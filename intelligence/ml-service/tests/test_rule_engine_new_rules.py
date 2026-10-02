@@ -449,3 +449,77 @@ class TestConsistency002CharacterContinuityLock:
             mock_verifier_cls.return_value.verify_continuity.return_value = mock_result
             evaluation = engine._evaluate_consistency_002(ir, {})
         assert evaluation.outcome is RuleOutcome.FAIL
+
+
+class TestFamilyScoreExcludesNotApplicableAndUnknown:
+    def test_not_applicable_outcome_excluded_from_family_score(self) -> None:
+        from app.quality.contracts import RuleEvaluation as CanonicalRuleEvaluation
+        from app.quality.contracts import RuleOutcome, Severity
+
+        engine = _engine()
+        evaluations = [
+            CanonicalRuleEvaluation(
+                rule_id="A",
+                rule_name="A",
+                family="test_family",
+                outcome=RuleOutcome.PASS,
+                configured_severity=Severity.PASS,
+                message="",
+            ),
+            CanonicalRuleEvaluation(
+                rule_id="B",
+                rule_name="B",
+                family="test_family",
+                outcome=RuleOutcome.NOT_APPLICABLE,
+                configured_severity=Severity.WARNING,
+                message="",
+            ),
+        ]
+        scores = engine._calculate_family_scores(evaluations)
+        # Only the PASS evaluation should count: 100 / 1 = 100, not 100 / 2 = 50.
+        assert scores["test_family"] == 100.0
+
+    def test_unknown_outcome_excluded_from_family_score(self) -> None:
+        from app.quality.contracts import RuleEvaluation as CanonicalRuleEvaluation
+        from app.quality.contracts import RuleOutcome, Severity
+
+        engine = _engine()
+        evaluations = [
+            CanonicalRuleEvaluation(
+                rule_id="A",
+                rule_name="A",
+                family="test_family",
+                outcome=RuleOutcome.PASS,
+                configured_severity=Severity.PASS,
+                message="",
+            ),
+            CanonicalRuleEvaluation(
+                rule_id="B",
+                rule_name="B",
+                family="test_family",
+                outcome=RuleOutcome.UNKNOWN,
+                configured_severity=Severity.WARNING,
+                message="",
+            ),
+        ]
+        scores = engine._calculate_family_scores(evaluations)
+        assert scores["test_family"] == 100.0
+
+    def test_family_with_only_not_applicable_scores_zero_with_zero_count(self) -> None:
+        from app.quality.contracts import RuleEvaluation as CanonicalRuleEvaluation
+        from app.quality.contracts import RuleOutcome, Severity
+
+        engine = _engine()
+        evaluations = [
+            CanonicalRuleEvaluation(
+                rule_id="A",
+                rule_name="A",
+                family="test_family",
+                outcome=RuleOutcome.NOT_APPLICABLE,
+                configured_severity=Severity.WARNING,
+                message="",
+            ),
+        ]
+        scores = engine._calculate_family_scores(evaluations)
+        # count == 0 for this family -> the existing "count > 0 else 0" branch applies.
+        assert scores["test_family"] == 0

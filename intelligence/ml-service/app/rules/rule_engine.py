@@ -249,6 +249,17 @@ class RuleEngine:
                     # overall score) cannot float up on missing coverage.
                     total_score += 0
                     count += 1
+                elif rule.outcome is RuleOutcome.NOT_APPLICABLE:
+                    # The rule does not apply to this concept by design (e.g. no
+                    # fake-win beat present). Excluded from both numerator and
+                    # denominator — contributes neither a pass nor a fail signal.
+                    pass
+                elif rule.outcome is RuleOutcome.UNKNOWN:
+                    # Evidence to evaluate this rule is currently missing (e.g. no
+                    # rendered video yet). Excluded from scoring for a different
+                    # reason than NOT_APPLICABLE — tracked separately via
+                    # QualityReport.unknown_count for observability.
+                    pass
 
             family_scores[family] = total_score / count if count > 0 else 0
 
