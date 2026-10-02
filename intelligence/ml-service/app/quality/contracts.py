@@ -27,11 +27,20 @@ from typing import Any
 
 
 class RuleOutcome(StrEnum):
-    """Explicit outcome of evaluating a single rule."""
+    """Explicit outcome of evaluating a single rule.
+
+    UNKNOWN and NOT_APPLICABLE are deliberately distinct: UNKNOWN means the
+    rule applies but required evidence is currently missing (e.g. no
+    rendered video yet). NOT_APPLICABLE means the rule does not apply to
+    this concept at all, by design (e.g. no fake-win beat present, so a
+    fake-win-escalation check has nothing to evaluate). Conflating these
+    would corrupt rule-coverage and rule-effectiveness measurement.
+    """
 
     PASS = "PASS"
     FAIL = "FAIL"
     UNKNOWN = "UNKNOWN"
+    NOT_APPLICABLE = "NOT_APPLICABLE"
     SERVICE_ERROR = "SERVICE_ERROR"
 
 
@@ -172,6 +181,14 @@ class QualityReport:
         return tuple(e for e in self.evaluations if e.outcome is RuleOutcome.SERVICE_ERROR)
 
     @property
+    def not_applicable_rules(self) -> tuple[RuleEvaluation, ...]:
+        return tuple(e for e in self.evaluations if e.outcome is RuleOutcome.NOT_APPLICABLE)
+
+    @property
+    def unknown_rules(self) -> tuple[RuleEvaluation, ...]:
+        return tuple(e for e in self.evaluations if e.outcome is RuleOutcome.UNKNOWN)
+
+    @property
     def blocker_count(self) -> int:
         return sum(
             1
@@ -204,6 +221,14 @@ class QualityReport:
     @property
     def service_error_count(self) -> int:
         return len(self.service_errors)
+
+    @property
+    def not_applicable_count(self) -> int:
+        return len(self.not_applicable_rules)
+
+    @property
+    def unknown_count(self) -> int:
+        return len(self.unknown_rules)
 
     @property
     def is_render_ready(self) -> bool:
