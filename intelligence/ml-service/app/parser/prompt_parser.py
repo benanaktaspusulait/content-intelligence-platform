@@ -337,6 +337,10 @@ class PromptParser:
                 "physicalRule": rule_text,
                 "causeEffect": "Extracted from prompt",
                 "consistency": "consistent",  # Default assumption
+                "mechanicCount": 1,  # Default assumption; author/parser does not
+                # currently detect multiple mechanics from
+                # text — CONCEPT_007 verifies this claim
+                # semantically rather than trusting it.
             }
 
         self.ambiguities.append("Core mechanic not explicitly stated")
@@ -344,6 +348,7 @@ class PromptParser:
             "physicalRule": "Inferred from beat actions",
             "causeEffect": "Action-based consequence",
             "consistency": "consistent",
+            "mechanicCount": 1,
         }
 
     def _parse_timeline_beats(self, text: str, duration: float) -> list[dict[str, Any]]:
@@ -406,6 +411,17 @@ class PromptParser:
         verb = match.group(1).strip().upper()
         return True, verb
 
+    def _extract_detached_marker(self, description: str) -> bool:
+        """Extract an explicit ``[DETACHED]`` marker from a beat description.
+
+        Returns True (relatesToCoreProblem) unless the beat is explicitly
+        marked as detached from the core problem/mechanic. This default
+        (True, i.e. "assumed on-topic") is the documented backward-compatible
+        default for pre-1.2 IRs that have never seen this field — see
+        VIDEO_PLAN_IR_SCHEMA.md's Backward Compatibility section.
+        """
+        return "[DETACHED]" not in description.upper()
+
     def _create_beat_from_description(
         self, beat_id: str, start_time: float, end_time: float, description: str
     ) -> dict[str, Any]:
@@ -438,6 +454,7 @@ class PromptParser:
         is_readable = duration >= 0.6
 
         is_attempt, primary_verb = self._extract_attempt_marker(description)
+        relates_to_core_problem = self._extract_detached_marker(description)
 
         return {
             "id": beat_id,
@@ -460,6 +477,7 @@ class PromptParser:
             "cycleGroup": None,  # Will be enriched later
             "isAttempt": is_attempt,
             "primaryVerb": primary_verb,
+            "relatesToCoreProblem": relates_to_core_problem,
         }
 
     def _extract_action_from_description(self, description: str) -> str:
@@ -579,6 +597,9 @@ class PromptParser:
         self, text: str, beats: list[dict[str, Any]], duration: float
     ) -> dict[str, Any]:
         """Identify final payoff characteristics"""
+        loops_to_opening = "loop" in text.lower() and "no loop" not in text.lower()
+        loop_quality = "strong" if "strong loop" in text.lower() else "weak" if loops_to_opening else "none"
+
         if not beats:
             return {
                 "type": "escalation",
@@ -587,6 +608,8 @@ class PromptParser:
                 "isPeakIntensity": True,
                 "isHardCut": True,
                 "isRepeatOfOpening": False,
+                "loopsToOpening": loops_to_opening,
+                "loopQuality": loop_quality,
             }
 
         last_beat = beats[-1]
@@ -602,6 +625,8 @@ class PromptParser:
             "isPeakIntensity": last_beat["intensity"] >= max(b["intensity"] for b in beats),
             "isHardCut": "hard cut" in text.lower() or "mid" in text.lower(),
             "isRepeatOfOpening": is_repeat,
+            "loopsToOpening": loops_to_opening,
+            "loopQuality": loop_quality,
         }
 
     def _assess_producibility(self, text: str, beats: list[dict[str, Any]]) -> dict[str, Any]:

@@ -110,3 +110,71 @@ Title: Mimi vs Rug
     assert beats[1]["primaryVerb"] == "BLOCK"
     assert beats[2]["isAttempt"] is False
     assert beats[2]["primaryVerb"] == ""
+
+
+def test_beats_default_relatestocoreproblem_true() -> None:
+    """Beats with no explicit detachment marker default relatesToCoreProblem True."""
+    prompt = """
+Title: Plain Beat
+
+15-second video
+
+## Characters
+- Hero: Brave
+
+## Timeline
+0.0-5.0 SEC: Hero — stands still
+5.0-15.0 SEC: Hero — walks away
+"""
+    ir = parse_prompt(prompt).video_plan_ir
+    for beat in ir["beats"]:
+        assert beat["relatesToCoreProblem"] is True
+
+
+def test_beats_explicit_detached_marker_sets_relatestocoreproblem_false() -> None:
+    """`[DETACHED]` in a beat description sets relatesToCoreProblem to False."""
+    prompt = """
+Title: Mimi vs Rug
+
+15-second video
+
+## Characters
+- Mimi: Curious
+
+## Timeline
+0.0-2.0 SEC: Mimi — catches the sliding cup [ATTEMPT: CATCH]
+2.0-3.0 SEC: Camera cuts to unrelated scenery [DETACHED]
+3.0-15.0 SEC: Mimi — blocks it with a book [ATTEMPT: BLOCK]
+"""
+    ir = parse_prompt(prompt).video_plan_ir
+    beats = ir["beats"]
+    assert beats[0]["relatesToCoreProblem"] is True
+    assert beats[1]["relatesToCoreProblem"] is False
+    assert beats[2]["relatesToCoreProblem"] is True
+
+
+def test_core_mechanic_defaults_mechaniccount_to_1() -> None:
+    prompt = """
+Title: Plain Beat
+
+15-second video
+
+## Timeline
+0.0-15.0 SEC: Hero — stands still
+"""
+    ir = parse_prompt(prompt).video_plan_ir
+    assert ir["coreMechanic"]["mechanicCount"] == 1
+
+
+def test_final_payoff_defaults_loop_fields() -> None:
+    prompt = """
+Title: Plain Beat
+
+15-second video
+
+## Timeline
+0.0-15.0 SEC: Hero — stands still
+"""
+    ir = parse_prompt(prompt).video_plan_ir
+    assert ir["finalPayoff"]["loopsToOpening"] is False
+    assert ir["finalPayoff"]["loopQuality"] == "none"

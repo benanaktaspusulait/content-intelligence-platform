@@ -56,6 +56,11 @@ interface VideoPlanIR {
     physicalRule: string;             // e.g., "Smooth floor = slide, Rough mat = stop"
     causeEffect: string;              // e.g., "Stepping on surface → movement consequence"
     consistency: "consistent" | "evolving" | "breaking";  // Does rule stay same or change?
+    mechanicCount: number;            // Number of independent physical/magical
+                                       // rules active in the concept, as claimed
+                                       // by the author. Verified (not trusted) by
+                                       // CONCEPT_007 via semantic evaluation.
+                                       // Optional; defaults to 1 when absent.
   };
 
   // Hook
@@ -78,6 +83,12 @@ interface VideoPlanIR {
     isPeakIntensity: boolean;         // Is this the strongest moment?
     isHardCut: boolean;               // Cuts mid-action vs holds pose
     isRepeatOfOpening: boolean;       // True if final = opening (bad)
+    loopsToOpening: boolean;          // True if the final state visually/
+                                       // narratively connects back to the
+                                       // opening, inviting replay. Optional;
+                                       // defaults to false when absent.
+    loopQuality: "strong" | "weak" | "none";  // Quality of the loop if present.
+                                       // Optional; defaults to "none" when absent.
   };
 
   // AI Producibility Assessment
@@ -133,6 +144,12 @@ interface Beat {
                                       // for this attempt, e.g. "CATCH", "BLOCK".
                                       // Required (non-empty) when isAttempt is true;
                                       // empty string otherwise.
+  relatesToCoreProblem: boolean;     // True if this beat advances/stays engaged
+                                      // with the established core mechanic/problem.
+                                      // False if it cuts away to story-irrelevant
+                                      // content (scenery, unrelated reaction, etc).
+                                      // Optional; defaults to true when absent
+                                      // (pre-1.2 IRs are assumed on-topic).
 }
 ```
 
@@ -410,6 +427,22 @@ strategies, not by slowing down the same number of attempts.
 
 ---
 
+## Backward Compatibility (v1.2)
+
+Three fields were added in schema v1.2: `beats[].relatesToCoreProblem`,
+`coreMechanic.mechanicCount`, `finalPayoff.loopsToOpening`/`loopQuality`.
+All three are optional. A v1.0/v1.1-shaped IR that omits them is handled
+identically to a v1.2 IR that includes them with these default values:
+
+- `beats[].relatesToCoreProblem` → `true` (assumed on-topic)
+- `coreMechanic.mechanicCount` → `1` (assumed single-mechanic)
+- `finalPayoff.loopsToOpening` → `false`, `finalPayoff.loopQuality` → `"none"`
+
+No rule introduced in RULESET 1.2 produces a false FAIL purely from these
+fields being absent on an older IR.
+
+---
+
 ## Schema Validation Rules
 
 ```yaml
@@ -471,10 +504,14 @@ This allows the system to flag **low-confidence parses** that need human review.
 
 **This schema is versioned.**
 
-Current version: **1.1**
+Current version: **1.2**
 
 v1.1 adds `Beat.isAttempt` / `Beat.primaryVerb` and relaxes the duration ceiling to
 support 30-45s long-form concepts.
+
+v1.2 adds `Beat.relatesToCoreProblem`, `coreMechanic.mechanicCount`, and
+`finalPayoff.loopsToOpening`/`loopQuality`, all optional with backward-compatible
+defaults.
 
 Future versions may add:
 - Camera movement tracking
