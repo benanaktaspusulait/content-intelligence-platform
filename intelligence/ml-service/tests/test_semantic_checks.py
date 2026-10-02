@@ -12,6 +12,7 @@ import pytest
 from app.llm.semantic_checks import (
     SemanticCheckServiceError,
     check_twist_matches_rule,
+    count_independent_mechanics,
     find_duplicate_strategy_pairs,
 )
 
@@ -144,3 +145,112 @@ class TestMissingCredentialsFailClosed:
         with patch("app.llm.semantic_checks.get_provider", side_effect=ValueError("OPENAI_API_KEY not set")):
             with pytest.raises(SemanticCheckServiceError):
                 check_twist_matches_rule(physical_rule="rule", twist_description="twist")
+
+
+class TestCountIndependentMechanics:
+    def test_returns_one_when_llm_reports_single_mechanic(self) -> None:
+        mock_llm = Mock()
+        mock_llm.complete.return_value = json.dumps(
+            {
+                "mechanic_count": 1,
+                "reasoning": "All consequences are escalating depths of the same puddle-contact rule.",
+            }
+        )
+
+        with patch("app.llm.semantic_checks.get_provider", return_value=mock_llm):
+            count, reasoning = count_independent_mechanics(
+                physical_rule="Touching the puddle increases its depth.",
+                beat_descriptions=[
+                    "toe touches puddle, ankle-deep",
+                    "foot touches puddle, knee-deep",
+                    "both feet touch puddle, waist-deep",
+                ],
+            )
+
+        assert count == 1
+        assert "same" in reasoning.lower() or "escalat" in reasoning.lower()
+
+    def test_returns_two_when_llm_reports_second_independent_mechanic(self) -> None:
+        mock_llm = Mock()
+        mock_llm.complete.return_value = json.dumps(
+            {
+                "mechanic_count": 2,
+                "reasoning": "The puddle deepening is one rule; the puddle chasing the character "
+                "autonomously is a second, independent rule.",
+            }
+        )
+
+        with patch("app.llm.semantic_checks.get_provider", return_value=mock_llm):
+            count, reasoning = count_independent_mechanics(
+                physical_rule="Touching the puddle increases its depth.",
+                beat_descriptions=[
+                    "toe touches puddle, ankle-deep",
+                    "puddle grows legs and chases the character",
+                ],
+            )
+
+        assert count == 2
+        assert "second" in reasoning.lower() or "independent" in reasoning.lower()
+
+    def test_raises_service_error_on_missing_field(self) -> None:
+        mock_llm = Mock()
+        mock_llm.complete.return_value = json.dumps({"mechanic_count": 1})  # missing "reasoning"
+
+        with patch("app.llm.semantic_checks.get_provider", return_value=mock_llm):
+            with pytest.raises(SemanticCheckServiceError):
+                count_independent_mechanics(physical_rule="rule", beat_descriptions=["beat one", "beat two"])
+
+    def test_raises_service_error_on_non_integer_count(self) -> None:
+        mock_llm = Mock()
+        mock_llm.complete.return_value = json.dumps({"mechanic_count": "one", "reasoning": "test"})
+
+        with patch("app.llm.semantic_checks.get_provider", return_value=mock_llm):
+            with pytest.raises(SemanticCheckServiceError):
+                count_independent_mechanics(physical_rule="rule", beat_descriptions=["beat one", "beat two"])
+
+    def test_raises_service_error_on_bool_count(self) -> None:
+        """bool is a subclass of int in Python; a hallucinated true/false must not
+        silently pass through as mechanic_count=1/0."""
+        mock_llm = Mock()
+        mock_llm.complete.return_value = json.dumps({"mechanic_count": True, "reasoning": "test"})
+
+        with patch("app.llm.semantic_checks.get_provider", return_value=mock_llm):
+            with pytest.raises(SemanticCheckServiceError):
+                count_independent_mechanics(physical_rule="rule", beat_descriptions=["beat one", "beat two"])
+
+    def test_raises_service_error_on_count_below_one(self) -> None:
+        mock_llm = Mock()
+        mock_llm.complete.return_value = json.dumps({"mechanic_count": 0, "reasoning": "test"})
+
+        with patch("app.llm.semantic_checks.get_provider", return_value=mock_llm):
+            with pytest.raises(SemanticCheckServiceError):
+                count_independent_mechanics(physical_rule="rule", beat_descriptions=["beat one", "beat two"])
+
+    def test_raises_service_error_on_llm_provider_unavailable(self) -> None:
+        with patch("app.llm.semantic_checks.get_provider", side_effect=ValueError("OPENAI_API_KEY not set")):
+            with pytest.raises(SemanticCheckServiceError):
+                count_independent_mechanics(physical_rule="rule", beat_descriptions=["beat one", "beat two"])
+
+    def test_short_circuits_to_one_without_calling_llm_when_fewer_than_two_beats(self) -> None:
+        mock_llm = Mock()
+
+        with patch("app.llm.semantic_checks.get_provider", return_value=mock_llm) as mock_get_provider:
+            count, reasoning = count_independent_mechanics(
+                physical_rule="rule", beat_descriptions=["only one beat"]
+            )
+
+        assert count == 1
+        assert reasoning  # non-empty, explains the short-circuit
+        mock_get_provider.assert_not_called()
+        mock_llm.complete.assert_not_called()
+
+    def test_short_circuits_to_one_without_calling_llm_when_zero_beats(self) -> None:
+        mock_llm = Mock()
+
+        with patch("app.llm.semantic_checks.get_provider", return_value=mock_llm) as mock_get_provider:
+            count, reasoning = count_independent_mechanics(physical_rule="rule", beat_descriptions=[])
+
+        assert count == 1
+        assert reasoning
+        mock_get_provider.assert_not_called()
+        mock_llm.complete.assert_not_called()
