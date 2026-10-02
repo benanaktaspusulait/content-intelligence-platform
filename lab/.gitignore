@@ -1,0 +1,6 @@
+__pycache__/
+*.py[cod]
+.venv/
+.lab_data/library.sqlite3-shm
+.lab_data/library.sqlite3-wal
+

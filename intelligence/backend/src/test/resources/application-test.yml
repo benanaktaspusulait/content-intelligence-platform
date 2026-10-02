@@ -1,0 +1,29 @@
+spring:
+  flyway:
+    enabled: false
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+
+pompom:
+  data-root: ${java.io.tmpdir}/pompom-test-data
+  openart:
+    enabled: false
+    mock:
+      enabled: true
+    budget:
+      monthly: 10000
+      warning-threshold: 0.2
+      alert:
+        enabled: false
+    cost:
+      first-frame: 10
+      video: 100
+  qa:
+    service:
+      url: http://localhost:8001

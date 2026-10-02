@@ -1,0 +1,255 @@
+{
+  "video_id": "4b5d0cfc9b928821",
+  "metadata": {
+    "path": "/Users/benanaktas/project/video/yuvarlak-dunya/POMPOM_HILLS_PRODUCTION/09_SOCIAL_REELS/new14092026/What’s Wrong? uploaded/3-The Giant Spoon/openart-02178939987125200000000000000000000ffffc0a8bb63151dee_1789400009256_2de80364_hook.mp4",
+    "filename": "openart-02178939987125200000000000000000000ffffc0a8bb63151dee_1789400009256_2de80364_hook.mp4",
+    "series": "What’s Wrong? uploaded",
+    "duration": 15.104,
+    "fps": 24.0,
+    "width": 1080,
+    "height": 1920,
+    "aspect_ratio": 0.5625,
+    "codec": "h264",
+    "has_audio": true,
+    "audio_codec": "aac",
+    "size_bytes": 13895777,
+    "content_hash": "4b5d0cfc9b9288217b15c486b2e45b29042d12c776fedc413ef7a0f4aa4204d9"
+  },
+  "classification": "GOOD",
+  "classification_reason": "Measured structure is strong overall; only minor or reviewable issues remain.",
+  "diagnosis": "GOOD: first meaningful change at 0.25s; action density 84%; dead time 0.00s.",
+  "creative_structure_match": 57.8,
+  "confidence": 0.51,
+  "scores": {
+    "first_frame_hook": 5.0,
+    "problem_readability": 5.0,
+    "character_goal": 5.0,
+    "physical_action": 8.3,
+    "problem_resistance": 5.0,
+    "escalation": 4.7,
+    "single_physical_rule": 5.0,
+    "fake_resolution": 4.0,
+    "final_twist": 5.3,
+    "loopability": 7.7,
+    "pacing": 10.0
+  },
+  "timeline": [
+    {
+      "start": 0.25,
+      "end": 0.6,
+      "kind": "ACTION",
+      "detail": "High local motion/change peak.",
+      "value": 8.947,
+      "confidence": 0.68
+    },
+    {
+      "start": 1.25,
+      "end": 1.6,
+      "kind": "ACTION",
+      "detail": "High local motion/change peak.",
+      "value": 9.65,
+      "confidence": 0.68
+    },
+    {
+      "start": 2.5,
+      "end": 2.85,
+      "kind": "ACTION",
+      "detail": "High local motion/change peak.",
+      "value": 8.544,
+      "confidence": 0.68
+    },
+    {
+      "start": 2.75,
+      "end": 3.1,
+      "kind": "ACTION",
+      "detail": "High local motion/change peak.",
+      "value": 11.856,
+      "confidence": 0.68
+    },
+    {
+      "start": 3.0,
+      "end": 3.35,
+      "kind": "ACTION",
+      "detail": "High local motion/change peak.",
+      "value": 8.688,
+      "confidence": 0.68
+    },
+    {
+      "start": 4.0,
+      "end": 4.35,
+      "kind": "ACTION",
+      "detail": "High local motion/change peak.",
+      "value": 8.097,
+      "confidence": 0.68
+    },
+    {
+      "start": 6.0,
+      "end": 6.0,
+      "kind": "SHOT_CHANGE",
+      "detail": "Large whole-frame visual discontinuity.",
+      "value": 0.213,
+      "confidence": 0.78
+    },
+    {
+      "start": 12.0,
+      "end": 12.35,
+      "kind": "ACTION",
+      "detail": "High local motion/change peak.",
+      "value": 7.997,
+      "confidence": 0.68
+    },
+    {
+      "start": 12.0,
+      "end": 12.0,
+      "kind": "SHOT_CHANGE",
+      "detail": "Large whole-frame visual discontinuity.",
+      "value": 0.228,
+      "confidence": 0.78
+    },
+    {
+      "start": 13.0,
+      "end": 13.35,
+      "kind": "ACTION",
+      "detail": "High local motion/change peak.",
+      "value": 8.055,
+      "confidence": 0.68
+    },
+    {
+      "start": 13.0,
+      "end": 13.0,
+      "kind": "SHOT_CHANGE",
+      "detail": "Large whole-frame visual discontinuity.",
+      "value": 0.213,
+      "confidence": 0.78
+    },
+    {
+      "start": 13.104,
+      "end": 13.453999999999999,
+      "kind": "ACTION",
+      "detail": "High local motion/change peak.",
+      "value": 9.848,
+      "confidence": 0.68
+    },
+    {
+      "start": 13.354,
+      "end": 13.703999999999999,
+      "kind": "ACTION",
+      "detail": "High local motion/change peak.",
+      "value": 10.147,
+      "confidence": 0.68
+    }
+  ],
+  "issues": [],
+  "strengths": [
+    "Visual action density is high (84% of sampled intervals active)."
+  ],
+  "weaknesses": [
+    "Character goal, causal physical rule, and anatomy continuity are not verified without a configured local VLM or human review."
+  ],
+  "physical_actions": [
+    {
+      "start": 0.25,
+      "end": 0.6,
+      "kind": "ACTION",
+      "detail": "High local motion/change peak.",
+      "value": 8.947,
+      "confidence": 0.68
+    },
+    {
+      "start": 1.25,
+      "end": 1.6,
+      "kind": "ACTION",
+      "detail": "High local motion/change peak.",
+      "value": 9.65,
+      "confidence": 0.68
+    },
+    {
+      "start": 2.5,
+      "end": 2.85,
+      "kind": "ACTION",
+      "detail": "High local motion/change peak.",
+      "value": 8.544,
+      "confidence": 0.68
+    },
+    {
+      "start": 2.75,
+      "end": 3.1,
+      "kind": "ACTION",
+      "detail": "High local motion/change peak.",
+      "value": 11.856,
+      "confidence": 0.68
+    },
+    {
+      "start": 3.0,
+      "end": 3.35,
+      "kind": "ACTION",
+      "detail": "High local motion/change peak.",
+      "value": 8.688,
+      "confidence": 0.68
+    },
+    {
+      "start": 4.0,
+      "end": 4.35,
+      "kind": "ACTION",
+      "detail": "High local motion/change peak.",
+      "value": 8.097,
+      "confidence": 0.68
+    },
+    {
+      "start": 12.0,
+      "end": 12.35,
+      "kind": "ACTION",
+      "detail": "High local motion/change peak.",
+      "value": 7.997,
+      "confidence": 0.68
+    },
+    {
+      "start": 13.0,
+      "end": 13.35,
+      "kind": "ACTION",
+      "detail": "High local motion/change peak.",
+      "value": 8.055,
+      "confidence": 0.68
+    },
+    {
+      "start": 13.104,
+      "end": 13.453999999999999,
+      "kind": "ACTION",
+      "detail": "High local motion/change peak.",
+      "value": 9.848,
+      "confidence": 0.68
+    },
+    {
+      "start": 13.354,
+      "end": 13.703999999999999,
+      "kind": "ACTION",
+      "detail": "High local motion/change peak.",
+      "value": 10.147,
+      "confidence": 0.68
+    }
+  ],
+  "dead_time": [],
+  "continuity_findings": [],
+  "text_findings": [],
+  "audio_findings": [],
+  "fix_plan": [],
+  "semantic_notes": {
+    "provider": "local_heuristic",
+    "model": "opencv+ffmpeg",
+    "confidence": 0.42,
+    "goal": "Not semantically verified; enable a local VLM or add human review.",
+    "physical_rule": "Not semantically verified; motion metrics cannot identify causal rules.",
+    "continuity": "Only abrupt frame-level discontinuities are measured; anatomy/identity require semantic review.",
+    "text": "Embedded text meaning is not inferred by the heuristic provider.",
+    "raw": {
+      "strongest_motion_time": 2.75,
+      "first_meaningful_change": 0.25,
+      "action_density": 0.8387
+    }
+  },
+  "provider": "local_heuristic",
+  "model": "opencv+ffmpeg",
+  "prompt_version": "heuristic-v1",
+  "rubric_version": "pompom-action-dna-v1",
+  "software_version": "0.2.0"
+}

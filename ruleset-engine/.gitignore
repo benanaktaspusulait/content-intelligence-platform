@@ -1,0 +1,32 @@
+# Java
+target/
+*.class
+*.jar
+*.war
+*.ear
+
+# Maven
+.mvn/
+!.mvn/wrapper/maven-wrapper.jar
+
+# IDE
+.idea/
+*.iml
+.vscode/
+.DS_Store
+
+# Environment
+.env
+*.env.local
+
+# Logs
+*.log
+logs/
+
+# Test
+*.test
+test-output/
+
+# Database
+*.db
+*.sqlite

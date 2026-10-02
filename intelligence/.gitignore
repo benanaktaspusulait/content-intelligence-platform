@@ -1,0 +1,16 @@
+.env
+.idea/
+.DS_Store
+**/target/
+**/node_modules/
+**/.venv/
+**/__pycache__/
+**/.pytest_cache/
+data/videos/original/*
+data/videos/variants/*
+data/frames/*
+data/storyboards/*
+data/model-artifacts/*
+data/imports/raw/*
+!data/**/.gitkeep
+

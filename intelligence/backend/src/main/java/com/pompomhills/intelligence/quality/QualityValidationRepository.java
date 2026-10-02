@@ -1,0 +1,43 @@
+package com.pompomhills.intelligence.quality;
+
+import java.util.List;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
+
+/** Repository for quality validation history. */
+@Repository
+public interface QualityValidationRepository extends JpaRepository<QualityValidationEntity, Long> {
+
+  /**
+   * Find all validations for a specific prompt ordered by date.
+   *
+   * @param promptId Prompt ID
+   * @return List of validations
+   */
+  List<QualityValidationEntity> findByPromptIdOrderByCreatedAtDesc(Long promptId);
+
+  /**
+   * Count validations by status.
+   *
+   * @param status Status string (RENDER_READY, BLOCKED, NEEDS_REVISION)
+   * @return Count
+   */
+  long countByStatus(String status);
+
+  /**
+   * Calculate average score across all validations.
+   *
+   * @return Average score or null if no validations
+   */
+  @Query("SELECT AVG(v.overallScore) FROM QualityValidationEntity v")
+  Double averageScore();
+
+  /**
+   * Find recent validations for dashboard.
+   *
+   * @return Recent validations
+   */
+  @Query("SELECT v FROM QualityValidationEntity v ORDER BY v.createdAt DESC LIMIT 100")
+  List<QualityValidationEntity> findRecentValidations();
+}

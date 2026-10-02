@@ -1,0 +1,10 @@
+.modebar{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.modebar p{margin:0;color:var(--muted);font-size:11px}
+.segmented{display:inline-flex;border:1px solid var(--line);background:#fff;padding:3px}
+.segmented button{height:30px;border:0;background:transparent;padding:0 13px;font-weight:750;color:var(--muted);cursor:pointer}
+.segmented button.active{background:#14241f;color:#fff}
+.rescue-band{border-left:4px solid var(--blue)}
+.rescue-engine{font-size:12px;line-height:1.45}
+.badge.A{background:#d9f0e4;color:#105b41}.badge.B{background:#e5f0dc;color:#3e6426}
+.badge.C{background:#fff0c5;color:#795600}.badge.D{background:#f5e7d5;color:#7a4a17}.badge.E{background:#fae4e1;color:#9e3026}
+@media(max-width:650px){.modebar{align-items:flex-start;gap:8px;flex-direction:column}.modebar p{display:none}}

@@ -1,0 +1,50 @@
+spring:
+  application:
+    name: pompom-creative-render-service
+  # The render service owns an isolated `creative_render` schema with its own Flyway history,
+  # physically separate from the backend-owned `public` schema (historical V1-V28). Flyway creates
+  # and manages only this schema; Hibernate never issues DDL (ddl-auto=none) and resolves all
+  # entities against `creative_render`.
+  flyway:
+    enabled: true
+    create-schemas: true
+    default-schema: creative_render
+    schemas: creative_render
+  jpa:
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        default_schema: creative_render
+  # Required for EmailNotificationService's JavaMailSender bean to be autoconfigured. Without a
+  # host, Spring Boot's mail autoconfiguration backs off and the application fails to start
+  # (ProductionMailAutoConfigurationTest pins this). Email sending itself stays opt-in via
+  # pompom.notifications.email.enabled (default false), so an unreachable/placeholder SMTP host
+  # never blocks boot or gets contacted unless notifications are explicitly turned on.
+  mail:
+    host: ${MAIL_HOST:smtp.gmail.com}
+    port: ${MAIL_PORT:587}
+    username: ${MAIL_USERNAME:}
+    password: ${MAIL_PASSWORD:}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+server:
+  port: ${SERVER_PORT:8081}
+
+management:
+  health:
+    mail:
+      enabled: false
+
+pompom:
+  intelligence-base-url: ${POMPOM_INTELLIGENCE_BASE_URL:http://localhost:8080}
+  render:
+    worker:
+      enabled: ${RENDER_WORKER_ENABLED:true}
+      lease-duration: ${RENDER_WORKER_LEASE_DURATION:30s}
+      batch-size: ${RENDER_WORKER_BATCH_SIZE:10}
+      tick-interval: ${RENDER_WORKER_TICK_INTERVAL:5s}

@@ -1,0 +1,178 @@
+package com.pompomhills.intelligence.quality;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
+import java.time.Instant;
+import java.util.Optional;
+import java.util.UUID;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+class ValidationEvidenceServiceTest {
+
+  private QualityValidationRepository repository;
+  private ValidationEvidenceService service;
+
+  @BeforeEach
+  void setUp() {
+    repository = mock(QualityValidationRepository.class);
+    service = new ValidationEvidenceService(repository);
+  }
+
+  @Test
+  void returnsCompleteRecordAsRenderReady() {
+    QualityValidationEntity entity = completeEntity();
+    entity.setStatus("RENDER_READY");
+    when(repository.findById(42L)).thenReturn(Optional.of(entity));
+
+    ValidationEvidenceResponse evidence = service.getEvidence(42L);
+
+    assertThat(evidence.validationRecordId()).isEqualTo(42L);
+    assertThat(evidence.status()).isEqualTo(ValidationDecisionStatus.RENDER_READY);
+    assertThat(evidence.promptSha256()).hasSize(64);
+    assertThat(evidence.independentRevalidationId()).isNotNull();
+  }
+
+  @Test
+  void missingRecordThrowsNotFound() {
+    when(repository.findById(404L)).thenReturn(Optional.empty());
+
+    assertThatThrownBy(() -> service.getEvidence(404L))
+        .isInstanceOf(ValidationEvidenceNotFoundException.class)
+        .hasMessageContaining("404");
+  }
+
+  @Test
+  void legacyRecordMissingContentLinkageIsIncomplete() {
+    // Legacy rows created before this migration have no content/prompt linkage and no
+    // immutable evidence fields populated - they must never be reported as usable evidence.
+    QualityValidationEntity legacy = new QualityValidationEntity();
+    legacy.setId(7L);
+    legacy.setPromptText("legacy prompt text from before evidence tracking existed");
+    legacy.setRulesetVersion("1.0");
+    legacy.setOverallScore(80.0);
+    legacy.setStatus("RENDER_READY");
+    legacy.setCreatedAt(Instant.now());
+    when(repository.findById(7L)).thenReturn(Optional.of(legacy));
+
+    assertThatThrownBy(() -> service.getEvidence(7L))
+        .isInstanceOf(ValidationEvidenceIncompleteException.class)
+        .hasMessageContaining("7");
+  }
+
+  @Test
+  void negativeBlockerCountIsIncomplete() {
+    QualityValidationEntity entity = completeEntity();
+    entity.setBlockerCount(-1);
+    when(repository.findById(42L)).thenReturn(Optional.of(entity));
+
+    assertThatThrownBy(() -> service.getEvidence(42L))
+        .isInstanceOf(ValidationEvidenceIncompleteException.class);
+  }
+
+  @Test
+  void malformedPromptHashIsIncomplete() {
+    QualityValidationEntity entity = completeEntity();
+    entity.setPromptSha256("not-a-valid-sha256");
+    when(repository.findById(42L)).thenReturn(Optional.of(entity));
+
+    assertThatThrownBy(() -> service.getEvidence(42L))
+        .isInstanceOf(ValidationEvidenceIncompleteException.class);
+  }
+
+  @Test
+  void missingSemanticIdentityCannotBeRenderReadyEvenWhenStatusSaysSo() {
+    // The ML service does not yet populate semantic/producibility/independent-revalidation
+    // identity (added later in Slice C). Evidence missing those fields must never be surfaced
+    // as RENDER_READY, regardless of what the stored status column says, so a render queue
+    // gate built against this evidence can never fabricate authorization.
+    QualityValidationEntity entity = completeEntity();
+    entity.setStatus("RENDER_READY");
+    entity.setSemanticProvider(null);
+    when(repository.findById(42L)).thenReturn(Optional.of(entity));
+
+    ValidationEvidenceResponse evidence = service.getEvidence(42L);
+
+    assertThat(evidence.status()).isNotEqualTo(ValidationDecisionStatus.RENDER_READY);
+    assertThat(evidence.status()).isEqualTo(ValidationDecisionStatus.NEEDS_REVISION);
+  }
+
+  @Test
+  void missingIndependentRevalidationCannotBeRenderReady() {
+    QualityValidationEntity entity = completeEntity();
+    entity.setStatus("RENDER_READY");
+    entity.setIndependentRevalidationId(null);
+    entity.setIndependentlyRevalidatedAt(null);
+    when(repository.findById(42L)).thenReturn(Optional.of(entity));
+
+    ValidationEvidenceResponse evidence = service.getEvidence(42L);
+
+    assertThat(evidence.status()).isEqualTo(ValidationDecisionStatus.NEEDS_REVISION);
+  }
+
+  @Test
+  void expiredEvidenceCannotBeRenderReady() {
+    QualityValidationEntity entity = completeEntity();
+    entity.setStatus("RENDER_READY");
+    entity.setExpiresAt(Instant.now().minusSeconds(1));
+    when(repository.findById(42L)).thenReturn(Optional.of(entity));
+
+    ValidationEvidenceResponse evidence = service.getEvidence(42L);
+
+    assertThat(evidence.status()).isEqualTo(ValidationDecisionStatus.NEEDS_REVISION);
+  }
+
+  @Test
+  void evidenceWithNoExpiryIsTreatedAsAlreadyExpired() {
+    // expiresAt is only ever populated once a freshness policy exists upstream (today it is
+    // always null). Absence must never be read as "never expires".
+    QualityValidationEntity entity = completeEntity();
+    entity.setStatus("RENDER_READY");
+    entity.setExpiresAt(null);
+    when(repository.findById(42L)).thenReturn(Optional.of(entity));
+
+    ValidationEvidenceResponse evidence = service.getEvidence(42L);
+
+    assertThat(evidence.status()).isEqualTo(ValidationDecisionStatus.NEEDS_REVISION);
+  }
+
+  @Test
+  void unexpiredEvidenceWithAllFieldsPresentIsRenderReady() {
+    QualityValidationEntity entity = completeEntity();
+    entity.setStatus("RENDER_READY");
+    entity.setExpiresAt(Instant.now().plusSeconds(3600));
+    when(repository.findById(42L)).thenReturn(Optional.of(entity));
+
+    ValidationEvidenceResponse evidence = service.getEvidence(42L);
+
+    assertThat(evidence.status()).isEqualTo(ValidationDecisionStatus.RENDER_READY);
+  }
+
+  private QualityValidationEntity completeEntity() {
+    QualityValidationEntity entity = new QualityValidationEntity();
+    entity.setId(42L);
+    entity.setContentId(10L);
+    entity.setPromptVersionId(11L);
+    entity.setPromptText("a".repeat(120));
+    entity.setPromptSha256("a".repeat(64));
+    entity.setRulesetVersion("1.0");
+    entity.setOverallScore(95.0);
+    entity.setStatus("NEEDS_REVISION");
+    entity.setBlockerCount(0);
+    entity.setCriticalCount(0);
+    entity.setWarningCount(0);
+    entity.setDeterministicRulesetVersion("1.0");
+    entity.setSemanticProvider("openai");
+    entity.setSemanticModelVersion("gpt-4o-2026-01");
+    entity.setProducibilityValidatorVersion("1.0");
+    entity.setIndependentRevalidationId(UUID.randomUUID());
+    entity.setIndependentlyRevalidatedAt(Instant.now());
+    entity.setValidatedAt(Instant.now());
+    entity.setExpiresAt(Instant.now().plusSeconds(3600));
+    entity.setCreatedAt(Instant.now());
+    return entity;
+  }
+}

@@ -1,0 +1,320 @@
+versions:
+- changelog: '# Ruleset 1.0 - Initial Release
+
+
+    ## New Rules (10)
+
+    - CONCEPT_006: Minimum 4 distinct consequences (BLOCKER)
+
+    - BEAT_004: Max 30% single visual state (CRITICAL)
+
+    - REPETITION_002: Action repetition max 2-3x with escalation (CRITICAL)
+
+    - REPETITION_003: Cycle repetition max 2-3x with structural change (CRITICAL)
+
+    - NOVELTY_001: Max 4.5s gap between new consequences (WARNING)
+
+    - PROGRESSION_005: Static pattern max 50% (WARNING→CRITICAL at 65%)
+
+    - ESCALATION_004: Payoff timing at 80%+ (WARNING→CRITICAL)
+
+    - PAYOFF_001: Payoff not repeat of opening (CRITICAL)
+
+    - PRODUCIBILITY_001: Block very_high complexity (BLOCKER)
+
+    - CONSISTENCY_001: Physics rules consistent (WARNING)
+
+
+    ## Learned From
+
+    - FAIL_001: Kiko static state dominance (42% on mat) → BEAT_004
+
+    - FAIL_002: Opa repetitive open/close 3x → REPETITION_002
+
+    - FAIL_003: Arda repetitive sharpen/draw cycle 3x → REPETITION_003
+
+
+    ## Philosophy
+
+    Quality Engine enforces three core principles:
+
+    1. **Consequence Density**: Every 15s must deliver 4+ distinct consequences
+
+    2. **Visual Momentum**: No single visual state dominates >30% of timeline
+
+    3. **Escalation**: Intensity builds to payoff, no repetitive loops
+
+    '
+  changes:
+  - breaking_change: false
+    change_type: added
+    new_value:
+      severity: BLOCKER
+      threshold: 4
+    old_value: null
+    reason: Prevent low-consequence scenarios that fail to engage
+    rule_id: CONCEPT_006
+  - breaking_change: false
+    change_type: added
+    new_value:
+      severity: CRITICAL
+      threshold: 0.3
+    old_value: null
+    reason: 'Prevent static state dominance (learned from FAIL_001: Kiko 42% on mat)'
+    rule_id: BEAT_004
+  - breaking_change: false
+    change_type: added
+    new_value:
+      max_repetitions: 3
+      severity: CRITICAL
+    old_value: null
+    reason: 'Prevent action repetition without escalation (learned from FAIL_002:
+      Opa open/close 3x)'
+    rule_id: REPETITION_002
+  - breaking_change: false
+    change_type: added
+    new_value:
+      max_cycles: 3
+      severity: CRITICAL
+    old_value: null
+    reason: 'Prevent cycle repetition (learned from FAIL_003: Arda sharpen/draw/blunt
+      3x)'
+    rule_id: REPETITION_003
+  - breaking_change: false
+    change_type: added
+    new_value:
+      max_gap_seconds: 4.5
+      severity: WARNING
+    old_value: null
+    reason: Maintain novelty distribution across timeline
+    rule_id: NOVELTY_001
+  - breaking_change: false
+    change_type: added
+    new_value:
+      critical_threshold: 0.65
+      static_threshold: 0.5
+    old_value: null
+    reason: Ensure narrative progression, not static patterns
+    rule_id: PROGRESSION_005
+  - breaking_change: false
+    change_type: added
+    new_value:
+      min_payoff_position: 0.8
+    old_value: null
+    reason: Payoff must be at climax (80%+ of timeline)
+    rule_id: ESCALATION_004
+  - breaking_change: false
+    change_type: added
+    new_value:
+      severity: CRITICAL
+    old_value: null
+    reason: Payoff cannot be repeat of opening beat
+    rule_id: PAYOFF_001
+  - breaking_change: false
+    change_type: added
+    new_value:
+      block_complexity: very_high
+      severity: BLOCKER
+    old_value: null
+    reason: Block technically unfeasible prompts before render attempt
+    rule_id: PRODUCIBILITY_001
+  - breaking_change: false
+    change_type: added
+    new_value:
+      severity: WARNING
+    old_value: null
+    reason: Flag physics/character inconsistencies for review
+    rule_id: CONSISTENCY_001
+  deprecated_rules: []
+  description: Initial ruleset derived from FAIL_001, FAIL_002, FAIL_003
+  is_breaking: false
+  learned_from:
+  - FAIL_001_KIKO_STATIC_STATE
+  - FAIL_002_OPA_REPETITIVE
+  - FAIL_003_ARDA_CYCLE
+  release_date: '2026-09-14'
+  ruleset_path: RULESET_1.0.yaml
+  version: '1.0'
+- changelog: '# Ruleset 1.1
+
+
+    Adds 10 rules covering first-frame anomaly, sound independence, dead-air detection,
+    active-character ratio, tiered attempt counting, mechanically distinct attempts,
+    prop economy, fake resolution, rule-consistent twists, and character continuity
+    lock. Supports both short-tier (<=20s) and long-tier (>20s) videos via duration-derived
+    thresholds.
+
+
+    ## New Rules (10)
+
+    - HOOK_002: RULESET 1.1: First Frame Anomaly (hook_strength family)
+
+    - HOOK_003: RULESET 1.1: Sound Independence (hook_strength family)
+
+    - MOTION_001: RULESET 1.1: No Dead Air (motion_quality family)
+
+    - ATTEMPT_001: RULESET 1.1: Attempt Count (concept_strength family)
+
+    - CHAR_002: RULESET 1.1: Active Character (progression family)
+
+    - PRODUCIBILITY_002: RULESET 1.1: Prop Economy (ai_producibility family)
+
+    - PAYOFF_002: RULESET 1.1: Fake Resolution Present (progression family)
+
+    - ATTEMPT_002: RULESET 1.1: Distinct Attempts (visual_novelty family)
+
+    - PAYOFF_003: RULESET 1.1: Rule-Consistent Twist (final_payoff family)
+
+    - CONSISTENCY_002: RULESET 1.1: Character Continuity Lock (consistency family)
+
+    '
+  changes:
+  - breaking_change: false
+    change_type: added
+    new_value:
+      description: The problem must already be visually obvious within the opening
+        second, with no setup, narration, or text explanation required. hook.startsMidAction
+        must be true and hook.visualStrength must be at least 4/5.
+      family: hook_strength
+      id: HOOK_002
+      name: First Frame Anomaly
+      severity: CRITICAL
+      version: '1.1'
+    old_value: null
+    reason: 'RULESET 1.1: First Frame Anomaly (hook_strength family)'
+    rule_id: HOOK_002
+  - breaking_change: false
+    change_type: added
+    new_value:
+      description: The core problem and physical comedy must work with audio muted.
+        hook.soundOffClear must be true.
+      family: hook_strength
+      id: HOOK_003
+      name: Sound Independence
+      severity: CRITICAL
+      version: '1.1'
+    old_value: null
+    reason: 'RULESET 1.1: Sound Independence (hook_strength family)'
+    rule_id: HOOK_003
+  - breaking_change: false
+    change_type: added
+    new_value:
+      description: No beat may hold with motionAmount == 'none' for longer than 1.5
+        seconds.
+      family: motion_quality
+      id: MOTION_001
+      name: No Dead Air
+      severity: WARNING
+      version: '1.1'
+    old_value: null
+    reason: 'RULESET 1.1: No Dead Air (motion_quality family)'
+    rule_id: MOTION_001
+  - breaking_change: false
+    change_type: added
+    new_value:
+      description: 'Count of beats with isAttempt == true must meet a duration-tier
+        minimum: 3 for videos <= 20s (short tier), 7 for videos > 20s (long tier).'
+      family: concept_strength
+      id: ATTEMPT_001
+      name: Attempt Count
+      severity: BLOCKER
+      version: '1.1'
+    old_value: null
+    reason: 'RULESET 1.1: Attempt Count (concept_strength family)'
+    rule_id: ATTEMPT_001
+  - breaking_change: false
+    change_type: added
+    new_value:
+      description: The character must spend most of the runtime actively trying a
+        solution, not watching or reacting. Ratio of (duration of isAttempt beats)
+        / (total duration) must be at least 0.5 for short-tier videos, 0.6 for long-tier.
+      family: progression
+      id: CHAR_002
+      name: Active Character
+      severity: CRITICAL
+      version: '1.1'
+    old_value: null
+    reason: 'RULESET 1.1: Active Character (progression family)'
+    rule_id: CHAR_002
+  - breaking_change: false
+    change_type: added
+    new_value:
+      description: Introduce the minimum number of props necessary. setting.mainProps
+        count must not exceed 2 for short-tier videos, 4 for long-tier videos.
+      family: ai_producibility
+      id: PRODUCIBILITY_002
+      name: Prop Economy
+      severity: WARNING
+      version: '1.1'
+    old_value: null
+    reason: 'RULESET 1.1: Prop Economy (ai_producibility family)'
+    rule_id: PRODUCIBILITY_002
+  - breaking_change: false
+    change_type: added
+    new_value:
+      description: 'Bonus (non-blocking): at least one beat with consequenceType ==
+        ''fake_win'' before finalPayoff.startsAt, giving the audience a moment to
+        believe the problem is solved before the final twist.'
+      family: progression
+      id: PAYOFF_002
+      name: Fake Resolution Present
+      severity: WARNING
+      version: '1.1'
+    old_value: null
+    reason: 'RULESET 1.1: Fake Resolution Present (progression family)'
+    rule_id: PAYOFF_002
+  - breaking_change: false
+    change_type: added
+    new_value:
+      description: Attempts must be mechanically distinct, not just differently worded.
+        Identical primaryVerb across attempts is an automatic deterministic FAIL.
+        Verb-distinct attempts are checked for semantic duplication via LLM (e.g.
+        GRAB vs YANK may be the same underlying strategy). Effective distinct count
+        must meet the same duration-tier minimum as ATTEMPT_001.
+      family: visual_novelty
+      id: ATTEMPT_002
+      name: Distinct Attempts
+      severity: CRITICAL
+      version: '1.1'
+    old_value: null
+    reason: 'RULESET 1.1: Distinct Attempts (visual_novelty family)'
+    rule_id: ATTEMPT_002
+  - breaking_change: false
+    change_type: added
+    new_value:
+      description: The final twist must derive from the same established physical
+        rule (coreMechanic.physicalRule), applied in a new or bigger way — not an
+        unrelated, disconnected joke. Checked via LLM semantic judgment.
+      family: final_payoff
+      id: PAYOFF_003
+      name: Rule-Consistent Twist
+      severity: CRITICAL
+      version: '1.1'
+    old_value: null
+    reason: 'RULESET 1.1: Rule-Consistent Twist (final_payoff family)'
+    rule_id: PAYOFF_003
+  - breaking_change: false
+    change_type: added
+    new_value:
+      description: Character appearance (face, outfit, colors, proportions) must remain
+        identical throughout the video, judged by sampling first/middle/last frames
+        via vision LLM. This rule requires a rendered video (video_plan_ir['_renderedVideoPath'])
+        and reports UNKNOWN at the pure-text concept stage, before any video exists.
+      family: consistency
+      id: CONSISTENCY_002
+      name: Character Continuity Lock
+      severity: CRITICAL
+      version: '1.1'
+    old_value: null
+    reason: 'RULESET 1.1: Character Continuity Lock (consistency family)'
+    rule_id: CONSISTENCY_002
+  description: Adds 10 rules covering first-frame anomaly, sound independence, dead-air
+    detection, active-character ratio, tiered attempt counting, mechanically distinct
+    attempts, prop economy, fake resolution, rule-consistent twists, and character
+    continuity lock. Supports both short-tier (<=20s) and long-tier (>20s) videos
+    via duration-derived thresholds.
+  is_breaking: false
+  learned_from: []
+  release_date: '2026-10-02'
+  ruleset_path: RULESET_1.1.yaml
+  version: '1.1'

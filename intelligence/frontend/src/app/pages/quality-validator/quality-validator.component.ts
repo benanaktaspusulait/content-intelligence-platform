@@ -1,0 +1,251 @@
+import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
+import { TimelineChartComponent } from './timeline-chart.component';
+
+interface QualityReport {
+  overallScore: number;
+  status: 'RENDER_READY' | 'NEEDS_REVISION' | 'BLOCKED';
+  rulesetVersion: string;
+  blockerCount: number;
+  criticalCount: number;
+  warningCount: number;
+  familyScores: { [key: string]: number };
+  failedRules: RuleEvaluation[];
+  priorityFixes: PriorityFix[];
+  scoreCard: ScoreCard;
+  timelineData: TimelineData;
+}
+
+interface RuleEvaluation {
+  ruleId: string;
+  ruleName: string;
+  family: string;
+  severity: string;
+  result: boolean;
+  message: string;
+  actualValue?: number;
+  thresholdValue?: number;
+}
+
+interface PriorityFix {
+  ruleId: string;
+  ruleName: string;
+  family: string;
+  severity: string;
+  issue: string;
+  recommendation: string;
+  impact: string;
+}
+
+interface ScoreCard {
+  score: number;
+  label: string;
+  color: string;
+}
+
+interface TimelineData {
+  beats: Beat[];
+  consequenceMarkers: ConsequenceMarker[];
+  stateSegments: StateSegment[];
+}
+
+interface Beat {
+  startTime: number;
+  endTime: number;
+  action: string;
+  consequence: string;
+  intensity: number;
+  isNewConsequence: boolean;
+}
+
+interface ConsequenceMarker {
+  time: number;
+  consequence: string;
+  type: string;
+}
+
+interface StateSegment {
+  stateId: string;
+  startTime: number;
+  endTime: number;
+  percentage: number;
+}
+
+@Component({
+  selector: 'app-quality-validator',
+  standalone: true,
+  imports: [CommonModule, FormsModule, TimelineChartComponent],
+  templateUrl: './quality-validator.component.html',
+  styleUrls: ['./quality-validator.component.scss']
+})
+export class QualityValidatorComponent implements OnInit {
+  prompt: string = '';
+  report: QualityReport | null = null;
+  loading: boolean = false;
+  error: string | null = null;
+  
+  // Sample prompt for testing
+  samplePrompt: string = `[TITLE] Kiko's Mat Mystery
+[DURATION] 15 seconds
+[FORMAT] Instagram Reel (9:16 vertical)
+
+[CHARACTERS]
+- Kiko (curious penguin, 3 years)
+
+[SETTING]
+Interior shot, Kiko's playroom with colorful mat in center
+
+[LEARNING OBJECTIVE]
+Problem-solving through observation and experimentation
+
+[CORE MECHANIC]
+Kiko sits on mat that changes color when pressed. Single static state.
+
+[HOOK] 0.0-2.0 SEC
+Kiko walks toward colorful mat, notices it's soft
+
+[BEAT 1] 2.0-8.5 SEC
+Kiko sits on mat
+Visual state: sitting on mat (42% of video = 6.5s)
+Consequence: Mat changes to blue
+Intensity: 3
+
+[BEAT 2] 8.5-11.0 SEC  
+Kiko stays sitting, looks around
+Visual state: sitting on mat (continuation)
+Consequence: Nothing new happens
+Intensity: 2
+
+[BEAT 3] 11.0-13.5 SEC
+Kiko shifts weight slightly
+Visual state: sitting on mat (continuation)  
+Consequence: Mat shifts to lighter blue
+Intensity: 3
+
+[PAYOFF] 13.5-15.0 SEC
+Kiko smiles while still sitting
+Visual state: sitting on mat (continuation)
+Consequence: Feels happy about mat
+Intensity: 4`;
+
+  constructor(private http: HttpClient) {}
+
+  ngOnInit(): void {
+    // Load sample prompt on init for demo
+    this.prompt = this.samplePrompt;
+  }
+
+  validatePrompt(): void {
+    if (!this.prompt || this.prompt.length < 100) {
+      this.error = 'Prompt must be at least 100 characters';
+      return;
+    }
+
+    this.loading = true;
+    this.error = null;
+    this.report = null;
+
+    const apiUrl = '/api/quality/validate';
+    const payload = {
+      prompt: this.prompt,
+      rulesetVersion: 'latest'
+    };
+
+    this.http.post<QualityReport>(apiUrl, payload).subscribe({
+      next: (response) => {
+        this.report = response;
+        this.loading = false;
+      },
+      error: (err) => {
+        this.error = err.error?.message || 'Validation failed. Please try again.';
+        this.loading = false;
+        console.error('Validation error:', err);
+      }
+    });
+  }
+
+  clearPrompt(): void {
+    this.prompt = '';
+    this.report = null;
+    this.error = null;
+  }
+
+  loadSamplePrompt(): void {
+    this.prompt = this.samplePrompt;
+    this.report = null;
+    this.error = null;
+  }
+
+  getStatusBadgeClass(): string {
+    if (!this.report) return '';
+    
+    switch (this.report.status) {
+      case 'RENDER_READY':
+        return 'badge-success';
+      case 'NEEDS_REVISION':
+        return 'badge-warning';
+      case 'BLOCKED':
+        return 'badge-danger';
+      default:
+        return '';
+    }
+  }
+
+  getScoreClass(): string {
+    if (!this.report) return '';
+    
+    const score = this.report.overallScore;
+    if (score >= 92) return 'score-excellent';
+    if (score >= 80) return 'score-good';
+    if (score >= 70) return 'score-acceptable';
+    if (score >= 60) return 'score-weak';
+    return 'score-poor';
+  }
+
+  getSeverityBadgeClass(severity: string): string {
+    switch (severity) {
+      case 'BLOCKER':
+        return 'badge-danger';
+      case 'CRITICAL':
+        return 'badge-danger';
+      case 'WARNING':
+        return 'badge-warning';
+      default:
+        return 'badge-secondary';
+    }
+  }
+
+  getFamilyScoreClass(score: number): string {
+    if (score >= 90) return 'family-score-excellent';
+    if (score >= 75) return 'family-score-good';
+    if (score >= 60) return 'family-score-acceptable';
+    return 'family-score-poor';
+  }
+
+  getFamilyScoreEntries(): [string, number][] {
+    if (!this.report?.familyScores) return [];
+    return Object.entries(this.report.familyScores).sort((a, b) => b[1] - a[1]);
+  }
+
+  getIntensityColor(intensity: number): string {
+    if (intensity >= 8) return '#dc3545'; // red
+    if (intensity >= 6) return '#fd7e14'; // orange
+    if (intensity >= 4) return '#ffc107'; // yellow
+    return '#28a745'; // green
+  }
+
+  getStateColor(index: number): string {
+    const colors = ['#007bff', '#6610f2', '#6f42c1', '#e83e8c', '#dc3545', '#fd7e14'];
+    return colors[index % colors.length];
+  }
+
+  formatTime(seconds: number): string {
+    return `${seconds.toFixed(1)}s`;
+  }
+
+  formatPercentage(value: number): string {
+    return `${(value * 100).toFixed(0)}%`;
+  }
+}

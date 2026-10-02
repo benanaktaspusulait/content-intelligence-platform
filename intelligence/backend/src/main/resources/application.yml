@@ -1,0 +1,165 @@
+spring:
+  application:
+    name: pompom-creative-intelligence
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/pompom}
+    username: ${DB_USERNAME:pompom}
+    password: ${DB_PASSWORD:pompom_local}
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: UTC
+  flyway:
+    enabled: true
+  servlet:
+    multipart:
+      max-file-size: 250MB
+      max-request-size: 250MB
+  task:
+    execution:
+      pool:
+        core-size: 5
+        max-size: 10
+        queue-capacity: 100
+      thread-name-prefix: publication-
+  ai:
+    enabled: ${AI_ENABLED:false}
+    openai:
+      api-key: ${OPENAI_API_KEY:}
+      model: ${OPENAI_MODEL:gpt-4}
+  mail:
+    host: ${MAIL_HOST:smtp.gmail.com}
+    port: ${MAIL_PORT:587}
+    username: ${MAIL_USERNAME:}
+    password: ${MAIL_PASSWORD:}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+server:
+  port: ${SERVER_PORT:8080}
+  compression:
+    enabled: true
+    mime-types: application/json,application/xml,text/html,text/xml,text/plain
+
+management:
+  health:
+    mail:
+      enabled: false
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  endpoint:
+    health:
+      probes:
+        enabled: true
+      show-details: always
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+
+pompom:
+  data-root: ${POMPOM_DATA_ROOT:/tmp/pompom-data}
+  ml-base-url: ${ML_BASE_URL:http://localhost:8000}
+  allowed-video-extensions: mp4,mov,m4v
+  reach-further-early-hours: 3
+  reach-further-mid-hours: 12
+  quality:
+    # How long a linked validation record remains render-authorizing evidence after it is
+    # produced. ValidationEvidenceService treats evidence with no expiry, or an expiry that has
+    # passed, as never render-ready - this is never allowed to default to "never expires".
+    evidence-freshness-ttl: ${QUALITY_EVIDENCE_FRESHNESS_TTL:PT24H}
+  meta:
+    enabled: ${META_READ_ENABLED:false}
+    api-version: ${META_API_VERSION:v26.0}
+    page-id: ${META_PAGE_ID:}
+    instagram-account-id: ${META_INSTAGRAM_ACCOUNT_ID:}
+    access-token: ${META_INSTAGRAM_ACCESS_TOKEN:${META_PAGE_ACCESS_TOKEN:${META_ACCESS_TOKEN:}}}
+    user-access-token: ${META_USER_ACCESS_TOKEN:}
+    connect-timeout: 5s
+    read-timeout: 15s
+    oauth:
+      app-id: ${META_APP_ID:}
+      app-secret: ${META_APP_SECRET:}
+      redirect-uri: ${META_OAUTH_REDIRECT_URI:}
+  discovery-score:
+    non-follower-weight: 0.65
+    us-audience-weight: 0.35
+    us-audience-target-percentage: 20
+  openart:
+    enabled: ${OPENART_ENABLED:false}
+    cli:
+      path: ${OPENART_CLI_PATH:openart}
+      timeout-seconds: ${OPENART_CLI_TIMEOUT:300}
+    api-key: ${OPENART_API_KEY:}
+    mock:
+      enabled: ${OPENART_MOCK_ENABLED:true}
+    budget:
+      monthly: ${OPENART_MONTHLY_BUDGET:1000}
+      warning-threshold: ${OPENART_WARNING_THRESHOLD:0.2}
+      alert:
+        enabled: ${OPENART_ALERT_ENABLED:true}
+        webhook-url: ${OPENART_ALERT_WEBHOOK_URL:}
+        email: ${OPENART_ALERT_EMAIL:}
+    cost:
+      first-frame: ${OPENART_FIRST_FRAME_COST:10}
+      video: ${OPENART_VIDEO_COST:100}
+  qa:
+    service:
+      url: ${QA_SERVICE_URL:http://localhost:8001}
+  oauth:
+    callback-url: ${OAUTH_CALLBACK_URL:http://localhost:8080/api/v1/oauth/callback}
+    tiktok:
+      client-id: ${TIKTOK_CLIENT_ID:}
+      client-secret: ${TIKTOK_CLIENT_SECRET:}
+    youtube:
+      client-id: ${YOUTUBE_CLIENT_ID:}
+      client-secret: ${YOUTUBE_CLIENT_SECRET:}
+    facebook:
+      app-id: ${FACEBOOK_APP_ID:}
+      app-secret: ${FACEBOOK_APP_SECRET:}
+    instagram:
+      app-id: ${INSTAGRAM_APP_ID:}
+      app-secret: ${INSTAGRAM_APP_SECRET:}
+  security:
+    encryption:
+      key: ${ENCRYPTION_KEY:}
+  social:
+    facebook:
+      page-id: ${FACEBOOK_PAGE_ID:}
+  webhooks:
+    tiktok:
+      secret: ${TIKTOK_WEBHOOK_SECRET:}
+    youtube:
+      secret: ${YOUTUBE_WEBHOOK_SECRET:}
+    facebook:
+      secret: ${FACEBOOK_WEBHOOK_SECRET:}
+    instagram:
+      secret: ${INSTAGRAM_WEBHOOK_SECRET:}
+  notifications:
+    email:
+      enabled: ${EMAIL_NOTIFICATIONS_ENABLED:false}
+      from: ${EMAIL_FROM:noreply@pompomhills.com}
+      to: ${EMAIL_TO:admin@pompomhills.com}
+
+ml:
+  service:
+    url: ${ML_SERVICE_URL:http://localhost:8001}
+    timeout: 30s
+    connect-timeout: 5s
+
+metrics:
+  use-real-api: ${METRICS_USE_REAL_API:false}
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html

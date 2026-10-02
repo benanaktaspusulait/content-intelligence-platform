@@ -1,0 +1,416 @@
+package com.pompomhills.intelligence.meta;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.IOException;
+import java.util.List;
+import java.util.regex.Pattern;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpHeaders;
+import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestClient;
+
+@Component
+public final class MetaGraphReadClient {
+  private static final String PAGE_FIELDS = "id,name,category";
+  private static final String INSTAGRAM_ACCOUNT_FIELDS =
+      "id,username,media_count,profile_picture_url";
+  private static final String INSTAGRAM_MEDIA_FIELDS =
+      "id,media_type,media_product_type,caption,permalink,timestamp,thumbnail_url,media_url";
+  private static final String INSTAGRAM_MEDIA_INSIGHT_METRICS =
+      "views,reach,shares,saved,total_interactions";
+  private static final String PAGE_POSTS_FIELDS = "id,message,created_time,permalink_url";
+  private static final Pattern NUMERIC_ID = Pattern.compile("\\d{1,40}");
+  private static final int MIN_MEDIA_LIMIT = 1;
+  private static final int MAX_MEDIA_LIMIT = 50;
+  private static final int MIN_POSTS_LIMIT = 1;
+  private static final int MAX_POSTS_LIMIT = 25;
+  private static final Pattern BEARER_VALUE =
+      Pattern.compile("(?i)\\bbearer\\s+[^\\s,;]+", Pattern.CASE_INSENSITIVE);
+  private static final Pattern TOKEN_VALUE =
+      Pattern.compile(
+          "(?i)\\b(access[_-]?token|appsecret_proof|token)\\s*[:=]\\s*[^\\s,;]+",
+          Pattern.CASE_INSENSITIVE);
+  private static final Pattern CONTROL_CHARACTERS = Pattern.compile("[\\r\\n\\t]+");
+  private static final int MAX_ERROR_MESSAGE_LENGTH = 300;
+
+  private final RestClient restClient;
+  private final ObjectMapper objectMapper;
+  private final MetaReadProperties properties;
+  private final MetaOAuthTokenStore oauthTokenStore;
+
+  public MetaGraphReadClient(
+      @Qualifier("metaReadRestClient") RestClient restClient,
+      ObjectMapper objectMapper,
+      MetaReadProperties properties,
+      MetaOAuthTokenStore oauthTokenStore) {
+    this.restClient = restClient;
+    this.objectMapper = objectMapper;
+    this.properties = properties;
+    this.oauthTokenStore = oauthTokenStore;
+  }
+
+  /**
+   * The access token to use for configured-account reads: the Page token obtained via the OAuth
+   * flow if present, otherwise the statically configured token. Never logged or exposed.
+   */
+  private String effectiveAccessToken() {
+    String oauthToken = oauthTokenStore.getPageAccessToken();
+    return oauthToken != null && !oauthToken.isBlank() ? oauthToken : properties.accessToken();
+  }
+
+  /**
+   * The user-context token for pages_show_list verification: the fresh OAuth-derived user token if
+   * present, otherwise the statically configured {@code META_USER_ACCESS_TOKEN}. The Page token is
+   * never used here; GET /me/accounts requires a user token, not a Page token.
+   */
+  private String effectiveUserAccessToken() {
+    String oauthUserToken = oauthTokenStore.getUserAccessToken();
+    return oauthUserToken != null && !oauthUserToken.isBlank()
+        ? oauthUserToken
+        : properties.userAccessToken();
+  }
+
+  private org.springframework.web.client.RestClient.RequestHeadersSpec<?> withAuth(
+      org.springframework.web.client.RestClient.RequestHeadersSpec<?> spec) {
+    String token = effectiveAccessToken();
+    return token.isBlank()
+        ? spec
+        : spec.headers(headers -> headers.set(HttpHeaders.AUTHORIZATION, "Bearer " + token));
+  }
+
+  public FacebookPage getFacebookPage() {
+    return withAuth(
+            restClient
+                .get()
+                .uri(
+                    uriBuilder ->
+                        uriBuilder
+                            .pathSegment(properties.apiVersion(), properties.pageId())
+                            .queryParam("fields", PAGE_FIELDS)
+                            .build()))
+        .retrieve()
+        .onStatus(
+            status -> status.isError(),
+            (request, response) -> {
+              throw mapError(response.getStatusCode().value(), response.getBody());
+            })
+        .body(FacebookPage.class);
+  }
+
+  /**
+   * Verifies, read-only, that the configured Page id is among the Pages managed by the
+   * authenticated user. Uses pages_show_list via GET /me/accounts, requesting only Page ids so no
+   * other Page names are retrieved. The list is not returned or persisted.
+   */
+  public MetaConnectionResponse.PageManagementVerification verifyConfiguredPageManaged() {
+    String userToken = effectiveUserAccessToken();
+    if (userToken.isBlank()) {
+      return MetaConnectionResponse.PageManagementVerification.UNAVAILABLE;
+    }
+    AccountsResponse response =
+        restClient
+            .get()
+            .uri(
+                uriBuilder ->
+                    uriBuilder
+                        .pathSegment(properties.apiVersion(), "me", "accounts")
+                        .queryParam("fields", "id")
+                        .queryParam("limit", 200)
+                        .build())
+            .headers(headers -> headers.set(HttpHeaders.AUTHORIZATION, "Bearer " + userToken))
+            .retrieve()
+            .onStatus(
+                status -> status.isError(),
+                (request, resp) -> {
+                  throw mapError(resp.getStatusCode().value(), resp.getBody());
+                })
+            .body(AccountsResponse.class);
+    if (response == null || response.data() == null) {
+      return MetaConnectionResponse.PageManagementVerification.UNAVAILABLE;
+    }
+    boolean present =
+        response.data().stream()
+            .anyMatch(account -> account != null && properties.pageId().equals(account.id()));
+    return present
+        ? MetaConnectionResponse.PageManagementVerification.VERIFIED
+        : MetaConnectionResponse.PageManagementVerification.NOT_VERIFIED;
+  }
+
+  /** Reads recent content published by the configured Facebook Page. GET only, read-only. */
+  public PagePostsResponse getPagePosts(int limit) {
+    int boundedLimit = Math.max(MIN_POSTS_LIMIT, Math.min(MAX_POSTS_LIMIT, limit));
+    return withAuth(
+            restClient
+                .get()
+                .uri(
+                    uriBuilder ->
+                        uriBuilder
+                            .pathSegment(properties.apiVersion(), properties.pageId(), "posts")
+                            .queryParam("fields", PAGE_POSTS_FIELDS)
+                            .queryParam("limit", boundedLimit)
+                            .build()))
+        .retrieve()
+        .onStatus(
+            status -> status.isError(),
+            (request, response) -> {
+              throw mapError(response.getStatusCode().value(), response.getBody());
+            })
+        .body(PagePostsResponse.class);
+  }
+
+  public InstagramAccount getInstagramAccount() {
+    return withAuth(
+            restClient
+                .get()
+                .uri(
+                    uriBuilder ->
+                        uriBuilder
+                            .pathSegment(properties.apiVersion(), properties.instagramAccountId())
+                            .queryParam("fields", INSTAGRAM_ACCOUNT_FIELDS)
+                            .build()))
+        .retrieve()
+        .onStatus(
+            status -> status.isError(),
+            (request, response) -> {
+              throw mapError(response.getStatusCode().value(), response.getBody());
+            })
+        .body(InstagramAccount.class);
+  }
+
+  public void validateInstagramInsights() {
+    withAuth(
+            restClient
+                .get()
+                .uri(
+                    uriBuilder ->
+                        uriBuilder
+                            .pathSegment(
+                                properties.apiVersion(),
+                                properties.instagramAccountId(),
+                                "insights")
+                            .queryParam("metric", "reach")
+                            .queryParam("period", "day")
+                            .build()))
+        .retrieve()
+        .onStatus(
+            status -> status.isError(),
+            (request, response) -> {
+              throw mapError(response.getStatusCode().value(), response.getBody());
+            })
+        .toBodilessEntity();
+  }
+
+  /** Reads a single page of Instagram media for the configured account. GET only. */
+  public InstagramMediaPage listInstagramMedia(String after, int limit) {
+    int boundedLimit = Math.max(MIN_MEDIA_LIMIT, Math.min(MAX_MEDIA_LIMIT, limit));
+    String cursor = (after == null || after.isBlank()) ? null : after.trim();
+    return withAuth(
+            restClient
+                .get()
+                .uri(
+                    uriBuilder -> {
+                      uriBuilder
+                          .pathSegment(
+                              properties.apiVersion(), properties.instagramAccountId(), "media")
+                          .queryParam("fields", INSTAGRAM_MEDIA_FIELDS)
+                          .queryParam("limit", boundedLimit);
+                      if (cursor != null) {
+                        uriBuilder.queryParam("after", cursor);
+                      }
+                      return uriBuilder.build();
+                    }))
+        .retrieve()
+        .onStatus(
+            status -> status.isError(),
+            (request, response) -> {
+              throw mapError(response.getStatusCode().value(), response.getBody());
+            })
+        .body(InstagramMediaPage.class);
+  }
+
+  /** Reads a single Instagram media object by its numeric identifier. GET only. */
+  public InstagramMedia getInstagramMedia(String mediaId) {
+    String validatedId = requireNumericId(mediaId);
+    return withAuth(
+            restClient
+                .get()
+                .uri(
+                    uriBuilder ->
+                        uriBuilder
+                            .pathSegment(properties.apiVersion(), validatedId)
+                            .queryParam("fields", INSTAGRAM_MEDIA_FIELDS)
+                            .build()))
+        .retrieve()
+        .onStatus(
+            status -> status.isError(),
+            (request, response) -> {
+              throw mapError(response.getStatusCode().value(), response.getBody());
+            })
+        .body(InstagramMedia.class);
+  }
+
+  /** Reads read-only insight metrics for a single Instagram media object. GET only. */
+  public InstagramInsightsResponse getInstagramMediaInsights(String mediaId) {
+    String validatedId = requireNumericId(mediaId);
+    return withAuth(
+            restClient
+                .get()
+                .uri(
+                    uriBuilder ->
+                        uriBuilder
+                            .pathSegment(properties.apiVersion(), validatedId, "insights")
+                            .queryParam("metric", INSTAGRAM_MEDIA_INSIGHT_METRICS)
+                            .build()))
+        .retrieve()
+        .onStatus(
+            status -> status.isError(),
+            (request, response) -> {
+              throw mapError(response.getStatusCode().value(), response.getBody());
+            })
+        .body(InstagramInsightsResponse.class);
+  }
+
+  private String requireNumericId(String mediaId) {
+    String trimmed = mediaId == null ? "" : mediaId.trim();
+    if (!NUMERIC_ID.matcher(trimmed).matches()) {
+      throw new IllegalArgumentException("Instagram media id must be numeric.");
+    }
+    return trimmed;
+  }
+
+  private MetaGraphException mapError(int httpStatus, java.io.InputStream responseBody) {
+    try {
+      MetaErrorEnvelope envelope = objectMapper.readValue(responseBody, MetaErrorEnvelope.class);
+      MetaError error = envelope == null ? null : envelope.error();
+      if (error == null) {
+        return genericError(httpStatus);
+      }
+      return new MetaGraphException(
+          httpStatus,
+          error.code(),
+          error.errorSubcode(),
+          error.type(),
+          error.fbTraceId(),
+          sanitizeMessage(error.message()));
+    } catch (IOException | RuntimeException ignored) {
+      return genericError(httpStatus);
+    }
+  }
+
+  private MetaGraphException genericError(int httpStatus) {
+    return new MetaGraphException(
+        httpStatus, null, null, null, null, "Meta Graph API request failed.");
+  }
+
+  private String sanitizeMessage(String message) {
+    if (message == null || message.isBlank()) {
+      return "Meta Graph API request failed.";
+    }
+    String sanitized = message;
+    if (!properties.accessToken().isBlank()) {
+      sanitized = sanitized.replace(properties.accessToken(), "[REDACTED]");
+    }
+    if (!properties.userAccessToken().isBlank()) {
+      sanitized = sanitized.replace(properties.userAccessToken(), "[REDACTED]");
+    }
+    String oauthToken = oauthTokenStore.getPageAccessToken();
+    if (oauthToken != null && !oauthToken.isBlank()) {
+      sanitized = sanitized.replace(oauthToken, "[REDACTED]");
+    }
+    String oauthUserToken = oauthTokenStore.getUserAccessToken();
+    if (oauthUserToken != null && !oauthUserToken.isBlank()) {
+      sanitized = sanitized.replace(oauthUserToken, "[REDACTED]");
+    }
+    sanitized = BEARER_VALUE.matcher(sanitized).replaceAll("Bearer [REDACTED]");
+    sanitized = TOKEN_VALUE.matcher(sanitized).replaceAll("$1=[REDACTED]");
+    sanitized = CONTROL_CHARACTERS.matcher(sanitized).replaceAll(" ").trim();
+    return sanitized.length() <= MAX_ERROR_MESSAGE_LENGTH
+        ? sanitized
+        : sanitized.substring(0, MAX_ERROR_MESSAGE_LENGTH);
+  }
+
+  @JsonIgnoreProperties(ignoreUnknown = true)
+  public record FacebookPage(String id, String name, String category) {}
+
+  @JsonIgnoreProperties(ignoreUnknown = true)
+  public record AccountsResponse(List<Account> data) {}
+
+  @JsonIgnoreProperties(ignoreUnknown = true)
+  public record Account(String id) {}
+
+  @JsonIgnoreProperties(ignoreUnknown = true)
+  public record PagePostsResponse(List<PagePost> data) {}
+
+  @JsonIgnoreProperties(ignoreUnknown = true)
+  public record PagePost(
+      String id,
+      String message,
+      @JsonProperty("created_time") String createdTime,
+      @JsonProperty("permalink_url") String permalinkUrl) {}
+
+  @JsonIgnoreProperties(ignoreUnknown = true)
+  public record InstagramAccount(
+      String id,
+      String username,
+      @JsonProperty("account_type") String accountType,
+      @JsonProperty("media_count") Long mediaCount,
+      @JsonProperty("profile_picture_url") String profilePictureUrl) {}
+
+  @JsonIgnoreProperties(ignoreUnknown = true)
+  public record InstagramMedia(
+      String id,
+      @JsonProperty("media_type") String mediaType,
+      @JsonProperty("media_product_type") String mediaProductType,
+      String caption,
+      String permalink,
+      String timestamp,
+      @JsonProperty("thumbnail_url") String thumbnailUrl,
+      @JsonProperty("media_url") String mediaUrl) {}
+
+  @JsonIgnoreProperties(ignoreUnknown = true)
+  public record InstagramMediaPage(List<InstagramMedia> data, Paging paging) {
+    public String afterCursor() {
+      return paging == null || paging.cursors() == null ? null : paging.cursors().after();
+    }
+
+    public String nextPageUrl() {
+      return paging == null ? null : paging.next();
+    }
+  }
+
+  @JsonIgnoreProperties(ignoreUnknown = true)
+  public record Paging(Cursors cursors, String next, String previous) {}
+
+  @JsonIgnoreProperties(ignoreUnknown = true)
+  public record Cursors(String before, String after) {}
+
+  @JsonIgnoreProperties(ignoreUnknown = true)
+  public record InstagramInsightsResponse(List<InsightMetric> data) {}
+
+  @JsonIgnoreProperties(ignoreUnknown = true)
+  public record InsightMetric(
+      String name, String title, String description, List<InsightValue> values, Long value) {
+    public Long resolveValue() {
+      if (values != null && !values.isEmpty() && values.get(0) != null) {
+        return values.get(0).value();
+      }
+      return value;
+    }
+  }
+
+  @JsonIgnoreProperties(ignoreUnknown = true)
+  public record InsightValue(Long value, @JsonProperty("end_time") String endTime) {}
+
+  @JsonIgnoreProperties(ignoreUnknown = true)
+  private record MetaErrorEnvelope(MetaError error) {}
+
+  @JsonIgnoreProperties(ignoreUnknown = true)
+  private record MetaError(
+      String message,
+      String type,
+      Integer code,
+      @JsonProperty("error_subcode") Integer errorSubcode,
+      @JsonProperty("fbtrace_id") String fbTraceId) {}
+}

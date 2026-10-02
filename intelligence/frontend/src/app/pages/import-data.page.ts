@@ -1,0 +1,74 @@
+import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
+import { CreativeIntelligenceService } from '../core/creative-intelligence.service';
+
+interface FieldMapping { source: string; sample: string; target: string; confidence: 'High' | 'Medium' | 'Unresolved'; }
+
+@Component({
+  selector: 'app-import-data-page',
+  template: `
+    <header class="page-header"><div><span class="eyebrow">DATA INTAKE</span><h1>Import Data</h1><p>Validate platform exports before they enter the evidence store.</p></div><span class="step-indicator">STEP {{ step() }} OF 3</span></header>
+    <ol class="workflow-steps" aria-label="Import progress"><li class="is-complete"><span>1</span><strong>Source</strong><small>Selected</small></li><li [class.is-active]="step() === 2" [class.is-complete]="step() === 3"><span>2</span><strong>Map fields</strong><small>Review schema</small></li><li [class.is-active]="step() === 3"><span>3</span><strong>Commit</strong><small>Confirm import</small></li></ol>
+    <div class="import-layout">
+      <section class="section-band upload-panel">
+        <div class="section-heading"><div><span class="eyebrow">SOURCE FILE</span><h2>Platform export</h2></div><span class="status-badge status-badge--green">CSV</span></div>
+        <label class="file-drop"><input type="file" accept=".csv,.tsv,.xlsx" (change)="fileSelected($event)"><span class="upload-icon" aria-hidden="true">↑</span><strong>{{ fileName() || 'Choose a platform export' }}</strong><small>{{ rowCount() ? rowCount() + ' rows staged' : 'CSV, TSV or XLSX · up to 250 MB' }}</small><span class="button button--secondary">Browse files</span></label>
+        <dl class="compact-facts source-facts"><div><dt>Platform</dt><dd>Instagram</dd></div><div><dt>Matched rows</dt><dd>{{ matchedRows() }}</dd></div><div><dt>Storage</dt><dd>Raw + normalized</dd></div></dl>
+      </section>
+      <aside class="section-band validation-panel"><span class="eyebrow">VALIDATION</span><h2>{{ unresolvedRows() }} unresolved rows</h2><p>Only exact video IDs or unique filenames are accepted.</p><div class="validation-meter"><span [style.width.%]="matchCoverage()"></span></div><small>{{ matchCoverage() }}% row coverage</small><ul><li class="passed">{{ mappings().length }} fields detected</li><li class="passed">{{ matchedRows() }} exact matches</li><li class="warning">{{ unresolvedRows() }} rows need review</li></ul>@if (error()) { <p class="amber-text">{{ error() }}</p> }</aside>
+    </div>
+    <section class="section-band mapping-section">
+      <div class="section-heading"><div><span class="eyebrow">DETECTED SCHEMA</span><h2>Field mapping</h2></div><button class="button button--quiet" type="button" (click)="autoMap()">↯ Auto-map fields</button></div>
+      <div class="data-table-scroll"><table class="data-table mapping-table"><thead><tr><th>Source field</th><th>Example value</th><th>Maps to</th><th>Confidence</th></tr></thead><tbody>@for (field of mappings(); track field.source; let index = $index) {<tr><td><strong>{{ field.source }}</strong></td><td class="code-value">{{ field.sample }}</td><td><select [value]="field.target" (change)="updateMapping(index, $event)" [attr.aria-label]="'Map ' + field.source"><option value="">Select target…</option><option value="video_id">Video ID</option><option value="views">Views</option><option value="completion_rate">Completion rate</option><option value="hook_rate">Hook rate</option><option value="published_at">Published at</option></select></td><td><span class="confidence" [class.confidence--high]="field.confidence === 'High'" [class.confidence--medium]="field.confidence === 'Medium'">{{ field.confidence }}</span></td></tr>}</tbody></table></div>
+      <footer class="commit-bar"><div><strong>{{ matchedRows() }} of {{ rowCount() }} rows matched</strong><small>Raw source remains append-only; blank metrics stay null.</small></div><button class="button button--primary" type="button" [disabled]="unresolvedRows() > 0 || !batchId() || loading()" (click)="commit()">{{ committed() ? 'Import committed' : loading() ? 'Working…' : 'Commit import' }} <span aria-hidden="true">→</span></button></footer>
+    </section>
+  `,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+})
+export class ImportDataPage {
+  private readonly service = inject(CreativeIntelligenceService);
+  protected readonly step = signal(2);
+  protected readonly fileName = signal('');
+  protected readonly committed = signal(false);
+  protected readonly mappings = signal<FieldMapping[]>([]);
+  protected readonly batchId = signal('');
+  protected readonly rowCount = signal(0);
+  protected readonly matchedRows = signal(0);
+  protected readonly unresolvedRows = signal(0);
+  protected readonly loading = signal(false);
+  protected readonly error = signal('');
+  protected readonly unresolved = computed(() => this.mappings().filter(field => !field.target).length);
+  protected readonly completion = computed(() => Math.round(((this.mappings().length - this.unresolved()) / this.mappings().length) * 100));
+  protected readonly matchCoverage = computed(() => this.rowCount() ? Math.round(this.matchedRows() / this.rowCount() * 100) : 0);
+
+  protected fileSelected(event: Event): void {
+    const file = (event.target as HTMLInputElement).files?.[0];
+    if (!file) return;
+    this.fileName.set(file.name); this.loading.set(true); this.error.set(''); this.committed.set(false);
+    this.service.previewImport(file, 'instagram', Intl.DateTimeFormat().resolvedOptions().timeZone).subscribe({
+      next: preview => {
+        this.batchId.set(preview.batchId); this.rowCount.set(preview.rowCount); this.matchedRows.set(preview.matchedRows); this.unresolvedRows.set(preview.unresolvedRows);
+        this.mappings.set(preview.columns.map(column => ({ source: column, sample: 'From source file', target: this.suggestTarget(column), confidence: this.suggestTarget(column) ? 'Medium' : 'Unresolved' })));
+        this.loading.set(false);
+      },
+      error: response => { this.error.set(response.error?.message || 'Import preview failed.'); this.loading.set(false); },
+    });
+  }
+  protected updateMapping(index: number, event: Event): void { const target = (event.target as HTMLSelectElement).value; this.mappings.update(fields => fields.map((field, i) => i === index ? { ...field, target, confidence: target ? 'Medium' : 'Unresolved' } : field)); }
+  protected autoMap(): void { this.mappings.update(fields => fields.map(field => field.target ? field : { ...field, target: 'views', confidence: 'Medium' })); }
+  protected commit(): void {
+    if (!this.batchId() || this.unresolvedRows() > 0) return;
+    this.loading.set(true); this.error.set('');
+    this.service.commitImport(this.batchId()).subscribe({
+      next: () => { this.committed.set(true); this.step.set(3); this.loading.set(false); },
+      error: response => { this.error.set(response.error?.message || 'Import commit failed.'); this.loading.set(false); },
+    });
+  }
+  private suggestTarget(column: string): string {
+    const key = column.toLowerCase().replace(/[^a-z0-9]/g, '');
+    if (key.includes('videoid') || key === 'mediaid') return 'video_id';
+    if (key.includes('view') || key === 'plays') return 'views';
+    if (key.includes('published') || key === 'posted') return 'published_at';
+    if (key.includes('completion') || key.includes('watch')) return 'completion_rate';
+    return '';
+  }
+}

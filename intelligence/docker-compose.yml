@@ -1,0 +1,97 @@
+services:
+  postgres:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-pompom}
+      POSTGRES_USER: ${POSTGRES_USER:-pompom}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-pompom_local}
+    ports: ["5432:5432"]
+    volumes: ["postgres-data:/var/lib/postgresql/data"]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-pompom} -d ${POSTGRES_DB:-pompom}"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+
+  ml-service:
+    build: ./ml-service
+    environment:
+      POMPOM_DATA_ROOT: /data
+    ports: ["8000:8000"]
+    volumes:
+      - "./data:/data"
+      - "../:/data/library:ro"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  backend:
+    build: ./backend
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      DB_URL: jdbc:postgresql://postgres:5432/${POSTGRES_DB:-pompom}
+      DB_USERNAME: ${POSTGRES_USER:-pompom}
+      DB_PASSWORD: ${POSTGRES_PASSWORD:-pompom_local}
+      ML_BASE_URL: http://ml-service:8000
+      POMPOM_DATA_ROOT: /data
+      # Meta read-only analytics (disabled by default). Only read scopes; no publishing vars.
+      META_READ_ENABLED: ${META_READ_ENABLED:-false}
+      META_API_VERSION: ${META_API_VERSION:-v26.0}
+      META_PAGE_ID: ${META_PAGE_ID:-}
+      META_INSTAGRAM_ACCOUNT_ID: ${META_INSTAGRAM_ACCOUNT_ID:-}
+      # Resolve the read token with nested fallbacks so the backend's primary var is never
+      # set-but-empty (Spring treats a set-empty var as a real value, defeating its own fallback).
+      META_INSTAGRAM_ACCESS_TOKEN: ${META_INSTAGRAM_ACCESS_TOKEN:-${META_PAGE_ACCESS_TOKEN:-${META_ACCESS_TOKEN:-}}}
+      # User token is used only for the read-only pages_show_list management verification (GET /me/accounts).
+      META_USER_ACCESS_TOKEN: ${META_USER_ACCESS_TOKEN:-}
+      # Meta OAuth authorization flow (read-only scopes only; app secret stays server-side).
+      META_APP_ID: ${META_APP_ID:-}
+      META_APP_SECRET: ${META_APP_SECRET:-}
+      META_OAUTH_REDIRECT_URI: ${META_OAUTH_REDIRECT_URI:-}
+    ports: ["8080:8080"]
+    volumes:
+      - "./data:/data"
+      - "../:/data/library:ro"
+    depends_on:
+      postgres: { condition: service_healthy }
+      ml-service: { condition: service_healthy }
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
+      interval: 5s
+      timeout: 3s
+      start_period: 30s
+      retries: 20
+
+  creative-render-service:
+    build: ./creative-render-service
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/${POSTGRES_DB:-pompom}
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER:-pompom}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD:-pompom_local}
+      POMPOM_INTELLIGENCE_BASE_URL: http://backend:8080
+      POMPOM_DATA_ROOT: /data
+    ports: ["8081:8081"]
+    volumes:
+      - "./data:/data"
+      - "../:/data/library:ro"
+    depends_on:
+      postgres: { condition: service_healthy }
+      backend: { condition: service_healthy }
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8081/actuator/health"]
+      interval: 5s
+      timeout: 3s
+      start_period: 30s
+      retries: 20
+
+  frontend:
+    build: ./frontend
+    ports: ["4200:80"]
+    depends_on:
+      backend: { condition: service_healthy }
+      creative-render-service: { condition: service_healthy }
+
+volumes:
+  postgres-data:

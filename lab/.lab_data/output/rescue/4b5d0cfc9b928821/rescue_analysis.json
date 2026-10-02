@@ -1,0 +1,127 @@
+{
+  "video_id": "4b5d0cfc9b928821",
+  "filename": "openart-02178939987125200000000000000000000ffffc0a8bb63151dee_1789400009256_2de80364_hook.mp4",
+  "classification": "A",
+  "classification_label": "PRIME / PUBLISH AS-IS",
+  "classification_reason": "Observed platform performance (60,000) outranks speculative structural assumptions; preserve this cut.",
+  "creative_engine": [
+    "UNVERIFIED — HUMAN OR LOCAL VLM REVIEW REQUIRED"
+  ],
+  "core_viewer_question": "The creative reason cannot be inferred responsibly from motion alone.",
+  "hook_score": 5.0,
+  "ending_score": 5.3,
+  "best_moments": [
+    {
+      "kind": "strongest_movement",
+      "timestamp": 2.75,
+      "description": "Strongest measured movement/change peak.",
+      "confidence": 0.72
+    },
+    {
+      "kind": "strongest_visual",
+      "timestamp": 2.75,
+      "description": "Strongest measured movement/change peak.",
+      "confidence": 0.38
+    }
+  ],
+  "main_problem": "Creative engine and reveal logic need human or local-VLM review; timing evidence is available.",
+  "do_not_change": [
+    "Preserve the existing high visual-change density (84%).",
+    "Preserve the visually compatible end-to-start loop potential."
+  ],
+  "fix_first": [],
+  "optional_experiment": "A/B test a 0.50s cold open from 2.57-3.07s against the original/minimal cut; do not replace the original until real platform data is compared.",
+  "alternative_pattern": "A different mechanism may be present; preserve it until semantically reviewed.",
+  "opening_comparison": "Current opening is compared using measured motion/change only; semantic scroll-stop value is unverified.",
+  "final_three_seconds": "Final motion and dead-tail evidence are measured; narrative payoff is unverified.",
+  "cta_assessment": "CTA meaning and context are not inferred by the heuristic provider.",
+  "new_footage_needed": false,
+  "new_footage_prompt": null,
+  "publishing_use": "PRIME SLOT",
+  "confidence": 0.44,
+  "beats": [
+    {
+      "start": 0.0,
+      "end": 1.5,
+      "what_changes": "High measured visual change.",
+      "retention_reason": "Semantic retention reason requires review; visual evidence shows high change.",
+      "risk": false
+    },
+    {
+      "start": 1.5,
+      "end": 3.0,
+      "what_changes": "High measured visual change.",
+      "retention_reason": "Semantic retention reason requires review; visual evidence shows high change.",
+      "risk": false
+    },
+    {
+      "start": 3.0,
+      "end": 4.5,
+      "what_changes": "High measured visual change.",
+      "retention_reason": "Semantic retention reason requires review; visual evidence shows high change.",
+      "risk": false
+    },
+    {
+      "start": 4.5,
+      "end": 6.0,
+      "what_changes": "High measured visual change.",
+      "retention_reason": "Semantic retention reason requires review; visual evidence shows high change.",
+      "risk": false
+    },
+    {
+      "start": 6.0,
+      "end": 7.5,
+      "what_changes": "High measured visual change.",
+      "retention_reason": "Semantic retention reason requires review; visual evidence shows high change.",
+      "risk": false
+    },
+    {
+      "start": 7.5,
+      "end": 9.0,
+      "what_changes": "High measured visual change.",
+      "retention_reason": "Semantic retention reason requires review; visual evidence shows high change.",
+      "risk": false
+    },
+    {
+      "start": 9.0,
+      "end": 10.5,
+      "what_changes": "High measured visual change.",
+      "retention_reason": "Semantic retention reason requires review; visual evidence shows high change.",
+      "risk": false
+    },
+    {
+      "start": 10.5,
+      "end": 12.0,
+      "what_changes": "High measured visual change.",
+      "retention_reason": "Semantic retention reason requires review; visual evidence shows high change.",
+      "risk": false
+    },
+    {
+      "start": 12.0,
+      "end": 13.5,
+      "what_changes": "High measured visual change.",
+      "retention_reason": "Semantic retention reason requires review; visual evidence shows high change.",
+      "risk": false
+    },
+    {
+      "start": 13.5,
+      "end": 15.0,
+      "what_changes": "High measured visual change.",
+      "retention_reason": "Semantic retention reason requires review; visual evidence shows high change.",
+      "risk": false
+    },
+    {
+      "start": 15.0,
+      "end": 15.1,
+      "what_changes": "Low measured visual change.",
+      "retention_reason": "Semantic retention reason requires review; visual evidence shows low change.",
+      "risk": true
+    }
+  ],
+  "provider": "local_heuristic",
+  "model": "opencv+ffmpeg",
+  "prompt_version": "stock-creative-rescue-v1",
+  "software_version": "0.2.0",
+  "performance_override": true,
+  "observed_performance_note": "Highest imported observed reach/views: 60,000."
+}

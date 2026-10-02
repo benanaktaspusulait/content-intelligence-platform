@@ -1,0 +1,29 @@
+{
+  "videos": [
+    {
+      "video": "../Can You Find It?/01_lucas_lost_treasure/output/final.mp4",
+      "caption": "Can you find Lucas's lost treasure? 🔍✨\n\nJoin Lucas on an exciting treasure hunt in Pompom Hills! Perfect for curious little minds.\n\n#PompomHills #KidsLearning #TreasureHunt #EducationalContent #PreschoolFun #ToddlerActivities",
+      "content_id": "lucas-treasure-001"
+    },
+    {
+      "video": "../Can You Find It?/02_mimis_missing_carrot/output/final.mp4",
+      "caption": "Where did Mimi's carrot go? 🥕\n\nHelp Mimi find her favorite snack in this fun search adventure!\n\n#PompomHills #KidsEducation #SearchAndFind #HealthyEating #PreschoolLearning",
+      "content_id": "mimi-carrot-001"
+    },
+    {
+      "video": "../Can You Find It?/03_opas_missing_glasses/output/final.mp4",
+      "caption": "Help Opa find his glasses! 👓\n\nOpa needs help finding his reading glasses. Can you spot them?\n\n#PompomHills #KidsStories #ProblemSolving #ObservationSkills #FunLearning",
+      "content_id": "opa-glasses-001"
+    },
+    {
+      "video": "../Daily Routines : Relatable Parenting/01_morning_rush/output/final.mp4",
+      "caption": "The morning rush is real! ☀️😅\n\nWatch Kiko's family navigate a typical busy morning in Pompom Hills.\n\n#PompomHills #Parenting #MorningRoutine #RealLife #KidsContent #RelatableParenting",
+      "content_id": "morning-rush-001"
+    },
+    {
+      "video": "../Emotion & Empathy/01_kiko_shares/output/final.mp4",
+      "caption": "Learning to share with friends 💕\n\nKiko discovers the joy of sharing in this heartwarming story.\n\n#PompomHills #EmotionalLearning #Sharing #Empathy #SocialSkills #KidsEducation",
+      "content_id": "kiko-shares-001"
+    }
+  ]
+}

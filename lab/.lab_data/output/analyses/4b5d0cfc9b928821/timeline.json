@@ -1,0 +1,106 @@
+[
+  {
+    "start": 0.25,
+    "end": 0.6,
+    "kind": "ACTION",
+    "detail": "High local motion/change peak.",
+    "value": 8.947,
+    "confidence": 0.68
+  },
+  {
+    "start": 1.25,
+    "end": 1.6,
+    "kind": "ACTION",
+    "detail": "High local motion/change peak.",
+    "value": 9.65,
+    "confidence": 0.68
+  },
+  {
+    "start": 2.5,
+    "end": 2.85,
+    "kind": "ACTION",
+    "detail": "High local motion/change peak.",
+    "value": 8.544,
+    "confidence": 0.68
+  },
+  {
+    "start": 2.75,
+    "end": 3.1,
+    "kind": "ACTION",
+    "detail": "High local motion/change peak.",
+    "value": 11.856,
+    "confidence": 0.68
+  },
+  {
+    "start": 3.0,
+    "end": 3.35,
+    "kind": "ACTION",
+    "detail": "High local motion/change peak.",
+    "value": 8.688,
+    "confidence": 0.68
+  },
+  {
+    "start": 4.0,
+    "end": 4.35,
+    "kind": "ACTION",
+    "detail": "High local motion/change peak.",
+    "value": 8.097,
+    "confidence": 0.68
+  },
+  {
+    "start": 6.0,
+    "end": 6.0,
+    "kind": "SHOT_CHANGE",
+    "detail": "Large whole-frame visual discontinuity.",
+    "value": 0.213,
+    "confidence": 0.78
+  },
+  {
+    "start": 12.0,
+    "end": 12.35,
+    "kind": "ACTION",
+    "detail": "High local motion/change peak.",
+    "value": 7.997,
+    "confidence": 0.68
+  },
+  {
+    "start": 12.0,
+    "end": 12.0,
+    "kind": "SHOT_CHANGE",
+    "detail": "Large whole-frame visual discontinuity.",
+    "value": 0.228,
+    "confidence": 0.78
+  },
+  {
+    "start": 13.0,
+    "end": 13.35,
+    "kind": "ACTION",
+    "detail": "High local motion/change peak.",
+    "value": 8.055,
+    "confidence": 0.68
+  },
+  {
+    "start": 13.0,
+    "end": 13.0,
+    "kind": "SHOT_CHANGE",
+    "detail": "Large whole-frame visual discontinuity.",
+    "value": 0.213,
+    "confidence": 0.78
+  },
+  {
+    "start": 13.104,
+    "end": 13.453999999999999,
+    "kind": "ACTION",
+    "detail": "High local motion/change peak.",
+    "value": 9.848,
+    "confidence": 0.68
+  },
+  {
+    "start": 13.354,
+    "end": 13.703999999999999,
+    "kind": "ACTION",
+    "detail": "High local motion/change peak.",
+    "value": 10.147,
+    "confidence": 0.68
+  }
+]

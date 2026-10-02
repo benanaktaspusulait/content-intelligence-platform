@@ -1,0 +1,21 @@
+input_dir = ".."
+data_dir = ".lab_data"
+database = ".lab_data/library.sqlite3"
+host = "127.0.0.1"
+port = 8765
+analysis_version = "0.2.0"
+rubric_version = "pompom-action-dna-v1"
+vision_provider = "heuristic"
+vision_base_url = "http://127.0.0.1:11434/v1"
+vision_model = ""
+external_network_enabled = false
+transcription_enabled = false
+sample_fps = 4.0
+max_analysis_width = 480
+
+[performance_bands]
+low = 500
+partial = 2000
+meaningful_expansion = 5000
+strong = 20000
+persistent_winner_observed = 50000

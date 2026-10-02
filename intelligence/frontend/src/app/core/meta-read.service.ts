@@ -1,0 +1,50 @@
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import {
+  MetaConnection,
+  MetaPageContent,
+  MetaReelAnalytics,
+  MetaReelsPage,
+  MetaReelSummary,
+  MetaSnapshotResult,
+} from './meta-read.models';
+
+/** Read-only client for the Meta analytics API. All reads are GET; snapshots are append-only. */
+@Injectable({ providedIn: 'root' })
+export class MetaReadService {
+  private readonly baseUrl = '/api/v1/meta';
+
+  constructor(private readonly http: HttpClient) {}
+
+  getConnection(): Observable<MetaConnection> {
+    return this.http.get<MetaConnection>(`${this.baseUrl}/connection`);
+  }
+
+  getPageContent(): Observable<MetaPageContent> {
+    return this.http.get<MetaPageContent>(`${this.baseUrl}/page/content`);
+  }
+
+  listReels(after?: string | null, limit = 25): Observable<MetaReelsPage> {
+    let params = new HttpParams().set('limit', String(limit));
+    if (after) {
+      params = params.set('after', after);
+    }
+    return this.http.get<MetaReelsPage>(`${this.baseUrl}/instagram/reels`, { params });
+  }
+
+  getReel(mediaId: string): Observable<MetaReelSummary> {
+    return this.http.get<MetaReelSummary>(`${this.baseUrl}/instagram/reels/${mediaId}`);
+  }
+
+  getAnalytics(mediaId: string): Observable<MetaReelAnalytics> {
+    return this.http.get<MetaReelAnalytics>(`${this.baseUrl}/instagram/reels/${mediaId}/analytics`);
+  }
+
+  captureSnapshot(mediaId: string): Observable<MetaSnapshotResult> {
+    return this.http.post<MetaSnapshotResult>(
+      `${this.baseUrl}/instagram/reels/${mediaId}/snapshots`,
+      {},
+    );
+  }
+}

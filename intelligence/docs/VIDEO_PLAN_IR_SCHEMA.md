@@ -1,0 +1,483 @@
+# Video Plan IR (Intermediate Representation) Schema
+
+## Purpose
+
+The Video Plan IR is a **structured JSON representation** of a 15-second video prompt that enables:
+- Automated quality analysis
+- Rule engine validation
+- Consequence counting
+- Static state detection
+- Repetition analysis
+- Escalation measurement
+
+**Key principle:** Rules operate on structured data, not free text.
+
+---
+
+## Schema Definition
+
+```typescript
+interface VideoPlanIR {
+  // Metadata
+  metadata: {
+    title: string;                    // e.g., "Kiko — Slippery / Rough"
+    duration: number;                 // Total seconds (typically 15)
+    format: "9:16" | "16:9";         // Aspect ratio
+    seriesType: "opposites" | "whats_wrong" | "discovery" | "feelings" | "music" | "stories" | "social_reel";
+    createdAt: string;                // ISO timestamp
+    version: number;                  // Iteration count (1, 2, 3...)
+    previousVersion?: string;         // Link to prior version if exists
+  };
+
+  // Characters
+  characters: {
+    primary: string;                  // e.g., "Kiko"
+    secondary?: string[];             // e.g., ["Mimi"] if applicable
+    characterRefs: string[];          // File paths to character sheets
+  };
+
+  // Location & Props
+  setting: {
+    location: string;                 // e.g., "Warm Pompom Hills hallway"
+    locationRef?: string;             // File path to location reference
+    mainProps: string[];              // e.g., ["yellow pencil", "pencil sharpener"]
+    visualEnvironment: string;        // Brief description for AI producibility check
+  };
+
+  // Learning Objective (if applicable)
+  learningObjective?: {
+    concepts: string[];               // e.g., ["SLIPPERY", "ROUGH"]
+    pedagogicalGoal: string;          // e.g., "Teach opposite textures through physical experience"
+    soundOffReadable: boolean;        // Must be understandable without audio
+  };
+
+  // Core Mechanic
+  coreMechanic: {
+    physicalRule: string;             // e.g., "Smooth floor = slide, Rough mat = stop"
+    causeEffect: string;              // e.g., "Stepping on surface → movement consequence"
+    consistency: "consistent" | "evolving" | "breaking";  // Does rule stay same or change?
+  };
+
+  // Hook
+  hook: {
+    anomaly: string;                  // What's unusual in frame 1?
+    startsAt: number;                 // Timestamp (typically 0)
+    startsMidAction: boolean;         // True if no setup
+    visualStrength: 1 | 2 | 3 | 4 | 5;  // How attention-grabbing (1=weak, 5=strong)
+    soundOffClear: boolean;           // Understandable without audio?
+  };
+
+  // Timeline Beats
+  beats: Beat[];
+
+  // Final Payoff
+  finalPayoff: {
+    type: "escalation" | "twist" | "loop" | "reveal" | "callback";
+    startsAt: number;                 // When final beat begins
+    endsAt: number;                   // When it ends (typically 15)
+    isPeakIntensity: boolean;         // Is this the strongest moment?
+    isHardCut: boolean;               // Cuts mid-action vs holds pose
+    isRepeatOfOpening: boolean;       // True if final = opening (bad)
+  };
+
+  // AI Producibility Assessment
+  producibility: {
+    overallComplexity: "low" | "medium" | "high" | "very_high";
+    riskFactors: string[];            // e.g., ["hand-object precision", "morphing texture"]
+    estimatedRenderQuality: 1 | 2 | 3 | 4 | 5;  // 1=high risk, 5=confident
+  };
+}
+
+interface Beat {
+  // Timing
+  id: string;                         // e.g., "beat_01"
+  startTime: number;                  // Seconds (e.g., 0.0)
+  endTime: number;                    // Seconds (e.g., 1.0)
+  duration: number;                   // Calculated: endTime - startTime
+
+  // Action
+  action: string;                     // What character does, e.g., "slides on floor"
+  actionType: "motion" | "interaction" | "reaction" | "transition" | "idle";
+  
+  // Visual State
+  visualState: string;                // What viewer sees, e.g., "character on slippery floor"
+  visualStateId: string;              // Normalized ID for comparison, e.g., "on_slippery_floor"
+  
+  // Consequence
+  consequence: string;                // Physical result, e.g., "shoe glides forward, arms spread"
+  consequenceType: "new" | "continuation" | "repeat" | "escalation";
+  
+  // Intensity
+  intensity: number;                  // 1-10 scale of visual/emotional energy
+  motionAmount: "none" | "minimal" | "moderate" | "high" | "extreme";
+  
+  // Dialogue (if any)
+  dialogue?: {
+    speaker: string;
+    text: string;
+    isLearningWord: boolean;          // True if part of pedagogical goal
+  };
+
+  // Readability
+  readabilityDuration: number;        // How long state is held for comprehension
+  isReadable: boolean;                // True if >= 0.6s
+
+  // Relationships
+  isNewConsequence: boolean;          // True if distinct from all prior beats
+  similarToBeats: string[];           // IDs of similar beats (for repetition detection)
+  cycleGroup?: string;                // If part of repeated cycle, e.g., "sharpen_draw_blunt"
+  isAttempt: boolean;                // True if this beat represents the character
+                                      // actively trying a new strategy against the
+                                      // established problem. Defaults to false.
+  primaryVerb: string;               // Normalized (upper-case) primary action verb
+                                      // for this attempt, e.g. "CATCH", "BLOCK".
+                                      // Required (non-empty) when isAttempt is true;
+                                      // empty string otherwise.
+}
+```
+
+---
+
+## Example: Kiko Slippery/Rough (FAIL_001)
+
+```json
+{
+  "metadata": {
+    "title": "Kiko — Slippery / Rough",
+    "duration": 15,
+    "format": "9:16",
+    "seriesType": "opposites",
+    "createdAt": "2026-09-09T00:00:00Z",
+    "version": 1
+  },
+  "characters": {
+    "primary": "Kiko",
+    "characterRefs": ["01-CHARACTERS/drawings/kiko.png"]
+  },
+  "setting": {
+    "location": "Warm Pompom Hills hallway",
+    "mainProps": ["dark wooden floor", "light beige coir mat"],
+    "visualEnvironment": "Simple indoor hallway, two fixed floor surfaces"
+  },
+  "learningObjective": {
+    "concepts": ["SLIPPERY", "ROUGH"],
+    "pedagogicalGoal": "Teach opposite surface textures through physical experience",
+    "soundOffReadable": true
+  },
+  "coreMechanic": {
+    "physicalRule": "Smooth floor = slide, Rough mat = stop",
+    "causeEffect": "Surface texture determines movement type",
+    "consistency": "consistent"
+  },
+  "hook": {
+    "anomaly": "Kiko already sliding with wide eyes",
+    "startsAt": 0.0,
+    "startsMidAction": true,
+    "visualStrength": 5,
+    "soundOffClear": true
+  },
+  "beats": [
+    {
+      "id": "beat_01",
+      "startTime": 0.0,
+      "endTime": 1.0,
+      "duration": 1.0,
+      "action": "slides on glossy floor",
+      "actionType": "motion",
+      "visualState": "character sliding on slippery floor",
+      "visualStateId": "on_slippery_floor",
+      "consequence": "shoe glides forward, arms spread for balance",
+      "consequenceType": "new",
+      "intensity": 8,
+      "motionAmount": "high",
+      "dialogue": {
+        "speaker": "Kiko",
+        "text": "SLIPPERY!",
+        "isLearningWord": true
+      },
+      "readabilityDuration": 1.0,
+      "isReadable": true,
+      "isNewConsequence": true,
+      "similarToBeats": [],
+      "cycleGroup": null
+    },
+    {
+      "id": "beat_02",
+      "startTime": 1.0,
+      "endTime": 3.2,
+      "duration": 2.2,
+      "action": "tries corrective step",
+      "actionType": "interaction",
+      "visualState": "character still on slippery floor",
+      "visualStateId": "on_slippery_floor",
+      "consequence": "front shoe glides further, body shifts",
+      "consequenceType": "continuation",
+      "intensity": 6,
+      "motionAmount": "moderate",
+      "readabilityDuration": 2.2,
+      "isReadable": true,
+      "isNewConsequence": false,
+      "similarToBeats": ["beat_01"],
+      "cycleGroup": null
+    },
+    {
+      "id": "beat_03",
+      "startTime": 3.2,
+      "endTime": 5.2,
+      "duration": 2.0,
+      "action": "reaches rough mat, stops sliding",
+      "actionType": "transition",
+      "visualState": "character on rough mat",
+      "visualStateId": "on_rough_mat",
+      "consequence": "sliding stops, tiny bounce, looks at mat",
+      "consequenceType": "new",
+      "intensity": 7,
+      "motionAmount": "moderate",
+      "dialogue": {
+        "speaker": "Kiko",
+        "text": "ROUGH!",
+        "isLearningWord": true
+      },
+      "readabilityDuration": 2.0,
+      "isReadable": true,
+      "isNewConsequence": true,
+      "similarToBeats": [],
+      "cycleGroup": null
+    },
+    {
+      "id": "beat_04",
+      "startTime": 5.2,
+      "endTime": 7.5,
+      "duration": 2.3,
+      "action": "tests mat by moving shoe",
+      "actionType": "interaction",
+      "visualState": "character on rough mat",
+      "visualStateId": "on_rough_mat",
+      "consequence": "shoe barely slides, presses down",
+      "consequenceType": "continuation",
+      "intensity": 4,
+      "motionAmount": "minimal",
+      "readabilityDuration": 2.3,
+      "isReadable": true,
+      "isNewConsequence": false,
+      "similarToBeats": ["beat_03"],
+      "cycleGroup": null
+    },
+    {
+      "id": "beat_05",
+      "startTime": 7.5,
+      "endTime": 9.5,
+      "duration": 2.0,
+      "action": "extends shoe to floor, tests contrast",
+      "actionType": "interaction",
+      "visualState": "character on rough mat",
+      "visualStateId": "on_rough_mat",
+      "consequence": "shoe glides on floor, pulls back to mat",
+      "consequenceType": "continuation",
+      "intensity": 5,
+      "motionAmount": "moderate",
+      "readabilityDuration": 2.0,
+      "isReadable": true,
+      "isNewConsequence": false,
+      "similarToBeats": ["beat_03", "beat_04"],
+      "cycleGroup": null
+    },
+    {
+      "id": "beat_06",
+      "startTime": 9.5,
+      "endTime": 11.5,
+      "duration": 2.0,
+      "action": "walks comfortably on mat",
+      "actionType": "motion",
+      "visualState": "character on rough mat",
+      "visualStateId": "on_rough_mat",
+      "consequence": "takes two tiny steps, no sliding, looks relieved",
+      "consequenceType": "continuation",
+      "intensity": 3,
+      "motionAmount": "minimal",
+      "readabilityDuration": 2.0,
+      "isReadable": true,
+      "isNewConsequence": false,
+      "similarToBeats": ["beat_03", "beat_04", "beat_05"],
+      "cycleGroup": null
+    },
+    {
+      "id": "beat_07",
+      "startTime": 11.5,
+      "endTime": 12.6,
+      "duration": 1.1,
+      "action": "steps back onto slippery floor",
+      "actionType": "transition",
+      "visualState": "character on slippery floor",
+      "visualStateId": "on_slippery_floor",
+      "consequence": "shoe begins to glide, eyes widen",
+      "consequenceType": "repeat",
+      "intensity": 7,
+      "motionAmount": "moderate",
+      "readabilityDuration": 1.1,
+      "isReadable": true,
+      "isNewConsequence": false,
+      "similarToBeats": ["beat_01", "beat_02"],
+      "cycleGroup": null
+    },
+    {
+      "id": "beat_08",
+      "startTime": 12.6,
+      "endTime": 15.0,
+      "duration": 2.4,
+      "action": "slides sideways",
+      "actionType": "motion",
+      "visualState": "character sliding on slippery floor",
+      "visualStateId": "on_slippery_floor",
+      "consequence": "controlled slide, arms out, panicked expression",
+      "consequenceType": "repeat",
+      "intensity": 8,
+      "motionAmount": "high",
+      "dialogue": {
+        "speaker": "Kiko",
+        "text": "SLIPPERY!",
+        "isLearningWord": true
+      },
+      "readabilityDuration": 2.4,
+      "isReadable": true,
+      "isNewConsequence": false,
+      "similarToBeats": ["beat_01", "beat_02", "beat_07"],
+      "cycleGroup": null
+    }
+  ],
+  "finalPayoff": {
+    "type": "callback",
+    "startsAt": 12.6,
+    "endsAt": 15.0,
+    "isPeakIntensity": false,
+    "isHardCut": true,
+    "isRepeatOfOpening": true
+  },
+  "producibility": {
+    "overallComplexity": "low",
+    "riskFactors": ["foot-floor contact consistency"],
+    "estimatedRenderQuality": 4
+  }
+}
+```
+
+---
+
+## Key Fields for Quality Analysis
+
+### For Static State Detection
+- `beat.visualStateId`: Normalized identifier
+- `beat.duration`: How long state persists
+- Group consecutive beats with same `visualStateId`
+- Calculate total duration per unique state
+
+### For Consequence Counting
+- `beat.isNewConsequence`: Boolean flag
+- `beat.consequenceType`: "new" vs "repeat"
+- Count beats where `isNewConsequence === true`
+
+### For Repetition Detection
+- `beat.similarToBeats`: Array of beat IDs
+- `beat.cycleGroup`: Identifier for repeated cycles
+- Track action frequency across timeline
+
+### For Escalation Measurement
+- `beat.intensity`: 1-10 scale
+- Plot intensity over time
+- Detect drops, plateaus, or steady rises
+
+### For AI Producibility
+- `producibility.overallComplexity`
+- `producibility.riskFactors`
+- `beat.actionType` and `motionAmount`
+
+---
+
+## Duration Tiers
+
+Rules that scale with video length (ATTEMPT_001, ATTEMPT_002, CHAR_002,
+PRODUCIBILITY_002 — see RULESET_1.1) derive a tier from `metadata.duration`
+rather than reading a stored field:
+
+- **short tier**: `duration <= 20` seconds — minimum 3 distinct attempts,
+  minimum 50% active-character ratio, maximum 2 main props.
+- **long tier**: `duration > 20` seconds — minimum 7 distinct attempts,
+  minimum 60% active-character ratio, maximum 4 main props.
+
+A 30-45 second concept must not simply stretch a short-form idea — the
+longer duration must be earned by genuinely more distinct problem-solving
+strategies, not by slowing down the same number of attempts.
+
+---
+
+## Schema Validation Rules
+
+```yaml
+required:
+  - metadata.duration must be between 10 and 45 seconds
+  - durationTier is derived at evaluation time, not stored on the IR:
+    duration <= 20 -> "short" tier, duration > 20 -> "long" tier
+  - beats array must not be empty
+  - beats must cover 0 to metadata.duration with no gaps
+  - each beat.duration must be >= 0.4 seconds (minimum readability)
+  - finalPayoff.endsAt must equal metadata.duration
+
+consistency:
+  - sum(beat.duration) must equal metadata.duration
+  - beat[n].endTime must equal beat[n+1].startTime
+  - visualStateId must be normalized (lowercase, underscores)
+
+quality:
+  - at least 4 beats with isNewConsequence === true
+  - no single visualStateId should exceed 30% of total duration
+  - intensity should generally increase or maintain (not drop mid-video)
+```
+
+---
+
+## Parser Output Format
+
+When the parser converts a text prompt → IR, it should also output:
+
+```json
+{
+  "videoPlanIR": { ... },
+  "parserMetadata": {
+    "confidence": 0.85,
+    "ambiguities": [
+      "Beat timing for 'tests mat' unclear, estimated 2.3s"
+    ],
+    "assumptions": [
+      "Assumed 'tiny steps' = minimal motion amount"
+    ],
+    "warnings": [
+      "No explicit intensity specified, inferred from action descriptions"
+    ]
+  }
+}
+```
+
+This allows the system to flag **low-confidence parses** that need human review.
+
+---
+
+## Next Steps
+
+1. Use this schema to build the Python parser (Task #5)
+2. Define rule engine operations on this structure (Task #7)
+3. Create test fixtures from FAIL_001, FAIL_002, FAIL_003 (Task #16)
+
+---
+
+**This schema is versioned.**
+
+Current version: **1.1**
+
+v1.1 adds `Beat.isAttempt` / `Beat.primaryVerb` and relaxes the duration ceiling to
+support 30-45s long-form concepts.
+
+Future versions may add:
+- Camera movement tracking
+- Character interaction complexity
+- Prop state changes
+- Multi-character coordination metrics

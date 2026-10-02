@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pompom Creative Lab</title>
+  <link rel="stylesheet" href="/app.css">
+  <link rel="stylesheet" href="/rescue.css">
+  <link rel="stylesheet" href="/lab.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand"><span class="mark">P</span><div><strong>Pompom Creative Lab</strong><small>Creative evidence library</small></div></div>
+    <div class="privacy"><span></span> Local-only mode</div>
+  </header>
+  <main>
+    <section class="summary" aria-label="Library summary">
+      <div><small>Analysed</small><strong id="total">0</strong></div>
+      <div><small>Review queue</small><strong id="reviewCount">0</strong></div>
+      <div><small>Fix available</small><strong id="fixCount">0</strong></div>
+      <div><small>Median DNA</small><strong id="median">0</strong></div>
+    </section>
+    <section class="modebar" aria-label="Analysis mode">
+      <div class="segmented"><button class="active" data-mode="action">Action DNA</button><button data-mode="rescue">Stock Creative Rescue</button><button data-mode="lab">Experiment Lab</button></div>
+      <p id="modeNote">Creative structure match, not a view prediction.</p>
+    </section>
+    <section class="toolbar">
+      <label class="search"><span>⌕</span><input id="search" type="search" placeholder="Search filename or series"></label>
+      <select id="classification" aria-label="Classification"><option value="">All classifications</option><option>BAD</option><option>AVERAGE/FIXABLE</option><option>GOOD</option><option>WINNER CANDIDATE</option></select>
+      <select id="series" aria-label="Series"><option value="">All series</option></select>
+      <select id="sort" aria-label="Sort"><option value="dna">Action DNA</option><option value="classification">Classification</option><option value="filename">Filename</option><option value="performance">Actual performance</option><option value="review">Not yet reviewed</option></select>
+    </section>
+    <section class="workspace">
+      <div class="table-wrap">
+        <table>
+          <thead><tr id="tableHead"></tr></thead>
+          <tbody id="rows"></tbody>
+        </table>
+        <div id="empty" class="empty" hidden>No analysed videos match this view.</div>
+      </div>
+      <aside id="detail" class="detail" aria-live="polite">
+        <div class="detail-empty"><strong>Select a video</strong><span>Evidence, timeline, and review controls appear here.</span></div>
+      </aside>
+    </section>
+    <section id="labWorkspace" class="lab-workspace" hidden>
+      <nav class="lab-tabs" aria-label="Experiment Lab sections">
+        <button class="active" data-lab="performance">Performance</button><button data-lab="imports">Import Data</button><button data-lab="predictions">Predictions</button><button data-lab="experiments">Experiments</button><button data-lab="learning">Model Versions</button><button data-lab="characters">Character Lab</button>
+      </nav>
+      <div id="labContent"></div>
+    </section>
+  </main>
+  <script src="/app.js"></script>
+</body>
+</html>

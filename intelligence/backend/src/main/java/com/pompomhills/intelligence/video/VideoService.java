@@ -1,0 +1,310 @@
+package com.pompomhills.intelligence.video;
+
+import com.pompomhills.intelligence.common.config.PompomProperties;
+import com.pompomhills.intelligence.creative.CreativeAnalysisEntity;
+import com.pompomhills.intelligence.creative.CreativeAnalysisRepository;
+import com.pompomhills.intelligence.creative.CreativeFingerprintEntity;
+import com.pompomhills.intelligence.creative.CreativeFingerprintRepository;
+import com.pompomhills.intelligence.video.api.VideoDtos.AnalysisResponse;
+import com.pompomhills.intelligence.video.api.VideoDtos.DirectoryIngestResponse;
+import com.pompomhills.intelligence.video.api.VideoDtos.IngestError;
+import com.pompomhills.intelligence.video.api.VideoDtos.MediaDirectory;
+import com.pompomhills.intelligence.video.api.VideoDtos.MediaFile;
+import com.pompomhills.intelligence.video.api.VideoDtos.VideoResponse;
+import com.pompomhills.intelligence.video.ml.MlVideoClient;
+import jakarta.persistence.EntityNotFoundException;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.time.Clock;
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+import java.util.stream.Stream;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+@Service
+public class VideoService {
+  private final VideoRepository videos;
+  private final CreativeAnalysisRepository analyses;
+  private final CreativeFingerprintRepository fingerprints;
+  private final MlVideoClient ml;
+  private final PompomProperties properties;
+  private final Clock clock;
+
+  public VideoService(
+      VideoRepository videos,
+      CreativeAnalysisRepository analyses,
+      CreativeFingerprintRepository fingerprints,
+      MlVideoClient ml,
+      PompomProperties properties,
+      Clock clock) {
+    this.videos = videos;
+    this.analyses = analyses;
+    this.fingerprints = fingerprints;
+    this.ml = ml;
+    this.properties = properties;
+    this.clock = clock;
+  }
+
+  @Transactional
+  public VideoResponse ingest(String relativePath, UUID seriesId) {
+    Path root = properties.dataRoot().toAbsolutePath().normalize();
+    Path file = root.resolve(relativePath).normalize();
+    if (!file.startsWith(root) || !Files.isRegularFile(file))
+      throw new IllegalArgumentException(
+          "Video path must be a file inside the configured data root");
+    String extension = file.getFileName().toString().replaceFirst("^.*\\.", "").toLowerCase();
+    if (!properties.allowedVideoExtensions().contains(extension))
+      throw new IllegalArgumentException("Unsupported video extension: " + extension);
+    var result = ml.analyse(root.relativize(file).toString());
+    var metadata = result.metadata();
+    var entity =
+        videos
+            .findByContentHash(metadata.sha256())
+            .orElseGet(
+                () ->
+                    videos.save(
+                        new VideoEntity(
+                            UUID.randomUUID(),
+                            metadata.sha256(),
+                            file.getFileName().toString(),
+                            root.relativize(file).toString(),
+                            metadata.durationMs(),
+                            metadata.width(),
+                            metadata.height(),
+                            metadata.fps(),
+                            metadata.aspectRatio(),
+                            metadata.codec(),
+                            metadata.audioPresent(),
+                            seriesId,
+                            clock.instant())));
+    return map(entity);
+  }
+
+  public DirectoryIngestResponse ingestDirectory(
+      String relativeDirectory, UUID seriesId, boolean recursive) {
+    Path root = properties.dataRoot().toAbsolutePath().normalize();
+    Path directory = root.resolve(relativeDirectory).normalize();
+    if (!directory.startsWith(root) || !Files.isDirectory(directory)) {
+      throw new IllegalArgumentException("Video directory must be inside the configured data root");
+    }
+    var files = new ArrayList<Path>();
+    try (Stream<Path> stream = recursive ? Files.walk(directory) : Files.list(directory)) {
+      stream
+          .filter(Files::isRegularFile)
+          .filter(this::hasAllowedExtension)
+          .sorted(Comparator.comparing(Path::toString))
+          .limit(1000)
+          .forEach(files::add);
+    } catch (IOException error) {
+      throw new IllegalStateException("Could not scan video directory", error);
+    }
+    var ingested = new ArrayList<VideoResponse>();
+    var errors = new ArrayList<IngestError>();
+    for (Path file : files) {
+      String relativePath = root.relativize(file).toString();
+      try {
+        ingested.add(ingest(relativePath, seriesId));
+      } catch (RuntimeException error) {
+        errors.add(new IngestError(relativePath, error.getMessage()));
+      }
+    }
+    return new DirectoryIngestResponse(relativeDirectory, files.size(), ingested, errors);
+  }
+
+  public List<MediaDirectory> mediaDirectories(String relativeDirectory) {
+    Path root = properties.dataRoot().toAbsolutePath().normalize();
+    Path directory = root.resolve(relativeDirectory).normalize();
+    if (!directory.startsWith(root) || !Files.isDirectory(directory)) {
+      throw new IllegalArgumentException("Media directory must be inside the configured data root");
+    }
+    try (Stream<Path> children = Files.list(directory)) {
+      return children
+          .filter(Files::isDirectory)
+          .sorted(Comparator.comparing(path -> path.getFileName().toString().toLowerCase()))
+          .map(
+              path ->
+                  new MediaDirectory(
+                      path.getFileName().toString(),
+                      root.relativize(path).toString(),
+                      countVideos(path)))
+          .toList();
+    } catch (IOException error) {
+      throw new IllegalStateException("Could not list media directories", error);
+    }
+  }
+
+  @Transactional(readOnly = true)
+  public List<MediaFile> mediaFiles(String relativeDirectory, boolean recursive) {
+    Path root = properties.dataRoot().toAbsolutePath().normalize();
+    Path directory = root.resolve(relativeDirectory).normalize();
+    if (!directory.startsWith(root) || !Files.isDirectory(directory)) {
+      throw new IllegalArgumentException("Media directory must be inside the configured data root");
+    }
+
+    List<Path> files;
+    try (Stream<Path> stream = recursive ? Files.walk(directory) : Files.list(directory)) {
+      files =
+          stream
+              .filter(Files::isRegularFile)
+              .filter(this::hasAllowedExtension)
+              .sorted(Comparator.comparing(Path::toString))
+              .limit(1000)
+              .toList();
+    } catch (IOException error) {
+      throw new IllegalStateException("Could not list media files", error);
+    }
+
+    List<String> relativePaths =
+        files.stream().map(path -> root.relativize(path).toString()).toList();
+    Map<String, VideoEntity> ingestedByPath =
+        relativePaths.isEmpty()
+            ? Map.of()
+            : videos.findAllByRelativePathIn(relativePaths).stream()
+                .collect(
+                    java.util.stream.Collectors.toMap(
+                        VideoEntity::getRelativePath, video -> video, (first, ignored) -> first));
+
+    return files.stream().map(path -> mapMediaFile(root, path, ingestedByPath)).toList();
+  }
+
+  @Transactional
+  public AnalysisResponse analyse(UUID videoId) {
+    var video =
+        videos
+            .findById(videoId)
+            .orElseThrow(() -> new EntityNotFoundException("Video not found: " + videoId));
+    video.markAnalysing();
+    try {
+      var result = ml.analyse(video.getRelativePath());
+      var raw = new LinkedHashMap<String, Object>();
+      raw.put("contractVersion", result.contractVersion());
+      raw.put("evidence", result.evidence());
+      var analysis =
+          analyses.save(
+              new CreativeAnalysisEntity(
+                  video,
+                  result.analysisVersion(),
+                  result.primaryEngine(),
+                  result.secondaryEngines(),
+                  result.classification(),
+                  result.actionDnaScore(),
+                  result.confidence(),
+                  result.reason(),
+                  result.storyboardPath(),
+                  result.timeline(),
+                  raw));
+      fingerprints.save(
+          new CreativeFingerprintEntity(
+              video,
+              analysis,
+              "creative-fingerprint-v1",
+              result.actionDnaScore(),
+              result.features()));
+      video.markAnalysed();
+      return new AnalysisResponse(
+          analysis.getId(),
+          videoId,
+          analysis.getPrimaryEngine(),
+          analysis.getSecondaryEngines(),
+          analysis.getClassification(),
+          analysis.getActionDnaScore(),
+          analysis.getConfidence(),
+          result.features(),
+          analysis.getStoryboardPath());
+    } catch (RuntimeException error) {
+      video.markFailed();
+      throw error;
+    }
+  }
+
+  @Transactional(readOnly = true)
+  public Page<VideoResponse> list(VideoStatus status, Pageable pageable) {
+    return status == null
+        ? videos.findAll(pageable).map(this::map)
+        : videos.findByStatus(status, pageable).map(this::map);
+  }
+
+  @Transactional(readOnly = true)
+  public VideoResponse get(UUID id) {
+    return videos
+        .findById(id)
+        .map(this::map)
+        .orElseThrow(() -> new EntityNotFoundException("Video not found: " + id));
+  }
+
+  private VideoResponse map(VideoEntity v) {
+    return new VideoResponse(
+        v.getId(),
+        v.getOriginalFilename(),
+        v.getRelativePath(),
+        v.getDurationMs(),
+        v.getWidth(),
+        v.getHeight(),
+        v.getFps(),
+        v.getAspectRatio(),
+        v.getCodec(),
+        v.isAudioPresent(),
+        v.getStatus().name(),
+        v.getSeriesId(),
+        v.getIngestedAt());
+  }
+
+  private boolean hasAllowedExtension(Path file) {
+    String name = file.getFileName().toString();
+    int separator = name.lastIndexOf('.');
+    return separator >= 0
+        && properties
+            .allowedVideoExtensions()
+            .contains(name.substring(separator + 1).toLowerCase());
+  }
+
+  private MediaFile mapMediaFile(Path root, Path file, Map<String, VideoEntity> ingestedByPath) {
+    String relativePath = root.relativize(file).toString();
+    VideoEntity ingested = ingestedByPath.get(relativePath);
+    return new MediaFile(
+        file.getFileName().toString(),
+        relativePath,
+        fileSize(file),
+        lastModified(file),
+        ingested != null,
+        ingested == null ? null : ingested.getId(),
+        ingested == null ? null : ingested.getStatus().name());
+  }
+
+  private Long fileSize(Path file) {
+    try {
+      return Files.size(file);
+    } catch (IOException ignored) {
+      return null;
+    }
+  }
+
+  private Instant lastModified(Path file) {
+    try {
+      return Files.getLastModifiedTime(file).toInstant();
+    } catch (IOException ignored) {
+      return null;
+    }
+  }
+
+  private long countVideos(Path directory) {
+    try (Stream<Path> files = Files.walk(directory)) {
+      return files
+          .filter(Files::isRegularFile)
+          .filter(this::hasAllowedExtension)
+          .limit(10_000)
+          .count();
+    } catch (IOException error) {
+      return 0;
+    }
+  }
+}

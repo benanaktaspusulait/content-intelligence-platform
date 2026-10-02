@@ -1,0 +1,17 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pompom-creative-lab"
+version = "0.1.0"
+description = "Local-first evidence-based creative review for Pompom Hills vertical videos"
+requires-python = ">=3.11"
+dependencies = ["numpy>=1.26", "opencv-python>=4.8", "Pillow>=10"]
+
+[project.scripts]
+pompom = "pompom_lab.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["pompom_lab*"]
+

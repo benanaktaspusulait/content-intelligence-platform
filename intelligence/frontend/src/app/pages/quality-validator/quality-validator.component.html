@@ -1,0 +1,289 @@
+<div class="quality-validator-container">
+  <div class="header">
+    <h1>🎯 Pompom Creative Quality Engine</h1>
+    <p class="subtitle">Validate video prompts before render</p>
+  </div>
+
+  <!-- Prompt Input Section -->
+  <div class="prompt-section card">
+    <div class="card-header">
+      <h2>Video Prompt</h2>
+      <div class="actions">
+        <button 
+          class="btn btn-secondary btn-sm" 
+          (click)="loadSamplePrompt()"
+          [disabled]="loading">
+          Load Sample (FAIL_001)
+        </button>
+        <button 
+          class="btn btn-outline-secondary btn-sm" 
+          (click)="clearPrompt()"
+          [disabled]="loading">
+          Clear
+        </button>
+      </div>
+    </div>
+    <div class="card-body">
+      <textarea
+        [(ngModel)]="prompt"
+        class="form-control prompt-input"
+        rows="15"
+        placeholder="Paste your video prompt here (min 100 characters)...&#10;&#10;Include: [TITLE], [DURATION], [CHARACTERS], [SETTING], [HOOK], [BEAT 1-N], [PAYOFF]"
+        [disabled]="loading">
+      </textarea>
+      <div class="prompt-meta">
+        <span class="char-count" [class.valid]="prompt.length >= 100">
+          {{ prompt.length }} characters
+          <span *ngIf="prompt.length < 100" class="text-danger">
+            (min 100 required)
+          </span>
+        </span>
+      </div>
+    </div>
+    <div class="card-footer">
+      <button 
+        class="btn btn-primary btn-lg"
+        (click)="validatePrompt()"
+        [disabled]="loading || prompt.length < 100">
+        <span *ngIf="!loading">🚀 Validate Quality</span>
+        <span *ngIf="loading">
+          <span class="spinner"></span> Analyzing...
+        </span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Error Message -->
+  <div *ngIf="error" class="alert alert-danger">
+    <strong>Error:</strong> {{ error }}
+  </div>
+
+  <!-- Quality Report -->
+  <div *ngIf="report" class="report-section">
+    
+    <!-- Score Card -->
+    <div class="score-card card" [ngClass]="getScoreClass()">
+      <div class="score-display">
+        <div class="score-number">{{ report.overallScore.toFixed(1) }}</div>
+        <div class="score-max">/100</div>
+      </div>
+      <div class="score-label">{{ report.scoreCard.label }}</div>
+      <div class="score-status">
+        <span class="badge" [ngClass]="getStatusBadgeClass()">
+          {{ report.status }}
+        </span>
+      </div>
+      <div class="score-details">
+        <div class="score-detail">
+          <span class="icon">🚫</span>
+          <span class="count">{{ report.blockerCount }}</span>
+          <span class="label">Blockers</span>
+        </div>
+        <div class="score-detail">
+          <span class="icon">⚠️</span>
+          <span class="count">{{ report.criticalCount }}</span>
+          <span class="label">Critical</span>
+        </div>
+        <div class="score-detail">
+          <span class="icon">⚡</span>
+          <span class="count">{{ report.warningCount }}</span>
+          <span class="label">Warnings</span>
+        </div>
+      </div>
+      <div class="ruleset-version">
+        <small>Ruleset v{{ report.rulesetVersion }}</small>
+      </div>
+    </div>
+
+    <!-- Priority Fixes -->
+    <div *ngIf="report.priorityFixes && report.priorityFixes.length > 0" class="priority-fixes card">
+      <div class="card-header">
+        <h2>🔧 Priority Fixes</h2>
+        <span class="badge badge-secondary">{{ report.priorityFixes.length }}</span>
+      </div>
+      <div class="card-body">
+        <div *ngFor="let fix of report.priorityFixes; let i = index" class="fix-item">
+          <div class="fix-header">
+            <span class="fix-number">#{{ i + 1 }}</span>
+            <span class="badge" [ngClass]="getSeverityBadgeClass(fix.severity)">
+              {{ fix.severity }}
+            </span>
+            <span class="fix-rule">{{ fix.ruleName }}</span>
+            <span class="fix-family">{{ fix.family }}</span>
+          </div>
+          <div class="fix-issue">
+            <strong>Issue:</strong> {{ fix.issue }}
+          </div>
+          <div class="fix-recommendation">
+            <strong>Fix:</strong> {{ fix.recommendation }}
+          </div>
+          <div class="fix-impact">
+            <small class="text-muted">Impact: {{ fix.impact }}</small>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Failed Rules -->
+    <div *ngIf="report.failedRules && report.failedRules.length > 0" class="failed-rules card">
+      <div class="card-header">
+        <h2>❌ Failed Rules</h2>
+        <span class="badge badge-danger">{{ report.failedRules.length }}</span>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Severity</th>
+                <th>Rule</th>
+                <th>Family</th>
+                <th>Message</th>
+                <th>Actual</th>
+                <th>Threshold</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let rule of report.failedRules">
+                <td>
+                  <span class="badge badge-sm" [ngClass]="getSeverityBadgeClass(rule.severity)">
+                    {{ rule.severity }}
+                  </span>
+                </td>
+                <td><code>{{ rule.ruleId }}</code></td>
+                <td><small>{{ rule.family }}</small></td>
+                <td>{{ rule.message }}</td>
+                <td>
+                  <span *ngIf="rule.actualValue !== null && rule.actualValue !== undefined">
+                    {{ rule.actualValue }}
+                  </span>
+                  <span *ngIf="rule.actualValue === null || rule.actualValue === undefined">
+                    —
+                  </span>
+                </td>
+                <td>
+                  <span *ngIf="rule.thresholdValue !== null && rule.thresholdValue !== undefined">
+                    {{ rule.thresholdValue }}
+                  </span>
+                  <span *ngIf="rule.thresholdValue === null || rule.thresholdValue === undefined">
+                    —
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Family Scores -->
+    <div class="family-scores card">
+      <div class="card-header">
+        <h2>📊 Quality Family Scores</h2>
+      </div>
+      <div class="card-body">
+        <div class="family-grid">
+          <div *ngFor="let entry of getFamilyScoreEntries()" class="family-item">
+            <div class="family-name">{{ entry[0] }}</div>
+            <div class="family-bar">
+              <div 
+                class="family-bar-fill" 
+                [ngClass]="getFamilyScoreClass(entry[1])"
+                [style.width.%]="entry[1]">
+              </div>
+            </div>
+            <div class="family-score">{{ entry[1].toFixed(0) }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Timeline Visualization -->
+    <div *ngIf="report.timelineData" class="timeline-visualization card">
+      <div class="card-header">
+        <h2>📈 Timeline Visualization</h2>
+        <span class="badge badge-info">Interactive Chart</span>
+      </div>
+      <div class="card-body">
+        <app-timeline-chart [timelineData]="report.timelineData"></app-timeline-chart>
+      </div>
+    </div>
+
+    <!-- Timeline Preview -->
+    <div *ngIf="report.timelineData" class="timeline-preview card">
+      <div class="card-header">
+        <h2>⏱️ Timeline Overview</h2>
+        <span class="badge badge-info">{{ report.timelineData.beats.length }} beats</span>
+      </div>
+      <div class="card-body">
+        
+        <!-- Beats -->
+        <div class="timeline-beats">
+          <h3>Beats</h3>
+          <div class="beat-list">
+            <div *ngFor="let beat of report.timelineData.beats" class="beat-item">
+              <div class="beat-time">
+                {{ formatTime(beat.startTime) }} - {{ formatTime(beat.endTime) }}
+              </div>
+              <div class="beat-action">{{ beat.action }}</div>
+              <div class="beat-consequence">
+                <span *ngIf="beat.isNewConsequence" class="badge badge-success badge-sm">NEW</span>
+                {{ beat.consequence }}
+              </div>
+              <div class="beat-intensity">
+                <div class="intensity-bar">
+                  <div 
+                    class="intensity-fill" 
+                    [style.width.%]="beat.intensity * 10"
+                    [style.background-color]="getIntensityColor(beat.intensity)">
+                  </div>
+                </div>
+                <span class="intensity-value">{{ beat.intensity }}/10</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- State Segments -->
+        <div *ngIf="report.timelineData.stateSegments && report.timelineData.stateSegments.length > 0" 
+             class="state-segments">
+          <h3>Visual State Distribution</h3>
+          <div class="state-list">
+            <div *ngFor="let segment of report.timelineData.stateSegments; let i = index" 
+                 class="state-item">
+              <div class="state-color" [style.background-color]="getStateColor(i)"></div>
+              <div class="state-id">{{ segment.stateId }}</div>
+              <div class="state-duration">
+                {{ formatTime(segment.startTime) }} - {{ formatTime(segment.endTime) }}
+              </div>
+              <div class="state-percentage" 
+                   [class.warning]="segment.percentage > 0.25"
+                   [class.danger]="segment.percentage > 0.30">
+                {{ formatPercentage(segment.percentage) }}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Consequence Markers -->
+        <div *ngIf="report.timelineData.consequenceMarkers && report.timelineData.consequenceMarkers.length > 0" 
+             class="consequence-markers">
+          <h3>Consequence Timeline</h3>
+          <div class="marker-list">
+            <div *ngFor="let marker of report.timelineData.consequenceMarkers" class="marker-item">
+              <span class="marker-time">{{ formatTime(marker.time) }}</span>
+              <span class="marker-type badge badge-sm" 
+                    [ngClass]="marker.type === 'distinct' ? 'badge-success' : 'badge-secondary'">
+                {{ marker.type }}
+              </span>
+              <span class="marker-consequence">{{ marker.consequence }}</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+</div>
