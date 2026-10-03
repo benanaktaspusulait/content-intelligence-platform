@@ -86,7 +86,8 @@ touch the variant model Plan B introduces).
 |---|---|---|---|---|
 | A | Observation mathematics correctness (metric semantics + source reconciliation + checkpoint tolerance) | Phase A | backend | ✅ Done, backend-only (commit `ffbdf84`, see §4 for completion record and 2 open follow-ups) |
 | B1 | Variant domain (entity/repository/service/API) | Phase B.1 | backend | ✅ Done (commit `bb35667`, see §4 for completion record) |
-| B2 | Variant-aware ingest, import, publication, performance queries + path-alias dedup | Phase B.2-5 | backend, frontend | ⬜ Not started |
+| B2a | Variant-aware backend wiring (path-alias dedup, import variant resolution, publication read path, performance query filters, V32 migration) | Phase B.2-5 (backend) | backend | ⬜ Not started |
+| B2b | Frontend variant consumption (Angular service methods + replace folder-grouping heuristic) | Phase B.3 (frontend) | frontend | ⬜ Not started |
 | C | Creative analysis completion (stop duplicate ML calls, surface analysis in Video Detail) | Phase C | backend, frontend | ⬜ Not started |
 | D | Evidence honesty (error-vs-empty, completion/watch metrics, overview placeholders, platform validation) | Phase D | backend, frontend | ⬜ Not started |
 | E | Deployment and scale boundaries (media mount, scan truncation, pagination) | Phase E | backend, frontend, deployment config | ⬜ Not started |
@@ -95,8 +96,15 @@ touch the variant model Plan B introduces).
 - **A is independent** of B/C/D/E — pure backend query-correctness fix on existing columns. Can be
   done first or in parallel with B1; sequenced first here for lower risk and because Part 03's
   dataset-construction phase needs correct trajectory math regardless of variant identity.
-- **B2 depends on B1** (needs the `VideoVariant` entity/service to exist before anything can
-  reference a real variant ID).
+- **B2a depends on B1** (needs the `VideoVariant` entity/service to exist before anything can
+  reference a real variant ID). Split from the original single "B2" into B2a (backend)/B2b
+  (frontend) on 2026-10-03 after investigating B2's actual scope — it touches 6+ backend files
+  (`VideoService`, `PerformanceImportService`, `PlatformStateService`,
+  `PerformanceTrajectoryController`, `PlatformGrowthProfileService`, `DiscoveryProfileService`)
+  plus a new `V32` migration, which is independently plannable/testable/committable from the
+  Angular frontend half, per `writing-plans`' scope-check rule.
+- **B2b depends on B2a** (the frontend cannot consume real `variantId`s or a variant-aware
+  `MediaFile.variantId` field until the backend endpoints/fields exist).
 - **C is independent of A/B** — the duplicate-ML-call and analysis-surfacing fix touches
   `VideoService`/`AnalysisJobService`/frontend detail page, not performance or variant code. Can
   be done in parallel with A/B if desired.
@@ -156,30 +164,52 @@ schema")
 the prerequisite every later plan item (import, publication, performance queries, frontend) needs
 a real `variantId` to reference.
 
-### Plan B2 — Variant-aware ingest, import, publication, performance queries + path-alias dedup
-**Audit section:** Phase B, items 2-5
+### Plan B2a — Variant-aware backend wiring
+**Audit section:** Phase B, items 2-5 (backend half; split from the original single "Plan B2" on
+2026-10-03 after investigating actual scope — see roadmap §1's dependency notes)
 **Files:**
-- `VideoService.java` (associate discovered physical files with a canonical video/variant identity
-  rather than treating folder-as-creative; fix the content-hash dedup path from P1-01 — add a
-  path-alias relationship so a second path resolving to the same content hash is recorded, not
-  discarded)
-- New migration `V32__...sql` (never edit V1-V31; add the path-alias table from P1-01; add
-  `intervention_events.variant_id` nullable FK, since that table has no variant column at all per
-  the audit's P0-03 finding)
+- `VideoService.java` (fix the content-hash dedup path from P1-01 — add a path-alias relationship
+  so a second path resolving to the same content hash is recorded, not discarded; `mediaFiles()`
+  must then resolve an aliased path to its canonical video rather than showing it as permanently
+  "Not ingested")
+- New: `VideoPathAliasEntity.java`/`VideoPathAliasRepository.java` (new table, see migration below)
+- New migration `V32__...sql` (never edit V1-V31; adds `video_path_aliases` table for the above;
+  adds `intervention_events.variant_id` nullable FK, since that table has no variant column at all)
 - `PerformanceImportService.java` (extend the existing exact/manual resolution step to accept and
-  write `variant_id` on `writeObservation()`'s INSERT — no fuzzy attribution, per P1-08)
-- `PlatformStateService.java` (`publication(videoId, platform)`'s read path becomes variant-aware,
-  matching the already-variant-aware write path `recordPublication()`, per P1-09)
+  write `variant_id` on `writeObservation()`'s INSERT, resolved via a new explicit
+  `variantid`/`variant_id` import-row column scoped to the already-resolved `videoId` — no fuzzy
+  attribution, per P1-08)
+- `PlatformStateService.java` (`publication(videoId, platform)`'s read path becomes
+  `publication(videoId, variantId, platform)`, matching the already-variant-aware write path
+  `recordPublication()`, per P1-09; `null` variantId means "the un-variant-scoped group,"
+  consistent with the schema's own `IS NOT DISTINCT FROM` sentinel convention, never "match any
+  variant")
 - `PerformanceTrajectoryController.java`, `PlatformGrowthProfileService.java`,
-  `DiscoveryProfileService.java` (accept and filter by `variantId` where provided)
-- Frontend: `video-library.page.ts`/`video-detail.page.ts` (introduce a real `variantId` concept
-  in TypeScript interfaces/HTTP calls/routes; replace folder-grouping-as-variant heuristic with the
-  persisted identity from Plan B1 — folder grouping may remain a *discovery aid* but must not be
-  the identity model)
-**Goal:** a creative and its variants are persisted identities, not inferred from directory layout;
-every published edit can be linked to the exact variant that generated its outcome; import
-resolution can target that exact variant; duplicate bytes at multiple paths no longer show as
-permanently "Not ingested."
+  `DiscoveryProfileService.java` (accept an optional `variantId` filter; `IS NOT DISTINCT FROM`
+  semantics so existing variant-blind data stays visible under the default `null` filter, while
+  newly variant-tagged observations require an explicit variantId to see — never a silent
+  aggregate-across-variants fallback, which would reintroduce the exact P0-03 problem this plan
+  exists to fix)
+**Goal:** every backend write/read path that touches a video's performance evidence can be scoped
+to an exact variant when one is known, duplicate bytes at multiple paths no longer show as
+permanently "Not ingested," and import resolution can target an exact variant with no fuzzy
+matching.
+
+### Plan B2b — Frontend variant consumption
+**Audit section:** Phase B, item 3 (frontend half)
+**Files:**
+- `creative-intelligence.service.ts` (add `VideoVariant` interface matching
+  `VideoVariantDtos.VariantResponse` exactly; add `listVariants(videoId)`/`createVariant(videoId,
+  request)` HTTP methods against Plan B1's `/api/v1/videos/{videoId}/variants` endpoints, which
+  currently have zero Angular consumers; add `variantId: string | null` to the `MediaFile`
+  interface, mirroring the backend DTO change Plan B2a makes)
+- `video-library.page.ts`/`video-detail.page.ts` (replace the `mediaVariant()` filename-suffix
+  parser — currently the entire "variant" model, with labels that don't even align to
+  `VideoVariantType`'s enum values — with real `variantId`-based grouping from the backend;
+  filename-based folder grouping may remain as a *discovery aid* for browsing un-ingested files,
+  but must not be the persisted identity a user acts on)
+**Goal:** a creative and its variants are persisted identities a user can see and act on in the
+product, not inferred from directory layout and filename guesswork.
 
 ### Plan C — Creative analysis completion
 **Audit section:** Phase C
