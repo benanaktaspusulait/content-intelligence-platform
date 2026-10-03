@@ -35,6 +35,7 @@ public class VideoService {
   private final VideoRepository videos;
   private final CreativeAnalysisRepository analyses;
   private final CreativeFingerprintRepository fingerprints;
+  private final VideoPathAliasRepository pathAliases;
   private final MlVideoClient ml;
   private final PompomProperties properties;
   private final Clock clock;
@@ -43,12 +44,14 @@ public class VideoService {
       VideoRepository videos,
       CreativeAnalysisRepository analyses,
       CreativeFingerprintRepository fingerprints,
+      VideoPathAliasRepository pathAliases,
       MlVideoClient ml,
       PompomProperties properties,
       Clock clock) {
     this.videos = videos;
     this.analyses = analyses;
     this.fingerprints = fingerprints;
+    this.pathAliases = pathAliases;
     this.ml = ml;
     this.properties = properties;
     this.clock = clock;
@@ -66,26 +69,31 @@ public class VideoService {
       throw new IllegalArgumentException("Unsupported video extension: " + extension);
     var result = ml.analyse(root.relativize(file).toString());
     var metadata = result.metadata();
-    var entity =
-        videos
-            .findByContentHash(metadata.sha256())
-            .orElseGet(
-                () ->
-                    videos.save(
-                        new VideoEntity(
-                            UUID.randomUUID(),
-                            metadata.sha256(),
-                            file.getFileName().toString(),
-                            root.relativize(file).toString(),
-                            metadata.durationMs(),
-                            metadata.width(),
-                            metadata.height(),
-                            metadata.fps(),
-                            metadata.aspectRatio(),
-                            metadata.codec(),
-                            metadata.audioPresent(),
-                            seriesId,
-                            clock.instant())));
+    String relative = root.relativize(file).toString();
+    var entity = videos.findByContentHash(metadata.sha256()).orElse(null);
+    if (entity != null) {
+      if (!entity.getRelativePath().equals(relative)
+          && pathAliases.findByRelativePath(relative).isEmpty()) {
+        pathAliases.save(new VideoPathAliasEntity(entity, relative, metadata.sha256()));
+      }
+    } else {
+      entity =
+          videos.save(
+              new VideoEntity(
+                  UUID.randomUUID(),
+                  metadata.sha256(),
+                  file.getFileName().toString(),
+                  relative,
+                  metadata.durationMs(),
+                  metadata.width(),
+                  metadata.height(),
+                  metadata.fps(),
+                  metadata.aspectRatio(),
+                  metadata.codec(),
+                  metadata.audioPresent(),
+                  seriesId,
+                  clock.instant()));
+    }
     return map(entity);
   }
 
@@ -173,7 +181,20 @@ public class VideoService {
                     java.util.stream.Collectors.toMap(
                         VideoEntity::getRelativePath, video -> video, (first, ignored) -> first));
 
-    return files.stream().map(path -> mapMediaFile(root, path, ingestedByPath)).toList();
+    List<String> unmatchedPaths =
+        relativePaths.stream().filter(path -> !ingestedByPath.containsKey(path)).toList();
+    Map<String, VideoEntity> aliasedByPath = new java.util.HashMap<>();
+    if (!unmatchedPaths.isEmpty()) {
+      for (String path : unmatchedPaths) {
+        pathAliases
+            .findByRelativePath(path)
+            .ifPresent(alias -> aliasedByPath.put(path, alias.getVideo()));
+      }
+    }
+
+    Map<String, VideoEntity> resolvedByPath = new java.util.HashMap<>(ingestedByPath);
+    resolvedByPath.putAll(aliasedByPath);
+    return files.stream().map(path -> mapMediaFile(root, path, resolvedByPath)).toList();
   }
 
   @Transactional
