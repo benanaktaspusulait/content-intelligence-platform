@@ -264,7 +264,16 @@ class IntelligenceQualityValidationServiceTest {
         Map.of(),
         java.util.List.of(),
         java.util.List.of(),
+        java.util.List.of(),
+        java.util.List.of(),
+        java.util.List.of(),
         new ScoreCardDto(95.0, "Excellent", "green"),
-        new TimelineDataDto(java.util.List.of(), java.util.List.of(), java.util.List.of()));
+        new TimelineDataDto(java.util.List.of(), java.util.List.of(), java.util.List.of()),
+        1.0,
+        java.util.List.of(),
+        java.util.List.of(),
+        java.util.List.of(),
+        java.util.List.of(),
+        java.util.List.of());
   }
 }

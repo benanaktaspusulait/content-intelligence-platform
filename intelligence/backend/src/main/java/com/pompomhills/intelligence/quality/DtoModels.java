@@ -22,7 +22,7 @@ record RuleEvaluationDto(
     String ruleName,
     String family,
     String severity,
-    boolean result,
+    String outcome,
     String message,
     Double actualValue,
     Double thresholdValue) {}

@@ -7,16 +7,28 @@ import java.util.Map;
  * Quality validation report from ML service.
  *
  * @param overallScore 0-100 quality score
- * @param status RENDER_READY, NEEDS_REVISION, or BLOCKED
+ * @param status RENDER_READY, NEEDS_REVISION, BLOCKED, or SERVICE_ERROR
  * @param rulesetVersion Ruleset version used
  * @param blockerCount Number of blocker-level failures
  * @param criticalCount Number of critical-level failures
  * @param warningCount Number of warning-level issues
  * @param familyScores Per-family scores (Concept Strength, Hook Strength, etc.)
- * @param failedRules List of failed rule evaluations
+ * @param failedRules Rule evaluations with outcome FAIL
+ * @param unknownRules Rule evaluations with outcome UNKNOWN (applies but evidence missing)
+ * @param notApplicableRules Rule evaluations with outcome NOT_APPLICABLE (does not apply to this
+ *     concept)
+ * @param serviceErrors Rule evaluations with outcome SERVICE_ERROR (provider/runtime failure, not a
+ *     rule failure)
  * @param priorityFixes Top fixes sorted by severity
  * @param scoreCard UI-ready score card (label, color)
  * @param timelineData Beat-level timeline data for visualization
+ * @param parserConfidence Parser's self-reported confidence (0.0-1.0) in the extracted Video Plan
+ *     IR
+ * @param parserWarnings Parser warnings about ambiguous or unparseable input
+ * @param parserAssumptions Parser assumptions made when explicit evidence was absent
+ * @param topStrengths Top-scoring quality families, human-readable
+ * @param topWeaknesses Lowest-scoring quality families needing attention, human-readable
+ * @param evidenceMissing Named IR sections the parser could not populate at all (e.g. "beats")
  */
 public record QualityReportDto(
     double overallScore,
@@ -27,6 +39,15 @@ public record QualityReportDto(
     int warningCount,
     Map<String, Double> familyScores,
     List<RuleEvaluationDto> failedRules,
+    List<RuleEvaluationDto> unknownRules,
+    List<RuleEvaluationDto> notApplicableRules,
+    List<RuleEvaluationDto> serviceErrors,
     List<PriorityFixDto> priorityFixes,
     ScoreCardDto scoreCard,
-    TimelineDataDto timelineData) {}
+    TimelineDataDto timelineData,
+    double parserConfidence,
+    List<String> parserWarnings,
+    List<String> parserAssumptions,
+    List<String> topStrengths,
+    List<String> topWeaknesses,
+    List<String> evidenceMissing) {}

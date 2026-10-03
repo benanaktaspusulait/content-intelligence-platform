@@ -111,7 +111,16 @@ class IntelligenceQualityValidationControllerTest {
         Map.of(),
         List.of(),
         List.of(),
+        List.of(),
+        List.of(),
+        List.of(),
         new ScoreCardDto(95.0, "Excellent", "green"),
-        new TimelineDataDto(List.of(), List.of(), List.of()));
+        new TimelineDataDto(List.of(), List.of(), List.of()),
+        1.0,
+        List.of(),
+        List.of(),
+        List.of(),
+        List.of(),
+        List.of());
   }
 }
