@@ -139,6 +139,11 @@ class QualityReportResponse(BaseModel):
     unknown_rules: list[RuleEvaluationResponse]
     not_applicable_rules: list[RuleEvaluationResponse]
     service_errors: list[RuleEvaluationResponse]
+    parser_confidence: float
+    parser_warnings: list[str]
+    parser_assumptions: list[str]
+    top_strengths: list[str]
+    top_weaknesses: list[str]
     priority_fixes: list[PriorityFixResponse]
     score_card: ScoreCardResponse
     timeline_data: TimelineDataResponse
@@ -561,6 +566,11 @@ def convert_quality_report(enhanced: EnhancedQualityReport, ruleset_version: str
         unknown_rules=unknown_rules,
         not_applicable_rules=not_applicable_rules,
         service_errors=service_errors,
+        parser_confidence=enhanced.parser_metadata.confidence,
+        parser_warnings=list(enhanced.parser_metadata.warnings),
+        parser_assumptions=list(enhanced.parser_metadata.assumptions),
+        top_strengths=list(enhanced.top_3_strengths),
+        top_weaknesses=list(enhanced.top_3_weaknesses),
         priority_fixes=priority_fixes,
         score_card=ScoreCardResponse(**enhanced.score_card),
         timeline_data=timeline_data,

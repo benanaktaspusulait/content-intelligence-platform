@@ -177,3 +177,17 @@ def test_convert_quality_report_separates_unknown_not_applicable_service_error()
     # None of these three leak into failed_rules (which stays FAIL-only).
     failed_ids = {fr.rule_id for fr in response.failed_rules}
     assert failed_ids.isdisjoint({"PAYOFF_005", "CONSISTENCY_002", "GOAL_001"})
+
+
+def test_convert_quality_report_exposes_parser_metadata_and_strengths_weaknesses() -> None:
+    parsed = parse_prompt(STATIC_PROMPT)
+    report = RuleEngine(RULESET).evaluate(parsed.video_plan_ir)
+    enhanced = QualityScorer().create_enhanced_report(report, parsed.video_plan_ir, parsed.metadata)
+
+    response = convert_quality_report(enhanced, "1.0")
+
+    assert response.parser_confidence == parsed.metadata.confidence
+    assert response.parser_warnings == list(parsed.metadata.warnings)
+    assert response.parser_assumptions == list(parsed.metadata.assumptions)
+    assert response.top_strengths == list(enhanced.top_3_strengths)
+    assert response.top_weaknesses == list(enhanced.top_3_weaknesses)
