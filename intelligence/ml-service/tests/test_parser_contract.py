@@ -271,3 +271,46 @@ The core rule is simple and clean, but the pencil tip breaks off here.
 """
     ir = parse_prompt(prompt).video_plan_ir
     assert ir["coreMechanic"]["consistency"] is None
+
+
+def test_unmarked_beat_with_clear_action_verb_is_inferred_as_attempt() -> None:
+    """A beat description starting with a recognizable physical action verb,
+    even with no [ATTEMPT: VERB] marker, is inferred as an attempt at lower
+    confidence rather than being invisible to ATTEMPT_001/ATTEMPT_002."""
+    prompt = """
+Title: Mimi vs Rug
+
+15-second video
+
+## Characters
+- Mimi: Curious
+
+## Timeline
+0.0-3.0 SEC: Mimi catches the sliding cup with both hands
+3.0-6.0 SEC: Mimi blocks it with a book
+6.0-15.0 SEC: Mimi watches the rug slide away
+"""
+    result = parse_prompt(prompt)
+    ir = result.video_plan_ir
+    beats = ir["beats"]
+    assert beats[0]["isAttempt"] is True
+    assert beats[0]["primaryVerb"] == "CATCHES"
+    assert beats[1]["isAttempt"] is True
+    assert beats[1]["primaryVerb"] == "BLOCKS"
+    assert beats[2]["isAttempt"] is False
+    assert any("inferred" in a.lower() for a in result.metadata.assumptions)
+
+
+def test_explicit_marker_still_takes_precedence_over_inference() -> None:
+    """When both an explicit [ATTEMPT: VERB] marker and an inferrable leading
+    verb are present, the explicit marker's verb wins."""
+    prompt = """
+Title: Mimi vs Rug
+
+15-second video
+
+## Timeline
+0.0-3.0 SEC: Mimi catches the sliding cup [ATTEMPT: GRAB]
+"""
+    ir = parse_prompt(prompt).video_plan_ir
+    assert ir["beats"][0]["primaryVerb"] == "GRAB"

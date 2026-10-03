@@ -456,6 +456,75 @@ class PromptParser:
         verb = match.group(1).strip().upper()
         return True, verb
 
+    # Physical action verbs that, when they are the first word of a beat's
+    # action text, indicate a problem-solving attempt even with no explicit
+    # [ATTEMPT: VERB] marker. Deliberately short and conservative -- this is
+    # a confidence-improving inference, not a replacement for the marker;
+    # ambiguous or non-physical leading words are left unmarked (isAttempt
+    # stays False) rather than guessed.
+    _INFERABLE_ATTEMPT_VERBS = frozenset(
+        {
+            "CATCHES",
+            "CATCH",
+            "BLOCKS",
+            "BLOCK",
+            "GRABS",
+            "GRAB",
+            "PULLS",
+            "PULL",
+            "PUSHES",
+            "PUSH",
+            "LIFTS",
+            "LIFT",
+            "HOLDS",
+            "HOLD",
+            "STEPS",
+            "STEP",
+            "TURNS",
+            "TURN",
+            "PLACES",
+            "PLACE",
+            "ROTATES",
+            "ROTATE",
+        }
+    )
+
+    def _infer_attempt_from_leading_verb(self, description: str) -> tuple[bool, str]:
+        """Infer isAttempt/primaryVerb from an unmarked beat's leading word,
+        when that word is a known physical action verb. Returns
+        (False, "") when the leading word is not in the conservative
+        _INFERABLE_ATTEMPT_VERBS set -- never guessed from anything else.
+
+        Beat text conventionally leads with a character name, optionally
+        followed by a dash separator, before the action verb (e.g.
+        "Mimi catches the cup" or "Mimi — catches the cup"). To find the
+        verb to check against the whitelist, this looks at the first word;
+        if that word is not itself in the whitelist, it also checks the
+        word immediately after a single leading subject token (skipping
+        over one optional dash/em-dash separator) rather than only ever
+        checking the literal first token -- a bare name like "Mimi" is
+        never in _INFERABLE_ATTEMPT_VERBS, so this does not loosen the
+        conservative matching, it just locates the verb correctly.
+        """
+        stripped = description.strip()
+        first_word_match = re.match(r"[A-Za-z]+", stripped)
+        if not first_word_match:
+            return False, ""
+        first_word = first_word_match.group(0).upper()
+        if first_word in self._INFERABLE_ATTEMPT_VERBS:
+            return True, first_word
+
+        # Not a verb on its own -- check if it's a leading subject token
+        # (e.g. a character name) immediately followed by the real verb,
+        # with an optional dash separator in between.
+        after_first_word = stripped[first_word_match.end() :]
+        second_word_match = re.match(r"\s*(?:[-—–]\s*)?([A-Za-z]+)", after_first_word)
+        if second_word_match:
+            second_word = second_word_match.group(1).upper()
+            if second_word in self._INFERABLE_ATTEMPT_VERBS:
+                return True, second_word
+        return False, ""
+
     def _extract_detached_marker(self, description: str) -> bool:
         """Extract an explicit ``[DETACHED]`` marker from a beat description.
 
@@ -499,6 +568,13 @@ class PromptParser:
         is_readable = duration >= 0.6
 
         is_attempt, primary_verb = self._extract_attempt_marker(description)
+        if not is_attempt:
+            is_attempt, primary_verb = self._infer_attempt_from_leading_verb(description)
+            if is_attempt:
+                self.assumptions.append(
+                    f"Beat '{description[:40]}...' inferred as an attempt ({primary_verb}) "
+                    "from its leading verb; no explicit [ATTEMPT: VERB] marker was present."
+                )
         relates_to_core_problem = self._extract_detached_marker(description)
 
         return {
