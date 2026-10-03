@@ -130,7 +130,14 @@ public class IntelligenceQualityValidationService {
       if (provenance != null) {
         entity.setSemanticProvider(provenance.semanticProvider());
         entity.setSemanticModelVersion(provenance.semanticModelVersion());
-        entity.setProducibilityValidatorVersion(provenance.producibilityValidatorVersion());
+        // producibilityValidatorVersion is deliberately NOT populated here. There is no
+        // independent "producibility validator" runtime: AI producibility validation is a
+        // family of ordinary deterministic rules in the versioned ruleset, already fully
+        // identified by deterministicRulesetVersion above. Writing a value here (even the ML
+        // response's own producibilityValidatorVersion, which is itself a fabricated static
+        // config string, not real provenance) would make this evidence record claim a kind of
+        // verification that never happened. See ValidationEvidenceService/ValidationEvidencePolicy,
+        // which no longer require this field, and PART_01_COMPLETION_ROADMAP.md's Plan C1.
       }
     }
     return entity;

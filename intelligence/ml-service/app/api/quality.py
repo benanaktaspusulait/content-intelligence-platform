@@ -135,7 +135,13 @@ class QualityProvenanceResponse(BaseModel):
     rule_engine_version: str
     semantic_provider: str
     semantic_model_version: str
-    producibility_validator_version: str
+    # Deliberately str | None, always None: no independent "producibility
+    # validator" runtime exists to version. AI producibility validation is a
+    # family of ordinary deterministic rules in the versioned ruleset,
+    # already fully identified by ruleset_version elsewhere on this report.
+    # Kept (not removed) so this response shape does not break existing
+    # consumers; see PART_01_COMPLETION_ROADMAP.md's Plan C1.
+    producibility_validator_version: str | None = None
     evaluation_stage: str
 
 
@@ -630,7 +636,7 @@ def convert_quality_report(
             rule_engine_version=settings.rule_engine_version,
             semantic_provider=semantic_provider,
             semantic_model_version=semantic_model_version,
-            producibility_validator_version=settings.producibility_validator_version,
+            producibility_validator_version=None,
             evaluation_stage=evaluation_stage,
         ),
     )

@@ -115,9 +115,11 @@ public class ValidationEvidenceService {
     if (entity.getBlockerCount() > 0 || entity.getCriticalCount() > 0) {
       return ValidationDecisionStatus.NEEDS_REVISION;
     }
-    if (entity.getSemanticProvider() == null
-        || entity.getSemanticModelVersion() == null
-        || entity.getProducibilityValidatorVersion() == null) {
+    // producibilityValidatorVersion is deliberately NOT required here: AI producibility
+    // validation is a family of ordinary deterministic rules in the versioned ruleset,
+    // already fully identified by deterministicRulesetVersion - there is no independent
+    // "producibility validator" runtime with its own version axis to require evidence of.
+    if (entity.getSemanticProvider() == null || entity.getSemanticModelVersion() == null) {
       return ValidationDecisionStatus.NEEDS_REVISION;
     }
     if (entity.getIndependentRevalidationId() == null
@@ -157,10 +159,7 @@ public class ValidationEvidenceService {
             revalidation.getDeterministicRulesetVersion())
         && java.util.Objects.equals(primary.getSemanticProvider(), revalidation.getSemanticProvider())
         && java.util.Objects.equals(
-            primary.getSemanticModelVersion(), revalidation.getSemanticModelVersion())
-        && java.util.Objects.equals(
-            primary.getProducibilityValidatorVersion(),
-            revalidation.getProducibilityValidatorVersion());
+            primary.getSemanticModelVersion(), revalidation.getSemanticModelVersion());
   }
 
   private ValidationDecisionStatus parseStatus(String status) {

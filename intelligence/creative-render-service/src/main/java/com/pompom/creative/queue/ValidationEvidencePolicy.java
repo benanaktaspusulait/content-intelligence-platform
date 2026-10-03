@@ -68,13 +68,19 @@ public class ValidationEvidencePolicy {
           "Validation record %d's prompt hash does not match the request's expected hash"
               .formatted(evidence.validationRecordId()));
     }
+    // producibilityValidatorVersion is deliberately NOT checked here: AI producibility
+    // validation (PRODUCIBILITY_001/002/003) is a family of ordinary deterministic rules in
+    // the versioned ruleset, already fully identified by deterministicRulesetVersion above -
+    // there is no independent "producibility validator" runtime with its own version axis.
+    // Requiring this field would mean either rejecting every otherwise-complete evidence
+    // record (since nothing can honestly populate it) or inventing a fabricated value just to
+    // pass this check - both are worse than not checking it at all.
     if (evidence.deterministicRulesetVersion() == null
         || evidence.semanticProvider() == null
-        || evidence.semanticModelVersion() == null
-        || evidence.producibilityValidatorVersion() == null) {
+        || evidence.semanticModelVersion() == null) {
       throw new ValidationEvidenceRejectedException(
           "EVIDENCE_VERSIONS_INCOMPLETE",
-          "Validation record %d is missing a required ruleset/semantic/producibility version identity"
+          "Validation record %d is missing a required ruleset/semantic version identity"
               .formatted(evidence.validationRecordId()));
     }
     if (evidence.expiresAt() == null || !evidence.expiresAt().isAfter(now)) {

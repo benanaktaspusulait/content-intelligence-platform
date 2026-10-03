@@ -67,6 +67,17 @@ public class QualityValidationEntity {
   @Column(name = "semantic_model_version", length = 100)
   private String semanticModelVersion;
 
+  /**
+   * @deprecated No independent "producibility validator" runtime exists. AI producibility
+   *     validation is a family of ordinary deterministic rules in the versioned ruleset,
+   *     already fully identified by {@link #deterministicRulesetVersion}. This column is kept
+   *     (nullable, unused) rather than dropped so existing rows and any external readers of
+   *     this table are not broken by a schema change; {@link ValidationEvidenceService} and
+   *     {@code ValidationEvidencePolicy} no longer read or require it. A future migration may
+   *     drop this column once nothing references it. See PART_01_COMPLETION_ROADMAP.md's Plan
+   *     C1.
+   */
+  @Deprecated
   @Column(name = "producibility_validator_version", length = 20)
   private String producibilityValidatorVersion;
 
@@ -228,10 +239,14 @@ public class QualityValidationEntity {
     this.semanticModelVersion = semanticModelVersion;
   }
 
+  /** @deprecated See the field-level Javadoc on {@link #producibilityValidatorVersion}. */
+  @Deprecated
   public String getProducibilityValidatorVersion() {
     return producibilityValidatorVersion;
   }
 
+  /** @deprecated See the field-level Javadoc on {@link #producibilityValidatorVersion}. */
+  @Deprecated
   public void setProducibilityValidatorVersion(String producibilityValidatorVersion) {
     this.producibilityValidatorVersion = producibilityValidatorVersion;
   }

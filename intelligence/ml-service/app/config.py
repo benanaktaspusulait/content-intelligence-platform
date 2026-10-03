@@ -14,7 +14,14 @@ class Settings(BaseSettings):
     analysis_version: str = "video-analysis-v1"
     parser_version: str = "prompt-parser-v2"
     rule_engine_version: str = "quality-rule-engine-v2"
-    producibility_validator_version: str = "semantic-producibility-v1"
+    # No producibility_validator_version setting: AI producibility validation
+    # (PRODUCIBILITY_001/002/003) is a family of ordinary deterministic rules
+    # in the versioned ruleset, already fully identified by the ruleset
+    # version itself. There is no independent "producibility validator"
+    # runtime to version separately - populating this with any string
+    # (including a copy of the ruleset version) would fabricate a second
+    # version axis for something that is not architecturally separate. See
+    # PART_01_COMPLETION_ROADMAP.md's Plan C1.
 
     @property
     def rules_dir(self) -> Path:
