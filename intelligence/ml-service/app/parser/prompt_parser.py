@@ -68,6 +68,7 @@ class PromptParser:
         self.warnings: list[str] = []
         self.assumptions: list[str] = []
         self.ambiguities: list[str] = []
+        self.evidence_missing: list[str] = []
 
     def parse(self, prompt_text: str) -> dict[str, Any]:
         """
@@ -137,14 +138,16 @@ class PromptParser:
                 "ambiguities": self.ambiguities,
                 "assumptions": self.assumptions,
                 "warnings": self.warnings,
+                "evidence_missing": self.evidence_missing,
             },
         }
 
     def _reset_parser_state(self) -> None:
-        """Clear warnings/assumptions/ambiguities for new parse"""
+        """Clear warnings/assumptions/ambiguities/evidence_missing for new parse"""
         self.warnings = []
         self.assumptions = []
         self.ambiguities = []
+        self.evidence_missing = []
 
     def _extract_metadata(self, text: str) -> dict[str, Any]:
         """Extract title, duration, format, series type"""
@@ -720,6 +723,7 @@ class PromptParser:
     def _fallback_beat_parsing(self, text: str, duration: float) -> list[dict[str, Any]]:
         """Fallback if no explicit timestamps found"""
         self.warnings.append("Using fallback beat parsing - confidence low")
+        self.evidence_missing.append("beats")
         # Create generic beats
         return []
 
@@ -918,5 +922,6 @@ def parse_prompt(prompt_text: str, config: ParserConfig | None = None) -> ParseR
             ambiguities=tuple(pm.get("ambiguities", [])),
             assumptions=tuple(pm.get("assumptions", [])),
             warnings=tuple(pm.get("warnings", [])),
+            evidence_missing=tuple(pm.get("evidence_missing", [])),
         ),
     )

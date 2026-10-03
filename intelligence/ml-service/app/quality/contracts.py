@@ -110,6 +110,7 @@ class ParserMetadata:
     ambiguities: tuple[str, ...] = ()
     assumptions: tuple[str, ...] = ()
     warnings: tuple[str, ...] = ()
+    evidence_missing: tuple[str, ...] = ()
 
 
 @dataclass(frozen=True)

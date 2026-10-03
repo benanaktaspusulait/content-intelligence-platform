@@ -338,3 +338,18 @@ Title: Narrated Events
     assert beats[0]["primaryVerb"] == ""
     assert beats[1]["isAttempt"] is False
     assert beats[1]["primaryVerb"] == ""
+
+
+def test_fallback_parsing_with_no_timeline_marks_evidence_missing() -> None:
+    """A prompt with no parseable timeline at all must surface
+    evidenceMissing=("beats",), not silently return an empty, valid-looking
+    plan that callers mistake for a genuinely zero-beat video."""
+    prompt = "Title: No Timeline Here\n\nJust some prose, no SEC markers at all.\n"
+    result = parse_prompt(prompt)
+    assert result.video_plan_ir["beats"] == []
+    assert "beats" in result.metadata.evidence_missing
+
+
+def test_normal_parse_with_beats_has_empty_evidence_missing() -> None:
+    result = parse_prompt(SAMPLE_PROMPT)
+    assert result.metadata.evidence_missing == ()

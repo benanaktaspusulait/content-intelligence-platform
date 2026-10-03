@@ -142,6 +142,7 @@ class QualityReportResponse(BaseModel):
     parser_confidence: float
     parser_warnings: list[str]
     parser_assumptions: list[str]
+    evidence_missing: list[str]
     top_strengths: list[str]
     top_weaknesses: list[str]
     priority_fixes: list[PriorityFixResponse]
@@ -569,6 +570,7 @@ def convert_quality_report(enhanced: EnhancedQualityReport, ruleset_version: str
         parser_confidence=enhanced.parser_metadata.confidence,
         parser_warnings=list(enhanced.parser_metadata.warnings),
         parser_assumptions=list(enhanced.parser_metadata.assumptions),
+        evidence_missing=list(enhanced.parser_metadata.evidence_missing),
         top_strengths=list(enhanced.top_3_strengths),
         top_weaknesses=list(enhanced.top_3_weaknesses),
         priority_fixes=priority_fixes,

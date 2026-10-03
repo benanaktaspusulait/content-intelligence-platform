@@ -191,3 +191,13 @@ def test_convert_quality_report_exposes_parser_metadata_and_strengths_weaknesses
     assert response.parser_assumptions == list(parsed.metadata.assumptions)
     assert response.top_strengths == list(enhanced.top_3_strengths)
     assert response.top_weaknesses == list(enhanced.top_3_weaknesses)
+
+
+def test_convert_quality_report_exposes_evidence_missing() -> None:
+    parsed = parse_prompt("Title: No Timeline\n\nJust prose.\n")
+    report = RuleEngine(RULESET).evaluate(parsed.video_plan_ir)
+    enhanced = QualityScorer().create_enhanced_report(report, parsed.video_plan_ir, parsed.metadata)
+
+    response = convert_quality_report(enhanced, "1.0")
+
+    assert "beats" in response.evidence_missing
