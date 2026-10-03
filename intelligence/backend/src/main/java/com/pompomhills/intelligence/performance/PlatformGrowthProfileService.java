@@ -1,5 +1,6 @@
 package com.pompomhills.intelligence.performance;
 
+import java.time.Duration;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -12,6 +13,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class PlatformGrowthProfileService {
+  /**
+   * How close an observation must be to a target horizon to count as satisfying that horizon's
+   * label. A "24h" checkpoint built from a 1-hour-old observation is misleading - per the
+   * audit's P1-07 finding, this must be visible rather than silently accepted.
+   */
+  private static final Duration CHECKPOINT_TOLERANCE = Duration.ofHours(2);
+
   private final JdbcClient jdbc;
 
   public PlatformGrowthProfileService(JdbcClient jdbc) {
@@ -21,15 +29,15 @@ public class PlatformGrowthProfileService {
   @Transactional(readOnly = true)
   public GrowthProfile profile(UUID videoId, String platform, Instant cutoff) {
     String normalized = platform.toLowerCase(Locale.ROOT);
-    List<Point> points =
+    List<ObservationSeries.RawObservation> raw =
         jdbc.sql(
                 """
-                SELECT publication_timestamp,measurement_timestamp,views
+                SELECT measurement_timestamp,views,metric_semantics,source
                 FROM performance_observations
                 WHERE video_id=:video AND platform=:platform
                   AND publication_timestamp IS NOT NULL
                   AND measurement_timestamp IS NOT NULL
-                  AND measurement_timestamp<=:cutoff AND views IS NOT NULL
+                  AND measurement_timestamp<=:cutoff
                 ORDER BY measurement_timestamp
                 """)
             .param("video", videoId)
@@ -37,19 +45,23 @@ public class PlatformGrowthProfileService {
             .param("cutoff", OffsetDateTime.ofInstant(cutoff, ZoneOffset.UTC))
             .query(
                 (rs, ignored) ->
-                    new Point(
-                        rs.getObject("publication_timestamp", OffsetDateTime.class).toInstant(),
+                    new ObservationSeries.RawObservation(
                         rs.getObject("measurement_timestamp", OffsetDateTime.class).toInstant(),
-                        rs.getLong("views")))
+                        nullableLong(rs, "views"),
+                        rs.getString("metric_semantics"),
+                        rs.getString("source")))
             .list();
+    Instant publishedAt = earliestPublication(videoId, normalized, cutoff);
+    if (publishedAt == null) return empty(videoId, normalized);
+
+    List<ObservationSeries.NormalizedPoint> points = ObservationSeries.normalize(raw);
     if (points.isEmpty()) return empty(videoId, normalized);
 
-    Instant publishedAt = points.getFirst().publishedAt();
     MetricCheckpoint at6h = checkpoint(points, publishedAt.plusSeconds(6 * 3600L));
     MetricCheckpoint at24h = checkpoint(points, publishedAt.plusSeconds(24 * 3600L));
     MetricCheckpoint at48h = checkpoint(points, publishedAt.plusSeconds(48 * 3600L));
     MetricCheckpoint at7d = checkpoint(points, publishedAt.plusSeconds(7 * 24 * 3600L));
-    Point latest = points.getLast();
+    ObservationSeries.NormalizedPoint latest = points.getLast();
 
     Double instagramBurstRatio =
         at6h == null || at24h == null || at24h.views() == 0
@@ -58,7 +70,7 @@ public class PlatformGrowthProfileService {
     Long viewsAfter24h =
         at24h == null || !latest.measuredAt().isAfter(publishedAt.plusSeconds(24 * 3600L))
             ? null
-            : Math.max(0, latest.views() - at24h.views());
+            : Math.max(0, latest.cumulativeViews() - at24h.views());
     Double facebookTailRatio =
         viewsAfter24h == null || at24h.views() == 0 ? null : viewsAfter24h / (double) at24h.views();
 
@@ -76,23 +88,42 @@ public class PlatformGrowthProfileService {
         at24h,
         at48h,
         at7d,
-        new MetricCheckpoint(latest.measuredAt(), latest.views()),
+        new MetricCheckpoint(latest.measuredAt(), latest.cumulativeViews(), true),
         instagramBurstRatio,
         viewsAfter24h,
         facebookTailRatio,
         signal,
-        "Ratios are descriptive and use observed cumulative checkpoints without interpolation.");
+        "Ratios are descriptive and use metric-semantics-normalized cumulative checkpoints "
+            + "without interpolation; a checkpoint outside its tolerance window is flagged, not "
+            + "hidden.");
   }
 
-  private MetricCheckpoint checkpoint(List<Point> points, Instant horizon) {
-    Point candidate = null;
-    for (Point point : points) {
+  private Instant earliestPublication(UUID videoId, String platform, Instant cutoff) {
+    return jdbc.sql(
+            """
+            SELECT min(publication_timestamp) FROM performance_observations
+            WHERE video_id=:video AND platform=:platform AND publication_timestamp IS NOT NULL
+              AND measurement_timestamp<=:cutoff
+            """)
+        .param("video", videoId)
+        .param("platform", platform)
+        .param("cutoff", OffsetDateTime.ofInstant(cutoff, ZoneOffset.UTC))
+        .query(OffsetDateTime.class)
+        .optional()
+        .map(OffsetDateTime::toInstant)
+        .orElse(null);
+  }
+
+  private MetricCheckpoint checkpoint(List<ObservationSeries.NormalizedPoint> points, Instant horizon) {
+    ObservationSeries.NormalizedPoint candidate = null;
+    for (var point : points) {
       if (point.measuredAt().isAfter(horizon)) break;
       candidate = point;
     }
-    return candidate == null
-        ? null
-        : new MetricCheckpoint(candidate.measuredAt(), candidate.views());
+    if (candidate == null) return null;
+    boolean withinTolerance =
+        Duration.between(candidate.measuredAt(), horizon).abs().compareTo(CHECKPOINT_TOLERANCE) <= 0;
+    return new MetricCheckpoint(candidate.measuredAt(), candidate.cumulativeViews(), withinTolerance);
   }
 
   private GrowthProfile empty(UUID videoId, String platform) {
@@ -109,12 +140,17 @@ public class PlatformGrowthProfileService {
         null,
         null,
         "INSUFFICIENT_DATA",
-        "Ratios are descriptive and use observed cumulative checkpoints without interpolation.");
+        "Ratios are descriptive and use metric-semantics-normalized cumulative checkpoints "
+            + "without interpolation; a checkpoint outside its tolerance window is flagged, not "
+            + "hidden.");
   }
 
-  private record Point(Instant publishedAt, Instant measuredAt, long views) {}
+  private Long nullableLong(java.sql.ResultSet rs, String column) throws java.sql.SQLException {
+    long value = rs.getLong(column);
+    return rs.wasNull() ? null : value;
+  }
 
-  public record MetricCheckpoint(Instant measuredAt, long views) {}
+  public record MetricCheckpoint(Instant measuredAt, long views, boolean withinTolerance) {}
 
   public record GrowthProfile(
       UUID videoId,
