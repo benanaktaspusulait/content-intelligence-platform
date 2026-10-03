@@ -5,6 +5,7 @@ Evaluates Video Plan IR against ruleset and generates quality report.
 Integrates parser, analyzers, and rule definitions.
 """
 
+import re
 from pathlib import Path
 from typing import Any
 
@@ -118,6 +119,7 @@ class RuleEngine:
             "BEAT_005": self._evaluate_beat_005,
             "PAYOFF_004": self._evaluate_payoff_004,
             "REPETITION_004": self._evaluate_repetition_004,
+            "PAYOFF_006": self._evaluate_payoff_006,
         }
 
     def _get_duration_tier(self, duration: float) -> str:
@@ -1513,6 +1515,99 @@ class RuleEngine:
             actual_value=dominant_ratio,
             threshold_value=0.55,
             details={"dominant_verb": dominant_verb},
+        )
+
+    def _evaluate_payoff_006(self, video_plan_ir: dict[str, Any], rule: dict[str, Any]) -> RuleEvaluationType:
+        """PAYOFF_006: Loopability.
+
+        Never BLOCKER or CRITICAL — loopability is a retention optimization
+        dimension, not a structural requirement. A strong natural loop is a
+        bonus; an ordinary hard cut with no loop claim is a fully valid,
+        neutral ending; only the specific weak-ending text patterns (fade,
+        "the end", walks away) produce a (WARNING) FAIL.
+        """
+        final_payoff = video_plan_ir.get("finalPayoff", {})
+        loops_to_opening = final_payoff.get("loopsToOpening", False)
+        loop_quality = final_payoff.get("loopQuality", "none")
+        is_hard_cut = final_payoff.get("isHardCut", False)
+
+        if loops_to_opening and loop_quality == "strong":
+            return RuleEvaluation(
+                rule_id="PAYOFF_006",
+                rule_name="Loopability",
+                family="final_payoff",
+                severity="PASS",
+                result="PASS",
+                message="Strong natural loop back to the opening — retention bonus.",
+                actual_value=loop_quality,
+            )
+        if loops_to_opening and loop_quality == "weak":
+            return RuleEvaluation(
+                rule_id="PAYOFF_006",
+                rule_name="Loopability",
+                family="final_payoff",
+                severity="WARNING",
+                result="PASS",
+                message=(
+                    "Weak loop present — acceptable, consider strengthening the connection to the opening."
+                ),
+                actual_value=loop_quality,
+            )
+        if is_hard_cut:
+            return RuleEvaluation(
+                rule_id="PAYOFF_006",
+                rule_name="Loopability",
+                family="final_payoff",
+                severity="PASS",
+                result="PASS",
+                message="Ordinary hard-cut ending, no loop claimed. Fully valid.",
+                actual_value=loop_quality,
+            )
+
+        beats = video_plan_ir.get("beats", [])
+        last_beat = beats[-1] if beats else {}
+        last_text = f"{last_beat.get('action', '')} {last_beat.get('consequence', '')}".lower()
+        # Word-boundary regex with a negative lookahead for "of"/"up", not plain
+        # substring: a bare `in` check on "the end" or "walks away" false-positives
+        # on unrelated phrasing that happens to contain the same words as part of a
+        # different idiom, e.g. "reaches the end of the hallway" (not a weak ending,
+        # it's "the end of X") or "walks away up the stairs" (not an exit, it's
+        # "walks away up X"). The lookahead excludes exactly that "...of/up <noun>"
+        # continuation while still matching the real weak-ending idiom regardless of
+        # where in the beat text it appears.
+        weak_ending_patterns = [
+            r"\bfade[sd]?\b",
+            r"\bthe end\b(?!\s+of)",
+            r"\bwalk(?:s|ed)? away\b(?!\s+(?:up|down|from|to|into|through))",
+        ]
+        matched_text = None
+        for p in weak_ending_patterns:
+            match = re.search(p, last_text)
+            if match:
+                matched_text = match.group(0).strip(" .,!")
+                break
+
+        if matched_text:
+            return RuleEvaluation(
+                rule_id="PAYOFF_006",
+                rule_name="Loopability",
+                family="final_payoff",
+                severity="WARNING",
+                result="FAIL",
+                message=(
+                    f"Ending matches a weak-ending pattern ('{matched_text}'). Consider a "
+                    "harder cut or a loop back to the opening for stronger retention."
+                ),
+                actual_value=matched_text,
+            )
+        return RuleEvaluation(
+            rule_id="PAYOFF_006",
+            rule_name="Loopability",
+            family="final_payoff",
+            severity="PASS",
+            result="PASS",
+            message="No loop claimed, no hard-cut flag, but no weak-ending pattern detected either.",
+            actual_value=loop_quality,
         )
 
 

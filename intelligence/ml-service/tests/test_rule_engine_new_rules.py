@@ -833,3 +833,153 @@ class TestRepetition004DominantActionRatio:
         ir = _minimal_ir(beats=[])
         evaluation = engine._evaluate_repetition_004(ir, {})
         assert evaluation.outcome is RuleOutcome.PASS
+
+
+class TestPayoff006Loopability:
+    def test_pass_bonus_for_strong_loop(self) -> None:
+        engine = _engine()
+        ir = _minimal_ir(finalPayoff={"loopsToOpening": True, "loopQuality": "strong", "isHardCut": False})
+        evaluation = engine._evaluate_payoff_006(ir, {})
+        assert evaluation.outcome is RuleOutcome.PASS
+        assert evaluation.configured_severity is Severity.PASS
+
+    def test_warning_pass_for_weak_loop(self) -> None:
+        engine = _engine()
+        ir = _minimal_ir(finalPayoff={"loopsToOpening": True, "loopQuality": "weak", "isHardCut": False})
+        evaluation = engine._evaluate_payoff_006(ir, {})
+        assert evaluation.outcome is RuleOutcome.PASS
+        assert evaluation.configured_severity is Severity.WARNING
+
+    def test_pass_neutral_for_ordinary_hard_cut_no_loop(self) -> None:
+        engine = _engine()
+        ir = _minimal_ir(
+            finalPayoff={"loopsToOpening": False, "loopQuality": "none", "isHardCut": True},
+            beats=[{"startTime": 10.0, "endTime": 15.0, "action": "slides away", "consequence": "cup lands"}],
+        )
+        evaluation = engine._evaluate_payoff_006(ir, {})
+        assert evaluation.outcome is RuleOutcome.PASS
+        assert evaluation.configured_severity is Severity.PASS
+
+    def test_warning_fail_for_fade_out_ending(self) -> None:
+        engine = _engine()
+        ir = _minimal_ir(
+            finalPayoff={"loopsToOpening": False, "loopQuality": "none", "isHardCut": False},
+            beats=[
+                {
+                    "startTime": 10.0,
+                    "endTime": 15.0,
+                    "action": "character fades out",
+                    "consequence": "the end",
+                }
+            ],
+        )
+        evaluation = engine._evaluate_payoff_006(ir, {})
+        assert evaluation.outcome is RuleOutcome.FAIL
+        assert evaluation.configured_severity is Severity.WARNING
+
+    def test_warning_fail_for_walks_away_ending(self) -> None:
+        engine = _engine()
+        ir = _minimal_ir(
+            finalPayoff={"loopsToOpening": False, "loopQuality": "none", "isHardCut": False},
+            beats=[
+                {
+                    "startTime": 10.0,
+                    "endTime": 15.0,
+                    "action": "character walks away",
+                    "consequence": "scene ends",
+                }
+            ],
+        )
+        evaluation = engine._evaluate_payoff_006(ir, {})
+        assert evaluation.outcome is RuleOutcome.FAIL
+        assert evaluation.configured_severity is Severity.WARNING
+
+    def test_never_blocker_or_critical_for_missing_loop(self) -> None:
+        """loopQuality == 'none' alone must never be CRITICAL/BLOCKER —
+        only the specific weak-ending text patterns trigger a (WARNING) FAIL."""
+        engine = _engine()
+        ir = _minimal_ir(
+            finalPayoff={"loopsToOpening": False, "loopQuality": "none", "isHardCut": False},
+            beats=[
+                {
+                    "startTime": 10.0,
+                    "endTime": 15.0,
+                    "action": "slides into a pile",
+                    "consequence": "dominoes fall",
+                }
+            ],
+        )
+        evaluation = engine._evaluate_payoff_006(ir, {})
+        assert evaluation.configured_severity in (Severity.PASS, Severity.WARNING)
+
+    def test_backward_compat_missing_loop_fields_treated_as_no_loop(self) -> None:
+        engine = _engine()
+        ir = _minimal_ir(
+            finalPayoff={"isHardCut": True},
+            beats=[{"startTime": 10.0, "endTime": 15.0, "action": "stops moving", "consequence": "settles"}],
+        )
+        evaluation = engine._evaluate_payoff_006(ir, {})
+        assert evaluation.outcome is RuleOutcome.PASS
+
+    def test_no_false_positive_when_the_end_is_part_of_unrelated_phrase(self) -> None:
+        """'the end' appearing as part of 'the end of X' (a location/object
+        reference, not the weak-ending idiom) must not trigger a FAIL."""
+        engine = _engine()
+        ir = _minimal_ir(
+            finalPayoff={"loopsToOpening": False, "loopQuality": "none", "isHardCut": False},
+            beats=[
+                {
+                    "startTime": 10.0,
+                    "endTime": 15.0,
+                    "action": "character reaches the end of the hallway",
+                    "consequence": "door opens",
+                }
+            ],
+        )
+        evaluation = engine._evaluate_payoff_006(ir, {})
+        assert evaluation.outcome is RuleOutcome.PASS
+
+    def test_no_false_positive_when_walks_away_is_part_of_unrelated_phrase(self) -> None:
+        """'walks away' followed by a directional continuation ('from the
+        puddle') describes movement relative to an object, not the
+        weak hard-cut-avoidance idiom of simply walking off-screen."""
+        engine = _engine()
+        ir = _minimal_ir(
+            finalPayoff={"loopsToOpening": False, "loopQuality": "none", "isHardCut": False},
+            beats=[
+                {
+                    "startTime": 10.0,
+                    "endTime": 15.0,
+                    "action": "character walks away from the puddle",
+                    "consequence": "puddle grows legs and follows",
+                }
+            ],
+        )
+        evaluation = engine._evaluate_payoff_006(ir, {})
+        assert evaluation.outcome is RuleOutcome.PASS
+
+    def test_inconsistent_loops_to_opening_true_with_quality_none_never_escalates(self) -> None:
+        """A self-contradictory claim (loopsToOpening=True but loopQuality="none")
+        must fall through without error and never produce a severity stricter
+        than WARNING, consistent with the overall severity ceiling."""
+        engine = _engine()
+        ir = _minimal_ir(
+            finalPayoff={"loopsToOpening": True, "loopQuality": "none", "isHardCut": False},
+            beats=[{"startTime": 10.0, "endTime": 15.0, "action": "stops", "consequence": "settles"}],
+        )
+        evaluation = engine._evaluate_payoff_006(ir, {})
+        assert evaluation.configured_severity in (Severity.PASS, Severity.WARNING)
+
+    def test_hard_cut_combined_with_weak_loop_claim_prefers_weak_loop_branch(self) -> None:
+        """When isHardCut=True is combined with loopsToOpening=True and
+        loopQuality="weak", the weak-loop branch takes precedence over the
+        hard-cut branch (checked first) — documents the actual precedence
+        rather than leaving it as an untested ambiguity."""
+        engine = _engine()
+        ir = _minimal_ir(
+            finalPayoff={"loopsToOpening": True, "loopQuality": "weak", "isHardCut": True},
+        )
+        evaluation = engine._evaluate_payoff_006(ir, {})
+        assert evaluation.outcome is RuleOutcome.PASS
+        assert evaluation.configured_severity is Severity.WARNING
+        assert evaluation.actual_value == "weak"
