@@ -16,6 +16,7 @@ from app.analyzer.static_state_analyzer import analyze_static_states
 from app.llm.semantic_checks import (
     SemanticCheckServiceError,
     check_twist_matches_rule,
+    count_independent_mechanics,
     find_duplicate_strategy_pairs,
 )
 from app.qa.character_verifier import CharacterVerifier
@@ -121,6 +122,7 @@ class RuleEngine:
             "REPETITION_004": self._evaluate_repetition_004,
             "PAYOFF_006": self._evaluate_payoff_006,
             "PAYOFF_005": self._evaluate_payoff_005,
+            "CONCEPT_007": self._evaluate_concept_007,
         }
 
     def _get_duration_tier(self, duration: float) -> str:
@@ -1678,6 +1680,89 @@ class RuleEngine:
             message=(f"Problem escalates after the fake win: {intensity_before} -> {intensity_after}."),
             actual_value=intensity_after,
             required_value=intensity_before,
+        )
+
+    def _evaluate_concept_007(
+        self, video_plan_ir: dict[str, Any], rule: dict[str, Any]
+    ) -> RuleEvaluationType:
+        """CONCEPT_007: Single Dominant Mechanic.
+
+        coreMechanic.mechanicCount is an author claim, never trusted at face
+        value — the verdict always comes from a semantic verification that
+        distinguishes "same mechanic, escalating/varied consequences" (PASS)
+        from "a second, independent mechanic introduced" (FAIL). If the
+        authored claim disagrees with the derived verdict, the message
+        surfaces the discrepancy; the derived verdict always wins.
+        """
+        core_mechanic = video_plan_ir.get("coreMechanic", {})
+        physical_rule = core_mechanic.get("physicalRule", "")
+        authored_count = core_mechanic.get("mechanicCount", 1)
+
+        beats = video_plan_ir.get("beats", [])
+        beat_descriptions = [b.get("consequence", "") for b in beats]
+
+        try:
+            derived_count, reasoning = count_independent_mechanics(physical_rule, beat_descriptions)
+        except SemanticCheckServiceError as e:
+            return RuleEvaluation(
+                rule_id="CONCEPT_007",
+                rule_name="Single Dominant Mechanic",
+                family="concept_strength",
+                severity="BLOCKER",
+                result="SERVICE_ERROR",
+                message=f"Mechanic-count verification failed: {e}",
+                details={"error": str(e)},
+            )
+
+        discrepancy_note = ""
+        if authored_count != derived_count:
+            discrepancy_note = (
+                f" (Author claimed mechanicCount={authored_count}; verified count is {derived_count}.)"
+            )
+
+        if derived_count == 1:
+            consistency_warning = ""
+            if core_mechanic.get("consistency") == "breaking":
+                consistency_warning = (
+                    " Note: coreMechanic.consistency is 'breaking' despite a single verified "
+                    "mechanic — this is a self-contradictory IR worth reviewing."
+                )
+            return RuleEvaluation(
+                rule_id="CONCEPT_007",
+                rule_name="Single Dominant Mechanic",
+                family="concept_strength",
+                severity="PASS",
+                result="PASS",
+                message=f"Single mechanic verified: {reasoning}{discrepancy_note}{consistency_warning}",
+                actual_value=derived_count,
+                required_value=1,
+                details={"reasoning": reasoning, "authored_count": authored_count},
+            )
+        elif derived_count == 2:
+            return RuleEvaluation(
+                rule_id="CONCEPT_007",
+                rule_name="Single Dominant Mechanic",
+                family="concept_strength",
+                severity="CRITICAL",
+                result="FAIL",
+                message=(f"A second, independent mechanic was introduced: {reasoning}{discrepancy_note}"),
+                actual_value=derived_count,
+                required_value=1,
+                details={"reasoning": reasoning, "authored_count": authored_count},
+            )
+        return RuleEvaluation(
+            rule_id="CONCEPT_007",
+            rule_name="Single Dominant Mechanic",
+            family="concept_strength",
+            severity="BLOCKER",
+            result="FAIL",
+            message=(
+                f"{derived_count} independent mechanics detected: {reasoning}{discrepancy_note} "
+                "The concept has lost focus."
+            ),
+            actual_value=derived_count,
+            required_value=1,
+            details={"reasoning": reasoning, "authored_count": authored_count},
         )
 
 

@@ -1092,3 +1092,111 @@ class TestPayoff005FakeWinEscalation:
         assert evaluation.outcome is RuleOutcome.PASS
         assert evaluation.actual_value == 9
         assert evaluation.required_value == 5
+
+
+class TestConcept007SingleDominantMechanic:
+    def test_pass_when_llm_confirms_single_mechanic(self) -> None:
+        engine = _engine()
+        ir = _minimal_ir(
+            coreMechanic={
+                "physicalRule": "touching increases puddle depth",
+                "consistency": "consistent",
+                "mechanicCount": 1,
+            },
+            beats=[
+                {"consequence": "ankle-deep"},
+                {"consequence": "knee-deep"},
+                {"consequence": "waist-deep"},
+            ],
+        )
+        with patch(
+            "app.rules.rule_engine.count_independent_mechanics",
+            return_value=(1, "All consequences escalate the same depth rule."),
+        ):
+            evaluation = engine._evaluate_concept_007(ir, {})
+        assert evaluation.outcome is RuleOutcome.PASS
+
+    def test_critical_fail_when_llm_detects_second_mechanic(self) -> None:
+        engine = _engine()
+        ir = _minimal_ir(
+            coreMechanic={
+                "physicalRule": "touching increases puddle depth",
+                "consistency": "consistent",
+                "mechanicCount": 1,
+            },
+            beats=[
+                {"consequence": "ankle-deep"},
+                {"consequence": "puddle grows legs and chases the character"},
+            ],
+        )
+        with patch(
+            "app.rules.rule_engine.count_independent_mechanics",
+            return_value=(2, "Depth increase is one rule; autonomous chasing is a second, independent rule."),
+        ):
+            evaluation = engine._evaluate_concept_007(ir, {})
+        assert evaluation.outcome is RuleOutcome.FAIL
+        assert evaluation.configured_severity is Severity.CRITICAL
+
+    def test_blocker_fail_when_llm_detects_three_or_more_mechanics(self) -> None:
+        engine = _engine()
+        ir = _minimal_ir(
+            coreMechanic={
+                "physicalRule": "touching increases puddle depth",
+                "consistency": "consistent",
+                "mechanicCount": 1,
+            },
+            beats=[{"consequence": "a"}, {"consequence": "b"}, {"consequence": "c"}],
+        )
+        with patch(
+            "app.rules.rule_engine.count_independent_mechanics",
+            return_value=(3, "Three unrelated rules are active."),
+        ):
+            evaluation = engine._evaluate_concept_007(ir, {})
+        assert evaluation.outcome is RuleOutcome.FAIL
+        assert evaluation.configured_severity is Severity.BLOCKER
+
+    def test_authored_claim_never_overrides_derived_verdict(self) -> None:
+        """Author claims mechanicCount=1, but the semantic check derives 2 —
+        the derived verdict must win, and the discrepancy must be surfaced."""
+        engine = _engine()
+        ir = _minimal_ir(
+            coreMechanic={"physicalRule": "rule", "consistency": "consistent", "mechanicCount": 1},
+            beats=[{"consequence": "a"}, {"consequence": "b"}],
+        )
+        with patch(
+            "app.rules.rule_engine.count_independent_mechanics",
+            return_value=(2, "A second mechanic is introduced."),
+        ):
+            evaluation = engine._evaluate_concept_007(ir, {})
+        assert evaluation.outcome is RuleOutcome.FAIL
+        assert "1" in evaluation.message or str(1) in str(evaluation.details)
+
+    def test_service_error_on_llm_failure(self) -> None:
+        from app.llm.semantic_checks import SemanticCheckServiceError
+
+        engine = _engine()
+        ir = _minimal_ir(
+            coreMechanic={"physicalRule": "rule", "consistency": "consistent", "mechanicCount": 1},
+            beats=[{"consequence": "a"}, {"consequence": "b"}],
+        )
+        with patch(
+            "app.rules.rule_engine.count_independent_mechanics",
+            side_effect=SemanticCheckServiceError("boom"),
+        ):
+            evaluation = engine._evaluate_concept_007(ir, {})
+        assert evaluation.outcome is RuleOutcome.SERVICE_ERROR
+
+    def test_backward_compat_missing_mechaniccount_defaults_to_1(self) -> None:
+        """A pre-1.2 IR with no mechanicCount field at all must not crash —
+        the semantic check still runs regardless of the authored claim."""
+        engine = _engine()
+        ir = _minimal_ir(
+            coreMechanic={"physicalRule": "rule", "consistency": "consistent"},  # no mechanicCount key
+            beats=[{"consequence": "a"}, {"consequence": "b"}],
+        )
+        with patch(
+            "app.rules.rule_engine.count_independent_mechanics",
+            return_value=(1, "Single mechanic confirmed."),
+        ):
+            evaluation = engine._evaluate_concept_007(ir, {})
+        assert evaluation.outcome is RuleOutcome.PASS
