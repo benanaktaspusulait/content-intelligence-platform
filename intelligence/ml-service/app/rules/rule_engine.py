@@ -15,6 +15,10 @@ from app.analyzer.consequence_analyzer import analyze_consequences
 from app.analyzer.static_state_analyzer import analyze_static_states
 from app.llm.semantic_checks import (
     SemanticCheckServiceError,
+    check_character_performance_readable,
+    check_goal_is_natural,
+    check_opening_problem_legible,
+    check_rule_is_predictable,
     check_twist_matches_rule,
     count_independent_mechanics,
     find_duplicate_strategy_pairs,
@@ -123,6 +127,13 @@ class RuleEngine:
             "PAYOFF_006": self._evaluate_payoff_006,
             "PAYOFF_005": self._evaluate_payoff_005,
             "CONCEPT_007": self._evaluate_concept_007,
+            "GOAL_001": self._evaluate_goal_001,
+            "CONCEPT_008": self._evaluate_concept_008,
+            "PROGRESSION_006": self._evaluate_progression_006,
+            "ESCALATION_005": self._evaluate_escalation_005,
+            "HOOK_004": self._evaluate_hook_004,
+            "PERFORMANCE_001": self._evaluate_performance_001,
+            "PRODUCIBILITY_003": self._evaluate_producibility_003,
         }
 
     def _get_duration_tier(self, duration: float) -> str:
@@ -278,7 +289,10 @@ class RuleEngine:
     ) -> float:
         """Calculate weighted overall score"""
 
-        # Family weights from schema
+        # Family weights from schema. character_performance added in RULESET
+        # 1.3 (PERFORMANCE_001) — weighted lower than the structural families
+        # since it's a single WARNING-ceiling performance-quality nudge, not
+        # a load-bearing structural dimension like visual_novelty/concept_strength.
         weights = {
             "concept_strength": 0.12,
             "hook_strength": 0.12,
@@ -291,6 +305,7 @@ class RuleEngine:
             "consistency": 0.07,
             "final_payoff": 0.09,
             "render_risk": 0.08,
+            "character_performance": 0.05,
         }
 
         weighted_sum = 0.0
@@ -1869,6 +1884,452 @@ class RuleEngine:
             actual_value=derived_count,
             required_value=1,
             details={"reasoning": reasoning, "authored_count": authored_count},
+        )
+
+    def _evaluate_goal_001(self, video_plan_ir: dict[str, Any], rule: dict[str, Any]) -> RuleEvaluationType:
+        """GOAL_001: Goal-Obstruction Clarity (RULESET 1.3, new).
+
+        A concept can pass CONCEPT_006/007/ATTEMPT_001/002 — enough consequence
+        capacity, a single verified mechanic, enough distinct attempts — and
+        still fail the most basic creative question: does the character have
+        a natural, believable reason to keep trying? "Character deliberately
+        drops a pencil to see if it floats" can pass every structural check
+        while being a magic-demo setup, not a sympathetic problem. This is a
+        semantic judgment a deterministic rule cannot make — delegated to an
+        LLM check (check_goal_is_natural), fail-closed to SERVICE_ERROR on any
+        parsing/provider failure, never a silent PASS/FAIL guess.
+        """
+        character_name = video_plan_ir.get("characters", {}).get("primary", "")
+        physical_rule = video_plan_ir.get("coreMechanic", {}).get("physicalRule", "")
+        beats = video_plan_ir.get("beats", [])
+        beat_descriptions = [b.get("action", "") for b in beats if b.get("action")]
+
+        try:
+            is_natural, reasoning = check_goal_is_natural(character_name, physical_rule, beat_descriptions)
+        except SemanticCheckServiceError as e:
+            return RuleEvaluation(
+                rule_id="GOAL_001",
+                rule_name="Goal-Obstruction Clarity",
+                family="concept_strength",
+                severity="BLOCKER",
+                result="SERVICE_ERROR",
+                message=f"Goal-naturalness verification failed: {e}",
+                details={"error": str(e)},
+            )
+
+        if not is_natural:
+            return RuleEvaluation(
+                rule_id="GOAL_001",
+                rule_name="Goal-Obstruction Clarity",
+                family="concept_strength",
+                severity="BLOCKER",
+                result="FAIL",
+                message=(
+                    f"Goal does not read as natural/believable: {reasoning} The character "
+                    "needs an ordinary, sympathetic reason to keep trying — not a setup "
+                    "invented only to showcase the mechanic."
+                ),
+                details={"reasoning": reasoning},
+            )
+        return RuleEvaluation(
+            rule_id="GOAL_001",
+            rule_name="Goal-Obstruction Clarity",
+            family="concept_strength",
+            severity="PASS",
+            result="PASS",
+            message=f"Goal reads as natural and obstructed by the established rule: {reasoning}",
+            details={"reasoning": reasoning},
+        )
+
+    def _evaluate_concept_008(
+        self, video_plan_ir: dict[str, Any], rule: dict[str, Any]
+    ) -> RuleEvaluationType:
+        """CONCEPT_008: Rule Readability / Predictability (RULESET 1.3, new).
+
+        Distinct from CONCEPT_007: a single, internally consistent mechanic
+        (CONCEPT_007's concern) is not automatically a LEGIBLE one. A rule
+        that depends on a combination of exact position, angle, and speed is
+        technically one mechanic but unlearnable by a child audience watching
+        once. This asks whether a viewer could say "aha, I get it" after 1-2
+        occurrences and predict what happens next — delegated to an LLM check
+        (check_rule_is_predictable), fail-closed to SERVICE_ERROR.
+        """
+        physical_rule = video_plan_ir.get("coreMechanic", {}).get("physicalRule", "")
+        beats = video_plan_ir.get("beats", [])
+        beat_descriptions = [b.get("consequence", "") for b in beats if b.get("consequence")]
+
+        try:
+            is_predictable, reasoning = check_rule_is_predictable(physical_rule, beat_descriptions)
+        except SemanticCheckServiceError as e:
+            return RuleEvaluation(
+                rule_id="CONCEPT_008",
+                rule_name="Rule Readability / Predictability",
+                family="concept_strength",
+                severity="BLOCKER",
+                result="SERVICE_ERROR",
+                message=f"Rule-predictability verification failed: {e}",
+                details={"error": str(e)},
+            )
+
+        if not is_predictable:
+            return RuleEvaluation(
+                rule_id="CONCEPT_008",
+                rule_name="Rule Readability / Predictability",
+                family="concept_strength",
+                severity="CRITICAL",
+                result="FAIL",
+                message=(
+                    f"Rule is not predictable from observation: {reasoning} A viewer should "
+                    "be able to learn the pattern from the first 1-2 occurrences and "
+                    "anticipate what happens next."
+                ),
+                details={"reasoning": reasoning},
+            )
+        return RuleEvaluation(
+            rule_id="CONCEPT_008",
+            rule_name="Rule Readability / Predictability",
+            family="concept_strength",
+            severity="PASS",
+            result="PASS",
+            message=f"Rule is learnable and predictable: {reasoning}",
+            details={"reasoning": reasoning},
+        )
+
+    def _evaluate_progression_006(
+        self, video_plan_ir: dict[str, Any], rule: dict[str, Any]
+    ) -> RuleEvaluationType:
+        """PROGRESSION_006: Activity Is Not Progression (RULESET 1.3, new).
+
+        Companion to CHAR_002 (time-active) and ATTEMPT_002 (strategy
+        distinctness via LLM), covering the gray area in between: a character
+        can be active (CHAR_002 passes) with verb-distinct, LLM-confirmed
+        non-duplicate attempts (ATTEMPT_002 passes) while still just doing
+        MORE of the same basic action rather than changing strategy — e.g.
+        "push", "push harder", "push while leaning", "push with both hands"
+        are four distinct primaryVerb labels but one repeated verb root.
+
+        This is a deterministic, free check (no LLM call) layered on top of
+        the two above: it looks for a shared leading word across attempts'
+        primaryVerb labels (the verb "root"), which is a strong, cheap signal
+        of "same base action, more effort" even when ATTEMPT_002's full-label
+        dedup and LLM check didn't catch it (those operate on the full label
+        and on consequence-level semantics, not on verb-root overlap alone).
+        Never BLOCKER — this is a secondary, supporting signal, not a
+        standalone hard requirement; a shared verb root is sometimes a false
+        positive (e.g. "LIFT" and "LIFT_AND_TURN" could be genuinely distinct
+        if the consequences differ), so it stays below ATTEMPT_002's severity.
+        """
+        beats = video_plan_ir.get("beats", [])
+        attempts = [b for b in beats if b.get("isAttempt", False)]
+
+        if len(attempts) < 2:
+            return RuleEvaluation(
+                rule_id="PROGRESSION_006",
+                rule_name="Activity Is Not Progression",
+                family="progression",
+                severity="PASS",
+                result="PASS",
+                message="Fewer than two attempts; nothing to compare for verb-root repetition.",
+            )
+
+        verb_roots: dict[str, int] = {}
+        for attempt in attempts:
+            verb = attempt.get("primaryVerb", "").strip().upper()
+            root = verb.split("_")[0] if verb else ""
+            if root:
+                verb_roots[root] = verb_roots.get(root, 0) + 1
+
+        if not verb_roots:
+            return RuleEvaluation(
+                rule_id="PROGRESSION_006",
+                rule_name="Activity Is Not Progression",
+                family="progression",
+                severity="PASS",
+                result="PASS",
+                message="No labeled primaryVerb roots to evaluate.",
+            )
+
+        dominant_root = max(verb_roots, key=lambda r: verb_roots[r])
+        dominant_root_ratio = verb_roots[dominant_root] / len(attempts)
+
+        if dominant_root_ratio > 0.70:
+            return RuleEvaluation(
+                rule_id="PROGRESSION_006",
+                rule_name="Activity Is Not Progression",
+                family="progression",
+                severity="CRITICAL",
+                result="FAIL",
+                message=(
+                    f"{dominant_root_ratio * 100:.0f}% of attempts share the verb root "
+                    f"'{dominant_root}' (e.g. '{dominant_root}', '{dominant_root}_HARDER', "
+                    f"'{dominant_root}_FROM_LEFT'). This reads as doing more of the same "
+                    "action, not changing problem-solving strategy, even if ATTEMPT_002's "
+                    "full-label and semantic checks passed."
+                ),
+                actual_value=dominant_root_ratio,
+                threshold_value=0.70,
+                details={"dominant_root": dominant_root, "correlation_group": "ATTEMPT_REPETITION"},
+            )
+        return RuleEvaluation(
+            rule_id="PROGRESSION_006",
+            rule_name="Activity Is Not Progression",
+            family="progression",
+            severity="PASS",
+            result="PASS",
+            message=f"No single verb root dominates. Most common: '{dominant_root}' at "
+            f"{dominant_root_ratio * 100:.0f}%.",
+            actual_value=dominant_root_ratio,
+            threshold_value=0.70,
+            details={"dominant_root": dominant_root},
+        )
+
+    def _evaluate_escalation_005(
+        self, video_plan_ir: dict[str, Any], rule: dict[str, Any]
+    ) -> RuleEvaluationType:
+        """ESCALATION_005: Meaningful Attempt Escalation (RULESET 1.3, new).
+
+        Companion to ESCALATION_004 (payoff timing), covering a different
+        question: do the middle attempts themselves escalate, or are they all
+        roughly the same intensity? Deterministic, keyed off beats[].intensity
+        across isAttempt beats in timeline order — flags a flat or declining
+        trend. Capped at WARNING: deadpan-comedy concepts can deliberately
+        keep escalation small, so this is a nudge, never a blocker.
+        """
+        beats = video_plan_ir.get("beats", [])
+        attempts = [b for b in beats if b.get("isAttempt", False)]
+
+        if len(attempts) < 2:
+            return RuleEvaluation(
+                rule_id="ESCALATION_005",
+                rule_name="Meaningful Attempt Escalation",
+                family="escalation",
+                severity="PASS",
+                result="PASS",
+                message="Fewer than two attempts; nothing to compare for escalation trend.",
+            )
+
+        intensities = [a.get("intensity", 0) for a in attempts]
+        first_intensity = intensities[0]
+        last_intensity = intensities[-1]
+        is_flat_or_declining = last_intensity <= first_intensity
+
+        if is_flat_or_declining:
+            return RuleEvaluation(
+                rule_id="ESCALATION_005",
+                rule_name="Meaningful Attempt Escalation",
+                family="escalation",
+                severity="WARNING",
+                result="FAIL",
+                message=(
+                    f"Attempt intensity does not rise across the middle of the video "
+                    f"(first attempt intensity {first_intensity}, last attempt intensity "
+                    f"{last_intensity}). Consider making later attempts more committed, "
+                    "difficult, or consequential than earlier ones — though small, "
+                    "deliberately flat escalation can be valid for deadpan-style comedy."
+                ),
+                actual_value=last_intensity,
+                required_value=first_intensity,
+                details={"intensities": intensities},
+            )
+        return RuleEvaluation(
+            rule_id="ESCALATION_005",
+            rule_name="Meaningful Attempt Escalation",
+            family="escalation",
+            severity="PASS",
+            result="PASS",
+            message=(
+                f"Attempt intensity rises from {first_intensity} to {last_intensity} across the timeline."
+            ),
+            actual_value=last_intensity,
+            required_value=first_intensity,
+            details={"intensities": intensities},
+        )
+
+    def _evaluate_hook_004(self, video_plan_ir: dict[str, Any], rule: dict[str, Any]) -> RuleEvaluationType:
+        """HOOK_004: Opening Problem Legibility (RULESET 1.3, new).
+
+        Stricter than HOOK_002: HOOK_002 confirms something visually unusual
+        happens immediately. This asks whether the opening ALSO makes clear
+        what the character wants and why they can't get it yet — not just
+        that something odd is occurring. Delegated to an LLM check
+        (check_opening_problem_legible) since "is the goal legible" is a
+        semantic judgment, fail-closed to SERVICE_ERROR.
+        """
+        hook = video_plan_ir.get("hook", {})
+        anomaly = hook.get("anomaly", "")
+        beats = video_plan_ir.get("beats", [])
+        opening_beats = beats[:2]
+        opening_descriptions = [
+            f"{b.get('action', '')} -> {b.get('consequence', '')}".strip(" ->") for b in opening_beats
+        ]
+
+        try:
+            is_legible, reasoning = check_opening_problem_legible(anomaly, opening_descriptions)
+        except SemanticCheckServiceError as e:
+            return RuleEvaluation(
+                rule_id="HOOK_004",
+                rule_name="Opening Problem Legibility",
+                family="hook_strength",
+                severity="BLOCKER",
+                result="SERVICE_ERROR",
+                message=f"Opening-legibility verification failed: {e}",
+                details={"error": str(e)},
+            )
+
+        if not is_legible:
+            return RuleEvaluation(
+                rule_id="HOOK_004",
+                rule_name="Opening Problem Legibility",
+                family="hook_strength",
+                severity="CRITICAL",
+                result="FAIL",
+                message=(f"Opening shows an anomaly but not the character's goal/obstruction: {reasoning}"),
+                details={"reasoning": reasoning},
+            )
+        return RuleEvaluation(
+            rule_id="HOOK_004",
+            rule_name="Opening Problem Legibility",
+            family="hook_strength",
+            severity="PASS",
+            result="PASS",
+            message=f"Opening makes the goal and obstruction legible: {reasoning}",
+            details={"reasoning": reasoning},
+        )
+
+    def _evaluate_performance_001(
+        self, video_plan_ir: dict[str, Any], rule: dict[str, Any]
+    ) -> RuleEvaluationType:
+        """PERFORMANCE_001: Cute Emotional Readability (RULESET 1.3, new,
+        character_performance family).
+
+        CHAR_002 confirms the character is active for enough of the runtime;
+        this asks whether that activity reads as emotionally engaged and
+        sympathetic — not blank, robotic, aggressive, or stuck in prolonged
+        panic. Delegated to an LLM check (check_character_performance_readable)
+        since emotional readability is a semantic judgment, fail-closed to
+        SERVICE_ERROR. Capped at WARNING: this is a performance-quality nudge,
+        not a structural requirement.
+        """
+        character_name = video_plan_ir.get("characters", {}).get("primary", "")
+        beats = video_plan_ir.get("beats", [])
+        beat_descriptions = [
+            f"{b.get('action', '')} -> {b.get('consequence', '')}".strip(" ->") for b in beats
+        ]
+
+        try:
+            is_readable, reasoning = check_character_performance_readable(character_name, beat_descriptions)
+        except SemanticCheckServiceError as e:
+            return RuleEvaluation(
+                rule_id="PERFORMANCE_001",
+                rule_name="Cute Emotional Readability",
+                family="character_performance",
+                severity="BLOCKER",
+                result="SERVICE_ERROR",
+                message=f"Character-performance verification failed: {e}",
+                details={"error": str(e)},
+            )
+
+        if not is_readable:
+            return RuleEvaluation(
+                rule_id="PERFORMANCE_001",
+                rule_name="Cute Emotional Readability",
+                family="character_performance",
+                severity="WARNING",
+                result="FAIL",
+                message=(
+                    f"Character performance does not read as emotionally engaged/sympathetic: {reasoning}"
+                ),
+                details={"reasoning": reasoning},
+            )
+        return RuleEvaluation(
+            rule_id="PERFORMANCE_001",
+            rule_name="Cute Emotional Readability",
+            family="character_performance",
+            severity="PASS",
+            result="PASS",
+            message=f"Character performance reads as engaged and sympathetic: {reasoning}",
+            details={"reasoning": reasoning},
+        )
+
+    # Risk tags for PRODUCIBILITY_003, each mapped to a lowercase keyword list
+    # that is matched against setting.mainProps and beat action/consequence
+    # text. Deliberately simple substring matching (not an LLM call) — this
+    # is a best-effort heuristic flag, not a guarantee, following the design
+    # tradeoff of one tag-based rule over many near-duplicate single-purpose
+    # rules for each fragile interaction type.
+    _FRAGILE_INTERACTION_RISK_TAGS: dict[str, list[str]] = {
+        "PRECISION_ALIGNMENT": ["peg", "slot", "keyhole", "insert", "align", "thread the"],
+        "DEFORMABLE_OBJECT": ["cloth", "fabric", "curtain", "blanket", "pillow", "balloon"],
+        "CLOTH": ["shirt", "sleeve", "scarf", "ribbon", "bow", "cloth", "fabric"],
+        "ROPE_STRING": ["rope", "string", "shoelace", "cord", "thread", "yarn"],
+        "ZIPPER": ["zipper", "zip"],
+        "LIQUID": ["water", "liquid", "spill", "puddle", "juice", "milk"],
+        "THIN_OBJECT": ["pencil", "stick", "wire", "needle", "twig", "straw"],
+        "FACE_CONTACT": ["face", "nose", "cheek", "mouth", "eye"],
+        "HAIR_CONTACT": ["hair", "hair bow", "braid", "ponytail"],
+        "MULTI_OBJECT": ["stack", "stacking", "rings", "blocks", "pile"],
+        "WATCH_CLASP": ["watch", "clasp", "buckle", "latch"],
+    }
+
+    def _evaluate_producibility_003(
+        self, video_plan_ir: dict[str, Any], rule: dict[str, Any]
+    ) -> RuleEvaluationType:
+        """PRODUCIBILITY_003: Fragile Interaction Risk (RULESET 1.3, new).
+
+        Fills the gap between PRODUCIBILITY_001 (very-high-complexity hard
+        block) and PRODUCIBILITY_002 (prop count budget): a middle tier of
+        AI-generation risks (precision alignment, cloth/rope simulation,
+        liquids, thin dangling objects, face/hair contact, multi-object
+        stacking) that are each individually too narrow to deserve their own
+        rule, but collectively matter a lot for render reliability. Uses a
+        tag-based diagnostic model (riskTags in details) rather than one rule
+        per risk, per the RULESET 1.3 design decision — a flat substring match
+        against setting.mainProps and beat action/consequence text. Always
+        CRITICAL when any tag is found: these risks don't block rendering
+        outright (PRODUCIBILITY_001's job) but are serious enough to warrant
+        a human look before committing render budget, never a silent WARNING.
+        """
+        setting = video_plan_ir.get("setting", {})
+        main_props = setting.get("mainProps", [])
+        beats = video_plan_ir.get("beats", [])
+
+        searchable_text = " ".join(main_props).lower()
+        for beat in beats:
+            searchable_text += " " + beat.get("action", "").lower()
+            searchable_text += " " + beat.get("consequence", "").lower()
+
+        matched_tags = sorted(
+            tag
+            for tag, keywords in self._FRAGILE_INTERACTION_RISK_TAGS.items()
+            if any(keyword in searchable_text for keyword in keywords)
+        )
+
+        if matched_tags:
+            return RuleEvaluation(
+                rule_id="PRODUCIBILITY_003",
+                rule_name="Fragile Interaction Risk",
+                family="ai_producibility",
+                severity="CRITICAL",
+                result="FAIL",
+                message=(
+                    f"Fragile interaction risk tags detected: {matched_tags}. These are "
+                    "mid-tier AI-generation risks (precision alignment, cloth/rope "
+                    "simulation, liquids, thin objects, face/hair contact, multi-object "
+                    "stacking) worth a human look before committing render budget, even "
+                    "though they don't rise to very-high-complexity blocking."
+                ),
+                actual_value=matched_tags,
+                required_value=[],
+                details={"riskTags": matched_tags},
+            )
+        return RuleEvaluation(
+            rule_id="PRODUCIBILITY_003",
+            rule_name="Fragile Interaction Risk",
+            family="ai_producibility",
+            severity="PASS",
+            result="PASS",
+            message="No fragile interaction risk tags detected.",
+            details={"riskTags": []},
         )
 
 

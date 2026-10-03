@@ -251,3 +251,247 @@ Respond in strict JSON format:
         raise SemanticCheckServiceError("reasoning must be a string")
 
     return parsed["mechanic_count"], parsed["reasoning"]
+
+
+def check_goal_is_natural(
+    character_name: str, physical_rule: str, beat_descriptions: list[str], llm_provider: str | None = None
+) -> tuple[bool, str]:
+    """Judge whether the character has an immediately understandable, natural
+    physical goal that the established abnormal rule genuinely obstructs.
+
+    Distinguishes a believable reason to keep trying (the character wants
+    something ordinary and ought to want it) from an arbitrary or
+    magic-demo setup invented only to showcase the mechanic (the character
+    could simply walk away with no believable reason to continue).
+
+    Returns (is_natural, reasoning). Raises SemanticCheckServiceError if the
+    LLM response cannot be parsed into the expected shape, or if the LLM
+    provider is unavailable (e.g. missing credentials).
+    """
+    try:
+        llm = get_provider(llm_provider)
+    except ValueError as e:
+        raise SemanticCheckServiceError(f"LLM provider unavailable: {e}") from e
+
+    numbered_beats = "\n".join(f"{i}. {desc!r}" for i, desc in enumerate(beat_descriptions))
+
+    prompt = f"""You are reviewing a children's short-form video concept for goal clarity.
+
+Character: {character_name!r}
+Established abnormal physical rule: {physical_rule!r}
+
+Beat-by-beat actions/consequences across the timeline (0-indexed):
+{numbered_beats}
+
+Determine whether the character has an immediately understandable, natural physical
+goal, and whether the abnormal rule genuinely obstructs that goal.
+
+PASS example: a character wants to put on a slipper, straighten a picture frame, or
+pick up a dropped pencil — an ordinary, believable thing to want — and the abnormal
+rule gets in the way of that ordinary goal.
+
+FAIL example: a character deliberately keeps dropping a pencil "to see if it floats,"
+or otherwise has no goal beyond demonstrating the mechanic itself — the character
+could simply walk away with no believable reason to keep trying.
+
+Respond in strict JSON format:
+{{
+  "is_natural": true or false,
+  "reasoning": "brief explanation of your decision"
+}}"""
+
+    response = llm.complete(prompt)
+    parsed = _parse_json_with_markdown_fallback(response)
+
+    required_fields = ["is_natural", "reasoning"]
+    for field in required_fields:
+        if field not in parsed:
+            raise SemanticCheckServiceError(f"LLM response missing required field: {field}")
+
+    if not isinstance(parsed["is_natural"], bool):
+        raise SemanticCheckServiceError("is_natural must be a boolean")
+    if not isinstance(parsed["reasoning"], str):
+        raise SemanticCheckServiceError("reasoning must be a string")
+
+    return parsed["is_natural"], parsed["reasoning"]
+
+
+def check_rule_is_predictable(
+    physical_rule: str, beat_descriptions: list[str], llm_provider: str | None = None
+) -> tuple[bool, str]:
+    """Judge whether a viewer could learn the established abnormal rule from
+    the first 1-2 occurrences and predict what happens next.
+
+    A single consistent mechanic (per CONCEPT_007) is not the same as a
+    LEGIBLE one: a rule that depends on the character's exact position,
+    angle, and speed in combination is technically one mechanic but
+    unlearnable by a child audience watching once. This check asks whether
+    the pattern is simple enough that a viewer could say "aha, I get it"
+    partway through and anticipate the next beat.
+
+    Returns (is_predictable, reasoning). Raises SemanticCheckServiceError if
+    the LLM response cannot be parsed into the expected shape, or if the LLM
+    provider is unavailable (e.g. missing credentials).
+    """
+    try:
+        llm = get_provider(llm_provider)
+    except ValueError as e:
+        raise SemanticCheckServiceError(f"LLM provider unavailable: {e}") from e
+
+    numbered_beats = "\n".join(f"{i}. {desc!r}" for i, desc in enumerate(beat_descriptions))
+
+    prompt = f"""You are reviewing a children's short-form video concept for rule readability.
+
+Stated physical/magical rule: {physical_rule!r}
+
+Beat-by-beat actions/consequences across the timeline (0-indexed):
+{numbered_beats}
+
+Determine whether a child viewer could learn this rule from the first 1-2
+occurrences and predict what happens on later occurrences — i.e. the rule is
+SIMPLE and PREDICTABLE, not just internally consistent.
+
+PASS example: "Kiko drops it -> the frame tilts sideways" or "Arda pushes the handle
+down -> the handle pops back up" — one clear trigger, one clear consequence, easy
+to anticipate after seeing it once.
+
+FAIL example: a rule that depends on a combination of the character's exact position,
+angle, and movement speed to determine which direction an object goes — technically
+one consistent rule, but a viewer cannot learn or predict it from watching, because
+too many factors interact at once.
+
+Respond in strict JSON format:
+{{
+  "is_predictable": true or false,
+  "reasoning": "brief explanation of your decision"
+}}"""
+
+    response = llm.complete(prompt)
+    parsed = _parse_json_with_markdown_fallback(response)
+
+    required_fields = ["is_predictable", "reasoning"]
+    for field in required_fields:
+        if field not in parsed:
+            raise SemanticCheckServiceError(f"LLM response missing required field: {field}")
+
+    if not isinstance(parsed["is_predictable"], bool):
+        raise SemanticCheckServiceError("is_predictable must be a boolean")
+    if not isinstance(parsed["reasoning"], str):
+        raise SemanticCheckServiceError("reasoning must be a string")
+
+    return parsed["is_predictable"], parsed["reasoning"]
+
+
+def check_opening_problem_legible(
+    anomaly: str, opening_beat_descriptions: list[str], llm_provider: str | None = None
+) -> tuple[bool, str]:
+    """Judge whether the opening window makes clear not just that something
+    is unusual (HOOK_002's job), but what the character wants and why they
+    can't get it yet.
+
+    Returns (is_legible, reasoning). Raises SemanticCheckServiceError if the
+    LLM response cannot be parsed into the expected shape, or if the LLM
+    provider is unavailable (e.g. missing credentials).
+    """
+    try:
+        llm = get_provider(llm_provider)
+    except ValueError as e:
+        raise SemanticCheckServiceError(f"LLM provider unavailable: {e}") from e
+
+    numbered_beats = "\n".join(f"{i}. {desc!r}" for i, desc in enumerate(opening_beat_descriptions))
+
+    prompt = f"""You are reviewing the opening window of a children's short-form video for
+problem legibility.
+
+Stated opening anomaly: {anomaly!r}
+
+Opening beat(s) action/consequence (0-indexed):
+{numbered_beats}
+
+HOOK_002 already confirms something visually unusual is happening immediately. This
+check asks a stricter question: within this same opening window, is it ALSO clear
+what the character wants and why they can't get it yet — not just that something
+odd is occurring?
+
+PASS example: character reaches for a cup, the cup visibly slides away from their
+hand — the goal (get the cup) and the obstruction (it won't stay still) are both
+immediately legible.
+
+FAIL example: the opening only shows an odd visual event (an object behaving
+strangely) with no indication yet of what the character is trying to do about it or
+why it matters to them.
+
+Respond in strict JSON format:
+{{
+  "is_legible": true or false,
+  "reasoning": "brief explanation of your decision"
+}}"""
+
+    response = llm.complete(prompt)
+    parsed = _parse_json_with_markdown_fallback(response)
+
+    required_fields = ["is_legible", "reasoning"]
+    for field in required_fields:
+        if field not in parsed:
+            raise SemanticCheckServiceError(f"LLM response missing required field: {field}")
+
+    if not isinstance(parsed["is_legible"], bool):
+        raise SemanticCheckServiceError("is_legible must be a boolean")
+    if not isinstance(parsed["reasoning"], str):
+        raise SemanticCheckServiceError("reasoning must be a string")
+
+    return parsed["is_legible"], parsed["reasoning"]
+
+
+def check_character_performance_readable(
+    character_name: str, beat_descriptions: list[str], llm_provider: str | None = None
+) -> tuple[bool, str]:
+    """Judge whether the character reads as emotionally engaged, sympathetic,
+    and appropriately invested in the problem throughout — not blank,
+    robotic, aggressive, or stuck in prolonged panic.
+
+    Returns (is_readable, reasoning). Raises SemanticCheckServiceError if the
+    LLM response cannot be parsed into the expected shape, or if the LLM
+    provider is unavailable (e.g. missing credentials).
+    """
+    try:
+        llm = get_provider(llm_provider)
+    except ValueError as e:
+        raise SemanticCheckServiceError(f"LLM provider unavailable: {e}") from e
+
+    numbered_beats = "\n".join(f"{i}. {desc!r}" for i, desc in enumerate(beat_descriptions))
+
+    prompt = f"""You are reviewing a children's short-form video concept for character
+performance quality.
+
+Character: {character_name!r}
+
+Beat-by-beat actions/consequences across the timeline (0-indexed):
+{numbered_beats}
+
+Determine whether the character reads as emotionally engaged and sympathetic
+throughout — curious, determined, mildly surprised, briefly frustrated — rather than
+blank/robotic, overly aggressive, or stuck in prolonged panic/distress. A character
+can take the problem seriously without losing charm; a short, charming reaction after
+a failed attempt is good, as long as it doesn't stall the story.
+
+Respond in strict JSON format:
+{{
+  "is_readable": true or false,
+  "reasoning": "brief explanation of your decision"
+}}"""
+
+    response = llm.complete(prompt)
+    parsed = _parse_json_with_markdown_fallback(response)
+
+    required_fields = ["is_readable", "reasoning"]
+    for field in required_fields:
+        if field not in parsed:
+            raise SemanticCheckServiceError(f"LLM response missing required field: {field}")
+
+    if not isinstance(parsed["is_readable"], bool):
+        raise SemanticCheckServiceError("is_readable must be a boolean")
+    if not isinstance(parsed["reasoning"], str):
+        raise SemanticCheckServiceError("reasoning must be a string")
+
+    return parsed["is_readable"], parsed["reasoning"]
