@@ -55,7 +55,7 @@ earlier plans' deliverables exist.**
 
 | # | Plan name | Spec phases covered | Codebase(s) | Status |
 |---|---|---|---|---|
-| A | Python outcome model + API contract completion | 1, 5, 6, 13 | ml-service | ⬜ Not started |
+| A | Python outcome model + API contract completion | 1, 5, 6, 13 | ml-service | 🟨 Plan written (`docs/superpowers/plans/2026-10-03-plan-a-outcome-model-api-contract.md`, commit `880e607`), not yet executed |
 | B | Vision QA fix (image passthrough + character verifier) | 7 | ml-service | ⬜ Not started |
 | C | Spring evidence chain + independent revalidation + DB migration | 3, 4 | backend | ⬜ Not started |
 | D | Render authorization stage model + evidence invalidation | 2, 15 | ml-service, backend, creative-render-service | ⬜ Not started |
