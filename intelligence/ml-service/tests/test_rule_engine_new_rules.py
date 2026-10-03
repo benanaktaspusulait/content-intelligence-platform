@@ -983,3 +983,112 @@ class TestPayoff006Loopability:
         assert evaluation.outcome is RuleOutcome.PASS
         assert evaluation.configured_severity is Severity.WARNING
         assert evaluation.actual_value == "weak"
+
+
+class TestPayoff005FakeWinEscalation:
+    def test_not_applicable_when_no_fake_win_beat(self) -> None:
+        engine = _engine()
+        ir = _minimal_ir(
+            beats=[
+                {"startTime": 0.0, "endTime": 5.0, "consequenceType": "new", "intensity": 5},
+                {"startTime": 5.0, "endTime": 15.0, "consequenceType": "escalation", "intensity": 8},
+            ]
+        )
+        evaluation = engine._evaluate_payoff_005(ir, {})
+        assert evaluation.outcome is RuleOutcome.NOT_APPLICABLE
+
+    def test_pass_when_fake_win_followed_by_stronger_consequence(self) -> None:
+        engine = _engine()
+        ir = _minimal_ir(
+            beats=[
+                {"startTime": 0.0, "endTime": 5.0, "consequenceType": "new", "intensity": 4},
+                {"startTime": 5.0, "endTime": 8.0, "consequenceType": "fake_win", "intensity": 3},
+                {"startTime": 8.0, "endTime": 15.0, "consequenceType": "escalation", "intensity": 9},
+            ]
+        )
+        evaluation = engine._evaluate_payoff_005(ir, {})
+        assert evaluation.outcome is RuleOutcome.PASS
+
+    def test_fail_when_fake_win_followed_by_weaker_or_equal_consequence(self) -> None:
+        engine = _engine()
+        ir = _minimal_ir(
+            beats=[
+                {"startTime": 0.0, "endTime": 5.0, "consequenceType": "new", "intensity": 4},
+                {"startTime": 5.0, "endTime": 8.0, "consequenceType": "fake_win", "intensity": 7},
+                {"startTime": 8.0, "endTime": 15.0, "consequenceType": "repeat", "intensity": 7},
+            ]
+        )
+        evaluation = engine._evaluate_payoff_005(ir, {})
+        assert evaluation.outcome is RuleOutcome.FAIL
+        assert evaluation.configured_severity is Severity.WARNING
+
+    def test_not_applicable_outcome_never_counted_as_fail_or_pass_in_report(self) -> None:
+        """Integration-level sanity check: NOT_APPLICABLE must not appear in
+        QualityReport.failed_rules or contribute to pass_count."""
+        from app.quality.contracts import RuleOutcome as CanonicalOutcome
+
+        engine = _engine()
+        ir = _minimal_ir(
+            beats=[{"startTime": 0.0, "endTime": 15.0, "consequenceType": "new", "intensity": 5}]
+        )
+        evaluation = engine._evaluate_payoff_005(ir, {})
+        outcome: CanonicalOutcome = evaluation.outcome
+        assert outcome is CanonicalOutcome.NOT_APPLICABLE
+        assert outcome not in (CanonicalOutcome.FAIL, CanonicalOutcome.PASS)
+
+    def test_beat_starting_exactly_at_fake_win_endtime_counts_as_subsequent(self) -> None:
+        """Pins down the >= (not strict >) boundary choice: a beat whose
+        startTime exactly equals the fake-win beat's endTime is the very next
+        beat in a contiguously-authored timeline, and must count toward
+        intensity_after -- not be excluded as if it were simultaneous with the
+        fake-win beat itself."""
+        engine = _engine()
+        ir = _minimal_ir(
+            beats=[
+                {"startTime": 0.0, "endTime": 5.0, "consequenceType": "new", "intensity": 4},
+                {"startTime": 5.0, "endTime": 8.0, "consequenceType": "fake_win", "intensity": 3},
+                # startTime == fake_win beat's endTime exactly.
+                {"startTime": 8.0, "endTime": 15.0, "consequenceType": "escalation", "intensity": 9},
+            ]
+        )
+        evaluation = engine._evaluate_payoff_005(ir, {})
+        assert evaluation.outcome is RuleOutcome.PASS
+        assert evaluation.actual_value == 9
+
+    def test_fail_when_fake_win_is_the_last_beat_with_nothing_after_it(self) -> None:
+        """A fake win with no subsequent beats at all cannot have escalated --
+        falls back to intensity_before via max(..., default=intensity_before),
+        which correctly resolves to FAIL (intensity_after <= intensity_before)."""
+        engine = _engine()
+        ir = _minimal_ir(
+            beats=[
+                {"startTime": 0.0, "endTime": 5.0, "consequenceType": "new", "intensity": 4},
+                {"startTime": 5.0, "endTime": 8.0, "consequenceType": "fake_win", "intensity": 6},
+            ]
+        )
+        evaluation = engine._evaluate_payoff_005(ir, {})
+        assert evaluation.outcome is RuleOutcome.FAIL
+        assert evaluation.actual_value == 6
+        assert evaluation.required_value == 6
+
+    def test_only_first_fake_win_beat_is_evaluated_when_multiple_present(self) -> None:
+        """With more than one fake-win beat, only the first (in timeline order)
+        defines the escalation check -- a later, stronger fake-win beat with its
+        own weak follow-through is not separately evaluated."""
+        engine = _engine()
+        ir = _minimal_ir(
+            beats=[
+                {"startTime": 0.0, "endTime": 5.0, "consequenceType": "new", "intensity": 4},
+                # First fake_win beat: escalates afterward (9 > 5) -> this check should PASS.
+                {"startTime": 5.0, "endTime": 8.0, "consequenceType": "fake_win", "intensity": 5},
+                {"startTime": 8.0, "endTime": 12.0, "consequenceType": "escalation", "intensity": 9},
+                # Second fake_win beat with a weak follow-through is never reached by
+                # this evaluator -- it only ever looks at fake_win_beats[0].
+                {"startTime": 12.0, "endTime": 14.0, "consequenceType": "fake_win", "intensity": 9},
+                {"startTime": 14.0, "endTime": 16.0, "consequenceType": "repeat", "intensity": 2},
+            ]
+        )
+        evaluation = engine._evaluate_payoff_005(ir, {})
+        assert evaluation.outcome is RuleOutcome.PASS
+        assert evaluation.actual_value == 9
+        assert evaluation.required_value == 5

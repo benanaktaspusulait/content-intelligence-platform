@@ -120,6 +120,7 @@ class RuleEngine:
             "PAYOFF_004": self._evaluate_payoff_004,
             "REPETITION_004": self._evaluate_repetition_004,
             "PAYOFF_006": self._evaluate_payoff_006,
+            "PAYOFF_005": self._evaluate_payoff_005,
         }
 
     def _get_duration_tier(self, duration: float) -> str:
@@ -1608,6 +1609,75 @@ class RuleEngine:
             result="PASS",
             message="No loop claimed, no hard-cut flag, but no weak-ending pattern detected either.",
             actual_value=loop_quality,
+        )
+
+    def _evaluate_payoff_005(self, video_plan_ir: dict[str, Any], rule: dict[str, Any]) -> RuleEvaluationType:
+        """PAYOFF_005: Fake Win Escalation.
+
+        Returns NOT_APPLICABLE (not FAIL, not PASS, and never UNKNOWN) when
+        no fake-win beat is present — this check simply does not apply to a
+        concept that doesn't use the fake-resolution structure. UNKNOWN is
+        reserved for cases where evidence is missing but the rule still
+        applies (e.g. CONSISTENCY_002 before a video is rendered); a
+        fake-win-free concept has no missing evidence, the precondition for
+        the check existing is itself absent.
+        """
+        beats = video_plan_ir.get("beats", [])
+        fake_win_beats = [b for b in beats if b.get("consequenceType") == "fake_win"]
+
+        if not fake_win_beats:
+            return RuleEvaluation(
+                rule_id="PAYOFF_005",
+                rule_name="Fake Win Escalation",
+                family="progression",
+                severity="WARNING",
+                result="NOT_APPLICABLE",
+                message="No fake-win beat present; this check does not apply to this concept.",
+            )
+
+        # Only the first fake-win beat in timeline order is evaluated. A video
+        # using the fake-resolution structure more than once is an edge case this
+        # rule intentionally doesn't attempt to generalize over; the first
+        # occurrence is the one that defines whether the fake-win pattern pays
+        # off here.
+        fake_win_beat = fake_win_beats[0]
+        intensity_before = fake_win_beat.get("intensity", 0)
+        # >= rather than strict >: beats in this IR are authored contiguously
+        # (beat N's endTime == beat N+1's startTime), so a beat starting exactly
+        # when the fake-win beat ends is the very next beat, not the fake-win
+        # beat itself (whose own startTime is strictly less than its endTime for
+        # any beat with positive duration) -- using strict > would blind this
+        # check to the beat immediately following the fake win.
+        subsequent_beats = [b for b in beats if b.get("startTime", 0.0) >= fake_win_beat.get("endTime", 0.0)]
+        # No subsequent beats at all (fake win is the last beat) falls back to
+        # intensity_before, which correctly resolves to FAIL below: a fake win
+        # with nothing after it to escalate has not escalated.
+        intensity_after = max((b.get("intensity", 0) for b in subsequent_beats), default=intensity_before)
+
+        if intensity_after <= intensity_before:
+            return RuleEvaluation(
+                rule_id="PAYOFF_005",
+                rule_name="Fake Win Escalation",
+                family="progression",
+                severity="WARNING",
+                result="FAIL",
+                message=(
+                    f"The problem after the fake win (intensity {intensity_after}) is not "
+                    f"stronger than before it (intensity {intensity_before}). A fake win should "
+                    "be followed by escalation, not a repeat or weaker consequence."
+                ),
+                actual_value=intensity_after,
+                required_value=intensity_before,
+            )
+        return RuleEvaluation(
+            rule_id="PAYOFF_005",
+            rule_name="Fake Win Escalation",
+            family="progression",
+            severity="PASS",
+            result="PASS",
+            message=(f"Problem escalates after the fake win: {intensity_before} -> {intensity_after}."),
+            actual_value=intensity_after,
+            required_value=intensity_before,
         )
 
 
