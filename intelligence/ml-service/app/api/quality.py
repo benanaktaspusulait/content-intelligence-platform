@@ -11,7 +11,7 @@ from pydantic import BaseModel, Field
 from ..autofix.iteration_loop import AutoFixIterationLoop
 from ..config import settings
 from ..parser.prompt_parser import parse_prompt
-from ..quality.contracts import EnhancedQualityReport, RuleOutcome
+from ..quality.contracts import EnhancedQualityReport
 from ..rules.rule_versioning import (
     RulesetConfigurationError,
     RulesetVersion,
@@ -77,7 +77,7 @@ class RuleEvaluationResponse(BaseModel):
     rule_name: str
     family: str
     severity: str
-    result: bool
+    outcome: str
     message: str
     actual_value: float | None
     threshold_value: float | None
@@ -136,6 +136,9 @@ class QualityReportResponse(BaseModel):
     warning_count: int
     family_scores: dict[str, float]
     failed_rules: list[RuleEvaluationResponse]
+    unknown_rules: list[RuleEvaluationResponse]
+    not_applicable_rules: list[RuleEvaluationResponse]
+    service_errors: list[RuleEvaluationResponse]
     priority_fixes: list[PriorityFixResponse]
     score_card: ScoreCardResponse
     timeline_data: TimelineDataResponse
@@ -485,19 +488,22 @@ def convert_quality_report(enhanced: EnhancedQualityReport, ruleset_version: str
     """
     report = enhanced.base_report
 
-    failed_rules = [
-        RuleEvaluationResponse(
+    def _to_rule_evaluation_response(ev: Any) -> RuleEvaluationResponse:
+        return RuleEvaluationResponse(
             rule_id=ev.rule_id,
             rule_name=ev.rule_name,
             family=ev.family,
             severity=ev.configured_severity.value,
-            result=(ev.outcome is RuleOutcome.PASS),
+            outcome=ev.outcome.value,
             message=ev.message,
             actual_value=_as_optional_float(ev.actual_value),
             threshold_value=_as_optional_float(ev.threshold_value),
         )
-        for ev in report.failed_rules
-    ]
+
+    failed_rules = [_to_rule_evaluation_response(ev) for ev in report.failed_rules]
+    unknown_rules = [_to_rule_evaluation_response(ev) for ev in report.unknown_rules]
+    not_applicable_rules = [_to_rule_evaluation_response(ev) for ev in report.not_applicable_rules]
+    service_errors = [_to_rule_evaluation_response(ev) for ev in report.service_errors]
 
     priority_fixes = [
         PriorityFixResponse(
@@ -552,6 +558,9 @@ def convert_quality_report(enhanced: EnhancedQualityReport, ruleset_version: str
         warning_count=report.warning_count,
         family_scores=report.family_scores,
         failed_rules=failed_rules,
+        unknown_rules=unknown_rules,
+        not_applicable_rules=not_applicable_rules,
+        service_errors=service_errors,
         priority_fixes=priority_fixes,
         score_card=ScoreCardResponse(**enhanced.score_card),
         timeline_data=timeline_data,
