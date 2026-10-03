@@ -1028,24 +1028,65 @@ git commit -m "feat(intelligence): mirror semanticEvaluations provenance list on
 
 ---
 
-## 5. Review Checklist — apply once the parallel instance's work lands
+## 5. Review Checklist — applied 2026-10-03 against the landed parallel work
 
-Before resuming any work on this plan, read the parallel instance's actual landed diff
-(not just the uncommitted snapshot seen at design time) and classify each row below.
+The parallel instance's work landed as commit `943e067` plus a large uncommitted
+working-tree diff, which the controller session reconciled (fixed build breakage, then
+committed as `c2dd149`), followed by a dedicated Plan C1 fix (`ab29da1`). This checklist was
+applied against that final state.
 
-| # | Requirement | DONE / PARTIAL / WRONG / MISSING | Evidence (file:line) | Action if not DONE |
+| # | Requirement | Status | Evidence (file:line) | Action taken / needed |
 |---|---|---|---|---|
-| 1 | Provenance reflects what a **specific executed call** used, not what config/env *would* resolve to right now | | | If WRONG (flat config-derived value): keep the honest per-call model from this plan; do not adopt the shortcut. |
-| 2 | Per-rule-ID granularity exists somewhere (even if collapsed into one entry when all rules share a provider) | | | If MISSING: implement Task 2-3's `rule_ids`-bearing aggregation. |
-| 3 | A report where **zero** semantic checks actually ran produces an **empty** semantic-evaluations list, not a fabricated entry | | | If WRONG: this is a correctness bug (claims a provider was used when none was) — fix before anything else, highest priority. |
-| 4 | `producibilityValidatorVersion` is NOT populated by any new code (per Plan C1's decision that no such runtime exists) | | | If a value was added (even `deterministicRulesetVersion`'s value): revert that specific population; defer entirely to Plan C1's removal-from-contract approach. Flag explicitly to the user — this is the single most likely point of disagreement with the parallel instance's work, since "populate the gate" is an intuitive-but-wrong fix for a missing-evidence gate. |
-| 5 | `RULESET_1.3.yaml` changes, if any, are metadata/comment-only — no rule *behavior* change in-place | | | If a behavior change was made in-place: this is a global-constraint violation independent of this plan; flag to the user before writing any new code, do not silently work around it by also editing 1.3. |
-| 6 | `evaluation_stage` (if introduced) has a single source of truth, not duplicated across YAML/engine/API/config | | | If duplicated: flag as a Plan D-scope issue; do not let this plan's work add a 4th copy. If this plan ends up needing stage info, read from whichever the single source of truth turns out to be. |
-| 7 | The provider/model data this plan needs (`LLMProvider.provider_name` or equivalent) exists in a usable form | | | If the parallel work added an equivalent (e.g. `get_provider_identity`), confirm it answers "what was used by this specific call" vs. "what would be used right now" — see §1.3's distinction — and adapt Task 1 to reuse it if it genuinely answers the right question, instead of adding a second parallel mechanism. |
-| 8 | Spring-side mirroring (if any was done) follows Plan A's established record/field-mirroring conventions (positional record, `src/test` call sites updated too) | | | If `src/test` call sites were missed (per Plan A Task 8's own documented near-miss): fix before this plan's Task 5 adds yet another field to the same broken call sites. |
-| 9 | Full ml-service test suite green, `ruff`/`mypy --strict` clean, after the parallel instance's work | | | If not green: this blocks starting this plan's Task 1 at all — fix or request fix first. |
-| 10 | Full Java test suite green after the parallel instance's work | | | Same as above. |
+| 1 | Provenance reflects what a **specific executed call** used, not what config/env *would* resolve to right now | **PARTIAL** | `app/api/quality.py`'s `convert_quality_report` calls `get_provider_identity()` once per report (no args), independent of which evaluators actually ran a semantic check. `app/rules/rule_engine.py`'s 8 semantic-check call sites (`_evaluate_attempt_002` confirmed directly, e.g. still calls `find_duplicate_strategy_pairs(llm_attempts)` with the old 1-value return shape) were NOT updated to capture per-call provenance. | Not fixed in this session (time-boxed; functionally harmless today since all 8 call sites use the same env-resolved provider). Real gap: if any call site ever passes an explicit `llm_provider` override, or if any evaluator short-circuits without calling an LLM at all, the flat field will report a provider "used" when it wasn't, or report the wrong one. **Follow-up task still needed**, scoped per this doc's Tasks 1-4, but now additive on top of the landed `QualityProvenanceResponse`/`get_provider_identity()` rather than replacing them — see §6 below for the reconciled approach. |
+| 2 | Per-rule-ID granularity exists somewhere (even if collapsed into one entry when all rules share a provider) | **MISSING** | No `rule_ids`-bearing structure exists anywhere in the landed code; `QualityProvenanceResponse` is a flat one-pair-per-report shape. | Still needed, per Tasks 2-3 of this doc, as an **addition** alongside the existing flat field (which can remain as a convenience summary), not a replacement. |
+| 3 | A report where **zero** semantic checks actually ran produces an **empty** semantic-evaluations list, not a fabricated entry | **WRONG** (for the flat field specifically) | `get_provider_identity()` is called unconditionally in `convert_quality_report`, so `QualityProvenanceResponse.semantic_provider`/`semantic_model_version` are always populated even on a report where every semantic-check-backed rule short-circuited (e.g. `ATTEMPT_002` with `< 2` verb-distinct attempts, which never calls `get_provider` at all). | This is the real correctness gap flagged by this checklist's design. Not yet fixed — flagging explicitly rather than silently accepting, per this doc's own instruction. A per-call `semantic_evaluations` list (Task 2-3) would resolve this correctly (empty when nothing ran); the flat field cannot be made correct without that structural change, since it has no way to represent "nothing ran." |
+| 4 | `producibilityValidatorVersion` is NOT populated by any new code (per Plan C1's decision that no such runtime exists) | **FIXED (was WRONG)** | Was populated end-to-end (`config.py`'s hardcoded `"semantic-producibility-v1"` → `QualityProvenanceResponse` → `IntelligenceQualityValidationService` → `QualityValidationEntity` → required by both `ValidationEvidenceService.resolveStatus` and `ValidationEvidencePolicy.validate`). **Fixed in commit `ab29da1`**: removed the config setting, changed the response field to always-`None`, stopped the entity-population copy, removed both required-evidence checks, marked the entity field/accessors `@Deprecated` (column kept, nullable, unused). | Done. |
+| 5 | `RULESET_1.3.yaml` changes, if any, are metadata/comment-only — no rule *behavior* change in-place | **DONE** | Commit `943e067`'s message confirms generation via `RuleVersionManager.create_new_version()` (the proper non-destructive versioning path), carrying forward 1.2's base plus 7 genuinely new rules. Not an in-place behavior edit to an already-shipped 1.3 — this IS 1.3's first creation in this session's history (confirmed via `git log -- RULESET_1.3.yaml` showing only one commit touching the file). No global-constraint violation. | None needed. |
+| 6 | `evaluation_stage` (if introduced) has a single source of truth, not duplicated across YAML/engine/API/config | **PARTIAL** | `evaluation_stage` exists as a `ValidateRequest` field (`PRE_RENDER`/`POST_RENDER` literal) threaded through to `QualityProvenanceResponse` and used in `IntelligenceQualityValidationService.sameAuthorizationDecision`'s `"PRE_RENDER".equals(first.evaluationStage())` check. This is request-supplied, not derived from any per-rule YAML metadata — `rule_engine.py`'s evaluators do not appear to branch on stage (not confirmed exhaustively). This is a much lighter-weight version of Plan D's full stage model (PRE_RENDER-only rules → NOT_APPLICABLE during PRE_RENDER evaluation), not a conflicting duplicate of it — Plan D can still build the real per-rule stage metadata without contradicting this. | No action needed now; flag for whoever picks up Plan D to confirm this field composes cleanly with the real stage model rather than becoming a second, parallel notion of "stage." |
+| 7 | The provider/model data this plan needs (`LLMProvider.provider_name` or equivalent) exists in a usable form | **PARTIAL** | `get_provider_identity(name) -> tuple[str, str]` exists (`app/llm/provider.py`) and answers "what would `get_provider(name)` return right now" — exactly the pre-call question this doc's §1.3 distinguishes from the post-call question. No `LLMProvider.provider_name` (or equivalent instance-level accessor) exists; providers only expose `self.model`. | `get_provider_identity()` is good and should be kept for its actual purpose (a cheap pre-call summary). Task 1 of this doc (adding `provider_name` to `LLMProvider`) is still needed for the post-call, per-executed-call question that `get_provider_identity()` cannot answer. |
+| 8 | Spring-side mirroring (if any was done) follows Plan A's established record/field-mirroring conventions (positional record, `src/test` call sites updated too) | **WRONG, then FIXED** | The landed work added `scoreBreakdowns`/`familyRadar`/`provenance` to `QualityReportDto` (20→23 fields) but left both `src/test` `sampleReport()` helpers at the old 20-arg shape, causing a compile failure — the exact near-miss Plan A Task 8 self-reported and warned future work about. **Fixed in commit `c2dd149`** (both helpers updated to the new 23-field shape). | Done. |
+| 9 | Full ml-service test suite green, `ruff`/`mypy --strict` clean, after the parallel instance's work | **WRONG, then FIXED** | `mypy --strict` failed on `app/llm/provider.py:21` (`get_provider_identity`'s `name or os.getenv(...)` left a `str \| None` path mypy couldn't narrow) and 4 files failed `ruff format --check`. **Fixed in commit `c2dd149`** (explicit `is not None` check; `ruff format` applied). Final state: 307/307 passed, ruff/format/mypy all clean. | Done. |
+| 10 | Full Java test suite green after the parallel instance's work | **WRONG, then FIXED** | Backend: compile failure (row 8) plus 3 test failures after fixing compilation — `IntelligenceQualityValidationServiceTest`'s call-count assertion didn't account for the new independent-revalidation second call, and `ValidationEvidenceServiceTest`'s shared `completeEntity()` fixture set an `independentRevalidationId` with no matching row for the new `findByValidationRunId` cross-reference to find. **Fixed in commit `c2dd149`** (`atLeastOnce()`, added `stubMatchingIndependentRevalidation()` helper). Final state: backend 62/62, creative-render-service 286/286 (incl. `ValidationEvidencePolicyTest` 14/14 after the C1 fix), both BUILD SUCCESS. | Done. |
 
-**Do not proceed past this checklist with any row marked WRONG until that row's "Action" is
-resolved and re-verified** — a WRONG classification (not just MISSING) means code already
-exists that this plan's own implementation would otherwise conflict with or duplicate.
+### Bonus finding beyond the original checklist: independent revalidation (Plan C2) was substantially implemented too
+
+Not anticipated when this checklist was written (it predates discovering the full scope of
+the parallel work), but worth recording: `IntelligenceQualityValidationService` now
+implements genuine independent revalidation — a second `mlClient.validatePrompt(...)` call
+on a `RENDER_READY` linked validation, persisted as a **separate** `QualityValidationEntity`
+row (own `validationRunId`), cross-referenced from the primary row's
+`independentRevalidationId`/`independentlyRevalidatedAt`, never a self-referential copy.
+`ValidationEvidenceService.resolveStatus` verifies this by loading the referenced row via
+`repository.findByValidationRunId(...)` and checking it is itself clean/matching/
+RENDER_READY — closing the self-certification gap the roadmap's Plan C2 goal described. A
+new `V31` migration (landed in `943e067`) adds `SERVICE_ERROR` to the status CHECK
+constraint and a DB-level check preventing self-reference. **This substantially satisfies
+Plan C2's goal already** — the roadmap's status table and Plan C2 section should be updated
+to reflect this rather than planning it as unstarted work.
+
+## 6. Reconciled next steps (written 2026-10-03, after the review above)
+
+Given the above, the roadmap's C0-C3 split needs revision:
+
+- **C1 is done** (commit `ab29da1`).
+- **C2 is substantially done** (independent revalidation + SERVICE_ERROR persistence landed
+  as part of `943e067`/`c2dd149`). Remaining C2 scope: none identified; re-verify against
+  the roadmap's original C2 file list if picking this back up.
+- **C0 is partially done**: the flat `QualityProvenanceResponse.semantic_provider`/
+  `semantic_model_version` fields exist and are wired end-to-end into
+  `QualityValidationEntity`/`ValidationEvidenceService`/`ValidationEvidencePolicy`, so
+  render authorization's semantic-evidence requirement is no longer permanently unsatisfiable
+  (checklist row 4's original blocking concern is resolved). What remains undone from this
+  doc's original design: per-rule-ID granularity (`SemanticEvaluationProvenance` with
+  `rule_ids`) and correctness for the "zero semantic checks ran" case (checklist row 3,
+  genuinely WRONG today, not just incomplete). This is now a smaller, **additive** follow-up
+  (add the richer structure alongside the existing flat fields) rather than the original
+  from-scratch design.
+- **C3 (end-to-end RENDER_READY authorization tests)** has NOT been written. Given C1 and
+  C2 are now substantially done and C0's flat fields make `RENDER_READY` reachable in
+  principle, C3's tests are now the highest-value next step: they would either confirm the
+  landed work actually reaches `RENDER_READY` under real evidence, or surface a gap no unit
+  test caught. Recommend doing C3 before the C0 richer-provenance follow-up, since C3 tests
+  the thing that actually matters (does authorization work end-to-end) and the richer
+  per-rule provenance structure is a correctness/precision improvement on top of an
+  already-functional path, not a blocker to it.

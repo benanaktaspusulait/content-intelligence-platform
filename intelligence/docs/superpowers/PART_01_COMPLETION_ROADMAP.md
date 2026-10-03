@@ -59,10 +59,10 @@ either incomplete or quietly dishonest — see the note below the dependency lis
 |---|---|---|---|---|
 | A | Python outcome model + API contract completion | 1, 5, 6, 13 | ml-service, backend | ✅ Done (commit `5a9ffd0`, see §4 for details) |
 | B | Vision QA fix (image passthrough + character verifier) | 7 | ml-service | ⬜ Not started |
-| C0 | Semantic evaluation provenance threading | 3 (prerequisite) | ml-service | ⬜ Not started |
-| C1 | Evidence contract cleanup (remove `producibilityValidatorVersion`) | 3 (prerequisite) | backend | ⬜ Not started |
-| C2 | Independent revalidation + SERVICE_ERROR persistence | 3, 4 | backend | ⬜ Not started |
-| C3 | End-to-end RENDER_READY authorization tests | 3, 4, 18 (partial) | backend, ml-service | ⬜ Not started |
+| C0 | Semantic evaluation provenance threading | 3 (prerequisite) | ml-service | 🟨 Partial (flat per-report field landed via a parallel session, commit `c2dd149`; per-rule granularity + zero-semantic-checks correctness still missing — see `plans/PLAN_C0_SEMANTIC_PROVENANCE.md` §5-6) |
+| C1 | Evidence contract cleanup (remove `producibilityValidatorVersion`) | 3 (prerequisite) | backend | ✅ Done (commit `ab29da1`) |
+| C2 | Independent revalidation + SERVICE_ERROR persistence | 3, 4 | backend | ✅ Substantially done (landed via a parallel session, commits `943e067`/`c2dd149`; see `plans/PLAN_C0_SEMANTIC_PROVENANCE.md` §5 "Bonus finding") |
+| C3 | End-to-end RENDER_READY authorization tests | 3, 4, 18 (partial) | backend, ml-service | ⬜ Not started — now the highest-value next step per the reconciliation above |
 | D | Render authorization stage model + evidence invalidation | 2, 15 | ml-service, backend, creative-render-service | ⬜ Not started |
 | E | Auto-fix repair + rule metadata single-source + recommendations | 8, 9, 10, 11 | ml-service | ⬜ Not started |
 | F | Angular quality screen reconnection | 14 | frontend | ⬜ Not started |
@@ -391,6 +391,48 @@ add a global `spring.jackson.property-naming-strategy: SNAKE_CASE` (or a `RestCl
 full HTTP round-trip, not just the DTO's own isolated Jackson deserialization (which
 `QualityReportDtoTest`, added in Task 8, already proves — but only when given an explicitly
 SNAKE_CASE-configured mapper, not the production default).
+
+---
+
+## 4a. Parallel-session reconciliation record (2026-10-03)
+
+A second Kiro session worked in this same repo concurrently with this one and stopped
+mid-stream with substantial uncommitted work. This controller session reconciled it rather
+than discarding or re-doing it:
+
+1. **`943e067`** (the parallel session's own commit): generated `RULESET_1.3.yaml` with 7
+   new rules (`GOAL_001`, `CONCEPT_008`, `PROGRESSION_006`, `ESCALATION_005`, `HOOK_004`,
+   `PERFORMANCE_001`, `PRODUCIBILITY_003`) via the proper `RuleVersionManager` path, plus
+   (bundled into the same commit despite the message only mentioning RULESET_1.3) the `V31`
+   migration and `QualityValidationEntity`/`QualityValidationRepository` changes
+   independent revalidation needed.
+2. **`c2dd149`**: this controller session's reconciliation of everything the parallel
+   session left uncommitted — closing the silent-image-ignore half of Plan B (all 4
+   providers), switching `CharacterVerifier` to local OpenCV comparison, a shared
+   `CANONICAL_FAMILY_WEIGHTS` source (Plan E), the 7 new rule evaluators, a `provenance`
+   block on the API response, real independent-revalidation orchestration in
+   `IntelligenceQualityValidationService`, cross-referenced verification in
+   `ValidationEvidenceService`, and the Angular `/quality` route (Plan F) — **plus fixes**
+   for what was left broken: one `mypy --strict` error, 4 unformatted files, a Spring
+   compile failure (DTO grew 20→23 fields, two `src/test` helpers not updated — the exact
+   near-miss Plan A Task 8 had warned about), and 3 Java test failures from behavior changes
+   the parallel session's own tests hadn't been updated for.
+3. **`ab29da1`**: a dedicated Plan C1 fix — the parallel work had populated
+   `producibilityValidatorVersion` end-to-end from a hardcoded config string, exactly the
+   fabrication Plan C1 was created to prevent. Removed the requirement from both
+   `ValidationEvidenceService` and `ValidationEvidencePolicy`, stopped populating it, and
+   marked the entity field `@Deprecated` (column kept, nullable, unused).
+
+Full before/after classification against a pre-written design checklist:
+`intelligence/docs/superpowers/plans/PLAN_C0_SEMANTIC_PROVENANCE.md` §5-6. That doc also
+records what's genuinely still missing (C0's per-rule semantic-provenance granularity, and
+a real correctness bug where the flat provenance field claims a provider was used even on
+reports where zero semantic checks actually ran) versus what turned out to already be
+handled by the parallel work (C1, C2).
+
+Verified after all three commits: ml-service 307/307 passed, ruff + format + mypy --strict
+clean; backend 62/62 passed, BUILD SUCCESS; creative-render-service 286/286 passed, BUILD
+SUCCESS.
 
 ---
 
