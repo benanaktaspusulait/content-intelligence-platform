@@ -368,18 +368,28 @@ class PromptParser:
         no explicit claim either way.
 
         Deliberately requires the claim to be stated near the word "rule"
-        or "mechanic" (within the same ~60-character window), not just
-        anywhere in the prompt — a bare "breaks" elsewhere in the text (e.g.
-        "pencil breaks" describing a physical prop event, not the physics
-        rule itself) must not be misread as a rule-consistency statement.
+        or "mechanic" (within the same ~25-character window, with no
+        sentence-separating punctuation in between), not just anywhere in
+        the prompt — a bare "breaks" elsewhere in the text (e.g. "pencil
+        breaks" describing a physical prop event, not the physics rule
+        itself) must not be misread as a rule-consistency statement. The
+        window is intentionally short and the punctuation boundary
+        intentionally includes commas/semicolons (not just periods) so that
+        two unrelated clauses sharing one sentence -- e.g. "the core rule is
+        simple, but the pencil tip breaks off" -- don't false-positive just
+        because "rule" and "breaks" both appear somewhere in the sentence.
         """
+        # Window size and clause-boundary characters shared by every
+        # keyword-proximity check below -- tune in one place.
+        proximity_window = r"[^.,;]{0,25}"
+
         text_lower = text.lower()
-        if re.search(r"(?:rule|mechanic)[^.]{0,60}\bbreak(?:s|ing)?\b", text_lower) or re.search(
-            r"\bbreak(?:s|ing)?\b[^.]{0,60}(?:rule|mechanic)", text_lower
+        if re.search(rf"(?:rule|mechanic){proximity_window}\bbreak(?:s|ing)?\b", text_lower) or re.search(
+            rf"\bbreak(?:s|ing)?\b{proximity_window}(?:rule|mechanic)", text_lower
         ):
             return "breaking"
-        if re.search(r"(?:rule|mechanic)[^.]{0,60}\bevolv(?:es|ing)\b", text_lower) or re.search(
-            r"\bevolv(?:es|ing)\b[^.]{0,60}(?:rule|mechanic)", text_lower
+        if re.search(rf"(?:rule|mechanic){proximity_window}\bevolv(?:es|ing)\b", text_lower) or re.search(
+            rf"\bevolv(?:es|ing)\b{proximity_window}(?:rule|mechanic)", text_lower
         ):
             return "evolving"
         if "stays consistent" in text_lower or "consistent throughout" in text_lower:

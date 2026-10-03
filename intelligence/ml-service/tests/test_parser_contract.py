@@ -250,3 +250,24 @@ The rule breaks halfway through on purpose for the twist.
 """
     ir = parse_prompt(prompt).video_plan_ir
     assert ir["coreMechanic"]["consistency"] == "breaking"
+
+
+def test_core_mechanic_consistency_unrelated_breaks_in_same_sentence_is_not_misread() -> None:
+    """A prop event ("pencil tip breaks off") sharing a sentence with an
+    unrelated mention of "rule" must not be misread as a rule-consistency
+    claim just because both words appear in the same sentence -- this is
+    the exact false-positive pattern that caused a regression against the
+    FAIL_003_ARDA_REPETITIVE_SHARPEN_DRAW.md fixture during this task."""
+    prompt = """
+Title: Pencil Mishap
+
+15-second video
+
+## Core Rule
+The core rule is simple and clean, but the pencil tip breaks off here.
+
+## Timeline
+0.0-15.0 SEC: Hero — sharpens the pencil
+"""
+    ir = parse_prompt(prompt).video_plan_ir
+    assert ir["coreMechanic"]["consistency"] is None
