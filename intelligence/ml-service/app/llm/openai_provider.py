@@ -2,7 +2,7 @@ import os
 
 from openai import OpenAI
 
-from .provider import LLMProvider
+from .provider import LLMProvider, UnsupportedProviderError
 
 
 class OpenAIProvider(LLMProvider):
@@ -18,10 +18,10 @@ class OpenAIProvider(LLMProvider):
     def complete(
         self, prompt: str, system: str = "", temperature: float = 0.7, image: str | None = None
     ) -> str:
-        # TODO: forward `image` as an OpenAI vision content part once a vision-capable
-        # model is configured for this provider; accepted-but-ignored for now so callers
-        # like CharacterVerifier can pass it uniformly across providers.
-        del image
+        if image is not None:
+            raise UnsupportedProviderError(
+                "Image input is not configured for OpenAI; use the local character verifier"
+            )
         messages: list[dict[str, str]] = []
         if system:
             messages.append({"role": "system", "content": system})

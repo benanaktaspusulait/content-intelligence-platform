@@ -2,6 +2,7 @@ package com.pompomhills.intelligence.quality;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
@@ -74,7 +75,11 @@ class IntelligenceQualityValidationServiceTest {
 
     service.validateAndPersistEvidence(request);
 
-    verify(mlClient).validatePrompt(storedPromptText, "1.0");
+    // sampleReport() reports RENDER_READY, so the service also fires an independent
+    // revalidation call using the same stored prompt text - atLeastOnce() because this test's
+    // concern is "the request body's text is never used," not the exact call count (which the
+    // independent-revalidation-specific tests below cover precisely).
+    verify(mlClient, atLeastOnce()).validatePrompt(storedPromptText, "1.0");
   }
 
   @Test
@@ -274,6 +279,10 @@ class IntelligenceQualityValidationServiceTest {
         java.util.List.of(),
         java.util.List.of(),
         java.util.List.of(),
-        java.util.List.of());
+        java.util.List.of(),
+        java.util.List.of(),
+        Map.of(),
+        new QualityProvenanceDto(
+            "prompt-parser-v2", "quality-rule-engine-v2", null, null, null, "PRE_RENDER"));
   }
 }

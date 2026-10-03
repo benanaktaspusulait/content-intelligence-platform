@@ -121,6 +121,9 @@ class IntelligenceQualityValidationControllerTest {
         List.of(),
         List.of(),
         List.of(),
-        List.of());
+        List.of(),
+        List.of(),
+        Map.of(),
+        new QualityProvenanceDto("prompt-parser-v2", "quality-rule-engine-v2", null, null, null, "PRE_RENDER"));
   }
 }

@@ -32,6 +32,7 @@ from app.quality.contracts import (
     Severity,
 )
 from app.quality.contracts import RuleEvaluation as _RuleEvaluation
+from app.quality.family_weights import CANONICAL_FAMILY_WEIGHTS
 
 # Re-export the canonical types so existing ``from app.rules.rule_engine
 # import RuleEvaluation, QualityReport`` call sites keep working.
@@ -152,9 +153,7 @@ class RuleEngine:
             loaded: dict[str, Any] = yaml.safe_load(f)
             return loaded
 
-    def evaluate(
-        self, video_plan_ir: dict[str, Any], evaluation_stage: str = "PRE_RENDER"
-    ) -> QualityReport:
+    def evaluate(self, video_plan_ir: dict[str, Any], evaluation_stage: str = "PRE_RENDER") -> QualityReport:
         """
         Evaluate Video Plan IR against all rules.
 
@@ -329,31 +328,11 @@ class RuleEngine:
     ) -> float:
         """Calculate weighted overall score"""
 
-        # Family weights from schema. character_performance added in RULESET
-        # 1.3 (PERFORMANCE_001) — weighted lower than the structural families
-        # since it's a single WARNING-ceiling performance-quality nudge, not
-        # a load-bearing structural dimension like visual_novelty/concept_strength.
-        weights = {
-            "concept_strength": 0.12,
-            "hook_strength": 0.12,
-            "visual_novelty": 0.14,
-            "progression": 0.11,
-            "escalation": 0.10,
-            "motion_quality": 0.09,
-            "readability": 0.08,
-            "ai_producibility": 0.10,
-            "consistency": 0.07,
-            "final_payoff": 0.09,
-            "render_risk": 0.08,
-            "character_performance": 0.05,
-            "generation_executability": 0.09,
-        }
-
         weighted_sum = 0.0
         total_weight = 0.0
 
         for family, score in family_scores.items():
-            weight = weights.get(family, 0.05)  # Default weight if not found
+            weight = CANONICAL_FAMILY_WEIGHTS.get(family, 0.05)
             weighted_sum += score * weight
             total_weight += weight
 
@@ -942,7 +921,17 @@ class RuleEngine:
         hook = video_plan_ir.get("hook", {})
         starts_mid_action = hook.get("startsMidAction", False)
         visual_strength = hook.get("visualStrength")
-        starts_at = hook.get("startsAt", 0.0)
+        starts_at = hook.get("startsAt")
+
+        if starts_at is None:
+            return RuleEvaluation(
+                rule_id="HOOK_002",
+                rule_name="First Frame Anomaly",
+                family="hook_strength",
+                severity="CRITICAL",
+                result="UNKNOWN",
+                message="Hook start time could not be extracted from prompt evidence.",
+            )
 
         if starts_at > 0.8:
             return RuleEvaluation(
@@ -1478,7 +1467,12 @@ class RuleEngine:
                 result="FAIL",
                 message=f"Character continuity drift detected: {result['reasoning']}",
                 actual_value=result["frame_issues"],
-                details={"confidence": result["confidence"]},
+                details={
+                    "confidence": result["confidence"],
+                    "validator_version": result.get("validator_version", CharacterVerifier.VALIDATOR_VERSION),
+                    "frame_timestamps": result.get("frame_timestamps", {}),
+                    "frame_metrics": result.get("frame_metrics", {}),
+                },
             )
         return RuleEvaluation(
             rule_id="CONSISTENCY_002",
@@ -1488,7 +1482,12 @@ class RuleEngine:
             result="PASS",
             message="Character identity remains consistent across sampled frames.",
             actual_value=result["frame_issues"],
-            details={"confidence": result["confidence"]},
+            details={
+                "confidence": result["confidence"],
+                "validator_version": result.get("validator_version", CharacterVerifier.VALIDATOR_VERSION),
+                "frame_timestamps": result.get("frame_timestamps", {}),
+                "frame_metrics": result.get("frame_metrics", {}),
+            },
         )
 
     def _evaluate_beat_005(self, video_plan_ir: dict[str, Any], rule: dict[str, Any]) -> RuleEvaluationType:
@@ -1892,7 +1891,7 @@ class RuleEngine:
         """
         core_mechanic = video_plan_ir.get("coreMechanic", {})
         physical_rule = core_mechanic.get("physicalRule", "")
-        authored_count = core_mechanic.get("mechanicCount", 1)
+        authored_count = core_mechanic.get("mechanicCount")
 
         beats = video_plan_ir.get("beats", [])
         beat_descriptions = [b.get("consequence", "") for b in beats]
@@ -1911,7 +1910,7 @@ class RuleEngine:
             )
 
         discrepancy_note = ""
-        if authored_count != derived_count:
+        if authored_count is not None and authored_count != derived_count:
             discrepancy_note = (
                 f" (Author claimed mechanicCount={authored_count}; verified count is {derived_count}.)"
             )

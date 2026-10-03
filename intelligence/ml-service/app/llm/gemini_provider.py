@@ -2,7 +2,7 @@ import os
 
 import google.generativeai as genai
 
-from .provider import LLMProvider
+from .provider import LLMProvider, UnsupportedProviderError
 
 
 class GeminiProvider(LLMProvider):
@@ -18,9 +18,10 @@ class GeminiProvider(LLMProvider):
     def complete(
         self, prompt: str, system: str = "", temperature: float = 0.7, image: str | None = None
     ) -> str:
-        # TODO: forward `image` as a Gemini inline image part once wired for vision use;
-        # accepted-but-ignored for now so callers can pass it uniformly across providers.
-        del image
+        if image is not None:
+            raise UnsupportedProviderError(
+                "Image input is not configured for Gemini; use the local character verifier"
+            )
         if not self._configured:
             # google-generativeai's package __init__ does not declare
             # `configure`/`GenerativeModel` in its public type stubs even

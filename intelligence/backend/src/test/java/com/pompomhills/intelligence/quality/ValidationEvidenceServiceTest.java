@@ -27,6 +27,7 @@ class ValidationEvidenceServiceTest {
     QualityValidationEntity entity = completeEntity();
     entity.setStatus("RENDER_READY");
     when(repository.findById(42L)).thenReturn(Optional.of(entity));
+    stubMatchingIndependentRevalidation(entity);
 
     ValidationEvidenceResponse evidence = service.getEvidence(42L);
 
@@ -145,10 +146,38 @@ class ValidationEvidenceServiceTest {
     entity.setStatus("RENDER_READY");
     entity.setExpiresAt(Instant.now().plusSeconds(3600));
     when(repository.findById(42L)).thenReturn(Optional.of(entity));
+    stubMatchingIndependentRevalidation(entity);
 
     ValidationEvidenceResponse evidence = service.getEvidence(42L);
 
     assertThat(evidence.status()).isEqualTo(ValidationDecisionStatus.RENDER_READY);
+  }
+
+  /**
+   * resolveStatus cross-references entity.getIndependentRevalidationId() against a SEPARATE
+   * stored row (via repository.findByValidationRunId) to confirm the independent revalidation
+   * genuinely exists, matches this record's evidence identity, and is itself a clean
+   * RENDER_READY run - this is what makes "independent" real rather than a self-referential
+   * field. Any test exercising the RENDER_READY path must stub this second row too, or the
+   * cross-reference legitimately (and correctly) fails closed to NEEDS_REVISION.
+   */
+  private void stubMatchingIndependentRevalidation(QualityValidationEntity primary) {
+    QualityValidationEntity revalidation = new QualityValidationEntity();
+    revalidation.setId(primary.getId() + 1000);
+    revalidation.setValidationRunId(primary.getIndependentRevalidationId());
+    revalidation.setContentId(primary.getContentId());
+    revalidation.setPromptVersionId(primary.getPromptVersionId());
+    revalidation.setPromptSha256(primary.getPromptSha256());
+    revalidation.setDeterministicRulesetVersion(primary.getDeterministicRulesetVersion());
+    revalidation.setSemanticProvider(primary.getSemanticProvider());
+    revalidation.setSemanticModelVersion(primary.getSemanticModelVersion());
+    revalidation.setProducibilityValidatorVersion(primary.getProducibilityValidatorVersion());
+    revalidation.setStatus("RENDER_READY");
+    revalidation.setBlockerCount(0);
+    revalidation.setCriticalCount(0);
+    revalidation.setValidatedAt(primary.getIndependentlyRevalidatedAt());
+    when(repository.findByValidationRunId(primary.getIndependentRevalidationId()))
+        .thenReturn(Optional.of(revalidation));
   }
 
   private QualityValidationEntity completeEntity() {

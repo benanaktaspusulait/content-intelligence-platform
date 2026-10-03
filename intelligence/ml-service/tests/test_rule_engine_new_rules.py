@@ -57,19 +57,25 @@ class TestDurationTier:
 class TestHook002FirstFrameAnomaly:
     def test_pass_when_mid_action_and_strong(self) -> None:
         engine = _engine()
-        ir = _minimal_ir(hook={"startsMidAction": True, "visualStrength": 5, "soundOffClear": True})
+        ir = _minimal_ir(
+            hook={"startsAt": 0.0, "startsMidAction": True, "visualStrength": 5, "soundOffClear": True}
+        )
         evaluation = engine._evaluate_hook_002(ir, {})
         assert evaluation.outcome is RuleOutcome.PASS
 
     def test_fail_when_not_mid_action(self) -> None:
         engine = _engine()
-        ir = _minimal_ir(hook={"startsMidAction": False, "visualStrength": 5, "soundOffClear": True})
+        ir = _minimal_ir(
+            hook={"startsAt": 0.0, "startsMidAction": False, "visualStrength": 5, "soundOffClear": True}
+        )
         evaluation = engine._evaluate_hook_002(ir, {})
         assert evaluation.outcome is RuleOutcome.FAIL
 
     def test_fail_when_visual_strength_too_low(self) -> None:
         engine = _engine()
-        ir = _minimal_ir(hook={"startsMidAction": True, "visualStrength": 2, "soundOffClear": True})
+        ir = _minimal_ir(
+            hook={"startsAt": 0.0, "startsMidAction": True, "visualStrength": 2, "soundOffClear": True}
+        )
         evaluation = engine._evaluate_hook_002(ir, {})
         assert evaluation.outcome is RuleOutcome.FAIL
 

@@ -93,6 +93,7 @@ class PriorityFixResponse(BaseModel):
     issue: str
     recommendation: str
     impact: str
+    strategy: str
 
 
 class ScoreCardResponse(BaseModel):
@@ -549,6 +550,7 @@ def convert_quality_report(
             issue=fix.issue,
             recommendation=fix.recommendation,
             impact=fix.impact,
+            strategy=fix.strategy.value,
         )
         for fix in enhanced.priority_fixes
     ]

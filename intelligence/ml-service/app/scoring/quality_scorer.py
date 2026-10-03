@@ -20,6 +20,7 @@ from ..quality.contracts import (
     ScoreBreakdown,
     Severity,
 )
+from ..quality.family_weights import CANONICAL_FAMILY_WEIGHTS
 
 # Re-exported so existing ``from app.scoring.quality_scorer import
 # EnhancedQualityReport, PriorityFix`` imports keep resolving to the canonical
@@ -55,19 +56,7 @@ class QualityScorer:
     """
 
     # Family weights (from QUALITY_FAMILY_SCHEMAS)
-    FAMILY_WEIGHTS = {
-        "concept_strength": 0.12,
-        "hook_strength": 0.12,
-        "visual_novelty": 0.14,
-        "progression": 0.11,
-        "escalation": 0.10,
-        "motion_quality": 0.09,
-        "readability": 0.08,
-        "ai_producibility": 0.10,
-        "consistency": 0.07,
-        "final_payoff": 0.09,
-        "render_risk": 0.08,
-    }
+    FAMILY_WEIGHTS = CANONICAL_FAMILY_WEIGHTS
 
     # Score thresholds
     EXCELLENT_THRESHOLD = 90
@@ -222,7 +211,8 @@ class QualityScorer:
                 "Maintain consistent physics rule throughout, or justify rule change as part of concept."
             ),
         }
-        return recommendations_map.get(rule_id)
+        configured = evaluation.details.get("recommendation")
+        return recommendations_map.get(rule_id) or (str(configured).strip() if configured else None)
 
     def _identify_top_strengths(self, breakdowns: tuple[ScoreBreakdown, ...]) -> list[str]:
         """Identify top strengths across all families."""

@@ -130,6 +130,7 @@ class AutoFixIterationLoop:
         improvement_history = [initial_score]
         warnings = []
         early_stop_reason = None
+        attempted_rule_ids: set[str] = set()
 
         # If already RENDER_READY, done
         if initial_status == "RENDER_READY":
@@ -158,7 +159,14 @@ class AutoFixIterationLoop:
                 early_stop_reason = "No more fixes available"
                 break
 
-            top_fix = current_enhanced.priority_fixes[0]
+            top_fix = next(
+                (fix for fix in current_enhanced.priority_fixes if fix.rule_id not in attempted_rule_ids),
+                None,
+            )
+            if top_fix is None:
+                early_stop_reason = "No untried fixes available"
+                break
+            attempted_rule_ids.add(top_fix.rule_id)
 
             # Apply fix
             fix_result = self.fixer.apply_fix(current_prompt, top_fix, current_ir)
@@ -167,12 +175,7 @@ class AutoFixIterationLoop:
                 warnings.append(
                     f"Iteration {iteration}: Fix {top_fix.rule_id} failed: {fix_result.fix_description}"
                 )
-                # Try next fix
-                if len(current_enhanced.priority_fixes) > 1:
-                    continue
-                else:
-                    early_stop_reason = "All fixes failed"
-                    break
+                continue
 
             # Validate fixed prompt
             try:

@@ -18,7 +18,8 @@ _DEFAULT_MODELS = {
 
 def get_provider_identity(name: str | None = None) -> tuple[str, str]:
     """Return the provider/model pair used by :func:`get_provider`."""
-    provider_name = (name or os.getenv("DEFAULT_LLM_PROVIDER", "openai")).lower()
+    resolved_name: str = name if name is not None else os.getenv("DEFAULT_LLM_PROVIDER", "openai")
+    provider_name = resolved_name.lower()
     if provider_name not in _DEFAULT_MODELS:
         raise UnsupportedProviderError(f"Unsupported provider: {provider_name}")
     model_env = f"{provider_name.upper()}_MODEL"
@@ -39,9 +40,9 @@ class LLMProvider(ABC):
             prompt: User prompt text
             system: System prompt text
             temperature: Sampling temperature (0.0-1.0)
-            image: Optional base64-encoded image for vision-capable callers (e.g.
-                CharacterVerifier). Providers that do not support vision input may
-                accept and ignore this parameter rather than rejecting the call.
+            image: Optional base64-encoded image. A provider must either forward
+                it to a configured vision model or reject it explicitly; silently
+                ignoring image evidence is forbidden.
 
         Returns:
             Generated completion text

@@ -153,7 +153,7 @@ Title: Mimi vs Rug
     assert beats[2]["relatesToCoreProblem"] is True
 
 
-def test_core_mechanic_defaults_mechaniccount_to_1() -> None:
+def test_core_mechanic_does_not_invent_mechanic_count() -> None:
     prompt = """
 Title: Plain Beat
 
@@ -163,7 +163,7 @@ Title: Plain Beat
 0.0-15.0 SEC: Hero — stands still
 """
     ir = parse_prompt(prompt).video_plan_ir
-    assert ir["coreMechanic"]["mechanicCount"] == 1
+    assert ir["coreMechanic"]["mechanicCount"] is None
 
 
 def test_final_payoff_defaults_loop_fields() -> None:

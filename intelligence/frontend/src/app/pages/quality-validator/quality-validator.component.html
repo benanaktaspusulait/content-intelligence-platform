@@ -1,7 +1,7 @@
 <div class="quality-validator-container">
   <div class="header">
     <h1>🎯 Pompom Creative Quality Engine</h1>
-    <p class="subtitle">Validate video prompts before render</p>
+    <p class="subtitle">Exploratory prompt analysis. This screen does not authorize a render.</p>
   </div>
 
   <!-- Prompt Input Section -->
@@ -118,9 +118,37 @@
             <strong>Fix:</strong> {{ fix.recommendation }}
           </div>
           <div class="fix-impact">
-            <small class="text-muted">Impact: {{ fix.impact }}</small>
+            <small class="text-muted">{{ fix.strategy }} · Impact: {{ fix.impact }}</small>
           </div>
         </div>
+      </div>
+    </div>
+
+    <div *ngIf="report.serviceErrors?.length || report.unknownRules?.length || report.notApplicableRules?.length" class="failed-rules card">
+      <div class="card-header">
+        <h2>Evaluation Coverage</h2>
+      </div>
+      <div class="card-body">
+        <p><strong>Service errors:</strong> {{ report.serviceErrors.length }}</p>
+        <p><strong>Unknown:</strong> {{ report.unknownRules.length }}</p>
+        <p><strong>Not applicable:</strong> {{ report.notApplicableRules.length }}</p>
+        <div *ngFor="let rule of report.serviceErrors" class="fix-item">
+          <strong>{{ rule.ruleId }}</strong> · {{ rule.message }}
+        </div>
+        <div *ngFor="let rule of report.unknownRules" class="fix-item">
+          <strong>{{ rule.ruleId }}</strong> · {{ rule.message }}
+        </div>
+      </div>
+    </div>
+
+    <div class="family-scores card">
+      <div class="card-header"><h2>Validation Evidence</h2></div>
+      <div class="card-body">
+        <p><strong>Parser confidence:</strong> {{ report.parserConfidence | percent:'1.0-0' }}</p>
+        <p><strong>Stage:</strong> {{ report.provenance.evaluationStage }}</p>
+        <p><strong>Semantic model:</strong> {{ report.provenance.semanticProvider }} / {{ report.provenance.semanticModelVersion }}</p>
+        <p *ngIf="report.evidenceMissing.length"><strong>Missing evidence:</strong> {{ report.evidenceMissing.join(', ') }}</p>
+        <p *ngIf="report.parserWarnings.length"><strong>Parser warnings:</strong> {{ report.parserWarnings.join(' · ') }}</p>
       </div>
     </div>
 

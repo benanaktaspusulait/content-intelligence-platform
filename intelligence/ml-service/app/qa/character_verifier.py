@@ -1,15 +1,18 @@
-"""Character identity verification using vision LLM."""
+"""Local character-reference similarity checks for rendered video frames."""
 
-import base64
 import json
 import subprocess
 from pathlib import Path
 
-from app.llm import get_provider
+import cv2
+import numpy as np
 
 
 class CharacterVerifier:
-    """Verifies character identity in video using vision LLM."""
+    """Verifies sampled frames locally against a canonical reference image."""
+
+    VALIDATOR_VERSION = "opencv-reference-similarity-v1"
+    PASS_THRESHOLD = 0.55
 
     def __init__(self, llm_provider: str = "openai"):
         """
@@ -18,18 +21,18 @@ class CharacterVerifier:
         Args:
             llm_provider: LLM provider to use (default 'openai' for GPT-4V)
         """
-        self.llm = get_provider(llm_provider)
+        self.llm_provider = llm_provider
 
     def verify(
         self, video_path: Path, expected_character: str, reference_image_path: Path | None = None
     ) -> dict[str, object]:
         """
-        Verify character identity using vision LLM.
+        Verify the first frame against a canonical reference image locally.
 
         Args:
             video_path: Path to video file
             expected_character: Expected character name (e.g., "Kiko", "Mimi")
-            reference_image_path: Optional reference image (not used in current implementation)
+            reference_image_path: Required canonical reference image
 
         Returns:
             Dict with keys:
@@ -40,32 +43,23 @@ class CharacterVerifier:
         """
         if not video_path.exists():
             raise FileNotFoundError(f"Video file not found: {video_path}")
+        if reference_image_path is None or not reference_image_path.exists():
+            raise FileNotFoundError("A canonical character reference image is required")
 
         # Extract first frame
         first_frame_path = self._extract_first_frame(video_path)
 
         try:
-            # Encode image to base64
-            with open(first_frame_path, "rb") as f:
-                image_data = base64.b64encode(f.read()).decode("utf-8")
-
-            # Build verification prompt
-            prompt = self._build_verification_prompt(expected_character)
-
-            # Call vision LLM
-            response = self.llm.complete(prompt, image=image_data)
-
-            # Parse JSON response
-            result = self._parse_llm_response(response)
-
-            issues = result["issues"]
-            issue_list = [str(issue) for issue in issues] if isinstance(issues, list) else []
+            result = self._compare_images(reference_image_path, first_frame_path)
+            passed = bool(result["passed"])
 
             return {
-                "character_identity_verified": result["character_verified"],
-                "confidence": result["confidence"],
-                "character_identity_issues": ", ".join(issue_list) if issue_list else None,
-                "reasoning": result["reasoning"],
+                "character_identity_verified": passed,
+                "confidence": result["score"],
+                "character_identity_issues": None if passed else "Local reference similarity below threshold",
+                "reasoning": self._reasoning(expected_character, result),
+                "validator_version": self.VALIDATOR_VERSION,
+                "metrics": result,
             }
 
         finally:
@@ -78,16 +72,8 @@ class CharacterVerifier:
     ) -> dict[str, object]:
         """
         Verify character identity remains consistent across the video by
-        sampling the first, middle, and last frame and judging each against
-        the expected character identity.
-
-        Note: LLMProvider.complete() currently supports a single image per
-        call, so the reference image itself is not attached to the vision
-        call — reference_image_path is validated to exist (fail fast if the
-        canonical reference is missing) and reserved for a future multi-image
-        upgrade of LLMProvider. Today's comparison relies on the same
-        single-frame-against-expected-name judgment as verify(), applied
-        three times across the video's duration instead of once.
+        sampling the first, middle, and last frame and comparing each against
+        the canonical reference without transmitting media to an external API.
 
         Args:
             video_path: Path to the rendered video file
@@ -114,28 +100,20 @@ class CharacterVerifier:
         frame_issues: dict[str, str | None] = {}
         confidences: list[float] = []
         reasonings: list[str] = []
+        frame_metrics: dict[str, dict[str, float | bool]] = {}
         all_verified = True
 
         for frame_label, timestamp in timestamps.items():
             frame_path = self._extract_frame_at(video_path, timestamp, frame_label)
             try:
-                with open(frame_path, "rb") as f:
-                    frame_image_data = base64.b64encode(f.read()).decode("utf-8")
+                result = self._compare_images(reference_image_path, frame_path)
+                passed = bool(result["passed"])
+                frame_issues[frame_label] = None if passed else "Local reference similarity below threshold"
+                confidences.append(float(result["score"]))
+                frame_metrics[frame_label] = result
+                reasonings.append(f"{frame_label}: {self._reasoning(expected_character, result)}")
 
-                prompt = self._build_continuity_prompt(expected_character)
-                response = self.llm.complete(prompt, image=frame_image_data)
-                result = self._parse_llm_response(response)
-
-                issues = result["issues"]
-                issue_list = [str(issue) for issue in issues] if isinstance(issues, list) else []
-                frame_issues[frame_label] = ", ".join(issue_list) if issue_list else None
-
-                confidence_value = result["confidence"]
-                assert isinstance(confidence_value, (int, float))
-                confidences.append(float(confidence_value))
-                reasonings.append(f"{frame_label}: {result['reasoning']}")
-
-                if not result["character_verified"]:
+                if not passed:
                     all_verified = False
             finally:
                 if frame_path.exists():
@@ -146,7 +124,66 @@ class CharacterVerifier:
             "confidence": min(confidences) if confidences else 0.0,
             "frame_issues": frame_issues,
             "reasoning": " | ".join(reasonings),
+            "validator_version": self.VALIDATOR_VERSION,
+            "frame_timestamps": timestamps,
+            "frame_metrics": frame_metrics,
         }
+
+    def _compare_images(self, reference_path: Path, candidate_path: Path) -> dict[str, float | bool]:
+        reference = cv2.imread(str(reference_path), cv2.IMREAD_COLOR)
+        candidate = cv2.imread(str(candidate_path), cv2.IMREAD_COLOR)
+        if reference is None or candidate is None:
+            raise RuntimeError("Reference or sampled frame could not be decoded")
+
+        reference = cv2.resize(reference, (256, 256), interpolation=cv2.INTER_AREA)
+        candidate = cv2.resize(candidate, (256, 256), interpolation=cv2.INTER_AREA)
+
+        histogram_score = self._histogram_similarity(reference, candidate)
+        hash_score = self._difference_hash_similarity(reference, candidate)
+        edge_score = self._edge_similarity(reference, candidate)
+        score = max(0.0, min(1.0, 0.5 * histogram_score + 0.3 * hash_score + 0.2 * edge_score))
+
+        return {
+            "passed": score >= self.PASS_THRESHOLD,
+            "score": round(score, 4),
+            "histogram_similarity": round(histogram_score, 4),
+            "difference_hash_similarity": round(hash_score, 4),
+            "edge_similarity": round(edge_score, 4),
+            "threshold": self.PASS_THRESHOLD,
+        }
+
+    def _histogram_similarity(self, first: np.ndarray, second: np.ndarray) -> float:
+        first_hsv = cv2.cvtColor(first, cv2.COLOR_BGR2HSV)
+        second_hsv = cv2.cvtColor(second, cv2.COLOR_BGR2HSV)
+        first_hist = cv2.calcHist([first_hsv], [0, 1], None, [32, 32], [0, 180, 0, 256])
+        second_hist = cv2.calcHist([second_hsv], [0, 1], None, [32, 32], [0, 180, 0, 256])
+        cv2.normalize(first_hist, first_hist)
+        cv2.normalize(second_hist, second_hist)
+        correlation = float(cv2.compareHist(first_hist, second_hist, cv2.HISTCMP_CORREL))
+        return max(0.0, min(1.0, correlation))
+
+    def _difference_hash_similarity(self, first: np.ndarray, second: np.ndarray) -> float:
+        def difference_hash(image: np.ndarray) -> np.ndarray:
+            gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+            resized = cv2.resize(gray, (9, 8), interpolation=cv2.INTER_AREA)
+            return resized[:, 1:] > resized[:, :-1]
+
+        distance = int(np.count_nonzero(difference_hash(first) != difference_hash(second)))
+        return 1.0 - distance / 64.0
+
+    def _edge_similarity(self, first: np.ndarray, second: np.ndarray) -> float:
+        first_edges = cv2.Canny(first, 80, 160)
+        second_edges = cv2.Canny(second, 80, 160)
+        first_density = float(np.count_nonzero(first_edges)) / first_edges.size
+        second_density = float(np.count_nonzero(second_edges)) / second_edges.size
+        return 1.0 - min(1.0, abs(first_density - second_density) / 0.25)
+
+    def _reasoning(self, expected_character: str, result: dict[str, float | bool]) -> str:
+        return (
+            f"{expected_character} local reference similarity={result['score']} "
+            f"(threshold={result['threshold']}, histogram={result['histogram_similarity']}, "
+            f"dhash={result['difference_hash_similarity']}, edges={result['edge_similarity']})"
+        )
 
     def _get_video_duration(self, video_path: Path) -> float:
         """Get video duration in seconds using ffprobe."""

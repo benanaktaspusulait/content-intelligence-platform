@@ -6,13 +6,23 @@ import { TimelineChartComponent } from './timeline-chart.component';
 
 interface QualityReport {
   overallScore: number;
-  status: 'RENDER_READY' | 'NEEDS_REVISION' | 'BLOCKED';
+  status: 'RENDER_READY' | 'NEEDS_REVISION' | 'BLOCKED' | 'SERVICE_ERROR';
   rulesetVersion: string;
   blockerCount: number;
   criticalCount: number;
   warningCount: number;
   familyScores: { [key: string]: number };
   failedRules: RuleEvaluation[];
+  unknownRules: RuleEvaluation[];
+  notApplicableRules: RuleEvaluation[];
+  serviceErrors: RuleEvaluation[];
+  parserConfidence: number;
+  parserWarnings: string[];
+  parserAssumptions: string[];
+  evidenceMissing: string[];
+  topStrengths: string[];
+  topWeaknesses: string[];
+  provenance: QualityProvenance;
   priorityFixes: PriorityFix[];
   scoreCard: ScoreCard;
   timelineData: TimelineData;
@@ -23,7 +33,7 @@ interface RuleEvaluation {
   ruleName: string;
   family: string;
   severity: string;
-  result: boolean;
+  outcome: 'PASS' | 'FAIL' | 'UNKNOWN' | 'NOT_APPLICABLE' | 'SERVICE_ERROR';
   message: string;
   actualValue?: number;
   thresholdValue?: number;
@@ -37,6 +47,16 @@ interface PriorityFix {
   issue: string;
   recommendation: string;
   impact: string;
+  strategy: 'CONTROLLED_PATCH' | 'REPLACE_CONCEPT' | 'HUMAN_REVIEW';
+}
+
+interface QualityProvenance {
+  parserVersion: string;
+  ruleEngineVersion: string;
+  semanticProvider: string;
+  semanticModelVersion: string;
+  producibilityValidatorVersion: string;
+  evaluationStage: 'PRE_RENDER' | 'POST_RENDER';
 }
 
 interface ScoreCard {
@@ -187,6 +207,8 @@ Intensity: 4`;
       case 'NEEDS_REVISION':
         return 'badge-warning';
       case 'BLOCKED':
+        return 'badge-danger';
+      case 'SERVICE_ERROR':
         return 'badge-danger';
       default:
         return '';

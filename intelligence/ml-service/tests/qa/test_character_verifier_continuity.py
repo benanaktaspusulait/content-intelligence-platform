@@ -1,33 +1,19 @@
-"""Tests for CharacterVerifier.verify_continuity (multi-frame + reference image)."""
+"""Tests for local multi-frame character continuity verification."""
 
-import json
 import subprocess
 from pathlib import Path
-from unittest.mock import Mock, patch
+from unittest.mock import patch
 
+import cv2
+import numpy as np
 import pytest
 
 from app.qa.character_verifier import CharacterVerifier
 
 
 @pytest.fixture
-def mock_llm_all_pass() -> Mock:
-    mock_llm = Mock()
-    mock_llm.complete.return_value = json.dumps(
-        {
-            "character_verified": True,
-            "confidence": 0.9,
-            "issues": [],
-            "reasoning": "Matches reference.",
-        }
-    )
-    return mock_llm
-
-
-@pytest.fixture
-def verifier(mock_llm_all_pass: Mock) -> CharacterVerifier:
-    with patch("app.qa.character_verifier.get_provider", return_value=mock_llm_all_pass):
-        return CharacterVerifier()
+def verifier() -> CharacterVerifier:
+    return CharacterVerifier()
 
 
 @pytest.fixture
@@ -52,59 +38,40 @@ def mock_video(tmp_path: Path) -> Path:
 @pytest.fixture
 def reference_image(tmp_path: Path) -> Path:
     ref_path = tmp_path / "kiko_reference.png"
-    try:
-        cmd = [
-            "ffmpeg",
-            "-f",
-            "lavfi",
-            "-i",
-            "color=c=red:s=320x240:d=1",
-            "-vframes",
-            "1",
-            "-y",
-            str(ref_path),
-        ]
-        subprocess.run(cmd, capture_output=True, check=True)
-    except (FileNotFoundError, subprocess.CalledProcessError):
-        pytest.skip("FFmpeg not available")
+    assert cv2.imwrite(str(ref_path), np.full((240, 320, 3), (255, 0, 0), dtype=np.uint8))
     return ref_path
 
 
 def test_verify_continuity_all_frames_pass(
-    verifier: CharacterVerifier, mock_video: Path, reference_image: Path, mock_llm_all_pass: Mock
+    verifier: CharacterVerifier, mock_video: Path, reference_image: Path
 ) -> None:
     result = verifier.verify_continuity(mock_video, "Kiko", reference_image)
 
     assert result["character_continuity_verified"] is True
-    assert result["confidence"] == 0.9
+    assert float(result["confidence"]) >= CharacterVerifier.PASS_THRESHOLD
     assert result["frame_issues"] == {"first": None, "middle": None, "last": None}
-    # Called once per sampled frame (first, middle, last).
-    assert mock_llm_all_pass.complete.call_count == 3
+    assert result["validator_version"] == CharacterVerifier.VALIDATOR_VERSION
 
 
 def test_verify_continuity_fails_if_any_frame_fails(
-    verifier: CharacterVerifier, mock_video: Path, reference_image: Path, mock_llm_all_pass: Mock
+    verifier: CharacterVerifier, mock_video: Path, reference_image: Path
 ) -> None:
-    responses = [
-        json.dumps({"character_verified": True, "confidence": 0.9, "issues": [], "reasoning": "ok"}),
-        json.dumps(
-            {
-                "character_verified": False,
-                "confidence": 0.3,
-                "issues": ["wrong outfit color"],
-                "reasoning": "Outfit drifted to a different color mid-video.",
-            }
-        ),
-        json.dumps({"character_verified": True, "confidence": 0.9, "issues": [], "reasoning": "ok"}),
-    ]
-    mock_llm_all_pass.complete.side_effect = responses
-
-    result = verifier.verify_continuity(mock_video, "Kiko", reference_image)
+    passing = {
+        "passed": True,
+        "score": 0.9,
+        "histogram_similarity": 0.9,
+        "difference_hash_similarity": 0.9,
+        "edge_similarity": 0.9,
+        "threshold": CharacterVerifier.PASS_THRESHOLD,
+    }
+    failing = {**passing, "passed": False, "score": 0.2}
+    with patch.object(verifier, "_compare_images", side_effect=[passing, failing, passing]):
+        result = verifier.verify_continuity(mock_video, "Kiko", reference_image)
     frame_issues = result["frame_issues"]
     assert isinstance(frame_issues, dict)
 
     assert result["character_continuity_verified"] is False
-    assert frame_issues["middle"] == "wrong outfit color"
+    assert frame_issues["middle"] == "Local reference similarity below threshold"
     assert frame_issues["first"] is None
     assert frame_issues["last"] is None
 

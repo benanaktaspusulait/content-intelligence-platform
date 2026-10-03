@@ -34,7 +34,8 @@ record PriorityFixDto(
     String severity,
     String issue,
     String recommendation,
-    String impact) {}
+    String impact,
+    String strategy) {}
 
 record ScoreCardDto(double score, String label, String color) {}
 

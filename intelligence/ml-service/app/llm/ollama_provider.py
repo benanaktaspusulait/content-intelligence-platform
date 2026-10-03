@@ -3,7 +3,7 @@ from typing import Any
 
 import requests
 
-from .provider import LLMProvider
+from .provider import LLMProvider, UnsupportedProviderError
 
 
 class OllamaProvider(LLMProvider):
@@ -16,9 +16,10 @@ class OllamaProvider(LLMProvider):
     def complete(
         self, prompt: str, system: str = "", temperature: float = 0.7, image: str | None = None
     ) -> str:
-        # TODO: forward `image` once this provider targets a vision-capable local model;
-        # accepted-but-ignored for now so callers can pass it uniformly across providers.
-        del image
+        if image is not None:
+            raise UnsupportedProviderError(
+                "Image input is not configured for Ollama; use the local character verifier"
+            )
         url = f"{self.base_url}/api/generate"
         full_prompt = f"{system}\n\n{prompt}" if system else prompt
 

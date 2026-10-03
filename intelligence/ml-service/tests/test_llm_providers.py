@@ -36,10 +36,8 @@ def test_openai_provider_complete() -> None:
         mock_client.chat.completions.create.assert_called_once()
 
 
-def test_openai_provider_complete_accepts_optional_image_without_sending_it() -> None:
-    """``complete`` accepts the ``image`` keyword used by vision callers (e.g. CharacterVerifier),
-    but OpenAIProvider does not yet forward it to the chat-completions call -- this pins that
-    exact current behavior so widening the interface for mypy does not silently change it."""
+def test_openai_provider_rejects_image_when_vision_is_not_configured() -> None:
+    """Image evidence must never be silently ignored."""
     with patch("app.llm.openai_provider.OpenAI") as mock_openai:
         mock_client = MagicMock()
         mock_response = MagicMock()
@@ -50,11 +48,9 @@ def test_openai_provider_complete_accepts_optional_image_without_sending_it() ->
         from app.llm.openai_provider import OpenAIProvider
 
         provider = OpenAIProvider(api_key="test-key")
-        result = provider.complete("describe this", image="base64-image-data")
-
-        assert result == "described"
-        _, kwargs = mock_client.chat.completions.create.call_args
-        assert "image" not in kwargs
+        with pytest.raises(UnsupportedProviderError, match="Image input is not configured"):
+            provider.complete("describe this", image="base64-image-data")
+        mock_client.chat.completions.create.assert_not_called()
 
 
 def test_openai_provider_complete_handles_none_content() -> None:

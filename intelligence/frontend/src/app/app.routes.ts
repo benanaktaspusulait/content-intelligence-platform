@@ -11,10 +11,12 @@ import { RenderDashboardPage } from './pages/render-dashboard.page';
 import { MetaConnectionPage } from './pages/meta-connection.page';
 import { MetaReelsPage } from './pages/meta-reels.page';
 import { MetaReelAnalyticsPage } from './pages/meta-reel-analytics.page';
+import { QualityValidatorComponent } from './pages/quality-validator/quality-validator.component';
 
 export const routes: Routes = [
   { path: 'overview', component: OverviewPage, title: 'Overview · Pompom CI' },
   { path: 'render', component: RenderDashboardPage, title: 'Render Pipeline · Pompom CI' },
+  { path: 'quality', component: QualityValidatorComponent, title: 'Prompt Quality · Pompom CI' },
   { path: 'videos', component: VideoLibraryPage, title: 'Video Library · Pompom CI' },
   { path: 'videos/detail', component: VideoDetailPage, title: 'Video Review Studio · Pompom CI' },
   { path: 'videos/:id', component: VideoDetailPage, title: 'Video Detail · Pompom CI' },

@@ -256,8 +256,12 @@ class PromptParser:
 
     def _find_secondary_characters(self, text: str) -> list[str] | None:
         """Find secondary characters if mentioned"""
-        # This is simplistic; could be enhanced
-        return None
+        primary = self._find_primary_character(text)
+        known_names = ["Kiko", "Mimi", "Opa", "Arda", "Luca", "Noah", "Aiko", "Amara", "Sofia", "Freya"]
+        secondary = [
+            name for name in known_names if name != primary and re.search(rf"\b{name}\b", text, re.IGNORECASE)
+        ]
+        return secondary or None
 
     def _find_character_refs(self, text: str) -> list[str]:
         """Find file references to character sheets"""
@@ -351,10 +355,7 @@ class PromptParser:
                 "physicalRule": rule_text,
                 "causeEffect": "Extracted from prompt",
                 "consistency": consistency,
-                "mechanicCount": 1,  # Default assumption; author/parser does not
-                # currently detect multiple mechanics from
-                # text — CONCEPT_007 verifies this claim
-                # semantically rather than trusting it.
+                "mechanicCount": None,
             }
 
         self.ambiguities.append("Core mechanic not explicitly stated")
@@ -362,7 +363,7 @@ class PromptParser:
             "physicalRule": "Inferred from beat actions",
             "causeEffect": "Action-based consequence",
             "consistency": consistency,
-            "mechanicCount": 1,
+            "mechanicCount": None,
         }
 
     def _extract_mechanic_consistency(self, text: str) -> str | None:
@@ -750,7 +751,7 @@ class PromptParser:
 
         return {
             "anomaly": first_beat["action"] if first_beat else "Unknown",
-            "startsAt": 0.0,
+            "startsAt": first_beat["startTime"] if first_beat else None,
             "startsMidAction": starts_mid_action,
             "visualStrength": visual_strength,
             "soundOffClear": sound_off_clear,

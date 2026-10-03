@@ -20,6 +20,7 @@ export class App {
     { label: 'Overview', icon: 'OV', route: '/overview' },
     { label: 'Video Library', icon: 'VL', route: '/videos' },
     { label: 'Characters', icon: 'CH', route: '/characters' },
+    { label: 'Prompt Quality', icon: 'PQ', route: '/quality' },
     { label: 'Experiments', icon: 'EX', route: '/experiments' },
     { label: 'Test Planner', icon: 'TP', route: '/test-planner' },
     { label: 'Predictions', icon: 'PR', route: '/predictions' },
