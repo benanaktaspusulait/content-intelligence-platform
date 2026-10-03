@@ -55,7 +55,7 @@ earlier plans' deliverables exist.**
 
 | # | Plan name | Spec phases covered | Codebase(s) | Status |
 |---|---|---|---|---|
-| A | Python outcome model + API contract completion | 1, 5, 6, 13 | ml-service | 🟨 Plan written (`docs/superpowers/plans/2026-10-03-plan-a-outcome-model-api-contract.md`, commit `880e607`), not yet executed |
+| A | Python outcome model + API contract completion | 1, 5, 6, 13 | ml-service, backend | ✅ Done (commit `5a9ffd0`, see §4 for details) |
 | B | Vision QA fix (image passthrough + character verifier) | 7 | ml-service | ⬜ Not started |
 | C | Spring evidence chain + independent revalidation + DB migration | 3, 4 | backend | ⬜ Not started |
 | D | Render authorization stage model + evidence invalidation | 2, 15 | ml-service, backend, creative-render-service | ⬜ Not started |
@@ -222,7 +222,75 @@ actually pass.
 
 ---
 
-## 3. Session handoff protocol
+## 4. Plan A completion record
+
+**Status: ✅ Done.** Executed via `subagent-driven-development`, 8 tasks, each with an
+implementer → review → fix-round cycle. Plan doc:
+`docs/superpowers/plans/2026-10-03-plan-a-outcome-model-api-contract.md`.
+
+Final state: Python test suite 312/312 passing, `ruff`/`mypy --strict` clean. Java test
+suite 62/62 passing, `BUILD SUCCESS`. Full-plan diff reviewed holistically (not just
+per-task) and Approved — no cross-task field mirroring gaps, no global-constraint
+violations, no scope creep.
+
+Commit range: `b2afd01..5a9ffd0` (10 commits: 8 task commits + 2 fix-round commits from
+task review feedback on Tasks 3 and 4).
+
+Delivered:
+- `RuleOutcome`'s 5 states (PASS/FAIL/UNKNOWN/NOT_APPLICABLE/SERVICE_ERROR) are now visible
+  end-to-end: rule engine → `QualityReportResponse` (`unknown_rules`/`not_applicable_rules`/
+  `service_errors` fields) → Spring `QualityReportDto` (`unknownRules`/`notApplicableRules`/
+  `serviceErrors`). `RuleEvaluationDto.result: boolean` → `outcome: String` on the Java side.
+- Parser confidence/warnings/assumptions and top strengths/weaknesses now exposed on the API
+  response (`parser_confidence`, `parser_warnings`, `parser_assumptions`, `top_strengths`,
+  `top_weaknesses`) and mirrored on `QualityReportDto`.
+- Parser no longer fabricates hook/consistency evidence: HOOK_002, HOOK_003, and
+  CONSISTENCY_001 report UNKNOWN instead of a manufactured PASS/FAIL when the underlying
+  evidence genuinely isn't extractable from the prompt text.
+- `[ATTEMPT: VERB]` markers are no longer required — attempts are inferred from leading verbs
+  in beat descriptions, closing the Phase 5 "optimistic default" gap for this specific case.
+- Timeline parse failure (`_fallback_beat_parsing` returning zero beats) now surfaces
+  explicitly via a new `evidence_missing: tuple[str, ...]` field on `ParserMetadata`, mirrored
+  through to the API response and (implicitly, since Task 8 added the parser-metadata fields)
+  available to Spring consumers.
+- All LLM provider runtime failures (timeout, HTTP, SDK, network — not just the
+  provider-construction `ValueError`) are now normalized into `SemanticCheckServiceError` via
+  a new `_call_llm_safely` helper in `semantic_checks.py`, used at all 8 call sites.
+- Proved (via a new integration test, no production code change needed — the architecture
+  was already correct) that `/validate` returns a structured 200 + `SERVICE_ERROR` response,
+  never an unstructured 500, when an LLM provider fails mid-request.
+
+**Not delivered by Plan A, by design (deferred to later plans per the dependency graph in
+§1):** `provenance`, `authorizationEligible`, `authorizationFailureReasons` fields mentioned
+in Phase 13's full field list were deliberately NOT added in Plan A — populating them
+correctly needs Plan C's evidence model first; adding them now would mean either fabricating
+placeholder values (violating this plan's own anti-fabrication goal) or adding dead fields.
+Revisit when Plan C lands.
+
+**Follow-up required before relying on Plan A's Spring-side changes in production (found and
+documented during Task 8, independently verified by the controller, NOT fixed as part of
+Plan A since it's a pre-existing gap unrelated to this plan's scope):**
+
+`intelligence/backend`'s `QualityMlClient` has **no Jackson snake_case naming configuration
+anywhere** — no `spring.jackson.property-naming-strategy`, no `@JsonNaming`, no custom
+`ObjectMapper`/`RestClientCustomizer`. It builds its `RestClient` from the plain
+autoconfigured `RestClient.Builder`. This means the production path deserializing the Python
+ML service's snake_case JSON (`overall_score`, `blocker_count`, `unknown_rules`, etc.) into
+`QualityReportDto` may be silently dropping every field value today — Jackson's default
+behavior ignores unrecognized JSON properties rather than erroring, so this would fail
+silently, not loudly. This predates Plan A entirely (the original `overallScore`/
+`rulesetVersion` fields have the same problem) and was never previously caught because no
+test exercised `QualityMlClient`'s real deserialization path before this session.
+**Recommend a dedicated task** (not clearly owned by any of Plans B–H as currently scoped):
+add a global `spring.jackson.property-naming-strategy: SNAKE_CASE` (or a `RestClient`
+`ObjectMapper` customizer bean) plus a real `QualityMlClient` integration test proving the
+full HTTP round-trip, not just the DTO's own isolated Jackson deserialization (which
+`QualityReportDtoTest`, added in Task 8, already proves — but only when given an explicitly
+SNAKE_CASE-configured mapper, not the production default).
+
+---
+
+## 5. Session handoff protocol
 
 - Before starting work in a new session: read this file, run `git log --oneline -10` on
   `master` to see what's actually landed, check the status table in §1 against reality
