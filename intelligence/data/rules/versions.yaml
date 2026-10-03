@@ -318,3 +318,141 @@ versions:
   release_date: '2026-10-02'
   ruleset_path: RULESET_1.1.yaml
   version: '1.1'
+- changelog: '# Ruleset 1.2
+
+
+    Adds 6 rules closing genuine gaps identified by comparing against the ruleset-engine
+    Java project: single dominant mechanic (semantically verified, not just author-claimed),
+    story-detached gap, final peak intensity, fake-win escalation, dominant action
+    ratio, and loopability. Uses RuleOutcome.NOT_APPLICABLE (added in an earlier RULESET
+    1.2 commit, distinct from UNKNOWN) for PAYOFF_005''s not-applicable case. All new
+    IR fields are optional with backward-compatible defaults; no 1.0/1.1-shaped IR
+    is broken by this version.
+
+
+    ## New Rules (6)
+
+    - CONCEPT_007: RULESET 1.2: Single Dominant Mechanic (concept_strength family)
+
+    - BEAT_005: RULESET 1.2: Story Detached Gap (visual_novelty family)
+
+    - PAYOFF_004: RULESET 1.2: Final Peak Intensity (final_payoff family)
+
+    - PAYOFF_005: RULESET 1.2: Fake Win Escalation (progression family)
+
+    - REPETITION_004: RULESET 1.2: Dominant Action Ratio (visual_novelty family)
+
+    - PAYOFF_006: RULESET 1.2: Loopability (final_payoff family)
+
+    '
+  changes:
+  - breaking_change: false
+    change_type: added
+    new_value:
+      description: The concept must exhibit exactly one independent physical/magical
+        rule. Same mechanic applied with escalating/varied consequences is fine (PASS);
+        a second, genuinely independent rule introduced partway through is not (CRITICAL
+        at 2 mechanics, BLOCKER at 3+). coreMechanic.mechanicCount is an author claim,
+        verified (not trusted) via LLM semantic judgment against the beat-by-beat
+        consequences.
+      family: concept_strength
+      id: CONCEPT_007
+      name: Single Dominant Mechanic
+      severity: BLOCKER
+      version: '1.2'
+    old_value: null
+    reason: 'RULESET 1.2: Single Dominant Mechanic (concept_strength family)'
+    rule_id: CONCEPT_007
+  - breaking_change: false
+    change_type: added
+    new_value:
+      description: While the core problem is actively unresolved (at least one attempt
+        beat has occurred, final payoff not yet started), no consecutive stretch of
+        beats.relatesToCoreProblem == false may exceed 0.5 seconds. Brief transitions/reaction
+        beats under that threshold are not flagged; only a genuine abandonment of
+        the active problem fails.
+      family: visual_novelty
+      id: BEAT_005
+      name: Story Detached Gap
+      severity: CRITICAL
+      version: '1.2'
+    old_value: null
+    reason: 'RULESET 1.2: Story Detached Gap (visual_novelty family)'
+    rule_id: BEAT_005
+  - breaking_change: false
+    change_type: added
+    new_value:
+      description: The final payoff's beat.intensity should be at least as high as
+        the highest intensity seen earlier in the video. Computed independently from
+        beat.intensity values; finalPayoff.isPeakIntensity is never trusted as the
+        verdict, only cross-checked for discrepancy reporting. Optimization-level
+        (WARNING), never a blocker.
+      family: final_payoff
+      id: PAYOFF_004
+      name: Final Peak Intensity
+      severity: WARNING
+      version: '1.2'
+    old_value: null
+    reason: 'RULESET 1.2: Final Peak Intensity (final_payoff family)'
+    rule_id: PAYOFF_004
+  - breaking_change: false
+    change_type: added
+    new_value:
+      description: If a beat with consequenceType == 'fake_win' is present, the intensity
+        after it must exceed the intensity at the fake win (the problem must escalate,
+        not repeat or weaken, after a fake resolution). Reports NOT_APPLICABLE (not
+        FAIL, not UNKNOWN) when no fake-win beat exists — this check simply does not
+        apply to a concept that doesn't use the fake-resolution structure.
+      family: progression
+      id: PAYOFF_005
+      name: Fake Win Escalation
+      severity: WARNING
+      version: '1.2'
+    old_value: null
+    reason: 'RULESET 1.2: Fake Win Escalation (progression family)'
+    rule_id: PAYOFF_005
+  - breaking_change: false
+    change_type: added
+    new_value:
+      description: 'Companion to ATTEMPT_002, not a replacement: catches one primaryVerb
+        numerically dominating the attempt list even when every attempt is legitimately
+        distinct in ATTEMPT_002''s semantic judgment. WARNING above 55% dominance,
+        CRITICAL above 70%. Never a BLOCKER, since a dominant verb can be valid if
+        it produces genuinely different consequences each time.'
+      family: visual_novelty
+      id: REPETITION_004
+      name: Dominant Action Ratio
+      severity: CRITICAL
+      version: '1.2'
+    old_value: null
+    reason: 'RULESET 1.2: Dominant Action Ratio (visual_novelty family)'
+    rule_id: REPETITION_004
+  - breaking_change: false
+    change_type: added
+    new_value:
+      description: A retention-optimization dimension, never a hard blocker. A strong
+        natural loop back to the opening (finalPayoff.loopsToOpening + loopQuality
+        == 'strong') is a bonus. An ordinary hard cut with no loop claim is fully
+        valid (neutral PASS). Only specific weak-ending text patterns (fade-out, 'the
+        end', walks away) with neither a loop nor a hard cut produce a WARNING-severity
+        FAIL.
+      family: final_payoff
+      id: PAYOFF_006
+      name: Loopability
+      severity: WARNING
+      version: '1.2'
+    old_value: null
+    reason: 'RULESET 1.2: Loopability (final_payoff family)'
+    rule_id: PAYOFF_006
+  description: 'Adds 6 rules closing genuine gaps identified by comparing against
+    the ruleset-engine Java project: single dominant mechanic (semantically verified,
+    not just author-claimed), story-detached gap, final peak intensity, fake-win escalation,
+    dominant action ratio, and loopability. Uses RuleOutcome.NOT_APPLICABLE (added
+    in an earlier RULESET 1.2 commit, distinct from UNKNOWN) for PAYOFF_005''s not-applicable
+    case. All new IR fields are optional with backward-compatible defaults; no 1.0/1.1-shaped
+    IR is broken by this version.'
+  is_breaking: false
+  learned_from: []
+  release_date: '2026-10-03'
+  ruleset_path: RULESET_1.2.yaml
+  version: '1.2'
