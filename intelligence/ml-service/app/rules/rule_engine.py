@@ -115,6 +115,9 @@ class RuleEngine:
             "ATTEMPT_002": self._evaluate_attempt_002,
             "PAYOFF_003": self._evaluate_payoff_003,
             "CONSISTENCY_002": self._evaluate_consistency_002,
+            "BEAT_005": self._evaluate_beat_005,
+            "PAYOFF_004": self._evaluate_payoff_004,
+            "REPETITION_004": self._evaluate_repetition_004,
         }
 
     def _get_duration_tier(self, duration: float) -> str:
@@ -1291,6 +1294,225 @@ class RuleEngine:
             message="Character identity remains consistent across sampled frames.",
             actual_value=result["frame_issues"],
             details={"confidence": result["confidence"]},
+        )
+
+    def _evaluate_beat_005(self, video_plan_ir: dict[str, Any], rule: dict[str, Any]) -> RuleEvaluationType:
+        """BEAT_005: Story Detached Gap.
+
+        Only applies once at least one attempt beat has occurred and before
+        the final payoff starts (i.e. while the core problem is actively
+        unresolved). Flags a consecutive detached stretch exceeding 0.5s —
+        short transitions/reaction beats under that threshold are never
+        flagged, only a genuine abandonment of the active problem.
+        """
+        beats = video_plan_ir.get("beats", [])
+        final_payoff_starts_at = video_plan_ir.get("finalPayoff", {}).get("startsAt", float("inf"))
+
+        mid_story_beats = [b for b in beats if b.get("startTime", 0.0) < final_payoff_starts_at]
+        has_established_problem = any(b.get("isAttempt", False) for b in mid_story_beats)
+
+        if not has_established_problem:
+            return RuleEvaluation(
+                rule_id="BEAT_005",
+                rule_name="Story Detached Gap",
+                family="visual_novelty",
+                severity="PASS",
+                result="PASS",
+                message="No active problem established yet; story-relevance check does not apply.",
+            )
+
+        longest_detached_run = 0.0
+        current_run = 0.0
+        for beat in mid_story_beats:
+            if not beat.get("relatesToCoreProblem", True):
+                # A beat that starts before the payoff but keeps playing past
+                # final_payoff_starts_at only counts for its pre-payoff portion —
+                # detachment that occurs once the payoff has already begun is not
+                # "detachment while the core problem is still unresolved."
+                beat_start = beat.get("startTime", 0.0)
+                beat_end = beat.get("endTime", beat_start + beat.get("duration", 0.0))
+                effective_end = min(beat_end, final_payoff_starts_at)
+                clipped_duration = max(0.0, effective_end - beat_start)
+                current_run += clipped_duration
+                longest_detached_run = max(longest_detached_run, current_run)
+            else:
+                current_run = 0.0
+
+        if longest_detached_run > 0.5:
+            return RuleEvaluation(
+                rule_id="BEAT_005",
+                rule_name="Story Detached Gap",
+                family="visual_novelty",
+                severity="CRITICAL",
+                result="FAIL",
+                message=(
+                    f"Story-detached stretch of {longest_detached_run:.1f}s while the core "
+                    "problem is still unresolved. Maximum tolerated: 0.5s (brief transitions "
+                    "only). The video cuts away from the active problem for too long."
+                ),
+                actual_value=longest_detached_run,
+                threshold_value=0.5,
+            )
+        return RuleEvaluation(
+            rule_id="BEAT_005",
+            rule_name="Story Detached Gap",
+            family="visual_novelty",
+            severity="PASS",
+            result="PASS",
+            message=f"Longest detached stretch: {longest_detached_run:.1f}s, within tolerance.",
+            actual_value=longest_detached_run,
+            threshold_value=0.5,
+        )
+
+    def _evaluate_payoff_004(self, video_plan_ir: dict[str, Any], rule: dict[str, Any]) -> RuleEvaluationType:
+        """PAYOFF_004: Final Peak Intensity.
+
+        The pass/fail verdict is entirely derived from computed beat.intensity
+        values. finalPayoff.isPeakIntensity is never read as part of the
+        decision — only consulted afterward to surface a producer/evaluator
+        disagreement in the message, never to override the computed result.
+        """
+        beats = video_plan_ir.get("beats", [])
+        final_payoff = video_plan_ir.get("finalPayoff", {})
+        payoff_starts_at = final_payoff.get("startsAt", 0.0)
+
+        # Partition on a single key (endTime relative to payoff_starts_at) so every
+        # beat lands in exactly one bucket. A beat straddling the boundary (started
+        # before the payoff but still playing when it starts, or ends exactly as it
+        # starts) counts as "final" — it's on screen at/after startsAt, which is what
+        # the ending actually looks like to the viewer. Partitioning on startTime for
+        # one side and endTime for the other (the original approach) leaves a gap
+        # where a straddling beat is excluded from both sides entirely.
+        prior_beats = [b for b in beats if b.get("endTime", 0.0) <= payoff_starts_at]
+        final_beats = [b for b in beats if b.get("endTime", 0.0) > payoff_starts_at]
+
+        max_prior_intensity = max((b.get("intensity", 0) for b in prior_beats), default=0)
+        final_intensity = max((b.get("intensity", 0) for b in final_beats), default=0)
+
+        claimed_peak = final_payoff.get("isPeakIntensity", False)
+        computed_is_peak = final_intensity >= max_prior_intensity
+        discrepancy_note = ""
+        if claimed_peak != computed_is_peak:
+            discrepancy_note = (
+                f" Note: finalPayoff.isPeakIntensity claims {claimed_peak}, but computed "
+                f"intensities disagree (final={final_intensity}, prior max={max_prior_intensity})."
+            )
+
+        if final_intensity < max_prior_intensity:
+            return RuleEvaluation(
+                rule_id="PAYOFF_004",
+                rule_name="Final Peak Intensity",
+                family="final_payoff",
+                severity="WARNING",
+                result="FAIL",
+                message=(
+                    f"Final payoff intensity ({final_intensity}) is lower than an earlier peak "
+                    f"({max_prior_intensity}). The ending should be the most intense moment."
+                    f"{discrepancy_note}"
+                ),
+                actual_value=final_intensity,
+                required_value=max_prior_intensity,
+            )
+        elif final_intensity == max_prior_intensity:
+            return RuleEvaluation(
+                rule_id="PAYOFF_004",
+                rule_name="Final Peak Intensity",
+                family="final_payoff",
+                severity="WARNING",
+                result="PASS",
+                message=(
+                    f"Final payoff intensity ({final_intensity}) ties the earlier peak. "
+                    f"Acceptable but not ideal — consider making the ending strictly the peak."
+                    f"{discrepancy_note}"
+                ),
+                actual_value=final_intensity,
+                required_value=max_prior_intensity,
+            )
+        return RuleEvaluation(
+            rule_id="PAYOFF_004",
+            rule_name="Final Peak Intensity",
+            family="final_payoff",
+            severity="PASS",
+            result="PASS",
+            message=f"Final payoff intensity ({final_intensity}) is strictly the peak.{discrepancy_note}",
+            actual_value=final_intensity,
+            required_value=max_prior_intensity,
+        )
+
+    def _evaluate_repetition_004(
+        self, video_plan_ir: dict[str, Any], rule: dict[str, Any]
+    ) -> RuleEvaluationType:
+        """REPETITION_004: Dominant Action Ratio.
+
+        Companion to ATTEMPT_002, not a replacement: ATTEMPT_002 catches
+        verb-distinct-but-same-strategy attempts via LLM; this rule catches
+        one verb numerically dominating even when every attempt is a
+        legitimately distinct strategy. Never a BLOCKER — a dominant verb can
+        be valid when it produces genuinely different consequences each time.
+        """
+        beats = video_plan_ir.get("beats", [])
+        attempts = [b for b in beats if b.get("isAttempt", False)]
+
+        if not attempts:
+            return RuleEvaluation(
+                rule_id="REPETITION_004",
+                rule_name="Dominant Action Ratio",
+                family="visual_novelty",
+                severity="PASS",
+                result="PASS",
+                message="No attempts to evaluate.",
+            )
+
+        verb_counts: dict[str, int] = {}
+        for attempt in attempts:
+            verb = attempt.get("primaryVerb", "").strip().upper()
+            verb_counts[verb] = verb_counts.get(verb, 0) + 1
+
+        dominant_verb = max(verb_counts, key=lambda v: verb_counts[v])
+        dominant_ratio = verb_counts[dominant_verb] / len(attempts)
+
+        if dominant_ratio > 0.70:
+            return RuleEvaluation(
+                rule_id="REPETITION_004",
+                rule_name="Dominant Action Ratio",
+                family="visual_novelty",
+                severity="CRITICAL",
+                result="FAIL",
+                message=(
+                    f"'{dominant_verb}' accounts for {dominant_ratio * 100:.0f}% of all attempts. "
+                    "Maximum: 70%. One action dominates too strongly, even allowing for varied "
+                    "consequences."
+                ),
+                actual_value=dominant_ratio,
+                threshold_value=0.70,
+                details={"dominant_verb": dominant_verb},
+            )
+        elif dominant_ratio > 0.55:
+            return RuleEvaluation(
+                rule_id="REPETITION_004",
+                rule_name="Dominant Action Ratio",
+                family="visual_novelty",
+                severity="WARNING",
+                result="FAIL",
+                message=(
+                    f"'{dominant_verb}' accounts for {dominant_ratio * 100:.0f}% of all attempts. "
+                    "Consider more variety, though a dominant verb can be valid if it produces "
+                    "genuinely different consequences each time."
+                ),
+                actual_value=dominant_ratio,
+                threshold_value=0.55,
+                details={"dominant_verb": dominant_verb},
+            )
+        return RuleEvaluation(
+            rule_id="REPETITION_004",
+            rule_name="Dominant Action Ratio",
+            family="visual_novelty",
+            severity="PASS",
+            result="PASS",
+            message=f"Good action variety. Dominant verb '{dominant_verb}' at {dominant_ratio * 100:.0f}%.",
+            actual_value=dominant_ratio,
+            threshold_value=0.55,
+            details={"dominant_verb": dominant_verb},
         )
 
 

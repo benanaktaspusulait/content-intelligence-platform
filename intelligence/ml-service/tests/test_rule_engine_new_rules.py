@@ -9,6 +9,8 @@ existing 10 evaluators), and asserts on the returned RuleEvaluation.
 from typing import Any
 from unittest.mock import patch
 
+import pytest
+
 from app.config import settings
 from app.quality.contracts import RuleOutcome, Severity
 from app.rules.rule_engine import RuleEngine
@@ -523,3 +525,311 @@ class TestFamilyScoreExcludesNotApplicableAndUnknown:
         scores = engine._calculate_family_scores(evaluations)
         # count == 0 for this family -> the existing "count > 0 else 0" branch applies.
         assert scores["test_family"] == 0
+
+
+class TestBeat005StoryDetachedGap:
+    def test_pass_when_all_beats_relate_to_core_problem(self) -> None:
+        engine = _engine()
+        ir = _minimal_ir(
+            finalPayoff={"startsAt": 12.0},
+            beats=[
+                {
+                    "startTime": 0.0,
+                    "endTime": 5.0,
+                    "duration": 5.0,
+                    "isAttempt": True,
+                    "relatesToCoreProblem": True,
+                },
+                {
+                    "startTime": 5.0,
+                    "endTime": 12.0,
+                    "duration": 7.0,
+                    "isAttempt": True,
+                    "relatesToCoreProblem": True,
+                },
+            ],
+        )
+        evaluation = engine._evaluate_beat_005(ir, {})
+        assert evaluation.outcome is RuleOutcome.PASS
+
+    def test_pass_when_detached_stretch_under_threshold(self) -> None:
+        engine = _engine()
+        ir = _minimal_ir(
+            finalPayoff={"startsAt": 12.0},
+            beats=[
+                {
+                    "startTime": 0.0,
+                    "endTime": 5.0,
+                    "duration": 5.0,
+                    "isAttempt": True,
+                    "relatesToCoreProblem": True,
+                },
+                {
+                    "startTime": 5.0,
+                    "endTime": 5.3,
+                    "duration": 0.3,
+                    "isAttempt": False,
+                    "relatesToCoreProblem": False,
+                },
+                {
+                    "startTime": 5.3,
+                    "endTime": 12.0,
+                    "duration": 6.7,
+                    "isAttempt": True,
+                    "relatesToCoreProblem": True,
+                },
+            ],
+        )
+        evaluation = engine._evaluate_beat_005(ir, {})
+        assert evaluation.outcome is RuleOutcome.PASS
+
+    def test_fail_when_detached_stretch_exceeds_threshold(self) -> None:
+        engine = _engine()
+        ir = _minimal_ir(
+            finalPayoff={"startsAt": 12.0},
+            beats=[
+                {
+                    "startTime": 0.0,
+                    "endTime": 5.0,
+                    "duration": 5.0,
+                    "isAttempt": True,
+                    "relatesToCoreProblem": True,
+                },
+                {
+                    "startTime": 5.0,
+                    "endTime": 6.0,
+                    "duration": 1.0,
+                    "isAttempt": False,
+                    "relatesToCoreProblem": False,
+                },
+                {
+                    "startTime": 6.0,
+                    "endTime": 12.0,
+                    "duration": 6.0,
+                    "isAttempt": True,
+                    "relatesToCoreProblem": True,
+                },
+            ],
+        )
+        evaluation = engine._evaluate_beat_005(ir, {})
+        assert evaluation.outcome is RuleOutcome.FAIL
+        assert evaluation.configured_severity is Severity.CRITICAL
+
+    def test_pass_when_no_attempt_beats_yet_problem_not_established(self) -> None:
+        engine = _engine()
+        ir = _minimal_ir(
+            finalPayoff={"startsAt": 12.0},
+            beats=[
+                {
+                    "startTime": 0.0,
+                    "endTime": 12.0,
+                    "duration": 12.0,
+                    "isAttempt": False,
+                    "relatesToCoreProblem": False,
+                },
+            ],
+        )
+        evaluation = engine._evaluate_beat_005(ir, {})
+        assert evaluation.outcome is RuleOutcome.PASS
+
+    def test_backward_compat_missing_field_treated_as_true(self) -> None:
+        """A pre-1.2 beat with no relatesToCoreProblem key at all must never
+        be treated as detached — the field defaults to True when absent."""
+        engine = _engine()
+        ir = _minimal_ir(
+            finalPayoff={"startsAt": 12.0},
+            beats=[
+                {"startTime": 0.0, "endTime": 5.0, "duration": 5.0, "isAttempt": True},
+                {"startTime": 5.0, "endTime": 12.0, "duration": 7.0, "isAttempt": True},
+            ],
+        )
+        evaluation = engine._evaluate_beat_005(ir, {})
+        assert evaluation.outcome is RuleOutcome.PASS
+
+    def test_backward_compat_single_beat_missing_field_among_explicit_ones(self) -> None:
+        """A single pre-1.2 beat with the field entirely absent, sitting between
+        beats that do set it explicitly, must default to True (not detached) —
+        isolating the default from any other beat's explicit value."""
+        engine = _engine()
+        ir = _minimal_ir(
+            finalPayoff={"startsAt": 12.0},
+            beats=[
+                {
+                    "startTime": 0.0,
+                    "endTime": 5.0,
+                    "duration": 5.0,
+                    "isAttempt": True,
+                    "relatesToCoreProblem": True,
+                },
+                {"startTime": 5.0, "endTime": 5.3, "duration": 0.3, "isAttempt": False},
+                {
+                    "startTime": 5.3,
+                    "endTime": 12.0,
+                    "duration": 6.7,
+                    "isAttempt": True,
+                    "relatesToCoreProblem": True,
+                },
+            ],
+        )
+        evaluation = engine._evaluate_beat_005(ir, {})
+        assert evaluation.outcome is RuleOutcome.PASS
+
+    def test_detached_beat_straddling_payoff_start_only_counts_pre_payoff_portion(self) -> None:
+        """A detached beat that starts before the payoff but keeps playing past
+        finalPayoff.startsAt must only have its pre-payoff portion counted toward
+        the detached run — detachment occurring after the payoff has already
+        begun is not "detachment while the core problem is still unresolved."""
+        engine = _engine()
+        ir = _minimal_ir(
+            finalPayoff={"startsAt": 12.0},
+            beats=[
+                {
+                    "startTime": 0.0,
+                    "endTime": 11.8,
+                    "duration": 11.8,
+                    "isAttempt": True,
+                    "relatesToCoreProblem": True,
+                },
+                # Detached beat spans the payoff boundary: only 0.2s (11.8 -> 12.0)
+                # is pre-payoff and within tolerance; the remaining 4.8s (12.0 -> 16.6)
+                # occurs during/after the payoff. The *full* beat duration (4.8s) would
+                # fail against the 0.5s cap, but the clipped pre-payoff portion (0.2s)
+                # must not -- proving detachment after the payoff starts doesn't count.
+                {
+                    "startTime": 11.8,
+                    "endTime": 16.6,
+                    "duration": 4.8,
+                    "isAttempt": False,
+                    "relatesToCoreProblem": False,
+                },
+            ],
+        )
+        evaluation = engine._evaluate_beat_005(ir, {})
+        assert evaluation.outcome is RuleOutcome.PASS
+        assert evaluation.actual_value == pytest.approx(0.2)
+
+
+class TestPayoff004FinalPeakIntensity:
+    def test_pass_when_final_is_strictly_most_intense(self) -> None:
+        engine = _engine()
+        ir = _minimal_ir(
+            finalPayoff={"startsAt": 10.0, "isPeakIntensity": True},
+            beats=[
+                {"startTime": 0.0, "endTime": 5.0, "intensity": 5},
+                {"startTime": 5.0, "endTime": 10.0, "intensity": 6},
+                {"startTime": 10.0, "endTime": 15.0, "intensity": 9},
+            ],
+        )
+        evaluation = engine._evaluate_payoff_004(ir, {})
+        assert evaluation.outcome is RuleOutcome.PASS
+        assert evaluation.configured_severity is Severity.PASS
+
+    def test_warning_pass_when_final_ties_the_peak(self) -> None:
+        engine = _engine()
+        ir = _minimal_ir(
+            finalPayoff={"startsAt": 10.0, "isPeakIntensity": True},
+            beats=[
+                {"startTime": 0.0, "endTime": 10.0, "intensity": 9},
+                {"startTime": 10.0, "endTime": 15.0, "intensity": 9},
+            ],
+        )
+        evaluation = engine._evaluate_payoff_004(ir, {})
+        assert evaluation.outcome is RuleOutcome.PASS
+        assert evaluation.configured_severity is Severity.WARNING
+
+    def test_fail_when_final_is_weaker_than_an_earlier_beat(self) -> None:
+        engine = _engine()
+        ir = _minimal_ir(
+            finalPayoff={"startsAt": 10.0, "isPeakIntensity": True},
+            beats=[
+                {"startTime": 0.0, "endTime": 10.0, "intensity": 9},
+                {"startTime": 10.0, "endTime": 15.0, "intensity": 4},
+            ],
+        )
+        evaluation = engine._evaluate_payoff_004(ir, {})
+        assert evaluation.outcome is RuleOutcome.FAIL
+        assert evaluation.configured_severity is Severity.WARNING
+
+    def test_ispeakintensity_claim_never_overrides_computed_result(self) -> None:
+        """A producer writing isPeakIntensity=true must not force a PASS when
+        the computed intensities say otherwise."""
+        engine = _engine()
+        ir = _minimal_ir(
+            finalPayoff={"startsAt": 10.0, "isPeakIntensity": True},  # claim: true
+            beats=[
+                {"startTime": 0.0, "endTime": 10.0, "intensity": 9},
+                {"startTime": 10.0, "endTime": 15.0, "intensity": 2},  # computed: not peak
+            ],
+        )
+        evaluation = engine._evaluate_payoff_004(ir, {})
+        assert evaluation.outcome is RuleOutcome.FAIL  # computed result wins, not the claim
+
+    def test_beat_straddling_payoff_start_counts_toward_final_not_dropped(self) -> None:
+        """A beat that starts before finalPayoff.startsAt but is still playing
+        when the payoff begins (endTime > startsAt) must count toward the final
+        intensity, not be silently dropped from both partitions. Verifies the
+        beat is not excluded entirely: without it, final_intensity would default
+        to 0 and this would incorrectly PASS as "strictly the peak"."""
+        engine = _engine()
+        ir = _minimal_ir(
+            finalPayoff={"startsAt": 10.0},
+            beats=[
+                {"startTime": 0.0, "endTime": 8.0, "intensity": 9},
+                # Straddles the boundary: starts at 5 (before startsAt) but ends at 15
+                # (after startsAt) -> must land in final_beats, not be dropped.
+                {"startTime": 5.0, "endTime": 15.0, "intensity": 3},
+            ],
+        )
+        evaluation = engine._evaluate_payoff_004(ir, {})
+        # final_intensity should be 3 (from the straddling beat), prior max 9 -> FAIL,
+        # not a false PASS from both beats being excluded and defaulting to 0 == 0.
+        assert evaluation.outcome is RuleOutcome.FAIL
+        assert evaluation.actual_value == 3
+        assert evaluation.required_value == 9
+
+
+class TestRepetition004DominantActionRatio:
+    def test_pass_below_warning_threshold(self) -> None:
+        engine = _engine()
+        beats = [{"isAttempt": True, "primaryVerb": v} for v in ["CATCH", "BLOCK", "TILT", "CONTAIN", "SIT"]]
+        ir = _minimal_ir(beats=beats)
+        evaluation = engine._evaluate_repetition_004(ir, {})
+        assert evaluation.outcome is RuleOutcome.PASS
+
+    def test_warning_fail_at_exactly_above_0_55(self) -> None:
+        engine = _engine()
+        # 6 of 10 attempts share one verb -> ratio 0.6, strictly above 0.55.
+        beats = [{"isAttempt": True, "primaryVerb": "PUSH"} for _ in range(6)] + [
+            {"isAttempt": True, "primaryVerb": v} for v in ["A", "B", "C", "D"]
+        ]
+        ir = _minimal_ir(beats=beats)
+        evaluation = engine._evaluate_repetition_004(ir, {})
+        assert evaluation.outcome is RuleOutcome.FAIL
+        assert evaluation.configured_severity is Severity.WARNING
+
+    def test_critical_fail_above_0_70(self) -> None:
+        engine = _engine()
+        # 8 of 10 attempts share one verb -> ratio 0.8, strictly above 0.70.
+        beats = [{"isAttempt": True, "primaryVerb": "PUSH"} for _ in range(8)] + [
+            {"isAttempt": True, "primaryVerb": v} for v in ["A", "B"]
+        ]
+        ir = _minimal_ir(beats=beats)
+        evaluation = engine._evaluate_repetition_004(ir, {})
+        assert evaluation.outcome is RuleOutcome.FAIL
+        assert evaluation.configured_severity is Severity.CRITICAL
+
+    def test_pass_at_exactly_0_55_boundary(self) -> None:
+        engine = _engine()
+        # 11 of 20 attempts share one verb -> ratio 0.55 exactly, not > 0.55.
+        beats = [{"isAttempt": True, "primaryVerb": "PUSH"} for _ in range(11)] + [
+            {"isAttempt": True, "primaryVerb": f"V{i}"} for i in range(9)
+        ]
+        ir = _minimal_ir(beats=beats)
+        evaluation = engine._evaluate_repetition_004(ir, {})
+        assert evaluation.outcome is RuleOutcome.PASS
+
+    def test_pass_with_no_attempts(self) -> None:
+        engine = _engine()
+        ir = _minimal_ir(beats=[])
+        evaluation = engine._evaluate_repetition_004(ir, {})
+        assert evaluation.outcome is RuleOutcome.PASS
