@@ -40,6 +40,7 @@ public class PlatformStateService {
           "24h", Duration.ofHours(24),
           "48h", Duration.ofHours(48),
           "7d", Duration.ofDays(7));
+  private static final Duration CHECKPOINT_TOLERANCE = Duration.ofHours(2);
 
   private final JdbcClient jdbc;
   private final PompomProperties properties;
@@ -588,7 +589,7 @@ public class PlatformStateService {
         .param("video", videoId)
         .param("platform", platform)
         .param("at", dbTime(at), Types.TIMESTAMP_WITH_TIMEZONE)
-        .query((rs, ignored) -> metricPoint(rs))
+        .query((rs, ignored) -> metricPoint(rs, at))
         .optional()
         .orElse(null);
   }
@@ -602,16 +603,21 @@ public class PlatformStateService {
             """)
         .param("video", videoId)
         .param("platform", platform)
-        .query((rs, ignored) -> metricPoint(rs))
+        .query(
+            (rs, ignored) -> {
+              Instant measuredAt = rs.getObject("measurement_timestamp", OffsetDateTime.class).toInstant();
+              return metricPoint(rs, measuredAt);
+            })
         .optional()
         .orElse(null);
   }
 
-  private MetricPoint metricPoint(java.sql.ResultSet rs) throws java.sql.SQLException {
+  private MetricPoint metricPoint(java.sql.ResultSet rs, Instant target) throws java.sql.SQLException {
+    Instant measuredAt = rs.getObject("measurement_timestamp", OffsetDateTime.class).toInstant();
+    boolean withinTolerance =
+        Duration.between(measuredAt, target).abs().compareTo(CHECKPOINT_TOLERANCE) <= 0;
     return new MetricPoint(
-        rs.getObject("measurement_timestamp", OffsetDateTime.class).toInstant(),
-        nullableLong(rs, "views"),
-        nullableLong(rs, "reach"));
+        measuredAt, nullableLong(rs, "views"), nullableLong(rs, "reach"), withinTolerance);
   }
 
   private Double velocity(UUID videoId, String platform, Instant from, Instant to) {
@@ -811,7 +817,7 @@ public class PlatformStateService {
       String source,
       String notes) {}
 
-  public record MetricPoint(Instant measuredAt, Long views, Long reach) {}
+  public record MetricPoint(Instant measuredAt, Long views, Long reach, boolean withinTolerance) {}
 
   public record WindowPerformance(
       MetricPoint observation, Long deltaViews, Long deltaReach, Double viewsPerHour) {}
