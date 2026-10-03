@@ -507,7 +507,7 @@ This allows the system to flag **low-confidence parses** that need human review.
 
 **This schema is versioned.**
 
-Current version: **1.2**
+Current version: **1.3**
 
 v1.1 adds `Beat.isAttempt` / `Beat.primaryVerb` and relaxes the duration ceiling to
 support 30-45s long-form concepts.
@@ -515,6 +515,29 @@ support 30-45s long-form concepts.
 v1.2 adds `Beat.relatesToCoreProblem`, `coreMechanic.mechanicCount`, and
 `finalPayoff.loopsToOpening`/`loopQuality`, all optional with backward-compatible
 defaults.
+
+v1.3 adds no new IR fields — it adds 8 new rules (GOAL_001, CONCEPT_008,
+PROGRESSION_006, ESCALATION_005, HOOK_004, PERFORMANCE_001, PRODUCIBILITY_003,
+GENERATION_EXECUTABLE_ATTEMPTS) that evaluate existing fields (`Beat.action`,
+`Beat.consequence`, `Beat.primaryVerb`, `Beat.isAttempt`, `Beat.intensity`,
+`coreMechanic.physicalRule`, `hook.anomaly`) more deeply, plus corrects the
+semantics of 9 existing rules (renames, a tolerance window, a timeline-aware
+check, prompt strengthening, cross-rule correlation tagging) without changing
+their IR dependencies. See `RULESET_1.3.yaml` for the full rule-level detail.
+Two new rule families are introduced: `character_performance`
+(PERFORMANCE_001) and `generation_executability`
+(GENERATION_EXECUTABLE_ATTEMPTS) — see `RuleEngine._calculate_overall_score`'s
+weight table in `rule_engine.py`.
+
+### Backward Compatibility (v1.3)
+
+No new required fields were added. `GENERATION_EXECUTABLE_ATTEMPTS` and the
+four new LLM-semantic-check rules (`GOAL_001`, `CONCEPT_008`, `HOOK_004`,
+`PERFORMANCE_001`) all read only pre-existing fields (`Beat.action`,
+`Beat.consequence`, `Beat.primaryVerb`, `hook.anomaly`,
+`coreMechanic.physicalRule`, `characters.primary`) — a video plan authored
+before v1.3 is fully evaluable by every v1.3 rule with no missing-field
+false FAILs, since nothing new was added to be missing.
 
 Future versions may add:
 - Camera movement tracking

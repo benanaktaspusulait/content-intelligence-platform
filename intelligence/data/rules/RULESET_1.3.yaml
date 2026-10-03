@@ -742,8 +742,26 @@ rules:
   name: Fragile Interaction Risk
   severity: CRITICAL
   version: '1.3'
+- description: 'Distinct from ATTEMPT_002 (semantic strategy diversity): ATTEMPT_002
+    asks whether the character is genuinely trying a different strategy; this asks
+    whether that different strategy will actually LOOK different and be reliably executable
+    by an image-to-video generation model (e.g. Seedance). A deterministic keyword
+    pre-filter flags abstract-intent language (''blocks the escape route'', ''tries
+    to outsmart'') and vague movement-magnitude phrasing (''slightly moves'') on attempt
+    beats, plus a beat-budget estimate (too many attempts for the available duration).
+    An LLM semantic check (check_attempts_are_generation_executable) judges each attempt
+    for a concrete action-result pair and flags attempts that would visually collapse
+    into the same choreography despite different wording. BLOCKER only when NO attempt
+    is judged executable at all or the LLM is unreachable (SERVICE_ERROR); CRITICAL
+    when some attempts are unexecutable or abstract-intent language is matched; WARNING
+    for vague magnitude phrasing or beat-budget pressure alone.'
+  family: generation_executability
+  id: GENERATION_EXECUTABLE_ATTEMPTS
+  name: Generation Executable Attempts
+  severity: BLOCKER
+  version: '1.3'
 ruleset_summary:
-  blockers: 5
+  blockers: 6
   criticals: 16
   derived_from_failures:
   - FAIL_001_KIKO_STATIC_STATE_DOMINANCE
@@ -754,6 +772,6 @@ ruleset_summary:
   - Action and cycle repetition detection
   - Consequence capacity validation
   - Payoff quality checks
-  total_rules: 33
+  total_rules: 34
   warnings: 12
 version: '1.3'

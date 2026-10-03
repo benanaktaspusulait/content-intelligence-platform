@@ -18,6 +18,7 @@ EXPECTED_NEW_RULE_IDS = {
     "HOOK_004",
     "PERFORMANCE_001",
     "PRODUCIBILITY_003",
+    "GENERATION_EXECUTABLE_ATTEMPTS",
 }
 
 EXPECTED_1_2_RULE_IDS = {
@@ -60,6 +61,10 @@ _ALL_SEMANTIC_CHECK_MOCKS = {
     "app.rules.rule_engine.check_rule_is_predictable": (True, "ok"),
     "app.rules.rule_engine.check_opening_problem_legible": (True, "ok"),
     "app.rules.rule_engine.check_character_performance_readable": (True, "ok"),
+    "app.rules.rule_engine.check_attempts_are_generation_executable": [
+        {"index": 0, "is_executable": True, "problem": "", "suggested_rewrite": ""},
+        {"index": 1, "is_executable": True, "problem": "", "suggested_rewrite": ""},
+    ],
 }
 
 
@@ -67,7 +72,7 @@ def test_ruleset_1_3_file_exists() -> None:
     assert (settings.rules_dir / "RULESET_1.3.yaml").exists()
 
 
-def test_ruleset_1_3_contains_all_33_rules() -> None:
+def test_ruleset_1_3_contains_all_34_rules() -> None:
     engine = RuleEngine(str(settings.rules_dir / "RULESET_1.3.yaml"))
     rule_ids = {rule["id"] for rule in engine.ruleset["rules"]}
     assert rule_ids == EXPECTED_1_2_RULE_IDS | EXPECTED_NEW_RULE_IDS
@@ -76,8 +81,8 @@ def test_ruleset_1_3_contains_all_33_rules() -> None:
 def test_ruleset_1_3_summary_total_rules_matches_actual_count() -> None:
     engine = RuleEngine(str(settings.rules_dir / "RULESET_1.3.yaml"))
     actual_count = len(engine.ruleset["rules"])
-    assert actual_count == 33
-    assert engine.ruleset["ruleset_summary"]["total_rules"] == 33
+    assert actual_count == 34
+    assert engine.ruleset["ruleset_summary"]["total_rules"] == 34
 
 
 def test_ruleset_1_0_through_1_3_remain_independently_loadable() -> None:
@@ -89,7 +94,7 @@ def test_ruleset_1_0_through_1_3_remain_independently_loadable() -> None:
     assert len(e10.ruleset["rules"]) == 10
     assert len(e11.ruleset["rules"]) == 20
     assert len(e12.ruleset["rules"]) == 26
-    assert len(e13.ruleset["rules"]) == 33
+    assert len(e13.ruleset["rules"]) == 34
 
 
 def _minimal_valid_ir() -> dict[str, Any]:

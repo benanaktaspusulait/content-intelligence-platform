@@ -459,21 +459,24 @@ versions:
 - changelog: '# Ruleset 1.3
 
 
-    Adds 7 rules closing gaps identified in a session-end review of RULESET 1.2: goal-obstruction
-    clarity, rule readability/predictability, activity-vs-progression (verb-root repetition),
-    meaningful attempt escalation, opening problem legibility, cute emotional readability
-    (new character_performance family), and mid-tier fragile-interaction AI-production
-    risk. Also carries forward 9 existing-rule semantic corrections applied directly
-    to RULESET_1.2.yaml ahead of this generation: MOTION_001 and PAYOFF_004 renamed
-    (logic unchanged), HOOK_002 gained a 0.8s tolerance window, PRODUCIBILITY_002
-    gained a timeline-aware mid-concept-prop check, ATTEMPT_002''s duplicate-strategy
-    prompt was strengthened for intensity/angle variants, and REPETITION_002/003/004
-    + ATTEMPT_002 gained correlation_group tagging for cross-rule-overlap observability.
-    All new IR fields/behavior are additive; no 1.0/1.1/1.2-shaped IR is broken by
-    this version.
+    Adds 8 rules closing gaps identified in a session-end review of RULESET 1.2 and
+    a real-generation failure analysis: goal-obstruction clarity, rule readability/predictability,
+    activity-vs-progression (verb-root repetition), meaningful attempt escalation,
+    opening problem legibility, cute emotional readability (new character_performance
+    family), mid-tier fragile-interaction AI-production risk, and generation executability
+    (new generation_executability family) -- whether semantically-distinct attempts
+    will actually render as visually distinct, reliably executable physical actions,
+    not just whether they''re conceptually different strategies. Also carries forward
+    9 existing-rule semantic corrections applied directly to RULESET_1.2.yaml ahead
+    of this generation: MOTION_001 and PAYOFF_004 renamed (logic unchanged), HOOK_002
+    gained a 0.8s tolerance window, PRODUCIBILITY_002 gained a timeline-aware mid-concept-prop
+    check, ATTEMPT_002''s duplicate-strategy prompt was strengthened for intensity/angle
+    variants, and REPETITION_002/003/004 + ATTEMPT_002 gained correlation_group tagging
+    for cross-rule-overlap observability. All new IR fields/behavior are additive;
+    no 1.0/1.1/1.2-shaped IR is broken by this version.
 
 
-    ## New Rules (7)
+    ## New Rules (8)
 
     - GOAL_001: RULESET 1.3: Goal-Obstruction Clarity (concept_strength family)
 
@@ -490,6 +493,9 @@ versions:
     family)
 
     - PRODUCIBILITY_003: RULESET 1.3: Fragile Interaction Risk (ai_producibility family)
+
+    - GENERATION_EXECUTABLE_ATTEMPTS: RULESET 1.3: Generation Executable Attempts
+    (generation_executability family)
 
     '
   changes:
@@ -612,18 +618,47 @@ versions:
     old_value: null
     reason: 'RULESET 1.3: Fragile Interaction Risk (ai_producibility family)'
     rule_id: PRODUCIBILITY_003
-  description: 'Adds 7 rules closing gaps identified in a session-end review of RULESET
-    1.2: goal-obstruction clarity, rule readability/predictability, activity-vs-progression
-    (verb-root repetition), meaningful attempt escalation, opening problem legibility,
-    cute emotional readability (new character_performance family), and mid-tier fragile-interaction
-    AI-production risk. Also carries forward 9 existing-rule semantic corrections
-    applied directly to RULESET_1.2.yaml ahead of this generation: MOTION_001 and
-    PAYOFF_004 renamed (logic unchanged), HOOK_002 gained a 0.8s tolerance window,
-    PRODUCIBILITY_002 gained a timeline-aware mid-concept-prop check, ATTEMPT_002''s
-    duplicate-strategy prompt was strengthened for intensity/angle variants, and REPETITION_002/003/004
-    + ATTEMPT_002 gained correlation_group tagging for cross-rule-overlap observability.
-    All new IR fields/behavior are additive; no 1.0/1.1/1.2-shaped IR is broken by
-    this version.'
+  - breaking_change: false
+    change_type: added
+    new_value:
+      description: 'Distinct from ATTEMPT_002 (semantic strategy diversity): ATTEMPT_002
+        asks whether the character is genuinely trying a different strategy; this
+        asks whether that different strategy will actually LOOK different and be reliably
+        executable by an image-to-video generation model (e.g. Seedance). A deterministic
+        keyword pre-filter flags abstract-intent language (''blocks the escape route'',
+        ''tries to outsmart'') and vague movement-magnitude phrasing (''slightly moves'')
+        on attempt beats, plus a beat-budget estimate (too many attempts for the available
+        duration). An LLM semantic check (check_attempts_are_generation_executable)
+        judges each attempt for a concrete action-result pair and flags attempts that
+        would visually collapse into the same choreography despite different wording.
+        BLOCKER only when NO attempt is judged executable at all or the LLM is unreachable
+        (SERVICE_ERROR); CRITICAL when some attempts are unexecutable or abstract-intent
+        language is matched; WARNING for vague magnitude phrasing or beat-budget pressure
+        alone.'
+      family: generation_executability
+      id: GENERATION_EXECUTABLE_ATTEMPTS
+      name: Generation Executable Attempts
+      severity: BLOCKER
+      version: '1.3'
+    old_value: null
+    reason: 'RULESET 1.3: Generation Executable Attempts (generation_executability
+      family)'
+    rule_id: GENERATION_EXECUTABLE_ATTEMPTS
+  description: 'Adds 8 rules closing gaps identified in a session-end review of RULESET
+    1.2 and a real-generation failure analysis: goal-obstruction clarity, rule readability/predictability,
+    activity-vs-progression (verb-root repetition), meaningful attempt escalation,
+    opening problem legibility, cute emotional readability (new character_performance
+    family), mid-tier fragile-interaction AI-production risk, and generation executability
+    (new generation_executability family) -- whether semantically-distinct attempts
+    will actually render as visually distinct, reliably executable physical actions,
+    not just whether they''re conceptually different strategies. Also carries forward
+    9 existing-rule semantic corrections applied directly to RULESET_1.2.yaml ahead
+    of this generation: MOTION_001 and PAYOFF_004 renamed (logic unchanged), HOOK_002
+    gained a 0.8s tolerance window, PRODUCIBILITY_002 gained a timeline-aware mid-concept-prop
+    check, ATTEMPT_002''s duplicate-strategy prompt was strengthened for intensity/angle
+    variants, and REPETITION_002/003/004 + ATTEMPT_002 gained correlation_group tagging
+    for cross-rule-overlap observability. All new IR fields/behavior are additive;
+    no 1.0/1.1/1.2-shaped IR is broken by this version.'
   is_breaking: false
   learned_from: []
   release_date: '2026-10-03'

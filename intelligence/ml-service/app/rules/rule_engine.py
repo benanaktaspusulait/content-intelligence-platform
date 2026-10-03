@@ -15,6 +15,7 @@ from app.analyzer.consequence_analyzer import analyze_consequences
 from app.analyzer.static_state_analyzer import analyze_static_states
 from app.llm.semantic_checks import (
     SemanticCheckServiceError,
+    check_attempts_are_generation_executable,
     check_character_performance_readable,
     check_goal_is_natural,
     check_opening_problem_legible,
@@ -134,6 +135,7 @@ class RuleEngine:
             "HOOK_004": self._evaluate_hook_004,
             "PERFORMANCE_001": self._evaluate_performance_001,
             "PRODUCIBILITY_003": self._evaluate_producibility_003,
+            "GENERATION_EXECUTABLE_ATTEMPTS": self._evaluate_generation_executable_attempts,
         }
 
     def _get_duration_tier(self, duration: float) -> str:
@@ -306,6 +308,7 @@ class RuleEngine:
             "final_payoff": 0.09,
             "render_risk": 0.08,
             "character_performance": 0.05,
+            "generation_executability": 0.09,
         }
 
         weighted_sum = 0.0
@@ -2330,6 +2333,238 @@ class RuleEngine:
             result="PASS",
             message="No fragile interaction risk tags detected.",
             details={"riskTags": []},
+        )
+
+    # Deterministic pre-filter for GENERATION_EXECUTABLE_ATTEMPTS: abstract/
+    # mental-state verbs that describe intention or spatial strategy rather
+    # than a concrete physical action. This is a free, cheap signal checked
+    # before/alongside the LLM call -- not a replacement for it, since many
+    # abstract-strategy attempts (e.g. "positions himself to cut off the box's
+    # path") don't contain any of these literal words but are still
+    # unexecutable. Mirrors the keyword-list-as-pre-filter structure already
+    # used by _FRAGILE_INTERACTION_RISK_TAGS, applied to a different purpose.
+    _ABSTRACT_INTENT_VERBS = [
+        "trick",
+        "outsmart",
+        "block the escape",
+        "block its escape",
+        "blocks the escape",
+        "blocks its escape",
+        "anticipate",
+        "fool",
+        "test",
+        "decide",
+        "figure out",
+        "pretend",
+        "corner",
+        "trap",
+        "predict",
+    ]
+
+    # Vague-magnitude phrases that under-specify how large a visible
+    # transformation is -- a problem only when the movement IS the primary
+    # gag (an attempt beat), not for every beat in general.
+    _VAGUE_MAGNITUDE_PHRASES = [
+        "slightly moves",
+        "subtly shifts",
+        "moves a little",
+        "barely slides",
+        "moves slightly",
+        "shifts subtly",
+    ]
+
+    def _evaluate_generation_executable_attempts(
+        self, video_plan_ir: dict[str, Any], rule: dict[str, Any]
+    ) -> RuleEvaluationType:
+        """GENERATION_EXECUTABLE_ATTEMPTS: Generation Executable Attempts
+        (RULESET 1.3, new, generation_executability family).
+
+        Distinct from ATTEMPT_002 (semantic strategy diversity): ATTEMPT_002
+        asks "is the character genuinely trying a different strategy?" This
+        rule asks "will that different strategy actually LOOK different and
+        be reliably executable by the generation model?" Both must pass --
+        a pair of attempts can be semantically distinct (different intent)
+        while rendering as visually identical choreography, which ATTEMPT_002
+        alone cannot catch since it only judges strategy, not generation
+        executability.
+
+        Three layers, cheapest first:
+        1. Deterministic abstract-intent-verb keyword match (free) --
+           catches explicit mental-state/spatial-strategy language in
+           action/consequence text (e.g. "blocks the escape route").
+        2. Deterministic vague-magnitude-phrase match (free) -- catches
+           under-specified movement size on attempt beats specifically,
+           where the movement itself is meant to be the visible gag.
+        3. LLM semantic check (check_attempts_are_generation_executable) --
+           catches the harder cases a keyword list can't: attempts that
+           lack a concrete action/result pair without using any of the
+           listed abstract words, and attempts that would visually collapse
+           into the same choreography despite different wording. Only
+           called once, over all attempts together (not per-pair), mirroring
+           ATTEMPT_002's one-call-for-all-attempts structure. Fail-closed to
+           SERVICE_ERROR on any parsing/provider failure.
+
+        Also checks beat budget: too many semantically complex attempts for
+        the available duration reduces generation reliability even if each
+        attempt individually is executable. This is an estimate, not a rigid
+        "exactly 3 attempts" rule -- it only flags when attempts are so
+        numerous relative to duration that each gets under ~2.5s, too little
+        time for setup + action + readable result.
+
+        Severity: BLOCKER only when the LLM itself is unreachable
+        (SERVICE_ERROR) or when NONE of the attempts are judged executable
+        (the central mechanic cannot be expressed as a reliable action/result
+        sequence at all). CRITICAL when some but not all attempts are
+        unexecutable, or when an abstract-intent keyword is matched. WARNING
+        for vague magnitude phrasing and beat-budget pressure alone.
+        """
+        beats = video_plan_ir.get("beats", [])
+        attempts = [b for b in beats if b.get("isAttempt", False)]
+
+        if len(attempts) < 2:
+            return RuleEvaluation(
+                rule_id="GENERATION_EXECUTABLE_ATTEMPTS",
+                rule_name="Generation Executable Attempts",
+                family="generation_executability",
+                severity="PASS",
+                result="PASS",
+                message="Fewer than two attempts; nothing to compare for generation executability.",
+            )
+
+        combined_text_by_index = [
+            f"{a.get('action', '')} {a.get('consequence', '')}".lower() for a in attempts
+        ]
+
+        abstract_intent_matches: dict[int, list[str]] = {}
+        for i, text in enumerate(combined_text_by_index):
+            matched = [kw for kw in self._ABSTRACT_INTENT_VERBS if kw in text]
+            if matched:
+                abstract_intent_matches[i] = matched
+
+        vague_magnitude_matches: dict[int, list[str]] = {}
+        for i, text in enumerate(combined_text_by_index):
+            matched = [kw for kw in self._VAGUE_MAGNITUDE_PHRASES if kw in text]
+            if matched:
+                vague_magnitude_matches[i] = matched
+
+        duration = video_plan_ir.get("metadata", {}).get("duration", 15.0)
+        average_seconds_per_attempt = duration / len(attempts) if attempts else duration
+        beat_budget_pressure = average_seconds_per_attempt < 2.5
+
+        llm_attempts = [
+            {
+                "primaryVerb": a.get("primaryVerb", ""),
+                "action": a.get("action", ""),
+                "consequence": a.get("consequence", ""),
+            }
+            for a in attempts
+        ]
+        try:
+            judgments = check_attempts_are_generation_executable(llm_attempts)
+        except SemanticCheckServiceError as e:
+            return RuleEvaluation(
+                rule_id="GENERATION_EXECUTABLE_ATTEMPTS",
+                rule_name="Generation Executable Attempts",
+                family="generation_executability",
+                severity="BLOCKER",
+                result="SERVICE_ERROR",
+                message=f"Generation-executability verification failed: {e}",
+                details={"error": str(e)},
+            )
+
+        unexecutable_judgments = [j for j in judgments if not j["is_executable"]]
+        all_unexecutable = len(unexecutable_judgments) == len(judgments) and len(judgments) > 0
+
+        if all_unexecutable:
+            evidence = [
+                f"Attempt {j['index']} ('{attempts[j['index']].get('action', '')}'): {j['problem']} "
+                f"Suggested rewrite: {j['suggested_rewrite']}"
+                for j in unexecutable_judgments
+            ]
+            return RuleEvaluation(
+                rule_id="GENERATION_EXECUTABLE_ATTEMPTS",
+                rule_name="Generation Executable Attempts",
+                family="generation_executability",
+                severity="BLOCKER",
+                result="FAIL",
+                message=(
+                    "No attempt is expressed as a reliable, generation-executable action/"
+                    f"result sequence. {' | '.join(evidence)}"
+                ),
+                actual_value=0,
+                required_value=len(judgments),
+                details={"unexecutable_attempts": evidence, "correlation_group": "ATTEMPT_REPETITION"},
+            )
+
+        if unexecutable_judgments or abstract_intent_matches:
+            evidence = [
+                f"Attempt {j['index']} ('{attempts[j['index']].get('action', '')}'): {j['problem']} "
+                f"Suggested rewrite: {j['suggested_rewrite']}"
+                for j in unexecutable_judgments
+            ]
+            for i, matched_keywords in abstract_intent_matches.items():
+                evidence.append(
+                    f"Attempt {i} ('{attempts[i].get('action', '')}'): contains abstract-intent "
+                    f"language {matched_keywords}, which describes a spatial strategy or mental "
+                    "state rather than a deterministic physical action."
+                )
+            return RuleEvaluation(
+                rule_id="GENERATION_EXECUTABLE_ATTEMPTS",
+                rule_name="Generation Executable Attempts",
+                family="generation_executability",
+                severity="CRITICAL",
+                result="FAIL",
+                message=(
+                    f"{len(unexecutable_judgments)} of {len(judgments)} attempts and/or "
+                    f"{len(abstract_intent_matches)} attempt(s) with abstract-intent language "
+                    f"may not render as reliable, distinct physical actions. {' | '.join(evidence)}"
+                ),
+                actual_value=len(judgments) - len(unexecutable_judgments),
+                required_value=len(judgments),
+                details={
+                    "unexecutable_attempts": evidence,
+                    "correlation_group": "ATTEMPT_REPETITION",
+                },
+            )
+
+        if vague_magnitude_matches or beat_budget_pressure:
+            notes = []
+            for i, matched_keywords in vague_magnitude_matches.items():
+                notes.append(
+                    f"Attempt {i} ('{attempts[i].get('action', '')}') uses vague magnitude "
+                    f"phrasing {matched_keywords} for what appears to be the primary gag -- "
+                    "make the movement size explicit (e.g. 'one box-width')."
+                )
+            if beat_budget_pressure:
+                notes.append(
+                    f"{len(attempts)} attempts across {duration:.1f}s averages "
+                    f"{average_seconds_per_attempt:.1f}s per attempt, which may be too little "
+                    "time for setup, action, and a readable result each time."
+                )
+            return RuleEvaluation(
+                rule_id="GENERATION_EXECUTABLE_ATTEMPTS",
+                rule_name="Generation Executable Attempts",
+                family="generation_executability",
+                severity="WARNING",
+                result="FAIL",
+                message=" | ".join(notes),
+                actual_value=average_seconds_per_attempt,
+                required_value=2.5,
+                details={"vague_magnitude_attempts": list(vague_magnitude_matches.keys())},
+            )
+
+        return RuleEvaluation(
+            rule_id="GENERATION_EXECUTABLE_ATTEMPTS",
+            rule_name="Generation Executable Attempts",
+            family="generation_executability",
+            severity="PASS",
+            result="PASS",
+            message=(
+                f"All {len(judgments)} attempts are expressed as concrete, generation-"
+                "executable action/result sequences."
+            ),
+            actual_value=len(judgments),
+            required_value=len(judgments),
         )
 
 

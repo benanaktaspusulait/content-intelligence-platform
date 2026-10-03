@@ -495,3 +495,146 @@ Respond in strict JSON format:
         raise SemanticCheckServiceError("reasoning must be a string")
 
     return parsed["is_readable"], parsed["reasoning"]
+
+
+def check_attempts_are_generation_executable(
+    attempts: list[dict[str, str]], llm_provider: str | None = None
+) -> list[dict[str, Any]]:
+    """Judge whether each attempt is expressed as a concrete, visually
+    distinct, generation-friendly physical action an image-to-video model
+    can reliably render — not merely whether the strategies are
+    conceptually/semantically different (that's find_duplicate_strategy_pairs'
+    job, which this complements rather than replaces).
+
+    `attempts` is an ordered list of dicts with keys "primaryVerb", "action",
+    "consequence" (the same shape ATTEMPT_002 already builds). Distinguishes:
+    - a concrete action/result pair ("lowers right foot" -> "box slides right
+      one box-width") from an abstract strategy description ("blocks the
+      escape route", "tries to outsmart the box") that requires spatial
+      reasoning or mental-state interpretation a generation model can't
+      execute;
+    - attempts that are conceptually different but would visually collapse
+      into the same choreography when actually rendered.
+
+    Returns a list of per-attempt judgment dicts, one per input attempt, each
+    shaped:
+    {
+        "index": int,
+        "is_executable": bool,
+        "problem": str,              # "" if is_executable is True
+        "suggested_rewrite": str,    # "" if is_executable is True
+    }
+
+    Raises SemanticCheckServiceError if the LLM response cannot be parsed
+    into the expected shape, or if the LLM provider is unavailable (e.g.
+    missing credentials). Returns [] when 0 or 1 attempts are given (nothing
+    to compare for visual collapse, and a single attempt's executability is
+    better judged in context of its peers) without calling the LLM at all,
+    mirroring find_duplicate_strategy_pairs' handling of a too-small input.
+    """
+    if len(attempts) < 2:
+        return []
+
+    try:
+        llm = get_provider(llm_provider)
+    except ValueError as e:
+        raise SemanticCheckServiceError(f"LLM provider unavailable: {e}") from e
+
+    numbered_attempts = "\n".join(
+        f"{i}. primaryVerb={a['primaryVerb']!r}, action={a['action']!r}, consequence={a['consequence']!r}"
+        for i, a in enumerate(attempts)
+    )
+
+    prompt = f"""You are reviewing problem-solving attempts in a children's short-form video
+for GENERATION EXECUTABILITY — whether an image-to-video generation model (such as
+Seedance) can reliably render each attempt as a clear, visually distinct physical
+action, as opposed to the attempts merely being conceptually/strategically different
+on paper.
+
+The core question for each attempt is NOT "is this a different strategy?" (that's a
+separate check). It is: "will the viewer and the generation model clearly see a
+different physical action?"
+
+Every attempt should reduce to a simple, literal ACTION -> OBJECT RESPONSE ->
+CHARACTER CONSEQUENCE sequence a generation model can execute without inferring
+spatial layout or mental state.
+
+GOOD (concrete, executable): "lowers right foot toward the box" -> "box slides one
+box-width to the right" -> "foot lands on the floor". The verb is a literal physical
+action (step, push, pull, lift, turn, place, hold, rotate), the object's response is
+an explicit visible transformation, and the consequence is visible.
+
+BAD (abstract, not reliably executable):
+- "blocks the escape route" — requires the generation model to infer which route is
+  blocked and which remains open; a spatial plan, not a literal action.
+- "tries to outsmart the box" — describes intention, not a physical action at all.
+- "pretends not to care" / "confidently tries again" — a performance/mental-state cue,
+  not a primary physical action; acceptable only as a secondary detail alongside an
+  explicit physical action, never as the sole description of an attempt.
+
+Also flag when two attempts, despite being worded as different strategies, would
+likely render as visually IDENTICAL choreography — e.g. "character steps toward
+object" vs. "character confidently steps toward object" vs. "character secretly
+steps toward object" are visually almost indistinguishable, even though their
+adjectives differ.
+
+Attempts (0-indexed):
+{numbered_attempts}
+
+For EACH attempt (0-indexed, same order as given), judge whether it is generation-
+executable. An attempt is NOT executable if it lacks a concrete physical verb, lacks
+a visible action-result pair, depends on complex spatial reasoning the generation
+model would have to infer, or would likely render identically to another attempt in
+this list despite different wording.
+
+Respond in strict JSON format:
+{{
+  "judgments": [
+    {{
+      "index": 0,
+      "is_executable": true or false,
+      "problem": "brief explanation if not executable, empty string if executable",
+      "suggested_rewrite": "a literal action/result rewrite if not executable, empty string if executable"
+    }},
+    ...
+  ]
+}}
+
+Include exactly one judgment per attempt, in the same 0-indexed order given above."""
+
+    response = llm.complete(prompt)
+    parsed = _parse_json_with_markdown_fallback(response)
+
+    if "judgments" not in parsed:
+        raise SemanticCheckServiceError("LLM response missing required field: judgments")
+    if not isinstance(parsed["judgments"], list):
+        raise SemanticCheckServiceError("judgments must be a list")
+    if len(parsed["judgments"]) != len(attempts):
+        raise SemanticCheckServiceError(f"Expected {len(attempts)} judgments, got {len(parsed['judgments'])}")
+
+    judgments: list[dict[str, Any]] = []
+    required_fields = ["index", "is_executable", "problem", "suggested_rewrite"]
+    for entry in parsed["judgments"]:
+        if not isinstance(entry, dict):
+            raise SemanticCheckServiceError(f"Malformed judgment entry: {entry!r}")
+        for field in required_fields:
+            if field not in entry:
+                raise SemanticCheckServiceError(f"Judgment entry missing required field: {field}")
+        if isinstance(entry["index"], bool) or not isinstance(entry["index"], int):
+            raise SemanticCheckServiceError("judgment index must be an integer")
+        if not isinstance(entry["is_executable"], bool):
+            raise SemanticCheckServiceError("is_executable must be a boolean")
+        if not isinstance(entry["problem"], str):
+            raise SemanticCheckServiceError("problem must be a string")
+        if not isinstance(entry["suggested_rewrite"], str):
+            raise SemanticCheckServiceError("suggested_rewrite must be a string")
+        judgments.append(
+            {
+                "index": entry["index"],
+                "is_executable": entry["is_executable"],
+                "problem": entry["problem"],
+                "suggested_rewrite": entry["suggested_rewrite"],
+            }
+        )
+
+    return judgments
