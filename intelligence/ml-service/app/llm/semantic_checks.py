@@ -13,7 +13,7 @@ import json
 import re
 from typing import Any
 
-from app.llm import get_provider
+from app.llm import LLMProvider, get_provider
 
 
 class SemanticCheckServiceError(RuntimeError):
@@ -41,6 +41,29 @@ def _parse_json_with_markdown_fallback(response: str) -> dict[str, Any]:
             except json.JSONDecodeError:
                 pass
         raise SemanticCheckServiceError(f"Failed to parse LLM response as JSON: {e}") from e
+
+
+def _call_llm_safely(llm: LLMProvider, prompt: str) -> str:
+    """Call ``llm.complete(prompt)``, converting ANY runtime failure
+    (timeout, HTTP error, SDK error, network failure, malformed-response
+    exception, or anything else the provider's SDK can raise) into
+    SemanticCheckServiceError.
+
+    This is distinct from the provider-construction ValueError each calling
+    function already catches around ``get_provider(...)`` (missing
+    credentials) -- that happens before this function is ever called. This
+    function exists because the actual network call is where timeouts, HTTP
+    errors, and SDK-internal errors occur, and until this fix those were not
+    normalized at all: a provider-construction failure correctly became a
+    typed SERVICE_ERROR, but a mid-call network blip crashed the whole
+    request with an unstructured 500.
+    """
+    try:
+        return llm.complete(prompt)
+    except SemanticCheckServiceError:
+        raise
+    except Exception as e:
+        raise SemanticCheckServiceError(f"LLM call failed: {e}") from e
 
 
 def find_duplicate_strategy_pairs(
@@ -108,7 +131,7 @@ Respond in strict JSON format:
 
 Use an empty list if every attempt is a genuinely different strategy."""
 
-    response = llm.complete(prompt)
+    response = _call_llm_safely(llm, prompt)
     parsed = _parse_json_with_markdown_fallback(response)
 
     if "duplicate_pairs" not in parsed:
@@ -160,7 +183,7 @@ Respond in strict JSON format:
   "reasoning": "brief explanation of your decision"
 }}"""
 
-    response = llm.complete(prompt)
+    response = _call_llm_safely(llm, prompt)
     parsed = _parse_json_with_markdown_fallback(response)
 
     required_fields = ["matches_rule", "reasoning"]
@@ -235,7 +258,7 @@ Respond in strict JSON format:
   "reasoning": "brief explanation identifying which beat(s), if any, introduce an independent mechanic"
 }}"""
 
-    response = llm.complete(prompt)
+    response = _call_llm_safely(llm, prompt)
     parsed = _parse_json_with_markdown_fallback(response)
 
     required_fields = ["mechanic_count", "reasoning"]
@@ -300,7 +323,7 @@ Respond in strict JSON format:
   "reasoning": "brief explanation of your decision"
 }}"""
 
-    response = llm.complete(prompt)
+    response = _call_llm_safely(llm, prompt)
     parsed = _parse_json_with_markdown_fallback(response)
 
     required_fields = ["is_natural", "reasoning"]
@@ -366,7 +389,7 @@ Respond in strict JSON format:
   "reasoning": "brief explanation of your decision"
 }}"""
 
-    response = llm.complete(prompt)
+    response = _call_llm_safely(llm, prompt)
     parsed = _parse_json_with_markdown_fallback(response)
 
     required_fields = ["is_predictable", "reasoning"]
@@ -427,7 +450,7 @@ Respond in strict JSON format:
   "reasoning": "brief explanation of your decision"
 }}"""
 
-    response = llm.complete(prompt)
+    response = _call_llm_safely(llm, prompt)
     parsed = _parse_json_with_markdown_fallback(response)
 
     required_fields = ["is_legible", "reasoning"]
@@ -481,7 +504,7 @@ Respond in strict JSON format:
   "reasoning": "brief explanation of your decision"
 }}"""
 
-    response = llm.complete(prompt)
+    response = _call_llm_safely(llm, prompt)
     parsed = _parse_json_with_markdown_fallback(response)
 
     required_fields = ["is_readable", "reasoning"]
@@ -602,7 +625,7 @@ Respond in strict JSON format:
 
 Include exactly one judgment per attempt, in the same 0-indexed order given above."""
 
-    response = llm.complete(prompt)
+    response = _call_llm_safely(llm, prompt)
     parsed = _parse_json_with_markdown_fallback(response)
 
     if "judgments" not in parsed:

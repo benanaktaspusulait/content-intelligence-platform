@@ -254,3 +254,64 @@ class TestCountIndependentMechanics:
         assert reasoning
         mock_get_provider.assert_not_called()
         mock_llm.complete.assert_not_called()
+
+
+class TestLlmRuntimeFailuresNormalizeToServiceError:
+    def test_find_duplicate_strategy_pairs_wraps_timeout_error(self) -> None:
+        mock_llm = Mock()
+        mock_llm.complete.side_effect = TimeoutError("request timed out")
+
+        with patch("app.llm.semantic_checks.get_provider", return_value=mock_llm):
+            with pytest.raises(SemanticCheckServiceError):
+                find_duplicate_strategy_pairs(
+                    [
+                        {"primaryVerb": "PUSH", "action": "a", "consequence": "b"},
+                        {"primaryVerb": "PULL", "action": "c", "consequence": "d"},
+                    ]
+                )
+
+    def test_find_duplicate_strategy_pairs_wraps_generic_runtime_error(self) -> None:
+        mock_llm = Mock()
+        mock_llm.complete.side_effect = RuntimeError("SDK internal error")
+
+        with patch("app.llm.semantic_checks.get_provider", return_value=mock_llm):
+            with pytest.raises(SemanticCheckServiceError):
+                find_duplicate_strategy_pairs(
+                    [
+                        {"primaryVerb": "PUSH", "action": "a", "consequence": "b"},
+                        {"primaryVerb": "PULL", "action": "c", "consequence": "d"},
+                    ]
+                )
+
+    def test_check_twist_matches_rule_wraps_network_error(self) -> None:
+        mock_llm = Mock()
+        mock_llm.complete.side_effect = ConnectionError("network unreachable")
+
+        with patch("app.llm.semantic_checks.get_provider", return_value=mock_llm):
+            with pytest.raises(SemanticCheckServiceError):
+                check_twist_matches_rule(physical_rule="rule", twist_description="twist")
+
+    def test_count_independent_mechanics_wraps_timeout_error(self) -> None:
+        mock_llm = Mock()
+        mock_llm.complete.side_effect = TimeoutError("request timed out")
+
+        with patch("app.llm.semantic_checks.get_provider", return_value=mock_llm):
+            with pytest.raises(SemanticCheckServiceError):
+                count_independent_mechanics(physical_rule="rule", beat_descriptions=["beat one", "beat two"])
+
+    def test_service_error_message_does_not_leak_raw_exception_type_only(self) -> None:
+        """The wrapped error's message must be safe/diagnostic -- it already
+        is, since SemanticCheckServiceError just carries str(original_error);
+        this test documents that no API key or secret-shaped string from a
+        provider's internal error ever appears literally in the raised
+        message when it wasn't in the original exception's str() already
+        (we are not newly adding risk here, just confirming no masking is
+        accidentally stripping the diagnostic value either)."""
+        mock_llm = Mock()
+        mock_llm.complete.side_effect = RuntimeError("provider said: invalid request")
+
+        with patch("app.llm.semantic_checks.get_provider", return_value=mock_llm):
+            try:
+                check_twist_matches_rule(physical_rule="rule", twist_description="twist")
+            except SemanticCheckServiceError as e:
+                assert "invalid request" in str(e)
