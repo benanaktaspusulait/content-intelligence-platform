@@ -116,7 +116,10 @@ interface Beat {
   
   // Consequence
   consequence: string;                // Physical result, e.g., "shoe glides forward, arms spread"
-  consequenceType: "new" | "continuation" | "repeat" | "escalation";
+  consequenceType: "new" | "continuation" | "repeat" | "escalation" | "fake_win";
+                                       // "fake_win": the problem appears solved,
+                                       // optional bonus beat consumed by
+                                       // PAYOFF_002/PAYOFF_005.
   
   // Intensity
   intensity: number;                  // 1-10 scale of visual/emotional energy

@@ -79,8 +79,21 @@ def find_duplicate_strategy_pairs(
 
     prompt = f"""You are reviewing a list of problem-solving attempts in a children's \
 short-form video. Each attempt has a different labeled primary verb, but some attempts \
-might still represent the SAME underlying strategy despite different wording (for \
-example, "GRAB" and "YANK" can both just mean "pull the object away").
+might still represent the SAME underlying strategy despite different wording.
+
+Two ways attempts can be duplicates despite different wording:
+1. Synonym substitution: "GRAB" and "YANK" can both just mean "pull the object away."
+2. Intensity/angle variants of the identical strategy: "PUSH", "PUSH_HARDER", and \
+"PUSH_FROM_LEFT" are still just "push the object" tried again with a different \
+force or direction — not a new strategy. If the attempts all boil down to the \
+same basic mechanical action repeated with more effort or from a different angle, \
+and produce essentially the same kind of consequence each time, treat them as \
+duplicates.
+
+The one thing that makes attempts genuinely different, even with an overlapping verb, \
+is a meaningfully different consequence or mechanism — e.g. "PUSH" that slides the \
+object away vs. a later "PUSH" that is revealed to flip the object over is two \
+different strategies, because the consequence differs in kind, not just in degree.
 
 Attempts (0-indexed):
 {numbered_attempts}

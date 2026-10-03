@@ -451,7 +451,12 @@ class RuleEngine:
                 ),
                 actual_value=max_count,
                 threshold_value=3,
-                details={"action": max_action},
+                # correlation_group: this and REPETITION_003/004/ATTEMPT_002 key off
+                # different fields (action text / cycleGroup / primaryVerb) but can all
+                # fire from one underlying repetition problem. Tagged for observability
+                # in the quality report, not yet deduplicated in scoring — see RULESET
+                # 1.3 design notes on cross-rule correlation.
+                details={"action": max_action, "correlation_group": "ATTEMPT_REPETITION"},
             )
         elif max_count == 3:
             # Check if all have different consequences (simplified check)
@@ -474,6 +479,7 @@ class RuleEngine:
                     ),
                     actual_value=max_count,
                     threshold_value=2,
+                    details={"correlation_group": "ATTEMPT_REPETITION"},
                 )
             else:
                 return RuleEvaluation(
@@ -544,6 +550,7 @@ class RuleEngine:
                 ),
                 actual_value=max_count,
                 threshold_value=3,
+                details={"correlation_group": "ATTEMPT_REPETITION"},
             )
         elif max_count == 3:
             return RuleEvaluation(
@@ -855,11 +862,36 @@ class RuleEngine:
             )
 
     def _evaluate_hook_002(self, video_plan_ir: dict[str, Any], rule: dict[str, Any]) -> RuleEvaluationType:
-        """HOOK_002: First Frame Anomaly"""
+        """HOOK_002: First Frame Anomaly.
+
+        "First frame" doesn't literally mean timestamp 0 — a tolerance window
+        of 0.8s is allowed before startsMidAction's absence is treated as a
+        hard FAIL, since an anomaly established within the first beat still
+        reads as immediate to a viewer. hook.startsAt defaults to 0.0 when
+        absent (pre-1.3 IRs), which keeps the window check a no-op for them —
+        only startsMidAction/visualStrength drove the verdict before, and
+        still do when startsAt isn't provided.
+        """
         hook = video_plan_ir.get("hook", {})
         starts_mid_action = hook.get("startsMidAction", False)
         visual_strength = hook.get("visualStrength", 1)
+        starts_at = hook.get("startsAt", 0.0)
 
+        if starts_at > 0.8:
+            return RuleEvaluation(
+                rule_id="HOOK_002",
+                rule_name="First Frame Anomaly",
+                family="hook_strength",
+                severity="CRITICAL",
+                result="FAIL",
+                message=(
+                    f"Hook's anomaly starts at {starts_at:.1f}s. Maximum: 0.8s. The problem "
+                    "must be visually obvious within the opening window, not after a setup "
+                    "or wind-up."
+                ),
+                actual_value=starts_at,
+                threshold_value=0.8,
+            )
         if not starts_mid_action:
             return RuleEvaluation(
                 rule_id="HOOK_002",
@@ -930,38 +962,48 @@ class RuleEngine:
         )
 
     def _evaluate_motion_001(self, video_plan_ir: dict[str, Any], rule: dict[str, Any]) -> RuleEvaluationType:
-        """MOTION_001: No Dead Air"""
+        """MOTION_001: Continuous Meaningful Progression.
+
+        Renamed from "No Dead Air" in RULESET 1.3 — the old name implied any
+        stillness was a defect. It isn't: a brief (<=1.5s) still beat (a
+        puzzled look, a short charming reaction) is a legitimate pause, not
+        dead air. What actually matters is motion is not required, forward
+        narrative progression is. The threshold/logic are unchanged from
+        1.1/1.2 — a still beat only fails once it holds long enough that
+        it's reasonable to call it a stall rather than a readable beat.
+        """
         beats = video_plan_ir.get("beats", [])
 
-        longest_dead_air = 0.0
+        longest_still_beat = 0.0
         for beat in beats:
             if beat.get("motionAmount") == "none":
                 duration = beat.get("duration", 0.0)
-                if duration > longest_dead_air:
-                    longest_dead_air = duration
+                if duration > longest_still_beat:
+                    longest_still_beat = duration
 
-        if longest_dead_air > 1.5:
+        if longest_still_beat > 1.5:
             return RuleEvaluation(
                 rule_id="MOTION_001",
-                rule_name="No Dead Air",
+                rule_name="Continuous Meaningful Progression",
                 family="motion_quality",
                 severity="WARNING",
                 result="FAIL",
                 message=(
-                    f"Longest static (no-motion) beat is {longest_dead_air:.1f}s. Maximum: 1.5s. "
-                    "No beat should hold with zero motion for longer than this."
+                    f"Longest motionless beat is {longest_still_beat:.1f}s. Maximum: 1.5s. "
+                    "A brief still reaction (puzzled look, short charming pause) is fine — "
+                    "this flags a hold long enough to stall progression, not stillness itself."
                 ),
-                actual_value=longest_dead_air,
+                actual_value=longest_still_beat,
                 threshold_value=1.5,
             )
         return RuleEvaluation(
             rule_id="MOTION_001",
-            rule_name="No Dead Air",
+            rule_name="Continuous Meaningful Progression",
             family="motion_quality",
             severity="PASS",
             result="PASS",
-            message=f"No excessive dead air. Longest static beat: {longest_dead_air:.1f}s.",
-            actual_value=longest_dead_air,
+            message=f"No stalled progression. Longest motionless beat: {longest_still_beat:.1f}s.",
+            actual_value=longest_still_beat,
             threshold_value=1.5,
         )
 
@@ -1044,12 +1086,49 @@ class RuleEngine:
     def _evaluate_producibility_002(
         self, video_plan_ir: dict[str, Any], rule: dict[str, Any]
     ) -> RuleEvaluationType:
-        """PRODUCIBILITY_002: Prop Economy"""
+        """PRODUCIBILITY_002: Prop Economy.
+
+        RULESET 1.3 adds a timeline-aware check alongside the original static
+        count: a prop introduced mid-concept purely to manufacture another
+        attempt (rather than being established from the opening) is flagged
+        even when the total prop count is within budget. Detection is a
+        best-effort text match (a prop name appearing in a later attempt
+        beat's action/consequence but never in any earlier beat) — this is a
+        heuristic, not a guarantee, since prop names are free text; it only
+        ever adds a WARNING on top of the existing count check, never
+        replaces it.
+        """
         duration = video_plan_ir.get("metadata", {}).get("duration", 15.0)
         tier = self._get_duration_tier(duration)
         maximum = 2 if tier == "short" else 4
 
-        prop_count = len(video_plan_ir.get("setting", {}).get("mainProps", []))
+        main_props = video_plan_ir.get("setting", {}).get("mainProps", [])
+        prop_count = len(main_props)
+        beats = video_plan_ir.get("beats", [])
+
+        late_introduced_props: list[str] = []
+        for prop in main_props:
+            prop_lower = prop.lower()
+            first_mentioning_beat_index = next(
+                (
+                    i
+                    for i, b in enumerate(beats)
+                    if prop_lower in b.get("action", "").lower()
+                    or prop_lower in b.get("consequence", "").lower()
+                ),
+                None,
+            )
+            # A prop that is never mentioned in any beat text can't be judged
+            # as "introduced mid-concept" by this heuristic — skip it rather
+            # than guess.
+            if first_mentioning_beat_index is None:
+                continue
+            first_beat = beats[first_mentioning_beat_index]
+            is_mid_concept_attempt_prop = first_mentioning_beat_index > 0 and first_beat.get(
+                "isAttempt", False
+            )
+            if is_mid_concept_attempt_prop:
+                late_introduced_props.append(prop)
 
         if prop_count > maximum:
             return RuleEvaluation(
@@ -1064,7 +1143,24 @@ class RuleEngine:
                 ),
                 actual_value=prop_count,
                 required_value=maximum,
-                details={"tier": tier},
+                details={"tier": tier, "late_introduced_props": late_introduced_props},
+            )
+        if late_introduced_props:
+            return RuleEvaluation(
+                rule_id="PRODUCIBILITY_002",
+                rule_name="Prop Economy",
+                family="ai_producibility",
+                severity="WARNING",
+                result="FAIL",
+                message=(
+                    f"{len(late_introduced_props)} prop(s) first appear mid-concept inside an "
+                    f"attempt beat, not established from the opening: {late_introduced_props}. "
+                    "A prop introduced only to manufacture another attempt increases render risk "
+                    "and can read as contrived, even when the total prop count is within budget."
+                ),
+                actual_value=late_introduced_props,
+                required_value=[],
+                details={"tier": tier, "prop_count": prop_count},
             )
         return RuleEvaluation(
             rule_id="PRODUCIBILITY_002",
@@ -1170,7 +1266,11 @@ class RuleEngine:
                 ),
                 actual_value=effective_distinct_count,
                 required_value=minimum,
-                details={"tier": tier, "duplicate_pairs": duplicate_pairs},
+                details={
+                    "tier": tier,
+                    "duplicate_pairs": duplicate_pairs,
+                    "correlation_group": "ATTEMPT_REPETITION",
+                },
             )
         return RuleEvaluation(
             rule_id="ATTEMPT_002",
@@ -1370,12 +1470,17 @@ class RuleEngine:
         )
 
     def _evaluate_payoff_004(self, video_plan_ir: dict[str, Any], rule: dict[str, Any]) -> RuleEvaluationType:
-        """PAYOFF_004: Final Peak Intensity.
+        """PAYOFF_004: Final Payoff Salience.
 
-        The pass/fail verdict is entirely derived from computed beat.intensity
-        values. finalPayoff.isPeakIntensity is never read as part of the
-        decision — only consulted afterward to surface a producer/evaluator
-        disagreement in the message, never to override the computed result.
+        Renamed from "Final Peak Intensity" in RULESET 1.3 — "intensity" read
+        as "faster/bigger/more chaotic motion," which isn't the actual claim.
+        beats[].intensity is documented as a 1-10 scale of visual/emotional
+        energy, not motion magnitude: a quiet, conclusive side-eye can score
+        as high as a frantic chase. The logic is unchanged — the pass/fail
+        verdict is entirely derived from computed beat.intensity values.
+        finalPayoff.isPeakIntensity is never read as part of the decision —
+        only consulted afterward to surface a producer/evaluator disagreement
+        in the message, never to override the computed result.
         """
         beats = video_plan_ir.get("beats", [])
         final_payoff = video_plan_ir.get("finalPayoff", {})
@@ -1406,14 +1511,15 @@ class RuleEngine:
         if final_intensity < max_prior_intensity:
             return RuleEvaluation(
                 rule_id="PAYOFF_004",
-                rule_name="Final Peak Intensity",
+                rule_name="Final Payoff Salience",
                 family="final_payoff",
                 severity="WARNING",
                 result="FAIL",
                 message=(
-                    f"Final payoff intensity ({final_intensity}) is lower than an earlier peak "
-                    f"({max_prior_intensity}). The ending should be the most intense moment."
-                    f"{discrepancy_note}"
+                    f"Final payoff salience ({final_intensity}) is lower than an earlier peak "
+                    f"({max_prior_intensity}). The ending should be the most memorable/conclusive "
+                    "moment — this isn't about motion or chaos, a quiet, decisive beat can still "
+                    f"score high.{discrepancy_note}"
                 ),
                 actual_value=final_intensity,
                 required_value=max_prior_intensity,
@@ -1421,12 +1527,12 @@ class RuleEngine:
         elif final_intensity == max_prior_intensity:
             return RuleEvaluation(
                 rule_id="PAYOFF_004",
-                rule_name="Final Peak Intensity",
+                rule_name="Final Payoff Salience",
                 family="final_payoff",
                 severity="WARNING",
                 result="PASS",
                 message=(
-                    f"Final payoff intensity ({final_intensity}) ties the earlier peak. "
+                    f"Final payoff salience ({final_intensity}) ties the earlier peak. "
                     f"Acceptable but not ideal — consider making the ending strictly the peak."
                     f"{discrepancy_note}"
                 ),
@@ -1435,11 +1541,11 @@ class RuleEngine:
             )
         return RuleEvaluation(
             rule_id="PAYOFF_004",
-            rule_name="Final Peak Intensity",
+            rule_name="Final Payoff Salience",
             family="final_payoff",
             severity="PASS",
             result="PASS",
-            message=f"Final payoff intensity ({final_intensity}) is strictly the peak.{discrepancy_note}",
+            message=f"Final payoff salience ({final_intensity}) is strictly the peak.{discrepancy_note}",
             actual_value=final_intensity,
             required_value=max_prior_intensity,
         )
@@ -1490,7 +1596,7 @@ class RuleEngine:
                 ),
                 actual_value=dominant_ratio,
                 threshold_value=0.70,
-                details={"dominant_verb": dominant_verb},
+                details={"dominant_verb": dominant_verb, "correlation_group": "ATTEMPT_REPETITION"},
             )
         elif dominant_ratio > 0.55:
             return RuleEvaluation(
@@ -1506,7 +1612,7 @@ class RuleEngine:
                 ),
                 actual_value=dominant_ratio,
                 threshold_value=0.55,
-                details={"dominant_verb": dominant_verb},
+                details={"dominant_verb": dominant_verb, "correlation_group": "ATTEMPT_REPETITION"},
             )
         return RuleEvaluation(
             rule_id="REPETITION_004",

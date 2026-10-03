@@ -518,12 +518,14 @@ rules:
   version: '1.0'
 - description: The problem must already be visually obvious within the opening second,
     with no setup, narration, or text explanation required. hook.startsMidAction must
-    be true and hook.visualStrength must be at least 4/5.
+    be true and hook.visualStrength must be at least 4/5. RULESET 1.3 adds a tolerance
+    window -- hook.startsAt must be <= 0.8s (defaults to 0.0 when absent, a no-op for
+    pre-1.3 IRs); the anomaly doesn't need to be literally frame-0 to read as immediate.
   family: hook_strength
   id: HOOK_002
   name: First Frame Anomaly
   severity: CRITICAL
-  version: '1.1'
+  version: '1.3'
 - description: The core problem and physical comedy must work with audio muted. hook.soundOffClear
     must be true.
   family: hook_strength
@@ -532,11 +534,14 @@ rules:
   severity: CRITICAL
   version: '1.1'
 - description: No beat may hold with motionAmount == 'none' for longer than 1.5 seconds.
+    Renamed from "No Dead Air" in RULESET 1.3 -- brief stillness (a puzzled look,
+    a short charming reaction) is a legitimate pause, not a defect; what matters is
+    progression not stalling, not motion itself.
   family: motion_quality
   id: MOTION_001
-  name: No Dead Air
+  name: Continuous Meaningful Progression
   severity: WARNING
-  version: '1.1'
+  version: '1.3'
 - description: 'Count of beats with isAttempt == true must meet a duration-tier minimum:
     3 for videos <= 20s (short tier), 7 for videos > 20s (long tier).'
   family: concept_strength
@@ -553,12 +558,16 @@ rules:
   severity: CRITICAL
   version: '1.1'
 - description: Introduce the minimum number of props necessary. setting.mainProps
-    count must not exceed 2 for short-tier videos, 4 for long-tier videos.
+    count must not exceed 2 for short-tier videos, 4 for long-tier videos. RULESET
+    1.3 adds a timeline-aware check (heuristic, text-match based) alongside the static
+    count -- a prop first mentioned mid-concept inside an attempt beat, rather than
+    established from the opening, is flagged as a WARNING even when the total count
+    is within budget.
   family: ai_producibility
   id: PRODUCIBILITY_002
   name: Prop Economy
   severity: WARNING
-  version: '1.1'
+  version: '1.3'
 - description: 'Bonus (non-blocking): at least one beat with consequenceType == ''fake_win''
     before finalPayoff.startsAt, giving the audience a moment to believe the problem
     is solved before the final twist.'
@@ -570,8 +579,9 @@ rules:
 - description: Attempts must be mechanically distinct, not just differently worded.
     Identical primaryVerb across attempts is an automatic deterministic FAIL. Verb-distinct
     attempts are checked for semantic duplication via LLM (e.g. GRAB vs YANK may be
-    the same underlying strategy). Effective distinct count must meet the same duration-tier
-    minimum as ATTEMPT_001.
+    the same underlying strategy; RULESET 1.3 explicitly also treats intensity/angle
+    variants of the identical strategy as duplicates, e.g. PUSH/PUSH_HARDER/PUSH_FROM_LEFT).
+    Effective distinct count must meet the same duration-tier minimum as ATTEMPT_001.
   family: visual_novelty
   id: ATTEMPT_002
   name: Distinct Attempts
@@ -616,12 +626,15 @@ rules:
 - description: The final payoff's beat.intensity should be at least as high as the
     highest intensity seen earlier in the video. Computed independently from beat.intensity
     values; finalPayoff.isPeakIntensity is never trusted as the verdict, only cross-checked
-    for discrepancy reporting. Optimization-level (WARNING), never a blocker.
+    for discrepancy reporting. Optimization-level (WARNING), never a blocker. Renamed
+    from "Final Peak Intensity" in RULESET 1.3 -- "intensity" read as motion/chaos,
+    but beats[].intensity is a 1-10 visual/emotional energy scale; a quiet, conclusive
+    beat can score as high as a frantic one.
   family: final_payoff
   id: PAYOFF_004
-  name: Final Peak Intensity
+  name: Final Payoff Salience
   severity: WARNING
-  version: '1.2'
+  version: '1.3'
 - description: If a beat with consequenceType == 'fake_win' is present, the intensity
     after it must exceed the intensity at the fake win (the problem must escalate,
     not repeat or weaken, after a fake resolution). Reports NOT_APPLICABLE (not FAIL,
