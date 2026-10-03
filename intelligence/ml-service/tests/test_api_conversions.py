@@ -10,6 +10,7 @@ from fastapi.testclient import TestClient
 
 from app.api.quality import convert_quality_report
 from app.config import settings
+from app.llm.semantic_checks import SemanticCheckServiceError
 from app.main import app
 from app.parser.prompt_parser import parse_prompt
 from app.rules.rule_engine import RuleEngine
@@ -201,3 +202,36 @@ def test_convert_quality_report_exposes_evidence_missing() -> None:
     response = convert_quality_report(enhanced, "1.0")
 
     assert "beats" in response.evidence_missing
+
+
+def test_validate_endpoint_returns_200_service_error_on_llm_provider_failure() -> None:
+    """A semantic-check-dependent rule's LLM provider failing (e.g. missing
+    credentials, network error) must surface as a normal 200 response with
+    status SERVICE_ERROR, never an unstructured 500 -- the quality endpoint
+    is expected-failure-aware for provider outages."""
+    from unittest.mock import patch
+
+    client = TestClient(app)
+    # ATTEMPT_002 requires >=2 verb-distinct attempt beats to invoke its LLM
+    # semantic check at all -- construct a prompt that reaches that path.
+    attempt_prompt = (
+        "Title: Attempt Service Error Test\n\n15-second video\n\n## Characters\n- Hero: Brave\n\n"
+        "## Timeline\n"
+        "0.0-3.0 SEC: Hero pushes the box [ATTEMPT: PUSH]\n"
+        "3.0-6.0 SEC: Hero pulls the box [ATTEMPT: PULL]\n"
+        "6.0-15.0 SEC: Hero rests beside the box\n"
+    )
+    with patch(
+        "app.rules.rule_engine.find_duplicate_strategy_pairs",
+        side_effect=SemanticCheckServiceError("LLM provider unavailable: OPENAI_API_KEY not set"),
+    ):
+        response = client.post(
+            "/api/v1/quality/validate",
+            json={"prompt": attempt_prompt, "ruleset_version": "1.3"},
+        )
+
+    assert response.status_code == 200
+    body = response.json()
+    assert body["status"] == "SERVICE_ERROR"
+    assert len(body["service_errors"]) >= 1
+    assert any(se["rule_id"] == "ATTEMPT_002" for se in body["service_errors"])
