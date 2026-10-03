@@ -852,8 +852,19 @@ class RuleEngine:
     ) -> RuleEvaluationType:
         """CONSISTENCY_001: Physics Rule Consistency"""
         core_mechanic = video_plan_ir.get("coreMechanic", {})
-        consistency = core_mechanic.get("consistency", "consistent")
+        consistency = core_mechanic.get("consistency")
 
+        if consistency is None:
+            return RuleEvaluation(
+                rule_id="CONSISTENCY_001",
+                rule_name="Physics Rule Consistency",
+                family="consistency",
+                severity="WARNING",
+                result="UNKNOWN",
+                message=(
+                    "coreMechanic.consistency was not explicitly stated in the prompt and cannot be verified."
+                ),
+            )
         if consistency == "breaking":
             return RuleEvaluation(
                 rule_id="CONSISTENCY_001",
@@ -892,7 +903,7 @@ class RuleEngine:
         """
         hook = video_plan_ir.get("hook", {})
         starts_mid_action = hook.get("startsMidAction", False)
-        visual_strength = hook.get("visualStrength", 1)
+        visual_strength = hook.get("visualStrength")
         starts_at = hook.get("startsAt", 0.0)
 
         if starts_at > 0.8:
@@ -924,6 +935,18 @@ class RuleEngine:
                 actual_value=starts_mid_action,
                 required_value=True,
             )
+        if visual_strength is None:
+            return RuleEvaluation(
+                rule_id="HOOK_002",
+                rule_name="First Frame Anomaly",
+                family="hook_strength",
+                severity="CRITICAL",
+                result="UNKNOWN",
+                message=(
+                    "Hook starts mid-action, but visual strength was not explicitly stated "
+                    "in the prompt and cannot be verified."
+                ),
+            )
         if visual_strength < 4:
             return RuleEvaluation(
                 rule_id="HOOK_002",
@@ -952,8 +975,19 @@ class RuleEngine:
     def _evaluate_hook_003(self, video_plan_ir: dict[str, Any], rule: dict[str, Any]) -> RuleEvaluationType:
         """HOOK_003: Sound Independence"""
         hook = video_plan_ir.get("hook", {})
-        sound_off_clear = hook.get("soundOffClear", False)
+        sound_off_clear = hook.get("soundOffClear")
 
+        if sound_off_clear is None:
+            return RuleEvaluation(
+                rule_id="HOOK_003",
+                rule_name="Sound Independence",
+                family="hook_strength",
+                severity="CRITICAL",
+                result="UNKNOWN",
+                message=(
+                    "hook.soundOffClear was not explicitly stated in the prompt and cannot be verified."
+                ),
+            )
         if not sound_off_clear:
             return RuleEvaluation(
                 rule_id="HOOK_003",

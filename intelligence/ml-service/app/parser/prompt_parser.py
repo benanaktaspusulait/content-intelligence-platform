@@ -323,20 +323,31 @@ class PromptParser:
         return None
 
     def _extract_core_mechanic(self, text: str) -> dict[str, Any]:
-        """Extract the core physical rule"""
-        # Look for sections describing the main rule
+        """Extract the core physical rule.
+
+        consistency is only populated from explicit evidence ("breaking",
+        "evolving", or an explicit "stays consistent"/"consistent throughout"
+        statement). Absent evidence leaves consistency as None rather than
+        defaulting to the passing value "consistent" — CONSISTENCY_001 has
+        no semantic re-verification of this field, so a fabricated default
+        would manufacture a guaranteed PASS.
+        """
         rule_match = re.search(
             r"(?:ONE SIMPLE|CORE|MAIN)\s+(?:RULE|MECHANIC|CONCEPT):\s*\n((?:.*\n?)+?)(?:\n\n|={3,})",
             text,
             re.IGNORECASE | re.DOTALL,
         )
 
+        consistency = self._extract_mechanic_consistency(text)
+        if consistency is None:
+            self.warnings.append("coreMechanic.consistency not explicitly stated in prompt; evidence missing")
+
         if rule_match:
             rule_text = rule_match.group(1).strip()[:200]
             return {
                 "physicalRule": rule_text,
                 "causeEffect": "Extracted from prompt",
-                "consistency": "consistent",  # Default assumption
+                "consistency": consistency,
                 "mechanicCount": 1,  # Default assumption; author/parser does not
                 # currently detect multiple mechanics from
                 # text — CONCEPT_007 verifies this claim
@@ -347,9 +358,33 @@ class PromptParser:
         return {
             "physicalRule": "Inferred from beat actions",
             "causeEffect": "Action-based consequence",
-            "consistency": "consistent",
+            "consistency": consistency,
             "mechanicCount": 1,
         }
+
+    def _extract_mechanic_consistency(self, text: str) -> str | None:
+        """Extract an explicit rule-consistency statement. Returns one of
+        "breaking", "evolving", "consistent", or None if the prompt makes
+        no explicit claim either way.
+
+        Deliberately requires the claim to be stated near the word "rule"
+        or "mechanic" (within the same ~60-character window), not just
+        anywhere in the prompt — a bare "breaks" elsewhere in the text (e.g.
+        "pencil breaks" describing a physical prop event, not the physics
+        rule itself) must not be misread as a rule-consistency statement.
+        """
+        text_lower = text.lower()
+        if re.search(r"(?:rule|mechanic)[^.]{0,60}\bbreak(?:s|ing)?\b", text_lower) or re.search(
+            r"\bbreak(?:s|ing)?\b[^.]{0,60}(?:rule|mechanic)", text_lower
+        ):
+            return "breaking"
+        if re.search(r"(?:rule|mechanic)[^.]{0,60}\bevolv(?:es|ing)\b", text_lower) or re.search(
+            r"\bevolv(?:es|ing)\b[^.]{0,60}(?:rule|mechanic)", text_lower
+        ):
+            return "evolving"
+        if "stays consistent" in text_lower or "consistent throughout" in text_lower:
+            return "consistent"
+        return None
 
     def _parse_timeline_beats(self, text: str, duration: float) -> list[dict[str, Any]]:
         """
@@ -579,19 +614,51 @@ class PromptParser:
         return []
 
     def _identify_hook(self, text: str, beats: list[dict[str, Any]]) -> dict[str, Any]:
-        """Identify hook characteristics"""
-        # Look for HOOK section or use first beat
+        """Identify hook characteristics.
+
+        visualStrength and soundOffClear are only ever populated from
+        explicit evidence in the prompt text. A prompt with no HOOK section
+        and no visual-strength/sound-off language leaves both as None
+        (evidence missing) rather than defaulting to values that would pass
+        HOOK_002's un-reverified threshold checks.
+        """
         starts_mid_action = "start" in text.lower() and ("mid" in text.lower() or "action" in text.lower())
 
         first_beat = beats[0] if beats else None
+
+        visual_strength = self._extract_hook_visual_strength(text)
+        sound_off_clear = self._extract_hook_sound_off_clear(text)
+
+        if visual_strength is None:
+            self.warnings.append("hook.visualStrength not explicitly stated in prompt; evidence missing")
+        if sound_off_clear is None:
+            self.warnings.append("hook.soundOffClear not explicitly stated in prompt; evidence missing")
 
         return {
             "anomaly": first_beat["action"] if first_beat else "Unknown",
             "startsAt": 0.0,
             "startsMidAction": starts_mid_action,
-            "visualStrength": 4,  # Default assumption
-            "soundOffClear": True,  # Default assumption
+            "visualStrength": visual_strength,
+            "soundOffClear": sound_off_clear,
         }
+
+    def _extract_hook_visual_strength(self, text: str) -> int | None:
+        """Extract an explicit visual-strength rating (1-5) from a HOOK
+        section, e.g. "Visual strength: 5". Returns None when absent."""
+        match = re.search(r"visual\s*strength[:\s]+(\d)", text, re.IGNORECASE)
+        if match:
+            value = int(match.group(1))
+            if 1 <= value <= 5:
+                return value
+        return None
+
+    def _extract_hook_sound_off_clear(self, text: str) -> bool | None:
+        """Extract an explicit sound-off-clear claim from a HOOK section,
+        e.g. "Sound off clear: true". Returns None when absent."""
+        match = re.search(r"sound\s*off\s*clear[:\s]+(true|false|yes|no)", text, re.IGNORECASE)
+        if match:
+            return match.group(1).lower() in ("true", "yes")
+        return None
 
     def _identify_final_payoff(
         self, text: str, beats: list[dict[str, Any]], duration: float

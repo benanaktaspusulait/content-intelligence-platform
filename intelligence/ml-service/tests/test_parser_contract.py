@@ -178,3 +178,75 @@ Title: Plain Beat
     ir = parse_prompt(prompt).video_plan_ir
     assert ir["finalPayoff"]["loopsToOpening"] is False
     assert ir["finalPayoff"]["loopQuality"] == "none"
+
+
+def test_hook_fields_are_none_when_no_explicit_evidence() -> None:
+    """A prompt with no HOOK: section and no visual-strength/sound-off
+    language must not fabricate a passing visualStrength=4/soundOffClear=True
+    — those become None (evidence missing), not an invented pass."""
+    prompt = """
+Title: Plain Beat
+
+15-second video
+
+## Timeline
+0.0-15.0 SEC: Hero — stands still
+"""
+    result = parse_prompt(prompt)
+    ir = result.video_plan_ir
+    assert ir["hook"]["visualStrength"] is None
+    assert ir["hook"]["soundOffClear"] is None
+    assert "hook.visualStrength" in " ".join(result.metadata.warnings) or any(
+        "visualStrength" in w for w in result.metadata.warnings
+    )
+
+
+def test_hook_fields_are_populated_when_explicit_evidence_present() -> None:
+    """An explicit HOOK: section with a stated visual strength and sound-off
+    claim is parsed, not discarded."""
+    prompt = """
+Title: Loud Hook
+
+15-second video
+
+## Hook
+Visual strength: 5
+Sound off clear: true
+
+## Timeline
+0.0-15.0 SEC: Hero — explodes into view
+"""
+    ir = parse_prompt(prompt).video_plan_ir
+    assert ir["hook"]["visualStrength"] == 5
+    assert ir["hook"]["soundOffClear"] is True
+
+
+def test_core_mechanic_consistency_is_none_when_not_stated() -> None:
+    """No explicit consistency statement in the prompt must not default to
+    the passing value "consistent" — it becomes None (evidence missing)."""
+    prompt = """
+Title: Plain Beat
+
+15-second video
+
+## Timeline
+0.0-15.0 SEC: Hero — stands still
+"""
+    ir = parse_prompt(prompt).video_plan_ir
+    assert ir["coreMechanic"]["consistency"] is None
+
+
+def test_core_mechanic_consistency_is_parsed_when_explicitly_stated() -> None:
+    prompt = """
+Title: Breaking Rule
+
+15-second video
+
+## Core Rule
+The rule breaks halfway through on purpose for the twist.
+
+## Timeline
+0.0-15.0 SEC: Hero — walks normally
+"""
+    ir = parse_prompt(prompt).video_plan_ir
+    assert ir["coreMechanic"]["consistency"] == "breaking"
