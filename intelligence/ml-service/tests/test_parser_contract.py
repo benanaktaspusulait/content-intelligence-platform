@@ -314,3 +314,27 @@ Title: Mimi vs Rug
 """
     ir = parse_prompt(prompt).video_plan_ir
     assert ir["beats"][0]["primaryVerb"] == "GRAB"
+
+
+def test_noun_phrase_with_whitelisted_second_word_is_not_misread_as_attempt() -> None:
+    """A sentence led by an article/determiner ("The push...", "A turn...")
+    using a whitelisted verb word as a NOUN, not an actor performing an
+    action, must not be inferred as an attempt just because word 2 happens
+    to be in the whitelist -- the leading-subject-skip logic only applies
+    when word 1 is a plausible capitalized subject (e.g. a character name),
+    never an article/determiner."""
+    prompt = """
+Title: Narrated Events
+
+15-second video
+
+## Timeline
+0.0-7.0 SEC: The push toward the door failed completely
+7.0-15.0 SEC: A turn of events surprises everyone watching
+"""
+    ir = parse_prompt(prompt).video_plan_ir
+    beats = ir["beats"]
+    assert beats[0]["isAttempt"] is False
+    assert beats[0]["primaryVerb"] == ""
+    assert beats[1]["isAttempt"] is False
+    assert beats[1]["primaryVerb"] == ""

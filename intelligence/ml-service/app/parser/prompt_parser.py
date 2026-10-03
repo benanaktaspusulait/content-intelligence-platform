@@ -489,6 +489,15 @@ class PromptParser:
         }
     )
 
+    # Articles/determiners that can lead a noun phrase using a word that is
+    # ALSO in _INFERABLE_ATTEMPT_VERBS (e.g. "the push", "a turn") without
+    # that word being used as a verb at all. A leading word followed
+    # immediately by one of these is never treated as a subject-skip
+    # candidate -- "The push toward the door failed" must not infer an
+    # attempt just because word 2 ("push") is whitelisted; "push" there is
+    # a noun, not a character performing an action.
+    _NON_SUBJECT_LEADING_WORDS = frozenset({"THE", "A", "AN", "NO", "THIS", "THAT", "THESE", "THOSE"})
+
     def _infer_attempt_from_leading_verb(self, description: str) -> tuple[bool, str]:
         """Infer isAttempt/primaryVerb from an unmarked beat's leading word,
         when that word is a known physical action verb. Returns
@@ -500,11 +509,18 @@ class PromptParser:
         "Mimi catches the cup" or "Mimi — catches the cup"). To find the
         verb to check against the whitelist, this looks at the first word;
         if that word is not itself in the whitelist, it also checks the
-        word immediately after a single leading subject token (skipping
-        over one optional dash/em-dash separator) rather than only ever
-        checking the literal first token -- a bare name like "Mimi" is
-        never in _INFERABLE_ATTEMPT_VERBS, so this does not loosen the
-        conservative matching, it just locates the verb correctly.
+        word immediately after a leading subject token -- but ONLY when
+        that first word plausibly IS a subject (capitalized, and not an
+        article/determiner in _NON_SUBJECT_LEADING_WORDS). This prevents a
+        noun-phrase sentence like "The push toward the door failed" or "A
+        turn of events surprises everyone" from being misread as an
+        attempt just because word 2 happens to be whitelisted -- there,
+        word 1 ("The"/"A") is a determiner, not a character's name, so the
+        second-word check never fires. A bare name like "Mimi" is itself
+        never in _INFERABLE_ATTEMPT_VERBS, so allowing the second-word
+        check for genuine capitalized-subject cases does not loosen the
+        conservative matching; it only locates the verb correctly when a
+        real subject precedes it.
         """
         stripped = description.strip()
         first_word_match = re.match(r"[A-Za-z]+", stripped)
@@ -514,9 +530,17 @@ class PromptParser:
         if first_word in self._INFERABLE_ATTEMPT_VERBS:
             return True, first_word
 
-        # Not a verb on its own -- check if it's a leading subject token
-        # (e.g. a character name) immediately followed by the real verb,
-        # with an optional dash separator in between.
+        # Not a verb on its own -- only treat it as a skippable subject
+        # token when it's capitalized in the original text (a plausible
+        # proper noun/character name) and not a determiner/article that
+        # would make the following word a noun, not a verb.
+        first_word_raw = stripped[: first_word_match.end()]
+        is_plausible_subject = (
+            first_word_raw[:1].isupper() and first_word not in self._NON_SUBJECT_LEADING_WORDS
+        )
+        if not is_plausible_subject:
+            return False, ""
+
         after_first_word = stripped[first_word_match.end() :]
         second_word_match = re.match(r"\s*(?:[-—–]\s*)?([A-Za-z]+)", after_first_word)
         if second_word_match:
