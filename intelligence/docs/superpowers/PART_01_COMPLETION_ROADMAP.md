@@ -49,15 +49,20 @@ No contradiction found between the spec and the actual schema/classes.
 ## 1. Decomposition into sub-plans
 
 Per `writing-plans` skill's scope-check rule (a spec touching multiple independent
-subsystems must be split before planning), this work is split into 8 sub-plans, each
+subsystems must be split before planning), this work is split into sub-plans, each
 independently plannable/testable/committable. **Work them in order — later plans assume
-earlier plans' deliverables exist.**
+earlier plans' deliverables exist.** (Originally 8 sub-plans A–H; Plan C was further split
+into C0–C3 mid-session once investigation showed the single "Plan C" would have been
+either incomplete or quietly dishonest — see the note below the dependency list.)
 
 | # | Plan name | Spec phases covered | Codebase(s) | Status |
 |---|---|---|---|---|
 | A | Python outcome model + API contract completion | 1, 5, 6, 13 | ml-service, backend | ✅ Done (commit `5a9ffd0`, see §4 for details) |
 | B | Vision QA fix (image passthrough + character verifier) | 7 | ml-service | ⬜ Not started |
-| C | Spring evidence chain + independent revalidation + DB migration | 3, 4 | backend | ⬜ Not started |
+| C0 | Semantic evaluation provenance threading | 3 (prerequisite) | ml-service | ⬜ Not started |
+| C1 | Evidence contract cleanup (remove `producibilityValidatorVersion`) | 3 (prerequisite) | backend | ⬜ Not started |
+| C2 | Independent revalidation + SERVICE_ERROR persistence | 3, 4 | backend | ⬜ Not started |
+| C3 | End-to-end RENDER_READY authorization tests | 3, 4, 18 (partial) | backend, ml-service | ⬜ Not started |
 | D | Render authorization stage model + evidence invalidation | 2, 15 | ml-service, backend, creative-render-service | ⬜ Not started |
 | E | Auto-fix repair + rule metadata single-source + recommendations | 8, 9, 10, 11 | ml-service | ⬜ Not started |
 | F | Angular quality screen reconnection | 14 | frontend | ⬜ Not started |
@@ -70,21 +75,62 @@ touching code adjacent to feedback modules or variant/folder identity must expli
 preserve the deferred/non-production marking — never quietly wire them in.
 
 ### Dependency notes
-- **C depends on A** conceptually (same outcome-model vocabulary) but is a separate codebase
-  (Spring) and separate migration — can start once A's contracts are stable, doesn't need to
-  wait for A's full merge.
-- **D depends on A and C** (needs the stage model concept from A's rule metadata and the
-  evidence fields C populates).
+- **C0 depends on A** conceptually (same outcome-model vocabulary, same ml-service files
+  Plan A already touched) but is otherwise self-contained.
+- **C1 depends on nothing new** — it only removes a requirement, doesn't need C0's data.
+- **C2 depends on C0 and C1 both being done** — C2's `IntelligenceQualityValidationService`
+  changes need C0's real `semanticProvider`/`semanticModelVersion` data to populate, and
+  C1's removal of `producibilityValidatorVersion` from the required-evidence check so C2's
+  work can actually reach `RENDER_READY` without inventing data for a field C1 retired.
+- **C3 depends on C0, C1, and C2 all being done** — it's the end-to-end proof that the
+  whole chain works together.
+- **D depends on A and C2** (needs the stage model concept from A's rule metadata and the
+  evidence fields C2 populates).
 - **E depends on A** (rule metadata single-source needs the outcome model finalized).
 - **F depends on A** (Angular models need the finalized API contract shape).
-- **H depends on A–G all being done.**
+- **H depends on A, B, C0–C3, D, E, F, G all being done.**
 - **B and G are independent of everything else** — can be done in any order, even in
-  parallel with A if desired, but default sequencing below does them after A/C/D since they
+  parallel with A if desired, but default sequencing below does them after A/C*/D since they
   are lower architectural risk.
 
-Suggested execution order: **A → C → D → E → B → F → G → H**. (B and G moved later only
-because they're self-contained and lower-risk to slot in opportunistically; reorder freely
-if it's more convenient to do B or G earlier.)
+Suggested execution order: **A → C0 → C1 → C2 → C3 → D → E → B → F → G → H**. (B and G
+moved later only because they're self-contained and lower-risk to slot in
+opportunistically; reorder freely if it's more convenient to do B or G earlier.)
+
+**Why Plan C was split into C0-C3 (decided 2026-10-03, mid-session, before any Plan C
+code was written):** investigating Plan C's file list before writing its plan surfaced
+two problems that would have made the original single "Plan C" either incomplete or
+quietly dishonest:
+
+1. `semanticProvider`/`semanticModelVersion` — the evidence fields `ValidationEvidenceService`
+   already requires for `RENDER_READY` — have no data path at all today. Each LLM provider
+   object (`OpenAIProvider`, `ClaudeProvider`, `GeminiProvider`, `OllamaProvider`) carries a
+   `self.model` attribute, but nothing between the 8 semantic-check call sites in
+   `rule_engine.py` and the API response ever captures or forwards it. Building the
+   independent-revalidation chain (original "Plan C") without this would leave every
+   validation permanently stuck at `NEEDS_REVISION` regardless of how correct the
+   revalidation logic is — `ValidationEvidenceService.resolveStatus` requires
+   `semanticProvider`/`semanticModelVersion` non-null for `RENDER_READY`, and nothing would
+   ever populate them. This is now **Plan C0**, done first, in `ml-service` (not `backend`).
+2. `producibilityValidatorVersion` assumes a separate "producibility validator" runtime
+   exists. It does not: `ai_producibility` is a family of ordinary deterministic rules in
+   `RULESET_1.3.yaml` (`PRODUCIBILITY_001/002/003`), already fully described by
+   `deterministicRulesetVersion`. Populating `producibilityValidatorVersion` with anything
+   (including copying `deterministicRulesetVersion` into it) would fabricate a second
+   version axis for something that is not architecturally separate. **Plan C1** removes
+   this field from the required-evidence contract (deprecate the column, stop requiring it
+   for `RENDER_READY`) rather than inventing data to satisfy it.
+
+**C0's target data model** (decided with the user, not to be redesigned without
+re-confirming): a `SemanticEvaluationProvenance` record per semantic-check-backed rule
+evaluation — `provider`, `model`, `semantic_check_version`, and which `rule_id`s it backed
+— not a single flat `semanticProvider`/`semanticModelVersion` pair hardcoded at the report
+level. Different rules may use different providers/models in the future (e.g. `GOAL_001`
+on one model, `PERFORMANCE_001` on another) and the data model must not foreclose that.
+`QualityReportResponse`/`QualityReportDto` expose the full `semantic_evaluations` list; a
+convenience single `semanticProvider`/`semanticModelVersion` pair is derived at the Spring
+evidence-service layer only when every entry in the list agrees (same provider, same
+model) — never fabricated when they don't.
 
 ---
 
@@ -131,22 +177,80 @@ reaching callers as an unstructured error.
 **Goal:** character continuity QA actually sees both the canonical reference and sampled
 rendered frames (early/middle/late, skipping failed extractions) when judging consistency.
 
-### Plan C — Spring evidence chain + independent revalidation + DB migration
+### Plan C0 — Semantic evaluation provenance threading
+**Phases:** 3 (prerequisite — makes semantic evidence fields real before C2 needs them)
+**Files:**
+- `intelligence/ml-service/app/llm/semantic_checks.py` (every semantic-check function
+  returns which provider/model backed its judgment, not just the judgment itself)
+- `intelligence/ml-service/app/rules/rule_engine.py` (all 8 semantic-check-calling
+  evaluators: `_evaluate_attempt_002`, `_evaluate_payoff_003`, `_evaluate_concept_007`,
+  `_evaluate_goal_001`, `_evaluate_concept_008`, `_evaluate_hook_004`,
+  `_evaluate_performance_001`, `_evaluate_generation_executable_attempts` — thread
+  provenance into each evaluation)
+- `intelligence/ml-service/app/quality/contracts.py` (new `SemanticEvaluationProvenance`
+  frozen dataclass: `provider`, `model`, `semantic_check_version`, `rule_ids`; new
+  `semantic_evaluations: tuple[SemanticEvaluationProvenance, ...]` field on
+  `EnhancedQualityReport`)
+- `intelligence/ml-service/app/api/quality.py` (expose `semantic_evaluations` on
+  `QualityReportResponse`)
+- Mirror onto `intelligence/backend/.../quality/DtoModels.java` /
+  `QualityReportDto.java` (new `SemanticEvaluationProvenanceDto` + `semanticEvaluations`
+  list field, same pattern as Plan A's Task 8)
+**Goal:** every semantic-check-backed rule evaluation records which LLM provider and model
+version actually produced its judgment, with no flat/fabricated single
+`semanticProvider`/`semanticModelVersion` pair invented at the report level — the data
+model stays honest even once different rules use different providers.
+
+### Plan C1 — Evidence contract cleanup
+**Phases:** 3 (prerequisite — stops requiring evidence that cannot exist)
+**Files:**
+- `ValidationEvidenceService.java` (`resolveStatus`/`requireCompleteBaseEvidence`: drop
+  `producibilityValidatorVersion` from the required-evidence checks entirely)
+- `ValidationEvidencePolicy.java` (drop the same field from its `EVIDENCE_VERSIONS_INCOMPLETE`
+  check)
+- `QualityValidationEntity.java` (mark `producibilityValidatorVersion` field `@Deprecated`,
+  keep the column — nullable, unused, not dropped; a schema-removal migration is a separate,
+  later, non-urgent cleanup, not part of this plan)
+- Doc note added to `ValidationEvidenceService`'s Javadoc explaining why: AI producibility
+  validation is part of the deterministic versioned ruleset; its version is
+  `deterministicRulesetVersion`; there is no independent producibility validator runtime.
+**Goal:** stop requiring evidence for a system that does not exist. Never write
+`producibilityValidatorVersion = deterministicRulesetVersion` just to satisfy the gate —
+that would make the data model lie.
+
+### Plan C2 — Independent revalidation + SERVICE_ERROR persistence
 **Phases:** 3, 4
 **Files:**
-- New migration `V31__...sql` (never edit V1-V30; status CHECK constraint fix for
-  `SERVICE_ERROR`, any new provenance columns: semanticCheckVersion, parserVersion,
-  evaluator/rule-engine version, validationStage)
-- `IntelligenceQualityValidationService.java` (populate all evidence fields from actual ML
-  response; implement real independent revalidation as a *second* fresh validation call,
-  not a copy of the first validation's ID)
-- `ValidationEvidenceService.java` (should need minimal change — already recomputes status
-  correctly; verify it reads any new columns)
+- New migration `V31__...sql` (never edit V1-V30; status CHECK constraint fix to allow
+  `SERVICE_ERROR`)
+- `IntelligenceQualityValidationService.java` (now that C0 makes `semanticProvider`/
+  `semanticModelVersion` real: populate them from the ML response; implement real
+  independent revalidation as a *second* fresh validation call, not a copy of the first
+  validation's ID — new `independentlyRevalidate(long originalValidationRecordId)` method
+  and a new `POST /api/v1/intelligence/quality/{id}/revalidate` endpoint; return 409 if the
+  original record already has a non-null `independentRevalidationId`, since a validation's
+  independent-revalidation link is set once and locked, not replaceable)
+- `ValidationEvidenceService.java` (verify it reads the now-real semantic provenance fields
+  correctly; no change expected beyond what C1 already did)
 - `ValidationDecisionStatus.java`, `QualityReportDto.java` (SERVICE_ERROR persistence path)
 **Goal:** a render-authorizing validation can actually reach RENDER_READY with real
-evidence, and independent revalidation is a genuine second execution (same content/prompt/
-ruleset/stage, fresh semantic calls, separate DB row, recorded relationship to the
-original) — not the original validation's ID copied into its own evidence field.
+evidence (depends on C0 and C1 both being done first), and independent revalidation is a
+genuine second execution (same content/prompt/ruleset/stage, fresh semantic calls, separate
+DB row, recorded relationship to the original) — not the original validation's ID copied
+into its own evidence field.
+
+### Plan C3 — End-to-end RENDER_READY authorization tests
+**Phases:** 3, 4, 18 (partial — the render-authorization-specific scenarios only; the full
+Phase 18 suite is Plan H)
+**Files:**
+- New integration test(s) spanning: valid prompt → validation #1 → semantic provenance
+  persisted (C0) → independent validation #2 → complete evidence → `RENDER_READY` → render
+  gate accepts the exact prompt/hash/version; same record + changed prompt hash → denied;
+  semantic provider timeout → `SERVICE_ERROR` persisted → render denied.
+**Goal:** automated proof that the full chain (C0 + C1 + C2) actually reaches
+`RENDER_READY` under real evidence, not just that each piece's unit tests pass in
+isolation. Do not mark Plan C done, or claim render authorization "works," until these
+pass.
 
 ### Plan D — Render authorization stage model + evidence invalidation
 **Phases:** 2, 15
