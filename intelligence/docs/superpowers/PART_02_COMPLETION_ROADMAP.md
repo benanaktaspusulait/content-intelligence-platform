@@ -84,7 +84,7 @@ touch the variant model Plan B introduces).
 
 | # | Plan name | Audit section | Codebase(s) | Status |
 |---|---|---|---|---|
-| A | Observation mathematics correctness (metric semantics + source reconciliation + checkpoint tolerance) | Phase A | backend | ⬜ Not started |
+| A | Observation mathematics correctness (metric semantics + source reconciliation + checkpoint tolerance) | Phase A | backend | ✅ Done, backend-only (commit `ffbdf84`, see §4 for completion record and 2 open follow-ups) |
 | B1 | Variant domain (entity/repository/service/API) | Phase B.1 | backend | ⬜ Not started |
 | B2 | Variant-aware ingest, import, publication, performance queries + path-alias dedup | Phase B.2-5 | backend, frontend | ⬜ Not started |
 | C | Creative analysis completion (stop duplicate ML calls, surface analysis in Video Detail) | Phase C | backend, frontend | ⬜ Not started |
@@ -235,7 +235,73 @@ results.
 
 ---
 
-## 3. Session handoff protocol
+## 4. Plan A completion record
+
+**Status: ✅ Done (backend-only — see open follow-ups below).** Executed via
+`subagent-driven-development`, 4 tasks, each with an implementer → review → fix-round cycle (no
+fix rounds were actually needed — every task was Approved on first review). Plan doc:
+`docs/superpowers/plans/2026-10-03-part02-plan-a-observation-mathematics.md`.
+
+Final state: Spring test suite 78/78 passing, `BUILD SUCCESS`. Full-plan diff reviewed
+holistically (not just per-task) and found Approved-with-follow-ups — no cross-task
+inconsistency, no global-constraint violation, but two gaps between the plan's stated Goal and
+what actually landed, both now documented rather than silently assumed covered.
+
+Commit range: `fad3c22..ffbdf84` (4 commits, one per task, no fix-round commits needed).
+
+Delivered:
+- New `ObservationSeries` utility (`intelligence/backend/.../performance/ObservationSeries.java`):
+  converts raw, possibly-mixed-`metric_semantics` observation rows into one honest cumulative-views
+  series — `DAILY_INCREMENT` rows accumulate into a running sum (scoped independently per
+  `source`), `CUMULATIVE`/`SNAPSHOT` rows are used directly, `UNKNOWN`/null-views rows are excluded
+  entirely (never guessed).
+- `PerformanceTrajectoryController.trajectory()` now routes through this normalization instead of
+  computing velocity as a raw consecutive-row `views` diff — closes the audit's exact failure case
+  (two `DAILY_INCREMENT` rows of 1,000 then 300 no longer produce a nonsensical -700 delta). Also
+  gained explicit source reconciliation: when more than one `source` is present, the response's
+  new `sourcesPresent`/`sourceReconciliationApplied` fields disclose this, and the series uses only
+  the dominant source rather than silently interleaving two incompatible streams.
+- `PlatformGrowthProfileService.profile()`'s checkpoints (6h/24h/48h/7d) get the same
+  normalization, plus a new `withinTolerance` flag on `MetricCheckpoint`: a checkpoint satisfied
+  only by an observation more than 2 hours from its target horizon is now flagged as such rather
+  than silently accepted as if accurate — closes the audit's "24h checkpoint built from a 1-hour
+  observation" finding.
+- `PlatformStateService`'s Reach Further window lookups (`pointAtOrBefore`/`pointAtOrAfter`) gained
+  the same `withinTolerance` flag on `MetricPoint`, consistent naming/semantics with the above.
+
+**Known, accepted gaps (NOT delivered by Plan A, documented in the plan doc's "Scope addendum"
+added after the whole-plan review found them, 2026-10-03):**
+
+1. **Frontend never consumes the three new fields.** `sourcesPresent`/`sourceReconciliationApplied`
+   (on `TrajectoryView`) and both `withinTolerance` fields exist in API responses only —
+   `intelligence/frontend/`'s TypeScript types and templates have zero references to any of them.
+   A stale or multi-source-reconciled checkpoint is correctly flagged by the backend today but
+   still renders identically to a clean one in the product. **This needs an explicit follow-up
+   task** — most naturally folded into Plan D ("Evidence honesty") since that plan already touches
+   `video-detail.page.ts`'s data-rendering logic, or Plan B2 if it ends up touching the same
+   TypeScript interfaces for variant-aware queries. Do not assume this is silently covered by
+   either plan without checking.
+2. **`PlatformStateService`'s Reach Further velocity/window math remains metric-semantics-blind.**
+   Task 4 only added the tolerance-window flag to `pointAtOrBefore`/`pointAtOrAfter`/`latestPoint`
+   — it deliberately did NOT route this code path through `ObservationSeries.normalize()`, unlike
+   Tasks 2 and 3. This means `velocity()`, used by `reachFurtherSummary()`'s before/after-3h
+   acceleration calculation, can still compute an incorrect value from raw `DAILY_INCREMENT` rows
+   — the identical bug class Tasks 2/3 fixed elsewhere, just not here. This was a deliberate,
+   lower-priority scope cut to finish Plan A on the audit's Phase A schedule, not an oversight.
+   **Should be closed before Reach Further evidence is used for anything higher-stakes than
+   descriptive display** (e.g. as Part 03 training data).
+
+Also independently flagged by Task 4's reviewer (not fixed, not blocking): `CHECKPOINT_TOLERANCE`
+(`Duration.ofHours(2)`) is defined identically in both `PlatformGrowthProfileService.java` and
+`PlatformStateService.java` — two independent constants with the same value today, no shared
+source of truth. Low risk now, but recommend consolidating (e.g. into `ObservationSeries`, already
+the shared home for cross-cutting observation-math concepts) before a third consumer appears or
+before anyone needs to change the tolerance value, to prevent silent divergence between the two
+files.
+
+---
+
+## 5. Session handoff protocol
 
 - Before starting work in a new session: read this file, run `git log --oneline -10` on `master`
   to see what's actually landed, check the status table in §1 against reality (a plan may be

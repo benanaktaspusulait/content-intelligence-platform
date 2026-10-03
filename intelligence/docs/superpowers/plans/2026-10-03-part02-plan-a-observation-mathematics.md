@@ -19,6 +19,26 @@ interleaving CSV-origin and Meta-Graph-origin rows. `PlatformGrowthProfileServic
 **Tech Stack:** Java 21, Spring Boot (`JdbcClient`, no JPA entity for these tables — raw SQL +
 record mapping), PostgreSQL 17, JUnit 5 + AssertJ, Testcontainers for DB-backed tests.
 
+**Scope addendum (added after whole-plan review, 2026-10-03):** this plan's Goal is backend-only.
+The three new correctness signals it introduces (`TrajectoryView.sourcesPresent`/
+`sourceReconciliationApplied`, `MetricCheckpoint.withinTolerance`, `MetricPoint.withinTolerance`)
+land in the API responses but are **not yet consumed anywhere in the Angular frontend** —
+`intelligence/frontend/`'s TypeScript types and templates are untouched by this plan. A stale or
+multi-source-reconciled checkpoint is now correctly flagged at the API layer, but still renders
+identically to a clean one in the product today. Frontend consumption of these fields is explicit
+follow-up work, most naturally inside Plan D ("Evidence honesty") or Plan B2's frontend variant
+work — not silently assumed to be covered here. Additionally, `PlatformStateService`'s Reach
+Further window/velocity calculations (`point()`, `pointAtOrBefore()`, `pointAtOrAfter()`,
+`velocity()`) remain deliberately **not** routed through `ObservationSeries.normalize()` — Task 4
+only adds the tolerance-window flag to this path, not metric-semantics accumulation. This means a
+Reach-Further-eligible video with `DAILY_INCREMENT` rows can still produce an incorrect
+window/velocity value via this specific code path, even though the equivalent bug is fixed in
+`PerformanceTrajectoryController` (Task 2) and `PlatformGrowthProfileService` (Task 3). This is a
+named, accepted gap, not an oversight — closing it was judged lower priority than finishing the
+Phase A completion order on schedule, but it should be picked up before `PlatformStateService`'s
+Reach Further evidence is used for anything higher-stakes than descriptive display (e.g. training
+data for Part 03).
+
 ## Global Constraints
 
 - Never edit a previously-committed migration (V1-V31). Any new migration starts at `V32`.
