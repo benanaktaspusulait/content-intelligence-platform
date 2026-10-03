@@ -1,5 +1,9 @@
 package com.pompomhills.intelligence.quality;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import java.util.List;
 import java.util.Map;
 import org.slf4j.Logger;
@@ -20,6 +24,7 @@ public class QualityMlClient {
   private static final Logger log = LoggerFactory.getLogger(QualityMlClient.class);
 
   private final RestClient restClient;
+  private final ObjectMapper mlObjectMapper;
 
   public QualityMlClient(
       @Value("${ml.service.url:http://localhost:8001}") String mlServiceUrl,
@@ -29,6 +34,8 @@ public class QualityMlClient {
             .baseUrl(mlServiceUrl)
             .defaultHeader("Content-Type", "application/json")
             .build();
+    this.mlObjectMapper =
+        new ObjectMapper().setPropertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE);
 
     log.info("ML client initialized with base URL: {}", mlServiceUrl);
   }
@@ -48,10 +55,13 @@ public class QualityMlClient {
             "prompt",
             prompt,
             "ruleset_version",
-            rulesetVersion != null ? rulesetVersion : "latest");
+            rulesetVersion != null ? rulesetVersion : "latest",
+            "evaluation_stage",
+            "PRE_RENDER");
 
     try {
-      return restClient
+      String body =
+          restClient
           .post()
           .uri("/api/v1/quality/validate")
           .body(request)
@@ -67,7 +77,8 @@ public class QualityMlClient {
               (req, res) -> {
                 throw new MlServiceException("ML service error: " + res.getStatusText());
               })
-          .body(QualityReportDto.class);
+          .body(String.class);
+      return readBody(body, QualityReportDto.class);
 
     } catch (Exception ex) {
       log.error("ML service call failed", ex);
@@ -99,12 +110,14 @@ public class QualityMlClient {
             "version_after",
             versionAfter != null ? versionAfter : "after");
 
-    return restClient
+    String body =
+        restClient
         .post()
         .uri("/api/v1/quality/compare-versions")
         .body(request)
         .retrieve()
-        .body(RegressionReportDto.class);
+        .body(String.class);
+    return readBody(body, RegressionReportDto.class);
   }
 
   /**
@@ -115,12 +128,13 @@ public class QualityMlClient {
   public List<RulesetVersionDto> listRulesets() {
     log.debug("Calling ML service: /rulesets");
 
-    return restClient
+    String body =
+        restClient
         .get()
         .uri("/api/v1/quality/rulesets")
         .retrieve()
-        .body(
-            new org.springframework.core.ParameterizedTypeReference<List<RulesetVersionDto>>() {});
+        .body(String.class);
+    return readBody(body, new TypeReference<List<RulesetVersionDto>>() {});
   }
 
   /**
@@ -132,7 +146,8 @@ public class QualityMlClient {
   public RulesetVersionDto getRuleset(String version) {
     log.debug("Calling ML service: /rulesets/{}", version);
 
-    return restClient
+    String body =
+        restClient
         .get()
         .uri("/api/v1/quality/rulesets/{version}", version)
         .retrieve()
@@ -142,7 +157,8 @@ public class QualityMlClient {
               throw new QualityValidationException(
                   "Ruleset not found: " + version, "RULESET_NOT_FOUND");
             })
-        .body(RulesetVersionDto.class);
+        .body(String.class);
+    return readBody(body, RulesetVersionDto.class);
   }
 
   /**
@@ -155,11 +171,13 @@ public class QualityMlClient {
   public RulesetComparisonDto compareRulesets(String fromVersion, String toVersion) {
     log.debug("Calling ML service: /rulesets/compare");
 
-    return restClient
+    String body =
+        restClient
         .get()
         .uri("/api/v1/quality/rulesets/compare/{from}/{to}", fromVersion, toVersion)
         .retrieve()
-        .body(RulesetComparisonDto.class);
+        .body(String.class);
+    return readBody(body, RulesetComparisonDto.class);
   }
 
   /**
@@ -171,9 +189,33 @@ public class QualityMlClient {
     log.debug("Calling ML service: /health");
 
     try {
-      return restClient.get().uri("/api/v1/quality/health").retrieve().body(HealthDto.class);
+      String body =
+          restClient.get().uri("/api/v1/quality/health").retrieve().body(String.class);
+      return readBody(body, HealthDto.class);
     } catch (Exception ex) {
       return new HealthDto("DOWN", ex.getMessage());
+    }
+  }
+
+  private <T> T readBody(String body, Class<T> type) {
+    if (body == null || body.isBlank()) {
+      throw new MlServiceException("ML service returned an empty response");
+    }
+    try {
+      return mlObjectMapper.readValue(body, type);
+    } catch (JsonProcessingException error) {
+      throw new MlServiceException("ML service returned an incompatible response", error);
+    }
+  }
+
+  private <T> T readBody(String body, TypeReference<T> type) {
+    if (body == null || body.isBlank()) {
+      throw new MlServiceException("ML service returned an empty response");
+    }
+    try {
+      return mlObjectMapper.readValue(body, type);
+    } catch (JsonProcessingException error) {
+      throw new MlServiceException("ML service returned an incompatible response", error);
     }
   }
 }

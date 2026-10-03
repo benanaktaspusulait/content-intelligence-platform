@@ -4,6 +4,7 @@ import com.pompomhills.intelligence.content.ContentPromptQueryService;
 import com.pompomhills.intelligence.content.ContentPromptSnapshot;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,10 +20,10 @@ import org.springframework.transaction.annotation.Transactional;
  * non-renderable validations), and the persisted record is additionally populated with the evidence
  * fields {@link ValidationEvidenceService} requires, including an {@code expiresAt} one freshness
  * TTL after {@code validatedAt} so evidence cannot authorize render indefinitely. Deterministic
- * ruleset version is recorded directly; semantic/producibility/independent- revalidation identity
- * are left absent here because the ML service does not yet produce them - a later slice populates
- * those fields, and until then {@link ValidationEvidenceService} ensures such a record can never
- * read back as RENDER_READY.
+ * ruleset, semantic provider/model and producibility-validator provenance are copied from the ML
+ * response. A linked validation that is initially render-ready is validated a second time and the
+ * two executions are persisted as separate rows before the primary row can reference the
+ * independent run.
  */
 @Service
 public class IntelligenceQualityValidationService {
@@ -66,11 +67,51 @@ public class IntelligenceQualityValidationService {
         request.rulesetVersion());
 
     QualityReportDto report = mlClient.validatePrompt(promptToValidate, request.rulesetVersion());
-
     Instant validatedAt = Instant.now();
+    QualityValidationEntity entity =
+        buildEntity(promptToValidate, snapshot, report, validatedAt, UUID.randomUUID());
 
+    if (snapshot != null && "RENDER_READY".equals(report.status())) {
+      QualityReportDto independentReport =
+          mlClient.validatePrompt(promptToValidate, report.rulesetVersion());
+      Instant independentlyValidatedAt = Instant.now();
+      UUID independentRunId = UUID.randomUUID();
+      QualityValidationEntity independent =
+          buildEntity(
+              promptToValidate,
+              snapshot,
+              independentReport,
+              independentlyValidatedAt,
+              independentRunId);
+      repository.saveAndFlush(independent);
+
+      if (sameAuthorizationDecision(report, independentReport)) {
+        entity.setIndependentRevalidationId(independentRunId);
+        entity.setIndependentlyRevalidatedAt(independentlyValidatedAt);
+      }
+    }
+
+    QualityValidationEntity saved = repository.save(entity);
+
+    log.info(
+        "Validation complete: score={}, status={}, id={}, linked={}",
+        report.overallScore(),
+        report.status(),
+        saved.getId(),
+        linked);
+
+    return new IntelligenceValidateResponse(saved.getId(), report);
+  }
+
+  private QualityValidationEntity buildEntity(
+      String prompt,
+      ContentPromptSnapshot snapshot,
+      QualityReportDto report,
+      Instant validatedAt,
+      UUID validationRunId) {
     QualityValidationEntity entity = new QualityValidationEntity();
-    entity.setPromptText(promptToValidate);
+    entity.setValidationRunId(validationRunId);
+    entity.setPromptText(prompt);
     entity.setRulesetVersion(report.rulesetVersion());
     entity.setOverallScore(report.overallScore());
     entity.setStatus(report.status());
@@ -85,18 +126,30 @@ public class IntelligenceQualityValidationService {
       entity.setPromptVersionId(snapshot.promptVersionId());
       entity.setPromptSha256(snapshot.promptSha256());
       entity.setDeterministicRulesetVersion(report.rulesetVersion());
+      QualityProvenanceDto provenance = report.provenance();
+      if (provenance != null) {
+        entity.setSemanticProvider(provenance.semanticProvider());
+        entity.setSemanticModelVersion(provenance.semanticModelVersion());
+        entity.setProducibilityValidatorVersion(provenance.producibilityValidatorVersion());
+      }
     }
+    return entity;
+  }
 
-    QualityValidationEntity saved = repository.save(entity);
-
-    log.info(
-        "Validation complete: score={}, status={}, id={}, linked={}",
-        report.overallScore(),
-        report.status(),
-        saved.getId(),
-        linked);
-
-    return new IntelligenceValidateResponse(saved.getId(), report);
+  private boolean sameAuthorizationDecision(
+      QualityReportDto primary, QualityReportDto independent) {
+    if (!"RENDER_READY".equals(independent.status())) {
+      return false;
+    }
+    if (!primary.rulesetVersion().equals(independent.rulesetVersion())) {
+      return false;
+    }
+    QualityProvenanceDto first = primary.provenance();
+    QualityProvenanceDto second = independent.provenance();
+    return first != null
+        && second != null
+        && "PRE_RENDER".equals(first.evaluationStage())
+        && first.equals(second);
   }
 
   /**

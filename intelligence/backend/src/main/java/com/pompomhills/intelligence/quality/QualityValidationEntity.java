@@ -73,6 +73,9 @@ public class QualityValidationEntity {
   @Column(name = "independent_revalidation_id")
   private UUID independentRevalidationId;
 
+  @Column(name = "validation_run_id")
+  private UUID validationRunId;
+
   @Column(name = "independently_revalidated_at")
   private Instant independentlyRevalidatedAt;
 
@@ -235,6 +238,14 @@ public class QualityValidationEntity {
 
   public UUID getIndependentRevalidationId() {
     return independentRevalidationId;
+  }
+
+  public UUID getValidationRunId() {
+    return validationRunId;
+  }
+
+  public void setValidationRunId(UUID validationRunId) {
+    this.validationRunId = validationRunId;
   }
 
   public void setIndependentRevalidationId(UUID independentRevalidationId) {

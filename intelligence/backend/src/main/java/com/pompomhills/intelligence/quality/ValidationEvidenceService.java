@@ -124,6 +124,20 @@ public class ValidationEvidenceService {
         || entity.getIndependentlyRevalidatedAt() == null) {
       return ValidationDecisionStatus.NEEDS_REVISION;
     }
+    QualityValidationEntity revalidation =
+        repository.findByValidationRunId(entity.getIndependentRevalidationId()).orElse(null);
+    if (revalidation == null
+        || revalidation.getId().equals(entity.getId())
+        || !sameEvidenceIdentity(entity, revalidation)
+        || parseStatus(revalidation.getStatus()) != ValidationDecisionStatus.RENDER_READY
+        || revalidation.getBlockerCount() == null
+        || revalidation.getBlockerCount() > 0
+        || revalidation.getCriticalCount() == null
+        || revalidation.getCriticalCount() > 0
+        || revalidation.getValidatedAt() == null
+        || !revalidation.getValidatedAt().equals(entity.getIndependentlyRevalidatedAt())) {
+      return ValidationDecisionStatus.NEEDS_REVISION;
+    }
     // Absence of expiresAt is never treated as "never expires" - no freshness policy means the
     // evidence has no proven freshness, so it must not authorize render.
     Instant expiresAt = entity.getExpiresAt();
@@ -131,6 +145,22 @@ public class ValidationEvidenceService {
       return ValidationDecisionStatus.NEEDS_REVISION;
     }
     return ValidationDecisionStatus.RENDER_READY;
+  }
+
+  private boolean sameEvidenceIdentity(
+      QualityValidationEntity primary, QualityValidationEntity revalidation) {
+    return java.util.Objects.equals(primary.getContentId(), revalidation.getContentId())
+        && java.util.Objects.equals(primary.getPromptVersionId(), revalidation.getPromptVersionId())
+        && java.util.Objects.equals(primary.getPromptSha256(), revalidation.getPromptSha256())
+        && java.util.Objects.equals(
+            primary.getDeterministicRulesetVersion(),
+            revalidation.getDeterministicRulesetVersion())
+        && java.util.Objects.equals(primary.getSemanticProvider(), revalidation.getSemanticProvider())
+        && java.util.Objects.equals(
+            primary.getSemanticModelVersion(), revalidation.getSemanticModelVersion())
+        && java.util.Objects.equals(
+            primary.getProducibilityValidatorVersion(),
+            revalidation.getProducibilityValidatorVersion());
   }
 
   private ValidationDecisionStatus parseStatus(String status) {

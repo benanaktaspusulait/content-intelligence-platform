@@ -8,6 +8,23 @@ class UnsupportedProviderError(Exception):
     pass
 
 
+_DEFAULT_MODELS = {
+    "openai": "gpt-4o",
+    "claude": "claude-3-5-sonnet-20241022",
+    "gemini": "gemini-2.0-flash-exp",
+    "ollama": "llama3.2-vision:latest",
+}
+
+
+def get_provider_identity(name: str | None = None) -> tuple[str, str]:
+    """Return the provider/model pair used by :func:`get_provider`."""
+    provider_name = (name or os.getenv("DEFAULT_LLM_PROVIDER", "openai")).lower()
+    if provider_name not in _DEFAULT_MODELS:
+        raise UnsupportedProviderError(f"Unsupported provider: {provider_name}")
+    model_env = f"{provider_name.upper()}_MODEL"
+    return provider_name, os.getenv(model_env, _DEFAULT_MODELS[provider_name])
+
+
 class LLMProvider(ABC):
     """Abstract base class for LLM providers."""
 
@@ -49,26 +66,23 @@ def get_provider(name: str | None = None) -> LLMProvider:
     Raises:
         UnsupportedProviderError: If provider name not recognized
     """
-    if name is None:
-        name = os.getenv("DEFAULT_LLM_PROVIDER", "openai")
-
-    name = name.lower()
+    name, model = get_provider_identity(name)
 
     if name == "openai":
         from .openai_provider import OpenAIProvider
 
-        return OpenAIProvider()
+        return OpenAIProvider(model=model)
     elif name == "claude":
         from .claude_provider import ClaudeProvider
 
-        return ClaudeProvider()
+        return ClaudeProvider(model=model)
     elif name == "gemini":
         from .gemini_provider import GeminiProvider
 
-        return GeminiProvider()
+        return GeminiProvider(model=model)
     elif name == "ollama":
         from .ollama_provider import OllamaProvider
 
-        return OllamaProvider()
+        return OllamaProvider(model=model)
     else:
         raise UnsupportedProviderError(f"Unsupported provider: {name}")

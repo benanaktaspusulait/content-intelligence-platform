@@ -55,6 +55,26 @@ record ConsequenceMarkerDto(double time, String consequence, String type) {}
 
 record StateSegmentDto(String stateId, double startTime, double endTime, double percentage) {}
 
+record ScoreBreakdownDto(
+    String family,
+    double score,
+    double weight,
+    double weightedContribution,
+    int rulesPassed,
+    int rulesFailed,
+    int rulesWarning,
+    List<String> strengths,
+    List<String> weaknesses,
+    List<String> recommendations) {}
+
+record QualityProvenanceDto(
+    String parserVersion,
+    String ruleEngineVersion,
+    String semanticProvider,
+    String semanticModelVersion,
+    String producibilityValidatorVersion,
+    String evaluationStage) {}
+
 record RegressionReportDto(
     String versionBefore,
     String versionAfter,

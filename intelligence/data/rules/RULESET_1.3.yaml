@@ -1,4 +1,5 @@
 created: '2026-09-09'
+default_evaluation_stage: PRE_RENDER
 description: 'Initial ruleset focusing on critical structural failures: static state
   dominance, repetitive actions, and repetitive cycles'
 next_version_improvements:
@@ -602,6 +603,7 @@ rules:
     and reports UNKNOWN at the pure-text concept stage, before any video exists.
   family: consistency
   id: CONSISTENCY_002
+  evaluation_stage: POST_RENDER
   name: Character Continuity Lock
   severity: CRITICAL
   version: '1.1'

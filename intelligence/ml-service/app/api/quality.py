@@ -3,13 +3,14 @@ Pompom Creative Quality Engine - FastAPI Router
 REST API endpoints for quality validation, scoring, and ruleset management.
 """
 
-from typing import Any
+from typing import Any, Literal
 
 from fastapi import APIRouter, HTTPException, status
 from pydantic import BaseModel, Field
 
 from ..autofix.iteration_loop import AutoFixIterationLoop
 from ..config import settings
+from ..llm.provider import get_provider_identity
 from ..parser.prompt_parser import parse_prompt
 from ..quality.contracts import EnhancedQualityReport
 from ..rules.rule_versioning import (
@@ -44,6 +45,7 @@ class ValidateRequest(BaseModel):
             "omit this field."
         ),
     )
+    evaluation_stage: Literal["PRE_RENDER", "POST_RENDER"] = "PRE_RENDER"
 
 
 class CompareVersionsRequest(BaseModel):
@@ -127,6 +129,28 @@ class TimelineDataResponse(BaseModel):
     state_segments: list[StateSegmentResponse]
 
 
+class QualityProvenanceResponse(BaseModel):
+    parser_version: str
+    rule_engine_version: str
+    semantic_provider: str
+    semantic_model_version: str
+    producibility_validator_version: str
+    evaluation_stage: str
+
+
+class ScoreBreakdownResponse(BaseModel):
+    family: str
+    score: float
+    weight: float
+    weighted_contribution: float
+    rules_passed: int
+    rules_failed: int
+    rules_warning: int
+    strengths: list[str]
+    weaknesses: list[str]
+    recommendations: list[str]
+
+
 class QualityReportResponse(BaseModel):
     overall_score: float
     status: str
@@ -148,6 +172,9 @@ class QualityReportResponse(BaseModel):
     priority_fixes: list[PriorityFixResponse]
     score_card: ScoreCardResponse
     timeline_data: TimelineDataResponse
+    score_breakdowns: list[ScoreBreakdownResponse]
+    family_radar: dict[str, Any]
+    provenance: QualityProvenanceResponse
 
 
 class RegressionIssueResponse(BaseModel):
@@ -278,14 +305,14 @@ async def validate_prompt(request: ValidateRequest) -> QualityReportResponse:
         ) from error
 
     # Evaluate
-    report = engine.evaluate(ir)
+    report = engine.evaluate(ir, evaluation_stage=request.evaluation_stage)
 
     # Enhance with scoring
     scorer = QualityScorer()
     enhanced = scorer.create_enhanced_report(report, ir, parse_result.metadata)
 
     # Convert to response model
-    return convert_quality_report(enhanced, ruleset_version)
+    return convert_quality_report(enhanced, ruleset_version, request.evaluation_stage)
 
 
 @router.post("/compare-versions", response_model=RegressionReportResponse)
@@ -485,7 +512,9 @@ def _as_optional_float(value: Any) -> float | None:
     return None
 
 
-def convert_quality_report(enhanced: EnhancedQualityReport, ruleset_version: str) -> QualityReportResponse:
+def convert_quality_report(
+    enhanced: EnhancedQualityReport, ruleset_version: str, evaluation_stage: str = "PRE_RENDER"
+) -> QualityReportResponse:
     """Convert an :class:`EnhancedQualityReport` to the API response model.
 
     Consumes the canonical ``base_report`` (explicit ``RuleOutcome`` /
@@ -555,6 +584,8 @@ def convert_quality_report(enhanced: EnhancedQualityReport, ruleset_version: str
         ],
     )
 
+    semantic_provider, semantic_model_version = get_provider_identity()
+
     return QualityReportResponse(
         overall_score=report.overall_score,
         status=report.status,
@@ -576,6 +607,30 @@ def convert_quality_report(enhanced: EnhancedQualityReport, ruleset_version: str
         priority_fixes=priority_fixes,
         score_card=ScoreCardResponse(**enhanced.score_card),
         timeline_data=timeline_data,
+        score_breakdowns=[
+            ScoreBreakdownResponse(
+                family=item.family,
+                score=item.score,
+                weight=item.weight,
+                weighted_contribution=item.weighted_contribution,
+                rules_passed=item.rules_passed,
+                rules_failed=item.rules_failed,
+                rules_warning=item.rules_warning,
+                strengths=list(item.strengths),
+                weaknesses=list(item.weaknesses),
+                recommendations=list(item.recommendations),
+            )
+            for item in enhanced.score_breakdowns
+        ],
+        family_radar=enhanced.family_radar,
+        provenance=QualityProvenanceResponse(
+            parser_version=settings.parser_version,
+            rule_engine_version=settings.rule_engine_version,
+            semantic_provider=semantic_provider,
+            semantic_model_version=semantic_model_version,
+            producibility_validator_version=settings.producibility_validator_version,
+            evaluation_stage=evaluation_stage,
+        ),
     )
 
 

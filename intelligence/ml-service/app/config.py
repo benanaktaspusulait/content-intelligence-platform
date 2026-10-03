@@ -12,6 +12,9 @@ class Settings(BaseSettings):
     # -> Pompom_Creative_Intelligence).
     data_root: Path = Path(__file__).resolve().parents[2] / "data"
     analysis_version: str = "video-analysis-v1"
+    parser_version: str = "prompt-parser-v2"
+    rule_engine_version: str = "quality-rule-engine-v2"
+    producibility_validator_version: str = "semantic-producibility-v1"
 
     @property
     def rules_dir(self) -> Path:

@@ -35,6 +35,7 @@ services:
       DB_USERNAME: ${POSTGRES_USER:-pompom}
       DB_PASSWORD: ${POSTGRES_PASSWORD:-pompom_local}
       ML_BASE_URL: http://ml-service:8000
+      ML_SERVICE_URL: http://ml-service:8000
       POMPOM_DATA_ROOT: /data
       # Meta read-only analytics (disabled by default). Only read scopes; no publishing vars.
       META_READ_ENABLED: ${META_READ_ENABLED:-false}

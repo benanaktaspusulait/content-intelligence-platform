@@ -152,7 +152,9 @@ class RuleEngine:
             loaded: dict[str, Any] = yaml.safe_load(f)
             return loaded
 
-    def evaluate(self, video_plan_ir: dict[str, Any]) -> QualityReport:
+    def evaluate(
+        self, video_plan_ir: dict[str, Any], evaluation_stage: str = "PRE_RENDER"
+    ) -> QualityReport:
         """
         Evaluate Video Plan IR against all rules.
 
@@ -160,13 +162,49 @@ class RuleEngine:
         """
         evaluations = []
 
+        if evaluation_stage not in {"PRE_RENDER", "POST_RENDER"}:
+            raise ValueError(f"Unsupported evaluation stage: {evaluation_stage}")
+
+        default_stage = self.ruleset.get("default_evaluation_stage", "PRE_RENDER")
+
         # Evaluate each rule
         for rule in self.ruleset.get("rules", []):
             rule_id = rule["id"]
+            rule_stage = rule.get("evaluation_stage", default_stage)
+
+            if rule_stage == "POST_RENDER" and evaluation_stage == "PRE_RENDER":
+                evaluations.append(
+                    RuleEvaluation(
+                        rule_id=rule_id,
+                        rule_name=rule.get("name", rule_id),
+                        family=rule.get("family", "unknown"),
+                        severity=rule.get("severity", "WARNING"),
+                        result="NOT_APPLICABLE",
+                        message="Rule is evaluated only after a rendered video exists.",
+                        details={"evaluation_stage": rule_stage},
+                    )
+                )
+                continue
 
             if rule_id in self.evaluators:
                 evaluation = self.evaluators[rule_id](video_plan_ir, rule)
-                evaluations.append(evaluation)
+                details = dict(evaluation.details)
+                details.setdefault("evaluation_stage", rule_stage)
+                details.setdefault("recommendation", str(rule.get("description", "")).strip())
+                evaluations.append(
+                    _RuleEvaluation(
+                        rule_id=evaluation.rule_id,
+                        rule_name=evaluation.rule_name,
+                        family=evaluation.family,
+                        outcome=evaluation.outcome,
+                        configured_severity=evaluation.configured_severity,
+                        message=evaluation.message,
+                        actual_value=evaluation.actual_value,
+                        required_value=evaluation.required_value,
+                        threshold_value=evaluation.threshold_value,
+                        details=details,
+                    )
+                )
             else:
                 # No registered evaluator: fail closed with SERVICE_ERROR rather
                 # than silently passing an unchecked rule. The configured

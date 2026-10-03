@@ -1,6 +1,8 @@
 package com.pompomhills.intelligence.quality;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -8,6 +10,8 @@ import org.springframework.stereotype.Repository;
 /** Repository for quality validation history. */
 @Repository
 public interface QualityValidationRepository extends JpaRepository<QualityValidationEntity, Long> {
+
+  Optional<QualityValidationEntity> findByValidationRunId(UUID validationRunId);
 
   /**
    * Find all validations for a specific prompt ordered by date.

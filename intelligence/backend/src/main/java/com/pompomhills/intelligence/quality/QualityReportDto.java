@@ -50,4 +50,7 @@ public record QualityReportDto(
     List<String> parserAssumptions,
     List<String> topStrengths,
     List<String> topWeaknesses,
-    List<String> evidenceMissing) {}
+    List<String> evidenceMissing,
+    List<ScoreBreakdownDto> scoreBreakdowns,
+    Map<String, Object> familyRadar,
+    QualityProvenanceDto provenance) {}
