@@ -85,7 +85,7 @@ touch the variant model Plan B introduces).
 | # | Plan name | Audit section | Codebase(s) | Status |
 |---|---|---|---|---|
 | A | Observation mathematics correctness (metric semantics + source reconciliation + checkpoint tolerance) | Phase A | backend | ✅ Done, backend-only (commit `ffbdf84`, see §4 for completion record and 2 open follow-ups) |
-| B1 | Variant domain (entity/repository/service/API) | Phase B.1 | backend | ⬜ Not started |
+| B1 | Variant domain (entity/repository/service/API) | Phase B.1 | backend | ✅ Done (commit `bb35667`, see §4 for completion record) |
 | B2 | Variant-aware ingest, import, publication, performance queries + path-alias dedup | Phase B.2-5 | backend, frontend | ⬜ Not started |
 | C | Creative analysis completion (stop duplicate ML calls, surface analysis in Video Detail) | Phase C | backend, frontend | ⬜ Not started |
 | D | Evidence honesty (error-vs-empty, completion/watch metrics, overview placeholders, platform validation) | Phase D | backend, frontend | ⬜ Not started |
@@ -298,6 +298,57 @@ source of truth. Low risk now, but recommend consolidating (e.g. into `Observati
 the shared home for cross-cutting observation-math concepts) before a third consumer appears or
 before anyone needs to change the tolerance value, to prevent silent divergence between the two
 files.
+
+---
+
+## 4a. Plan B1 completion record
+
+**Status: ✅ Done.** Executed via `subagent-driven-development`, 4 tasks, each with an
+implementer → review → fix-round cycle (no fix rounds were actually needed — every task was
+Approved on first review, though two tasks' implementers found and fixed real bugs in the plan's
+own draft code before that approval). Plan doc:
+`docs/superpowers/plans/2026-10-03-part02-plan-b1-variant-domain.md`.
+
+Final state: Spring test suite 92/92 passing, `BUILD SUCCESS`. Full-plan diff reviewed
+holistically and found fully Approved — no cross-task inconsistency, no global-constraint
+violation, no incursion into Plan B2's scope.
+
+Commit range: `f39a7dd..bb35667` (4 commits, one per task, no fix-round commits needed).
+
+Delivered: `video_variants` (migrated since `V1`, never previously touched by any Java code) now
+has a full backend surface:
+- `VideoVariantEntity`/`VideoVariantType` (`intelligence/backend/.../video/`) — JPA entity over
+  the unchanged existing table, enum matching the DB's CHECK constraint exactly.
+- `VideoVariantRepository` — video-scoped lookups (`findAllByVideoId`, `findByIdAndVideoId`),
+  never a bare `findById` for anything variant-related, enforcing the no-fuzzy-attribution rule
+  structurally.
+- `VideoVariantService` — `create`/`list`/`get`, all requiring an explicit `videoId`; a duplicate
+  `generatedPath` is translated from a raw `DataIntegrityViolationException` into a clear
+  `DuplicateGeneratedPathException` rather than leaking an unstructured 500.
+- `VideoVariantController` — `POST`/`GET /api/v1/videos/{videoId}/variants`,
+  `GET .../variants/{variantId}`, correctly covered end-to-end by the pre-existing global
+  `@RestControllerAdvice` (`EntityNotFoundException`→404, `IllegalArgumentException`→400) with no
+  new per-controller exception handling needed.
+
+Two real bugs were found and fixed during implementation (not plan-level issues, task-level
+catches, documented here since they illustrate this plan's draft code was not perfect and needed
+real engineering judgment, not just transcription):
+1. Task 3's brief explicitly flagged its own draft `requireVariant` helper only threw
+   `IllegalArgumentException`, which would fail a test expecting `EntityNotFoundException` from
+   `get()`. Resolved with two separate exception-throwing call sites sharing one non-throwing
+   `Optional`-returning lookup.
+2. Task 3's implementer also found an unflagged Mockito `verifyNoMoreInteractions` test bug in the
+   brief's own draft test code (missing an explicit `verify()` before the no-more-interactions
+   assertion) and fixed it correctly.
+
+No new migration was needed — the existing `V1` schema already supported everything this plan
+required.
+
+**Not delivered by Plan B1, by design (this is Phase B item 1 only; items 2-5 are Plan B2):** no
+physical file is yet associated with a variant, the frontend still groups files by folder as a
+variant-identity heuristic, no `variantId` flows through imports/publications/performance queries
+yet, and the content-hash/multiple-path alias issue (P1-01) is unresolved. Plan B2 is the next
+step and depends entirely on this plan's deliverables existing first.
 
 ---
 
