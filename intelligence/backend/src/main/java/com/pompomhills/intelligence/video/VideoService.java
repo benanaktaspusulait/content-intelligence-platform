@@ -36,6 +36,7 @@ public class VideoService {
   private final CreativeAnalysisRepository analyses;
   private final CreativeFingerprintRepository fingerprints;
   private final VideoPathAliasRepository pathAliases;
+  private final VideoVariantRepository variants;
   private final MlVideoClient ml;
   private final PompomProperties properties;
   private final Clock clock;
@@ -45,6 +46,7 @@ public class VideoService {
       CreativeAnalysisRepository analyses,
       CreativeFingerprintRepository fingerprints,
       VideoPathAliasRepository pathAliases,
+      VideoVariantRepository variants,
       MlVideoClient ml,
       PompomProperties properties,
       Clock clock) {
@@ -52,6 +54,7 @@ public class VideoService {
     this.analyses = analyses;
     this.fingerprints = fingerprints;
     this.pathAliases = pathAliases;
+    this.variants = variants;
     this.ml = ml;
     this.properties = properties;
     this.clock = clock;
@@ -291,6 +294,8 @@ public class VideoService {
   private MediaFile mapMediaFile(Path root, Path file, Map<String, VideoEntity> ingestedByPath) {
     String relativePath = root.relativize(file).toString();
     VideoEntity ingested = ingestedByPath.get(relativePath);
+    UUID variantId =
+        variants.findByGeneratedPath(relativePath).map(VideoVariantEntity::getId).orElse(null);
     return new MediaFile(
         file.getFileName().toString(),
         relativePath,
@@ -298,7 +303,8 @@ public class VideoService {
         lastModified(file),
         ingested != null,
         ingested == null ? null : ingested.getId(),
-        ingested == null ? null : ingested.getStatus().name());
+        ingested == null ? null : ingested.getStatus().name(),
+        variantId);
   }
 
   private Long fileSize(Path file) {

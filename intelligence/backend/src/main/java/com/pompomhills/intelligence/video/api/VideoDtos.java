@@ -31,7 +31,8 @@ public final class VideoDtos {
       Instant modifiedAt,
       boolean ingested,
       UUID videoId,
-      String status) {}
+      String status,
+      UUID variantId) {}
 
   public record VideoResponse(
       UUID id,

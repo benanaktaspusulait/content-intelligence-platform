@@ -9,4 +9,6 @@ public interface VideoVariantRepository extends JpaRepository<VideoVariantEntity
   List<VideoVariantEntity> findAllByVideoId(UUID videoId);
 
   Optional<VideoVariantEntity> findByIdAndVideoId(UUID id, UUID videoId);
+
+  Optional<VideoVariantEntity> findByGeneratedPath(String generatedPath);
 }
