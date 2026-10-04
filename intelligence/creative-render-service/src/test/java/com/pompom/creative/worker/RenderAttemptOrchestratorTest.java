@@ -19,6 +19,7 @@ import com.pompom.creative.repository.RenderAttemptRepository;
 import com.pompom.creative.repository.RenderJobRepository;
 import com.pompom.creative.service.AssetLibraryManager;
 import com.pompom.creative.websocket.WebSocketEventPublisher;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.nio.file.Path;
 import java.time.Instant;
 import java.util.List;
@@ -65,7 +66,8 @@ class RenderAttemptOrchestratorTest {
             assetLibraryManager,
             qaService,
             qaDecisionEngine,
-            webSocketEventPublisher);
+            webSocketEventPublisher,
+            new ObjectMapper());
     job =
         RenderJob.builder()
             .id(UUID.randomUUID())

@@ -4,8 +4,12 @@ import com.pompom.creative.domain.RenderAttempt;
 import com.pompom.creative.domain.RenderJob;
 import com.pompom.creative.evidence.IntelligenceValidationEvidenceClient;
 import com.pompom.creative.evidence.ValidationEvidenceDto;
+import com.pompom.creative.intelligence.ContentPromptSnapshot;
+import com.pompom.creative.intelligence.IntelligenceContentClient;
 import com.pompom.creative.repository.RenderAttemptRepository;
 import com.pompom.creative.repository.RenderJobRepository;
+import com.pompom.creative.service.BudgetAlertService;
+import com.pompom.creative.service.CreditTrackingService;
 import java.time.Instant;
 import java.util.Optional;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -27,22 +31,31 @@ public class RenderJobQueueService {
   private final RenderJobRepository repository;
   private final RenderAttemptRepository attemptRepository;
   private final IntelligenceValidationEvidenceClient evidenceClient;
+  private final IntelligenceContentClient contentClient;
   private final ValidationEvidencePolicy policy;
   private final RequestFingerprint fingerprints;
+  private final CreditTrackingService creditTrackingService;
+  private final BudgetAlertService budgetAlertService;
   private final TransactionTemplate newTransaction;
 
   public RenderJobQueueService(
       RenderJobRepository repository,
       RenderAttemptRepository attemptRepository,
       IntelligenceValidationEvidenceClient evidenceClient,
+      IntelligenceContentClient contentClient,
       ValidationEvidencePolicy policy,
       RequestFingerprint fingerprints,
+      CreditTrackingService creditTrackingService,
+      BudgetAlertService budgetAlertService,
       PlatformTransactionManager transactionManager) {
     this.repository = repository;
     this.attemptRepository = attemptRepository;
     this.evidenceClient = evidenceClient;
+    this.contentClient = contentClient;
     this.policy = policy;
     this.fingerprints = fingerprints;
+    this.creditTrackingService = creditTrackingService;
+    this.budgetAlertService = budgetAlertService;
     // Each create attempt runs in its own, explicitly-started transaction (rather than relying
     // on @Transactional, which would not create a new transaction boundary on a self-invoked
     // method anyway) so that a losing concurrent insert's aborted transaction is fully isolated:
@@ -86,15 +99,37 @@ public class RenderJobQueueService {
     // must create zero rows and never even starts a database transaction.
     ValidationEvidenceDto evidence = evidenceClient.getEvidence(request.validationRecordId());
     policy.validate(request, evidence, Instant.now());
+    ContentPromptSnapshot prompt = contentClient.fetch(request.contentId(), request.promptVersionId());
+    if (prompt.contentId() != evidence.contentId()
+        || prompt.promptVersionId() != evidence.promptVersionId()
+        || !prompt.promptSha256().equals(evidence.promptSha256())) {
+      throw new ValidationEvidenceRejectedException(
+          "PROMPT_SNAPSHOT_MISMATCH",
+          "Canonical prompt snapshot does not match the render-authorizing evidence");
+    }
+    if (!"RENDER_READY".equals(prompt.contentStatus())) {
+      throw new ValidationEvidenceRejectedException(
+          "CONTENT_NOT_RENDER_READY", "Content is not in the RENDER_READY state");
+    }
+    if (prompt.promptText() == null || prompt.promptText().isBlank()) {
+      throw new ValidationEvidenceRejectedException(
+          "PROMPT_TEXT_EMPTY", "Canonical approved prompt text is empty");
+    }
+    budgetAlertService.checkBudgetBeforeRender();
+    if (!creditTrackingService.canAffordRender(request.jobType())) {
+      throw new IllegalStateException("Insufficient render budget");
+    }
+    java.math.BigDecimal estimatedCredits =
+        creditTrackingService.getEstimatedCost(request.jobType());
 
     RenderJob job =
         RenderJob.builder()
             .contentId(evidence.contentId())
             .promptVersionId(evidence.promptVersionId())
-            .contentTitleSnapshot(String.valueOf(evidence.contentId()))
-            .promptVersionNumberSnapshot(0)
-            .promptSha256(evidence.promptSha256())
-            .promptTextSnapshot("")
+            .contentTitleSnapshot(prompt.contentTitle())
+            .promptVersionNumberSnapshot(prompt.promptVersionNumber())
+            .promptSha256(prompt.promptSha256())
+            .promptTextSnapshot(prompt.promptText())
             .validationRecordId(evidence.validationRecordId())
             .evidenceDeterministicRulesetVersion(evidence.deterministicRulesetVersion())
             .evidenceSemanticProvider(evidence.semanticProvider())
@@ -107,6 +142,8 @@ public class RenderJobQueueService {
             .requestFingerprint(fingerprint)
             .jobType(request.jobType())
             .openartModel(request.openartModel())
+            .openartParams(toJson(request.openartParams()))
+            .creditsEstimated(estimatedCredits)
             .build();
 
     // Runs in its own, explicitly-scoped transaction (started here, not via @Transactional on a
@@ -124,5 +161,13 @@ public class RenderJobQueueService {
               return savedJob;
             });
     return new QueueRenderJobResponse(saved.getId(), false);
+  }
+
+  private String toJson(java.util.Map<String, Object> parameters) {
+    try {
+      return new com.fasterxml.jackson.databind.ObjectMapper().writeValueAsString(parameters);
+    } catch (com.fasterxml.jackson.core.JsonProcessingException error) {
+      throw new IllegalArgumentException("Provider parameters are not serializable", error);
+    }
   }
 }

@@ -1,9 +1,11 @@
 package com.pompom.creative.service;
 
 import com.pompom.creative.domain.PublicationJob;
+import com.pompom.creative.domain.RenderAsset;
 import com.pompom.creative.domain.ScheduledPublication;
 import com.pompom.creative.oauth.PlatformType;
 import com.pompom.creative.repository.ScheduledPublicationRepository;
+import com.pompom.creative.repository.RenderAssetRepository;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -26,12 +28,15 @@ public class ScheduledPublishingService {
 
   private final ScheduledPublicationRepository scheduledPublicationRepository;
   private final PublicationService publicationService;
+  private final RenderAssetRepository renderAssetRepository;
+  private final AssetLibraryManager assetLibraryManager;
 
   /**
    * Schedule a publication for future execution.
    *
    * @param platform Target platform
-   * @param videoPath Path to video file
+   * @param renderAssetId canonical render asset identity
+   * @param platformAccountId explicit target platform account
    * @param title Video title
    * @param caption Video caption
    * @param hashtags Hashtags
@@ -43,7 +48,8 @@ public class ScheduledPublishingService {
   @Transactional
   public ScheduledPublication schedulePublication(
       PlatformType platform,
-      String videoPath,
+      UUID renderAssetId,
+      String platformAccountId,
       String title,
       String caption,
       String hashtags,
@@ -60,11 +66,20 @@ public class ScheduledPublishingService {
     if (scheduledAt.isBefore(Instant.now())) {
       throw new IllegalArgumentException("Scheduled time must be in the future");
     }
+    if (platformAccountId == null || platformAccountId.isBlank()) {
+      throw new IllegalArgumentException("platformAccountId is required");
+    }
+    RenderAsset asset =
+        renderAssetRepository
+            .findById(renderAssetId)
+            .orElseThrow(() -> new IllegalArgumentException("Render asset not found"));
 
     ScheduledPublication scheduled =
         ScheduledPublication.builder()
             .platform(platform)
-            .videoPath(videoPath)
+            .videoPath(assetLibraryManager.resolveStoredPath(asset).toString())
+            .renderAsset(asset)
+            .platformAccountId(platformAccountId)
             .title(title)
             .caption(caption)
             .hashtags(hashtags)
@@ -85,7 +100,8 @@ public class ScheduledPublishingService {
   @Transactional
   public ScheduledPublication schedulePublication(
       PlatformType platform,
-      String videoPath,
+      UUID renderAssetId,
+      String platformAccountId,
       String title,
       String caption,
       String hashtags,
@@ -93,7 +109,8 @@ public class ScheduledPublishingService {
       ZonedDateTime scheduledAt) {
     return schedulePublication(
         platform,
-        videoPath,
+        renderAssetId,
+        platformAccountId,
         title,
         caption,
         hashtags,
@@ -140,7 +157,8 @@ public class ScheduledPublishingService {
     PublicationJob job =
         publicationService.queuePublication(
             scheduled.getPlatform(),
-            scheduled.getVideoPath(),
+            scheduled.getRenderAsset().getId(),
+            scheduled.getPlatformAccountId(),
             scheduled.getTitle(),
             scheduled.getCaption(),
             scheduled.getHashtags(),

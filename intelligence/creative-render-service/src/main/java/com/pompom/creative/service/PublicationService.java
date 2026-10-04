@@ -2,11 +2,17 @@ package com.pompom.creative.service;
 
 import com.pompom.creative.domain.PublicationJob;
 import com.pompom.creative.domain.PublicationStatus;
+import com.pompom.creative.domain.RenderAsset;
+import com.pompom.creative.domain.RenderQaResult;
 import com.pompom.creative.oauth.PlatformType;
 import com.pompom.creative.publisher.PlatformPublisher;
 import com.pompom.creative.publisher.dto.PublishRequest;
 import com.pompom.creative.publisher.dto.PublishResponse;
 import com.pompom.creative.repository.PublicationJobRepository;
+import com.pompom.creative.repository.RenderAssetRepository;
+import com.pompom.creative.repository.RenderQaResultRepository;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.time.Instant;
 import java.util.List;
 import java.util.Map;
@@ -29,13 +35,17 @@ import org.springframework.transaction.annotation.Transactional;
 public class PublicationService {
 
   private final PublicationJobRepository publicationJobRepository;
+  private final RenderAssetRepository renderAssetRepository;
+  private final RenderQaResultRepository qaResultRepository;
+  private final AssetLibraryManager assetLibraryManager;
   private final Map<String, PlatformPublisher> publishers;
 
   /**
    * Queue a publication job.
    *
    * @param platform Target platform
-   * @param videoPath Path to video file
+   * @param renderAssetId canonical render asset identity
+   * @param platformAccountId explicit target account identity
    * @param title Video title
    * @param caption Video caption
    * @param hashtags Hashtags (comma-separated or JSON array)
@@ -45,18 +55,38 @@ public class PublicationService {
   @Transactional
   public PublicationJob queuePublication(
       PlatformType platform,
-      String videoPath,
+      UUID renderAssetId,
+      String platformAccountId,
       String title,
       String caption,
       String hashtags,
       Boolean isPrivate) {
-    log.info("Queueing publication: platform={}, video={}", platform, videoPath);
+    RenderAsset asset = resolvePublishableAsset(renderAssetId);
+    if (platformAccountId == null || platformAccountId.isBlank()) {
+      throw new IllegalArgumentException("platformAccountId is required");
+    }
+    Path assetPath = assetLibraryManager.resolveStoredPath(asset);
+    if (!Files.isRegularFile(assetPath)) {
+      throw new IllegalStateException("Canonical asset file is unavailable");
+    }
+    if (!asset.getSha256().equals(assetLibraryManager.checksum(assetPath))) {
+      throw new IllegalStateException("Canonical asset checksum does not match stored evidence");
+    }
+    log.info(
+        "Queueing publication: platform={}, renderAssetId={}, account={}",
+        platform,
+        renderAssetId,
+        platformAccountId);
 
     PublicationJob job =
         PublicationJob.builder()
             .platform(platform)
             .status(PublicationStatus.QUEUED)
-            .videoPath(videoPath)
+            .videoPath(assetPath.toString())
+            .renderAsset(asset)
+            .videoId(asset.getVideoId())
+            .variantId(asset.getVariantId())
+            .platformAccountId(platformAccountId)
             .title(title)
             .caption(caption)
             .hashtags(hashtags)
@@ -72,6 +102,39 @@ public class PublicationService {
     publishAsync(saved.getId());
 
     return saved;
+  }
+
+  private RenderAsset resolvePublishableAsset(UUID renderAssetId) {
+    if (renderAssetId == null) {
+      throw new IllegalArgumentException("renderAssetId is required");
+    }
+    RenderAsset asset =
+        renderAssetRepository
+            .findById(renderAssetId)
+            .orElseThrow(() -> new IllegalArgumentException("Render asset not found"));
+    if (asset.getAssetType() != RenderAsset.AssetType.VIDEO) {
+      throw new IllegalArgumentException("Only video assets can be published");
+    }
+    if (!Boolean.TRUE.equals(asset.getIsCurrent())
+        || Boolean.TRUE.equals(asset.getIsMock())
+        || Boolean.TRUE.equals(asset.getQuarantined())
+        || !Boolean.TRUE.equals(asset.getMediaVerified())
+        || asset.getSha256() == null
+        || asset.getVariantId() == null) {
+      throw new IllegalStateException("Asset does not satisfy production publication invariants");
+    }
+    RenderQaResult qa =
+        qaResultRepository
+            .findTopByRenderAssetIdOrderByCreatedAtDesc(renderAssetId)
+            .orElseThrow(() -> new IllegalStateException("Post-render QA evidence is missing"));
+    if (qa.getDecision() != RenderQaResult.QaDecision.ACCEPT) {
+      throw new IllegalStateException("Post-render QA has not accepted this asset");
+    }
+    if (Boolean.TRUE.equals(qa.getRequiresHumanReview())
+        && !"APPROVED".equals(qa.getHumanDecision())) {
+      throw new IllegalStateException("Required human review has not approved this asset");
+    }
+    return asset;
   }
 
   /** Publish job asynchronously. */

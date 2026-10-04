@@ -62,7 +62,7 @@ public class AnalyticsService {
       return null;
     }
 
-    // Fetch metrics from platform API (real or mock)
+    // Fetch observed metrics from the platform API. No generated fallback is permitted.
     PublicationAnalytics newMetrics = fetchFromPlatform(job);
 
     // Find existing analytics or create new
@@ -91,30 +91,23 @@ public class AnalyticsService {
         job.getPlatform(),
         job.getPlatformPostId());
 
-    // Try real API if enabled
-    if (useRealApi) {
-      try {
-        VideoMetrics metrics =
-            switch (job.getPlatform()) {
-              case TIKTOK -> tiktokMetricsClient.fetchMetrics(job.getPlatformVideoId());
-              case YOUTUBE -> youtubeMetricsClient.fetchMetrics(job.getPlatformVideoId());
-              case INSTAGRAM, FACEBOOK ->
-                  instagramMetricsClient.fetchMetrics(job.getPlatformVideoId());
-            };
-
-        log.info("Fetched real metrics from {}: views={}", job.getPlatform(), metrics.getViews());
-        return convertToPublicationAnalytics(metrics, job);
-
-      } catch (Exception e) {
-        log.warn(
-            "Failed to fetch from real {} API, falling back to mock: {}",
-            job.getPlatform(),
-            e.getMessage());
-      }
+    if (!useRealApi) {
+      throw new IllegalStateException("Platform analytics collection is disabled");
     }
-
-    // Fallback to mock data
-    return generateMockAnalytics(job);
+    try {
+      VideoMetrics metrics =
+          switch (job.getPlatform()) {
+            case TIKTOK -> tiktokMetricsClient.fetchMetrics(job.getPlatformVideoId());
+            case YOUTUBE -> youtubeMetricsClient.fetchMetrics(job.getPlatformVideoId());
+            case INSTAGRAM, FACEBOOK ->
+                instagramMetricsClient.fetchMetrics(job.getPlatformVideoId());
+          };
+      log.info("Fetched real metrics from {}: views={}", job.getPlatform(), metrics.getViews());
+      return convertToPublicationAnalytics(metrics, job);
+    } catch (Exception error) {
+      throw new IllegalStateException(
+          "Observed analytics are unavailable for " + job.getPlatform(), error);
+    }
   }
 
   /** Convert VideoMetrics to PublicationAnalytics. */
@@ -130,27 +123,7 @@ public class AnalyticsService {
         .saves(metrics.getSaves())
         .impressions(metrics.getImpressions())
         .reach(metrics.getReach())
-        .clicks(0L) // ProfileVisits not available in VideoMetrics
-        .fetchedAt(Instant.now())
-        .build();
-  }
-
-  /** Generate mock analytics for testing/development. */
-  private PublicationAnalytics generateMockAnalytics(PublicationJob job) {
-    log.debug("Generating mock analytics for {}", job.getPlatform());
-    Random random = new Random();
-
-    return PublicationAnalytics.builder()
-        .platform(job.getPlatform())
-        .platformPostId(job.getPlatformPostId())
-        .views(random.nextLong(1000, 50000))
-        .likes(random.nextLong(50, 5000))
-        .comments(random.nextLong(10, 500))
-        .shares(random.nextLong(5, 200))
-        .saves(random.nextLong(10, 1000))
-        .impressions(random.nextLong(2000, 100000))
-        .reach(random.nextLong(1500, 80000))
-        .clicks(random.nextLong(100, 10000))
+        .clicks(null)
         .fetchedAt(Instant.now())
         .build();
   }

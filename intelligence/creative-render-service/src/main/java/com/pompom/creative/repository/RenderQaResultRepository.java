@@ -11,5 +11,7 @@ public interface RenderQaResultRepository extends JpaRepository<RenderQaResult, 
 
   Optional<RenderQaResult> findByRenderAssetId(UUID renderAssetId);
 
+  Optional<RenderQaResult> findTopByRenderAssetIdOrderByCreatedAtDesc(UUID renderAssetId);
+
   Optional<RenderQaResult> findTopByRenderAsset_RenderJob_IdOrderByCreatedAtDesc(UUID renderJobId);
 }

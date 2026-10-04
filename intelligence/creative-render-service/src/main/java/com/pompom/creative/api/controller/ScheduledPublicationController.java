@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v1/scheduled")
 @Slf4j
 @RequiredArgsConstructor
-@CrossOrigin(origins = "*")
 public class ScheduledPublicationController {
 
   private final ScheduledPublishingService scheduledPublishingService;
@@ -44,7 +43,8 @@ public class ScheduledPublicationController {
       ScheduledPublication scheduled =
           scheduledPublishingService.schedulePublication(
               platform,
-              request.getVideoPath(),
+              request.getRenderAssetId(),
+              request.getPlatformAccountId(),
               request.getTitle(),
               request.getCaption(),
               request.getHashtags(),
@@ -161,7 +161,8 @@ public class ScheduledPublicationController {
   @Data
   public static class SchedulePublicationRequest {
     private String platform;
-    private String videoPath;
+    private UUID renderAssetId;
+    private String platformAccountId;
     private String title;
     private String caption;
     private String hashtags;

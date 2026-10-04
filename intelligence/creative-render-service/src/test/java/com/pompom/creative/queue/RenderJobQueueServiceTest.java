@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -15,8 +16,13 @@ import com.pompom.creative.domain.RenderExecutionStage;
 import com.pompom.creative.domain.RenderJob;
 import com.pompom.creative.evidence.IntelligenceValidationEvidenceClient;
 import com.pompom.creative.evidence.ValidationEvidenceDto;
+import com.pompom.creative.intelligence.ContentPromptSnapshot;
+import com.pompom.creative.intelligence.IntelligenceContentClient;
 import com.pompom.creative.repository.RenderAttemptRepository;
 import com.pompom.creative.repository.RenderJobRepository;
+import com.pompom.creative.service.BudgetAlertService;
+import com.pompom.creative.service.CreditTrackingService;
+import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.Map;
 import java.util.Optional;
@@ -39,6 +45,9 @@ class RenderJobQueueServiceTest {
   private RenderJobRepository repository;
   private RenderAttemptRepository attemptRepository;
   private IntelligenceValidationEvidenceClient evidenceClient;
+  private IntelligenceContentClient contentClient;
+  private CreditTrackingService creditTrackingService;
+  private BudgetAlertService budgetAlertService;
   private ValidationEvidencePolicy policy;
   private RequestFingerprint fingerprints;
   private RenderJobQueueService service;
@@ -48,6 +57,9 @@ class RenderJobQueueServiceTest {
     repository = mock(RenderJobRepository.class);
     attemptRepository = mock(RenderAttemptRepository.class);
     evidenceClient = mock(IntelligenceValidationEvidenceClient.class);
+    contentClient = mock(IntelligenceContentClient.class);
+    creditTrackingService = mock(CreditTrackingService.class);
+    budgetAlertService = mock(BudgetAlertService.class);
     policy = new ValidationEvidencePolicy();
     fingerprints = new RequestFingerprint(new ObjectMapper());
     service =
@@ -55,9 +67,15 @@ class RenderJobQueueServiceTest {
             repository,
             attemptRepository,
             evidenceClient,
+            contentClient,
             policy,
             fingerprints,
+            creditTrackingService,
+            budgetAlertService,
             new NoOpTransactionManager());
+    lenient().when(contentClient.fetch(10L, 11L)).thenReturn(promptSnapshot());
+    lenient().when(creditTrackingService.canAffordRender(any())).thenReturn(true);
+    lenient().when(creditTrackingService.getEstimatedCost(any())).thenReturn(BigDecimal.TEN);
 
     // Mirrors real JPA save(): assigns a generated ID as a side effect for a new entity.
     when(repository.save(any(RenderJob.class)))
@@ -189,6 +207,12 @@ class RenderJobQueueServiceTest {
         now.minusSeconds(60),
         now.minusSeconds(60),
         now.plusSeconds(3600));
+  }
+
+  private ContentPromptSnapshot promptSnapshot() {
+    return new ContentPromptSnapshot(
+        "v1", 10L, "Kiko Episode", "REEL", "RENDER_READY", 11L, 3,
+        "a".repeat(120), "{}", "a".repeat(64));
   }
 
   private ValidationEvidenceDto withStatus(ValidationEvidenceDto base, String status) {

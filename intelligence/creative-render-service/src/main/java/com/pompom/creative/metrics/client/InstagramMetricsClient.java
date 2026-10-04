@@ -6,7 +6,6 @@ import com.pompom.creative.metrics.VideoMetrics;
 import com.pompom.creative.oauth.PlatformType;
 import com.pompom.creative.service.CredentialManager;
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.time.Instant;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -105,18 +104,6 @@ public class InstagramMetricsClient implements PlatformMetricsClient {
       }
     }
 
-    // If insights not available yet (24-48 hour delay), estimate from engagement
-    if (impressions == 0 && plays > 0) {
-      impressions = (long) (plays * 1.5);
-    }
-    if (reach == 0 && plays > 0) {
-      reach = (long) (plays * 0.8);
-    }
-
-    // Estimate completion rate and watch time
-    BigDecimal completionRate = estimateCompletionRate(plays, likes);
-    BigDecimal avgWatchTime = BigDecimal.valueOf(12.0); // Reels are typically 15s, ~80% watch time
-
     VideoMetrics metrics =
         VideoMetrics.builder()
             .platform(PlatformType.INSTAGRAM)
@@ -126,10 +113,10 @@ public class InstagramMetricsClient implements PlatformMetricsClient {
             .comments(comments)
             .shares(shares)
             .saves(saves)
-            .completionRate(completionRate)
-            .avgWatchTimeSeconds(avgWatchTime)
-            .impressions(impressions)
-            .reach(reach)
+            .completionRate(null)
+            .avgWatchTimeSeconds(null)
+            .impressions(impressions == 0 ? null : impressions)
+            .reach(reach == 0 ? null : reach)
             .collectedAt(Instant.now())
             .build();
 
@@ -144,15 +131,4 @@ public class InstagramMetricsClient implements PlatformMetricsClient {
     return PlatformType.INSTAGRAM;
   }
 
-  /** Estimate completion rate from engagement. */
-  private BigDecimal estimateCompletionRate(long plays, long likes) {
-    if (plays == 0) return BigDecimal.valueOf(70);
-
-    double likeRate = (double) likes / plays;
-
-    if (likeRate > 0.05) return BigDecimal.valueOf(90); // Very high engagement
-    if (likeRate > 0.03) return BigDecimal.valueOf(80); // High engagement
-    if (likeRate > 0.02) return BigDecimal.valueOf(70); // Medium engagement
-    return BigDecimal.valueOf(60); // Low engagement
-  }
 }

@@ -95,11 +95,16 @@ public class QaService {
       log.debug(
           "Dead air analysis: {} segments found", response != null ? response.segmentCount() : 0);
 
+      if (response == null) {
+        throw new QaDependencyUnavailableException("Dead-air service returned no evidence");
+      }
       return response;
     } catch (Exception e) {
       log.error("Failed to analyze dead air for: {}", assetPath, e);
-      // Return empty result on error
-      return new DeadAirResponse(false, List.of(), 0, 0);
+      if (e instanceof QaDependencyUnavailableException unavailable) {
+        throw unavailable;
+      }
+      throw new QaDependencyUnavailableException("Dead-air evidence is unavailable", e);
     }
   }
 
@@ -127,12 +132,16 @@ public class QaService {
           response != null && response.characterIdentityVerified(),
           response != null ? response.confidence() : 0.0);
 
+      if (response == null) {
+        throw new QaDependencyUnavailableException("Character service returned no evidence");
+      }
       return response;
     } catch (Exception e) {
       log.error("Failed to verify character identity for: {} ({})", assetPath, characterName, e);
-      // Return failed verification on error
-      return new CharacterIdentityResponse(
-          false, 0.0, "Service error: " + e.getMessage(), "Failed to verify due to service error");
+      if (e instanceof QaDependencyUnavailableException unavailable) {
+        throw unavailable;
+      }
+      throw new QaDependencyUnavailableException("Character identity evidence is unavailable", e);
     }
   }
 
@@ -224,4 +233,14 @@ public class QaService {
       double confidence,
       @JsonProperty("character_identity_issues") String characterIdentityIssues,
       String reasoning) {}
+
+  public static final class QaDependencyUnavailableException extends RuntimeException {
+    public QaDependencyUnavailableException(String message) {
+      super(message);
+    }
+
+    public QaDependencyUnavailableException(String message, Throwable cause) {
+      super(message, cause);
+    }
+  }
 }

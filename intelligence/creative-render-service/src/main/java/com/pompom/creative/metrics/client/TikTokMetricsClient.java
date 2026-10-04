@@ -6,7 +6,6 @@ import com.pompom.creative.metrics.VideoMetrics;
 import com.pompom.creative.oauth.PlatformType;
 import com.pompom.creative.service.CredentialManager;
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.time.Instant;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -118,14 +117,6 @@ public class TikTokMetricsClient implements PlatformMetricsClient {
     long comments = video.has("comment_count") ? video.get("comment_count").asLong() : 0;
     long shares = video.has("share_count") ? video.get("share_count").asLong() : 0;
 
-    // TikTok doesn't provide these in basic API
-    BigDecimal completionRate = estimateCompletionRate(views, likes);
-    BigDecimal avgWatchTime =
-        video.has("video_duration")
-            ? BigDecimal.valueOf(
-                video.get("video_duration").asDouble() * 0.7) // Estimate 70% watch time
-            : BigDecimal.valueOf(10.0);
-
     VideoMetrics metrics =
         VideoMetrics.builder()
             .platform(PlatformType.TIKTOK)
@@ -135,10 +126,10 @@ public class TikTokMetricsClient implements PlatformMetricsClient {
             .comments(comments)
             .shares(shares)
             .saves(0L) // TikTok doesn't provide saves in basic API
-            .completionRate(completionRate)
-            .avgWatchTimeSeconds(avgWatchTime)
-            .impressions(estimateImpressions(views))
-            .reach(estimateReach(views))
+            .completionRate(null)
+            .avgWatchTimeSeconds(null)
+            .impressions(null)
+            .reach(null)
             .collectedAt(Instant.now())
             .build();
 
@@ -153,28 +144,4 @@ public class TikTokMetricsClient implements PlatformMetricsClient {
     return PlatformType.TIKTOK;
   }
 
-  /**
-   * Estimate completion rate from engagement. High engagement usually correlates with high
-   * completion.
-   */
-  private BigDecimal estimateCompletionRate(long views, long likes) {
-    if (views == 0) return BigDecimal.valueOf(50);
-
-    double likeRate = (double) likes / views;
-
-    if (likeRate > 0.05) return BigDecimal.valueOf(85); // Very high engagement
-    if (likeRate > 0.03) return BigDecimal.valueOf(75); // High engagement
-    if (likeRate > 0.02) return BigDecimal.valueOf(65); // Medium engagement
-    return BigDecimal.valueOf(55); // Low engagement
-  }
-
-  /** Estimate impressions (typically 1.5-2x views). */
-  private Long estimateImpressions(long views) {
-    return (long) (views * 1.7);
-  }
-
-  /** Estimate reach (typically 0.7-0.9x views). */
-  private Long estimateReach(long views) {
-    return (long) (views * 0.8);
-  }
 }

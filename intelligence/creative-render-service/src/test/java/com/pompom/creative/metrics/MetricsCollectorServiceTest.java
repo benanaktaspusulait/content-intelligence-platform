@@ -7,8 +7,10 @@ import static org.mockito.Mockito.*;
 
 import com.pompom.creative.domain.PublicationJob;
 import com.pompom.creative.domain.PublicationStatus;
+import com.pompom.creative.metrics.client.PlatformMetricsClient;
 import com.pompom.creative.oauth.PlatformType;
 import com.pompom.creative.repository.PublicationJobRepository;
+import com.pompom.creative.websocket.WebSocketEventPublisher;
 import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
@@ -17,9 +19,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.test.util.ReflectionTestUtils;
 
 @ExtendWith(MockitoExtension.class)
 class MetricsCollectorServiceTest {
@@ -30,18 +32,34 @@ class MetricsCollectorServiceTest {
 
   @Mock private PublicationJobRepository publicationJobRepo;
 
-  @InjectMocks private MetricsCollectorService metricsCollectorService;
+  @Mock private PlatformMetricsClient metricsClient;
+
+  @Mock private WebSocketEventPublisher webSocketPublisher;
+
+  private MetricsCollectorService metricsCollectorService;
 
   private PublicationJob testJob;
 
   @BeforeEach
   void setUp() {
+    when(metricsClient.getPlatform()).thenReturn(PlatformType.TIKTOK);
+    metricsCollectorService =
+        new MetricsCollectorService(
+            collectionJobRepo,
+            metricsRepo,
+            publicationJobRepo,
+            List.of(metricsClient),
+            webSocketPublisher);
+    ReflectionTestUtils.setField(metricsCollectorService, "useRealApi", true);
+    metricsCollectorService.init();
+
     testJob =
         PublicationJob.builder()
             .id(UUID.randomUUID())
             .platform(PlatformType.TIKTOK)
             .status(PublicationStatus.PUBLISHED)
             .platformPostId("video123")
+            .platformVideoId("video123")
             .completedAt(Instant.now().minusSeconds(3600)) // 1 hour ago
             .build();
   }
@@ -103,7 +121,7 @@ class MetricsCollectorServiceTest {
   }
 
   @Test
-  void collectMetrics_validJob_savesMetrics() {
+  void collectMetrics_validJob_savesMetrics() throws Exception {
     // Given
     MetricsCollectionJob collectionJob =
         MetricsCollectionJob.builder()
@@ -118,6 +136,8 @@ class MetricsCollectorServiceTest {
         .thenAnswer(invocation -> invocation.getArgument(0));
     when(metricsRepo.save(any(VideoMetrics.class)))
         .thenAnswer(invocation -> invocation.getArgument(0));
+    when(metricsClient.fetchMetrics("video123"))
+        .thenReturn(observedMetrics(12_345L, 321L));
 
     // When
     VideoMetrics metrics = metricsCollectorService.collectMetrics(collectionJob);
@@ -126,8 +146,8 @@ class MetricsCollectorServiceTest {
     assertThat(metrics).isNotNull();
     assertThat(metrics.getPlatform()).isEqualTo(PlatformType.TIKTOK);
     assertThat(metrics.getPlatformVideoId()).isEqualTo("video123");
-    assertThat(metrics.getViews()).isGreaterThan(0);
-    assertThat(metrics.getLikes()).isGreaterThan(0);
+    assertThat(metrics.getViews()).isEqualTo(12_345L);
+    assertThat(metrics.getLikes()).isEqualTo(321L);
     assertThat(metrics.getCollectionSource()).isEqualTo("API");
 
     verify(metricsRepo).save(any(VideoMetrics.class));
@@ -138,7 +158,7 @@ class MetricsCollectorServiceTest {
   }
 
   @Test
-  void collectMetrics_finalCollectionPoint_marksFinal() {
+  void collectMetrics_finalCollectionPoint_marksFinal() throws Exception {
     // Given
     MetricsCollectionJob collectionJob =
         MetricsCollectionJob.builder()
@@ -155,6 +175,8 @@ class MetricsCollectorServiceTest {
     ArgumentCaptor<VideoMetrics> metricsCaptor = ArgumentCaptor.forClass(VideoMetrics.class);
     when(metricsRepo.save(metricsCaptor.capture()))
         .thenAnswer(invocation -> invocation.getArgument(0));
+    when(metricsClient.fetchMetrics("video123"))
+        .thenReturn(observedMetrics(20_000L, 500L));
 
     // When
     metricsCollectorService.collectMetrics(collectionJob);
@@ -236,6 +258,19 @@ class MetricsCollectorServiceTest {
         .publicationJob(testJob)
         .views(views)
         .timeSincePublishMinutes(minutesSincePublish)
+        .collectedAt(Instant.now())
+        .build();
+  }
+
+  private VideoMetrics observedMetrics(Long views, Long likes) {
+    return VideoMetrics.builder()
+        .platform(PlatformType.TIKTOK)
+        .platformVideoId("video123")
+        .views(views)
+        .likes(likes)
+        .comments(10L)
+        .shares(5L)
+        .saves(0L)
         .collectedAt(Instant.now())
         .build();
   }

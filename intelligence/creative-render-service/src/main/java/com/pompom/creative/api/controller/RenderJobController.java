@@ -34,7 +34,6 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v1/render-jobs")
 @Slf4j
 @RequiredArgsConstructor
-@CrossOrigin(origins = "*")
 public class RenderJobController {
 
   private final RenderJobRepository renderJobRepo;

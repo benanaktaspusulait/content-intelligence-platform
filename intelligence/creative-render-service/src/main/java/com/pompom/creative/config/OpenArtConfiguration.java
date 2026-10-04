@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+import org.springframework.core.env.Environment;
 
 /**
  * Configuration for OpenArt adapter selection.
@@ -29,11 +30,25 @@ public class OpenArtConfiguration {
   @Value("${pompom.data.root:../data}")
   private String dataRoot;
 
+  private final Environment environment;
+
+  public OpenArtConfiguration(Environment environment) {
+    this.environment = environment;
+  }
+
   /** Primary OpenArt adapter bean. Uses real adapter if enabled, otherwise falls back to mock. */
   @Bean
   @Primary
   public OpenArtAdapter openArtAdapter(CliRealOpenArtAdapter realAdapter) {
+    boolean production = java.util.Arrays.asList(environment.getActiveProfiles()).contains("production");
+    if (production && (!openartEnabled || mockEnabled)) {
+      throw new IllegalStateException(
+          "Production requires the real OpenArt provider and forbids the mock provider");
+    }
     if (openartEnabled) {
+      if (production && !realAdapter.isAvailable()) {
+        throw new IllegalStateException("OpenArt runtime is unavailable in production");
+      }
       log.info("Using REAL OpenArt adapter (CLI-based)");
       return realAdapter;
     } else if (mockEnabled) {

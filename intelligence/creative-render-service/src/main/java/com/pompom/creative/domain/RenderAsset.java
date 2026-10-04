@@ -59,6 +59,27 @@ public class RenderAsset {
   @Column(name = "is_current", nullable = false)
   private Boolean isCurrent = true;
 
+  @Column(name = "asset_version", nullable = false)
+  private Integer assetVersion;
+
+  @Column(name = "sha256", length = 64)
+  private String sha256;
+
+  @Column(name = "media_verified", nullable = false)
+  private Boolean mediaVerified = false;
+
+  @Column(name = "is_mock", nullable = false)
+  private Boolean isMock = false;
+
+  @Column(name = "quarantined", nullable = false)
+  private Boolean quarantined = false;
+
+  @Column(name = "video_id")
+  private UUID videoId;
+
+  @Column(name = "variant_id")
+  private UUID variantId;
+
   @Column(name = "created_at", nullable = false, updatable = false)
   private Instant createdAt = Instant.now();
 

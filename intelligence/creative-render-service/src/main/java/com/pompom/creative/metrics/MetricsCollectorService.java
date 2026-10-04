@@ -11,7 +11,6 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.UUID;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -36,7 +35,6 @@ public class MetricsCollectorService {
   private final PublicationJobRepository publicationJobRepo;
   private final List<PlatformMetricsClient> metricsClients;
   private final WebSocketEventPublisher webSocketPublisher;
-  private final Random random = new Random();
 
   @Value("${metrics.use-real-api:false}")
   private boolean useRealApi;
@@ -210,8 +208,8 @@ public class MetricsCollectorService {
   }
 
   /**
-   * Collect metrics from platform API. Uses real API if configured and available, otherwise falls
-   * back to mock data.
+   * Collect metrics from the configured platform API. Unavailable evidence remains unavailable;
+   * production persistence never receives generated fallback values.
    */
   private VideoMetrics collectFromPlatform(
       PlatformType platform, String platformVideoId, int minutesSincePublish) {
@@ -221,51 +219,20 @@ public class MetricsCollectorService {
         platformVideoId,
         minutesSincePublish);
 
-    // Try real API first if enabled
-    if (useRealApi && clientsByPlatform.containsKey(platform)) {
-      try {
-        PlatformMetricsClient client = clientsByPlatform.get(platform);
-        VideoMetrics metrics = client.fetchMetrics(platformVideoId);
-        log.info("Metrics collected from real {} API: views={}", platform, metrics.getViews());
-        return metrics;
-      } catch (Exception e) {
-        log.warn(
-            "Failed to fetch from real {} API, falling back to mock: {}", platform, e.getMessage());
-      }
+    if (!useRealApi) {
+      throw new IllegalStateException("Platform metrics API collection is disabled");
     }
-
-    // Fallback to mock data
-    return generateMockMetrics(platform, platformVideoId, minutesSincePublish);
-  }
-
-  /** Generate mock metrics for testing/development. */
-  private VideoMetrics generateMockMetrics(
-      PlatformType platform, String platformVideoId, int minutesSincePublish) {
-    log.debug("Generating mock metrics for {}", platform);
-
-    // Mock data with growth over time
-    long baseViews = 1000 + random.nextInt(5000);
-    double growthFactor =
-        Math.log(minutesSincePublish + 1) / Math.log(43200); // Normalize to 30 days
-    long views = (long) (baseViews * (1 + growthFactor * 10));
-    long likes = (long) (views * (0.02 + random.nextDouble() * 0.03)); // 2-5% like rate
-    long comments = (long) (views * (0.001 + random.nextDouble() * 0.002)); // 0.1-0.3% comment rate
-    long shares = (long) (views * (0.005 + random.nextDouble() * 0.01)); // 0.5-1.5% share rate
-
-    return VideoMetrics.builder()
-        .platform(platform)
-        .platformVideoId(platformVideoId)
-        .views(views)
-        .likes(likes)
-        .comments(comments)
-        .shares(shares)
-        .saves((long) (views * 0.01)) // 1% save rate
-        .completionRate(BigDecimal.valueOf(60 + random.nextInt(30))) // 60-90%
-        .avgWatchTimeSeconds(BigDecimal.valueOf(8 + random.nextInt(7))) // 8-15s
-        .impressions((long) (views * 1.5))
-        .reach((long) (views * 0.8))
-        .collectedAt(Instant.now())
-        .build();
+    PlatformMetricsClient client = clientsByPlatform.get(platform);
+    if (client == null) {
+      throw new IllegalStateException("No metrics client is configured for " + platform);
+    }
+    try {
+      VideoMetrics metrics = client.fetchMetrics(platformVideoId);
+      log.info("Metrics collected from real {} API: views={}", platform, metrics.getViews());
+      return metrics;
+    } catch (Exception error) {
+      throw new IllegalStateException("Platform metrics are unavailable for " + platform, error);
+    }
   }
 
   /** Handle collection failure. */

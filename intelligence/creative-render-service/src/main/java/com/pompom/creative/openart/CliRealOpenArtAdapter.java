@@ -56,8 +56,7 @@ public class CliRealOpenArtAdapter implements OpenArtAdapter {
     checkAvailability();
 
     log.info(
-        "Generating image via OpenArt CLI: prompt={}, model={}, style={}",
-        request.getPromptText(),
+        "Generating image via OpenArt CLI: model={}, style={}",
         request.getModel(),
         request.getStyle());
 
@@ -97,8 +96,7 @@ public class CliRealOpenArtAdapter implements OpenArtAdapter {
     checkAvailability();
 
     log.info(
-        "Generating video via OpenArt CLI: prompt={}, duration={}s, firstFrame={}",
-        request.getPromptText(),
+        "Generating video via OpenArt CLI: duration={}s, firstFrame={}",
         request.getDurationSeconds(),
         request.getFirstFrameImageId());
 
@@ -278,11 +276,6 @@ public class CliRealOpenArtAdapter implements OpenArtAdapter {
       command.add(request.getAspectRatio());
     }
 
-    if (apiKey != null && !apiKey.isEmpty()) {
-      command.add("--api-key");
-      command.add(apiKey);
-    }
-
     command.add("--output-format");
     command.add("json");
 
@@ -312,11 +305,6 @@ public class CliRealOpenArtAdapter implements OpenArtAdapter {
       command.add(String.valueOf(request.getDurationSeconds()));
     }
 
-    if (apiKey != null && !apiKey.isEmpty()) {
-      command.add("--api-key");
-      command.add(apiKey);
-    }
-
     command.add("--output-format");
     command.add("json");
 
@@ -330,11 +318,6 @@ public class CliRealOpenArtAdapter implements OpenArtAdapter {
     command.add("status");
     command.add("--job-id");
     command.add(jobId);
-
-    if (apiKey != null && !apiKey.isEmpty()) {
-      command.add("--api-key");
-      command.add(apiKey);
-    }
 
     command.add("--output-format");
     command.add("json");
@@ -352,11 +335,6 @@ public class CliRealOpenArtAdapter implements OpenArtAdapter {
     command.add("--output");
     command.add(destination.toString());
 
-    if (apiKey != null && !apiKey.isEmpty()) {
-      command.add("--api-key");
-      command.add(apiKey);
-    }
-
     command.add("--output-format");
     command.add("json");
 
@@ -369,11 +347,6 @@ public class CliRealOpenArtAdapter implements OpenArtAdapter {
     command.add(cliPath);
     command.add("credits");
 
-    if (apiKey != null && !apiKey.isEmpty()) {
-      command.add("--api-key");
-      command.add(apiKey);
-    }
-
     command.add("--output-format");
     command.add("json");
 
@@ -382,9 +355,12 @@ public class CliRealOpenArtAdapter implements OpenArtAdapter {
 
   /** Execute CLI command and return output. */
   private String executeCommand(List<String> command) throws IOException, InterruptedException {
-    log.debug("Executing command: {}", String.join(" ", command));
+    log.debug("Executing OpenArt command: executable={}, operation={}", command.get(0), command.get(1));
 
     ProcessBuilder processBuilder = new ProcessBuilder(command);
+    if (apiKey != null && !apiKey.isBlank()) {
+      processBuilder.environment().put("OPENART_API_KEY", apiKey);
+    }
     processBuilder.redirectErrorStream(true);
 
     Process process = processBuilder.start();

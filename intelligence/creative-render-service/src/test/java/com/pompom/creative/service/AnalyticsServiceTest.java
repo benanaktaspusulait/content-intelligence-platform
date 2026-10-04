@@ -7,6 +7,10 @@ import static org.mockito.Mockito.*;
 import com.pompom.creative.domain.PublicationAnalytics;
 import com.pompom.creative.domain.PublicationJob;
 import com.pompom.creative.domain.PublicationStatus;
+import com.pompom.creative.metrics.VideoMetrics;
+import com.pompom.creative.metrics.client.InstagramMetricsClient;
+import com.pompom.creative.metrics.client.TikTokMetricsClient;
+import com.pompom.creative.metrics.client.YouTubeMetricsClient;
 import com.pompom.creative.oauth.PlatformType;
 import com.pompom.creative.repository.PublicationAnalyticsRepository;
 import com.pompom.creative.repository.PublicationJobRepository;
@@ -15,10 +19,11 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.test.util.ReflectionTestUtils;
 
 @ExtendWith(MockitoExtension.class)
 class AnalyticsServiceTest {
@@ -29,10 +34,29 @@ class AnalyticsServiceTest {
 
   @Mock private CredentialManager credentialManager;
 
-  @InjectMocks private AnalyticsService analyticsService;
+  @Mock private TikTokMetricsClient tiktokMetricsClient;
+
+  @Mock private YouTubeMetricsClient youtubeMetricsClient;
+
+  @Mock private InstagramMetricsClient instagramMetricsClient;
+
+  private AnalyticsService analyticsService;
+
+  @BeforeEach
+  void setUp() {
+    analyticsService =
+        new AnalyticsService(
+            analyticsRepository,
+            publicationJobRepository,
+            credentialManager,
+            tiktokMetricsClient,
+            youtubeMetricsClient,
+            instagramMetricsClient);
+    ReflectionTestUtils.setField(analyticsService, "useRealApi", true);
+  }
 
   @Test
-  void fetchAnalytics_newJob_createsAnalytics() {
+  void fetchAnalytics_newJob_createsAnalytics() throws Exception {
     // Given
     UUID jobId = UUID.randomUUID();
     PublicationJob job =
@@ -40,6 +64,7 @@ class AnalyticsServiceTest {
             .id(jobId)
             .platform(PlatformType.TIKTOK)
             .platformPostId("post-123")
+            .platformVideoId("video-123")
             .status(PublicationStatus.PUBLISHED)
             .build();
 
@@ -48,6 +73,8 @@ class AnalyticsServiceTest {
     when(analyticsRepository.findByPublicationJobId(jobId)).thenReturn(Optional.empty());
     when(analyticsRepository.save(any(PublicationAnalytics.class)))
         .thenAnswer(invocation -> invocation.getArgument(0));
+    when(tiktokMetricsClient.fetchMetrics("video-123"))
+        .thenReturn(observedMetrics(PlatformType.TIKTOK, "video-123", 1_234L, 45L));
 
     // When
     PublicationAnalytics result = analyticsService.fetchAnalytics(jobId);
@@ -56,13 +83,13 @@ class AnalyticsServiceTest {
     assertThat(result).isNotNull();
     assertThat(result.getPublicationJobId()).isEqualTo(jobId);
     assertThat(result.getPlatform()).isEqualTo(PlatformType.TIKTOK);
-    assertThat(result.getViews()).isNotNull();
+    assertThat(result.getViews()).isEqualTo(1_234L);
 
     verify(analyticsRepository).save(any(PublicationAnalytics.class));
   }
 
   @Test
-  void fetchAnalytics_existingAnalytics_updatesMetrics() {
+  void fetchAnalytics_existingAnalytics_updatesMetrics() throws Exception {
     // Given
     UUID jobId = UUID.randomUUID();
     PublicationJob job =
@@ -70,6 +97,7 @@ class AnalyticsServiceTest {
             .id(jobId)
             .platform(PlatformType.YOUTUBE)
             .platformPostId("video-456")
+            .platformVideoId("video-456")
             .status(PublicationStatus.PUBLISHED)
             .build();
 
@@ -87,13 +115,15 @@ class AnalyticsServiceTest {
     when(analyticsRepository.findByPublicationJobId(jobId)).thenReturn(Optional.of(existing));
     when(analyticsRepository.save(any(PublicationAnalytics.class)))
         .thenAnswer(invocation -> invocation.getArgument(0));
+    when(youtubeMetricsClient.fetchMetrics("video-456"))
+        .thenReturn(observedMetrics(PlatformType.YOUTUBE, "video-456", 2_500L, 100L));
 
     // When
     PublicationAnalytics result = analyticsService.fetchAnalytics(jobId);
 
     // Then
     assertThat(result.getId()).isEqualTo(existing.getId());
-    assertThat(result.getViews()).isNotEqualTo(1000L); // Updated with new data
+    assertThat(result.getViews()).isEqualTo(2_500L);
 
     verify(analyticsRepository).save(existing);
   }
@@ -205,5 +235,19 @@ class AnalyticsServiceTest {
     assertThat(existing.getComments()).isEqualTo(20L);
     assertThat(existing.getShares()).isEqualTo(10L);
     assertThat(existing.getEngagementRate()).isNotNull();
+  }
+
+  private VideoMetrics observedMetrics(
+      PlatformType platform, String videoId, Long views, Long likes) {
+    return VideoMetrics.builder()
+        .platform(platform)
+        .platformVideoId(videoId)
+        .views(views)
+        .likes(likes)
+        .comments(12L)
+        .shares(3L)
+        .saves(1L)
+        .collectedAt(java.time.Instant.now())
+        .build();
   }
 }

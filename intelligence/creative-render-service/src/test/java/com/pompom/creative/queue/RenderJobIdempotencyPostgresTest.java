@@ -7,7 +7,12 @@ import static org.mockito.Mockito.when;
 import com.pompom.creative.domain.RenderJob;
 import com.pompom.creative.evidence.IntelligenceValidationEvidenceClient;
 import com.pompom.creative.evidence.ValidationEvidenceDto;
+import com.pompom.creative.intelligence.ContentPromptSnapshot;
+import com.pompom.creative.intelligence.IntelligenceContentClient;
 import com.pompom.creative.repository.RenderJobRepository;
+import com.pompom.creative.service.BudgetAlertService;
+import com.pompom.creative.service.CreditTrackingService;
+import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.List;
 import java.util.Map;
@@ -55,10 +60,21 @@ class RenderJobIdempotencyPostgresTest {
   @Autowired RenderJobQueueService queueService;
   @Autowired RenderJobRepository renderJobRepo;
   @MockitoBean IntelligenceValidationEvidenceClient evidenceClient;
+  @MockitoBean IntelligenceContentClient contentClient;
+  @MockitoBean CreditTrackingService creditTrackingService;
+  @MockitoBean BudgetAlertService budgetAlertService;
 
   @BeforeEach
   void stubEvidence() {
     when(evidenceClient.getEvidence(anyLong())).thenReturn(renderReadyEvidence());
+    when(contentClient.fetch(anyLong(), anyLong()))
+        .thenReturn(
+            new ContentPromptSnapshot(
+                "v1", 10L, "Kiko", "REEL", "RENDER_READY", 11L, 1,
+                "a".repeat(120), "{}", "a".repeat(64)));
+    when(creditTrackingService.canAffordRender(org.mockito.ArgumentMatchers.any())).thenReturn(true);
+    when(creditTrackingService.getEstimatedCost(org.mockito.ArgumentMatchers.any()))
+        .thenReturn(BigDecimal.TEN);
   }
 
   @Test

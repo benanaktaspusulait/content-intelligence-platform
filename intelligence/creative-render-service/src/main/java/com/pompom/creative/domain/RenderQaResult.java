@@ -53,13 +53,13 @@ public class RenderQaResult {
   @Column(name = "character_identity_issues", columnDefinition = "TEXT")
   private String characterIdentityIssues;
 
-  @Column(name = "physics_consistent", nullable = false)
+  @Column(name = "physics_consistent")
   private Boolean physicsConsistent;
 
   @Column(name = "physics_violations", columnDefinition = "TEXT")
   private String physicsViolations;
 
-  @Column(name = "has_object_duplication", nullable = false)
+  @Column(name = "has_object_duplication")
   private Boolean hasObjectDuplication;
 
   @Column(name = "duplication_details", columnDefinition = "TEXT")

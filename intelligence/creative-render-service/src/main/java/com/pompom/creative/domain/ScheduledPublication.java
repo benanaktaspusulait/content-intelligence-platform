@@ -30,6 +30,13 @@ public class ScheduledPublication {
   @Column(name = "video_path", nullable = false, columnDefinition = "TEXT")
   private String videoPath;
 
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "render_asset_id")
+  private RenderAsset renderAsset;
+
+  @Column(name = "platform_account_id", length = 200)
+  private String platformAccountId;
+
   @Column(name = "title", length = 500)
   private String title;
 

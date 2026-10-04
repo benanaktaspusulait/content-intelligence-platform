@@ -6,7 +6,7 @@ COPY src src
 RUN mvn -q -Dmaven.test.skip=true package
 
 FROM amazoncorretto:21-alpine
-RUN apk add --no-cache curl
+RUN apk add --no-cache curl ffmpeg
 WORKDIR /app
 COPY --from=build /workspace/target/creative-render-service-*.jar app.jar
 EXPOSE 8081

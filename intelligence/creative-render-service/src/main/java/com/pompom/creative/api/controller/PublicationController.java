@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v1/publications")
 @Slf4j
 @RequiredArgsConstructor
-@CrossOrigin(origins = "*")
 public class PublicationController {
 
   private final PublicationService publicationService;
@@ -28,9 +27,9 @@ public class PublicationController {
   public ResponseEntity<PublicationJob> queuePublication(
       @RequestBody QueuePublicationRequest request) {
     log.info(
-        "Queueing publication: platform={}, video={}",
+        "Queueing publication: platform={}, renderAssetId={}",
         request.getPlatform(),
-        request.getVideoPath());
+        request.getRenderAssetId());
 
     try {
       PlatformType platform = PlatformType.valueOf(request.getPlatform().toUpperCase());
@@ -38,7 +37,8 @@ public class PublicationController {
       PublicationJob job =
           publicationService.queuePublication(
               platform,
-              request.getVideoPath(),
+              request.getRenderAssetId(),
+              request.getPlatformAccountId(),
               request.getTitle(),
               request.getCaption(),
               request.getHashtags(),
@@ -109,7 +109,8 @@ public class PublicationController {
   @Data
   public static class QueuePublicationRequest {
     private String platform;
-    private String videoPath;
+    private UUID renderAssetId;
+    private String platformAccountId;
     private String title;
     private String caption;
     private String hashtags;

@@ -33,6 +33,22 @@ public class PublicationJob {
   @Column(name = "video_path", nullable = false, columnDefinition = "TEXT")
   private String videoPath;
 
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "render_asset_id")
+  private RenderAsset renderAsset;
+
+  @Column(name = "video_id")
+  private UUID videoId;
+
+  @Column(name = "variant_id")
+  private UUID variantId;
+
+  @Column(name = "platform_account_id", length = 200)
+  private String platformAccountId;
+
+  @Column(name = "idempotency_key", length = 200)
+  private String idempotencyKey;
+
   @Column(name = "title", length = 500)
   private String title;
 

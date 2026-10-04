@@ -18,7 +18,6 @@ import org.springframework.web.servlet.view.RedirectView;
 @RequestMapping("/api/v1/oauth")
 @Slf4j
 @RequiredArgsConstructor
-@CrossOrigin(origins = "*")
 public class OAuthController {
 
   private final OAuthService oauthService;

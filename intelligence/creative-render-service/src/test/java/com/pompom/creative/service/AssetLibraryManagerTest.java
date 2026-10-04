@@ -25,6 +25,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 class AssetLibraryManagerTest {
 
   @Mock private RenderAssetRepository assetRepo;
+  @Mock private MediaProbeService mediaProbeService;
 
   private AssetLibraryManager manager;
 
@@ -32,7 +33,7 @@ class AssetLibraryManagerTest {
 
   @BeforeEach
   void setUp() {
-    manager = new AssetLibraryManager(assetRepo, tempDir.toString());
+    manager = new AssetLibraryManager(assetRepo, mediaProbeService, tempDir.toString());
   }
 
   @Test
@@ -172,7 +173,7 @@ class AssetLibraryManagerTest {
   void recordAsset_firstFrame_createsCorrectEntity() throws Exception {
     // Given
     RenderJob job =
-        RenderJob.builder().contentId(123L).jobType(RenderJob.JobType.FIRST_FRAME).build();
+        RenderJob.builder().contentId(123L).jobType(RenderJob.JobType.FIRST_FRAME).openartJobId("mock-img-test").build();
 
     Path assetPath = tempDir.resolve("content/123/first-frame-v1.png");
     Files.createDirectories(assetPath.getParent());
@@ -213,7 +214,7 @@ class AssetLibraryManagerTest {
   @Test
   void recordAsset_video_createsCorrectEntity() throws Exception {
     // Given
-    RenderJob job = RenderJob.builder().contentId(789L).jobType(RenderJob.JobType.VIDEO).build();
+    RenderJob job = RenderJob.builder().contentId(789L).jobType(RenderJob.JobType.VIDEO).openartJobId("mock-vid-test").build();
 
     Path assetPath = tempDir.resolve("content/789/render-v1.mp4");
     Files.createDirectories(assetPath.getParent());
@@ -248,7 +249,7 @@ class AssetLibraryManagerTest {
   void recordAsset_savesEntityToDatabase() throws Exception {
     // Given
     RenderJob job =
-        RenderJob.builder().contentId(123L).jobType(RenderJob.JobType.FIRST_FRAME).build();
+        RenderJob.builder().contentId(123L).jobType(RenderJob.JobType.FIRST_FRAME).openartJobId("mock-img-test").build();
 
     Path assetPath = tempDir.resolve("content/123/first-frame-v1.png");
     Files.createDirectories(assetPath.getParent());

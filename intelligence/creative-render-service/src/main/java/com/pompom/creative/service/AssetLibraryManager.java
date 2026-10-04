@@ -8,6 +8,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.HexFormat;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -30,12 +33,15 @@ import org.springframework.transaction.annotation.Transactional;
 public class AssetLibraryManager {
 
   private final RenderAssetRepository assetRepo;
+  private final MediaProbeService mediaProbeService;
   private final Path dataRoot;
 
   public AssetLibraryManager(
       RenderAssetRepository assetRepo,
+      MediaProbeService mediaProbeService,
       @Value("${pompom.data.root:/tmp/pompom-data}") String dataRoot) {
     this.assetRepo = assetRepo;
+    this.mediaProbeService = mediaProbeService;
     this.dataRoot = Paths.get(dataRoot);
     log.info("AssetLibraryManager initialized with data root: {}", this.dataRoot);
   }
@@ -113,6 +119,14 @@ public class AssetLibraryManager {
 
     // Convert absolute path to relative path (relative to data root)
     Path absolutePath = Paths.get(downloadResult.getAssetPath());
+    Path normalizedRoot = dataRoot.toAbsolutePath().normalize();
+    Path normalizedAsset = absolutePath.toAbsolutePath().normalize();
+    if (!normalizedAsset.startsWith(normalizedRoot)) {
+      throw new IllegalArgumentException("Downloaded asset is outside the configured data root");
+    }
+    if (!Files.isRegularFile(normalizedAsset)) {
+      throw new IllegalArgumentException("Downloaded asset is not a regular file");
+    }
     String relativePath = dataRoot.relativize(absolutePath).toString();
 
     // Determine asset type from job type
@@ -120,6 +134,13 @@ public class AssetLibraryManager {
         job.getJobType() == RenderJob.JobType.FIRST_FRAME
             ? RenderAsset.AssetType.FIRST_FRAME
             : RenderAsset.AssetType.VIDEO;
+    int assetVersion = extractVersionFromPath(relativePath);
+    if (assetVersion < 1) {
+      throw new IllegalArgumentException("Asset path does not contain an explicit version");
+    }
+    String checksum = sha256(normalizedAsset);
+    boolean mock = job.getOpenartJobId() != null && job.getOpenartJobId().startsWith("mock-");
+    MediaProbeService.ProbeResult measured = mock ? null : mediaProbeService.probe(normalizedAsset);
 
     // Create asset entity
     RenderAsset asset =
@@ -129,12 +150,18 @@ public class AssetLibraryManager {
             .assetType(assetType)
             .relativePath(relativePath)
             .fileSizeBytes(downloadResult.getFileSizeBytes())
-            .width(downloadResult.getWidth())
-            .height(downloadResult.getHeight())
-            .durationMs(downloadResult.getDurationMs())
-            .codec(downloadResult.getCodec())
+            .width(measured == null ? downloadResult.getWidth() : measured.width())
+            .height(measured == null ? downloadResult.getHeight() : measured.height())
+            .durationMs(measured == null ? downloadResult.getDurationMs() : measured.durationMs())
+            .codec(measured == null ? downloadResult.getCodec() : measured.codec())
+            .frameRate(measured == null ? null : measured.frameRate())
             .downloadUrl(null) // Not stored in mock implementation
             .isCurrent(true)
+            .assetVersion(assetVersion)
+            .sha256(checksum)
+            .mediaVerified(measured != null)
+            .isMock(mock)
+            .quarantined(false)
             .build();
 
     asset = assetRepo.save(asset);
@@ -179,5 +206,34 @@ public class AssetLibraryManager {
     }
 
     return 0;
+  }
+
+  /** Resolve an asset path without allowing traversal outside the configured storage root. */
+  public Path resolveStoredPath(RenderAsset asset) {
+    Path resolved = dataRoot.toAbsolutePath().normalize().resolve(asset.getRelativePath()).normalize();
+    if (!resolved.startsWith(dataRoot.toAbsolutePath().normalize())) {
+      throw new IllegalArgumentException("Asset path escapes the configured data root");
+    }
+    return resolved;
+  }
+
+  public String checksum(Path path) {
+    return sha256(path.toAbsolutePath().normalize());
+  }
+
+  private String sha256(Path path) {
+    try {
+      MessageDigest digest = MessageDigest.getInstance("SHA-256");
+      try (var input = Files.newInputStream(path)) {
+        byte[] buffer = new byte[8192];
+        int read;
+        while ((read = input.read(buffer)) >= 0) {
+          digest.update(buffer, 0, read);
+        }
+      }
+      return HexFormat.of().formatHex(digest.digest());
+    } catch (IOException | NoSuchAlgorithmException error) {
+      throw new IllegalStateException("Unable to checksum asset", error);
+    }
   }
 }

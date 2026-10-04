@@ -1,5 +1,7 @@
 package com.pompom.creative.worker;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pompom.creative.domain.ProviderJobState;
 import com.pompom.creative.domain.RenderAsset;
 import com.pompom.creative.domain.RenderAttempt;
@@ -60,6 +62,7 @@ public class RenderAttemptOrchestrator {
   private final QaService qaService;
   private final QaDecisionEngine qaDecisionEngine;
   private final WebSocketEventPublisher webSocketPublisher;
+  private final ObjectMapper objectMapper;
 
   /**
    * Process exactly one stage of the given attempt.
@@ -115,34 +118,53 @@ public class RenderAttemptOrchestrator {
             : submitVideo(job);
 
     attempt.setProviderJobId(response.getJobId());
+    job.setOpenartJobId(response.getJobId());
     attempt.setStage(RenderExecutionStage.PROVIDER_QUEUED);
     attempt.setStartedAt(Instant.now());
     releaseLease(attempt);
 
     renderAttemptRepo.save(attempt);
+    renderJobRepo.save(job);
     publishProgress(job, "Submitted to provider", 10);
   }
 
   private OpenArtJobResponse submitFirstFrame(RenderJob job) {
+    JsonNode parameters = providerParameters(job);
     OpenArtImageRequest request =
         OpenArtImageRequest.builder()
             .promptText(job.getPromptTextSnapshot())
             .model(job.getOpenartModel())
-            .style("cinematic")
-            .aspectRatio("16:9")
+            .style(parameters.path("style").asText("cinematic"))
+            .aspectRatio(parameters.path("aspectRatio").asText("16:9"))
             .build();
     return openArtAdapter.generateImage(request);
   }
 
   private OpenArtJobResponse submitVideo(RenderJob job) {
+    JsonNode parameters = providerParameters(job);
     OpenArtVideoRequest request =
         OpenArtVideoRequest.builder()
             .promptText(job.getPromptTextSnapshot())
             .model(job.getOpenartModel())
-            .firstFrameImageId(null)
-            .durationSeconds(15)
+            .firstFrameImageId(textOrNull(parameters, "firstFrameImageId"))
+            .durationSeconds(parameters.path("durationSeconds").asInt(15))
             .build();
     return openArtAdapter.generateVideo(request);
+  }
+
+  private JsonNode providerParameters(RenderJob job) {
+    try {
+      return job.getOpenartParams() == null
+          ? objectMapper.createObjectNode()
+          : objectMapper.readTree(job.getOpenartParams());
+    } catch (Exception error) {
+      throw new IllegalStateException("Persisted provider parameters are invalid", error);
+    }
+  }
+
+  private String textOrNull(JsonNode parameters, String field) {
+    JsonNode value = parameters.get(field);
+    return value == null || value.isNull() || value.asText().isBlank() ? null : value.asText();
   }
 
   /**

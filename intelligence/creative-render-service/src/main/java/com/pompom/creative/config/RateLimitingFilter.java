@@ -6,7 +6,9 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.time.Clock;
+import java.time.Instant;
+import java.time.Duration;
 import org.springframework.stereotype.Component;
 
 /** Simple rate limiting filter. Production should use Redis-based solution like Bucket4j. */
@@ -14,7 +16,9 @@ import org.springframework.stereotype.Component;
 public class RateLimitingFilter implements Filter {
 
   private static final int MAX_REQUESTS_PER_MINUTE = 100;
-  private final Map<String, AtomicInteger> requestCounts = new ConcurrentHashMap<>();
+  private static final Duration WINDOW = Duration.ofMinutes(1);
+  private final Map<String, WindowCounter> requestCounts = new ConcurrentHashMap<>();
+  private final Clock clock = Clock.systemUTC();
 
   @Override
   public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
@@ -24,9 +28,16 @@ public class RateLimitingFilter implements Filter {
     HttpServletResponse httpResponse = (HttpServletResponse) response;
 
     String clientId = getClientId(httpRequest);
-    AtomicInteger count = requestCounts.computeIfAbsent(clientId, k -> new AtomicInteger(0));
+    Instant now = clock.instant();
+    WindowCounter count =
+        requestCounts.compute(
+            clientId,
+            (ignored, current) ->
+                current == null || !now.isBefore(current.windowStart.plus(WINDOW))
+                    ? new WindowCounter(now, 1)
+                    : new WindowCounter(current.windowStart, current.count + 1));
 
-    if (count.incrementAndGet() > MAX_REQUESTS_PER_MINUTE) {
+    if (count.count > MAX_REQUESTS_PER_MINUTE) {
       httpResponse.setStatus(429);
       httpResponse.getWriter().write("{\"error\":\"Rate limit exceeded\"}");
       return;
@@ -38,4 +49,6 @@ public class RateLimitingFilter implements Filter {
   private String getClientId(HttpServletRequest request) {
     return request.getRemoteAddr();
   }
+
+  private record WindowCounter(Instant windowStart, int count) {}
 }

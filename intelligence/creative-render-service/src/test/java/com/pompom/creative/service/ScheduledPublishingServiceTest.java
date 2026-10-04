@@ -6,9 +6,11 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 import com.pompom.creative.domain.PublicationJob;
+import com.pompom.creative.domain.RenderAsset;
 import com.pompom.creative.domain.ScheduledPublication;
 import com.pompom.creative.oauth.PlatformType;
 import com.pompom.creative.repository.ScheduledPublicationRepository;
+import com.pompom.creative.repository.RenderAssetRepository;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -17,6 +19,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -28,14 +31,25 @@ class ScheduledPublishingServiceTest {
   @Mock private ScheduledPublicationRepository scheduledPublicationRepository;
 
   @Mock private PublicationService publicationService;
+  @Mock private RenderAssetRepository renderAssetRepository;
+  @Mock private AssetLibraryManager assetLibraryManager;
 
   @InjectMocks private ScheduledPublishingService scheduledPublishingService;
+  private UUID assetId;
+  private RenderAsset asset;
+
+  @BeforeEach
+  void setUpAsset() {
+    assetId = UUID.randomUUID();
+    asset = RenderAsset.builder().id(assetId).relativePath("content/1/render-v1.mp4").build();
+    lenient().when(renderAssetRepository.findById(assetId)).thenReturn(Optional.of(asset));
+    lenient().when(assetLibraryManager.resolveStoredPath(asset)).thenReturn(java.nio.file.Path.of("/data/content/1/render-v1.mp4"));
+  }
 
   @Test
   void schedulePublication_futureTime_createsSchedule() {
     // Given
     PlatformType platform = PlatformType.TIKTOK;
-    String videoPath = "/tmp/video.mp4";
     Instant scheduledAt = Instant.now().plus(1, ChronoUnit.HOURS);
     String timezone = "Europe/Istanbul";
 
@@ -50,7 +64,7 @@ class ScheduledPublishingServiceTest {
     // When
     ScheduledPublication result =
         scheduledPublishingService.schedulePublication(
-            platform, videoPath, "Title", "Caption", "hashtags", false, scheduledAt, timezone);
+            platform, assetId, "account-1", "Title", "Caption", "hashtags", false, scheduledAt, timezone);
 
     // Then
     assertThat(result).isNotNull();
@@ -72,7 +86,8 @@ class ScheduledPublishingServiceTest {
             () ->
                 scheduledPublishingService.schedulePublication(
                     PlatformType.YOUTUBE,
-                    "/tmp/video.mp4",
+                    assetId,
+                    "account-1",
                     "Title",
                     "Caption",
                     "hashtags",
@@ -96,7 +111,8 @@ class ScheduledPublishingServiceTest {
     ScheduledPublication result =
         scheduledPublishingService.schedulePublication(
             PlatformType.FACEBOOK,
-            "/tmp/video.mp4",
+            assetId,
+            "account-1",
             "Title",
             "Caption",
             "hashtags",
@@ -116,7 +132,8 @@ class ScheduledPublishingServiceTest {
         ScheduledPublication.builder()
             .id(scheduleId)
             .platform(PlatformType.INSTAGRAM)
-            .videoPath("/tmp/video.mp4")
+            .renderAsset(asset)
+            .platformAccountId("account-1")
             .title("Title")
             .caption("Caption")
             .hashtags("tag1,tag2")
@@ -128,7 +145,7 @@ class ScheduledPublishingServiceTest {
     UUID jobId = UUID.randomUUID();
     PublicationJob job = PublicationJob.builder().id(jobId).build();
 
-    when(publicationService.queuePublication(any(), any(), any(), any(), any(), any()))
+    when(publicationService.queuePublication(any(), any(), any(), any(), any(), any(), any()))
         .thenReturn(job);
     when(scheduledPublicationRepository.save(any()))
         .thenAnswer(invocation -> invocation.getArgument(0));
@@ -143,7 +160,7 @@ class ScheduledPublishingServiceTest {
 
     verify(publicationService)
         .queuePublication(
-            PlatformType.INSTAGRAM, "/tmp/video.mp4", "Title", "Caption", "tag1,tag2", false);
+            PlatformType.INSTAGRAM, assetId, "account-1", "Title", "Caption", "tag1,tag2", false);
     verify(scheduledPublicationRepository).save(scheduled);
   }
 
@@ -156,7 +173,8 @@ class ScheduledPublishingServiceTest {
         ScheduledPublication.builder()
             .id(UUID.randomUUID())
             .platform(PlatformType.TIKTOK)
-            .videoPath("/tmp/video1.mp4")
+            .renderAsset(asset)
+            .platformAccountId("account-1")
             .scheduledAt(pastTime)
             .isExecuted(false)
             .build();
@@ -165,7 +183,8 @@ class ScheduledPublishingServiceTest {
         ScheduledPublication.builder()
             .id(UUID.randomUUID())
             .platform(PlatformType.YOUTUBE)
-            .videoPath("/tmp/video2.mp4")
+            .renderAsset(asset)
+            .platformAccountId("account-1")
             .scheduledAt(pastTime)
             .isExecuted(false)
             .build();
@@ -173,7 +192,7 @@ class ScheduledPublishingServiceTest {
     when(scheduledPublicationRepository.findByIsExecutedFalseAndScheduledAtBefore(any()))
         .thenReturn(List.of(due1, due2));
 
-    when(publicationService.queuePublication(any(), any(), any(), any(), any(), any()))
+    when(publicationService.queuePublication(any(), any(), any(), any(), any(), any(), any()))
         .thenReturn(PublicationJob.builder().id(UUID.randomUUID()).build());
 
     when(scheduledPublicationRepository.save(any()))
@@ -183,7 +202,7 @@ class ScheduledPublishingServiceTest {
     scheduledPublishingService.processScheduledPublications();
 
     // Then
-    verify(publicationService, times(2)).queuePublication(any(), any(), any(), any(), any(), any());
+    verify(publicationService, times(2)).queuePublication(any(), any(), any(), any(), any(), any(), any());
     verify(scheduledPublicationRepository, times(2)).save(any());
   }
 

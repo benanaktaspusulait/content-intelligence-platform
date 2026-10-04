@@ -157,9 +157,9 @@ public class QaDecisionEngine {
         .deadAirSegments(deadAirSegmentsJson)
         .characterIdentityVerified(qaResult.isCharacterIdentityVerified())
         .characterIdentityIssues(qaResult.getCharacterIdentityIssues())
-        .physicsConsistent(true) // Placeholder - not implemented in Part 2
+        .physicsConsistent(null)
         .physicsViolations(null)
-        .hasObjectDuplication(false) // Placeholder - not implemented in Part 2
+        .hasObjectDuplication(null)
         .duplicationDetails(null)
         .finalExecutionScore(null) // Placeholder - not implemented in Part 2
         .finalExecutionIssues(null)

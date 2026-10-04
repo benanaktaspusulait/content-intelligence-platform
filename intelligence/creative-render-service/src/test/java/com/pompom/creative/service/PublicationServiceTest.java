@@ -6,15 +6,22 @@ import static org.mockito.Mockito.*;
 
 import com.pompom.creative.domain.PublicationJob;
 import com.pompom.creative.domain.PublicationStatus;
+import com.pompom.creative.domain.RenderAsset;
+import com.pompom.creative.domain.RenderQaResult;
 import com.pompom.creative.oauth.PlatformType;
 import com.pompom.creative.publisher.PlatformPublisher;
 import com.pompom.creative.repository.PublicationJobRepository;
+import com.pompom.creative.repository.RenderAssetRepository;
+import com.pompom.creative.repository.RenderQaResultRepository;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.io.TempDir;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -23,15 +30,19 @@ import org.mockito.junit.jupiter.MockitoExtension;
 class PublicationServiceTest {
 
   @Mock private PublicationJobRepository publicationJobRepository;
+  @Mock private RenderAssetRepository renderAssetRepository;
+  @Mock private RenderQaResultRepository qaResultRepository;
+  @Mock private AssetLibraryManager assetLibraryManager;
 
   @Mock private Map<String, PlatformPublisher> publishers;
 
   @Mock private PlatformPublisher mockPublisher;
 
   @InjectMocks private PublicationService publicationService;
+  @TempDir Path tempDir;
 
   @Test
-  void queuePublication_validRequest_createsJob() {
+  void queuePublication_validRequest_createsJob() throws Exception {
     // queuePublication() persists the job and then calls publishAsync(id), which is
     // annotated @Async in production. @InjectMocks constructs a plain PublicationService
     // with no Spring AOP proxy, so @Async has no effect here and publishAsync() runs
@@ -41,7 +52,31 @@ class PublicationServiceTest {
     // covered separately; stubbing it here is unnecessary for this test's assertions.
     // Given
     PlatformType platform = PlatformType.TIKTOK;
-    String videoPath = "/tmp/video.mp4";
+    UUID assetId = UUID.randomUUID();
+    UUID variantId = UUID.randomUUID();
+    Path videoPath = tempDir.resolve("video.mp4");
+    Files.writeString(videoPath, "verified-video");
+    RenderAsset asset =
+        RenderAsset.builder()
+            .id(assetId)
+            .assetType(RenderAsset.AssetType.VIDEO)
+            .isCurrent(true)
+            .isMock(false)
+            .quarantined(false)
+            .mediaVerified(true)
+            .sha256("checksum")
+            .variantId(variantId)
+            .build();
+    RenderQaResult qa =
+        RenderQaResult.builder()
+            .decision(RenderQaResult.QaDecision.ACCEPT)
+            .requiresHumanReview(false)
+            .build();
+    when(renderAssetRepository.findById(assetId)).thenReturn(Optional.of(asset));
+    when(qaResultRepository.findTopByRenderAssetIdOrderByCreatedAtDesc(assetId))
+        .thenReturn(Optional.of(qa));
+    when(assetLibraryManager.resolveStoredPath(asset)).thenReturn(videoPath);
+    when(assetLibraryManager.checksum(videoPath)).thenReturn("checksum");
     String title = "Test Video";
     String caption = "Test caption";
     String hashtags = "pompomhills,kids";
@@ -58,13 +93,14 @@ class PublicationServiceTest {
     // When
     PublicationJob job =
         publicationService.queuePublication(
-            platform, videoPath, title, caption, hashtags, isPrivate);
+            platform, assetId, "account-1", title, caption, hashtags, isPrivate);
 
     // Then
     assertThat(job).isNotNull();
     assertThat(job.getPlatform()).isEqualTo(platform);
     assertThat(job.getStatus()).isEqualTo(PublicationStatus.QUEUED);
-    assertThat(job.getVideoPath()).isEqualTo(videoPath);
+    assertThat(job.getVideoPath()).isEqualTo(videoPath.toString());
+    assertThat(job.getRenderAsset()).isEqualTo(asset);
     assertThat(job.getTitle()).isEqualTo(title);
 
     verify(publicationJobRepository, atLeastOnce()).save(any(PublicationJob.class));
