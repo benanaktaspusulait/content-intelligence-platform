@@ -1,7 +1,7 @@
 import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { CreateVariantRequest, CreativeIntelligenceService, DiscoveryProfile, VideoVariant } from './creative-intelligence.service';
+import { AnalysisStatus, CreateVariantRequest, CreativeIntelligenceService, DiscoveryProfile, VideoVariant } from './creative-intelligence.service';
 
 describe('CreativeIntelligenceService discovery profile', () => {
   let service: CreativeIntelligenceService;
@@ -78,6 +78,48 @@ describe('CreativeIntelligenceService variants', () => {
       parentVariantId: 'variant-1', variantType: 'TRIMMED',
       generatedPath: 'library/x/trimmed.mp4', editOperations: [{ op: 'trim', startMs: 0, endMs: 5000 }],
     });
+    request.flush(response);
+  });
+});
+
+describe('CreativeIntelligenceService analysis', () => {
+  let service: CreativeIntelligenceService;
+  let http: HttpTestingController;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({ providers: [provideHttpClient(), provideHttpClientTesting()] });
+    service = TestBed.inject(CreativeIntelligenceService);
+    http = TestBed.inject(HttpTestingController);
+  });
+
+  afterEach(() => http.verify());
+
+  it('triggers analysis via POST and returns the status response', () => {
+    const response: AnalysisStatus = {
+      videoId: 'video-1', hasCompletedAnalysis: false, jobId: 'job-1', jobState: 'QUEUED',
+      attempts: 0, maxAttempts: 3, errorMessage: null, analysisId: null, classification: null,
+      actionDnaScore: null, confidence: null, reason: null, storyboardPath: null, analysisVersion: null,
+    };
+
+    service.triggerAnalysis('video-1').subscribe(status => expect(status).toEqual(response));
+
+    const request = http.expectOne('/api/v1/videos/video-1/analysis');
+    expect(request.request.method).toBe('POST');
+    request.flush(response);
+  });
+
+  it('reads analysis status via GET', () => {
+    const response: AnalysisStatus = {
+      videoId: 'video-1', hasCompletedAnalysis: true, jobId: null, jobState: 'COMPLETED',
+      attempts: null, maxAttempts: null, errorMessage: null, analysisId: 'analysis-1',
+      classification: 'GOOD', actionDnaScore: 0.82, confidence: 0.9, reason: 'Clear hook',
+      storyboardPath: 'library/x/storyboard.png', analysisVersion: 'creative-v3',
+    };
+
+    service.getAnalysisStatus('video-1').subscribe(status => expect(status).toEqual(response));
+
+    const request = http.expectOne('/api/v1/videos/video-1/analysis/status');
+    expect(request.request.method).toBe('GET');
     request.flush(response);
   });
 });

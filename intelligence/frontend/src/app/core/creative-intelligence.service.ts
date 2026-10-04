@@ -251,6 +251,23 @@ export interface ReachFurtherResearch {
   disclaimer: string;
 }
 
+export interface AnalysisStatus {
+  videoId: string;
+  hasCompletedAnalysis: boolean;
+  jobId: string | null;
+  jobState: 'NOT_STARTED' | 'QUEUED' | 'RUNNING' | 'COMPLETED' | 'FAILED';
+  attempts: number | null;
+  maxAttempts: number | null;
+  errorMessage: string | null;
+  analysisId: string | null;
+  classification: string | null;
+  actionDnaScore: number | null;
+  confidence: number | null;
+  reason: string | null;
+  storyboardPath: string | null;
+  analysisVersion: string | null;
+}
+
 export interface ReachFurtherComparison {
   reachFurtherObserved: { sampleSize: number; medianCurrentViews: number | null; distribution: Record<string, number> };
   reachFurtherNotObserved: { sampleSize: number; medianCurrentViews: number | null; distribution: Record<string, number> };
@@ -333,6 +350,14 @@ export class CreativeIntelligenceService {
 
   createVariant(videoId: string, request: CreateVariantRequest): Observable<VideoVariant> {
     return this.http.post<VideoVariant>(`${this.baseUrl}/videos/${videoId}/variants`, request);
+  }
+
+  triggerAnalysis(videoId: string): Observable<AnalysisStatus> {
+    return this.http.post<AnalysisStatus>(`${this.baseUrl}/videos/${videoId}/analysis`, {});
+  }
+
+  getAnalysisStatus(videoId: string): Observable<AnalysisStatus> {
+    return this.http.get<AnalysisStatus>(`${this.baseUrl}/videos/${videoId}/analysis/status`);
   }
 
   getReachFurther(id: string, platform = 'facebook'): Observable<ReachFurtherSummary> {
