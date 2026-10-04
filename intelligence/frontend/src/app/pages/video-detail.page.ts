@@ -1,7 +1,8 @@
-import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, OnDestroy, signal } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { catchError, combineLatest, forkJoin, Observable, of } from 'rxjs';
+import { catchError, combineLatest, forkJoin, interval, Observable, of, startWith, Subscription, switchMap } from 'rxjs';
 import {
+  AnalysisStatus,
   CreativeIntelligenceService,
   DiscoveryProfile,
   MediaFile,
@@ -103,6 +104,28 @@ const VARIANT_TYPE_LABELS: Record<string, string> = {
             </dl>
           </section>
         </div>
+      </section>
+
+      <section class="section-band creative-analysis-panel" aria-labelledby="creative-analysis-heading">
+        <div class="section-heading"><div><span class="eyebrow">CREATIVE ANALYSIS</span><h2 id="creative-analysis-heading">Automated quality assessment</h2></div>
+          @if (!analysisStatus()?.hasCompletedAnalysis) { <button class="button button--primary" type="button" [disabled]="triggeringAnalysis() || analysisStatus()?.jobState === 'QUEUED' || analysisStatus()?.jobState === 'RUNNING'" (click)="triggerAnalysis()">{{ triggeringAnalysis() ? 'Starting…' : analysisStatus()?.jobState === 'QUEUED' || analysisStatus()?.jobState === 'RUNNING' ? (analysisStatus()!.jobState === 'QUEUED' ? 'Queued…' : 'Running…') : 'Trigger analysis' }}</button> }
+        </div>
+        @if (analysisStatus()?.hasCompletedAnalysis) {
+          <dl class="technical-facts">
+            <div><dt>Classification</dt><dd>{{ analysisStatus()!.classification }}</dd></div>
+            <div><dt>Action DNA score</dt><dd>{{ decimal(analysisStatus()!.actionDnaScore) }}</dd></div>
+            <div><dt>Confidence</dt><dd>{{ decimal(analysisStatus()!.confidence) }}</dd></div>
+            <div><dt>Reason</dt><dd>{{ analysisStatus()!.reason }}</dd></div>
+            <div><dt>Analysis version</dt><dd><code>{{ analysisStatus()!.analysisVersion }}</code></dd></div>
+            @if (analysisStatus()!.storyboardPath) { <div><dt>Storyboard</dt><dd><code>{{ analysisStatus()!.storyboardPath }}</code></dd></div> }
+          </dl>
+        } @else if (analysisStatus()?.jobState === 'FAILED') {
+          <div class="state-panel state-panel--error compact-state"><strong>Analysis failed</strong><p>{{ analysisStatus()!.errorMessage || 'The analysis job failed.' }}</p></div>
+        } @else if (analysisStatus()?.jobState === 'QUEUED' || analysisStatus()?.jobState === 'RUNNING') {
+          <div class="state-panel compact-state"><span class="spinner"></span><strong>{{ analysisStatus()!.jobState === 'QUEUED' ? 'Queued for analysis' : 'Analysis running' }}</strong></div>
+        } @else {
+          <div class="state-panel compact-state"><strong>No analysis yet</strong><p>Trigger analysis to classify this creative.</p></div>
+        }
       </section>
 
       @if (!activeFile()!.ingested) {
@@ -219,10 +242,11 @@ const VARIANT_TYPE_LABELS: Record<string, string> = {
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class VideoDetailPage {
+export class VideoDetailPage implements OnDestroy {
   private readonly service = inject(CreativeIntelligenceService);
   private readonly route = inject(ActivatedRoute);
   private loadGeneration = 0;
+  private analysisPollSubscription: Subscription | null = null;
   protected readonly platforms: Array<{ key: PlatformKey; label: string }> = [
     { key: 'facebook', label: 'Facebook' },
     { key: 'instagram', label: 'Instagram' },
@@ -258,6 +282,8 @@ export class VideoDetailPage {
   protected readonly interventionNotes = signal('');
   protected readonly viewsBefore = signal('');
   protected readonly viewsAfter = signal('');
+  protected readonly analysisStatus = signal<AnalysisStatus | null>(null);
+  protected readonly triggeringAnalysis = signal(false);
 
   protected readonly folderName = computed(() => this.readableFolder(this.folderPath()));
   protected readonly mediaUrl = computed(() => this.activeFile() ? this.service.mediaContentUrl(this.activeFile()!.relativePath) : '');
@@ -315,6 +341,8 @@ export class VideoDetailPage {
     });
   }
 
+  ngOnDestroy(): void { this.analysisPollSubscription?.unsubscribe(); }
+
   protected selectVariant(file: MediaFile): void { this.activateVariant(file); }
   protected selectPlatform(platform: PlatformKey): void { if (platform !== this.platform()) { this.platform.set(platform); this.loadPerformance(); } }
   protected ingestSelected(): void {
@@ -351,6 +379,15 @@ export class VideoDetailPage {
     this.run(this.service.addManualEngagementIntervention(id, new Date(this.interventionAt()).toISOString(), this.interventionNotes(), before, after, this.platform()), 'Manual intervention recorded.');
   }
   protected selectEvidence(event: Event): void { this.evidence.set((event.target as HTMLInputElement).files?.[0] || null); }
+  protected triggerAnalysis(): void {
+    const id = this.video()?.id;
+    if (!id) return;
+    this.triggeringAnalysis.set(true);
+    this.service.triggerAnalysis(id).subscribe({
+      next: status => { this.triggeringAnalysis.set(false); this.analysisStatus.set(status); this.pollAnalysisStatus(id); },
+      error: response => { this.triggeringAnalysis.set(false); this.message.set(response.error?.message || 'Could not start analysis.'); },
+    });
+  }
   protected date(value: string | null | undefined): string { return value ? new Date(value).toLocaleString('en-GB', { dateStyle: 'medium', timeStyle: 'short' }) : '—'; }
   protected number(value: number | null | undefined): string { return value === null || value === undefined ? '—' : new Intl.NumberFormat('en').format(value); }
   protected readable(value: string | null | undefined): string { return value ? value.replaceAll('_', ' ').toLowerCase().replace(/(^|\s)\S/g, letter => letter.toUpperCase()) : '—'; }
@@ -394,12 +431,24 @@ export class VideoDetailPage {
   }
   private activateVariant(file: MediaFile, knownVideo?: VideoApiRecord): void {
     this.activeFile.set(file); this.message.set(''); this.video.set(null); this.clearPerformance();
-    if (!file.ingested || !file.videoId) { this.videoVariants.set([]); return; }
-    if (knownVideo?.id === file.videoId) { this.video.set(knownVideo); this.loadPerformance(); this.loadVariants(file.videoId); return; }
-    this.service.getVideo(file.videoId).subscribe({ next: video => { if (this.activeFile()?.relativePath === file.relativePath) { this.video.set(video); this.loadPerformance(); this.loadVariants(video.id); } }, error: response => this.message.set(response.error?.message || 'Technical metadata could not be loaded.') });
+    this.analysisStatus.set(null);
+    if (!file.ingested || !file.videoId) { this.videoVariants.set([]); this.analysisPollSubscription?.unsubscribe(); return; }
+    if (knownVideo?.id === file.videoId) { this.video.set(knownVideo); this.loadPerformance(); this.loadVariants(file.videoId); this.pollAnalysisStatus(file.videoId); return; }
+    this.service.getVideo(file.videoId).subscribe({ next: video => { if (this.activeFile()?.relativePath === file.relativePath) { this.video.set(video); this.loadPerformance(); this.loadVariants(video.id); this.pollAnalysisStatus(video.id); } }, error: response => this.message.set(response.error?.message || 'Technical metadata could not be loaded.') });
   }
   private loadVariants(videoId: string): void {
     this.service.listVariants(videoId).subscribe({ next: variants => this.videoVariants.set(variants), error: () => this.videoVariants.set([]) });
+  }
+  private pollAnalysisStatus(videoId: string): void {
+    this.analysisPollSubscription?.unsubscribe();
+    this.analysisPollSubscription = interval(5000)
+      .pipe(startWith(0), switchMap(() => this.service.getAnalysisStatus(videoId)))
+      .subscribe(status => {
+        this.analysisStatus.set(status);
+        if (status.jobState === 'COMPLETED' || status.jobState === 'FAILED') {
+          this.analysisPollSubscription?.unsubscribe();
+        }
+      });
   }
   private loadPerformance(): void {
     const id = this.video()?.id;

@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { ActivatedRoute, convertToParamMap, provideRouter } from '@angular/router';
 import { of } from 'rxjs';
-import { CreativeIntelligenceService, DiscoveryProfile, MediaFile, VideoApiRecord } from '../core/creative-intelligence.service';
+import { AnalysisStatus, CreativeIntelligenceService, DiscoveryProfile, MediaFile, VideoApiRecord } from '../core/creative-intelligence.service';
 import { VideoDetailPage } from './video-detail.page';
 
 const mediaFile: MediaFile = {
@@ -26,8 +26,17 @@ function serviceWith(discovery: DiscoveryProfile) {
     getPlatformGrowth: () => of(null),
     getDiscoveryProfile: () => of(discovery),
     listVariants: () => of([]),
+    triggerAnalysis: () => of(notStartedAnalysis),
+    getAnalysisStatus: () => of(notStartedAnalysis),
   };
 }
+
+const notStartedAnalysis: AnalysisStatus = {
+  videoId: 'video-1', hasCompletedAnalysis: false, jobId: null, jobState: 'NOT_STARTED',
+  attempts: null, maxAttempts: null, errorMessage: null, analysisId: null,
+  classification: null, actionDnaScore: null, confidence: null, reason: null,
+  storyboardPath: null, analysisVersion: null,
+};
 
 const baseDiscovery: DiscoveryProfile = {
   videoId: 'video-1', platform: 'facebook', cutoff: '2026-09-30T12:00:00Z',
@@ -133,6 +142,8 @@ describe('VideoDetailPage variant rail', () => {
         variantType: 'HOOK_COLD_OPEN', generatedPath: taggedFile.relativePath,
         editOperations: [], createdAt: '2026-10-04T00:00:00Z',
       }]),
+      triggerAnalysis: () => of(notStartedAnalysis),
+      getAnalysisStatus: () => of(notStartedAnalysis),
     };
   }
 
@@ -153,5 +164,73 @@ describe('VideoDetailPage variant rail', () => {
     const rail = fixture.nativeElement.querySelector('.variant-list');
     expect(rail.textContent).toContain('Hook / Cold Open');
     expect(rail.textContent).not.toContain('HD');
+  });
+});
+
+describe('VideoDetailPage creative analysis panel', () => {
+  const route = {
+    paramMap: of(convertToParamMap({})),
+    queryParamMap: of(convertToParamMap({ folder: 'library/Giant Sock', file: mediaFile.relativePath })),
+  };
+
+  function serviceWithAnalysis(status: AnalysisStatus) {
+    return {
+      mediaContentUrl: () => '/media',
+      getMediaFiles: () => of([mediaFile]),
+      getVideo: () => of(video),
+      getReachFurther: () => of(null),
+      getTrajectory: () => of({ videoId: 'video-1', platform: 'facebook', label: '', cleanOrganic: true, interventions: [], points: [] }),
+      getPlatformGrowth: () => of(null),
+      getDiscoveryProfile: () => of(baseDiscovery),
+      listVariants: () => of([]),
+      triggerAnalysis: () => of(status),
+      getAnalysisStatus: () => of(status),
+    };
+  }
+
+  afterEach(() => TestBed.resetTestingModule());
+
+  it('renders completed analysis results instead of a trigger button', async () => {
+    await TestBed.configureTestingModule({
+      imports: [VideoDetailPage],
+      providers: [
+        provideRouter([]),
+        { provide: ActivatedRoute, useValue: route },
+        { provide: CreativeIntelligenceService, useValue: serviceWithAnalysis({
+          videoId: 'video-1', hasCompletedAnalysis: true, jobId: null, jobState: 'COMPLETED',
+          attempts: null, maxAttempts: null, errorMessage: null, analysisId: 'analysis-1',
+          classification: 'GOOD', actionDnaScore: 0.82, confidence: 0.9, reason: 'Clear hook',
+          storyboardPath: null, analysisVersion: 'creative-v3',
+        }) },
+      ],
+    }).compileComponents();
+    const fixture = TestBed.createComponent(VideoDetailPage);
+    fixture.detectChanges();
+
+    const panel = fixture.nativeElement.querySelector('.creative-analysis-panel');
+    expect(panel.textContent).toContain('GOOD');
+    expect(panel.textContent).toContain('Clear hook');
+    expect(panel.querySelector('button')).toBeNull();
+  });
+
+  it('shows a trigger button when no analysis exists yet', async () => {
+    await TestBed.configureTestingModule({
+      imports: [VideoDetailPage],
+      providers: [
+        provideRouter([]),
+        { provide: ActivatedRoute, useValue: route },
+        { provide: CreativeIntelligenceService, useValue: serviceWithAnalysis({
+          videoId: 'video-1', hasCompletedAnalysis: false, jobId: null, jobState: 'NOT_STARTED',
+          attempts: null, maxAttempts: null, errorMessage: null, analysisId: null,
+          classification: null, actionDnaScore: null, confidence: null, reason: null,
+          storyboardPath: null, analysisVersion: null,
+        }) },
+      ],
+    }).compileComponents();
+    const fixture = TestBed.createComponent(VideoDetailPage);
+    fixture.detectChanges();
+
+    const panel = fixture.nativeElement.querySelector('.creative-analysis-panel');
+    expect(panel.querySelector('button')?.textContent).toContain('Trigger analysis');
   });
 });
