@@ -996,6 +996,9 @@ transitions from `RUNNING` to `COMPLETED` correctly reports `200`, not a stale `
 state fresh after enqueueing is deliberately more honest than trusting `enqueue()`'s own return
 value for the HTTP status.)
 
+Add this private helper to the same class, used by both endpoints above:
+
+```java
   private VideoDtos.AnalysisStatusResponse statusFor(UUID id) {
     if (service.hasCurrentAnalysis(id)) {
       var analysis = analyses.findFirstByVideoIdOrderByCreatedAtDesc(id).orElseThrow();
