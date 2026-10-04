@@ -41,6 +41,9 @@ public class WebhookEvent {
   @Column(name = "signature", columnDefinition = "TEXT")
   private String signature; // Webhook signature for verification
 
+  @Column(name = "delivery_key", nullable = false, length = 128)
+  private String deliveryKey;
+
   @Column(name = "is_processed", nullable = false)
   private Boolean isProcessed = false;
 

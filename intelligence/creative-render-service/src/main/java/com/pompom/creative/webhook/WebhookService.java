@@ -10,6 +10,7 @@ import com.pompom.creative.repository.PublicationJobRepository;
 import com.pompom.creative.repository.WebhookEventRepository;
 import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
+import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 import java.util.List;
@@ -46,6 +47,17 @@ public class WebhookService {
    */
   @Transactional
   public WebhookEvent receiveWebhook(PlatformType platform, String payload, String signature) {
+    String deliveryKey = deliveryKey(platform, payload, signature);
+    Optional<WebhookEvent> existing = webhookEventRepository.findByDeliveryKey(deliveryKey);
+    if (existing.isPresent()) {
+      return existing.get();
+    }
+    return receiveWebhook(platform, payload, signature, deliveryKey);
+  }
+
+  @Transactional
+  private WebhookEvent receiveWebhook(
+      PlatformType platform, String payload, String signature, String deliveryKey) {
     log.info("Received webhook: platform={}", platform);
 
     try {
@@ -63,6 +75,7 @@ public class WebhookService {
               .platformPostId(platformPostId)
               .payload(payload)
               .signature(signature)
+              .deliveryKey(deliveryKey)
               .isProcessed(false)
               .build();
 
@@ -232,11 +245,33 @@ public class WebhookService {
   public boolean verifySignature(
       PlatformType platform, String payload, String signature, String secret) {
     try {
+      if (payload == null
+          || signature == null
+          || signature.isBlank()
+          || secret == null
+          || secret.isBlank()) {
+        return false;
+      }
       String expectedSignature = generateSignature(payload, secret);
-      return expectedSignature.equals(signature);
+      return MessageDigest.isEqual(
+          expectedSignature.getBytes(StandardCharsets.UTF_8),
+          signature.getBytes(StandardCharsets.UTF_8));
     } catch (Exception e) {
       log.error("Failed to verify signature", e);
       return false;
+    }
+  }
+
+  private String deliveryKey(PlatformType platform, String payload, String signature) {
+    try {
+      MessageDigest digest = MessageDigest.getInstance("SHA-256");
+      byte[] value =
+          digest.digest(
+              (platform.name() + ":" + (signature == null ? "" : signature) + ":" + payload)
+                  .getBytes(StandardCharsets.UTF_8));
+      return java.util.HexFormat.of().formatHex(value);
+    } catch (NoSuchAlgorithmException error) {
+      throw new IllegalStateException("SHA-256 is unavailable", error);
     }
   }
 
