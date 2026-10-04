@@ -7,8 +7,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.pompomhills.intelligence.common.api.GlobalExceptionHandler;
 import com.pompomhills.intelligence.common.config.PompomProperties;
+import com.pompomhills.intelligence.creative.CreativeAnalysisRepository;
 import com.pompomhills.intelligence.video.MediaContentService;
 import com.pompomhills.intelligence.video.VideoService;
+import com.pompomhills.intelligence.video.job.AnalysisJobService;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Set;
@@ -28,7 +30,11 @@ class VideoMediaContentTest {
     var properties =
         new PompomProperties(root, "http://localhost", Set.of("mp4", "mov", "m4v"), 3, 12);
     var controller =
-        new VideoController(Mockito.mock(VideoService.class), new MediaContentService(properties));
+        new VideoController(
+            Mockito.mock(VideoService.class),
+            new MediaContentService(properties),
+            Mockito.mock(AnalysisJobService.class),
+            Mockito.mock(CreativeAnalysisRepository.class));
     mvc =
         MockMvcBuilders.standaloneSetup(controller)
             .setControllerAdvice(new GlobalExceptionHandler())

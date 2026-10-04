@@ -121,6 +121,10 @@ public class CreativeAnalysisEntity {
     return confidence;
   }
 
+  public String getReason() {
+    return reason;
+  }
+
   public String getStoryboardPath() {
     return storyboardPath;
   }

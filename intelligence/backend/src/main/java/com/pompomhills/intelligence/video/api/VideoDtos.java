@@ -59,4 +59,20 @@ public final class VideoDtos {
       double confidence,
       Map<String, Object> features,
       String storyboardPath) {}
+
+  public record AnalysisStatusResponse(
+      UUID videoId,
+      boolean hasCompletedAnalysis,
+      String jobId,
+      String jobState,
+      Integer attempts,
+      Integer maxAttempts,
+      String errorMessage,
+      UUID analysisId,
+      String classification,
+      Double actionDnaScore,
+      Double confidence,
+      String reason,
+      String storyboardPath,
+      String analysisVersion) {}
 }

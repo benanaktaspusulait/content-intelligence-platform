@@ -1,8 +1,10 @@
 package com.pompomhills.intelligence.video.api;
 
+import com.pompomhills.intelligence.creative.CreativeAnalysisRepository;
 import com.pompomhills.intelligence.video.MediaContentService;
 import com.pompomhills.intelligence.video.VideoService;
 import com.pompomhills.intelligence.video.VideoStatus;
+import com.pompomhills.intelligence.video.job.AnalysisJobService;
 import jakarta.validation.Valid;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
@@ -27,10 +29,18 @@ import org.springframework.web.bind.annotation.RestController;
 public class VideoController {
   private final VideoService service;
   private final MediaContentService mediaContent;
+  private final AnalysisJobService jobService;
+  private final CreativeAnalysisRepository analyses;
 
-  public VideoController(VideoService service, MediaContentService mediaContent) {
+  public VideoController(
+      VideoService service,
+      MediaContentService mediaContent,
+      AnalysisJobService jobService,
+      CreativeAnalysisRepository analyses) {
     this.service = service;
     this.mediaContent = mediaContent;
+    this.jobService = jobService;
+    this.analyses = analyses;
   }
 
   @PostMapping("/ingest")
@@ -77,8 +87,73 @@ public class VideoController {
   }
 
   @PostMapping("/{id}/analysis")
-  public VideoDtos.AnalysisResponse analyse(@PathVariable UUID id) {
-    return service.analyse(id);
+  public ResponseEntity<VideoDtos.AnalysisStatusResponse> analyse(@PathVariable UUID id) {
+    jobService.enqueue(id);
+    var status = statusFor(id);
+    return status.hasCompletedAnalysis()
+        ? ResponseEntity.ok(status)
+        : ResponseEntity.accepted().body(status);
+  }
+
+  @GetMapping("/{id}/analysis/status")
+  public VideoDtos.AnalysisStatusResponse status(@PathVariable UUID id) {
+    return statusFor(id);
+  }
+
+  private VideoDtos.AnalysisStatusResponse statusFor(UUID id) {
+    if (service.hasCurrentAnalysis(id)) {
+      var analysis = analyses.findFirstByVideoIdOrderByCreatedAtDesc(id).orElseThrow();
+      return new VideoDtos.AnalysisStatusResponse(
+          id,
+          true,
+          null,
+          "COMPLETED",
+          null,
+          null,
+          null,
+          analysis.getId(),
+          analysis.getClassification(),
+          analysis.getActionDnaScore(),
+          analysis.getConfidence(),
+          analysis.getReason(),
+          analysis.getStoryboardPath(),
+          analysis.getAnalysisVersion());
+    }
+    var active = jobService.findActiveByVideoId(id);
+    var latest = active.isPresent() ? active : jobService.findLatestByVideoId(id);
+    if (latest.isEmpty()) {
+      return new VideoDtos.AnalysisStatusResponse(
+          id,
+          false,
+          null,
+          "NOT_STARTED",
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null);
+    }
+    var job = latest.get();
+    return new VideoDtos.AnalysisStatusResponse(
+        id,
+        false,
+        job.id().toString(),
+        job.state(),
+        job.attempts(),
+        job.maxAttempts(),
+        job.error(),
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null);
   }
 
   @GetMapping
