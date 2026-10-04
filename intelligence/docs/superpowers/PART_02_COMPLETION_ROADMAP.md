@@ -87,7 +87,7 @@ touch the variant model Plan B introduces).
 | A | Observation mathematics correctness (metric semantics + source reconciliation + checkpoint tolerance) | Phase A | backend | ✅ Done, backend-only (commit `ffbdf84`, see §4 for completion record and 2 open follow-ups) |
 | B1 | Variant domain (entity/repository/service/API) | Phase B.1 | backend | ✅ Done (commit `bb35667`, see §4 for completion record) |
 | B2a | Variant-aware backend wiring (path-alias dedup, import variant resolution, publication read path, performance query filters, V32/V33 migrations) | Phase B.2-5 (backend) | backend | ✅ Done (commit `284105f`, see §4 for completion record) |
-| B2b | Frontend variant consumption (Angular service methods + replace folder-grouping heuristic) | Phase B.3 (frontend) | frontend | ⬜ Not started |
+| B2b | Frontend variant consumption (Angular service methods + replace folder-grouping heuristic) | Phase B.3 (frontend) | frontend | ✅ Done (commit `c11dfd9`, see §4c for completion record) |
 | C | Creative analysis completion (stop duplicate ML calls, surface analysis in Video Detail) | Phase C | backend, frontend | ⬜ Not started |
 | D | Evidence honesty (error-vs-empty, completion/watch metrics, overview placeholders, platform validation) | Phase D | backend, frontend | ⬜ Not started |
 | E | Deployment and scale boundaries (media mount, scan truncation, pagination) | Phase E | backend, frontend, deployment config | ⬜ Not started |
@@ -447,6 +447,88 @@ Next: Plan B2b (frontend variant consumption), which depends on both Plan B1's
 `/api/v1/videos/{videoId}/variants` endpoints and this plan's variant-aware query parameters/
 alias-resolution behavior existing before building the Angular-side `variantId` concept on top
 of them.
+
+---
+
+## 4c. Plan B2b completion record
+
+**Status: ✅ Done.** Executed via `subagent-driven-development`, 4 tasks + final review. Task 2's
+and Task 1's implementer dispatches each timed out once (3600s, no side effects on one; partial-
+but-correct Step 1 only on the other) — both completed directly by the controller rather than
+re-dispatched, per this session's established precedent. Every task reached Approved or Approved
+with minor notes on first review — no fix rounds needed, though two of the four tasks' implementers
+caught and correctly fixed real false-positive bugs in the plan's own draft test fixtures before
+review (not left for the reviewer to catch). Plan doc:
+`docs/superpowers/plans/2026-10-04-part02-plan-b2b-frontend-variant-consumption.md`.
+
+Final state: backend Spring suite 104/104 passing, `BUILD SUCCESS`; frontend suite 19/20 passing
+(1 pre-existing, unrelated `app.spec.ts` nav-link-count failure, confirmed via `git stash` to
+predate this entire plan — not caused or fixed by it, out of scope). Full-plan diff reviewed
+holistically: scope boundary confirmed clean (only the 10 files the plan's File Structure section
+named were touched, verified via `git diff --stat` against the plan-start commit), `VariantType`'s
+6-value closed set used consistently with no 7th value invented anywhere, and both frontend pages'
+variantId-first/filename-guess-fallback logic independently confirmed never leaves a blank/undefined
+label on any path.
+
+Commit range: `26d08b3..c11dfd9` (plan doc + 4 task commits, no fix-round commits needed).
+
+Delivered:
+- **Task 1** (`9737801`): a gap this roadmap had assumed Plan B2a already closed, but hadn't —
+  `VideoDtos.MediaFile`/`VideoService.mapMediaFile()` had no `variantId` resolution at all before
+  this task. Added `VideoVariantRepository.findByGeneratedPath()` and a trailing `variantId` field
+  on `MediaFile`, resolved via exact `generated_path` string match (no fuzzy matching, consistent
+  with Plan B2a's precedent).
+- **Task 2** (`1520819`): `VideoVariant`/`CreateVariantRequest`/`VariantType` TypeScript interfaces
+  and `listVariants(videoId)`/`createVariant(videoId, request)` methods added to
+  `creative-intelligence.service.ts`, consuming Plan B1's `/api/v1/videos/{videoId}/variants`
+  endpoints, which had zero Angular consumers before this task. `MediaFile.variantId: string | null`
+  added to match Task 1's backend field.
+- **Task 3** (`e9f0f54`): `video-library.page.ts`'s `displayFiles` grouping/counting key now prefers
+  real `variantId` identity over the filename guess when present (`variantGroupKey` helper), so two
+  files with different names but the same persisted variant are counted/numbered together. Per-row
+  **label text** deliberately still uses the pre-existing `mediaVariant(file.name)` guess unchanged
+  — only the grouping mechanism changed here, not what's displayed per file (see known gap below).
+- **Task 4** (`c11dfd9`): `video-detail.page.ts`'s "Compare variants" rail now fetches a video's real
+  `VideoVariant[]` (via `listVariants`, fired from both `activateVariant` branches) and labels any
+  file with a matching `variantId` using its real, humanized `variantType` (`VARIANT_TYPE_LABELS`),
+  overriding the filename guess. Files with no `variantId` keep the filename-guess fallback. Fetch
+  fails open to an empty array on error — a display enhancement, never a page-blocking dependency.
+
+Two real test-fixture bugs were found and fixed during implementation (not plan-level design
+issues — the plan's own illustrative example filenames happened to not exercise the behavior they
+were meant to prove):
+1. Task 3's draft fixture (`take1.mp4` + `weird_name_v9.mp4`) both guess `'Original'` under
+   `mediaVariant()` — the `_v9` suffix doesn't match the versioned-suffix regex without a trailing
+   `_original`/`_hd`/`_hook` word, so the test would have passed identically before and after the
+   fix. Replaced the second filename with `weird_name_hd.mp4` (guesses `'HD'`) and asserted the
+   actual sequential-label behavior instead of a `.media-file-group` count that the plan's own text
+   already flagged as not exercising the change.
+2. Task 4's draft fixture reused `mediaFile.name` (`'giant-sock-hd.mp4'`, hyphen before `hd`), which
+   `mediaVariant()` does not recognize as an `'HD'` suffix (the regex requires an underscore, `_hd`)
+   — so it guesses `'Original'`, making the test's negative assertion (`not.toContain('HD')`)
+   vacuous. Replaced with `'giant_sock_hd.mp4'` (underscore), confirmed empirically to guess `'HD'`
+   under old code and the real variant type under new code.
+
+**Known, accepted gaps (deliberate, documented deferrals, not oversights):**
+- `video-library.page.ts`'s per-row **label text** is still `mediaVariant()`-only, even for files
+  with a known `variantId` — only the grouping/counting key is variantId-aware (Task 3). Giving each
+  row its own real `variantType` label there would require a `listVariants()` call per video shown
+  in a multi-video folder listing, which this plan deliberately did not add (the library page lists
+  files across many videos at once; `video-detail.page.ts`'s equivalent fetch is one call per single
+  active video, a different cost profile). Candidate for a future small follow-up if a real
+  per-group `variantType` label becomes a product requirement on the library page too.
+- No test coverage for an unmapped/future 7th `variantType` value reaching `VARIANT_TYPE_LABELS` in
+  `video-detail.page.ts` (behavior is correct — falls back to rendering the raw string — but
+  untested). Flagged by Task 4's reviewer; not blocking since the brief didn't request it.
+- The frontend test runner did not fail the suite on 3 uncaught exceptions thrown by
+  `video-detail.page.spec.ts`'s pre-existing tests before Task 4's `serviceWith()` mock fix (the
+  tests still reported "passed," with the exceptions surfacing only as console noise after
+  assertions had already run). This masked a real, if narrow, regression risk during this plan and
+  could do so again in a future task — worth a follow-up on the Vitest/Angular test configuration,
+  outside this plan's scope.
+
+Next: Plan C (creative analysis completion), independent of A/B2 per §1's dependency notes — can
+proceed directly without further prerequisites from this plan.
 
 ---
 
