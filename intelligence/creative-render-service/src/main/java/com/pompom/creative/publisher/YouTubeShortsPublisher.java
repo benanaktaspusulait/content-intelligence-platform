@@ -8,6 +8,7 @@ import com.pompom.creative.publisher.dto.PublishResponse;
 import com.pompom.creative.service.CredentialManager;
 import java.io.File;
 import java.io.IOException;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.FileSystemResource;
@@ -52,6 +53,40 @@ public class YouTubeShortsPublisher implements PlatformPublisher {
     } catch (Exception e) {
       log.error("YouTube Shorts publish failed: video={}", request.getVideoPath(), e);
       return PublishResponse.failure("YouTube Shorts publish failed: " + e.getMessage());
+    }
+  }
+
+  @Override
+  public Optional<PublishResponse> reconcile(
+      PublishRequest request, String platformPostId, String platformVideoId) {
+    String videoId = platformVideoId != null ? platformVideoId : platformPostId;
+    if (videoId == null || videoId.isBlank()) {
+      return Optional.empty();
+    }
+    try {
+      String token = credentialManager.getActiveAccessToken(PlatformType.YOUTUBE);
+      String response =
+          restClientBuilder
+              .build()
+              .get()
+              .uri(API_BASE_URL + "/videos?id=" + videoId + "&part=id,status&access_token=" + token)
+              .retrieve()
+              .body(String.class);
+      JsonNode json = objectMapper.readTree(response);
+      if (!json.has("items") || json.get("items").isEmpty()) {
+        return Optional.empty();
+      }
+      return Optional.of(
+          PublishResponse.builder()
+              .success(true)
+              .platformVideoId(videoId)
+              .postUrl(null)
+              .status("RECONCILED")
+              .message("Existing YouTube video confirmed")
+              .build());
+    } catch (Exception error) {
+      log.warn("YouTube reconciliation unavailable for video {}", videoId, error);
+      return Optional.empty();
     }
   }
 

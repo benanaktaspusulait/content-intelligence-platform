@@ -8,6 +8,7 @@ import com.pompom.creative.publisher.dto.PublishResponse;
 import com.pompom.creative.service.CredentialManager;
 import java.io.File;
 import java.io.IOException;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.FileSystemResource;
@@ -63,6 +64,40 @@ public class FacebookPublisher implements PlatformPublisher {
     } catch (Exception e) {
       log.error("Facebook publish failed: video={}", request.getVideoPath(), e);
       return PublishResponse.failure("Facebook publish failed: " + e.getMessage());
+    }
+  }
+
+  @Override
+  public Optional<PublishResponse> reconcile(
+      PublishRequest request, String platformPostId, String platformVideoId) {
+    String videoId = platformVideoId != null ? platformVideoId : platformPostId;
+    if (videoId == null || videoId.isBlank()) {
+      return Optional.empty();
+    }
+    try {
+      String token = credentialManager.getActiveAccessToken(PlatformType.FACEBOOK);
+      String response =
+          restClientBuilder
+              .build()
+              .get()
+              .uri(GRAPH_API_BASE_URL + "/" + videoId + "?fields=id,permalink_url&access_token=" + token)
+              .retrieve()
+              .body(String.class);
+      JsonNode json = objectMapper.readTree(response);
+      if (json.has("error") || !json.has("id")) {
+        return Optional.empty();
+      }
+      return Optional.of(
+          PublishResponse.builder()
+              .success(true)
+              .platformVideoId(json.get("id").asText())
+              .postUrl(json.hasNonNull("permalink_url") ? json.get("permalink_url").asText() : null)
+              .status("RECONCILED")
+              .message("Existing Facebook video confirmed")
+              .build());
+    } catch (Exception error) {
+      log.warn("Facebook reconciliation unavailable for video {}", videoId, error);
+      return Optional.empty();
     }
   }
 

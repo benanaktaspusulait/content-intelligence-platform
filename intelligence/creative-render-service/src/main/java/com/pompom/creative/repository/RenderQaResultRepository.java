@@ -5,6 +5,7 @@ import java.util.Optional;
 import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+import java.util.List;
 
 @Repository
 public interface RenderQaResultRepository extends JpaRepository<RenderQaResult, UUID> {
@@ -14,4 +15,6 @@ public interface RenderQaResultRepository extends JpaRepository<RenderQaResult, 
   Optional<RenderQaResult> findTopByRenderAssetIdOrderByCreatedAtDesc(UUID renderAssetId);
 
   Optional<RenderQaResult> findTopByRenderAsset_RenderJob_IdOrderByCreatedAtDesc(UUID renderJobId);
+
+  List<RenderQaResult> findByRequiresHumanReviewTrueAndHumanReviewedAtIsNullOrderByCreatedAtAsc();
 }

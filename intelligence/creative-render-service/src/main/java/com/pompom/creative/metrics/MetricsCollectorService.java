@@ -13,8 +13,8 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -26,10 +26,11 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service
 @Slf4j
-@RequiredArgsConstructor
 public class MetricsCollectorService {
 
   private final MetricsCollectionJobRepository collectionJobRepo;
+  private final JdbcMetricsCollectionClaimRepository claimRepository;
+  private final PerformanceObservationPublisher observationPublisher;
   private final VideoMetricsRepository metricsRepo;
   private final PublicationJobRepository publicationJobRepo;
   private final List<PlatformMetricsClient> metricsClients;
@@ -40,6 +41,41 @@ public class MetricsCollectorService {
 
   // Map of platform clients for easy lookup
   private Map<PlatformType, PlatformMetricsClient> clientsByPlatform;
+
+  @Autowired
+  public MetricsCollectorService(
+      MetricsCollectionJobRepository collectionJobRepo,
+      JdbcMetricsCollectionClaimRepository claimRepository,
+      PerformanceObservationPublisher observationPublisher,
+      VideoMetricsRepository metricsRepo,
+      PublicationJobRepository publicationJobRepo,
+      List<PlatformMetricsClient> metricsClients,
+      WebSocketEventPublisher webSocketPublisher) {
+    this.collectionJobRepo = collectionJobRepo;
+    this.claimRepository = claimRepository;
+    this.observationPublisher = observationPublisher;
+    this.metricsRepo = metricsRepo;
+    this.publicationJobRepo = publicationJobRepo;
+    this.metricsClients = metricsClients;
+    this.webSocketPublisher = webSocketPublisher;
+  }
+
+  /** Compatibility constructor for direct service tests that do not exercise scheduled claims. */
+  public MetricsCollectorService(
+      MetricsCollectionJobRepository collectionJobRepo,
+      VideoMetricsRepository metricsRepo,
+      PublicationJobRepository publicationJobRepo,
+      List<PlatformMetricsClient> metricsClients,
+      WebSocketEventPublisher webSocketPublisher) {
+    this(
+        collectionJobRepo,
+        null,
+        null,
+        metricsRepo,
+        publicationJobRepo,
+        metricsClients,
+        webSocketPublisher);
+  }
 
   @jakarta.annotation.PostConstruct
   public void init() {
@@ -104,18 +140,27 @@ public class MetricsCollectorService {
 
   /** Process due collection jobs (runs every 5 minutes). */
   @Scheduled(cron = "0 */5 * * * *") // Every 5 minutes
-  @Transactional
   public void processDueJobs() {
-    List<MetricsCollectionJob> dueJobs = collectionJobRepo.findDueJobs(Instant.now());
+    if (claimRepository == null) {
+      throw new IllegalStateException("Durable metrics claim repository is not configured");
+    }
+    Instant now = Instant.now();
+    String leaseOwner = "metrics-" + UUID.randomUUID();
+    List<UUID> claimedIds =
+        claimRepository.claimDueJobs(leaseOwner, now, now.plus(Duration.ofMinutes(10)), 25);
 
-    if (dueJobs.isEmpty()) {
+    if (claimedIds.isEmpty()) {
       log.debug("No due metrics collection jobs");
       return;
     }
 
-    log.info("Processing {} due metrics collection jobs", dueJobs.size());
+    log.info("Processing {} claimed metrics collection jobs", claimedIds.size());
 
-    for (MetricsCollectionJob job : dueJobs) {
+    for (UUID jobId : claimedIds) {
+      MetricsCollectionJob job = collectionJobRepo.findById(jobId).orElse(null);
+      if (job == null) {
+        continue;
+      }
       try {
         collectMetrics(job);
       } catch (Exception e) {
@@ -150,9 +195,13 @@ public class MetricsCollectorService {
     metrics.setIsFinal("T+30D".equals(job.getCollectionPoint()));
 
     metrics = metricsRepo.save(metrics);
+    if (observationPublisher != null) {
+      observationPublisher.publish(pubJob, job, metrics);
+    }
 
     job.setStatus(MetricsCollectionJob.JobStatus.COMPLETED);
     job.setCollectedMetrics(metrics);
+    clearLease(job);
     collectionJobRepo.save(job);
 
     log.info(
@@ -239,6 +288,7 @@ public class MetricsCollectorService {
     job.setStatus(MetricsCollectionJob.JobStatus.FAILED);
     job.setErrorMessage(errorMessage);
     job.setRetryCount(job.getRetryCount() + 1);
+    clearLease(job);
     collectionJobRepo.save(job);
 
     log.warn(
@@ -247,6 +297,11 @@ public class MetricsCollectorService {
         job.getRetryCount(),
         job.getMaxRetries(),
         errorMessage);
+  }
+
+  private void clearLease(MetricsCollectionJob job) {
+    job.setLeaseOwner(null);
+    job.setLeaseExpiresAt(null);
   }
 
   /** Publish WebSocket metrics update event. */

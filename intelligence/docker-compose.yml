@@ -17,6 +17,8 @@ services:
     build: ./ml-service
     environment:
       POMPOM_DATA_ROOT: /data
+      OBSERVATION_BRIDGE_TOKEN: ${OBSERVATION_BRIDGE_TOKEN:-}
+      QA_REVIEW_TOKEN: ${QA_REVIEW_TOKEN:-}
     ports: ["8000:8000"]
     volumes:
       - "./data:/data"
@@ -73,6 +75,8 @@ services:
       SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER:-pompom}
       SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD:-pompom_local}
       POMPOM_INTELLIGENCE_BASE_URL: http://backend:8080
+      OBSERVATION_BRIDGE_TOKEN: ${OBSERVATION_BRIDGE_TOKEN:-}
+      QA_REVIEW_TOKEN: ${QA_REVIEW_TOKEN:-}
       POMPOM_DATA_ROOT: /data
       POMPOM_QA_SERVICE_URL: http://ml-service:8000
     expose: ["8081"]

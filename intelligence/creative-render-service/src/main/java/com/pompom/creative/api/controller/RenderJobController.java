@@ -13,13 +13,14 @@ import com.pompom.creative.queue.QueueRenderJobResponse;
 import com.pompom.creative.queue.RenderJobQueueService;
 import com.pompom.creative.queue.ValidationEvidenceRejectedException;
 import com.pompom.creative.repository.RenderJobRepository;
+import com.pompom.creative.repository.RenderAttemptRepository;
 import com.pompom.creative.repository.RenderQaResultRepository;
 import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -33,12 +34,32 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/v1/render-jobs")
 @Slf4j
-@RequiredArgsConstructor
 public class RenderJobController {
 
   private final RenderJobRepository renderJobRepo;
   private final RenderQaResultRepository qaResultRepo;
+  private final RenderAttemptRepository renderAttemptRepo;
   private final RenderJobQueueService queueService;
+
+  @Autowired
+  public RenderJobController(
+      RenderJobRepository renderJobRepo,
+      RenderQaResultRepository qaResultRepo,
+      RenderAttemptRepository renderAttemptRepo,
+      RenderJobQueueService queueService) {
+    this.renderJobRepo = renderJobRepo;
+    this.qaResultRepo = qaResultRepo;
+    this.renderAttemptRepo = renderAttemptRepo;
+    this.queueService = queueService;
+  }
+
+  /** Compatibility constructor for queue-focused controller tests. */
+  public RenderJobController(
+      RenderJobRepository renderJobRepo,
+      RenderQaResultRepository qaResultRepo,
+      RenderJobQueueService queueService) {
+    this(renderJobRepo, qaResultRepo, null, queueService);
+  }
 
   /**
    * Queue a render job. Requires the {@code Idempotency-Key} header; the same key with the same
@@ -188,7 +209,25 @@ public class RenderJobController {
             .completedAt(job.getCompletedAt())
             .failedAt(job.getFailedAt())
             .errorCode(job.getErrorCode())
-            .errorMessage(job.getErrorMessage());
+            .errorMessage(job.getErrorMessage())
+            .attempts(
+                renderAttemptRepo == null
+                    ? List.of()
+                    : renderAttemptRepo.findByRenderJobIdOrderByAttemptNumberAsc(job.getId()).stream()
+                    .map(
+                        attempt ->
+                            RenderJobDto.AttemptDto.builder()
+                                .id(attempt.getId())
+                                .attemptNumber(attempt.getAttemptNumber())
+                                .stage(attempt.getStage().name())
+                                .providerJobId(attempt.getProviderJobId())
+                                .assetId(attempt.getAssetId())
+                                .startedAt(attempt.getStartedAt())
+                                .completedAt(attempt.getCompletedAt())
+                                .errorCode(attempt.getErrorCode())
+                                .errorMessage(attempt.getErrorMessage())
+                                .build())
+                    .toList());
 
     // Load QA result if exists
     qaResultRepo

@@ -68,6 +68,8 @@ management:
         enabled: true
 
 pompom:
+  internal:
+    observation-bridge-token: ${OBSERVATION_BRIDGE_TOKEN:}
   data-root: ${POMPOM_DATA_ROOT:/tmp/pompom-data}
   ml-base-url: ${ML_BASE_URL:http://localhost:8000}
   allowed-video-extensions: mp4,mov,m4v

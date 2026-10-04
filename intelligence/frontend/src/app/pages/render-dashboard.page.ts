@@ -23,6 +23,17 @@ interface RenderJob {
   failedAt?: string;
   errorCode?: string;
   errorMessage?: string;
+  attempts?: Array<{
+    id: string;
+    attemptNumber: number;
+    stage: string;
+    providerJobId?: string;
+    assetId?: string;
+    startedAt?: string;
+    completedAt?: string;
+    errorCode?: string;
+    errorMessage?: string;
+  }>;
   qaResult?: {
     id: string;
     decision: string;
@@ -181,6 +192,19 @@ interface Page<T> {
                 @if (job.errorMessage) {
                   <div class="job-error">
                     <strong>Error:</strong> {{ job.errorMessage }}
+                  </div>
+                }
+
+                @if (job.attempts?.length) {
+                  <div class="attempt-history">
+                    <strong>Attempt history</strong>
+                    @for (attempt of job.attempts; track attempt.id) {
+                      <span class="attempt-row">
+                        <span>#{{ attempt.attemptNumber }}</span>
+                        <span>{{ attempt.stage }}</span>
+                        @if (attempt.errorCode) { <span>{{ attempt.errorCode }}</span> }
+                      </span>
+                    }
                   </div>
                 }
 
@@ -507,6 +531,25 @@ interface Page<T> {
       border: 1px solid #e74c3c;
       border-radius: 6px;
       font-size: 0.875rem;
+    }
+
+    .attempt-history {
+      display: grid;
+      gap: 0.45rem;
+      margin-top: 1rem;
+      padding-top: 0.75rem;
+      border-top: 1px solid #2d2d2d;
+      color: #a8a8a8;
+      font-size: 0.78rem;
+    }
+
+    .attempt-row {
+      display: grid;
+      grid-template-columns: 42px 1fr auto;
+      gap: 0.6rem;
+      padding: 0.35rem 0.5rem;
+      background: #151515;
+      border-radius: 4px;
     }
 
     .job-footer {

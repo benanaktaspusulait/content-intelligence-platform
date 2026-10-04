@@ -8,6 +8,7 @@ import com.pompom.creative.publisher.dto.PublishResponse;
 import com.pompom.creative.service.CredentialManager;
 import java.io.IOException;
 import java.net.URI;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -50,6 +51,40 @@ public class InstagramReelsPublisher implements PlatformPublisher {
     } catch (Exception e) {
       log.error("Instagram Reels publish failed: video={}", request.getVideoPath(), e);
       return PublishResponse.failure("Instagram Reels publish failed: " + e.getMessage());
+    }
+  }
+
+  @Override
+  public Optional<PublishResponse> reconcile(
+      PublishRequest request, String platformPostId, String platformVideoId) {
+    String mediaId = platformPostId != null ? platformPostId : platformVideoId;
+    if (mediaId == null || mediaId.isBlank()) {
+      return Optional.empty();
+    }
+    try {
+      String token = credentialManager.getActiveAccessToken(PlatformType.INSTAGRAM);
+      String response =
+          restClientBuilder
+              .build()
+              .get()
+              .uri(GRAPH_API_BASE_URL + "/" + mediaId + "?fields=id,permalink&access_token=" + token)
+              .retrieve()
+              .body(String.class);
+      JsonNode json = objectMapper.readTree(response);
+      if (json.has("error") || !json.has("id")) {
+        return Optional.empty();
+      }
+      return Optional.of(
+          PublishResponse.builder()
+              .success(true)
+              .platformPostId(json.get("id").asText())
+              .postUrl(json.hasNonNull("permalink") ? json.get("permalink").asText() : null)
+              .status("RECONCILED")
+              .message("Existing Instagram media confirmed")
+              .build());
+    } catch (Exception error) {
+      log.warn("Instagram reconciliation unavailable for media {}", mediaId, error);
+      return Optional.empty();
     }
   }
 
@@ -147,7 +182,7 @@ public class InstagramReelsPublisher implements PlatformPublisher {
     return PublishResponse.builder()
         .success(true)
         .platformPostId(mediaId)
-        .postUrl("https://www.instagram.com/reel/" + mediaId)
+        .postUrl(null)
         .status("PUBLISHED")
         .message("Successfully published to Instagram Reels")
         .build();

@@ -14,6 +14,7 @@ import java.time.Instant;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.support.TransactionTemplate;
@@ -146,25 +147,64 @@ public class PublicationAttemptOrchestrator {
   }
 
   public void reconcileExpiredSubmissions() {
-    transactionTemplate.executeWithoutResult(
-        status -> {
-          for (PublicationAttempt attempt :
-              attemptRepository.findByStageAndLeaseExpiresAtBefore(
-                  PublicationExecutionStage.SUBMITTING, Instant.now())) {
-            PublicationJob job =
-                jobRepository.findById(attempt.getPublicationJobId()).orElseThrow();
-            attempt.setStage(PublicationExecutionStage.AMBIGUOUS);
-            attempt.setErrorCode("WORKER_LEASE_EXPIRED_AFTER_SUBMISSION_STARTED");
-            attempt.setErrorMessage(
-                "Worker lease expired after remote submission began; reconcile before retrying");
-            attempt.setCompletedAt(Instant.now());
-            clearLease(attempt);
-            attemptRepository.save(attempt);
-            job.setErrorMessage(attempt.getErrorMessage());
-            job.updateStatus(PublicationStatus.FAILED);
-            jobRepository.save(job);
-          }
-        });
+    List<UUID> expiredIds =
+        transactionTemplate.execute(
+            status ->
+                attemptRepository.findByStageAndLeaseExpiresAtBefore(
+                        PublicationExecutionStage.SUBMITTING, Instant.now())
+                    .stream()
+                    .map(PublicationAttempt::getId)
+                    .toList());
+    if (expiredIds == null) {
+      return;
+    }
+    for (UUID attemptId : expiredIds) {
+      ReconciliationWork work =
+          transactionTemplate.execute(status -> loadReconciliationWork(attemptId));
+      if (work == null) {
+        continue;
+      }
+      Optional<PublishResponse> response =
+          Optional.ofNullable(getPublisher(work.platform()))
+              .filter(PlatformPublisher::isConfigured)
+              .flatMap(
+                  publisher ->
+                      publisher.reconcile(
+                          work.request(), work.platformPostId(), work.platformVideoId()));
+      if (response.isPresent() && Boolean.TRUE.equals(response.get().getSuccess())) {
+        transactionTemplate.executeWithoutResult(
+            status -> markComplete(attemptId, response.get()));
+      } else {
+        markAmbiguous(
+            attemptId,
+            "Remote outcome could not be reconciled; no blind retry was performed");
+      }
+    }
+  }
+
+  private ReconciliationWork loadReconciliationWork(UUID attemptId) {
+    PublicationAttempt attempt = attemptRepository.findById(attemptId).orElse(null);
+    if (attempt == null) {
+      return null;
+    }
+    PublicationJob job = jobRepository.findById(attempt.getPublicationJobId()).orElseThrow();
+    return new ReconciliationWork(
+        job.getPlatform(),
+        buildRequest(job),
+        attempt.getPlatformPostId(),
+        attempt.getPlatformVideoId());
+  }
+
+  private PublishRequest buildRequest(PublicationJob job) {
+    return PublishRequest.builder()
+        .videoPath(job.getVideoPath())
+        .platformAccountId(job.getPlatformAccountId())
+        .idempotencyKey(job.getIdempotencyKey())
+        .title(job.getTitle())
+        .caption(job.getCaption())
+        .hashtags(parseHashtags(job.getHashtags()))
+        .isPrivate(job.getIsPrivate())
+        .build();
   }
 
   private void clearLease(PublicationAttempt attempt) {
@@ -194,4 +234,10 @@ public class PublicationAttemptOrchestrator {
   }
 
   private record PublicationWork(PlatformType platform, PublishRequest request) {}
+
+  private record ReconciliationWork(
+      PlatformType platform,
+      PublishRequest request,
+      String platformPostId,
+      String platformVideoId) {}
 }

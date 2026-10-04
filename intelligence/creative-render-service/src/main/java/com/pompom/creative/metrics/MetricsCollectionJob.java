@@ -45,6 +45,12 @@ public class MetricsCollectionJob {
   @Column(name = "error_message", columnDefinition = "TEXT")
   private String errorMessage;
 
+  @Column(name = "lease_owner", length = 100)
+  private String leaseOwner;
+
+  @Column(name = "lease_expires_at")
+  private Instant leaseExpiresAt;
+
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "collected_metrics_id")
   private VideoMetrics collectedMetrics;

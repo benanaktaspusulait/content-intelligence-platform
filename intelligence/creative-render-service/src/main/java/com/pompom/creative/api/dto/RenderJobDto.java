@@ -3,6 +3,7 @@ package com.pompom.creative.api.dto;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.UUID;
+import java.util.List;
 import lombok.Builder;
 import lombok.Data;
 
@@ -30,6 +31,21 @@ public class RenderJobDto {
   private String errorCode;
   private String errorMessage;
   private QaResultDto qaResult;
+  private List<AttemptDto> attempts;
+
+  @Data
+  @Builder
+  public static class AttemptDto {
+    private UUID id;
+    private Integer attemptNumber;
+    private String stage;
+    private String providerJobId;
+    private UUID assetId;
+    private Instant startedAt;
+    private Instant completedAt;
+    private String errorCode;
+    private String errorMessage;
+  }
 
   @Data
   @Builder
