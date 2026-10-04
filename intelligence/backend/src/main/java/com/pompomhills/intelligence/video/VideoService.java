@@ -97,6 +97,10 @@ public class VideoService {
                   seriesId,
                   clock.instant()));
     }
+    if (!analyses.existsByVideoId(entity.getId())) {
+      persistCreativeAnalysis(entity, result);
+      entity.markAnalysed();
+    }
     return map(entity);
   }
 
@@ -209,30 +213,7 @@ public class VideoService {
     video.markAnalysing();
     try {
       var result = ml.analyse(video.getRelativePath());
-      var raw = new LinkedHashMap<String, Object>();
-      raw.put("contractVersion", result.contractVersion());
-      raw.put("evidence", result.evidence());
-      var analysis =
-          analyses.save(
-              new CreativeAnalysisEntity(
-                  video,
-                  result.analysisVersion(),
-                  result.primaryEngine(),
-                  result.secondaryEngines(),
-                  result.classification(),
-                  result.actionDnaScore(),
-                  result.confidence(),
-                  result.reason(),
-                  result.storyboardPath(),
-                  result.timeline(),
-                  raw));
-      fingerprints.save(
-          new CreativeFingerprintEntity(
-              video,
-              analysis,
-              "creative-fingerprint-v1",
-              result.actionDnaScore(),
-              result.features()));
+      var analysis = persistCreativeAnalysis(video, result);
       video.markAnalysed();
       return new AnalysisResponse(
           analysis.getId(),
@@ -248,6 +229,31 @@ public class VideoService {
       video.markFailed();
       throw error;
     }
+  }
+
+  private CreativeAnalysisEntity persistCreativeAnalysis(
+      VideoEntity video, MlVideoClient.MlAnalysisResponse result) {
+    var raw = new LinkedHashMap<String, Object>();
+    raw.put("contractVersion", result.contractVersion());
+    raw.put("evidence", result.evidence());
+    var analysis =
+        analyses.save(
+            new CreativeAnalysisEntity(
+                video,
+                result.analysisVersion(),
+                result.primaryEngine(),
+                result.secondaryEngines(),
+                result.classification(),
+                result.actionDnaScore(),
+                result.confidence(),
+                result.reason(),
+                result.storyboardPath(),
+                result.timeline(),
+                raw));
+    fingerprints.save(
+        new CreativeFingerprintEntity(
+            video, analysis, "creative-fingerprint-v1", result.actionDnaScore(), result.features()));
+    return analysis;
   }
 
   @Transactional(readOnly = true)

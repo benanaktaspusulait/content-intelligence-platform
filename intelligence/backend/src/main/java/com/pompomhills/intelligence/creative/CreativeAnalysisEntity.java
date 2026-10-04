@@ -97,6 +97,10 @@ public class CreativeAnalysisEntity {
     return video;
   }
 
+  public String getAnalysisVersion() {
+    return analysisVersion;
+  }
+
   public String getPrimaryEngine() {
     return primaryEngine;
   }

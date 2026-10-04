@@ -79,7 +79,7 @@ class VideoServicePathAliasTest {
             "analysis-v1",
             "primary-engine",
             List.of(),
-            "classification",
+            "GOOD",
             0.5,
             0.9,
             "reason",
