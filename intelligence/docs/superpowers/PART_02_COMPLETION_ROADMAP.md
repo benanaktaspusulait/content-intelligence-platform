@@ -86,7 +86,7 @@ touch the variant model Plan B introduces).
 |---|---|---|---|---|
 | A | Observation mathematics correctness (metric semantics + source reconciliation + checkpoint tolerance) | Phase A | backend | ✅ Done, backend-only (commit `ffbdf84`, see §4 for completion record and 2 open follow-ups) |
 | B1 | Variant domain (entity/repository/service/API) | Phase B.1 | backend | ✅ Done (commit `bb35667`, see §4 for completion record) |
-| B2a | Variant-aware backend wiring (path-alias dedup, import variant resolution, publication read path, performance query filters, V32 migration) | Phase B.2-5 (backend) | backend | ⬜ Not started |
+| B2a | Variant-aware backend wiring (path-alias dedup, import variant resolution, publication read path, performance query filters, V32/V33 migrations) | Phase B.2-5 (backend) | backend | ✅ Done (commit `284105f`, see §4 for completion record) |
 | B2b | Frontend variant consumption (Angular service methods + replace folder-grouping heuristic) | Phase B.3 (frontend) | frontend | ⬜ Not started |
 | C | Creative analysis completion (stop duplicate ML calls, surface analysis in Video Detail) | Phase C | backend, frontend | ⬜ Not started |
 | D | Evidence honesty (error-vs-empty, completion/watch metrics, overview placeholders, platform validation) | Phase D | backend, frontend | ⬜ Not started |
@@ -379,6 +379,74 @@ physical file is yet associated with a variant, the frontend still groups files 
 variant-identity heuristic, no `variantId` flows through imports/publications/performance queries
 yet, and the content-hash/multiple-path alias issue (P1-01) is unresolved. Plan B2 is the next
 step and depends entirely on this plan's deliverables existing first.
+
+---
+
+## 4b. Plan B2a completion record
+
+**Status: ✅ Done.** Executed via `subagent-driven-development`, 4 tasks (Task 2's original
+implementer subagent timed out with no side effects; the controller completed that task
+directly). Every task was Approved on first review — no fix rounds needed, though three
+implementation-time bugs were found and fixed by implementers/controller before each task's
+review (not left for the reviewer to catch). Plan doc:
+`docs/superpowers/plans/2026-10-03-part02-plan-b2a-variant-aware-backend.md`.
+
+Final state: Spring test suite 103/103 passing, `BUILD SUCCESS`. Full-plan diff reviewed
+holistically and found fully Approved — no cross-task inconsistency, no global-constraint
+violation, no incursion into Plan B2b's (frontend) scope.
+
+Commit range: `4c0c925..284105f` (4 commits, one per task, no fix-round commits needed).
+
+Delivered:
+- **Task 1** (`088ab6b`): `V32` migration (`video_path_aliases` table +
+  `intervention_events.variant_id`), `VideoPathAliasEntity`/`Repository`, and a fix to
+  `VideoService.ingest()`/`mediaFiles()` closing the P1-01 content-hash dedup bug — a duplicate
+  physical path with identical bytes to an already-ingested video now resolves to the canonical
+  video via an alias record, instead of permanently showing "Not ingested."
+- **Task 2** (`4c45f03`): `V33` migration (`import_rows.matched_variant_id`) and explicit,
+  exact-UUID variant resolution in `PerformanceImportService` — an import row's `variantid`
+  column, when present and valid, is verified to belong to the already-resolved video and
+  persisted onto `performance_observations.variant_id`. No fuzzy matching at any point.
+- **Task 3** (`f7562d7`): `PlatformStateService.publication()`'s read path became variant-aware
+  (`variant_id IS NOT DISTINCT FROM :variant`), matching the write path (`recordPublication()`)
+  that was already variant-aware — closes P1-09.
+- **Task 4** (`284105f`): optional, selective `variantId` filter added to
+  `PerformanceTrajectoryController.trajectory()`, `PlatformGrowthProfileService.profile()`
+  (+ its `earliestPublication()` helper), and `DiscoveryProfileService.profile()`. `null` means
+  "match only the unscoped group," never "match any variant" — preserves this constraint
+  consistently with every other variant filter added in this plan.
+
+Three real bugs were found and fixed during implementation (not plan-level issues — task-level
+catches that illustrate the plan's own draft code/tests needed real engineering judgment):
+1. Task 2's test asserted `null` via `.query(UUID.class).single()`, which throws on a null
+   result rather than returning it — fixed to `.optional().orElse(null)`.
+2. Task 3's brief-specified test scenario didn't actually exercise the bug it claimed to
+   (`recordPublication()`'s own internal lookup is already variant-scoped, so two fresh INSERTs
+   never collided) — fixed by forcing an UPDATE on an already-recorded variant's publication so
+   the stale "most recent row regardless of variant" read bug became reliably observable.
+3. Task 4 found 7 more arity-broken call sites than the brief's own grep anticipated
+   (`PlatformGrowthController`, `DiscoveryProfileController`, `PlatformGrowthResearchService` in
+   production code; three more in test code) plus a wrong test-package placement in the brief's
+   own new test file (specified in a package that couldn't call the package-private controller
+   method it needed) — all fixed, confirmed via independent whole-plan review that no residual
+   trace of either defect remains in the final committed state.
+
+**Known, accepted gaps (deliberate, documented deferrals, not oversights):**
+- `PlatformStateService.reachFurtherSummary()`'s own public signature still does not accept a
+  caller-supplied `variantId` (only its internal `publication()` call does, passing `null`) —
+  widening it has a bigger ripple through `liveFeatures()` and that method's own callers than
+  this plan attempted.
+- `PlatformGrowthResearchService`'s cross-video research aggregation still only sees unscoped
+  (`variantId=null`) observations — correct scope discipline for "keep the build compiling," not
+  a behavior upgrade this plan attempted.
+- `V33`'s new `matched_variant_id` column has no index (unlike `V32`'s indexed `variant_id`) —
+  low impact today since nothing queries `import_rows` by this column yet; worth adding if that
+  changes.
+
+Next: Plan B2b (frontend variant consumption), which depends on both Plan B1's
+`/api/v1/videos/{videoId}/variants` endpoints and this plan's variant-aware query parameters/
+alias-resolution behavior existing before building the Angular-side `variantId` concept on top
+of them.
 
 ---
 
