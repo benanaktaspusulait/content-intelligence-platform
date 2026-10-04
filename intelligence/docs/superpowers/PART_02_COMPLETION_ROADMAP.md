@@ -88,7 +88,7 @@ touch the variant model Plan B introduces).
 | B1 | Variant domain (entity/repository/service/API) | Phase B.1 | backend | ✅ Done (commit `bb35667`, see §4 for completion record) |
 | B2a | Variant-aware backend wiring (path-alias dedup, import variant resolution, publication read path, performance query filters, V32/V33 migrations) | Phase B.2-5 (backend) | backend | ✅ Done (commit `284105f`, see §4 for completion record) |
 | B2b | Frontend variant consumption (Angular service methods + replace folder-grouping heuristic) | Phase B.3 (frontend) | frontend | ✅ Done (commit `c11dfd9`, see §4c for completion record) |
-| C | Creative analysis completion (stop duplicate ML calls, surface analysis in Video Detail) | Phase C | backend, frontend | ⬜ Not started |
+| C | Creative analysis completion (stop duplicate ML calls, surface analysis in Video Detail) | Phase C | backend, frontend | ✅ Done (commit `50b16ee`, see §4d for completion record) |
 | D | Evidence honesty (error-vs-empty, completion/watch metrics, overview placeholders, platform validation) | Phase D | backend, frontend | ⬜ Not started |
 | E | Deployment and scale boundaries (media mount, scan truncation, pagination) | Phase E | backend, frontend, deployment config | ⬜ Not started |
 
@@ -529,6 +529,122 @@ were meant to prove):
 
 Next: Plan C (creative analysis completion), independent of A/B2 per §1's dependency notes — can
 proceed directly without further prerequisites from this plan.
+
+---
+
+## 4d. Plan C completion record
+
+**Status: ✅ Done.** Executed via `subagent-driven-development`, 6 tasks + final review. One task
+(the final controller task) required a planning revision mid-execution after a real discovery; one
+task required a fix round after review found a genuine Critical gap. Plan doc:
+`docs/superpowers/plans/2026-10-04-part02-plan-c-creative-analysis-completion.md`.
+
+**A real architecture decision was made mid-plan, not just an implementation detail:** the
+original roadmap text for this plan was ambiguous about whether `AnalysisJobService` (a complete,
+already-built `QUEUED→RUNNING→COMPLETED/FAILED` durable job queue with `FOR UPDATE SKIP LOCKED`
+leasing and retry, but with zero callers anywhere in the product) should be wired into the real
+request path (async, job-queue-backed) or left as dead code while the fix stayed purely
+synchronous. The user explicitly chose the async, job-queue-backed path, with one hard constraint:
+going async must never be used as an excuse to call the ML service a second time, and the queue's
+execution-progress state (`AnalysisJob`) must never be merged with the durable result state
+(`VideoEntity.status`/`creative_analyses` existence) — two distinct models, never one derived from
+the other except via the three pre-existing `markAnalysing()/markAnalysed()/markFailed()` calls.
+
+**A planning gap was discovered and corrected mid-execution:** Task 3's implementer found that
+`AnalysisJobController.java` already existed in this codebase — present since the repository's
+very first commit, exposing `POST /api/v1/jobs/video-analysis/{videoId}`, `GET /api/v1/jobs/{id}`,
+`POST /api/v1/jobs/{id}/retry` — completely missed by this plan's own pre-execution investigation.
+A repository-wide zero-consumer check (Java, Angular, tests, scripts, docs, OpenAPI/API-contract
+files) confirmed it had no callers anywhere. Per explicit user decision, Task 4 was revised
+in-flight to delete this controller and consolidate the entire public analysis API under the
+existing `VideoController`, rather than maintain two parallel public surfaces for triggering
+analysis. This is recorded as a deliberate scope correction, not scope creep: the user was asked
+before any deletion, and the deletion was independently re-verified safe twice (once before
+deleting, once after) by two different task executions.
+
+Final state: backend Spring suite 119/119 passing, `BUILD SUCCESS`; frontend suite 24/25 passing
+(1 pre-existing, unrelated `app.spec.ts` nav-link-count failure, confirmed to predate this entire
+plan and the one before it — not caused or fixed by this plan, out of scope). Full-plan diff
+reviewed holistically: exactly 2 production `MlVideoClient.analyse()` call sites exist anywhere in
+the backend (`VideoService.ingest()`, `VideoService.analyse()`), plus exactly 1
+`VideoService.analyse()` caller (`AnalysisJobService.processNext()`'s worker) — confirmed via
+repository-wide grep, matching the plan's binding "never call the ML endpoint a third way" rule
+precisely. `VideoEntity.status` is mutated only via its three pre-existing mark methods, called
+only from the two places that already called them before this plan — the two-state-model
+separation holds structurally, not just by convention. Zero `force=true`-style bypass exists
+anywhere.
+
+Commit range: `29efc70..50b16ee` (plan doc + 7 implementation/fix commits + 1 plan-doc fence-bug
+fix + 1 mid-plan revision commit).
+
+Delivered:
+- **Task 1** (`e1a1338`): `VideoService.ingest()` now persists the full creative-analysis result
+  its own existing ML call already returns (previously only the technical-metadata portion was
+  used, the classification/score/confidence/etc. were silently discarded). Zero additional ML
+  calls. Implementer found and fixed a real pre-existing test bug exposed only once persistence
+  actually started happening: `VideoServicePathAliasTest.java`'s mock used an invalid
+  `classification` literal that violated the DB's `CHECK` constraint, previously invisible because
+  nothing ever wrote it to the database.
+- **Task 2** (`a396c1e`): `V34` migration — a partial unique index,
+  `analysis_jobs(video_id) WHERE state IN ('QUEUED','RUNNING')`, the DB-level guarantee behind
+  Task 3's concurrency safety.
+- **Task 3** (`d73611d`): `AnalysisJobService.enqueue()` became idempotent — no duplicate active
+  jobs per video (verified under real `CountDownLatch`-gated thread contention, with the
+  implementer empirically proving the DB constraint's `catch` block is load-bearing by temporarily
+  removing it and observing 7/8 threads hit a genuine `DuplicateKeyException`), no re-enqueueing
+  once any analysis exists for a video (existence-based skip, deliberately not version-string-
+  based — see the plan's own documented rationale for why that's correct, not a shortcut). All 10
+  of the user's numbered test requirements pass as individually named test methods. Implementer
+  diagnosed and fixed 3 real test-infrastructure bugs (cross-test job stealing from the shared
+  Testcontainers context, the `@Scheduled` poller firing immediately at startup, a classic
+  Mockito re-stubbing pitfall) via genuine root-cause tracing, not workarounds.
+- **Task 4** (`5772b66`): `AnalysisJobController.java` deleted (see architecture-decision note
+  above); `VideoController` became the sole public analysis API —
+  `POST /{id}/analysis` (`200` only when a completed analysis already exists, `202` for both
+  "already active" and "newly created," deliberately not keyed off the enqueue result alone) and
+  `GET /{id}/analysis/status`, both returning a new `AnalysisStatusResponse` DTO rather than
+  leaking the internal `JobView`/`EnqueueResult` records over HTTP. Implementer found and fixed a
+  real Spring Boot 4 API-compatibility bug in the plan's own draft test code
+  (`TestRestTemplate` moved packages in Boot 4; replaced with `RestTestClient`).
+- **Task 5** (`ea3ed56`): `AnalysisStatus` TypeScript interface and
+  `triggerAnalysis`/`getAnalysisStatus` methods added to `creative-intelligence.service.ts`,
+  matching the backend DTO field-for-field. Zero deviations from the plan.
+- **Task 6** (`fab2bcd` + fix `50b16ee`): `video-detail.page.ts` gained a trigger button, 5-second
+  status polling (wired into both `activateVariant` branches, not just one), and a result panel
+  rendering classification/Action DNA score/confidence/reason/storyboard path/analysis version.
+  Review initially found one Critical gap — the polling observable had no error handling,
+  violating the plan's explicit "must fail gracefully, page must stay usable" constraint, since a
+  single transient failure would permanently kill polling with the switchMap chain's error
+  propagating up and tearing down the subscription. Fixed in `50b16ee` with the same
+  `catchError(() => of(null))` idiom already used elsewhere in this same file
+  (`loadPerformance()`), proven by a new fake-timer test that fails one tick and asserts a later
+  tick still fires.
+
+**Known, accepted gaps (deliberate, documented deferrals, not oversights):**
+- `AnalysisStatusResponse` does not carry `timeline`/feature-fingerprint data (the full
+  `creative_fingerprints` payload) — the frontend's result panel therefore does not render a
+  feature-fingerprint section, even though the roadmap's original Plan C text mentioned wanting
+  one. This is a backend DTO scope boundary, not a frontend omission: extending
+  `AnalysisStatusResponse` to carry these fields is a reasonable, small follow-up if the product
+  wants them surfaced, not something this plan silently dropped.
+- No test coverage exists for an unmapped/future `jobState` value reaching the frontend's 5-value
+  TypeScript union (`NOT_STARTED/QUEUED/RUNNING/COMPLETED/FAILED`) — the backend field is a plain
+  `String` with no matching enum constraint, so a future 6th state would compile fine on the
+  frontend while silently lying about the type's completeness. Flagged by a task reviewer as a
+  latent risk, not acted on since no 6th state exists today.
+- This session's `file_search`/`grep_search` tools produced multiple confirmed false-negative
+  results during this plan's execution (reporting files/content as "not found" when they
+  demonstrably existed and were read directly moments later via `find`/`cat`/`grep` in the same
+  session) — independently reproduced by at least two different task reviewers across two
+  different tasks. This did not affect any delivered code's correctness (every affected finding
+  was re-verified via direct file reads before being acted on), but it's a real tooling reliability
+  issue worth a separate investigation outside this plan's scope.
+
+Next: Plan D (evidence honesty) or Plan E (deployment and scale boundaries) per §1's dependency
+notes — D depends on Plan A (done) and Plan B2 (done, both B2a and B2b); E is independent of
+everything. Re-evaluate Part 03's scope against what's now actually landed across Plans A/B1/B2/C
+before starting Part 03 work, per the roadmap's own stated dependency ("Part 03 depends on A and
+B1/B2 at minimum").
 
 ---
 
