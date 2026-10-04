@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { ActivatedRoute, convertToParamMap, provideRouter } from '@angular/router';
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
 import { AnalysisStatus, CreativeIntelligenceService, DiscoveryProfile, MediaFile, VideoApiRecord } from '../core/creative-intelligence.service';
 import { VideoDetailPage } from './video-detail.page';
 
@@ -232,5 +232,64 @@ describe('VideoDetailPage creative analysis panel', () => {
 
     const panel = fixture.nativeElement.querySelector('.creative-analysis-panel');
     expect(panel.querySelector('button')?.textContent).toContain('Trigger analysis');
+  });
+
+  it('keeps polling and preserves the last-known analysis status when a tick fails', async () => {
+    vi.useFakeTimers();
+    try {
+      const runningStatus: AnalysisStatus = {
+        videoId: 'video-1', hasCompletedAnalysis: false, jobId: 'job-1', jobState: 'RUNNING',
+        attempts: 1, maxAttempts: 5, errorMessage: null, analysisId: null,
+        classification: null, actionDnaScore: null, confidence: null, reason: null,
+        storyboardPath: null, analysisVersion: null,
+      };
+
+      let callCount = 0;
+      const getAnalysisStatus = vi.fn(() => {
+        callCount++;
+        // First poll tick (the immediate startWith(0) tick) succeeds and seeds a known-good status.
+        if (callCount === 1) return of(runningStatus);
+        // Second poll tick (after 5s) fails transiently.
+        if (callCount === 2) return throwError(() => new Error('network unreachable'));
+        // Third poll tick (after another 5s) succeeds again, proving polling kept going.
+        return of(runningStatus);
+      });
+
+      await TestBed.configureTestingModule({
+        imports: [VideoDetailPage],
+        providers: [
+          provideRouter([]),
+          { provide: ActivatedRoute, useValue: route },
+          { provide: CreativeIntelligenceService, useValue: {
+            ...serviceWithAnalysis(runningStatus),
+            getAnalysisStatus,
+          } },
+        ],
+      }).compileComponents();
+      const fixture = TestBed.createComponent(VideoDetailPage);
+      fixture.detectChanges();
+      await Promise.resolve();
+
+      // Initial tick (startWith(0)) resolved synchronously via `of`.
+      expect(getAnalysisStatus).toHaveBeenCalledTimes(1);
+      expect(fixture.componentInstance['analysisStatus']()).toEqual(runningStatus);
+
+      // Advance 5s: this tick errors. No exception should propagate, and the subscription
+      // must still be alive for the next tick (switchMap's inner observable erroring must
+      // not tear down the outer `interval` subscription).
+      expect(() => vi.advanceTimersByTime(5000)).not.toThrow();
+      await Promise.resolve();
+      expect(getAnalysisStatus).toHaveBeenCalledTimes(2);
+      // Last-known-good status must be preserved, not wiped to null.
+      expect(fixture.componentInstance['analysisStatus']()).toEqual(runningStatus);
+
+      // Advance another 5s: polling must still be attempting ticks after the failure.
+      vi.advanceTimersByTime(5000);
+      await Promise.resolve();
+      expect(getAnalysisStatus).toHaveBeenCalledTimes(3);
+      expect(fixture.componentInstance['analysisStatus']()).toEqual(runningStatus);
+    } finally {
+      vi.useRealTimers();
+    }
   });
 });

@@ -442,8 +442,12 @@ export class VideoDetailPage implements OnDestroy {
   private pollAnalysisStatus(videoId: string): void {
     this.analysisPollSubscription?.unsubscribe();
     this.analysisPollSubscription = interval(5000)
-      .pipe(startWith(0), switchMap(() => this.service.getAnalysisStatus(videoId)))
+      .pipe(
+        startWith(0),
+        switchMap(() => this.service.getAnalysisStatus(videoId).pipe(catchError(() => of(null)))),
+      )
       .subscribe(status => {
+        if (status === null) return;
         this.analysisStatus.set(status);
         if (status.jobState === 'COMPLETED' || status.jobState === 'FAILED') {
           this.analysisPollSubscription?.unsubscribe();
