@@ -275,7 +275,7 @@ public class PlatformStateService {
         .param("platformContentId", request.platformContentId(), Types.VARCHAR)
         .param("platformUrl", request.platformUrl(), Types.VARCHAR)
         .update();
-    return publication(videoId, platform).orElseThrow();
+    return publication(videoId, request.variantId(), platform).orElseThrow();
   }
 
   @Transactional(readOnly = true)
@@ -330,7 +330,7 @@ public class PlatformStateService {
                 item ->
                     "UNKNOWN".equals(item.stateValue()) ? null : "ACTIVE".equals(item.stateValue()))
             .orElse(null);
-    PublicationView publication = publication(videoId, normalizedPlatform).orElse(null);
+    PublicationView publication = publication(videoId, null, normalizedPlatform).orElse(null);
     Instant publishedAt =
         publication == null
             ? inferredPublication(videoId, normalizedPlatform)
@@ -528,15 +528,17 @@ public class PlatformStateService {
         rs.getBoolean("superseded"));
   }
 
-  private Optional<PublicationView> publication(UUID videoId, String platform) {
+  private Optional<PublicationView> publication(UUID videoId, UUID variantId, String platform) {
     return jdbc.sql(
             """
             SELECT id,platform,platform_content_id,platform_url,published_at,
                    publication_timezone,off_peak_publish,context_label,source,notes
-            FROM video_publications WHERE video_id=:video AND platform=:platform
+            FROM video_publications
+            WHERE video_id=:video AND variant_id IS NOT DISTINCT FROM :variant AND platform=:platform
             ORDER BY created_at DESC LIMIT 1
             """)
         .param("video", videoId)
+        .param("variant", variantId, Types.OTHER)
         .param("platform", platform)
         .query(
             (rs, ignored) ->
