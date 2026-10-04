@@ -25,6 +25,7 @@ function serviceWith(discovery: DiscoveryProfile) {
     getTrajectory: () => of({ videoId: 'video-1', platform: 'facebook', label: '', cleanOrganic: true, interventions: [], points: [] }),
     getPlatformGrowth: () => of(null),
     getDiscoveryProfile: () => of(discovery),
+    listVariants: () => of([]),
   };
 }
 
@@ -97,5 +98,60 @@ describe('VideoDetailPage audience discovery', () => {
     expect(groups[2].querySelector('h3')?.textContent).toBe('Evidence');
     expect(groups[2].textContent).toContain('ANALYSED');
     expect(groups[2].textContent).toContain('Audio / codec');
+  });
+});
+
+describe('VideoDetailPage variant rail', () => {
+  // Deviation from brief: the brief's fixture reused `mediaFile.name` ('giant-sock-hd.mp4') and
+  // asserted the rendered label is not 'HD', on the premise that `mediaVariant()` guesses 'HD' for
+  // that filename. It does not: `mediaVariant` matches the `_hd` suffix with an underscore, and
+  // 'giant-sock-hd' has a hyphen before 'hd', so the filename-guess fallback actually resolves to
+  // 'Original' under both old and new code. That makes the `not.toContain('HD')` assertion vacuous
+  // (true before and after the fix) and doesn't exercise the regression this test is meant to catch.
+  // Renamed to 'giant_sock_hd.mp4' so `mediaVariant()` genuinely guesses 'HD', which is what the old
+  // code would render here absent a matched variant, proving the real-variant-type label overrides it.
+  const taggedFile: MediaFile = {
+    ...mediaFile, name: 'giant_sock_hd.mp4', relativePath: 'library/Giant Sock/giant_sock_hd.mp4', variantId: 'variant-1',
+  };
+
+  const route = {
+    paramMap: of(convertToParamMap({})),
+    queryParamMap: of(convertToParamMap({ folder: 'library/Giant Sock', file: taggedFile.relativePath })),
+  };
+
+  function serviceWithVariants() {
+    return {
+      mediaContentUrl: () => '/media',
+      getMediaFiles: () => of([taggedFile]),
+      getVideo: () => of(video),
+      getReachFurther: () => of(null),
+      getTrajectory: () => of({ videoId: 'video-1', platform: 'facebook', label: '', cleanOrganic: true, interventions: [], points: [] }),
+      getPlatformGrowth: () => of(null),
+      getDiscoveryProfile: () => of(baseDiscovery),
+      listVariants: () => of([{
+        id: 'variant-1', videoId: 'video-1', parentVariantId: null,
+        variantType: 'HOOK_COLD_OPEN', generatedPath: taggedFile.relativePath,
+        editOperations: [], createdAt: '2026-10-04T00:00:00Z',
+      }]),
+    };
+  }
+
+  afterEach(() => TestBed.resetTestingModule());
+
+  it('labels a variant-linked file with its real persisted variant type, not a filename guess', async () => {
+    await TestBed.configureTestingModule({
+      imports: [VideoDetailPage],
+      providers: [
+        provideRouter([]),
+        { provide: ActivatedRoute, useValue: route },
+        { provide: CreativeIntelligenceService, useValue: serviceWithVariants() },
+      ],
+    }).compileComponents();
+    const fixture = TestBed.createComponent(VideoDetailPage);
+    fixture.detectChanges();
+
+    const rail = fixture.nativeElement.querySelector('.variant-list');
+    expect(rail.textContent).toContain('Hook / Cold Open');
+    expect(rail.textContent).not.toContain('HD');
   });
 });

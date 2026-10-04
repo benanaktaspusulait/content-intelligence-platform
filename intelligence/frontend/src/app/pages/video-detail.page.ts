@@ -9,12 +9,22 @@ import {
   ReachFurtherSummary,
   TrajectoryView,
   VideoApiRecord,
+  VideoVariant,
 } from '../core/creative-intelligence.service';
 import { mediaVariant } from './video-library.page';
 
 type PlatformKey = 'facebook' | 'instagram' | 'tiktok' | 'youtube';
 interface ChartDot { left: number; bottom: number; label: string; }
 interface VariantView extends MediaFile { label: string; }
+
+const VARIANT_TYPE_LABELS: Record<string, string> = {
+  ORIGINAL: 'Original',
+  HOOK_COLD_OPEN: 'Hook / Cold Open',
+  TRIMMED: 'Trimmed',
+  NO_CTA: 'No CTA',
+  LOOP_CUT: 'Loop Cut',
+  CUSTOM_EDIT: 'Custom Edit',
+};
 
 @Component({
   selector: 'app-video-detail-page',
@@ -223,6 +233,7 @@ export class VideoDetailPage {
   protected readonly files = signal<MediaFile[]>([]);
   protected readonly activeFile = signal<MediaFile | null>(null);
   protected readonly video = signal<VideoApiRecord | null>(null);
+  protected readonly videoVariants = signal<VideoVariant[]>([]);
   protected readonly summary = signal<ReachFurtherSummary | null>(null);
   protected readonly trajectory = signal<TrajectoryView | null>(null);
   protected readonly growth = signal<PlatformGrowthProfile | null>(null);
@@ -251,11 +262,16 @@ export class VideoDetailPage {
   protected readonly folderName = computed(() => this.readableFolder(this.folderPath()));
   protected readonly mediaUrl = computed(() => this.activeFile() ? this.service.mediaContentUrl(this.activeFile()!.relativePath) : '');
   protected readonly variants = computed<VariantView[]>(() => {
+    const variantTypeById = new Map(this.videoVariants().map(variant => [variant.id, variant.variantType]));
+    const labelFor = (file: MediaFile): string => {
+      const type = file.variantId ? variantTypeById.get(file.variantId) : undefined;
+      return type ? (VARIANT_TYPE_LABELS[type] ?? type) : mediaVariant(file.name);
+    };
     const totals = new Map<string, number>();
     const positions = new Map<string, number>();
-    for (const file of this.files()) totals.set(mediaVariant(file.name), (totals.get(mediaVariant(file.name)) || 0) + 1);
+    for (const file of this.files()) { const base = labelFor(file); totals.set(base, (totals.get(base) || 0) + 1); }
     return this.files().map(file => {
-      const base = mediaVariant(file.name);
+      const base = labelFor(file);
       const position = (positions.get(base) || 0) + 1;
       positions.set(base, position);
       return { ...file, label: (totals.get(base) || 0) > 1 ? `${base} ${position}` : base };
@@ -378,9 +394,12 @@ export class VideoDetailPage {
   }
   private activateVariant(file: MediaFile, knownVideo?: VideoApiRecord): void {
     this.activeFile.set(file); this.message.set(''); this.video.set(null); this.clearPerformance();
-    if (!file.ingested || !file.videoId) return;
-    if (knownVideo?.id === file.videoId) { this.video.set(knownVideo); this.loadPerformance(); return; }
-    this.service.getVideo(file.videoId).subscribe({ next: video => { if (this.activeFile()?.relativePath === file.relativePath) { this.video.set(video); this.loadPerformance(); } }, error: response => this.message.set(response.error?.message || 'Technical metadata could not be loaded.') });
+    if (!file.ingested || !file.videoId) { this.videoVariants.set([]); return; }
+    if (knownVideo?.id === file.videoId) { this.video.set(knownVideo); this.loadPerformance(); this.loadVariants(file.videoId); return; }
+    this.service.getVideo(file.videoId).subscribe({ next: video => { if (this.activeFile()?.relativePath === file.relativePath) { this.video.set(video); this.loadPerformance(); this.loadVariants(video.id); } }, error: response => this.message.set(response.error?.message || 'Technical metadata could not be loaded.') });
+  }
+  private loadVariants(videoId: string): void {
+    this.service.listVariants(videoId).subscribe({ next: variants => this.videoVariants.set(variants), error: () => this.videoVariants.set([]) });
   }
   private loadPerformance(): void {
     const id = this.video()?.id;
