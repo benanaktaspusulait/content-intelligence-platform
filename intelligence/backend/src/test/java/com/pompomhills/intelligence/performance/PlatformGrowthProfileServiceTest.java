@@ -87,7 +87,7 @@ class PlatformGrowthProfileServiceTest {
     insertObservation(
         videoId, published, published.plusSeconds(23 * 3600L + 50 * 60L), 5000L, "CUMULATIVE", "CSV");
 
-    var profile = service.profile(videoId, "instagram", Instant.now());
+    var profile = service.profile(videoId, "instagram", Instant.now(), null);
 
     assertThat(profile.views24h()).isNotNull();
     assertThat(profile.views24h().withinTolerance()).isTrue();
@@ -100,7 +100,7 @@ class PlatformGrowthProfileServiceTest {
     // Only a 1h observation exists; the audit's exact failure case for the "24h" label.
     insertObservation(videoId, published, published.plusSeconds(3600L), 100L, "CUMULATIVE", "CSV");
 
-    var profile = service.profile(videoId, "instagram", Instant.now());
+    var profile = service.profile(videoId, "instagram", Instant.now(), null);
 
     assertThat(profile.views24h()).isNotNull();
     assertThat(profile.views24h().withinTolerance()).isFalse();
@@ -116,7 +116,7 @@ class PlatformGrowthProfileServiceTest {
     insertObservation(
         videoId, published, published.plusSeconds(6 * 3600L), 500L, "DAILY_INCREMENT", "CSV");
 
-    var profile = service.profile(videoId, "instagram", Instant.now());
+    var profile = service.profile(videoId, "instagram", Instant.now(), null);
 
     assertThat(profile.views6h().views()).isEqualTo(1500L);
   }

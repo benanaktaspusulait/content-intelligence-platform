@@ -23,6 +23,6 @@ public class DiscoveryProfileController {
       @PathVariable UUID videoId,
       @RequestParam(defaultValue = "facebook") String platform,
       @RequestParam(required = false) Instant cutoff) {
-    return service.profile(videoId, platform, cutoff == null ? Instant.now() : cutoff);
+    return service.profile(videoId, platform, cutoff == null ? Instant.now() : cutoff, null);
   }
 }

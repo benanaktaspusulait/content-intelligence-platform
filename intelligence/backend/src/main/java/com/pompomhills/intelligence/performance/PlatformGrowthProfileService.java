@@ -27,7 +27,7 @@ public class PlatformGrowthProfileService {
   }
 
   @Transactional(readOnly = true)
-  public GrowthProfile profile(UUID videoId, String platform, Instant cutoff) {
+  public GrowthProfile profile(UUID videoId, String platform, Instant cutoff, UUID variantId) {
     String normalized = platform.toLowerCase(Locale.ROOT);
     List<ObservationSeries.RawObservation> raw =
         jdbc.sql(
@@ -38,11 +38,13 @@ public class PlatformGrowthProfileService {
                   AND publication_timestamp IS NOT NULL
                   AND measurement_timestamp IS NOT NULL
                   AND measurement_timestamp<=:cutoff
+                  AND variant_id IS NOT DISTINCT FROM :variant
                 ORDER BY measurement_timestamp
                 """)
             .param("video", videoId)
             .param("platform", normalized)
             .param("cutoff", OffsetDateTime.ofInstant(cutoff, ZoneOffset.UTC))
+            .param("variant", variantId, java.sql.Types.OTHER)
             .query(
                 (rs, ignored) ->
                     new ObservationSeries.RawObservation(
@@ -51,7 +53,7 @@ public class PlatformGrowthProfileService {
                         rs.getString("metric_semantics"),
                         rs.getString("source")))
             .list();
-    Instant publishedAt = earliestPublication(videoId, normalized, cutoff);
+    Instant publishedAt = earliestPublication(videoId, normalized, cutoff, variantId);
     if (publishedAt == null) return empty(videoId, normalized);
 
     List<ObservationSeries.NormalizedPoint> points = ObservationSeries.normalize(raw);
@@ -98,16 +100,17 @@ public class PlatformGrowthProfileService {
             + "hidden.");
   }
 
-  private Instant earliestPublication(UUID videoId, String platform, Instant cutoff) {
+  private Instant earliestPublication(UUID videoId, String platform, Instant cutoff, UUID variantId) {
     return jdbc.sql(
             """
             SELECT min(publication_timestamp) FROM performance_observations
             WHERE video_id=:video AND platform=:platform AND publication_timestamp IS NOT NULL
-              AND measurement_timestamp<=:cutoff
+              AND measurement_timestamp<=:cutoff AND variant_id IS NOT DISTINCT FROM :variant
             """)
         .param("video", videoId)
         .param("platform", platform)
         .param("cutoff", OffsetDateTime.ofInstant(cutoff, ZoneOffset.UTC))
+        .param("variant", variantId, java.sql.Types.OTHER)
         .query(OffsetDateTime.class)
         .optional()
         .map(OffsetDateTime::toInstant)

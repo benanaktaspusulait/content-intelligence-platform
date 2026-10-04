@@ -23,7 +23,7 @@ public class DiscoveryProfileService {
   }
 
   @Transactional(readOnly = true)
-  public DiscoveryProfile profile(UUID videoId, String platform, Instant cutoff) {
+  public DiscoveryProfile profile(UUID videoId, String platform, Instant cutoff, UUID variantId) {
     String normalizedPlatform = platform.toLowerCase();
     OffsetDateTime cutoffTime = OffsetDateTime.ofInstant(cutoff, ZoneOffset.UTC);
     AudienceSnapshot audience =
@@ -34,12 +34,14 @@ public class DiscoveryProfileService {
                 FROM performance_observations
                 WHERE video_id=:video AND platform=:platform
                   AND COALESCE(measurement_timestamp,created_at)<=:cutoff
+                  AND variant_id IS NOT DISTINCT FROM :variant
                 ORDER BY COALESCE(measurement_timestamp,created_at) DESC,created_at DESC
                 LIMIT 1
                 """)
             .param("video", videoId)
             .param("platform", normalizedPlatform)
             .param("cutoff", cutoffTime)
+            .param("variant", variantId, java.sql.Types.OTHER)
             .query(
                 (rs, ignored) ->
                     new AudienceSnapshot(
@@ -62,12 +64,14 @@ public class DiscoveryProfileService {
                 JOIN performance_observations po ON po.id=co.performance_observation_id
                 WHERE po.video_id=:video AND po.platform=:platform AND co.country_code='US'
                   AND COALESCE(co.observed_at,po.measurement_timestamp,po.created_at)<=:cutoff
+                  AND po.variant_id IS NOT DISTINCT FROM :variant
                 ORDER BY COALESCE(co.observed_at,po.measurement_timestamp,po.created_at) DESC
                 LIMIT 1
                 """)
             .param("video", videoId)
             .param("platform", normalizedPlatform)
             .param("cutoff", cutoffTime)
+            .param("variant", variantId, java.sql.Types.OTHER)
             .query(
                 (rs, ignored) ->
                     new CountrySnapshot(

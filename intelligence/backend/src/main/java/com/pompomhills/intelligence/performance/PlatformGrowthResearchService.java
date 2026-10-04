@@ -46,7 +46,7 @@ public class PlatformGrowthResearchService {
             .query(UUID.class)
             .list();
     List<PlatformGrowthProfileService.GrowthProfile> data =
-        ids.stream().map(id -> profiles.profile(id, platform, Instant.now())).toList();
+        ids.stream().map(id -> profiles.profile(id, platform, Instant.now(), null)).toList();
     List<Double> ratios =
         data.stream()
             .map(

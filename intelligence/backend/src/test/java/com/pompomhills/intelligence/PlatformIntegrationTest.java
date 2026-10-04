@@ -158,7 +158,8 @@ class PlatformIntegrationTest {
     imports.commit(preview.batchId());
 
     var profile =
-        discoveryProfiles.profile(videoId, "facebook", Instant.parse("2026-09-29T09:00:00Z"));
+        discoveryProfiles.profile(
+            videoId, "facebook", Instant.parse("2026-09-29T09:00:00Z"), null);
     assertThat(profile.nonFollowerShare()).isEqualTo(99.0);
     assertThat(profile.usAudienceShare()).isEqualTo(19.8);
     assertThat(profile.estimatedUsAudience()).isEqualTo(11880L);
@@ -349,9 +350,9 @@ class PlatformIntegrationTest {
     insertPerformance("facebook", published, published.plusSeconds(7 * 24 * 3600), 2200L, 1800L);
 
     var instagram =
-        growthProfiles.profile(videoId, "instagram", published.plusSeconds(8 * 24 * 3600));
+        growthProfiles.profile(videoId, "instagram", published.plusSeconds(8 * 24 * 3600), null);
     var facebook =
-        growthProfiles.profile(videoId, "facebook", published.plusSeconds(8 * 24 * 3600));
+        growthProfiles.profile(videoId, "facebook", published.plusSeconds(8 * 24 * 3600), null);
 
     assertThat(instagram.instagramBurstRatio()).isEqualTo(0.6);
     assertThat(instagram.primarySignal()).isEqualTo("EARLY_BURST");

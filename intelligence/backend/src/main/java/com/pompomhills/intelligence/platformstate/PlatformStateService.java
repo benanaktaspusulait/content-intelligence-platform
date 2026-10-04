@@ -405,8 +405,8 @@ public class PlatformStateService {
       return new LiveFeatures(false, "PRE_PUBLISH_LEAKAGE_GUARD", Map.of());
     }
     ReachFurtherSummary summary = reachFurtherSummary(videoId, platform);
-    var growth = growthProfiles.profile(videoId, platform, cutoff);
-    var discovery = discoveryProfiles.profile(videoId, platform, cutoff);
+    var growth = growthProfiles.profile(videoId, platform, cutoff, null);
+    var discovery = discoveryProfiles.profile(videoId, platform, cutoff, null);
     Instant firstIntervention = interventions.firstAtOrBefore(videoId, platform, cutoff);
     var features = new LinkedHashMap<String, Object>();
     features.put("manualEngagementIntervention", firstIntervention != null);

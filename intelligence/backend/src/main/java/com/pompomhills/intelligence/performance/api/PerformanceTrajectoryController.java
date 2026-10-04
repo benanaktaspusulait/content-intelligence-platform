@@ -30,17 +30,21 @@ public class PerformanceTrajectoryController {
 
   @GetMapping("/video/{videoId}/trajectory")
   TrajectoryView trajectory(
-      @PathVariable UUID videoId, @RequestParam(defaultValue = "instagram") String platform) {
+      @PathVariable UUID videoId,
+      @RequestParam(defaultValue = "instagram") String platform,
+      @RequestParam(required = false) UUID variantId) {
     List<ObservationSeries.RawObservation> raw =
         jdbc.sql(
                 """
                 SELECT measurement_timestamp,views,metric_semantics,source
                 FROM performance_observations
                 WHERE video_id=:video AND platform=:platform AND measurement_timestamp IS NOT NULL
+                  AND variant_id IS NOT DISTINCT FROM :variant
                 ORDER BY measurement_timestamp
                 """)
             .param("video", videoId)
             .param("platform", platform.toLowerCase())
+            .param("variant", variantId, java.sql.Types.OTHER)
             .query(
                 (rs, ignored) ->
                     new ObservationSeries.RawObservation(

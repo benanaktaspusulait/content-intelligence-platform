@@ -85,7 +85,7 @@ class PerformanceTrajectoryControllerTest {
     insertObservation(videoId, t0, 1000L, "DAILY_INCREMENT", "CSV");
     insertObservation(videoId, t1, 300L, "DAILY_INCREMENT", "CSV");
 
-    var view = controller().trajectory(videoId, "instagram");
+    var view = controller().trajectory(videoId, "instagram", null);
 
     assertThat(view.points()).hasSize(2);
     assertThat(view.points().get(0).views()).isEqualTo(1000L);
@@ -104,7 +104,7 @@ class PerformanceTrajectoryControllerTest {
     insertObservation(videoId, t1, 1200L, "CUMULATIVE", "CSV");
     insertObservation(videoId, t2, 999999L, "SNAPSHOT", "API");
 
-    var view = controller().trajectory(videoId, "instagram");
+    var view = controller().trajectory(videoId, "instagram", null);
 
     assertThat(view.sourcesPresent()).containsExactlyInAnyOrder("CSV", "API");
     assertThat(view.sourceReconciliationApplied()).isTrue();
@@ -118,7 +118,7 @@ class PerformanceTrajectoryControllerTest {
     UUID videoId = insertVideo();
     insertObservation(videoId, Instant.parse("2026-01-01T00:00:00Z"), 1000L, "CUMULATIVE", "CSV");
 
-    var view = controller().trajectory(videoId, "instagram");
+    var view = controller().trajectory(videoId, "instagram", null);
 
     assertThat(view.sourcesPresent()).containsExactly("CSV");
     assertThat(view.sourceReconciliationApplied()).isFalse();
@@ -130,7 +130,7 @@ class PerformanceTrajectoryControllerTest {
     insertObservation(videoId, Instant.parse("2026-01-01T00:00:00Z"), 1000L, "CUMULATIVE", "CSV");
     insertObservation(videoId, Instant.parse("2026-01-02T00:00:00Z"), 50L, "UNKNOWN", "CSV");
 
-    var view = controller().trajectory(videoId, "instagram");
+    var view = controller().trajectory(videoId, "instagram", null);
 
     assertThat(view.points()).hasSize(1);
   }
