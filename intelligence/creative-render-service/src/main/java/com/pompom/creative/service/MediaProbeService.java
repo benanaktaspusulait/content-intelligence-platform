@@ -12,7 +12,9 @@ import java.util.concurrent.TimeUnit;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-/** Independently measures downloaded media. Provider-declared metadata is never trusted as proof. */
+/**
+ * Independently measures downloaded media. Provider-declared metadata is never trusted as proof.
+ */
 @Service
 public class MediaProbeService {
   private final ObjectMapper objectMapper;
@@ -59,7 +61,9 @@ public class MediaProbeService {
           break;
         }
       }
-      if (video == null || video.path("width").asInt(0) <= 0 || video.path("height").asInt(0) <= 0) {
+      if (video == null
+          || video.path("width").asInt(0) <= 0
+          || video.path("height").asInt(0) <= 0) {
         throw new IllegalStateException("Downloaded media has no measurable video/image stream");
       }
       Double durationSeconds =

@@ -40,7 +40,8 @@ public class OpenArtConfiguration {
   @Bean
   @Primary
   public OpenArtAdapter openArtAdapter(CliRealOpenArtAdapter realAdapter) {
-    boolean production = java.util.Arrays.asList(environment.getActiveProfiles()).contains("production");
+    boolean production =
+        java.util.Arrays.asList(environment.getActiveProfiles()).contains("production");
     if (production && (!openartEnabled || mockEnabled)) {
       throw new IllegalStateException(
           "Production requires the real OpenArt provider and forbids the mock provider");

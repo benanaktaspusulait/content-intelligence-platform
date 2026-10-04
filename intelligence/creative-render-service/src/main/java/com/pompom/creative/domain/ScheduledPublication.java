@@ -3,6 +3,7 @@ package com.pompom.creative.domain;
 import com.pompom.creative.oauth.PlatformType;
 import jakarta.persistence.*;
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
@@ -58,6 +59,23 @@ public class ScheduledPublication {
   @Column(name = "is_executed", nullable = false)
   private Boolean isExecuted = false;
 
+  @Enumerated(EnumType.STRING)
+  @Column(name = "schedule_status", nullable = false, length = 30)
+  @Builder.Default
+  private ScheduleStatus scheduleStatus = ScheduleStatus.SCHEDULED;
+
+  @Column(name = "lease_owner", length = 100)
+  private String leaseOwner;
+
+  @Column(name = "lease_expires_at")
+  private Instant leaseExpiresAt;
+
+  @Column(name = "original_local_time")
+  private LocalDateTime originalLocalTime;
+
+  @Column(name = "cancellation_requested_at")
+  private Instant cancellationRequestedAt;
+
   @Column(name = "executed_at")
   private Instant executedAt;
 
@@ -88,6 +106,9 @@ public class ScheduledPublication {
     this.isExecuted = true;
     this.executedAt = Instant.now();
     this.publicationJobId = jobId;
+    this.scheduleStatus = ScheduleStatus.ENQUEUED;
+    this.leaseOwner = null;
+    this.leaseExpiresAt = null;
   }
 
   /** Get timezone or default. */

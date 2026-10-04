@@ -1,12 +1,12 @@
 package com.pompom.creative.api.controller;
 
 import com.pompom.creative.oauth.OAuthService;
+import com.pompom.creative.oauth.OAuthStateService;
 import com.pompom.creative.oauth.PlatformType;
 import com.pompom.creative.oauth.dto.OAuthToken;
 import com.pompom.creative.service.CredentialManager;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -21,11 +21,8 @@ import org.springframework.web.servlet.view.RedirectView;
 public class OAuthController {
 
   private final OAuthService oauthService;
+  private final OAuthStateService oauthStateService;
   private final CredentialManager credentialManager;
-
-  // In-memory state storage (should use Redis in production)
-  private final Map<String, PlatformType> stateStore =
-      new java.util.concurrent.ConcurrentHashMap<>();
 
   /** Initiate OAuth flow for a platform. Returns authorization URL to redirect user to. */
   @GetMapping("/connect/{platform}")
@@ -46,8 +43,7 @@ public class OAuthController {
     }
 
     // Generate CSRF token
-    String state = UUID.randomUUID().toString();
-    stateStore.put(state, platformType);
+    String state = oauthStateService.issue(platformType);
 
     // Generate authorization URL
     String authUrl = oauthService.generateAuthorizationUrl(platformType, state);
@@ -74,8 +70,10 @@ public class OAuthController {
     }
 
     // Validate state token
-    PlatformType platform = stateStore.remove(state);
-    if (platform == null) {
+    PlatformType platform;
+    try {
+      platform = oauthStateService.consume(state);
+    } catch (IllegalArgumentException invalidState) {
       log.error("Invalid state token: {}", state);
       return new RedirectView("/oauth/error?reason=invalid_state");
     }

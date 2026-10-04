@@ -196,10 +196,7 @@ public class TikTokPublisher implements PlatformPublisher {
 
     String publishId = json.get("data").get("publish_id").asText();
 
-    // TikTok doesn't return direct URL, would need to construct or fetch later
-    String postUrl = "https://www.tiktok.com/@user/video/" + publishId;
-
-    return PublishResponse.success(publishId, postUrl);
+    return PublishResponse.success(publishId, null);
   }
 
   @Override

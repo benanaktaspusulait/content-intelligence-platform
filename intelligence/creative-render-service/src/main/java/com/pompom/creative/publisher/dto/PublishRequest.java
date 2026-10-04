@@ -9,6 +9,8 @@ import lombok.Data;
 @Builder
 public class PublishRequest {
   private String videoPath;
+  private String platformAccountId;
+  private String idempotencyKey;
   private String title;
   private String caption;
   private List<String> hashtags;

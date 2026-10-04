@@ -7,10 +7,13 @@ import static org.mockito.Mockito.*;
 
 import com.pompom.creative.domain.PublicationJob;
 import com.pompom.creative.domain.RenderAsset;
+import com.pompom.creative.domain.ScheduleStatus;
 import com.pompom.creative.domain.ScheduledPublication;
 import com.pompom.creative.oauth.PlatformType;
-import com.pompom.creative.repository.ScheduledPublicationRepository;
+import com.pompom.creative.repository.PublicationJobRepository;
 import com.pompom.creative.repository.RenderAssetRepository;
+import com.pompom.creative.repository.ScheduledPublicationRepository;
+import com.pompom.creative.worker.ScheduledPublicationClaimRepository;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -18,8 +21,8 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -33,6 +36,8 @@ class ScheduledPublishingServiceTest {
   @Mock private PublicationService publicationService;
   @Mock private RenderAssetRepository renderAssetRepository;
   @Mock private AssetLibraryManager assetLibraryManager;
+  @Mock private PublicationJobRepository publicationJobRepository;
+  @Mock private ScheduledPublicationClaimRepository claimRepository;
 
   @InjectMocks private ScheduledPublishingService scheduledPublishingService;
   private UUID assetId;
@@ -43,7 +48,9 @@ class ScheduledPublishingServiceTest {
     assetId = UUID.randomUUID();
     asset = RenderAsset.builder().id(assetId).relativePath("content/1/render-v1.mp4").build();
     lenient().when(renderAssetRepository.findById(assetId)).thenReturn(Optional.of(asset));
-    lenient().when(assetLibraryManager.resolveStoredPath(asset)).thenReturn(java.nio.file.Path.of("/data/content/1/render-v1.mp4"));
+    lenient()
+        .when(assetLibraryManager.resolveStoredPath(asset))
+        .thenReturn(java.nio.file.Path.of("/data/content/1/render-v1.mp4"));
   }
 
   @Test
@@ -64,7 +71,15 @@ class ScheduledPublishingServiceTest {
     // When
     ScheduledPublication result =
         scheduledPublishingService.schedulePublication(
-            platform, assetId, "account-1", "Title", "Caption", "hashtags", false, scheduledAt, timezone);
+            platform,
+            assetId,
+            "account-1",
+            "Title",
+            "Caption",
+            "hashtags",
+            false,
+            scheduledAt,
+            timezone);
 
     // Then
     assertThat(result).isNotNull();
@@ -140,6 +155,7 @@ class ScheduledPublishingServiceTest {
             .isPrivate(false)
             .scheduledAt(Instant.now())
             .isExecuted(false)
+            .scheduleStatus(ScheduleStatus.SCHEDULED)
             .build();
 
     UUID jobId = UUID.randomUUID();
@@ -177,6 +193,7 @@ class ScheduledPublishingServiceTest {
             .platformAccountId("account-1")
             .scheduledAt(pastTime)
             .isExecuted(false)
+            .scheduleStatus(ScheduleStatus.SCHEDULED)
             .build();
 
     ScheduledPublication due2 =
@@ -187,10 +204,21 @@ class ScheduledPublishingServiceTest {
             .platformAccountId("account-1")
             .scheduledAt(pastTime)
             .isExecuted(false)
+            .scheduleStatus(ScheduleStatus.SCHEDULED)
             .build();
 
-    when(scheduledPublicationRepository.findByIsExecutedFalseAndScheduledAtBefore(any()))
-        .thenReturn(List.of(due1, due2));
+    when(claimRepository.claimDueSchedules(any(), any(), any(), anyInt()))
+        .thenAnswer(
+            invocation -> {
+              String owner = invocation.getArgument(0);
+              due1.setScheduleStatus(ScheduleStatus.CLAIMED);
+              due1.setLeaseOwner(owner);
+              due2.setScheduleStatus(ScheduleStatus.CLAIMED);
+              due2.setLeaseOwner(owner);
+              return List.of(due1.getId(), due2.getId());
+            });
+    when(scheduledPublicationRepository.findById(due1.getId())).thenReturn(Optional.of(due1));
+    when(scheduledPublicationRepository.findById(due2.getId())).thenReturn(Optional.of(due2));
 
     when(publicationService.queuePublication(any(), any(), any(), any(), any(), any(), any()))
         .thenReturn(PublicationJob.builder().id(UUID.randomUUID()).build());
@@ -202,7 +230,8 @@ class ScheduledPublishingServiceTest {
     scheduledPublishingService.processScheduledPublications();
 
     // Then
-    verify(publicationService, times(2)).queuePublication(any(), any(), any(), any(), any(), any(), any());
+    verify(publicationService, times(2))
+        .queuePublication(any(), any(), any(), any(), any(), any(), any());
     verify(scheduledPublicationRepository, times(2)).save(any());
   }
 
@@ -211,8 +240,14 @@ class ScheduledPublishingServiceTest {
     // Given
     List<ScheduledPublication> pending =
         List.of(
-            ScheduledPublication.builder().isExecuted(false).build(),
-            ScheduledPublication.builder().isExecuted(false).build());
+            ScheduledPublication.builder()
+                .isExecuted(false)
+                .scheduleStatus(ScheduleStatus.SCHEDULED)
+                .build(),
+            ScheduledPublication.builder()
+                .isExecuted(false)
+                .scheduleStatus(ScheduleStatus.SCHEDULED)
+                .build());
 
     when(scheduledPublicationRepository.findByIsExecutedFalse()).thenReturn(pending);
 
@@ -228,7 +263,11 @@ class ScheduledPublishingServiceTest {
     // Given
     UUID scheduleId = UUID.randomUUID();
     ScheduledPublication scheduled =
-        ScheduledPublication.builder().id(scheduleId).isExecuted(false).build();
+        ScheduledPublication.builder()
+            .id(scheduleId)
+            .isExecuted(false)
+            .scheduleStatus(ScheduleStatus.SCHEDULED)
+            .build();
 
     when(scheduledPublicationRepository.findById(scheduleId)).thenReturn(Optional.of(scheduled));
 
@@ -237,7 +276,8 @@ class ScheduledPublishingServiceTest {
 
     // Then
     assertThat(cancelled).isTrue();
-    verify(scheduledPublicationRepository).delete(scheduled);
+    assertThat(scheduled.getScheduleStatus()).isEqualTo(ScheduleStatus.CANCELLED);
+    verify(scheduledPublicationRepository).save(scheduled);
   }
 
   @Test
@@ -245,7 +285,11 @@ class ScheduledPublishingServiceTest {
     // Given
     UUID scheduleId = UUID.randomUUID();
     ScheduledPublication scheduled =
-        ScheduledPublication.builder().id(scheduleId).isExecuted(true).build();
+        ScheduledPublication.builder()
+            .id(scheduleId)
+            .isExecuted(true)
+            .scheduleStatus(ScheduleStatus.ENQUEUED)
+            .build();
 
     when(scheduledPublicationRepository.findById(scheduleId)).thenReturn(Optional.of(scheduled));
 
@@ -269,6 +313,7 @@ class ScheduledPublishingServiceTest {
             .id(scheduleId)
             .scheduledAt(oldTime)
             .isExecuted(false)
+            .scheduleStatus(ScheduleStatus.SCHEDULED)
             .build();
 
     when(scheduledPublicationRepository.findById(scheduleId)).thenReturn(Optional.of(scheduled));
@@ -291,7 +336,11 @@ class ScheduledPublishingServiceTest {
     Instant pastTime = Instant.now().minus(1, ChronoUnit.HOURS);
 
     ScheduledPublication scheduled =
-        ScheduledPublication.builder().id(scheduleId).isExecuted(false).build();
+        ScheduledPublication.builder()
+            .id(scheduleId)
+            .isExecuted(false)
+            .scheduleStatus(ScheduleStatus.SCHEDULED)
+            .build();
 
     when(scheduledPublicationRepository.findById(scheduleId)).thenReturn(Optional.of(scheduled));
 

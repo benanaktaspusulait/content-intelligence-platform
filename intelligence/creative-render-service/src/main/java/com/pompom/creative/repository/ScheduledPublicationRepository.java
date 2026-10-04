@@ -1,5 +1,6 @@
 package com.pompom.creative.repository;
 
+import com.pompom.creative.domain.ScheduleStatus;
 import com.pompom.creative.domain.ScheduledPublication;
 import com.pompom.creative.oauth.PlatformType;
 import java.time.Instant;
@@ -12,6 +13,8 @@ import org.springframework.stereotype.Repository;
 public interface ScheduledPublicationRepository extends JpaRepository<ScheduledPublication, UUID> {
 
   List<ScheduledPublication> findByIsExecutedFalse();
+
+  List<ScheduledPublication> findByScheduleStatus(ScheduleStatus status);
 
   List<ScheduledPublication> findByIsExecutedFalseAndScheduledAtBefore(Instant before);
 

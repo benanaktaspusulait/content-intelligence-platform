@@ -70,9 +70,18 @@ class RenderJobIdempotencyPostgresTest {
     when(contentClient.fetch(anyLong(), anyLong()))
         .thenReturn(
             new ContentPromptSnapshot(
-                "v1", 10L, "Kiko", "REEL", "RENDER_READY", 11L, 1,
-                "a".repeat(120), "{}", "a".repeat(64)));
-    when(creditTrackingService.canAffordRender(org.mockito.ArgumentMatchers.any())).thenReturn(true);
+                "v1",
+                10L,
+                "Kiko",
+                "REEL",
+                "RENDER_READY",
+                11L,
+                1,
+                "a".repeat(120),
+                "{}",
+                "a".repeat(64)));
+    when(creditTrackingService.canAffordRender(org.mockito.ArgumentMatchers.any()))
+        .thenReturn(true);
     when(creditTrackingService.getEstimatedCost(org.mockito.ArgumentMatchers.any()))
         .thenReturn(BigDecimal.TEN);
   }

@@ -355,7 +355,8 @@ public class CliRealOpenArtAdapter implements OpenArtAdapter {
 
   /** Execute CLI command and return output. */
   private String executeCommand(List<String> command) throws IOException, InterruptedException {
-    log.debug("Executing OpenArt command: executable={}, operation={}", command.get(0), command.get(1));
+    log.debug(
+        "Executing OpenArt command: executable={}, operation={}", command.get(0), command.get(1));
 
     ProcessBuilder processBuilder = new ProcessBuilder(command);
     if (apiKey != null && !apiKey.isBlank()) {

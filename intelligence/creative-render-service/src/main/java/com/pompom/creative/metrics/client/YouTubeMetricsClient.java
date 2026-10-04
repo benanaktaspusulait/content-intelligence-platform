@@ -98,5 +98,4 @@ public class YouTubeMetricsClient implements PlatformMetricsClient {
   public PlatformType getPlatform() {
     return PlatformType.YOUTUBE;
   }
-
 }

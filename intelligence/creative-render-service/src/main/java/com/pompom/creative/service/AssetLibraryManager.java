@@ -210,7 +210,8 @@ public class AssetLibraryManager {
 
   /** Resolve an asset path without allowing traversal outside the configured storage root. */
   public Path resolveStoredPath(RenderAsset asset) {
-    Path resolved = dataRoot.toAbsolutePath().normalize().resolve(asset.getRelativePath()).normalize();
+    Path resolved =
+        dataRoot.toAbsolutePath().normalize().resolve(asset.getRelativePath()).normalize();
     if (!resolved.startsWith(dataRoot.toAbsolutePath().normalize())) {
       throw new IllegalArgumentException("Asset path escapes the configured data root");
     }

@@ -2,10 +2,14 @@ package com.pompom.creative.service;
 
 import com.pompom.creative.domain.PublicationJob;
 import com.pompom.creative.domain.RenderAsset;
+import com.pompom.creative.domain.ScheduleStatus;
 import com.pompom.creative.domain.ScheduledPublication;
 import com.pompom.creative.oauth.PlatformType;
-import com.pompom.creative.repository.ScheduledPublicationRepository;
+import com.pompom.creative.repository.PublicationJobRepository;
 import com.pompom.creative.repository.RenderAssetRepository;
+import com.pompom.creative.repository.ScheduledPublicationRepository;
+import com.pompom.creative.worker.ScheduledPublicationClaimRepository;
+import java.time.Duration;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -14,6 +18,7 @@ import java.util.Optional;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,6 +35,15 @@ public class ScheduledPublishingService {
   private final PublicationService publicationService;
   private final RenderAssetRepository renderAssetRepository;
   private final AssetLibraryManager assetLibraryManager;
+  private final PublicationJobRepository publicationJobRepository;
+  private final ScheduledPublicationClaimRepository claimRepository;
+  private final String leaseOwner = "schedule-worker-" + UUID.randomUUID();
+
+  @Value("${pompom.publication.scheduler.batch-size:20}")
+  private int batchSize;
+
+  @Value("${pompom.publication.scheduler.lease-duration:PT2M}")
+  private Duration leaseDuration;
 
   /**
    * Schedule a publication for future execution.
@@ -69,6 +83,7 @@ public class ScheduledPublishingService {
     if (platformAccountId == null || platformAccountId.isBlank()) {
       throw new IllegalArgumentException("platformAccountId is required");
     }
+    ZoneId resolvedZone = ZoneId.of(timezone != null ? timezone : "UTC");
     RenderAsset asset =
         renderAssetRepository
             .findById(renderAssetId)
@@ -85,8 +100,9 @@ public class ScheduledPublishingService {
             .hashtags(hashtags)
             .isPrivate(isPrivate)
             .scheduledAt(scheduledAt)
-            .timezone(timezone != null ? timezone : ZoneId.systemDefault().getId())
+            .timezone(resolvedZone.getId())
             .isExecuted(false)
+            .scheduleStatus(ScheduleStatus.SCHEDULED)
             .build();
 
     ScheduledPublication saved = scheduledPublicationRepository.save(scheduled);
@@ -107,42 +123,55 @@ public class ScheduledPublishingService {
       String hashtags,
       Boolean isPrivate,
       ZonedDateTime scheduledAt) {
-    return schedulePublication(
-        platform,
-        renderAssetId,
-        platformAccountId,
-        title,
-        caption,
-        hashtags,
-        isPrivate,
-        scheduledAt.toInstant(),
-        scheduledAt.getZone().getId());
+    ScheduledPublication scheduled =
+        schedulePublication(
+            platform,
+            renderAssetId,
+            platformAccountId,
+            title,
+            caption,
+            hashtags,
+            isPrivate,
+            scheduledAt.toInstant(),
+            scheduledAt.getZone().getId());
+    scheduled.setOriginalLocalTime(scheduledAt.toLocalDateTime());
+    return scheduledPublicationRepository.save(scheduled);
   }
 
   /** Process scheduled publications. Runs every minute to check for due publications. */
   @Scheduled(cron = "0 * * * * *") // Every minute
-  @Transactional
   public void processScheduledPublications() {
     log.debug("Processing scheduled publications");
 
     Instant now = Instant.now();
-    List<ScheduledPublication> duePublications =
-        scheduledPublicationRepository.findByIsExecutedFalseAndScheduledAtBefore(now);
+    List<UUID> claimed =
+        claimRepository.claimDueSchedules(leaseOwner, now, now.plus(leaseDuration), batchSize);
 
-    if (duePublications.isEmpty()) {
+    if (claimed.isEmpty()) {
       log.debug("No due publications found");
       return;
     }
 
-    log.info("Found {} due publications", duePublications.size());
+    log.info("Claimed {} due publications", claimed.size());
 
-    for (ScheduledPublication scheduled : duePublications) {
+    for (UUID scheduleId : claimed) {
       try {
-        executeScheduledPublication(scheduled);
+        executeClaimedPublication(scheduleId, leaseOwner);
       } catch (Exception e) {
-        log.error("Failed to execute scheduled publication: id={}", scheduled.getId(), e);
+        log.error("Failed to execute scheduled publication: id={}", scheduleId, e);
       }
     }
+  }
+
+  @Transactional
+  public void executeClaimedPublication(UUID scheduleId, String owner) {
+    ScheduledPublication scheduled =
+        scheduledPublicationRepository.findById(scheduleId).orElseThrow();
+    if (scheduled.getScheduleStatus() != ScheduleStatus.CLAIMED
+        || !owner.equals(scheduled.getLeaseOwner())) {
+      throw new IllegalStateException("Scheduled publication lease is not owned by caller");
+    }
+    executeScheduledPublication(scheduled);
   }
 
   /** Execute a scheduled publication. */
@@ -208,12 +237,14 @@ public class ScheduledPublishingService {
 
     ScheduledPublication scheduled = scheduledOpt.get();
 
-    if (scheduled.getIsExecuted()) {
+    if (scheduled.getScheduleStatus() != ScheduleStatus.SCHEDULED) {
       log.warn("Cannot cancel already executed scheduled publication: id={}", scheduleId);
       return false;
     }
 
-    scheduledPublicationRepository.delete(scheduled);
+    scheduled.setScheduleStatus(ScheduleStatus.CANCELLED);
+    scheduled.setCancellationRequestedAt(Instant.now());
+    scheduledPublicationRepository.save(scheduled);
     log.info("Scheduled publication cancelled: id={}", scheduleId);
 
     return true;
@@ -231,7 +262,7 @@ public class ScheduledPublishingService {
 
     ScheduledPublication scheduled = scheduledOpt.get();
 
-    if (scheduled.getIsExecuted()) {
+    if (scheduled.getScheduleStatus() != ScheduleStatus.SCHEDULED) {
       log.warn("Cannot reschedule already executed publication: id={}", scheduleId);
       return false;
     }
@@ -255,5 +286,28 @@ public class ScheduledPublishingService {
         "pending", scheduledPublicationRepository.countByIsExecutedFalse(),
         "executed", scheduledPublicationRepository.countByIsExecutedTrue(),
         "total", scheduledPublicationRepository.count());
+  }
+
+  @Scheduled(fixedDelayString = "${pompom.publication.scheduler.reconcile-interval:30s}")
+  @Transactional
+  public void reconcileEnqueuedSchedules() {
+    for (ScheduledPublication scheduled :
+        scheduledPublicationRepository.findByScheduleStatus(ScheduleStatus.ENQUEUED)) {
+      if (scheduled.getPublicationJobId() == null) {
+        continue;
+      }
+      publicationJobRepository
+          .findById(scheduled.getPublicationJobId())
+          .ifPresent(
+              job -> {
+                if (job.getStatus() == com.pompom.creative.domain.PublicationStatus.PUBLISHED) {
+                  scheduled.setScheduleStatus(ScheduleStatus.PUBLICATION_SUCCEEDED);
+                  scheduledPublicationRepository.save(scheduled);
+                } else if (job.getStatus() == com.pompom.creative.domain.PublicationStatus.FAILED) {
+                  scheduled.setScheduleStatus(ScheduleStatus.PUBLICATION_FAILED);
+                  scheduledPublicationRepository.save(scheduled);
+                }
+              });
+    }
   }
 }

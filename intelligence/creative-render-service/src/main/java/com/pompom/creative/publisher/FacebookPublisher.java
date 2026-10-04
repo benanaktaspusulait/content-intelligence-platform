@@ -10,7 +10,6 @@ import java.io.File;
 import java.io.IOException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
@@ -39,9 +38,6 @@ public class FacebookPublisher implements PlatformPublisher {
   private final RestClient.Builder restClientBuilder;
   private final ObjectMapper objectMapper;
 
-  @Value("${pompom.social.facebook.page-id:}")
-  private String facebookPageId;
-
   @Override
   public PublishResponse publish(PublishRequest request) {
     log.info("Publishing to Facebook: video={}", request.getVideoPath());
@@ -50,8 +46,7 @@ public class FacebookPublisher implements PlatformPublisher {
       // Get access token
       String accessToken = credentialManager.getActiveAccessToken(PlatformType.FACEBOOK);
 
-      // Get page ID if not configured
-      String pageId = getPageId(accessToken);
+      String pageId = requireAccountId(request);
 
       // Initialize upload
       String videoId = initializeUpload(accessToken, pageId, request);
@@ -71,33 +66,11 @@ public class FacebookPublisher implements PlatformPublisher {
     }
   }
 
-  /** Get Facebook Page ID. */
-  private String getPageId(String accessToken) throws IOException {
-    if (facebookPageId != null && !facebookPageId.isEmpty()) {
-      return facebookPageId;
+  private String requireAccountId(PublishRequest request) {
+    if (request.getPlatformAccountId() == null || request.getPlatformAccountId().isBlank()) {
+      throw new IllegalArgumentException("Explicit Facebook Page ID is required");
     }
-
-    log.debug("Fetching Facebook Page ID");
-
-    RestClient restClient = restClientBuilder.build();
-
-    String response =
-        restClient
-            .get()
-            .uri(GRAPH_API_BASE_URL + "/me/accounts?access_token=" + accessToken)
-            .retrieve()
-            .body(String.class);
-
-    JsonNode json = objectMapper.readTree(response);
-
-    if (!json.has("data") || json.get("data").isEmpty()) {
-      throw new RuntimeException("No Facebook Pages found for this account");
-    }
-
-    String pageId = json.get("data").get(0).get("id").asText();
-    log.debug("Facebook Page ID: {}", pageId);
-
-    return pageId;
+    return request.getPlatformAccountId();
   }
 
   /** Initialize resumable video upload. */
@@ -194,12 +167,10 @@ public class FacebookPublisher implements PlatformPublisher {
       throw new RuntimeException("Facebook video publish failed");
     }
 
-    String postUrl = "https://www.facebook.com/" + pageId + "/videos/" + videoId;
-
     return PublishResponse.builder()
         .success(true)
         .platformVideoId(videoId)
-        .postUrl(postUrl)
+        .postUrl(null)
         .status("PUBLISHED")
         .message("Successfully published to Facebook")
         .build();

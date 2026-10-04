@@ -39,7 +39,7 @@ public class InstagramReelsPublisher implements PlatformPublisher {
     try {
       String accessToken = credentialManager.getActiveAccessToken(PlatformType.INSTAGRAM);
       String publicVideoUrl = requirePublicVideoUrl(request.getVideoPath());
-      String igUserId = getInstagramBusinessAccountId(accessToken);
+      String igUserId = requireAccountId(request);
       String containerId = createMediaContainer(accessToken, igUserId, publicVideoUrl, request);
 
       waitForProcessing(accessToken, containerId);
@@ -53,43 +53,11 @@ public class InstagramReelsPublisher implements PlatformPublisher {
     }
   }
 
-  private String getInstagramBusinessAccountId(String accessToken) throws IOException {
-    log.debug("Fetching Instagram Business Account ID");
-
-    RestClient restClient = restClientBuilder.build();
-    String pageResponse =
-        restClient
-            .get()
-            .uri(GRAPH_API_BASE_URL + "/me/accounts?access_token=" + accessToken)
-            .retrieve()
-            .body(String.class);
-
-    JsonNode pageJson = objectMapper.readTree(pageResponse);
-    if (!pageJson.has("data") || pageJson.get("data").isEmpty()) {
-      throw new IllegalStateException("No Facebook Pages found");
+  private String requireAccountId(PublishRequest request) {
+    if (request.getPlatformAccountId() == null || request.getPlatformAccountId().isBlank()) {
+      throw new IllegalArgumentException("Explicit Instagram Business Account ID is required");
     }
-
-    String pageId = pageJson.get("data").get(0).get("id").asText();
-    String igResponse =
-        restClient
-            .get()
-            .uri(
-                GRAPH_API_BASE_URL
-                    + "/"
-                    + pageId
-                    + "?fields=instagram_business_account&access_token="
-                    + accessToken)
-            .retrieve()
-            .body(String.class);
-
-    JsonNode igJson = objectMapper.readTree(igResponse);
-    if (!igJson.has("instagram_business_account")) {
-      throw new IllegalStateException("No Instagram Business Account connected to this Page");
-    }
-
-    String igUserId = igJson.get("instagram_business_account").get("id").asText();
-    log.debug("Instagram Business Account ID: {}", igUserId);
-    return igUserId;
+    return request.getPlatformAccountId();
   }
 
   private String createMediaContainer(

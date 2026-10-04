@@ -6,7 +6,6 @@ import com.pompom.creative.oauth.PlatformType;
 import com.pompom.creative.repository.PublicationJobRepository;
 import com.pompom.creative.websocket.WebSocketEventPublisher;
 import com.pompom.creative.websocket.dto.MetricsUpdateEvent;
-import java.math.BigDecimal;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.List;

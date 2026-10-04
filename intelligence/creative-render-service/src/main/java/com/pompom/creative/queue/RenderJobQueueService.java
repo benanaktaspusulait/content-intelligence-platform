@@ -99,7 +99,8 @@ public class RenderJobQueueService {
     // must create zero rows and never even starts a database transaction.
     ValidationEvidenceDto evidence = evidenceClient.getEvidence(request.validationRecordId());
     policy.validate(request, evidence, Instant.now());
-    ContentPromptSnapshot prompt = contentClient.fetch(request.contentId(), request.promptVersionId());
+    ContentPromptSnapshot prompt =
+        contentClient.fetch(request.contentId(), request.promptVersionId());
     if (prompt.contentId() != evidence.contentId()
         || prompt.promptVersionId() != evidence.promptVersionId()
         || !prompt.promptSha256().equals(evidence.promptSha256())) {

@@ -10,6 +10,7 @@ import com.pompom.creative.domain.RenderAsset;
 import com.pompom.creative.domain.RenderQaResult;
 import com.pompom.creative.oauth.PlatformType;
 import com.pompom.creative.publisher.PlatformPublisher;
+import com.pompom.creative.repository.PublicationAttemptRepository;
 import com.pompom.creative.repository.PublicationJobRepository;
 import com.pompom.creative.repository.RenderAssetRepository;
 import com.pompom.creative.repository.RenderQaResultRepository;
@@ -30,6 +31,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 class PublicationServiceTest {
 
   @Mock private PublicationJobRepository publicationJobRepository;
+  @Mock private PublicationAttemptRepository publicationAttemptRepository;
   @Mock private RenderAssetRepository renderAssetRepository;
   @Mock private RenderQaResultRepository qaResultRepository;
   @Mock private AssetLibraryManager assetLibraryManager;
@@ -89,6 +91,7 @@ class PublicationServiceTest {
               job.setId(UUID.randomUUID());
               return job;
             });
+    when(publicationJobRepository.findByIdempotencyKey(any())).thenReturn(Optional.empty());
 
     // When
     PublicationJob job =
@@ -104,6 +107,7 @@ class PublicationServiceTest {
     assertThat(job.getTitle()).isEqualTo(title);
 
     verify(publicationJobRepository, atLeastOnce()).save(any(PublicationJob.class));
+    verify(publicationAttemptRepository).save(any());
   }
 
   @Test

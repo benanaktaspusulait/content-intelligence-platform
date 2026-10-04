@@ -130,5 +130,4 @@ public class InstagramMetricsClient implements PlatformMetricsClient {
   public PlatformType getPlatform() {
     return PlatformType.INSTAGRAM;
   }
-
 }

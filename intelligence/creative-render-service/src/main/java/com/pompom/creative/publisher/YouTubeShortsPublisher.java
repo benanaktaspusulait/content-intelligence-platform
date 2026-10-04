@@ -112,12 +112,10 @@ public class YouTubeShortsPublisher implements PlatformPublisher {
     // Step 2: Upload video file
     String videoId = uploadVideoFile(restClient, uploadSessionUrl, videoFile);
 
-    String videoUrl = "https://www.youtube.com/shorts/" + videoId;
-
     return PublishResponse.builder()
         .success(true)
         .platformVideoId(videoId)
-        .postUrl(videoUrl)
+        .postUrl(null)
         .status("PUBLISHED")
         .message("Successfully uploaded to YouTube Shorts")
         .build();

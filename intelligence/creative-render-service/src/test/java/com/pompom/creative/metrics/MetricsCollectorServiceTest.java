@@ -136,8 +136,7 @@ class MetricsCollectorServiceTest {
         .thenAnswer(invocation -> invocation.getArgument(0));
     when(metricsRepo.save(any(VideoMetrics.class)))
         .thenAnswer(invocation -> invocation.getArgument(0));
-    when(metricsClient.fetchMetrics("video123"))
-        .thenReturn(observedMetrics(12_345L, 321L));
+    when(metricsClient.fetchMetrics("video123")).thenReturn(observedMetrics(12_345L, 321L));
 
     // When
     VideoMetrics metrics = metricsCollectorService.collectMetrics(collectionJob);
@@ -175,8 +174,7 @@ class MetricsCollectorServiceTest {
     ArgumentCaptor<VideoMetrics> metricsCaptor = ArgumentCaptor.forClass(VideoMetrics.class);
     when(metricsRepo.save(metricsCaptor.capture()))
         .thenAnswer(invocation -> invocation.getArgument(0));
-    when(metricsClient.fetchMetrics("video123"))
-        .thenReturn(observedMetrics(20_000L, 500L));
+    when(metricsClient.fetchMetrics("video123")).thenReturn(observedMetrics(20_000L, 500L));
 
     // When
     metricsCollectorService.collectMetrics(collectionJob);

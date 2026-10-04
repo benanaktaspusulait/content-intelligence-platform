@@ -4,8 +4,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.lenient;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -211,8 +211,16 @@ class RenderJobQueueServiceTest {
 
   private ContentPromptSnapshot promptSnapshot() {
     return new ContentPromptSnapshot(
-        "v1", 10L, "Kiko Episode", "REEL", "RENDER_READY", 11L, 3,
-        "a".repeat(120), "{}", "a".repeat(64));
+        "v1",
+        10L,
+        "Kiko Episode",
+        "REEL",
+        "RENDER_READY",
+        11L,
+        3,
+        "a".repeat(120),
+        "{}",
+        "a".repeat(64));
   }
 
   private ValidationEvidenceDto withStatus(ValidationEvidenceDto base, String status) {

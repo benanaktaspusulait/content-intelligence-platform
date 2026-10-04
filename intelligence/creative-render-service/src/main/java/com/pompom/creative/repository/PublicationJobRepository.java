@@ -5,6 +5,7 @@ import com.pompom.creative.domain.PublicationStatus;
 import com.pompom.creative.oauth.PlatformType;
 import java.time.Instant;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,6 +16,8 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface PublicationJobRepository extends JpaRepository<PublicationJob, UUID> {
+
+  Optional<PublicationJob> findByIdempotencyKey(String idempotencyKey);
 
   List<PublicationJob> findByStatus(PublicationStatus status);
 
