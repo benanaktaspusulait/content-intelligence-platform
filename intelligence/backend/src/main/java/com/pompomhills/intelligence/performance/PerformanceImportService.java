@@ -112,14 +112,16 @@ public class PerformanceImportService {
         jdbc.sql(
                 """
                 INSERT INTO import_rows
-                  (import_batch_id,sheet_name,source_row_number,raw_data,matched_video_id,match_status,match_confidence)
-                VALUES (:batch,:sheet,:row,CAST(:raw AS jsonb),:video,:status,:confidence)
+                  (import_batch_id,sheet_name,source_row_number,raw_data,matched_video_id,
+                   matched_variant_id,match_status,match_confidence)
+                VALUES (:batch,:sheet,:row,CAST(:raw AS jsonb),:video,:variant,:status,:confidence)
                 """)
             .param("batch", batchId)
             .param("sheet", row.sheet())
             .param("row", row.rowNumber())
             .param("raw", writeJson(row.values()))
             .param("video", rowMatch.videoId(), Types.OTHER)
+            .param("variant", rowMatch.variantId(), Types.OTHER)
             .param("status", rowMatch.videoId() == null ? "UNRESOLVED" : "EXACT")
             .param("confidence", rowMatch.videoId() == null ? null : 1.0, Types.DOUBLE)
             .update();
@@ -162,7 +164,7 @@ public class PerformanceImportService {
     var rows =
         jdbc.sql(
                 """
-                SELECT id,matched_video_id,raw_data::text
+                SELECT id,matched_video_id,matched_variant_id,raw_data::text
                 FROM import_rows WHERE import_batch_id=:id ORDER BY sheet_name,source_row_number
                 """)
             .param("id", batchId)
@@ -171,6 +173,7 @@ public class PerformanceImportService {
                     new CommitRow(
                         rs.getObject("id", UUID.class),
                         rs.getObject("matched_video_id", UUID.class),
+                        rs.getObject("matched_variant_id", UUID.class),
                         readMap(rs.getString("raw_data"))))
             .list();
     rows.forEach(
@@ -354,6 +357,7 @@ public class PerformanceImportService {
   private RowMatch match(ImportFileParser.ParsedRow row) {
     var normalized = normalize(row.values());
     String explicitId = first(normalized, "videoid", "video_id");
+    UUID resolvedVideoId = null;
     if (explicitId != null) {
       try {
         UUID id = UUID.fromString(explicitId);
@@ -362,19 +366,49 @@ public class PerformanceImportService {
                 .param("id", id)
                 .query(Boolean.class)
                 .single();
-        if (exists) return new RowMatch(id);
+        if (exists) resolvedVideoId = id;
       } catch (IllegalArgumentException ignored) {
         // Invalid identifiers remain unresolved. Fuzzy matching is intentionally forbidden.
       }
     }
-    String filename = first(normalized, "filename", "videofilename", "video_filename");
-    if (filename == null) return new RowMatch(null);
-    List<UUID> ids =
-        jdbc.sql("SELECT id FROM videos WHERE original_filename=:name ORDER BY created_at")
-            .param("name", filename)
-            .query(UUID.class)
-            .list();
-    return ids.size() == 1 ? new RowMatch(ids.getFirst()) : new RowMatch(null);
+    if (resolvedVideoId == null) {
+      String filename = first(normalized, "filename", "videofilename", "video_filename");
+      if (filename != null) {
+        List<UUID> ids =
+            jdbc.sql("SELECT id FROM videos WHERE original_filename=:name ORDER BY created_at")
+                .param("name", filename)
+                .query(UUID.class)
+                .list();
+        if (ids.size() == 1) resolvedVideoId = ids.getFirst();
+      }
+    }
+    if (resolvedVideoId == null) return new RowMatch(null, null);
+    UUID variantId = resolveVariant(normalized, resolvedVideoId);
+    return new RowMatch(resolvedVideoId, variantId);
+  }
+
+  /**
+   * Resolves an explicit variantid/variant_id import column to a real video_variants row scoped
+   * to the already-resolved video - never a filename or fuzzy guess, per the audit's P1-08
+   * requirement. Returns null (not an error) when no variant column is present, the value isn't
+   * a valid UUID, or the UUID doesn't resolve to a variant of THIS video.
+   */
+  private UUID resolveVariant(Map<String, String> normalized, UUID videoId) {
+    String explicitVariantId = first(normalized, "variantid", "variant_id");
+    if (explicitVariantId == null) return null;
+    try {
+      UUID variantId = UUID.fromString(explicitVariantId);
+      boolean belongsToVideo =
+          jdbc.sql(
+                  "SELECT EXISTS(SELECT 1 FROM video_variants WHERE id=:variant AND video_id=:video)")
+              .param("variant", variantId)
+              .param("video", videoId)
+              .query(Boolean.class)
+              .single();
+      return belongsToVideo ? variantId : null;
+    } catch (IllegalArgumentException ignored) {
+      return null;
+    }
   }
 
   private String first(Map<String, String> values, String... keys) {
@@ -398,7 +432,7 @@ public class PerformanceImportService {
         jdbc.sql(
                 """
             INSERT INTO performance_observations
-              (import_row_id,video_id,platform,platform_content_id,publication_timestamp,
+              (import_row_id,video_id,variant_id,platform,platform_content_id,publication_timestamp,
                measurement_timestamp,metric_semantics,views,reach,unique_viewers,
                three_second_views,fifteen_second_views,average_watch_seconds,total_watch_seconds,
                likes,comments,shares,saves,follows,recommendation_percentage,
@@ -406,7 +440,7 @@ public class PerformanceImportService {
                profile_visits,follows_attributed,source,source_version,raw_payload_json,
                data_quality_status)
             VALUES
-              (:row,:video,:platform,:contentId,:published,:measured,:semantics,:views,:reach,
+              (:row,:video,:variant,:platform,:contentId,:published,:measured,:semantics,:views,:reach,
                :uniqueViewers,:threeSecond,:fifteenSecond,:averageWatch,:totalWatch,
                :likes,:comments,:shares,:saves,:follows,:recommendation,
                :followers,:nonfollowers,:paid,:plays,:completion,:skipRate,:profileVisits,
@@ -416,6 +450,7 @@ public class PerformanceImportService {
             """)
             .param("row", row.id())
             .param("video", row.videoId())
+            .param("variant", row.variantId(), Types.OTHER)
             .param("platform", platform)
             .param(
                 "contentId",
@@ -736,9 +771,9 @@ public class PerformanceImportService {
     return value instanceof Number number ? number.longValue() : 0;
   }
 
-  private record RowMatch(UUID videoId) {}
+  private record RowMatch(UUID videoId, UUID variantId) {}
 
-  private record CommitRow(UUID id, UUID videoId, Map<String, String> raw) {}
+  private record CommitRow(UUID id, UUID videoId, UUID variantId, Map<String, String> raw) {}
 
   public record ImportRow(
       UUID id,
