@@ -85,6 +85,42 @@ describe('VideoLibraryPage folder selection', () => {
   });
 });
 
+describe('variant identity grouping', () => {
+  const service = {
+    getMediaDirectories: () => of(folders),
+    getMediaFiles: () =>
+      of([
+        { ...shared, name: 'take1.mp4', relativePath: 'library/Sea Stories/take1.mp4', variantId: 'variant-1' },
+        { ...shared, name: 'weird_name_hd.mp4', relativePath: 'library/Sea Stories/weird_name_hd.mp4', variantId: 'variant-1' },
+      ]),
+    ingestDirectory: () => of({ relativeDirectory: '', discovered: 0, ingested: [], errors: [] }),
+    ingestVideo: () => of({}),
+  };
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [VideoLibraryPage],
+      providers: [provideRouter([]), { provide: CreativeIntelligenceService, useValue: service }],
+    }).compileComponents();
+  });
+
+  it('groups two differently-named files under the same real variant into one row group', () => {
+    const fixture = TestBed.createComponent(VideoLibraryPage);
+    fixture.detectChanges();
+    const search = fixture.nativeElement.querySelector('#folder-search') as HTMLInputElement;
+    search.dispatchEvent(new Event('focus'));
+    fixture.detectChanges();
+    const choice = fixture.nativeElement.querySelector('.folder-option input') as HTMLInputElement;
+    choice.click();
+    fixture.detectChanges();
+
+    const rows = fixture.nativeElement.querySelectorAll('.media-files-table tbody tr');
+    expect(rows.length).toBe(2);
+    const labels = [...rows].map((row: HTMLElement) => row.querySelector('td strong')!.textContent);
+    expect(labels).toEqual(['Original 1', 'HD 2']);
+  });
+});
+
 describe('mergeMediaFiles', () => {
   it('deduplicates by relative path', () => {
     expect(mergeMediaFiles([[seaFile, shared], [stoneFile, shared]])).toHaveLength(3);

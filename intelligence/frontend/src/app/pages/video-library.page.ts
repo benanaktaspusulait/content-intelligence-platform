@@ -49,6 +49,10 @@ export function mediaVariant(filename: string): string {
   return 'Original';
 }
 
+export function variantGroupKey(file: MediaFile, folderPath: string): string {
+  return file.variantId ? `variant:${file.variantId}` : `guess:${folderPath}|${mediaVariant(file.name)}`;
+}
+
 export function resultCountLabel(groupCount: number, fileCount: number): string {
   return `${groupCount} ${groupCount === 1 ? 'group' : 'groups'} · ${fileCount} ${fileCount === 1 ? 'file' : 'files'}`;
 }
@@ -161,11 +165,11 @@ export class VideoLibraryPage {
   protected readonly displayFiles = computed<MediaFileView[]>(() => {
     const totals = new Map<string, number>();
     const positions = new Map<string, number>();
-    for (const file of this.mediaFiles()) { const key = `${this.parentPath(file.relativePath)}|${mediaVariant(file.name)}`; totals.set(key, (totals.get(key) || 0) + 1); }
+    for (const file of this.mediaFiles()) { const key = variantGroupKey(file, this.parentPath(file.relativePath)); totals.set(key, (totals.get(key) || 0) + 1); }
     return this.mediaFiles().map(file => {
       const folderPath = this.parentPath(file.relativePath);
       const variant = mediaVariant(file.name);
-      const key = `${folderPath}|${variant}`;
+      const key = variantGroupKey(file, folderPath);
       const position = (positions.get(key) || 0) + 1;
       positions.set(key, position);
       const suffix = (totals.get(key) || 0) > 1 ? `${variant} ${position}` : variant;
