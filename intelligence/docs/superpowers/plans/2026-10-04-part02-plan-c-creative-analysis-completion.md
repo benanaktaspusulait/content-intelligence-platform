@@ -98,8 +98,14 @@ frontend tests.
   before inserting); add `findActiveByVideoId(UUID videoId): Optional<JobView>` and
   `findLatestByVideoId(UUID videoId): Optional<JobView>` helpers backing the new controller
   endpoint and the idempotent enqueue path.
+- `intelligence/backend/src/main/java/com/pompomhills/intelligence/video/job/AnalysisJobController.java`
+  — **delete** (discovered during Task 3's implementation to be pre-existing, unused dead code —
+  zero Java/frontend/test/script/docs consumers, confirmed by repository-wide search; see Task 4's
+  planning update note for the full decision record). The product's analysis API is consolidated
+  entirely under `VideoController` instead of maintaining two parallel public surfaces.
 - `intelligence/backend/src/main/java/com/pompomhills/intelligence/video/api/VideoController.java`
-  — `analyse()` now calls `AnalysisJobService.enqueue()`, returns `202 Accepted`; new `GET
+  — `analyse()` now calls `AnalysisJobService.enqueue()`, returns `200 OK` when a completed
+  analysis already exists, `202 Accepted` otherwise (new or already-active job); new `GET
   /{id}/analysis/status` endpoint.
 - `intelligence/backend/src/main/java/com/pompomhills/intelligence/video/api/VideoDtos.java` — new
   `AnalysisStatusResponse` record (job view + optional completed-analysis view, see Task 4).
@@ -892,9 +898,24 @@ git commit -m "feat(intelligence): make AnalysisJobService.enqueue idempotent, n
 
 ---
 
-### Task 4: Wire `VideoController`'s analysis endpoint to the job queue
+### Task 4: Delete the unused `AnalysisJobController`, wire `VideoController`'s analysis endpoint to the job queue
+
+**Planning update (post-Task-3, user-approved):** Task 3's implementer discovered
+`AnalysisJobController.java` already exists in this codebase (present since the repository's very
+first commit, `b4ff69d` — missed by this plan's original investigation), exposing
+`POST /api/v1/jobs/video-analysis/{videoId}`, `GET /api/v1/jobs/{id}`, and
+`POST /api/v1/jobs/{id}/retry`, returning raw `JobView`/`EnqueueResult` records directly. A
+repository-wide check confirmed zero consumers: no Java caller outside its own file, no Angular
+caller, no test file, no script/CLI reference, no README/docs mention, no OpenAPI/API-contract
+file reference. Per explicit user decision: **delete this controller** as part of this task (first
+re-confirming the same zero-consumer check yourself, since time may have passed) rather than keep
+two parallel public ways to trigger analysis. `AnalysisJobService` itself is untouched and remains
+the internal durable execution engine — only its now-unused public HTTP wrapper is removed.
+`VideoController` becomes the sole public analysis API boundary, consuming `AnalysisJobService`
+directly, exactly as this task originally planned.
 
 **Files:**
+- Delete: `intelligence/backend/src/main/java/com/pompomhills/intelligence/video/job/AnalysisJobController.java`
 - Modify: `intelligence/backend/src/main/java/com/pompomhills/intelligence/video/api/VideoController.java`
 - Modify: `intelligence/backend/src/main/java/com/pompomhills/intelligence/video/api/VideoDtos.java`
 - Test: `intelligence/backend/src/test/java/com/pompomhills/intelligence/video/api/VideoControllerAnalysisTest.java`
@@ -908,7 +929,20 @@ git commit -m "feat(intelligence): make AnalysisJobService.enqueue idempotent, n
 
 **Context:** `VideoController.analyse(UUID id)` today calls `service.analyse(id)` directly and
 returns `200 OK` with the full `AnalysisResponse` synchronously — this is the blocking call this
-plan removes. Replace it with an enqueue-and-return-202 pattern, and add a status-read endpoint.
+plan removes. Replace it with an idempotent enqueue pattern, and add a status-read endpoint.
+
+**Exact status-code semantics for `POST /{id}/analysis` (binding, user-specified):**
+- A current-version analysis already exists (`hasCompletedAnalysis=true`) → `200 OK` with the
+  existing completed result.
+- No completed analysis yet, but an active (`QUEUED`/`RUNNING`) job already exists for this video
+  → `202 Accepted` with that same existing job's status (not a new job).
+- No completed analysis and no active job → a new job is enqueued → `202 Accepted` with the new
+  job's status.
+
+This is **not** simply `result.created() ? 202 : 200` — that would incorrectly return `200` for
+the "already active, not yet complete" case. The correct mapping is: `200` only when
+`hasCompletedAnalysis` is true; `202` in every other case (both "a job already existed" and "a new
+job was just created").
 
 Add to `VideoDtos.java`:
 
@@ -941,17 +975,26 @@ Replace `VideoController.analyse()`:
   @PostMapping("/{id}/analysis")
   public org.springframework.http.ResponseEntity<VideoDtos.AnalysisStatusResponse> analyse(
       @PathVariable UUID id) {
-    var result = jobService.enqueue(id);
+    jobService.enqueue(id);
     var status = statusFor(id);
-    return result.created()
-        ? org.springframework.http.ResponseEntity.accepted().body(status)
-        : org.springframework.http.ResponseEntity.ok(status);
+    return status.hasCompletedAnalysis()
+        ? org.springframework.http.ResponseEntity.ok(status)
+        : org.springframework.http.ResponseEntity.accepted().body(status);
   }
 
   @GetMapping("/{id}/analysis/status")
   public VideoDtos.AnalysisStatusResponse status(@PathVariable UUID id) {
     return statusFor(id);
   }
+```
+
+(`enqueue(id)`'s own `EnqueueResult` is deliberately not inspected here for the status-code
+decision — `statusFor(id)`, called fresh immediately after, is the single source of truth for
+what response to send, since it already distinguishes "has a completed analysis" from "has an
+active job" from "nothing yet." This also means a request arriving at the exact moment a job
+transitions from `RUNNING` to `COMPLETED` correctly reports `200`, not a stale `202` — reading
+state fresh after enqueueing is deliberately more honest than trusting `enqueue()`'s own return
+value for the HTTP status.)
 
   private VideoDtos.AnalysisStatusResponse statusFor(UUID id) {
     if (service.hasCurrentAnalysis(id)) {
@@ -1000,9 +1043,8 @@ import static org.mockito.Mockito.when;
 
 import com.pompomhills.intelligence.video.VideoEntity;
 import com.pompomhills.intelligence.video.VideoRepository;
+import com.pompomhills.intelligence.video.job.AnalysisJobService;
 import com.pompomhills.intelligence.video.ml.MlVideoClient;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -1010,12 +1052,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
@@ -1036,12 +1077,17 @@ class VideoControllerAnalysisTest {
 
   @Autowired private TestRestTemplate rest;
   @Autowired private VideoRepository videoRepository;
-  @MockBean private MlVideoClient ml;
+  @Autowired private AnalysisJobService analysisJobService;
+  @MockitoBean private MlVideoClient ml;
+
+  @BeforeEach
+  void stubDefaultResponse() {
+    when(ml.analyse(any())).thenReturn(stubResponse());
+  }
 
   @Test
   void firstAnalysisRequestReturns202WithAQueuedJob() {
     var video = freshUnanalysedVideo();
-    when(ml.analyse(any())).thenReturn(stubResponse());
 
     var response =
         rest.postForEntity(
@@ -1063,6 +1109,44 @@ class VideoControllerAnalysisTest {
     assertThat(status.jobState()).isEqualTo("NOT_STARTED");
   }
 
+  @Test
+  void duplicateAnalysisRequestWhileActiveReturns202WithTheSameJob() {
+    var video = freshUnanalysedVideo();
+    var first =
+        rest.postForEntity(
+            "/api/v1/videos/" + video.getId() + "/analysis", null,
+            VideoDtos.AnalysisStatusResponse.class);
+
+    var second =
+        rest.postForEntity(
+            "/api/v1/videos/" + video.getId() + "/analysis", null,
+            VideoDtos.AnalysisStatusResponse.class);
+
+    assertThat(second.getStatusCode()).isEqualTo(HttpStatus.ACCEPTED);
+    assertThat(second.getBody().jobId()).isEqualTo(first.getBody().jobId());
+    assertThat(second.getBody().hasCompletedAnalysis()).isFalse();
+  }
+
+  @Test
+  void analysisRequestAfterCompletionReturns200WithTheExistingResult() {
+    var video = freshUnanalysedVideo();
+    rest.postForEntity(
+        "/api/v1/videos/" + video.getId() + "/analysis", null,
+        VideoDtos.AnalysisStatusResponse.class);
+    // Drive the job to completion the same way the real worker would, by invoking the service
+    // directly rather than waiting on the @Scheduled poller's real-world 2s delay in a test.
+    analysisJobService.processNext();
+
+    var response =
+        rest.postForEntity(
+            "/api/v1/videos/" + video.getId() + "/analysis", null,
+            VideoDtos.AnalysisStatusResponse.class);
+
+    assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+    assertThat(response.getBody().hasCompletedAnalysis()).isTrue();
+    assertThat(response.getBody().classification()).isEqualTo("GOOD");
+  }
+
   private VideoEntity freshUnanalysedVideo() {
     return videoRepository.save(
         new VideoEntity(
@@ -1082,36 +1166,80 @@ class VideoControllerAnalysisTest {
 
 (Verify `VideoEntity`'s real constructor arity exactly as Task 3 flagged — do not guess.)
 
+**Test isolation note, carried forward from Task 3's own findings:** this test class shares one
+Testcontainers Postgres instance and Spring context across all its methods, and
+`analysisJobService.processNext()` claims the globally-oldest `QUEUED` row with no per-video
+scoping — Task 3's implementer traced two concrete problems from this (cross-test job stealing,
+and the `@Scheduled` poller firing once immediately at context startup regardless of configured
+delay) and fixed them in `AnalysisJobServiceIdempotencyTest.java` via a `TRUNCATE` in
+`@BeforeEach` plus cancelling scheduled tasks through the autowired
+`ScheduledAnnotationBeanPostProcessor`. Read that test file's exact fix before writing this one,
+and apply the same two fixes here if (as expected) this test class hits the identical problem —
+do not rediscover this from scratch or guess at a different workaround.
+
 - [ ] **Step 2: Run tests to verify they fail**
 
 Run: `cd intelligence/backend && mvn test -Dtest=VideoControllerAnalysisTest`
 Expected: FAIL — `AnalysisStatusResponse` doesn't exist, controller still returns `200`+old shape.
 
-- [ ] **Step 3: Implement** (per the snippets above — fix the `NOT_STARTED` branch's argument count
-  carefully; the record has 14 fields: `videoId, hasCompletedAnalysis, jobId, jobState, attempts,
-  maxAttempts, errorMessage, analysisId, classification, actionDnaScore, confidence, reason,
-  storyboardPath, analysisVersion`)
+- [ ] **Step 3: Re-confirm `AnalysisJobController` has zero consumers, then delete it**
 
-- [ ] **Step 4: Run tests to verify they pass**
+Before deleting anything, re-run the same zero-consumer check from this task's planning note
+yourself (do not skip this just because it was already checked once — confirm the result still
+holds at the moment you act):
+
+```bash
+cd /Users/benanaktas/project/video/content-intelligence-platform
+grep -rln "AnalysisJobController" --include="*.java" . | grep -v /target/
+grep -rln "api/v1/jobs" --include="*.java" --include="*.ts" --include="*.md" --include="*.yml" \
+  --include="*.yaml" --include="*.json" --include="*.sh" --include="*.http" . \
+  | grep -vE "/target/|/node_modules/|\.git/"
+find . -iname "*AnalysisJobController*" -path "*/test/*"
+```
+
+Expected: the only match for the first command is the controller's own file; the second command
+returns nothing beyond the controller's own `@RequestMapping` annotation line (grep for file
+matches, not line matches, to confirm no second file references the path string either); the third
+returns nothing (no test file exists for it). If any of these turns up a real consumer that didn't
+exist when this plan was written, STOP and escalate rather than deleting — do not proceed on stale
+information.
+
+If the check is clean (expected), delete the file:
+
+```bash
+git rm intelligence/backend/src/main/java/com/pompomhills/intelligence/video/job/AnalysisJobController.java
+```
+
+- [ ] **Step 4: Implement the `VideoController`/`VideoDtos` changes** (per the snippets above — fix
+  the `NOT_STARTED` branch's argument count carefully; the record has 14 fields: `videoId,
+  hasCompletedAnalysis, jobId, jobState, attempts, maxAttempts, errorMessage, analysisId,
+  classification, actionDnaScore, confidence, reason, storyboardPath, analysisVersion`)
+
+- [ ] **Step 5: Run tests to verify they pass**
 
 Run: `cd intelligence/backend && mvn test -Dtest=VideoControllerAnalysisTest`
-Expected: PASS.
+Expected: PASS, all 4 tests (first-request-202, status-reflects-state, duplicate-while-active-202,
+after-completion-200).
 
-- [ ] **Step 5: Run full backend suite for regressions**
+- [ ] **Step 6: Run full backend suite for regressions**
 
 Run: `cd intelligence/backend && mvn test`
-Expected: all pass. The old `AnalysisResponse`-returning `200 OK` contract is now gone from this
-endpoint — search for any existing test or code calling `POST /{id}/analysis` and asserting the old
-response shape; fix any such caller directly.
+Expected: all pass. The old `AnalysisResponse`-returning `200 OK` contract is now gone from
+`VideoController.analyse()` — search for any existing test or code calling `POST /{id}/analysis`
+and asserting the old response shape; fix any such caller directly. Also confirm the build still
+compiles cleanly after deleting `AnalysisJobController.java` — nothing should have referenced it
+(per Step 3's check), but this is the actual proof, not just the grep.
 
-- [ ] **Step 6: Commit**
+- [ ] **Step 7: Commit**
 
 ```bash
 cd intelligence/backend
 git add src/main/java/com/pompomhills/intelligence/video/api/VideoController.java \
         src/main/java/com/pompomhills/intelligence/video/api/VideoDtos.java \
         src/test/java/com/pompomhills/intelligence/video/api/VideoControllerAnalysisTest.java
-git commit -m "feat(intelligence): make the analysis endpoint enqueue a job and expose status, not block"
+git status --short  # confirm AnalysisJobController.java's deletion (staged by Step 3's `git rm`)
+                     # is already present in the index alongside these files before committing
+git commit -m "feat(intelligence): consolidate analysis API under VideoController, remove unused AnalysisJobController"
 ```
 
 ---
