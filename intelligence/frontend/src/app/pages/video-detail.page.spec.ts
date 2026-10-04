@@ -7,7 +7,7 @@ import { VideoDetailPage } from './video-detail.page';
 const mediaFile: MediaFile = {
   name: 'giant-sock-hd.mp4', relativePath: 'library/Giant Sock/giant-sock-hd.mp4',
   sizeBytes: 1200, modifiedAt: '2026-09-30T10:00:00Z', ingested: true,
-  videoId: 'video-1', status: 'ANALYSED',
+  videoId: 'video-1', status: 'ANALYSED', variantId: null,
 };
 
 const video: VideoApiRecord = {

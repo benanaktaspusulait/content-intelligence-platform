@@ -10,7 +10,7 @@ const folders: MediaDirectory[] = [
   { name: 'Garden Games', relativePath: 'library/Garden Games', videoCount: 1 },
 ];
 
-const shared: MediaFile = { name: 'shared.mp4', relativePath: 'library/shared.mp4', sizeBytes: 100, modifiedAt: null, ingested: false, videoId: null, status: null };
+const shared: MediaFile = { name: 'shared.mp4', relativePath: 'library/shared.mp4', sizeBytes: 100, modifiedAt: null, ingested: false, videoId: null, status: null, variantId: null };
 const seaFile: MediaFile = { ...shared, name: 'sea.mp4', relativePath: 'library/Sea Stories/sea.mp4' };
 const stoneFile: MediaFile = { ...shared, name: 'stone.mp4', relativePath: 'library/Stone Music/stone.mp4' };
 

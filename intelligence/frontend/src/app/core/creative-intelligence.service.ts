@@ -62,6 +62,26 @@ export interface MediaFile {
   ingested: boolean;
   videoId: string | null;
   status: string | null;
+  variantId: string | null;
+}
+
+export type VariantType = 'ORIGINAL' | 'HOOK_COLD_OPEN' | 'TRIMMED' | 'NO_CTA' | 'LOOP_CUT' | 'CUSTOM_EDIT';
+
+export interface VideoVariant {
+  id: string;
+  videoId: string;
+  parentVariantId: string | null;
+  variantType: string;
+  generatedPath: string;
+  editOperations: unknown[];
+  createdAt: string;
+}
+
+export interface CreateVariantRequest {
+  parentVariantId: string | null;
+  variantType: VariantType;
+  generatedPath: string;
+  editOperations: unknown[];
 }
 
 interface PredictionApiRecord {
@@ -305,6 +325,14 @@ export class CreativeIntelligenceService {
 
   ingestVideo(relativePath: string): Observable<VideoApiRecord> {
     return this.http.post<VideoApiRecord>(`${this.baseUrl}/videos/ingest`, { relativePath, seriesId: null });
+  }
+
+  listVariants(videoId: string): Observable<VideoVariant[]> {
+    return this.http.get<VideoVariant[]>(`${this.baseUrl}/videos/${videoId}/variants`);
+  }
+
+  createVariant(videoId: string, request: CreateVariantRequest): Observable<VideoVariant> {
+    return this.http.post<VideoVariant>(`${this.baseUrl}/videos/${videoId}/variants`, request);
   }
 
   getReachFurther(id: string, platform = 'facebook'): Observable<ReachFurtherSummary> {
