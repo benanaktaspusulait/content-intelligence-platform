@@ -17,7 +17,7 @@ public class AnalysisJobController {
   }
 
   @PostMapping("/video-analysis/{videoId}")
-  AnalysisJobService.JobView enqueue(@PathVariable UUID videoId) {
+  AnalysisJobService.EnqueueResult enqueue(@PathVariable UUID videoId) {
     return service.enqueue(videoId);
   }
 

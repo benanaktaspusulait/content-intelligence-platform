@@ -204,6 +204,11 @@ public class VideoService {
     return files.stream().map(path -> mapMediaFile(root, path, resolvedByPath)).toList();
   }
 
+  @Transactional(readOnly = true)
+  public boolean hasCurrentAnalysis(UUID videoId) {
+    return analyses.existsByVideoId(videoId);
+  }
+
   @Transactional
   public AnalysisResponse analyse(UUID videoId) {
     var video =

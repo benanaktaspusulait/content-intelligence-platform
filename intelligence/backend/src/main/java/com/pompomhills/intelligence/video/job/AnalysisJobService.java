@@ -3,7 +3,9 @@ package com.pompomhills.intelligence.video.job;
 import com.pompomhills.intelligence.video.VideoService;
 import java.time.OffsetDateTime;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -22,24 +24,71 @@ public class AnalysisJobService {
     this.json = json;
   }
 
-  public JobView enqueue(UUID videoId) {
+  public EnqueueResult enqueue(UUID videoId) {
     boolean exists =
         jdbc.sql("SELECT EXISTS(SELECT 1 FROM videos WHERE id=:id)")
             .param("id", videoId)
             .query(Boolean.class)
             .single();
     if (!exists) throw new IllegalArgumentException("Video not found: " + videoId);
+
+    if (videos.hasCurrentAnalysis(videoId)) {
+      return new EnqueueResult(false, null);
+    }
+
+    var active = findActiveByVideoId(videoId);
+    if (active.isPresent()) {
+      return new EnqueueResult(false, active.get());
+    }
+
     UUID id = UUID.randomUUID();
-    jdbc.sql(
+    try {
+      jdbc.sql(
+              """
+              INSERT INTO analysis_jobs (id,video_id,job_type,state,request_payload)
+              VALUES (:id,:video,'VIDEO_ANALYSIS','QUEUED',CAST(:payload AS jsonb))
+              """)
+          .param("id", id)
+          .param("video", videoId)
+          .param("payload", "{\"contractVersion\":\"v1\"}")
+          .update();
+    } catch (DataIntegrityViolationException raceLoss) {
+      // Another concurrent request won the V34 unique-index race and already created the active
+      // job; fetch and return that one instead of failing the request.
+      return new EnqueueResult(
+          false,
+          findActiveByVideoId(videoId)
+              .orElseThrow(
+                  () ->
+                      new IllegalStateException(
+                          "Enqueue race lost but no active job found for video " + videoId,
+                          raceLoss)));
+    }
+    return new EnqueueResult(true, get(id));
+  }
+
+  public Optional<JobView> findActiveByVideoId(UUID videoId) {
+    return jdbc.sql(
             """
-            INSERT INTO analysis_jobs (id,video_id,job_type,state,request_payload)
-            VALUES (:id,:video,'VIDEO_ANALYSIS','QUEUED',CAST(:payload AS jsonb))
+            SELECT id,video_id,job_type,state,attempts,max_attempts,error_message,
+                   created_at,started_at,completed_at
+            FROM analysis_jobs WHERE video_id=:video AND state IN ('QUEUED','RUNNING')
             """)
-        .param("id", id)
         .param("video", videoId)
-        .param("payload", "{\"contractVersion\":\"v1\"}")
-        .update();
-    return get(id);
+        .query((rs, ignored) -> map(rs))
+        .optional();
+  }
+
+  public Optional<JobView> findLatestByVideoId(UUID videoId) {
+    return jdbc.sql(
+            """
+            SELECT id,video_id,job_type,state,attempts,max_attempts,error_message,
+                   created_at,started_at,completed_at
+            FROM analysis_jobs WHERE video_id=:video ORDER BY created_at DESC LIMIT 1
+            """)
+        .param("video", videoId)
+        .query((rs, ignored) -> map(rs))
+        .optional();
   }
 
   public JobView get(UUID id) {
@@ -150,6 +199,8 @@ public class AnalysisJobService {
   }
 
   private record ClaimedJob(UUID id, UUID videoId) {}
+
+  public record EnqueueResult(boolean created, JobView job) {}
 
   public record JobView(
       UUID id,
