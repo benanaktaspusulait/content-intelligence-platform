@@ -1,4 +1,4 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, OnDestroy, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { interval } from 'rxjs';
@@ -55,6 +55,28 @@ interface Page<T> {
   number: number;
 }
 
+interface RenderAsset {
+  id: string;
+  renderJobId: string;
+  contentId: number;
+  assetType: string;
+  relativePath: string;
+  fileSizeBytes: number;
+  durationMs?: number;
+  width: number;
+  height: number;
+  frameRate?: number;
+  codec?: string;
+  downloadUrl?: string;
+  downloadedAt: string;
+  current: boolean;
+  assetVersion: number;
+  sha256?: string;
+  mediaVerified: boolean;
+  mock: boolean;
+  quarantined: boolean;
+}
+
 @Component({
   selector: 'app-render-dashboard',
   standalone: true,
@@ -66,6 +88,7 @@ interface Page<T> {
           <div class="title-section">
             <h1>Render Pipeline Dashboard</h1>
             <p class="subtitle">Monitor render jobs, QA results, and production status</p>
+            <span class="live-indicator">Live stream: {{ liveState() }}</span>
           </div>
           <div class="stats-section">
             <div class="stat-card">
@@ -203,6 +226,7 @@ interface Page<T> {
                         <span>#{{ attempt.attemptNumber }}</span>
                         <span>{{ attempt.stage }}</span>
                         @if (attempt.errorCode) { <span>{{ attempt.errorCode }}</span> }
+                        @if (attempt.assetId) { <button type="button" (click)="loadAsset(attempt.assetId)">Asset detail</button> }
                       </span>
                     }
                   </div>
@@ -222,6 +246,9 @@ interface Page<T> {
           }
         </div>
       </div>
+      @if (assetLoading()) { <section class="section-band asset-detail"><span class="spinner"></span><strong>Loading render asset</strong></section> }
+      @else if (assetError()) { <section class="section-band asset-detail"><strong>Asset detail unavailable</strong><p>{{ assetError() }}</p></section> }
+      @else if (asset(); as item) { <section class="section-band asset-detail"><div class="section-heading"><div><span class="eyebrow">DURABLE ASSET</span><h2>{{ item.assetType }} · version {{ item.assetVersion }}</h2></div><span class="status-badge">{{ item.mediaVerified ? 'MEDIA VERIFIED' : 'NOT VERIFIED' }}</span></div><dl class="compact-facts"><div><dt>Path</dt><dd><code>{{ item.relativePath }}</code></dd></div><div><dt>Dimensions</dt><dd>{{ item.width }} × {{ item.height }}</dd></div><div><dt>Codec</dt><dd>{{ item.codec || '—' }}</dd></div><div><dt>SHA-256</dt><dd><code>{{ item.sha256 || '—' }}</code></dd></div><div><dt>Quarantine</dt><dd>{{ item.quarantined ? 'QUARANTINED' : 'Clear' }}</dd></div></dl></section> }
     </div>
   `,
   styles: [`
@@ -602,7 +629,7 @@ interface Page<T> {
     }
   `]
 })
-export class RenderDashboardPage implements OnInit {
+export class RenderDashboardPage implements OnInit, OnDestroy {
   jobs = signal<RenderJob[]>([]);
   stats = signal({ queued: 0, generating: 0, complete: 0, abandoned: 0 });
   loading = signal(true);
@@ -610,12 +637,27 @@ export class RenderDashboardPage implements OnInit {
   pageNumber = signal(0);
   totalPages = signal(0);
   totalElements = signal(0);
+  liveState = signal('CONNECTING');
+  liveUpdate = signal('');
+  asset = signal<RenderAsset | null>(null);
+  assetLoading = signal(false);
+  assetError = signal('');
 
   private readonly apiUrl = '/api/v1/render-jobs';
+  private notificationStream: EventSource | null = null;
 
   constructor(private http: HttpClient) {}
 
+  loadAsset(id: string) {
+    this.assetLoading.set(true); this.assetError.set(''); this.asset.set(null);
+    this.http.get<RenderAsset>(`/api/v1/render-assets/${id}`).subscribe({
+      next: asset => { this.asset.set(asset); this.assetLoading.set(false); },
+      error: err => { this.assetError.set(err.error?.detail || err.error?.message || 'The render asset could not be read.'); this.assetLoading.set(false); },
+    });
+  }
+
   ngOnInit() {
+    this.connectLiveNotifications();
     // Poll every 5 seconds
     interval(5000)
       .pipe(
@@ -635,6 +677,18 @@ export class RenderDashboardPage implements OnInit {
           this.loading.set(false);
         }
       });
+  }
+
+  ngOnDestroy() {
+    this.notificationStream?.close();
+  }
+
+  private connectLiveNotifications(): void {
+    if (typeof EventSource === 'undefined') { this.liveState.set('UNAVAILABLE'); return; }
+    this.notificationStream = new EventSource('/api/v1/sse/notifications');
+    this.notificationStream.onopen = () => this.liveState.set('CONNECTED');
+    this.notificationStream.onmessage = () => { this.liveState.set('CONNECTED'); this.liveUpdate.set(new Date().toLocaleTimeString()); this.loadJobs(this.pageNumber()); };
+    this.notificationStream.onerror = () => this.liveState.set('RECONNECTING');
   }
 
   loadJobs(page = this.pageNumber()) {
