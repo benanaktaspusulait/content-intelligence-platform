@@ -34,7 +34,8 @@ public class AnalysisJobService {
 
   public EnqueueResult enqueue(UUID videoId, boolean force, String analysisVersion) {
     if (!VideoService.CURRENT_ANALYSIS_VERSION.equals(analysisVersion)
-        && !VideoService.V4_ANALYSIS_VERSION.equals(analysisVersion)) {
+        && !VideoService.V4_ANALYSIS_VERSION.equals(analysisVersion)
+        && !VideoService.V5_ANALYSIS_VERSION.equals(analysisVersion)) {
       throw new IllegalArgumentException("Unsupported video analysis version: " + analysisVersion);
     }
     boolean exists =

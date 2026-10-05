@@ -7,6 +7,8 @@ from app.video import (
     _v4_recurrence,
     _v4_target_times,
     _v4_visual_novelty,
+    _v5_action_novelty,
+    _v5_loop,
 )
 
 
@@ -80,3 +82,24 @@ def test_v4_intervals_keep_pre_clamp_saturation_diagnostics() -> None:
     assert intervals[0]["preClampNormalizedMotion"] >= 1.0
     assert intervals[0]["wasClipped"] is True
     assert intervals[0]["finalMotion"] == 1.0
+
+
+def test_v5_action_novelty_keeps_observed_visual_evidence_without_semantic_claim() -> None:
+    profile = {"segments": [
+        {"relativeToPrevious": 0.0, "motionVariability": 0.02},
+        {"relativeToPrevious": 0.55, "motionVariability": 0.20},
+        {"relativeToPrevious": 0.40, "motionVariability": 0.03},
+    ]}
+
+    result = _v5_action_novelty(profile, {"averageNovelty": 0.30}, {"detected": False})
+
+    assert result["plannedStrategyNovelty"]["status"] == "NOT_EVALUATED"
+    assert result["observedVisualBeatNovelty"]["level"] in {"MODERATE", "STRONG"}
+    assert result["observedSemanticActionNovelty"]["status"] == "NOT_EVALUATED"
+
+
+def test_v5_loop_does_not_turn_visual_similarity_into_semantic_continuity() -> None:
+    result = _v5_loop(0.80, {"detected": False})
+
+    assert result["visualEvidence"] == "MODERATE"
+    assert result["semanticContinuityStatus"] == "NOT_EVALUATED"

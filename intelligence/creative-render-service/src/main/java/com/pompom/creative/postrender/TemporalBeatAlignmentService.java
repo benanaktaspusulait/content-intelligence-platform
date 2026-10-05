@@ -23,11 +23,15 @@ public class TemporalBeatAlignmentService {
     result.put("unmappedActivityDrops", unmapped);
     result.put("alignmentStatus", profile.isEmpty() ? "UNKNOWN" : beats.isEmpty() ? "NO_PLAN_BEATS" : "AVAILABLE");
     if (contract == null || contract.isEmpty()) {
+      Map<String, Object> observed = observedWithoutPlan(profile);
       result.putAll(Map.of(
           "planAvailability", Map.of("status", "PLAN_NOT_AVAILABLE", "reason", "No immutable production contract is linked to this render."),
           "plannedActionNovelty", Map.of("status", "NOT_EVALUATED", "reason", "No validated creative plan is linked to this asset."),
-          "observedVisualBeatNovelty", Map.of("status", "UNKNOWN", "reason", "Observed visual beat novelty requires planned beat windows."),
-          "actionBeatNovelty", Map.of("status", "PLAN_NOT_AVAILABLE", "reason", "No validated creative plan is linked to this asset."),
+          "observedVisualBeatNovelty", observed,
+          "actionBeatNovelty", Map.of("status", observed.get("status"), "planned", "NOT_EVALUATED",
+              "observedVisually", observed.get("status"), "semanticActionStatus", "NOT_EVALUATED",
+              "semanticActionReason", "No semantic action-recognition provider is configured.",
+              "reason", "Observed visual beat novelty is available without a plan; semantic and planned novelty remain unevaluated."),
           "planRenderFidelity", unavailableFidelity("PLAN_NOT_AVAILABLE", "No validated creative plan is linked to this asset, so plan/render fidelity cannot be evaluated.")));
     } else {
       result.putAll(actionEvidence(beats, profile));
@@ -70,6 +74,26 @@ public class TemporalBeatAlignmentService {
     result.put("planRenderFidelity", fidelity);
     return result;
     }
+
+  private Map<String, Object> observedWithoutPlan(Map<String, Object> profile) {
+    List<Map<String, Object>> segments = maps(profile.get("segments"));
+    if (segments.size() < 2) {
+      return Map.of("status", "UNKNOWN", "reason", "At least two sampled temporal segments are required for observed visual beat novelty.");
+    }
+    List<Map<String, Object>> transitions = new ArrayList<>();
+    for (int index = 1; index < segments.size(); index++) {
+      Map<String, Object> before = segments.get(index - 1);
+      Map<String, Object> after = segments.get(index);
+      double change = Math.abs(number(after.get("averageMotion")) - number(before.get("averageMotion")))
+          + Math.abs(number(after.get("motionVariability")) - number(before.get("motionVariability")));
+      transitions.add(Map.of("fromSegment", index - 1, "toSegment", index, "changeMagnitude", round(change),
+          "status", change >= 0.22 ? "DISTINCT" : change >= 0.10 ? "MODERATE" : "SIMILAR"));
+    }
+    long distinct = transitions.stream().filter(item -> "DISTINCT".equals(item.get("status"))).count();
+    String status = distinct >= 2 ? "STRONG" : distinct == 1 ? "MODERATE" : "WEAK";
+    return Map.of("status", status, "transitions", transitions,
+        "reason", "Observed visual beat novelty uses sampled motion transitions only; it does not identify semantic actions or prove a creative plan.");
+  }
 
   private Map<String, Object> observedVisualBeatNovelty(List<Map<String, Object>> beats, Map<String, Object> profile) {
     List<Map<String, Object>> signatures = observedSignatures(beats, profile);

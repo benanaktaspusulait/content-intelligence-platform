@@ -7,7 +7,7 @@ from pydantic import BaseModel, Field
 class VideoAnalysisRequest(BaseModel):
     contract_version: Literal["v1"] = Field(alias="contractVersion")
     relative_path: str = Field(alias="relativePath")
-    analysis_version: str = Field("sampled-visual-motion-v4", alias="analysisVersion")
+    analysis_version: str = Field("sampled-visual-motion-v5", alias="analysisVersion")
 
 
 class VideoMetadata(BaseModel):

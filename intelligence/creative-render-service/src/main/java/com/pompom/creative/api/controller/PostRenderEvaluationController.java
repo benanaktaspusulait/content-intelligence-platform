@@ -50,8 +50,23 @@ public class PostRenderEvaluationController {
   }
 
   private AssessmentView assessment(PostRenderAssessmentEntity value) {
-    return new AssessmentView(value.getGrade(), value.getLabel(), value.getVerdict(),
+    PostRenderAssessmentSnapshot snapshot = snapshot(value);
+    return new AssessmentView(value.getGrade(), snapshot.decision(), snapshot.risk(), snapshot.recommendedAction(), value.getLabel(), value.getVerdict(),
         value.getEvidenceCoveragePercent(), value.getAssessmentVersion(), parse(value.getSnapshot()));
+  }
+
+  private PostRenderAssessmentSnapshot snapshot(PostRenderAssessmentEntity value) {
+    Object parsed = parse(value.getSnapshot());
+    if (parsed instanceof Map<?, ?> map) {
+      return new PostRenderAssessmentSnapshot(stringValue(map, "decision", "REVIEW"),
+          stringValue(map, "risk", "UNKNOWN"), stringValue(map, "recommendedAction", "HUMAN_REVIEW"));
+    }
+    return new PostRenderAssessmentSnapshot("REVIEW", "UNKNOWN", "HUMAN_REVIEW");
+  }
+
+  private String stringValue(Map<?, ?> map, String key, String fallback) {
+    Object value = map.get(key);
+    return value == null ? fallback : String.valueOf(value);
   }
 
   private Object parse(String value) {
@@ -65,8 +80,10 @@ public class PostRenderEvaluationController {
       AssessmentView assessment,
       List<RuleView> ruleResults) {}
 
-  public record AssessmentView(String grade, String label, String verdict, int evidenceCoveragePercent,
+  public record AssessmentView(String grade, String decision, String risk, String recommendedAction, String label, String verdict, int evidenceCoveragePercent,
       String assessmentVersion, Object snapshot) {}
+
+  private record PostRenderAssessmentSnapshot(String decision, String risk, String recommendedAction) {}
 
   public record RuleView(String ruleId, String ruleVersion, String rulesetVersion, String stage,
       String family, String severity, String outcome, String message, Object actualValue,

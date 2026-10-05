@@ -53,4 +53,63 @@ public record QualityReportDto(
     List<String> evidenceMissing,
     List<ScoreBreakdownDto> scoreBreakdowns,
     Map<String, Object> familyRadar,
-    QualityProvenanceDto provenance) {}
+    QualityProvenanceDto provenance,
+    Map<String, Object> preRenderAssessment,
+    Map<String, Object> videoPlanIr) {
+
+  /**
+   * Backward-compatible constructor for callers that only know the original report shape.
+   * Older service/tests do not provide prompt-intelligence fields yet.
+   */
+  public QualityReportDto(
+      double overallScore,
+      String status,
+      String rulesetVersion,
+      int blockerCount,
+      int criticalCount,
+      int warningCount,
+      Map<String, Double> familyScores,
+      List<RuleEvaluationDto> failedRules,
+      List<RuleEvaluationDto> unknownRules,
+      List<RuleEvaluationDto> notApplicableRules,
+      List<RuleEvaluationDto> serviceErrors,
+      List<PriorityFixDto> priorityFixes,
+      ScoreCardDto scoreCard,
+      TimelineDataDto timelineData,
+      double parserConfidence,
+      List<String> parserWarnings,
+      List<String> parserAssumptions,
+      List<String> topStrengths,
+      List<String> topWeaknesses,
+      List<String> evidenceMissing,
+      List<ScoreBreakdownDto> scoreBreakdowns,
+      Map<String, Object> familyRadar,
+      QualityProvenanceDto provenance) {
+    this(
+        overallScore,
+        status,
+        rulesetVersion,
+        blockerCount,
+        criticalCount,
+        warningCount,
+        familyScores,
+        failedRules,
+        unknownRules,
+        notApplicableRules,
+        serviceErrors,
+        priorityFixes,
+        scoreCard,
+        timelineData,
+        parserConfidence,
+        parserWarnings,
+        parserAssumptions,
+        topStrengths,
+        topWeaknesses,
+        evidenceMissing,
+        scoreBreakdowns,
+        familyRadar,
+        provenance,
+        Map.of(),
+        Map.of());
+  }
+}

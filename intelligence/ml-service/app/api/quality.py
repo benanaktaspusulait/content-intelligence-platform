@@ -9,6 +9,7 @@ from fastapi import APIRouter, HTTPException, status
 from pydantic import BaseModel, Field
 
 from ..autofix.iteration_loop import AutoFixIterationLoop
+from ..assessment.pre_render_assessment import build_pre_render_assessment
 from ..config import settings
 from ..llm.provider import get_provider_identity
 from ..parser.prompt_parser import parse_prompt
@@ -131,6 +132,30 @@ class TimelineDataResponse(BaseModel):
     state_segments: list[StateSegmentResponse]
 
 
+class PreRenderDimensionResponse(BaseModel):
+    key: str
+    title: str
+    status: str
+    summary: str
+    observed: str
+    recommendation: str
+    evidence_status: str
+
+
+class PreRenderAssessmentResponse(BaseModel):
+    name: str
+    grade: str
+    readiness: str
+    assessment_coverage_percent: int
+    verdict: str
+    strengths: list[str]
+    concerns: list[str]
+    recommended_changes: list[str]
+    dimensions: list[PreRenderDimensionResponse]
+    stable_intent: list[str]
+    provenance: dict[str, Any]
+
+
 class QualityProvenanceResponse(BaseModel):
     parser_version: str
     rule_engine_version: str
@@ -183,6 +208,8 @@ class QualityReportResponse(BaseModel):
     score_breakdowns: list[ScoreBreakdownResponse]
     family_radar: dict[str, Any]
     provenance: QualityProvenanceResponse
+    pre_render_assessment: PreRenderAssessmentResponse
+    video_plan_ir: dict[str, Any]
 
 
 class RegressionIssueResponse(BaseModel):
@@ -320,7 +347,7 @@ async def validate_prompt(request: ValidateRequest) -> QualityReportResponse:
     enhanced = scorer.create_enhanced_report(report, ir, parse_result.metadata)
 
     # Convert to response model
-    return convert_quality_report(enhanced, ruleset_version, request.evaluation_stage)
+    return convert_quality_report(enhanced, ruleset_version, request.evaluation_stage, ir)
 
 
 @router.post("/compare-versions", response_model=RegressionReportResponse)
@@ -521,7 +548,8 @@ def _as_optional_float(value: Any) -> float | None:
 
 
 def convert_quality_report(
-    enhanced: EnhancedQualityReport, ruleset_version: str, evaluation_stage: str = "PRE_RENDER"
+    enhanced: EnhancedQualityReport, ruleset_version: str, evaluation_stage: str = "PRE_RENDER",
+    video_plan_ir: dict[str, Any] | None = None,
 ) -> QualityReportResponse:
     """Convert an :class:`EnhancedQualityReport` to the API response model.
 
@@ -595,6 +623,8 @@ def convert_quality_report(
     )
 
     semantic_provider, semantic_model_version = get_provider_identity()
+    plan_ir = video_plan_ir or {}
+    assessment = build_pre_render_assessment(plan_ir, enhanced.parser_metadata, report, ruleset_version)
 
     return QualityReportResponse(
         overall_score=report.overall_score,
@@ -641,6 +671,8 @@ def convert_quality_report(
             producibility_validator_version=None,
             evaluation_stage=evaluation_stage,
         ),
+        pre_render_assessment=PreRenderAssessmentResponse(**assessment),
+        video_plan_ir=plan_ir,
     )
 
 

@@ -79,6 +79,9 @@ interface PostRenderEvaluation {
   humanDecision?: string;
   assessment?: {
     grade: string;
+    decision: string;
+    risk: string;
+    recommendedAction: string;
     label: string;
     verdict: string;
     evidenceCoveragePercent: number;
@@ -250,8 +253,8 @@ interface RenderAsset {
                           @if (postRenderDetails()?.assessment; as assessment) {
                             <section class="post-render-assessment">
                               <div class="assessment-heading">
-                                <div><span class="metric-label">Post-render assessment</span><strong>{{ assessment.label }}</strong></div>
-                                <span class="assessment-grade grade-{{ assessment.grade.toLowerCase() }}">{{ assessment.grade }}</span>
+                                <div><span class="metric-label">Post-render assessment</span><strong>{{ assessment.label }}</strong><small>{{ assessment.decision }} · risk {{ assessment.risk }} · {{ assessment.recommendedAction }}</small></div>
+                                <span class="assessment-grade grade-{{ assessment.grade.toLowerCase() }}">Grade {{ assessment.grade }}</span>
                               </div>
                               <p class="assessment-verdict">{{ assessment.verdict }}</p>
                               <div class="assessment-meta"><span>Evidence coverage {{ assessment.evidenceCoveragePercent }}%</span><span>{{ assessment.assessmentVersion }}</span></div>

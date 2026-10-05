@@ -56,7 +56,7 @@ public class PostRenderEvidenceExtractor {
     Map<String, String> analyzerVersions = new LinkedHashMap<>();
     analyzerVersions.put("technical", "asset-metadata-v1");
     analyzerVersions.put("qaHelpers", "qa-helper-current");
-    analyzerVersions.put("renderedCreativeEvidence", "rendered-creative-evidence-v1");
+      analyzerVersions.put("renderedCreativeEvidence", "rendered-creative-evidence-v5");
     visualMotion.fetch(asset.getVideoId()).ifPresentOrElse(status -> {
       analyzerVersions.put("visualMotion", String.valueOf(status.getOrDefault("analysisVersion", "unknown")));
       copyMap(status.get("motion"), motion);
@@ -89,6 +89,10 @@ public class PostRenderEvidenceExtractor {
     evidence.put("visualSimilarity", similarity);
     evidence.put("darkFrames", dark);
     evidence.put("presentation", presentation);
+    if (motion.get("temporalProfile") instanceof Map<?, ?> profile
+        && profile.get("temporalActivityEvents") != null) {
+      evidence.put("temporalActivityEvents", profile.get("temporalActivityEvents"));
+    }
     PayoffWindow payoff = payoffWindowResolver.resolve(asset.getRenderJob());
     Map<String, Object> payoffEvidence = new LinkedHashMap<>();
     payoffEvidence.put("status", payoff.status().name());
@@ -108,6 +112,9 @@ public class PostRenderEvidenceExtractor {
     Map<String, Object> temporalProfile = motion.get("temporalProfile") instanceof Map<?, ?> profile
         ? cast(profile) : Map.of();
     Map<String, Object> temporal = temporalBeatAlignmentService.align(temporalProfile, contract(asset.getRenderJob()));
+    if (temporalProfile.get("temporalActivityEvents") != null) {
+      temporal.put("temporalActivityEvents", temporalProfile.get("temporalActivityEvents"));
+    }
     temporal.put("activityDropsStatus", temporalProfile.isEmpty() ? EvidenceStatus.UNKNOWN.name() : EvidenceStatus.AVAILABLE.name());
     temporal.put("activitySpikesStatus", temporalProfile.isEmpty() ? EvidenceStatus.UNKNOWN.name() : EvidenceStatus.AVAILABLE.name());
     temporal.put("unmappedActivityDropsStatus", temporalProfile.isEmpty() ? EvidenceStatus.UNKNOWN.name() : EvidenceStatus.AVAILABLE.name());
@@ -125,9 +132,11 @@ public class PostRenderEvidenceExtractor {
     Map<String, Object> opening = new LinkedHashMap<>();
     opening.put("causalLegibility", null);
     opening.put("causalLegibilityStatus", EvidenceStatus.NOT_EVALUATED.name());
+    opening.put("reason", "SEMANTIC_VISION_NOT_CONFIGURED");
     Map<String, Object> semanticLoop = new LinkedHashMap<>();
     semanticLoop.put("continuity", null);
     semanticLoop.put("continuityStatus", EvidenceStatus.NOT_EVALUATED.name());
+    semanticLoop.put("reason", "Endpoint similarity is visual evidence only; semantic continuity is not configured.");
     Map<String, Object> character = new LinkedHashMap<>();
     character.put("primaryContinuity", null);
     character.put("primaryContinuityStatus", EvidenceStatus.NOT_EVALUATED.name());
@@ -136,7 +145,7 @@ public class PostRenderEvidenceExtractor {
     evidence.put("character", character);
 
     return new RenderEvidenceIR(asset.getId(), asset.getRenderJob().getId(), renderAttemptId,
-        asset.getVideoId(), asset.getVariantId(), "render-evidence-v2", Instant.now(),
+        asset.getVideoId(), asset.getVariantId(), "render-evidence-v5", Instant.now(),
         Map.copyOf(analyzerVersions), Map.copyOf(evidence));
   }
 

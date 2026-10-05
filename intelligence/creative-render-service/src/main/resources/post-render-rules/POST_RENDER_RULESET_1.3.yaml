@@ -135,7 +135,7 @@ rules:
     source: opening.causalLegibility
     operator: EQUALS
     expected: true
-    missingEvidence: UNKNOWN
+    missingEvidence: NOT_APPLICABLE
     resultWhenMatched: PASS
     description: Opening causal legibility is not evaluated unless explicit semantic evidence is available.
   - id: SEMANTIC_LOOP_CONTINUITY
@@ -145,7 +145,7 @@ rules:
     source: semanticLoop.continuity
     operator: EQUALS
     expected: true
-    missingEvidence: UNKNOWN
+    missingEvidence: NOT_APPLICABLE
     resultWhenMatched: PASS
     description: Endpoint pixel similarity is not treated as semantic loop continuity without semantic evidence.
   - id: PRIMARY_CHARACTER_CONTINUITY
@@ -155,6 +155,6 @@ rules:
     source: character.primaryContinuity
     operator: EQUALS
     expected: true
-    missingEvidence: UNKNOWN
+    missingEvidence: NOT_APPLICABLE
     resultWhenMatched: PASS
     description: Primary character identity continuity remains unevaluated until a semantic character analyzer supplies evidence.

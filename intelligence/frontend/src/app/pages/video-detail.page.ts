@@ -144,13 +144,22 @@ const VARIANT_TYPE_LABELS: Record<string, string> = {
               <div><span>Opening/ending relationship</span><strong>{{ similaritySummary() }}</strong><small>Visual similarity does not prove a semantic loop.</small></div>
               <div><span>Local activity drops</span><strong>{{ activityDropSummary() }}</strong><small>Timestamped candidates require beat context before review.</small></div>
             </div>
-            @if (analysisStatus()!.analysisVersion === 'sampled-visual-motion-v4') {
+            @if (analysisStatus()!.analysisVersion === 'sampled-visual-motion-v4' || analysisStatus()!.analysisVersion === 'sampled-visual-motion-v5') {
               <div class="creative-evidence-cards creative-evidence-cards--v4">
                 <div><span>Visual novelty</span><strong>{{ v4Dimension('visualNovelty') }}</strong><small>Medium-range structural and perceptual state change.</small></div>
                 <div><span>Repetition evidence</span><strong>{{ v4Repetition() }}</strong><small>High motion with low state novelty, not a performance verdict.</small></div>
                 <div><span>Action / beat novelty</span><strong>{{ v4Dimension('actionBeatNovelty') }}</strong><small>Plan-side semantic evidence is separate from pixels.</small></div>
                 <div><span>Plan / render fidelity</span><strong>{{ v4Dimension('planRenderFidelity') }}</strong><small>Aligned when a structured production plan is available.</small></div>
               </div>
+              @if (analysisStatus()!.analysisVersion === 'sampled-visual-motion-v5') {
+                <div class="creative-evidence-cards creative-evidence-cards--v4">
+                  <div><span>Opening hook</span><strong>{{ v5HookSummary() }}</strong><small>{{ v5HookReason() }}</small></div>
+                  <div><span>Temporal emphasis</span><strong>{{ v5HoldSummary() }}</strong><small>{{ v5HoldReason() }}</small></div>
+                  <div><span>Payoff rebound</span><strong>{{ v5ReboundSummary() }}</strong><small>Rebound is evidence of visual progression, not performance.</small></div>
+                  <div><span>Loop evidence</span><strong>{{ v5LoopSummary() }}</strong><small>Visual endpoint evidence is separate from semantic loop verification.</small></div>
+                  <div><span>Readiness coverage</span><strong>{{ v5CoverageSummary() }}</strong><small>{{ v5CoverageReason() }}</small></div>
+                </div>
+              }
             }
           </section>
           <section class="temporal-timeline" aria-labelledby="temporal-timeline-heading">
@@ -657,6 +666,45 @@ export class VideoDetailPage implements OnDestroy {
     if (!repetition || typeof repetition !== 'object') return 'Not evaluated';
     const classification = (repetition as Record<string, unknown>)['classification'];
     return typeof classification === 'string' ? this.readable(classification) : 'Not evaluated';
+  }
+  protected v5HoldSummary(): string {
+    const events = this.analysisStatus()?.temporalProfile?.['temporalActivityEvents'];
+    if (!Array.isArray(events) || !events.length) return 'None detected';
+    const types = events.map(item => String((item as Record<string, unknown>)['eventType'] || 'AMBIGUOUS'));
+    return types.some(type => type === 'LIKELY_PURPOSEFUL_HOLD') ? 'Likely purposeful hold' : this.readable(types[0]);
+  }
+  protected v5HookSummary(): string {
+    const hook = this.analysisStatus()?.temporalProfile?.['hook'];
+    if (!hook || typeof hook !== 'object') return 'Not evaluated';
+    return this.readable(String((hook as Record<string, unknown>)['status'] || 'NOT_EVALUATED'));
+  }
+  protected v5HookReason(): string {
+    const hook = this.analysisStatus()?.temporalProfile?.['hook'];
+    return hook && typeof hook === 'object' ? String((hook as Record<string, unknown>)['reason'] || 'Opening evidence is limited to sampled visual activity.') : 'Semantic hook evidence is not configured.';
+  }
+  protected v5HoldReason(): string {
+    const events = this.analysisStatus()?.temporalProfile?.['temporalActivityEvents'];
+    if (!Array.isArray(events) || !events.length) return 'No contextual trough event was established.';
+    const event = events[0] as Record<string, unknown>;
+    return `${event['startSeconds']}–${event['endSeconds']}s · ${String(event['reason'] || 'Context requires review.')}`;
+  }
+  protected v5ReboundSummary(): string {
+    const rebound = this.analysisStatus()?.temporalProfile?.['reboundEvidence'];
+    return rebound && typeof rebound === 'object' && (rebound as Record<string, unknown>)['sustainedRisingActivity'] === true ? 'Sustained rising activity' : 'Not established';
+  }
+  protected v5LoopSummary(): string {
+    const similarity = this.analysisStatus()?.visualSimilarity?.['firstLastVisualSimilarity'];
+    if (typeof similarity !== 'number') return 'Unknown';
+    return `${similarity >= 0.9 ? 'Strong visual evidence' : similarity >= 0.75 ? 'Moderate visual evidence' : 'Weak visual evidence'} · semantic unknown`;
+  }
+  protected v5CoverageSummary(): string {
+    const action = this.analysisStatus()?.temporalProfile?.['actionBeatNovelty'];
+    const status = action && typeof action === 'object' ? (action as Record<string, unknown>)['status'] : null;
+    return typeof status === 'string' ? this.readable(status) : 'Partial';
+  }
+  protected v5CoverageReason(): string {
+    const fidelity = this.analysisStatus()?.temporalProfile?.['planRenderFidelity'];
+    return fidelity && typeof fidelity === 'object' ? String((fidelity as Record<string, unknown>)['reason'] || 'Plan provenance was not supplied.') : 'Plan provenance was not supplied.';
   }
   protected metricSource(value: number | null | undefined, available: string): string { return value === null || value === undefined ? 'No imported value' : available; }
   protected discoveryQualityLabel(): string { return this.discovery()?.dataQualityStatus === 'DERIVED_FROM_REPORTED_SHARES' ? 'REPORTED EVIDENCE' : 'NO COMPLETE DATA'; }

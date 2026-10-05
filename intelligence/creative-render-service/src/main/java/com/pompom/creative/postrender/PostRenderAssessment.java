@@ -5,6 +5,9 @@ import java.util.Map;
 
 public record PostRenderAssessment(
     String grade,
+    String decision,
+    String risk,
+    String recommendedAction,
     String label,
     String verdict,
     int evidenceCoveragePercent,

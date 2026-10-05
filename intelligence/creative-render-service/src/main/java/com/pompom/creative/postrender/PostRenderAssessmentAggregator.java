@@ -87,7 +87,27 @@ public class PostRenderAssessmentAggregator {
       case "C", "D", "F" -> "The measured rule outcomes require review before treating this render as a reliable creative control.";
       default -> "Do not assign a final creative grade until the missing required evidence is available.";
     };
-    return new PostRenderAssessment(grade, label, verdict, coverage, VERSION,
+    String decision = switch (grade) {
+      case "A" -> "READY_TO_PUBLISH";
+      case "B", "C" -> "REVIEW";
+      case "D" -> "REGENERATE";
+      case "F" -> "BLOCKED";
+      default -> "INCOMPLETE";
+    };
+    String risk = switch (grade) {
+      case "A" -> "LOW";
+      case "B", "C" -> "MEDIUM";
+      case "D", "F" -> "HIGH";
+      default -> "UNKNOWN";
+    };
+    String recommendedAction = switch (decision) {
+      case "READY_TO_PUBLISH" -> "PUBLISH";
+      case "REGENERATE" -> "REGENERATE_SAME_PLAN";
+      case "BLOCKED" -> "BLOCK_UNTIL_FIXED";
+      case "INCOMPLETE" -> "COMPLETE_EVIDENCE";
+      default -> "HUMAN_REVIEW";
+    };
+    return new PostRenderAssessment(grade, decision, risk, recommendedAction, label, verdict, coverage, VERSION,
         List.copyOf(strengths), List.copyOf(concerns), List.copyOf(insights), recommendation);
   }
 

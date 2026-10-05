@@ -82,6 +82,23 @@
 
   <!-- Quality Report -->
   <div *ngIf="report" class="report-section">
+
+    <div *ngIf="report.preRenderAssessment" class="pre-render-assessment card">
+      <div class="card-header">
+        <div><span class="eyebrow">PRE-RENDER CREATIVE READINESS</span><h2>Can this plan spend render credits?</h2></div>
+        <div class="readiness-summary"><strong>Grade {{ report.preRenderAssessment.grade }}</strong><span>{{ report.preRenderAssessment.readiness.replaceAll('_', ' ') }}</span><small>{{ report.preRenderAssessment.assessment_coverage_percent }}% evidence coverage</small></div>
+      </div>
+      <div class="card-body">
+        <p class="assessment-verdict">{{ report.preRenderAssessment.verdict }}</p>
+        <div class="assessment-columns">
+          <section><h3>Strengths</h3><p *ngFor="let item of report.preRenderAssessment.strengths">✓ {{ item }}</p></section>
+          <section><h3>Needs attention</h3><p *ngFor="let item of report.preRenderAssessment.concerns">⚠ {{ item }}</p></section>
+          <section><h3>Recommended changes</h3><p *ngFor="let item of report.preRenderAssessment.recommended_changes">→ {{ item }}</p></section>
+        </div>
+        <div class="assessment-dimensions"><article *ngFor="let dimension of report.preRenderAssessment.dimensions" [class]="'dimension dimension--' + dimension.status.toLowerCase()"><div><strong>{{ dimension.title }}</strong><span>{{ dimension.status.replaceAll('_', ' ') }}</span></div><p>{{ dimension.summary }}</p><small>{{ dimension.observed }}</small><em *ngIf="dimension.status === 'NEEDS_ATTENTION'">What to change: {{ dimension.recommendation }}</em></article></div>
+        <details class="plan-details"><summary>Parsed VideoPlanIR and technical evidence</summary><pre>{{ report.videoPlanIr | json }}</pre></details>
+      </div>
+    </div>
     
     <!-- Score Card -->
     <div class="score-card card" [ngClass]="getScoreClass()">

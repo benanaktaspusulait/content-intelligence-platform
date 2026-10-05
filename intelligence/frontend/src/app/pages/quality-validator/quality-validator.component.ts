@@ -26,7 +26,12 @@ interface QualityReport {
   priorityFixes: PriorityFix[];
   scoreCard: ScoreCard;
   timelineData: TimelineData;
+  preRenderAssessment: PreRenderAssessment;
+  videoPlanIr: Record<string, any>;
 }
+
+interface PreRenderDimension { key: string; title: string; status: string; summary: string; observed: string; recommendation: string; evidence_status: string; }
+interface PreRenderAssessment { name: string; grade: string; readiness: string; assessment_coverage_percent: number; verdict: string; strengths: string[]; concerns: string[]; recommended_changes: string[]; dimensions: PreRenderDimension[]; stable_intent: string[]; provenance: Record<string, any>; }
 
 interface LinkedValidationResponse { validationRecordId: number; report: QualityReport; }
 

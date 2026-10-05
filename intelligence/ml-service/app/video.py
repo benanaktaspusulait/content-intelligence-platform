@@ -47,6 +47,7 @@ TEMPORAL_CHANGE_MIN_DURATION_SECONDS = 0.50
 
 # V4 parameters are versioned evidence configuration, not creative-quality rules.
 V4_ANALYSIS_VERSION = "sampled-visual-motion-v4"
+V5_ANALYSIS_VERSION = "sampled-visual-motion-v5"
 V4_SAMPLE_INTERVAL_SECONDS = 0.25
 V4_MEDIUM_NOVELTY_OFFSET_SECONDS = 1.25
 V4_LOW_MOTION_ENTER_THRESHOLD = 0.12
@@ -694,6 +695,97 @@ def _clipped_ratio(intervals: list[dict[str, Any]], start: float, end: float) ->
     return clipped / max(len(local), 1)
 
 
+def _v5_post_hold_trend(intervals: list[dict[str, Any]], start: float, end: float) -> dict[str, Any]:
+    values = [float(item.get("smoothedMotion", item.get("normalizedMotionIntensity", 0.0)))
+              for item in intervals if float(item.get("startTime", 0.0)) >= end
+              and float(item.get("startTime", 0.0)) <= end + 2.5]
+    if len(values) < 2:
+        return {"trend": "UNKNOWN", "reboundMagnitude": 0.0, "sampleCount": len(values)}
+    differences = np.diff(values)
+    rising = int(np.sum(differences > 0.03))
+    falling = int(np.sum(differences < -0.03))
+    magnitude = max(0.0, values[-1] - values[0])
+    if rising >= max(2, len(differences) // 2) and magnitude >= 0.12:
+        trend = "RISING"
+    elif falling >= max(2, len(differences) // 2):
+        trend = "FALLING"
+    elif magnitude < 0.06 and float(np.std(values)) < 0.08:
+        trend = "FLAT"
+    else:
+        trend = "VARIABLE"
+    return {"trend": trend, "reboundMagnitude": round(float(magnitude), 4), "sampleCount": len(values)}
+
+
+def _v5_hold_events(profile: dict[str, Any], intervals: list[dict[str, Any]], duration: float,
+                    timestamp_confidence: float) -> list[dict[str, Any]]:
+    events: list[dict[str, Any]] = []
+    segments = profile.get("segments", [])
+    for candidate in profile.get("activityDrops", []):
+        start, end = float(candidate["startSeconds"]), float(candidate["endSeconds"])
+        during = float(candidate.get("duringActivity", 0.0))
+        before = float(candidate.get("beforeActivity", 0.0))
+        after = float(candidate.get("afterActivity", 0.0))
+        local = [item for item in segments if item["endSeconds"] > start and item["startSeconds"] < end]
+        density_during = float(np.mean([item.get("motionDensity", 0.0) for item in local])) if local else 0.0
+        before_segments = [item for item in segments if item["endSeconds"] <= start][-2:]
+        after_segments = [item for item in segments if item["startSeconds"] >= end][:2]
+        density_before = float(np.mean([item.get("motionDensity", 0.0) for item in before_segments])) if before_segments else 0.0
+        density_after = float(np.mean([item.get("motionDensity", 0.0) for item in after_segments])) if after_segments else 0.0
+        post = _v5_post_hold_trend(intervals, start, end)
+        relative_drop = float(candidate.get("relativeDrop", 0.0))
+        technical = bool(during <= 0.015 and post["trend"] == "FLAT")
+        late_support = start >= duration * 0.50 and start <= duration * 0.85
+        if technical:
+            event_type = "TECHNICAL_FREEZE"
+            emphasis = "UNKNOWN"
+            reason = "Near-zero activity persists without a measurable post-event change; technical freeze suspicion requires review."
+        elif late_support and post["trend"] == "RISING" and post["reboundMagnitude"] >= 0.12:
+            event_type = "LIKELY_PURPOSEFUL_HOLD"
+            emphasis = "STRONG" if post["reboundMagnitude"] >= 0.25 else "MODERATE"
+            reason = "A late local activity trough is followed by sustained rising activity; no structured plan was available to confirm its purpose."
+        else:
+            event_type = "UNMAPPED_TROUGH"
+            emphasis = "WEAK"
+            reason = "A substantial local activity trough was detected without enough plan or semantic evidence to explain it."
+        events.append({
+            "eventType": event_type,
+            "startSeconds": round(start, 3), "endSeconds": round(end, 3),
+            "durationSeconds": round(end - start, 3),
+            "activityBefore": round(before, 4), "activityDuring": round(during, 4), "activityAfter": round(after, 4),
+            "densityBefore": round(density_before, 4), "densityDuring": round(density_during, 4), "densityAfter": round(density_after, 4),
+            "relativeDrop": round(relative_drop, 4), "postEventTrend": post["trend"],
+            "reboundMagnitude": post["reboundMagnitude"], "reboundSampleCount": post["sampleCount"],
+            "alignedBeatId": None, "alignedBeatType": None, "alignedPayoff": False, "alignedReaction": False,
+            "technicalFreezeSuspected": technical, "positionSupport": "LATE_WINDOW_SUPPORT" if late_support else "POSITION_NOT_DECISIVE",
+            "holdEmphasis": emphasis, "evidenceConfidence": round(timestamp_confidence, 4),
+            "reason": reason,
+        })
+    return events
+
+
+def _v5_hook(profile: dict[str, Any], samples: list[V4SampledFrame]) -> dict[str, Any]:
+    opening = float(profile.get("segments", [{}])[0].get("averageMotion", 0.0)) if profile.get("segments") else 0.0
+    if opening >= 0.30:
+        status, reason = "MODERATE", "The opening contains measurable visual activity, but semantic subject/object readability is not configured."
+    elif opening >= 0.12:
+        status, reason = "WEAK", "The opening begins with limited visual activity; semantic anomaly verification is unavailable."
+    else:
+        status, reason = "UNKNOWN", "Opening semantic evidence is unavailable because no character-aware vision provider is configured."
+    return {"status": status, "windowSeconds": 1.5, "subjectPresence": None, "subjectPresenceStatus": "NOT_EVALUATED", "objectPresence": None, "objectPresenceStatus": "NOT_EVALUATED", "anomalyReadable": None, "anomalyReadableStatus": "NOT_EVALUATED", "expressionReadable": None, "expressionStatus": "NOT_EVALUATED", "directCameraGaze": None, "directCameraGazeStatus": "NOT_EVALUATED", "textOverlay": {"status": "NOT_EVALUATED", "reason": "OCR/text detection is not configured."}, "visualOpeningActivity": round(opening, 4), "reason": reason}
+
+
+def _v5_action_novelty(profile: dict[str, Any], novelty: dict[str, Any], recurrence: dict[str, Any]) -> dict[str, Any]:
+    segments = profile.get("segments", [])
+    distinct = sum(1 for item in segments if float(item.get("relativeToPrevious") or 0.0) >= 0.10 or float(item.get("motionVariability", 0.0)) >= 0.12)
+    observed = "STRONG" if distinct >= 3 else "MODERATE" if distinct >= 1 else "WEAK"
+    return {"status": "PARTIAL", "plannedStrategyNovelty": {"status": "NOT_EVALUATED", "reason": "NO_STRUCTURED_PLAN"}, "observedVisualBeatNovelty": {"status": "AVAILABLE", "level": observed, "distinctBeatChanges": distinct, "reason": "Deterministic temporal and visual-state changes."}, "observedSemanticActionNovelty": {"status": "NOT_EVALUATED", "reason": "SEMANTIC_VISION_NOT_CONFIGURED"}, "combinedAssessment": observed if observed != "WEAK" else "WEAK", "repetitionContext": "ACCEPTABLE_IF_BEAT_CHANGES_PRESENT" if recurrence.get("detected") and distinct >= 2 else "REVIEW_CONTEXT_REQUIRED"}
+
+
+def _v5_loop(similarity: float, recurrence: dict[str, Any]) -> dict[str, Any]:
+    visual = "STRONG" if similarity >= 0.90 else "MODERATE" if similarity >= 0.75 else "WEAK"
+    return {"status": "PARTIAL", "visualEvidence": visual, "visualEndpointSimilarity": round(similarity, 4), "semanticContinuity": None, "semanticContinuityStatus": "NOT_EVALUATED", "semanticContinuityReason": "SEMANTIC_VISION_NOT_CONFIGURED", "overall": visual, "reason": "Visual endpoint similarity is available; semantic loop continuity is not verified."}
+
+
 def _analyse_v4(path: Path, metadata: VideoMetadata) -> VideoAnalysisResponse:
     duration = metadata.duration_ms / 1000
     samples, sampling = _sequential_frames(path, duration)
@@ -837,11 +929,63 @@ def _analyse_v4(path: Path, metadata: VideoMetadata) -> VideoAnalysisResponse:
     )
 
 
+def _analyse_v5(path: Path, metadata: VideoMetadata) -> VideoAnalysisResponse:
+    """V5 keeps V4 measurements intact and adds contextual readiness evidence."""
+    result = _analyse_v4(path, metadata)
+    profile = result.evidence.get("temporalProfile", {})
+    intervals = result.evidence.get("intervals", [])
+    sampling = result.sampling or {}
+    confidence = float(result.measurement_confidence or 0.0)
+    similarity = float(result.visual_similarity.get("firstLastVisualSimilarity", 0.0))
+    hold_events = _v5_hold_events(profile, intervals, metadata.duration_ms / 1000, confidence)
+    hook = _v5_hook(profile, [])
+    action_novelty = _v5_action_novelty(profile, result.evidence.get("visualNovelty", {}), result.evidence.get("recurrence", {}))
+    loop = _v5_loop(similarity, result.evidence.get("recurrence", {}))
+    strong_hold = any(item["eventType"] == "LIKELY_PURPOSEFUL_HOLD" and item["holdEmphasis"] == "STRONG" for item in hold_events)
+    rebound = any(item["postEventTrend"] == "RISING" and item["reboundMagnitude"] >= 0.12 for item in hold_events)
+    payoff_status = "MODERATE" if strong_hold and rebound else "WEAK" if hold_events else "UNKNOWN"
+    payoff = {"status": payoff_status, "plannedAlignment": "NOT_EVALUATED", "plannedAlignmentReason": "NO_STRUCTURED_PLAN", "rebound": "STRONG" if rebound else "UNKNOWN", "stateChange": "NOT_EVALUATED", "reason": "Payoff evidence is based on temporal contrast only; plan and semantic consequence evidence are unavailable."}
+    fidelity = {"status": "NOT_EVALUATED", "reason": "NO_STRUCTURED_PLAN", "provenance": "No render-time ProductionContract or exact VideoPlanIR was supplied to the ML analyzer."}
+    repetition = result.evidence.get("repetitiveMotion", {})
+    if repetition.get("classification") == "MODERATE" and action_novelty.get("combinedAssessment") in {"STRONG", "MODERATE"}:
+        repetition["interpretation"] = "Some movement repeats, but the observed temporal evidence contains distinct beat changes; repeated mechanics remain context-dependent."
+    temporal = dict(profile)
+    temporal["version"] = V5_ANALYSIS_VERSION
+    temporal["temporalActivityEvents"] = hold_events
+    temporal["holdEvidenceStatus"] = "AVAILABLE" if hold_events else "NOT_EVALUATED"
+    temporal["reboundEvidence"] = {"status": "AVAILABLE" if hold_events else "NOT_EVALUATED", "sustainedRisingActivity": rebound}
+    temporal["hook"] = hook
+    temporal["payoff"] = payoff
+    temporal["loop"] = loop
+    temporal["actionBeatNovelty"] = action_novelty
+    temporal["planRenderFidelity"] = fidelity
+    temporal["dimensions"] = {**temporal.get("dimensions", {}), "actionBeatNovelty": action_novelty["combinedAssessment"], "planRenderFidelity": "NOT_EVALUATED"}
+    result.evidence["temporalProfile"] = temporal
+    result.evidence["temporalActivityEvents"] = hold_events
+    result.evidence["hook"] = hook
+    result.evidence["payoff"] = payoff
+    result.evidence["loop"] = loop
+    result.evidence["actionBeatNovelty"] = action_novelty
+    result.evidence["planRenderFidelity"] = fidelity
+    result.features["hook"] = hook
+    result.features["payoff"] = payoff
+    result.features["loop"] = loop
+    result.features["actionBeatNovelty"] = action_novelty
+    result.features["planRenderFidelity"] = fidelity
+    result.analysis_version = V5_ANALYSIS_VERSION
+    result.analysis_type = "SAMPLED_VISUAL_MOTION_V5"
+    result.primary_engine = "SAMPLED_VISUAL_MOTION_V5"
+    result.reason = "V5 combines deterministic temporal evidence with contextual hold, rebound, hook, payoff, loop, recurrence, and provenance-aware readiness evidence. It does not infer platform performance or fabricate semantic actions."
+    return result
+
+
 def analyse(relative_path: str, analysis_version: str = "sampled-visual-motion-v3") -> VideoAnalysisResponse:
     path = safe_video_path(relative_path)
     metadata = probe(path)
     if analysis_version == V4_ANALYSIS_VERSION:
         return _analyse_v4(path, metadata)
+    if analysis_version == V5_ANALYSIS_VERSION:
+        return _analyse_v5(path, metadata)
     if analysis_version != "sampled-visual-motion-v3":
         raise ValueError(f"Unsupported video analysis version: {analysis_version}")
     duration = metadata.duration_ms / 1000
