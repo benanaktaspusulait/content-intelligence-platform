@@ -68,6 +68,8 @@ management:
         enabled: true
 
 pompom:
+  rule-governance:
+    token: ${RULE_GOVERNANCE_TOKEN:}
   internal:
     observation-bridge-token: ${OBSERVATION_BRIDGE_TOKEN:}
   data-root: ${POMPOM_DATA_ROOT:/tmp/pompom-data}
