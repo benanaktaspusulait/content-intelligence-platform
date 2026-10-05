@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, inject, OnDestroy, signal } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { catchError, combineLatest, forkJoin, interval, Observable, of, startWith, Subscription, switchMap } from 'rxjs';
 import {
@@ -21,6 +22,7 @@ interface ChartDot { left: number; bottom: number; label: string; }
 interface VariantView extends MediaFile { label: string; }
 interface PublicationCopy {
   sourceFile: string | null;
+  sourcePath: string | null;
   raw: string;
   title: string;
   body: string;
@@ -28,7 +30,7 @@ interface PublicationCopy {
   tags: string;
 }
 
-const EMPTY_PUBLICATION_COPY: PublicationCopy = { sourceFile: null, raw: '', title: '', body: '', hashtags: '', tags: '' };
+const EMPTY_PUBLICATION_COPY: PublicationCopy = { sourceFile: null, sourcePath: null, raw: '', title: '', body: '', hashtags: '', tags: '' };
 
 const VARIANT_TYPE_LABELS: Record<string, string> = {
   ORIGINAL: 'Original',
@@ -41,7 +43,7 @@ const VARIANT_TYPE_LABELS: Record<string, string> = {
 
 @Component({
   selector: 'app-video-detail-page',
-  imports: [RouterLink],
+  imports: [RouterLink, FormsModule],
   template: `
     <header class="page-header detail-header">
       <div>
@@ -129,13 +131,51 @@ const VARIANT_TYPE_LABELS: Record<string, string> = {
 
       <section class="section-band creative-analysis-panel" aria-labelledby="creative-analysis-heading">
         <div class="section-heading"><div><span class="eyebrow">VISUAL MOTION ANALYSIS</span><h2 id="creative-analysis-heading">Sampled visual-motion evidence</h2></div>
-          @if (!analysisStatus()?.hasCompletedAnalysis || analysisStatus()?.analysisType === 'LEGACY') { <button class="button button--primary" type="button" [disabled]="triggeringAnalysis() || analysisStatus()?.jobState === 'QUEUED' || analysisStatus()?.jobState === 'RUNNING'" (click)="triggerAnalysis()">{{ triggeringAnalysis() ? 'Starting…' : analysisStatus()?.jobState === 'QUEUED' || analysisStatus()?.jobState === 'RUNNING' ? (analysisStatus()!.jobState === 'QUEUED' ? 'Queued…' : 'Running…') : 'Run current analysis' }}</button> }
+          <button class="button button--primary" type="button" [disabled]="triggeringAnalysis() || analysisStatus()?.jobState === 'QUEUED' || analysisStatus()?.jobState === 'RUNNING'" (click)="triggerAnalysis()">{{ triggeringAnalysis() ? 'Starting…' : analysisStatus()?.jobState === 'QUEUED' || analysisStatus()?.jobState === 'RUNNING' ? (analysisStatus()!.jobState === 'QUEUED' ? 'Queued…' : 'Running…') : analysisStatus()?.hasCompletedAnalysis ? 'Reanalyze' : 'Run analysis' }}</button>
         </div>
         <div class="assessment-notice"><strong>Interpretation</strong><span>This is a sampled visual-motion heuristic. It does not use views, reach, likes, comments, follows or retention data.</span></div>
         @if (analysisStatus()?.hasCompletedAnalysis) {
           <dl class="technical-facts analysis-facts">
             <div><dt>Motion evidence level</dt><dd>{{ analysisStatus()!.classification || '—' }}</dd></div>
             <div><dt>Motion heuristic score</dt><dd>{{ decimal(analysisStatus()!.motionHeuristicScore ?? analysisStatus()!.actionDnaScore) }} / 100</dd></div>
+            <div class="analysis-facts__group"><dt>Motion score components</dt><dd><small class="analysis-legacy-note">{{ analysisStatus()!.analysisVersion === 'sampled-visual-motion-v2' ? 'Legacy v2 score formula' : 'Current motion-only formula' }}</small><dl class="analysis-components">
+              <div><dt>Opening motion</dt><dd>{{ analysisMetric('openingMotionIntensity') }}</dd></div>
+              <div><dt>Overall motion</dt><dd>{{ analysisMetric('overallMotionIntensity') }}</dd></div>
+              <div><dt>Motion density</dt><dd>{{ analysisMetric('motionIntervalDensity') }}</dd></div>
+              <div><dt>Ending motion</dt><dd>{{ analysisMetric('endingMotionEvidence') }}</dd></div>
+            </dl></dd></div>
+            <div class="analysis-facts__group"><dt>Other visual evidence</dt><dd><dl class="analysis-components">
+              <div><dt>First/last visual similarity</dt><dd>{{ analysisMetric('firstLastVisualSimilarity', true) }}</dd></div>
+              <div><dt>Motion escalation proxy</dt><dd>{{ analysisNumber('motion', 'motionEscalationProxy') }}</dd></div>
+              <div><dt>Low-motion duration</dt><dd>{{ analysisFeatureValue('lowMotionDurationEstimate') }}</dd></div>
+            </dl></dd></div>
+            <div class="analysis-facts__group"><dt>Measurement quality</dt><dd><dl class="analysis-components">
+              <div><dt>Decode success</dt><dd>{{ analysisPercent('measurementQuality', 'decodeSuccessRatio') }}</dd></div>
+              <div><dt>Temporal coverage</dt><dd>{{ analysisPercent('measurementQuality', 'temporalCoverage') }}</dd></div>
+              <div><dt>Valid frame pairs</dt><dd>{{ analysisNumber('measurementQuality', 'validFramePairCount') }}</dd></div>
+              <div><dt>Failed decode samples</dt><dd>{{ analysisNumber('measurementQuality', 'failedDecodeSamples') }}</dd></div>
+              <div><dt>Minimum interval</dt><dd>{{ analysisNumber('measurementQuality', 'minimumDeltaTSeconds') }}s</dd></div>
+            </dl></dd></div>
+            <div class="analysis-facts__group"><dt>Sampling coverage</dt><dd><dl class="analysis-components">
+              <div><dt>Requested samples</dt><dd>{{ analysisNumber('sampling', 'requestedSamples') }}</dd></div>
+              <div><dt>Decoded samples</dt><dd>{{ analysisNumber('sampling', 'decodedSamples') }}</dd></div>
+              <div><dt>Valid frame pairs</dt><dd>{{ analysisNumber('sampling', 'validFramePairs') }}</dd></div>
+              <div><dt>Failed requested times</dt><dd>{{ analysisListLength('sampling', 'failedRequestedTimes') }}</dd></div>
+            </dl></dd></div>
+            @if (analysisList('motion', 'lowMotionIntervals').length) {
+              <div class="analysis-facts__group"><dt>Low-motion intervals</dt><dd><div class="analysis-intervals">
+                @for (interval of analysisList('motion', 'lowMotionIntervals'); track $index) {
+                  <span>{{ interval['startTime'] }}–{{ interval['endTime'] }}s · {{ interval['duration'] }}s</span>
+                }
+              </div></dd></div>
+            }
+            @if (analysisStatus()!.darkFrameCandidates?.length) {
+              <div class="analysis-facts__group"><dt>Dark-frame candidates</dt><dd><div class="analysis-intervals">
+                @for (candidate of analysisStatus()!.darkFrameCandidates; track $index) {
+                  <span>{{ candidate['kind'] || 'DARK_FRAME' }} · {{ candidate['requestedTime'] }}s</span>
+                }
+              </div></dd></div>
+            }
             <div><dt>Measurement confidence</dt><dd>{{ decimal(analysisStatus()!.measurementConfidence ?? analysisStatus()!.confidence) }} <small>(decode and sampling quality only)</small></dd></div>
             <div><dt>Analysis type</dt><dd>{{ analysisStatus()!.analysisType || 'LEGACY' }}</dd></div>
             <div><dt>Interpretation</dt><dd>{{ analysisStatus()!.reason }}</dd></div>
@@ -171,22 +211,25 @@ const VARIANT_TYPE_LABELS: Record<string, string> = {
         <div class="section-heading"><div><span class="eyebrow">PUBLICATION COPY</span><h2 id="social-copy-heading">Social caption</h2></div><span class="data-freshness">Read from folder metadata</span></div>
         @if (metadataLoading()) { <div class="state-panel compact-state"><span class="spinner"></span><strong>Loading publication metadata</strong></div> }
         @if (metadataError()) { <div class="state-panel state-panel--error compact-state"><strong>Metadata unavailable</strong><p>{{ metadataError() }}</p></div> }
+        <nav class="platform-tabs caption-tabs" aria-label="Publication platform">
+          @for (item of captionPlatforms; track item.key) { <button type="button" [class.is-active]="captionPlatform() === item.key" [attr.aria-current]="captionPlatform() === item.key ? 'page' : null" (click)="captionPlatform.set(item.key)">{{ item.label }}</button> }
+        </nav>
         <div class="caption-platform-grid">
-          @for (item of captionPlatforms; track item.key) {
-            @let copy = publicationCopy()[item.key];
+          @let item = currentCaptionPlatform();
+          @let copy = publicationCopy()[item.key];
             <article class="caption-card">
               <header><span class="eyebrow">{{ item.label.toUpperCase() }}</span><strong>{{ item.label }}</strong><small class="metadata-source">{{ copy.sourceFile || 'Metadata file not found' }}</small></header>
               @if (copy.sourceFile) {
-                @if (copy.title) { <label>Title<textarea [value]="copy.title" readonly rows="2"></textarea></label> }
-                @if (copy.body) { <label>{{ item.key === 'YOUTUBE' ? 'Description' : 'Caption' }}<textarea [value]="copy.body" readonly rows="4"></textarea></label> }
-                @if (copy.hashtags) { <label>Hashtags<textarea [value]="copy.hashtags" readonly rows="2"></textarea></label> }
-                @if (copy.tags) { <label>Tags<textarea [value]="copy.tags" readonly rows="3"></textarea></label> }
+                @if (copy.title) { <label>Title<textarea [ngModel]="copy.title" (ngModelChange)="updateCopy(item.key, 'title', $event)" rows="2"></textarea></label> }
+                @if (copy.body) { <label>{{ item.key === 'YOUTUBE' ? 'Description' : 'Caption' }}<textarea [ngModel]="copy.body" (ngModelChange)="updateCopy(item.key, 'body', $event)" rows="4"></textarea></label> }
+                @if (copy.hashtags) { <label>Hashtags<textarea [ngModel]="copy.hashtags" (ngModelChange)="updateCopy(item.key, 'hashtags', $event)" rows="2"></textarea></label> }
+                @if (copy.tags) { <label>Tags<textarea [ngModel]="copy.tags" (ngModelChange)="updateCopy(item.key, 'tags', $event)" rows="3"></textarea></label> }
+                <footer class="caption-card__footer"><span>{{ copy.sourceFile }}</span><button class="button button--secondary button--compact" type="button" [disabled]="savingCopy() === item.key" (click)="saveCopy(item.key)">{{ savingCopy() === item.key ? 'Saving…' : 'Save changes' }}</button></footer>
                 @if (!copy.title && !copy.body && !copy.hashtags && !copy.tags) { <div class="state-panel compact-state"><strong>No copy sections found</strong><p>The metadata file exists but has no supported publication fields.</p></div> }
               } @else {
                 <div class="state-panel compact-state"><strong>No {{ item.key === 'YOUTUBE' ? 'youtube.md' : 'social.md' }} found</strong><p>This platform has no folder metadata yet. No copy has been invented.</p></div>
               }
             </article>
-          }
         </div>
       </section>
       }
@@ -335,8 +378,11 @@ export class VideoDetailPage implements OnDestroy {
     { key: 'YOUTUBE', label: 'YouTube' },
   ];
   protected readonly publicationCopy = signal<Record<CaptionPlatform, PublicationCopy>>({ INSTAGRAM: { ...EMPTY_PUBLICATION_COPY }, FACEBOOK: { ...EMPTY_PUBLICATION_COPY }, TIKTOK: { ...EMPTY_PUBLICATION_COPY }, YOUTUBE: { ...EMPTY_PUBLICATION_COPY } });
+  protected readonly captionPlatform = signal<CaptionPlatform>('INSTAGRAM');
+  protected readonly currentCaptionPlatform = computed(() => this.captionPlatforms.find(item => item.key === this.captionPlatform()) || this.captionPlatforms[0]);
   protected readonly metadataLoading = signal(false);
   protected readonly metadataError = signal('');
+  protected readonly savingCopy = signal<CaptionPlatform | null>(null);
   protected readonly summary = signal<ReachFurtherSummary | null>(null);
   protected readonly trajectory = signal<TrajectoryView | null>(null);
   protected readonly growth = signal<PlatformGrowthProfile | null>(null);
@@ -474,12 +520,52 @@ export class VideoDetailPage implements OnDestroy {
       error: response => { this.triggeringAnalysis.set(false); this.message.set(response.error?.message || 'Could not start analysis.'); },
     });
   }
+  protected updateCopy(platform: CaptionPlatform, field: 'title' | 'body' | 'hashtags' | 'tags', value: string): void {
+    this.publicationCopy.update(current => ({ ...current, [platform]: { ...current[platform], [field]: value } }));
+  }
+  protected saveCopy(platform: CaptionPlatform): void {
+    const copy = this.publicationCopy()[platform];
+    if (!copy.sourcePath) return;
+    this.savingCopy.set(platform); this.metadataError.set('');
+    const content = this.metadataContent(copy, platform);
+    this.service.updateMetadataFile(copy.sourcePath, content).subscribe({
+      next: file => {
+        this.publicationCopy.update(current => ({ ...current, [platform]: { ...current[platform], raw: file.content } }));
+        this.savingCopy.set(null); this.message.set(`${platform} metadata saved.`);
+      },
+      error: response => { this.savingCopy.set(null); this.metadataError.set(response.error?.message || 'Publication metadata could not be saved.'); },
+    });
+  }
   protected date(value: string | null | undefined): string { return value ? new Date(value).toLocaleString('en-GB', { dateStyle: 'medium', timeStyle: 'short' }) : '—'; }
   protected number(value: number | null | undefined): string { return value === null || value === undefined ? '—' : new Intl.NumberFormat('en').format(value); }
   protected readable(value: string | null | undefined): string { return value ? value.replaceAll('_', ' ').toLowerCase().replace(/(^|\s)\S/g, letter => letter.toUpperCase()) : '—'; }
   protected ratio(value: number | null | undefined): string { return value === null || value === undefined ? '—' : `${value.toFixed(2)}×`; }
   protected percent(value: number | null | undefined): string { return value === null || value === undefined ? '—' : `${value.toFixed(1)}%`; }
   protected decimal(value: number | null | undefined): string { return value === null || value === undefined ? '—' : value.toFixed(2); }
+  protected analysisMetric(key: string, similarity = false): string {
+    const source = similarity ? this.analysisStatus()?.visualSimilarity : this.analysisStatus()?.motion;
+    const value = source?.[key];
+    return typeof value === 'number' ? value.toFixed(4) : '—';
+  }
+  protected analysisNumber(group: 'motion' | 'sampling' | 'measurementQuality', key: string): string {
+    const value = this.analysisStatus()?.[group]?.[key];
+    return typeof value === 'number' ? value.toFixed(4).replace(/\.0000$/, '') : '—';
+  }
+  protected analysisPercent(group: 'measurementQuality' | 'sampling', key: string): string {
+    const value = this.analysisStatus()?.[group]?.[key];
+    return typeof value === 'number' ? `${(value * 100).toFixed(1)}%` : '—';
+  }
+  protected analysisFeatureValue(key: string): string {
+    const value = this.analysisStatus()?.motion?.[key];
+    return typeof value === 'number' ? `${(value * 100).toFixed(1)}%` : '—';
+  }
+  protected analysisList(group: 'motion' | 'sampling', key: string): Array<Record<string, any>> {
+    const value = this.analysisStatus()?.[group]?.[key];
+    return Array.isArray(value) ? value as Array<Record<string, any>> : [];
+  }
+  protected analysisListLength(group: 'motion' | 'sampling', key: string): string {
+    return String(this.analysisList(group, key).length);
+  }
   protected metricSource(value: number | null | undefined, available: string): string { return value === null || value === undefined ? 'No imported value' : available; }
   protected discoveryQualityLabel(): string { return this.discovery()?.dataQualityStatus === 'DERIVED_FROM_REPORTED_SHARES' ? 'REPORTED EVIDENCE' : 'NO COMPLETE DATA'; }
   protected discoverySourceStatement(): string { return this.discovery()?.dataQualityStatus === 'DERIVED_FROM_REPORTED_SHARES' ? 'Derived only from imported, platform-reported audience shares.' : 'No complete imported component set. Missing values are not estimated.'; }
@@ -526,14 +612,16 @@ export class VideoDetailPage implements OnDestroy {
     const base = folder.replace(/\\+$/, '');
     forkJoin({
       social: this.service.getMetadataFile(`${base}/social.md`).pipe(catchError(() => of(null))),
+      instagram: this.service.getMetadataFile(`${base}/03_instagram_social.txt`).pipe(catchError(() => of(null))),
       youtube: this.service.getMetadataFile(`${base}/youtube.md`).pipe(catchError(() => of(null))),
     }).subscribe({
       next: files => {
         if (generation !== this.loadGeneration) return;
         const social = files.social ? this.parseMetadata(files.social, 'social.md') : EMPTY_PUBLICATION_COPY;
+        const instagram = files.instagram ? this.parseInstagramMetadata(files.instagram) : EMPTY_PUBLICATION_COPY;
         const youtube = files.youtube ? this.parseMetadata(files.youtube, 'youtube.md') : EMPTY_PUBLICATION_COPY;
         this.publicationCopy.set({
-          INSTAGRAM: this.socialCopy(social, 'INSTAGRAM'),
+          INSTAGRAM: instagram.sourcePath ? instagram : this.socialCopy(social, 'FACEBOOK'),
           FACEBOOK: this.socialCopy(social, 'FACEBOOK'),
           TIKTOK: this.socialCopy(social, 'TIKTOK'),
           YOUTUBE: youtube,
@@ -548,6 +636,7 @@ export class VideoDetailPage implements OnDestroy {
     const section = (...headings: string[]): string => headings.map(heading => this.markdownField(file.content, heading)).find(Boolean) || '';
     return {
       sourceFile,
+      sourcePath: file.relativePath,
       raw: file.content,
       title: section('YouTube Title', 'YouTube Shorts title', 'Title'),
       body: section('YouTube Description', 'Caption', 'Primary Instagram / Facebook caption'),
@@ -556,17 +645,40 @@ export class VideoDetailPage implements OnDestroy {
     };
   }
 
+  private parseInstagramMetadata(file: MetadataFile): PublicationCopy {
+    const parts = this.splitHashtags(file.content);
+    return { sourceFile: '03_instagram_social.txt', sourcePath: file.relativePath, raw: file.content, title: '', body: parts.body, hashtags: parts.hashtags, tags: '' };
+  }
+
   private socialCopy(copy: PublicationCopy, platform: CaptionPlatform): PublicationCopy {
     const source = copy.raw;
     if (!source) return copy;
+    const sectionLabel = platform === 'TIKTOK' ? 'TikTok caption' : 'Meta / Facebook caption';
+    const labeled = this.splitHashtags(this.labeledSection(source, sectionLabel));
     return {
       ...copy,
       title: this.markdownField(source, 'Title') || copy.title,
       body: platform === 'TIKTOK'
-        ? (this.markdownField(source, 'TikTok caption') || this.markdownField(source, 'Short caption') || this.markdownField(source, 'Alternate short caption') || this.markdownField(source, 'Caption') || copy.body)
-        : (this.markdownField(source, 'Caption') || this.markdownField(source, 'Primary Instagram / Facebook caption') || copy.body),
-      hashtags: this.markdownField(source, 'Hashtags') || copy.hashtags,
+        ? (labeled.body || this.markdownField(source, 'Short caption') || this.markdownField(source, 'Alternate short caption') || this.markdownField(source, 'Caption') || copy.body)
+        : (labeled.body || this.markdownField(source, 'Caption') || this.markdownField(source, 'Primary Instagram / Facebook caption') || copy.body),
+      hashtags: labeled.hashtags || this.markdownField(source, 'Hashtags') || copy.hashtags,
     };
+  }
+
+  private metadataContent(copy: PublicationCopy, platform: CaptionPlatform): string {
+    if (copy.sourceFile === '03_instagram_social.txt') {
+      return [copy.body.trim(), copy.hashtags.trim()].filter(Boolean).join('\n') + '\n';
+    }
+    if (platform === 'YOUTUBE') {
+      let content = copy.raw;
+      content = this.replaceMarkdownField(content, ['YouTube Title', 'YouTube Shorts title', 'Title'], copy.title);
+      content = this.replaceMarkdownField(content, ['YouTube Description', 'Description'], copy.body);
+      content = this.replaceMarkdownField(content, ['YouTube Tags', 'Tags'], copy.tags);
+      content = this.replaceMarkdownField(content, ['Hashtags'], copy.hashtags);
+      return content;
+    }
+    const label = platform === 'TIKTOK' ? 'TikTok caption' : 'Meta / Facebook caption';
+    return this.replaceLabeledSection(copy.raw, label, [copy.body.trim(), copy.hashtags.trim()].filter(Boolean).join('\n'));
   }
 
   private markdownField(content: string, heading: string): string {
@@ -575,6 +687,34 @@ export class VideoDetailPage implements OnDestroy {
     if (start < 0) return '';
     const end = lines.slice(start + 1).findIndex(line => /^##\s+/.test(line.trim()));
     return lines.slice(start + 1, end < 0 ? undefined : start + 1 + end).join('\n').trim();
+  }
+  private splitHashtags(content: string): { body: string; hashtags: string } {
+    const lines = content.split(/\r?\n/);
+    const hashLines = lines.filter(line => line.trim().startsWith('#'));
+    return { body: lines.filter(line => !line.trim().startsWith('#')).join('\n').trim(), hashtags: hashLines.join('\n').trim() };
+  }
+  private labeledSection(content: string, label: string): string {
+    const lines = content.split(/\r?\n/);
+    const start = lines.findIndex(line => line.trim().toLowerCase() === `${label.toLowerCase()}:`);
+    if (start < 0) return '';
+    const end = lines.slice(start + 1).findIndex(line => /^(?:[A-Za-z][^:]{0,80}):\s*$/.test(line.trim()));
+    return lines.slice(start + 1, end < 0 ? undefined : start + 1 + end).join('\n').trim();
+  }
+  private replaceLabeledSection(content: string, label: string, value: string): string {
+    const lines = content.split(/\r?\n/);
+    const start = lines.findIndex(line => line.trim().toLowerCase() === `${label.toLowerCase()}:`);
+    if (start < 0) return content;
+    const end = lines.slice(start + 1).findIndex(line => /^(?:[A-Za-z][^:]{0,80}):\s*$/.test(line.trim()));
+    const endIndex = end < 0 ? lines.length : start + 1 + end;
+    return [...lines.slice(0, start + 1), '', value, '', ...lines.slice(endIndex)].join('\n').replace(/\n{4,}/g, '\n\n\n');
+  }
+  private replaceMarkdownField(content: string, headings: string[], value: string): string {
+    const lines = content.split(/\r?\n/);
+    const headingIndex = lines.findIndex(line => headings.some(heading => line.trim().toLowerCase() === `## ${heading.toLowerCase()}`));
+    if (headingIndex < 0) return content;
+    const end = lines.slice(headingIndex + 1).findIndex(line => /^##\s+/.test(line.trim()));
+    const endIndex = end < 0 ? lines.length : headingIndex + 1 + end;
+    return [...lines.slice(0, headingIndex + 1), '', value, '', ...lines.slice(endIndex)].join('\n').replace(/\n{4,}/g, '\n\n\n');
   }
   private activateVariant(file: MediaFile, knownVideo?: VideoApiRecord): void {
     this.activeFile.set(file); this.message.set(''); this.video.set(null); this.clearPerformance();

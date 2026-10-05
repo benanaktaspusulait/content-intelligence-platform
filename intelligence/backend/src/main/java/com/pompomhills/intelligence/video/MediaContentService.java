@@ -4,6 +4,7 @@ import com.pompomhills.intelligence.common.config.PompomProperties;
 import jakarta.persistence.EntityNotFoundException;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.StandardCopyOption;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Locale;
@@ -44,16 +45,19 @@ public class MediaContentService {
       }
 
       String extension = extension(file);
-      if (!properties.allowedVideoExtensions().contains(extension)) {
-        throw new IllegalArgumentException("Unsupported video extension: " + extension);
+      if (!properties.allowedVideoExtensions().contains(extension) && !isSupportedImageExtension(extension)) {
+        throw new IllegalArgumentException("Unsupported media extension: " + extension);
       }
 
       String contentType = Files.probeContentType(file);
-      if (contentType == null || !contentType.startsWith("video/")) {
+      if (contentType == null || (!contentType.startsWith("video/") && !contentType.startsWith("image/"))) {
         contentType =
             switch (extension) {
               case "mov" -> "video/quicktime";
               case "m4v" -> "video/x-m4v";
+              case "png" -> "image/png";
+              case "jpg", "jpeg" -> "image/jpeg";
+              case "webp" -> "image/webp";
               default -> "video/mp4";
             };
       }
@@ -77,8 +81,8 @@ public class MediaContentService {
     String filename = candidate.getFileName() == null
         ? ""
         : candidate.getFileName().toString().toLowerCase(Locale.ROOT);
-    if (!filename.equals("social.md") && !filename.equals("youtube.md")) {
-      throw new IllegalArgumentException("Only social.md and youtube.md metadata are readable");
+    if (!isSupportedTextFilename(filename)) {
+      throw new IllegalArgumentException("Unsupported metadata filename");
     }
 
     try {
@@ -96,10 +100,62 @@ public class MediaContentService {
     }
   }
 
+  public void writeMetadata(String relativePath, String content) {
+    if (relativePath == null || relativePath.isBlank()) {
+      throw new IllegalArgumentException("Metadata path is required");
+    }
+    if (content == null || content.getBytes(StandardCharsets.UTF_8).length > 256 * 1024) {
+      throw new IllegalArgumentException("Metadata content is too large");
+    }
+
+    Path configuredRoot = properties.dataRoot().toAbsolutePath().normalize();
+    Path candidate = configuredRoot.resolve(relativePath).normalize();
+    String filename = candidate.getFileName() == null
+        ? ""
+        : candidate.getFileName().toString().toLowerCase(Locale.ROOT);
+    if (!candidate.startsWith(configuredRoot) || !isSupportedTextFilename(filename)) {
+      throw new IllegalArgumentException("Metadata path is not writable");
+    }
+
+    try {
+      Path root = configuredRoot.toRealPath();
+      Path parent = candidate.getParent() == null ? root : candidate.getParent().toRealPath();
+      if (!parent.startsWith(root) || !Files.isDirectory(parent)) {
+        throw new IllegalArgumentException("Metadata path must stay inside the configured data root");
+      }
+      Path temp = Files.createTempFile(parent, ".metadata-", ".tmp");
+      try {
+        Files.writeString(temp, content, StandardCharsets.UTF_8);
+        Files.move(temp, candidate, StandardCopyOption.ATOMIC_MOVE, StandardCopyOption.REPLACE_EXISTING);
+      } finally {
+        Files.deleteIfExists(temp);
+      }
+    } catch (IOException error) {
+      throw new IllegalStateException("Could not write metadata file", error);
+    }
+  }
+
+  private boolean isSupportedTextFilename(String filename) {
+    return filename.equals("social.md")
+        || filename.equals("youtube.md")
+        || filename.equals("03_instagram_social.txt")
+        || filename.equals("prompt.md")
+        || filename.equals("prompt.txt")
+        || filename.equals("01_video_prompt.txt")
+        || filename.equals("video_prompt.txt")
+        || filename.endsWith("-prompt.md")
+        || filename.endsWith("_prompt.txt");
+  }
+
   private String extension(Path file) {
     String name = file.getFileName().toString();
     int separator = name.lastIndexOf('.');
     return separator < 0 ? "" : name.substring(separator + 1).toLowerCase(Locale.ROOT);
+  }
+
+  private boolean isSupportedImageExtension(String extension) {
+    return extension.equals("png") || extension.equals("jpg") || extension.equals("jpeg")
+        || extension.equals("webp");
   }
 
   public record MediaContent(Resource resource, String contentType, long contentLength) {}

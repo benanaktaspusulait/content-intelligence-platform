@@ -1,7 +1,7 @@
 <div class="app-frame">
   <header class="mobile-header">
     <a class="brand brand--mobile" routerLink="/overview" aria-label="Pompom Creative Intelligence home">
-      <span class="brand-mark">P</span>
+      <img class="brand-logo" src="pompom-loop-emblem.png" alt="" aria-hidden="true">
       <span>Creative Intelligence</span>
     </a>
     <button class="icon-button mobile-menu" type="button" aria-label="Toggle navigation" (click)="navOpen.update(value => !value)">
@@ -11,7 +11,7 @@
 
   <aside class="sidebar" [class.sidebar--open]="navOpen()">
     <a class="brand" routerLink="/overview" aria-label="Pompom Creative Intelligence home">
-      <span class="brand-mark">P</span>
+      <img class="brand-logo" src="pompom-loop-emblem.png" alt="" aria-hidden="true">
       <span class="brand-copy"><strong>Pompom</strong><small>Creative Intelligence</small></span>
     </a>
 

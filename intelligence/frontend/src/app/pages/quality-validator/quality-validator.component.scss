@@ -1,5 +1,5 @@
 .quality-validator-container {
-  max-width: 1400px;
+  max-width: 1500px;
   margin: 0 auto;
   padding: 2rem;
 }
@@ -63,7 +63,7 @@
 }
 
 // Prompt Section
-.prompt-section {
+  .prompt-section {
   .prompt-input {
     font-family: 'Courier New', monospace;
     font-size: 0.9rem;
@@ -629,4 +629,5 @@
   .family-item {
     grid-template-columns: 1fr;
   }
+
 }

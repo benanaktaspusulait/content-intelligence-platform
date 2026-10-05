@@ -7,39 +7,40 @@
   <!-- Prompt Input Section -->
   <div class="prompt-section card">
     <div class="card-header">
-      <h2>Video Prompt</h2>
+      <div><span class="eyebrow">PROMPT WORKSPACE</span><h2>Choose or create a video prompt</h2></div>
       <div class="actions">
-        <button 
-          class="btn btn-secondary btn-sm" 
-          (click)="loadSamplePrompt()"
-          [disabled]="loading">
-          Load Sample (FAIL_001)
-        </button>
-        <button 
-          class="btn btn-outline-secondary btn-sm" 
-          (click)="clearPrompt()"
-          [disabled]="loading">
-          Clear
-        </button>
+        <button class="btn btn-secondary btn-sm" (click)="startNewPrompt()" [disabled]="loading">New prompt</button>
+        <button class="btn btn-outline-secondary btn-sm" (click)="loadPromptFiles()" [disabled]="promptFilesLoading">Refresh library</button>
       </div>
     </div>
     <div class="card-body">
+      <div class="prompt-library-toolbar">
+        <label>Project prompt library
+          <input type="text" [(ngModel)]="promptLibraryRoot" [disabled]="promptFilesLoading" (keyup.enter)="loadPromptFiles()" />
+        </label>
+        <span class="prompt-library-count">{{ promptFiles.length }} prompts found</span>
+      </div>
+      <div class="prompt-library" *ngIf="!promptFilesLoading; else loadingPrompts">
+        <button type="button" class="prompt-file" *ngFor="let file of promptFiles" [class.is-selected]="selectedPromptPath === file.relativePath" (click)="selectPromptFile(file)" [disabled]="selectedPromptLoading">
+          <span class="prompt-file__icon">P</span><span><strong>{{ file.folder.split('/').pop() }}</strong><small>{{ file.name }}</small></span><span class="prompt-file__arrow">→</span>
+        </button>
+        <div class="empty-library" *ngIf="!promptFiles.length">No prompt files found in this project folder.</div>
+      </div>
+      <ng-template #loadingPrompts><div class="loading-library">Loading project prompts…</div></ng-template>
+      <div class="selected-prompt" *ngIf="selectedPromptPath"><span>Selected source</span><code>{{ selectedPromptPath }}</code></div>
       <div class="linked-context">
         <label>Content title<input type="text" [(ngModel)]="contentTitle" [disabled]="loading" placeholder="Kiko's Mat Mystery" /></label>
         <label>Type<select [(ngModel)]="contentType" [disabled]="loading"><option value="SHORT">Short</option><option value="REEL">Reel</option><option value="EPISODE">Episode</option></select></label>
-        <button class="btn btn-outline-secondary btn-sm" type="button" (click)="createContentAndPrompt()" [disabled]="loading || !contentTitle || prompt.length < 100">Create content + prompt version</button>
-        <button class="btn btn-outline-secondary btn-sm" type="button" (click)="createRevisionPromptVersion()" [disabled]="loading || !contentId || prompt.length < 100">Save revision + revalidate</button>
-        <label>Content ID (optional for render-authorizing evidence)<input type="number" min="1" [(ngModel)]="contentId" [disabled]="loading" /></label>
-        <label>Prompt version ID<input type="number" min="1" [(ngModel)]="promptVersionId" [disabled]="loading" /></label>
-        <small *ngIf="contentId && promptVersionId">Linked mode: validation will use the immutable stored prompt and can produce render evidence.</small>
-        <small *ngIf="!contentId || !promptVersionId">Exploratory mode: this result will not authorize a render.</small>
+        <div class="prompt-actions"><button class="btn btn-outline-secondary btn-sm" type="button" (click)="createContentAndPrompt()" [disabled]="loading || !contentTitle || prompt.length < 100">Create workspace version</button><button class="btn btn-outline-secondary btn-sm" type="button" (click)="createRevisionPromptVersion()" [disabled]="loading || !contentId || prompt.length < 100">Save revision</button></div>
+        <small *ngIf="contentId && promptVersionId">Linked workspace prompt: validation uses the immutable stored version and can produce render evidence.</small>
+        <small *ngIf="!contentId || !promptVersionId">Draft mode: create a workspace version before render authorization.</small>
         <a *ngIf="validationRecordId" class="btn btn-outline-secondary btn-sm" [href]="renderQueueUrl()">Open render queue</a>
       </div>
       <textarea
         [(ngModel)]="prompt"
         class="form-control prompt-input"
         rows="15"
-        placeholder="Paste your video prompt here (min 100 characters)...&#10;&#10;Include: [TITLE], [DURATION], [CHARACTERS], [SETTING], [HOOK], [BEAT 1-N], [PAYOFF]"
+        placeholder="Select a project prompt above, or write a new prompt here…"
         [disabled]="loading">
       </textarea>
       <div class="prompt-meta">

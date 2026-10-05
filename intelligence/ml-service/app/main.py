@@ -16,6 +16,7 @@ from .contracts import (
     VideoAnalysisResponse,
 )
 from .prediction import live, prepublish
+from .retention_assessment import RetentionAssessmentRequest, assess
 from .qa.character_verifier import CharacterVerifier
 from .qa.dead_air_analyzer import DeadAirAnalyzer
 from .rules.rule_versioning import RulesetConfigurationError, RuleVersionManager
@@ -108,6 +109,12 @@ def analyse_video(request: VideoAnalysisRequest) -> VideoAnalysisResponse:
         return analyse(request.relative_path)
     except (ValueError, OSError) as error:
         raise HTTPException(status_code=400, detail=str(error)) from error
+
+
+@app.post("/v1/analysis/retention")
+def assess_retention(request: RetentionAssessmentRequest) -> dict[str, object]:
+    """Return the strict short-form retention assessment from supplied evidence."""
+    return assess(request)
 
 
 @app.post("/v1/prediction/prepublish", response_model=PredictionResponse, response_model_by_alias=True)

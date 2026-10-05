@@ -11,9 +11,8 @@ NEW_RULE_IDS = {
 }
 
 
-def test_ruleset_1_4_is_the_latest_registered_version() -> None:
+def test_ruleset_1_4_remains_registered_at_its_original_path() -> None:
     manager = RuleVersionManager(settings.rules_dir)
-    assert manager.get_latest_version() == "1.4"
     assert manager.get_version_info("1.4").ruleset_path == "RULESET_1.4.yaml"
 
 

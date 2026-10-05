@@ -50,7 +50,7 @@ public class AnalysisJobService {
               """)
           .param("id", id)
           .param("video", videoId)
-          .param("payload", "{\"contractVersion\":\"v1\",\"analysisVersion\":\"sampled-visual-motion-v2\"}")
+          .param("payload", "{\"contractVersion\":\"v1\",\"analysisVersion\":\"sampled-visual-motion-v3\"}")
           .update();
     } catch (DataIntegrityViolationException raceLoss) {
       // Another concurrent request won the V34 unique-index race and already created the active

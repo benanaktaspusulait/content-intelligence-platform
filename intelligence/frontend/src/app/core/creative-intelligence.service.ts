@@ -126,6 +126,7 @@ export interface MediaFile {
   videoId: string | null;
   status: string | null;
   variantId: string | null;
+  thumbnailPath: string | null;
 }
 
 export type VariantType = 'ORIGINAL' | 'HOOK_COLD_OPEN' | 'TRIMMED' | 'NO_CTA' | 'LOOP_CUT' | 'CUSTOM_EDIT';
@@ -523,6 +524,10 @@ export class CreativeIntelligenceService {
     return this.http.get<MetadataFile>(`${this.baseUrl}/videos/metadata`, {
       params: { path: relativePath },
     });
+  }
+
+  updateMetadataFile(relativePath: string, content: string): Observable<MetadataFile> {
+    return this.http.put<MetadataFile>(`${this.baseUrl}/videos/metadata`, { relativePath, content });
   }
 
   ingestVideo(relativePath: string): Observable<VideoApiRecord> {

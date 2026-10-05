@@ -32,9 +32,15 @@ public final class VideoDtos {
       boolean ingested,
       UUID videoId,
       String status,
-      UUID variantId) {}
+      UUID variantId,
+      String thumbnailPath) {}
 
   public record MetadataFile(String relativePath, String content) {}
+
+  public record PromptFile(String name, String relativePath, String folder, Long sizeBytes, Instant modifiedAt) {}
+
+  public record MetadataUpdateRequest(
+      @jakarta.validation.constraints.NotBlank String relativePath, String content) {}
 
   public record VideoResponse(
       UUID id,

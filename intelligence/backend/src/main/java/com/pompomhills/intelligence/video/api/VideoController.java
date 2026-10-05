@@ -20,6 +20,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -69,6 +70,12 @@ public class VideoController {
     return service.mediaFiles(relativeDirectory, recursive);
   }
 
+  @GetMapping("/prompt-files")
+  public List<VideoDtos.PromptFile> promptFiles(
+      @RequestParam(defaultValue = "library") String relativeDirectory) {
+    return service.promptFiles(relativeDirectory);
+  }
+
   @GetMapping("/content")
   public ResponseEntity<Resource> content(@RequestParam("path") String relativePath) {
     var media = mediaContent.resolve(relativePath);
@@ -90,6 +97,13 @@ public class VideoController {
   @GetMapping("/metadata")
   public VideoDtos.MetadataFile metadata(@RequestParam("path") String relativePath) {
     return new VideoDtos.MetadataFile(relativePath, mediaContent.readMetadata(relativePath));
+  }
+
+  @PutMapping("/metadata")
+  public VideoDtos.MetadataFile updateMetadata(
+      @Valid @RequestBody VideoDtos.MetadataUpdateRequest request) {
+    mediaContent.writeMetadata(request.relativePath(), request.content());
+    return new VideoDtos.MetadataFile(request.relativePath(), request.content());
   }
 
   @PostMapping("/{id}/analysis")

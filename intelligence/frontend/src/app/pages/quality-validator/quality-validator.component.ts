@@ -30,6 +30,14 @@ interface QualityReport {
 
 interface LinkedValidationResponse { validationRecordId: number; report: QualityReport; }
 
+interface PromptFile {
+  name: string;
+  relativePath: string;
+  folder: string;
+  sizeBytes: number | null;
+  modifiedAt: string | null;
+}
+
 interface RuleEvaluation {
   ruleId: string;
   ruleName: string;
@@ -112,6 +120,11 @@ export class QualityValidatorComponent {
   report: QualityReport | null = null;
   loading: boolean = false;
   error: string | null = null;
+  promptFiles: PromptFile[] = [];
+  promptLibraryRoot = 'library/POMPOM_HILLS_PRODUCTION';
+  selectedPromptPath = '';
+  promptFilesLoading = false;
+  selectedPromptLoading = false;
   
   // Sample prompt for testing
   samplePrompt: string = `[TITLE] Kiko's Mat Mystery
@@ -157,7 +170,44 @@ Visual state: sitting on mat (continuation)
 Consequence: Feels happy about mat
 Intensity: 4`;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { this.loadPromptFiles(); }
+
+  loadPromptFiles(): void {
+    this.promptFilesLoading = true;
+    this.http.get<PromptFile[]>(`/api/v1/videos/prompt-files?relativeDirectory=${encodeURIComponent(this.promptLibraryRoot)}`).subscribe({
+      next: files => { this.promptFiles = files; this.promptFilesLoading = false; },
+      error: response => { this.error = response.error?.message || 'Project prompts could not be loaded.'; this.promptFilesLoading = false; },
+    });
+  }
+
+  selectPromptFile(file: PromptFile): void {
+    this.selectedPromptPath = file.relativePath;
+    this.selectedPromptLoading = true;
+    this.error = null;
+    this.http.get<{ relativePath: string; content: string }>(`/api/v1/videos/metadata?path=${encodeURIComponent(file.relativePath)}`).subscribe({
+      next: result => {
+        this.prompt = result.content;
+        this.contentTitle = this.titleFromFolder(file.folder);
+        this.contentType = file.folder.includes('SOCIAL_REELS') ? 'REEL' : 'SHORT';
+        this.contentId = '';
+        this.promptVersionId = '';
+        this.validationRecordId = null;
+        this.report = null;
+        this.selectedPromptLoading = false;
+      },
+      error: response => { this.error = response.error?.message || 'Selected prompt could not be loaded.'; this.selectedPromptLoading = false; },
+    });
+  }
+
+  startNewPrompt(): void {
+    this.prompt = ''; this.contentTitle = ''; this.contentType = 'SHORT'; this.contentId = ''; this.promptVersionId = '';
+    this.selectedPromptPath = ''; this.validationRecordId = null; this.report = null; this.error = null;
+  }
+
+  titleFromFolder(folder: string): string {
+    const name = folder.split('/').filter(Boolean).pop() || 'New Pompom Video';
+    return name.replaceAll('_', ' ').replace(/(^|\s)\S/g, letter => letter.toUpperCase());
+  }
 
 
   validatePrompt(): void {

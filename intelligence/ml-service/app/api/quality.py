@@ -83,6 +83,7 @@ class RuleEvaluationResponse(BaseModel):
     message: str
     actual_value: float | None
     threshold_value: float | None
+    details: dict[str, Any] = Field(default_factory=dict)
 
 
 class PriorityFixResponse(BaseModel):
@@ -540,6 +541,7 @@ def convert_quality_report(
             message=ev.message,
             actual_value=_as_optional_float(ev.actual_value),
             threshold_value=_as_optional_float(ev.threshold_value),
+            details=dict(ev.details),
         )
 
     failed_rules = [_to_rule_evaluation_response(ev) for ev in report.failed_rules]

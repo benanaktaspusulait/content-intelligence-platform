@@ -58,6 +58,7 @@ services:
     volumes:
       - "./data:/data"
       - "${POMPOM_LIBRARY_ROOT:-../../yuvarlak-dunya}:/data/library:ro"
+      - "${POMPOM_SOCIAL_ROOT:-../../yuvarlak-dunya/POMPOM_HILLS_PRODUCTION/09_SOCIAL_REELS/new14092026}:/data/library/POMPOM_HILLS_PRODUCTION/09_SOCIAL_REELS/new14092026"
     depends_on:
       postgres: { condition: service_healthy }
       ml-service: { condition: service_healthy }

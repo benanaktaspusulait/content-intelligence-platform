@@ -24,6 +24,73 @@ class SemanticCheckServiceError(RuntimeError):
     """
 
 
+def check_single_agent_object_mechanic(
+    primary_character: str,
+    secondary_characters: list[str],
+    physical_rule: str,
+    cause_effect: str,
+    beat_descriptions: list[str],
+    llm_provider: str | None = None,
+) -> tuple[dict[str, Any], str]:
+    """Judge whether one character and one object own the central mechanic."""
+    try:
+        llm = get_provider(llm_provider)
+    except ValueError as e:
+        raise SemanticCheckServiceError(f"LLM provider unavailable: {e}") from e
+
+    prompt = f"""You are evaluating a children's short-form video concept.
+The concept requires exactly one primary living agent interacting with exactly
+one primary non-living object. Judge causal participation, not raw character
+count. A background character that does not affect the mechanic is irrelevant.
+
+Primary character: {primary_character!r}
+Other named characters: {secondary_characters!r}
+Physical rule: {physical_rule!r}
+Cause and effect: {cause_effect!r}
+Beat descriptions: {beat_descriptions!r}
+
+A second living character is causal if it creates, demonstrates, obstructs,
+triggers, resolves, or receives the payoff from the impossible mechanic. If
+the evidence is insufficient, return UNKNOWN. Do not guess a missing object.
+
+Respond with strict JSON:
+{{
+  "primary_agent": "name or null",
+  "primary_object": "name or null",
+  "mechanic_carrier": "OBJECT | OBJECT_INTERACTION | PRIMARY_AGENT | SECONDARY_AGENT | MULTI_AGENT | UNKNOWN",
+  "causal_participants": ["names"],
+  "decision": "PASS | FAIL | UNKNOWN",
+  "reasoning": "brief explanation"
+}}"""
+
+    response = _call_llm_safely(llm, prompt)
+    parsed = _parse_json_with_markdown_fallback(response)
+    required = {
+        "primary_agent", "primary_object", "mechanic_carrier",
+        "causal_participants", "decision", "reasoning",
+    }
+    missing = required - parsed.keys()
+    if missing:
+        raise SemanticCheckServiceError(f"LLM response missing required fields: {sorted(missing)}")
+    if not isinstance(parsed["primary_agent"], (str, type(None))) or not isinstance(
+        parsed["primary_object"], (str, type(None))
+    ):
+        raise SemanticCheckServiceError("primary_agent and primary_object must be strings or null")
+    if parsed["mechanic_carrier"] not in {
+        "OBJECT", "OBJECT_INTERACTION", "PRIMARY_AGENT", "SECONDARY_AGENT", "MULTI_AGENT", "UNKNOWN"
+    }:
+        raise SemanticCheckServiceError("mechanic_carrier has an invalid value")
+    if not isinstance(parsed["causal_participants"], list) or not all(
+        isinstance(item, str) for item in parsed["causal_participants"]
+    ):
+        raise SemanticCheckServiceError("causal_participants must be a list of strings")
+    if parsed["decision"] not in {"PASS", "FAIL", "UNKNOWN"}:
+        raise SemanticCheckServiceError("decision has an invalid value")
+    if not isinstance(parsed["reasoning"], str):
+        raise SemanticCheckServiceError("reasoning must be a string")
+    return {key: parsed[key] for key in required if key != "decision"}, parsed["decision"]
+
+
 def _parse_json_with_markdown_fallback(response: str) -> dict[str, Any]:
     """Parse an LLM response as JSON, retrying inside a ```json fenced block.
 

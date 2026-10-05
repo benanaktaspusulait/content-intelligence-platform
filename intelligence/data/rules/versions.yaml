@@ -707,3 +707,25 @@ versions:
   release_date: '2026-10-05'
   ruleset_path: RULESET_1.4.yaml
   version: '1.4'
+- changes:
+  - breaking_change: true
+    change_type: added
+    new_value:
+      description: 'For the social_reel growth/absurd short family, require one causal primary character interacting with one primary non-living object; a second causal living agent fails the concept.'
+      family: concept_strength
+      id: CONCEPT_009
+      name: Single-Agent Object Mechanic
+      scopeId: social_reel
+      scopeType: CONTENT_FAMILY
+      severity: BLOCKER
+      version: '1.5'
+    old_value: null
+    reason: 'RULESET 1.5: Single-Agent Object Mechanic'
+    rule_id: CONCEPT_009
+  description: 'Adds a narrowly scoped causal-participation gate for the Pompom growth/absurd short family without changing RULESET 1.4 or other content families.'
+  is_breaking: true
+  learned_from:
+  - FLYING_BOY_TWO_AGENT_MECHANIC
+  release_date: '2026-10-05'
+  ruleset_path: RULESET_1.5.yaml
+  version: '1.5'

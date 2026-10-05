@@ -10,6 +10,7 @@ import com.pompomhills.intelligence.video.api.VideoDtos.DirectoryIngestResponse;
 import com.pompomhills.intelligence.video.api.VideoDtos.IngestError;
 import com.pompomhills.intelligence.video.api.VideoDtos.MediaDirectory;
 import com.pompomhills.intelligence.video.api.VideoDtos.MediaFile;
+import com.pompomhills.intelligence.video.api.VideoDtos.PromptFile;
 import com.pompomhills.intelligence.video.api.VideoDtos.VideoResponse;
 import com.pompomhills.intelligence.video.ml.MlVideoClient;
 import jakarta.persistence.EntityNotFoundException;
@@ -40,7 +41,7 @@ public class VideoService {
   private final MlVideoClient ml;
   private final PompomProperties properties;
   private final Clock clock;
-  public static final String CURRENT_ANALYSIS_VERSION = "sampled-visual-motion-v2";
+  public static final String CURRENT_ANALYSIS_VERSION = "sampled-visual-motion-v3";
 
   public VideoService(
       VideoRepository videos,
@@ -206,6 +207,43 @@ public class VideoService {
   }
 
   @Transactional(readOnly = true)
+  public List<PromptFile> promptFiles(String relativeDirectory) {
+    Path root = properties.dataRoot().toAbsolutePath().normalize();
+    Path directory = root.resolve(relativeDirectory).normalize();
+    if (!directory.startsWith(root) || !Files.isDirectory(directory)) {
+      throw new IllegalArgumentException("Prompt directory must be inside the configured data root");
+    }
+    try (Stream<Path> stream = Files.walk(directory)) {
+      return stream
+          .filter(Files::isRegularFile)
+          .filter(this::isPromptFile)
+          .sorted(Comparator.comparing(Path::toString))
+          .limit(5000)
+          .map(file -> new PromptFile(
+              file.getFileName().toString(),
+              root.relativize(file).toString(),
+              root.relativize(file.getParent()).toString(),
+              fileSize(file),
+              lastModified(file)))
+          .toList();
+    } catch (IOException error) {
+      throw new IllegalStateException("Could not scan prompt files", error);
+    }
+  }
+
+  private boolean isPromptFile(Path file) {
+    String name = file.getFileName().toString().toLowerCase(java.util.Locale.ROOT);
+    if (!(name.endsWith(".md") || name.endsWith(".txt")) || name.contains("image")) return false;
+    if (name.startsWith("shot-") || name.startsWith("shot_")) return false;
+    return name.equals("prompt.md")
+        || name.equals("prompt.txt")
+        || name.equals("01_video_prompt.txt")
+        || name.equals("video_prompt.txt")
+        || name.endsWith("-prompt.md")
+        || name.endsWith("_prompt.txt");
+  }
+
+  @Transactional(readOnly = true)
   public boolean hasCurrentAnalysis(UUID videoId) {
     return analyses.existsByVideoIdAndAnalysisVersion(videoId, CURRENT_ANALYSIS_VERSION);
   }
@@ -326,7 +364,36 @@ public class VideoService {
         ingested != null,
         ingested == null ? null : ingested.getId(),
         ingested == null ? null : ingested.getStatus().name(),
-        variantId);
+        variantId,
+        findThumbnail(root, file));
+  }
+
+  private String findThumbnail(Path root, Path video) {
+    Path parent = video.getParent();
+    if (parent == null) return null;
+    try (Stream<Path> siblings = Files.list(parent)) {
+      List<Path> images = siblings
+          .filter(Files::isRegularFile)
+          .filter(this::hasImageExtension)
+          .sorted(Comparator
+              .comparing((Path path) -> !isFirstFrameName(path.getFileName().toString()))
+              .thenComparing(path -> path.getFileName().toString().toLowerCase()))
+          .toList();
+      return images.isEmpty() ? null : root.relativize(images.get(0)).toString();
+    } catch (IOException ignored) {
+      return null;
+    }
+  }
+
+  private boolean hasImageExtension(Path file) {
+    String name = file.getFileName().toString().toLowerCase(java.util.Locale.ROOT);
+    return name.endsWith(".png") || name.endsWith(".jpg") || name.endsWith(".jpeg")
+        || name.endsWith(".webp");
+  }
+
+  private boolean isFirstFrameName(String filename) {
+    String name = filename.toLowerCase(java.util.Locale.ROOT);
+    return name.contains("first") || name.contains("frame") || name.contains("scene");
   }
 
   private Long fileSize(Path file) {

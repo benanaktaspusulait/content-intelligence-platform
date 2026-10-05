@@ -20,6 +20,7 @@ from app.llm.semantic_checks import (
     check_goal_is_natural,
     check_opening_problem_legible,
     check_rule_is_predictable,
+    check_single_agent_object_mechanic,
     check_twist_matches_rule,
     count_independent_mechanics,
     find_duplicate_strategy_pairs,
@@ -140,6 +141,7 @@ class RuleEngine:
             "CONTINUOUS_ACTION_MOMENTUM": self._evaluate_continuous_action_momentum,
             "INSTANT_VISUAL_ABSURDITY_GATE": self._evaluate_instant_visual_absurdity_gate,
             "ENGINE_SILHOUETTE_DUPLICATE": self._evaluate_engine_silhouette_duplicate,
+            "CONCEPT_009": self._evaluate_concept_009,
         }
 
     def _get_duration_tier(self, duration: float) -> str:
@@ -173,6 +175,23 @@ class RuleEngine:
         for rule in self.ruleset.get("rules", []):
             rule_id = rule["id"]
             rule_stage = rule.get("evaluation_stage", default_stage)
+
+            if not self._rule_applies(rule, video_plan_ir):
+                evaluations.append(
+                    RuleEvaluation(
+                        rule_id=rule_id,
+                        rule_name=rule.get("name", rule_id),
+                        family=rule.get("family", "unknown"),
+                        severity=rule.get("severity", "WARNING"),
+                        result="NOT_APPLICABLE",
+                        message="Rule does not apply to this content family.",
+                        details={
+                            "scopeType": rule.get("scopeType", "GLOBAL"),
+                            "scopeId": rule.get("scopeId"),
+                        },
+                    )
+                )
+                continue
 
             if rule_stage == "POST_RENDER" and evaluation_stage == "PRE_RENDER":
                 evaluations.append(
@@ -226,6 +245,16 @@ class RuleEngine:
 
         # Aggregate results
         return self._generate_report(evaluations, video_plan_ir)
+
+    @staticmethod
+    def _rule_applies(rule: dict[str, Any], video_plan_ir: dict[str, Any]) -> bool:
+        """Apply only the scope vocabulary already declared by the ruleset."""
+        scope_type = rule.get("scopeType", "GLOBAL")
+        if scope_type == "GLOBAL":
+            return True
+        if scope_type == "CONTENT_FAMILY":
+            return video_plan_ir.get("metadata", {}).get("seriesType") == rule.get("scopeId")
+        return False
 
     def _generate_report(
         self, evaluations: list[RuleEvaluationType], video_plan_ir: dict[str, Any]
@@ -2070,6 +2099,101 @@ class RuleEngine:
             result="PASS",
             message=f"Rule is learnable and predictable: {reasoning}",
             details={"reasoning": reasoning},
+        )
+
+    def _evaluate_concept_009(
+        self, video_plan_ir: dict[str, Any], rule: dict[str, Any]
+    ) -> RuleEvaluationType:
+        """CONCEPT_009: one causal character, one impossible object."""
+        rule_id = "CONCEPT_009"
+        rule_name = "Single-Agent Object Mechanic"
+        family = "concept_strength"
+        characters = video_plan_ir.get("characters", {})
+        core = video_plan_ir.get("coreMechanic", {})
+        primary = characters.get("primary")
+        primary_object = core.get("primaryObject")
+        carrier = core.get("mechanicCarrier")
+        participants = core.get("causalParticipants")
+
+        if all(value is not None for value in (primary_object, carrier, participants)):
+            if not isinstance(primary, str) or not primary.strip():
+                return RuleEvaluation(
+                    rule_id, rule_name, family, "BLOCKER", "UNKNOWN",
+                    "Primary character evidence is missing.",
+                    details={"evidenceSource": "deterministic_ir"},
+                )
+            if not isinstance(primary_object, str) or not primary_object.strip() or not isinstance(carrier, str):
+                return RuleEvaluation(
+                    rule_id, rule_name, family, "BLOCKER", "UNKNOWN",
+                    "Primary object or mechanic carrier is ambiguous.",
+                    details={"evidenceSource": "deterministic_ir"},
+                )
+            if not isinstance(participants, list) or not all(isinstance(item, str) for item in participants):
+                return RuleEvaluation(
+                    rule_id, rule_name, family, "BLOCKER", "UNKNOWN",
+                    "Causal participant evidence is ambiguous.",
+                    details={"evidenceSource": "deterministic_ir"},
+                )
+            if not participants or carrier == "UNKNOWN":
+                return RuleEvaluation(
+                    rule_id, rule_name, family, "BLOCKER", "UNKNOWN",
+                    "Causal participant or mechanic-carrier evidence is ambiguous.",
+                    details={
+                        "primaryAgent": primary,
+                        "primaryObject": primary_object,
+                        "mechanicCarrier": carrier,
+                        "causalParticipants": participants,
+                        "evidenceSource": "deterministic_ir",
+                    },
+                )
+            evidence = {
+                "primaryAgent": primary,
+                "primaryObject": primary_object,
+                "mechanicCarrier": carrier,
+                "causalParticipants": participants,
+                "evidenceSource": "deterministic_ir",
+            }
+            valid_carrier = carrier in {"OBJECT", "OBJECT_INTERACTION"}
+            extra_agents = [item for item in participants if item != primary]
+            if valid_carrier and set(participants) == {primary}:
+                return RuleEvaluation(
+                    rule_id, rule_name, family, "BLOCKER", "PASS",
+                    f"The central mechanic is owned by {primary} and the non-living object {primary_object}.",
+                    required_value=1, details=evidence,
+                )
+            failed_agents = extra_agents or ([carrier] if not valid_carrier else [])
+            return RuleEvaluation(
+                rule_id, rule_name, family, "BLOCKER", "FAIL",
+                "Central mechanic has more than one causal living agent or is not carried by the primary object. "
+                f"Causal evidence: {failed_agents or carrier}. Pompom growth shorts require one primary character "
+                "interacting with one primary non-living object.",
+                required_value=1, details=evidence,
+            )
+
+        core_mechanic = video_plan_ir.get("coreMechanic", {})
+        beat_descriptions = [
+            " ".join(str(value) for value in (beat.get("action", ""), beat.get("consequence", ""))).strip()
+            for beat in video_plan_ir.get("beats", [])
+        ]
+        try:
+            evidence, decision = check_single_agent_object_mechanic(
+                str(primary or ""),
+                [str(item) for item in (characters.get("secondary") or [])],
+                str(core_mechanic.get("physicalRule", "")),
+                str(core_mechanic.get("causeEffect", "")),
+                beat_descriptions,
+            )
+        except SemanticCheckServiceError as error:
+            return RuleEvaluation(
+                rule_id, rule_name, family, "BLOCKER", "SERVICE_ERROR",
+                f"Single-agent object verification failed: {error}",
+                details={"evidenceSource": "semantic", "error": str(error)},
+            )
+        evidence = {**evidence, "evidenceSource": "semantic"}
+        reasoning = evidence.get("reasoning", "")
+        return RuleEvaluation(
+            rule_id, rule_name, family, "BLOCKER", decision, reasoning,
+            required_value=1, details=evidence,
         )
 
     def _evaluate_progression_006(

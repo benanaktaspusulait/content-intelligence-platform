@@ -16,7 +16,15 @@ from .contracts import VideoAnalysisResponse, VideoMetadata
 # (e.g. to point ``data_root`` at a tmp dir) rather than reaching into ``app.config``.
 # Declaring it in ``__all__`` tells mypy this is an intentional public re-export, not an
 # unused import.
-__all__ = ["settings", "safe_video_path", "probe", "analyse"]
+__all__ = [
+    "settings",
+    "safe_video_path",
+    "probe",
+    "analyse",
+    "MOTION_SCORE_WEIGHTS",
+    "calculate_motion_heuristic_score",
+    "normalize_motion_intensity",
+]
 
 SAMPLE_TIMES = (0.0, 0.25, 0.5, 0.75, 1.0, 1.5, 2.0, 2.5, 3.0)
 MIN_DELTA_T = 0.10
@@ -27,6 +35,14 @@ NEAR_BLACK_MEAN_THRESHOLD = 0.03
 NEAR_BLACK_PIXEL_THRESHOLD = 0.05
 NEAR_BLACK_PIXEL_RATIO = 0.98
 LOW_BRIGHTNESS_MEAN_THRESHOLD = 0.15
+
+# v3 preserves the v2 motion-component proportions after removing endpoint similarity.
+MOTION_SCORE_WEIGHTS = {
+    "overall": 0.35 / 0.90,
+    "opening": 0.25 / 0.90,
+    "density": 0.20 / 0.90,
+    "ending": 0.10 / 0.90,
+}
 
 
 @dataclass(frozen=True)
@@ -141,8 +157,30 @@ def _feature(value: float, confidence: float, evidence: str, ranges: list[list[f
     }
 
 
-def _intervals(samples: list[SampledFrame]) -> list[dict[str, float]]:
-    intervals: list[dict[str, float]] = []
+def normalize_motion_intensity(change_rate: float) -> tuple[float, float, bool]:
+    """Return the pre-clamp value, bounded intensity, and saturation flag."""
+    pre_clamp = max(0.0, change_rate) / MOTION_RATE_SCALE
+    clipped = max(0.0, min(1.0, pre_clamp))
+    return pre_clamp, clipped, pre_clamp >= 1.0
+
+
+def calculate_motion_heuristic_score(
+    overall: float,
+    opening: float,
+    density: float,
+    ending: float,
+) -> float:
+    value = 100 * (
+        MOTION_SCORE_WEIGHTS["overall"] * overall
+        + MOTION_SCORE_WEIGHTS["opening"] * opening
+        + MOTION_SCORE_WEIGHTS["density"] * density
+        + MOTION_SCORE_WEIGHTS["ending"] * ending
+    )
+    return round(max(0.0, min(100.0, value)), 2)
+
+
+def _intervals(samples: list[SampledFrame]) -> list[dict[str, Any]]:
+    intervals: list[dict[str, Any]] = []
     for first, second in zip(samples, samples[1:], strict=False):
         t1 = first.actual_time if first.actual_time is not None else first.requested_time
         t2 = second.actual_time if second.actual_time is not None else second.requested_time
@@ -153,12 +191,17 @@ def _intervals(samples: list[SampledFrame]) -> list[dict[str, float]]:
             cv2.cvtColor(first.frame, cv2.COLOR_BGR2GRAY),
             cv2.cvtColor(second.frame, cv2.COLOR_BGR2GRAY),
         ))) / 255
+        visual_change_rate = raw_difference / max(delta_t, MIN_DELTA_T)
+        pre_clamp, clipped, saturated = normalize_motion_intensity(visual_change_rate)
         intervals.append({
             "startTime": max(0.0, t1),
             "endTime": max(t1, t2),
             "deltaTSeconds": delta_t,
             "rawFrameDifference": raw_difference,
-            "visualChangeRate": raw_difference / max(delta_t, MIN_DELTA_T),
+            "visualChangeRate": visual_change_rate,
+            "normalizedMotionIntensityPreClamp": pre_clamp,
+            "normalizedMotionIntensity": clipped,
+            "normalizationSaturated": saturated,
         })
     return intervals
 
@@ -228,9 +271,9 @@ def analyse(relative_path: str) -> VideoAnalysisResponse:
     motion_interval_density = sum(
         item["deltaTSeconds"] for item in intervals if item["visualChangeRate"] >= MOTION_RATE_THRESHOLD
     ) / max(total_interval_time, MIN_DELTA_T)
-    opening_intensity = min(1.0, opening_rate / MOTION_RATE_SCALE)
-    overall_intensity = min(1.0, overall_rate / MOTION_RATE_SCALE)
-    ending_evidence = min(1.0, ending_rate / MOTION_RATE_SCALE)
+    _, opening_intensity, _ = normalize_motion_intensity(opening_rate)
+    _, overall_intensity, _ = normalize_motion_intensity(overall_rate)
+    _, ending_evidence, _ = normalize_motion_intensity(ending_rate)
     if opening_rate < MIN_DELTA_T:
         escalation_proxy = 0.0
     else:
@@ -249,15 +292,11 @@ def analyse(relative_path: str) -> VideoAnalysisResponse:
         max(0.0, min(1.0, 0.35 * decode_success_ratio + 0.35 * temporal_coverage + 0.30 * min(1.0, valid_pair_count / 8))),
         4,
     )
-    motion_heuristic_score = round(
-        100 * (
-            0.35 * overall_intensity
-            + 0.25 * opening_intensity
-            + 0.20 * motion_interval_density
-            + 0.10 * ending_evidence
-            + 0.10 * first_last_similarity
-        ),
-        2,
+    motion_heuristic_score = calculate_motion_heuristic_score(
+        overall_intensity,
+        opening_intensity,
+        motion_interval_density,
+        ending_evidence,
     )
     classification = (
         "HIGH_MOTION_EVIDENCE" if motion_heuristic_score >= 60
@@ -325,5 +364,12 @@ def analyse(relative_path: str) -> VideoAnalysisResponse:
         motion=motion,
         visualSimilarity=visual_similarity,
         darkFrameCandidates=dark_candidates,
-        evidence={"sampleTimes": times, "intervals": intervals, "darkFrameCount": len(dark_candidates)},
+        evidence={
+            "sampleTimes": times,
+            "intervals": intervals,
+            "darkFrameCount": len(dark_candidates),
+            "motionScoreWeights": MOTION_SCORE_WEIGHTS,
+            "motionNormalizationReference": MOTION_RATE_SCALE,
+            "saturatedIntervalCount": sum(1 for item in intervals if item["normalizationSaturated"]),
+        },
     )

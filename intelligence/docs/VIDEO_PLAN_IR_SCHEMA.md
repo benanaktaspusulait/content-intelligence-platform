@@ -61,6 +61,10 @@ interface VideoPlanIR {
                                        // by the author. Verified (not trusted) by
                                        // CONCEPT_007 via semantic evaluation.
                                        // Optional; defaults to 1 when absent.
+    primaryObject?: string;            // Primary non-living object carrying the mechanic
+    mechanicCarrier?: "OBJECT" | "OBJECT_INTERACTION" | "PRIMARY_AGENT" |
+                      "SECONDARY_AGENT" | "MULTI_AGENT" | "UNKNOWN";
+    causalParticipants?: string[];    // Living agents causally participating in the mechanic
   };
 
   // Hook
@@ -155,6 +159,11 @@ interface Beat {
                                       // (pre-1.2 IRs are assumed on-topic).
 }
 ```
+
+The optional `primaryObject`, `mechanicCarrier`, and `causalParticipants` fields
+provide explicit evidence for the scoped `CONCEPT_009` rule. They describe causal
+participation, not every character visible in a frame; absent or ambiguous fields
+are evaluated semantically and must not be guessed as a pass.
 
 ---
 
