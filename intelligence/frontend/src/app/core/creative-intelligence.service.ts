@@ -336,6 +336,35 @@ export interface ReachFurtherResearch {
   disclaimer: string;
 }
 
+export interface OperationalGuardDecision {
+  id: string;
+  guardType: 'DISTRIBUTION' | 'RETENTION' | string;
+  platform: string;
+  scopeType: string;
+  state: string;
+  policyVersion: string;
+  evidenceCount: number;
+  metricValue: number | null;
+  evaluatedAt: string;
+  evidence: string;
+}
+
+export interface OperationalGuardSnapshot {
+  platform: string;
+  enabled: boolean;
+  decisions: OperationalGuardDecision[];
+  policyVersion: string;
+}
+
+export interface CaptionResponse {
+  caption: string;
+  hashtags: string[];
+  platform: string;
+  language: string;
+  characterCount: number;
+  withinLimit: boolean;
+}
+
 export interface AnalysisStatus {
   videoId: string;
   hasCompletedAnalysis: boolean;
@@ -559,6 +588,27 @@ export class CreativeIntelligenceService {
 
   getReachFurtherResearch(platform = 'facebook'): Observable<ReachFurtherResearch> {
     return this.http.get<ReachFurtherResearch>(`${this.baseUrl}/research/reach-further`, { params: { platform } });
+  }
+
+  getOperationalGuards(platform = 'facebook', evaluate = false): Observable<OperationalGuardSnapshot> {
+    return this.http.get<OperationalGuardSnapshot>(`${this.baseUrl}/performance/operational-guards`, {
+      params: { platform, evaluate: String(evaluate) },
+    });
+  }
+
+  generateCaption(request: {
+    videoTitle: string;
+    videoDescription: string;
+    platform: string;
+    language?: string;
+    contentType?: string;
+    maxLength?: number;
+    hashtagCount?: number;
+  }): Observable<CaptionResponse> {
+    return this.http.post<CaptionResponse>('/api/v1/captions/generate', {
+      targetAudience: 'kids 3-6 years old',
+      ...request,
+    });
   }
 
   getReachFurtherComparison(platform = 'facebook'): Observable<ReachFurtherComparison> {

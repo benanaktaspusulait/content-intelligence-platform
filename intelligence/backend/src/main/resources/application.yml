@@ -98,6 +98,14 @@ pompom:
       redirect-uri: ${META_OAUTH_REDIRECT_URI:}
   discovery-score:
     non-follower-weight: 0.65
+  operational-guards:
+    enabled: ${OPERATIONAL_GUARDS_ENABLED:true}
+    minimum-mature-observations: ${OPERATIONAL_GUARDS_MINIMUM_MATURE_OBSERVATIONS:3}
+    maturity-hours: ${OPERATIONAL_GUARDS_MATURITY_HOURS:24}
+    recommendation-percentage-floor: ${OPERATIONAL_GUARDS_RECOMMENDATION_FLOOR:20.0}
+    completion-rate-floor: ${OPERATIONAL_GUARDS_COMPLETION_FLOOR:35.0}
+    average-watch-seconds-floor: ${OPERATIONAL_GUARDS_AVERAGE_WATCH_SECONDS_FLOOR:4.0}
+    policy-version: ${OPERATIONAL_GUARDS_POLICY_VERSION:operational-guards-v1}
     us-audience-weight: 0.35
     us-audience-target-percentage: 20
   openart:

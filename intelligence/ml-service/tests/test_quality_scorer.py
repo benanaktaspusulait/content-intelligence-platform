@@ -14,6 +14,9 @@ from app.quality.contracts import (
     ParserMetadata,
     PriorityFix,
     QualityReport,
+    RuleEvaluation,
+    RuleOutcome,
+    Severity,
 )
 from app.rules.rule_engine import RuleEngine
 from app.scoring.quality_scorer import QualityScorer
@@ -78,3 +81,20 @@ def test_timeline_data_keys_align_with_response_dto() -> None:
 def test_score_breakdowns_are_tuple() -> None:
     enhanced, _ = _enhanced()
     assert isinstance(enhanced.score_breakdowns, tuple)
+
+
+def test_recommendation_generation_handles_list_diagnostics() -> None:
+    evaluation = RuleEvaluation(
+        rule_id="PRODUCIBILITY_003",
+        rule_name="Generation Risk Tags",
+        family="producibility",
+        outcome=RuleOutcome.FAIL,
+        configured_severity=Severity.CRITICAL,
+        message="Cloth simulation risk detected.",
+        actual_value=["CLOTH"],
+        details={"recommendation": "Review cloth simulation risk."},
+    )
+
+    recommendation = QualityScorer()._get_rule_recommendation("PRODUCIBILITY_003", evaluation)
+
+    assert recommendation == "Review cloth simulation risk."

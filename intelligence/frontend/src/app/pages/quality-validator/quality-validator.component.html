@@ -24,6 +24,13 @@
       </div>
     </div>
     <div class="card-body">
+      <div class="linked-context">
+        <label>Content ID (optional for render-authorizing evidence)<input type="number" min="1" [(ngModel)]="contentId" [disabled]="loading" /></label>
+        <label>Prompt version ID<input type="number" min="1" [(ngModel)]="promptVersionId" [disabled]="loading" /></label>
+        <small *ngIf="contentId && promptVersionId">Linked mode: validation will use the immutable stored prompt and can produce render evidence.</small>
+        <small *ngIf="!contentId || !promptVersionId">Exploratory mode: this result will not authorize a render.</small>
+        <a *ngIf="validationRecordId" class="btn btn-outline-secondary btn-sm" [href]="renderQueueUrl()">Open render queue</a>
+      </div>
       <textarea
         [(ngModel)]="prompt"
         class="form-control prompt-input"
@@ -44,7 +51,7 @@
       <button 
         class="btn btn-primary btn-lg"
         (click)="validatePrompt()"
-        [disabled]="loading || prompt.length < 100">
+        [disabled]="loading || ((!contentId || !promptVersionId) && prompt.length < 100)">
         <span *ngIf="!loading">🚀 Validate Quality</span>
         <span *ngIf="loading">
           <span class="spinner"></span> Analyzing...
@@ -92,6 +99,7 @@
       </div>
       <div class="ruleset-version">
         <small>Ruleset v{{ report.rulesetVersion }}</small>
+        <small *ngIf="validationRecordId"> · Evidence record #{{ validationRecordId }}</small>
       </div>
     </div>
 

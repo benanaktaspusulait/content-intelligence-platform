@@ -4,6 +4,11 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
 import org.slf4j.Logger;
@@ -25,17 +30,21 @@ public class QualityMlClient {
 
   private final RestClient restClient;
   private final ObjectMapper mlObjectMapper;
+  private final String mlServiceUrl;
+  private final HttpClient httpClient;
 
   public QualityMlClient(
       @Value("${ml.service.url:http://localhost:8001}") String mlServiceUrl,
       RestClient.Builder restClientBuilder) {
+    this.mlServiceUrl = mlServiceUrl;
+    this.httpClient = HttpClient.newBuilder().version(HttpClient.Version.HTTP_1_1).build();
+    this.mlObjectMapper =
+        new ObjectMapper().setPropertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE);
     this.restClient =
         restClientBuilder
             .baseUrl(mlServiceUrl)
             .defaultHeader("Content-Type", "application/json")
             .build();
-    this.mlObjectMapper =
-        new ObjectMapper().setPropertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE);
 
     log.info("ML client initialized with base URL: {}", mlServiceUrl);
   }
@@ -60,24 +69,24 @@ public class QualityMlClient {
             "PRE_RENDER");
 
     try {
-      String body =
-          restClient
-          .post()
-          .uri("/api/v1/quality/validate")
-          .body(request)
-          .retrieve()
-          .onStatus(
-              HttpStatusCode::is4xxClientError,
-              (req, res) -> {
-                throw new QualityValidationException(
-                    "Validation failed: " + res.getStatusText(), "VALIDATION_ERROR");
-              })
-          .onStatus(
-              HttpStatusCode::is5xxServerError,
-              (req, res) -> {
-                throw new MlServiceException("ML service error: " + res.getStatusText());
-              })
-          .body(String.class);
+      String requestBody = mlObjectMapper.writeValueAsString(request);
+      HttpRequest httpRequest =
+          HttpRequest.newBuilder(
+                  URI.create(mlServiceUrl + "/api/v1/quality/validate"))
+              .header("Content-Type", "application/json")
+              .POST(HttpRequest.BodyPublishers.ofString(requestBody, StandardCharsets.UTF_8))
+              .build();
+      HttpResponse<String> response =
+          httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString(StandardCharsets.UTF_8));
+      String body = response.body();
+      if (response.statusCode() >= 400 && response.statusCode() < 500) {
+        throw new QualityValidationException(
+            "Validation failed: HTTP " + response.statusCode() + " " + body,
+            "VALIDATION_ERROR");
+      }
+      if (response.statusCode() >= 500) {
+        throw new MlServiceException("ML service error: HTTP " + response.statusCode());
+      }
       return readBody(body, QualityReportDto.class);
 
     } catch (Exception ex) {

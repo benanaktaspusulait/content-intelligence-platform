@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class InterventionService {
   public static final String MANUAL_ENGAGEMENT = "MANUAL_ENGAGEMENT";
+  public static final String MANUAL_DISTRIBUTION = "MANUAL_DISTRIBUTION";
   private final JdbcClient jdbc;
 
   public InterventionService(JdbcClient jdbc) {
@@ -23,30 +24,41 @@ public class InterventionService {
   public InterventionView record(UUID videoId, InterventionRequest request, String actor) {
     if (request.eventTime() == null) throw new IllegalArgumentException("eventTime is required");
     String platform = request.platform().toLowerCase(Locale.ROOT);
+    String eventType = request.eventType() == null ? MANUAL_ENGAGEMENT : request.eventType();
+    if (!MANUAL_ENGAGEMENT.equals(eventType) && !MANUAL_DISTRIBUTION.equals(eventType)) {
+      throw new IllegalArgumentException("Unsupported intervention event type: " + eventType);
+    }
     UUID id = UUID.randomUUID();
     jdbc.sql(
             """
             INSERT INTO intervention_events(id,video_id,platform,event_type,event_time,details)
             VALUES (:id,:video,:platform,:type,:time,
               jsonb_strip_nulls(jsonb_build_object('notes',:notes,'viewsBefore',CAST(:before AS bigint),
-                'viewsAfter',CAST(:after AS bigint))))
+                'viewsAfter',CAST(:after AS bigint),'channelType',:channelType,
+                'externalChannelRef',:externalChannelRef,'externalChannelLabel',:externalChannelLabel,
+                'campaignTag',:campaignTag))
             """)
         .param("id", id)
         .param("video", videoId)
         .param("platform", platform)
-        .param("type", MANUAL_ENGAGEMENT)
+        .param("type", eventType)
         .param("time", OffsetDateTime.ofInstant(request.eventTime(), ZoneOffset.UTC))
         .param("notes", request.notes())
         .param("before", request.viewsBefore())
         .param("after", request.viewsAfter())
+        .param("channelType", request.channelType())
+        .param("externalChannelRef", request.externalChannelRef())
+        .param("externalChannelLabel", request.externalChannelLabel())
+        .param("campaignTag", request.campaignTag())
         .update();
     jdbc.sql(
             """
             INSERT INTO audit_events(actor,action,entity_type,entity_id,reason,new_state)
-            VALUES (:actor,'MANUAL_ENGAGEMENT_INTERVENTION_RECORDED','INTERVENTION_EVENT',:id,:notes,
+            VALUES (:actor,:auditAction,'INTERVENTION_EVENT',:id,:notes,
               jsonb_build_object('videoId',CAST(:video AS uuid),'platform',:platform,'eventTime',:time))
             """)
         .param("actor", actor)
+        .param("auditAction", eventType + "_INTERVENTION_RECORDED")
         .param("id", id)
         .param("video", videoId)
         .param("platform", platform)
@@ -118,7 +130,9 @@ public class InterventionService {
   }
 
   public record InterventionRequest(
-      String platform, Instant eventTime, String notes, Long viewsBefore, Long viewsAfter) {}
+      String platform, Instant eventTime, String notes, Long viewsBefore, Long viewsAfter,
+      String eventType, String channelType, String externalChannelRef,
+      String externalChannelLabel, String campaignTag) {}
 
   public record InterventionView(
       UUID id,

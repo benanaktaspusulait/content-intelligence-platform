@@ -131,6 +131,13 @@ const VARIANT_TYPE_LABELS: Record<string, string> = {
         }
       </section>
 
+      <section class="section-band social-copy-panel" aria-labelledby="social-copy-heading">
+        <div class="section-heading"><div><span class="eyebrow">PUBLICATION COPY</span><h2 id="social-copy-heading">Social caption</h2></div><span class="data-freshness">Generated from selected video</span></div>
+        <div class="copy-controls"><label>Platform<select [value]="captionPlatform()" (change)="captionPlatform.set(($any($event.target)).value)"><option value="INSTAGRAM">Instagram</option><option value="FACEBOOK">Facebook</option><option value="TIKTOK">TikTok</option><option value="YOUTUBE">YouTube</option></select></label><label>Description<input type="text" [value]="captionDescription()" (input)="captionDescription.set(($any($event.target)).value)" placeholder="Short description for the generator" /></label><button class="button button--primary" type="button" [disabled]="captionLoading()" (click)="generateCaption()">{{ captionLoading() ? 'Generating…' : 'Generate copy' }}</button></div>
+        @if (captionError()) { <div class="state-panel state-panel--error compact-state"><strong>Caption generation failed</strong><p>{{ captionError() }}</p></div> }
+        @if (caption(); as copy) { <div class="copy-result"><textarea [value]="copy.caption" readonly rows="4" aria-label="Generated caption"></textarea><p class="muted">{{ copy.characterCount }} characters · {{ copy.hashtags.join(' ') }}</p></div> }
+      </section>
+
       @if (!activeFile()!.ingested) {
         <section class="section-band un-ingested-state"><span aria-hidden="true">i</span><div><strong>Performance evidence requires ingest and imported platform data</strong><p>This mounted file remains playable. Ingesting creates its evidence identity; it does not invent metrics.</p></div></section>
       } @else {
@@ -263,6 +270,11 @@ export class VideoDetailPage implements OnDestroy {
   protected readonly video = signal<VideoApiRecord | null>(null);
   protected readonly videoVariants = signal<VideoVariant[]>([]);
   protected readonly variantsError = signal('');
+  protected readonly captionPlatform = signal('INSTAGRAM');
+  protected readonly captionDescription = signal('');
+  protected readonly captionLoading = signal(false);
+  protected readonly captionError = signal('');
+  protected readonly caption = signal<import('../core/creative-intelligence.service').CaptionResponse | null>(null);
   protected readonly summary = signal<ReachFurtherSummary | null>(null);
   protected readonly trajectory = signal<TrajectoryView | null>(null);
   protected readonly growth = signal<PlatformGrowthProfile | null>(null);
@@ -346,6 +358,19 @@ export class VideoDetailPage implements OnDestroy {
       else if (folder) this.loadFolder(folder, file);
       else { this.loading.set(false); this.error.set('Choose a creative folder from Video Library.'); }
     });
+  }
+
+  protected generateCaption(): void {
+    const title = this.activeFile()?.name || this.folderName() || 'Pompom Hills video';
+    this.captionLoading.set(true); this.captionError.set('');
+    this.service.generateCaption({
+      videoTitle: title,
+      videoDescription: this.captionDescription().trim() || 'A short Pompom Hills children\'s video.',
+      platform: this.captionPlatform(),
+      language: 'en',
+      contentType: 'entertainment',
+      hashtagCount: 5,
+    }).subscribe({ next: value => { this.caption.set(value); this.captionLoading.set(false); }, error: response => { this.captionError.set(response.error?.message || 'The caption service did not respond.'); this.captionLoading.set(false); } });
   }
 
   ngOnDestroy(): void { this.analysisPollSubscription?.unsubscribe(); }

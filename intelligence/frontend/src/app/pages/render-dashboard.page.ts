@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
+import { ActivatedRoute } from '@angular/router';
 import { interval } from 'rxjs';
 import { startWith, switchMap } from 'rxjs/operators';
 
@@ -112,6 +113,12 @@ interface RenderAsset {
       </header>
 
       <div class="dashboard-content">
+        <section class="queue-panel">
+          <div class="queue-panel-heading"><div><span class="eyebrow">QUEUE RENDER</span><h2>Start a validated render</h2></div><span class="data-freshness">Validation evidence required</span></div>
+          <div class="queue-fields"><label>Content ID<input type="number" min="1" [value]="queueContentId()" (input)="queueContentId.set(($any($event.target)).value)" /></label><label>Prompt version ID<input type="number" min="1" [value]="queuePromptVersionId()" (input)="queuePromptVersionId.set(($any($event.target)).value)" /></label><label>Validation record ID<input type="number" min="1" [value]="queueValidationId()" (input)="queueValidationId.set(($any($event.target)).value)" /></label><label>Job type<select [value]="queueJobType()" (change)="queueJobType.set(($any($event.target)).value)"><option value="VIDEO">VIDEO</option><option value="FIRST_FRAME">FIRST_FRAME</option></select></label><label>OpenArt model<input type="text" [value]="queueModel()" (input)="queueModel.set(($any($event.target)).value)" /></label><button type="button" class="queue-button" [disabled]="queueLoading()" (click)="queueRender()">{{ queueLoading() ? 'Queueing…' : 'Queue render' }}</button></div>
+          @if (queueError()) { <p class="queue-error">{{ queueError() }}</p> }
+          @if (queuedJobId()) { <p class="queue-success">Render queued: {{ queuedJobId() }}</p> }
+        </section>
         <div class="jobs-list">
           @if (loading()) {
             <div class="loading-state">
@@ -206,6 +213,15 @@ interface RenderAsset {
                           @if (job.qaResult.characterIdentityIssues) {
                             <p>{{ job.qaResult.characterIdentityIssues }}</p>
                           }
+                          <div class="review-controls">
+                            <input type="text" placeholder="Reviewer" [value]="reviewer()" (input)="reviewer.set(($any($event.target)).value)" />
+                            <input type="password" placeholder="QA review token" [value]="reviewToken()" (input)="reviewToken.set(($any($event.target)).value)" />
+                            <input type="text" placeholder="Decision notes" [value]="reviewNotes()" (input)="reviewNotes.set(($any($event.target)).value)" />
+                            <div class="review-actions">
+                              <button type="button" (click)="decideQa(job, 'APPROVED')" [disabled]="reviewingQa() === job.id">Approve</button>
+                              <button type="button" (click)="decideQa(job, 'REJECTED')" [disabled]="reviewingQa() === job.id">Reject</button>
+                            </div>
+                          </div>
                         </div>
                       }
                     </div>
@@ -642,11 +658,23 @@ export class RenderDashboardPage implements OnInit, OnDestroy {
   asset = signal<RenderAsset | null>(null);
   assetLoading = signal(false);
   assetError = signal('');
+  queueContentId = signal('');
+  queuePromptVersionId = signal('');
+  queueValidationId = signal('');
+  queueJobType = signal('VIDEO');
+  queueModel = signal('seedance-2.0-mini');
+  queueLoading = signal(false);
+  queueError = signal('');
+  queuedJobId = signal('');
+  reviewer = signal('local-user');
+  reviewToken = signal('');
+  reviewNotes = signal('');
+  reviewingQa = signal<string | null>(null);
 
   private readonly apiUrl = '/api/v1/render-jobs';
   private notificationStream: EventSource | null = null;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private route: ActivatedRoute) {}
 
   loadAsset(id: string) {
     this.assetLoading.set(true); this.assetError.set(''); this.asset.set(null);
@@ -656,7 +684,48 @@ export class RenderDashboardPage implements OnInit, OnDestroy {
     });
   }
 
+  queueRender(): void {
+    const contentId = Number(this.queueContentId());
+    const promptVersionId = Number(this.queuePromptVersionId());
+    const validationRecordId = Number(this.queueValidationId());
+    if (![contentId, promptVersionId, validationRecordId].every(Number.isInteger) || [contentId, promptVersionId, validationRecordId].some(value => value <= 0)) {
+      this.queueError.set('Content, prompt version, and validation record IDs are required.');
+      return;
+    }
+    this.queueLoading.set(true); this.queueError.set(''); this.queuedJobId.set('');
+    this.http.post<{ renderJobId: string }>('/api/v1/render-jobs', {
+      contentId, promptVersionId, validationRecordId,
+      jobType: this.queueJobType(), openartModel: this.queueModel().trim() || 'seedance-2.0-mini',
+      openartParams: {}, requestPromptSha256: null,
+    }, { headers: { 'Idempotency-Key': crypto.randomUUID() } }).subscribe({
+      next: response => { this.queueLoading.set(false); this.queuedJobId.set(response.renderJobId); this.loadJobs(0); },
+      error: err => { this.queueLoading.set(false); this.queueError.set(err.error?.detail || err.error?.message || 'Render could not be queued.'); },
+    });
+  }
+
+  decideQa(job: RenderJob, decision: 'APPROVED' | 'REJECTED'): void {
+    if (!job.qaResult?.id || !this.reviewToken().trim()) {
+      this.error.set('Enter the configured QA review token before submitting a decision.');
+      return;
+    }
+    this.reviewingQa.set(job.id);
+    this.http.post(`/api/v1/qa/reviews/${job.qaResult.id}/decision`, {
+      decision,
+      reviewer: this.reviewer().trim() || 'local-user',
+      notes: this.reviewNotes().trim(),
+    }, { headers: { 'X-QA-Review-Token': this.reviewToken().trim() } }).subscribe({
+      next: () => { this.reviewingQa.set(null); this.reviewNotes.set(''); this.loadJobs(this.pageNumber()); },
+      error: err => { this.reviewingQa.set(null); this.error.set(err.error?.detail || err.error?.message || 'QA decision could not be saved.'); },
+    });
+  }
+
+
   ngOnInit() {
+    this.route.queryParamMap.subscribe(params => {
+      this.queueContentId.set(params.get('contentId') || '');
+      this.queuePromptVersionId.set(params.get('promptVersionId') || '');
+      this.queueValidationId.set(params.get('validationRecordId') || '');
+    });
     this.connectLiveNotifications();
     // Poll every 5 seconds
     interval(5000)

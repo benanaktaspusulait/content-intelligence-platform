@@ -168,51 +168,48 @@ class QualityScorer:
 
     def _get_rule_recommendation(self, rule_id: str, evaluation: RuleEvaluation) -> str | None:
         """Get specific recommendation for a failed rule."""
-
-        recommendations_map = {
-            "CONCEPT_006": (
-                f"Add {4 - (evaluation.actual_value or 0)} more visually distinct consequences. "
+        # Keep rule-specific formatting lazy. Evaluation values are deliberately
+        # heterogeneous (for example, producibility diagnostics may be a list),
+        # so building every f-string up front can crash on an unrelated rule.
+        if rule_id == "CONCEPT_006":
+            count = evaluation.actual_value if isinstance(evaluation.actual_value, (int, float)) else 0
+            return (
+                f"Add {max(0, 4 - count)} more visually distinct consequences. "
                 "Consider introducing new obstacles or props."
-            ),
-            "BEAT_004": (
+            )
+        if rule_id == "BEAT_004":
+            percentage = evaluation.actual_value if isinstance(evaluation.actual_value, (int, float)) else 0
+            return (
                 f"Reduce time in '{evaluation.details.get('state_id', 'dominant state')}' by "
-                f"~{(evaluation.actual_value or 0) - 25:.0f}%. Add transitions or new visual states."
-            ),
-            "REPETITION_002": (
+                f"~{percentage - 25:.0f}%. Add transitions or new visual states."
+            )
+        if rule_id == "REPETITION_002":
+            return (
                 f"Reduce '{evaluation.details.get('action', 'repeated action')}' from "
                 f"{evaluation.actual_value} to 2-3 occurrences with escalation."
-            ),
-            "REPETITION_003": (
-                "Break the cycle after 2 iterations. Introduce new physical element "
-                "(break, obstacle, or character intervention)."
-            ),
-            "NOVELTY_001": (
+            )
+        if rule_id == "REPETITION_003":
+            return "Break the cycle after 2 iterations. Introduce new physical element (break, obstacle, or character intervention)."
+        if rule_id == "NOVELTY_001":
+            return (
                 f"Add 1-2 new consequences between {evaluation.details.get('gap_start', '?')}s "
                 f"and {evaluation.details.get('gap_end', '?')}s."
-            ),
-            "PROGRESSION_005": (
-                "Add new physical consequences in middle section (4-11s). Avoid pure dialogue variations."
-            ),
-            "ESCALATION_004": (
-                f"Move final escalation earlier (before {evaluation.threshold_value:.0f}%) "
-                "or strengthen middle section."
             )
-            if evaluation.threshold_value is not None
-            else "Move final escalation earlier.",
-            "PAYOFF_001": (
-                "Change final beat. Make it bigger, add twist, or introduce new element. "
-                "Don't repeat opening."
-            ),
-            "PRODUCIBILITY_001": (
-                "Simplify complex operations. Reduce simultaneous hand-object interactions "
-                "or morphing effects."
-            ),
-            "CONSISTENCY_001": (
-                "Maintain consistent physics rule throughout, or justify rule change as part of concept."
-            ),
-        }
+        if rule_id == "PROGRESSION_005":
+            return "Add new physical consequences in middle section (4-11s). Avoid pure dialogue variations."
+        if rule_id == "ESCALATION_004":
+            if evaluation.threshold_value is not None:
+                return f"Move final escalation earlier (before {evaluation.threshold_value:.0f}%) or strengthen middle section."
+            return "Move final escalation earlier."
+        if rule_id == "PAYOFF_001":
+            return "Change final beat. Make it bigger, add twist, or introduce new element. Don't repeat opening."
+        if rule_id == "PRODUCIBILITY_001":
+            return "Simplify complex operations. Reduce simultaneous hand-object interactions or morphing effects."
+        if rule_id == "CONSISTENCY_001":
+            return "Maintain consistent physics rule throughout, or justify rule change as part of concept."
+
         configured = evaluation.details.get("recommendation")
-        return recommendations_map.get(rule_id) or (str(configured).strip() if configured else None)
+        return str(configured).strip() if configured else None
 
     def _identify_top_strengths(self, breakdowns: tuple[ScoreBreakdown, ...]) -> list[str]:
         """Identify top strengths across all families."""

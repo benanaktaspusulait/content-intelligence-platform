@@ -28,6 +28,8 @@ interface QualityReport {
   timelineData: TimelineData;
 }
 
+interface LinkedValidationResponse { validationRecordId: number; report: QualityReport; }
+
 interface RuleEvaluation {
   ruleId: string;
   ruleName: string;
@@ -102,6 +104,9 @@ interface StateSegment {
 })
 export class QualityValidatorComponent {
   prompt: string = '';
+  contentId: string = '';
+  promptVersionId: string = '';
+  validationRecordId: number | null = null;
   report: QualityReport | null = null;
   loading: boolean = false;
   error: string | null = null;
@@ -154,8 +159,13 @@ Intensity: 4`;
 
 
   validatePrompt(): void {
-    if (!this.prompt || this.prompt.length < 100) {
+    const linked = Boolean(this.contentId.trim() && this.promptVersionId.trim());
+    if (!linked && (!this.prompt || this.prompt.length < 100)) {
       this.error = 'Prompt must be at least 100 characters';
+      return;
+    }
+    if (linked && (![Number(this.contentId), Number(this.promptVersionId)].every(Number.isInteger) || [Number(this.contentId), Number(this.promptVersionId)].some(value => value <= 0))) {
+      this.error = 'Content ID and prompt version ID must be positive integers';
       return;
     }
 
@@ -163,15 +173,24 @@ Intensity: 4`;
     this.error = null;
     this.report = null;
 
-    const apiUrl = '/api/quality/validate';
-    const payload = {
-      prompt: this.prompt,
-      rulesetVersion: 'latest'
-    };
+    const apiUrl = linked ? '/api/v1/intelligence/quality/validate' : '/api/quality/validate';
+    const payload = linked ? {
+      prompt: '',
+      rulesetVersion: 'latest',
+      contentId: Number(this.contentId),
+      promptVersionId: Number(this.promptVersionId),
+    } : { prompt: this.prompt, rulesetVersion: 'latest' };
 
-    this.http.post<QualityReport>(apiUrl, payload).subscribe({
+    this.http.post<QualityReport | LinkedValidationResponse>(apiUrl, payload).subscribe({
       next: (response) => {
-        this.report = response;
+        if (linked) {
+          const linkedResponse = response as LinkedValidationResponse;
+          this.validationRecordId = linkedResponse.validationRecordId;
+          this.report = linkedResponse.report;
+        } else {
+          this.validationRecordId = null;
+          this.report = response as QualityReport;
+        }
         this.loading = false;
       },
       error: (err) => {
@@ -186,12 +205,14 @@ Intensity: 4`;
     this.prompt = '';
     this.report = null;
     this.error = null;
+    this.validationRecordId = null;
   }
 
   loadSamplePrompt(): void {
     this.prompt = this.samplePrompt;
     this.report = null;
     this.error = null;
+    this.validationRecordId = null;
   }
 
   getStatusBadgeClass(): string {
@@ -265,5 +286,9 @@ Intensity: 4`;
 
   formatPercentage(value: number): string {
     return `${(value * 100).toFixed(0)}%`;
+  }
+
+  renderQueueUrl(): string {
+    return `/render?contentId=${encodeURIComponent(this.contentId)}&promptVersionId=${encodeURIComponent(this.promptVersionId)}&validationRecordId=${this.validationRecordId}`;
   }
 }
