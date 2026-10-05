@@ -22,7 +22,7 @@ services:
     ports: ["8000:8000"]
     volumes:
       - "./data:/data"
-      - "../:/data/library:ro"
+      - "${POMPOM_LIBRARY_ROOT:-../../yuvarlak-dunya}:/data/library:ro"
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
       interval: 5s
@@ -57,7 +57,7 @@ services:
     ports: ["8080:8080"]
     volumes:
       - "./data:/data"
-      - "../:/data/library:ro"
+      - "${POMPOM_LIBRARY_ROOT:-../../yuvarlak-dunya}:/data/library:ro"
     depends_on:
       postgres: { condition: service_healthy }
       ml-service: { condition: service_healthy }
@@ -83,7 +83,7 @@ services:
     expose: ["8081"]
     volumes:
       - "./data:/data"
-      - "../:/data/library:ro"
+      - "${POMPOM_LIBRARY_ROOT:-../../yuvarlak-dunya}:/data/library:ro"
     depends_on:
       postgres: { condition: service_healthy }
       backend: { condition: service_healthy }

@@ -365,6 +365,11 @@ export interface CaptionResponse {
   withinLimit: boolean;
 }
 
+export interface MetadataFile {
+  relativePath: string;
+  content: string;
+}
+
 export interface AnalysisStatus {
   videoId: string;
   hasCompletedAnalysis: boolean;
@@ -504,6 +509,12 @@ export class CreativeIntelligenceService {
 
   mediaContentUrl(relativePath: string): string {
     return `${this.baseUrl}/videos/content?path=${encodeURIComponent(relativePath)}`;
+  }
+
+  getMetadataFile(relativePath: string): Observable<MetadataFile> {
+    return this.http.get<MetadataFile>(`${this.baseUrl}/videos/metadata`, {
+      params: { path: relativePath },
+    });
   }
 
   ingestVideo(relativePath: string): Observable<VideoApiRecord> {

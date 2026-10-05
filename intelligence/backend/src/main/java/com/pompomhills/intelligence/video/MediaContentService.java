@@ -3,6 +3,7 @@ package com.pompomhills.intelligence.video;
 import com.pompomhills.intelligence.common.config.PompomProperties;
 import jakarta.persistence.EntityNotFoundException;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Locale;
@@ -59,6 +60,39 @@ public class MediaContentService {
       return new MediaContent(new FileSystemResource(file), contentType, Files.size(file));
     } catch (IOException error) {
       throw new IllegalStateException("Could not open media file", error);
+    }
+  }
+
+  public String readMetadata(String relativePath) {
+    if (relativePath == null || relativePath.isBlank()) {
+      throw new IllegalArgumentException("Metadata path is required");
+    }
+
+    Path configuredRoot = properties.dataRoot().toAbsolutePath().normalize();
+    Path candidate = configuredRoot.resolve(relativePath).normalize();
+    if (!candidate.startsWith(configuredRoot)) {
+      throw new IllegalArgumentException("Metadata path must stay inside the configured data root");
+    }
+
+    String filename = candidate.getFileName() == null
+        ? ""
+        : candidate.getFileName().toString().toLowerCase(Locale.ROOT);
+    if (!filename.equals("social.md") && !filename.equals("youtube.md")) {
+      throw new IllegalArgumentException("Only social.md and youtube.md metadata are readable");
+    }
+
+    try {
+      Path root = configuredRoot.toRealPath();
+      Path file = candidate.toRealPath();
+      if (!file.startsWith(root) || !Files.isRegularFile(file)) {
+        throw new EntityNotFoundException("Metadata file not found: " + relativePath);
+      }
+      if (Files.size(file) > 256 * 1024) {
+        throw new IllegalArgumentException("Metadata file is too large");
+      }
+      return Files.readString(file, StandardCharsets.UTF_8);
+    } catch (IOException error) {
+      throw new IllegalStateException("Could not read metadata file", error);
     }
   }
 

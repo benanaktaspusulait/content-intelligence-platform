@@ -3,6 +3,8 @@ import { RouterLink } from '@angular/router';
 import { catchError, concatMap, forkJoin, from, map, of, toArray } from 'rxjs';
 import { CreativeIntelligenceService, MediaDirectory, MediaFile } from '../core/creative-intelligence.service';
 
+const SOCIAL_REELS_MEDIA_ROOT = 'library/POMPOM_HILLS_PRODUCTION/09_SOCIAL_REELS/new14092026';
+
 export interface MediaFileView extends MediaFile {
   displayName: string;
   folderName: string;
@@ -44,9 +46,14 @@ export function mediaVariant(filename: string): string {
   if (versioned) return `V${versioned[1]} ${versioned[2] === 'original' ? 'Original' : versioned[2].toUpperCase()}`;
   if (stem.endsWith('_hook_endcard_test')) return 'Hook End Card Test';
   if (stem.endsWith('_hook')) return 'Hook';
-  if (stem.endsWith('_hd_1080x1920') || stem.endsWith('_hd')) return 'HD';
+  if (stem.endsWith('_hd_1080x1920') || /_hd(?:_\d+)?$/.test(stem)) return 'HD';
   if (stem.endsWith('_no_text')) return 'No Text';
   return 'Original';
+}
+
+export function isHdFile(filename: string): boolean {
+  const stem = filename.replace(/\.[^.]+$/, '').toLowerCase();
+  return /_hd(?:_\d+)?$/.test(stem) || stem.endsWith('_hd_1080x1920');
 }
 
 export function variantGroupKey(file: MediaFile, folderPath: string): string {
@@ -144,7 +151,7 @@ export class VideoLibraryPage {
   protected readonly error = signal('');
   protected readonly message = signal('');
   protected readonly ingestErrors = signal(0);
-  protected readonly directory = signal('library');
+  protected readonly directory = signal(SOCIAL_REELS_MEDIA_ROOT);
   protected readonly recursive = signal(true);
   protected readonly mediaDirectories = signal<MediaDirectory[]>([]);
   protected readonly selectedPaths = signal<string[]>([]);
@@ -163,10 +170,11 @@ export class VideoLibraryPage {
     return `Ingest ${count} selected folder${count === 1 ? '' : 's'}`;
   });
   protected readonly displayFiles = computed<MediaFileView[]>(() => {
+    const hdFiles = this.mediaFiles().filter(file => isHdFile(file.name));
     const totals = new Map<string, number>();
     const positions = new Map<string, number>();
-    for (const file of this.mediaFiles()) { const key = variantGroupKey(file, this.parentPath(file.relativePath)); totals.set(key, (totals.get(key) || 0) + 1); }
-    return this.mediaFiles().map(file => {
+    for (const file of hdFiles) { const key = variantGroupKey(file, this.parentPath(file.relativePath)); totals.set(key, (totals.get(key) || 0) + 1); }
+    return hdFiles.map(file => {
       const folderPath = this.parentPath(file.relativePath);
       const variant = mediaVariant(file.name);
       const key = variantGroupKey(file, folderPath);
@@ -185,7 +193,7 @@ export class VideoLibraryPage {
   protected readonly resultCount = computed(() => resultCountLabel(this.visibleGroups().length, this.filteredFiles().length));
 
   constructor() {
-    this.service.getMediaDirectories().subscribe({
+    this.service.getMediaDirectories(SOCIAL_REELS_MEDIA_ROOT).subscribe({
       next: folders => { this.mediaDirectories.set(folders); this.directoriesLoading.set(false); },
       error: response => { this.directoriesLoading.set(false); this.error.set(response.error?.message || 'The media folder list could not be loaded.'); },
     });

@@ -1,11 +1,11 @@
 import { ChangeDetectionStrategy, Component, computed, inject, OnDestroy, signal } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
 import { catchError, combineLatest, forkJoin, interval, Observable, of, startWith, Subscription, switchMap } from 'rxjs';
 import {
   AnalysisStatus,
   CreativeIntelligenceService,
   DiscoveryProfile,
+  MetadataFile,
   MediaFile,
   PlatformGrowthProfile,
   ReachFurtherSummary,
@@ -13,11 +13,22 @@ import {
   VideoApiRecord,
   VideoVariant,
 } from '../core/creative-intelligence.service';
-import { mediaVariant } from './video-library.page';
+import { isHdFile, mediaVariant } from './video-library.page';
 
 type PlatformKey = 'facebook' | 'instagram' | 'tiktok' | 'youtube';
+type CaptionPlatform = 'INSTAGRAM' | 'FACEBOOK' | 'TIKTOK' | 'YOUTUBE';
 interface ChartDot { left: number; bottom: number; label: string; }
 interface VariantView extends MediaFile { label: string; }
+interface PublicationCopy {
+  sourceFile: string | null;
+  raw: string;
+  title: string;
+  body: string;
+  hashtags: string;
+  tags: string;
+}
+
+const EMPTY_PUBLICATION_COPY: PublicationCopy = { sourceFile: null, raw: '', title: '', body: '', hashtags: '', tags: '' };
 
 const VARIANT_TYPE_LABELS: Record<string, string> = {
   ORIGINAL: 'Original',
@@ -52,7 +63,7 @@ const VARIANT_TYPE_LABELS: Record<string, string> = {
     } @else if (activeFile()) {
       <section class="review-workspace" aria-label="Video and variants">
         <div class="video-inspection">
-          <div class="video-stage">
+          <div class="video-stage" [class.video-stage--portrait]="isPortrait()">
             <video controls preload="metadata" [src]="mediaUrl()" [attr.aria-label]="'Preview ' + activeFile()!.name"></video>
           </div>
           <div class="selected-file-bar">
@@ -78,6 +89,14 @@ const VARIANT_TYPE_LABELS: Record<string, string> = {
 
       @if (message()) { <p class="form-message studio-message">{{ message() }}</p> }
 
+      <nav class="detail-tabs" aria-label="Video detail sections">
+        <button type="button" [class.is-active]="activeTab() === 'overview'" (click)="activeTab.set('overview')">Overview</button>
+        <button type="button" [class.is-active]="activeTab() === 'publication'" (click)="activeTab.set('publication')">Publication</button>
+        <button type="button" [class.is-active]="activeTab() === 'performance'" (click)="activeTab.set('performance')">Performance</button>
+        <button type="button" [class.is-active]="activeTab() === 'evidence'" (click)="activeTab.set('evidence')">Evidence</button>
+      </nav>
+
+      @if (activeTab() === 'overview') {
       <section class="section-band technical-panel">
         <div class="section-heading"><div><span class="eyebrow">SOURCE FACTS</span><h2>Technical details</h2></div><span class="data-freshness">Real file metadata</span></div>
         <div class="technical-groups">
@@ -113,7 +132,7 @@ const VARIANT_TYPE_LABELS: Record<string, string> = {
           @if (!analysisStatus()?.hasCompletedAnalysis) { <button class="button button--primary" type="button" [disabled]="triggeringAnalysis() || analysisStatus()?.jobState === 'QUEUED' || analysisStatus()?.jobState === 'RUNNING'" (click)="triggerAnalysis()">{{ triggeringAnalysis() ? 'Starting…' : analysisStatus()?.jobState === 'QUEUED' || analysisStatus()?.jobState === 'RUNNING' ? (analysisStatus()!.jobState === 'QUEUED' ? 'Queued…' : 'Running…') : 'Trigger analysis' }}</button> }
         </div>
         @if (analysisStatus()?.hasCompletedAnalysis) {
-          <dl class="technical-facts">
+          <dl class="technical-facts analysis-facts">
             <div><dt>Classification</dt><dd>{{ analysisStatus()!.classification }}</dd></div>
             <div><dt>Action DNA score</dt><dd>{{ decimal(analysisStatus()!.actionDnaScore) }}</dd></div>
             <div><dt>Confidence</dt><dd>{{ decimal(analysisStatus()!.confidence) }}</dd></div>
@@ -131,14 +150,34 @@ const VARIANT_TYPE_LABELS: Record<string, string> = {
           <div class="state-panel compact-state"><strong>No analysis yet</strong><p>Trigger analysis to classify this creative.</p></div>
         }
       </section>
+      }
 
+      @if (activeTab() === 'publication') {
       <section class="section-band social-copy-panel" aria-labelledby="social-copy-heading">
-        <div class="section-heading"><div><span class="eyebrow">PUBLICATION COPY</span><h2 id="social-copy-heading">Social caption</h2></div><span class="data-freshness">Generated from selected video</span></div>
-        <div class="copy-controls"><label>Platform<select [value]="captionPlatform()" (change)="captionPlatform.set(($any($event.target)).value)"><option value="INSTAGRAM">Instagram</option><option value="FACEBOOK">Facebook</option><option value="TIKTOK">TikTok</option><option value="YOUTUBE">YouTube</option></select></label><label>Description<input type="text" [value]="captionDescription()" (input)="captionDescription.set(($any($event.target)).value)" placeholder="Short description for the generator" /></label><label>Render asset ID<input type="text" [value]="captionAssetId()" (input)="captionAssetId.set(($any($event.target)).value)" placeholder="Optional UUID for version history" /></label><button class="button button--primary" type="button" [disabled]="captionLoading()" (click)="generateCaption()">{{ captionLoading() ? 'Generating…' : 'Generate copy' }}</button></div>
-        @if (captionError()) { <div class="state-panel state-panel--error compact-state"><strong>Caption generation failed</strong><p>{{ captionError() }}</p></div> }
-        @if (caption(); as copy) { <div class="copy-result"><textarea [value]="copy.caption" readonly rows="4" aria-label="Generated caption"></textarea><p class="muted">{{ copy.characterCount }} characters · {{ copy.hashtags.join(' ') }}</p><button class="button button--secondary" type="button" [disabled]="captionSaveState() === 'saving' || !captionAssetId()" (click)="saveCaptionVersion()">{{ captionSaveState() === 'saving' ? 'Saving…' : 'Save caption version' }}</button>@if (captionSaveState() === 'saved') { <span class="muted">Saved as a new immutable version.</span> }@if (captionSaveState() === 'error') { <span class="amber-text">Caption version could not be saved.</span> }</div> }
+        <div class="section-heading"><div><span class="eyebrow">PUBLICATION COPY</span><h2 id="social-copy-heading">Social caption</h2></div><span class="data-freshness">Read from folder metadata</span></div>
+        @if (metadataLoading()) { <div class="state-panel compact-state"><span class="spinner"></span><strong>Loading publication metadata</strong></div> }
+        @if (metadataError()) { <div class="state-panel state-panel--error compact-state"><strong>Metadata unavailable</strong><p>{{ metadataError() }}</p></div> }
+        <div class="caption-platform-grid">
+          @for (item of captionPlatforms; track item.key) {
+            @let copy = publicationCopy()[item.key];
+            <article class="caption-card">
+              <header><span class="eyebrow">{{ item.label.toUpperCase() }}</span><strong>{{ item.label }}</strong><small class="metadata-source">{{ copy.sourceFile || 'Metadata file not found' }}</small></header>
+              @if (copy.sourceFile) {
+                @if (copy.title) { <label>Title<textarea [value]="copy.title" readonly rows="2"></textarea></label> }
+                @if (copy.body) { <label>{{ item.key === 'YOUTUBE' ? 'Description' : 'Caption' }}<textarea [value]="copy.body" readonly rows="4"></textarea></label> }
+                @if (copy.hashtags) { <label>Hashtags<textarea [value]="copy.hashtags" readonly rows="2"></textarea></label> }
+                @if (copy.tags) { <label>Tags<textarea [value]="copy.tags" readonly rows="3"></textarea></label> }
+                @if (!copy.title && !copy.body && !copy.hashtags && !copy.tags) { <div class="state-panel compact-state"><strong>No copy sections found</strong><p>The metadata file exists but has no supported publication fields.</p></div> }
+              } @else {
+                <div class="state-panel compact-state"><strong>No {{ item.key === 'YOUTUBE' ? 'youtube.md' : 'social.md' }} found</strong><p>This platform has no folder metadata yet. No copy has been invented.</p></div>
+              }
+            </article>
+          }
+        </div>
       </section>
+      }
 
+      @if (activeTab() === 'performance') {
       @if (!activeFile()!.ingested) {
         <section class="section-band un-ingested-state"><span aria-hidden="true">i</span><div><strong>Performance evidence requires ingest and imported platform data</strong><p>This mounted file remains playable. Ingesting creates its evidence identity; it does not invent metrics.</p></div></section>
       } @else {
@@ -227,6 +266,11 @@ const VARIANT_TYPE_LABELS: Record<string, string> = {
             </section>
           }
 
+      }
+      }
+      }
+
+      @if (activeTab() === 'evidence' && activeFile()!.ingested) {
           <div class="detail-grid">
             <section class="section-band evidence-ledger">
               <div class="section-heading"><div><span class="eyebrow">EVIDENCE LEDGER</span><h2>{{ isMeta() ? 'Reach Further and interventions' : 'Manual interventions' }}</h2></div></div>
@@ -248,7 +292,6 @@ const VARIANT_TYPE_LABELS: Record<string, string> = {
               <section class="section-band entry-panel"><span class="eyebrow">DATA PURITY EVENT</span><h2>Record manual engagement</h2><label>Intervention timestamp<input type="datetime-local" [value]="interventionAt()" (input)="interventionAt.set(($any($event.target)).value)"></label><div class="input-pair"><label>Views before<input type="number" min="0" [value]="viewsBefore()" (input)="viewsBefore.set(($any($event.target)).value)"></label><label>Views after<input type="number" min="0" [value]="viewsAfter()" (input)="viewsAfter.set(($any($event.target)).value)"></label></div><label>Notes<textarea rows="3" [value]="interventionNotes()" (input)="interventionNotes.set(($any($event.target)).value)"></textarea></label><button class="button button--secondary" type="button" [disabled]="!interventionAt() || saving()" (click)="saveIntervention()">Mark as intervened</button></section>
             </aside>
           </div>
-        }
       }
     }
   `,
@@ -256,7 +299,6 @@ const VARIANT_TYPE_LABELS: Record<string, string> = {
 })
 export class VideoDetailPage implements OnDestroy {
   private readonly service = inject(CreativeIntelligenceService);
-  private readonly http = inject(HttpClient);
   private readonly route = inject(ActivatedRoute);
   private loadGeneration = 0;
   private analysisPollSubscription: Subscription | null = null;
@@ -272,18 +314,21 @@ export class VideoDetailPage implements OnDestroy {
   protected readonly video = signal<VideoApiRecord | null>(null);
   protected readonly videoVariants = signal<VideoVariant[]>([]);
   protected readonly variantsError = signal('');
-  protected readonly captionPlatform = signal('INSTAGRAM');
-  protected readonly captionDescription = signal('');
-  protected readonly captionLoading = signal(false);
-  protected readonly captionError = signal('');
-  protected readonly caption = signal<import('../core/creative-intelligence.service').CaptionResponse | null>(null);
-  protected readonly captionAssetId = signal('');
-  protected readonly captionSaveState = signal<'idle' | 'saving' | 'saved' | 'error'>('idle');
+  protected readonly captionPlatforms: Array<{ key: CaptionPlatform; label: string }> = [
+    { key: 'INSTAGRAM', label: 'Instagram' },
+    { key: 'FACEBOOK', label: 'Facebook' },
+    { key: 'TIKTOK', label: 'TikTok' },
+    { key: 'YOUTUBE', label: 'YouTube' },
+  ];
+  protected readonly publicationCopy = signal<Record<CaptionPlatform, PublicationCopy>>({ INSTAGRAM: { ...EMPTY_PUBLICATION_COPY }, FACEBOOK: { ...EMPTY_PUBLICATION_COPY }, TIKTOK: { ...EMPTY_PUBLICATION_COPY }, YOUTUBE: { ...EMPTY_PUBLICATION_COPY } });
+  protected readonly metadataLoading = signal(false);
+  protected readonly metadataError = signal('');
   protected readonly summary = signal<ReachFurtherSummary | null>(null);
   protected readonly trajectory = signal<TrajectoryView | null>(null);
   protected readonly growth = signal<PlatformGrowthProfile | null>(null);
   protected readonly discovery = signal<DiscoveryProfile | null>(null);
   protected readonly platform = signal<PlatformKey>('facebook');
+  protected readonly activeTab = signal<'overview' | 'publication' | 'performance' | 'evidence'>('overview');
   protected readonly loading = signal(true);
   protected readonly performanceLoading = signal(false);
   protected readonly performanceError = signal('');
@@ -310,6 +355,10 @@ export class VideoDetailPage implements OnDestroy {
 
   protected readonly folderName = computed(() => this.readableFolder(this.folderPath()));
   protected readonly mediaUrl = computed(() => this.activeFile() ? this.service.mediaContentUrl(this.activeFile()!.relativePath) : '');
+  protected readonly isPortrait = computed(() => {
+    const source = this.video();
+    return source !== null && source.height > source.width;
+  });
   protected readonly variants = computed<VariantView[]>(() => {
     const variantTypeById = new Map(this.videoVariants().map(variant => [variant.id, variant.variantType]));
     const labelFor = (file: MediaFile): string => {
@@ -362,33 +411,6 @@ export class VideoDetailPage implements OnDestroy {
       else if (folder) this.loadFolder(folder, file);
       else { this.loading.set(false); this.error.set('Choose a creative folder from Video Library.'); }
     });
-  }
-
-  protected generateCaption(): void {
-    const title = this.activeFile()?.name || this.folderName() || 'Pompom Hills video';
-    this.captionLoading.set(true); this.captionError.set('');
-    this.service.generateCaption({
-      videoTitle: title,
-      videoDescription: this.captionDescription().trim() || 'A short Pompom Hills children\'s video.',
-      platform: this.captionPlatform(),
-      language: 'en',
-      contentType: 'entertainment',
-      hashtagCount: 5,
-    }).subscribe({ next: value => { this.caption.set(value); this.captionLoading.set(false); }, error: response => { this.captionError.set(response.error?.message || 'The caption service did not respond.'); this.captionLoading.set(false); } });
-  }
-
-  protected saveCaptionVersion(): void {
-    const copy = this.caption();
-    if (!copy || !this.captionAssetId().trim()) return;
-    this.captionSaveState.set('saving');
-    this.http.post('/api/v1/captions/versions', {
-      renderAssetId: this.captionAssetId().trim(),
-      platform: this.captionPlatform(),
-      caption: copy.caption,
-      hashtags: copy.hashtags.join(' '),
-      source: 'GENERATED',
-      createdBy: 'local-user',
-    }).subscribe({ next: () => this.captionSaveState.set('saved'), error: () => this.captionSaveState.set('error') });
   }
 
   ngOnDestroy(): void { this.analysisPollSubscription?.unsubscribe(); }
@@ -458,8 +480,9 @@ export class VideoDetailPage implements OnDestroy {
         if (generation !== this.loadGeneration) return;
         const folder = this.parentPath(video.relativePath);
         this.folderPath.set(folder);
+        this.loadPublicationCopy(folder, generation);
         this.service.getMediaFiles(folder, false).subscribe({
-          next: files => { if (generation === this.loadGeneration) { this.files.set(files); this.loading.set(false); const selected = files.find(file => file.relativePath === video.relativePath) || files[0]; if (selected) this.activateVariant(selected, video); else this.error.set('No playable media remains in this folder.'); } },
+          next: files => { if (generation === this.loadGeneration) { const hdFiles = files.filter(file => isHdFile(file.name)); this.files.set(hdFiles); this.loading.set(false); const selected = hdFiles.find(file => file.relativePath === video.relativePath) || hdFiles[0]; if (selected) this.activateVariant(selected, video); else this.error.set('No HD media remains in this folder.'); } },
           error: response => { if (generation === this.loadGeneration) { this.loading.set(false); this.error.set(response.error?.message || 'Could not load folder variants.'); } },
         });
       },
@@ -469,15 +492,75 @@ export class VideoDetailPage implements OnDestroy {
   private loadFolder(folder: string, requestedFile: string | null): void {
     const generation = ++this.loadGeneration;
     this.loading.set(true); this.error.set(''); this.folderPath.set(folder);
+    this.loadPublicationCopy(folder, generation);
     this.service.getMediaFiles(folder, false).subscribe({
       next: files => {
         if (generation !== this.loadGeneration) return;
-        this.files.set(files); this.loading.set(false);
-        const selected = files.find(file => file.relativePath === requestedFile) || files[0];
-        if (selected) this.activateVariant(selected); else this.error.set('No supported video files were found in this folder.');
+        const hdFiles = files.filter(file => isHdFile(file.name));
+        this.files.set(hdFiles); this.loading.set(false);
+        const selected = hdFiles.find(file => file.relativePath === requestedFile) || hdFiles[0];
+        if (selected) this.activateVariant(selected); else this.error.set('No HD media remains in this folder.');
       },
       error: response => { if (generation === this.loadGeneration) { this.loading.set(false); this.error.set(response.error?.message || 'Could not load folder variants.'); } },
     });
+  }
+
+  private loadPublicationCopy(folder: string, generation: number): void {
+    this.metadataLoading.set(true);
+    this.metadataError.set('');
+    this.publicationCopy.set({ INSTAGRAM: { ...EMPTY_PUBLICATION_COPY }, FACEBOOK: { ...EMPTY_PUBLICATION_COPY }, TIKTOK: { ...EMPTY_PUBLICATION_COPY }, YOUTUBE: { ...EMPTY_PUBLICATION_COPY } });
+    const base = folder.replace(/\\+$/, '');
+    forkJoin({
+      social: this.service.getMetadataFile(`${base}/social.md`).pipe(catchError(() => of(null))),
+      youtube: this.service.getMetadataFile(`${base}/youtube.md`).pipe(catchError(() => of(null))),
+    }).subscribe({
+      next: files => {
+        if (generation !== this.loadGeneration) return;
+        const social = files.social ? this.parseMetadata(files.social, 'social.md') : EMPTY_PUBLICATION_COPY;
+        const youtube = files.youtube ? this.parseMetadata(files.youtube, 'youtube.md') : EMPTY_PUBLICATION_COPY;
+        this.publicationCopy.set({
+          INSTAGRAM: this.socialCopy(social, 'INSTAGRAM'),
+          FACEBOOK: this.socialCopy(social, 'FACEBOOK'),
+          TIKTOK: this.socialCopy(social, 'TIKTOK'),
+          YOUTUBE: youtube,
+        });
+        this.metadataLoading.set(false);
+      },
+      error: response => { if (generation === this.loadGeneration) { this.metadataLoading.set(false); this.metadataError.set(response.error?.message || 'Publication metadata could not be loaded.'); } },
+    });
+  }
+
+  private parseMetadata(file: MetadataFile, sourceFile: string): PublicationCopy {
+    const section = (...headings: string[]): string => headings.map(heading => this.markdownField(file.content, heading)).find(Boolean) || '';
+    return {
+      sourceFile,
+      raw: file.content,
+      title: section('YouTube Title', 'YouTube Shorts title', 'Title'),
+      body: section('YouTube Description', 'Caption', 'Primary Instagram / Facebook caption'),
+      hashtags: section('Hashtags'),
+      tags: section('YouTube Tags', 'Tags'),
+    };
+  }
+
+  private socialCopy(copy: PublicationCopy, platform: CaptionPlatform): PublicationCopy {
+    const source = copy.raw;
+    if (!source) return copy;
+    return {
+      ...copy,
+      title: this.markdownField(source, 'Title') || copy.title,
+      body: platform === 'TIKTOK'
+        ? (this.markdownField(source, 'TikTok caption') || this.markdownField(source, 'Short caption') || this.markdownField(source, 'Alternate short caption') || this.markdownField(source, 'Caption') || copy.body)
+        : (this.markdownField(source, 'Caption') || this.markdownField(source, 'Primary Instagram / Facebook caption') || copy.body),
+      hashtags: this.markdownField(source, 'Hashtags') || copy.hashtags,
+    };
+  }
+
+  private markdownField(content: string, heading: string): string {
+    const lines = content.split(/\r?\n/);
+    const start = lines.findIndex(line => line.trim().toLowerCase() === `## ${heading.toLowerCase()}`);
+    if (start < 0) return '';
+    const end = lines.slice(start + 1).findIndex(line => /^##\s+/.test(line.trim()));
+    return lines.slice(start + 1, end < 0 ? undefined : start + 1 + end).join('\n').trim();
   }
   private activateVariant(file: MediaFile, knownVideo?: VideoApiRecord): void {
     this.activeFile.set(file); this.message.set(''); this.video.set(null); this.clearPerformance();

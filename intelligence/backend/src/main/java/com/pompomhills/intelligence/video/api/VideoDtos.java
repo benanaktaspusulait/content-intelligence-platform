@@ -34,6 +34,8 @@ public final class VideoDtos {
       String status,
       UUID variantId) {}
 
+  public record MetadataFile(String relativePath, String content) {}
+
   public record VideoResponse(
       UUID id,
       String originalFilename,

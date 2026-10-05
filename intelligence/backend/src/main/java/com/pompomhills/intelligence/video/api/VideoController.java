@@ -86,6 +86,11 @@ public class VideoController {
         .body(media.resource());
   }
 
+  @GetMapping("/metadata")
+  public VideoDtos.MetadataFile metadata(@RequestParam("path") String relativePath) {
+    return new VideoDtos.MetadataFile(relativePath, mediaContent.readMetadata(relativePath));
+  }
+
   @PostMapping("/{id}/analysis")
   public ResponseEntity<VideoDtos.AnalysisStatusResponse> analyse(@PathVariable UUID id) {
     jobService.enqueue(id);
