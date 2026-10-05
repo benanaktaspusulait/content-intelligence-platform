@@ -220,6 +220,7 @@ interface RenderAsset {
                             <div class="review-actions">
                               <button type="button" (click)="decideQa(job, 'APPROVED')" [disabled]="reviewingQa() === job.id">Approve</button>
                               <button type="button" (click)="decideQa(job, 'REJECTED')" [disabled]="reviewingQa() === job.id">Reject</button>
+                              <button type="button" (click)="decideQa(job, 'RERENDER_REQUESTED')" [disabled]="reviewingQa() === job.id">Request rerender</button>
                             </div>
                           </div>
                         </div>
@@ -703,7 +704,7 @@ export class RenderDashboardPage implements OnInit, OnDestroy {
     });
   }
 
-  decideQa(job: RenderJob, decision: 'APPROVED' | 'REJECTED'): void {
+  decideQa(job: RenderJob, decision: 'APPROVED' | 'REJECTED' | 'RERENDER_REQUESTED'): void {
     if (!job.qaResult?.id || !this.reviewToken().trim()) {
       this.error.set('Enter the configured QA review token before submitting a decision.');
       return;

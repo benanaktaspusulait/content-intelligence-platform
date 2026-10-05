@@ -104,6 +104,8 @@ interface StateSegment {
 })
 export class QualityValidatorComponent {
   prompt: string = '';
+  contentTitle: string = '';
+  contentType: string = 'SHORT';
   contentId: string = '';
   promptVersionId: string = '';
   validationRecordId: number | null = null;
@@ -213,6 +215,23 @@ Intensity: 4`;
     this.report = null;
     this.error = null;
     this.validationRecordId = null;
+  }
+
+  createContentAndPrompt(): void {
+    if (!this.contentTitle.trim() || this.prompt.length < 100) {
+      this.error = 'Content title and a prompt of at least 100 characters are required';
+      return;
+    }
+    this.loading = true; this.error = null;
+    this.http.post<{ id: number }>('/api/v1/intelligence/contents', {
+      title: this.contentTitle.trim(), type: this.contentType, description: 'Pompom Hills local production content',
+    }).subscribe({
+      next: content => this.http.post<{ id: number }>(`/api/v1/intelligence/contents/${content.id}/prompt-versions`, { rawText: this.prompt, parsedIr: '{}' }).subscribe({
+        next: promptVersion => { this.contentId = String(content.id); this.promptVersionId = String(promptVersion.id); this.validationRecordId = null; this.loading = false; },
+        error: response => { this.error = response.error?.detail || response.error?.message || 'Prompt version could not be created'; this.loading = false; },
+      }),
+      error: response => { this.error = response.error?.detail || response.error?.message || 'Content could not be created'; this.loading = false; },
+    });
   }
 
   getStatusBadgeClass(): string {
