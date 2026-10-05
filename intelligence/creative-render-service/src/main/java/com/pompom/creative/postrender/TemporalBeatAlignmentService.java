@@ -22,7 +22,55 @@ public class TemporalBeatAlignmentService {
     result.put("activitySpikes", spikes);
     result.put("unmappedActivityDrops", unmapped);
     result.put("alignmentStatus", profile.isEmpty() ? "UNKNOWN" : beats.isEmpty() ? "NO_PLAN_BEATS" : "AVAILABLE");
+    result.putAll(actionEvidence(beats, profile));
     return result;
+  }
+
+  private Map<String, Object> actionEvidence(List<Map<String, Object>> beats, Map<String, Object> profile) {
+    List<String> actions = beats.stream()
+        .map(beat -> String.valueOf(beat.get("plannedAction")))
+        .filter(action -> !"UNKNOWN".equals(action))
+        .toList();
+    if (actions.isEmpty()) {
+      return Map.of("actionBeatNovelty", Map.of("status", "NOT_EVALUATED", "reason", "No structured primary actions were present in the plan."),
+          "planRenderFidelity", Map.of("status", "UNKNOWN", "reason", "No timestamped planned actions were available."));
+    }
+    long distinct = actions.stream().distinct().count();
+    double repetitionRatio = 1.0 - distinct / (double) actions.size();
+    String actionStatus = distinct >= 3 ? "STRONG" : distinct == 2 ? "MODERATE" : "WEAK";
+    Map<String, Object> fidelity = visualFidelity(beats, profile);
+    return Map.of(
+        "plannedActionSequence", actions,
+        "plannedActionCount", actions.size(),
+        "distinctPrimaryActionCount", distinct,
+        "strategyDiversity", round(distinct / (double) actions.size()),
+        "repetitionRatio", round(repetitionRatio),
+        "actionBeatNovelty", Map.of("status", actionStatus, "planned", actions),
+        "planRenderFidelity", fidelity);
+  }
+
+  private Map<String, Object> visualFidelity(List<Map<String, Object>> beats, Map<String, Object> profile) {
+    Object noveltyValue = profile.get("visualNovelty");
+    if (!(noveltyValue instanceof Map<?, ?> novelty) || !(novelty.get("points") instanceof List<?> points)) {
+      return Map.of("status", "UNKNOWN", "reason", "Visual novelty evidence is unavailable.");
+    }
+    int transitions = 0;
+    int supported = 0;
+    for (int index = 1; index < beats.size(); index++) {
+      String before = String.valueOf(beats.get(index - 1).get("plannedAction"));
+      String after = String.valueOf(beats.get(index).get("plannedAction"));
+      if ("UNKNOWN".equals(before) || "UNKNOWN".equals(after) || before.equals(after)) continue;
+      transitions++;
+      double start = number(beats.get(index).get("startSeconds"));
+      boolean changed = points.stream().anyMatch(point -> point instanceof Map<?, ?> value
+          && Math.abs(number(value.get("timestamp")) - start) <= 0.75
+          && number(value.get("novelty")) >= 0.15);
+      if (changed) supported++;
+    }
+    if (transitions == 0) return Map.of("status", "NOT_EVALUATED", "reason", "No distinct planned action transition was available.");
+    String status = supported == transitions ? "MATCH" : supported > 0 ? "PARTIAL_MATCH" : "UNKNOWN";
+    return Map.of("status", status, "plannedTransitions", transitions, "supportedTransitions", supported,
+        "reason", "Visual novelty was compared with planned action transitions; pixels alone do not prove semantic action fidelity.");
   }
 
   private List<Map<String, Object>> alignCandidates(List<Map<String, Object>> candidates, List<Map<String, Object>> beats, String direction) {
@@ -74,6 +122,7 @@ public class TemporalBeatAlignmentService {
       Map<String, Object> normalized = new LinkedHashMap<>();
       normalized.put("id", first(beat, "id", "beatId", "key"));
       normalized.put("type", first(beat, "type", "beatType", "kind", "name"));
+      normalized.put("plannedAction", normalizeAction(first(beat, "strategyClass", "primaryAction", "primaryVerb", "action", "strategy")));
       normalized.put("startSeconds", start);
       normalized.put("endSeconds", end);
       result.add(normalized);
@@ -84,6 +133,10 @@ public class TemporalBeatAlignmentService {
   private String first(Map<String, Object> map, String... keys) {
     for (String key : keys) if (map.get(key) != null) return String.valueOf(map.get(key));
     return "UNKNOWN";
+  }
+
+  private String normalizeAction(String value) {
+    return value == null || value.isBlank() || "UNKNOWN".equals(value) ? "UNKNOWN" : value.toUpperCase();
   }
 
   private Double firstNumber(Map<String, Object> map, String... keys) {

@@ -340,7 +340,8 @@ public class VideoService {
     }
     analysis = analyses.save(analysis);
     final CreativeAnalysisEntity persistedAnalysis = analysis;
-    String featureVersion = "creative-fingerprint-v1";
+    String featureVersion = "sampled-visual-motion-v4".equals(result.analysisVersion())
+        ? "creative-fingerprint-v4" : "creative-fingerprint-v1";
     fingerprints.findByVideoIdAndFeatureVersion(video.getId(), featureVersion)
         .ifPresentOrElse(
             existing -> existing.updateFrom(persistedAnalysis, result.actionDnaScore(), result.features()),

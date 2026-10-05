@@ -131,7 +131,8 @@ const VARIANT_TYPE_LABELS: Record<string, string> = {
 
       <section class="section-band creative-analysis-panel" aria-labelledby="creative-analysis-heading">
         <div class="section-heading"><div><span class="eyebrow">VISUAL MOTION ANALYSIS</span><h2 id="creative-analysis-heading">Sampled visual-motion evidence</h2></div>
-          <button class="button button--primary" type="button" [disabled]="triggeringAnalysis() || analysisStatus()?.jobState === 'QUEUED' || analysisStatus()?.jobState === 'RUNNING'" (click)="triggerAnalysis()">{{ triggeringAnalysis() ? 'Starting…' : analysisStatus()?.jobState === 'QUEUED' || analysisStatus()?.jobState === 'RUNNING' ? (analysisStatus()!.jobState === 'QUEUED' ? 'Queued…' : 'Running…') : analysisStatus()?.hasCompletedAnalysis ? 'Reanalyze' : 'Run analysis' }}</button>
+          <button class="button button--primary" type="button" [disabled]="triggeringAnalysis() || analysisStatus()?.jobState === 'QUEUED' || analysisStatus()?.jobState === 'RUNNING'" (click)="triggerAnalysis()">{{ triggeringAnalysis() ? 'Starting…' : analysisStatus()?.jobState === 'QUEUED' || analysisStatus()?.jobState === 'RUNNING' ? (analysisStatus()!.jobState === 'QUEUED' ? 'Queued…' : 'Running…') : analysisStatus()?.hasCompletedAnalysis ? 'Reanalyze v3' : 'Run v3 analysis' }}</button>
+          <button class="button button--secondary" type="button" [disabled]="triggeringAnalysis() || analysisStatus()?.jobState === 'QUEUED' || analysisStatus()?.jobState === 'RUNNING'" (click)="triggerAnalysis('sampled-visual-motion-v4')">Run v4 evidence</button>
         </div>
         @if (analysisFeedback()) { <p class="analysis-feedback" [class.analysis-feedback--error]="analysisFeedbackKind() === 'error'" role="status">{{ analysisFeedback() }}</p> }
         <div class="assessment-notice"><strong>Interpretation</strong><span>This is a sampled visual-motion heuristic. It does not use views, reach, likes, comments, follows or retention data.</span></div>
@@ -144,6 +145,14 @@ const VARIANT_TYPE_LABELS: Record<string, string> = {
               <div><span>Opening/ending relationship</span><strong>{{ similaritySummary() }}</strong><small>Visual similarity does not prove a semantic loop.</small></div>
               <div><span>Local activity drops</span><strong>{{ activityDropSummary() }}</strong><small>Timestamped candidates require beat context before review.</small></div>
             </div>
+            @if (analysisStatus()!.analysisVersion === 'sampled-visual-motion-v4') {
+              <div class="creative-evidence-cards creative-evidence-cards--v4">
+                <div><span>Visual novelty</span><strong>{{ v4Dimension('visualNovelty') }}</strong><small>Medium-range structural and perceptual state change.</small></div>
+                <div><span>Repetition evidence</span><strong>{{ v4Repetition() }}</strong><small>High motion with low state novelty, not a performance verdict.</small></div>
+                <div><span>Action / beat novelty</span><strong>{{ v4Dimension('actionBeatNovelty') }}</strong><small>Plan-side semantic evidence is separate from pixels.</small></div>
+                <div><span>Plan / render fidelity</span><strong>{{ v4Dimension('planRenderFidelity') }}</strong><small>Aligned when a structured production plan is available.</small></div>
+              </div>
+            }
           </section>
           <section class="temporal-timeline" aria-labelledby="temporal-timeline-heading">
             <div class="section-heading"><div><span class="eyebrow">LOCAL TIMELINE</span><h3 id="temporal-timeline-heading">Motion by segment</h3></div><span class="data-freshness">{{ temporalVersion() }}</span></div>
@@ -218,7 +227,7 @@ const VARIANT_TYPE_LABELS: Record<string, string> = {
         } @else if (analysisStatus()?.jobState === 'QUEUED' || analysisStatus()?.jobState === 'RUNNING') {
           <div class="state-panel compact-state"><span class="spinner"></span><strong>{{ analysisStatus()!.jobState === 'QUEUED' ? 'Queued for analysis' : 'Analysis running' }}</strong></div>
         } @else if (analysisError()) {
-          <div class="state-panel state-panel--error compact-state"><strong>Analysis status unavailable</strong><p>{{ analysisError() }}</p><button class="button button--secondary" type="button" (click)="pollAnalysisStatus(video()!.id)">Retry status</button></div>
+          <div class="state-panel state-panel--error compact-state"><strong>Analysis status unavailable</strong><p>{{ analysisError() }}</p><button class="button button--secondary" type="button" (click)="pollAnalysisStatus(video()!.id, analysisStatus()?.analysisVersion || 'sampled-visual-motion-v3')">Retry status</button></div>
         } @else {
           <div class="state-panel compact-state"><strong>No analysis yet</strong><p>Trigger visual-motion analysis to measure sampled frame-change evidence.</p></div>
         }
@@ -545,13 +554,13 @@ export class VideoDetailPage implements OnDestroy {
     this.run(this.service.addManualEngagementIntervention(id, new Date(this.interventionAt()).toISOString(), this.interventionNotes(), before, after, this.platform()), 'Manual intervention recorded.');
   }
   protected selectEvidence(event: Event): void { this.evidence.set((event.target as HTMLInputElement).files?.[0] || null); }
-  protected triggerAnalysis(): void {
+  protected triggerAnalysis(analysisVersion = 'sampled-visual-motion-v3'): void {
     const id = this.video()?.id;
     if (!id) return;
     this.triggeringAnalysis.set(true); this.analysisRunActive.set(true); this.analysisError.set('');
     this.analysisFeedbackKind.set('info'); this.analysisFeedback.set('Analysis is being queued…');
-    this.service.triggerAnalysis(id, true).subscribe({
-      next: status => { this.triggeringAnalysis.set(false); this.analysisStatus.set(status); this.analysisFeedback.set(status.jobState === 'RUNNING' ? 'Analysis is running…' : 'Analysis is queued…'); this.pollAnalysisStatus(id); },
+    this.service.triggerAnalysis(id, true, analysisVersion).subscribe({
+      next: status => { this.triggeringAnalysis.set(false); this.analysisStatus.set(status); this.analysisFeedback.set(status.jobState === 'RUNNING' ? 'Analysis is running…' : 'Analysis is queued…'); this.pollAnalysisStatus(id, analysisVersion); },
       error: response => { this.triggeringAnalysis.set(false); this.analysisRunActive.set(false); this.analysisFeedbackKind.set('error'); this.analysisFeedback.set(response.error?.message || 'Could not start analysis.'); },
     });
   }
@@ -637,6 +646,18 @@ export class VideoDetailPage implements OnDestroy {
     const value = Number(segment['relativeToPrevious']);
     if (!Number.isFinite(value) || Math.abs(value) < 0.08) return 'Stable';
     return value > 0 ? 'Rising' : 'Falling';
+  }
+  protected v4Dimension(key: string): string {
+    const dimensions = this.analysisStatus()?.temporalProfile?.['dimensions'];
+    return dimensions && typeof dimensions === 'object' && typeof (dimensions as Record<string, unknown>)[key] === 'string'
+      ? String((dimensions as Record<string, unknown>)[key]).replaceAll('_', ' ')
+      : 'Not evaluated';
+  }
+  protected v4Repetition(): string {
+    const repetition = this.analysisStatus()?.temporalProfile?.['repetitiveMotion'];
+    if (!repetition || typeof repetition !== 'object') return 'Not evaluated';
+    const classification = (repetition as Record<string, unknown>)['classification'];
+    return typeof classification === 'string' ? this.readable(classification) : 'Not evaluated';
   }
   protected metricSource(value: number | null | undefined, available: string): string { return value === null || value === undefined ? 'No imported value' : available; }
   protected discoveryQualityLabel(): string { return this.discovery()?.dataQualityStatus === 'DERIVED_FROM_REPORTED_SHARES' ? 'REPORTED EVIDENCE' : 'NO COMPLETE DATA'; }
@@ -799,14 +820,14 @@ export class VideoDetailPage implements OnDestroy {
     this.variantsError.set('');
     this.service.listVariants(videoId).subscribe({ next: variants => this.videoVariants.set(variants), error: response => { this.videoVariants.set([]); this.variantsError.set(response.error?.message || 'Variant history could not be loaded.'); } });
   }
-  protected pollAnalysisStatus(videoId: string): void {
+  protected pollAnalysisStatus(videoId: string, analysisVersion = 'sampled-visual-motion-v3'): void {
     this.analysisPollSubscription?.unsubscribe();
     this.analysisError.set('');
     let previousState = this.analysisStatus()?.jobState;
     this.analysisPollSubscription = interval(5000)
       .pipe(
         startWith(0),
-        switchMap(() => this.service.getAnalysisStatus(videoId).pipe(catchError(response => { this.analysisError.set(response.error?.message || 'The analysis service did not respond.'); return of(null); }))),
+        switchMap(() => this.service.getAnalysisStatus(videoId, analysisVersion).pipe(catchError(response => { this.analysisError.set(response.error?.message || 'The analysis service did not respond.'); return of(null); }))),
       )
       .subscribe(status => {
         if (status === null) return;

@@ -551,12 +551,12 @@ export class CreativeIntelligenceService {
     return this.http.post<VideoVariant>(`${this.baseUrl}/videos/${videoId}/variants`, request);
   }
 
-  triggerAnalysis(videoId: string, force = false): Observable<AnalysisStatus> {
-    return this.http.post<AnalysisStatus>(`${this.baseUrl}/videos/${videoId}/analysis`, {}, { params: { force } });
+  triggerAnalysis(videoId: string, force = false, analysisVersion = 'sampled-visual-motion-v3'): Observable<AnalysisStatus> {
+    return this.http.post<AnalysisStatus>(`${this.baseUrl}/videos/${videoId}/analysis`, {}, { params: { force, analysisVersion } });
   }
 
-  getAnalysisStatus(videoId: string): Observable<AnalysisStatus> {
-    return this.http.get<AnalysisStatus>(`${this.baseUrl}/videos/${videoId}/analysis/status`);
+  getAnalysisStatus(videoId: string, analysisVersion = 'sampled-visual-motion-v3'): Observable<AnalysisStatus> {
+    return this.http.get<AnalysisStatus>(`${this.baseUrl}/videos/${videoId}/analysis/status`, { params: { analysisVersion } });
   }
 
   getReachFurther(id: string, platform = 'facebook'): Observable<ReachFurtherSummary> {

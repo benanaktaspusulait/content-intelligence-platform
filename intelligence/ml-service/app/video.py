@@ -289,23 +289,25 @@ def _v4_low_motion_candidates(intervals: list[dict[str, Any]]) -> list[dict[str,
     for item in intervals:
         motion = float(item["smoothedMotion"])
         if active is None and motion <= V4_LOW_MOTION_ENTER_THRESHOLD:
-            active = {"startSeconds": item["startTime"], "endSeconds": item["endTime"], "motions": [motion], "mergedGapCount": 0}
+            active = {"startSeconds": item["startTime"], "endSeconds": item["endTime"], "motions": [motion]}
         elif active is not None and motion <= V4_LOW_MOTION_EXIT_THRESHOLD:
             active["endSeconds"] = item["endTime"]
             active["motions"].append(motion)
         elif active is not None:
-            gap = item["endTime"] - active["endSeconds"]
-            if gap <= V4_LOW_MOTION_MAX_MERGE_GAP_SECONDS:
-                active["mergedGapCount"] += 1
-                active["endSeconds"] = item["endTime"]
-                active["motions"].append(motion)
-            else:
-                spans.append(active)
-                active = None
+            spans.append(active)
+            active = None
     if active is not None:
         spans.append(active)
-    result: list[dict[str, Any]] = []
+    merged: list[dict[str, Any]] = []
     for span in spans:
+        if merged and span["startSeconds"] - merged[-1]["endSeconds"] <= V4_LOW_MOTION_MAX_MERGE_GAP_SECONDS:
+            merged[-1]["endSeconds"] = span["endSeconds"]
+            merged[-1]["motions"].extend(span["motions"])
+            merged[-1]["mergedGapCount"] += 1
+        else:
+            merged.append({**span, "mergedGapCount": 0})
+    result: list[dict[str, Any]] = []
+    for span in merged:
         duration = span["endSeconds"] - span["startSeconds"]
         if duration < V4_LOW_MOTION_MIN_DURATION_SECONDS:
             continue
@@ -643,12 +645,29 @@ def _analyse_v4(path: Path, metadata: VideoMetadata) -> VideoAnalysisResponse:
     ]
     novelty = _v4_visual_novelty(samples, duration)
     repetition = _v4_repetitive_motion(intervals, novelty)
+    v4_profile["visualNovelty"] = novelty
+    v4_profile["repetitiveMotion"] = repetition
+    v4_profile["dimensions"] = {
+        "motionIntensity": _v4_motion_label(float(v4_profile["overallMotion"])),
+        "temporalConsistency": _v4_consistency_label(v4_profile),
+        "visualNovelty": "LOW" if novelty["averageNovelty"] < 0.16 else "MODERATE" if novelty["averageNovelty"] < 0.32 else "HIGH",
+        "actionBeatNovelty": "NOT_EVALUATED",
+        "planRenderFidelity": "NOT_EVALUATED",
+    }
     actual_times = [sample.actual_time for sample in samples if sample.actual_time is not None]
     valid_pair_count = len(intervals)
     coverage = min(1.0, (actual_times[-1] - actual_times[0]) / max(duration, 0.1)) if len(actual_times) > 1 else 0.0
     sampling["validPairCount"] = valid_pair_count
     sampling["coverage"] = round(coverage, 4)
     sampling["decodeSuccessRatio"] = round(sampling["decodedSamples"] / max(sampling["requestedSamples"], 1), 4)
+    sampling["sampleTimestamps"] = [
+        {
+            "requestedTimestamp": round(sample.requested_time, 6),
+            "actualTimestamp": None if sample.actual_time is None else round(sample.actual_time, 6),
+            "timestampError": None if sample.timestamp_error is None else round(sample.timestamp_error, 6),
+        }
+        for sample in samples
+    ]
     measurement_confidence = round(max(0.0, min(1.0, 0.35 * sampling["decodeSuccessRatio"] + 0.35 * coverage + 0.20 * sampling["timestampAccuracy"] + 0.10 * (1 - sampling["duplicateTimestampRatio"]))), 4)
     overall = float(v4_profile["overallMotion"])
     density = float(np.mean([item["motionDensity"] for item in v4_profile["segments"]])) if v4_profile["segments"] else 0.0

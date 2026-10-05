@@ -58,6 +58,8 @@ public class PostRenderAssessmentAggregator {
     List<PostRenderAssessment.Insight> insights = new ArrayList<>();
     addMotionInsight(evidence, insights);
     addTemporalInsight(evidence, insights);
+    addNoveltyInsight(evidence, insights);
+    addPlanInsight(evidence, insights);
     addSimilarityInsight(evidence, insights);
     addPayoffInsight(evidence, insights);
     if (insights.isEmpty()) insights.add(new PostRenderAssessment.Insight(
@@ -133,6 +135,26 @@ public class PostRenderAssessmentAggregator {
           "The sampled timeline is " + variationText + " with no substantial two-sided local activity drop detected. This does not evaluate story intent, dialogue, or retention.",
           "AVAILABLE"));
     }
+  }
+
+  private void addNoveltyInsight(RenderEvidenceIR evidence, List<PostRenderAssessment.Insight> target) {
+    Object novelty = evidence.valueAt("temporal.profile.visualNovelty.averageNovelty");
+    Object repeated = evidence.valueAt("temporal.profile.repetitiveMotion.repeatedPatternCandidate");
+    if (!(novelty instanceof Number value)) return;
+    String level = value.doubleValue() < 0.16 ? "low" : value.doubleValue() < 0.32 ? "moderate" : "high";
+    String detail = Boolean.TRUE.equals(repeated)
+        ? "Short-range movement continues while medium-range visual novelty remains " + level + "; this is possible repetitive-motion evidence, not a proven audience or story failure."
+        : "Medium-range visual novelty is " + level + ". This describes observed state change and does not establish semantic progression or retention.";
+    target.add(new PostRenderAssessment.Insight("Visual novelty", detail, "AVAILABLE"));
+  }
+
+  private void addPlanInsight(RenderEvidenceIR evidence, List<PostRenderAssessment.Insight> target) {
+    Object status = evidence.valueAt("temporal.planRenderFidelity.status");
+    if (status == null) return;
+    target.add(new PostRenderAssessment.Insight("Plan/render fidelity",
+        "Plan-side action and beat structure is " + String.valueOf(status).toLowerCase().replace('_', ' ')
+            + " against the available visual evidence. Pixels alone do not confirm semantic action fidelity.",
+        "AVAILABLE"));
   }
 
   private void addPayoffInsight(RenderEvidenceIR evidence, List<PostRenderAssessment.Insight> target) {

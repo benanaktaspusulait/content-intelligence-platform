@@ -14,8 +14,8 @@ import org.yaml.snakeyaml.Yaml;
 @Service
 @Slf4j
 public class PostRenderRuleEngine {
-  public static final String RULESET_VERSION = "POST_RENDER_RULESET_1.2";
-  private static final String RESOURCE = "post-render-rules/POST_RENDER_RULESET_1.2.yaml";
+  public static final String RULESET_VERSION = "POST_RENDER_RULESET_1.3";
+  private static final String RESOURCE = "post-render-rules/POST_RENDER_RULESET_1.3.yaml";
 
   private final List<PostRenderRuleDefinition> rules;
 

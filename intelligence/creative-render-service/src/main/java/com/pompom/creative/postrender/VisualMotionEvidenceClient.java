@@ -28,7 +28,8 @@ public class VisualMotionEvidenceClient {
           .retrieve()
           .body(new ParameterizedTypeReference<>() {});
       if (status == null || !Boolean.TRUE.equals(status.get("hasCompletedAnalysis"))) return Optional.empty();
-      if (!"SAMPLED_VISUAL_MOTION".equals(status.get("analysisType"))) return Optional.empty();
+      if (!"SAMPLED_VISUAL_MOTION".equals(status.get("analysisType"))
+          && !"SAMPLED_VISUAL_MOTION_V4".equals(status.get("analysisType"))) return Optional.empty();
       return Optional.of(status);
     } catch (Exception error) {
       log.warn("Visual-motion evidence unavailable for video {}", videoId, error);
