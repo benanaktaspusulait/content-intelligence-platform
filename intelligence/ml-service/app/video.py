@@ -212,15 +212,19 @@ def _v4_intervals(samples: list[V4SampledFrame]) -> list[dict[str, Any]]:
         second_gray = cv2.cvtColor(second.frame, cv2.COLOR_BGR2GRAY)
         raw_difference = float(np.mean(cv2.absdiff(first_gray, second_gray))) / 255
         change_rate = raw_difference / max(delta_t, MIN_DELTA_T)
-        _, normalized, saturated = normalize_motion_intensity(change_rate)
+        pre_clamp, normalized, saturated = normalize_motion_intensity(change_rate)
         intervals.append({
             "startTime": round(max(0.0, t1), 6),
             "endTime": round(max(t1, t2), 6),
             "deltaTSeconds": round(delta_t, 6),
             "rawPixelDifference": round(raw_difference, 6),
             "visualChangeRate": change_rate,
+            "timeNormalizedChange": change_rate,
+            "preClampNormalizedMotion": pre_clamp,
             "normalizedShortMotion": normalized,
             "normalizedMotionIntensity": normalized,
+            "finalMotion": normalized,
+            "wasClipped": saturated,
             "normalizationSaturated": saturated,
         })
     raw = [item["normalizedShortMotion"] for item in intervals]
@@ -283,6 +287,61 @@ def _v4_visual_novelty(samples: list[V4SampledFrame], duration: float) -> dict[s
         "points": points,
         "averageNovelty": round(average, 5),
         "status": "AVAILABLE" if points else "NOT_EVALUATED",
+    }
+
+
+def _v4_recurrence(samples: list[V4SampledFrame], intervals: list[dict[str, Any]], duration: float) -> dict[str, Any]:
+    """Summarize multi-lag visual recurrence without exposing the full similarity matrix."""
+    lags = (0.5, 0.75, 1.0, 1.5, 2.0, 2.25, 2.5, 3.0)
+    lag_results: list[dict[str, Any]] = []
+    for lag in lags:
+        similarities: list[float] = []
+        for index, sample in enumerate(samples):
+            match = next((candidate for candidate in samples[index + 1:] if candidate.requested_time >= sample.requested_time + lag), None)
+            if match is None:
+                continue
+            first_gray, second_gray = _gray_small(sample.frame), _gray_small(match.frame)
+            structural = _structural_similarity(first_gray, second_gray)
+            hash_similarity = 1.0 - _phash_distance(first_gray, second_gray)
+            similarities.append(0.7 * structural + 0.3 * hash_similarity)
+        if len(similarities) < 3:
+            continue
+        interval_seconds = np.median(np.diff([item["startTime"] for item in intervals])) if len(intervals) > 1 else 0.25
+        shift = max(1, int(round(lag / max(float(interval_seconds), MIN_DELTA_T))))
+        motion = [float(item.get("preClampNormalizedMotion", item.get("smoothedMotion", 0.0))) for item in intervals]
+        autocorrelation = 0.0
+        if len(motion) > shift * 2:
+            left, right = np.asarray(motion[:-shift]), np.asarray(motion[shift:])
+            if float(np.std(left)) > 1e-6 and float(np.std(right)) > 1e-6:
+                autocorrelation = float(np.corrcoef(left, right)[0, 1])
+                if not math.isfinite(autocorrelation):
+                    autocorrelation = 0.0
+        visual_recurrence = float(np.mean(similarities))
+        strength = max(0.0, min(1.0, 0.65 * visual_recurrence + 0.35 * max(0.0, autocorrelation)))
+        lag_results.append({
+            "lagSeconds": lag,
+            "visualSimilarity": round(visual_recurrence, 5),
+            "motionAutocorrelation": round(autocorrelation, 5),
+            "recurrenceStrength": round(strength, 5),
+            "comparisonCount": len(similarities),
+            "estimatedCycles": round(duration / lag, 2),
+        })
+    best = max(lag_results, key=lambda item: item["recurrenceStrength"], default=None)
+    moving = float(np.std([item.get("preClampNormalizedMotion", item.get("smoothedMotion", 0.0)) for item in intervals])) if intervals else 0.0
+    detected = bool(best and best["recurrenceStrength"] >= 0.72 and moving >= 0.025)
+    return {
+        "version": "multi-lag-recurrence-v1",
+        "detected": detected,
+        "startSeconds": 0.0 if detected else None,
+        "endSeconds": round(duration, 3) if detected else None,
+        "durationSeconds": round(duration, 3) if detected else 0.0,
+        "recurrenceStrength": None if best is None else best["recurrenceStrength"],
+        "dominantLagSeconds": None if best is None else best["lagSeconds"],
+        "estimatedCycles": None if best is None else best["estimatedCycles"],
+        "visualStateRecurrence": bool(best and best["visualSimilarity"] >= 0.78),
+        "motionPatternRecurrence": bool(best and best["motionAutocorrelation"] >= 0.55),
+        "evidenceQuality": "MULTI_LAG_SSIM_AND_MOTION_AUTOCORRELATION" if best else "INSUFFICIENT_COMPARISONS",
+        "lags": lag_results,
     }
 
 
@@ -476,6 +535,8 @@ def _temporal_profile(intervals: list[dict[str, Any]], duration: float) -> dict[
                 local.append({**item, "overlap": overlap})
         total = sum(item["overlap"] for item in local)
         values = [item["normalizedMotionIntensity"] for item in local]
+        pre_clamp_values = [float(item.get("preClampNormalizedMotion", 0.0)) for item in local]
+        clipped_values = [item for item in local if item.get("wasClipped", item.get("normalizationSaturated", False))]
         average = sum(item["normalizedMotionIntensity"] * item["overlap"] for item in local) / total if total else 0.0
         density = sum(item["overlap"] for item in local if item["visualChangeRate"] >= MOTION_RATE_THRESHOLD) / total if total else 0.0
         peak = max(values) if values else 0.0
@@ -499,6 +560,11 @@ def _temporal_profile(intervals: list[dict[str, Any]], duration: float) -> dict[
             "relativeToOverall": round(average - overall, 4),
             "relativeToNext": None,
             "sampledIntervalCount": len(local),
+            "clippedIntervalRatio": round(len(clipped_values) / max(len(local), 1), 4),
+            "preClampMean": round(float(np.mean(pre_clamp_values)) if pre_clamp_values else 0.0, 4),
+            "preClampP50": round(float(np.percentile(pre_clamp_values, 50)) if pre_clamp_values else 0.0, 4),
+            "preClampP90": round(float(np.percentile(pre_clamp_values, 90)) if pre_clamp_values else 0.0, 4),
+            "finalMean": round(average, 4),
         })
 
     for index, segment in enumerate(segments):
@@ -601,10 +667,10 @@ def _v4_consistency_label(profile: dict[str, Any]) -> str:
     return {"STEADY": "STEADY", "MODERATELY_VARIABLE": "UNEVEN", "HIGHLY_VARIABLE": "HIGHLY_UNEVEN"}.get(variation, "UNKNOWN")
 
 
-def _v4_repetitive_motion(intervals: list[dict[str, Any]], novelty: dict[str, Any]) -> dict[str, Any]:
+def _v4_repetitive_motion(intervals: list[dict[str, Any]], novelty: dict[str, Any], recurrence: dict[str, Any]) -> dict[str, Any]:
     novelty_value = float(novelty.get("averageNovelty", 0.0))
     high_motion = [item for item in intervals if float(item.get("smoothedMotion", 0.0)) >= 0.55]
-    repeated = bool(high_motion) and novelty_value <= 0.16
+    repeated = bool(high_motion) and novelty_value <= 0.20 and bool(recurrence.get("detected"))
     return {
         "version": "repetitive-motion-evidence-v1",
         "status": "AVAILABLE" if intervals and novelty.get("status") == "AVAILABLE" else "NOT_EVALUATED",
@@ -613,9 +679,19 @@ def _v4_repetitive_motion(intervals: list[dict[str, Any]], novelty: dict[str, An
         "continuousMotion": len(high_motion) >= max(2, len(intervals) // 4),
         "lowStateNovelty": novelty_value <= 0.16,
         "repeatedPatternCandidate": repeated,
+        "recurrence": recurrence,
         "classification": "HIGH" if repeated and novelty_value <= 0.08 else "MODERATE" if repeated else "LOW",
         "interpretation": "Movement continues while medium-range visual novelty remains low; this is evidence of possible repetition, not a performance claim." if repeated else "No prolonged high-motion/low-novelty pattern was established.",
     }
+
+
+def _clipped_ratio(intervals: list[dict[str, Any]], start: float, end: float) -> float:
+    local = [
+        item for item in intervals
+        if max(0.0, min(end, float(item.get("endTime", 0.0))) - max(start, float(item.get("startTime", 0.0)))) > 0
+    ]
+    clipped = sum(bool(item.get("wasClipped", item.get("normalizationSaturated", False))) for item in local)
+    return clipped / max(len(local), 1)
 
 
 def _analyse_v4(path: Path, metadata: VideoMetadata) -> VideoAnalysisResponse:
@@ -647,9 +723,25 @@ def _analyse_v4(path: Path, metadata: VideoMetadata) -> VideoAnalysisResponse:
         for candidate in v4_profile.get("activitySpikes", [])
     ]
     novelty = _v4_visual_novelty(samples, duration)
-    repetition = _v4_repetitive_motion(intervals, novelty)
+    recurrence = _v4_recurrence(samples, intervals, duration)
+    repetition = _v4_repetitive_motion(intervals, novelty, recurrence)
     v4_profile["visualNovelty"] = novelty
     v4_profile["repetitiveMotion"] = repetition
+    v4_profile["recurrence"] = recurrence
+    clipped = [item for item in intervals if item.get("wasClipped")]
+    pre_clamp = [float(item.get("preClampNormalizedMotion", 0.0)) for item in intervals]
+    final_motion = [float(item.get("finalMotion", 0.0)) for item in intervals]
+    v4_profile["saturationDiagnostics"] = {
+        "overallClippedRatio": round(len(clipped) / max(len(intervals), 1), 5),
+        "openingClippedRatio": round(_clipped_ratio(intervals, 0.0, duration * 0.25), 5),
+        "middleClippedRatio": round(_clipped_ratio(intervals, duration * 0.25, duration * 0.75), 5),
+        "endingClippedRatio": round(_clipped_ratio(intervals, duration * 0.75, duration), 5),
+        "preClampMean": round(float(np.mean(pre_clamp)) if pre_clamp else 0.0, 5),
+        "preClampP50": round(float(np.percentile(pre_clamp, 50)) if pre_clamp else 0.0, 5),
+        "preClampP90": round(float(np.percentile(pre_clamp, 90)) if pre_clamp else 0.0, 5),
+        "finalMean": round(float(np.mean(final_motion)) if final_motion else 0.0, 5),
+        "warning": "MOTION_SCALE_SATURATION" if len(clipped) / max(len(intervals), 1) >= 0.60 else None,
+    }
     v4_profile["dimensions"] = {
         "motionIntensity": _v4_motion_label(float(v4_profile["overallMotion"])),
         "temporalConsistency": _v4_consistency_label(v4_profile),

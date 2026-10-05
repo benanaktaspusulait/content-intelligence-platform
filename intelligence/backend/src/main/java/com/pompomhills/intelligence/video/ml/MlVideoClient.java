@@ -1,5 +1,6 @@
 package com.pompomhills.intelligence.video.ml;
 
+import com.pompomhills.intelligence.video.VideoService;
 import java.util.List;
 import java.util.Map;
 import org.springframework.stereotype.Component;
@@ -14,7 +15,7 @@ public class MlVideoClient {
   }
 
   public MlAnalysisResponse analyse(String relativePath) {
-    return analyse(relativePath, "sampled-visual-motion-v3");
+    return analyse(relativePath, VideoService.CURRENT_ANALYSIS_VERSION);
   }
 
   public MlAnalysisResponse analyse(String relativePath, String analysisVersion) {

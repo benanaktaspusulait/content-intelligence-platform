@@ -5,6 +5,7 @@ import { OverviewPage } from './pages/overview.page';
 import { PredictionsPage } from './pages/predictions.page';
 import { VideoLibraryPage } from './pages/video-library.page';
 import { VideoDetailPage } from './pages/video-detail.page';
+import { VideoAnalysisWorkbenchPage } from './pages/video-analysis-workbench.page';
 import { ReachFurtherResearchPage } from './pages/reach-further-research.page';
 import { RenderDashboardPage } from './pages/render-dashboard.page';
 import { MetaConnectionPage } from './pages/meta-connection.page';
@@ -25,6 +26,7 @@ export const routes: Routes = [
   { path: 'rule-governance', component: RuleGovernancePage, title: 'Rule Governance · Pompom CI' },
   { path: 'quality', component: QualityValidatorComponent, title: 'Prompt Quality · Pompom CI' },
   { path: 'videos', component: VideoLibraryPage, title: 'Video Library · Pompom CI' },
+  { path: 'videos/workbench', component: VideoAnalysisWorkbenchPage, title: 'Analysis Workbench · Pompom CI' },
   { path: 'videos/detail', component: VideoDetailPage, title: 'Video Review Studio · Pompom CI' },
   { path: 'videos/:id', component: VideoDetailPage, title: 'Video Detail · Pompom CI' },
   { path: 'characters', component: CharacterLabPage, title: 'Character Lab · Pompom CI' },

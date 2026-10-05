@@ -73,6 +73,7 @@ interface PostRenderEvaluation {
   evidenceVersion: string;
   rulesetVersion: string;
   analyzerVersions: string;
+  evidenceSnapshot?: string;
   decision: string;
   humanReviewRequired: boolean;
   humanDecision?: string;
@@ -90,6 +91,7 @@ interface PostRenderEvaluation {
     };
   };
   ruleResults: PostRenderRuleResult[];
+  evidence?: any;
 }
 
 interface Page<T> {
@@ -261,6 +263,17 @@ interface RenderAsset {
                                 <div class="assessment-recommendation"><h5>Recommended experiment</h5><strong>{{ recommendation.experiment }}</strong><p>{{ recommendation.hypothesis }}</p></div>
                               }
                               <div class="assessment-insights">@for (insight of assessment.snapshot.insights ?? []; track insight.title) { <div><strong>{{ insight.title }}</strong><p>{{ insight.detail }}</p></div> }</div>
+                            </section>
+                          }
+                          @if (postRenderDetails()?.evidence; as evidence) {
+                            <section class="evidence-structure">
+                              <div class="assessment-heading"><div><span class="metric-label">V4 creative evidence</span><strong>Plan, render and recurrence</strong></div></div>
+                              <div class="evidence-structure__grid">
+                                <div><span class="metric-label">Action / beat novelty</span><strong>{{ evidence.temporal?.actionBeatNovelty?.status || evidence.actionBeatNovelty?.status || '—' }}</strong><p>Planned: {{ evidence.temporal?.actionBeatNovelty?.planned || evidence.temporal?.plannedActionNovelty?.status || '—' }} · Observed visually: {{ evidence.temporal?.actionBeatNovelty?.observedVisually || evidence.temporal?.observedVisualBeatNovelty?.status || '—' }}</p><small>Semantic action identity: {{ evidence.temporal?.actionBeatNovelty?.semanticActionStatus || 'NOT_EVALUATED' }}</small></div>
+                                <div><span class="metric-label">Plan → render fidelity</span><strong>{{ evidence.temporal?.planRenderFidelity?.status || evidence.planRenderFidelity?.status || '—' }}</strong><p>{{ evidence.temporal?.planRenderFidelity?.reason || evidence.planRenderFidelity?.reason || 'No fidelity explanation available.' }}</p><small>Coverage: {{ evidence.temporal?.planRenderFidelity?.coverage ?? '—' }}%</small></div>
+                                <div><span class="metric-label">Repetition</span><strong>{{ evidence.temporal?.profile?.repetitiveMotion?.classification || evidence.repetitiveMotion?.classification || '—' }}</strong><p>{{ evidence.temporal?.profile?.repetitiveMotion?.interpretation || evidence.repetitiveMotion?.interpretation || 'No repetition summary available.' }}</p><small>Recurrence: {{ evidence.temporal?.profile?.recurrence?.detected ? 'detected' : 'not established' }}</small></div>
+                                <div><span class="metric-label">Motion measurement</span><strong>{{ evidence.temporal?.profile?.saturationDiagnostics?.warning ? 'Limited discrimination' : 'Available' }}</strong><p>{{ evidence.temporal?.profile?.saturationDiagnostics?.warning ? 'Normalization is saturating across a large part of the timeline.' : 'No widespread normalization saturation was detected.' }}</p><small>Clipped intervals: {{ evidence.temporal?.profile?.saturationDiagnostics?.overallClippedRatio ?? '—' }}</small></div>
+                              </div>
                             </section>
                           }
                           <h5 class="rule-results-title">Rule results</h5>
@@ -632,6 +645,42 @@ interface RenderAsset {
       cursor: pointer;
     }
 
+    .evidence-structure {
+      margin-top: 1rem;
+      padding: 1rem;
+      border: 1px solid #2f3d3b;
+      border-radius: 8px;
+      background: #101616;
+    }
+
+    .evidence-structure__grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 0.75rem;
+      margin-top: 0.8rem;
+    }
+
+    .evidence-structure__grid > div {
+      min-height: 120px;
+      padding: 0.8rem;
+      border: 1px solid #263330;
+      border-radius: 6px;
+      background: #151d1c;
+    }
+
+    .evidence-structure strong {
+      display: block;
+      margin-top: 0.25rem;
+      color: #d7ff7c;
+    }
+
+    .evidence-structure p,
+    .evidence-structure small {
+      color: #b9c7c2;
+      font-size: 0.78rem;
+      line-height: 1.45;
+    }
+
     .rule-results {
       display: grid;
       gap: 0.5rem;
@@ -905,9 +954,14 @@ export class RenderDashboardPage implements OnInit, OnDestroy {
       return;
     }
     this.http.get<PostRenderEvaluation>(`/api/v1/post-render/evaluations/${evaluationId}`).subscribe({
-      next: details => this.postRenderDetails.set(details),
+      next: details => this.postRenderDetails.set({ ...details, evidence: this.parseEvidence(details.evidenceSnapshot) }),
       error: err => this.error.set(err.error?.detail || err.error?.message || 'Post-render rule results could not be loaded.'),
     });
+  }
+
+  private parseEvidence(value: string | undefined): any {
+    if (!value) return null;
+    try { return JSON.parse(value); } catch { return null; }
   }
 
   formatRuleValue(value: unknown): string {

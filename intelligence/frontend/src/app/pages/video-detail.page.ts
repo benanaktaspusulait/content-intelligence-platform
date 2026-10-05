@@ -226,7 +226,7 @@ const VARIANT_TYPE_LABELS: Record<string, string> = {
         } @else if (analysisStatus()?.jobState === 'QUEUED' || analysisStatus()?.jobState === 'RUNNING') {
           <div class="state-panel compact-state"><span class="spinner"></span><strong>{{ analysisStatus()!.jobState === 'QUEUED' ? 'Queued for analysis' : 'Analysis running' }}</strong></div>
         } @else if (analysisError()) {
-          <div class="state-panel state-panel--error compact-state"><strong>Analysis status unavailable</strong><p>{{ analysisError() }}</p><button class="button button--secondary" type="button" (click)="pollAnalysisStatus(video()!.id, analysisStatus()?.analysisVersion || 'sampled-visual-motion-v4')">Retry status</button></div>
+          <div class="state-panel state-panel--error compact-state"><strong>Analysis status unavailable</strong><p>{{ analysisError() }}</p><button class="button button--secondary" type="button" (click)="pollAnalysisStatus(video()!.id)">Retry status</button></div>
         } @else {
           <div class="state-panel compact-state"><strong>No analysis yet</strong><p>Trigger visual-motion analysis to measure sampled frame-change evidence.</p></div>
         }
@@ -553,13 +553,13 @@ export class VideoDetailPage implements OnDestroy {
     this.run(this.service.addManualEngagementIntervention(id, new Date(this.interventionAt()).toISOString(), this.interventionNotes(), before, after, this.platform()), 'Manual intervention recorded.');
   }
   protected selectEvidence(event: Event): void { this.evidence.set((event.target as HTMLInputElement).files?.[0] || null); }
-  protected triggerAnalysis(analysisVersion = 'sampled-visual-motion-v4'): void {
+  protected triggerAnalysis(): void {
     const id = this.video()?.id;
     if (!id) return;
     this.triggeringAnalysis.set(true); this.analysisRunActive.set(true); this.analysisError.set('');
     this.analysisFeedbackKind.set('info'); this.analysisFeedback.set('Analysis is being queued…');
-    this.service.triggerAnalysis(id, true, analysisVersion).subscribe({
-      next: status => { this.triggeringAnalysis.set(false); this.analysisStatus.set(status); this.analysisFeedback.set(status.jobState === 'RUNNING' ? 'Analysis is running…' : 'Analysis is queued…'); this.pollAnalysisStatus(id, analysisVersion); },
+    this.service.triggerAnalysis(id, true).subscribe({
+      next: status => { this.triggeringAnalysis.set(false); this.analysisStatus.set(status); this.analysisFeedback.set(status.jobState === 'RUNNING' ? 'Analysis is running…' : 'Analysis is queued…'); this.pollAnalysisStatus(id); },
       error: response => { this.triggeringAnalysis.set(false); this.analysisRunActive.set(false); this.analysisFeedbackKind.set('error'); this.analysisFeedback.set(response.error?.message || 'Could not start analysis.'); },
     });
   }
@@ -819,14 +819,14 @@ export class VideoDetailPage implements OnDestroy {
     this.variantsError.set('');
     this.service.listVariants(videoId).subscribe({ next: variants => this.videoVariants.set(variants), error: response => { this.videoVariants.set([]); this.variantsError.set(response.error?.message || 'Variant history could not be loaded.'); } });
   }
-  protected pollAnalysisStatus(videoId: string, analysisVersion = 'sampled-visual-motion-v4'): void {
+  protected pollAnalysisStatus(videoId: string): void {
     this.analysisPollSubscription?.unsubscribe();
     this.analysisError.set('');
     let previousState = this.analysisStatus()?.jobState;
     this.analysisPollSubscription = interval(5000)
       .pipe(
         startWith(0),
-        switchMap(() => this.service.getAnalysisStatus(videoId, analysisVersion).pipe(catchError(response => { this.analysisError.set(response.error?.message || 'The analysis service did not respond.'); return of(null); }))),
+        switchMap(() => this.service.getAnalysisStatus(videoId).pipe(catchError(response => { this.analysisError.set(response.error?.message || 'The analysis service did not respond.'); return of(null); }))),
       )
       .subscribe(status => {
         if (status === null) return;

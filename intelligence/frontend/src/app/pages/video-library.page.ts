@@ -68,7 +68,7 @@ export function resultCountLabel(groupCount: number, fileCount: number): string 
   selector: 'app-video-library-page',
   imports: [RouterLink],
   template: `
-    <header class="page-header"><div><span class="eyebrow">CREATIVE EVIDENCE</span><h1>Video Library</h1><p>Browse mounted media and choose which videos become evidence records.</p></div></header>
+    <header class="page-header"><div><span class="eyebrow">CREATIVE EVIDENCE</span><h1>Video Library</h1><p>Browse mounted media and choose which videos become evidence records.</p></div><div class="header-actions"><a class="button button--secondary" routerLink="/videos/workbench">Analysis Workbench</a></div></header>
 
     <section class="section-band ingest-directory-panel">
       <div><span class="eyebrow">MEDIA LIBRARY</span><h2>Ingest selected folders</h2><p>Selection only previews real files. Ingest starts only when you use the action.</p></div>

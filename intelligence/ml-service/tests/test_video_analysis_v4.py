@@ -3,6 +3,8 @@ import numpy as np
 from app.video import (
     V4SampledFrame,
     _v4_low_motion_candidates,
+    _v4_intervals,
+    _v4_recurrence,
     _v4_target_times,
     _v4_visual_novelty,
 )
@@ -50,3 +52,31 @@ def test_v4_novelty_separates_identical_and_changed_states() -> None:
 
     assert novelty["status"] == "AVAILABLE"
     assert novelty["points"][0]["novelty"] < novelty["points"][1]["novelty"]
+
+
+def test_v4_recurrence_detects_repeated_visual_cycle_without_embeddings() -> None:
+    frames = []
+    for index, value in enumerate((0, 96, 220, 0, 96, 220, 0, 96)):
+        frame = np.full((32, 32, 3), value, dtype=np.uint8)
+        timestamp = index * 0.25
+        frames.append(V4SampledFrame(frame, timestamp, timestamp, 0.0))
+
+    intervals = _v4_intervals(frames)
+    recurrence = _v4_recurrence(frames, intervals, 1.75)
+
+    assert recurrence["detected"] is True
+    assert recurrence["dominantLagSeconds"] in {0.5, 0.75, 1.0, 1.5, 2.0, 2.25, 2.5, 3.0}
+    assert recurrence["visualStateRecurrence"] is True
+
+
+def test_v4_intervals_keep_pre_clamp_saturation_diagnostics() -> None:
+    dark = np.zeros((32, 32, 3), dtype=np.uint8)
+    bright = np.full((32, 32, 3), 255, dtype=np.uint8)
+    intervals = _v4_intervals([
+        V4SampledFrame(dark, 0.0, 0.0, 0.0),
+        V4SampledFrame(bright, 0.25, 0.25, 0.0),
+    ])
+
+    assert intervals[0]["preClampNormalizedMotion"] >= 1.0
+    assert intervals[0]["wasClipped"] is True
+    assert intervals[0]["finalMotion"] == 1.0

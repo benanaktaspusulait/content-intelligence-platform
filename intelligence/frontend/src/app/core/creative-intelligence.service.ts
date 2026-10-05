@@ -131,6 +131,51 @@ export interface MediaFile {
   thumbnailPath: string | null;
 }
 
+export interface WorkbenchCharacter {
+  id: string;
+  name: string;
+  participation: string;
+  role: string;
+  source: string;
+  confidence: number | null;
+  evidenceReference: string | null;
+}
+
+export interface WorkbenchRow {
+  id: string;
+  title: string;
+  relativePath: string;
+  durationMs: number;
+  width: number;
+  height: number;
+  videoStatus: string;
+  ingestedAt: string;
+  analysisStatus: string;
+  analysisVersion: string | null;
+  classification: string | null;
+  confidence: number | null;
+  reason: string | null;
+  triage: string;
+  publicationState: string;
+  observedViews: number | null;
+  observationCount: number | null;
+  characters: WorkbenchCharacter[];
+}
+
+export interface WorkbenchSummary {
+  total: number; current: number; stale: number; missing: number; running: number; failed: number;
+  ready: number; review: number; regenerate: number; editPlan: number; incomplete: number;
+}
+
+export interface WorkbenchPage {
+  content: WorkbenchRow[];
+  page: number;
+  size: number;
+  totalElements: number;
+  totalPages: number;
+  summary: WorkbenchSummary;
+}
+
 export type VariantType = 'ORIGINAL' | 'HOOK_COLD_OPEN' | 'TRIMMED' | 'NO_CTA' | 'LOOP_CUT' | 'CUSTOM_EDIT';
 
 export interface VideoVariant {
@@ -509,6 +554,18 @@ export class CreativeIntelligenceService {
     return this.http.get<VideoApiRecord>(`${this.baseUrl}/videos/${id}`);
   }
 
+  getAnalysisWorkbench(params: Record<string, string | number>): Observable<WorkbenchPage> {
+    return this.http.get<WorkbenchPage>(`${this.baseUrl}/videos/analysis-workbench`, { params });
+  }
+
+  bulkAnalyze(request: {
+    videoIds?: string[]; allMatching?: boolean; analysisStatus?: string; triage?: string;
+    publicationState?: string; characterId?: string; characterRole?: string; query?: string;
+    reanalyzeSelected?: boolean;
+  }): Observable<{ requested: number; accepted: number; skipped: number; alreadyRunning: number; failed: number; jobIds: string[] }> {
+    return this.http.post<{ requested: number; accepted: number; skipped: number; alreadyRunning: number; failed: number; jobIds: string[] }>(`${this.baseUrl}/videos/analysis-workbench/bulk`, request);
+  }
+
   ingestDirectory(relativeDirectory: string, recursive: boolean): Observable<DirectoryIngestResult> {
     return this.http.post<DirectoryIngestResult>(`${this.baseUrl}/videos/ingest-directory`, {
       relativeDirectory, recursive, seriesId: null,
@@ -551,12 +608,12 @@ export class CreativeIntelligenceService {
     return this.http.post<VideoVariant>(`${this.baseUrl}/videos/${videoId}/variants`, request);
   }
 
-  triggerAnalysis(videoId: string, force = false, analysisVersion = 'sampled-visual-motion-v4'): Observable<AnalysisStatus> {
-    return this.http.post<AnalysisStatus>(`${this.baseUrl}/videos/${videoId}/analysis`, {}, { params: { force, analysisVersion } });
+  triggerAnalysis(videoId: string, force = false): Observable<AnalysisStatus> {
+    return this.http.post<AnalysisStatus>(`${this.baseUrl}/videos/${videoId}/analysis`, {}, { params: { force } });
   }
 
-  getAnalysisStatus(videoId: string, analysisVersion = 'sampled-visual-motion-v4'): Observable<AnalysisStatus> {
-    return this.http.get<AnalysisStatus>(`${this.baseUrl}/videos/${videoId}/analysis/status`, { params: { analysisVersion } });
+  getAnalysisStatus(videoId: string): Observable<AnalysisStatus> {
+    return this.http.get<AnalysisStatus>(`${this.baseUrl}/videos/${videoId}/analysis/status`);
   }
 
   getReachFurther(id: string, platform = 'facebook'): Observable<ReachFurtherSummary> {

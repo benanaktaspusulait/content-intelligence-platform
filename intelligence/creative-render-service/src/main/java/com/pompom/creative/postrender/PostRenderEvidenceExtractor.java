@@ -102,8 +102,9 @@ public class PostRenderEvidenceExtractor {
         motion.get("temporalProfile") instanceof Map<?, ?> profile ? cast(profile) : Map.of(), payoff);
     evidence.put("payoffContrast", payoffMotion);
     evidence.put("intentionalHold", payoffMotion);
-    evidence.put("planRenderFidelity", fidelityAnalyzer.compare(
-        contract(asset.getRenderJob()), payoffMotion));
+    Map<String, Object> payoffFidelity = fidelityAnalyzer.compare(
+        contract(asset.getRenderJob()), payoffMotion);
+    evidence.put("payoffFidelity", payoffFidelity);
     Map<String, Object> temporalProfile = motion.get("temporalProfile") instanceof Map<?, ?> profile
         ? cast(profile) : Map.of();
     Map<String, Object> temporal = temporalBeatAlignmentService.align(temporalProfile, contract(asset.getRenderJob()));
@@ -112,6 +113,15 @@ public class PostRenderEvidenceExtractor {
     temporal.put("unmappedActivityDropsStatus", temporalProfile.isEmpty() ? EvidenceStatus.UNKNOWN.name() : EvidenceStatus.AVAILABLE.name());
     temporal.put("status", temporalProfile.isEmpty() ? EvidenceStatus.UNKNOWN.name() : EvidenceStatus.AVAILABLE.name());
     evidence.put("temporal", temporal);
+    if (temporal.containsKey("planRenderFidelity")) {
+      Map<String, Object> canonicalFidelity = mergePayoffFidelity(
+          cast(temporal.get("planRenderFidelity")), payoffFidelity);
+      temporal.put("planRenderFidelity", canonicalFidelity);
+      evidence.put("planRenderFidelity", canonicalFidelity);
+    }
+    if (temporal.containsKey("actionBeatNovelty")) {
+      evidence.put("actionBeatNovelty", temporal.get("actionBeatNovelty"));
+    }
     Map<String, Object> opening = new LinkedHashMap<>();
     opening.put("causalLegibility", null);
     opening.put("causalLegibilityStatus", EvidenceStatus.NOT_EVALUATED.name());
@@ -145,8 +155,8 @@ public class PostRenderEvidenceExtractor {
   }
 
   @SuppressWarnings("unchecked")
-  private Map<String, Object> cast(Map<?, ?> source) {
-    return (Map<String, Object>) source;
+  private Map<String, Object> cast(Object source) {
+    return source instanceof Map<?, ?> values ? (Map<String, Object>) values : Map.of();
   }
 
   private Map<String, Object> contract(com.pompom.creative.domain.RenderJob job) {
@@ -156,5 +166,33 @@ public class PostRenderEvidenceExtractor {
     } catch (Exception ignored) {
       return Map.of();
     }
+  }
+
+  private Map<String, Object> mergePayoffFidelity(
+      Map<String, Object> canonical, Map<String, Object> payoffFidelity) {
+    if (canonical.isEmpty() || payoffFidelity.isEmpty()) return canonical;
+    Map<String, Object> dimensions = new LinkedHashMap<>(cast(canonical.get("dimensions")));
+    Map<String, Object> payoff = cast(payoffFidelity.get("payoff"));
+    if (!payoff.isEmpty()) {
+      String status = String.valueOf(payoff.getOrDefault("fidelity", "UNKNOWN"));
+      dimensions.put("payoff", Map.of(
+          "status", status,
+          "reason", "Payoff intent was compared with the resolved payoff motion window.",
+          "planned", payoff.getOrDefault("planned", "UNKNOWN"),
+          "observed", payoff.getOrDefault("observed", "UNKNOWN"),
+          "recommendedActionType", payoff.getOrDefault("recommendedActionType", "HUMAN_REVIEW")));
+    }
+    Map<String, Object> merged = new LinkedHashMap<>(canonical);
+    merged.put("dimensions", dimensions);
+    long evaluated = dimensions.values().stream()
+        .map(item -> String.valueOf(((Map<?, ?>) item).get("status")))
+        .filter(status -> !status.equals("UNKNOWN") && !status.equals("NOT_EVALUATED") && !status.equals("NOT_APPLICABLE"))
+        .count();
+    long applicable = dimensions.values().stream()
+        .map(item -> String.valueOf(((Map<?, ?>) item).get("status")))
+        .filter(status -> !status.equals("NOT_EVALUATED") && !status.equals("NOT_APPLICABLE"))
+        .count();
+    merged.put("coverage", Math.round(evaluated * 1000.0 / Math.max(applicable, 1)) / 10.0);
+    return merged;
   }
 }
