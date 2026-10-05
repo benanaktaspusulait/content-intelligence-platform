@@ -42,7 +42,7 @@ public class PlatformCreativeReadinessService {
     Map<String, Object> temporalAssessment = map(canonical.get("temporalStructure"));
 
     List<Criterion> criteria = new ArrayList<>();
-    criteria.add(criterion("OPENING_HOOK", importance(platform, "OPENING_HOOK"), value(hook, "status", "UNKNOWN"),
+    criteria.add(criterion("OPENING_HOOK", importance(platform, "OPENING_HOOK"), value(hook, "strength", value(hook, "status", "UNKNOWN")),
         "The measured opening activity is interpreted as a platform hook signal, not a performance prediction."));
     criteria.add(criterion("VISUAL_NOVELTY", importance(platform, "VISUAL_NOVELTY"), value(dimensions, "visualNovelty", "UNKNOWN"),
         "Visual novelty is the shared V5 evidence of structural/perceptual change."));

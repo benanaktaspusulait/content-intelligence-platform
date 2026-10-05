@@ -30,9 +30,18 @@
 
 ## Verification
 
-The fusion endpoint is deterministic and provider-neutral. Existing persisted
-semantic evidence can be rewired with zero additional VLM calls. Full test and
-runtime verification should be run after the backend/ml containers are rebuilt.
+- Targeted ML fusion tests pass (`7 passed` in the semantic routing/fusion test
+  module).
+- Backend production compilation passes with Maven test compilation skipped;
+  the repository still has an unrelated pre-existing test-source constructor
+  mismatch in `PlatformIntegrationTest` when test compilation is enabled.
+- Containers were rebuilt and restarted successfully. ML, backend, PostgreSQL,
+  render service, and frontend are healthy; the frontend route returns HTTP 200.
+- Existing video `e2c9e9bb-9d53-43ad-a4ad-6dade3d9e4ef` was backfilled through
+  the deterministic `/v1/analysis/semantic-fusion` endpoint. Persisted output
+  is `semantic-fusion-v1`, with hook `STRONG`, payoff `MODERATE`, loop
+  `MODERATE`, and `100%` applicable coverage.
+- ML logs confirm one local fusion request and no new video-analysis/VLM call.
 
 ## Known limitations
 

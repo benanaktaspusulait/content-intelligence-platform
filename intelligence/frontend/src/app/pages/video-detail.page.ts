@@ -768,6 +768,13 @@ export class VideoDetailPage implements OnDestroy {
     return value > 0 ? 'Rising' : 'Falling';
   }
   protected v4Dimension(key: string): string {
+    if (key === 'planRenderFidelity') {
+      const canonical = this.canonicalAssessments()['planRenderFidelity'];
+      if (canonical && typeof canonical === 'object') {
+        const value = canonical as Record<string, unknown>;
+        return this.readable(String(value['status'] || 'NOT_AVAILABLE'));
+      }
+    }
     const dimensions = this.analysisStatus()?.temporalProfile?.['dimensions'];
     return dimensions && typeof dimensions === 'object' && typeof (dimensions as Record<string, unknown>)[key] === 'string'
       ? String((dimensions as Record<string, unknown>)[key]).replaceAll('_', ' ')
@@ -780,6 +787,13 @@ export class VideoDetailPage implements OnDestroy {
     return typeof classification === 'string' ? this.readable(classification) : 'Not evaluated';
   }
   protected v5HoldSummary(): string {
+    const temporal = this.canonicalAssessments()['temporalStructure'];
+    if (temporal && typeof temporal === 'object') {
+      const value = temporal as Record<string, unknown>;
+      const interpretation = String(value['interpretation'] || 'NOT_AVAILABLE');
+      if (interpretation === 'NOT_AVAILABLE') return 'Not available';
+      return this.readable(interpretation);
+    }
     const events = this.canonicalTemporalEvents();
     if (!events?.length) return 'None detected';
     const holds = events.filter(item => item['eventType'] === 'LIKELY_PURPOSEFUL_HOLD');
@@ -799,6 +813,11 @@ export class VideoDetailPage implements OnDestroy {
     return hook && typeof hook === 'object' ? String((hook as Record<string, unknown>)['reason'] || 'Opening evidence is limited to sampled visual activity.') : 'Semantic hook evidence is not configured.';
   }
   protected v5HoldReason(): string {
+    const temporal = this.canonicalAssessments()['temporalStructure'];
+    if (temporal && typeof temporal === 'object') {
+      const value = temporal as Record<string, unknown>;
+      return String(value['summary'] || 'Canonical temporal evidence is available.');
+    }
     const events = this.canonicalTemporalEvents();
     const event = events?.find(item => item['eventType'] === 'LIKELY_PURPOSEFUL_HOLD');
     if (!event) return 'Motion evidence alone cannot classify a local dip as a purposeful hold.';
