@@ -31,7 +31,7 @@ export class App {
     { label: 'Reach Further', icon: 'RF', route: '/research' },
     { label: 'Meta Analytics', icon: 'MA', route: '/meta/connection' },
     { label: 'Model Versions', icon: 'MV', route: '/models' },
-    { label: 'Settings', icon: 'ST', route: '/settings' },
+    { label: 'Operations', icon: 'OP', route: '/operations' },
   ];
 
   protected closeNavigation(): void {

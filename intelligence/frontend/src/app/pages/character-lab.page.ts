@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
-import { CharacterCoverage, CreativeIntelligenceService } from '../core/creative-intelligence.service';
+import { CharacterCoverage, CharacterIdentity, CreativeIntelligenceService } from '../core/creative-intelligence.service';
 
 interface FormatColumn { label: string; key: string; }
 
@@ -16,6 +16,7 @@ interface FormatColumn { label: string; key: string; }
       </tbody></table></div> }
     </section>
     @if (!loading() && !error() && gap(); as item) { <section class="section-band evidence-gap"><div><span class="eyebrow">EVIDENCE GAP</span><h2>{{ item.name }} has no imported performance evidence</h2><p>Import performance observations and assign matching videos to {{ item.name }} before character-level comparison.</p></div></section> }
+    @if (!loading() && !error()) { <section class="section-band"><div class="section-heading"><div><span class="eyebrow">CANONICAL IDENTITIES</span><h2>Character records</h2></div><span class="data-freshness">Persisted character registry</span></div><div class="data-table-scroll"><table class="data-table"><thead><tr><th>Character</th><th>Status</th><th>Identity ID</th><th>Notes</th></tr></thead><tbody>@for (character of identities(); track character.id) {<tr><td><strong>{{ character.name }}</strong></td><td>{{ readable(character.status) }}</td><td><code>{{ character.id }}</code></td><td>{{ character.notes || '—' }}</td></tr>}</tbody></table></div></section> }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -30,13 +31,14 @@ export class CharacterLabPage {
     { label: 'Audio Quiz', key: 'AUDIO_QUIZ' },
   ];
   protected readonly characters = signal<CharacterCoverage[]>([]);
+  protected readonly identities = signal<CharacterIdentity[]>([]);
   protected readonly loading = signal(true);
   protected readonly error = signal('');
   protected readonly gap = computed(() => this.characters().find(item => item.observations === 0) || null);
 
   constructor() {
     this.service.getCharacterCoverage().subscribe({
-      next: records => { this.characters.set(records); this.loading.set(false); },
+      next: records => { this.characters.set(records); this.service.getCharacters().subscribe({ next: identities => { this.identities.set(identities); this.loading.set(false); }, error: response => { this.error.set(response.error?.message || 'The character registry did not respond.'); this.loading.set(false); } }); },
       error: response => { this.error.set(response.error?.message || 'The evidence API did not respond.'); this.loading.set(false); },
     });
   }

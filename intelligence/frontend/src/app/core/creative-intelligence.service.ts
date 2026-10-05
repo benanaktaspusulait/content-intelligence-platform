@@ -20,6 +20,7 @@ export interface VideoRecord {
 
 export interface PredictionRecord {
   id: string;
+  videoId: string;
   video: string;
   platform: Platform;
   state: 'DRAFT' | 'LOCKED' | 'EVALUATED';
@@ -28,6 +29,68 @@ export interface PredictionRecord {
   sample: number;
   model: string;
   lockedAt: string;
+  datasetVersion: string;
+  featureVersion: string;
+  knowledgeCutoff: string;
+  predictionType: string;
+}
+
+export interface ExperimentRecord {
+  id: string;
+  videoId: string;
+  variantId: string | null;
+  platform: string;
+  hypothesis: string;
+  experimentType: string;
+  plannedPublishTime: string | null;
+  status: string;
+}
+
+export interface CreateExperimentRequest {
+  videoId: string;
+  variantId?: string | null;
+  platform: string;
+  hypothesis: string;
+  experimentType: string;
+  plannedPublishTime?: string | null;
+  testVariables?: Record<string, unknown>;
+  notes?: string;
+}
+
+export interface TestPlannerView {
+  recommendedAllocation: Record<string, number>;
+  currentExperimentCounts: Record<string, number>;
+  charactersWithoutTests: number;
+  guardrails: string[];
+}
+
+export interface ModelVersionRecord {
+  id: string;
+  version: string;
+  modelType: string;
+  platform: string;
+  trainingDatasetVersion: string;
+  featureVersion: string;
+  knowledgeCutoff: string;
+  metrics: Record<string, unknown>;
+  artifactPath: string | null;
+  status: 'CHALLENGER' | 'CHAMPION' | 'RETIRED' | string;
+  trainedAt: string;
+}
+
+export interface ReliabilityRecord {
+  id: string;
+  predictionId: string;
+  modelVersion: string;
+  platform: string;
+  horizonMinutes: number;
+  actualValue: number | null;
+  absoluteError: number | null;
+  logError: number | null;
+  interval50Covered: boolean | null;
+  interval80Covered: boolean | null;
+  brierScore: number | null;
+  evaluatedAt: string;
 }
 
 export interface VideoApiRecord {
@@ -93,6 +156,10 @@ interface PredictionApiRecord {
   payload: { targets?: Array<{ expectedValue?: number | null; interval80?: Array<number | null> }> };
   comparableSampleSize: number;
   lockedAt?: string | null;
+  predictionType?: string;
+  datasetVersion: string;
+  featureVersion: string;
+  knowledgeCutoff: string;
 }
 
 export interface ImportPreview {
@@ -104,6 +171,16 @@ export interface ImportPreview {
   unresolvedRows: number;
   duplicate: boolean;
   status: string;
+}
+
+export interface ImportRow {
+  id: string;
+  sheetName: string;
+  sourceRowNumber: number;
+  rawData: Record<string, string>;
+  matchedVideoId: string | null;
+  matchStatus: string;
+  matchConfidence: number | null;
 }
 
 export interface OverviewData {
@@ -119,6 +196,14 @@ export interface CharacterCoverage {
   observations: number;
   formatObservations: Record<string, number>;
   confidence: 'NO_DATA' | 'LOW' | 'MEDIUM' | 'HIGH';
+}
+
+export interface CharacterIdentity {
+  id: string;
+  name: string;
+  status: string;
+  notes: string | null;
+  active: boolean;
 }
 
 export interface PlatformStateObservation {
@@ -300,8 +385,52 @@ export class CreativeIntelligenceService {
     );
   }
 
+  generatePrediction(videoId: string, platform: string): Observable<PredictionApiRecord> {
+    return this.http.post<PredictionApiRecord>(`${this.baseUrl}/predictions`, { videoId, platform });
+  }
+
+  lockPrediction(id: string, reason = 'confirmed for publication'): Observable<PredictionApiRecord> {
+    return this.http.post<PredictionApiRecord>(`${this.baseUrl}/predictions/${id}/lock`, { reason });
+  }
+
+  evaluatePrediction(id: string, horizonMinutes: number, actualValue: number): Observable<PredictionApiRecord> {
+    return this.http.post<PredictionApiRecord>(`${this.baseUrl}/predictions/${id}/evaluate`, { horizonMinutes, actualValue });
+  }
+
+  getExperiments(): Observable<ExperimentRecord[]> {
+    return this.http.get<ExperimentRecord[]>(`${this.baseUrl}/experiments`);
+  }
+
+  createExperiment(request: CreateExperimentRequest): Observable<ExperimentRecord> {
+    return this.http.post<ExperimentRecord>(`${this.baseUrl}/experiments`, request);
+  }
+
+  getTestPlanner(): Observable<TestPlannerView> {
+    return this.http.get<TestPlannerView>(`${this.baseUrl}/test-planner`);
+  }
+
+  getModels(): Observable<ModelVersionRecord[]> {
+    return this.http.get<ModelVersionRecord[]>(`${this.baseUrl}/models`);
+  }
+
+  promoteModel(id: string, reason: string): Observable<ModelVersionRecord> {
+    return this.http.post<ModelVersionRecord>(`${this.baseUrl}/models/${id}/promote`, { reason });
+  }
+
+  getReliability(): Observable<ReliabilityRecord[]> {
+    return this.http.get<ReliabilityRecord[]>(`${this.baseUrl}/predictions/reliability`);
+  }
+
+  getPerformanceResearch(platform = 'facebook'): Observable<ReachFurtherResearch> {
+    return this.getReachFurtherResearch(platform);
+  }
+
   getCharacterCoverage(): Observable<CharacterCoverage[]> {
     return this.http.get<CharacterCoverage[]>(`${this.baseUrl}/characters/coverage`);
+  }
+
+  getCharacters(): Observable<CharacterIdentity[]> {
+    return this.http.get<CharacterIdentity[]>(`${this.baseUrl}/characters`);
   }
 
   previewImport(file: File, platform: string, timezone: string): Observable<ImportPreview> {
@@ -314,6 +443,14 @@ export class CreativeIntelligenceService {
 
   commitImport(batchId: string): Observable<ImportPreview> {
     return this.http.post<ImportPreview>(`${this.baseUrl}/imports/${batchId}/commit`, {});
+  }
+
+  getImportRows(batchId: string): Observable<ImportRow[]> {
+    return this.http.get<ImportRow[]>(`${this.baseUrl}/imports/${batchId}/rows`);
+  }
+
+  resolveImportRow(batchId: string, rowId: string, videoId: string, reason = 'Manual exact selection'): Observable<ImportPreview> {
+    return this.http.post<ImportPreview>(`${this.baseUrl}/imports/${batchId}/rows/${rowId}/match`, { videoId, reason });
   }
 
   getVideo(id: string): Observable<VideoApiRecord> {
@@ -457,6 +594,7 @@ export class CreativeIntelligenceService {
         const interval = target?.interval80;
         return {
           id: item.id,
+          videoId: item.videoId,
           video: item.videoId,
           platform: this.platform(item.platform),
           state: item.status,
@@ -465,6 +603,10 @@ export class CreativeIntelligenceService {
           sample: item.comparableSampleSize,
           model: item.modelVersion,
           lockedAt: item.lockedAt ? new Date(item.lockedAt).toLocaleString() : 'Not locked',
+          datasetVersion: item.datasetVersion,
+          featureVersion: item.featureVersion,
+          knowledgeCutoff: item.knowledgeCutoff,
+          predictionType: item.predictionType || 'PRE_PUBLISH',
         };
       })),
     );

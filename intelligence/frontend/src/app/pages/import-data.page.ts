@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
-import { CreativeIntelligenceService } from '../core/creative-intelligence.service';
+import { CreativeIntelligenceService, ImportRow, VideoRecord } from '../core/creative-intelligence.service';
 
-interface FieldMapping { source: string; sample: string; target: string; confidence: 'High' | 'Medium' | 'Unresolved'; }
+interface DetectedField { source: string; interpretation: string; }
 
 @Component({
   selector: 'app-import-data-page',
@@ -12,13 +12,18 @@ interface FieldMapping { source: string; sample: string; target: string; confide
       <section class="section-band upload-panel">
         <div class="section-heading"><div><span class="eyebrow">SOURCE FILE</span><h2>Platform export</h2></div><span class="status-badge status-badge--green">CSV</span></div>
         <label class="file-drop"><input type="file" accept=".csv,.tsv,.xlsx" (change)="fileSelected($event)"><span class="upload-icon" aria-hidden="true">↑</span><strong>{{ fileName() || 'Choose a platform export' }}</strong><small>{{ rowCount() ? rowCount() + ' rows staged' : 'CSV, TSV or XLSX · up to 250 MB' }}</small><span class="button button--secondary">Browse files</span></label>
-        <dl class="compact-facts source-facts"><div><dt>Platform</dt><dd>Instagram</dd></div><div><dt>Matched rows</dt><dd>{{ matchedRows() }}</dd></div><div><dt>Storage</dt><dd>Raw + normalized</dd></div></dl>
+        <dl class="compact-facts source-facts"><div><dt>Platform</dt><dd><select [value]="platform()" (change)="platform.set(selectValue($event))"><option value="instagram">Instagram</option><option value="facebook">Facebook</option><option value="tiktok">TikTok</option><option value="youtube">YouTube</option></select></dd></div><div><dt>Matched rows</dt><dd>{{ matchedRows() }}</dd></div><div><dt>Storage</dt><dd>Raw + normalized</dd></div></dl>
       </section>
       <aside class="section-band validation-panel"><span class="eyebrow">VALIDATION</span><h2>{{ unresolvedRows() }} unresolved rows</h2><p>Only exact video IDs or unique filenames are accepted.</p><div class="validation-meter"><span [style.width.%]="matchCoverage()"></span></div><small>{{ matchCoverage() }}% row coverage</small><ul><li class="passed">{{ mappings().length }} fields detected</li><li class="passed">{{ matchedRows() }} exact matches</li><li class="warning">{{ unresolvedRows() }} rows need review</li></ul>@if (error()) { <p class="amber-text">{{ error() }}</p> }</aside>
     </div>
     <section class="section-band mapping-section">
-      <div class="section-heading"><div><span class="eyebrow">DETECTED SCHEMA</span><h2>Field mapping</h2></div><button class="button button--quiet" type="button" (click)="autoMap()">↯ Auto-map fields</button></div>
-      <div class="data-table-scroll"><table class="data-table mapping-table"><thead><tr><th>Source field</th><th>Example value</th><th>Maps to</th><th>Confidence</th></tr></thead><tbody>@for (field of mappings(); track field.source; let index = $index) {<tr><td><strong>{{ field.source }}</strong></td><td class="code-value">{{ field.sample }}</td><td><select [value]="field.target" (change)="updateMapping(index, $event)" [attr.aria-label]="'Map ' + field.source"><option value="">Select target…</option><option value="video_id">Video ID</option><option value="views">Views</option><option value="completion_rate">Completion rate</option><option value="hook_rate">Hook rate</option><option value="published_at">Published at</option></select></td><td><span class="confidence" [class.confidence--high]="field.confidence === 'High'" [class.confidence--medium]="field.confidence === 'Medium'">{{ field.confidence }}</span></td></tr>}</tbody></table></div>
+      <div class="section-heading"><div><span class="eyebrow">DETECTED SCHEMA</span><h2>Backend field interpretation</h2></div><span class="data-freshness">Read-only preview</span></div>
+      <p class="form-message">The import service uses the source column names and keeps the original payload. These interpretations are informational; no client-side mapping is silently applied.</p>
+      <div class="data-table-scroll"><table class="data-table mapping-table"><thead><tr><th>Source field</th><th>Backend interpretation</th></tr></thead><tbody>@for (field of mappings(); track field.source) {<tr><td><strong>{{ field.source }}</strong></td><td>{{ field.interpretation }}</td></tr>}</tbody></table></div>
+      @if (unresolvedRows() > 0 && batchId()) {
+        <div class="section-heading review-heading"><div><span class="eyebrow">MATCH REVIEW</span><h2>Resolve unmatched rows</h2></div><span class="status-badge status-badge--amber">{{ unresolvedRows() }} unresolved</span></div>
+        <div class="data-table-scroll"><table class="data-table"><thead><tr><th>Source row</th><th>Source identity</th><th>Match to canonical video</th></tr></thead><tbody>@for (row of unresolvedRowsList(); track row.id) {<tr><td>{{ row.sourceRowNumber }}</td><td class="code-value">{{ rowIdentity(row) }}</td><td><select [value]="''" (change)="resolveRow(row, $event)" [attr.aria-label]="'Resolve source row ' + row.sourceRowNumber"><option value="">Select video…</option>@for (video of videos(); track video.id) {<option [value]="video.id">{{ video.title }}</option>}</select></td></tr>}</tbody></table></div>
+      }
       <footer class="commit-bar"><div><strong>{{ matchedRows() }} of {{ rowCount() }} rows matched</strong><small>Raw source remains append-only; blank metrics stay null.</small></div><button class="button button--primary" type="button" [disabled]="unresolvedRows() > 0 || !batchId() || loading()" (click)="commit()">{{ committed() ? 'Import committed' : loading() ? 'Working…' : 'Commit import' }} <span aria-hidden="true">→</span></button></footer>
     </section>
   `,
@@ -29,32 +34,49 @@ export class ImportDataPage {
   protected readonly step = signal(2);
   protected readonly fileName = signal('');
   protected readonly committed = signal(false);
-  protected readonly mappings = signal<FieldMapping[]>([]);
+  protected readonly mappings = signal<DetectedField[]>([]);
+  protected readonly platform = signal('instagram');
+  protected readonly rows = signal<ImportRow[]>([]);
+  protected readonly videos = signal<VideoRecord[]>([]);
   protected readonly batchId = signal('');
   protected readonly rowCount = signal(0);
   protected readonly matchedRows = signal(0);
   protected readonly unresolvedRows = signal(0);
   protected readonly loading = signal(false);
   protected readonly error = signal('');
-  protected readonly unresolved = computed(() => this.mappings().filter(field => !field.target).length);
-  protected readonly completion = computed(() => Math.round(((this.mappings().length - this.unresolved()) / this.mappings().length) * 100));
+  protected readonly unresolvedRowsList = computed(() => this.rows().filter(row => row.matchStatus === 'UNRESOLVED'));
   protected readonly matchCoverage = computed(() => this.rowCount() ? Math.round(this.matchedRows() / this.rowCount() * 100) : 0);
 
   protected fileSelected(event: Event): void {
     const file = (event.target as HTMLInputElement).files?.[0];
     if (!file) return;
     this.fileName.set(file.name); this.loading.set(true); this.error.set(''); this.committed.set(false);
-    this.service.previewImport(file, 'instagram', Intl.DateTimeFormat().resolvedOptions().timeZone).subscribe({
+    this.service.previewImport(file, this.platform(), Intl.DateTimeFormat().resolvedOptions().timeZone).subscribe({
       next: preview => {
         this.batchId.set(preview.batchId); this.rowCount.set(preview.rowCount); this.matchedRows.set(preview.matchedRows); this.unresolvedRows.set(preview.unresolvedRows);
-        this.mappings.set(preview.columns.map(column => ({ source: column, sample: 'From source file', target: this.suggestTarget(column), confidence: this.suggestTarget(column) ? 'Medium' : 'Unresolved' })));
-        this.loading.set(false);
+        this.mappings.set(preview.columns.map(column => ({ source: column, interpretation: this.interpretation(column) })));
+        this.service.getImportRows(preview.batchId).subscribe({
+          next: rows => { this.rows.set(rows); this.loading.set(false); },
+          error: response => { this.error.set(response.error?.message || 'Import rows could not be loaded.'); this.loading.set(false); },
+        });
       },
       error: response => { this.error.set(response.error?.message || 'Import preview failed.'); this.loading.set(false); },
     });
   }
-  protected updateMapping(index: number, event: Event): void { const target = (event.target as HTMLSelectElement).value; this.mappings.update(fields => fields.map((field, i) => i === index ? { ...field, target, confidence: target ? 'Medium' : 'Unresolved' } : field)); }
-  protected autoMap(): void { this.mappings.update(fields => fields.map(field => field.target ? field : { ...field, target: 'views', confidence: 'Medium' })); }
+  protected selectValue(event: Event): string { return (event.target as HTMLSelectElement).value; }
+  protected resolveRow(row: ImportRow, event: Event): void {
+    const videoId = this.selectValue(event);
+    if (!videoId || !this.batchId()) return;
+    this.loading.set(true); this.error.set('');
+    this.service.resolveImportRow(this.batchId(), row.id, videoId).subscribe({
+      next: preview => {
+        this.matchedRows.set(preview.matchedRows); this.unresolvedRows.set(preview.unresolvedRows);
+        this.service.getImportRows(this.batchId()).subscribe({ next: rows => { this.rows.set(rows); this.loading.set(false); }, error: response => { this.error.set(response.error?.message || 'Import rows could not be refreshed.'); this.loading.set(false); } });
+      },
+      error: response => { this.error.set(response.error?.message || 'Row match failed.'); this.loading.set(false); },
+    });
+  }
+  protected rowIdentity(row: ImportRow): string { return row.rawData['video_id'] || row.rawData['videoId'] || row.rawData['filename'] || row.rawData['file_name'] || `row ${row.sourceRowNumber}`; }
   protected commit(): void {
     if (!this.batchId() || this.unresolvedRows() > 0) return;
     this.loading.set(true); this.error.set('');
@@ -63,12 +85,15 @@ export class ImportDataPage {
       error: response => { this.error.set(response.error?.message || 'Import commit failed.'); this.loading.set(false); },
     });
   }
-  private suggestTarget(column: string): string {
+  private interpretation(column: string): string {
     const key = column.toLowerCase().replace(/[^a-z0-9]/g, '');
-    if (key.includes('videoid') || key === 'mediaid') return 'video_id';
-    if (key.includes('view') || key === 'plays') return 'views';
-    if (key.includes('published') || key === 'posted') return 'published_at';
-    if (key.includes('completion') || key.includes('watch')) return 'completion_rate';
-    return '';
+    if (key.includes('videoid') || key === 'mediaid') return 'Canonical video match key';
+    if (key.includes('filename') || key === 'file') return 'Canonical filename match key';
+    if (key.includes('view') || key === 'plays') return 'Views metric';
+    if (key.includes('published') || key === 'posted') return 'Publication timestamp';
+    if (key.includes('measure') || key === 'date') return 'Measurement timestamp';
+    if (key.includes('completion')) return 'Completion rate metric';
+    if (key.includes('reach')) return 'Reach metric';
+    return 'Raw payload retained; no recognized interpretation';
   }
 }

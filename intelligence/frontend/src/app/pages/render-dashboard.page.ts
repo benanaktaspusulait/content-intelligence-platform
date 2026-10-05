@@ -218,6 +218,7 @@ interface Page<T> {
                 </div>
               </div>
             }
+            <div class="pagination-bar"><span>Page {{ pageNumber() + 1 }} of {{ totalPages() || 1 }} · {{ totalElements() }} total jobs</span><div><button type="button" [disabled]="pageNumber() === 0 || loading()" (click)="loadJobs(pageNumber() - 1)">Previous</button><button type="button" [disabled]="pageNumber() + 1 >= totalPages() || loading()" (click)="loadJobs(pageNumber() + 1)">Next</button></div></div>
           }
         </div>
       </div>
@@ -606,6 +607,9 @@ export class RenderDashboardPage implements OnInit {
   stats = signal({ queued: 0, generating: 0, complete: 0, abandoned: 0 });
   loading = signal(true);
   error = signal<string | null>(null);
+  pageNumber = signal(0);
+  totalPages = signal(0);
+  totalElements = signal(0);
 
   private readonly apiUrl = '/api/v1/render-jobs';
 
@@ -616,11 +620,12 @@ export class RenderDashboardPage implements OnInit {
     interval(5000)
       .pipe(
         startWith(0),
-        switchMap(() => this.http.get<Page<RenderJob>>(`${this.apiUrl}?size=50`))
+        switchMap(() => this.http.get<Page<RenderJob>>(`${this.apiUrl}?page=${this.pageNumber()}&size=50`))
       )
       .subscribe({
         next: (page) => {
           this.jobs.set(page.content);
+          this.pageNumber.set(page.number); this.totalPages.set(page.totalPages); this.totalElements.set(page.totalElements);
           this.updateStats(page.content);
           this.loading.set(false);
           this.error.set(null);
@@ -632,12 +637,13 @@ export class RenderDashboardPage implements OnInit {
       });
   }
 
-  loadJobs() {
+  loadJobs(page = this.pageNumber()) {
     this.loading.set(true);
     this.error.set(null);
-    this.http.get<Page<RenderJob>>(`${this.apiUrl}?size=50`).subscribe({
+    this.http.get<Page<RenderJob>>(`${this.apiUrl}?page=${page}&size=50`).subscribe({
       next: (page) => {
         this.jobs.set(page.content);
+        this.pageNumber.set(page.number); this.totalPages.set(page.totalPages); this.totalElements.set(page.totalElements);
         this.updateStats(page.content);
         this.loading.set(false);
       },

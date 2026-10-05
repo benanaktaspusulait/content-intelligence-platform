@@ -123,6 +123,8 @@ const OAUTH_NOTICES: Record<string, OAuthNotice> = {
 
       @if (pageContentLoading()) {
         <section class="section-band" aria-live="polite"><span class="spinner"></span><strong>Loading recent Page content</strong></section>
+      } @else if (pageContentError()) {
+        <div class="state-panel state-panel--error"><strong>Page content unavailable</strong><p>{{ pageContentError() }}</p><button class="button button--secondary" type="button" (click)="loadPageContent()">Retry Page content</button></div>
       } @else if (pageContent(); as content) {
         @if (content.availability === 'UNAVAILABLE') {
           <div class="state-panel"><strong>Page content unavailable</strong><p>{{ content.unavailableReason || 'Facebook Page content could not be read.' }}</p></div>
@@ -169,6 +171,7 @@ export class MetaConnectionPage {
   protected readonly connection = signal<MetaConnection | null>(null);
   protected readonly pageContent = signal<MetaPageContent | null>(null);
   protected readonly pageContentLoading = signal(false);
+  protected readonly pageContentError = signal('');
   protected readonly insightsGap = computed(() => {
     const data = this.connection();
     if (!data) return false;
@@ -201,15 +204,16 @@ export class MetaConnectionPage {
     });
   }
 
-  private loadPageContent(): void {
-    this.pageContentLoading.set(true);
+  protected loadPageContent(): void {
+    this.pageContentLoading.set(true); this.pageContentError.set('');
     this.service.getPageContent().subscribe({
       next: content => {
         this.pageContent.set(content);
         this.pageContentLoading.set(false);
       },
-      error: () => {
+      error: response => {
         this.pageContent.set(null);
+        this.pageContentError.set(response.error?.message || 'The configured Facebook Page content could not be read.');
         this.pageContentLoading.set(false);
       },
     });

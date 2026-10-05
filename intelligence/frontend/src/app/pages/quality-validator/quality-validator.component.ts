@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
@@ -100,7 +100,7 @@ interface StateSegment {
   templateUrl: './quality-validator.component.html',
   styleUrls: ['./quality-validator.component.scss']
 })
-export class QualityValidatorComponent implements OnInit {
+export class QualityValidatorComponent {
   prompt: string = '';
   report: QualityReport | null = null;
   loading: boolean = false;
@@ -152,10 +152,6 @@ Intensity: 4`;
 
   constructor(private http: HttpClient) {}
 
-  ngOnInit(): void {
-    // Load sample prompt on init for demo
-    this.prompt = this.samplePrompt;
-  }
 
   validatePrompt(): void {
     if (!this.prompt || this.prompt.length < 100) {

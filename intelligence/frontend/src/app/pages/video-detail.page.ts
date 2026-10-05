@@ -62,6 +62,7 @@ const VARIANT_TYPE_LABELS: Record<string, string> = {
         </div>
 
         <aside class="variant-rail" aria-label="Video variants">
+          @if (variantsError()) { <p class="amber-text">{{ variantsError() }}</p> }
           <div class="variant-rail-heading"><span class="eyebrow">FOLDER VERSIONS</span><strong>Compare variants</strong></div>
           <div class="variant-list">
             @for (variant of variants(); track variant.relativePath) {
@@ -123,6 +124,8 @@ const VARIANT_TYPE_LABELS: Record<string, string> = {
           <div class="state-panel state-panel--error compact-state"><strong>Analysis failed</strong><p>{{ analysisStatus()!.errorMessage || 'The analysis job failed.' }}</p></div>
         } @else if (analysisStatus()?.jobState === 'QUEUED' || analysisStatus()?.jobState === 'RUNNING') {
           <div class="state-panel compact-state"><span class="spinner"></span><strong>{{ analysisStatus()!.jobState === 'QUEUED' ? 'Queued for analysis' : 'Analysis running' }}</strong></div>
+        } @else if (analysisError()) {
+          <div class="state-panel state-panel--error compact-state"><strong>Analysis status unavailable</strong><p>{{ analysisError() }}</p><button class="button button--secondary" type="button" (click)="pollAnalysisStatus(video()!.id)">Retry status</button></div>
         } @else {
           <div class="state-panel compact-state"><strong>No analysis yet</strong><p>Trigger analysis to classify this creative.</p></div>
         }
@@ -138,6 +141,7 @@ const VARIANT_TYPE_LABELS: Record<string, string> = {
         @if (performanceLoading()) {
           <section class="state-panel section-band compact-state"><span class="spinner"></span><strong>Loading {{ platformLabel() }} evidence</strong></section>
         } @else {
+          @if (performanceError()) { <section class="state-panel state-panel--error section-band compact-state"><strong>Some performance evidence is unavailable</strong><p>{{ performanceError() }}</p><button class="button button--secondary" type="button" (click)="loadPerformance()">Retry evidence</button></section> }
           <section class="performance-summary" aria-label="Latest persisted performance">
             @for (metric of summaryMetrics(); track metric.label) { <div><span>{{ metric.label }}</span><strong>{{ number(metric.value) }}</strong><small>{{ metric.value === null || metric.value === undefined ? 'No imported value' : 'Latest persisted checkpoint' }}</small></div> }
           </section>
@@ -258,6 +262,7 @@ export class VideoDetailPage implements OnDestroy {
   protected readonly activeFile = signal<MediaFile | null>(null);
   protected readonly video = signal<VideoApiRecord | null>(null);
   protected readonly videoVariants = signal<VideoVariant[]>([]);
+  protected readonly variantsError = signal('');
   protected readonly summary = signal<ReachFurtherSummary | null>(null);
   protected readonly trajectory = signal<TrajectoryView | null>(null);
   protected readonly growth = signal<PlatformGrowthProfile | null>(null);
@@ -265,6 +270,7 @@ export class VideoDetailPage implements OnDestroy {
   protected readonly platform = signal<PlatformKey>('facebook');
   protected readonly loading = signal(true);
   protected readonly performanceLoading = signal(false);
+  protected readonly performanceError = signal('');
   protected readonly ingesting = signal(false);
   protected readonly saving = signal(false);
   protected readonly error = signal('');
@@ -283,6 +289,7 @@ export class VideoDetailPage implements OnDestroy {
   protected readonly viewsBefore = signal('');
   protected readonly viewsAfter = signal('');
   protected readonly analysisStatus = signal<AnalysisStatus | null>(null);
+  protected readonly analysisError = signal('');
   protected readonly triggeringAnalysis = signal(false);
 
   protected readonly folderName = computed(() => this.readableFolder(this.folderPath()));
@@ -382,7 +389,7 @@ export class VideoDetailPage implements OnDestroy {
   protected triggerAnalysis(): void {
     const id = this.video()?.id;
     if (!id) return;
-    this.triggeringAnalysis.set(true);
+    this.triggeringAnalysis.set(true); this.analysisError.set('');
     this.service.triggerAnalysis(id).subscribe({
       next: status => { this.triggeringAnalysis.set(false); this.analysisStatus.set(status); this.pollAnalysisStatus(id); },
       error: response => { this.triggeringAnalysis.set(false); this.message.set(response.error?.message || 'Could not start analysis.'); },
@@ -437,14 +444,16 @@ export class VideoDetailPage implements OnDestroy {
     this.service.getVideo(file.videoId).subscribe({ next: video => { if (this.activeFile()?.relativePath === file.relativePath) { this.video.set(video); this.loadPerformance(); this.loadVariants(video.id); this.pollAnalysisStatus(video.id); } }, error: response => this.message.set(response.error?.message || 'Technical metadata could not be loaded.') });
   }
   private loadVariants(videoId: string): void {
-    this.service.listVariants(videoId).subscribe({ next: variants => this.videoVariants.set(variants), error: () => this.videoVariants.set([]) });
+    this.variantsError.set('');
+    this.service.listVariants(videoId).subscribe({ next: variants => this.videoVariants.set(variants), error: response => { this.videoVariants.set([]); this.variantsError.set(response.error?.message || 'Variant history could not be loaded.'); } });
   }
-  private pollAnalysisStatus(videoId: string): void {
+  protected pollAnalysisStatus(videoId: string): void {
     this.analysisPollSubscription?.unsubscribe();
+    this.analysisError.set('');
     this.analysisPollSubscription = interval(5000)
       .pipe(
         startWith(0),
-        switchMap(() => this.service.getAnalysisStatus(videoId).pipe(catchError(() => of(null)))),
+        switchMap(() => this.service.getAnalysisStatus(videoId).pipe(catchError(response => { this.analysisError.set(response.error?.message || 'The analysis service did not respond.'); return of(null); }))),
       )
       .subscribe(status => {
         if (status === null) return;
@@ -454,16 +463,16 @@ export class VideoDetailPage implements OnDestroy {
         }
       });
   }
-  private loadPerformance(): void {
+  protected loadPerformance(): void {
     const id = this.video()?.id;
     if (!id) return;
     const platform = this.platform();
-    this.performanceLoading.set(true); this.clearPerformance();
+    this.performanceLoading.set(true); this.performanceError.set(''); this.clearPerformance();
     forkJoin({
-      summary: this.service.getReachFurther(id, platform).pipe(catchError(() => of(null))),
-      trajectory: this.service.getTrajectory(id, platform).pipe(catchError(() => of(null))),
-      growth: this.service.getPlatformGrowth(id, platform).pipe(catchError(() => of(null))),
-      discovery: this.service.getDiscoveryProfile(id, platform).pipe(catchError(() => of(null))),
+      summary: this.service.getReachFurther(id, platform).pipe(catchError(response => { this.performanceError.set(response.error?.message || 'Summary evidence could not be loaded.'); return of(null); })),
+      trajectory: this.service.getTrajectory(id, platform).pipe(catchError(response => { this.performanceError.set(response.error?.message || 'Trajectory evidence could not be loaded.'); return of(null); })),
+      growth: this.service.getPlatformGrowth(id, platform).pipe(catchError(response => { this.performanceError.set(response.error?.message || 'Growth evidence could not be loaded.'); return of(null); })),
+      discovery: this.service.getDiscoveryProfile(id, platform).pipe(catchError(response => { this.performanceError.set(response.error?.message || 'Discovery evidence could not be loaded.'); return of(null); })),
     }).subscribe(data => {
       if (this.video()?.id !== id || this.platform() !== platform) return;
       this.summary.set(data.summary); this.trajectory.set(data.trajectory); this.growth.set(data.growth); this.discovery.set(data.discovery);

@@ -6,7 +6,7 @@ import { CreativeIntelligenceService, OverviewData } from '../core/creative-inte
   selector: 'app-overview-page',
   imports: [RouterLink],
   template: `
-    <header class="page-header"><div><span class="eyebrow">EVIDENCE WORKSPACE</span><h1>Overview</h1><p>Only persisted videos, predictions, and imported outcomes are shown.</p></div><a class="button button--primary" routerLink="/import"><span aria-hidden="true">＋</span> Import data</a></header>
+    <header class="page-header"><div><span class="eyebrow">EVIDENCE WORKSPACE</span><h1>Overview</h1><p>Only persisted videos, predictions, and imported outcomes are shown.</p></div><div class="header-actions"><a class="button button--secondary" routerLink="/operations">Operations</a><a class="button button--primary" routerLink="/import"><span aria-hidden="true">＋</span> Import data</a></div></header>
     @if (loading()) { <div class="state-panel"><span class="spinner"></span><strong>Loading evidence</strong></div> }
     @else if (error()) { <div class="state-panel state-panel--error"><strong>Evidence unavailable</strong><p>{{ error() }}</p><button class="button" type="button" (click)="load()">Retry</button></div> }
     @else if (data(); as overview) {
