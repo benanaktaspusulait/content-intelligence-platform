@@ -263,9 +263,12 @@ public class VideoService {
                 result.storyboardPath(),
                 result.timeline(),
                 raw));
-    fingerprints.save(
-        new CreativeFingerprintEntity(
-            video, analysis, "creative-fingerprint-v1", result.actionDnaScore(), result.features()));
+    String featureVersion = "creative-fingerprint-v1";
+    fingerprints.findByVideoIdAndFeatureVersion(video.getId(), featureVersion)
+        .ifPresentOrElse(
+            existing -> existing.updateFrom(analysis, result.actionDnaScore(), result.features()),
+            () -> fingerprints.save(new CreativeFingerprintEntity(
+                video, analysis, featureVersion, result.actionDnaScore(), result.features())));
     return analysis;
   }
 

@@ -70,4 +70,11 @@ public class CreativeFingerprintEntity {
   public double getCreativeQualityScore() {
     return creativeQualityScore;
   }
+
+  public void updateFrom(
+      CreativeAnalysisEntity analysis, double score, Map<String, Object> features) {
+    this.analysis = analysis;
+    this.creativeQualityScore = score;
+    this.features = features;
+  }
 }

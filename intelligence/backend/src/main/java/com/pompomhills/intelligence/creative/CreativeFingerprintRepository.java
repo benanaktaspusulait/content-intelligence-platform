@@ -7,4 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface CreativeFingerprintRepository
     extends JpaRepository<CreativeFingerprintEntity, UUID> {
   Optional<CreativeFingerprintEntity> findFirstByVideoIdOrderByCreatedAtDesc(UUID videoId);
+
+  Optional<CreativeFingerprintEntity> findByVideoIdAndFeatureVersion(
+      UUID videoId, String featureVersion);
 }
