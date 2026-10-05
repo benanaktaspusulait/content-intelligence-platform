@@ -31,4 +31,30 @@ public class RuleHealthEntity {
   private Double currentEffectEstimate;
   private Instant reviewDueAt;
   @JdbcTypeCode(SqlTypes.JSON) @Column(nullable = false) private Map<String, Object> details;
+
+  public RuleHealthEntity(String tenantId, String ruleKey, String rulesetVersion, ScopeType scopeType, String scopeId) {
+    this.tenantId = tenantId;
+    this.ruleKey = ruleKey;
+    this.rulesetVersion = rulesetVersion;
+    this.scopeType = scopeType;
+    this.scopeId = scopeId;
+    this.status = RuleHealthStatus.ACTIVE;
+    this.details = Map.of();
+  }
+
+  public void revalidate(int sampleSize, Double effect, RuleHealthStatus nextStatus, String trend, Instant now) {
+    if (firstSupportedAt == null) firstSupportedAt = now;
+    lastSupportedAt = now;
+    lastEvaluatedAt = now;
+    currentSupportingSampleSize = sampleSize;
+    currentEffectEstimate = effect;
+    supportTrend = trend;
+    status = nextStatus;
+  }
+
+  public void markRevalidationRequired() {
+    if (status != RuleHealthStatus.SUPERSEDED && status != RuleHealthStatus.RETIRED) {
+      status = RuleHealthStatus.REVALIDATION_REQUIRED;
+    }
+  }
 }

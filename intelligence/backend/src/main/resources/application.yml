@@ -70,6 +70,7 @@ management:
 pompom:
   rule-governance:
     token: ${RULE_GOVERNANCE_TOKEN:}
+    health-poll-ms: ${RULE_GOVERNANCE_HEALTH_POLL_MS:3600000}
   internal:
     observation-bridge-token: ${OBSERVATION_BRIDGE_TOKEN:}
   data-root: ${POMPOM_DATA_ROOT:/tmp/pompom-data}

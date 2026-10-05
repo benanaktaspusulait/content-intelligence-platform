@@ -1,0 +1,800 @@
+created: '2026-10-05'
+default_evaluation_stage: PRE_RENDER
+description: 'Pre-render creative quality ruleset with structural, motion-continuity,
+  first-frame hook, and visual-novelty gates'
+next_version_improvements:
+- Add learned thresholds from performance data
+- Refine cosmetic vs structural escalation detection
+- Add character-specific producibility rules
+- Include platform-specific optimization (IG vs FB)
+rules:
+- description: 'Before writing a 15-second prompt, verify that the core mechanic
+
+    can naturally generate at least 4 visually distinct consequences.
+
+
+    If it cannot, reject the concept.
+
+
+    Do NOT stretch a two-beat teaching contrast into 15 seconds.
+
+    '
+  evaluation:
+  - if: consequence_count < 4
+    message: 'Only {consequence_count} distinct visual consequences detected. Minimum:
+      4. Core mechanic insufficient for 15 seconds.'
+    result: FAIL
+    severity: BLOCKER
+  - if: consequence_count == 4
+    message: Exactly 4 consequences. Consider adding 1-2 more for stronger engagement.
+    result: PASS
+    severity: WARNING
+  - if: consequence_count >= 5
+    message: 'Sufficient consequence variety: {consequence_count} distinct consequences.'
+    result: PASS
+    severity: PASS
+  examples:
+    fail:
+    - concept: slippery floor vs rough mat
+      consequences:
+      - slide
+      - stop on mat
+      count: 2
+      reason: Two-state contrast only generates 2 consequences
+    pass:
+    - concept: door that opens when character leaves
+      consequences:
+      - door closes
+      - won't open when pulled
+      - opens when character turns away
+      - character catches it opening
+      - final reveal
+      count: 5
+      reason: Multiple escalating consequences from single mechanic
+  family: concept_strength
+  id: CONCEPT_006
+  learned_from:
+  - FAIL_001
+  - FAIL_003
+  measurement:
+    aggregation: count_true
+    field: beats[].isNewConsequence
+    type: count
+  name: Consequence Capacity
+  severity: BLOCKER
+  threshold:
+    minimum: 4
+    recommended: 5
+  version: '1.0'
+- description: 'No single visual state may occupy more than approximately
+
+    25–30% of the entire video unless meaningful new physical
+
+    consequences occur within that state.
+
+
+    Different dialogue or tiny movements do NOT count
+
+    as different visual beats.
+
+    '
+  evaluation:
+  - if: any_state_percentage > 35
+    message: 'Visual state ''{state_id}'' occupies {percentage}% of video. Maximum:
+      30%. Video feels static.'
+    result: FAIL
+    severity: CRITICAL
+  - if: any_state_percentage > 30 and any_state_percentage <= 35
+    message: 'Visual state ''{state_id}'' occupies {percentage}% of video. Maximum:
+      30%.'
+    result: FAIL
+    severity: CRITICAL
+  - if: any_state_percentage > 25 and any_state_percentage <= 30
+    message: Visual state '{state_id}' occupies {percentage}% of video. Consider adding
+      variation.
+    result: PASS
+    severity: WARNING
+  - if: any_state_percentage <= 25
+    message: 'Good visual state distribution. Max state: {percentage}%.'
+    result: PASS
+    severity: PASS
+  examples:
+    fail:
+      case: FAIL_001_KIKO
+      reason: Character stands on mat for 42% of video with minimal consequence variation
+      states:
+        on_rough_mat: 6.3s (42%)
+        on_slippery_floor: 5.4s (36%)
+    pass:
+      reason: Well-distributed visual states, no single state dominates
+      states:
+        escalation: 3.5s (23%)
+        sliding: 3.2s (21%)
+        testing_surface: 2.8s (19%)
+        transition: 2.5s (17%)
+  family: visual_novelty
+  id: BEAT_004
+  implementation_notes: '1. Group consecutive beats by visualStateId
+
+    2. Sum duration for each unique visualStateId
+
+    3. Calculate percentage: (state_duration / total_duration) * 100
+
+    4. Find maximum percentage
+
+    5. Apply threshold evaluation
+
+    '
+  learned_from:
+  - FAIL_001
+  measurement:
+    aggregation: group_and_sum_duration
+    field: beats[].visualStateId
+    type: duration_percentage
+  name: Static State Dominance
+  severity: CRITICAL
+  threshold:
+    critical_percentage: 35
+    maximum_percentage: 30
+    warning_percentage: 25
+  version: '1.0'
+- description: 'The same physical action should not repeat more than twice
+
+    unless each iteration introduces a materially different consequence.
+
+
+    Emotional variation (confused → understanding → frustrated)
+
+    without physical consequence change is insufficient.
+
+    '
+  evaluation:
+  - if: any_action_count > 3
+    message: 'Action ''{action}'' repeats {count} times. Maximum: 2-3 with escalation.
+      Video feels repetitive.'
+    result: FAIL
+    severity: CRITICAL
+  - if: any_action_count == 3 and not all_have_different_consequences
+    message: Action '{action}' repeats 3 times without distinct consequences. Add
+      variation or new obstacles.
+    result: FAIL
+    severity: CRITICAL
+  - if: any_action_count == 3 and all_have_different_consequences
+    message: Action '{action}' appears 3 times but with escalating consequences. Consider
+      if more variation possible.
+    result: PASS
+    severity: WARNING
+  - if: any_action_count <= 2
+    message: 'Good action variety. Max repetition: {count}.'
+    result: PASS
+    severity: PASS
+  examples:
+    fail:
+      actions:
+        book_closes: 2 times (beats 0, 2)
+        open_book: 3 times (beats 1, 3, 4)
+      case: FAIL_002_OPA
+      reason: Same open/close cycle repeats without new physical elements
+    pass:
+      actions:
+        book_ejects_tape: 1 time
+        hold_book_with_bookmark: 1 time
+        open_book: 1 time
+        tape_book_edges: 1 time
+      reason: Each attempt introduces new physical element
+  family: visual_novelty
+  id: REPETITION_002
+  implementation_notes: '1. Normalize action descriptions (e.g., "opens book" == "opens
+    it" == "Opa opens book")
+
+    2. Count frequency of each normalized action
+
+    3. For actions appearing 3+ times, check if beats have different consequenceType
+
+    4. Apply threshold evaluation
+
+    '
+  learned_from:
+  - FAIL_002
+  measurement:
+    aggregation: count_similar_actions
+    field: beats[].action
+    type: action_frequency
+  name: Visual Beat Repetition
+  severity: CRITICAL
+  threshold:
+    maximum_repetitions: 2
+    requires_consequence_escalation: true
+  version: '1.0'
+- description: 'A cause-effect cycle (action → consequence → reset) should not
+
+    repeat more than twice unless each iteration introduces a NEW
+
+    physical element, obstacle, or escalation.
+
+
+    Example cycle: sharpen → draw → blunt → (reset to sharpen)
+
+
+    Cosmetic variations (stroke pattern, sharpen duration) do not
+
+    count as structural escalation.
+
+    '
+  evaluation:
+  - if: any_cycle_count > 3
+    message: 'Cycle ''{cycle_id}'' repeats {count} times. Maximum: 2-3 with escalation.
+      Add new obstacles or consequences.'
+    result: FAIL
+    severity: CRITICAL
+  - if: any_cycle_count == 3 and not has_structural_escalation
+    message: Cycle '{cycle_id}' repeats 3 times with only cosmetic variation. Introduce
+      new physical elements.
+    result: FAIL
+    severity: CRITICAL
+  - if: any_cycle_count == 3 and has_structural_escalation
+    message: Cycle '{cycle_id}' repeats 3 times with escalation. Acceptable but consider
+      more variety.
+    result: PASS
+    severity: WARNING
+  - if: any_cycle_count <= 2
+    message: 'Good cycle variety. Max iterations: {count}.'
+    result: PASS
+    severity: PASS
+  examples:
+    fail:
+      case: FAIL_003_ARDA
+      cycle: sharpen_draw_blunt
+      iterations:
+      - iter_1: fast strokes → blunt → sharpen
+      - iter_2: zigzag strokes → blunt → careful sharpen
+      - iter_3: clean line → stays sharp (minor win) → extra sharpen
+      reason: Same cycle with only cosmetic variations (stroke pattern, sharpen duration)
+    pass:
+      cycle: sharpen_draw
+      iterations:
+      - iter_1: sharpen → draw → blunt
+      - iter_2: sharpen harder → paper tears
+      - iter_3: new paper → gentle sharpen → pencil breaks
+      reason: Each iteration introduces new physical consequence (tear, break)
+  family: visual_novelty
+  id: REPETITION_003
+  implementation_notes: '1. Detect cycles by grouping beats with same cycleGroup identifier
+
+    2. Count iterations of each cycle
+
+    3. For cycles appearing 3+ times, check if new props/obstacles appear
+
+    4. Cosmetic changes (different drawing pattern) ≠ structural escalation
+
+    5. Structural escalation = new prop, break, obstacle, character reaction with
+    consequence
+
+    '
+  learned_from:
+  - FAIL_003
+  measurement:
+    aggregation: count_cycle_iterations
+    field: beats[].cycleGroup
+    type: cycle_detection
+  name: Cycle Repetition Limit
+  severity: CRITICAL
+  threshold:
+    maximum_cycle_iterations: 2
+    requires_structural_escalation: true
+  version: '1.0'
+- description: 'New consequences should be distributed across the timeline,
+
+    not clustered at the beginning or end.
+
+
+    No gap longer than 4.5 seconds should pass without a new
+
+    visually distinct consequence appearing.
+
+    '
+  evaluation:
+  - if: longest_gap > 6.0
+    message: Gap of {gap}s between new consequences (at {start}s-{end}s). Video likely
+      loses viewer attention.
+    result: FAIL
+    severity: CRITICAL
+  - if: longest_gap > 4.5 and longest_gap <= 6.0
+    message: Gap of {gap}s between new consequences (at {start}s-{end}s). Consider
+      adding intermediate beat.
+    result: PASS
+    severity: WARNING
+  - if: longest_gap <= 4.5
+    message: 'Good novelty distribution. Max gap: {gap}s.'
+    result: PASS
+    severity: PASS
+  family: visual_novelty
+  id: NOVELTY_001
+  learned_from:
+  - FAIL_001
+  - FAIL_002
+  - FAIL_003
+  measurement:
+    aggregation: find_longest_gap
+    field: beats[].isNewConsequence
+    type: gap_detection
+  name: Novelty Timeline Distribution
+  severity: WARNING
+  threshold:
+    critical_gap_seconds: 6.0
+    maximum_gap_seconds: 4.5
+  version: '1.0'
+- description: 'No more than 50% of the video should pass without new
+
+    visually distinct physical consequences appearing.
+
+
+    If > 65% of video shows only pattern variations of the same
+
+    core action, flag as CRITICAL.
+
+    '
+  evaluation:
+  - if: static_percentage > 65
+    message: '{static_percentage}% of video (0-{end_time}s) shows repetitive pattern
+      without new consequences. Maximum: 50%.'
+    result: FAIL
+    severity: CRITICAL
+  - if: static_percentage > 50 and static_percentage <= 65
+    message: '{static_percentage}% of video shows pattern repetition. Consider adding
+      new elements by {mid_point}s.'
+    result: PASS
+    severity: WARNING
+  - if: static_percentage <= 50
+    message: 'Good novelty timeline. Static pattern: {static_percentage}%.'
+    result: PASS
+    severity: PASS
+  family: progression
+  id: PROGRESSION_005
+  learned_from:
+  - FAIL_001
+  - FAIL_003
+  measurement:
+    aggregation: calculate_static_pattern_percentage
+    field: beats[].isNewConsequence
+    type: percentage_calculation
+  name: Consequence Novelty Timeline
+  severity: WARNING
+  threshold:
+    critical_static_percentage: 65
+    maximum_static_percentage: 50
+  version: '1.0'
+- description: 'The final major escalation should not appear after 80% of the video
+
+    (12 seconds in a 15-second video) unless the middle contains
+
+    strong intermediate escalations.
+
+
+    Late payoffs risk losing viewer attention before the peak.
+
+    '
+  evaluation:
+  - if: payoff_percentage > 80 and middle_has_weak_escalation
+    message: Final payoff at {payoff_time}s ({payoff_percentage}%). Repetitive middle
+      + late payoff risks early exits.
+    result: FAIL
+    severity: CRITICAL
+  - if: payoff_percentage > 80 and middle_has_strong_escalation
+    message: Final payoff at {payoff_time}s ({payoff_percentage}%). Late but middle
+      is strong.
+    result: PASS
+    severity: WARNING
+  - if: payoff_percentage > 75 and payoff_percentage <= 80
+    message: Final payoff at {payoff_time}s. Consider moving earlier for stronger
+      retention.
+    result: PASS
+    severity: WARNING
+  - if: payoff_percentage <= 75
+    message: Good payoff timing at {payoff_time}s.
+    result: PASS
+    severity: PASS
+  family: escalation
+  id: ESCALATION_004
+  implementation_notes: "payoff_percentage = (finalPayoff.startsAt / metadata.duration)\
+    \ * 100\n\nmiddle_has_weak_escalation = true if:\n  - beats 4s-11s have < 2 new\
+    \ consequences\n  - OR intensity variance in middle < 2\n"
+  learned_from:
+  - FAIL_003
+  measurement:
+    aggregation: compare_to_duration
+    field: finalPayoff.startsAt
+    type: timestamp_check
+  name: Delayed Payoff
+  severity: WARNING
+  threshold:
+    critical_percentage: 80
+    warning_percentage: 75
+  version: '1.0'
+- description: 'The final beat must not be identical or nearly identical
+
+    to the opening beat.
+
+
+    A callback is acceptable if it''s BIGGER or has a TWIST.
+
+    A simple repeat signals lazy structure.
+
+    '
+  evaluation:
+  - if: is_repeat == true
+    message: Final beat repeats opening action without escalation. Payoff must be
+      unique or bigger.
+    result: FAIL
+    severity: CRITICAL
+  - if: is_repeat == false
+    message: Final payoff is distinct from opening.
+    result: PASS
+    severity: PASS
+  examples:
+    fail:
+      case: FAIL_001_KIKO
+      final: slides on slippery floor, arms out, says 'SLIPPERY!'
+      opening: slides on slippery floor, arms out, says 'SLIPPERY!'
+      reason: Nearly identical visual and dialogue
+    pass:
+      final: slides into tall stack of objects, creates domino effect
+      opening: slides on slippery floor
+      reason: Callback to slide but with bigger consequence
+  family: final_payoff
+  id: PAYOFF_001
+  learned_from:
+  - FAIL_001
+  measurement:
+    aggregation: direct_check
+    field: finalPayoff.isRepeatOfOpening
+    type: boolean_check
+  name: Not Repeat of Opening
+  severity: CRITICAL
+  threshold:
+    is_repeat: false
+  version: '1.0'
+- description: 'Prompts marked as "very_high" complexity should not proceed
+
+    to render without human review and risk acceptance.
+
+
+    Very high complexity typically means 4+ simultaneous high-risk
+
+    operations or untested novel requirements.
+
+    '
+  evaluation:
+  - if: complexity == "very_high"
+    message: 'Overall complexity: very_high. High risk of render failure. Simplify
+      or accept risk.'
+    result: FAIL
+    severity: BLOCKER
+  - if: complexity == "high"
+    message: 'Overall complexity: high. Render uncertain. Consider simplifications.'
+    result: PASS
+    severity: WARNING
+  - if: complexity == "medium" or complexity == "low"
+    message: 'Acceptable complexity: {complexity}.'
+    result: PASS
+    severity: PASS
+  family: ai_producibility
+  id: PRODUCIBILITY_001
+  measurement:
+    aggregation: direct_check
+    field: producibility.overallComplexity
+    type: enum_check
+  name: Very High Complexity Block
+  severity: BLOCKER
+  threshold:
+    blocked_value: very_high
+  version: '1.0'
+- description: 'The physical rule established in the hook should remain
+
+    consistent throughout the video unless the concept explicitly
+
+    involves rule-breaking as the payoff.
+
+    '
+  evaluation:
+  - if: consistency == "breaking" and not justified_by_concept
+    message: Physics rule breaks mid-video without conceptual justification. May confuse
+      viewers.
+    result: FAIL
+    severity: WARNING
+  - if: consistency == "consistent"
+    message: Physics rule remains consistent.
+    result: PASS
+    severity: PASS
+  family: consistency
+  id: CONSISTENCY_001
+  measurement:
+    aggregation: direct_check
+    field: coreMechanic.consistency
+    type: enum_check
+  name: Physics Rule Consistency
+  severity: WARNING
+  threshold:
+    expected_value: consistent
+  version: '1.0'
+- description: The problem must already be visually obvious within the opening second,
+    with no setup, narration, or text explanation required. hook.startsMidAction must
+    be true and hook.visualStrength must be at least 4/5. RULESET 1.3 adds a tolerance
+    window -- hook.startsAt must be <= 0.8s (defaults to 0.0 when absent, a no-op
+    for pre-1.3 IRs); the anomaly doesn't need to be literally frame-0 to read as
+    immediate.
+  family: hook_strength
+  id: HOOK_002
+  name: First Frame Anomaly
+  severity: CRITICAL
+  version: '1.3'
+- description: The core problem and physical comedy must work with audio muted. hook.soundOffClear
+    must be true.
+  family: hook_strength
+  id: HOOK_003
+  name: Sound Independence
+  severity: CRITICAL
+  version: '1.1'
+- description: No beat may hold with motionAmount == 'none' for longer than 1.5 seconds.
+    Renamed from "No Dead Air" in RULESET 1.3 -- brief stillness (a puzzled look,
+    a short charming reaction) is a legitimate pause, not a defect; what matters is
+    progression not stalling, not motion itself.
+  family: motion_quality
+  id: MOTION_001
+  name: Continuous Meaningful Progression
+  severity: WARNING
+  version: '1.3'
+- description: 'Count of beats with isAttempt == true must meet a duration-tier minimum:
+    3 for videos <= 20s (short tier), 7 for videos > 20s (long tier).'
+  family: concept_strength
+  id: ATTEMPT_001
+  name: Attempt Count
+  severity: BLOCKER
+  version: '1.1'
+- description: The character must spend most of the runtime actively trying a solution,
+    not watching or reacting. Ratio of (duration of isAttempt beats) / (total duration)
+    must be at least 0.5 for short-tier videos, 0.6 for long-tier.
+  family: progression
+  id: CHAR_002
+  name: Active Character
+  severity: CRITICAL
+  version: '1.1'
+- description: Introduce the minimum number of props necessary. setting.mainProps
+    count must not exceed 2 for short-tier videos, 4 for long-tier videos. RULESET
+    1.3 adds a timeline-aware check (heuristic, text-match based) alongside the static
+    count -- a prop first mentioned mid-concept inside an attempt beat, rather than
+    established from the opening, is flagged as a WARNING even when the total count
+    is within budget.
+  family: ai_producibility
+  id: PRODUCIBILITY_002
+  name: Prop Economy
+  severity: WARNING
+  version: '1.3'
+- description: 'Bonus (non-blocking): at least one beat with consequenceType == ''fake_win''
+    before finalPayoff.startsAt, giving the audience a moment to believe the problem
+    is solved before the final twist.'
+  family: progression
+  id: PAYOFF_002
+  name: Fake Resolution Present
+  severity: WARNING
+  version: '1.1'
+- description: Attempts must be mechanically distinct, not just differently worded.
+    Identical primaryVerb across attempts is an automatic deterministic FAIL. Verb-distinct
+    attempts are checked for semantic duplication via LLM (e.g. GRAB vs YANK may be
+    the same underlying strategy; RULESET 1.3 explicitly also treats intensity/angle
+    variants of the identical strategy as duplicates, e.g. PUSH/PUSH_HARDER/PUSH_FROM_LEFT).
+    Effective distinct count must meet the same duration-tier minimum as ATTEMPT_001.
+  family: visual_novelty
+  id: ATTEMPT_002
+  name: Distinct Attempts
+  severity: CRITICAL
+  version: '1.1'
+- description: The final twist must derive from the same established physical rule
+    (coreMechanic.physicalRule), applied in a new or bigger way — not an unrelated,
+    disconnected joke. Checked via LLM semantic judgment.
+  family: final_payoff
+  id: PAYOFF_003
+  name: Rule-Consistent Twist
+  severity: CRITICAL
+  version: '1.1'
+- description: Character appearance (face, outfit, colors, proportions) must remain
+    identical throughout the video, judged by sampling first/middle/last frames via
+    vision LLM. This rule requires a rendered video (video_plan_ir['_renderedVideoPath'])
+    and reports UNKNOWN at the pure-text concept stage, before any video exists.
+  family: consistency
+  id: CONSISTENCY_002
+  evaluation_stage: POST_RENDER
+  name: Character Continuity Lock
+  severity: CRITICAL
+  version: '1.1'
+- description: The concept must exhibit exactly one independent physical/magical rule.
+    Same mechanic applied with escalating/varied consequences is fine (PASS); a second,
+    genuinely independent rule introduced partway through is not (CRITICAL at 2 mechanics,
+    BLOCKER at 3+). coreMechanic.mechanicCount is an author claim, verified (not trusted)
+    via LLM semantic judgment against the beat-by-beat consequences.
+  family: concept_strength
+  id: CONCEPT_007
+  name: Single Dominant Mechanic
+  severity: BLOCKER
+  version: '1.2'
+- description: While the core problem is actively unresolved (at least one attempt
+    beat has occurred, final payoff not yet started), no consecutive stretch of beats.relatesToCoreProblem
+    == false may exceed 0.5 seconds. Brief transitions/reaction beats under that threshold
+    are not flagged; only a genuine abandonment of the active problem fails.
+  family: visual_novelty
+  id: BEAT_005
+  name: Story Detached Gap
+  severity: CRITICAL
+  version: '1.2'
+- description: The final payoff's beat.intensity should be at least as high as the
+    highest intensity seen earlier in the video. Computed independently from beat.intensity
+    values; finalPayoff.isPeakIntensity is never trusted as the verdict, only cross-checked
+    for discrepancy reporting. Optimization-level (WARNING), never a blocker. Renamed
+    from "Final Peak Intensity" in RULESET 1.3 -- "intensity" read as motion/chaos,
+    but beats[].intensity is a 1-10 visual/emotional energy scale; a quiet, conclusive
+    beat can score as high as a frantic one.
+  family: final_payoff
+  id: PAYOFF_004
+  name: Final Payoff Salience
+  severity: WARNING
+  version: '1.3'
+- description: If a beat with consequenceType == 'fake_win' is present, the intensity
+    after it must exceed the intensity at the fake win (the problem must escalate,
+    not repeat or weaken, after a fake resolution). Reports NOT_APPLICABLE (not FAIL,
+    not UNKNOWN) when no fake-win beat exists — this check simply does not apply to
+    a concept that doesn't use the fake-resolution structure.
+  family: progression
+  id: PAYOFF_005
+  name: Fake Win Escalation
+  severity: WARNING
+  version: '1.2'
+- description: 'Companion to ATTEMPT_002, not a replacement: catches one primaryVerb
+    numerically dominating the attempt list even when every attempt is legitimately
+    distinct in ATTEMPT_002''s semantic judgment. WARNING above 55% dominance, CRITICAL
+    above 70%. Never a BLOCKER, since a dominant verb can be valid if it produces
+    genuinely different consequences each time.'
+  family: visual_novelty
+  id: REPETITION_004
+  name: Dominant Action Ratio
+  severity: CRITICAL
+  version: '1.2'
+- description: A retention-optimization dimension, never a hard blocker. A strong
+    natural loop back to the opening (finalPayoff.loopsToOpening + loopQuality ==
+    'strong') is a bonus. An ordinary hard cut with no loop claim is fully valid (neutral
+    PASS). Only specific weak-ending text patterns (fade-out, 'the end', walks away)
+    with neither a loop nor a hard cut produce a WARNING-severity FAIL.
+  family: final_payoff
+  id: PAYOFF_006
+  name: Loopability
+  severity: WARNING
+  version: '1.2'
+- description: The character must have an immediately understandable, natural physical
+    goal, and the established abnormal rule must genuinely obstruct that goal. Distinguishes
+    a believable reason to keep trying from an arbitrary or magic-demo setup invented
+    only to showcase the mechanic (the character could simply walk away with no believable
+    reason to continue). Verified via LLM semantic judgment (check_goal_is_natural),
+    fail-closed to SERVICE_ERROR.
+  family: concept_strength
+  id: GOAL_001
+  name: Goal-Obstruction Clarity
+  severity: BLOCKER
+  version: '1.3'
+- description: 'Distinct from CONCEPT_007: a single, internally consistent mechanic
+    is not automatically a legible one. A rule that depends on a combination of exact
+    position, angle, and speed is technically one mechanic but unlearnable by a child
+    audience watching once. Asks whether a viewer could learn the pattern from the
+    first 1-2 occurrences and predict what happens next. Verified via LLM semantic
+    judgment (check_rule_is_predictable), fail-closed to SERVICE_ERROR.'
+  family: concept_strength
+  id: CONCEPT_008
+  name: Rule Readability / Predictability
+  severity: CRITICAL
+  version: '1.3'
+- description: 'Deterministic companion to ATTEMPT_002: flags a dominant primaryVerb
+    ROOT across attempts (e.g. PUSH / PUSH_HARDER / PUSH_FROM_LEFT all share the root
+    PUSH) even when full verb labels are distinct and ATTEMPT_002''s LLM duplicate-strategy
+    check already passed. Catches ''more activity, not a new strategy'' in the gray
+    area between CHAR_002 (time-active) and ATTEMPT_002 (label/semantic distinctness).
+    No LLM call.'
+  family: progression
+  id: PROGRESSION_006
+  name: Activity Is Not Progression
+  severity: CRITICAL
+  version: '1.3'
+- description: 'Companion to ESCALATION_004 (payoff timing): checks whether attempt-beat
+    intensity rises across the timeline rather than staying flat or declining. Deterministic,
+    keyed off beats[].intensity on isAttempt beats in timeline order. Capped at WARNING
+    — deadpan-comedy concepts can deliberately keep escalation small.'
+  family: escalation
+  id: ESCALATION_005
+  name: Meaningful Attempt Escalation
+  severity: WARNING
+  version: '1.3'
+- description: 'Stricter than HOOK_002: HOOK_002 confirms something visually unusual
+    happens immediately; this asks whether the opening ALSO makes clear what the character
+    wants and why they can''t get it yet, not just that something odd is occurring.
+    Verified via LLM semantic judgment (check_opening_problem_legible), fail-closed
+    to SERVICE_ERROR.'
+  family: hook_strength
+  id: HOOK_004
+  name: Opening Problem Legibility
+  severity: CRITICAL
+  version: '1.3'
+- description: New character_performance family (RULESET 1.3). CHAR_002 confirms the
+    character is active for enough of the runtime; this asks whether that activity
+    reads as emotionally engaged and sympathetic rather than blank, robotic, aggressive,
+    or stuck in prolonged panic. Verified via LLM semantic judgment (check_character_performance_readable),
+    fail-closed to SERVICE_ERROR. Capped at WARNING — a performance-quality nudge,
+    not a structural requirement.
+  family: character_performance
+  id: PERFORMANCE_001
+  name: Cute Emotional Readability
+  severity: WARNING
+  version: '1.3'
+- description: 'Fills the gap between PRODUCIBILITY_001 (very-high-complexity hard
+    block) and PRODUCIBILITY_002 (prop count budget): a middle tier of AI-generation
+    risks (precision alignment, cloth/rope simulation, liquids, thin dangling objects,
+    face/hair contact, multi-object stacking). Uses a tag-based diagnostic model (riskTags
+    in evaluation details) rather than one rule per risk type. Deterministic substring
+    match against setting.mainProps and beat action/consequence text, no LLM call.
+    Always CRITICAL when any tag is found — a human-review trigger, not an outright
+    render block.'
+  family: ai_producibility
+  id: PRODUCIBILITY_003
+  name: Fragile Interaction Risk
+  severity: CRITICAL
+  version: '1.3'
+- description: 'Distinct from ATTEMPT_002 (semantic strategy diversity): ATTEMPT_002
+    asks whether the character is genuinely trying a different strategy; this asks
+    whether that different strategy will actually LOOK different and be reliably executable
+    by an image-to-video generation model (e.g. Seedance). A deterministic keyword
+    pre-filter flags abstract-intent language (''blocks the escape route'', ''tries
+    to outsmart'') and vague movement-magnitude phrasing (''slightly moves'') on attempt
+    beats, plus a beat-budget estimate (too many attempts for the available duration).
+    An LLM semantic check (check_attempts_are_generation_executable) judges each attempt
+    for a concrete action-result pair and flags attempts that would visually collapse
+    into the same choreography despite different wording. BLOCKER only when NO attempt
+    is judged executable at all or the LLM is unreachable (SERVICE_ERROR); CRITICAL
+    when some attempts are unexecutable or abstract-intent language is matched; WARNING
+    for vague magnitude phrasing or beat-budget pressure alone.'
+  family: generation_executability
+  id: GENERATION_EXECUTABLE_ATTEMPTS
+  name: Generation Executable Attempts
+  severity: BLOCKER
+  version: '1.3'
+- description: 'A reaction must overlap the physical transition into the next attempt. Rejects standalone reaction beats, reset-to-neutral gaps, excessive passive time, slow attempt transitions, and long final aftermaths. This rule distinguishes meaningful progression from forward motion momentum.'
+  family: motion_quality
+  id: CONTINUOUS_ACTION_MOMENTUM
+  name: Continuous Action Momentum
+  severity: CRITICAL
+  version: '1.4'
+- description: 'BLOCKER: the first frame must communicate a physically impossible or clearly wrong situation without history, counting, micro-comparison, audio, text, or prior knowledge. The main character must already be engaged with the event.'
+  family: hook_strength
+  id: INSTANT_VISUAL_ABSURDITY_GATE
+  name: Instant Visual Absurdity Gate
+  severity: BLOCKER
+  version: '1.4'
+- description: 'BLOCKER: reject concepts whose visible progression and final silhouette substantially duplicate a known winner visual engine, even when the underlying mathematical rule differs.'
+  family: visual_novelty
+  id: ENGINE_SILHOUETTE_DUPLICATE
+  name: Engine Silhouette Duplicate
+  severity: BLOCKER
+  version: '1.4'
+ruleset_summary:
+  blockers: 8
+  criticals: 17
+  derived_from_failures:
+  - FAIL_001_KIKO_STATIC_STATE_DOMINANCE
+  - FAIL_002_OPA_REPETITIVE_OPEN_CLOSE
+  - FAIL_003_ARDA_REPETITIVE_SHARPEN_DRAW
+  primary_focus:
+  - Static state dominance detection
+  - Action and cycle repetition detection
+  - Consequence capacity validation
+  - Payoff quality checks
+  - Continuous action momentum
+  - Instant visual absurdity
+  - Visual-engine silhouette novelty
+  total_rules: 37
+  warnings: 12
+version: '1.4'

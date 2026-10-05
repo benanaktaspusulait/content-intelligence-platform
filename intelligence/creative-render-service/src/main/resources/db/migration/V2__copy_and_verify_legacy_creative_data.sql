@@ -78,14 +78,12 @@ BEGIN
         INSERT INTO creative_render.render_assets (
             id, render_job_id, content_id, asset_type, relative_path, file_size_bytes,
             duration_ms, width, height, frame_rate, codec,
-            download_url, downloaded_at, is_current, created_at, entity_version,
-            asset_version
+            download_url, downloaded_at, is_current, created_at, entity_version
         )
         SELECT
             ra.id, ra.render_job_id, ra.content_id, ra.asset_type, ra.relative_path, ra.file_size_bytes,
             ra.duration_ms, ra.width, ra.height, ra.frame_rate, ra.codec,
-            ra.download_url, ra.downloaded_at, ra.is_current, ra.created_at, ra.entity_version,
-            COALESCE(NULLIF(substring(ra.relative_path FROM 'v([0-9]+)'), '')::INTEGER, 1)
+            ra.download_url, ra.downloaded_at, ra.is_current, ra.created_at, ra.entity_version
         FROM public.render_assets ra
         ON CONFLICT (id) DO NOTHING;
 

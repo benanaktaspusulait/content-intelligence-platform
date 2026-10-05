@@ -36,4 +36,21 @@ class EffectiveRulePolicyResolverTest {
 
     assertThat(result).singleElement().extracting(rule -> rule.get("value")).isEqualTo("global");
   }
+
+  @Test
+  void bootstrapResolverDoesNotInheritAnotherBrandOrFamilyRule() {
+    BootstrapPolicyResolver bootstrap = new BootstrapPolicyResolver(resolver);
+    Map<String, Object> document =
+        Map.of(
+            "rules",
+            List.of(
+                Map.of("id", "GLOBAL", "scopeType", "GLOBAL"),
+                Map.of("id", "DOMAIN", "scopeType", "INDUSTRY_OR_DOMAIN", "scopeId", "PRESCHOOL"),
+                Map.of("id", "BRAND", "scopeType", "BRAND_OR_ACCOUNT", "scopeId", "other-brand"),
+                Map.of("id", "FAMILY", "scopeType", "CONTENT_FAMILY", "scopeId", "other-family")));
+
+    assertThat(bootstrap.resolveForNewAccount(document, "PRESCHOOL"))
+        .extracting(rule -> rule.get("id"))
+        .containsExactly("GLOBAL", "DOMAIN");
+  }
 }

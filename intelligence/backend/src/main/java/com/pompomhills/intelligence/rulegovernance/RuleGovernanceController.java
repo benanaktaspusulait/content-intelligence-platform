@@ -16,13 +16,41 @@ import org.springframework.web.server.ResponseStatusException;
 @RequestMapping("/api/v1/rule-governance")
 public class RuleGovernanceController {
   private final RuleGovernanceService service;
+  private final RuleCandidateGenerationService generation;
   private final String governanceToken;
 
   public RuleGovernanceController(
       RuleGovernanceService service,
+      RuleCandidateGenerationService generation,
       @Value("${pompom.rule-governance.token:}") String governanceToken) {
     this.service = service;
+    this.generation = generation;
     this.governanceToken = governanceToken;
+  }
+
+  @PostMapping("/analysis/candidates")
+  public RuleCandidateEntity generateCandidate(
+      @RequestHeader("X-Tenant-Id") String tenantId,
+      @RequestHeader(value = "X-Rule-Governance-Token", required = false) String token,
+      @RequestBody GenerationRequest request) {
+    requireAccess(token);
+    RuleCandidateGenerationService.GenerationRequest input =
+        new RuleCandidateGenerationService.GenerationRequest(
+            tenantId,
+            request.ruleKey(),
+            request.ruleName(),
+            request.definition(),
+            request.hypothesis(),
+            request.scopeType(),
+            request.scopeId(),
+            request.evidenceLevel(),
+            request.riskTier(),
+            request.analysisMethod(),
+            request.analysisVersion(),
+            request.datasetSnapshotId(),
+            request.knownConfounders(),
+            request.observations());
+    return generation.generate(input).candidate();
   }
 
   @GetMapping("/candidates")
@@ -40,6 +68,32 @@ public class RuleGovernanceController {
       @RequestHeader(value = "X-Rule-Governance-Token", required = false) String token) {
     requireAccess(token);
     return service.health(tenantId);
+  }
+
+  @GetMapping("/rulesets")
+  public List<RulesetVersionEntity> rulesets(
+      @RequestHeader("X-Tenant-Id") String tenantId,
+      @RequestHeader(value = "X-Rule-Governance-Token", required = false) String token) {
+    requireAccess(token);
+    return service.rulesetHistory(tenantId);
+  }
+
+  @GetMapping("/changesets")
+  public List<RulesetChangesetEntity> changesets(
+      @RequestHeader("X-Tenant-Id") String tenantId,
+      @RequestHeader(value = "X-Rule-Governance-Token", required = false) String token) {
+    requireAccess(token);
+    return service.changesetHistory(tenantId);
+  }
+
+  @PostMapping("/health/revalidate/{candidateId}")
+  public RuleHealthEntity revalidateHealth(
+      @RequestHeader("X-Tenant-Id") String tenantId,
+      @RequestHeader(value = "X-Rule-Governance-Token", required = false) String token,
+      @PathVariable UUID candidateId,
+      @RequestParam String rulesetVersion) {
+    requireAccess(token);
+    return service.revalidateHealth(tenantId, candidateId, rulesetVersion);
   }
 
   @GetMapping("/candidates/{id}")
@@ -143,6 +197,15 @@ public class RuleGovernanceController {
     return service.registerConflict(tenantId, id, request.ruleKey(), request.conflictType(), request.overridePolicy());
   }
 
+  @PostMapping("/candidates/{id}/discover-conflicts")
+  public List<RuleConflictEntity> discoverConflicts(
+      @RequestHeader("X-Tenant-Id") String tenantId,
+      @RequestHeader(value = "X-Rule-Governance-Token", required = false) String token,
+      @PathVariable UUID id) {
+    requireAccess(token);
+    return service.discoverConflicts(tenantId, id);
+  }
+
   @PostMapping("/candidates/{id}/conflicts/{conflictId}/resolve")
   public RuleConflictEntity resolveConflict(
       @RequestHeader("X-Tenant-Id") String tenantId,
@@ -197,5 +260,6 @@ public class RuleGovernanceController {
   public record EvidenceRequest(EvidenceType evidenceType, EvidenceLevel evidenceLevel, ScopeType scopeType, String scopeId, String metric, int sampleSize, String analysisMethod, String analysisVersion) {}
   public record ConflictRequest(String ruleKey, String conflictType, OverridePolicy overridePolicy) {}
   public record ConflictResolutionRequest(String reviewer, String note) {}
+  public record GenerationRequest(String ruleKey, String ruleName, String definition, String hypothesis, ScopeType scopeType, String scopeId, EvidenceLevel evidenceLevel, RiskTier riskTier, String analysisMethod, String analysisVersion, UUID datasetSnapshotId, List<String> knownConfounders, List<RuleCandidateGenerationService.Observation> observations) {}
   public record EvidenceResponse(UUID id, EvidenceType evidenceType, EvidenceLevel evidenceLevel, String metric, int sampleSize, Double observedEffect, String analysisMethod, String analysisVersion) {}
 }

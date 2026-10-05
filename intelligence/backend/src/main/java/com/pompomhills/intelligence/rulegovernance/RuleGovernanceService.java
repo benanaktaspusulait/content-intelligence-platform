@@ -40,6 +40,63 @@ public class RuleGovernanceService {
     return health.findByTenantIdOrderByLastEvaluatedAtDesc(tenantId);
   }
 
+  public List<RulesetVersionEntity> rulesetHistory(String tenantId) {
+    return versions.findByTenantIdOrderByCreatedAtDesc(tenantId);
+  }
+
+  public List<RulesetChangesetEntity> changesetHistory(String tenantId) {
+    return changesets.findByTenantIdOrderByGeneratedAtDesc(tenantId);
+  }
+
+  @Transactional
+  public int flagDueHealthForRevalidation() {
+    List<RuleHealthEntity> due = health.findByReviewDueAtBeforeAndStatusNot(Instant.now(), RuleHealthStatus.RETIRED);
+    due.forEach(RuleHealthEntity::markRevalidationRequired);
+    health.saveAll(due);
+    return due.size();
+  }
+
+  @Transactional
+  public RuleHealthEntity revalidateHealth(String tenantId, UUID candidateId, String rulesetVersion) {
+    RuleCandidateEntity candidate = getCandidate(tenantId, candidateId);
+    List<RuleEvidenceEntity> records = evidence.findByCandidateIdOrderByCreatedAtAsc(candidateId);
+    int sampleSize = records.stream().mapToInt(RuleEvidenceEntity::getSampleSize).sum();
+    Double effect = records.stream().map(RuleEvidenceEntity::getObservedEffect).filter(java.util.Objects::nonNull).mapToDouble(Double::doubleValue).average().orElse(0D);
+    boolean directionReversed = records.size() > 1
+        && records.get(0).getObservedEffect() != null
+        && records.get(records.size() - 1).getObservedEffect() != null
+        && Math.signum(records.get(0).getObservedEffect()) != Math.signum(records.get(records.size() - 1).getObservedEffect());
+    RuleHealthStatus status = sampleSize == 0
+        ? RuleHealthStatus.REVALIDATION_REQUIRED
+        : directionReversed ? RuleHealthStatus.EVIDENCE_WEAKENING : RuleHealthStatus.ACTIVE;
+    RuleHealthEntity item = health.findByTenantIdAndRuleKeyAndRulesetVersionAndScopeTypeAndScopeId(tenantId, candidate.getProposedRuleKey(), rulesetVersion, candidate.getScopeType(), candidate.getScopeId())
+        .orElseGet(() -> new RuleHealthEntity(tenantId, candidate.getProposedRuleKey(), rulesetVersion, candidate.getScopeType(), candidate.getScopeId()));
+    item.revalidate(sampleSize, effect, status, records.size() > 1 ? "STABLE_OR_REVALIDATED" : "INSUFFICIENT_HISTORY", Instant.now());
+    return health.save(item);
+  }
+
+  @Transactional
+  public List<RuleConflictEntity> discoverConflicts(String tenantId, UUID candidateId) {
+    RuleCandidateEntity candidate = getCandidate(tenantId, candidateId);
+    List<Map<String, Object>> activeRules =
+        versions.findFirstByTenantIdAndStatusOrderByCreatedAtDesc(tenantId, "ACTIVE")
+            .map(RulesetVersionEntity::getRulesDocument)
+            .map(document -> document.get("rules"))
+            .filter(List.class::isInstance)
+            .map(value -> (List<Map<String, Object>>) value)
+            .orElseGet(List::of);
+    List<RuleConflictEntity> found = new java.util.ArrayList<>();
+    for (Map<String, Object> rule : activeRules) {
+      String key = String.valueOf(rule.getOrDefault("id", rule.getOrDefault("ruleKey", "")));
+      String definition = String.valueOf(rule.getOrDefault("definition", rule.getOrDefault("condition", "")));
+      if (candidate.getProposedRuleKey().equals(key) && !candidate.getProposedDefinition().equals(definition)) {
+        OverridePolicy policy = OverridePolicy.valueOf(String.valueOf(rule.getOrDefault("overridePolicy", "REQUIRES_APPROVAL")));
+        found.add(conflicts.save(new RuleConflictEntity(candidate, tenantId, key, "DEFINITION_OR_THRESHOLD", policy)));
+      }
+    }
+    return found;
+  }
+
   public List<RuleCandidateEntity> listCandidates(String tenantId, CandidateStatus status) {
     return status == null
         ? candidates.findByTenantIdOrderByCreatedAtDesc(tenantId)

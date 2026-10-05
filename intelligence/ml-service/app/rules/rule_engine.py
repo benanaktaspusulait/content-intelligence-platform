@@ -137,6 +137,9 @@ class RuleEngine:
             "PERFORMANCE_001": self._evaluate_performance_001,
             "PRODUCIBILITY_003": self._evaluate_producibility_003,
             "GENERATION_EXECUTABLE_ATTEMPTS": self._evaluate_generation_executable_attempts,
+            "CONTINUOUS_ACTION_MOMENTUM": self._evaluate_continuous_action_momentum,
+            "INSTANT_VISUAL_ABSURDITY_GATE": self._evaluate_instant_visual_absurdity_gate,
+            "ENGINE_SILHOUETTE_DUPLICATE": self._evaluate_engine_silhouette_duplicate,
         }
 
     def _get_duration_tier(self, duration: float) -> str:
@@ -2443,6 +2446,197 @@ class RuleEngine:
         "moves slightly",
         "shifts subtly",
     ]
+
+    def _evaluate_continuous_action_momentum(
+        self, video_plan_ir: dict[str, Any], rule: dict[str, Any]
+    ) -> RuleEvaluationType:
+        """CONTINUOUS_ACTION_MOMENTUM: reaction/action overlap and passive-time budget."""
+        beats = video_plan_ir.get("beats", [])
+        duration = float(video_plan_ir.get("metadata", {}).get("duration", 15.0) or 15.0)
+        attempts = [beat for beat in beats if beat.get("isAttempt", False)]
+        if len(attempts) < 2:
+            return RuleEvaluation(
+                rule_id="CONTINUOUS_ACTION_MOMENTUM",
+                rule_name="Continuous Action Momentum",
+                family="motion_quality",
+                severity="CRITICAL",
+                result="UNKNOWN",
+                message="At least two attempts are required to evaluate momentum between strategies.",
+            )
+
+        reaction_words = (
+            "look", "looks", "stare", "stares", "react", "reaction", "notice", "notices",
+            "think", "thinks", "puzzled", "side-eye", "smile", "shrug", "wait", "waits",
+            "reset", "reposition", "prepare", "prepares", "stands still", "neutral",
+        )
+        physical_words = (
+            "step", "walk", "run", "pivot", "turn", "reach", "grab", "push", "pull", "jump",
+            "slide", "squeeze", "block", "catch", "move", "swing", "climb", "land", "kick",
+        )
+        passive_seconds = 0.0
+        standalone_reactions = []
+        for beat in beats:
+            text = f"{beat.get('action', '')} {beat.get('consequence', '')}".lower()
+            reaction_only = any(word in text for word in reaction_words) and not any(
+                word in text for word in physical_words
+            )
+            motionless = beat.get("motionAmount") == "none"
+            if reaction_only or (motionless and not beat.get("isAttempt", False)):
+                passive_seconds += float(beat.get("duration", 0.0) or 0.0)
+            if reaction_only and not beat.get("isAttempt", False):
+                standalone_reactions.append(beat.get("action", "reaction beat"))
+
+        gaps = []
+        for current, following in zip(attempts, attempts[1:], strict=False):
+            current_end = float(current.get("endTime", 0.0) or 0.0)
+            if not current_end:
+                current_end = float(current.get("startTime", 0.0) or 0.0) + float(
+                    current.get("duration", 0.0) or 0.0
+                )
+            next_start = float(following.get("startTime", current_end) or current_end)
+            gaps.append(max(0.0, next_start - current_end))
+
+        final_start = video_plan_ir.get("finalPayoff", {}).get("startsAt")
+        final_aftermath = 0.0
+        if final_start is not None:
+            for beat in beats:
+                start = float(beat.get("startTime", 0.0) or 0.0)
+                if start >= float(final_start) and not beat.get("isAttempt", False):
+                    final_aftermath += float(beat.get("duration", 0.0) or 0.0)
+
+        passive_ratio = passive_seconds / duration if duration > 0 else 1.0
+        max_gap = max(gaps, default=0.0)
+        details = {
+            "passiveSeconds": round(passive_seconds, 3),
+            "passiveRatio": round(passive_ratio, 3),
+            "standaloneReactionCount": len(standalone_reactions),
+            "attemptTransitionGaps": [round(value, 3) for value in gaps],
+            "maxAttemptTransitionGap": round(max_gap, 3),
+            "finalAftermathSeconds": round(final_aftermath, 3),
+        }
+        short_video = duration <= 20.0
+        passive_limit = 0.20 if short_video else 0.30
+        if passive_ratio > passive_limit or max_gap > 1.0 or final_aftermath > 1.5:
+            return RuleEvaluation(
+                rule_id="CONTINUOUS_ACTION_MOMENTUM",
+                rule_name="Continuous Action Momentum",
+                family="motion_quality",
+                severity="CRITICAL",
+                result="FAIL",
+                message=(
+                    f"Action momentum is interrupted: passive time {passive_ratio * 100:.0f}%, "
+                    f"largest attempt gap {max_gap:.1f}s, final aftermath {final_aftermath:.1f}s."
+                ),
+                actual_value=passive_ratio,
+                threshold_value=passive_limit,
+                details=details,
+            )
+        return RuleEvaluation(
+            rule_id="CONTINUOUS_ACTION_MOMENTUM",
+            rule_name="Continuous Action Momentum",
+            family="motion_quality",
+            severity="PASS",
+            result="PASS",
+            message="Attempts chain with reaction/action overlap and a bounded passive-time budget.",
+            actual_value=passive_ratio,
+            threshold_value=passive_limit,
+            details=details,
+        )
+
+    def _evaluate_instant_visual_absurdity_gate(
+        self, video_plan_ir: dict[str, Any], rule: dict[str, Any]
+    ) -> RuleEvaluationType:
+        """INSTANT_VISUAL_ABSURDITY_GATE: first-frame static readability blocker."""
+        hook = video_plan_ir.get("hook", {})
+        required = {
+            "staticWrongness": hook.get("staticWrongness"),
+            "noHistoryRequired": hook.get("noHistoryRequired"),
+            "noMicroComparison": hook.get("noMicroComparison"),
+            "largeVisualSignal": hook.get("largeVisualSignal"),
+            "characterAlreadyEngaged": hook.get("characterAlreadyEngaged"),
+        }
+        missing = [key for key, value in required.items() if value is None]
+        hook_text = " ".join(str(value) for value in hook.values()).lower()
+        auto_fail_phrases = (
+            "count", "previous movement", "compare before", "marker did not", "looks normal",
+            "only audible", "simply surprised", "simply looking",
+        )
+        matched_auto_fail = [phrase for phrase in auto_fail_phrases if phrase in hook_text]
+        if missing:
+            return RuleEvaluation(
+                rule_id="INSTANT_VISUAL_ABSURDITY_GATE",
+                rule_name="Instant Visual Absurdity Gate",
+                family="hook_strength",
+                severity="BLOCKER",
+                result="FAIL",
+                message="First-frame absurdity evidence is incomplete; the concept is blocked before render.",
+                details={"missingEvidence": missing},
+            )
+        failed = [key for key, value in required.items() if value is False]
+        if failed or matched_auto_fail:
+            return RuleEvaluation(
+                rule_id="INSTANT_VISUAL_ABSURDITY_GATE",
+                rule_name="Instant Visual Absurdity Gate",
+                family="hook_strength",
+                severity="BLOCKER",
+                result="FAIL",
+                message="The first frame does not communicate a large, history-free physical absurdity.",
+                details={"failedConditions": failed, "autoFailPatterns": matched_auto_fail},
+            )
+        return RuleEvaluation(
+            rule_id="INSTANT_VISUAL_ABSURDITY_GATE",
+            rule_name="Instant Visual Absurdity Gate",
+            family="hook_strength",
+            severity="PASS",
+            result="PASS",
+            message="The first frame communicates the physical absurdity without temporal context.",
+            details={"conditions": required},
+        )
+
+    def _evaluate_engine_silhouette_duplicate(
+        self, video_plan_ir: dict[str, Any], rule: dict[str, Any]
+    ) -> RuleEvaluationType:
+        """ENGINE_SILHOUETTE_DUPLICATE: reject a known winner's visual engine reuse."""
+        fingerprint = video_plan_ir.get("creativeFingerprint", {})
+        family = fingerprint.get("visualEngineFamily")
+        known_families = fingerprint.get("knownWinnerEngineFamilies", [])
+        similarity = fingerprint.get("silhouetteSimilarity")
+        if family is None and similarity is None:
+            return RuleEvaluation(
+                rule_id="ENGINE_SILHOUETTE_DUPLICATE",
+                rule_name="Engine Silhouette Duplicate",
+                family="visual_novelty",
+                severity="BLOCKER",
+                result="FAIL",
+                message=(
+                    "No first-frame/final-silhouette comparison evidence was supplied; "
+                    "the concept is blocked before render."
+                ),
+            )
+        family_duplicate = family is not None and family in known_families
+        numeric_duplicate = similarity is not None and float(similarity) >= 0.80
+        if family_duplicate or numeric_duplicate:
+            return RuleEvaluation(
+                rule_id="ENGINE_SILHOUETTE_DUPLICATE",
+                rule_name="Engine Silhouette Duplicate",
+                family="visual_novelty",
+                severity="BLOCKER",
+                result="FAIL",
+                message="The concept substantially reuses a known winner's visible progression engine.",
+                actual_value=similarity if similarity is not None else family,
+                threshold_value=0.80,
+                details={"visualEngineFamily": family, "knownWinnerEngineFamilies": known_families},
+            )
+        return RuleEvaluation(
+            rule_id="ENGINE_SILHOUETTE_DUPLICATE",
+            rule_name="Engine Silhouette Duplicate",
+            family="visual_novelty",
+            severity="PASS",
+            result="PASS",
+            message="No substantial visual-engine silhouette duplication detected.",
+            actual_value=similarity,
+            threshold_value=0.80,
+        )
 
     def _evaluate_generation_executable_attempts(
         self, video_plan_ir: dict[str, Any], rule: dict[str, Any]

@@ -664,3 +664,46 @@ versions:
   release_date: '2026-10-03'
   ruleset_path: RULESET_1.3.yaml
   version: '1.3'
+- changes:
+  - breaking_change: true
+    change_type: added
+    new_value:
+      description: 'Reaction must overlap movement and each failed attempt must immediately trigger the next physical strategy. Passive time, reset-to-neutral gaps, standalone reactions, and long final aftermaths are flagged.'
+      family: motion_quality
+      id: CONTINUOUS_ACTION_MOMENTUM
+      name: Continuous Action Momentum
+      severity: CRITICAL
+    old_value: null
+    reason: 'RULESET 1.4: Continuous Action Momentum'
+    rule_id: CONTINUOUS_ACTION_MOMENTUM
+  - breaking_change: true
+    change_type: added
+    new_value:
+      description: 'First-frame blocker requiring static, history-free, large visual absurdity with the character already engaged.'
+      family: hook_strength
+      id: INSTANT_VISUAL_ABSURDITY_GATE
+      name: Instant Visual Absurdity Gate
+      severity: BLOCKER
+    old_value: null
+    reason: 'RULESET 1.4: Instant Visual Absurdity Gate'
+    rule_id: INSTANT_VISUAL_ABSURDITY_GATE
+  - breaking_change: true
+    change_type: added
+    new_value:
+      description: 'Rejects a concept whose visible progression/final silhouette substantially duplicates a known winner visual engine.'
+      family: visual_novelty
+      id: ENGINE_SILHOUETTE_DUPLICATE
+      name: Engine Silhouette Duplicate
+      severity: BLOCKER
+    old_value: null
+    reason: 'RULESET 1.4: Engine Silhouette Duplicate'
+    rule_id: ENGINE_SILHOUETTE_DUPLICATE
+  description: 'Adds motion continuity, first-frame visual absurdity, and visual-engine duplication gates after Seedance pacing and hook failures.'
+  is_breaking: true
+  learned_from:
+  - SEEDANCE_MOTION_CONTINUITY_FAILURE
+  - KUMBARA_FIRST_FRAME_GATE_FAILURE
+  - TABLE_TURNING_ENGINE_DUPLICATE
+  release_date: '2026-10-05'
+  ruleset_path: RULESET_1.4.yaml
+  version: '1.4'
