@@ -134,6 +134,8 @@ def select_semantic_frames(
     selected = _write_frame_assets(path, selected, asset_hash)
     return {
         "version": FRAME_SELECTION_VERSION,
+        "assetHash": asset_hash,
+        "durationSeconds": round(duration, 3),
         "maxFrames": max_frames,
         "selectedFrameCount": len(selected),
         "selectedFrames": selected,

@@ -9,6 +9,7 @@ from app.video import (
     _v4_visual_novelty,
     _v5_action_novelty,
     _v5_loop,
+    _v5_structural_risk_windows,
     _v5_temporal_trend,
 )
 
@@ -120,7 +121,11 @@ def test_v5_shape_prefers_dip_and_recover_over_small_negative_slope() -> None:
     assert result["trendShape"] == "DIP_AND_RECOVER"
     assert result["recoveryCount"] == 1
     assert result["events"][0]["type"] in {"MODERATE_DIP", "SIGNIFICANT_TROUGH"}
+    assert result["events"][0]["eventClass"] == "LOCAL_ACTIVITY_DIP"
+    assert result["events"][0]["relationToRecovery"] == "RECOVERED"
     assert any(event["type"] in {"RECOVERY", "SUSTAINED_RECOVERY"} for event in result["events"])
+    assert next(event for event in result["events"] if event["eventClass"] == "LOCAL_ACTIVITY_RECOVERY")["sourceEventId"] == result["events"][0]["id"]
+    assert result["slopeStatus"] == "TECHNICAL_MEASUREMENT_ONLY"
 
 
 def test_v5_shape_does_not_call_slight_endpoint_drop_falling() -> None:
@@ -135,3 +140,12 @@ def test_v5_flat_high_has_no_canonical_local_events() -> None:
     assert result["trendShape"] == "STEADY_HIGH"
     assert result["events"] == []
     assert result["humanSummary"] == "No local activity events detected."
+
+
+def test_v5_structural_windows_are_explicitly_uncalibrated() -> None:
+    trend = _v5_temporal_trend(_segments([1.0, 1.0, 0.74, 1.0, 1.0]))
+    result = _v5_structural_risk_windows(trend)
+
+    assert result["calibrationStatus"] == "UNCALIBRATED_HEURISTIC"
+    assert result["windows"][0]["structuralRisk"] in {"LOW", "MEDIUM", "HIGH"}
+    assert "viewer retention drop" in result["windows"][0]["interpretation"]

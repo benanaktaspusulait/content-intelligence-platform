@@ -195,12 +195,13 @@ const VARIANT_TYPE_LABELS: Record<string, string> = {
                   <div><span>Loop evidence</span><strong>{{ v5LoopSummary() }}</strong><small>Visual endpoint evidence is separate from semantic loop verification.</small></div>
                   <div><span>Readiness coverage</span><strong>{{ v5CoverageSummary() }}</strong><small>{{ v5CoverageReason() }}</small></div>
                 </div>
-                <div class="creative-evidence-cards creative-evidence-cards--v4">
-                  <div><span>Temporal motion trend</span><strong>{{ v5TrendSummary() }}</strong><small>{{ v5TrendReason() }}</small></div>
-                  <div><span>Temporal structure</span><strong>{{ temporalShapeSummary() }}</strong><small>{{ temporalShapeReason() }}</small></div>
-                  <div><span>Local recovery</span><strong>{{ v5RecoverySummary() }}</strong><small>Recovery is distinct from a final rebound.</small></div>
-                  <div><span>Final rebound</span><strong>{{ v5FinalReboundSummary() }}</strong><small>Measured recovery from the preceding segment.</small></div>
-                </div>
+                  <div class="creative-evidence-cards creative-evidence-cards--v4">
+                    <div><span>Temporal motion trend</span><strong>{{ v5TrendSummary() }}</strong><small>{{ v5TrendReason() }}</small></div>
+                    <div><span>Temporal structure</span><strong>{{ temporalShapeSummary() }}</strong><small>{{ temporalShapeReason() }}</small></div>
+                    <div><span>Local recovery</span><strong>{{ v5RecoverySummary() }}</strong><small>Recovery is distinct from a final rebound.</small></div>
+                    <div><span>Final rebound</span><strong>{{ v5FinalReboundSummary() }}</strong><small>Measured recovery from the preceding segment.</small></div>
+                    <div><span>Structural attention windows</span><strong>{{ structuralRiskSummary() }}</strong><small>Uncalibrated structural evidence only; never a predicted viewer drop.</small></div>
+                  </div>
                 @if (platformReadiness().length) {
                   <div class="platform-readiness-strip">
                     <div class="section-heading"><div><span class="eyebrow">PLATFORM LENS</span><h3>Creative fit by platform</h3></div><span class="data-freshness">Policy hypothesis · not prediction</span></div>
@@ -710,12 +711,16 @@ export class VideoDetailPage implements OnDestroy {
     return value >= 0.9 ? 'Very high' : value >= 0.75 ? 'High' : value >= 0.5 ? 'Moderate' : 'Low';
   }
   protected activityDropSummary(): string {
-    const events = this.analysisStatus()?.temporalProfile?.['temporalActivityEvents'];
-    if (!Array.isArray(events)) return 'Not evaluated';
-    const dips = events.filter(item => !String((item as Record<string, unknown>)['type'] || '').includes('RECOVERY'));
-    const recoveries = events.filter(item => String((item as Record<string, unknown>)['type'] || '').includes('RECOVERY'));
+    const events = this.canonicalTemporalEvents();
+    if (!events) return 'Not evaluated';
+    const dips = events.filter(item => item['eventClass'] === 'LOCAL_ACTIVITY_DIP');
+    const recoveries = events.filter(item => item['eventClass'] === 'LOCAL_ACTIVITY_RECOVERY');
     if (!dips.length) return 'None detected';
     return `${dips.length} local dip${dips.length === 1 ? '' : 's'}${recoveries.length ? ` · ${recoveries.length} recovery` : ''}`;
+  }
+  protected canonicalTemporalEvents(): Array<Record<string, any>> | null {
+    const events = this.analysisStatus()?.temporalProfile?.['temporalActivityEvents'];
+    return Array.isArray(events) ? events as Array<Record<string, any>> : null;
   }
   protected semanticEvidence(): Record<string, any> { return (this.analysisStatus()?.semanticVideoEvidence || {}) as Record<string, any>; }
   protected semanticStatus(): string { return String(this.semanticEvidence()['status'] || 'NOT_REQUESTED'); }
@@ -774,10 +779,10 @@ export class VideoDetailPage implements OnDestroy {
     return typeof classification === 'string' ? this.readable(classification) : 'Not evaluated';
   }
   protected v5HoldSummary(): string {
-    const events = this.analysisStatus()?.temporalProfile?.['temporalActivityEvents'];
-    if (!Array.isArray(events) || !events.length) return 'None detected';
-    const types = events.map(item => String((item as Record<string, unknown>)['eventType'] || 'AMBIGUOUS'));
-    return types.some(type => type === 'LIKELY_PURPOSEFUL_HOLD') ? 'Likely purposeful hold' : this.readable(types[0]);
+    const events = this.canonicalTemporalEvents();
+    if (!events?.length) return 'None detected';
+    const holds = events.filter(item => item['eventType'] === 'LIKELY_PURPOSEFUL_HOLD');
+    return holds.length ? 'Likely purposeful hold' : 'No contextual hold evidence';
   }
   protected v5HookSummary(): string {
     const hook = this.analysisStatus()?.temporalProfile?.['hook'];
@@ -789,9 +794,9 @@ export class VideoDetailPage implements OnDestroy {
     return hook && typeof hook === 'object' ? String((hook as Record<string, unknown>)['reason'] || 'Opening evidence is limited to sampled visual activity.') : 'Semantic hook evidence is not configured.';
   }
   protected v5HoldReason(): string {
-    const events = this.analysisStatus()?.temporalProfile?.['temporalActivityEvents'];
-    if (!Array.isArray(events) || !events.length) return 'No contextual trough event was established.';
-    const event = events[0] as Record<string, unknown>;
+    const events = this.canonicalTemporalEvents();
+    const event = events?.find(item => item['eventType'] === 'LIKELY_PURPOSEFUL_HOLD');
+    if (!event) return 'Motion evidence alone cannot classify a local dip as a purposeful hold.';
     return `${event['startSeconds']}–${event['endSeconds']}s · ${String(event['reason'] || 'Context requires review.')}`;
   }
   protected v5ReboundSummary(): string {
@@ -820,7 +825,7 @@ export class VideoDetailPage implements OnDestroy {
   protected v5TrendReason(): string {
     const trend = this.analysisStatus()?.temporalProfile?.['temporalTrend'];
     return trend && typeof trend === 'object'
-      ? String((trend as Record<string, unknown>)['humanSummary'] || (trend as Record<string, unknown>)['interpretation'] || 'Temporal motion trend only.')
+      ? `${String((trend as Record<string, unknown>)['humanSummary'] || 'Temporal motion trend available.')} ${String((trend as Record<string, unknown>)['interpretation'] || 'Technical measurement only; not a performance prediction.')}`
       : 'Temporal motion trend is available in V5 analysis.';
   }
   protected temporalShapeSummary(): string { return this.v5TrendSummary(); }
@@ -843,21 +848,33 @@ export class VideoDetailPage implements OnDestroy {
     const magnitude = trend && typeof trend === 'object' ? (trend as Record<string, unknown>)['finalReboundMagnitude'] : null;
     return typeof magnitude === 'number' && magnitude > 0 ? `+${magnitude.toFixed(3)}` : 'Not established';
   }
+  protected structuralRiskSummary(): string {
+    const value = this.analysisStatus()?.temporalProfile?.['structuralRetentionRisk'];
+    if (!value || typeof value !== 'object') return 'Not evaluated';
+    const windows = (value as Record<string, unknown>)['windows'];
+    if (!Array.isArray(windows) || !windows.length) return 'None detected';
+    const high = windows.filter(item => (item as Record<string, unknown>)['structuralRisk'] === 'HIGH').length;
+    return high ? `${windows.length} window${windows.length === 1 ? '' : 's'} · ${high} high` : `${windows.length} window${windows.length === 1 ? '' : 's'}`;
+  }
   protected lowMotionDurationSummary(): string {
     const evidence = this.analysisStatus()?.temporalProfile?.['lowMotionEvidence'];
     if (evidence && typeof evidence === 'object') {
       const value = evidence as Record<string, unknown>;
-      if (value['status'] === 'AVAILABLE') return typeof value['durationSeconds'] === 'number' && value['durationSeconds'] > 0 ? `${Number(value['durationSeconds']).toFixed(1)}s` : 'None detected';
+      if (value['status'] === 'AVAILABLE') {
+        const duration = Number(value['durationSeconds']);
+        const count = Number(value['intervalCount']);
+        return duration > 0 ? `${duration.toFixed(1)}s · ${count} interval${count === 1 ? '' : 's'}` : 'None detected';
+      }
       return this.readable(String(value['status'] || 'UNKNOWN'));
     }
     return 'Not evaluated';
   }
   protected timelineEventLabel(segment: Record<string, any>): string {
-    const events = this.analysisStatus()?.temporalProfile?.['temporalActivityEvents'];
-    if (!Array.isArray(events)) return '—';
+    const events = this.canonicalTemporalEvents();
+    if (!events) return '—';
     const start = Number(segment['startSeconds']); const end = Number(segment['endSeconds']);
     const event = events.find(item => Number((item as Record<string, unknown>)['startSeconds']) < end && Number((item as Record<string, unknown>)['endSeconds']) > start) as Record<string, unknown> | undefined;
-    return event ? this.readable(String(event['type'] || 'EVENT')) : '—';
+    return event ? this.readable(String(event['eventClass'] || event['type'] || 'EVENT')) : '—';
   }
   protected metricSource(value: number | null | undefined, available: string): string { return value === null || value === undefined ? 'No imported value' : available; }
   protected discoveryQualityLabel(): string { return this.discovery()?.dataQualityStatus === 'DERIVED_FROM_REPORTED_SHARES' ? 'REPORTED EVIDENCE' : 'NO COMPLETE DATA'; }

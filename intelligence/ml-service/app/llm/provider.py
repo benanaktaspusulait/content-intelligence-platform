@@ -22,8 +22,8 @@ def get_provider_identity(name: str | None = None) -> tuple[str, str]:
     provider_name = resolved_name.lower()
     if provider_name not in _DEFAULT_MODELS:
         raise UnsupportedProviderError(f"Unsupported provider: {provider_name}")
-    model_env = f"{provider_name.upper()}_MODEL"
-    return provider_name, os.getenv(model_env, _DEFAULT_MODELS[provider_name])
+    model_env = "OPENAI_VLM_MODEL" if provider_name == "openai" else f"{provider_name.upper()}_MODEL"
+    return provider_name, os.getenv(model_env, os.getenv(f"{provider_name.upper()}_MODEL", _DEFAULT_MODELS[provider_name]))
 
 
 class LLMProvider(ABC):

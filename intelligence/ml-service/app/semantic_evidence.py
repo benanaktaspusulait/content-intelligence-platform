@@ -12,6 +12,7 @@ import os
 from typing import Any
 
 from .llm import get_provider
+from .semantic_provider import SemanticAnalysisRequest, SemanticFrame
 
 SEMANTIC_ANALYZER_VERSION = "semantic-video-intelligence-v1"
 SEMANTIC_SCHEMA_VERSION = "semantic-evidence-v1"
@@ -77,11 +78,26 @@ def analyse_semantic_video(
     try:
         provider_name = os.getenv("POMPOM_SEMANTIC_PROVIDER") or os.getenv("DEFAULT_LLM_PROVIDER", "openai")
         provider = get_provider(provider_name)
-        prompt = _semantic_prompt(canonical_characters or [])
-        response, usage = provider.complete_images(prompt, [str(frame) for frame in frames], system=_semantic_system())
-        payload = json.loads(response)
-        if not isinstance(payload, dict):
-            raise ValueError("Semantic provider response must be an object")
+        selected = [item for item in frame_selection.get("selectedFrames", []) if item.get("frameAvailable") and item.get("framePath")]
+        request = SemanticAnalysisRequest(
+            asset_hash=str(frame_selection.get("assetHash") or ""),
+            duration_seconds=float(frame_selection.get("durationSeconds") or 0.0),
+            frames=tuple(SemanticFrame(
+                timestamp_seconds=float(item["timestampSeconds"]),
+                selection_reason=str(item.get("selectionReason", "OTHER")),
+                image_path=str(item["framePath"]),
+                image_hash=item.get("imageHash"),
+                related_event_id=item.get("relatedEventId"),
+                related_beat_id=item.get("relatedBeatId"),
+            ) for item in selected),
+            known_characters=tuple(canonical_characters or ()),
+            temporal_events=tuple(frame_selection.get("temporalEvents") or ()),
+            analysis_requirements=_semantic_prompt(canonical_characters or []),
+        )
+        if not hasattr(provider, "analyze"):
+            raise TypeError(f"Provider {provider_name} does not implement VisionLanguageModelProvider")
+        semantic_result = provider.analyze(request)
+        payload = semantic_result.payload
         payload.setdefault("status", "COMPLETED")
         payload.setdefault("schemaVersion", SEMANTIC_SCHEMA_VERSION)
         payload.setdefault("analyzerVersion", SEMANTIC_ANALYZER_VERSION)
@@ -90,7 +106,9 @@ def analyse_semantic_video(
             **dict(payload.get("provenance") or {}),
             "selectedFrameTimestamps": [frame["timestampSeconds"] for frame in frame_selection.get("selectedFrames", [])],
             "frameSelectionVersion": frame_selection.get("version"),
-            **usage,
+            **semantic_result.usage,
+            "provider": semantic_result.provider,
+            "providerModel": semantic_result.model,
         }
         payload.setdefault("limitations", [])
         return payload

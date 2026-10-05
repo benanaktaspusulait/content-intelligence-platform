@@ -742,6 +742,8 @@ def _v5_temporal_trend(segments: list[dict[str, Any]]) -> dict[str, Any]:
             canonical_events.append({
                 "id": event_id,
                 "type": local_dips[-1]["type"],
+                "eventClass": "LOCAL_ACTIVITY_DIP",
+                "relationToRecovery": "RECOVERED" if recovery_status == "FULL" else "PARTIALLY_RECOVERED" if recovery_status == "PARTIAL" else "NOT_ESTABLISHED",
                 "startSeconds": round(valid[index]["startSeconds"], 3),
                 "endSeconds": round(valid[index]["endSeconds"], 3),
                 "durationSeconds": round(valid[index]["endSeconds"] - valid[index]["startSeconds"], 3),
@@ -773,6 +775,8 @@ def _v5_temporal_trend(segments: list[dict[str, Any]]) -> dict[str, Any]:
                 canonical_events.append({
                     "id": f"{event_id}-recovery",
                     "type": recovery["type"],
+                    "eventClass": "LOCAL_ACTIVITY_RECOVERY",
+                    "sourceEventId": event_id,
                     "startSeconds": round(valid[index]["endSeconds"], 3),
                     "endSeconds": round(valid[index + 1]["endSeconds"], 3),
                     "durationSeconds": recovery["timeToRecovery"],
@@ -827,6 +831,8 @@ def _v5_temporal_trend(segments: list[dict[str, Any]]) -> dict[str, Any]:
     return {
         "version": "temporal-trend-profile-v1",
         "status": "AVAILABLE",
+        "slopeStatus": "TECHNICAL_MEASUREMENT_ONLY",
+        "slopeUnit": "normalized_motion_per_second",
         "overallSlope": round(slope(values, midpoints), 5),
         "earlySlope": round(slope(values[:cut_one], midpoints[:cut_one]), 5),
         "middleSlope": round(slope(values[cut_one:cut_two], midpoints[cut_one:cut_two]), 5),
@@ -848,6 +854,37 @@ def _v5_temporal_trend(segments: list[dict[str, Any]]) -> dict[str, Any]:
         "strongestDipSeverity": max((item["severity"] for item in local_dips), default=None),
         "humanSummary": description + ".",
         "interpretation": "Temporal motion trend only; it is not semantic creative escalation or a performance prediction.",
+    }
+
+
+def _v5_structural_risk_windows(trend: dict[str, Any]) -> dict[str, Any]:
+    """Project local motion dips into non-calibrated structural attention windows."""
+    dips = [event for event in trend.get("events", []) if event.get("eventClass") == "LOCAL_ACTIVITY_DIP"]
+    deltas = trend.get("segmentDeltas", [])
+    windows: list[dict[str, Any]] = []
+    for event in dips:
+        incoming = next((item for item in deltas if item.get("toSegment") == event.get("segmentIndex")), {})
+        risk = "HIGH" if event.get("severity") == "SIGNIFICANT" and event.get("relationToRecovery") == "NOT_ESTABLISHED" else "MEDIUM" if event.get("severity") in {"SIGNIFICANT", "MODERATE"} else "LOW"
+        windows.append({
+            "startSeconds": event.get("startSeconds"),
+            "endSeconds": event.get("endSeconds"),
+            "sourceTemporalEvent": event.get("id"),
+            "activity": event.get("eventActivity"),
+            "density": event.get("densityDuring"),
+            "trend": incoming.get("direction", "UNKNOWN"),
+            "relativeDrop": event.get("relativeChangeFromNeighborhood"),
+            "recoveryStatus": event.get("recoveryStatus", "UNKNOWN"),
+            "structuralRisk": risk,
+            "interpretation": "Structural activity window only; it is not a viewer retention drop.",
+            "confidence": event.get("confidence", "UNKNOWN"),
+        })
+    return {
+        "status": "AVAILABLE",
+        "version": "structural-retention-risk-v1",
+        "calibrationStatus": "UNCALIBRATED_HEURISTIC",
+        "windows": windows,
+        "summary": "No structural attention windows detected" if not windows else f"{len(windows)} structural attention window(s) detected",
+        "limitations": ["No retention curve was used.", "A local activity dip does not establish audience drop-off.", "Use imported retention time-series for calibrated drop-window prediction."],
     }
 
 
@@ -1176,6 +1213,7 @@ def _analyse_v5(path: Path, metadata: VideoMetadata) -> VideoAnalysisResponse:
     temporal["version"] = V5_ANALYSIS_VERSION
     temporal["temporalTrend"] = trend
     temporal["temporalActivityEvents"] = canonical_events
+    temporal["structuralRetentionRisk"] = _v5_structural_risk_windows(trend)
     temporal["legacyHoldEvents"] = hold_events
     temporal["temporalEmphasis"] = [
         {
@@ -1199,6 +1237,8 @@ def _analyse_v5(path: Path, metadata: VideoMetadata) -> VideoAnalysisResponse:
         "status": "AVAILABLE",
         "durationSeconds": round(sum(float(item.get("durationSeconds", 0.0)) for item in low_motion_candidates), 3),
         "intervalCount": len(low_motion_candidates),
+        "intervals": low_motion_candidates,
+        "interpretation": "Absolute low visual-change intervals; not audience retention or a creative verdict.",
         "summary": "None detected" if not low_motion_candidates else f"{len(low_motion_candidates)} absolute low-motion interval(s)",
         "provenance": "V5_ABSOLUTE_LOW_MOTION_DETECTOR",
     }
