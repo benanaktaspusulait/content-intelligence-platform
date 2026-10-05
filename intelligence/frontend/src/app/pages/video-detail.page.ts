@@ -10,6 +10,7 @@ import {
   MediaFile,
   PlatformGrowthProfile,
   PlatformCreativeReadiness,
+  VideoCreativeContext,
   ReachFurtherSummary,
   TrajectoryView,
   VideoApiRecord,
@@ -94,10 +95,44 @@ const VARIANT_TYPE_LABELS: Record<string, string> = {
 
       <nav class="detail-tabs" aria-label="Video detail sections">
         <button type="button" [class.is-active]="activeTab() === 'overview'" (click)="activeTab.set('overview')">Overview</button>
+        <button type="button" [class.is-active]="activeTab() === 'creative'" (click)="activeTab.set('creative')">Creative</button>
         <button type="button" [class.is-active]="activeTab() === 'publication'" (click)="activeTab.set('publication')">Publication</button>
         <button type="button" [class.is-active]="activeTab() === 'performance'" (click)="activeTab.set('performance')">Performance</button>
         <button type="button" [class.is-active]="activeTab() === 'evidence'" (click)="activeTab.set('evidence')">Evidence</button>
       </nav>
+
+      @if (activeTab() === 'creative') {
+      <section class="section-band creative-context-panel" aria-labelledby="creative-context-heading">
+        <div class="section-heading"><div><span class="eyebrow">CREATIVE CONTEXT</span><h2 id="creative-context-heading">Characters and prompt lineage</h2></div><span class="data-freshness">Read from canonical DB records</span></div>
+        @if (creativeContextLoading()) {
+          <div class="state-panel compact-state"><span class="spinner"></span><strong>Loading creative context</strong></div>
+        } @else if (creativeContextError()) {
+          <div class="state-panel state-panel--error compact-state"><strong>Creative context unavailable</strong><p>{{ creativeContextError() }}</p></div>
+        } @else {
+          <div class="creative-context-grid">
+            <section class="context-card" aria-labelledby="context-characters-heading">
+              <span class="eyebrow">CHARACTER TOPIC</span><h3 id="context-characters-heading">Characters in this video</h3>
+              @if (creativeContext()?.characters?.length) {
+                <div class="context-list">
+                  @for (character of creativeContext()!.characters; track character.id) {
+                    <article><strong>{{ character.name }}</strong><span>{{ readable(character.participation) }} · {{ readable(character.role) }}</span><small>{{ characterMetrics(character) }}</small></article>
+                  }
+                </div>
+              } @else { <div class="compact-empty"><strong>No linked character records</strong><span>Character data has not been persisted for this video.</span></div> }
+            </section>
+            <section class="context-card" aria-labelledby="context-prompt-heading">
+              <span class="eyebrow">PROMPT TOPIC</span><h3 id="context-prompt-heading">Source prompt and version</h3>
+              @if (creativeContext()?.prompt; as prompt) {
+                <dl class="context-facts"><div><dt>Content</dt><dd>{{ prompt.title }}</dd></div><div><dt>Version</dt><dd>v{{ prompt.versionNumber }} · {{ readable(prompt.type) }} · {{ readable(prompt.status) }}</dd></div><div><dt>Source</dt><dd><code>{{ prompt.sourcePath || 'Render lineage' }}</code></dd></div></dl>
+                <details class="prompt-preview"><summary>View prompt text</summary><pre>{{ prompt.rawText }}</pre></details>
+                @if (prompt.parsedIr) { <details class="prompt-preview"><summary>View parsed plan</summary><pre>{{ prompt.parsedIr }}</pre></details> }
+                <a class="button button--secondary button--compact" routerLink="/quality">Open Prompt Quality</a>
+              } @else { <div class="compact-empty"><strong>No linked prompt version</strong><span>This video has no persisted render or folder prompt lineage yet.</span><a class="button button--secondary button--compact" routerLink="/quality">Open Prompt Quality</a></div> }
+            </section>
+          </div>
+        }
+      </section>
+      }
 
       @if (activeTab() === 'overview') {
       <section class="section-band technical-panel">
@@ -452,7 +487,10 @@ export class VideoDetailPage implements OnDestroy {
   protected readonly growth = signal<PlatformGrowthProfile | null>(null);
   protected readonly discovery = signal<DiscoveryProfile | null>(null);
   protected readonly platform = signal<PlatformKey>('facebook');
-  protected readonly activeTab = signal<'overview' | 'publication' | 'performance' | 'evidence'>('overview');
+  protected readonly activeTab = signal<'overview' | 'creative' | 'publication' | 'performance' | 'evidence'>('overview');
+  protected readonly creativeContext = signal<VideoCreativeContext | null>(null);
+  protected readonly creativeContextLoading = signal(false);
+  protected readonly creativeContextError = signal('');
   protected readonly platformReadiness = signal<PlatformCreativeReadiness[]>([]);
   protected readonly loading = signal(true);
   protected readonly performanceLoading = signal(false);
@@ -608,6 +646,14 @@ export class VideoDetailPage implements OnDestroy {
   protected date(value: string | null | undefined): string { return value ? new Date(value).toLocaleString('en-GB', { dateStyle: 'medium', timeStyle: 'short' }) : '—'; }
   protected number(value: number | null | undefined): string { return value === null || value === undefined ? '—' : new Intl.NumberFormat('en').format(value); }
   protected readable(value: string | null | undefined): string { return value ? value.replaceAll('_', ' ').toLowerCase().replace(/(^|\s)\S/g, letter => letter.toUpperCase()) : '—'; }
+  protected characterMetrics(character: VideoCreativeContext['characters'][number]): string {
+    const metrics = [
+      character.screenTimeRatio === null ? null : `screen ${(character.screenTimeRatio * 100).toFixed(0)}%`,
+      character.actionShare === null ? null : `action ${(character.actionShare * 100).toFixed(0)}%`,
+      character.speakingShare === null ? null : `speaking ${(character.speakingShare * 100).toFixed(0)}%`,
+    ].filter(Boolean);
+    return metrics.length ? metrics.join(' · ') : 'No participation ratios recorded';
+  }
   protected ratio(value: number | null | undefined): string { return value === null || value === undefined ? '—' : `${value.toFixed(2)}×`; }
   protected percent(value: number | null | undefined): string { return value === null || value === undefined ? '—' : `${value.toFixed(1)}%`; }
   protected decimal(value: number | null | undefined): string { return value === null || value === undefined ? '—' : value.toFixed(2); }
@@ -758,6 +804,7 @@ export class VideoDetailPage implements OnDestroy {
         if (generation !== this.loadGeneration) return;
         const folder = this.parentPath(video.relativePath);
         this.folderPath.set(folder);
+        this.loadCreativeContext(video.id);
         this.loadPlatformReadiness(video.id);
         this.loadPublicationCopy(folder, generation);
         this.service.getMediaFiles(folder, false).subscribe({
@@ -773,6 +820,13 @@ export class VideoDetailPage implements OnDestroy {
     forkJoin(platforms.map(platform => this.service.getPlatformCreativeReadiness(videoId, platform))).subscribe({
       next: values => this.platformReadiness.set(values),
       error: () => this.platformReadiness.set([]),
+    });
+  }
+  private loadCreativeContext(videoId: string): void {
+    this.creativeContextLoading.set(true); this.creativeContextError.set(''); this.creativeContext.set(null);
+    this.service.getVideoCreativeContext(videoId).subscribe({
+      next: context => { this.creativeContext.set(context); this.creativeContextLoading.set(false); },
+      error: response => { this.creativeContextLoading.set(false); this.creativeContextError.set(response.error?.message || 'Creative context could not be loaded.'); },
     });
   }
   private loadFolder(folder: string, requestedFile: string | null): void {
@@ -903,11 +957,11 @@ export class VideoDetailPage implements OnDestroy {
     return [...lines.slice(0, headingIndex + 1), '', value, '', ...lines.slice(endIndex)].join('\n').replace(/\n{4,}/g, '\n\n\n');
   }
   private activateVariant(file: MediaFile, knownVideo?: VideoApiRecord): void {
-    this.activeFile.set(file); this.message.set(''); this.video.set(null); this.clearPerformance();
+    this.activeFile.set(file); this.message.set(''); this.video.set(null); this.creativeContext.set(null); this.clearPerformance();
     this.analysisStatus.set(null);
     if (!file.ingested || !file.videoId) { this.videoVariants.set([]); this.analysisPollSubscription?.unsubscribe(); return; }
-    if (knownVideo?.id === file.videoId) { this.video.set(knownVideo); this.loadPerformance(); this.loadVariants(file.videoId); this.pollAnalysisStatus(file.videoId); return; }
-    this.service.getVideo(file.videoId).subscribe({ next: video => { if (this.activeFile()?.relativePath === file.relativePath) { this.video.set(video); this.loadPerformance(); this.loadVariants(video.id); this.pollAnalysisStatus(video.id); } }, error: response => this.message.set(response.error?.message || 'Technical metadata could not be loaded.') });
+    if (knownVideo?.id === file.videoId) { this.video.set(knownVideo); this.loadCreativeContext(knownVideo.id); this.loadPerformance(); this.loadVariants(file.videoId); this.pollAnalysisStatus(file.videoId); return; }
+    this.service.getVideo(file.videoId).subscribe({ next: video => { if (this.activeFile()?.relativePath === file.relativePath) { this.video.set(video); this.loadCreativeContext(video.id); this.loadPerformance(); this.loadVariants(video.id); this.pollAnalysisStatus(video.id); } }, error: response => this.message.set(response.error?.message || 'Technical metadata could not be loaded.') });
   }
   private loadVariants(videoId: string): void {
     this.variantsError.set('');

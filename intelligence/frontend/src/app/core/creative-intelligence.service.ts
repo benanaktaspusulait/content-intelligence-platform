@@ -467,6 +467,33 @@ export interface PlatformCreativeReadiness {
   limitations: string[];
 }
 
+export interface VideoCreativeContext {
+  videoId: string;
+  characters: Array<{
+    id: string;
+    name: string;
+    participation: string;
+    role: string;
+    screenTimeRatio: number | null;
+    actionShare: number | null;
+    speakingShare: number | null;
+  }>;
+  prompt: {
+    contentId: number;
+    title: string;
+    type: string;
+    status: string;
+    promptVersionId: number;
+    versionNumber: number;
+    rawText: string;
+    parsedIr: string | null;
+    sourcePath: string | null;
+    createdAt: string | null;
+    linkage: string;
+  } | null;
+  evidenceStatus: string;
+}
+
 export interface ReachFurtherComparison {
   reachFurtherObserved: { sampleSize: number; medianCurrentViews: number | null; distribution: Record<string, number> };
   reachFurtherNotObserved: { sampleSize: number; medianCurrentViews: number | null; distribution: Record<string, number> };
@@ -635,6 +662,10 @@ export class CreativeIntelligenceService {
 
   getPlatformCreativeReadiness(videoId: string, platform: string): Observable<PlatformCreativeReadiness> {
     return this.http.get<PlatformCreativeReadiness>(`${this.baseUrl}/videos/${videoId}/platform-readiness`, { params: { platform } });
+  }
+
+  getVideoCreativeContext(videoId: string): Observable<VideoCreativeContext> {
+    return this.http.get<VideoCreativeContext>(`${this.baseUrl}/videos/${videoId}/creative-context`);
   }
 
   getReachFurther(id: string, platform = 'facebook'): Observable<ReachFurtherSummary> {
