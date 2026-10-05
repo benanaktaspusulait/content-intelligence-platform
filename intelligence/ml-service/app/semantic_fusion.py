@@ -14,7 +14,7 @@ def _status(value: Any) -> str:
 
 
 def _semantic_available(semantic: dict[str, Any]) -> bool:
-    return _status(semantic.get("status")) in {"COMPLETED", "PARTIAL"} and bool(semantic.get("provenance"))
+    return _status(semantic.get("status")) in {"COMPLETED", "PARTIAL", "CACHE_HIT"} and bool(semantic.get("provenance"))
 
 
 def fuse_canonical_assessments(temporal: dict[str, Any], semantic: dict[str, Any]) -> dict[str, Any]:

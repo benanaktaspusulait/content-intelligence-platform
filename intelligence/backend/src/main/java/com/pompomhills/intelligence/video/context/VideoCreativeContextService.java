@@ -8,6 +8,10 @@ import java.sql.SQLException;
 import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
+import com.pompomhills.intelligence.video.VideoEntity;
+import com.pompomhills.intelligence.video.VideoRepository;
+import com.pompomhills.intelligence.video.prompt.PromptSourceResolution;
+import com.pompomhills.intelligence.video.prompt.VideoPromptSourceResolver;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,9 +19,14 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class VideoCreativeContextService {
   private final JdbcClient jdbc;
+  private final VideoRepository videos;
+  private final VideoPromptSourceResolver promptResolver;
 
-  public VideoCreativeContextService(JdbcClient jdbc) {
+  public VideoCreativeContextService(JdbcClient jdbc, VideoRepository videos,
+      VideoPromptSourceResolver promptResolver) {
     this.jdbc = jdbc;
+    this.videos = videos;
+    this.promptResolver = promptResolver;
   }
 
   @Transactional(readOnly = true)
@@ -80,6 +89,18 @@ public class VideoCreativeContextService {
           """).param("videoId", videoId)
           .query((rs, ignored) -> mapPrompt(rs))
           .optional().orElse(null);
+    }
+
+    if (prompt == null) {
+      VideoEntity video = videos.findById(videoId).orElse(null);
+      if (video != null) {
+        PromptSourceResolution resolution = promptResolver.resolve(video);
+        if (resolution.matched()) {
+          prompt = new PromptContext(null, resolution.promptPath(), "REEL", "SOURCE_RESOLVED",
+              null, null, resolution.promptText(), null, resolution.promptPath(), null,
+              "FOLDER_SOURCE_RESOLUTION");
+        }
+      }
     }
 
     String evidenceStatus = prompt == null ? "CHARACTER_DATA_ONLY" : "CHARACTER_AND_PROMPT_LINKED";

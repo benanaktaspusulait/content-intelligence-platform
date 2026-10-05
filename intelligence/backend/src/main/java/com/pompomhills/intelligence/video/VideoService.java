@@ -306,7 +306,11 @@ public class VideoService {
             .orElseThrow(() -> new EntityNotFoundException("Video not found: " + videoId));
     video.markAnalysing();
     try {
-      var result = ml.analyse(video.getRelativePath(), analysisVersion);
+      Map<String, Object> cachedSemantic = analyses
+          .findFirstByVideoIdAndAnalysisVersionOrderByCreatedAtDesc(videoId, analysisVersion)
+          .map(CreativeAnalysisEntity::getSemanticVideoEvidence)
+          .orElse(Map.of());
+      var result = ml.analyse(video.getRelativePath(), analysisVersion, cachedSemantic, true);
     var analysis = persistCreativeAnalysis(video, result);
       video.markAnalysed();
       return new AnalysisResponse(

@@ -469,6 +469,18 @@ export interface PlatformCreativeReadiness {
   limitations: string[];
 }
 
+export interface PredictionDataReadiness {
+  platform: string;
+  eligibleObservations: number;
+  organicObservations: number;
+  paidObservations: number;
+  incompleteObservations: number;
+  status: string;
+  note: string;
+  minimumEligibleRows: number;
+  experimentalReadyRows: number;
+}
+
 export interface VideoCreativeContext {
   videoId: string;
   characters: Array<{
@@ -532,6 +544,10 @@ export class CreativeIntelligenceService {
     return this.predictionRecords().pipe(
       map(records => ({ source: 'api' as const, records })),
     );
+  }
+
+  getPredictionReadiness(): Observable<PredictionDataReadiness[]> {
+    return this.http.get<PredictionDataReadiness[]>(`${this.baseUrl}/predictions/readiness`);
   }
 
   generatePrediction(videoId: string, platform: string): Observable<PredictionApiRecord> {

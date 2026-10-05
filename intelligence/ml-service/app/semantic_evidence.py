@@ -67,8 +67,23 @@ def unavailable_semantic_evidence(
 def analyse_semantic_video(
     frame_selection: dict[str, Any],
     canonical_characters: list[str] | None = None,
+    cached_evidence: dict[str, Any] | None = None,
+    semantic_requested: bool = False,
 ) -> dict[str, Any]:
-    """Run exactly one structured vision pass when explicitly enabled."""
+    """Reuse fresh evidence or run exactly one structured vision pass."""
+    cached = dict(cached_evidence or {})
+    cache_selection = cached.get("frameSelection") if isinstance(cached.get("frameSelection"), dict) else {}
+    if (
+        str(cached.get("status") or "").upper() in {"COMPLETED", "PARTIAL", "CACHE_HIT"}
+        and str(cached.get("assetHash") or "") == str(frame_selection.get("assetHash") or "")
+        and str(cached.get("schemaVersion") or "") == SEMANTIC_SCHEMA_VERSION
+        and cache_selection.get("version") == frame_selection.get("version")
+        and isinstance(cached.get("provenance"), dict)
+    ):
+        cached["status"] = "CACHE_HIT"
+        cached["frameSelection"] = frame_selection
+        cached["provenance"] = {**dict(cached.get("provenance") or {}), "cacheHit": True, "cacheSource": "persisted-semantic-video-evidence", "providerCallCount": 0}
+        return cached
     frames = [
         item.get("framePath")
         for item in frame_selection.get("selectedFrames", [])
@@ -76,7 +91,8 @@ def analyse_semantic_video(
     ]
     if not frames:
         return unavailable_semantic_evidence(None, "", frame_selection, "No readable semantic frames were produced.")
-    if os.getenv("POMPOM_SEMANTIC_ENABLED", "false").lower() != "true":
+    enabled = semantic_requested or any(os.getenv(name, "false").lower() == "true" for name in ("POMPOM_SEMANTIC_ENABLED", "SEMANTIC_VIDEO_AI_ENABLED"))
+    if not enabled:
         return unavailable_semantic_evidence(None, "", frame_selection)
     try:
         selected = [item for item in frame_selection.get("selectedFrames", []) if item.get("frameAvailable") and item.get("framePath")]

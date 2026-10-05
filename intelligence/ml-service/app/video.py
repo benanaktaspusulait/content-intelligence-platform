@@ -1177,7 +1177,7 @@ def _analyse_v4(path: Path, metadata: VideoMetadata) -> VideoAnalysisResponse:
     )
 
 
-def _analyse_v5(path: Path, metadata: VideoMetadata) -> VideoAnalysisResponse:
+def _analyse_v5(path: Path, metadata: VideoMetadata, cached_semantic_video_evidence: dict[str, Any] | None = None, semantic_requested: bool = False) -> VideoAnalysisResponse:
     """V5 keeps V4 measurements intact and adds contextual readiness evidence."""
     result = _analyse_v4(path, metadata)
     profile = result.evidence.get("temporalProfile", {})
@@ -1264,7 +1264,7 @@ def _analyse_v5(path: Path, metadata: VideoMetadata) -> VideoAnalysisResponse:
         metadata.sha256,
         temporal_profile=temporal,
     )
-    result.semantic_video_evidence = analyse_semantic_video(frame_selection)
+    result.semantic_video_evidence = analyse_semantic_video(frame_selection, cached_evidence=cached_semantic_video_evidence, semantic_requested=semantic_requested)
     result.semantic_video_evidence["assetHash"] = metadata.sha256
     if result.semantic_video_evidence.get("status") == "NOT_EVALUATED":
         result.semantic_video_evidence["status"] = "NOT_REQUESTED"
@@ -1284,13 +1284,13 @@ def _analyse_v5(path: Path, metadata: VideoMetadata) -> VideoAnalysisResponse:
     return result
 
 
-def analyse(relative_path: str, analysis_version: str = "sampled-visual-motion-v3") -> VideoAnalysisResponse:
+def analyse(relative_path: str, analysis_version: str = "sampled-visual-motion-v3", cached_semantic_video_evidence: dict[str, Any] | None = None, semantic_requested: bool = False) -> VideoAnalysisResponse:
     path = safe_video_path(relative_path)
     metadata = probe(path)
     if analysis_version == V4_ANALYSIS_VERSION:
         return _analyse_v4(path, metadata)
     if analysis_version == V5_ANALYSIS_VERSION:
-        return _analyse_v5(path, metadata)
+        return _analyse_v5(path, metadata, cached_semantic_video_evidence, semantic_requested)
     if analysis_version != "sampled-visual-motion-v3":
         raise ValueError(f"Unsupported video analysis version: {analysis_version}")
     duration = metadata.duration_ms / 1000

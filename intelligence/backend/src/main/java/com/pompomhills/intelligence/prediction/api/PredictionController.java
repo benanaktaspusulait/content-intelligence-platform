@@ -1,6 +1,7 @@
 package com.pompomhills.intelligence.prediction.api;
 
 import com.pompomhills.intelligence.prediction.PredictionService;
+import com.pompomhills.intelligence.prediction.PredictionDataReadinessService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import java.util.List;
@@ -12,11 +13,18 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v1/predictions")
 public class PredictionController {
   private final PredictionService service;
+  private final PredictionDataReadinessService readiness;
   private final JdbcClient jdbc;
 
-  public PredictionController(PredictionService service, JdbcClient jdbc) {
+  public PredictionController(PredictionService service, PredictionDataReadinessService readiness, JdbcClient jdbc) {
     this.service = service;
+    this.readiness = readiness;
     this.jdbc = jdbc;
+  }
+
+  @GetMapping("/readiness")
+  public List<PredictionDataReadinessService.Readiness> readiness() {
+    return readiness.all();
   }
 
   @PostMapping

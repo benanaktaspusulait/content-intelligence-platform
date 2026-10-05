@@ -47,6 +47,11 @@ public class VideoPromptSourceResolver {
       String stem = normalizeStem(stripExtension(file.getFileName().toString()));
       List<Path> exact = prompts.stream().filter(candidate -> isExactCandidate(stem, candidate)).toList();
       if (!exact.isEmpty()) return read(video, exact.get(0), PromptSourceResolution.Status.MATCHED_SIDECAR, "EXACT_SIDECAR", "HIGH", prompts);
+      List<Path> namedPrompt = prompts.stream().filter(this::isCanonicalPromptFile).toList();
+      if (namedPrompt.size() == 1) {
+        return read(video, namedPrompt.get(0), PromptSourceResolution.Status.MATCHED_SIDECAR,
+            "CANONICAL_PROMPT_FILENAME", "HIGH", prompts);
+      }
       long videoCount;
       try (Stream<Path> files = Files.list(folder)) {
         videoCount = files.filter(Files::isRegularFile).filter(this::isVideo).count();
@@ -112,6 +117,16 @@ public class VideoPromptSourceResolver {
     String promptStem = normalizeStem(stripExtension(candidate.getFileName().toString()));
     if (promptStem.equals(videoStem)) return true;
     return promptStem.equals(videoStem + "prompt") || promptStem.equals(videoStem + "prompts");
+  }
+
+  /** Metadata files share the folder with the production prompt; only canonical prompt names may disambiguate them. */
+  private boolean isCanonicalPromptFile(Path file) {
+    String stem = stripExtension(file.getFileName().toString()).toLowerCase(Locale.ROOT)
+        .replaceAll("[^a-z0-9]+", "_").replaceAll("_+", "_").replaceAll("^_|_$", "");
+    return stem.equals("prompt") || stem.startsWith("prompt_")
+        || stem.equals("video_prompt") || stem.startsWith("video_prompt_")
+        || stem.equals("generation_prompt") || stem.startsWith("generation_prompt_")
+        || stem.equals("openart_prompt") || stem.startsWith("openart_prompt_");
   }
 
   private String normalizeStem(String value) {

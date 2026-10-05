@@ -5,12 +5,14 @@ import com.pompomhills.intelligence.platformstate.PlatformStateService;
 import com.pompomhills.intelligence.prediction.ml.MlPredictionClient;
 import jakarta.persistence.EntityNotFoundException;
 import java.time.Clock;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import tools.jackson.databind.ObjectMapper;
 
 @Service
 public class PredictionService {
@@ -20,6 +22,7 @@ public class PredictionService {
   private final Clock clock;
   private final JdbcClient jdbc;
   private final PlatformStateService platformStates;
+  private final ObjectMapper json;
 
   public PredictionService(
       PredictionRepository predictions,
@@ -27,13 +30,15 @@ public class PredictionService {
       MlPredictionClient ml,
       Clock clock,
       JdbcClient jdbc,
-      PlatformStateService platformStates) {
+      PlatformStateService platformStates,
+      ObjectMapper json) {
     this.predictions = predictions;
     this.fingerprints = fingerprints;
     this.ml = ml;
     this.clock = clock;
     this.jdbc = jdbc;
     this.platformStates = platformStates;
+    this.json = json;
   }
 
   @Transactional
@@ -43,7 +48,10 @@ public class PredictionService {
             .findFirstByVideoIdOrderByCreatedAtDesc(videoId)
             .orElseThrow(() -> new IllegalStateException("Analyse the video before prediction"));
     var cutoff = clock.instant();
+    UUID snapshotId = createFeatureSnapshot(videoId, platform, fingerprint, cutoff);
     var response = ml.prepublish(platform, fingerprint.getFeatures(), cutoff);
+    Map<String, Object> payload = new LinkedHashMap<>(response.payload());
+    payload.put("featureSnapshotId", snapshotId.toString());
     var entity =
         new PredictionEntity(
             UUID.randomUUID(),
@@ -54,10 +62,32 @@ public class PredictionService {
             response.datasetVersion(),
             response.featureVersion(),
             cutoff,
-            response.payload(),
+            payload,
             response.confidence(),
             response.comparableSampleSize());
     return map(predictions.save(entity));
+  }
+
+  private UUID createFeatureSnapshot(UUID videoId, String platform,
+      com.pompomhills.intelligence.creative.CreativeFingerprintEntity fingerprint,
+      java.time.Instant cutoff) {
+    UUID id = UUID.randomUUID();
+    Map<String, Object> semantic = fingerprint.getAnalysis().getSemanticVideoEvidence();
+    String semanticVersion = String.valueOf(semantic.getOrDefault("schemaVersion",
+        semantic.getOrDefault("version", "UNKNOWN")));
+    jdbc.sql("""
+        INSERT INTO prediction_feature_snapshots
+          (id,video_id,platform,feature_schema_version,source_analysis_version,
+           semantic_schema_version,knowledge_cutoff,features)
+        VALUES (:id,:video,:platform,:featureVersion,:analysisVersion,
+                :semanticVersion,:cutoff,CAST(:features AS jsonb))
+        """)
+        .param("id", id).param("video", videoId).param("platform", platform)
+        .param("featureVersion", "prediction-feature-snapshot-v1")
+        .param("analysisVersion", fingerprint.getAnalysis().getAnalysisVersion())
+        .param("semanticVersion", semanticVersion).param("cutoff", cutoff)
+        .param("features", json.writeValueAsString(fingerprint.getFeatures())).update();
+    return id;
   }
 
   @Transactional

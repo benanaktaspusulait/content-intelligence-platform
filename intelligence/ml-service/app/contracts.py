@@ -8,6 +8,8 @@ class VideoAnalysisRequest(BaseModel):
     contract_version: Literal["v1"] = Field(alias="contractVersion")
     relative_path: str = Field(alias="relativePath")
     analysis_version: str = Field("sampled-visual-motion-v5", alias="analysisVersion")
+    cached_semantic_video_evidence: dict[str, Any] = Field(default_factory=dict, alias="cachedSemanticVideoEvidence")
+    semantic_requested: bool = Field(False, alias="semanticRequested")
 
 
 class VideoMetadata(BaseModel):
@@ -46,7 +48,7 @@ class VideoAnalysisResponse(BaseModel):
 
 class PredictionRequest(BaseModel):
     contract_version: Literal["v1"] = Field(alias="contractVersion")
-    platform: Literal["instagram", "facebook", "tiktok"]
+    platform: Literal["instagram", "facebook", "tiktok", "youtube"]
     fingerprint: dict[str, Any]
     knowledge_cutoff: datetime = Field(alias="knowledgeCutoff")
 

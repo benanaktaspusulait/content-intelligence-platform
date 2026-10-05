@@ -63,6 +63,10 @@ public class CreativeFingerprintEntity {
     return featureVersion;
   }
 
+  public CreativeAnalysisEntity getAnalysis() {
+    return analysis;
+  }
+
   public Map<String, Object> getFeatures() {
     return features;
   }

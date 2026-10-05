@@ -19,10 +19,23 @@ public class MlVideoClient {
   }
 
   public MlAnalysisResponse analyse(String relativePath, String analysisVersion) {
+    return analyse(relativePath, analysisVersion, Map.of(), false);
+  }
+
+  public MlAnalysisResponse analyse(
+      String relativePath, String analysisVersion, Map<String, Object> cachedSemanticVideoEvidence) {
+    return analyse(relativePath, analysisVersion, cachedSemanticVideoEvidence, true);
+  }
+
+  public MlAnalysisResponse analyse(
+      String relativePath,
+      String analysisVersion,
+      Map<String, Object> cachedSemanticVideoEvidence,
+      boolean semanticRequested) {
     return restClient
         .post()
         .uri("/v1/analysis/video")
-        .body(new MlAnalysisRequest("v1", relativePath, analysisVersion))
+        .body(new MlAnalysisRequest("v1", relativePath, analysisVersion, cachedSemanticVideoEvidence, semanticRequested))
         .retrieve()
         .body(MlAnalysisResponse.class);
   }
@@ -38,7 +51,12 @@ public class MlVideoClient {
         .body(Map.class);
   }
 
-  public record MlAnalysisRequest(String contractVersion, String relativePath, String analysisVersion) {}
+  public record MlAnalysisRequest(
+      String contractVersion,
+      String relativePath,
+      String analysisVersion,
+      Map<String, Object> cachedSemanticVideoEvidence,
+      boolean semanticRequested) {}
 
   public record Metadata(
       long durationMs,

@@ -3,7 +3,11 @@ package com.pompomhills.intelligence.video.platform;
 import com.pompomhills.intelligence.creative.CreativeAnalysisEntity;
 import com.pompomhills.intelligence.creative.CreativeAnalysisRepository;
 import java.time.Instant;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.HexFormat;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
@@ -42,23 +46,23 @@ public class PlatformCreativeReadinessService {
     Map<String, Object> temporalAssessment = map(canonical.get("temporalStructure"));
 
     List<Criterion> criteria = new ArrayList<>();
-    criteria.add(criterion("OPENING_HOOK", importance(platform, "OPENING_HOOK"), value(hook, "strength", value(hook, "status", "UNKNOWN")),
+    criteria.add(criterion(platform, "OPENING_HOOK", importance(platform, "OPENING_HOOK"), value(hook, "strength", value(hook, "status", "UNKNOWN")),
         "The measured opening activity is interpreted as a platform hook signal, not a performance prediction."));
-    criteria.add(criterion("VISUAL_NOVELTY", importance(platform, "VISUAL_NOVELTY"), value(dimensions, "visualNovelty", "UNKNOWN"),
+    criteria.add(criterion(platform, "VISUAL_NOVELTY", importance(platform, "VISUAL_NOVELTY"), value(dimensions, "visualNovelty", "UNKNOWN"),
         "Visual novelty is the shared V5 evidence of structural/perceptual change."));
-    criteria.add(criterion("BEAT_NOVELTY", importance(platform, "BEAT_NOVELTY"), value(action, "combinedAssessment", "UNKNOWN"),
+    criteria.add(criterion(platform, "BEAT_NOVELTY", importance(platform, "BEAT_NOVELTY"), value(action, "combinedAssessment", "UNKNOWN"),
         "Observed beat novelty is interpreted qualitatively; semantic action evidence may be unavailable."));
-    criteria.add(criterion("LOOP_CONTINUITY", importance(platform, "LOOP_CONTINUITY"), value(loop, "strength", value(loop, "overall", "UNKNOWN")),
+    criteria.add(criterion(platform, "LOOP_CONTINUITY", importance(platform, "LOOP_CONTINUITY"), value(loop, "strength", value(loop, "overall", "UNKNOWN")),
         String.valueOf(loop.getOrDefault("summary", "Endpoint similarity and semantic loop continuity are fused."))));
-    criteria.add(criterion("PAYOFF", importance(platform, "PAYOFF"), value(payoff, "strength", value(payoff, "status", "UNKNOWN")),
+    criteria.add(criterion(platform, "PAYOFF", importance(platform, "PAYOFF"), value(payoff, "strength", value(payoff, "status", "UNKNOWN")),
         String.valueOf(payoff.getOrDefault("summary", "Payoff combines semantic resolution and motion support."))));
-    criteria.add(criterion("SEMANTIC_RESOLUTION", importance(platform, "SEMANTIC_RESOLUTION"), value(payoff, "semanticStatus", "UNKNOWN"),
+    criteria.add(criterion(platform, "SEMANTIC_RESOLUTION", importance(platform, "SEMANTIC_RESOLUTION"), value(payoff, "semanticStatus", "UNKNOWN"),
         "Semantic resolution is read from the canonical payoff assessment, not motion rebound alone."));
-    criteria.add(criterion("TEMPORAL_VARIATION", importance(platform, "TEMPORAL_VARIATION"), value(trend, "trendShape", "UNKNOWN"),
+    criteria.add(criterion(platform, "TEMPORAL_VARIATION", importance(platform, "TEMPORAL_VARIATION"), value(trend, "trendShape", "UNKNOWN"),
         "Temporal motion trend describes the asset and is not creative escalation."));
-    criteria.add(criterion("LOCAL_RECOVERY", importance(platform, "LOCAL_RECOVERY"), value(temporalAssessment, "interpretation", value(recovery, "localRecoveryStatus", "UNKNOWN")),
+    criteria.add(criterion(platform, "LOCAL_RECOVERY", importance(platform, "LOCAL_RECOVERY"), value(temporalAssessment, "interpretation", value(recovery, "localRecoveryStatus", "UNKNOWN")),
         String.valueOf(temporalAssessment.getOrDefault("summary", "Local recovery is separate from final payoff."))));
-    criteria.add(criterion("REPETITION", importance(platform, "REPETITION"), value(repetition, "classification", "UNKNOWN"),
+    criteria.add(criterion(platform, "REPETITION", importance(platform, "REPETITION"), value(repetition, "classification", "UNKNOWN"),
         "Repetition evidence is a review signal, not a platform outcome."));
 
     int available = (int) criteria.stream().filter(item -> !"UNKNOWN".equals(item.evidenceStatus())).count();
@@ -75,6 +79,7 @@ public class PlatformCreativeReadinessService {
     result.put("videoId", videoId);
     result.put("platform", platform);
     result.put("profileVersion", PROFILE_VERSION);
+    result.put("profileFingerprint", fingerprint(platform));
     result.put("evidenceVersion", analysis.getAnalysisVersion());
     result.put("canonicalAssessmentVersion", canonical.getOrDefault("version", "LEGACY_V5_ONLY"));
     result.put("analyzerVersion", analysis.getPrimaryEngine());
@@ -101,12 +106,51 @@ public class PlatformCreativeReadinessService {
         "Grade " + grade + " qualitative creative fit for " + platform + "; this is not a performance prediction.";
   }
 
-  private Criterion criterion(String key, String importance, String evidence, String meaning) {
+  private Criterion criterion(String platform, String key, String importance, String evidence, String ignoredMeaning) {
     boolean unknown = evidence == null || evidence.equals("UNKNOWN") || evidence.equals("NOT_EVALUATED") || evidence.equals("NOT_AVAILABLE");
     boolean weak = evidence.equals("WEAK") || evidence.equals("LOW") || evidence.equals("NONE") || evidence.equals("FAILED");
     String result = unknown ? "UNKNOWN" : weak ? "HIGH" : "STRENGTH";
     String recommendation = weak ? "Review this criterion before publishing for this platform." : unknown ? "Collect or link the missing canonical evidence; do not estimate it." : "No platform-specific correction is indicated by the current evidence.";
-    return new Criterion(key, importance, unknown ? "UNKNOWN" : "AVAILABLE", "STRENGTH".equals(result) ? "SUPPORTIVE" : result, evidence, meaning, recommendation);
+    return new Criterion(key, importance, unknown ? "UNKNOWN" : "AVAILABLE", "STRENGTH".equals(result) ? "SUPPORTIVE" : result, evidence, meaning(platform, key), recommendation);
+  }
+
+  private String meaning(String platform, String key) {
+    return switch (platform) {
+      case "FACEBOOK_REELS" -> switch (key) {
+        case "PAYOFF", "SEMANTIC_RESOLUTION" -> "Facebook policy emphasizes narrative payoff and semantic resolution.";
+        case "BEAT_NOVELTY", "VISUAL_NOVELTY" -> "Facebook policy values readable progression and sustained visual change.";
+        default -> "Facebook policy treats this as supporting creative evidence.";
+      };
+      case "INSTAGRAM_REELS" -> switch (key) {
+        case "OPENING_HOOK", "VISUAL_NOVELTY" -> "Instagram policy emphasizes immediate visual clarity and novelty.";
+        case "LOOP_CONTINUITY" -> "Instagram policy treats replay-compatible endpoint continuity as a high-priority signal.";
+        default -> "Instagram policy treats this as supporting creative evidence.";
+      };
+      case "TIKTOK" -> switch (key) {
+        case "OPENING_HOOK", "BEAT_NOVELTY" -> "TikTok policy emphasizes immediate action and beat progression.";
+        case "REPETITION", "LOOP_CONTINUITY" -> "TikTok policy checks repetition risk and replay-compatible continuity.";
+        default -> "TikTok policy treats this as supporting creative evidence.";
+      };
+      case "YOUTUBE_SHORTS" -> switch (key) {
+        case "OPENING_HOOK", "PAYOFF", "SEMANTIC_RESOLUTION" -> "YouTube Shorts policy emphasizes opening clarity and completed narrative resolution.";
+        case "TEMPORAL_VARIATION" -> "YouTube Shorts policy values sustained progression across the short.";
+        default -> "YouTube Shorts policy treats this as supporting creative evidence.";
+      };
+      default -> "Platform policy treats this as supporting creative evidence.";
+    };
+  }
+
+  private String fingerprint(String platform) {
+    String material = platform + "|" + String.join("|", policy(platform)) + "|" +
+        List.of("OPENING_HOOK", "VISUAL_NOVELTY", "BEAT_NOVELTY", "LOOP_CONTINUITY", "PAYOFF",
+            "SEMANTIC_RESOLUTION", "TEMPORAL_VARIATION", "LOCAL_RECOVERY", "REPETITION")
+            .stream().map(key -> key + ":" + importance(platform, key)).toList();
+    try {
+      return HexFormat.of().formatHex(MessageDigest.getInstance("SHA-256")
+          .digest(material.getBytes(StandardCharsets.UTF_8))).substring(0, 16);
+    } catch (NoSuchAlgorithmException error) {
+      throw new IllegalStateException("SHA-256 is unavailable", error);
+    }
   }
 
   private String importance(String platform, String criterion) {

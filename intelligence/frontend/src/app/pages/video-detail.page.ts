@@ -217,8 +217,8 @@ const VARIANT_TYPE_LABELS: Record<string, string> = {
           </section>
           <section class="semantic-understanding-panel" aria-labelledby="semantic-understanding-heading">
             <div class="section-heading"><div><span class="eyebrow">SEMANTIC VIDEO UNDERSTANDING</span><h2 id="semantic-understanding-heading">Observed story and meaning</h2></div><span class="data-freshness">{{ semanticStatus() }}</span></div>
-            @if (semanticStatus() === 'NOT_EVALUATED' || semanticStatus() === 'NOT_REQUESTED') {
-              <div class="state-panel compact-state"><strong>Semantic layer not evaluated</strong><p>{{ semanticLimitation() }}</p></div>
+            @if (!['COMPLETED', 'PARTIAL', 'CACHE_HIT'].includes(semanticStatus())) {
+              <div class="state-panel compact-state"><strong>Semantic layer {{ semanticStatus().replaceAll('_', ' ').toLowerCase() }}</strong><p>{{ semanticLimitation() }}</p></div>
             } @else {
               <div class="creative-evidence-cards">
                 <div><span>Story arc</span><strong>{{ semanticValue('storyArc', 'arcType') }}</strong><small>Structured observed sequence.</small></div>
@@ -1112,7 +1112,11 @@ export class VideoDetailPage implements OnDestroy {
           if (status.jobState === 'QUEUED') { this.analysisFeedbackKind.set('info'); this.analysisFeedback.set('Analysis is queued…'); }
           if (status.jobState === 'RUNNING') { this.analysisFeedbackKind.set('info'); this.analysisFeedback.set('Analysis is running…'); }
           if (status.jobState === 'COMPLETED' && previousState !== 'COMPLETED') {
-            this.analysisFeedbackKind.set('success'); this.analysisFeedback.set('Analysis completed. Results updated.'); this.analysisRunActive.set(false);
+            const semanticStatus = String(status.semanticVideoEvidence?.['status'] || 'NOT_REQUESTED');
+            const partial = ['NOT_REQUESTED', 'NOT_CONFIGURED', 'SERVICE_ERROR', 'FAILED'].includes(semanticStatus);
+            this.analysisFeedbackKind.set(partial ? 'info' : 'success');
+            this.analysisFeedback.set(partial ? `Deterministic analysis completed; semantic analysis is ${semanticStatus.replaceAll('_', ' ').toLowerCase()}.` : 'Analysis completed. Results updated.');
+            this.analysisRunActive.set(false);
           }
           if (status.jobState === 'FAILED') {
             this.analysisFeedbackKind.set('error'); this.analysisFeedback.set(status.errorMessage || 'Analysis failed.'); this.analysisRunActive.set(false);
