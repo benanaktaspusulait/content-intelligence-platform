@@ -450,6 +450,23 @@ export interface AnalysisStatus {
   presentation?: Record<string, unknown>;
 }
 
+export interface PlatformCreativeReadiness {
+  platform: string;
+  profileVersion: string;
+  evidenceVersion?: string;
+  analyzerVersion?: string;
+  readinessGrade: string;
+  readinessDecision: string;
+  readinessRisk: string;
+  assessmentCoverage: number;
+  strengths: string[];
+  risks: string[];
+  neutralObservations: string[];
+  criterionAssessments: Array<Record<string, unknown>>;
+  verdict: string;
+  limitations: string[];
+}
+
 export interface ReachFurtherComparison {
   reachFurtherObserved: { sampleSize: number; medianCurrentViews: number | null; distribution: Record<string, number> };
   reachFurtherNotObserved: { sampleSize: number; medianCurrentViews: number | null; distribution: Record<string, number> };
@@ -614,6 +631,10 @@ export class CreativeIntelligenceService {
 
   getAnalysisStatus(videoId: string): Observable<AnalysisStatus> {
     return this.http.get<AnalysisStatus>(`${this.baseUrl}/videos/${videoId}/analysis/status`);
+  }
+
+  getPlatformCreativeReadiness(videoId: string, platform: string): Observable<PlatformCreativeReadiness> {
+    return this.http.get<PlatformCreativeReadiness>(`${this.baseUrl}/videos/${videoId}/platform-readiness`, { params: { platform } });
   }
 
   getReachFurther(id: string, platform = 'facebook'): Observable<ReachFurtherSummary> {

@@ -9,6 +9,7 @@ import {
   MetadataFile,
   MediaFile,
   PlatformGrowthProfile,
+  PlatformCreativeReadiness,
   ReachFurtherSummary,
   TrajectoryView,
   VideoApiRecord,
@@ -159,6 +160,21 @@ const VARIANT_TYPE_LABELS: Record<string, string> = {
                   <div><span>Loop evidence</span><strong>{{ v5LoopSummary() }}</strong><small>Visual endpoint evidence is separate from semantic loop verification.</small></div>
                   <div><span>Readiness coverage</span><strong>{{ v5CoverageSummary() }}</strong><small>{{ v5CoverageReason() }}</small></div>
                 </div>
+                <div class="creative-evidence-cards creative-evidence-cards--v4">
+                  <div><span>Temporal motion trend</span><strong>{{ v5TrendSummary() }}</strong><small>{{ v5TrendReason() }}</small></div>
+                  <div><span>Local dips</span><strong>{{ v5DipSummary() }}</strong><small>Relative activity events, not semantic story beats.</small></div>
+                  <div><span>Final rebound</span><strong>{{ v5FinalReboundSummary() }}</strong><small>Measured recovery from the preceding segment.</small></div>
+                </div>
+                @if (platformReadiness().length) {
+                  <div class="platform-readiness-strip">
+                    <div class="section-heading"><div><span class="eyebrow">PLATFORM LENS</span><h3>Creative fit by platform</h3></div><span class="data-freshness">Policy hypothesis · not prediction</span></div>
+                    <div class="creative-evidence-cards creative-evidence-cards--v4">
+                      @for (item of platformReadiness(); track item.platform) {
+                        <div><span>{{ item.platform.replaceAll('_', ' ') }}</span><strong>{{ item.readinessGrade }} · {{ item.readinessRisk }}</strong><small>{{ item.readinessDecision.replaceAll('_', ' ') }} · {{ item.assessmentCoverage }}% evidence</small></div>
+                      }
+                    </div>
+                  </div>
+                }
               }
             }
           </section>
@@ -193,7 +209,7 @@ const VARIANT_TYPE_LABELS: Record<string, string> = {
             </dl></dd></div>
             <div class="analysis-facts__group"><dt>Other visual evidence</dt><dd><dl class="analysis-components">
               <div><dt>First/last visual similarity</dt><dd>{{ analysisMetric('firstLastVisualSimilarity', true) }}</dd></div>
-              <div><dt>Motion escalation proxy</dt><dd>{{ analysisNumber('motion', 'motionEscalationProxy') }}</dd></div>
+              <div><dt>Temporal trend</dt><dd>{{ v5TrendSummary() }}</dd></div>
               <div><dt>Low-motion duration</dt><dd>{{ analysisFeatureValue('lowMotionDurationEstimate') }}</dd></div>
             </dl></dd></div>
             <div class="analysis-facts__group"><dt>Measurement quality</dt><dd><dl class="analysis-components">
@@ -437,6 +453,7 @@ export class VideoDetailPage implements OnDestroy {
   protected readonly discovery = signal<DiscoveryProfile | null>(null);
   protected readonly platform = signal<PlatformKey>('facebook');
   protected readonly activeTab = signal<'overview' | 'publication' | 'performance' | 'evidence'>('overview');
+  protected readonly platformReadiness = signal<PlatformCreativeReadiness[]>([]);
   protected readonly loading = signal(true);
   protected readonly performanceLoading = signal(false);
   protected readonly performanceError = signal('');
@@ -706,6 +723,27 @@ export class VideoDetailPage implements OnDestroy {
     const fidelity = this.analysisStatus()?.temporalProfile?.['planRenderFidelity'];
     return fidelity && typeof fidelity === 'object' ? String((fidelity as Record<string, unknown>)['reason'] || 'Plan provenance was not supplied.') : 'Plan provenance was not supplied.';
   }
+  protected v5TrendSummary(): string {
+    const trend = this.analysisStatus()?.temporalProfile?.['temporalTrend'];
+    if (!trend || typeof trend !== 'object') return 'Not evaluated';
+    return this.readable(String((trend as Record<string, unknown>)['trendShape'] || 'UNKNOWN'));
+  }
+  protected v5TrendReason(): string {
+    const trend = this.analysisStatus()?.temporalProfile?.['temporalTrend'];
+    return trend && typeof trend === 'object'
+      ? String((trend as Record<string, unknown>)['interpretation'] || 'Temporal motion trend only.')
+      : 'Temporal motion trend is available in V5 analysis.';
+  }
+  protected v5DipSummary(): string {
+    const trend = this.analysisStatus()?.temporalProfile?.['temporalTrend'];
+    const dips = trend && typeof trend === 'object' ? (trend as Record<string, unknown>)['localDipEvidence'] : null;
+    return Array.isArray(dips) ? dips.length ? `${dips.length} local event${dips.length === 1 ? '' : 's'}` : 'None detected' : 'Not evaluated';
+  }
+  protected v5FinalReboundSummary(): string {
+    const trend = this.analysisStatus()?.temporalProfile?.['temporalTrend'];
+    const magnitude = trend && typeof trend === 'object' ? (trend as Record<string, unknown>)['finalReboundMagnitude'] : null;
+    return typeof magnitude === 'number' && magnitude > 0 ? `+${magnitude.toFixed(3)}` : 'Not established';
+  }
   protected metricSource(value: number | null | undefined, available: string): string { return value === null || value === undefined ? 'No imported value' : available; }
   protected discoveryQualityLabel(): string { return this.discovery()?.dataQualityStatus === 'DERIVED_FROM_REPORTED_SHARES' ? 'REPORTED EVIDENCE' : 'NO COMPLETE DATA'; }
   protected discoverySourceStatement(): string { return this.discovery()?.dataQualityStatus === 'DERIVED_FROM_REPORTED_SHARES' ? 'Derived only from imported, platform-reported audience shares.' : 'No complete imported component set. Missing values are not estimated.'; }
@@ -720,6 +758,7 @@ export class VideoDetailPage implements OnDestroy {
         if (generation !== this.loadGeneration) return;
         const folder = this.parentPath(video.relativePath);
         this.folderPath.set(folder);
+        this.loadPlatformReadiness(video.id);
         this.loadPublicationCopy(folder, generation);
         this.service.getMediaFiles(folder, false).subscribe({
           next: files => { if (generation === this.loadGeneration) { const hdFiles = files.filter(file => isHdFile(file.name)); this.files.set(hdFiles); this.loading.set(false); const selected = hdFiles.find(file => file.relativePath === video.relativePath) || hdFiles[0]; if (selected) this.activateVariant(selected, video); else this.error.set('No HD media remains in this folder.'); } },
@@ -727,6 +766,13 @@ export class VideoDetailPage implements OnDestroy {
         });
       },
       error: response => { if (generation === this.loadGeneration) { this.loading.set(false); this.error.set(response.error?.message || 'Could not load this evidence record.'); } },
+    });
+  }
+  private loadPlatformReadiness(videoId: string): void {
+    const platforms = ['INSTAGRAM_REELS', 'FACEBOOK_REELS', 'TIKTOK', 'YOUTUBE_SHORTS'];
+    forkJoin(platforms.map(platform => this.service.getPlatformCreativeReadiness(videoId, platform))).subscribe({
+      next: values => this.platformReadiness.set(values),
+      error: () => this.platformReadiness.set([]),
     });
   }
   private loadFolder(folder: string, requestedFile: string | null): void {

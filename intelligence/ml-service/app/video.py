@@ -44,6 +44,8 @@ TEMPORAL_TARGET_SEGMENT_SECONDS = 1.5
 TEMPORAL_CHANGE_MIN_ABSOLUTE = 0.18
 TEMPORAL_CHANGE_MIN_RELATIVE = 0.30
 TEMPORAL_CHANGE_MIN_DURATION_SECONDS = 0.50
+TEMPORAL_TREND_DELTA_THRESHOLD = 0.04
+TEMPORAL_EVENT_MIN_RELATIVE = 0.08
 
 # V4 parameters are versioned evidence configuration, not creative-quality rules.
 V4_ANALYSIS_VERSION = "sampled-visual-motion-v4"
@@ -641,6 +643,106 @@ def _temporal_profile(intervals: list[dict[str, Any]], duration: float) -> dict[
     }
 
 
+def _v5_temporal_trend(segments: list[dict[str, Any]]) -> dict[str, Any]:
+    """Describe time-aware activity shape without calling it creative escalation."""
+    valid = [
+        item for item in segments
+        if item.get("validIntervalCount", 0) and item["endSeconds"] > item["startSeconds"]
+    ]
+    if len(valid) < 2:
+        return {"status": "NOT_EVALUATED", "trendShape": "UNKNOWN", "segmentDeltas": []}
+
+    midpoints = np.asarray([(item["startSeconds"] + item["endSeconds"]) / 2 for item in valid], dtype=float)
+    values = np.asarray([float(item["averageMotion"]) for item in valid], dtype=float)
+
+    def slope(local_values: np.ndarray, local_times: np.ndarray) -> float:
+        if len(local_values) < 2 or float(np.ptp(local_times)) <= 0:
+            return 0.0
+        return float(np.polyfit(local_times, local_values, 1)[0])
+
+    cut_one = max(2, int(math.ceil(len(valid) / 3)))
+    cut_two = max(cut_one + 1, int(math.ceil(2 * len(valid) / 3)))
+    deltas: list[dict[str, Any]] = []
+    rising_indices: list[int] = []
+    falling_indices: list[int] = []
+    for index in range(1, len(valid)):
+        delta = float(values[index] - values[index - 1])
+        seconds = max(float(midpoints[index] - midpoints[index - 1]), MIN_DELTA_T)
+        direction = "RISING" if delta >= TEMPORAL_TREND_DELTA_THRESHOLD else "FALLING" if delta <= -TEMPORAL_TREND_DELTA_THRESHOLD else "FLAT"
+        if direction == "RISING":
+            rising_indices.append(index)
+        elif direction == "FALLING":
+            falling_indices.append(index)
+        deltas.append({
+            "fromSegment": valid[index - 1]["segmentIndex"],
+            "toSegment": valid[index]["segmentIndex"],
+            "deltaActivity": round(delta, 4),
+            "deltaActivityPerSecond": round(delta / seconds, 4),
+            "direction": direction,
+        })
+
+    def longest_run(indices: list[int]) -> int:
+        longest = current = 0
+        previous = None
+        for index in indices:
+            current = current + 1 if previous is not None and index == previous + 1 else 1
+            longest = max(longest, current)
+            previous = index
+        return longest
+
+    rising_runs = sum(1 for item in deltas if item["direction"] == "RISING")
+    falling_runs = sum(1 for item in deltas if item["direction"] == "FALLING")
+    final_delta = float(values[-1] - values[-2])
+    final_rebound = max(0.0, final_delta)
+    local_dips = []
+    for index in range(1, len(values) - 1):
+        neighborhood = (float(values[index - 1]) + float(values[index + 1])) / 2
+        relative = (neighborhood - float(values[index])) / max(abs(neighborhood), 0.05)
+        if relative >= TEMPORAL_EVENT_MIN_RELATIVE:
+            local_dips.append({
+                "segmentIndex": valid[index]["segmentIndex"],
+                "activity": round(float(values[index]), 4),
+                "localBaselineBefore": round(float(values[index - 1]), 4),
+                "localBaselineAfter": round(float(values[index + 1]), 4),
+                "dropFromNeighborhood": round(relative, 4),
+                "durationSeconds": round(valid[index]["endSeconds"] - valid[index]["startSeconds"], 3),
+                "severity": "SIGNIFICANT" if relative >= 0.30 else "MODERATE" if relative >= 0.15 else "MINOR",
+            })
+
+    if not local_dips and rising_runs == 0 and falling_runs == 0:
+        shape = "STEADY_HIGH" if float(np.mean(values)) >= 0.55 else "STEADY_LOW"
+    elif local_dips and final_rebound >= TEMPORAL_TREND_DELTA_THRESHOLD:
+        shape = "LATE_REBOUND" if valid[-1]["startSeconds"] >= valid[-1]["endSeconds"] * 0.65 else "DIP_AND_RECOVER"
+        if len(local_dips) >= 2:
+            shape = "MULTI_DIP"
+    elif rising_runs > falling_runs:
+        shape = "RISING"
+    elif falling_runs > rising_runs:
+        shape = "FALLING"
+    elif float(np.ptp(values)) >= 0.25:
+        shape = "HIGHLY_VARIABLE"
+    else:
+        shape = "OTHER"
+
+    return {
+        "version": "temporal-trend-profile-v1",
+        "status": "AVAILABLE",
+        "overallSlope": round(slope(values, midpoints), 5),
+        "earlySlope": round(slope(values[:cut_one], midpoints[:cut_one]), 5),
+        "middleSlope": round(slope(values[cut_one:cut_two], midpoints[cut_one:cut_two]), 5),
+        "lateSlope": round(slope(values[cut_two:], midpoints[cut_two:]), 5),
+        "segmentDeltas": deltas,
+        "risingRunCount": rising_runs,
+        "fallingRunCount": falling_runs,
+        "longestRisingRun": longest_run(rising_indices),
+        "longestFallingRun": longest_run(falling_indices),
+        "finalReboundMagnitude": round(final_rebound, 4),
+        "trendShape": shape,
+        "localDipEvidence": local_dips,
+        "interpretation": "Temporal motion trend only; it is not semantic creative escalation or a performance prediction.",
+    }
+
+
 def _presentation_profile(samples: list[SampledFrame]) -> dict[str, Any]:
     luminance: list[float] = []
     saturation: list[float] = []
@@ -951,7 +1053,25 @@ def _analyse_v5(path: Path, metadata: VideoMetadata) -> VideoAnalysisResponse:
         repetition["interpretation"] = "Some movement repeats, but the observed temporal evidence contains distinct beat changes; repeated mechanics remain context-dependent."
     temporal = dict(profile)
     temporal["version"] = V5_ANALYSIS_VERSION
+    temporal["temporalTrend"] = _v5_temporal_trend(temporal.get("segments", []))
     temporal["temporalActivityEvents"] = hold_events
+    temporal["temporalEmphasis"] = [
+        {
+            "type": "MODERATE_DIP" if dip["severity"] == "MODERATE" else "SIGNIFICANT_TROUGH" if dip["severity"] == "SIGNIFICANT" else "MINOR_VARIATION",
+            "segmentIndex": dip["segmentIndex"],
+            "startSeconds": next((item["startSeconds"] for item in temporal.get("segments", []) if item["segmentIndex"] == dip["segmentIndex"]), None),
+            "endSeconds": next((item["endSeconds"] for item in temporal.get("segments", []) if item["segmentIndex"] == dip["segmentIndex"]), None),
+            "magnitude": dip["dropFromNeighborhood"],
+            "reason": "Relative local activity dip against neighboring segments.",
+        }
+        for dip in temporal["temporalTrend"].get("localDipEvidence", [])
+    ]
+    if temporal["temporalTrend"].get("finalReboundMagnitude", 0.0) >= TEMPORAL_TREND_DELTA_THRESHOLD:
+        temporal["temporalEmphasis"].append({
+            "type": "FINAL_REBOUND",
+            "magnitude": temporal["temporalTrend"]["finalReboundMagnitude"],
+            "reason": "The final segment recovers relative to the immediately preceding segment.",
+        })
     temporal["holdEvidenceStatus"] = "AVAILABLE" if hold_events else "NOT_EVALUATED"
     temporal["reboundEvidence"] = {"status": "AVAILABLE" if hold_events else "NOT_EVALUATED", "sustainedRisingActivity": rebound}
     temporal["hook"] = hook

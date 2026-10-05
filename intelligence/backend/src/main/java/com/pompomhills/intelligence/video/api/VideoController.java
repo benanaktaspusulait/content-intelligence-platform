@@ -5,7 +5,9 @@ import com.pompomhills.intelligence.video.MediaContentService;
 import com.pompomhills.intelligence.video.VideoService;
 import com.pompomhills.intelligence.video.VideoStatus;
 import com.pompomhills.intelligence.video.job.AnalysisJobService;
+import com.pompomhills.intelligence.video.platform.PlatformCreativeReadinessService;
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
@@ -33,16 +35,28 @@ public class VideoController {
   private final MediaContentService mediaContent;
   private final AnalysisJobService jobService;
   private final CreativeAnalysisRepository analyses;
+  private final PlatformCreativeReadinessService platformReadiness;
+
+  @Autowired
+  public VideoController(
+      VideoService service,
+      MediaContentService mediaContent,
+      AnalysisJobService jobService,
+      CreativeAnalysisRepository analyses,
+      PlatformCreativeReadinessService platformReadiness) {
+    this.service = service;
+    this.mediaContent = mediaContent;
+    this.jobService = jobService;
+    this.analyses = analyses;
+    this.platformReadiness = platformReadiness;
+  }
 
   public VideoController(
       VideoService service,
       MediaContentService mediaContent,
       AnalysisJobService jobService,
       CreativeAnalysisRepository analyses) {
-    this.service = service;
-    this.mediaContent = mediaContent;
-    this.jobService = jobService;
-    this.analyses = analyses;
+    this(service, mediaContent, jobService, analyses, null);
   }
 
   @PostMapping("/ingest")
@@ -129,6 +143,15 @@ public class VideoController {
       @PathVariable UUID id,
       @RequestParam(defaultValue = VideoService.CURRENT_ANALYSIS_VERSION) String analysisVersion) {
     return statusFor(id, analysisVersion);
+  }
+
+  @GetMapping("/{id}/platform-readiness")
+  public ResponseEntity<Map<String, Object>> platformReadiness(
+      @PathVariable UUID id, @RequestParam String platform) {
+    if (platformReadiness == null) {
+      return ResponseEntity.status(503).body(Map.of("error", "Platform readiness service unavailable"));
+    }
+    return ResponseEntity.ok(platformReadiness.assess(id, platform));
   }
 
   private VideoDtos.AnalysisStatusResponse statusFor(UUID id, String analysisVersion) {
