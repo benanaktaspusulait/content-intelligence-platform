@@ -117,6 +117,9 @@ export function resultCountLabel(groupCount: number, fileCount: number): string 
     <section class="filter-bar" aria-label="Video filters">
       <label class="search-field"><span aria-hidden="true">⌕</span><input type="search" placeholder="Search filename or path" aria-label="Search videos" [value]="query()" (input)="setQuery($event)"></label>
       <label><span>Evidence</span><select aria-label="Filter by evidence state" [value]="evidenceState()" (change)="setEvidenceState($event)"><option>All</option><option>Not ingested</option><option>Ingested</option></select></label>
+      <label><span>Character</span><select aria-label="Filter by character" [value]="characterId()" (change)="characterId.set(value($event)); loadSelectedFiles()"><option value="">Any character</option>@for (character of characters(); track character.id) { <option [value]="character.id">{{ character.name }}</option> }</select></label>
+      <label><span>Role</span><select aria-label="Filter by character role" [value]="characterRole()" (change)="characterRole.set(value($event)); loadSelectedFiles()"><option value="">Any role</option><option value="PRIMARY">Primary</option><option value="SECONDARY">Secondary</option><option value="BACKGROUND">Background</option><option value="UNKNOWN">Unknown</option></select></label>
+      <label class="check-filter"><input type="checkbox" [checked]="unresolvedCharacter()" (change)="unresolvedCharacter.set(($any($event.target)).checked); loadSelectedFiles()"><span>Unresolved</span></label>
       <button class="icon-button" type="button" title="Reset filters" aria-label="Reset filters" (click)="resetFilters()">↺</button>
       <span class="result-count">{{ resultCount() }}</span>
     </section>
@@ -132,7 +135,7 @@ export function resultCountLabel(groupCount: number, fileCount: number): string 
                 <div><span class="eyebrow">CREATIVE</span><h2 [id]="'media-group-' + $index">{{ group.folderName }}</h2><p [title]="group.folderPath">{{ group.folderPath }}</p></div>
                 <div class="media-group-actions"><span class="variant-count"><b>{{ group.files.length }}</b> {{ group.files.length === 1 ? 'variant' : 'variants' }}</span><a class="button button--compact" routerLink="/videos/detail" [queryParams]="{ folder: group.folderPath, file: group.files[0].relativePath }" [attr.aria-label]="'Open details for ' + group.folderName"><span aria-hidden="true">▶</span> Details</a></div>
               </header>
-              <div class="data-table-scroll"><table class="data-table media-files-table"><thead><tr><th>Preview</th><th>Version</th><th>File</th><th>Size</th><th>Modified</th><th>Evidence state</th><th><span class="sr-only">Actions</span></th></tr></thead><tbody>@for (file of group.files; track file.relativePath) { <tr><td class="media-thumbnail-cell">@if (file.thumbnailPath) { <button class="media-thumbnail-button" type="button" (pointerdown)="$event.preventDefault(); $event.stopPropagation(); openThumbnail(file)" (click)="$event.stopPropagation(); openThumbnail(file)" [attr.aria-label]="'Open larger preview for ' + file.displayName"><img class="media-thumbnail" [src]="service.mediaContentUrl(file.thumbnailPath)" [alt]="'First frame for ' + file.displayName" loading="lazy"></button> } @else { <span class="media-thumbnail-placeholder" title="No first-frame image found" aria-label="No first-frame image found">—</span> }</td><td><strong>{{ file.variantName }}</strong><small>{{ extension(file.name) }}</small></td><td class="source-path" [title]="file.name">{{ file.name }}</td><td class="tabular">{{ fileSize(file.sizeBytes) }}</td><td>{{ modified(file.modifiedAt) }}</td><td><span class="status-badge" [class.status-badge--green]="file.ingested">{{ file.ingested ? (file.status || 'Ingested') : 'Not ingested' }}</span></td><td>@if (file.videoId) { <a class="icon-button table-action" [routerLink]="['/videos', file.videoId]" title="Open evidence record" [attr.aria-label]="'Open ' + file.displayName">↗</a> } @else { <button class="button button--compact" type="button" [disabled]="processingPath() === file.relativePath" (click)="ingestFile(file)">{{ processingPath() === file.relativePath ? 'Processing…' : 'Ingest' }}</button> }</td></tr> }</tbody></table></div>
+              <div class="data-table-scroll"><table class="data-table media-files-table"><thead><tr><th>Preview</th><th>Version</th><th>File</th><th>Character</th><th>Size</th><th>Modified</th><th>Evidence state</th><th><span class="sr-only">Actions</span></th></tr></thead><tbody>@for (file of group.files; track file.relativePath) { <tr><td class="media-thumbnail-cell">@if (file.thumbnailPath) { <button class="media-thumbnail-button" type="button" (pointerdown)="$event.preventDefault(); $event.stopPropagation(); openThumbnail(file)" (click)="$event.stopPropagation(); openThumbnail(file)" [attr.aria-label]="'Open larger preview for ' + file.displayName"><img class="media-thumbnail" [src]="service.mediaContentUrl(file.thumbnailPath)" [alt]="'First frame for ' + file.displayName" loading="lazy"></button> } @else { <span class="media-thumbnail-placeholder" title="No first-frame image found" aria-label="No first-frame image found">—</span> }</td><td><strong>{{ file.variantName }}</strong><small>{{ extension(file.name) }}</small></td><td class="source-path" [title]="file.name">{{ file.name }}</td><td>@if (file.characters?.length) { @for (character of file.characters; track character.id) { <span class="character-chip" [class.character-chip--primary]="character.participation === 'PRIMARY'">{{ character.name }}</span> } } @else { <span class="muted">Unresolved</span> }</td><td class="tabular">{{ fileSize(file.sizeBytes) }}</td><td>{{ modified(file.modifiedAt) }}</td><td><span class="status-badge" [class.status-badge--green]="file.ingested">{{ file.ingested ? (file.status || 'Ingested') : 'Not ingested' }}</span></td><td>@if (file.videoId) { <a class="icon-button table-action" [routerLink]="['/videos', file.videoId]" title="Open evidence record" [attr.aria-label]="'Open ' + file.displayName">↗</a> } @else { <button class="button button--compact" type="button" [disabled]="processingPath() === file.relativePath" (click)="ingestFile(file)">{{ processingPath() === file.relativePath ? 'Processing…' : 'Ingest' }}</button> }</td></tr> }</tbody></table></div>
             </section>
           }
         </div>
@@ -170,6 +173,10 @@ export class VideoLibraryPage {
   protected readonly query = signal('');
   protected readonly thumbnailPreview = signal<{ url: string; alt: string } | null>(null);
   protected readonly evidenceState = signal<'All' | 'Not ingested' | 'Ingested'>('All');
+  protected readonly characterId = signal('');
+  protected readonly characterRole = signal('');
+  protected readonly unresolvedCharacter = signal(false);
+  protected readonly characters = signal<Array<{ id: string; name: string }>>([]);
   protected readonly filteredDirectories = computed(() => filterMediaDirectories(this.mediaDirectories(), this.folderQuery()));
   protected readonly selectedDirectories = computed(() => { const selected = new Set(this.selectedPaths()); return this.mediaDirectories().filter(folder => selected.has(folder.relativePath)); });
   protected readonly ingestButtonLabel = computed(() => {
@@ -201,6 +208,7 @@ export class VideoLibraryPage {
   protected readonly resultCount = computed(() => resultCountLabel(this.visibleGroups().length, this.filteredFiles().length));
 
   constructor() {
+    this.service.getCharacters().subscribe({ next: items => this.characters.set(items) });
     this.service.getMediaDirectories(SOCIAL_REELS_MEDIA_ROOT).subscribe({
       next: folders => { this.mediaDirectories.set(folders); this.directoriesLoading.set(false); },
       error: response => { this.directoriesLoading.set(false); this.error.set(response.error?.message || 'The media folder list could not be loaded.'); },
@@ -254,20 +262,21 @@ export class VideoLibraryPage {
   }
   protected setQuery(event: Event): void { this.query.set((event.target as HTMLInputElement).value); }
   protected setEvidenceState(event: Event): void { this.evidenceState.set((event.target as HTMLSelectElement).value as 'All' | 'Not ingested' | 'Ingested'); }
-  protected resetFilters(): void { this.query.set(''); this.evidenceState.set('All'); }
+  protected resetFilters(): void { this.query.set(''); this.evidenceState.set('All'); this.characterId.set(''); this.characterRole.set(''); this.unresolvedCharacter.set(false); this.loadSelectedFiles(); }
+  protected value(event: Event): string { return (event.target as HTMLSelectElement).value; }
   protected extension(name: string): string { return name.includes('.') ? name.split('.').pop()!.toUpperCase() : 'VIDEO'; }
   protected fileSize(bytes: number | null): string { return bytes === null ? 'Unavailable' : new Intl.NumberFormat('en', { style: 'unit', unit: 'megabyte', maximumFractionDigits: 1 }).format(bytes / 1_000_000); }
   protected modified(value: string | null): string { return value ? new Date(value).toLocaleString() : 'Unavailable'; }
   private displayName(file: MediaFile): string { return this.displayFiles().find(item => item.relativePath === file.relativePath)?.displayName || file.name; }
   private parentPath(relativePath: string): string { return relativePath.slice(0, Math.max(0, relativePath.lastIndexOf('/'))); }
   private readableFolder(folderPath: string): string { const folder = folderPath.split('/').pop()?.trim() || 'Video'; return folder.replace(/[_-]+/g, ' ').replace(/\s+/g, ' ').replace(/\b\p{L}/gu, letter => letter.toUpperCase()); }
-  private loadSelectedFiles(): void {
+  protected loadSelectedFiles(): void {
     const paths = this.selectedPaths();
     const generation = ++this.loadGeneration;
     this.folderFailures.set([]);
     if (!paths.length) { this.mediaFiles.set([]); this.loading.set(false); return; }
     this.loading.set(true);
-    forkJoin(paths.map(path => this.service.getMediaFiles(path, this.recursive()).pipe(map(files => ({ path, files, error: '' })), catchError(response => of({ path, files: [] as MediaFile[], error: response.error?.message || 'The media API did not respond.' }))))).subscribe(results => {
+    forkJoin(paths.map(path => this.service.getMediaFiles(path, this.recursive(), this.characterId(), this.characterRole(), this.unresolvedCharacter()).pipe(map(files => ({ path, files, error: '' })), catchError(response => of({ path, files: [] as MediaFile[], error: response.error?.message || 'The media API did not respond.' }))))).subscribe(results => {
       if (generation !== this.loadGeneration) return;
       this.mediaFiles.set(mergeMediaFiles(results.map(result => result.files)));
       this.folderFailures.set(results.filter(result => result.error).map(result => ({ folder: this.mediaDirectories().find(folder => folder.relativePath === result.path)?.name || result.path, message: result.error })));

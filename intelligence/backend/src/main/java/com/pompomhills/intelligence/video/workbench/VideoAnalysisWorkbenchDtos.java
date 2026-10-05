@@ -35,11 +35,11 @@ public final class VideoAnalysisWorkbenchDtos {
       List<CharacterAssociation> characters) {}
 
   public record CharacterAssociation(UUID id, String name, String participation, String role,
-      String source, Double confidence, String evidenceReference) {}
+      String source, String confidence, String evidenceReference) {}
 
   public record BulkRequest(List<UUID> videoIds, boolean allMatching, String analysisStatus,
       String triage, String publicationState, UUID characterId, String characterRole,
-      String query, boolean reanalyzeSelected) {}
+      Boolean unresolvedCharacter, String query, boolean reanalyzeSelected) {}
 
   public record BulkResponse(int requested, int accepted, int skipped, int alreadyRunning,
       int failed, List<UUID> jobIds) {}

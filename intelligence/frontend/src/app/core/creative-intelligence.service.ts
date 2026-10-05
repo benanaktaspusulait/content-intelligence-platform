@@ -129,6 +129,7 @@ export interface MediaFile {
   status: string | null;
   variantId: string | null;
   thumbnailPath: string | null;
+  characters?: Array<{ id: string; name: string; participation: string; role: string; source: string; confidence: string }>;
 }
 
 export interface WorkbenchCharacter {
@@ -137,7 +138,7 @@ export interface WorkbenchCharacter {
   participation: string;
   role: string;
   source: string;
-  confidence: number | null;
+  confidence: string | null;
   evidenceReference: string | null;
 }
 
@@ -477,6 +478,12 @@ export interface VideoCreativeContext {
     screenTimeRatio: number | null;
     actionShare: number | null;
     speakingShare: number | null;
+    source: string;
+    confidence: string;
+    promptSourcePath: string | null;
+    resolverVersion: string | null;
+    evidenceReference: string | null;
+    manuallyConfirmed: boolean;
   }>;
   prompt: {
     contentId: number;
@@ -598,13 +605,13 @@ export class CreativeIntelligenceService {
     return this.http.get<VideoApiRecord>(`${this.baseUrl}/videos/${id}`);
   }
 
-  getAnalysisWorkbench(params: Record<string, string | number>): Observable<WorkbenchPage> {
+  getAnalysisWorkbench(params: Record<string, string | number | boolean>): Observable<WorkbenchPage> {
     return this.http.get<WorkbenchPage>(`${this.baseUrl}/videos/analysis-workbench`, { params });
   }
 
   bulkAnalyze(request: {
     videoIds?: string[]; allMatching?: boolean; analysisStatus?: string; triage?: string;
-    publicationState?: string; characterId?: string; characterRole?: string; query?: string;
+    publicationState?: string; characterId?: string; characterRole?: string; unresolvedCharacter?: boolean; query?: string;
     reanalyzeSelected?: boolean;
   }): Observable<{ requested: number; accepted: number; skipped: number; alreadyRunning: number; failed: number; jobIds: string[] }> {
     return this.http.post<{ requested: number; accepted: number; skipped: number; alreadyRunning: number; failed: number; jobIds: string[] }>(`${this.baseUrl}/videos/analysis-workbench/bulk`, request);
@@ -620,9 +627,9 @@ export class CreativeIntelligenceService {
     return this.http.get<MediaDirectory[]>(`${this.baseUrl}/videos/media-directories`, { params: { relativeDirectory } });
   }
 
-  getMediaFiles(relativeDirectory: string, recursive: boolean): Observable<MediaFile[]> {
+  getMediaFiles(relativeDirectory: string, recursive: boolean, characterId = '', characterRole = '', unresolvedCharacter = false): Observable<MediaFile[]> {
     return this.http.get<MediaFile[]>(`${this.baseUrl}/videos/media-files`, {
-      params: { relativeDirectory, recursive },
+      params: { relativeDirectory, recursive, characterId, characterRole, unresolvedCharacter },
     });
   }
 

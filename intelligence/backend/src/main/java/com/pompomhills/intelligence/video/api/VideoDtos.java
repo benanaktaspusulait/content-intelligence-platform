@@ -33,7 +33,11 @@ public final class VideoDtos {
       UUID videoId,
       String status,
       UUID variantId,
-      String thumbnailPath) {}
+      String thumbnailPath,
+      List<MediaCharacter> characters) {}
+
+  public record MediaCharacter(UUID id, String name, String participation, String role,
+      String source, String confidence) {}
 
   public record MetadataFile(String relativePath, String content) {}
 

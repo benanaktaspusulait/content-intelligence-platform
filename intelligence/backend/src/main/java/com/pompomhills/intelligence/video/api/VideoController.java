@@ -80,8 +80,11 @@ public class VideoController {
   @GetMapping("/media-files")
   public List<VideoDtos.MediaFile> mediaFiles(
       @RequestParam String relativeDirectory,
-      @RequestParam(defaultValue = "true") boolean recursive) {
-    return service.mediaFiles(relativeDirectory, recursive);
+      @RequestParam(defaultValue = "true") boolean recursive,
+      @RequestParam(required = false) UUID characterId,
+      @RequestParam(required = false) String characterRole,
+      @RequestParam(required = false) Boolean unresolvedCharacter) {
+    return service.mediaFiles(relativeDirectory, recursive, characterId, characterRole, unresolvedCharacter);
   }
 
   @GetMapping("/prompt-files")

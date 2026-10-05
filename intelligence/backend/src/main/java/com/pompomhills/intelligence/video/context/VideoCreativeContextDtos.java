@@ -20,7 +20,13 @@ public final class VideoCreativeContextDtos {
       String role,
       Double screenTimeRatio,
       Double actionShare,
-      Double speakingShare) {}
+      Double speakingShare,
+      String source,
+      String confidence,
+      String promptSourcePath,
+      String resolverVersion,
+      String evidenceReference,
+      boolean manuallyConfirmed) {}
 
   public record PromptContext(
       Long contentId,

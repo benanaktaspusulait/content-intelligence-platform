@@ -9,6 +9,7 @@ from app.video import (
     _v4_visual_novelty,
     _v5_action_novelty,
     _v5_loop,
+    _v5_temporal_trend,
 )
 
 
@@ -103,3 +104,34 @@ def test_v5_loop_does_not_turn_visual_similarity_into_semantic_continuity() -> N
 
     assert result["visualEvidence"] == "MODERATE"
     assert result["semanticContinuityStatus"] == "NOT_EVALUATED"
+
+
+def _segments(values: list[float]) -> list[dict]:
+    return [
+        {"segmentIndex": index, "startSeconds": float(index), "endSeconds": float(index + 1),
+         "averageMotion": value, "motionDensity": value, "validIntervalCount": 1}
+        for index, value in enumerate(values)
+    ]
+
+
+def test_v5_shape_prefers_dip_and_recover_over_small_negative_slope() -> None:
+    result = _v5_temporal_trend(_segments([1.0, 1.0, 1.0, 1.0, 0.74, 1.0, 1.0, 1.0, 1.0, 0.96]))
+
+    assert result["trendShape"] == "DIP_AND_RECOVER"
+    assert result["recoveryCount"] == 1
+    assert result["events"][0]["type"] in {"MODERATE_DIP", "SIGNIFICANT_TROUGH"}
+    assert any(event["type"] in {"RECOVERY", "SUSTAINED_RECOVERY"} for event in result["events"])
+
+
+def test_v5_shape_does_not_call_slight_endpoint_drop_falling() -> None:
+    result = _v5_temporal_trend(_segments([0.96, 0.98, 1.0, 1.0, 0.99, 0.96]))
+
+    assert result["trendShape"] != "FALLING"
+
+
+def test_v5_flat_high_has_no_canonical_local_events() -> None:
+    result = _v5_temporal_trend(_segments([0.95, 0.96, 0.95, 0.96, 0.95, 0.96]))
+
+    assert result["trendShape"] == "STEADY_HIGH"
+    assert result["events"] == []
+    assert result["humanSummary"] == "No local activity events detected."

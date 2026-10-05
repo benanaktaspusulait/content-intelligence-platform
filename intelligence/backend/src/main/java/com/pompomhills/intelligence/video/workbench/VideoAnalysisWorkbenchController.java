@@ -16,7 +16,7 @@ public class VideoAnalysisWorkbenchController {
   private final VideoAnalysisWorkbenchService service;
   public VideoAnalysisWorkbenchController(VideoAnalysisWorkbenchService service){this.service=service;}
   @GetMapping
-  public PageResponse page(@RequestParam(defaultValue="0") int page,@RequestParam(defaultValue="25") int size,@RequestParam(required=false) String analysisStatus,@RequestParam(required=false) String triage,@RequestParam(required=false) String publicationState,@RequestParam(required=false) UUID characterId,@RequestParam(required=false) String characterRole,@RequestParam(required=false) String query,@RequestParam(defaultValue="date") String sort,@RequestParam(defaultValue="desc") String direction){return service.page(page,size,analysisStatus,triage,publicationState,characterId,characterRole,query,sort,direction);}
+  public PageResponse page(@RequestParam(defaultValue="0") int page,@RequestParam(defaultValue="25") int size,@RequestParam(required=false) String analysisStatus,@RequestParam(required=false) String triage,@RequestParam(required=false) String publicationState,@RequestParam(required=false) UUID characterId,@RequestParam(required=false) String characterRole,@RequestParam(required=false) Boolean unresolvedCharacter,@RequestParam(required=false) String query,@RequestParam(defaultValue="date") String sort,@RequestParam(defaultValue="desc") String direction){return service.page(page,size,analysisStatus,triage,publicationState,characterId,characterRole,unresolvedCharacter,query,sort,direction);}
   @PostMapping("/bulk")
   public BulkResponse bulk(@RequestBody BulkRequest request){return service.bulk(request);}
 }

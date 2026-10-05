@@ -14,9 +14,11 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v1/characters")
 public class CharacterController {
   private final CharacterService service;
+  private final com.pompomhills.intelligence.character.VideoCharacterAssociationService associations;
 
-  public CharacterController(CharacterService service) {
+  public CharacterController(CharacterService service, com.pompomhills.intelligence.character.VideoCharacterAssociationService associations) {
     this.service = service;
+    this.associations = associations;
   }
 
   @PostMapping
@@ -49,6 +51,13 @@ public class CharacterController {
         request.screenTimeRatio(),
         request.actionShare(),
         request.speakingShare());
+  }
+
+  @PostMapping("/associations/backfill")
+  public com.pompomhills.intelligence.character.VideoCharacterAssociationService.BackfillReport backfill(
+      @RequestParam(defaultValue = "MISSING_ONLY") String mode,
+      @RequestParam(defaultValue = "true") boolean dryRun) {
+    return associations.backfill(com.pompomhills.intelligence.character.VideoCharacterAssociationService.Mode.valueOf(mode), dryRun);
   }
 
   public record CreateCharacter(

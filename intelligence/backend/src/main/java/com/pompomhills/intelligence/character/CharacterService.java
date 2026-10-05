@@ -48,7 +48,8 @@ public class CharacterService {
         insert into video_characters(video_id,character_id,participation,role,screen_time_ratio,action_share,speaking_share)
         values(:video,:character,:participation,:role,:screen,:action,:speaking)
         on conflict(video_id,character_id) do update set participation=excluded.participation,role=excluded.role,
-        screen_time_ratio=excluded.screen_time_ratio,action_share=excluded.action_share,speaking_share=excluded.speaking_share
+        screen_time_ratio=excluded.screen_time_ratio,action_share=excluded.action_share,speaking_share=excluded.speaking_share,
+        association_source='MANUAL',confidence='HIGH',manually_confirmed=true,updated_at=now()
         """)
         .param("video", videoId)
         .param("character", characterId)
@@ -58,6 +59,8 @@ public class CharacterService {
         .param("action", actionShare)
         .param("speaking", speakingShare)
         .update();
+    jdbc.sql("UPDATE video_characters SET association_source='MANUAL',confidence='HIGH',manually_confirmed=true,updated_at=now() WHERE video_id=:video AND character_id=:character")
+        .param("video", videoId).param("character", characterId).update();
   }
 
   @Transactional(readOnly = true)

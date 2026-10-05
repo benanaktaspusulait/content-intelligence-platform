@@ -26,13 +26,13 @@ public class VideoAnalysisWorkbenchService {
 
   @Transactional(readOnly = true)
   public PageResponse page(int page, int size, String analysisStatus, String triage,
-      String publicationState, UUID characterId, String characterRole, String query, String sort,
+      String publicationState, UUID characterId, String characterRole, Boolean unresolvedCharacter, String query, String sort,
       String direction) {
     int safePage = Math.max(0, page);
     int safeSize = Math.min(100, Math.max(1, size));
-    String where = whereClause(analysisStatus, triage, publicationState, characterId, characterRole, query);
+    String where = whereClause(analysisStatus, triage, publicationState, characterId, characterRole, unresolvedCharacter, query);
     String order = orderBy(sort, direction);
-    var params = params(analysisStatus, triage, publicationState, characterId, characterRole, query);
+    var params = params(analysisStatus, triage, publicationState, characterId, characterRole, unresolvedCharacter, query);
     long total = scalar("SELECT count(*) " + fromClause() + where, params);
     List<Row> rows = jdbc.sql(
             """
@@ -87,8 +87,8 @@ public class VideoAnalysisWorkbenchService {
   }
 
   private List<UUID> matchingIds(BulkRequest r) {
-    return jdbc.sql("SELECT v.id " + fromClause() + whereClause(r.analysisStatus(), r.triage(), r.publicationState(), r.characterId(), r.characterRole(), r.query()) + " ORDER BY v.ingested_at DESC")
-        .params(params(r.analysisStatus(), r.triage(), r.publicationState(), r.characterId(), r.characterRole(), r.query()))
+    return jdbc.sql("SELECT v.id " + fromClause() + whereClause(r.analysisStatus(), r.triage(), r.publicationState(), r.characterId(), r.characterRole(), r.unresolvedCharacter(), r.query()) + " ORDER BY v.ingested_at DESC")
+        .params(params(r.analysisStatus(), r.triage(), r.publicationState(), r.characterId(), r.characterRole(), r.unresolvedCharacter(), r.query()))
         .query(UUID.class).list();
   }
 
@@ -113,8 +113,8 @@ public class VideoAnalysisWorkbenchService {
   private List<Row> attachCharacters(List<Row> rows) {
     for (int i=0;i<rows.size();i++) {
       Row row=rows.get(i);
-      List<CharacterAssociation> chars=jdbc.sql("SELECT c.id,c.name,vc.participation,vc.role FROM video_characters vc JOIN characters c ON c.id=vc.character_id WHERE vc.video_id=:id ORDER BY vc.participation,c.name")
-          .param("id",row.id()).query((rs, ignored) -> new CharacterAssociation(rs.getObject("id",UUID.class),rs.getString("name"),rs.getString("participation"),rs.getString("role"),"EXPLICIT",null,null)).list();
+      List<CharacterAssociation> chars=jdbc.sql("SELECT c.id,c.name,vc.participation,vc.role,vc.association_source,vc.confidence,vc.evidence_reference FROM video_characters vc JOIN characters c ON c.id=vc.character_id WHERE vc.video_id=:id ORDER BY CASE WHEN vc.participation='PRIMARY' THEN 0 ELSE 1 END,c.name")
+          .param("id",row.id()).query((rs, ignored) -> new CharacterAssociation(rs.getObject("id",UUID.class),rs.getString("name"),rs.getString("participation"),rs.getString("role"),rs.getString("association_source"),rs.getString("confidence"),rs.getString("evidence_reference"))).list();
       rows.set(i,new Row(row.id(),row.title(),row.relativePath(),row.durationMs(),row.width(),row.height(),row.videoStatus(),row.ingestedAt(),row.analysisStatus(),row.analysisVersion(),row.classification(),row.confidence(),row.reason(),row.triage(),row.publicationState(),row.observedViews(),row.observationCount(),chars));
     }
     return rows;
@@ -130,7 +130,7 @@ public class VideoAnalysisWorkbenchService {
       LEFT JOIN LATERAL (SELECT count(*) AS publications FROM video_publications p WHERE p.video_id=v.id) pub ON true
       LEFT JOIN LATERAL (SELECT max(o.views) AS observed_views,count(*)::int AS observation_count FROM performance_observations o WHERE o.video_id=v.id) perf ON true
       """; }
-  private java.util.Map<String,Object> params(String a,String t,String p,UUID c,String r,String q){var m=new java.util.HashMap<String,Object>();m.put("current",VideoService.CURRENT_ANALYSIS_VERSION);if(a!=null&&!a.isBlank())m.put("analysisStatus",a);if(t!=null&&!t.isBlank())m.put("triage",t);if(p!=null&&!p.isBlank())m.put("publicationState",p);if(c!=null)m.put("characterId",c);if(r!=null&&!r.isBlank())m.put("characterRole",r);if(q!=null&&!q.isBlank())m.put("query",q.toLowerCase());return m;}
-  private String whereClause(String a,String t,String p,UUID c,String r,String q){StringBuilder s=new StringBuilder(" WHERE 1=1 ");if(a!=null&&!a.isBlank())s.append(" AND (CASE WHEN aj.state IN ('QUEUED','RUNNING') THEN 'RUNNING' WHEN aj.state='FAILED' THEN 'FAILED' WHEN ca.id IS NULL THEN 'MISSING' WHEN ca.analysis_version=:current THEN 'CURRENT' ELSE 'STALE' END)=:analysisStatus");if(t!=null&&!t.isBlank())s.append(" AND (CASE WHEN aj.state IN ('QUEUED','RUNNING','FAILED') OR ca.id IS NULL THEN 'INCOMPLETE' WHEN ca.classification='BAD' THEN 'REGENERATE' WHEN ca.classification='AVERAGE_FIXABLE' THEN 'EDIT_PLAN' WHEN ca.classification IN ('GOOD','WINNER_CANDIDATE') THEN 'READY' ELSE 'REVIEW' END)=:triage");if(p!=null&&!p.isBlank())s.append(" AND (CASE WHEN pub.publications>0 THEN 'PUBLISHED' ELSE 'UNPUBLISHED' END)=:publicationState");if(c!=null)s.append(" AND EXISTS (SELECT 1 FROM video_characters fvc WHERE fvc.video_id=v.id AND fvc.character_id=:characterId)");if(r!=null&&!r.isBlank())s.append(" AND EXISTS (SELECT 1 FROM video_characters fvr WHERE fvr.video_id=v.id AND fvr.role=:characterRole)");if(q!=null&&!q.isBlank())s.append(" AND (lower(v.original_filename) LIKE '%'||:query||'%' OR lower(v.relative_path) LIKE '%'||:query||'%')");return s.toString();}
+  private java.util.Map<String,Object> params(String a,String t,String p,UUID c,String r,Boolean u,String q){var m=new java.util.HashMap<String,Object>();m.put("current",VideoService.CURRENT_ANALYSIS_VERSION);if(a!=null&&!a.isBlank())m.put("analysisStatus",a);if(t!=null&&!t.isBlank())m.put("triage",t);if(p!=null&&!p.isBlank())m.put("publicationState",p);if(c!=null)m.put("characterId",c);if(r!=null&&!r.isBlank())m.put("characterRole",r);if(u!=null)m.put("unresolvedCharacter",u);if(q!=null&&!q.isBlank())m.put("query",q.toLowerCase());return m;}
+  private String whereClause(String a,String t,String p,UUID c,String r,Boolean u,String q){StringBuilder s=new StringBuilder(" WHERE 1=1 ");if(a!=null&&!a.isBlank())s.append(" AND (CASE WHEN aj.state IN ('QUEUED','RUNNING') THEN 'RUNNING' WHEN aj.state='FAILED' THEN 'FAILED' WHEN ca.id IS NULL THEN 'MISSING' WHEN ca.analysis_version=:current THEN 'CURRENT' ELSE 'STALE' END)=:analysisStatus");if(t!=null&&!t.isBlank())s.append(" AND (CASE WHEN aj.state IN ('QUEUED','RUNNING','FAILED') OR ca.id IS NULL THEN 'INCOMPLETE' WHEN ca.classification='BAD' THEN 'REGENERATE' WHEN ca.classification='AVERAGE_FIXABLE' THEN 'EDIT_PLAN' WHEN ca.classification IN ('GOOD','WINNER_CANDIDATE') THEN 'READY' ELSE 'REVIEW' END)=:triage");if(p!=null&&!p.isBlank())s.append(" AND (CASE WHEN pub.publications>0 THEN 'PUBLISHED' ELSE 'UNPUBLISHED' END)=:publicationState");if(c!=null)s.append(" AND EXISTS (SELECT 1 FROM video_characters fvc WHERE fvc.video_id=v.id AND fvc.character_id=:characterId)");if(r!=null&&!r.isBlank())s.append(" AND EXISTS (SELECT 1 FROM video_characters fvr WHERE fvr.video_id=v.id AND fvr.role=:characterRole)");if(Boolean.TRUE.equals(u))s.append(" AND NOT EXISTS (SELECT 1 FROM video_characters fvu WHERE fvu.video_id=v.id)");if(q!=null&&!q.isBlank())s.append(" AND (lower(v.original_filename) LIKE '%'||:query||'%' OR lower(v.relative_path) LIKE '%'||:query||'%')");return s.toString();}
   private String orderBy(String sort,String direction){String col=switch(sort==null?"date":sort){case "title"->"v.original_filename";case "status"->"v.status";case "analysis"->"analysis_status";case "triage"->"triage";case "views"->"perf.observed_views";default->"v.ingested_at";};return " ORDER BY "+col+(("asc".equalsIgnoreCase(direction))?" ASC":" DESC")+",v.id";}
 }

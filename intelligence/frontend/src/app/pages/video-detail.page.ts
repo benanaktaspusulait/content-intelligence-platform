@@ -115,7 +115,7 @@ const VARIANT_TYPE_LABELS: Record<string, string> = {
               @if (creativeContext()?.characters?.length) {
                 <div class="context-list">
                   @for (character of creativeContext()!.characters; track character.id) {
-                    <article><strong>{{ character.name }}</strong><span>{{ readable(character.participation) }} · {{ readable(character.role) }}</span><small>{{ characterMetrics(character) }}</small></article>
+                    <article><strong>{{ character.name }}</strong><span>{{ readable(character.participation) }} · {{ readable(character.role) }}</span><small>{{ characterMetrics(character) }}</small><small>{{ readable(character.source) }} · {{ readable(character.confidence) }}@if (character.manuallyConfirmed) { · confirmed }</small></article>
                   }
                 </div>
               } @else { <div class="compact-empty"><strong>No linked character records</strong><span>Character data has not been persisted for this video.</span></div> }
@@ -178,7 +178,7 @@ const VARIANT_TYPE_LABELS: Record<string, string> = {
               <div><span>Visual activity</span><strong>{{ motionSummary() }}</strong><small>Sampled visual change through the timeline.</small></div>
               <div><span>Motion variation</span><strong>{{ variationSummary() }}</strong><small>This describes motion, not story progression.</small></div>
               <div><span>Opening/ending relationship</span><strong>{{ similaritySummary() }}</strong><small>Visual similarity does not prove a semantic loop.</small></div>
-              <div><span>Local activity drops</span><strong>{{ activityDropSummary() }}</strong><small>Timestamped candidates require beat context before review.</small></div>
+              <div><span>Local activity changes</span><strong>{{ activityDropSummary() }}</strong><small>Canonical V5 temporal events; relative dips are separate from absolute low motion.</small></div>
             </div>
             @if (analysisStatus()!.analysisVersion === 'sampled-visual-motion-v4' || analysisStatus()!.analysisVersion === 'sampled-visual-motion-v5') {
               <div class="creative-evidence-cards creative-evidence-cards--v4">
@@ -197,7 +197,8 @@ const VARIANT_TYPE_LABELS: Record<string, string> = {
                 </div>
                 <div class="creative-evidence-cards creative-evidence-cards--v4">
                   <div><span>Temporal motion trend</span><strong>{{ v5TrendSummary() }}</strong><small>{{ v5TrendReason() }}</small></div>
-                  <div><span>Local dips</span><strong>{{ v5DipSummary() }}</strong><small>Relative activity events, not semantic story beats.</small></div>
+                  <div><span>Temporal structure</span><strong>{{ temporalShapeSummary() }}</strong><small>{{ temporalShapeReason() }}</small></div>
+                  <div><span>Local recovery</span><strong>{{ v5RecoverySummary() }}</strong><small>Recovery is distinct from a final rebound.</small></div>
                   <div><span>Final rebound</span><strong>{{ v5FinalReboundSummary() }}</strong><small>Measured recovery from the preceding segment.</small></div>
                 </div>
                 @if (platformReadiness().length) {
@@ -217,14 +218,14 @@ const VARIANT_TYPE_LABELS: Record<string, string> = {
             <div class="section-heading"><div><span class="eyebrow">LOCAL TIMELINE</span><h3 id="temporal-timeline-heading">Motion by segment</h3></div><span class="data-freshness">{{ temporalVersion() }}</span></div>
             @if (timelineSegments().length) {
               <div class="temporal-segment-table" role="table" aria-label="Local motion segment timeline">
-                <div class="temporal-segment-row temporal-segment-row--header" role="row"><span>Time</span><span>Activity</span><span>Density</span><span>Coverage</span><span>Shape</span></div>
+              <div class="temporal-segment-row temporal-segment-row--header" role="row"><span>Time</span><span>Activity</span><span>Density</span><span>Coverage</span><span>Shape</span><span>Event</span></div>
                 @for (segment of timelineSegments(); track segment['segmentIndex']) {
                   <div class="temporal-segment-row" role="row">
                     <span>{{ segment['startSeconds'] }}–{{ segment['endSeconds'] }}s</span>
                     <span class="temporal-activity"><i [style.width.%]="segmentActivityPercent(segment)"></i><b>{{ segment['averageMotion'] }}</b></span>
                     <span>{{ percentValue(segment['motionDensity']) }}</span>
                     <span>{{ percentValue(segment['coverage']) }}</span>
-                    <span>{{ segmentShape(segment) }}</span>
+                    <span>{{ segmentShape(segment) }}</span><span>{{ timelineEventLabel(segment) }}</span>
                   </div>
                 }
               </div>
@@ -245,7 +246,7 @@ const VARIANT_TYPE_LABELS: Record<string, string> = {
             <div class="analysis-facts__group"><dt>Other visual evidence</dt><dd><dl class="analysis-components">
               <div><dt>First/last visual similarity</dt><dd>{{ analysisMetric('firstLastVisualSimilarity', true) }}</dd></div>
               <div><dt>Temporal trend</dt><dd>{{ v5TrendSummary() }}</dd></div>
-              <div><dt>Low-motion duration</dt><dd>{{ analysisFeatureValue('lowMotionDurationEstimate') }}</dd></div>
+              <div><dt>Low-motion duration</dt><dd>{{ lowMotionDurationSummary() }}</dd></div>
             </dl></dd></div>
             <div class="analysis-facts__group"><dt>Measurement quality</dt><dd><dl class="analysis-components">
               <div><dt>Decode success</dt><dd>{{ analysisPercent('measurementQuality', 'decodeSuccessRatio') }}</dd></div>
@@ -695,8 +696,12 @@ export class VideoDetailPage implements OnDestroy {
     return value >= 0.9 ? 'Very high' : value >= 0.75 ? 'High' : value >= 0.5 ? 'Moderate' : 'Low';
   }
   protected activityDropSummary(): string {
-    const drops = this.analysisStatus()?.temporalProfile?.['activityDrops'];
-    return Array.isArray(drops) ? drops.length === 0 ? 'None detected' : `${drops.length} candidate${drops.length === 1 ? '' : 's'}` : 'Not evaluated';
+    const events = this.analysisStatus()?.temporalProfile?.['temporalActivityEvents'];
+    if (!Array.isArray(events)) return 'Not evaluated';
+    const dips = events.filter(item => !String((item as Record<string, unknown>)['type'] || '').includes('RECOVERY'));
+    const recoveries = events.filter(item => String((item as Record<string, unknown>)['type'] || '').includes('RECOVERY'));
+    if (!dips.length) return 'None detected';
+    return `${dips.length} local dip${dips.length === 1 ? '' : 's'}${recoveries.length ? ` · ${recoveries.length} recovery` : ''}`;
   }
   protected timelineSegments(): Array<Record<string, any>> {
     const segments = this.analysisStatus()?.temporalProfile?.['segments'];
@@ -772,13 +777,23 @@ export class VideoDetailPage implements OnDestroy {
   protected v5TrendSummary(): string {
     const trend = this.analysisStatus()?.temporalProfile?.['temporalTrend'];
     if (!trend || typeof trend !== 'object') return 'Not evaluated';
-    return this.readable(String((trend as Record<string, unknown>)['trendShape'] || 'UNKNOWN'));
+    return this.readable(String((trend as Record<string, unknown>)['shape'] || (trend as Record<string, unknown>)['trendShape'] || 'UNKNOWN'));
   }
   protected v5TrendReason(): string {
     const trend = this.analysisStatus()?.temporalProfile?.['temporalTrend'];
     return trend && typeof trend === 'object'
-      ? String((trend as Record<string, unknown>)['interpretation'] || 'Temporal motion trend only.')
+      ? String((trend as Record<string, unknown>)['humanSummary'] || (trend as Record<string, unknown>)['interpretation'] || 'Temporal motion trend only.')
       : 'Temporal motion trend is available in V5 analysis.';
+  }
+  protected temporalShapeSummary(): string { return this.v5TrendSummary(); }
+  protected temporalShapeReason(): string { return this.v5TrendReason(); }
+  protected v5RecoverySummary(): string {
+    const trend = this.analysisStatus()?.temporalProfile?.['temporalTrend'];
+    const recoveries = trend && typeof trend === 'object' ? (trend as Record<string, unknown>)['recoveryEvidence'] : null;
+    if (!Array.isArray(recoveries)) return 'Not evaluated';
+    if (!recoveries.length) return 'None detected';
+    const full = recoveries.filter(item => (item as Record<string, unknown>)['status'] === 'FULL').length;
+    return full ? `${full} full recovery` : `${recoveries.length} partial recovery`;
   }
   protected v5DipSummary(): string {
     const trend = this.analysisStatus()?.temporalProfile?.['temporalTrend'];
@@ -789,6 +804,22 @@ export class VideoDetailPage implements OnDestroy {
     const trend = this.analysisStatus()?.temporalProfile?.['temporalTrend'];
     const magnitude = trend && typeof trend === 'object' ? (trend as Record<string, unknown>)['finalReboundMagnitude'] : null;
     return typeof magnitude === 'number' && magnitude > 0 ? `+${magnitude.toFixed(3)}` : 'Not established';
+  }
+  protected lowMotionDurationSummary(): string {
+    const evidence = this.analysisStatus()?.temporalProfile?.['lowMotionEvidence'];
+    if (evidence && typeof evidence === 'object') {
+      const value = evidence as Record<string, unknown>;
+      if (value['status'] === 'AVAILABLE') return typeof value['durationSeconds'] === 'number' && value['durationSeconds'] > 0 ? `${Number(value['durationSeconds']).toFixed(1)}s` : 'None detected';
+      return this.readable(String(value['status'] || 'UNKNOWN'));
+    }
+    return 'Not evaluated';
+  }
+  protected timelineEventLabel(segment: Record<string, any>): string {
+    const events = this.analysisStatus()?.temporalProfile?.['temporalActivityEvents'];
+    if (!Array.isArray(events)) return '—';
+    const start = Number(segment['startSeconds']); const end = Number(segment['endSeconds']);
+    const event = events.find(item => Number((item as Record<string, unknown>)['startSeconds']) < end && Number((item as Record<string, unknown>)['endSeconds']) > start) as Record<string, unknown> | undefined;
+    return event ? this.readable(String(event['type'] || 'EVENT')) : '—';
   }
   protected metricSource(value: number | null | undefined, available: string): string { return value === null || value === undefined ? 'No imported value' : available; }
   protected discoveryQualityLabel(): string { return this.discovery()?.dataQualityStatus === 'DERIVED_FROM_REPORTED_SHARES' ? 'REPORTED EVIDENCE' : 'NO COMPLETE DATA'; }

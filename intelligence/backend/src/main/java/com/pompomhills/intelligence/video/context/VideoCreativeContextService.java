@@ -24,7 +24,9 @@ public class VideoCreativeContextService {
   public Response get(UUID videoId) {
     List<CharacterContext> characters = jdbc.sql("""
         SELECT c.id,c.name,vc.participation,vc.role,
-               vc.screen_time_ratio,vc.action_share,vc.speaking_share
+               vc.screen_time_ratio,vc.action_share,vc.speaking_share,
+               vc.association_source,vc.confidence,vc.source_prompt_path,
+               vc.resolver_version,vc.evidence_reference,vc.manually_confirmed
         FROM video_characters vc
         JOIN characters c ON c.id=vc.character_id
         WHERE vc.video_id=:videoId
@@ -35,7 +37,10 @@ public class VideoCreativeContextService {
             rs.getString("participation"), rs.getString("role"),
             nullableDouble(rs, "screen_time_ratio"),
             nullableDouble(rs, "action_share"),
-            nullableDouble(rs, "speaking_share")))
+            nullableDouble(rs, "speaking_share"),
+            rs.getString("association_source"), rs.getString("confidence"),
+            rs.getString("source_prompt_path"), rs.getString("resolver_version"),
+            rs.getString("evidence_reference"), rs.getBoolean("manually_confirmed")))
         .list();
 
     PromptContext prompt = jdbc.sql("""

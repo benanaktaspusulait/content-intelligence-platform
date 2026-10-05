@@ -11,9 +11,11 @@ import com.pompomhills.intelligence.video.api.VideoDtos.DirectoryIngestResponse;
 import com.pompomhills.intelligence.video.api.VideoDtos.IngestError;
 import com.pompomhills.intelligence.video.api.VideoDtos.MediaDirectory;
 import com.pompomhills.intelligence.video.api.VideoDtos.MediaFile;
+import com.pompomhills.intelligence.video.api.VideoDtos.MediaCharacter;
 import com.pompomhills.intelligence.video.api.VideoDtos.PromptFile;
 import com.pompomhills.intelligence.video.api.VideoDtos.VideoResponse;
 import com.pompomhills.intelligence.video.ml.MlVideoClient;
+import com.pompomhills.intelligence.character.VideoCharacterAssociationService;
 import jakarta.persistence.EntityNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -29,6 +31,7 @@ import java.util.UUID;
 import java.util.stream.Stream;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -42,6 +45,8 @@ public class VideoService {
   private final MlVideoClient ml;
   private final PompomProperties properties;
   private final Clock clock;
+  private final VideoCharacterAssociationService characterAssociations;
+  private final JdbcClient jdbc;
   public static final String CURRENT_ANALYSIS_VERSION = "sampled-visual-motion-v5";
   public static final String V5_ANALYSIS_VERSION = "sampled-visual-motion-v5";
   public static final String V4_ANALYSIS_VERSION = "sampled-visual-motion-v4";
@@ -54,7 +59,9 @@ public class VideoService {
       VideoVariantRepository variants,
       MlVideoClient ml,
       PompomProperties properties,
-      Clock clock) {
+      Clock clock,
+      VideoCharacterAssociationService characterAssociations,
+      JdbcClient jdbc) {
     this.videos = videos;
     this.analyses = analyses;
     this.fingerprints = fingerprints;
@@ -63,6 +70,8 @@ public class VideoService {
     this.ml = ml;
     this.properties = properties;
     this.clock = clock;
+    this.characterAssociations = characterAssociations;
+    this.jdbc = jdbc;
   }
 
   @Transactional
@@ -105,6 +114,11 @@ public class VideoService {
     if (!analyses.existsByVideoIdAndAnalysisVersion(entity.getId(), result.analysisVersion())) {
       persistCreativeAnalysis(entity, result);
       entity.markAnalysed();
+    }
+    try {
+      characterAssociations.associate(entity.getId(), VideoCharacterAssociationService.Mode.MISSING_ONLY);
+    } catch (RuntimeException ignored) {
+      // Character reconciliation is best-effort during ingest; the explicit backfill can retry it.
     }
     return map(entity);
   }
@@ -164,6 +178,12 @@ public class VideoService {
 
   @Transactional(readOnly = true)
   public List<MediaFile> mediaFiles(String relativeDirectory, boolean recursive) {
+    return mediaFiles(relativeDirectory, recursive, null, null, null);
+  }
+
+  @Transactional(readOnly = true)
+  public List<MediaFile> mediaFiles(String relativeDirectory, boolean recursive, UUID characterId,
+      String characterRole, Boolean unresolvedCharacter) {
     Path root = properties.dataRoot().toAbsolutePath().normalize();
     Path directory = root.resolve(relativeDirectory).normalize();
     if (!directory.startsWith(root) || !Files.isDirectory(directory)) {
@@ -206,7 +226,10 @@ public class VideoService {
 
     Map<String, VideoEntity> resolvedByPath = new java.util.HashMap<>(ingestedByPath);
     resolvedByPath.putAll(aliasedByPath);
-    return files.stream().map(path -> mapMediaFile(root, path, resolvedByPath)).toList();
+    Map<UUID, List<MediaCharacter>> characters = loadMediaCharacters(resolvedByPath.values());
+    return files.stream()
+        .filter(path -> matchesCharacterFilter(resolvedByPath.get(root.relativize(path).toString()), characters, characterId, characterRole, unresolvedCharacter))
+        .map(path -> mapMediaFile(root, path, resolvedByPath, characters)).toList();
   }
 
   @Transactional(readOnly = true)
@@ -392,7 +415,8 @@ public class VideoService {
             .contains(name.substring(separator + 1).toLowerCase());
   }
 
-  private MediaFile mapMediaFile(Path root, Path file, Map<String, VideoEntity> ingestedByPath) {
+  private MediaFile mapMediaFile(Path root, Path file, Map<String, VideoEntity> ingestedByPath,
+      Map<UUID, List<MediaCharacter>> characters) {
     String relativePath = root.relativize(file).toString();
     VideoEntity ingested = ingestedByPath.get(relativePath);
     UUID variantId =
@@ -406,7 +430,32 @@ public class VideoService {
         ingested == null ? null : ingested.getId(),
         ingested == null ? null : ingested.getStatus().name(),
         variantId,
-        findThumbnail(root, file));
+        findThumbnail(root, file),
+        ingested == null ? List.of() : characters.getOrDefault(ingested.getId(), List.of()));
+  }
+
+  private Map<UUID, List<MediaCharacter>> loadMediaCharacters(java.util.Collection<VideoEntity> values) {
+    List<UUID> ids = values.stream().map(VideoEntity::getId).distinct().toList();
+    if (ids.isEmpty()) return Map.of();
+    Map<UUID, List<MediaCharacter>> result = new java.util.HashMap<>();
+    jdbc.sql("SELECT vc.video_id,c.id,c.name,vc.participation,vc.role,vc.association_source,vc.confidence FROM video_characters vc JOIN characters c ON c.id=vc.character_id WHERE vc.video_id IN (:ids) ORDER BY CASE WHEN vc.participation='PRIMARY' THEN 0 ELSE 1 END,c.name")
+        .param("ids", ids).query((rs, ignored) -> {
+          UUID videoId = rs.getObject("video_id", UUID.class);
+          result.computeIfAbsent(videoId, unused -> new ArrayList<>()).add(new MediaCharacter(
+              rs.getObject("id", UUID.class), rs.getString("name"), rs.getString("participation"),
+              rs.getString("role"), rs.getString("association_source"), rs.getString("confidence")));
+          return videoId;
+        }).list();
+    return result;
+  }
+
+  private boolean matchesCharacterFilter(VideoEntity video, Map<UUID, List<MediaCharacter>> characters,
+      UUID characterId, String characterRole, Boolean unresolvedCharacter) {
+    List<MediaCharacter> linked = video == null ? List.of() : characters.getOrDefault(video.getId(), List.of());
+    if (Boolean.TRUE.equals(unresolvedCharacter) && !linked.isEmpty()) return false;
+    if (characterId != null && linked.stream().noneMatch(character -> character.id().equals(characterId))) return false;
+    return characterRole == null || characterRole.isBlank()
+        || linked.stream().anyMatch(character -> characterRole.equalsIgnoreCase(character.participation()) || characterRole.equalsIgnoreCase(character.role()));
   }
 
   private String findThumbnail(Path root, Path video) {

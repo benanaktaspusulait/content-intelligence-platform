@@ -46,6 +46,10 @@ TEMPORAL_CHANGE_MIN_RELATIVE = 0.30
 TEMPORAL_CHANGE_MIN_DURATION_SECONDS = 0.50
 TEMPORAL_TREND_DELTA_THRESHOLD = 0.04
 TEMPORAL_EVENT_MIN_RELATIVE = 0.08
+TEMPORAL_TREND_MEANINGFUL_NET_CHANGE = 0.12
+TEMPORAL_RECOVERY_FULL_FRACTION = 0.75
+TEMPORAL_RECOVERY_BASELINE_TOLERANCE = 0.10
+TEMPORAL_FINAL_WINDOW_FRACTION = 0.65
 
 # V4 parameters are versioned evidence configuration, not creative-quality rules.
 V4_ANALYSIS_VERSION = "sampled-visual-motion-v4"
@@ -644,7 +648,11 @@ def _temporal_profile(intervals: list[dict[str, Any]], duration: float) -> dict[
 
 
 def _v5_temporal_trend(segments: list[dict[str, Any]]) -> dict[str, Any]:
-    """Describe time-aware activity shape without calling it creative escalation."""
+    """Build the canonical V5 temporal event and shape projection.
+
+    Global slope remains technical evidence. Human-readable shape is classified from local
+    event topology first, so a small negative endpoint difference cannot erase a dip/recovery.
+    """
     valid = [
         item for item in segments
         if item.get("validIntervalCount", 0) and item["endSeconds"] > item["startSeconds"]
@@ -694,35 +702,125 @@ def _v5_temporal_trend(segments: list[dict[str, Any]]) -> dict[str, Any]:
     falling_runs = sum(1 for item in deltas if item["direction"] == "FALLING")
     final_delta = float(values[-1] - values[-2])
     final_rebound = max(0.0, final_delta)
-    local_dips = []
+    local_dips: list[dict[str, Any]] = []
+    canonical_events: list[dict[str, Any]] = []
+    recoveries: list[dict[str, Any]] = []
     for index in range(1, len(values) - 1):
         neighborhood = (float(values[index - 1]) + float(values[index + 1])) / 2
         relative = (neighborhood - float(values[index])) / max(abs(neighborhood), 0.05)
         if relative >= TEMPORAL_EVENT_MIN_RELATIVE:
+            before = float(values[index - 1])
+            after = float(values[index + 1])
+            trough = float(values[index])
+            baseline = max(before, after)
+            recovery_magnitude = max(0.0, after - trough)
+            lost = max(baseline - trough, 0.001)
+            recovered_fraction = min(1.0, recovery_magnitude / lost)
+            recovery_status = (
+                "FULL" if after >= before - TEMPORAL_RECOVERY_BASELINE_TOLERANCE and recovered_fraction >= TEMPORAL_RECOVERY_FULL_FRACTION
+                else "PARTIAL" if recovered_fraction >= 0.35
+                else "NONE"
+            )
+            severity = "SIGNIFICANT" if relative >= 0.30 else "MODERATE" if relative >= 0.15 else "MINOR"
+            event_id = f"dip-{valid[index]['segmentIndex']}"
             local_dips.append({
+                "id": event_id,
+                "type": f"{severity}_DIP" if severity != "SIGNIFICANT" else "SIGNIFICANT_TROUGH",
                 "segmentIndex": valid[index]["segmentIndex"],
-                "activity": round(float(values[index]), 4),
-                "localBaselineBefore": round(float(values[index - 1]), 4),
-                "localBaselineAfter": round(float(values[index + 1]), 4),
+                "activity": round(trough, 4),
+                "localBaselineBefore": round(before, 4),
+                "localBaselineAfter": round(after, 4),
                 "dropFromNeighborhood": round(relative, 4),
                 "durationSeconds": round(valid[index]["endSeconds"] - valid[index]["startSeconds"], 3),
                 "severity": "SIGNIFICANT" if relative >= 0.30 else "MODERATE" if relative >= 0.15 else "MINOR",
+                "recoveryStatus": recovery_status,
+                "recoveryMagnitude": round(recovery_magnitude, 4),
+                "recoveredFraction": round(recovered_fraction, 4),
             })
+            canonical_events.append({
+                "id": event_id,
+                "type": local_dips[-1]["type"],
+                "startSeconds": round(valid[index]["startSeconds"], 3),
+                "endSeconds": round(valid[index]["endSeconds"], 3),
+                "durationSeconds": round(valid[index]["endSeconds"] - valid[index]["startSeconds"], 3),
+                "baselineBefore": round(before, 4),
+                "eventActivity": round(trough, 4),
+                "baselineAfter": round(after, 4),
+                "relativeChangeFromNeighborhood": round(relative, 4),
+                "densityDuring": round(float(valid[index].get("motionDensity", 0.0)), 4),
+                "severity": severity,
+                "recoveryStatus": recovery_status,
+                "evidenceStatus": "AVAILABLE",
+                "confidence": "HIGH" if relative >= 0.15 else "MODERATE",
+                "provenance": "V5_CANONICAL_TEMPORAL_EVENT",
+            })
+            if recovery_status != "NONE":
+                recovery = {
+                    "sourceEventId": event_id,
+                    "type": "SUSTAINED_RECOVERY" if recovery_status == "FULL" else "RECOVERY",
+                    "preDipBaseline": round(before, 4),
+                    "troughActivity": round(trough, 4),
+                    "peakAfter": round(after, 4),
+                    "recoveryMagnitude": round(recovery_magnitude, 4),
+                    "recoveredFraction": round(recovered_fraction, 4),
+                    "status": recovery_status,
+                    "timeToRecovery": round(valid[index + 1]["endSeconds"] - valid[index]["startSeconds"], 3),
+                    "provenance": "V5_CANONICAL_TEMPORAL_EVENT",
+                }
+                recoveries.append(recovery)
+                canonical_events.append({
+                    "id": f"{event_id}-recovery",
+                    "type": recovery["type"],
+                    "startSeconds": round(valid[index]["endSeconds"], 3),
+                    "endSeconds": round(valid[index + 1]["endSeconds"], 3),
+                    "durationSeconds": recovery["timeToRecovery"],
+                    "baselineBefore": round(trough, 4),
+                    "eventActivity": round(after, 4),
+                    "baselineAfter": round(before, 4),
+                    "relativeChangeFromNeighborhood": round(recovery_magnitude / max(abs(trough), 0.05), 4),
+                    "densityDuring": round(float(valid[index + 1].get("motionDensity", 0.0)), 4),
+                    "severity": "RECOVERY",
+                    "recoveryStatus": recovery_status,
+                    "evidenceStatus": "AVAILABLE",
+                    "confidence": "HIGH" if recovery_status == "FULL" else "MODERATE",
+                    "provenance": "V5_CANONICAL_TEMPORAL_EVENT",
+                })
 
-    if not local_dips and rising_runs == 0 and falling_runs == 0:
-        shape = "STEADY_HIGH" if float(np.mean(values)) >= 0.55 else "STEADY_LOW"
-    elif local_dips and final_rebound >= TEMPORAL_TREND_DELTA_THRESHOLD:
-        shape = "LATE_REBOUND" if valid[-1]["startSeconds"] >= valid[-1]["endSeconds"] * 0.65 else "DIP_AND_RECOVER"
-        if len(local_dips) >= 2:
-            shape = "MULTI_DIP"
+    net_change = float(values[-1] - values[0])
+    full_recoveries = sum(1 for item in recoveries if item["status"] == "FULL")
+    late_baseline = max(values[max(0, len(values) - 4):-1]) if len(values) >= 3 else float(values[-2])
+    late_rebound = max(0.0, float(values[-1]) - float(values[-2])) if float(values[-2]) <= late_baseline - TEMPORAL_EVENT_MIN_RELATIVE else 0.0
+    final_rebound = late_rebound
+    if local_dips and full_recoveries:
+        shape = "MULTI_DIP" if len(local_dips) >= 2 else "DIP_AND_RECOVER"
+    elif final_rebound >= TEMPORAL_TREND_DELTA_THRESHOLD and valid[-1]["startSeconds"] >= valid[-1]["endSeconds"] * TEMPORAL_FINAL_WINDOW_FRACTION:
+        shape = "LATE_REBOUND"
+    elif abs(net_change) < TEMPORAL_TREND_MEANINGFUL_NET_CHANGE and float(np.ptp(values)) < 0.15:
+        mean = float(np.mean(values))
+        shape = "STEADY_HIGH" if mean >= 0.70 else "STEADY_MODERATE" if mean >= 0.35 else "STEADY_LOW"
+    elif net_change >= TEMPORAL_TREND_MEANINGFUL_NET_CHANGE and rising_runs >= falling_runs:
+        shape = "RISING"
+    elif net_change <= -TEMPORAL_TREND_MEANINGFUL_NET_CHANGE and falling_runs > rising_runs and not recoveries:
+        shape = "FALLING"
+    elif float(np.ptp(values)) >= 0.25:
+        shape = "HIGHLY_VARIABLE"
     elif rising_runs > falling_runs:
         shape = "RISING"
     elif falling_runs > rising_runs:
         shape = "FALLING"
-    elif float(np.ptp(values)) >= 0.25:
-        shape = "HIGHLY_VARIABLE"
     else:
         shape = "OTHER"
+
+    if local_dips:
+        description = f"{len(local_dips)} local activity dip{'s' if len(local_dips) != 1 else ''} detected"
+        if full_recoveries:
+            description += " and recovered to the prior local baseline"
+        elif recoveries:
+            description += " with partial recovery"
+        else:
+            description += " without established recovery"
+    else:
+        description = "No local activity events detected"
 
     return {
         "version": "temporal-trend-profile-v1",
@@ -736,9 +834,17 @@ def _v5_temporal_trend(segments: list[dict[str, Any]]) -> dict[str, Any]:
         "fallingRunCount": falling_runs,
         "longestRisingRun": longest_run(rising_indices),
         "longestFallingRun": longest_run(falling_indices),
+        "netChange": round(net_change, 4),
         "finalReboundMagnitude": round(final_rebound, 4),
         "trendShape": shape,
+        "shape": shape,
         "localDipEvidence": local_dips,
+        "events": canonical_events,
+        "recoveryEvidence": recoveries,
+        "localEventCount": len(canonical_events),
+        "recoveryCount": len(recoveries),
+        "strongestDipSeverity": max((item["severity"] for item in local_dips), default=None),
+        "humanSummary": description + ".",
         "interpretation": "Temporal motion trend only; it is not semantic creative escalation or a performance prediction.",
     }
 
@@ -1043,18 +1149,32 @@ def _analyse_v5(path: Path, metadata: VideoMetadata) -> VideoAnalysisResponse:
     hook = _v5_hook(profile, [])
     action_novelty = _v5_action_novelty(profile, result.evidence.get("visualNovelty", {}), result.evidence.get("recurrence", {}))
     loop = _v5_loop(similarity, result.evidence.get("recurrence", {}))
-    strong_hold = any(item["eventType"] == "LIKELY_PURPOSEFUL_HOLD" and item["holdEmphasis"] == "STRONG" for item in hold_events)
-    rebound = any(item["postEventTrend"] == "RISING" and item["reboundMagnitude"] >= 0.12 for item in hold_events)
-    payoff_status = "MODERATE" if strong_hold and rebound else "WEAK" if hold_events else "UNKNOWN"
-    payoff = {"status": payoff_status, "plannedAlignment": "NOT_EVALUATED", "plannedAlignmentReason": "NO_STRUCTURED_PLAN", "rebound": "STRONG" if rebound else "UNKNOWN", "stateChange": "NOT_EVALUATED", "reason": "Payoff evidence is based on temporal contrast only; plan and semantic consequence evidence are unavailable."}
-    fidelity = {"status": "NOT_EVALUATED", "reason": "NO_STRUCTURED_PLAN", "provenance": "No render-time ProductionContract or exact VideoPlanIR was supplied to the ML analyzer."}
+    trend = _v5_temporal_trend(profile.get("segments", []))
+    canonical_events = trend.get("events", [])
+    recoveries = trend.get("recoveryEvidence", [])
+    final_rebound = trend.get("finalReboundMagnitude", 0.0)
+    payoff = {
+        "status": "UNKNOWN",
+        "visualEndingEmphasis": "AVAILABLE" if profile.get("segments") else "NOT_EVALUATED",
+        "semanticResolutionStatus": "NOT_EVALUATED",
+        "consequenceDetected": "NOT_EVALUATED",
+        "characterReactionDetected": "NOT_EVALUATED",
+        "objectStateChange": "NOT_EVALUATED",
+        "motionRebound": "STRONG" if final_rebound >= TEMPORAL_TREND_DELTA_THRESHOLD else "NOT_ESTABLISHED",
+        "planAlignment": "NOT_EVALUATED",
+        "payoffWindow": "ENDING_WINDOW",
+        "evidenceCoverage": "DETERMINISTIC_ONLY",
+        "reason": "Semantic resolution, character reaction and plan alignment were not evaluated; motion evidence alone does not establish a payoff.",
+    }
+    fidelity = {"status": "NOT_AVAILABLE", "reason": "No structured production plan or source generation prompt is linked to this analysis.", "provenance": "NO_PLAN_OR_PROMPT"}
     repetition = result.evidence.get("repetitiveMotion", {})
     if repetition.get("classification") == "MODERATE" and action_novelty.get("combinedAssessment") in {"STRONG", "MODERATE"}:
         repetition["interpretation"] = "Some movement repeats, but the observed temporal evidence contains distinct beat changes; repeated mechanics remain context-dependent."
     temporal = dict(profile)
     temporal["version"] = V5_ANALYSIS_VERSION
-    temporal["temporalTrend"] = _v5_temporal_trend(temporal.get("segments", []))
-    temporal["temporalActivityEvents"] = hold_events
+    temporal["temporalTrend"] = trend
+    temporal["temporalActivityEvents"] = canonical_events
+    temporal["legacyHoldEvents"] = hold_events
     temporal["temporalEmphasis"] = [
         {
             "type": "MODERATE_DIP" if dip["severity"] == "MODERATE" else "SIGNIFICANT_TROUGH" if dip["severity"] == "SIGNIFICANT" else "MINOR_VARIATION",
@@ -1072,8 +1192,16 @@ def _analyse_v5(path: Path, metadata: VideoMetadata) -> VideoAnalysisResponse:
             "magnitude": temporal["temporalTrend"]["finalReboundMagnitude"],
             "reason": "The final segment recovers relative to the immediately preceding segment.",
         })
-    temporal["holdEvidenceStatus"] = "AVAILABLE" if hold_events else "NOT_EVALUATED"
-    temporal["reboundEvidence"] = {"status": "AVAILABLE" if hold_events else "NOT_EVALUATED", "sustainedRisingActivity": rebound}
+    low_motion_candidates = temporal.get("lowMotionCandidates", [])
+    temporal["lowMotionEvidence"] = {
+        "status": "AVAILABLE",
+        "durationSeconds": round(sum(float(item.get("durationSeconds", 0.0)) for item in low_motion_candidates), 3),
+        "intervalCount": len(low_motion_candidates),
+        "summary": "None detected" if not low_motion_candidates else f"{len(low_motion_candidates)} absolute low-motion interval(s)",
+        "provenance": "V5_ABSOLUTE_LOW_MOTION_DETECTOR",
+    }
+    temporal["holdEvidenceStatus"] = "NOT_EVALUATED"
+    temporal["reboundEvidence"] = {"status": "AVAILABLE", "localRecoveryStatus": "DETECTED" if recoveries else "NONE_DETECTED", "sustainedRisingActivity": bool(recoveries), "localRecoveryCount": len(recoveries), "finalRebound": final_rebound > 0}
     temporal["hook"] = hook
     temporal["payoff"] = payoff
     temporal["loop"] = loop
@@ -1081,7 +1209,7 @@ def _analyse_v5(path: Path, metadata: VideoMetadata) -> VideoAnalysisResponse:
     temporal["planRenderFidelity"] = fidelity
     temporal["dimensions"] = {**temporal.get("dimensions", {}), "actionBeatNovelty": action_novelty["combinedAssessment"], "planRenderFidelity": "NOT_EVALUATED"}
     result.evidence["temporalProfile"] = temporal
-    result.evidence["temporalActivityEvents"] = hold_events
+    result.evidence["temporalActivityEvents"] = canonical_events
     result.evidence["hook"] = hook
     result.evidence["payoff"] = payoff
     result.evidence["loop"] = loop

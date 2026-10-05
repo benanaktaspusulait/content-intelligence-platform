@@ -721,7 +721,7 @@ button.coverage-cell:hover { transform: scale(1.04); border-color: var(--moss); 
 .temporal-timeline { margin: 1rem 0; padding: 1rem; border: 1px solid var(--line); background: var(--surface-alt); }
 .temporal-timeline h3 { margin: .2rem 0 0; font-family: Georgia, serif; font-size: 18px; font-weight: 600; }
 .temporal-segment-table { overflow-x: auto; border: 1px solid var(--line); background: var(--surface); }
-.temporal-segment-row { display: grid; grid-template-columns: 1fr 1.8fr .8fr .8fr .8fr; gap: 12px; align-items: center; min-width: 590px; padding: 9px 12px; border-top: 1px solid var(--line); color: var(--text); font-size: 11px; }
+.temporal-segment-row { display: grid; grid-template-columns: 1fr 1.8fr .8fr .8fr .8fr 1.25fr; gap: 12px; align-items: center; min-width: 700px; padding: 9px 12px; border-top: 1px solid var(--line); color: var(--text); font-size: 11px; }
 .temporal-segment-row:first-child { border-top: 0; }
 .temporal-segment-row--header { border-top: 0; color: var(--muted); font-size: 9px; font-weight: 800; letter-spacing: .07em; text-transform: uppercase; background: var(--surface-alt); }
 .temporal-activity { display: flex; align-items: center; gap: 8px; }

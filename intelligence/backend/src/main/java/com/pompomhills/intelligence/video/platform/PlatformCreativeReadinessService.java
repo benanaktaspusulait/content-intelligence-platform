@@ -37,6 +37,7 @@ public class PlatformCreativeReadinessService {
     Map<String, Object> repetition = map(temporal.get("repetitiveMotion"));
     Map<String, Object> payoff = map(temporal.get("payoff"));
     Map<String, Object> trend = map(temporal.get("temporalTrend"));
+    Map<String, Object> recovery = map(temporal.get("reboundEvidence"));
 
     List<Criterion> criteria = new ArrayList<>();
     criteria.add(criterion("OPENING_HOOK", importance(platform, "OPENING_HOOK"), value(hook, "status", "UNKNOWN"),
@@ -49,16 +50,21 @@ public class PlatformCreativeReadinessService {
         "Endpoint similarity is not the same as semantic loop continuity."));
     criteria.add(criterion("PAYOFF", importance(platform, "PAYOFF"), value(payoff, "status", "UNKNOWN"),
         "Payoff is based on measured temporal emphasis unless a structured plan is linked."));
+    criteria.add(criterion("SEMANTIC_RESOLUTION", importance(platform, "SEMANTIC_RESOLUTION"), value(payoff, "semanticResolutionStatus", "UNKNOWN"),
+        "Semantic resolution is separate from motion rebound and is unavailable unless a semantic evidence provider ran."));
     criteria.add(criterion("TEMPORAL_VARIATION", importance(platform, "TEMPORAL_VARIATION"), value(trend, "trendShape", "UNKNOWN"),
         "Temporal motion trend describes the asset and is not creative escalation."));
+    criteria.add(criterion("LOCAL_RECOVERY", importance(platform, "LOCAL_RECOVERY"), value(recovery, "localRecoveryStatus", "UNKNOWN"),
+        "Local recovery is separate from final rebound and is derived from canonical temporal events."));
     criteria.add(criterion("REPETITION", importance(platform, "REPETITION"), value(repetition, "classification", "UNKNOWN"),
         "Repetition evidence is a review signal, not a platform outcome."));
 
     int available = (int) criteria.stream().filter(item -> !"UNKNOWN".equals(item.evidenceStatus())).count();
     int coverage = Math.round(100f * available / criteria.size());
     long highRisks = criteria.stream().filter(item -> "HIGH".equals(item.strengthOrRisk())).count();
+    long criticalUnknowns = criteria.stream().filter(item -> "CRITICAL".equals(item.importance()) && "UNKNOWN".equals(item.evidenceStatus())).count();
     long unknowns = criteria.stream().filter(item -> "UNKNOWN".equals(item.evidenceStatus())).count();
-    String grade = coverage < 60 ? "INCOMPLETE" : highRisks >= 3 ? "C" : highRisks >= 1 ? "B" : "A";
+    String grade = coverage < 60 || criticalUnknowns > 0 ? "INCOMPLETE" : highRisks >= 3 ? "C" : highRisks >= 1 ? "B" : "A";
     String decision = grade.equals("INCOMPLETE") ? "INSUFFICIENT_EVIDENCE" : grade.equals("A") ? "STRONG_FIT" : grade.equals("B") ? "GOOD_FIT" : "MIXED_FIT";
     String risk = grade.equals("INCOMPLETE") || unknowns >= 3 ? "UNKNOWN" : highRisks >= 2 ? "HIGH" : highRisks == 1 ? "MEDIUM" : "LOW";
     List<String> strengths = criteria.stream().filter(item -> "STRENGTH".equals(item.strengthOrRisk())).map(Criterion::criterion).toList();
@@ -77,6 +83,8 @@ public class PlatformCreativeReadinessService {
     result.put("risks", risks);
     result.put("neutralObservations", List.of("This lens does not use views, likes, retention, or prediction outputs."));
     result.put("criterionAssessments", criteria.stream().map(Criterion::toMap).toList());
+    result.put("profilePolicy", policy(platform));
+    result.put("comparisonNote", "All platforms consume the same canonical V5 evidence; only policy importance and interpretation differ.");
     result.put("verdict", verdict(grade, platform));
     result.put("limitations", List.of("Initial platform profile is a documented policy hypothesis.", "Semantic loop and platform performance are not inferred."));
     result.put("createdAt", Instant.now());
@@ -97,11 +105,27 @@ public class PlatformCreativeReadinessService {
   }
 
   private String importance(String platform, String criterion) {
-    if (criterion.equals("OPENING_HOOK")) return "CRITICAL";
-    if (platform.equals("FACEBOOK_REELS") && (criterion.equals("PAYOFF") || criterion.equals("BEAT_NOVELTY"))) return "HIGH";
-    if (platform.equals("YOUTUBE_SHORTS") && criterion.equals("PAYOFF")) return "CRITICAL";
-    if (criterion.equals("LOOP_CONTINUITY") || criterion.equals("VISUAL_NOVELTY") || criterion.equals("BEAT_NOVELTY")) return "HIGH";
-    return "MEDIUM";
+    return switch (platform) {
+      case "INSTAGRAM_REELS" -> criterion.equals("OPENING_HOOK") ? "CRITICAL" :
+          List.of("VISUAL_NOVELTY", "BEAT_NOVELTY", "LOOP_CONTINUITY", "PAYOFF").contains(criterion) ? "HIGH" : "MEDIUM";
+      case "FACEBOOK_REELS" -> criterion.equals("OPENING_HOOK") ? "CRITICAL" :
+          List.of("PAYOFF", "SEMANTIC_RESOLUTION", "VISUAL_NOVELTY", "BEAT_NOVELTY").contains(criterion) ? "HIGH" : "MEDIUM";
+      case "TIKTOK" -> criterion.equals("OPENING_HOOK") ? "CRITICAL" :
+          List.of("BEAT_NOVELTY", "LOOP_CONTINUITY", "LOCAL_RECOVERY").contains(criterion) ? "HIGH" : "MEDIUM";
+      case "YOUTUBE_SHORTS" -> List.of("OPENING_HOOK", "PAYOFF", "SEMANTIC_RESOLUTION").contains(criterion) ? "CRITICAL" :
+          List.of("BEAT_NOVELTY", "TEMPORAL_VARIATION").contains(criterion) ? "HIGH" : "MEDIUM";
+      default -> "MEDIUM";
+    };
+  }
+
+  private List<String> policy(String platform) {
+    return switch (platform) {
+      case "INSTAGRAM_REELS" -> List.of("CRITICAL: opening readability", "HIGH: novelty, beat novelty, loop, payoff", "MEDIUM: repetition, temporal variation, semantic resolution");
+      case "FACEBOOK_REELS" -> List.of("CRITICAL: readable opening", "HIGH: payoff, semantic resolution, novelty, beat novelty", "MEDIUM: temporal structure, repetition, loop");
+      case "TIKTOK" -> List.of("CRITICAL: immediate hook", "HIGH: beat novelty, continuity, loop, local recovery", "MEDIUM: novelty, repetition, payoff, semantic resolution");
+      case "YOUTUBE_SHORTS" -> List.of("CRITICAL: opening clarity and resolution", "HIGH: progression, beat novelty, temporal arc", "MEDIUM: loop, novelty, repetition");
+      default -> List.of();
+    };
   }
 
   private String normalizePlatform(String value) {
