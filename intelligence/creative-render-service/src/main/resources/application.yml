@@ -16,6 +16,9 @@ spring:
     properties:
       hibernate:
         default_schema: creative_render
+  datasource:
+    hikari:
+      schema: creative_render
   # Required for EmailNotificationService's JavaMailSender bean to be autoconfigured. Without a
   # host, Spring Boot's mail autoconfiguration backs off and the application fails to start
   # (ProductionMailAutoConfigurationTest pins this). Email sending itself stays opt-in via

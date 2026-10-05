@@ -2,6 +2,8 @@ package com.pompom.creative.api.controller;
 
 import com.pompom.creative.api.dto.RenderJobDto;
 import com.pompom.creative.domain.RenderJob;
+import com.pompom.creative.domain.RenderAttempt;
+import com.pompom.creative.domain.RenderExecutionStage;
 import com.pompom.creative.evidence.ValidationEvidenceClientException;
 import com.pompom.creative.evidence.ValidationEvidenceIncompleteRemoteException;
 import com.pompom.creative.evidence.ValidationEvidenceNotFoundException;
@@ -29,6 +31,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.transaction.annotation.Transactional;
+import java.time.Instant;
 
 /** REST API controller for render jobs. */
 @RestController
@@ -155,6 +159,59 @@ public class RenderJobController {
     RenderJobDto dto = toDto(job.get());
 
     return ResponseEntity.ok(dto);
+  }
+
+  /** Stop a queued or active job locally. A remote provider job is never misreported as deleted. */
+  @PostMapping("/{id}/cancel")
+  @Transactional
+  public ResponseEntity<?> cancelRenderJob(@PathVariable UUID id) {
+    Optional<RenderJob> found = renderJobRepo.findById(id);
+    if (found.isEmpty()) return ResponseEntity.notFound().build();
+    RenderJob job = found.get();
+    if (job.getStatus() == RenderJob.RenderJobStatus.COMPLETE
+        || job.getStatus() == RenderJob.RenderJobStatus.ABANDONED) {
+      return ResponseEntity.badRequest().body(java.util.Map.of("message", "Render job is already terminal"));
+    }
+    RenderAttempt attempt = renderAttemptRepo.findTopByRenderJobIdOrderByAttemptNumberDesc(id).orElse(null);
+    if (attempt != null && !attempt.isTerminal()) {
+      attempt.setStage(RenderExecutionStage.ABANDONED);
+      attempt.setTerminalReason("Cancelled by operator");
+      attempt.setCompletedAt(Instant.now());
+      attempt.setLeaseOwner(null);
+      attempt.setLeaseExpiresAt(null);
+      renderAttemptRepo.save(attempt);
+    }
+    job.setStatus(RenderJob.RenderJobStatus.ABANDONED);
+    job.setFailedAt(Instant.now());
+    job.setErrorCode("CANCELLED_BY_OPERATOR");
+    job.setErrorMessage("Cancelled by operator; any remote provider job was not deleted");
+    renderJobRepo.save(job);
+    return ResponseEntity.ok(java.util.Map.of("success", true, "message", "Render job cancelled locally"));
+  }
+
+  /** Queue a new durable attempt for a failed job while preserving the previous attempt history. */
+  @PostMapping("/{id}/retry")
+  @Transactional
+  public ResponseEntity<?> retryRenderJob(@PathVariable UUID id) {
+    Optional<RenderJob> found = renderJobRepo.findById(id);
+    if (found.isEmpty()) return ResponseEntity.notFound().build();
+    RenderJob job = found.get();
+    RenderAttempt previous = renderAttemptRepo.findTopByRenderJobIdOrderByAttemptNumberDesc(id).orElse(null);
+    if (previous == null || !(previous.getStage() == RenderExecutionStage.FAILED || previous.getStage() == RenderExecutionStage.ABANDONED)) {
+      return ResponseEntity.badRequest().body(java.util.Map.of("message", "Only failed or abandoned jobs can be retried"));
+    }
+    int nextNumber = previous.getAttemptNumber() + 1;
+    if (nextNumber > job.getMaxAttempts()) {
+      return ResponseEntity.badRequest().body(java.util.Map.of("message", "Maximum render attempts reached"));
+    }
+    renderAttemptRepo.save(RenderAttempt.builder().renderJobId(id).attemptNumber(nextNumber).stage(RenderExecutionStage.QUEUED).pollCount(0).eligibleAt(Instant.now()).build());
+    job.setAttemptNumber(nextNumber);
+    job.setStatus(RenderJob.RenderJobStatus.QUEUED);
+    job.setFailedAt(null);
+    job.setErrorCode(null);
+    job.setErrorMessage(null);
+    renderJobRepo.save(job);
+    return ResponseEntity.ok(java.util.Map.of("success", true, "message", "Render retry queued", "attemptNumber", nextNumber));
   }
 
   /** Get render jobs by status. */

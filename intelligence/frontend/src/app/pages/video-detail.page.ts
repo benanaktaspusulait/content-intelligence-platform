@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, computed, inject, OnDestroy, signal } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
 import { catchError, combineLatest, forkJoin, interval, Observable, of, startWith, Subscription, switchMap } from 'rxjs';
 import {
   AnalysisStatus,
@@ -133,9 +134,9 @@ const VARIANT_TYPE_LABELS: Record<string, string> = {
 
       <section class="section-band social-copy-panel" aria-labelledby="social-copy-heading">
         <div class="section-heading"><div><span class="eyebrow">PUBLICATION COPY</span><h2 id="social-copy-heading">Social caption</h2></div><span class="data-freshness">Generated from selected video</span></div>
-        <div class="copy-controls"><label>Platform<select [value]="captionPlatform()" (change)="captionPlatform.set(($any($event.target)).value)"><option value="INSTAGRAM">Instagram</option><option value="FACEBOOK">Facebook</option><option value="TIKTOK">TikTok</option><option value="YOUTUBE">YouTube</option></select></label><label>Description<input type="text" [value]="captionDescription()" (input)="captionDescription.set(($any($event.target)).value)" placeholder="Short description for the generator" /></label><button class="button button--primary" type="button" [disabled]="captionLoading()" (click)="generateCaption()">{{ captionLoading() ? 'Generating…' : 'Generate copy' }}</button></div>
+        <div class="copy-controls"><label>Platform<select [value]="captionPlatform()" (change)="captionPlatform.set(($any($event.target)).value)"><option value="INSTAGRAM">Instagram</option><option value="FACEBOOK">Facebook</option><option value="TIKTOK">TikTok</option><option value="YOUTUBE">YouTube</option></select></label><label>Description<input type="text" [value]="captionDescription()" (input)="captionDescription.set(($any($event.target)).value)" placeholder="Short description for the generator" /></label><label>Render asset ID<input type="text" [value]="captionAssetId()" (input)="captionAssetId.set(($any($event.target)).value)" placeholder="Optional UUID for version history" /></label><button class="button button--primary" type="button" [disabled]="captionLoading()" (click)="generateCaption()">{{ captionLoading() ? 'Generating…' : 'Generate copy' }}</button></div>
         @if (captionError()) { <div class="state-panel state-panel--error compact-state"><strong>Caption generation failed</strong><p>{{ captionError() }}</p></div> }
-        @if (caption(); as copy) { <div class="copy-result"><textarea [value]="copy.caption" readonly rows="4" aria-label="Generated caption"></textarea><p class="muted">{{ copy.characterCount }} characters · {{ copy.hashtags.join(' ') }}</p></div> }
+        @if (caption(); as copy) { <div class="copy-result"><textarea [value]="copy.caption" readonly rows="4" aria-label="Generated caption"></textarea><p class="muted">{{ copy.characterCount }} characters · {{ copy.hashtags.join(' ') }}</p><button class="button button--secondary" type="button" [disabled]="captionSaveState() === 'saving' || !captionAssetId()" (click)="saveCaptionVersion()">{{ captionSaveState() === 'saving' ? 'Saving…' : 'Save caption version' }}</button>@if (captionSaveState() === 'saved') { <span class="muted">Saved as a new immutable version.</span> }@if (captionSaveState() === 'error') { <span class="amber-text">Caption version could not be saved.</span> }</div> }
       </section>
 
       @if (!activeFile()!.ingested) {
@@ -255,6 +256,7 @@ const VARIANT_TYPE_LABELS: Record<string, string> = {
 })
 export class VideoDetailPage implements OnDestroy {
   private readonly service = inject(CreativeIntelligenceService);
+  private readonly http = inject(HttpClient);
   private readonly route = inject(ActivatedRoute);
   private loadGeneration = 0;
   private analysisPollSubscription: Subscription | null = null;
@@ -275,6 +277,8 @@ export class VideoDetailPage implements OnDestroy {
   protected readonly captionLoading = signal(false);
   protected readonly captionError = signal('');
   protected readonly caption = signal<import('../core/creative-intelligence.service').CaptionResponse | null>(null);
+  protected readonly captionAssetId = signal('');
+  protected readonly captionSaveState = signal<'idle' | 'saving' | 'saved' | 'error'>('idle');
   protected readonly summary = signal<ReachFurtherSummary | null>(null);
   protected readonly trajectory = signal<TrajectoryView | null>(null);
   protected readonly growth = signal<PlatformGrowthProfile | null>(null);
@@ -371,6 +375,20 @@ export class VideoDetailPage implements OnDestroy {
       contentType: 'entertainment',
       hashtagCount: 5,
     }).subscribe({ next: value => { this.caption.set(value); this.captionLoading.set(false); }, error: response => { this.captionError.set(response.error?.message || 'The caption service did not respond.'); this.captionLoading.set(false); } });
+  }
+
+  protected saveCaptionVersion(): void {
+    const copy = this.caption();
+    if (!copy || !this.captionAssetId().trim()) return;
+    this.captionSaveState.set('saving');
+    this.http.post('/api/v1/captions/versions', {
+      renderAssetId: this.captionAssetId().trim(),
+      platform: this.captionPlatform(),
+      caption: copy.caption,
+      hashtags: copy.hashtags.join(' '),
+      source: 'GENERATED',
+      createdBy: 'local-user',
+    }).subscribe({ next: () => this.captionSaveState.set('saved'), error: () => this.captionSaveState.set('error') });
   }
 
   ngOnDestroy(): void { this.analysisPollSubscription?.unsubscribe(); }

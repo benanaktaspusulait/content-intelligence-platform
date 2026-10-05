@@ -234,6 +234,18 @@ Intensity: 4`;
     });
   }
 
+  createRevisionPromptVersion(): void {
+    if (!this.contentId || this.prompt.length < 100) {
+      this.error = 'A linked content ID and a prompt of at least 100 characters are required';
+      return;
+    }
+    this.loading = true; this.error = null; this.report = null; this.validationRecordId = null;
+    this.http.post<{ id: number }>(`/api/v1/intelligence/contents/${Number(this.contentId)}/prompt-versions`, { rawText: this.prompt, parsedIr: '{}' }).subscribe({
+      next: version => { this.promptVersionId = String(version.id); this.loading = false; },
+      error: response => { this.error = response.error?.detail || response.error?.message || 'Prompt revision could not be saved'; this.loading = false; },
+    });
+  }
+
   getStatusBadgeClass(): string {
     if (!this.report) return '';
     

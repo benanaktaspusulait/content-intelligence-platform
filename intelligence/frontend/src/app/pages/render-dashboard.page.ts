@@ -256,6 +256,10 @@ interface RenderAsset {
                       <span>Completed: {{ formatTime(job.completedAt) }}</span>
                     }
                   </div>
+                  <div class="job-actions">
+                    @if (['QUEUED', 'GENERATING', 'POLLING', 'DOWNLOADING'].includes(job.status)) { <button type="button" (click)="cancelRender(job)" [disabled]="jobAction() === job.id">{{ jobAction() === job.id ? 'Cancelling…' : 'Cancel render' }}</button> }
+                    @if (['FAILED', 'ABANDONED'].includes(job.status)) { <button type="button" (click)="retryRender(job)" [disabled]="jobAction() === job.id || job.attemptNumber >= job.maxAttempts">{{ jobAction() === job.id ? 'Retrying…' : 'Retry render' }}</button> }
+                  </div>
                 </div>
               </div>
             }
@@ -671,6 +675,7 @@ export class RenderDashboardPage implements OnInit, OnDestroy {
   reviewToken = signal('');
   reviewNotes = signal('');
   reviewingQa = signal<string | null>(null);
+  jobAction = signal<string | null>(null);
 
   private readonly apiUrl = '/api/v1/render-jobs';
   private notificationStream: EventSource | null = null;
@@ -701,6 +706,22 @@ export class RenderDashboardPage implements OnInit, OnDestroy {
     }, { headers: { 'Idempotency-Key': crypto.randomUUID() } }).subscribe({
       next: response => { this.queueLoading.set(false); this.queuedJobId.set(response.renderJobId); this.loadJobs(0); },
       error: err => { this.queueLoading.set(false); this.queueError.set(err.error?.detail || err.error?.message || 'Render could not be queued.'); },
+    });
+  }
+
+  cancelRender(job: RenderJob): void {
+    this.jobAction.set(job.id);
+    this.http.post(`/api/v1/render-jobs/${job.id}/cancel`, {}).subscribe({
+      next: () => { this.jobAction.set(null); this.loadJobs(this.pageNumber()); },
+      error: err => { this.jobAction.set(null); this.error.set(err.error?.detail || err.error?.message || 'Render could not be cancelled.'); },
+    });
+  }
+
+  retryRender(job: RenderJob): void {
+    this.jobAction.set(job.id);
+    this.http.post(`/api/v1/render-jobs/${job.id}/retry`, {}).subscribe({
+      next: () => { this.jobAction.set(null); this.loadJobs(this.pageNumber()); },
+      error: err => { this.jobAction.set(null); this.error.set(err.error?.detail || err.error?.message || 'Render could not be retried.'); },
     });
   }
 
