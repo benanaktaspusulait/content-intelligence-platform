@@ -170,9 +170,14 @@ def analyse_semantic_video(
         }
         payload.setdefault("limitations", [])
         return payload
+    except ValueError as error:
+        result = unavailable_semantic_evidence(None, "", frame_selection, "Semantic provider is not configured.")
+        result["status"] = "NOT_CONFIGURED"
+        result["provenance"]["configurationError"] = type(error).__name__
+        return result
     except Exception as error:
         result = unavailable_semantic_evidence(None, "", frame_selection, f"Semantic provider failed: {type(error).__name__}")
-        result["status"] = "FAILED"
+        result["status"] = "SERVICE_ERROR"
         return result
 
 

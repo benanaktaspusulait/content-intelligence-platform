@@ -2,6 +2,9 @@ package com.pompomhills.intelligence.video.api;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyBoolean;
+import static org.mockito.ArgumentMatchers.anyMap;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 import com.pompomhills.intelligence.video.VideoEntity;
@@ -63,7 +66,7 @@ class VideoControllerAnalysisTest {
   void isolateDatabaseAndStubMl() {
     scheduledTasks.getScheduledTasks().forEach(task -> task.cancel(false));
     jdbc.update("TRUNCATE videos CASCADE");
-    when(ml.analyse(any())).thenReturn(stubResponse());
+    when(ml.analyse(anyString(), anyString(), anyMap(), anyBoolean())).thenReturn(stubResponse());
   }
 
   @Test

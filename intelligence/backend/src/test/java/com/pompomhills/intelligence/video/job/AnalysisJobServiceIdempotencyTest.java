@@ -2,6 +2,9 @@ package com.pompomhills.intelligence.video.job;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyBoolean;
+import static org.mockito.ArgumentMatchers.anyMap;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.when;
 
@@ -73,7 +76,7 @@ class AnalysisJobServiceIdempotencyTest {
   void isolateDatabaseAndStubMl() {
     scheduledTasks.getScheduledTasks().forEach(task -> task.cancel(false));
     jdbc.update("TRUNCATE videos CASCADE");
-    when(ml.analyse(any())).thenReturn(stubResponse("creative-v1"));
+    when(ml.analyse(anyString(), anyString(), anyMap(), anyBoolean())).thenReturn(stubResponse("creative-v1"));
   }
 
   /**
@@ -154,7 +157,7 @@ class AnalysisJobServiceIdempotencyTest {
 
     assertThat(result.created()).isFalse();
     assertThat(result.job()).isNull();
-    org.mockito.Mockito.verify(ml, org.mockito.Mockito.never()).analyse(any());
+    org.mockito.Mockito.verify(ml, org.mockito.Mockito.never()).analyse(anyString(), anyString(), anyMap(), anyBoolean());
   }
 
   // Requirement 4: a new analysis version does not force a second job through this plan's
@@ -165,7 +168,7 @@ class AnalysisJobServiceIdempotencyTest {
     UUID videoId = freshUnanalysedVideo();
     jobs.enqueue(videoId);
     jobs.processNext(); // persists an analysis with analysisVersion "creative-v1"
-    when(ml.analyse(any())).thenReturn(stubResponse("creative-v2")); // a hypothetically newer version
+    when(ml.analyse(anyString(), anyString(), anyMap(), anyBoolean())).thenReturn(stubResponse("creative-v2")); // a hypothetically newer version
 
     var result = jobs.enqueue(videoId);
 
@@ -192,7 +195,7 @@ class AnalysisJobServiceIdempotencyTest {
   @Test
   void workerFailureEndsInFailed() {
     UUID videoId = freshUnanalysedVideo();
-    when(ml.analyse(any())).thenThrow(new RuntimeException("ML unavailable"));
+    when(ml.analyse(anyString(), anyString(), anyMap(), anyBoolean())).thenThrow(new RuntimeException("ML unavailable"));
     var enqueued = jobs.enqueue(videoId);
 
     jobs.processNext();
@@ -206,14 +209,14 @@ class AnalysisJobServiceIdempotencyTest {
   @Test
   void retryDoesNotCreateDuplicateAnalysisRows() {
     UUID videoId = freshUnanalysedVideo();
-    when(ml.analyse(any())).thenThrow(new RuntimeException("transient failure"));
+    when(ml.analyse(anyString(), anyString(), anyMap(), anyBoolean())).thenThrow(new RuntimeException("transient failure"));
     var enqueued = jobs.enqueue(videoId);
     jobs.processNext(); // fails, job is now FAILED with available_at 10s in the future
     // Re-stubbing with when(ml.analyse(any())).thenReturn(...) here would itself invoke
     // ml.analyse(any()) to register the new stub, which would immediately re-trigger the
     // still-active thenThrow(...) stub above instead of replacing it. doReturn(...).when(...)
     // configures the stub without invoking the mock, so it correctly replaces the throwing stub.
-    doReturn(stubResponse("creative-v1")).when(ml).analyse(any());
+    doReturn(stubResponse("creative-v1")).when(ml).analyse(anyString(), anyString(), anyMap(), anyBoolean());
 
     jobs.retry(enqueued.job().id()); // flips FAILED back to QUEUED with available_at=now()
     jobs.processNext(); // succeeds this time
@@ -274,7 +277,7 @@ class AnalysisJobServiceIdempotencyTest {
     // globally oldest QUEUED row with no video scoping (pre-existing behavior), so queuedVideo's
     // job must not be older than any job this test still expects processNext() to claim.
     UUID failedVideo = freshUnanalysedVideo();
-    when(ml.analyse(any())).thenThrow(new RuntimeException("boom"));
+    when(ml.analyse(anyString(), anyString(), anyMap(), anyBoolean())).thenThrow(new RuntimeException("boom"));
     jobs.enqueue(failedVideo);
     jobs.processNext();
     // doReturn(...).when(...) instead of when(...).thenReturn(...): see the comment in
@@ -309,6 +312,6 @@ class AnalysisJobServiceIdempotencyTest {
 
     jobs.enqueue(videoId); // must not call ML again, since an analysis already exists
 
-    org.mockito.Mockito.verify(ml, org.mockito.Mockito.never()).analyse(any());
+    org.mockito.Mockito.verify(ml, org.mockito.Mockito.never()).analyse(anyString(), anyString(), anyMap(), anyBoolean());
   }
 }
