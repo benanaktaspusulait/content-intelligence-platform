@@ -214,6 +214,20 @@ const VARIANT_TYPE_LABELS: Record<string, string> = {
               }
             }
           </section>
+          <section class="semantic-understanding-panel" aria-labelledby="semantic-understanding-heading">
+            <div class="section-heading"><div><span class="eyebrow">SEMANTIC VIDEO UNDERSTANDING</span><h2 id="semantic-understanding-heading">Observed story and meaning</h2></div><span class="data-freshness">{{ semanticStatus() }}</span></div>
+            @if (semanticStatus() === 'NOT_EVALUATED' || semanticStatus() === 'NOT_REQUESTED') {
+              <div class="state-panel compact-state"><strong>Semantic layer not evaluated</strong><p>{{ semanticLimitation() }}</p></div>
+            } @else {
+              <div class="creative-evidence-cards">
+                <div><span>Story arc</span><strong>{{ semanticValue('storyArc', 'arcType') }}</strong><small>Structured observed sequence.</small></div>
+                <div><span>Semantic hook</span><strong>{{ semanticValue('opening', 'semanticHookReadable') }}</strong><small>Hook is more than face visibility.</small></div>
+                <div><span>Payoff</span><strong>{{ semanticValue('payoff', 'status') }}</strong><small>Semantic resolution is separate from motion rebound.</small></div>
+                <div><span>Loop</span><strong>{{ semanticValue('loop', 'status') }}</strong><small>Scene-state compatibility, not pixel similarity alone.</small></div>
+              </div>
+              <div class="semantic-evidence-list"><span>Characters</span><strong>{{ semanticNames('characters') }}</strong><span>Objects</span><strong>{{ semanticNames('objects') }}</strong><span>Beats</span><strong>{{ semanticBeatSummary() }}</strong><span>Confidence</span><strong>{{ semanticConfidence() }}</strong></div>
+            }
+          </section>
           <section class="temporal-timeline" aria-labelledby="temporal-timeline-heading">
             <div class="section-heading"><div><span class="eyebrow">LOCAL TIMELINE</span><h3 id="temporal-timeline-heading">Motion by segment</h3></div><span class="data-freshness">{{ temporalVersion() }}</span></div>
             @if (timelineSegments().length) {
@@ -702,6 +716,30 @@ export class VideoDetailPage implements OnDestroy {
     const recoveries = events.filter(item => String((item as Record<string, unknown>)['type'] || '').includes('RECOVERY'));
     if (!dips.length) return 'None detected';
     return `${dips.length} local dip${dips.length === 1 ? '' : 's'}${recoveries.length ? ` · ${recoveries.length} recovery` : ''}`;
+  }
+  protected semanticEvidence(): Record<string, any> { return (this.analysisStatus()?.semanticVideoEvidence || {}) as Record<string, any>; }
+  protected semanticStatus(): string { return String(this.semanticEvidence()['status'] || 'NOT_REQUESTED'); }
+  protected semanticLimitation(): string {
+    const limitations = this.semanticEvidence()['limitations'];
+    return Array.isArray(limitations) && limitations.length ? String(limitations[0]) : 'Run the semantic pass when a vision-capable provider is configured.';
+  }
+  protected semanticValue(group: string, key: string): string {
+    const value = (this.semanticEvidence()[group] as Record<string, any> | undefined)?.[key];
+    return value === null || value === undefined || value === '' ? 'Unknown' : this.readable(String(value));
+  }
+  protected semanticNames(group: string): string {
+    const values = this.semanticEvidence()[group];
+    if (!Array.isArray(values) || !values.length) return 'Unknown';
+    return values.map((value: any) => value?.canonicalName || value?.label || value?.objectType || 'Unknown').join(', ');
+  }
+  protected semanticBeatSummary(): string {
+    const values = this.semanticEvidence()['beats'];
+    if (!Array.isArray(values) || !values.length) return 'Unknown';
+    return `${values.length} observed beat${values.length === 1 ? '' : 's'}`;
+  }
+  protected semanticConfidence(): string {
+    const value = this.semanticEvidence()['confidence'];
+    return typeof value === 'number' ? `${(value * 100).toFixed(0)}%` : 'Unknown';
   }
   protected timelineSegments(): Array<Record<string, any>> {
     const segments = this.analysisStatus()?.temporalProfile?.['segments'];

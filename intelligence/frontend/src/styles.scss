@@ -568,6 +568,11 @@ button.coverage-cell:hover { transform: scale(1.04); border-color: var(--moss); 
 .caption-card .copy-result { padding: 10px 0 0; border-top: 1px solid var(--line); }
 .caption-card__footer { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding-top: 9px; border-top: 1px solid var(--line); }
 .caption-card__footer span { min-width: 0; overflow: hidden; color: var(--muted); font-size: 8px; text-overflow: ellipsis; white-space: nowrap; }
+.semantic-understanding-panel { margin: 18px 0; padding: 18px; background: var(--surface); border: 1px solid var(--line); }
+.semantic-understanding-panel .state-panel { margin: 0; }
+.semantic-evidence-list { display: grid; grid-template-columns: 150px minmax(0, 1fr); gap: 8px 14px; margin-top: 14px; padding: 12px; background: var(--surface-alt); border: 1px solid var(--line); }
+.semantic-evidence-list span { color: var(--muted); font-size: 10px; font-weight: 800; text-transform: uppercase; }
+.semantic-evidence-list strong { min-width: 0; overflow-wrap: anywhere; font-size: 12px; }
 .caption-error { margin: 0; padding: 8px; color: var(--danger); background: #f8e4df; font-size: 9px; }
 
 .causal-notice { display: flex; min-height: 48px; align-items: center; gap: 11px; margin-bottom: 16px; padding: 9px 12px; background: var(--blue-soft); border-left: 3px solid var(--blue); }

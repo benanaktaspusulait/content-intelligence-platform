@@ -195,7 +195,8 @@ public class VideoController {
           analysis.getDarkFrameCandidates(),
           analysis.getTimeline(),
           analysis.getTemporalProfile(),
-          analysis.getPresentation());
+          analysis.getPresentation(),
+          analysis.getSemanticVideoEvidence());
     }
     var latest = jobService.findLatestByVideoId(id);
     if (latest.isEmpty()) {
@@ -226,6 +227,7 @@ public class VideoController {
             Map.of(),
             List.of(),
             List.of(),
+            Map.of(),
             Map.of(),
             Map.of());
       }

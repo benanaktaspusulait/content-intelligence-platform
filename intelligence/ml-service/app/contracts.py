@@ -41,6 +41,7 @@ class VideoAnalysisResponse(BaseModel):
     motion: dict[str, Any] = Field(default_factory=dict)
     visual_similarity: dict[str, Any] = Field(default_factory=dict, alias="visualSimilarity")
     dark_frame_candidates: list[dict[str, Any]] = Field(default_factory=list, alias="darkFrameCandidates")
+    semantic_video_evidence: dict[str, Any] = Field(default_factory=dict, alias="semanticVideoEvidence")
 
 
 class PredictionRequest(BaseModel):

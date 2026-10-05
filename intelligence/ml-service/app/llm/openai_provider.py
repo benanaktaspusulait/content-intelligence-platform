@@ -1,4 +1,7 @@
 import os
+import base64
+from pathlib import Path
+from typing import Any
 
 from openai import OpenAI
 
@@ -44,3 +47,28 @@ class OpenAIProvider(LLMProvider):
         # than leaking ``None`` to callers.
         content = response.choices[0].message.content
         return content if content is not None else ""
+
+    def complete_images(
+        self, prompt: str, image_paths: list[str], system: str = "", temperature: float = 0.0
+    ) -> tuple[str, dict[str, object]]:
+        content: list[dict[str, Any]] = [{"type": "text", "text": prompt}]
+        for image_path in image_paths:
+            encoded = base64.b64encode(Path(image_path).read_bytes()).decode("ascii")
+            content.append({"type": "image_url", "image_url": {"url": f"data:image/jpeg;base64,{encoded}"}})
+        messages: list[dict[str, Any]] = []
+        if system:
+            messages.append({"role": "system", "content": system})
+        messages.append({"role": "user", "content": content})
+        response = self.client.chat.completions.create(
+            model=self.model,
+            messages=messages,  # type: ignore[arg-type]
+            temperature=temperature,
+            response_format={"type": "json_object"},
+        )
+        result = response.choices[0].message.content or ""
+        usage = getattr(response, "usage", None)
+        return result, {
+            "inputTokens": getattr(usage, "prompt_tokens", None),
+            "outputTokens": getattr(usage, "completion_tokens", None),
+            "requestId": getattr(response, "id", None),
+        }

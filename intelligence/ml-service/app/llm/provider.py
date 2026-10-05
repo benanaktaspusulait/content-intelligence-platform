@@ -52,6 +52,12 @@ class LLMProvider(ABC):
         """
         pass
 
+    def complete_images(
+        self, prompt: str, image_paths: list[str], system: str = "", temperature: float = 0.0
+    ) -> tuple[str, dict[str, object]]:
+        """Run one structured vision request when the provider supports it."""
+        raise UnsupportedProviderError(f"Vision input is not configured for {type(self).__name__}")
+
 
 def get_provider(name: str | None = None) -> LLMProvider:
     """

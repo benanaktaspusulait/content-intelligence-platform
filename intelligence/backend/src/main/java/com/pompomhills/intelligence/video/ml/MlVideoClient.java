@@ -58,7 +58,8 @@ public class MlVideoClient {
       Map<String, Object> sampling,
       Map<String, Object> motion,
       Map<String, Object> visualSimilarity,
-      List<Map<String, Object>> darkFrameCandidates) {
+      List<Map<String, Object>> darkFrameCandidates,
+      Map<String, Object> semanticVideoEvidence) {
     public MlAnalysisResponse(
         String contractVersion,
         Metadata metadata,
@@ -92,7 +93,8 @@ public class MlVideoClient {
           Map.of(),
           Map.of(),
           Map.of(),
-          List.of());
+          List.of(),
+          Map.of());
     }
 
     public double actionDnaScore() {

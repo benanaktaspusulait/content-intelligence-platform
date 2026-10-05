@@ -99,7 +99,8 @@ public final class VideoDtos {
       List<Map<String, Object>> darkFrameCandidates,
       List<Map<String, Object>> timeline,
       Map<String, Object> temporalProfile,
-      Map<String, Object> presentation) {
+      Map<String, Object> presentation,
+      Map<String, Object> semanticVideoEvidence) {
     public AnalysisStatusResponse(
         UUID videoId,
         boolean hasCompletedAnalysis,
@@ -117,7 +118,7 @@ public final class VideoDtos {
         String analysisVersion) {
       this(videoId, hasCompletedAnalysis, jobId, jobState, attempts, maxAttempts, errorMessage,
           analysisId, classification, actionDnaScore, confidence, reason, storyboardPath,
-          analysisVersion, "LEGACY", actionDnaScore, confidence, Map.of(), Map.of(), Map.of(), Map.of(), List.of(), List.of(), Map.of(), Map.of());
+          analysisVersion, "LEGACY", actionDnaScore, confidence, Map.of(), Map.of(), Map.of(), Map.of(), List.of(), List.of(), Map.of(), Map.of(), Map.of());
     }
   }
 }

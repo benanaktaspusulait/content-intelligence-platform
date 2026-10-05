@@ -11,6 +11,8 @@ import numpy as np
 
 from .config import settings
 from .contracts import VideoAnalysisResponse, VideoMetadata
+from .semantic_evidence import analyse_semantic_video
+from .semantic_frame_selector import select_semantic_frames
 
 # ``settings`` is re-exported deliberately: tests patch ``app.video.settings`` directly
 # (e.g. to point ``data_root`` at a tmp dir) rather than reaching into ``app.config``.
@@ -1215,6 +1217,17 @@ def _analyse_v5(path: Path, metadata: VideoMetadata) -> VideoAnalysisResponse:
     result.evidence["loop"] = loop
     result.evidence["actionBeatNovelty"] = action_novelty
     result.evidence["planRenderFidelity"] = fidelity
+    frame_selection = select_semantic_frames(
+        path,
+        metadata.duration_ms / 1000,
+        metadata.sha256,
+        temporal_profile=temporal,
+    )
+    result.semantic_video_evidence = analyse_semantic_video(frame_selection)
+    result.semantic_video_evidence["assetHash"] = metadata.sha256
+    if result.semantic_video_evidence.get("status") == "NOT_EVALUATED":
+        result.semantic_video_evidence["status"] = "NOT_REQUESTED"
+    result.evidence["semanticFrameSelection"] = frame_selection
     result.features["hook"] = hook
     result.features["payoff"] = payoff
     result.features["loop"] = loop

@@ -334,6 +334,7 @@ public class VideoService {
     raw.put("darkFrameCandidates", result.darkFrameCandidates());
     raw.put("temporalProfile", result.evidence().getOrDefault("temporalProfile", Map.of()));
     raw.put("presentation", result.evidence().getOrDefault("presentation", Map.of()));
+    raw.put("semanticVideoEvidence", result.semanticVideoEvidence());
     var analysis = analyses
         .findFirstByVideoIdAndAnalysisVersionOrderByCreatedAtDesc(video.getId(), result.analysisVersion())
         .orElseGet(() -> new CreativeAnalysisEntity(

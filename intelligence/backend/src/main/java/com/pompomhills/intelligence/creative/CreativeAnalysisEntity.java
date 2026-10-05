@@ -151,6 +151,10 @@ public class CreativeAnalysisEntity {
     return rawResult == null ? Map.of() : castMap(rawResult.get("presentation"));
   }
 
+  public Map<String, Object> getSemanticVideoEvidence() {
+    return rawResult == null ? Map.of() : castMap(rawResult.get("semanticVideoEvidence"));
+  }
+
   @SuppressWarnings("unchecked")
   private Map<String, Object> castMap(Object value) {
     return value instanceof Map<?, ?> map ? (Map<String, Object>) map : Map.of();

@@ -128,7 +128,7 @@ export interface MediaFile {
   videoId: string | null;
   status: string | null;
   variantId: string | null;
-  thumbnailPath: string | null;
+  thumbnailPath?: string | null;
   characters?: Array<{ id: string; name: string; participation: string; role: string; source: string; confidence: string }>;
 }
 
@@ -449,6 +449,7 @@ export interface AnalysisStatus {
   timeline?: Array<Record<string, unknown>>;
   temporalProfile?: Record<string, unknown>;
   presentation?: Record<string, unknown>;
+  semanticVideoEvidence?: Record<string, unknown>;
 }
 
 export interface PlatformCreativeReadiness {
