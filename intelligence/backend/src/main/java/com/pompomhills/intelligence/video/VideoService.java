@@ -42,7 +42,7 @@ public class VideoService {
   private final MlVideoClient ml;
   private final PompomProperties properties;
   private final Clock clock;
-  public static final String CURRENT_ANALYSIS_VERSION = "sampled-visual-motion-v3";
+  public static final String CURRENT_ANALYSIS_VERSION = "sampled-visual-motion-v4";
   public static final String V4_ANALYSIS_VERSION = "sampled-visual-motion-v4";
 
   public VideoService(

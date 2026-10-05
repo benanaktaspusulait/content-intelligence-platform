@@ -11,7 +11,7 @@ class Settings(BaseSettings):
     # that contains the shared ``data/`` directory (ml-service/app -> ml-service
     # -> Pompom_Creative_Intelligence).
     data_root: Path = Path(__file__).resolve().parents[2] / "data"
-    analysis_version: str = "sampled-visual-motion-v3"
+    analysis_version: str = "sampled-visual-motion-v4"
     parser_version: str = "prompt-parser-v2"
     rule_engine_version: str = "quality-rule-engine-v2"
     # No producibility_validator_version setting: AI producibility validation

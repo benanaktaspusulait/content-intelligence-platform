@@ -224,7 +224,10 @@ def _v4_intervals(samples: list[V4SampledFrame]) -> list[dict[str, Any]]:
             "normalizationSaturated": saturated,
         })
     raw = [item["normalizedShortMotion"] for item in intervals]
-    smoothed = np.median(np.array([raw[max(0, index - 1): min(len(raw), index + 2)] for index in range(len(raw))]), axis=1) if raw else []
+    smoothed = [
+        float(np.median(raw[max(0, index - 1): min(len(raw), index + 2)]))
+        for index in range(len(raw))
+    ]
     for item, value in zip(intervals, smoothed, strict=False):
         item["smoothedMotion"] = round(float(value), 6)
         item["normalizedMotionIntensity"] = float(value)

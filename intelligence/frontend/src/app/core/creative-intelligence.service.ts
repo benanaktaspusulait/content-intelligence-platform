@@ -551,11 +551,11 @@ export class CreativeIntelligenceService {
     return this.http.post<VideoVariant>(`${this.baseUrl}/videos/${videoId}/variants`, request);
   }
 
-  triggerAnalysis(videoId: string, force = false, analysisVersion = 'sampled-visual-motion-v3'): Observable<AnalysisStatus> {
+  triggerAnalysis(videoId: string, force = false, analysisVersion = 'sampled-visual-motion-v4'): Observable<AnalysisStatus> {
     return this.http.post<AnalysisStatus>(`${this.baseUrl}/videos/${videoId}/analysis`, {}, { params: { force, analysisVersion } });
   }
 
-  getAnalysisStatus(videoId: string, analysisVersion = 'sampled-visual-motion-v3'): Observable<AnalysisStatus> {
+  getAnalysisStatus(videoId: string, analysisVersion = 'sampled-visual-motion-v4'): Observable<AnalysisStatus> {
     return this.http.get<AnalysisStatus>(`${this.baseUrl}/videos/${videoId}/analysis/status`, { params: { analysisVersion } });
   }
 
