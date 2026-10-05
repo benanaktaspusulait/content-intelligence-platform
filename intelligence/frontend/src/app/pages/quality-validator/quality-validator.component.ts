@@ -32,11 +32,19 @@ interface LinkedValidationResponse { validationRecordId: number; report: Quality
 
 interface PromptFile {
   name: string;
+  title?: string;
   relativePath: string;
   folder: string;
   sizeBytes: number | null;
   modifiedAt: string | null;
+  contentId?: number;
+  promptVersionId?: number;
+  versionNumber?: number;
+  rawText?: string;
+  sourcePath?: string;
 }
+
+interface PromptDirectory { name: string; relativePath: string; promptCount: number; }
 
 interface RuleEvaluation {
   ruleId: string;
@@ -122,6 +130,10 @@ export class QualityValidatorComponent {
   error: string | null = null;
   promptFiles: PromptFile[] = [];
   promptLibraryRoot = 'library/POMPOM_HILLS_PRODUCTION';
+  promptDirectories: PromptDirectory[] = [];
+  selectedPromptDirectory = '';
+  promptDirectoriesLoading = false;
+  importMessage = '';
   selectedPromptPath = '';
   promptFilesLoading = false;
   selectedPromptLoading = false;
@@ -170,13 +182,50 @@ Visual state: sitting on mat (continuation)
 Consequence: Feels happy about mat
 Intensity: 4`;
 
-  constructor(private http: HttpClient) { this.loadPromptFiles(); }
+  constructor(private http: HttpClient) { this.loadPromptDirectories(); }
+
+  loadPromptDirectories(): void {
+    this.promptDirectoriesLoading = true;
+    this.error = null;
+    this.http.get<PromptDirectory[]>(`/api/v1/videos/prompt-directories?relativeDirectory=${encodeURIComponent(this.promptLibraryRoot)}`).subscribe({
+      next: directories => { this.promptDirectories = directories; this.promptDirectoriesLoading = false; },
+      error: response => { this.error = response.error?.message || 'Prompt folders could not be loaded.'; this.promptDirectoriesLoading = false; },
+    });
+  }
+
+  selectPromptDirectory(): void {
+    this.promptFiles = [];
+    this.selectedPromptPath = '';
+    this.prompt = '';
+    this.importMessage = '';
+    if (this.selectedPromptDirectory) this.loadPromptFiles();
+  }
 
   loadPromptFiles(): void {
+    if (!this.selectedPromptDirectory) { this.promptFiles = []; return; }
     this.promptFilesLoading = true;
-    this.http.get<PromptFile[]>(`/api/v1/videos/prompt-files?relativeDirectory=${encodeURIComponent(this.promptLibraryRoot)}`).subscribe({
-      next: files => { this.promptFiles = files; this.promptFilesLoading = false; },
+    this.http.get<PromptFile[]>(`/api/v1/videos/prompt-files?relativeDirectory=${encodeURIComponent(this.selectedPromptDirectory)}`).subscribe({
+      next: files => { this.promptFiles = files; this.promptFilesLoading = false; this.loadDbPromptLibrary(); },
       error: response => { this.error = response.error?.message || 'Project prompts could not be loaded.'; this.promptFilesLoading = false; },
+    });
+  }
+
+  importSelectedFolder(): void {
+    if (!this.selectedPromptDirectory) return;
+    this.loading = true;
+    this.importMessage = '';
+    this.http.post<{ discovered: number; imported: number; unchanged: number }>('/api/v1/intelligence/contents/import-folder', { relativeDirectory: this.selectedPromptDirectory }).subscribe({
+      next: result => { this.loading = false; this.importMessage = `${result.imported} prompt(s) imported to DB; ${result.unchanged} unchanged.`; this.loadDbPromptLibrary(); },
+      error: response => { this.loading = false; this.error = response.error?.detail || response.error?.message || 'Prompt folder could not be imported.'; },
+    });
+  }
+
+  loadDbPromptLibrary(): void {
+    if (!this.selectedPromptDirectory) return;
+    this.promptFilesLoading = true;
+    this.http.get<PromptFile[]>(`/api/v1/intelligence/contents/prompt-library?sourceDirectory=${encodeURIComponent(this.selectedPromptDirectory)}`).subscribe({
+      next: files => { if (files.length) this.promptFiles = files.map(file => ({ ...file, name: file.sourcePath?.split('/').pop() || file.title || 'Prompt', relativePath: file.sourcePath || '', folder: this.selectedPromptDirectory, sizeBytes: null, modifiedAt: null })); this.promptFilesLoading = false; },
+      error: response => { this.error = response.error?.detail || response.error?.message || 'DB prompt library could not be loaded.'; this.promptFilesLoading = false; },
     });
   }
 
@@ -184,6 +233,17 @@ Intensity: 4`;
     this.selectedPromptPath = file.relativePath;
     this.selectedPromptLoading = true;
     this.error = null;
+    if (file.rawText && file.contentId && file.promptVersionId) {
+      this.prompt = file.rawText;
+      this.contentTitle = file.title || this.titleFromFolder(file.folder);
+      this.contentType = file.folder.includes('SOCIAL_REELS') ? 'REEL' : 'SHORT';
+      this.contentId = String(file.contentId);
+      this.promptVersionId = String(file.promptVersionId);
+      this.validationRecordId = null;
+      this.report = null;
+      this.selectedPromptLoading = false;
+      return;
+    }
     this.http.get<{ relativePath: string; content: string }>(`/api/v1/videos/metadata?path=${encodeURIComponent(file.relativePath)}`).subscribe({
       next: result => {
         this.prompt = result.content;

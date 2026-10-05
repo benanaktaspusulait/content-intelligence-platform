@@ -24,6 +24,10 @@ interface RenderJob {
   failedAt?: string;
   errorCode?: string;
   errorMessage?: string;
+  creativeContractVersion?: string;
+  creativeContractStatus?: string;
+  compiledGenerationConstraints?: string;
+  constraintCompilerVersion?: string;
   attempts?: Array<{
     id: string;
     attemptNumber: number;
@@ -72,6 +76,19 @@ interface PostRenderEvaluation {
   decision: string;
   humanReviewRequired: boolean;
   humanDecision?: string;
+  assessment?: {
+    grade: string;
+    label: string;
+    verdict: string;
+    evidenceCoveragePercent: number;
+    assessmentVersion: string;
+    snapshot: {
+      strengths?: string[];
+      concerns?: string[];
+      insights?: Array<{ title: string; detail: string; evidenceStatus: string }>;
+      recommendation?: { experiment: string; hypothesis: string; measures: string[] };
+    };
+  };
   ruleResults: PostRenderRuleResult[];
 }
 
@@ -193,6 +210,22 @@ interface RenderAsset {
                   </div>
                 </div>
 
+                @if (job.creativeContractStatus) {
+                  <div class="production-contract-summary">
+                    <div>
+                      <span class="contract-eyebrow">CREATIVE PRODUCTION CONTRACT</span>
+                      <strong>{{ job.creativeContractStatus }}</strong>
+                      <small>{{ job.creativeContractVersion }} · {{ job.constraintCompilerVersion || 'No compiler snapshot' }}</small>
+                    </div>
+                    @if (job.compiledGenerationConstraints) {
+                      <details>
+                        <summary>View compiled generation constraints</summary>
+                        <pre>{{ job.compiledGenerationConstraints }}</pre>
+                      </details>
+                    }
+                  </div>
+                }
+
                 @if (job.qaResult) {
                   <div class="qa-results" [class.requires-review]="job.qaResult.requiresHumanReview">
                     <div class="qa-header">
@@ -209,9 +242,28 @@ interface RenderAsset {
                           @if (job.qaResult.humanDecision) { <div class="metric"><span class="metric-label">Human decision</span><span class="metric-value">{{ job.qaResult.humanDecision }}</span></div> }
                         </div>
                         <button type="button" class="details-button" (click)="loadPostRenderDetails(job.qaResult.id)">
-                          {{ postRenderDetails()?.id === job.qaResult.id ? 'Hide rule results' : 'View rule results' }}
+                          {{ postRenderDetails()?.id === job.qaResult.id ? 'Hide assessment' : 'View assessment' }}
                         </button>
                         @if (postRenderDetails()?.id === job.qaResult.id) {
+                          @if (postRenderDetails()?.assessment; as assessment) {
+                            <section class="post-render-assessment">
+                              <div class="assessment-heading">
+                                <div><span class="metric-label">Post-render assessment</span><strong>{{ assessment.label }}</strong></div>
+                                <span class="assessment-grade grade-{{ assessment.grade.toLowerCase() }}">{{ assessment.grade }}</span>
+                              </div>
+                              <p class="assessment-verdict">{{ assessment.verdict }}</p>
+                              <div class="assessment-meta"><span>Evidence coverage {{ assessment.evidenceCoveragePercent }}%</span><span>{{ assessment.assessmentVersion }}</span></div>
+                              <div class="assessment-columns">
+                                <div><h5>Strengths</h5><ul>@for (item of assessment.snapshot.strengths ?? []; track item) { <li>{{ item }}</li> }</ul></div>
+                                <div><h5>Concerns</h5><ul>@for (item of assessment.snapshot.concerns ?? []; track item) { <li>{{ item }}</li> }</ul></div>
+                              </div>
+                              @if (assessment.snapshot.recommendation; as recommendation) {
+                                <div class="assessment-recommendation"><h5>Recommended experiment</h5><strong>{{ recommendation.experiment }}</strong><p>{{ recommendation.hypothesis }}</p></div>
+                              }
+                              <div class="assessment-insights">@for (insight of assessment.snapshot.insights ?? []; track insight.title) { <div><strong>{{ insight.title }}</strong><p>{{ insight.detail }}</p></div> }</div>
+                            </section>
+                          }
+                          <h5 class="rule-results-title">Rule results</h5>
                           <div class="rule-results">
                             @for (rule of postRenderDetails()?.ruleResults ?? []; track rule.ruleId) {
                               <div class="rule-result" [class.rule-failed]="rule.outcome !== 'PASS'">

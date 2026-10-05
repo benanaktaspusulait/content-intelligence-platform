@@ -38,16 +38,17 @@ def test_retention_assessment_returns_strict_metric_shape_without_platform_data(
     result = assess(request)
 
     assert set(result) == {
-        "motion_score", "hook_face", "stillness_punchline", "text_overlay", "eye_line",
-        "audio_silence", "color_brightness", "loop_sequel", "final_score", "prediction", "fix_1", "fix_2",
+        "assessment_scope", "policy_decision", "motion_evidence", "hook_face", "stillness_punchline",
+        "text_overlay", "eye_line", "audio_silence", "color_brightness", "loop_sequel",
     }
-    assert result["hook_face"]["score"] == 100
-    assert result["text_overlay"]["score"] == 100
-    assert result["loop_sequel"]["has_sequel_hook"] is True
-    assert 0 <= result["final_score"] <= 100
+    assert result["assessment_scope"] == "EXPERIMENT_ONLY"
+    assert result["policy_decision"] == "NOT_APPLICABLE"
+    assert result["hook_face"]["early_eye_contact"] is True
+    assert result["text_overlay"]["opening_text_present"] is True
+    assert result["loop_sequel"]["sequel_words_observed"] is True
 
 
-def test_full_motion_density_is_penalized_without_using_platform_performance() -> None:
+def test_motion_evidence_is_returned_without_a_combined_score() -> None:
     request = RetentionAssessmentRequest.model_validate(
         {
             "storyboard_frames": [{"timestampSeconds": 0.0}],
@@ -60,4 +61,6 @@ def test_full_motion_density_is_penalized_without_using_platform_performance() -
             },
         }
     )
-    assert assess(request)["motion_score"] == 80.0
+    result = assess(request)
+    assert result["motion_evidence"]["motion_density"] == 1.0
+    assert "final_score" not in result

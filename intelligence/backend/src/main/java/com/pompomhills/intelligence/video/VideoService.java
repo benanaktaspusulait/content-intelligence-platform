@@ -6,6 +6,7 @@ import com.pompomhills.intelligence.creative.CreativeAnalysisRepository;
 import com.pompomhills.intelligence.creative.CreativeFingerprintEntity;
 import com.pompomhills.intelligence.creative.CreativeFingerprintRepository;
 import com.pompomhills.intelligence.video.api.VideoDtos.AnalysisResponse;
+import com.pompomhills.intelligence.video.api.VideoDtos;
 import com.pompomhills.intelligence.video.api.VideoDtos.DirectoryIngestResponse;
 import com.pompomhills.intelligence.video.api.VideoDtos.IngestError;
 import com.pompomhills.intelligence.video.api.VideoDtos.MediaDirectory;
@@ -42,6 +43,7 @@ public class VideoService {
   private final PompomProperties properties;
   private final Clock clock;
   public static final String CURRENT_ANALYSIS_VERSION = "sampled-visual-motion-v3";
+  public static final String V4_ANALYSIS_VERSION = "sampled-visual-motion-v4";
 
   public VideoService(
       VideoRepository videos,
@@ -231,6 +233,21 @@ public class VideoService {
     }
   }
 
+  @Transactional(readOnly = true)
+  public List<VideoDtos.PromptDirectory> promptDirectories(String relativeDirectory) {
+    Map<String, Long> counts = promptFiles(relativeDirectory).stream()
+        .collect(java.util.stream.Collectors.groupingBy(PromptFile::folder, LinkedHashMap::new,
+            java.util.stream.Collectors.counting()));
+    return counts.entrySet().stream()
+        .sorted(Map.Entry.comparingByKey(String.CASE_INSENSITIVE_ORDER))
+        .map(entry -> {
+          String path = entry.getKey();
+          String name = path.substring(path.lastIndexOf('/') + 1);
+          return new VideoDtos.PromptDirectory(name, path, entry.getValue());
+        })
+        .toList();
+  }
+
   private boolean isPromptFile(Path file) {
     String name = file.getFileName().toString().toLowerCase(java.util.Locale.ROOT);
     if (!(name.endsWith(".md") || name.endsWith(".txt")) || name.contains("image")) return false;
@@ -250,13 +267,18 @@ public class VideoService {
 
   @Transactional
   public AnalysisResponse analyse(UUID videoId) {
+    return analyse(videoId, CURRENT_ANALYSIS_VERSION);
+  }
+
+  @Transactional
+  public AnalysisResponse analyse(UUID videoId, String analysisVersion) {
     var video =
         videos
             .findById(videoId)
             .orElseThrow(() -> new EntityNotFoundException("Video not found: " + videoId));
     video.markAnalysing();
     try {
-      var result = ml.analyse(video.getRelativePath());
+      var result = ml.analyse(video.getRelativePath(), analysisVersion);
     var analysis = persistCreativeAnalysis(video, result);
       video.markAnalysed();
       return new AnalysisResponse(
@@ -286,28 +308,45 @@ public class VideoService {
     raw.put("motion", result.motion());
     raw.put("visualSimilarity", result.visualSimilarity());
     raw.put("darkFrameCandidates", result.darkFrameCandidates());
-    var analysis =
-        analyses.save(
-            new CreativeAnalysisEntity(
-                video,
-                result.analysisVersion(),
-                result.analysisType(),
-                result.primaryEngine(),
-                result.secondaryEngines(),
-                result.classification(),
-                result.motionHeuristicScore() == null ? 0.0 : result.motionHeuristicScore(),
-                result.measurementConfidence() == null ? 0.0 : result.measurementConfidence(),
-                result.reason(),
-                result.storyboardPath(),
-                result.timeline(),
-                raw));
+    raw.put("temporalProfile", result.evidence().getOrDefault("temporalProfile", Map.of()));
+    raw.put("presentation", result.evidence().getOrDefault("presentation", Map.of()));
+    var analysis = analyses
+        .findFirstByVideoIdAndAnalysisVersionOrderByCreatedAtDesc(video.getId(), result.analysisVersion())
+        .orElseGet(() -> new CreativeAnalysisEntity(
+            video,
+            result.analysisVersion(),
+            result.analysisType(),
+            result.primaryEngine(),
+            result.secondaryEngines(),
+            result.classification(),
+            result.motionHeuristicScore() == null ? 0.0 : result.motionHeuristicScore(),
+            result.measurementConfidence() == null ? 0.0 : result.measurementConfidence(),
+            result.reason(),
+            result.storyboardPath(),
+            result.timeline(),
+            raw));
+    if (analysis.getId() != null) {
+      analysis.updateFrom(
+          result.analysisType(),
+          result.primaryEngine(),
+          result.secondaryEngines(),
+          result.classification(),
+          result.motionHeuristicScore() == null ? 0.0 : result.motionHeuristicScore(),
+          result.measurementConfidence() == null ? 0.0 : result.measurementConfidence(),
+          result.reason(),
+          result.storyboardPath(),
+          result.timeline(),
+          raw);
+    }
+    analysis = analyses.save(analysis);
+    final CreativeAnalysisEntity persistedAnalysis = analysis;
     String featureVersion = "creative-fingerprint-v1";
     fingerprints.findByVideoIdAndFeatureVersion(video.getId(), featureVersion)
         .ifPresentOrElse(
-            existing -> existing.updateFrom(analysis, result.actionDnaScore(), result.features()),
+            existing -> existing.updateFrom(persistedAnalysis, result.actionDnaScore(), result.features()),
             () -> fingerprints.save(new CreativeFingerprintEntity(
-                video, analysis, featureVersion, result.actionDnaScore(), result.features())));
-    return analysis;
+                video, persistedAnalysis, featureVersion, result.actionDnaScore(), result.features())));
+    return persistedAnalysis;
   }
 
   @Transactional(readOnly = true)

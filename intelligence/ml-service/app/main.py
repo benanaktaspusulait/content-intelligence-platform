@@ -106,7 +106,7 @@ def readiness() -> JSONResponse:
 @app.post("/v1/analysis/video", response_model=VideoAnalysisResponse, response_model_by_alias=True)
 def analyse_video(request: VideoAnalysisRequest) -> VideoAnalysisResponse:
     try:
-        return analyse(request.relative_path)
+        return analyse(request.relative_path, request.analysis_version)
     except (ValueError, OSError) as error:
         raise HTTPException(status_code=400, detail=str(error)) from error
 

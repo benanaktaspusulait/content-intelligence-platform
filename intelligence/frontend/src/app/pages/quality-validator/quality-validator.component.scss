@@ -64,6 +64,25 @@
 
 // Prompt Section
   .prompt-section {
+  .prompt-folder-picker {
+    display: flex;
+    align-items: end;
+    gap: 12px;
+    margin: 12px 0;
+
+    label { flex: 1; }
+    select { width: 100%; }
+  }
+
+  .import-message {
+    margin: 8px 0;
+    padding: 8px 10px;
+    color: #31583b;
+    background: #edf7df;
+    border-left: 3px solid #8fbd36;
+    font-size: 11px;
+  }
+
   .prompt-input {
     font-family: 'Courier New', monospace;
     font-size: 0.9rem;

@@ -133,8 +133,38 @@ const VARIANT_TYPE_LABELS: Record<string, string> = {
         <div class="section-heading"><div><span class="eyebrow">VISUAL MOTION ANALYSIS</span><h2 id="creative-analysis-heading">Sampled visual-motion evidence</h2></div>
           <button class="button button--primary" type="button" [disabled]="triggeringAnalysis() || analysisStatus()?.jobState === 'QUEUED' || analysisStatus()?.jobState === 'RUNNING'" (click)="triggerAnalysis()">{{ triggeringAnalysis() ? 'Starting…' : analysisStatus()?.jobState === 'QUEUED' || analysisStatus()?.jobState === 'RUNNING' ? (analysisStatus()!.jobState === 'QUEUED' ? 'Queued…' : 'Running…') : analysisStatus()?.hasCompletedAnalysis ? 'Reanalyze' : 'Run analysis' }}</button>
         </div>
+        @if (analysisFeedback()) { <p class="analysis-feedback" [class.analysis-feedback--error]="analysisFeedbackKind() === 'error'" role="status">{{ analysisFeedback() }}</p> }
         <div class="assessment-notice"><strong>Interpretation</strong><span>This is a sampled visual-motion heuristic. It does not use views, reach, likes, comments, follows or retention data.</span></div>
         @if (analysisStatus()?.hasCompletedAnalysis) {
+          <section class="creative-evidence-summary" aria-labelledby="creative-evidence-summary-heading">
+            <div class="section-heading"><div><span class="eyebrow">WHAT THE EVIDENCE SAYS</span><h3 id="creative-evidence-summary-heading">Human-readable motion interpretation</h3></div><span class="data-freshness">Motion evidence only</span></div>
+            <div class="creative-evidence-cards">
+              <div><span>Visual activity</span><strong>{{ motionSummary() }}</strong><small>Sampled visual change through the timeline.</small></div>
+              <div><span>Motion variation</span><strong>{{ variationSummary() }}</strong><small>This describes motion, not story progression.</small></div>
+              <div><span>Opening/ending relationship</span><strong>{{ similaritySummary() }}</strong><small>Visual similarity does not prove a semantic loop.</small></div>
+              <div><span>Local activity drops</span><strong>{{ activityDropSummary() }}</strong><small>Timestamped candidates require beat context before review.</small></div>
+            </div>
+          </section>
+          <section class="temporal-timeline" aria-labelledby="temporal-timeline-heading">
+            <div class="section-heading"><div><span class="eyebrow">LOCAL TIMELINE</span><h3 id="temporal-timeline-heading">Motion by segment</h3></div><span class="data-freshness">{{ temporalVersion() }}</span></div>
+            @if (timelineSegments().length) {
+              <div class="temporal-segment-table" role="table" aria-label="Local motion segment timeline">
+                <div class="temporal-segment-row temporal-segment-row--header" role="row"><span>Time</span><span>Activity</span><span>Density</span><span>Coverage</span><span>Shape</span></div>
+                @for (segment of timelineSegments(); track segment['segmentIndex']) {
+                  <div class="temporal-segment-row" role="row">
+                    <span>{{ segment['startSeconds'] }}–{{ segment['endSeconds'] }}s</span>
+                    <span class="temporal-activity"><i [style.width.%]="segmentActivityPercent(segment)"></i><b>{{ segment['averageMotion'] }}</b></span>
+                    <span>{{ percentValue(segment['motionDensity']) }}</span>
+                    <span>{{ percentValue(segment['coverage']) }}</span>
+                    <span>{{ segmentShape(segment) }}</span>
+                  </div>
+                }
+              </div>
+              <p class="analysis-caption">Activity is duration-weighted sampled visual change. It is not a story, audience, or retention measurement.</p>
+            } @else { <div class="state-panel compact-state"><strong>No local timeline available</strong><p>Run analysis to create duration-aware motion segments.</p></div> }
+          </section>
+          <details class="technical-details-collapsible">
+            <summary>Technical details</summary>
           <dl class="technical-facts analysis-facts">
             <div><dt>Motion evidence level</dt><dd>{{ analysisStatus()!.classification || '—' }}</dd></div>
             <div><dt>Motion heuristic score</dt><dd>{{ decimal(analysisStatus()!.motionHeuristicScore ?? analysisStatus()!.actionDnaScore) }} / 100</dd></div>
@@ -182,6 +212,7 @@ const VARIANT_TYPE_LABELS: Record<string, string> = {
             <div><dt>Analysis version</dt><dd><code>{{ analysisStatus()!.analysisVersion }}</code></dd></div>
             @if (analysisStatus()!.storyboardPath) { <div><dt>Storyboard</dt><dd><code>{{ analysisStatus()!.storyboardPath }}</code></dd></div> }
           </dl>
+          </details>
         } @else if (analysisStatus()?.jobState === 'FAILED') {
           <div class="state-panel state-panel--error compact-state"><strong>Analysis failed</strong><p>{{ analysisStatus()!.errorMessage || 'The analysis job failed.' }}</p></div>
         } @else if (analysisStatus()?.jobState === 'QUEUED' || analysisStatus()?.jobState === 'RUNNING') {
@@ -412,6 +443,9 @@ export class VideoDetailPage implements OnDestroy {
   protected readonly analysisStatus = signal<AnalysisStatus | null>(null);
   protected readonly analysisError = signal('');
   protected readonly triggeringAnalysis = signal(false);
+  protected readonly analysisFeedback = signal('');
+  protected readonly analysisFeedbackKind = signal<'info' | 'success' | 'error'>('info');
+  protected readonly analysisRunActive = signal(false);
 
   protected readonly folderName = computed(() => this.readableFolder(this.folderPath()));
   protected readonly mediaUrl = computed(() => this.activeFile() ? this.service.mediaContentUrl(this.activeFile()!.relativePath) : '');
@@ -514,10 +548,11 @@ export class VideoDetailPage implements OnDestroy {
   protected triggerAnalysis(): void {
     const id = this.video()?.id;
     if (!id) return;
-    this.triggeringAnalysis.set(true); this.analysisError.set('');
-    this.service.triggerAnalysis(id).subscribe({
-      next: status => { this.triggeringAnalysis.set(false); this.analysisStatus.set(status); this.pollAnalysisStatus(id); },
-      error: response => { this.triggeringAnalysis.set(false); this.message.set(response.error?.message || 'Could not start analysis.'); },
+    this.triggeringAnalysis.set(true); this.analysisRunActive.set(true); this.analysisError.set('');
+    this.analysisFeedbackKind.set('info'); this.analysisFeedback.set('Analysis is being queued…');
+    this.service.triggerAnalysis(id, true).subscribe({
+      next: status => { this.triggeringAnalysis.set(false); this.analysisStatus.set(status); this.analysisFeedback.set(status.jobState === 'RUNNING' ? 'Analysis is running…' : 'Analysis is queued…'); this.pollAnalysisStatus(id); },
+      error: response => { this.triggeringAnalysis.set(false); this.analysisRunActive.set(false); this.analysisFeedbackKind.set('error'); this.analysisFeedback.set(response.error?.message || 'Could not start analysis.'); },
     });
   }
   protected updateCopy(platform: CaptionPlatform, field: 'title' | 'body' | 'hashtags' | 'tags', value: string): void {
@@ -565,6 +600,43 @@ export class VideoDetailPage implements OnDestroy {
   }
   protected analysisListLength(group: 'motion' | 'sampling', key: string): string {
     return String(this.analysisList(group, key).length);
+  }
+  protected motionSummary(): string {
+    const score = this.analysisStatus()?.motionHeuristicScore ?? this.analysisStatus()?.actionDnaScore;
+    return typeof score !== 'number' ? 'Not evaluated' : score >= 80 ? 'Strong' : score >= 50 ? 'Moderate' : 'Limited';
+  }
+  protected variationSummary(): string {
+    const value = this.analysisStatus()?.temporalProfile?.['variation'];
+    return typeof value === 'string' ? this.readable(value) : 'Not evaluated';
+  }
+  protected similaritySummary(): string {
+    const value = this.analysisStatus()?.visualSimilarity?.['firstLastVisualSimilarity'];
+    if (typeof value !== 'number') return 'Not evaluated';
+    return value >= 0.9 ? 'Very high' : value >= 0.75 ? 'High' : value >= 0.5 ? 'Moderate' : 'Low';
+  }
+  protected activityDropSummary(): string {
+    const drops = this.analysisStatus()?.temporalProfile?.['activityDrops'];
+    return Array.isArray(drops) ? drops.length === 0 ? 'None detected' : `${drops.length} candidate${drops.length === 1 ? '' : 's'}` : 'Not evaluated';
+  }
+  protected timelineSegments(): Array<Record<string, any>> {
+    const segments = this.analysisStatus()?.temporalProfile?.['segments'];
+    return Array.isArray(segments) ? segments as Array<Record<string, any>> : [];
+  }
+  protected temporalVersion(): string {
+    const value = this.analysisStatus()?.temporalProfile?.['version'];
+    return typeof value === 'string' ? value : 'Not evaluated';
+  }
+  protected segmentActivityPercent(segment: Record<string, any>): number {
+    const value = Number(segment['averageMotion']);
+    return Number.isFinite(value) ? Math.max(2, Math.min(100, value * 100)) : 2;
+  }
+  protected percentValue(value: unknown): string {
+    return typeof value === 'number' ? `${(value * 100).toFixed(0)}%` : '—';
+  }
+  protected segmentShape(segment: Record<string, any>): string {
+    const value = Number(segment['relativeToPrevious']);
+    if (!Number.isFinite(value) || Math.abs(value) < 0.08) return 'Stable';
+    return value > 0 ? 'Rising' : 'Falling';
   }
   protected metricSource(value: number | null | undefined, available: string): string { return value === null || value === undefined ? 'No imported value' : available; }
   protected discoveryQualityLabel(): string { return this.discovery()?.dataQualityStatus === 'DERIVED_FROM_REPORTED_SHARES' ? 'REPORTED EVIDENCE' : 'NO COMPLETE DATA'; }
@@ -730,6 +802,7 @@ export class VideoDetailPage implements OnDestroy {
   protected pollAnalysisStatus(videoId: string): void {
     this.analysisPollSubscription?.unsubscribe();
     this.analysisError.set('');
+    let previousState = this.analysisStatus()?.jobState;
     this.analysisPollSubscription = interval(5000)
       .pipe(
         startWith(0),
@@ -738,6 +811,17 @@ export class VideoDetailPage implements OnDestroy {
       .subscribe(status => {
         if (status === null) return;
         this.analysisStatus.set(status);
+        if (this.analysisRunActive()) {
+          if (status.jobState === 'QUEUED') { this.analysisFeedbackKind.set('info'); this.analysisFeedback.set('Analysis is queued…'); }
+          if (status.jobState === 'RUNNING') { this.analysisFeedbackKind.set('info'); this.analysisFeedback.set('Analysis is running…'); }
+          if (status.jobState === 'COMPLETED' && previousState !== 'COMPLETED') {
+            this.analysisFeedbackKind.set('success'); this.analysisFeedback.set('Analysis completed. Results updated.'); this.analysisRunActive.set(false);
+          }
+          if (status.jobState === 'FAILED') {
+            this.analysisFeedbackKind.set('error'); this.analysisFeedback.set(status.errorMessage || 'Analysis failed.'); this.analysisRunActive.set(false);
+          }
+        }
+        previousState = status.jobState;
         if (status.jobState === 'COMPLETED' || status.jobState === 'FAILED') {
           this.analysisPollSubscription?.unsubscribe();
         }

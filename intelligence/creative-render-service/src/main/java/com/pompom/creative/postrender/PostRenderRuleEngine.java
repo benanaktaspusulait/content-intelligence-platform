@@ -14,8 +14,8 @@ import org.yaml.snakeyaml.Yaml;
 @Service
 @Slf4j
 public class PostRenderRuleEngine {
-  public static final String RULESET_VERSION = "POST_RENDER_RULESET_1.0";
-  private static final String RESOURCE = "post-render-rules/POST_RENDER_RULESET_1.0.yaml";
+  public static final String RULESET_VERSION = "POST_RENDER_RULESET_1.2";
+  private static final String RESOURCE = "post-render-rules/POST_RENDER_RULESET_1.2.yaml";
 
   private final List<PostRenderRuleDefinition> rules;
 
@@ -93,6 +93,8 @@ public class PostRenderRuleEngine {
       case "GREATER_THAN_OR_EQUAL" -> number(actual) >= number(expected);
       case "LESS_THAN" -> number(actual) < number(expected);
       case "LESS_THAN_OR_EQUAL" -> number(actual) <= number(expected);
+      case "LIST_NOT_EMPTY" -> actual instanceof List<?> values && !values.isEmpty();
+      case "LIST_EMPTY" -> actual instanceof List<?> values && values.isEmpty();
       default -> false;
     };
   }

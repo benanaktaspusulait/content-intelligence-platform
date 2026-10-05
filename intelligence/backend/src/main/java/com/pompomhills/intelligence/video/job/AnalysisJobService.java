@@ -25,6 +25,18 @@ public class AnalysisJobService {
   }
 
   public EnqueueResult enqueue(UUID videoId) {
+    return enqueue(videoId, false);
+  }
+
+  public EnqueueResult enqueue(UUID videoId, boolean force) {
+    return enqueue(videoId, force, VideoService.CURRENT_ANALYSIS_VERSION);
+  }
+
+  public EnqueueResult enqueue(UUID videoId, boolean force, String analysisVersion) {
+    if (!VideoService.CURRENT_ANALYSIS_VERSION.equals(analysisVersion)
+        && !VideoService.V4_ANALYSIS_VERSION.equals(analysisVersion)) {
+      throw new IllegalArgumentException("Unsupported video analysis version: " + analysisVersion);
+    }
     boolean exists =
         jdbc.sql("SELECT EXISTS(SELECT 1 FROM videos WHERE id=:id)")
             .param("id", videoId)
@@ -32,7 +44,7 @@ public class AnalysisJobService {
             .single();
     if (!exists) throw new IllegalArgumentException("Video not found: " + videoId);
 
-    if (videos.hasCurrentAnalysis(videoId)) {
+    if (!force && videos.hasCurrentAnalysis(videoId)) {
       return new EnqueueResult(false, null);
     }
 
@@ -50,7 +62,7 @@ public class AnalysisJobService {
               """)
           .param("id", id)
           .param("video", videoId)
-          .param("payload", "{\"contractVersion\":\"v1\",\"analysisVersion\":\"sampled-visual-motion-v3\"}")
+          .param("payload", writeJson(Map.of("contractVersion", "v1", "analysisVersion", analysisVersion)))
           .update();
     } catch (DataIntegrityViolationException raceLoss) {
       // Another concurrent request won the V34 unique-index race and already created the active
@@ -70,7 +82,7 @@ public class AnalysisJobService {
   public Optional<JobView> findActiveByVideoId(UUID videoId) {
     return jdbc.sql(
             """
-            SELECT id,video_id,job_type,state,attempts,max_attempts,error_message,
+            SELECT id,video_id,job_type,state,attempts,max_attempts,error_message,request_payload,
                    created_at,started_at,completed_at
             FROM analysis_jobs WHERE video_id=:video AND state IN ('QUEUED','RUNNING')
             """)
@@ -130,17 +142,18 @@ public class AnalysisJobService {
                 UPDATE analysis_jobs j
                 SET state='RUNNING',attempts=attempts+1,started_at=now()
                 FROM candidate WHERE j.id=candidate.id
-                RETURNING j.id,j.video_id
+                RETURNING j.id,j.video_id,j.request_payload
                 """)
             .query(
                 (rs, ignored) ->
                     new ClaimedJob(
-                        rs.getObject("id", UUID.class), rs.getObject("video_id", UUID.class)))
+                        rs.getObject("id", UUID.class), rs.getObject("video_id", UUID.class),
+                        analysisVersion(rs.getString("request_payload"))))
             .optional();
     if (claimed.isEmpty()) return;
     var job = claimed.get();
     try {
-      var result = videos.analyse(job.videoId());
+      var result = videos.analyse(job.videoId(), job.analysisVersion());
       jdbc.sql(
               """
               UPDATE analysis_jobs
@@ -198,7 +211,17 @@ public class AnalysisJobService {
     }
   }
 
-  private record ClaimedJob(UUID id, UUID videoId) {}
+  private String analysisVersion(String payload) {
+    try {
+      Map<?, ?> value = json.readValue(payload, Map.class);
+      Object version = value.get("analysisVersion");
+      return version == null ? VideoService.CURRENT_ANALYSIS_VERSION : String.valueOf(version);
+    } catch (Exception ignored) {
+      return VideoService.CURRENT_ANALYSIS_VERSION;
+    }
+  }
+
+  private record ClaimedJob(UUID id, UUID videoId, String analysisVersion) {}
 
   public record EnqueueResult(boolean created, JobView job) {}
 

@@ -3,6 +3,8 @@ package com.pompom.creative.api.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pompom.creative.postrender.PostRenderEvaluation;
 import com.pompom.creative.postrender.PostRenderEvaluationRepository;
+import com.pompom.creative.postrender.PostRenderAssessmentEntity;
+import com.pompom.creative.postrender.PostRenderAssessmentRepository;
 import com.pompom.creative.postrender.PostRenderRuleResultEntity;
 import com.pompom.creative.postrender.PostRenderRuleResultRepository;
 import java.time.Instant;
@@ -22,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class PostRenderEvaluationController {
   private final PostRenderEvaluationRepository evaluations;
   private final PostRenderRuleResultRepository results;
+  private final PostRenderAssessmentRepository assessments;
   private final ObjectMapper objectMapper;
 
   @GetMapping("/{id}")
@@ -33,6 +36,7 @@ public class PostRenderEvaluationController {
             evaluation.getAnalyzerVersions(), evaluation.getEvidenceSnapshot(),
             evaluation.getOverallDecision().name(), evaluation.isHumanReviewRequired(),
             evaluation.getHumanDecision(), evaluation.getStartedAt(), evaluation.getCompletedAt(),
+            assessments.findByEvaluationId(id).map(this::assessment).orElse(null),
             results.findByEvaluationIdOrderByRuleId(id).stream().map(this::rule).toList())))
         .orElseGet(() -> ResponseEntity.notFound().build());
   }
@@ -45,6 +49,11 @@ public class PostRenderEvaluationController {
         value.getEvaluatedAt());
   }
 
+  private AssessmentView assessment(PostRenderAssessmentEntity value) {
+    return new AssessmentView(value.getGrade(), value.getLabel(), value.getVerdict(),
+        value.getEvidenceCoveragePercent(), value.getAssessmentVersion(), parse(value.getSnapshot()));
+  }
+
   private Object parse(String value) {
     try { return value == null ? null : objectMapper.readValue(value, Object.class); }
     catch (Exception ignored) { return value; }
@@ -53,7 +62,11 @@ public class PostRenderEvaluationController {
   public record EvaluationView(UUID id, UUID assetId, UUID renderAttemptId, String evidenceVersion,
       String rulesetVersion, String analyzerVersions, String evidenceSnapshot, String decision,
       boolean humanReviewRequired, String humanDecision, Instant startedAt, Instant completedAt,
+      AssessmentView assessment,
       List<RuleView> ruleResults) {}
+
+  public record AssessmentView(String grade, String label, String verdict, int evidenceCoveragePercent,
+      String assessmentVersion, Object snapshot) {}
 
   public record RuleView(String ruleId, String ruleVersion, String rulesetVersion, String stage,
       String family, String severity, String outcome, String message, Object actualValue,

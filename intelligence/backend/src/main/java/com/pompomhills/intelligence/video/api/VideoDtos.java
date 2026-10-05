@@ -39,6 +39,8 @@ public final class VideoDtos {
 
   public record PromptFile(String name, String relativePath, String folder, Long sizeBytes, Instant modifiedAt) {}
 
+  public record PromptDirectory(String name, String relativePath, long promptCount) {}
+
   public record MetadataUpdateRequest(
       @jakarta.validation.constraints.NotBlank String relativePath, String content) {}
 
@@ -90,7 +92,10 @@ public final class VideoDtos {
       Map<String, Object> sampling,
       Map<String, Object> motion,
       Map<String, Object> visualSimilarity,
-      List<Map<String, Object>> darkFrameCandidates) {
+      List<Map<String, Object>> darkFrameCandidates,
+      List<Map<String, Object>> timeline,
+      Map<String, Object> temporalProfile,
+      Map<String, Object> presentation) {
     public AnalysisStatusResponse(
         UUID videoId,
         boolean hasCompletedAnalysis,
@@ -108,7 +113,7 @@ public final class VideoDtos {
         String analysisVersion) {
       this(videoId, hasCompletedAnalysis, jobId, jobState, attempts, maxAttempts, errorMessage,
           analysisId, classification, actionDnaScore, confidence, reason, storyboardPath,
-          analysisVersion, "LEGACY", actionDnaScore, confidence, Map.of(), Map.of(), Map.of(), Map.of(), List.of());
+          analysisVersion, "LEGACY", actionDnaScore, confidence, Map.of(), Map.of(), Map.of(), Map.of(), List.of(), List.of(), Map.of(), Map.of());
     }
   }
 }

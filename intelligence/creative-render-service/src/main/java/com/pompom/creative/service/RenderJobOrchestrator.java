@@ -2,6 +2,7 @@ package com.pompom.creative.service;
 
 import com.pompom.creative.domain.RenderAttempt;
 import com.pompom.creative.domain.RenderJob;
+import com.pompom.creative.contract.CreativeProductionContractService;
 import com.pompom.creative.intelligence.ContentPromptSnapshot;
 import com.pompom.creative.intelligence.IntelligenceContentClient;
 import com.pompom.creative.repository.RenderAttemptRepository;
@@ -36,6 +37,8 @@ public class RenderJobOrchestrator {
   private final CreditTrackingService creditTrackingService;
   private final BudgetAlertService budgetAlertService;
   private final WebSocketEventPublisher webSocketPublisher;
+
+  @Autowired private CreativeProductionContractService contractService;
 
   // Self reference so the public (non-transactional) queue method can invoke the transactional
   // persistence method through the Spring proxy. Injected lazily to avoid a construction cycle;
@@ -84,6 +87,10 @@ public class RenderJobOrchestrator {
   @Transactional
   public UUID persistQueuedJob(
       ContentPromptSnapshot snapshot, RenderJob.JobType jobType, BigDecimal estimatedCredits) {
+    CreativeProductionContractService.ContractCompilation contract =
+        contractService == null
+            ? CreativeProductionContractService.ContractCompilation.legacy()
+            : contractService.compile(snapshot, "unknown");
     // Create render job with scalar ownership + immutable prompt snapshot
     RenderJob job =
         RenderJob.builder()
@@ -93,6 +100,13 @@ public class RenderJobOrchestrator {
             .promptVersionNumberSnapshot(snapshot.promptVersionNumber())
             .promptSha256(snapshot.promptSha256())
             .promptTextSnapshot(snapshot.promptText())
+            .generationPromptSnapshot(contract.generationPromptSnapshot())
+            .creativeContractVersion(contract.contract().contractVersion())
+            .creativeContractStatus(contract.contract().status())
+            .creativeContractSnapshot(contract.contractJson())
+            .compiledGenerationConstraints(contract.constraintsJson())
+            .constraintCompilerVersion(contract.constraints().compilerVersion())
+            .compiledConstraintsSha256(contract.constraintsSha256())
             .jobType(jobType)
             .openartModel("mock_model") // Will be configurable in future
             .status(RenderJob.RenderJobStatus.QUEUED)

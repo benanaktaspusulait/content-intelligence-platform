@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { forkJoin, map, Observable } from 'rxjs';
 
-export type Platform = 'Instagram' | 'YouTube' | 'TikTok' | 'Unknown';
+export type Platform = 'Instagram' | 'Facebook' | 'YouTube' | 'TikTok' | 'Unknown';
 export type VideoState = 'Observed' | 'Testing' | 'Queued' | 'Ingested';
 
 export interface VideoRecord {
@@ -33,6 +33,8 @@ export interface PredictionRecord {
   featureVersion: string;
   knowledgeCutoff: string;
   predictionType: string;
+  confidence: 'LOW' | 'MEDIUM' | 'HIGH' | string;
+  uncertaintyReasons: string[];
 }
 
 export interface ExperimentRecord {
@@ -154,13 +156,17 @@ interface PredictionApiRecord {
   platform: string;
   status: 'DRAFT' | 'LOCKED' | 'EVALUATED';
   modelVersion: string;
-  payload: { targets?: Array<{ expectedValue?: number | null; interval80?: Array<number | null> }> };
+  payload: {
+    targets?: Array<{ expectedValue?: number | null; interval80?: Array<number | null> }>;
+    uncertaintyReasons?: unknown;
+  };
   comparableSampleSize: number;
   lockedAt?: string | null;
   predictionType?: string;
   datasetVersion: string;
   featureVersion: string;
   knowledgeCutoff: string;
+  confidence?: 'LOW' | 'MEDIUM' | 'HIGH' | string;
 }
 
 export interface ImportPreview {
@@ -394,6 +400,9 @@ export interface AnalysisStatus {
   motion?: Record<string, unknown>;
   visualSimilarity?: Record<string, unknown>;
   darkFrameCandidates?: Array<Record<string, unknown>>;
+  timeline?: Array<Record<string, unknown>>;
+  temporalProfile?: Record<string, unknown>;
+  presentation?: Record<string, unknown>;
 }
 
 export interface ReachFurtherComparison {
@@ -542,8 +551,8 @@ export class CreativeIntelligenceService {
     return this.http.post<VideoVariant>(`${this.baseUrl}/videos/${videoId}/variants`, request);
   }
 
-  triggerAnalysis(videoId: string): Observable<AnalysisStatus> {
-    return this.http.post<AnalysisStatus>(`${this.baseUrl}/videos/${videoId}/analysis`, {});
+  triggerAnalysis(videoId: string, force = false): Observable<AnalysisStatus> {
+    return this.http.post<AnalysisStatus>(`${this.baseUrl}/videos/${videoId}/analysis`, {}, { params: { force } });
   }
 
   getAnalysisStatus(videoId: string): Observable<AnalysisStatus> {
@@ -666,6 +675,9 @@ export class CreativeIntelligenceService {
         const target = item.payload.targets?.[0];
         const expected = target?.expectedValue ?? null;
         const interval = target?.interval80;
+        const uncertaintyReasons = Array.isArray(item.payload.uncertaintyReasons)
+          ? item.payload.uncertaintyReasons.filter((reason): reason is string => typeof reason === 'string')
+          : [];
         return {
           id: item.id,
           videoId: item.videoId,
@@ -681,6 +693,8 @@ export class CreativeIntelligenceService {
           featureVersion: item.featureVersion,
           knowledgeCutoff: item.knowledgeCutoff,
           predictionType: item.predictionType || 'PRE_PUBLISH',
+          confidence: item.confidence || 'LOW',
+          uncertaintyReasons,
         };
       })),
     );
@@ -688,6 +702,6 @@ export class CreativeIntelligenceService {
 
   private platform(value: string): Platform {
     const key = value.toLowerCase();
-    return key === 'youtube' ? 'YouTube' : key === 'tiktok' ? 'TikTok' : 'Instagram';
+    return key === 'facebook' ? 'Facebook' : key === 'youtube' ? 'YouTube' : key === 'tiktok' ? 'TikTok' : key === 'instagram' ? 'Instagram' : 'Unknown';
   }
 }

@@ -139,6 +139,18 @@ public class CreativeAnalysisEntity {
     return values.stream().filter(Map.class::isInstance).map(value -> (Map<String, Object>) value).toList();
   }
 
+  public List<Map<String, Object>> getTimeline() {
+    return timeline == null ? List.of() : timeline;
+  }
+
+  public Map<String, Object> getTemporalProfile() {
+    return rawResult == null ? Map.of() : castMap(rawResult.get("temporalProfile"));
+  }
+
+  public Map<String, Object> getPresentation() {
+    return rawResult == null ? Map.of() : castMap(rawResult.get("presentation"));
+  }
+
   @SuppressWarnings("unchecked")
   private Map<String, Object> castMap(Object value) {
     return value instanceof Map<?, ?> map ? (Map<String, Object>) map : Map.of();
@@ -170,5 +182,28 @@ public class CreativeAnalysisEntity {
 
   public String getStoryboardPath() {
     return storyboardPath;
+  }
+
+  public void updateFrom(
+      String analysisType,
+      String primaryEngine,
+      List<String> secondaryEngines,
+      String classification,
+      double actionDnaScore,
+      double confidence,
+      String reason,
+      String storyboardPath,
+      List<Map<String, Object>> timeline,
+      Map<String, Object> rawResult) {
+    this.analysisType = analysisType;
+    this.primaryEngine = primaryEngine;
+    this.secondaryEngines = secondaryEngines;
+    this.classification = classification;
+    this.actionDnaScore = actionDnaScore;
+    this.confidence = confidence;
+    this.reason = reason;
+    this.storyboardPath = storyboardPath;
+    this.timeline = timeline;
+    this.rawResult = rawResult;
   }
 }

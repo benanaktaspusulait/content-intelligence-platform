@@ -2,6 +2,9 @@ package com.pompom.creative.queue;
 
 import com.pompom.creative.domain.RenderAttempt;
 import com.pompom.creative.domain.RenderJob;
+import com.pompom.creative.contract.CreativeProductionContractService;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.pompom.creative.contract.PromptConstraintCompiler;
 import com.pompom.creative.evidence.IntelligenceValidationEvidenceClient;
 import com.pompom.creative.evidence.ValidationEvidenceDto;
 import com.pompom.creative.intelligence.ContentPromptSnapshot;
@@ -36,6 +39,7 @@ public class RenderJobQueueService {
   private final RequestFingerprint fingerprints;
   private final CreditTrackingService creditTrackingService;
   private final BudgetAlertService budgetAlertService;
+  private final CreativeProductionContractService contractService;
   private final TransactionTemplate newTransaction;
 
   public RenderJobQueueService(
@@ -47,6 +51,7 @@ public class RenderJobQueueService {
       RequestFingerprint fingerprints,
       CreditTrackingService creditTrackingService,
       BudgetAlertService budgetAlertService,
+      CreativeProductionContractService contractService,
       PlatformTransactionManager transactionManager) {
     this.repository = repository;
     this.attemptRepository = attemptRepository;
@@ -56,11 +61,36 @@ public class RenderJobQueueService {
     this.fingerprints = fingerprints;
     this.creditTrackingService = creditTrackingService;
     this.budgetAlertService = budgetAlertService;
+    this.contractService = contractService;
     // Each create attempt runs in its own, explicitly-started transaction (rather than relying
     // on @Transactional, which would not create a new transaction boundary on a self-invoked
     // method anyway) so that a losing concurrent insert's aborted transaction is fully isolated:
     // the subsequent replay re-read runs in a separate transaction, never the poisoned one.
     this.newTransaction = new TransactionTemplate(transactionManager);
+  }
+
+  /** Compatibility constructor for focused unit tests and legacy callers. */
+  public RenderJobQueueService(
+      RenderJobRepository repository,
+      RenderAttemptRepository attemptRepository,
+      IntelligenceValidationEvidenceClient evidenceClient,
+      IntelligenceContentClient contentClient,
+      ValidationEvidencePolicy policy,
+      RequestFingerprint fingerprints,
+      CreditTrackingService creditTrackingService,
+      BudgetAlertService budgetAlertService,
+      PlatformTransactionManager transactionManager) {
+    this(
+        repository,
+        attemptRepository,
+        evidenceClient,
+        contentClient,
+        policy,
+        fingerprints,
+        creditTrackingService,
+        budgetAlertService,
+        new CreativeProductionContractService(new ObjectMapper(), new PromptConstraintCompiler()),
+        transactionManager);
   }
 
   public QueueRenderJobResponse queue(String idempotencyKey, QueueRenderJobRequest request) {
@@ -116,6 +146,15 @@ public class RenderJobQueueService {
       throw new ValidationEvidenceRejectedException(
           "PROMPT_TEXT_EMPTY", "Canonical approved prompt text is empty");
     }
+    CreativeProductionContractService.ContractCompilation contract =
+        contractService.compile(prompt, evidence.deterministicRulesetVersion());
+    if ("INCOMPLETE".equals(contract.contract().status())
+        || "SERVICE_ERROR".equals(contract.contract().status())) {
+      throw new ValidationEvidenceRejectedException(
+          "CREATIVE_CONTRACT_INCOMPLETE",
+          "Validated prompt cannot produce a complete creative production contract: "
+              + contract.contract().errors());
+    }
     budgetAlertService.checkBudgetBeforeRender();
     if (!creditTrackingService.canAffordRender(request.jobType())) {
       throw new IllegalStateException("Insufficient render budget");
@@ -131,6 +170,13 @@ public class RenderJobQueueService {
             .promptVersionNumberSnapshot(prompt.promptVersionNumber())
             .promptSha256(prompt.promptSha256())
             .promptTextSnapshot(prompt.promptText())
+            .generationPromptSnapshot(contract.generationPromptSnapshot())
+            .creativeContractVersion(contract.contract().contractVersion())
+            .creativeContractStatus(contract.contract().status())
+            .creativeContractSnapshot(contract.contractJson())
+            .compiledGenerationConstraints(contract.constraintsJson())
+            .constraintCompilerVersion(contract.constraints().compilerVersion())
+            .compiledConstraintsSha256(contract.constraintsSha256())
             .validationRecordId(evidence.validationRecordId())
             .evidenceDeterministicRulesetVersion(evidence.deterministicRulesetVersion())
             .evidenceSemanticProvider(evidence.semanticProvider())

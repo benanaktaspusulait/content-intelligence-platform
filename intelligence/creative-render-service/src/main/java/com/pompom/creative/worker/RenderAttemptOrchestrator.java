@@ -134,7 +134,8 @@ public class RenderAttemptOrchestrator {
     JsonNode parameters = providerParameters(job);
     OpenArtImageRequest request =
         OpenArtImageRequest.builder()
-            .promptText(job.getPromptTextSnapshot())
+            .promptText(job.getGenerationPromptSnapshot() == null
+                ? job.getPromptTextSnapshot() : job.getGenerationPromptSnapshot())
             .model(job.getOpenartModel())
             .style(parameters.path("style").asText("cinematic"))
             .aspectRatio(parameters.path("aspectRatio").asText("16:9"))
@@ -146,7 +147,8 @@ public class RenderAttemptOrchestrator {
     JsonNode parameters = providerParameters(job);
     OpenArtVideoRequest request =
         OpenArtVideoRequest.builder()
-            .promptText(job.getPromptTextSnapshot())
+            .promptText(job.getGenerationPromptSnapshot() == null
+                ? job.getPromptTextSnapshot() : job.getGenerationPromptSnapshot())
             .model(job.getOpenartModel())
             .firstFrameImageId(textOrNull(parameters, "firstFrameImageId"))
             .durationSeconds(parameters.path("durationSeconds").asInt(15))

@@ -36,6 +36,26 @@ NEAR_BLACK_PIXEL_THRESHOLD = 0.05
 NEAR_BLACK_PIXEL_RATIO = 0.98
 LOW_BRIGHTNESS_MEAN_THRESHOLD = 0.15
 
+# Local temporal evidence is intentionally independent from the v3 score.
+TEMPORAL_PROFILE_VERSION = "temporal-motion-profile-v2"
+TEMPORAL_MIN_SEGMENTS = 4
+TEMPORAL_MAX_SEGMENTS = 10
+TEMPORAL_TARGET_SEGMENT_SECONDS = 1.5
+TEMPORAL_CHANGE_MIN_ABSOLUTE = 0.18
+TEMPORAL_CHANGE_MIN_RELATIVE = 0.30
+TEMPORAL_CHANGE_MIN_DURATION_SECONDS = 0.50
+
+# V4 parameters are versioned evidence configuration, not creative-quality rules.
+V4_ANALYSIS_VERSION = "sampled-visual-motion-v4"
+V4_SAMPLE_INTERVAL_SECONDS = 0.25
+V4_MEDIUM_NOVELTY_OFFSET_SECONDS = 1.25
+V4_LOW_MOTION_ENTER_THRESHOLD = 0.12
+V4_LOW_MOTION_EXIT_THRESHOLD = 0.20
+V4_LOW_MOTION_MAX_MERGE_GAP_SECONDS = 0.35
+V4_LOW_MOTION_MIN_DURATION_SECONDS = 0.75
+V4_SMOOTHING_WINDOW = 3
+V4_NOVELTY_SSIM_WINDOW = 64
+
 # v3 preserves the v2 motion-component proportions after removing endpoint similarity.
 MOTION_SCORE_WEIGHTS = {
     "overall": 0.35 / 0.90,
@@ -50,6 +70,14 @@ class SampledFrame:
     frame: np.ndarray
     requested_time: float
     actual_time: float | None
+
+
+@dataclass(frozen=True)
+class V4SampledFrame:
+    frame: np.ndarray
+    requested_time: float
+    actual_time: float | None
+    timestamp_error: float | None
 
 
 def safe_video_path(relative_path: str) -> Path:
@@ -117,6 +145,181 @@ def _frames(path: Path, duration: float) -> tuple[list[SampledFrame], list[float
         frames.append(SampledFrame(frame, requested_time, actual_time))
     capture.release()
     return frames, failed
+
+
+def _v4_target_times(duration: float) -> list[float]:
+    if duration <= 0:
+        return []
+    count = int(math.floor(duration / V4_SAMPLE_INTERVAL_SECONDS))
+    targets = [round(index * V4_SAMPLE_INTERVAL_SECONDS, 6) for index in range(count + 1)]
+    if not targets or duration - targets[-1] > 1e-6:
+        targets.append(round(duration, 6))
+    return [min(duration, value) for value in targets]
+
+
+def _sequential_frames(path: Path, duration: float) -> tuple[list[V4SampledFrame], dict[str, Any]]:
+    """Decode once and select the nearest decoded frame for each uniform target."""
+    targets = _v4_target_times(duration)
+    capture = cv2.VideoCapture(str(path))
+    fps = float(capture.get(cv2.CAP_PROP_FPS) or 0.0)
+    samples: list[V4SampledFrame] = []
+    failed: list[float] = []
+    previous: tuple[np.ndarray, float] | None = None
+    target_index = 0
+    frame_index = 0
+    while target_index < len(targets):
+        ok, frame = capture.read()
+        if not ok:
+            failed.extend(targets[target_index:])
+            break
+        raw_timestamp = float(capture.get(cv2.CAP_PROP_POS_MSEC)) / 1000
+        actual = raw_timestamp if math.isfinite(raw_timestamp) and raw_timestamp >= 0 else frame_index / max(fps, 1.0)
+        current = (frame, actual)
+        while target_index < len(targets) and targets[target_index] <= actual:
+            requested = targets[target_index]
+            candidate = current
+            if previous is not None and abs(previous[1] - requested) <= abs(current[1] - requested):
+                candidate = previous
+            samples.append(V4SampledFrame(candidate[0], requested, candidate[1], abs(candidate[1] - requested)))
+            target_index += 1
+        previous = current
+        frame_index += 1
+    capture.release()
+    actual_times = [sample.actual_time for sample in samples if sample.actual_time is not None]
+    duplicate_count = sum(1 for first, second in zip(actual_times, actual_times[1:], strict=False) if abs(second - first) < 1e-6)
+    return samples, {
+        "requestedSamples": len(targets),
+        "decodedSamples": len(samples),
+        "failedSamples": len(failed),
+        "failedRequestedTimes": failed,
+        "duplicateSamples": duplicate_count,
+        "duplicateTimestampRatio": duplicate_count / max(len(samples) - 1, 1),
+        "timestampAccuracy": round(1.0 - min(1.0, float(np.mean([sample.timestamp_error or 0.0 for sample in samples])) / max(V4_SAMPLE_INTERVAL_SECONDS, 0.001)), 4) if samples else 0.0,
+        "temporalCoverage": round((actual_times[-1] - actual_times[0]) / max(duration, 0.1), 4) if len(actual_times) > 1 else 0.0,
+        "requestedTimes": targets,
+    }
+
+
+def _v4_intervals(samples: list[V4SampledFrame]) -> list[dict[str, Any]]:
+    intervals: list[dict[str, Any]] = []
+    for first, second in zip(samples, samples[1:], strict=False):
+        t1 = first.actual_time if first.actual_time is not None else first.requested_time
+        t2 = second.actual_time if second.actual_time is not None else second.requested_time
+        delta_t = t2 - t1
+        if delta_t < MIN_DELTA_T:
+            continue
+        first_gray = cv2.cvtColor(first.frame, cv2.COLOR_BGR2GRAY)
+        second_gray = cv2.cvtColor(second.frame, cv2.COLOR_BGR2GRAY)
+        raw_difference = float(np.mean(cv2.absdiff(first_gray, second_gray))) / 255
+        change_rate = raw_difference / max(delta_t, MIN_DELTA_T)
+        _, normalized, saturated = normalize_motion_intensity(change_rate)
+        intervals.append({
+            "startTime": round(max(0.0, t1), 6),
+            "endTime": round(max(t1, t2), 6),
+            "deltaTSeconds": round(delta_t, 6),
+            "rawPixelDifference": round(raw_difference, 6),
+            "visualChangeRate": change_rate,
+            "normalizedShortMotion": normalized,
+            "normalizedMotionIntensity": normalized,
+            "normalizationSaturated": saturated,
+        })
+    raw = [item["normalizedShortMotion"] for item in intervals]
+    smoothed = np.median(np.array([raw[max(0, index - 1): min(len(raw), index + 2)] for index in range(len(raw))]), axis=1) if raw else []
+    for item, value in zip(intervals, smoothed, strict=False):
+        item["smoothedMotion"] = round(float(value), 6)
+        item["normalizedMotionIntensity"] = float(value)
+    return intervals
+
+
+def _gray_small(frame: np.ndarray) -> np.ndarray:
+    return cv2.resize(cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY), (V4_NOVELTY_SSIM_WINDOW, V4_NOVELTY_SSIM_WINDOW), interpolation=cv2.INTER_AREA).astype(np.float32) / 255
+
+
+def _structural_similarity(first: np.ndarray, second: np.ndarray) -> float:
+    mean_first, mean_second = float(np.mean(first)), float(np.mean(second))
+    variance_first, variance_second = float(np.var(first)), float(np.var(second))
+    covariance = float(np.mean((first - mean_first) * (second - mean_second)))
+    c1, c2 = 0.0001, 0.0009
+    value = ((2 * mean_first * mean_second + c1) * (2 * covariance + c2)) / ((mean_first**2 + mean_second**2 + c1) * (variance_first + variance_second + c2))
+    return max(0.0, min(1.0, value))
+
+
+def _phash_distance(first: np.ndarray, second: np.ndarray) -> float:
+    first_dct = cv2.dct(cv2.resize(first, (32, 32), interpolation=cv2.INTER_AREA))[:8, :8]
+    second_dct = cv2.dct(cv2.resize(second, (32, 32), interpolation=cv2.INTER_AREA))[:8, :8]
+    first_bits = first_dct > np.median(first_dct)
+    second_bits = second_dct > np.median(second_dct)
+    return float(np.mean(first_bits != second_bits))
+
+
+def _v4_visual_novelty(samples: list[V4SampledFrame], duration: float) -> dict[str, Any]:
+    points: list[dict[str, Any]] = []
+    offset = V4_MEDIUM_NOVELTY_OFFSET_SECONDS
+    for index, sample in enumerate(samples):
+        target = sample.requested_time + offset
+        match = next((candidate for candidate in samples[index + 1:] if candidate.requested_time >= target), None)
+        if match is None:
+            continue
+        first_gray, second_gray = _gray_small(sample.frame), _gray_small(match.frame)
+        similarity = _structural_similarity(first_gray, second_gray)
+        phash = _phash_distance(first_gray, second_gray)
+        points.append({
+            "timestamp": round(sample.requested_time, 3),
+            "comparisonOffset": round(match.requested_time - sample.requested_time, 3),
+            "structuralSimilarity": round(similarity, 5),
+            "perceptualHashDistance": round(phash, 5),
+            "embeddingDistance": None,
+            "embeddingStatus": "NOT_EVALUATED",
+            "novelty": round((1.0 - similarity) * 0.8 + phash * 0.2, 5),
+        })
+    values = [item["novelty"] for item in points]
+    average = float(np.mean(values)) if values else 0.0
+    return {
+        "version": "visual-novelty-v1",
+        "mediumOffsetSeconds": offset,
+        "points": points,
+        "averageNovelty": round(average, 5),
+        "status": "AVAILABLE" if points else "NOT_EVALUATED",
+    }
+
+
+def _v4_low_motion_candidates(intervals: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    spans: list[dict[str, Any]] = []
+    active: dict[str, Any] | None = None
+    for item in intervals:
+        motion = float(item["smoothedMotion"])
+        if active is None and motion <= V4_LOW_MOTION_ENTER_THRESHOLD:
+            active = {"startSeconds": item["startTime"], "endSeconds": item["endTime"], "motions": [motion], "mergedGapCount": 0}
+        elif active is not None and motion <= V4_LOW_MOTION_EXIT_THRESHOLD:
+            active["endSeconds"] = item["endTime"]
+            active["motions"].append(motion)
+        elif active is not None:
+            gap = item["endTime"] - active["endSeconds"]
+            if gap <= V4_LOW_MOTION_MAX_MERGE_GAP_SECONDS:
+                active["mergedGapCount"] += 1
+                active["endSeconds"] = item["endTime"]
+                active["motions"].append(motion)
+            else:
+                spans.append(active)
+                active = None
+    if active is not None:
+        spans.append(active)
+    result: list[dict[str, Any]] = []
+    for span in spans:
+        duration = span["endSeconds"] - span["startSeconds"]
+        if duration < V4_LOW_MOTION_MIN_DURATION_SECONDS:
+            continue
+        motions = span.pop("motions")
+        result.append({
+            **span,
+            "durationSeconds": round(duration, 3),
+            "averageMotion": round(float(np.mean(motions)), 5),
+            "minimumMotion": round(float(np.min(motions)), 5),
+            "entryThreshold": V4_LOW_MOTION_ENTER_THRESHOLD,
+            "exitThreshold": V4_LOW_MOTION_EXIT_THRESHOLD,
+            "evidenceQuality": "SMOOTHED_HYSTERESIS",
+        })
+    return result
 
 
 def _storyboard(frames: list[SampledFrame], digest: str) -> str:
@@ -250,9 +453,283 @@ def _dark_candidates(samples: list[SampledFrame]) -> list[dict[str, Any]]:
     return candidates
 
 
-def analyse(relative_path: str) -> VideoAnalysisResponse:
+def _temporal_profile(intervals: list[dict[str, Any]], duration: float) -> dict[str, Any]:
+    """Build local, duration-aware motion evidence without changing v3 scoring."""
+    segment_count = max(
+        TEMPORAL_MIN_SEGMENTS,
+        min(TEMPORAL_MAX_SEGMENTS, math.ceil(duration / TEMPORAL_TARGET_SEGMENT_SECONDS)),
+    )
+    edges = np.linspace(0.0, duration, segment_count + 1).tolist()
+    overall = _weighted_mean(intervals, "normalizedMotionIntensity")
+    segments: list[dict[str, Any]] = []
+    for index in range(segment_count):
+        start, end = edges[index], edges[index + 1]
+        local = []
+        for item in intervals:
+            overlap = max(0.0, min(end, item["endTime"]) - max(start, item["startTime"]))
+            if overlap > 0:
+                local.append({**item, "overlap": overlap})
+        total = sum(item["overlap"] for item in local)
+        values = [item["normalizedMotionIntensity"] for item in local]
+        average = sum(item["normalizedMotionIntensity"] * item["overlap"] for item in local) / total if total else 0.0
+        density = sum(item["overlap"] for item in local if item["visualChangeRate"] >= MOTION_RATE_THRESHOLD) / total if total else 0.0
+        peak = max(values) if values else 0.0
+        minimum = min(values) if values else 0.0
+        variability = math.sqrt(
+            sum(((item["normalizedMotionIntensity"] - average) ** 2) * item["overlap"] for item in local) / total
+        ) if total else 0.0
+        previous = segments[-1]["averageMotion"] if segments else None
+        segments.append({
+            "segmentIndex": index,
+            "startSeconds": round(start, 3),
+            "endSeconds": round(end, 3),
+            "averageMotion": round(average, 4),
+            "motionDensity": round(density, 4),
+            "peakMotion": round(peak, 4),
+            "minimumMotion": round(minimum, 4),
+            "motionVariability": round(variability, 4),
+            "coverage": round(min(1.0, total / max(end - start, MIN_DELTA_T)), 4),
+            "validIntervalCount": len(local),
+            "relativeToPrevious": None if previous is None else round(average - previous, 4),
+            "relativeToOverall": round(average - overall, 4),
+            "relativeToNext": None,
+            "sampledIntervalCount": len(local),
+        })
+
+    for index, segment in enumerate(segments):
+        segment["relativeToNext"] = (
+            None if index == len(segments) - 1
+            else round(segments[index + 1]["averageMotion"] - segment["averageMotion"], 4)
+        )
+
+    def change_runs(direction: str) -> list[dict[str, Any]]:
+        marked: list[int] = []
+        for index in range(1, len(segments) - 1):
+            previous = segments[index - 1]["averageMotion"]
+            current = segments[index]["averageMotion"]
+            following = segments[index + 1]["averageMotion"]
+            baseline = (previous + following) / 2
+            magnitude = baseline - current if direction == "drop" else current - baseline
+            relative = magnitude / max(abs(baseline), 0.05)
+            if magnitude >= TEMPORAL_CHANGE_MIN_ABSOLUTE and relative >= TEMPORAL_CHANGE_MIN_RELATIVE:
+                marked.append(index)
+
+        runs: list[list[int]] = []
+        for index in marked:
+            if not runs or index != runs[-1][-1] + 1:
+                runs.append([index])
+            else:
+                runs[-1].append(index)
+
+        candidates: list[dict[str, Any]] = []
+        for run in runs:
+            first, last = run[0], run[-1]
+            if first == 0 or last >= len(segments) - 1:
+                continue
+            before = segments[first - 1]["averageMotion"]
+            after = segments[last + 1]["averageMotion"]
+            duration_seconds = segments[last]["endSeconds"] - segments[first]["startSeconds"]
+            during = sum(segments[index]["averageMotion"] for index in run) / len(run)
+            baseline = (before + after) / 2
+            magnitude = baseline - during if direction == "drop" else during - baseline
+            relative = magnitude / max(abs(baseline), 0.05)
+            if duration_seconds < TEMPORAL_CHANGE_MIN_DURATION_SECONDS or magnitude < TEMPORAL_CHANGE_MIN_ABSOLUTE or relative < TEMPORAL_CHANGE_MIN_RELATIVE:
+                continue
+            candidates.append({
+                "startSeconds": segments[first]["startSeconds"],
+                "endSeconds": segments[last]["endSeconds"],
+                "durationSeconds": round(duration_seconds, 3),
+                "beforeActivity": round(before, 4),
+                "duringActivity": round(during, 4),
+                "afterActivity": round(after, 4),
+                "localBaseline": round(baseline, 4),
+                "absoluteDrop" if direction == "drop" else "absoluteSpike": round(magnitude, 4),
+                "relativeDrop" if direction == "drop" else "relativeSpike": round(relative, 4),
+                "severityMagnitude": round(relative, 4),
+                "classification": "UNMAPPED_DROP" if direction == "drop" else "UNMAPPED_SPIKE",
+                "alignedBeatId": None,
+                "alignedBeatType": None,
+                "evidenceQuality": "LOCAL_TWO_SIDED_BASELINE",
+            })
+        return candidates
+
+    drops = change_runs("drop")
+    spikes = change_runs("spike")
+    values = [item["averageMotion"] for item in segments]
+    spread = max(values) - min(values) if values else 0.0
+    variation = "UNKNOWN" if not values else "HIGHLY_VARIABLE" if spread >= 0.45 else "MODERATELY_VARIABLE" if spread >= 0.2 else "STEADY"
+    return {
+        "version": TEMPORAL_PROFILE_VERSION,
+        "segments": segments,
+        "activityDrops": drops,
+        "activitySpikes": spikes,
+        "variation": variation,
+        "overallMotion": round(overall, 4),
+        "status": "AVAILABLE" if segments else "NOT_EVALUATED",
+    }
+
+
+def _presentation_profile(samples: list[SampledFrame]) -> dict[str, Any]:
+    luminance: list[float] = []
+    saturation: list[float] = []
+    for sample in samples:
+        hsv = cv2.cvtColor(sample.frame, cv2.COLOR_BGR2HSV)
+        gray = cv2.cvtColor(sample.frame, cv2.COLOR_BGR2GRAY) / 255
+        luminance.append(float(np.mean(gray)))
+        saturation.append(float(np.mean(hsv[:, :, 1]) / 255))
+    return {
+        "medianLuminance": round(float(np.median(luminance)), 4),
+        "luminanceP10": round(float(np.percentile(luminance, 10)), 4),
+        "luminanceP90": round(float(np.percentile(luminance, 90)), 4),
+        "averageSaturation": round(float(np.mean(saturation)), 4),
+        "exposureConsistency": round(max(0.0, 1.0 - float(np.std(luminance)) * 4), 4),
+        "status": "AVAILABLE" if luminance else "NOT_EVALUATED",
+    }
+
+
+def _v4_motion_label(value: float) -> str:
+    return "VERY_HIGH" if value >= 0.8 else "HIGH" if value >= 0.55 else "MODERATE" if value >= 0.3 else "LOW" if value >= 0.12 else "VERY_LOW"
+
+
+def _v4_consistency_label(profile: dict[str, Any]) -> str:
+    variation = profile.get("variation")
+    return {"STEADY": "STEADY", "MODERATELY_VARIABLE": "UNEVEN", "HIGHLY_VARIABLE": "HIGHLY_UNEVEN"}.get(variation, "UNKNOWN")
+
+
+def _v4_repetitive_motion(intervals: list[dict[str, Any]], novelty: dict[str, Any]) -> dict[str, Any]:
+    novelty_value = float(novelty.get("averageNovelty", 0.0))
+    high_motion = [item for item in intervals if float(item.get("smoothedMotion", 0.0)) >= 0.55]
+    repeated = bool(high_motion) and novelty_value <= 0.16
+    return {
+        "version": "repetitive-motion-evidence-v1",
+        "status": "AVAILABLE" if intervals and novelty.get("status") == "AVAILABLE" else "NOT_EVALUATED",
+        "averageShortMotion": round(float(np.mean([item["smoothedMotion"] for item in intervals])) if intervals else 0.0, 5),
+        "averageVisualNovelty": novelty_value,
+        "continuousMotion": len(high_motion) >= max(2, len(intervals) // 4),
+        "lowStateNovelty": novelty_value <= 0.16,
+        "repeatedPatternCandidate": repeated,
+        "classification": "HIGH" if repeated and novelty_value <= 0.08 else "MODERATE" if repeated else "LOW",
+        "interpretation": "Movement continues while medium-range visual novelty remains low; this is evidence of possible repetition, not a performance claim." if repeated else "No prolonged high-motion/low-novelty pattern was established.",
+    }
+
+
+def _analyse_v4(path: Path, metadata: VideoMetadata) -> VideoAnalysisResponse:
+    duration = metadata.duration_ms / 1000
+    samples, sampling = _sequential_frames(path, duration)
+    if len(samples) < 2:
+        raise ValueError("Video yielded too few sequential samples")
+    intervals = _v4_intervals(samples)
+    if not intervals:
+        raise ValueError("Video yielded too few valid sequential frame pairs")
+    v4_profile = _temporal_profile(intervals, duration)
+    v4_profile["version"] = V4_ANALYSIS_VERSION
+    v4_profile["motionPoints"] = [
+        {
+            "timestamp": round(item["startTime"], 3),
+            "shortRangeMotion": round(item["normalizedShortMotion"], 5),
+            "smoothedMotion": round(item["smoothedMotion"], 5),
+        }
+        for item in intervals
+    ]
+    low_candidates = _v4_low_motion_candidates(intervals)
+    v4_profile["lowMotionCandidates"] = low_candidates
+    v4_profile["troughs"] = [
+        {**candidate, "depth": candidate.get("relativeDrop", 0.0), "sharpness": candidate.get("relativeDrop", 0.0), "confidence": sampling["timestampAccuracy"]}
+        for candidate in v4_profile.get("activityDrops", [])
+    ]
+    v4_profile["spikes"] = [
+        {**candidate, "confidence": sampling["timestampAccuracy"]}
+        for candidate in v4_profile.get("activitySpikes", [])
+    ]
+    novelty = _v4_visual_novelty(samples, duration)
+    repetition = _v4_repetitive_motion(intervals, novelty)
+    actual_times = [sample.actual_time for sample in samples if sample.actual_time is not None]
+    valid_pair_count = len(intervals)
+    coverage = min(1.0, (actual_times[-1] - actual_times[0]) / max(duration, 0.1)) if len(actual_times) > 1 else 0.0
+    sampling["validPairCount"] = valid_pair_count
+    sampling["coverage"] = round(coverage, 4)
+    sampling["decodeSuccessRatio"] = round(sampling["decodedSamples"] / max(sampling["requestedSamples"], 1), 4)
+    measurement_confidence = round(max(0.0, min(1.0, 0.35 * sampling["decodeSuccessRatio"] + 0.35 * coverage + 0.20 * sampling["timestampAccuracy"] + 0.10 * (1 - sampling["duplicateTimestampRatio"]))), 4)
+    overall = float(v4_profile["overallMotion"])
+    density = float(np.mean([item["motionDensity"] for item in v4_profile["segments"]])) if v4_profile["segments"] else 0.0
+    opening = float(v4_profile["segments"][0]["averageMotion"])
+    ending = float(v4_profile["segments"][-1]["averageMotion"])
+    score = calculate_motion_heuristic_score(overall, opening, density, ending)
+    first = samples[0].frame
+    last = samples[-1].frame
+    first_gray = cv2.cvtColor(first, cv2.COLOR_BGR2GRAY)
+    last_gray = cv2.cvtColor(last, cv2.COLOR_BGR2GRAY)
+    first_last_similarity = max(0.0, min(1.0, 1 - float(np.mean(cv2.absdiff(first_gray, last_gray))) / 255))
+    storyboard = _storyboard([SampledFrame(sample.frame, sample.requested_time, sample.actual_time) for sample in samples], metadata.sha256 + "-v4")
+    timeline = [
+        {"kind": "V4_LOW_MOTION_CANDIDATE", "start": item["startSeconds"], "end": item["endSeconds"], "confidence": measurement_confidence}
+        for item in low_candidates
+    ]
+    return VideoAnalysisResponse(
+        metadata=metadata,
+        analysisVersion=V4_ANALYSIS_VERSION,
+        analysisType="SAMPLED_VISUAL_MOTION_V4",
+        primaryEngine="SAMPLED_VISUAL_MOTION_V4",
+        secondaryEngines=["STRUCTURAL_NOVELTY", "PERCEPTUAL_HASH"],
+        classification="HIGH_MOTION_EVIDENCE" if score >= 60 else "MODERATE_MOTION_EVIDENCE" if score >= 40 else "LOW_MOTION_EVIDENCE",
+        motionHeuristicScore=score,
+        measurementConfidence=measurement_confidence,
+        measurementQuality={
+            "decodeSuccessRatio": sampling["decodeSuccessRatio"],
+            "timelineCoverage": sampling["coverage"],
+            "duplicateTimestampRatio": sampling["duplicateTimestampRatio"],
+            "timestampAccuracy": sampling["timestampAccuracy"],
+            "validPairCount": valid_pair_count,
+        },
+        reason="V4 measures uniform sequential image-space motion, temporal structure, and deterministic visual novelty. It does not infer story meaning or platform performance.",
+        storyboardPath=storyboard,
+        timeline=timeline,
+        features={
+            "motionIntensity": {"label": _v4_motion_label(overall), "value": overall},
+            "temporalConsistency": {"label": _v4_consistency_label(v4_profile), "variation": v4_profile["variation"]},
+            "visualNovelty": novelty,
+            "actionBeatNovelty": {"status": "NOT_EVALUATED", "reason": "Observed semantic action recognition is not configured."},
+            "planRenderFidelity": {"status": "NOT_EVALUATED", "reason": "Plan alignment is completed by the render evidence layer when a production contract is available."},
+            "repetitiveMotion": repetition,
+        },
+        sampling=sampling,
+        motion={
+            "openingMotionIntensity": round(opening, 4),
+            "overallMotionIntensity": round(overall, 4),
+            "motionIntervalDensity": round(density, 4),
+            "endingMotionEvidence": round(ending, 4),
+            "motionEscalationProxy": 0.0,
+            "motionEscalationProxyStatus": "TECHNICAL_ONLY",
+            "lowMotionCandidates": low_candidates,
+            "changeRateUnit": "mean grayscale pixel change per second",
+        },
+        visualSimilarity={"firstLastVisualSimilarity": round(first_last_similarity, 4)},
+        darkFrameCandidates=[],
+        evidence={
+            "sampleTimes": [sample.requested_time for sample in samples],
+            "intervals": intervals,
+            "temporalProfile": v4_profile,
+            "visualNovelty": novelty,
+            "repetitiveMotion": repetition,
+            "presentation": _presentation_profile([SampledFrame(sample.frame, sample.requested_time, sample.actual_time) for sample in samples[::max(1, len(samples) // 12)]]),
+            "dimensions": {
+                "motionIntensity": _v4_motion_label(overall),
+                "temporalConsistency": _v4_consistency_label(v4_profile),
+                "visualNovelty": "LOW" if novelty["averageNovelty"] < 0.16 else "MODERATE" if novelty["averageNovelty"] < 0.32 else "HIGH",
+                "actionBeatNovelty": "NOT_EVALUATED",
+                "planRenderFidelity": "NOT_EVALUATED",
+            },
+        },
+    )
+
+
+def analyse(relative_path: str, analysis_version: str = "sampled-visual-motion-v3") -> VideoAnalysisResponse:
     path = safe_video_path(relative_path)
     metadata = probe(path)
+    if analysis_version == V4_ANALYSIS_VERSION:
+        return _analyse_v4(path, metadata)
+    if analysis_version != "sampled-visual-motion-v3":
+        raise ValueError(f"Unsupported video analysis version: {analysis_version}")
     duration = metadata.duration_ms / 1000
     frames, failed_times = _frames(path, duration)
     if len(frames) < 2:
@@ -322,6 +799,8 @@ def analyse(relative_path: str) -> VideoAnalysisResponse:
         "changeRateUnit": "mean grayscale pixel change per second",
     }
     visual_similarity = {"firstLastVisualSimilarity": round(first_last_similarity, 4)}
+    temporal_profile = _temporal_profile(intervals, duration)
+    presentation_profile = _presentation_profile(frames)
     measurement_quality = {
         "decodeSuccessRatio": round(decode_success_ratio, 4),
         "validFramePairCount": valid_pair_count,
@@ -371,5 +850,7 @@ def analyse(relative_path: str) -> VideoAnalysisResponse:
             "motionScoreWeights": MOTION_SCORE_WEIGHTS,
             "motionNormalizationReference": MOTION_RATE_SCALE,
             "saturatedIntervalCount": sum(1 for item in intervals if item["normalizationSaturated"]),
+            "temporalProfile": temporal_profile,
+            "presentation": presentation_profile,
         },
     )

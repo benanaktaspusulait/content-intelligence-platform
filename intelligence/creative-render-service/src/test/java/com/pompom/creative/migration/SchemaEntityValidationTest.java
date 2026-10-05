@@ -63,7 +63,10 @@ class SchemaEntityValidationTest {
           com.pompom.creative.benchmark.WinnerEntry.class,
           com.pompom.creative.notification.Notification.class,
           com.pompom.creative.analytics.PerformancePrediction.class,
-          com.pompom.creative.analytics.ABTest.class);
+          com.pompom.creative.analytics.ABTest.class,
+          com.pompom.creative.postrender.PostRenderEvaluation.class,
+          com.pompom.creative.postrender.PostRenderRuleResultEntity.class,
+          com.pompom.creative.postrender.PostRenderAssessmentEntity.class);
 
   @BeforeAll
   static void migrate() {
@@ -137,7 +140,7 @@ class SchemaEntityValidationTest {
 
     assertThatThrownBy(() -> cfg.buildSessionFactory().close())
         .isInstanceOf(SchemaManagementException.class)
-        .hasMessageContaining("prompt_sha256");
+        .hasMessageContaining("render_jobs");
   }
 
   /**

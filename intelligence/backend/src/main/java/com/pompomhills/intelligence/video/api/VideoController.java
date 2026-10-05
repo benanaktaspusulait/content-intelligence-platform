@@ -76,6 +76,12 @@ public class VideoController {
     return service.promptFiles(relativeDirectory);
   }
 
+  @GetMapping("/prompt-directories")
+  public List<VideoDtos.PromptDirectory> promptDirectories(
+      @RequestParam(defaultValue = "library") String relativeDirectory) {
+    return service.promptDirectories(relativeDirectory);
+  }
+
   @GetMapping("/content")
   public ResponseEntity<Resource> content(@RequestParam("path") String relativePath) {
     var media = mediaContent.resolve(relativePath);
@@ -107,23 +113,35 @@ public class VideoController {
   }
 
   @PostMapping("/{id}/analysis")
-  public ResponseEntity<VideoDtos.AnalysisStatusResponse> analyse(@PathVariable UUID id) {
-    jobService.enqueue(id);
-    var status = statusFor(id);
+  public ResponseEntity<VideoDtos.AnalysisStatusResponse> analyse(
+      @PathVariable UUID id,
+      @RequestParam(defaultValue = "false") boolean force,
+      @RequestParam(defaultValue = VideoService.CURRENT_ANALYSIS_VERSION) String analysisVersion) {
+    jobService.enqueue(id, force, analysisVersion);
+    var status = statusFor(id, analysisVersion);
     return status.hasCompletedAnalysis()
         ? ResponseEntity.ok(status)
         : ResponseEntity.accepted().body(status);
   }
 
   @GetMapping("/{id}/analysis/status")
-  public VideoDtos.AnalysisStatusResponse status(@PathVariable UUID id) {
-    return statusFor(id);
+  public VideoDtos.AnalysisStatusResponse status(
+      @PathVariable UUID id,
+      @RequestParam(defaultValue = VideoService.CURRENT_ANALYSIS_VERSION) String analysisVersion) {
+    return statusFor(id, analysisVersion);
   }
 
-  private VideoDtos.AnalysisStatusResponse statusFor(UUID id) {
-    if (service.hasCurrentAnalysis(id)) {
+  private VideoDtos.AnalysisStatusResponse statusFor(UUID id, String analysisVersion) {
+    var active = jobService.findActiveByVideoId(id);
+    if (active.isPresent()) {
+      var job = active.get();
+      return new VideoDtos.AnalysisStatusResponse(
+          id, false, job.id().toString(), job.state(), job.attempts(), job.maxAttempts(),
+          job.error(), null, null, null, null, null, null, null);
+    }
+    if (analyses.existsByVideoIdAndAnalysisVersion(id, analysisVersion)) {
       var analysis = analyses
-          .findFirstByVideoIdAndAnalysisVersionOrderByCreatedAtDesc(id, VideoService.CURRENT_ANALYSIS_VERSION)
+          .findFirstByVideoIdAndAnalysisVersionOrderByCreatedAtDesc(id, analysisVersion)
           .orElseThrow();
       boolean legacy = "LEGACY".equals(analysis.getAnalysisType());
       return new VideoDtos.AnalysisStatusResponse(
@@ -148,10 +166,12 @@ public class VideoController {
           analysis.getSampling(),
           analysis.getMotion(),
           analysis.getVisualSimilarity(),
-          analysis.getDarkFrameCandidates());
+          analysis.getDarkFrameCandidates(),
+          analysis.getTimeline(),
+          analysis.getTemporalProfile(),
+          analysis.getPresentation());
     }
-    var active = jobService.findActiveByVideoId(id);
-    var latest = active.isPresent() ? active : jobService.findLatestByVideoId(id);
+    var latest = jobService.findLatestByVideoId(id);
     if (latest.isEmpty()) {
       var legacy = analyses.findFirstByVideoIdOrderByCreatedAtDesc(id);
       if (legacy.isPresent()) {
@@ -178,7 +198,10 @@ public class VideoController {
             Map.of(),
             Map.of(),
             Map.of(),
-            List.of());
+            List.of(),
+            List.of(),
+            Map.of(),
+            Map.of());
       }
       return new VideoDtos.AnalysisStatusResponse(
           id,

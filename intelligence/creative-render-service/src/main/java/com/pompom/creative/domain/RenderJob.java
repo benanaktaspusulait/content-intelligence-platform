@@ -49,6 +49,34 @@ public class RenderJob {
       updatable = false)
   private String promptTextSnapshot;
 
+  @Setter(AccessLevel.NONE)
+  @Column(name = "generation_prompt_snapshot", columnDefinition = "TEXT", updatable = false)
+  private String generationPromptSnapshot;
+
+  @Setter(AccessLevel.NONE)
+  @Column(name = "creative_contract_version", length = 80, updatable = false)
+  private String creativeContractVersion;
+
+  @Setter(AccessLevel.NONE)
+  @Column(name = "creative_contract_status", length = 40, updatable = false)
+  private String creativeContractStatus;
+
+  @Setter(AccessLevel.NONE)
+  @Column(name = "creative_contract_snapshot", columnDefinition = "jsonb", updatable = false)
+  private String creativeContractSnapshot;
+
+  @Setter(AccessLevel.NONE)
+  @Column(name = "compiled_generation_constraints", columnDefinition = "jsonb", updatable = false)
+  private String compiledGenerationConstraints;
+
+  @Setter(AccessLevel.NONE)
+  @Column(name = "constraint_compiler_version", length = 80, updatable = false)
+  private String constraintCompilerVersion;
+
+  @Setter(AccessLevel.NONE)
+  @Column(name = "compiled_constraints_sha256", length = 64, updatable = false)
+  private String compiledConstraintsSha256;
+
   // Immutable validation evidence snapshot: the accepted ValidationEvidenceDto this job was
   // queued against, copied in at queue time per the design doc ("The accepted evidence is copied
   // into the render job transaction"). Never mutated after insert. Nullable: legacy rows copied

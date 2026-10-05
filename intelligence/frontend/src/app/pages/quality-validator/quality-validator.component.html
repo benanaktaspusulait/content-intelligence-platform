@@ -15,18 +15,28 @@
     </div>
     <div class="card-body">
       <div class="prompt-library-toolbar">
-        <label>Project prompt library
-          <input type="text" [(ngModel)]="promptLibraryRoot" [disabled]="promptFilesLoading" (keyup.enter)="loadPromptFiles()" />
+        <label>Project prompt root
+          <input type="text" [(ngModel)]="promptLibraryRoot" [disabled]="promptDirectoriesLoading" (keyup.enter)="loadPromptDirectories()" />
         </label>
-        <span class="prompt-library-count">{{ promptFiles.length }} prompts found</span>
+        <button class="btn btn-outline-secondary btn-sm" type="button" (click)="loadPromptDirectories()" [disabled]="promptDirectoriesLoading">Refresh folders</button>
       </div>
-      <div class="prompt-library" *ngIf="!promptFilesLoading; else loadingPrompts">
+      <div class="prompt-folder-picker">
+        <label>1. Choose a prompt folder
+          <select [(ngModel)]="selectedPromptDirectory" (change)="selectPromptDirectory()" [disabled]="promptDirectoriesLoading || loading">
+            <option value="">Select a mounted folder…</option>
+            <option *ngFor="let directory of promptDirectories" [value]="directory.relativePath">{{ directory.name }} ({{ directory.promptCount }} prompts)</option>
+          </select>
+        </label>
+        <button class="btn btn-primary btn-sm" type="button" (click)="importSelectedFolder()" [disabled]="loading || !selectedPromptDirectory || !promptFiles.length">Import folder to DB</button>
+      </div>
+      <div class="prompt-library" *ngIf="selectedPromptDirectory && !promptFilesLoading; else loadingPrompts">
         <button type="button" class="prompt-file" *ngFor="let file of promptFiles" [class.is-selected]="selectedPromptPath === file.relativePath" (click)="selectPromptFile(file)" [disabled]="selectedPromptLoading">
           <span class="prompt-file__icon">P</span><span><strong>{{ file.folder.split('/').pop() }}</strong><small>{{ file.name }}</small></span><span class="prompt-file__arrow">→</span>
         </button>
-        <div class="empty-library" *ngIf="!promptFiles.length">No prompt files found in this project folder.</div>
+        <div class="empty-library" *ngIf="!promptFiles.length">No prompt files found in this folder.</div>
       </div>
-      <ng-template #loadingPrompts><div class="loading-library">Loading project prompts…</div></ng-template>
+      <ng-template #loadingPrompts><div class="loading-library">{{ selectedPromptDirectory ? 'Loading folder prompts…' : 'Choose a folder to load prompts.' }}</div></ng-template>
+      <div class="import-message" *ngIf="importMessage">{{ importMessage }}</div>
       <div class="selected-prompt" *ngIf="selectedPromptPath"><span>Selected source</span><code>{{ selectedPromptPath }}</code></div>
       <div class="linked-context">
         <label>Content title<input type="text" [(ngModel)]="contentTitle" [disabled]="loading" placeholder="Kiko's Mat Mystery" /></label>

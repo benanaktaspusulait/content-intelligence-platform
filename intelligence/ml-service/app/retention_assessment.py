@@ -56,35 +56,30 @@ class RetentionAssessmentRequest(BaseModel):
     existing_metrics: ExistingMetrics = Field(alias="existing_metrics")
 
 
-def _clamp(value: float, lower: float = 0.0, upper: float = 100.0) -> float:
-    return round(max(lower, min(upper, value)), 2)
-
-
-def _motion_score(metrics: ExistingMetrics) -> float:
-    score = 100 * (
-        0.35 * metrics.overall_motion
-        + 0.25 * metrics.opening_motion
-        + 0.20 * metrics.motion_density
-        + 0.10 * metrics.ending_motion
-    )
-    if metrics.motion_density >= 1.0:
-        score -= 10
-    return _clamp(score)
+def _motion_evidence(metrics: ExistingMetrics) -> dict[str, Any]:
+    """Return supplied motion measurements without inventing a quality score."""
+    return {
+        "opening_motion": metrics.opening_motion,
+        "overall_motion": metrics.overall_motion,
+        "motion_density": metrics.motion_density,
+        "ending_motion": metrics.ending_motion,
+        "first_last_similarity": metrics.first_last_similarity,
+    }
 
 
 def _hook_face(frames: list[StoryboardFrame]) -> dict[str, Any]:
     faces = [frame for frame in frames if frame.has_child_face]
     first_face = min(faces, key=lambda frame: frame.timestamp_seconds, default=None)
     if first_face is None:
-        return {"score": 0, "first_face_at": None, "reason": "No child face is present in the opening evidence."}
+        return {"first_face_at": None, "has_child_face": False, "reason": "No child face is present in the supplied opening evidence."}
     first_face_at = f"{first_face.timestamp_seconds:.1f}s"
-    if first_face.timestamp_seconds < 0.8 and first_face.eye_contact:
-        return {"score": 100, "first_face_at": first_face_at, "reason": "Face and camera eye contact appear before 0.8s."}
-    if first_face.timestamp_seconds <= 0.8:
-        return {"score": 70, "first_face_at": first_face_at, "reason": "A child face appears immediately, but early camera eye contact is not evidenced."}
-    if first_face.timestamp_seconds <= 1.5:
-        return {"score": 50, "first_face_at": first_face_at, "reason": "A child face appears after the strongest opening-hook window."}
-    return {"score": 0, "first_face_at": first_face_at, "reason": "The first child face appears after the 1.5s opening window."}
+    return {
+        "first_face_at": first_face_at,
+        "has_child_face": True,
+        "early_face_within_0_8s": first_face.timestamp_seconds <= 0.8,
+        "early_eye_contact": first_face.timestamp_seconds <= 0.8 and first_face.eye_contact,
+        "reason": "Supplied face timing and gaze evidence; camera gaze is optional and not a policy decision.",
+    }
 
 
 def _punchline(transcript: list[TranscriptSegment]) -> TranscriptSegment | None:
@@ -96,20 +91,27 @@ def _punchline(transcript: list[TranscriptSegment]) -> TranscriptSegment | None:
 def _stillness(frames: list[StoryboardFrame], transcript: list[TranscriptSegment]) -> dict[str, Any]:
     punchline = _punchline(transcript)
     if punchline is None:
-        return {"score": 50, "punchline_at": None, "motion_at_punchline": None, "reason": "No timestamped punchline evidence was supplied."}
+        return {"punchline_at": None, "motion_at_punchline": None, "reason": "No timestamped punchline evidence was supplied."}
     center = (punchline.start_seconds + punchline.end_seconds) / 2
     nearby = [frame for frame in frames if abs(frame.timestamp_seconds - center) <= 0.5 and frame.motion_density is not None]
     motion = sum(frame.motion_density for frame in nearby) / len(nearby) if nearby else None
     if motion is None:
-        return {"score": 50, "punchline_at": f"{center:.2f}s", "motion_at_punchline": None, "reason": "Punchline exists, but local motion evidence is unavailable."}
-    score = 100 if 0.4 <= motion <= 0.6 else 0 if motion >= 0.9 else 50
-    reason = "Motion drops into a readable punchline pause." if score == 100 else "Motion does not provide the requested punchline stillness."
-    return {"score": score, "punchline_at": f"{center:.2f}s", "motion_at_punchline": round(motion, 4), "reason": reason}
+        return {"punchline_at": f"{center:.2f}s", "motion_at_punchline": None, "reason": "Punchline exists, but local motion evidence is unavailable."}
+    return {
+        "punchline_at": f"{center:.2f}s",
+        "motion_at_punchline": round(motion, 4),
+        "reason": "Local motion evidence is supplied for experiment analysis; no fixed stillness target is applied.",
+    }
 
 
 def _text_overlay(frames: list[StoryboardFrame]) -> dict[str, Any]:
     has_text = any(frame.timestamp_seconds <= 2.0 and frame.text_overlay_area_ratio > 0.15 for frame in frames)
-    return {"score": 100 if has_text else 0, "reason": "A large opening text overlay is present." if has_text else "No text overlay larger than 15% is present in the first 2s."}
+    maximum = max((frame.text_overlay_area_ratio for frame in frames if frame.timestamp_seconds <= 2.0), default=0.0)
+    return {
+        "opening_text_present": maximum > 0,
+        "opening_text_max_area_ratio": round(maximum, 4),
+        "reason": "Text evidence is recorded for an experiment only; text is not required by production policy.",
+    }
 
 
 def _eye_line(frames: list[StoryboardFrame]) -> dict[str, Any]:
@@ -117,8 +119,7 @@ def _eye_line(frames: list[StoryboardFrame]) -> dict[str, Any]:
     camera = sum(frame.looks_at_camera for frame in frames) / total
     other = sum(frame.looks_at_other_character for frame in frames) / total
     away = sum(frame.looks_away for frame in frames) / total
-    distance = abs(camera - 0.2) + abs(other - 0.6) + abs(away - 0.2)
-    return {"score": _clamp(100 * (1 - distance / 2)), "camera_ratio": round(camera, 4), "other_character_ratio": round(other, 4), "away_ratio": round(away, 4)}
+    return {"camera_ratio": round(camera, 4), "other_character_ratio": round(other, 4), "away_ratio": round(away, 4), "reason": "Ratios are descriptive evidence only; no target eye-line distribution is enforced."}
 
 
 def _audio_silence(frames: list[StoryboardFrame], audio: AudioAnalysis) -> dict[str, Any]:
@@ -133,30 +134,27 @@ def _audio_silence(frames: list[StoryboardFrame], audio: AudioAnalysis) -> dict[
         )
         if not moving:
             traps += 1
-    return {"score": _clamp(100 - traps * 25), "traps": traps}
+    return {"silence_gaps_over_0_4s_without_sampled_motion": traps, "reason": "Silence alone is not a production failure; planned visual progression is evaluated elsewhere."}
 
 
 def _color(frames: list[StoryboardFrame]) -> dict[str, Any]:
     measured = [frame for frame in frames if frame.brightness is not None and frame.saturation is not None]
     if not measured:
-        return {"score": 50, "avg_brightness": None, "avg_saturation": None, "reason": "No brightness or saturation measurements were supplied."}
+        return {"avg_brightness": None, "avg_saturation": None, "reason": "No brightness or saturation measurements were supplied."}
     brightness = sum(frame.brightness for frame in measured) / len(measured)
     saturation = sum(frame.saturation for frame in measured) / len(measured)
-    brightness_score = 100 if 110 <= brightness <= 180 else 40 if brightness < 90 else 70
-    score = brightness_score if saturation > 0.5 else min(brightness_score, 50)
-    return {"score": score, "avg_brightness": round(brightness, 2), "avg_saturation": round(saturation, 4), "reason": "Brightness and saturation are in the kids-content target range." if score == 100 else "Color measurements are outside the target range."}
+    return {"avg_brightness": round(brightness, 2), "avg_saturation": round(saturation, 4), "reason": "Measurements are descriptive evidence; no universal kids-content brightness or saturation target is applied."}
 
 
 def _loop_sequel(metrics: ExistingMetrics, transcript: list[TranscriptSegment]) -> dict[str, Any]:
     similarity = metrics.first_last_similarity
-    base = 100 if 0.75 <= similarity <= 0.85 else _clamp(100 - abs(similarity - 0.8) * 250)
     text = " ".join(segment.text.lower() for segment in transcript)
     has_hook = any(token in text for token in ("again", "tomorrow", "part 2", "next time"))
-    return {"score": _clamp(base + (20 if has_hook else 0)), "first_last_similarity": similarity, "has_sequel_hook": has_hook}
+    return {"first_last_visual_similarity": similarity, "sequel_words_observed": has_hook, "reason": "Similarity remains independent evidence; transcript words do not create a semantic loop score."}
 
 
 def assess(request: RetentionAssessmentRequest) -> dict[str, Any]:
-    motion = _motion_score(request.existing_metrics)
+    motion = _motion_evidence(request.existing_metrics)
     hook = _hook_face(request.storyboard_frames)
     stillness = _stillness(request.storyboard_frames, request.transcript_with_timestamps)
     text = _text_overlay(request.storyboard_frames)
@@ -164,20 +162,10 @@ def assess(request: RetentionAssessmentRequest) -> dict[str, Any]:
     audio = _audio_silence(request.storyboard_frames, request.audio_analysis)
     color = _color(request.storyboard_frames)
     loop = _loop_sequel(request.existing_metrics, request.transcript_with_timestamps)
-    final = _clamp(
-        motion * 0.20 + hook["score"] * 0.25 + stillness["score"] * 0.15 + text["score"] * 0.15
-        + eye_line["score"] * 0.05 + audio["score"] * 0.10 + color["score"] * 0.05 + loop["score"] * 0.05
-    )
-    prediction = "15K+ lifetime, viral potential" if final >= 90 else "8-12K, target range" if final >= 80 else "3-6K lifetime, average" if final >= 60 else "<3K, below usual range"
-    fixes = []
-    if text["score"] == 0:
-        fixes.append("Add big text in the first 2s")
-    if stillness["score"] < 100:
-        fixes.append("Drop motion during the punchline")
-    if not fixes:
-        fixes.append("Keep the opening face hook and punchline contrast")
     return {
-        "motion_score": motion,
+        "assessment_scope": "EXPERIMENT_ONLY",
+        "policy_decision": "NOT_APPLICABLE",
+        "motion_evidence": motion,
         "hook_face": hook,
         "stillness_punchline": stillness,
         "text_overlay": text,
@@ -185,8 +173,4 @@ def assess(request: RetentionAssessmentRequest) -> dict[str, Any]:
         "audio_silence": audio,
         "color_brightness": color,
         "loop_sequel": loop,
-        "final_score": final,
-        "prediction": prediction,
-        "fix_1": fixes[0],
-        "fix_2": fixes[1] if len(fixes) > 1 else "No second fix identified from supplied evidence",
     }

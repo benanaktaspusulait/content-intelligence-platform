@@ -1,0 +1,149 @@
+version: POST_RENDER_RULESET_1.2
+stage: POST_RENDER
+rules:
+  - id: TECH_QA_EVIDENCE_SERVICE
+    ruleVersion: "1.0"
+    family: TECHNICAL_INTEGRITY
+    severity: BLOCKER
+    source: qa.evidenceAvailable
+    operator: EQUALS
+    expected: true
+    missingEvidence: SERVICE_ERROR
+    resultWhenMatched: PASS
+    description: Required post-render evidence extractors must be available.
+  - id: TECH_MEDIA_READABLE
+    ruleVersion: "1.0"
+    family: TECHNICAL_INTEGRITY
+    severity: BLOCKER
+    source: technical.mediaReadable
+    operator: EQUALS
+    expected: true
+    missingEvidence: FAIL_CLOSED
+    resultWhenMatched: PASS
+    description: Rendered media must be readable and verified by the media probe.
+  - id: TECH_CHECKSUM_VERIFIED
+    ruleVersion: "1.0"
+    family: TECHNICAL_INTEGRITY
+    severity: BLOCKER
+    source: technical.checksumVerified
+    operator: EQUALS
+    expected: true
+    missingEvidence: FAIL_CLOSED
+    resultWhenMatched: PASS
+    description: Rendered media checksum must be present and verified.
+  - id: TECH_VALID_DURATION
+    ruleVersion: "1.0"
+    family: MEDIA_VALIDITY
+    severity: BLOCKER
+    source: technical.durationMs
+    operator: GREATER_THAN
+    expected: 0
+    missingEvidence: FAIL_CLOSED
+    resultWhenMatched: PASS
+    description: Rendered media must have a positive duration.
+  - id: TECH_MINIMUM_DIMENSIONS
+    ruleVersion: "1.0"
+    family: MEDIA_VALIDITY
+    severity: CRITICAL
+    source: technical.width
+    operator: GREATER_THAN_OR_EQUAL
+    expected: 1
+    missingEvidence: FAIL_CLOSED
+    resultWhenMatched: PASS
+    description: Rendered media must have measured dimensions.
+  - id: QA_DEAD_AIR_REVIEW
+    ruleVersion: "1.0"
+    family: TEMPORAL_CONTINUITY
+    severity: WARNING
+    source: qa.hasDeadAir
+    operator: EQUALS
+    expected: true
+    missingEvidence: UNKNOWN
+    resultWhenMatched: FAIL
+    policyEffect: HUMAN_REVIEW
+    description: Dead-air evidence requires a human review decision; it is not an automatic creative failure.
+  - id: CHARACTER_CONTINUITY_REVIEW
+    ruleVersion: "1.0"
+    family: CHARACTER_CONTINUITY
+    severity: WARNING
+    source: qa.characterIdentityVerified
+    operator: EQUALS
+    expected: false
+    missingEvidence: REVIEW
+    resultWhenMatched: FAIL
+    policyEffect: HUMAN_REVIEW
+    description: Character identity evidence requires human review when it reports a mismatch.
+  - id: VISUAL_LOW_MOTION_INFO
+    ruleVersion: "1.0"
+    family: VISUAL_MOTION
+    severity: INFO
+    source: motion.motionIntervalDensity
+    operator: LESS_THAN
+    expected: 0.12
+    missingEvidence: UNKNOWN
+    resultWhenMatched: PASS
+    policyEffect: INFO
+    description: Low sampled motion is informational evidence only and does not block publication.
+  - id: EXPECTED_VISIBILITY_PROFILE
+    ruleVersion: "1.1"
+    family: VISIBILITY
+    severity: WARNING
+    source: technical.visibilityProfile.allSampledFramesDark
+    operator: EQUALS
+    expected: true
+    missingEvidence: UNKNOWN
+    resultWhenMatched: FAIL
+    policyEffect: HUMAN_REVIEW
+    description: All decoded visual samples are dark candidates; review exposure in context. This is not an automatic creative failure.
+  - id: PAYOFF_VISUAL_EMPHASIS
+    ruleVersion: "1.0"
+    family: PAYOFF_STRUCTURE
+    severity: WARNING
+    source: payoffContrast.contrastMagnitude
+    operator: LESS_THAN
+    expected: 0.1
+    missingEvidence: UNKNOWN
+    resultWhenMatched: FAIL
+    policyEffect: HUMAN_REVIEW
+    description: The planned payoff has little measured visual-energy contrast with its surrounding motion. Test a short hold, isolated reaction, or stronger visual change; this does not establish a retention effect.
+  - id: UNMAPPED_ACTIVITY_DROP
+    ruleVersion: "1.0"
+    family: TEMPORAL_CONTINUITY
+    severity: WARNING
+    source: temporal.unmappedActivityDrops
+    operator: LIST_NOT_EMPTY
+    expected: true
+    missingEvidence: UNKNOWN
+    resultWhenMatched: FAIL
+    policyEffect: HUMAN_REVIEW
+    description: A substantial local activity drop was detected without a matching planned beat, so the segment requires human review. This is not a causal or performance claim.
+  - id: OPENING_CAUSAL_LEGIBILITY
+    ruleVersion: "1.0"
+    family: OPENING_STRUCTURE
+    severity: WARNING
+    source: opening.causalLegibility
+    operator: EQUALS
+    expected: true
+    missingEvidence: UNKNOWN
+    resultWhenMatched: PASS
+    description: Opening causal legibility is not evaluated unless explicit semantic evidence is available.
+  - id: SEMANTIC_LOOP_CONTINUITY
+    ruleVersion: "1.0"
+    family: SEMANTIC_LOOP
+    severity: WARNING
+    source: semanticLoop.continuity
+    operator: EQUALS
+    expected: true
+    missingEvidence: UNKNOWN
+    resultWhenMatched: PASS
+    description: Endpoint pixel similarity is not treated as semantic loop continuity without semantic evidence.
+  - id: PRIMARY_CHARACTER_CONTINUITY
+    ruleVersion: "1.0"
+    family: CHARACTER_CONTINUITY
+    severity: WARNING
+    source: character.primaryContinuity
+    operator: EQUALS
+    expected: true
+    missingEvidence: UNKNOWN
+    resultWhenMatched: PASS
+    description: Primary character identity continuity remains unevaluated until a semantic character analyzer supplies evidence.

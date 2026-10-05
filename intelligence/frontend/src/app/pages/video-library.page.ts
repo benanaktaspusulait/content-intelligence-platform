@@ -132,12 +132,19 @@ export function resultCountLabel(groupCount: number, fileCount: number): string 
                 <div><span class="eyebrow">CREATIVE</span><h2 [id]="'media-group-' + $index">{{ group.folderName }}</h2><p [title]="group.folderPath">{{ group.folderPath }}</p></div>
                 <div class="media-group-actions"><span class="variant-count"><b>{{ group.files.length }}</b> {{ group.files.length === 1 ? 'variant' : 'variants' }}</span><a class="button button--compact" routerLink="/videos/detail" [queryParams]="{ folder: group.folderPath, file: group.files[0].relativePath }" [attr.aria-label]="'Open details for ' + group.folderName"><span aria-hidden="true">▶</span> Details</a></div>
               </header>
-              <div class="data-table-scroll"><table class="data-table media-files-table"><thead><tr><th>Preview</th><th>Version</th><th>File</th><th>Size</th><th>Modified</th><th>Evidence state</th><th><span class="sr-only">Actions</span></th></tr></thead><tbody>@for (file of group.files; track file.relativePath) { <tr><td class="media-thumbnail-cell">@if (file.thumbnailPath) { <img class="media-thumbnail" [src]="service.mediaContentUrl(file.thumbnailPath)" [alt]="'First frame for ' + file.displayName" loading="lazy"> } @else { <span class="media-thumbnail-placeholder" title="No first-frame image found" aria-label="No first-frame image found">—</span> }</td><td><strong>{{ file.variantName }}</strong><small>{{ extension(file.name) }}</small></td><td class="source-path" [title]="file.name">{{ file.name }}</td><td class="tabular">{{ fileSize(file.sizeBytes) }}</td><td>{{ modified(file.modifiedAt) }}</td><td><span class="status-badge" [class.status-badge--green]="file.ingested">{{ file.ingested ? (file.status || 'Ingested') : 'Not ingested' }}</span></td><td>@if (file.videoId) { <a class="icon-button table-action" [routerLink]="['/videos', file.videoId]" title="Open evidence record" [attr.aria-label]="'Open ' + file.displayName">↗</a> } @else { <button class="button button--compact" type="button" [disabled]="processingPath() === file.relativePath" (click)="ingestFile(file)">{{ processingPath() === file.relativePath ? 'Processing…' : 'Ingest' }}</button> }</td></tr> }</tbody></table></div>
+              <div class="data-table-scroll"><table class="data-table media-files-table"><thead><tr><th>Preview</th><th>Version</th><th>File</th><th>Size</th><th>Modified</th><th>Evidence state</th><th><span class="sr-only">Actions</span></th></tr></thead><tbody>@for (file of group.files; track file.relativePath) { <tr><td class="media-thumbnail-cell">@if (file.thumbnailPath) { <button class="media-thumbnail-button" type="button" (pointerdown)="$event.preventDefault(); $event.stopPropagation(); openThumbnail(file)" (click)="$event.stopPropagation(); openThumbnail(file)" [attr.aria-label]="'Open larger preview for ' + file.displayName"><img class="media-thumbnail" [src]="service.mediaContentUrl(file.thumbnailPath)" [alt]="'First frame for ' + file.displayName" loading="lazy"></button> } @else { <span class="media-thumbnail-placeholder" title="No first-frame image found" aria-label="No first-frame image found">—</span> }</td><td><strong>{{ file.variantName }}</strong><small>{{ extension(file.name) }}</small></td><td class="source-path" [title]="file.name">{{ file.name }}</td><td class="tabular">{{ fileSize(file.sizeBytes) }}</td><td>{{ modified(file.modifiedAt) }}</td><td><span class="status-badge" [class.status-badge--green]="file.ingested">{{ file.ingested ? (file.status || 'Ingested') : 'Not ingested' }}</span></td><td>@if (file.videoId) { <a class="icon-button table-action" [routerLink]="['/videos', file.videoId]" title="Open evidence record" [attr.aria-label]="'Open ' + file.displayName">↗</a> } @else { <button class="button button--compact" type="button" [disabled]="processingPath() === file.relativePath" (click)="ingestFile(file)">{{ processingPath() === file.relativePath ? 'Processing…' : 'Ingest' }}</button> }</td></tr> }</tbody></table></div>
             </section>
           }
         </div>
       }
     </section>
+    @if (thumbnailPreview(); as preview) {
+      <div class="thumbnail-lightbox" role="presentation" (click)="closeThumbnail()">
+        <div class="thumbnail-lightbox__panel" role="dialog" aria-modal="true" [attr.aria-label]="preview.alt">
+          <img [src]="preview.url" [alt]="preview.alt">
+        </div>
+      </div>
+    }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -161,6 +168,7 @@ export class VideoLibraryPage {
   protected readonly folderMenuOpen = signal(false);
   protected readonly processingPath = signal('');
   protected readonly query = signal('');
+  protected readonly thumbnailPreview = signal<{ url: string; alt: string } | null>(null);
   protected readonly evidenceState = signal<'All' | 'Not ingested' | 'Ingested'>('All');
   protected readonly filteredDirectories = computed(() => filterMediaDirectories(this.mediaDirectories(), this.folderQuery()));
   protected readonly selectedDirectories = computed(() => { const selected = new Set(this.selectedPaths()); return this.mediaDirectories().filter(folder => selected.has(folder.relativePath)); });
@@ -201,6 +209,14 @@ export class VideoLibraryPage {
 
   @HostListener('document:click', ['$event'])
   protected handleOutsideClick(event: MouseEvent): void { if (!this.elementRef.nativeElement.querySelector('.folder-combobox')?.contains(event.target as Node)) this.folderMenuOpen.set(false); }
+  @HostListener('document:keydown.escape')
+  protected closeThumbnailOnEscape(): void { this.thumbnailPreview.set(null); }
+  protected openThumbnail(file: MediaFileView): void {
+    if (!file.thumbnailPath) return;
+    const preview = { url: this.service.mediaContentUrl(file.thumbnailPath), alt: `First frame for ${file.displayName}` };
+    window.setTimeout(() => this.thumbnailPreview.set(preview), 0);
+  }
+  protected closeThumbnail(): void { this.thumbnailPreview.set(null); }
   protected openFolderMenu(): void { this.folderMenuOpen.set(true); }
   protected toggleFolderMenu(event: MouseEvent): void { event.stopPropagation(); this.folderMenuOpen.update(open => !open); }
   protected closeFolderMenu(event: Event): void { event.preventDefault(); event.stopPropagation(); this.folderMenuOpen.set(false); }

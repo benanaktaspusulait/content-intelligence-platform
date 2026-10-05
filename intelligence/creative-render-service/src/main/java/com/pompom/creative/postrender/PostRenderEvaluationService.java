@@ -20,6 +20,8 @@ public class PostRenderEvaluationService {
   private final PostRenderRuleEngine ruleEngine;
   private final PostRenderEvaluationRepository evaluationRepository;
   private final PostRenderRuleResultRepository ruleResultRepository;
+  private final PostRenderAssessmentRepository assessmentRepository;
+  private final PostRenderAssessmentAggregator assessmentAggregator;
   private final ObjectMapper objectMapper;
 
   @Transactional
@@ -29,6 +31,7 @@ public class PostRenderEvaluationService {
     RenderEvidenceIR evidence = evidenceExtractor.extract(asset, renderAttemptId, qa, qaStatus);
     List<PostRenderRuleResult> results = ruleEngine.evaluate(evidence);
     PostRenderDecision decision = new PostRenderDecisionAggregator().aggregate(results);
+    PostRenderAssessment assessment = assessmentAggregator.aggregate(evidence, results);
     boolean reviewRequired = decision == PostRenderDecision.HUMAN_REVIEW
         || results.stream().anyMatch(PostRenderRuleResult::reviewRequired);
 
@@ -62,6 +65,16 @@ public class PostRenderEvaluationService {
         .reviewRequired(result.reviewRequired())
         .evaluatedAt(result.evaluatedAt())
         .build()).toList());
+
+    assessmentRepository.save(PostRenderAssessmentEntity.builder()
+        .evaluation(evaluation)
+        .grade(assessment.grade())
+        .label(assessment.label())
+        .verdict(assessment.verdict())
+        .evidenceCoveragePercent(assessment.evidenceCoveragePercent())
+        .assessmentVersion(assessment.assessmentVersion())
+        .snapshot(write(assessment))
+        .build());
 
     return new EvaluationResult(evaluation, evidence, results);
   }
