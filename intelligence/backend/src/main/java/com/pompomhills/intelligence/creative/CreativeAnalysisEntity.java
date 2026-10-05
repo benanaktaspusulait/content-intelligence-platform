@@ -30,6 +30,9 @@ public class CreativeAnalysisEntity {
   private String analysisVersion;
 
   @Column(nullable = false)
+  private String analysisType;
+
+  @Column(nullable = false)
   private String primaryEngine;
 
   @JdbcTypeCode(SqlTypes.JSON)
@@ -67,6 +70,7 @@ public class CreativeAnalysisEntity {
   public CreativeAnalysisEntity(
       VideoEntity video,
       String analysisVersion,
+      String analysisType,
       String primaryEngine,
       List<String> secondaryEngines,
       String classification,
@@ -78,6 +82,7 @@ public class CreativeAnalysisEntity {
       Map<String, Object> rawResult) {
     this.video = video;
     this.analysisVersion = analysisVersion;
+    this.analysisType = analysisType;
     this.primaryEngine = primaryEngine;
     this.secondaryEngines = secondaryEngines;
     this.classification = classification;
@@ -99,6 +104,44 @@ public class CreativeAnalysisEntity {
 
   public String getAnalysisVersion() {
     return analysisVersion;
+  }
+
+  public String getAnalysisType() {
+    return analysisType;
+  }
+
+  public Double getMotionHeuristicScore() {
+    return actionDnaScore;
+  }
+
+  public Double getMeasurementConfidence() {
+    return confidence;
+  }
+
+  public Map<String, Object> getMeasurementQuality() {
+    return rawResult == null ? Map.of() : castMap(rawResult.get("measurementQuality"));
+  }
+
+  public Map<String, Object> getSampling() {
+    return rawResult == null ? Map.of() : castMap(rawResult.get("sampling"));
+  }
+
+  public Map<String, Object> getMotion() {
+    return rawResult == null ? Map.of() : castMap(rawResult.get("motion"));
+  }
+
+  public Map<String, Object> getVisualSimilarity() {
+    return rawResult == null ? Map.of() : castMap(rawResult.get("visualSimilarity"));
+  }
+
+  public List<Map<String, Object>> getDarkFrameCandidates() {
+    if (rawResult == null || !(rawResult.get("darkFrameCandidates") instanceof List<?> values)) return List.of();
+    return values.stream().filter(Map.class::isInstance).map(value -> (Map<String, Object>) value).toList();
+  }
+
+  @SuppressWarnings("unchecked")
+  private Map<String, Object> castMap(Object value) {
+    return value instanceof Map<?, ?> map ? (Map<String, Object>) map : Map.of();
   }
 
   public String getPrimaryEngine() {

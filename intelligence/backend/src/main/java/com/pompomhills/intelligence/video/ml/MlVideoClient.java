@@ -38,14 +38,64 @@ public class MlVideoClient {
       String contractVersion,
       Metadata metadata,
       String analysisVersion,
+      String analysisType,
       String primaryEngine,
       List<String> secondaryEngines,
       String classification,
-      double actionDnaScore,
-      double confidence,
+      Double motionHeuristicScore,
+      Double measurementConfidence,
+      Map<String, Object> measurementQuality,
       String reason,
       String storyboardPath,
       List<Map<String, Object>> timeline,
       Map<String, Object> features,
-      Map<String, Object> evidence) {}
+      Map<String, Object> evidence,
+      Map<String, Object> sampling,
+      Map<String, Object> motion,
+      Map<String, Object> visualSimilarity,
+      List<Map<String, Object>> darkFrameCandidates) {
+    public MlAnalysisResponse(
+        String contractVersion,
+        Metadata metadata,
+        String analysisVersion,
+        String primaryEngine,
+        List<String> secondaryEngines,
+        String classification,
+        double actionDnaScore,
+        double confidence,
+        String reason,
+        String storyboardPath,
+        List<Map<String, Object>> timeline,
+        Map<String, Object> features,
+        Map<String, Object> evidence) {
+      this(
+          contractVersion,
+          metadata,
+          analysisVersion,
+          "LEGACY",
+          primaryEngine,
+          secondaryEngines,
+          classification,
+          actionDnaScore,
+          confidence,
+          Map.of(),
+          reason,
+          storyboardPath,
+          timeline,
+          features,
+          evidence,
+          Map.of(),
+          Map.of(),
+          Map.of(),
+          List.of());
+    }
+
+    public double actionDnaScore() {
+      return motionHeuristicScore == null ? 0.0 : motionHeuristicScore;
+    }
+
+    public double confidence() {
+      return measurementConfidence == null ? 0.0 : measurementConfidence;
+    }
+  }
 }

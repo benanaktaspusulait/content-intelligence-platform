@@ -59,5 +59,9 @@ public class RenderJobDto {
     private Boolean characterIdentityVerified;
     private String characterIdentityIssues;
     private Boolean requiresHumanReview;
+    private String evidenceVersion;
+    private String rulesetVersion;
+    private String humanDecision;
+    private Boolean canonicalPostRender;
   }
 }

@@ -31,8 +31,12 @@ public class QaHumanReview {
   private UUID id;
 
   @ManyToOne(optional = false)
-  @JoinColumn(name = "render_qa_result_id", nullable = false, updatable = false)
+  @JoinColumn(name = "render_qa_result_id", updatable = false)
   private RenderQaResult renderQaResult;
+
+  @ManyToOne(optional = true)
+  @JoinColumn(name = "post_render_evaluation_id", updatable = false)
+  private com.pompom.creative.postrender.PostRenderEvaluation postRenderEvaluation;
 
   @Enumerated(EnumType.STRING)
   @Column(name = "decision", nullable = false, length = 30, updatable = false)

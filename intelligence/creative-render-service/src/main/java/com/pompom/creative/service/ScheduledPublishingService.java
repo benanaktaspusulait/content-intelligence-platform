@@ -144,8 +144,9 @@ public class ScheduledPublishingService {
     log.debug("Processing scheduled publications");
 
     Instant now = Instant.now();
+    Duration effectiveLeaseDuration = leaseDuration == null ? Duration.ofMinutes(2) : leaseDuration;
     List<UUID> claimed =
-        claimRepository.claimDueSchedules(leaseOwner, now, now.plus(leaseDuration), batchSize);
+        claimRepository.claimDueSchedules(leaseOwner, now, now.plus(effectiveLeaseDuration), batchSize);
 
     if (claimed.isEmpty()) {
       log.debug("No due publications found");

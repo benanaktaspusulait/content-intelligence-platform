@@ -17,6 +17,7 @@ import com.pompom.creative.queue.ValidationEvidenceRejectedException;
 import com.pompom.creative.repository.RenderJobRepository;
 import com.pompom.creative.repository.RenderAttemptRepository;
 import com.pompom.creative.repository.RenderQaResultRepository;
+import com.pompom.creative.postrender.PostRenderEvaluationRepository;
 import java.net.URI;
 import java.util.List;
 import java.util.Optional;
@@ -44,17 +45,20 @@ public class RenderJobController {
   private final RenderQaResultRepository qaResultRepo;
   private final RenderAttemptRepository renderAttemptRepo;
   private final RenderJobQueueService queueService;
+  private final PostRenderEvaluationRepository postRenderEvaluationRepo;
 
   @Autowired
   public RenderJobController(
       RenderJobRepository renderJobRepo,
       RenderQaResultRepository qaResultRepo,
       RenderAttemptRepository renderAttemptRepo,
-      RenderJobQueueService queueService) {
+      RenderJobQueueService queueService,
+      PostRenderEvaluationRepository postRenderEvaluationRepo) {
     this.renderJobRepo = renderJobRepo;
     this.qaResultRepo = qaResultRepo;
     this.renderAttemptRepo = renderAttemptRepo;
     this.queueService = queueService;
+    this.postRenderEvaluationRepo = postRenderEvaluationRepo;
   }
 
   /** Compatibility constructor for queue-focused controller tests. */
@@ -62,7 +66,7 @@ public class RenderJobController {
       RenderJobRepository renderJobRepo,
       RenderQaResultRepository qaResultRepo,
       RenderJobQueueService queueService) {
-    this(renderJobRepo, qaResultRepo, null, queueService);
+    this(renderJobRepo, qaResultRepo, null, queueService, null);
   }
 
   /**
@@ -286,27 +290,28 @@ public class RenderJobController {
                                 .build())
                     .toList());
 
-    // Load QA result if exists
-    qaResultRepo
-        .findTopByRenderAsset_RenderJob_IdOrderByCreatedAtDesc(job.getId())
-        .ifPresent(
-            qaResult -> {
-              builder.qaResult(
-                  RenderJobDto.QaResultDto.builder()
-                      .id(qaResult.getId())
-                      .decision(qaResult.getDecision().name())
-                      .decisionReason(qaResult.getDecisionReason())
-                      .complianceScore(qaResult.getComplianceScore())
-                      .confidence(
-                          qaResult.getConfidence() != null
-                              ? qaResult.getConfidence().doubleValue()
-                              : null)
-                      .hasDeadAir(qaResult.getHasDeadAir())
-                      .characterIdentityVerified(qaResult.getCharacterIdentityVerified())
-                      .characterIdentityIssues(qaResult.getCharacterIdentityIssues())
-                      .requiresHumanReview(qaResult.getRequiresHumanReview())
-                      .build());
-            });
+    if (postRenderEvaluationRepo != null) {
+      postRenderEvaluationRepo.findTopByRenderAsset_RenderJob_IdOrderByCreatedAtDesc(job.getId())
+          .ifPresent(evaluation -> builder.qaResult(RenderJobDto.QaResultDto.builder()
+              .id(evaluation.getId())
+              .decision(evaluation.getOverallDecision().name())
+              .decisionReason("Post-render evaluation " + evaluation.getPostRenderRulesetVersion())
+              .requiresHumanReview(evaluation.isHumanReviewRequired())
+              .evidenceVersion(evaluation.getEvidenceVersion())
+              .rulesetVersion(evaluation.getPostRenderRulesetVersion())
+              .humanDecision(evaluation.getHumanDecision())
+              .canonicalPostRender(true)
+              .build()));
+    } else {
+      qaResultRepo.findTopByRenderAsset_RenderJob_IdOrderByCreatedAtDesc(job.getId())
+          .ifPresent(qaResult -> builder.qaResult(RenderJobDto.QaResultDto.builder()
+              .id(qaResult.getId()).decision(qaResult.getDecision().name())
+              .decisionReason(qaResult.getDecisionReason()).complianceScore(qaResult.getComplianceScore())
+              .confidence(qaResult.getConfidence() == null ? null : qaResult.getConfidence().doubleValue())
+              .hasDeadAir(qaResult.getHasDeadAir()).characterIdentityVerified(qaResult.getCharacterIdentityVerified())
+              .characterIdentityIssues(qaResult.getCharacterIdentityIssues())
+              .requiresHumanReview(qaResult.getRequiresHumanReview()).canonicalPostRender(false).build()));
+    }
 
     return builder.build();
   }

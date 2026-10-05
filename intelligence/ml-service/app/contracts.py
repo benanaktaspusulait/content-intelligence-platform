@@ -24,16 +24,22 @@ class VideoAnalysisResponse(BaseModel):
     contract_version: Literal["v1"] = Field("v1", alias="contractVersion")
     metadata: VideoMetadata
     analysis_version: str = Field(alias="analysisVersion")
+    analysis_type: str = Field(alias="analysisType")
     primary_engine: str = Field(alias="primaryEngine")
     secondary_engines: list[str] = Field(alias="secondaryEngines")
     classification: str
-    action_dna_score: float = Field(alias="actionDnaScore")
-    confidence: float
+    motion_heuristic_score: float = Field(alias="motionHeuristicScore")
+    measurement_confidence: float | None = Field(None, alias="measurementConfidence")
+    measurement_quality: dict[str, Any] = Field(default_factory=dict, alias="measurementQuality")
     reason: str
     storyboard_path: str | None = Field(None, alias="storyboardPath")
     timeline: list[dict[str, Any]]
     features: dict[str, Any]
     evidence: dict[str, Any]
+    sampling: dict[str, Any] = Field(default_factory=dict)
+    motion: dict[str, Any] = Field(default_factory=dict)
+    visual_similarity: dict[str, Any] = Field(default_factory=dict, alias="visualSimilarity")
+    dark_frame_candidates: list[dict[str, Any]] = Field(default_factory=list, alias="darkFrameCandidates")
 
 
 class PredictionRequest(BaseModel):

@@ -8,6 +8,7 @@ import com.pompomhills.intelligence.video.job.AnalysisJobService;
 import jakarta.validation.Valid;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
@@ -107,7 +108,10 @@ public class VideoController {
 
   private VideoDtos.AnalysisStatusResponse statusFor(UUID id) {
     if (service.hasCurrentAnalysis(id)) {
-      var analysis = analyses.findFirstByVideoIdOrderByCreatedAtDesc(id).orElseThrow();
+      var analysis = analyses
+          .findFirstByVideoIdAndAnalysisVersionOrderByCreatedAtDesc(id, VideoService.CURRENT_ANALYSIS_VERSION)
+          .orElseThrow();
+      boolean legacy = "LEGACY".equals(analysis.getAnalysisType());
       return new VideoDtos.AnalysisStatusResponse(
           id,
           true,
@@ -118,15 +122,50 @@ public class VideoController {
           null,
           analysis.getId(),
           analysis.getClassification(),
-          analysis.getActionDnaScore(),
-          analysis.getConfidence(),
+          legacy ? analysis.getActionDnaScore() : null,
+          legacy ? analysis.getConfidence() : null,
           analysis.getReason(),
           analysis.getStoryboardPath(),
-          analysis.getAnalysisVersion());
+          analysis.getAnalysisVersion(),
+          analysis.getAnalysisType(),
+          legacy ? null : analysis.getMotionHeuristicScore(),
+          legacy ? null : analysis.getMeasurementConfidence(),
+          analysis.getMeasurementQuality(),
+          analysis.getSampling(),
+          analysis.getMotion(),
+          analysis.getVisualSimilarity(),
+          analysis.getDarkFrameCandidates());
     }
     var active = jobService.findActiveByVideoId(id);
     var latest = active.isPresent() ? active : jobService.findLatestByVideoId(id);
     if (latest.isEmpty()) {
+      var legacy = analyses.findFirstByVideoIdOrderByCreatedAtDesc(id);
+      if (legacy.isPresent()) {
+        var analysis = legacy.get();
+        return new VideoDtos.AnalysisStatusResponse(
+            id,
+            true,
+            null,
+            "COMPLETED",
+            null,
+            null,
+            null,
+            analysis.getId(),
+            analysis.getClassification(),
+            analysis.getActionDnaScore(),
+            analysis.getConfidence(),
+            analysis.getReason(),
+            analysis.getStoryboardPath(),
+            analysis.getAnalysisVersion(),
+            "LEGACY",
+            null,
+            null,
+            Map.of(),
+            Map.of(),
+            Map.of(),
+            Map.of(),
+            List.of());
+      }
       return new VideoDtos.AnalysisStatusResponse(
           id,
           false,

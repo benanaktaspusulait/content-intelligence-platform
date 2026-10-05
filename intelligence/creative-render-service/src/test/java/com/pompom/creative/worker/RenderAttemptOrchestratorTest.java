@@ -15,6 +15,9 @@ import com.pompom.creative.openart.dto.OpenArtJobStatus;
 import com.pompom.creative.qa.QaAnalysisResult;
 import com.pompom.creative.qa.QaDecisionEngine;
 import com.pompom.creative.qa.QaService;
+import com.pompom.creative.postrender.PostRenderDecision;
+import com.pompom.creative.postrender.PostRenderEvaluation;
+import com.pompom.creative.postrender.PostRenderEvaluationService;
 import com.pompom.creative.repository.RenderAssetRepository;
 import com.pompom.creative.repository.RenderAttemptRepository;
 import com.pompom.creative.repository.RenderJobRepository;
@@ -49,7 +52,7 @@ class RenderAttemptOrchestratorTest {
   @Mock private OpenArtAdapter openArtAdapter;
   @Mock private AssetLibraryManager assetLibraryManager;
   @Mock private QaService qaService;
-  @Mock private QaDecisionEngine qaDecisionEngine;
+  @Mock private PostRenderEvaluationService postRenderEvaluationService;
   @Mock private WebSocketEventPublisher webSocketEventPublisher;
 
   private RenderAttemptOrchestrator orchestrator;
@@ -65,7 +68,7 @@ class RenderAttemptOrchestratorTest {
             openArtAdapter,
             assetLibraryManager,
             qaService,
-            qaDecisionEngine,
+            postRenderEvaluationService,
             webSocketEventPublisher,
             new ObjectMapper());
     job =
@@ -233,9 +236,8 @@ class RenderAttemptOrchestratorTest {
     when(renderAssetRepo.findById(asset.getId())).thenReturn(Optional.of(asset));
     when(qaService.analyzeAsset(any()))
         .thenReturn(QaAnalysisResult.builder().complianceScore(100).build());
-    when(qaDecisionEngine.makeDecision(any(), any()))
-        .thenReturn(
-            new QaDecisionEngine.QaDecision(RenderQaResult.QaDecision.ACCEPT, "all good", false));
+    when(postRenderEvaluationService.evaluate(any(), any(), any(), any()))
+        .thenReturn(evaluation(asset, PostRenderDecision.PASS));
 
     orchestrator.processAttempt(attempt.getId(), LEASE_OWNER);
 
@@ -247,40 +249,22 @@ class RenderAttemptOrchestratorTest {
   }
 
   @Test
-  void postRenderQaRerenderInsertsNewAttemptInsteadOfRecursing() {
+  void postRenderQaFailAbandonsWithoutUsingLegacyDecisionEngine() {
     RenderAttempt attempt = attempt(RenderExecutionStage.POST_RENDER_QA);
     RenderAsset asset = RenderAsset.builder().id(UUID.randomUUID()).renderJob(job).build();
     attempt.setAssetId(asset.getId());
     when(renderAssetRepo.findById(asset.getId())).thenReturn(Optional.of(asset));
-    when(renderAttemptRepo.findByRenderJobIdOrderByAttemptNumberAsc(job.getId()))
-        .thenReturn(List.of(attempt));
     when(qaService.analyzeAsset(any()))
         .thenReturn(QaAnalysisResult.builder().complianceScore(50).build());
-    when(qaDecisionEngine.makeDecision(any(), any()))
-        .thenReturn(
-            new QaDecisionEngine.QaDecision(
-                RenderQaResult.QaDecision.RERENDER, "low score", false));
+    when(postRenderEvaluationService.evaluate(any(), any(), any(), any()))
+        .thenReturn(evaluation(asset, PostRenderDecision.FAIL));
 
     orchestrator.processAttempt(attempt.getId(), LEASE_OWNER);
 
-    // The current attempt is marked RETRY_WAIT (not re-executed), and a NEW attempt row (number
-    // 2) is inserted for the retry - never a recursive call back into stage execution.
     ArgumentCaptor<RenderAttempt> captor = ArgumentCaptor.forClass(RenderAttempt.class);
-    verify(renderAttemptRepo, times(2)).save(captor.capture());
-    List<RenderAttempt> saved = captor.getAllValues();
-    assertThat(saved)
-        .anySatisfy(
-            a -> {
-              assertThat(a.getStage()).isEqualTo(RenderExecutionStage.RETRY_WAIT);
-              // RETRY_WAIT is a dead end for this row (the new attempt below drives the job
-              // forward instead) - it must never be left claimable, or a worker will eventually
-              // claim it once its stale lease expires and crash with no stage to execute.
-              assertThat(a.getLeaseOwner()).isNull();
-              assertThat(a.getLeaseExpiresAt()).isNull();
-            });
-    assertThat(saved).anySatisfy(a -> assertThat(a.getAttemptNumber()).isEqualTo(2));
-    assertThat(saved)
-        .anySatisfy(a -> assertThat(a.getStage()).isEqualTo(RenderExecutionStage.QUEUED));
+    verify(renderAttemptRepo).save(captor.capture());
+    assertThat(captor.getValue().getStage()).isEqualTo(RenderExecutionStage.ABANDONED);
+    verify(renderJobRepo).save(argThat(j -> j.getStatus() == RenderJob.RenderJobStatus.ABANDONED));
   }
 
   @Test
@@ -291,10 +275,8 @@ class RenderAttemptOrchestratorTest {
     when(renderAssetRepo.findById(asset.getId())).thenReturn(Optional.of(asset));
     when(qaService.analyzeAsset(any()))
         .thenReturn(QaAnalysisResult.builder().characterIdentityVerified(false).build());
-    when(qaDecisionEngine.makeDecision(any(), any()))
-        .thenReturn(
-            new QaDecisionEngine.QaDecision(
-                RenderQaResult.QaDecision.ABANDON, "character mismatch", true));
+    when(postRenderEvaluationService.evaluate(any(), any(), any(), any()))
+        .thenReturn(evaluation(asset, PostRenderDecision.FAIL));
 
     orchestrator.processAttempt(attempt.getId(), LEASE_OWNER);
 
@@ -316,6 +298,24 @@ class RenderAttemptOrchestratorTest {
         .isInstanceOf(IllegalStateException.class)
         .hasMessageContaining(attempt.getId().toString());
 
-    verifyNoInteractions(renderAssetRepo, qaService, qaDecisionEngine);
+    verifyNoInteractions(renderAssetRepo, qaService, postRenderEvaluationService);
+  }
+
+  private PostRenderEvaluationService.EvaluationResult evaluation(
+      RenderAsset asset, PostRenderDecision decision) {
+    PostRenderEvaluation evaluation = PostRenderEvaluation.builder()
+        .id(UUID.randomUUID())
+        .renderAsset(asset)
+        .renderAttemptId(UUID.randomUUID())
+        .evidenceVersion("render-evidence-v1")
+        .postRenderRulesetVersion("POST_RENDER_RULESET_1.0")
+        .analyzerVersions("{}")
+        .evidenceSnapshot("{}")
+        .overallDecision(decision)
+        .humanReviewRequired(decision == PostRenderDecision.HUMAN_REVIEW)
+        .startedAt(Instant.now())
+        .completedAt(Instant.now())
+        .build();
+    return new PostRenderEvaluationService.EvaluationResult(evaluation, null, List.of());
   }
 }

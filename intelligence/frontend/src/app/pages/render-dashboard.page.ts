@@ -39,13 +39,40 @@ interface RenderJob {
     id: string;
     decision: string;
     decisionReason: string;
-    complianceScore: number;
+    complianceScore?: number;
     confidence?: number;
-    hasDeadAir: boolean;
-    characterIdentityVerified: boolean;
+    hasDeadAir?: boolean;
+    characterIdentityVerified?: boolean;
     characterIdentityIssues?: string;
     requiresHumanReview: boolean;
+    evidenceVersion?: string;
+    rulesetVersion?: string;
+    humanDecision?: string;
+    canonicalPostRender?: boolean;
   };
+}
+
+interface PostRenderRuleResult {
+  ruleId: string;
+  family: string;
+  severity: string;
+  outcome: string;
+  message: string;
+  actualValue: unknown;
+  expectedCondition: unknown;
+  evidenceReferences: unknown;
+  reviewRequired: boolean;
+}
+
+interface PostRenderEvaluation {
+  id: string;
+  evidenceVersion: string;
+  rulesetVersion: string;
+  analyzerVersions: string;
+  decision: string;
+  humanReviewRequired: boolean;
+  humanDecision?: string;
+  ruleResults: PostRenderRuleResult[];
 }
 
 interface Page<T> {
@@ -169,12 +196,37 @@ interface RenderAsset {
                 @if (job.qaResult) {
                   <div class="qa-results" [class.requires-review]="job.qaResult.requiresHumanReview">
                     <div class="qa-header">
-                      <h4>QA Analysis</h4>
+                      <h4>{{ job.qaResult.canonicalPostRender ? 'Post-Render QA' : 'Legacy QA' }}</h4>
                       <span [class]="'qa-decision qa-' + job.qaResult.decision.toLowerCase()">
                         {{ job.qaResult.decision }}
                       </span>
                     </div>
                     <div class="qa-details">
+                      @if (job.qaResult.canonicalPostRender) {
+                        <div class="qa-metrics">
+                          <div class="metric"><span class="metric-label">Ruleset</span><span class="metric-value">{{ job.qaResult.rulesetVersion }}</span></div>
+                          <div class="metric"><span class="metric-label">Evidence</span><span class="metric-value">{{ job.qaResult.evidenceVersion }}</span></div>
+                          @if (job.qaResult.humanDecision) { <div class="metric"><span class="metric-label">Human decision</span><span class="metric-value">{{ job.qaResult.humanDecision }}</span></div> }
+                        </div>
+                        <button type="button" class="details-button" (click)="loadPostRenderDetails(job.qaResult.id)">
+                          {{ postRenderDetails()?.id === job.qaResult.id ? 'Hide rule results' : 'View rule results' }}
+                        </button>
+                        @if (postRenderDetails()?.id === job.qaResult.id) {
+                          <div class="rule-results">
+                            @for (rule of postRenderDetails()?.ruleResults ?? []; track rule.ruleId) {
+                              <div class="rule-result" [class.rule-failed]="rule.outcome !== 'PASS'">
+                                <div class="rule-result-heading">
+                                  <strong>{{ rule.ruleId }}</strong>
+                                  <span>{{ rule.outcome }}</span>
+                                </div>
+                                <div class="rule-result-meta">{{ rule.family }} · {{ rule.severity }}{{ rule.reviewRequired ? ' · review required' : '' }}</div>
+                                <p>{{ rule.message }}</p>
+                                <code>actual={{ formatRuleValue(rule.actualValue) }} · expected={{ formatRuleValue(rule.expectedCondition) }}</code>
+                              </div>
+                            }
+                          </div>
+                        }
+                      } @else {
                       <div class="qa-metrics">
                         <div class="metric">
                           <span class="metric-label">Compliance</span>
@@ -182,9 +234,9 @@ interface RenderAsset {
                             <div class="compliance-bar">
                               <div class="compliance-fill" 
                                    [style.width.%]="job.qaResult.complianceScore"
-                                   [class.low]="job.qaResult.complianceScore < 70"></div>
+                                   [class.low]="(job.qaResult.complianceScore ?? 0) < 70"></div>
                             </div>
-                            <span class="metric-value">{{ job.qaResult.complianceScore }}%</span>
+                            <span class="metric-value">{{ job.qaResult.complianceScore ?? '—' }}%</span>
                           </div>
                         </div>
                         @if (job.qaResult.confidence) {
@@ -203,7 +255,7 @@ interface RenderAsset {
                           <span class="check-icon">{{ job.qaResult.characterIdentityVerified ? '✓' : '✗' }}</span>
                           <span>{{ job.qaResult.characterIdentityVerified ? 'Character verified' : 'Character mismatch' }}</span>
                         </div>
-                      </div>
+                      </div> }
                       <div class="qa-reason">
                         <p>{{ job.qaResult.decisionReason }}</p>
                       </div>
@@ -518,6 +570,56 @@ interface RenderAsset {
       color: #4ecdc4;
     }
 
+    .details-button {
+      margin-top: 0.75rem;
+      padding: 0.5rem 0.75rem;
+      border: 1px solid #4ecdc4;
+      border-radius: 4px;
+      background: transparent;
+      color: #8de8df;
+      cursor: pointer;
+    }
+
+    .rule-results {
+      display: grid;
+      gap: 0.5rem;
+      margin-top: 0.75rem;
+    }
+
+    .rule-result {
+      padding: 0.7rem;
+      border-left: 3px solid #27ae60;
+      background: #151515;
+    }
+
+    .rule-result.rule-failed {
+      border-left-color: #ff6b6b;
+    }
+
+    .rule-result-heading {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .rule-result-meta {
+      margin-top: 0.2rem;
+      color: #999;
+      font-size: 0.75rem;
+    }
+
+    .rule-result p {
+      margin: 0.4rem 0;
+      color: #ddd;
+      font-size: 0.82rem;
+    }
+
+    .rule-result code {
+      color: #9ad8d2;
+      font-size: 0.72rem;
+      word-break: break-word;
+    }
+
     .qa-checks {
       display: flex;
       gap: 1rem;
@@ -676,6 +778,7 @@ export class RenderDashboardPage implements OnInit, OnDestroy {
   reviewNotes = signal('');
   reviewingQa = signal<string | null>(null);
   jobAction = signal<string | null>(null);
+  postRenderDetails = signal<PostRenderEvaluation | null>(null);
 
   private readonly apiUrl = '/api/v1/render-jobs';
   private notificationStream: EventSource | null = null;
@@ -731,7 +834,10 @@ export class RenderDashboardPage implements OnInit, OnDestroy {
       return;
     }
     this.reviewingQa.set(job.id);
-    this.http.post(`/api/v1/qa/reviews/${job.qaResult.id}/decision`, {
+    const reviewPath = job.qaResult.canonicalPostRender
+      ? `/api/v1/qa/reviews/post-render/${job.qaResult.id}/decision`
+      : `/api/v1/qa/reviews/${job.qaResult.id}/decision`;
+    this.http.post(reviewPath, {
       decision,
       reviewer: this.reviewer().trim() || 'local-user',
       notes: this.reviewNotes().trim(),
@@ -739,6 +845,23 @@ export class RenderDashboardPage implements OnInit, OnDestroy {
       next: () => { this.reviewingQa.set(null); this.reviewNotes.set(''); this.loadJobs(this.pageNumber()); },
       error: err => { this.reviewingQa.set(null); this.error.set(err.error?.detail || err.error?.message || 'QA decision could not be saved.'); },
     });
+  }
+
+  loadPostRenderDetails(evaluationId: string): void {
+    if (this.postRenderDetails()?.id === evaluationId) {
+      this.postRenderDetails.set(null);
+      return;
+    }
+    this.http.get<PostRenderEvaluation>(`/api/v1/post-render/evaluations/${evaluationId}`).subscribe({
+      next: details => this.postRenderDetails.set(details),
+      error: err => this.error.set(err.error?.detail || err.error?.message || 'Post-render rule results could not be loaded.'),
+    });
+  }
+
+  formatRuleValue(value: unknown): string {
+    if (value === null || value === undefined) return '—';
+    if (typeof value === 'string') return value;
+    try { return JSON.stringify(value); } catch { return String(value); }
   }
 
 

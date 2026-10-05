@@ -16,6 +16,8 @@ import com.pompom.creative.openart.dto.OpenArtVideoRequest;
 import com.pompom.creative.qa.QaAnalysisResult;
 import com.pompom.creative.qa.QaDecisionEngine;
 import com.pompom.creative.qa.QaService;
+import com.pompom.creative.postrender.PostRenderDecision;
+import com.pompom.creative.postrender.PostRenderEvaluationService;
 import com.pompom.creative.repository.RenderAssetRepository;
 import com.pompom.creative.repository.RenderAttemptRepository;
 import com.pompom.creative.repository.RenderJobRepository;
@@ -60,7 +62,7 @@ public class RenderAttemptOrchestrator {
   private final OpenArtAdapter openArtAdapter;
   private final AssetLibraryManager assetLibraryManager;
   private final QaService qaService;
-  private final QaDecisionEngine qaDecisionEngine;
+  private final PostRenderEvaluationService postRenderEvaluationService;
   private final WebSocketEventPublisher webSocketPublisher;
   private final ObjectMapper objectMapper;
 
@@ -258,13 +260,32 @@ public class RenderAttemptOrchestrator {
                     new IllegalStateException(
                         "RenderAsset not found for attempt " + attempt.getId()));
 
-    QaAnalysisResult qaResult = qaService.analyzeAsset(asset);
-    QaDecisionEngine.QaDecision qaDecision = qaDecisionEngine.makeDecision(asset, qaResult);
-
-    switch (qaDecision.decision()) {
-      case ACCEPT -> accept(attempt, job, qaDecision);
-      case RERENDER -> rerender(attempt, job, qaDecision);
-      case ABANDON -> abandon(attempt, job, qaDecision);
+    QaAnalysisResult qaResult = null;
+    String qaStatus = "AVAILABLE";
+    try {
+      qaResult = qaService.analyzeAsset(asset);
+    } catch (QaService.QaDependencyUnavailableException error) {
+      qaStatus = "SERVICE_ERROR";
+      log.warn("QA helper evidence unavailable for asset {}: {}", asset.getId(), error.getMessage());
+    }
+    var evaluation = postRenderEvaluationService.evaluate(asset, attempt.getId(), qaResult, qaStatus);
+    String reason = "Post-render " + evaluation.evaluation().getOverallDecision()
+        + " under " + evaluation.evaluation().getPostRenderRulesetVersion();
+    switch (evaluation.evaluation().getOverallDecision()) {
+      case PASS -> accept(attempt, job, new QaDecisionEngine.QaDecision(
+          com.pompom.creative.domain.RenderQaResult.QaDecision.ACCEPT, reason, false));
+      case HUMAN_REVIEW -> {
+        attempt.setStage(RenderExecutionStage.NEEDS_HUMAN_REVIEW);
+        attempt.setTerminalReason(reason);
+        attempt.setCompletedAt(Instant.now());
+        renderAttemptRepo.save(attempt);
+        job.setStatus(RenderJob.RenderJobStatus.COMPLETE);
+        job.setCompletedAt(Instant.now());
+        renderJobRepo.save(job);
+        publishProgress(job, "Human review required", 100);
+      }
+      case FAIL, SYSTEM_ERROR -> abandon(attempt, job, new QaDecisionEngine.QaDecision(
+          com.pompom.creative.domain.RenderQaResult.QaDecision.ABANDON, reason, false));
     }
   }
 

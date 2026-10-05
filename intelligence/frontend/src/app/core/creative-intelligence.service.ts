@@ -385,6 +385,14 @@ export interface AnalysisStatus {
   reason: string | null;
   storyboardPath: string | null;
   analysisVersion: string | null;
+  analysisType?: string | null;
+  motionHeuristicScore?: number | null;
+  measurementConfidence?: number | null;
+  measurementQuality?: Record<string, unknown>;
+  sampling?: Record<string, unknown>;
+  motion?: Record<string, unknown>;
+  visualSimilarity?: Record<string, unknown>;
+  darkFrameCandidates?: Array<Record<string, unknown>>;
 }
 
 export interface ReachFurtherComparison {

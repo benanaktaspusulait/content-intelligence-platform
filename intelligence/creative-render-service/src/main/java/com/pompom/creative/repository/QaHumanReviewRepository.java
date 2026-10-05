@@ -8,4 +8,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface QaHumanReviewRepository extends JpaRepository<QaHumanReview, UUID> {
 
   List<QaHumanReview> findByRenderQaResultIdOrderByCreatedAtDesc(UUID renderQaResultId);
+
+  List<QaHumanReview> findByPostRenderEvaluationIdOrderByCreatedAtDesc(UUID evaluationId);
 }

@@ -40,6 +40,7 @@ public class VideoService {
   private final MlVideoClient ml;
   private final PompomProperties properties;
   private final Clock clock;
+  public static final String CURRENT_ANALYSIS_VERSION = "sampled-visual-motion-v2";
 
   public VideoService(
       VideoRepository videos,
@@ -97,7 +98,7 @@ public class VideoService {
                   seriesId,
                   clock.instant()));
     }
-    if (!analyses.existsByVideoId(entity.getId())) {
+    if (!analyses.existsByVideoIdAndAnalysisVersion(entity.getId(), result.analysisVersion())) {
       persistCreativeAnalysis(entity, result);
       entity.markAnalysed();
     }
@@ -206,7 +207,7 @@ public class VideoService {
 
   @Transactional(readOnly = true)
   public boolean hasCurrentAnalysis(UUID videoId) {
-    return analyses.existsByVideoId(videoId);
+    return analyses.existsByVideoIdAndAnalysisVersion(videoId, CURRENT_ANALYSIS_VERSION);
   }
 
   @Transactional
@@ -218,7 +219,7 @@ public class VideoService {
     video.markAnalysing();
     try {
       var result = ml.analyse(video.getRelativePath());
-      var analysis = persistCreativeAnalysis(video, result);
+    var analysis = persistCreativeAnalysis(video, result);
       video.markAnalysed();
       return new AnalysisResponse(
           analysis.getId(),
@@ -226,7 +227,7 @@ public class VideoService {
           analysis.getPrimaryEngine(),
           analysis.getSecondaryEngines(),
           analysis.getClassification(),
-          analysis.getActionDnaScore(),
+          analysis.getMotionHeuristicScore(),
           analysis.getConfidence(),
           result.features(),
           analysis.getStoryboardPath());
@@ -241,16 +242,23 @@ public class VideoService {
     var raw = new LinkedHashMap<String, Object>();
     raw.put("contractVersion", result.contractVersion());
     raw.put("evidence", result.evidence());
+    raw.put("analysisType", result.analysisType());
+    raw.put("measurementQuality", result.measurementQuality());
+    raw.put("sampling", result.sampling());
+    raw.put("motion", result.motion());
+    raw.put("visualSimilarity", result.visualSimilarity());
+    raw.put("darkFrameCandidates", result.darkFrameCandidates());
     var analysis =
         analyses.save(
             new CreativeAnalysisEntity(
                 video,
                 result.analysisVersion(),
+                result.analysisType(),
                 result.primaryEngine(),
                 result.secondaryEngines(),
                 result.classification(),
-                result.actionDnaScore(),
-                result.confidence(),
+                result.motionHeuristicScore() == null ? 0.0 : result.motionHeuristicScore(),
+                result.measurementConfidence() == null ? 0.0 : result.measurementConfidence(),
                 result.reason(),
                 result.storyboardPath(),
                 result.timeline(),

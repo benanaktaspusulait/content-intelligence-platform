@@ -76,5 +76,33 @@ public final class VideoDtos {
       Double confidence,
       String reason,
       String storyboardPath,
-      String analysisVersion) {}
+      String analysisVersion,
+      String analysisType,
+      Double motionHeuristicScore,
+      Double measurementConfidence,
+      Map<String, Object> measurementQuality,
+      Map<String, Object> sampling,
+      Map<String, Object> motion,
+      Map<String, Object> visualSimilarity,
+      List<Map<String, Object>> darkFrameCandidates) {
+    public AnalysisStatusResponse(
+        UUID videoId,
+        boolean hasCompletedAnalysis,
+        String jobId,
+        String jobState,
+        Integer attempts,
+        Integer maxAttempts,
+        String errorMessage,
+        UUID analysisId,
+        String classification,
+        Double actionDnaScore,
+        Double confidence,
+        String reason,
+        String storyboardPath,
+        String analysisVersion) {
+      this(videoId, hasCompletedAnalysis, jobId, jobState, attempts, maxAttempts, errorMessage,
+          analysisId, classification, actionDnaScore, confidence, reason, storyboardPath,
+          analysisVersion, "LEGACY", actionDnaScore, confidence, Map.of(), Map.of(), Map.of(), Map.of(), List.of());
+    }
+  }
 }

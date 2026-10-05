@@ -6,6 +6,8 @@ import com.pompom.creative.repository.QaHumanReviewRepository;
 import com.pompom.creative.repository.RenderAttemptRepository;
 import com.pompom.creative.repository.RenderJobRepository;
 import com.pompom.creative.repository.RenderQaResultRepository;
+import com.pompom.creative.postrender.PostRenderEvaluation;
+import com.pompom.creative.postrender.PostRenderEvaluationRepository;
 import com.pompom.creative.domain.RenderAttempt;
 import com.pompom.creative.domain.RenderExecutionStage;
 import com.pompom.creative.domain.RenderJob;
@@ -25,10 +27,16 @@ public class QaHumanReviewService {
   private final QaHumanReviewRepository reviewRepository;
   private final RenderAttemptRepository renderAttemptRepository;
   private final RenderJobRepository renderJobRepository;
+  private final PostRenderEvaluationRepository postRenderEvaluationRepository;
 
   @Transactional(readOnly = true)
   public List<RenderQaResult> pendingReviews() {
     return qaResultRepository.findByRequiresHumanReviewTrueAndHumanReviewedAtIsNullOrderByCreatedAtAsc();
+  }
+
+  @Transactional(readOnly = true)
+  public List<PostRenderEvaluation> pendingPostRenderEvaluations() {
+    return postRenderEvaluationRepository.findByHumanReviewRequiredTrueAndHumanReviewedAtIsNullOrderByCreatedAtAsc();
   }
 
   @Transactional
@@ -78,8 +86,33 @@ public class QaHumanReviewService {
     return reviewRepository.findByRenderQaResultIdOrderByCreatedAtDesc(qaResultId);
   }
 
+  @Transactional
+  public QaHumanReview decidePostRender(
+      UUID evaluationId, QaHumanReview.Decision decision, String reviewer, String notes) {
+    if (reviewer == null || reviewer.isBlank()) throw new IllegalArgumentException("reviewer is required");
+    PostRenderEvaluation evaluation = postRenderEvaluationRepository.findById(evaluationId)
+        .orElseThrow(() -> new IllegalArgumentException("Post-render evaluation not found"));
+    evaluation.recordHumanDecision(reviewer.trim(), decision.name(), notes);
+    postRenderEvaluationRepository.save(evaluation);
+    if (decision == QaHumanReview.Decision.RERENDER_REQUESTED) queueRerender(evaluation.getRenderAsset().getRenderJob());
+    return reviewRepository.save(QaHumanReview.builder()
+        .postRenderEvaluation(evaluation)
+        .decision(decision)
+        .reviewer(reviewer.trim())
+        .notes(notes)
+        .build());
+  }
+
+  @Transactional(readOnly = true)
+  public List<QaHumanReview> postRenderHistory(UUID evaluationId) {
+    return reviewRepository.findByPostRenderEvaluationIdOrderByCreatedAtDesc(evaluationId);
+  }
+
   private void queueRerender(RenderQaResult qa) {
-    RenderJob job = qa.getRenderAsset().getRenderJob();
+    queueRerender(qa.getRenderAsset().getRenderJob());
+  }
+
+  private void queueRerender(RenderJob job) {
     if (job.getStatus() != RenderJob.RenderJobStatus.ABANDONED
         && job.getStatus() != RenderJob.RenderJobStatus.COMPLETE) {
       throw new IllegalStateException("Render job is not in a rerenderable terminal state");

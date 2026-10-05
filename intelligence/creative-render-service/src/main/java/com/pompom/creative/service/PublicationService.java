@@ -10,6 +10,9 @@ import com.pompom.creative.repository.PublicationAttemptRepository;
 import com.pompom.creative.repository.PublicationJobRepository;
 import com.pompom.creative.repository.RenderAssetRepository;
 import com.pompom.creative.repository.RenderQaResultRepository;
+import com.pompom.creative.postrender.PostRenderDecision;
+import com.pompom.creative.postrender.PostRenderEvaluation;
+import com.pompom.creative.postrender.PostRenderEvaluationRepository;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -37,6 +40,7 @@ public class PublicationService {
   private final PublicationAttemptRepository publicationAttemptRepository;
   private final RenderAssetRepository renderAssetRepository;
   private final RenderQaResultRepository qaResultRepository;
+  private final PostRenderEvaluationRepository postRenderEvaluationRepository;
   private final AssetLibraryManager assetLibraryManager;
 
   /**
@@ -128,16 +132,28 @@ public class PublicationService {
         || asset.getVariantId() == null) {
       throw new IllegalStateException("Asset does not satisfy production publication invariants");
     }
-    RenderQaResult qa =
-        qaResultRepository
-            .findTopByRenderAssetIdOrderByCreatedAtDesc(renderAssetId)
-            .orElseThrow(() -> new IllegalStateException("Post-render QA evidence is missing"));
-    if (qa.getDecision() != RenderQaResult.QaDecision.ACCEPT) {
-      throw new IllegalStateException("Post-render QA has not accepted this asset");
-    }
-    if (Boolean.TRUE.equals(qa.getRequiresHumanReview())
-        && !"APPROVED".equals(qa.getHumanDecision())) {
-      throw new IllegalStateException("Required human review has not approved this asset");
+    Optional<PostRenderEvaluation> canonical = postRenderEvaluationRepository == null
+        ? Optional.empty()
+        : postRenderEvaluationRepository.findTopByRenderAssetIdOrderByCreatedAtDesc(renderAssetId);
+    if (canonical.isPresent()) {
+      PostRenderEvaluation evaluation = canonical.get();
+      if (evaluation.getOverallDecision() == PostRenderDecision.FAIL
+          || evaluation.getOverallDecision() == PostRenderDecision.SYSTEM_ERROR) {
+        throw new IllegalStateException("Post-render QA has not accepted this asset");
+      }
+      if (evaluation.getOverallDecision() == PostRenderDecision.HUMAN_REVIEW
+          && !"APPROVED".equals(evaluation.getHumanDecision())) {
+        throw new IllegalStateException("Required human review has not approved this asset");
+      }
+    } else {
+      RenderQaResult qa = qaResultRepository.findTopByRenderAssetIdOrderByCreatedAtDesc(renderAssetId)
+          .orElseThrow(() -> new IllegalStateException("Post-render QA evidence is missing"));
+      if (qa.getDecision() != RenderQaResult.QaDecision.ACCEPT) {
+        throw new IllegalStateException("Post-render QA has not accepted this asset");
+      }
+      if (Boolean.TRUE.equals(qa.getRequiresHumanReview()) && !"APPROVED".equals(qa.getHumanDecision())) {
+        throw new IllegalStateException("Required human review has not approved this asset");
+      }
     }
     return asset;
   }

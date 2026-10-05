@@ -128,15 +128,17 @@ const VARIANT_TYPE_LABELS: Record<string, string> = {
       </section>
 
       <section class="section-band creative-analysis-panel" aria-labelledby="creative-analysis-heading">
-        <div class="section-heading"><div><span class="eyebrow">CREATIVE ANALYSIS</span><h2 id="creative-analysis-heading">Automated quality assessment</h2></div>
-          @if (!analysisStatus()?.hasCompletedAnalysis) { <button class="button button--primary" type="button" [disabled]="triggeringAnalysis() || analysisStatus()?.jobState === 'QUEUED' || analysisStatus()?.jobState === 'RUNNING'" (click)="triggerAnalysis()">{{ triggeringAnalysis() ? 'Starting…' : analysisStatus()?.jobState === 'QUEUED' || analysisStatus()?.jobState === 'RUNNING' ? (analysisStatus()!.jobState === 'QUEUED' ? 'Queued…' : 'Running…') : 'Trigger analysis' }}</button> }
+        <div class="section-heading"><div><span class="eyebrow">VISUAL MOTION ANALYSIS</span><h2 id="creative-analysis-heading">Sampled visual-motion evidence</h2></div>
+          @if (!analysisStatus()?.hasCompletedAnalysis || analysisStatus()?.analysisType === 'LEGACY') { <button class="button button--primary" type="button" [disabled]="triggeringAnalysis() || analysisStatus()?.jobState === 'QUEUED' || analysisStatus()?.jobState === 'RUNNING'" (click)="triggerAnalysis()">{{ triggeringAnalysis() ? 'Starting…' : analysisStatus()?.jobState === 'QUEUED' || analysisStatus()?.jobState === 'RUNNING' ? (analysisStatus()!.jobState === 'QUEUED' ? 'Queued…' : 'Running…') : 'Run current analysis' }}</button> }
         </div>
+        <div class="assessment-notice"><strong>Interpretation</strong><span>This is a sampled visual-motion heuristic. It does not use views, reach, likes, comments, follows or retention data.</span></div>
         @if (analysisStatus()?.hasCompletedAnalysis) {
           <dl class="technical-facts analysis-facts">
-            <div><dt>Classification</dt><dd>{{ analysisStatus()!.classification }}</dd></div>
-            <div><dt>Action DNA score</dt><dd>{{ decimal(analysisStatus()!.actionDnaScore) }}</dd></div>
-            <div><dt>Confidence</dt><dd>{{ decimal(analysisStatus()!.confidence) }}</dd></div>
-            <div><dt>Reason</dt><dd>{{ analysisStatus()!.reason }}</dd></div>
+            <div><dt>Motion evidence level</dt><dd>{{ analysisStatus()!.classification || '—' }}</dd></div>
+            <div><dt>Motion heuristic score</dt><dd>{{ decimal(analysisStatus()!.motionHeuristicScore ?? analysisStatus()!.actionDnaScore) }} / 100</dd></div>
+            <div><dt>Measurement confidence</dt><dd>{{ decimal(analysisStatus()!.measurementConfidence ?? analysisStatus()!.confidence) }} <small>(decode and sampling quality only)</small></dd></div>
+            <div><dt>Analysis type</dt><dd>{{ analysisStatus()!.analysisType || 'LEGACY' }}</dd></div>
+            <div><dt>Interpretation</dt><dd>{{ analysisStatus()!.reason }}</dd></div>
             <div><dt>Analysis version</dt><dd><code>{{ analysisStatus()!.analysisVersion }}</code></dd></div>
             @if (analysisStatus()!.storyboardPath) { <div><dt>Storyboard</dt><dd><code>{{ analysisStatus()!.storyboardPath }}</code></dd></div> }
           </dl>
@@ -147,7 +149,19 @@ const VARIANT_TYPE_LABELS: Record<string, string> = {
         } @else if (analysisError()) {
           <div class="state-panel state-panel--error compact-state"><strong>Analysis status unavailable</strong><p>{{ analysisError() }}</p><button class="button button--secondary" type="button" (click)="pollAnalysisStatus(video()!.id)">Retry status</button></div>
         } @else {
-          <div class="state-panel compact-state"><strong>No analysis yet</strong><p>Trigger analysis to classify this creative.</p></div>
+          <div class="state-panel compact-state"><strong>No analysis yet</strong><p>Trigger visual-motion analysis to measure sampled frame-change evidence.</p></div>
+        }
+      </section>
+
+      <section class="section-band observed-performance-overview" aria-labelledby="observed-performance-heading">
+        <div class="section-heading"><div><span class="eyebrow">OBSERVED PERFORMANCE</span><h2 id="observed-performance-heading">Latest imported platform evidence</h2></div><span class="data-freshness">{{ platformLabel() }}</span></div>
+        @if (!activeFile()!.ingested) {
+          <div class="state-panel compact-state"><strong>No observed performance yet</strong><p>Ingest the video and import platform checkpoints to separate real audience response from the creative heuristic.</p></div>
+        } @else {
+          <div class="performance-summary overview-performance-summary">
+            @for (metric of summaryMetrics(); track metric.label) { <div><span>{{ metric.label }}</span><strong>{{ number(metric.value) }}</strong><small>{{ metric.value === null || metric.value === undefined ? 'No imported value' : 'Latest persisted checkpoint' }}</small></div> }
+          </div>
+          <p class="assessment-footnote">Observed performance is evidence from the selected platform. It does not rewrite the creative assessment score.</p>
         }
       </section>
       }
