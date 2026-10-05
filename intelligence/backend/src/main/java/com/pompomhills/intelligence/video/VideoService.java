@@ -94,8 +94,11 @@ public class VideoService {
         pathAliases.save(new VideoPathAliasEntity(entity, relative, metadata.sha256()));
       }
     } else {
+      // Character association writes through JdbcClient and has an FK to videos. Flush the
+      // JPA insert before that best-effort reconciliation runs, otherwise PostgreSQL can reject
+      // the association because the new video row is still only pending in the persistence context.
       entity =
-          videos.save(
+          videos.saveAndFlush(
               new VideoEntity(
                   UUID.randomUUID(),
                   metadata.sha256(),

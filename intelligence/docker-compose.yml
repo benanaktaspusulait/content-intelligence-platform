@@ -15,8 +15,15 @@ services:
 
   ml-service:
     build: ./ml-service
+    env_file:
+      - ./backend/.env
     environment:
       POMPOM_DATA_ROOT: /data
+      POMPOM_SEMANTIC_ENABLED: ${POMPOM_SEMANTIC_ENABLED:-false}
+      SEMANTIC_VIDEO_AI_ENABLED: ${SEMANTIC_VIDEO_AI_ENABLED:-false}
+      POMPOM_SEMANTIC_PROVIDER: ${POMPOM_SEMANTIC_PROVIDER:-openai}
+      OPENAI_VLM_MODEL: ${OPENAI_VLM_MODEL:-gpt-4o}
+      OPENAI_SUMMARY_MODEL: ${OPENAI_SUMMARY_MODEL:-gpt-4o}
       OBSERVATION_BRIDGE_TOKEN: ${OBSERVATION_BRIDGE_TOKEN:-}
       QA_REVIEW_TOKEN: ${QA_REVIEW_TOKEN:-}
     ports: ["8000:8000"]
@@ -31,8 +38,12 @@ services:
 
   backend:
     build: ./backend
+    env_file:
+      - ./backend/.env
     environment:
       SPRING_PROFILES_ACTIVE: docker
+      OPENAI_VLM_MODEL: ${OPENAI_VLM_MODEL:-gpt-4o}
+      OPENAI_SUMMARY_MODEL: ${OPENAI_SUMMARY_MODEL:-gpt-4o}
       DB_URL: jdbc:postgresql://postgres:5432/${POSTGRES_DB:-pompom}
       DB_USERNAME: ${POSTGRES_USER:-pompom}
       DB_PASSWORD: ${POSTGRES_PASSWORD:-pompom_local}
