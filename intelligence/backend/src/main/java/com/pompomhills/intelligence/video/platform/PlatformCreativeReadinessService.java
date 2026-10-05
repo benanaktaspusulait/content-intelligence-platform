@@ -29,15 +29,17 @@ public class PlatformCreativeReadinessService {
           "readinessRisk", "UNKNOWN", "assessmentCoverage", 0, "limitations", List.of("No completed V5 analysis exists."));
     }
     Map<String, Object> temporal = analysis.getTemporalProfile();
+    Map<String, Object> canonical = map(temporal.get("canonicalAssessments"));
     Map<String, Object> dimensions = map(temporal.get("dimensions"));
-    Map<String, Object> loop = map(temporal.get("loop"));
-    Map<String, Object> hook = map(temporal.get("hook"));
+    Map<String, Object> loop = map(canonical.getOrDefault("loop", temporal.get("loop")));
+    Map<String, Object> hook = map(canonical.getOrDefault("hook", temporal.get("hook")));
     Map<String, Object> novelty = map(temporal.get("visualNovelty"));
     Map<String, Object> action = map(temporal.get("actionBeatNovelty"));
     Map<String, Object> repetition = map(temporal.get("repetitiveMotion"));
-    Map<String, Object> payoff = map(temporal.get("payoff"));
+    Map<String, Object> payoff = map(canonical.getOrDefault("payoff", temporal.get("payoff")));
     Map<String, Object> trend = map(temporal.get("temporalTrend"));
     Map<String, Object> recovery = map(temporal.get("reboundEvidence"));
+    Map<String, Object> temporalAssessment = map(canonical.get("temporalStructure"));
 
     List<Criterion> criteria = new ArrayList<>();
     criteria.add(criterion("OPENING_HOOK", importance(platform, "OPENING_HOOK"), value(hook, "status", "UNKNOWN"),
@@ -46,16 +48,16 @@ public class PlatformCreativeReadinessService {
         "Visual novelty is the shared V5 evidence of structural/perceptual change."));
     criteria.add(criterion("BEAT_NOVELTY", importance(platform, "BEAT_NOVELTY"), value(action, "combinedAssessment", "UNKNOWN"),
         "Observed beat novelty is interpreted qualitatively; semantic action evidence may be unavailable."));
-    criteria.add(criterion("LOOP_CONTINUITY", importance(platform, "LOOP_CONTINUITY"), value(loop, "overall", "UNKNOWN"),
-        "Endpoint similarity is not the same as semantic loop continuity."));
-    criteria.add(criterion("PAYOFF", importance(platform, "PAYOFF"), value(payoff, "status", "UNKNOWN"),
-        "Payoff is based on measured temporal emphasis unless a structured plan is linked."));
-    criteria.add(criterion("SEMANTIC_RESOLUTION", importance(platform, "SEMANTIC_RESOLUTION"), value(payoff, "semanticResolutionStatus", "UNKNOWN"),
-        "Semantic resolution is separate from motion rebound and is unavailable unless a semantic evidence provider ran."));
+    criteria.add(criterion("LOOP_CONTINUITY", importance(platform, "LOOP_CONTINUITY"), value(loop, "strength", value(loop, "overall", "UNKNOWN")),
+        String.valueOf(loop.getOrDefault("summary", "Endpoint similarity and semantic loop continuity are fused."))));
+    criteria.add(criterion("PAYOFF", importance(platform, "PAYOFF"), value(payoff, "strength", value(payoff, "status", "UNKNOWN")),
+        String.valueOf(payoff.getOrDefault("summary", "Payoff combines semantic resolution and motion support."))));
+    criteria.add(criterion("SEMANTIC_RESOLUTION", importance(platform, "SEMANTIC_RESOLUTION"), value(payoff, "semanticStatus", "UNKNOWN"),
+        "Semantic resolution is read from the canonical payoff assessment, not motion rebound alone."));
     criteria.add(criterion("TEMPORAL_VARIATION", importance(platform, "TEMPORAL_VARIATION"), value(trend, "trendShape", "UNKNOWN"),
         "Temporal motion trend describes the asset and is not creative escalation."));
-    criteria.add(criterion("LOCAL_RECOVERY", importance(platform, "LOCAL_RECOVERY"), value(recovery, "localRecoveryStatus", "UNKNOWN"),
-        "Local recovery is separate from final rebound and is derived from canonical temporal events."));
+    criteria.add(criterion("LOCAL_RECOVERY", importance(platform, "LOCAL_RECOVERY"), value(temporalAssessment, "interpretation", value(recovery, "localRecoveryStatus", "UNKNOWN")),
+        String.valueOf(temporalAssessment.getOrDefault("summary", "Local recovery is separate from final payoff."))));
     criteria.add(criterion("REPETITION", importance(platform, "REPETITION"), value(repetition, "classification", "UNKNOWN"),
         "Repetition evidence is a review signal, not a platform outcome."));
 
@@ -74,6 +76,7 @@ public class PlatformCreativeReadinessService {
     result.put("platform", platform);
     result.put("profileVersion", PROFILE_VERSION);
     result.put("evidenceVersion", analysis.getAnalysisVersion());
+    result.put("canonicalAssessmentVersion", canonical.getOrDefault("version", "LEGACY_V5_ONLY"));
     result.put("analyzerVersion", analysis.getPrimaryEngine());
     result.put("readinessGrade", grade);
     result.put("readinessDecision", decision);
@@ -86,7 +89,9 @@ public class PlatformCreativeReadinessService {
     result.put("profilePolicy", policy(platform));
     result.put("comparisonNote", "All platforms consume the same canonical V5 evidence; only policy importance and interpretation differ.");
     result.put("verdict", verdict(grade, platform));
-    result.put("limitations", List.of("Initial platform profile is a documented policy hypothesis.", "Semantic loop and platform performance are not inferred."));
+    result.put("limitations", canonical.isEmpty()
+        ? List.of("Initial platform profile is a documented policy hypothesis.", "Canonical semantic fusion is unavailable for this historical row.")
+        : List.of("Initial platform profile is a documented policy hypothesis.", "Platform performance is not inferred."));
     result.put("createdAt", Instant.now());
     return result;
   }

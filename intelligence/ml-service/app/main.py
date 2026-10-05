@@ -21,6 +21,7 @@ from .qa.character_verifier import CharacterVerifier
 from .qa.dead_air_analyzer import DeadAirAnalyzer
 from .rules.rule_versioning import RulesetConfigurationError, RuleVersionManager
 from .video import analyse
+from .semantic_fusion import fuse_canonical_assessments
 
 app = FastAPI(title="Pompom Creative Intelligence ML", version="0.1.0")
 
@@ -76,6 +77,11 @@ class CharacterIdentityResponse(BaseModel):
     reasoning: str
 
 
+class SemanticFusionRequest(BaseModel):
+    temporal_profile: dict[str, object]
+    semantic_video_evidence: dict[str, object]
+
+
 @app.get("/health")
 def health() -> dict[str, str]:
     return {"status": "UP", "service": "pompom-ml"}
@@ -109,6 +115,16 @@ def analyse_video(request: VideoAnalysisRequest) -> VideoAnalysisResponse:
         return analyse(request.relative_path, request.analysis_version)
     except (ValueError, OSError) as error:
         raise HTTPException(status_code=400, detail=str(error)) from error
+
+
+@app.post("/v1/analysis/semantic-fusion")
+def fuse_semantic_evidence(request: SemanticFusionRequest) -> dict[str, object]:
+    """Recompute canonical assessments from persisted evidence only.
+
+    This endpoint is intentionally local/deterministic and never invokes a VLM.
+    It lets historical semantic rows receive the current fusion projection.
+    """
+    return fuse_canonical_assessments(request.temporal_profile, request.semantic_video_evidence)
 
 
 @app.post("/v1/analysis/retention")

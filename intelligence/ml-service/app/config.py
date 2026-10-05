@@ -39,5 +39,9 @@ class Settings(BaseSettings):
     def test_cases_dir(self) -> Path:
         return self.data_root / "test_cases"
 
+    semantic_target_frames: int = 8
+    semantic_max_frames: int = 14
+    semantic_frame_cache_enabled: bool = True
+
 
 settings = Settings()

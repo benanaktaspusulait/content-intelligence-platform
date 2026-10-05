@@ -59,7 +59,7 @@ class LLMProvider(ABC):
         raise UnsupportedProviderError(f"Vision input is not configured for {type(self).__name__}")
 
 
-def get_provider(name: str | None = None) -> LLMProvider:
+def get_provider(name: str | None = None, model: str | None = None) -> LLMProvider:
     """
     Factory function to get LLM provider by name.
 
@@ -73,7 +73,8 @@ def get_provider(name: str | None = None) -> LLMProvider:
     Raises:
         UnsupportedProviderError: If provider name not recognized
     """
-    name, model = get_provider_identity(name)
+    name, configured_model = get_provider_identity(name)
+    model = model or configured_model
 
     if name == "openai":
         from .openai_provider import OpenAIProvider

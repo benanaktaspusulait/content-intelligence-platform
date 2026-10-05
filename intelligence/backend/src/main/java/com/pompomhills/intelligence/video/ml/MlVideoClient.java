@@ -27,6 +27,17 @@ public class MlVideoClient {
         .body(MlAnalysisResponse.class);
   }
 
+  @SuppressWarnings("unchecked")
+  public Map<String, Object> fuseSemanticEvidence(
+      Map<String, Object> temporalProfile, Map<String, Object> semanticVideoEvidence) {
+    return restClient
+        .post()
+        .uri("/v1/analysis/semantic-fusion")
+        .body(Map.of("temporal_profile", temporalProfile, "semantic_video_evidence", semanticVideoEvidence))
+        .retrieve()
+        .body(Map.class);
+  }
+
   public record MlAnalysisRequest(String contractVersion, String relativePath, String analysisVersion) {}
 
   public record Metadata(

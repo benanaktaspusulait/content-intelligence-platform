@@ -156,6 +156,15 @@ public class CreativeAnalysisEntity {
   }
 
   @SuppressWarnings("unchecked")
+  public Map<String, Object> getRawResult() {
+    return rawResult == null ? Map.of() : rawResult;
+  }
+
+  public void updateRawResult(Map<String, Object> value) {
+    this.rawResult = value;
+  }
+
+  @SuppressWarnings("unchecked")
   private Map<String, Object> castMap(Object value) {
     return value instanceof Map<?, ?> map ? (Map<String, Object>) map : Map.of();
   }

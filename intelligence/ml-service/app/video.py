@@ -13,6 +13,7 @@ from .config import settings
 from .contracts import VideoAnalysisResponse, VideoMetadata
 from .semantic_evidence import analyse_semantic_video
 from .semantic_frame_selector import select_semantic_frames
+from .semantic_fusion import fuse_canonical_assessments
 
 # ``settings`` is re-exported deliberately: tests patch ``app.video.settings`` directly
 # (e.g. to point ``data_root`` at a tmp dir) rather than reaching into ``app.config``.
@@ -1268,6 +1269,9 @@ def _analyse_v5(path: Path, metadata: VideoMetadata) -> VideoAnalysisResponse:
     if result.semantic_video_evidence.get("status") == "NOT_EVALUATED":
         result.semantic_video_evidence["status"] = "NOT_REQUESTED"
     result.evidence["semanticFrameSelection"] = frame_selection
+    canonical = fuse_canonical_assessments(temporal, result.semantic_video_evidence)
+    temporal["canonicalAssessments"] = canonical
+    result.evidence["canonicalAssessments"] = canonical
     result.features["hook"] = hook
     result.features["payoff"] = payoff
     result.features["loop"] = loop

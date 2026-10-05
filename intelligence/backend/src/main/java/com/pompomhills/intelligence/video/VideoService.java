@@ -27,6 +27,7 @@ import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Stream;
 import org.springframework.data.domain.Page;
@@ -322,6 +323,26 @@ public class VideoService {
       video.markFailed();
       throw error;
     }
+  }
+
+  @Transactional
+  public void ensureCanonicalAssessments(UUID videoId, String analysisVersion) {
+    analyses.findFirstByVideoIdAndAnalysisVersionOrderByCreatedAtDesc(videoId, analysisVersion)
+        .ifPresent(analysis -> {
+          Map<String, Object> temporal = analysis.getTemporalProfile();
+          if (temporal.containsKey("canonicalAssessments")) return;
+          Map<String, Object> semantic = analysis.getSemanticVideoEvidence();
+          String status = String.valueOf(semantic.getOrDefault("status", "UNKNOWN"));
+          if (!Set.of("COMPLETED", "PARTIAL").contains(status)) return;
+          Map<String, Object> canonical = ml.fuseSemanticEvidence(temporal, semantic);
+          Map<String, Object> updatedTemporal = new LinkedHashMap<>(temporal);
+          updatedTemporal.put("canonicalAssessments", canonical);
+          Map<String, Object> raw = new LinkedHashMap<>(analysis.getRawResult());
+          raw.put("temporalProfile", updatedTemporal);
+          raw.put("canonicalAssessments", canonical);
+          analysis.updateRawResult(raw);
+          analyses.save(analysis);
+        });
   }
 
   private CreativeAnalysisEntity persistCreativeAnalysis(

@@ -158,6 +158,7 @@ public class VideoController {
   }
 
   private VideoDtos.AnalysisStatusResponse statusFor(UUID id, String analysisVersion) {
+    service.ensureCanonicalAssessments(id, analysisVersion);
     var active = jobService.findActiveByVideoId(id);
     if (active.isPresent()) {
       var job = active.get();

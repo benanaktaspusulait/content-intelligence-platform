@@ -9,10 +9,13 @@ from __future__ import annotations
 
 import json
 import os
+import time
 from typing import Any
 
 from .llm import get_provider
 from .semantic_provider import SemanticAnalysisRequest, SemanticFrame
+from .semantic_quality_gate import assess_semantic_evidence
+from .semantic_routing import SemanticModelRoutingPolicy
 
 SEMANTIC_ANALYZER_VERSION = "semantic-video-intelligence-v1"
 SEMANTIC_SCHEMA_VERSION = "semantic-evidence-v1"
@@ -76,8 +79,6 @@ def analyse_semantic_video(
     if os.getenv("POMPOM_SEMANTIC_ENABLED", "false").lower() != "true":
         return unavailable_semantic_evidence(None, "", frame_selection)
     try:
-        provider_name = os.getenv("POMPOM_SEMANTIC_PROVIDER") or os.getenv("DEFAULT_LLM_PROVIDER", "openai")
-        provider = get_provider(provider_name)
         selected = [item for item in frame_selection.get("selectedFrames", []) if item.get("frameAvailable") and item.get("framePath")]
         request = SemanticAnalysisRequest(
             asset_hash=str(frame_selection.get("assetHash") or ""),
@@ -94,10 +95,46 @@ def analyse_semantic_video(
             temporal_events=tuple(frame_selection.get("temporalEvents") or ()),
             analysis_requirements=_semantic_prompt(canonical_characters or []),
         )
-        if not hasattr(provider, "analyze"):
-            raise TypeError(f"Provider {provider_name} does not implement VisionLanguageModelProvider")
-        semantic_result = provider.analyze(request)
-        payload = semantic_result.payload
+        policy = SemanticModelRoutingPolicy.from_environment()
+
+        def run(selection, reason: str) -> tuple[dict[str, Any], dict[str, Any]]:
+            started = time.perf_counter()
+            provider = get_provider(selection.provider, selection.model)
+            if not hasattr(provider, "analyze"):
+                raise TypeError(f"Provider {selection.provider} does not implement VisionLanguageModelProvider")
+            result = provider.analyze(request)
+            payload = dict(result.payload)
+            quality = assess_semantic_evidence(payload, len(request.frames))
+            usage = {
+                **dict(result.usage),
+                "provider": result.provider,
+                "providerModel": result.model,
+                "role": selection.role,
+                "reason": reason,
+                "latencyMs": round((time.perf_counter() - started) * 1000),
+                "framesSent": len(request.frames),
+                "imagePreparationProfile": os.getenv("SEMANTIC_IMAGE_PREPARATION_PROFILE", "STANDARD"),
+                "cacheHit": False,
+            }
+            input_rate = os.getenv("SEMANTIC_INPUT_COST_PER_1M")
+            output_rate = os.getenv("SEMANTIC_OUTPUT_COST_PER_1M")
+            if input_rate and output_rate and usage.get("inputTokens") is not None and usage.get("outputTokens") is not None:
+                usage["estimatedCost"] = round(
+                    (float(usage["inputTokens"]) / 1_000_000) * float(input_rate)
+                    + (float(usage["outputTokens"]) / 1_000_000) * float(output_rate),
+                    6,
+                )
+            else:
+                usage["estimatedCost"] = None
+            return payload, {"usage": usage, "quality": quality, "selection": selection}
+
+        payload, primary = run(policy.primary, policy.primary.reason)
+        attempts = [{"selection": primary["selection"].__dict__, "quality": primary["quality"], "usage": primary["usage"]}]
+        final = primary
+        if primary["quality"]["qualityStatus"] == "INSUFFICIENT" and policy.fallback is not None:
+            fallback_payload, fallback = run(policy.fallback, "PRIMARY_EVIDENCE_INSUFFICIENT")
+            attempts.append({"selection": fallback["selection"].__dict__, "quality": fallback["quality"], "usage": fallback["usage"]})
+            payload, final = fallback_payload, fallback
         payload.setdefault("status", "COMPLETED")
         payload.setdefault("schemaVersion", SEMANTIC_SCHEMA_VERSION)
         payload.setdefault("analyzerVersion", SEMANTIC_ANALYZER_VERSION)
@@ -106,9 +143,14 @@ def analyse_semantic_video(
             **dict(payload.get("provenance") or {}),
             "selectedFrameTimestamps": [frame["timestampSeconds"] for frame in frame_selection.get("selectedFrames", [])],
             "frameSelectionVersion": frame_selection.get("version"),
-            **semantic_result.usage,
-            "provider": semantic_result.provider,
-            "providerModel": semantic_result.model,
+            **final["usage"],
+            "routingPolicyVersion": policy.version,
+            "routingMode": policy.mode,
+            "primaryQuality": primary["quality"],
+            "fallbackTriggered": len(attempts) > 1,
+            "fallbackReason": "PRIMARY_EVIDENCE_INSUFFICIENT" if len(attempts) > 1 else None,
+            "attempts": attempts,
+            "finalSelectedRole": final["selection"].role,
         }
         payload.setdefault("limitations", [])
         return payload

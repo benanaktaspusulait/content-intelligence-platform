@@ -191,7 +191,7 @@ const VARIANT_TYPE_LABELS: Record<string, string> = {
                 <div class="creative-evidence-cards creative-evidence-cards--v4">
                   <div><span>Opening hook</span><strong>{{ v5HookSummary() }}</strong><small>{{ v5HookReason() }}</small></div>
                   <div><span>Temporal emphasis</span><strong>{{ v5HoldSummary() }}</strong><small>{{ v5HoldReason() }}</small></div>
-                  <div><span>Payoff rebound</span><strong>{{ v5ReboundSummary() }}</strong><small>Rebound is evidence of visual progression, not performance.</small></div>
+                  <div><span>Payoff</span><strong>{{ v5ReboundSummary() }}</strong><small>{{ v5PayoffReason() }}</small></div>
                   <div><span>Loop evidence</span><strong>{{ v5LoopSummary() }}</strong><small>Visual endpoint evidence is separate from semantic loop verification.</small></div>
                   <div><span>Readiness coverage</span><strong>{{ v5CoverageSummary() }}</strong><small>{{ v5CoverageReason() }}</small></div>
                 </div>
@@ -723,6 +723,7 @@ export class VideoDetailPage implements OnDestroy {
     return Array.isArray(events) ? events as Array<Record<string, any>> : null;
   }
   protected semanticEvidence(): Record<string, any> { return (this.analysisStatus()?.semanticVideoEvidence || {}) as Record<string, any>; }
+  protected canonicalAssessments(): Record<string, any> { return (this.analysisStatus()?.temporalProfile?.['canonicalAssessments'] || {}) as Record<string, any>; }
   protected semanticStatus(): string { return String(this.semanticEvidence()['status'] || 'NOT_REQUESTED'); }
   protected semanticLimitation(): string {
     const limitations = this.semanticEvidence()['limitations'];
@@ -785,11 +786,15 @@ export class VideoDetailPage implements OnDestroy {
     return holds.length ? 'Likely purposeful hold' : 'No contextual hold evidence';
   }
   protected v5HookSummary(): string {
+    const canonical = this.canonicalAssessments()['hook'];
+    if (canonical && typeof canonical === 'object') return this.readable(String((canonical as Record<string, unknown>)['strength'] || 'UNKNOWN'));
     const hook = this.analysisStatus()?.temporalProfile?.['hook'];
     if (!hook || typeof hook !== 'object') return 'Not evaluated';
     return this.readable(String((hook as Record<string, unknown>)['status'] || 'NOT_EVALUATED'));
   }
   protected v5HookReason(): string {
+    const canonical = this.canonicalAssessments()['hook'];
+    if (canonical && typeof canonical === 'object') return String((canonical as Record<string, unknown>)['summary'] || 'Canonical hook assessment is available.');
     const hook = this.analysisStatus()?.temporalProfile?.['hook'];
     return hook && typeof hook === 'object' ? String((hook as Record<string, unknown>)['reason'] || 'Opening evidence is limited to sampled visual activity.') : 'Semantic hook evidence is not configured.';
   }
@@ -800,20 +805,39 @@ export class VideoDetailPage implements OnDestroy {
     return `${event['startSeconds']}–${event['endSeconds']}s · ${String(event['reason'] || 'Context requires review.')}`;
   }
   protected v5ReboundSummary(): string {
+    const payoff = this.canonicalAssessments()['payoff'];
+    if (payoff && typeof payoff === 'object') return this.readable(String((payoff as Record<string, unknown>)['strength'] || 'UNKNOWN'));
     const rebound = this.analysisStatus()?.temporalProfile?.['reboundEvidence'];
     return rebound && typeof rebound === 'object' && (rebound as Record<string, unknown>)['sustainedRisingActivity'] === true ? 'Sustained rising activity' : 'Not established';
   }
+  protected v5PayoffReason(): string {
+    const payoff = this.canonicalAssessments()['payoff'];
+    if (payoff && typeof payoff === 'object') {
+      const value = payoff as Record<string, unknown>;
+      return `${String(value['summary'] || 'Canonical payoff assessment.')} Motion support: ${String(value['motionRebound'] || 'UNKNOWN')}.`;
+    }
+    return 'Motion rebound is supporting evidence, not the payoff assessment.';
+  }
   protected v5LoopSummary(): string {
+    const canonical = this.canonicalAssessments()['loop'];
+    if (canonical && typeof canonical === 'object') return String((canonical as Record<string, unknown>)['summary'] || 'Canonical loop assessment is available.');
     const similarity = this.analysisStatus()?.visualSimilarity?.['firstLastVisualSimilarity'];
     if (typeof similarity !== 'number') return 'Unknown';
     return `${similarity >= 0.9 ? 'Strong visual evidence' : similarity >= 0.75 ? 'Moderate visual evidence' : 'Weak visual evidence'} · semantic unknown`;
   }
   protected v5CoverageSummary(): string {
+    const coverage = this.canonicalAssessments()['coverage'];
+    if (coverage && typeof coverage === 'object' && typeof (coverage as Record<string, unknown>)['percent'] === 'number') return `${String((coverage as Record<string, unknown>)['percent'])}%`;
     const action = this.analysisStatus()?.temporalProfile?.['actionBeatNovelty'];
     const status = action && typeof action === 'object' ? (action as Record<string, unknown>)['status'] : null;
     return typeof status === 'string' ? this.readable(status) : 'Partial';
   }
   protected v5CoverageReason(): string {
+    const coverage = this.canonicalAssessments()['coverage'];
+    if (coverage && typeof coverage === 'object') {
+      const missing = (coverage as Record<string, unknown>)['missing'];
+      return Array.isArray(missing) && missing.length ? `Missing: ${missing.join(', ')}.` : 'Canonical evidence coverage is complete for the applicable dimensions.';
+    }
     const fidelity = this.analysisStatus()?.temporalProfile?.['planRenderFidelity'];
     return fidelity && typeof fidelity === 'object' ? String((fidelity as Record<string, unknown>)['reason'] || 'Plan provenance was not supplied.') : 'Plan provenance was not supplied.';
   }

@@ -8,6 +8,7 @@ each frame was selected.
 from __future__ import annotations
 
 import math
+import json
 from pathlib import Path
 from typing import Any
 
@@ -15,7 +16,7 @@ import cv2
 
 from .config import settings
 
-FRAME_SELECTION_VERSION = "semantic-frame-selection-v1"
+FRAME_SELECTION_VERSION = "semantic-frame-selection-v2"
 DEFAULT_MAX_FRAMES = 14
 MIN_FRAME_GAP_SECONDS = 0.18
 
@@ -95,10 +96,23 @@ def select_semantic_frames(
     asset_hash: str,
     temporal_profile: dict[str, Any] | None = None,
     beat_windows: list[dict[str, Any]] | None = None,
-    max_frames: int = DEFAULT_MAX_FRAMES,
+    max_frames: int | None = None,
 ) -> dict[str, Any]:
     """Select and materialize a small set of representative frame assets."""
+    requested_max = max_frames if max_frames is not None else settings.semantic_target_frames
+    requested_max = max(4, min(int(requested_max), settings.semantic_max_frames))
     duration = max(0.0, float(duration_seconds))
+    cache_dir = settings.data_root.expanduser().resolve() / "semantic-frames" / asset_hash[:24]
+    manifest_path = cache_dir / f"selection-{FRAME_SELECTION_VERSION}-{requested_max}.json"
+    if settings.semantic_frame_cache_enabled and manifest_path.is_file():
+        try:
+            cached = json.loads(manifest_path.read_text(encoding="utf-8"))
+            selected = cached.get("selectedFrames") or []
+            if selected and all(item.get("frameAvailable") and Path(str(item.get("framePath"))).is_file() for item in selected):
+                cached["cacheHit"] = True
+                return cached
+        except (OSError, ValueError, TypeError):
+            pass
     candidates: list[dict[str, Any]] = []
     for timestamp in (0.0, 0.5, 1.0, 1.5):
         if timestamp <= duration:
@@ -130,13 +144,15 @@ def select_semantic_frames(
             beat_id = str(beat.get("beatId", f"plan-beat-{index + 1}"))
             _add(candidates, (float(start) + float(end)) / 2.0, "PLAN_BEAT", beat_id=beat_id)
 
-    selected = _deduplicate(candidates, max(4, min(int(max_frames), DEFAULT_MAX_FRAMES)), duration)
+    selected = _deduplicate(candidates, requested_max, duration)
     selected = _write_frame_assets(path, selected, asset_hash)
     return {
         "version": FRAME_SELECTION_VERSION,
         "assetHash": asset_hash,
         "durationSeconds": round(duration, 3),
-        "maxFrames": max_frames,
+        "maxFrames": requested_max,
+        "targetFrames": settings.semantic_target_frames,
+        "cacheHit": False,
         "selectedFrameCount": len(selected),
         "selectedFrames": selected,
         "coverage": {
@@ -146,3 +162,7 @@ def select_semantic_frames(
             "planBeats": sum(item["selectionReason"] == "PLAN_BEAT" for item in selected),
         },
     }
+    if settings.semantic_frame_cache_enabled:
+        cache_dir.mkdir(parents=True, exist_ok=True)
+        manifest_path.write_text(json.dumps(result, indent=2), encoding="utf-8")
+    return result
