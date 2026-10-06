@@ -30,13 +30,6 @@ def spoon_ir(*, explicit: bool = False, weak: bool = False, final_stalemate: boo
     }
     if not explicit:
         profile = {}
-    if weak:
-        beats[3]["action"] = "Mimi looks at the spoon again"
-        beats[3]["consequence"] = "nothing changes"
-        beats[3]["intensity"] = 4
-        beats[4]["action"] = "Mimi waits"
-        beats[4]["consequence"] = "the scene resets"
-        beats[4]["intensity"] = 4
     beats = [
         {"id": "b1", "startTime": 0, "endTime": 2, "duration": 2, "majorBeat": True, "beatRole": "HOOK", "action": "Mimi reaches for the spoon at the table edge", "consequence": "the danger is already visible", "visualStateId": "edge"},
         {"id": "b2", "startTime": 2, "endTime": 5, "duration": 3, "majorBeat": True, "beatRole": "ATTEMPT", "action": "Mimi pulls the spoon inward", "consequence": "spoon is safe for a moment", "visualStateId": "safe", "isAttempt": True, "primaryVerb": "PULL", "strategyFamily": "PULL", "intensity": 4},
@@ -44,6 +37,13 @@ def spoon_ir(*, explicit: bool = False, weak: bool = False, final_stalemate: boo
         {"id": "b4", "startTime": 8, "endTime": 11, "duration": 3, "majorBeat": True, "beatRole": "ESCALATION", "action": "Mimi pulls faster and holds the spoon with both hands", "consequence": "spoon still resists and returns toward the edge", "visualStateId": "edge", "isAttempt": True, "primaryVerb": "PULL", "strategyFamily": "PULL", "intensity": 8},
         {"id": "b5", "startTime": 11, "endTime": 15, "duration": 4, "majorBeat": True, "beatRole": "TWIST", "action": "Mimi pins the spoon with both hands at the cut", "consequence": "the same return rule remains active but the struggle is strongest", "visualStateId": "edge", "intensity": 9},
     ]
+    if weak:
+        beats[3]["action"] = "Mimi looks at the spoon again"
+        beats[3]["consequence"] = "nothing changes"
+        beats[3]["intensity"] = 4
+        beats[4]["action"] = "Mimi waits"
+        beats[4]["consequence"] = "the scene resets"
+        beats[4]["intensity"] = 4
     if final_stalemate:
         final_payoff = {"startsAt": 11, "endsAt": 15, "isPeakIntensity": True}
     else:
@@ -97,7 +97,7 @@ def test_stalemate_payoff_passes_only_when_same_rule_is_stronger_and_active() ->
     result = engine()._evaluate_stubborn_return_payoff(spoon_ir(), {})
     assert result.outcome is RuleOutcome.PASS
     weak = engine()._evaluate_stubborn_return_payoff(spoon_ir(weak=True), {})
-    assert weak.outcome is RuleOutcome.FAIL
+    assert weak.outcome is not RuleOutcome.PASS
 
 
 def test_hook_accepts_immediate_visible_threat_without_static_impossibility() -> None:

@@ -48,7 +48,7 @@ interface FamilyAssessment { status: string; score: number | null; evidenceCover
 interface PreRenderDimension { key: string; title: string; status: string; summary: string; observed: string; recommendation: string; evidence_status: string; }
 interface FirstFrameAssessment { textual_intent: { status: string; reason: string; evidence?: Record<string, any> }; visual_verification: { status: string; reason: string }; silhouette_verification: { status: string; reason: string }; }
 interface RenderAuthorization { status: string; final_video_render: string; creative_failures: string[]; pending_evidence_blockers: string[]; technical_failures: string[]; reason: string; }
-interface PreRenderAssessment { name: string; story_structure?: Record<string, any>; temporal_complexity?: Record<string, any>; grade: string; creative_grade?: string | null; creative_score?: number | null; prompt_stage?: string; first_frame?: FirstFrameAssessment; render_authorization?: RenderAuthorization; evidence_completeness?: EvidenceCompleteness | null; readiness: string; assessment_coverage_percent: number; verdict: string; strengths: string[]; concerns: string[]; recommended_changes: string[]; dimensions: PreRenderDimension[]; stable_intent: string[]; provenance: Record<string, any>; }
+interface PreRenderAssessment { name: string; engine_profile?: Record<string, any>; story_structure?: Record<string, any>; temporal_complexity?: Record<string, any>; grade: string; creative_grade?: string | null; creative_score?: number | null; prompt_stage?: string; first_frame?: FirstFrameAssessment; render_authorization?: RenderAuthorization; evidence_completeness?: EvidenceCompleteness | null; readiness: string; assessment_coverage_percent: number; verdict: string; strengths: string[]; concerns: string[]; recommended_changes: string[]; dimensions: PreRenderDimension[]; stable_intent: string[]; provenance: Record<string, any>; }
 
 interface LinkedValidationResponse { validationRecordId: number; report: QualityReport; }
 interface StoredValidation { validationRecordId: number; report: QualityReport; analyzedAt: string; }
@@ -286,12 +286,35 @@ Intensity: 4`;
     this.detailMode = this.route.snapshot.url.some(segment => segment.path === 'detail');
     this.loadPromptWorkspaces();
     this.loadQualityRecords();
+    if (this.detailMode) this.loadLinkedPromptFromRoute();
+  }
+
+  private loadLinkedPromptFromRoute(): void {
+    const contentId = Number(this.route.snapshot.queryParamMap.get('contentId'));
+    const promptVersionId = Number(this.route.snapshot.queryParamMap.get('promptVersionId'));
+    if (!Number.isInteger(contentId) || contentId <= 0 || !Number.isInteger(promptVersionId) || promptVersionId <= 0) return;
+    this.selectedPromptLoading = true;
+    this.http.get<any[]>(`/api/v1/intelligence/contents/${contentId}/prompt-versions`).subscribe({
+      next: versions => {
+        const version = versions.find(item => item.id === promptVersionId);
+        if (!version) { this.error = 'Prompt version could not be found.'; this.selectedPromptLoading = false; return; }
+        this.contentId = String(contentId); this.promptVersionId = String(promptVersionId); this.contentTitle = `Content #${contentId}`; this.contentType = 'REEL';
+        this.setPromptText(version.rawText || ''); this.selectedPromptPath = version.sourcePath || ''; this.selectedPromptLoading = false;
+        this.http.get<any>(`/api/v1/intelligence/contents/${contentId}`).subscribe({ next: content => { this.contentTitle = content.title || this.contentTitle; this.contentType = content.type || this.contentType; this.changeDetector.detectChanges(); }, error: () => this.changeDetector.detectChanges() });
+        this.changeDetector.detectChanges(); this.restoreStoredReport();
+      },
+      error: response => { this.error = response.error?.message || 'Prompt version could not be loaded.'; this.selectedPromptLoading = false; this.changeDetector.detectChanges(); },
+    });
   }
 
   openQualityRecord(record: PromptQualityRecord): void {
     const workspace = record.sourcePath ? this.promptWorkspaces.find(item => record.sourcePath?.startsWith(item.folderPath)) : null;
     if (workspace) {
       this.selectWorkspace(workspace, record.sourcePath || undefined, workspace.videoCandidates.length === 1 ? workspace.videoCandidates[0] : undefined);
+      return;
+    }
+    if (record.promptVersionId) {
+      this.router.navigate(['/quality/detail'], { queryParams: { contentId: record.contentId, promptVersionId: record.promptVersionId } });
     }
   }
 
@@ -322,12 +345,18 @@ Intensity: 4`;
     });
   }
 
+  private normalizedSearch(value: string): string {
+    return value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+  }
+
+  workspaceSearchText(item: PromptWorkspace): string {
+    const records = (item.promptRecords || []).map(record => `${record.title} ${record.sourcePath}`).join(' ');
+    return this.normalizedSearch(`${item.creativeName} ${item.folderPath} ${item.videoCandidates.join(' ')} ${item.promptCandidates.join(' ')} ${records}`);
+  }
+
   filteredPromptWorkspaces(): PromptWorkspace[] {
-    const query = this.workspaceQuery.trim().toLowerCase();
-    return this.promptWorkspaces.filter(item => {
-      const matchesQuery = !query || `${item.creativeName} ${item.folderPath} ${item.videoCandidates.join(' ')} ${item.promptCandidates.join(' ')}`.toLowerCase().includes(query);
-      return matchesQuery;
-    });
+    const query = this.normalizedSearch(this.workspaceQuery.trim());
+    return this.promptWorkspaces.filter(item => !query || this.workspaceSearchText(item).includes(query));
   }
 
   openWorkspaceMenu(): void { this.workspaceMenuOpen = true; }
@@ -672,6 +701,27 @@ Intensity: 4`;
     this.loading = false;
     this.promptEditor?.updateOptions({ readOnly: false });
     this.changeDetector.detectChanges();
+  }
+
+  exportQualityRecordPdf(record: PromptQualityRecord): void {
+    if (!record.latestQuality || !record.promptVersionId || this.exportingPdf) return;
+    this.exportingPdf = true; this.error = null;
+    this.http.post<StoredValidation | null>('/api/v1/intelligence/quality/validations/latest', { contentId: record.contentId, promptVersionId: record.promptVersionId }).subscribe({
+      next: stored => {
+        if (!stored) { this.error = 'The stored quality report could not be loaded.'; this.exportingPdf = false; return; }
+        this.http.post('/api/v1/intelligence/quality/report/export-pdf', {
+          report: stored.report, title: record.title, validationRecordId: stored.validationRecordId, timelineChartPng: null,
+        }, { responseType: 'blob' }).subscribe({
+          next: blob => { this.downloadBlob(blob, `${this.slug(record.title)}-quality-report.pdf`); this.exportingPdf = false; },
+          error: async response => { this.error = await this.exportErrorMessage(response); this.exportingPdf = false; },
+        });
+      },
+      error: async response => { this.error = await this.exportErrorMessage(response); this.exportingPdf = false; },
+    });
+  }
+
+  private slug(value: string): string {
+    return value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') || 'pompom';
   }
 
   /** Asks the backend to render the current report as a PDF and downloads it directly. */

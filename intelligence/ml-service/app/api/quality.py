@@ -145,6 +145,7 @@ class PreRenderDimensionResponse(BaseModel):
 
 class PreRenderAssessmentResponse(BaseModel):
     name: str
+    engine_profile: dict[str, Any] | None = None
     story_structure: dict[str, Any] | None = None
     temporal_complexity: dict[str, Any] | None = None
     grade: str

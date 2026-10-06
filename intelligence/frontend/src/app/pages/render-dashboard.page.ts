@@ -175,7 +175,7 @@ interface VisualEvidenceResponse {
       <div class="dashboard-content">
         <section class="queue-panel">
           <div class="queue-panel-heading"><div><span class="eyebrow">QUEUE RENDER</span><h2>Start a validated render</h2></div><span class="data-freshness">Validation evidence required</span></div>
-          <div class="queue-fields"><label>Content ID<input type="number" min="1" [value]="queueContentId()" (input)="queueContentId.set(($any($event.target)).value)" /></label><label>Prompt version ID<input type="number" min="1" [value]="queuePromptVersionId()" (input)="queuePromptVersionId.set(($any($event.target)).value)" /></label><label>Validation record ID<input type="number" min="1" [value]="queueValidationId()" (input)="queueValidationId.set(($any($event.target)).value)" /></label><label>Job type<select [value]="queueJobType()" (change)="queueJobType.set(($any($event.target)).value)"><option value="VIDEO">VIDEO</option><option value="FIRST_FRAME">FIRST_FRAME</option></select></label><label>OpenArt model<input type="text" [value]="queueModel()" (input)="queueModel.set(($any($event.target)).value)" /></label><button type="button" class="queue-button" [disabled]="queueLoading()" (click)="queueRender()">{{ queueLoading() ? 'Queueing…' : 'Queue render' }}</button></div>
+          <div class="queue-fields"><label>Content ID<input type="number" min="1" [value]="queueContentId()" (input)="queueContentId.set(($any($event.target)).value)" /></label><label>Prompt version ID<input type="number" min="1" [value]="queuePromptVersionId()" (input)="queuePromptVersionId.set(($any($event.target)).value)" /></label><label>Validation record ID<input type="number" min="1" [value]="queueValidationId()" (input)="queueValidationId.set(($any($event.target)).value)" /></label><label>Job type<select [value]="queueJobType()" (change)="queueJobType.set(($any($event.target)).value)"><option value="VIDEO">VIDEO</option><option value="FIRST_FRAME">FIRST_FRAME</option></select></label><label>OpenArt model<input type="text" [value]="queueModel()" (input)="queueModel.set(($any($event.target)).value)" /></label>@if (queueJobType() === 'VIDEO') { <label class="wide-field">First-frame path or HTTPS URL<input type="text" placeholder="/data/library/.../first-frame.png" [value]="queueFirstFramePath()" (input)="queueFirstFramePath.set(($any($event.target)).value)" /></label> }<button type="button" class="queue-button" [disabled]="queueLoading()" (click)="queueRender()">{{ queueLoading() ? 'Queueing…' : 'Queue render' }}</button></div>
           @if (queueError()) { <p class="queue-error">{{ queueError() }}</p> }
           @if (queuedJobId()) { <p class="queue-success">Render queued: {{ queuedJobId() }}</p> }
         </section>
@@ -400,7 +400,7 @@ interface VisualEvidenceResponse {
       </div>
       @if (assetLoading()) { <section class="section-band asset-detail"><span class="spinner"></span><strong>Loading render asset</strong></section> }
       @else if (assetError()) { <section class="section-band asset-detail"><strong>Asset detail unavailable</strong><p>{{ assetError() }}</p></section> }
-      @else if (asset(); as item) { <section class="section-band asset-detail"><div class="section-heading"><div><span class="eyebrow">DURABLE ASSET</span><h2>{{ item.assetType }} · version {{ item.assetVersion }}</h2></div><span class="status-badge">{{ item.mediaVerified ? 'MEDIA VERIFIED' : 'NOT VERIFIED' }}</span></div><dl class="compact-facts"><div><dt>Path</dt><dd><code>{{ item.relativePath }}</code></dd></div><div><dt>Dimensions</dt><dd>{{ item.width }} × {{ item.height }}</dd></div><div><dt>Codec</dt><dd>{{ item.codec || '—' }}</dd></div><div><dt>SHA-256</dt><dd><code>{{ item.sha256 || '—' }}</code></dd></div><div><dt>Quarantine</dt><dd>{{ item.quarantined ? 'QUARANTINED' : 'Clear' }}</dd></div></dl></section> }
+      @else if (asset(); as item) { <section class="section-band asset-detail"><div class="section-heading"><div><span class="eyebrow">DURABLE ASSET</span><h2>{{ item.assetType }} · version {{ item.assetVersion }}</h2></div><span class="status-badge">{{ item.mediaVerified ? 'MEDIA VERIFIED' : 'NOT VERIFIED' }}</span></div><dl class="compact-facts"><div><dt>Path</dt><dd><code>{{ item.relativePath }}</code></dd></div><div><dt>Dimensions</dt><dd>{{ item.width }} × {{ item.height }}</dd></div><div><dt>Codec</dt><dd>{{ item.codec || '—' }}</dd></div><div><dt>SHA-256</dt><dd><code>{{ item.sha256 || '—' }}</code></dd></div><div><dt>Quarantine</dt><dd>{{ item.quarantined ? 'QUARANTINED' : 'Clear' }}</dd></div></dl>@if (item.assetType === 'FIRST_FRAME') { <button type="button" class="queue-button" (click)="useAsVideoFirstFrame(item)">Use as video first-frame</button> }</section> }
       @if (asset()?.assetType === 'FIRST_FRAME') {
         <section class="section-band visual-evidence-panel">
           <div class="section-heading"><div><span class="eyebrow">VISUAL EVIDENCE</span><h2>Verify first-frame gates</h2></div><span class="status-badge">EXPLICIT VERIFIER RESULT REQUIRED</span></div>
@@ -902,6 +902,7 @@ export class RenderDashboardPage implements OnInit, OnDestroy {
   queueValidationId = signal('');
   queueJobType = signal('VIDEO');
   queueModel = signal('byte-plus-seedance-2-mini');
+  queueFirstFramePath = signal('');
   queueLoading = signal(false);
   queueError = signal('');
   queuedJobId = signal('');
@@ -932,6 +933,12 @@ export class RenderDashboardPage implements OnInit, OnDestroy {
       next: asset => { this.asset.set(asset); this.assetLoading.set(false); },
       error: err => { this.assetError.set(err.error?.detail || err.error?.message || 'The render asset could not be read.'); this.assetLoading.set(false); },
     });
+  }
+
+  useAsVideoFirstFrame(asset: RenderAsset): void {
+    this.queueJobType.set('VIDEO');
+    this.queueFirstFramePath.set(asset.relativePath.startsWith('/') ? asset.relativePath : `/data/${asset.relativePath}`);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   submitVisualEvidence(): void {
@@ -966,10 +973,11 @@ export class RenderDashboardPage implements OnInit, OnDestroy {
       return;
     }
     this.queueLoading.set(true); this.queueError.set(''); this.queuedJobId.set('');
+    const firstFramePath = this.queueFirstFramePath().trim();
     this.http.post<{ renderJobId: string }>('/api/v1/render-jobs', {
       contentId, promptVersionId, validationRecordId,
-      jobType: this.queueJobType(), openartModel: this.queueModel().trim() || 'seedance-2.0-mini',
-      openartParams: {}, requestPromptSha256: null,
+      jobType: this.queueJobType(), openartModel: this.queueModel().trim() || 'byte-plus-seedance-2-mini',
+      openartParams: firstFramePath ? { firstFrameImageId: firstFramePath } : {}, requestPromptSha256: null,
     }, { headers: { 'Idempotency-Key': crypto.randomUUID() } }).subscribe({
       next: response => { this.queueLoading.set(false); this.queuedJobId.set(response.renderJobId); this.loadJobs(0); },
       error: err => { this.queueLoading.set(false); this.queueError.set(err.error?.detail || err.error?.message || 'Render could not be queued.'); },

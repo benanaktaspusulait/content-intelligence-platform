@@ -4,13 +4,16 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pompom.creative.domain.*;
 import com.pompom.creative.openart.OpenArtAdapter;
+import com.pompom.creative.openart.OpenArtReferenceResolver;
 import com.pompom.creative.openart.dto.DownloadResult;
+import com.pompom.creative.openart.dto.OpenArtImageRequest;
 import com.pompom.creative.openart.dto.OpenArtJobResponse;
 import com.pompom.creative.openart.dto.OpenArtJobStatus;
 import com.pompom.creative.postrender.PostRenderDecision;
@@ -59,6 +62,7 @@ class RenderAttemptOrchestratorTest {
   @Mock private WebSocketEventPublisher webSocketEventPublisher;
   @Mock private CreditTrackingService creditTrackingService;
   @Mock private VideoUpscaleService videoUpscaleService;
+  @Mock private OpenArtReferenceResolver referenceResolver;
   @Mock private RenderSubmissionStateService submissionStateService;
 
   private RenderAttemptOrchestrator orchestrator;
@@ -79,6 +83,7 @@ class RenderAttemptOrchestratorTest {
             submissionStateService,
             creditTrackingService,
             videoUpscaleService,
+            referenceResolver,
             new ObjectMapper());
     job =
         RenderJob.builder()
@@ -91,6 +96,7 @@ class RenderAttemptOrchestratorTest {
             .promptTextSnapshot("a".repeat(120))
             .jobType(RenderJob.JobType.FIRST_FRAME)
             .openartModel("mock_model")
+            .creativeContractSnapshot("{\"intent\":{\"characterIntent\":{}}}")
             .status(RenderJob.RenderJobStatus.QUEUED)
             .attemptNumber(1)
             .maxAttempts(3)
@@ -129,6 +135,8 @@ class RenderAttemptOrchestratorTest {
   @Test
   void queuedStageSubmitsToProviderAndAdvancesToProviderQueued() {
     RenderAttempt attempt = attempt(RenderExecutionStage.QUEUED);
+    when(referenceResolver.resolveCharacterReferences(anyString()))
+        .thenReturn(List.of("/tmp/kiko.png", "/tmp/mimi.png"));
     when(openArtAdapter.generateImage(any()))
         .thenReturn(OpenArtJobResponse.builder().jobId("provider-job-1").status("QUEUED").build());
 
@@ -137,7 +145,11 @@ class RenderAttemptOrchestratorTest {
     verify(submissionStateService).markSubmitting(attempt.getId(), LEASE_OWNER);
     verify(submissionStateService)
         .markSubmitted(attempt.getId(), job.getId(), "provider-job-1", null);
-    verify(openArtAdapter).generateImage(any());
+    ArgumentCaptor<OpenArtImageRequest> imageRequest =
+        ArgumentCaptor.forClass(OpenArtImageRequest.class);
+    verify(openArtAdapter).generateImage(imageRequest.capture());
+    assertThat(imageRequest.getValue().getReferenceImagePaths())
+        .containsExactly("/tmp/kiko.png", "/tmp/mimi.png");
   }
 
   @Test

@@ -107,7 +107,12 @@ The adapter intentionally uses only commands documented by OpenArt CLI v0.1.1:
 
 The image command uses the selected model's defaults. The v0.1.1 image CLI does not expose generic `style` or `aspect-ratio` flags, so those choices must be expressed in the approved prompt rather than silently persisted as unused provider parameters. The video request field currently named `firstFrameImageId` is a local image path or an HTTPS CDN URL. The old `--first-frame` option is not used. The adapter downloads the result URL because v0.1.1 has no separate `openart download` command.
 
-## Render lifecycle and status
+## Character references and first frames
+
+For `FIRST_FRAME` jobs, the service reads `intent.characterIntent.characterRefs` from the immutable parsed prompt contract, resolves each relative path under `POMPOM_LIBRARY_ROOT` (Docker: `/data/library`), and sends every character sheet to OpenArt image generation as a repeatable `--image` reference.
+
+For `VIDEO` jobs, the dashboard accepts an optional first-frame local path or HTTPS URL through `openartParams.firstFrameImageId`; the adapter sends it as the OpenArt `--image` start frame. The installed OpenArt CLI v0.1.1 exposes video `--image` as a single start-frame flag and does not expose `element2video`/`visualReferences` as a generation flag. Therefore the supported production workflow for multiple character sheets is: generate the FIRST_FRAME with all character references, then use that resulting first-frame asset when queueing VIDEO. This avoids silently dropping character references.
+
 
 `RenderAttempt` stages are durable and processed one stage per worker claim:
 

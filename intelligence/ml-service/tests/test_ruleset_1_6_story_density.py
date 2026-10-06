@@ -173,7 +173,7 @@ def test_continuation_lock_is_not_applicable_for_single_generation() -> None:
 
 def test_ruleset_1_5_remains_immutable_and_1_6_is_latest() -> None:
     manager = RuleVersionManager(settings.rules_dir)
-    assert manager.get_latest_version() == "1.6"
+    assert manager.get_latest_version() == "1.7"
     old = RuleEngine(str(settings.rules_dir / "RULESET_1.5.yaml"))
     new = RuleEngine(RULESET)
     assert "MINI_STORY_LOCK" not in {rule["id"] for rule in old.ruleset["rules"]}

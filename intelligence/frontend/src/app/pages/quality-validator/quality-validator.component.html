@@ -15,7 +15,7 @@
           <div class="quality-record-meta"><span *ngIf="record.versionNumber">Prompt v{{ record.versionNumber }}</span><ng-container *ngIf="record.latestQuality as quality"><span>{{ quality.status }} · {{ quality.overallScore.toFixed(1) }}/100</span><span *ngIf="quality.creativeGrade">Creative {{ quality.creativeGrade }}</span><span *ngIf="quality.readiness">{{ quality.readiness.replaceAll('_', ' ') }}</span></ng-container></div>
           <p class="quality-record-summary">{{ promptQualitySummary(record) }}</p>
           <small *ngIf="record.latestQuality?.analyzedAt" class="quality-record-date">Analyzed {{ record.latestQuality?.analyzedAt | date:'medium' }}</small>
-          <button *ngIf="record.promptVersionId && record.sourcePath" type="button" class="btn btn-outline-secondary btn-sm" (click)="openQualityRecord(record)">Open analysis</button>
+          <button *ngIf="record.latestQuality" type="button" class="btn btn-outline-secondary btn-sm" [disabled]="exportingPdf" (click)="exportQualityRecordPdf(record)">Export PDF</button><button *ngIf="record.promptVersionId && record.sourcePath" type="button" class="btn btn-outline-secondary btn-sm" (click)="openQualityRecord(record)">Open analysis</button>
         </article>
       </div>
     </div>
@@ -29,7 +29,8 @@
     <div class="card-body">
       <div *ngIf="promptWorkspacesLoading" class="loading-library">Loading prompt folders…</div>
       <div *ngIf="!promptWorkspacesLoading" class="workspace-folder-combobox">
-        <label for="prompt-folder-search">Find and select a prompt folder</label>
+        <label for="prompt-folder-search">Find a prompt, video, or subfolder topic</label>
+        <small class="workspace-search-hint">Search also scans nested prompt/video paths; results stay grouped by top-level workspace.</small>
         <div class="workspace-folder-search" [class.is-open]="workspaceMenuOpen">
           <span aria-hidden="true">⌕</span>
           <input id="prompt-folder-search" type="search" role="combobox" autocomplete="off" [attr.aria-expanded]="workspaceMenuOpen" placeholder="Type a folder name…" [value]="workspaceQuery" (focus)="openWorkspaceMenu()" (input)="setWorkspaceQuery($event)" (keydown.escape)="closeWorkspaceMenu()">
@@ -119,6 +120,7 @@
       <div class="card-body">
         <p class="assessment-verdict">{{ report.preRenderAssessment.verdict }}</p>
         <div *ngIf="report.preRenderAssessment.story_structure || report.preRenderAssessment.temporal_complexity" class="assessment-columns">
+          <section *ngIf="report.preRenderAssessment.engine_profile as profile"><h3>Engine profile · {{ profile['profile'] }}</h3><p>Source: {{ profile['source'] }} · Confidence: {{ profile['confidence'] }} · {{ profile['active'] ? 'Exception active' : profile['candidate_only'] ? 'Candidate only' : 'Default rules' }}</p><small>{{ profile['reason'] }}</small></section>
           <section *ngIf="report.preRenderAssessment.story_structure as story"><h3>Mini story</h3><p>Goal: {{ story['goal'] }} · Obstacle: {{ story['obstacle'] }} · Attempts: {{ story['attempts'] }} · Strategies: {{ story['distinct_strategies'] }} · Realization: {{ story['realization'] }} · Payoff: {{ story['payoff'] }}</p></section>
           <section *ngIf="report.preRenderAssessment.temporal_complexity as temporal"><h3>Generation plan · {{ temporal['status'].replaceAll('_', ' ') }}</h3><p>{{ temporal['major_beats'] }} major beats, {{ temporal['micro_beats'] }} micro beats, {{ temporal['state_transitions'] }} state transitions · {{ temporal['recommendation'] || 'No split required' }}</p></section>
         </div>

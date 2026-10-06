@@ -101,9 +101,9 @@ def test_blocker_failure_blocks_render_authorization():
     assert result.status.value == "BLOCKED"
 
 
-def test_ruleset_1_4_and_1_5_remain_immutable_with_1_6_latest():
+def test_ruleset_1_4_1_5_and_1_6_remain_immutable_with_1_7_latest():
     manager = RuleVersionManager(settings.rules_dir)
-    assert manager.get_latest_version() == "1.6"
+    assert manager.get_latest_version() == "1.7"
     old = RuleEngine(str(settings.rules_dir / "RULESET_1.4.yaml"))
     stable = RuleEngine(str(settings.rules_dir / "RULESET_1.5.yaml"))
     latest = RuleEngine(str(settings.rules_dir / "RULESET_1.6.yaml"))

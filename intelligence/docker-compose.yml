@@ -98,6 +98,7 @@ services:
       OBSERVATION_BRIDGE_TOKEN: ${OBSERVATION_BRIDGE_TOKEN:-}
       QA_REVIEW_TOKEN: ${QA_REVIEW_TOKEN:-}
       POMPOM_DATA_ROOT: /data
+      POMPOM_LIBRARY_ROOT: /data/library
       POMPOM_QA_SERVICE_URL: http://ml-service:8000
       POMPOM_UPSCALE_ENABLED: ${POMPOM_UPSCALE_ENABLED:-true}
       POMPOM_UPSCALE_SCRIPT: /opt/pompom/tools/upscale.sh

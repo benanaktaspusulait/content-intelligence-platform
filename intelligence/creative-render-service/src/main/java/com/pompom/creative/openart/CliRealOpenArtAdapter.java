@@ -285,6 +285,15 @@ public class CliRealOpenArtAdapter implements OpenArtAdapter {
     command.add("image");
     command.add(requiredRequestText(request.getPromptText(), "image prompt"));
     addOption(command, "--model", request.getModel());
+    if (request.getReferenceImagePaths() != null) {
+      request.getReferenceImagePaths().stream()
+          .filter(path -> path != null && !path.isBlank())
+          .forEach(
+              path -> {
+                command.add("--image");
+                command.add(path);
+              });
+    }
     command.add("--async");
     command.add("--json");
     command.add("--no-input");

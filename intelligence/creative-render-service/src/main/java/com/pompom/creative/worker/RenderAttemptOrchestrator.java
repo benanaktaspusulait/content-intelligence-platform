@@ -8,6 +8,7 @@ import com.pompom.creative.domain.RenderAttempt;
 import com.pompom.creative.domain.RenderExecutionStage;
 import com.pompom.creative.domain.RenderJob;
 import com.pompom.creative.openart.OpenArtAdapter;
+import com.pompom.creative.openart.OpenArtReferenceResolver;
 import com.pompom.creative.openart.dto.DownloadResult;
 import com.pompom.creative.openart.dto.OpenArtImageRequest;
 import com.pompom.creative.openart.dto.OpenArtJobResponse;
@@ -69,6 +70,7 @@ public class RenderAttemptOrchestrator {
   private final RenderSubmissionStateService submissionStateService;
   private final CreditTrackingService creditTrackingService;
   private final VideoUpscaleService videoUpscaleService;
+  private final OpenArtReferenceResolver referenceResolver;
   private final ObjectMapper objectMapper;
 
   @Value("${pompom.openart.max-polls:180}")
@@ -162,6 +164,8 @@ public class RenderAttemptOrchestrator {
                     ? job.getPromptTextSnapshot()
                     : job.getGenerationPromptSnapshot())
             .model(job.getOpenartModel())
+            .referenceImagePaths(
+                referenceResolver.resolveCharacterReferences(job.getCreativeContractSnapshot()))
             .build();
     return openArtAdapter.generateImage(request);
   }

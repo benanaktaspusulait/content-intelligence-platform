@@ -13,6 +13,7 @@ from ..quality.canonical_evidence import (
     attempt_beats,
     attempt_evidence,
     beat_audit,
+    engine_profile_evidence,
     evidence_gap_kind,
     is_evidence_gap,
     is_unspecified_verb,
@@ -28,6 +29,7 @@ def build_pre_render_assessment(ir: dict[str, Any], parser: Any, report: Any, ru
     coverage = round(len(evaluated) * 100 / max(len(applicable), 1))
 
     story = story_density_evidence(ir)
+    engine_profile = engine_profile_evidence(ir)
     dimensions = [
         _concept(ir),
         _opening(ir, evaluations),
@@ -73,6 +75,18 @@ def build_pre_render_assessment(ir: dict[str, Any], parser: Any, report: Any, ru
 
     return {
         "name": "PRE_RENDER_CREATIVE_READINESS",
+        "engine_profile": {
+            "profile": engine_profile.profile,
+            "source": engine_profile.source,
+            "confidence": engine_profile.confidence,
+            "active": engine_profile.active,
+            "candidate_only": engine_profile.candidate_only,
+            "signals": engine_profile.signals,
+            "recurrence_count": engine_profile.recurrence_count,
+            "intervention_count": engine_profile.intervention_count,
+            "state_memory_cost": engine_profile.state_memory_cost,
+            "reason": engine_profile.reason,
+        },
         "story_structure": {
             "goal": story.goal_status,
             "obstacle": story.obstruction_status,

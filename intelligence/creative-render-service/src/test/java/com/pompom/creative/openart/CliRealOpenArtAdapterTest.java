@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pompom.creative.openart.dto.DownloadResult;
+import com.pompom.creative.openart.dto.OpenArtImageRequest;
 import com.pompom.creative.openart.dto.OpenArtJobResponse;
 import com.pompom.creative.openart.dto.OpenArtJobStatus;
 import com.pompom.creative.openart.dto.OpenArtVideoRequest;
@@ -100,6 +101,24 @@ class CliRealOpenArtAdapterTest {
     assertThat(commands).anyMatch(line -> line.contains("creation get history-123"));
     assertThat(commands).noneMatch(line -> line.contains("generate-video"));
     assertThat(commands).noneMatch(line -> line.contains(" download "));
+  }
+
+  @Test
+  void imageSubmissionIncludesEveryCharacterReference() throws Exception {
+    OpenArtJobResponse response =
+        adapter.generateImage(
+            OpenArtImageRequest.builder()
+                .promptText("Kiko and Mimi in the room")
+                .model("nano-banana-2")
+                .referenceImagePaths(List.of("/tmp/kiko.png", "/tmp/mimi.png"))
+                .build());
+
+    assertThat(response.getJobId()).isEqualTo("history-123");
+    List<String> commands = Files.readAllLines(commandLog);
+    assertThat(commands)
+        .anyMatch(
+            line ->
+                line.contains("--image /tmp/kiko.png") && line.contains("--image /tmp/mimi.png"));
   }
 
   @Test

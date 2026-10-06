@@ -3170,7 +3170,7 @@ class RuleEngine:
     def _evaluate_mini_story_lock(self, video_plan_ir: dict[str, Any], rule: dict[str, Any]) -> RuleEvaluationType:
         evidence = story_density_evidence(video_plan_ir)
         profile = engine_profile_evidence(video_plan_ir)
-
+        required = {
             "goal": evidence.goal_status in {"EXPLICIT", "IMPLICIT_BUT_OBSERVABLE"},
             "obstruction": evidence.obstruction_status == "AVAILABLE",
             "attempts": len(attempt_beats(video_plan_ir)) >= 2,
@@ -3220,6 +3220,7 @@ class RuleEngine:
                 rule_id="TEMPORAL_COMPLEXITY_SPLIT_GATE", rule_name="Temporal Complexity Split Gate", family="generation_executability", severity="BLOCKER", result="PASS",
                 message="STUBBORN_RETURN_LOOP exception: repeated boundary returns have low state-memory cost and remain readable in one generation.",
                 actual_value=evidence.major_beat_count, required_value=6, details={"exception": "STUBBORN_RETURN_LOOP", "stateMemoryCost": profile.state_memory_cost, "storyEvidence": evidence.__dict__})
+        if evidence.temporal_load != "HIGH":
             return RuleEvaluation(
                 rule_id="TEMPORAL_COMPLEXITY_SPLIT_GATE", rule_name="Temporal Complexity Split Gate", family="generation_executability",
                 severity="BLOCKER", result="PASS", message="Temporal load is manageable for the selected generation plan.",
