@@ -27,7 +27,6 @@ import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Stream;
 import org.springframework.data.domain.Page;
@@ -334,11 +333,10 @@ public class VideoService {
     analyses.findFirstByVideoIdAndAnalysisVersionOrderByCreatedAtDesc(videoId, analysisVersion)
         .ifPresent(analysis -> {
           Map<String, Object> temporal = analysis.getTemporalProfile();
-          if (temporal.containsKey("canonicalAssessments")) return;
           Map<String, Object> semantic = analysis.getSemanticVideoEvidence();
-          String status = String.valueOf(semantic.getOrDefault("status", "UNKNOWN"));
-          if (!Set.of("COMPLETED", "PARTIAL").contains(status)) return;
+          if (!SemanticEvidenceAvailability.isAvailable(semantic)) return;
           Map<String, Object> canonical = ml.fuseSemanticEvidence(temporal, semantic);
+          if (canonical.equals(temporal.get("canonicalAssessments"))) return;
           Map<String, Object> updatedTemporal = new LinkedHashMap<>(temporal);
           updatedTemporal.put("canonicalAssessments", canonical);
           Map<String, Object> raw = new LinkedHashMap<>(analysis.getRawResult());

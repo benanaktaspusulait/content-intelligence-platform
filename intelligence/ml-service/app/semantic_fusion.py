@@ -17,6 +17,19 @@ def _semantic_available(semantic: dict[str, Any]) -> bool:
     return _status(semantic.get("status")) in {"COMPLETED", "PARTIAL", "CACHE_HIT"} and bool(semantic.get("provenance"))
 
 
+def _semantic_identity(semantic: dict[str, Any]) -> str | None:
+    """Stable identity for local dependent recomputation; it never triggers a provider call."""
+    provenance = _map(semantic.get("provenance"))
+    frame_selection = _map(semantic.get("frameSelection"))
+    parts = (
+        semantic.get("assetHash"),
+        semantic.get("schemaVersion"),
+        frame_selection.get("version"),
+        provenance.get("requestId"),
+    )
+    return "|".join(str(part) for part in parts if part) or None
+
+
 def fuse_canonical_assessments(temporal: dict[str, Any], semantic: dict[str, Any]) -> dict[str, Any]:
     """Return one canonical interpretation without changing raw evidence."""
     opening = _map(semantic.get("opening"))
@@ -58,9 +71,12 @@ def fuse_canonical_assessments(temporal: dict[str, Any], semantic: dict[str, Any
 
     semantic_payoff_status = _status(payoff.get("status")) if semantic_available else "UNKNOWN"
     motion_rebound = str(visual_payoff.get("motionRebound") or "NOT_ESTABLISHED")
-    if semantic_payoff_status in {"OBSERVED", "OBSERVED_WITH_PARTIAL_TIMING", "PARTIAL"}:
-        payoff_strength = "STRONG" if semantic_payoff_status == "OBSERVED" else "MODERATE"
-        payoff_summary = "Semantic payoff evidence is observed; timing is partial." if semantic_payoff_status != "OBSERVED" else "Semantic payoff evidence is observed."
+    if semantic_payoff_status in {"COMPLETED", "OBSERVED"}:
+        payoff_strength = "STRONG"
+        payoff_summary = "Semantic payoff evidence is completed and distinct from the preceding beat."
+    elif semantic_payoff_status in {"OBSERVED_WITH_PARTIAL_TIMING", "PARTIAL"}:
+        payoff_strength = "MODERATE"
+        payoff_summary = "Semantic payoff evidence is observed; timing is partial."
     elif semantic_payoff_status in {"NOT_ESTABLISHED", "WEAK"}:
         payoff_strength = "NOT_ESTABLISHED"
         payoff_summary = "The semantic evidence does not establish a distinct payoff."
@@ -69,6 +85,7 @@ def fuse_canonical_assessments(temporal: dict[str, Any], semantic: dict[str, Any
         payoff_summary = "Payoff cannot be resolved from the available evidence."
     canonical_payoff = {
         "version": "payoff-assessment-v1",
+        "evidenceStatus": "AVAILABLE" if semantic_available and semantic_payoff_status not in {"UNKNOWN", "NOT_EVALUATED"} else "UNKNOWN",
         "strength": payoff_strength,
         "semanticStatus": semantic_payoff_status,
         "visualEndingEmphasis": visual_payoff.get("visualEndingEmphasis", "UNKNOWN"),
@@ -77,13 +94,17 @@ def fuse_canonical_assessments(temporal: dict[str, Any], semantic: dict[str, Any
         "stateChange": payoff.get("stateChangeDetected") if semantic_available else None,
         "planAlignment": "NOT_AVAILABLE",
         "timingConfidence": payoff.get("confidence") if semantic_available else None,
+        "characterReaction": payoff.get("characterReaction") if semantic_available else None,
+        "stateResolution": payoff.get("objectResolution") if semantic_available else None,
         "summary": payoff_summary,
-        "limitations": [] if semantic_available else ["Semantic payoff evidence is unavailable."],
+        "limitations": (["Motion rebound was not established; semantic payoff remains independently available."]
+                        if payoff_strength in {"STRONG", "MODERATE"} and motion_rebound == "NOT_ESTABLISHED"
+                        else [] if semantic_available else ["Semantic payoff evidence is unavailable."]),
     }
 
     semantic_loop_status = _status(loop.get("status")) if semantic_available else "UNKNOWN"
     visual_strength = "STRONG" if visual_similarity >= 0.90 else "MODERATE" if visual_similarity >= 0.75 else "WEAK"
-    if semantic_loop_status in {"PARTIAL", "MODERATE"}:
+    if semantic_loop_status in {"CONSISTENT", "PARTIAL", "MODERATE"}:
         loop_strength = "MODERATE" if visual_strength in {"STRONG", "MODERATE"} else "WEAK"
     elif semantic_loop_status in {"STRONG", "EXCELLENT"}:
         loop_strength = "STRONG"
@@ -93,6 +114,7 @@ def fuse_canonical_assessments(temporal: dict[str, Any], semantic: dict[str, Any
         loop_strength = visual_strength if not semantic_available else "UNKNOWN"
     canonical_loop = {
         "version": "loop-assessment-v1",
+        "evidenceStatus": "AVAILABLE" if semantic_available and semantic_loop_status not in {"UNKNOWN", "NOT_EVALUATED"} else "UNKNOWN",
         "strength": loop_strength,
         "visualEvidence": visual_strength,
         "semanticEvidence": semantic_loop_status,
@@ -123,7 +145,13 @@ def fuse_canonical_assessments(temporal: dict[str, Any], semantic: dict[str, Any
         "limitations": [] if joined and semantic_available else ["Contextual semantic beat evidence is unavailable."],
     }
 
-    applicable = [hook["status"] != "UNKNOWN", bool(beats), canonical_payoff["strength"] != "UNKNOWN", canonical_loop["strength"] != "UNKNOWN", temporal_assessment["status"] != "UNKNOWN"]
+    applicable = [
+        hook["status"] != "UNKNOWN",
+        bool(beats),
+        canonical_payoff["evidenceStatus"] != "UNKNOWN",
+        canonical_loop["evidenceStatus"] != "UNKNOWN",
+        temporal_assessment["status"] != "UNKNOWN",
+    ]
     coverage = round(100 * sum(applicable) / len(applicable))
     missing = [name for name, ok in zip(("hook", "beats", "payoff", "loop", "temporal structure"), applicable) if not ok]
     return {
@@ -135,4 +163,5 @@ def fuse_canonical_assessments(temporal: dict[str, Any], semantic: dict[str, Any
         "planRenderFidelity": {"status": "NOT_AVAILABLE", "reason": "No resolved production plan or matching source prompt was available in this analysis."},
         "coverage": {"percent": coverage, "missing": missing},
         "semanticEvidenceAvailable": semantic_available,
+        "semanticEvidenceIdentity": _semantic_identity(semantic) if semantic_available else None,
     }
