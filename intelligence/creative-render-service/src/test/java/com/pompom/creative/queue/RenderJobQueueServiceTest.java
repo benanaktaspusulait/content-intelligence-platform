@@ -216,8 +216,16 @@ class RenderJobQueueServiceTest {
   private Map<String, Object> visualPasses() {
     String evidenceSet = UUID.randomUUID().toString();
     String asset = UUID.randomUUID().toString();
-    Map<String, Object> gate = Map.of(
-        "status", "PASS", "evidenceSetId", evidenceSet, "assetId", asset, "assetSha256", "b".repeat(64));
+    Map<String, Object> gate =
+        Map.of(
+            "status",
+            "PASS",
+            "evidenceSetId",
+            evidenceSet,
+            "assetId",
+            asset,
+            "assetSha256",
+            "b".repeat(64));
     return Map.of("firstFrame", gate, "silhouette", gate, "finalVideoEligible", true);
   }
 

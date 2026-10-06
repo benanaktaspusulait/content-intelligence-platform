@@ -181,7 +181,7 @@ class AssetLibraryManagerTest {
 
     Path assetPath = tempDir.resolve("content/123/first-frame-v1.png");
     Files.createDirectories(assetPath.getParent());
-    Files.createFile(assetPath);
+    Files.write(assetPath, new byte[12345]);
 
     DownloadResult downloadResult =
         DownloadResult.builder()
@@ -227,7 +227,7 @@ class AssetLibraryManagerTest {
 
     Path assetPath = tempDir.resolve("content/789/render-v1.mp4");
     Files.createDirectories(assetPath.getParent());
-    Files.createFile(assetPath);
+    Files.write(assetPath, new byte[12345]);
 
     DownloadResult downloadResult =
         DownloadResult.builder()
@@ -266,7 +266,7 @@ class AssetLibraryManagerTest {
 
     Path assetPath = tempDir.resolve("content/123/first-frame-v1.png");
     Files.createDirectories(assetPath.getParent());
-    Files.createFile(assetPath);
+    Files.write(assetPath, new byte[12345]);
 
     DownloadResult downloadResult =
         DownloadResult.builder()

@@ -751,3 +751,24 @@ versions:
   release_date: '2026-10-06'
   ruleset_path: RULESET_1.6.yaml
   version: '1.6'
+- changes:
+  - breaking_change: true
+    change_type: added
+    new_value:
+      engineProfile: STUBBORN_RETURN_LOOP
+      activation: EXPLICIT_OR_INFERRED_HIGH_ONLY
+      exceptionRules:
+      - ATTEMPT_002
+      - PAYOFF_001
+      - HOOK_002
+      version: '1.7'
+    old_value: null
+    reason: 'RULESET 1.7: high-confidence stubborn-return loop exceptions'
+    rule_id: STUBBORN_RETURN_LOOP_POLICY_1_7
+  description: 'Adds high-confidence Spoon-class stubborn-return loop evidence and scoped hook, diversity, payoff, and temporal exceptions. RULESET 1.6 remains immutable.'
+  is_breaking: true
+  learned_from:
+  - SPOON_RETURN_TO_DANGER
+  release_date: '2026-10-06'
+  ruleset_path: RULESET_1.7.yaml
+  version: '1.7'

@@ -1,0 +1,28 @@
+created: '2026-10-06'
+version: '1.7'
+extends: RULESET_1.6.yaml
+default_evaluation_stage: PRE_RENDER
+description: 'Immutable RULESET 1.7: high-confidence stubborn-return loop exceptions for visible boundary comedy'
+policy_changes:
+  - STUBBORN_RETURN_LOOP exceptions activate only for EXPLICIT valid evidence or INFERRED HIGH confidence.
+  - MEDIUM inference remains candidate-only and cannot remove diversity/payoff gates.
+  - Visible immediate threat hooks, active same-rule stalemate payoffs, and low state-memory return loops are supported.
+rules:
+  - id: STUBBORN_RETURN_LOOP
+    name: Stubborn Return Loop
+    family: progression
+    severity: BLOCKER
+    version: '1.7'
+    description: 'High-confidence Spoon-class engine profile: one object, one visible safe/danger boundary, autonomous return, recurrence, active intervention, escalation, and no dead reset.'
+  - id: STUBBORN_RETURN_HOOK
+    name: Stubborn Return Hook
+    family: hook_strength
+    severity: CRITICAL
+    version: '1.7'
+    description: 'Accept an immediate visible physical threat with the character already engaged even when frame zero is not a static impossibility.'
+  - id: STUBBORN_RETURN_PAYOFF
+    name: Stubborn Return Payoff
+    family: final_payoff
+    severity: CRITICAL
+    version: '1.7'
+    description: 'Accept a stronger active same-rule stalemate as payoff when the character remains engaged at the cut.'

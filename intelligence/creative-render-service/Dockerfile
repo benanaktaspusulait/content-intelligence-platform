@@ -8,7 +8,7 @@ RUN mvn -q -Dmaven.test.skip=true package
 FROM amazoncorretto:21-alpine
 ARG TARGETARCH
 ARG OPENART_VERSION=0.1.1
-RUN apk add --no-cache ca-certificates curl ffmpeg tar \
+RUN apk add --no-cache bash ca-certificates curl ffmpeg tar \
     && case "${TARGETARCH:-amd64}" in \
          amd64) OPENART_ARCH=amd64 ;; \
          arm64) OPENART_ARCH=arm64 ;; \
@@ -26,6 +26,8 @@ RUN apk add --no-cache ca-certificates curl ffmpeg tar \
     && rm -f "/tmp/${OPENART_ARCHIVE}" /tmp/openart /tmp/openart-checksums.txt
 WORKDIR /app
 COPY --from=build /workspace/target/creative-render-service-*.jar app.jar
+COPY tools/upscale.sh /opt/pompom/tools/upscale.sh
+RUN chmod 0755 /opt/pompom/tools/upscale.sh
 EXPOSE 8081
 HEALTHCHECK --interval=5s --timeout=3s --start-period=30s --retries=20 \
   CMD curl -f http://localhost:8081/actuator/health || exit 1

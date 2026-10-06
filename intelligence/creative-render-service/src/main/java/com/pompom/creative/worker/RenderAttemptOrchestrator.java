@@ -22,6 +22,7 @@ import com.pompom.creative.repository.RenderAttemptRepository;
 import com.pompom.creative.repository.RenderJobRepository;
 import com.pompom.creative.service.AssetLibraryManager;
 import com.pompom.creative.service.CreditTrackingService;
+import com.pompom.creative.service.VideoUpscaleService;
 import com.pompom.creative.websocket.WebSocketEventPublisher;
 import com.pompom.creative.websocket.dto.RenderProgressEvent;
 import java.nio.file.Path;
@@ -67,6 +68,7 @@ public class RenderAttemptOrchestrator {
   private final WebSocketEventPublisher webSocketPublisher;
   private final RenderSubmissionStateService submissionStateService;
   private final CreditTrackingService creditTrackingService;
+  private final VideoUpscaleService videoUpscaleService;
   private final ObjectMapper objectMapper;
 
   @Value("${pompom.openart.max-polls:180}")
@@ -175,6 +177,8 @@ public class RenderAttemptOrchestrator {
             .model(job.getOpenartModel())
             .firstFrameImageId(textOrNull(parameters, "firstFrameImageId"))
             .durationSeconds(parameters.path("durationSeconds").asInt(15))
+            .aspectRatio(parameters.path("aspectRatio").asText("16:9"))
+            .resolution("480p")
             .build();
     return openArtAdapter.generateVideo(request);
   }
@@ -308,6 +312,10 @@ public class RenderAttemptOrchestrator {
 
     DownloadResult downloadResult =
         openArtAdapter.downloadAsset(attempt.getProviderJobId(), assetPath);
+    if (job.getJobType() == RenderJob.JobType.VIDEO
+        && (job.getOpenartJobId() == null || !job.getOpenartJobId().startsWith("mock-"))) {
+      videoUpscaleService.upscale(assetPath);
+    }
     RenderAsset asset = assetLibraryManager.recordAsset(job, downloadResult);
 
     attempt.setAssetId(asset.getId());

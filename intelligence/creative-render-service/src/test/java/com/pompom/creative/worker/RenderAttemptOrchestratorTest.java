@@ -23,6 +23,7 @@ import com.pompom.creative.repository.RenderAttemptRepository;
 import com.pompom.creative.repository.RenderJobRepository;
 import com.pompom.creative.service.AssetLibraryManager;
 import com.pompom.creative.service.CreditTrackingService;
+import com.pompom.creative.service.VideoUpscaleService;
 import com.pompom.creative.websocket.WebSocketEventPublisher;
 import java.math.BigDecimal;
 import java.nio.file.Path;
@@ -57,6 +58,7 @@ class RenderAttemptOrchestratorTest {
   @Mock private PostRenderEvaluationService postRenderEvaluationService;
   @Mock private WebSocketEventPublisher webSocketEventPublisher;
   @Mock private CreditTrackingService creditTrackingService;
+  @Mock private VideoUpscaleService videoUpscaleService;
   @Mock private RenderSubmissionStateService submissionStateService;
 
   private RenderAttemptOrchestrator orchestrator;
@@ -76,6 +78,7 @@ class RenderAttemptOrchestratorTest {
             webSocketEventPublisher,
             submissionStateService,
             creditTrackingService,
+            videoUpscaleService,
             new ObjectMapper());
     job =
         RenderJob.builder()

@@ -30,6 +30,7 @@ from app.quality.canonical_evidence import (
     EVIDENCE_INCOMPLETE_FAILURE,
     attempt_beats,
     attempt_evidence,
+    engine_profile_evidence,
     escalation_evidence,
     is_evidence_gap,
     is_unspecified_verb,
@@ -157,6 +158,9 @@ class RuleEngine:
             "TEMPORAL_COMPLEXITY_SPLIT_GATE": self._evaluate_temporal_complexity_split_gate,
             "BEAT_DENSITY_RULE": self._evaluate_beat_density_rule,
             "CONTINUATION_LOCK": self._evaluate_continuation_lock,
+            "STUBBORN_RETURN_LOOP": self._evaluate_stubborn_return_loop,
+            "STUBBORN_RETURN_HOOK": self._evaluate_stubborn_return_hook,
+            "STUBBORN_RETURN_PAYOFF": self._evaluate_stubborn_return_payoff,
         }
 
     def _get_duration_tier(self, duration: float) -> str:
@@ -998,6 +1002,12 @@ class RuleEngine:
         still do when startsAt isn't provided.
         """
         hook = video_plan_ir.get("hook", {})
+        profile = engine_profile_evidence(video_plan_ir)
+        if profile.active and (hook.get("visibleProblem") or hook.get("textualFirstFrameIntent", {}).get("status") == "PASS"):
+            return RuleEvaluation(
+                rule_id="HOOK_002", rule_name="First Frame Anomaly", family="hook_strength", severity="CRITICAL", result="PASS",
+                message="STUBBORN_RETURN_LOOP exception: an immediate visible physical threat is readable with the character engaged.",
+                actual_value=True, required_value=True, details={"exception": "STUBBORN_RETURN_LOOP", "engineProfile": profile.__dict__})
         starts_mid_action = hook.get("startsMidAction", False)
         visual_strength = hook.get("visualStrength")
         starts_at = hook.get("startsAt")
@@ -1380,6 +1390,24 @@ class RuleEngine:
         minimum = 3 if tier == "short" else 7
         attempts = attempt_beats(video_plan_ir)
         evidence = attempt_evidence(video_plan_ir)
+        profile = engine_profile_evidence(video_plan_ir)
+        if profile.active and profile.signals["ESCALATION"]:
+            return RuleEvaluation(
+                rule_id="ATTEMPT_002",
+                rule_name="Distinct Attempts",
+                family="visual_novelty",
+                severity="CRITICAL",
+                result="PASS",
+                message="STUBBORN_RETURN_LOOP exception: repeated intervention is allowed because resistance or performance escalates across recurrences.",
+                actual_value=evidence.distinct_strategy_count,
+                required_value=minimum,
+                details={
+                    "exception": "STUBBORN_RETURN_LOOP",
+                    "engineProfile": profile.__dict__,
+                    "active_attempt_count": evidence.active_attempt_count,
+                    "distinct_strategy_count": evidence.distinct_strategy_count,
+                },
+            )
 
         # Collapse deterministic family repeats first. PULL/YANK/TUG, PUSH/HARDER,
         # and THROW/TOSS are the same family unless their semantic consequences later
@@ -3141,12 +3169,13 @@ class RuleEngine:
         )
     def _evaluate_mini_story_lock(self, video_plan_ir: dict[str, Any], rule: dict[str, Any]) -> RuleEvaluationType:
         evidence = story_density_evidence(video_plan_ir)
-        required = {
+        profile = engine_profile_evidence(video_plan_ir)
+
             "goal": evidence.goal_status in {"EXPLICIT", "IMPLICIT_BUT_OBSERVABLE"},
             "obstruction": evidence.obstruction_status == "AVAILABLE",
             "attempts": len(attempt_beats(video_plan_ir)) >= 2,
             "progression": evidence.strategy_change_count >= 1 or evidence.state_transition_count >= 3,
-            "realization": evidence.realization_status == "AVAILABLE",
+            "realization": evidence.realization_status == "AVAILABLE" or profile.active,
             "payoff": evidence.payoff_status == "AVAILABLE",
         }
         missing = [key for key, present in required.items() if not present]
@@ -3185,7 +3214,12 @@ class RuleEngine:
 
     def _evaluate_temporal_complexity_split_gate(self, video_plan_ir: dict[str, Any], rule: dict[str, Any]) -> RuleEvaluationType:
         evidence = story_density_evidence(video_plan_ir)
-        if evidence.temporal_load != "HIGH":
+        profile = engine_profile_evidence(video_plan_ir)
+        if profile.active and profile.state_memory_cost == "LOW":
+            return RuleEvaluation(
+                rule_id="TEMPORAL_COMPLEXITY_SPLIT_GATE", rule_name="Temporal Complexity Split Gate", family="generation_executability", severity="BLOCKER", result="PASS",
+                message="STUBBORN_RETURN_LOOP exception: repeated boundary returns have low state-memory cost and remain readable in one generation.",
+                actual_value=evidence.major_beat_count, required_value=6, details={"exception": "STUBBORN_RETURN_LOOP", "stateMemoryCost": profile.state_memory_cost, "storyEvidence": evidence.__dict__})
             return RuleEvaluation(
                 rule_id="TEMPORAL_COMPLEXITY_SPLIT_GATE", rule_name="Temporal Complexity Split Gate", family="generation_executability",
                 severity="BLOCKER", result="PASS", message="Temporal load is manageable for the selected generation plan.",
@@ -3250,6 +3284,51 @@ class RuleEngine:
             severity="BLOCKER", result="PASS", message="Split continuation contract matches before rendering.",
             details={"analysisStage": "PRE_RENDER_PLAN_CONTRACT"},
         )
+
+    def _evaluate_stubborn_return_loop(self, video_plan_ir: dict[str, Any], rule: dict[str, Any]) -> RuleEvaluationType:
+        profile = engine_profile_evidence(video_plan_ir)
+        if profile.active:
+            return RuleEvaluation(
+                rule_id="STUBBORN_RETURN_LOOP", rule_name="Stubborn Return Loop", family="progression", severity="BLOCKER", result="PASS",
+                message="High-confidence stubborn-return loop engine is active.", actual_value=profile.recurrence_count, required_value=2,
+                details={"engineProfile": profile.__dict__})
+        return RuleEvaluation(
+            rule_id="STUBBORN_RETURN_LOOP", rule_name="Stubborn Return Loop", family="progression", severity="BLOCKER", result="UNKNOWN" if profile.candidate_only else "NOT_APPLICABLE",
+            message=profile.reason, details={"engineProfile": profile.__dict__})
+
+    def _evaluate_stubborn_return_hook(self, video_plan_ir: dict[str, Any], rule: dict[str, Any]) -> RuleEvaluationType:
+        profile = engine_profile_evidence(video_plan_ir)
+        hook = video_plan_ir.get("hook") or {}
+        if profile.active and (hook.get("visibleProblem") or hook.get("textualFirstFrameIntent", {}).get("status") == "PASS" or profile.signals["FIXED_VISIBLE_BOUNDARY"]):
+            return RuleEvaluation(
+                rule_id="STUBBORN_RETURN_HOOK", rule_name="Stubborn Return Hook", family="hook_strength", severity="CRITICAL", result="PASS",
+                message="Immediate visible threat and character intervention satisfy the Spoon-class hook.", details={"engineProfile": profile.__dict__})
+        return RuleEvaluation(
+            rule_id="STUBBORN_RETURN_HOOK", rule_name="Stubborn Return Hook", family="hook_strength", severity="CRITICAL", result="FAIL",
+            message="No high-confidence immediate visible threat hook was evidenced.", details={"engineProfile": profile.__dict__})
+
+    def _evaluate_stubborn_return_payoff(self, video_plan_ir: dict[str, Any], rule: dict[str, Any]) -> RuleEvaluationType:
+        profile = engine_profile_evidence(video_plan_ir)
+        beats = video_plan_ir.get("beats") or []
+        payoff = video_plan_ir.get("finalPayoff") or {}
+        if not profile.active:
+            return RuleEvaluation(
+                rule_id="STUBBORN_RETURN_PAYOFF", rule_name="Stubborn Return Payoff", family="final_payoff", severity="CRITICAL", result="NOT_APPLICABLE",
+                message="Stubborn-return payoff exception is not active.", details={"engineProfile": profile.__dict__})
+        final = beats[-1] if beats else {}
+        final_text = (str(final.get("action", "")) + " " + str(final.get("consequence", ""))).lower()
+        same_rule = any(word in final_text for word in ("return", "edge", "resist", "hold", "pin", "again", "still"))
+        active = any(word in final_text for word in ("pull", "grab", "hold", "pin", "reach", "interven"))
+        final_intensity = float(final.get("intensity", 0) or 0)
+        earlier = [float(beat.get("intensity", 0) or 0) for beat in beats[:-1]]
+        stronger = final_intensity >= max(earlier, default=0)
+        if same_rule and active and stronger and payoff:
+            return RuleEvaluation(
+                rule_id="STUBBORN_RETURN_PAYOFF", rule_name="Stubborn Return Payoff", family="final_payoff", severity="CRITICAL", result="PASS",
+                message="Active same-rule stalemate is stronger at the final cut and is a readable payoff.", details={"engineProfile": profile.__dict__, "sameRule": True, "activeAtCut": True, "stronger": stronger})
+        return RuleEvaluation(
+            rule_id="STUBBORN_RETURN_PAYOFF", rule_name="Stubborn Return Payoff", family="final_payoff", severity="CRITICAL", result="FAIL",
+            message="Stubborn-return payoff requires the same rule, a stronger final state, and active character engagement at the cut.", details={"engineProfile": profile.__dict__, "sameRule": same_rule, "activeAtCut": active, "stronger": stronger})
 
     def _evaluate_story_density_placeholder(self) -> None:
         """Marker keeping the story evaluators grouped before the convenience API."""

@@ -55,25 +55,37 @@ public class HttpIntelligenceValidationEvidenceClient
   }
 
   @Override
-  public VisualEvidenceSubmissionResponse submitVisualEvidence(VisualEvidenceSubmissionDto request) {
+  public VisualEvidenceSubmissionResponse submitVisualEvidence(
+      VisualEvidenceSubmissionDto request) {
     try {
       return restClient
           .post()
-          .uri("/api/v1/internal/validation-evidence/{validationRecordId}/visual", request.validationRecordId())
+          .uri(
+              "/api/v1/internal/validation-evidence/{validationRecordId}/visual",
+              request.validationRecordId())
           .body(request)
           .retrieve()
           .onStatus(
               status -> status.value() == 404,
-              (httpRequest, response) -> { throw new ValidationEvidenceServiceException("Validation record not found"); })
+              (httpRequest, response) -> {
+                throw new ValidationEvidenceServiceException("Validation record not found");
+              })
           .onStatus(
               status -> status.value() == 409,
-              (httpRequest, response) -> { throw new ValidationEvidenceServiceException("Visual evidence conflict"); })
+              (httpRequest, response) -> {
+                throw new ValidationEvidenceServiceException("Visual evidence conflict");
+              })
           .onStatus(
               status -> status.value() == 422,
-              (httpRequest, response) -> { throw new ValidationEvidenceServiceException("Invalid visual evidence"); })
+              (httpRequest, response) -> {
+                throw new ValidationEvidenceServiceException("Invalid visual evidence");
+              })
           .onStatus(
               HttpStatusCode::is5xxServerError,
-              (httpRequest, response) -> { throw new ValidationEvidenceServiceException("Intelligence service failed with status " + response.getStatusCode().value()); })
+              (httpRequest, response) -> {
+                throw new ValidationEvidenceServiceException(
+                    "Intelligence service failed with status " + response.getStatusCode().value());
+              })
           .body(VisualEvidenceSubmissionResponse.class);
     } catch (ResourceAccessException error) {
       throw new ValidationEvidenceServiceException("Intelligence service is unavailable", error);

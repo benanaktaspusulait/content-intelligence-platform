@@ -141,6 +141,12 @@ public class AssetLibraryManager {
     String checksum = sha256(normalizedAsset);
     boolean mock = job.getOpenartJobId() != null && job.getOpenartJobId().startsWith("mock-");
     MediaProbeService.ProbeResult measured = mock ? null : mediaProbeService.probe(normalizedAsset);
+    long actualFileSize;
+    try {
+      actualFileSize = Files.size(normalizedAsset);
+    } catch (IOException error) {
+      throw new IllegalStateException("Unable to read downloaded asset size", error);
+    }
 
     // Create asset entity
     RenderAsset asset =
@@ -149,7 +155,7 @@ public class AssetLibraryManager {
             .contentId(job.getContentId())
             .assetType(assetType)
             .relativePath(relativePath)
-            .fileSizeBytes(downloadResult.getFileSizeBytes())
+            .fileSizeBytes(actualFileSize)
             .width(measured == null ? downloadResult.getWidth() : measured.width())
             .height(measured == null ? downloadResult.getHeight() : measured.height())
             .durationMs(measured == null ? downloadResult.getDurationMs() : measured.durationMs())

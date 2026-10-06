@@ -54,6 +54,11 @@ pompom:
       lease-duration: ${RENDER_WORKER_LEASE_DURATION:10m}
       batch-size: ${RENDER_WORKER_BATCH_SIZE:10}
       tick-interval: ${RENDER_WORKER_TICK_INTERVAL:5s}
+    upscale:
+      enabled: ${POMPOM_UPSCALE_ENABLED:true}
+      script: ${POMPOM_UPSCALE_SCRIPT:tools/upscale.sh}
+      target-resolution: ${POMPOM_UPSCALE_TARGET_RESOLUTION:1920x1080}
+      timeout-seconds: ${POMPOM_UPSCALE_TIMEOUT:900}
   openart:
     enabled: ${OPENART_ENABLED:false}
     mock:

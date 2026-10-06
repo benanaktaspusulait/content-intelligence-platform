@@ -901,7 +901,7 @@ export class RenderDashboardPage implements OnInit, OnDestroy {
   queuePromptVersionId = signal('');
   queueValidationId = signal('');
   queueJobType = signal('VIDEO');
-  queueModel = signal('seedance-2.0-mini');
+  queueModel = signal('byte-plus-seedance-2-mini');
   queueLoading = signal(false);
   queueError = signal('');
   queuedJobId = signal('');

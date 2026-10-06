@@ -259,17 +259,37 @@ class ValidationEvidencePolicyTest {
   @Test
   void rejectsVideoWhenVisualEvidenceIsPending() {
     ValidationEvidenceDto base = renderReadyEvidence();
-    ValidationEvidenceDto pending = new ValidationEvidenceDto(
-        base.validationRecordId(), base.contentId(), base.promptVersionId(), base.promptSha256(), base.status(),
-        base.blockerCount(), base.criticalCount(), base.warningCount(), base.deterministicRulesetVersion(),
-        base.semanticProvider(), base.semanticModelVersion(), base.producibilityValidatorVersion(),
-        base.independentRevalidationId(), base.independentlyRevalidatedAt(), base.validatedAt(), base.expiresAt(),
-        false, false, Map.of("firstFrame", Map.of("status", "PENDING"), "silhouette", Map.of("status", "PENDING")));
+    ValidationEvidenceDto pending =
+        new ValidationEvidenceDto(
+            base.validationRecordId(),
+            base.contentId(),
+            base.promptVersionId(),
+            base.promptSha256(),
+            base.status(),
+            base.blockerCount(),
+            base.criticalCount(),
+            base.warningCount(),
+            base.deterministicRulesetVersion(),
+            base.semanticProvider(),
+            base.semanticModelVersion(),
+            base.producibilityValidatorVersion(),
+            base.independentRevalidationId(),
+            base.independentlyRevalidatedAt(),
+            base.validatedAt(),
+            base.expiresAt(),
+            false,
+            false,
+            Map.of(
+                "firstFrame",
+                Map.of("status", "PENDING"),
+                "silhouette",
+                Map.of("status", "PENDING")));
     assertThatThrownBy(() -> policy.validate(request(), pending, now))
         .isInstanceOf(ValidationEvidenceRejectedException.class)
         .extracting(ex -> ((ValidationEvidenceRejectedException) ex).getErrorCode())
         .isEqualTo("VISUAL_EVIDENCE_PENDING");
   }
+
   @Test
   void firstFrameMayUsePromptStageEligibilityWhileFinalVideoEvidenceIsPending() {
     QueueRenderJobRequest firstFrame =
@@ -366,8 +386,9 @@ class ValidationEvidencePolicyTest {
     String evidenceSet = UUID.randomUUID().toString();
     String asset = UUID.randomUUID().toString();
     String hash = "b".repeat(64);
-    Map<String, Object> gate = Map.of(
-        "status", "PASS", "evidenceSetId", evidenceSet, "assetId", asset, "assetSha256", hash);
+    Map<String, Object> gate =
+        Map.of(
+            "status", "PASS", "evidenceSetId", evidenceSet, "assetId", asset, "assetSha256", hash);
     return Map.of("firstFrame", gate, "silhouette", gate, "finalVideoEligible", true);
   }
 

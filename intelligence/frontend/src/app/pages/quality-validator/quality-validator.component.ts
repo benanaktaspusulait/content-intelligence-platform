@@ -65,7 +65,22 @@ interface PromptFile {
   versionNumber?: number;
   rawText?: string;
   sourcePath?: string;
+  latestQuality?: PromptQualitySummary | null;
 }
+
+interface PromptQualitySummary {
+  validationRecordId: number;
+  analyzedAt: string;
+  rulesetVersion: string;
+  overallScore: number;
+  status: string;
+  creativeGrade?: string | null;
+  readiness?: string | null;
+  summary?: string | null;
+}
+
+interface PromptQualityCard { sourcePath: string; title: string; contentId: number; promptVersionId: number; versionNumber: number; latestQuality?: PromptQualitySummary | null; }
+interface PromptQualityRecord { contentId: number; title: string; sourcePath?: string | null; promptVersionId?: number | null; versionNumber?: number | null; latestQuality?: PromptQualitySummary | null; }
 
 interface PromptDirectory { name: string; relativePath: string; promptCount: number; }
 interface PromptWorkspace {
@@ -76,6 +91,7 @@ interface PromptWorkspace {
   videoId: string | null;
   promptStatus: 'AVAILABLE' | 'NO_PROMPT' | 'AMBIGUOUS';
   promptCandidates: string[];
+  promptRecords?: PromptQualityCard[];
   analysisStatus: string;
   modifiedAt: string | null;
 }
@@ -208,6 +224,8 @@ export class QualityValidatorComponent implements AfterViewInit, OnDestroy {
   promptFilesLoading = false;
   selectedPromptLoading = false;
   promptWorkspaces: PromptWorkspace[] = [];
+  qualityRecords: PromptQualityRecord[] = [];
+  qualityRecordsLoading = false;
   promptWorkspacesLoading = false;
   workspaceQuery = '';
   workspaceMenuOpen = false;
@@ -267,6 +285,22 @@ Intensity: 4`;
   constructor(private http: HttpClient, private router: Router, private route: ActivatedRoute, private changeDetector: ChangeDetectorRef) {
     this.detailMode = this.route.snapshot.url.some(segment => segment.path === 'detail');
     this.loadPromptWorkspaces();
+    this.loadQualityRecords();
+  }
+
+  openQualityRecord(record: PromptQualityRecord): void {
+    const workspace = record.sourcePath ? this.promptWorkspaces.find(item => record.sourcePath?.startsWith(item.folderPath)) : null;
+    if (workspace) {
+      this.selectWorkspace(workspace, record.sourcePath || undefined, workspace.videoCandidates.length === 1 ? workspace.videoCandidates[0] : undefined);
+    }
+  }
+
+  loadQualityRecords(): void {
+    this.qualityRecordsLoading = true;
+    this.http.get<PromptQualityRecord[]>('/api/v1/intelligence/contents/quality-summary').subscribe({
+      next: records => { this.qualityRecords = records; this.qualityRecordsLoading = false; this.changeDetector.detectChanges(); },
+      error: () => { this.qualityRecords = []; this.qualityRecordsLoading = false; },
+    });
   }
 
   loadPromptWorkspaces(): void {
@@ -546,6 +580,20 @@ Intensity: 4`;
       },
       error: err => console.warn('Previous analysis could not be loaded:', err),
     });
+  }
+
+  promptRecord(workspace: PromptWorkspace, path: string): PromptQualityCard | null {
+    return workspace.promptRecords?.find(record => record.sourcePath === path) || null;
+  }
+
+  qualityState(record: { latestQuality?: PromptQualitySummary | null } | null): string {
+    return record?.latestQuality ? 'ANALYZED' : 'NOT_ANALYZED';
+  }
+
+  promptQualitySummary(record: { latestQuality?: PromptQualitySummary | null } | null): string {
+    const quality = record?.latestQuality;
+    if (!quality) return 'No prompt quality analysis yet';
+    return quality.summary || `${quality.status} · score ${quality.overallScore.toFixed(1)}`;
   }
 
   promptFolder(path: string, fallback: string): string {

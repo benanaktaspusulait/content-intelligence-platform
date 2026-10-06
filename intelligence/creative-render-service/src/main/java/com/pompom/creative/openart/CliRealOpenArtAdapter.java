@@ -303,6 +303,8 @@ public class CliRealOpenArtAdapter implements OpenArtAdapter {
       command.add("--duration");
       command.add(String.valueOf(request.getDurationSeconds()));
     }
+    addOption(command, "--aspect-ratio", request.getAspectRatio());
+    addOption(command, "--resolution", request.getResolution());
     command.add("--async");
     command.add("--json");
     command.add("--no-input");

@@ -54,7 +54,39 @@ public final class VideoDtos {
       String promptStatus,
       List<String> promptCandidates,
       String analysisStatus,
-      String modifiedAt) {}
+      String modifiedAt,
+      List<PromptCard> promptRecords) {
+    public PromptWorkspace(
+        String creativeName,
+        String folderPath,
+        List<String> videoCandidates,
+        String selectedVideoPath,
+        UUID videoId,
+        String promptStatus,
+        List<String> promptCandidates,
+        String analysisStatus,
+        String modifiedAt) {
+      this(creativeName, folderPath, videoCandidates, selectedVideoPath, videoId, promptStatus, promptCandidates, analysisStatus, modifiedAt, List.of());
+    }
+  }
+
+  public record PromptCard(
+      String sourcePath,
+      String title,
+      Long contentId,
+      Long promptVersionId,
+      Integer versionNumber,
+      QualitySummary latestQuality) {}
+
+  public record QualitySummary(
+      Long validationRecordId,
+      Instant analyzedAt,
+      String rulesetVersion,
+      Double overallScore,
+      String status,
+      String creativeGrade,
+      String readiness,
+      String summary) {}
 
   public record CreatePromptWorkspaceFolderRequest(String parentDirectory, String folderName) {}
 

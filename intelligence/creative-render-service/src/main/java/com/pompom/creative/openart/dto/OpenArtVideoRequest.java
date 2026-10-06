@@ -10,4 +10,6 @@ public class OpenArtVideoRequest {
   private String model;
   private String firstFrameImageId;
   private Integer durationSeconds;
+  private String aspectRatio;
+  private String resolution;
 }

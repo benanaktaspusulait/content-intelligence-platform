@@ -157,7 +157,7 @@ const VARIANT_TYPE_LABELS: Record<string, string> = {
               @if (creativeContext()?.characters?.length) {
                 <div class="context-list">
                   @for (character of creativeContext()!.characters; track character.id) {
-                    <article><strong>{{ character.name }}</strong><span>{{ readable(character.participation) }} · {{ readable(character.role) }}</span><small>{{ characterMetrics(character) }}</small><small>{{ readable(character.source) }} · {{ readable(character.confidence) }}@if (character.manuallyConfirmed) { · confirmed }</small></article>
+                    <article><strong>{{ character.name }}</strong><span>Participation: {{ participationLabel(character.participation) }}</span><span>Role: {{ roleLabel(character.role) }}</span><small>{{ characterMetrics(character) }}</small><small>Association: {{ associationLabel(character.source) }} · Confidence: {{ confidenceLabel(character.confidence) }}@if (character.manuallyConfirmed) { · confirmed }</small></article>
                   }
                 </div>
               } @else { <div class="compact-empty"><strong>No linked character records</strong><span>No character was found for this video. You can add them manually.</span></div> }
@@ -729,13 +729,17 @@ export class VideoDetailPage implements OnDestroy {
   protected date(value: string | null | undefined): string { return value ? new Date(value).toLocaleString('en-GB', { dateStyle: 'medium', timeStyle: 'short' }) : '—'; }
   protected number(value: number | null | undefined): string { return value === null || value === undefined ? '—' : new Intl.NumberFormat('en').format(value); }
   protected readable(value: string | null | undefined): string { return value ? value.replaceAll('_', ' ').toLowerCase().replace(/(^|\s)\S/g, letter => letter.toUpperCase()) : '—'; }
+  protected participationLabel(value: string | null | undefined): string { return this.readable(value); }
+  protected roleLabel(value: string | null | undefined): string { return value === 'UNKNOWN' ? 'Not classified' : this.readable(value); }
+  protected associationLabel(value: string | null | undefined): string { return value === 'PROMPT_FILE_INFERRED' ? 'Prompt file inferred' : this.readable(value); }
+  protected confidenceLabel(value: string | null | undefined): string { return value ? this.readable(value) : 'Not scored'; }
   protected characterMetrics(character: VideoCreativeContext['characters'][number]): string {
     const metrics = [
       character.screenTimeRatio === null ? null : `screen ${(character.screenTimeRatio * 100).toFixed(0)}%`,
       character.actionShare === null ? null : `action ${(character.actionShare * 100).toFixed(0)}%`,
       character.speakingShare === null ? null : `speaking ${(character.speakingShare * 100).toFixed(0)}%`,
     ].filter(Boolean);
-    return metrics.length ? metrics.join(' · ') : 'No participation ratios recorded';
+    return metrics.length ? metrics.join(' · ') : 'Participation metrics not measured';
   }
   protected ratio(value: number | null | undefined): string { return value === null || value === undefined ? '—' : `${value.toFixed(2)}×`; }
   protected percent(value: number | null | undefined): string { return value === null || value === undefined ? '—' : `${value.toFixed(1)}%`; }

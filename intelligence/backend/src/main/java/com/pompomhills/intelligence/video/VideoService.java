@@ -13,7 +13,9 @@ import com.pompomhills.intelligence.video.api.VideoDtos.MediaDirectory;
 import com.pompomhills.intelligence.video.api.VideoDtos.MediaFile;
 import com.pompomhills.intelligence.video.api.VideoDtos.MediaCharacter;
 import com.pompomhills.intelligence.video.api.VideoDtos.PromptFile;
+import com.pompomhills.intelligence.video.api.VideoDtos.PromptCard;
 import com.pompomhills.intelligence.video.api.VideoDtos.PromptWorkspace;
+import com.pompomhills.intelligence.video.api.VideoDtos.QualitySummary;
 import com.pompomhills.intelligence.video.api.VideoDtos.VideoResponse;
 import com.pompomhills.intelligence.video.ml.MlVideoClient;
 import com.pompomhills.intelligence.character.VideoCharacterAssociationService;
@@ -285,10 +287,11 @@ public class VideoService {
     }
     Map<String, VideoEntity> ingested = videos.findAll().stream()
         .collect(java.util.stream.Collectors.toMap(VideoEntity::getRelativePath, video -> video, (first, ignored) -> first));
+    Map<String, PromptCard> promptCards = promptQualityCards(relativeDirectory);
     try (Stream<Path> stream = Files.list(base)) {
       // Match Video Library: the picker contains only first-level folders. Files in
       // nested shot/video folders are aggregated into their top-level creative.
-      return stream.filter(Files::isDirectory).map(folder -> promptWorkspaceForFolder(root, folder, ingested))
+      return stream.filter(Files::isDirectory).map(folder -> promptWorkspaceForFolder(root, folder, ingested, promptCards))
           .filter(java.util.Objects::nonNull)
           .sorted(Comparator.comparing(PromptWorkspace::folderPath, String.CASE_INSENSITIVE_ORDER)).toList();
     } catch (IOException error) {
@@ -296,7 +299,43 @@ public class VideoService {
     }
   }
 
-  private PromptWorkspace promptWorkspaceForFolder(Path root, Path folder, Map<String, VideoEntity> ingested) {
+  private Map<String, PromptCard> promptQualityCards(String relativeDirectory) {
+    String prefix = relativeDirectory.replaceAll("/+$", "");
+    return jdbc.sql("""
+        SELECT c.source_path,c.title,c.id content_id,pv.id prompt_version_id,pv.version_number,
+               q.id validation_record_id,q.created_at analyzed_at,q.ruleset_version,q.overall_score,q.status,
+               q.report_json::jsonb->'preRenderAssessment'->>'creative_grade' creative_grade,
+               COALESCE(q.report_json::jsonb->'preRenderAssessment'->>'prompt_stage',q.report_json::jsonb->'preRenderAssessment'->>'readiness') readiness,
+               q.report_json::jsonb->'preRenderAssessment'->>'verdict' summary
+        FROM contents c
+        JOIN LATERAL (SELECT id,version_number,raw_text FROM prompt_versions WHERE content_id=c.id ORDER BY version_number DESC LIMIT 1) pv ON true
+        LEFT JOIN LATERAL (
+          SELECT id,created_at,ruleset_version,overall_score,status,report_json
+          FROM quality_validations
+          WHERE ((content_id=c.id AND prompt_version_id=pv.id) OR prompt_text=pv.raw_text)
+          ORDER BY id DESC LIMIT 1
+        ) q ON true
+        WHERE c.source_path LIKE :prefix || '/%'
+        """).param("prefix", prefix).query((rs, ignored) -> {
+      String source = rs.getString("source_path");
+      Long validation = nullableLong(rs, "validation_record_id");
+      java.math.BigDecimal score = rs.getBigDecimal("overall_score");
+      QualitySummary quality = validation == null ? null : new QualitySummary(
+          validation,
+          rs.getObject("analyzed_at", java.sql.Timestamp.class).toInstant(),
+          rs.getString("ruleset_version"),
+          score == null ? null : score.doubleValue(),
+          rs.getString("status"),
+          rs.getString("creative_grade"),
+          rs.getString("readiness"),
+          rs.getString("summary"));
+      return new PromptCard(source, rs.getString("title"), rs.getLong("content_id"),
+          rs.getLong("prompt_version_id"), rs.getInt("version_number"), quality);
+    }).list().stream().collect(java.util.stream.Collectors.toMap(PromptCard::sourcePath, item -> item, (first, ignored) -> first, LinkedHashMap::new));
+  }
+
+  private PromptWorkspace promptWorkspaceForFolder(
+      Path root, Path folder, Map<String, VideoEntity> ingested, Map<String, PromptCard> promptCards) {
     try (Stream<Path> descendants = Files.walk(folder)) {
       List<Path> files = descendants.filter(Files::isRegularFile).toList();
       List<Path> videoFiles = files.stream().filter(this::hasAllowedExtension).sorted().toList();
@@ -312,9 +351,10 @@ public class VideoService {
       String analysis = anyAnalysed ? "ANALYZED" : "NOT_ANALYZED";
       String promptStatus = promptsInFolder.isEmpty() ? "NO_PROMPT" : promptsInFolder.size() == 1 ? "AVAILABLE" : "AMBIGUOUS";
       Instant modified = files.stream().map(this::lastModifiedInstant).filter(java.util.Objects::nonNull).max(Comparator.naturalOrder()).orElse(null);
+      List<PromptCard> promptRecords = promptsInFolder.stream().map(promptCards::get).filter(java.util.Objects::nonNull).toList();
       return new PromptWorkspace(folder.getFileName().toString(), folderPath, videosInFolder, selected,
           selectedEntity == null ? null : selectedEntity.getId(), promptStatus, promptsInFolder, analysis,
-          modified == null ? null : modified.toString());
+          modified == null ? null : modified.toString(), promptRecords);
     } catch (IOException error) {
       return null;
     }
@@ -341,6 +381,11 @@ public class VideoService {
     } catch (IOException error) {
       throw new IllegalStateException("Could not create prompt workspace folder", error);
     }
+  }
+
+  private Long nullableLong(java.sql.ResultSet rs, String column) throws java.sql.SQLException {
+    long value = rs.getLong(column);
+    return rs.wasNull() ? null : value;
   }
 
   private Instant lastModifiedInstant(Path file) {

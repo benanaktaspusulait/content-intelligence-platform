@@ -28,6 +28,13 @@ function serviceWith(discovery: DiscoveryProfile) {
     listVariants: () => of([]),
     triggerAnalysis: () => of(notStartedAnalysis),
     getAnalysisStatus: () => of(notStartedAnalysis),
+    getMetadataFile: () => of(null),
+    getVideoCreativeContext: () => of({
+      videoId: 'video-1',
+      characters: [{ id: 'character-mimi', name: 'Mimi', participation: 'PRIMARY', role: 'UNKNOWN', screenTimeRatio: null, actionShare: null, speakingShare: null, source: 'PROMPT_FILE_INFERRED', confidence: 'HIGH', promptSourcePath: 'prompt.txt', resolverVersion: 'v1', evidenceReference: 'matched=Mimi', manuallyConfirmed: false }],
+      prompt: null,
+      evidenceStatus: 'CHARACTER_DATA_ONLY',
+    }),
   };
 }
 
@@ -69,6 +76,17 @@ describe('VideoDetailPage audience discovery', () => {
 
   afterEach(() => TestBed.resetTestingModule());
 
+  it('separates participation, narrative role, association provenance, and missing metrics', async () => {
+    const fixture = await render(baseDiscovery);
+    const panel = fixture.nativeElement.querySelector('.creative-context-panel') as HTMLElement;
+
+    expect(panel.textContent).toContain('Participation: Primary');
+    expect(panel.textContent).toContain('Role: Not classified');
+    expect(panel.textContent).toContain('Association: Prompt file inferred');
+    expect(panel.textContent).toContain('Confidence: High');
+    expect(panel.textContent).toContain('Participation metrics not measured');
+    expect(panel.textContent).not.toContain('Primary · Unknown');
+  });
   it('renders only verified API discovery values and provenance', async () => {
     const fixture = await render(baseDiscovery);
     const panel = fixture.nativeElement.querySelector('.discovery-profile') as HTMLElement;
@@ -144,6 +162,8 @@ describe('VideoDetailPage variant rail', () => {
       }]),
       triggerAnalysis: () => of(notStartedAnalysis),
       getAnalysisStatus: () => of(notStartedAnalysis),
+      getMetadataFile: () => of(null),
+      getVideoCreativeContext: () => of({ videoId: 'video-1', characters: [{ id: 'character-mimi', name: 'Mimi', participation: 'PRIMARY', role: 'UNKNOWN', screenTimeRatio: null, actionShare: null, speakingShare: null, source: 'PROMPT_FILE_INFERRED', confidence: 'HIGH', promptSourcePath: 'prompt.txt', resolverVersion: 'v1', evidenceReference: 'matched=Mimi', manuallyConfirmed: false }], prompt: null, evidenceStatus: 'CHARACTER_DATA_ONLY' }),
     };
   }
 
@@ -185,6 +205,8 @@ describe('VideoDetailPage creative analysis panel', () => {
       listVariants: () => of([]),
       triggerAnalysis: () => of(status),
       getAnalysisStatus: () => of(status),
+      getMetadataFile: () => of(null),
+      getVideoCreativeContext: () => of({ videoId: 'video-1', characters: [{ id: 'character-mimi', name: 'Mimi', participation: 'PRIMARY', role: 'UNKNOWN', screenTimeRatio: null, actionShare: null, speakingShare: null, source: 'PROMPT_FILE_INFERRED', confidence: 'HIGH', promptSourcePath: 'prompt.txt', resolverVersion: 'v1', evidenceReference: 'matched=Mimi', manuallyConfirmed: false }], prompt: null, evidenceStatus: 'CHARACTER_DATA_ONLY' }),
     };
   }
 

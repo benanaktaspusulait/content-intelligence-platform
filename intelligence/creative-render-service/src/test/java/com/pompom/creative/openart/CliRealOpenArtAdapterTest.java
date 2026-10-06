@@ -66,6 +66,8 @@ class CliRealOpenArtAdapterTest {
                 .model("kling-3-omni")
                 .firstFrameImageId("/tmp/first-frame.png")
                 .durationSeconds(8)
+                .aspectRatio("16:9")
+                .resolution("480p")
                 .build());
 
     assertThat(response.getJobId()).isEqualTo("history-123");
@@ -91,6 +93,8 @@ class CliRealOpenArtAdapterTest {
                 line.contains("--model kling-3-omni")
                     && line.contains("--image /tmp/first-frame.png")
                     && line.contains("--duration 8")
+                    && line.contains("--aspect-ratio 16:9")
+                    && line.contains("--resolution 480p")
                     && line.contains("--async")
                     && line.contains("--json"));
     assertThat(commands).anyMatch(line -> line.contains("creation get history-123"));

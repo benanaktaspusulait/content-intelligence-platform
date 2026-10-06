@@ -109,7 +109,8 @@ public class ValidationEvidencePolicy {
   private boolean hasVerifiedVisualGates(ValidationEvidenceDto evidence) {
     if (!evidence.finalVideoEligible()) return false;
     if (!(evidence.visualEvidence().get("firstFrame") instanceof java.util.Map<?, ?> first)
-        || !(evidence.visualEvidence().get("silhouette") instanceof java.util.Map<?, ?> silhouette)) {
+        || !(evidence.visualEvidence().get("silhouette")
+            instanceof java.util.Map<?, ?> silhouette)) {
       return false;
     }
     return "PASS".equals(first.get("status"))

@@ -6,13 +6,15 @@ The production render path lives in `creative-render-service`. It uses the publi
 
 1. Render jobs are queued with an immutable prompt/contract snapshot.
 2. The worker submits `openart generate image|video ... --async --json`.
-3. The returned OpenArt history ID is persisted in `render_attempts` and `render_jobs`.
-4. The worker polls `openart creation get <history-id> --json`.
-5. When the creation completes, the result URL is downloaded over HTTPS/HTTP into the configured asset library.
-6. Media is probed, recorded, and sent through post-render QA.
-7. Provider failures update both the attempt and the render job; unknown/running jobs are bounded by `OPENART_MAX_POLLS`.
-8. The worker commits a `SUBMITTING` intent before invoking OpenArt. An uncertain submission becomes `NEEDS_HUMAN_REVIEW` and is excluded from automatic retry, preventing a crash from blindly spending a second generation.
-9. Queue-time estimates are reserved in `openart_credit_log` and reconciled in place when the provider history completes. Provider usage is recorded once per OpenArt history ID; a worker retry cannot double-charge the same creation, and `credits_actual` aggregates rerender attempts.
+3. Video submissions always request `480p` from OpenArt.
+4. The returned OpenArt history ID is persisted in `render_attempts` and `render_jobs`.
+5. The worker polls `openart creation get <history-id> --json`.
+6. When the creation completes, the result URL is downloaded over HTTPS/HTTP into the configured asset library.
+7. Downloaded real videos are always passed through the bundled `tools/upscale.sh` pipeline and replaced with a 1920x1080 HD version before media probing and QA.
+8. Media is probed, recorded, and sent through post-render QA.
+9. Provider failures update both the attempt and the render job; unknown/running jobs are bounded by `OPENART_MAX_POLLS`.
+10. The worker commits a `SUBMITTING` intent before invoking OpenArt. An uncertain submission becomes `NEEDS_HUMAN_REVIEW` and is excluded from automatic retry, preventing a crash from blindly spending a second generation.
+11. Queue-time estimates are reserved in `openart_credit_log` and reconciled in place when the provider history completes. Provider usage is recorded once per OpenArt history ID; a worker retry cannot double-charge the same creation, and `credits_actual` aggregates rerender attempts.
 
 The mock adapter remains the default for local development. Production rejects a mock adapter.
 
@@ -59,6 +61,10 @@ The active settings are in `src/main/resources/application.yml`:
 | `OPENART_CLI_PATH` | `openart` | CLI executable path. |
 | `OPENART_TOKEN` | empty | Optional token; OAuth files are preferred. |
 | `OPENART_CLI_TIMEOUT` | `300` | Per-command/download timeout in seconds. |
+| `POMPOM_UPSCALE_ENABLED` | `true` | Run HD post-processing for real videos. |
+| `POMPOM_UPSCALE_SCRIPT` | `tools/upscale.sh` | Upscale script path. Docker uses `/opt/pompom/tools/upscale.sh`. |
+| `POMPOM_UPSCALE_TARGET_RESOLUTION` | `1920x1080` | Final HD output resolution. |
+| `POMPOM_UPSCALE_TIMEOUT` | `900` | Upscale process timeout in seconds. |
 | `OPENART_MAX_POLLS` | `180` | Maximum 10-second provider polls per attempt. |
 | `OPENART_MONTHLY_BUDGET` | `1000` | Local monthly budget gate. |
 | `OPENART_FIRST_FRAME_COST` | `10` | Queue-time fallback estimate for images. |
@@ -94,7 +100,7 @@ The adapter intentionally uses only commands documented by OpenArt CLI v0.1.1:
 | Render operation | CLI command |
 |---|---|
 | Image submit | `openart generate image "<prompt>" --model <model> --async --json --no-input` |
-| Video submit | `openart generate video "<prompt>" --model <model> --image <path-or-url> --duration <seconds> --async --json --no-input` |
+| Video submit | `openart generate video "<prompt>" --model <model> --image <path-or-url> --duration <seconds> --aspect-ratio 16:9 --resolution 480p --async --json --no-input` |
 | Status | `openart creation get <history-id> --json --no-input` |
 | Account credits | `openart account --json --no-input` |
 | Model quote | `openart model cost --model <model> --mode text2image\|text2video --json --no-input` |
@@ -110,6 +116,15 @@ The image command uses the selected model's defaults. The v0.1.1 image CLI does 
 `SUBMITTING` is intentionally unclaimable. If a process dies around the external call, the attempt is held for human reconciliation rather than submitted twice. The corresponding render job status is updated to `GENERATING`, `POLLING`, `DOWNLOADING`, and finally `COMPLETE`. A provider failure/cancellation sets both records to `FAILED`. A worker crash during a poll or download can safely retry that stage; provider usage is protected by the unique `(openart_job_id, operation)` index from migration `V16`.
 
 The default worker lease is ten minutes, longer than a bounded provider/download operation. If the provider remains ambiguous until `OPENART_MAX_POLLS`, the attempt is failed with `PROVIDER_TIMEOUT` instead of polling forever.
+
+The durable filesystem layout is:
+
+```text
+${POMPOM_DATA_ROOT}/content/<content-id>/first-frame-v1.png
+${POMPOM_DATA_ROOT}/content/<content-id>/render-v1.mp4
+```
+
+In Docker, `${POMPOM_DATA_ROOT}` is `/data`, backed by the host `intelligence/data` volume. Downloaded real videos are processed by `intelligence/creative-render-service/tools/upscale.sh` and upscaled to 1920x1080. The Docker image packages it as `/opt/pompom/tools/upscale.sh`, so runtime does not depend on the host episode path. The downloaded 480p source is replaced in place before `render_assets` is persisted, so stored file size/dimensions and post-render QA describe the HD file.
 
 ## Reconciling an uncertain submission
 

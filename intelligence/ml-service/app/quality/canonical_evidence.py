@@ -232,6 +232,77 @@ def beat_audit(video_plan_ir: dict[str, Any]) -> list[dict[str, Any]]:
 
 
 @dataclass(frozen=True)
+class EngineProfileEvidence:
+    profile: str
+    source: str
+    confidence: str
+    active: bool
+    candidate_only: bool
+    signals: dict[str, bool]
+    recurrence_count: int
+    intervention_count: int
+    state_memory_cost: str
+    reason: str
+
+
+def _engine_profile_payload(video_plan_ir: dict[str, Any]) -> dict[str, Any]:
+    root = video_plan_ir.get("engineProfile")
+    core = (video_plan_ir.get("coreMechanic") or {}).get("engineProfile")
+    return root if isinstance(root, dict) else core if isinstance(core, dict) else {}
+
+
+def engine_profile_evidence(video_plan_ir: dict[str, Any]) -> EngineProfileEvidence:
+    """Resolve Spoon-class evidence; MEDIUM/LOW never activates exceptions."""
+    beats = list(video_plan_ir.get("beats") or [])
+    payload = _engine_profile_payload(video_plan_ir)
+    explicit = payload.get("engineProfile") == "STUBBORN_RETURN_LOOP" and payload.get("engineProfileSource") == "EXPLICIT"
+    all_text = " ".join(str(beat.get(key, "")) for beat in beats for key in ("action", "consequence")).lower()
+    words = _words(all_text)
+    core = video_plan_ir.get("coreMechanic") or {}
+    object_signal = bool(core.get("primaryObject") or payload.get("dominantObject"))
+    boundary_signal = bool((payload.get("boundary") or {}).get("type")) or bool(
+        words.intersection({"EDGE", "HOLE", "LINE", "SHELF", "DOORWAY", "ZONE", "MARKED"})
+    )
+    safe_signal = bool((payload.get("boundary") or {}).get("safeState")) or any(
+        phrase in all_text for phrase in ("safe", "inward", "away from", "pulls in", "pulled in")
+    )
+    return_signal = bool(payload.get("autonomousReturn") is True) or any(
+        phrase in all_text for phrase in ("by itself", "itself", "returns", "slides back", "goes back", "back to")
+    )
+    recurrence_count = int(payload.get("recurrenceCount") or 0)
+    if recurrence_count < 2:
+        recurrence_count = max(0, sum(all_text.count(phrase) for phrase in ("by itself", "returns", "slides back", "goes back")))
+    recurrence_signal = recurrence_count >= 2
+    intervention_count = sum(1 for beat in beats if beat.get("isAttempt") or any(
+        word in _words(str(beat.get("action", ""))) for word in ("PULL", "PULLS", "GRAB", "GRABS", "HOLD", "HOLDS", "PIN", "PINS")
+    ))
+    intervention_signal = intervention_count >= 2
+    intensities = [float(beat.get("intensity", 0) or 0) for beat in beats]
+    escalation_signal = bool(payload.get("resistanceEscalation") or payload.get("emotionalEscalation")) or (
+        len(intensities) >= 2 and max(intensities[-2:]) > intensities[0]
+    )
+    no_dead_reset = not any(word in all_text for word in ("reset", "waits", "stands still", "long stare", "nothing changes"))
+    signals = {
+        "SINGLE_DOMINANT_OBJECT": object_signal,
+        "FIXED_VISIBLE_BOUNDARY": boundary_signal,
+        "SAFE_STATE": safe_signal,
+        "AUTONOMOUS_RETURN": return_signal,
+        "RECURRENCE": recurrence_signal,
+        "CHARACTER_INTERVENTION": intervention_signal,
+        "ESCALATION": escalation_signal,
+        "NO_DEAD_RESET": no_dead_reset,
+    }
+    state_memory_cost = "HIGH" if sum(1 for phrase in ("inside", "outside", "reinsert", "catch", "transfer") if phrase in all_text) >= 3 else "LOW"
+    if explicit:
+        valid = all(signals.values())
+        return EngineProfileEvidence("STUBBORN_RETURN_LOOP", "EXPLICIT", "HIGH" if valid else "LOW", valid, False, signals, recurrence_count, intervention_count, state_memory_cost, "Explicit profile is active only when every mandatory signal is valid.")
+    score = sum(signals.values())
+    confidence = "HIGH" if score == len(signals) else "MEDIUM" if score >= 5 else "LOW"
+    active = confidence == "HIGH"
+    return EngineProfileEvidence("STUBBORN_RETURN_LOOP" if score >= 4 else "DEFAULT", "INFERRED" if score else "NONE", confidence, active, bool(score and not active), signals, recurrence_count, intervention_count, state_memory_cost, "All mandatory deterministic return-loop signals are present." if active else "Return-loop candidate lacks one or more mandatory signals.")
+
+
+@dataclass(frozen=True)
 class StoryDensityEvidence:
     major_beat_count: int
     micro_beat_count: int

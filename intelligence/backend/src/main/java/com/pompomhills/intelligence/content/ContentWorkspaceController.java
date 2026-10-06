@@ -46,8 +46,39 @@ public class ContentWorkspaceController {
         nullableLong(rs, "latest_prompt_version_id"), nullableInt(rs, "latest_prompt_version_number"))).list();
   }
 
-  @PostMapping
-  @ResponseStatus(HttpStatus.CREATED)
+  @GetMapping("/quality-summary")
+  public List<PromptQualityRecord> qualitySummary() {
+    return jdbc.sql("""
+        SELECT c.id content_id,c.title,c.source_path,pv.id prompt_version_id,pv.version_number,
+               q.id validation_record_id,q.created_at analyzed_at,q.ruleset_version,q.overall_score,q.status,
+               q.report_json::jsonb->'preRenderAssessment'->>'creative_grade' creative_grade,
+               COALESCE(q.report_json::jsonb->'preRenderAssessment'->>'prompt_stage',q.report_json::jsonb->'preRenderAssessment'->>'readiness') readiness,
+               q.report_json::jsonb->'preRenderAssessment'->>'verdict' summary
+        FROM contents c
+        LEFT JOIN LATERAL (SELECT id,version_number,raw_text FROM prompt_versions WHERE content_id=c.id ORDER BY version_number DESC LIMIT 1) pv ON true
+        LEFT JOIN LATERAL (
+          SELECT id,created_at,ruleset_version,overall_score,status,report_json FROM quality_validations
+          WHERE ((content_id=c.id AND prompt_version_id=pv.id) OR prompt_text=pv.raw_text)
+          ORDER BY id DESC LIMIT 1
+        ) q ON true
+        ORDER BY c.updated_at DESC,c.id DESC
+        """).query((rs, ignored) -> new PromptQualityRecord(
+        rs.getLong("content_id"), rs.getString("title"), rs.getString("source_path"),
+        nullableLong(rs, "prompt_version_id"), nullableInt(rs, "version_number"),
+        nullableQualitySummary(rs))).list();
+  }
+
+  private PromptQualitySummary nullableQualitySummary(java.sql.ResultSet rs) throws java.sql.SQLException {
+    Long validationId = nullableLong(rs, "validation_record_id");
+    if (validationId == null) return null;
+    java.sql.Timestamp timestamp = rs.getTimestamp("analyzed_at");
+    java.math.BigDecimal score = rs.getBigDecimal("overall_score");
+    return new PromptQualitySummary(validationId, timestamp == null ? null : timestamp.toInstant(),
+        rs.getString("ruleset_version"), score == null ? null : score.doubleValue(), rs.getString("status"),
+        rs.getString("creative_grade"), rs.getString("readiness"), rs.getString("summary"));
+  }
+
+
   public ContentSummary create(@RequestBody CreateContentRequest request) {
     if (request.title() == null || request.title().isBlank()) throw new IllegalArgumentException("title is required");
     String type = request.type() == null ? "SHORT" : request.type().toUpperCase();
@@ -155,6 +186,8 @@ public class ContentWorkspaceController {
   public record ContentSummary(Long id, String title, String description, String type, String status, java.time.Instant createdAt, java.time.Instant updatedAt, Long latestPromptVersionId, Integer latestPromptVersionNumber) {}
   public record PromptVersionSummary(Long id, Long contentId, Integer versionNumber, String rawText, String parsedIr, java.time.Instant createdAt) {}
   public record PromptLibraryItem(Long contentId, String title, Long promptVersionId, Integer versionNumber, String rawText, String sourcePath) {}
+  public record PromptQualityRecord(Long contentId, String title, String sourcePath, Long promptVersionId, Integer versionNumber, PromptQualitySummary latestQuality) {}
+  public record PromptQualitySummary(Long validationRecordId, java.time.Instant analyzedAt, String rulesetVersion, Double overallScore, String status, String creativeGrade, String readiness, String summary) {}
 
   private String titleFromFolder(String folder) {
     String name = folder.substring(folder.lastIndexOf('/') + 1).replace('_', ' ').replace('-', ' ').trim();
