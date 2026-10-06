@@ -22,7 +22,11 @@ import pytest
 from app.assessment.pre_render_assessment import build_pre_render_assessment
 from app.config import settings
 from app.parser.prompt_parser import parse_prompt
-from app.quality.canonical_evidence import attempt_beats, attempt_evidence
+from app.quality.canonical_evidence import (
+    attempt_beats,
+    attempt_evidence,
+    story_density_evidence,
+)
 from app.quality.contracts import (
     ParseResult,
     QualityReport,
@@ -128,10 +132,21 @@ def test_attempts_are_recognised_with_explicit_provenance(parsed: ParseResult) -
     assert evidence.count == 2
     assert evidence.active_attempt_count == 2
     assert evidence.verbs == ("PULLS", "CATCHES")
-    assert evidence.strategy_families == ("PULL", "CATCH")
+    assert evidence.strategy_families == ("PULL", "SQUEEZE")
+    assert evidence.attempts[1]["reactiveActionFamily"] == "CATCH"
+    assert evidence.attempts[1]["intendedStrategyFamily"] == "SQUEEZE"
+    assert evidence.canonical_confidence == pytest.approx(0.95)
     assert evidence.distinct_strategy_count == 2
     assert evidence.active_seconds == pytest.approx(6.0)
     assert evidence.active_ratio == pytest.approx(0.4)
+
+
+def test_luca_distinguishes_reactive_catch_from_intended_squeeze(parsed: ParseResult) -> None:
+    second = parsed.video_plan_ir["beats"][4]
+    assert second["actionStrategyFamily"] == "CATCH"
+    assert second["intendedStrategyFamily"] == "SQUEEZE"
+    assert second["consequence"].startswith("He squeezes it gently.")
+    assert not second["consequence"].startswith(second["action"])
 
 
 def test_author_declared_non_attempt_roles_are_never_inferred_as_attempts(parsed: ParseResult) -> None:
@@ -266,6 +281,15 @@ def test_family_without_evaluable_evidence_is_not_reported_as_a_creative_weaknes
 
 
 # ------------------------------------------------------------------- visual state shares
+
+
+def test_luca_story_density_uses_major_load_and_implicit_realization(parsed: ParseResult, engine: RuleEngine) -> None:
+    evidence = story_density_evidence(parsed.video_plan_ir)
+    assert evidence.raw_beat_count == 7
+    assert evidence.load_beat_count == 6
+    assert evidence.realization_status == "AVAILABLE"
+    assert evidence.temporal_load == "MANAGEABLE"
+    assert engine._evaluate_temporal_complexity_split_gate(parsed.video_plan_ir, {}).outcome is RuleOutcome.PASS
 
 
 def test_visual_state_percentages_are_percent_of_duration_and_never_exceed_100(parsed: ParseResult) -> None:

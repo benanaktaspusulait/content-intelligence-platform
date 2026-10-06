@@ -100,6 +100,8 @@ def build_pre_render_assessment(ir: dict[str, Any], parser: Any, report: Any, ru
         "temporal_complexity": {
             "status": "BLOCK_SINGLE_GENERATION" if story.temporal_load == "HIGH" and story.generation_mode == "SINGLE_15S" else "PASS_WITH_SPLIT" if story.temporal_load == "HIGH" else "MANAGEABLE",
             "major_beats": story.major_beat_count,
+            "load_beats": story.load_beat_count,
+            "raw_beats": story.raw_beat_count,
             "micro_beats": story.micro_beat_count,
             "state_transitions": story.state_transition_count,
             "strategy_changes": story.strategy_change_count,
@@ -577,6 +579,8 @@ def _evidence_completeness(
                 "attempts": list(attempts.attempts),
                 "active_seconds": round(attempts.active_seconds, 3),
                 "active_ratio": round(attempts.active_ratio, 4),
+                "canonical_confidence": attempts.canonical_confidence,
+                "confidence_basis": "minimum_non_null_attempt_confidence",
                 "sources": attempts.sources,
             },
         },

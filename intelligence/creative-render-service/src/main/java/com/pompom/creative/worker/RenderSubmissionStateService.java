@@ -54,9 +54,23 @@ public class RenderSubmissionStateService {
     return job;
   }
 
-  @Transactional(propagation = Propagation.REQUIRES_NEW)
   public void markSubmitted(
       UUID attemptId, UUID jobId, String providerJobId, BigDecimal estimatedCredits) {
+    markSubmitted(
+        attemptId,
+        jobId,
+        providerJobId,
+        estimatedCredits,
+        com.pompom.creative.domain.RenderProviderOperation.VIDEO);
+  }
+
+  @Transactional(propagation = Propagation.REQUIRES_NEW)
+  public void markSubmitted(
+      UUID attemptId,
+      UUID jobId,
+      String providerJobId,
+      BigDecimal estimatedCredits,
+      com.pompom.creative.domain.RenderProviderOperation operation) {
     if (providerJobId == null || providerJobId.isBlank()) {
       throw new IllegalArgumentException("OpenArt returned an empty history id");
     }
@@ -77,6 +91,7 @@ public class RenderSubmissionStateService {
           "Operator cancelled while OpenArt submission was in flight; reconcile history "
               + providerJobId;
       attempt.setProviderJobId(providerJobId);
+      attempt.setProviderOperation(operation);
       attempt.setProviderJobState(com.pompom.creative.domain.ProviderJobState.UNKNOWN);
       attempt.setStage(RenderExecutionStage.NEEDS_HUMAN_REVIEW);
       attempt.setErrorCode(CANCELLED_SUBMISSION_CODE);
@@ -90,6 +105,7 @@ public class RenderSubmissionStateService {
     }
 
     attempt.setProviderJobId(providerJobId);
+    attempt.setProviderOperation(operation);
     attempt.setStage(RenderExecutionStage.PROVIDER_QUEUED);
     releaseLease(attempt);
     if (estimatedCredits != null) {

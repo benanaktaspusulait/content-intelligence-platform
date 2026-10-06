@@ -175,6 +175,10 @@ class QualityReport:
     family_assessments: dict[str, dict[str, Any]] = field(default_factory=dict)
 
     @property
+    def passed_rules(self) -> tuple[RuleEvaluation, ...]:
+        return tuple(e for e in self.evaluations if e.outcome is RuleOutcome.PASS)
+
+    @property
     def failed_rules(self) -> tuple[RuleEvaluation, ...]:
         return tuple(e for e in self.evaluations if e.outcome is RuleOutcome.FAIL)
 

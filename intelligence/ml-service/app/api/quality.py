@@ -207,11 +207,13 @@ class QualityReportResponse(BaseModel):
     warning_count: int
     family_scores: dict[str, float | None]
     family_assessments: dict[str, dict[str, Any]] = Field(default_factory=dict)
+    passed_rules: list[RuleEvaluationResponse]
     failed_rules: list[RuleEvaluationResponse]
     unknown_rules: list[RuleEvaluationResponse]
     not_applicable_rules: list[RuleEvaluationResponse]
     service_errors: list[RuleEvaluationResponse]
     parser_confidence: float
+    canonical_evidence_confidence: float | None = None
     parser_warnings: list[str]
     parser_assumptions: list[str]
     evidence_missing: list[str]
@@ -589,6 +591,7 @@ def convert_quality_report(
             details=dict(ev.details),
         )
 
+    passed_rules = [_to_rule_evaluation_response(ev) for ev in report.passed_rules]
     failed_rules = [_to_rule_evaluation_response(ev) for ev in report.failed_rules]
     unknown_rules = [_to_rule_evaluation_response(ev) for ev in report.unknown_rules]
     not_applicable_rules = [_to_rule_evaluation_response(ev) for ev in report.not_applicable_rules]
@@ -642,6 +645,12 @@ def convert_quality_report(
     semantic_provider, semantic_model_version = get_provider_identity()
     plan_ir = video_plan_ir or {}
     assessment = build_pre_render_assessment(plan_ir, enhanced.parser_metadata, report, ruleset_version)
+    canonical_confidence = (
+        assessment.get("evidence_completeness", {})
+        .get("canonical_evidence", {})
+        .get("attempts", {})
+        .get("canonical_confidence")
+    )
 
     return QualityReportResponse(
         overall_score=report.overall_score,
@@ -652,11 +661,13 @@ def convert_quality_report(
         warning_count=report.warning_count,
         family_scores=report.family_scores,
         family_assessments=report.family_assessments,
+        passed_rules=passed_rules,
         failed_rules=failed_rules,
         unknown_rules=unknown_rules,
         not_applicable_rules=not_applicable_rules,
         service_errors=service_errors,
         parser_confidence=enhanced.parser_metadata.confidence,
+        canonical_evidence_confidence=canonical_confidence,
         parser_warnings=list(enhanced.parser_metadata.warnings),
         parser_assumptions=list(enhanced.parser_metadata.assumptions),
         evidence_missing=list(enhanced.parser_metadata.evidence_missing),

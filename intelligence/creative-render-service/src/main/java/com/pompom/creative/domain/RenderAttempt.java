@@ -49,6 +49,14 @@ public class RenderAttempt {
   @Column(name = "provider_job_id", length = 100)
   private String providerJobId;
 
+  @Enumerated(EnumType.STRING)
+  @Column(name = "provider_operation", length = 20)
+  private RenderProviderOperation providerOperation;
+
+  /** The intermediate FIRST_FRAME asset used to submit a VIDEO operation. */
+  @Column(name = "first_frame_asset_id")
+  private UUID firstFrameAssetId;
+
   /**
    * The {@link RenderAsset} recorded by the DOWNLOADING stage for this attempt, read back by the
    * POST_RENDER_QA stage on a later (possibly different-process) claim. Null until DOWNLOADING

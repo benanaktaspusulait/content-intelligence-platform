@@ -13,6 +13,7 @@ import java.util.Map;
  * @param criticalCount Number of critical-level failures
  * @param warningCount Number of warning-level issues
  * @param familyScores Per-family scores (Concept Strength, Hook Strength, etc.)
+ * @param passedRules Rule evaluations with outcome PASS
  * @param failedRules Rule evaluations with outcome FAIL
  * @param unknownRules Rule evaluations with outcome UNKNOWN (applies but evidence missing)
  * @param notApplicableRules Rule evaluations with outcome NOT_APPLICABLE (does not apply to this
@@ -29,6 +30,7 @@ import java.util.Map;
  * @param topStrengths Top-scoring quality families, human-readable
  * @param topWeaknesses Lowest-scoring quality families needing attention, human-readable
  * @param evidenceMissing Named IR sections the parser could not populate at all (e.g. "beats")
+ * @param canonicalEvidenceConfidence Conservative confidence of canonical attempt evidence, or null when no attempt was parsed
  */
 public record QualityReportDto(
     double overallScore,

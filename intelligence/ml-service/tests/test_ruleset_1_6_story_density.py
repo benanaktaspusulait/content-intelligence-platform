@@ -2,15 +2,18 @@
 
 from __future__ import annotations
 
+from pathlib import Path
 from typing import Any
 
 from app.config import settings
+from app.parser.prompt_parser import parse_prompt
 from app.quality.canonical_evidence import story_density_evidence
 from app.quality.contracts import RuleOutcome
 from app.rules.rule_engine import RuleEngine
 from app.rules.rule_versioning import RuleVersionManager
 
 RULESET = str(settings.rules_dir / "RULESET_1.6.yaml")
+FIXTURE = Path(__file__).parent / "fixtures" / "luca_sticky_ball_prompt.txt"
 
 
 def engine() -> RuleEngine:
@@ -126,6 +129,15 @@ def test_seven_raw_entries_with_four_major_beats_are_not_overblocked() -> None:
     assert evidence.major_beat_count == 4
     result = engine()._evaluate_temporal_complexity_split_gate(ir, {})
     assert result.outcome is not RuleOutcome.FAIL
+
+
+def test_luca_temporal_load_uses_canonical_major_beats() -> None:
+    ir = parse_prompt(FIXTURE.read_text(encoding="utf-8")).video_plan_ir
+    evidence = story_density_evidence(ir)
+    assert evidence.raw_beat_count == 7
+    assert evidence.load_beat_count == 6
+    assert evidence.temporal_load == "MANAGEABLE"
+    assert engine()._evaluate_temporal_complexity_split_gate(ir, {}).outcome is RuleOutcome.PASS
 
 
 def test_temporal_overload_blocks_single_generation_and_recommends_split() -> None:

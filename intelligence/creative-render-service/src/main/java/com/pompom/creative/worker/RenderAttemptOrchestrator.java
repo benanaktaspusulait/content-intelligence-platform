@@ -7,6 +7,7 @@ import com.pompom.creative.domain.RenderAsset;
 import com.pompom.creative.domain.RenderAttempt;
 import com.pompom.creative.domain.RenderExecutionStage;
 import com.pompom.creative.domain.RenderJob;
+import com.pompom.creative.domain.RenderProviderOperation;
 import com.pompom.creative.openart.OpenArtAdapter;
 import com.pompom.creative.openart.OpenArtReferenceResolver;
 import com.pompom.creative.openart.dto.DownloadResult;
@@ -133,12 +134,19 @@ public class RenderAttemptOrchestrator {
    */
   private void submit(UUID attemptId, String leaseOwner) {
     RenderJob job = submissionStateService.markSubmitting(attemptId, leaseOwner);
+    RenderAttempt attempt =
+        renderAttemptRepo
+            .findById(attemptId)
+            .orElseThrow(
+                () -> new IllegalArgumentException("RenderAttempt not found: " + attemptId));
+    RenderProviderOperation operation;
     OpenArtJobResponse response;
     try {
+      operation = chooseProviderOperation(job, attempt);
       response =
-          job.getJobType() == RenderJob.JobType.FIRST_FRAME
+          operation == RenderProviderOperation.FIRST_FRAME
               ? submitFirstFrame(job)
-              : submitVideo(job);
+              : submitVideo(job, attempt);
       if (response == null || response.getJobId() == null || response.getJobId().isBlank()) {
         throw new IllegalStateException("OpenArt returned an empty history id");
       }
@@ -151,9 +159,23 @@ public class RenderAttemptOrchestrator {
     }
 
     submissionStateService.markSubmitted(
-        attemptId, job.getId(), response.getJobId(), response.getEstimatedCredits());
+        attemptId, job.getId(), response.getJobId(), response.getEstimatedCredits(), operation);
     RenderJob submittedJob = renderJobRepo.findById(job.getId()).orElse(job);
     publishProgress(submittedJob, "Submitted to provider", 10);
+  }
+
+  private RenderProviderOperation chooseProviderOperation(RenderJob job, RenderAttempt attempt) {
+    if (job.getJobType() == RenderJob.JobType.FIRST_FRAME) {
+      return RenderProviderOperation.FIRST_FRAME;
+    }
+    JsonNode parameters = providerParameters(job);
+    if (textOrNull(parameters, "firstFrameImageId") != null
+        || attempt.getFirstFrameAssetId() != null) {
+      return RenderProviderOperation.VIDEO;
+    }
+    return referenceResolver.resolveCharacterReferences(job.getCreativeContractSnapshot()).isEmpty()
+        ? RenderProviderOperation.VIDEO
+        : RenderProviderOperation.FIRST_FRAME;
   }
 
   private OpenArtJobResponse submitFirstFrame(RenderJob job) {
@@ -170,8 +192,19 @@ public class RenderAttemptOrchestrator {
     return openArtAdapter.generateImage(request);
   }
 
-  private OpenArtJobResponse submitVideo(RenderJob job) {
+  private OpenArtJobResponse submitVideo(RenderJob job, RenderAttempt attempt) {
     JsonNode parameters = providerParameters(job);
+    String firstFrameImageId = textOrNull(parameters, "firstFrameImageId");
+    if (firstFrameImageId == null && attempt.getFirstFrameAssetId() != null) {
+      RenderAsset firstFrame =
+          renderAssetRepo
+              .findById(attempt.getFirstFrameAssetId())
+              .orElseThrow(
+                  () ->
+                      new IllegalStateException(
+                          "First-frame asset not found: " + attempt.getFirstFrameAssetId()));
+      firstFrameImageId = assetLibraryManager.resolveStoredPath(firstFrame).toString();
+    }
     OpenArtVideoRequest request =
         OpenArtVideoRequest.builder()
             .promptText(
@@ -179,7 +212,7 @@ public class RenderAttemptOrchestrator {
                     ? job.getPromptTextSnapshot()
                     : job.getGenerationPromptSnapshot())
             .model(job.getOpenartModel())
-            .firstFrameImageId(textOrNull(parameters, "firstFrameImageId"))
+            .firstFrameImageId(firstFrameImageId)
             .durationSeconds(parameters.path("durationSeconds").asInt(15))
             .aspectRatio(parameters.path("aspectRatio").asText("16:9"))
             .resolution("480p")
@@ -306,8 +339,14 @@ public class RenderAttemptOrchestrator {
 
   /** DOWNLOADING: download the finished asset and record it, then move to POST_RENDER_QA. */
   private void download(RenderAttempt attempt, RenderJob job) {
+    RenderProviderOperation operation =
+        attempt.getProviderOperation() == null
+            ? (job.getJobType() == RenderJob.JobType.FIRST_FRAME
+                ? RenderProviderOperation.FIRST_FRAME
+                : RenderProviderOperation.VIDEO)
+            : attempt.getProviderOperation();
     RenderAsset.AssetType assetType =
-        job.getJobType() == RenderJob.JobType.FIRST_FRAME
+        operation == RenderProviderOperation.FIRST_FRAME
             ? RenderAsset.AssetType.FIRST_FRAME
             : RenderAsset.AssetType.VIDEO;
 
@@ -316,11 +355,24 @@ public class RenderAttemptOrchestrator {
 
     DownloadResult downloadResult =
         openArtAdapter.downloadAsset(attempt.getProviderJobId(), assetPath);
-    if (job.getJobType() == RenderJob.JobType.VIDEO
+    if (operation == RenderProviderOperation.VIDEO
         && (job.getOpenartJobId() == null || !job.getOpenartJobId().startsWith("mock-"))) {
       videoUpscaleService.upscale(assetPath);
     }
-    RenderAsset asset = assetLibraryManager.recordAsset(job, downloadResult);
+    RenderAsset asset = assetLibraryManager.recordAsset(job, attempt, downloadResult);
+
+    if (operation == RenderProviderOperation.FIRST_FRAME
+        && job.getJobType() == RenderJob.JobType.VIDEO) {
+      attempt.setFirstFrameAssetId(asset.getId());
+      attempt.setAssetId(null);
+      attempt.setStage(RenderExecutionStage.QUEUED);
+      job.setStatus(RenderJob.RenderJobStatus.QUEUED);
+      releaseLease(attempt);
+      renderAttemptRepo.save(attempt);
+      renderJobRepo.save(job);
+      publishProgress(job, "First frame ready; queuing video", 45);
+      return;
+    }
 
     attempt.setAssetId(asset.getId());
     attempt.setStage(RenderExecutionStage.POST_RENDER_QA);

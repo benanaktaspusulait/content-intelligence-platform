@@ -363,12 +363,13 @@ class RuleEngine:
                     total_score += 40
                 else:
                     total_score += 70
-            # Any unknown/not-applicable companion means the family is partial; keep
-            # the numeric score out of the canonical projection rather than implying
-            # complete coverage.
-            family_scores[family] = None if any(
-                rule.outcome in {RuleOutcome.UNKNOWN, RuleOutcome.NOT_APPLICABLE} for rule in rules
-            ) else total_score / len(scored)
+            if any(rule.outcome is RuleOutcome.SERVICE_ERROR for rule in rules):
+                family_scores[family] = None
+            else:
+                # UNKNOWN and NOT_APPLICABLE reduce evidence coverage but do not
+                # erase the evaluated PASS/FAIL signal. The score is explicitly an
+                # evaluated-subset score; the family assessment remains PARTIAL.
+                family_scores[family] = total_score / len(scored)
         return family_scores
 
     def _calculate_family_assessments(
@@ -1429,8 +1430,13 @@ class RuleEngine:
                 {
                     "primaryVerb": a.get("primaryVerb", ""),
                     "strategyFamily": strategy_family_for_beat(a),
+                    "intendedStrategyFamily": a.get("intendedStrategyFamily", strategy_family_for_beat(a)),
+                    "reactiveActionFamily": a.get("actionStrategyFamily", a.get("reactiveActionFamily", "")),
+                    "targetObject": a.get("targetObject", ""),
+                    "intendedEffect": a.get("intendedEffect", ""),
                     "action": a.get("action", ""),
                     "consequence": a.get("consequence", ""),
+                    "result": a.get("result", a.get("consequence", "")),
                 }
                 for a in candidates
             ]
@@ -2430,27 +2436,28 @@ class RuleEngine:
         keep escalation small, so this is a nudge, never a blocker.
         """
         evidence = escalation_evidence(video_plan_ir)
-        if evidence["status"] == "UNKNOWN":
+        evidence_payload = evidence.to_dict()
+        if evidence.status == "UNKNOWN":
             return RuleEvaluation(
                 rule_id="ESCALATION_005",
                 rule_name="Meaningful Attempt Escalation",
                 family="escalation",
                 severity="WARNING",
                 result="UNKNOWN",
-                message=evidence["reason"],
-                details={"evidence": evidence},
+                message=evidence.reason,
+                details={"evidence": evidence_payload},
             )
-        if evidence["new_target"] or evidence["intensity_rise"] or evidence["consequence_expansion"]:
+        if evidence.new_target or evidence.intensity_rise or evidence.consequence_expansion or evidence.resistance or evidence.wall_flex:
             return RuleEvaluation(
                 rule_id="ESCALATION_005",
                 rule_name="Meaningful Attempt Escalation",
                 family="escalation",
                 severity="PASS",
                 result="PASS",
-                message=f"Escalation evidence is present: {evidence['reason']}",
+                message=f"Escalation evidence is present: {evidence.reason}",
                 actual_value=1,
                 required_value=1,
-                details={"evidence": evidence},
+                details={"evidence": evidence_payload},
             )
         return RuleEvaluation(
             rule_id="ESCALATION_005",
@@ -2458,7 +2465,7 @@ class RuleEngine:
             family="escalation",
             severity="WARNING",
             result="FAIL",
-            message=f"No increasing intensity, affected target, stakes or consequence scale was evidenced. {evidence['reason']}",
+            message=f"No increasing intensity, affected target, stakes or consequence scale was evidenced. {evidence.reason}",
             actual_value=0,
             required_value=1,
             details={"evidence": evidence},
@@ -3300,7 +3307,11 @@ class RuleEngine:
     def _evaluate_stubborn_return_hook(self, video_plan_ir: dict[str, Any], rule: dict[str, Any]) -> RuleEvaluationType:
         profile = engine_profile_evidence(video_plan_ir)
         hook = video_plan_ir.get("hook") or {}
-        if profile.active and (hook.get("visibleProblem") or hook.get("textualFirstFrameIntent", {}).get("status") == "PASS" or profile.signals["FIXED_VISIBLE_BOUNDARY"]):
+        if not profile.active:
+            return RuleEvaluation(
+                rule_id="STUBBORN_RETURN_HOOK", rule_name="Stubborn Return Hook", family="hook_strength", severity="CRITICAL", result="NOT_APPLICABLE",
+                message="Stubborn-return hook exception applies only when the engine profile is explicitly or high-confidence active.", details={"engineProfile": profile.__dict__})
+        if hook.get("visibleProblem") or hook.get("textualFirstFrameIntent", {}).get("status") == "PASS" or profile.signals["FIXED_VISIBLE_BOUNDARY"]:
             return RuleEvaluation(
                 rule_id="STUBBORN_RETURN_HOOK", rule_name="Stubborn Return Hook", family="hook_strength", severity="CRITICAL", result="PASS",
                 message="Immediate visible threat and character intervention satisfy the Spoon-class hook.", details={"engineProfile": profile.__dict__})

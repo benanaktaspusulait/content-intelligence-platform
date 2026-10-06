@@ -107,6 +107,12 @@ def test_hook_accepts_immediate_visible_threat_without_static_impossibility() ->
     assert result.outcome is RuleOutcome.PASS
 
 
+def test_medium_profile_candidate_makes_specialized_hook_not_applicable() -> None:
+    result = engine()._evaluate_stubborn_return_hook(spoon_ir(weak=True), {})
+    assert result.outcome is RuleOutcome.NOT_APPLICABLE
+    assert result.details["engineProfile"]["candidate_only"] is True
+
+
 def test_state_memory_cost_is_low_for_boundary_return_and_high_for_containment_chain() -> None:
     low = engine_profile_evidence(spoon_ir())
     high_ir = spoon_ir()

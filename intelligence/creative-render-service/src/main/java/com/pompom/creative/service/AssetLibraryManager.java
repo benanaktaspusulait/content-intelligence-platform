@@ -1,7 +1,9 @@
 package com.pompom.creative.service;
 
 import com.pompom.creative.domain.RenderAsset;
+import com.pompom.creative.domain.RenderAttempt;
 import com.pompom.creative.domain.RenderJob;
+import com.pompom.creative.domain.RenderProviderOperation;
 import com.pompom.creative.openart.dto.DownloadResult;
 import com.pompom.creative.repository.RenderAssetRepository;
 import java.io.IOException;
@@ -115,6 +117,12 @@ public class AssetLibraryManager {
    */
   @Transactional
   public RenderAsset recordAsset(RenderJob job, DownloadResult downloadResult) {
+    return recordAsset(job, null, downloadResult);
+  }
+
+  @Transactional
+  public RenderAsset recordAsset(
+      RenderJob job, RenderAttempt attempt, DownloadResult downloadResult) {
     log.info("Recording asset for job {} at path: {}", job.getId(), downloadResult.getAssetPath());
 
     // Convert absolute path to relative path (relative to data root)
@@ -152,6 +160,22 @@ public class AssetLibraryManager {
     RenderAsset asset =
         RenderAsset.builder()
             .renderJob(job)
+            .providerJobId(attempt == null ? job.getOpenartJobId() : attempt.getProviderJobId())
+            .providerAssetId(null)
+            .source(mock ? "MOCK" : "OPENART")
+            .parentAssetId(
+                attempt != null && attempt.getProviderOperation() == RenderProviderOperation.VIDEO
+                    ? attempt.getFirstFrameAssetId()
+                    : null)
+            .promptHash(job.getPromptSha256())
+            .contractHash(job.getCompiledConstraintsSha256())
+            .originalWidth(downloadResult.getWidth())
+            .originalHeight(downloadResult.getHeight())
+            .finalWidth(measured == null ? downloadResult.getWidth() : measured.width())
+            .finalHeight(measured == null ? downloadResult.getHeight() : measured.height())
+            .processingStatus("REGISTERED")
+            .processingAttemptCount(
+                attempt == null ? job.getAttemptNumber() : attempt.getAttemptNumber())
             .contentId(job.getContentId())
             .assetType(assetType)
             .relativePath(relativePath)

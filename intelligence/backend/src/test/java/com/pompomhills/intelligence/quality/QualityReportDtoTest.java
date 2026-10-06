@@ -30,6 +30,9 @@ class QualityReportDtoTest {
           "critical_count": 0,
           "warning_count": 1,
           "family_scores": {"progression": 70.0},
+          "passed_rules": [
+            {"rule_id": "HOOK_001", "rule_name": "Hook", "family": "hook_strength", "severity": "PASS", "outcome": "PASS", "message": "Opening is clear", "actual_value": null, "threshold_value": null}
+          ],
           "failed_rules": [],
           "unknown_rules": [
             {"rule_id": "CONSISTENCY_002", "rule_name": "Character Continuity Lock",
@@ -43,6 +46,7 @@ class QualityReportDtoTest {
           "score_card": {"score": 70.0, "label": "Acceptable", "color": "yellow"},
           "timeline_data": {"beats": [], "consequence_markers": [], "state_segments": []},
           "parser_confidence": 0.9,
+          "canonical_evidence_confidence": 0.95,
           "parser_warnings": [],
           "parser_assumptions": [],
           "top_strengths": [],
@@ -53,12 +57,15 @@ class QualityReportDtoTest {
 
     QualityReportDto dto = mapper.readValue(json, QualityReportDto.class);
 
+    assertThat(dto.passedRules()).hasSize(1);
+    assertThat(dto.passedRules().get(0).outcome()).isEqualTo("PASS");
     assertThat(dto.unknownRules()).hasSize(1);
     assertThat(dto.unknownRules().get(0).outcome()).isEqualTo("UNKNOWN");
     assertThat(dto.unknownRules().get(0).ruleId()).isEqualTo("CONSISTENCY_002");
     assertThat(dto.notApplicableRules()).isEmpty();
     assertThat(dto.serviceErrors()).isEmpty();
     assertThat(dto.parserConfidence()).isEqualTo(0.9);
+    assertThat(dto.canonicalEvidenceConfidence()).isEqualTo(0.95);
     assertThat(dto.evidenceMissing()).isEmpty();
   }
 }

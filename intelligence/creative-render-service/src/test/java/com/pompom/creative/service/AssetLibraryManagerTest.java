@@ -5,7 +5,9 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 import com.pompom.creative.domain.RenderAsset;
+import com.pompom.creative.domain.RenderAttempt;
 import com.pompom.creative.domain.RenderJob;
+import com.pompom.creative.domain.RenderProviderOperation;
 import com.pompom.creative.openart.dto.DownloadResult;
 import com.pompom.creative.repository.RenderAssetRepository;
 import java.io.File;
@@ -287,5 +289,50 @@ class AssetLibraryManagerTest {
     verify(assetRepo).save(any(RenderAsset.class));
     RenderAsset savedAsset = captor.getValue();
     assertThat(savedAsset.getRelativePath()).contains("content/123/first-frame-v1.png");
+  }
+
+  @Test
+  void recordAsset_preservesProviderAndParentLineage() throws Exception {
+    RenderJob job =
+        RenderJob.builder()
+            .id(java.util.UUID.randomUUID())
+            .contentId(321L)
+            .jobType(RenderJob.JobType.VIDEO)
+            .openartJobId("video-provider-history")
+            .promptSha256("a".repeat(64))
+            .compiledConstraintsSha256("b".repeat(64))
+            .creditsEstimated(new java.math.BigDecimal("200"))
+            .build();
+    RenderAttempt attempt =
+        RenderAttempt.builder()
+            .id(java.util.UUID.randomUUID())
+            .renderJobId(job.getId())
+            .providerJobId("video-provider-history")
+            .providerOperation(RenderProviderOperation.VIDEO)
+            .firstFrameAssetId(java.util.UUID.randomUUID())
+            .attemptNumber(2)
+            .build();
+    Path assetPath = tempDir.resolve("content/321/render-v1.mp4");
+    Files.createDirectories(assetPath.getParent());
+    Files.write(assetPath, new byte[42]);
+    when(assetRepo.save(any(RenderAsset.class)))
+        .thenAnswer(invocation -> invocation.getArgument(0));
+
+    RenderAsset result =
+        manager.recordAsset(
+            job,
+            attempt,
+            DownloadResult.builder()
+                .assetPath(assetPath.toString())
+                .width(1920)
+                .height(1080)
+                .fileSizeBytes(42L)
+                .build());
+
+    assertThat(result.getProviderJobId()).isEqualTo("video-provider-history");
+    assertThat(result.getParentAssetId()).isEqualTo(attempt.getFirstFrameAssetId());
+    assertThat(result.getPromptHash()).isEqualTo("a".repeat(64));
+    assertThat(result.getContractHash()).isEqualTo("b".repeat(64));
+    assertThat(result.getProcessingStatus()).isEqualTo("REGISTERED");
   }
 }

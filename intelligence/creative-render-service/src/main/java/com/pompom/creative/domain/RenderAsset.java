@@ -22,6 +22,50 @@ public class RenderAsset {
   @JoinColumn(name = "render_job_id", nullable = false)
   private RenderJob renderJob;
 
+  @Column(name = "provider_job_id", length = 100)
+  private String providerJobId;
+
+  @Column(name = "provider_asset_id", length = 200)
+  private String providerAssetId;
+
+  @Column(name = "asset_source", length = 30)
+  private String source;
+
+  @Column(name = "parent_asset_id")
+  private UUID parentAssetId;
+
+  @Column(name = "character_refs", columnDefinition = "jsonb")
+  private String characterRefsJson;
+
+  @Column(name = "prompt_hash", length = 64)
+  private String promptHash;
+
+  @Column(name = "contract_hash", length = 64)
+  private String contractHash;
+
+  @Column(name = "original_width")
+  private Integer originalWidth;
+
+  @Column(name = "original_height")
+  private Integer originalHeight;
+
+  @Column(name = "final_width")
+  private Integer finalWidth;
+
+  @Column(name = "final_height")
+  private Integer finalHeight;
+
+  @Column(name = "processing_status", nullable = false, length = 30)
+  @Builder.Default
+  private String processingStatus = "REGISTERED";
+
+  @Column(name = "processing_error", columnDefinition = "TEXT")
+  private String processingError;
+
+  @Column(name = "processing_attempt_count", nullable = false)
+  @Builder.Default
+  private Integer processingAttemptCount = 1;
+
   @Column(name = "content_id", nullable = false)
   private Long contentId;
 

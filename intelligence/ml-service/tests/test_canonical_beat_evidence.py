@@ -70,6 +70,45 @@ def test_labelled_attempt_with_no_identifiable_verb_is_explicitly_unspecified() 
     assert any("no action verb" in item for item in result.metadata.ambiguities)
 
 
+def test_catch_reaction_is_not_the_intended_test_strategy() -> None:
+    (beat,) = _beats(
+        "0.0-15.0 SEC — SECOND ATTEMPT\n"
+        "Mimi catches the cup.\n"
+        "She squeezes it gently. It behaves normally and she smiles."
+    )
+    evidence = attempt_evidence({"metadata": {"duration": 15.0}, "beats": [beat]})
+    assert beat["actionStrategyFamily"] == "CATCH"
+    assert beat["intendedStrategyFamily"] == "SQUEEZE"
+    assert evidence.strategy_families == ("SQUEEZE",)
+    assert evidence.attempts[0]["reactiveActionFamily"] == "CATCH"
+
+
+def test_target_and_intended_effect_are_not_strategy_families() -> None:
+    ir = {
+        "metadata": {"duration": 15.0},
+        "goalEvidence": {"targetObject": "red ball", "intendedEffect": "restore_or_control_normal_object_use"},
+        "beats": [{
+            "id": "b1", "isAttempt": True, "primaryVerb": "PULLS",
+            "action": "Mimi pulls the red ball", "consequence": "the ball moves",
+            "targetObject": "red ball", "intendedEffect": "restore_or_control_normal_object_use",
+            "duration": 5.0, "attemptSource": "STRUCTURED_PLAN_ROLE",
+        }],
+    }
+    assert attempt_evidence(ir).strategy_families == ("PULL",)
+
+
+def test_consequence_contains_result_lines_not_the_action_line() -> None:
+    (beat,) = _beats(
+        "0.0-15.0 SEC — FIRST ATTEMPT\n"
+        "Mimi pulls the rope.\n"
+        "The rope stretches toward her.\n"
+        "She lets go."
+    )
+    assert beat["action"] == "Mimi pulls the rope."
+    assert beat["consequence"].startswith("The rope stretches")
+    assert not beat["consequence"].startswith(beat["action"])
+
+
 def test_attempt_evidence_summary_counts_sources_and_ratio() -> None:
     ir = parse_prompt(
         "Title: Label Semantics\n\n15-second video\n\n## Timeline\n"

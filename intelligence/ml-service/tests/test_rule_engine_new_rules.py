@@ -460,59 +460,35 @@ class TestConsistency002CharacterContinuityLock:
 
 
 class TestFamilyScoreExcludesNotApplicableAndUnknown:
-    def test_not_applicable_outcome_excluded_from_family_score(self) -> None:
+    def test_mixed_pass_fail_unknown_uses_evaluated_subset_and_stays_partial(self) -> None:
         from app.quality.contracts import RuleEvaluation as CanonicalRuleEvaluation
         from app.quality.contracts import RuleOutcome, Severity
 
         engine = _engine()
         evaluations = [
-            CanonicalRuleEvaluation(
-                rule_id="A",
-                rule_name="A",
-                family="test_family",
-                outcome=RuleOutcome.PASS,
-                configured_severity=Severity.PASS,
-                message="",
-            ),
-            CanonicalRuleEvaluation(
-                rule_id="B",
-                rule_name="B",
-                family="test_family",
-                outcome=RuleOutcome.NOT_APPLICABLE,
-                configured_severity=Severity.WARNING,
-                message="",
-            ),
+            CanonicalRuleEvaluation("A", "A", "test_family", RuleOutcome.PASS, Severity.PASS, ""),
+            CanonicalRuleEvaluation("B", "B", "test_family", RuleOutcome.FAIL, Severity.CRITICAL, ""),
+            CanonicalRuleEvaluation("C", "C", "test_family", RuleOutcome.UNKNOWN, Severity.WARNING, "missing"),
         ]
         scores = engine._calculate_family_scores(evaluations)
-        # NOT_APPLICABLE is not a measured family score, even beside a PASS.
-        assert scores["test_family"] is None
+        assessment = engine._calculate_family_assessments(evaluations)["test_family"]
+        assert scores["test_family"] == pytest.approx(70.0)
+        assert assessment["status"] == "PARTIAL"
+        assert assessment["score"] == pytest.approx(70.0)
+        assert assessment["evidenceCoverage"] == 67
 
-    def test_unknown_outcome_excluded_from_family_score(self) -> None:
+    def test_mixed_pass_fail_not_applicable_uses_evaluated_subset_and_stays_partial(self) -> None:
         from app.quality.contracts import RuleEvaluation as CanonicalRuleEvaluation
         from app.quality.contracts import RuleOutcome, Severity
 
         engine = _engine()
         evaluations = [
-            CanonicalRuleEvaluation(
-                rule_id="A",
-                rule_name="A",
-                family="test_family",
-                outcome=RuleOutcome.PASS,
-                configured_severity=Severity.PASS,
-                message="",
-            ),
-            CanonicalRuleEvaluation(
-                rule_id="B",
-                rule_name="B",
-                family="test_family",
-                outcome=RuleOutcome.UNKNOWN,
-                configured_severity=Severity.WARNING,
-                message="",
-            ),
+            CanonicalRuleEvaluation("A", "A", "test_family", RuleOutcome.PASS, Severity.PASS, ""),
+            CanonicalRuleEvaluation("B", "B", "test_family", RuleOutcome.FAIL, Severity.CRITICAL, ""),
+            CanonicalRuleEvaluation("C", "C", "test_family", RuleOutcome.NOT_APPLICABLE, Severity.WARNING, "not applicable"),
         ]
         scores = engine._calculate_family_scores(evaluations)
-        # Partial evidence is not a complete numeric family score.
-        assert scores["test_family"] is None
+        assert scores["test_family"] == pytest.approx(70.0)
 
     def test_family_with_only_not_applicable_has_no_score(self) -> None:
         from app.quality.contracts import RuleEvaluation as CanonicalRuleEvaluation

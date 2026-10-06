@@ -15,6 +15,7 @@ from ..quality.canonical_evidence import (
     UNSPECIFIED_VERB,
     escalation_evidence,
     normalize_strategy_family,
+    strategy_semantics_for_beat,
 )
 from ..quality.contracts import ParseResult, ParserMetadata
 
@@ -129,7 +130,7 @@ class PromptParser:
         escalation = escalation_evidence({"metadata": metadata, "coreMechanic": core_mechanic, "beats": beats})
         for beat in beats:
             if beat.get("beatRole") == "ESCALATION":
-                beat["escalationEvidence"] = escalation
+                beat["escalationEvidence"] = escalation.to_dict()
 
         # Construct IR
         video_plan_ir = {
@@ -868,8 +869,8 @@ class PromptParser:
         visual_state = self._extract_visual_state(content, action)
         visual_state_id = self._normalize_visual_state_id(visual_state)
 
-        # Extract consequence
-        consequence = self._extract_consequence(content)
+        # Extract consequence/result separately from the selected action sentence.
+        consequence = self._extract_consequence(content, action)
 
         # Determine action type
         action_type = self._determine_action_type(action, content)
@@ -889,10 +890,20 @@ class PromptParser:
         is_attempt, primary_verb, attempt_source, attempt_candidate = self._resolve_attempt_evidence(
             description, content, role, label
         )
+        if role == "ATTEMPT" and primary_verb:
+            acting_action = self._extract_action_for_verb(content, primary_verb)
+            if acting_action:
+                action = self._extract_action_from_description(acting_action)
+                visual_state = self._extract_visual_state(content, action)
+                visual_state_id = self._normalize_visual_state_id(visual_state)
+                consequence = self._extract_consequence(content, action)
+                action_type = self._determine_action_type(action, content)
         relates_to_core_problem = self._extract_detached_marker(description)
         strategy_verb = primary_verb or (attempt_candidate or {}).get("verb", "")
-        strategy_family = normalize_strategy_family(strategy_verb, action, content)
-
+        strategy_semantics = strategy_semantics_for_beat(
+            {"primaryVerb": strategy_verb, "action": action, "consequence": consequence}
+        )
+        strategy_family = strategy_semantics["intendedStrategyFamily"]
 
         return {
             "id": beat_id,
@@ -920,6 +931,10 @@ class PromptParser:
             "attemptConfidence": 1.0 if attempt_source == "EXPLICIT_ATTEMPT_LABEL" else 0.95 if attempt_source == "STRUCTURED_PLAN_ROLE" else None,
             "attemptReason": "Explicit attempt marker/role provides goal-directed evidence." if is_attempt else None,
             "strategyFamily": strategy_family,
+            "actionStrategyFamily": strategy_semantics["reactiveActionFamily"],
+            "intendedStrategyFamily": strategy_semantics["intendedStrategyFamily"],
+            "strategyRole": strategy_semantics["strategyRole"],
+            "strategyIntent": strategy_semantics["strategyIntent"],
             "primaryAction": action,
             "actor": None,
             "goal": None,
@@ -940,6 +955,15 @@ class PromptParser:
             first_line = first_line[:80] + "..."
         return first_line.strip()
 
+    def _extract_action_for_verb(self, description: str, primary_verb: str) -> str:
+        """Choose the acting-character line for a labelled attempt."""
+        expected_family = normalize_strategy_family(primary_verb)
+        for line in description.split("\n"):
+            candidate = self._acting_character_verb(line.strip())
+            if candidate and normalize_strategy_family(candidate) == expected_family:
+                return line.strip()
+        return ""
+
     def _extract_visual_state(self, description: str, action: str) -> str:
         """Infer visual state from description"""
         # Simplified: use action as visual state
@@ -952,10 +976,24 @@ class PromptParser:
         normalized = re.sub(r"[^a-z0-9_]", "", normalized)
         return normalized[:50]  # Limit length
 
-    def _extract_consequence(self, description: str) -> str:
-        """Extract physical consequence from description"""
-        # Look for result descriptions (simplified)
-        return description[:150]  # First 150 chars as consequence
+    def _extract_consequence(self, description: str, action: str = "") -> str:
+        """Extract result lines without duplicating the selected action sentence."""
+        lines: list[str] = []
+        action_text = action.strip().rstrip(".")
+        action_seen = not bool(action_text)
+        for raw_line in description.split("\n"):
+            line = raw_line.strip()
+            if not line or self._SUBHEADER_LINE.match(line):
+                continue
+            if action_text and line.rstrip(".").strip() == action_text:
+                action_seen = True
+                continue
+            if not action_seen:
+                continue
+            if re.match(r"^(?:FIRST FRAME|SFX|DIALOGUE|SAFETY|CAMERA|SOUND)\s*:", line, re.IGNORECASE):
+                continue
+            lines.append(line)
+        return "\n".join(lines)[:150]
 
     def _determine_action_type(self, action: str, description: str) -> str:
         """Classify action type"""

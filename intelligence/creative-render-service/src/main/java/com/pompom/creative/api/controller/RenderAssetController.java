@@ -1,6 +1,7 @@
 package com.pompom.creative.api.controller;
 
 import com.pompom.creative.domain.RenderAsset;
+import com.pompom.creative.api.MediaResourceService;
 import com.pompom.creative.evidence.IntelligenceValidationEvidenceClient;
 import com.pompom.creative.evidence.VisualEvidenceSubmissionDto;
 import com.pompom.creative.evidence.VisualEvidenceSubmissionResponse;
@@ -10,8 +11,13 @@ import java.time.Instant;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import org.springframework.http.ContentDisposition;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.support.ResourceRegion;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,16 +31,25 @@ import org.springframework.web.bind.annotation.RestController;
 public class RenderAssetController {
   private final RenderAssetRepository assets;
   private final IntelligenceValidationEvidenceClient evidenceClient;
+  private final MediaResourceService mediaResources;
 
   public RenderAssetController(RenderAssetRepository assets) {
-    this(assets, null);
+    this(assets, null, null);
+  }
+
+  public RenderAssetController(
+      RenderAssetRepository assets, IntelligenceValidationEvidenceClient evidenceClient) {
+    this(assets, evidenceClient, null);
   }
 
   @org.springframework.beans.factory.annotation.Autowired
   public RenderAssetController(
-      RenderAssetRepository assets, IntelligenceValidationEvidenceClient evidenceClient) {
+      RenderAssetRepository assets,
+      IntelligenceValidationEvidenceClient evidenceClient,
+      MediaResourceService mediaResources) {
     this.assets = assets;
     this.evidenceClient = evidenceClient;
+    this.mediaResources = mediaResources;
   }
 
   @GetMapping("/{id}")

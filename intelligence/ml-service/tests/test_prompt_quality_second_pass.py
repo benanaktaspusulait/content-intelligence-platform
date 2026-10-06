@@ -8,7 +8,7 @@ from unittest.mock import patch
 from app.assessment.pre_render_assessment import build_pre_render_assessment
 from app.config import settings
 from app.parser.prompt_parser import parse_prompt
-from app.quality.canonical_evidence import attempt_evidence
+from app.quality.canonical_evidence import attempt_evidence, escalation_evidence, story_density_evidence
 from app.quality.contracts import QualityReport, QualityStatus, RuleEvaluation, RuleOutcome, Severity
 from app.rules.rule_engine import RuleEngine
 
@@ -48,6 +48,9 @@ def test_luca_escalation_is_escalation_evidence_but_not_a_new_attempt() -> None:
     assert evidence.distinct_strategy_count == 2
     assert escalation["isAttempt"] is False
     assert escalation["escalationEvidence"]["newTarget"] is True
+    assert escalation["escalationEvidence"]["wallFlex"] is True
+    assert escalation["escalationEvidence"]["resistance"] is True
+    assert escalation["escalationEvidence"]["source"] == "STRUCTURED_ESCALATION_ROLE"
     assert escalation["escalationEvidence"]["reason"]
 
 
@@ -96,6 +99,20 @@ def test_escalation_rule_can_pass_from_new_target_without_new_attempt() -> None:
     result = _engine()._evaluate_escalation_005(ir, {})
     assert result.outcome is RuleOutcome.PASS
     assert result.details["evidence"]["new_target"] is True
+
+
+def test_escalation_evidence_does_not_require_active_attempts() -> None:
+    ir = _ir("0.0-15.0 SEC — ESCALATION\nThe ball stays stuck and the wooden wall flexes while it resists.\n")
+    evidence = escalation_evidence(ir)
+    assert evidence.status == "AVAILABLE"
+    assert evidence.wall_flex is True
+    assert evidence.resistance is True
+    assert evidence.source == "STRUCTURED_ESCALATION_ROLE"
+
+
+def test_luca_realization_reads_result_text_and_fake_resolution() -> None:
+    ir = parse_prompt(FIXTURE.read_text(encoding="utf-8")).video_plan_ir
+    assert story_density_evidence(ir).realization_status == "AVAILABLE"
 
 
 def test_escalation_without_comparable_evidence_is_unknown_not_pass() -> None:

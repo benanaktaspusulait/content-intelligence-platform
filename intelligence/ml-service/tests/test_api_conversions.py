@@ -6,6 +6,8 @@ and the ``/validate`` endpoint returns a well-formed report. The ``/auto-fix``
 module imports cleanly now that the scorer/contract drift is repaired.
 """
 
+from pathlib import Path
+
 from fastapi.testclient import TestClient
 
 from app.api.quality import convert_quality_report
@@ -17,6 +19,7 @@ from app.rules.rule_engine import RuleEngine
 from app.scoring.quality_scorer import QualityScorer
 
 RULESET = str(settings.rules_dir / "RULESET_1.0.yaml")
+LUCA_FIXTURE = Path(__file__).parent / "fixtures" / "luca_sticky_ball_prompt.txt"
 
 STATIC_PROMPT = (
     "Title: Static Hero\n\n15-second video\n\n## Characters\n- Hero: Brave\n\n"
@@ -102,6 +105,14 @@ def test_convert_quality_report_separates_unknown_not_applicable_service_error()
         family_scores={"progression": 70.0},
         evaluations=(
             RuleEvaluation(
+                rule_id="HOOK_001",
+                rule_name="Hook",
+                family="hook_strength",
+                outcome=RuleOutcome.PASS,
+                configured_severity=Severity.PASS,
+                message="opening is clear",
+            ),
+            RuleEvaluation(
                 rule_id="PAYOFF_005",
                 rule_name="Fake Win Escalation",
                 family="progression",
@@ -166,6 +177,7 @@ def test_convert_quality_report_separates_unknown_not_applicable_service_error()
     assert len(response.unknown_rules) == 1
     assert response.unknown_rules[0].rule_id == "CONSISTENCY_002"
     assert response.unknown_rules[0].outcome == "UNKNOWN"
+    assert any(item.rule_id == "HOOK_001" and item.outcome == "PASS" for item in response.passed_rules)
 
     assert len(response.not_applicable_rules) == 1
     assert response.not_applicable_rules[0].rule_id == "PAYOFF_005"
@@ -178,6 +190,18 @@ def test_convert_quality_report_separates_unknown_not_applicable_service_error()
     # None of these three leak into failed_rules (which stays FAIL-only).
     failed_ids = {fr.rule_id for fr in response.failed_rules}
     assert failed_ids.isdisjoint({"PAYOFF_005", "CONSISTENCY_002", "GOAL_001"})
+
+
+def test_convert_quality_report_propagates_canonical_confidence_separately() -> None:
+    parsed = parse_prompt(LUCA_FIXTURE.read_text(encoding="utf-8"))
+    report = RuleEngine(RULESET).evaluate(parsed.video_plan_ir)
+    enhanced = QualityScorer().create_enhanced_report(report, parsed.video_plan_ir, parsed.metadata)
+
+    response = convert_quality_report(enhanced, "1.0", video_plan_ir=parsed.video_plan_ir)
+
+    assert response.parser_confidence == parsed.metadata.confidence
+    assert response.canonical_evidence_confidence == 0.95
+    assert response.parser_confidence != response.canonical_evidence_confidence
 
 
 def test_convert_quality_report_exposes_parser_metadata_and_strengths_weaknesses() -> None:

@@ -144,7 +144,12 @@ class RenderAttemptOrchestratorTest {
 
     verify(submissionStateService).markSubmitting(attempt.getId(), LEASE_OWNER);
     verify(submissionStateService)
-        .markSubmitted(attempt.getId(), job.getId(), "provider-job-1", null);
+        .markSubmitted(
+            attempt.getId(),
+            job.getId(),
+            "provider-job-1",
+            null,
+            RenderProviderOperation.FIRST_FRAME);
     ArgumentCaptor<OpenArtImageRequest> imageRequest =
         ArgumentCaptor.forClass(OpenArtImageRequest.class);
     verify(openArtAdapter).generateImage(imageRequest.capture());
@@ -257,7 +262,7 @@ class RenderAttemptOrchestratorTest {
         .thenReturn(Path.of(System.getProperty("java.io.tmpdir"), "asset.mp4"));
     when(openArtAdapter.downloadAsset(any(), any()))
         .thenReturn(DownloadResult.builder().assetPath("/tmp/asset.mp4").build());
-    when(assetLibraryManager.recordAsset(any(), any()))
+    when(assetLibraryManager.recordAsset(any(), any(), any()))
         .thenReturn(RenderAsset.builder().id(UUID.randomUUID()).build());
 
     orchestrator.processAttempt(attempt.getId(), LEASE_OWNER);

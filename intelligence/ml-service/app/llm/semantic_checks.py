@@ -134,14 +134,15 @@ def _call_llm_safely(llm: LLMProvider, prompt: str) -> str:
 
 
 def find_duplicate_strategy_pairs(
-    attempts: list[dict[str, str]], llm_provider: str | None = None
+    attempts: list[dict[str, Any]], llm_provider: str | None = None
 ) -> list[tuple[int, int]]:
     """Identify attempt pairs that are the same strategy despite different wording.
 
     `attempts` must already be verb-distinct (the caller filters out literal
     primaryVerb repeats before calling this — those are a free deterministic
     check and never need an LLM call). Each attempt dict has keys
-    "primaryVerb", "action", "consequence".
+    primaryVerb, action, consequence, intendedStrategyFamily, reactiveActionFamily,
+    targetObject, intendedEffect, and result.
 
     Returns a list of (i, j) index pairs, i < j, that the LLM judges to be the
     same underlying strategy. Returns [] when 0 or 1 attempts are given
@@ -163,7 +164,19 @@ def find_duplicate_strategy_pairs(
         raise SemanticCheckServiceError(f"LLM provider unavailable: {e}") from e
 
     numbered_attempts = "\n".join(
-        f"{i}. strategyFamily={a.get('strategyFamily', '')!r}, primaryVerb={a['primaryVerb']!r}, action={a['action']!r}, consequence={a['consequence']!r}"
+        "{i}. intendedStrategyFamily={intended!r}, reactiveActionFamily={reactive!r}, "
+        "primaryVerb={verb!r}, targetObject={target!r}, intendedEffect={effect!r}, "
+        "action={action!r}, consequence={consequence!r}, result={result!r}".format(
+            i=i,
+            intended=a.get("intendedStrategyFamily", a.get("strategyFamily", "")),
+            reactive=a.get("reactiveActionFamily", ""),
+            verb=a.get("primaryVerb", ""),
+            target=a.get("targetObject", ""),
+            effect=a.get("intendedEffect", ""),
+            action=a.get("action", ""),
+            consequence=a.get("consequence", ""),
+            result=a.get("result", ""),
+        )
         for i, a in enumerate(attempts)
     )
 
@@ -641,7 +654,19 @@ def check_attempts_are_generation_executable(
         raise SemanticCheckServiceError(f"LLM provider unavailable: {e}") from e
 
     numbered_attempts = "\n".join(
-        f"{i}. strategyFamily={a.get('strategyFamily', '')!r}, primaryVerb={a['primaryVerb']!r}, action={a['action']!r}, consequence={a['consequence']!r}"
+        "{i}. intendedStrategyFamily={intended!r}, reactiveActionFamily={reactive!r}, "
+        "primaryVerb={verb!r}, targetObject={target!r}, intendedEffect={effect!r}, "
+        "action={action!r}, consequence={consequence!r}, result={result!r}".format(
+            i=i,
+            intended=a.get("intendedStrategyFamily", a.get("strategyFamily", "")),
+            reactive=a.get("reactiveActionFamily", ""),
+            verb=a.get("primaryVerb", ""),
+            target=a.get("targetObject", ""),
+            effect=a.get("intendedEffect", ""),
+            action=a.get("action", ""),
+            consequence=a.get("consequence", ""),
+            result=a.get("result", ""),
+        )
         for i, a in enumerate(attempts)
     )
 
