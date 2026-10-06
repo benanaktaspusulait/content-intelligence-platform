@@ -153,10 +153,10 @@ public class VisualEvidenceSubmissionService {
   }
 
   private boolean promptStageEligible(QualityValidationEntity validation) {
-    QualityReportDto report = QualityReportSnapshots.fromJson(validation.getReportJson());
-    if (report == null || report.preRenderAssessment() == null) return false;
-    Object stage = report.preRenderAssessment().get("prompt_stage");
-    Object authorization = report.preRenderAssessment().get("render_authorization");
+    Map<String, Object> assessment = QualityReportSnapshots.preRenderAssessment(validation.getReportJson());
+    if (assessment == null) return false;
+    Object stage = assessment.get("prompt_stage");
+    Object authorization = assessment.get("render_authorization");
     return "READY_FOR_FIRST_FRAME".equals(stage)
         && authorization instanceof Map<?, ?> map
         && !"BLOCKED_CREATIVE_FAILURE".equals(map.get("status"));
