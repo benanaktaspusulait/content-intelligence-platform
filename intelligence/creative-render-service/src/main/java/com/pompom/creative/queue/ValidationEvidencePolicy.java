@@ -18,26 +18,35 @@ import org.springframework.stereotype.Component;
 public class ValidationEvidencePolicy {
 
   public void validate(QueueRenderJobRequest request, ValidationEvidenceDto evidence, Instant now) {
-    if (!"RENDER_READY".equals(evidence.status())) {
+    boolean firstFrame =
+        request.jobType() == com.pompom.creative.domain.RenderJob.JobType.FIRST_FRAME;
+    if (!firstFrame && !"RENDER_READY".equals(evidence.status())) {
       throw new ValidationEvidenceRejectedException(
           "EVIDENCE_NOT_RENDER_READY",
           "Validation record %d has status %s, not RENDER_READY"
               .formatted(evidence.validationRecordId(), evidence.status()));
     }
-    if (evidence.blockerCount() > 0) {
+    if (firstFrame && !evidence.firstFrameEligible()) {
+      throw new ValidationEvidenceRejectedException(
+          "FIRST_FRAME_NOT_ELIGIBLE",
+          "Validation record %d has no eligible prompt-stage first-frame decision"
+              .formatted(evidence.validationRecordId()));
+    }
+    if (!firstFrame && evidence.blockerCount() > 0) {
       throw new ValidationEvidenceRejectedException(
           "EVIDENCE_HAS_BLOCKERS",
           "Validation record %d has %d blocker(s)"
               .formatted(evidence.validationRecordId(), evidence.blockerCount()));
     }
-    if (evidence.criticalCount() > 0) {
+    if (!firstFrame && evidence.criticalCount() > 0) {
       throw new ValidationEvidenceRejectedException(
           "EVIDENCE_HAS_CRITICALS",
           "Validation record %d has %d critical(s)"
               .formatted(evidence.validationRecordId(), evidence.criticalCount()));
     }
-    if (evidence.independentRevalidationId() == null
-        || evidence.independentlyRevalidatedAt() == null) {
+    if (!firstFrame
+        && (evidence.independentRevalidationId() == null
+            || evidence.independentlyRevalidatedAt() == null)) {
       throw new ValidationEvidenceRejectedException(
           "EVIDENCE_NOT_INDEPENDENTLY_REVALIDATED",
           "Validation record %d has no independent revalidation"

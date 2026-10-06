@@ -11,7 +11,8 @@ The production render path lives in `creative-render-service`. It uses the publi
 5. When the creation completes, the result URL is downloaded over HTTPS/HTTP into the configured asset library.
 6. Media is probed, recorded, and sent through post-render QA.
 7. Provider failures update both the attempt and the render job; unknown/running jobs are bounded by `OPENART_MAX_POLLS`.
-8. Provider usage is recorded once per OpenArt history ID in `openart_credit_log`; a worker retry cannot double-charge the same creation.
+8. The worker commits a `SUBMITTING` intent before invoking OpenArt. An uncertain submission becomes `NEEDS_HUMAN_REVIEW` and is excluded from automatic retry, preventing a crash from blindly spending a second generation.
+9. Queue-time estimates are reserved in `openart_credit_log` and reconciled in place when the provider history completes. Provider usage is recorded once per OpenArt history ID; a worker retry cannot double-charge the same creation, and `credits_actual` aggregates rerender attempts.
 
 The mock adapter remains the default for local development. Production rejects a mock adapter.
 
@@ -63,7 +64,7 @@ The active settings are in `src/main/resources/application.yml`:
 | `OPENART_FIRST_FRAME_COST` | `10` | Queue-time fallback estimate for images. |
 | `OPENART_VIDEO_COST` | `100` | Queue-time fallback estimate for videos. |
 
-The queue uses the configured estimate as its preflight reservation. On submission, the adapter also asks `model cost` when the provider does not return a quote, and on completion the provider-reported usage is reconciled into `credits_actual`. If the provider does not expose usage, the persisted estimate is used and marked as an estimate fallback.
+The queue uses the configured estimate as a durable preflight reservation. Admission and reservation are serialized with a PostgreSQL transaction-scoped advisory lock, so concurrent idempotency keys cannot all pass the same stale budget read. On submission, the adapter also asks `model cost` when the provider does not return a quote, and on completion the provider-reported usage is reconciled into `credits_actual`. If the provider does not expose usage, the persisted estimate is used and marked as an estimate fallback. A reservation is released for a render cancelled before submission; it is deliberately retained when a provider submission is in flight or uncertain and must be reconciled by an operator rather than silently releasing spend.
 
 ## Docker Compose
 
@@ -98,17 +99,37 @@ The adapter intentionally uses only commands documented by OpenArt CLI v0.1.1:
 | Account credits | `openart account --json --no-input` |
 | Model quote | `openart model cost --model <model> --mode text2image\|text2video --json --no-input` |
 
-The video request field currently named `firstFrameImageId` is a local image path or an HTTPS CDN URL. The old `--first-frame` option is not used. The adapter downloads the result URL because v0.1.1 has no separate `openart download` command.
+The image command uses the selected model's defaults. The v0.1.1 image CLI does not expose generic `style` or `aspect-ratio` flags, so those choices must be expressed in the approved prompt rather than silently persisted as unused provider parameters. The video request field currently named `firstFrameImageId` is a local image path or an HTTPS CDN URL. The old `--first-frame` option is not used. The adapter downloads the result URL because v0.1.1 has no separate `openart download` command.
 
 ## Render lifecycle and status
 
 `RenderAttempt` stages are durable and processed one stage per worker claim:
 
-`QUEUED → PROVIDER_QUEUED → DOWNLOADING → POST_RENDER_QA → COMPLETE`
+`QUEUED → SUBMITTING → PROVIDER_QUEUED → DOWNLOADING → POST_RENDER_QA → COMPLETE`
 
-The corresponding render job status is updated to `GENERATING`, `POLLING`, `DOWNLOADING`, and finally `COMPLETE`. A provider failure/cancellation sets both records to `FAILED`. A worker crash can safely retry a poll or download; provider usage is protected by the unique `(openart_job_id, operation)` index from migration `V16`.
+`SUBMITTING` is intentionally unclaimable. If a process dies around the external call, the attempt is held for human reconciliation rather than submitted twice. The corresponding render job status is updated to `GENERATING`, `POLLING`, `DOWNLOADING`, and finally `COMPLETE`. A provider failure/cancellation sets both records to `FAILED`. A worker crash during a poll or download can safely retry that stage; provider usage is protected by the unique `(openart_job_id, operation)` index from migration `V16`.
 
 The default worker lease is ten minutes, longer than a bounded provider/download operation. If the provider remains ambiguous until `OPENART_MAX_POLLS`, the attempt is failed with `PROVIDER_TIMEOUT` instead of polling forever.
+
+## Reconciling an uncertain submission
+
+If the process dies while the attempt is `SUBMITTING`, the worker will not submit it again automatically. An operator must first inspect OpenArt history, then either attach the observed ID:
+
+```bash
+curl -X POST http://localhost:8081/api/v1/render-jobs/<job-id>/reconcile-submission \
+  -H 'Content-Type: application/json' \
+  -d '{"providerJobId":"<openart-history-id>"}'
+```
+
+or explicitly close the uncertain attempt while retaining its conservative budget reservation:
+
+```bash
+curl -X POST http://localhost:8081/api/v1/render-jobs/<job-id>/reconcile-submission \
+  -H 'Content-Type: application/json' \
+  -d '{"action":"ABANDON","reason":"No matching OpenArt history found"}'
+```
+
+The regular retry endpoint rejects non-terminal/uncertain provider histories; it never blindly submits a second generation.
 
 ## Verification
 

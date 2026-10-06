@@ -28,6 +28,7 @@ public class QaHumanReviewService {
   private final RenderAttemptRepository renderAttemptRepository;
   private final RenderJobRepository renderJobRepository;
   private final PostRenderEvaluationRepository postRenderEvaluationRepository;
+  private final CreditTrackingService creditTrackingService;
 
   @Transactional(readOnly = true)
   public List<RenderQaResult> pendingReviews() {
@@ -128,6 +129,7 @@ public class QaHumanReviewService {
     if (attempts.size() >= job.getMaxAttempts()) {
       throw new IllegalStateException("Render job has reached its maximum attempts");
     }
+    creditTrackingService.reserveAdditionalAttempt(job);
     RenderAttempt latest = attempts.get(attempts.size() - 1);
     latest.setStage(RenderExecutionStage.RETRY_WAIT);
     latest.setCompletedAt(Instant.now());

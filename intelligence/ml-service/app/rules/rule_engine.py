@@ -31,6 +31,7 @@ from app.quality.canonical_evidence import (
     attempt_beats,
     attempt_evidence,
     escalation_evidence,
+    is_evidence_gap,
     is_unspecified_verb,
     strategy_family_for_beat,
 )
@@ -287,8 +288,10 @@ class RuleEngine:
         )
         service_error_count = sum(1 for e in evaluations if e.outcome is RuleOutcome.SERVICE_ERROR)
 
-        # Calculate family scores and overall score
+        # Calculate family scores and overall score. A missing/unknown family is
+        # represented as None, never as a semantic zero.
         family_scores = self._calculate_family_scores(evaluations)
+        family_assessments = self._calculate_family_assessments(evaluations)
         overall_score = self._calculate_overall_score(family_scores, evaluations)
 
         # Determine status (fail closed on service errors)
@@ -308,74 +311,93 @@ class RuleEngine:
             evaluations=tuple(evaluations),
             ruleset_version=self.ruleset.get("version", "1.0"),
             evaluated_at=video_plan_ir.get("metadata", {}).get("createdAt", "unknown"),
+            family_assessments=family_assessments,
         )
 
-    def _calculate_family_scores(self, evaluations: list[RuleEvaluationType]) -> dict[str, float]:
-        """Calculate score for each quality family"""
-        family_scores: dict[str, float] = {}
+    def _calculate_family_scores(
+        self, evaluations: list[RuleEvaluationType]
+    ) -> dict[str, float | None]:
+        """Calculate nullable scores; UNKNOWN/NOT_APPLICABLE never become zero."""
+        family_scores: dict[str, float | None] = {}
         family_rules: dict[str, list[RuleEvaluationType]] = {}
+        for evaluation in evaluations:
+            family_rules.setdefault(evaluation.family, []).append(evaluation)
 
-        # Group evaluations by family
-        for eval in evaluations:
-            family = eval.family
-            if family not in family_rules:
-                family_rules[family] = []
-            family_rules[family].append(eval)
-
-        # Calculate score for each family
         for family, rules in family_rules.items():
-            total_score = 0
-            count = 0
-
-            for rule in rules:
+            scored = [
+                rule
+                for rule in rules
+                if rule.outcome in {RuleOutcome.PASS, RuleOutcome.FAIL} and not is_evidence_gap(rule)
+            ]
+            if not scored:
+                family_scores[family] = None
+                continue
+            total_score = 0.0
+            for rule in scored:
                 if rule.outcome is RuleOutcome.PASS:
-                    if rule.configured_severity is Severity.PASS:
-                        total_score += 100
-                    elif rule.configured_severity is Severity.WARNING:
-                        total_score += 85
-                    count += 1
-                elif rule.outcome is RuleOutcome.FAIL:
-                    if rule.configured_severity is Severity.BLOCKER:
-                        total_score += 0
-                    elif rule.configured_severity is Severity.CRITICAL:
-                        total_score += 40
-                    elif rule.configured_severity is Severity.WARNING:
-                        total_score += 70
-                    count += 1
-                elif rule.outcome is RuleOutcome.SERVICE_ERROR:
-                    # Unevaluated rule contributes a zero so the family (and the
-                    # overall score) cannot float up on missing coverage.
+                    total_score += 100 if rule.configured_severity is Severity.PASS else 85
+                elif rule.configured_severity is Severity.BLOCKER:
                     total_score += 0
-                    count += 1
-                elif rule.outcome is RuleOutcome.NOT_APPLICABLE:
-                    # The rule does not apply to this concept by design (e.g. no
-                    # fake-win beat present). Excluded from both numerator and
-                    # denominator — contributes neither a pass nor a fail signal.
-                    pass
-                elif rule.outcome is RuleOutcome.UNKNOWN:
-                    # Evidence to evaluate this rule is currently missing (e.g. no
-                    # rendered video yet). Excluded from scoring for a different
-                    # reason than NOT_APPLICABLE — tracked separately via
-                    # QualityReport.unknown_count for observability.
-                    pass
-
-            family_scores[family] = total_score / count if count > 0 else 0
-
+                elif rule.configured_severity is Severity.CRITICAL:
+                    total_score += 40
+                else:
+                    total_score += 70
+            # Any unknown/not-applicable companion means the family is partial; keep
+            # the numeric score out of the canonical projection rather than implying
+            # complete coverage.
+            family_scores[family] = None if any(
+                rule.outcome in {RuleOutcome.UNKNOWN, RuleOutcome.NOT_APPLICABLE} for rule in rules
+            ) else total_score / len(scored)
         return family_scores
 
-    def _calculate_overall_score(
-        self, family_scores: dict[str, float], evaluations: list[RuleEvaluationType]
-    ) -> float:
-        """Calculate weighted overall score"""
+    def _calculate_family_assessments(
+        self, evaluations: list[RuleEvaluationType]
+    ) -> dict[str, dict[str, Any]]:
+        assessments: dict[str, dict[str, Any]] = {}
+        family_rules: dict[str, list[RuleEvaluationType]] = {}
+        for evaluation in evaluations:
+            family_rules.setdefault(evaluation.family, []).append(evaluation)
+        scores = self._calculate_family_scores(evaluations)
+        for family, rules in family_rules.items():
+            counts = {outcome.value: sum(1 for rule in rules if rule.outcome is outcome) for outcome in RuleOutcome}
+            if counts[RuleOutcome.SERVICE_ERROR.value]:
+                state = "SERVICE_ERROR"
+            elif any(is_evidence_gap(rule) for rule in rules):
+                evaluated_without_gaps = any(
+                    rule.outcome in {RuleOutcome.PASS, RuleOutcome.FAIL} and not is_evidence_gap(rule)
+                    for rule in rules
+                )
+                state = "PARTIAL" if evaluated_without_gaps else "UNKNOWN"
+            elif counts[RuleOutcome.PASS.value] + counts[RuleOutcome.FAIL.value] == 0:
+                state = "UNKNOWN" if counts[RuleOutcome.UNKNOWN.value] else "NOT_APPLICABLE"
+            elif counts[RuleOutcome.UNKNOWN.value] or counts[RuleOutcome.NOT_APPLICABLE.value]:
+                state = "PARTIAL"
+            else:
+                state = "EVALUATED"
+            evaluated_count = sum(
+                1 for rule in rules if rule.outcome in {RuleOutcome.PASS, RuleOutcome.FAIL} and not is_evidence_gap(rule)
+            )
+            assessments[family] = {
+                "status": state,
+                "score": scores.get(family),
+                "evidenceCoverage": round(100 * evaluated_count / max(len(rules), 1)),
+                "counts": counts,
+                "reasons": [rule.message for rule in rules if rule.outcome in {RuleOutcome.UNKNOWN, RuleOutcome.SERVICE_ERROR}],
+            }
+        return assessments
 
+    def _calculate_overall_score(
+        self, family_scores: dict[str, float | None], evaluations: list[RuleEvaluationType]
+    ) -> float:
+        """Calculate weighted overall score from fully evaluated families only."""
         weighted_sum = 0.0
         total_weight = 0.0
-
         for family, score in family_scores.items():
+            if score is None:
+                continue
             weight = CANONICAL_FAMILY_WEIGHTS.get(family, 0.05)
             weighted_sum += score * weight
             total_weight += weight
-
         return weighted_sum / total_weight if total_weight > 0 else 0.0
 
     # ========================================
@@ -989,6 +1011,18 @@ class RuleEngine:
                 threshold_value=0.8,
             )
         if not starts_mid_action:
+            if (hook.get("textualFirstFrameIntent") or {}).get("status") == "PASS":
+                return RuleEvaluation(
+                    rule_id="HOOK_002",
+                    rule_name="First Frame Anomaly",
+                    family="hook_strength",
+                    severity="PASS",
+                    result="PASS",
+                    message="Textual first-frame intent establishes an immediate anomaly; visual verification remains a separate gate.",
+                    actual_value=True,
+                    required_value=True,
+                    details={"textualFirstFrameIntent": hook.get("textualFirstFrameIntent")},
+                )
             return RuleEvaluation(
                 rule_id="HOOK_002",
                 rule_name="First Frame Anomaly",
@@ -1409,15 +1443,34 @@ class RuleEngine:
     def _evaluate_payoff_003(self, video_plan_ir: dict[str, Any], rule: dict[str, Any]) -> RuleEvaluationType:
         """PAYOFF_003: Rule-Consistent Twist (LLM semantic check)"""
         physical_rule = video_plan_ir.get("coreMechanic", {}).get("physicalRule", "")
+        mechanic_evidence = video_plan_ir.get("coreMechanic", {})
         final_payoff = video_plan_ir.get("finalPayoff", {})
         payoff_starts_at = final_payoff.get("startsAt", 0.0)
 
         beats = video_plan_ir.get("beats", [])
         twist_beat = next((b for b in beats if b.get("startTime", 0.0) >= payoff_starts_at), None)
-        twist_description = twist_beat.get("consequence", "") if twist_beat else ""
+        twist_description = (
+            f"{twist_beat.get('action', '')} -> {twist_beat.get('consequence', '')}".strip(" ->")
+            if twist_beat
+            else ""
+        )
+        if not physical_rule or not twist_description:
+            return RuleEvaluation(
+                rule_id="PAYOFF_003",
+                rule_name="Rule-Consistent Twist",
+                family="final_payoff",
+                severity="CRITICAL",
+                result="UNKNOWN",
+                message="Physical rule or final consequence evidence is missing; payoff derivation cannot be judged.",
+                details={"failureBasis": EVIDENCE_INCOMPLETE_FAILURE},
+            )
 
         try:
-            matches, reasoning = check_twist_matches_rule(physical_rule, twist_description)
+            matches, reasoning = check_twist_matches_rule(
+                physical_rule,
+                twist_description,
+                mechanic_evidence=mechanic_evidence,
+            )
         except SemanticCheckServiceError as e:
             return RuleEvaluation(
                 rule_id="PAYOFF_003",
@@ -2021,8 +2074,32 @@ class RuleEngine:
         beats = video_plan_ir.get("beats", [])
         beat_descriptions = [b.get("action", "") for b in beats if b.get("action")]
 
+        goal_evidence = video_plan_ir.get("goalEvidence")
+        if isinstance(goal_evidence, dict) and goal_evidence.get("goalExplicitness") == "UNSUPPORTED":
+            return RuleEvaluation(
+                rule_id="GOAL_001",
+                rule_name="Goal-Obstruction Clarity",
+                family="concept_strength",
+                severity="BLOCKER",
+                result="FAIL",
+                message="No believable local goal is evidenced; the interaction reads as mechanic demonstration only.",
+                details={"goalEvidence": goal_evidence},
+            )
+        if isinstance(goal_evidence, dict) and goal_evidence.get("goalExplicitness") == "UNKNOWN":
+            return RuleEvaluation(
+                rule_id="GOAL_001",
+                rule_name="Goal-Obstruction Clarity",
+                family="concept_strength",
+                severity="BLOCKER",
+                result="UNKNOWN",
+                message="Local goal evidence is unavailable, so goal-obstruction clarity cannot be judged.",
+                details={"goalEvidence": goal_evidence},
+            )
+
         try:
-            is_natural, reasoning = check_goal_is_natural(character_name, physical_rule, beat_descriptions)
+            is_natural, reasoning = check_goal_is_natural(
+                character_name, physical_rule, beat_descriptions, goal_evidence
+            )
         except SemanticCheckServiceError as e:
             return RuleEvaluation(
                 rule_id="GOAL_001",
@@ -2201,7 +2278,7 @@ class RuleEngine:
                 details={"evidenceSource": "semantic", "error": str(error)},
             )
         evidence = {**evidence, "evidenceSource": "semantic"}
-        reasoning = evidence.get("reasoning", "")
+        reasoning = str(evidence.get("reasoning", ""))
         return RuleEvaluation(
             rule_id, rule_name, family, "BLOCKER", decision, reasoning,
             required_value=1, details=evidence,
@@ -2883,6 +2960,7 @@ class RuleEngine:
         llm_attempts = [
             {
                 "primaryVerb": a.get("primaryVerb", ""),
+                "strategyFamily": strategy_family_for_beat(a),
                 "action": a.get("action", ""),
                 "consequence": a.get("consequence", ""),
             }
@@ -3023,7 +3101,10 @@ class RuleEngine:
                 "distinct_strategy_count": canonical_attempts.distinct_strategy_count,
                 "policy": "CRITICAL_ON_PARTIAL_UNEXECUTABILITY",
             },
-        )(video_plan_ir: dict[str, Any], ruleset_path: str | None = None) -> QualityReport:
+        )
+
+
+def validate_video_plan(video_plan_ir: dict[str, Any], ruleset_path: str | None = None) -> QualityReport:
     """
     Convenience function to validate a video plan.
 

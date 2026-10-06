@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -105,7 +106,9 @@ class RenderAttemptOrchestratorTest {
             .leaseOwner(LEASE_OWNER)
             .build();
     lenient().when(renderAttemptRepo.findById(attempt.getId())).thenReturn(Optional.of(attempt));
-    lenient().when(submissionStateService.markSubmitting(attempt.getId(), LEASE_OWNER)).thenReturn(job);
+    lenient()
+        .when(submissionStateService.markSubmitting(attempt.getId(), LEASE_OWNER))
+        .thenReturn(job);
     return attempt;
   }
 
@@ -132,6 +135,21 @@ class RenderAttemptOrchestratorTest {
     verify(submissionStateService)
         .markSubmitted(attempt.getId(), job.getId(), "provider-job-1", null);
     verify(openArtAdapter).generateImage(any());
+  }
+
+  @Test
+  void uncertainProviderSubmissionIsNotRetriedAutomatically() {
+    RenderAttempt attempt = attempt(RenderExecutionStage.QUEUED);
+    when(openArtAdapter.generateImage(any()))
+        .thenThrow(new IllegalStateException("connection lost after submit"));
+
+    assertThatThrownBy(() -> orchestrator.processAttempt(attempt.getId(), LEASE_OWNER))
+        .isInstanceOf(IllegalStateException.class)
+        .hasMessageContaining("connection lost");
+
+    verify(submissionStateService).markSubmitting(attempt.getId(), LEASE_OWNER);
+    verify(submissionStateService)
+        .markUncertain(eq(attempt.getId()), eq(job.getId()), any(IllegalStateException.class));
   }
 
   @Test

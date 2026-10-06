@@ -168,10 +168,11 @@ class QualityReport:
 
     overall_score: float
     status: QualityStatus
-    family_scores: dict[str, float]
+    family_scores: dict[str, float | None]
     evaluations: tuple[RuleEvaluation, ...]
     ruleset_version: str
     evaluated_at: str
+    family_assessments: dict[str, dict[str, Any]] = field(default_factory=dict)
 
     @property
     def failed_rules(self) -> tuple[RuleEvaluation, ...]:
@@ -250,9 +251,9 @@ class ScoreBreakdown:
     """Detailed per-family score breakdown."""
 
     family: str
-    score: float
+    score: float | None
     weight: float
-    weighted_contribution: float
+    weighted_contribution: float | None
     rules_passed: int
     rules_failed: int
     rules_warning: int

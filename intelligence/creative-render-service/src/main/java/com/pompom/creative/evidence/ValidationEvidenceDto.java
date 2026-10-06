@@ -25,4 +25,43 @@ public record ValidationEvidenceDto(
     UUID independentRevalidationId,
     Instant independentlyRevalidatedAt,
     Instant validatedAt,
-    Instant expiresAt) {}
+    Instant expiresAt,
+    boolean firstFrameEligible) {
+
+  public ValidationEvidenceDto(
+      long validationRecordId,
+      long contentId,
+      long promptVersionId,
+      String promptSha256,
+      String status,
+      int blockerCount,
+      int criticalCount,
+      int warningCount,
+      String deterministicRulesetVersion,
+      String semanticProvider,
+      String semanticModelVersion,
+      String producibilityValidatorVersion,
+      UUID independentRevalidationId,
+      Instant independentlyRevalidatedAt,
+      Instant validatedAt,
+      Instant expiresAt) {
+    this(
+        validationRecordId,
+        contentId,
+        promptVersionId,
+        promptSha256,
+        status,
+        blockerCount,
+        criticalCount,
+        warningCount,
+        deterministicRulesetVersion,
+        semanticProvider,
+        semanticModelVersion,
+        producibilityValidatorVersion,
+        independentRevalidationId,
+        independentlyRevalidatedAt,
+        validatedAt,
+        expiresAt,
+        false);
+  }
+}

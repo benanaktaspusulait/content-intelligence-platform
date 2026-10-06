@@ -197,7 +197,8 @@ class CreditTrackingServiceTest {
     when(creditLogRepo.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
     when(creditLogRepo.findByLoggedAtAfter(any())).thenReturn(List.of());
 
-    creditTrackingService.recordProviderUsageIfAbsent(job, new BigDecimal("12.5"), "provider-status");
+    creditTrackingService.recordProviderUsageIfAbsent(
+        job, new BigDecimal("12.5"), "provider-status");
     job.setOpenartJobId("retry-job-456");
     creditTrackingService.recordProviderUsageIfAbsent(job, new BigDecimal("5"), "provider-status");
 

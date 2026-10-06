@@ -130,8 +130,8 @@ def test_attempts_are_recognised_with_explicit_provenance(parsed: ParseResult) -
     assert evidence.verbs == ("PULLS", "CATCHES")
     assert evidence.strategy_families == ("PULL", "CATCH")
     assert evidence.distinct_strategy_count == 2
-    assert evidence.active_seconds == pytest.approx(5.0)
-    assert evidence.active_ratio == pytest.approx(1 / 3)
+    assert evidence.active_seconds == pytest.approx(6.0)
+    assert evidence.active_ratio == pytest.approx(0.4)
 
 
 def test_author_declared_non_attempt_roles_are_never_inferred_as_attempts(parsed: ParseResult) -> None:
@@ -241,12 +241,12 @@ def test_creative_grade_ignores_evidence_gaps_while_evidence_completeness_report
     assessment = build_pre_render_assessment(ir, parsed.metadata, _mixed_report(ir), "1.5")
 
     # The overall grade keeps its fail-closed meaning (a blocker exists)...
-    assert assessment["grade"] == "F"
+    assert assessment["grade"] == "INCOMPLETE"
     # ...but the creative grade only reflects creative failures (one CRITICAL).
     assert assessment["creative_grade"] == "D"
 
     completeness = assessment["evidence_completeness"]
-    assert completeness["status"] == "PARTIAL"
+    assert completeness["status"] == "INCOMPLETE"
     gaps = {g["rule_id"]: g["kind"] for g in completeness["gaps"]}
     assert gaps == {
         "INSTANT_VISUAL_ABSURDITY_GATE": "EVIDENCE_INCOMPLETE_FAIL",

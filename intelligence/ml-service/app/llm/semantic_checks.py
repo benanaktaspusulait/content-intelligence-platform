@@ -163,7 +163,7 @@ def find_duplicate_strategy_pairs(
         raise SemanticCheckServiceError(f"LLM provider unavailable: {e}") from e
 
     numbered_attempts = "\n".join(
-        f"{i}. primaryVerb={a['primaryVerb']!r}, action={a['action']!r}, consequence={a['consequence']!r}"
+        f"{i}. strategyFamily={a.get('strategyFamily', '')!r}, primaryVerb={a['primaryVerb']!r}, action={a['action']!r}, consequence={a['consequence']!r}"
         for i, a in enumerate(attempts)
     )
 
@@ -219,7 +219,11 @@ Use an empty list if every attempt is a genuinely different strategy."""
 
 
 def check_twist_matches_rule(
-    physical_rule: str, twist_description: str, llm_provider: str | None = None
+    physical_rule: str,
+    twist_description: str,
+    llm_provider: str | None = None,
+    *,
+    mechanic_evidence: dict[str, Any] | None = None,
 ) -> tuple[bool, str]:
     """Judge whether a final twist derives from the same established physical rule.
 
@@ -238,6 +242,7 @@ def check_twist_matches_rule(
 structural consistency.
 
 Established physical rule: {physical_rule!r}
+Canonical mechanic evidence: {mechanic_evidence or {}!r}
 
 Final twist: {twist_description!r}
 
@@ -344,7 +349,11 @@ Respond in strict JSON format:
 
 
 def check_goal_is_natural(
-    character_name: str, physical_rule: str, beat_descriptions: list[str], llm_provider: str | None = None
+    character_name: str,
+    physical_rule: str,
+    beat_descriptions: list[str],
+    goal_evidence: dict[str, Any] | None = None,
+    llm_provider: str | None = None,
 ) -> tuple[bool, str]:
     """Judge whether the character has an immediately understandable, natural
     physical goal that the established abnormal rule genuinely obstructs.
@@ -369,6 +378,7 @@ def check_goal_is_natural(
 
 Character: {character_name!r}
 Established abnormal physical rule: {physical_rule!r}
+Canonical local-goal evidence (may be implicit, not a performance signal): {goal_evidence or {}!r}
 
 Beat-by-beat actions/consequences across the timeline (0-indexed):
 {numbered_beats}
@@ -631,7 +641,7 @@ def check_attempts_are_generation_executable(
         raise SemanticCheckServiceError(f"LLM provider unavailable: {e}") from e
 
     numbered_attempts = "\n".join(
-        f"{i}. primaryVerb={a['primaryVerb']!r}, action={a['action']!r}, consequence={a['consequence']!r}"
+        f"{i}. strategyFamily={a.get('strategyFamily', '')!r}, primaryVerb={a['primaryVerb']!r}, action={a['action']!r}, consequence={a['consequence']!r}"
         for i, a in enumerate(attempts)
     )
 
@@ -704,7 +714,8 @@ Include exactly one judgment per attempt, in the same 0-indexed order given abov
 
     judgments: list[dict[str, Any]] = []
     required_fields = ["index", "is_executable", "problem", "suggested_rewrite"]
-    for entry in parsed["judgments"]:
+    seen_indices: set[int] = set()
+    for expected_index, entry in enumerate(parsed["judgments"]):
         if not isinstance(entry, dict):
             raise SemanticCheckServiceError(f"Malformed judgment entry: {entry!r}")
         for field in required_fields:
@@ -712,6 +723,9 @@ Include exactly one judgment per attempt, in the same 0-indexed order given abov
                 raise SemanticCheckServiceError(f"Judgment entry missing required field: {field}")
         if isinstance(entry["index"], bool) or not isinstance(entry["index"], int):
             raise SemanticCheckServiceError("judgment index must be an integer")
+        if entry["index"] != expected_index or entry["index"] in seen_indices or not 0 <= entry["index"] < len(attempts):
+            raise SemanticCheckServiceError("judgment indices must be unique, in order, and within the attempt list")
+        seen_indices.add(entry["index"])
         if not isinstance(entry["is_executable"], bool):
             raise SemanticCheckServiceError("is_executable must be a boolean")
         if not isinstance(entry["problem"], str):

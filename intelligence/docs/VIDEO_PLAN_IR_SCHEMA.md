@@ -516,27 +516,36 @@ This allows the system to flag **low-confidence parses** that need human review.
 
 **This schema is versioned.**
 
-Current version: **1.4**
+Current version: **1.5**
 
-v1.4 adds canonical beat evidence to each beat, all additive and derived once by the parser:
+v1.4 added canonical beat evidence to each beat. v1.5 adds strategy/goal evidence and
+nullable evidence projections; these are parser/evidence plumbing changes and do not mutate
+historical rulesets:
 
 - `beatLabel` / `beatRole`: the author's structural label after the timestamp (for example
   `FIRST ATTEMPT`) and its canonical role (`HOOK`, `REACTION`, `ATTEMPT`, `ESCALATION`,
-  `FAKE_RESOLUTION`, `TWIST`, `PAYOFF`). Both are empty when the first line is not an exact
-  label from that vocabulary. The label is beat metadata: `action`, `consequence`, intensity and
-  the hook anomaly are derived from the body, never from the label text.
-- `attemptSource`: provenance of `isAttempt`, one of `EXPLICIT_MARKER` (`[ATTEMPT: VERB]`),
-  `STRUCTURAL_LABEL` (an `ATTEMPT` label), `LEADING_VERB_INFERENCE` (existing conservative
-  heuristic) or `NONE`. Precedence is in that order. A beat whose author-declared role is
-  `HOOK`, `REACTION`, `FAKE_RESOLUTION`, `TWIST` or `PAYOFF` is never inferred as an attempt;
-  only an explicit marker can override that.
-- `primaryVerb` is `UNSPECIFIED` when a labelled attempt has no identifiable action verb.
-  `ATTEMPT_002` never collapses `UNSPECIFIED` attempts into one strategy.
+  `FAKE_RESOLUTION`, `TWIST`, `PAYOFF`). The label is metadata; action, consequence, intensity
+  and hook anomaly are derived from the body.
+- `attemptSource`: `EXPLICIT_ATTEMPT_LABEL` (`[ATTEMPT: VERB]`), `STRUCTURED_PLAN_ROLE`
+  (an explicit `FIRST/SECOND/... ATTEMPT` role), `SEMANTIC_INFERENCE` or `NONE`. A leading
+  physical verb is only an `attemptCandidate` with source `LEADING_VERB_INFERENCE`; it never
+  sets `isAttempt=true` on its own. Narrative `ESCALATION` is therefore not an attempt unless
+  it also has explicit attempt evidence.
+- `strategyFamily`: conservative mechanical normalization (`PULL`, `PUSH`, `SQUEEZE`,
+  `CATCH`, `THROW_TOSS`, etc.). Force, angle and synonym variants can share a family. Rules
+  track `activeAttemptCount` separately from `distinctStrategyCount`.
+- Attempt beats carry additive `actor`, `goal`, `targetObject`, `intendedEffect`, `result`,
+  `attemptConfidence`, `distinctFromPreviousAttempt` and `attemptReason` fields. Missing
+  semantic evidence remains null; it is not fabricated from performance history.
+- `goalEvidence` carries `goalExplicitness` (`EXPLICIT`, `IMPLICIT_BUT_OBSERVABLE`,
+  `UNSUPPORTED`, `UNKNOWN`), `goalType`, target and obstruction. `coreMechanic` may carry
+  `abnormalProperty`, `trigger`, `persistence`, `releaseCondition` and `recurrence`, so a
+  declared fake resolution can be distinguished from an uncontrolled rule change.
 
-All consumers read attempts through `app/quality/canonical_evidence.py` (`attempt_beats`,
-`attempt_evidence`); nothing re-derives them. `timeline_data.state_segments[].percentage` is a
-percent (0-100) of the timeline, not a 0-1 ratio.
-
+All attempt consumers read `app/quality/canonical_evidence.py` (`attempt_beats` and
+`attempt_evidence`). `timeline_data.state_segments[].percentage` is a percent (0-100), not a
+0-1 ratio. Family assessments represent UNKNOWN/NOT_APPLICABLE/SERVICE_ERROR with a nullable
+score and status; they never encode missing evidence as a measured numeric zero.
 v1.1 adds `Beat.isAttempt` / `Beat.primaryVerb` and relaxes the duration ceiling to
 support 30-45s long-form concepts.
 

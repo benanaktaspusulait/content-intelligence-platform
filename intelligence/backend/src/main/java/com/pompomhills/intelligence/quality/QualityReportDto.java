@@ -55,7 +55,8 @@ public record QualityReportDto(
     Map<String, Object> familyRadar,
     QualityProvenanceDto provenance,
     Map<String, Object> preRenderAssessment,
-    Map<String, Object> videoPlanIr) {
+    Map<String, Object> videoPlanIr,
+    Map<String, Object> familyAssessments) {
 
   /**
    * Backward-compatible constructor for callers that only know the original report shape.
@@ -109,6 +110,7 @@ public record QualityReportDto(
         scoreBreakdowns,
         familyRadar,
         provenance,
+        Map.of(),
         Map.of(),
         Map.of());
   }

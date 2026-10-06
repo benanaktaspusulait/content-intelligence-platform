@@ -97,17 +97,24 @@
     <div *ngIf="report.preRenderAssessment" class="pre-render-assessment card">
       <div class="card-header">
         <div><span class="eyebrow">PRE-RENDER CREATIVE READINESS</span><h2>Can this plan spend render credits?</h2></div>
-        <div class="readiness-summary"><strong>Grade {{ report.preRenderAssessment.grade }}</strong><span>{{ report.preRenderAssessment.readiness.replaceAll('_', ' ') }}</span><small *ngIf="report.preRenderAssessment.creative_grade">Creative grade {{ report.preRenderAssessment.creative_grade }} (evaluated evidence only)</small><small>Evidence {{ report.preRenderAssessment.evidence_completeness?.status || 'UNKNOWN' }} · {{ report.preRenderAssessment.assessment_coverage_percent }}% coverage</small></div>
+        <div class="readiness-summary"><strong>Creative grade {{ report.preRenderAssessment.creative_grade || report.preRenderAssessment.grade }}</strong><span>{{ report.preRenderAssessment.prompt_stage?.replaceAll('_', ' ') || report.preRenderAssessment.readiness.replaceAll('_', ' ') }}</span><small>Creative score {{ report.preRenderAssessment.creative_score ?? 'n/a' }}</small><small>Evidence {{ report.preRenderAssessment.evidence_completeness?.status || 'UNKNOWN' }} · {{ report.preRenderAssessment.assessment_coverage_percent }}% coverage</small><small *ngIf="report.preRenderAssessment.render_authorization">Video render: {{ report.preRenderAssessment.render_authorization.status.replaceAll('_', ' ') }}</small></div>
       </div>
       <div class="card-body">
         <p class="assessment-verdict">{{ report.preRenderAssessment.verdict }}</p>
+        <div *ngIf="report.preRenderAssessment.first_frame as firstFrame" class="assessment-columns">
+          <section><h3>First-frame text intent · {{ firstFrame.textual_intent.status }}</h3><p>{{ firstFrame.textual_intent.reason }}</p></section>
+          <section><h3>Visual verification · {{ firstFrame.visual_verification.status }}</h3><p>{{ firstFrame.visual_verification.reason }}</p></section>
+          <section><h3>Silhouette gate · {{ firstFrame.silhouette_verification.status }}</h3><p>{{ firstFrame.silhouette_verification.reason }}</p></section>
+          <section *ngIf="report.preRenderAssessment.render_authorization as authorization"><h3>Render authorization · {{ authorization.status.replaceAll('_', ' ') }}</h3><p>{{ authorization.reason }}</p><p *ngFor="let item of authorization.pending_evidence_blockers">Evidence required: {{ item }}</p><p *ngFor="let item of authorization.creative_failures">Creative issue: {{ item }}</p></section>
+        </div>
         <div class="assessment-columns">
           <section><h3>Strengths</h3><p *ngFor="let item of report.preRenderAssessment.strengths">✓ {{ item }}</p></section>
           <section><h3>Needs attention</h3><p *ngFor="let item of report.preRenderAssessment.concerns">⚠ {{ item }}</p></section>
           <section><h3>Recommended changes</h3><p *ngFor="let item of report.preRenderAssessment.recommended_changes">→ {{ item }}</p></section>
           <section *ngIf="report.preRenderAssessment.evidence_completeness as evidence">
             <h3>Evidence completeness · {{ evidence.status }}</h3>
-            <p>{{ evidence.canonical_evidence.beat_count }} beats ({{ evidence.canonical_evidence.labelled_beats }} labelled), {{ evidence.canonical_evidence.attempts.count }} attempts [{{ evidence.canonical_evidence.attempts.verbs.join(', ') }}], {{ formatRatioAsPercent(evidence.canonical_evidence.attempts.active_ratio) }} active time.</p>
+            <p>{{ evidence.canonical_evidence.beat_count }} beats ({{ evidence.canonical_evidence.labelled_beats }} labelled), {{ evidence.canonical_evidence.attempts.activeAttemptCount }} active attempts, {{ evidence.canonical_evidence.attempts.distinctStrategyCount }} distinct strategies [{{ evidence.canonical_evidence.attempts.strategy_families.join(', ') }}], {{ formatRatioAsPercent(evidence.canonical_evidence.attempts.active_ratio) }} active time.</p>
+            <details><summary>Canonical beat strategy audit</summary><p *ngFor="let beat of evidence.canonical_evidence.beatAudit"><strong>{{ beat['beatId'] }} · {{ beat['beatRole'] || 'UNLABELLED' }}</strong> · {{ beat['action'] }} · strategy={{ beat['strategyFamily'] }} · attempt={{ beat['isAttempt'] }} · source={{ beat['attemptSource'] }} · {{ beat['reason'] }}</p></details>
             <p *ngFor="let gap of evidence.gaps">○ {{ gap.rule_id }} ({{ gap.kind.replaceAll('_', ' ') }}): {{ gap.message }}</p>
             <p *ngFor="let item of evidence.unscored_families">○ {{ item.family }}: not evaluated. Shown as 0 only as a fail-closed placeholder.</p>
           </section>
@@ -274,12 +281,12 @@
               <div 
                 class="family-bar-fill" 
                 [ngClass]="getFamilyScoreClass(entry[1])"
-                [style.width.%]="isUnscoredFamily(entry[0]) ? 0 : entry[1]">
+                [style.width.%]="entry[1] === null ? 0 : entry[1]">
               </div>
             </div>
             <div class="family-score"
                  [attr.title]="isUnscoredFamily(entry[0]) ? 'No evaluable evidence for this family; not a creative score' : null">
-              {{ isUnscoredFamily(entry[0]) ? 'n/a' : entry[1].toFixed(0) }}
+              {{ entry[1] === null ? 'n/a' : entry[1].toFixed(0) }}
             </div>
           </div>
         </div>

@@ -117,6 +117,7 @@ class RenderJobQueueServiceTest {
     assertThat(savedAttempt.getRenderJobId()).isEqualTo(saved.getId());
     assertThat(savedAttempt.getAttemptNumber()).isEqualTo(1);
     assertThat(savedAttempt.getStage()).isEqualTo(RenderExecutionStage.QUEUED);
+    verify(creditTrackingService).recordEstimatedUsage(saved);
   }
 
   @Test

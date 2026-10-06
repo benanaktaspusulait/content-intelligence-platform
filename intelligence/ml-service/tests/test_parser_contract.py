@@ -273,10 +273,8 @@ The core rule is simple and clean, but the pencil tip breaks off here.
     assert ir["coreMechanic"]["consistency"] is None
 
 
-def test_unmarked_beat_with_clear_action_verb_is_inferred_as_attempt() -> None:
-    """A beat description starting with a recognizable physical action verb,
-    even with no [ATTEMPT: VERB] marker, is inferred as an attempt at lower
-    confidence rather than being invisible to ATTEMPT_001/ATTEMPT_002."""
+def test_unmarked_beat_with_clear_action_verb_is_a_candidate_not_an_attempt() -> None:
+    """A leading physical verb nominates a candidate but is not canonical attempt evidence."""
     prompt = """
 Title: Mimi vs Rug
 
@@ -293,12 +291,14 @@ Title: Mimi vs Rug
     result = parse_prompt(prompt)
     ir = result.video_plan_ir
     beats = ir["beats"]
-    assert beats[0]["isAttempt"] is True
-    assert beats[0]["primaryVerb"] == "CATCHES"
-    assert beats[1]["isAttempt"] is True
-    assert beats[1]["primaryVerb"] == "BLOCKS"
+    assert beats[0]["isAttempt"] is False
+    assert beats[0]["attemptSource"] == "NONE"
+    assert beats[0]["attemptCandidate"]["source"] == "LEADING_VERB_INFERENCE"
+    assert beats[1]["isAttempt"] is False
+    assert beats[1]["attemptSource"] == "NONE"
+    assert beats[1]["attemptCandidate"]["source"] == "LEADING_VERB_INFERENCE"
     assert beats[2]["isAttempt"] is False
-    assert any("inferred" in a.lower() for a in result.metadata.assumptions)
+    assert any("inferred" not in a.lower() for a in result.metadata.assumptions)
 
 
 def test_explicit_marker_still_takes_precedence_over_inference() -> None:

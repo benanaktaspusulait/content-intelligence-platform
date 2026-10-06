@@ -484,8 +484,8 @@ class TestFamilyScoreExcludesNotApplicableAndUnknown:
             ),
         ]
         scores = engine._calculate_family_scores(evaluations)
-        # Only the PASS evaluation should count: 100 / 1 = 100, not 100 / 2 = 50.
-        assert scores["test_family"] == 100.0
+        # NOT_APPLICABLE is not a measured family score, even beside a PASS.
+        assert scores["test_family"] is None
 
     def test_unknown_outcome_excluded_from_family_score(self) -> None:
         from app.quality.contracts import RuleEvaluation as CanonicalRuleEvaluation
@@ -511,9 +511,10 @@ class TestFamilyScoreExcludesNotApplicableAndUnknown:
             ),
         ]
         scores = engine._calculate_family_scores(evaluations)
-        assert scores["test_family"] == 100.0
+        # Partial evidence is not a complete numeric family score.
+        assert scores["test_family"] is None
 
-    def test_family_with_only_not_applicable_scores_zero_with_zero_count(self) -> None:
+    def test_family_with_only_not_applicable_has_no_score(self) -> None:
         from app.quality.contracts import RuleEvaluation as CanonicalRuleEvaluation
         from app.quality.contracts import RuleOutcome, Severity
 
@@ -529,8 +530,8 @@ class TestFamilyScoreExcludesNotApplicableAndUnknown:
             ),
         ]
         scores = engine._calculate_family_scores(evaluations)
-        # count == 0 for this family -> the existing "count > 0 else 0" branch applies.
-        assert scores["test_family"] == 0
+        # NOT_APPLICABLE has no semantic score.
+        assert scores["test_family"] is None
 
 
 class TestBeat005StoryDetachedGap:

@@ -164,6 +164,9 @@ public class AssetLibraryManager {
             .quarantined(false)
             .build();
 
+    // The partial unique index allows only one current asset per content/type. Demote the previous
+    // version in the same transaction before promoting this newly downloaded version.
+    assetRepo.clearCurrentForContentAndType(job.getContentId(), assetType);
     asset = assetRepo.save(asset);
     log.info(
         "Recorded asset {} for content {}: type={}, size={} bytes",

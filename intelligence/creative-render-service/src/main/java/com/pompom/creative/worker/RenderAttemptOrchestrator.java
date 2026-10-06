@@ -123,8 +123,8 @@ public class RenderAttemptOrchestrator {
   }
 
   /**
-   * Persist a submission intent in its own transaction before invoking the external provider.
-   * An uncertain outcome is terminal for automatic processing; retrying it blindly could spend a
+   * Persist a submission intent in its own transaction before invoking the external provider. An
+   * uncertain outcome is terminal for automatic processing; retrying it blindly could spend a
    * second provider generation.
    */
   private void submit(UUID attemptId, String leaseOwner) {
@@ -153,7 +153,6 @@ public class RenderAttemptOrchestrator {
   }
 
   private OpenArtJobResponse submitFirstFrame(RenderJob job) {
-    JsonNode parameters = providerParameters(job);
     OpenArtImageRequest request =
         OpenArtImageRequest.builder()
             .promptText(
@@ -161,8 +160,6 @@ public class RenderAttemptOrchestrator {
                     ? job.getPromptTextSnapshot()
                     : job.getGenerationPromptSnapshot())
             .model(job.getOpenartModel())
-            .style(parameters.path("style").asText("cinematic"))
-            .aspectRatio(parameters.path("aspectRatio").asText("16:9"))
             .build();
     return openArtAdapter.generateImage(request);
   }
@@ -227,6 +224,7 @@ public class RenderAttemptOrchestrator {
             status.getCreditsUsed() == null ? "estimate-fallback" : "provider-status");
       }
     } else if (state == ProviderJobState.FAILED || state == ProviderJobState.CANCELLED) {
+      settleProviderFailure(job, status, state);
       failProviderAttempt(attempt, job, state, status.getErrorMessage());
     } else if (maxProviderPolls > 0 && pollCount >= maxProviderPolls) {
       failProviderAttempt(
@@ -246,6 +244,16 @@ public class RenderAttemptOrchestrator {
     renderAttemptRepo.save(attempt);
     renderJobRepo.save(job);
     publishProgress(job, "Polling provider", status == null ? null : status.getProgressPercent());
+  }
+
+  private void settleProviderFailure(
+      RenderJob job, OpenArtJobStatus status, ProviderJobState state) {
+    if (status.getCreditsUsed() != null && job.getOpenartJobId() != null) {
+      creditTrackingService.recordProviderUsageIfAbsent(
+          job, status.getCreditsUsed(), "provider-" + state.name().toLowerCase());
+    } else {
+      creditTrackingService.releaseEstimateIfPresent(job, "provider-" + state.name().toLowerCase());
+    }
   }
 
   private void failProviderAttempt(

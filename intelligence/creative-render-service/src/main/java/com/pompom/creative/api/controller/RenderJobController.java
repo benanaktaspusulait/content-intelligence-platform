@@ -19,6 +19,8 @@ import com.pompom.creative.queue.ValidationEvidenceRejectedException;
 import com.pompom.creative.repository.RenderAttemptRepository;
 import com.pompom.creative.repository.RenderJobRepository;
 import com.pompom.creative.repository.RenderQaResultRepository;
+import com.pompom.creative.service.CreditTrackingService;
+import com.pompom.creative.worker.RenderSubmissionStateService;
 import java.net.URI;
 import java.time.Instant;
 import java.util.List;
@@ -47,6 +49,8 @@ public class RenderJobController {
   private final RenderAttemptRepository renderAttemptRepo;
   private final RenderJobQueueService queueService;
   private final PostRenderEvaluationRepository postRenderEvaluationRepo;
+  private final CreditTrackingService creditTrackingService;
+  private final RenderSubmissionStateService submissionStateService;
 
   @Autowired
   public RenderJobController(
@@ -54,12 +58,16 @@ public class RenderJobController {
       RenderQaResultRepository qaResultRepo,
       RenderAttemptRepository renderAttemptRepo,
       RenderJobQueueService queueService,
-      PostRenderEvaluationRepository postRenderEvaluationRepo) {
+      PostRenderEvaluationRepository postRenderEvaluationRepo,
+      CreditTrackingService creditTrackingService,
+      RenderSubmissionStateService submissionStateService) {
     this.renderJobRepo = renderJobRepo;
     this.qaResultRepo = qaResultRepo;
     this.renderAttemptRepo = renderAttemptRepo;
     this.queueService = queueService;
     this.postRenderEvaluationRepo = postRenderEvaluationRepo;
+    this.creditTrackingService = creditTrackingService;
+    this.submissionStateService = submissionStateService;
   }
 
   /** Compatibility constructor for queue-focused controller tests. */
@@ -67,7 +75,7 @@ public class RenderJobController {
       RenderJobRepository renderJobRepo,
       RenderQaResultRepository qaResultRepo,
       RenderJobQueueService queueService) {
-    this(renderJobRepo, qaResultRepo, null, queueService, null);
+    this(renderJobRepo, qaResultRepo, null, queueService, null, null, null);
   }
 
   /**
@@ -180,6 +188,10 @@ public class RenderJobController {
     }
     RenderAttempt attempt =
         renderAttemptRepo.findTopByRenderJobIdOrderByAttemptNumberDesc(id).orElse(null);
+    boolean remoteSubmissionUncertain =
+        attempt != null
+            && (attempt.getStage() == RenderExecutionStage.SUBMITTING
+                || attempt.getProviderJobId() != null);
     if (attempt != null && !attempt.isTerminal()) {
       attempt.setStage(RenderExecutionStage.ABANDONED);
       attempt.setTerminalReason("Cancelled by operator");
@@ -192,9 +204,50 @@ public class RenderJobController {
     job.setFailedAt(Instant.now());
     job.setErrorCode("CANCELLED_BY_OPERATOR");
     job.setErrorMessage("Cancelled by operator; any remote provider job was not deleted");
+    if (creditTrackingService != null && !remoteSubmissionUncertain) {
+      creditTrackingService.releaseEstimateIfPresent(job, "operator-cancel");
+    }
     renderJobRepo.save(job);
     return ResponseEntity.ok(
         java.util.Map.of("success", true, "message", "Render job cancelled locally"));
+  }
+
+  /**
+   * Resolve an uncertain OpenArt submission without blindly creating a second provider job. Provide
+   * {@code providerJobId} to attach an observed OpenArt history, or {@code action=ABANDON} to close
+   * the local attempt while retaining its conservative credit reservation.
+   */
+  @PostMapping("/{id}/reconcile-submission")
+  public ResponseEntity<?> reconcileSubmission(
+      @PathVariable UUID id, @RequestBody java.util.Map<String, String> request) {
+    if (submissionStateService == null) {
+      return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED)
+          .body(java.util.Map.of("message", "Submission reconciliation is not configured"));
+    }
+    RenderAttempt attempt =
+        renderAttemptRepo == null
+            ? null
+            : renderAttemptRepo.findTopByRenderJobIdOrderByAttemptNumberDesc(id).orElse(null);
+    if (attempt == null) {
+      return ResponseEntity.notFound().build();
+    }
+
+    String providerJobId = request.get("providerJobId");
+    if (providerJobId != null && !providerJobId.isBlank()) {
+      submissionStateService.attachProviderJob(attempt.getId(), providerJobId);
+      return ResponseEntity.ok(
+          java.util.Map.of("success", true, "message", "Provider history attached"));
+    }
+    if ("ABANDON".equalsIgnoreCase(request.get("action"))) {
+      submissionStateService.abandonUncertainSubmission(
+          attempt.getId(), request.getOrDefault("reason", "Operator reconciliation abandoned"));
+      return ResponseEntity.ok(
+          java.util.Map.of("success", true, "message", "Uncertain submission abandoned"));
+    }
+    return ResponseEntity.badRequest()
+        .body(
+            java.util.Map.of(
+                "message", "Provide providerJobId or action=ABANDON to reconcile the submission"));
   }
 
   /** Queue a new durable attempt for a failed job while preserving the previous attempt history. */
@@ -212,21 +265,25 @@ public class RenderJobController {
       return ResponseEntity.badRequest()
           .body(java.util.Map.of("message", "Only failed or abandoned jobs can be retried"));
     }
-    if (previous.getStage() == RenderExecutionStage.ABANDONED
-        && previous.getProviderJobId() != null
-        && previous.getProviderJobState() != ProviderJobState.SUCCEEDED
-        && previous.getProviderJobState() != ProviderJobState.FAILED
-        && previous.getProviderJobState() != ProviderJobState.CANCELLED) {
+    if ((previous.getStage() == RenderExecutionStage.FAILED
+            || previous.getStage() == RenderExecutionStage.ABANDONED)
+        && ("PROVIDER_SUBMISSION_UNCERTAIN".equals(job.getErrorCode())
+            || (previous.getProviderJobId() != null
+                && previous.getProviderJobState() != ProviderJobState.SUCCEEDED
+                && previous.getProviderJobState() != ProviderJobState.FAILED
+                && previous.getProviderJobState() != ProviderJobState.CANCELLED))) {
       return ResponseEntity.badRequest()
           .body(
               java.util.Map.of(
-                  "message",
-                  "Remote OpenArt job is not terminal; reconcile it before retrying"));
+                  "message", "Remote OpenArt job is not terminal; reconcile it before retrying"));
     }
     int nextNumber = previous.getAttemptNumber() + 1;
     if (nextNumber > job.getMaxAttempts()) {
       return ResponseEntity.badRequest()
           .body(java.util.Map.of("message", "Maximum render attempts reached"));
+    }
+    if (creditTrackingService != null) {
+      creditTrackingService.reserveAdditionalAttempt(job);
     }
     renderAttemptRepo.save(
         RenderAttempt.builder()

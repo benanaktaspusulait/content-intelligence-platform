@@ -140,7 +140,8 @@ public class RenderJobQueueService {
           "PROMPT_SNAPSHOT_MISMATCH",
           "Canonical prompt snapshot does not match the render-authorizing evidence");
     }
-    if (!"RENDER_READY".equals(prompt.contentStatus())) {
+    if (request.jobType() != RenderJob.JobType.FIRST_FRAME
+        && !"RENDER_READY".equals(prompt.contentStatus())) {
       throw new ValidationEvidenceRejectedException(
           "CONTENT_NOT_RENDER_READY", "Content is not in the RENDER_READY state");
     }
@@ -156,10 +157,6 @@ public class RenderJobQueueService {
           "CREATIVE_CONTRACT_INCOMPLETE",
           "Validated prompt cannot produce a complete creative production contract: "
               + contract.contract().errors());
-    }
-    budgetAlertService.checkBudgetBeforeRender();
-    if (!creditTrackingService.canAffordRender(request.jobType())) {
-      throw new IllegalStateException("Insufficient render budget");
     }
     java.math.BigDecimal estimatedCredits =
         creditTrackingService.getEstimatedCost(request.jobType());
@@ -205,6 +202,11 @@ public class RenderJobQueueService {
     RenderJob saved =
         newTransaction.execute(
             status -> {
+              creditTrackingService.lockBudgetForReservation();
+              budgetAlertService.checkBudgetBeforeRender();
+              if (!creditTrackingService.canAffordRender(request.jobType())) {
+                throw new IllegalStateException("Insufficient render budget");
+              }
               RenderJob savedJob = repository.save(job);
               attemptRepository.save(RenderAttempt.firstAttemptFor(savedJob.getId()));
               creditTrackingService.recordEstimatedUsage(savedJob);

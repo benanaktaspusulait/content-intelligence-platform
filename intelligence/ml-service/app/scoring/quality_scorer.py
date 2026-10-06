@@ -114,7 +114,7 @@ class QualityScorer:
     def _create_score_breakdowns(
         self,
         evaluations: tuple[RuleEvaluation, ...],
-        family_scores: dict[str, float],
+        family_scores: dict[str, float | None],
     ) -> list[ScoreBreakdown]:
         """Create detailed breakdown for each family."""
 
@@ -141,7 +141,7 @@ class QualityScorer:
             recommendations = tuple(self._generate_family_recommendations(family, evals))
 
             weight = self.FAMILY_WEIGHTS.get(family, 0.05)
-            contribution = score * weight
+            contribution = score * weight if score is not None else None
 
             breakdowns.append(
                 ScoreBreakdown(
@@ -158,7 +158,7 @@ class QualityScorer:
                 )
             )
 
-        breakdowns.sort(key=lambda b: b.weighted_contribution, reverse=True)
+        breakdowns.sort(key=lambda b: b.weighted_contribution if b.weighted_contribution is not None else -1, reverse=True)
         return breakdowns
 
     def _generate_family_recommendations(self, family: str, evaluations: list[RuleEvaluation]) -> list[str]:
@@ -222,7 +222,7 @@ class QualityScorer:
 
         strengths: list[str] = []
         for breakdown in breakdowns:
-            if breakdown.score >= self.EXCELLENT_THRESHOLD:
+            if breakdown.score is not None and breakdown.score >= self.EXCELLENT_THRESHOLD:
                 strengths.append(f"{breakdown.family.replace('_', ' ').title()}: {breakdown.score:.0f}/100")
         return strengths
 
@@ -236,9 +236,12 @@ class QualityScorer:
         """
 
         weaknesses: list[str] = []
-        sorted_breakdowns = sorted(breakdowns, key=lambda b: (b.score, -b.weight))
+        sorted_breakdowns = sorted(
+            breakdowns,
+            key=lambda b: (b.score if b.score is not None else 101, -b.weight),
+        )
         for breakdown in sorted_breakdowns:
-            if breakdown.family in unscored:
+            if breakdown.family in unscored or breakdown.score is None:
                 continue
             if breakdown.score < self.ACCEPTABLE_THRESHOLD:
                 weakness_str = f"{breakdown.family.replace('_', ' ').title()}: {breakdown.score:.0f}/100"
@@ -375,7 +378,7 @@ class QualityScorer:
             "state_segments": state_segments,
         }
 
-    def _create_family_radar(self, family_scores: dict[str, float]) -> dict[str, Any]:
+    def _create_family_radar(self, family_scores: dict[str, float | None]) -> dict[str, Any]:
         """Create radar chart data."""
 
         ordered_families = [
@@ -392,7 +395,7 @@ class QualityScorer:
             "render_risk",
         ]
 
-        scores = [family_scores.get(family, 0) for family in ordered_families]
+        scores = [family_scores.get(family) for family in ordered_families]
         labels = [family.replace("_", " ").title() for family in ordered_families]
 
         return {
@@ -422,7 +425,11 @@ class QualityScorer:
             previous_families = {b.family: b.score for b in previous_report.score_breakdowns}
             for family in current_families:
                 if family in previous_families:
-                    delta = current_families[family] - previous_families[family]
+                    current_score = current_families[family]
+                    previous_score = previous_families[family]
+                    if current_score is None or previous_score is None:
+                        continue
+                    delta = current_score - previous_score
                     if delta > 5:
                         trend.improved_families.append(family)
                     elif delta < -5:

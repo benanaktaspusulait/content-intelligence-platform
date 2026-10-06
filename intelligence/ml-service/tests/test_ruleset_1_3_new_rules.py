@@ -147,11 +147,11 @@ class TestProgression006ActivityIsNotProgression:
 
 
 class TestEscalation005MeaningfulAttemptEscalation:
-    def test_pass_with_fewer_than_two_attempts(self) -> None:
+    def test_unknown_with_fewer_than_two_attempts(self) -> None:
         engine = _engine()
         ir = _minimal_ir(beats=[{"isAttempt": True, "intensity": 3}])
         evaluation = engine._evaluate_escalation_005(ir, {})
-        assert evaluation.outcome is RuleOutcome.PASS
+        assert evaluation.outcome is RuleOutcome.UNKNOWN
 
     def test_warning_fail_when_intensity_is_flat(self) -> None:
         engine = _engine()

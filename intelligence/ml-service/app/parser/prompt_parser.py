@@ -13,6 +13,7 @@ from typing import Any
 from ..quality.canonical_evidence import (
     CANONICAL_EVIDENCE_VERSION,
     UNSPECIFIED_VERB,
+    escalation_evidence,
     normalize_strategy_family,
 )
 from ..quality.contracts import ParseResult, ParserMetadata
@@ -125,6 +126,10 @@ class PromptParser:
 
         # Step 10: Enrich beats with analysis
         beats = self._enrich_beats(beats)
+        escalation = escalation_evidence({"metadata": metadata, "coreMechanic": core_mechanic, "beats": beats})
+        for beat in beats:
+            if beat.get("beatRole") == "ESCALATION":
+                beat["escalationEvidence"] = escalation
 
         # Construct IR
         video_plan_ir = {
@@ -309,9 +314,9 @@ class PromptParser:
         """Find main props/objects"""
         # Look for MAIN OBJECTS: or similar
         props_match = re.search(
-            r"(?:MAIN OBJECTS?|PROPS?):\s*\n((?:.*\n?)+?)(?:\n\n|[A-Z]{2,})",
+            r"(?ims)^\s*(?:#{0,3}\s*)?(?:MAIN OBJECTS?|PROPS?)\s*:?[ \t]*\n"
+            r"(?P<body>.*?)(?=\n\s*\n\s*(?:[A-Z][A-Z0-9 _/&'-]{2,})\s*(?:\n|$)|\Z)",
             text,
-            re.IGNORECASE,
         )
         if props_match:
             props_text = props_match.group(1)
@@ -358,10 +363,10 @@ class PromptParser:
         would manufacture a guaranteed PASS.
         """
         rule_match = re.search(
-            r"(?:ONE SIMPLE|CORE|MAIN|PHYSICAL)\s+(?:RULE|MECHANIC|CONCEPT):?\s*\n?"
-            r"((?:.*\n?)+?)(?:\n\n|={3,}|\n[A-Z][A-Z _-]{2,}:)",
+            r"(?ims)^\s*(?:#{0,3}\s*)?(?:ONE SIMPLE|CORE|MAIN|PHYSICAL)\s+"
+            r"(?:RULE|MECHANIC|CONCEPT)\s*:?[ \t]*\n"
+            r"(?P<body>.*?)(?=\n\s*\n\s*(?:[A-Z][A-Z0-9 _/&'-]{2,})\s*(?:\n|$)|\Z)",
             text,
-            re.IGNORECASE | re.DOTALL,
         )
 
         consistency = self._extract_mechanic_consistency(text)
@@ -480,13 +485,13 @@ class PromptParser:
         ).lower()
         target = mechanic.get("primaryObject")
         target_text = str(target or "the object")
-        explicit_match = re.search(r"(?:goal|objective|wants? to|tries? to|must)[:\s]+([^\n.]+)", text, re.IGNORECASE)
+        explicit_match = re.search(r"(?:goal|objective)\s*:\s*([^\n.]+)|(?:wants? to|tries? to)\s+([^\n.]+)", text, re.IGNORECASE)
         goal_words = ("retrieve", "remove", "pull", "catch", "control", "use", "free", "get", "restore", "normal", "unstick", "inspect", "fix")
         obstruction_words = ("stuck", "will not", "won't", "cannot", "can't", "instead of", "remains", "resists", "impossible")
         has_goal_action = any(word in all_text for word in goal_words)
         has_obstruction = any(word in all_text for word in obstruction_words) or bool(mechanic.get("abnormalProperty"))
         if explicit_match:
-            description = explicit_match.group(1).strip()
+            description = (explicit_match.group(1) or explicit_match.group(2) or "").strip()
             explicitness = "EXPLICIT"
             source = "EXPLICIT_TEXT"
         elif has_goal_action and has_obstruction:
@@ -885,7 +890,8 @@ class PromptParser:
             description, content, role, label
         )
         relates_to_core_problem = self._extract_detached_marker(description)
-        strategy_family = normalize_strategy_family(primary_verb, action, content)
+        strategy_verb = primary_verb or (attempt_candidate or {}).get("verb", "")
+        strategy_family = normalize_strategy_family(strategy_verb, action, content)
 
 
         return {
@@ -1041,6 +1047,15 @@ class PromptParser:
         visual_strength = self._extract_hook_visual_strength(text)
         sound_off_clear = self._extract_hook_sound_off_clear(text)
 
+        textual_opening_text = " ".join(
+            str(first_beat.get(key, "")) for key in ("action", "consequence", "visualState")
+        ) if first_beat else ""
+        anomaly_terms = ("stick", "stuck", "sticky", "impossible", "instead of", "wrong", "already", "won't", "will not", "cannot")
+        textual_first_frame_intent = {
+            "status": "PASS" if first_beat and first_beat.get("startTime", 0.0) <= 0.8 and any(term in textual_opening_text.lower() for term in anomaly_terms) else "FAIL" if first_beat else "UNKNOWN",
+            "source": "PROMPT_TEXT",
+        }
+
         if visual_strength is None:
             self.warnings.append("hook.visualStrength not explicitly stated in prompt; evidence missing")
         if sound_off_clear is None:
@@ -1052,6 +1067,7 @@ class PromptParser:
             "startsMidAction": starts_mid_action,
             "visualStrength": visual_strength,
             "soundOffClear": sound_off_clear,
+            "textualFirstFrameIntent": textual_first_frame_intent,
         }
 
     def _extract_hook_visual_strength(self, text: str) -> int | None:

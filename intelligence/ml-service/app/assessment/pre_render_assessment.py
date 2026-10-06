@@ -12,6 +12,7 @@ from typing import Any
 from ..quality.canonical_evidence import (
     attempt_beats,
     attempt_evidence,
+    beat_audit,
     evidence_gap_kind,
     is_evidence_gap,
     is_unspecified_verb,
@@ -22,7 +23,7 @@ from ..quality.canonical_evidence import (
 def build_pre_render_assessment(ir: dict[str, Any], parser: Any, report: Any, ruleset_version: str) -> dict[str, Any]:
     evaluations = tuple(report.evaluations)
     applicable = tuple(e for e in evaluations if e.outcome.value not in {"NOT_APPLICABLE"})
-    evaluated = tuple(e for e in applicable if e.outcome.value not in {"UNKNOWN", "SERVICE_ERROR"})
+    evaluated = tuple(e for e in applicable if not is_evidence_gap(e))
     coverage = round(len(evaluated) * 100 / max(len(applicable), 1))
 
     dimensions = [
@@ -47,6 +48,12 @@ def build_pre_render_assessment(ir: dict[str, Any], parser: Any, report: Any, ru
 
     grade = _grade(report, coverage, parser)
     creative_grade = _creative_grade(evaluations)
+    evidence_completeness = _evidence_completeness(report, ir, evaluations, coverage, dimensions)
+    first_frame = _first_frame_assessment(ir)
+    render_authorization = _render_authorization(
+        report, creative_grade, evidence_completeness, first_frame
+    )
+    prompt_stage = _prompt_stage(creative_grade, first_frame, render_authorization)
     readiness = {
         "A": "READY_TO_RENDER", "B": "READY_TO_RENDER", "C": "EDIT_PLAN",
         "D": "EDIT_PLAN", "F": "BLOCKED", "INCOMPLETE": "INCOMPLETE",
@@ -66,9 +73,13 @@ def build_pre_render_assessment(ir: dict[str, Any], parser: Any, report: Any, ru
         "name": "PRE_RENDER_CREATIVE_READINESS",
         "grade": grade,
         "creative_grade": creative_grade,
+        "creative_score": round(float(report.overall_score), 2),
         "readiness": readiness,
+        "prompt_stage": prompt_stage,
         "assessment_coverage_percent": coverage,
-        "evidence_completeness": _evidence_completeness(report, ir, evaluations, coverage, dimensions),
+        "evidence_completeness": evidence_completeness,
+        "first_frame": first_frame,
+        "render_authorization": render_authorization,
         "verdict": verdict,
         "strengths": strengths or ["No dimension has enough evidence to be called a strength."],
         "concerns": concerns or ["No unresolved dimension concern was recorded."],
@@ -78,6 +89,9 @@ def build_pre_render_assessment(ir: dict[str, Any], parser: Any, report: Any, ru
         "provenance": {
             "rulesetVersion": ruleset_version,
             "parserVersion": "prompt-parser-v2",
+            "canonicalEvidenceVersion": "canonical-attempt-evidence-v2",
+            "assessmentVersion": "pre-render-assessment-v2",
+            "scoringVersion": "quality-scorer-v2",
             "semanticProvider": "deterministic-pre-render-evidence",
             "evaluationStage": "PRE_RENDER",
         },
@@ -111,12 +125,45 @@ def _concept(ir: dict[str, Any]) -> dict[str, str]:
 
 def _opening(ir: dict[str, Any], evaluations: Iterable[Any]) -> dict[str, str]:
     hook = ir.get("hook") or {}
-    status = _rule_status(evaluations, "INSTANT_CAUSAL_LEGIBILITY", "INSTANT_VISUAL_ABSURDITY_GATE", "HOOK_001", "HOOK_002")
+    rule = _rule(evaluations, "INSTANT_CAUSAL_LEGIBILITY", "INSTANT_VISUAL_ABSURDITY_GATE", "HOOK_001", "HOOK_002")
+    status = None if rule is None else rule.outcome.value
+    if rule is not None and is_evidence_gap(rule):
+        return _dimension(
+            "OPENING_HOOK",
+            "Opening / hook",
+            "UNKNOWN",
+            "Textual opening evidence exists, but visual hook verification is pending.",
+            rule.message,
+            "Supply first-frame visual evidence; do not rewrite the prompt solely for this gap.",
+            "PARTIAL",
+        )
     if status == "FAIL":
-        return _dimension("OPENING_HOOK", "Opening / hook", "NEEDS_ATTENTION", "The opening rule evidence reports a delayed or unclear anomaly.", hook.get("description", "The central problem is not established early enough."), "Start at the first visible consequence of the impossible rule.")
+        return _dimension(
+            "OPENING_HOOK",
+            "Opening / hook",
+            "NEEDS_ATTENTION",
+            "The opening rule evidence reports a delayed or unclear anomaly.",
+            hook.get("description", "The central problem is not established early enough."),
+            "Start at the first visible consequence of the impossible rule.",
+        )
     if hook.get("startTime", 0) <= 0.8 or hook.get("visualStrength") is True:
-        return _dimension("OPENING_HOOK", "Opening / hook", "STRONG", "The plan declares an immediate opening beat.", "The hook begins at the opening window; face, text and direct gaze are not mandatory.", "Keep the anomaly readable without adding an unnecessary establishing shot.")
-    return _dimension("OPENING_HOOK", "Opening / hook", "UNKNOWN", "The opening cannot be confirmed from explicit plan evidence.", "Hook timing or visual consequence is not explicit.", "Specify what the viewer sees in the first 0–0.8 seconds.", "PARTIAL")
+        return _dimension(
+            "OPENING_HOOK",
+            "Opening / hook",
+            "STRONG",
+            "The plan declares an immediate opening beat.",
+            "The hook begins at the opening window; face, text and direct gaze are not mandatory.",
+            "Keep the anomaly readable without adding an unnecessary establishing shot.",
+        )
+    return _dimension(
+        "OPENING_HOOK",
+        "Opening / hook",
+        "UNKNOWN",
+        "The opening cannot be confirmed from explicit plan evidence.",
+        "Hook timing or visual consequence is not explicit.",
+        "Specify what the viewer sees in the first 0–0.8 seconds.",
+        "PARTIAL",
+    )
 
 
 def _goal(ir: dict[str, Any], evaluations: Iterable[Any]) -> dict[str, str]:
@@ -140,7 +187,7 @@ def _attempts(ir: dict[str, Any], evaluations: Iterable[Any]) -> dict[str, str]:
     # Attempt facts come from the canonical accessor; "distinct" comes from the rule
     # that judged it (ATTEMPT_002) so this dimension can never disagree with the rule list.
     evidence = attempt_evidence(ir)
-    verbs = [verb for verb in evidence.verbs if not is_unspecified_verb(verb)]
+    verbs = [family for family in evidence.strategy_families if family != "UNSPECIFIED"]
     rule = _rule(evaluations, "ATTEMPT_002", "ATTEMPT_STRATEGY_DIVERSITY", "ATTEMPT_003")
     judged = (
         rule is not None
@@ -316,11 +363,123 @@ def _stable_intent(ir: dict[str, Any]) -> list[str]:
     return [value for value in [f"primary_character:{characters.get('primary')}" if characters.get("primary") else None, f"central_mechanic:{mechanic.get('physicalRule')}" if mechanic.get("physicalRule") else None, f"content_family:{(ir.get('metadata') or {}).get('seriesType')}" if (ir.get('metadata') or {}).get('seriesType') else None] if value]
 
 
-_UNSCORED_FAMILY_REASON = (
-    "No rule in this family produced an evaluable result; family_scores shows a fail-closed 0 "
-    "placeholder, not a creative score."
-)
+def _textual_first_frame_intent(ir: dict[str, Any]) -> dict[str, Any]:
+    hook = ir.get("hook") or {}
+    beats = ir.get("beats") or []
+    first = beats[0] if beats else {}
+    text = " ".join(
+        str(first.get(key, "")) for key in ("action", "consequence", "visualState")
+    )
+    text += " " + str((ir.get("coreMechanic") or {}).get("physicalRule", ""))
+    lower = text.lower()
+    timing = hook.get("startsAt") is not None and float(hook.get("startsAt") or 0) <= 0.8
+    anomaly_terms = ("stick", "stuck", "sticky", "impossible", "instead of", "wrong", "already", "won't", "will not", "cannot")
+    has_anomaly = any(term in lower for term in anomaly_terms)
+    has_actor = bool((ir.get("characters") or {}).get("primary")) and bool(first.get("action"))
+    if not beats or hook.get("startsAt") is None:
+        return {"status": "UNKNOWN", "reason": "Opening beat or timestamp evidence is missing.", "evidence": {}}
+    if timing and has_anomaly and has_actor:
+        return {
+            "status": "PASS",
+            "reason": "The prompt describes an actor, object and immediate abnormal relationship in the opening window.",
+            "evidence": {"startsAt": hook.get("startsAt"), "hasActor": has_actor, "hasAnomaly": has_anomaly},
+        }
+    return {
+        "status": "FAIL",
+        "reason": "The opening text does not explicitly establish an immediate, history-free visual anomaly with the character engaged.",
+        "evidence": {"startsAt": hook.get("startsAt"), "hasActor": has_actor, "hasAnomaly": has_anomaly},
+    }
 
+
+def _visual_verification_status(ir: dict[str, Any], key: str) -> dict[str, Any]:
+    evidence = (ir.get("visualEvidence") or {}).get(key) or (ir.get("creativeFingerprint") or {}).get(key)
+    if isinstance(evidence, dict) and evidence.get("status"):
+        return dict(evidence)
+    return {"status": "PENDING", "reason": "No verified image evidence has been supplied yet."}
+
+
+def _first_frame_assessment(ir: dict[str, Any]) -> dict[str, Any]:
+    fingerprint = ir.get("creativeFingerprint") or {}
+    silhouette = fingerprint.get("silhouetteVerification") or (ir.get("visualEvidence") or {}).get("silhouette")
+    if not silhouette:
+        silhouette_result = {"status": "PENDING", "reason": "First-frame/silhouette comparison has not been run."}
+    elif isinstance(silhouette, dict):
+        silhouette_result = dict(silhouette)
+    else:
+        silhouette_result = {"status": "AVAILABLE", "value": silhouette}
+    return {
+        "textual_intent": _textual_first_frame_intent(ir),
+        "visual_verification": _visual_verification_status(ir, "firstFrame"),
+        "silhouette_verification": silhouette_result,
+    }
+
+
+def _prompt_stage(
+    creative_grade: str, first_frame: dict[str, Any], render_authorization: dict[str, Any]
+) -> str:
+    if render_authorization.get("status") in {"BLOCKED_CREATIVE_FAILURE", "BLOCKED_TECHNICAL_FAILURE"}:
+        return render_authorization["status"]
+    if first_frame["textual_intent"]["status"] != "PASS":
+        return "BLOCKED_CREATIVE_FAILURE"
+    return "READY_FOR_FIRST_FRAME"
+
+
+def _render_authorization(
+    report: Any, creative_grade: str, completeness: dict[str, Any], first_frame: dict[str, Any]
+) -> dict[str, Any]:
+    evidence_gate_ids = {"INSTANT_VISUAL_ABSURDITY_GATE", "ENGINE_SILHOUETTE_DUPLICATE"}
+    pending = [
+        gap["rule_id"] for gap in completeness["gaps"] if gap["rule_id"] in evidence_gate_ids
+    ]
+    creative_failures = [
+        evaluation.rule_id
+        for evaluation in report.evaluations
+        if evaluation.outcome.value == "FAIL" and not is_evidence_gap(evaluation)
+    ]
+    technical = [
+        evaluation.rule_id
+        for evaluation in report.evaluations
+        if evaluation.outcome.value == "SERVICE_ERROR"
+    ]
+    pending_items = list(pending)
+    if first_frame["visual_verification"]["status"] == "PENDING" and "first-frame visual verification" not in pending_items:
+        pending_items.append("first-frame visual verification")
+    if first_frame["silhouette_verification"]["status"] == "PENDING" and "silhouette duplicate comparison" not in pending_items:
+        pending_items.append("silhouette duplicate comparison")
+    if not bool(getattr(report, "independent_revalidated", False)):
+        pending_items.append("independent validation revalidation")
+    final_policy_ready = (
+        str(getattr(report.status, "value", report.status)) == "RENDER_READY"
+        and report.blocker_count == 0
+        and report.critical_count == 0
+    )
+    if technical:
+        status = "BLOCKED_TECHNICAL_FAILURE"
+    elif creative_failures:
+        status = "BLOCKED_CREATIVE_FAILURE"
+    elif not final_policy_ready or pending_items:
+        status = "BLOCKED_PENDING_EVIDENCE"
+    else:
+        status = "AUTHORIZED"
+    return {
+        "status": status,
+        "final_video_render": status,
+        "creative_failures": creative_failures,
+        "pending_evidence_blockers": pending_items,
+        "technical_failures": technical,
+        "human_review": status == "HUMAN_REVIEW",
+        "reason": {
+            "BLOCKED_PENDING_EVIDENCE": "Final video authorization remains fail-closed until required visual evidence is supplied.",
+            "BLOCKED_CREATIVE_FAILURE": "One or more evaluated creative policies failed.",
+            "BLOCKED_TECHNICAL_FAILURE": "A required provider or technical evaluation failed.",
+            "AUTHORIZED": "All applicable creative and authorization evidence is available.",
+        }.get(status, "Human review is required."),
+    }
+
+
+_UNSCORED_FAMILY_REASON = (
+    "No rule in this family produced an evaluable result; its canonical score is null, not a creative zero."
+)
 
 def _creative_grade(evaluations: Iterable[Any]) -> str:
     """Grade from creative judgments only.
@@ -372,10 +531,15 @@ def _evidence_completeness(
         "canonical_evidence": {
             "beat_count": len(beats),
             "labelled_beats": sum(1 for beat in beats if beat.get("beatRole")),
+            "beatAudit": beat_audit(ir),
             "attempts": {
                 "count": attempts.count,
+                "activeAttemptCount": attempts.active_attempt_count,
+                "distinctStrategyCount": attempts.distinct_strategy_count,
                 "beat_ids": list(attempts.beat_ids),
                 "verbs": list(attempts.verbs),
+                "strategy_families": list(attempts.strategy_families),
+                "attempts": list(attempts.attempts),
                 "active_seconds": round(attempts.active_seconds, 3),
                 "active_ratio": round(attempts.active_ratio, 4),
                 "sources": attempts.sources,

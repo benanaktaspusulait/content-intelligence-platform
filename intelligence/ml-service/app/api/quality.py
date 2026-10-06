@@ -147,6 +147,10 @@ class PreRenderAssessmentResponse(BaseModel):
     grade: str
     # Grade from creative judgments only; evidence gaps are reported separately below.
     creative_grade: str | None = None
+    creative_score: float | None = None
+    prompt_stage: str | None = None
+    first_frame: dict[str, Any] | None = None
+    render_authorization: dict[str, Any] | None = None
     readiness: str
     assessment_coverage_percent: int
     evidence_completeness: dict[str, Any] | None = None
@@ -161,7 +165,10 @@ class PreRenderAssessmentResponse(BaseModel):
 
 class QualityProvenanceResponse(BaseModel):
     parser_version: str
+    canonical_evidence_version: str = "canonical-attempt-evidence-v2"
     rule_engine_version: str
+    scoring_version: str = "quality-scorer-v2"
+    assessment_version: str = "pre-render-assessment-v2"
     semantic_provider: str
     semantic_model_version: str
     # Deliberately str | None, always None: no independent "producibility
@@ -176,9 +183,9 @@ class QualityProvenanceResponse(BaseModel):
 
 class ScoreBreakdownResponse(BaseModel):
     family: str
-    score: float
+    score: float | None
     weight: float
-    weighted_contribution: float
+    weighted_contribution: float | None
     rules_passed: int
     rules_failed: int
     rules_warning: int
@@ -194,7 +201,8 @@ class QualityReportResponse(BaseModel):
     blocker_count: int
     critical_count: int
     warning_count: int
-    family_scores: dict[str, float]
+    family_scores: dict[str, float | None]
+    family_assessments: dict[str, dict[str, Any]] = Field(default_factory=dict)
     failed_rules: list[RuleEvaluationResponse]
     unknown_rules: list[RuleEvaluationResponse]
     not_applicable_rules: list[RuleEvaluationResponse]
@@ -637,6 +645,7 @@ def convert_quality_report(
         critical_count=report.critical_count,
         warning_count=report.warning_count,
         family_scores=report.family_scores,
+        family_assessments=report.family_assessments,
         failed_rules=failed_rules,
         unknown_rules=unknown_rules,
         not_applicable_rules=not_applicable_rules,
@@ -668,7 +677,10 @@ def convert_quality_report(
         family_radar=enhanced.family_radar,
         provenance=QualityProvenanceResponse(
             parser_version=settings.parser_version,
+            canonical_evidence_version="canonical-attempt-evidence-v2",
             rule_engine_version=settings.rule_engine_version,
+            scoring_version="quality-scorer-v2",
+            assessment_version="pre-render-assessment-v2",
             semantic_provider=semantic_provider,
             semantic_model_version=semantic_model_version,
             producibility_validator_version=None,

@@ -24,7 +24,7 @@ def test_label_on_the_timestamp_line_is_split_from_the_action() -> None:
     assert beat["action"] == "Mimi pulls the rope."
     assert beat["isAttempt"] is True
     assert beat["primaryVerb"] == "PULLS"
-    assert beat["attemptSource"] == "STRUCTURAL_LABEL"
+    assert beat["attemptSource"] == "STRUCTURED_PLAN_ROLE"
 
 
 def test_label_followed_by_text_on_the_same_line() -> None:
@@ -51,7 +51,7 @@ def test_explicit_attempt_marker_outranks_a_non_attempt_role() -> None:
     (beat,) = _beats("0.0-15.0 SEC — REACTION\nMimi tugs the rope. [ATTEMPT: TUG]")
     assert beat["isAttempt"] is True
     assert beat["primaryVerb"] == "TUG"
-    assert beat["attemptSource"] == "EXPLICIT_MARKER"
+    assert beat["attemptSource"] == "EXPLICIT_ATTEMPT_LABEL"
 
 
 def test_labelled_attempt_without_whitelisted_verb_uses_the_acting_characters_verb() -> None:
@@ -78,9 +78,9 @@ def test_attempt_evidence_summary_counts_sources_and_ratio() -> None:
         "10.0-15.0 SEC — FAKE RESOLUTION\nMimi relaxes.\n"
     ).video_plan_ir
     evidence = attempt_evidence(ir)
-    assert evidence.count == 2
-    assert evidence.sources == {"STRUCTURAL_LABEL": 1, "LEADING_VERB_INFERENCE": 1}
-    assert evidence.active_ratio == 10.0 / 15.0
+    assert evidence.count == 1
+    assert evidence.sources == {"STRUCTURED_PLAN_ROLE": 1}
+    assert evidence.active_ratio == 5.0 / 15.0
 
 
 def test_attempt_002_does_not_collapse_unspecified_verbs_into_one_strategy() -> None:

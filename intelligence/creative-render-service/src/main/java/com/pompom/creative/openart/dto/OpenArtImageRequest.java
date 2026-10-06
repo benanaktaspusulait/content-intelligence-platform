@@ -8,6 +8,4 @@ import lombok.Data;
 public class OpenArtImageRequest {
   private String promptText;
   private String model;
-  private String style;
-  private String aspectRatio;
 }

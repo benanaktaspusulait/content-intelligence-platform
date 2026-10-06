@@ -256,6 +256,66 @@ class ValidationEvidencePolicyTest {
         .isEqualTo("EVIDENCE_EXPIRED");
   }
 
+  @Test
+  void firstFrameMayUsePromptStageEligibilityWhileFinalVideoEvidenceIsPending() {
+    QueueRenderJobRequest firstFrame =
+        new QueueRenderJobRequest(
+            10L, 11L, 42L, RenderJob.JobType.FIRST_FRAME, "model-x", Map.of("seed", 1), null);
+    ValidationEvidenceDto pendingVideoEvidence =
+        new ValidationEvidenceDto(
+            42L,
+            10L,
+            11L,
+            "a".repeat(64),
+            "BLOCKED",
+            2,
+            3,
+            0,
+            "1.5",
+            "openai",
+            "gpt-4o",
+            null,
+            null,
+            null,
+            now.minusSeconds(60),
+            now.plusSeconds(3600),
+            true);
+
+    assertThatCode(() -> policy.validate(firstFrame, pendingVideoEvidence, now))
+        .doesNotThrowAnyException();
+  }
+
+  @Test
+  void firstFrameWithoutPromptStageEligibilityStillFailsClosed() {
+    QueueRenderJobRequest firstFrame =
+        new QueueRenderJobRequest(
+            10L, 11L, 42L, RenderJob.JobType.FIRST_FRAME, "model-x", Map.of("seed", 1), null);
+    ValidationEvidenceDto evidence =
+        new ValidationEvidenceDto(
+            42L,
+            10L,
+            11L,
+            "a".repeat(64),
+            "BLOCKED",
+            0,
+            0,
+            0,
+            "1.5",
+            "openai",
+            "gpt-4o",
+            null,
+            null,
+            null,
+            now.minusSeconds(60),
+            now.plusSeconds(3600),
+            false);
+
+    assertThatThrownBy(() -> policy.validate(firstFrame, evidence, now))
+        .isInstanceOf(ValidationEvidenceRejectedException.class)
+        .extracting(ex -> ((ValidationEvidenceRejectedException) ex).getErrorCode())
+        .isEqualTo("FIRST_FRAME_NOT_ELIGIBLE");
+  }
+
   private QueueRenderJobRequest request() {
     return new QueueRenderJobRequest(
         10L, 11L, 42L, RenderJob.JobType.VIDEO, "model-x", Map.of("seed", 1), null);

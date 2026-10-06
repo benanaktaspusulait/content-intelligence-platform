@@ -5,15 +5,10 @@ from __future__ import annotations
 from pathlib import Path
 from unittest.mock import patch
 
-import pytest
-
 from app.assessment.pre_render_assessment import build_pre_render_assessment
 from app.config import settings
 from app.parser.prompt_parser import parse_prompt
-from app.quality.canonical_evidence import (
-    attempt_evidence,
-    strategy_family_for_beat,
-)
+from app.quality.canonical_evidence import attempt_evidence
 from app.quality.contracts import QualityReport, QualityStatus, RuleEvaluation, RuleOutcome, Severity
 from app.rules.rule_engine import RuleEngine
 
@@ -151,6 +146,7 @@ def test_textual_first_frame_pass_is_not_visual_verification() -> None:
                 ),
             ),
         ),
+        "1.5",
     )
     assert assessment["first_frame"]["textual_intent"]["status"] == "PASS"
     assert assessment["first_frame"]["visual_verification"]["status"] == "PENDING"
@@ -192,6 +188,13 @@ def test_fake_resolution_is_not_automatic_consistency_failure() -> None:
         "0.0-5.0 SEC — FIRST ATTEMPT\nMimi pulls the rope.\n"
         "5.0-10.0 SEC — FAKE RESOLUTION\nThe rope behaves normally for a moment.\n"
         "10.0-15.0 SEC — FINAL TWIST\nThe rope pulls Mimi back again.\n"
+    )
+    ir["coreMechanic"].update(
+        {
+            "physicalRule": "The rope sticks to surfaces.",
+            "abnormalProperty": "STICKS_TO_SURFACES",
+            "recurrence": True,
+        }
     )
     fake = next(beat for beat in ir["beats"] if beat["beatRole"] == "FAKE_RESOLUTION")
     assert fake["consequenceType"] == "fake_win"

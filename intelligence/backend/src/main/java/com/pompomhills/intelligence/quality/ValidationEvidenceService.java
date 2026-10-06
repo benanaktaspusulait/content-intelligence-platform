@@ -65,7 +65,19 @@ public class ValidationEvidenceService {
         entity.getIndependentRevalidationId(),
         entity.getIndependentlyRevalidatedAt(),
         entity.getValidatedAt(),
-        entity.getExpiresAt());
+        entity.getExpiresAt(),
+        isFirstFrameEligible(entity));
+  }
+
+  private boolean isFirstFrameEligible(QualityValidationEntity entity) {
+    QualityReportDto report = QualityReportSnapshots.fromJson(entity.getReportJson());
+    if (report == null || report.preRenderAssessment() == null) return false;
+    Object promptStage = report.preRenderAssessment().get("prompt_stage");
+    Object authorization = report.preRenderAssessment().get("render_authorization");
+    if (!("READY_FOR_FIRST_FRAME".equals(promptStage)) || !(authorization instanceof java.util.Map<?, ?> map)) {
+      return false;
+    }
+    return !"BLOCKED_CREATIVE_FAILURE".equals(map.get("status"));
   }
 
   /**

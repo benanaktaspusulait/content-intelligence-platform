@@ -4,6 +4,8 @@ import com.pompom.creative.domain.OpenArtCreditLog;
 import com.pompom.creative.domain.RenderJob;
 import com.pompom.creative.repository.OpenArtCreditLogRepository;
 import java.math.BigDecimal;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
@@ -11,7 +13,9 @@ import java.util.Optional;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,6 +26,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class CreditTrackingService {
 
   private final OpenArtCreditLogRepository creditLogRepo;
+  private JdbcTemplate jdbcTemplate;
+  private boolean postgresDatabase;
   private BudgetAlertService
       budgetAlertService; // Optional, set via setter to avoid circular dependency
 
@@ -36,6 +42,29 @@ public class CreditTrackingService {
 
   @Value("${pompom.openart.budget.warning-threshold:0.2}")
   private double warningThreshold; // 20% remaining
+
+  /**
+   * Serialize queue admission across render service instances while the estimate reservation is
+   * inserted. PostgreSQL's transaction-scoped advisory lock avoids a read-then-insert budget race;
+   * focused unit tests without a datasource simply skip the database lock.
+   */
+  @Autowired
+  void configureBudgetLock(JdbcTemplate jdbcTemplate) {
+    this.jdbcTemplate = jdbcTemplate;
+    try (Connection connection = jdbcTemplate.getDataSource().getConnection()) {
+      this.postgresDatabase =
+          connection.getMetaData().getDatabaseProductName().toLowerCase().contains("postgresql");
+    } catch (SQLException error) {
+      log.warn("Could not detect database for OpenArt budget locking", error);
+      this.postgresDatabase = false;
+    }
+  }
+
+  public void lockBudgetForReservation() {
+    if (jdbcTemplate != null && postgresDatabase) {
+      jdbcTemplate.execute("SELECT pg_advisory_xact_lock(728391)");
+    }
+  }
 
   /** Set budget alert service (to avoid circular dependency). */
   public void setBudgetAlertService(BudgetAlertService budgetAlertService) {
@@ -86,10 +115,7 @@ public class CreditTrackingService {
   }
 
   private OpenArtCreditLog reconcileReservation(
-      OpenArtCreditLog reservation,
-      RenderJob job,
-      BigDecimal actualCredits,
-      String source) {
+      OpenArtCreditLog reservation, RenderJob job, BigDecimal actualCredits, String source) {
     reservation.setOpenartJobId(job.getOpenartJobId());
     reservation.setOperation("PROVIDER_USAGE");
     reservation.setOperationMetadata("{\"source\":\"" + source + "\",\"reconciled\":true}");
@@ -150,6 +176,40 @@ public class CreditTrackingService {
       budgetAlertService.checkAndAlert(status);
     }
     return creditLog;
+  }
+
+  @Transactional
+  public void reserveAdditionalAttempt(RenderJob job) {
+    lockBudgetForReservation();
+    if (creditLogRepo.findUnassignedReservation(job.getId(), "ESTIMATE").isPresent()) {
+      return;
+    }
+    BigDecimal estimate =
+        job.getCreditsEstimated() == null
+            ? getEstimatedCost(job.getJobType())
+            : job.getCreditsEstimated();
+    if (getRemainingCredits().compareTo(estimate) < 0) {
+      throw new IllegalStateException(
+          "Insufficient render budget for another OpenArt attempt: need "
+              + estimate
+              + ", remaining "
+              + getRemainingCredits());
+    }
+    recordEstimatedUsage(job);
+  }
+
+  @Transactional
+  public void releaseEstimateIfPresent(RenderJob job, String source) {
+    creditLogRepo
+        .findUnassignedReservation(job.getId(), "ESTIMATE")
+        .ifPresent(
+            reservation -> {
+              reservation.setOperation("ESTIMATE_RELEASED");
+              reservation.setOperationMetadata("{\"source\":\"" + source + "\"}");
+              reservation.setCreditsSpent(BigDecimal.ZERO);
+              reservation.setCreditsUsed(BigDecimal.ZERO);
+              creditLogRepo.save(reservation);
+            });
   }
 
   /**

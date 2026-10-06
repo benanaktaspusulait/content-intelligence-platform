@@ -61,8 +61,9 @@ def normalize_strategy_family(primary_verb: object, action: object = "", consequ
     """
 
     text = f"{primary_verb or ''} {action or ''} {consequence or ''}".upper()
+    primary_words = _words(primary_verb)
     words = _words(text)
-    groups = (
+    direct = (
         ("PULL", {"PULL", "PULLS", "PULLED", "YANK", "YANKS", "YANKED", "TUG", "TUGS", "TUGGED", "DRAG", "DRAGS", "DRAGGED", "HAUL", "HAULS"}),
         ("PUSH", {"PUSH", "PUSHES", "PUSHED", "SHOVE", "SHOVES", "SHOVED"}),
         ("SHAKE", {"SHAKE", "SHAKES", "SHAKING", "SHAKEN", "JIGGLE", "JIGGLES", "JIGGLED"}),
@@ -72,12 +73,13 @@ def normalize_strategy_family(primary_verb: object, action: object = "", consequ
         ("SQUEEZE", {"SQUEEZE", "SQUEEZES", "SQUEEZED", "SQUEEZING"}),
         ("THROW_TOSS", {"THROW", "THROWS", "THREW", "TOSS", "TOSSES", "TOSSED", "FLING", "FLINGS"}),
         ("CATCH", {"CATCH", "CATCHES", "CAUGHT"}),
-        ("USE_TOOL", {"TOOL", "BOOK", "TAPE", "WEDGE", "LEVER"}),
         ("LIFT", {"LIFT", "LIFTS", "LIFTED", "RAISE", "RAISES", "RAISED"}),
         ("HOLD", {"HOLD", "HOLDS", "HELD", "GRIP", "GRIPS", "GRIPPED"}),
     )
-    for family, candidates in groups:
-        if words.intersection(candidates):
+    if primary_words.intersection({"GRAB", "GRABS", "GRABBED"}):
+        return "PULL" if words.intersection({"PULL", "PULLS", "BACKWARD", "TOWARD", "AWAY", "LEAN", "LEANS"}) else "GRAB_HOLD"
+    for family, candidates in direct:
+        if primary_words.intersection(candidates):
             return family
     verb = str(primary_verb or "").strip().upper()
     return UNSPECIFIED_VERB if is_unspecified_verb(verb) else f"OTHER:{verb}"
@@ -186,15 +188,47 @@ def escalation_evidence(video_plan_ir: dict[str, Any]) -> dict[str, Any]:
     intensity_rise = len(intensities) >= 2 and max(intensities[1:]) > intensities[0]
     expansion_words = {"FLEX", "FLEXES", "STRETCH", "STRETCHES", "WHOLE", "WALL", "LARGER", "BIGGER", "ENTIRE", "ITSELF"}
     consequence_expansion = bool(expansion_words.intersection(_words(" ".join(str(beat.get("consequence", "")) for beat in candidate_beats))))
+    new_target = bool(candidate_objects - baseline_objects) or consequence_expansion
     available = len(attempts) >= 2 or bool(escalation_beats)
+    status = "AVAILABLE" if available else "UNKNOWN"
+    reason = (
+        "Escalation changes intensity, affected target or consequence scale."
+        if (new_target or intensity_rise or consequence_expansion)
+        else "No increasing intensity, target, stakes or consequence scale was evidenced."
+    )
     return {
-        "status": "AVAILABLE" if available else "UNKNOWN",
-        "reason": "Escalation changes intensity, affected target or consequence scale." if (new_target or intensity_rise or consequence_expansion) else "No increasing intensity, target, stakes or consequence scale was evidenced.",
+        "status": status,
+        "reason": reason,
         "new_target": new_target,
+        "newTarget": new_target,
         "intensity_rise": intensity_rise,
+        "intensityRise": intensity_rise,
         "consequence_expansion": consequence_expansion,
+        "consequenceExpansion": consequence_expansion,
         "candidateBeatIds": [str(beat.get("id", "")) for beat in candidate_beats],
     }
+
+
+def beat_audit(video_plan_ir: dict[str, Any]) -> list[dict[str, Any]]:
+    """Human-readable audit of every beat's role versus strategy evidence."""
+    attempts = {record["beatId"]: record for record in attempt_evidence(video_plan_ir).attempts}
+    audit: list[dict[str, Any]] = []
+    for beat in video_plan_ir.get("beats", []):
+        record = attempts.get(str(beat.get("id", "")))
+        audit.append(
+            {
+                "beatId": beat.get("id"),
+                "beatRole": beat.get("beatRole", ""),
+                "action": beat.get("action", ""),
+                "goal": (record or {}).get("goal") or beat.get("goal"),
+                "strategyFamily": beat.get("strategyFamily") or strategy_family_for_beat(beat),
+                "isAttempt": bool(beat.get("isAttempt", False)),
+                "attemptSource": beat.get("attemptSource", "NONE"),
+                "distinctFromPreviousAttempt": (record or {}).get("distinctFromPreviousAttempt"),
+                "reason": (record or {}).get("reason") or (beat.get("attemptCandidate") or {}).get("reason") or "Narrative beat has no canonical goal-directed attempt evidence.",
+            }
+        )
+    return audit
 
 
 def is_evidence_gap(evaluation: RuleEvaluation) -> bool:

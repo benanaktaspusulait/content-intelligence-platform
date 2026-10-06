@@ -82,9 +82,9 @@ record StateSegmentDto(String stateId, double startTime, double endTime, double 
 
 record ScoreBreakdownDto(
     String family,
-    double score,
+    Double score,
     double weight,
-    double weightedContribution,
+    Double weightedContribution,
     int rulesPassed,
     int rulesFailed,
     int rulesWarning,
@@ -98,7 +98,30 @@ record QualityProvenanceDto(
     String semanticProvider,
     String semanticModelVersion,
     String producibilityValidatorVersion,
-    String evaluationStage) {}
+    String evaluationStage,
+    String canonicalEvidenceVersion,
+    String scoringVersion,
+    String assessmentVersion) {
+
+  QualityProvenanceDto(
+      String parserVersion,
+      String ruleEngineVersion,
+      String semanticProvider,
+      String semanticModelVersion,
+      String producibilityValidatorVersion,
+      String evaluationStage) {
+    this(
+        parserVersion,
+        ruleEngineVersion,
+        semanticProvider,
+        semanticModelVersion,
+        producibilityValidatorVersion,
+        evaluationStage,
+        null,
+        null,
+        null);
+  }
+}
 
 record RegressionReportDto(
     String versionBefore,

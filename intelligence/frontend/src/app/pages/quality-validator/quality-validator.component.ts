@@ -24,7 +24,8 @@ interface QualityReport {
   blockerCount: number;
   criticalCount: number;
   warningCount: number;
-  familyScores: { [key: string]: number };
+  familyScores: { [key: string]: number | null };
+  familyAssessments: { [key: string]: FamilyAssessment };
   failedRules: RuleEvaluation[];
   unknownRules: RuleEvaluation[];
   notApplicableRules: RuleEvaluation[];
@@ -43,8 +44,11 @@ interface QualityReport {
   videoPlanIr: Record<string, any>;
 }
 
+interface FamilyAssessment { status: string; score: number | null; evidenceCoverage: number; counts: Record<string, number>; reasons: string[]; }
 interface PreRenderDimension { key: string; title: string; status: string; summary: string; observed: string; recommendation: string; evidence_status: string; }
-interface PreRenderAssessment { name: string; grade: string; creative_grade?: string | null; evidence_completeness?: EvidenceCompleteness | null; readiness: string; assessment_coverage_percent: number; verdict: string; strengths: string[]; concerns: string[]; recommended_changes: string[]; dimensions: PreRenderDimension[]; stable_intent: string[]; provenance: Record<string, any>; }
+interface FirstFrameAssessment { textual_intent: { status: string; reason: string; evidence?: Record<string, any> }; visual_verification: { status: string; reason: string }; silhouette_verification: { status: string; reason: string }; }
+interface RenderAuthorization { status: string; final_video_render: string; creative_failures: string[]; pending_evidence_blockers: string[]; technical_failures: string[]; reason: string; }
+interface PreRenderAssessment { name: string; grade: string; creative_grade?: string | null; creative_score?: number | null; prompt_stage?: string; first_frame?: FirstFrameAssessment; render_authorization?: RenderAuthorization; evidence_completeness?: EvidenceCompleteness | null; readiness: string; assessment_coverage_percent: number; verdict: string; strengths: string[]; concerns: string[]; recommended_changes: string[]; dimensions: PreRenderDimension[]; stable_intent: string[]; provenance: Record<string, any>; }
 
 interface LinkedValidationResponse { validationRecordId: number; report: QualityReport; }
 interface StoredValidation { validationRecordId: number; report: QualityReport; analyzedAt: string; }
@@ -100,7 +104,10 @@ interface PriorityFix {
 
 interface QualityProvenance {
   parserVersion: string;
+  canonicalEvidenceVersion?: string;
   ruleEngineVersion: string;
+  scoringVersion?: string;
+  assessmentVersion?: string;
   semanticProvider: string;
   semanticModelVersion: string;
   producibilityValidatorVersion: string;
@@ -143,14 +150,25 @@ interface StateSegment {
 }
 
 interface EvidenceGap { rule_id: string; family: string; kind: string; message: string; }
-interface CanonicalAttemptEvidence { count: number; beat_ids: string[]; verbs: string[]; active_seconds: number; active_ratio: number; sources: Record<string, number>; }
+interface CanonicalAttemptEvidence {
+  count: number;
+  activeAttemptCount: number;
+  distinctStrategyCount: number;
+  beat_ids: string[];
+  verbs: string[];
+  strategy_families: string[];
+  active_seconds: number;
+  active_ratio: number;
+  sources: Record<string, number>;
+  attempts: Array<Record<string, any>>;
+}
 interface EvidenceCompleteness {
   status: 'COMPLETE' | 'PARTIAL' | 'INCOMPLETE';
   coverage_percent: number;
   gaps: EvidenceGap[];
   unscored_families: { family: string; reason: string }[];
   partial_dimensions: string[];
-  canonical_evidence: { beat_count: number; labelled_beats: number; attempts: CanonicalAttemptEvidence };
+  canonical_evidence: { beat_count: number; labelled_beats: number; beatAudit: Array<Record<string, any>>; attempts: CanonicalAttemptEvidence };
 }
 
 interface BeatEvidence { label: string; role: string; isAttempt: boolean; verb: string; source: string; }
@@ -800,16 +818,21 @@ Intensity: 4`;
     }
   }
 
-  getFamilyScoreClass(score: number): string {
+  getFamilyScoreClass(score: number | null): string {
+    if (score === null || score === undefined) return 'family-score-unavailable';
     if (score >= 90) return 'family-score-excellent';
     if (score >= 75) return 'family-score-good';
     if (score >= 60) return 'family-score-acceptable';
     return 'family-score-poor';
   }
 
-  getFamilyScoreEntries(): [string, number][] {
+  getFamilyScoreEntries(): [string, number | null][] {
     if (!this.report?.familyScores) return [];
-    return Object.entries(this.report.familyScores).sort((a, b) => b[1] - a[1]);
+    return Object.entries(this.report.familyScores).sort((a, b) => {
+      if (a[1] === null) return 1;
+      if (b[1] === null) return -1;
+      return b[1] - a[1];
+    });
   }
 
   getIntensityColor(intensity: number): string {
@@ -863,6 +886,8 @@ Intensity: 4`;
 
   /** A family with no evaluable evidence is "not evaluated", not a creative score of 0. */
   isUnscoredFamily(family: string): boolean {
+    const assessment = this.report?.familyAssessments?.[family];
+    if (assessment) return assessment.score === null || ['UNKNOWN', 'NOT_APPLICABLE', 'SERVICE_ERROR'].includes(assessment.status);
     const unscored = this.report?.preRenderAssessment?.evidence_completeness?.unscored_families;
     return !!unscored?.some(item => item.family === family);
   }

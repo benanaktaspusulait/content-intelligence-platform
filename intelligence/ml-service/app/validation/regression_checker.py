@@ -159,8 +159,12 @@ class RegressionChecker:
         degraded_families = []
 
         for family in r_before.family_scores.keys():
-            score_before = r_before.family_scores.get(family, 0)
-            score_after = r_after.family_scores.get(family, 0)
+            score_before = r_before.family_scores.get(family)
+            score_after = r_after.family_scores.get(family)
+            # Unknown/not-applicable families have no numeric delta. They are
+            # represented by evidence-coverage changes elsewhere, never by 0.
+            if score_before is None or score_after is None:
+                continue
             delta = score_after - score_before
 
             if delta >= self.FAMILY_SCORE_DROP_THRESHOLD:
