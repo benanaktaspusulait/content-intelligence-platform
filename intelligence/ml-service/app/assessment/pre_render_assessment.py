@@ -16,6 +16,7 @@ from ..quality.canonical_evidence import (
     evidence_gap_kind,
     is_evidence_gap,
     is_unspecified_verb,
+    story_density_evidence,
     unscored_families,
 )
 
@@ -26,6 +27,7 @@ def build_pre_render_assessment(ir: dict[str, Any], parser: Any, report: Any, ru
     evaluated = tuple(e for e in applicable if not is_evidence_gap(e))
     coverage = round(len(evaluated) * 100 / max(len(applicable), 1))
 
+    story = story_density_evidence(ir)
     dimensions = [
         _concept(ir),
         _opening(ir, evaluations),
@@ -71,6 +73,25 @@ def build_pre_render_assessment(ir: dict[str, Any], parser: Any, report: Any, ru
 
     return {
         "name": "PRE_RENDER_CREATIVE_READINESS",
+        "story_structure": {
+            "goal": story.goal_status,
+            "obstacle": story.obstruction_status,
+            "attempts": attempt_evidence(ir).active_attempt_count,
+            "distinct_strategies": attempt_evidence(ir).distinct_strategy_count,
+            "realization": story.realization_status,
+            "payoff": story.payoff_status,
+            "fake_resolution": "OPTIONAL",
+            "recurrence": "OPTIONAL",
+        },
+        "temporal_complexity": {
+            "status": "BLOCK_SINGLE_GENERATION" if story.temporal_load == "HIGH" and story.generation_mode == "SINGLE_15S" else "PASS_WITH_SPLIT" if story.temporal_load == "HIGH" else "MANAGEABLE",
+            "major_beats": story.major_beat_count,
+            "micro_beats": story.micro_beat_count,
+            "state_transitions": story.state_transition_count,
+            "strategy_changes": story.strategy_change_count,
+            "generation_mode": story.generation_mode,
+            "recommendation": story.split_recommendation,
+        },
         "grade": grade,
         "creative_grade": creative_grade,
         "creative_score": round(float(report.overall_score), 2),

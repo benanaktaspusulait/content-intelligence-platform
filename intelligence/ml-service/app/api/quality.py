@@ -47,6 +47,7 @@ class ValidateRequest(BaseModel):
         ),
     )
     evaluation_stage: Literal["PRE_RENDER", "POST_RENDER"] = "PRE_RENDER"
+    visual_evidence: dict[str, Any] | None = None
 
 
 class CompareVersionsRequest(BaseModel):
@@ -144,6 +145,8 @@ class PreRenderDimensionResponse(BaseModel):
 
 class PreRenderAssessmentResponse(BaseModel):
     name: str
+    story_structure: dict[str, Any] | None = None
+    temporal_complexity: dict[str, Any] | None = None
     grade: str
     # Grade from creative judgments only; evidence gaps are reported separately below.
     creative_grade: str | None = None
@@ -333,6 +336,8 @@ async def validate_prompt(request: ValidateRequest) -> QualityReportResponse:
     # Parse prompt
     parse_result = parse_prompt(request.prompt)
     ir = parse_result.video_plan_ir
+    if request.visual_evidence is not None:
+        ir["visualEvidence"] = request.visual_evidence
 
     # Load ruleset. An unknown version or an absent/misconfigured ruleset
     # directory is a client/config error, not a server fault.

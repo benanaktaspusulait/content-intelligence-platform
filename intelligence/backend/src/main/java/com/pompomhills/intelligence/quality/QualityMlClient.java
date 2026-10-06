@@ -58,16 +58,19 @@ public class QualityMlClient {
    * @return Quality report
    */
   public QualityReportDto validatePrompt(String prompt, String rulesetVersion) {
+    return validatePrompt(prompt, rulesetVersion, null);
+  }
+
+  /** Re-run prompt policy with explicit verified visual evidence attached to the IR. */
+  public QualityReportDto validatePrompt(
+      String prompt, String rulesetVersion, Map<String, Object> visualEvidence) {
     log.debug("Calling ML service: /validate");
 
-    var request =
-        Map.of(
-            "prompt",
-            prompt,
-            "ruleset_version",
-            rulesetVersion != null ? rulesetVersion : "latest",
-            "evaluation_stage",
-            "PRE_RENDER");
+    var request = new java.util.LinkedHashMap<String, Object>();
+    request.put("prompt", prompt);
+    request.put("ruleset_version", rulesetVersion != null ? rulesetVersion : "latest");
+    request.put("evaluation_stage", "PRE_RENDER");
+    if (visualEvidence != null) request.put("visual_evidence", visualEvidence);
 
     try {
       String requestBody = mlObjectMapper.writeValueAsString(request);

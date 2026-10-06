@@ -101,6 +101,10 @@
       </div>
       <div class="card-body">
         <p class="assessment-verdict">{{ report.preRenderAssessment.verdict }}</p>
+        <div *ngIf="report.preRenderAssessment.story_structure || report.preRenderAssessment.temporal_complexity" class="assessment-columns">
+          <section *ngIf="report.preRenderAssessment.story_structure as story"><h3>Mini story</h3><p>Goal: {{ story['goal'] }} · Obstacle: {{ story['obstacle'] }} · Attempts: {{ story['attempts'] }} · Strategies: {{ story['distinct_strategies'] }} · Realization: {{ story['realization'] }} · Payoff: {{ story['payoff'] }}</p></section>
+          <section *ngIf="report.preRenderAssessment.temporal_complexity as temporal"><h3>Generation plan · {{ temporal['status'].replaceAll('_', ' ') }}</h3><p>{{ temporal['major_beats'] }} major beats, {{ temporal['micro_beats'] }} micro beats, {{ temporal['state_transitions'] }} state transitions · {{ temporal['recommendation'] || 'No split required' }}</p></section>
+        </div>
         <div *ngIf="report.preRenderAssessment.first_frame as firstFrame" class="assessment-columns">
           <section><h3>First-frame text intent · {{ firstFrame.textual_intent.status }}</h3><p>{{ firstFrame.textual_intent.reason }}</p></section>
           <section><h3>Visual verification · {{ firstFrame.visual_verification.status }}</h3><p>{{ firstFrame.visual_verification.reason }}</p></section>
@@ -116,7 +120,7 @@
             <p>{{ evidence.canonical_evidence.beat_count }} beats ({{ evidence.canonical_evidence.labelled_beats }} labelled), {{ evidence.canonical_evidence.attempts.activeAttemptCount }} active attempts, {{ evidence.canonical_evidence.attempts.distinctStrategyCount }} distinct strategies [{{ evidence.canonical_evidence.attempts.strategy_families.join(', ') }}], {{ formatRatioAsPercent(evidence.canonical_evidence.attempts.active_ratio) }} active time.</p>
             <details><summary>Canonical beat strategy audit</summary><p *ngFor="let beat of evidence.canonical_evidence.beatAudit"><strong>{{ beat['beatId'] }} · {{ beat['beatRole'] || 'UNLABELLED' }}</strong> · {{ beat['action'] }} · strategy={{ beat['strategyFamily'] }} · attempt={{ beat['isAttempt'] }} · source={{ beat['attemptSource'] }} · {{ beat['reason'] }}</p></details>
             <p *ngFor="let gap of evidence.gaps">○ {{ gap.rule_id }} ({{ gap.kind.replaceAll('_', ' ') }}): {{ gap.message }}</p>
-            <p *ngFor="let item of evidence.unscored_families">○ {{ item.family }}: not evaluated. Shown as 0 only as a fail-closed placeholder.</p>
+            <p *ngFor="let item of evidence.unscored_families">○ {{ item.family }}: not evaluated. Canonical score is unavailable (n/a).</p>
           </section>
         </div>
         <div class="assessment-dimensions"><article *ngFor="let dimension of report.preRenderAssessment.dimensions" [class]="'dimension dimension--' + dimension.status.toLowerCase()"><div><strong>{{ dimension.title }}</strong><span>{{ dimension.status.replaceAll('_', ' ') }}</span></div><p>{{ dimension.summary }}</p><small>{{ dimension.observed }}</small><em *ngIf="dimension.status === 'NEEDS_ATTENTION'">What to change: {{ dimension.recommendation }}</em></article></div>

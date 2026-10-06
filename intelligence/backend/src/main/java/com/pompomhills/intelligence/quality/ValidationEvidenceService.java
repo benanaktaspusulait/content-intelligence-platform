@@ -26,15 +26,29 @@ public class ValidationEvidenceService {
   private static final Pattern SHA256_PATTERN = Pattern.compile("^[0-9a-f]{64}$");
 
   private final QualityValidationRepository repository;
+  private final ValidationVisualEvidenceRepository visualEvidence;
   private final Clock clock;
 
   @Autowired
+  public ValidationEvidenceService(
+      QualityValidationRepository repository, ValidationVisualEvidenceRepository visualEvidence) {
+    this(repository, visualEvidence, Clock.systemUTC());
+  }
+
   public ValidationEvidenceService(QualityValidationRepository repository) {
-    this(repository, Clock.systemUTC());
+    this(repository, null, Clock.systemUTC());
   }
 
   ValidationEvidenceService(QualityValidationRepository repository, Clock clock) {
+    this(repository, null, clock);
+  }
+
+  ValidationEvidenceService(
+      QualityValidationRepository repository,
+      ValidationVisualEvidenceRepository visualEvidence,
+      Clock clock) {
     this.repository = repository;
+    this.visualEvidence = visualEvidence;
     this.clock = clock;
   }
 
@@ -49,6 +63,9 @@ public class ValidationEvidenceService {
 
     ValidationDecisionStatus status = resolveStatus(entity);
 
+    var visualRows = visualEvidence == null
+        ? java.util.List.<ValidationVisualEvidenceEntity>of()
+        : visualEvidence.findByValidationRecordIdOrderBySubmittedAtAscIdAsc(entity.getId());
     return new ValidationEvidenceResponse(
         entity.getId(),
         entity.getContentId(),
@@ -66,14 +83,16 @@ public class ValidationEvidenceService {
         entity.getIndependentlyRevalidatedAt(),
         entity.getValidatedAt(),
         entity.getExpiresAt(),
-        isFirstFrameEligible(entity));
+        isFirstFrameEligible(entity),
+        ValidationVisualEvidenceProjection.finalVideoEligible(visualRows),
+        ValidationVisualEvidenceProjection.project(visualRows));
   }
 
   private boolean isFirstFrameEligible(QualityValidationEntity entity) {
-    QualityReportDto report = QualityReportSnapshots.fromJson(entity.getReportJson());
-    if (report == null || report.preRenderAssessment() == null) return false;
-    Object promptStage = report.preRenderAssessment().get("prompt_stage");
-    Object authorization = report.preRenderAssessment().get("render_authorization");
+    java.util.Map<String, Object> assessment = QualityReportSnapshots.preRenderAssessment(entity.getReportJson());
+    if (assessment == null) return false;
+    Object promptStage = assessment.get("prompt_stage");
+    Object authorization = assessment.get("render_authorization");
     if (!("READY_FOR_FIRST_FRAME".equals(promptStage)) || !(authorization instanceof java.util.Map<?, ?> map)) {
       return false;
     }
@@ -121,16 +140,17 @@ public class ValidationEvidenceService {
    */
   private ValidationDecisionStatus resolveStatus(QualityValidationEntity entity) {
     ValidationDecisionStatus storedStatus = parseStatus(entity.getStatus());
-    if (storedStatus != ValidationDecisionStatus.RENDER_READY) {
+    var visualRows = visualEvidence == null
+        ? java.util.List.<ValidationVisualEvidenceEntity>of()
+        : visualEvidence.findByValidationRecordIdOrderBySubmittedAtAscIdAsc(entity.getId());
+    boolean visualReady = ValidationVisualEvidenceProjection.finalVideoEligible(visualRows);
+    QualityValidationEntity revalidation = entity.getIndependentRevalidationId() == null
+        ? null
+        : repository.findByValidationRunId(entity.getIndependentRevalidationId()).orElse(null);
+    boolean visualRevalidationPath = visualReady && revalidation != null;
+    if (storedStatus != ValidationDecisionStatus.RENDER_READY && !visualRevalidationPath) {
       return storedStatus;
     }
-    if (entity.getBlockerCount() > 0 || entity.getCriticalCount() > 0) {
-      return ValidationDecisionStatus.NEEDS_REVISION;
-    }
-    // producibilityValidatorVersion is deliberately NOT required here: AI producibility
-    // validation is a family of ordinary deterministic rules in the versioned ruleset,
-    // already fully identified by deterministicRulesetVersion - there is no independent
-    // "producibility validator" runtime with its own version axis to require evidence of.
     if (entity.getSemanticProvider() == null || entity.getSemanticModelVersion() == null) {
       return ValidationDecisionStatus.NEEDS_REVISION;
     }
@@ -138,8 +158,10 @@ public class ValidationEvidenceService {
         || entity.getIndependentlyRevalidatedAt() == null) {
       return ValidationDecisionStatus.NEEDS_REVISION;
     }
-    QualityValidationEntity revalidation =
-        repository.findByValidationRunId(entity.getIndependentRevalidationId()).orElse(null);
+    if (entity.getBlockerCount() > 0 && !visualRevalidationPath
+        || entity.getCriticalCount() > 0 && !visualRevalidationPath) {
+      return ValidationDecisionStatus.NEEDS_REVISION;
+    }
     if (revalidation == null
         || revalidation.getId().equals(entity.getId())
         || !sameEvidenceIdentity(entity, revalidation)
@@ -152,8 +174,6 @@ public class ValidationEvidenceService {
         || !revalidation.getValidatedAt().equals(entity.getIndependentlyRevalidatedAt())) {
       return ValidationDecisionStatus.NEEDS_REVISION;
     }
-    // Absence of expiresAt is never treated as "never expires" - no freshness policy means the
-    // evidence has no proven freshness, so it must not authorize render.
     Instant expiresAt = entity.getExpiresAt();
     if (expiresAt == null || !expiresAt.isAfter(clock.instant())) {
       return ValidationDecisionStatus.NEEDS_REVISION;

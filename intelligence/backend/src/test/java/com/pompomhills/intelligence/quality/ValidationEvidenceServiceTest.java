@@ -38,6 +38,21 @@ class ValidationEvidenceServiceTest {
   }
 
   @Test
+  void derivesFirstFrameEligibilityFromPersistedReportSnapshotWithoutRewritingParent() {
+    QualityValidationEntity entity = completeEntity();
+    entity.setStatus("BLOCKED");
+    entity.setReportJson(
+        "{\"preRenderAssessment\":{\"prompt_stage\":\"READY_FOR_FIRST_FRAME\",\"render_authorization\":{\"status\":\"BLOCKED_PENDING_EVIDENCE\"}}}");
+    when(repository.findById(42L)).thenReturn(Optional.of(entity));
+
+    ValidationEvidenceResponse evidence = service.getEvidence(42L);
+
+    assertThat(evidence.firstFrameEligible()).isTrue();
+    assertThat(evidence.finalVideoEligible()).isFalse();
+    assertThat(evidence.visualEvidence().get("firstFrame")).isNotNull();
+    assertThat(entity.getReportJson()).contains("READY_FOR_FIRST_FRAME");
+  }
+  @Test
   void missingRecordThrowsNotFound() {
     when(repository.findById(404L)).thenReturn(Optional.empty());
 

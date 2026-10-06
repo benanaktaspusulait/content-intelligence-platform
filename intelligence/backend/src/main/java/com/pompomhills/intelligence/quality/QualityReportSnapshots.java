@@ -3,6 +3,7 @@ package com.pompomhills.intelligence.quality;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Map;
 import java.util.HexFormat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,6 +45,21 @@ final class QualityReportSnapshots {
       return MAPPER.readValue(json, QualityReportDto.class);
     } catch (JacksonException e) {
       log.warn("Stored quality report snapshot could not be read", e);
+      return null;
+    }
+  }
+
+  static Map<String, Object> preRenderAssessment(String json) {
+    if (json == null || json.isBlank()) return null;
+    try {
+      Map<?, ?> root = new com.fasterxml.jackson.databind.ObjectMapper().readValue(json, Map.class);
+      Object assessment = root.get("preRenderAssessment");
+      if (!(assessment instanceof Map<?, ?> map)) return null;
+      @SuppressWarnings("unchecked")
+      Map<String, Object> typed = (Map<String, Object>) map;
+      return typed;
+    } catch (Exception error) {
+      log.warn("Stored pre-render assessment could not be read", error);
       return null;
     }
   }

@@ -2,13 +2,20 @@ package com.pompom.creative.api.controller;
 
 import com.pompom.creative.domain.RenderAsset;
 import com.pompom.creative.repository.RenderAssetRepository;
+import com.pompom.creative.evidence.IntelligenceValidationEvidenceClient;
+import com.pompom.creative.evidence.VisualEvidenceSubmissionDto;
+import com.pompom.creative.evidence.VisualEvidenceSubmissionResponse;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -17,9 +24,17 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/render-assets")
 public class RenderAssetController {
   private final RenderAssetRepository assets;
+  private final IntelligenceValidationEvidenceClient evidenceClient;
 
   public RenderAssetController(RenderAssetRepository assets) {
+    this(assets, null);
+  }
+
+  @org.springframework.beans.factory.annotation.Autowired
+  public RenderAssetController(
+      RenderAssetRepository assets, IntelligenceValidationEvidenceClient evidenceClient) {
     this.assets = assets;
+    this.evidenceClient = evidenceClient;
   }
 
   @GetMapping("/{id}")
@@ -35,6 +50,46 @@ public class RenderAssetController {
     return assets.findByRenderJobId(jobId).stream().map(this::toView).toList();
   }
 
+  @PostMapping("/{id}/visual-evidence")
+  public ResponseEntity<VisualEvidenceSubmissionResponse> submitVisualEvidence(
+      @PathVariable UUID id, @RequestBody VisualEvidenceSubmissionRequest request) {
+    RenderAsset asset = assets.findById(id).orElseThrow(() -> new org.springframework.web.server.ResponseStatusException(HttpStatus.NOT_FOUND, "Asset not found"));
+    if (asset.getAssetType() != RenderAsset.AssetType.FIRST_FRAME) {
+      throw new org.springframework.web.server.ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "Only FIRST_FRAME assets can supply visual evidence");
+    }
+    if (evidenceClient == null || asset.getRenderJob().getValidationRecordId() == null) {
+      throw new org.springframework.web.server.ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "Asset has no linked validation evidence");
+    }
+    VisualEvidenceSubmissionDto payload = new VisualEvidenceSubmissionDto(
+        asset.getRenderJob().getValidationRecordId(),
+        asset.getContentId(),
+        asset.getRenderJob().getPromptVersionId(),
+        asset.getRenderJob().getPromptSha256(),
+        request.gate(),
+        request.status(),
+        request.evidenceSetId(),
+        asset.getRenderJob().getId(),
+        asset.getId(),
+        asset.getAssetType().name(),
+        asset.getRelativePath(),
+        asset.getSha256(),
+        request.provenance(),
+        request.reason(),
+        request.verificationId(),
+        request.verifiedAt(),
+        request.submissionKey());
+    return ResponseEntity.status(HttpStatus.CREATED).body(evidenceClient.submitVisualEvidence(payload));
+  }
+
+  public record VisualEvidenceSubmissionRequest(
+      String gate,
+      String status,
+      UUID evidenceSetId,
+      Map<String, Object> provenance,
+      String reason,
+      String verificationId,
+      Instant verifiedAt,
+      String submissionKey) {}
   private AssetView toView(RenderAsset asset) {
     return new AssetView(
         asset.getId(),

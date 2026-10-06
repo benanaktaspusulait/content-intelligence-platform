@@ -1,6 +1,7 @@
 package com.pompom.creative.evidence;
 
 import java.time.Instant;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -26,7 +27,9 @@ public record ValidationEvidenceDto(
     Instant independentlyRevalidatedAt,
     Instant validatedAt,
     Instant expiresAt,
-    boolean firstFrameEligible) {
+    boolean firstFrameEligible,
+    boolean finalVideoEligible,
+    Map<String, Object> visualEvidence) {
 
   public ValidationEvidenceDto(
       long validationRecordId,
@@ -62,6 +65,8 @@ public record ValidationEvidenceDto(
         independentlyRevalidatedAt,
         validatedAt,
         expiresAt,
-        false);
+        false,
+        false,
+        Map.of());
   }
 }

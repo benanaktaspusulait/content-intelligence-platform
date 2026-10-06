@@ -175,4 +175,38 @@ public class IntelligenceQualityValidationService {
       throw new IllegalArgumentException("Prompt must be between 100-10000 characters");
     }
   }
+
+  /**
+   * Explicitly revalidates a linked prompt after both visual gates have supplied evidence.
+   * The original report_json snapshot is never rewritten; the two new validation rows preserve
+   * the visual-evidence revalidation and its independent run as immutable history.
+   */
+  @Transactional
+  public void revalidateWithVisualEvidence(
+      QualityValidationEntity parent, java.util.Map<String, Object> visualEvidence) {
+    if (parent.getContentId() == null || parent.getPromptVersionId() == null) return;
+    ContentPromptSnapshot snapshot =
+        contentPrompts.load(parent.getContentId(), parent.getPromptVersionId());
+    QualityReportDto first =
+        mlClient.validatePrompt(parent.getPromptText(), parent.getRulesetVersion(), visualEvidence);
+    Instant firstAt = Instant.now();
+    UUID firstRunId = UUID.randomUUID();
+    QualityValidationEntity firstEntity =
+        buildEntity(parent.getPromptText(), snapshot, first, firstAt, firstRunId);
+    repository.saveAndFlush(firstEntity);
+    if (!"RENDER_READY".equals(first.status())) return;
+
+    QualityReportDto independent =
+        mlClient.validatePrompt(parent.getPromptText(), parent.getRulesetVersion(), visualEvidence);
+    Instant independentAt = Instant.now();
+    UUID independentRunId = UUID.randomUUID();
+    QualityValidationEntity independentEntity =
+        buildEntity(parent.getPromptText(), snapshot, independent, independentAt, independentRunId);
+    repository.saveAndFlush(independentEntity);
+    if (sameAuthorizationDecision(first, independent)) {
+      parent.setIndependentRevalidationId(independentRunId);
+      parent.setIndependentlyRevalidatedAt(independentAt);
+      repository.save(parent);
+    }
+  }
 }

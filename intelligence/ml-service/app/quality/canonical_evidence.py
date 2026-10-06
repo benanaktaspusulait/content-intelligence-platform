@@ -231,6 +231,116 @@ def beat_audit(video_plan_ir: dict[str, Any]) -> list[dict[str, Any]]:
     return audit
 
 
+@dataclass(frozen=True)
+class StoryDensityEvidence:
+    major_beat_count: int
+    micro_beat_count: int
+    state_transition_count: int
+    strategy_change_count: int
+    critical_beat_durations: tuple[float, ...]
+    generation_mode: str
+    temporal_load: str
+    split_recommendation: str | None
+    goal_status: str
+    obstruction_status: str
+    realization_status: str
+    payoff_status: str
+    continuation_status: str
+    continuation_mismatches: tuple[str, ...]
+
+
+_MAJOR_ROLES = frozenset({
+    "HOOK", "DISCOVERY", "ATTEMPT", "ESCALATION", "REALIZATION", "DECISION",
+    "SOLUTION", "PAYOFF", "TWIST", "FAKE_RESOLUTION", "FAILURE",
+})
+_MICRO_ROLES = frozenset({"REACTION", "TRANSITION", "MICRO_ACTION", "IDLE"})
+_CONTINUATION_FIELDS = (
+    "character", "characterPoseIntent", "heldObjects", "objectStates", "objectState", "camera", "environment", "unresolvedAction"
+)
+
+
+def _is_major_beat(beat: dict[str, Any]) -> bool:
+    if isinstance(beat.get("majorBeat"), bool):
+        return bool(beat["majorBeat"])
+    role = str(beat.get("beatRole") or "").upper()
+    if role in _MICRO_ROLES:
+        return False
+    if role in _MAJOR_ROLES:
+        return True
+    return beat.get("consequenceType") in {"new", "escalation", "fake_win"}
+
+
+def _continuation_mismatches(ir: dict[str, Any]) -> tuple[str, ...]:
+    split = ir.get("splitPlan") or {}
+    part1 = (split.get("part1") or {}).get("endState") or {}
+    part2 = (split.get("part2") or {}).get("startState") or {}
+    if not part1 or not part2:
+        return ()
+    return tuple(field for field in _CONTINUATION_FIELDS if part1.get(field) != part2.get(field))
+
+
+def story_density_evidence(video_plan_ir: dict[str, Any]) -> StoryDensityEvidence:
+    beats = list(video_plan_ir.get("beats") or [])
+    major = [beat for beat in beats if _is_major_beat(beat)]
+    micro = [beat for beat in beats if not _is_major_beat(beat)]
+    transitions = video_plan_ir.get("storyEvidence", {}).get("stateTransitionCount")
+    if not isinstance(transitions, int):
+        transitions = 0
+        for index, beat in enumerate(beats):
+            if index == 0 or beat.get("visualStateId") != beats[index - 1].get("visualStateId"):
+                transitions += 1
+            if beat.get("consequenceType") in {"new", "escalation", "fake_win"} and index > 0:
+                transitions += 1
+    attempts = attempt_evidence(video_plan_ir)
+    strategy_changes = sum(
+        1 for before, after in zip(attempts.strategy_families, attempts.strategy_families[1:]) if before != after
+    )
+    critical_durations = tuple(
+        float(beat.get("duration", 0.0) or 0.0) for beat in major if float(beat.get("duration", 0.0) or 0.0) > 0
+    )
+    mode = str((video_plan_ir.get("metadata") or {}).get("generationMode") or "SINGLE_15S")
+    overloaded = (
+        len(major) > 6
+        or transitions > 6
+        or strategy_changes > 4
+        or (len(critical_durations) >= 4 and min(critical_durations) < 1.5)
+    )
+    goal = video_plan_ir.get("goalEvidence") or {}
+    goal_status = str(goal.get("goalExplicitness") or "UNKNOWN")
+    obstruction_status = "AVAILABLE" if goal.get("obstruction") else "UNKNOWN"
+    realization_status = "AVAILABLE" if any(
+        str(beat.get("beatRole", "")).upper() in {"REALIZATION", "DECISION"}
+        or any(word in str(beat.get("action", "")).lower() for word in ("realize", "understand", "decide", "notices"))
+        for beat in beats
+    ) else "UNKNOWN"
+    payoff = video_plan_ir.get("finalPayoff") or {}
+    payoff_status = "AVAILABLE" if payoff.get("startsAt") is not None or any(
+        str(beat.get("beatRole", "")).upper() in {"PAYOFF", "SOLUTION", "TWIST"} for beat in beats
+    ) else "UNKNOWN"
+    mismatches = _continuation_mismatches(video_plan_ir)
+    continuation_status = (
+        "NOT_APPLICABLE" if mode != "SPLIT_2X15S"
+        else "UNKNOWN" if not (video_plan_ir.get("splitPlan") or {})
+        else "FAIL" if mismatches else "PASS"
+    )
+    return StoryDensityEvidence(
+        major_beat_count=len(major),
+        micro_beat_count=len(micro),
+        state_transition_count=transitions,
+        strategy_change_count=strategy_changes,
+        critical_beat_durations=critical_durations,
+        generation_mode=mode,
+        temporal_load="HIGH" if overloaded else "MANAGEABLE",
+        split_recommendation="RECOMMEND_SPLIT_2X15" if overloaded else None,
+        goal_status=goal_status,
+        obstruction_status=obstruction_status,
+        realization_status=realization_status,
+        payoff_status=payoff_status,
+        continuation_status=continuation_status,
+        continuation_mismatches=mismatches,
+    )
+
+
 def is_evidence_gap(evaluation: RuleEvaluation) -> bool:
     if evaluation.outcome in (RuleOutcome.UNKNOWN, RuleOutcome.SERVICE_ERROR):
         return True

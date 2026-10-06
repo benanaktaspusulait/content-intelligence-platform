@@ -101,13 +101,16 @@ def test_blocker_failure_blocks_render_authorization():
     assert result.status.value == "BLOCKED"
 
 
-def test_ruleset_1_4_is_immutable_and_1_5_is_latest_additive_version():
+def test_ruleset_1_4_and_1_5_remain_immutable_with_1_6_latest():
     manager = RuleVersionManager(settings.rules_dir)
-    assert manager.get_latest_version() == "1.5"
+    assert manager.get_latest_version() == "1.6"
     old = RuleEngine(str(settings.rules_dir / "RULESET_1.4.yaml"))
-    new = RuleEngine(str(settings.rules_dir / "RULESET_1.5.yaml"))
+    stable = RuleEngine(str(settings.rules_dir / "RULESET_1.5.yaml"))
+    latest = RuleEngine(str(settings.rules_dir / "RULESET_1.6.yaml"))
     assert "CONCEPT_009" not in {rule["id"] for rule in old.ruleset["rules"]}
-    assert "CONCEPT_009" in {rule["id"] for rule in new.ruleset["rules"]}
+    assert "CONCEPT_009" in {rule["id"] for rule in stable.ruleset["rules"]}
+    assert "MINI_STORY_LOCK" not in {rule["id"] for rule in stable.ruleset["rules"]}
+    assert "MINI_STORY_LOCK" in {rule["id"] for rule in latest.ruleset["rules"]}
     comparison = manager.compare_versions("1.4", "1.5")
     assert comparison.new_rules == ["CONCEPT_009"]
     assert comparison.removed_rules == []

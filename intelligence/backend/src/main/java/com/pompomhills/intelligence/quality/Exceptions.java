@@ -24,3 +24,13 @@ class MlServiceException extends RuntimeException {
     super(message, cause);
   }
 }
+
+/** Visual evidence payload conflicts with an earlier immutable submission. */
+class VisualEvidenceConflictException extends RuntimeException {
+  VisualEvidenceConflictException(String message) { super(message); }
+}
+
+/** Visual evidence payload is malformed or does not match its validation snapshot. */
+class VisualEvidenceInvalidException extends RuntimeException {
+  VisualEvidenceInvalidException(String message) { super(message); }
+}

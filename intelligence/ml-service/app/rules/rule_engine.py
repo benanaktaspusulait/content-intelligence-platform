@@ -33,6 +33,7 @@ from app.quality.canonical_evidence import (
     escalation_evidence,
     is_evidence_gap,
     is_unspecified_verb,
+    story_density_evidence,
     strategy_family_for_beat,
 )
 from app.quality.contracts import (
@@ -151,6 +152,11 @@ class RuleEngine:
             "INSTANT_VISUAL_ABSURDITY_GATE": self._evaluate_instant_visual_absurdity_gate,
             "ENGINE_SILHOUETTE_DUPLICATE": self._evaluate_engine_silhouette_duplicate,
             "CONCEPT_009": self._evaluate_concept_009,
+            "MINI_STORY_LOCK": self._evaluate_mini_story_lock,
+            "GOAL_VISIBLE_EARLY": self._evaluate_goal_visible_early,
+            "TEMPORAL_COMPLEXITY_SPLIT_GATE": self._evaluate_temporal_complexity_split_gate,
+            "BEAT_DENSITY_RULE": self._evaluate_beat_density_rule,
+            "CONTINUATION_LOCK": self._evaluate_continuation_lock,
         }
 
     def _get_duration_tier(self, duration: float) -> str:
@@ -162,10 +168,21 @@ class RuleEngine:
         return "short" if duration <= 20.0 else "long"
 
     def _load_ruleset(self) -> dict[str, Any]:
-        """Load ruleset from YAML file"""
-        with open(self.ruleset_path) as f:
+        """Load a ruleset, resolving an additive immutable ``extends`` base."""
+        with open(self.ruleset_path, encoding="utf-8") as f:
             loaded: dict[str, Any] = yaml.safe_load(f)
+        base_name = loaded.get("extends")
+        if not base_name:
             return loaded
+        base_path = Path(self.ruleset_path).parent / str(base_name)
+        with open(base_path, encoding="utf-8") as f:
+            base: dict[str, Any] = yaml.safe_load(f)
+        merged = dict(base)
+        merged.update({key: value for key, value in loaded.items() if key not in {"rules", "extends"}})
+        merged["rules"] = list(base.get("rules", [])) + list(loaded.get("rules", []))
+        merged["version"] = loaded.get("version", base.get("version"))
+        merged["extends"] = base_name
+        return merged
 
     def evaluate(self, video_plan_ir: dict[str, Any], evaluation_stage: str = "PRE_RENDER") -> QualityReport:
         """
@@ -2780,6 +2797,16 @@ class RuleEngine:
         self, video_plan_ir: dict[str, Any], rule: dict[str, Any]
     ) -> RuleEvaluationType:
         """INSTANT_VISUAL_ABSURDITY_GATE: first-frame static readability blocker."""
+        visual = video_plan_ir.get("visualEvidence") or {}
+        first_frame = visual.get("firstFrame") if isinstance(visual, dict) else None
+        if isinstance(first_frame, dict) and first_frame.get("status") == "PASS":
+            return RuleEvaluation(
+                rule_id="INSTANT_VISUAL_ABSURDITY_GATE", rule_name="Instant Visual Absurdity Gate", family="hook_strength", severity="BLOCKER", result="PASS",
+                message="Verified first-frame visual evidence communicates the required absurdity.", details={"evidenceSource": "VERIFIED_FIRST_FRAME", "visualEvidence": first_frame})
+        if isinstance(first_frame, dict) and first_frame.get("status") == "FAIL":
+            return RuleEvaluation(
+                rule_id="INSTANT_VISUAL_ABSURDITY_GATE", rule_name="Instant Visual Absurdity Gate", family="hook_strength", severity="BLOCKER", result="FAIL",
+                message="Verified first-frame evidence does not communicate the required absurdity.", details={"evidenceSource": "VERIFIED_FIRST_FRAME", "visualEvidence": first_frame})
         hook = video_plan_ir.get("hook", {})
         required = {
             "staticWrongness": hook.get("staticWrongness"),
@@ -2830,6 +2857,16 @@ class RuleEngine:
         self, video_plan_ir: dict[str, Any], rule: dict[str, Any]
     ) -> RuleEvaluationType:
         """ENGINE_SILHOUETTE_DUPLICATE: reject a known winner's visual engine reuse."""
+        visual = video_plan_ir.get("visualEvidence") or {}
+        silhouette = visual.get("silhouette") if isinstance(visual, dict) else None
+        if isinstance(silhouette, dict) and silhouette.get("status") == "PASS":
+            return RuleEvaluation(
+                rule_id="ENGINE_SILHOUETTE_DUPLICATE", rule_name="Engine Silhouette Duplicate", family="visual_novelty", severity="BLOCKER", result="PASS",
+                message="Verified silhouette comparison found no duplicate visual engine.", details={"evidenceSource": "VERIFIED_SILHOUETTE", "visualEvidence": silhouette})
+        if isinstance(silhouette, dict) and silhouette.get("status") == "FAIL":
+            return RuleEvaluation(
+                rule_id="ENGINE_SILHOUETTE_DUPLICATE", rule_name="Engine Silhouette Duplicate", family="visual_novelty", severity="BLOCKER", result="FAIL",
+                message="Verified silhouette comparison found a duplicate visual engine.", details={"evidenceSource": "VERIFIED_SILHOUETTE", "visualEvidence": silhouette})
         fingerprint = video_plan_ir.get("creativeFingerprint", {})
         family = fingerprint.get("visualEngineFamily")
         known_families = fingerprint.get("knownWinnerEngineFamilies", [])
@@ -3102,6 +3139,121 @@ class RuleEngine:
                 "policy": "CRITICAL_ON_PARTIAL_UNEXECUTABILITY",
             },
         )
+    def _evaluate_mini_story_lock(self, video_plan_ir: dict[str, Any], rule: dict[str, Any]) -> RuleEvaluationType:
+        evidence = story_density_evidence(video_plan_ir)
+        required = {
+            "goal": evidence.goal_status in {"EXPLICIT", "IMPLICIT_BUT_OBSERVABLE"},
+            "obstruction": evidence.obstruction_status == "AVAILABLE",
+            "attempts": len(attempt_beats(video_plan_ir)) >= 2,
+            "progression": evidence.strategy_change_count >= 1 or evidence.state_transition_count >= 3,
+            "realization": evidence.realization_status == "AVAILABLE",
+            "payoff": evidence.payoff_status == "AVAILABLE",
+        }
+        missing = [key for key, present in required.items() if not present]
+        if missing:
+            return RuleEvaluation(
+                rule_id="MINI_STORY_LOCK", rule_name="Mini Story Lock", family="concept_strength",
+                severity="BLOCKER", result="FAIL",
+                message=f"Mini-story structure is incomplete; missing: {', '.join(missing)}.",
+                actual_value=len(required) - len(missing), required_value=len(required),
+                details={"missing": missing, "fake_resolution": "OPTIONAL", "recurrence": "OPTIONAL", "storyEvidence": evidence.__dict__},
+            )
+        return RuleEvaluation(
+            rule_id="MINI_STORY_LOCK", rule_name="Mini Story Lock", family="concept_strength",
+            severity="BLOCKER", result="PASS",
+            message="Readable mini-story arc: goal, obstruction, attempts, progression, realization and payoff are evidenced.",
+            actual_value=len(required), required_value=len(required),
+            details={"missing": [], "fake_resolution": "OPTIONAL", "recurrence": "OPTIONAL", "storyEvidence": evidence.__dict__},
+        )
+
+    def _evaluate_goal_visible_early(self, video_plan_ir: dict[str, Any], rule: dict[str, Any]) -> RuleEvaluationType:
+        goal = video_plan_ir.get("goalEvidence") or {}
+        beats = video_plan_ir.get("beats") or []
+        first = beats[0] if beats else {}
+        visible = goal.get("goalExplicitness") in {"EXPLICIT", "IMPLICIT_BUT_OBSERVABLE"} and float(first.get("startTime", 0.0) or 0.0) <= 0.8
+        if visible:
+            return RuleEvaluation(
+                rule_id="GOAL_VISIBLE_EARLY", rule_name="Goal Visible Early", family="hook_strength",
+                severity="CRITICAL", result="PASS", message="The character goal is available in the opening window.",
+                actual_value=True, required_value=True, details={"goalEvidence": goal},
+            )
+        return RuleEvaluation(
+            rule_id="GOAL_VISIBLE_EARLY", rule_name="Goal Visible Early", family="hook_strength",
+            severity="CRITICAL", result="FAIL", message="The character goal is not explicit or observable within the first 1-2 seconds.",
+            actual_value=False, required_value=True, details={"goalEvidence": goal},
+        )
+
+    def _evaluate_temporal_complexity_split_gate(self, video_plan_ir: dict[str, Any], rule: dict[str, Any]) -> RuleEvaluationType:
+        evidence = story_density_evidence(video_plan_ir)
+        if evidence.temporal_load != "HIGH":
+            return RuleEvaluation(
+                rule_id="TEMPORAL_COMPLEXITY_SPLIT_GATE", rule_name="Temporal Complexity Split Gate", family="generation_executability",
+                severity="BLOCKER", result="PASS", message="Temporal load is manageable for the selected generation plan.",
+                actual_value=evidence.major_beat_count, required_value=6, details={"mode": evidence.generation_mode, "storyEvidence": evidence.__dict__},
+            )
+        if evidence.generation_mode == "SPLIT_2X15S":
+            return RuleEvaluation(
+                rule_id="TEMPORAL_COMPLEXITY_SPLIT_GATE", rule_name="Temporal Complexity Split Gate", family="generation_executability",
+                severity="BLOCKER", result="PASS", message="Temporal load is acknowledged by an explicit SPLIT_2X15S generation plan.",
+                actual_value=evidence.major_beat_count, required_value=6, details={"mode": "SPLIT_2X15S", "storyEvidence": evidence.__dict__},
+            )
+        return RuleEvaluation(
+            rule_id="TEMPORAL_COMPLEXITY_SPLIT_GATE", rule_name="Temporal Complexity Split Gate", family="generation_executability",
+            severity="BLOCKER", result="FAIL", message="Single 15-second generation is temporally overloaded; split the plan into 2 x 15s.",
+            actual_value="BLOCK_SINGLE_GENERATION", required_value="SPLIT_2X15S",
+            details={"mode": evidence.generation_mode, "recommendation": "RECOMMEND_SPLIT_2X15", "storyEvidence": evidence.__dict__},
+        )
+
+    def _evaluate_beat_density_rule(self, video_plan_ir: dict[str, Any], rule: dict[str, Any]) -> RuleEvaluationType:
+        evidence = story_density_evidence(video_plan_ir)
+        if evidence.generation_mode != "SINGLE_15S":
+            return RuleEvaluation(
+                rule_id="BEAT_DENSITY_RULE", rule_name="Beat Density Rule", family="progression",
+                severity="CRITICAL", result="PASS", message="Beat density is delegated to the selected split generation plan.",
+                actual_value=evidence.major_beat_count, required_value=4, details={"storyEvidence": evidence.__dict__},
+            )
+        if 4 <= evidence.major_beat_count <= 6:
+            return RuleEvaluation(
+                rule_id="BEAT_DENSITY_RULE", rule_name="Beat Density Rule", family="progression",
+                severity="CRITICAL", result="PASS", message=f"{evidence.major_beat_count} canonical major beats fit the 15-second plan.",
+                actual_value=evidence.major_beat_count, required_value=4, details={"microBeatCount": evidence.micro_beat_count, "storyEvidence": evidence.__dict__},
+            )
+        return RuleEvaluation(
+            rule_id="BEAT_DENSITY_RULE", rule_name="Beat Density Rule", family="progression",
+            severity="CRITICAL", result="FAIL", message=f"Single 15-second plan has {evidence.major_beat_count} major beats; safe range is 4-6.",
+            actual_value=evidence.major_beat_count, required_value=4,
+            details={"microBeatCount": evidence.micro_beat_count, "recommendation": "RECOMMEND_SPLIT_2X15" if evidence.major_beat_count > 6 else "ADD_MAJOR_BEATS", "storyEvidence": evidence.__dict__},
+        )
+
+    def _evaluate_continuation_lock(self, video_plan_ir: dict[str, Any], rule: dict[str, Any]) -> RuleEvaluationType:
+        evidence = story_density_evidence(video_plan_ir)
+        if evidence.continuation_status == "NOT_APPLICABLE":
+            return RuleEvaluation(
+                rule_id="CONTINUATION_LOCK", rule_name="Continuation Lock", family="generation_executability",
+                severity="BLOCKER", result="NOT_APPLICABLE", message="Continuation lock applies only to SPLIT_2X15S plans.",
+                details={"analysisStage": "PRE_RENDER_PLAN_CONTRACT"},
+            )
+        if evidence.continuation_status == "UNKNOWN":
+            return RuleEvaluation(
+                rule_id="CONTINUATION_LOCK", rule_name="Continuation Lock", family="generation_executability",
+                severity="BLOCKER", result="UNKNOWN", message="SPLIT_2X15S was selected but its continuation contract is missing.",
+                details={"analysisStage": "PRE_RENDER_PLAN_CONTRACT"},
+            )
+        if evidence.continuation_status == "FAIL":
+            return RuleEvaluation(
+                rule_id="CONTINUATION_LOCK", rule_name="Continuation Lock", family="generation_executability",
+                severity="BLOCKER", result="FAIL", message="Part 1 end-state and Part 2 start-state contracts do not match.",
+                details={"analysisStage": "PRE_RENDER_PLAN_CONTRACT", "mismatches": list(evidence.continuation_mismatches)},
+            )
+        return RuleEvaluation(
+            rule_id="CONTINUATION_LOCK", rule_name="Continuation Lock", family="generation_executability",
+            severity="BLOCKER", result="PASS", message="Split continuation contract matches before rendering.",
+            details={"analysisStage": "PRE_RENDER_PLAN_CONTRACT"},
+        )
+
+    def _evaluate_story_density_placeholder(self) -> None:
+        """Marker keeping the story evaluators grouped before the convenience API."""
+        return None
 
 
 def validate_video_plan(video_plan_ir: dict[str, Any], ruleset_path: str | None = None) -> QualityReport:

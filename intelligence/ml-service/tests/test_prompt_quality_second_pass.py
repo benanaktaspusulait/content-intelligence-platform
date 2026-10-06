@@ -209,3 +209,14 @@ def test_generation_audit_exposes_per_attempt_concrete_risks() -> None:
     assert {item["riskLevel"] for item in attempts} <= {"LOW", "MODERATE", "HIGH"}
     assert all(item["risks"] for item in attempts)
     assert result.details["policy"] == "CRITICAL_ON_PARTIAL_UNEXECUTABILITY"
+
+
+def test_verified_visual_evidence_satisfies_the_two_render_gates_without_prompt_rewrite() -> None:
+    ir = _ir("0.0-15.0 SEC — HARD HOOK\nMimi sees the rope stuck to the wall.\n")
+    gate = {"status": "PASS", "evidenceSetId": "set-1", "assetId": "asset-1", "assetSha256": "a" * 64}
+    ir["visualEvidence"] = {"firstFrame": gate, "silhouette": gate, "finalVideoEligible": True}
+    engine = _engine()
+    instant = engine._evaluate_instant_visual_absurdity_gate(ir, {})
+    silhouette = engine._evaluate_engine_silhouette_duplicate(ir, {})
+    assert instant.outcome is RuleOutcome.PASS
+    assert silhouette.outcome is RuleOutcome.PASS

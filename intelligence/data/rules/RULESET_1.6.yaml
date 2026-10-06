@@ -1,0 +1,41 @@
+created: '2026-10-06'
+version: '1.6'
+extends: RULESET_1.5.yaml
+default_evaluation_stage: PRE_RENDER
+description: 'Immutable RULESET 1.6: mini-story readability and temporal generation-plan safety'
+policy_changes:
+  - MINI_STORY_LOCK requires a readable goal-obstacle-attempts-realization-payoff arc; fake resolution and recurrence are optional.
+  - TEMPORAL_COMPLEXITY_SPLIT_GATE blocks only SINGLE_15S execution plans and recommends SPLIT_2X15S.
+  - CONTINUATION_LOCK validates planned split state contracts before render; visual continuity remains post-render.
+  - BEAT_DENSITY_RULE counts canonical major beats after micro-action filtering.
+rules:
+  - id: MINI_STORY_LOCK
+    name: Mini Story Lock
+    family: concept_strength
+    severity: BLOCKER
+    version: '1.6'
+    description: 'Every video needs a visible goal, one impossible obstruction tied to that goal, active strategies, progression, realization or decision, and a readable payoff. Fake resolution, recurrence, and final twist are optional bonus evidence.'
+  - id: GOAL_VISIBLE_EARLY
+    name: Goal Visible Early
+    family: hook_strength
+    severity: CRITICAL
+    version: '1.6'
+    description: 'The character goal must be explicit or implicit-but-observable in the first 1-2 seconds.'
+  - id: TEMPORAL_COMPLEXITY_SPLIT_GATE
+    name: Temporal Complexity Split Gate
+    family: generation_executability
+    severity: BLOCKER
+    version: '1.6'
+    description: 'Block an overloaded SINGLE_15S generation plan and recommend SPLIT_2X15S. The creative concept is not rejected when the split plan is selected.'
+  - id: BEAT_DENSITY_RULE
+    name: Beat Density Rule
+    family: progression
+    severity: CRITICAL
+    version: '1.6'
+    description: 'A 15-second single-generation plan should contain 4-5 canonical major story beats, with approximately 6 as the upper safe limit. Micro-actions do not count.'
+  - id: CONTINUATION_LOCK
+    name: Continuation Lock
+    family: generation_executability
+    severity: BLOCKER
+    version: '1.6'
+    description: 'For SPLIT_2X15S, Part 1 end-state and Part 2 start-state contracts must match. This is pre-render plan evidence, not pixel continuity verification.'

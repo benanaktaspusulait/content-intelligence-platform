@@ -516,9 +516,23 @@ This allows the system to flag **low-confidence parses** that need human review.
 
 **This schema is versioned.**
 
-Current version: **1.5**
+Current version: **1.6**
 
-v1.4 added canonical beat evidence to each beat. v1.5 adds strategy/goal evidence and
+v1.6 adds a read-only story/density policy projection (no new parser):
+
+- `metadata.generationMode`: `SINGLE_15S` or `SPLIT_2X15S` when explicitly selected.
+- `storyEvidence`: optional structured transition evidence used for temporal-load calculation.
+- `splitPlan.part1.endState` and `splitPlan.part2.startState`: planned continuation contract fields
+  for `CONTINUATION_LOCK`; this is not pixel/frame continuity evidence.
+- Canonical major-beat filtering excludes micro-actions before `BEAT_DENSITY_RULE` and
+  `TEMPORAL_COMPLEXITY_SPLIT_GATE` count transitions. A 7-entry timeline is not automatically
+  a 7-major-beat story.
+
+`MINI_STORY_LOCK` requires goal, impossible obstruction, active strategies, progression,
+realization/decision and readable payoff. Fake resolution, recurrence and final twist remain
+optional bonus evidence. Temporal overload blocks only a `SINGLE_15S` generation plan and
+recommends `SPLIT_2X15S`; it does not declare the concept itself bad. Rendered continuity remains
+a post-render/video-analysis responsibility.
 nullable evidence projections; these are parser/evidence plumbing changes and do not mutate
 historical rulesets:
 

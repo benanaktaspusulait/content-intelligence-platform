@@ -98,5 +98,24 @@ public class ValidationEvidencePolicy {
           "Validation record %d evidence has no expiry or has expired"
               .formatted(evidence.validationRecordId()));
     }
+    if (!firstFrame && !hasVerifiedVisualGates(evidence)) {
+      throw new ValidationEvidenceRejectedException(
+          "VISUAL_EVIDENCE_PENDING",
+          "Validation record %d does not have two matching verified visual gates"
+              .formatted(evidence.validationRecordId()));
+    }
+  }
+
+  private boolean hasVerifiedVisualGates(ValidationEvidenceDto evidence) {
+    if (!evidence.finalVideoEligible()) return false;
+    if (!(evidence.visualEvidence().get("firstFrame") instanceof java.util.Map<?, ?> first)
+        || !(evidence.visualEvidence().get("silhouette") instanceof java.util.Map<?, ?> silhouette)) {
+      return false;
+    }
+    return "PASS".equals(first.get("status"))
+        && "PASS".equals(silhouette.get("status"))
+        && java.util.Objects.equals(first.get("evidenceSetId"), silhouette.get("evidenceSetId"))
+        && java.util.Objects.equals(first.get("assetId"), silhouette.get("assetId"))
+        && java.util.Objects.equals(first.get("assetSha256"), silhouette.get("assetSha256"));
   }
 }

@@ -1,6 +1,7 @@
 package com.pompomhills.intelligence.quality;
 
 import java.time.Instant;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -29,7 +30,9 @@ public record ValidationEvidenceResponse(
     Instant independentlyRevalidatedAt,
     Instant validatedAt,
     Instant expiresAt,
-    boolean firstFrameEligible) {
+    boolean firstFrameEligible,
+    boolean finalVideoEligible,
+    Map<String, Object> visualEvidence) {
 
   public ValidationEvidenceResponse(
       long validationRecordId,
@@ -65,6 +68,8 @@ public record ValidationEvidenceResponse(
         independentlyRevalidatedAt,
         validatedAt,
         expiresAt,
-        false);
+        false,
+        false,
+        Map.of());
   }
 }
