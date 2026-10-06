@@ -132,7 +132,12 @@ public class InterventionService {
   public record InterventionRequest(
       String platform, Instant eventTime, String notes, Long viewsBefore, Long viewsAfter,
       String eventType, String channelType, String externalChannelRef,
-      String externalChannelLabel, String campaignTag) {}
+      String externalChannelLabel, String campaignTag) {
+    public InterventionRequest(
+        String platform, Instant eventTime, String notes, Long viewsBefore, Long viewsAfter) {
+      this(platform, eventTime, notes, viewsBefore, viewsAfter, null, null, null, null, null);
+    }
+  }
 
   public record InterventionView(
       UUID id,

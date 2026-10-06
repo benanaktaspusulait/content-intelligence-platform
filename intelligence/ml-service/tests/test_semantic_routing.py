@@ -33,6 +33,7 @@ def test_routing_policy_is_configurable(monkeypatch) -> None:
     monkeypatch.setenv("SEMANTIC_PRIMARY_MODEL", "cheap-model")
     monkeypatch.setenv("SEMANTIC_FALLBACK_MODEL", "strong-model")
     monkeypatch.setenv("SEMANTIC_ROUTING_MODE", "PRIMARY_WITH_FALLBACK")
+    monkeypatch.setenv("SEMANTIC_FALLBACK_ENABLED", "true")
     policy = SemanticModelRoutingPolicy.from_environment()
     assert policy.primary.model == "cheap-model"
     assert policy.fallback is not None

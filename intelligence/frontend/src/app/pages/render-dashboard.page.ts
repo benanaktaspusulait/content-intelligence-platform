@@ -127,6 +127,17 @@ interface RenderAsset {
   quarantined: boolean;
 }
 
+interface VisualEvidenceResponse {
+  validationRecordId: number;
+  visualEvidenceId: number;
+  gate: string;
+  status: string;
+  firstFrameEligible: boolean;
+  finalVideoEligible: boolean;
+  visualEvidence: Record<string, any>;
+  created: boolean;
+}
+
 @Component({
   selector: 'app-render-dashboard',
   standalone: true,
@@ -390,6 +401,23 @@ interface RenderAsset {
       @if (assetLoading()) { <section class="section-band asset-detail"><span class="spinner"></span><strong>Loading render asset</strong></section> }
       @else if (assetError()) { <section class="section-band asset-detail"><strong>Asset detail unavailable</strong><p>{{ assetError() }}</p></section> }
       @else if (asset(); as item) { <section class="section-band asset-detail"><div class="section-heading"><div><span class="eyebrow">DURABLE ASSET</span><h2>{{ item.assetType }} · version {{ item.assetVersion }}</h2></div><span class="status-badge">{{ item.mediaVerified ? 'MEDIA VERIFIED' : 'NOT VERIFIED' }}</span></div><dl class="compact-facts"><div><dt>Path</dt><dd><code>{{ item.relativePath }}</code></dd></div><div><dt>Dimensions</dt><dd>{{ item.width }} × {{ item.height }}</dd></div><div><dt>Codec</dt><dd>{{ item.codec || '—' }}</dd></div><div><dt>SHA-256</dt><dd><code>{{ item.sha256 || '—' }}</code></dd></div><div><dt>Quarantine</dt><dd>{{ item.quarantined ? 'QUARANTINED' : 'Clear' }}</dd></div></dl></section> }
+      @if (asset()?.assetType === 'FIRST_FRAME') {
+        <section class="section-band visual-evidence-panel">
+          <div class="section-heading"><div><span class="eyebrow">VISUAL EVIDENCE</span><h2>Verify first-frame gates</h2></div><span class="status-badge">EXPLICIT VERIFIER RESULT REQUIRED</span></div>
+          <p class="muted">Asset existence never becomes PASS automatically. Submit a human or vision-verifier result for each gate. Use the same evidence set for FIRST_FRAME and SILHOUETTE.</p>
+          <div class="queue-fields visual-evidence-fields">
+            <label>Gate<select [value]="visualGate()" (change)="visualGate.set(($any($event.target)).value)"><option value="FIRST_FRAME">FIRST_FRAME</option><option value="SILHOUETTE">SILHOUETTE</option></select></label>
+            <label>Status<select [value]="visualStatus()" (change)="visualStatus.set(($any($event.target)).value)"><option value="PENDING">PENDING</option><option value="PASS">PASS</option><option value="FAIL">FAIL</option><option value="UNKNOWN">UNKNOWN</option></select></label>
+            <label>Evidence set ID<input type="text" [value]="visualEvidenceSetId()" (input)="visualEvidenceSetId.set(($any($event.target)).value)" /></label>
+            <label>Verifier<input type="text" [value]="visualVerifier()" (input)="visualVerifier.set(($any($event.target)).value)" /></label>
+            <label>Verification ID<input type="text" [value]="visualVerificationId()" (input)="visualVerificationId.set(($any($event.target)).value)" /></label>
+            <label class="wide-field">Reason<textarea [value]="visualReason()" (input)="visualReason.set(($any($event.target)).value)"></textarea></label>
+            <button type="button" class="queue-button" [disabled]="visualSubmitting()" (click)="submitVisualEvidence()">{{ visualSubmitting() ? 'Submitting…' : 'Submit visual result' }}</button>
+          </div>
+          @if (visualEvidenceError()) { <p class="queue-error">{{ visualEvidenceError() }}</p> }
+          @if (visualEvidenceResult(); as result) { <p class="queue-success">{{ result.gate }} {{ result.status }} · Final video eligible: {{ result.finalVideoEligible ? 'YES' : 'NO' }}</p> }
+        </section>
+      }
     </div>
   `,
   styles: [`
@@ -883,6 +911,15 @@ export class RenderDashboardPage implements OnInit, OnDestroy {
   reviewingQa = signal<string | null>(null);
   jobAction = signal<string | null>(null);
   postRenderDetails = signal<PostRenderEvaluation | null>(null);
+  visualGate = signal('FIRST_FRAME');
+  visualStatus = signal('PENDING');
+  visualEvidenceSetId = signal(crypto.randomUUID());
+  visualVerifier = signal('local-user');
+  visualVerificationId = signal('');
+  visualReason = signal('');
+  visualSubmitting = signal(false);
+  visualEvidenceError = signal('');
+  visualEvidenceResult = signal<VisualEvidenceResponse | null>(null);
 
   private readonly apiUrl = '/api/v1/render-jobs';
   private notificationStream: EventSource | null = null;
@@ -890,10 +927,33 @@ export class RenderDashboardPage implements OnInit, OnDestroy {
   constructor(private http: HttpClient, private route: ActivatedRoute) {}
 
   loadAsset(id: string) {
-    this.assetLoading.set(true); this.assetError.set(''); this.asset.set(null);
+    this.assetLoading.set(true); this.assetError.set(''); this.asset.set(null); this.visualEvidenceError.set(''); this.visualEvidenceResult.set(null); this.visualEvidenceSetId.set(crypto.randomUUID());
     this.http.get<RenderAsset>(`/api/v1/render-assets/${id}`).subscribe({
       next: asset => { this.asset.set(asset); this.assetLoading.set(false); },
       error: err => { this.assetError.set(err.error?.detail || err.error?.message || 'The render asset could not be read.'); this.assetLoading.set(false); },
+    });
+  }
+
+  submitVisualEvidence(): void {
+    const asset = this.asset();
+    if (!asset || asset.assetType !== 'FIRST_FRAME') return;
+    if (!this.visualReason().trim() || !this.visualVerifier().trim()) {
+      this.visualEvidenceError.set('Verifier and reason are required.');
+      return;
+    }
+    if (['PASS', 'FAIL'].includes(this.visualStatus()) && (!asset.sha256 || !this.visualVerificationId().trim())) {
+      this.visualEvidenceError.set('PASS/FAIL requires the canonical asset SHA-256 and verification ID.');
+      return;
+    }
+    this.visualSubmitting.set(true); this.visualEvidenceError.set(''); this.visualEvidenceResult.set(null);
+    this.http.post<VisualEvidenceResponse>(`/api/v1/render-assets/${asset.id}/visual-evidence`, {
+      gate: this.visualGate(), status: this.visualStatus(), evidenceSetId: this.visualEvidenceSetId(),
+      provenance: { kind: 'HUMAN_VERIFICATION', verifier: this.visualVerifier().trim(), method: 'render-dashboard-visual-review' },
+      reason: this.visualReason().trim(), verificationId: this.visualVerificationId().trim() || null,
+      verifiedAt: new Date().toISOString(), submissionKey: crypto.randomUUID(),
+    }).subscribe({
+      next: result => { this.visualSubmitting.set(false); this.visualEvidenceResult.set(result); },
+      error: err => { this.visualSubmitting.set(false); this.visualEvidenceError.set(err.error?.detail || err.error?.message || 'Visual evidence could not be submitted.'); },
     });
   }
 
