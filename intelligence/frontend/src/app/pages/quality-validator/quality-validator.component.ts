@@ -46,6 +46,7 @@ interface PreRenderDimension { key: string; title: string; status: string; summa
 interface PreRenderAssessment { name: string; grade: string; readiness: string; assessment_coverage_percent: number; verdict: string; strengths: string[]; concerns: string[]; recommended_changes: string[]; dimensions: PreRenderDimension[]; stable_intent: string[]; provenance: Record<string, any>; }
 
 interface LinkedValidationResponse { validationRecordId: number; report: QualityReport; }
+interface StoredValidation { validationRecordId: number; report: QualityReport; analyzedAt: string; }
 
 interface PromptFile {
   name: string;
@@ -152,6 +153,9 @@ export class QualityValidatorComponent implements AfterViewInit, OnDestroy {
   private promptEditor: PromptEditorInstance | null = null;
   private updatingPromptEditor = false;
   exportingPdf = false;
+  /** Set only when the shown report was restored from storage rather than freshly validated. */
+  reportAnalyzedAt: string | null = null;
+  private restoreRequestId = 0;
   prompt: string = '';
   contentTitle: string = '';
   contentType: string = 'SHORT';
@@ -444,6 +448,7 @@ Intensity: 4`;
         this.report = null;
         this.selectedPromptLoading = false;
         this.changeDetector.detectChanges();
+        this.restoreStoredReport();
       return;
     }
     this.http.get<PromptFile[]>(`/api/v1/intelligence/contents/prompt-library?sourceDirectory=${encodeURIComponent(file.folder)}`).subscribe({
@@ -455,8 +460,11 @@ Intensity: 4`;
           this.contentType = file.folder.includes('SOCIAL_REELS') ? 'REEL' : 'SHORT';
           this.contentId = String(linked.contentId);
           this.promptVersionId = String(linked.promptVersionId);
+          this.validationRecordId = null;
+          this.report = null;
           this.selectedPromptLoading = false;
           this.changeDetector.detectChanges();
+          this.restoreStoredReport();
           return;
         }
         this.loadPromptFileFromFilesystem(file);
@@ -477,8 +485,33 @@ Intensity: 4`;
         this.report = null;
         this.selectedPromptLoading = false;
         this.changeDetector.detectChanges();
+        this.restoreStoredReport();
       },
       error: response => { this.error = response.error?.message || 'Selected prompt could not be loaded.'; this.selectedPromptLoading = false; this.changeDetector.detectChanges(); },
+    });
+  }
+
+  /** Shows the most recent stored analysis of the currently loaded prompt, if one exists. */
+  private restoreStoredReport(): void {
+    const linked = Boolean(this.contentId.trim() && this.promptVersionId.trim());
+    const prompt = this.prompt;
+    if (!linked && !prompt.trim()) return;
+
+    const requestId = ++this.restoreRequestId;
+    const payload = linked
+      ? { contentId: Number(this.contentId), promptVersionId: Number(this.promptVersionId) }
+      : { prompt };
+
+    this.http.post<StoredValidation | null>('/api/v1/intelligence/quality/validations/latest', payload).subscribe({
+      next: stored => {
+        // Ignore stale answers: another prompt was selected, or a fresh validation already produced a report.
+        if (!stored || requestId !== this.restoreRequestId || this.report || this.loading) return;
+        this.report = stored.report;
+        this.validationRecordId = linked ? stored.validationRecordId : null;
+        this.reportAnalyzedAt = stored.analyzedAt;
+        this.changeDetector.detectChanges();
+      },
+      error: err => console.warn('Previous analysis could not be loaded:', err),
     });
   }
 
@@ -523,6 +556,8 @@ Intensity: 4`;
     this.promptEditor?.updateOptions({ readOnly: true });
     this.error = null;
     this.report = null;
+    this.reportAnalyzedAt = null;
+    this.restoreRequestId++;
 
     const apiUrl = linked ? '/api/v1/intelligence/quality/validate' : '/api/quality/validate';
     const payload = linked ? {

@@ -259,6 +259,12 @@ export interface CharacterIdentity {
   active: boolean;
 }
 
+export interface VideoCharacterAssignment {
+  characterId: string;
+  participation: 'PRIMARY' | 'SECONDARY';
+  role: string;
+}
+
 export interface PlatformStateObservation {
   id: string;
   stateValue: 'ACTIVE' | 'INACTIVE' | 'UNKNOWN';
@@ -596,6 +602,14 @@ export class CreativeIntelligenceService {
 
   getCharacters(): Observable<CharacterIdentity[]> {
     return this.http.get<CharacterIdentity[]>(`${this.baseUrl}/characters`);
+  }
+
+  createCharacter(name: string): Observable<CharacterIdentity> {
+    return this.http.post<CharacterIdentity>(`${this.baseUrl}/characters`, { name, status: 'NEW', notes: null });
+  }
+
+  replaceVideoCharacters(videoId: string, characters: VideoCharacterAssignment[]): Observable<void> {
+    return this.http.put<void>(`${this.baseUrl}/videos/${videoId}/characters`, { characters });
   }
 
   previewImport(file: File, platform: string, timezone: string): Observable<ImportPreview> {

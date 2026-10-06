@@ -13,6 +13,16 @@ public interface QualityValidationRepository extends JpaRepository<QualityValida
 
   Optional<QualityValidationEntity> findByValidationRunId(UUID validationRunId);
 
+  /** Latest stored report for a linked content/prompt version. */
+  Optional<QualityValidationEntity>
+      findFirstByContentIdAndPromptVersionIdAndReportJsonIsNotNullOrderByIdDesc(
+          Long contentId, Long promptVersionId);
+
+  /** Latest stored report for an unlinked prompt, identified by its text fingerprint. */
+  Optional<QualityValidationEntity>
+      findFirstByPromptFingerprintAndContentIdIsNullAndReportJsonIsNotNullOrderByIdDesc(
+          String promptFingerprint);
+
   /**
    * Find all validations for a specific prompt ordered by date.
    *

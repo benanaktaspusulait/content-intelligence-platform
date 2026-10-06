@@ -10,12 +10,13 @@ const folders: MediaDirectory[] = [
   { name: 'Garden Games', relativePath: 'library/Garden Games', videoCount: 1 },
 ];
 
-const shared: MediaFile = { name: 'shared.mp4', relativePath: 'library/shared.mp4', sizeBytes: 100, modifiedAt: null, ingested: false, videoId: null, status: null, variantId: null };
-const seaFile: MediaFile = { ...shared, name: 'sea.mp4', relativePath: 'library/Sea Stories/sea.mp4' };
-const stoneFile: MediaFile = { ...shared, name: 'stone.mp4', relativePath: 'library/Stone Music/stone.mp4' };
+const shared: MediaFile = { name: 'shared_hd.mp4', relativePath: 'library/shared_hd.mp4', sizeBytes: 100, modifiedAt: null, ingested: false, videoId: null, status: null, variantId: null };
+const seaFile: MediaFile = { ...shared, name: 'sea_hd.mp4', relativePath: 'library/Sea Stories/sea_hd.mp4' };
+const stoneFile: MediaFile = { ...shared, name: 'stone_hd.mp4', relativePath: 'library/Stone Music/stone_hd.mp4' };
 
 describe('VideoLibraryPage folder selection', () => {
   const service = {
+    getCharacters: () => of([]),
     getMediaDirectories: () => of(folders),
     getMediaFiles: (path: string) => of(path.includes('Sea') ? [seaFile, shared] : [stoneFile, shared]),
     ingestDirectory: () => of({ relativeDirectory: '', discovered: 0, ingested: [], errors: [] }),
@@ -79,7 +80,7 @@ describe('VideoLibraryPage folder selection', () => {
     fixture.detectChanges();
 
     expect(fixture.nativeElement.querySelectorAll('.folder-chips > span').length).toBe(2);
-    expect(fixture.nativeElement.querySelectorAll('.media-files-table tbody tr').length).toBe(3);
+    expect(fixture.nativeElement.querySelectorAll('.media-variant').length).toBe(3);
     expect(fixture.nativeElement.querySelectorAll('.media-file-group').length).toBe(3);
     expect(fixture.nativeElement.textContent).toContain('3 groups · 3 files');
   });
@@ -87,6 +88,7 @@ describe('VideoLibraryPage folder selection', () => {
 
 describe('variant identity grouping', () => {
   const service = {
+    getCharacters: () => of([]),
     getMediaDirectories: () => of(folders),
     getMediaFiles: () =>
       of([
@@ -114,10 +116,11 @@ describe('variant identity grouping', () => {
     choice.click();
     fixture.detectChanges();
 
-    const rows = fixture.nativeElement.querySelectorAll('.media-files-table tbody tr');
-    expect(rows.length).toBe(2);
-    const labels = [...rows].map((row: HTMLElement) => row.querySelector('td strong')!.textContent);
-    expect(labels).toEqual(['Original 1', 'HD 2']);
+    const rows = fixture.nativeElement.querySelectorAll('.media-variant');
+    // The library only lists HD renditions, so the non-HD take is not shown.
+    expect(rows.length).toBe(1);
+    const labels = [...rows].map((row: HTMLElement) => row.querySelector('.media-variant__name')!.textContent);
+    expect(labels).toEqual(['HD']);
   });
 });
 

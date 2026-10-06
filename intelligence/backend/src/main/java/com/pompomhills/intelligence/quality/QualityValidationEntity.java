@@ -43,6 +43,14 @@ public class QualityValidationEntity {
   @Column(name = "created_at", nullable = false, updatable = false)
   private Instant createdAt;
 
+  /** JSON snapshot of the full report shown in the UI; null for legacy rows. */
+  @Column(name = "report_json", columnDefinition = "TEXT")
+  private String reportJson;
+
+  /** SHA-256 hex of the validated prompt text; lookup key for unlinked prompts. Not evidence. */
+  @Column(name = "prompt_fingerprint", length = 64)
+  private String promptFingerprint;
+
   // --- Immutable validation evidence (Slice B Task 1) ---
   // All nullable: legacy rows predate this migration, and semantic/producibility/independent
   // revalidation identity cannot be populated until the ML service's quality pipeline (Slice C)
@@ -189,6 +197,22 @@ public class QualityValidationEntity {
 
   public void setCreatedAt(Instant createdAt) {
     this.createdAt = createdAt;
+  }
+
+  public String getReportJson() {
+    return reportJson;
+  }
+
+  public void setReportJson(String reportJson) {
+    this.reportJson = reportJson;
+  }
+
+  public String getPromptFingerprint() {
+    return promptFingerprint;
+  }
+
+  public void setPromptFingerprint(String promptFingerprint) {
+    this.promptFingerprint = promptFingerprint;
   }
 
   public Long getContentId() {

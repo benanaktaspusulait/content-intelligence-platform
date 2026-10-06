@@ -50,6 +50,8 @@ public class QualityValidationService {
       entity.setBlockerCount(report.blockerCount());
       entity.setCriticalCount(report.criticalCount());
       entity.setWarningCount(report.warningCount());
+      entity.setReportJson(QualityReportSnapshots.toJson(report));
+      entity.setPromptFingerprint(QualityReportSnapshots.fingerprint(prompt));
       entity.setFailedRules(
           report.failedRules().stream()
               .map(RuleEvaluationDto::ruleId)

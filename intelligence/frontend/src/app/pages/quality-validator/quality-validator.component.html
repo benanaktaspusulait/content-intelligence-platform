@@ -86,7 +86,8 @@
       <div>
         <span class="eyebrow">ANALYSIS REPORT</span>
         <strong>{{ contentTitle || 'Pompom creative quality report' }}</strong>
-        <small>Generated from the completed analysis above</small>
+        <small *ngIf="!reportAnalyzedAt">Generated from the completed analysis above</small>
+        <small *ngIf="reportAnalyzedAt">Previous analysis from {{ reportAnalyzedAt | date:'medium' }}. Run validation again to refresh it.</small>
       </div>
       <button class="btn btn-outline-secondary btn-sm report-export-button" type="button" [disabled]="exportingPdf" (click)="exportReportPdf()">
         {{ exportingPdf ? 'Generating PDF…' : 'Export PDF' }}

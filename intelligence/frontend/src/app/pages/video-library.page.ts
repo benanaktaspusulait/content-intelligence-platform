@@ -131,13 +131,34 @@ export function resultCountLabel(groupCount: number, fileCount: number): string 
       @else {
         <div class="media-file-groups">
           @for (group of visibleGroups(); track group.folderPath) {
-            <section class="media-file-group" [attr.aria-labelledby]="'media-group-' + $index">
-              <header class="media-group-header">
-                <div><span class="eyebrow">CREATIVE</span><h2 [id]="'media-group-' + $index">{{ group.folderName }}</h2><p [title]="group.folderPath">{{ group.folderPath }}</p></div>
-                <div class="media-group-actions"><span class="variant-count"><b>{{ group.files.length }}</b> {{ group.files.length === 1 ? 'variant' : 'variants' }}</span><a class="button button--compact" routerLink="/videos/detail" [queryParams]="{ folder: group.folderPath, file: group.files[0].relativePath }" [attr.aria-label]="'Open details for ' + group.folderName"><span aria-hidden="true">▶</span> Details</a></div>
+            <article class="media-file-group media-card" [attr.aria-labelledby]="'media-group-' + $index">
+              <header class="media-card__header">
+                <div><span class="eyebrow">CREATIVE</span><h2 [id]="'media-group-' + $index" [title]="group.folderName">{{ group.folderName }}</h2><p [title]="group.folderPath">{{ group.folderPath }}</p></div>
+                <span class="variant-count"><b>{{ group.files.length }}</b> {{ group.files.length === 1 ? 'variant' : 'variants' }}</span>
               </header>
-              <div class="data-table-scroll"><table class="data-table media-files-table"><thead><tr><th>Preview</th><th>Version</th><th>File</th><th>Character</th><th>Size</th><th>Modified</th><th>Evidence state</th><th><span class="sr-only">Actions</span></th></tr></thead><tbody>@for (file of group.files; track file.relativePath) { <tr><td class="media-thumbnail-cell">@if (file.thumbnailPath) { <button class="media-thumbnail-button" type="button" (pointerdown)="$event.preventDefault(); $event.stopPropagation(); openThumbnail(file)" (click)="$event.stopPropagation(); openThumbnail(file)" [attr.aria-label]="'Open larger preview for ' + file.displayName"><img class="media-thumbnail" [src]="service.mediaContentUrl(file.thumbnailPath)" [alt]="'First frame for ' + file.displayName" loading="lazy"></button> } @else { <span class="media-thumbnail-placeholder" title="No first-frame image found" aria-label="No first-frame image found">—</span> }</td><td><strong>{{ file.variantName }}</strong><small>{{ extension(file.name) }}</small></td><td class="source-path" [title]="file.name">{{ file.name }}</td><td>@if (file.characters?.length) { @for (character of file.characters; track character.id) { <span class="character-chip" [class.character-chip--primary]="character.participation === 'PRIMARY'">{{ character.name }}</span> } } @else { <span class="muted">Unresolved</span> }</td><td class="tabular">{{ fileSize(file.sizeBytes) }}</td><td>{{ modified(file.modifiedAt) }}</td><td><span class="status-badge" [class.status-badge--green]="file.ingested">{{ file.ingested ? (file.status || 'Ingested') : 'Not ingested' }}</span></td><td>@if (file.videoId) { <a class="icon-button table-action" [routerLink]="['/videos', file.videoId]" title="Open evidence record" [attr.aria-label]="'Open ' + file.displayName">↗</a> } @else { <button class="button button--compact" type="button" [disabled]="processingPath() === file.relativePath" (click)="ingestFile(file)">{{ processingPath() === file.relativePath ? 'Processing…' : 'Ingest' }}</button> }</td></tr> }</tbody></table></div>
-            </section>
+              <div class="media-card__variants">
+                @for (file of group.files; track file.relativePath) {
+                  <div class="media-variant">
+                    <div class="media-variant__preview">
+                      @if (file.thumbnailPath) { <button class="media-thumbnail-button" type="button" (pointerdown)="$event.preventDefault(); $event.stopPropagation(); openThumbnail(file)" (click)="$event.stopPropagation(); openThumbnail(file)" [attr.aria-label]="'Open larger preview for ' + file.displayName"><img class="media-thumbnail" [src]="service.mediaContentUrl(file.thumbnailPath)" [alt]="'First frame for ' + file.displayName" loading="lazy"></button> }
+                      @else { <span class="media-thumbnail-placeholder" title="No first-frame image found" aria-label="No first-frame image found">—</span> }
+                    </div>
+                    <div class="media-variant__body">
+                      <div class="media-variant__title"><strong class="media-variant__name">{{ file.variantName }}</strong><small>{{ extension(file.name) }}</small></div>
+                      <div class="source-path" [title]="file.name">{{ file.name }}</div>
+                      <div class="media-variant__characters">@if (file.characters?.length) { @for (character of file.characters; track character.id) { <span class="character-chip" [class.character-chip--primary]="character.participation === 'PRIMARY'">{{ character.name }}</span> } } @else { <span class="muted">Unresolved</span> }</div>
+                      <div class="media-variant__meta"><span class="tabular">{{ fileSize(file.sizeBytes) }}</span><span>{{ modified(file.modifiedAt) }}</span></div>
+                      <div class="media-variant__state">
+                        <span class="status-badge" [class.status-badge--green]="file.ingested">{{ file.ingested ? (file.status || 'Ingested') : 'Not ingested' }}</span>
+                        @if (file.videoId) { <a class="button button--compact" [routerLink]="['/videos', file.videoId]" [attr.aria-label]="'Open evidence record for ' + file.displayName">Evidence ↗</a> }
+                        @else { <button class="button button--compact" type="button" [disabled]="processingPath() === file.relativePath" (click)="ingestFile(file)">{{ processingPath() === file.relativePath ? 'Processing…' : 'Ingest' }}</button> }
+                      </div>
+                    </div>
+                  </div>
+                }
+              </div>
+              <footer class="media-card__footer"><a class="button button--compact" routerLink="/videos/detail" [queryParams]="{ folder: group.folderPath, file: group.files[0].relativePath }" [attr.aria-label]="'Open details for ' + group.folderName"><span aria-hidden="true">▶</span> Details</a></footer>
+            </article>
           }
         </div>
       }

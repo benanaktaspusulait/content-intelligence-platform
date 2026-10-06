@@ -4,7 +4,9 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 import { catchError, combineLatest, forkJoin, interval, Observable, of, startWith, Subscription, switchMap } from 'rxjs';
 import {
   AnalysisStatus,
+  CharacterIdentity,
   CreativeIntelligenceService,
+  VideoCharacterAssignment,
   DiscoveryProfile,
   MetadataFile,
   MediaFile,
@@ -22,6 +24,7 @@ type PlatformKey = 'facebook' | 'instagram' | 'tiktok' | 'youtube';
 type CaptionPlatform = 'INSTAGRAM' | 'FACEBOOK' | 'TIKTOK' | 'YOUTUBE';
 interface ChartDot { left: number; bottom: number; label: string; }
 interface VariantView extends MediaFile { label: string; }
+interface DraftCharacter { characterId: string; name: string; participation: 'PRIMARY' | 'SECONDARY'; role: string; }
 interface PublicationCopy {
   sourceFile: string | null;
   sourcePath: string | null;
@@ -112,13 +115,54 @@ const VARIANT_TYPE_LABELS: Record<string, string> = {
           <div class="creative-context-grid">
             <section class="context-card" aria-labelledby="context-characters-heading">
               <span class="eyebrow">CHARACTER TOPIC</span><h3 id="context-characters-heading">Characters in this video</h3>
+              @if (editingCharacters()) {
+                <div class="character-editor" role="group" aria-labelledby="context-characters-heading">
+                  @if (!draftCharacters().length) { <div class="compact-empty"><strong>No characters selected</strong><span>Add the main character and any supporting characters below.</span></div> }
+                  @for (draft of draftCharacters(); track draft.characterId) {
+                    <div class="character-editor-row">
+                      <strong>{{ draft.name }}</strong>
+                      <label><span>Type</span>
+                        <select [ngModel]="draft.participation" (ngModelChange)="setDraftParticipation(draft.characterId, $event)" [attr.aria-label]="'Type for ' + draft.name">
+                          <option value="PRIMARY">Main</option>
+                          <option value="SECONDARY">Supporting</option>
+                        </select>
+                      </label>
+                      <label><span>Role</span>
+                        <select [ngModel]="draft.role" (ngModelChange)="setDraftRole(draft.characterId, $event)" [attr.aria-label]="'Role for ' + draft.name">
+                          @for (role of characterRoles; track role) { <option [value]="role">{{ readable(role) }}</option> }
+                        </select>
+                      </label>
+                      <button type="button" class="button button--secondary button--compact" (click)="removeDraftCharacter(draft.characterId)" [attr.aria-label]="'Remove ' + draft.name">Remove</button>
+                    </div>
+                  }
+                  <div class="character-editor-add">
+                    <label><span>Add existing character</span>
+                      <select [ngModel]="''" (ngModelChange)="addRegistryCharacter($event)" aria-label="Add existing character">
+                        <option value="">Select character…</option>
+                        @for (option of availableRegistryCharacters(); track option.id) { <option [value]="option.id">{{ option.name }}</option> }
+                      </select>
+                    </label>
+                    <label><span>Or create new character</span>
+                      <input type="text" [ngModel]="newCharacterName()" (ngModelChange)="newCharacterName.set($event)" (keydown.enter)="createDraftCharacter()" placeholder="Character name" aria-label="New character name" />
+                    </label>
+                    <button type="button" class="button button--secondary button--compact" [disabled]="!newCharacterName().trim() || characterSaving()" (click)="createDraftCharacter()">Create and add</button>
+                  </div>
+                  @if (characterEditError()) { <p class="character-editor-error" role="alert">{{ characterEditError() }}</p> }
+                  <div class="character-editor-actions">
+                    <button type="button" class="button button--primary button--compact" [disabled]="characterSaving()" (click)="saveCharacters()">{{ characterSaving() ? 'Saving…' : 'Save characters' }}</button>
+                    <button type="button" class="button button--secondary button--compact" [disabled]="characterSaving()" (click)="cancelEditCharacters()">Cancel</button>
+                  </div>
+                </div>
+              } @else {
               @if (creativeContext()?.characters?.length) {
                 <div class="context-list">
                   @for (character of creativeContext()!.characters; track character.id) {
                     <article><strong>{{ character.name }}</strong><span>{{ readable(character.participation) }} · {{ readable(character.role) }}</span><small>{{ characterMetrics(character) }}</small><small>{{ readable(character.source) }} · {{ readable(character.confidence) }}@if (character.manuallyConfirmed) { · confirmed }</small></article>
                   }
                 </div>
-              } @else { <div class="compact-empty"><strong>No linked character records</strong><span>Character data has not been persisted for this video.</span></div> }
+              } @else { <div class="compact-empty"><strong>No linked character records</strong><span>No character was found for this video. You can add them manually.</span></div> }
+              <button type="button" class="button button--secondary button--compact character-edit-button" (click)="startEditCharacters()">Edit characters</button>
+              }
             </section>
             <section class="context-card" aria-labelledby="context-prompt-heading">
               <span class="eyebrow">PROMPT TOPIC</span><h3 id="context-prompt-heading">Source prompt and version</h3>
@@ -519,6 +563,17 @@ export class VideoDetailPage implements OnDestroy {
   protected readonly creativeContext = signal<VideoCreativeContext | null>(null);
   protected readonly creativeContextLoading = signal(false);
   protected readonly creativeContextError = signal('');
+  protected readonly characterRoles = ['UNKNOWN', 'PROTAGONIST', 'HELPER', 'RIVAL', 'OBSERVER', 'COMEDIC_TARGET', 'TEACHER'];
+  protected readonly editingCharacters = signal(false);
+  protected readonly draftCharacters = signal<DraftCharacter[]>([]);
+  protected readonly characterRegistry = signal<CharacterIdentity[]>([]);
+  protected readonly newCharacterName = signal('');
+  protected readonly characterSaving = signal(false);
+  protected readonly characterEditError = signal('');
+  protected readonly availableRegistryCharacters = computed(() => {
+    const used = new Set(this.draftCharacters().map(item => item.characterId));
+    return this.characterRegistry().filter(item => item.active && !used.has(item.id));
+  });
   protected readonly platformReadiness = signal<PlatformCreativeReadiness[]>([]);
   protected readonly loading = signal(true);
   protected readonly performanceLoading = signal(false);
@@ -993,6 +1048,66 @@ export class VideoDetailPage implements OnDestroy {
       next: values => this.platformReadiness.set(values),
       error: () => this.platformReadiness.set([]),
     });
+  }
+  protected startEditCharacters(): void {
+    this.characterEditError.set(''); this.newCharacterName.set('');
+    this.draftCharacters.set((this.creativeContext()?.characters ?? []).map(item => ({
+      characterId: item.id,
+      name: item.name,
+      participation: item.participation === 'PRIMARY' ? 'PRIMARY' : 'SECONDARY',
+      role: this.characterRoles.includes(item.role) ? item.role : 'UNKNOWN',
+    })));
+    this.editingCharacters.set(true);
+    this.service.getCharacters().subscribe({
+      next: characters => this.characterRegistry.set(characters),
+      error: response => this.characterEditError.set(response.error?.message || 'Character list could not be loaded.'),
+    });
+  }
+  protected cancelEditCharacters(): void { this.editingCharacters.set(false); this.characterEditError.set(''); }
+  protected setDraftParticipation(characterId: string, participation: 'PRIMARY' | 'SECONDARY'): void {
+    // Only one main character per video: promoting one demotes the previous main character.
+    this.draftCharacters.update(items => items.map(item =>
+      item.characterId === characterId ? { ...item, participation }
+        : participation === 'PRIMARY' && item.participation === 'PRIMARY' ? { ...item, participation: 'SECONDARY' } : item));
+  }
+  protected setDraftRole(characterId: string, role: string): void {
+    this.draftCharacters.update(items => items.map(item => item.characterId === characterId ? { ...item, role } : item));
+  }
+  protected removeDraftCharacter(characterId: string): void {
+    this.draftCharacters.update(items => items.filter(item => item.characterId !== characterId));
+  }
+  protected addRegistryCharacter(characterId: string): void {
+    const character = this.characterRegistry().find(item => item.id === characterId);
+    if (character) this.addDraftCharacter(character);
+  }
+  protected createDraftCharacter(): void {
+    const name = this.newCharacterName().trim();
+    if (!name || this.characterSaving()) return;
+    const existing = this.characterRegistry().find(item => item.name.toLowerCase() === name.toLowerCase());
+    if (existing) { this.addDraftCharacter(existing); this.newCharacterName.set(''); return; }
+    this.characterSaving.set(true); this.characterEditError.set('');
+    this.service.createCharacter(name).subscribe({
+      next: character => {
+        this.characterRegistry.update(items => [...items, character]);
+        this.addDraftCharacter(character); this.newCharacterName.set(''); this.characterSaving.set(false);
+      },
+      error: response => { this.characterSaving.set(false); this.characterEditError.set(response.error?.message || 'Character could not be created.'); },
+    });
+  }
+  protected saveCharacters(): void {
+    const videoId = this.video()?.id;
+    if (!videoId || this.characterSaving()) return;
+    this.characterSaving.set(true); this.characterEditError.set('');
+    const payload: VideoCharacterAssignment[] = this.draftCharacters().map(({ characterId, participation, role }) => ({ characterId, participation, role }));
+    this.service.replaceVideoCharacters(videoId, payload).subscribe({
+      next: () => { this.characterSaving.set(false); this.editingCharacters.set(false); this.loadCreativeContext(videoId); },
+      error: response => { this.characterSaving.set(false); this.characterEditError.set(response.error?.message || 'Characters could not be saved.'); },
+    });
+  }
+  private addDraftCharacter(character: CharacterIdentity): void {
+    if (this.draftCharacters().some(item => item.characterId === character.id)) return;
+    const hasPrimary = this.draftCharacters().some(item => item.participation === 'PRIMARY');
+    this.draftCharacters.update(items => [...items, { characterId: character.id, name: character.name, participation: hasPrimary ? 'SECONDARY' : 'PRIMARY', role: 'UNKNOWN' }]);
   }
   private loadCreativeContext(videoId: string): void {
     this.creativeContextLoading.set(true); this.creativeContextError.set(''); this.creativeContext.set(null);

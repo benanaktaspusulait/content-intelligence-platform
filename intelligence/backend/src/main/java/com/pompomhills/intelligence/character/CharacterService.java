@@ -63,6 +63,67 @@ public class CharacterService {
         .param("video", videoId).param("character", characterId).update();
   }
 
+  private static final java.util.Set<String> PARTICIPATIONS = java.util.Set.of("PRIMARY", "SECONDARY");
+  private static final java.util.Set<String> ROLES =
+      java.util.Set.of("PROTAGONIST", "HELPER", "RIVAL", "OBSERVER", "COMEDIC_TARGET", "TEACHER", "UNKNOWN");
+
+  /**
+   * Replaces the complete character set of a video in one transaction. At most one PRIMARY is
+   * allowed; existing participation ratios are preserved for retained characters. Every stored row
+   * is marked as a manual, confirmed association.
+   */
+  @Transactional
+  public void replaceForVideo(UUID videoId, List<VideoCharacterInput> items) {
+    Integer videoCount =
+        jdbc.sql("select count(*) from videos where id=:id").param("id", videoId).query(Integer.class).single();
+    if (videoCount == 0) throw new EntityNotFoundException("Video not found: " + videoId);
+    java.util.Set<UUID> seen = new java.util.HashSet<>();
+    UUID primary = null;
+    for (VideoCharacterInput item : items) {
+      if (item.characterId() == null) throw new IllegalArgumentException("characterId is required");
+      if (!PARTICIPATIONS.contains(item.participation()))
+        throw new IllegalArgumentException("Invalid participation: " + item.participation());
+      if (!ROLES.contains(item.role())) throw new IllegalArgumentException("Invalid role: " + item.role());
+      if (!seen.add(item.characterId()))
+        throw new IllegalArgumentException("Duplicate character: " + item.characterId());
+      if (!characters.existsById(item.characterId()))
+        throw new EntityNotFoundException("Character not found: " + item.characterId());
+      if ("PRIMARY".equals(item.participation())) {
+        if (primary != null) throw new IllegalArgumentException("A video can have only one primary character");
+        primary = item.characterId();
+      }
+    }
+    if (seen.isEmpty()) {
+      jdbc.sql("delete from video_characters where video_id=:video").param("video", videoId).update();
+      return;
+    }
+    jdbc.sql("delete from video_characters where video_id=:video and character_id not in (:ids)")
+        .param("video", videoId).param("ids", seen).update();
+    // Demote first so the single-primary unique index is never violated mid-transaction.
+    jdbc.sql("update video_characters set participation='SECONDARY' where video_id=:video and participation='PRIMARY'")
+        .param("video", videoId).update();
+    for (VideoCharacterInput item : items) {
+      jdbc.sql(
+              """
+          insert into video_characters(video_id,character_id,participation,role,association_source,confidence,manually_confirmed,updated_at)
+          values(:video,:character,:participation,:role,'MANUAL','HIGH',true,now())
+          on conflict(video_id,character_id) do update set participation=excluded.participation,role=excluded.role,
+          association_source='MANUAL',confidence='HIGH',manually_confirmed=true,updated_at=now()
+          """)
+          .param("video", videoId)
+          .param("character", item.characterId())
+          .param("participation", "SECONDARY")
+          .param("role", item.role())
+          .update();
+    }
+    if (primary != null) {
+      jdbc.sql("update video_characters set participation='PRIMARY' where video_id=:video and character_id=:character")
+          .param("video", videoId).param("character", primary).update();
+    }
+  }
+
+  public record VideoCharacterInput(UUID characterId, String participation, String role) {}
+
   @Transactional(readOnly = true)
   public List<CharacterView> list() {
     return characters.findAll().stream().map(this::map).toList();

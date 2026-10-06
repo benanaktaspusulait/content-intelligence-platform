@@ -119,6 +119,8 @@ public class IntelligenceQualityValidationService {
     entity.setCriticalCount(report.criticalCount());
     entity.setWarningCount(report.warningCount());
     entity.setValidatedAt(validatedAt);
+    entity.setReportJson(QualityReportSnapshots.toJson(report));
+    entity.setPromptFingerprint(QualityReportSnapshots.fingerprint(prompt));
 
     if (snapshot != null) {
       entity.setExpiresAt(validatedAt.plus(evidenceFreshnessTtl));
