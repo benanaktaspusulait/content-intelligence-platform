@@ -47,13 +47,7 @@ class CliRealOpenArtAdapterTest {
     Files.writeString(executable, fixtureScript(), StandardCharsets.UTF_8);
     executable.toFile().setExecutable(true);
 
-    adapter =
-        new CliRealOpenArtAdapter(
-            executable.toString(),
-            "",
-            5,
-            true,
-            new ObjectMapper());
+    adapter = new CliRealOpenArtAdapter(executable.toString(), "", 5, true, new ObjectMapper());
   }
 
   @AfterEach
@@ -120,11 +114,10 @@ class CliRealOpenArtAdapterTest {
   }
 
   private String fixtureScript() {
-    String downloadUrl =
-        "http://127.0.0.1:" + downloadServer.getAddress().getPort() + "/asset.mp4";
+    String downloadUrl = "http://127.0.0.1:" + downloadServer.getAddress().getPort() + "/asset.mp4";
     return """
         #!/bin/sh
-        printf '%s\\n' "$*" >> '%s'
+        printf '%%s\\n' "$*" >> '%s'
         if [ "$1" = "version" ] || [ "$1" = "--version" ]; then
           printf 'openart 0.1.1\\n'
           exit 0
@@ -151,6 +144,7 @@ class CliRealOpenArtAdapterTest {
         fi
         printf 'unexpected command\\n' >&2
         exit 2
-        """.formatted(commandLog);
+        """
+        .formatted(commandLog, downloadUrl);
   }
 }

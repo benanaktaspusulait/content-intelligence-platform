@@ -13,15 +13,15 @@ import com.pompom.creative.openart.dto.OpenArtImageRequest;
 import com.pompom.creative.openart.dto.OpenArtJobResponse;
 import com.pompom.creative.openart.dto.OpenArtJobStatus;
 import com.pompom.creative.openart.dto.OpenArtVideoRequest;
+import com.pompom.creative.postrender.PostRenderEvaluationService;
 import com.pompom.creative.qa.QaAnalysisResult;
 import com.pompom.creative.qa.QaDecisionEngine;
 import com.pompom.creative.qa.QaService;
-import com.pompom.creative.postrender.PostRenderDecision;
-import com.pompom.creative.postrender.PostRenderEvaluationService;
 import com.pompom.creative.repository.RenderAssetRepository;
 import com.pompom.creative.repository.RenderAttemptRepository;
 import com.pompom.creative.repository.RenderJobRepository;
 import com.pompom.creative.service.AssetLibraryManager;
+import com.pompom.creative.service.CreditTrackingService;
 import com.pompom.creative.websocket.WebSocketEventPublisher;
 import com.pompom.creative.websocket.dto.RenderProgressEvent;
 import java.nio.file.Path;
@@ -30,6 +30,7 @@ import java.time.Instant;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -64,7 +65,11 @@ public class RenderAttemptOrchestrator {
   private final QaService qaService;
   private final PostRenderEvaluationService postRenderEvaluationService;
   private final WebSocketEventPublisher webSocketPublisher;
+  private final CreditTrackingService creditTrackingService;
   private final ObjectMapper objectMapper;
+
+  @Value("${pompom.openart.max-polls:180}")
+  private int maxProviderPolls;
 
   /**
    * Process exactly one stage of the given attempt.
@@ -118,11 +123,20 @@ public class RenderAttemptOrchestrator {
         job.getJobType() == RenderJob.JobType.FIRST_FRAME
             ? submitFirstFrame(job)
             : submitVideo(job);
+    if (response.getJobId() == null || response.getJobId().isBlank()) {
+      throw new IllegalStateException("OpenArt returned an empty history id");
+    }
 
     attempt.setProviderJobId(response.getJobId());
     job.setOpenartJobId(response.getJobId());
+    if (response.getEstimatedCredits() != null) {
+      job.setCreditsEstimated(response.getEstimatedCredits());
+    }
+    Instant now = Instant.now();
     attempt.setStage(RenderExecutionStage.PROVIDER_QUEUED);
-    attempt.setStartedAt(Instant.now());
+    attempt.setStartedAt(now);
+    job.setStartedAt(job.getStartedAt() == null ? now : job.getStartedAt());
+    job.setStatus(RenderJob.RenderJobStatus.GENERATING);
     releaseLease(attempt);
 
     renderAttemptRepo.save(attempt);
@@ -134,8 +148,10 @@ public class RenderAttemptOrchestrator {
     JsonNode parameters = providerParameters(job);
     OpenArtImageRequest request =
         OpenArtImageRequest.builder()
-            .promptText(job.getGenerationPromptSnapshot() == null
-                ? job.getPromptTextSnapshot() : job.getGenerationPromptSnapshot())
+            .promptText(
+                job.getGenerationPromptSnapshot() == null
+                    ? job.getPromptTextSnapshot()
+                    : job.getGenerationPromptSnapshot())
             .model(job.getOpenartModel())
             .style(parameters.path("style").asText("cinematic"))
             .aspectRatio(parameters.path("aspectRatio").asText("16:9"))
@@ -147,8 +163,10 @@ public class RenderAttemptOrchestrator {
     JsonNode parameters = providerParameters(job);
     OpenArtVideoRequest request =
         OpenArtVideoRequest.builder()
-            .promptText(job.getGenerationPromptSnapshot() == null
-                ? job.getPromptTextSnapshot() : job.getGenerationPromptSnapshot())
+            .promptText(
+                job.getGenerationPromptSnapshot() == null
+                    ? job.getPromptTextSnapshot()
+                    : job.getGenerationPromptSnapshot())
             .model(job.getOpenartModel())
             .firstFrameImageId(textOrNull(parameters, "firstFrameImageId"))
             .durationSeconds(parameters.path("durationSeconds").asInt(15))
@@ -180,30 +198,69 @@ public class RenderAttemptOrchestrator {
   private void poll(RenderAttempt attempt, RenderJob job) {
     OpenArtJobStatus status = openArtAdapter.getJobStatus(attempt.getProviderJobId());
     ProviderJobState state = mapProviderState(status);
-
+    int pollCount = attempt.getPollCount() == null ? 1 : attempt.getPollCount() + 1;
     attempt.setProviderJobState(state);
-    attempt.setPollCount(attempt.getPollCount() + 1);
+    attempt.setPollCount(pollCount);
 
     if (state == ProviderJobState.SUCCEEDED) {
       attempt.setStage(RenderExecutionStage.DOWNLOADING);
+      job.setStatus(RenderJob.RenderJobStatus.DOWNLOADING);
+      java.math.BigDecimal credits = status.getCreditsUsed();
+      if (credits == null) {
+        credits = job.getCreditsEstimated();
+      }
+      if (credits != null && credits.signum() >= 0) {
+        creditTrackingService.recordProviderUsageIfAbsent(
+            job,
+            credits,
+            status.getCreditsUsed() == null ? "estimate-fallback" : "provider-status");
+      }
     } else if (state == ProviderJobState.FAILED || state == ProviderJobState.CANCELLED) {
-      attempt.setStage(RenderExecutionStage.FAILED);
-      attempt.setErrorCode("PROVIDER_" + state.name());
-      attempt.setErrorMessage(status.getErrorMessage());
-      attempt.setCompletedAt(Instant.now());
+      failProviderAttempt(attempt, job, state, status.getErrorMessage());
+    } else if (maxProviderPolls > 0 && pollCount >= maxProviderPolls) {
+      failProviderAttempt(
+          attempt,
+          job,
+          ProviderJobState.FAILED,
+          "Provider did not finish within " + maxProviderPolls + " polls");
+      attempt.setErrorCode("PROVIDER_TIMEOUT");
+      job.setErrorCode("PROVIDER_TIMEOUT");
     } else {
       // RUNNING, QUEUED, or UNKNOWN: stay PROVIDER_QUEUED and poll again later.
       attempt.setNextPollAt(Instant.now().plus(POLL_BACKOFF));
+      job.setStatus(RenderJob.RenderJobStatus.POLLING);
     }
 
     releaseLease(attempt);
     renderAttemptRepo.save(attempt);
-    publishProgress(job, "Polling provider", status.getProgressPercent());
+    renderJobRepo.save(job);
+    publishProgress(job, "Polling provider", status == null ? null : status.getProgressPercent());
+  }
+
+  private void failProviderAttempt(
+      RenderAttempt attempt, RenderJob job, ProviderJobState state, String providerMessage) {
+    String message =
+        providerMessage == null || providerMessage.isBlank()
+            ? "OpenArt provider reported " + state
+            : providerMessage;
+    attempt.setStage(RenderExecutionStage.FAILED);
+    attempt.setErrorCode("PROVIDER_" + state.name());
+    attempt.setErrorMessage(message);
+    attempt.setCompletedAt(Instant.now());
+    job.setStatus(RenderJob.RenderJobStatus.FAILED);
+    job.setFailedAt(Instant.now());
+    job.setErrorCode("PROVIDER_" + state.name());
+    job.setErrorMessage(message);
   }
 
   private ProviderJobState mapProviderState(OpenArtJobStatus status) {
+    if (status == null) {
+      return ProviderJobState.UNKNOWN;
+    }
     if (status.isFailed()) {
-      return ProviderJobState.FAILED;
+      return "CANCELLED".equalsIgnoreCase(status.getStatus())
+          ? ProviderJobState.CANCELLED
+          : ProviderJobState.FAILED;
     }
     if (status.isComplete()) {
       return ProviderJobState.SUCCEEDED;
@@ -212,10 +269,10 @@ public class RenderAttemptOrchestrator {
     if (raw == null) {
       return ProviderJobState.UNKNOWN;
     }
-    return switch (raw) {
-      case "QUEUED" -> ProviderJobState.QUEUED;
-      case "RUNNING" -> ProviderJobState.RUNNING;
-      case "CANCELLED" -> ProviderJobState.CANCELLED;
+    return switch (raw.trim().toUpperCase(java.util.Locale.ROOT).replace('-', '_')) {
+      case "QUEUED", "PENDING", "CREATED", "SUBMITTED" -> ProviderJobState.QUEUED;
+      case "RUNNING", "PROCESSING", "IN_PROGRESS", "GENERATING" -> ProviderJobState.RUNNING;
+      case "CANCELLED", "CANCELED" -> ProviderJobState.CANCELLED;
       default -> ProviderJobState.UNKNOWN;
     };
   }
@@ -236,9 +293,11 @@ public class RenderAttemptOrchestrator {
 
     attempt.setAssetId(asset.getId());
     attempt.setStage(RenderExecutionStage.POST_RENDER_QA);
+    job.setStatus(RenderJob.RenderJobStatus.DOWNLOADING);
     releaseLease(attempt);
 
     renderAttemptRepo.save(attempt);
+    renderJobRepo.save(job);
     publishProgress(job, "Downloaded asset", 70);
   }
 
@@ -268,14 +327,23 @@ public class RenderAttemptOrchestrator {
       qaResult = qaService.analyzeAsset(asset);
     } catch (QaService.QaDependencyUnavailableException error) {
       qaStatus = "SERVICE_ERROR";
-      log.warn("QA helper evidence unavailable for asset {}: {}", asset.getId(), error.getMessage());
+      log.warn(
+          "QA helper evidence unavailable for asset {}: {}", asset.getId(), error.getMessage());
     }
-    var evaluation = postRenderEvaluationService.evaluate(asset, attempt.getId(), qaResult, qaStatus);
-    String reason = "Post-render " + evaluation.evaluation().getOverallDecision()
-        + " under " + evaluation.evaluation().getPostRenderRulesetVersion();
+    var evaluation =
+        postRenderEvaluationService.evaluate(asset, attempt.getId(), qaResult, qaStatus);
+    String reason =
+        "Post-render "
+            + evaluation.evaluation().getOverallDecision()
+            + " under "
+            + evaluation.evaluation().getPostRenderRulesetVersion();
     switch (evaluation.evaluation().getOverallDecision()) {
-      case PASS -> accept(attempt, job, new QaDecisionEngine.QaDecision(
-          com.pompom.creative.domain.RenderQaResult.QaDecision.ACCEPT, reason, false));
+      case PASS ->
+          accept(
+              attempt,
+              job,
+              new QaDecisionEngine.QaDecision(
+                  com.pompom.creative.domain.RenderQaResult.QaDecision.ACCEPT, reason, false));
       case HUMAN_REVIEW -> {
         attempt.setStage(RenderExecutionStage.NEEDS_HUMAN_REVIEW);
         attempt.setTerminalReason(reason);
@@ -286,8 +354,12 @@ public class RenderAttemptOrchestrator {
         renderJobRepo.save(job);
         publishProgress(job, "Human review required", 100);
       }
-      case FAIL, SYSTEM_ERROR -> abandon(attempt, job, new QaDecisionEngine.QaDecision(
-          com.pompom.creative.domain.RenderQaResult.QaDecision.ABANDON, reason, false));
+      case FAIL, SYSTEM_ERROR ->
+          abandon(
+              attempt,
+              job,
+              new QaDecisionEngine.QaDecision(
+                  com.pompom.creative.domain.RenderQaResult.QaDecision.ABANDON, reason, false));
     }
   }
 
@@ -337,6 +409,9 @@ public class RenderAttemptOrchestrator {
             .eligibleAt(Instant.now())
             .build();
     renderAttemptRepo.save(nextAttempt);
+    job.setAttemptNumber(nextAttempt.getAttemptNumber());
+    job.setStatus(RenderJob.RenderJobStatus.QUEUED);
+    renderJobRepo.save(job);
 
     log.info(
         "Attempt {} rerendering as attempt {}: {}",
@@ -365,6 +440,7 @@ public class RenderAttemptOrchestrator {
   private void releaseLease(RenderAttempt attempt) {
     attempt.setLeaseOwner(null);
     attempt.setLeaseExpiresAt(null);
+    attempt.setLeaseHeartbeatAt(null);
   }
 
   private void publishProgress(RenderJob job, String currentStep, Integer progressPercent) {

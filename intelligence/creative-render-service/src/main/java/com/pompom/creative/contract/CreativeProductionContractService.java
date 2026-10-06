@@ -25,11 +25,14 @@ public class CreativeProductionContractService {
   }
 
   public ContractCompilation compile(ContentPromptSnapshot snapshot, String preRenderRuleset) {
-    if (snapshot.parsedIr() == null || snapshot.parsedIr().isBlank() || "{}".equals(snapshot.parsedIr().trim())) {
+    if (snapshot.parsedIr() == null
+        || snapshot.parsedIr().isBlank()
+        || "{}".equals(snapshot.parsedIr().trim())) {
       return ContractCompilation.legacy();
     }
     try {
-      Map<String, Object> root = objectMapper.readValue(snapshot.parsedIr(), new TypeReference<>() {});
+      Map<String, Object> root =
+          objectMapper.readValue(snapshot.parsedIr(), new TypeReference<>() {});
       Map<String, Object> plan = map(root.get("videoPlanIR"));
       if (plan.isEmpty()) plan = root;
       List<String> errors = new ArrayList<>();
@@ -42,8 +45,11 @@ public class CreativeProductionContractService {
       copy(intent, "payoffIntent", plan.get("finalPayoff"));
       copy(intent, "loopIntent", plan.get("loop"));
       copy(intent, "producibilityIntent", plan.get("producibility"));
-      if (!intent.containsKey("loopIntent") && map(plan.get("finalPayoff")).containsKey("loopsToOpening")) {
-        intent.put("loopIntent", Map.of("loopsToOpening", map(plan.get("finalPayoff")).get("loopsToOpening")));
+      if (!intent.containsKey("loopIntent")
+          && map(plan.get("finalPayoff")).containsKey("loopsToOpening")) {
+        intent.put(
+            "loopIntent",
+            Map.of("loopsToOpening", map(plan.get("finalPayoff")).get("loopsToOpening")));
       }
       if (!intent.containsKey("mechanicIntent")) errors.add("MISSING_MECHANIC_INTENT");
       if (!intent.containsKey("payoffIntent")) errors.add("MISSING_PAYOFF_INTENT");
@@ -104,7 +110,8 @@ public class CreativeProductionContractService {
           promptText
               + "\n\n[COMPILED CREATIVE PRODUCTION CONSTRAINTS]\n- "
               + String.join("\n- ", constraints.constraints());
-      return new ContractCompilation(contract, constraints, contractJson, constraintsJson, hash, compiledPrompt);
+      return new ContractCompilation(
+          contract, constraints, contractJson, constraintsJson, hash, compiledPrompt);
     }
 
     public static ContractCompilation legacy() {
@@ -120,17 +127,26 @@ public class CreativeProductionContractService {
               List.of("legacy-prompt-without-parsed-plan"),
               List.of());
       CompiledGenerationConstraints constraints =
-          new CompiledGenerationConstraints(COMPILER_VERSION, "NOT_AVAILABLE", List.of(), List.of());
+          new CompiledGenerationConstraints(
+              COMPILER_VERSION, "NOT_AVAILABLE", List.of(), List.of());
       return new ContractCompilation(contract, constraints, "{}", "{}", null, null);
     }
 
     public static ContractCompilation failed(String reason) {
       CreativeProductionContract contract =
           new CreativeProductionContract(
-              "SERVICE_ERROR", CONTRACT_VERSION, "unknown", "unknown", "unknown", "unknown",
-              Map.of(), List.of(), List.of(reason));
+              "SERVICE_ERROR",
+              CONTRACT_VERSION,
+              "unknown",
+              "unknown",
+              "unknown",
+              "unknown",
+              Map.of(),
+              List.of(),
+              List.of(reason));
       CompiledGenerationConstraints constraints =
-          new CompiledGenerationConstraints(COMPILER_VERSION, "SERVICE_ERROR", List.of(), List.of());
+          new CompiledGenerationConstraints(
+              COMPILER_VERSION, "SERVICE_ERROR", List.of(), List.of());
       return new ContractCompilation(contract, constraints, "{}", "{}", null, null);
     }
   }

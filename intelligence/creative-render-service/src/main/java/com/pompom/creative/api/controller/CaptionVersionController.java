@@ -29,18 +29,26 @@ public class CaptionVersionController {
 
   @PostMapping
   public ResponseEntity<?> save(@RequestBody SaveCaptionRequest request) {
-    if (request.renderAssetId == null || request.platform == null || request.platform.isBlank()
-        || request.caption == null || request.caption.isBlank()) {
+    if (request.renderAssetId == null
+        || request.platform == null
+        || request.platform.isBlank()
+        || request.caption == null
+        || request.caption.isBlank()) {
       return ResponseEntity.badRequest().body("renderAssetId, platform and caption are required");
     }
-    CaptionVersion version = repository.save(CaptionVersion.builder()
-        .renderAssetId(request.renderAssetId)
-        .platform(request.platform.trim().toUpperCase())
-        .caption(request.caption)
-        .hashtags(request.hashtags)
-        .source(request.source == null || request.source.isBlank() ? "GENERATED" : request.source.trim().toUpperCase())
-        .createdBy(request.createdBy)
-        .build());
+    CaptionVersion version =
+        repository.save(
+            CaptionVersion.builder()
+                .renderAssetId(request.renderAssetId)
+                .platform(request.platform.trim().toUpperCase())
+                .caption(request.caption)
+                .hashtags(request.hashtags)
+                .source(
+                    request.source == null || request.source.isBlank()
+                        ? "GENERATED"
+                        : request.source.trim().toUpperCase())
+                .createdBy(request.createdBy)
+                .build());
     return ResponseEntity.status(HttpStatus.CREATED).body(version);
   }
 

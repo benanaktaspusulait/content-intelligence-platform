@@ -48,8 +48,17 @@ public class PlanRenderFidelityAnalyzer {
     return result;
   }
 
-  private Map<String, Object> dimension(String fidelity, String planned, String observed, String action) {
-    return Map.of("fidelity", fidelity, "planned", planned, "observed", observed, "recommendedActionType", action);
+  private Map<String, Object> dimension(
+      String fidelity, String planned, String observed, String action) {
+    return Map.of(
+        "fidelity",
+        fidelity,
+        "planned",
+        planned,
+        "observed",
+        observed,
+        "recommendedActionType",
+        action);
   }
 
   @SuppressWarnings("unchecked")

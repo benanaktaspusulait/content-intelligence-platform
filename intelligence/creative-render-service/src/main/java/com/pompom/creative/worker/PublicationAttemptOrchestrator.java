@@ -150,7 +150,8 @@ public class PublicationAttemptOrchestrator {
     List<UUID> expiredIds =
         transactionTemplate.execute(
             status ->
-                attemptRepository.findByStageAndLeaseExpiresAtBefore(
+                attemptRepository
+                    .findByStageAndLeaseExpiresAtBefore(
                         PublicationExecutionStage.SUBMITTING, Instant.now())
                     .stream()
                     .map(PublicationAttempt::getId)
@@ -172,12 +173,10 @@ public class PublicationAttemptOrchestrator {
                       publisher.reconcile(
                           work.request(), work.platformPostId(), work.platformVideoId()));
       if (response.isPresent() && Boolean.TRUE.equals(response.get().getSuccess())) {
-        transactionTemplate.executeWithoutResult(
-            status -> markComplete(attemptId, response.get()));
+        transactionTemplate.executeWithoutResult(status -> markComplete(attemptId, response.get()));
       } else {
         markAmbiguous(
-            attemptId,
-            "Remote outcome could not be reconciled; no blind retry was performed");
+            attemptId, "Remote outcome could not be reconciled; no blind retry was performed");
       }
     }
   }

@@ -28,7 +28,8 @@ class CreativeProductionContractServiceTest {
     assertThat(result.contract().contractVersion()).isEqualTo("creative-production-contract-v1");
     assertThat(result.contract().activePreRenderRulesetVersion()).isEqualTo("RULESET_1.5");
     assertThat(result.constraints().constraints())
-        .contains("At the payoff, reduce non-essential motion so the consequence and reaction remain readable.");
+        .contains(
+            "At the payoff, reduce non-essential motion so the consequence and reaction remain readable.");
     assertThat(result.constraintsSha256()).hasSize(64);
   }
 
@@ -42,7 +43,16 @@ class CreativeProductionContractServiceTest {
   }
 
   private ContentPromptSnapshot snapshot(String parsedIr) {
-    return new ContentPromptSnapshot("v1", 1L, "Test", "REEL", "RENDER_READY", 2L, 1,
-        "A valid prompt with enough text", parsedIr, "a".repeat(64));
+    return new ContentPromptSnapshot(
+        "v1",
+        1L,
+        "Test",
+        "REEL",
+        "RENDER_READY",
+        2L,
+        1,
+        "A valid prompt with enough text",
+        parsedIr,
+        "a".repeat(64));
   }
 }

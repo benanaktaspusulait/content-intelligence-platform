@@ -1,16 +1,16 @@
 package com.pompom.creative.service;
 
 import com.pompom.creative.domain.QaHumanReview;
+import com.pompom.creative.domain.RenderAttempt;
+import com.pompom.creative.domain.RenderExecutionStage;
+import com.pompom.creative.domain.RenderJob;
 import com.pompom.creative.domain.RenderQaResult;
+import com.pompom.creative.postrender.PostRenderEvaluation;
+import com.pompom.creative.postrender.PostRenderEvaluationRepository;
 import com.pompom.creative.repository.QaHumanReviewRepository;
 import com.pompom.creative.repository.RenderAttemptRepository;
 import com.pompom.creative.repository.RenderJobRepository;
 import com.pompom.creative.repository.RenderQaResultRepository;
-import com.pompom.creative.postrender.PostRenderEvaluation;
-import com.pompom.creative.postrender.PostRenderEvaluationRepository;
-import com.pompom.creative.domain.RenderAttempt;
-import com.pompom.creative.domain.RenderExecutionStage;
-import com.pompom.creative.domain.RenderJob;
 import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
@@ -31,12 +31,14 @@ public class QaHumanReviewService {
 
   @Transactional(readOnly = true)
   public List<RenderQaResult> pendingReviews() {
-    return qaResultRepository.findByRequiresHumanReviewTrueAndHumanReviewedAtIsNullOrderByCreatedAtAsc();
+    return qaResultRepository
+        .findByRequiresHumanReviewTrueAndHumanReviewedAtIsNullOrderByCreatedAtAsc();
   }
 
   @Transactional(readOnly = true)
   public List<PostRenderEvaluation> pendingPostRenderEvaluations() {
-    return postRenderEvaluationRepository.findByHumanReviewRequiredTrueAndHumanReviewedAtIsNullOrderByCreatedAtAsc();
+    return postRenderEvaluationRepository
+        .findByHumanReviewRequiredTrueAndHumanReviewedAtIsNullOrderByCreatedAtAsc();
   }
 
   @Transactional
@@ -89,18 +91,23 @@ public class QaHumanReviewService {
   @Transactional
   public QaHumanReview decidePostRender(
       UUID evaluationId, QaHumanReview.Decision decision, String reviewer, String notes) {
-    if (reviewer == null || reviewer.isBlank()) throw new IllegalArgumentException("reviewer is required");
-    PostRenderEvaluation evaluation = postRenderEvaluationRepository.findById(evaluationId)
-        .orElseThrow(() -> new IllegalArgumentException("Post-render evaluation not found"));
+    if (reviewer == null || reviewer.isBlank())
+      throw new IllegalArgumentException("reviewer is required");
+    PostRenderEvaluation evaluation =
+        postRenderEvaluationRepository
+            .findById(evaluationId)
+            .orElseThrow(() -> new IllegalArgumentException("Post-render evaluation not found"));
     evaluation.recordHumanDecision(reviewer.trim(), decision.name(), notes);
     postRenderEvaluationRepository.save(evaluation);
-    if (decision == QaHumanReview.Decision.RERENDER_REQUESTED) queueRerender(evaluation.getRenderAsset().getRenderJob());
-    return reviewRepository.save(QaHumanReview.builder()
-        .postRenderEvaluation(evaluation)
-        .decision(decision)
-        .reviewer(reviewer.trim())
-        .notes(notes)
-        .build());
+    if (decision == QaHumanReview.Decision.RERENDER_REQUESTED)
+      queueRerender(evaluation.getRenderAsset().getRenderJob());
+    return reviewRepository.save(
+        QaHumanReview.builder()
+            .postRenderEvaluation(evaluation)
+            .decision(decision)
+            .reviewer(reviewer.trim())
+            .notes(notes)
+            .build());
   }
 
   @Transactional(readOnly = true)

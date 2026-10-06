@@ -13,7 +13,8 @@ class PostRenderAssessmentAggregatorTest {
 
   @Test
   void blockerServiceFailureIsIncompleteRatherThanAFalseCreativeGrade() {
-    PostRenderRuleResult result = result(PostRenderSeverity.BLOCKER, PostRenderOutcome.SERVICE_ERROR, false);
+    PostRenderRuleResult result =
+        result(PostRenderSeverity.BLOCKER, PostRenderOutcome.SERVICE_ERROR, false);
     PostRenderAssessment assessment = aggregator.aggregate(evidence(), List.of(result));
 
     assertThat(assessment.grade()).isEqualTo("INCOMPLETE");
@@ -29,14 +30,36 @@ class PostRenderAssessmentAggregatorTest {
     assertThat(assessment.evidenceCoveragePercent()).isEqualTo(100);
   }
 
-  private PostRenderRuleResult result(PostRenderSeverity severity, PostRenderOutcome outcome, boolean review) {
-    return new PostRenderRuleResult("TEST", "1.0", "TEST", "POST_RENDER", "TEST", severity, outcome,
-        "test message", null, Map.of(), Map.of(), "test", review, Instant.now());
+  private PostRenderRuleResult result(
+      PostRenderSeverity severity, PostRenderOutcome outcome, boolean review) {
+    return new PostRenderRuleResult(
+        "TEST",
+        "1.0",
+        "TEST",
+        "POST_RENDER",
+        "TEST",
+        severity,
+        outcome,
+        "test message",
+        null,
+        Map.of(),
+        Map.of(),
+        "test",
+        review,
+        Instant.now());
   }
 
   private RenderEvidenceIR evidence() {
-    return new RenderEvidenceIR(UUID.randomUUID(), UUID.randomUUID(), UUID.randomUUID(), null, null,
-        "render-evidence-v2", Instant.now(), Map.of(), Map.of(
+    return new RenderEvidenceIR(
+        UUID.randomUUID(),
+        UUID.randomUUID(),
+        UUID.randomUUID(),
+        null,
+        null,
+        "render-evidence-v2",
+        Instant.now(),
+        Map.of(),
+        Map.of(
             "payoff", Map.of("status", "NOT_AVAILABLE"),
             "motion", Map.of("motionHeuristicScore", 80),
             "visualSimilarity", Map.of("firstLastSimilarity", 0.8)));

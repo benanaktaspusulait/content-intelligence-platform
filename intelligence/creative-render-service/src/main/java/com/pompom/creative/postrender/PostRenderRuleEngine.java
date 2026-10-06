@@ -40,49 +40,118 @@ public class PostRenderRuleEngine {
     }
     boolean conditionPasses = compare(actual, rule.operator(), rule.expected());
     if (conditionPasses && "INFO".equals(rule.policyEffect())) {
-      return result(rule, PostRenderOutcome.PASS, actual, false,
-          "Informational evidence: " + rule.description(), now);
+      return result(
+          rule,
+          PostRenderOutcome.PASS,
+          actual,
+          false,
+          "Informational evidence: " + rule.description(),
+          now);
     }
     if ("HUMAN_REVIEW".equals(rule.policyEffect())) {
       return conditionPasses
           ? result(rule, PostRenderOutcome.FAIL, actual, true, rule.description(), now)
-          : result(rule, PostRenderOutcome.PASS, actual, false,
-              "Evidence does not require human review.", now);
+          : result(
+              rule,
+              PostRenderOutcome.PASS,
+              actual,
+              false,
+              "Evidence does not require human review.",
+              now);
     }
     if (conditionPasses) {
-      return result(rule, outcome(rule.resultWhenMatched()), actual, false,
-          rule.description(), now);
+      return result(
+          rule, outcome(rule.resultWhenMatched()), actual, false, rule.description(), now);
     }
-    return result(rule, PostRenderOutcome.FAIL, actual, false,
-        "Evidence violates the rule: " + rule.description(), now);
+    return result(
+        rule,
+        PostRenderOutcome.FAIL,
+        actual,
+        false,
+        "Evidence violates the rule: " + rule.description(),
+        now);
   }
 
-  private PostRenderRuleResult missing(PostRenderRuleDefinition rule, EvidenceStatus status, Instant now) {
+  private PostRenderRuleResult missing(
+      PostRenderRuleDefinition rule, EvidenceStatus status, Instant now) {
     return switch (rule.missingEvidence()) {
-      case "FAIL_CLOSED" -> result(rule, PostRenderOutcome.FAIL, null, false,
-          "Required evidence is unavailable: " + status, now, PostRenderSeverity.BLOCKER);
-      case "REVIEW" -> result(rule, PostRenderOutcome.UNKNOWN, null, true,
-          "Evidence requires human review: " + status, now);
-      case "NOT_APPLICABLE" -> result(rule, PostRenderOutcome.NOT_APPLICABLE, null, false,
-          "Evidence is not applicable: " + status, now);
-      case "SERVICE_ERROR" -> result(rule, PostRenderOutcome.SERVICE_ERROR, null, false,
-          "Evidence service failed: " + status, now);
-      default -> result(rule, PostRenderOutcome.UNKNOWN, null, false,
-          "Evidence is unavailable: " + status, now);
+      case "FAIL_CLOSED" ->
+          result(
+              rule,
+              PostRenderOutcome.FAIL,
+              null,
+              false,
+              "Required evidence is unavailable: " + status,
+              now,
+              PostRenderSeverity.BLOCKER);
+      case "REVIEW" ->
+          result(
+              rule,
+              PostRenderOutcome.UNKNOWN,
+              null,
+              true,
+              "Evidence requires human review: " + status,
+              now);
+      case "NOT_APPLICABLE" ->
+          result(
+              rule,
+              PostRenderOutcome.NOT_APPLICABLE,
+              null,
+              false,
+              "Evidence is not applicable: " + status,
+              now);
+      case "SERVICE_ERROR" ->
+          result(
+              rule,
+              PostRenderOutcome.SERVICE_ERROR,
+              null,
+              false,
+              "Evidence service failed: " + status,
+              now);
+      default ->
+          result(
+              rule,
+              PostRenderOutcome.UNKNOWN,
+              null,
+              false,
+              "Evidence is unavailable: " + status,
+              now);
     };
   }
 
-  private PostRenderRuleResult result(PostRenderRuleDefinition rule, PostRenderOutcome outcome,
-      Object actual, boolean reviewRequired, String message, Instant evaluatedAt) {
+  private PostRenderRuleResult result(
+      PostRenderRuleDefinition rule,
+      PostRenderOutcome outcome,
+      Object actual,
+      boolean reviewRequired,
+      String message,
+      Instant evaluatedAt) {
     return result(rule, outcome, actual, reviewRequired, message, evaluatedAt, rule.severity());
   }
 
-  private PostRenderRuleResult result(PostRenderRuleDefinition rule, PostRenderOutcome outcome,
-      Object actual, boolean reviewRequired, String message, Instant evaluatedAt,
+  private PostRenderRuleResult result(
+      PostRenderRuleDefinition rule,
+      PostRenderOutcome outcome,
+      Object actual,
+      boolean reviewRequired,
+      String message,
+      Instant evaluatedAt,
       PostRenderSeverity severity) {
-    return new PostRenderRuleResult(rule.id(), rule.version(), RULESET_VERSION, "POST_RENDER",
-        rule.family(), severity, outcome, message, actual, rule.expectedCondition(),
-        Map.of("source", rule.source()), "POST_RENDER_RULE_ENGINE", reviewRequired, evaluatedAt);
+    return new PostRenderRuleResult(
+        rule.id(),
+        rule.version(),
+        RULESET_VERSION,
+        "POST_RENDER",
+        rule.family(),
+        severity,
+        outcome,
+        message,
+        actual,
+        rule.expectedCondition(),
+        Map.of("source", rule.source()),
+        "POST_RENDER_RULE_ENGINE",
+        reviewRequired,
+        evaluatedAt);
   }
 
   private boolean compare(Object actual, String operator, Object expected) {
@@ -100,7 +169,9 @@ public class PostRenderRuleEngine {
   }
 
   private double number(Object value) {
-    return value instanceof Number number ? number.doubleValue() : Double.parseDouble(value.toString());
+    return value instanceof Number number
+        ? number.doubleValue()
+        : Double.parseDouble(value.toString());
   }
 
   private PostRenderOutcome outcome(String value) {
@@ -116,18 +187,25 @@ public class PostRenderRuleEngine {
     try (InputStream input = new ClassPathResource(RESOURCE).getInputStream()) {
       Map<String, Object> root = (Map<String, Object>) new Yaml().load(input);
       String version = String.valueOf(root.get("version"));
-      if (!RULESET_VERSION.equals(version)) throw new IllegalStateException("Unexpected post-render ruleset version");
-      List<Map<String, Object>> configured = (List<Map<String, Object>>) root.getOrDefault("rules", List.of());
+      if (!RULESET_VERSION.equals(version))
+        throw new IllegalStateException("Unexpected post-render ruleset version");
+      List<Map<String, Object>> configured =
+          (List<Map<String, Object>>) root.getOrDefault("rules", List.of());
       List<PostRenderRuleDefinition> definitions = new ArrayList<>();
       for (Map<String, Object> rule : configured) {
-        definitions.add(new PostRenderRuleDefinition(
-            String.valueOf(rule.get("id")), String.valueOf(rule.get("ruleVersion")),
-            String.valueOf(rule.get("family")), PostRenderSeverity.valueOf(String.valueOf(rule.get("severity"))),
-            String.valueOf(rule.get("source")), String.valueOf(rule.get("operator")), rule.get("expected"),
-            String.valueOf(rule.getOrDefault("missingEvidence", "UNKNOWN")),
-            String.valueOf(rule.getOrDefault("resultWhenMatched", "FAIL")),
-            String.valueOf(rule.getOrDefault("policyEffect", "")),
-            String.valueOf(rule.getOrDefault("description", rule.get("id")))));
+        definitions.add(
+            new PostRenderRuleDefinition(
+                String.valueOf(rule.get("id")),
+                String.valueOf(rule.get("ruleVersion")),
+                String.valueOf(rule.get("family")),
+                PostRenderSeverity.valueOf(String.valueOf(rule.get("severity"))),
+                String.valueOf(rule.get("source")),
+                String.valueOf(rule.get("operator")),
+                rule.get("expected"),
+                String.valueOf(rule.getOrDefault("missingEvidence", "UNKNOWN")),
+                String.valueOf(rule.getOrDefault("resultWhenMatched", "FAIL")),
+                String.valueOf(rule.getOrDefault("policyEffect", "")),
+                String.valueOf(rule.getOrDefault("description", rule.get("id")))));
       }
       return List.copyOf(definitions);
     } catch (Exception error) {

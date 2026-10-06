@@ -51,6 +51,25 @@ pompom:
   render:
     worker:
       enabled: ${RENDER_WORKER_ENABLED:true}
-      lease-duration: ${RENDER_WORKER_LEASE_DURATION:30s}
+      lease-duration: ${RENDER_WORKER_LEASE_DURATION:10m}
       batch-size: ${RENDER_WORKER_BATCH_SIZE:10}
       tick-interval: ${RENDER_WORKER_TICK_INTERVAL:5s}
+  openart:
+    enabled: ${OPENART_ENABLED:false}
+    mock:
+      enabled: ${OPENART_MOCK_ENABLED:true}
+    token: ${OPENART_TOKEN:}
+    cli:
+      path: ${OPENART_CLI_PATH:openart}
+      timeout-seconds: ${OPENART_CLI_TIMEOUT:300}
+    max-polls: ${OPENART_MAX_POLLS:180}
+    budget:
+      monthly: ${OPENART_MONTHLY_BUDGET:1000}
+      warning-threshold: ${OPENART_WARNING_THRESHOLD:0.2}
+      alert:
+        enabled: ${OPENART_ALERT_ENABLED:true}
+        webhook-url: ${OPENART_ALERT_WEBHOOK_URL:}
+        email: ${OPENART_ALERT_EMAIL:}
+    cost:
+      first-frame: ${OPENART_FIRST_FRAME_COST:10}
+      video: ${OPENART_VIDEO_COST:100}

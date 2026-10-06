@@ -99,10 +99,21 @@ services:
       QA_REVIEW_TOKEN: ${QA_REVIEW_TOKEN:-}
       POMPOM_DATA_ROOT: /data
       POMPOM_QA_SERVICE_URL: http://ml-service:8000
+      OPENART_ENABLED: ${OPENART_ENABLED:-false}
+      OPENART_MOCK_ENABLED: ${OPENART_MOCK_ENABLED:-true}
+      OPENART_TOKEN: ${OPENART_TOKEN:-}
+      OPENART_CLI_PATH: /usr/local/bin/openart
+      OPENART_CLI_TIMEOUT: ${OPENART_CLI_TIMEOUT:-300}
+      OPENART_MAX_POLLS: ${OPENART_MAX_POLLS:-180}
+      OPENART_MONTHLY_BUDGET: ${OPENART_MONTHLY_BUDGET:-1000}
+      OPENART_WARNING_THRESHOLD: ${OPENART_WARNING_THRESHOLD:-0.2}
+      OPENART_ALERT_ENABLED: ${OPENART_ALERT_ENABLED:-true}
     expose: ["8081"]
     volumes:
       - "./data:/data"
       - "${POMPOM_LIBRARY_ROOT:-../../yuvarlak-dunya}:/data/library:ro"
+      # Run `openart login` on the host first. The CLI stores OAuth credentials here.
+      - "${OPENART_CREDENTIALS_DIR:-~/.openart}:/root/.openart"
     depends_on:
       postgres: { condition: service_healthy }
       backend: { condition: service_healthy }

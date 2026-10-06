@@ -24,7 +24,9 @@ public class RenderAssetController {
 
   @GetMapping("/{id}")
   public ResponseEntity<AssetView> get(@PathVariable UUID id) {
-    return assets.findById(id).map(asset -> ResponseEntity.ok(toView(asset)))
+    return assets
+        .findById(id)
+        .map(asset -> ResponseEntity.ok(toView(asset)))
         .orElseGet(() -> ResponseEntity.notFound().build());
   }
 

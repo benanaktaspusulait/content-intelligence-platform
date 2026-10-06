@@ -28,7 +28,8 @@ public class PerformanceObservationPublisher {
     this.bridgeToken = bridgeToken;
   }
 
-  public void publish(PublicationJob job, MetricsCollectionJob collectionJob, VideoMetrics metrics) {
+  public void publish(
+      PublicationJob job, MetricsCollectionJob collectionJob, VideoMetrics metrics) {
     if (bridgeToken.isBlank()) {
       throw new IllegalStateException("Observation bridge token is not configured");
     }

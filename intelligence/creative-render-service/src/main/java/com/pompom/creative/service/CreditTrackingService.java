@@ -50,7 +50,43 @@ public class CreditTrackingService {
    */
   @Transactional
   public OpenArtCreditLog recordUsage(RenderJob job, BigDecimal actualCredits) {
-    log.info("Recording credit usage: job={}, credits={}", job.getId(), actualCredits);
+    return recordUsage(job, actualCredits, "PROVIDER_USAGE", "provider-status");
+  }
+
+  /**
+   * Record provider usage exactly once for a remote history id. Poll retries can call this method
+   * repeatedly after a worker crash; the provider id makes those retries idempotent and allows
+   * separate rerender attempts of the same render job to be charged independently.
+   */
+  @Transactional
+  public OpenArtCreditLog recordProviderUsageIfAbsent(
+      RenderJob job, BigDecimal actualCredits, String source) {
+    if (actualCredits == null) {
+      return null;
+    }
+    if (actualCredits.signum() < 0) {
+      throw new IllegalArgumentException("OpenArt credits cannot be negative");
+    }
+    String providerJobId = job.getOpenartJobId();
+    if (providerJobId == null || providerJobId.isBlank()) {
+      throw new IllegalStateException("Cannot record OpenArt usage before provider submission");
+    }
+    return creditLogRepo
+        .findFirstByOpenartJobIdAndOperation(providerJobId, "PROVIDER_USAGE")
+        .orElseGet(() -> recordUsage(job, actualCredits, "PROVIDER_USAGE", source));
+  }
+
+  private OpenArtCreditLog recordUsage(
+      RenderJob job, BigDecimal actualCredits, String operation, String source) {
+    if (actualCredits == null || actualCredits.signum() < 0) {
+      throw new IllegalArgumentException("OpenArt credits must be zero or greater");
+    }
+    log.info(
+        "Recording credit usage: job={}, credits={}, operation={}",
+        job.getId(),
+        actualCredits,
+        operation);
+    job.setCreditsActual(actualCredits);
 
     OpenArtCreditLog creditLog =
         OpenArtCreditLog.builder()
@@ -59,12 +95,14 @@ public class CreditTrackingService {
             .jobType(job.getJobType() != null ? job.getJobType().name() : null)
             .openartJobId(job.getOpenartJobId())
             .openartModel(job.getOpenartModel())
+            .operation(operation)
+            .operationMetadata("{\"source\":\"" + source + "\"}")
+            .creditsSpent(actualCredits)
             .creditsUsed(actualCredits)
             .build();
 
     creditLog = creditLogRepo.save(creditLog);
 
-    // Check budget status after recording
     BudgetStatus status = getBudgetStatus();
     log.info(
         "Budget status after recording: used={}/{}, remaining={}, level={}",
@@ -73,11 +111,9 @@ public class CreditTrackingService {
         status.getRemainingCredits(),
         status.getLevel());
 
-    // Trigger alert check if alert service is configured
     if (budgetAlertService != null) {
       budgetAlertService.checkAndAlert(status);
     }
-
     return creditLog;
   }
 
@@ -99,7 +135,7 @@ public class CreditTrackingService {
     log.info(
         "Recording estimated credit usage: job={}, estimated={}", job.getId(), estimatedCredits);
 
-    return recordUsage(job, estimatedCredits);
+    return recordUsage(job, estimatedCredits, "ESTIMATE", "queue-estimate");
   }
 
   /**

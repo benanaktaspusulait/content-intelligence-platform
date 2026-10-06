@@ -1,317 +1,137 @@
-# OpenArt Integration Setup
+# OpenArt integration
 
-This document describes how to set up the real OpenArt adapter for production use.
+The production render path lives in `creative-render-service`. It uses the published OpenArt CLI (pinned to **v0.1.1**) rather than calling an undocumented HTTP API.
 
-## Overview
+## What is implemented
 
-The system supports two OpenArt adapters:
-- **Mock Adapter** (default): For development and testing, no external dependencies
-- **Real Adapter**: Production adapter using OpenArt CLI tool
+1. Render jobs are queued with an immutable prompt/contract snapshot.
+2. The worker submits `openart generate image|video ... --async --json`.
+3. The returned OpenArt history ID is persisted in `render_attempts` and `render_jobs`.
+4. The worker polls `openart creation get <history-id> --json`.
+5. When the creation completes, the result URL is downloaded over HTTPS/HTTP into the configured asset library.
+6. Media is probed, recorded, and sent through post-render QA.
+7. Provider failures update both the attempt and the render job; unknown/running jobs are bounded by `OPENART_MAX_POLLS`.
+8. Provider usage is recorded once per OpenArt history ID in `openart_credit_log`; a worker retry cannot double-charge the same creation.
 
-## Prerequisites
+The mock adapter remains the default for local development. Production rejects a mock adapter.
 
-### 1. OpenArt CLI Installation
+## Install and authenticate the CLI
 
-The real adapter requires OpenArt CLI tool to be installed and accessible in PATH.
-
-**Installation** (example - adjust based on actual OpenArt CLI):
+The CLI uses OAuth credentials, not the old API-key/template contract.
 
 ```bash
-# Via npm (if OpenArt CLI is distributed as npm package)
-npm install -g @openart/cli
-
-# Or via pip (if Python-based)
-pip install openart-cli
-
-# Or download binary from OpenArt website
-curl -L https://openart.ai/cli/download | bash
+curl -fsSL https://raw.githubusercontent.com/OpenArt-AI/cli/main/install.sh | sh -s -- --version 0.1.1
+openart version
+openart login
+openart account
 ```
 
-**Verify installation:**
+The login flow stores credentials in `~/.openart/cli-credentials.json`. An OpenArt personal access token can also be supplied through `OPENART_TOKEN`; do not put credentials in source control.
+
+Before spending credits, verify the account and model price:
 
 ```bash
-openart --version
-# Should output: OpenArt CLI v1.2.3 (or similar)
+openart account --json
+openart model list --json
+openart model cost --model kling-3-omni --mode text2video --json
 ```
 
-### 2. OpenArt API Key
+## Local configuration
 
-Obtain an API key from OpenArt:
-1. Sign up at https://openart.ai
-2. Navigate to API settings
-3. Generate a new API key
-4. Save the key securely
-
-## Configuration
-
-### Environment Variables
-
-Set these environment variables before starting the application:
+Run the service from `intelligence/creative-render-service` with the CLI available on `PATH`:
 
 ```bash
-# Enable real OpenArt adapter
 export OPENART_ENABLED=true
-
-# Disable mock adapter
 export OPENART_MOCK_ENABLED=false
-
-# OpenArt API key (required for real adapter)
-export OPENART_API_KEY=your_api_key_here
-
-# Optional: Custom CLI path (if not in PATH)
-export OPENART_CLI_PATH=/usr/local/bin/openart
-
-# Optional: CLI timeout in seconds (default: 300)
-export OPENART_CLI_TIMEOUT=600
-
-# Optional: Monthly budget in credits (default: 1000)
-export OPENART_MONTHLY_BUDGET=5000
+export OPENART_CLI_PATH="$(command -v openart)"
+export OPENART_CLI_TIMEOUT=300
+export OPENART_MAX_POLLS=180
+mvn spring-boot:run
 ```
 
-### Application Properties
+The active settings are in `src/main/resources/application.yml`:
 
-Alternatively, configure in `application.yml` or `application-prod.yml`:
+| Variable | Default | Purpose |
+|---|---:|---|
+| `OPENART_ENABLED` | `false` | Select the real adapter. |
+| `OPENART_MOCK_ENABLED` | `true` | Development fallback; must be `false` in production. |
+| `OPENART_CLI_PATH` | `openart` | CLI executable path. |
+| `OPENART_TOKEN` | empty | Optional token; OAuth files are preferred. |
+| `OPENART_CLI_TIMEOUT` | `300` | Per-command/download timeout in seconds. |
+| `OPENART_MAX_POLLS` | `180` | Maximum 10-second provider polls per attempt. |
+| `OPENART_MONTHLY_BUDGET` | `1000` | Local monthly budget gate. |
+| `OPENART_FIRST_FRAME_COST` | `10` | Queue-time fallback estimate for images. |
+| `OPENART_VIDEO_COST` | `100` | Queue-time fallback estimate for videos. |
 
-```yaml
-pompom:
-  openart:
-    enabled: true
-    mock:
-      enabled: false
-    api-key: ${OPENART_API_KEY}
-    cli:
-      path: openart
-      timeout-seconds: 300
-    budget:
-      monthly: 1000
-      warning-threshold: 0.2
-      alert:
-        enabled: true
-        webhook-url: https://hooks.slack.com/services/YOUR/WEBHOOK/URL
-        email: alerts@yourcompany.com
-    cost:
-      first-frame: 10   # Credits per first-frame generation
-      video: 100         # Credits per video generation
-```
+The queue uses the configured estimate as its preflight reservation. On submission, the adapter also asks `model cost` when the provider does not return a quote, and on completion the provider-reported usage is reconciled into `credits_actual`. If the provider does not expose usage, the persisted estimate is used and marked as an estimate fallback.
 
-## CLI Command Reference
+## Docker Compose
 
-The real adapter expects OpenArt CLI to support these commands:
-
-### Image Generation
-```bash
-openart generate-image \
-  --prompt "A happy orange ball character playing" \
-  --model "stable-diffusion-xl" \
-  --style "cinematic" \
-  --aspect-ratio "16:9" \
-  --api-key <KEY> \
-  --output-format json
-```
-
-**Expected JSON output:**
-```json
-{
-  "job_id": "img-abc123",
-  "status": "QUEUED",
-  "estimated_credits": 2.5
-}
-```
-
-### Video Generation
-```bash
-openart generate-video \
-  --prompt "Orange ball rolling down a hill" \
-  --first-frame <IMAGE_ID> \
-  --duration 15 \
-  --model "runway-gen2" \
-  --api-key <KEY> \
-  --output-format json
-```
-
-**Expected JSON output:**
-```json
-{
-  "job_id": "vid-xyz789",
-  "status": "QUEUED",
-  "estimated_credits": 15.0
-}
-```
-
-### Job Status Check
-```bash
-openart status \
-  --job-id <JOB_ID> \
-  --api-key <KEY> \
-  --output-format json
-```
-
-**Expected JSON output:**
-```json
-{
-  "job_id": "vid-xyz789",
-  "status": "COMPLETE",
-  "progress_percent": 100
-}
-```
-
-Or if failed:
-```json
-{
-  "job_id": "vid-xyz789",
-  "status": "FAILED",
-  "progress_percent": 50,
-  "error": "Insufficient credits"
-}
-```
-
-### Asset Download
-```bash
-openart download \
-  --job-id <JOB_ID> \
-  --output /path/to/output.mp4 \
-  --api-key <KEY> \
-  --output-format json
-```
-
-**Expected JSON output:**
-```json
-{
-  "width": 1920,
-  "height": 1080,
-  "duration_ms": 15000,
-  "codec": "h264"
-}
-```
-
-### Credit Balance
-```bash
-openart credits \
-  --api-key <KEY> \
-  --output-format json
-```
-
-**Expected JSON output:**
-```json
-{
-  "balance": 950.5
-}
-```
-
-## Testing the Integration
-
-### 1. Test CLI Availability
+Authenticate on the host first:
 
 ```bash
-curl http://localhost:8080/api/v1/health
-# Should show openart.available: true
+openart login
 ```
 
-### 2. Check Credit Balance
+Start the stack with the real provider:
 
 ```bash
-curl http://localhost:8080/api/v1/budget/status
+OPENART_ENABLED=true \
+OPENART_MOCK_ENABLED=false \
+OPENART_CREDENTIALS_DIR="$HOME/.openart" \
+docker compose -f intelligence/docker-compose.yml up --build creative-render-service
 ```
 
-**Expected response:**
-```json
-{
-  "budgetLimit": 1000,
-  "usedCredits": 0,
-  "remainingCredits": 1000,
-  "remainingPercent": 100.0,
-  "level": "HEALTHY",
-  "totalJobs": 0
-}
-```
+The render image installs and checksum-verifies the pinned Linux OpenArt CLI binary. The host `~/.openart` directory is mounted at `/root/.openart`, which is the runtime user's credential directory in the image. Set `OPENART_CREDENTIALS_DIR` to another host path when required.
 
-### 3. Queue a Test Job
+For normal local development, omit those variables; the mock adapter is used and no OpenArt account is contacted.
+
+## CLI contract used by the adapter
+
+The adapter intentionally uses only commands documented by OpenArt CLI v0.1.1:
+
+| Render operation | CLI command |
+|---|---|
+| Image submit | `openart generate image "<prompt>" --model <model> --async --json --no-input` |
+| Video submit | `openart generate video "<prompt>" --model <model> --image <path-or-url> --duration <seconds> --async --json --no-input` |
+| Status | `openart creation get <history-id> --json --no-input` |
+| Account credits | `openart account --json --no-input` |
+| Model quote | `openart model cost --model <model> --mode text2image\|text2video --json --no-input` |
+
+The video request field currently named `firstFrameImageId` is a local image path or an HTTPS CDN URL. The old `--first-frame` option is not used. The adapter downloads the result URL because v0.1.1 has no separate `openart download` command.
+
+## Render lifecycle and status
+
+`RenderAttempt` stages are durable and processed one stage per worker claim:
+
+`QUEUED → PROVIDER_QUEUED → DOWNLOADING → POST_RENDER_QA → COMPLETE`
+
+The corresponding render job status is updated to `GENERATING`, `POLLING`, `DOWNLOADING`, and finally `COMPLETE`. A provider failure/cancellation sets both records to `FAILED`. A worker crash can safely retry a poll or download; provider usage is protected by the unique `(openart_job_id, operation)` index from migration `V16`.
+
+The default worker lease is ten minutes, longer than a bounded provider/download operation. If the provider remains ambiguous until `OPENART_MAX_POLLS`, the attempt is failed with `PROVIDER_TIMEOUT` instead of polling forever.
+
+## Verification
+
+Run the real-adapter fixture test and the render/credit tests:
 
 ```bash
-curl -X POST http://localhost:8080/api/v1/render-jobs \
-  -H "Content-Type: application/json" \
-  -d '{
-    "contentId": 1,
-    "promptVersionId": 1,
-    "jobType": "FIRST_FRAME"
-  }'
+cd intelligence
+mvn -B -ntp -pl creative-render-service \
+  -Dtest='CliRealOpenArtAdapterTest,RenderAttemptOrchestratorTest,CreditTrackingServiceTest,CliMockOpenArtAdapterTest' test
 ```
 
-**Expected response:**
-```json
-{
-  "jobId": "550e8400-e29b-41d4-a716-446655440000"
-}
-```
-
-### 4. Monitor Job Progress
-
-```bash
-curl http://localhost:8080/api/v1/render-jobs/550e8400-e29b-41d4-a716-446655440000
-```
+The fixture asserts the actual command vocabulary, JSON/stdout separation, history polling, failure normalization, credit parsing, and result download without spending credits.
 
 ## Troubleshooting
 
-### CLI Not Found
-**Error:** `OpenArt CLI is not available`
+- **`OpenArt CLI is not available`**: run `openart version`, check `OPENART_CLI_PATH`, and ensure the container image was rebuilt.
+- **`not logged in`**: run `openart login` on the same host whose `~/.openart` directory is mounted into the container, or set `OPENART_TOKEN`.
+- **`model ... does not support ...`**: omit model-specific duration/aspect settings or use `openart model form <model> text2video` to inspect supported parameters.
+- **Job stays queued**: inspect `render_attempts.provider_job_id`, `provider_job_state`, `poll_count`, and the service log. `PROVIDER_TIMEOUT` is the bounded terminal error.
+- **Budget blocks a render**: inspect `GET /api/v1/budget/status`; the local budget gate is independent from the provider's account balance.
 
-**Solution:**
-1. Verify CLI is installed: `which openart`
-2. Add to PATH if needed: `export PATH=$PATH:/path/to/openart`
-3. Or set explicit path: `OPENART_CLI_PATH=/full/path/to/openart`
+## Security notes
 
-### API Key Invalid
-**Error:** `Command failed with exit code 1: Unauthorized`
-
-**Solution:**
-1. Verify API key is correct
-2. Check key has not expired
-3. Ensure key has sufficient permissions
-
-### Timeout
-**Error:** `Command timed out after 300 seconds`
-
-**Solution:**
-1. Increase timeout: `OPENART_CLI_TIMEOUT=600`
-2. Check network connectivity
-3. Verify OpenArt service status
-
-### Insufficient Credits
-**Error:** `Monthly budget exhausted`
-
-**Solution:**
-1. Check budget status: `GET /api/v1/budget/status`
-2. Increase monthly budget: `OPENART_MONTHLY_BUDGET=5000`
-3. Wait for next billing cycle
-
-## Production Checklist
-
-- [ ] OpenArt CLI installed and accessible
-- [ ] Valid API key configured
-- [ ] Budget limits set appropriately
-- [ ] Alert webhooks/emails configured
-- [ ] Test render job completed successfully
-- [ ] Monitoring/logging configured
-- [ ] Backup strategy for generated assets
-- [ ] Credit usage tracking dashboard
-
-## CLI Command Customization
-
-If the actual OpenArt CLI uses different command syntax, update the command builders in:
-`backend/src/main/java/com/pompom/creative/openart/CliRealOpenArtAdapter.java`
-
-Methods to customize:
-- `buildImageGenerateCommand()`
-- `buildVideoGenerateCommand()`
-- `buildStatusCommand()`
-- `buildDownloadCommand()`
-- `buildCreditsCommand()`
-
-## Support
-
-For OpenArt CLI issues, consult:
-- OpenArt CLI documentation: https://docs.openart.ai/cli
-- OpenArt support: support@openart.ai
-- OpenArt community forum: https://forum.openart.ai
-
-For Pompom CI integration issues, contact the development team.
+- Never commit `OPENART_TOKEN` or `~/.openart/cli-credentials.json`.
+- Keep the credentials mount scoped to the render service.
+- Production requires `OPENART_ENABLED=true` and `OPENART_MOCK_ENABLED=false`; startup checks both the binary and authenticated account access.

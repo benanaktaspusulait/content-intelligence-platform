@@ -23,14 +23,20 @@ public class VisualMotionEvidenceClient {
   public Optional<Map<String, Object>> fetch(UUID videoId) {
     if (videoId == null) return Optional.empty();
     try {
-      Map<String, Object> status = restClientBuilder.baseUrl(intelligenceBaseUrl).build().get()
-          .uri("/api/v1/videos/{id}/analysis/status", videoId)
-          .retrieve()
-          .body(new ParameterizedTypeReference<>() {});
-      if (status == null || !Boolean.TRUE.equals(status.get("hasCompletedAnalysis"))) return Optional.empty();
+      Map<String, Object> status =
+          restClientBuilder
+              .baseUrl(intelligenceBaseUrl)
+              .build()
+              .get()
+              .uri("/api/v1/videos/{id}/analysis/status", videoId)
+              .retrieve()
+              .body(new ParameterizedTypeReference<>() {});
+      if (status == null || !Boolean.TRUE.equals(status.get("hasCompletedAnalysis")))
+        return Optional.empty();
       if (!"SAMPLED_VISUAL_MOTION".equals(status.get("analysisType"))
           && !"SAMPLED_VISUAL_MOTION_V4".equals(status.get("analysisType"))
-          && !"SAMPLED_VISUAL_MOTION_V5".equals(status.get("analysisType"))) return Optional.empty();
+          && !"SAMPLED_VISUAL_MOTION_V5".equals(status.get("analysisType")))
+        return Optional.empty();
       return Optional.of(status);
     } catch (Exception error) {
       log.warn("Visual-motion evidence unavailable for video {}", videoId, error);

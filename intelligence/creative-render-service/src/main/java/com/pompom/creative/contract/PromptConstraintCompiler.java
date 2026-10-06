@@ -14,27 +14,39 @@ public class PromptConstraintCompiler {
     Map<String, Object> mechanic = map(intent.get("mechanicIntent"));
     Map<String, Object> payoff = map(intent.get("payoffIntent"));
     Map<String, Object> opening = map(intent.get("openingIntent"));
-    if (!opening.isEmpty()) constraints.add("Make the opening relationship and central anomaly readable immediately.");
-    if (!mechanic.isEmpty()) constraints.add("Preserve one clear primary mechanic and its causal participants throughout.");
-    if (intent.containsKey("timingIntent")) constraints.add("Preserve the planned beat order and visible state changes.");
+    if (!opening.isEmpty())
+      constraints.add("Make the opening relationship and central anomaly readable immediately.");
+    if (!mechanic.isEmpty())
+      constraints.add(
+          "Preserve one clear primary mechanic and its causal participants throughout.");
+    if (intent.containsKey("timingIntent"))
+      constraints.add("Preserve the planned beat order and visible state changes.");
     List<String> attempts = attemptActions(intent.get("timingIntent"));
     if (attempts.size() > 1) {
-      constraints.add("Use visibly different primary actions in this order: " + String.join(", ", attempts) + ".");
+      constraints.add(
+          "Use visibly different primary actions in this order: "
+              + String.join(", ", attempts)
+              + ".");
     }
     if (!payoff.isEmpty()) {
       String strategy = first(payoff, "emphasisStrategy", "emphasis", "motionStrategy");
       if (strategy != null && strategy.toUpperCase().contains("REDUCTION")) {
-        constraints.add("At the payoff, reduce non-essential motion so the consequence and reaction remain readable.");
+        constraints.add(
+            "At the payoff, reduce non-essential motion so the consequence and reaction remain readable.");
       } else if (strategy != null && strategy.toUpperCase().contains("SPIKE")) {
-        constraints.add("At the payoff, create one clear visual motion spike while controlling background motion.");
+        constraints.add(
+            "At the payoff, create one clear visual motion spike while controlling background motion.");
       } else {
-        constraints.add("Make the planned payoff consequence and reaction visually distinct from the preceding beat.");
+        constraints.add(
+            "Make the planned payoff consequence and reaction visually distinct from the preceding beat.");
       }
     }
     if (!map(intent.get("loopIntent")).isEmpty()) {
-      constraints.add("End in a visual or action state that can naturally reconnect to the planned opening.");
+      constraints.add(
+          "End in a visual or action state that can naturally reconnect to the planned opening.");
     }
-    if (constraints.stream().noneMatch(value -> value.startsWith("Make the opening")) && !intent.isEmpty()) {
+    if (constraints.stream().noneMatch(value -> value.startsWith("Make the opening"))
+        && !intent.isEmpty()) {
       constraints.add("Keep the main subject, object and action readable in a clean composition.");
     }
     return new CompiledGenerationConstraints(

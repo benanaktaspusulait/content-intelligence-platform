@@ -12,12 +12,11 @@ import com.pompom.creative.openart.OpenArtAdapter;
 import com.pompom.creative.openart.dto.DownloadResult;
 import com.pompom.creative.openart.dto.OpenArtJobResponse;
 import com.pompom.creative.openart.dto.OpenArtJobStatus;
-import com.pompom.creative.qa.QaAnalysisResult;
-import com.pompom.creative.qa.QaDecisionEngine;
-import com.pompom.creative.qa.QaService;
 import com.pompom.creative.postrender.PostRenderDecision;
 import com.pompom.creative.postrender.PostRenderEvaluation;
 import com.pompom.creative.postrender.PostRenderEvaluationService;
+import com.pompom.creative.qa.QaAnalysisResult;
+import com.pompom.creative.qa.QaService;
 import com.pompom.creative.repository.RenderAssetRepository;
 import com.pompom.creative.repository.RenderAttemptRepository;
 import com.pompom.creative.repository.RenderJobRepository;
@@ -309,19 +308,20 @@ class RenderAttemptOrchestratorTest {
 
   private PostRenderEvaluationService.EvaluationResult evaluation(
       RenderAsset asset, PostRenderDecision decision) {
-    PostRenderEvaluation evaluation = PostRenderEvaluation.builder()
-        .id(UUID.randomUUID())
-        .renderAsset(asset)
-        .renderAttemptId(UUID.randomUUID())
-        .evidenceVersion("render-evidence-v1")
-        .postRenderRulesetVersion("POST_RENDER_RULESET_1.0")
-        .analyzerVersions("{}")
-        .evidenceSnapshot("{}")
-        .overallDecision(decision)
-        .humanReviewRequired(decision == PostRenderDecision.HUMAN_REVIEW)
-        .startedAt(Instant.now())
-        .completedAt(Instant.now())
-        .build();
+    PostRenderEvaluation evaluation =
+        PostRenderEvaluation.builder()
+            .id(UUID.randomUUID())
+            .renderAsset(asset)
+            .renderAttemptId(UUID.randomUUID())
+            .evidenceVersion("render-evidence-v1")
+            .postRenderRulesetVersion("POST_RENDER_RULESET_1.0")
+            .analyzerVersions("{}")
+            .evidenceSnapshot("{}")
+            .overallDecision(decision)
+            .humanReviewRequired(decision == PostRenderDecision.HUMAN_REVIEW)
+            .startedAt(Instant.now())
+            .completedAt(Instant.now())
+            .build();
     return new PostRenderEvaluationService.EvaluationResult(evaluation, null, List.of());
   }
 }

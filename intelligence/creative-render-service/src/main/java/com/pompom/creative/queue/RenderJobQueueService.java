@@ -1,10 +1,10 @@
 package com.pompom.creative.queue;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.pompom.creative.contract.CreativeProductionContractService;
+import com.pompom.creative.contract.PromptConstraintCompiler;
 import com.pompom.creative.domain.RenderAttempt;
 import com.pompom.creative.domain.RenderJob;
-import com.pompom.creative.contract.CreativeProductionContractService;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.pompom.creative.contract.PromptConstraintCompiler;
 import com.pompom.creative.evidence.IntelligenceValidationEvidenceClient;
 import com.pompom.creative.evidence.ValidationEvidenceDto;
 import com.pompom.creative.intelligence.ContentPromptSnapshot;
@@ -15,8 +15,8 @@ import com.pompom.creative.service.BudgetAlertService;
 import com.pompom.creative.service.CreditTrackingService;
 import java.time.Instant;
 import java.util.Optional;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.support.TransactionTemplate;

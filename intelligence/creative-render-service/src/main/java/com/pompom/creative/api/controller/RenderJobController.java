@@ -1,24 +1,25 @@
 package com.pompom.creative.api.controller;
 
 import com.pompom.creative.api.dto.RenderJobDto;
-import com.pompom.creative.domain.RenderJob;
 import com.pompom.creative.domain.RenderAttempt;
 import com.pompom.creative.domain.RenderExecutionStage;
+import com.pompom.creative.domain.RenderJob;
 import com.pompom.creative.evidence.ValidationEvidenceClientException;
 import com.pompom.creative.evidence.ValidationEvidenceIncompleteRemoteException;
 import com.pompom.creative.evidence.ValidationEvidenceNotFoundException;
 import com.pompom.creative.evidence.ValidationEvidenceServiceException;
 import com.pompom.creative.evidence.ValidationEvidenceTimeoutException;
+import com.pompom.creative.postrender.PostRenderEvaluationRepository;
 import com.pompom.creative.queue.IdempotencyKeyConflictException;
 import com.pompom.creative.queue.QueueRenderJobRequest;
 import com.pompom.creative.queue.QueueRenderJobResponse;
 import com.pompom.creative.queue.RenderJobQueueService;
 import com.pompom.creative.queue.ValidationEvidenceRejectedException;
-import com.pompom.creative.repository.RenderJobRepository;
 import com.pompom.creative.repository.RenderAttemptRepository;
+import com.pompom.creative.repository.RenderJobRepository;
 import com.pompom.creative.repository.RenderQaResultRepository;
-import com.pompom.creative.postrender.PostRenderEvaluationRepository;
 import java.net.URI;
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -31,9 +32,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
 import org.springframework.transaction.annotation.Transactional;
-import java.time.Instant;
+import org.springframework.web.bind.annotation.*;
 
 /** REST API controller for render jobs. */
 @RestController
@@ -174,9 +174,11 @@ public class RenderJobController {
     RenderJob job = found.get();
     if (job.getStatus() == RenderJob.RenderJobStatus.COMPLETE
         || job.getStatus() == RenderJob.RenderJobStatus.ABANDONED) {
-      return ResponseEntity.badRequest().body(java.util.Map.of("message", "Render job is already terminal"));
+      return ResponseEntity.badRequest()
+          .body(java.util.Map.of("message", "Render job is already terminal"));
     }
-    RenderAttempt attempt = renderAttemptRepo.findTopByRenderJobIdOrderByAttemptNumberDesc(id).orElse(null);
+    RenderAttempt attempt =
+        renderAttemptRepo.findTopByRenderJobIdOrderByAttemptNumberDesc(id).orElse(null);
     if (attempt != null && !attempt.isTerminal()) {
       attempt.setStage(RenderExecutionStage.ABANDONED);
       attempt.setTerminalReason("Cancelled by operator");
@@ -190,7 +192,8 @@ public class RenderJobController {
     job.setErrorCode("CANCELLED_BY_OPERATOR");
     job.setErrorMessage("Cancelled by operator; any remote provider job was not deleted");
     renderJobRepo.save(job);
-    return ResponseEntity.ok(java.util.Map.of("success", true, "message", "Render job cancelled locally"));
+    return ResponseEntity.ok(
+        java.util.Map.of("success", true, "message", "Render job cancelled locally"));
   }
 
   /** Queue a new durable attempt for a failed job while preserving the previous attempt history. */
@@ -200,22 +203,36 @@ public class RenderJobController {
     Optional<RenderJob> found = renderJobRepo.findById(id);
     if (found.isEmpty()) return ResponseEntity.notFound().build();
     RenderJob job = found.get();
-    RenderAttempt previous = renderAttemptRepo.findTopByRenderJobIdOrderByAttemptNumberDesc(id).orElse(null);
-    if (previous == null || !(previous.getStage() == RenderExecutionStage.FAILED || previous.getStage() == RenderExecutionStage.ABANDONED)) {
-      return ResponseEntity.badRequest().body(java.util.Map.of("message", "Only failed or abandoned jobs can be retried"));
+    RenderAttempt previous =
+        renderAttemptRepo.findTopByRenderJobIdOrderByAttemptNumberDesc(id).orElse(null);
+    if (previous == null
+        || !(previous.getStage() == RenderExecutionStage.FAILED
+            || previous.getStage() == RenderExecutionStage.ABANDONED)) {
+      return ResponseEntity.badRequest()
+          .body(java.util.Map.of("message", "Only failed or abandoned jobs can be retried"));
     }
     int nextNumber = previous.getAttemptNumber() + 1;
     if (nextNumber > job.getMaxAttempts()) {
-      return ResponseEntity.badRequest().body(java.util.Map.of("message", "Maximum render attempts reached"));
+      return ResponseEntity.badRequest()
+          .body(java.util.Map.of("message", "Maximum render attempts reached"));
     }
-    renderAttemptRepo.save(RenderAttempt.builder().renderJobId(id).attemptNumber(nextNumber).stage(RenderExecutionStage.QUEUED).pollCount(0).eligibleAt(Instant.now()).build());
+    renderAttemptRepo.save(
+        RenderAttempt.builder()
+            .renderJobId(id)
+            .attemptNumber(nextNumber)
+            .stage(RenderExecutionStage.QUEUED)
+            .pollCount(0)
+            .eligibleAt(Instant.now())
+            .build());
     job.setAttemptNumber(nextNumber);
     job.setStatus(RenderJob.RenderJobStatus.QUEUED);
     job.setFailedAt(null);
     job.setErrorCode(null);
     job.setErrorMessage(null);
     renderJobRepo.save(job);
-    return ResponseEntity.ok(java.util.Map.of("success", true, "message", "Render retry queued", "attemptNumber", nextNumber));
+    return ResponseEntity.ok(
+        java.util.Map.of(
+            "success", true, "message", "Render retry queued", "attemptNumber", nextNumber));
   }
 
   /** Get render jobs by status. */
@@ -274,43 +291,62 @@ public class RenderJobController {
             .attempts(
                 renderAttemptRepo == null
                     ? List.of()
-                    : renderAttemptRepo.findByRenderJobIdOrderByAttemptNumberAsc(job.getId()).stream()
-                    .map(
-                        attempt ->
-                            RenderJobDto.AttemptDto.builder()
-                                .id(attempt.getId())
-                                .attemptNumber(attempt.getAttemptNumber())
-                                .stage(attempt.getStage().name())
-                                .providerJobId(attempt.getProviderJobId())
-                                .assetId(attempt.getAssetId())
-                                .startedAt(attempt.getStartedAt())
-                                .completedAt(attempt.getCompletedAt())
-                                .errorCode(attempt.getErrorCode())
-                                .errorMessage(attempt.getErrorMessage())
-                                .build())
-                    .toList());
+                    : renderAttemptRepo
+                        .findByRenderJobIdOrderByAttemptNumberAsc(job.getId())
+                        .stream()
+                        .map(
+                            attempt ->
+                                RenderJobDto.AttemptDto.builder()
+                                    .id(attempt.getId())
+                                    .attemptNumber(attempt.getAttemptNumber())
+                                    .stage(attempt.getStage().name())
+                                    .providerJobId(attempt.getProviderJobId())
+                                    .assetId(attempt.getAssetId())
+                                    .startedAt(attempt.getStartedAt())
+                                    .completedAt(attempt.getCompletedAt())
+                                    .errorCode(attempt.getErrorCode())
+                                    .errorMessage(attempt.getErrorMessage())
+                                    .build())
+                        .toList());
 
     if (postRenderEvaluationRepo != null) {
-      postRenderEvaluationRepo.findTopByRenderAsset_RenderJob_IdOrderByCreatedAtDesc(job.getId())
-          .ifPresent(evaluation -> builder.qaResult(RenderJobDto.QaResultDto.builder()
-              .id(evaluation.getId())
-              .decision(evaluation.getOverallDecision().name())
-              .decisionReason("Post-render evaluation " + evaluation.getPostRenderRulesetVersion())
-              .requiresHumanReview(evaluation.isHumanReviewRequired())
-              .evidenceVersion(evaluation.getEvidenceVersion())
-              .rulesetVersion(evaluation.getPostRenderRulesetVersion())
-              .humanDecision(evaluation.getHumanDecision())
-              .canonicalPostRender(true)
-              .build()));
+      postRenderEvaluationRepo
+          .findTopByRenderAsset_RenderJob_IdOrderByCreatedAtDesc(job.getId())
+          .ifPresent(
+              evaluation ->
+                  builder.qaResult(
+                      RenderJobDto.QaResultDto.builder()
+                          .id(evaluation.getId())
+                          .decision(evaluation.getOverallDecision().name())
+                          .decisionReason(
+                              "Post-render evaluation " + evaluation.getPostRenderRulesetVersion())
+                          .requiresHumanReview(evaluation.isHumanReviewRequired())
+                          .evidenceVersion(evaluation.getEvidenceVersion())
+                          .rulesetVersion(evaluation.getPostRenderRulesetVersion())
+                          .humanDecision(evaluation.getHumanDecision())
+                          .canonicalPostRender(true)
+                          .build()));
     } else {
-      qaResultRepo.findTopByRenderAsset_RenderJob_IdOrderByCreatedAtDesc(job.getId())
-          .ifPresent(qaResult -> builder.qaResult(RenderJobDto.QaResultDto.builder()
-              .id(qaResult.getId()).decision(qaResult.getDecision().name())
-              .decisionReason(qaResult.getDecisionReason()).complianceScore(qaResult.getComplianceScore())
-              .confidence(qaResult.getConfidence() == null ? null : qaResult.getConfidence().doubleValue())
-              .hasDeadAir(qaResult.getHasDeadAir()).characterIdentityVerified(qaResult.getCharacterIdentityVerified())
-              .characterIdentityIssues(qaResult.getCharacterIdentityIssues())
-              .requiresHumanReview(qaResult.getRequiresHumanReview()).canonicalPostRender(false).build()));
+      qaResultRepo
+          .findTopByRenderAsset_RenderJob_IdOrderByCreatedAtDesc(job.getId())
+          .ifPresent(
+              qaResult ->
+                  builder.qaResult(
+                      RenderJobDto.QaResultDto.builder()
+                          .id(qaResult.getId())
+                          .decision(qaResult.getDecision().name())
+                          .decisionReason(qaResult.getDecisionReason())
+                          .complianceScore(qaResult.getComplianceScore())
+                          .confidence(
+                              qaResult.getConfidence() == null
+                                  ? null
+                                  : qaResult.getConfidence().doubleValue())
+                          .hasDeadAir(qaResult.getHasDeadAir())
+                          .characterIdentityVerified(qaResult.getCharacterIdentityVerified())
+                          .characterIdentityIssues(qaResult.getCharacterIdentityIssues())
+                          .requiresHumanReview(qaResult.getRequiresHumanReview())
+                          .canonicalPostRender(false)
+                          .build()));
     }
 
     return builder.build();

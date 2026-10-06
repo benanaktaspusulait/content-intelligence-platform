@@ -2,18 +2,17 @@ package com.pompom.creative.api.controller;
 
 import com.pompom.creative.domain.QaHumanReview;
 import com.pompom.creative.domain.RenderQaResult;
-import com.pompom.creative.service.QaHumanReviewService;
 import com.pompom.creative.postrender.PostRenderEvaluation;
-import java.util.List;
-import java.util.UUID;
-import java.time.Instant;
+import com.pompom.creative.service.QaHumanReviewService;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
+import java.time.Instant;
+import java.util.List;
+import java.util.UUID;
 import lombok.Data;
-import org.springframework.http.ResponseEntity;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.server.ResponseStatusException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 /** Read and decision endpoints for the durable human-review gate. */
 @RestController
@@ -31,8 +31,7 @@ public class QaReviewController {
   private final String reviewToken;
 
   public QaReviewController(
-      QaHumanReviewService reviewService,
-      @Value("${pompom.qa.review-token:}") String reviewToken) {
+      QaHumanReviewService reviewService, @Value("${pompom.qa.review-token:}") String reviewToken) {
     this.reviewService = reviewService;
     this.reviewToken = reviewToken;
   }
@@ -69,8 +68,10 @@ public class QaReviewController {
 
   @GetMapping("/post-render/pending")
   public ResponseEntity<List<PostRenderEvaluationView>> pendingPostRender() {
-    return ResponseEntity.ok(reviewService.pendingPostRenderEvaluations().stream()
-        .map(PostRenderEvaluationView::from).toList());
+    return ResponseEntity.ok(
+        reviewService.pendingPostRenderEvaluations().stream()
+            .map(PostRenderEvaluationView::from)
+            .toList());
   }
 
   @GetMapping("/post-render/{evaluationId}/history")
@@ -85,10 +86,12 @@ public class QaReviewController {
       @RequestBody DecisionRequest request) {
     try {
       requireReviewToken(token);
-      return ResponseEntity.ok(reviewService.decidePostRender(
-          evaluationId,
-          QaHumanReview.Decision.valueOf(request.getDecision().toUpperCase()),
-          request.getReviewer(), request.getNotes()));
+      return ResponseEntity.ok(
+          reviewService.decidePostRender(
+              evaluationId,
+              QaHumanReview.Decision.valueOf(request.getDecision().toUpperCase()),
+              request.getReviewer(),
+              request.getNotes()));
     } catch (IllegalArgumentException e) {
       return ResponseEntity.badRequest().build();
     } catch (IllegalStateException e) {
@@ -97,14 +100,27 @@ public class QaReviewController {
   }
 
   public record PostRenderEvaluationView(
-      UUID id, UUID assetId, UUID renderAttemptId, String evidenceVersion,
-      String rulesetVersion, String decision, boolean humanReviewRequired,
-      Instant startedAt, Instant completedAt, String humanDecision) {
+      UUID id,
+      UUID assetId,
+      UUID renderAttemptId,
+      String evidenceVersion,
+      String rulesetVersion,
+      String decision,
+      boolean humanReviewRequired,
+      Instant startedAt,
+      Instant completedAt,
+      String humanDecision) {
     static PostRenderEvaluationView from(PostRenderEvaluation value) {
-      return new PostRenderEvaluationView(value.getId(), value.getRenderAsset().getId(),
-          value.getRenderAttemptId(), value.getEvidenceVersion(),
-          value.getPostRenderRulesetVersion(), value.getOverallDecision().name(),
-          value.isHumanReviewRequired(), value.getStartedAt(), value.getCompletedAt(),
+      return new PostRenderEvaluationView(
+          value.getId(),
+          value.getRenderAsset().getId(),
+          value.getRenderAttemptId(),
+          value.getEvidenceVersion(),
+          value.getPostRenderRulesetVersion(),
+          value.getOverallDecision().name(),
+          value.isHumanReviewRequired(),
+          value.getStartedAt(),
+          value.getCompletedAt(),
           value.getHumanDecision());
     }
   }

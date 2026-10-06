@@ -11,8 +11,10 @@ class PayoffMotionAnalyzerTest {
 
   @Test
   void highLowHighProducesReductionContrastAndHoldCandidate() {
-    Map<String, Object> result = analyzer.analyze(profile(0.9, 0.4, 0.9),
-        new PayoffWindow(PayoffWindowStatus.RESOLVED, 1.0, 2.0, "test", "test"));
+    Map<String, Object> result =
+        analyzer.analyze(
+            profile(0.9, 0.4, 0.9),
+            new PayoffWindow(PayoffWindowStatus.RESOLVED, 1.0, 2.0, "test", "test"));
 
     assertThat(result.get("contrastDirection")).isEqualTo("REDUCTION");
     assertThat(result.get("intentionalHold")).isEqualTo(true);
@@ -21,8 +23,10 @@ class PayoffMotionAnalyzerTest {
 
   @Test
   void lowHighLowProducesIncreaseWithoutCallingItBad() {
-    Map<String, Object> result = analyzer.analyze(profile(0.3, 0.9, 0.3),
-        new PayoffWindow(PayoffWindowStatus.RESOLVED, 1.0, 2.0, "test", "test"));
+    Map<String, Object> result =
+        analyzer.analyze(
+            profile(0.3, 0.9, 0.3),
+            new PayoffWindow(PayoffWindowStatus.RESOLVED, 1.0, 2.0, "test", "test"));
 
     assertThat(result.get("contrastDirection")).isEqualTo("INCREASE");
     assertThat(result.get("contrastStatus")).isEqualTo("AVAILABLE");
@@ -30,17 +34,21 @@ class PayoffMotionAnalyzerTest {
 
   @Test
   void unresolvedPayoffDoesNotGuessAWindow() {
-    Map<String, Object> result = analyzer.analyze(profile(0.8, 0.8, 0.8),
-        new PayoffWindow(PayoffWindowStatus.NOT_AVAILABLE, null, null, "test", "missing"));
+    Map<String, Object> result =
+        analyzer.analyze(
+            profile(0.8, 0.8, 0.8),
+            new PayoffWindow(PayoffWindowStatus.NOT_AVAILABLE, null, null, "test", "missing"));
 
     assertThat(result.get("contrastStatus")).isEqualTo("NOT_EVALUATED");
     assertThat(result.get("prePayoffMotion")).isNull();
   }
 
   private Map<String, Object> profile(double pre, double during, double post) {
-    return Map.of("segments", List.of(
-        Map.of("startSeconds", 0.0, "endSeconds", 1.0, "averageMotion", pre),
-        Map.of("startSeconds", 1.0, "endSeconds", 2.0, "averageMotion", during),
-        Map.of("startSeconds", 2.0, "endSeconds", 3.0, "averageMotion", post)));
+    return Map.of(
+        "segments",
+        List.of(
+            Map.of("startSeconds", 0.0, "endSeconds", 1.0, "averageMotion", pre),
+            Map.of("startSeconds", 1.0, "endSeconds", 2.0, "averageMotion", during),
+            Map.of("startSeconds", 2.0, "endSeconds", 3.0, "averageMotion", post)));
   }
 }

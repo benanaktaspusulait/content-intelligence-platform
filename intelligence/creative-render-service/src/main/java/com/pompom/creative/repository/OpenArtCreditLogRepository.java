@@ -3,6 +3,7 @@ package com.pompom.creative.repository;
 import com.pompom.creative.domain.OpenArtCreditLog;
 import java.time.Instant;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -15,4 +16,7 @@ public interface OpenArtCreditLogRepository extends JpaRepository<OpenArtCreditL
   List<OpenArtCreditLog> findByLoggedAtAfter(Instant after);
 
   List<OpenArtCreditLog> findByLoggedAtBetween(Instant start, Instant end);
+
+  Optional<OpenArtCreditLog> findFirstByOpenartJobIdAndOperation(
+      String openartJobId, String operation);
 }

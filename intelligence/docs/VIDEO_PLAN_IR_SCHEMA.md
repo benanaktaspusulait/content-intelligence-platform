@@ -516,7 +516,26 @@ This allows the system to flag **low-confidence parses** that need human review.
 
 **This schema is versioned.**
 
-Current version: **1.3**
+Current version: **1.4**
+
+v1.4 adds canonical beat evidence to each beat, all additive and derived once by the parser:
+
+- `beatLabel` / `beatRole`: the author's structural label after the timestamp (for example
+  `FIRST ATTEMPT`) and its canonical role (`HOOK`, `REACTION`, `ATTEMPT`, `ESCALATION`,
+  `FAKE_RESOLUTION`, `TWIST`, `PAYOFF`). Both are empty when the first line is not an exact
+  label from that vocabulary. The label is beat metadata: `action`, `consequence`, intensity and
+  the hook anomaly are derived from the body, never from the label text.
+- `attemptSource`: provenance of `isAttempt`, one of `EXPLICIT_MARKER` (`[ATTEMPT: VERB]`),
+  `STRUCTURAL_LABEL` (an `ATTEMPT` label), `LEADING_VERB_INFERENCE` (existing conservative
+  heuristic) or `NONE`. Precedence is in that order. A beat whose author-declared role is
+  `HOOK`, `REACTION`, `FAKE_RESOLUTION`, `TWIST` or `PAYOFF` is never inferred as an attempt;
+  only an explicit marker can override that.
+- `primaryVerb` is `UNSPECIFIED` when a labelled attempt has no identifiable action verb.
+  `ATTEMPT_002` never collapses `UNSPECIFIED` attempts into one strategy.
+
+All consumers read attempts through `app/quality/canonical_evidence.py` (`attempt_beats`,
+`attempt_evidence`); nothing re-derives them. `timeline_data.state_segments[].percentage` is a
+percent (0-100) of the timeline, not a 0-1 ratio.
 
 v1.1 adds `Beat.isAttempt` / `Beat.primaryVerb` and relaxes the duration ceiling to
 support 30-45s long-form concepts.

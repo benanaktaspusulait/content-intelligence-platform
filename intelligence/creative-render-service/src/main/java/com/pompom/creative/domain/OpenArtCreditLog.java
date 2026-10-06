@@ -44,14 +44,17 @@ public class OpenArtCreditLog {
   private BigDecimal creditsBefore;
 
   @Column(name = "credits_spent", nullable = false, precision = 10, scale = 2)
+  @Builder.Default
   private BigDecimal creditsSpent = BigDecimal.ZERO;
 
   @Column(name = "credits_used", nullable = false, precision = 10, scale = 2)
+  @Builder.Default
   private BigDecimal creditsUsed = BigDecimal.ZERO;
 
   @Column(name = "credits_after", precision = 10, scale = 2)
   private BigDecimal creditsAfter;
 
   @Column(name = "logged_at", nullable = false)
+  @Builder.Default
   private Instant loggedAt = Instant.now();
 }

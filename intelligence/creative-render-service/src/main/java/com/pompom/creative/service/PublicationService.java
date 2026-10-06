@@ -6,13 +6,13 @@ import com.pompom.creative.domain.PublicationStatus;
 import com.pompom.creative.domain.RenderAsset;
 import com.pompom.creative.domain.RenderQaResult;
 import com.pompom.creative.oauth.PlatformType;
+import com.pompom.creative.postrender.PostRenderDecision;
+import com.pompom.creative.postrender.PostRenderEvaluation;
+import com.pompom.creative.postrender.PostRenderEvaluationRepository;
 import com.pompom.creative.repository.PublicationAttemptRepository;
 import com.pompom.creative.repository.PublicationJobRepository;
 import com.pompom.creative.repository.RenderAssetRepository;
 import com.pompom.creative.repository.RenderQaResultRepository;
-import com.pompom.creative.postrender.PostRenderDecision;
-import com.pompom.creative.postrender.PostRenderEvaluation;
-import com.pompom.creative.postrender.PostRenderEvaluationRepository;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -132,9 +132,11 @@ public class PublicationService {
         || asset.getVariantId() == null) {
       throw new IllegalStateException("Asset does not satisfy production publication invariants");
     }
-    Optional<PostRenderEvaluation> canonical = postRenderEvaluationRepository == null
-        ? Optional.empty()
-        : postRenderEvaluationRepository.findTopByRenderAssetIdOrderByCreatedAtDesc(renderAssetId);
+    Optional<PostRenderEvaluation> canonical =
+        postRenderEvaluationRepository == null
+            ? Optional.empty()
+            : postRenderEvaluationRepository.findTopByRenderAssetIdOrderByCreatedAtDesc(
+                renderAssetId);
     if (canonical.isPresent()) {
       PostRenderEvaluation evaluation = canonical.get();
       if (evaluation.getOverallDecision() == PostRenderDecision.FAIL
@@ -146,12 +148,15 @@ public class PublicationService {
         throw new IllegalStateException("Required human review has not approved this asset");
       }
     } else {
-      RenderQaResult qa = qaResultRepository.findTopByRenderAssetIdOrderByCreatedAtDesc(renderAssetId)
-          .orElseThrow(() -> new IllegalStateException("Post-render QA evidence is missing"));
+      RenderQaResult qa =
+          qaResultRepository
+              .findTopByRenderAssetIdOrderByCreatedAtDesc(renderAssetId)
+              .orElseThrow(() -> new IllegalStateException("Post-render QA evidence is missing"));
       if (qa.getDecision() != RenderQaResult.QaDecision.ACCEPT) {
         throw new IllegalStateException("Post-render QA has not accepted this asset");
       }
-      if (Boolean.TRUE.equals(qa.getRequiresHumanReview()) && !"APPROVED".equals(qa.getHumanDecision())) {
+      if (Boolean.TRUE.equals(qa.getRequiresHumanReview())
+          && !"APPROVED".equals(qa.getHumanDecision())) {
         throw new IllegalStateException("Required human review has not approved this asset");
       }
     }

@@ -23,8 +23,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
 
 @ExtendWith(MockitoExtension.class)
@@ -83,7 +83,8 @@ class PublicationAttemptOrchestratorTest {
     when(attemptRepository.findById(attemptId)).thenReturn(Optional.of(attempt));
     when(jobRepository.findById(jobId)).thenReturn(Optional.of(job));
     when(publisher.isConfigured()).thenReturn(true);
-    when(publisher.publish(any())).thenReturn(PublishResponse.success("post-1", "https://youtu.be/post-1"));
+    when(publisher.publish(any()))
+        .thenReturn(PublishResponse.success("post-1", "https://youtu.be/post-1"));
 
     orchestrator.processAttempt(attemptId, "worker-1");
 
@@ -123,10 +124,13 @@ class PublicationAttemptOrchestratorTest {
 
   private void runTransactionCallbacks() {
     when(transactionTemplate.execute(any(TransactionCallback.class)))
-        .thenAnswer(invocation -> invocation.<TransactionCallback<Object>>getArgument(0).doInTransaction(null));
+        .thenAnswer(
+            invocation ->
+                invocation.<TransactionCallback<Object>>getArgument(0).doInTransaction(null));
     doAnswer(
             invocation -> {
-              invocation.<java.util.function.Consumer<TransactionStatus>>getArgument(0)
+              invocation
+                  .<java.util.function.Consumer<TransactionStatus>>getArgument(0)
                   .accept(null);
               return null;
             })

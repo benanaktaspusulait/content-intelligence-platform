@@ -10,9 +10,8 @@ class PayoffWindowResolverTest {
 
   @Test
   void resolvesOnlyAnExplicitTimestampedPayoffMarker() {
-    RenderJob job = RenderJob.builder()
-        .promptTextSnapshot("0.0-1.0 HOOK\n7.5-9.0 PAYOFF: Kiko laughs")
-        .build();
+    RenderJob job =
+        RenderJob.builder().promptTextSnapshot("0.0-1.0 HOOK\n7.5-9.0 PAYOFF: Kiko laughs").build();
 
     PayoffWindow window = resolver.resolve(job);
 
@@ -23,16 +22,16 @@ class PayoffWindowResolverTest {
 
   @Test
   void doesNotInferPayoffFromAnUntimedPrompt() {
-    RenderJob job = RenderJob.builder().promptTextSnapshot("Kiko reaches the payoff and smiles.").build();
+    RenderJob job =
+        RenderJob.builder().promptTextSnapshot("Kiko reaches the payoff and smiles.").build();
 
     assertThat(resolver.resolve(job).status()).isEqualTo(PayoffWindowStatus.NOT_AVAILABLE);
   }
 
   @Test
   void marksMultipleExplicitPayoffsAmbiguous() {
-    RenderJob job = RenderJob.builder()
-        .promptTextSnapshot("2-3s PAYOFF one\\n8-9s REVEAL two")
-        .build();
+    RenderJob job =
+        RenderJob.builder().promptTextSnapshot("2-3s PAYOFF one\\n8-9s REVEAL two").build();
 
     assertThat(resolver.resolve(job).status()).isEqualTo(PayoffWindowStatus.AMBIGUOUS);
   }

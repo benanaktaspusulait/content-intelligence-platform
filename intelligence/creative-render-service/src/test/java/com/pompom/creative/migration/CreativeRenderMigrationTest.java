@@ -44,7 +44,8 @@ class CreativeRenderMigrationTest {
 
     assertThat(tables).as("metrics tables").contains("video_metrics", "metrics_collection_jobs");
 
-    assertThat(tables).as("post-render assessment tables")
+    assertThat(tables)
+        .as("post-render assessment tables")
         .contains("post_render_evaluations", "post_render_rule_results", "post_render_assessments");
 
     assertThat(tables)

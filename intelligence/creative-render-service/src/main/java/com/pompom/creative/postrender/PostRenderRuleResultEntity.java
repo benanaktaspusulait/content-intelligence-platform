@@ -12,7 +12,9 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PostRenderRuleResultEntity {
-  @Id @GeneratedValue(strategy = GenerationType.UUID) private UUID id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.UUID)
+  private UUID id;
 
   @ManyToOne(fetch = FetchType.LAZY, optional = false)
   @JoinColumn(name = "evaluation_id", nullable = false, updatable = false)
@@ -47,10 +49,18 @@ public class PostRenderRuleResultEntity {
   @Column(name = "actual_value", columnDefinition = "jsonb", updatable = false)
   private String actualValue;
 
-  @Column(name = "expected_condition", nullable = false, columnDefinition = "jsonb", updatable = false)
+  @Column(
+      name = "expected_condition",
+      nullable = false,
+      columnDefinition = "jsonb",
+      updatable = false)
   private String expectedCondition;
 
-  @Column(name = "evidence_references", nullable = false, columnDefinition = "jsonb", updatable = false)
+  @Column(
+      name = "evidence_references",
+      nullable = false,
+      columnDefinition = "jsonb",
+      updatable = false)
   private String evidenceReferences;
 
   @Column(name = "evaluator", nullable = false, updatable = false)

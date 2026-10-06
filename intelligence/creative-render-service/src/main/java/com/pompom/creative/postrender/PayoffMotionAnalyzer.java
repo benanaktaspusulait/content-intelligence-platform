@@ -12,8 +12,11 @@ public class PayoffMotionAnalyzer {
   public Map<String, Object> analyze(Map<String, Object> temporalProfile, PayoffWindow payoff) {
     Map<String, Object> result = new LinkedHashMap<>();
     result.put("status", payoff.status().name());
-    result.put("statusStatus", payoff.status() == PayoffWindowStatus.SERVICE_ERROR
-        ? EvidenceStatus.SERVICE_ERROR.name() : EvidenceStatus.AVAILABLE.name());
+    result.put(
+        "statusStatus",
+        payoff.status() == PayoffWindowStatus.SERVICE_ERROR
+            ? EvidenceStatus.SERVICE_ERROR.name()
+            : EvidenceStatus.AVAILABLE.name());
     if (payoff.status() != PayoffWindowStatus.RESOLVED) {
       result.put("contrastStatus", EvidenceStatus.NOT_EVALUATED.name());
       result.put("holdStatus", EvidenceStatus.NOT_EVALUATED.name());
@@ -77,18 +80,26 @@ public class PayoffMotionAnalyzer {
   private List<Map<String, Object>> maps(Object value) {
     if (!(value instanceof List<?> values)) return List.of();
     List<Map<String, Object>> result = new ArrayList<>();
-    for (Object item : values) if (item instanceof Map<?, ?> map) {
-      Map<String, Object> copy = new LinkedHashMap<>();
-      map.forEach((key, entry) -> copy.put(String.valueOf(key), entry));
-      result.add(copy);
-    }
+    for (Object item : values)
+      if (item instanceof Map<?, ?> map) {
+        Map<String, Object> copy = new LinkedHashMap<>();
+        map.forEach((key, entry) -> copy.put(String.valueOf(key), entry));
+        result.add(copy);
+      }
     return result;
   }
 
   private double number(Object value) {
-    return value instanceof Number number ? number.doubleValue() : Double.parseDouble(String.valueOf(value));
+    return value instanceof Number number
+        ? number.doubleValue()
+        : Double.parseDouble(String.valueOf(value));
   }
 
-  private Object value(double value) { return Double.isNaN(value) ? null : round(value); }
-  private double round(double value) { return Math.round(value * 10000.0) / 10000.0; }
+  private Object value(double value) {
+    return Double.isNaN(value) ? null : round(value);
+  }
+
+  private double round(double value) {
+    return Math.round(value * 10000.0) / 10000.0;
+  }
 }
