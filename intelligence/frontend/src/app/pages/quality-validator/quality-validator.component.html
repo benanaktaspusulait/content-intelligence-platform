@@ -4,6 +4,33 @@
     <p class="subtitle">Exploratory prompt analysis. This screen does not authorize a render.</p>
   </div>
 
+  <section class="workspace-picker card">
+    <div class="card-header">
+      <div><span class="eyebrow">PROMPT ASSET LIBRARY</span><h2>Choose a creative workspace</h2><p>Select a folder even before a video exists.</p></div>
+      <div class="actions"><button class="btn btn-primary btn-sm" type="button" (click)="startNewPrompt()" [disabled]="loading">New prompt</button><button class="btn btn-outline-secondary btn-sm" type="button" (click)="loadPromptWorkspaces()" [disabled]="promptWorkspacesLoading">Refresh</button></div>
+    </div>
+    <div class="card-body">
+      <input class="workspace-search" type="search" [(ngModel)]="workspaceQuery" placeholder="Search folder, creative, video or prompt name" aria-label="Search prompt workspaces">
+      <div class="new-workspace-row"><input type="text" [(ngModel)]="newFolderName" placeholder="New folder name, e.g. hiccup_box" aria-label="New prompt workspace folder name"><input type="text" [(ngModel)]="futureVideoName" placeholder="Future video / creative name" aria-label="Future video or creative name"><button class="btn btn-outline-secondary btn-sm" type="button" (click)="createWorkspaceFolder()" [disabled]="creatingFolder || !newFolderName.trim()">{{ creatingFolder ? 'Creating…' : 'Create folder' }}</button></div>
+      <div class="workspace-controls"><label>Show<select [(ngModel)]="workspaceFilter"><option value="ALL">All workspaces</option><option value="VIDEO">Video available</option><option value="NO_VIDEO">No video yet</option><option value="PROMPT">Prompt available</option><option value="NO_PROMPT">No prompt</option><option value="ANALYZED">Analyzed</option><option value="NOT_ANALYZED">Not analyzed</option></select></label><label>Sort<select [(ngModel)]="workspaceSort"><option value="MODIFIED">Recently modified</option><option value="NAME">Name</option></select></label></div>
+      <div *ngIf="promptWorkspacesLoading" class="loading-library">Loading prompt workspaces…</div>
+      <div *ngIf="!promptWorkspacesLoading" class="workspace-grid">
+        <article *ngFor="let workspace of filteredPromptWorkspaces(); let workspaceIndex = index" class="workspace-card" [class.is-selected]="selectedWorkspace?.folderPath === workspace.folderPath">
+          <button type="button" class="workspace-card__main" (click)="openWorkspace(workspace)">
+            <span class="workspace-card__icon">P</span><span><strong>{{ workspace.creativeName }}</strong><small>{{ workspace.folderPath }}</small></span>
+          </button>
+          <div class="workspace-card__statuses"><span class="workspace-badge" [class.is-muted]="!workspace.videoCandidates.length">{{ workspace.videoCandidates.length ? 'VIDEO AVAILABLE' : 'NO VIDEO YET' }}</span><span class="workspace-badge" [class.is-muted]="workspace.promptStatus === 'NO_PROMPT'">{{ workspace.promptStatus === 'AVAILABLE' ? 'PROMPT AVAILABLE' : workspace.promptStatus === 'AMBIGUOUS' ? 'PROMPT AMBIGUOUS' : 'NO PROMPT' }}</span><span class="workspace-badge">{{ statusLabel(workspace.analysisStatus) }}</span></div>
+          <div *ngIf="workspace.videoCandidates.length > 1" class="workspace-choices"><small>Multiple videos found — search and select one</small><input class="workspace-video-autocomplete" type="search" [attr.list]="'video-candidates-' + workspaceIndex" [ngModel]="videoDrafts[workspace.folderPath] || ''" (ngModelChange)="chooseVideoCandidate(workspace, $event)" placeholder="Search video candidates" [attr.aria-label]="'Select video for ' + workspace.creativeName"><datalist [id]="'video-candidates-' + workspaceIndex"><option *ngFor="let video of workspace.videoCandidates" [value]="video">{{ video.split('/').pop() }}</option></datalist></div>
+          <div *ngIf="workspace.promptCandidates.length > 1" class="workspace-choices"><small>Select prompt candidate</small><button *ngFor="let promptPath of workspace.promptCandidates" type="button" (click)="selectWorkspace(workspace, promptPath)">{{ promptPath.split('/').pop() }}</button></div>
+          <button *ngIf="workspace.promptStatus === 'NO_PROMPT'" class="workspace-open" type="button" (click)="openWorkspace(workspace)">Create prompt here →</button>
+          <button *ngIf="workspace.promptStatus !== 'NO_PROMPT' && workspace.videoCandidates.length <= 1 && workspace.promptCandidates.length <= 1" class="workspace-open" type="button" (click)="openWorkspace(workspace)">Open workspace →</button>
+        </article>
+        <div *ngIf="!filteredPromptWorkspaces().length" class="empty-library">No prompt workspaces found. Create a new prompt or refresh source folders.</div>
+      </div>
+      <div *ngIf="selectedWorkspace" class="selected-prompt selected-workspace-context"><span>Selected workspace</span><strong>{{ selectedWorkspace.folderPath }}</strong><small>{{ selectedWorkspaceVideoPath || 'No rendered video yet' }}</small></div>
+    </div>
+  </section>
+
   <!-- Prompt Input Section -->
   <div class="prompt-section card">
     <div class="card-header">
@@ -14,6 +41,8 @@
       </div>
     </div>
     <div class="card-body">
+      <details class="legacy-prompt-source">
+        <summary>Advanced prompt source files</summary>
       <div class="prompt-library-toolbar">
         <label>Project prompt root
           <input type="text" [(ngModel)]="promptLibraryRoot" [disabled]="promptDirectoriesLoading" (keyup.enter)="loadPromptDirectories()" />
@@ -38,6 +67,7 @@
       <ng-template #loadingPrompts><div class="loading-library">{{ selectedPromptDirectory ? 'Loading folder prompts…' : 'Choose a folder to load prompts.' }}</div></ng-template>
       <div class="import-message" *ngIf="importMessage">{{ importMessage }}</div>
       <div class="selected-prompt" *ngIf="selectedPromptPath"><span>Selected source</span><code>{{ selectedPromptPath }}</code></div>
+      </details>
       <div class="linked-context">
         <label>Content title<input type="text" [(ngModel)]="contentTitle" [disabled]="loading" placeholder="Kiko's Mat Mystery" /></label>
         <label>Type<select [(ngModel)]="contentType" [disabled]="loading"><option value="SHORT">Short</option><option value="REEL">Reel</option><option value="EPISODE">Episode</option></select></label>
@@ -67,7 +97,7 @@
         class="btn btn-primary btn-lg"
         (click)="validatePrompt()"
         [disabled]="loading || ((!contentId || !promptVersionId) && prompt.length < 100)">
-        <span *ngIf="!loading">🚀 Validate Quality</span>
+        <span *ngIf="!loading">Analyze prompt</span>
         <span *ngIf="loading">
           <span class="spinner"></span> Analyzing...
         </span>

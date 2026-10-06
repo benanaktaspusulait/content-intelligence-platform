@@ -1,6 +1,8 @@
 from unittest.mock import Mock, patch
 
 from app.semantic_evidence import analyse_semantic_video
+from app.semantic_reproducibility import request_fingerprint
+from app.semantic_routing import SemanticModelRoutingPolicy
 
 
 def _frames() -> dict:
@@ -14,6 +16,13 @@ def _frames() -> dict:
 
 
 def _completed_evidence() -> dict:
+    fingerprint, _ = request_fingerprint(
+        _frames(),
+        SemanticModelRoutingPolicy.from_environment().primary.provider,
+        SemanticModelRoutingPolicy.from_environment().primary.model,
+        SemanticModelRoutingPolicy.from_environment().version,
+        [],
+    )
     return {
         "status": "COMPLETED",
         "assetHash": "asset-1",
@@ -21,6 +30,7 @@ def _completed_evidence() -> dict:
         "frameSelection": _frames(),
         "provenance": {"requestId": "resp-test", "provider": "openai"},
         "opening": {"semanticHookReadable": True},
+        "semanticRequestFingerprint": fingerprint,
     }
 
 

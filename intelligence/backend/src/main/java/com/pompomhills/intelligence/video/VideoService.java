@@ -13,6 +13,7 @@ import com.pompomhills.intelligence.video.api.VideoDtos.MediaDirectory;
 import com.pompomhills.intelligence.video.api.VideoDtos.MediaFile;
 import com.pompomhills.intelligence.video.api.VideoDtos.MediaCharacter;
 import com.pompomhills.intelligence.video.api.VideoDtos.PromptFile;
+import com.pompomhills.intelligence.video.api.VideoDtos.PromptWorkspace;
 import com.pompomhills.intelligence.video.api.VideoDtos.VideoResponse;
 import com.pompomhills.intelligence.video.ml.MlVideoClient;
 import com.pompomhills.intelligence.character.VideoCharacterAssociationService;
@@ -273,6 +274,65 @@ public class VideoService {
           return new VideoDtos.PromptDirectory(name, path, entry.getValue());
         })
         .toList();
+  }
+
+  @Transactional(readOnly = true)
+  public List<PromptWorkspace> promptWorkspaces(String relativeDirectory) {
+    Path root = properties.dataRoot().toAbsolutePath().normalize();
+    Path base = root.resolve(relativeDirectory).normalize();
+    if (!base.startsWith(root) || !Files.isDirectory(base)) {
+      throw new IllegalArgumentException("Prompt workspace root must be inside the configured data root");
+    }
+    Map<String, VideoEntity> ingested = videos.findAll().stream()
+        .collect(java.util.stream.Collectors.toMap(VideoEntity::getRelativePath, video -> video, (first, ignored) -> first));
+    try (Stream<Path> stream = Files.walk(base)) {
+      return stream.filter(Files::isDirectory).map(folder -> {
+        try (Stream<Path> children = Files.list(folder)) {
+          List<Path> files = children.filter(Files::isRegularFile).toList();
+          List<Path> videoFiles = files.stream().filter(this::hasAllowedExtension).sorted().toList();
+          List<Path> promptFiles = files.stream().filter(this::isPromptFile).sorted().toList();
+          if (videoFiles.isEmpty() && promptFiles.isEmpty()) return null;
+          String folderPath = root.relativize(folder).toString().replace('\\', '/');
+          List<String> videosInFolder = videoFiles.stream().map(file -> root.relativize(file).toString().replace('\\', '/')).toList();
+          List<String> promptsInFolder = promptFiles.stream().map(file -> root.relativize(file).toString().replace('\\', '/')).toList();
+          String selected = videosInFolder.size() == 1 ? videosInFolder.get(0) : null;
+          VideoEntity selectedEntity = selected == null ? null : ingested.get(selected);
+          String analysis = selectedEntity == null ? "NOT_ANALYZED" : (analyses.existsByVideoIdAndAnalysisVersion(selectedEntity.getId(), CURRENT_ANALYSIS_VERSION) ? "ANALYZED" : "NOT_ANALYZED");
+          String promptStatus = promptsInFolder.isEmpty() ? "NO_PROMPT" : promptsInFolder.size() == 1 ? "AVAILABLE" : "AMBIGUOUS";
+          Instant modified = files.stream().map(this::lastModifiedInstant).filter(java.util.Objects::nonNull).max(Comparator.naturalOrder()).orElse(null);
+          return new PromptWorkspace(folder.getFileName().toString(), folderPath, videosInFolder, selected, selectedEntity == null ? null : selectedEntity.getId(), promptStatus, promptsInFolder, analysis, modified == null ? null : modified.toString());
+        } catch (IOException error) { return null; }
+      }).filter(java.util.Objects::nonNull).sorted(Comparator.comparing(PromptWorkspace::folderPath, String.CASE_INSENSITIVE_ORDER)).toList();
+    } catch (IOException error) {
+      throw new IllegalStateException("Could not scan prompt workspaces", error);
+    }
+  }
+
+  @Transactional
+  public PromptWorkspace createPromptWorkspaceFolder(String parentDirectory, String folderName) {
+    if (folderName == null || !folderName.matches("[A-Za-z0-9][A-Za-z0-9._-]{0,99}")) {
+      throw new IllegalArgumentException("Folder name must use letters, numbers, dot, underscore, or hyphen");
+    }
+    String parentValue = parentDirectory == null || parentDirectory.isBlank() ? "library/POMPOM_HILLS_PRODUCTION" : parentDirectory;
+    Path root = properties.dataRoot().toAbsolutePath().normalize();
+    Path parent = root.resolve(parentValue).normalize();
+    Path folder = parent.resolve(folderName).normalize();
+    if (!parent.startsWith(root) || !folder.startsWith(root) || !Files.isDirectory(parent)) {
+      throw new IllegalArgumentException("Folder must stay inside the configured project root");
+    }
+    try {
+      Files.createDirectory(folder);
+      String relative = root.relativize(folder).toString().replace('\\', '/');
+      return new PromptWorkspace(folderName, relative, List.of(), null, null, "NO_PROMPT", List.of(), "NOT_ANALYZED", Instant.now().toString());
+    } catch (java.nio.file.FileAlreadyExistsException error) {
+      throw new IllegalArgumentException("Folder already exists");
+    } catch (IOException error) {
+      throw new IllegalStateException("Could not create prompt workspace folder", error);
+    }
+  }
+
+  private Instant lastModifiedInstant(Path file) {
+    try { return Files.getLastModifiedTime(file).toInstant(); } catch (IOException ignored) { return null; }
   }
 
   private boolean isPromptFile(Path file) {

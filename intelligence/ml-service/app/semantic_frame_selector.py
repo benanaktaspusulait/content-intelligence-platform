@@ -13,6 +13,7 @@ from pathlib import Path
 from typing import Any
 
 import cv2
+import hashlib
 
 from .config import settings
 
@@ -72,6 +73,16 @@ def _write_frame_assets(path: Path, selected: list[dict[str, Any]], asset_hash: 
     capture = cv2.VideoCapture(str(path))
     try:
         for index, item in enumerate(selected, start=1):
+            existing_path = Path(str(item.get("framePath") or ""))
+            if (
+                item.get("frameAvailable")
+                and existing_path.is_file()
+                and item.get("frameHash")
+                and item.get("preparedImageHash")
+                and item.get("width")
+                and item.get("height")
+            ):
+                continue
             capture.set(cv2.CAP_PROP_POS_MSEC, float(item["timestampSeconds"]) * 1000)
             ok, frame = capture.read()
             if not ok:
@@ -85,6 +96,10 @@ def _write_frame_assets(path: Path, selected: list[dict[str, Any]], asset_hash: 
                 continue
             item["framePath"] = str(destination)
             item["frameAvailable"] = True
+            item["frameHash"] = hashlib.sha256(destination.read_bytes()).hexdigest()
+            item["preparedImageHash"] = item["frameHash"]
+            item["width"] = int(frame.shape[1])
+            item["height"] = int(frame.shape[0])
     finally:
         capture.release()
     return selected
@@ -109,7 +124,9 @@ def select_semantic_frames(
             cached = json.loads(manifest_path.read_text(encoding="utf-8"))
             selected = cached.get("selectedFrames") or []
             if selected and all(item.get("frameAvailable") and Path(str(item.get("framePath"))).is_file() for item in selected):
+                selected = _write_frame_assets(path, selected, asset_hash)
                 cached["cacheHit"] = True
+                cached["selectedFrames"] = selected
                 return cached
         except (OSError, ValueError, TypeError):
             pass
@@ -146,7 +163,7 @@ def select_semantic_frames(
 
     selected = _deduplicate(candidates, requested_max, duration)
     selected = _write_frame_assets(path, selected, asset_hash)
-    return {
+    result = {
         "version": FRAME_SELECTION_VERSION,
         "assetHash": asset_hash,
         "durationSeconds": round(duration, 3),

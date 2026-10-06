@@ -45,6 +45,19 @@ public final class VideoDtos {
 
   public record PromptDirectory(String name, String relativePath, long promptCount) {}
 
+  public record PromptWorkspace(
+      String creativeName,
+      String folderPath,
+      List<String> videoCandidates,
+      String selectedVideoPath,
+      UUID videoId,
+      String promptStatus,
+      List<String> promptCandidates,
+      String analysisStatus,
+      String modifiedAt) {}
+
+  public record CreatePromptWorkspaceFolderRequest(String parentDirectory, String folderName) {}
+
   public record MetadataUpdateRequest(
       @jakarta.validation.constraints.NotBlank String relativePath, String content) {}
 

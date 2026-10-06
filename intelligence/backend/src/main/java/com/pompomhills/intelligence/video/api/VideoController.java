@@ -99,6 +99,18 @@ public class VideoController {
     return service.promptDirectories(relativeDirectory);
   }
 
+  @GetMapping("/prompt-workspaces")
+  public List<VideoDtos.PromptWorkspace> promptWorkspaces(
+      @RequestParam(defaultValue = "library/POMPOM_HILLS_PRODUCTION") String relativeDirectory) {
+    return service.promptWorkspaces(relativeDirectory);
+  }
+
+  @PostMapping("/prompt-workspaces/folders")
+  public VideoDtos.PromptWorkspace createPromptWorkspaceFolder(
+      @RequestBody VideoDtos.CreatePromptWorkspaceFolderRequest request) {
+    return service.createPromptWorkspaceFolder(request.parentDirectory(), request.folderName());
+  }
+
   @GetMapping("/content")
   public ResponseEntity<Resource> content(@RequestParam("path") String relativePath) {
     var media = mediaContent.resolve(relativePath);

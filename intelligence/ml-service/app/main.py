@@ -1,4 +1,5 @@
 from pathlib import Path
+import os
 
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import JSONResponse
@@ -22,6 +23,7 @@ from .qa.dead_air_analyzer import DeadAirAnalyzer
 from .rules.rule_versioning import RulesetConfigurationError, RuleVersionManager
 from .video import analyse
 from .semantic_fusion import fuse_canonical_assessments
+from .semantic_evidence import analyse_semantic_video
 
 app = FastAPI(title="Pompom Creative Intelligence ML", version="0.1.0")
 
@@ -82,6 +84,18 @@ class SemanticFusionRequest(BaseModel):
     semantic_video_evidence: dict[str, object]
 
 
+class SemanticReplayRequest(BaseModel):
+    """Exact-frame semantic replay input; available only in an explicitly enabled test runtime."""
+
+    asset_hash: str
+    frame_selection: dict[str, object]
+    canonical_characters: list[str] = []
+    replay_index: int
+
+
+SEMANTIC_REPLAY_ASSET_HASH = "fcba5934179363b02b063083dd075a3b7c2d66db69e9167773fbf704cd5e9816"
+
+
 @app.get("/health")
 def health() -> dict[str, str]:
     return {"status": "UP", "service": "pompom-ml"}
@@ -125,6 +139,31 @@ def fuse_semantic_evidence(request: SemanticFusionRequest) -> dict[str, object]:
     It lets historical semantic rows receive the current fusion projection.
     """
     return fuse_canonical_assessments(request.temporal_profile, request.semantic_video_evidence)
+
+
+@app.post("/v1/test/semantic-replay")
+def semantic_replay(request: SemanticReplayRequest) -> dict[str, object]:
+    """Run one exact-input semantic replay; never enabled in normal production mode."""
+    if os.getenv("SEMANTIC_REPLAY_ENABLED", "false").lower() != "true":
+        raise HTTPException(status_code=404, detail="Semantic replay is disabled")
+    if request.asset_hash != SEMANTIC_REPLAY_ASSET_HASH:
+        raise HTTPException(status_code=403, detail="Replay is restricted to the audited Hıçkıran Kutu asset")
+    if request.replay_index not in {1, 2, 3}:
+        raise HTTPException(status_code=400, detail="replay_index must be 1, 2, or 3")
+    selection = dict(request.frame_selection)
+    if str(selection.get("assetHash") or "") != request.asset_hash:
+        raise HTTPException(status_code=400, detail="Frame manifest asset hash does not match replay asset")
+    result = analyse_semantic_video(
+        selection,
+        canonical_characters=request.canonical_characters,
+        cached_evidence={},
+        semantic_requested=True,
+        bypass_cache=True,
+        allow_fallback=False,
+    )
+    result.setdefault("provenance", {})["replayIndex"] = request.replay_index
+    result["provenance"]["replayMode"] = "EXACT_PERSISTED_FRAME_MANIFEST"
+    return result
 
 
 @app.post("/v1/analysis/retention")

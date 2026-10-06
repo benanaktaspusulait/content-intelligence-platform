@@ -227,6 +227,18 @@ const VARIANT_TYPE_LABELS: Record<string, string> = {
                 <div><span>Loop</span><strong>{{ semanticValue('loop', 'status') }}</strong><small>Scene-state compatibility, not pixel similarity alone.</small></div>
               </div>
               <div class="semantic-evidence-list"><span>Characters</span><strong>{{ semanticNames('characters') }}</strong><span>Objects</span><strong>{{ semanticNames('objects') }}</strong><span>Beats</span><strong>{{ semanticBeatSummary() }}</strong><span>Confidence</span><strong>{{ semanticConfidence() }}</strong></div>
+              <details class="semantic-technical-details">
+                <summary>Semantic evidence provenance</summary>
+                <dl class="semantic-provenance-grid">
+                  <div><dt>Request fingerprint</dt><dd><code>{{ semanticFingerprint() }}</code></dd></div>
+                  <div><dt>Frame manifest</dt><dd>{{ semanticFrameManifestCount() }} exact prepared frame{{ semanticFrameManifestCount() === 1 ? '' : 's' }}</dd></div>
+                  <div><dt>Consistency validator</dt><dd>{{ semanticConsistencyStatus() }}</dd></div>
+                  <div><dt>Provider / model</dt><dd>{{ semanticProviderModel() }}</dd></div>
+                  <div><dt>Prompt / schema</dt><dd>{{ semanticVersion('prompt') }} / {{ semanticVersion('schema') }}</dd></div>
+                  <div><dt>Selector / image prep</dt><dd>{{ semanticFrameSelectorVersion() }} / {{ semanticVersion('imagePreparation') }}</dd></div>
+                  <div><dt>Provider calls</dt><dd>{{ semanticProviderCalls() }}</dd></div>
+                </dl>
+              </details>
             }
           </section>
           <section class="temporal-timeline" aria-labelledby="temporal-timeline-heading">
@@ -746,6 +758,37 @@ export class VideoDetailPage implements OnDestroy {
   protected semanticConfidence(): string {
     const value = this.semanticEvidence()['confidence'];
     return typeof value === 'number' ? `${(value * 100).toFixed(0)}%` : 'Unknown';
+  }
+  protected semanticFingerprint(): string {
+    const value = this.semanticEvidence()['semanticRequestFingerprint'];
+    return typeof value === 'string' && value.length ? value : 'Not persisted for this run';
+  }
+  protected semanticFrameManifestCount(): number {
+    const value = this.semanticEvidence()['semanticFrameManifest'];
+    return Array.isArray(value) ? value.length : 0;
+  }
+  protected semanticConsistencyStatus(): string {
+    const value = (this.semanticEvidence()['consistency'] as Record<string, any> | undefined)?.['status'];
+    return value ? this.readable(String(value)) : 'Unknown';
+  }
+  protected semanticProviderModel(): string {
+    const evidence = this.semanticEvidence();
+    const provider = evidence['provider'] || (evidence['provenance'] as Record<string, any> | undefined)?.['provider'];
+    const model = evidence['model'] || (evidence['provenance'] as Record<string, any> | undefined)?.['providerModel'];
+    return provider || model ? `${provider || 'Unknown'} / ${model || 'Unknown'}` : 'Unknown';
+  }
+  protected semanticVersion(key: string): string {
+    const value = (this.semanticEvidence()['semanticVersions'] as Record<string, any> | undefined)?.[key];
+    return value ? String(value) : 'Unknown';
+  }
+  protected semanticFrameSelectorVersion(): string {
+    const value = (this.semanticEvidence()['semanticFrameManifest'] as Array<Record<string, any>> | undefined);
+    const selection = this.semanticEvidence()['frameSelection'] as Record<string, any> | undefined;
+    return selection?.['version'] || (value?.length ? 'Persisted manifest' : 'Unknown');
+  }
+  protected semanticProviderCalls(): string {
+    const value = (this.semanticEvidence()['provenance'] as Record<string, any> | undefined)?.['providerCallCount'];
+    return typeof value === 'number' ? String(value) : 'Unknown';
   }
   protected timelineSegments(): Array<Record<string, any>> {
     const segments = this.analysisStatus()?.temporalProfile?.['segments'];

@@ -16,6 +16,20 @@ from .llm import get_provider
 from .semantic_provider import SemanticAnalysisRequest, SemanticFrame
 from .semantic_quality_gate import assess_semantic_evidence
 from .semantic_routing import SemanticModelRoutingPolicy
+from .semantic_reproducibility import (
+    SEMANTIC_BEAT_CANONICALIZER_VERSION,
+    SEMANTIC_CONTEXT_VERSION,
+    SEMANTIC_HOOK_EVALUATOR_VERSION,
+    SEMANTIC_IMAGE_PREPARATION_VERSION,
+    SEMANTIC_LOOP_EVALUATOR_VERSION,
+    SEMANTIC_NORMALIZATION_VERSION,
+    SEMANTIC_PAYOFF_EVALUATOR_VERSION,
+    SEMANTIC_PROMPT_VERSION,
+    build_frame_manifest,
+    canonicalize_beats,
+    request_fingerprint,
+    validate_consistency,
+)
 
 SEMANTIC_ANALYZER_VERSION = "semantic-video-intelligence-v1"
 SEMANTIC_SCHEMA_VERSION = "semantic-evidence-v1"
@@ -69,19 +83,36 @@ def analyse_semantic_video(
     canonical_characters: list[str] | None = None,
     cached_evidence: dict[str, Any] | None = None,
     semantic_requested: bool = False,
+    bypass_cache: bool = False,
+    allow_fallback: bool = True,
 ) -> dict[str, Any]:
     """Reuse fresh evidence or run exactly one structured vision pass."""
     cached = dict(cached_evidence or {})
     cache_selection = cached.get("frameSelection") if isinstance(cached.get("frameSelection"), dict) else {}
+    policy = SemanticModelRoutingPolicy.from_environment()
+    fingerprint, fingerprint_inputs = request_fingerprint(
+        frame_selection,
+        policy.primary.provider,
+        policy.primary.model,
+        policy.version,
+        canonical_characters,
+        transcript_context=frame_selection.get("transcriptContext"),
+        planned_context=frame_selection.get("plannedCreativeContext"),
+        image_preparation_profile=os.getenv("SEMANTIC_IMAGE_PREPARATION_PROFILE", "STANDARD"),
+    )
     if (
-        str(cached.get("status") or "").upper() in {"COMPLETED", "PARTIAL", "CACHE_HIT"}
+        not bypass_cache
+        and str(cached.get("status") or "").upper() in {"COMPLETED", "PARTIAL", "CACHE_HIT"}
         and str(cached.get("assetHash") or "") == str(frame_selection.get("assetHash") or "")
         and str(cached.get("schemaVersion") or "") == SEMANTIC_SCHEMA_VERSION
         and cache_selection.get("version") == frame_selection.get("version")
         and isinstance(cached.get("provenance"), dict)
+        and cached.get("semanticRequestFingerprint") == fingerprint
     ):
         cached["status"] = "CACHE_HIT"
         cached["frameSelection"] = frame_selection
+        cached["semanticFrameManifest"] = build_frame_manifest(frame_selection)
+        cached["semanticRequestFingerprint"] = fingerprint
         cached["provenance"] = {**dict(cached.get("provenance") or {}), "cacheHit": True, "cacheSource": "persisted-semantic-video-evidence", "providerCallCount": 0}
         return cached
     frames = [
@@ -111,8 +142,6 @@ def analyse_semantic_video(
             temporal_events=tuple(frame_selection.get("temporalEvents") or ()),
             analysis_requirements=_semantic_prompt(canonical_characters or []),
         )
-        policy = SemanticModelRoutingPolicy.from_environment()
-
         def run(selection, reason: str) -> tuple[dict[str, Any], dict[str, Any]]:
             started = time.perf_counter()
             provider = get_provider(selection.provider, selection.model)
@@ -147,7 +176,7 @@ def analyse_semantic_video(
         payload, primary = run(policy.primary, policy.primary.reason)
         attempts = [{"selection": primary["selection"].__dict__, "quality": primary["quality"], "usage": primary["usage"]}]
         final = primary
-        if primary["quality"]["qualityStatus"] == "INSUFFICIENT" and policy.fallback is not None:
+        if allow_fallback and primary["quality"]["qualityStatus"] == "INSUFFICIENT" and policy.fallback is not None:
             fallback_payload, fallback = run(policy.fallback, "PRIMARY_EVIDENCE_INSUFFICIENT")
             attempts.append({"selection": fallback["selection"].__dict__, "quality": fallback["quality"], "usage": fallback["usage"]})
             payload, final = fallback_payload, fallback
@@ -155,10 +184,30 @@ def analyse_semantic_video(
         payload.setdefault("schemaVersion", SEMANTIC_SCHEMA_VERSION)
         payload.setdefault("analyzerVersion", SEMANTIC_ANALYZER_VERSION)
         payload["frameSelection"] = frame_selection
+        raw_beats = payload.get("beats") if isinstance(payload.get("beats"), list) else []
+        payload["rawBeatObservations"] = raw_beats
+        payload["canonicalBeats"] = canonicalize_beats(raw_beats)
+        payload["consistency"] = validate_consistency(payload)
+        payload["semanticFrameManifest"] = build_frame_manifest(frame_selection)
+        payload["semanticRequestFingerprint"] = fingerprint
+        payload["semanticFingerprintInputs"] = fingerprint_inputs
+        payload["semanticVersions"] = {
+            "prompt": SEMANTIC_PROMPT_VERSION,
+            "schema": SEMANTIC_SCHEMA_VERSION,
+            "normalization": SEMANTIC_NORMALIZATION_VERSION,
+            "beatCanonicalizer": SEMANTIC_BEAT_CANONICALIZER_VERSION,
+            "hookEvaluator": SEMANTIC_HOOK_EVALUATOR_VERSION,
+            "payoffEvaluator": SEMANTIC_PAYOFF_EVALUATOR_VERSION,
+            "loopEvaluator": SEMANTIC_LOOP_EVALUATOR_VERSION,
+            "context": SEMANTIC_CONTEXT_VERSION,
+            "imagePreparation": SEMANTIC_IMAGE_PREPARATION_VERSION,
+        }
         payload["provenance"] = {
             **dict(payload.get("provenance") or {}),
             "selectedFrameTimestamps": [frame["timestampSeconds"] for frame in frame_selection.get("selectedFrames", [])],
             "frameSelectionVersion": frame_selection.get("version"),
+            "semanticPromptVersion": SEMANTIC_PROMPT_VERSION,
+            "semanticRequestFingerprint": fingerprint,
             **final["usage"],
             "routingPolicyVersion": policy.version,
             "routingMode": policy.mode,
@@ -167,6 +216,7 @@ def analyse_semantic_video(
             "fallbackReason": "PRIMARY_EVIDENCE_INSUFFICIENT" if len(attempts) > 1 else None,
             "attempts": attempts,
             "finalSelectedRole": final["selection"].role,
+            "providerCallCount": len(attempts),
         }
         payload.setdefault("limitations", [])
         return payload
@@ -192,16 +242,17 @@ def _semantic_system() -> str:
 def _semantic_prompt(canonical_characters: list[str]) -> str:
     names = ", ".join(canonical_characters) if canonical_characters else "none supplied"
     return f'''Analyze this ordered representative frame set as one video. Canonical characters allowed: {names}.
-Return JSON with these keys:
-opening: {{primaryCharacterVisible, primaryObjectVisible, actionAlreadyStarted, conflictVisible, anomalyVisible, expressionReadable, textPresent, detectedText, semanticHookReadable, summary, confidence}}
+Return JSON with these keys. This is evidence extraction, not creative criticism or performance prediction.
+Use UNKNOWN or null when the supplied frames do not support a conclusion. Cite frame indices in supportingFrames.
+opening: {{primaryCharacterVisible, primaryObjectVisible, actionAlreadyStarted, conflictVisible, anomalyVisible, expressionReadable, textPresent, detectedText, semanticHookReadable, semanticHookReadability, openingSubjectVisible, openingObjectVisible, openingActionVisible, abnormalRelationshipVisible, problemOrAnomalyReadable, requiresPriorContext, supportingFrameIndices, observedFacts, summary, confidence}}
 characters: [{{canonicalName, present, role, firstSeenSeconds, lastSeenSeconds, actions, emotions, confidence}}]
-objects: [{{objectType, label, role, stateChanges, interactions, firstSeen, lastSeen, confidence}}]
-beats: [{{beatIndex, startSeconds, endSeconds, primaryCharacter, primaryAction, targetObject, interactionType, characterStateBefore, characterStateAfter, objectStateBefore, objectStateAfter, consequence, emotion, semanticDistinctnessFromPrevious, confidence}}]
-storyArc: {{arcType, sequence, status}}
+objects: [{{objectType, label, normalizedObjectType, attributes, role, stateChanges, interactions, firstSeen, lastSeen, supportingFrames, confidence}}]
+beats: [{{beatIndex, startSeconds, endSeconds, primaryCharacter, primaryAction, targetObject, interactionType, characterStateBefore, characterStateAfter, objectStateBefore, objectStateAfter, consequence, reaction, strategyId, emotion, semanticDistinctnessFromPrevious, supportingFrames, confidence}}]
+storyArc: {{arcType, pattern, initialState, goalOrIntent, recurringMechanic, escalationPresent, stateChanges, resolutionPresent, endingState, sequence, status}}
 emotionalArc: {{openingEmotion, intermediateEmotions, endingEmotion, emotionShift, conflictPresent, conflictResolved, positiveResolution, confidence}}
-payoff: {{payoffDetected, payoffStartSeconds, payoffEndSeconds, payoffType, consequenceDetected, stateChangeDetected, characterReaction, emotionalResolution, objectResolution, distinctFromPreviousBeat, confidence, summary, status}}
+payoff: {{payoffEventObserved, resolutionObserved, payoffDetected, payoffStartSeconds, payoffEndSeconds, payoffWindow, payoffType, consequenceDetected, stateChangeDetected, characterReactionObserved, characterReaction, emotionalResolution, objectStateResolution, objectResolution, distinctFromPreviousBeat, supportingFrames, confidence, summary, status}}
 ending: {{status, summary}}
-loop: {{openingSceneState, endingSceneState, samePrimaryCharacter, samePrimaryObject, objectStateCompatibility, characterStateCompatibility, spatialCompatibility, actionContinuity, mechanicContinuity, semanticLoopCompatibility, confidence, summary, status}}
+loop: {{openingSceneState, endingSceneState, sameCharacter, samePrimaryObject, sameSetting, stateCompatibility, spatialCompatibility, actionContinuity, mechanicContinuity, emotionCompatibility, restartPlausibility, samePrimaryCharacter, objectStateCompatibility, characterStateCompatibility, semanticLoopCompatibility, supportingOpeningFrames, supportingEndingFrames, confidence, summary, status}}
 textEvidence: {{textPresent, detectedText, readabilityConfidence, status}}
 semanticCoverage: "FULL" or "PARTIAL"
 confidence: number or null

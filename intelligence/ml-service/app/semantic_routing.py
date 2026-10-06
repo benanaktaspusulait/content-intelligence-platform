@@ -27,8 +27,10 @@ class SemanticModelRoutingPolicy:
         provider = (os.getenv("POMPOM_SEMANTIC_PROVIDER") or os.getenv("DEFAULT_LLM_PROVIDER") or "openai").lower()
         primary = os.getenv("SEMANTIC_PRIMARY_MODEL") or os.getenv("OPENAI_VLM_MODEL") or "gpt-4o-mini"
         fallback = os.getenv("SEMANTIC_FALLBACK_MODEL") or os.getenv("OPENAI_VLM_MODEL") or "gpt-4o"
-        mode = (os.getenv("SEMANTIC_ROUTING_MODE") or "PRIMARY_WITH_FALLBACK").upper()
-        enabled = os.getenv("SEMANTIC_FALLBACK_ENABLED", "true").lower() == "true"
+        # Production is one-call by default. A fallback is an explicit operator
+        # choice and remains available for controlled evaluation only.
+        mode = (os.getenv("SEMANTIC_ROUTING_MODE") or "SINGLE_MODEL").upper()
+        enabled = os.getenv("SEMANTIC_FALLBACK_ENABLED", "false").lower() == "true"
         fallback_selection = None
         if enabled and mode == "PRIMARY_WITH_FALLBACK" and fallback and fallback != primary:
             fallback_selection = SemanticModelSelection(provider, fallback, "FALLBACK", "PRIMARY_EVIDENCE_INSUFFICIENT")

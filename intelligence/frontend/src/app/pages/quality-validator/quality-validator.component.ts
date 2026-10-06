@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
+import { ActivatedRoute, Router } from '@angular/router';
 import { TimelineChartComponent } from './timeline-chart.component';
 
 interface QualityReport {
@@ -50,6 +51,17 @@ interface PromptFile {
 }
 
 interface PromptDirectory { name: string; relativePath: string; promptCount: number; }
+interface PromptWorkspace {
+  creativeName: string;
+  folderPath: string;
+  videoCandidates: string[];
+  selectedVideoPath: string | null;
+  videoId: string | null;
+  promptStatus: 'AVAILABLE' | 'NO_PROMPT' | 'AMBIGUOUS';
+  promptCandidates: string[];
+  analysisStatus: string;
+  modifiedAt: string | null;
+}
 
 interface RuleEvaluation {
   ruleId: string;
@@ -142,6 +154,17 @@ export class QualityValidatorComponent {
   selectedPromptPath = '';
   promptFilesLoading = false;
   selectedPromptLoading = false;
+  promptWorkspaces: PromptWorkspace[] = [];
+  promptWorkspacesLoading = false;
+  workspaceQuery = '';
+  workspaceFilter = 'ALL';
+  workspaceSort = 'MODIFIED';
+  selectedWorkspace: PromptWorkspace | null = null;
+  selectedWorkspaceVideoPath = '';
+  videoDrafts: Record<string, string> = {};
+  newFolderName = '';
+  futureVideoName = '';
+  creatingFolder = false;
   
   // Sample prompt for testing
   samplePrompt: string = `[TITLE] Kiko's Mat Mystery
@@ -187,7 +210,83 @@ Visual state: sitting on mat (continuation)
 Consequence: Feels happy about mat
 Intensity: 4`;
 
-  constructor(private http: HttpClient) { this.loadPromptDirectories(); }
+  constructor(private http: HttpClient, private router: Router, private route: ActivatedRoute) { this.loadPromptDirectories(); this.loadPromptWorkspaces(); }
+
+  loadPromptWorkspaces(): void {
+    this.promptWorkspacesLoading = true;
+    this.http.get<PromptWorkspace[]>('/api/v1/videos/prompt-workspaces?relativeDirectory=library/POMPOM_HILLS_PRODUCTION').subscribe({
+      next: workspaces => {
+        this.promptWorkspaces = workspaces;
+        this.promptWorkspacesLoading = false;
+        const requestedFolder = this.route.snapshot.queryParamMap.get('workspace');
+        const requestedWorkspace = requestedFolder ? workspaces.find(item => item.folderPath === requestedFolder) : null;
+        if (requestedWorkspace && !this.selectedWorkspace) this.selectWorkspace(requestedWorkspace);
+      },
+      error: response => { this.error = response.error?.message || 'Prompt workspaces could not be loaded.'; this.promptWorkspacesLoading = false; },
+    });
+  }
+
+  filteredPromptWorkspaces(): PromptWorkspace[] {
+    const query = this.workspaceQuery.trim().toLowerCase();
+    const filtered = this.promptWorkspaces.filter(item => {
+      const matchesQuery = !query || `${item.creativeName} ${item.folderPath} ${item.videoCandidates.join(' ')} ${item.promptCandidates.join(' ')}`.toLowerCase().includes(query);
+      const matchesFilter = this.workspaceFilter === 'ALL'
+        || (this.workspaceFilter === 'VIDEO' && item.videoCandidates.length > 0)
+        || (this.workspaceFilter === 'NO_VIDEO' && item.videoCandidates.length === 0)
+        || (this.workspaceFilter === 'PROMPT' && item.promptStatus === 'AVAILABLE')
+        || (this.workspaceFilter === 'NO_PROMPT' && item.promptStatus === 'NO_PROMPT')
+        || (this.workspaceFilter === 'ANALYZED' && item.analysisStatus === 'ANALYZED')
+        || (this.workspaceFilter === 'NOT_ANALYZED' && item.analysisStatus === 'NOT_ANALYZED');
+      return matchesQuery && matchesFilter;
+    });
+    return [...filtered].sort((left, right) => this.workspaceSort === 'NAME'
+      ? left.creativeName.localeCompare(right.creativeName)
+      : (right.modifiedAt || '').localeCompare(left.modifiedAt || ''));
+  }
+
+  selectWorkspace(workspace: PromptWorkspace, promptPath?: string, videoPath?: string): void {
+    const existingVideoSelection = this.selectedWorkspace?.folderPath === workspace.folderPath ? this.selectedWorkspaceVideoPath : '';
+    this.selectedWorkspace = workspace;
+    this.selectedWorkspaceVideoPath = videoPath || existingVideoSelection || workspace.selectedVideoPath || '';
+    this.selectedPromptDirectory = workspace.folderPath;
+    this.contentTitle = this.futureVideoName.trim() || workspace.creativeName;
+    this.contentType = workspace.folderPath.includes('SOCIAL_REELS') ? 'REEL' : 'SHORT';
+    this.contentId = '';
+    this.promptVersionId = '';
+    this.validationRecordId = null;
+    this.report = null;
+    this.error = null;
+    this.router.navigate(['/quality'], { queryParams: { workspace: workspace.folderPath } });
+    const candidate = promptPath || (workspace.promptCandidates.length === 1 ? workspace.promptCandidates[0] : null);
+    if (candidate) {
+      this.selectPromptFile({ name: candidate.split('/').pop() || 'Prompt', relativePath: candidate, folder: workspace.folderPath, sizeBytes: null, modifiedAt: workspace.modifiedAt });
+    } else {
+      this.prompt = '';
+      this.selectedPromptPath = '';
+    }
+  }
+
+  openWorkspace(workspace: PromptWorkspace): void {
+    if (workspace.videoCandidates.length > 1 || workspace.promptCandidates.length > 1) return;
+    this.selectWorkspace(workspace, workspace.promptCandidates[0], workspace.videoCandidates[0]);
+  }
+
+  chooseVideoCandidate(workspace: PromptWorkspace, value: string): void {
+    this.videoDrafts[workspace.folderPath] = value;
+    if (workspace.videoCandidates.includes(value)) this.selectWorkspace(workspace, undefined, value);
+  }
+
+  statusLabel(value: string): string { return value.replaceAll('_', ' '); }
+
+  createWorkspaceFolder(): void {
+    const name = this.newFolderName.trim();
+    if (!name) return;
+    this.creatingFolder = true;
+    this.http.post<PromptWorkspace>('/api/v1/videos/prompt-workspaces/folders', { parentDirectory: 'library/POMPOM_HILLS_PRODUCTION', folderName: name }).subscribe({
+      next: workspace => { this.creatingFolder = false; this.newFolderName = ''; this.promptWorkspaces = [workspace, ...this.promptWorkspaces]; this.selectWorkspace(workspace); },
+      error: response => { this.creatingFolder = false; this.error = response.error?.message || 'Prompt workspace folder could not be created.'; },
+    });
+  }
 
   loadPromptDirectories(): void {
     this.promptDirectoriesLoading = true;
@@ -240,7 +339,7 @@ Intensity: 4`;
     this.error = null;
     if (file.rawText && file.contentId && file.promptVersionId) {
       this.prompt = file.rawText;
-      this.contentTitle = file.title || this.titleFromFolder(file.folder);
+          this.contentTitle = this.futureVideoName.trim() || file.title || this.titleFromFolder(file.folder);
       this.contentType = file.folder.includes('SOCIAL_REELS') ? 'REEL' : 'SHORT';
       this.contentId = String(file.contentId);
       this.promptVersionId = String(file.promptVersionId);
@@ -249,10 +348,29 @@ Intensity: 4`;
       this.selectedPromptLoading = false;
       return;
     }
+    this.http.get<PromptFile[]>(`/api/v1/intelligence/contents/prompt-library?sourceDirectory=${encodeURIComponent(file.folder)}`).subscribe({
+      next: records => {
+        const linked = records.find(record => record.sourcePath === file.relativePath);
+        if (linked?.rawText && linked.contentId && linked.promptVersionId) {
+          this.prompt = linked.rawText;
+          this.contentTitle = this.futureVideoName.trim() || linked.title || this.titleFromFolder(file.folder);
+          this.contentType = file.folder.includes('SOCIAL_REELS') ? 'REEL' : 'SHORT';
+          this.contentId = String(linked.contentId);
+          this.promptVersionId = String(linked.promptVersionId);
+          this.selectedPromptLoading = false;
+          return;
+        }
+        this.loadPromptFileFromFilesystem(file);
+      },
+      error: () => this.loadPromptFileFromFilesystem(file),
+    });
+  }
+
+  private loadPromptFileFromFilesystem(file: PromptFile): void {
     this.http.get<{ relativePath: string; content: string }>(`/api/v1/videos/metadata?path=${encodeURIComponent(file.relativePath)}`).subscribe({
       next: result => {
         this.prompt = result.content;
-        this.contentTitle = this.titleFromFolder(file.folder);
+        this.contentTitle = this.futureVideoName.trim() || this.titleFromFolder(file.folder);
         this.contentType = file.folder.includes('SOCIAL_REELS') ? 'REEL' : 'SHORT';
         this.contentId = '';
         this.promptVersionId = '';
@@ -265,7 +383,7 @@ Intensity: 4`;
   }
 
   startNewPrompt(): void {
-    this.prompt = ''; this.contentTitle = ''; this.contentType = 'SHORT'; this.contentId = ''; this.promptVersionId = '';
+    this.prompt = ''; this.contentTitle = ''; this.futureVideoName = ''; this.contentType = 'SHORT'; this.contentId = ''; this.promptVersionId = '';
     this.selectedPromptPath = ''; this.validationRecordId = null; this.report = null; this.error = null;
   }
 
