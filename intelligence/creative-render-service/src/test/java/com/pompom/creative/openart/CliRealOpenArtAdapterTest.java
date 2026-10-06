@@ -122,6 +122,19 @@ class CliRealOpenArtAdapterTest {
   }
 
   @Test
+  void exposesThePublishedCliCapabilityMatrix() {
+    assertThat(adapter.capabilities()).isEqualTo(OpenArtCapabilities.cliV011());
+  }
+
+  @Test
+  void listsWorkspaceReferenceAssetsWithProviderIdentity() {
+    assertThat(adapter.listReferenceAssets())
+        .containsExactly(
+            new OpenArtReferenceDescriptor(
+                "ref-1", "https://cdn.openart.ai/kiko.png", "kiko.png", "image"));
+  }
+
+  @Test
   void readsCreditBalanceFromTheAccountCommand() {
     assertThat(adapter.getCreditBalance()).isEqualByComparingTo("875.25");
   }
@@ -143,6 +156,10 @@ class CliRealOpenArtAdapterTest {
         printf '%%s\\n' "$*" >> '%s'
         if [ "$1" = "version" ] || [ "$1" = "--version" ]; then
           printf 'openart 0.1.1\\n'
+          exit 0
+        fi
+        if [ "$1" = "upload" ] && [ "$2" = "list" ]; then
+          printf '{"data":[{"id":"ref-1","url":"https://cdn.openart.ai/kiko.png","resourceType":"image","status":"completed","upload":{"originalFilename":"kiko.png"}}]}\\n'
           exit 0
         fi
         if [ "$1" = "account" ]; then

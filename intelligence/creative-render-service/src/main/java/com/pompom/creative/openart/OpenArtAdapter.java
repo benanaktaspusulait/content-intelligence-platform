@@ -1,8 +1,13 @@
 package com.pompom.creative.openart;
 
-import com.pompom.creative.openart.dto.*;
+import com.pompom.creative.openart.dto.DownloadResult;
+import com.pompom.creative.openart.dto.OpenArtImageRequest;
+import com.pompom.creative.openart.dto.OpenArtJobResponse;
+import com.pompom.creative.openart.dto.OpenArtJobStatus;
+import com.pompom.creative.openart.dto.OpenArtVideoRequest;
 import java.math.BigDecimal;
 import java.nio.file.Path;
+import java.util.List;
 
 public interface OpenArtAdapter {
 
@@ -20,6 +25,12 @@ public interface OpenArtAdapter {
 
   /** Get current credit balance. */
   BigDecimal getCreditBalance();
+
+  /** Return provider capabilities verified for the active adapter. */
+  OpenArtCapabilities capabilities();
+
+  /** List provider reference assets using the provider's documented catalog command. */
+  List<OpenArtReferenceDescriptor> listReferenceAssets();
 
   /** Check if service is available. */
   boolean isAvailable();

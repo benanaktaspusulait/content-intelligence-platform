@@ -246,6 +246,41 @@ public class CliRealOpenArtAdapter implements OpenArtAdapter {
   }
 
   @Override
+  public OpenArtCapabilities capabilities() {
+    return OpenArtCapabilities.cliV011();
+  }
+
+  @Override
+  public List<OpenArtReferenceDescriptor> listReferenceAssets() {
+    requireEnabled();
+    try {
+      JsonNode response = runJsonCommand(buildReferenceListCommand());
+      JsonNode data = response.path("data");
+      if (!data.isArray()) {
+        return List.of();
+      }
+      List<OpenArtReferenceDescriptor> assets = new ArrayList<>();
+      for (JsonNode asset : data) {
+        String id = firstText(asset, Set.of("id"));
+        String url = firstText(asset, Set.of("url"));
+        if (id == null || url == null) {
+          continue;
+        }
+        JsonNode upload = asset.path("upload");
+        String label = firstText(upload, Set.of("originalFilename", "filename", "displayName"));
+        if (label == null) {
+          label = firstText(asset, Set.of("originalFilename", "filename", "displayName", "id"));
+        }
+        String mediaType = firstText(asset, Set.of("resourceType", "mediaType", "type"));
+        assets.add(new OpenArtReferenceDescriptor(id, url, label == null ? id : label, mediaType));
+      }
+      return List.copyOf(assets);
+    } catch (Exception error) {
+      throw providerException("reference asset listing", error);
+    }
+  }
+
+  @Override
   public boolean isAvailable() {
     if (!enabled) {
       return false;
@@ -326,6 +361,21 @@ public class CliRealOpenArtAdapter implements OpenArtAdapter {
 
   private List<String> buildCreditsCommand() {
     return List.of(cliPath, "account", "--json", "--no-input");
+  }
+
+  private List<String> buildReferenceListCommand() {
+    return List.of(
+        cliPath,
+        "upload",
+        "list",
+        "--type",
+        "image",
+        "--scope",
+        "workspace",
+        "--limit",
+        "100",
+        "--json",
+        "--no-input");
   }
 
   private List<String> buildModelCostCommand(String model, String mode) {

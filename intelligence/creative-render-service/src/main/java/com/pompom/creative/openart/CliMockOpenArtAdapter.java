@@ -6,6 +6,7 @@ import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
@@ -90,6 +91,16 @@ public class CliMockOpenArtAdapter implements OpenArtAdapter {
   @Override
   public BigDecimal getCreditBalance() {
     return creditBalance;
+  }
+
+  @Override
+  public OpenArtCapabilities capabilities() {
+    return OpenArtCapabilities.cliV011();
+  }
+
+  @Override
+  public List<OpenArtReferenceDescriptor> listReferenceAssets() {
+    return List.of();
   }
 
   @Override
