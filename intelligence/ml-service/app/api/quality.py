@@ -145,8 +145,11 @@ class PreRenderDimensionResponse(BaseModel):
 class PreRenderAssessmentResponse(BaseModel):
     name: str
     grade: str
+    # Grade from creative judgments only; evidence gaps are reported separately below.
+    creative_grade: str | None = None
     readiness: str
     assessment_coverage_percent: int
+    evidence_completeness: dict[str, Any] | None = None
     verdict: str
     strengths: list[str]
     concerns: list[str]

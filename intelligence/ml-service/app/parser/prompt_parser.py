@@ -10,6 +10,7 @@ from dataclasses import dataclass
 from datetime import datetime
 from typing import Any
 
+from ..quality.canonical_evidence import UNSPECIFIED_VERB
 from ..quality.contracts import ParseResult, ParserMetadata
 
 
@@ -553,6 +554,166 @@ class PromptParser:
                 return True, second_word
         return False, ""
 
+    # ------------------------------------------------------------------
+    # Canonical beat evidence: structural label, role and attempt provenance
+    # ------------------------------------------------------------------
+    _ORDINAL = r"(?:FIRST|SECOND|THIRD|FOURTH|FIFTH|SIXTH|SEVENTH|EIGHTH|NEXT|FINAL|LAST|\d+(?:ST|ND|RD|TH))"
+
+    # Structural labels an author writes after the timestamp, e.g.
+    # "0.8-3.0 SEC - REACTION". Matching is exact against this vocabulary so an
+    # ordinary action line is never mistaken for a label.
+    _BEAT_ROLE_PATTERNS: tuple[tuple[str, re.Pattern[str]], ...] = (
+        ("ATTEMPT", re.compile(rf"^(?:{_ORDINAL}\s+)?ATTEMPT(?:\s+#?\d+)?$")),
+        ("FAKE_RESOLUTION", re.compile(r"^(?:FAKE|FALSE)\s+(?:RESOLUTION|WIN|SUCCESS|ENDING)$")),
+        ("HOOK", re.compile(r"^(?:(?:HARD|COLD|OPENING)\s+)?HOOK$")),
+        ("REACTION", re.compile(r"^(?:(?:FIRST|INITIAL)\s+)?REACTION$")),
+        ("ESCALATION", re.compile(r"^(?:(?:BIG|BIGGER|FINAL|MAJOR)\s+)?ESCALATION$")),
+        ("TWIST", re.compile(r"^(?:(?:FINAL|PLOT)\s+)?TWIST$")),
+        ("PAYOFF", re.compile(r"^(?:FINAL\s+)?PAYOFF$")),
+    )
+
+    # When the author declares one of these roles, the beat is explicitly NOT an
+    # attempt; leading-verb inference never overrides that declaration. Only an
+    # explicit [ATTEMPT: VERB] marker can.
+    _NON_ATTEMPT_ROLES = frozenset({"HOOK", "REACTION", "FAKE_RESOLUTION", "TWIST", "PAYOFF"})
+
+    _LABEL_LINE = re.compile(r"^(?P<label>[A-Za-z][A-Za-z0-9 #]{1,30}?)\s*(?:[:\-—–]\s*(?P<tail>.+))?$")
+    _SUBHEADER_LINE = re.compile(r"^[A-Z][A-Z0-9 _/&'-]{1,30}:$")
+
+    _VERB_SKIP_WORDS = frozenset(
+        {"THEN", "JUST", "NOW", "ALSO", "AGAIN", "STILL", "ONCE", "NEVER", "ALWAYS", "EVEN"}
+    )
+    _NON_ACTION_WORDS = frozenset(
+        {
+            "IS",
+            "ARE",
+            "WAS",
+            "WERE",
+            "BE",
+            "BEEN",
+            "HAS",
+            "HAVE",
+            "HAD",
+            "DOES",
+            "DID",
+            "WILL",
+            "CAN",
+            "COULD",
+            "WOULD",
+            "SHOULD",
+            "MAY",
+            "MIGHT",
+            "MUST",
+            "LOOKS",
+            "SEEMS",
+            "FEELS",
+            "REMAINS",
+            "STAYS",
+        }
+    )
+    _INANIMATE_SUBJECTS = frozenset({"IT", "THERE", "HERE", "SOMETHING", "NOTHING"})
+
+    def _classify_beat_role(self, label: str) -> str:
+        normalized = re.sub(r"\s+", " ", label.strip().upper())
+        for role, pattern in self._BEAT_ROLE_PATTERNS:
+            if pattern.match(normalized):
+                return role
+        return ""
+
+    def _split_beat_label(self, description: str) -> tuple[str, str, str]:
+        """Split a leading structural label from a beat description.
+
+        Returns ``(label, role, body)``. ``role`` is empty (and the description is
+        returned untouched) unless the first line is exactly a known structural label,
+        optionally followed by ``: text`` or ``- text`` on the same line.
+        """
+        stripped = description.strip()
+        first_line, _, rest = stripped.partition("\n")
+        match = self._LABEL_LINE.match(first_line.strip().strip("[]").strip())
+        if match is None:
+            return "", "", description
+        label = re.sub(r"\s+", " ", match.group("label").strip().upper())
+        role = self._classify_beat_role(label)
+        if not role:
+            return "", "", description
+        tail = (match.group("tail") or "").strip()
+        body = "\n".join(part for part in (tail, rest.strip()) if part)
+        return label, role, body
+
+    def _first_content_line(self, body: str) -> str:
+        """First non-empty line of a labelled beat body, skipping ``FIRST FRAME:`` style headers."""
+        for line in body.split("\n"):
+            text = line.strip()
+            if text and not self._SUBHEADER_LINE.match(text):
+                return text
+        return ""
+
+    def _acting_character_verb(self, sentence: str) -> str:
+        """Verb right after a capitalised acting subject (``Mimi squeezes the cup`` -> SQUEEZES)."""
+        words = re.findall(r"[A-Za-z']+", sentence)
+        if len(words) < 2:
+            return ""
+        subject = words[0]
+        if (
+            not subject[:1].isupper()
+            or subject.upper() in self._NON_SUBJECT_LEADING_WORDS
+            or subject.upper() in self._INANIMATE_SUBJECTS
+        ):
+            return ""
+        index = 1
+        while index < len(words) and (
+            words[index].upper() in self._VERB_SKIP_WORDS or words[index].lower().endswith("ly")
+        ):
+            index += 1
+        if index >= len(words):
+            return ""
+        candidate = words[index].upper()
+        return "" if candidate in self._NON_ACTION_WORDS else candidate
+
+    def _find_attempt_verb(self, content: str) -> str:
+        """Primary verb for a beat the author explicitly labelled as an attempt."""
+        sentences = [part.strip() for part in re.split(r"(?<=[.!?])\s+|\n+", content) if part.strip()]
+        for sentence in sentences:
+            found, verb = self._infer_attempt_from_leading_verb(sentence)
+            if found:
+                return verb
+        for sentence in sentences:
+            verb = self._acting_character_verb(sentence)
+            if verb:
+                return verb
+        return ""
+
+    def _resolve_attempt_evidence(
+        self, description: str, content: str, role: str, label: str
+    ) -> tuple[bool, str, str]:
+        """Decide once, with provenance, whether a beat is an attempt.
+
+        Precedence: explicit ``[ATTEMPT: VERB]`` marker, then an explicit structural
+        ``ATTEMPT`` label, then (only when the author did not declare a non-attempt
+        role) the conservative leading-verb inference.
+        """
+        marked, marked_verb = self._extract_attempt_marker(description)
+        if marked:
+            return True, marked_verb, "EXPLICIT_MARKER"
+        if role == "ATTEMPT":
+            verb = self._find_attempt_verb(content)
+            if not verb:
+                verb = UNSPECIFIED_VERB
+                self.ambiguities.append(
+                    f"Beat '{label}' is labelled as an attempt but no action verb could be identified."
+                )
+            return True, verb, "STRUCTURAL_LABEL"
+        if role in self._NON_ATTEMPT_ROLES:
+            return False, "", "NONE"
+        inferred, inferred_verb = self._infer_attempt_from_leading_verb(content)
+        if inferred:
+            self.assumptions.append(
+                f"Beat '{content[:40]}...' inferred as an attempt ({inferred_verb}) "
+                "from its leading verb; no explicit [ATTEMPT: VERB] marker was present."
+            )
+            return True, inferred_verb, "LEADING_VERB_INFERENCE"
+        return False, "", "NONE"
+
     def _extract_detached_marker(self, description: str) -> bool:
         """Extract an explicit ``[DETACHED]`` marker from a beat description.
 
@@ -570,39 +731,40 @@ class PromptParser:
         """Create a beat dict from timestamp and description"""
         duration = end_time - start_time
 
+        # A structural label ("FIRST ATTEMPT") is beat metadata, not beat content: keep it
+        # as evidence (beatLabel/beatRole) and derive every content field from the body.
+        label, role, body = self._split_beat_label(description)
+        content = body if role else description
+
         # Extract action (first sentence or phrase)
-        action = self._extract_action_from_description(description)
+        action_source = (self._first_content_line(body) or label) if role else description
+        action = self._extract_action_from_description(action_source)
 
         # Extract visual state
-        visual_state = self._extract_visual_state(description, action)
+        visual_state = self._extract_visual_state(content, action)
         visual_state_id = self._normalize_visual_state_id(visual_state)
 
         # Extract consequence
-        consequence = self._extract_consequence(description)
+        consequence = self._extract_consequence(content)
 
         # Determine action type
-        action_type = self._determine_action_type(action, description)
+        action_type = self._determine_action_type(action, content)
 
         # Estimate intensity
-        intensity = self._estimate_intensity(description)
+        intensity = self._estimate_intensity(content)
 
         # Estimate motion amount
-        motion_amount = self._estimate_motion_amount(description)
+        motion_amount = self._estimate_motion_amount(content)
 
         # Extract dialogue if present
-        dialogue = self._extract_dialogue(description)
+        dialogue = self._extract_dialogue(content)
 
         # Check readability
         is_readable = duration >= 0.6
 
-        is_attempt, primary_verb = self._extract_attempt_marker(description)
-        if not is_attempt:
-            is_attempt, primary_verb = self._infer_attempt_from_leading_verb(description)
-            if is_attempt:
-                self.assumptions.append(
-                    f"Beat '{description[:40]}...' inferred as an attempt ({primary_verb}) "
-                    "from its leading verb; no explicit [ATTEMPT: VERB] marker was present."
-                )
+        is_attempt, primary_verb, attempt_source = self._resolve_attempt_evidence(
+            description, content, role, label
+        )
         relates_to_core_problem = self._extract_detached_marker(description)
 
         return {
@@ -626,6 +788,9 @@ class PromptParser:
             "cycleGroup": None,  # Will be enriched later
             "isAttempt": is_attempt,
             "primaryVerb": primary_verb,
+            "attemptSource": attempt_source,
+            "beatLabel": label,
+            "beatRole": role,
             "relatesToCoreProblem": relates_to_core_problem,
         }
 

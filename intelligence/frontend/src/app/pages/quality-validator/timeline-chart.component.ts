@@ -1,5 +1,6 @@
 import { Component, Input, OnChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { formatStateShare, isStateShareDanger, maxStateShare } from './state-share';
 
 interface TimelineData {
   beats: Beat[];
@@ -26,6 +27,7 @@ interface StateSegment {
   stateId: string;
   startTime: number;
   endTime: number;
+  /** PERCENT of the timeline (0-100), not a 0-1 ratio. See state-share.ts. */
   percentage: number;
 }
 
@@ -61,9 +63,9 @@ interface StateSegment {
                 [attr.width]="getX(segment.endTime) - getX(segment.startTime)"
                 [attr.height]="chartHeight"
                 [attr.fill]="getStateColor(i)"
-                [attr.opacity]="segment.percentage > 0.30 ? '0.4' : '0.2'"
-                [attr.stroke]="segment.percentage > 0.30 ? '#dc3545' : 'none'"
-                [attr.stroke-width]="segment.percentage > 0.30 ? '2' : '0'"/>
+                [attr.opacity]="isDominantState(segment.percentage) ? '0.4' : '0.2'"
+                [attr.stroke]="isDominantState(segment.percentage) ? '#dc3545' : 'none'"
+                [attr.stroke-width]="isDominantState(segment.percentage) ? '2' : '0'"/>
         </g>
 
         <!-- Intensity Curve -->
@@ -215,9 +217,9 @@ interface StateSegment {
           <span class="stat-label">Avg Intensity:</span>
           <span class="stat-value">{{ avgIntensity.toFixed(1) }}/10</span>
         </div>
-        <div class="stat-item" *ngIf="maxStatePercentage > 0.30">
+        <div class="stat-item" *ngIf="isDominantState(maxStatePercentage)">
           <span class="stat-label warning">⚠️ Max State:</span>
-          <span class="stat-value warning">{{ (maxStatePercentage * 100).toFixed(0) }}%</span>
+          <span class="stat-value warning">{{ formatShare(maxStatePercentage) }}</span>
         </div>
       </div>
     </div>
@@ -367,10 +369,16 @@ export class TimelineChartComponent implements OnChanges {
       this.avgIntensity = sum / this.timelineData.beats.length;
     }
 
-    // Max state percentage
-    if (this.timelineData.stateSegments.length > 0) {
-      this.maxStatePercentage = Math.max(...this.timelineData.stateSegments.map(s => s.percentage));
-    }
+    // Max state share, in percent (0-100). The API value is already a percent.
+    this.maxStatePercentage = maxStateShare(this.timelineData.stateSegments);
+  }
+
+  isDominantState(percent: number): boolean {
+    return isStateShareDanger(percent);
+  }
+
+  formatShare(percent: number): string {
+    return formatStateShare(percent);
   }
 
   generateTicks(): void {

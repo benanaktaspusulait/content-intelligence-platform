@@ -9,6 +9,15 @@ from __future__ import annotations
 from collections.abc import Iterable
 from typing import Any
 
+from ..quality.canonical_evidence import (
+    attempt_beats,
+    attempt_evidence,
+    evidence_gap_kind,
+    is_evidence_gap,
+    is_unspecified_verb,
+    unscored_families,
+)
+
 
 def build_pre_render_assessment(ir: dict[str, Any], parser: Any, report: Any, ruleset_version: str) -> dict[str, Any]:
     evaluations = tuple(report.evaluations)
@@ -23,7 +32,7 @@ def build_pre_render_assessment(ir: dict[str, Any], parser: Any, report: Any, ru
         _mechanic(ir),
         _attempts(ir, evaluations),
         _progression(ir, evaluations),
-        _escalation(ir),
+        _escalation(ir, evaluations),
         _payoff(ir, evaluations),
         _loop(ir, evaluations),
         _character_intent(ir, evaluations),
@@ -37,6 +46,7 @@ def build_pre_render_assessment(ir: dict[str, Any], parser: Any, report: Any, ru
     recommendations = [item["recommendation"] for item in dimensions if item["status"] == "NEEDS_ATTENTION"][:5]
 
     grade = _grade(report, coverage, parser)
+    creative_grade = _creative_grade(evaluations)
     readiness = {
         "A": "READY_TO_RENDER", "B": "READY_TO_RENDER", "C": "EDIT_PLAN",
         "D": "EDIT_PLAN", "F": "BLOCKED", "INCOMPLETE": "INCOMPLETE",
@@ -55,8 +65,10 @@ def build_pre_render_assessment(ir: dict[str, Any], parser: Any, report: Any, ru
     return {
         "name": "PRE_RENDER_CREATIVE_READINESS",
         "grade": grade,
+        "creative_grade": creative_grade,
         "readiness": readiness,
         "assessment_coverage_percent": coverage,
+        "evidence_completeness": _evidence_completeness(report, ir, evaluations, coverage, dimensions),
         "verdict": verdict,
         "strengths": strengths or ["No dimension has enough evidence to be called a strength."],
         "concerns": concerns or ["No unresolved dimension concern was recorded."],
@@ -125,15 +137,57 @@ def _mechanic(ir: dict[str, Any]) -> dict[str, str]:
 
 
 def _attempts(ir: dict[str, Any], evaluations: Iterable[Any]) -> dict[str, str]:
-    attempts = [beat for beat in ir.get("beats", []) if beat.get("isAttempt")]
-    verbs = [str(beat.get("primaryVerb", "")).strip().upper() for beat in attempts if beat.get("primaryVerb")]
-    distinct = len(set(verbs))
-    status = _rule_status(evaluations, "ATTEMPT_002", "ATTEMPT_STRATEGY_DIVERSITY", "ATTEMPT_003")
-    if status == "FAIL" or len(attempts) >= 2 and distinct <= 1:
-        return _dimension("ATTEMPT_DIVERSITY", "Attempt diversity", "NEEDS_ATTENTION", "The planned attempts rely on one underlying strategy.", f"{len(attempts)} attempt(s), {distinct} distinct action verb(s): {', '.join(verbs) or 'unknown'}.", "Replace later stronger/repeated versions with materially different actions.")
-    if len(attempts) >= 2 and distinct >= 2:
-        return _dimension("ATTEMPT_DIVERSITY", "Attempt diversity", "STRONG", "The attempts use materially different action strategies.", f"{len(attempts)} attempt(s), {distinct} distinct action strategies.", "Preserve the strategy change and keep each consequence visible.")
-    return _dimension("ATTEMPT_DIVERSITY", "Attempt diversity", "UNKNOWN", "Fewer than two explicit attempts were parsed.", "Attempt sequence is missing or under-specified.", "Mark each attempt with its action, target and expected consequence.", "PARTIAL")
+    # Attempt facts come from the canonical accessor; "distinct" comes from the rule
+    # that judged it (ATTEMPT_002) so this dimension can never disagree with the rule list.
+    evidence = attempt_evidence(ir)
+    verbs = [verb for verb in evidence.verbs if not is_unspecified_verb(verb)]
+    rule = _rule(evaluations, "ATTEMPT_002", "ATTEMPT_STRATEGY_DIVERSITY", "ATTEMPT_003")
+    judged = (
+        rule is not None
+        and rule.outcome.value in {"PASS", "FAIL"}
+        and isinstance(rule.actual_value, (int, float))
+    )
+    distinct = int(rule.actual_value) if judged and rule is not None else len(set(verbs))
+    summary = f"{evidence.count} attempt(s), {distinct} distinct action strategies"
+    observed = f"{summary}: {', '.join(verbs) or 'unspecified'}."
+    key, title = "ATTEMPT_DIVERSITY", "Attempt diversity"
+    if (rule is not None and rule.outcome.value == "FAIL") or (evidence.count >= 2 and distinct <= 1):
+        return _dimension(
+            key,
+            title,
+            "NEEDS_ATTENTION",
+            "The planned attempts rely on one underlying strategy.",
+            observed,
+            "Replace later stronger/repeated versions with materially different actions.",
+        )
+    if evidence.count >= 2 and distinct >= 2:
+        if rule is not None and not judged:
+            return _dimension(
+                key,
+                title,
+                "MODERATE",
+                "The attempts use different action verbs; their semantic distinctness was not verified.",
+                observed,
+                "Re-run validation once the semantic check is available.",
+                "PARTIAL",
+            )
+        return _dimension(
+            key,
+            title,
+            "STRONG",
+            "The attempts use materially different action strategies.",
+            observed,
+            "Preserve the strategy change and keep each consequence visible.",
+        )
+    return _dimension(
+        key,
+        title,
+        "UNKNOWN",
+        "Fewer than two explicit attempts were parsed.",
+        "Attempt sequence is missing or under-specified.",
+        "Mark each attempt with its action, target and expected consequence.",
+        "PARTIAL",
+    )
 
 
 def _progression(ir: dict[str, Any], evaluations: Iterable[Any]) -> dict[str, str]:
@@ -148,14 +202,51 @@ def _progression(ir: dict[str, Any], evaluations: Iterable[Any]) -> dict[str, st
     return _dimension("PROGRESSION", "Progression", "UNKNOWN", "Progression cannot be confirmed from the parsed state evidence.", "State transitions are not explicit.", "Add before-state, action and after-state for each meaningful beat.", "PARTIAL")
 
 
-def _escalation(ir: dict[str, Any]) -> dict[str, str]:
-    attempts = [beat for beat in ir.get("beats", []) if beat.get("isAttempt")]
+def _escalation(ir: dict[str, Any], evaluations: Iterable[Any]) -> dict[str, str]:
+    evidence = attempt_evidence(ir)
+    key, title = "ESCALATION", "Escalation"
+    if evidence.count < 2:
+        summary = (
+            "Escalation cannot be evaluated without explicit attempts."
+            if evidence.count == 0
+            else "Escalation needs at least two attempts to compare."
+        )
+        observed = "No attempt sequence was parsed." if evidence.count == 0 else "Only one attempt was parsed."
+        return _dimension(
+            key,
+            title,
+            "UNKNOWN",
+            summary,
+            observed,
+            "Define at least two attempts and their changing consequences.",
+            "PARTIAL",
+        )
+    attempts = attempt_beats(ir)
     intensities = [float(beat.get("intensity", 0)) for beat in attempts]
-    if len(intensities) >= 2 and intensities[-1] > intensities[0]:
-        return _dimension("ESCALATION", "Escalation", "MODERATE", "Later attempts are planned with greater commitment or consequence.", f"Attempt intensity moves from {intensities[0]:.0f} to {intensities[-1]:.0f}.", "Make the increase change the problem, not only the movement size.")
-    if attempts:
-        return _dimension("ESCALATION", "Escalation", "NEEDS_ATTENTION", "The attempt sequence does not show a clear structural increase.", "Attempt intensity or consequence remains flat.", "Increase difficulty, surprise or consequence while keeping the same mechanic.")
-    return _dimension("ESCALATION", "Escalation", "UNKNOWN", "Escalation cannot be evaluated without explicit attempts.", "No attempt sequence was parsed.", "Define at least two attempts and their changing consequences.", "PARTIAL")
+    observed = (
+        f"Attempt intensity moves from {intensities[0]:.0f} to {intensities[-1]:.0f} "
+        f"across {evidence.count} attempts."
+    )
+    # Prefer the rule's judgment (ESCALATION_005) over re-comparing intensities here.
+    status = _rule_status(evaluations, "ESCALATION_005")
+    rises = intensities[-1] > intensities[0] if status is None else status == "PASS"
+    if rises:
+        return _dimension(
+            key,
+            title,
+            "MODERATE",
+            "Later attempts are planned with greater commitment or consequence.",
+            observed,
+            "Make the increase change the problem, not only the movement size.",
+        )
+    return _dimension(
+        key,
+        title,
+        "NEEDS_ATTENTION",
+        "The attempt sequence does not show a clear structural increase.",
+        observed,
+        "Increase difficulty, surprise or consequence while keeping the same mechanic.",
+    )
 
 
 def _payoff(ir: dict[str, Any], evaluations: Iterable[Any]) -> dict[str, str]:
@@ -223,6 +314,74 @@ def _stable_intent(ir: dict[str, Any]) -> list[str]:
     characters = ir.get("characters") or {}
     mechanic = ir.get("coreMechanic") or {}
     return [value for value in [f"primary_character:{characters.get('primary')}" if characters.get("primary") else None, f"central_mechanic:{mechanic.get('physicalRule')}" if mechanic.get("physicalRule") else None, f"content_family:{(ir.get('metadata') or {}).get('seriesType')}" if (ir.get('metadata') or {}).get('seriesType') else None] if value]
+
+
+_UNSCORED_FAMILY_REASON = (
+    "No rule in this family produced an evaluable result; family_scores shows a fail-closed 0 "
+    "placeholder, not a creative score."
+)
+
+
+def _creative_grade(evaluations: Iterable[Any]) -> str:
+    """Grade from creative judgments only.
+
+    Outcomes that merely reflect missing evidence (UNKNOWN, SERVICE_ERROR and gates that
+    fail closed on absent evidence) are reported under evidence completeness instead, so
+    "we could not tell" never reads as "the plan is weak".
+    """
+    creative = [item for item in evaluations if not is_evidence_gap(item) and item.outcome.value != "NOT_APPLICABLE"]
+    if not creative:
+        return "INCOMPLETE"
+    failed = [item for item in creative if item.outcome.value == "FAIL"]
+    if any(item.configured_severity.value == "BLOCKER" for item in failed):
+        return "F"
+    if any(item.configured_severity.value == "CRITICAL" for item in failed):
+        return "D"
+    if failed:
+        return "C"
+    if any(item.configured_severity.value == "WARNING" for item in creative):
+        return "B"
+    return "A"
+
+
+def _evidence_completeness(
+    report: Any, ir: dict[str, Any], evaluations: tuple[Any, ...], coverage: int, dimensions: list[dict[str, str]]
+) -> dict[str, Any]:
+    """How much of the plan could actually be judged, independent of how good it is."""
+    gaps = [
+        {"rule_id": item.rule_id, "family": item.family, "kind": evidence_gap_kind(item), "message": item.message}
+        for item in evaluations
+        if is_evidence_gap(item)
+    ]
+    if report.service_error_count or coverage < 80:
+        status = "INCOMPLETE"
+    elif gaps:
+        status = "PARTIAL"
+    else:
+        status = "COMPLETE"
+    attempts = attempt_evidence(ir)
+    beats = ir.get("beats") or []
+    return {
+        "status": status,
+        "coverage_percent": coverage,
+        "gaps": gaps,
+        "unscored_families": [
+            {"family": family, "reason": _UNSCORED_FAMILY_REASON} for family in unscored_families(evaluations)
+        ],
+        "partial_dimensions": [item["key"] for item in dimensions if item["evidence_status"] != "AVAILABLE"],
+        "canonical_evidence": {
+            "beat_count": len(beats),
+            "labelled_beats": sum(1 for beat in beats if beat.get("beatRole")),
+            "attempts": {
+                "count": attempts.count,
+                "beat_ids": list(attempts.beat_ids),
+                "verbs": list(attempts.verbs),
+                "active_seconds": round(attempts.active_seconds, 3),
+                "active_ratio": round(attempts.active_ratio, 4),
+                "sources": attempts.sources,
+            },
+        },
+    }
 
 
 def _grade(report: Any, coverage: int, parser: Any) -> str:

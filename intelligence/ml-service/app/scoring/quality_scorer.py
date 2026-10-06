@@ -9,6 +9,7 @@ produces the canonical :class:`EnhancedQualityReport`.
 from dataclasses import dataclass, field
 from typing import Any
 
+from ..quality.canonical_evidence import unscored_families
 from ..quality.contracts import (
     EnhancedQualityReport,
     ParserMetadata,
@@ -95,7 +96,12 @@ class QualityScorer:
             timeline_data=self._create_timeline_data(video_plan_ir),
             family_radar=self._create_family_radar(quality_report.family_scores),
             top_3_strengths=tuple(self._identify_top_strengths(score_breakdowns)[:3]),
-            top_3_weaknesses=tuple(self._identify_top_weaknesses(score_breakdowns)[:3]),
+            top_3_weaknesses=tuple(
+                self._identify_top_weaknesses(
+                    score_breakdowns,
+                    unscored=frozenset(unscored_families(quality_report.evaluations)),
+                )[:3]
+            ),
             priority_fixes=tuple(
                 self._generate_priority_fixes(
                     quality_report.failed_rules,
@@ -220,12 +226,20 @@ class QualityScorer:
                 strengths.append(f"{breakdown.family.replace('_', ' ').title()}: {breakdown.score:.0f}/100")
         return strengths
 
-    def _identify_top_weaknesses(self, breakdowns: tuple[ScoreBreakdown, ...]) -> list[str]:
-        """Identify top weaknesses that need attention."""
+    def _identify_top_weaknesses(
+        self, breakdowns: tuple[ScoreBreakdown, ...], unscored: frozenset[str] = frozenset()
+    ) -> list[str]:
+        """Identify top weaknesses that need attention.
+
+        Families in ``unscored`` have no evaluable evidence; their 0 is a fail-closed
+        placeholder (reported under evidence completeness), not a creative weakness.
+        """
 
         weaknesses: list[str] = []
         sorted_breakdowns = sorted(breakdowns, key=lambda b: (b.score, -b.weight))
         for breakdown in sorted_breakdowns:
+            if breakdown.family in unscored:
+                continue
             if breakdown.score < self.ACCEPTABLE_THRESHOLD:
                 weakness_str = f"{breakdown.family.replace('_', ' ').title()}: {breakdown.score:.0f}/100"
                 if breakdown.weaknesses:
@@ -344,9 +358,15 @@ class QualityScorer:
         if current_segment is not None:
             state_segments.append(current_segment)
 
+        # ``percentage`` is a PERCENT (0-100) of the timeline, not a 0-1 ratio: 0.8s of a
+        # 15s video is 5.33. Every consumer (API, PDF, UI) must treat it as percent and
+        # must not multiply it by 100 again. The denominator is never shorter than the
+        # last beat, so a share can never exceed 100.
+        timeline_end = max((float(beat.get("endTime", 0.0)) for beat in beats), default=0.0)
+        share_denominator = max(float(total_duration), timeline_end)
         for segment in state_segments:
-            duration = segment["end_time"] - segment["start_time"]
-            segment["percentage"] = (duration / total_duration) * 100 if total_duration else 0.0
+            duration = max(0.0, segment["end_time"] - segment["start_time"])
+            segment["percentage"] = (duration / share_denominator) * 100 if share_denominator else 0.0
 
         return {
             "duration": total_duration,

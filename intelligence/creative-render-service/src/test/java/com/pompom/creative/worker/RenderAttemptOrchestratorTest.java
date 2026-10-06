@@ -22,6 +22,7 @@ import com.pompom.creative.repository.RenderAssetRepository;
 import com.pompom.creative.repository.RenderAttemptRepository;
 import com.pompom.creative.repository.RenderJobRepository;
 import com.pompom.creative.service.AssetLibraryManager;
+import com.pompom.creative.service.CreditTrackingService;
 import com.pompom.creative.websocket.WebSocketEventPublisher;
 import java.nio.file.Path;
 import java.time.Instant;
@@ -54,6 +55,7 @@ class RenderAttemptOrchestratorTest {
   @Mock private QaService qaService;
   @Mock private PostRenderEvaluationService postRenderEvaluationService;
   @Mock private WebSocketEventPublisher webSocketEventPublisher;
+  @Mock private CreditTrackingService creditTrackingService;
 
   private RenderAttemptOrchestrator orchestrator;
   private RenderJob job;
@@ -70,6 +72,7 @@ class RenderAttemptOrchestratorTest {
             qaService,
             postRenderEvaluationService,
             webSocketEventPublisher,
+            creditTrackingService,
             new ObjectMapper());
     job =
         RenderJob.builder()
@@ -163,6 +166,7 @@ class RenderAttemptOrchestratorTest {
     ArgumentCaptor<RenderAttempt> captor = ArgumentCaptor.forClass(RenderAttempt.class);
     verify(renderAttemptRepo).save(captor.capture());
     assertThat(captor.getValue().getStage()).isEqualTo(RenderExecutionStage.DOWNLOADING);
+    assertThat(job.getStatus()).isEqualTo(RenderJob.RenderJobStatus.DOWNLOADING);
     verify(openArtAdapter, never()).downloadAsset(any(), any());
   }
 
@@ -184,6 +188,8 @@ class RenderAttemptOrchestratorTest {
     verify(renderAttemptRepo).save(captor.capture());
     assertThat(captor.getValue().getStage()).isEqualTo(RenderExecutionStage.FAILED);
     assertThat(captor.getValue().getErrorMessage()).contains("provider blew up");
+    assertThat(job.getStatus()).isEqualTo(RenderJob.RenderJobStatus.FAILED);
+    assertThat(job.getErrorCode()).isEqualTo("PROVIDER_FAILED");
   }
 
   @Test

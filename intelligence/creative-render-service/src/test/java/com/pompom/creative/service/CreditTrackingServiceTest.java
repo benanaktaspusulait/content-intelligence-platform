@@ -52,6 +52,8 @@ class CreditTrackingServiceTest {
     // Then
     assertThat(log.getRenderJob()).isEqualTo(job);
     assertThat(log.getCreditsUsed()).isEqualTo(credits);
+    assertThat(log.getCreditsSpent()).isEqualTo(credits);
+    assertThat(log.getOperation()).isEqualTo("PROVIDER_USAGE");
     verify(creditLogRepo).save(any(OpenArtCreditLog.class));
   }
 
@@ -170,6 +172,20 @@ class CreditTrackingServiceTest {
     assertThat(stats.getVideoCredits()).isEqualTo(new BigDecimal("300"));
     assertThat(stats.getTotalJobs()).isEqualTo(5);
     assertThat(stats.getTotalCredits()).isEqualTo(new BigDecimal("320"));
+  }
+
+  @Test
+  void providerUsage_isIdempotentForTheSameProviderJob() {
+    RenderJob job = createJob(RenderJob.JobType.VIDEO);
+    when(creditLogRepo.findFirstByOpenartJobIdAndOperation("test-job-123", "PROVIDER_USAGE"))
+        .thenReturn(java.util.Optional.empty());
+    when(creditLogRepo.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
+    when(creditLogRepo.findByLoggedAtAfter(any())).thenReturn(List.of());
+
+    creditTrackingService.recordProviderUsageIfAbsent(job, new BigDecimal("12.5"), "provider-status");
+
+    verify(creditLogRepo).save(any(OpenArtCreditLog.class));
+    assertThat(job.getCreditsActual()).isEqualByComparingTo("12.5");
   }
 
   // Helper methods

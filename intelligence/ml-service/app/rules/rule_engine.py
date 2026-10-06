@@ -26,6 +26,12 @@ from app.llm.semantic_checks import (
     find_duplicate_strategy_pairs,
 )
 from app.qa.character_verifier import CharacterVerifier
+from app.quality.canonical_evidence import (
+    EVIDENCE_INCOMPLETE_FAILURE,
+    attempt_beats,
+    attempt_evidence,
+    is_unspecified_verb,
+)
 from app.quality.contracts import (
     QualityReport,
     QualityStatus,
@@ -1126,8 +1132,7 @@ class RuleEngine:
         tier = self._get_duration_tier(duration)
         minimum = 3 if tier == "short" else 7
 
-        beats = video_plan_ir.get("beats", [])
-        attempt_count = sum(1 for beat in beats if beat.get("isAttempt", False))
+        attempt_count = attempt_evidence(video_plan_ir).count
 
         if attempt_count < minimum:
             return RuleEvaluation(
@@ -1162,9 +1167,7 @@ class RuleEngine:
         tier = self._get_duration_tier(duration)
         minimum_ratio = 0.5 if tier == "short" else 0.6
 
-        beats = video_plan_ir.get("beats", [])
-        active_duration = sum(beat.get("duration", 0.0) for beat in beats if beat.get("isAttempt", False))
-        ratio = active_duration / duration if duration > 0 else 0.0
+        ratio = attempt_evidence(video_plan_ir).active_ratio
 
         if ratio < minimum_ratio:
             return RuleEvaluation(
@@ -1323,8 +1326,7 @@ class RuleEngine:
         tier = self._get_duration_tier(duration)
         minimum = 3 if tier == "short" else 7
 
-        beats = video_plan_ir.get("beats", [])
-        attempts = [b for b in beats if b.get("isAttempt", False)]
+        attempts = attempt_beats(video_plan_ir)
 
         # Deduplicate by normalized primaryVerb first — free, deterministic,
         # catches "PULL -> PULL HARDER -> PULL AGAIN" without an LLM call.
@@ -1332,6 +1334,12 @@ class RuleEngine:
         verb_distinct_attempts: list[dict[str, Any]] = []
         for attempt in attempts:
             verb = attempt.get("primaryVerb", "").strip().upper()
+            if is_unspecified_verb(verb):
+                # An unidentified verb is missing evidence, not a shared strategy:
+                # never collapse such attempts into one bucket. The semantic check
+                # below decides whether they are genuinely distinct.
+                verb_distinct_attempts.append(attempt)
+                continue
             if verb not in verb_to_first_index:
                 verb_to_first_index[verb] = len(verb_distinct_attempts)
                 verb_distinct_attempts.append(attempt)
@@ -2296,8 +2304,7 @@ class RuleEngine:
         trend. Capped at WARNING: deadpan-comedy concepts can deliberately
         keep escalation small, so this is a nudge, never a blocker.
         """
-        beats = video_plan_ir.get("beats", [])
-        attempts = [b for b in beats if b.get("isAttempt", False)]
+        attempts = attempt_beats(video_plan_ir)
 
         if len(attempts) < 2:
             return RuleEvaluation(
@@ -2694,7 +2701,7 @@ class RuleEngine:
                 severity="BLOCKER",
                 result="FAIL",
                 message="First-frame absurdity evidence is incomplete; the concept is blocked before render.",
-                details={"missingEvidence": missing},
+                details={"missingEvidence": missing, "failureBasis": EVIDENCE_INCOMPLETE_FAILURE},
             )
         failed = [key for key, value in required.items() if value is False]
         if failed or matched_auto_fail:
@@ -2736,6 +2743,7 @@ class RuleEngine:
                     "No first-frame/final-silhouette comparison evidence was supplied; "
                     "the concept is blocked before render."
                 ),
+                details={"failureBasis": EVIDENCE_INCOMPLETE_FAILURE},
             )
         family_duplicate = family is not None and family in known_families
         numeric_duplicate = similarity is not None and float(similarity) >= 0.80
@@ -2807,8 +2815,7 @@ class RuleEngine:
         unexecutable, or when an abstract-intent keyword is matched. WARNING
         for vague magnitude phrasing and beat-budget pressure alone.
         """
-        beats = video_plan_ir.get("beats", [])
-        attempts = [b for b in beats if b.get("isAttempt", False)]
+        attempts = attempt_beats(video_plan_ir)
 
         if len(attempts) < 2:
             return RuleEvaluation(

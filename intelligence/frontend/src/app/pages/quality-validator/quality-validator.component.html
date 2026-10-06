@@ -97,7 +97,7 @@
     <div *ngIf="report.preRenderAssessment" class="pre-render-assessment card">
       <div class="card-header">
         <div><span class="eyebrow">PRE-RENDER CREATIVE READINESS</span><h2>Can this plan spend render credits?</h2></div>
-        <div class="readiness-summary"><strong>Grade {{ report.preRenderAssessment.grade }}</strong><span>{{ report.preRenderAssessment.readiness.replaceAll('_', ' ') }}</span><small>{{ report.preRenderAssessment.assessment_coverage_percent }}% evidence coverage</small></div>
+        <div class="readiness-summary"><strong>Grade {{ report.preRenderAssessment.grade }}</strong><span>{{ report.preRenderAssessment.readiness.replaceAll('_', ' ') }}</span><small *ngIf="report.preRenderAssessment.creative_grade">Creative grade {{ report.preRenderAssessment.creative_grade }} (evaluated evidence only)</small><small>Evidence {{ report.preRenderAssessment.evidence_completeness?.status || 'UNKNOWN' }} · {{ report.preRenderAssessment.assessment_coverage_percent }}% coverage</small></div>
       </div>
       <div class="card-body">
         <p class="assessment-verdict">{{ report.preRenderAssessment.verdict }}</p>
@@ -105,6 +105,12 @@
           <section><h3>Strengths</h3><p *ngFor="let item of report.preRenderAssessment.strengths">✓ {{ item }}</p></section>
           <section><h3>Needs attention</h3><p *ngFor="let item of report.preRenderAssessment.concerns">⚠ {{ item }}</p></section>
           <section><h3>Recommended changes</h3><p *ngFor="let item of report.preRenderAssessment.recommended_changes">→ {{ item }}</p></section>
+          <section *ngIf="report.preRenderAssessment.evidence_completeness as evidence">
+            <h3>Evidence completeness · {{ evidence.status }}</h3>
+            <p>{{ evidence.canonical_evidence.beat_count }} beats ({{ evidence.canonical_evidence.labelled_beats }} labelled), {{ evidence.canonical_evidence.attempts.count }} attempts [{{ evidence.canonical_evidence.attempts.verbs.join(', ') }}], {{ formatRatioAsPercent(evidence.canonical_evidence.attempts.active_ratio) }} active time.</p>
+            <p *ngFor="let gap of evidence.gaps">○ {{ gap.rule_id }} ({{ gap.kind.replaceAll('_', ' ') }}): {{ gap.message }}</p>
+            <p *ngFor="let item of evidence.unscored_families">○ {{ item.family }}: not evaluated. Shown as 0 only as a fail-closed placeholder.</p>
+          </section>
         </div>
         <div class="assessment-dimensions"><article *ngFor="let dimension of report.preRenderAssessment.dimensions" [class]="'dimension dimension--' + dimension.status.toLowerCase()"><div><strong>{{ dimension.title }}</strong><span>{{ dimension.status.replaceAll('_', ' ') }}</span></div><p>{{ dimension.summary }}</p><small>{{ dimension.observed }}</small><em *ngIf="dimension.status === 'NEEDS_ATTENTION'">What to change: {{ dimension.recommendation }}</em></article></div>
         <details class="plan-details"><summary>Parsed VideoPlanIR and technical evidence</summary><pre>{{ report.videoPlanIr | json }}</pre></details>
@@ -268,10 +274,13 @@
               <div 
                 class="family-bar-fill" 
                 [ngClass]="getFamilyScoreClass(entry[1])"
-                [style.width.%]="entry[1]">
+                [style.width.%]="isUnscoredFamily(entry[0]) ? 0 : entry[1]">
               </div>
             </div>
-            <div class="family-score">{{ entry[1].toFixed(0) }}</div>
+            <div class="family-score"
+                 [attr.title]="isUnscoredFamily(entry[0]) ? 'No evaluable evidence for this family; not a creative score' : null">
+              {{ isUnscoredFamily(entry[0]) ? 'n/a' : entry[1].toFixed(0) }}
+            </div>
           </div>
         </div>
       </div>
@@ -304,7 +313,14 @@
               <div class="beat-time">
                 {{ formatTime(beat.startTime) }} - {{ formatTime(beat.endTime) }}
               </div>
-              <div class="beat-action">{{ beat.action }}</div>
+              <div class="beat-action">
+                <ng-container *ngIf="beatEvidence(beat) as evidence">
+                  <span *ngIf="evidence.label" class="badge badge-secondary badge-sm">{{ evidence.label }}</span>
+                  <span *ngIf="evidence.isAttempt" class="badge badge-info badge-sm"
+                        [attr.title]="'Attempt evidence: ' + evidence.source">ATTEMPT · {{ evidence.verb }}</span>
+                </ng-container>
+                {{ beat.action }}
+              </div>
               <div class="beat-consequence">
                 <span *ngIf="beat.isNewConsequence" class="badge badge-success badge-sm">NEW</span>
                 {{ beat.consequence }}
@@ -336,8 +352,8 @@
                 {{ formatTime(segment.startTime) }} - {{ formatTime(segment.endTime) }}
               </div>
               <div class="state-percentage" 
-                   [class.warning]="segment.percentage > 0.25"
-                   [class.danger]="segment.percentage > 0.30">
+                   [class.warning]="isStateShareWarning(segment.percentage)"
+                   [class.danger]="isStateShareDanger(segment.percentage)">
                 {{ formatPercentage(segment.percentage) }}
               </div>
             </div>

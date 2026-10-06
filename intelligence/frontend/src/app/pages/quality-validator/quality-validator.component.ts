@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { formatStateShare, isStateShareDanger, isStateShareWarning } from './state-share';
 import { TimelineChartComponent } from './timeline-chart.component';
 
 interface PromptEditorInstance {
@@ -43,7 +44,7 @@ interface QualityReport {
 }
 
 interface PreRenderDimension { key: string; title: string; status: string; summary: string; observed: string; recommendation: string; evidence_status: string; }
-interface PreRenderAssessment { name: string; grade: string; readiness: string; assessment_coverage_percent: number; verdict: string; strengths: string[]; concerns: string[]; recommended_changes: string[]; dimensions: PreRenderDimension[]; stable_intent: string[]; provenance: Record<string, any>; }
+interface PreRenderAssessment { name: string; grade: string; creative_grade?: string | null; evidence_completeness?: EvidenceCompleteness | null; readiness: string; assessment_coverage_percent: number; verdict: string; strengths: string[]; concerns: string[]; recommended_changes: string[]; dimensions: PreRenderDimension[]; stable_intent: string[]; provenance: Record<string, any>; }
 
 interface LinkedValidationResponse { validationRecordId: number; report: QualityReport; }
 interface StoredValidation { validationRecordId: number; report: QualityReport; analyzedAt: string; }
@@ -137,8 +138,22 @@ interface StateSegment {
   stateId: string;
   startTime: number;
   endTime: number;
+  /** PERCENT of the timeline (0-100), not a 0-1 ratio. See state-share.ts. */
   percentage: number;
 }
+
+interface EvidenceGap { rule_id: string; family: string; kind: string; message: string; }
+interface CanonicalAttemptEvidence { count: number; beat_ids: string[]; verbs: string[]; active_seconds: number; active_ratio: number; sources: Record<string, number>; }
+interface EvidenceCompleteness {
+  status: 'COMPLETE' | 'PARTIAL' | 'INCOMPLETE';
+  coverage_percent: number;
+  gaps: EvidenceGap[];
+  unscored_families: { family: string; reason: string }[];
+  partial_dimensions: string[];
+  canonical_evidence: { beat_count: number; labelled_beats: number; attempts: CanonicalAttemptEvidence };
+}
+
+interface BeatEvidence { label: string; role: string; isAttempt: boolean; verb: string; source: string; }
 
 @Component({
   selector: 'app-quality-validator',
@@ -813,8 +828,43 @@ Intensity: 4`;
     return `${seconds.toFixed(1)}s`;
   }
 
-  formatPercentage(value: number): string {
-    return `${(value * 100).toFixed(0)}%`;
+  /** `percent` is already 0-100 (the API contract); it is formatted, never multiplied by 100 again. */
+  formatPercentage(percent: number): string {
+    return formatStateShare(percent);
+  }
+
+  isStateShareWarning(percent: number): boolean {
+    return isStateShareWarning(percent);
+  }
+
+  isStateShareDanger(percent: number): boolean {
+    return isStateShareDanger(percent);
+  }
+
+  /** For values that are genuinely 0-1 ratios (for example attempt active_ratio). */
+  formatRatioAsPercent(ratio: number): string {
+    return `${(ratio * 100).toFixed(0)}%`;
+  }
+
+  /** Canonical per-beat evidence (label, role, attempt provenance) from the same parsed VideoPlanIR the rules used. */
+  beatEvidence(beat: { startTime: number; endTime: number }): BeatEvidence | null {
+    const beats = this.report?.videoPlanIr?.['beats'];
+    if (!Array.isArray(beats)) return null;
+    const match = beats.find(item => item?.startTime === beat.startTime && item?.endTime === beat.endTime);
+    if (!match) return null;
+    return {
+      label: match.beatLabel || '',
+      role: match.beatRole || '',
+      isAttempt: !!match.isAttempt,
+      verb: match.primaryVerb || '',
+      source: match.attemptSource || '',
+    };
+  }
+
+  /** A family with no evaluable evidence is "not evaluated", not a creative score of 0. */
+  isUnscoredFamily(family: string): boolean {
+    const unscored = this.report?.preRenderAssessment?.evidence_completeness?.unscored_families;
+    return !!unscored?.some(item => item.family === family);
   }
 
   renderQueueUrl(): string {
