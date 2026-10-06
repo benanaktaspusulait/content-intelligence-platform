@@ -14,12 +14,17 @@ public class OpenArtJobStatus {
   private java.math.BigDecimal creditsUsed;
 
   public boolean isComplete() {
-    return normalizedStatus().equals("COMPLETE");
+    return switch (normalizedStatus()) {
+      case "COMPLETE", "COMPLETED", "SUCCEEDED", "SUCCESS", "DONE" -> true;
+      default -> false;
+    };
   }
 
   public boolean isFailed() {
-    String normalized = normalizedStatus();
-    return normalized.equals("FAILED") || normalized.equals("CANCELLED");
+    return switch (normalizedStatus()) {
+      case "FAILED", "FAILURE", "ERROR", "ERRORED", "EXPIRED", "CANCELLED", "CANCELED" -> true;
+      default -> false;
+    };
   }
 
   private String normalizedStatus() {

@@ -189,6 +189,21 @@ class CreditTrackingServiceTest {
     assertThat(job.getCreditsActual()).isEqualByComparingTo("12.5");
   }
 
+  @Test
+  void providerUsageAggregatesAcrossRerenderAttempts() {
+    RenderJob job = createJob(RenderJob.JobType.VIDEO);
+    when(creditLogRepo.findFirstByOpenartJobIdAndOperation(any(), eq("PROVIDER_USAGE")))
+        .thenReturn(java.util.Optional.empty());
+    when(creditLogRepo.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
+    when(creditLogRepo.findByLoggedAtAfter(any())).thenReturn(List.of());
+
+    creditTrackingService.recordProviderUsageIfAbsent(job, new BigDecimal("12.5"), "provider-status");
+    job.setOpenartJobId("retry-job-456");
+    creditTrackingService.recordProviderUsageIfAbsent(job, new BigDecimal("5"), "provider-status");
+
+    assertThat(job.getCreditsActual()).isEqualByComparingTo("17.5");
+  }
+
   // Helper methods
 
   private RenderJob createJob(RenderJob.JobType jobType) {

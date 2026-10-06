@@ -9,9 +9,9 @@
 set -euo pipefail
 
 APP="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-REPO_ROOT="$(cd "$APP/../../../../.." && pwd)"
+LIBRARY_ROOT="${POMPOM_LIBRARY_ROOT:-$APP/../../yuvarlak-dunya}"
 ML="$APP/ml-service"
-WRAPPER="$REPO_ROOT/POMPOM_HILLS_PRODUCTION/00_GLOBAL_RULES/TOOLS/openart_wrapper"
+WRAPPER="$LIBRARY_ROOT/POMPOM_HILLS_PRODUCTION/00_GLOBAL_RULES/TOOLS/openart_wrapper"
 
 echo "== Java: backend + creative-render-service =="
 # spotless:check is scoped to the two code modules (-pl); the aggregator POM

@@ -65,6 +65,7 @@ public class RenderAttemptOrchestrator {
   private final QaService qaService;
   private final PostRenderEvaluationService postRenderEvaluationService;
   private final WebSocketEventPublisher webSocketPublisher;
+  private final RenderSubmissionStateService submissionStateService;
   private final CreditTrackingService creditTrackingService;
   private final ObjectMapper objectMapper;
 
@@ -91,6 +92,11 @@ public class RenderAttemptOrchestrator {
       throw new LeaseNotOwnedException(attemptId, leaseOwner, attempt.getLeaseOwner());
     }
 
+    if (attempt.getStage() == RenderExecutionStage.QUEUED) {
+      submit(attemptId, leaseOwner);
+      return;
+    }
+
     RenderJob job =
         renderJobRepo
             .findById(attempt.getRenderJobId())
@@ -107,7 +113,6 @@ public class RenderAttemptOrchestrator {
         leaseOwner);
 
     switch (attempt.getStage()) {
-      case QUEUED -> submit(attempt, job);
       case PROVIDER_QUEUED -> poll(attempt, job);
       case DOWNLOADING -> download(attempt, job);
       case POST_RENDER_QA -> evaluateQa(attempt, job);
@@ -117,31 +122,34 @@ public class RenderAttemptOrchestrator {
     }
   }
 
-  /** QUEUED: submit the render request to the provider, then release the lease. */
-  private void submit(RenderAttempt attempt, RenderJob job) {
-    OpenArtJobResponse response =
-        job.getJobType() == RenderJob.JobType.FIRST_FRAME
-            ? submitFirstFrame(job)
-            : submitVideo(job);
-    if (response.getJobId() == null || response.getJobId().isBlank()) {
-      throw new IllegalStateException("OpenArt returned an empty history id");
+  /**
+   * Persist a submission intent in its own transaction before invoking the external provider.
+   * An uncertain outcome is terminal for automatic processing; retrying it blindly could spend a
+   * second provider generation.
+   */
+  private void submit(UUID attemptId, String leaseOwner) {
+    RenderJob job = submissionStateService.markSubmitting(attemptId, leaseOwner);
+    OpenArtJobResponse response;
+    try {
+      response =
+          job.getJobType() == RenderJob.JobType.FIRST_FRAME
+              ? submitFirstFrame(job)
+              : submitVideo(job);
+      if (response == null || response.getJobId() == null || response.getJobId().isBlank()) {
+        throw new IllegalStateException("OpenArt returned an empty history id");
+      }
+    } catch (Exception error) {
+      submissionStateService.markUncertain(attemptId, job.getId(), error);
+      if (error instanceof RuntimeException runtimeException) {
+        throw runtimeException;
+      }
+      throw new IllegalStateException("OpenArt submission failed", error);
     }
 
-    attempt.setProviderJobId(response.getJobId());
-    job.setOpenartJobId(response.getJobId());
-    if (response.getEstimatedCredits() != null) {
-      job.setCreditsEstimated(response.getEstimatedCredits());
-    }
-    Instant now = Instant.now();
-    attempt.setStage(RenderExecutionStage.PROVIDER_QUEUED);
-    attempt.setStartedAt(now);
-    job.setStartedAt(job.getStartedAt() == null ? now : job.getStartedAt());
-    job.setStatus(RenderJob.RenderJobStatus.GENERATING);
-    releaseLease(attempt);
-
-    renderAttemptRepo.save(attempt);
-    renderJobRepo.save(job);
-    publishProgress(job, "Submitted to provider", 10);
+    submissionStateService.markSubmitted(
+        attemptId, job.getId(), response.getJobId(), response.getEstimatedCredits());
+    RenderJob submittedJob = renderJobRepo.findById(job.getId()).orElse(job);
+    publishProgress(submittedJob, "Submitted to provider", 10);
   }
 
   private OpenArtJobResponse submitFirstFrame(RenderJob job) {
@@ -197,6 +205,9 @@ public class RenderAttemptOrchestrator {
    */
   private void poll(RenderAttempt attempt, RenderJob job) {
     OpenArtJobStatus status = openArtAdapter.getJobStatus(attempt.getProviderJobId());
+    if (status == null) {
+      status = OpenArtJobStatus.builder().status("UNKNOWN").progressPercent(0).build();
+    }
     ProviderJobState state = mapProviderState(status);
     int pollCount = attempt.getPollCount() == null ? 1 : attempt.getPollCount() + 1;
     attempt.setProviderJobState(state);

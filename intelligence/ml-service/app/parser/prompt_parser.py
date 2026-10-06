@@ -10,7 +10,11 @@ from dataclasses import dataclass
 from datetime import datetime
 from typing import Any
 
-from ..quality.canonical_evidence import UNSPECIFIED_VERB
+from ..quality.canonical_evidence import (
+    CANONICAL_EVIDENCE_VERSION,
+    UNSPECIFIED_VERB,
+    normalize_strategy_family,
+)
 from ..quality.contracts import ParseResult, ParserMetadata
 
 
@@ -104,16 +108,22 @@ class PromptParser:
         # Step 5: Parse timeline beats (most complex step)
         beats = self._parse_timeline_beats(prompt_text, metadata["duration"])
 
-        # Step 6: Identify hook
+        # Step 6: Add structured central-mechanic and local-goal evidence. These are
+        # additive parser evidence fields; they do not use performance history.
+        core_mechanic = self._enrich_core_mechanic(core_mechanic, prompt_text, beats)
+        goal_evidence = self._extract_goal_evidence(prompt_text, beats, core_mechanic)
+        beats = self._attach_goal_evidence(beats, goal_evidence)
+
+        # Step 7: Identify hook
         hook = self._identify_hook(prompt_text, beats)
 
-        # Step 7: Identify final payoff
+        # Step 8: Identify final payoff
         final_payoff = self._identify_final_payoff(prompt_text, beats, metadata["duration"])
 
-        # Step 8: Assess AI producibility
+        # Step 9: Assess AI producibility
         producibility = self._assess_producibility(prompt_text, beats)
 
-        # Step 9: Enrich beats with analysis
+        # Step 10: Enrich beats with analysis
         beats = self._enrich_beats(beats)
 
         # Construct IR
@@ -123,10 +133,12 @@ class PromptParser:
             "setting": setting,
             "learningObjective": learning_objective,
             "coreMechanic": core_mechanic,
+            "goalEvidence": goal_evidence,
             "hook": hook,
             "beats": beats,
             "finalPayoff": final_payoff,
             "producibility": producibility,
+            "evidenceVersions": {"canonicalEvidence": CANONICAL_EVIDENCE_VERSION},
         }
 
         # Calculate confidence
@@ -297,13 +309,18 @@ class PromptParser:
         """Find main props/objects"""
         # Look for MAIN OBJECTS: or similar
         props_match = re.search(
-            r"(?:MAIN OBJECTS?|PROPS?):\s*\n((?:.*\n?)+?)(?:\n\n|[A-Z]{2,})", text, re.IGNORECASE
+            r"(?:MAIN OBJECTS?|PROPS?):\s*\n((?:.*\n?)+?)(?:\n\n|[A-Z]{2,})",
+            text,
+            re.IGNORECASE,
         )
         if props_match:
             props_text = props_match.group(1)
-            # Extract numbered or bulleted items
+            # Accept both bullet lists and the common single-line production form
+            # "MAIN OBJECT\nOne bright red ball.".
             props = re.findall(r"(?:\d+\.|[-*])\s*(.+)", props_text)
-            return [p.strip() for p in props if p.strip()]
+            if not props:
+                props = [line.strip() for line in props_text.splitlines() if line.strip()]
+            return [p.strip().rstrip(".") for p in props if p.strip()]
 
         return []
 
@@ -341,7 +358,8 @@ class PromptParser:
         would manufacture a guaranteed PASS.
         """
         rule_match = re.search(
-            r"(?:ONE SIMPLE|CORE|MAIN)\s+(?:RULE|MECHANIC|CONCEPT):\s*\n((?:.*\n?)+?)(?:\n\n|={3,})",
+            r"(?:ONE SIMPLE|CORE|MAIN|PHYSICAL)\s+(?:RULE|MECHANIC|CONCEPT):?\s*\n?"
+            r"((?:.*\n?)+?)(?:\n\n|={3,}|\n[A-Z][A-Z _-]{2,}:)",
             text,
             re.IGNORECASE | re.DOTALL,
         )
@@ -357,6 +375,9 @@ class PromptParser:
                 "causeEffect": "Extracted from prompt",
                 "consistency": consistency,
                 "mechanicCount": None,
+                "primaryObject": None,
+                "mechanicCarrier": "UNKNOWN",
+                "causalParticipants": None,
             }
 
         self.ambiguities.append("Core mechanic not explicitly stated")
@@ -365,6 +386,9 @@ class PromptParser:
             "causeEffect": "Action-based consequence",
             "consistency": consistency,
             "mechanicCount": None,
+            "primaryObject": None,
+            "mechanicCarrier": "UNKNOWN",
+            "causalParticipants": None,
         }
 
     def _extract_mechanic_consistency(self, text: str) -> str | None:
@@ -400,6 +424,102 @@ class PromptParser:
         if "stays consistent" in text_lower or "consistent throughout" in text_lower:
             return "consistent"
         return None
+
+    def _enrich_core_mechanic(
+        self, core: dict[str, Any], text: str, beats: list[dict[str, Any]]
+    ) -> dict[str, Any]:
+        """Add explicit central-mechanic evidence without inventing rule consistency."""
+        enriched = dict(core)
+        lower = text.lower()
+        props = self._find_main_props(text)
+        primary_object = props[0] if props else None
+        if primary_object:
+            enriched["primaryObject"] = primary_object
+            enriched["mechanicCarrier"] = "OBJECT_INTERACTION"
+            primary = self._find_primary_character(text)
+            enriched["causalParticipants"] = [primary] if primary != "Unknown" else None
+
+        rule_text = str(enriched.get("physicalRule") or "")
+        if "stick" in lower or "sticky" in lower:
+            enriched["abnormalProperty"] = "STICKS_TO_SURFACES"
+            enriched["trigger"] = "CONTACT_OR_THROW"
+            enriched["persistence"] = "PERSISTS_AFTER_CONTACT"
+            enriched["releaseCondition"] = "FORCE_OR_SELF_RELEASE"
+        elif rule_text and rule_text != "Inferred from beat actions":
+            enriched["abnormalProperty"] = "EXPLICIT_RULE_PROPERTY"
+            enriched["trigger"] = "EXPLICIT_RULE_TRIGGER"
+            enriched["persistence"] = "EXPLICIT_RULE_PERSISTENCE"
+            enriched["releaseCondition"] = None
+
+        enriched["recurrence"] = bool(
+            len(beats) >= 2
+            and any(
+                beat.get("beatRole") == "TWIST"
+                and any(word in str(beat.get("consequence", "")).lower() for word in ("stick", "sticky", "again", "returns"))
+                for beat in beats
+            )
+        )
+        return enriched
+
+    def _extract_goal_evidence(
+        self, text: str, beats: list[dict[str, Any]], mechanic: dict[str, Any]
+    ) -> dict[str, Any]:
+        """Extract a local observable goal; do not convert activity into a fake goal."""
+        if not beats:
+            return {
+                "goalExplicitness": "UNKNOWN",
+                "goalType": None,
+                "description": None,
+                "targetObject": mechanic.get("primaryObject"),
+                "obstruction": None,
+                "intendedEffect": None,
+                "source": "NONE",
+            }
+        all_text = " ".join(
+            str(beat.get(key, "")) for beat in beats for key in ("action", "consequence")
+        ).lower()
+        target = mechanic.get("primaryObject")
+        target_text = str(target or "the object")
+        explicit_match = re.search(r"(?:goal|objective|wants? to|tries? to|must)[:\s]+([^\n.]+)", text, re.IGNORECASE)
+        goal_words = ("retrieve", "remove", "pull", "catch", "control", "use", "free", "get", "restore", "normal", "unstick", "inspect", "fix")
+        obstruction_words = ("stuck", "will not", "won't", "cannot", "can't", "instead of", "remains", "resists", "impossible")
+        has_goal_action = any(word in all_text for word in goal_words)
+        has_obstruction = any(word in all_text for word in obstruction_words) or bool(mechanic.get("abnormalProperty"))
+        if explicit_match:
+            description = explicit_match.group(1).strip()
+            explicitness = "EXPLICIT"
+            source = "EXPLICIT_TEXT"
+        elif has_goal_action and has_obstruction:
+            description = f"Control or retrieve {target_text} despite the established abnormal behavior."
+            explicitness = "IMPLICIT_BUT_OBSERVABLE"
+            source = "GOAL_DIRECTED_ACTION_INFERENCE"
+        else:
+            description = None
+            explicitness = "UNSUPPORTED"
+            source = "NONE"
+        return {
+            "goalExplicitness": explicitness,
+            "goalType": "RETRIEVE_OR_CONTROL_OBJECT" if description else None,
+            "description": description,
+            "targetObject": target,
+            "obstruction": str(mechanic.get("physicalRule") or "the object does not behave normally") if has_obstruction else None,
+            "intendedEffect": "restore_or_control_normal_object_use" if description else None,
+            "source": source,
+        }
+
+    def _attach_goal_evidence(self, beats: list[dict[str, Any]], goal: dict[str, Any]) -> list[dict[str, Any]]:
+        for beat in beats:
+            beat["actor"] = beat.get("actor") or None
+            if beat.get("isAttempt"):
+                beat["goal"] = goal.get("description")
+                beat["targetObject"] = goal.get("targetObject")
+                beat["intendedEffect"] = goal.get("intendedEffect")
+                beat["attemptReason"] = (
+                    "The beat is explicitly labelled as an attempt toward the local object goal."
+                    if beat.get("beatRole") == "ATTEMPT"
+                    else beat.get("attemptReason")
+                )
+        return beats
 
     def _parse_timeline_beats(self, text: str, duration: float) -> list[dict[str, Any]]:
         """
@@ -685,16 +805,17 @@ class PromptParser:
 
     def _resolve_attempt_evidence(
         self, description: str, content: str, role: str, label: str
-    ) -> tuple[bool, str, str]:
-        """Decide once, with provenance, whether a beat is an attempt.
+    ) -> tuple[bool, str, str, dict[str, str] | None]:
+        """Canonicalize attempt evidence without promoting verb presence to an attempt.
 
-        Precedence: explicit ``[ATTEMPT: VERB]`` marker, then an explicit structural
-        ``ATTEMPT`` label, then (only when the author did not declare a non-attempt
-        role) the conservative leading-verb inference.
+        An explicit attempt marker or explicit ATTEMPT label is sufficient evidence.
+        A leading verb can nominate a candidate for audit, but cannot set ``isAttempt``;
+        a narrative ESCALATION/REACTION/TWIST beat must not inflate active or distinct
+        attempt counts merely because it says ``grabs`` or ``leans``.
         """
         marked, marked_verb = self._extract_attempt_marker(description)
         if marked:
-            return True, marked_verb, "EXPLICIT_MARKER"
+            return True, marked_verb, "EXPLICIT_ATTEMPT_LABEL", None
         if role == "ATTEMPT":
             verb = self._find_attempt_verb(content)
             if not verb:
@@ -702,17 +823,15 @@ class PromptParser:
                 self.ambiguities.append(
                     f"Beat '{label}' is labelled as an attempt but no action verb could be identified."
                 )
-            return True, verb, "STRUCTURAL_LABEL"
-        if role in self._NON_ATTEMPT_ROLES:
-            return False, "", "NONE"
+            return True, verb, "STRUCTURED_PLAN_ROLE", None
+
         inferred, inferred_verb = self._infer_attempt_from_leading_verb(content)
-        if inferred:
-            self.assumptions.append(
-                f"Beat '{content[:40]}...' inferred as an attempt ({inferred_verb}) "
-                "from its leading verb; no explicit [ATTEMPT: VERB] marker was present."
-            )
-            return True, inferred_verb, "LEADING_VERB_INFERENCE"
-        return False, "", "NONE"
+        candidate = (
+            {"verb": inferred_verb, "source": "LEADING_VERB_INFERENCE", "reason": "Leading action verb only; goal-directed attempt evidence not explicit."}
+            if inferred
+            else None
+        )
+        return False, "", "NONE", candidate
 
     def _extract_detached_marker(self, description: str) -> bool:
         """Extract an explicit ``[DETACHED]`` marker from a beat description.
@@ -762,10 +881,12 @@ class PromptParser:
         # Check readability
         is_readable = duration >= 0.6
 
-        is_attempt, primary_verb, attempt_source = self._resolve_attempt_evidence(
+        is_attempt, primary_verb, attempt_source, attempt_candidate = self._resolve_attempt_evidence(
             description, content, role, label
         )
         relates_to_core_problem = self._extract_detached_marker(description)
+        strategy_family = normalize_strategy_family(primary_verb, action, content)
+
 
         return {
             "id": beat_id,
@@ -789,6 +910,17 @@ class PromptParser:
             "isAttempt": is_attempt,
             "primaryVerb": primary_verb,
             "attemptSource": attempt_source,
+            "attemptCandidate": attempt_candidate,
+            "attemptConfidence": 1.0 if attempt_source == "EXPLICIT_ATTEMPT_LABEL" else 0.95 if attempt_source == "STRUCTURED_PLAN_ROLE" else None,
+            "attemptReason": "Explicit attempt marker/role provides goal-directed evidence." if is_attempt else None,
+            "strategyFamily": strategy_family,
+            "primaryAction": action,
+            "actor": None,
+            "goal": None,
+            "targetObject": None,
+            "intendedEffect": None,
+            "result": consequence,
+            "distinctFromPreviousAttempt": None,
             "beatLabel": label,
             "beatRole": role,
             "relatesToCoreProblem": relates_to_core_problem,
@@ -1037,7 +1169,9 @@ class PromptParser:
             current["isNewConsequence"] = is_new
             current["similarToBeats"] = similar_beats
 
-            if similar_beats:
+            if current.get("beatRole") == "FAKE_RESOLUTION":
+                current["consequenceType"] = "fake_win"
+            elif similar_beats:
                 current["consequenceType"] = "repeat"
             elif i > 0 and current["visualStateId"] == beats[i - 1]["visualStateId"]:
                 current["consequenceType"] = "continuation"

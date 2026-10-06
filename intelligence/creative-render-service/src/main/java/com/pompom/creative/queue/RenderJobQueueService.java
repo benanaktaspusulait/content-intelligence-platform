@@ -207,6 +207,7 @@ public class RenderJobQueueService {
             status -> {
               RenderJob savedJob = repository.save(job);
               attemptRepository.save(RenderAttempt.firstAttemptFor(savedJob.getId()));
+              creditTrackingService.recordEstimatedUsage(savedJob);
               return savedJob;
             });
     return new QueueRenderJobResponse(saved.getId(), false);

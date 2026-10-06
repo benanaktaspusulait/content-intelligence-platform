@@ -7,6 +7,7 @@ import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.Optional;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -71,9 +72,39 @@ public class CreditTrackingService {
     if (providerJobId == null || providerJobId.isBlank()) {
       throw new IllegalStateException("Cannot record OpenArt usage before provider submission");
     }
-    return creditLogRepo
-        .findFirstByOpenartJobIdAndOperation(providerJobId, "PROVIDER_USAGE")
-        .orElseGet(() -> recordUsage(job, actualCredits, "PROVIDER_USAGE", source));
+    Optional<OpenArtCreditLog> recorded =
+        creditLogRepo.findFirstByOpenartJobIdAndOperation(providerJobId, "PROVIDER_USAGE");
+    if (recorded.isPresent()) {
+      return recorded.get();
+    }
+    Optional<OpenArtCreditLog> reservation =
+        creditLogRepo.findUnassignedReservation(job.getId(), "ESTIMATE");
+    if (reservation.isPresent()) {
+      return reconcileReservation(reservation.get(), job, actualCredits, source);
+    }
+    return recordUsage(job, actualCredits, "PROVIDER_USAGE", source);
+  }
+
+  private OpenArtCreditLog reconcileReservation(
+      OpenArtCreditLog reservation,
+      RenderJob job,
+      BigDecimal actualCredits,
+      String source) {
+    reservation.setOpenartJobId(job.getOpenartJobId());
+    reservation.setOperation("PROVIDER_USAGE");
+    reservation.setOperationMetadata("{\"source\":\"" + source + "\",\"reconciled\":true}");
+    reservation.setCreditsSpent(actualCredits);
+    reservation.setCreditsUsed(actualCredits);
+    BigDecimal previousActual = job.getCreditsActual();
+    job.setCreditsActual(
+        previousActual == null ? actualCredits : previousActual.add(actualCredits));
+
+    OpenArtCreditLog saved = creditLogRepo.save(reservation);
+    BudgetStatus status = getBudgetStatus();
+    if (budgetAlertService != null) {
+      budgetAlertService.checkAndAlert(status);
+    }
+    return saved;
   }
 
   private OpenArtCreditLog recordUsage(
@@ -86,7 +117,11 @@ public class CreditTrackingService {
         job.getId(),
         actualCredits,
         operation);
-    job.setCreditsActual(actualCredits);
+    if ("PROVIDER_USAGE".equals(operation)) {
+      BigDecimal previousActual = job.getCreditsActual();
+      job.setCreditsActual(
+          previousActual == null ? actualCredits : previousActual.add(actualCredits));
+    }
 
     OpenArtCreditLog creditLog =
         OpenArtCreditLog.builder()

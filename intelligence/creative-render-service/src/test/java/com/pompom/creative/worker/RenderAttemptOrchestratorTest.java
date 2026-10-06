@@ -23,6 +23,7 @@ import com.pompom.creative.repository.RenderJobRepository;
 import com.pompom.creative.service.AssetLibraryManager;
 import com.pompom.creative.service.CreditTrackingService;
 import com.pompom.creative.websocket.WebSocketEventPublisher;
+import java.math.BigDecimal;
 import java.nio.file.Path;
 import java.time.Instant;
 import java.util.List;
@@ -55,6 +56,7 @@ class RenderAttemptOrchestratorTest {
   @Mock private PostRenderEvaluationService postRenderEvaluationService;
   @Mock private WebSocketEventPublisher webSocketEventPublisher;
   @Mock private CreditTrackingService creditTrackingService;
+  @Mock private RenderSubmissionStateService submissionStateService;
 
   private RenderAttemptOrchestrator orchestrator;
   private RenderJob job;
@@ -71,6 +73,7 @@ class RenderAttemptOrchestratorTest {
             qaService,
             postRenderEvaluationService,
             webSocketEventPublisher,
+            submissionStateService,
             creditTrackingService,
             new ObjectMapper());
     job =
@@ -102,6 +105,7 @@ class RenderAttemptOrchestratorTest {
             .leaseOwner(LEASE_OWNER)
             .build();
     lenient().when(renderAttemptRepo.findById(attempt.getId())).thenReturn(Optional.of(attempt));
+    lenient().when(submissionStateService.markSubmitting(attempt.getId(), LEASE_OWNER)).thenReturn(job);
     return attempt;
   }
 
@@ -124,14 +128,10 @@ class RenderAttemptOrchestratorTest {
 
     orchestrator.processAttempt(attempt.getId(), LEASE_OWNER);
 
-    ArgumentCaptor<RenderAttempt> captor = ArgumentCaptor.forClass(RenderAttempt.class);
-    verify(renderAttemptRepo).save(captor.capture());
-    RenderAttempt saved = captor.getValue();
-    assertThat(saved.getStage()).isEqualTo(RenderExecutionStage.PROVIDER_QUEUED);
-    assertThat(saved.getProviderJobId()).isEqualTo("provider-job-1");
-    // Exactly one stage transition per call: the lease is released, not advanced further.
-    assertThat(saved.getLeaseOwner()).isNull();
-    assertThat(saved.getLeaseExpiresAt()).isNull();
+    verify(submissionStateService).markSubmitting(attempt.getId(), LEASE_OWNER);
+    verify(submissionStateService)
+        .markSubmitted(attempt.getId(), job.getId(), "provider-job-1", null);
+    verify(openArtAdapter).generateImage(any());
   }
 
   @Test
@@ -158,7 +158,12 @@ class RenderAttemptOrchestratorTest {
     RenderAttempt attempt = attempt(RenderExecutionStage.PROVIDER_QUEUED);
     attempt.setProviderJobId("provider-job-1");
     when(openArtAdapter.getJobStatus("provider-job-1"))
-        .thenReturn(OpenArtJobStatus.builder().jobId("provider-job-1").status("COMPLETE").build());
+        .thenReturn(
+            OpenArtJobStatus.builder()
+                .jobId("provider-job-1")
+                .status("COMPLETE")
+                .creditsUsed(new BigDecimal("12.5"))
+                .build());
 
     orchestrator.processAttempt(attempt.getId(), LEASE_OWNER);
 
@@ -166,6 +171,8 @@ class RenderAttemptOrchestratorTest {
     verify(renderAttemptRepo).save(captor.capture());
     assertThat(captor.getValue().getStage()).isEqualTo(RenderExecutionStage.DOWNLOADING);
     assertThat(job.getStatus()).isEqualTo(RenderJob.RenderJobStatus.DOWNLOADING);
+    verify(creditTrackingService)
+        .recordProviderUsageIfAbsent(job, new BigDecimal("12.5"), "provider-status");
     verify(openArtAdapter, never()).downloadAsset(any(), any());
   }
 

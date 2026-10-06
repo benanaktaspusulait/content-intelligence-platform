@@ -1,6 +1,7 @@
 package com.pompom.creative.api.controller;
 
 import com.pompom.creative.api.dto.RenderJobDto;
+import com.pompom.creative.domain.ProviderJobState;
 import com.pompom.creative.domain.RenderAttempt;
 import com.pompom.creative.domain.RenderExecutionStage;
 import com.pompom.creative.domain.RenderJob;
@@ -210,6 +211,17 @@ public class RenderJobController {
             || previous.getStage() == RenderExecutionStage.ABANDONED)) {
       return ResponseEntity.badRequest()
           .body(java.util.Map.of("message", "Only failed or abandoned jobs can be retried"));
+    }
+    if (previous.getStage() == RenderExecutionStage.ABANDONED
+        && previous.getProviderJobId() != null
+        && previous.getProviderJobState() != ProviderJobState.SUCCEEDED
+        && previous.getProviderJobState() != ProviderJobState.FAILED
+        && previous.getProviderJobState() != ProviderJobState.CANCELLED) {
+      return ResponseEntity.badRequest()
+          .body(
+              java.util.Map.of(
+                  "message",
+                  "Remote OpenArt job is not terminal; reconcile it before retrying"));
     }
     int nextNumber = previous.getAttemptNumber() + 1;
     if (nextNumber > job.getMaxAttempts()) {

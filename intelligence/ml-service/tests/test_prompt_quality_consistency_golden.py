@@ -116,17 +116,22 @@ def test_beat_action_is_the_described_action_not_the_structural_label(parsed: Pa
 def test_attempts_are_recognised_with_explicit_provenance(parsed: ParseResult) -> None:
     ir = parsed.video_plan_ir
     attempts = attempt_beats(ir)
-    assert [b["beatLabel"] for b in attempts] == ["FIRST ATTEMPT", "ESCALATION", "SECOND ATTEMPT"]
+    assert [b["beatLabel"] for b in attempts] == ["FIRST ATTEMPT", "SECOND ATTEMPT"]
     assert [b["attemptSource"] for b in attempts] == [
-        "STRUCTURAL_LABEL",
-        "LEADING_VERB_INFERENCE",
-        "STRUCTURAL_LABEL",
+        "STRUCTURED_PLAN_ROLE",
+        "STRUCTURED_PLAN_ROLE",
     ]
+    escalation = next(b for b in ir["beats"] if b["beatRole"] == "ESCALATION")
+    assert escalation["isAttempt"] is False
+    assert escalation["attemptCandidate"]["source"] == "LEADING_VERB_INFERENCE"
     evidence = attempt_evidence(ir)
-    assert evidence.count == 3
-    assert evidence.verbs == ("PULLS", "GRABS", "CATCHES")
-    assert evidence.active_seconds == pytest.approx(9.0)
-    assert evidence.active_ratio == pytest.approx(0.6)
+    assert evidence.count == 2
+    assert evidence.active_attempt_count == 2
+    assert evidence.verbs == ("PULLS", "CATCHES")
+    assert evidence.strategy_families == ("PULL", "CATCH")
+    assert evidence.distinct_strategy_count == 2
+    assert evidence.active_seconds == pytest.approx(5.0)
+    assert evidence.active_ratio == pytest.approx(1 / 3)
 
 
 def test_author_declared_non_attempt_roles_are_never_inferred_as_attempts(parsed: ParseResult) -> None:
@@ -151,9 +156,10 @@ def test_every_attempt_consumer_reads_the_same_canonical_evidence(
         distinct_rule = engine._evaluate_attempt_002(ir, {})
     escalation_rule = engine._evaluate_escalation_005(ir, {})
 
-    assert count_rule.actual_value == evidence.count
+    assert count_rule.actual_value == evidence.active_attempt_count
     assert active_rule.actual_value == pytest.approx(evidence.active_ratio)
-    assert distinct_rule.actual_value == len(set(evidence.verbs))
+    assert distinct_rule.actual_value == evidence.distinct_strategy_count
+    assert escalation_rule.outcome.value in {"PASS", "FAIL", "UNKNOWN"}
     assert "Fewer than two attempts" not in escalation_rule.message
 
     for rule in (count_rule, active_rule, distinct_rule):
@@ -186,8 +192,8 @@ def test_assessment_dimensions_agree_with_the_rule_results(parsed: ParseResult, 
     dimensions = {d["key"]: d for d in assessment["dimensions"]}
 
     attempts = dimensions["ATTEMPT_DIVERSITY"]
-    assert "3 attempt(s)" in attempts["observed"]
-    assert "3 distinct" in attempts["observed"]
+    assert "2 attempt(s)" in attempts["observed"]
+    assert "2 distinct" in attempts["observed"]
     assert attempts["evidence_status"] == "AVAILABLE"
 
     escalation = dimensions["ESCALATION"]
@@ -220,7 +226,7 @@ def _mixed_report(ir: dict[str, Any]) -> QualityReport:
             "concept_strength": 100.0,
             "progression": 100.0,
             "hook_strength": 20.0,
-            "consistency": 0.0,
+            "consistency": None,
         },
         evaluations=evaluations,
         ruleset_version="1.5",
@@ -247,7 +253,7 @@ def test_creative_grade_ignores_evidence_gaps_while_evidence_completeness_report
         "CONSISTENCY_001": "UNKNOWN",
     }
     assert [f["family"] for f in completeness["unscored_families"]] == ["consistency"]
-    assert completeness["canonical_evidence"]["attempts"]["count"] == 3
+    assert completeness["canonical_evidence"]["attempts"]["count"] == 2
 
 
 def test_family_without_evaluable_evidence_is_not_reported_as_a_creative_weakness(

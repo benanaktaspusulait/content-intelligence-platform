@@ -30,7 +30,9 @@ from app.quality.canonical_evidence import (
     EVIDENCE_INCOMPLETE_FAILURE,
     attempt_beats,
     attempt_evidence,
+    escalation_evidence,
     is_unspecified_verb,
+    strategy_family_for_beat,
 )
 from app.quality.contracts import (
     QualityReport,
@@ -1321,37 +1323,37 @@ class RuleEngine:
     def _evaluate_attempt_002(
         self, video_plan_ir: dict[str, Any], rule: dict[str, Any]
     ) -> RuleEvaluationType:
-        """ATTEMPT_002: Distinct Attempts (hybrid deterministic + LLM semantic check)"""
+        """ATTEMPT_002: distinct canonical strategy families, not verb-bearing beats."""
         duration = video_plan_ir.get("metadata", {}).get("duration", 15.0)
         tier = self._get_duration_tier(duration)
         minimum = 3 if tier == "short" else 7
-
         attempts = attempt_beats(video_plan_ir)
+        evidence = attempt_evidence(video_plan_ir)
 
-        # Deduplicate by normalized primaryVerb first — free, deterministic,
-        # catches "PULL -> PULL HARDER -> PULL AGAIN" without an LLM call.
-        verb_to_first_index: dict[str, int] = {}
-        verb_distinct_attempts: list[dict[str, Any]] = []
-        for attempt in attempts:
-            verb = attempt.get("primaryVerb", "").strip().upper()
-            if is_unspecified_verb(verb):
-                # An unidentified verb is missing evidence, not a shared strategy:
-                # never collapse such attempts into one bucket. The semantic check
-                # below decides whether they are genuinely distinct.
-                verb_distinct_attempts.append(attempt)
-                continue
-            if verb not in verb_to_first_index:
-                verb_to_first_index[verb] = len(verb_distinct_attempts)
-                verb_distinct_attempts.append(attempt)
+        # Collapse deterministic family repeats first. PULL/YANK/TUG, PUSH/HARDER,
+        # and THROW/TOSS are the same family unless their semantic consequences later
+        # prove otherwise. An unspecified family is retained as its own candidate so
+        # missing verb evidence is not silently merged with another strategy.
+        family_to_first: dict[str, dict[str, Any]] = {}
+        candidates: list[dict[str, Any]] = []
+        for beat in attempts:
+            family = strategy_family_for_beat(beat)
+            if is_unspecified_verb(beat.get("primaryVerb")):
+                family = f"UNSPECIFIED:{beat.get('id', len(candidates))}"
+            if family not in family_to_first:
+                family_to_first[family] = beat
+                candidates.append(beat)
 
-        if len(verb_distinct_attempts) >= 2:
+        duplicate_pairs: list[tuple[int, int]] = []
+        if len(candidates) >= 2:
             llm_attempts = [
                 {
                     "primaryVerb": a.get("primaryVerb", ""),
+                    "strategyFamily": strategy_family_for_beat(a),
                     "action": a.get("action", ""),
                     "consequence": a.get("consequence", ""),
                 }
-                for a in verb_distinct_attempts
+                for a in candidates
             ]
             try:
                 duplicate_pairs = find_duplicate_strategy_pairs(llm_attempts)
@@ -1363,13 +1365,19 @@ class RuleEngine:
                     severity="BLOCKER",
                     result="SERVICE_ERROR",
                     message=f"Semantic duplicate-strategy check failed: {e}",
-                    details={"error": str(e)},
+                    details={"error": str(e), "strategy_families": [strategy_family_for_beat(a) for a in candidates]},
                 )
-        else:
-            duplicate_pairs = []
 
-        effective_distinct_count = len(verb_distinct_attempts) - len(duplicate_pairs)
-
+        effective_distinct_count = len(candidates) - len(duplicate_pairs)
+        details = {
+            "tier": tier,
+            "duplicate_pairs": duplicate_pairs,
+            "strategy_families": [strategy_family_for_beat(a) for a in candidates],
+            "attempts": list(evidence.attempts),
+            "active_attempt_count": evidence.active_attempt_count,
+            "distinct_strategy_count": effective_distinct_count,
+            "correlation_group": "ATTEMPT_REPETITION",
+        }
         if effective_distinct_count < minimum:
             return RuleEvaluation(
                 rule_id="ATTEMPT_002",
@@ -1378,18 +1386,13 @@ class RuleEngine:
                 severity="CRITICAL",
                 result="FAIL",
                 message=(
-                    f"Only {effective_distinct_count} mechanically distinct attempt(s) "
-                    f"detected for a {tier}-tier video. Minimum: {minimum}. Attempts that "
-                    "use different wording for the same underlying strategy do not count "
-                    "as separate attempts."
+                    f"Only {effective_distinct_count} distinct strategy family/families detected "
+                    f"from {evidence.active_attempt_count} active attempt(s) for a {tier}-tier video. "
+                    f"Minimum: {minimum}. Repeated force, angle or synonym variants do not count."
                 ),
                 actual_value=effective_distinct_count,
                 required_value=minimum,
-                details={
-                    "tier": tier,
-                    "duplicate_pairs": duplicate_pairs,
-                    "correlation_group": "ATTEMPT_REPETITION",
-                },
+                details=details,
             )
         return RuleEvaluation(
             rule_id="ATTEMPT_002",
@@ -1397,10 +1400,10 @@ class RuleEngine:
             family="visual_novelty",
             severity="PASS",
             result="PASS",
-            message=f"{effective_distinct_count} mechanically distinct attempts detected.",
+            message=f"{effective_distinct_count} mechanically distinct strategy families detected from {evidence.active_attempt_count} active attempts.",
             actual_value=effective_distinct_count,
             required_value=minimum,
-            details={"tier": tier, "duplicate_pairs": duplicate_pairs},
+            details=details,
         )
 
     def _evaluate_payoff_003(self, video_plan_ir: dict[str, Any], rule: dict[str, Any]) -> RuleEvaluationType:
@@ -2304,53 +2307,39 @@ class RuleEngine:
         trend. Capped at WARNING: deadpan-comedy concepts can deliberately
         keep escalation small, so this is a nudge, never a blocker.
         """
-        attempts = attempt_beats(video_plan_ir)
-
-        if len(attempts) < 2:
+        evidence = escalation_evidence(video_plan_ir)
+        if evidence["status"] == "UNKNOWN":
+            return RuleEvaluation(
+                rule_id="ESCALATION_005",
+                rule_name="Meaningful Attempt Escalation",
+                family="escalation",
+                severity="WARNING",
+                result="UNKNOWN",
+                message=evidence["reason"],
+                details={"evidence": evidence},
+            )
+        if evidence["new_target"] or evidence["intensity_rise"] or evidence["consequence_expansion"]:
             return RuleEvaluation(
                 rule_id="ESCALATION_005",
                 rule_name="Meaningful Attempt Escalation",
                 family="escalation",
                 severity="PASS",
                 result="PASS",
-                message="Fewer than two attempts; nothing to compare for escalation trend.",
-            )
-
-        intensities = [a.get("intensity", 0) for a in attempts]
-        first_intensity = intensities[0]
-        last_intensity = intensities[-1]
-        is_flat_or_declining = last_intensity <= first_intensity
-
-        if is_flat_or_declining:
-            return RuleEvaluation(
-                rule_id="ESCALATION_005",
-                rule_name="Meaningful Attempt Escalation",
-                family="escalation",
-                severity="WARNING",
-                result="FAIL",
-                message=(
-                    f"Attempt intensity does not rise across the middle of the video "
-                    f"(first attempt intensity {first_intensity}, last attempt intensity "
-                    f"{last_intensity}). Consider making later attempts more committed, "
-                    "difficult, or consequential than earlier ones — though small, "
-                    "deliberately flat escalation can be valid for deadpan-style comedy."
-                ),
-                actual_value=last_intensity,
-                required_value=first_intensity,
-                details={"intensities": intensities},
+                message=f"Escalation evidence is present: {evidence['reason']}",
+                actual_value=1,
+                required_value=1,
+                details={"evidence": evidence},
             )
         return RuleEvaluation(
             rule_id="ESCALATION_005",
             rule_name="Meaningful Attempt Escalation",
             family="escalation",
-            severity="PASS",
-            result="PASS",
-            message=(
-                f"Attempt intensity rises from {first_intensity} to {last_intensity} across the timeline."
-            ),
-            actual_value=last_intensity,
-            required_value=first_intensity,
-            details={"intensities": intensities},
+            severity="WARNING",
+            result="FAIL",
+            message=f"No increasing intensity, affected target, stakes or consequence scale was evidenced. {evidence['reason']}",
+            actual_value=0,
+            required_value=1,
+            details={"evidence": evidence},
         )
 
     def _evaluate_hook_004(self, video_plan_ir: dict[str, Any], rule: dict[str, Any]) -> RuleEvaluationType:
@@ -2577,6 +2566,42 @@ class RuleEngine:
         "moves slightly",
         "shifts subtly",
     ]
+
+    @staticmethod
+    def _generation_attempt_risk_evidence(attempts: list[dict[str, Any]]) -> list[dict[str, Any]]:
+        """Explain concrete generation risks per canonical attempt beat."""
+        results: list[dict[str, Any]] = []
+        risk_phrases = {
+            "DEFORMATION_COMPLEXITY": ("stretch", "stretches", "flex", "flexes", "morph", "chewing gum"),
+            "CONTACT_PRECISION": ("catch", "catches", "hand", "hands", "squeeze", "squeezes"),
+            "FACE_OCCLUSION": ("cheek", "face", "eye", "eyes", "mouth", "nose"),
+            "STATE_CONTINUITY": ("stays", "remains", "returns", "normal", "stuck", "drops", "again"),
+            "PHYSICS_SIMULATION": ("bounce", "boing", "snap", "stick", "flex", "stretch"),
+            "MULTI_STEP_CAUSALITY": (" while ", " then ", " and ", "immediately"),
+        }
+        for beat in attempts:
+            text = f" {beat.get('action', '')} {beat.get('consequence', '')} ".lower()
+            risks = [name for name, phrases in risk_phrases.items() if any(phrase in text for phrase in phrases)]
+            if len(risks) >= 3 or "FACE_OCCLUSION" in risks or "DEFORMATION_COMPLEXITY" in risks:
+                level = "HIGH"
+            elif risks:
+                level = "MODERATE"
+            else:
+                level = "LOW"
+            results.append(
+                {
+                    "beatId": beat.get("id"),
+                    "strategyFamily": strategy_family_for_beat(beat),
+                    "riskLevel": level,
+                    "risks": risks or ["No deterministic risk tag matched; semantic judgment remains required."],
+                    "reason": (
+                        "Concrete interaction risks: " + ", ".join(risks)
+                        if risks
+                        else "The beat contains a concrete action/result pair without a known high-risk tag."
+                    ),
+                }
+            )
+        return results
 
     def _evaluate_continuous_action_momentum(
         self, video_plan_ir: dict[str, Any], rule: dict[str, Any]
@@ -2816,6 +2841,8 @@ class RuleEngine:
         for vague magnitude phrasing and beat-budget pressure alone.
         """
         attempts = attempt_beats(video_plan_ir)
+        risk_evidence = self._generation_attempt_risk_evidence(attempts)
+        canonical_attempts = attempt_evidence(video_plan_ir)
 
         if len(attempts) < 2:
             return RuleEvaluation(
@@ -2825,6 +2852,12 @@ class RuleEngine:
                 severity="PASS",
                 result="PASS",
                 message="Fewer than two attempts; nothing to compare for generation executability.",
+                details={
+                    "attempts": risk_evidence,
+                    "active_attempt_count": canonical_attempts.active_attempt_count,
+                    "distinct_strategy_count": canonical_attempts.distinct_strategy_count,
+                    "policy": "CRITICAL_ON_PARTIAL_UNEXECUTABILITY",
+                },
             )
 
         combined_text_by_index = [
@@ -2865,7 +2898,13 @@ class RuleEngine:
                 severity="BLOCKER",
                 result="SERVICE_ERROR",
                 message=f"Generation-executability verification failed: {e}",
-                details={"error": str(e)},
+                details={
+                    "error": str(e),
+                    "attempts": risk_evidence,
+                    "active_attempt_count": canonical_attempts.active_attempt_count,
+                    "distinct_strategy_count": canonical_attempts.distinct_strategy_count,
+                    "policy": "CRITICAL_ON_PARTIAL_UNEXECUTABILITY",
+                },
             )
 
         unexecutable_judgments = [j for j in judgments if not j["is_executable"]]
@@ -2889,7 +2928,14 @@ class RuleEngine:
                 ),
                 actual_value=0,
                 required_value=len(judgments),
-                details={"unexecutable_attempts": evidence, "correlation_group": "ATTEMPT_REPETITION"},
+                details={
+                    "unexecutable_attempts": evidence,
+                    "attempts": risk_evidence,
+                    "active_attempt_count": canonical_attempts.active_attempt_count,
+                    "distinct_strategy_count": canonical_attempts.distinct_strategy_count,
+                    "policy": "CRITICAL_ON_PARTIAL_UNEXECUTABILITY",
+                    "correlation_group": "ATTEMPT_REPETITION",
+                },
             )
 
         if unexecutable_judgments or abstract_intent_matches:
@@ -2919,6 +2965,10 @@ class RuleEngine:
                 required_value=len(judgments),
                 details={
                     "unexecutable_attempts": evidence,
+                    "attempts": risk_evidence,
+                    "active_attempt_count": canonical_attempts.active_attempt_count,
+                    "distinct_strategy_count": canonical_attempts.distinct_strategy_count,
+                    "policy": "CRITICAL_ON_PARTIAL_UNEXECUTABILITY",
                     "correlation_group": "ATTEMPT_REPETITION",
                 },
             )
@@ -2946,7 +2996,13 @@ class RuleEngine:
                 message=" | ".join(notes),
                 actual_value=average_seconds_per_attempt,
                 required_value=2.5,
-                details={"vague_magnitude_attempts": list(vague_magnitude_matches.keys())},
+                details={
+                    "vague_magnitude_attempts": list(vague_magnitude_matches.keys()),
+                    "attempts": risk_evidence,
+                    "active_attempt_count": canonical_attempts.active_attempt_count,
+                    "distinct_strategy_count": canonical_attempts.distinct_strategy_count,
+                    "policy": "CRITICAL_ON_PARTIAL_UNEXECUTABILITY",
+                },
             )
 
         return RuleEvaluation(
@@ -2961,10 +3017,13 @@ class RuleEngine:
             ),
             actual_value=len(judgments),
             required_value=len(judgments),
-        )
-
-
-def validate_video_plan(video_plan_ir: dict[str, Any], ruleset_path: str | None = None) -> QualityReport:
+            details={
+                "attempts": risk_evidence,
+                "active_attempt_count": canonical_attempts.active_attempt_count,
+                "distinct_strategy_count": canonical_attempts.distinct_strategy_count,
+                "policy": "CRITICAL_ON_PARTIAL_UNEXECUTABILITY",
+            },
+        )(video_plan_ir: dict[str, Any], ruleset_path: str | None = None) -> QualityReport:
     """
     Convenience function to validate a video plan.
 
