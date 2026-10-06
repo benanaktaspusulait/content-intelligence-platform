@@ -270,27 +270,39 @@ public class QualityReportPdfService {
 
   private void addEvaluationCoverage(Document document, QualityReportDto report, Fonts fonts)
       throws DocumentException {
+    List<RuleEvaluationDto> passed = orEmpty(report.passedRules());
+    List<RuleEvaluationDto> failed = orEmpty(report.failedRules());
     List<RuleEvaluationDto> errors = orEmpty(report.serviceErrors());
     List<RuleEvaluationDto> unknown = orEmpty(report.unknownRules());
     List<RuleEvaluationDto> notApplicable = orEmpty(report.notApplicableRules());
-    if (errors.isEmpty() && unknown.isEmpty() && notApplicable.isEmpty()) {
+    if (passed.isEmpty() && failed.isEmpty() && errors.isEmpty() && unknown.isEmpty() && notApplicable.isEmpty()) {
       return;
     }
-    section(document, "Evaluation coverage", fonts);
+    section(document, "Rule outcome coverage", fonts);
     document.add(
         new Paragraph(
-            "Service errors: "
-                + errors.size()
-                + "   ·   Unknown: "
+            "PASS: "
+                + passed.size()
+                + "   ·   FAIL: "
+                + failed.size()
+                + "   ·   UNKNOWN: "
                 + unknown.size()
-                + "   ·   Not applicable: "
-                + notApplicable.size(),
+                + "   ·   NOT APPLICABLE: "
+                + notApplicable.size()
+                + "   ·   SERVICE ERROR: "
+                + errors.size(),
             fonts.body));
-    for (RuleEvaluationDto rule : errors) {
-      document.add(ruleLine(rule, fonts));
+    for (RuleEvaluationDto rule : passed) {
+      document.add(outcomeLine("PASS", rule, fonts));
     }
     for (RuleEvaluationDto rule : unknown) {
-      document.add(ruleLine(rule, fonts));
+      document.add(outcomeLine("UNKNOWN", rule, fonts));
+    }
+    for (RuleEvaluationDto rule : notApplicable) {
+      document.add(outcomeLine("NOT APPLICABLE", rule, fonts));
+    }
+    for (RuleEvaluationDto rule : errors) {
+      document.add(outcomeLine("SERVICE ERROR", rule, fonts));
     }
   }
 
@@ -299,6 +311,13 @@ public class QualityReportPdfService {
     section(document, "Validation evidence", fonts);
     document.add(
         labelled("Parser confidence: ", Math.round(report.parserConfidence() * 100) + "%", fonts));
+    if (report.canonicalEvidenceConfidence() != null) {
+      document.add(
+          labelled(
+              "Canonical evidence confidence: ",
+              Math.round(report.canonicalEvidenceConfidence() * 100) + "%",
+              fonts));
+    }
     QualityProvenanceDto provenance = report.provenance();
     if (provenance != null) {
       document.add(labelled("Stage: ", provenance.evaluationStage(), fonts));
@@ -451,13 +470,13 @@ public class QualityReportPdfService {
       table.setHeaderRows(1);
       header(table, fonts, "State", "Range", "Share");
       for (StateSegmentDto segment : segments) {
-        boolean dominant = segment.percentage() > 0.30;
+        boolean dominant = isDominantStateShare(segment.percentage());
         table.addCell(cell(orDash(segment.stateId()), fonts.small, null));
         table.addCell(
             cell(oneDecimal(segment.startTime()) + "s - " + oneDecimal(segment.endTime()) + "s", fonts.small, null));
         table.addCell(
             cell(
-                Math.round(segment.percentage() * 100) + "%" + (dominant ? "  (above 30%)" : ""),
+                formatStateShare(segment.percentage()) + (dominant ? "  (above 30%)" : ""),
                 fonts.colored(dominant ? fonts.bold : fonts.small, dominant ? RED : INK),
                 null));
       }
@@ -570,6 +589,14 @@ public class QualityReportPdfService {
     return paragraph;
   }
 
+  private Paragraph outcomeLine(String outcome, RuleEvaluationDto rule, Fonts fonts) {
+    Paragraph paragraph = new Paragraph();
+    paragraph.setSpacingBefore(2);
+    paragraph.add(new Chunk(clean(outcome), fonts.bold));
+    paragraph.add(new Chunk("  ·  " + clean(orDash(rule.ruleId())) + "  ·  " + clean(orDash(rule.message())), fonts.small));
+    return paragraph;
+  }
+
   private Paragraph ruleLine(RuleEvaluationDto rule, Fonts fonts) {
     Paragraph paragraph = new Paragraph();
     paragraph.setSpacingBefore(2);
@@ -600,6 +627,14 @@ public class QualityReportPdfService {
   }
 
   // ===== Formatting helpers =====
+
+  static boolean isDominantStateShare(double percentage) {
+    return percentage > 30.0;
+  }
+
+  static String formatStateShare(double percentage) {
+    return Math.round(Math.max(0.0, Math.min(100.0, percentage))) + "%";
+  }
 
   private static String titleOf(QualityReportExportRequest request) {
     return notBlank(request.title()) ? request.title().trim() : "Pompom creative quality report";

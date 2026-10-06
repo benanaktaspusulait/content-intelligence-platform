@@ -40,6 +40,7 @@ public record QualityReportDto(
     int criticalCount,
     int warningCount,
     Map<String, Double> familyScores,
+    List<RuleEvaluationDto> passedRules,
     List<RuleEvaluationDto> failedRules,
     List<RuleEvaluationDto> unknownRules,
     List<RuleEvaluationDto> notApplicableRules,
@@ -58,7 +59,8 @@ public record QualityReportDto(
     QualityProvenanceDto provenance,
     Map<String, Object> preRenderAssessment,
     Map<String, Object> videoPlanIr,
-    Map<String, Object> familyAssessments) {
+    Map<String, Object> familyAssessments,
+    Double canonicalEvidenceConfidence) {
 
   /**
    * Backward-compatible constructor for callers that only know the original report shape.
@@ -96,6 +98,7 @@ public record QualityReportDto(
         criticalCount,
         warningCount,
         familyScores,
+        List.of(),
         failedRules,
         unknownRules,
         notApplicableRules,
@@ -114,6 +117,7 @@ public record QualityReportDto(
         provenance,
         Map.of(),
         Map.of(),
-        Map.of());
+        Map.of(),
+        null);
   }
 }

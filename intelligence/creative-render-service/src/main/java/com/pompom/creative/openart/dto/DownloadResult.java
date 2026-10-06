@@ -7,6 +7,7 @@ import lombok.Data;
 @Builder
 public class DownloadResult {
   private String assetPath;
+  private String originalAssetPath;
   private Long fileSizeBytes;
   private Integer width;
   private Integer height;

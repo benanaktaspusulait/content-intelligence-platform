@@ -1,7 +1,7 @@
 package com.pompom.creative.api.controller;
 
-import com.pompom.creative.domain.RenderAsset;
 import com.pompom.creative.api.MediaResourceService;
+import com.pompom.creative.domain.RenderAsset;
 import com.pompom.creative.evidence.IntelligenceValidationEvidenceClient;
 import com.pompom.creative.evidence.VisualEvidenceSubmissionDto;
 import com.pompom.creative.evidence.VisualEvidenceSubmissionResponse;
@@ -11,17 +11,16 @@ import java.time.Instant;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import org.springframework.core.io.Resource;
 import org.springframework.http.ContentDisposition;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.support.ResourceRegion;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -63,6 +62,58 @@ public class RenderAssetController {
   @GetMapping("/by-job/{jobId}")
   public List<AssetView> byJob(@PathVariable UUID jobId) {
     return assets.findByRenderJobId(jobId).stream().map(this::toView).toList();
+  }
+
+  @GetMapping("/{id}/media")
+  public ResponseEntity<?> media(
+      @PathVariable UUID id, @RequestHeader(value = "Range", required = false) String rangeHeader) {
+    RenderAsset asset = findAsset(id);
+    if (mediaResources == null) {
+      return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).build();
+    }
+    MediaResourceService.ResolvedMedia media = mediaResources.resolve(asset);
+    HttpHeaders headers = new HttpHeaders();
+    headers.set(HttpHeaders.ACCEPT_RANGES, "bytes");
+    headers.setContentType(media.mediaType());
+    if (rangeHeader == null || rangeHeader.isBlank()) {
+      headers.setContentLength(media.length());
+      return ResponseEntity.ok().headers(headers).body(media.resource());
+    }
+
+    MediaResourceService.RangedMedia region = mediaResources.range(media, rangeHeader);
+    org.springframework.http.HttpRange httpRange =
+        org.springframework.http.HttpRange.parseRanges(rangeHeader).getFirst();
+    long start = httpRange.getRangeStart(media.length());
+    long end = httpRange.getRangeEnd(media.length());
+    headers.set(HttpHeaders.CONTENT_RANGE, "bytes " + start + "-" + end + "/" + media.length());
+    headers.setContentLength(end - start + 1);
+    return ResponseEntity.status(HttpStatus.PARTIAL_CONTENT)
+        .headers(headers)
+        .body(region.resource());
+  }
+
+  @GetMapping("/{id}/download")
+  public ResponseEntity<Resource> download(@PathVariable UUID id) {
+    RenderAsset asset = findAsset(id);
+    if (mediaResources == null) {
+      return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).build();
+    }
+    MediaResourceService.ResolvedMedia media = mediaResources.resolve(asset);
+    HttpHeaders headers = new HttpHeaders();
+    headers.setContentType(media.mediaType());
+    headers.setContentLength(media.length());
+    headers.setContentDisposition(
+        ContentDisposition.attachment().filename(media.filename()).build());
+    return ResponseEntity.ok().headers(headers).body(media.resource());
+  }
+
+  private RenderAsset findAsset(UUID id) {
+    return assets
+        .findById(id)
+        .orElseThrow(
+            () ->
+                new org.springframework.web.server.ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "Asset not found"));
   }
 
   @PostMapping("/{id}/visual-evidence")

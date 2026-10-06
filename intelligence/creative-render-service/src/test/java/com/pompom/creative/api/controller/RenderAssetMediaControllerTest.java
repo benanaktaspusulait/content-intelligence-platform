@@ -5,6 +5,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.pompom.creative.api.MediaResourceService;
 import com.pompom.creative.domain.RenderAsset;
 import com.pompom.creative.repository.RenderAssetRepository;
 import com.pompom.creative.service.AssetLibraryManager;
@@ -36,14 +37,16 @@ class RenderAssetMediaControllerTest {
 
   @BeforeEach
   void setUp() throws Exception {
-    asset = RenderAsset.builder().id(UUID.randomUUID()).assetType(RenderAsset.AssetType.VIDEO).build();
+    asset =
+        RenderAsset.builder().id(UUID.randomUUID()).assetType(RenderAsset.AssetType.VIDEO).build();
     media = tempDir.resolve("render-v1.mp4");
     Files.writeString(media, "0123456789", StandardCharsets.UTF_8);
     when(assetRepository.findById(asset.getId())).thenReturn(Optional.of(asset));
     when(assetLibraryManager.resolveStoredPath(asset)).thenReturn(media);
     mvc =
         MockMvcBuilders.standaloneSetup(
-                new RenderAssetController(assetRepository, null, assetLibraryManager))
+                new RenderAssetController(
+                    assetRepository, null, new MediaResourceService(assetLibraryManager)))
             .build();
   }
 
@@ -56,9 +59,7 @@ class RenderAssetMediaControllerTest {
 
   @Test
   void streamsAByteRangeForBrowserSeeking() throws Exception {
-    mvc.perform(
-            get("/api/v1/render-assets/{id}/media", asset.getId())
-                .header("Range", "bytes=2-5"))
+    mvc.perform(get("/api/v1/render-assets/{id}/media", asset.getId()).header("Range", "bytes=2-5"))
         .andExpect(status().isPartialContent())
         .andExpect(header().string("Content-Range", "bytes 2-5/10"));
   }
@@ -67,6 +68,8 @@ class RenderAssetMediaControllerTest {
   void downloadsMediaAsAnAttachment() throws Exception {
     mvc.perform(get("/api/v1/render-assets/{id}/download", asset.getId()))
         .andExpect(status().isOk())
-        .andExpect(header().string("Content-Disposition", org.hamcrest.Matchers.containsString("attachment")));
+        .andExpect(
+            header()
+                .string("Content-Disposition", org.hamcrest.Matchers.containsString("attachment")));
   }
 }

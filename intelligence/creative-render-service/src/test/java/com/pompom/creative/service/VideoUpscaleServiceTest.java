@@ -24,9 +24,10 @@ class VideoUpscaleServiceTest {
     Path video = tempDir.resolve("render-v1.mp4");
     Files.writeString(video, "low-resolution-video", StandardCharsets.UTF_8);
 
-    VideoUpscaleService service = new VideoUpscaleService(script, true, "1920x1080", 10);
-
-    assertThat(service.upscale(video)).isEqualTo(video);
+    VideoUpscaleService.UpscaleResult result = service.upscale(video);
+    assertThat(result.finalPath()).isEqualTo(video);
+    assertThat(result.originalPath()).isNotNull();
+    assertThat(Files.exists(result.originalPath())).isTrue();
     assertThat(Files.readString(log)).contains("-r 1920x1080 " + video);
     assertThat(Files.readString(video)).isEqualTo("low-resolution-video");
   }
@@ -37,8 +38,6 @@ class VideoUpscaleServiceTest {
     Path video = tempDir.resolve("render-v1.mp4");
     Files.writeString(video, "video", StandardCharsets.UTF_8);
 
-    VideoUpscaleService service = new VideoUpscaleService(missingScript, false, "1920x1080", 10);
-
-    assertThat(service.upscale(video)).isEqualTo(video);
+    assertThat(service.upscale(video).finalPath()).isEqualTo(video);
   }
 }

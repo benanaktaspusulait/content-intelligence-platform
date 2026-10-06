@@ -43,16 +43,24 @@ public class VideoUpscaleService {
   }
 
   /**
-   * Upscale a downloaded video in place. The supplied script is responsible for preserving the
-   * original path; the bundled production script uses a temporary file and replaces it atomically.
+   * Preserve the downloaded source and upscale the working path in place.
    */
-  public Path upscale(Path input) {
-    if (!enabled) {
-      return input;
-    }
+  public UpscaleResult upscale(Path input) {
     Path video = input.toAbsolutePath().normalize();
+    if (!enabled) {
+      return new UpscaleResult(video, null);
+    }
     if (!Files.isRegularFile(video)) {
       throw new IllegalArgumentException("Video to upscale is not a regular file: " + video);
+    }
+
+    Path original =
+        video.resolveSibling(
+            video.getFileName().toString().replaceFirst("\\.mp4$", "-source-480p.mp4"));
+    try {
+      Files.copy(video, original, java.nio.file.StandardCopyOption.REPLACE_EXISTING);
+    } catch (IOException error) {
+      throw new IllegalStateException("Could not preserve downloaded source video", error);
     }
 
     Path script = resolveScriptPath();
@@ -82,7 +90,7 @@ public class VideoUpscaleService {
         throw new IllegalStateException("Video upscale produced no usable output: " + video);
       }
       log.info("Upscaled video to {}: {}", targetResolution, video);
-      return video;
+      return new UpscaleResult(video, original);
     } catch (InterruptedException error) {
       Thread.currentThread().interrupt();
       throw new IllegalStateException("Video upscale interrupted", error);
@@ -90,6 +98,8 @@ public class VideoUpscaleService {
       throw new IllegalStateException("Could not start video upscale script", error);
     }
   }
+
+  public record UpscaleResult(Path finalPath, Path originalPath) {}
 
   private Path resolveScriptPath() {
     if (scriptPath.isAbsolute()) {
