@@ -9,6 +9,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
 import java.util.List;
 import java.util.Map;
 import org.slf4j.Logger;
@@ -73,6 +74,7 @@ public class QualityMlClient {
       HttpRequest httpRequest =
           HttpRequest.newBuilder(
                   URI.create(mlServiceUrl + "/api/v1/quality/validate"))
+              .timeout(Duration.ofSeconds(180))
               .header("Content-Type", "application/json")
               .POST(HttpRequest.BodyPublishers.ofString(requestBody, StandardCharsets.UTF_8))
               .build();

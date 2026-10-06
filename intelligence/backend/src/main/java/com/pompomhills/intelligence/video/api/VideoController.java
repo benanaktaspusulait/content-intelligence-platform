@@ -101,7 +101,7 @@ public class VideoController {
 
   @GetMapping("/prompt-workspaces")
   public List<VideoDtos.PromptWorkspace> promptWorkspaces(
-      @RequestParam(defaultValue = "library/POMPOM_HILLS_PRODUCTION") String relativeDirectory) {
+      @RequestParam(defaultValue = "library/POMPOM_HILLS_PRODUCTION/09_SOCIAL_REELS/new14092026") String relativeDirectory) {
     return service.promptWorkspaces(relativeDirectory);
   }
 

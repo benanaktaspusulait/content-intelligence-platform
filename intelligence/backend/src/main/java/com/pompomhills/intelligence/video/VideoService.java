@@ -285,26 +285,38 @@ public class VideoService {
     }
     Map<String, VideoEntity> ingested = videos.findAll().stream()
         .collect(java.util.stream.Collectors.toMap(VideoEntity::getRelativePath, video -> video, (first, ignored) -> first));
-    try (Stream<Path> stream = Files.walk(base)) {
-      return stream.filter(Files::isDirectory).map(folder -> {
-        try (Stream<Path> children = Files.list(folder)) {
-          List<Path> files = children.filter(Files::isRegularFile).toList();
-          List<Path> videoFiles = files.stream().filter(this::hasAllowedExtension).sorted().toList();
-          List<Path> promptFiles = files.stream().filter(this::isPromptFile).sorted().toList();
-          if (videoFiles.isEmpty() && promptFiles.isEmpty()) return null;
-          String folderPath = root.relativize(folder).toString().replace('\\', '/');
-          List<String> videosInFolder = videoFiles.stream().map(file -> root.relativize(file).toString().replace('\\', '/')).toList();
-          List<String> promptsInFolder = promptFiles.stream().map(file -> root.relativize(file).toString().replace('\\', '/')).toList();
-          String selected = videosInFolder.size() == 1 ? videosInFolder.get(0) : null;
-          VideoEntity selectedEntity = selected == null ? null : ingested.get(selected);
-          String analysis = selectedEntity == null ? "NOT_ANALYZED" : (analyses.existsByVideoIdAndAnalysisVersion(selectedEntity.getId(), CURRENT_ANALYSIS_VERSION) ? "ANALYZED" : "NOT_ANALYZED");
-          String promptStatus = promptsInFolder.isEmpty() ? "NO_PROMPT" : promptsInFolder.size() == 1 ? "AVAILABLE" : "AMBIGUOUS";
-          Instant modified = files.stream().map(this::lastModifiedInstant).filter(java.util.Objects::nonNull).max(Comparator.naturalOrder()).orElse(null);
-          return new PromptWorkspace(folder.getFileName().toString(), folderPath, videosInFolder, selected, selectedEntity == null ? null : selectedEntity.getId(), promptStatus, promptsInFolder, analysis, modified == null ? null : modified.toString());
-        } catch (IOException error) { return null; }
-      }).filter(java.util.Objects::nonNull).sorted(Comparator.comparing(PromptWorkspace::folderPath, String.CASE_INSENSITIVE_ORDER)).toList();
+    try (Stream<Path> stream = Files.list(base)) {
+      // Match Video Library: the picker contains only first-level folders. Files in
+      // nested shot/video folders are aggregated into their top-level creative.
+      return stream.filter(Files::isDirectory).map(folder -> promptWorkspaceForFolder(root, folder, ingested))
+          .filter(java.util.Objects::nonNull)
+          .sorted(Comparator.comparing(PromptWorkspace::folderPath, String.CASE_INSENSITIVE_ORDER)).toList();
     } catch (IOException error) {
       throw new IllegalStateException("Could not scan prompt workspaces", error);
+    }
+  }
+
+  private PromptWorkspace promptWorkspaceForFolder(Path root, Path folder, Map<String, VideoEntity> ingested) {
+    try (Stream<Path> descendants = Files.walk(folder)) {
+      List<Path> files = descendants.filter(Files::isRegularFile).toList();
+      List<Path> videoFiles = files.stream().filter(this::hasAllowedExtension).sorted().toList();
+      List<Path> promptFiles = files.stream().filter(this::isPromptFile).sorted().toList();
+      if (videoFiles.isEmpty() && promptFiles.isEmpty()) return null;
+      String folderPath = root.relativize(folder).toString().replace('\\', '/');
+      List<String> videosInFolder = videoFiles.stream().map(file -> root.relativize(file).toString().replace('\\', '/')).toList();
+      List<String> promptsInFolder = promptFiles.stream().map(file -> root.relativize(file).toString().replace('\\', '/')).toList();
+      String selected = videosInFolder.size() == 1 ? videosInFolder.get(0) : null;
+      VideoEntity selectedEntity = selected == null ? null : ingested.get(selected);
+      boolean anyAnalysed = videosInFolder.stream().map(ingested::get).filter(java.util.Objects::nonNull)
+          .anyMatch(video -> analyses.existsByVideoIdAndAnalysisVersion(video.getId(), CURRENT_ANALYSIS_VERSION));
+      String analysis = anyAnalysed ? "ANALYZED" : "NOT_ANALYZED";
+      String promptStatus = promptsInFolder.isEmpty() ? "NO_PROMPT" : promptsInFolder.size() == 1 ? "AVAILABLE" : "AMBIGUOUS";
+      Instant modified = files.stream().map(this::lastModifiedInstant).filter(java.util.Objects::nonNull).max(Comparator.naturalOrder()).orElse(null);
+      return new PromptWorkspace(folder.getFileName().toString(), folderPath, videosInFolder, selected,
+          selectedEntity == null ? null : selectedEntity.getId(), promptStatus, promptsInFolder, analysis,
+          modified == null ? null : modified.toString());
+    } catch (IOException error) {
+      return null;
     }
   }
 
@@ -313,7 +325,7 @@ public class VideoService {
     if (folderName == null || !folderName.matches("[A-Za-z0-9][A-Za-z0-9._-]{0,99}")) {
       throw new IllegalArgumentException("Folder name must use letters, numbers, dot, underscore, or hyphen");
     }
-    String parentValue = parentDirectory == null || parentDirectory.isBlank() ? "library/POMPOM_HILLS_PRODUCTION" : parentDirectory;
+    String parentValue = parentDirectory == null || parentDirectory.isBlank() ? "library/POMPOM_HILLS_PRODUCTION/09_SOCIAL_REELS/new14092026" : parentDirectory;
     Path root = properties.dataRoot().toAbsolutePath().normalize();
     Path parent = root.resolve(parentValue).normalize();
     Path folder = parent.resolve(folderName).normalize();

@@ -46,6 +46,7 @@ export function mediaVariant(filename: string): string {
   if (versioned) return `V${versioned[1]} ${versioned[2] === 'original' ? 'Original' : versioned[2].toUpperCase()}`;
   if (stem.endsWith('_hook_endcard_test')) return 'Hook End Card Test';
   if (stem.endsWith('_hook')) return 'Hook';
+  if (stem.endsWith('_hd_aplus')) return 'HD A+';
   if (stem.endsWith('_hd_1080x1920') || /_hd(?:_\d+)?$/.test(stem)) return 'HD';
   if (stem.endsWith('_no_text')) return 'No Text';
   return 'Original';
@@ -53,7 +54,7 @@ export function mediaVariant(filename: string): string {
 
 export function isHdFile(filename: string): boolean {
   const stem = filename.replace(/\.[^.]+$/, '').toLowerCase();
-  return /_hd(?:_\d+)?$/.test(stem) || stem.endsWith('_hd_1080x1920');
+  return /_hd(?:_[a-z0-9]+)?$/.test(stem) || stem.endsWith('_hd_1080x1920');
 }
 
 export function variantGroupKey(file: MediaFile, folderPath: string): string {

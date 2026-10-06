@@ -25,7 +25,31 @@ record RuleEvaluationDto(
     String outcome,
     String message,
     Double actualValue,
-    Double thresholdValue) {}
+    Double thresholdValue,
+    Map<String, Object> details) {
+
+  /** Keeps existing backend construction sites source-compatible while accepting ML details. */
+  RuleEvaluationDto(
+      String ruleId,
+      String ruleName,
+      String family,
+      String severity,
+      String outcome,
+      String message,
+      Double actualValue,
+      Double thresholdValue) {
+    this(
+        ruleId,
+        ruleName,
+        family,
+        severity,
+        outcome,
+        message,
+        actualValue,
+        thresholdValue,
+        Map.of());
+  }
+}
 
 record PriorityFixDto(
     String ruleId,

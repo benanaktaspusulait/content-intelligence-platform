@@ -24,6 +24,7 @@ export const routes: Routes = [
   { path: 'overview', component: OverviewPage, title: 'Overview · Pompom CI' },
   { path: 'render', component: RenderDashboardPage, title: 'Render Pipeline · Pompom CI' },
   { path: 'rule-governance', component: RuleGovernancePage, title: 'Rule Governance · Pompom CI' },
+  { path: 'quality/detail', component: QualityValidatorComponent, title: 'Prompt Detail · Pompom CI' },
   { path: 'quality', component: QualityValidatorComponent, title: 'Prompt Quality · Pompom CI' },
   { path: 'videos', component: VideoLibraryPage, title: 'Video Library · Pompom CI' },
   { path: 'videos/workbench', component: VideoAnalysisWorkbenchPage, title: 'Analysis Workbench · Pompom CI' },

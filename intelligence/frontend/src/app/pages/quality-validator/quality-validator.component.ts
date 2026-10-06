@@ -1,9 +1,20 @@
-import { Component } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { TimelineChartComponent } from './timeline-chart.component';
+
+interface PromptEditorInstance {
+  getValue(): string;
+  setValue(value: string): void;
+  updateOptions(options: { readOnly: boolean }): void;
+  layout(): void;
+  onDidChangeModelContent(listener: () => void): { dispose(): void };
+  dispose(): void;
+}
+
+const PROMPT_WORKSPACE_ROOT = 'library/POMPOM_HILLS_PRODUCTION/09_SOCIAL_REELS/new14092026';
 
 interface QualityReport {
   overallScore: number;
@@ -131,11 +142,14 @@ interface StateSegment {
 @Component({
   selector: 'app-quality-validator',
   standalone: true,
-  imports: [CommonModule, FormsModule, TimelineChartComponent],
+  imports: [CommonModule, FormsModule, TimelineChartComponent, RouterLink],
   templateUrl: './quality-validator.component.html',
   styleUrls: ['./quality-validator.component.scss']
 })
-export class QualityValidatorComponent {
+export class QualityValidatorComponent implements AfterViewInit, OnDestroy {
+  @ViewChild('promptMonaco') private promptMonaco?: ElementRef<HTMLDivElement>;
+  private promptEditor: PromptEditorInstance | null = null;
+  private updatingPromptEditor = false;
   prompt: string = '';
   contentTitle: string = '';
   contentType: string = 'SHORT';
@@ -157,9 +171,10 @@ export class QualityValidatorComponent {
   promptWorkspaces: PromptWorkspace[] = [];
   promptWorkspacesLoading = false;
   workspaceQuery = '';
-  workspaceFilter = 'ALL';
-  workspaceSort = 'MODIFIED';
+  workspaceMenuOpen = false;
+  detailMode = false;
   selectedWorkspace: PromptWorkspace | null = null;
+  selectedWorkspacePaths: string[] = [];
   selectedWorkspaceVideoPath = '';
   videoDrafts: Record<string, string> = {};
   newFolderName = '';
@@ -210,44 +225,121 @@ Visual state: sitting on mat (continuation)
 Consequence: Feels happy about mat
 Intensity: 4`;
 
-  constructor(private http: HttpClient, private router: Router, private route: ActivatedRoute) { this.loadPromptDirectories(); this.loadPromptWorkspaces(); }
+  constructor(private http: HttpClient, private router: Router, private route: ActivatedRoute, private changeDetector: ChangeDetectorRef) {
+    this.detailMode = this.route.snapshot.url.some(segment => segment.path === 'detail');
+    this.loadPromptWorkspaces();
+  }
 
   loadPromptWorkspaces(): void {
     this.promptWorkspacesLoading = true;
-    this.http.get<PromptWorkspace[]>('/api/v1/videos/prompt-workspaces?relativeDirectory=library/POMPOM_HILLS_PRODUCTION').subscribe({
+    this.http.get<PromptWorkspace[]>(`/api/v1/videos/prompt-workspaces?relativeDirectory=${encodeURIComponent(PROMPT_WORKSPACE_ROOT)}`).subscribe({
       next: workspaces => {
         this.promptWorkspaces = workspaces;
         this.promptWorkspacesLoading = false;
         const requestedFolder = this.route.snapshot.queryParamMap.get('workspace');
+        const requestedPrompt = this.route.snapshot.queryParamMap.get('prompt') || undefined;
         const requestedWorkspace = requestedFolder ? workspaces.find(item => item.folderPath === requestedFolder) : null;
-        if (requestedWorkspace && !this.selectedWorkspace) this.selectWorkspace(requestedWorkspace);
+        if (requestedWorkspace && !this.selectedWorkspace) {
+          this.selectedWorkspacePaths = [requestedWorkspace.folderPath];
+          this.activateWorkspace(requestedWorkspace, requestedPrompt, undefined, false, false);
+        }
+        this.changeDetector.detectChanges();
       },
-      error: response => { this.error = response.error?.message || 'Prompt workspaces could not be loaded.'; this.promptWorkspacesLoading = false; },
+      error: response => { this.error = response.error?.message || 'Prompt workspaces could not be loaded.'; this.promptWorkspacesLoading = false; this.changeDetector.detectChanges(); },
     });
   }
 
   filteredPromptWorkspaces(): PromptWorkspace[] {
     const query = this.workspaceQuery.trim().toLowerCase();
-    const filtered = this.promptWorkspaces.filter(item => {
+    return this.promptWorkspaces.filter(item => {
       const matchesQuery = !query || `${item.creativeName} ${item.folderPath} ${item.videoCandidates.join(' ')} ${item.promptCandidates.join(' ')}`.toLowerCase().includes(query);
-      const matchesFilter = this.workspaceFilter === 'ALL'
-        || (this.workspaceFilter === 'VIDEO' && item.videoCandidates.length > 0)
-        || (this.workspaceFilter === 'NO_VIDEO' && item.videoCandidates.length === 0)
-        || (this.workspaceFilter === 'PROMPT' && item.promptStatus === 'AVAILABLE')
-        || (this.workspaceFilter === 'NO_PROMPT' && item.promptStatus === 'NO_PROMPT')
-        || (this.workspaceFilter === 'ANALYZED' && item.analysisStatus === 'ANALYZED')
-        || (this.workspaceFilter === 'NOT_ANALYZED' && item.analysisStatus === 'NOT_ANALYZED');
-      return matchesQuery && matchesFilter;
+      return matchesQuery;
     });
-    return [...filtered].sort((left, right) => this.workspaceSort === 'NAME'
-      ? left.creativeName.localeCompare(right.creativeName)
-      : (right.modifiedAt || '').localeCompare(left.modifiedAt || ''));
+  }
+
+  openWorkspaceMenu(): void { this.workspaceMenuOpen = true; }
+  toggleWorkspaceMenu(event: MouseEvent): void { event.stopPropagation(); this.workspaceMenuOpen = !this.workspaceMenuOpen; }
+  closeWorkspaceMenu(): void { this.workspaceMenuOpen = false; }
+  setWorkspaceQuery(event: Event): void { this.workspaceQuery = (event.target as HTMLInputElement).value; this.workspaceMenuOpen = true; }
+
+  selectedPromptWorkspaces(): PromptWorkspace[] {
+    const selected = new Set(this.selectedWorkspacePaths);
+    return this.promptWorkspaces.filter(workspace => selected.has(workspace.folderPath));
+  }
+
+  isWorkspaceSelected(path: string): boolean { return this.selectedWorkspacePaths.includes(path); }
+  toggleWorkspace(workspace: PromptWorkspace): void {
+    if (this.isWorkspaceSelected(workspace.folderPath)) {
+      this.selectedWorkspacePaths = this.selectedWorkspacePaths.filter(path => path !== workspace.folderPath);
+      if (this.selectedWorkspace?.folderPath === workspace.folderPath) {
+        const next = this.selectedPromptWorkspaces()[0] || null;
+        this.selectedWorkspace = null;
+        if (next) this.activateWorkspace(next, undefined, undefined, false, false);
+      }
+      return;
+    }
+    this.selectedWorkspacePaths = [...this.selectedWorkspacePaths, workspace.folderPath];
+    if (!this.selectedWorkspace) this.activateWorkspace(workspace, undefined, undefined, false, false);
+  }
+  selectAllFilteredWorkspaces(): void {
+    const paths = new Set(this.selectedWorkspacePaths);
+    const filtered = this.filteredPromptWorkspaces();
+    filtered.forEach(workspace => paths.add(workspace.folderPath));
+    this.selectedWorkspacePaths = [...paths];
+    if (!this.selectedWorkspace && filtered[0]) this.activateWorkspace(filtered[0], undefined, undefined, false, false);
+  }
+  clearWorkspaceSelection(): void { this.selectedWorkspacePaths = []; this.selectedWorkspace = null; this.selectedWorkspaceVideoPath = ''; }
+  removeWorkspace(path: string): void {
+    const workspace = this.promptWorkspaces.find(item => item.folderPath === path);
+    if (workspace) this.toggleWorkspace(workspace);
+  }
+
+  ngAfterViewInit(): void {
+    if (!this.promptMonaco) return;
+    import('monaco-editor/esm/vs/editor/editor.api').then(monaco => {
+      if (!this.promptMonaco) return;
+      this.promptEditor = monaco.editor.create(this.promptMonaco.nativeElement, {
+        value: this.prompt,
+        language: 'markdown',
+        theme: 'vs-light',
+        automaticLayout: true,
+        minimap: { enabled: false },
+        wordWrap: 'on',
+        lineNumbers: 'on',
+        readOnly: false,
+        padding: { top: 14, bottom: 14 },
+        fontSize: 13,
+        scrollBeyondLastLine: false,
+      });
+      this.promptEditor.onDidChangeModelContent(() => {
+        if (!this.updatingPromptEditor) this.prompt = this.promptEditor?.getValue() || '';
+      });
+      window.setTimeout(() => this.promptEditor?.layout(), 0);
+    });
+  }
+
+  ngOnDestroy(): void { this.promptEditor?.dispose(); }
+  private setPromptText(value: string): void {
+    this.prompt = value;
+    if (this.promptEditor && this.promptEditor.getValue() !== value) {
+      this.updatingPromptEditor = true;
+      this.promptEditor.setValue(value);
+      this.updatingPromptEditor = false;
+      window.setTimeout(() => this.promptEditor?.layout(), 0);
+    }
   }
 
   selectWorkspace(workspace: PromptWorkspace, promptPath?: string, videoPath?: string): void {
+    if (!this.isWorkspaceSelected(workspace.folderPath)) this.selectedWorkspacePaths = [...this.selectedWorkspacePaths, workspace.folderPath];
+    this.activateWorkspace(workspace, promptPath, videoPath, true, true);
+  }
+
+  private activateWorkspace(workspace: PromptWorkspace, promptPath?: string, videoPath?: string, scroll = true, navigate = false): void {
     const existingVideoSelection = this.selectedWorkspace?.folderPath === workspace.folderPath ? this.selectedWorkspaceVideoPath : '';
     this.selectedWorkspace = workspace;
+    this.workspaceMenuOpen = false;
     this.selectedWorkspaceVideoPath = videoPath || existingVideoSelection || workspace.selectedVideoPath || '';
+    if (this.selectedWorkspaceVideoPath) this.videoDrafts[workspace.folderPath] = this.selectedWorkspaceVideoPath;
     this.selectedPromptDirectory = workspace.folderPath;
     this.contentTitle = this.futureVideoName.trim() || workspace.creativeName;
     this.contentType = workspace.folderPath.includes('SOCIAL_REELS') ? 'REEL' : 'SHORT';
@@ -256,19 +348,22 @@ Intensity: 4`;
     this.validationRecordId = null;
     this.report = null;
     this.error = null;
-    this.router.navigate(['/quality'], { queryParams: { workspace: workspace.folderPath } });
+    if (navigate) {
+      this.router.navigate(['/quality/detail'], { queryParams: { workspace: workspace.folderPath, ...(promptPath ? { prompt: promptPath } : {}) } });
+    }
     const candidate = promptPath || (workspace.promptCandidates.length === 1 ? workspace.promptCandidates[0] : null);
     if (candidate) {
-      this.selectPromptFile({ name: candidate.split('/').pop() || 'Prompt', relativePath: candidate, folder: workspace.folderPath, sizeBytes: null, modifiedAt: workspace.modifiedAt });
+      this.selectPromptFile({ name: candidate.split('/').pop() || 'Prompt', relativePath: candidate, folder: this.promptFolder(candidate, workspace.folderPath), sizeBytes: null, modifiedAt: workspace.modifiedAt });
     } else {
-      this.prompt = '';
+      this.setPromptText('');
       this.selectedPromptPath = '';
     }
+    if (scroll) window.setTimeout(() => document.getElementById('prompt-editor')?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 0);
   }
 
   openWorkspace(workspace: PromptWorkspace): void {
-    if (workspace.videoCandidates.length > 1 || workspace.promptCandidates.length > 1) return;
-    this.selectWorkspace(workspace, workspace.promptCandidates[0], workspace.videoCandidates[0]);
+    if (workspace.promptStatus !== 'NO_PROMPT' && (workspace.videoCandidates.length > 1 || workspace.promptCandidates.length > 1)) return;
+    this.selectWorkspace(workspace, workspace.promptCandidates[0], workspace.videoCandidates.length === 1 ? workspace.videoCandidates[0] : undefined);
   }
 
   chooseVideoCandidate(workspace: PromptWorkspace, value: string): void {
@@ -282,7 +377,7 @@ Intensity: 4`;
     const name = this.newFolderName.trim();
     if (!name) return;
     this.creatingFolder = true;
-    this.http.post<PromptWorkspace>('/api/v1/videos/prompt-workspaces/folders', { parentDirectory: 'library/POMPOM_HILLS_PRODUCTION', folderName: name }).subscribe({
+    this.http.post<PromptWorkspace>('/api/v1/videos/prompt-workspaces/folders', { parentDirectory: PROMPT_WORKSPACE_ROOT, folderName: name }).subscribe({
       next: workspace => { this.creatingFolder = false; this.newFolderName = ''; this.promptWorkspaces = [workspace, ...this.promptWorkspaces]; this.selectWorkspace(workspace); },
       error: response => { this.creatingFolder = false; this.error = response.error?.message || 'Prompt workspace folder could not be created.'; },
     });
@@ -300,7 +395,7 @@ Intensity: 4`;
   selectPromptDirectory(): void {
     this.promptFiles = [];
     this.selectedPromptPath = '';
-    this.prompt = '';
+    this.setPromptText('');
     this.importMessage = '';
     if (this.selectedPromptDirectory) this.loadPromptFiles();
   }
@@ -338,26 +433,28 @@ Intensity: 4`;
     this.selectedPromptLoading = true;
     this.error = null;
     if (file.rawText && file.contentId && file.promptVersionId) {
-      this.prompt = file.rawText;
+        this.setPromptText(file.rawText);
           this.contentTitle = this.futureVideoName.trim() || file.title || this.titleFromFolder(file.folder);
       this.contentType = file.folder.includes('SOCIAL_REELS') ? 'REEL' : 'SHORT';
       this.contentId = String(file.contentId);
-      this.promptVersionId = String(file.promptVersionId);
-      this.validationRecordId = null;
-      this.report = null;
-      this.selectedPromptLoading = false;
+        this.promptVersionId = String(file.promptVersionId);
+        this.validationRecordId = null;
+        this.report = null;
+        this.selectedPromptLoading = false;
+        this.changeDetector.detectChanges();
       return;
     }
     this.http.get<PromptFile[]>(`/api/v1/intelligence/contents/prompt-library?sourceDirectory=${encodeURIComponent(file.folder)}`).subscribe({
       next: records => {
         const linked = records.find(record => record.sourcePath === file.relativePath);
         if (linked?.rawText && linked.contentId && linked.promptVersionId) {
-          this.prompt = linked.rawText;
+          this.setPromptText(linked.rawText);
           this.contentTitle = this.futureVideoName.trim() || linked.title || this.titleFromFolder(file.folder);
           this.contentType = file.folder.includes('SOCIAL_REELS') ? 'REEL' : 'SHORT';
           this.contentId = String(linked.contentId);
           this.promptVersionId = String(linked.promptVersionId);
           this.selectedPromptLoading = false;
+          this.changeDetector.detectChanges();
           return;
         }
         this.loadPromptFileFromFilesystem(file);
@@ -369,7 +466,7 @@ Intensity: 4`;
   private loadPromptFileFromFilesystem(file: PromptFile): void {
     this.http.get<{ relativePath: string; content: string }>(`/api/v1/videos/metadata?path=${encodeURIComponent(file.relativePath)}`).subscribe({
       next: result => {
-        this.prompt = result.content;
+        this.setPromptText(result.content);
         this.contentTitle = this.futureVideoName.trim() || this.titleFromFolder(file.folder);
         this.contentType = file.folder.includes('SOCIAL_REELS') ? 'REEL' : 'SHORT';
         this.contentId = '';
@@ -377,14 +474,30 @@ Intensity: 4`;
         this.validationRecordId = null;
         this.report = null;
         this.selectedPromptLoading = false;
+        this.changeDetector.detectChanges();
       },
-      error: response => { this.error = response.error?.message || 'Selected prompt could not be loaded.'; this.selectedPromptLoading = false; },
+      error: response => { this.error = response.error?.message || 'Selected prompt could not be loaded.'; this.selectedPromptLoading = false; this.changeDetector.detectChanges(); },
     });
   }
 
+  promptFolder(path: string, fallback: string): string {
+    const lastSlash = path.lastIndexOf('/');
+    return lastSlash > 0 ? path.slice(0, lastSlash) : fallback;
+  }
+
+  promptName(path: string): string {
+    const folder = this.promptFolder(path, '');
+    return folder.split('/').filter(Boolean).pop() || path.split('/').pop() || 'Prompt';
+  }
+
   startNewPrompt(): void {
-    this.prompt = ''; this.contentTitle = ''; this.futureVideoName = ''; this.contentType = 'SHORT'; this.contentId = ''; this.promptVersionId = '';
+    this.setPromptText(''); this.contentTitle = ''; this.futureVideoName = ''; this.contentType = 'SHORT'; this.contentId = ''; this.promptVersionId = '';
     this.selectedPromptPath = ''; this.validationRecordId = null; this.report = null; this.error = null;
+    if (!this.detailMode) {
+      this.clearWorkspaceSelection();
+      return;
+    }
+    this.router.navigate(['/quality']);
   }
 
   titleFromFolder(folder: string): string {
@@ -405,6 +518,7 @@ Intensity: 4`;
     }
 
     this.loading = true;
+    this.promptEditor?.updateOptions({ readOnly: true });
     this.error = null;
     this.report = null;
 
@@ -426,25 +540,40 @@ Intensity: 4`;
           this.validationRecordId = null;
           this.report = response as QualityReport;
         }
-        this.loading = false;
+        this.finishValidation();
       },
       error: (err) => {
         this.error = err.error?.message || 'Validation failed. Please try again.';
-        this.loading = false;
+        this.finishValidation();
         console.error('Validation error:', err);
       }
     });
   }
 
+  private finishValidation(): void {
+    this.loading = false;
+    this.promptEditor?.updateOptions({ readOnly: false });
+    this.changeDetector.detectChanges();
+  }
+
+  exportReportPdf(): void {
+    if (!this.report) return;
+
+    const previousTitle = document.title;
+    document.title = `${this.contentTitle || 'Pompom Quality Report'} - Quality Report`;
+    window.print();
+    window.setTimeout(() => { document.title = previousTitle; }, 1000);
+  }
+
   clearPrompt(): void {
-    this.prompt = '';
+    this.setPromptText('');
     this.report = null;
     this.error = null;
     this.validationRecordId = null;
   }
 
   loadSamplePrompt(): void {
-    this.prompt = this.samplePrompt;
+    this.setPromptText(this.samplePrompt);
     this.report = null;
     this.error = null;
     this.validationRecordId = null;

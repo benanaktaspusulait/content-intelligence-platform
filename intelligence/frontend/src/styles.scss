@@ -27,6 +27,26 @@
 }
 
 * { box-sizing: border-box; }
+
+@media print {
+  @page { size: auto; margin: 12mm; }
+  .quality-validator-container { max-width: none; margin: 0; padding: 0; }
+  .quality-validator-container > .header,
+  .quality-validator-container > .workspace-picker,
+  .quality-validator-container > .prompt-section,
+  .quality-validator-container > .alert,
+  .report-export-button { display: none !important; }
+  .report-section { display: block !important; }
+  .report-toolbar { margin: 0 0 12px; padding: 0 0 10px; border: 0; border-bottom: 2px solid #294332; }
+  .quality-validator-container .card { box-shadow: none !important; break-inside: avoid; page-break-inside: avoid; }
+  .quality-validator-container .card-header,
+  .quality-validator-container .card-body,
+  .quality-validator-container .card-footer { break-inside: avoid; page-break-inside: avoid; }
+  .quality-validator-container .timeline-visualization,
+  .quality-validator-container .timeline-preview { break-inside: auto; page-break-inside: auto; }
+  .quality-validator-container .plan-details pre { max-height: none; overflow: visible; }
+  .quality-validator-container .family-bar-fill { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+}
 html { min-width: 320px; min-height: 100%; background: var(--paper); }
 body { margin: 0; min-height: 100dvh; background: var(--paper); color: var(--ink); font-size: 14px; line-height: 1.45; }
 button, input, select { font: inherit; letter-spacing: 0; }
