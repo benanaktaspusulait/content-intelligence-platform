@@ -148,8 +148,10 @@ interface StateSegment {
 })
 export class QualityValidatorComponent implements AfterViewInit, OnDestroy {
   @ViewChild('promptMonaco') private promptMonaco?: ElementRef<HTMLDivElement>;
+  @ViewChild(TimelineChartComponent, { read: ElementRef }) private timelineChart?: ElementRef<HTMLElement>;
   private promptEditor: PromptEditorInstance | null = null;
   private updatingPromptEditor = false;
+  exportingPdf = false;
   prompt: string = '';
   contentTitle: string = '';
   contentType: string = 'SHORT';
@@ -556,13 +558,112 @@ Intensity: 4`;
     this.changeDetector.detectChanges();
   }
 
-  exportReportPdf(): void {
-    if (!this.report) return;
+  /** Asks the backend to render the current report as a PDF and downloads it directly. */
+  async exportReportPdf(): Promise<void> {
+    if (!this.report || this.exportingPdf) return;
 
-    const previousTitle = document.title;
-    document.title = `${this.contentTitle || 'Pompom Quality Report'} - Quality Report`;
-    window.print();
-    window.setTimeout(() => { document.title = previousTitle; }, 1000);
+    this.exportingPdf = true;
+    this.error = null;
+    this.changeDetector.detectChanges();
+
+    const timelineChartPng = await this.captureTimelineChartPng();
+    const payload = {
+      report: this.report,
+      title: this.contentTitle || null,
+      validationRecordId: this.validationRecordId,
+      timelineChartPng,
+    };
+
+    this.http.post('/api/v1/intelligence/quality/report/export-pdf', payload, { responseType: 'blob' }).subscribe({
+      next: blob => {
+        this.downloadBlob(blob, this.pdfFileName());
+        this.exportingPdf = false;
+        this.changeDetector.detectChanges();
+      },
+      error: async response => {
+        this.error = await this.exportErrorMessage(response);
+        this.exportingPdf = false;
+        this.changeDetector.detectChanges();
+      },
+    });
+  }
+
+  private pdfFileName(): string {
+    const slug = (this.contentTitle || 'pompom')
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '');
+    return `${slug || 'pompom'}-quality-report.pdf`;
+  }
+
+  private downloadBlob(blob: Blob, fileName: string): void {
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = fileName;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    window.setTimeout(() => URL.revokeObjectURL(url), 1000);
+  }
+
+  private async exportErrorMessage(response: any): Promise<string> {
+    const fallback = 'PDF export failed. Please try again.';
+    if (response?.error instanceof Blob) {
+      try {
+        const problem = JSON.parse(await response.error.text());
+        return problem.detail || problem.message || fallback;
+      } catch {
+        return fallback;
+      }
+    }
+    return response?.error?.detail || response?.error?.message || fallback;
+  }
+
+  /** Rasterises the timeline SVG to a base64 PNG (2x) so the backend can embed it. Returns null on failure. */
+  private async captureTimelineChartPng(): Promise<string | null> {
+    const svg = this.timelineChart?.nativeElement.querySelector('svg.timeline-svg') as SVGSVGElement | null;
+    if (!svg) return null;
+
+    const viewBox = svg.viewBox.baseVal;
+    const width = viewBox.width || 1200;
+    const height = viewBox.height || 400;
+    const scale = 2;
+
+    const clone = svg.cloneNode(true) as SVGSVGElement;
+    clone.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+    clone.setAttribute('width', String(width));
+    clone.setAttribute('height', String(height));
+    clone.setAttribute('font-family', 'Helvetica, Arial, sans-serif');
+    const background = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+    background.setAttribute('width', String(width));
+    background.setAttribute('height', String(height));
+    background.setAttribute('fill', '#ffffff');
+    clone.insertBefore(background, clone.firstChild);
+
+    const svgUrl = URL.createObjectURL(new Blob([new XMLSerializer().serializeToString(clone)], { type: 'image/svg+xml;charset=utf-8' }));
+    try {
+      const image = await new Promise<HTMLImageElement>((resolve, reject) => {
+        const img = new Image();
+        img.onload = () => resolve(img);
+        img.onerror = () => reject(new Error('Timeline chart could not be rasterised'));
+        img.src = svgUrl;
+      });
+      const canvas = document.createElement('canvas');
+      canvas.width = width * scale;
+      canvas.height = height * scale;
+      const context = canvas.getContext('2d');
+      if (!context) return null;
+      context.drawImage(image, 0, 0, canvas.width, canvas.height);
+      return canvas.toDataURL('image/png');
+    } catch (error) {
+      console.warn('Timeline chart snapshot skipped:', error);
+      return null;
+    } finally {
+      URL.revokeObjectURL(svgUrl);
+    }
   }
 
   clearPrompt(): void {

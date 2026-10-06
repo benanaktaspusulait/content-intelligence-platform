@@ -88,8 +88,8 @@
         <strong>{{ contentTitle || 'Pompom creative quality report' }}</strong>
         <small>Generated from the completed analysis above</small>
       </div>
-      <button class="btn btn-outline-secondary btn-sm report-export-button" type="button" (click)="exportReportPdf()">
-        Export PDF
+      <button class="btn btn-outline-secondary btn-sm report-export-button" type="button" [disabled]="exportingPdf" (click)="exportReportPdf()">
+        {{ exportingPdf ? 'Generating PDF…' : 'Export PDF' }}
       </button>
     </div>
 
