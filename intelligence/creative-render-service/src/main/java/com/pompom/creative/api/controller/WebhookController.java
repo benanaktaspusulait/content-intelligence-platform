@@ -22,6 +22,8 @@ import org.springframework.web.bind.annotation.*;
 public class WebhookController {
 
   private final WebhookService webhookService;
+  private final MetaPublicCommentWebhookNormalizer commentNormalizer;
+  private final MetaPublicCommentIngestionService commentIngestion;
 
   @Value("${pompom.webhooks.tiktok.secret:}")
   private String tiktokWebhookSecret;
@@ -107,6 +109,7 @@ public class WebhookController {
       }
 
       webhookService.receiveWebhook(PlatformType.FACEBOOK, payload, signature);
+      commentNormalizer.normalize(payload).ifPresent(commentIngestion::ingest);
 
       return ResponseEntity.ok(Map.of("status", "received"));
 
@@ -134,6 +137,7 @@ public class WebhookController {
       }
 
       webhookService.receiveWebhook(PlatformType.INSTAGRAM, payload, signature);
+      commentNormalizer.normalize(payload).ifPresent(commentIngestion::ingest);
 
       return ResponseEntity.ok(Map.of("status", "received"));
 
