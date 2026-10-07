@@ -1,0 +1,209 @@
+POMPOM HILLS — ABSURD MOMENTS
+EPISODE: LUCA & THE BALL-MULTIPLYING CROCODILE
+FORMAT: 15 seconds, vertical 9:16, image-to-video
+
+USE THE PROVIDED FIRST-FRAME IMAGE AS THE AUTHORITATIVE VISUAL REFERENCE.
+Preserve Luca exactly as shown in the reference image.
+Preserve the same green crocodile, garden, treehouse, lighting, camera angle, ball colours, proportions, and overall 3D Pompom Hills style.
+DO NOT redesign Luca.
+DO NOT redesign the crocodile.
+DO NOT replace the scene.
+DO NOT add a pond.
+DO NOT change the balls to only red balls.
+DO NOT add extra characters.
+
+SERIES TONE:
+Absurd Moments.
+Fast, visual, silly physical comedy.
+No educational dialogue.
+The joke must work with sound OFF.
+
+CORE ABSURD RULE:
+Every time a ball goes into the crocodile’s mouth, it spits back MORE balls than it received.
+
+IMPORTANT:
+The crocodile is a silly toy-like character, not a predator.
+It NEVER bites, chases, threatens, or attacks Luca.
+The balls are soft lightweight play balls.
+The crocodile behaves like a ridiculous living ball machine.
+
+CAMERA:
+One continuous shot.
+Stable camera.
+No camera rotation.
+No cutaways.
+No establishing shot.
+Keep Luca and the crocodile readable in the same frame whenever possible.
+Do not zoom excessively.
+Do not change location.
+
+--------------------------------------------------
+0.0–0.8 SEC — FIRST-FRAME HOOK
+--------------------------------------------------
+START EXACTLY FROM THE PROVIDED IMAGE.
+
+Luca is already recoiling in surprise.
+The crocodile’s huge open mouth is already full of colourful soft balls.
+
+Immediately:
+PTOO!
+
+ONE colourful ball shoots out of the crocodile’s mouth toward Luca.
+
+Luca flinches and catches/blocks it with both hands.
+
+No pause.
+
+--------------------------------------------------
+0.8–3.5 SEC — FIRST ACTION
+--------------------------------------------------
+Luca quickly tosses that ONE ball back into the crocodile’s open mouth.
+
+GULP.
+
+The crocodile freezes for half a beat.
+Its cheeks puff slightly.
+
+PTOO-PTOO-PTOO!
+
+It spits out THREE colourful balls in quick succession.
+
+Luca dodges one, catches one, and one bounces off the grass beside him.
+
+Keep the action fast and readable.
+
+--------------------------------------------------
+3.5–6.5 SEC — ESCALATION
+--------------------------------------------------
+Luca grabs TWO nearby balls and throws BOTH back into the crocodile’s mouth.
+
+GULP-GULP.
+
+The crocodile’s cheeks puff much bigger.
+
+For one short beat, everything is silent.
+
+Then:
+
+PTOO-PTOO-PTOO-PTOO-PTOO-PTOO!
+
+A burst of SIX soft balls fires out rapidly.
+
+Luca jumps backward while balls bounce around his feet.
+
+--------------------------------------------------
+6.5–9.5 SEC — LUCA TRIES TO STOP IT
+--------------------------------------------------
+Luca raises both hands as if saying “enough.”
+
+He carefully picks up only ONE ball.
+
+He slowly rolls it toward the crocodile instead of throwing it.
+
+The crocodile gently catches it.
+
+GULP.
+
+Luca waits nervously.
+
+--------------------------------------------------
+9.5–11.5 SEC — FAKE RESOLUTION
+--------------------------------------------------
+The crocodile returns exactly ONE ball.
+
+PTOO.
+
+Luca catches it.
+
+Both Luca and the crocodile relax.
+
+The crocodile closes its mouth and smiles innocently.
+
+Luca smiles with relief.
+
+Hold this calm moment for LESS THAN ONE SECOND.
+
+--------------------------------------------------
+11.5–15.0 SEC — HUGE FINAL TWIST
+--------------------------------------------------
+The crocodile suddenly gets a strange hiccup.
+
+HIC!
+
+Its cheeks inflate enormously.
+
+Luca’s smile disappears.
+
+Then:
+
+PTOO-PTOO-PTOO-PTOO-PTOO!
+
+A ridiculous FOUNTAIN of colourful soft balls blasts upward from the crocodile’s mouth and rains across the garden.
+
+Dozens of balls bounce everywhere.
+
+Luca tries to dodge them but becomes surrounded up to his shoulders.
+
+At the final moment, only Luca’s shocked face is visible between bouncing colourful balls.
+
+HARD CUT while balls are still falling.
+
+No fade-out.
+
+--------------------------------------------------
+MOTION / RETENTION RULES
+--------------------------------------------------
+- Something physical must happen every 1–2 seconds.
+- Luca must actively catch, throw, dodge, step back, roll, and react.
+- Do NOT make Luca stand still watching for long periods.
+- Do NOT add a second absurd rule.
+- Do NOT grow or shrink the crocodile.
+- Do NOT grow or shrink Luca.
+- Do NOT transform the garden.
+- Only the NUMBER OF BALLS increases.
+- The escalation must feel obvious: 1 ball → 3 balls → 6 balls → huge final fountain.
+- Ball motion must be large and easy to read on a phone screen.
+- Keep the crocodile friendly and funny.
+- No dangerous contact with Luca.
+- No biting.
+- No sharp attack behavior.
+
+--------------------------------------------------
+AUDIO / SOUND DESIGN
+--------------------------------------------------
+No dialogue.
+No narrator.
+No lip-sync.
+
+Use clear comedy sound effects:
+- soft GULP for balls entering
+- playful PTOO for balls exiting
+- light BOING sounds when balls bounce
+- one comic HIC before the final fountain
+
+Background music:
+Fast playful absurd preschool comedy, around 118 BPM.
+Pizzicato strings + marimba + soft percussion.
+Music builds slightly with each multiplication step.
+Brief near-silence before the final fountain.
+No vocals.
+
+--------------------------------------------------
+NEGATIVE / DO NOT GENERATE
+--------------------------------------------------
+NO text overlay.
+NO subtitles.
+NO logo.
+NO captions.
+NO pond.
+NO water.
+NO extra children.
+NO scary crocodile behavior.
+NO biting.
+NO chasing.
+NO camera spin.
+NO scene change.
+NO random objects.
+NO body deformation.
+NO extra limbs.
+NO character redesign.

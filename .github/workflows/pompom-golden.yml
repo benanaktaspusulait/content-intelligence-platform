@@ -1,0 +1,104 @@
+name: Pompom Golden Calibration
+
+on:
+  push:
+    paths:
+      - "intelligence/data/golden/**"
+      - "intelligence/ml-service/app/golden/**"
+      - "intelligence/ml-service/app/parser/**"
+      - "intelligence/ml-service/app/quality/**"
+      - "intelligence/ml-service/app/rules/**"
+      - "intelligence/ml-service/app/assessment/**"
+      - "intelligence/ml-service/app/scoring/**"
+      - "intelligence/ml-service/tests/test_pompom_golden_*.py"
+      - "intelligence/ml-service/tests/test_golden_*.py"
+      - "intelligence/backend/**"
+      - "intelligence/frontend/**"
+      - "intelligence/ml-service/app/**"
+      - "intelligence/ml-service/tests/**"
+      - ".github/workflows/pompom-golden.yml"
+  pull_request:
+    paths:
+      - "intelligence/data/golden/**"
+      - "intelligence/ml-service/app/golden/**"
+      - "intelligence/ml-service/app/parser/**"
+      - "intelligence/ml-service/app/quality/**"
+      - "intelligence/ml-service/app/rules/**"
+      - "intelligence/ml-service/app/assessment/**"
+      - "intelligence/ml-service/app/scoring/**"
+      - "intelligence/ml-service/tests/test_pompom_golden_*.py"
+      - "intelligence/ml-service/tests/test_golden_*.py"
+      - "intelligence/backend/**"
+      - "intelligence/frontend/**"
+      - "intelligence/ml-service/app/**"
+      - "intelligence/ml-service/tests/**"
+      - ".github/workflows/pompom-golden.yml"
+
+jobs:
+  deterministic-golden:
+    runs-on: ubuntu-latest
+    env:
+      POMPOM_GOLDEN_PROVIDER_MODE: FROZEN_DETERMINISTIC
+      POMPOM_SEMANTIC_ENABLED: "false"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install ML service test dependencies
+        working-directory: intelligence/ml-service
+        run: python -m pip install --upgrade pip && pip install -e ".[dev]"
+      - name: Run Golden schema and boundary tests
+        working-directory: intelligence/ml-service
+        run: >-
+          python -m pytest -vv --no-header -p no:cacheprovider
+          tests/test_pompom_golden_manifest.py
+          tests/test_pompom_golden_truth_schema.py
+          tests/test_golden_provenance.py
+          tests/test_pompom_golden_baseline.py
+          tests/test_golden_comparator.py
+          tests/test_golden_architecture_boundary.py
+          tests/test_golden_representation_contract.py
+          tests/test_golden_report.py
+          tests/test_golden_ci_gate.py
+      - name: Run deterministic Golden release gate
+        working-directory: intelligence/ml-service
+        run: >-
+          python scripts/run_pompom_golden_ci.py
+          --manifest ../data/golden/pompom-golden-v1/manifest.yaml
+          --baseline ../data/golden/pompom-golden-v1/baselines/v1.7/baseline.json
+          --ruleset ../data/rules/RULESET_1.7.yaml
+          --truth ../data/golden/pompom-golden-v1/truth/gold_truth.yaml
+          --policy ../data/golden/pompom-golden-v1/policy/policy_expectations_v1.7.yaml
+          --reports ../data/golden/pompom-golden-v1/reports/ci
+
+  backend-representation:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+          cache: maven
+      - name: Run backend DTO and PDF representation tests
+        working-directory: intelligence/backend
+        run: mvn -q -Dtest=QualityReportDtoTest,QualityReportPdfServiceTest test
+
+  frontend-representation:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: intelligence/frontend/package-lock.json
+      - name: Install frontend dependencies
+        working-directory: intelligence/frontend
+        run: npm ci
+      - name: Run frontend representation tests
+        working-directory: intelligence/frontend
+        env:
+          NG_CLI_ANALYTICS: "false"
+        run: npx ng test --watch=false --include 'src/app/pages/quality-validator/**/*.spec.ts'

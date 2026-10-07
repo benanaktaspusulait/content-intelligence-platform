@@ -1,0 +1,116 @@
+goldenSetVersion: POMPOM_GOLDEN_V1
+goldLabelVersion: GOLD_LABELS_V1
+manifestStatus: FROZEN
+sourceAuthority: /Users/benanaktas/project/video/yuvarlak-dunya
+engineInputPolicy:
+  corpusRole: EXCLUDED
+  performanceData: EXCLUDED
+assets:
+  - goldenId: sticky-ball-01
+    displayName: Luca Sticky Ball
+    sourceType: REAL_PRODUCTION_PROMPT
+    sourceLocation: POMPOM_HILLS_PRODUCTION/09_SOCIAL_REELS/new14092026/Absurd_Moments/01_luca_sticky_ball/01_video_prompt.txt
+    promptFile: prompts/sticky-ball-01.txt
+    promptHash: 378a39e7d625d5e4e36cd23436b53b0d410b326f02a3c77406853cc51e965e01
+    corpusRole: WINNER
+    character: Luca
+    mechanicFamily: sticky_deformation
+    contentFamily: absurd_moments
+    sourceLineageConfidence: HIGH
+    knownIssues: []
+  - goldenId: ball-crocodile-01
+    displayName: Luca Ball-Multiplying Crocodile
+    sourceType: REAL_PRODUCTION_PROMPT
+    sourceLocation: POMPOM_HILLS_PRODUCTION/09_SOCIAL_REELS/new14092026/Absurd_Moments/07_luca_ball_spitting_crocodile/01_video_prompt.txt
+    promptFile: prompts/ball-crocodile-01.txt
+    promptHash: a4f76d88158463b989250ddfec943677d1f848db3a86bbae9200871516c8ccba
+    corpusRole: WINNER
+    character: Luca
+    mechanicFamily: quantity_multiplication
+    contentFamily: absurd_moments
+    sourceLineageConfidence: HIGH
+    knownIssues: [PARSER_STRUCTURED_TIMELINE_GAP]
+  - goldenId: upside-chair-01
+    displayName: Upside-Down Chair
+    sourceType: REAL_PRODUCTION_PROMPT
+    sourceLocation: POMPOM_HILLS_PRODUCTION/09_SOCIAL_REELS/new14092026/What’s Wrong? uploaded/1-The Upside-Down Chair/prompt.md
+    promptFile: prompts/upside-chair-01.md
+    promptHash: 6db5f744f51dca45b4be2133e8d88648b839e5d1fb5b742be5f1aaa3d016502a
+    corpusRole: WINNER
+    character: Kiko
+    mechanicFamily: spatial_inversion_recurrence
+    contentFamily: what_is_wrong
+    sourceLineageConfidence: HIGH
+    knownIssues: [PARSER_DISCOVERY_TIMEOUT]
+  - goldenId: lamp-01
+    displayName: Kiko And The Lamp That Hates Being Watched
+    sourceType: REAL_PRODUCTION_PROMPT
+    sourceLocation: POMPOM_HILLS_PRODUCTION/09_SOCIAL_REELS/new14092026/easy uploaded/4- Kiko and the Lamp That Hates Being Watched /prompt.md
+    promptFile: prompts/lamp-01.md
+    promptHash: e2a4c2b2e3ab5ed7927831c2c264e779c9d9b251b6e979e997c1c271bd7ff0bc
+    corpusRole: MIDDLE
+    character: Kiko
+    mechanicFamily: observation_dependent_state
+    contentFamily: easy_uploaded
+    sourceLineageConfidence: HIGH
+    knownIssues: [PARSER_PARTIAL_STRUCTURED_EVIDENCE]
+  - goldenId: snack-box-01
+    displayName: Mimi And The Snack Box That Keeps Changing
+    sourceType: REAL_PRODUCTION_PROMPT
+    sourceLocation: POMPOM_HILLS_PRODUCTION/09_SOCIAL_REELS/new14092026/easy uploaded/2- Mimi and the Snack Box That Keeps Changing/prompt.md
+    promptFile: prompts/snack-box-01.md
+    promptHash: 513554d245fefa31659587f26144ec53cbc099b867da9180114305dc845b1154
+    corpusRole: MIDDLE
+    character: Mimi
+    mechanicFamily: changing_contents_recurrence
+    contentFamily: easy_uploaded
+    sourceLineageConfidence: HIGH
+    knownIssues: [PARSER_PARTIAL_STRUCTURED_EVIDENCE]
+  - goldenId: box-cat-01
+    displayName: Luca And The Box Cat
+    sourceType: REAL_PRODUCTION_PROMPT
+    sourceLocation: POMPOM_HILLS_PRODUCTION/09_SOCIAL_REELS/new14092026/pompom_vs_animals/03_luca_vs_box_cat/prompt.md
+    promptFile: prompts/box-cat-01.md
+    promptHash: d93add25456b009ad9937920d1d40d56cbbd517ba6883b743f99a6c6f60bb854
+    corpusRole: MIDDLE
+    character: Luca
+    mechanicFamily: stubborn_return_animal_claim
+    contentFamily: pompom_vs_animals
+    sourceLineageConfidence: HIGH
+    knownIssues: [TIMELINE_PARSE_INCOMPATIBLE, DATABASE_PROMPT_NOT_IMPORTED]
+  - goldenId: spot-cat-01
+    displayName: Kiko And The Spot-Stealing Cat
+    sourceType: REAL_PRODUCTION_PROMPT
+    sourceLocation: POMPOM_HILLS_PRODUCTION/09_SOCIAL_REELS/new14092026/pompom_vs_animals/04_kiko_vs_spot_stealing_cat/prompt.md
+    promptFile: prompts/spot-cat-01.md
+    promptHash: 76ea701ceb81d9bc4bc0ac6b9ed6998cea84c8423bb4fa1fa9793d9c523622e5
+    corpusRole: NEGATIVE
+    character: Kiko
+    mechanicFamily: repeated_target_claim
+    contentFamily: pompom_vs_animals
+    sourceLineageConfidence: HIGH
+    knownIssues: [TIMELINE_PARSE_INCOMPATIBLE, DATABASE_PROMPT_NOT_IMPORTED]
+  - goldenId: sneaky-door-01
+    displayName: Mimi Vs. The Sneaky Door
+    sourceType: REAL_PRODUCTION_PROMPT_ARCHIVE
+    sourceLocation: POMPOM_HILLS_PRODUCTION/09_SOCIAL_REELS/archive/MIMI_VS_THE_SNEAKY_DOOR/mimi-sneaky-door-compact-generation-prompt.md
+    promptFile: prompts/sneaky-door-01.md
+    promptHash: f85635f1f10b4834ade72f8091a4a2f2698525d474f02285fa374b56c9c14392
+    corpusRole: NEGATIVE
+    character: Mimi
+    mechanicFamily: multi_clip_door_continuity
+    contentFamily: archived_social_reels
+    sourceLineageConfidence: HIGH
+    knownIssues: [MULTI_CLIP_CONTINUATION_COMPLEXITY, DATABASE_PROMPT_NOT_IMPORTED]
+  - goldenId: island-journal-01
+    displayName: Luca And The Island Journal
+    sourceType: REAL_PRODUCTION_PROMPT
+    sourceLocation: POMPOM_HILLS_PRODUCTION/09_SOCIAL_REELS/new14092026/classic story-1/03_luca_and_the_island_journal/01_video_prompt.txt
+    promptFile: prompts/island-journal-01.txt
+    promptHash: 2ef992226b13e968e43f065a6cad606039c3d7af27e92577ec754d9d342830de
+    corpusRole: NEGATIVE
+    character: Luca
+    mechanicFamily: montage_late_dream_reveal
+    contentFamily: classic_story
+    sourceLineageConfidence: HIGH
+    knownIssues: [LONG_FORM_25_5S, CENTRAL_MECHANIC_NOT_EXPLICIT]

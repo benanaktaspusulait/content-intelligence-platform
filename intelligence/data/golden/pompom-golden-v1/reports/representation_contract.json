@@ -1,0 +1,12 @@
+{
+  "contractVersion": "GOLDEN_REPRESENTATION_V1",
+  "stateShareUnit": "PERCENT_0_100",
+  "stateShareSeconds": 3.0,
+  "timelineSeconds": 15.0,
+  "stateSharePercent": 20.0,
+  "stateShareFormatted": "20%",
+  "outcomes": ["PASS", "FAIL", "UNKNOWN", "NOT_APPLICABLE", "SERVICE_ERROR"],
+  "creativeGrade": "B",
+  "evidenceCompleteness": 92,
+  "renderAuthorization": "BLOCKED_PENDING_EVIDENCE"
+}

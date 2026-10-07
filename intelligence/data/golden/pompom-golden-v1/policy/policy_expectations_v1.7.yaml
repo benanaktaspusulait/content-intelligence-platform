@@ -1,0 +1,109 @@
+policyExpectationVersion: POLICY_EXPECTATIONS_V1_7
+rulesetVersion: "1.7"
+assessmentVersion: pre-render-assessment-v2
+scoringVersion: quality-scorer-v2
+basis: CURRENT_DETERMINISTIC_BASELINE_V1_7
+notes:
+  - These are policy outputs, not structural Gold Truth.
+  - They describe the captured current stack before calibration fixes.
+  - A future intentional ruleset/policy change must version this file.
+assets:
+  sticky-ball-01:
+    baselineStatus: OK
+    creativeScore: {expected: 85.0, tolerance: 0.001}
+    creativeGrade: {expected: A}
+    evidenceCompleteness: {expected: 80}
+    renderAuthorization: {expected: BLOCKED_PENDING_EVIDENCE}
+    blockers: {expected: 0}
+    criticals: {expected: 0}
+    warnings: {expected: 0}
+    unknowns: {expected: 1}
+    notApplicable: {expected: 3}
+  ball-crocodile-01:
+    baselineStatus: OK
+    creativeScore: {expected: 61.81818181818181, tolerance: 0.001}
+    creativeGrade: {expected: F}
+    evidenceCompleteness: {expected: 80}
+    renderAuthorization: {expected: BLOCKED_CREATIVE_FAILURE}
+    blockers: {expected: 1}
+    criticals: {expected: 0}
+    warnings: {expected: 0}
+    unknowns: {expected: 1}
+    notApplicable: {expected: 3}
+  upside-chair-01:
+    baselineStatus: PARSER_TIMEOUT
+    creativeScore: {expected: null}
+    creativeGrade: {expected: null}
+    evidenceCompleteness: {expected: null}
+    renderAuthorization: {expected: null}
+    blockers: {expected: null}
+    criticals: {expected: null}
+    warnings: {expected: null}
+    unknowns: {expected: null}
+    notApplicable: {expected: null}
+  lamp-01:
+    baselineStatus: OK
+    creativeScore: {expected: 49.54545454545455, tolerance: 0.001}
+    creativeGrade: {expected: F}
+    evidenceCompleteness: {expected: 80}
+    renderAuthorization: {expected: BLOCKED_CREATIVE_FAILURE}
+    blockers: {expected: 1}
+    criticals: {expected: 1}
+    warnings: {expected: 0}
+    unknowns: {expected: 1}
+    notApplicable: {expected: 3}
+  snack-box-01:
+    baselineStatus: OK
+    creativeScore: {expected: 49.54545454545455, tolerance: 0.001}
+    creativeGrade: {expected: F}
+    evidenceCompleteness: {expected: 80}
+    renderAuthorization: {expected: BLOCKED_CREATIVE_FAILURE}
+    blockers: {expected: 1}
+    criticals: {expected: 1}
+    warnings: {expected: 0}
+    unknowns: {expected: 1}
+    notApplicable: {expected: 3}
+  box-cat-01:
+    baselineStatus: OK
+    creativeScore: {expected: 38.295454545454554, tolerance: 0.001}
+    creativeGrade: {expected: F}
+    evidenceCompleteness: {expected: 80}
+    renderAuthorization: {expected: BLOCKED_CREATIVE_FAILURE}
+    blockers: {expected: 1}
+    criticals: {expected: 2}
+    warnings: {expected: 0}
+    unknowns: {expected: 1}
+    notApplicable: {expected: 3}
+  spot-cat-01:
+    baselineStatus: OK
+    creativeScore: {expected: 38.295454545454554, tolerance: 0.001}
+    creativeGrade: {expected: F}
+    evidenceCompleteness: {expected: 80}
+    renderAuthorization: {expected: BLOCKED_CREATIVE_FAILURE}
+    blockers: {expected: 1}
+    criticals: {expected: 2}
+    warnings: {expected: 0}
+    unknowns: {expected: 1}
+    notApplicable: {expected: 3}
+  sneaky-door-01:
+    baselineStatus: OK
+    creativeScore: {expected: 38.295454545454554, tolerance: 0.001}
+    creativeGrade: {expected: F}
+    evidenceCompleteness: {expected: 80}
+    renderAuthorization: {expected: BLOCKED_CREATIVE_FAILURE}
+    blockers: {expected: 1}
+    criticals: {expected: 2}
+    warnings: {expected: 0}
+    unknowns: {expected: 1}
+    notApplicable: {expected: 3}
+  island-journal-01:
+    baselineStatus: OK
+    creativeScore: {expected: 20.90909090909091, tolerance: 0.001}
+    creativeGrade: {expected: F}
+    evidenceCompleteness: {expected: 80}
+    renderAuthorization: {expected: BLOCKED_CREATIVE_FAILURE}
+    blockers: {expected: 2}
+    criticals: {expected: 2}
+    warnings: {expected: 0}
+    unknowns: {expected: 1}
+    notApplicable: {expected: 3}
