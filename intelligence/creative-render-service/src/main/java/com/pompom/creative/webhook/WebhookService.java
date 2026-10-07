@@ -13,6 +13,7 @@ import java.security.InvalidKeyException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
+import java.util.HexFormat;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -101,6 +102,12 @@ public class WebhookService {
 
     try {
       JsonNode payload = objectMapper.readTree(event.getPayload());
+
+      if ("meta.public_comment".equals(event.getEventType())) {
+        event.markProcessed();
+        webhookEventRepository.save(event);
+        return;
+      }
 
       // Find related publication job by platform post ID
       Optional<PublicationJob> jobOpt = findPublicationJob(event.getPlatformPostId());
@@ -217,18 +224,39 @@ public class WebhookService {
     return switch (platform) {
       case TIKTOK -> payload.has("event") ? payload.get("event").asText() : "unknown";
       case YOUTUBE -> payload.has("status") ? payload.get("status").asText() : "unknown";
-      case FACEBOOK, INSTAGRAM ->
-          payload.has("entry") && payload.get("entry").size() > 0
-              ? payload
-                  .get("entry")
-                  .get(0)
-                  .get("messaging")
-                  .get(0)
-                  .get("message")
-                  .get("text")
-                  .asText()
-              : "unknown";
+      case FACEBOOK, INSTAGRAM -> extractMetaEventType(platform, payload);
     };
+  }
+
+  private String extractMetaEventType(PlatformType platform, JsonNode payload) {
+    JsonNode entries = payload.path("entry");
+    if (!entries.isArray()) return "unknown";
+
+    for (JsonNode entry : entries) {
+      JsonNode changes = entry.path("changes");
+      if (!changes.isArray()) continue;
+      for (JsonNode change : changes) {
+        JsonNode value = change.path("value");
+        String field = change.path("field").asText();
+        boolean instagramComment =
+            platform == PlatformType.INSTAGRAM && "comments".equalsIgnoreCase(field);
+        boolean facebookComment =
+            platform == PlatformType.FACEBOOK
+                && "feed".equalsIgnoreCase(field)
+                && "comment".equalsIgnoreCase(value.path("item").asText());
+        if (instagramComment || facebookComment) return "meta.public_comment";
+      }
+    }
+
+    JsonNode entry = firstEntry(payload);
+    if (entry == null) return "unknown";
+    JsonNode message = entry.path("messaging").path(0).path("message").path("text");
+    return message.isMissingNode() ? "unknown" : message.asText("unknown");
+  }
+
+  private JsonNode firstEntry(JsonNode payload) {
+    JsonNode entries = payload.path("entry");
+    return entries.isArray() && !entries.isEmpty() ? entries.path(0) : null;
   }
 
   /** Extract post ID from payload. */
@@ -237,8 +265,31 @@ public class WebhookService {
     return switch (platform) {
       case TIKTOK -> payload.has("video_id") ? payload.get("video_id").asText() : null;
       case YOUTUBE -> payload.has("id") ? payload.get("id").asText() : null;
-      case FACEBOOK, INSTAGRAM -> payload.has("post_id") ? payload.get("post_id").asText() : null;
+      case FACEBOOK, INSTAGRAM -> extractMetaObjectId(platform, payload);
     };
+  }
+
+  private String extractMetaObjectId(PlatformType platform, JsonNode payload) {
+    JsonNode entries = payload.path("entry");
+    if (entries.isArray()) {
+      for (JsonNode entry : entries) {
+        JsonNode changes = entry.path("changes");
+        if (!changes.isArray()) continue;
+        for (JsonNode change : changes) {
+          JsonNode value = change.path("value");
+          String field = change.path("field").asText();
+          if (platform == PlatformType.INSTAGRAM && "comments".equalsIgnoreCase(field)) {
+            return value.path("media").path("id").asText(null);
+          }
+          if (platform == PlatformType.FACEBOOK
+              && "feed".equalsIgnoreCase(field)
+              && "comment".equalsIgnoreCase(value.path("item").asText())) {
+            return value.path("post_id").asText(null);
+          }
+        }
+      }
+    }
+    return payload.path("post_id").asText(null);
   }
 
   /** Verify webhook signature. */
@@ -252,7 +303,7 @@ public class WebhookService {
           || secret.isBlank()) {
         return false;
       }
-      String expectedSignature = generateSignature(payload, secret);
+      String expectedSignature = generateSignature(payload, secret, platform);
       String providedSignature = signature.trim();
       if (providedSignature.regionMatches(true, 0, "sha256=", 0, 7)) {
         providedSignature = providedSignature.substring(7);
@@ -280,7 +331,7 @@ public class WebhookService {
   }
 
   /** Generate HMAC-SHA256 signature. */
-  private String generateSignature(String payload, String secret)
+  private String generateSignature(String payload, String secret, PlatformType platform)
       throws NoSuchAlgorithmException, InvalidKeyException {
 
     Mac mac = Mac.getInstance("HmacSHA256");
@@ -289,7 +340,9 @@ public class WebhookService {
     mac.init(secretKeySpec);
 
     byte[] hash = mac.doFinal(payload.getBytes(StandardCharsets.UTF_8));
-    return Base64.getEncoder().encodeToString(hash);
+    return platform == PlatformType.FACEBOOK || platform == PlatformType.INSTAGRAM
+        ? HexFormat.of().formatHex(hash)
+        : Base64.getEncoder().encodeToString(hash);
   }
 
   /** Retry failed webhooks. Runs every 15 minutes. */

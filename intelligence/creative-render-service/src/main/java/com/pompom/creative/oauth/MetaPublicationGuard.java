@@ -1,5 +1,6 @@
 package com.pompom.creative.oauth;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -9,6 +10,7 @@ public class MetaPublicationGuard {
 
   private final boolean enabled;
 
+  @Autowired
   public MetaPublicationGuard(@Value("${pompom.meta.publish-enabled:false}") String enabled) {
     this(Boolean.parseBoolean(enabled));
   }

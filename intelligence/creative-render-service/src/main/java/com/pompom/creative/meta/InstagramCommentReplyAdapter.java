@@ -36,11 +36,17 @@ public class InstagramCommentReplyAdapter implements MetaCommentReplyPort {
     String uri =
         UriComponentsBuilder.fromUriString(GRAPH_API_BASE + "/" + commentId + "/replies")
             .queryParam("message", reply.getDraftText())
-            .queryParam("access_token", token)
             .build()
             .encode()
             .toUriString();
-    String body = restClientBuilder.build().post().uri(uri).retrieve().body(String.class);
+    String body =
+        restClientBuilder
+            .build()
+            .post()
+            .uri(uri)
+            .header(org.springframework.http.HttpHeaders.AUTHORIZATION, "Bearer " + token)
+            .retrieve()
+            .body(String.class);
     return parseResult(body, "Instagram comment reply failed");
   }
 

@@ -71,7 +71,7 @@ class WebhookSignaturePolicyTest {
   private String hmac(String payload, String secret) throws Exception {
     Mac mac = Mac.getInstance("HmacSHA256");
     mac.init(new SecretKeySpec(secret.getBytes(StandardCharsets.UTF_8), "HmacSHA256"));
-    return java.util.Base64.getEncoder()
-        .encodeToString(mac.doFinal(payload.getBytes(StandardCharsets.UTF_8)));
+    return java.util.HexFormat.of()
+        .formatHex(mac.doFinal(payload.getBytes(StandardCharsets.UTF_8)));
   }
 }

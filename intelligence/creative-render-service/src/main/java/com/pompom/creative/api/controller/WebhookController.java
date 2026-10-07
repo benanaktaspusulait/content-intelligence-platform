@@ -119,7 +119,7 @@ public class WebhookController {
       }
 
       webhookService.receiveWebhook(PlatformType.FACEBOOK, payload, signature);
-      commentNormalizer.normalize(payload).ifPresent(commentIngestion::ingest);
+      commentNormalizer.normalizeAll(payload).forEach(commentIngestion::ingest);
 
       return ResponseEntity.ok(Map.of("status", "received"));
 
@@ -154,7 +154,7 @@ public class WebhookController {
       }
 
       webhookService.receiveWebhook(PlatformType.INSTAGRAM, payload, signature);
-      commentNormalizer.normalize(payload).ifPresent(commentIngestion::ingest);
+      commentNormalizer.normalizeAll(payload).forEach(commentIngestion::ingest);
 
       return ResponseEntity.ok(Map.of("status", "received"));
 

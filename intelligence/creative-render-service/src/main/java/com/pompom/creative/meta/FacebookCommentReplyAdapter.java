@@ -38,11 +38,17 @@ public class FacebookCommentReplyAdapter implements MetaCommentReplyPort {
     String uri =
         UriComponentsBuilder.fromUriString(GRAPH_API_BASE + "/" + commentId + "/comments")
             .queryParam("message", reply.getDraftText())
-            .queryParam("access_token", token)
             .build()
             .encode()
             .toUriString();
-    String body = restClientBuilder.build().post().uri(uri).retrieve().body(String.class);
+    String body =
+        restClientBuilder
+            .build()
+            .post()
+            .uri(uri)
+            .header(org.springframework.http.HttpHeaders.AUTHORIZATION, "Bearer " + token)
+            .retrieve()
+            .body(String.class);
     return parseResult(body, "Facebook comment reply failed");
   }
 

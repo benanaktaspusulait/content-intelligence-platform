@@ -75,7 +75,7 @@ Scope: Meta integration only. Publishing remains disabled until the safety gate 
 ## Phase 4 — Webhooks and operations
 
 - [x] Verify Meta webhook signatures in every environment; fail closed when a configured secret is absent.
-- [ ] Separate publication-status webhook parsing from comments/messages/replies event parsing.
+- [x] Separate publication-status webhook parsing from public-comment event parsing; DM/Messenger event parsing remains out of scope.
 - [ ] Persist raw event identity safely without storing unnecessary personal data.
 - [ ] Add replay/reconciliation endpoint for failed or ambiguous inbound events.
 - [ ] Add operational dashboards for token health, API errors, rate limits, webhook lag, and reply delivery.

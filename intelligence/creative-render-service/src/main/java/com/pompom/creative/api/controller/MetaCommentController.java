@@ -52,6 +52,8 @@ public class MetaCommentController {
       return ResponseEntity.status(403).build();
     } catch (IllegalStateException e) {
       return ResponseEntity.badRequest().build();
+    } catch (IllegalArgumentException e) {
+      return ResponseEntity.notFound().build();
     }
   }
 

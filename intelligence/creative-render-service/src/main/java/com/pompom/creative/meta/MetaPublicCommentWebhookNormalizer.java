@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pompom.creative.oauth.PlatformType;
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -16,39 +18,52 @@ public class MetaPublicCommentWebhookNormalizer {
   private final ObjectMapper objectMapper;
 
   public Optional<NormalizedComment> normalize(String payload) {
+    return normalizeAll(payload).stream().findFirst();
+  }
+
+  public List<NormalizedComment> normalizeAll(String payload) {
     try {
       JsonNode root = objectMapper.readTree(payload);
       String object = root.path("object").asText();
-      JsonNode entry =
-          root.path("entry").isArray() && root.path("entry").size() > 0
-              ? root.path("entry").get(0)
-              : null;
-      if (entry == null || !entry.path("changes").isArray()) return Optional.empty();
-      for (JsonNode change : entry.path("changes")) {
-        String field = change.path("field").asText();
-        JsonNode value = change.path("value");
-        if ("instagram".equalsIgnoreCase(object) && "comments".equals(field)) {
-          JsonNode media = value.path("media");
-          return build(
-              PlatformType.INSTAGRAM,
-              entry.path("id").asText(null),
-              media.path("id").asText(null),
-              value);
-        }
-        if ("page".equalsIgnoreCase(object)
-            && "feed".equals(field)
-            && "comment".equalsIgnoreCase(value.path("item").asText())) {
-          return build(
-              PlatformType.FACEBOOK,
-              entry.path("id").asText(null),
-              value.path("post_id").asText(null),
-              value);
+      JsonNode entries = root.path("entry");
+      if (!entries.isArray()) return List.of();
+
+      List<NormalizedComment> comments = new ArrayList<>();
+      for (JsonNode entry : entries) {
+        JsonNode changes = entry.path("changes");
+        if (!changes.isArray()) continue;
+        for (JsonNode change : changes) {
+          normalizeChange(object, entry, change).ifPresent(comments::add);
         }
       }
-      return Optional.empty();
+      return comments;
     } catch (Exception ignored) {
-      return Optional.empty();
+      return List.of();
     }
+  }
+
+  private Optional<NormalizedComment> normalizeChange(
+      String object, JsonNode entry, JsonNode change) {
+    String field = change.path("field").asText();
+    JsonNode value = change.path("value");
+    if ("instagram".equalsIgnoreCase(object) && "comments".equalsIgnoreCase(field)) {
+      JsonNode media = value.path("media");
+      return build(
+          PlatformType.INSTAGRAM,
+          entry.path("id").asText(null),
+          media.path("id").asText(null),
+          value);
+    }
+    if ("page".equalsIgnoreCase(object)
+        && "feed".equalsIgnoreCase(field)
+        && "comment".equalsIgnoreCase(value.path("item").asText())) {
+      return build(
+          PlatformType.FACEBOOK,
+          entry.path("id").asText(null),
+          value.path("post_id").asText(null),
+          value);
+    }
+    return Optional.empty();
   }
 
   private Optional<NormalizedComment> build(

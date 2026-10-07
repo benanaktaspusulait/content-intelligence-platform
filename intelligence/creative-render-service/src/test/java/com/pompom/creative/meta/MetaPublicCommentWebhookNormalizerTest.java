@@ -46,6 +46,25 @@ class MetaPublicCommentWebhookNormalizerTest {
   }
 
   @Test
+  void normalizesCommentsAcrossAllEntries() {
+    var result =
+        normalizer.normalizeAll(
+            """
+            {
+              "object": "page",
+              "entry": [
+                {"id": "page-1", "changes": [{"field": "feed", "value": {"item": "status"}}]},
+                {"id": "page-2", "changes": [{"field": "feed", "value": {"item": "comment", "post_id": "post-2", "comment_id": "comment-2", "message": "Second entry"}}]}
+              ]
+            }
+            """);
+
+    assertThat(result).hasSize(1);
+    assertThat(result.get(0).accountId()).isEqualTo("page-2");
+    assertThat(result.get(0).commentId()).isEqualTo("comment-2");
+  }
+
+  @Test
   void ignoresNonCommentEvents() {
     assertThat(
             normalizer.normalize(
