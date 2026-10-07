@@ -6,6 +6,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,22 +18,30 @@ public class OpenArtReferenceResolver {
 
   private final ObjectMapper objectMapper;
   private final Path libraryRoot;
+  private final OpenArtReferenceAssetRepository catalog;
 
   @Autowired
   public OpenArtReferenceResolver(
       ObjectMapper objectMapper,
-      @Value("${pompom.library.root:/data/library}") String libraryRoot) {
-    this(objectMapper, Path.of(libraryRoot));
+      @Value("${pompom.library.root:/data/library}") String libraryRoot,
+      OpenArtReferenceAssetRepository catalog) {
+    this(objectMapper, Path.of(libraryRoot), catalog);
   }
 
   OpenArtReferenceResolver(ObjectMapper objectMapper, Path libraryRoot) {
+    this(objectMapper, libraryRoot, null);
+  }
+
+  OpenArtReferenceResolver(
+      ObjectMapper objectMapper, Path libraryRoot, OpenArtReferenceAssetRepository catalog) {
     this.objectMapper = objectMapper;
     this.libraryRoot = libraryRoot.toAbsolutePath().normalize();
+    this.catalog = catalog;
   }
 
   /**
    * Resolve all character sheet paths from a compiled contract. HTTPS URLs are passed through;
-   * relative prompt paths are resolved under the read-only production library mount.
+   * local prompt paths are preferred, with the durable OpenArt workspace catalog as fallback.
    */
   public List<String> resolveCharacterReferences(String contractJson) {
     if (contractJson == null || contractJson.isBlank()) {
@@ -70,13 +79,46 @@ public class OpenArtReferenceResolver {
         (candidate.isAbsolute() ? candidate : libraryRoot.resolve(candidate))
             .toAbsolutePath()
             .normalize();
-    if (!resolved.startsWith(libraryRoot) && !candidate.isAbsolute()) {
-      throw new IllegalArgumentException(
-          "Character reference escapes the library root: " + reference);
+    if ((candidate.isAbsolute() || resolved.startsWith(libraryRoot))
+        && Files.isRegularFile(resolved)) {
+      return resolved.toString();
     }
-    if (!Files.isRegularFile(resolved)) {
-      throw new IllegalStateException("Character reference file not found: " + resolved);
+
+    if (catalog != null) {
+      String canonicalKey = normalizeKey(reference);
+      return catalog.findByCanonicalKeyIgnoreCaseOrderBySourceAsc(canonicalKey).stream()
+          .filter(asset -> asset.getStatus() == OpenArtReferenceAsset.ReferenceStatus.AVAILABLE)
+          .map(this::catalogReference)
+          .filter(value -> value != null)
+          .findFirst()
+          .orElseThrow(() -> missingReference(reference, resolved));
     }
-    return resolved.toString();
+    throw missingReference(reference, resolved);
+  }
+
+  private String catalogReference(OpenArtReferenceAsset asset) {
+    if (asset.getSource() == OpenArtReferenceAsset.ReferenceSource.OPENART_WORKSPACE
+        && asset.getProviderUrl() != null
+        && !asset.getProviderUrl().isBlank()) {
+      return asset.getProviderUrl();
+    }
+    if (asset.getLocalPath() != null && Files.isRegularFile(Path.of(asset.getLocalPath()))) {
+      return asset.getLocalPath();
+    }
+    return null;
+  }
+
+  private IllegalStateException missingReference(String reference, Path resolved) {
+    return new IllegalStateException(
+        "Character reference file not found: " + reference + " (" + resolved + ")");
+  }
+
+  private String normalizeKey(String value) {
+    String normalized = value.trim().toLowerCase(Locale.ROOT);
+    int slash = Math.max(normalized.lastIndexOf('/'), normalized.lastIndexOf('\\'));
+    if (slash >= 0) normalized = normalized.substring(slash + 1);
+    int dot = normalized.lastIndexOf('.');
+    if (dot > 0) normalized = normalized.substring(0, dot);
+    return normalized.replaceAll("[^a-z0-9_-]+", "-");
   }
 }
