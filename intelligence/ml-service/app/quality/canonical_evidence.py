@@ -90,12 +90,24 @@ def strategy_semantics_for_beat(beat: dict[str, Any]) -> dict[str, str]:
     """Separate the physical first action from the intended attempt strategy."""
     action_family = normalize_strategy_family(beat.get("primaryVerb"), beat.get("action"))
     result_text = " ".join(
-        str(beat.get(key, "")) for key in ("consequence", "result", "intendedEffect")
+        str(beat.get(key, "")) for key in ("action", "consequence", "result", "goal", "targetObject", "intendedEffect")
     )
     result_words = _words(result_text)
     derived_family = action_family
     strategy_intent = "DIRECT"
     strategy_role = "INTENDED"
+    if result_words.intersection({"SPOT", "SITTING", "SIT", "SQUAT", "COMMIT"}) and (result_words.intersection({"CAT", "TARGET", "EMPTY"}) or action_family.startswith("OTHER:")):
+        derived_family = "COMMIT_TO_TARGET"
+        strategy_intent = "CLAIM_TARGET"
+    elif "CAT" in result_words and "OUT" in result_words:
+        derived_family = "DISPLACE"
+        strategy_intent = "REMOVE_OBSTRUCTION"
+    elif "BOX" in result_words and (action_family == "LIFT" or result_words.intersection({"MOVE", "MOVES", "MOVING"})):
+        derived_family = "RELOCATE"
+        strategy_intent = "CHANGE_TARGET_LOCATION"
+    elif "BOX" in result_words and result_words.intersection({"WATCH", "WATCHES", "GUARD", "GUARDS", "STAYS", "CAREFULLY"}):
+        derived_family = "GUARD"
+        strategy_intent = "PREVENT_RECLAIM"
     if action_family == "CATCH" and result_words.intersection(
         {"SQUEEZE", "SQUEEZES", "SQUEEZED", "TEST", "TESTS", "CHECK", "CHECKS", "NORMAL", "NORMALLY"}
     ):

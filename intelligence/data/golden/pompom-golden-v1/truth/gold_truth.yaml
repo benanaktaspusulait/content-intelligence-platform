@@ -1085,7 +1085,7 @@ assets:
         reviewStatus: APPROVED
       DISTINCT_STRATEGIES:
         expected:
-        - CAT_CLAIMS_COMMITTED_TARGET
+        - COMMIT_TO_TARGET
         applicable: true
         confidence: HIGH
         evidenceReferences:

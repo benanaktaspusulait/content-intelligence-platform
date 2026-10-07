@@ -171,3 +171,33 @@ def test_attempt_002_does_not_collapse_unspecified_verbs_into_one_strategy() -> 
         result = engine._evaluate_attempt_002(ir, {})
     assert result.actual_value == 3
     assert len(judge.call_args.args[0]) == 3
+
+
+def test_markdown_attempt_sections_become_canonical_attempts_without_source_rewrite() -> None:
+    from pathlib import Path
+
+    root = Path(__file__).resolve().parents[2] / "data" / "golden" / "pompom-golden-v1" / "prompts"
+    box_cat = parse_prompt((root / "box-cat-01.md").read_text(encoding="utf-8")).video_plan_ir
+    spot_cat = parse_prompt((root / "spot-cat-01.md").read_text(encoding="utf-8")).video_plan_ir
+
+    box_evidence = attempt_evidence(box_cat)
+    spot_evidence = attempt_evidence(spot_cat)
+    assert box_evidence.active_attempt_count == 3
+    assert box_evidence.distinct_strategy_count == 3
+    assert spot_evidence.active_attempt_count == 3
+    assert spot_evidence.distinct_strategy_count == 1
+    assert spot_evidence.strategy_families == ("COMMIT_TO_TARGET",) * 3
+
+
+def test_reactive_look_smile_wait_beats_do_not_become_attempts() -> None:
+    ir = {
+        "metadata": {"duration": 15.0},
+        "beats": [
+            {"id": "look", "beatRole": "REACTION", "action": "Mimi looks at the box", "isAttempt": False},
+            {"id": "smile", "beatRole": "REACTION", "action": "Mimi smiles", "isAttempt": False},
+            {"id": "wait", "beatRole": "REACTION", "action": "Mimi waits", "isAttempt": False},
+        ],
+    }
+    evidence = attempt_evidence(ir)
+    assert evidence.active_attempt_count == 0
+    assert evidence.distinct_strategy_count == 0

@@ -567,9 +567,53 @@ class PromptParser:
             beat_id += 1
 
         if not beats:
+            beats = self._parse_markdown_timeline_sections(text, duration)
+        if not beats:
             self.warnings.append("No explicit timeline beats found, using fallback parsing")
             beats = self._fallback_beat_parsing(text, duration)
 
+        return beats
+
+    def _parse_markdown_timeline_sections(self, text: str, duration: float) -> list[dict[str, Any]]:
+        """Parse existing markdown prompt sections without rewriting their source text."""
+        heading_pattern = re.compile(
+            r"^#{2,6}\s+(?P<label>[^\n]+)\n(?P<body>.*?)(?=^#{2,6}\s+|\Z)",
+            re.IGNORECASE | re.MULTILINE | re.DOTALL,
+        )
+        sections: list[tuple[str, str]] = []
+        for match in heading_pattern.finditer(text):
+            raw_label = match.group("label").strip()
+            normalized = raw_label.lower()
+            if re.match(r"attempt\s+\d+", normalized):
+                number_match = re.search(r"\d+", normalized)
+                label = f"ATTEMPT {number_match.group(0) if number_match else '1'}"
+            elif normalized.startswith("frame zero") or normalized.startswith("hard hook"):
+                label = "HARD HOOK"
+            elif "fake win" in normalized or "final payoff" in normalized:
+                label = "FAKE RESOLUTION"
+            elif "escalation" in normalized:
+                label = "ESCALATION"
+            elif normalized.startswith("payoff"):
+                label = "PAYOFF"
+            else:
+                continue
+            sections.append((label, match.group("body").strip()))
+        if not sections:
+            return []
+        self.assumptions.append("Parsed markdown-labeled timeline sections without explicit timestamps")
+        beat_duration = float(duration) / len(sections) if sections else float(duration)
+        beats: list[dict[str, Any]] = []
+        for index, (label, body) in enumerate(sections, start=1):
+            start = (index - 1) * beat_duration
+            end = index * beat_duration
+            beats.append(
+                self._create_beat_from_description(
+                    beat_id=f"beat_{index:02d}",
+                    start_time=start,
+                    end_time=end,
+                    description=f"{label}\n{body}",
+                )
+            )
         return beats
 
     def _extract_attempt_marker(self, description: str) -> tuple[bool, str]:

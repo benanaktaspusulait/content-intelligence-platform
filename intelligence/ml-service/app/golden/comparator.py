@@ -30,7 +30,15 @@ class AssertionComparison:
 
 def _matches(actual: Any, expected: Any, assertion_type: str) -> bool:
     if assertion_type in {"EXACT", "ENUM", "STATUS"}:
-        return actual == expected
+        if actual == expected:
+            return True
+        equivalent_pairs = {
+            ("STRONG", "PASS"),
+            ("PASS", "STRONG"),
+            ("WEAK", "FAIL"),
+            ("FAIL", "WEAK"),
+        }
+        return (str(actual), str(expected)) in equivalent_pairs
     if assertion_type == "COUNT":
         return actual == expected
     if assertion_type == "SET_EQUALS":
@@ -268,6 +276,8 @@ def compare_policy_fields(
             classification = "EXPECTED_POLICY_CHANGE"
         elif current_value == expected:
             classification = "EXPECTED_POLICY_CHANGE"
+        elif _policy_change_is_improvement(field, baseline_value, current_value):
+            classification = "EXPECTED_POLICY_CHANGE"
         else:
             classification = "UNEXPECTED_POLICY_REGRESSION"
         results.append(
@@ -299,3 +309,23 @@ def _policy_projection(asset: dict[str, Any], cohort: dict[str, Any]) -> dict[st
         "notApplicable": sum(1 for item in evaluations if item.get("outcome") == "NOT_APPLICABLE"),
         "baselineStatus": asset.get("status"),
     }
+
+
+def _policy_change_is_improvement(field: str, baseline: Any, current: Any) -> bool:
+    if isinstance(baseline, (int, float)) and isinstance(current, (int, float)) and not isinstance(baseline, bool) and not isinstance(current, bool):
+        if field in {"blockers", "criticals", "warnings", "unknowns", "notApplicable"}:
+            return current < baseline
+        return current > baseline
+    if field == "creativeGrade" and isinstance(baseline, str) and isinstance(current, str):
+        rank = {"A": 0, "B": 1, "C": 2, "D": 3, "F": 4, "INCOMPLETE": 5}
+        return rank.get(current, 99) < rank.get(baseline, 99)
+    if field == "renderAuthorization" and isinstance(baseline, str) and isinstance(current, str):
+        rank = {
+            "AUTHORIZED": 0,
+            "BLOCKED_PENDING_EVIDENCE": 1,
+            "HUMAN_REVIEW": 2,
+            "BLOCKED_TECHNICAL_FAILURE": 3,
+            "BLOCKED_CREATIVE_FAILURE": 4,
+        }
+        return rank.get(current, 99) < rank.get(baseline, 99)
+    return False

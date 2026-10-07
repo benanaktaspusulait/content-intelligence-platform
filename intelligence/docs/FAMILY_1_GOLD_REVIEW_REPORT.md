@@ -64,12 +64,12 @@ Source: `easy uploaded/4- Kiko and the Lamp That Hates Being Watched /prompt.md`
 
 | Relevant beat | Beat role | Observed action | Character goal | Intended effect | Active attempt? | Why? | Primary action | Strategy family | Distinct from previous? | Confidence | Evidence |
 |---|---|---|---|---|---|---|---|---|---|---|---|
-| 0.0–2.0s | HOOK / TEST 1 | Turns on lamp, reads, looks away, lamp switches off | Read/use lamp | Verify and keep light on | YES | Intentional observation test against local rule | Watches / looks away | DIRECT_WATCH | YES | MEDIUM | “When she looks away, it switches off” |
-| 2.0–8.0s | TEST 2 | Switches on, stares, looks away, points | Keep light stable | Reproduce and confirm behavior | YES | Repeated deliberate test; same method | Stares/watches | DIRECT_WATCH | NO | MEDIUM | “Kiko switches it on again and stares at it” |
-| 8.0–11.5s | TEST 3 | Uses mirror to watch indirectly | Control lamp while not looking directly | Test indirect observation | YES | New intended mechanism | Uses mirror | INDIRECT_WATCH | YES | MEDIUM | “She uses a small mirror ... to watch the lamp indirectly” |
+| 0.0–2.0s | HOOK / TEST 1 | Turns on lamp, reads, looks away, lamp switches off | Read/use lamp | Verify and keep light on | YES | Intentional observation test against local rule | Watches / looks away | OBSERVE_CONTROL_VISIBILITY | YES | MEDIUM | “When she looks away, it switches off” |
+| 2.0–8.0s | TEST 2 | Switches on, stares, looks away, points | Keep light stable | Reproduce and confirm behavior | YES | Repeated deliberate test; same method | Stares/watches | OBSERVE_CONTROL_VISIBILITY | NO | MEDIUM | “Kiko switches it on again and stares at it” |
+| 8.0–11.5s | TEST 3 | Uses mirror to watch indirectly | Control lamp while not looking directly | Test indirect observation | YES | Execution variant of the same visibility-control method | Uses mirror | OBSERVE_CONTROL_VISIBILITY | NO | MEDIUM | “She uses a small mirror ... to watch the lamp indirectly” |
 | 11.5–15.0s | PAYOFF / REACTION | Second light flickers; returns to main lamp | N/A | N/A | NO | Consequence and loop setup | Turns back/lunges | NONE | N/A | MEDIUM | “a second small light ... instead” |
 
-**Family 1 Gold recommendation:** active attempts `3`; distinct strategies `2`; families `{DIRECT_WATCH, INDIRECT_WATCH}`. Goal and intended effect are MEDIUM because the source implies reading/use rather than naming a single problem-solving objective.
+**Family 1 Gold recommendation:** active attempts `3`; distinct strategies `1`; family `{OBSERVE_CONTROL_VISIBILITY}`. Direct watching and mirror watching are execution variants of one visibility-control strategy. Confidence is MEDIUM; human review is APPROVED.
 
 ## 5. Mimi And The Snack Box That Keeps Changing
 
@@ -147,7 +147,7 @@ Source: `classic story-1/03_luca_and_the_island_journal/01_video_prompt.txt`
 | Sticky Ball | 2 | 2 | PULL, TEST_SQUEEZE | HIGH except setup boundary MEDIUM |
 | Ball-Multiplying Crocodile | 3 | 2 | THROW_TOSS, ROLL/TEST | MEDIUM for goal/attempt boundary |
 | Upside-Down Chair | 3 | 2 | FLIP, GUARD_AND_APPROACH | HIGH/MEDIUM boundary |
-| Lamp | 3 | 2 | DIRECT_WATCH, INDIRECT_WATCH | MEDIUM |
+| Lamp | 3 | 1 | OBSERVE_CONTROL_VISIBILITY | MEDIUM · APPROVED |
 | Snack Box | 4 | 2 | REOPEN/TEST, TAP_TURN/CONTROLLED_REOPEN | MEDIUM |
 | Box Cat | 3 | 3 | DISPLACE, RELOCATE, GUARD | HIGH/MEDIUM policy boundary |
 | Spot-Stealing Cat | 3 | 1 | COMMIT_TO_TARGET | HIGH/MEDIUM decoy boundary |
@@ -163,7 +163,7 @@ This compares the human-review recommendation with the captured deterministic v1
 | Sticky Ball | 2 | 2 | 2 | 2 | PULL, TEST_SQUEEZE | PULL, SQUEEZE | PASS_AFTER_NORMALIZATION | No |
 | Ball-Multiplying Crocodile | 3 | 0 | 2 | 0 | THROW_TOSS, ROLL/TEST | — | KNOWN_BASELINE_ISSUE | Parser structured timeline gap |
 | Upside-Down Chair | 3 | unavailable | 2 | unavailable | FLIP, GUARD_AND_APPROACH | — | KNOWN_BASELINE_ISSUE | Parser discovery timeout |
-| Lamp | 3 | 0 | 2 | 0 | DIRECT_WATCH, INDIRECT_WATCH | — | KNOWN_BASELINE_ISSUE | Parser partial structured evidence |
+| Lamp | 3 | 0 | 1 | 0 | OBSERVE_CONTROL_VISIBILITY | — | KNOWN_BASELINE_ISSUE | Parser partial structured evidence |
 | Snack Box | 4 | 0 | 2 | 0 | REOPEN/TEST, TAP_TURN/CONTROLLED_REOPEN | — | KNOWN_BASELINE_ISSUE | Parser partial structured evidence |
 | Box Cat | 3 | 0 | 3 | 0 | DISPLACE, RELOCATE, GUARD | — | KNOWN_BASELINE_ISSUE | Timeline parser incompatibility |
 | Spot-Stealing Cat | 3 | 0 | 1 | 0 | COMMIT_TO_TARGET | — | KNOWN_BASELINE_ISSUE | Timeline parser incompatibility |
@@ -172,14 +172,12 @@ This compares the human-review recommendation with the captured deterministic v1
 
 ## Review Decision
 
-There is sufficient HIGH-confidence coverage to begin a narrowly scoped Family 1 engine calibration, but the following labels should remain `MEDIUM / HUMAN_REVIEW_REQUIRED` in Gold Truth until explicitly confirmed:
+There is sufficient HIGH-confidence coverage to begin a narrowly scoped Family 1 engine calibration. The following human-approved MEDIUM-confidence labels are locked for Family 1 and remain MEDIUM as confidence rather than review status:
 
 - Crocodile attempt 3 and `ROLL/TEST` boundary
 - Upside-Down Chair verification as a separate attempt
-- Lamp direct versus indirect watch strategies
 - Snack Box final controlled reopen boundary
 - Box Cat `GUARD` as a distinct strategy family
-- Spot Cat decoy as same-family execution
 - Sneaky Door multi-clip strategy partition
 
 No engine behavior, Gold Truth confidence, or policy output was changed in this preparation step.

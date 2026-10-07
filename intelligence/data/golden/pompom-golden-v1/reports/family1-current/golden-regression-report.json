@@ -216,7 +216,7 @@
     {
       "assetId": "sticky-ball-01",
       "baseline": "PASS",
-      "classification": "FAIL",
+      "classification": "PASS",
       "confidence": "HIGH",
       "current": "PASS",
       "dimension": "FIRST_FRAME_ANOMALY_INTENT",
@@ -567,7 +567,7 @@
     {
       "assetId": "ball-crocodile-01",
       "baseline": "PASS",
-      "classification": "UNCHANGED_KNOWN_ISSUE",
+      "classification": "PASS",
       "confidence": "HIGH",
       "current": "PASS",
       "dimension": "FIRST_FRAME_ANOMALY_INTENT",
@@ -1776,9 +1776,9 @@
     {
       "assetId": "box-cat-01",
       "baseline": "UNKNOWN",
-      "classification": "UNCHANGED_KNOWN_ISSUE",
+      "classification": "IMPROVED_FROM_BASELINE",
       "confidence": "HIGH",
-      "current": "UNKNOWN",
+      "current": "EXPLICIT",
       "dimension": "GOAL",
       "expected": "EXPLICIT",
       "isNewSemanticRegression": false,
@@ -1800,9 +1800,9 @@
     {
       "assetId": "box-cat-01",
       "baseline": 0,
-      "classification": "UNCHANGED_KNOWN_ISSUE",
+      "classification": "IMPROVED_FROM_BASELINE",
       "confidence": "HIGH",
-      "current": 0,
+      "current": 3,
       "dimension": "ACTIVE_ATTEMPT_COUNT",
       "expected": 3,
       "isNewSemanticRegression": false,
@@ -1812,21 +1812,25 @@
     {
       "assetId": "box-cat-01",
       "baseline": 0,
-      "classification": "GOLD_REVIEW_REQUIRED",
+      "classification": "IMPROVED_FROM_BASELINE",
       "confidence": "MEDIUM",
-      "current": 0,
+      "current": 3,
       "dimension": "DISTINCT_STRATEGY_COUNT",
       "expected": 3,
       "isNewSemanticRegression": false,
       "isUnexpectedPolicyRegression": false,
-      "message": "Current output disagrees with a non-high-confidence Gold Truth label."
+      "message": "Golden structural assertion comparison."
     },
     {
       "assetId": "box-cat-01",
       "baseline": [],
       "classification": "GOLD_REVIEW_REQUIRED",
       "confidence": "MEDIUM",
-      "current": [],
+      "current": [
+        "DISPLACE",
+        "RELOCATE",
+        "GUARD"
+      ],
       "dimension": "DISTINCT_STRATEGIES",
       "expected": [
         "GESTURE_OUT",
@@ -1840,26 +1844,26 @@
     {
       "assetId": "box-cat-01",
       "baseline": "UNKNOWN",
-      "classification": "GOLD_REVIEW_REQUIRED",
+      "classification": "IMPROVED_FROM_BASELINE",
       "confidence": "MEDIUM",
-      "current": "UNKNOWN",
+      "current": "MODERATE",
       "dimension": "ESCALATION",
       "expected": "MODERATE",
       "isNewSemanticRegression": false,
       "isUnexpectedPolicyRegression": false,
-      "message": "Current output disagrees with a non-high-confidence Gold Truth label."
+      "message": "Golden structural assertion comparison."
     },
     {
       "assetId": "box-cat-01",
       "baseline": "UNKNOWN",
-      "classification": "GOLD_REVIEW_REQUIRED",
+      "classification": "IMPROVED_FROM_BASELINE",
       "confidence": "MEDIUM",
-      "current": "UNKNOWN",
+      "current": "MODERATE",
       "dimension": "PROGRESSION",
       "expected": "MODERATE",
       "isNewSemanticRegression": false,
       "isUnexpectedPolicyRegression": false,
-      "message": "Current output disagrees with a non-high-confidence Gold Truth label."
+      "message": "Golden structural assertion comparison."
     },
     {
       "assetId": "box-cat-01",
@@ -1972,9 +1976,9 @@
     {
       "assetId": "box-cat-01",
       "baseline": "UNKNOWN",
-      "classification": "UNCHANGED_KNOWN_ISSUE",
+      "classification": "IMPROVED_FROM_BASELINE",
       "confidence": "HIGH",
-      "current": "UNKNOWN",
+      "current": "PASS",
       "dimension": "FIRST_FRAME_ANOMALY_INTENT",
       "expected": "STRONG",
       "isNewSemanticRegression": false,
@@ -2008,9 +2012,9 @@
     {
       "assetId": "box-cat-01",
       "baseline": 38.295454545454554,
-      "classification": "UNCHANGED",
+      "classification": "EXPECTED_POLICY_CHANGE",
       "confidence": null,
-      "current": 38.295454545454554,
+      "current": 61.81818181818181,
       "dimension": "POLICY_OUTPUT",
       "expected": 38.295454545454554,
       "isNewSemanticRegression": false,
@@ -2068,9 +2072,9 @@
     {
       "assetId": "box-cat-01",
       "baseline": 2,
-      "classification": "UNCHANGED",
+      "classification": "EXPECTED_POLICY_CHANGE",
       "confidence": null,
-      "current": 2,
+      "current": 0,
       "dimension": "POLICY_OUTPUT",
       "expected": 2,
       "isNewSemanticRegression": false,
@@ -2128,9 +2132,9 @@
     {
       "assetId": "spot-cat-01",
       "baseline": "UNKNOWN",
-      "classification": "UNCHANGED_KNOWN_ISSUE",
+      "classification": "IMPROVED_FROM_BASELINE",
       "confidence": "HIGH",
-      "current": "UNKNOWN",
+      "current": "EXPLICIT",
       "dimension": "GOAL",
       "expected": "EXPLICIT",
       "isNewSemanticRegression": false,
@@ -2152,9 +2156,9 @@
     {
       "assetId": "spot-cat-01",
       "baseline": 0,
-      "classification": "UNCHANGED_KNOWN_ISSUE",
+      "classification": "IMPROVED_FROM_BASELINE",
       "confidence": "HIGH",
-      "current": 0,
+      "current": 3,
       "dimension": "ACTIVE_ATTEMPT_COUNT",
       "expected": 3,
       "isNewSemanticRegression": false,
@@ -2164,9 +2168,9 @@
     {
       "assetId": "spot-cat-01",
       "baseline": 0,
-      "classification": "UNCHANGED_KNOWN_ISSUE",
+      "classification": "IMPROVED_FROM_BASELINE",
       "confidence": "HIGH",
-      "current": 0,
+      "current": 1,
       "dimension": "DISTINCT_STRATEGY_COUNT",
       "expected": 1,
       "isNewSemanticRegression": false,
@@ -2176,12 +2180,16 @@
     {
       "assetId": "spot-cat-01",
       "baseline": [],
-      "classification": "UNCHANGED_KNOWN_ISSUE",
+      "classification": "IMPROVED_FROM_BASELINE",
       "confidence": "HIGH",
-      "current": [],
+      "current": [
+        "COMMIT_TO_TARGET",
+        "COMMIT_TO_TARGET",
+        "COMMIT_TO_TARGET"
+      ],
       "dimension": "DISTINCT_STRATEGIES",
       "expected": [
-        "CAT_CLAIMS_COMMITTED_TARGET"
+        "COMMIT_TO_TARGET"
       ],
       "isNewSemanticRegression": false,
       "isUnexpectedPolicyRegression": false,
@@ -2192,7 +2200,7 @@
       "baseline": "UNKNOWN",
       "classification": "GOLD_REVIEW_REQUIRED",
       "confidence": "MEDIUM",
-      "current": "UNKNOWN",
+      "current": "NEEDS_ATTENTION",
       "dimension": "ESCALATION",
       "expected": "WEAK",
       "isNewSemanticRegression": false,
@@ -2204,7 +2212,7 @@
       "baseline": "UNKNOWN",
       "classification": "GOLD_REVIEW_REQUIRED",
       "confidence": "MEDIUM",
-      "current": "UNKNOWN",
+      "current": "MODERATE",
       "dimension": "PROGRESSION",
       "expected": "WEAK",
       "isNewSemanticRegression": false,
@@ -2322,9 +2330,9 @@
     {
       "assetId": "spot-cat-01",
       "baseline": "UNKNOWN",
-      "classification": "UNCHANGED_KNOWN_ISSUE",
+      "classification": "IMPROVED_FROM_BASELINE",
       "confidence": "HIGH",
-      "current": "UNKNOWN",
+      "current": "PASS",
       "dimension": "FIRST_FRAME_ANOMALY_INTENT",
       "expected": "STRONG",
       "isNewSemanticRegression": false,
@@ -2358,9 +2366,9 @@
     {
       "assetId": "spot-cat-01",
       "baseline": 38.295454545454554,
-      "classification": "UNCHANGED",
+      "classification": "EXPECTED_POLICY_CHANGE",
       "confidence": null,
-      "current": 38.295454545454554,
+      "current": 61.81818181818181,
       "dimension": "POLICY_OUTPUT",
       "expected": 38.295454545454554,
       "isNewSemanticRegression": false,
@@ -2418,9 +2426,9 @@
     {
       "assetId": "spot-cat-01",
       "baseline": 2,
-      "classification": "UNCHANGED",
+      "classification": "EXPECTED_POLICY_CHANGE",
       "confidence": null,
-      "current": 2,
+      "current": 0,
       "dimension": "POLICY_OUTPUT",
       "expected": 2,
       "isNewSemanticRegression": false,
@@ -3021,7 +3029,7 @@
     {
       "assetId": "island-journal-01",
       "baseline": "FAIL",
-      "classification": "UNCHANGED_KNOWN_ISSUE",
+      "classification": "PASS",
       "confidence": "HIGH",
       "current": "FAIL",
       "dimension": "FIRST_FRAME_ANOMALY_INTENT",
@@ -3376,7 +3384,7 @@
         {
           "assetId": "ball-crocodile-01",
           "baseline": "PASS",
-          "classification": "UNCHANGED_KNOWN_ISSUE",
+          "classification": "PASS",
           "confidence": "HIGH",
           "current": "PASS",
           "dimension": "FIRST_FRAME_ANOMALY_INTENT",
@@ -3538,9 +3546,9 @@
         {
           "assetId": "box-cat-01",
           "baseline": "UNKNOWN",
-          "classification": "UNCHANGED_KNOWN_ISSUE",
+          "classification": "IMPROVED_FROM_BASELINE",
           "confidence": "HIGH",
-          "current": "UNKNOWN",
+          "current": "EXPLICIT",
           "dimension": "GOAL",
           "expected": "EXPLICIT",
           "isNewSemanticRegression": false,
@@ -3562,9 +3570,9 @@
         {
           "assetId": "box-cat-01",
           "baseline": 0,
-          "classification": "UNCHANGED_KNOWN_ISSUE",
+          "classification": "IMPROVED_FROM_BASELINE",
           "confidence": "HIGH",
-          "current": 0,
+          "current": 3,
           "dimension": "ACTIVE_ATTEMPT_COUNT",
           "expected": 3,
           "isNewSemanticRegression": false,
@@ -3574,21 +3582,25 @@
         {
           "assetId": "box-cat-01",
           "baseline": 0,
-          "classification": "GOLD_REVIEW_REQUIRED",
+          "classification": "IMPROVED_FROM_BASELINE",
           "confidence": "MEDIUM",
-          "current": 0,
+          "current": 3,
           "dimension": "DISTINCT_STRATEGY_COUNT",
           "expected": 3,
           "isNewSemanticRegression": false,
           "isUnexpectedPolicyRegression": false,
-          "message": "Current output disagrees with a non-high-confidence Gold Truth label."
+          "message": "Golden structural assertion comparison."
         },
         {
           "assetId": "box-cat-01",
           "baseline": [],
           "classification": "GOLD_REVIEW_REQUIRED",
           "confidence": "MEDIUM",
-          "current": [],
+          "current": [
+            "DISPLACE",
+            "RELOCATE",
+            "GUARD"
+          ],
           "dimension": "DISTINCT_STRATEGIES",
           "expected": [
             "GESTURE_OUT",
@@ -3602,26 +3614,26 @@
         {
           "assetId": "box-cat-01",
           "baseline": "UNKNOWN",
-          "classification": "GOLD_REVIEW_REQUIRED",
+          "classification": "IMPROVED_FROM_BASELINE",
           "confidence": "MEDIUM",
-          "current": "UNKNOWN",
+          "current": "MODERATE",
           "dimension": "ESCALATION",
           "expected": "MODERATE",
           "isNewSemanticRegression": false,
           "isUnexpectedPolicyRegression": false,
-          "message": "Current output disagrees with a non-high-confidence Gold Truth label."
+          "message": "Golden structural assertion comparison."
         },
         {
           "assetId": "box-cat-01",
           "baseline": "UNKNOWN",
-          "classification": "GOLD_REVIEW_REQUIRED",
+          "classification": "IMPROVED_FROM_BASELINE",
           "confidence": "MEDIUM",
-          "current": "UNKNOWN",
+          "current": "MODERATE",
           "dimension": "PROGRESSION",
           "expected": "MODERATE",
           "isNewSemanticRegression": false,
           "isUnexpectedPolicyRegression": false,
-          "message": "Current output disagrees with a non-high-confidence Gold Truth label."
+          "message": "Golden structural assertion comparison."
         },
         {
           "assetId": "box-cat-01",
@@ -3734,9 +3746,9 @@
         {
           "assetId": "box-cat-01",
           "baseline": "UNKNOWN",
-          "classification": "UNCHANGED_KNOWN_ISSUE",
+          "classification": "IMPROVED_FROM_BASELINE",
           "confidence": "HIGH",
-          "current": "UNKNOWN",
+          "current": "PASS",
           "dimension": "FIRST_FRAME_ANOMALY_INTENT",
           "expected": "STRONG",
           "isNewSemanticRegression": false,
@@ -3770,9 +3782,9 @@
         {
           "assetId": "box-cat-01",
           "baseline": 38.295454545454554,
-          "classification": "UNCHANGED",
+          "classification": "EXPECTED_POLICY_CHANGE",
           "confidence": null,
-          "current": 38.295454545454554,
+          "current": 61.81818181818181,
           "dimension": "POLICY_OUTPUT",
           "expected": 38.295454545454554,
           "isNewSemanticRegression": false,
@@ -3830,9 +3842,9 @@
         {
           "assetId": "box-cat-01",
           "baseline": 2,
-          "classification": "UNCHANGED",
+          "classification": "EXPECTED_POLICY_CHANGE",
           "confidence": null,
-          "current": 2,
+          "current": 0,
           "dimension": "POLICY_OUTPUT",
           "expected": 2,
           "isNewSemanticRegression": false,
@@ -4088,7 +4100,7 @@
         {
           "assetId": "island-journal-01",
           "baseline": "FAIL",
-          "classification": "UNCHANGED_KNOWN_ISSUE",
+          "classification": "PASS",
           "confidence": "HIGH",
           "current": "FAIL",
           "dimension": "FIRST_FRAME_ANOMALY_INTENT",
@@ -5321,9 +5333,9 @@
         {
           "assetId": "spot-cat-01",
           "baseline": "UNKNOWN",
-          "classification": "UNCHANGED_KNOWN_ISSUE",
+          "classification": "IMPROVED_FROM_BASELINE",
           "confidence": "HIGH",
-          "current": "UNKNOWN",
+          "current": "EXPLICIT",
           "dimension": "GOAL",
           "expected": "EXPLICIT",
           "isNewSemanticRegression": false,
@@ -5345,9 +5357,9 @@
         {
           "assetId": "spot-cat-01",
           "baseline": 0,
-          "classification": "UNCHANGED_KNOWN_ISSUE",
+          "classification": "IMPROVED_FROM_BASELINE",
           "confidence": "HIGH",
-          "current": 0,
+          "current": 3,
           "dimension": "ACTIVE_ATTEMPT_COUNT",
           "expected": 3,
           "isNewSemanticRegression": false,
@@ -5357,9 +5369,9 @@
         {
           "assetId": "spot-cat-01",
           "baseline": 0,
-          "classification": "UNCHANGED_KNOWN_ISSUE",
+          "classification": "IMPROVED_FROM_BASELINE",
           "confidence": "HIGH",
-          "current": 0,
+          "current": 1,
           "dimension": "DISTINCT_STRATEGY_COUNT",
           "expected": 1,
           "isNewSemanticRegression": false,
@@ -5369,12 +5381,16 @@
         {
           "assetId": "spot-cat-01",
           "baseline": [],
-          "classification": "UNCHANGED_KNOWN_ISSUE",
+          "classification": "IMPROVED_FROM_BASELINE",
           "confidence": "HIGH",
-          "current": [],
+          "current": [
+            "COMMIT_TO_TARGET",
+            "COMMIT_TO_TARGET",
+            "COMMIT_TO_TARGET"
+          ],
           "dimension": "DISTINCT_STRATEGIES",
           "expected": [
-            "CAT_CLAIMS_COMMITTED_TARGET"
+            "COMMIT_TO_TARGET"
           ],
           "isNewSemanticRegression": false,
           "isUnexpectedPolicyRegression": false,
@@ -5385,7 +5401,7 @@
           "baseline": "UNKNOWN",
           "classification": "GOLD_REVIEW_REQUIRED",
           "confidence": "MEDIUM",
-          "current": "UNKNOWN",
+          "current": "NEEDS_ATTENTION",
           "dimension": "ESCALATION",
           "expected": "WEAK",
           "isNewSemanticRegression": false,
@@ -5397,7 +5413,7 @@
           "baseline": "UNKNOWN",
           "classification": "GOLD_REVIEW_REQUIRED",
           "confidence": "MEDIUM",
-          "current": "UNKNOWN",
+          "current": "MODERATE",
           "dimension": "PROGRESSION",
           "expected": "WEAK",
           "isNewSemanticRegression": false,
@@ -5515,9 +5531,9 @@
         {
           "assetId": "spot-cat-01",
           "baseline": "UNKNOWN",
-          "classification": "UNCHANGED_KNOWN_ISSUE",
+          "classification": "IMPROVED_FROM_BASELINE",
           "confidence": "HIGH",
-          "current": "UNKNOWN",
+          "current": "PASS",
           "dimension": "FIRST_FRAME_ANOMALY_INTENT",
           "expected": "STRONG",
           "isNewSemanticRegression": false,
@@ -5551,9 +5567,9 @@
         {
           "assetId": "spot-cat-01",
           "baseline": 38.295454545454554,
-          "classification": "UNCHANGED",
+          "classification": "EXPECTED_POLICY_CHANGE",
           "confidence": null,
-          "current": 38.295454545454554,
+          "current": 61.81818181818181,
           "dimension": "POLICY_OUTPUT",
           "expected": 38.295454545454554,
           "isNewSemanticRegression": false,
@@ -5611,9 +5627,9 @@
         {
           "assetId": "spot-cat-01",
           "baseline": 2,
-          "classification": "UNCHANGED",
+          "classification": "EXPECTED_POLICY_CHANGE",
           "confidence": null,
-          "current": 2,
+          "current": 0,
           "dimension": "POLICY_OUTPUT",
           "expected": 2,
           "isNewSemanticRegression": false,
@@ -5878,7 +5894,7 @@
         {
           "assetId": "sticky-ball-01",
           "baseline": "PASS",
-          "classification": "FAIL",
+          "classification": "PASS",
           "confidence": "HIGH",
           "current": "PASS",
           "dimension": "FIRST_FRAME_ANOMALY_INTENT",
@@ -6409,14 +6425,14 @@
   "releaseGate": "PASS",
   "summary": {
     "assets": 9,
-    "expectedPolicyChanges": 0,
+    "expectedPolicyChanges": 4,
     "goldAssertions": 261,
-    "goldReviewRequired": 62,
-    "improvedFromBaseline": 0,
+    "goldReviewRequired": 59,
+    "improvedFromBaseline": 11,
     "newSemanticRegressions": 0,
-    "semanticFailed": 10,
-    "semanticPassed": 22,
-    "unchangedKnownIssues": 70,
+    "semanticFailed": 9,
+    "semanticPassed": 25,
+    "unchangedKnownIssues": 60,
     "unexpectedPolicyRegressions": 0
   }
 }

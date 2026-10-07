@@ -43,6 +43,7 @@ REQUIRED_DIMENSIONS = {
 FAMILY_REVIEW_DIMENSIONS = {"GOAL", "ACTIVE_ATTEMPT_COUNT", "DISTINCT_STRATEGY_COUNT", "DISTINCT_STRATEGIES"}
 
 
+def test_gold_truth_is_independent_and_evidence_backed() -> None:
     truth = yaml.safe_load(TRUTH.read_text(encoding="utf-8"))
     assert truth["goldTruthVersion"] == "GOLD_TRUTH_V1"
     assert truth["evidenceReferencePolicy"]["excerptMode"] == "HUMAN_REVIEWED_VERBATIM_OR_SHORT_PARAPHRASE"
