@@ -2,6 +2,10 @@
 
 This document explains how each social media platform is integrated.
 
+## Package Boundaries
+
+Each platform has its own top-level package. `pompom_meta_publisher` contains only Facebook/Instagram code, `pompom_tiktok_publisher` contains only TikTok code, and `pompom_youtube_publisher` contains only YouTube code. Neutral environment, retry, caption, ledger, error, and secret helpers live in `pompom_publisher_common`. `batch_publish.py` is the intentional orchestration boundary when multiple platforms are selected.
+
 ## 📊 Platform Comparison
 
 | Feature | Meta (FB+IG) | TikTok | YouTube |
@@ -140,7 +144,7 @@ curl -G "https://graph.facebook.com/v21.0/PAGE_ID" \
 - Processing can take 1-5 minutes
 
 ### Files
-- `pompom_meta_publisher/tiktok/tiktok_publisher.py` - Core API
+- `pompom_tiktok_publisher/tiktok_publisher.py` - Core API
 - `publish_to_tiktok.py` - CLI tool
 
 ---
@@ -217,7 +221,7 @@ YOUTUBE_MADE_FOR_KIDS=true
 ```
 
 ### Files
-- `pompom_meta_publisher/youtube/youtube_publisher.py` - Core API
+- `pompom_youtube_publisher/youtube_publisher.py` - Core API
 - `publish_to_youtube.py` - CLI tool
 
 ---
@@ -298,12 +302,12 @@ python get_insights.py --content-id kiko-001
 
 ## 🗄️ Duplicate Protection
 
-All platforms share a SQLite ledger to prevent duplicate uploads:
+Each platform uses the neutral SQLite ledger implementation with its own default database (`data/publish_log.db` for Meta, `data/tiktok_publish_log.db` for TikTok, and `data/youtube_publish_log.db` for YouTube):
 
 ```python
-from pompom_meta_publisher.publishing.ledger import PublishLedger
+from pompom_publisher_common import PublishLedger
 
-ledger = PublishLedger("data/publish_log.db")
+ledger = PublishLedger("data/youtube_publish_log.db")
 
 # Check if already published
 existing = ledger.already_published("content-id-001", "youtube")

@@ -53,7 +53,9 @@ public class MetaReelsService {
   }
 
   public boolean isConfigured() {
-    return properties.isConfigured();
+    return properties.enabled()
+        && client.hasEffectiveInstagramTarget()
+        && client.hasEffectiveAccessToken();
   }
 
   @Transactional(readOnly = true)
@@ -314,7 +316,9 @@ public class MetaReelsService {
   }
 
   private void requireConfigured() {
-    if (!properties.isConfigured()) {
+    if (!properties.enabled()
+        || !client.hasEffectiveInstagramTarget()
+        || !client.hasEffectiveAccessToken()) {
       throw new MetaNotConfiguredException();
     }
   }

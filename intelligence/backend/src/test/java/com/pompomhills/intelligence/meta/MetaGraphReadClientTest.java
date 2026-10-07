@@ -1,13 +1,19 @@
 package com.pompomhills.intelligence.meta;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.header;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.time.Clock;
 import java.time.Duration;
+import java.time.Instant;
+import java.time.ZoneOffset;
+import java.util.Optional;
+import java.util.Set;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -16,6 +22,113 @@ import org.springframework.test.web.client.MockRestServiceServer;
 import org.springframework.web.client.RestClient;
 
 class MetaGraphReadClientTest {
+
+  @Test
+  void durableConnectionSuppliesReadTokenAndTargetsWithoutStaticAccessToken() {
+    RestClient.Builder builder = RestClient.builder().baseUrl("https://graph.facebook.com");
+    MockRestServiceServer server = MockRestServiceServer.bindTo(builder).build();
+    MetaReadProperties properties =
+        new MetaReadProperties(
+            true,
+            "v26.0",
+            "",
+            "",
+            "",
+            "",
+            Duration.ofSeconds(5),
+            Duration.ofSeconds(15),
+            false,
+            false,
+            "owner-1");
+    MetaTokenEncryptionService encryption = new MetaTokenEncryptionService("test-key");
+    MetaConnectionEntity entity =
+        MetaConnectionEntity.connected(
+            "owner-1",
+            new MetaProviderAdapter.AuthorizationResult(
+                "meta-user-1",
+                "page-1",
+                "instagram-1",
+                "PROFESSIONAL",
+                "user-secret",
+                "page-secret",
+                null,
+                Set.of("pages_read_engagement", "instagram_basic", "instagram_manage_insights"),
+                Instant.parse("2026-10-01T12:00:00Z"),
+                Instant.parse("2026-10-01T13:00:00Z"),
+                true,
+                true,
+                null),
+            encryption,
+            java.util.Map.of());
+    MetaConnectionRepository repository = org.mockito.Mockito.mock(MetaConnectionRepository.class);
+    when(repository.findTopByOwnerKeyOrderByUpdatedAtDesc("owner-1"))
+        .thenReturn(Optional.of(entity));
+    MetaGraphReadClient client =
+        new MetaGraphReadClient(
+            builder.build(),
+            new ObjectMapper(),
+            properties,
+            new MetaOAuthTokenStore(),
+            repository,
+            encryption,
+            Clock.fixed(Instant.parse("2026-10-01T12:30:00Z"), ZoneOffset.UTC));
+
+    server
+        .expect(requestTo("https://graph.facebook.com/v26.0/page-1?fields=id,name,category"))
+        .andExpect(header(HttpHeaders.AUTHORIZATION, "Bearer page-secret"))
+        .andRespond(
+            withSuccess(
+                "{\"id\":\"page-1\",\"name\":\"Pompom Hills\"}",
+                MediaType.APPLICATION_JSON));
+
+    assertThat(client.getFacebookPage().id()).isEqualTo("page-1");
+    assertThat(client.hasEffectiveAccessToken()).isTrue();
+    server.verify();
+  }
+
+  @Test
+  void revokedDurableConnectionDoesNotFallBackToStaticCredentials() {
+    RestClient.Builder builder = RestClient.builder().baseUrl("https://graph.facebook.com");
+    MockRestServiceServer server = MockRestServiceServer.bindTo(builder).build();
+    MetaReadProperties properties = properties("legacy-user-token");
+    MetaTokenEncryptionService encryption = new MetaTokenEncryptionService("test-key");
+    MetaConnectionEntity entity =
+        MetaConnectionEntity.connected(
+            "default",
+            new MetaProviderAdapter.AuthorizationResult(
+                "meta-user-1",
+                "durable-page",
+                "durable-instagram",
+                "PROFESSIONAL",
+                "user-secret",
+                "page-secret",
+                null,
+                Set.of("pages_read_engagement"),
+                Instant.parse("2026-10-01T12:00:00Z"),
+                Instant.parse("2026-10-01T13:00:00Z"),
+                true,
+                true,
+                null),
+            encryption,
+            java.util.Map.of());
+    entity.setStatus(MetaConnectionStatus.REVOKED);
+    MetaConnectionRepository repository = org.mockito.Mockito.mock(MetaConnectionRepository.class);
+    when(repository.findTopByOwnerKeyOrderByUpdatedAtDesc("default"))
+        .thenReturn(Optional.of(entity));
+    MetaGraphReadClient client =
+        new MetaGraphReadClient(
+            builder.build(),
+            new ObjectMapper(),
+            properties,
+            new MetaOAuthTokenStore(),
+            repository,
+            encryption,
+            Clock.fixed(Instant.parse("2026-10-01T12:30:00Z"), ZoneOffset.UTC));
+
+    assertThat(client.hasEffectiveAccessToken()).isFalse();
+    assertThat(client.hasEffectivePageTarget()).isFalse();
+    server.verify();
+  }
 
   @Test
   void verifiesConfiguredPageWithGetMeAccountsAndRequestsIdsOnly() {

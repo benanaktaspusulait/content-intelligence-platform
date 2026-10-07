@@ -4,6 +4,8 @@ import java.time.Clock;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
+import java.util.Optional;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
 
@@ -18,16 +20,35 @@ public class MetaConnectionService {
   private final MetaReadProperties properties;
   private final MetaGraphReadClient client;
   private final Clock clock;
+  private final MetaConnectionLifecycleService lifecycle;
   private CacheEntry cachedResponse;
 
+  /** Spring constructor that prefers the durable owner over legacy static-token validation. */
+  @Autowired
   public MetaConnectionService(
-      MetaReadProperties properties, MetaGraphReadClient client, Clock clock) {
+      MetaReadProperties properties,
+      MetaGraphReadClient client,
+      Clock clock,
+      MetaConnectionLifecycleService lifecycle) {
     this.properties = properties;
     this.client = client;
     this.clock = clock;
+    this.lifecycle = lifecycle;
+  }
+
+  /** Compatibility constructor for the existing read-only validation tests. */
+  public MetaConnectionService(
+      MetaReadProperties properties, MetaGraphReadClient client, Clock clock) {
+    this(properties, client, clock, null);
   }
 
   public synchronized MetaConnectionResponse getConnection() {
+    if (lifecycle != null) {
+      Optional<MetaConnectionResponse> durable = lifecycle.currentConnection();
+      if (durable.isPresent()) {
+        return durable.get();
+      }
+    }
     Instant now = clock.instant();
     if (cachedResponse != null && now.isBefore(cachedResponse.expiresAt())) {
       return cachedResponse.response();

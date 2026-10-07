@@ -58,18 +58,23 @@ Standalone Python module for publishing Pompom Hills content to Facebook Page Re
 
 ```
 pompom-meta-publisher/
-├── pompom_meta_publisher/        # Main package
-│   ├── common/                   # Shared utilities
-│   │   ├── env.py               # Environment management
-│   │   └── retry.py             # Retry policy
-│   └── publishing/               # Publishing logic
+├── pompom_meta_publisher/        # Facebook + Instagram only
+│   ├── common/                   # Compatibility re-exports
+│   └── publishing/               # Meta publishing logic
 │       ├── config.py            # Configuration
-│       ├── errors.py            # Exception hierarchy
-│       ├── ledger.py            # SQLite publication tracking
-│       ├── storage.py           # Video hosting backends
-│       ├── captions.py          # Caption helpers
+│       ├── errors.py            # Meta exception hierarchy
 │       ├── http_client.py       # Meta Graph API client
+│       ├── storage.py            # Video hosting backends
 │       └── meta_publisher.py    # Core publishing logic
+├── pompom_tiktok_publisher/      # TikTok publishing logic
+├── pompom_youtube_publisher/     # YouTube publishing logic
+├── pompom_publisher_common/      # Neutral shared utilities
+│   ├── env.py                    # Environment management
+│   ├── retry.py                  # Retry policy
+│   ├── ledger.py                 # SQLite publication tracking
+│   ├── captions.py               # Caption helpers
+│   ├── errors.py                 # Base publishing error
+│   └── secrets.py                # Secret scrubbing
 ├── scripts/                      # Automation scripts
 │   └── auto_publish_new_videos.sh
 ├── examples/                     # Example data
@@ -80,8 +85,10 @@ pompom-meta-publisher/
 │   ├── QUICKSTART.md
 │   ├── EXAMPLE_USAGE.md
 │   └── INTEGRATION_GUIDE.md
-├── publish_pompom_reel.py       # CLI tool
-├── batch_publish.py             # Batch publisher
+├── publish_pompom_reel.py        # Meta CLI tool
+├── publish_to_tiktok.py          # TikTok CLI tool
+├── publish_to_youtube.py         # YouTube CLI tool
+├── batch_publish.py              # Batch publisher
 ├── test_config.py               # Config tester
 ├── setup.py                     # Package setup
 ├── Makefile                     # Build automation

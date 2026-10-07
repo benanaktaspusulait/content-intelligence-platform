@@ -19,6 +19,9 @@ setup(
     packages=find_packages(),
     package_data={
         "pompom_meta_publisher": ["py.typed"],
+        "pompom_publisher_common": ["py.typed"],
+        "pompom_tiktok_publisher": ["py.typed"],
+        "pompom_youtube_publisher": ["py.typed"],
     },
     python_requires=">=3.10",
     install_requires=[

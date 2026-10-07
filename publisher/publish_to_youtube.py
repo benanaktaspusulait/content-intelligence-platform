@@ -21,12 +21,12 @@ from pathlib import Path
 # Add parent directory to path for imports
 sys.path.insert(0, str(Path(__file__).parent))
 
-from pompom_meta_publisher.youtube import (
+from pompom_youtube_publisher import (
     load_youtube_config,
     publish_to_youtube,
     verify_youtube_configuration,
 )
-from pompom_meta_publisher.publishing.ledger import PublishLedger
+from pompom_publisher_common import PublishLedger
 
 logging.basicConfig(
     level=logging.INFO,

@@ -9,41 +9,56 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import org.springframework.stereotype.Component;
 
-/**
- * Short-lived, in-memory, single-use CSRF state tokens for the OAuth authorization flow. A state
- * value is valid once and expires after {@link #STATE_TTL}; it is removed as soon as it is consumed
- * or found expired, so it cannot be replayed.
- */
+/** Short-lived, in-memory, owner-bound, single-use CSRF state for the Meta OAuth flow. */
 @Component
 public class MetaOAuthStateStore {
   private static final Duration STATE_TTL = Duration.ofMinutes(10);
   private static final SecureRandom RANDOM = new SecureRandom();
 
-  private final Map<String, Instant> pendingStates = new ConcurrentHashMap<>();
+  private final Map<String, PendingState> pendingStates = new ConcurrentHashMap<>();
   private final Clock clock;
 
   public MetaOAuthStateStore(Clock clock) {
     this.clock = clock;
   }
 
-  /** Issues a new random state value and records it as pending. */
+  /** Compatibility overload for the default single-owner deployment. */
   public String issue() {
+    return issue("default");
+  }
+
+  /** Issues a state value bound to the explicit application owner key. */
+  public String issue(String ownerKey) {
     byte[] bytes = new byte[32];
     RANDOM.nextBytes(bytes);
     String state = Base64.getUrlEncoder().withoutPadding().encodeToString(bytes);
-    pendingStates.put(state, clock.instant().plus(STATE_TTL));
+    pendingStates.put(
+        state,
+        new PendingState(
+            normalizeOwnerKey(ownerKey), clock.instant().plus(STATE_TTL)));
     return state;
   }
 
-  /**
-   * Consumes a state value: returns true only if it was previously issued and has not expired. The
-   * state is removed either way, so it can never be validated twice.
-   */
+  /** Compatibility overload for the default single-owner deployment. */
   public boolean consume(String state) {
+    return consume(state, "default");
+  }
+
+  /** Consumes a state only when it belongs to the requested owner and is not expired. */
+  public boolean consume(String state, String ownerKey) {
     if (state == null || state.isBlank()) {
       return false;
     }
-    Instant expiresAt = pendingStates.remove(state);
-    return expiresAt != null && clock.instant().isBefore(expiresAt);
+    PendingState pending = pendingStates.remove(state);
+    return pending != null
+        && normalizeOwnerKey(ownerKey).equals(pending.ownerKey())
+        && clock.instant().isBefore(pending.expiresAt());
   }
+
+  private String normalizeOwnerKey(String ownerKey) {
+    String normalized = ownerKey == null ? "" : ownerKey.trim();
+    return normalized.isBlank() ? "default" : normalized;
+  }
+
+  private record PendingState(String ownerKey, Instant expiresAt) {}
 }

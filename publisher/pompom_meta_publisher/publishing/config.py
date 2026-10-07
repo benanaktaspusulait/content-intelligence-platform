@@ -9,7 +9,7 @@ import logging
 from dataclasses import dataclass
 from pathlib import Path
 
-from ..common.env import (
+from pompom_publisher_common.env import (
     DEFAULT_ENV_PATH,
     EnvError,
     env_bool,
@@ -18,7 +18,7 @@ from ..common.env import (
     env_str,
     load_env_file,
 )
-from ..common.retry import RetryPolicy
+from pompom_publisher_common.retry import RetryPolicy
 from .errors import MetaConfigurationError
 from .http_client import register_secret
 
@@ -31,8 +31,8 @@ DEFAULT_API_VERSION = "v26.0"
 GRAPH_HOST = "https://graph.facebook.com"
 RUPLOAD_HOST = "https://rupload.facebook.com"
 
-# Environment helpers live in pompom_meta_publisher/common/env.py and are re-exported
-# here so existing imports from this module keep working.
+# Environment helpers live in pompom_publisher_common.env and remain available
+# from the old Meta path through a compatibility re-export.
 __all__ = [
     "DEFAULT_API_VERSION",
     "DEFAULT_ENV_PATH",

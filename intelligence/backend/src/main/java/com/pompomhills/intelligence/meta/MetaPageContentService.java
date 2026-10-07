@@ -25,7 +25,7 @@ public class MetaPageContentService {
   }
 
   public MetaPageContentResponse getRecentContent() {
-    if (!properties.isConfigured()) {
+    if (!properties.enabled() || !client.hasEffectivePageTarget() || !client.hasEffectiveAccessToken()) {
       throw new MetaNotConfiguredException();
     }
 

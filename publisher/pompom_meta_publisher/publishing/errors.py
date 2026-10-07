@@ -5,8 +5,7 @@ Every exception raised by this package inherits from PublishError.
 """
 
 
-class PublishError(Exception):
-    """Base class for every publishing failure."""
+from pompom_publisher_common.errors import PublishError
 
 
 class MetaConfigurationError(PublishError):

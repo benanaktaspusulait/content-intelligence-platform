@@ -17,7 +17,8 @@ import urllib.parse
 import urllib.request
 from dataclasses import dataclass, field
 
-from ..common.retry import RETRYABLE_STATUS, RetryPolicy
+from pompom_publisher_common.retry import RETRYABLE_STATUS, RetryPolicy
+from pompom_publisher_common.secrets import register_secret, scrub
 from .errors import (
     MetaApiError,
     MetaAuthenticationError,
@@ -31,25 +32,6 @@ AUTH_ERROR_CODES = {102, 190, 200, 458, 459, 463, 464, 467}
 
 # Graph API throttling codes.
 RATE_LIMIT_CODES = {4, 17, 32, 613}
-
-_SECRETS: set[str] = set()
-
-
-def register_secret(value: str | None) -> None:
-    """Remember a value that must never appear in a log line."""
-    if value and len(value) >= 8:
-        _SECRETS.add(value)
-
-
-def scrub(text: str | None) -> str:
-    """Replace every registered secret with a placeholder."""
-    if not text:
-        return ""
-    cleaned = text
-    for secret in _SECRETS:
-        cleaned = cleaned.replace(secret, "<redacted>")
-    return cleaned
-
 
 @dataclass
 class HttpResponse:

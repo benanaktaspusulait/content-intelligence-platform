@@ -16,13 +16,18 @@ import time
 from dataclasses import dataclass, field
 from pathlib import Path
 
-from ..publishing.config import env_bool, env_str
-from ..publishing.errors import PublishError
-from ..publishing.http_client import register_secret
-from ..publishing.ledger import PublishLedger
-from ..common.retry import RetryPolicy
+from pompom_publisher_common.env import (
+    DEFAULT_ENV_PATH,
+    env_bool,
+    env_str,
+    load_env_file,
+)
+from pompom_publisher_common.errors import PublishError
+from pompom_publisher_common.ledger import PublishLedger
+from pompom_publisher_common.retry import RetryPolicy
+from pompom_publisher_common.secrets import register_secret
 
-log = logging.getLogger("pompom_meta.tiktok")
+log = logging.getLogger("pompom_tiktok_publisher")
 
 TIKTOK = "tiktok"
 
@@ -54,7 +59,7 @@ class TikTokConfig:
     upload_timeout: float = 600.0
     max_attempts: int = 5
     
-    ledger_path: Path = Path("data/publish_log.db")
+    ledger_path: Path = Path("data/tiktok_publish_log.db")
     
     @property
     def retry_policy(self) -> RetryPolicy:
@@ -71,7 +76,6 @@ class TikTokConfig:
 
 def load_tiktok_config() -> TikTokConfig:
     """Load TikTok configuration from environment."""
-    from ..publishing.config import load_env_file, DEFAULT_ENV_PATH
     load_env_file(DEFAULT_ENV_PATH)
     
     config = TikTokConfig(
@@ -81,7 +85,7 @@ def load_tiktok_config() -> TikTokConfig:
         api_base=env_str("TIKTOK_API_BASE", "https://open.tiktokapis.com"),
         enable_tiktok=env_bool("TIKTOK_ENABLE", False),
         dry_run=env_bool("TIKTOK_DRY_RUN", True),
-        ledger_path=Path(env_str("TIKTOK_PUBLISH_DB", "data/publish_log.db")),
+        ledger_path=Path(env_str("TIKTOK_PUBLISH_DB", "data/tiktok_publish_log.db")),
     )
     
     # Register secrets

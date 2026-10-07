@@ -2,88 +2,138 @@ package com.pompomhills.intelligence.meta;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.time.Clock;
+import java.time.Instant;
+import java.util.Arrays;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.util.UriComponentsBuilder;
 
-/**
- * Orchestrates the Meta OAuth authorization-code flow for read-only analytics access.
- *
- * <p>Only four read-only scopes are requested: pages_show_list, pages_read_engagement,
- * instagram_basic, instagram_manage_insights. The app secret and all tokens are used strictly
- * server-side; they are never returned to the browser, logged, or placed in any DTO.
- */
+/** Provider-facing Meta OAuth exchange for the read-only analytics connection. */
 @Service
-public class MetaOAuthService {
+public class MetaOAuthService implements MetaProviderAdapter {
   private static final String AUTH_DIALOG_URL = "https://www.facebook.com/v26.0/dialog/oauth";
-  private static final String REQUESTED_SCOPES =
-      "pages_show_list,pages_read_engagement,instagram_basic,instagram_manage_insights";
+  private static final List<String> REQUESTED_SCOPES =
+      List.of("pages_show_list", "pages_read_engagement", "instagram_basic", "instagram_manage_insights");
 
   private final MetaOAuthProperties oauthProperties;
   private final MetaReadProperties readProperties;
-  private final MetaOAuthTokenStore tokenStore;
   private final RestClient restClient;
+  private final Clock clock;
 
+  @Autowired
   public MetaOAuthService(
       MetaOAuthProperties oauthProperties,
       MetaReadProperties readProperties,
-      MetaOAuthTokenStore tokenStore,
-      @Qualifier("metaReadRestClient") RestClient restClient) {
+      MetaOAuthTokenStore ignoredLegacyTokenStore,
+      @Qualifier("metaReadRestClient") RestClient restClient,
+      Clock clock) {
     this.oauthProperties = oauthProperties;
     this.readProperties = readProperties;
-    this.tokenStore = tokenStore;
     this.restClient = restClient;
+    this.clock = clock;
+  }
+
+  /** Compatibility constructor for isolated provider tests. */
+  public MetaOAuthService(
+      MetaOAuthProperties oauthProperties,
+      MetaReadProperties readProperties,
+      MetaOAuthTokenStore ignoredLegacyTokenStore,
+      RestClient restClient) {
+    this(oauthProperties, readProperties, ignoredLegacyTokenStore, restClient, Clock.systemUTC());
   }
 
   public boolean isConfigured() {
     return oauthProperties.isConfigured();
   }
 
-  /** Builds the real Meta/Facebook authorization dialog URL for the given CSRF state. */
+  /** Builds the read-only Meta authorization URL. No publish or comment-write scope is requested. */
   public String buildAuthorizationUrl(String state) {
     return UriComponentsBuilder.fromUriString(AUTH_DIALOG_URL)
         .queryParam("client_id", oauthProperties.appId())
         .queryParam("redirect_uri", oauthProperties.redirectUri())
         .queryParam("state", state)
         .queryParam("response_type", "code")
-        .queryParam("scope", REQUESTED_SCOPES)
+        .queryParam("scope", String.join(",", REQUESTED_SCOPES))
         .build()
         .toUriString();
   }
 
-  /**
-   * Completes the OAuth flow for an authorization code already validated against CSRF state by the
-   * caller: exchanges the code for a user token (server-side), verifies the configured Page is
-   * managed by this user via pages_show_list, obtains the Page access token, and resolves the
-   * linked Instagram Professional account id from the Page. The derived Page token is stored in
-   * {@link MetaOAuthTokenStore}; nothing is returned to callers beyond a success outcome.
-   */
-  public OAuthCompletionResult completeAuthorization(String code) {
-    String userAccessToken = exchangeCodeForUserToken(code);
-    AccountsResponse accounts = fetchManagedAccounts(userAccessToken);
-    String configuredPageId = readProperties.pageId();
-    boolean pageManaged =
-        accounts.data() != null
-            && accounts.data().stream()
-                .anyMatch(account -> account != null && configuredPageId.equals(account.id()));
-    if (!pageManaged) {
-      return OAuthCompletionResult.failure(
-          "The authenticated user does not manage the configured Facebook Page.");
-    }
-
-    String pageAccessToken = fetchPageAccessToken(configuredPageId, userAccessToken);
-    if (pageAccessToken == null || pageAccessToken.isBlank()) {
-      return OAuthCompletionResult.failure("A Page access token could not be obtained.");
-    }
-
-    tokenStore.setUserAccessToken(userAccessToken);
-    tokenStore.setPageAccessToken(pageAccessToken);
-    return OAuthCompletionResult.succeeded();
+  public List<String> requestedScopes() {
+    return REQUESTED_SCOPES;
   }
 
-  private String exchangeCodeForUserToken(String code) {
+  /**
+   * Exchanges and validates an authorization code without placing provider tokens in process-local
+   * state. The lifecycle service is the only caller that persists the returned internal result.
+   */
+  @Override
+  public AuthorizationResult authorize(String code) {
+    if (code == null || code.isBlank()) {
+      throw genericOAuthError();
+    }
+    TokenResponse response = exchangeCodeForUserToken(code);
+    String userAccessToken = response.accessToken();
+    AccountsResponse accounts = fetchManagedAccounts(userAccessToken);
+    String pageId = resolveManagedPageId(accounts);
+    if (pageId == null) {
+      throw new MetaOAuthException(
+          "The authenticated user does not manage a Facebook Page configured for this connection.");
+    }
+
+    String pageAccessToken = fetchPageAccessToken(pageId, userAccessToken);
+    if (pageAccessToken == null || pageAccessToken.isBlank()) {
+      throw new MetaOAuthException("A Page access token could not be obtained.");
+    }
+
+    Instant issuedAt = clock.instant();
+    return new AuthorizationResult(
+        response.userId(),
+        pageId,
+        blankToNull(readProperties.instagramAccountId()),
+        null,
+        userAccessToken,
+        pageAccessToken,
+        null,
+        grantedScopes(response.scope()),
+        issuedAt,
+        expiresAt(response, issuedAt),
+        true,
+        false,
+        null);
+  }
+
+  /** Compatibility result for callers that only need a sanitized success/failure outcome. */
+  public OAuthCompletionResult completeAuthorization(String code) {
+    try {
+      authorize(code);
+      return OAuthCompletionResult.succeeded();
+    } catch (MetaOAuthException error) {
+      return OAuthCompletionResult.failure(error.getMessage());
+    }
+  }
+
+  private String resolveManagedPageId(AccountsResponse accounts) {
+    if (accounts == null || accounts.data() == null) {
+      return null;
+    }
+    String configuredPageId = blankToNull(readProperties.pageId());
+    return accounts.data().stream()
+        .filter(account -> account != null && account.id() != null && !account.id().isBlank())
+        .map(Account::id)
+        .filter(
+            pageId -> configuredPageId == null || configuredPageId.equals(pageId.trim()))
+        .map(String::trim)
+        .findFirst()
+        .orElse(null);
+  }
+
+  private TokenResponse exchangeCodeForUserToken(String code) {
     TokenResponse response =
         restClient
             .get()
@@ -106,7 +156,7 @@ public class MetaOAuthService {
     if (response == null || response.accessToken() == null || response.accessToken().isBlank()) {
       throw genericOAuthError();
     }
-    return response.accessToken();
+    return response;
   }
 
   private AccountsResponse fetchManagedAccounts(String userAccessToken) {
@@ -152,6 +202,32 @@ public class MetaOAuthService {
     return response == null ? null : response.accessToken();
   }
 
+  private Set<String> grantedScopes(String scope) {
+    if (scope == null || scope.isBlank()) {
+      return Set.of();
+    }
+    LinkedHashSet<String> scopes = new LinkedHashSet<>();
+    Arrays.stream(scope.split("[,\\s]+"))
+        .map(String::trim)
+        .filter(value -> !value.isBlank())
+        .forEach(scopes::add);
+    return Set.copyOf(scopes);
+  }
+
+  private Instant expiresAt(TokenResponse response, Instant issuedAt) {
+    if (response.expiresIn() != null && response.expiresIn() > 0) {
+      return issuedAt.plusSeconds(response.expiresIn());
+    }
+    if (response.dataAccessExpirationTime() != null && response.dataAccessExpirationTime() > 0) {
+      return Instant.ofEpochSecond(response.dataAccessExpirationTime());
+    }
+    return null;
+  }
+
+  private static String blankToNull(String value) {
+    return value == null || value.isBlank() ? null : value.trim();
+  }
+
   private MetaOAuthException genericOAuthError() {
     return new MetaOAuthException("The Meta authorization request could not be completed.");
   }
@@ -167,7 +243,12 @@ public class MetaOAuthService {
   }
 
   @JsonIgnoreProperties(ignoreUnknown = true)
-  private record TokenResponse(@JsonProperty("access_token") String accessToken) {}
+  private record TokenResponse(
+      @JsonProperty("access_token") String accessToken,
+      @JsonProperty("expires_in") Long expiresIn,
+      @JsonProperty("data_access_expiration_time") Long dataAccessExpirationTime,
+      @JsonProperty("user_id") String userId,
+      String scope) {}
 
   @JsonIgnoreProperties(ignoreUnknown = true)
   private record AccountsResponse(List<Account> data) {}

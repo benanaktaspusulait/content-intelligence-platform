@@ -16,13 +16,18 @@ import time
 from dataclasses import dataclass
 from pathlib import Path
 
-from ..publishing.config import env_bool, env_str
-from ..publishing.errors import PublishError
-from ..publishing.http_client import register_secret
-from ..publishing.ledger import PublishLedger
-from ..common.retry import RetryPolicy
+from pompom_publisher_common.env import (
+    DEFAULT_ENV_PATH,
+    env_bool,
+    env_str,
+    load_env_file,
+)
+from pompom_publisher_common.errors import PublishError
+from pompom_publisher_common.ledger import PublishLedger
+from pompom_publisher_common.retry import RetryPolicy
+from pompom_publisher_common.secrets import register_secret
 
-log = logging.getLogger("pompom_meta.youtube")
+log = logging.getLogger("pompom_youtube_publisher")
 
 YOUTUBE = "youtube"
 
@@ -62,7 +67,7 @@ class YouTubeConfig:
     default_privacy: str = "public"  # public, unlisted, private
     made_for_kids: bool = True
     
-    ledger_path: Path = Path("data/publish_log.db")
+    ledger_path: Path = Path("data/youtube_publish_log.db")
     
     @property
     def retry_policy(self) -> RetryPolicy:
@@ -79,7 +84,6 @@ class YouTubeConfig:
 
 def load_youtube_config() -> YouTubeConfig:
     """Load YouTube configuration from environment."""
-    from ..publishing.config import load_env_file, DEFAULT_ENV_PATH
     load_env_file(DEFAULT_ENV_PATH)
     
     config = YouTubeConfig(
@@ -91,7 +95,7 @@ def load_youtube_config() -> YouTubeConfig:
         dry_run=env_bool("YOUTUBE_DRY_RUN", True),
         default_privacy=env_str("YOUTUBE_PRIVACY", "public"),
         made_for_kids=env_bool("YOUTUBE_MADE_FOR_KIDS", True),
-        ledger_path=Path(env_str("YOUTUBE_PUBLISH_DB", "data/publish_log.db")),
+        ledger_path=Path(env_str("YOUTUBE_PUBLISH_DB", "data/youtube_publish_log.db")),
     )
     
     # Register secrets

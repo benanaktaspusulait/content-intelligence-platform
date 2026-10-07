@@ -4,8 +4,12 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
+import java.time.Clock;
+import java.time.Instant;
 import java.util.List;
+import java.util.Optional;
 import java.util.regex.Pattern;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
@@ -39,37 +43,121 @@ public final class MetaGraphReadClient {
   private final ObjectMapper objectMapper;
   private final MetaReadProperties properties;
   private final MetaOAuthTokenStore oauthTokenStore;
+  private final MetaConnectionRepository connectionRepository;
+  private final MetaTokenEncryptionService tokenEncryption;
+  private final Clock clock;
 
+  @Autowired
   public MetaGraphReadClient(
       @Qualifier("metaReadRestClient") RestClient restClient,
       ObjectMapper objectMapper,
       MetaReadProperties properties,
-      MetaOAuthTokenStore oauthTokenStore) {
+      MetaOAuthTokenStore oauthTokenStore,
+      MetaConnectionRepository connectionRepository,
+      MetaTokenEncryptionService tokenEncryption,
+      Clock clock) {
     this.restClient = restClient;
     this.objectMapper = objectMapper;
     this.properties = properties;
     this.oauthTokenStore = oauthTokenStore;
+    this.connectionRepository = connectionRepository;
+    this.tokenEncryption = tokenEncryption;
+    this.clock = clock;
   }
 
-  /**
-   * The access token to use for configured-account reads: the Page token obtained via the OAuth
-   * flow if present, otherwise the statically configured token. Never logged or exposed.
-   */
+  /** Compatibility constructor for read-only unit tests and legacy static-token callers. */
+  public MetaGraphReadClient(
+      RestClient restClient,
+      ObjectMapper objectMapper,
+      MetaReadProperties properties,
+      MetaOAuthTokenStore oauthTokenStore) {
+    this(restClient, objectMapper, properties, oauthTokenStore, null, null, Clock.systemUTC());
+  }
+
+  /** The durable Page token wins; static/process-local tokens are fallbacks only before durable state exists. */
   private String effectiveAccessToken() {
+    Optional<MetaConnectionEntity> durable = durableConnection();
+    if (durable.isPresent()) {
+      if (!isActive(durable.get()) || tokenEncryption == null) {
+        return "";
+      }
+      String token = durable.get().decryptTokens(tokenEncryption).pageAccessToken();
+      return token == null ? "" : token;
+    }
     String oauthToken = oauthTokenStore.getPageAccessToken();
     return oauthToken != null && !oauthToken.isBlank() ? oauthToken : properties.accessToken();
   }
 
-  /**
-   * The user-context token for pages_show_list verification: the fresh OAuth-derived user token if
-   * present, otherwise the statically configured {@code META_USER_ACCESS_TOKEN}. The Page token is
-   * never used here; GET /me/accounts requires a user token, not a Page token.
-   */
+  /** A user token is used only for user-context calls such as GET /me/accounts. */
   private String effectiveUserAccessToken() {
+    Optional<MetaConnectionEntity> durable = durableConnection();
+    if (durable.isPresent()) {
+      if (!isActive(durable.get()) || tokenEncryption == null) {
+        return "";
+      }
+      String token = durable.get().decryptTokens(tokenEncryption).userAccessToken();
+      return token == null ? "" : token;
+    }
     String oauthUserToken = oauthTokenStore.getUserAccessToken();
     return oauthUserToken != null && !oauthUserToken.isBlank()
         ? oauthUserToken
         : properties.userAccessToken();
+  }
+
+  public boolean hasEffectiveAccessToken() {
+    return !effectiveAccessToken().isBlank();
+  }
+
+  public boolean hasEffectiveTargets() {
+    return hasEffectivePageTarget() && hasEffectiveInstagramTarget();
+  }
+
+  public boolean hasEffectivePageTarget() {
+    return !effectivePageId().isBlank();
+  }
+
+  public boolean hasEffectiveInstagramTarget() {
+    return !effectiveInstagramAccountId().isBlank();
+  }
+
+  private String effectivePageId() {
+    Optional<MetaConnectionEntity> durable = durableConnection();
+    if (durable.isPresent()) {
+      return isActive(durable.get()) ? normalizeTarget(durable.get().getFacebookPageId()) : "";
+    }
+    return properties.pageId();
+  }
+
+  private String effectiveInstagramAccountId() {
+    Optional<MetaConnectionEntity> durable = durableConnection();
+    if (durable.isPresent()) {
+      return isActive(durable.get())
+          ? normalizeTarget(durable.get().getInstagramAccountId())
+          : "";
+    }
+    return properties.instagramAccountId();
+  }
+
+  private Optional<MetaConnectionEntity> durableConnection() {
+    if (connectionRepository == null) {
+      return Optional.empty();
+    }
+    return connectionRepository.findTopByOwnerKeyOrderByUpdatedAtDesc(properties.connectionOwnerKey());
+  }
+
+  private Optional<MetaConnectionEntity> activeDurableConnection() {
+    return durableConnection().filter(this::isActive);
+  }
+
+  private boolean isActive(MetaConnectionEntity connection) {
+    return (connection.getStatus() == MetaConnectionStatus.CONNECTED
+            || connection.getStatus() == MetaConnectionStatus.DEGRADED)
+        && connection.getExpiresAt() != null
+        && clock.instant().isBefore(connection.getExpiresAt());
+  }
+
+  private String normalizeTarget(String value) {
+    return value == null ? "" : value.trim();
   }
 
   private org.springframework.web.client.RestClient.RequestHeadersSpec<?> withAuth(
@@ -87,7 +175,7 @@ public final class MetaGraphReadClient {
                 .uri(
                     uriBuilder ->
                         uriBuilder
-                            .pathSegment(properties.apiVersion(), properties.pageId())
+                            .pathSegment(properties.apiVersion(), effectivePageId())
                             .queryParam("fields", PAGE_FIELDS)
                             .build()))
         .retrieve()
@@ -132,7 +220,7 @@ public final class MetaGraphReadClient {
     }
     boolean present =
         response.data().stream()
-            .anyMatch(account -> account != null && properties.pageId().equals(account.id()));
+            .anyMatch(account -> account != null && effectivePageId().equals(account.id()));
     return present
         ? MetaConnectionResponse.PageManagementVerification.VERIFIED
         : MetaConnectionResponse.PageManagementVerification.NOT_VERIFIED;
@@ -147,7 +235,7 @@ public final class MetaGraphReadClient {
                 .uri(
                     uriBuilder ->
                         uriBuilder
-                            .pathSegment(properties.apiVersion(), properties.pageId(), "posts")
+                            .pathSegment(properties.apiVersion(), effectivePageId(), "posts")
                             .queryParam("fields", PAGE_POSTS_FIELDS)
                             .queryParam("limit", boundedLimit)
                             .build()))
@@ -167,7 +255,7 @@ public final class MetaGraphReadClient {
                 .uri(
                     uriBuilder ->
                         uriBuilder
-                            .pathSegment(properties.apiVersion(), properties.instagramAccountId())
+                            .pathSegment(properties.apiVersion(), effectiveInstagramAccountId())
                             .queryParam("fields", INSTAGRAM_ACCOUNT_FIELDS)
                             .build()))
         .retrieve()
@@ -188,7 +276,7 @@ public final class MetaGraphReadClient {
                         uriBuilder
                             .pathSegment(
                                 properties.apiVersion(),
-                                properties.instagramAccountId(),
+                                effectiveInstagramAccountId(),
                                 "insights")
                             .queryParam("metric", "reach")
                             .queryParam("period", "day")
@@ -213,7 +301,7 @@ public final class MetaGraphReadClient {
                     uriBuilder -> {
                       uriBuilder
                           .pathSegment(
-                              properties.apiVersion(), properties.instagramAccountId(), "media")
+                              properties.apiVersion(), effectiveInstagramAccountId(), "media")
                           .queryParam("fields", INSTAGRAM_MEDIA_FIELDS)
                           .queryParam("limit", boundedLimit);
                       if (cursor != null) {
@@ -322,6 +410,22 @@ public final class MetaGraphReadClient {
     String oauthUserToken = oauthTokenStore.getUserAccessToken();
     if (oauthUserToken != null && !oauthUserToken.isBlank()) {
       sanitized = sanitized.replace(oauthUserToken, "[REDACTED]");
+    }
+    if (tokenEncryption != null) {
+      try {
+        Optional<MetaConnectionEntity> durable = activeDurableConnection();
+        if (durable.isPresent()) {
+          MetaProviderAdapter.StoredTokens tokens = durable.get().decryptTokens(tokenEncryption);
+          if (tokens.pageAccessToken() != null && !tokens.pageAccessToken().isBlank()) {
+            sanitized = sanitized.replace(tokens.pageAccessToken(), "[REDACTED]");
+          }
+          if (tokens.userAccessToken() != null && !tokens.userAccessToken().isBlank()) {
+            sanitized = sanitized.replace(tokens.userAccessToken(), "[REDACTED]");
+          }
+        }
+      } catch (RuntimeException ignored) {
+        // Keep generic regex redaction below even if a persisted token cannot be decrypted.
+      }
     }
     sanitized = BEARER_VALUE.matcher(sanitized).replaceAll("Bearer [REDACTED]");
     sanitized = TOKEN_VALUE.matcher(sanitized).replaceAll("$1=[REDACTED]");

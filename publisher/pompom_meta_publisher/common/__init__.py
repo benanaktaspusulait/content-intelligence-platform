@@ -1,5 +1,5 @@
 """
-common — Shared infrastructure utilities.
+Compatibility namespace for Meta-owned imports of neutral helpers.
 
-Environment loading, retry policy, and other content-agnostic helpers.
+Canonical implementations live in `pompom_publisher_common`.
 """

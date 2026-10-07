@@ -235,26 +235,29 @@ pompom-meta-publisher/
 ├── README.md                          This file
 ├── setup.py                           Package installation
 ├── .env.example                       Environment template
-├── .gitignore                         
-├── publish_pompom_reel.py            CLI tool
-├── pompom_meta_publisher/
+├── .gitignore
+├── publish_pompom_reel.py             Meta CLI tool
+├── publish_to_tiktok.py               TikTok CLI tool
+├── publish_to_youtube.py              YouTube CLI tool
+├── batch_publish.py                   Multi-platform orchestration
+├── pompom_meta_publisher/             Facebook + Instagram only
 │   ├── __init__.py
 │   ├── py.typed
-│   ├── common/                        Shared utilities
-│   │   ├── __init__.py
-│   │   ├── env.py                     Environment loading
-│   │   └── retry.py                   Exponential backoff
-│   └── publishing/                    Meta publishing
-│       ├── __init__.py
-│       ├── config.py                  Configuration
-│       ├── errors.py                  Exception hierarchy
-│       ├── http_client.py             Graph API HTTP layer
-│       ├── ledger.py                  Publication tracking
-│       ├── storage.py                 Video hosting
-│       ├── captions.py                Caption helpers
-│       └── meta_publisher.py          Core publishing logic
+│   ├── common/                        Compatibility re-exports
+│   └── publishing/                    Meta publishing implementation
+├── pompom_tiktok_publisher/           TikTok implementation
+├── pompom_youtube_publisher/          YouTube implementation
+├── pompom_publisher_common/           Neutral shared utilities
+│   ├── env.py                         Environment loading
+│   ├── retry.py                       Exponential backoff
+│   ├── ledger.py                      Publication tracking
+│   ├── captions.py                    Caption helpers
+│   ├── errors.py                      Base publishing error
+│   └── secrets.py                     Secret scrubbing
 └── data/
-    └── publish_log.db                 SQLite ledger (auto-created)
+    ├── publish_log.db                 Meta SQLite ledger
+    ├── tiktok_publish_log.db          TikTok SQLite ledger
+    └── youtube_publish_log.db         YouTube SQLite ledger
 ```
 
 ## License

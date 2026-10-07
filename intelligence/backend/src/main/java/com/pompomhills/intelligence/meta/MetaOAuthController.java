@@ -8,31 +8,32 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-/**
- * Starts and completes the real Meta/Facebook OAuth authorization flow for read-only analytics
- * access. Only redirects are returned to the browser; no token, code, or secret ever appears in a
- * response body, header value shown to the user, or log line.
- */
+/** Starts and completes the owner-bound Meta OAuth flow without returning provider secrets. */
 @RestController
 @RequestMapping("/api/v1/meta/oauth")
 public class MetaOAuthController {
   private static final String CONNECTION_PAGE = "/meta/connection";
 
-  private final MetaOAuthService oauthService;
+  private final MetaConnectionLifecycleService lifecycle;
   private final MetaOAuthStateStore stateStore;
+  private final MetaReadProperties properties;
 
-  public MetaOAuthController(MetaOAuthService oauthService, MetaOAuthStateStore stateStore) {
-    this.oauthService = oauthService;
+  public MetaOAuthController(
+      MetaConnectionLifecycleService lifecycle,
+      MetaOAuthStateStore stateStore,
+      MetaReadProperties properties) {
+    this.lifecycle = lifecycle;
     this.stateStore = stateStore;
+    this.properties = properties;
   }
 
   @GetMapping("/start")
   public ResponseEntity<Void> start() {
-    if (!oauthService.isConfigured()) {
+    if (!lifecycle.isConfigured()) {
       return redirectTo(CONNECTION_PAGE + "?meta_oauth=not_configured");
     }
-    String state = stateStore.issue();
-    return redirectTo(oauthService.buildAuthorizationUrl(state));
+    String state = stateStore.issue(properties.connectionOwnerKey());
+    return redirectTo(lifecycle.buildAuthorizationUrl(state));
   }
 
   @GetMapping("/callback")
@@ -40,21 +41,25 @@ public class MetaOAuthController {
       @RequestParam(name = "code", required = false) String code,
       @RequestParam(name = "state", required = false) String state,
       @RequestParam(name = "error", required = false) String error) {
+    if (!stateStore.consume(state, properties.connectionOwnerKey())) {
+      return redirectTo(CONNECTION_PAGE + "?meta_oauth=invalid_state");
+    }
     if (error != null && !error.isBlank()) {
       return redirectTo(CONNECTION_PAGE + "?meta_oauth=denied");
-    }
-    if (!stateStore.consume(state)) {
-      return redirectTo(CONNECTION_PAGE + "?meta_oauth=invalid_state");
     }
     if (code == null || code.isBlank()) {
       return redirectTo(CONNECTION_PAGE + "?meta_oauth=missing_code");
     }
     try {
-      MetaOAuthService.OAuthCompletionResult result = oauthService.completeAuthorization(code);
-      return result.success()
-          ? redirectTo(CONNECTION_PAGE + "?meta_oauth=connected")
-          : redirectTo(CONNECTION_PAGE + "?meta_oauth=not_managed");
-    } catch (MetaOAuthException | MetaGraphException error2) {
+      MetaConnectionResponse result = lifecycle.completeAuthorization(code, state);
+      if (result.connectionId() != null && result.failureReason() == null) {
+        return redirectTo(CONNECTION_PAGE + "?meta_oauth=connected");
+      }
+      if (result.message() != null && result.message().contains("does not manage")) {
+        return redirectTo(CONNECTION_PAGE + "?meta_oauth=not_managed");
+      }
+      return redirectTo(CONNECTION_PAGE + "?meta_oauth=failed");
+    } catch (RuntimeException ignored) {
       return redirectTo(CONNECTION_PAGE + "?meta_oauth=failed");
     }
   }

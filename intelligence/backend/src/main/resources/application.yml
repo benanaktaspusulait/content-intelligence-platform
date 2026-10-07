@@ -90,6 +90,9 @@ pompom:
     instagram-account-id: ${META_INSTAGRAM_ACCOUNT_ID:}
     access-token: ${META_INSTAGRAM_ACCESS_TOKEN:${META_PAGE_ACCESS_TOKEN:${META_ACCESS_TOKEN:}}}
     user-access-token: ${META_USER_ACCESS_TOKEN:}
+    publish-enabled: ${META_PUBLISH_ENABLED:false}
+    comment-reply-enabled: ${META_COMMENT_REPLY_ENABLED:false}
+    connection-owner-key: ${META_CONNECTION_OWNER_KEY:default}
     connect-timeout: 5s
     read-timeout: 15s
     oauth:

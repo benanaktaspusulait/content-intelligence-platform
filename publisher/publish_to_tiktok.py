@@ -35,13 +35,12 @@ import logging
 import sys
 from pathlib import Path
 
-from pompom_meta_publisher.tiktok import (
+from pompom_tiktok_publisher import (
+    load_tiktok_config,
     publish_to_tiktok,
     verify_tiktok_configuration,
 )
-from pompom_meta_publisher.publishing import PublishLedger, read_caption
-from pompom_meta_publisher.publishing.errors import PublishError
-from pompom_meta_publisher.tiktok.tiktok_publisher import load_tiktok_config
+from pompom_publisher_common import PublishError, PublishLedger, read_caption
 
 log = logging.getLogger("publish_to_tiktok")
 
