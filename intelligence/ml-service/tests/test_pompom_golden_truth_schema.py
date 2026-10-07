@@ -4,7 +4,6 @@ from pathlib import Path
 
 import yaml
 
-
 ROOT = Path(__file__).resolve().parents[2] / "data" / "golden" / "pompom-golden-v1"
 TRUTH = ROOT / "truth" / "gold_truth.yaml"
 POLICY = ROOT / "policy" / "policy_expectations_v1.7.yaml"
@@ -35,6 +34,17 @@ FAMILY5_EXPECTED = {
     "sneaky-door-01": {"LOOP": "NOT_APPLICABLE", "HOOK": "NOT_APPLICABLE", "PAYOFF": "NOT_APPLICABLE"},
     "island-journal-01": {"LOOP": "NOT_APPLICABLE", "HOOK": "NOT_APPLICABLE", "PAYOFF": "NOT_APPLICABLE"},
 }
+FAMILY6_EXPECTED = {
+    "sticky-ball-01": "MANAGEABLE",
+    "ball-crocodile-01": "HIGH",
+    "upside-chair-01": "HIGH",
+    "lamp-01": "MANAGEABLE",
+    "snack-box-01": "MANAGEABLE",
+    "box-cat-01": "MANAGEABLE",
+    "spot-cat-01": "HIGH",
+    "sneaky-door-01": "HIGH",
+    "island-journal-01": "HIGH",
+}
 REQUIRED_DIMENSIONS = {
     "HOOK",
     "GOAL",
@@ -57,6 +67,7 @@ REQUIRED_DIMENSIONS = {
     *FAMILY5_DIMENSIONS,
     "MECHANIC_INTERACTION",
     "RECURRENCE",
+    "TEMPORAL_GENERATION_LOAD",
 }
 FAMILY_REVIEW_DIMENSIONS = {"GOAL", "ACTIVE_ATTEMPT_COUNT", "DISTINCT_STRATEGY_COUNT", "DISTINCT_STRATEGIES", "ESCALATION", "REALIZATION"}
 
@@ -73,6 +84,24 @@ def test_family5_uses_per_rule_applicability_dimensions() -> None:
             assert dimension["expected"] in {"APPLICABLE", "NOT_APPLICABLE", "UNKNOWN"}
             assert dimension["expected"] == FAMILY5_EXPECTED[asset_id][dimension_name.rsplit("_", 1)[-1]]
             assert dimension["reviewStatus"] == "APPROVED"
+
+
+def test_family6_uses_approved_temporal_generation_load_matrix() -> None:
+    truth = yaml.safe_load(TRUTH.read_text(encoding="utf-8"))
+    definition = truth["definitions"]["family6TemporalGenerationLoad"]
+    assert set(definition["axes"]) == {
+        "temporal_packing",
+        "state_breadth",
+        "continuity_memory",
+        "action_concurrency",
+    }
+    assert "one severe load axis" in definition["highThreshold"]
+    assert "mainly sequential" in definition["manageableThreshold"]
+    for asset_id, expected in FAMILY6_EXPECTED.items():
+        dimension = truth["assets"][asset_id]["dimensions"]["TEMPORAL_GENERATION_LOAD"]
+        assert dimension["expected"] == expected
+        assert dimension["applicable"] is True
+        assert dimension["reviewStatus"] == "APPROVED"
 
 
 def test_gold_truth_is_independent_and_evidence_backed() -> None:

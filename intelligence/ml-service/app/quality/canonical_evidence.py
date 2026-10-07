@@ -12,7 +12,7 @@ import re
 from collections import Counter
 from collections.abc import Iterable
 from dataclasses import dataclass
-from typing import Any
+from typing import Any, Literal
 
 from .contracts import RuleEvaluation, RuleOutcome
 
@@ -933,3 +933,395 @@ def unscored_families(evaluations: Iterable[RuleEvaluation]) -> tuple[str, ...]:
     for evaluation in evaluations:
         families[evaluation.family] = families.get(evaluation.family, False) or evaluation.outcome in scoring
     return tuple(family for family, has_signal in families.items() if not has_signal)
+
+
+# Family 6 — Temporal Generation Load
+TemporalAxis = Literal[
+    "temporal_packing",
+    "state_breadth",
+    "continuity_memory",
+    "action_concurrency",
+]
+TemporalAxisLevel = Literal["LOW", "ELEVATED", "SEVERE", "UNKNOWN", "NOT_APPLICABLE"]
+TemporalLoadStatus = Literal["MANAGEABLE", "HIGH", "UNKNOWN", "NOT_APPLICABLE"]
+TEMPORAL_GENERATION_LOAD_AXES: tuple[TemporalAxis, ...] = (
+    "temporal_packing",
+    "state_breadth",
+    "continuity_memory",
+    "action_concurrency",
+)
+TEMPORAL_AXIS_LEVELS: frozenset[str] = frozenset(
+    {"LOW", "ELEVATED", "SEVERE", "UNKNOWN", "NOT_APPLICABLE"}
+)
+TEMPORAL_LOAD_STATUSES: frozenset[str] = frozenset(
+    {"MANAGEABLE", "HIGH", "UNKNOWN", "NOT_APPLICABLE"}
+)
+
+
+@dataclass(frozen=True)
+class TemporalAxisEvidence:
+    """Evidence for one independent Family 6 load axis."""
+
+    axis: TemporalAxis
+    level: TemporalAxisLevel
+    confidence: Literal["HIGH", "MEDIUM", "LOW"]
+    evidence_references: tuple[str, ...]
+    reason: str
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "axis": self.axis,
+            "level": self.level,
+            "confidence": self.confidence,
+            "evidenceReferences": list(self.evidence_references),
+            "reason": self.reason,
+        }
+
+
+@dataclass(frozen=True)
+class TemporalGenerationLoadEvidence:
+    """Canonical, non-policy Family 6 temporal load projection."""
+
+    status: TemporalLoadStatus
+    axes: tuple[TemporalAxisEvidence, ...]
+    severe_axis_count: int
+    elevated_axis_count: int
+    high_basis: str | None
+    evidence_status: Literal["AVAILABLE", "PARTIAL", "UNKNOWN"]
+    version: str = "family6-temporal-generation-load-v1"
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "status": self.status,
+            "axes": [axis.to_dict() for axis in self.axes],
+            "severeAxisCount": self.severe_axis_count,
+            "elevatedAxisCount": self.elevated_axis_count,
+            "highBasis": self.high_basis,
+            "evidenceStatus": self.evidence_status,
+            "version": self.version,
+        }
+
+
+def _temporal_axis(
+    axis: TemporalAxis,
+    level: TemporalAxisLevel,
+    confidence: Literal["HIGH", "MEDIUM", "LOW"],
+    references: tuple[str, ...],
+    reason: str,
+) -> TemporalAxisEvidence:
+    if axis not in TEMPORAL_GENERATION_LOAD_AXES:
+        raise ValueError(f"Unsupported Family 6 axis: {axis}")
+    if level not in TEMPORAL_AXIS_LEVELS:
+        raise ValueError(f"Unsupported Family 6 axis level: {level}")
+    if confidence not in {"HIGH", "MEDIUM", "LOW"}:
+        raise ValueError(f"Unsupported Family 6 confidence: {confidence}")
+    return TemporalAxisEvidence(axis, level, confidence, references, reason)
+
+
+def _temporal_packing_axis(video_plan_ir: dict[str, Any]) -> TemporalAxisEvidence:
+    beats = list(video_plan_ir.get("beats") or [])
+    duration = float((video_plan_ir.get("metadata") or {}).get("duration") or 0.0)
+    durations = [float(beat.get("duration", 0.0) or 0.0) for beat in beats]
+    valid_durations = [value for value in durations if value > 0]
+    if (
+        not beats
+        or duration <= 0
+        or len(valid_durations) != len(beats)
+        or any("startTime" not in beat or "endTime" not in beat for beat in beats)
+    ):
+        return _temporal_axis(
+            "temporal_packing",
+            "UNKNOWN",
+            "LOW",
+            (),
+            "Explicit duration and complete beat timing are unavailable.",
+        )
+    short_state_count = sum(value < 0.8 for value in valid_durations)
+    overlap = any(
+        current.get("startTime", 0.0) < previous.get("endTime", 0.0)
+        for previous, current in zip(beats, beats[1:], strict=False)
+    )
+    references = tuple(
+        str(beat.get("id"))
+        for beat in beats
+        if float(beat.get("duration", 0.0) or 0.0) < 0.8 and beat.get("id")
+    )
+    if overlap or short_state_count >= 2:
+        return _temporal_axis(
+            "temporal_packing",
+            "ELEVATED" if short_state_count < 3 and not overlap else "SEVERE",
+            "MEDIUM",
+            references,
+            "Multiple important states are packed into short or overlapping time windows.",
+        )
+    return _temporal_axis(
+        "temporal_packing",
+        "LOW",
+        "HIGH",
+        tuple(str(beat.get("id")) for beat in beats if beat.get("id")),
+        "Timed state progression has local duration without short-state or overlap pressure.",
+    )
+
+
+def _temporal_state_breadth_axis(video_plan_ir: dict[str, Any]) -> TemporalAxisEvidence:
+    beats = list(video_plan_ir.get("beats") or [])
+    characters = video_plan_ir.get("characters") or {}
+    setting = video_plan_ir.get("setting") or {}
+    if not beats:
+        return _temporal_axis(
+            "state_breadth",
+            "UNKNOWN",
+            "LOW",
+            (),
+            "No beat-level character, object, or environment state is available.",
+        )
+    if not any(
+        bool(beat.get("objectStates"))
+        or bool(beat.get("heldObjects"))
+        or bool(beat.get("environment"))
+        or bool(beat.get("camera"))
+        for beat in beats
+    ):
+        return _temporal_axis(
+            "state_breadth",
+            "UNKNOWN",
+            "LOW",
+            tuple(str(beat.get("id")) for beat in beats if beat.get("id")),
+            "Beat timing exists, but structured state-breadth fields are unavailable.",
+        )
+    primary = characters.get("primary")
+    secondary = characters.get("secondary") or []
+    character_count = int(bool(primary)) + len([item for item in secondary if item])
+    object_ids = {str(item) for item in setting.get("mainProps") or []}
+    environments: set[str] = set()
+    cameras: set[str] = set()
+    state_signatures: set[tuple[tuple[str, str], ...]] = set()
+    references: list[str] = []
+    for beat in beats:
+        object_states = beat.get("objectStates") or {}
+        object_ids.update(str(key) for key in object_states)
+        object_ids.update(str(item) for item in beat.get("heldObjects") or [])
+        state_signatures.add(tuple(sorted((str(key), str(value)) for key, value in object_states.items())))
+        if beat.get("environment"):
+            environments.add(str(beat["environment"]))
+        if beat.get("camera"):
+            cameras.add(str(beat["camera"]))
+        if beat.get("id"):
+            references.append(str(beat["id"]))
+    elevated_axes = sum(
+        (
+            character_count > 1,
+            len(object_ids) >= 3,
+            len(environments) > 1,
+            len(cameras) > 1,
+            len(state_signatures) >= 2,
+        )
+    )
+    severe = len(object_ids) >= 5 and len(state_signatures) >= 3
+    level: TemporalAxisLevel
+    if severe:
+        level = "SEVERE"
+    elif elevated_axes >= 2 or len(object_ids) >= 3:
+        level = "ELEVATED"
+    else:
+        level = "LOW"
+    return _temporal_axis(
+        "state_breadth",
+        level,
+        "MEDIUM" if level != "LOW" else "HIGH",
+        tuple(references),
+        "Breadth is derived from tracked character, object, environment, camera, and state dimensions.",
+    )
+
+
+def _temporal_continuity_axis(video_plan_ir: dict[str, Any]) -> TemporalAxisEvidence:
+    beats = list(video_plan_ir.get("beats") or [])
+    mode = str((video_plan_ir.get("metadata") or {}).get("generationMode") or "")
+    split = video_plan_ir.get("splitPlan") or {}
+    references: list[str] = []
+    if split:
+        references.append("splitPlan")
+        part1 = (split.get("part1") or {}).get("endState") or {}
+        part2 = (split.get("part2") or {}).get("startState") or {}
+        if part1 and part2:
+            mismatches = [key for key in set(part1) | set(part2) if part1.get(key) != part2.get(key)]
+            if mismatches:
+                return _temporal_axis(
+                    "continuity_memory",
+                    "ELEVATED",
+                    "HIGH",
+                    ("splitPlan", *mismatches),
+                    "A split plan carries explicit state across a clip boundary.",
+                )
+            return _temporal_axis(
+                "continuity_memory",
+                "ELEVATED",
+                "HIGH",
+                ("splitPlan",),
+                "A split plan carries an explicit end-state/start-state contract.",
+            )
+    if not beats:
+        return _temporal_axis(
+            "continuity_memory",
+            "UNKNOWN",
+            "LOW",
+            tuple(references),
+            "No beat or clip state is available for continuity analysis.",
+        )
+    if not any(bool(beat.get("objectStates")) for beat in beats):
+        return _temporal_axis(
+            "continuity_memory",
+            "UNKNOWN",
+            "LOW",
+            tuple(str(beat.get("id")) for beat in beats if beat.get("id")),
+            "Beat timing exists, but structured continuity state is unavailable.",
+        )
+    target_signatures = {
+        tuple(sorted((str(key), str(value)) for key, value in (beat.get("objectStates") or {}).items()))
+        for beat in beats
+        if beat.get("objectStates")
+    }
+    if len(target_signatures) >= 2:
+        return _temporal_axis(
+            "continuity_memory",
+            "ELEVATED",
+            "MEDIUM",
+            tuple(str(beat.get("id")) for beat in beats if beat.get("id")),
+            "Object-state identity changes across beats and must remain associated with the active target.",
+        )
+    return _temporal_axis(
+        "continuity_memory",
+        "LOW",
+        "HIGH",
+        tuple(str(beat.get("id")) for beat in beats if beat.get("id")),
+        f"Continuity remains local to the selected {mode or 'single'} plan.",
+    )
+
+
+def _temporal_concurrency_axis(video_plan_ir: dict[str, Any]) -> TemporalAxisEvidence:
+    beats = list(video_plan_ir.get("beats") or [])
+    if not beats:
+        return _temporal_axis(
+            "action_concurrency",
+            "UNKNOWN",
+            "LOW",
+            (),
+            "No structured actor/object action evidence is available.",
+        )
+    max_actor_count = 0
+    max_object_count = 0
+    has_structured_concurrency_evidence = False
+    simultaneous_references: list[str] = []
+    severe_references: list[str] = []
+    for beat in beats:
+        actor_value = beat.get("actor")
+        held_objects = beat.get("heldObjects")
+        unresolved_value = beat.get("unresolvedAction")
+        has_structured_concurrency_evidence = has_structured_concurrency_evidence or bool(
+            actor_value or held_objects or unresolved_value
+        )
+        actor_text = str(actor_value or "")
+        actor_count = len([item for item in re.split(r"\s+and\s+|,|&", actor_text) if item.strip()])
+        max_actor_count = max(max_actor_count, actor_count)
+        max_object_count = max(max_object_count, len(held_objects or []))
+        unresolved = str(unresolved_value or "").lower()
+        negated_simultaneous = re.search(
+            r"(?:\b(?:not|never|do not|don't)\b[^.]{0,40}\bsimult"
+            r"|\bnon[-\s]?simult"
+            r"|\b(?:rather than|instead of)\b[^.]{0,30}\bsimult)",
+            unresolved,
+        )
+        if "simult" in unresolved and negated_simultaneous is None:
+            if beat.get("id"):
+                reference = str(beat["id"])
+                simultaneous_references.append(reference)
+                if actor_count >= 2 and len(held_objects or []) >= 2:
+                    severe_references.append(reference)
+    if not has_structured_concurrency_evidence:
+        return _temporal_axis(
+            "action_concurrency",
+            "UNKNOWN",
+            "LOW",
+            tuple(str(beat.get("id")) for beat in beats if beat.get("id")),
+            "Beat timing exists, but structured actor/object concurrency evidence is unavailable.",
+        )
+    if severe_references:
+        return _temporal_axis(
+            "action_concurrency",
+            "SEVERE",
+            "HIGH",
+            tuple(severe_references),
+            "Multiple actors and objects require coupled actions in the same time window.",
+        )
+    if max_actor_count >= 2 or max_object_count >= 2:
+        return _temporal_axis(
+            "action_concurrency",
+            "ELEVATED",
+            "MEDIUM",
+            tuple(simultaneous_references),
+            "More than one actor or active object is present in the action contract.",
+        )
+    return _temporal_axis(
+        "action_concurrency",
+        "LOW",
+        "HIGH",
+        tuple(str(beat.get("id")) for beat in beats if beat.get("id")),
+        "Actions remain local to one actor and one active object at a time.",
+    )
+
+
+def _aggregate_temporal_generation_load(
+    axes: tuple[TemporalAxisEvidence, ...],
+    *,
+    explicit_non_short_video_mode: bool,
+) -> tuple[TemporalLoadStatus, int, int, str | None, Literal["AVAILABLE", "PARTIAL", "UNKNOWN"]]:
+    severe = tuple(axis for axis in axes if axis.level == "SEVERE")
+    elevated = tuple(axis for axis in axes if axis.level == "ELEVATED")
+    unknown = tuple(axis for axis in axes if axis.level == "UNKNOWN")
+    if severe:
+        return "HIGH", len(severe), len(elevated), f"SEVERE_AXIS:{severe[0].axis}", "AVAILABLE"
+    if len(elevated) >= 2:
+        names = ",".join(axis.axis for axis in elevated[:2])
+        return "HIGH", 0, len(elevated), f"TWO_ELEVATED_AXES:{names}", "AVAILABLE"
+    if explicit_non_short_video_mode:
+        return "NOT_APPLICABLE", 0, len(elevated), None, "AVAILABLE"
+    if unknown:
+        evidence_status: Literal["AVAILABLE", "PARTIAL", "UNKNOWN"] = "UNKNOWN" if len(unknown) == len(axes) else "PARTIAL"
+        return "UNKNOWN", 0, len(elevated), None, evidence_status
+    return "MANAGEABLE", 0, len(elevated), None, "AVAILABLE"
+
+
+def temporal_generation_load_evidence(
+    video_plan_ir: dict[str, Any] | None,
+) -> TemporalGenerationLoadEvidence:
+    """Project Family 6 temporal/state/continuity load without evaluating a rule."""
+    if video_plan_ir is None:
+        axes = tuple(
+            _temporal_axis(axis, "UNKNOWN", "LOW", (), "Canonical video-plan IR is unavailable.")
+            for axis in TEMPORAL_GENERATION_LOAD_AXES
+        )
+        return TemporalGenerationLoadEvidence("UNKNOWN", axes, 0, 0, None, "UNKNOWN")
+    mode = str((video_plan_ir.get("metadata") or {}).get("generationMode") or "")
+    axes = (
+        _temporal_packing_axis(video_plan_ir),
+        _temporal_state_breadth_axis(video_plan_ir),
+        _temporal_continuity_axis(video_plan_ir),
+        _temporal_concurrency_axis(video_plan_ir),
+    )
+    status: TemporalLoadStatus
+    severe_count: int
+    elevated_count: int
+    high_basis: str | None
+    evidence_status: Literal["AVAILABLE", "PARTIAL", "UNKNOWN"]
+    status, severe_count, elevated_count, high_basis, evidence_status = _aggregate_temporal_generation_load(
+        axes,
+        explicit_non_short_video_mode=bool(mode and mode not in {"SINGLE_15S", "SPLIT_2X15S"}),
+    )
+    return TemporalGenerationLoadEvidence(
+        status=status,
+        axes=axes,
+        severe_axis_count=severe_count,
+        elevated_axis_count=elevated_count,
+        high_basis=high_basis,
+        evidence_status=evidence_status,
+    )

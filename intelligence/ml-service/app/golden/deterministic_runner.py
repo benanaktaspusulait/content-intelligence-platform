@@ -16,6 +16,7 @@ from ..quality.canonical_evidence import (
     escalation_evidence,
     specialized_applicability_evidence,
     story_density_evidence,
+    temporal_generation_load_evidence,
 )
 from ..quality.contracts import EnhancedQualityReport, ParseResult, QualityReport
 from ..rules import rule_engine as rule_engine_module
@@ -78,6 +79,7 @@ class GoldenRun:
         story = story_density_evidence(ir)
         escalation = escalation_evidence(ir)
         specialized_applicability = specialized_applicability_evidence(ir)
+        temporal_generation_load = temporal_generation_load_evidence(ir)
         return {
             "attempts": {
                 "count": attempts.count,
@@ -95,6 +97,7 @@ class GoldenRun:
                 rule_id: evidence.to_dict()
                 for rule_id, evidence in specialized_applicability.items()
             },
+            "temporalGenerationLoad": temporal_generation_load.to_dict(),
             "beatAudit": beat_audit(ir),
         }
 

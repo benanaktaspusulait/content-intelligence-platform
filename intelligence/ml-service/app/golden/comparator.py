@@ -3,14 +3,18 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Any
 
-from ..quality.canonical_evidence import mechanic_payoff_evidence, specialized_applicability_evidence
-
+from ..quality.canonical_evidence import (
+    mechanic_payoff_evidence,
+    specialized_applicability_evidence,
+    temporal_generation_load_evidence,
+)
 
 SPECIALIZED_APPLICABILITY_DIMENSIONS = {
     "SPECIALIZED_RULE_APPLICABILITY_STUBBORN_RETURN_LOOP": "STUBBORN_RETURN_LOOP",
     "SPECIALIZED_RULE_APPLICABILITY_STUBBORN_RETURN_HOOK": "STUBBORN_RETURN_HOOK",
     "SPECIALIZED_RULE_APPLICABILITY_STUBBORN_RETURN_PAYOFF": "STUBBORN_RETURN_PAYOFF",
 }
+TEMPORAL_GENERATION_LOAD_DIMENSION = "TEMPORAL_GENERATION_LOAD"
 
 
 @dataclass(frozen=True)
@@ -70,7 +74,17 @@ def compare_dimension(
     current: dict[str, Any],
     assertion_type: str,
     known_issue: bool = False,
+    baseline_captured: bool = True,
 ) -> AssertionComparison:
+    if not baseline_captured:
+        return AssertionComparison(
+            classification="BASELINE_NOT_CAPTURED",
+            expected=gold.get("expected"),
+            baseline=baseline.get("actual"),
+            current=current.get("actual"),
+            confidence=gold.get("confidence"),
+            message="v1.7 baseline predates the Family 6 canonical dimension.",
+        )
     if gold.get("applicable") is False:
         return AssertionComparison(
             classification="NOT_APPLICABLE",
@@ -161,10 +175,22 @@ class GoldenRegressionReport:
         }
 
 
+def _family6_status(snapshot: dict[str, Any]) -> Any:
+    stored = dict(snapshot.get("dimensionValues") or {})
+    canonical = (snapshot.get("canonicalEvidence") or {}).get("temporalGenerationLoad")
+    if isinstance(canonical, dict) and canonical.get("status") is not None:
+        return canonical["status"]
+    ir = snapshot.get("videoPlanIR")
+    if isinstance(ir, dict) and ir:
+        return temporal_generation_load_evidence(ir).status
+    return stored.get(TEMPORAL_GENERATION_LOAD_DIMENSION)
+
+
 def extract_dimension_values(snapshot: dict[str, Any]) -> dict[str, Any]:
     """Project existing report evidence into comparator values; no new scoring logic."""
     stored = dict(snapshot.get("dimensionValues") or {})
     ir = snapshot.get("videoPlanIR")
+    family6_status = _family6_status(snapshot)
     specialized_values: dict[str, Any] = {}
     canonical_specialized = (snapshot.get("canonicalEvidence") or {}).get("specializedApplicability") or {}
     for dimension, rule_id in SPECIALIZED_APPLICABILITY_DIMENSIONS.items():
@@ -187,7 +213,10 @@ def extract_dimension_values(snapshot: dict[str, Any]) -> dict[str, Any]:
             specialized_values[dimension] = stored[dimension]
 
     if not isinstance(ir, dict) or not ir:
-        return {**stored, **specialized_values}
+        values = {**stored, **specialized_values}
+        if family6_status is not None:
+            values[TEMPORAL_GENERATION_LOAD_DIMENSION] = family6_status
+        return values
 
     assessment = snapshot.get("assessment") or {}
     story = assessment.get("story_structure") or {}
@@ -220,6 +249,7 @@ def extract_dimension_values(snapshot: dict[str, Any]) -> dict[str, Any]:
         "CONTENT_FAMILY_FIT": dimensions.get("CONTENT_FAMILY_FIT"),
         "FIRST_FRAME_ANOMALY_INTENT": (assessment.get("first_frame") or {}).get("textual_intent", {}).get("status"),
         "SPECIALIZED_RULE_APPLICABILITY": dimensions.get("ENGINE_PROFILE"),
+        TEMPORAL_GENERATION_LOAD_DIMENSION: family6_status,
         **specialized_values,
     }
     return {key: value if value is not None else stored.get(key) for key, value in projected.items()}
@@ -238,6 +268,7 @@ def compare_cohort(
         "improvedFromBaseline": 0,
         "unchangedKnownIssues": 0,
         "goldReviewRequired": 0,
+        "baselineNotCaptured": 0,
         "newSemanticRegressions": 0,
         "expectedPolicyChanges": 0,
         "unexpectedPolicyRegressions": 0,
@@ -245,6 +276,7 @@ def compare_cohort(
     for asset_id, truth_asset in truth.get("assets", {}).items():
         baseline_asset = (baseline.get("assets") or {}).get(asset_id, {})
         current_asset = (current.get("assets") or {}).get(asset_id, {})
+        baseline_dimension_values = dict(baseline_asset.get("dimensionValues") or {})
         baseline_values = extract_dimension_values(baseline_asset)
         current_values = extract_dimension_values(current_asset)
         known_issue = bool(baseline_asset.get("knownIssues"))
@@ -280,12 +312,17 @@ def compare_cohort(
                     counts["newSemanticRegressions"] += 1
                 continue
             assertion_type = "SET_EQUALS" if dimension == "DISTINCT_STRATEGIES" else "EXACT"
+            baseline_captured = not (
+                dimension == TEMPORAL_GENERATION_LOAD_DIMENSION
+                and dimension not in baseline_dimension_values
+            )
             comparison = compare_dimension(
                 gold=gold,
                 baseline={"actual": baseline_values.get(dimension)},
                 current={"actual": current_values.get(dimension)},
                 assertion_type=assertion_type,
                 known_issue=known_issue,
+                baseline_captured=baseline_captured,
             )
             row = {"assetId": asset_id, "dimension": dimension, **comparison.to_dict()}
             assertions.append(row)
@@ -300,6 +337,8 @@ def compare_cohort(
                 counts["unchangedKnownIssues"] += 1
             elif classification == "GOLD_REVIEW_REQUIRED":
                 counts["goldReviewRequired"] += 1
+            elif classification == "BASELINE_NOT_CAPTURED":
+                counts["baselineNotCaptured"] += 1
             if comparison.is_new_semantic_regression:
                 counts["newSemanticRegressions"] += 1
             if dimension == "REALIZATION" and gold.get("mode") is not None:

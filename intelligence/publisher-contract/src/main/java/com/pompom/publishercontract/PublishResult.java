@@ -34,9 +34,7 @@ public record PublishResult(
           }
         }
         case FAILED -> {
-          if (errorClass == null
-              || PublishErrorClass.RECONCILIATION_REQUIRED.wireValue().equals(errorClass)
-              || reconciliationRequired) {
+          if (errorClass == null || isUncertainErrorClass(errorClass) || reconciliationRequired) {
             throw invalidLifecycle(status, errorClass, reconciliationRequired);
           }
         }

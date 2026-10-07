@@ -359,3 +359,108 @@ def test_family5_legacy_aggregate_is_not_a_comparator_assertion() -> None:
     result = compare_cohort(truth, baseline, current)
 
     assert not any(row["dimension"] == "SPECIALIZED_RULE_APPLICABILITY" for row in result["assertions"])
+
+
+
+def test_family6_missing_baseline_dimension_is_non_gating_even_with_ir() -> None:
+    from app.golden.comparator import compare_cohort
+
+    truth = {
+        "assets": {
+            "asset-1": {
+                "dimensions": {
+                    "TEMPORAL_GENERATION_LOAD": {
+                        "expected": "HIGH",
+                        "applicable": True,
+                        "confidence": "HIGH",
+                        "evidenceReferences": [{"excerpt": "structured load"}],
+                        "notes": "",
+                    }
+                }
+            }
+        }
+    }
+    baseline = {
+        "assets": {
+            "asset-1": {
+                "dimensionValues": {},
+                "videoPlanIR": {
+                    "metadata": {"duration": 15.0, "generationMode": "SINGLE_15S"},
+                    "beats": [{
+                        "id": "beat_01",
+                        "startTime": 0.0,
+                        "endTime": 3.0,
+                        "duration": 3.0,
+                        "objectStates": {"box": "closed"},
+                        "heldObjects": ["box"],
+                        "camera": "locked",
+                        "environment": "room",
+                    }],
+                },
+            }
+        }
+    }
+    current = {
+        "assets": {
+            "asset-1": {
+                "canonicalEvidence": {"temporalGenerationLoad": {"status": "HIGH"}},
+                "dimensionValues": {"TEMPORAL_GENERATION_LOAD": "HIGH"},
+            }
+        }
+    }
+
+    result = compare_cohort(truth, baseline, current)
+    row = result["assertions"][0]
+    assert row["classification"] == "BASELINE_NOT_CAPTURED"
+    assert row["isNewSemanticRegression"] is False
+    assert result["baselineNotCaptured"] == 1
+    assert result["newSemanticRegressions"] == 0
+
+
+
+def test_family6_stored_baseline_and_canonical_override_are_cohort_safe() -> None:
+    from app.golden.comparator import compare_cohort
+
+    truth = {
+        "assets": {
+            "asset-1": {
+                "dimensions": {
+                    "TEMPORAL_GENERATION_LOAD": {
+                        "expected": "HIGH",
+                        "applicable": True,
+                        "confidence": "HIGH",
+                        "evidenceReferences": [{"excerpt": "stored Family 6 status"}],
+                        "notes": "",
+                    }
+                }
+            }
+        }
+    }
+    baseline = {
+        "assets": {
+            "asset-1": {
+                "dimensionValues": {"TEMPORAL_GENERATION_LOAD": "MANAGEABLE"},
+            }
+        }
+    }
+    current = {
+        "assets": {
+            "asset-1": {
+                "canonicalEvidence": {"temporalGenerationLoad": {"status": "HIGH"}},
+                "dimensionValues": {"TEMPORAL_GENERATION_LOAD": "MANAGEABLE"},
+            }
+        }
+    }
+    improved = compare_cohort(truth, baseline, current)
+    assert improved["assertions"][0]["classification"] == "IMPROVED_FROM_BASELINE"
+
+    baseline_with_canonical = {
+        "assets": {
+            "asset-1": {
+                "canonicalEvidence": {"temporalGenerationLoad": {"status": "HIGH"}},
+                "dimensionValues": {"TEMPORAL_GENERATION_LOAD": "MANAGEABLE"},
+            }
+        }
+    }
+    passed = compare_cohort(truth, baseline_with_canonical, current)
+    assert passed["assertions"][0]["classification"] == "PASS"

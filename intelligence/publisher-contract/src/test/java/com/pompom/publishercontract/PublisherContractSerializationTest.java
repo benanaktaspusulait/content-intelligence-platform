@@ -248,6 +248,8 @@ class PublisherContractSerializationTest {
     assertInvalidLifecycle(PublishStatus.FAILED, null, false);
     assertInvalidLifecycle(
         PublishStatus.FAILED, PublishErrorClass.RECONCILIATION_REQUIRED.wireValue(), false);
+    assertInvalidLifecycle(PublishStatus.FAILED, PublishErrorClass.TRANSIENT.wireValue(), false);
+    assertInvalidLifecycle(PublishStatus.FAILED, PublishErrorClass.UNKNOWN.wireValue(), false);
     assertInvalidLifecycle(PublishStatus.FAILED, PublishErrorClass.TRANSIENT.wireValue(), true);
 
     assertInvalidLifecycle(PublishStatus.RECONCILIATION_REQUIRED, null, true);
