@@ -37,6 +37,9 @@ public class WebhookController {
   @Value("${pompom.webhooks.instagram.secret:}")
   private String instagramWebhookSecret;
 
+  @Value("${pompom.webhooks.meta-signature-required:true}")
+  private boolean metaSignatureRequired;
+
   /** TikTok webhook endpoint. */
   @PostMapping("/tiktok")
   public ResponseEntity<Map<String, String>> handleTikTokWebhook(
@@ -99,13 +102,20 @@ public class WebhookController {
     log.info("Received Facebook webhook");
 
     try {
-      // Verify signature if secret is configured
-      if (facebookWebhookSecret != null && !facebookWebhookSecret.isEmpty()) {
-        if (!webhookService.verifySignature(
-            PlatformType.FACEBOOK, payload, signature, facebookWebhookSecret)) {
-          log.warn("Invalid Facebook webhook signature");
-          return ResponseEntity.status(401).body(Map.of("error", "Invalid signature"));
-        }
+      if (metaSignatureRequired
+          && (facebookWebhookSecret == null || facebookWebhookSecret.isBlank())) {
+        log.error("Facebook webhook rejected: signature secret is not configured");
+        return ResponseEntity.status(503)
+            .body(Map.of("error", "Webhook signature verification is not configured"));
+      }
+      if (!metaSignatureRequired
+          && (facebookWebhookSecret == null || facebookWebhookSecret.isBlank())) {
+        log.warn(
+            "Facebook webhook signature verification is explicitly disabled for this environment");
+      } else if (!webhookService.verifySignature(
+          PlatformType.FACEBOOK, payload, signature, facebookWebhookSecret)) {
+        log.warn("Invalid Facebook webhook signature");
+        return ResponseEntity.status(401).body(Map.of("error", "Invalid signature"));
       }
 
       webhookService.receiveWebhook(PlatformType.FACEBOOK, payload, signature);
@@ -127,13 +137,20 @@ public class WebhookController {
     log.info("Received Instagram webhook");
 
     try {
-      // Verify signature if secret is configured
-      if (instagramWebhookSecret != null && !instagramWebhookSecret.isEmpty()) {
-        if (!webhookService.verifySignature(
-            PlatformType.INSTAGRAM, payload, signature, instagramWebhookSecret)) {
-          log.warn("Invalid Instagram webhook signature");
-          return ResponseEntity.status(401).body(Map.of("error", "Invalid signature"));
-        }
+      if (metaSignatureRequired
+          && (instagramWebhookSecret == null || instagramWebhookSecret.isBlank())) {
+        log.error("Instagram webhook rejected: signature secret is not configured");
+        return ResponseEntity.status(503)
+            .body(Map.of("error", "Webhook signature verification is not configured"));
+      }
+      if (!metaSignatureRequired
+          && (instagramWebhookSecret == null || instagramWebhookSecret.isBlank())) {
+        log.warn(
+            "Instagram webhook signature verification is explicitly disabled for this environment");
+      } else if (!webhookService.verifySignature(
+          PlatformType.INSTAGRAM, payload, signature, instagramWebhookSecret)) {
+        log.warn("Invalid Instagram webhook signature");
+        return ResponseEntity.status(401).body(Map.of("error", "Invalid signature"));
       }
 
       webhookService.receiveWebhook(PlatformType.INSTAGRAM, payload, signature);
@@ -155,7 +172,10 @@ public class WebhookController {
       @RequestParam("hub.verify_token") String verifyToken) {
     log.info("Facebook webhook verification request");
 
-    // Verify token should match configured secret
+    if (metaSignatureRequired
+        && (facebookWebhookSecret == null || facebookWebhookSecret.isBlank())) {
+      return ResponseEntity.status(503).body("Webhook signature verification is not configured");
+    }
     if ("subscribe".equals(mode) && facebookWebhookSecret.equals(verifyToken)) {
       log.info("Facebook webhook verified");
       return ResponseEntity.ok(challenge);

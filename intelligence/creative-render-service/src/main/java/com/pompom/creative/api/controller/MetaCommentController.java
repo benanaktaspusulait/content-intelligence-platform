@@ -2,6 +2,8 @@ package com.pompom.creative.api.controller;
 
 import com.pompom.creative.domain.MetaCommentReply;
 import com.pompom.creative.meta.MetaCommentModerationService;
+import com.pompom.creative.meta.MetaCommentReplyDeliveryService;
+import com.pompom.creative.oauth.MetaCommentReplyDisabledException;
 import java.util.UUID;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 public class MetaCommentController {
 
   private final MetaCommentModerationService moderation;
+  private final MetaCommentReplyDeliveryService delivery;
 
   @PostMapping("/{commentId}/replies/draft")
   public ResponseEntity<MetaCommentReply> createDraft(
@@ -39,6 +42,17 @@ public class MetaCommentController {
       @PathVariable UUID replyId, @RequestBody ReviewRequest request) {
     return ResponseEntity.ok(
         moderation.reject(replyId, request.getReviewer(), request.getReason()));
+  }
+
+  @PostMapping("/replies/{replyId}/send")
+  public ResponseEntity<MetaCommentReply> send(@PathVariable UUID replyId) {
+    try {
+      return ResponseEntity.ok(delivery.send(replyId));
+    } catch (MetaCommentReplyDisabledException e) {
+      return ResponseEntity.status(403).build();
+    } catch (IllegalStateException e) {
+      return ResponseEntity.badRequest().build();
+    }
   }
 
   @Data

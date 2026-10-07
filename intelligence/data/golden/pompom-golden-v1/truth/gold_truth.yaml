@@ -1008,13 +1008,13 @@ assets:
         notes: Explicit goal.
         reviewStatus: APPROVED
       CENTRAL_MECHANIC:
-        expected: STUBBORN_RETURN_LOOP
+        expected: STUBBORN_RETURN_ANIMAL_CLAIM
         applicable: true
         confidence: HIGH
         evidenceReferences:
         - excerpt: whenever the box becomes empty and usable, the cat claims it again
           location: SINGLE ANIMAL RULE
-        notes: Stable recurrence rule.
+        notes: Stable animal-claim rule; recurrence is not a separate mechanic family.
       ACTIVE_ATTEMPT_COUNT:
         expected: 3
         applicable: true
@@ -1624,14 +1624,13 @@ assets:
           location: TWIST
         notes: Dream transition is not a fake resolution of a central rule.
       PAYOFF:
-        expected: MODERATE
+        expected: NOT_ESTABLISHED
         applicable: true
-        confidence: MEDIUM
+        confidence: HIGH
         evidenceReferences:
         - excerpt: same journal in his hand
           location: TWIST
-        notes: HUMAN_REVIEW_REQUIRED; twist exists but is weakly connected to the
-          earlier montage.
+        notes: Narrative twist is not a mechanic payoff because no central mechanic is established.
         sameRuleRelation: NOT_ESTABLISHED
         reviewStatus: APPROVED
       LOOP:

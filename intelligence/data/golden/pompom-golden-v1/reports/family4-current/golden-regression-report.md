@@ -9,14 +9,14 @@
 |---|---:|
 | Assets | 9 |
 | Golden assertions | 296 |
-| Semantic passed | 49 |
+| Semantic passed | 53 |
 | Semantic failed | 5 |
 | Improved from baseline | 26 |
-| Unchanged known issues | 54 |
+| Unchanged known issues | 53 |
 | NEW semantic regressions | 0 |
 | Expected policy changes | 4 |
 | Unexpected policy regressions | 0 |
-| Gold review required | 63 |
+| Gold review required | 60 |
 
 ## Asset Matrix
 

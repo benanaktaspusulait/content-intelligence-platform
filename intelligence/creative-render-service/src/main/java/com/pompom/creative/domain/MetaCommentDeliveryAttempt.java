@@ -50,6 +50,7 @@ public class MetaCommentDeliveryAttempt {
     SUBMITTING,
     SENT,
     FAILED,
-    RETRYABLE
+    RETRYABLE,
+    RECONCILIATION_REQUIRED
   }
 }

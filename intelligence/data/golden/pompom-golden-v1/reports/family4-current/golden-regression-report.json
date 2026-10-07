@@ -1471,15 +1471,15 @@
     },
     {
       "assetId": "lamp-01",
-      "baseline": "NOT_ESTABLISHED",
-      "classification": "GOLD_REVIEW_REQUIRED",
+      "baseline": "PRESENT",
+      "classification": "PASS",
       "confidence": "MEDIUM",
-      "current": "NOT_ESTABLISHED",
+      "current": "PRESENT",
       "dimension": "RECURRENCE",
       "expected": "PRESENT",
       "isNewSemanticRegression": false,
       "isUnexpectedPolicyRegression": false,
-      "message": "Current output disagrees with a non-high-confidence Gold Truth label."
+      "message": "Golden structural assertion comparison."
     },
     {
       "assetId": "lamp-01",
@@ -1871,15 +1871,15 @@
     },
     {
       "assetId": "snack-box-01",
-      "baseline": "NOT_ESTABLISHED",
-      "classification": "GOLD_REVIEW_REQUIRED",
+      "baseline": "PRESENT",
+      "classification": "PASS",
       "confidence": "MEDIUM",
-      "current": "NOT_ESTABLISHED",
+      "current": "PRESENT",
       "dimension": "RECURRENCE",
       "expected": "PRESENT",
       "isNewSemanticRegression": false,
       "isUnexpectedPolicyRegression": false,
-      "message": "Current output disagrees with a non-high-confidence Gold Truth label."
+      "message": "Golden structural assertion comparison."
     },
     {
       "assetId": "snack-box-01",
@@ -2028,11 +2028,11 @@
     {
       "assetId": "box-cat-01",
       "baseline": "STUBBORN_RETURN_ANIMAL_CLAIM",
-      "classification": "UNCHANGED_KNOWN_ISSUE",
+      "classification": "PASS",
       "confidence": "HIGH",
       "current": "STUBBORN_RETURN_ANIMAL_CLAIM",
       "dimension": "CENTRAL_MECHANIC",
-      "expected": "STUBBORN_RETURN_LOOP",
+      "expected": "STUBBORN_RETURN_ANIMAL_CLAIM",
       "isNewSemanticRegression": false,
       "isUnexpectedPolicyRegression": false,
       "message": "Golden structural assertion comparison."
@@ -3329,20 +3329,20 @@
     {
       "assetId": "island-journal-01",
       "baseline": "NOT_ESTABLISHED",
-      "classification": "GOLD_REVIEW_REQUIRED",
-      "confidence": "MEDIUM",
+      "classification": "PASS",
+      "confidence": "HIGH",
       "current": "NOT_ESTABLISHED",
       "dimension": "PAYOFF",
-      "expected": "MODERATE",
+      "expected": "NOT_ESTABLISHED",
       "isNewSemanticRegression": false,
       "isUnexpectedPolicyRegression": false,
-      "message": "Current output disagrees with a non-high-confidence Gold Truth label."
+      "message": "Golden structural assertion comparison."
     },
     {
       "assetId": "island-journal-01",
       "baseline": "NOT_ESTABLISHED",
       "classification": "PASS",
-      "confidence": "MEDIUM",
+      "confidence": "HIGH",
       "current": "NOT_ESTABLISHED",
       "dimension": "PAYOFF_RELATION",
       "expected": "NOT_ESTABLISHED",
@@ -4026,11 +4026,11 @@
         {
           "assetId": "box-cat-01",
           "baseline": "STUBBORN_RETURN_ANIMAL_CLAIM",
-          "classification": "UNCHANGED_KNOWN_ISSUE",
+          "classification": "PASS",
           "confidence": "HIGH",
           "current": "STUBBORN_RETURN_ANIMAL_CLAIM",
           "dimension": "CENTRAL_MECHANIC",
-          "expected": "STUBBORN_RETURN_LOOP",
+          "expected": "STUBBORN_RETURN_ANIMAL_CLAIM",
           "isNewSemanticRegression": false,
           "isUnexpectedPolicyRegression": false,
           "message": "Golden structural assertion comparison."
@@ -4532,20 +4532,20 @@
         {
           "assetId": "island-journal-01",
           "baseline": "NOT_ESTABLISHED",
-          "classification": "GOLD_REVIEW_REQUIRED",
-          "confidence": "MEDIUM",
+          "classification": "PASS",
+          "confidence": "HIGH",
           "current": "NOT_ESTABLISHED",
           "dimension": "PAYOFF",
-          "expected": "MODERATE",
+          "expected": "NOT_ESTABLISHED",
           "isNewSemanticRegression": false,
           "isUnexpectedPolicyRegression": false,
-          "message": "Current output disagrees with a non-high-confidence Gold Truth label."
+          "message": "Golden structural assertion comparison."
         },
         {
           "assetId": "island-journal-01",
           "baseline": "NOT_ESTABLISHED",
           "classification": "PASS",
-          "confidence": "MEDIUM",
+          "confidence": "HIGH",
           "current": "NOT_ESTABLISHED",
           "dimension": "PAYOFF_RELATION",
           "expected": "NOT_ESTABLISHED",
@@ -5067,15 +5067,15 @@
         },
         {
           "assetId": "lamp-01",
-          "baseline": "NOT_ESTABLISHED",
-          "classification": "GOLD_REVIEW_REQUIRED",
+          "baseline": "PRESENT",
+          "classification": "PASS",
           "confidence": "MEDIUM",
-          "current": "NOT_ESTABLISHED",
+          "current": "PRESENT",
           "dimension": "RECURRENCE",
           "expected": "PRESENT",
           "isNewSemanticRegression": false,
           "isUnexpectedPolicyRegression": false,
-          "message": "Current output disagrees with a non-high-confidence Gold Truth label."
+          "message": "Golden structural assertion comparison."
         },
         {
           "assetId": "lamp-01",
@@ -5473,15 +5473,15 @@
         },
         {
           "assetId": "snack-box-01",
-          "baseline": "NOT_ESTABLISHED",
-          "classification": "GOLD_REVIEW_REQUIRED",
+          "baseline": "PRESENT",
+          "classification": "PASS",
           "confidence": "MEDIUM",
-          "current": "NOT_ESTABLISHED",
+          "current": "PRESENT",
           "dimension": "RECURRENCE",
           "expected": "PRESENT",
           "isNewSemanticRegression": false,
           "isUnexpectedPolicyRegression": false,
-          "message": "Current output disagrees with a non-high-confidence Gold Truth label."
+          "message": "Golden structural assertion comparison."
         },
         {
           "assetId": "snack-box-01",
@@ -7267,12 +7267,12 @@
     "assets": 9,
     "expectedPolicyChanges": 4,
     "goldAssertions": 296,
-    "goldReviewRequired": 63,
+    "goldReviewRequired": 60,
     "improvedFromBaseline": 26,
     "newSemanticRegressions": 0,
     "semanticFailed": 5,
-    "semanticPassed": 49,
-    "unchangedKnownIssues": 54,
+    "semanticPassed": 53,
+    "unchangedKnownIssues": 53,
     "unexpectedPolicyRegressions": 0
   }
 }

@@ -88,3 +88,89 @@ def test_assessment_projects_mechanic_fake_recurrence_and_same_rule_evidence() -
     assert story["fake_resolution"] == "PRESENT"
     assert story["recurrence"] == "PRESENT"
     assert story["payoff_relation"] == "SAME_RULE"
+
+
+def test_recurrence_is_present_when_an_established_mechanic_reasserts_without_fake_resolution() -> None:
+    ir = {
+        "coreMechanic": {"physicalRule": "The sticky ball sticks to surfaces."},
+        "beats": [
+            {
+                "beatRole": "ATTEMPT",
+                "action": "Mimi pulls the sticky ball",
+                "consequence": "it sticks to the table",
+                "consequenceType": "new",
+            },
+            {
+                "beatRole": "TWIST",
+                "action": "the sticky ball sticks again",
+                "consequence": "it sticks to the wall",
+                "consequenceType": "new",
+            },
+        ],
+        "finalPayoff": {"description": "The sticky ball sticks again to the wall."},
+    }
+
+    evidence = mechanic_payoff_evidence(ir)
+
+    assert evidence.fake_resolution_status == "NOT_ESTABLISHED"
+    assert evidence.recurrence_status == "PRESENT"
+
+
+def test_quantity_mechanic_does_not_turn_an_unrelated_twist_into_recurrence_or_payoff() -> None:
+    ir = {
+        "coreMechanic": {"physicalRule": "Every ball entering the mouth produces more balls."},
+        "beats": [
+            {
+                "beatRole": "ATTEMPT",
+                "action": "Mimi feeds one ball",
+                "consequence": "the crocodile spits three balls",
+                "consequenceType": "new",
+            },
+            {
+                "beatRole": "FAKE_RESOLUTION",
+                "action": "Mimi relaxes",
+                "consequence": "the crocodile returns one ball",
+                "consequenceType": "fake_win",
+            },
+            {
+                "beatRole": "TWIST",
+                "action": "an elephant appears",
+                "consequence": "the scene changes",
+                "consequenceType": "new",
+            },
+        ],
+        "finalPayoff": {"type": "twist", "description": "An elephant appears."},
+    }
+
+    evidence = mechanic_payoff_evidence(ir)
+
+    assert evidence.recurrence_status == "NOT_ESTABLISHED"
+    assert evidence.same_rule_relation == "NOT_ESTABLISHED"
+    assert evidence.payoff_status == "NOT_ESTABLISHED"
+
+
+def test_generic_return_word_does_not_establish_recurrence_for_an_unrelated_twist() -> None:
+    ir = {
+        "coreMechanic": {"physicalRule": "The sticky ball sticks to surfaces."},
+        "beats": [
+            {
+                "beatRole": "ATTEMPT",
+                "action": "Mimi pulls the sticky ball",
+                "consequence": "it sticks to the table",
+                "consequenceType": "new",
+            },
+            {
+                "beatRole": "TWIST",
+                "action": "an elephant returns",
+                "consequence": "the scene changes",
+                "consequenceType": "new",
+            },
+        ],
+        "finalPayoff": {"description": "An elephant returns."},
+    }
+
+    evidence = mechanic_payoff_evidence(ir)
+
+    assert evidence.recurrence_status == "NOT_ESTABLISHED"
+    assert evidence.same_rule_relation == "NOT_ESTABLISHED"
+    assert evidence.payoff_status == "NOT_ESTABLISHED"

@@ -253,9 +253,13 @@ public class WebhookService {
         return false;
       }
       String expectedSignature = generateSignature(payload, secret);
+      String providedSignature = signature.trim();
+      if (providedSignature.regionMatches(true, 0, "sha256=", 0, 7)) {
+        providedSignature = providedSignature.substring(7);
+      }
       return MessageDigest.isEqual(
           expectedSignature.getBytes(StandardCharsets.UTF_8),
-          signature.getBytes(StandardCharsets.UTF_8));
+          providedSignature.getBytes(StandardCharsets.UTF_8));
     } catch (Exception e) {
       log.error("Failed to verify signature", e);
       return false;

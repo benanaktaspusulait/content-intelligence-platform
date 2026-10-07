@@ -498,14 +498,14 @@ def mechanic_payoff_evidence(video_plan_ir: dict[str, Any]) -> MechanicPayoffEvi
         or beat.get("consequenceType") == "fake_win"
         for beat in beats
     ) or any(token in all_text for token in ("normal", "relaxes", "relax", "confident smile", "proud smile"))
-    recurrence_markers = ("again", "returns", "return", "claims", "sticks", "fountain", "more", "balls", "flips", "off again", "wrong item")
     payoff_type = str(final_payoff.get("type") or "").lower()
-    recurrence = fake and (any(token in final_text for token in recurrence_markers) or payoff_type in {"escalation", "twist", "payoff"})
+    quantity_history = len(words.intersection({"ONE", "TWO", "THREE", "SIX", "MORE", "BALL", "BALLS", "FOUNTAIN", "SPITS", "PTOO"})) >= 4
+    structured_quantity_escalation = family == "QUANTITY_MULTIPLICATION" and payoff_type == "escalation" and quantity_history
     same_rule = False
     if family == "STICKY_DEFORMATION":
         same_rule = "stick" in final_text
     elif family == "QUANTITY_MULTIPLICATION":
-        same_rule = any(token in final_text for token in ("ball", "fountain", "more", "spits")) or payoff_type in {"escalation", "twist", "payoff"}
+        same_rule = any(token in final_text for token in ("ball", "fountain", "more", "spits")) or structured_quantity_escalation
     elif family == "AUTONOMOUS_CHAIR_INVERSION":
         same_rule = "flip" in final_text or "upside" in final_text
     elif family == "OBSERVATION_DEPENDENT_LIGHT":
@@ -519,6 +519,8 @@ def mechanic_payoff_evidence(video_plan_ir: dict[str, Any]) -> MechanicPayoffEvi
     else:
         rule_words = _words(str((video_plan_ir.get("coreMechanic") or {}).get("physicalRule") or "")).difference({"THE", "A", "AN", "TO", "OF", "AND", "IS"})
         same_rule = bool(rule_words.intersection(_words(final_text)))
+    # Recurrence requires family-linked final evidence, not a generic return word.
+    recurrence = same_rule
     same_rule_relation = "SAME_RULE" if same_rule else "NOT_ESTABLISHED"
     payoff_status = "NOT_ESTABLISHED"
     if same_rule and final_payoff:

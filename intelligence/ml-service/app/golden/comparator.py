@@ -5,6 +5,7 @@ from typing import Any
 
 from ..quality.canonical_evidence import mechanic_payoff_evidence
 
+
 @dataclass(frozen=True)
 class AssertionComparison:
     classification: str

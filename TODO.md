@@ -67,14 +67,14 @@ Scope: Meta integration only. Publishing remains disabled until the safety gate 
 - [x] Add moderation state: `RECEIVED`, `PENDING_REVIEW`, `APPROVED`, `REJECTED`, `SENT`, `FAILED`, `RETRYABLE`.
 - [ ] Add optional AI reply-draft generation; drafts never send automatically.
 - [x] Require human approval before every outbound public comment reply.
-- [ ] Add provider-specific Facebook and Instagram comment-reply adapters behind one canonical service.
-- [ ] Enforce `META_COMMENT_REPLY_ENABLED` immediately before every provider write.
+- [x] Add provider-specific Facebook and Instagram comment-reply adapters behind one canonical service.
+- [x] Enforce `META_COMMENT_REPLY_ENABLED` immediately before every provider write.
 - [ ] Add frontend public-comment review, draft approval, reply status, and audit views; do not add DM/Messenger UI.
 - [ ] Add realistic webhook, deduplication, moderation, approval, idempotency, and reply tests.
 
 ## Phase 4 — Webhooks and operations
 
-- [ ] Verify Meta webhook signatures in every environment; fail closed when a configured secret is absent.
+- [x] Verify Meta webhook signatures in every environment; fail closed when a configured secret is absent.
 - [ ] Separate publication-status webhook parsing from comments/messages/replies event parsing.
 - [ ] Persist raw event identity safely without storing unnecessary personal data.
 - [ ] Add replay/reconciliation endpoint for failed or ambiguous inbound events.

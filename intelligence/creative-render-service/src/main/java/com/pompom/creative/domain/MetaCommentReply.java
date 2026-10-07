@@ -67,7 +67,8 @@ public class MetaCommentReply {
     REJECTED,
     SENT,
     FAILED,
-    RETRYABLE
+    RETRYABLE,
+    RECONCILIATION_REQUIRED
   }
 
   public void submitForApproval() {
@@ -108,6 +109,14 @@ public class MetaCommentReply {
       throw new IllegalStateException("Reply is not sendable in status " + status);
     }
     status = retryable ? Status.RETRYABLE : Status.FAILED;
+    errorMessage = message;
+  }
+
+  public void markAmbiguous(String message) {
+    if (status != Status.APPROVED && status != Status.RETRYABLE) {
+      throw new IllegalStateException("Reply is not sendable in status " + status);
+    }
+    status = Status.RECONCILIATION_REQUIRED;
     errorMessage = message;
   }
 

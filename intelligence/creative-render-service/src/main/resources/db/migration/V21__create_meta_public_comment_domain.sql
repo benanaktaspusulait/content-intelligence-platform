@@ -37,7 +37,7 @@ CREATE TABLE meta_comment_replies (
     comment_id UUID NOT NULL REFERENCES meta_comments(id) ON DELETE CASCADE,
     draft_text TEXT NOT NULL,
     status VARCHAR(30) NOT NULL DEFAULT 'DRAFT'
-        CHECK (status IN ('DRAFT', 'PENDING_APPROVAL', 'APPROVED', 'REJECTED', 'SENT', 'FAILED', 'RETRYABLE')),
+        CHECK (status IN ('DRAFT', 'PENDING_APPROVAL', 'APPROVED', 'REJECTED', 'SENT', 'FAILED', 'RETRYABLE', 'RECONCILIATION_REQUIRED')),
     idempotency_key VARCHAR(240) NOT NULL UNIQUE,
     approved_by VARCHAR(200),
     approved_at TIMESTAMPTZ,
@@ -52,7 +52,7 @@ CREATE TABLE meta_comment_delivery_attempts (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     reply_id UUID NOT NULL REFERENCES meta_comment_replies(id) ON DELETE CASCADE,
     attempt_number INTEGER NOT NULL,
-    status VARCHAR(30) NOT NULL CHECK (status IN ('SUBMITTING', 'SENT', 'FAILED', 'RETRYABLE')),
+    status VARCHAR(30) NOT NULL CHECK (status IN ('SUBMITTING', 'SENT', 'FAILED', 'RETRYABLE', 'RECONCILIATION_REQUIRED')),
     provider_request_id VARCHAR(200),
     error_message TEXT,
     started_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
