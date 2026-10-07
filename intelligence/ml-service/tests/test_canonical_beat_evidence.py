@@ -97,6 +97,23 @@ def test_target_and_intended_effect_are_not_strategy_families() -> None:
     assert attempt_evidence(ir).strategy_families == ("PULL",)
 
 
+def test_legacy_strategy_fields_cannot_override_physical_action() -> None:
+    ir = {
+        "metadata": {"duration": 15.0},
+        "beats": [{
+            "id": "b1", "isAttempt": True, "primaryVerb": "PULL",
+            "action": "Mimi pulls the red ball", "consequence": "the ball moves",
+            "strategyFamily": "red ball",
+            "intendedStrategyFamily": "restore_or_control_normal_object_use",
+            "targetObject": "red ball", "intendedEffect": "restore_or_control_normal_object_use",
+            "duration": 5.0, "attemptSource": "STRUCTURED_PLAN_ROLE",
+        }],
+    }
+    evidence = attempt_evidence(ir)
+    assert evidence.strategy_families == ("PULL",)
+    assert evidence.attempts[0]["intendedStrategyFamily"] == "PULL"
+
+
 def test_consequence_contains_result_lines_not_the_action_line() -> None:
     (beat,) = _beats(
         "0.0-15.0 SEC — FIRST ATTEMPT\n"

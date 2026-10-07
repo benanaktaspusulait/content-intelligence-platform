@@ -68,4 +68,29 @@ class QualityReportDtoTest {
     assertThat(dto.canonicalEvidenceConfidence()).isEqualTo(0.95);
     assertThat(dto.evidenceMissing()).isEmpty();
   }
+
+  @Test
+  void normalizesMissingLegacyCollectionsForStoredReports() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.setPropertyNamingStrategy(
+        com.fasterxml.jackson.databind.PropertyNamingStrategies.SNAKE_CASE);
+
+    QualityReportDto dto =
+        mapper.readValue(
+            """
+            {"overall_score": 70.0, "status": "NEEDS_REVISION", "ruleset_version": "1.0"}
+            """,
+            QualityReportDto.class);
+
+    assertThat(dto.passedRules()).isEmpty();
+    assertThat(dto.failedRules()).isEmpty();
+    assertThat(dto.unknownRules()).isEmpty();
+    assertThat(dto.notApplicableRules()).isEmpty();
+    assertThat(dto.serviceErrors()).isEmpty();
+    assertThat(dto.parserWarnings()).isEmpty();
+    assertThat(dto.evidenceMissing()).isEmpty();
+    assertThat(dto.scoreCard()).isNotNull();
+    assertThat(dto.timelineData()).isNotNull();
+    assertThat(dto.provenance()).isNotNull();
+  }
 }

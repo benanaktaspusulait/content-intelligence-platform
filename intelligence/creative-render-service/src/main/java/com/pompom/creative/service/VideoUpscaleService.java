@@ -42,9 +42,7 @@ public class VideoUpscaleService {
     this.timeoutSeconds = Math.max(1, timeoutSeconds);
   }
 
-  /**
-   * Preserve the downloaded source and upscale the working path in place.
-   */
+  /** Preserve the downloaded source and upscale the working path in place. */
   public UpscaleResult upscale(Path input) {
     Path video = input.toAbsolutePath().normalize();
     if (!enabled) {

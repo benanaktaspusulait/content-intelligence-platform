@@ -62,6 +62,35 @@ public record QualityReportDto(
     Map<String, Object> familyAssessments,
     Double canonicalEvidenceConfidence) {
 
+  public QualityReportDto {
+    familyScores = familyScores == null ? Map.of() : familyScores;
+    passedRules = passedRules == null ? List.of() : passedRules;
+    failedRules = failedRules == null ? List.of() : failedRules;
+    unknownRules = unknownRules == null ? List.of() : unknownRules;
+    notApplicableRules = notApplicableRules == null ? List.of() : notApplicableRules;
+    serviceErrors = serviceErrors == null ? List.of() : serviceErrors;
+    priorityFixes = priorityFixes == null ? List.of() : priorityFixes;
+    timelineData =
+        timelineData == null
+            ? new TimelineDataDto(List.of(), List.of(), List.of())
+            : timelineData;
+    parserWarnings = parserWarnings == null ? List.of() : parserWarnings;
+    parserAssumptions = parserAssumptions == null ? List.of() : parserAssumptions;
+    topStrengths = topStrengths == null ? List.of() : topStrengths;
+    topWeaknesses = topWeaknesses == null ? List.of() : topWeaknesses;
+    evidenceMissing = evidenceMissing == null ? List.of() : evidenceMissing;
+    scoreBreakdowns = scoreBreakdowns == null ? List.of() : scoreBreakdowns;
+    familyRadar = familyRadar == null ? Map.of() : familyRadar;
+    preRenderAssessment = preRenderAssessment == null ? Map.of() : preRenderAssessment;
+    videoPlanIr = videoPlanIr == null ? Map.of() : videoPlanIr;
+    familyAssessments = familyAssessments == null ? Map.of() : familyAssessments;
+    scoreCard = scoreCard == null ? new ScoreCardDto(overallScore, "Unknown", "gray") : scoreCard;
+    provenance =
+        provenance == null
+            ? new QualityProvenanceDto(null, null, null, null, null, "PRE_RENDER")
+            : provenance;
+  }
+
   /**
    * Backward-compatible constructor for callers that only know the original report shape.
    * Older service/tests do not provide prompt-intelligence fields yet.

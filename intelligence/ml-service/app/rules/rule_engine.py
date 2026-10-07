@@ -2468,7 +2468,7 @@ class RuleEngine:
             message=f"No increasing intensity, affected target, stakes or consequence scale was evidenced. {evidence.reason}",
             actual_value=0,
             required_value=1,
-            details={"evidence": evidence},
+            details={"evidence": evidence_payload},
         )
 
     def _evaluate_hook_004(self, video_plan_ir: dict[str, Any], rule: dict[str, Any]) -> RuleEvaluationType:

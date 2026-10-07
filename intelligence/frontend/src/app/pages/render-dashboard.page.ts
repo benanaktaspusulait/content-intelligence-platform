@@ -125,6 +125,39 @@ interface RenderAsset {
   mediaVerified: boolean;
   mock: boolean;
   quarantined: boolean;
+  providerJobId?: string;
+  source?: string;
+  parentAssetId?: string;
+  originalRelativePath?: string;
+  originalFileSizeBytes?: number;
+  originalWidth?: number;
+  originalHeight?: number;
+  finalWidth?: number;
+  finalHeight?: number;
+  processingStatus?: string;
+  processingError?: string;
+  creditsEstimated?: number;
+  creditsActual?: number;
+}
+
+interface OpenArtReferenceAsset {
+  id: string;
+  canonicalKey: string;
+  displayName: string;
+  source: 'LOCAL' | 'OPENART_WORKSPACE';
+  mediaType: string;
+  providerAssetId?: string;
+  providerUrl?: string;
+  localPath?: string;
+  sha256?: string;
+  status: string;
+}
+
+interface OpenArtCapabilities {
+  imageMultipleReferences: string;
+  videoSingleStartFrame: string;
+  videoMultipleElementReferences: string;
+  workspaceAssetDiscovery: string;
 }
 
 interface VisualEvidenceResponse {
@@ -178,6 +211,12 @@ interface VisualEvidenceResponse {
           <div class="queue-fields"><label>Content ID<input type="number" min="1" [value]="queueContentId()" (input)="queueContentId.set(($any($event.target)).value)" /></label><label>Prompt version ID<input type="number" min="1" [value]="queuePromptVersionId()" (input)="queuePromptVersionId.set(($any($event.target)).value)" /></label><label>Validation record ID<input type="number" min="1" [value]="queueValidationId()" (input)="queueValidationId.set(($any($event.target)).value)" /></label><label>Job type<select [value]="queueJobType()" (change)="queueJobType.set(($any($event.target)).value)"><option value="VIDEO">VIDEO</option><option value="FIRST_FRAME">FIRST_FRAME</option></select></label><label>OpenArt model<input type="text" [value]="queueModel()" (input)="queueModel.set(($any($event.target)).value)" /></label>@if (queueJobType() === 'VIDEO') { <label class="wide-field">First-frame path or HTTPS URL<input type="text" placeholder="/data/library/.../first-frame.png" [value]="queueFirstFramePath()" (input)="queueFirstFramePath.set(($any($event.target)).value)" /></label> }<button type="button" class="queue-button" [disabled]="queueLoading()" (click)="queueRender()">{{ queueLoading() ? 'Queueing…' : 'Queue render' }}</button></div>
           @if (queueError()) { <p class="queue-error">{{ queueError() }}</p> }
           @if (queuedJobId()) { <p class="queue-success">Render queued: {{ queuedJobId() }}</p> }
+        </section>
+        <section class="section-band openart-reference-panel">
+          <div class="section-heading"><div><span class="eyebrow">OPENART REFERENCES</span><h2>Workspace character catalog</h2></div><button type="button" class="queue-button" [disabled]="referenceSyncLoading()" (click)="syncOpenArtReferences()">{{ referenceSyncLoading() ? 'Syncing…' : 'Sync workspace assets' }}</button></div>
+          @if (referenceError()) { <p class="queue-error">{{ referenceError() }}</p> }
+          @if (referenceCapabilities(); as caps) { <p class="muted">Image references: {{ caps.imageMultipleReferences }} · First-frame video: {{ caps.videoSingleStartFrame }} · Multi-element video: {{ caps.videoMultipleElementReferences }}</p> }
+          <div class="reference-chips">@for (reference of referenceAssets(); track reference.id) { <span class="status-badge">{{ reference.displayName }} · {{ reference.source }}</span> } @empty { <span class="muted">No synced workspace references</span> }</div>
         </section>
         <div class="jobs-list">
           @if (loading()) {
@@ -400,7 +439,7 @@ interface VisualEvidenceResponse {
       </div>
       @if (assetLoading()) { <section class="section-band asset-detail"><span class="spinner"></span><strong>Loading render asset</strong></section> }
       @else if (assetError()) { <section class="section-band asset-detail"><strong>Asset detail unavailable</strong><p>{{ assetError() }}</p></section> }
-      @else if (asset(); as item) { <section class="section-band asset-detail"><div class="section-heading"><div><span class="eyebrow">DURABLE ASSET</span><h2>{{ item.assetType }} · version {{ item.assetVersion }}</h2></div><span class="status-badge">{{ item.mediaVerified ? 'MEDIA VERIFIED' : 'NOT VERIFIED' }}</span></div><dl class="compact-facts"><div><dt>Path</dt><dd><code>{{ item.relativePath }}</code></dd></div><div><dt>Dimensions</dt><dd>{{ item.width }} × {{ item.height }}</dd></div><div><dt>Codec</dt><dd>{{ item.codec || '—' }}</dd></div><div><dt>SHA-256</dt><dd><code>{{ item.sha256 || '—' }}</code></dd></div><div><dt>Quarantine</dt><dd>{{ item.quarantined ? 'QUARANTINED' : 'Clear' }}</dd></div></dl>@if (item.assetType === 'FIRST_FRAME') { <button type="button" class="queue-button" (click)="useAsVideoFirstFrame(item)">Use as video first-frame</button> }</section> }
+      @else if (asset(); as item) { <section class="section-band asset-detail"><div class="section-heading"><div><span class="eyebrow">DURABLE ASSET</span><h2>{{ item.assetType }} · version {{ item.assetVersion }}</h2></div><span class="status-badge">{{ item.mediaVerified ? 'MEDIA VERIFIED' : 'NOT VERIFIED' }}</span></div>@if (item.assetType === 'VIDEO') { <video class="asset-preview" controls preload="metadata" [src]="assetMediaUrl(item)"></video> } @else if (item.assetType === 'FIRST_FRAME') { <img class="asset-preview" [src]="assetMediaUrl(item)" [alt]="item.relativePath" /> }<dl class="compact-facts"><div><dt>Path</dt><dd><code>{{ item.relativePath }}</code></dd></div><div><dt>Dimensions</dt><dd>{{ item.width }} × {{ item.height }}</dd></div><div><dt>Original</dt><dd>{{ item.originalWidth || item.width }} × {{ item.originalHeight || item.height }}</dd></div><div><dt>Codec</dt><dd>{{ item.codec || '—' }}</dd></div><div><dt>SHA-256</dt><dd><code>{{ item.sha256 || '—' }}</code></dd></div><div><dt>Quarantine</dt><dd>{{ item.quarantined ? 'QUARANTINED' : 'Clear' }}</dd></div></dl><div class="asset-actions"><a class="queue-button" [href]="assetDownloadUrl(item)">Download HD</a>@if (item.originalRelativePath) { <a class="queue-button" [href]="assetDownloadUrl(item, true)">Download original</a> }</div>@if (item.assetType === 'FIRST_FRAME') { <button type="button" class="queue-button" (click)="useAsVideoFirstFrame(item)">Use as video first-frame</button> }</section> }
       @if (asset()?.assetType === 'FIRST_FRAME') {
         <section class="section-band visual-evidence-panel">
           <div class="section-heading"><div><span class="eyebrow">VISUAL EVIDENCE</span><h2>Verify first-frame gates</h2></div><span class="status-badge">EXPLICIT VERIFIER RESULT REQUIRED</span></div>
@@ -921,6 +960,10 @@ export class RenderDashboardPage implements OnInit, OnDestroy {
   visualSubmitting = signal(false);
   visualEvidenceError = signal('');
   visualEvidenceResult = signal<VisualEvidenceResponse | null>(null);
+  referenceAssets = signal<OpenArtReferenceAsset[]>([]);
+  referenceCapabilities = signal<OpenArtCapabilities | null>(null);
+  referenceSyncLoading = signal(false);
+  referenceError = signal('');
 
   private readonly apiUrl = '/api/v1/render-jobs';
   private notificationStream: EventSource | null = null;
@@ -933,6 +976,14 @@ export class RenderDashboardPage implements OnInit, OnDestroy {
       next: asset => { this.asset.set(asset); this.assetLoading.set(false); },
       error: err => { this.assetError.set(err.error?.detail || err.error?.message || 'The render asset could not be read.'); this.assetLoading.set(false); },
     });
+  }
+
+  assetMediaUrl(asset: RenderAsset, original = false): string {
+    return `/api/v1/render-assets/${asset.id}/${original ? 'original' : 'media'}`;
+  }
+
+  assetDownloadUrl(asset: RenderAsset, original = false): string {
+    return `/api/v1/render-assets/${asset.id}/${original ? 'original/download' : 'download'}`;
   }
 
   useAsVideoFirstFrame(asset: RenderAsset): void {
@@ -1042,6 +1093,26 @@ export class RenderDashboardPage implements OnInit, OnDestroy {
   }
 
 
+  syncOpenArtReferences(): void {
+    this.referenceSyncLoading.set(true);
+    this.referenceError.set('');
+    this.http.post<{ workspaceAssets: number; localAssets: number }>('/api/v1/openart/references/sync', { workspace: true, local: [] }).subscribe({
+      next: () => { this.referenceSyncLoading.set(false); this.loadOpenArtReferences(); },
+      error: err => { this.referenceSyncLoading.set(false); this.referenceError.set(err.error?.detail || err.error?.message || 'OpenArt references could not be synced.'); },
+    });
+  }
+
+  private loadOpenArtReferences(): void {
+    this.http.get<OpenArtReferenceAsset[]>('/api/v1/openart/references').subscribe({
+      next: references => this.referenceAssets.set(references),
+      error: err => this.referenceError.set(err.error?.detail || err.error?.message || 'OpenArt references could not be loaded.'),
+    });
+    this.http.get<OpenArtCapabilities>('/api/v1/openart/references/capabilities').subscribe({
+      next: capabilities => this.referenceCapabilities.set(capabilities),
+      error: () => this.referenceCapabilities.set(null),
+    });
+  }
+
   ngOnInit() {
     this.route.queryParamMap.subscribe(params => {
       this.queueContentId.set(params.get('contentId') || '');
@@ -1049,6 +1120,7 @@ export class RenderDashboardPage implements OnInit, OnDestroy {
       this.queueValidationId.set(params.get('validationRecordId') || '');
     });
     this.connectLiveNotifications();
+    this.loadOpenArtReferences();
     // Poll every 5 seconds
     interval(5000)
       .pipe(

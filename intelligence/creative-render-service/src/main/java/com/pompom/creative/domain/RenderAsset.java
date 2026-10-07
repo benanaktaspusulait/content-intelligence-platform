@@ -66,6 +66,12 @@ public class RenderAsset {
   @Builder.Default
   private Integer processingAttemptCount = 1;
 
+  @Column(name = "credits_estimated", precision = 10, scale = 2)
+  private BigDecimal creditsEstimated;
+
+  @Column(name = "credits_actual", precision = 10, scale = 2)
+  private BigDecimal creditsActual;
+
   @Column(name = "content_id", nullable = false)
   private Long contentId;
 
@@ -75,6 +81,12 @@ public class RenderAsset {
 
   @Column(name = "relative_path", nullable = false, columnDefinition = "TEXT")
   private String relativePath;
+
+  @Column(name = "original_relative_path", columnDefinition = "TEXT")
+  private String originalRelativePath;
+
+  @Column(name = "original_file_size_bytes")
+  private Long originalFileSizeBytes;
 
   @Column(name = "file_size_bytes", nullable = false)
   private Long fileSizeBytes;

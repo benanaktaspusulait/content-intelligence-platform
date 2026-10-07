@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 from pathlib import Path
 from unittest.mock import patch
 
@@ -113,6 +114,22 @@ def test_escalation_evidence_does_not_require_active_attempts() -> None:
 def test_luca_realization_reads_result_text_and_fake_resolution() -> None:
     ir = parse_prompt(FIXTURE.read_text(encoding="utf-8")).video_plan_ir
     assert story_density_evidence(ir).realization_status == "AVAILABLE"
+
+
+def test_escalation_failure_details_are_json_serializable() -> None:
+    ir = _ir("0.0-15.0 SEC — ESCALATION\nMimi watches the ball without any change.\n")
+    result = _engine()._evaluate_escalation_005(ir, {})
+    assert result.outcome is RuleOutcome.FAIL
+    json.dumps(result.details)
+
+
+def test_abnormal_does_not_count_as_normal_realization() -> None:
+    ir = _ir(
+        "0.0-5.0 SEC — ATTEMPT\nMimi pulls the rope.\n"
+        "5.0-10.0 SEC — FAKE RESOLUTION\nThe rope remains abnormal.\n"
+        "10.0-15.0 SEC — TWIST\nMimi frowns.\n"
+    )
+    assert story_density_evidence(ir).realization_status == "UNKNOWN"
 
 
 def test_escalation_without_comparable_evidence_is_unknown_not_pass() -> None:

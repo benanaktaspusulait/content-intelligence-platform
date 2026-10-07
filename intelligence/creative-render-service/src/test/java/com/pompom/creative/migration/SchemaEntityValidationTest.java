@@ -47,6 +47,7 @@ class SchemaEntityValidationTest {
           com.pompom.creative.domain.RenderAsset.class,
           com.pompom.creative.domain.RenderQaResult.class,
           com.pompom.creative.domain.OpenArtCreditLog.class,
+          com.pompom.creative.openart.OpenArtReferenceAsset.class,
           com.pompom.creative.domain.PlatformCredential.class,
           com.pompom.creative.domain.PublicationJob.class,
           com.pompom.creative.domain.PublicationAnalytics.class,

@@ -71,7 +71,21 @@ public class RenderAssetController {
     if (mediaResources == null) {
       return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).build();
     }
-    MediaResourceService.ResolvedMedia media = mediaResources.resolve(asset);
+    return streamMedia(mediaResources.resolve(asset), rangeHeader);
+  }
+
+  @GetMapping("/{id}/original")
+  public ResponseEntity<?> originalMedia(
+      @PathVariable UUID id, @RequestHeader(value = "Range", required = false) String rangeHeader) {
+    RenderAsset asset = findAsset(id);
+    if (mediaResources == null) {
+      return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).build();
+    }
+    return streamMedia(mediaResources.resolveOriginal(asset), rangeHeader);
+  }
+
+  private ResponseEntity<?> streamMedia(
+      MediaResourceService.ResolvedMedia media, String rangeHeader) {
     HttpHeaders headers = new HttpHeaders();
     headers.set(HttpHeaders.ACCEPT_RANGES, "bytes");
     headers.setContentType(media.mediaType());
@@ -90,6 +104,21 @@ public class RenderAssetController {
     return ResponseEntity.status(HttpStatus.PARTIAL_CONTENT)
         .headers(headers)
         .body(region.resource());
+  }
+
+  @GetMapping("/{id}/original/download")
+  public ResponseEntity<Resource> downloadOriginal(@PathVariable UUID id) {
+    RenderAsset asset = findAsset(id);
+    if (mediaResources == null) {
+      return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).build();
+    }
+    MediaResourceService.ResolvedMedia media = mediaResources.resolveOriginal(asset);
+    HttpHeaders headers = new HttpHeaders();
+    headers.setContentType(media.mediaType());
+    headers.setContentLength(media.length());
+    headers.setContentDisposition(
+        ContentDisposition.attachment().filename(media.filename()).build());
+    return ResponseEntity.ok().headers(headers).body(media.resource());
   }
 
   @GetMapping("/{id}/download")
@@ -190,6 +219,19 @@ public class RenderAssetController {
         asset.getQuarantined(),
         asset.getVideoId(),
         asset.getVariantId(),
+        asset.getProviderJobId(),
+        asset.getSource(),
+        asset.getParentAssetId(),
+        asset.getOriginalRelativePath(),
+        asset.getOriginalFileSizeBytes(),
+        asset.getOriginalWidth(),
+        asset.getOriginalHeight(),
+        asset.getFinalWidth(),
+        asset.getFinalHeight(),
+        asset.getProcessingStatus(),
+        asset.getProcessingError(),
+        asset.getCreditsEstimated(),
+        asset.getCreditsActual(),
         asset.getCreatedAt());
   }
 
@@ -215,5 +257,18 @@ public class RenderAssetController {
       Boolean quarantined,
       UUID videoId,
       UUID variantId,
+      String providerJobId,
+      String source,
+      UUID parentAssetId,
+      String originalRelativePath,
+      Long originalFileSizeBytes,
+      Integer originalWidth,
+      Integer originalHeight,
+      Integer finalWidth,
+      Integer finalHeight,
+      String processingStatus,
+      String processingError,
+      BigDecimal creditsEstimated,
+      BigDecimal creditsActual,
       Instant createdAt) {}
 }

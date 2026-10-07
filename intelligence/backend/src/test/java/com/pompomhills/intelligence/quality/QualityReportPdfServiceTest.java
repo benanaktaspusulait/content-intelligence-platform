@@ -61,7 +61,9 @@ class QualityReportPdfServiceTest {
             Map.of(),
             0.95);
 
-    byte[] pdf = new QualityReportPdfService().render(new QualityReportExportRequest(report, "Luca", null, null));
+    byte[] pdf =
+        new QualityReportPdfService()
+            .render(new QualityReportExportRequest(report, "Luca", null, null));
     PdfReader reader = new PdfReader(pdf);
     PdfTextExtractor extractor = new PdfTextExtractor(reader);
     StringBuilder text = new StringBuilder();

@@ -275,7 +275,11 @@ public class QualityReportPdfService {
     List<RuleEvaluationDto> errors = orEmpty(report.serviceErrors());
     List<RuleEvaluationDto> unknown = orEmpty(report.unknownRules());
     List<RuleEvaluationDto> notApplicable = orEmpty(report.notApplicableRules());
-    if (passed.isEmpty() && failed.isEmpty() && errors.isEmpty() && unknown.isEmpty() && notApplicable.isEmpty()) {
+    if (passed.isEmpty()
+        && failed.isEmpty()
+        && errors.isEmpty()
+        && unknown.isEmpty()
+        && notApplicable.isEmpty()) {
       return;
     }
     section(document, "Rule outcome coverage", fonts);
@@ -593,7 +597,13 @@ public class QualityReportPdfService {
     Paragraph paragraph = new Paragraph();
     paragraph.setSpacingBefore(2);
     paragraph.add(new Chunk(clean(outcome), fonts.bold));
-    paragraph.add(new Chunk("  ·  " + clean(orDash(rule.ruleId())) + "  ·  " + clean(orDash(rule.message())), fonts.small));
+    paragraph.add(
+        new Chunk(
+            "  ·  "
+                + clean(orDash(rule.ruleId()))
+                + "  ·  "
+                + clean(orDash(rule.message())),
+            fonts.small));
     return paragraph;
   }
 

@@ -1,5 +1,7 @@
 -- Provider identity, multi-stage lineage, and original/final media metadata.
 ALTER TABLE render_assets
+    ADD COLUMN original_relative_path TEXT,
+    ADD COLUMN original_file_size_bytes BIGINT,
     ADD COLUMN provider_job_id VARCHAR(100),
     ADD COLUMN provider_asset_id VARCHAR(200),
     ADD COLUMN asset_source VARCHAR(30),
@@ -13,7 +15,9 @@ ALTER TABLE render_assets
     ADD COLUMN final_height INTEGER,
     ADD COLUMN processing_status VARCHAR(30) NOT NULL DEFAULT 'REGISTERED',
     ADD COLUMN processing_error TEXT,
-    ADD COLUMN processing_attempt_count INTEGER NOT NULL DEFAULT 1;
+    ADD COLUMN processing_attempt_count INTEGER NOT NULL DEFAULT 1,
+    ADD COLUMN credits_estimated NUMERIC(10,2),
+    ADD COLUMN credits_actual NUMERIC(10,2);
 
 UPDATE render_assets
 SET final_width = width,

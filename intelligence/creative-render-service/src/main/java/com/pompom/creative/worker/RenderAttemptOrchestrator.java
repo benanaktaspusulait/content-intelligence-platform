@@ -357,9 +357,20 @@ public class RenderAttemptOrchestrator {
         openArtAdapter.downloadAsset(attempt.getProviderJobId(), assetPath);
     if (operation == RenderProviderOperation.VIDEO
         && (job.getOpenartJobId() == null || !job.getOpenartJobId().startsWith("mock-"))) {
-      videoUpscaleService.upscale(assetPath);
+      VideoUpscaleService.UpscaleResult upscale = videoUpscaleService.upscale(assetPath);
+      if (upscale.originalPath() != null) {
+        downloadResult.setOriginalAssetPath(upscale.originalPath().toString());
+      }
     }
     RenderAsset asset = assetLibraryManager.recordAsset(job, attempt, downloadResult);
+    try {
+      asset.setCharacterRefsJson(
+          objectMapper.writeValueAsString(
+              referenceResolver.resolveCharacterReferences(job.getCreativeContractSnapshot())));
+      renderAssetRepo.save(asset);
+    } catch (Exception error) {
+      throw new IllegalStateException("Unable to persist character reference lineage", error);
+    }
 
     if (operation == RenderProviderOperation.FIRST_FRAME
         && job.getJobType() == RenderJob.JobType.VIDEO) {

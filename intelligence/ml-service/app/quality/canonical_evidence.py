@@ -93,15 +93,25 @@ def strategy_semantics_for_beat(beat: dict[str, Any]) -> dict[str, str]:
         str(beat.get(key, "")) for key in ("consequence", "result", "intendedEffect")
     )
     result_words = _words(result_text)
-    intended_family = str(beat.get("intendedStrategyFamily") or beat.get("strategyFamily") or action_family)
+    derived_family = action_family
     strategy_intent = "DIRECT"
     strategy_role = "INTENDED"
     if action_family == "CATCH" and result_words.intersection(
         {"SQUEEZE", "SQUEEZES", "SQUEEZED", "TEST", "TESTS", "CHECK", "CHECKS", "NORMAL", "NORMALLY"}
     ):
-        intended_family = "SQUEEZE" if result_words.intersection({"SQUEEZE", "SQUEEZES", "SQUEEZED"}) else "TEST"
+        derived_family = "SQUEEZE" if result_words.intersection({"SQUEEZE", "SQUEEZES", "SQUEEZED"}) else "TEST"
         strategy_intent = "TEST_OBJECT_BEHAVIOR"
         strategy_role = "REACTIVE_SETUP"
+    declared_family = str(beat.get("intendedStrategyFamily") or beat.get("strategyFamily") or "").strip().upper()
+    known_families = {
+        "UNSPECIFIED", "PULL", "PUSH", "SHAKE", "POUR", "ADD", "STIR", "SQUEEZE",
+        "THROW_TOSS", "CATCH", "LIFT", "HOLD", "GRAB_HOLD", "TEST",
+    }
+    intended_family = (
+        declared_family
+        if declared_family in {action_family, derived_family} or (action_family == UNSPECIFIED_VERB and declared_family in known_families)
+        else derived_family
+    )
     return {
         "reactiveActionFamily": action_family,
         "intendedStrategyFamily": intended_family,
@@ -492,7 +502,8 @@ def story_density_evidence(video_plan_ir: dict[str, Any]) -> StoryDensityEvidenc
         or any(word in str(beat.get("action", "")).lower() for word in ("realize", "understand", "decide", "notice"))
         for beat in beats
     )
-    normal_state = any(term in resolution_text for term in ("normal", "normally", "works", "restored", "back to normal"))
+    resolution_words = _words(resolution_text)
+    normal_state = bool(resolution_words.intersection({"NORMAL", "NORMALLY", "WORKS", "RESTORED"})) or "BACK TO NORMAL" in resolution_text
     positive_reaction = any(term in resolution_text for term in ("smile", "smiles", "relax", "relaxes", "relieved"))
     fake_resolution = any(
         str(beat.get("beatRole", "")).upper() == "FAKE_RESOLUTION" or beat.get("consequenceType") == "fake_win"

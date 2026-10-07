@@ -8,8 +8,8 @@ from typing import Any, Literal
 from fastapi import APIRouter, HTTPException, status
 from pydantic import BaseModel, Field
 
-from ..autofix.iteration_loop import AutoFixIterationLoop
 from ..assessment.pre_render_assessment import build_pre_render_assessment
+from ..autofix.iteration_loop import AutoFixIterationLoop
 from ..config import settings
 from ..llm.provider import get_provider_identity
 from ..parser.prompt_parser import parse_prompt
@@ -444,8 +444,14 @@ async def auto_fix_prompt(request: AutoFixRequest) -> AutoFixResultResponse:
             detail="Active ruleset is not available",
         ) from error
 
-    # The loop already produced the enhanced final report; reuse it.
-    final_report_response = convert_quality_report(result.final_enhanced_report, ruleset_version)
+    # Reparse the final prompt so report-facing canonical evidence (including
+    # confidence) describes the exact prompt returned by auto-fix.
+    final_parse = parse_prompt(result.final_prompt)
+    final_report_response = convert_quality_report(
+        result.final_enhanced_report,
+        ruleset_version,
+        video_plan_ir=final_parse.video_plan_ir,
+    )
 
     applied_fixes_response = [
         FixIterationResponse(

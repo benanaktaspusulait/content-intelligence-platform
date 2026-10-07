@@ -155,6 +155,20 @@ public class AssetLibraryManager {
     } catch (IOException error) {
       throw new IllegalStateException("Unable to read downloaded asset size", error);
     }
+    String originalRelativePath = null;
+    Long originalFileSize = null;
+    if (downloadResult.getOriginalAssetPath() != null) {
+      Path original = Paths.get(downloadResult.getOriginalAssetPath()).toAbsolutePath().normalize();
+      if (!original.startsWith(normalizedRoot) || !Files.isRegularFile(original)) {
+        throw new IllegalArgumentException("Original asset is outside the configured data root");
+      }
+      originalRelativePath = dataRoot.relativize(original).toString();
+      try {
+        originalFileSize = Files.size(original);
+      } catch (IOException error) {
+        throw new IllegalStateException("Unable to read original asset size", error);
+      }
+    }
 
     // Create asset entity
     RenderAsset asset =
@@ -176,9 +190,13 @@ public class AssetLibraryManager {
             .processingStatus("REGISTERED")
             .processingAttemptCount(
                 attempt == null ? job.getAttemptNumber() : attempt.getAttemptNumber())
+            .creditsEstimated(job.getCreditsEstimated())
+            .creditsActual(job.getCreditsActual())
             .contentId(job.getContentId())
             .assetType(assetType)
             .relativePath(relativePath)
+            .originalRelativePath(originalRelativePath)
+            .originalFileSizeBytes(originalFileSize)
             .fileSizeBytes(actualFileSize)
             .width(measured == null ? downloadResult.getWidth() : measured.width())
             .height(measured == null ? downloadResult.getHeight() : measured.height())
@@ -247,6 +265,19 @@ public class AssetLibraryManager {
         dataRoot.toAbsolutePath().normalize().resolve(asset.getRelativePath()).normalize();
     if (!resolved.startsWith(dataRoot.toAbsolutePath().normalize())) {
       throw new IllegalArgumentException("Asset path escapes the configured data root");
+    }
+    return resolved;
+  }
+
+  /** Resolve the preserved pre-upscale source path, falling back to the final asset. */
+  public Path resolveOriginalPath(RenderAsset asset) {
+    if (asset.getOriginalRelativePath() == null || asset.getOriginalRelativePath().isBlank()) {
+      return resolveStoredPath(asset);
+    }
+    Path resolved =
+        dataRoot.toAbsolutePath().normalize().resolve(asset.getOriginalRelativePath()).normalize();
+    if (!resolved.startsWith(dataRoot.toAbsolutePath().normalize())) {
+      throw new IllegalArgumentException("Original asset path escapes the configured data root");
     }
     return resolved;
   }

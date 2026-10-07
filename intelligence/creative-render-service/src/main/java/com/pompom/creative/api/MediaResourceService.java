@@ -30,10 +30,17 @@ public class MediaResourceService {
   }
 
   public ResolvedMedia resolve(RenderAsset asset) {
+    return resolveAt(asset, assetLibraryManager.resolveStoredPath(asset));
+  }
+
+  public ResolvedMedia resolveOriginal(RenderAsset asset) {
+    return resolveAt(asset, assetLibraryManager.resolveOriginalPath(asset));
+  }
+
+  private ResolvedMedia resolveAt(RenderAsset asset, Path path) {
     if (Boolean.TRUE.equals(asset.getQuarantined())) {
       throw new ResponseStatusException(NOT_FOUND, "Asset is quarantined");
     }
-    Path path = assetLibraryManager.resolveStoredPath(asset);
     if (!Files.isRegularFile(path)) {
       throw new ResponseStatusException(NOT_FOUND, "Asset file not found");
     }

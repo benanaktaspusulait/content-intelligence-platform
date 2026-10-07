@@ -8,6 +8,7 @@ module imports cleanly now that the scorer/contract drift is repaired.
 
 from pathlib import Path
 
+import pytest
 from fastapi.testclient import TestClient
 
 from app.api.quality import convert_quality_report
@@ -259,3 +260,48 @@ def test_validate_endpoint_returns_200_service_error_on_llm_provider_failure() -
     assert body["status"] == "SERVICE_ERROR"
     assert len(body["service_errors"]) >= 1
     assert any(se["rule_id"] == "ATTEMPT_002" for se in body["service_errors"])
+
+
+def test_auto_fix_final_report_rebuilds_canonical_confidence_from_final_prompt() -> None:
+    from unittest.mock import MagicMock, patch
+
+    from app.autofix.iteration_loop import AutoFixResult
+    from app.quality.contracts import ParserMetadata, QualityReport, QualityStatus
+
+    prompt = LUCA_FIXTURE.read_text(encoding="utf-8")
+    parsed = parse_prompt(prompt)
+    base_report = QualityReport(
+        overall_score=70.0,
+        status=QualityStatus.NEEDS_REVISION,
+        family_scores={},
+        evaluations=(),
+        ruleset_version="1.0",
+        evaluated_at="unknown",
+    )
+    enhanced = QualityScorer().create_enhanced_report(
+        base_report, parsed.video_plan_ir, ParserMetadata(confidence=0.7)
+    )
+    fake_result = AutoFixResult(
+        success=True,
+        final_prompt=prompt,
+        final_report=base_report,
+        final_enhanced_report=enhanced,
+        initial_score=70.0,
+        final_score=70.0,
+        score_delta=0.0,
+        initial_status=QualityStatus.NEEDS_REVISION.value,
+        final_status=QualityStatus.NEEDS_REVISION.value,
+        iteration_count=0,
+    )
+    mocked_loop = MagicMock()
+    mocked_loop.run.return_value = fake_result
+
+    with patch("app.api.quality.AutoFixIterationLoop", return_value=mocked_loop):
+        with TestClient(app) as client:
+            response = client.post(
+                "/api/v1/quality/auto-fix",
+                json={"prompt": prompt, "ruleset_version": "1.0", "max_iterations": 1},
+            )
+
+    assert response.status_code == 200
+    assert response.json()["final_report"]["canonical_evidence_confidence"] == pytest.approx(0.95)
