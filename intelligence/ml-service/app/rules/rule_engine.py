@@ -2437,6 +2437,16 @@ class RuleEngine:
         """
         evidence = escalation_evidence(video_plan_ir)
         evidence_payload = evidence.to_dict()
+        if evidence.applicability == "NOT_APPLICABLE":
+            return RuleEvaluation(
+                rule_id="ESCALATION_005",
+                rule_name="Meaningful Attempt Escalation",
+                family="escalation",
+                severity="WARNING",
+                result="NOT_APPLICABLE",
+                message=evidence.reason,
+                details={"evidence": evidence_payload},
+            )
         if evidence.status == "UNKNOWN":
             return RuleEvaluation(
                 rule_id="ESCALATION_005",
@@ -2447,14 +2457,14 @@ class RuleEngine:
                 message=evidence.reason,
                 details={"evidence": evidence_payload},
             )
-        if evidence.new_target or evidence.intensity_rise or evidence.consequence_expansion or evidence.resistance or evidence.wall_flex:
+        if evidence.strength in {"STRONG", "MODERATE"}:
             return RuleEvaluation(
                 rule_id="ESCALATION_005",
                 rule_name="Meaningful Attempt Escalation",
                 family="escalation",
                 severity="PASS",
                 result="PASS",
-                message=f"Escalation evidence is present: {evidence.reason}",
+                message=f"{evidence.strength.title()} escalation evidence is present: {evidence.reason}",
                 actual_value=1,
                 required_value=1,
                 details={"evidence": evidence_payload},
@@ -2465,7 +2475,7 @@ class RuleEngine:
             family="escalation",
             severity="WARNING",
             result="FAIL",
-            message=f"No increasing intensity, affected target, stakes or consequence scale was evidenced. {evidence.reason}",
+            message=f"Escalation evidence is only {evidence.strength.lower()}; no material increase was evidenced. {evidence.reason}",
             actual_value=0,
             required_value=1,
             details={"evidence": evidence_payload},

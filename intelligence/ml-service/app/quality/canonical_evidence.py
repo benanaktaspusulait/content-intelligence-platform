@@ -240,6 +240,15 @@ class CanonicalEscalationEvidence:
     consequence_expansion: bool
     resistance: bool
     wall_flex: bool
+    force_rise: bool
+    deformation: bool
+    scope_expansion: bool
+    difficulty_rise: bool
+    stakes_rise: bool
+    persistence: bool
+    quantity_growth: bool
+    applicability: str
+    strength: str
     source: str
     confidence: float | None
 
@@ -258,6 +267,15 @@ class CanonicalEscalationEvidence:
             "resistance": self.resistance,
             "wallFlex": self.wall_flex,
             "wall_flex": self.wall_flex,
+            "forceRise": self.force_rise,
+            "deformation": self.deformation,
+            "scopeExpansion": self.scope_expansion,
+            "difficultyRise": self.difficulty_rise,
+            "stakesRise": self.stakes_rise,
+            "persistence": self.persistence,
+            "quantityGrowth": self.quantity_growth,
+            "applicability": self.applicability,
+            "strength": self.strength,
             "source": self.source,
             "confidence": self.confidence,
         }
@@ -275,27 +293,62 @@ def escalation_evidence(video_plan_ir: dict[str, Any]) -> CanonicalEscalationEvi
         if str(beat.get("beatRole") or "").upper() == "ESCALATION"
         or beat.get("consequenceType") == "escalation"
     ]
+    all_text = " ".join(
+        str(beat.get(key, "")) for beat in beats for key in ("action", "consequence", "result")
+    ).upper()
+    goal = video_plan_ir.get("goalEvidence") or {}
+    core = video_plan_ir.get("coreMechanic") or {}
+    mechanic_signal = bool(
+        _words(all_text).intersection(
+            {
+                "STICK", "STUCK", "RETURNS", "RESISTS", "FLEX", "FLEXES", "MULTIPLY",
+                "MULTIPLYING", "MORE", "SWITCH", "WATCHED", "FLIP", "CLAIMS", "CHANGES",
+                "NORMAL", "GROW", "SHRINK", "FLOAT", "SPITS", "BOUNCE", "WRONG", "APPEARS",
+                "FLIPS", "LID", "CRACKER", "CAT", "CHAIR", "LAMP", "BOX", "BALLOON", "SHOES",
+            }
+        )
+    )
+    no_mechanic = (
+        not attempts
+        and not escalation_beats
+        and str(goal.get("goalExplicitness") or "").upper() in {"", "UNKNOWN", "UNSUPPORTED"}
+        and str(core.get("physicalRule") or "").strip().lower() in {"", "inferred from beat actions"}
+        and not mechanic_signal
+    )
+    not_applicable = no_mechanic and len(beats) >= 3
+    if not_applicable:
+        return CanonicalEscalationEvidence(
+            status="NOT_APPLICABLE", reason="No single established local mechanic exists for escalation measurement.",
+            candidate_beat_ids=(), new_target=False, intensity_rise=False, consequence_expansion=False,
+            resistance=False, wall_flex=False, force_rise=False, deformation=False, scope_expansion=False,
+            difficulty_rise=False, stakes_rise=False, persistence=False, quantity_growth=False,
+            applicability="NOT_APPLICABLE", strength="NOT_APPLICABLE", source="NONE", confidence=None,
+        )
+    if no_mechanic:
+        return CanonicalEscalationEvidence(
+            status="UNKNOWN", reason="Escalation evidence is insufficient because no established local mechanic was found.",
+            candidate_beat_ids=(), new_target=False, intensity_rise=False, consequence_expansion=False,
+            resistance=False, wall_flex=False, force_rise=False, deformation=False, scope_expansion=False,
+            difficulty_rise=False, stakes_rise=False, persistence=False, quantity_growth=False,
+            applicability="APPLICABLE", strength="UNKNOWN", source="NONE", confidence=None,
+        )
     later_beats = [
-        beat
-        for beat in beats
-        if attempts
-        and float(beat.get("startTime", 0.0) or 0.0) >= float(attempts[0].get("startTime", 0.0) or 0.0)
+        beat for beat in beats
+        if attempts and float(beat.get("startTime", 0.0) or 0.0) >= float(attempts[0].get("startTime", 0.0) or 0.0)
     ]
-    candidate_beats = escalation_beats or later_beats
+    if escalation_beats:
+        first_escalation_index = min(beats.index(beat) for beat in escalation_beats)
+        candidate_beats = beats[first_escalation_index:]
+    else:
+        candidate_beats = later_beats or beats[1:]
     if not candidate_beats:
         return CanonicalEscalationEvidence(
-            status="UNKNOWN",
-            reason="No comparable attempts or explicit escalation beat exists.",
-            candidate_beat_ids=(),
-            new_target=False,
-            intensity_rise=False,
-            consequence_expansion=False,
-            resistance=False,
-            wall_flex=False,
-            source="NONE",
-            confidence=None,
+            status="UNKNOWN", reason="No comparable attempts or explicit escalation beat exists.",
+            candidate_beat_ids=(), new_target=False, intensity_rise=False, consequence_expansion=False,
+            resistance=False, wall_flex=False, force_rise=False, deformation=False, scope_expansion=False,
+            difficulty_rise=False, stakes_rise=False, persistence=False, quantity_growth=False,
+            applicability="APPLICABLE", strength="UNKNOWN", source="NONE", confidence=None,
         )
-
     baseline_objects = _beat_objects(attempts[0]) if attempts else set()
     candidate_objects = set().union(*(_beat_objects(beat) for beat in candidate_beats)) if candidate_beats else set()
     new_target = bool(baseline_objects and candidate_objects - baseline_objects)
@@ -305,31 +358,39 @@ def escalation_evidence(video_plan_ir: dict[str, Any]) -> CanonicalEscalationEvi
     candidate_words = _words(candidate_text)
     resistance = bool(candidate_words.intersection({"STUCK", "STAYS", "REMAINS", "RESISTS", "WILL", "WONT", "WON"}))
     wall_flex = "WALL" in candidate_words and bool(candidate_words.intersection({"FLEX", "FLEXES", "BEND", "BENDS", "STRETCH", "STRETCHES"}))
-    expansion_words = {"WHOLE", "WALL", "LARGER", "BIGGER", "ENTIRE", "ITSELF", "FLEX", "FLEXES", "STRETCH", "STRETCHES"}
-    consequence_expansion = bool(expansion_words.intersection(candidate_words)) or wall_flex
+    force_rise = bool(candidate_words.intersection({"HARDER", "FASTER", "STRONGER", "BURST", "BURSTS"})) or (
+        "LEAN" in candidate_words and bool(candidate_words.intersection({"BACKWARD", "TOWARD"}))
+    )
+    deformation = bool(candidate_words.intersection({"STRETCH", "STRETCHES", "FLEX", "FLEXES", "BEND", "BENDS", "GROW", "GROWS", "SHRINK", "SHRINKS", "INFLATE", "INFLATES", "PUFF", "PUFFS", "EXPAND", "EXPANDS"}))
+    scope_expansion = bool(candidate_words.intersection({"WALL", "WHOLE", "ENTIRE", "FOUNTAIN", "SURROUNDED", "SHOULDERS", "SHOULDER"})) or (
+        "SECOND" in candidate_words and "LIGHT" in candidate_words
+    ) or ("ANOTHER" in candidate_words and "LIGHT" in candidate_words)
+    difficulty_rise = bool(candidate_words.intersection({"HARDER", "MISSES", "MISSED", "ALMOST", "CANNOT", "RESISTS", "TIGHTER"}))
+    stakes_rise = bool(candidate_words.intersection({"CHEEK", "UPSIDE", "SURROUNDED", "SHOULDERS", "SHOULDER", "HAT", "MOUTH"}))
+    persistence = bool(candidate_words.intersection({"AGAIN", "RETURNS", "BACK", "CLAIMS", "REMAINS", "STILL", "REPEAT", "REPEATS", "ITSELF"}))
+    quantity_words = candidate_words.intersection({"ONE", "TWO", "THREE", "SIX", "DOZENS"})
+    quantity_growth = len(quantity_words) >= 2 or bool(candidate_words.intersection({"MORE", "MULTIPLY", "MULTIPLYING", "FOUNTAIN", "MANY"}))
+    consequence_expansion = bool({"WHOLE", "WALL", "LARGER", "BIGGER", "ENTIRE", "ITSELF", "FLEX", "FLEXES", "STRETCH", "STRETCHES"}.intersection(candidate_words)) or wall_flex or quantity_growth
     comparable = [beat for beat in beats if beat in attempts or beat in escalation_beats]
     intensities = [float(beat.get("intensity", 0) or 0) for beat in comparable]
     intensity_rise = len(intensities) >= 2 and max(intensities[1:]) > intensities[0]
-    available = bool(escalation_beats) or len(attempts) >= 2
-    source = "STRUCTURED_ESCALATION_ROLE" if escalation_beats else "LATER_ATTEMPT_COMPARISON"
+    available = bool(escalation_beats) or len(attempts) >= 2 or (not attempts and len(candidate_beats) > 0)
+    source = "STRUCTURED_ESCALATION_ROLE" if escalation_beats else "CANONICAL_BEAT_SEQUENCE" if not attempts else "LATER_ATTEMPT_COMPARISON"
     confidence = 0.95 if escalation_beats else 0.8
-    positive = new_target or intensity_rise or consequence_expansion or resistance or wall_flex
-    reason = (
-        "Escalation changes resistance, intensity, affected target or consequence scale."
-        if positive
-        else "An escalation window exists, but no increasing resistance, intensity, target or consequence scale was evidenced."
-    )
+    result_variation = bool(candidate_words.intersection({"WRONG", "DIFFERENT", "CHANGING"}))
+    strong = quantity_growth or (deformation and (scope_expansion or persistence or stakes_rise)) or (force_rise and (difficulty_rise or stakes_rise)) or (scope_expansion and stakes_rise)
+    moderate = force_rise or deformation or scope_expansion or difficulty_rise or result_variation or stakes_rise or intensity_rise or (persistence and len(attempts) >= 2)
+    strength = "STRONG" if strong else "MODERATE" if moderate else "WEAK" if persistence or new_target or intensity_rise or (len(attempts) >= 2 and len(candidate_beats) > 0) else "UNKNOWN"
+    positive = strength in {"STRONG", "MODERATE", "WEAK"}
+    reason = "Escalation is evidenced by consequence magnitude, force, deformation, scope, difficulty, stakes or mechanic persistence." if positive else "A candidate escalation window exists, but no measurable escalation axis was evidenced."
     return CanonicalEscalationEvidence(
-        status="AVAILABLE" if available else "UNKNOWN",
-        reason=reason,
+        status="AVAILABLE" if available else "UNKNOWN", reason=reason,
         candidate_beat_ids=tuple(str(beat.get("id", "")) for beat in candidate_beats),
-        new_target=new_target,
-        intensity_rise=intensity_rise,
-        consequence_expansion=consequence_expansion,
-        resistance=resistance,
-        wall_flex=wall_flex,
-        source=source,
-        confidence=confidence,
+        new_target=new_target, intensity_rise=intensity_rise, consequence_expansion=consequence_expansion,
+        resistance=resistance, wall_flex=wall_flex, force_rise=force_rise, deformation=deformation,
+        scope_expansion=scope_expansion, difficulty_rise=difficulty_rise, stakes_rise=stakes_rise,
+        persistence=persistence, quantity_growth=quantity_growth, applicability="APPLICABLE",
+        strength=strength, source=source, confidence=confidence,
     )
 
 

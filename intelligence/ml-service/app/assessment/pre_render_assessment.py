@@ -14,6 +14,7 @@ from ..quality.canonical_evidence import (
     attempt_evidence,
     beat_audit,
     engine_profile_evidence,
+    escalation_evidence,
     evidence_gap_kind,
     is_evidence_gap,
     is_unspecified_verb,
@@ -287,49 +288,67 @@ def _progression(ir: dict[str, Any], evaluations: Iterable[Any]) -> dict[str, st
 
 
 def _escalation(ir: dict[str, Any], evaluations: Iterable[Any]) -> dict[str, str]:
-    evidence = attempt_evidence(ir)
+    evidence = escalation_evidence(ir)
     key, title = "ESCALATION", "Escalation"
-    if evidence.count < 2:
-        summary = (
-            "Escalation cannot be evaluated without explicit attempts."
-            if evidence.count == 0
-            else "Escalation needs at least two attempts to compare."
+    if evidence.applicability == "NOT_APPLICABLE":
+        return _dimension(
+            key,
+            title,
+            "NOT_APPLICABLE",
+            "No single established local mechanic exists for escalation measurement.",
+            evidence.reason,
+            "Keep escalation scoped to prompts with an established local mechanic.",
+            "NOT_APPLICABLE",
         )
-        observed = "No attempt sequence was parsed." if evidence.count == 0 else "Only one attempt was parsed."
+    if evidence.status == "UNKNOWN":
         return _dimension(
             key,
             title,
             "UNKNOWN",
-            summary,
-            observed,
-            "Define at least two attempts and their changing consequences.",
+            "Escalation evidence is not currently available.",
+            evidence.reason,
+            "Provide comparable consequence or persistence evidence before judging escalation.",
             "PARTIAL",
         )
-    attempts = attempt_beats(ir)
-    intensities = [float(beat.get("intensity", 0)) for beat in attempts]
-    observed = (
-        f"Attempt intensity moves from {intensities[0]:.0f} to {intensities[-1]:.0f} "
-        f"across {evidence.count} attempts."
-    )
-    # Prefer the rule's judgment (ESCALATION_005) over re-comparing intensities here.
-    status = _rule_status(evaluations, "ESCALATION_005")
-    rises = intensities[-1] > intensities[0] if status is None else status == "PASS"
-    if rises:
+    observed_axes = [
+        name
+        for name, value in (
+            ("force", evidence.force_rise),
+            ("deformation", evidence.deformation),
+            ("scope", evidence.scope_expansion),
+            ("difficulty", evidence.difficulty_rise),
+            ("stakes", evidence.stakes_rise),
+            ("persistence", evidence.persistence),
+            ("quantity", evidence.quantity_growth),
+        )
+        if value
+    ]
+    observed = ", ".join(observed_axes) or "no material escalation axis"
+    if evidence.strength == "STRONG":
+        return _dimension(
+            key,
+            title,
+            "STRONG",
+            "The established mechanic materially increases consequence, scope, magnitude or stakes.",
+            observed,
+            "Preserve the same mechanic while keeping the escalation visually causal.",
+        )
+    if evidence.strength == "MODERATE":
         return _dimension(
             key,
             title,
             "MODERATE",
-            "Later attempts are planned with greater commitment or consequence.",
+            "The plan shows a meaningful but limited increase in consequence or persistence.",
             observed,
-            "Make the increase change the problem, not only the movement size.",
+            "Increase consequence magnitude or difficulty only if the same rule remains readable.",
         )
     return _dimension(
         key,
         title,
         "NEEDS_ATTENTION",
-        "The attempt sequence does not show a clear structural increase.",
+        "Repeated activity is present without enough material escalation.",
         observed,
-        "Increase difficulty, surprise or consequence while keeping the same mechanic.",
+        "Increase force, scope, difficulty, stakes or consequence magnitude without inventing a new rule.",
     )
 
 

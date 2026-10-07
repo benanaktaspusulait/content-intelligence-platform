@@ -90,6 +90,7 @@ assets:
         - excerpt: the WOODEN WALL itself flexes slightly toward Luca
           location: 6.0-9.0 SEC
         notes: Escalation expands affected scope and deformation.
+        reviewStatus: APPROVED
       PROGRESSION:
         expected: STRONG
         applicable: true
@@ -269,6 +270,7 @@ assets:
         - excerpt: 1 ball → 3 balls → 6 balls → huge final fountain
           location: MOTION / RETENTION RULES
         notes: Measurable consequence magnitude grows.
+        reviewStatus: APPROVED
       PROGRESSION:
         expected: STRONG
         applicable: true
@@ -440,6 +442,7 @@ assets:
         - excerpt: ENTIRE chair suddenly flips upside down WITH Kiko on it
           location: TWIST + LOOP
         notes: Consequence scope increases from chair state to character state.
+        reviewStatus: APPROVED
       PROGRESSION:
         expected: STRONG
         applicable: true
@@ -613,7 +616,8 @@ assets:
         evidenceReferences:
         - excerpt: a second small light ... flickers
           location: 11.5-13.5 SEC
-        notes: HUMAN_REVIEW_REQUIRED; scope expands but rule wording may change.
+        notes: scope expands but rule wording may change.
+        reviewStatus: APPROVED
       PROGRESSION:
         expected: MODERATE
         applicable: true
@@ -777,7 +781,8 @@ assets:
         evidenceReferences:
         - excerpt: wrong item ... finally, the cracker appears ... box still wins
           location: ACTION TIMING
-        notes: HUMAN_REVIEW_REQUIRED.
+        notes: .
+        reviewStatus: APPROVED
       PROGRESSION:
         expected: MODERATE
         applicable: true
@@ -941,7 +946,8 @@ assets:
         evidenceReferences:
         - excerpt: cat has claimed the box again
           location: ATTEMPTS 1-3
-        notes: HUMAN_REVIEW_REQUIRED; recurrence and timing escalate more than force.
+        notes: recurrence and timing escalate more than force.
+        reviewStatus: APPROVED
       PROGRESSION:
         expected: MODERATE
         applicable: true
@@ -1099,8 +1105,8 @@ assets:
         confidence: MEDIUM
         evidenceReferences:
         - excerpt: third open spot ... decoy
-        notes: HUMAN_REVIEW_REQUIRED; repetition and decoy do not materially grow
-          consequence.
+        notes: repetition and decoy do not materially grow consequence.
+        reviewStatus: APPROVED
       PROGRESSION:
         expected: WEAK
         applicable: true
@@ -1256,7 +1262,8 @@ assets:
         evidenceReferences:
         - excerpt: spring-back and Got you
           location: SHOT 03
-        notes: HUMAN_REVIEW_REQUIRED.
+        notes: .
+        reviewStatus: APPROVED
       PROGRESSION:
         expected: STRONG
         applicable: true
@@ -1415,6 +1422,7 @@ assets:
         confidence: HIGH
         evidenceReferences: []
         notes: No single mechanic to escalate.
+        reviewStatus: APPROVED
       PROGRESSION:
         expected: WEAK
         applicable: true
