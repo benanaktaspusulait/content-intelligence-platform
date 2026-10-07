@@ -94,6 +94,7 @@ def build_pre_render_assessment(ir: dict[str, Any], parser: Any, report: Any, ru
             "attempts": attempt_evidence(ir).active_attempt_count,
             "distinct_strategies": attempt_evidence(ir).distinct_strategy_count,
             "realization": story.realization_status,
+            "realization_mode": story.realization_mode,
             "payoff": story.payoff_status,
             "fake_resolution": "OPTIONAL",
             "recurrence": "OPTIONAL",
@@ -206,11 +207,20 @@ def _opening(ir: dict[str, Any], evaluations: Iterable[Any]) -> dict[str, str]:
 
 def _goal(ir: dict[str, Any], evaluations: Iterable[Any]) -> dict[str, str]:
     status = _rule_status(evaluations, "GOAL_001", "OPENING_GOAL_OBSTRUCTION")
+    goal = ir.get("goalEvidence") or {}
+    explicitness = str(goal.get("goalExplicitness") or "UNKNOWN")
+    obstruction = bool(goal.get("obstruction"))
     if status == "FAIL":
         return _dimension("CHARACTER_GOAL", "Character goal", "NEEDS_ATTENTION", "The character reacts, but the rule evidence does not establish a visible objective.", "Goal/obstruction evidence failed.", "Write a simple visible goal and a specific obstruction.")
+    if explicitness == "EXPLICIT" and obstruction:
+        return _dimension("CHARACTER_GOAL", "Character goal", "STRONG", "The prompt explicitly states a visible objective and obstruction.", str(goal.get("description") or "Explicit goal parsed."), "Preserve the goal while varying the attempts.")
+    if explicitness == "IMPLICIT_BUT_OBSERVABLE" and obstruction:
+        return _dimension("CHARACTER_GOAL", "Character goal", "MODERATE", "The character goal is observable from intentional action against a named obstruction.", str(goal.get("description") or "Implicit goal parsed."), "Keep the obstruction and intended effect visible in the first attempt.")
+    if explicitness in {"UNSUPPORTED", "NOT_ESTABLISHED"}:
+        return _dimension("CHARACTER_GOAL", "Character goal", "NEEDS_ATTENTION", "The source does not establish a reliable local goal against an obstruction.", str(goal.get("description") or "Goal not established."), "Define a local goal and the obstruction it addresses.", "PARTIAL")
     if status == "PASS":
         return _dimension("CHARACTER_GOAL", "Character goal", "STRONG", "The plan gives the character a visible objective and obstruction.", "Existing goal rule passed.", "Preserve the goal while varying the attempts.")
-    return _dimension("CHARACTER_GOAL", "Character goal", "UNKNOWN", "The character goal is not explicit enough for a reliable diagnosis.", "No explicit goal field is available in the current IR.", "Add a one-sentence visible goal before the timeline.", "PARTIAL")
+    return _dimension("CHARACTER_GOAL", "Character goal", "UNKNOWN", "The character goal is not explicit enough for a reliable diagnosis.", "No reliable goal/obstruction evidence is available.", "Add a one-sentence visible goal before the timeline.", "PARTIAL")
 
 
 def _mechanic(ir: dict[str, Any]) -> dict[str, str]:

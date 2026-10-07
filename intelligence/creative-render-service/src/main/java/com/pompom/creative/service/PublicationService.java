@@ -5,6 +5,7 @@ import com.pompom.creative.domain.PublicationJob;
 import com.pompom.creative.domain.PublicationStatus;
 import com.pompom.creative.domain.RenderAsset;
 import com.pompom.creative.domain.RenderQaResult;
+import com.pompom.creative.oauth.MetaPublicationGuard;
 import com.pompom.creative.oauth.PlatformType;
 import com.pompom.creative.postrender.PostRenderDecision;
 import com.pompom.creative.postrender.PostRenderEvaluation;
@@ -42,6 +43,7 @@ public class PublicationService {
   private final RenderQaResultRepository qaResultRepository;
   private final PostRenderEvaluationRepository postRenderEvaluationRepository;
   private final AssetLibraryManager assetLibraryManager;
+  private final MetaPublicationGuard metaPublicationGuard;
 
   /**
    * Queue a publication job.
@@ -64,6 +66,9 @@ public class PublicationService {
       String caption,
       String hashtags,
       Boolean isPrivate) {
+    if (metaPublicationGuard != null) {
+      metaPublicationGuard.assertAllowed(platform);
+    }
     RenderAsset asset = resolvePublishableAsset(renderAssetId);
     if (platformAccountId == null || platformAccountId.isBlank()) {
       throw new IllegalArgumentException("platformAccountId is required");

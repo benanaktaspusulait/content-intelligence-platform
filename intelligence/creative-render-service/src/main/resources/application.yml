@@ -61,6 +61,8 @@ pompom:
       script: ${POMPOM_UPSCALE_SCRIPT:tools/upscale.sh}
       target-resolution: ${POMPOM_UPSCALE_TARGET_RESOLUTION:1920x1080}
       timeout-seconds: ${POMPOM_UPSCALE_TIMEOUT:900}
+  meta:
+    publish-enabled: ${META_PUBLISH_ENABLED:false}
   openart:
     enabled: ${OPENART_ENABLED:false}
     mock:

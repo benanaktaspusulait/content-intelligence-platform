@@ -502,6 +502,7 @@ class StoryDensityEvidence:
     goal_status: str
     obstruction_status: str
     realization_status: str
+    realization_mode: str | None
     payoff_status: str
     continuation_status: str
     continuation_mismatches: tuple[str, ...]
@@ -582,7 +583,9 @@ def story_density_evidence(video_plan_ir: dict[str, Any]) -> StoryDensityEvidenc
         str(beat.get("beatRole", "")).upper() == "FAKE_RESOLUTION" or beat.get("consequenceType") == "fake_win"
         for beat in beats
     )
-    realization_status = "AVAILABLE" if explicit_realization or (normal_state and (positive_reaction or fake_resolution)) else "UNKNOWN"
+    implicit_realization = normal_state and (positive_reaction or fake_resolution)
+    realization_status = "AVAILABLE" if explicit_realization or implicit_realization else "UNKNOWN"
+    realization_mode = "EXPLICIT" if explicit_realization else "IMPLICIT_BUT_OBSERVABLE" if implicit_realization else None
     payoff = video_plan_ir.get("finalPayoff") or {}
     payoff_status = "AVAILABLE" if payoff.get("startsAt") is not None or any(
         str(beat.get("beatRole", "")).upper() in {"PAYOFF", "SOLUTION", "TWIST"} for beat in beats
@@ -607,6 +610,7 @@ def story_density_evidence(video_plan_ir: dict[str, Any]) -> StoryDensityEvidenc
         goal_status=goal_status,
         obstruction_status=obstruction_status,
         realization_status=realization_status,
+        realization_mode=realization_mode,
         payoff_status=payoff_status,
         continuation_status=continuation_status,
         continuation_mismatches=mismatches,

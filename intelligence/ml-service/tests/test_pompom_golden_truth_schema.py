@@ -40,7 +40,7 @@ REQUIRED_DIMENSIONS = {
     "FIRST_FRAME_ANOMALY_INTENT",
     "SPECIALIZED_RULE_APPLICABILITY",
 }
-FAMILY_REVIEW_DIMENSIONS = {"GOAL", "ACTIVE_ATTEMPT_COUNT", "DISTINCT_STRATEGY_COUNT", "DISTINCT_STRATEGIES", "ESCALATION"}
+FAMILY_REVIEW_DIMENSIONS = {"GOAL", "ACTIVE_ATTEMPT_COUNT", "DISTINCT_STRATEGY_COUNT", "DISTINCT_STRATEGIES", "ESCALATION", "REALIZATION"}
 
 
 def test_gold_truth_is_independent_and_evidence_backed() -> None:
@@ -54,7 +54,9 @@ def test_gold_truth_is_independent_and_evidence_backed() -> None:
             assert {"expected", "applicable", "confidence", "evidenceReferences", "notes"} <= set(dimension)
             assert dimension["confidence"] in {"HIGH", "MEDIUM", "LOW"}
             if name in FAMILY_REVIEW_DIMENSIONS:
-                assert dimension.get("reviewStatus") == "APPROVED", f"Family 1 review missing: {asset_id}/{name}"
+                assert dimension.get("reviewStatus") == "APPROVED", f"Family review missing: {asset_id}/{name}"
+            if name == "REALIZATION":
+                assert dimension.get("mode") in {"EXPLICIT", "IMPLICIT_BUT_OBSERVABLE", None}
             if dimension["confidence"] == "HIGH" and dimension["applicable"]:
                 assert dimension["evidenceReferences"]
             if dimension["confidence"] in {"MEDIUM", "LOW"} and dimension.get("reviewStatus") != "APPROVED":

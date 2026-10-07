@@ -4,6 +4,7 @@ import com.pompom.creative.domain.PublicationAttempt;
 import com.pompom.creative.domain.PublicationExecutionStage;
 import com.pompom.creative.domain.PublicationJob;
 import com.pompom.creative.domain.PublicationStatus;
+import com.pompom.creative.oauth.MetaPublicationGuard;
 import com.pompom.creative.oauth.PlatformType;
 import com.pompom.creative.publisher.PlatformPublisher;
 import com.pompom.creative.publisher.dto.PublishRequest;
@@ -27,16 +28,19 @@ public class PublicationAttemptOrchestrator {
   private final PublicationJobRepository jobRepository;
   private final Map<String, PlatformPublisher> publishers;
   private final TransactionTemplate transactionTemplate;
+  private final MetaPublicationGuard metaPublicationGuard;
 
   public PublicationAttemptOrchestrator(
       PublicationAttemptRepository attemptRepository,
       PublicationJobRepository jobRepository,
       Map<String, PlatformPublisher> publishers,
-      TransactionTemplate transactionTemplate) {
+      TransactionTemplate transactionTemplate,
+      MetaPublicationGuard metaPublicationGuard) {
     this.attemptRepository = attemptRepository;
     this.jobRepository = jobRepository;
     this.publishers = publishers;
     this.transactionTemplate = transactionTemplate;
+    this.metaPublicationGuard = metaPublicationGuard;
   }
 
   public void processAttempt(UUID attemptId, String leaseOwner) {
@@ -80,6 +84,23 @@ public class PublicationAttemptOrchestrator {
         jobRepository
             .findById(attempt.getPublicationJobId())
             .orElseThrow(() -> new IllegalArgumentException("Publication job not found"));
+    try {
+      if (metaPublicationGuard != null) {
+        metaPublicationGuard.assertAllowed(job.getPlatform());
+      }
+    } catch (com.pompom.creative.oauth.MetaPublishingDisabledException disabled) {
+      attempt.setStage(PublicationExecutionStage.CANCELLED);
+      attempt.setErrorCode("META_PUBLISH_DISABLED");
+      attempt.setErrorMessage(disabled.getMessage());
+      attempt.setCompletedAt(Instant.now());
+      clearLease(attempt);
+      attemptRepository.save(attempt);
+      job.updateStatus(PublicationStatus.FAILED);
+      job.setErrorCode("META_PUBLISH_DISABLED");
+      job.setErrorMessage(disabled.getMessage());
+      jobRepository.save(job);
+      return null;
+    }
     if (job.getStatus() == PublicationStatus.CANCELLED) {
       attempt.setStage(PublicationExecutionStage.CANCELLED);
       attempt.setCompletedAt(Instant.now());

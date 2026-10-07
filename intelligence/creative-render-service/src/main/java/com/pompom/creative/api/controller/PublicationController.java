@@ -46,6 +46,9 @@ public class PublicationController {
 
       return ResponseEntity.ok(job);
 
+    } catch (com.pompom.creative.oauth.MetaPublishingDisabledException e) {
+      log.warn("Meta publication blocked by server policy");
+      return ResponseEntity.status(403).build();
     } catch (IllegalArgumentException e) {
       log.error("Invalid platform: {}", request.getPlatform());
       return ResponseEntity.badRequest().build();

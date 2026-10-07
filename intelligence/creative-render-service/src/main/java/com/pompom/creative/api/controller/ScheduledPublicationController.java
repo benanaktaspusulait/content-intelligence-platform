@@ -53,8 +53,10 @@ public class ScheduledPublicationController {
 
       return ResponseEntity.ok(scheduled);
 
+    } catch (com.pompom.creative.oauth.MetaPublishingDisabledException e) {
+      log.warn("Meta scheduled publication blocked by server policy");
+      return ResponseEntity.status(403).build();
     } catch (IllegalArgumentException e) {
-      log.error("Invalid request: {}", e.getMessage());
       return ResponseEntity.badRequest().build();
     } catch (Exception e) {
       log.error("Failed to schedule publication", e);

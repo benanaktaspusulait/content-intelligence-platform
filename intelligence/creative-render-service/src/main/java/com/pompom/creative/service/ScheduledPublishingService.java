@@ -4,6 +4,7 @@ import com.pompom.creative.domain.PublicationJob;
 import com.pompom.creative.domain.RenderAsset;
 import com.pompom.creative.domain.ScheduleStatus;
 import com.pompom.creative.domain.ScheduledPublication;
+import com.pompom.creative.oauth.MetaPublicationGuard;
 import com.pompom.creative.oauth.PlatformType;
 import com.pompom.creative.repository.PublicationJobRepository;
 import com.pompom.creative.repository.RenderAssetRepository;
@@ -37,6 +38,7 @@ public class ScheduledPublishingService {
   private final AssetLibraryManager assetLibraryManager;
   private final PublicationJobRepository publicationJobRepository;
   private final ScheduledPublicationClaimRepository claimRepository;
+  private final MetaPublicationGuard metaPublicationGuard;
   private final String leaseOwner = "schedule-worker-" + UUID.randomUUID();
 
   @Value("${pompom.publication.scheduler.batch-size:20}")
@@ -70,6 +72,9 @@ public class ScheduledPublishingService {
       Boolean isPrivate,
       Instant scheduledAt,
       String timezone) {
+    if (metaPublicationGuard != null) {
+      metaPublicationGuard.assertAllowed(platform);
+    }
     log.info(
         "Scheduling publication: platform={}, scheduledAt={}, timezone={}",
         platform,

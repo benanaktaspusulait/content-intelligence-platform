@@ -110,7 +110,9 @@ assets:
         evidenceReferences:
         - excerpt: It behaves like a normal ball. He smiles.
           location: 9.0-12.0 SEC
-        notes: HUMAN_REVIEW_REQUIRED; realization is implicit in result and reaction.
+        notes: realization is implicit in result and reaction.
+        reviewStatus: APPROVED
+        mode: IMPLICIT_BUT_OBSERVABLE
       FAKE_RESOLUTION:
         expected: PRESENT
         applicable: true
@@ -288,8 +290,9 @@ assets:
         evidenceReferences:
         - excerpt: Both Luca and the crocodile relax
           location: FAKE RESOLUTION
-        notes: HUMAN_REVIEW_REQUIRED; relief is visible but no explicit decision sentence
-          exists.
+        notes: relief is visible but no explicit decision sentence exists.
+        reviewStatus: APPROVED
+        mode: IMPLICIT_BUT_OBSERVABLE
       FAKE_RESOLUTION:
         expected: PRESENT
         applicable: true
@@ -381,7 +384,7 @@ assets:
           location: 0.0-0.8 SEC
         notes: Anomaly dominates first frame.
       GOAL:
-        expected: IMPLICIT_BUT_OBSERVABLE
+        expected: EXPLICIT
         applicable: true
         confidence: HIGH
         evidenceReferences:
@@ -461,6 +464,8 @@ assets:
         - excerpt: Stay DOWN!
           location: COMEDY PAYOFF
         notes: Character learns a temporary control strategy.
+        reviewStatus: APPROVED
+        mode: IMPLICIT_BUT_OBSERVABLE
       FAKE_RESOLUTION:
         expected: PRESENT
         applicable: true
@@ -633,7 +638,9 @@ assets:
         evidenceReferences:
         - excerpt: Aha!
           location: 8.0-11.5 SEC
-        notes: HUMAN_REVIEW_REQUIRED; explicit reaction suggests a learned rule.
+        notes: explicit reaction suggests a learned rule.
+        reviewStatus: APPROVED
+        mode: IMPLICIT_BUT_OBSERVABLE
       FAKE_RESOLUTION:
         expected: PRESENT
         applicable: true
@@ -798,7 +805,9 @@ assets:
         evidenceReferences:
         - excerpt: There!
           location: 08.0-11.5s
-        notes: HUMAN_REVIEW_REQUIRED; proud reaction marks apparent solution.
+        notes: proud reaction marks apparent solution.
+        reviewStatus: APPROVED
+        mode: IMPLICIT_BUT_OBSERVABLE
       FAKE_RESOLUTION:
         expected: PRESENT
         applicable: true
@@ -962,7 +971,9 @@ assets:
         evidenceReferences:
         - excerpt: small confident smile
         - excerpt: cat makes one final short move
-        notes: HUMAN_REVIEW_REQUIRED.
+        notes: .
+        reviewStatus: APPROVED
+        mode: IMPLICIT_BUT_OBSERVABLE
       FAKE_RESOLUTION:
         expected: PRESENT
         applicable: true
@@ -1120,7 +1131,9 @@ assets:
         confidence: MEDIUM
         evidenceReferences:
         - excerpt: tiny determined nod
-        notes: HUMAN_REVIEW_REQUIRED; determination is not a strong belief change.
+        notes: determination is not a strong belief change.
+        reviewStatus: APPROVED
+        mode: IMPLICIT_BUT_OBSERVABLE
       FAKE_RESOLUTION:
         expected: PRESENT
         applicable: true
@@ -1209,7 +1222,7 @@ assets:
           location: SHOT 01 ACTION
         notes: Opening action is immediate.
       GOAL:
-        expected: EXPLICIT
+        expected: IMPLICIT_BUT_OBSERVABLE
         applicable: true
         confidence: MEDIUM
         evidenceReferences:
@@ -1279,8 +1292,9 @@ assets:
         evidenceReferences:
         - excerpt: clever realization
           location: SHOT 02
-        notes: HUMAN_REVIEW_REQUIRED; source names the realization but not exact belief
-          change.
+        notes: source names the realization but not exact belief change.
+        reviewStatus: APPROVED
+        mode: EXPLICIT
       FAKE_RESOLUTION:
         expected: PRESENT
         applicable: true
@@ -1438,7 +1452,9 @@ assets:
         evidenceReferences:
         - excerpt: A dream?
           location: TWIST
-        notes: HUMAN_REVIEW_REQUIRED; dream recognition is not a mechanic realization.
+        notes: dream recognition is not a mechanic realization.
+        reviewStatus: APPROVED
+        mode: null
       FAKE_RESOLUTION:
         expected: NOT_ESTABLISHED
         applicable: true
