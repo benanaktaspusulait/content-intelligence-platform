@@ -63,6 +63,7 @@ pompom:
       timeout-seconds: ${POMPOM_UPSCALE_TIMEOUT:900}
   meta:
     publish-enabled: ${META_PUBLISH_ENABLED:false}
+    comment-reply-enabled: ${META_COMMENT_REPLY_ENABLED:false}
   openart:
     enabled: ${OPENART_ENABLED:false}
     mock:

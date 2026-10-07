@@ -54,19 +54,22 @@ Scope: Meta integration only. Publishing remains disabled until the safety gate 
 - [ ] Add backend tests for Facebook and Instagram success, partial metrics, provider errors, pagination, and exact matching.
 - [ ] Add Angular Facebook/Page/account analytics views and snapshot history.
 
-## Phase 3 — Comments, messages, and replies
+## Phase 3 — Public comment engagement (Facebook + Instagram only)
 
-- [ ] Decide supported Meta surfaces: Facebook Page comments, Instagram media comments, Instagram DMs, or Messenger conversations.
-- [ ] Verify required official scopes before implementation; do not add write scopes to the read-only OAuth flow.
-- [ ] Add durable entities for `MetaConversation`, `MetaMessage`, `MetaComment`, `MetaReply`, and delivery attempts.
-- [ ] Normalize webhook payloads into typed inbound events with provider event IDs and deduplication.
-- [ ] Add comment/message ingestion endpoints and reconciliation jobs.
-- [ ] Add moderation state: `RECEIVED`, `PENDING_REVIEW`, `APPROVED`, `REJECTED`, `SENT`, `FAILED`, `RETRYABLE`.
-- [ ] Add outbound reply service with idempotency key and provider-safe retry.
-- [ ] Keep replies disabled by default behind a separate `META_REPLY_ENABLED=false` guard.
-- [ ] Add reviewer approval and audit trail before any outbound reply.
-- [ ] Add frontend inbox/thread/comment/reply screens only after the backend state model exists.
-- [ ] Add realistic webhook, deduplication, moderation, and reply tests.
+**Product decision:** Implement Facebook Page comments/replies and Instagram post/Reel comments/replies together. Instagram DM, Messenger, private conversations, unsolicited outbound messages, and automatic AI replies are explicitly out of scope.
+
+- [x] Add `META_COMMENT_REPLY_ENABLED=false` with a server-side fail-closed guard; `META_PUBLISH_ENABLED` remains separate and unchanged.
+- [ ] Verify required official comment-read/reply scopes; never add them to the read-only analytics OAuth flow.
+- [x] Add durable canonical models for `MetaComment`, `MetaCommentReply`, `MetaCommentThread`, and delivery attempts; keep the shape extensible for future private conversations without implementing them.
+- [x] Normalize Facebook Page and Instagram post/Reel comment/reply webhook payloads with provider event IDs and deduplication.
+- [ ] Add comment/reply ingestion endpoints and polling/reconciliation for missed events.
+- [x] Add moderation state: `RECEIVED`, `PENDING_REVIEW`, `APPROVED`, `REJECTED`, `SENT`, `FAILED`, `RETRYABLE`.
+- [ ] Add optional AI reply-draft generation; drafts never send automatically.
+- [ ] Require human approval before every outbound public comment reply.
+- [ ] Add provider-specific Facebook and Instagram comment-reply adapters behind one canonical service.
+- [ ] Enforce `META_COMMENT_REPLY_ENABLED` immediately before every provider write.
+- [ ] Add frontend public-comment review, draft approval, reply status, and audit views; do not add DM/Messenger UI.
+- [ ] Add realistic webhook, deduplication, moderation, approval, idempotency, and reply tests.
 
 ## Phase 4 — Webhooks and operations
 
@@ -91,7 +94,9 @@ Scope: Meta integration only. Publishing remains disabled until the safety gate 
 ## Explicit non-goals
 
 - No automatic Meta publishing.
-- No automatic comment/message replies.
+- No automatic AI comment replies; every public reply requires human approval.
+- No Instagram DM or Messenger implementation in this phase.
+- No new outbound private conversations.
 - No Meta website scraping.
 - No reuse of OpenArt credentials or OpenArt provider abstractions for Meta.
 - No changes to prompt scoring, video analysis, OpenArt, or unrelated generated quality-rule work.
@@ -101,8 +106,8 @@ Scope: Meta integration only. Publishing remains disabled until the safety gate 
 - [ ] Meta publishing is fail-closed by default at controller, service, worker, and UI layers.
 - [ ] Read-only OAuth is durable, refreshable, revocable, and scope-verified.
 - [ ] Facebook and Instagram analytics are unified, persisted, provenance-aware, and honest about missing data.
-- [ ] Comments/messages/replies have typed persistence, webhook deduplication, moderation, idempotency, and audit trails.
-- [ ] Dashboard exposes read-only analytics and approved reply workflows without hidden publish side effects.
+- [ ] Public Facebook/Instagram comments have typed persistence, webhook deduplication, moderation, approval, idempotency, and audited replies.
+- [ ] Dashboard exposes read-only analytics and human-approved public comment replies without hidden publish side effects.
 - [ ] Backend/frontend/package gates are green except explicitly documented unrelated baseline failures.
 - [ ] Live read-only smoke passes with a dedicated Meta test account.
 - [ ] No publish/reply live test is run without explicit approval.

@@ -67,3 +67,24 @@ def test_unrelated_final_twist_is_not_same_rule_payoff() -> None:
     evidence = mechanic_payoff_evidence(ir)
     assert evidence.same_rule_relation == "NOT_ESTABLISHED"
     assert evidence.payoff_status == "NOT_ESTABLISHED"
+
+
+def test_assessment_projects_mechanic_fake_recurrence_and_same_rule_evidence() -> None:
+    from app.assessment.pre_render_assessment import build_pre_render_assessment
+    from app.quality.contracts import ParserMetadata, QualityReport, QualityStatus
+
+    parsed = parse_prompt((ROOT / "sticky-ball-01.txt").read_text(encoding="utf-8"))
+    report = QualityReport(
+        overall_score=85.0,
+        status=QualityStatus.NEEDS_REVISION,
+        family_scores={},
+        evaluations=(),
+        ruleset_version="1.7",
+        evaluated_at="GOLDEN_DETERMINISTIC",
+    )
+    assessment = build_pre_render_assessment(parsed.video_plan_ir, parsed.metadata, report, "1.7")
+    story = assessment["story_structure"]
+    assert story["central_mechanic"] == "ESTABLISHED"
+    assert story["fake_resolution"] == "PRESENT"
+    assert story["recurrence"] == "PRESENT"
+    assert story["payoff_relation"] == "SAME_RULE"

@@ -15,6 +15,7 @@ from ..quality.canonical_evidence import (
     beat_audit,
     engine_profile_evidence,
     escalation_evidence,
+    mechanic_payoff_evidence,
     evidence_gap_kind,
     is_evidence_gap,
     is_unspecified_verb,
@@ -31,6 +32,7 @@ def build_pre_render_assessment(ir: dict[str, Any], parser: Any, report: Any, ru
 
     story = story_density_evidence(ir)
     engine_profile = engine_profile_evidence(ir)
+    mechanic_payoff = mechanic_payoff_evidence(ir)
     dimensions = [
         _concept(ir),
         _opening(ir, evaluations),
@@ -91,13 +93,16 @@ def build_pre_render_assessment(ir: dict[str, Any], parser: Any, report: Any, ru
         "story_structure": {
             "goal": story.goal_status,
             "obstacle": story.obstruction_status,
+            "central_mechanic": mechanic_payoff.central_mechanic_status,
+            "mechanic_interaction": mechanic_payoff.interaction_status,
             "attempts": attempt_evidence(ir).active_attempt_count,
             "distinct_strategies": attempt_evidence(ir).distinct_strategy_count,
             "realization": story.realization_status,
             "realization_mode": story.realization_mode,
-            "payoff": story.payoff_status,
-            "fake_resolution": "OPTIONAL",
-            "recurrence": "OPTIONAL",
+            "fake_resolution": mechanic_payoff.fake_resolution_status,
+            "recurrence": mechanic_payoff.recurrence_status,
+            "payoff": mechanic_payoff.payoff_status,
+            "payoff_relation": mechanic_payoff.same_rule_relation,
         },
         "temporal_complexity": {
             "status": "BLOCK_SINGLE_GENERATION" if story.temporal_load == "HIGH" and story.generation_mode == "SINGLE_15S" else "PASS_WITH_SPLIT" if story.temporal_load == "HIGH" else "MANAGEABLE",

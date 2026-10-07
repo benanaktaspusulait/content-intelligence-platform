@@ -419,6 +419,7 @@ def beat_audit(video_plan_ir: dict[str, Any]) -> list[dict[str, Any]]:
 @dataclass(frozen=True)
 class MechanicPayoffEvidence:
     central_mechanic_status: str
+    mechanic_family: str
     interaction_status: str
     fake_resolution_status: str
     recurrence_status: str
@@ -430,6 +431,7 @@ class MechanicPayoffEvidence:
     def to_dict(self) -> dict[str, Any]:
         return {
             "centralMechanicStatus": self.central_mechanic_status,
+            "mechanicFamily": self.mechanic_family,
             "interactionStatus": self.interaction_status,
             "fakeResolutionStatus": self.fake_resolution_status,
             "recurrenceStatus": self.recurrence_status,
@@ -460,6 +462,10 @@ def _mechanic_family_tokens(ir: dict[str, Any]) -> tuple[str, set[str], bool]:
         ("ANIMAL_CLAIM", {"CAT", "CLAIMS", "SPOT"}),
         ("AUTONOMOUS_SNEAKY_DOOR", {"DOOR", "OPENS", "CLOSES"}),
     )
+    if "CAT" in words and "BOX" in words:
+        return "STUBBORN_RETURN_ANIMAL_CLAIM", words, True
+    if "CAT" in words and "SPOT" in words:
+        return "REPEATED_TARGET_CLAIM", words, True
     for family, markers in families:
         if len(words.intersection(markers)) >= 2:
             return family, words, True
@@ -472,12 +478,13 @@ def mechanic_payoff_evidence(video_plan_ir: dict[str, Any]) -> MechanicPayoffEvi
     final_payoff = video_plan_ir.get("finalPayoff") or {}
     all_text = " ".join(str(beat.get(key, "")) for beat in beats for key in ("action", "consequence", "result")).lower()
     final_text = " ".join(
-        str(beat.get(key, "")) for beat in (beats[-2:] if beats else []) for key in ("action", "consequence", "result")
+        str(beat.get(key, "")) for beat in (beats[-1:] if beats else []) for key in ("action", "consequence", "result")
     ).lower() + " " + str(final_payoff.get("description") or final_payoff.get("event") or "").lower()
     references = tuple(str(beat.get("id", "")) for beat in beats if beat.get("beatRole"))
     if not mechanic_established:
         return MechanicPayoffEvidence(
             central_mechanic_status="NOT_ESTABLISHED",
+            mechanic_family=family,
             interaction_status="NOT_APPLICABLE",
             fake_resolution_status="NOT_ESTABLISHED",
             recurrence_status="NOT_ESTABLISHED",
@@ -491,13 +498,14 @@ def mechanic_payoff_evidence(video_plan_ir: dict[str, Any]) -> MechanicPayoffEvi
         or beat.get("consequenceType") == "fake_win"
         for beat in beats
     ) or any(token in all_text for token in ("normal", "relaxes", "relax", "confident smile", "proud smile"))
-    recurrence_markers = ("again", "returns", "return", "claims", "sticks", "fountain", "flips", "off again", "wrong item")
-    recurrence = fake and any(token in final_text for token in recurrence_markers)
+    recurrence_markers = ("again", "returns", "return", "claims", "sticks", "fountain", "more", "balls", "flips", "off again", "wrong item")
+    payoff_type = str(final_payoff.get("type") or "").lower()
+    recurrence = fake and (any(token in final_text for token in recurrence_markers) or payoff_type in {"escalation", "twist", "payoff"})
     same_rule = False
     if family == "STICKY_DEFORMATION":
         same_rule = "stick" in final_text
     elif family == "QUANTITY_MULTIPLICATION":
-        same_rule = any(token in final_text for token in ("ball", "fountain", "more", "spits"))
+        same_rule = any(token in final_text for token in ("ball", "fountain", "more", "spits")) or payoff_type in {"escalation", "twist", "payoff"}
     elif family == "AUTONOMOUS_CHAIR_INVERSION":
         same_rule = "flip" in final_text or "upside" in final_text
     elif family == "OBSERVATION_DEPENDENT_LIGHT":
@@ -509,14 +517,16 @@ def mechanic_payoff_evidence(video_plan_ir: dict[str, Any]) -> MechanicPayoffEvi
     elif family == "AUTONOMOUS_SNEAKY_DOOR":
         same_rule = "door" in final_text
     else:
-        same_rule = bool(words.intersection(_words(final_text)))
+        rule_words = _words(str((video_plan_ir.get("coreMechanic") or {}).get("physicalRule") or "")).difference({"THE", "A", "AN", "TO", "OF", "AND", "IS"})
+        same_rule = bool(rule_words.intersection(_words(final_text)))
     same_rule_relation = "SAME_RULE" if same_rule else "NOT_ESTABLISHED"
     payoff_status = "NOT_ESTABLISHED"
     if same_rule and final_payoff:
         payoff_status = "STRONG" if any(token in final_text for token in ("cheek", "fountain", "shoulder", "upside", "wipe", "whole", "entire")) else "MODERATE"
     return MechanicPayoffEvidence(
         central_mechanic_status="ESTABLISHED",
-        interaction_status="AVAILABLE" if beats else "UNKNOWN",
+        mechanic_family=family,
+        interaction_status="ACTIVE" if beats else "UNKNOWN",
         fake_resolution_status="PRESENT" if fake else "NOT_ESTABLISHED",
         recurrence_status="PRESENT" if recurrence else "NOT_ESTABLISHED",
         payoff_status=payoff_status,
@@ -526,6 +536,20 @@ def mechanic_payoff_evidence(video_plan_ir: dict[str, Any]) -> MechanicPayoffEvi
     )
 
 
+    profile: str
+    source: str
+    confidence: str
+    active: bool
+    candidate_only: bool
+    signals: dict[str, bool]
+    recurrence_count: int
+    intervention_count: int
+    state_memory_cost: str
+    reason: str
+
+
+@dataclass(frozen=True)
+class EngineProfileEvidence:
     profile: str
     source: str
     confidence: str

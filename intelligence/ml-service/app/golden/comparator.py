@@ -3,6 +3,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Any
 
+from ..quality.canonical_evidence import mechanic_payoff_evidence
 
 @dataclass(frozen=True)
 class AssertionComparison:
@@ -154,8 +155,9 @@ class GoldenRegressionReport:
 
 def extract_dimension_values(snapshot: dict[str, Any]) -> dict[str, Any]:
     """Project existing report evidence into comparator values; no new scoring logic."""
-    if snapshot.get("dimensionValues"):
-        return dict(snapshot["dimensionValues"])
+    stored = dict(snapshot.get("dimensionValues") or {})
+    if not snapshot.get("videoPlanIR"):
+        return stored
     assessment = snapshot.get("assessment") or {}
     story = assessment.get("story_structure") or {}
     temporal = assessment.get("temporal_complexity") or {}
@@ -163,11 +165,12 @@ def extract_dimension_values(snapshot: dict[str, Any]) -> dict[str, Any]:
     attempts = canonical.get("attempts") or {}
     dimensions = {item.get("key"): item.get("status") for item in assessment.get("dimensions", [])}
     ir = snapshot.get("videoPlanIR") or {}
-    core = ir.get("coreMechanic") or {}
-    return {
+    mechanic_payoff = mechanic_payoff_evidence(ir)
+    projected = {
         "HOOK": dimensions.get("OPENING_HOOK"),
         "GOAL": story.get("goal"),
-        "CENTRAL_MECHANIC": core.get("physicalRule") or core.get("abnormalProperty"),
+        "CENTRAL_MECHANIC": mechanic_payoff.mechanic_family,
+        "MECHANIC_INTERACTION": mechanic_payoff.interaction_status,
         "ACTIVE_ATTEMPT_COUNT": story.get("attempts", attempts.get("count")),
         "DISTINCT_STRATEGY_COUNT": story.get("distinct_strategies", len(set(attempts.get("strategyFamilies", [])))),
         "DISTINCT_STRATEGIES": attempts.get("strategyFamilies", []),
@@ -175,8 +178,10 @@ def extract_dimension_values(snapshot: dict[str, Any]) -> dict[str, Any]:
         "PROGRESSION": dimensions.get("PROGRESSION"),
         "REALIZATION": story.get("realization"),
         "REALIZATION_MODE": story.get("realization_mode"),
-        "FAKE_RESOLUTION": story.get("fake_resolution"),
-        "PAYOFF": story.get("payoff"),
+        "FAKE_RESOLUTION": mechanic_payoff.fake_resolution_status,
+        "PAYOFF": mechanic_payoff.payoff_status,
+        "PAYOFF_RELATION": mechanic_payoff.same_rule_relation,
+        "RECURRENCE": mechanic_payoff.recurrence_status,
         "LOOP": dimensions.get("LOOP_INTENT"),
         "CHARACTER_PERFORMANCE": dimensions.get("CHARACTER_PERFORMANCE_INTENT"),
         "PRODUCIBILITY": dimensions.get("PRODUCIBILITY"),
@@ -186,6 +191,7 @@ def extract_dimension_values(snapshot: dict[str, Any]) -> dict[str, Any]:
         "FIRST_FRAME_ANOMALY_INTENT": (assessment.get("first_frame") or {}).get("textual_intent", {}).get("status"),
         "SPECIALIZED_RULE_APPLICABILITY": dimensions.get("ENGINE_PROFILE"),
     }
+    return {key: value if value is not None else stored.get(key) for key, value in projected.items()}
 
 
 def compare_cohort(
@@ -257,6 +263,29 @@ def compare_cohort(
                 elif mode_comparison.classification == "GOLD_REVIEW_REQUIRED":
                     counts["goldReviewRequired"] += 1
                 if mode_comparison.is_new_semantic_regression:
+                    counts["newSemanticRegressions"] += 1
+            if dimension == "PAYOFF" and gold.get("sameRuleRelation") is not None:
+                relation_gold = dict(gold)
+                relation_gold["expected"] = gold["sameRuleRelation"]
+                relation_comparison = compare_dimension(
+                    gold=relation_gold,
+                    baseline={"actual": baseline_values.get("PAYOFF_RELATION")},
+                    current={"actual": current_values.get("PAYOFF_RELATION")},
+                    assertion_type="ENUM",
+                    known_issue=known_issue,
+                )
+                assertions.append({"assetId": asset_id, "dimension": "PAYOFF_RELATION", **relation_comparison.to_dict()})
+                if relation_comparison.classification == "PASS":
+                    counts["passed"] += 1
+                elif relation_comparison.classification == "FAIL":
+                    counts["failed"] += 1
+                elif relation_comparison.classification == "IMPROVED_FROM_BASELINE":
+                    counts["improvedFromBaseline"] += 1
+                elif relation_comparison.classification == "UNCHANGED_KNOWN_ISSUE":
+                    counts["unchangedKnownIssues"] += 1
+                elif relation_comparison.classification == "GOLD_REVIEW_REQUIRED":
+                    counts["goldReviewRequired"] += 1
+                if relation_comparison.is_new_semantic_regression:
                     counts["newSemanticRegressions"] += 1
         if policy_expectations:
             policy = (policy_expectations.get("assets") or {}).get(asset_id) or {}

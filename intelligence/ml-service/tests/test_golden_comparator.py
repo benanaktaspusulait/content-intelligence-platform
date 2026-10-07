@@ -149,3 +149,75 @@ def test_realization_mode_is_a_comparator_assertion_and_mutation_fails_gate() ->
     assert mode_rows[0]["classification"] == "REGRESSED_FROM_BASELINE"
     assert failing["newSemanticRegressions"] == 1
     assert failing["releaseGate"] == "FAIL"
+
+
+def test_family4_projection_prefers_canonical_evidence_and_falls_back_for_unavailable_fields() -> None:
+    from app.golden.comparator import extract_dimension_values
+
+    ir = {
+        "coreMechanic": {"physicalRule": "The sticky ball sticks to surfaces."},
+        "beats": [
+            {
+                "beatRole": "ATTEMPT",
+                "action": "Mimi pulls the sticky ball",
+                "consequence": "it sticks to the table",
+                "consequenceType": "new",
+            },
+            {
+                "beatRole": "FAKE_RESOLUTION",
+                "action": "Mimi relaxes",
+                "consequence": "the ball behaves normally",
+                "consequenceType": "fake_win",
+            },
+            {
+                "beatRole": "TWIST",
+                "action": "the sticky ball returns",
+                "consequence": "it sticks again",
+                "consequenceType": "new",
+            },
+        ],
+        "finalPayoff": {"description": "The sticky ball sticks to the entire wall."},
+    }
+    snapshot = {
+        "status": "OK",
+        "videoPlanIR": ir,
+        "dimensionValues": {
+            "HOOK": "STORED_HOOK",
+            "CENTRAL_MECHANIC": "stale mechanic",
+            "MECHANIC_INTERACTION": "stale interaction",
+            "FAKE_RESOLUTION": "OPTIONAL",
+            "RECURRENCE": "NOT_ESTABLISHED",
+            "PAYOFF": "AVAILABLE",
+            "PAYOFF_RELATION": "NOT_ESTABLISHED",
+        },
+    }
+
+    values = extract_dimension_values(snapshot)
+
+    assert values["HOOK"] == "STORED_HOOK"
+    assert values["CENTRAL_MECHANIC"] == "STICKY_DEFORMATION"
+    assert values["MECHANIC_INTERACTION"] == "ACTIVE"
+    assert values["FAKE_RESOLUTION"] == "PRESENT"
+    assert values["RECURRENCE"] == "PRESENT"
+    assert values["PAYOFF"] == "STRONG"
+    assert values["PAYOFF_RELATION"] == "SAME_RULE"
+
+
+def test_extract_dimension_values_preserves_stored_values_without_video_plan_ir() -> None:
+    from app.golden.comparator import extract_dimension_values
+
+    stored = {
+        "HOOK": "STORED_HOOK",
+        "CENTRAL_MECHANIC": "STORED_MECHANIC",
+        "MECHANIC_INTERACTION": "STORED_INTERACTION",
+        "FAKE_RESOLUTION": "STORED_FAKE",
+        "RECURRENCE": "STORED_RECURRENCE",
+        "PAYOFF": "STORED_PAYOFF",
+        "PAYOFF_RELATION": "STORED_RELATION",
+    }
+
+    for snapshot in (
+        {"status": "PARSER_TIMEOUT", "videoPlanIR": None, "dimensionValues": stored},
+        {"status": "OK", "videoPlanIR": None, "dimensionValues": stored},
+    ):
+        assert extract_dimension_values(snapshot) == stored
