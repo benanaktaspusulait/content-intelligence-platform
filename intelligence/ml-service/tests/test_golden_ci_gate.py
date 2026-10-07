@@ -26,3 +26,5 @@ def test_ci_gate_fails_closed_when_required_metrics_are_missing_or_malformed() -
         evaluate_ci_gate({})
     with pytest.raises(GoldenGateFailure, match="INVALID_GATE_METRICS"):
         evaluate_ci_gate({"newSemanticRegressions": "0", "unexpectedPolicyRegressions": 0})
+    with pytest.raises(GoldenGateFailure, match="INVALID_GATE_METRICS"):
+        evaluate_ci_gate({"newSemanticRegressions": False, "unexpectedPolicyRegressions": 0})

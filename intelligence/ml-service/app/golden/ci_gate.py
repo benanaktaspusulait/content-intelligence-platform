@@ -34,7 +34,13 @@ def evaluate_ci_gate(report: dict[str, Any], *, provider_mode: str = "FROZEN_DET
     if provider_mode != "FROZEN_DETERMINISTIC":
         raise GoldenGateFailure("LIVE_PROVIDER_NOT_ALLOWED: deterministic Golden CI requires frozen mode")
     required = ("newSemanticRegressions", "unexpectedPolicyRegressions")
-    if any(key not in report or not isinstance(report[key], int) or report[key] < 0 for key in required):
+    if any(
+        key not in report
+        or isinstance(report[key], bool)
+        or not isinstance(report[key], int)
+        or report[key] < 0
+        for key in required
+    ):
         raise GoldenGateFailure("INVALID_GATE_METRICS: release counters must be non-negative integers")
     if report["newSemanticRegressions"] != 0:
         return "FAIL"
