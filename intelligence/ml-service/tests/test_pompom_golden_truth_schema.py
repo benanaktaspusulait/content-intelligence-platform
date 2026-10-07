@@ -40,21 +40,23 @@ REQUIRED_DIMENSIONS = {
     "FIRST_FRAME_ANOMALY_INTENT",
     "SPECIALIZED_RULE_APPLICABILITY",
 }
+FAMILY_REVIEW_DIMENSIONS = {"GOAL", "ACTIVE_ATTEMPT_COUNT", "DISTINCT_STRATEGY_COUNT", "DISTINCT_STRATEGIES"}
 
 
-def test_gold_truth_is_independent_and_evidence_backed() -> None:
     truth = yaml.safe_load(TRUTH.read_text(encoding="utf-8"))
     assert truth["goldTruthVersion"] == "GOLD_TRUTH_V1"
     assert truth["evidenceReferencePolicy"]["excerptMode"] == "HUMAN_REVIEWED_VERBATIM_OR_SHORT_PARAPHRASE"
     assert set(truth["assets"]) == APPROVED_IDS
-    for asset in truth["assets"].values():
+    for asset_id, asset in truth["assets"].items():
         assert REQUIRED_DIMENSIONS <= set(asset["dimensions"])
-        for dimension in asset["dimensions"].values():
+        for name, dimension in asset["dimensions"].items():
             assert {"expected", "applicable", "confidence", "evidenceReferences", "notes"} <= set(dimension)
             assert dimension["confidence"] in {"HIGH", "MEDIUM", "LOW"}
+            if name in FAMILY_REVIEW_DIMENSIONS:
+                assert dimension.get("reviewStatus") == "APPROVED", f"Family 1 review missing: {asset_id}/{name}"
             if dimension["confidence"] == "HIGH" and dimension["applicable"]:
                 assert dimension["evidenceReferences"]
-            if dimension["confidence"] in {"MEDIUM", "LOW"}:
+            if dimension["confidence"] in {"MEDIUM", "LOW"} and dimension.get("reviewStatus") != "APPROVED":
                 assert "HUMAN_REVIEW_REQUIRED" in dimension["notes"]
 
 

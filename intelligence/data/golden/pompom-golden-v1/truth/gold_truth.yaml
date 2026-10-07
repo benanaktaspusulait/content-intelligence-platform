@@ -5,214 +5,1508 @@ evidenceReferencePolicy:
   excerptMode: HUMAN_REVIEWED_VERBATIM_OR_SHORT_PARAPHRASE
   locationRequired: false
 definitions:
-  notApplicable: &NOT_APPLICABLE
+  notApplicable:
     expected: NOT_APPLICABLE
     applicable: false
     confidence: HIGH
     evidenceReferences: []
     notes: Not applicable to the source structure; no engine inference is being substituted.
-  unknownReview: &UNKNOWN_REVIEW
+  unknownReview:
     expected: UNKNOWN
     applicable: true
     confidence: MEDIUM
     evidenceReferences: []
-    notes: HUMAN_REVIEW_REQUIRED; source text does not support a stronger structural assertion.
+    notes: HUMAN_REVIEW_REQUIRED; source text does not support a stronger structural
+      assertion.
 assets:
   sticky-ball-01:
     displayName: Luca Sticky Ball
     dimensions:
-      HOOK: {expected: STRONG, applicable: true, confidence: HIGH, evidenceReferences: [{excerpt: "ball is already STUCK flat to the wall", location: "0.0-0.8 SEC / FIRST FRAME"}], notes: Immediate impossible sticky-ball anomaly.}
-      GOAL: {expected: IMPLICIT_BUT_OBSERVABLE, applicable: true, confidence: MEDIUM, evidenceReferences: [{excerpt: "Luca walks straight to the ball and pulls it", location: "0.8-3.0 SEC"}], notes: HUMAN_REVIEW_REQUIRED; the local goal is inferred from action and obstruction.}
-      CENTRAL_MECHANIC: {expected: STICKY_DEFORMATION, applicable: true, confidence: HIGH, evidenceReferences: [{excerpt: "the red ball sticks to surfaces instead of bouncing", location: "PHYSICAL RULE"}], notes: One explicit central rule.}
-      ACTIVE_ATTEMPT_COUNT: {expected: 2, applicable: true, confidence: HIGH, evidenceReferences: [{excerpt: "FIRST ATTEMPT", location: "3.0-6.0 SEC"}, {excerpt: "SECOND ATTEMPT", location: "9.0-12.0 SEC"}], notes: Escalation is not counted as a third attempt.}
-      DISTINCT_STRATEGY_COUNT: {expected: 2, applicable: true, confidence: HIGH, evidenceReferences: [{excerpt: "pulls harder", location: "3.0-6.0 SEC"}, {excerpt: "catches it; squeezes it gently", location: "9.0-12.0 SEC"}], notes: PULL and TEST/SQUEEZE are distinct intended strategies.}
-      DISTINCT_STRATEGIES: {expected: [PULL, TEST_SQUEEZE], applicable: true, confidence: HIGH, evidenceReferences: [{excerpt: "Luca pulls harder", location: "FIRST ATTEMPT"}, {excerpt: "He squeezes it gently; it behaves like a normal ball", location: "SECOND ATTEMPT"}], notes: Reactive CATCH is not the intended strategy family.}
-      ESCALATION: {expected: STRONG, applicable: true, confidence: HIGH, evidenceReferences: [{excerpt: "the WOODEN WALL itself flexes slightly toward Luca", location: "6.0-9.0 SEC"}], notes: Escalation expands affected scope and deformation.}
-      PROGRESSION: {expected: STRONG, applicable: true, confidence: HIGH, evidenceReferences: [{excerpt: "ball sticks", location: "HOOK"}, {excerpt: "wall flexes", location: "ESCALATION"}, {excerpt: "ball sticks to cheek", location: "FINAL TWIST"}], notes: Consequence scale grows under the same rule.}
-      REALIZATION: {expected: AVAILABLE, applicable: true, confidence: MEDIUM, evidenceReferences: [{excerpt: "It behaves like a normal ball. He smiles.", location: "9.0-12.0 SEC"}], notes: HUMAN_REVIEW_REQUIRED; realization is implicit in result and reaction.}
-      FAKE_RESOLUTION: {expected: PRESENT, applicable: true, confidence: HIGH, evidenceReferences: [{excerpt: "FAKE RESOLUTION ... Normal. He relaxes.", location: "12.0-14.0 SEC"}], notes: Explicitly labelled fake resolution.}
-      PAYOFF: {expected: STRONG, applicable: true, confidence: HIGH, evidenceReferences: [{excerpt: "drops directly onto his CHEEK and sticks there", location: "FINAL TWIST"}], notes: Same sticky rule reaches the character.}
-      LOOP: {expected: NO_LOOP, applicable: true, confidence: HIGH, evidenceReferences: [{excerpt: "PLUP! — HARD CUT", location: "FINAL TWIST"}], notes: No explicit return to opening is declared.}
-      CHARACTER_PERFORMANCE: {expected: STRONG, applicable: true, confidence: HIGH, evidenceReferences: [{excerpt: "frozen with both hands half-raised, eyes wide", location: "HOOK"}, {excerpt: "goes cross-eyed", location: "FINAL TWIST"}], notes: Character reaction carries the comedy.}
-      PRODUCIBILITY: {expected: MODERATE_RISK, applicable: true, confidence: MEDIUM, evidenceReferences: [{excerpt: "ball stretches ... wall itself flexes", location: "ATTEMPT / ESCALATION"}], notes: HUMAN_REVIEW_REQUIRED; soft deformation and continuity are the main risks.}
-      SOUND_OFF_READABILITY: {expected: STRONG, applicable: true, confidence: HIGH, evidenceReferences: [{excerpt: "DIALOGUE None", location: "DIALOGUE"}, {excerpt: "impossible sticky ball must dominate the opening", location: "HOOK"}], notes: Cause and consequence are visual.}
-      TIMING_PACING: {expected: MODERATE, applicable: true, confidence: MEDIUM, evidenceReferences: [{excerpt: "seven labelled beats across 15 seconds", location: "TIMELINE"}], notes: HUMAN_REVIEW_REQUIRED; short hook and final twist remain readable under canonical load filtering.}
-      CONTENT_FAMILY_FIT: {expected: STRONG, applicable: true, confidence: HIGH, evidenceReferences: [{excerpt: "ABSURD MOMENTS source folder and single impossible rule", location: "SOURCE PATH / PHYSICAL RULE"}], notes: Clear absurd physical-comedy family.}
-      FIRST_FRAME_ANOMALY_INTENT: {expected: STRONG, applicable: true, confidence: HIGH, evidenceReferences: [{excerpt: "ball is already STUCK flat to the wall", location: "FIRST FRAME"}], notes: Explicit first-frame intent.}
-      SPECIALIZED_RULE_APPLICABILITY: {expected: NOT_APPLICABLE, applicable: false, confidence: HIGH, evidenceReferences: [], notes: Stubborn-return exception is not activated by this source evidence.}
+      HOOK:
+        expected: STRONG
+        applicable: true
+        confidence: HIGH
+        evidenceReferences:
+        - excerpt: ball is already STUCK flat to the wall
+          location: 0.0-0.8 SEC / FIRST FRAME
+        notes: Immediate impossible sticky-ball anomaly.
+      GOAL:
+        expected: IMPLICIT_BUT_OBSERVABLE
+        applicable: true
+        confidence: MEDIUM
+        evidenceReferences:
+        - excerpt: Luca walks straight to the ball and pulls it
+          location: 0.8-3.0 SEC
+        notes: the local goal is inferred from action and obstruction.
+        reviewStatus: APPROVED
+      CENTRAL_MECHANIC:
+        expected: STICKY_DEFORMATION
+        applicable: true
+        confidence: HIGH
+        evidenceReferences:
+        - excerpt: the red ball sticks to surfaces instead of bouncing
+          location: PHYSICAL RULE
+        notes: One explicit central rule.
+      ACTIVE_ATTEMPT_COUNT:
+        expected: 2
+        applicable: true
+        confidence: HIGH
+        evidenceReferences:
+        - excerpt: FIRST ATTEMPT
+          location: 3.0-6.0 SEC
+        - excerpt: SECOND ATTEMPT
+          location: 9.0-12.0 SEC
+        notes: Escalation is not counted as a third attempt.
+        reviewStatus: APPROVED
+      DISTINCT_STRATEGY_COUNT:
+        expected: 2
+        applicable: true
+        confidence: HIGH
+        evidenceReferences:
+        - excerpt: pulls harder
+          location: 3.0-6.0 SEC
+        - excerpt: catches it; squeezes it gently
+          location: 9.0-12.0 SEC
+        notes: PULL and TEST/SQUEEZE are distinct intended strategies.
+        reviewStatus: APPROVED
+      DISTINCT_STRATEGIES:
+        expected:
+        - PULL
+        - TEST_SQUEEZE
+        applicable: true
+        confidence: HIGH
+        evidenceReferences:
+        - excerpt: Luca pulls harder
+          location: FIRST ATTEMPT
+        - excerpt: He squeezes it gently; it behaves like a normal ball
+          location: SECOND ATTEMPT
+        notes: Reactive CATCH is not the intended strategy family.
+        reviewStatus: APPROVED
+      ESCALATION:
+        expected: STRONG
+        applicable: true
+        confidence: HIGH
+        evidenceReferences:
+        - excerpt: the WOODEN WALL itself flexes slightly toward Luca
+          location: 6.0-9.0 SEC
+        notes: Escalation expands affected scope and deformation.
+      PROGRESSION:
+        expected: STRONG
+        applicable: true
+        confidence: HIGH
+        evidenceReferences:
+        - excerpt: ball sticks
+          location: HOOK
+        - excerpt: wall flexes
+          location: ESCALATION
+        - excerpt: ball sticks to cheek
+          location: FINAL TWIST
+        notes: Consequence scale grows under the same rule.
+      REALIZATION:
+        expected: AVAILABLE
+        applicable: true
+        confidence: MEDIUM
+        evidenceReferences:
+        - excerpt: It behaves like a normal ball. He smiles.
+          location: 9.0-12.0 SEC
+        notes: HUMAN_REVIEW_REQUIRED; realization is implicit in result and reaction.
+      FAKE_RESOLUTION:
+        expected: PRESENT
+        applicable: true
+        confidence: HIGH
+        evidenceReferences:
+        - excerpt: FAKE RESOLUTION ... Normal. He relaxes.
+          location: 12.0-14.0 SEC
+        notes: Explicitly labelled fake resolution.
+      PAYOFF:
+        expected: STRONG
+        applicable: true
+        confidence: HIGH
+        evidenceReferences:
+        - excerpt: drops directly onto his CHEEK and sticks there
+          location: FINAL TWIST
+        notes: Same sticky rule reaches the character.
+      LOOP:
+        expected: NO_LOOP
+        applicable: true
+        confidence: HIGH
+        evidenceReferences:
+        - excerpt: PLUP! — HARD CUT
+          location: FINAL TWIST
+        notes: No explicit return to opening is declared.
+      CHARACTER_PERFORMANCE:
+        expected: STRONG
+        applicable: true
+        confidence: HIGH
+        evidenceReferences:
+        - excerpt: frozen with both hands half-raised, eyes wide
+          location: HOOK
+        - excerpt: goes cross-eyed
+          location: FINAL TWIST
+        notes: Character reaction carries the comedy.
+      PRODUCIBILITY:
+        expected: MODERATE_RISK
+        applicable: true
+        confidence: MEDIUM
+        evidenceReferences:
+        - excerpt: ball stretches ... wall itself flexes
+          location: ATTEMPT / ESCALATION
+        notes: HUMAN_REVIEW_REQUIRED; soft deformation and continuity are the main
+          risks.
+      SOUND_OFF_READABILITY:
+        expected: STRONG
+        applicable: true
+        confidence: HIGH
+        evidenceReferences:
+        - excerpt: DIALOGUE None
+          location: DIALOGUE
+        - excerpt: impossible sticky ball must dominate the opening
+          location: HOOK
+        notes: Cause and consequence are visual.
+      TIMING_PACING:
+        expected: MODERATE
+        applicable: true
+        confidence: MEDIUM
+        evidenceReferences:
+        - excerpt: seven labelled beats across 15 seconds
+          location: TIMELINE
+        notes: HUMAN_REVIEW_REQUIRED; short hook and final twist remain readable under
+          canonical load filtering.
+      CONTENT_FAMILY_FIT:
+        expected: STRONG
+        applicable: true
+        confidence: HIGH
+        evidenceReferences:
+        - excerpt: ABSURD MOMENTS source folder and single impossible rule
+          location: SOURCE PATH / PHYSICAL RULE
+        notes: Clear absurd physical-comedy family.
+      FIRST_FRAME_ANOMALY_INTENT:
+        expected: STRONG
+        applicable: true
+        confidence: HIGH
+        evidenceReferences:
+        - excerpt: ball is already STUCK flat to the wall
+          location: FIRST FRAME
+        notes: Explicit first-frame intent.
+      SPECIALIZED_RULE_APPLICABILITY:
+        expected: NOT_APPLICABLE
+        applicable: false
+        confidence: HIGH
+        evidenceReferences: []
+        notes: Stubborn-return exception is not activated by this source evidence.
   ball-crocodile-01:
     displayName: Luca Ball-Multiplying Crocodile
     dimensions:
-      HOOK: {expected: STRONG, applicable: true, confidence: HIGH, evidenceReferences: [{excerpt: "crocodile’s huge open mouth is already full of colourful soft balls", location: "0.0-0.8 SEC"}], notes: Conflict is already visible.}
-      GOAL: {expected: IMPLICIT_BUT_OBSERVABLE, applicable: true, confidence: MEDIUM, evidenceReferences: [{excerpt: "Luca quickly tosses that ONE ball back", location: "FIRST ACTION"}], notes: HUMAN_REVIEW_REQUIRED; action goal is to manage the ball machine.}
-      CENTRAL_MECHANIC: {expected: QUANTITY_MULTIPLICATION, applicable: true, confidence: HIGH, evidenceReferences: [{excerpt: "Every time a ball goes into the crocodile’s mouth, it spits back MORE balls", location: "CORE ABSURD RULE"}], notes: One explicit count-based rule.}
-      ACTIVE_ATTEMPT_COUNT: {expected: 3, applicable: true, confidence: MEDIUM, evidenceReferences: [{excerpt: "ONE ball", location: "FIRST ACTION"}, {excerpt: "TWO nearby balls", location: "ESCALATION"}, {excerpt: "only ONE ball ... rolls", location: "STOP ATTEMPT"}], notes: HUMAN_REVIEW_REQUIRED; count semantics depend on whether stopping the machine is an attempt.}
-      DISTINCT_STRATEGY_COUNT: {expected: 2, applicable: true, confidence: MEDIUM, evidenceReferences: [{excerpt: "throws back", location: "FIRST ACTION"}, {excerpt: "slowly rolls it", location: "STOP ATTEMPT"}], notes: HUMAN_REVIEW_REQUIRED; THROW and ROLL are distinct mechanics, while count changes are not strategies.}
-      DISTINCT_STRATEGIES: {expected: [THROW, ROLL], applicable: true, confidence: MEDIUM, evidenceReferences: [{excerpt: "tosses that ONE ball", location: "FIRST ACTION"}, {excerpt: "slowly rolls it toward the crocodile", location: "STOP ATTEMPT"}], notes: HUMAN_REVIEW_REQUIRED; do not count 1 versus 2 balls as a strategy.}
-      ESCALATION: {expected: STRONG, applicable: true, confidence: HIGH, evidenceReferences: [{excerpt: "1 ball → 3 balls → 6 balls → huge final fountain", location: "MOTION / RETENTION RULES"}], notes: Measurable consequence magnitude grows.}
-      PROGRESSION: {expected: STRONG, applicable: true, confidence: HIGH, evidenceReferences: [{excerpt: "PTOO-PTOO-PTOO ... burst of SIX", location: "ESCALATION"}, {excerpt: "FOUNTAIN of colourful soft balls", location: "FINAL TWIST"}], notes: Quantity increases under one rule.}
-      REALIZATION: {expected: AVAILABLE, applicable: true, confidence: MEDIUM, evidenceReferences: [{excerpt: "Both Luca and the crocodile relax", location: "FAKE RESOLUTION"}], notes: HUMAN_REVIEW_REQUIRED; relief is visible but no explicit decision sentence exists.}
-      FAKE_RESOLUTION: {expected: PRESENT, applicable: true, confidence: HIGH, evidenceReferences: [{excerpt: "The crocodile returns exactly ONE ball ... Both Luca and the crocodile relax", location: "9.5-11.5 SEC"}], notes: Explicit calm before fountain.}
-      PAYOFF: {expected: STRONG, applicable: true, confidence: HIGH, evidenceReferences: [{excerpt: "ridiculous FOUNTAIN ... rains across the garden", location: "FINAL TWIST"}], notes: Same count rule reaches maximum scale.}
-      LOOP: {expected: NO_LOOP, applicable: true, confidence: MEDIUM, evidenceReferences: [{excerpt: "HARD CUT while balls are still falling", location: "FINAL TWIST"}], notes: HUMAN_REVIEW_REQUIRED; no explicit visual return to frame zero.}
-      CHARACTER_PERFORMANCE: {expected: STRONG, applicable: true, confidence: HIGH, evidenceReferences: [{excerpt: "catches, throws, dodges, jumps backward", location: "MOTION / RETENTION RULES"}], notes: Character is causally active.}
-      PRODUCIBILITY: {expected: HIGH_RISK, applicable: true, confidence: HIGH, evidenceReferences: [{excerpt: "balls bounce around his feet ... surrounded up to his shoulders", location: "ESCALATION / FINAL TWIST"}], notes: Many moving balls and contacts are explicit generation risk.}
-      SOUND_OFF_READABILITY: {expected: STRONG, applicable: true, confidence: HIGH, evidenceReferences: [{excerpt: "The joke must work with sound OFF", location: "CORE ABSURD RULE"}], notes: Explicit sound-off requirement.}
-      TIMING_PACING: {expected: STRONG, applicable: true, confidence: HIGH, evidenceReferences: [{excerpt: "Something physical must happen every 1–2 seconds", location: "MOTION / RETENTION RULES"}], notes: Explicit fast pacing contract.}
-      CONTENT_FAMILY_FIT: {expected: STRONG, applicable: true, confidence: HIGH, evidenceReferences: [{excerpt: "SERIES TONE: Absurd Moments", location: "SERIES TONE"}], notes: Mechanic and tone are aligned.}
-      FIRST_FRAME_ANOMALY_INTENT: {expected: STRONG, applicable: true, confidence: HIGH, evidenceReferences: [{excerpt: "mouth is already full of colourful soft balls", location: "FIRST-FRAME HOOK"}], notes: Immediate visual contradiction.}
-      SPECIALIZED_RULE_APPLICABILITY: {expected: NOT_APPLICABLE, applicable: false, confidence: HIGH, evidenceReferences: [], notes: No stubborn-return boundary rule is established.}
+      HOOK:
+        expected: STRONG
+        applicable: true
+        confidence: HIGH
+        evidenceReferences:
+        - excerpt: crocodile’s huge open mouth is already full of colourful soft balls
+          location: 0.0-0.8 SEC
+        notes: Conflict is already visible.
+      GOAL:
+        expected: IMPLICIT_BUT_OBSERVABLE
+        applicable: true
+        confidence: MEDIUM
+        evidenceReferences:
+        - excerpt: Luca quickly tosses that ONE ball back
+          location: FIRST ACTION
+        notes: action goal is to manage the ball machine.
+        reviewStatus: APPROVED
+      CENTRAL_MECHANIC:
+        expected: QUANTITY_MULTIPLICATION
+        applicable: true
+        confidence: HIGH
+        evidenceReferences:
+        - excerpt: Every time a ball goes into the crocodile’s mouth, it spits back
+            MORE balls
+          location: CORE ABSURD RULE
+        notes: One explicit count-based rule.
+      ACTIVE_ATTEMPT_COUNT:
+        expected: 3
+        applicable: true
+        confidence: MEDIUM
+        evidenceReferences:
+        - excerpt: ONE ball
+          location: FIRST ACTION
+        - excerpt: TWO nearby balls
+          location: ESCALATION
+        - excerpt: only ONE ball ... rolls
+          location: STOP ATTEMPT
+        notes: count semantics depend on whether stopping the machine is an attempt.
+        reviewStatus: APPROVED
+      DISTINCT_STRATEGY_COUNT:
+        expected: 2
+        applicable: true
+        confidence: MEDIUM
+        evidenceReferences:
+        - excerpt: throws back
+          location: FIRST ACTION
+        - excerpt: slowly rolls it
+          location: STOP ATTEMPT
+        notes: THROW and ROLL are distinct mechanics
+        while count changes are not strategies.: null
+        reviewStatus: APPROVED
+      DISTINCT_STRATEGIES:
+        expected:
+        - THROW
+        - ROLL
+        applicable: true
+        confidence: MEDIUM
+        evidenceReferences:
+        - excerpt: tosses that ONE ball
+          location: FIRST ACTION
+        - excerpt: slowly rolls it toward the crocodile
+          location: STOP ATTEMPT
+        notes: do not count 1 versus 2 balls as a strategy.
+        reviewStatus: APPROVED
+      ESCALATION:
+        expected: STRONG
+        applicable: true
+        confidence: HIGH
+        evidenceReferences:
+        - excerpt: 1 ball → 3 balls → 6 balls → huge final fountain
+          location: MOTION / RETENTION RULES
+        notes: Measurable consequence magnitude grows.
+      PROGRESSION:
+        expected: STRONG
+        applicable: true
+        confidence: HIGH
+        evidenceReferences:
+        - excerpt: PTOO-PTOO-PTOO ... burst of SIX
+          location: ESCALATION
+        - excerpt: FOUNTAIN of colourful soft balls
+          location: FINAL TWIST
+        notes: Quantity increases under one rule.
+      REALIZATION:
+        expected: AVAILABLE
+        applicable: true
+        confidence: MEDIUM
+        evidenceReferences:
+        - excerpt: Both Luca and the crocodile relax
+          location: FAKE RESOLUTION
+        notes: HUMAN_REVIEW_REQUIRED; relief is visible but no explicit decision sentence
+          exists.
+      FAKE_RESOLUTION:
+        expected: PRESENT
+        applicable: true
+        confidence: HIGH
+        evidenceReferences:
+        - excerpt: The crocodile returns exactly ONE ball ... Both Luca and the crocodile
+            relax
+          location: 9.5-11.5 SEC
+        notes: Explicit calm before fountain.
+      PAYOFF:
+        expected: STRONG
+        applicable: true
+        confidence: HIGH
+        evidenceReferences:
+        - excerpt: ridiculous FOUNTAIN ... rains across the garden
+          location: FINAL TWIST
+        notes: Same count rule reaches maximum scale.
+      LOOP:
+        expected: NO_LOOP
+        applicable: true
+        confidence: MEDIUM
+        evidenceReferences:
+        - excerpt: HARD CUT while balls are still falling
+          location: FINAL TWIST
+        notes: HUMAN_REVIEW_REQUIRED; no explicit visual return to frame zero.
+      CHARACTER_PERFORMANCE:
+        expected: STRONG
+        applicable: true
+        confidence: HIGH
+        evidenceReferences:
+        - excerpt: catches, throws, dodges, jumps backward
+          location: MOTION / RETENTION RULES
+        notes: Character is causally active.
+      PRODUCIBILITY:
+        expected: HIGH_RISK
+        applicable: true
+        confidence: HIGH
+        evidenceReferences:
+        - excerpt: balls bounce around his feet ... surrounded up to his shoulders
+          location: ESCALATION / FINAL TWIST
+        notes: Many moving balls and contacts are explicit generation risk.
+      SOUND_OFF_READABILITY:
+        expected: STRONG
+        applicable: true
+        confidence: HIGH
+        evidenceReferences:
+        - excerpt: The joke must work with sound OFF
+          location: CORE ABSURD RULE
+        notes: Explicit sound-off requirement.
+      TIMING_PACING:
+        expected: STRONG
+        applicable: true
+        confidence: HIGH
+        evidenceReferences:
+        - excerpt: Something physical must happen every 1–2 seconds
+          location: MOTION / RETENTION RULES
+        notes: Explicit fast pacing contract.
+      CONTENT_FAMILY_FIT:
+        expected: STRONG
+        applicable: true
+        confidence: HIGH
+        evidenceReferences:
+        - excerpt: 'SERIES TONE: Absurd Moments'
+          location: SERIES TONE
+        notes: Mechanic and tone are aligned.
+      FIRST_FRAME_ANOMALY_INTENT:
+        expected: STRONG
+        applicable: true
+        confidence: HIGH
+        evidenceReferences:
+        - excerpt: mouth is already full of colourful soft balls
+          location: FIRST-FRAME HOOK
+        notes: Immediate visual contradiction.
+      SPECIALIZED_RULE_APPLICABILITY:
+        expected: NOT_APPLICABLE
+        applicable: false
+        confidence: HIGH
+        evidenceReferences: []
+        notes: No stubborn-return boundary rule is established.
   upside-chair-01:
     displayName: Upside-Down Chair
     dimensions:
-      HOOK: {expected: STRONG, applicable: true, confidence: HIGH, evidenceReferences: [{excerpt: "chair is completely upside down", location: "0.0-0.8 SEC"}], notes: Anomaly dominates first frame.}
-      GOAL: {expected: IMPLICIT_BUT_OBSERVABLE, applicable: true, confidence: HIGH, evidenceReferences: [{excerpt: "Kiko runs toward a chair to sit down", location: "HOOK"}], notes: Local use goal is visually explicit.}
-      CENTRAL_MECHANIC: {expected: AUTONOMOUS_CHAIR_INVERSION, applicable: true, confidence: HIGH, evidenceReferences: [{excerpt: "chair turns upside down by itself", location: "FIRST ESCALATION"}], notes: Stable autonomous rule.}
-      ACTIVE_ATTEMPT_COUNT: {expected: 3, applicable: true, confidence: MEDIUM, evidenceReferences: [{excerpt: "flips it correctly", location: "0.8-3.5 SEC"}, {excerpt: "Kiko flips it back", location: "8.5-11.5 SEC"}, {excerpt: "walks backward toward it", location: "COMEDY PAYOFF"}], notes: HUMAN_REVIEW_REQUIRED; intervention boundaries need canonical segmentation.}
-      DISTINCT_STRATEGY_COUNT: {expected: 2, applicable: true, confidence: MEDIUM, evidenceReferences: [{excerpt: "flips it correctly", location: "EARLY ACTION"}, {excerpt: "keeps staring ... walks backward", location: "COMEDY PAYOFF"}], notes: HUMAN_REVIEW_REQUIRED; correction and guarded approach differ from simple flipping.}
-      DISTINCT_STRATEGIES: {expected: [FLIP, GUARD_AND_APPROACH], applicable: true, confidence: MEDIUM, evidenceReferences: [{excerpt: "grabs the chair and flips it correctly", location: "EARLY ACTION"}, {excerpt: "keeps staring ... walks backward", location: "COMEDY PAYOFF"}], notes: HUMAN_REVIEW_REQUIRED.}
-      ESCALATION: {expected: STRONG, applicable: true, confidence: HIGH, evidenceReferences: [{excerpt: "ENTIRE chair suddenly flips upside down WITH Kiko on it", location: "TWIST + LOOP"}], notes: Consequence scope increases from chair state to character state.}
-      PROGRESSION: {expected: STRONG, applicable: true, confidence: HIGH, evidenceReferences: [{excerpt: "chair stays normal", location: "8.5-11.5 SEC"}, {excerpt: "Kiko ends upside down", location: "FINAL TWIST"}], notes: Same rule produces a stronger final state.}
-      REALIZATION: {expected: AVAILABLE, applicable: true, confidence: HIGH, evidenceReferences: [{excerpt: "Stay DOWN!", location: "COMEDY PAYOFF"}], notes: Character learns a temporary control strategy.}
-      FAKE_RESOLUTION: {expected: PRESENT, applicable: true, confidence: HIGH, evidenceReferences: [{excerpt: "The chair behaves. Kiko smiles", location: "COMEDY PAYOFF"}], notes: Explicit apparent success before recurrence.}
-      PAYOFF: {expected: STRONG, applicable: true, confidence: HIGH, evidenceReferences: [{excerpt: "ENTIRE chair suddenly flips upside down WITH Kiko on it", location: "FINAL TWIST"}], notes: Same rule directly affects character.}
-      LOOP: {expected: STRONG, applicable: true, confidence: HIGH, evidenceReferences: [{excerpt: "Loop back to the first upside-down chair", location: "TWIST + LOOP"}], notes: Explicit loop intent.}
-      CHARACTER_PERFORMANCE: {expected: STRONG, applicable: true, confidence: HIGH, evidenceReferences: [{excerpt: "freezes ... eyes huge", location: "HOOK"}, {excerpt: "shouts AGAIN?!", location: "FINAL TWIST"}], notes: Character carries the visual comedy.}
-      PRODUCIBILITY: {expected: MODERATE_RISK, applicable: true, confidence: MEDIUM, evidenceReferences: [{excerpt: "chair turns upside down by itself ... with Kiko on it", location: "ESCALATION / TWIST"}], notes: HUMAN_REVIEW_REQUIRED; repeated rigid-object flips and final attached state need continuity.}
-      SOUND_OFF_READABILITY: {expected: STRONG, applicable: true, confidence: HIGH, evidenceReferences: [{excerpt: "problem must be understandable without sound", location: "INSTAGRAM RETENTION RULES"}], notes: Visual chair state is self-explanatory.}
-      TIMING_PACING: {expected: MODERATE, applicable: true, confidence: MEDIUM, evidenceReferences: [{excerpt: "Something must change every 1–2 seconds", location: "INSTAGRAM RETENTION RULES"}], notes: HUMAN_REVIEW_REQUIRED; source is 17 seconds.}
-      CONTENT_FAMILY_FIT: {expected: STRONG, applicable: true, confidence: HIGH, evidenceReferences: [{excerpt: "Pompom English — What’s Wrong?", location: "SERIES"}], notes: Clear educational absurdity family.}
-      FIRST_FRAME_ANOMALY_INTENT: {expected: STRONG, applicable: true, confidence: HIGH, evidenceReferences: [{excerpt: "chair is completely upside down", location: "HARD SCROLL-STOP HOOK"}], notes: Explicit.}
-      SPECIALIZED_RULE_APPLICABILITY: {expected: CANDIDATE_REVIEW, applicable: true, confidence: MEDIUM, evidenceReferences: [{excerpt: "chair turns upside down by itself", location: "FIRST ESCALATION"}], notes: HUMAN_REVIEW_REQUIRED; possible stubborn-return shape but mandatory profile signals are not all explicit.}
+      HOOK:
+        expected: STRONG
+        applicable: true
+        confidence: HIGH
+        evidenceReferences:
+        - excerpt: chair is completely upside down
+          location: 0.0-0.8 SEC
+        notes: Anomaly dominates first frame.
+      GOAL:
+        expected: IMPLICIT_BUT_OBSERVABLE
+        applicable: true
+        confidence: HIGH
+        evidenceReferences:
+        - excerpt: Kiko runs toward a chair to sit down
+          location: HOOK
+        notes: Local use goal is visually explicit.
+        reviewStatus: APPROVED
+      CENTRAL_MECHANIC:
+        expected: AUTONOMOUS_CHAIR_INVERSION
+        applicable: true
+        confidence: HIGH
+        evidenceReferences:
+        - excerpt: chair turns upside down by itself
+          location: FIRST ESCALATION
+        notes: Stable autonomous rule.
+      ACTIVE_ATTEMPT_COUNT:
+        expected: 3
+        applicable: true
+        confidence: MEDIUM
+        evidenceReferences:
+        - excerpt: flips it correctly
+          location: 0.8-3.5 SEC
+        - excerpt: Kiko flips it back
+          location: 8.5-11.5 SEC
+        - excerpt: walks backward toward it
+          location: COMEDY PAYOFF
+        notes: intervention boundaries need canonical segmentation.
+        reviewStatus: APPROVED
+      DISTINCT_STRATEGY_COUNT:
+        expected: 2
+        applicable: true
+        confidence: MEDIUM
+        evidenceReferences:
+        - excerpt: flips it correctly
+          location: EARLY ACTION
+        - excerpt: keeps staring ... walks backward
+          location: COMEDY PAYOFF
+        notes: correction and guarded approach differ from simple flipping.
+        reviewStatus: APPROVED
+      DISTINCT_STRATEGIES:
+        expected:
+        - FLIP
+        - GUARD_AND_APPROACH
+        applicable: true
+        confidence: MEDIUM
+        evidenceReferences:
+        - excerpt: grabs the chair and flips it correctly
+          location: EARLY ACTION
+        - excerpt: keeps staring ... walks backward
+          location: COMEDY PAYOFF
+        notes: .
+        reviewStatus: APPROVED
+      ESCALATION:
+        expected: STRONG
+        applicable: true
+        confidence: HIGH
+        evidenceReferences:
+        - excerpt: ENTIRE chair suddenly flips upside down WITH Kiko on it
+          location: TWIST + LOOP
+        notes: Consequence scope increases from chair state to character state.
+      PROGRESSION:
+        expected: STRONG
+        applicable: true
+        confidence: HIGH
+        evidenceReferences:
+        - excerpt: chair stays normal
+          location: 8.5-11.5 SEC
+        - excerpt: Kiko ends upside down
+          location: FINAL TWIST
+        notes: Same rule produces a stronger final state.
+      REALIZATION:
+        expected: AVAILABLE
+        applicable: true
+        confidence: HIGH
+        evidenceReferences:
+        - excerpt: Stay DOWN!
+          location: COMEDY PAYOFF
+        notes: Character learns a temporary control strategy.
+      FAKE_RESOLUTION:
+        expected: PRESENT
+        applicable: true
+        confidence: HIGH
+        evidenceReferences:
+        - excerpt: The chair behaves. Kiko smiles
+          location: COMEDY PAYOFF
+        notes: Explicit apparent success before recurrence.
+      PAYOFF:
+        expected: STRONG
+        applicable: true
+        confidence: HIGH
+        evidenceReferences:
+        - excerpt: ENTIRE chair suddenly flips upside down WITH Kiko on it
+          location: FINAL TWIST
+        notes: Same rule directly affects character.
+      LOOP:
+        expected: STRONG
+        applicable: true
+        confidence: HIGH
+        evidenceReferences:
+        - excerpt: Loop back to the first upside-down chair
+          location: TWIST + LOOP
+        notes: Explicit loop intent.
+      CHARACTER_PERFORMANCE:
+        expected: STRONG
+        applicable: true
+        confidence: HIGH
+        evidenceReferences:
+        - excerpt: freezes ... eyes huge
+          location: HOOK
+        - excerpt: shouts AGAIN?!
+          location: FINAL TWIST
+        notes: Character carries the visual comedy.
+      PRODUCIBILITY:
+        expected: MODERATE_RISK
+        applicable: true
+        confidence: MEDIUM
+        evidenceReferences:
+        - excerpt: chair turns upside down by itself ... with Kiko on it
+          location: ESCALATION / TWIST
+        notes: HUMAN_REVIEW_REQUIRED; repeated rigid-object flips and final attached
+          state need continuity.
+      SOUND_OFF_READABILITY:
+        expected: STRONG
+        applicable: true
+        confidence: HIGH
+        evidenceReferences:
+        - excerpt: problem must be understandable without sound
+          location: INSTAGRAM RETENTION RULES
+        notes: Visual chair state is self-explanatory.
+      TIMING_PACING:
+        expected: MODERATE
+        applicable: true
+        confidence: MEDIUM
+        evidenceReferences:
+        - excerpt: Something must change every 1–2 seconds
+          location: INSTAGRAM RETENTION RULES
+        notes: HUMAN_REVIEW_REQUIRED; source is 17 seconds.
+      CONTENT_FAMILY_FIT:
+        expected: STRONG
+        applicable: true
+        confidence: HIGH
+        evidenceReferences:
+        - excerpt: Pompom English — What’s Wrong?
+          location: SERIES
+        notes: Clear educational absurdity family.
+      FIRST_FRAME_ANOMALY_INTENT:
+        expected: STRONG
+        applicable: true
+        confidence: HIGH
+        evidenceReferences:
+        - excerpt: chair is completely upside down
+          location: HARD SCROLL-STOP HOOK
+        notes: Explicit.
+      SPECIALIZED_RULE_APPLICABILITY:
+        expected: CANDIDATE_REVIEW
+        applicable: true
+        confidence: MEDIUM
+        evidenceReferences:
+        - excerpt: chair turns upside down by itself
+          location: FIRST ESCALATION
+        notes: HUMAN_REVIEW_REQUIRED; possible stubborn-return shape but mandatory
+          profile signals are not all explicit.
   lamp-01:
     displayName: Kiko And The Lamp That Hates Being Watched
     dimensions:
-      HOOK: {expected: STRONG, applicable: true, confidence: HIGH, evidenceReferences: [{excerpt: "when she looks away, it switches off", location: "CORE IDEA / ACTION TIMING"}], notes: Immediate observable rule.}
-      GOAL: {expected: IMPLICIT_BUT_OBSERVABLE, applicable: true, confidence: MEDIUM, evidenceReferences: [{excerpt: "Kiko switches on the lamp and starts to read", location: "0.0-2.0 SEC"}], notes: HUMAN_REVIEW_REQUIRED.}
-      CENTRAL_MECHANIC: {expected: OBSERVATION_DEPENDENT_LIGHT, applicable: true, confidence: HIGH, evidenceReferences: [{excerpt: "when watched, it behaves; when unwatched, it switches off", location: "LAMP LOCK"}], notes: Explicit rule.}
-      ACTIVE_ATTEMPT_COUNT: {expected: 3, applicable: true, confidence: MEDIUM, evidenceReferences: [{excerpt: "switches it on again and stares", location: "2.0-5.0 SEC"}, {excerpt: "uses a small mirror", location: "8.0-11.5 SEC"}], notes: HUMAN_REVIEW_REQUIRED.}
-      DISTINCT_STRATEGY_COUNT: {expected: 2, applicable: true, confidence: MEDIUM, evidenceReferences: [{excerpt: "stares at it", location: "REPEATED TEST"}, {excerpt: "watch indirectly with a mirror", location: "8.0-11.5 SEC"}], notes: HUMAN_REVIEW_REQUIRED.}
-      DISTINCT_STRATEGIES: {expected: [DIRECT_WATCH, INDIRECT_WATCH], applicable: true, confidence: MEDIUM, evidenceReferences: [{excerpt: "stares at it", location: "5.0-8.0 SEC"}, {excerpt: "uses a small mirror", location: "8.0-11.5 SEC"}], notes: HUMAN_REVIEW_REQUIRED.}
-      ESCALATION: {expected: MODERATE, applicable: true, confidence: MEDIUM, evidenceReferences: [{excerpt: "a second small light ... flickers", location: "11.5-13.5 SEC"}], notes: HUMAN_REVIEW_REQUIRED; scope expands but rule wording may change.}
-      PROGRESSION: {expected: MODERATE, applicable: true, confidence: MEDIUM, evidenceReferences: [{excerpt: "Kiko gets clever", location: "8.0-11.5 SEC"}], notes: HUMAN_REVIEW_REQUIRED.}
-      REALIZATION: {expected: AVAILABLE, applicable: true, confidence: MEDIUM, evidenceReferences: [{excerpt: "Aha!", location: "8.0-11.5 SEC"}], notes: HUMAN_REVIEW_REQUIRED; explicit reaction suggests a learned rule.}
-      FAKE_RESOLUTION: {expected: PRESENT, applicable: true, confidence: MEDIUM, evidenceReferences: [{excerpt: "The lamp stays on ... Aha!", location: "8.0-11.5 SEC"}], notes: HUMAN_REVIEW_REQUIRED.}
-      PAYOFF: {expected: MODERATE, applicable: true, confidence: MEDIUM, evidenceReferences: [{excerpt: "a second small light ... instead", location: "11.5-13.5 SEC"}], notes: HUMAN_REVIEW_REQUIRED.}
-      LOOP: {expected: STRONG, applicable: true, confidence: HIGH, evidenceReferences: [{excerpt: "matching the opening rhythm for loop", location: "13.5-15.0 SEC"}], notes: Explicit loop intent.}
-      CHARACTER_PERFORMANCE: {expected: STRONG, applicable: true, confidence: HIGH, evidenceReferences: [{excerpt: "smart, playful, observant acting", location: "CHARACTER LOCK"}], notes: Observation is the character action.}
-      PRODUCIBILITY: {expected: MODERATE_RISK, applicable: true, confidence: MEDIUM, evidenceReferences: [{excerpt: "uses a small mirror ... second small light", location: "8.0-13.5 SEC"}], notes: HUMAN_REVIEW_REQUIRED.}
-      SOUND_OFF_READABILITY: {expected: MODERATE, applicable: true, confidence: MEDIUM, evidenceReferences: [{excerpt: "lamp stays on when watched and switches off when unwatched", location: "LAMP LOCK"}], notes: HUMAN_REVIEW_REQUIRED; dialogue reinforces but visual rule exists.}
-      TIMING_PACING: {expected: STRONG, applicable: true, confidence: HIGH, evidenceReferences: [{excerpt: "15 seconds" , location: "DURATION"}], notes: Compact repeated test structure.}
-      CONTENT_FAMILY_FIT: {expected: STRONG, applicable: true, confidence: HIGH, evidenceReferences: [{excerpt: "Pompom English — What’s Wrong?", location: "SERIES"}], notes: Clear family fit.}
-      FIRST_FRAME_ANOMALY_INTENT: {expected: MODERATE, applicable: true, confidence: MEDIUM, evidenceReferences: [{excerpt: "Kiko switches on the lamp", location: "0.0-2.0 SEC"}], notes: HUMAN_REVIEW_REQUIRED; anomaly becomes obvious on look-away rather than static frame.}
-      SPECIALIZED_RULE_APPLICABILITY: {expected: NOT_APPLICABLE, applicable: false, confidence: HIGH, evidenceReferences: [], notes: No stubborn-return boundary profile.}
+      HOOK:
+        expected: STRONG
+        applicable: true
+        confidence: HIGH
+        evidenceReferences:
+        - excerpt: when she looks away, it switches off
+          location: CORE IDEA / ACTION TIMING
+        notes: Immediate observable rule.
+      GOAL:
+        expected: IMPLICIT_BUT_OBSERVABLE
+        applicable: true
+        confidence: MEDIUM
+        evidenceReferences:
+        - excerpt: Kiko switches on the lamp and starts to read
+          location: 0.0-2.0 SEC
+        notes: .
+        reviewStatus: APPROVED
+      CENTRAL_MECHANIC:
+        expected: OBSERVATION_DEPENDENT_LIGHT
+        applicable: true
+        confidence: HIGH
+        evidenceReferences:
+        - excerpt: when watched, it behaves; when unwatched, it switches off
+          location: LAMP LOCK
+        notes: Explicit rule.
+      ACTIVE_ATTEMPT_COUNT:
+        expected: 3
+        applicable: true
+        confidence: MEDIUM
+        evidenceReferences:
+        - excerpt: switches it on again and stares
+          location: 2.0-5.0 SEC
+        - excerpt: uses a small mirror
+          location: 8.0-11.5 SEC
+        notes: .
+        reviewStatus: APPROVED
+      DISTINCT_STRATEGY_COUNT:
+        expected: 1
+        applicable: true
+        confidence: MEDIUM
+        evidenceReferences:
+        - excerpt: stares at it
+          location: REPEATED TEST
+        - excerpt: watch indirectly with a mirror
+          location: 8.0-11.5 SEC
+        notes: Direct and indirect observation are execution variants of one underlying
+          visibility-control strategy.
+        reviewStatus: APPROVED
+      DISTINCT_STRATEGIES:
+        expected:
+        - OBSERVE_CONTROL_VISIBILITY
+        applicable: true
+        confidence: MEDIUM
+        evidenceReferences:
+        - excerpt: stares at it
+          location: 5.0-8.0 SEC
+        - excerpt: uses a small mirror
+          location: 8.0-11.5 SEC
+        notes: 'Human-approved normalization: watching directly and via mirror remain
+          one strategy family.'
+        reviewStatus: APPROVED
+      ESCALATION:
+        expected: MODERATE
+        applicable: true
+        confidence: MEDIUM
+        evidenceReferences:
+        - excerpt: a second small light ... flickers
+          location: 11.5-13.5 SEC
+        notes: HUMAN_REVIEW_REQUIRED; scope expands but rule wording may change.
+      PROGRESSION:
+        expected: MODERATE
+        applicable: true
+        confidence: MEDIUM
+        evidenceReferences:
+        - excerpt: Kiko gets clever
+          location: 8.0-11.5 SEC
+        notes: HUMAN_REVIEW_REQUIRED.
+      REALIZATION:
+        expected: AVAILABLE
+        applicable: true
+        confidence: MEDIUM
+        evidenceReferences:
+        - excerpt: Aha!
+          location: 8.0-11.5 SEC
+        notes: HUMAN_REVIEW_REQUIRED; explicit reaction suggests a learned rule.
+      FAKE_RESOLUTION:
+        expected: PRESENT
+        applicable: true
+        confidence: MEDIUM
+        evidenceReferences:
+        - excerpt: The lamp stays on ... Aha!
+          location: 8.0-11.5 SEC
+        notes: HUMAN_REVIEW_REQUIRED.
+      PAYOFF:
+        expected: MODERATE
+        applicable: true
+        confidence: MEDIUM
+        evidenceReferences:
+        - excerpt: a second small light ... instead
+          location: 11.5-13.5 SEC
+        notes: HUMAN_REVIEW_REQUIRED.
+      LOOP:
+        expected: STRONG
+        applicable: true
+        confidence: HIGH
+        evidenceReferences:
+        - excerpt: matching the opening rhythm for loop
+          location: 13.5-15.0 SEC
+        notes: Explicit loop intent.
+      CHARACTER_PERFORMANCE:
+        expected: STRONG
+        applicable: true
+        confidence: HIGH
+        evidenceReferences:
+        - excerpt: smart, playful, observant acting
+          location: CHARACTER LOCK
+        notes: Observation is the character action.
+      PRODUCIBILITY:
+        expected: MODERATE_RISK
+        applicable: true
+        confidence: MEDIUM
+        evidenceReferences:
+        - excerpt: uses a small mirror ... second small light
+          location: 8.0-13.5 SEC
+        notes: HUMAN_REVIEW_REQUIRED.
+      SOUND_OFF_READABILITY:
+        expected: MODERATE
+        applicable: true
+        confidence: MEDIUM
+        evidenceReferences:
+        - excerpt: lamp stays on when watched and switches off when unwatched
+          location: LAMP LOCK
+        notes: HUMAN_REVIEW_REQUIRED; dialogue reinforces but visual rule exists.
+      TIMING_PACING:
+        expected: STRONG
+        applicable: true
+        confidence: HIGH
+        evidenceReferences:
+        - excerpt: 15 seconds
+          location: DURATION
+        notes: Compact repeated test structure.
+      CONTENT_FAMILY_FIT:
+        expected: STRONG
+        applicable: true
+        confidence: HIGH
+        evidenceReferences:
+        - excerpt: Pompom English — What’s Wrong?
+          location: SERIES
+        notes: Clear family fit.
+      FIRST_FRAME_ANOMALY_INTENT:
+        expected: MODERATE
+        applicable: true
+        confidence: MEDIUM
+        evidenceReferences:
+        - excerpt: Kiko switches on the lamp
+          location: 0.0-2.0 SEC
+        notes: HUMAN_REVIEW_REQUIRED; anomaly becomes obvious on look-away rather
+          than static frame.
+      SPECIALIZED_RULE_APPLICABILITY:
+        expected: NOT_APPLICABLE
+        applicable: false
+        confidence: HIGH
+        evidenceReferences: []
+        notes: No stubborn-return boundary profile.
   snack-box-01:
     displayName: Mimi And The Snack Box That Keeps Changing
     dimensions:
-      HOOK: {expected: STRONG, applicable: true, confidence: HIGH, evidenceReferences: [{excerpt: "opens it ... an apple instead", location: "00.0-02.0s"}], notes: Immediate expectation violation.}
-      GOAL: {expected: EXPLICIT, applicable: true, confidence: HIGH, evidenceReferences: [{excerpt: "Mimi wants a cracker from a snack box", location: "CORE IDEA"}], notes: Explicit object goal.}
-      CENTRAL_MECHANIC: {expected: CHANGING_CONTENTS, applicable: true, confidence: HIGH, evidenceReferences: [{excerpt: "every time she opens it, something different is inside", location: "CORE IDEA"}], notes: Stable box rule.}
-      ACTIVE_ATTEMPT_COUNT: {expected: 4, applicable: true, confidence: MEDIUM, evidenceReferences: [{excerpt: "opens it"}, {excerpt: "closes and reopens"}, {excerpt: "opens it again"}, {excerpt: "closes it carefully, then opens it"}], notes: HUMAN_REVIEW_REQUIRED; attempt boundary follows each test of the box.}
-      DISTINCT_STRATEGY_COUNT: {expected: 3, applicable: true, confidence: MEDIUM, evidenceReferences: [{excerpt: "reopens"}, {excerpt: "turns the box slightly, taps it"}, {excerpt: "closes it carefully"}], notes: HUMAN_REVIEW_REQUIRED.}
-      DISTINCT_STRATEGIES: {expected: [REOPEN, TAP_TURN, CONTROLLED_REOPEN], applicable: true, confidence: MEDIUM, evidenceReferences: [{excerpt: "closes and reopens"}, {excerpt: "turns the box slightly, taps it"}], notes: HUMAN_REVIEW_REQUIRED.}
-      ESCALATION: {expected: MODERATE, applicable: true, confidence: MEDIUM, evidenceReferences: [{excerpt: "wrong item ... finally, the cracker appears ... box still wins", location: "ACTION TIMING"}], notes: HUMAN_REVIEW_REQUIRED.}
-      PROGRESSION: {expected: MODERATE, applicable: true, confidence: MEDIUM, evidenceReferences: [{excerpt: "apple ... banana or spoon ... sock or block ... cracker", location: "ACTION TIMING"}], notes: HUMAN_REVIEW_REQUIRED.}
-      REALIZATION: {expected: AVAILABLE, applicable: true, confidence: MEDIUM, evidenceReferences: [{excerpt: "There!", location: "08.0-11.5s"}], notes: HUMAN_REVIEW_REQUIRED; proud reaction marks apparent solution.}
-      FAKE_RESOLUTION: {expected: PRESENT, applicable: true, confidence: HIGH, evidenceReferences: [{excerpt: "Finally, the cracker appears", location: "08.0-11.5s"}], notes: Explicit apparent success before recurrence.}
-      PAYOFF: {expected: MODERATE, applicable: true, confidence: MEDIUM, evidenceReferences: [{excerpt: "box still wins", location: "CORE IDEA"}], notes: HUMAN_REVIEW_REQUIRED.}
-      LOOP: {expected: STRONG, applicable: true, confidence: HIGH, evidenceReferences: [{excerpt: "matching the opening rhythm for loop", location: "13.5-15.0s"}], notes: Explicit loop intent.}
-      CHARACTER_PERFORMANCE: {expected: STRONG, applicable: true, confidence: HIGH, evidenceReferences: [{excerpt: "becomes determined ... points proudly", location: "ACTION TIMING"}], notes: Character tests and reacts.}
-      PRODUCIBILITY: {expected: MODERATE_RISK, applicable: true, confidence: MEDIUM, evidenceReferences: [{excerpt: "something different is inside"}, {excerpt: "lid flips shut or cracker pops back"}], notes: HUMAN_REVIEW_REQUIRED; repeated prop-content continuity.}
-      SOUND_OFF_READABILITY: {expected: MODERATE, applicable: true, confidence: MEDIUM, evidenceReferences: [{excerpt: "wrong item appears"}, {excerpt: "cracker appears"}], notes: HUMAN_REVIEW_REQUIRED; dialogue is mandatory but object changes are visible.}
-      TIMING_PACING: {expected: STRONG, applicable: true, confidence: HIGH, evidenceReferences: [{excerpt: "15 seconds ... ACTION TIMING", location: "HEADER / ACTION TIMING"}], notes: Four compact tests.}
-      CONTENT_FAMILY_FIT: {expected: STRONG, applicable: true, confidence: HIGH, evidenceReferences: [{excerpt: "TYPE: Social Short / Reel", location: "HEADER"}], notes: Clear short-form object gag.}
-      FIRST_FRAME_ANOMALY_INTENT: {expected: STRONG, applicable: true, confidence: HIGH, evidenceReferences: [{excerpt: "box contains an apple instead of expected cracker", location: "00.0-02.0s"}], notes: Immediate expectation mismatch.}
-      SPECIALIZED_RULE_APPLICABILITY: {expected: NOT_APPLICABLE, applicable: false, confidence: HIGH, evidenceReferences: [], notes: No stubborn-return boundary profile.}
+      HOOK:
+        expected: STRONG
+        applicable: true
+        confidence: HIGH
+        evidenceReferences:
+        - excerpt: opens it ... an apple instead
+          location: 00.0-02.0s
+        notes: Immediate expectation violation.
+      GOAL:
+        expected: EXPLICIT
+        applicable: true
+        confidence: HIGH
+        evidenceReferences:
+        - excerpt: Mimi wants a cracker from a snack box
+          location: CORE IDEA
+        notes: Explicit object goal.
+        reviewStatus: APPROVED
+      CENTRAL_MECHANIC:
+        expected: CHANGING_CONTENTS
+        applicable: true
+        confidence: HIGH
+        evidenceReferences:
+        - excerpt: every time she opens it, something different is inside
+          location: CORE IDEA
+        notes: Stable box rule.
+      ACTIVE_ATTEMPT_COUNT:
+        expected: 4
+        applicable: true
+        confidence: MEDIUM
+        evidenceReferences:
+        - excerpt: opens it
+        - excerpt: closes and reopens
+        - excerpt: opens it again
+        - excerpt: closes it carefully, then opens it
+        notes: attempt boundary follows each test of the box.
+        reviewStatus: APPROVED
+      DISTINCT_STRATEGY_COUNT:
+        expected: 3
+        applicable: true
+        confidence: MEDIUM
+        evidenceReferences:
+        - excerpt: reopens
+        - excerpt: turns the box slightly, taps it
+        - excerpt: closes it carefully
+        notes: .
+        reviewStatus: APPROVED
+      DISTINCT_STRATEGIES:
+        expected:
+        - REOPEN
+        - TAP_TURN
+        - CONTROLLED_REOPEN
+        applicable: true
+        confidence: MEDIUM
+        evidenceReferences:
+        - excerpt: closes and reopens
+        - excerpt: turns the box slightly, taps it
+        notes: .
+        reviewStatus: APPROVED
+      ESCALATION:
+        expected: MODERATE
+        applicable: true
+        confidence: MEDIUM
+        evidenceReferences:
+        - excerpt: wrong item ... finally, the cracker appears ... box still wins
+          location: ACTION TIMING
+        notes: HUMAN_REVIEW_REQUIRED.
+      PROGRESSION:
+        expected: MODERATE
+        applicable: true
+        confidence: MEDIUM
+        evidenceReferences:
+        - excerpt: apple ... banana or spoon ... sock or block ... cracker
+          location: ACTION TIMING
+        notes: HUMAN_REVIEW_REQUIRED.
+      REALIZATION:
+        expected: AVAILABLE
+        applicable: true
+        confidence: MEDIUM
+        evidenceReferences:
+        - excerpt: There!
+          location: 08.0-11.5s
+        notes: HUMAN_REVIEW_REQUIRED; proud reaction marks apparent solution.
+      FAKE_RESOLUTION:
+        expected: PRESENT
+        applicable: true
+        confidence: HIGH
+        evidenceReferences:
+        - excerpt: Finally, the cracker appears
+          location: 08.0-11.5s
+        notes: Explicit apparent success before recurrence.
+      PAYOFF:
+        expected: MODERATE
+        applicable: true
+        confidence: MEDIUM
+        evidenceReferences:
+        - excerpt: box still wins
+          location: CORE IDEA
+        notes: HUMAN_REVIEW_REQUIRED.
+      LOOP:
+        expected: STRONG
+        applicable: true
+        confidence: HIGH
+        evidenceReferences:
+        - excerpt: matching the opening rhythm for loop
+          location: 13.5-15.0s
+        notes: Explicit loop intent.
+      CHARACTER_PERFORMANCE:
+        expected: STRONG
+        applicable: true
+        confidence: HIGH
+        evidenceReferences:
+        - excerpt: becomes determined ... points proudly
+          location: ACTION TIMING
+        notes: Character tests and reacts.
+      PRODUCIBILITY:
+        expected: MODERATE_RISK
+        applicable: true
+        confidence: MEDIUM
+        evidenceReferences:
+        - excerpt: something different is inside
+        - excerpt: lid flips shut or cracker pops back
+        notes: HUMAN_REVIEW_REQUIRED; repeated prop-content continuity.
+      SOUND_OFF_READABILITY:
+        expected: MODERATE
+        applicable: true
+        confidence: MEDIUM
+        evidenceReferences:
+        - excerpt: wrong item appears
+        - excerpt: cracker appears
+        notes: HUMAN_REVIEW_REQUIRED; dialogue is mandatory but object changes are
+          visible.
+      TIMING_PACING:
+        expected: STRONG
+        applicable: true
+        confidence: HIGH
+        evidenceReferences:
+        - excerpt: 15 seconds ... ACTION TIMING
+          location: HEADER / ACTION TIMING
+        notes: Four compact tests.
+      CONTENT_FAMILY_FIT:
+        expected: STRONG
+        applicable: true
+        confidence: HIGH
+        evidenceReferences:
+        - excerpt: 'TYPE: Social Short / Reel'
+          location: HEADER
+        notes: Clear short-form object gag.
+      FIRST_FRAME_ANOMALY_INTENT:
+        expected: STRONG
+        applicable: true
+        confidence: HIGH
+        evidenceReferences:
+        - excerpt: box contains an apple instead of expected cracker
+          location: 00.0-02.0s
+        notes: Immediate expectation mismatch.
+      SPECIALIZED_RULE_APPLICABILITY:
+        expected: NOT_APPLICABLE
+        applicable: false
+        confidence: HIGH
+        evidenceReferences: []
+        notes: No stubborn-return boundary profile.
   box-cat-01:
     displayName: Luca And The Box Cat
     dimensions:
-      HOOK: {expected: STRONG, applicable: true, confidence: HIGH, evidenceReferences: [{excerpt: "cat is already curled up inside it", location: "FRAME ZERO"}], notes: Conflict is already happening.}
-      GOAL: {expected: EXPLICIT, applicable: true, confidence: HIGH, evidenceReferences: [{excerpt: "Luca wants to use an empty toy box", location: "CORE CONCEPT"}], notes: Explicit goal.}
-      CENTRAL_MECHANIC: {expected: STUBBORN_RETURN_LOOP, applicable: true, confidence: HIGH, evidenceReferences: [{excerpt: "whenever the box becomes empty and usable, the cat claims it again", location: "SINGLE ANIMAL RULE"}], notes: Stable recurrence rule.}
-      ACTIVE_ATTEMPT_COUNT: {expected: 3, applicable: true, confidence: HIGH, evidenceReferences: [{excerpt: "Attempt 1"}, {excerpt: "Attempt 2"}, {excerpt: "Attempt 3"}], notes: Human-reviewed headings are source truth despite parser timeline gap.}
-      DISTINCT_STRATEGY_COUNT: {expected: 3, applicable: true, confidence: MEDIUM, evidenceReferences: [{excerpt: "gestures the cat out"}, {excerpt: "move the box"}, {excerpt: "guard the box"}], notes: HUMAN_REVIEW_REQUIRED; attempts vary physically even though the cat rule repeats.}
-      DISTINCT_STRATEGIES: {expected: [GESTURE_OUT, MOVE_BOX, GUARD], applicable: true, confidence: MEDIUM, evidenceReferences: [{excerpt: "gently gestures the cat out"}, {excerpt: "lifts the rigid empty box"}, {excerpt: "stays beside the empty box"}], notes: HUMAN_REVIEW_REQUIRED.}
-      ESCALATION: {expected: MODERATE, applicable: true, confidence: MEDIUM, evidenceReferences: [{excerpt: "cat has claimed the box again", location: "ATTEMPTS 1-3"}], notes: HUMAN_REVIEW_REQUIRED; recurrence and timing escalate more than force.}
-      PROGRESSION: {expected: MODERATE, applicable: true, confidence: MEDIUM, evidenceReferences: [{excerpt: "move the box ... guard the box"}], notes: HUMAN_REVIEW_REQUIRED.}
-      REALIZATION: {expected: AVAILABLE, applicable: true, confidence: MEDIUM, evidenceReferences: [{excerpt: "small confident smile"}, {excerpt: "cat makes one final short move"}], notes: HUMAN_REVIEW_REQUIRED.}
-      FAKE_RESOLUTION: {expected: PRESENT, applicable: true, confidence: HIGH, evidenceReferences: [{excerpt: "cat finally stays ... Luca sees the empty box"}], notes: Explicit apparent success.}
-      PAYOFF: {expected: MODERATE, applicable: true, confidence: MEDIUM, evidenceReferences: [{excerpt: "cat ... curls up again; Luca's hands stop"}], notes: HUMAN_REVIEW_REQUIRED.}
-      LOOP: {expected: NO_LOOP, applicable: true, confidence: MEDIUM, evidenceReferences: [{excerpt: "Hard cut on Luca's frozen hands"}], notes: HUMAN_REVIEW_REQUIRED; recurrence is explicit but a frame loop is not.}
-      CHARACTER_PERFORMANCE: {expected: STRONG, applicable: true, confidence: HIGH, evidenceReferences: [{excerpt: "tiny puzzled look"}, {excerpt: "determined nod"}], notes: Character remains causally engaged.}
-      PRODUCIBILITY: {expected: MODERATE_RISK, applicable: true, confidence: MEDIUM, evidenceReferences: [{excerpt: "one Luca, one cat, one rigid toy box, fixed camera"}], notes: HUMAN_REVIEW_REQUIRED; simple geometry but repeated precise timing.}
-      SOUND_OFF_READABILITY: {expected: STRONG, applicable: true, confidence: HIGH, evidenceReferences: [{excerpt: "fixed-camera ... cat claims box", location: "PROMPT"}], notes: Rule is visible without dialogue.}
-      TIMING_PACING: {expected: STRONG, applicable: true, confidence: HIGH, evidenceReferences: [{excerpt: "one continuous ... 15 seconds", location: "PROMPT"}], notes: Compact repeated structure.}
-      CONTENT_FAMILY_FIT: {expected: STRONG, applicable: true, confidence: HIGH, evidenceReferences: [{excerpt: "Single animal rule", location: "CORE CONCEPT"}], notes: Clear object/animal comedy family.}
-      FIRST_FRAME_ANOMALY_INTENT: {expected: STRONG, applicable: true, confidence: HIGH, evidenceReferences: [{excerpt: "cat is already curled up inside it", location: "FRAME ZERO"}], notes: Explicit.}
-      SPECIALIZED_RULE_APPLICABILITY: {expected: APPLICABLE_CANDIDATE, applicable: true, confidence: HIGH, evidenceReferences: [{excerpt: "cat claims it again"}, {excerpt: "recurrence across attempts"}], notes: Strong candidate for STUBBORN_RETURN_LOOP; exception activation remains policy-specific.}
+      HOOK:
+        expected: STRONG
+        applicable: true
+        confidence: HIGH
+        evidenceReferences:
+        - excerpt: cat is already curled up inside it
+          location: FRAME ZERO
+        notes: Conflict is already happening.
+      GOAL:
+        expected: EXPLICIT
+        applicable: true
+        confidence: HIGH
+        evidenceReferences:
+        - excerpt: Luca wants to use an empty toy box
+          location: CORE CONCEPT
+        notes: Explicit goal.
+        reviewStatus: APPROVED
+      CENTRAL_MECHANIC:
+        expected: STUBBORN_RETURN_LOOP
+        applicable: true
+        confidence: HIGH
+        evidenceReferences:
+        - excerpt: whenever the box becomes empty and usable, the cat claims it again
+          location: SINGLE ANIMAL RULE
+        notes: Stable recurrence rule.
+      ACTIVE_ATTEMPT_COUNT:
+        expected: 3
+        applicable: true
+        confidence: HIGH
+        evidenceReferences:
+        - excerpt: Attempt 1
+        - excerpt: Attempt 2
+        - excerpt: Attempt 3
+        notes: Human-reviewed headings are source truth despite parser timeline gap.
+        reviewStatus: APPROVED
+      DISTINCT_STRATEGY_COUNT:
+        expected: 3
+        applicable: true
+        confidence: MEDIUM
+        evidenceReferences:
+        - excerpt: gestures the cat out
+        - excerpt: move the box
+        - excerpt: guard the box
+        notes: attempts vary physically even though the cat rule repeats.
+        reviewStatus: APPROVED
+      DISTINCT_STRATEGIES:
+        expected:
+        - GESTURE_OUT
+        - MOVE_BOX
+        - GUARD
+        applicable: true
+        confidence: MEDIUM
+        evidenceReferences:
+        - excerpt: gently gestures the cat out
+        - excerpt: lifts the rigid empty box
+        - excerpt: stays beside the empty box
+        notes: .
+        reviewStatus: APPROVED
+      ESCALATION:
+        expected: MODERATE
+        applicable: true
+        confidence: MEDIUM
+        evidenceReferences:
+        - excerpt: cat has claimed the box again
+          location: ATTEMPTS 1-3
+        notes: HUMAN_REVIEW_REQUIRED; recurrence and timing escalate more than force.
+      PROGRESSION:
+        expected: MODERATE
+        applicable: true
+        confidence: MEDIUM
+        evidenceReferences:
+        - excerpt: move the box ... guard the box
+        notes: HUMAN_REVIEW_REQUIRED.
+      REALIZATION:
+        expected: AVAILABLE
+        applicable: true
+        confidence: MEDIUM
+        evidenceReferences:
+        - excerpt: small confident smile
+        - excerpt: cat makes one final short move
+        notes: HUMAN_REVIEW_REQUIRED.
+      FAKE_RESOLUTION:
+        expected: PRESENT
+        applicable: true
+        confidence: HIGH
+        evidenceReferences:
+        - excerpt: cat finally stays ... Luca sees the empty box
+        notes: Explicit apparent success.
+      PAYOFF:
+        expected: MODERATE
+        applicable: true
+        confidence: MEDIUM
+        evidenceReferences:
+        - excerpt: cat ... curls up again; Luca's hands stop
+        notes: HUMAN_REVIEW_REQUIRED.
+      LOOP:
+        expected: NO_LOOP
+        applicable: true
+        confidence: MEDIUM
+        evidenceReferences:
+        - excerpt: Hard cut on Luca's frozen hands
+        notes: HUMAN_REVIEW_REQUIRED; recurrence is explicit but a frame loop is not.
+      CHARACTER_PERFORMANCE:
+        expected: STRONG
+        applicable: true
+        confidence: HIGH
+        evidenceReferences:
+        - excerpt: tiny puzzled look
+        - excerpt: determined nod
+        notes: Character remains causally engaged.
+      PRODUCIBILITY:
+        expected: MODERATE_RISK
+        applicable: true
+        confidence: MEDIUM
+        evidenceReferences:
+        - excerpt: one Luca, one cat, one rigid toy box, fixed camera
+        notes: HUMAN_REVIEW_REQUIRED; simple geometry but repeated precise timing.
+      SOUND_OFF_READABILITY:
+        expected: STRONG
+        applicable: true
+        confidence: HIGH
+        evidenceReferences:
+        - excerpt: fixed-camera ... cat claims box
+          location: PROMPT
+        notes: Rule is visible without dialogue.
+      TIMING_PACING:
+        expected: STRONG
+        applicable: true
+        confidence: HIGH
+        evidenceReferences:
+        - excerpt: one continuous ... 15 seconds
+          location: PROMPT
+        notes: Compact repeated structure.
+      CONTENT_FAMILY_FIT:
+        expected: STRONG
+        applicable: true
+        confidence: HIGH
+        evidenceReferences:
+        - excerpt: Single animal rule
+          location: CORE CONCEPT
+        notes: Clear object/animal comedy family.
+      FIRST_FRAME_ANOMALY_INTENT:
+        expected: STRONG
+        applicable: true
+        confidence: HIGH
+        evidenceReferences:
+        - excerpt: cat is already curled up inside it
+          location: FRAME ZERO
+        notes: Explicit.
+      SPECIALIZED_RULE_APPLICABILITY:
+        expected: APPLICABLE_CANDIDATE
+        applicable: true
+        confidence: HIGH
+        evidenceReferences:
+        - excerpt: cat claims it again
+        - excerpt: recurrence across attempts
+        notes: Strong candidate for STUBBORN_RETURN_LOOP; exception activation remains
+          policy-specific.
   spot-cat-01:
     displayName: Kiko And The Spot-Stealing Cat
     dimensions:
-      HOOK: {expected: STRONG, applicable: true, confidence: HIGH, evidenceReferences: [{excerpt: "cat is curling into that exact spot just before Kiko sits", location: "FRAME ZERO"}], notes: Immediate target conflict.}
-      GOAL: {expected: EXPLICIT, applicable: true, confidence: HIGH, evidenceReferences: [{excerpt: "Kiko wants to sit down", location: "CORE CONCEPT"}], notes: Explicit.}
-      CENTRAL_MECHANIC: {expected: REPEATED_TARGET_CLAIM, applicable: true, confidence: HIGH, evidenceReferences: [{excerpt: "whenever Kiko truly commits to sitting ... cat claims that exact spot first", location: "SINGLE ANIMAL RULE"}], notes: Stable but repetitive.}
-      ACTIVE_ATTEMPT_COUNT: {expected: 3, applicable: true, confidence: HIGH, evidenceReferences: [{excerpt: "Attempt 1"}, {excerpt: "Attempt 2"}, {excerpt: "Attempt 3"}], notes: Human-reviewed headings; parser timeline gap is preserved.}
-      DISTINCT_STRATEGY_COUNT: {expected: 1, applicable: true, confidence: HIGH, evidenceReferences: [{excerpt: "switch spot / opposite spot / decoy"}, {excerpt: "cat ... claims target spot"}], notes: Target changes, cat strategy does not.}
-      DISTINCT_STRATEGIES: {expected: [CAT_CLAIMS_COMMITTED_TARGET], applicable: true, confidence: HIGH, evidenceReferences: [{excerpt: "cat ... settles into that second spot first"}, {excerpt: "cat ... claims Kiko's real target spot"}], notes: Negative canonical boundary.}
-      ESCALATION: {expected: WEAK, applicable: true, confidence: MEDIUM, evidenceReferences: [{excerpt: "third open spot ... decoy"}], notes: HUMAN_REVIEW_REQUIRED; repetition and decoy do not materially grow consequence.}
-      PROGRESSION: {expected: WEAK, applicable: true, confidence: MEDIUM, evidenceReferences: [{excerpt: "three nearby sitting spots"}], notes: HUMAN_REVIEW_REQUIRED.}
-      REALIZATION: {expected: AVAILABLE, applicable: true, confidence: MEDIUM, evidenceReferences: [{excerpt: "tiny determined nod"}], notes: HUMAN_REVIEW_REQUIRED; determination is not a strong belief change.}
-      FAKE_RESOLUTION: {expected: PRESENT, applicable: true, confidence: HIGH, evidenceReferences: [{excerpt: "cat does not move ... tiny proud smile"}], notes: Explicit apparent success.}
-      PAYOFF: {expected: MODERATE, applicable: true, confidence: MEDIUM, evidenceReferences: [{excerpt: "cat ... freezes in a squat"}], notes: HUMAN_REVIEW_REQUIRED.}
-      LOOP: {expected: NO_LOOP, applicable: true, confidence: MEDIUM, evidenceReferences: [{excerpt: "Hard cut in a squat"}], notes: HUMAN_REVIEW_REQUIRED.}
-      CHARACTER_PERFORMANCE: {expected: STRONG, applicable: true, confidence: HIGH, evidenceReferences: [{excerpt: "suspicious side-eye"}, {excerpt: "determined nod"}], notes: Character reaction is clear.}
-      PRODUCIBILITY: {expected: HIGH_RISK, applicable: true, confidence: MEDIUM, evidenceReferences: [{excerpt: "exact moment she truly commits ... cat makes one final short move"}], notes: HUMAN_REVIEW_REQUIRED; repeated precise timing and animal placement.}
-      SOUND_OFF_READABILITY: {expected: STRONG, applicable: true, confidence: HIGH, evidenceReferences: [{excerpt: "same rule throughout", location: "GUARDRAILS"}], notes: Target claims are visual.}
-      TIMING_PACING: {expected: STRONG, applicable: true, confidence: HIGH, evidenceReferences: [{excerpt: "15 seconds, one continuous fixed-camera shot", location: "PROMPT"}], notes: Compact repetition.}
-      CONTENT_FAMILY_FIT: {expected: STRONG, applicable: true, confidence: HIGH, evidenceReferences: [{excerpt: "Single animal rule", location: "CORE CONCEPT"}], notes: Clear family.}
-      FIRST_FRAME_ANOMALY_INTENT: {expected: STRONG, applicable: true, confidence: HIGH, evidenceReferences: [{excerpt: "cat ... curling into that exact spot", location: "FRAME ZERO"}], notes: Explicit.}
-      SPECIALIZED_RULE_APPLICABILITY: {expected: APPLICABLE_CANDIDATE, applicable: true, confidence: MEDIUM, evidenceReferences: [{excerpt: "cat claims that exact spot first"}], notes: HUMAN_REVIEW_REQUIRED; recurrence is present but profile signals need review.}
+      HOOK:
+        expected: STRONG
+        applicable: true
+        confidence: HIGH
+        evidenceReferences:
+        - excerpt: cat is curling into that exact spot just before Kiko sits
+          location: FRAME ZERO
+        notes: Immediate target conflict.
+      GOAL:
+        expected: EXPLICIT
+        applicable: true
+        confidence: HIGH
+        evidenceReferences:
+        - excerpt: Kiko wants to sit down
+          location: CORE CONCEPT
+        notes: Explicit.
+        reviewStatus: APPROVED
+      CENTRAL_MECHANIC:
+        expected: REPEATED_TARGET_CLAIM
+        applicable: true
+        confidence: HIGH
+        evidenceReferences:
+        - excerpt: whenever Kiko truly commits to sitting ... cat claims that exact
+            spot first
+          location: SINGLE ANIMAL RULE
+        notes: Stable but repetitive.
+      ACTIVE_ATTEMPT_COUNT:
+        expected: 3
+        applicable: true
+        confidence: HIGH
+        evidenceReferences:
+        - excerpt: Attempt 1
+        - excerpt: Attempt 2
+        - excerpt: Attempt 3
+        notes: Human-reviewed headings; parser timeline gap is preserved.
+        reviewStatus: APPROVED
+      DISTINCT_STRATEGY_COUNT:
+        expected: 1
+        applicable: true
+        confidence: HIGH
+        evidenceReferences:
+        - excerpt: switch spot / opposite spot / decoy
+        - excerpt: cat ... claims target spot
+        notes: Target changes
+        cat strategy does not.: null
+        reviewStatus: APPROVED
+      DISTINCT_STRATEGIES:
+        expected:
+        - CAT_CLAIMS_COMMITTED_TARGET
+        applicable: true
+        confidence: HIGH
+        evidenceReferences:
+        - excerpt: cat ... settles into that second spot first
+        - excerpt: cat ... claims Kiko's real target spot
+        notes: Negative canonical boundary.
+        reviewStatus: APPROVED
+      ESCALATION:
+        expected: WEAK
+        applicable: true
+        confidence: MEDIUM
+        evidenceReferences:
+        - excerpt: third open spot ... decoy
+        notes: HUMAN_REVIEW_REQUIRED; repetition and decoy do not materially grow
+          consequence.
+      PROGRESSION:
+        expected: WEAK
+        applicable: true
+        confidence: MEDIUM
+        evidenceReferences:
+        - excerpt: three nearby sitting spots
+        notes: HUMAN_REVIEW_REQUIRED.
+      REALIZATION:
+        expected: AVAILABLE
+        applicable: true
+        confidence: MEDIUM
+        evidenceReferences:
+        - excerpt: tiny determined nod
+        notes: HUMAN_REVIEW_REQUIRED; determination is not a strong belief change.
+      FAKE_RESOLUTION:
+        expected: PRESENT
+        applicable: true
+        confidence: HIGH
+        evidenceReferences:
+        - excerpt: cat does not move ... tiny proud smile
+        notes: Explicit apparent success.
+      PAYOFF:
+        expected: MODERATE
+        applicable: true
+        confidence: MEDIUM
+        evidenceReferences:
+        - excerpt: cat ... freezes in a squat
+        notes: HUMAN_REVIEW_REQUIRED.
+      LOOP:
+        expected: NO_LOOP
+        applicable: true
+        confidence: MEDIUM
+        evidenceReferences:
+        - excerpt: Hard cut in a squat
+        notes: HUMAN_REVIEW_REQUIRED.
+      CHARACTER_PERFORMANCE:
+        expected: STRONG
+        applicable: true
+        confidence: HIGH
+        evidenceReferences:
+        - excerpt: suspicious side-eye
+        - excerpt: determined nod
+        notes: Character reaction is clear.
+      PRODUCIBILITY:
+        expected: HIGH_RISK
+        applicable: true
+        confidence: MEDIUM
+        evidenceReferences:
+        - excerpt: exact moment she truly commits ... cat makes one final short move
+        notes: HUMAN_REVIEW_REQUIRED; repeated precise timing and animal placement.
+      SOUND_OFF_READABILITY:
+        expected: STRONG
+        applicable: true
+        confidence: HIGH
+        evidenceReferences:
+        - excerpt: same rule throughout
+          location: GUARDRAILS
+        notes: Target claims are visual.
+      TIMING_PACING:
+        expected: STRONG
+        applicable: true
+        confidence: HIGH
+        evidenceReferences:
+        - excerpt: 15 seconds, one continuous fixed-camera shot
+          location: PROMPT
+        notes: Compact repetition.
+      CONTENT_FAMILY_FIT:
+        expected: STRONG
+        applicable: true
+        confidence: HIGH
+        evidenceReferences:
+        - excerpt: Single animal rule
+          location: CORE CONCEPT
+        notes: Clear family.
+      FIRST_FRAME_ANOMALY_INTENT:
+        expected: STRONG
+        applicable: true
+        confidence: HIGH
+        evidenceReferences:
+        - excerpt: cat ... curling into that exact spot
+          location: FRAME ZERO
+        notes: Explicit.
+      SPECIALIZED_RULE_APPLICABILITY:
+        expected: APPLICABLE_CANDIDATE
+        applicable: true
+        confidence: MEDIUM
+        evidenceReferences:
+        - excerpt: cat claims that exact spot first
+        notes: HUMAN_REVIEW_REQUIRED; recurrence is present but profile signals need
+          review.
   sneaky-door-01:
     displayName: Mimi Vs. The Sneaky Door
     dimensions:
-      HOOK: {expected: STRONG, applicable: true, confidence: HIGH, evidenceReferences: [{excerpt: "door closes", location: "SHOT 01 ACTION"}], notes: Opening action is immediate.}
-      GOAL: {expected: EXPLICIT, applicable: true, confidence: MEDIUM, evidenceReferences: [{excerpt: "Mimi ... strong pull", location: "SHOT 01"}], notes: HUMAN_REVIEW_REQUIRED; goal is operational rather than stated in one sentence.}
-      CENTRAL_MECHANIC: {expected: AUTONOMOUS_SNEAKY_DOOR, applicable: true, confidence: HIGH, evidenceReferences: [{excerpt: "door opens once ... door closes once", location: "RENDER ORDER"}], notes: Door is the only moving environment object.}
-      ACTIVE_ATTEMPT_COUNT: {expected: 3, applicable: true, confidence: HIGH, evidenceReferences: [{excerpt: "Render Shot 01"}, {excerpt: "Render Shot 02"}, {excerpt: "Render Shot 03"}], notes: Multi-clip source contract defines three action windows.}
-      DISTINCT_STRATEGY_COUNT: {expected: 2, applicable: true, confidence: MEDIUM, evidenceReferences: [{excerpt: "strong pull"}, {excerpt: "fake steps / spring-back"}], notes: HUMAN_REVIEW_REQUIRED; clip-level strategy semantics need review.}
-      DISTINCT_STRATEGIES: {expected: [PULL, DECOY_AND_WAIT], applicable: true, confidence: MEDIUM, evidenceReferences: [{excerpt: "strong pull"}, {excerpt: "two fake steps"}], notes: HUMAN_REVIEW_REQUIRED.}
-      ESCALATION: {expected: MODERATE, applicable: true, confidence: MEDIUM, evidenceReferences: [{excerpt: "spring-back and Got you", location: "SHOT 03"}], notes: HUMAN_REVIEW_REQUIRED.}
-      PROGRESSION: {expected: STRONG, applicable: true, confidence: MEDIUM, evidenceReferences: [{excerpt: "@image1 → @image2 → @image3", location: "RENDER ORDER"}], notes: HUMAN_REVIEW_REQUIRED; continuity is the progression carrier.}
-      REALIZATION: {expected: AVAILABLE, applicable: true, confidence: MEDIUM, evidenceReferences: [{excerpt: "clever realization", location: "SHOT 02"}], notes: HUMAN_REVIEW_REQUIRED; source names the realization but not exact belief change.}
-      FAKE_RESOLUTION: {expected: PRESENT, applicable: true, confidence: MEDIUM, evidenceReferences: [{excerpt: "spring-back", location: "SHOT 03"}], notes: HUMAN_REVIEW_REQUIRED.}
-      PAYOFF: {expected: STRONG, applicable: true, confidence: HIGH, evidenceReferences: [{excerpt: "controlled door-to-lens wipe", location: "SHOT 03"}], notes: Visual payoff and loop bridge are explicit.}
-      LOOP: {expected: STRONG, applicable: true, confidence: HIGH, evidenceReferences: [{excerpt: "visual loop bridge into the opening", location: "ASSEMBLE"}], notes: Explicit loop bridge.}
-      CHARACTER_PERFORMANCE: {expected: STRONG, applicable: true, confidence: MEDIUM, evidenceReferences: [{excerpt: "Mimi Huh? ... Got you!", location: "SHOT ACTION"}], notes: HUMAN_REVIEW_REQUIRED; character performance is distributed across clips.}
-      PRODUCIBILITY: {expected: HIGH_RISK, applicable: true, confidence: HIGH, evidenceReferences: [{excerpt: "3 × 5-second clips ... export unmodified final frame as @image2/@image3", location: "FINAL TARGET / RENDER ORDER"}], notes: Cross-clip state continuity is explicit risk.}
-      SOUND_OFF_READABILITY: {expected: MODERATE, applicable: true, confidence: MEDIUM, evidenceReferences: [{excerpt: "door closes ... door opens", location: "SHOT ACTION"}], notes: HUMAN_REVIEW_REQUIRED; dialogue contributes.}
-      TIMING_PACING: {expected: MODERATE, applicable: true, confidence: MEDIUM, evidenceReferences: [{excerpt: "15 seconds total: 3 × 5-second clips", location: "FINAL TARGET"}], notes: HUMAN_REVIEW_REQUIRED; clip boundaries carry temporal complexity.}
-      CONTENT_FAMILY_FIT: {expected: STRONG, applicable: true, confidence: HIGH, evidenceReferences: [{excerpt: "warm ... preschool animation", location: "FINAL TARGET"}], notes: Clear social-reel production contract.}
-      FIRST_FRAME_ANOMALY_INTENT: {expected: STRONG, applicable: true, confidence: HIGH, evidenceReferences: [{excerpt: "door closes ... strong pull", location: "SHOT 01"}], notes: Explicit first-shot intent.}
-      SPECIALIZED_RULE_APPLICABILITY: {expected: NOT_APPLICABLE, applicable: false, confidence: HIGH, evidenceReferences: [], notes: Multi-clip door behavior is not the stubborn-return profile.}
+      HOOK:
+        expected: STRONG
+        applicable: true
+        confidence: HIGH
+        evidenceReferences:
+        - excerpt: door closes
+          location: SHOT 01 ACTION
+        notes: Opening action is immediate.
+      GOAL:
+        expected: EXPLICIT
+        applicable: true
+        confidence: MEDIUM
+        evidenceReferences:
+        - excerpt: Mimi ... strong pull
+          location: SHOT 01
+        notes: goal is operational rather than stated in one sentence.
+        reviewStatus: APPROVED
+      CENTRAL_MECHANIC:
+        expected: AUTONOMOUS_SNEAKY_DOOR
+        applicable: true
+        confidence: HIGH
+        evidenceReferences:
+        - excerpt: door opens once ... door closes once
+          location: RENDER ORDER
+        notes: Door is the only moving environment object.
+      ACTIVE_ATTEMPT_COUNT:
+        expected: 3
+        applicable: true
+        confidence: HIGH
+        evidenceReferences:
+        - excerpt: Render Shot 01
+        - excerpt: Render Shot 02
+        - excerpt: Render Shot 03
+        notes: Multi-clip source contract defines three action windows.
+        reviewStatus: APPROVED
+      DISTINCT_STRATEGY_COUNT:
+        expected: 2
+        applicable: true
+        confidence: MEDIUM
+        evidenceReferences:
+        - excerpt: strong pull
+        - excerpt: fake steps / spring-back
+        notes: clip-level strategy semantics need review.
+        reviewStatus: APPROVED
+      DISTINCT_STRATEGIES:
+        expected:
+        - PULL
+        - DECOY_AND_WAIT
+        applicable: true
+        confidence: MEDIUM
+        evidenceReferences:
+        - excerpt: strong pull
+        - excerpt: two fake steps
+        notes: .
+        reviewStatus: APPROVED
+      ESCALATION:
+        expected: MODERATE
+        applicable: true
+        confidence: MEDIUM
+        evidenceReferences:
+        - excerpt: spring-back and Got you
+          location: SHOT 03
+        notes: HUMAN_REVIEW_REQUIRED.
+      PROGRESSION:
+        expected: STRONG
+        applicable: true
+        confidence: MEDIUM
+        evidenceReferences:
+        - excerpt: '@image1 → @image2 → @image3'
+          location: RENDER ORDER
+        notes: HUMAN_REVIEW_REQUIRED; continuity is the progression carrier.
+      REALIZATION:
+        expected: AVAILABLE
+        applicable: true
+        confidence: MEDIUM
+        evidenceReferences:
+        - excerpt: clever realization
+          location: SHOT 02
+        notes: HUMAN_REVIEW_REQUIRED; source names the realization but not exact belief
+          change.
+      FAKE_RESOLUTION:
+        expected: PRESENT
+        applicable: true
+        confidence: MEDIUM
+        evidenceReferences:
+        - excerpt: spring-back
+          location: SHOT 03
+        notes: HUMAN_REVIEW_REQUIRED.
+      PAYOFF:
+        expected: STRONG
+        applicable: true
+        confidence: HIGH
+        evidenceReferences:
+        - excerpt: controlled door-to-lens wipe
+          location: SHOT 03
+        notes: Visual payoff and loop bridge are explicit.
+      LOOP:
+        expected: STRONG
+        applicable: true
+        confidence: HIGH
+        evidenceReferences:
+        - excerpt: visual loop bridge into the opening
+          location: ASSEMBLE
+        notes: Explicit loop bridge.
+      CHARACTER_PERFORMANCE:
+        expected: STRONG
+        applicable: true
+        confidence: MEDIUM
+        evidenceReferences:
+        - excerpt: Mimi Huh? ... Got you!
+          location: SHOT ACTION
+        notes: HUMAN_REVIEW_REQUIRED; character performance is distributed across
+          clips.
+      PRODUCIBILITY:
+        expected: HIGH_RISK
+        applicable: true
+        confidence: HIGH
+        evidenceReferences:
+        - excerpt: 3 × 5-second clips ... export unmodified final frame as @image2/@image3
+          location: FINAL TARGET / RENDER ORDER
+        notes: Cross-clip state continuity is explicit risk.
+      SOUND_OFF_READABILITY:
+        expected: MODERATE
+        applicable: true
+        confidence: MEDIUM
+        evidenceReferences:
+        - excerpt: door closes ... door opens
+          location: SHOT ACTION
+        notes: HUMAN_REVIEW_REQUIRED; dialogue contributes.
+      TIMING_PACING:
+        expected: MODERATE
+        applicable: true
+        confidence: MEDIUM
+        evidenceReferences:
+        - excerpt: '15 seconds total: 3 × 5-second clips'
+          location: FINAL TARGET
+        notes: HUMAN_REVIEW_REQUIRED; clip boundaries carry temporal complexity.
+      CONTENT_FAMILY_FIT:
+        expected: STRONG
+        applicable: true
+        confidence: HIGH
+        evidenceReferences:
+        - excerpt: warm ... preschool animation
+          location: FINAL TARGET
+        notes: Clear social-reel production contract.
+      FIRST_FRAME_ANOMALY_INTENT:
+        expected: STRONG
+        applicable: true
+        confidence: HIGH
+        evidenceReferences:
+        - excerpt: door closes ... strong pull
+          location: SHOT 01
+        notes: Explicit first-shot intent.
+      SPECIALIZED_RULE_APPLICABILITY:
+        expected: NOT_APPLICABLE
+        applicable: false
+        confidence: HIGH
+        evidenceReferences: []
+        notes: Multi-clip door behavior is not the stubborn-return profile.
   island-journal-01:
     displayName: Luca And The Island Journal
     dimensions:
-      HOOK: {expected: MODERATE, applicable: true, confidence: HIGH, evidenceReferences: [{excerpt: "Luca lies on soft sand ... wave splashes", location: "0.0-1.2 SEC"}], notes: Immediate scene, but no central impossible anomaly.}
-      GOAL: {expected: NOT_ESTABLISHED, applicable: true, confidence: HIGH, evidenceReferences: [{excerpt: "Adventure!", location: "1.2-5.0 SEC"}], notes: Broad adventure desire is not a focused local problem-solving goal.}
-      CENTRAL_MECHANIC: {expected: NOT_ESTABLISHED, applicable: true, confidence: HIGH, evidenceReferences: [{excerpt: "tries opening a coconut ... fishing ... builds a shelter", location: "COMEDY MONTAGE"}], notes: Multiple activities but no single impossible rule.}
-      ACTIVE_ATTEMPT_COUNT: {expected: 0, applicable: true, confidence: HIGH, evidenceReferences: [{excerpt: "COMEDY MONTAGE", location: "5.0-10.0 SEC"}], notes: No canonical goal-directed impossible-mechanic attempt sequence.}
-      DISTINCT_STRATEGY_COUNT: {expected: 0, applicable: true, confidence: HIGH, evidenceReferences: [{excerpt: "opening coconut / fishing / building shelter", location: "COMEDY MONTAGE"}], notes: Activities are not attempts toward one central mechanic.}
-      DISTINCT_STRATEGIES: {expected: [], applicable: true, confidence: HIGH, evidenceReferences: [{excerpt: "three unrelated survival activities", location: "COMEDY MONTAGE"}], notes: No central strategy set.}
-      ESCALATION: {expected: NOT_APPLICABLE, applicable: false, confidence: HIGH, evidenceReferences: [], notes: No single mechanic to escalate.}
-      PROGRESSION: {expected: WEAK, applicable: true, confidence: HIGH, evidenceReferences: [{excerpt: "comedy montage", location: "5.0-10.0 SEC"}], notes: Events accumulate but do not form one causal progression.}
-      REALIZATION: {expected: NOT_ESTABLISHED, applicable: true, confidence: MEDIUM, evidenceReferences: [{excerpt: "A dream?", location: "TWIST"}], notes: HUMAN_REVIEW_REQUIRED; dream recognition is not a mechanic realization.}
-      FAKE_RESOLUTION: {expected: NOT_ESTABLISHED, applicable: true, confidence: HIGH, evidenceReferences: [{excerpt: "wakes in his own bed", location: "TWIST"}], notes: Dream transition is not a fake resolution of a central rule.}
-      PAYOFF: {expected: MODERATE, applicable: true, confidence: MEDIUM, evidenceReferences: [{excerpt: "same journal in his hand", location: "TWIST"}], notes: HUMAN_REVIEW_REQUIRED; twist exists but is weakly connected to the earlier montage.}
-      LOOP: {expected: NO_LOOP, applicable: true, confidence: HIGH, evidenceReferences: [{excerpt: "CUT", location: "TWIST"}], notes: No explicit opening return.}
-      CHARACTER_PERFORMANCE: {expected: MODERATE, applicable: true, confidence: MEDIUM, evidenceReferences: [{excerpt: "Luca bolts upright"}, {excerpt: "stares at camera"}], notes: HUMAN_REVIEW_REQUIRED.}
-      PRODUCIBILITY: {expected: HIGH_RISK, applicable: true, confidence: HIGH, evidenceReferences: [{excerpt: "island ... coconut ... fishing ... shelter ... cave ... chest", location: "FULL PROMPT"}], notes: Many locations/props/actions for a short-form plan.}
-      SOUND_OFF_READABILITY: {expected: WEAK, applicable: true, confidence: MEDIUM, evidenceReferences: [{excerpt: "dialogue-heavy exchanges", location: "FULL PROMPT"}], notes: HUMAN_REVIEW_REQUIRED; many beats rely on spoken context.}
-      TIMING_PACING: {expected: WEAK, applicable: true, confidence: HIGH, evidenceReferences: [{excerpt: "25.5 seconds", location: "TIMELINE"}], notes: Long montage for the calibration short-form target.}
-      CONTENT_FAMILY_FIT: {expected: MODERATE, applicable: true, confidence: MEDIUM, evidenceReferences: [{excerpt: "classic public-domain shipwreck adventure literature", location: "GUEST"}], notes: HUMAN_REVIEW_REQUIRED; not a focused absurd-mechanic reel.}
-      FIRST_FRAME_ANOMALY_INTENT: {expected: WEAK, applicable: true, confidence: HIGH, evidenceReferences: [{excerpt: "wave splashes nearby", location: "HOOK"}], notes: Immediate scene is not an impossible visual anomaly.}
-      SPECIALIZED_RULE_APPLICABILITY: {expected: NOT_APPLICABLE, applicable: false, confidence: HIGH, evidenceReferences: [], notes: No specialized absurd-mechanic profile.}
+      HOOK:
+        expected: MODERATE
+        applicable: true
+        confidence: HIGH
+        evidenceReferences:
+        - excerpt: Luca lies on soft sand ... wave splashes
+          location: 0.0-1.2 SEC
+        notes: Immediate scene
+        but no central impossible anomaly.: null
+      GOAL:
+        expected: NOT_ESTABLISHED
+        applicable: true
+        confidence: HIGH
+        evidenceReferences:
+        - excerpt: Adventure!
+          location: 1.2-5.0 SEC
+        notes: Broad adventure desire is not a focused local problem-solving goal.
+        reviewStatus: APPROVED
+      CENTRAL_MECHANIC:
+        expected: NOT_ESTABLISHED
+        applicable: true
+        confidence: HIGH
+        evidenceReferences:
+        - excerpt: tries opening a coconut ... fishing ... builds a shelter
+          location: COMEDY MONTAGE
+        notes: Multiple activities but no single impossible rule.
+      ACTIVE_ATTEMPT_COUNT:
+        expected: 0
+        applicable: true
+        confidence: HIGH
+        evidenceReferences:
+        - excerpt: COMEDY MONTAGE
+          location: 5.0-10.0 SEC
+        notes: No canonical goal-directed impossible-mechanic attempt sequence.
+        reviewStatus: APPROVED
+      DISTINCT_STRATEGY_COUNT:
+        expected: 0
+        applicable: true
+        confidence: HIGH
+        evidenceReferences:
+        - excerpt: opening coconut / fishing / building shelter
+          location: COMEDY MONTAGE
+        notes: Activities are not attempts toward one central mechanic.
+        reviewStatus: APPROVED
+      DISTINCT_STRATEGIES:
+        expected: []
+        applicable: true
+        confidence: HIGH
+        evidenceReferences:
+        - excerpt: three unrelated survival activities
+          location: COMEDY MONTAGE
+        notes: No central strategy set.
+        reviewStatus: APPROVED
+      ESCALATION:
+        expected: NOT_APPLICABLE
+        applicable: false
+        confidence: HIGH
+        evidenceReferences: []
+        notes: No single mechanic to escalate.
+      PROGRESSION:
+        expected: WEAK
+        applicable: true
+        confidence: HIGH
+        evidenceReferences:
+        - excerpt: comedy montage
+          location: 5.0-10.0 SEC
+        notes: Events accumulate but do not form one causal progression.
+      REALIZATION:
+        expected: NOT_ESTABLISHED
+        applicable: true
+        confidence: MEDIUM
+        evidenceReferences:
+        - excerpt: A dream?
+          location: TWIST
+        notes: HUMAN_REVIEW_REQUIRED; dream recognition is not a mechanic realization.
+      FAKE_RESOLUTION:
+        expected: NOT_ESTABLISHED
+        applicable: true
+        confidence: HIGH
+        evidenceReferences:
+        - excerpt: wakes in his own bed
+          location: TWIST
+        notes: Dream transition is not a fake resolution of a central rule.
+      PAYOFF:
+        expected: MODERATE
+        applicable: true
+        confidence: MEDIUM
+        evidenceReferences:
+        - excerpt: same journal in his hand
+          location: TWIST
+        notes: HUMAN_REVIEW_REQUIRED; twist exists but is weakly connected to the
+          earlier montage.
+      LOOP:
+        expected: NO_LOOP
+        applicable: true
+        confidence: HIGH
+        evidenceReferences:
+        - excerpt: CUT
+          location: TWIST
+        notes: No explicit opening return.
+      CHARACTER_PERFORMANCE:
+        expected: MODERATE
+        applicable: true
+        confidence: MEDIUM
+        evidenceReferences:
+        - excerpt: Luca bolts upright
+        - excerpt: stares at camera
+        notes: HUMAN_REVIEW_REQUIRED.
+      PRODUCIBILITY:
+        expected: HIGH_RISK
+        applicable: true
+        confidence: HIGH
+        evidenceReferences:
+        - excerpt: island ... coconut ... fishing ... shelter ... cave ... chest
+          location: FULL PROMPT
+        notes: Many locations/props/actions for a short-form plan.
+      SOUND_OFF_READABILITY:
+        expected: WEAK
+        applicable: true
+        confidence: MEDIUM
+        evidenceReferences:
+        - excerpt: dialogue-heavy exchanges
+          location: FULL PROMPT
+        notes: HUMAN_REVIEW_REQUIRED; many beats rely on spoken context.
+      TIMING_PACING:
+        expected: WEAK
+        applicable: true
+        confidence: HIGH
+        evidenceReferences:
+        - excerpt: 25.5 seconds
+          location: TIMELINE
+        notes: Long montage for the calibration short-form target.
+      CONTENT_FAMILY_FIT:
+        expected: MODERATE
+        applicable: true
+        confidence: MEDIUM
+        evidenceReferences:
+        - excerpt: classic public-domain shipwreck adventure literature
+          location: GUEST
+        notes: HUMAN_REVIEW_REQUIRED; not a focused absurd-mechanic reel.
+      FIRST_FRAME_ANOMALY_INTENT:
+        expected: WEAK
+        applicable: true
+        confidence: HIGH
+        evidenceReferences:
+        - excerpt: wave splashes nearby
+          location: HOOK
+        notes: Immediate scene is not an impossible visual anomaly.
+      SPECIALIZED_RULE_APPLICABILITY:
+        expected: NOT_APPLICABLE
+        applicable: false
+        confidence: HIGH
+        evidenceReferences: []
+        notes: No specialized absurd-mechanic profile.
