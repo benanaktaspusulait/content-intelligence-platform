@@ -116,3 +116,36 @@ def test_policy_comparison_covers_declared_policy_fields() -> None:
     assert len(result) == 5
     assert any(item.classification == "EXPECTED_POLICY_CHANGE" for item in result)
     assert any(item.message == "Policy field: baselineStatus" and item.is_unexpected_policy_regression for item in result)
+
+
+def test_realization_mode_is_a_comparator_assertion_and_mutation_fails_gate() -> None:
+    from app.golden.comparator import compare_cohort
+
+    truth = {
+        "assets": {
+            "asset-1": {
+                "dimensions": {
+                    "REALIZATION": {
+                        "expected": "AVAILABLE",
+                        "mode": "IMPLICIT_BUT_OBSERVABLE",
+                        "applicable": True,
+                        "confidence": "HIGH",
+                        "evidenceReferences": [{"excerpt": "object becomes normal; character relaxes"}],
+                        "notes": "",
+                    }
+                }
+            }
+        }
+    }
+    baseline = {"assets": {"asset-1": {"dimensionValues": {"REALIZATION": "AVAILABLE", "REALIZATION_MODE": "IMPLICIT_BUT_OBSERVABLE"}, "knownIssues": []}}}
+    current = {"assets": {"asset-1": {"dimensionValues": {"REALIZATION": "AVAILABLE", "REALIZATION_MODE": "IMPLICIT_BUT_OBSERVABLE"}, "knownIssues": []}}}
+    passing = compare_cohort(truth, baseline, current)
+    assert any(row["dimension"] == "REALIZATION_MODE" and row["classification"] == "PASS" for row in passing["assertions"])
+    assert passing["newSemanticRegressions"] == 0
+
+    current["assets"]["asset-1"]["dimensionValues"]["REALIZATION_MODE"] = "EXPLICIT"
+    failing = compare_cohort(truth, baseline, current)
+    mode_rows = [row for row in failing["assertions"] if row["dimension"] == "REALIZATION_MODE"]
+    assert mode_rows[0]["classification"] == "REGRESSED_FROM_BASELINE"
+    assert failing["newSemanticRegressions"] == 1
+    assert failing["releaseGate"] == "FAIL"

@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.support.TransactionTemplate;
 
@@ -30,6 +31,7 @@ public class PublicationAttemptOrchestrator {
   private final TransactionTemplate transactionTemplate;
   private final MetaPublicationGuard metaPublicationGuard;
 
+  @Autowired
   public PublicationAttemptOrchestrator(
       PublicationAttemptRepository attemptRepository,
       PublicationJobRepository jobRepository,
@@ -41,6 +43,20 @@ public class PublicationAttemptOrchestrator {
     this.publishers = publishers;
     this.transactionTemplate = transactionTemplate;
     this.metaPublicationGuard = metaPublicationGuard;
+  }
+
+  /** Compatibility constructor for focused publication tests. */
+  public PublicationAttemptOrchestrator(
+      PublicationAttemptRepository attemptRepository,
+      PublicationJobRepository jobRepository,
+      Map<String, PlatformPublisher> publishers,
+      TransactionTemplate transactionTemplate) {
+    this(
+        attemptRepository,
+        jobRepository,
+        publishers,
+        transactionTemplate,
+        new MetaPublicationGuard(true));
   }
 
   public void processAttempt(UUID attemptId, String leaseOwner) {
@@ -96,8 +112,7 @@ public class PublicationAttemptOrchestrator {
       clearLease(attempt);
       attemptRepository.save(attempt);
       job.updateStatus(PublicationStatus.FAILED);
-      job.setErrorCode("META_PUBLISH_DISABLED");
-      job.setErrorMessage(disabled.getMessage());
+      job.setErrorMessage("META_PUBLISH_DISABLED: " + disabled.getMessage());
       jobRepository.save(job);
       return null;
     }

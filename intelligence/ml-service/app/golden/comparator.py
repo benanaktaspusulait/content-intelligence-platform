@@ -174,6 +174,7 @@ def extract_dimension_values(snapshot: dict[str, Any]) -> dict[str, Any]:
         "ESCALATION": dimensions.get("ESCALATION"),
         "PROGRESSION": dimensions.get("PROGRESSION"),
         "REALIZATION": story.get("realization"),
+        "REALIZATION_MODE": story.get("realization_mode"),
         "FAKE_RESOLUTION": story.get("fake_resolution"),
         "PAYOFF": story.get("payoff"),
         "LOOP": dimensions.get("LOOP_INTENT"),
@@ -234,6 +235,29 @@ def compare_cohort(
                 counts["goldReviewRequired"] += 1
             if comparison.is_new_semantic_regression:
                 counts["newSemanticRegressions"] += 1
+            if dimension == "REALIZATION" and gold.get("mode") is not None:
+                mode_gold = dict(gold)
+                mode_gold["expected"] = gold["mode"]
+                mode_comparison = compare_dimension(
+                    gold=mode_gold,
+                    baseline={"actual": baseline_values.get("REALIZATION_MODE")},
+                    current={"actual": current_values.get("REALIZATION_MODE")},
+                    assertion_type="ENUM",
+                    known_issue=known_issue,
+                )
+                assertions.append({"assetId": asset_id, "dimension": "REALIZATION_MODE", **mode_comparison.to_dict()})
+                if mode_comparison.classification == "PASS":
+                    counts["passed"] += 1
+                elif mode_comparison.classification == "FAIL":
+                    counts["failed"] += 1
+                elif mode_comparison.classification == "IMPROVED_FROM_BASELINE":
+                    counts["improvedFromBaseline"] += 1
+                elif mode_comparison.classification == "UNCHANGED_KNOWN_ISSUE":
+                    counts["unchangedKnownIssues"] += 1
+                elif mode_comparison.classification == "GOLD_REVIEW_REQUIRED":
+                    counts["goldReviewRequired"] += 1
+                if mode_comparison.is_new_semantic_regression:
+                    counts["newSemanticRegressions"] += 1
         if policy_expectations:
             policy = (policy_expectations.get("assets") or {}).get(asset_id) or {}
             baseline_policy = _policy_projection(baseline_asset, baseline)

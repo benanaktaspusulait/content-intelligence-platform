@@ -13,7 +13,7 @@ public class MetaPublicationGuard {
     this(Boolean.parseBoolean(enabled));
   }
 
-  MetaPublicationGuard(boolean enabled) {
+  public MetaPublicationGuard(boolean enabled) {
     this.enabled = enabled;
   }
 

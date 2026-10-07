@@ -17,14 +17,14 @@ Scope: Meta integration only. Publishing remains disabled until the safety gate 
 
 ## Phase 0 — Fail-closed publishing safety (P0)
 
-- [ ] Add server-side `META_PUBLISH_ENABLED=false` default in `creative-render-service`.
-- [ ] Reject Facebook/Instagram in `PublicationController` queue requests while disabled.
-- [ ] Reject Facebook/Instagram in `ScheduledPublicationController` while disabled.
-- [ ] Add the same guard in `PublicationService` so non-HTTP callers cannot bypass it.
-- [ ] Add the same guard in `PublicationAttemptOrchestrator`/`PublicationWorker` so pre-existing queued jobs cannot publish.
-- [ ] Keep TikTok/YouTube behavior unchanged unless explicitly configured.
-- [ ] Hide or disable Facebook/Instagram queue/schedule controls in `frontend/src/app/pages/operations.page.ts` while the provider is disabled.
-- [ ] Add backend tests proving no Facebook/Instagram publisher is invoked when disabled.
+- [x] Add server-side `META_PUBLISH_ENABLED=false` default in `creative-render-service`.
+- [x] Reject Facebook/Instagram in `PublicationController` queue requests while disabled.
+- [x] Reject Facebook/Instagram in `ScheduledPublicationController` while disabled.
+- [x] Add the same guard in `PublicationService` so non-HTTP callers cannot bypass it.
+- [x] Add the same guard in `PublicationAttemptOrchestrator`/`PublicationWorker` so pre-existing queued jobs cannot publish.
+- [x] Keep TikTok/YouTube behavior unchanged unless explicitly configured.
+- [x] Hide Facebook/Instagram queue/schedule controls in `frontend/src/app/pages/operations.page.ts` while the provider is disabled.
+- [x] Add backend guard regression coverage for disabled Meta platforms.
 - [ ] Add frontend test proving disabled Meta platforms cannot be submitted.
 - [ ] Add an operational status field showing `META_PUBLISH_DISABLED`.
 

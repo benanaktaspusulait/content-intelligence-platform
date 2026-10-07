@@ -119,6 +119,18 @@
     },
     {
       "assetId": "sticky-ball-01",
+      "baseline": null,
+      "classification": "IMPROVED_FROM_BASELINE",
+      "confidence": "MEDIUM",
+      "current": "IMPLICIT_BUT_OBSERVABLE",
+      "dimension": "REALIZATION_MODE",
+      "expected": "IMPLICIT_BUT_OBSERVABLE",
+      "isNewSemanticRegression": false,
+      "isUnexpectedPolicyRegression": false,
+      "message": "Golden structural assertion comparison."
+    },
+    {
+      "assetId": "sticky-ball-01",
       "baseline": "OPTIONAL",
       "classification": "FAIL",
       "confidence": "HIGH",
@@ -464,6 +476,18 @@
       "current": "UNKNOWN",
       "dimension": "REALIZATION",
       "expected": "AVAILABLE",
+      "isNewSemanticRegression": false,
+      "isUnexpectedPolicyRegression": false,
+      "message": "Current output disagrees with a non-high-confidence Gold Truth label."
+    },
+    {
+      "assetId": "ball-crocodile-01",
+      "baseline": null,
+      "classification": "GOLD_REVIEW_REQUIRED",
+      "confidence": "MEDIUM",
+      "current": null,
+      "dimension": "REALIZATION_MODE",
+      "expected": "IMPLICIT_BUT_OBSERVABLE",
       "isNewSemanticRegression": false,
       "isUnexpectedPolicyRegression": false,
       "message": "Current output disagrees with a non-high-confidence Gold Truth label."
@@ -825,6 +849,18 @@
       "classification": "UNCHANGED_KNOWN_ISSUE",
       "confidence": "HIGH",
       "current": null,
+      "dimension": "REALIZATION_MODE",
+      "expected": "IMPLICIT_BUT_OBSERVABLE",
+      "isNewSemanticRegression": false,
+      "isUnexpectedPolicyRegression": false,
+      "message": "Golden structural assertion comparison."
+    },
+    {
+      "assetId": "upside-chair-01",
+      "baseline": null,
+      "classification": "UNCHANGED_KNOWN_ISSUE",
+      "confidence": "HIGH",
+      "current": null,
       "dimension": "FAKE_RESOLUTION",
       "expected": "PRESENT",
       "isNewSemanticRegression": false,
@@ -1165,6 +1201,18 @@
       "current": "UNKNOWN",
       "dimension": "REALIZATION",
       "expected": "AVAILABLE",
+      "isNewSemanticRegression": false,
+      "isUnexpectedPolicyRegression": false,
+      "message": "Current output disagrees with a non-high-confidence Gold Truth label."
+    },
+    {
+      "assetId": "lamp-01",
+      "baseline": null,
+      "classification": "GOLD_REVIEW_REQUIRED",
+      "confidence": "MEDIUM",
+      "current": null,
+      "dimension": "REALIZATION_MODE",
+      "expected": "IMPLICIT_BUT_OBSERVABLE",
       "isNewSemanticRegression": false,
       "isUnexpectedPolicyRegression": false,
       "message": "Current output disagrees with a non-high-confidence Gold Truth label."
@@ -1517,6 +1565,18 @@
       "current": "UNKNOWN",
       "dimension": "REALIZATION",
       "expected": "AVAILABLE",
+      "isNewSemanticRegression": false,
+      "isUnexpectedPolicyRegression": false,
+      "message": "Current output disagrees with a non-high-confidence Gold Truth label."
+    },
+    {
+      "assetId": "snack-box-01",
+      "baseline": null,
+      "classification": "GOLD_REVIEW_REQUIRED",
+      "confidence": "MEDIUM",
+      "current": null,
+      "dimension": "REALIZATION_MODE",
+      "expected": "IMPLICIT_BUT_OBSERVABLE",
       "isNewSemanticRegression": false,
       "isUnexpectedPolicyRegression": false,
       "message": "Current output disagrees with a non-high-confidence Gold Truth label."
@@ -1879,6 +1939,18 @@
     },
     {
       "assetId": "box-cat-01",
+      "baseline": null,
+      "classification": "GOLD_REVIEW_REQUIRED",
+      "confidence": "MEDIUM",
+      "current": null,
+      "dimension": "REALIZATION_MODE",
+      "expected": "IMPLICIT_BUT_OBSERVABLE",
+      "isNewSemanticRegression": false,
+      "isUnexpectedPolicyRegression": false,
+      "message": "Current output disagrees with a non-high-confidence Gold Truth label."
+    },
+    {
+      "assetId": "box-cat-01",
       "baseline": "OPTIONAL",
       "classification": "UNCHANGED_KNOWN_ISSUE",
       "confidence": "HIGH",
@@ -2233,6 +2305,18 @@
     },
     {
       "assetId": "spot-cat-01",
+      "baseline": null,
+      "classification": "GOLD_REVIEW_REQUIRED",
+      "confidence": "MEDIUM",
+      "current": null,
+      "dimension": "REALIZATION_MODE",
+      "expected": "IMPLICIT_BUT_OBSERVABLE",
+      "isNewSemanticRegression": false,
+      "isUnexpectedPolicyRegression": false,
+      "message": "Current output disagrees with a non-high-confidence Gold Truth label."
+    },
+    {
+      "assetId": "spot-cat-01",
       "baseline": "OPTIONAL",
       "classification": "UNCHANGED_KNOWN_ISSUE",
       "confidence": "HIGH",
@@ -2578,6 +2662,18 @@
       "current": "UNKNOWN",
       "dimension": "REALIZATION",
       "expected": "AVAILABLE",
+      "isNewSemanticRegression": false,
+      "isUnexpectedPolicyRegression": false,
+      "message": "Current output disagrees with a non-high-confidence Gold Truth label."
+    },
+    {
+      "assetId": "sneaky-door-01",
+      "baseline": null,
+      "classification": "GOLD_REVIEW_REQUIRED",
+      "confidence": "MEDIUM",
+      "current": null,
+      "dimension": "REALIZATION_MODE",
+      "expected": "EXPLICIT",
       "isNewSemanticRegression": false,
       "isUnexpectedPolicyRegression": false,
       "message": "Current output disagrees with a non-high-confidence Gold Truth label."
@@ -3287,6 +3383,18 @@
         },
         {
           "assetId": "ball-crocodile-01",
+          "baseline": null,
+          "classification": "GOLD_REVIEW_REQUIRED",
+          "confidence": "MEDIUM",
+          "current": null,
+          "dimension": "REALIZATION_MODE",
+          "expected": "IMPLICIT_BUT_OBSERVABLE",
+          "isNewSemanticRegression": false,
+          "isUnexpectedPolicyRegression": false,
+          "message": "Current output disagrees with a non-high-confidence Gold Truth label."
+        },
+        {
+          "assetId": "ball-crocodile-01",
           "baseline": "OPTIONAL",
           "classification": "UNCHANGED_KNOWN_ISSUE",
           "confidence": "HIGH",
@@ -3643,6 +3751,18 @@
           "current": "UNKNOWN",
           "dimension": "REALIZATION",
           "expected": "AVAILABLE",
+          "isNewSemanticRegression": false,
+          "isUnexpectedPolicyRegression": false,
+          "message": "Current output disagrees with a non-high-confidence Gold Truth label."
+        },
+        {
+          "assetId": "box-cat-01",
+          "baseline": null,
+          "classification": "GOLD_REVIEW_REQUIRED",
+          "confidence": "MEDIUM",
+          "current": null,
+          "dimension": "REALIZATION_MODE",
+          "expected": "IMPLICIT_BUT_OBSERVABLE",
           "isNewSemanticRegression": false,
           "isUnexpectedPolicyRegression": false,
           "message": "Current output disagrees with a non-high-confidence Gold Truth label."
@@ -4359,6 +4479,18 @@
         },
         {
           "assetId": "lamp-01",
+          "baseline": null,
+          "classification": "GOLD_REVIEW_REQUIRED",
+          "confidence": "MEDIUM",
+          "current": null,
+          "dimension": "REALIZATION_MODE",
+          "expected": "IMPLICIT_BUT_OBSERVABLE",
+          "isNewSemanticRegression": false,
+          "isUnexpectedPolicyRegression": false,
+          "message": "Current output disagrees with a non-high-confidence Gold Truth label."
+        },
+        {
+          "assetId": "lamp-01",
           "baseline": "OPTIONAL",
           "classification": "GOLD_REVIEW_REQUIRED",
           "confidence": "MEDIUM",
@@ -4711,6 +4843,18 @@
           "current": "UNKNOWN",
           "dimension": "REALIZATION",
           "expected": "AVAILABLE",
+          "isNewSemanticRegression": false,
+          "isUnexpectedPolicyRegression": false,
+          "message": "Current output disagrees with a non-high-confidence Gold Truth label."
+        },
+        {
+          "assetId": "snack-box-01",
+          "baseline": null,
+          "classification": "GOLD_REVIEW_REQUIRED",
+          "confidence": "MEDIUM",
+          "current": null,
+          "dimension": "REALIZATION_MODE",
+          "expected": "IMPLICIT_BUT_OBSERVABLE",
           "isNewSemanticRegression": false,
           "isUnexpectedPolicyRegression": false,
           "message": "Current output disagrees with a non-high-confidence Gold Truth label."
@@ -5074,6 +5218,18 @@
         },
         {
           "assetId": "sneaky-door-01",
+          "baseline": null,
+          "classification": "GOLD_REVIEW_REQUIRED",
+          "confidence": "MEDIUM",
+          "current": null,
+          "dimension": "REALIZATION_MODE",
+          "expected": "EXPLICIT",
+          "isNewSemanticRegression": false,
+          "isUnexpectedPolicyRegression": false,
+          "message": "Current output disagrees with a non-high-confidence Gold Truth label."
+        },
+        {
+          "assetId": "sneaky-door-01",
           "baseline": "OPTIONAL",
           "classification": "GOLD_REVIEW_REQUIRED",
           "confidence": "MEDIUM",
@@ -5428,6 +5584,18 @@
           "current": "UNKNOWN",
           "dimension": "REALIZATION",
           "expected": "AVAILABLE",
+          "isNewSemanticRegression": false,
+          "isUnexpectedPolicyRegression": false,
+          "message": "Current output disagrees with a non-high-confidence Gold Truth label."
+        },
+        {
+          "assetId": "spot-cat-01",
+          "baseline": null,
+          "classification": "GOLD_REVIEW_REQUIRED",
+          "confidence": "MEDIUM",
+          "current": null,
+          "dimension": "REALIZATION_MODE",
+          "expected": "IMPLICIT_BUT_OBSERVABLE",
           "isNewSemanticRegression": false,
           "isUnexpectedPolicyRegression": false,
           "message": "Current output disagrees with a non-high-confidence Gold Truth label."
@@ -5797,6 +5965,18 @@
         },
         {
           "assetId": "sticky-ball-01",
+          "baseline": null,
+          "classification": "IMPROVED_FROM_BASELINE",
+          "confidence": "MEDIUM",
+          "current": "IMPLICIT_BUT_OBSERVABLE",
+          "dimension": "REALIZATION_MODE",
+          "expected": "IMPLICIT_BUT_OBSERVABLE",
+          "isNewSemanticRegression": false,
+          "isUnexpectedPolicyRegression": false,
+          "message": "Golden structural assertion comparison."
+        },
+        {
+          "assetId": "sticky-ball-01",
           "baseline": "OPTIONAL",
           "classification": "FAIL",
           "confidence": "HIGH",
@@ -6158,6 +6338,18 @@
           "classification": "UNCHANGED_KNOWN_ISSUE",
           "confidence": "HIGH",
           "current": null,
+          "dimension": "REALIZATION_MODE",
+          "expected": "IMPLICIT_BUT_OBSERVABLE",
+          "isNewSemanticRegression": false,
+          "isUnexpectedPolicyRegression": false,
+          "message": "Golden structural assertion comparison."
+        },
+        {
+          "assetId": "upside-chair-01",
+          "baseline": null,
+          "classification": "UNCHANGED_KNOWN_ISSUE",
+          "confidence": "HIGH",
+          "current": null,
           "dimension": "FAKE_RESOLUTION",
           "expected": "PRESENT",
           "isNewSemanticRegression": false,
@@ -6426,13 +6618,13 @@
   "summary": {
     "assets": 9,
     "expectedPolicyChanges": 4,
-    "goldAssertions": 261,
-    "goldReviewRequired": 57,
-    "improvedFromBaseline": 15,
+    "goldAssertions": 269,
+    "goldReviewRequired": 63,
+    "improvedFromBaseline": 16,
     "newSemanticRegressions": 0,
     "semanticFailed": 8,
     "semanticPassed": 25,
-    "unchangedKnownIssues": 59,
+    "unchangedKnownIssues": 60,
     "unexpectedPolicyRegressions": 0
   }
 }

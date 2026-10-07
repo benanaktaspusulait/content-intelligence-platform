@@ -8,29 +8,29 @@
 | Metric | Value |
 |---|---:|
 | Assets | 9 |
-| Golden assertions | 261 |
+| Golden assertions | 269 |
 | Semantic passed | 25 |
 | Semantic failed | 8 |
-| Improved from baseline | 15 |
-| Unchanged known issues | 59 |
+| Improved from baseline | 16 |
+| Unchanged known issues | 60 |
 | NEW semantic regressions | 0 |
 | Expected policy changes | 4 |
 | Unexpected policy regressions | 0 |
-| Gold review required | 57 |
+| Gold review required | 63 |
 
 ## Asset Matrix
 
 | Asset | Corpus role | Assertions |
 |---|---|---:|
-| Luca Ball-Multiplying Crocodile (`ball-crocodile-01`) | WINNER | 29 |
-| Luca And The Box Cat (`box-cat-01`) | MIDDLE | 29 |
+| Luca Ball-Multiplying Crocodile (`ball-crocodile-01`) | WINNER | 30 |
+| Luca And The Box Cat (`box-cat-01`) | MIDDLE | 30 |
 | Luca And The Island Journal (`island-journal-01`) | NEGATIVE | 29 |
-| Kiko And The Lamp That Hates Being Watched (`lamp-01`) | MIDDLE | 29 |
-| Mimi And The Snack Box That Keeps Changing (`snack-box-01`) | MIDDLE | 29 |
-| Mimi Vs. The Sneaky Door (`sneaky-door-01`) | NEGATIVE | 29 |
-| Kiko And The Spot-Stealing Cat (`spot-cat-01`) | NEGATIVE | 29 |
-| Luca Sticky Ball (`sticky-ball-01`) | WINNER | 29 |
-| Upside-Down Chair (`upside-chair-01`) | WINNER | 29 |
+| Kiko And The Lamp That Hates Being Watched (`lamp-01`) | MIDDLE | 30 |
+| Mimi And The Snack Box That Keeps Changing (`snack-box-01`) | MIDDLE | 30 |
+| Mimi Vs. The Sneaky Door (`sneaky-door-01`) | NEGATIVE | 30 |
+| Kiko And The Spot-Stealing Cat (`spot-cat-01`) | NEGATIVE | 30 |
+| Luca Sticky Ball (`sticky-ball-01`) | WINNER | 30 |
+| Upside-Down Chair (`upside-chair-01`) | WINNER | 30 |
 
 ## Full-stack Fingerprint
 
