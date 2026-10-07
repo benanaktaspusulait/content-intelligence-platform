@@ -2,6 +2,25 @@
 
 Scope: Meta integration only. Publishing remains disabled until the safety gate is implemented and explicitly enabled later. Do not modify OpenArt, prompt scoring, Meta publishing, or unrelated generated work while executing a Meta task unless the task explicitly requires it.
 
+Publisher migration is now an explicitly authorized companion workstream. It must not modify Family calibration work and must preserve the Meta read/comment scope boundaries. The current publisher inventory and migration plan are recorded in [`docs/superpowers/plans/2026-10-07-publisher-microservices-java-migration-plan.md`](docs/superpowers/plans/2026-10-07-publisher-microservices-java-migration-plan.md).
+
+## Current work list
+
+- [x] Audit `publisher/` Python packages, Java in-process publishers, Compose topology, and bypass/duplicate-ledger risks.
+- [x] Confirm the three target publisher services: Meta (Facebook + Instagram), TikTok, and YouTube.
+- [x] Record the migration architecture and Python-removal gates in the publisher migration plan.
+- [x] Keep the current Python publisher tree intact until Java parity, cutover, and reference-removal gates pass.
+- [ ] Define the provider-neutral Java publisher contract and normalized request/result/error model.
+- [ ] Create the Meta publisher microservice for Facebook Page and Instagram Professional/Reels protocols.
+- [ ] Create the TikTok publisher microservice with chunked upload and status reconciliation.
+- [ ] Create the YouTube publisher microservice with OAuth refresh and resumable upload.
+- [ ] Replace render-service in-process publisher bean dispatch with internal publisher-service clients.
+- [ ] Add Docker/Compose service definitions, internal routing, health checks, credential configuration, and no-browser-secret boundaries.
+- [ ] Add Java provider contract/parity tests before any Python deletion.
+- [ ] Verify no runtime or documentation path invokes Python publisher code.
+- [ ] Remove `publisher/` Python code, SQLite ledgers, Python dependencies, and stale integration docs only after all removal gates pass.
+- [ ] Re-run backend/render/frontend/package/release checks and update `META_INTEGRATION_READINESS.md`.
+
 ## Current baseline
 
 - [x] Backend read-only Meta connection check: `/api/v1/meta/connection`

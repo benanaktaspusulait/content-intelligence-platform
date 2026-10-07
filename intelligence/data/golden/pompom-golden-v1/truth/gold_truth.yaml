@@ -18,10 +18,44 @@ definitions:
     evidenceReferences: []
     notes: HUMAN_REVIEW_REQUIRED; source text does not support a stronger structural
       assertion.
+  family6TemporalGenerationLoad:
+    officialName: 'FAMILY 6 — TEMPORAL GENERATION LOAD'
+    question: 'Does this plan impose too much temporal/state/continuity load for a short generative-video render?'
+    statuses: [MANAGEABLE, HIGH, UNKNOWN, NOT_APPLICABLE]
+    axes:
+      - temporal_packing
+      - state_breadth
+      - continuity_memory
+      - action_concurrency
+    highThreshold: >
+      HIGH requires either one severe load axis or at least two materially
+      elevated load axes.
+    manageableThreshold: >
+      MANAGEABLE means state progression is mainly sequential with low
+      breadth/concurrency and limited continuity memory, even when beat count
+      is relatively high.
+    boundary: >
+      Beat count, attempt count, escalation, producibility, continuation-lock
+      equality, and general story complexity are not sufficient substitutes for
+      temporal generation load.
 assets:
   sticky-ball-01:
     displayName: Luca Sticky Ball
     dimensions:
+      TEMPORAL_GENERATION_LOAD:
+        expected: MANAGEABLE
+        applicable: true
+        confidence: MEDIUM
+        evidenceReferences:
+        - excerpt: Single continuous visual flow.
+          location: CAMERA
+        - excerpt: seven labelled beats across 15 seconds
+          location: TIMELINE
+        notes: >
+          State progression is sequential within one Luca-ball-wall scene and
+          one mechanic. The plan has no clip handoff; beat count alone is not
+          treated as temporal generation overload.
+        reviewStatus: APPROVED
       HOOK:
         expected: STRONG
         applicable: true
@@ -235,6 +269,20 @@ assets:
   ball-crocodile-01:
     displayName: Luca Ball-Multiplying Crocodile
     dimensions:
+      TEMPORAL_GENERATION_LOAD:
+        expected: HIGH
+        applicable: true
+        confidence: MEDIUM
+        evidenceReferences:
+        - excerpt: 1 ball → 3 balls → 6 balls → huge final fountain
+          location: MOTION / RETENTION RULES
+        - excerpt: Luca must actively catch, throw, dodge, step back, roll, and react.
+          location: MOTION / RETENTION RULES
+        notes: >
+          The severe load is object-count growth plus concurrent ball trajectories
+          and character reactions, not the six-beat count. One scene and one
+          mechanic reduce the breadth but do not remove the final concurrency load.
+        reviewStatus: APPROVED
       HOOK:
         expected: STRONG
         applicable: true
@@ -445,6 +493,23 @@ assets:
   upside-chair-01:
     displayName: Upside-Down Chair
     dimensions:
+      TEMPORAL_GENERATION_LOAD:
+        expected: HIGH
+        applicable: true
+        confidence: MEDIUM
+        evidenceReferences:
+        - excerpt: Create a highly engaging 15–18 second vertical 9:16 Pompom Hills Instagram Reel.
+          location: TARGET DURATION
+        - excerpt: Something must change every 1–2 seconds.
+          location: INSTAGRAM RETENTION RULES
+        - excerpt: The ENTIRE chair suddenly flips upside down WITH Kiko on it.
+          location: TWIST + LOOP
+        notes: >
+          The plan compresses seven temporal sections and six dialogue/lip-sync
+          points into a short render, then coordinates a coupled Kiko-and-chair
+          inversion. Single-room simplicity reduces breadth but does not remove
+          the elevated packing and action-coordination load.
+        reviewStatus: APPROVED
       HOOK:
         expected: STRONG
         applicable: true
@@ -661,6 +726,22 @@ assets:
   lamp-01:
     displayName: Kiko And The Lamp That Hates Being Watched
     dimensions:
+      TEMPORAL_GENERATION_LOAD:
+        expected: MANAGEABLE
+        applicable: true
+        confidence: MEDIUM
+        evidenceReferences:
+        - excerpt: 'MODE: Frame to Video, one continuous shot'
+          location: MODE
+        - excerpt: She uses a small mirror or reflective object to “watch” the lamp indirectly.
+          location: 8.0–11.5 SEC
+        - excerpt: a second small light in the room flickers on or off instead.
+          location: 11.5–13.5 SEC
+        notes: >
+          The plan adds mirror-mediated observation and one secondary light state,
+          but progression remains sequential in one locked room with no clip
+          handoff and limited continuity memory.
+        reviewStatus: APPROVED
       HOOK:
         expected: STRONG
         applicable: true
@@ -866,6 +947,22 @@ assets:
   snack-box-01:
     displayName: Mimi And The Snack Box That Keeps Changing
     dimensions:
+      TEMPORAL_GENERATION_LOAD:
+        expected: MANAGEABLE
+        applicable: true
+        confidence: MEDIUM
+        evidenceReferences:
+        - excerpt: 'DURATION: 15 seconds'
+          location: DURATION
+        - excerpt: Exactly one snack box with a lid.
+          location: BOX LOCK
+        - excerpt: apple ... banana or spoon ... sock or block ... cracker
+          location: ACTION TIMING
+        notes: >
+          Several contents and lid states change, but they occupy one box in one
+          fixed composition. State progression is sequential and local rather
+          than a broad multi-entity or cross-clip continuity load.
+        reviewStatus: APPROVED
       HOOK:
         expected: STRONG
         applicable: true
@@ -1068,6 +1165,20 @@ assets:
   box-cat-01:
     displayName: Luca And The Box Cat
     dimensions:
+      TEMPORAL_GENERATION_LOAD:
+        expected: MANAGEABLE
+        applicable: true
+        confidence: HIGH
+        evidenceReferences:
+        - excerpt: 15 seconds, one continuous fixed-camera shot in a warm simple playroom.
+          location: PROMPT
+        - excerpt: one rigid toy box and one stylized cat clearly visible.
+          location: PROMPT
+        notes: >
+          The three interventions reuse one local Luca-cat-box relationship in
+          one camera and one room. State changes are sequential, with limited
+          continuity memory despite multiple attempts.
+        reviewStatus: APPROVED
       HOOK:
         expected: STRONG
         applicable: true
@@ -1269,6 +1380,22 @@ assets:
   spot-cat-01:
     displayName: Kiko And The Spot-Stealing Cat
     dimensions:
+      TEMPORAL_GENERATION_LOAD:
+        expected: HIGH
+        applicable: true
+        confidence: MEDIUM
+        evidenceReferences:
+        - excerpt: three clearly readable open sitting spots on the floor/low seating area.
+          location: PROMPT
+        - excerpt: whenever Kiko truly commits to sitting in an empty spot, the cat claims that exact spot first.
+          location: CORE CONCEPT
+        - excerpt: The cat ignores the fake and claims Kiko's real target spot.
+          location: ATTEMPT 3 — DECOY
+        notes: >
+          The load comes from spatial target identity: three spots, target changes,
+          exact committed-target tracking, and decoy-versus-real-target continuity.
+          Five beats and one fixed camera do not fully represent this state breadth.
+        reviewStatus: APPROVED
       HOOK:
         expected: STRONG
         applicable: true
@@ -1467,6 +1594,23 @@ assets:
   sneaky-door-01:
     displayName: Mimi Vs. The Sneaky Door
     dimensions:
+      TEMPORAL_GENERATION_LOAD:
+        expected: HIGH
+        applicable: true
+        confidence: HIGH
+        evidenceReferences:
+        - excerpt: '15 seconds total: 3 × 5-second clips'
+          location: FINAL TARGET
+        - excerpt: Export the unmodified final frame as @image2 ... @image3.
+          location: RENDER ORDER
+        - excerpt: Concatenate Shot 01 → Shot 02 → Shot 03 with direct cuts only.
+          location: ASSEMBLE
+        notes: >
+          The severe load is cross-clip continuity memory and frame-anchor
+          dependency across three renders, including a later second character
+          and a controlled door-to-lens transition. This is broader than a
+          continuation end-state equality check.
+        reviewStatus: APPROVED
       HOOK:
         expected: STRONG
         applicable: true
@@ -1666,6 +1810,23 @@ assets:
   island-journal-01:
     displayName: Luca And The Island Journal
     dimensions:
+      TEMPORAL_GENERATION_LOAD:
+        expected: HIGH
+        applicable: true
+        confidence: HIGH
+        evidenceReferences:
+        - excerpt: Create a premium 23-26 second vertical 9:16 Pompom Hills Instagram Reel.
+          location: TARGET DURATION
+        - excerpt: Luca tries opening a coconut ... He tries fishing ... He builds a shelter.
+          location: COMEDY MONTAGE
+        - excerpt: 'SMASH CUT: Luca wakes in his own bed.'
+          location: TWIST
+        notes: >
+          The plan exceeds the 15-second short target and carries multiple
+          activities, props, locations, characters, and a late dream-state
+          transition. The judgment is temporal/state load, not a generic story
+          complexity or creative-quality label.
+        reviewStatus: APPROVED
       HOOK:
         expected: MODERATE
         applicable: true

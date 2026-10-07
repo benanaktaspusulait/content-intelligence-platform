@@ -10,5 +10,6 @@
   <modules>
     <module>backend</module>
     <module>creative-render-service</module>
+    <module>publisher-contract</module>
   </modules>
 </project>
