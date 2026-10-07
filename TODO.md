@@ -66,7 +66,7 @@ Scope: Meta integration only. Publishing remains disabled until the safety gate 
 - [ ] Add comment/reply polling and reconciliation for missed events.
 - [x] Add moderation state: `RECEIVED`, `PENDING_REVIEW`, `APPROVED`, `REJECTED`, `SENT`, `FAILED`, `RETRYABLE`.
 - [ ] Add optional AI reply-draft generation; drafts never send automatically.
-- [ ] Require human approval before every outbound public comment reply.
+- [x] Require human approval before every outbound public comment reply.
 - [ ] Add provider-specific Facebook and Instagram comment-reply adapters behind one canonical service.
 - [ ] Enforce `META_COMMENT_REPLY_ENABLED` immediately before every provider write.
 - [ ] Add frontend public-comment review, draft approval, reply status, and audit views; do not add DM/Messenger UI.
