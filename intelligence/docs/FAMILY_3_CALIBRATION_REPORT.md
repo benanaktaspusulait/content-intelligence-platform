@@ -89,12 +89,12 @@ intelligence/data/golden/pompom-golden-v1/reports/family3-current/golden-regress
 
 | Metric | Result |
 |---|---:|
-| Golden assertions | 261 |
+| Golden assertions | 269 |
 | Semantic passed | 25 |
 | Semantic failed | 8 |
-| Improved from baseline | 15 |
+| Improved from baseline | 16 |
 | Unchanged known issues | 59 |
-| Gold review required | 57 |
+| Gold review required | 63 |
 | NEW semantic regressions | 0 |
 | Expected policy changes | 4 |
 | Unexpected policy regressions | 0 |
@@ -103,7 +103,7 @@ intelligence/data/golden/pompom-golden-v1/reports/family3-current/golden-regress
 ## 6. Validation
 
 - Family 3 focused tests: **6 passed**
-- Full ML suite: **462 passed, 8 skipped**
+- Full ML suite: **463 passed, 8 skipped**
 - Golden release gate: **PASS**
 - Performance dependencies: **0**
 - Family 4 not started

@@ -39,6 +39,8 @@ REQUIRED_DIMENSIONS = {
     "CONTENT_FAMILY_FIT",
     "FIRST_FRAME_ANOMALY_INTENT",
     "SPECIALIZED_RULE_APPLICABILITY",
+    "MECHANIC_INTERACTION",
+    "RECURRENCE",
 }
 FAMILY_REVIEW_DIMENSIONS = {"GOAL", "ACTIVE_ATTEMPT_COUNT", "DISTINCT_STRATEGY_COUNT", "DISTINCT_STRATEGIES", "ESCALATION", "REALIZATION"}
 
@@ -57,6 +59,8 @@ def test_gold_truth_is_independent_and_evidence_backed() -> None:
                 assert dimension.get("reviewStatus") == "APPROVED", f"Family review missing: {asset_id}/{name}"
             if name == "REALIZATION":
                 assert dimension.get("mode") in {"EXPLICIT", "IMPLICIT_BUT_OBSERVABLE", None}
+            if name == "PAYOFF":
+                assert dimension.get("sameRuleRelation") in {"SAME_RULE", "NOT_ESTABLISHED"}
             if dimension["confidence"] == "HIGH" and dimension["applicable"]:
                 assert dimension["evidenceReferences"]
             if dimension["confidence"] in {"MEDIUM", "LOW"} and dimension.get("reviewStatus") != "APPROVED":

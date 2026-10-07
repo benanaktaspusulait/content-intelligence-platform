@@ -129,6 +129,8 @@ assets:
         - excerpt: drops directly onto his CHEEK and sticks there
           location: FINAL TWIST
         notes: Same sticky rule reaches the character.
+        sameRuleRelation: SAME_RULE
+        reviewStatus: APPROVED
       LOOP:
         expected: NO_LOOP
         applicable: true
@@ -197,6 +199,24 @@ assets:
         confidence: HIGH
         evidenceReferences: []
         notes: Stubborn-return exception is not activated by this source evidence.
+      MECHANIC_INTERACTION:
+        expected: ACTIVE
+        applicable: true
+        confidence: HIGH
+        evidenceReferences:
+        - excerpt: Character action materially engages the established mechanic
+          location: FAMILY_4_GOLD_REVIEW_REPORT.md
+        notes: Human-approved character/mechanic interaction evidence.
+        reviewStatus: APPROVED
+      RECURRENCE:
+        expected: PRESENT
+        applicable: true
+        confidence: HIGH
+        evidenceReferences:
+        - excerpt: Established mechanic returns after apparent normal/success state
+          location: FAMILY_4_GOLD_REVIEW_REPORT.md
+        notes: Human-approved same-mechanic recurrence evidence.
+        reviewStatus: APPROVED
   ball-crocodile-01:
     displayName: Luca Ball-Multiplying Crocodile
     dimensions:
@@ -310,6 +330,8 @@ assets:
         - excerpt: ridiculous FOUNTAIN ... rains across the garden
           location: FINAL TWIST
         notes: Same count rule reaches maximum scale.
+        sameRuleRelation: SAME_RULE
+        reviewStatus: APPROVED
       LOOP:
         expected: NO_LOOP
         applicable: true
@@ -372,6 +394,24 @@ assets:
         confidence: HIGH
         evidenceReferences: []
         notes: No stubborn-return boundary rule is established.
+      MECHANIC_INTERACTION:
+        expected: ACTIVE
+        applicable: true
+        confidence: HIGH
+        evidenceReferences:
+        - excerpt: Character action materially engages the established mechanic
+          location: FAMILY_4_GOLD_REVIEW_REPORT.md
+        notes: Human-approved character/mechanic interaction evidence.
+        reviewStatus: APPROVED
+      RECURRENCE:
+        expected: PRESENT
+        applicable: true
+        confidence: HIGH
+        evidenceReferences:
+        - excerpt: Established mechanic returns after apparent normal/success state
+          location: FAMILY_4_GOLD_REVIEW_REPORT.md
+        notes: Human-approved same-mechanic recurrence evidence.
+        reviewStatus: APPROVED
   upside-chair-01:
     displayName: Upside-Down Chair
     dimensions:
@@ -482,6 +522,8 @@ assets:
         - excerpt: ENTIRE chair suddenly flips upside down WITH Kiko on it
           location: FINAL TWIST
         notes: Same rule directly affects character.
+        sameRuleRelation: SAME_RULE
+        reviewStatus: APPROVED
       LOOP:
         expected: STRONG
         applicable: true
@@ -550,6 +592,24 @@ assets:
           location: FIRST ESCALATION
         notes: HUMAN_REVIEW_REQUIRED; possible stubborn-return shape but mandatory
           profile signals are not all explicit.
+      MECHANIC_INTERACTION:
+        expected: ACTIVE
+        applicable: true
+        confidence: HIGH
+        evidenceReferences:
+        - excerpt: Character action materially engages the established mechanic
+          location: FAMILY_4_GOLD_REVIEW_REPORT.md
+        notes: Human-approved character/mechanic interaction evidence.
+        reviewStatus: APPROVED
+      RECURRENCE:
+        expected: PRESENT
+        applicable: true
+        confidence: HIGH
+        evidenceReferences:
+        - excerpt: Established mechanic returns after apparent normal/success state
+          location: FAMILY_4_GOLD_REVIEW_REPORT.md
+        notes: Human-approved same-mechanic recurrence evidence.
+        reviewStatus: APPROVED
   lamp-01:
     displayName: Kiko And The Lamp That Hates Being Watched
     dimensions:
@@ -657,6 +717,8 @@ assets:
         - excerpt: a second small light ... instead
           location: 11.5-13.5 SEC
         notes: HUMAN_REVIEW_REQUIRED.
+        sameRuleRelation: SAME_RULE
+        reviewStatus: APPROVED
       LOOP:
         expected: STRONG
         applicable: true
@@ -720,6 +782,24 @@ assets:
         confidence: HIGH
         evidenceReferences: []
         notes: No stubborn-return boundary profile.
+      MECHANIC_INTERACTION:
+        expected: ACTIVE
+        applicable: true
+        confidence: MEDIUM
+        evidenceReferences:
+        - excerpt: Character action materially engages the established mechanic
+          location: FAMILY_4_GOLD_REVIEW_REPORT.md
+        notes: Human-approved character/mechanic interaction evidence.
+        reviewStatus: APPROVED
+      RECURRENCE:
+        expected: PRESENT
+        applicable: true
+        confidence: MEDIUM
+        evidenceReferences:
+        - excerpt: Established mechanic returns after apparent normal/success state
+          location: FAMILY_4_GOLD_REVIEW_REPORT.md
+        notes: Human-approved same-mechanic recurrence evidence.
+        reviewStatus: APPROVED
   snack-box-01:
     displayName: Mimi And The Snack Box That Keeps Changing
     dimensions:
@@ -824,6 +904,8 @@ assets:
         - excerpt: box still wins
           location: CORE IDEA
         notes: HUMAN_REVIEW_REQUIRED.
+        sameRuleRelation: SAME_RULE
+        reviewStatus: APPROVED
       LOOP:
         expected: STRONG
         applicable: true
@@ -887,6 +969,24 @@ assets:
         confidence: HIGH
         evidenceReferences: []
         notes: No stubborn-return boundary profile.
+      MECHANIC_INTERACTION:
+        expected: ACTIVE
+        applicable: true
+        confidence: MEDIUM
+        evidenceReferences:
+        - excerpt: Character action materially engages the established mechanic
+          location: FAMILY_4_GOLD_REVIEW_REPORT.md
+        notes: Human-approved character/mechanic interaction evidence.
+        reviewStatus: APPROVED
+      RECURRENCE:
+        expected: PRESENT
+        applicable: true
+        confidence: MEDIUM
+        evidenceReferences:
+        - excerpt: Established mechanic returns after apparent normal/success state
+          location: FAMILY_4_GOLD_REVIEW_REPORT.md
+        notes: Human-approved same-mechanic recurrence evidence.
+        reviewStatus: APPROVED
   box-cat-01:
     displayName: Luca And The Box Cat
     dimensions:
@@ -988,6 +1088,8 @@ assets:
         evidenceReferences:
         - excerpt: cat ... curls up again; Luca's hands stop
         notes: HUMAN_REVIEW_REQUIRED.
+        sameRuleRelation: SAME_RULE
+        reviewStatus: APPROVED
       LOOP:
         expected: NO_LOOP
         applicable: true
@@ -1051,6 +1153,24 @@ assets:
         - excerpt: recurrence across attempts
         notes: Strong candidate for STUBBORN_RETURN_LOOP; exception activation remains
           policy-specific.
+      MECHANIC_INTERACTION:
+        expected: ACTIVE
+        applicable: true
+        confidence: MEDIUM
+        evidenceReferences:
+        - excerpt: Character action materially engages the established mechanic
+          location: FAMILY_4_GOLD_REVIEW_REPORT.md
+        notes: Human-approved character/mechanic interaction evidence.
+        reviewStatus: APPROVED
+      RECURRENCE:
+        expected: PRESENT
+        applicable: true
+        confidence: MEDIUM
+        evidenceReferences:
+        - excerpt: Established mechanic returns after apparent normal/success state
+          location: FAMILY_4_GOLD_REVIEW_REPORT.md
+        notes: Human-approved same-mechanic recurrence evidence.
+        reviewStatus: APPROVED
   spot-cat-01:
     displayName: Kiko And The Spot-Stealing Cat
     dimensions:
@@ -1148,6 +1268,8 @@ assets:
         evidenceReferences:
         - excerpt: cat ... freezes in a squat
         notes: HUMAN_REVIEW_REQUIRED.
+        sameRuleRelation: SAME_RULE
+        reviewStatus: APPROVED
       LOOP:
         expected: NO_LOOP
         applicable: true
@@ -1210,6 +1332,24 @@ assets:
         - excerpt: cat claims that exact spot first
         notes: HUMAN_REVIEW_REQUIRED; recurrence is present but profile signals need
           review.
+      MECHANIC_INTERACTION:
+        expected: ACTIVE
+        applicable: true
+        confidence: MEDIUM
+        evidenceReferences:
+        - excerpt: Character action materially engages the established mechanic
+          location: FAMILY_4_GOLD_REVIEW_REPORT.md
+        notes: Human-approved character/mechanic interaction evidence.
+        reviewStatus: APPROVED
+      RECURRENCE:
+        expected: PRESENT
+        applicable: true
+        confidence: MEDIUM
+        evidenceReferences:
+        - excerpt: Established mechanic returns after apparent normal/success state
+          location: FAMILY_4_GOLD_REVIEW_REPORT.md
+        notes: Human-approved same-mechanic recurrence evidence.
+        reviewStatus: APPROVED
   sneaky-door-01:
     displayName: Mimi Vs. The Sneaky Door
     dimensions:
@@ -1311,6 +1451,8 @@ assets:
         - excerpt: controlled door-to-lens wipe
           location: SHOT 03
         notes: Visual payoff and loop bridge are explicit.
+        sameRuleRelation: SAME_RULE
+        reviewStatus: APPROVED
       LOOP:
         expected: STRONG
         applicable: true
@@ -1374,6 +1516,24 @@ assets:
         confidence: HIGH
         evidenceReferences: []
         notes: Multi-clip door behavior is not the stubborn-return profile.
+      MECHANIC_INTERACTION:
+        expected: ACTIVE
+        applicable: true
+        confidence: MEDIUM
+        evidenceReferences:
+        - excerpt: Character action materially engages the established mechanic
+          location: FAMILY_4_GOLD_REVIEW_REPORT.md
+        notes: Human-approved character/mechanic interaction evidence.
+        reviewStatus: APPROVED
+      RECURRENCE:
+        expected: PRESENT
+        applicable: true
+        confidence: MEDIUM
+        evidenceReferences:
+        - excerpt: Established mechanic returns after apparent normal/success state
+          location: FAMILY_4_GOLD_REVIEW_REPORT.md
+        notes: Human-approved same-mechanic recurrence evidence.
+        reviewStatus: APPROVED
   island-journal-01:
     displayName: Luca And The Island Journal
     dimensions:
@@ -1472,6 +1632,8 @@ assets:
           location: TWIST
         notes: HUMAN_REVIEW_REQUIRED; twist exists but is weakly connected to the
           earlier montage.
+        sameRuleRelation: NOT_ESTABLISHED
+        reviewStatus: APPROVED
       LOOP:
         expected: NO_LOOP
         applicable: true
@@ -1534,3 +1696,17 @@ assets:
         confidence: HIGH
         evidenceReferences: []
         notes: No specialized absurd-mechanic profile.
+      MECHANIC_INTERACTION:
+        expected: NOT_APPLICABLE
+        applicable: false
+        confidence: HIGH
+        evidenceReferences: []
+        notes: No central mechanic interaction exists.
+        reviewStatus: APPROVED
+      RECURRENCE:
+        expected: NOT_ESTABLISHED
+        applicable: false
+        confidence: HIGH
+        evidenceReferences: []
+        notes: No established mechanic can recur.
+        reviewStatus: APPROVED

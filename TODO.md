@@ -44,7 +44,7 @@ Scope: Meta integration only. Publishing remains disabled until the safety gate 
 ## Phase 2 — Unified read-only analytics
 
 - [ ] Create a provider-neutral `MetaAnalyticsProvider` interface for Page, post, Reel, account, and media insights.
-- [ ] Add a real Facebook Graph read client; do not route Facebook analytics through `InstagramMetricsClient`.
+- [x] Add a real Facebook Graph read client; do not route Facebook analytics through `InstagramMetricsClient`.
 - [ ] Add Facebook Page/post/Reel insight endpoints and durable snapshots.
 - [ ] Preserve `null`/`PARTIAL`/`UNAVAILABLE` metric semantics; never convert missing provider fields to zero.
 - [ ] Add pagination and bounded limits for all account/content reads.

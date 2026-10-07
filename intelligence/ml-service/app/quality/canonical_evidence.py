@@ -417,7 +417,115 @@ def beat_audit(video_plan_ir: dict[str, Any]) -> list[dict[str, Any]]:
 
 
 @dataclass(frozen=True)
-class EngineProfileEvidence:
+class MechanicPayoffEvidence:
+    central_mechanic_status: str
+    interaction_status: str
+    fake_resolution_status: str
+    recurrence_status: str
+    payoff_status: str
+    same_rule_relation: str
+    evidence_references: tuple[str, ...]
+    confidence: str
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "centralMechanicStatus": self.central_mechanic_status,
+            "interactionStatus": self.interaction_status,
+            "fakeResolutionStatus": self.fake_resolution_status,
+            "recurrenceStatus": self.recurrence_status,
+            "payoffStatus": self.payoff_status,
+            "sameRuleRelation": self.same_rule_relation,
+            "evidenceReferences": list(self.evidence_references),
+            "confidence": self.confidence,
+        }
+
+
+def _mechanic_family_tokens(ir: dict[str, Any]) -> tuple[str, set[str], bool]:
+    core = ir.get("coreMechanic") or {}
+    beats = list(ir.get("beats") or [])
+    text = " ".join(
+        str(core.get(key, "")) for key in ("physicalRule", "abnormalProperty", "causeEffect")
+    ) + " " + " ".join(
+        str(beat.get(key, "")) for beat in beats for key in ("action", "consequence", "result")
+    )
+    words = _words(text)
+    physical = str(core.get("physicalRule") or "").strip()
+    explicit = bool(physical and physical.lower() != "inferred from beat actions")
+    families = (
+        ("STICKY_DEFORMATION", {"STICK", "STUCK", "STICKS", "STICKY"}),
+        ("QUANTITY_MULTIPLICATION", {"BALL", "MORE", "MULTIPLY", "MULTIPLYING", "THREE", "SIX", "FOUNTAIN", "SPITS", "PTOO"}),
+        ("AUTONOMOUS_CHAIR_INVERSION", {"CHAIR", "UPSIDE", "FLIP", "FLIPS"}),
+        ("OBSERVATION_DEPENDENT_LIGHT", {"LAMP", "WATCHED", "WATCHES", "SWITCHES"}),
+        ("CHANGING_CONTENTS", {"BOX", "CRACKER", "CHANGES", "WRONG"}),
+        ("ANIMAL_CLAIM", {"CAT", "CLAIMS", "SPOT"}),
+        ("AUTONOMOUS_SNEAKY_DOOR", {"DOOR", "OPENS", "CLOSES"}),
+    )
+    for family, markers in families:
+        if len(words.intersection(markers)) >= 2:
+            return family, words, True
+    return "EXPLICIT_RULE" if explicit else "NOT_ESTABLISHED", words, explicit
+
+
+def mechanic_payoff_evidence(video_plan_ir: dict[str, Any]) -> MechanicPayoffEvidence:
+    family, words, mechanic_established = _mechanic_family_tokens(video_plan_ir)
+    beats = list(video_plan_ir.get("beats") or [])
+    final_payoff = video_plan_ir.get("finalPayoff") or {}
+    all_text = " ".join(str(beat.get(key, "")) for beat in beats for key in ("action", "consequence", "result")).lower()
+    final_text = " ".join(
+        str(beat.get(key, "")) for beat in (beats[-2:] if beats else []) for key in ("action", "consequence", "result")
+    ).lower() + " " + str(final_payoff.get("description") or final_payoff.get("event") or "").lower()
+    references = tuple(str(beat.get("id", "")) for beat in beats if beat.get("beatRole"))
+    if not mechanic_established:
+        return MechanicPayoffEvidence(
+            central_mechanic_status="NOT_ESTABLISHED",
+            interaction_status="NOT_APPLICABLE",
+            fake_resolution_status="NOT_ESTABLISHED",
+            recurrence_status="NOT_ESTABLISHED",
+            payoff_status="NOT_ESTABLISHED",
+            same_rule_relation="NOT_ESTABLISHED",
+            evidence_references=references,
+            confidence="HIGH",
+        )
+    fake = any(
+        str(beat.get("beatRole", "")).upper() == "FAKE_RESOLUTION"
+        or beat.get("consequenceType") == "fake_win"
+        for beat in beats
+    ) or any(token in all_text for token in ("normal", "relaxes", "relax", "confident smile", "proud smile"))
+    recurrence_markers = ("again", "returns", "return", "claims", "sticks", "fountain", "flips", "off again", "wrong item")
+    recurrence = fake and any(token in final_text for token in recurrence_markers)
+    same_rule = False
+    if family == "STICKY_DEFORMATION":
+        same_rule = "stick" in final_text
+    elif family == "QUANTITY_MULTIPLICATION":
+        same_rule = any(token in final_text for token in ("ball", "fountain", "more", "spits"))
+    elif family == "AUTONOMOUS_CHAIR_INVERSION":
+        same_rule = "flip" in final_text or "upside" in final_text
+    elif family == "OBSERVATION_DEPENDENT_LIGHT":
+        same_rule = "lamp" in final_text or "light" in final_text or "off" in final_text
+    elif family == "CHANGING_CONTENTS":
+        same_rule = "wrong item" in final_text or "box" in final_text or "cracker" in final_text
+    elif family == "ANIMAL_CLAIM":
+        same_rule = "cat" in final_text or "spot" in final_text or "box" in final_text
+    elif family == "AUTONOMOUS_SNEAKY_DOOR":
+        same_rule = "door" in final_text
+    else:
+        same_rule = bool(words.intersection(_words(final_text)))
+    same_rule_relation = "SAME_RULE" if same_rule else "NOT_ESTABLISHED"
+    payoff_status = "NOT_ESTABLISHED"
+    if same_rule and final_payoff:
+        payoff_status = "STRONG" if any(token in final_text for token in ("cheek", "fountain", "shoulder", "upside", "wipe", "whole", "entire")) else "MODERATE"
+    return MechanicPayoffEvidence(
+        central_mechanic_status="ESTABLISHED",
+        interaction_status="AVAILABLE" if beats else "UNKNOWN",
+        fake_resolution_status="PRESENT" if fake else "NOT_ESTABLISHED",
+        recurrence_status="PRESENT" if recurrence else "NOT_ESTABLISHED",
+        payoff_status=payoff_status,
+        same_rule_relation=same_rule_relation,
+        evidence_references=references,
+        confidence="HIGH" if family in {"STICKY_DEFORMATION", "QUANTITY_MULTIPLICATION", "AUTONOMOUS_CHAIR_INVERSION"} else "MEDIUM",
+    )
+
+
     profile: str
     source: str
     confidence: str

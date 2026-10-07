@@ -3,6 +3,7 @@ package com.pompom.creative.service;
 import com.pompom.creative.domain.PublicationAnalytics;
 import com.pompom.creative.domain.PublicationJob;
 import com.pompom.creative.metrics.VideoMetrics;
+import com.pompom.creative.metrics.client.FacebookMetricsClient;
 import com.pompom.creative.metrics.client.InstagramMetricsClient;
 import com.pompom.creative.metrics.client.TikTokMetricsClient;
 import com.pompom.creative.metrics.client.YouTubeMetricsClient;
@@ -14,6 +15,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -35,6 +37,7 @@ public class AnalyticsService {
   private final TikTokMetricsClient tiktokMetricsClient;
   private final YouTubeMetricsClient youtubeMetricsClient;
   private final InstagramMetricsClient instagramMetricsClient;
+  @Autowired private FacebookMetricsClient facebookMetricsClient;
 
   @Value("${metrics.use-real-api:false}")
   private boolean useRealApi;
@@ -99,8 +102,13 @@ public class AnalyticsService {
           switch (job.getPlatform()) {
             case TIKTOK -> tiktokMetricsClient.fetchMetrics(job.getPlatformVideoId());
             case YOUTUBE -> youtubeMetricsClient.fetchMetrics(job.getPlatformVideoId());
-            case INSTAGRAM, FACEBOOK ->
-                instagramMetricsClient.fetchMetrics(job.getPlatformVideoId());
+            case INSTAGRAM -> instagramMetricsClient.fetchMetrics(job.getPlatformVideoId());
+            case FACEBOOK -> {
+              if (facebookMetricsClient == null) {
+                throw new IllegalStateException("Facebook metrics client is not configured");
+              }
+              yield facebookMetricsClient.fetchMetrics(job.getPlatformVideoId());
+            }
           };
       log.info("Fetched real metrics from {}: views={}", job.getPlatform(), metrics.getViews());
       return convertToPublicationAnalytics(metrics, job);
