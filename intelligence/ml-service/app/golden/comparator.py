@@ -3,7 +3,14 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Any
 
-from ..quality.canonical_evidence import mechanic_payoff_evidence
+from ..quality.canonical_evidence import mechanic_payoff_evidence, specialized_applicability_evidence
+
+
+SPECIALIZED_APPLICABILITY_DIMENSIONS = {
+    "SPECIALIZED_RULE_APPLICABILITY_STUBBORN_RETURN_LOOP": "STUBBORN_RETURN_LOOP",
+    "SPECIALIZED_RULE_APPLICABILITY_STUBBORN_RETURN_HOOK": "STUBBORN_RETURN_HOOK",
+    "SPECIALIZED_RULE_APPLICABILITY_STUBBORN_RETURN_PAYOFF": "STUBBORN_RETURN_PAYOFF",
+}
 
 
 @dataclass(frozen=True)
@@ -157,15 +164,37 @@ class GoldenRegressionReport:
 def extract_dimension_values(snapshot: dict[str, Any]) -> dict[str, Any]:
     """Project existing report evidence into comparator values; no new scoring logic."""
     stored = dict(snapshot.get("dimensionValues") or {})
-    if not snapshot.get("videoPlanIR"):
-        return stored
+    ir = snapshot.get("videoPlanIR")
+    specialized_values: dict[str, Any] = {}
+    canonical_specialized = (snapshot.get("canonicalEvidence") or {}).get("specializedApplicability") or {}
+    for dimension, rule_id in SPECIALIZED_APPLICABILITY_DIMENSIONS.items():
+        entry = canonical_specialized.get(rule_id)
+        if isinstance(entry, dict) and entry.get("status") is not None:
+            specialized_values[dimension] = entry["status"]
+
+    if isinstance(ir, dict) and ir:
+        recomputed = specialized_applicability_evidence(ir)
+        for dimension, rule_id in SPECIALIZED_APPLICABILITY_DIMENSIONS.items():
+            if dimension in specialized_values:
+                continue
+            evidence = recomputed.get(rule_id)
+            status = getattr(evidence, "status", None)
+            if status is not None:
+                specialized_values[dimension] = status
+
+    for dimension in SPECIALIZED_APPLICABILITY_DIMENSIONS:
+        if dimension not in specialized_values and dimension in stored:
+            specialized_values[dimension] = stored[dimension]
+
+    if not isinstance(ir, dict) or not ir:
+        return {**stored, **specialized_values}
+
     assessment = snapshot.get("assessment") or {}
     story = assessment.get("story_structure") or {}
     temporal = assessment.get("temporal_complexity") or {}
     canonical = snapshot.get("canonicalEvidence") or {}
     attempts = canonical.get("attempts") or {}
     dimensions = {item.get("key"): item.get("status") for item in assessment.get("dimensions", [])}
-    ir = snapshot.get("videoPlanIR") or {}
     mechanic_payoff = mechanic_payoff_evidence(ir)
     projected = {
         "HOOK": dimensions.get("OPENING_HOOK"),
@@ -191,6 +220,7 @@ def extract_dimension_values(snapshot: dict[str, Any]) -> dict[str, Any]:
         "CONTENT_FAMILY_FIT": dimensions.get("CONTENT_FAMILY_FIT"),
         "FIRST_FRAME_ANOMALY_INTENT": (assessment.get("first_frame") or {}).get("textual_intent", {}).get("status"),
         "SPECIALIZED_RULE_APPLICABILITY": dimensions.get("ENGINE_PROFILE"),
+        **specialized_values,
     }
     return {key: value if value is not None else stored.get(key) for key, value in projected.items()}
 
@@ -219,6 +249,36 @@ def compare_cohort(
         current_values = extract_dimension_values(current_asset)
         known_issue = bool(baseline_asset.get("knownIssues"))
         for dimension, gold in (truth_asset.get("dimensions") or {}).items():
+            if dimension == "SPECIALIZED_RULE_APPLICABILITY":
+                continue
+            if dimension in SPECIALIZED_APPLICABILITY_DIMENSIONS:
+                rule_id = SPECIALIZED_APPLICABILITY_DIMENSIONS[dimension]
+                comparison = compare_dimension(
+                    gold=gold,
+                    baseline={"actual": baseline_values.get(dimension)},
+                    current={"actual": current_values.get(dimension)},
+                    assertion_type="EXACT",
+                    known_issue=known_issue,
+                )
+                assertions.append({
+                    "assetId": asset_id,
+                    "dimension": f"SPECIALIZED_RULE_APPLICABILITY:{rule_id}",
+                    **comparison.to_dict(),
+                })
+                classification = comparison.classification
+                if classification == "PASS":
+                    counts["passed"] += 1
+                elif classification == "FAIL":
+                    counts["failed"] += 1
+                elif classification == "IMPROVED_FROM_BASELINE":
+                    counts["improvedFromBaseline"] += 1
+                elif classification == "UNCHANGED_KNOWN_ISSUE":
+                    counts["unchangedKnownIssues"] += 1
+                elif classification == "GOLD_REVIEW_REQUIRED":
+                    counts["goldReviewRequired"] += 1
+                if comparison.is_new_semantic_regression:
+                    counts["newSemanticRegressions"] += 1
+                continue
             assertion_type = "SET_EQUALS" if dimension == "DISTINCT_STRATEGIES" else "EXACT"
             comparison = compare_dimension(
                 gold=gold,

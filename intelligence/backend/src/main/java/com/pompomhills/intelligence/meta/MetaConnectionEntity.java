@@ -154,9 +154,38 @@ public class MetaConnectionEntity {
     this.issuedAt = authorization.issuedAt();
     this.expiresAt = authorization.expiresAt();
     this.lastValidatedAt = authorization.issuedAt();
-    this.failureReason = authorization.providerValidationReason();
+    this.failureReason =
+        MetaErrorSanitizer.sanitizeOrNull(
+            authorization.providerValidationReason(),
+            authorization.userAccessToken(),
+            authorization.pageAccessToken(),
+            authorization.refreshToken());
     this.providerErrorCode = null;
     this.status = MetaConnectionStatus.CONNECTED;
+    this.capabilities = copyCapabilities(capabilityStatuses);
+  }
+
+  void applyDiscoveryTarget(
+      String facebookPageId,
+      String instagramAccountId,
+      String instagramAccountType,
+      boolean facebookPageEligible,
+      boolean instagramAccountEligible,
+      Map<MetaCapability, MetaCapabilityStatus> capabilityStatuses,
+      Instant validatedAt,
+      String failureReason) {
+    String normalizedPageId = normalize(facebookPageId);
+    if (normalizedPageId == null) {
+      throw new IllegalArgumentException("A discovered Meta Facebook Page id is required.");
+    }
+    this.facebookPageId = normalizedPageId;
+    this.instagramAccountId = normalize(instagramAccountId);
+    this.instagramAccountType = normalize(instagramAccountType);
+    this.facebookPageEligible = facebookPageEligible;
+    this.instagramAccountEligible = instagramAccountEligible;
+    this.lastValidatedAt = validatedAt;
+    this.failureReason = MetaErrorSanitizer.sanitizeOrNull(failureReason);
+    this.providerErrorCode = null;
     this.capabilities = copyCapabilities(capabilityStatuses);
   }
 
@@ -272,7 +301,7 @@ public class MetaConnectionEntity {
   }
 
   void setFailureReason(String failureReason) {
-    this.failureReason = failureReason;
+    this.failureReason = MetaErrorSanitizer.sanitizeOrNull(failureReason);
   }
 
   void setLastValidatedAt(Instant lastValidatedAt) {

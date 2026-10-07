@@ -93,6 +93,7 @@ pompom:
     publish-enabled: ${META_PUBLISH_ENABLED:false}
     comment-reply-enabled: ${META_COMMENT_REPLY_ENABLED:false}
     connection-owner-key: ${META_CONNECTION_OWNER_KEY:default}
+    diagnostic-overrides-enabled: ${META_DIAGNOSTIC_OVERRIDES_ENABLED:false}
     connect-timeout: 5s
     read-timeout: 15s
     oauth:

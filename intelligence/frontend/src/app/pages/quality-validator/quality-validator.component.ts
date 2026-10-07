@@ -4,6 +4,8 @@ import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { formatStateShare, isStateShareDanger, isStateShareWarning } from './state-share';
+import { toSpecializedApplicabilityRows } from './specialized-applicability';
+import type { SpecializedApplicability } from './specialized-applicability';
 import { TimelineChartComponent } from './timeline-chart.component';
 
 interface PromptEditorInstance {
@@ -48,7 +50,7 @@ interface FamilyAssessment { status: string; score: number | null; evidenceCover
 interface PreRenderDimension { key: string; title: string; status: string; summary: string; observed: string; recommendation: string; evidence_status: string; }
 interface FirstFrameAssessment { textual_intent: { status: string; reason: string; evidence?: Record<string, any> }; visual_verification: { status: string; reason: string }; silhouette_verification: { status: string; reason: string }; }
 interface RenderAuthorization { status: string; final_video_render: string; creative_failures: string[]; pending_evidence_blockers: string[]; technical_failures: string[]; reason: string; }
-interface PreRenderAssessment { name: string; engine_profile?: Record<string, any>; story_structure?: Record<string, any>; temporal_complexity?: Record<string, any>; grade: string; creative_grade?: string | null; creative_score?: number | null; prompt_stage?: string; first_frame?: FirstFrameAssessment; render_authorization?: RenderAuthorization; evidence_completeness?: EvidenceCompleteness | null; readiness: string; assessment_coverage_percent: number; verdict: string; strengths: string[]; concerns: string[]; recommended_changes: string[]; dimensions: PreRenderDimension[]; stable_intent: string[]; provenance: Record<string, any>; }
+interface PreRenderAssessment { name: string; engine_profile?: Record<string, any>; story_structure?: Record<string, any>; temporal_complexity?: Record<string, any>; grade: string; creative_grade?: string | null; creative_score?: number | null; prompt_stage?: string; first_frame?: FirstFrameAssessment; render_authorization?: RenderAuthorization; evidence_completeness?: EvidenceCompleteness | null; specialized_applicability: Record<string, SpecializedApplicability>; readiness: string; assessment_coverage_percent: number; verdict: string; strengths: string[]; concerns: string[]; recommended_changes: string[]; dimensions: PreRenderDimension[]; stable_intent: string[]; provenance: Record<string, any>; }
 
 interface LinkedValidationResponse { validationRecordId: number; report: QualityReport; }
 interface StoredValidation { validationRecordId: number; report: QualityReport; analyzedAt: string; }
@@ -212,6 +214,7 @@ export class QualityValidatorComponent implements AfterViewInit, OnDestroy {
   promptVersionId: string = '';
   validationRecordId: number | null = null;
   report: QualityReport | null = null;
+  readonly toSpecializedApplicabilityRows = toSpecializedApplicabilityRows;
   loading: boolean = false;
   error: string | null = null;
   promptFiles: PromptFile[] = [];

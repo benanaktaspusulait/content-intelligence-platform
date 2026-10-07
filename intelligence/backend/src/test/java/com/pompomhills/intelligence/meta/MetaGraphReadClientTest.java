@@ -262,6 +262,83 @@ class MetaGraphReadClientTest {
     server.verify();
   }
 
+  @Test
+  void listsManagedPagesWithBearerPaginationAndNoTokenQueryParameter() {
+    RestClient.Builder builder = RestClient.builder().baseUrl("https://graph.facebook.com");
+    MockRestServiceServer server = MockRestServiceServer.bindTo(builder).build();
+    MetaGraphReadClient client =
+        new MetaGraphReadClient(
+            builder.build(), new ObjectMapper(), properties("unused"), new MetaOAuthTokenStore());
+
+    server
+        .expect(
+            requestTo(
+                "https://graph.facebook.com/v26.0/me/accounts?fields=id,name,category,access_token,instagram_business_account&limit=50&after=cursor-1"))
+        .andExpect(method(HttpMethod.GET))
+        .andExpect(header(HttpHeaders.AUTHORIZATION, "Bearer user-secret"))
+        .andExpect(
+            request ->
+                assertThat(request.getURI().getRawQuery())
+                    .doesNotContain("user-secret", "access_token=user-secret"))
+        .andRespond(
+            withSuccess(
+                "{\"data\":[{\"id\":\"page-1\",\"name\":\"Pompom Hills\",\"category\":\"Education\",\"access_token\":\"page-secret\",\"instagram_business_account\":{\"id\":\"instagram-1\"}}],\"paging\":{\"cursors\":{\"after\":\"cursor-2\"}}}",
+                MediaType.APPLICATION_JSON));
+
+    MetaGraphReadClient.PageAccountPage response =
+        client.listManagedPages("user-secret", "cursor-1", 999);
+
+    assertThat(response.data()).hasSize(1);
+    assertThat(response.data().get(0).id()).isEqualTo("page-1");
+    assertThat(response.data().get(0).accessTokenAvailable()).isTrue();
+    assertThat(response.data().get(0).linkedInstagramAccountId()).isEqualTo("instagram-1");
+    assertThat(response.afterCursor()).isEqualTo("cursor-2");
+    server.verify();
+  }
+
+  @Test
+  void clampsManagedPageLimitToAtLeastOne() {
+    RestClient.Builder builder = RestClient.builder().baseUrl("https://graph.facebook.com");
+    MockRestServiceServer server = MockRestServiceServer.bindTo(builder).build();
+    MetaGraphReadClient client =
+        new MetaGraphReadClient(
+            builder.build(), new ObjectMapper(), properties("unused"), new MetaOAuthTokenStore());
+
+    server
+        .expect(
+            requestTo(
+                "https://graph.facebook.com/v26.0/me/accounts?fields=id,name,category,access_token,instagram_business_account&limit=1"))
+        .andRespond(withSuccess("{\"data\":[]}", MediaType.APPLICATION_JSON));
+
+    assertThat(client.listManagedPages("user-secret", null, 0).data()).isEmpty();
+    server.verify();
+  }
+
+  @Test
+  void mapsPermissionFailureWithSanitizedMessage() {
+    RestClient.Builder builder = RestClient.builder().baseUrl("https://graph.facebook.com");
+    MockRestServiceServer server = MockRestServiceServer.bindTo(builder).build();
+    MetaGraphReadClient client =
+        new MetaGraphReadClient(
+            builder.build(), new ObjectMapper(), properties("unused"), new MetaOAuthTokenStore());
+
+    server
+        .expect(
+            requestTo(
+                "https://graph.facebook.com/v26.0/me/accounts?fields=id,name,category,access_token,instagram_business_account&limit=25"))
+        .andRespond(
+            withStatusAndBody(
+                "{\"error\":{\"message\":\"Bearer user-secret is invalid\",\"code\":10}}"));
+
+    MetaGraphException error =
+        org.junit.jupiter.api.Assertions.assertThrows(
+            MetaGraphException.class, () -> client.listManagedPages("user-secret", null, 25));
+
+    assertThat(error.isPermissionDenied()).isTrue();
+    assertThat(error.getMessage()).doesNotContain("user-secret");
+    server.verify();
+  }
+
   private org.springframework.test.web.client.ResponseCreator withStatusAndBody(String body) {
     return org.springframework.test.web.client.response.MockRestResponseCreators.withStatus(
             org.springframework.http.HttpStatus.BAD_REQUEST)

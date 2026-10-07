@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -83,19 +84,31 @@ public class MetaOAuthService implements MetaProviderAdapter {
     String pageId = resolveManagedPageId(accounts);
     if (pageId == null) {
       throw new MetaOAuthException(
-          "The authenticated user does not manage a Facebook Page configured for this connection.");
+          "The authenticated user does not manage an available Facebook Page.");
     }
 
-    String pageAccessToken = fetchPageAccessToken(pageId, userAccessToken);
+    PageTokenResponse pageDetails = fetchPageDetails(pageId, userAccessToken);
+    String pageAccessToken = pageDetails == null ? null : pageDetails.accessToken();
     if (pageAccessToken == null || pageAccessToken.isBlank()) {
       throw new MetaOAuthException("A Page access token could not be obtained.");
     }
+
+    String configuredInstagramId =
+        readProperties.diagnosticOverridesEnabled()
+            ? blankToNull(readProperties.instagramAccountId())
+            : null;
+    String linkedInstagramId =
+        pageDetails == null || pageDetails.instagramBusinessAccount() == null
+            ? null
+            : blankToNull(pageDetails.instagramBusinessAccount().id());
+    String instagramAccountId =
+        configuredInstagramId == null ? linkedInstagramId : configuredInstagramId;
 
     Instant issuedAt = clock.instant();
     return new AuthorizationResult(
         response.userId(),
         pageId,
-        blankToNull(readProperties.instagramAccountId()),
+        instagramAccountId,
         null,
         userAccessToken,
         pageAccessToken,
@@ -114,7 +127,11 @@ public class MetaOAuthService implements MetaProviderAdapter {
       authorize(code);
       return OAuthCompletionResult.succeeded();
     } catch (MetaOAuthException error) {
-      return OAuthCompletionResult.failure(error.getMessage());
+      return OAuthCompletionResult.failure(
+          MetaErrorSanitizer.sanitize(
+              error.getMessage(),
+              "The Meta authorization request could not be completed.",
+              oauthProperties.appSecret()));
     }
   }
 
@@ -122,7 +139,10 @@ public class MetaOAuthService implements MetaProviderAdapter {
     if (accounts == null || accounts.data() == null) {
       return null;
     }
-    String configuredPageId = blankToNull(readProperties.pageId());
+    String configuredPageId =
+        readProperties.diagnosticOverridesEnabled()
+            ? blankToNull(readProperties.pageId())
+            : null;
     return accounts.data().stream()
         .filter(account -> account != null && account.id() != null && !account.id().isBlank())
         .map(Account::id)
@@ -169,8 +189,8 @@ public class MetaOAuthService implements MetaProviderAdapter {
                         .pathSegment(readProperties.apiVersion(), "me", "accounts")
                         .queryParam("fields", "id")
                         .queryParam("limit", 200)
-                        .queryParam("access_token", userAccessToken)
                         .build())
+            .headers(headers -> headers.set(HttpHeaders.AUTHORIZATION, "Bearer " + userAccessToken))
             .retrieve()
             .onStatus(
                 status -> status.isError(),
@@ -181,7 +201,7 @@ public class MetaOAuthService implements MetaProviderAdapter {
     return response == null ? new AccountsResponse(List.of()) : response;
   }
 
-  private String fetchPageAccessToken(String pageId, String userAccessToken) {
+  private PageTokenResponse fetchPageDetails(String pageId, String userAccessToken) {
     PageTokenResponse response =
         restClient
             .get()
@@ -189,9 +209,9 @@ public class MetaOAuthService implements MetaProviderAdapter {
                 uriBuilder ->
                     uriBuilder
                         .pathSegment(readProperties.apiVersion(), pageId)
-                        .queryParam("fields", "access_token")
-                        .queryParam("access_token", userAccessToken)
+                        .queryParam("fields", "access_token,instagram_business_account")
                         .build())
+            .headers(headers -> headers.set(HttpHeaders.AUTHORIZATION, "Bearer " + userAccessToken))
             .retrieve()
             .onStatus(
                 status -> status.isError(),
@@ -199,7 +219,7 @@ public class MetaOAuthService implements MetaProviderAdapter {
                   throw genericOAuthError();
                 })
             .body(PageTokenResponse.class);
-    return response == null ? null : response.accessToken();
+    return response;
   }
 
   private Set<String> grantedScopes(String scope) {
@@ -257,5 +277,10 @@ public class MetaOAuthService implements MetaProviderAdapter {
   private record Account(String id) {}
 
   @JsonIgnoreProperties(ignoreUnknown = true)
-  private record PageTokenResponse(@JsonProperty("access_token") String accessToken) {}
+  private record PageTokenResponse(
+      @JsonProperty("access_token") String accessToken,
+      @JsonProperty("instagram_business_account") InstagramBusinessAccount instagramBusinessAccount) {}
+
+  @JsonIgnoreProperties(ignoreUnknown = true)
+  private record InstagramBusinessAccount(String id) {}
 }

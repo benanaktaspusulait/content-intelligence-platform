@@ -19,6 +19,7 @@ from ..quality.canonical_evidence import (
     evidence_gap_kind,
     is_evidence_gap,
     is_unspecified_verb,
+    specialized_applicability_evidence,
     story_density_evidence,
     unscored_families,
 )
@@ -33,6 +34,7 @@ def build_pre_render_assessment(ir: dict[str, Any], parser: Any, report: Any, ru
     story = story_density_evidence(ir)
     engine_profile = engine_profile_evidence(ir)
     mechanic_payoff = mechanic_payoff_evidence(ir)
+    specialized_applicability = specialized_applicability_evidence(ir)
     dimensions = [
         _concept(ir),
         _opening(ir, evaluations),
@@ -78,6 +80,10 @@ def build_pre_render_assessment(ir: dict[str, Any], parser: Any, report: Any, ru
 
     return {
         "name": "PRE_RENDER_CREATIVE_READINESS",
+        "specialized_applicability": {
+            rule_id: evidence.to_dict()
+            for rule_id, evidence in specialized_applicability.items()
+        },
         "engine_profile": {
             "profile": engine_profile.profile,
             "source": engine_profile.source,

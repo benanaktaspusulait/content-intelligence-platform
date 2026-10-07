@@ -3,6 +3,7 @@ package com.pompomhills.intelligence.meta;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -22,12 +23,14 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 class MetaOAuthControllerTest {
   private MetaConnectionLifecycleService lifecycle;
+  private MetaAccountDiscoveryService discovery;
   private MetaOAuthStateStore states;
   private MockMvc mvc;
 
   @BeforeEach
   void setUp() {
     lifecycle = mock(MetaConnectionLifecycleService.class);
+    discovery = mock(MetaAccountDiscoveryService.class);
     states = new MetaOAuthStateStore(Clock.fixed(Instant.parse("2026-10-01T12:00:00Z"), ZoneOffset.UTC));
     MetaReadProperties properties =
         new MetaReadProperties(
@@ -45,7 +48,7 @@ class MetaOAuthControllerTest {
     MetaOAuthController oauthController =
         new MetaOAuthController(lifecycle, states, properties);
     MetaConnectionController connectionController =
-        new MetaConnectionController(mock(MetaConnectionService.class), lifecycle);
+        new MetaConnectionController(mock(MetaConnectionService.class), lifecycle, discovery);
     mvc = MockMvcBuilders.standaloneSetup(oauthController, connectionController).build();
     when(lifecycle.isConfigured()).thenReturn(true);
     when(lifecycle.buildAuthorizationUrl(anyString()))
@@ -148,5 +151,59 @@ class MetaOAuthControllerTest {
             org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath(
                     "$.connectionStatus")
                 .value("EXPIRED"));
+  }
+  @Test
+  void discoveryRoutesDelegateOwnerScopedResultsWithoutReturningSecrets() throws Exception {
+    java.util.UUID id = java.util.UUID.randomUUID();
+    MetaAccountDiscoveryResponse response =
+        new MetaAccountDiscoveryResponse(
+            id,
+            "owner-1",
+            MetaAccountDiscoveryResponse.Status.DEGRADED,
+            MetaConnectionStatus.DEGRADED,
+            java.util.List.of(
+                new MetaAccountDiscoveryResponse.PageTarget(
+                    "page-1",
+                    "Pompom Hills",
+                    "Education",
+                    true,
+                    true,
+                    MetaCapabilityStatus.SUPPORTED,
+                    Map.of(MetaCapability.META_FACEBOOK_ANALYTICS_READ, MetaCapabilityStatus.SUPPORTED),
+                    new MetaAccountDiscoveryResponse.InstagramTarget(
+                        "instagram-1", true, MetaCapabilityStatus.UNKNOWN, Map.of()))),
+            "page-1",
+            "instagram-1",
+            Map.of(MetaCapability.META_INSTAGRAM_ANALYTICS_READ, MetaCapabilityStatus.UNKNOWN),
+            Instant.parse("2026-10-01T13:00:00Z"),
+            "discovered",
+            null);
+    when(discovery.discover(null)).thenReturn(response);
+    when(discovery.discover(id)).thenReturn(response);
+
+    mvc.perform(get("/api/v1/meta/accounts"))
+        .andExpect(status().isOk())
+        .andExpect(
+            org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath(
+                    "$.pages[0].id")
+                .value("page-1"))
+        .andExpect(
+            org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath(
+                    "$.userAccessToken")
+                .doesNotExist())
+        .andExpect(
+            org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath(
+                    "$.pageAccessToken")
+                .doesNotExist());
+
+    mvc.perform(post("/api/v1/meta/accounts/discover").param("connectionId", id.toString()))
+        .andExpect(status().isOk())
+        .andExpect(
+            org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath(
+                    "$.selectedInstagramAccountId")
+                .value("instagram-1"));
+
+    verify(discovery).discover(null);
+    verify(discovery).discover(id);
   }
 }

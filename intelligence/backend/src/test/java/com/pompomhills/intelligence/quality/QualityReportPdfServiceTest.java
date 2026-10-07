@@ -56,7 +56,21 @@ class QualityReportPdfServiceTest {
             List.of(),
             Map.of(),
             new QualityProvenanceDto("parser", "rules", "provider", "model", null, "PRE_RENDER"),
-            Map.of(),
+            Map.of(
+                "specialized_applicability",
+                Map.of(
+                    "STUBBORN_RETURN_LOOP",
+                    Map.of("status", "APPLICABLE", "confidence", "HIGH", "reason", "Box reclaim"),
+                    "STUBBORN_RETURN_HOOK",
+                    Map.of(
+                        "status", "UNKNOWN",
+                        "confidence", "MEDIUM",
+                        "reason", "Threat boundary unresolved"),
+                    "STUBBORN_RETURN_PAYOFF",
+                    Map.of(
+                        "status", "APPLICABLE",
+                        "confidence", "MEDIUM",
+                        "reason", "Same-rule stalemate"))),
             Map.of(),
             Map.of(),
             0.95);
@@ -73,6 +87,12 @@ class QualityReportPdfServiceTest {
 
     assertThat(text).contains("Rule outcome coverage");
     assertThat(text).contains("PASS", "FAIL", "UNKNOWN", "NOT APPLICABLE", "SERVICE ERROR");
+    assertThat(text).contains("Rule", "Applicability", "Confidence", "Reason", "Evidence");
+    assertThat(text).contains("STUBBORN_RETURN_LOOP", "APPLICABLE", "HIGH", "Box reclaim");
+    assertThat(text)
+        .contains("STUBBORN_RETURN_HOOK", "UNKNOWN", "MEDIUM", "Threat boundary unresolved");
+    assertThat(text)
+        .contains("STUBBORN_RETURN_PAYOFF", "APPLICABLE", "MEDIUM", "Same-rule stalemate");
     assertThat(text).contains("Canonical evidence confidence");
     assertThat(text).contains("5%", "20%");
     assertThat(text).doesNotContain("533%", "2000%");

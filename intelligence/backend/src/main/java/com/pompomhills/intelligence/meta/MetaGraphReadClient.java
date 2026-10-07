@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.time.Clock;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.regex.Pattern;
@@ -18,6 +19,10 @@ import org.springframework.web.client.RestClient;
 @Component
 public final class MetaGraphReadClient {
   private static final String PAGE_FIELDS = "id,name,category";
+  private static final String MANAGED_PAGE_FIELDS =
+      "id,name,category,access_token,instagram_business_account";
+  private static final int MIN_PAGE_LIMIT = 1;
+  private static final int MAX_PAGE_LIMIT = 50;
   private static final String INSTAGRAM_ACCOUNT_FIELDS =
       "id,username,media_count,profile_picture_url";
   private static final String INSTAGRAM_MEDIA_FIELDS =
@@ -30,15 +35,6 @@ public final class MetaGraphReadClient {
   private static final int MAX_MEDIA_LIMIT = 50;
   private static final int MIN_POSTS_LIMIT = 1;
   private static final int MAX_POSTS_LIMIT = 25;
-  private static final Pattern BEARER_VALUE =
-      Pattern.compile("(?i)\\bbearer\\s+[^\\s,;]+", Pattern.CASE_INSENSITIVE);
-  private static final Pattern TOKEN_VALUE =
-      Pattern.compile(
-          "(?i)\\b(access[_-]?token|appsecret_proof|token)\\s*[:=]\\s*[^\\s,;]+",
-          Pattern.CASE_INSENSITIVE);
-  private static final Pattern CONTROL_CHARACTERS = Pattern.compile("[\\r\\n\\t]+");
-  private static final int MAX_ERROR_MESSAGE_LENGTH = 300;
-
   private final RestClient restClient;
   private final ObjectMapper objectMapper;
   private final MetaReadProperties properties;
@@ -185,6 +181,54 @@ public final class MetaGraphReadClient {
               throw mapError(response.getStatusCode().value(), response.getBody());
             })
         .body(FacebookPage.class);
+  }
+
+  /**
+   * Lists a bounded page of managed Facebook Pages with a caller-supplied user token. The token is
+   * sent only as a Bearer header; it is never added to the request URI or returned in the typed
+   * response.
+   */
+  public PageAccountPage listManagedPages(String userToken, String after, int limit) {
+    String token = userToken == null ? "" : userToken.trim();
+    if (token.isBlank()) {
+      throw new IllegalArgumentException("Meta user access token is required.");
+    }
+    int boundedLimit = Math.max(MIN_PAGE_LIMIT, Math.min(MAX_PAGE_LIMIT, limit));
+    String cursor = after == null || after.isBlank() ? null : after.trim();
+    RawPageAccountPage response =
+        restClient
+            .get()
+            .uri(
+                uriBuilder -> {
+                  uriBuilder
+                      .pathSegment(properties.apiVersion(), "me", "accounts")
+                      .queryParam("fields", MANAGED_PAGE_FIELDS)
+                      .queryParam("limit", boundedLimit);
+                  if (cursor != null) {
+                    uriBuilder.queryParam("after", cursor);
+                  }
+                  return uriBuilder.build();
+                })
+            .headers(headers -> headers.set(HttpHeaders.AUTHORIZATION, "Bearer " + token))
+            .retrieve()
+            .onStatus(
+                status -> status.isError(),
+                (request, responseBody) -> {
+                  throw mapError(responseBody.getStatusCode().value(), responseBody.getBody(), token);
+                })
+            .body(RawPageAccountPage.class);
+    if (response == null) {
+      return new PageAccountPage(List.of(), null);
+    }
+    List<PageAccount> pages =
+        response.data() == null
+            ? List.of()
+            : response.data().stream()
+                .filter(java.util.Objects::nonNull)
+                .map(RawPageAccount::toPageAccount)
+                .filter(java.util.Objects::nonNull)
+                .toList();
+    return new PageAccountPage(pages, response.paging());
   }
 
   /**
@@ -369,6 +413,11 @@ public final class MetaGraphReadClient {
   }
 
   private MetaGraphException mapError(int httpStatus, java.io.InputStream responseBody) {
+    return mapError(httpStatus, responseBody, new String[0]);
+  }
+
+  private MetaGraphException mapError(
+      int httpStatus, java.io.InputStream responseBody, String... requestCredentials) {
     try {
       MetaErrorEnvelope envelope = objectMapper.readValue(responseBody, MetaErrorEnvelope.class);
       MetaError error = envelope == null ? null : envelope.error();
@@ -381,7 +430,7 @@ public final class MetaGraphReadClient {
           error.errorSubcode(),
           error.type(),
           error.fbTraceId(),
-          sanitizeMessage(error.message()));
+          sanitizeMessage(error.message(), requestCredentials));
     } catch (IOException | RuntimeException ignored) {
       return genericError(httpStatus);
     }
@@ -392,47 +441,87 @@ public final class MetaGraphReadClient {
         httpStatus, null, null, null, null, "Meta Graph API request failed.");
   }
 
-  private String sanitizeMessage(String message) {
-    if (message == null || message.isBlank()) {
-      return "Meta Graph API request failed.";
-    }
-    String sanitized = message;
-    if (!properties.accessToken().isBlank()) {
-      sanitized = sanitized.replace(properties.accessToken(), "[REDACTED]");
-    }
-    if (!properties.userAccessToken().isBlank()) {
-      sanitized = sanitized.replace(properties.userAccessToken(), "[REDACTED]");
-    }
-    String oauthToken = oauthTokenStore.getPageAccessToken();
-    if (oauthToken != null && !oauthToken.isBlank()) {
-      sanitized = sanitized.replace(oauthToken, "[REDACTED]");
-    }
-    String oauthUserToken = oauthTokenStore.getUserAccessToken();
-    if (oauthUserToken != null && !oauthUserToken.isBlank()) {
-      sanitized = sanitized.replace(oauthUserToken, "[REDACTED]");
+  private String sanitizeMessage(String message, String... requestCredentials) {
+    List<String> credentials = new ArrayList<>();
+    credentials.add(properties.accessToken());
+    credentials.add(properties.userAccessToken());
+    credentials.add(oauthTokenStore.getPageAccessToken());
+    credentials.add(oauthTokenStore.getUserAccessToken());
+    if (requestCredentials != null) {
+      credentials.addAll(List.of(requestCredentials));
     }
     if (tokenEncryption != null) {
       try {
         Optional<MetaConnectionEntity> durable = activeDurableConnection();
         if (durable.isPresent()) {
           MetaProviderAdapter.StoredTokens tokens = durable.get().decryptTokens(tokenEncryption);
-          if (tokens.pageAccessToken() != null && !tokens.pageAccessToken().isBlank()) {
-            sanitized = sanitized.replace(tokens.pageAccessToken(), "[REDACTED]");
-          }
-          if (tokens.userAccessToken() != null && !tokens.userAccessToken().isBlank()) {
-            sanitized = sanitized.replace(tokens.userAccessToken(), "[REDACTED]");
-          }
+          credentials.add(tokens.pageAccessToken());
+          credentials.add(tokens.userAccessToken());
+          credentials.add(tokens.refreshToken());
         }
       } catch (RuntimeException ignored) {
-        // Keep generic regex redaction below even if a persisted token cannot be decrypted.
+        // Keep generic redaction even if a persisted token cannot be decrypted.
       }
     }
-    sanitized = BEARER_VALUE.matcher(sanitized).replaceAll("Bearer [REDACTED]");
-    sanitized = TOKEN_VALUE.matcher(sanitized).replaceAll("$1=[REDACTED]");
-    sanitized = CONTROL_CHARACTERS.matcher(sanitized).replaceAll(" ").trim();
-    return sanitized.length() <= MAX_ERROR_MESSAGE_LENGTH
-        ? sanitized
-        : sanitized.substring(0, MAX_ERROR_MESSAGE_LENGTH);
+    return MetaErrorSanitizer.sanitize(
+        message, "Meta Graph API request failed.", credentials.toArray(String[]::new));
+  }
+
+  @JsonIgnoreProperties(ignoreUnknown = true)
+  private record RawPageAccountPage(List<RawPageAccount> data, Paging paging) {}
+
+  @JsonIgnoreProperties(ignoreUnknown = true)
+  private record RawPageAccount(
+      String id,
+      String name,
+      String category,
+      @JsonProperty("access_token") String accessToken,
+      @JsonProperty("instagram_business_account") RawInstagramBusinessAccount instagramBusinessAccount) {
+    PageAccount toPageAccount() {
+      if (id == null || id.isBlank()) {
+        return null;
+      }
+      return new PageAccount(
+          id.trim(),
+          name,
+          category,
+          accessToken != null && !accessToken.isBlank(),
+          instagramBusinessAccount == null ? null : instagramBusinessAccount.id());
+    }
+  }
+
+  @JsonIgnoreProperties(ignoreUnknown = true)
+  private record RawInstagramBusinessAccount(String id) {}
+
+  @JsonIgnoreProperties(ignoreUnknown = true)
+  public record PageAccountPage(List<PageAccount> data, Paging paging) {
+    public PageAccountPage {
+      data = data == null ? List.of() : List.copyOf(data);
+    }
+
+    public String afterCursor() {
+      return paging == null || paging.cursors() == null ? null : paging.cursors().after();
+    }
+
+    public String nextPageUrl() {
+      return paging == null ? null : paging.next();
+    }
+  }
+
+  @JsonIgnoreProperties(ignoreUnknown = true)
+  public record PageAccount(
+      String id,
+      String name,
+      String category,
+      boolean accessTokenAvailable,
+      String instagramAccountId) {
+    public String linkedInstagramAccountId() {
+      return instagramAccountId;
+    }
+
+    public String instagramBusinessAccountId() {
+      return instagramAccountId;
+    }
   }
 
   @JsonIgnoreProperties(ignoreUnknown = true)

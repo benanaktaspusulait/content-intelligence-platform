@@ -10,7 +10,13 @@ from unittest.mock import patch
 from ..api.quality import convert_quality_report
 from ..assessment.pre_render_assessment import build_pre_render_assessment
 from ..parser.prompt_parser import parse_prompt
-from ..quality.canonical_evidence import attempt_evidence, beat_audit, escalation_evidence, story_density_evidence
+from ..quality.canonical_evidence import (
+    attempt_evidence,
+    beat_audit,
+    escalation_evidence,
+    specialized_applicability_evidence,
+    story_density_evidence,
+)
 from ..quality.contracts import EnhancedQualityReport, ParseResult, QualityReport
 from ..rules import rule_engine as rule_engine_module
 from ..rules.rule_engine import RuleEngine
@@ -71,6 +77,7 @@ class GoldenRun:
         attempts = attempt_evidence(ir)
         story = story_density_evidence(ir)
         escalation = escalation_evidence(ir)
+        specialized_applicability = specialized_applicability_evidence(ir)
         return {
             "attempts": {
                 "count": attempts.count,
@@ -84,6 +91,10 @@ class GoldenRun:
             },
             "escalation": escalation.to_dict(),
             "storyDensity": story.__dict__,
+            "specializedApplicability": {
+                rule_id: evidence.to_dict()
+                for rule_id, evidence in specialized_applicability.items()
+            },
             "beatAudit": beat_audit(ir),
         }
 

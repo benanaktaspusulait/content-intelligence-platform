@@ -193,12 +193,27 @@ assets:
         - excerpt: ball is already STUCK flat to the wall
           location: FIRST FRAME
         notes: Explicit first-frame intent.
-      SPECIALIZED_RULE_APPLICABILITY:
+      SPECIALIZED_RULE_APPLICABILITY_STUBBORN_RETURN_LOOP:
         expected: NOT_APPLICABLE
-        applicable: false
-        confidence: HIGH
+        applicable: true
+        confidence: MEDIUM
         evidenceReferences: []
-        notes: Stubborn-return exception is not activated by this source evidence.
+        notes: Sticky-ball deformation does not activate the STUBBORN_RETURN_LOOP domain.
+        reviewStatus: APPROVED
+      SPECIALIZED_RULE_APPLICABILITY_STUBBORN_RETURN_HOOK:
+        expected: NOT_APPLICABLE
+        applicable: true
+        confidence: MEDIUM
+        evidenceReferences: []
+        notes: Sticky-ball deformation does not establish the STUBBORN_RETURN_HOOK boundary.
+        reviewStatus: APPROVED
+      SPECIALIZED_RULE_APPLICABILITY_STUBBORN_RETURN_PAYOFF:
+        expected: NOT_APPLICABLE
+        applicable: true
+        confidence: MEDIUM
+        evidenceReferences: []
+        notes: Sticky-ball deformation does not establish the STUBBORN_RETURN_PAYOFF profile.
+        reviewStatus: APPROVED
       MECHANIC_INTERACTION:
         expected: ACTIVE
         applicable: true
@@ -388,12 +403,27 @@ assets:
         - excerpt: mouth is already full of colourful soft balls
           location: FIRST-FRAME HOOK
         notes: Immediate visual contradiction.
-      SPECIALIZED_RULE_APPLICABILITY:
+      SPECIALIZED_RULE_APPLICABILITY_STUBBORN_RETURN_LOOP:
         expected: NOT_APPLICABLE
-        applicable: false
-        confidence: HIGH
+        applicable: true
+        confidence: MEDIUM
         evidenceReferences: []
-        notes: No stubborn-return boundary rule is established.
+        notes: Ball multiplication has no STUBBORN_RETURN_LOOP boundary rule.
+        reviewStatus: APPROVED
+      SPECIALIZED_RULE_APPLICABILITY_STUBBORN_RETURN_HOOK:
+        expected: NOT_APPLICABLE
+        applicable: true
+        confidence: MEDIUM
+        evidenceReferences: []
+        notes: Ball multiplication has no STUBBORN_RETURN_HOOK boundary.
+        reviewStatus: APPROVED
+      SPECIALIZED_RULE_APPLICABILITY_STUBBORN_RETURN_PAYOFF:
+        expected: NOT_APPLICABLE
+        applicable: true
+        confidence: MEDIUM
+        evidenceReferences: []
+        notes: Ball multiplication has no STUBBORN_RETURN_PAYOFF profile.
+        reviewStatus: APPROVED
       MECHANIC_INTERACTION:
         expected: ACTIVE
         applicable: true
@@ -583,15 +613,33 @@ assets:
         - excerpt: chair is completely upside down
           location: HARD SCROLL-STOP HOOK
         notes: Explicit.
-      SPECIALIZED_RULE_APPLICABILITY:
-        expected: CANDIDATE_REVIEW
+      SPECIALIZED_RULE_APPLICABILITY_STUBBORN_RETURN_LOOP:
+        expected: NOT_APPLICABLE
         applicable: true
         confidence: MEDIUM
         evidenceReferences:
         - excerpt: chair turns upside down by itself
           location: FIRST ESCALATION
-        notes: HUMAN_REVIEW_REQUIRED; possible stubborn-return shape but mandatory
-          profile signals are not all explicit.
+        notes: Autonomous chair inversion is not a STUBBORN_RETURN_LOOP return/reclaim profile.
+        reviewStatus: APPROVED
+      SPECIALIZED_RULE_APPLICABILITY_STUBBORN_RETURN_HOOK:
+        expected: NOT_APPLICABLE
+        applicable: true
+        confidence: MEDIUM
+        evidenceReferences:
+        - excerpt: chair turns upside down by itself
+          location: FIRST ESCALATION
+        notes: Autonomous chair inversion does not establish a STUBBORN_RETURN_HOOK boundary.
+        reviewStatus: APPROVED
+      SPECIALIZED_RULE_APPLICABILITY_STUBBORN_RETURN_PAYOFF:
+        expected: NOT_APPLICABLE
+        applicable: true
+        confidence: MEDIUM
+        evidenceReferences:
+        - excerpt: ENTIRE chair suddenly flips upside down WITH Kiko on it
+          location: FINAL TWIST
+        notes: Autonomous chair inversion does not establish a STUBBORN_RETURN_PAYOFF profile.
+        reviewStatus: APPROVED
       MECHANIC_INTERACTION:
         expected: ACTIVE
         applicable: true
@@ -776,12 +824,27 @@ assets:
           location: 0.0-2.0 SEC
         notes: HUMAN_REVIEW_REQUIRED; anomaly becomes obvious on look-away rather
           than static frame.
-      SPECIALIZED_RULE_APPLICABILITY:
+      SPECIALIZED_RULE_APPLICABILITY_STUBBORN_RETURN_LOOP:
         expected: NOT_APPLICABLE
-        applicable: false
-        confidence: HIGH
+        applicable: true
+        confidence: MEDIUM
         evidenceReferences: []
-        notes: No stubborn-return boundary profile.
+        notes: Observation-dependent light is not a STUBBORN_RETURN_LOOP boundary profile.
+        reviewStatus: APPROVED
+      SPECIALIZED_RULE_APPLICABILITY_STUBBORN_RETURN_HOOK:
+        expected: NOT_APPLICABLE
+        applicable: true
+        confidence: MEDIUM
+        evidenceReferences: []
+        notes: Observation-dependent light is not a STUBBORN_RETURN_HOOK boundary.
+        reviewStatus: APPROVED
+      SPECIALIZED_RULE_APPLICABILITY_STUBBORN_RETURN_PAYOFF:
+        expected: NOT_APPLICABLE
+        applicable: true
+        confidence: MEDIUM
+        evidenceReferences: []
+        notes: Observation-dependent light is not a STUBBORN_RETURN_PAYOFF profile.
+        reviewStatus: APPROVED
       MECHANIC_INTERACTION:
         expected: ACTIVE
         applicable: true
@@ -963,12 +1026,27 @@ assets:
         - excerpt: box contains an apple instead of expected cracker
           location: 00.0-02.0s
         notes: Immediate expectation mismatch.
-      SPECIALIZED_RULE_APPLICABILITY:
+      SPECIALIZED_RULE_APPLICABILITY_STUBBORN_RETURN_LOOP:
         expected: NOT_APPLICABLE
-        applicable: false
-        confidence: HIGH
+        applicable: true
+        confidence: MEDIUM
         evidenceReferences: []
-        notes: No stubborn-return boundary profile.
+        notes: Changing snack-box contents are not a STUBBORN_RETURN_LOOP boundary profile.
+        reviewStatus: APPROVED
+      SPECIALIZED_RULE_APPLICABILITY_STUBBORN_RETURN_HOOK:
+        expected: NOT_APPLICABLE
+        applicable: true
+        confidence: MEDIUM
+        evidenceReferences: []
+        notes: Changing snack-box contents are not a STUBBORN_RETURN_HOOK boundary.
+        reviewStatus: APPROVED
+      SPECIALIZED_RULE_APPLICABILITY_STUBBORN_RETURN_PAYOFF:
+        expected: NOT_APPLICABLE
+        applicable: true
+        confidence: MEDIUM
+        evidenceReferences: []
+        notes: Changing snack-box contents are not a STUBBORN_RETURN_PAYOFF profile.
+        reviewStatus: APPROVED
       MECHANIC_INTERACTION:
         expected: ACTIVE
         applicable: true
@@ -1144,15 +1222,32 @@ assets:
         - excerpt: cat is already curled up inside it
           location: FRAME ZERO
         notes: Explicit.
-      SPECIALIZED_RULE_APPLICABILITY:
-        expected: APPLICABLE_CANDIDATE
+      SPECIALIZED_RULE_APPLICABILITY_STUBBORN_RETURN_LOOP:
+        expected: APPLICABLE
         applicable: true
         confidence: HIGH
         evidenceReferences:
         - excerpt: cat claims it again
         - excerpt: recurrence across attempts
-        notes: Strong candidate for STUBBORN_RETURN_LOOP; exception activation remains
-          policy-specific.
+        notes: The cat autonomously reclaims the usable box after interventions, activating STUBBORN_RETURN_LOOP.
+        reviewStatus: APPROVED
+      SPECIALIZED_RULE_APPLICABILITY_STUBBORN_RETURN_HOOK:
+        expected: UNKNOWN
+        applicable: true
+        confidence: MEDIUM
+        evidenceReferences:
+        - excerpt: cat is already curled up inside it
+          location: FRAME ZERO
+        notes: Immediate access conflict is clear, but the narrower physical-threat wording for STUBBORN_RETURN_HOOK is unsettled.
+        reviewStatus: APPROVED
+      SPECIALIZED_RULE_APPLICABILITY_STUBBORN_RETURN_PAYOFF:
+        expected: APPLICABLE
+        applicable: true
+        confidence: HIGH
+        evidenceReferences:
+        - excerpt: cat ... curls up again; Luca's hands stop
+        notes: The cat reclaims the box after apparent success, activating the causal STUBBORN_RETURN_PAYOFF.
+        reviewStatus: APPROVED
       MECHANIC_INTERACTION:
         expected: ACTIVE
         applicable: true
@@ -1324,14 +1419,33 @@ assets:
         - excerpt: cat ... curling into that exact spot
           location: FRAME ZERO
         notes: Explicit.
-      SPECIALIZED_RULE_APPLICABILITY:
-        expected: APPLICABLE_CANDIDATE
+      SPECIALIZED_RULE_APPLICABILITY_STUBBORN_RETURN_LOOP:
+        expected: NOT_APPLICABLE
         applicable: true
         confidence: MEDIUM
         evidenceReferences:
         - excerpt: cat claims that exact spot first
-        notes: HUMAN_REVIEW_REQUIRED; recurrence is present but profile signals need
-          review.
+          location: SINGLE ANIMAL RULE
+        notes: Changing target locations are not the STUBBORN_RETURN_LOOP return/reclaim profile.
+        reviewStatus: APPROVED
+      SPECIALIZED_RULE_APPLICABILITY_STUBBORN_RETURN_HOOK:
+        expected: NOT_APPLICABLE
+        applicable: true
+        confidence: MEDIUM
+        evidenceReferences:
+        - excerpt: cat claims that exact spot first
+          location: SINGLE ANIMAL RULE
+        notes: Changing target locations do not establish the STUBBORN_RETURN_HOOK boundary.
+        reviewStatus: APPROVED
+      SPECIALIZED_RULE_APPLICABILITY_STUBBORN_RETURN_PAYOFF:
+        expected: NOT_APPLICABLE
+        applicable: true
+        confidence: MEDIUM
+        evidenceReferences:
+        - excerpt: cat claims that exact spot first
+          location: SINGLE ANIMAL RULE
+        notes: Changing target locations do not establish the STUBBORN_RETURN_PAYOFF profile.
+        reviewStatus: APPROVED
       MECHANIC_INTERACTION:
         expected: ACTIVE
         applicable: true
@@ -1510,12 +1624,27 @@ assets:
         - excerpt: door closes ... strong pull
           location: SHOT 01
         notes: Explicit first-shot intent.
-      SPECIALIZED_RULE_APPLICABILITY:
+      SPECIALIZED_RULE_APPLICABILITY_STUBBORN_RETURN_LOOP:
         expected: NOT_APPLICABLE
-        applicable: false
-        confidence: HIGH
+        applicable: true
+        confidence: MEDIUM
         evidenceReferences: []
-        notes: Multi-clip door behavior is not the stubborn-return profile.
+        notes: Multi-clip door behavior is not the STUBBORN_RETURN_LOOP return/reclaim profile.
+        reviewStatus: APPROVED
+      SPECIALIZED_RULE_APPLICABILITY_STUBBORN_RETURN_HOOK:
+        expected: NOT_APPLICABLE
+        applicable: true
+        confidence: MEDIUM
+        evidenceReferences: []
+        notes: Multi-clip door behavior does not establish the STUBBORN_RETURN_HOOK boundary.
+        reviewStatus: APPROVED
+      SPECIALIZED_RULE_APPLICABILITY_STUBBORN_RETURN_PAYOFF:
+        expected: NOT_APPLICABLE
+        applicable: true
+        confidence: MEDIUM
+        evidenceReferences: []
+        notes: Multi-clip door behavior does not establish the STUBBORN_RETURN_PAYOFF profile.
+        reviewStatus: APPROVED
       MECHANIC_INTERACTION:
         expected: ACTIVE
         applicable: true
@@ -1689,12 +1818,27 @@ assets:
         - excerpt: wave splashes nearby
           location: HOOK
         notes: Immediate scene is not an impossible visual anomaly.
-      SPECIALIZED_RULE_APPLICABILITY:
+      SPECIALIZED_RULE_APPLICABILITY_STUBBORN_RETURN_LOOP:
         expected: NOT_APPLICABLE
-        applicable: false
-        confidence: HIGH
+        applicable: true
+        confidence: MEDIUM
         evidenceReferences: []
-        notes: No specialized absurd-mechanic profile.
+        notes: No central absurd mechanic establishes a STUBBORN_RETURN_LOOP profile.
+        reviewStatus: APPROVED
+      SPECIALIZED_RULE_APPLICABILITY_STUBBORN_RETURN_HOOK:
+        expected: NOT_APPLICABLE
+        applicable: true
+        confidence: MEDIUM
+        evidenceReferences: []
+        notes: No central absurd mechanic establishes a STUBBORN_RETURN_HOOK boundary.
+        reviewStatus: APPROVED
+      SPECIALIZED_RULE_APPLICABILITY_STUBBORN_RETURN_PAYOFF:
+        expected: NOT_APPLICABLE
+        applicable: true
+        confidence: MEDIUM
+        evidenceReferences: []
+        notes: No central absurd mechanic establishes a STUBBORN_RETURN_PAYOFF profile.
+        reviewStatus: APPROVED
       MECHANIC_INTERACTION:
         expected: NOT_APPLICABLE
         applicable: false

@@ -201,6 +201,38 @@ public class QualityReportPdfService {
             "Recommended changes", "→", strings(assessment.get("recommended_changes")), BLUE, fonts));
     document.add(columns);
 
+    List<Map.Entry<?, ?>> applicabilityRows = new ArrayList<>();
+    if (assessment.get("specialized_applicability") instanceof Map<?, ?> applicability) {
+      for (Map.Entry<?, ?> entry : applicability.entrySet()) {
+        if (entry.getValue() instanceof Map<?, ?>) {
+          applicabilityRows.add(entry);
+        }
+      }
+    }
+    if (!applicabilityRows.isEmpty()) {
+      applicabilityRows.sort(
+          (left, right) -> str(left.getKey()).compareTo(str(right.getKey())));
+      Paragraph applicabilityHeading = new Paragraph("Specialized applicability", fonts.bold);
+      applicabilityHeading.setSpacingBefore(4);
+      applicabilityHeading.setSpacingAfter(4);
+      document.add(applicabilityHeading);
+
+      PdfPTable table = new PdfPTable(new float[] {30, 18, 12, 28, 12});
+      table.setWidthPercentage(100);
+      table.setHeaderRows(1);
+      table.setSpacingAfter(6);
+      compactHeader(table, fonts, "Rule", "Applicability", "Confidence", "Reason", "Evidence");
+      for (Map.Entry<?, ?> entry : applicabilityRows) {
+        Map<?, ?> detail = (Map<?, ?>) entry.getValue();
+        table.addCell(cell(orDash(str(entry.getKey())), fonts.small, null));
+        table.addCell(cell(orDash(str(detail.get("status"))), fonts.small, null));
+        table.addCell(cell(orDash(str(detail.get("confidence"))), fonts.small, null));
+        table.addCell(cell(orDash(str(detail.get("reason"))), fonts.small, null));
+        table.addCell(cell(orDash(str(detail.get("evidence"))), fonts.small, null));
+      }
+      document.add(table);
+    }
+
     List<Map<?, ?>> dimensions = maps(assessment.get("dimensions"));
     if (!dimensions.isEmpty()) {
       PdfPTable table = new PdfPTable(new float[] {24, 16, 60});
@@ -548,6 +580,14 @@ public class QualityReportPdfService {
   private void header(PdfPTable table, Fonts fonts, String... labels) {
     for (String label : labels) {
       PdfPCell cell = cell(label, fonts.colored(fonts.bold, Color.WHITE), INK);
+      cell.setBorderColor(INK);
+      table.addCell(cell);
+    }
+  }
+
+  private void compactHeader(PdfPTable table, Fonts fonts, String... labels) {
+    for (String label : labels) {
+      PdfPCell cell = cell(label, fonts.colored(fonts.small, Color.WHITE), INK);
       cell.setBorderColor(INK);
       table.addCell(cell);
     }

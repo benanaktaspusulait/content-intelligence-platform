@@ -538,6 +538,168 @@ def mechanic_payoff_evidence(video_plan_ir: dict[str, Any]) -> MechanicPayoffEvi
     )
 
 
+SPECIALIZED_RULE_IDS: tuple[str, ...] = (
+    "STUBBORN_RETURN_LOOP",
+    "STUBBORN_RETURN_HOOK",
+    "STUBBORN_RETURN_PAYOFF",
+)
+
+
+@dataclass(frozen=True)
+class SpecializedApplicabilityEvidence:
+    """Canonical applicability evidence for one specialized rule."""
+
+    status: str
+    confidence: str
+    evidence_references: tuple[str, ...]
+    reason: str
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "status": self.status,
+            "confidence": self.confidence,
+            "evidenceReferences": list(self.evidence_references),
+            "reason": self.reason,
+        }
+
+
+def specialized_applicability_evidence(
+    video_plan_ir: dict[str, Any] | None,
+) -> dict[str, SpecializedApplicabilityEvidence]:
+    """Project source-backed Family 5 applicability without evaluating rules."""
+    unavailable_reason = (
+        "Canonical video-plan IR is unavailable; specialized applicability "
+        "evidence cannot be established."
+    )
+    if video_plan_ir is None:
+        return {
+            rule_id: SpecializedApplicabilityEvidence(
+                "UNKNOWN", "LOW", (), unavailable_reason
+            )
+            for rule_id in SPECIALIZED_RULE_IDS
+        }
+
+    mechanic = mechanic_payoff_evidence(video_plan_ir)
+    attempts = attempt_evidence(video_plan_ir)
+    story = story_density_evidence(video_plan_ir)
+    references = tuple(dict.fromkeys((*mechanic.evidence_references, *attempts.beat_ids)))
+    confidence = str(mechanic.confidence or "LOW").upper()
+    if confidence not in {"LOW", "MEDIUM", "HIGH"}:
+        confidence = "LOW"
+
+    target_family = mechanic.mechanic_family == "STUBBORN_RETURN_ANIMAL_CLAIM"
+    source_payoff = (
+        mechanic.same_rule_relation == "SAME_RULE"
+        and mechanic.payoff_status in {"MODERATE", "STRONG"}
+        and story.payoff_status == "AVAILABLE"
+    )
+    directed_attempts = (
+        attempts.active_attempt_count >= 2
+        and attempts.distinct_strategy_count >= 2
+    )
+    base_applicable = target_family and all(
+        (
+            mechanic.central_mechanic_status == "ESTABLISHED",
+            mechanic.interaction_status == "ACTIVE",
+            mechanic.recurrence_status == "PRESENT",
+            directed_attempts,
+            source_payoff,
+        )
+    )
+
+    if not target_family:
+        reason = (
+            f"Mechanic family {mechanic.mechanic_family} is outside the stubborn-return "
+            "animal-claim applicability domain."
+            if mechanic.mechanic_family != "NOT_ESTABLISHED"
+            else (
+                "No established mechanic evidence is available for the "
+                "stubborn-return animal-claim domain."
+            )
+        )
+        return {
+            rule_id: SpecializedApplicabilityEvidence(
+                "NOT_APPLICABLE", confidence, references, reason
+            )
+            for rule_id in SPECIALIZED_RULE_IDS
+        }
+
+    if not base_applicable:
+        reason = (
+            "The stubborn-return animal-claim family is present, but canonical recurrence, "
+            "active interaction, directed-attempt, or same-rule payoff evidence remains unresolved."
+        )
+        return {
+            rule_id: SpecializedApplicabilityEvidence(
+                "UNKNOWN", confidence, references, reason
+            )
+            for rule_id in SPECIALIZED_RULE_IDS
+        }
+
+    hook = video_plan_ir.get("hook") or {}
+    visible_threat = (
+        hook.get("visibleProblem") is True
+        or hook.get("physicalThreat") is True
+    )
+    engaged_at_opening = (
+        hook.get("characterAlreadyEngaged") is True
+        or hook.get("engagedAtOpening") is True
+    )
+    hook_applicable = visible_threat and engaged_at_opening
+    hook_status = "APPLICABLE" if hook_applicable else "UNKNOWN"
+    hook_reason = (
+        (
+            "Canonical opening evidence establishes a visible physical threat "
+            "with the character already engaged."
+        )
+        if hook_applicable
+        else (
+            "The stubborn-return domain applies, but explicit physical-threat and "
+            "engaged-at-opening hook evidence is unavailable."
+        )
+    )
+    payoff_applicable = (
+        source_payoff
+        and mechanic.interaction_status == "ACTIVE"
+        and attempts.active_attempt_count > 0
+    )
+    payoff_status = "APPLICABLE" if payoff_applicable else "UNKNOWN"
+    payoff_reason = (
+        (
+            "Canonical same-rule final-payoff evidence and active engagement are "
+            "available for the final consequence."
+        )
+        if payoff_applicable
+        else (
+            "The stubborn-return domain applies, but same-rule final-payoff and "
+            "active final-consequence evidence remains unresolved."
+        )
+    )
+    return {
+        "STUBBORN_RETURN_LOOP": SpecializedApplicabilityEvidence(
+            "APPLICABLE",
+            confidence,
+            references,
+            (
+                "Established recurrence, active interaction, repeated directed attempts, "
+                "and same-rule payoff evidence identify the stubborn-return loop domain."
+            ),
+        ),
+        "STUBBORN_RETURN_HOOK": SpecializedApplicabilityEvidence(
+            hook_status,
+            confidence,
+            references,
+            hook_reason,
+        ),
+        "STUBBORN_RETURN_PAYOFF": SpecializedApplicabilityEvidence(
+            payoff_status,
+            confidence,
+            references,
+            payoff_reason,
+        ),
+    }
+
+
     profile: str
     source: str
     confidence: str

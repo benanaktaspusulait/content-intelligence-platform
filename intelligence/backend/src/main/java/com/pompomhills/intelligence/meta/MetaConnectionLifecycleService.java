@@ -62,6 +62,7 @@ public class MetaConnectionLifecycleService {
         return failureResponse("Meta did not return a managed Facebook Page target.");
       }
       Map<MetaCapability, MetaCapabilityStatus> capabilities = calculateCapabilities(authorization);
+      String failureReason = sanitizeProviderValidationReason(authorization);
       Optional<MetaConnectionEntity> existing = findExisting(authorization);
       MetaConnectionEntity entity =
           existing.orElseGet(
@@ -72,7 +73,7 @@ public class MetaConnectionLifecycleService {
         entity.applyAuthorization(authorization, encryption, capabilities);
       }
       entity.setStatus(connectionStatus(capabilities, authorization.expiresAt()));
-      entity.setFailureReason(authorization.providerValidationReason());
+      entity.setFailureReason(failureReason);
       MetaConnectionEntity saved = repository.save(entity);
       return toResponse(saved);
     } catch (MetaOAuthException error) {
@@ -99,20 +100,22 @@ public class MetaConnectionLifecycleService {
       return failureResponse("The Meta connection was not found.");
     }
     MetaConnectionEntity entity = found.get();
-    if (provider.supportsRevoke()) {
+    boolean supportsRevoke = provider.supportsRevoke();
+    if (supportsRevoke) {
       try {
         provider.revoke(entity.decryptTokens(encryption));
       } catch (RuntimeException error) {
-        entity.setStatus(MetaConnectionStatus.DEGRADED);
+        entity.setStatus(MetaConnectionStatus.REVOKED);
+        entity.setEncryptedTokens(null, null, null);
         entity.setFailureReason("Meta token revocation could not be confirmed.");
-        repository.save(entity);
-        return toResponse(entity);
+        entity.setCapabilities(unknownCapabilities());
+        return toResponse(repository.save(entity));
       }
     }
     entity.setStatus(MetaConnectionStatus.REVOKED);
     entity.setEncryptedTokens(null, null, null);
     entity.setFailureReason(
-        provider.supportsRevoke()
+        supportsRevoke
             ? null
             : "The current Meta provider contract does not support remote token revocation.");
     entity.setCapabilities(unknownCapabilities());
@@ -182,12 +185,17 @@ public class MetaConnectionLifecycleService {
 
   private Map<MetaCapability, MetaCapabilityStatus> calculateCapabilities(
       MetaProviderAdapter.AuthorizationResult authorization) {
-    return calculateCapabilities(
-        authorization.grantedScopes(),
-        authorization.facebookPageEligible(),
-        authorization.instagramAccountEligible(),
-        authorization.instagramAccountType(),
-        authorization.expiresAt());
+    Map<MetaCapability, MetaCapabilityStatus> capabilities =
+        calculateCapabilities(
+            authorization.grantedScopes(),
+            authorization.facebookPageEligible(),
+            authorization.instagramAccountEligible(),
+            authorization.instagramAccountType(),
+            authorization.expiresAt());
+    return authorization.providerValidationReason() == null
+            || authorization.providerValidationReason().isBlank()
+        ? capabilities
+        : unknownCapabilities();
   }
 
   private Map<MetaCapability, MetaCapabilityStatus> calculateCapabilities(
@@ -334,9 +342,7 @@ public class MetaConnectionLifecycleService {
           case REVOKED -> MetaConnectionResponse.Status.REVOKED;
           case NOT_CONFIGURED -> MetaConnectionResponse.Status.NOT_CONFIGURED;
         };
-    boolean connected =
-        effectiveStatus == MetaConnectionStatus.CONNECTED
-            || effectiveStatus == MetaConnectionStatus.DEGRADED;
+    boolean connected = effectiveStatus == MetaConnectionStatus.CONNECTED;
     return new MetaConnectionResponse(
         responseStatus,
         connected,
@@ -465,12 +471,21 @@ public class MetaConnectionLifecycleService {
         reason);
   }
 
+  private String sanitizeProviderValidationReason(
+      MetaProviderAdapter.AuthorizationResult authorization) {
+    return MetaErrorSanitizer.sanitizeOrNull(
+        authorization.providerValidationReason(),
+        authorization.userAccessToken(),
+        authorization.pageAccessToken(),
+        authorization.refreshToken());
+  }
+
   private String sanitizeFailure(String reason) {
-    if (reason == null || reason.isBlank()) {
-      return "The Meta authorization request could not be completed.";
-    }
-    String sanitized = reason.replaceAll("(?i)bearer\\s+[^\\s,;]+", "Bearer [REDACTED]");
-    return sanitized.length() <= 300 ? sanitized : sanitized.substring(0, 300);
+    return MetaErrorSanitizer.sanitize(
+        reason,
+        "The Meta authorization request could not be completed.",
+        properties.accessToken(),
+        properties.userAccessToken());
   }
 
   private String ownerKey() {

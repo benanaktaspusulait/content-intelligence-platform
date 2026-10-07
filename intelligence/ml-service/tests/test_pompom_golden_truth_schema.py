@@ -19,6 +19,22 @@ APPROVED_IDS = {
     "sneaky-door-01",
     "island-journal-01",
 }
+FAMILY5_DIMENSIONS = {
+    "SPECIALIZED_RULE_APPLICABILITY_STUBBORN_RETURN_LOOP",
+    "SPECIALIZED_RULE_APPLICABILITY_STUBBORN_RETURN_HOOK",
+    "SPECIALIZED_RULE_APPLICABILITY_STUBBORN_RETURN_PAYOFF",
+}
+FAMILY5_EXPECTED = {
+    "sticky-ball-01": {"LOOP": "NOT_APPLICABLE", "HOOK": "NOT_APPLICABLE", "PAYOFF": "NOT_APPLICABLE"},
+    "ball-crocodile-01": {"LOOP": "NOT_APPLICABLE", "HOOK": "NOT_APPLICABLE", "PAYOFF": "NOT_APPLICABLE"},
+    "upside-chair-01": {"LOOP": "NOT_APPLICABLE", "HOOK": "NOT_APPLICABLE", "PAYOFF": "NOT_APPLICABLE"},
+    "lamp-01": {"LOOP": "NOT_APPLICABLE", "HOOK": "NOT_APPLICABLE", "PAYOFF": "NOT_APPLICABLE"},
+    "snack-box-01": {"LOOP": "NOT_APPLICABLE", "HOOK": "NOT_APPLICABLE", "PAYOFF": "NOT_APPLICABLE"},
+    "box-cat-01": {"LOOP": "APPLICABLE", "HOOK": "UNKNOWN", "PAYOFF": "APPLICABLE"},
+    "spot-cat-01": {"LOOP": "NOT_APPLICABLE", "HOOK": "NOT_APPLICABLE", "PAYOFF": "NOT_APPLICABLE"},
+    "sneaky-door-01": {"LOOP": "NOT_APPLICABLE", "HOOK": "NOT_APPLICABLE", "PAYOFF": "NOT_APPLICABLE"},
+    "island-journal-01": {"LOOP": "NOT_APPLICABLE", "HOOK": "NOT_APPLICABLE", "PAYOFF": "NOT_APPLICABLE"},
+}
 REQUIRED_DIMENSIONS = {
     "HOOK",
     "GOAL",
@@ -38,11 +54,25 @@ REQUIRED_DIMENSIONS = {
     "TIMING_PACING",
     "CONTENT_FAMILY_FIT",
     "FIRST_FRAME_ANOMALY_INTENT",
-    "SPECIALIZED_RULE_APPLICABILITY",
+    *FAMILY5_DIMENSIONS,
     "MECHANIC_INTERACTION",
     "RECURRENCE",
 }
 FAMILY_REVIEW_DIMENSIONS = {"GOAL", "ACTIVE_ATTEMPT_COUNT", "DISTINCT_STRATEGY_COUNT", "DISTINCT_STRATEGIES", "ESCALATION", "REALIZATION"}
+
+
+def test_family5_uses_per_rule_applicability_dimensions() -> None:
+    truth = yaml.safe_load(TRUTH.read_text(encoding="utf-8"))
+    for asset_id, asset in truth["assets"].items():
+        dimensions = asset["dimensions"]
+        assert FAMILY5_DIMENSIONS <= dimensions.keys()
+        assert "SPECIALIZED_RULE_APPLICABILITY" not in dimensions
+        for dimension_name in FAMILY5_DIMENSIONS:
+            dimension = dimensions[dimension_name]
+            assert dimension["applicable"] is True
+            assert dimension["expected"] in {"APPLICABLE", "NOT_APPLICABLE", "UNKNOWN"}
+            assert dimension["expected"] == FAMILY5_EXPECTED[asset_id][dimension_name.rsplit("_", 1)[-1]]
+            assert dimension["reviewStatus"] == "APPROVED"
 
 
 def test_gold_truth_is_independent_and_evidence_backed() -> None:

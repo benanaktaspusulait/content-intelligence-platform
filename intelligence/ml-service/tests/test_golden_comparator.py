@@ -221,3 +221,141 @@ def test_extract_dimension_values_preserves_stored_values_without_video_plan_ir(
         {"status": "OK", "videoPlanIR": None, "dimensionValues": stored},
     ):
         assert extract_dimension_values(snapshot) == stored
+
+
+def test_family5_comparator_emits_one_assertion_per_specialized_rule() -> None:
+    import copy
+
+    from app.golden.comparator import compare_cohort
+
+    truth = {"assets": {"asset-1": {"dimensions": {
+        "SPECIALIZED_RULE_APPLICABILITY_STUBBORN_RETURN_LOOP": {
+            "expected": "APPLICABLE", "applicable": True, "confidence": "HIGH"
+        },
+        "SPECIALIZED_RULE_APPLICABILITY_STUBBORN_RETURN_HOOK": {
+            "expected": "UNKNOWN", "applicable": True, "confidence": "HIGH"
+        },
+        "SPECIALIZED_RULE_APPLICABILITY_STUBBORN_RETURN_PAYOFF": {
+            "expected": "APPLICABLE", "applicable": True, "confidence": "HIGH"
+        },
+    }}}}
+    baseline = {"assets": {"asset-1": {
+        "videoPlanIR": {"metadata": {"duration": 15.0}},
+        "canonicalEvidence": {"specializedApplicability": {
+            "STUBBORN_RETURN_LOOP": {"status": "APPLICABLE"},
+            "STUBBORN_RETURN_HOOK": {"status": "UNKNOWN"},
+            "STUBBORN_RETURN_PAYOFF": {"status": "APPLICABLE"},
+        }},
+    }}}
+    current = copy.deepcopy(baseline)
+    current["assets"]["asset-1"]["canonicalEvidence"]["specializedApplicability"]["STUBBORN_RETURN_HOOK"]["status"] = "NOT_APPLICABLE"
+
+    result = compare_cohort(truth, baseline, current)
+
+    rows = [row for row in result["assertions"] if row["dimension"].startswith("SPECIALIZED_RULE_APPLICABILITY:")]
+    assert len(rows) == 3
+    assert {row["dimension"] for row in rows} == {
+        "SPECIALIZED_RULE_APPLICABILITY:STUBBORN_RETURN_LOOP",
+        "SPECIALIZED_RULE_APPLICABILITY:STUBBORN_RETURN_HOOK",
+        "SPECIALIZED_RULE_APPLICABILITY:STUBBORN_RETURN_PAYOFF",
+    }
+    assert next(row for row in rows if row["dimension"].endswith("HOOK"))["classification"] == "REGRESSED_FROM_BASELINE"
+    assert result["newSemanticRegressions"] == 1
+    assert result["releaseGate"] == "FAIL"
+
+
+def test_family5_medium_confidence_mismatch_requires_gold_review() -> None:
+    result = compare_dimension(
+        gold={"expected": "UNKNOWN", "applicable": True, "confidence": "MEDIUM"},
+        baseline={"actual": "UNKNOWN"},
+        current={"actual": "NOT_APPLICABLE"},
+        assertion_type="EXACT",
+    )
+
+    assert result.classification == "GOLD_REVIEW_REQUIRED"
+    assert result.is_new_semantic_regression is False
+
+
+def test_family5_projection_prefers_canonical_values_over_legacy_aggregate() -> None:
+    from app.golden.comparator import extract_dimension_values
+
+    snapshot = {
+        "videoPlanIR": {"metadata": {"duration": 15.0}},
+        "canonicalEvidence": {"specializedApplicability": {
+            "STUBBORN_RETURN_LOOP": {"status": "APPLICABLE"},
+            "STUBBORN_RETURN_HOOK": {"status": "UNKNOWN"},
+            "STUBBORN_RETURN_PAYOFF": {"status": "APPLICABLE"},
+        }},
+        "dimensionValues": {
+            "SPECIALIZED_RULE_APPLICABILITY": "NOT_APPLICABLE",
+            "SPECIALIZED_RULE_APPLICABILITY_STUBBORN_RETURN_LOOP": "STALE",
+            "SPECIALIZED_RULE_APPLICABILITY_STUBBORN_RETURN_HOOK": "STALE",
+            "SPECIALIZED_RULE_APPLICABILITY_STUBBORN_RETURN_PAYOFF": "STALE",
+        },
+    }
+
+    values = extract_dimension_values(snapshot)
+
+    assert values["SPECIALIZED_RULE_APPLICABILITY_STUBBORN_RETURN_LOOP"] == "APPLICABLE"
+    assert values["SPECIALIZED_RULE_APPLICABILITY_STUBBORN_RETURN_HOOK"] == "UNKNOWN"
+    assert values["SPECIALIZED_RULE_APPLICABILITY_STUBBORN_RETURN_PAYOFF"] == "APPLICABLE"
+
+
+def test_family5_projection_recomputes_historical_ir_when_canonical_evidence_is_missing() -> None:
+    from app.golden.comparator import extract_dimension_values
+
+    snapshot = {
+        "videoPlanIR": {"metadata": {"duration": 15.0}},
+        "dimensionValues": {"SPECIALIZED_RULE_APPLICABILITY": "LEGACY_AGGREGATE"},
+    }
+
+    values = extract_dimension_values(snapshot)
+
+    assert values["SPECIALIZED_RULE_APPLICABILITY_STUBBORN_RETURN_LOOP"] == "NOT_APPLICABLE"
+    assert values["SPECIALIZED_RULE_APPLICABILITY_STUBBORN_RETURN_HOOK"] == "NOT_APPLICABLE"
+    assert values["SPECIALIZED_RULE_APPLICABILITY_STUBBORN_RETURN_PAYOFF"] == "NOT_APPLICABLE"
+
+
+def test_family5_projection_preserves_stored_rule_values_without_ir() -> None:
+    from app.golden.comparator import extract_dimension_values
+
+    stored = {
+        "SPECIALIZED_RULE_APPLICABILITY": "LEGACY_AGGREGATE",
+        "SPECIALIZED_RULE_APPLICABILITY_STUBBORN_RETURN_LOOP": "UNKNOWN",
+        "SPECIALIZED_RULE_APPLICABILITY_STUBBORN_RETURN_HOOK": "NOT_APPLICABLE",
+        "SPECIALIZED_RULE_APPLICABILITY_STUBBORN_RETURN_PAYOFF": "APPLICABLE",
+    }
+
+    assert extract_dimension_values({"videoPlanIR": None, "dimensionValues": stored}) == stored
+
+
+def test_family5_unknown_does_not_match_not_applicable() -> None:
+    result = compare_dimension(
+        gold={"expected": "UNKNOWN", "applicable": True, "confidence": "HIGH"},
+        baseline={"actual": "UNKNOWN"},
+        current={"actual": "NOT_APPLICABLE"},
+        assertion_type="EXACT",
+    )
+
+    assert result.classification == "REGRESSED_FROM_BASELINE"
+    assert result.is_new_semantic_regression is True
+
+
+def test_family5_legacy_aggregate_is_not_a_comparator_assertion() -> None:
+    from app.golden.comparator import compare_cohort
+
+    truth = {"assets": {"asset-1": {"dimensions": {
+        "SPECIALIZED_RULE_APPLICABILITY": {
+            "expected": "NOT_APPLICABLE", "applicable": True, "confidence": "HIGH"
+        },
+    }}}}
+    baseline = {"assets": {"asset-1": {"dimensionValues": {
+        "SPECIALIZED_RULE_APPLICABILITY": "NOT_APPLICABLE",
+    }}}}
+    current = {"assets": {"asset-1": {"dimensionValues": {
+        "SPECIALIZED_RULE_APPLICABILITY": "APPLICABLE",
+    }}}}
+
+    result = compare_cohort(truth, baseline, current)
+
+    assert not any(row["dimension"] == "SPECIALIZED_RULE_APPLICABILITY" for row in result["assertions"])

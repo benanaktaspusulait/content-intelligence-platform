@@ -35,3 +35,12 @@ def test_baseline_preserves_parser_incompatibility_as_observed_issue() -> None:
     assert asset["knownIssues"]
     assert any("TIMELINE_PARSE_INCOMPATIBLE" in issue["code"] for issue in asset["knownIssues"])
     assert "corpusRole" not in asset["engineInput"]
+
+
+def test_baseline_projects_canonical_family5_statuses_per_rule() -> None:
+    asset = capture_baseline_asset("box-cat-01", MANIFEST, RULESET)
+    values = asset["dimensionValues"]
+
+    assert values["SPECIALIZED_RULE_APPLICABILITY_STUBBORN_RETURN_LOOP"] == "APPLICABLE"
+    assert values["SPECIALIZED_RULE_APPLICABILITY_STUBBORN_RETURN_HOOK"] == "UNKNOWN"
+    assert values["SPECIALIZED_RULE_APPLICABILITY_STUBBORN_RETURN_PAYOFF"] == "APPLICABLE"

@@ -2,6 +2,7 @@ package com.pompomhills.intelligence.meta;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -17,6 +18,7 @@ import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
+import org.springframework.web.client.RestClient;
 
 class MetaConnectionLifecycleServiceTest {
   private static final Instant ISSUED_AT = Instant.parse("2026-10-01T12:00:00Z");
@@ -163,6 +165,141 @@ class MetaConnectionLifecycleServiceTest {
     assertThat(entity.getEncryptedPageAccessToken()).isNull();
     assertThat(entity.getEncryptedRefreshToken()).isNull();
     verify(provider, never()).revoke(any(MetaProviderAdapter.StoredTokens.class));
+  }
+
+  @Test
+  void supportedRevokeFailureClearsTokensAndMakesGraphReadsFailClosed() {
+    MetaConnectionEntity entity = connectedEntity();
+    when(repository.findByIdAndOwnerKey(entity.getId(), "owner-1"))
+        .thenReturn(Optional.of(entity));
+    when(repository.save(any(MetaConnectionEntity.class)))
+        .thenAnswer(
+            invocation -> {
+              MetaConnectionEntity savedEntity = invocation.getArgument(0);
+              if (savedEntity.getId() == null) {
+                savedEntity.setId(UUID.randomUUID());
+              }
+              return savedEntity;
+            });
+    when(provider.supportsRevoke()).thenReturn(true);
+    doThrow(new IllegalStateException("provider access_token=remote-secret"))
+        .when(provider)
+        .revoke(any(MetaProviderAdapter.StoredTokens.class));
+
+    MetaConnectionResponse response = service.disconnect(entity.getId());
+
+    assertThat(response.connectionStatus()).isEqualTo(MetaConnectionStatus.REVOKED);
+    assertThat(response.connected()).isFalse();
+    assertThat(response.failureReason())
+        .isEqualTo("Meta token revocation could not be confirmed.");
+    assertThat(entity.getStatus()).isEqualTo(MetaConnectionStatus.REVOKED);
+    assertThat(entity.getEncryptedUserAccessToken()).isNull();
+    assertThat(entity.getEncryptedPageAccessToken()).isNull();
+    assertThat(entity.getEncryptedRefreshToken()).isNull();
+    assertThat(entity.getCapabilities()).doesNotContainValue(MetaCapabilityStatus.SUPPORTED);
+
+    when(repository.findTopByOwnerKeyOrderByUpdatedAtDesc("owner-1"))
+        .thenReturn(Optional.of(entity));
+    MetaGraphReadClient client =
+        new MetaGraphReadClient(
+            RestClient.builder().baseUrl("https://graph.facebook.com").build(),
+            new ObjectMapper(),
+            properties(),
+            new MetaOAuthTokenStore(),
+            repository,
+            new MetaTokenEncryptionService("test-encryption-key"),
+            Clock.fixed(ISSUED_AT, ZoneOffset.UTC));
+
+    assertThat(client.hasEffectiveAccessToken()).isFalse();
+    assertThat(client.hasEffectivePageTarget()).isFalse();
+    assertThat(client.hasEffectiveInstagramTarget()).isFalse();
+  }
+
+  @Test
+  void sanitizesProviderValidationReasonBeforePersistenceAndResponse() {
+    String providerReason =
+        "provider rejected access_token=user-secret token=raw-token appsecret_proof=proof-secret "
+            + "Bearer bearer-secret\n"
+            + "x".repeat(400);
+    when(repository.findByOwnerKeyAndProviderUserIdAndFacebookPageIdAndInstagramAccountId(
+            "owner-1", "meta-user-1", "page-1", "instagram-1"))
+        .thenReturn(Optional.empty());
+    when(repository.save(any(MetaConnectionEntity.class)))
+        .thenAnswer(
+            invocation -> {
+              MetaConnectionEntity savedEntity = invocation.getArgument(0);
+              if (savedEntity.getId() == null) {
+                savedEntity.setId(UUID.randomUUID());
+              }
+              return savedEntity;
+            });
+    when(provider.authorize("authorization-code"))
+        .thenReturn(authorizationResult(providerReason));
+
+    MetaConnectionResponse response =
+        service.completeAuthorization("authorization-code", "single-use-state");
+
+    ArgumentCaptor<MetaConnectionEntity> captor =
+        ArgumentCaptor.forClass(MetaConnectionEntity.class);
+    verify(repository).save(captor.capture());
+    String persistedReason = captor.getValue().getFailureReason();
+
+    assertThat(persistedReason).hasSizeLessThanOrEqualTo(300);
+    assertThat(persistedReason).doesNotContain("user-secret", "raw-token", "proof-secret", "bearer-secret");
+    assertThat(persistedReason).doesNotContain("\n", "\r", "\t");
+    assertThat(persistedReason).contains("[REDACTED]");
+    assertThat(response.failureReason()).isEqualTo(persistedReason);
+    assertThat(response.message()).isEqualTo(persistedReason);
+  }
+
+  @Test
+  void providerValidationFailureDowngradesCapabilityAdmission() {
+    when(repository.findByOwnerKeyAndProviderUserIdAndFacebookPageIdAndInstagramAccountId(
+            "owner-1", "meta-user-1", "page-1", "instagram-1"))
+        .thenReturn(Optional.empty());
+    when(repository.save(any(MetaConnectionEntity.class)))
+        .thenAnswer(
+            invocation -> {
+              MetaConnectionEntity savedEntity = invocation.getArgument(0);
+              if (savedEntity.getId() == null) {
+                savedEntity.setId(UUID.randomUUID());
+              }
+              return savedEntity;
+            });
+    when(provider.authorize("authorization-code"))
+        .thenReturn(authorizationResult("Provider validation failed."));
+
+    MetaConnectionResponse response =
+        service.completeAuthorization("authorization-code", "single-use-state");
+
+    assertThat(response.connectionStatus()).isEqualTo(MetaConnectionStatus.DEGRADED);
+    assertThat(response.connected()).isFalse();
+    assertThat(response.capabilities()).doesNotContainValue(MetaCapabilityStatus.SUPPORTED);
+    assertThat(response.capabilities().get(MetaCapability.META_FACEBOOK_ANALYTICS_READ))
+        .isEqualTo(MetaCapabilityStatus.UNKNOWN);
+    assertThat(response.capabilities().get(MetaCapability.META_INSTAGRAM_ANALYTICS_READ))
+        .isEqualTo(MetaCapabilityStatus.UNKNOWN);
+  }
+
+  private MetaProviderAdapter.AuthorizationResult authorizationResult(String validationReason) {
+    return new MetaProviderAdapter.AuthorizationResult(
+        "meta-user-1",
+        "page-1",
+        "instagram-1",
+        "PROFESSIONAL",
+        "user-secret",
+        "page-secret",
+        "refresh-secret",
+        Set.of(
+            "pages_show_list",
+            "pages_read_engagement",
+            "instagram_basic",
+            "instagram_manage_insights"),
+        ISSUED_AT,
+        EXPIRES_AT,
+        true,
+        true,
+        validationReason);
   }
 
   private MetaConnectionEntity connectedEntity() {

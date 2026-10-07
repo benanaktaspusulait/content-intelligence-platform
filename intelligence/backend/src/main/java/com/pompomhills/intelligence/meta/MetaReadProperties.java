@@ -17,7 +17,8 @@ public record MetaReadProperties(
     @DefaultValue("15s") Duration readTimeout,
     @DefaultValue("false") boolean publishEnabled,
     @DefaultValue("false") boolean commentReplyEnabled,
-    @DefaultValue("default") String connectionOwnerKey) {
+    @DefaultValue("default") String connectionOwnerKey,
+    @DefaultValue("false") boolean diagnosticOverridesEnabled) {
 
   @ConstructorBinding
   public MetaReadProperties {
@@ -29,6 +30,34 @@ public record MetaReadProperties(
     connectTimeout = normalizeDuration(connectTimeout, Duration.ofSeconds(5));
     readTimeout = normalizeDuration(readTimeout, Duration.ofSeconds(15));
     connectionOwnerKey = normalizeOwnerKey(connectionOwnerKey);
+  }
+
+  /** Compatibility constructor for existing lifecycle tests and legacy bootstrap callers. */
+  public MetaReadProperties(
+      boolean enabled,
+      String apiVersion,
+      String pageId,
+      String instagramAccountId,
+      String accessToken,
+      String userAccessToken,
+      Duration connectTimeout,
+      Duration readTimeout,
+      boolean publishEnabled,
+      boolean commentReplyEnabled,
+      String connectionOwnerKey) {
+    this(
+        enabled,
+        apiVersion,
+        pageId,
+        instagramAccountId,
+        accessToken,
+        userAccessToken,
+        connectTimeout,
+        readTimeout,
+        publishEnabled,
+        commentReplyEnabled,
+        connectionOwnerKey,
+        true);
   }
 
   /** Compatibility constructor for existing read-only unit tests and callers. */
@@ -52,7 +81,8 @@ public record MetaReadProperties(
         readTimeout,
         false,
         false,
-        "default");
+        "default",
+        true);
   }
 
   /** Static credentials are retained only as an explicit bootstrap fallback. */
@@ -61,7 +91,10 @@ public record MetaReadProperties(
   }
 
   public boolean isTargetConfigured() {
-    return enabled && !pageId.isBlank() && !instagramAccountId.isBlank();
+    return enabled
+        && diagnosticOverridesEnabled
+        && !pageId.isBlank()
+        && !instagramAccountId.isBlank();
   }
 
   @Override

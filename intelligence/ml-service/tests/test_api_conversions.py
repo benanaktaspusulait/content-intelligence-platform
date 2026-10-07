@@ -16,6 +16,7 @@ from app.config import settings
 from app.llm.semantic_checks import SemanticCheckServiceError
 from app.main import app
 from app.parser.prompt_parser import parse_prompt
+from app.quality.canonical_evidence import specialized_applicability_evidence
 from app.rules.rule_engine import RuleEngine
 from app.scoring.quality_scorer import QualityScorer
 
@@ -174,6 +175,12 @@ def test_convert_quality_report_separates_unknown_not_applicable_service_error()
     )
 
     response = convert_quality_report(enhanced, "1.3")
+
+    expected_assessment_map = {
+        rule_id: evidence.to_dict()
+        for rule_id, evidence in specialized_applicability_evidence({}).items()
+    }
+    assert response.pre_render_assessment.specialized_applicability == expected_assessment_map
 
     assert len(response.unknown_rules) == 1
     assert response.unknown_rules[0].rule_id == "CONSISTENCY_002"

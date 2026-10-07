@@ -1,6 +1,7 @@
 package com.pompomhills.intelligence.meta;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.header;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
@@ -11,6 +12,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.time.ZoneOffset;
 import org.junit.jupiter.api.Test;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.client.MockRestServiceServer;
@@ -53,24 +55,26 @@ class MetaOAuthServiceTest {
     server
         .expect(
             requestTo(
-                "https://graph.facebook.com/v26.0/me/accounts?fields=id&limit=200"
-                    + "&access_token=user-secret"))
+                "https://graph.facebook.com/v26.0/me/accounts?fields=id&limit=200"))
+        .andExpect(header(HttpHeaders.AUTHORIZATION, "Bearer user-secret"))
         .andExpect(method(HttpMethod.GET))
         .andRespond(withSuccess("{\"data\":[{\"id\":\"page-1\"}]}", MediaType.APPLICATION_JSON));
     server
         .expect(
             requestTo(
-                "https://graph.facebook.com/v26.0/page-1?fields=access_token"
-                    + "&access_token=user-secret"))
+                "https://graph.facebook.com/v26.0/page-1?fields=access_token,instagram_business_account"))
+        .andExpect(header(HttpHeaders.AUTHORIZATION, "Bearer user-secret"))
         .andExpect(method(HttpMethod.GET))
         .andRespond(
-            withSuccess("{\"access_token\":\"page-secret\"}", MediaType.APPLICATION_JSON));
+            withSuccess(
+                "{\"access_token\":\"page-secret\",\"instagram_business_account\":{\"id\":\"instagram-provider-1\"}}",
+                MediaType.APPLICATION_JSON));
 
     MetaProviderAdapter.AuthorizationResult result = service.authorize("authorization-code");
 
     assertThat(result.providerUserId()).isEqualTo("meta-user-1");
     assertThat(result.facebookPageId()).isEqualTo("page-1");
-    assertThat(result.instagramAccountId()).isEqualTo("instagram-1");
+    assertThat(result.instagramAccountId()).isEqualTo("instagram-provider-1");
     assertThat(result.instagramAccountEligible()).isFalse();
     assertThat(result.expiresAt()).isEqualTo(Instant.parse("2026-10-01T13:00:00Z"));
     assertThat(result.grantedScopes())
@@ -108,16 +112,18 @@ class MetaOAuthServiceTest {
     server
         .expect(
             requestTo(
-                "https://graph.facebook.com/v26.0/me/accounts?fields=id&limit=200"
-                    + "&access_token=user-secret"))
+                "https://graph.facebook.com/v26.0/me/accounts?fields=id&limit=200"))
+        .andExpect(header(HttpHeaders.AUTHORIZATION, "Bearer user-secret"))
         .andRespond(withSuccess("{\"data\":[{\"id\":\"page-1\"}]}", MediaType.APPLICATION_JSON));
     server
         .expect(
             requestTo(
-                "https://graph.facebook.com/v26.0/page-1?fields=access_token"
-                    + "&access_token=user-secret"))
+                "https://graph.facebook.com/v26.0/page-1?fields=access_token,instagram_business_account"))
+        .andExpect(header(HttpHeaders.AUTHORIZATION, "Bearer user-secret"))
         .andRespond(
-            withSuccess("{\"access_token\":\"page-secret\"}", MediaType.APPLICATION_JSON));
+            withSuccess(
+                "{\"access_token\":\"page-secret\",\"instagram_business_account\":{\"id\":\"instagram-provider-1\"}}",
+                MediaType.APPLICATION_JSON));
 
     MetaProviderAdapter.AuthorizationResult result = service.authorize("authorization-code");
 
@@ -129,14 +135,15 @@ class MetaOAuthServiceTest {
     return new MetaReadProperties(
         true,
         "v26.0",
-        "page-1",
-        "instagram-1",
+        "",
+        "",
         "",
         "",
         Duration.ofSeconds(5),
         Duration.ofSeconds(15),
         false,
         false,
-        "owner-1");
+        "owner-1",
+        false);
   }
 }

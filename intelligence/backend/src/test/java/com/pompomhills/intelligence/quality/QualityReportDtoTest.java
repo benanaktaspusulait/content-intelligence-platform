@@ -3,6 +3,7 @@ package com.pompomhills.intelligence.quality;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.Map;
 import org.junit.jupiter.api.Test;
 
 class QualityReportDtoTest {
@@ -67,6 +68,64 @@ class QualityReportDtoTest {
     assertThat(dto.parserConfidence()).isEqualTo(0.9);
     assertThat(dto.canonicalEvidenceConfidence()).isEqualTo(0.95);
     assertThat(dto.evidenceMissing()).isEmpty();
+  }
+
+  @SuppressWarnings("unchecked")
+  @Test
+  void preservesSpecializedApplicabilityThroughJsonRoundTrip() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.setPropertyNamingStrategy(
+        com.fasterxml.jackson.databind.PropertyNamingStrategies.SNAKE_CASE);
+
+    QualityReportDto original =
+        mapper.readValue(
+            """
+            {
+              "overall_score": 70.0,
+              "status": "NEEDS_REVISION",
+              "ruleset_version": "1.7",
+              "pre_render_assessment": {
+                "specialized_applicability": {
+                  "STUBBORN_RETURN_LOOP": {
+                    "status": "APPLICABLE",
+                    "confidence": "HIGH",
+                    "reason": "Box reclaim"
+                  },
+                  "STUBBORN_RETURN_HOOK": {
+                    "status": "UNKNOWN",
+                    "confidence": "MEDIUM",
+                    "reason": "Threat boundary unresolved"
+                  },
+                  "STUBBORN_RETURN_PAYOFF": {
+                    "status": "APPLICABLE",
+                    "confidence": "MEDIUM",
+                    "reason": "Same-rule stalemate"
+                  }
+                }
+              }
+            }
+            """,
+            QualityReportDto.class);
+
+    QualityReportDto roundTripped =
+        mapper.readValue(mapper.writeValueAsString(original), QualityReportDto.class);
+    Map<String, Object> applicability =
+        (Map<String, Object>) roundTripped.preRenderAssessment().get("specialized_applicability");
+
+    assertThat(applicability).containsKeys(
+        "STUBBORN_RETURN_LOOP", "STUBBORN_RETURN_HOOK", "STUBBORN_RETURN_PAYOFF");
+    assertThat((Map<String, Object>) applicability.get("STUBBORN_RETURN_LOOP"))
+        .containsEntry("status", "APPLICABLE")
+        .containsEntry("confidence", "HIGH")
+        .containsEntry("reason", "Box reclaim");
+    assertThat((Map<String, Object>) applicability.get("STUBBORN_RETURN_HOOK"))
+        .containsEntry("status", "UNKNOWN")
+        .containsEntry("confidence", "MEDIUM")
+        .containsEntry("reason", "Threat boundary unresolved");
+    assertThat((Map<String, Object>) applicability.get("STUBBORN_RETURN_PAYOFF"))
+        .containsEntry("status", "APPLICABLE")
+        .containsEntry("confidence", "MEDIUM")
+        .containsEntry("reason", "Same-rule stalemate");
   }
 
   @Test

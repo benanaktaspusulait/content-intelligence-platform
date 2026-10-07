@@ -119,6 +119,14 @@
       </div>
       <div class="card-body">
         <p class="assessment-verdict">{{ report.preRenderAssessment.verdict }}</p>
+        <div class="assessment-columns" aria-label="Specialized applicability">
+          <section *ngFor="let row of toSpecializedApplicabilityRows(report.preRenderAssessment.specialized_applicability)">
+            <h3>{{ row.ruleId }}</h3>
+            <p>Status: {{ row.status }} · Confidence: {{ row.confidence }}</p>
+            <p>{{ row.reason }}</p>
+            <small>Evidence: {{ row.evidenceReferences.length ? row.evidenceReferences.join(', ') : 'None referenced' }}</small>
+          </section>
+        </div>
         <div *ngIf="report.preRenderAssessment.story_structure || report.preRenderAssessment.temporal_complexity" class="assessment-columns">
           <section *ngIf="report.preRenderAssessment.engine_profile as profile"><h3>Engine profile · {{ profile['profile'] }}</h3><p>Source: {{ profile['source'] }} · Confidence: {{ profile['confidence'] }} · {{ profile['active'] ? 'Exception active' : profile['candidate_only'] ? 'Candidate only' : 'Default rules' }}</p><small>{{ profile['reason'] }}</small></section>
           <section *ngIf="report.preRenderAssessment.story_structure as story"><h3>Mini story</h3><p>Goal: {{ story['goal'] }} · Obstacle: {{ story['obstacle'] }} · Attempts: {{ story['attempts'] }} · Strategies: {{ story['distinct_strategies'] }} · Realization: {{ story['realization'] }} · Payoff: {{ story['payoff'] }}</p></section>
