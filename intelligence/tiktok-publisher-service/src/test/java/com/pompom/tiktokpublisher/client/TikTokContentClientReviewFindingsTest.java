@@ -49,7 +49,12 @@ class TikTokContentClientReviewFindingsTest {
           new TikTokContentClient(
               builder,
               OBJECT_MAPPER,
-              properties(Duration.ofSeconds(1), Duration.ofSeconds(1), Duration.ofSeconds(1), Duration.ZERO, 3));
+              properties(
+                  Duration.ofSeconds(1),
+                  Duration.ofSeconds(1),
+                  Duration.ofSeconds(1),
+                  Duration.ZERO,
+                  3));
 
       expectCreator(server, "{\"creator_username\":\"creator\"}");
       server
@@ -69,6 +74,42 @@ class TikTokContentClientReviewFindingsTest {
   }
 
   @Test
+  void treatsInitFiveHundredWithAnAuthCodeAsUncertainAfterDispatch() throws Exception {
+    Path video = Files.createTempFile("tiktok", ".mp4");
+    Files.write(video, new byte[] {1});
+    try {
+      RestClient.Builder builder = RestClient.builder();
+      MockRestServiceServer server = MockRestServiceServer.bindTo(builder).build();
+      TikTokContentClient client =
+          new TikTokContentClient(
+              builder,
+              OBJECT_MAPPER,
+              properties(
+                  Duration.ofSeconds(1),
+                  Duration.ofSeconds(1),
+                  Duration.ofSeconds(1),
+                  Duration.ZERO,
+                  1));
+
+      expectCreator(server, "{\"creator_username\":\"creator\"}");
+      server
+          .expect(requestTo(API + "/v2/post/publish/video/init/"))
+          .andRespond(
+              withStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+                  .contentType(MediaType.APPLICATION_JSON)
+                  .body("{\"error\":{\"code\":\"auth\",\"message\":\"provider busy\"}}"));
+
+      PublishResult result = client.publish(command(video.toString()));
+
+      assertThat(result.status()).isEqualTo(PublishStatus.RECONCILIATION_REQUIRED);
+      assertThat(result.reconciliationRequired()).isTrue();
+      server.verify();
+    } finally {
+      Files.deleteIfExists(video);
+    }
+  }
+
+  @Test
   void doesNotRetryProviderCreatingInitAfterTransportFailure() throws Exception {
     Path video = Files.createTempFile("tiktok", ".mp4");
     Files.write(video, new byte[] {1});
@@ -79,12 +120,20 @@ class TikTokContentClientReviewFindingsTest {
           new TikTokContentClient(
               builder,
               OBJECT_MAPPER,
-              properties(Duration.ofSeconds(1), Duration.ofSeconds(1), Duration.ofSeconds(1), Duration.ZERO, 3));
+              properties(
+                  Duration.ofSeconds(1),
+                  Duration.ofSeconds(1),
+                  Duration.ofSeconds(1),
+                  Duration.ZERO,
+                  3));
 
       expectCreator(server, "{\"creator_username\":\"creator\"}");
       server
           .expect(requestTo(API + "/v2/post/publish/video/init/"))
-          .andRespond(request -> { throw new ResourceAccessException("init timed out"); });
+          .andRespond(
+              request -> {
+                throw new ResourceAccessException("init timed out");
+              });
 
       PublishResult result = client.publish(command(video.toString()));
 
@@ -107,7 +156,12 @@ class TikTokContentClientReviewFindingsTest {
           new TikTokContentClient(
               builder,
               OBJECT_MAPPER,
-              properties(Duration.ofSeconds(1), Duration.ofSeconds(1), Duration.ofSeconds(1), Duration.ZERO, 1));
+              properties(
+                  Duration.ofSeconds(1),
+                  Duration.ofSeconds(1),
+                  Duration.ofSeconds(1),
+                  Duration.ZERO,
+                  1));
 
       expectCreator(server, "{\"creator_open_id\":\"different-account\"}");
 
@@ -132,7 +186,12 @@ class TikTokContentClientReviewFindingsTest {
           new TikTokContentClient(
               builder,
               OBJECT_MAPPER,
-              properties(Duration.ofSeconds(1), Duration.ofSeconds(1), Duration.ofSeconds(1), Duration.ZERO, 1));
+              properties(
+                  Duration.ofSeconds(1),
+                  Duration.ofSeconds(1),
+                  Duration.ofSeconds(1),
+                  Duration.ZERO,
+                  1));
 
       expectCreator(server, "{}");
 
@@ -148,14 +207,20 @@ class TikTokContentClientReviewFindingsTest {
 
   @Test
   void appliesRequestTimeoutToApiUrisAndUploadTimeoutToSignedUploadUris() throws Exception {
-    TikTokPublisherProperties properties =
-        properties(Duration.ofMillis(50), Duration.ofMillis(500), Duration.ofSeconds(1), Duration.ZERO, 1);
     HttpServer server = HttpServer.create(new InetSocketAddress("127.0.0.1", 0), 0);
     server.createContext("/v2/probe", exchange -> delayedResponse(exchange, 300));
     server.createContext("/upload/session", exchange -> delayedResponse(exchange, 100));
     server.start();
     try {
       String base = "http://127.0.0.1:" + server.getAddress().getPort();
+      TikTokPublisherProperties properties =
+          properties(
+              base,
+              Duration.ofMillis(50),
+              Duration.ofMillis(500),
+              Duration.ofSeconds(1),
+              Duration.ZERO,
+              1);
       RestClient client =
           RestClient.builder()
               .requestFactory(TikTokContentClient.deadlineRequestFactory(properties))
@@ -163,13 +228,7 @@ class TikTokContentClientReviewFindingsTest {
 
       long started = System.nanoTime();
       assertThatThrownBy(
-              () ->
-                  client
-                      .post()
-                      .uri(base + "/v2/probe")
-                      .body("{}")
-                      .retrieve()
-                      .toBodilessEntity())
+              () -> client.post().uri(base + "/v2/probe").body("{}").retrieve().toBodilessEntity())
           .isInstanceOf(RestClientException.class);
       Duration apiElapsed = Duration.ofNanos(System.nanoTime() - started);
 
@@ -226,6 +285,33 @@ class TikTokContentClientReviewFindingsTest {
     } finally {
       Files.deleteIfExists(video);
     }
+  }
+
+  @Test
+  void doesNotRetryPollingWhenBackoffExceedsRemainingDeadline() {
+    RestClient.Builder builder = RestClient.builder();
+    MockRestServiceServer server = MockRestServiceServer.bindTo(builder).build();
+    TikTokContentClient client =
+        new TikTokContentClient(
+            builder,
+            OBJECT_MAPPER,
+            properties(
+                Duration.ofSeconds(1),
+                Duration.ofSeconds(1),
+                Duration.ofMillis(60),
+                Duration.ZERO,
+                3));
+    server
+        .expect(requestTo(API + "/v2/post/publish/status/fetch/"))
+        .andRespond(withStatus(HttpStatus.TOO_MANY_REQUESTS));
+
+    long started = System.nanoTime();
+    PublishResult result = client.reconcile("publish-rate-limited");
+    Duration elapsed = Duration.ofNanos(System.nanoTime() - started);
+
+    assertThat(result.status()).isEqualTo(PublishStatus.RECONCILIATION_REQUIRED);
+    assertThat(elapsed).isLessThan(Duration.ofMillis(500));
+    server.verify();
   }
 
   @Test
@@ -306,12 +392,22 @@ class TikTokContentClientReviewFindingsTest {
       Duration pollTimeout,
       Duration pollInterval,
       int maxAttempts) {
+    return properties(API, requestTimeout, uploadTimeout, pollTimeout, pollInterval, maxAttempts);
+  }
+
+  private TikTokPublisherProperties properties(
+      String apiBase,
+      Duration requestTimeout,
+      Duration uploadTimeout,
+      Duration pollTimeout,
+      Duration pollInterval,
+      int maxAttempts) {
     return new TikTokPublisherProperties(
         true,
         true,
         "internal-secret",
         TOKEN,
-        API,
+        apiBase,
         "v2",
         false,
         4,

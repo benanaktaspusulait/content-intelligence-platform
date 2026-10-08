@@ -21,17 +21,26 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Duration;
 import java.util.Objects;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.function.Supplier;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.http.client.JdkClientHttpRequestFactory;
+import org.springframework.stereotype.Component;
 import org.springframework.util.StreamUtils;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.client.RestClientException;
 
 /** TikTok Content Posting API adapter; it never treats upload acceptance as publication. */
+@Component
 public class TikTokContentClient {
 
   public static final int CAPTION_LIMIT = 2200;
@@ -47,6 +56,7 @@ public class TikTokContentClient {
   private final SecretRedactor redactor = new SecretRedactor();
   private final RetryPolicy retryPolicy;
 
+  @Autowired
   public TikTokContentClient(
       RestClient.Builder builder, ObjectMapper objectMapper, TikTokPublisherProperties properties) {
     this.restClient = builder.build();
@@ -73,18 +83,25 @@ public class TikTokContentClient {
             RetryPolicy.DEFAULT_MAX_BACKOFF);
   }
 
-  /** Creates a bounded JDK request factory for both API and signed upload requests. */
+  /** Creates bounded request factories with independent API and signed-upload deadlines. */
   public static ClientHttpRequestFactory deadlineRequestFactory(
       TikTokPublisherProperties properties) {
     Objects.requireNonNull(properties, "properties");
     Duration requestTimeout = positive(properties.requestTimeout(), Duration.ofSeconds(120));
     Duration uploadTimeout = positive(properties.uploadTimeout(), Duration.ofSeconds(600));
-    Duration timeout =
-        requestTimeout.compareTo(uploadTimeout) >= 0 ? requestTimeout : uploadTimeout;
-    JdkClientHttpRequestFactory factory =
-        new JdkClientHttpRequestFactory(HttpClient.newBuilder().connectTimeout(timeout).build());
-    factory.setReadTimeout(timeout);
-    return factory;
+    JdkClientHttpRequestFactory apiFactory =
+        new JdkClientHttpRequestFactory(
+            HttpClient.newBuilder().connectTimeout(requestTimeout).build());
+    apiFactory.setReadTimeout(requestTimeout);
+    JdkClientHttpRequestFactory uploadFactory =
+        new JdkClientHttpRequestFactory(
+            HttpClient.newBuilder().connectTimeout(uploadTimeout).build());
+    uploadFactory.setReadTimeout(uploadTimeout);
+    URI apiBase = URI.create(properties.apiBaseUrl());
+    return (uri, method) ->
+        isUploadUri(uri, apiBase, properties.apiVersion())
+            ? uploadFactory.createRequest(uri, method)
+            : apiFactory.createRequest(uri, method);
   }
 
   public PublishResult publish(PublishCommand command) {
@@ -204,7 +221,7 @@ public class TikTokContentClient {
     ProviderResponse response =
         execute(
             () -> postJson(apiEndpoint(INIT_PATH), body),
-            RetryPolicy.SubmissionPhase.SUBMISSION_NOT_STARTED,
+            RetryPolicy.SubmissionPhase.SUBMISSION_STARTED,
             "video initialization");
     JsonNode data = response.body().path("data");
     String publishId = text(data, "publish_id");
@@ -242,7 +259,8 @@ public class TikTokContentClient {
                     putUpload(
                         uploadUrl, chunk, "bytes " + chunkStart + "-" + chunkEnd + "/" + fileSize),
                 RetryPolicy.SubmissionPhase.SUBMISSION_STARTED,
-                "video chunk upload");
+                "video chunk upload",
+                properties.uploadTimeout());
         if (uploadResponse.status() != 200
             && uploadResponse.status() != 201
             && uploadResponse.status() != 204) {
@@ -258,9 +276,13 @@ public class TikTokContentClient {
 
   private PublishResult pollUntilTerminal(String publishId, String initialRequestId)
       throws TikTokProviderException {
-    long deadline = System.nanoTime() + properties.pollTimeout().toNanos();
+    long deadline = deadlineNanos(properties.pollTimeout());
     String requestId = initialRequestId;
     while (true) {
+      if (deadlineExceeded(deadline)) {
+        return reconciliationRequired(
+            publishId, requestId, "TikTok publication status polling timed out");
+      }
       ProviderResponse response =
           execute(
               () -> {
@@ -269,7 +291,9 @@ public class TikTokContentClient {
                 return postJson(apiEndpoint(STATUS_PATH), body);
               },
               RetryPolicy.SubmissionPhase.SUBMISSION_STARTED,
-              "publication status");
+              "publication status",
+              properties.requestTimeout(),
+              deadline);
       requestId = firstNonBlank(response.providerRequestId(), requestId);
       JsonNode data = response.body().path("data");
       String returnedPublishId = text(data, "publish_id");
@@ -306,11 +330,16 @@ public class TikTokContentClient {
             publishId);
       }
 
-      if (System.nanoTime() >= deadline) {
+      if (deadlineExceeded(deadline)) {
         return reconciliationRequired(
             publishId, requestId, "TikTok publication status polling timed out");
       }
-      sleep(properties.pollInterval());
+      Duration remaining = remaining(deadline);
+      if (remaining.isZero() || remaining.isNegative()) {
+        return reconciliationRequired(
+            publishId, requestId, "TikTok publication status polling timed out");
+      }
+      sleep(bounded(properties.pollInterval(), remaining));
     }
   }
 
@@ -342,10 +371,38 @@ public class TikTokContentClient {
       RetryPolicy.SubmissionPhase submissionPhase,
       String operationName)
       throws TikTokProviderException {
+    return execute(
+        operation, submissionPhase, operationName, properties.requestTimeout(), Long.MAX_VALUE);
+  }
+
+  private ProviderResponse execute(
+      Supplier<ProviderResponse> operation,
+      RetryPolicy.SubmissionPhase submissionPhase,
+      String operationName,
+      Duration operationTimeout)
+      throws TikTokProviderException {
+    return execute(operation, submissionPhase, operationName, operationTimeout, Long.MAX_VALUE);
+  }
+
+  private ProviderResponse execute(
+      Supplier<ProviderResponse> operation,
+      RetryPolicy.SubmissionPhase submissionPhase,
+      String operationName,
+      Duration operationTimeout,
+      long deadlineNanos)
+      throws TikTokProviderException {
     TikTokProviderException lastFailure = null;
     for (int attempt = 1; attempt <= properties.maxAttempts(); attempt++) {
+      Duration remaining = remaining(deadlineNanos);
+      if (remaining.isZero() || remaining.isNegative()) {
+        throw timeoutFailure(operationName);
+      }
+      Duration timeout = bounded(operationTimeout, remaining);
+      if (timeout.isZero() || timeout.isNegative()) {
+        throw timeoutFailure(operationName);
+      }
       try {
-        return operation.get();
+        return runWithTimeout(operation, timeout, operationName);
       } catch (TikTokProviderException failure) {
         lastFailure = failure;
         RetryPolicy.Decision decision =
@@ -353,7 +410,10 @@ public class TikTokContentClient {
         if (!decision.shouldRetry() || attempt == properties.maxAttempts()) {
           throw failure;
         }
-        sleep(decision.backoff());
+        if (!canWaitForRetry(decision.backoff(), deadlineNanos)) {
+          throw timeoutFailure(operationName);
+        }
+        sleep(bounded(decision.backoff(), remaining(deadlineNanos)));
       } catch (RestClientException failure) {
         ProviderErrorMapper.Classification classification = errorMapper.classify(failure);
         lastFailure =
@@ -369,7 +429,10 @@ public class TikTokContentClient {
         if (!decision.shouldRetry() || attempt == properties.maxAttempts()) {
           throw lastFailure;
         }
-        sleep(decision.backoff());
+        if (!canWaitForRetry(decision.backoff(), deadlineNanos)) {
+          throw timeoutFailure(operationName);
+        }
+        sleep(bounded(decision.backoff(), remaining(deadlineNanos)));
       }
     }
     throw lastFailure == null
@@ -378,6 +441,57 @@ public class TikTokContentClient {
             null,
             new ProviderErrorMapper.Classification(PublishErrorClass.UNKNOWN, false, true))
         : lastFailure;
+  }
+
+  private ProviderResponse runWithTimeout(
+      Supplier<ProviderResponse> operation, Duration timeout, String operationName) {
+    ExecutorService executor =
+        Executors.newSingleThreadExecutor(
+            runnable -> {
+              Thread thread = new Thread(runnable, "tiktok-provider-timeout");
+              thread.setDaemon(true);
+              return thread;
+            });
+    Future<ProviderResponse> future = executor.submit(operation::get);
+    try {
+      return future.get(timeout.toNanos(), TimeUnit.NANOSECONDS);
+    } catch (TimeoutException failure) {
+      future.cancel(true);
+      throw new TikTokProviderException(
+          "TikTok " + operationName + " timed out",
+          null,
+          new ProviderErrorMapper.Classification(PublishErrorClass.TRANSIENT, true, true),
+          failure);
+    } catch (InterruptedException failure) {
+      Thread.currentThread().interrupt();
+      throw new TikTokProviderException(
+          "TikTok " + operationName + " was interrupted",
+          null,
+          errorMapper.classify(failure),
+          failure);
+    } catch (ExecutionException failure) {
+      Throwable cause = failure.getCause();
+      if (cause instanceof RuntimeException runtimeException) {
+        throw runtimeException;
+      }
+      if (cause instanceof Error error) {
+        throw error;
+      }
+      throw new RestClientException("TikTok " + operationName + " failed", cause);
+    } finally {
+      executor.shutdownNow();
+    }
+  }
+
+  private TikTokProviderException timeoutFailure(String operationName) {
+    return new TikTokProviderException(
+        "TikTok " + operationName + " timed out",
+        null,
+        new ProviderErrorMapper.Classification(PublishErrorClass.TRANSIENT, true, true));
+  }
+
+  private boolean canWaitForRetry(Duration wait, long deadlineNanos) {
+    return deadlineNanos == Long.MAX_VALUE || wait.compareTo(remaining(deadlineNanos)) < 0;
   }
 
   private ProviderResponse parseResponse(
@@ -443,14 +557,37 @@ public class TikTokContentClient {
     return new TikTokProviderException(
         redactor.redact(message, properties.accessToken()),
         requestId,
-        errorMapper.classify(status, code));
+        status >= 500
+            ? new ProviderErrorMapper.Classification(PublishErrorClass.TRANSIENT, true, true)
+            : errorMapper.classify(status, code));
   }
 
   private void validateCreatorResponse(ProviderResponse response) throws TikTokProviderException {
     JsonNode data = response.body().path("data");
-    if (!data.isObject()) {
+    if (!data.isObject() || data.isEmpty() || properties.platformAccountId().isBlank()) {
       throw new TikTokProviderException(
           "TikTok creator validation returned no creator data",
+          response.providerRequestId(),
+          new ProviderErrorMapper.Classification(PublishErrorClass.AUTHORIZATION, false, false));
+    }
+
+    String identity =
+        firstNonBlank(
+            text(data, "creator_open_id"),
+            text(data, "open_id"),
+            text(data, "creator_id"),
+            text(data, "account_id"),
+            text(data, "platform_account_id"));
+    boolean identityFieldPresent =
+        data.has("creator_open_id")
+            || data.has("open_id")
+            || data.has("creator_id")
+            || data.has("account_id")
+            || data.has("platform_account_id");
+    if (identityFieldPresent
+        && (identity == null || !properties.platformAccountId().equals(identity))) {
+      throw new TikTokProviderException(
+          "TikTok creator validation identity does not match the configured account",
           response.providerRequestId(),
           new ProviderErrorMapper.Classification(PublishErrorClass.AUTHORIZATION, false, false));
     }
@@ -623,6 +760,19 @@ public class TikTokContentClient {
     return (size + chunkSize - 1) / chunkSize;
   }
 
+  private static boolean isUploadUri(URI uri, URI apiBase, String apiVersion) {
+    if (uri.getHost() == null || apiBase.getHost() == null) {
+      return true;
+    }
+    String basePath = trimTrailingSlash(apiBase.getPath() == null ? "" : apiBase.getPath());
+    String versionPath = basePath + "/" + trimSlashes(apiVersion);
+    String requestPath = uri.getPath() == null ? "" : uri.getPath();
+    if (requestPath.equals(versionPath) || requestPath.startsWith(versionPath + "/")) {
+      return false;
+    }
+    return true;
+  }
+
   private static boolean isSafeIdentifier(String value) {
     return value != null && value.matches("[A-Za-z0-9._~-]{1,200}");
   }
@@ -668,6 +818,31 @@ public class TikTokContentClient {
 
   private static String trimSlashes(String value) {
     return value.replaceAll("^/+|/+$", "");
+  }
+
+  private static long deadlineNanos(Duration timeout) {
+    try {
+      return Math.addExact(System.nanoTime(), timeout.toNanos());
+    } catch (ArithmeticException failure) {
+      return Long.MAX_VALUE;
+    }
+  }
+
+  private static boolean deadlineExceeded(long deadlineNanos) {
+    return deadlineNanos != Long.MAX_VALUE && System.nanoTime() >= deadlineNanos;
+  }
+
+  private static Duration remaining(long deadlineNanos) {
+    if (deadlineNanos == Long.MAX_VALUE) {
+      return Duration.ofNanos(Long.MAX_VALUE);
+    }
+    long remaining = deadlineNanos - System.nanoTime();
+    return remaining <= 0 ? Duration.ZERO : Duration.ofNanos(remaining);
+  }
+
+  private static Duration bounded(Duration value, Duration maximum) {
+    Duration normalized = value == null || value.isNegative() ? Duration.ZERO : value;
+    return normalized.compareTo(maximum) > 0 ? maximum : normalized;
   }
 
   private static Duration positive(Duration value, Duration fallback) {

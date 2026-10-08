@@ -2,6 +2,7 @@ package com.pompom.tiktokpublisher;
 
 import java.time.Duration;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.bind.ConstructorBinding;
 
 /** Service-owned TikTok credentials, provider endpoints, and bounded operation settings. */
 @ConfigurationProperties(prefix = "pompom.tiktok")
@@ -36,13 +37,15 @@ public record TikTokPublisherProperties(
   public static final Duration DEFAULT_POLL_INTERVAL = Duration.ofSeconds(5);
   public static final int DEFAULT_MAX_ATTEMPTS = 5;
 
+  @ConstructorBinding
   public TikTokPublisherProperties {
     internalToken = valueOrEmpty(internalToken);
     accessToken = valueOrEmpty(accessToken);
     apiBaseUrl = defaultValue(apiBaseUrl, "https://open.tiktokapis.com");
     apiVersion = defaultValue(apiVersion, "v2");
     chunkSize = chunkSize > 0 ? chunkSize : DEFAULT_CHUNK_SIZE;
-    maxFileSize = maxFileSize > 0 ? maxFileSize : DEFAULT_MAX_FILE_SIZE;
+    maxFileSize =
+        maxFileSize > 0 ? Math.min(maxFileSize, DEFAULT_MAX_FILE_SIZE) : DEFAULT_MAX_FILE_SIZE;
     requestTimeout = positive(requestTimeout, DEFAULT_REQUEST_TIMEOUT);
     uploadTimeout = positive(uploadTimeout, DEFAULT_UPLOAD_TIMEOUT);
     pollTimeout = nonNegative(pollTimeout, DEFAULT_POLL_TIMEOUT);

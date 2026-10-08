@@ -114,6 +114,20 @@ public class TikTokPublishService {
     Optional<ProviderOperationRecord> operation =
         operationRepository.findByPublicationAttemptId(
             publisherCapability, command.publicationAttemptId());
+    ProviderOperationRecord stored = operation.orElse(null);
+    if (stored != null
+        && hasProviderIdentity(stored)
+        && !identitiesAgree(
+            command.providerPostId(),
+            command.providerVideoId(),
+            stored.getProviderPostId(),
+            stored.getProviderVideoId())) {
+      return reconciliationRequired(
+          stored.getProviderPostId(),
+          stored.getProviderVideoId(),
+          stored.getProviderRequestId(),
+          "TikTok reconciliation identity did not match the stored provider identity");
+    }
 
     PublishResult result;
     try {
@@ -133,12 +147,28 @@ public class TikTokPublishService {
               "TikTok provider identity could not be reconciled");
     }
 
+    if (stored != null && hasProviderIdentity(stored)) {
+      if (!identitiesAgree(
+          stored.getProviderPostId(),
+          stored.getProviderVideoId(),
+          result.providerPostId(),
+          result.providerVideoId())) {
+        return reconciliationRequired(
+            stored.getProviderPostId(),
+            stored.getProviderVideoId(),
+            firstNonBlank(result.providerRequestId(), stored.getProviderRequestId()),
+            "TikTok reconciliation result did not match the stored provider identity");
+      }
+    }
     if (result.status() == PublishStatus.COMPLETED && !matchesRequestedIdentity(command, result)) {
       result =
           reconciliationRequired(
               publishId,
               result.providerRequestId(),
               "TikTok publication evidence did not match the requested identity");
+      if (stored != null && hasProviderIdentity(stored)) {
+        return result;
+      }
     }
     recordReconciliationResult(operation, publisherCapability, result);
     return result;
@@ -160,14 +190,32 @@ public class TikTokPublishService {
   }
 
   private boolean matchesRequestedIdentity(ReconcileCommand command, PublishResult result) {
-    return matches(command.providerPostId(), result.providerPostId())
-        || matches(command.providerVideoId(), result.providerPostId())
-        || matches(command.providerPostId(), result.providerVideoId())
-        || matches(command.providerVideoId(), result.providerVideoId());
+    return identitiesAgree(
+        command.providerPostId(),
+        command.providerVideoId(),
+        result.providerPostId(),
+        result.providerVideoId());
   }
 
-  private boolean matches(String requested, String returned) {
-    return requested != null && !requested.isBlank() && requested.equals(returned);
+  private boolean hasProviderIdentity(ProviderOperationRecord record) {
+    return firstNonBlank(record.getProviderPostId(), record.getProviderVideoId()) != null;
+  }
+
+  private boolean identitiesAgree(
+      String firstPostId, String firstVideoId, String secondPostId, String secondVideoId) {
+    boolean firstPresent = firstNonBlank(firstPostId, firstVideoId) != null;
+    boolean secondPresent = firstNonBlank(secondPostId, secondVideoId) != null;
+    if (!firstPresent || !secondPresent) {
+      return false;
+    }
+    return matchesAny(firstPostId, secondPostId, secondVideoId)
+        && matchesAny(firstVideoId, secondPostId, secondVideoId)
+        && matchesAny(secondPostId, firstPostId, firstVideoId)
+        && matchesAny(secondVideoId, firstPostId, firstVideoId);
+  }
+
+  private boolean matchesAny(String value, String first, String second) {
+    return value == null || value.isBlank() || (value.equals(first) || value.equals(second));
   }
 
   private PublishCommand normalizeCommand(PublishCommand command) {
@@ -251,10 +299,15 @@ public class TikTokPublishService {
 
   private PublishResult reconciliationRequired(
       String providerPostId, String providerRequestId, String message) {
+    return reconciliationRequired(providerPostId, null, providerRequestId, message);
+  }
+
+  private PublishResult reconciliationRequired(
+      String providerPostId, String providerVideoId, String providerRequestId, String message) {
     return new PublishResult(
         PublishStatus.RECONCILIATION_REQUIRED,
         providerPostId,
-        null,
+        providerVideoId,
         null,
         providerRequestId,
         PublishErrorClass.RECONCILIATION_REQUIRED.wireValue(),

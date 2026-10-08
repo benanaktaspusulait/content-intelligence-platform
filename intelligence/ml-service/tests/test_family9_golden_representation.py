@@ -162,3 +162,17 @@ def test_frozen_manifest_runner_checks_all_nine_assets_and_quarantines_parser_ti
         mismatch.get("category") == "CREATIVE"
         for mismatch in timeout_comparison["mismatches"]
     )
+
+
+def test_ok_snapshot_missing_api_pre_render_projection_is_a_representation_mismatch() -> None:
+    snapshot = coherent_snapshot()
+    del snapshot["apiReport"]["pre_render_assessment"]
+
+    result = compare_representation_consistency(snapshot)
+
+    assert result["checked"] is True
+    assert result["consistent"] is False
+    assert any(
+        mismatch["path"] == "apiReport.pre_render_assessment"
+        for mismatch in result["mismatches"]
+    )

@@ -75,8 +75,8 @@ def enhanced_fixture(
 
 def test_numeric_overall_score_survives_assessment_and_api_representation() -> None:
     ir, parser_metadata, report, enhanced = enhanced_fixture(
-        overall_score=82.5,
-        family_scores={"family9_representation": 82.5},
+        overall_score=82.567,
+        family_scores={"family9_representation": 82.567},
         evaluations=(
             evaluation(
                 "FAMILY9_SCORE",
@@ -90,12 +90,12 @@ def test_numeric_overall_score_survives_assessment_and_api_representation() -> N
     assessment = build_pre_render_assessment(ir, parser_metadata, report, "1.7")
     response = convert_quality_report(enhanced, "1.7", video_plan_ir=ir)
 
-    assert assessment["creative_score"] == 82.5
-    assert assessment["family8"]["creativeQuality"]["creativeScore"] == 82.5
-    assert response.overall_score == 82.5
-    assert response.score_card.score == 82.5
-    assert response.pre_render_assessment.creative_score == 82.5
-    assert response.family_scores["family9_representation"] == 82.5
+    assert assessment["creative_score"] == 82.567
+    assert assessment["family8"]["creativeQuality"]["creativeScore"] == 82.567
+    assert response.overall_score == 82.567
+    assert response.score_card.score == 82.567
+    assert response.pre_render_assessment.creative_score == 82.567
+    assert response.family_scores["family9_representation"] == 82.567
 
 
 def test_nullable_overall_and_family_scores_survive_the_full_assessment_api_path() -> None:

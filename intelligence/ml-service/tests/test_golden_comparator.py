@@ -479,6 +479,7 @@ def test_cohort_representation_mismatch_is_independent_release_metric() -> None:
         "apiReport": {
             "overall_score": 82.5,
             "score_card": {"score": 0.0},
+            "pre_render_assessment": {"creative_score": 82.5},
         },
     }
 

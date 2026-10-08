@@ -81,11 +81,9 @@ public class TikTokWriteCapabilityGuard {
     if (requireWriteFlags && (!writeEnabled || !publishEnabled || dryRun)) {
       throw new ForbiddenException();
     }
-    if (accessToken.isBlank()) {
-      throw new ForbiddenException();
-    }
-    if (!configuredPlatformAccountId.isBlank()
-        && !configuredPlatformAccountId.equals(platformAccountId)) {
+    if (accessToken.isBlank()
+        || configuredPlatformAccountId.isBlank()
+        || !configuredPlatformAccountId.equals(platformAccountId)) {
       throw new ForbiddenException();
     }
   }

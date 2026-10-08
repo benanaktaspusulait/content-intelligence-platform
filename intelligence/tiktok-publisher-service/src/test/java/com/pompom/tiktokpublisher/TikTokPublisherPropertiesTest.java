@@ -35,8 +35,7 @@ class TikTokPublisherPropertiesTest {
             1000,
             "account-1");
 
-    assertThat(TikTokPublisherProperties.DEFAULT_MAX_FILE_SIZE)
-        .isEqualTo(287L * 1024 * 1024);
+    assertThat(TikTokPublisherProperties.DEFAULT_MAX_FILE_SIZE).isEqualTo(287L * 1024 * 1024);
     assertThat(defaults.maxFileSize()).isEqualTo(287L * 1024 * 1024);
     assertThat(configured.maxFileSize()).isEqualTo(287L * 1024 * 1024);
   }

@@ -37,8 +37,7 @@ class TikTokPublishServiceTest {
     when(repository.claim(any(PublishCommand.class), eq(PublisherCapability.TIKTOK_VIDEO)))
         .thenReturn(claim);
 
-    TikTokPublishService service =
-        service(repository, client, configuredGuard());
+    TikTokPublishService service = service(repository, client, configuredGuard());
 
     assertThat(service.publish(command(), "tiktok_video")).isEqualTo(completedResult());
     verifyNoInteractions(client);
@@ -53,8 +52,7 @@ class TikTokPublishServiceTest {
         .thenReturn(claim);
 
     PublishResult result =
-        service(repository, client, configuredGuard())
-            .publish(command(), "tiktok_video");
+        service(repository, client, configuredGuard()).publish(command(), "tiktok_video");
 
     assertThat(result.status()).isEqualTo(PublishStatus.ACCEPTED);
     assertThat(result.reconciliationRequired()).isFalse();
@@ -72,8 +70,7 @@ class TikTokPublishServiceTest {
     when(client.publish(any(PublishCommand.class))).thenReturn(result);
 
     PublishResult actual =
-        service(repository, client, configuredGuard())
-            .publish(command(), "tiktok_video");
+        service(repository, client, configuredGuard()).publish(command(), "tiktok_video");
 
     assertThat(actual).isEqualTo(result);
     verify(client).publish(any(PublishCommand.class));
@@ -107,9 +104,7 @@ class TikTokPublishServiceTest {
         new TikTokPublishService.ReconcileCommand(
             UUID.randomUUID(), "tiktok_video", "account-1", "publish-1", null, "log-1");
 
-    PublishResult actual =
-        service(repository, client, configuredGuard())
-            .reconcile(command);
+    PublishResult actual = service(repository, client, configuredGuard()).reconcile(command);
 
     assertThat(actual).isEqualTo(result);
     verify(client).reconcile("publish-1");
@@ -133,13 +128,15 @@ class TikTokPublishServiceTest {
         new TikTokPublishService.ReconcileCommand(
             UUID.randomUUID(), "tiktok_video", "account-1", "caller-publish", null, null);
 
-    PublishResult result = service(repository, client, configuredGuard()).reconcile(reconcileCommand);
+    PublishResult result =
+        service(repository, client, configuredGuard()).reconcile(reconcileCommand);
 
     assertThat(result.status()).isEqualTo(PublishStatus.RECONCILIATION_REQUIRED);
     assertThat(result.providerPostId()).isEqualTo("stored-publish");
     verifyNoInteractions(client);
     verify(repository, never())
-        .recordResult(eq(PublisherCapability.TIKTOK_VIDEO), any(String.class), any(PublishResult.class));
+        .recordResult(
+            eq(PublisherCapability.TIKTOK_VIDEO), any(String.class), any(PublishResult.class));
   }
 
   @Test
@@ -170,12 +167,14 @@ class TikTokPublishServiceTest {
         new TikTokPublishService.ReconcileCommand(
             UUID.randomUUID(), "tiktok_video", "account-1", "stored-publish", null, null);
 
-    PublishResult result = service(repository, client, configuredGuard()).reconcile(reconcileCommand);
+    PublishResult result =
+        service(repository, client, configuredGuard()).reconcile(reconcileCommand);
 
     assertThat(result.status()).isEqualTo(PublishStatus.RECONCILIATION_REQUIRED);
     assertThat(result.providerPostId()).isEqualTo("stored-publish");
     verify(repository, never())
-        .recordResult(eq(PublisherCapability.TIKTOK_VIDEO), any(String.class), any(PublishResult.class));
+        .recordResult(
+            eq(PublisherCapability.TIKTOK_VIDEO), any(String.class), any(PublishResult.class));
   }
 
   @Test
@@ -190,10 +189,7 @@ class TikTokPublishServiceTest {
     assertThat(
             org.assertj.core.api.Assertions.catchThrowable(
                 () ->
-                    service(
-                            repository,
-                            client,
-                            configuredGuard())
+                    service(repository, client, configuredGuard())
                         .publish(command(), "tiktok_video")))
         .isInstanceOf(TikTokPublishService.IdempotencyConflictException.class);
   }

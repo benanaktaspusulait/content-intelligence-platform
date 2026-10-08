@@ -117,7 +117,7 @@ def build_pre_render_assessment(ir: dict[str, Any], parser: Any, report: Any, ru
     }[grade]
     family8 = project_family8({
         "creativeQuality": {
-            "creativeScore": None if report.overall_score is None else round(float(report.overall_score), 2),
+            "creativeScore": report.overall_score,
             "creativeGrade": creative_grade,
             "familyScores": dict(report.family_scores),
         },
@@ -187,7 +187,7 @@ def build_pre_render_assessment(ir: dict[str, Any], parser: Any, report: Any, ru
         },
         "grade": grade,
         "creative_grade": creative_grade,
-        "creative_score": None if report.overall_score is None else round(float(report.overall_score), 2),
+        "creative_score": report.overall_score,
         "readiness": readiness,
         "prompt_stage": prompt_stage,
         "assessment_coverage_percent": coverage,

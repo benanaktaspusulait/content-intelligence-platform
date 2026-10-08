@@ -10,8 +10,7 @@ class TikTokWriteCapabilityGuardTest {
   @Test
   void rejectsLivePublishAndReconcileWhenTargetAccountIsBlank() {
     TikTokWriteCapabilityGuard guard =
-        new TikTokWriteCapabilityGuard(
-            true, true, false, "internal", "access-token", " ");
+        new TikTokWriteCapabilityGuard(true, true, false, "internal", "access-token", " ");
 
     assertThatThrownBy(() -> guard.assertProviderConfigured("tiktok_video", "account-1", true))
         .isInstanceOf(TikTokWriteCapabilityGuard.ForbiddenException.class);
@@ -22,8 +21,7 @@ class TikTokWriteCapabilityGuardTest {
   @Test
   void rejectsAccountMismatchAndAcceptsOnlyConfiguredTarget() {
     TikTokWriteCapabilityGuard guard =
-        new TikTokWriteCapabilityGuard(
-            true, true, false, "internal", "access-token", "account-1");
+        new TikTokWriteCapabilityGuard(true, true, false, "internal", "access-token", "account-1");
 
     assertThatThrownBy(() -> guard.assertProviderConfigured("tiktok_video", "account-2", true))
         .isInstanceOf(TikTokWriteCapabilityGuard.ForbiddenException.class);

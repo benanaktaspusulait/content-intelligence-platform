@@ -36,7 +36,7 @@ pompom:
     api-base-url: ${TIKTOK_API_BASE:https://open.tiktokapis.com}
     api-version: ${TIKTOK_API_VERSION:v2}
     chunk-size: ${TIKTOK_CHUNK_SIZE:10485760}
-    max-file-size: ${TIKTOK_MAX_FILE_SIZE:301989888}
+    max-file-size: ${TIKTOK_MAX_FILE_SIZE:300941312}
     request-timeout: ${TIKTOK_REQUEST_TIMEOUT:120s}
     upload-timeout: ${TIKTOK_UPLOAD_TIMEOUT:600s}
     poll-timeout: ${TIKTOK_POLL_TIMEOUT:300s}

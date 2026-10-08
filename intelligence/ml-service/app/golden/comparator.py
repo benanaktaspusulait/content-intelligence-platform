@@ -252,6 +252,27 @@ def compare_representation_consistency(snapshot: dict[str, Any]) -> dict[str, An
     api_report = _value_at(snapshot, ("apiReport",))
     api_pre_render = _value_at(api_report, ("pre_render_assessment",))
     mismatches = []
+    for projection_path, projection in (
+        ("report", report),
+        ("assessment", assessment),
+        ("apiReport", api_report),
+    ):
+        if projection is _MISSING or projection is None:
+            _add_representation_mismatch(
+                mismatches,
+                projection_path,
+                "PRESENT_FOR_OK_SNAPSHOT",
+                projection,
+            )
+    if isinstance(api_report, dict) and (
+        api_pre_render is _MISSING or api_pre_render is None
+    ):
+        _add_representation_mismatch(
+            mismatches,
+            "apiReport.pre_render_assessment",
+            "PRESENT_FOR_OK_SNAPSHOT",
+            api_pre_render,
+        )
 
     _compare_representation_sources(
         mismatches,
