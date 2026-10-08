@@ -1,0 +1,52 @@
+spring:
+  application:
+    name: pompom-meta-publisher-service
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/pompom}
+    username: ${SPRING_DATASOURCE_USERNAME:pompom}
+    password: ${SPRING_DATASOURCE_PASSWORD:pompom_local}
+  jpa:
+    hibernate:
+      ddl-auto: none
+  flyway:
+    enabled: false
+  jackson:
+    default-property-inclusion: non_null
+
+server:
+  port: ${SERVER_PORT:8082}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      probes:
+        enabled: true
+
+pompom:
+  meta:
+    write-enabled: ${META_PUBLISH_SERVICE_WRITE_ENABLED:false}
+    publish-enabled: ${META_PUBLISH_ENABLED:false}
+    internal-token: ${META_PUBLISHER_INTERNAL_TOKEN:}
+    graph-version: ${META_API_VERSION:v26.0}
+    graph-base-url: ${META_GRAPH_BASE_URL:https://graph.facebook.com}
+    rupload-base-url: ${META_RUPLOAD_BASE_URL:https://rupload.facebook.com/video-upload}
+    facebook-page-id: ${META_PUBLISH_PAGE_ID:}
+    facebook-page-access-token: ${META_PUBLISH_PAGE_ACCESS_TOKEN:}
+    instagram-account-id: ${META_PUBLISH_INSTAGRAM_ACCOUNT_ID:}
+    instagram-access-token: ${META_PUBLISH_INSTAGRAM_ACCESS_TOKEN:}
+    request-timeout: ${META_PUBLISH_REQUEST_TIMEOUT:120s}
+    upload-timeout: ${META_PUBLISH_UPLOAD_TIMEOUT:600s}
+    poll-timeout: ${META_PUBLISH_POLL_TIMEOUT:300s}
+    poll-interval: ${META_PUBLISH_POLL_INTERVAL:5s}
+    max-attempts: ${META_PUBLISH_MAX_ATTEMPTS:5}
+    share-to-feed: ${META_IG_SHARE_TO_FEED:true}
+    facebook-reel-title: ${META_FACEBOOK_REEL_TITLE:}
+    storage-backend: ${META_STORAGE_BACKEND:none}
+    storage-directory: ${META_STORAGE_DIR:}
+    storage-base-url: ${META_STORAGE_BASE_URL:}
+    storage-url-template: ${META_STORAGE_URL_TEMPLATE:}
+    storage-cleanup: ${META_STORAGE_CLEANUP:true}

@@ -9,7 +9,7 @@ from __future__ import annotations
 from collections.abc import Iterable
 from typing import Any
 
-from ..quality.aggregation import AggregationRow, summarize_aggregation
+from .family8_projection import project_family8
 from ..quality.canonical_evidence import (
     attempt_beats,
     attempt_evidence,
@@ -24,6 +24,34 @@ from ..quality.canonical_evidence import (
     story_density_evidence,
     unscored_families,
 )
+
+
+
+def _family8_authorization_reasons(render_authorization: dict[str, Any]) -> list[dict[str, Any]]:
+    reasons: list[dict[str, Any]] = []
+    for rule_id in render_authorization.get("creative_failures", []):
+        reasons.append({
+            "code": "CREATIVE_BLOCKER",
+            "source": "RULE_ENGINE",
+            "message": f"Creative rule failed: {rule_id}",
+            "references": [rule_id],
+        })
+    for item in render_authorization.get("technical_failures", []):
+        reasons.append({
+            "code": "ASSESSMENT_TECHNICAL_FAILURE",
+            "source": "ASSESSMENT",
+            "message": f"Technical assessment failed: {item}",
+            "references": [item],
+        })
+    for item in render_authorization.get("pending_evidence_blockers", []):
+        code = "VISUAL_EVIDENCE_PENDING" if "visual" in str(item).lower() or "silhouette" in str(item).lower() else "REQUIRED_EVIDENCE_MISSING"
+        reasons.append({
+            "code": code,
+            "source": "EVIDENCE_COMPLETENESS",
+            "message": str(item),
+            "references": [str(item)],
+        })
+    return reasons
 
 
 def build_pre_render_assessment(ir: dict[str, Any], parser: Any, report: Any, ruleset_version: str) -> dict[str, Any]:
@@ -86,6 +114,20 @@ def build_pre_render_assessment(ir: dict[str, Any], parser: Any, report: Any, ru
         "A": "READY_TO_RENDER", "B": "READY_TO_RENDER", "C": "EDIT_PLAN",
         "D": "EDIT_PLAN", "F": "BLOCKED", "INCOMPLETE": "INCOMPLETE",
     }[grade]
+    family8 = project_family8({
+        "creativeQuality": {
+            "creativeScore": None if report.overall_score is None else round(float(report.overall_score), 2),
+            "creativeGrade": creative_grade,
+            "familyScores": dict(report.family_scores),
+        },
+        "evidenceCompleteness": {
+            "status": evidence_completeness["status"],
+            "evaluationCoverage": aggregation.evaluation_coverage,
+            "aggregation": aggregation.to_dict(),
+        },
+        "legacy": {"grade": grade, "readiness": readiness},
+        "authorizationReasons": _family8_authorization_reasons(render_authorization),
+    })
     if grade == "B":
         verdict = "The plan satisfies the current major gates; minor creative improvements are recommended before spending render credits."
     elif grade == "A":
@@ -99,6 +141,7 @@ def build_pre_render_assessment(ir: dict[str, Any], parser: Any, report: Any, ru
 
     return {
         "name": "PRE_RENDER_CREATIVE_READINESS",
+        "family8": family8,
         "aggregation": aggregation.to_dict(),
         "specialized_applicability": {
             rule_id: evidence.to_dict()
