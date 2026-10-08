@@ -1,0 +1,24 @@
+{
+  "batchId": "6045a7ae-820a-492a-aa9b-a7c4243b8d53",
+  "filename": "pfw-exact-variant-fixture.csv",
+  "sha256": "7f4842793b3f4ed3898deadef80c854a184fb712d5fd16ae53b451fb50c07402",
+  "columns": [
+    "filename",
+    "platformcontentid",
+    "publicationtimestamp",
+    "measurementtimestamp",
+    "metricsemantics",
+    "views",
+    "reach",
+    "likes"
+  ],
+  "rowCount": 1,
+  "matchedRows": 1,
+  "unresolvedRows": 0,
+  "duplicate": false,
+  "status": "COMMITTED",
+  "platform": "instagram",
+  "timezone": "Europe/London",
+  "correctionOfBatchId": null,
+  "correctionReason": null
+}

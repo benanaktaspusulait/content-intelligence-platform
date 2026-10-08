@@ -37,4 +37,34 @@ class WorkflowTransportTest {
       server.stop(0);
     }
   }
+
+  @Test
+  void creativeRoleAndReadinessReachOnlyTheirExplicitLocalPorts() throws Exception {
+    var server = HttpServer.create(new InetSocketAddress("127.0.0.1", 0), 0);
+    server.createContext(
+        "/api/v1/workflow/creative-role",
+        exchange -> {
+          assertThat(exchange.getRequestMethod()).isEqualTo("POST");
+          var bytes =
+              "{\"liveVerified\":false,\"providerCalls\":0}".getBytes(StandardCharsets.UTF_8);
+          exchange.sendResponseHeaders(200, bytes.length);
+          exchange.getResponseBody().write(bytes);
+          exchange.close();
+        });
+    server.start();
+    try {
+      var client =
+          new QualityMlClient(
+              "http://127.0.0.1:" + server.getAddress().getPort(), RestClient.builder());
+      assertThat(client.workflow("creative-role/readiness", Map.of()))
+          .containsEntry("liveVerified", false);
+      assertThat(client.workflow("creative-role", Map.of("role", "STORY", "prompt", "fixture")))
+          .containsEntry("providerCalls", 0);
+      org.assertj.core.api.Assertions.assertThatThrownBy(
+              () -> client.workflow("../admin", Map.of()))
+          .isInstanceOf(IllegalArgumentException.class);
+    } finally {
+      server.stop(0);
+    }
+  }
 }

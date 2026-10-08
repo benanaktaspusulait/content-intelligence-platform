@@ -651,6 +651,24 @@ public class WorkflowService {
     return record;
   }
 
+  public List<Map<String, Object>> editedHandoffs(UUID videoId) {
+    videos.get(videoId);
+    return jdbc.sql(
+            """
+            SELECT id,payload::text payload FROM post_family_workflow_events
+            WHERE kind='EDIT_HANDOFF' AND (payload->>'videoId'=:video OR payload->>'artifactVideoId'=:video)
+            ORDER BY created_at DESC
+            """)
+        .param("video", videoId.toString())
+        .query(
+            (rs, index) -> {
+              Map<String, Object> value = new LinkedHashMap<>(read(rs.getString("payload")));
+              value.put("recordId", rs.getObject("id", UUID.class).toString());
+              return value;
+            })
+        .list();
+  }
+
   public List<Map<String, Object>> actualQaRecords(UUID videoId) {
     videos.get(videoId);
     return jdbc.sql(

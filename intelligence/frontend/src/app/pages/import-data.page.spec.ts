@@ -31,9 +31,9 @@ describe('Import exact variant workflow', () => {
   await TestBed.configureTestingModule({ imports:[ImportDataPage], providers:[provideHttpClient(),provideHttpClientTesting(),provideRouter([]),{provide:ActivatedRoute,useValue:{snapshot:{queryParamMap:{get:()=> 'corrected-batch'}}}}]}).compileComponents();
   const fixture=TestBed.createComponent(ImportDataPage);const http=TestBed.inject(HttpTestingController);
   http.expectOne('/api/v1/imports/corrected-batch').flush({batchId:'corrected-batch',filename:'corrected.csv',columns:['views'],rowCount:1,matchedRows:1,unresolvedRows:0,status:'COMMITTED',platform:'facebook',timezone:'Europe/London',correctionOfBatchId:'original-batch',correctionReason:'Exact source correction'});
-  http.expectOne('/api/v1/imports/corrected-batch/rows').flush([{id:'row',sourceRowNumber:2,rawData:{views:'0'},matchedVideoId:'canonical-video',matchedVariantId:'exact-variant',matchReason:'Checked publication',matchStatus:'MANUAL'}]);
+  http.expectOne('/api/v1/imports/corrected-batch/rows').flush([{id:'row',sourceRowNumber:2,rawData:{views:'0',reach:'',platformcontentid:'18446744073709551615'},observationId:'new-observation',correctionOfObservationId:'old-observation',correctionReason:'Exact source correction',matchedVideoId:'canonical-video',matchedVariantId:'exact-variant',matchReason:'Checked publication',matchStatus:'MANUAL'}]);
   http.expectOne(r=>r.url==='/api/v1/videos').flush({last:true,content:[]});fixture.detectChanges();
-  expect(fixture.nativeElement.textContent).toContain('Europe/London');expect(fixture.nativeElement.textContent).toContain('original-batch');expect(fixture.nativeElement.textContent).toContain('exact-variant');
+  expect(fixture.nativeElement.textContent).toContain('Europe/London');expect(fixture.nativeElement.textContent).toContain('original-batch');expect(fixture.nativeElement.textContent).toContain('exact-variant');expect(fixture.nativeElement.textContent).toContain('old-observation');expect(fixture.nativeElement.textContent).toContain('views: 0');expect(fixture.nativeElement.textContent).toContain('Blank (no reported value)');expect(fixture.nativeElement.textContent).toContain('18446744073709551615');
   http.expectNone(r=>r.method==='POST');http.verify();fixture.destroy();TestBed.resetTestingModule();
  });
 

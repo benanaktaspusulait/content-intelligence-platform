@@ -38,3 +38,18 @@ def test_grounded_actual_experience_can_be_usable_without_original_plan():
     assert result['planFidelity'] == 'NOT_EVALUATED'
     assert result['viewerFacingUsability'] == 'USABLE'
     assert result['editorialRecommendation'] == 'TEST_CANDIDATE'
+
+
+def test_actual_only_transport_accepts_explicit_null_plan_dimensions():
+    from fastapi.testclient import TestClient
+    from app.main import app
+    response = TestClient(app).post('/api/v1/workflow/feedback', json={'kind': 'ACTUAL_RENDER_QA', 'payload': {
+        'plan': {'bindingHash': 'actual', 'lineageStatus': 'UNAVAILABLE', 'events': [], 'planQuality': None, 'executionRisk': None},
+        'observation': {'bindingHash': 'actual', 'assetHash': 'a'*64, 'duration': 12, 'coverage': [0,12]},
+    }})
+    assert response.status_code == 200
+    value = response.json()
+    assert value['planFidelity'] == 'NOT_EVALUATED'
+    assert value['reviewDimensions']['promptPlanQuality']['status'] == 'UNKNOWN'
+    assert value['reviewDimensions']['generatorExecutionRisk']['status'] == 'UNKNOWN'
+    assert value['viewerFacingUsability'] != 'USABLE'

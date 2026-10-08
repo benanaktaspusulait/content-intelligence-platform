@@ -1,0 +1,15 @@
+{
+  "id": "3de761b6-b96b-45e2-98da-a298659a50e9",
+  "originalFilename": "08_luca_and_zipo_hd.mp4",
+  "relativePath": "library/workflow-examples/B/08_luca_and_zipo_hd.mp4",
+  "durationMs": 15104,
+  "width": 1080,
+  "height": 1920,
+  "fps": 24.0,
+  "aspectRatio": 0.5625,
+  "codec": "h264",
+  "audioPresent": true,
+  "status": "ANALYSED",
+  "seriesId": null,
+  "ingestedAt": "2026-10-08T16:46:18.323704Z"
+}

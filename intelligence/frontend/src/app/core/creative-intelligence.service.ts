@@ -743,6 +743,10 @@ export class CreativeIntelligenceService {
     return this.http.post<VideoCreativeContext>(`${this.baseUrl}/videos/${videoId}/creative-context/prompt-link`, { promptVersionId, origin, reason });
   }
 
+  getEditedHandoffs(videoId: string): Observable<Array<{videoId:string; artifactVideoId:string; variantId:string; relativePath:string; artifactHash:string; durationMs:number; reason:string; recordId:string}>> {
+    return this.http.get<Array<{videoId:string; artifactVideoId:string; variantId:string; relativePath:string; artifactHash:string; durationMs:number; reason:string; recordId:string}>>(`${this.baseUrl}/intelligence/workflow/videos/${videoId}/edit-handoffs`);
+  }
+
   getVideoCreativeContext(videoId: string): Observable<VideoCreativeContext> {
     return this.http.get<VideoCreativeContext>(`${this.baseUrl}/videos/${videoId}/creative-context`);
   }

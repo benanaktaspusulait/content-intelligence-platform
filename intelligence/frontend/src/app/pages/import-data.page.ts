@@ -32,7 +32,7 @@ interface DetectedField { source: string; interpretation: string; }
           </td></tr>}</tbody></table></div>
       }
       @if (rows().length) {
-        <details [open]="committed()"><summary>Saved exact row associations · batch {{ batchId() }}</summary><table class="data-table"><thead><tr><th>Source row</th><th>Canonical video</th><th>Exact variant</th><th>Evidence reason</th><th>Observation and correction lineage</th></tr></thead><tbody>@for (row of rows(); track row.id) {<tr><td>{{ row.sourceRowNumber }} · {{ row.matchStatus }}</td><td>{{ row.matchedVideoId || 'Unresolved' }}</td><td>{{ row.matchedVariantId || (row.matchedVideoId ? 'Original video' : 'Unresolved') }}</td><td>{{ row.matchReason || 'Source export matching' }}</td><td>{{ row.observationId || 'Not committed' }} @if (row.correctionOfObservationId) {<p>Corrects {{ row.correctionOfObservationId }} · {{ row.correctionReason }}</p>}</td></tr>}</tbody></table></details>
+        <details [open]="committed()"><summary>Saved exact row associations · batch {{ batchId() }}</summary><table class="data-table"><thead><tr><th>Source row</th><th>Canonical video</th><th>Exact variant</th><th>Evidence reason</th><th>Observation and correction lineage</th><th>Source values</th></tr></thead><tbody>@for (row of rows(); track row.id) {<tr><td>{{ row.sourceRowNumber }} · {{ row.matchStatus }}</td><td>{{ row.matchedVideoId || 'Unresolved' }}</td><td>{{ row.matchedVariantId || (row.matchedVideoId ? 'Original video' : 'Unresolved') }}</td><td>{{ row.matchReason || 'Source export matching' }}</td><td>{{ row.observationId || 'Not committed' }} @if (row.correctionOfObservationId) {<p>Corrects {{ row.correctionOfObservationId }} · {{ row.correctionReason }}</p>}</td><td><details><summary>Preserved export values</summary>@for (entry of sourceValues(row); track entry.key) {<p>{{ entry.key }}: {{ entry.value }}</p>}</details></td></tr>}</tbody></table></details>
       }
       <footer class="commit-bar"><div><strong>{{ matchedRows() }} of {{ rowCount() }} rows matched</strong><small>Raw source remains append-only; blank metrics stay null.</small></div><button class="button button--primary" type="button" [disabled]="unresolvedRows() > 0 || !batchId() || loading() || committed()" (click)="commit()">{{ committed() ? 'Import committed' : loading() ? 'Working…' : 'Commit import' }} <span aria-hidden="true">→</span></button></footer>
     </section>
@@ -144,16 +144,25 @@ export class ImportDataPage {
     if (!this.batchId() || this.unresolvedRows() > 0 || this.committed()) return;
     this.loading.set(true); this.error.set('');
     this.service.commitImport(this.batchId()).subscribe({
-      next: () => { this.committed.set(true); this.step.set(3); this.loading.set(false); },
+      next: () => { this.committed.set(true); this.step.set(3);
+        this.service.getImportRows(this.batchId()).subscribe({next: rows => {this.rows.set(rows); this.loading.set(false);}, error: () => {this.error.set('Import committed; saved observation lineage could not be loaded. Reopen this batch.'); this.loading.set(false);}}); },
       error: response => { this.error.set(response.error?.message || 'Import commit failed.'); this.loading.set(false); },
     });
   }
+  protected sourceValues(row: ImportRow): Array<{key: string; value: string}> {
+    return Object.entries(row.rawData).map(([key, value]) => ({key, value: value == null || value.trim() === '' ? 'Blank (no reported value)' : value}));
+  }
   private interpretation(column: string): string {
     const key = column.toLowerCase().replace(/[^a-z0-9]/g, '');
+    if (key === 'correctionofid') return 'Exact prior observation UUID';
+    if (key === 'platformcontentid') return 'Platform publication ID retained as text';
+    if (key === 'metricsemantics') return 'Source measurement semantics; no inferred horizon';
+    if (key === 'variantid') return 'Exact registered video variant';
+    if (['likes','comments','shares','follows','saves'].includes(key)) return 'Reported count; blank remains null';
     if (key.includes('videoid') || key === 'mediaid') return 'Canonical video match key';
     if (key.includes('filename') || key === 'file') return 'Canonical filename match key';
     if (key.includes('view') || key === 'plays') return 'Views metric';
-    if (key.includes('published') || key === 'posted') return 'Publication timestamp';
+    if (key.includes('published') || key === 'publicationtimestamp' || key === 'posted') return 'Publication timestamp';
     if (key.includes('measure') || key === 'date') return 'Measurement timestamp';
     if (key.includes('completion')) return 'Completion rate metric';
     if (key.includes('reach')) return 'Reach metric';

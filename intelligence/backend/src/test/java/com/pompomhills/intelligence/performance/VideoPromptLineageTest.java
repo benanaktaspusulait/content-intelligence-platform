@@ -77,6 +77,27 @@ class VideoPromptLineageTest {
   com.pompomhills.intelligence.prediction.ml.MlPredictionClient predictionMl;
 
   @Test
+  void savedEditLineageReopensFromBothParentAndArtifactWithoutNewAnalysis() {
+    UUID parent = insertVideo("parent.mp4"),
+        artifact = insertVideo("edited.mp4"),
+        unrelated = insertVideo("other.mp4"),
+        record = UUID.randomUUID();
+    jdbc.sql(
+            "INSERT INTO post_family_workflow_events(id,kind,payload) VALUES"
+                + " (:id,'EDIT_HANDOFF',jsonb_build_object('videoId',CAST(:parent AS"
+                + " text),'artifactVideoId',CAST(:artifact AS text),'reason','TEST_FIXTURE'))")
+        .param("id", record)
+        .param("parent", parent)
+        .param("artifact", artifact)
+        .update();
+    assertThat(workflow.editedHandoffs(parent).getFirst().get("recordId"))
+        .isEqualTo(record.toString());
+    assertThat(workflow.editedHandoffs(artifact).getFirst().get("videoId"))
+        .isEqualTo(parent.toString());
+    assertThat(workflow.editedHandoffs(unrelated)).isEmpty();
+  }
+
+  @Test
   void
       folderVersionsStayAmbiguousUntilExactOperatorSelectionAndReconstructionNeverBecomesOriginal() {
     UUID video = insertVideo("source.mp4");

@@ -1,0 +1,20 @@
+{
+  "reason": "TEST_FIXTURE: manually trimmed local copy to 12 seconds; original preserved",
+  "videoId": "3de761b6-b96b-45e2-98da-a298659a50e9",
+  "variantId": "c7c27909-725c-45fb-991e-b6ecaccea560",
+  "durationMs": 12083,
+  "artifactHash": "7626749e7834ecfe1183cfc0e804f79182ee34b1802e2908ea898c85cdaa2762",
+  "originalHash": "0c38bda790441af44f7f8d901f8ca9bf79cfafcc320a7c01a53baccc3f774f68",
+  "relativePath": "library/fix-fixtures/AUDIT_FIXTURE_EDITED.mp4",
+  "editOperations": [
+    {
+      "reason": "TEST_FIXTURE: manually trimmed local copy to 12 seconds; original preserved",
+      "operation": "MANUAL_EDIT"
+    }
+  ],
+  "artifactVideoId": "4befb9da-f665-4786-99cb-1574f28624b6",
+  "parentVariantId": null,
+  "fileVerification": "HASH_AND_METADATA_VERIFIED",
+  "operationVerification": "OPERATOR_REPORTED",
+  "recordId": "250d9854-5e70-4315-a124-5cf8cff52702"
+}

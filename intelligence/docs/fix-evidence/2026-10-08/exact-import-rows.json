@@ -1,0 +1,25 @@
+[
+  {
+    "id": "e47ad5cb-0e02-4f0d-9c84-0e322135e931",
+    "sheet": "data",
+    "sourceRowNumber": 2,
+    "rawData": {
+      "likes": "0",
+      "reach": "",
+      "views": "42",
+      "filename": "UNRESOLVED_TEST_FIXTURE.mp4",
+      "metricsemantics": "CUMULATIVE",
+      "platformcontentid": "18446744073709551615",
+      "measurementtimestamp": "2026-01-04T00:00:00Z",
+      "publicationtimestamp": "2026-01-01T00:00:00Z"
+    },
+    "matchedVideoId": "3de761b6-b96b-45e2-98da-a298659a50e9",
+    "matchedVariantId": "c7c27909-725c-45fb-991e-b6ecaccea560",
+    "matchStatus": "MANUAL",
+    "matchConfidence": 1.0,
+    "matchReason": "TEST_FIXTURE: exact registered 12.083-second manual edit; no production publication claim",
+    "observationId": "623ab11f-3bbe-41ca-aa08-34b9d58d11cb",
+    "correctionOfObservationId": null,
+    "correctionReason": null
+  }
+]

@@ -1,0 +1,22 @@
+{
+  "videoId": "3de761b6-b96b-45e2-98da-a298659a50e9",
+  "characters": [],
+  "prompt": null,
+  "evidenceStatus": "PROMPT_AMBIGUOUS",
+  "candidates": [],
+  "sourceResolution": {
+    "status": "AMBIGUOUS",
+    "videoPath": "library/workflow-examples/B/08_luca_and_zipo_hd.mp4",
+    "promptPath": null,
+    "promptText": null,
+    "matchingMethod": "MULTIPLE_PROMPT_CANDIDATES",
+    "confidence": "UNKNOWN",
+    "candidateCount": 2,
+    "candidates": [
+      "library/workflow-examples/B/00_title.txt",
+      "library/workflow-examples/B/01_video_prompt.txt"
+    ],
+    "errorMessage": "Multiple prompt files could describe this video"
+  },
+  "sourceLink": null
+}

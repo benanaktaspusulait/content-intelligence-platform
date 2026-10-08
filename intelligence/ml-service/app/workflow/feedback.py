@@ -377,12 +377,12 @@ def review_render(plan: dict[str, Any], observation: dict[str, Any]) -> dict[str
         },
         "technicalAnalysis": observation.get("technicalAnalysis"),
         "reviewDimensions": {
-            "promptPlanQuality": plan.get("planQuality", {"status": "UNKNOWN"}),
-            "generatorExecutionRisk": plan.get("executionRisk", {"status": "UNKNOWN"}),
+            "promptPlanQuality": (plan.get("planQuality") or {"status": "UNKNOWN"}),
+            "generatorExecutionRisk": (plan.get("executionRisk") or {"status": "UNKNOWN"}),
             "actualRenderQuality": actual,
             "audienceDistributionOutcome": {"status": "NOT_JOINED"},
         },
-        "operatorReport": operator_report(plan.get("planQuality", {}), plan.get("executionRisk", {}), actual),
+        "operatorReport": operator_report(plan.get("planQuality") or {}, plan.get("executionRisk") or {}, actual),
         "limitations": [
             "Seyrek kareler sürekli hareket, hassas temas veya kusursuz loop kanıtı değildir.",
             (

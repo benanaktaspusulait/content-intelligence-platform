@@ -1,0 +1,27 @@
+[
+  {
+    "id": "86700863-99f1-4e55-becf-29c42163c8f3",
+    "sheet": "data",
+    "sourceRowNumber": 2,
+    "rawData": {
+      "likes": "0",
+      "reach": "",
+      "views": "84",
+      "videoid": "3de761b6-b96b-45e2-98da-a298659a50e9",
+      "variantid": "c7c27909-725c-45fb-991e-b6ecaccea560",
+      "metricsemantics": "CUMULATIVE",
+      "correction_of_id": "623ab11f-3bbe-41ca-aa08-34b9d58d11cb",
+      "platformcontentid": "18446744073709551615",
+      "measurementtimestamp": "2026-01-04T00:00:00Z",
+      "publicationtimestamp": "2026-01-01T00:00:00Z"
+    },
+    "matchedVideoId": "3de761b6-b96b-45e2-98da-a298659a50e9",
+    "matchedVariantId": "c7c27909-725c-45fb-991e-b6ecaccea560",
+    "matchStatus": "EXACT",
+    "matchConfidence": 1.0,
+    "matchReason": null,
+    "observationId": "afc27e5a-e739-4681-9445-df69bc5aed12",
+    "correctionOfObservationId": "623ab11f-3bbe-41ca-aa08-34b9d58d11cb",
+    "correctionReason": "TEST_FIXTURE: corrected source export from 42 to 84; prior value retained"
+  }
+]

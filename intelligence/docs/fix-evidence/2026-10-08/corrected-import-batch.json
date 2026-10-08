@@ -1,0 +1,26 @@
+{
+  "batchId": "727c367c-e78e-44c9-9bc8-be84104a6a4b",
+  "filename": "pfw-corrected-variant-fixture.csv",
+  "sha256": "75cfa31b6d15ba67f999921ec67833e155fc56b8dfc69a8f8d85d464b905ef56",
+  "columns": [
+    "videoid",
+    "variantid",
+    "platformcontentid",
+    "publicationtimestamp",
+    "measurementtimestamp",
+    "metricsemantics",
+    "views",
+    "reach",
+    "likes",
+    "correction_of_id"
+  ],
+  "rowCount": 1,
+  "matchedRows": 1,
+  "unresolvedRows": 0,
+  "duplicate": false,
+  "status": "COMMITTED",
+  "platform": "instagram",
+  "timezone": "Europe/London",
+  "correctionOfBatchId": "6045a7ae-820a-492a-aa9b-a7c4243b8d53",
+  "correctionReason": "TEST_FIXTURE: corrected source export from 42 to 84; prior value retained"
+}

@@ -194,6 +194,7 @@ const VARIANT_TYPE_LABELS: Record<string, string> = {
           </div>
         }
       </section>
+      @if (editHistory().length) {<section class="section-band"><h3>Saved edited results and parent lineage</h3>@for (edit of editHistory(); track edit.recordId) {<p><a [routerLink]="['/videos',edit.artifactVideoId]">Edited artifact · {{ edit.durationMs / 1000 }} seconds</a> · variant {{ edit.variantId }} · <a [routerLink]="['/videos',edit.videoId]">Original parent video</a></p><p>{{ edit.reason }} · {{ edit.artifactHash }}</p>}</section>}
       <section class="section-band"><h3>Import manual edit result</h3><p>Save the edited file under configured media storage, then register it. The original stays unchanged. Operation descriptions are operator reports; file hash and duration are measured.</p>
         <input aria-label="Edited media path" [(ngModel)]="editedPath" placeholder="library/.../edited.mp4">
         <select aria-label="Parent variant" [(ngModel)]="editParentId"><option value="">Original video</option>@for (variant of videoVariants(); track variant.id) {<option [value]="variant.id">{{ variant.variantType }} · {{ variant.id }}</option>}</select>
@@ -586,6 +587,7 @@ export class VideoDetailPage implements OnDestroy {
   protected readonly discovery = signal<DiscoveryProfile | null>(null);
   protected readonly platform = signal<PlatformKey>('facebook');
   protected readonly activeTab = signal<'overview' | 'creative' | 'publication' | 'performance' | 'evidence'>('overview');
+  protected readonly editHistory = signal<Array<{videoId:string; artifactVideoId:string; variantId:string; relativePath:string; artifactHash:string; durationMs:number; reason:string; recordId:string}>>([]);
   protected editedPath = '';
   protected editedReason = '';
   protected editParentId = '';
@@ -594,7 +596,7 @@ export class VideoDetailPage implements OnDestroy {
     const id = this.creativeContext()?.videoId;
     if (!id || !this.editedPath || !this.editedReason.trim()) return;
     this.service.importEditedVariant(id, this.editedPath, this.editParentId || null, this.editedReason.trim()).subscribe({
-      next: result => { this.editedResult = result; },
+      next: result => { this.editedResult = result; this.loadEditHistory(id); },
       error: response => this.message.set(response.error?.detail || response.error?.message || 'Edited file import failed.'),
     });
   }
@@ -1165,7 +1167,12 @@ export class VideoDetailPage implements OnDestroy {
     const hasPrimary = this.draftCharacters().some(item => item.participation === 'PRIMARY');
     this.draftCharacters.update(items => [...items, { characterId: character.id, name: character.name, participation: hasPrimary ? 'SECONDARY' : 'PRIMARY', role: 'UNKNOWN' }]);
   }
+  private loadEditHistory(videoId: string): void {
+    this.editHistory.set([]);
+    this.service.getEditedHandoffs(videoId).subscribe({next: records => {if (this.video()?.id === videoId) this.editHistory.set(records);},error: () => this.message.set('Saved edit lineage could not be loaded. Reopen this video.')});
+  }
   private loadCreativeContext(videoId: string): void {
+    this.loadEditHistory(videoId);
     this.creativeContextLoading.set(true); this.creativeContextError.set(''); this.creativeContext.set(null);
     this.service.getVideoCreativeContext(videoId).subscribe({
       next: context => { this.creativeContext.set(context); this.creativeContextLoading.set(false); },

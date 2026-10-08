@@ -92,6 +92,11 @@ public class WorkflowController {
     return service.importEditedVariant(videoId, request);
   }
 
+  @GetMapping("/videos/{videoId}/edit-handoffs")
+  public List<Map<String, Object>> editedHandoffs(@PathVariable UUID videoId) {
+    return service.editedHandoffs(videoId);
+  }
+
   @GetMapping("/videos/{videoId}/qa")
   public List<Map<String, Object>> actualQaRecords(@PathVariable UUID videoId) {
     return service.actualQaRecords(videoId);

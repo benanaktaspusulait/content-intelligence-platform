@@ -1,3 +1,5 @@
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { ActivatedRoute, convertToParamMap, provideRouter } from '@angular/router';
 import { of, throwError } from 'rxjs';
@@ -29,6 +31,7 @@ function serviceWith(discovery: DiscoveryProfile) {
     triggerAnalysis: () => of(notStartedAnalysis),
     getAnalysisStatus: () => of(notStartedAnalysis),
     getMetadataFile: () => of(null),
+    getEditedHandoffs: () => of([]),
     getVideoCreativeContext: () => of({
       videoId: 'video-1',
       characters: [{ id: 'character-mimi', name: 'Mimi', participation: 'PRIMARY', role: 'UNKNOWN', screenTimeRatio: null, actionShare: null, speakingShare: null, source: 'PROMPT_FILE_INFERRED', confidence: 'HIGH', promptSourcePath: 'prompt.txt', resolverVersion: 'v1', evidenceReference: 'matched=Mimi', manuallyConfirmed: false }],
@@ -64,7 +67,7 @@ describe('VideoDetailPage audience discovery', () => {
     await TestBed.configureTestingModule({
       imports: [VideoDetailPage],
       providers: [
-        provideRouter([]),
+        provideRouter([]), provideHttpClient(), provideHttpClientTesting(),
         { provide: ActivatedRoute, useValue: route },
         { provide: CreativeIntelligenceService, useValue: serviceWith(discovery) },
       ],
@@ -78,6 +81,8 @@ describe('VideoDetailPage audience discovery', () => {
 
   it('separates participation, narrative role, association provenance, and missing metrics', async () => {
     const fixture = await render(baseDiscovery);
+    (Array.from(fixture.nativeElement.querySelectorAll('button')) as HTMLButtonElement[]).find(b => b.textContent?.trim() === 'Creative')!.click();
+    fixture.detectChanges();
     const panel = fixture.nativeElement.querySelector('.creative-context-panel') as HTMLElement;
 
     expect(panel.textContent).toContain('Participation: Primary');
@@ -89,6 +94,8 @@ describe('VideoDetailPage audience discovery', () => {
   });
   it('renders only verified API discovery values and provenance', async () => {
     const fixture = await render(baseDiscovery);
+    (Array.from(fixture.nativeElement.querySelectorAll('button')) as HTMLButtonElement[]).find(b => b.textContent?.trim() === 'Performance')!.click();
+    fixture.detectChanges();
     const panel = fixture.nativeElement.querySelector('.discovery-profile') as HTMLElement;
 
     expect(panel.textContent).toContain('99.0%');
@@ -105,11 +112,26 @@ describe('VideoDetailPage audience discovery', () => {
       usAudienceShare: null, followsPerThousandViews: null, newAudienceQualityScore: null,
       dataQualityStatus: 'UNAVAILABLE',
     });
+    (Array.from(fixture.nativeElement.querySelectorAll('button')) as HTMLButtonElement[]).find(b => b.textContent?.trim() === 'Performance')!.click();
+    fixture.detectChanges();
     const panel = fixture.nativeElement.querySelector('.discovery-profile') as HTMLElement;
 
     expect(panel.textContent).toContain('NO COMPLETE DATA');
     expect(panel.textContent?.match(/No imported value/g)?.length).toBe(4);
     expect(panel.textContent).toContain('Missing values are not estimated.');
+  });
+
+  it('opens the exact requested edited file even when its filename has no HD suffix', async () => {
+    const edited = {...mediaFile, name:'edited.mp4', relativePath:'library/Giant Sock/edited.mp4'};
+    await TestBed.configureTestingModule({imports:[VideoDetailPage], providers:[provideRouter([]), provideHttpClient(), provideHttpClientTesting(),
+      {provide:ActivatedRoute,useValue:{paramMap:of(convertToParamMap({})), queryParamMap:of(convertToParamMap({folder:'library/Giant Sock',file:edited.relativePath}))}},
+      {provide:CreativeIntelligenceService,useValue:{...serviceWith(baseDiscovery),getMediaFiles:()=>of([edited]),getVideo:()=>of({...video,relativePath:edited.relativePath,originalFilename:edited.name}),getEditedHandoffs:()=>of([{recordId:'saved-edit',videoId:'parent-video',artifactVideoId:video.id,variantId:'edited-variant',durationMs:12083,artifactHash:'verified-hash',reason:'Saved manual edit provenance'}])}}]}).compileComponents();
+    const fixture=TestBed.createComponent(VideoDetailPage); fixture.detectChanges();
+    expect(fixture.nativeElement.querySelector('.selected-file-bar').textContent).toContain('edited.mp4');
+    expect(fixture.nativeElement.querySelector('.state-panel--error')).toBeNull();
+    (Array.from(fixture.nativeElement.querySelectorAll('button')) as HTMLButtonElement[]).find(b=>b.textContent?.trim()==='Creative')!.click();fixture.detectChanges();
+    expect(fixture.nativeElement.textContent).toContain('Saved manual edit provenance');
+    expect(fixture.nativeElement.querySelector('a[href="/videos/parent-video"]')).not.toBeNull();
   });
 
   it('groups real technical metadata into video, file, and evidence sections', async () => {
@@ -163,7 +185,8 @@ describe('VideoDetailPage variant rail', () => {
       triggerAnalysis: () => of(notStartedAnalysis),
       getAnalysisStatus: () => of(notStartedAnalysis),
       getMetadataFile: () => of(null),
-      getVideoCreativeContext: () => of({ videoId: 'video-1', characters: [{ id: 'character-mimi', name: 'Mimi', participation: 'PRIMARY', role: 'UNKNOWN', screenTimeRatio: null, actionShare: null, speakingShare: null, source: 'PROMPT_FILE_INFERRED', confidence: 'HIGH', promptSourcePath: 'prompt.txt', resolverVersion: 'v1', evidenceReference: 'matched=Mimi', manuallyConfirmed: false }], prompt: null, evidenceStatus: 'CHARACTER_DATA_ONLY' }),
+      getEditedHandoffs: () => of([]),
+    getVideoCreativeContext: () => of({ videoId: 'video-1', characters: [{ id: 'character-mimi', name: 'Mimi', participation: 'PRIMARY', role: 'UNKNOWN', screenTimeRatio: null, actionShare: null, speakingShare: null, source: 'PROMPT_FILE_INFERRED', confidence: 'HIGH', promptSourcePath: 'prompt.txt', resolverVersion: 'v1', evidenceReference: 'matched=Mimi', manuallyConfirmed: false }], prompt: null, evidenceStatus: 'CHARACTER_DATA_ONLY' }),
     };
   }
 
@@ -173,7 +196,7 @@ describe('VideoDetailPage variant rail', () => {
     await TestBed.configureTestingModule({
       imports: [VideoDetailPage],
       providers: [
-        provideRouter([]),
+        provideRouter([]), provideHttpClient(), provideHttpClientTesting(),
         { provide: ActivatedRoute, useValue: route },
         { provide: CreativeIntelligenceService, useValue: serviceWithVariants() },
       ],
@@ -206,7 +229,8 @@ describe('VideoDetailPage creative analysis panel', () => {
       triggerAnalysis: () => of(status),
       getAnalysisStatus: () => of(status),
       getMetadataFile: () => of(null),
-      getVideoCreativeContext: () => of({ videoId: 'video-1', characters: [{ id: 'character-mimi', name: 'Mimi', participation: 'PRIMARY', role: 'UNKNOWN', screenTimeRatio: null, actionShare: null, speakingShare: null, source: 'PROMPT_FILE_INFERRED', confidence: 'HIGH', promptSourcePath: 'prompt.txt', resolverVersion: 'v1', evidenceReference: 'matched=Mimi', manuallyConfirmed: false }], prompt: null, evidenceStatus: 'CHARACTER_DATA_ONLY' }),
+      getEditedHandoffs: () => of([]),
+    getVideoCreativeContext: () => of({ videoId: 'video-1', characters: [{ id: 'character-mimi', name: 'Mimi', participation: 'PRIMARY', role: 'UNKNOWN', screenTimeRatio: null, actionShare: null, speakingShare: null, source: 'PROMPT_FILE_INFERRED', confidence: 'HIGH', promptSourcePath: 'prompt.txt', resolverVersion: 'v1', evidenceReference: 'matched=Mimi', manuallyConfirmed: false }], prompt: null, evidenceStatus: 'CHARACTER_DATA_ONLY' }),
     };
   }
 
@@ -216,7 +240,7 @@ describe('VideoDetailPage creative analysis panel', () => {
     await TestBed.configureTestingModule({
       imports: [VideoDetailPage],
       providers: [
-        provideRouter([]),
+        provideRouter([]), provideHttpClient(), provideHttpClientTesting(),
         { provide: ActivatedRoute, useValue: route },
         { provide: CreativeIntelligenceService, useValue: serviceWithAnalysis({
           videoId: 'video-1', hasCompletedAnalysis: true, jobId: null, jobState: 'COMPLETED',
@@ -232,14 +256,14 @@ describe('VideoDetailPage creative analysis panel', () => {
     const panel = fixture.nativeElement.querySelector('.creative-analysis-panel');
     expect(panel.textContent).toContain('GOOD');
     expect(panel.textContent).toContain('Clear hook');
-    expect(panel.querySelector('button')).toBeNull();
+    expect(panel.querySelector('button')?.textContent).toContain('Reanalyze');
   });
 
   it('shows a trigger button when no analysis exists yet', async () => {
     await TestBed.configureTestingModule({
       imports: [VideoDetailPage],
       providers: [
-        provideRouter([]),
+        provideRouter([]), provideHttpClient(), provideHttpClientTesting(),
         { provide: ActivatedRoute, useValue: route },
         { provide: CreativeIntelligenceService, useValue: serviceWithAnalysis({
           videoId: 'video-1', hasCompletedAnalysis: false, jobId: null, jobState: 'NOT_STARTED',
@@ -253,7 +277,7 @@ describe('VideoDetailPage creative analysis panel', () => {
     fixture.detectChanges();
 
     const panel = fixture.nativeElement.querySelector('.creative-analysis-panel');
-    expect(panel.querySelector('button')?.textContent).toContain('Trigger analysis');
+    expect(panel.querySelector('button')?.textContent).toContain('Run analysis');
   });
 
   it('keeps polling and preserves the last-known analysis status when a tick fails', async () => {
@@ -280,7 +304,7 @@ describe('VideoDetailPage creative analysis panel', () => {
       await TestBed.configureTestingModule({
         imports: [VideoDetailPage],
         providers: [
-          provideRouter([]),
+          provideRouter([]), provideHttpClient(), provideHttpClientTesting(),
           { provide: ActivatedRoute, useValue: route },
           { provide: CreativeIntelligenceService, useValue: {
             ...serviceWithAnalysis(runningStatus),

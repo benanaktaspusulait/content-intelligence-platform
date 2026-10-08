@@ -1,0 +1,7 @@
+{
+  "statusCode": 409,
+  "body": {
+    "status": "UNKNOWN",
+    "detail": "Unsupported workflow operation"
+  }
+}

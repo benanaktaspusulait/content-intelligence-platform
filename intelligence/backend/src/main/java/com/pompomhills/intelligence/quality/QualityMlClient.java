@@ -213,7 +213,9 @@ public class QualityMlClient {
   }
 
   public Map<String, Object> workflow(String operation, Map<String, Object> request) {
-    if (!List.of("review", "repair", "feedback", "critic").contains(operation)) {
+    if (!List.of(
+            "review", "repair", "feedback", "critic", "creative-role", "creative-role/readiness")
+        .contains(operation)) {
       throw new IllegalArgumentException("Unsupported workflow operation");
     }
     try {
