@@ -148,7 +148,7 @@ public class ProviderOperationRepository {
     Instant now = Instant.now();
     return entityManager
         .createNativeQuery(
-            "INSERT INTO provider_operation_records ("
+            "INSERT INTO publisher_support.provider_operation_records ("
                 + "id, publication_job_id, publication_attempt_id, command_idempotency_key, "
                 + "command_fingerprint, started_at, reconciliation_required, created_at, "
                 + "updated_at, entity_version) "

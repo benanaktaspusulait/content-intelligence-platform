@@ -1,4 +1,6 @@
-CREATE TABLE provider_operation_records (
+CREATE SCHEMA IF NOT EXISTS publisher_support;
+
+CREATE TABLE publisher_support.provider_operation_records (
     id UUID PRIMARY KEY,
     publication_job_id UUID NOT NULL,
     publication_attempt_id UUID NOT NULL,
@@ -22,7 +24,7 @@ CREATE TABLE provider_operation_records (
 );
 
 CREATE INDEX idx_provider_operation_reconciliation
-  ON provider_operation_records(reconciliation_required, status);
+  ON publisher_support.provider_operation_records(reconciliation_required, status);
 
 CREATE INDEX idx_provider_operation_provider_request
-  ON provider_operation_records(provider_request_id);
+  ON publisher_support.provider_operation_records(provider_request_id);

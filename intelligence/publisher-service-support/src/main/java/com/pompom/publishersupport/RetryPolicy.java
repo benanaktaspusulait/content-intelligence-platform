@@ -1,6 +1,5 @@
 package com.pompom.publishersupport;
 
-import com.pompom.publishercontract.PublishErrorClass;
 import java.time.Duration;
 import java.util.Objects;
 
@@ -10,8 +9,6 @@ public final class RetryPolicy {
   public static final int DEFAULT_MAX_ATTEMPTS = 3;
   public static final Duration DEFAULT_INITIAL_BACKOFF = Duration.ofSeconds(1);
   public static final Duration DEFAULT_MAX_BACKOFF = Duration.ofSeconds(30);
-
-  public record Decision(boolean shouldRetry, Duration backoff, boolean reconciliationRequired) {}
 
   private final int maxAttempts;
   private final Duration initialBackoff;
@@ -25,42 +22,33 @@ public final class RetryPolicy {
     if (maxAttempts < 1) {
       throw new IllegalArgumentException("maxAttempts must be positive");
     }
-    if (initialBackoff.isNegative()
-        || maxBackoff.isNegative()
-        || maxBackoff.compareTo(initialBackoff) < 0) {
-      throw new IllegalArgumentException("backoff bounds are invalid");
+    if (initialBackoff.isNegative() || initialBackoff.isZero()) {
+      throw new IllegalArgumentException("initialBackoff must be positive");
+    }
+    if (maxBackoff.compareTo(initialBackoff) < 0) {
+      throw new IllegalArgumentException("maxBackoff must not be less than initialBackoff");
     }
     this.maxAttempts = maxAttempts;
     this.initialBackoff = initialBackoff;
     this.maxBackoff = maxBackoff;
   }
 
-  public Decision decide(ProviderErrorMapper.Classification classification, int attemptNumber) {
-    return decide(classification, attemptNumber, false);
-  }
-
-  /**
-   * Decides whether a failure can be retried. Once a submission outcome is uncertain, this method
-   * always favors reconciliation over a second provider POST.
-   */
+  /** Submission phase must be explicit so an uncertain outcome cannot authorize another POST. */
   public Decision decide(
       ProviderErrorMapper.Classification classification,
       int attemptNumber,
-      boolean submissionStarted) {
+      SubmissionPhase submissionPhase) {
     Objects.requireNonNull(classification, "classification");
+    Objects.requireNonNull(submissionPhase, "submissionPhase");
     if (attemptNumber < 1) {
       throw new IllegalArgumentException("attemptNumber must be positive");
     }
 
-    boolean uncertainAfterSubmission =
-        submissionStarted
-            && (classification.errorClass() == PublishErrorClass.TRANSIENT
-                || classification.errorClass() == PublishErrorClass.UNKNOWN
-                || classification.reconciliationRequired());
-    if (classification.reconciliationRequired() || uncertainAfterSubmission) {
+    if (submissionPhase == SubmissionPhase.SUBMISSION_STARTED
+        && classification.uncertainAfterSubmission()) {
       return new Decision(false, Duration.ZERO, true);
     }
-    if (!classification.retryable() || attemptNumber >= maxAttempts) {
+    if (!classification.safeToRetryBeforeSubmission() || attemptNumber >= maxAttempts) {
       return new Decision(false, Duration.ZERO, false);
     }
     return new Decision(true, backoffForAttempt(attemptNumber), false);
@@ -73,5 +61,16 @@ public final class RetryPolicy {
     long multiplier = 1L << Math.min(attemptNumber - 1, 30);
     Duration candidate = initialBackoff.multipliedBy(multiplier);
     return candidate.compareTo(maxBackoff) > 0 ? maxBackoff : candidate;
+  }
+
+  public enum SubmissionPhase {
+    SUBMISSION_NOT_STARTED,
+    SUBMISSION_STARTED
+  }
+
+  public record Decision(boolean shouldRetry, Duration backoff, boolean reconciliationRequired) {
+    public Decision {
+      Objects.requireNonNull(backoff, "backoff");
+    }
   }
 }

@@ -7,7 +7,6 @@ import java.security.NoSuchAlgorithmException;
 import java.util.HexFormat;
 import java.util.Map;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 /**
  * Computes a stable, non-secret identity for a publish command independent of its idempotency key.
@@ -28,13 +27,9 @@ public final class PublisherCommandFingerprint {
             field(command.assetSha256()),
             field(command.title()),
             field(command.caption()),
-            field(String.join("\u001f", command.hashtags())),
+            field(list(command.hashtags())),
             field(Boolean.toString(command.isPrivate())),
-            field(
-                command.providerOptions().entrySet().stream()
-                    .sorted(Map.Entry.comparingByKey())
-                    .map(entry -> field(entry.getKey()) + field(entry.getValue()))
-                    .collect(Collectors.joining("\u001e"))));
+            field(map(command.providerOptions())));
     try {
       return HexFormat.of()
           .formatHex(
@@ -43,6 +38,30 @@ public final class PublisherCommandFingerprint {
     } catch (NoSuchAlgorithmException exception) {
       throw new IllegalStateException("SHA-256 is unavailable", exception);
     }
+  }
+
+  private static String list(Iterable<String> values) {
+    StringBuilder canonical = new StringBuilder(field(Integer.toString(size(values))));
+    for (String value : values) {
+      canonical.append(field(value));
+    }
+    return canonical.toString();
+  }
+
+  private static int size(Iterable<String> values) {
+    int count = 0;
+    for (String ignored : values) {
+      count++;
+    }
+    return count;
+  }
+
+  private static String map(Map<String, String> values) {
+    StringBuilder canonical = new StringBuilder(field(Integer.toString(values.size())));
+    values.entrySet().stream()
+        .sorted(Map.Entry.comparingByKey())
+        .forEach(entry -> canonical.append(field(entry.getKey())).append(field(entry.getValue())));
+    return canonical.toString();
   }
 
   private static String field(String value) {

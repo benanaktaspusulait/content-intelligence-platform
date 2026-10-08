@@ -22,22 +22,22 @@ class ProviderErrorMapperTest {
   }
 
   @Test
-  void treatsServerResponsesAsUncertainAndRequiresReconciliation() {
+  void marksServerResponsesAsRetryableBeforeSubmissionButUncertainAfterSubmission() {
     ProviderErrorMapper.Classification classification = mapper.classify(503);
 
     assertThat(classification.errorClass()).isEqualTo(PublishErrorClass.TRANSIENT);
-    assertThat(classification.retryable()).isTrue();
-    assertThat(classification.reconciliationRequired()).isTrue();
+    assertThat(classification.safeToRetryBeforeSubmission()).isTrue();
+    assertThat(classification.uncertainAfterSubmission()).isTrue();
   }
 
   @Test
-  void treatsTransportTimeoutsAsTransientWithoutGuessingProviderOutcome() {
+  void marksTransportTimeoutsAsRetryableBeforeSubmissionButUncertainAfterSubmission() {
     ProviderErrorMapper.Classification classification =
         mapper.classify(new SocketTimeoutException("provider connection timed out"));
 
     assertThat(classification.errorClass()).isEqualTo(PublishErrorClass.TRANSIENT);
-    assertThat(classification.retryable()).isTrue();
-    assertThat(classification.reconciliationRequired()).isTrue();
+    assertThat(classification.safeToRetryBeforeSubmission()).isTrue();
+    assertThat(classification.uncertainAfterSubmission()).isTrue();
   }
 
   @Test
@@ -46,7 +46,7 @@ class ProviderErrorMapperTest {
         mapper.classify(new IllegalStateException("unexpected response"));
 
     assertThat(classification.errorClass()).isEqualTo(PublishErrorClass.UNKNOWN);
-    assertThat(classification.retryable()).isFalse();
-    assertThat(classification.reconciliationRequired()).isTrue();
+    assertThat(classification.safeToRetryBeforeSubmission()).isFalse();
+    assertThat(classification.uncertainAfterSubmission()).isTrue();
   }
 }

@@ -12,9 +12,13 @@ import java.util.concurrent.TimeoutException;
 /** Maps generic transport/provider outcomes to the normalized publisher contract. */
 public final class ProviderErrorMapper {
 
-  /** Describes classification and whether another POST is safe without reconciliation. */
+  /**
+   * Describes retry safety before submission and uncertainty after a request may have been sent.
+   */
   public record Classification(
-      PublishErrorClass errorClass, boolean retryable, boolean reconciliationRequired) {}
+      PublishErrorClass errorClass,
+      boolean safeToRetryBeforeSubmission,
+      boolean uncertainAfterSubmission) {}
 
   public Classification classify(int httpStatus) {
     return classify(httpStatus, null);
@@ -57,7 +61,7 @@ public final class ProviderErrorMapper {
     return new Classification(PublishErrorClass.UNKNOWN, false, true);
   }
 
-  /** Classifies transport failures conservatively; uncertain outcomes require reconciliation. */
+  /** Classifies transport failures without deciding the caller's submission phase. */
   public Classification classify(Throwable failure) {
     Throwable cause = unwrap(failure);
     if (cause instanceof InterruptedException) {

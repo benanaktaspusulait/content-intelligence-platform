@@ -14,10 +14,11 @@ import org.junit.jupiter.api.Test;
 class ProviderOperationRecordMappingTest {
 
   @Test
-  void mapsTheProviderOperationTableWithoutControlPlaneForeignKeysOrRawSecrets() {
+  void mapsTheProviderOperationTableIntoTheOwnedSupportSchema() {
     Table table = ProviderOperationRecord.class.getAnnotation(Table.class);
 
     assertThat(table.name()).isEqualTo("provider_operation_records");
+    assertThat(table.schema()).isEqualTo(PublisherSupportFlywayConfiguration.SCHEMA);
     assertThat(table.uniqueConstraints())
         .anySatisfy(
             uniqueConstraint ->
@@ -47,11 +48,19 @@ class ProviderOperationRecordMappingTest {
   }
 
   @Test
-  void migrationDefinesOnlyProviderOperationStateAndItsIdempotencyIndex() throws IOException {
+  void migrationUsesTheExplicitSupportLocationAndSchemaWithoutConsumerHistoryCollision()
+      throws IOException {
+    assertThat(PublisherSupportFlywayConfiguration.MIGRATION_LOCATION)
+        .isEqualTo("classpath:db/publisher-support-migration");
+    assertThat(PublisherSupportFlywayConfiguration.SCHEMA).isEqualTo("publisher_support");
+    assertThat(PublisherSupportFlywayConfiguration.HISTORY_TABLE)
+        .isEqualTo("publisher_support_schema_history");
+
     String migration = readMigration();
 
     assertThat(migration)
-        .contains("CREATE TABLE provider_operation_records")
+        .contains("CREATE SCHEMA IF NOT EXISTS publisher_support")
+        .contains("CREATE TABLE publisher_support.provider_operation_records")
         .contains("command_idempotency_key")
         .contains("provider_request_id")
         .contains("command_fingerprint")
@@ -82,7 +91,9 @@ class ProviderOperationRecordMappingTest {
 
   private String readMigration() throws IOException {
     try (InputStream input =
-        getClass().getResourceAsStream("/db/migration/V1__create_provider_operation_records.sql")) {
+        getClass()
+            .getResourceAsStream(
+                "/db/publisher-support-migration/V1__create_provider_operation_records.sql")) {
       if (input == null) {
         throw new AssertionError("provider operation migration is missing");
       }

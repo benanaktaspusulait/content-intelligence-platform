@@ -25,6 +25,7 @@ import java.util.UUID;
 @Entity
 @Table(
     name = "provider_operation_records",
+    schema = PublisherSupportFlywayConfiguration.SCHEMA,
     uniqueConstraints =
         @UniqueConstraint(
             name = "uq_provider_operation_command_idempotency_key",
@@ -106,30 +107,47 @@ public class ProviderOperationRecord {
 
   void apply(PublishResult result, Instant completedAt, SecretRedactor redactor) {
     Objects.requireNonNull(result, "result");
-    Objects.requireNonNull(result.status(), "publish result status is required");
-    validateIdentifiers(result);
+    Objects.requireNonNull(completedAt, "completedAt");
+    Objects.requireNonNull(redactor, "redactor");
+    PublishResult normalized = normalize(result, redactor);
+    validateIdentifiers(normalized);
 
     if (status != null) {
       PublishResult existingResult = toPublishResult();
-      if (existingResult.equals(result)) {
+      if (existingResult.equals(normalized)) {
         return;
       }
-      if (lifecycleRank(result.status()) <= lifecycleRank(status)) {
+      if (lifecycleRank(normalized.status()) <= lifecycleRank(status)) {
         throw new IllegalStateException(
             "provider operation has a terminal or non-advancing result and cannot be overwritten");
       }
     }
 
-    status = result.status();
-    providerPostId = result.providerPostId();
-    providerVideoId = result.providerVideoId();
-    permalink = result.permalink();
-    providerRequestId = result.providerRequestId();
+    status = normalized.status();
+    providerPostId = normalized.providerPostId();
+    providerVideoId = normalized.providerVideoId();
+    permalink = normalized.permalink();
+    providerRequestId = normalized.providerRequestId();
     errorClass =
-        result.errorClass() == null ? null : PublishErrorClass.fromWireValue(result.errorClass());
-    message = redactor.redactProviderResponse(result.message());
-    reconciliationRequired = result.reconciliationRequired();
+        normalized.errorClass() == null
+            ? null
+            : PublishErrorClass.fromWireValue(normalized.errorClass());
+    message = normalized.message();
+    reconciliationRequired = normalized.reconciliationRequired();
     this.completedAt = completedAt;
+  }
+
+  private PublishResult normalize(PublishResult result, SecretRedactor redactor) {
+    Objects.requireNonNull(result.status(), "publish result status is required");
+    return new PublishResult(
+        result.status(),
+        result.providerPostId(),
+        result.providerVideoId(),
+        result.permalink(),
+        result.providerRequestId(),
+        result.errorClass(),
+        redactor.redactProviderResponse(result.message()),
+        result.reconciliationRequired());
   }
 
   private int lifecycleRank(PublishStatus lifecycleStatus) {

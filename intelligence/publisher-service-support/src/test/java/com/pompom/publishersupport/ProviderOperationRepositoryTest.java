@@ -1,6 +1,7 @@
 package com.pompom.publishersupport;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.pompom.publishercontract.PublishCommand;
@@ -82,6 +83,36 @@ class ProviderOperationRepositoryTest {
     assertThat(saved.getMessage()).doesNotContain("secret-value").contains("[REDACTED]");
     assertThat(saved.getStartedAt()).isEqualTo(Instant.parse("2026-10-07T12:00:00Z"));
     assertThat(saved.getCompletedAt()).isNotNull();
+  }
+
+  @Test
+  void repeatedSanitizedResultRecordingIsIdempotentForThePersistedProjection() {
+    PublishCommand command = command("sanitized-replay-command");
+    repository.claim(command);
+    String rawMessage =
+        "Authorization: Bearer secret-value access_token=another-secret\n\t"
+            + "provider detail "
+            + "x".repeat(SecretRedactor.MAX_LENGTH + 40);
+    PublishResult result =
+        new PublishResult(
+            PublishStatus.RECONCILIATION_REQUIRED,
+            "post-id",
+            "video-id",
+            "https://provider.example/post-id",
+            "request-id",
+            PublishErrorClass.TRANSIENT.wireValue(),
+            rawMessage,
+            true);
+
+    ProviderOperationRecord first = repository.recordResult(command.idempotencyKey(), result);
+
+    assertThat(first.getMessage())
+        .doesNotContain("secret-value", "another-secret", "\\n", "\\t")
+        .hasSize(SecretRedactor.MAX_LENGTH);
+    assertThatCode(() -> repository.recordResult(command.idempotencyKey(), result))
+        .doesNotThrowAnyException();
+    assertThat(repository.findExistingResult(command.idempotencyKey()))
+        .contains(first.toPublishResult());
   }
 
   @Test
