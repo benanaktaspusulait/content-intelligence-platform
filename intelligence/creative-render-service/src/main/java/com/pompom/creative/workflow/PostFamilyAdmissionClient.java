@@ -23,7 +23,11 @@ public class PostFamilyAdmissionClient {
   public void validate(QueueRenderJobRequest request) {
     if (request.jobType() == RenderJob.JobType.FIRST_FRAME) return;
     Map<String, Object> params = request.openartParams();
-    if (params == null || !params.containsKey("workflowProfile")) return;
+    if (params == null) return;
+    if (!params.containsKey("workflowProfile")) {
+      if (params.containsKey("regenerationHandoffId")) throw new IllegalArgumentException("Regeneration handoff requires source-bound post-family admission");
+      return;
+    }
     if (!"post-family-v1".equals(params.get("workflowProfile")))
       throw new IllegalArgumentException("Unsupported workflow profile");
     if (!(params.get("workflowReviewId") instanceof String id)

@@ -199,7 +199,9 @@ public class PerformanceImportService {
     return jdbc.sql(
             """
             SELECT id,sheet_name,source_row_number,raw_data::text,matched_video_id,matched_variant_id,match_status,
-                   match_confidence
+                   match_confidence,
+                   (SELECT reason FROM audit_events audit WHERE audit.entity_id=import_rows.id
+                    AND audit.action='MANUAL_IMPORT_MATCH' ORDER BY audit.created_at DESC LIMIT 1) match_reason
             FROM import_rows WHERE import_batch_id=:id
             ORDER BY sheet_name,source_row_number
             """)
@@ -214,7 +216,8 @@ public class PerformanceImportService {
                     rs.getObject("matched_video_id", UUID.class),
                     rs.getObject("matched_variant_id", UUID.class),
                     rs.getString("match_status"),
-                    (Double) rs.getObject("match_confidence")))
+                    (Double) rs.getObject("match_confidence"),
+                    rs.getString("match_reason")))
         .list();
   }
 
@@ -804,7 +807,8 @@ public class PerformanceImportService {
       UUID matchedVideoId,
       UUID matchedVariantId,
       String matchStatus,
-      Double matchConfidence) {}
+      Double matchConfidence,
+      String matchReason) {}
 
   public record ImportPreview(
       UUID batchId,

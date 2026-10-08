@@ -14,7 +14,7 @@ describe('post-family operator workflow', () => {
     fixture.componentRef.setInput('contentId', '1');
     fixture.componentRef.setInput('promptVersionId', '2');
     fixture.detectChanges();
-    TestBed.inject(HttpTestingController).expectOne('/api/v1/intelligence/workflow/records?kind=REVIEW').flush([]);
+    TestBed.inject(HttpTestingController).expectOne(r => r.url === '/api/v1/intelligence/workflow/records?kind=REVIEW').flush([]);
     return fixture;
   }
   it('restores the exact saved version using read requests and invalidates changed settings', async () => {
@@ -26,11 +26,11 @@ describe('post-family operator workflow', () => {
     fixture.componentRef.setInput('promptVersionId', '9');
     fixture.detectChanges();
     const http = TestBed.inject(HttpTestingController);
-    http.expectOne('/api/v1/intelligence/workflow/records?kind=REVIEW').flush([
+    http.expectOne(r => r.url === '/api/v1/intelligence/workflow/records?kind=REVIEW').flush([
       { recordId: 'other', contentId: 7, promptVersionId: 8 },
       { recordId: 'saved', contentId: 7, promptVersionId: 9, bindingHash: 'binding', decisionPolicyVersion: 'impact-review-v1', boundRequest: { prompt: 'Luca opens a box.', generator: 'SEEDANCE_2_5', desiredDuration: 15, settings: { aspectRatio: '16:9' } } },
     ]);
-    http.expectOne('/api/v1/intelligence/workflow/records?kind=ACTUAL_RENDER_QA').flush([{ recordId: 'qa', bindingHash: 'binding', videoId: 'exact-video' }]);
+    http.expectOne(r => r.url === '/api/v1/intelligence/workflow/records?kind=ACTUAL_RENDER_QA').flush([{ recordId: 'qa', bindingHash: 'binding', videoId: 'exact-video' }]);
     expect(component.restoredRecordId).toBe('saved');
     expect(component.generator).toBe('SEEDANCE_2_5');
     expect(component.qa.videoId).toBe('exact-video');

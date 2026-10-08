@@ -96,6 +96,7 @@ class ProviderExecutionCritic:
         # paths, credentials, audience outcomes or an implicit image attachment.
         context = {
             "prompt": request["prompt"],
+            "retrievedLessons": request.get("retrievedLessons", []),
             "source": evidence["source"],
             "generation": generation,
             "profile": request.get("contentProfile"),

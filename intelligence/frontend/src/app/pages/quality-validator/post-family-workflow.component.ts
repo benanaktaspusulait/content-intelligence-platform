@@ -297,6 +297,7 @@ import { GeneralProducibilityComponent } from './general-producibility.component
             taşıyabilir. Kaynaksız yorum UNKNOWN kalır.
           </p>
         </details>
+        <details><summary>Bounded repair session · at most two attempts</summary><label>Maximum total cost (USD)<input type="number" min="0" [(ngModel)]="repairBudget"></label><label><input type="checkbox" [(ngModel)]="repairConsent">I approve the configured repair provider within this session budget.</label><button type="button" (click)="startRepairSession()" [disabled]="busy || !isCurrent() || !repairConsent || repairBudget <= 0">Start bounded repair</button><label>Saved session ID<input [(ngModel)]="repairSessionId"></label><button type="button" (click)="reopenRepairSession(repairSessionId)">Reopen session</button><div *ngIf="repairSession"><p>{{ repairSession.sessionId }} · {{ repairSession.state }} · {{ repairSession.stopReason }} · attempts {{ repairSession.attempts }}/{{ repairSession.maxAttempts }} · reserved ceiling {{ repairSession.reservedCostUsd }} (actual spend may be unknown)</p><p>Best independently reviewed prompt version: {{ repairSession.bestPromptVersionId }}</p><pre>{{ repairSession.history | json }}</pre><button type="button" (click)="nextRepairAttempt()" [disabled]="busy || repairSession.state !== 'READY'">Next bounded attempt</button><button type="button" (click)="decideRepair('ACCEPTED')" [disabled]="busy || repairSession.state === 'RUNNING'">Accept best candidate</button><button type="button" (click)="decideRepair('REJECTED')">Reject</button><button type="button" (click)="decideRepair('CANCELLED')">Cancel</button></div></details>
         <h3>En küçük düzeltme</h3>
         <label>Değiştirilecek kaynak ifadesi<input [(ngModel)]="patchOriginal" /></label
         ><label>Yeni ifade<input [(ngModel)]="patchReplacement" /></label>
@@ -386,6 +387,7 @@ import { GeneralProducibilityComponent } from './general-producibility.component
         <p *ngFor="let finding of qa?.findings">
           {{ finding.start }}–{{ finding.end }} s · {{ finding.reason }} {{ finding.action }}
         </p>
+        <details><summary>Justified full-video regeneration handoff</summary><p>Requires a verified actual review with material full-rerender justification and exact prompt ancestry. Queue authorization and budget controls still apply.</p><label>Parent actual QA record<input [(ngModel)]="regenerationQaId" [placeholder]="qa?.recordId || ''"></label><label>Parent video ID<input [(ngModel)]="regenerationParentVideoId" [placeholder]="qa?.videoId || ''"></label><label>Parent variant ID (optional)<input [(ngModel)]="regenerationParentVariantId"></label><label>Why this new full-video attempt is justified<input [(ngModel)]="regenerationReason"></label><button type="button" (click)="createRegenerationHandoff()" [disabled]="!isCurrent() || !regenerationReason.trim()">Create immutable handoff</button><p *ngIf="regenerationHandoff">{{ regenerationHandoff.status }} · {{ regenerationHandoff.executionScope }}</p><a *ngIf="regenerationHandoff" [href]="regenerationLink()">Review authorized queue settings</a></details>
         <h3>Yayın ve ölçüm ilişkisi</h3>
         <p>
           Prompt → referanslar → render ayarları → gerçek video → edit varyantı → yayın ID →
@@ -509,6 +511,7 @@ import { GeneralProducibilityComponent } from './general-producibility.component
               Reddet
             </button></ng-container
           >
+          <div *ngIf="lesson?.reviewStatus === 'APPROVED'"><label>Geri çekme gerekçesi<input [(ngModel)]="learningReason"></label><button type="button" (click)="reviewLesson('REVOKED')" [disabled]="!learningReason.trim()">Onaylı dersi geri çek</button></div>
         </details>
       </ng-container>
     </ng-container>
@@ -590,6 +593,7 @@ export class PostFamilyWorkflowComponent implements OnChanges {
   @Input() sourcePath = '';
   @Input() videoPath = '';
   @Output() saveFinal = new EventEmitter<string>();
+  @Output() acceptedVersion = new EventEmitter<{contentId: number; promptVersionId: number; rawText: string}>();
   profile = 'FROZEN';
   contentProfile = 'AUTO';
   openingStrategy = 'AUTO';
@@ -692,17 +696,66 @@ export class PostFamilyWorkflowComponent implements OnChanges {
   counterexamples = '';
   lesson: any = null;
   encode = encodeURIComponent;
+  regenerationQaId = '';
+  regenerationParentVideoId = '';
+  regenerationParentVariantId = '';
+  regenerationReason = '';
+  regenerationHandoff: any = null;
+  createRegenerationHandoff() {
+    if (!this.isCurrent() || !this.regenerationReason.trim()) return;
+    this.http.post<any>('/api/v1/intelligence/workflow/regeneration-handoff', { qaRecordId: this.regenerationQaId || this.qa?.recordId, reviewId: this.review.recordId, parentVideoId: this.regenerationParentVideoId || this.qa?.videoId, parentVariantId: this.regenerationParentVariantId || null, reason: this.regenerationReason.trim() }).subscribe({ next: handoff => { this.regenerationHandoff = handoff; this.changeDetector.markForCheck(); }, error: e => this.fail(e) });
+  }
+  regenerationLink() {
+    return '/render?' + new URLSearchParams({ contentId: String(this.regenerationHandoff.contentId), promptVersionId: String(this.regenerationHandoff.promptVersionId), workflowReviewId: this.regenerationHandoff.reviewId, regenerationHandoffId: this.regenerationHandoff.recordId }).toString();
+  }
+  repairBudget = 0;
+  repairConsent = false;
+  repairSession: any = null;
+  private repairKey = '';
+  startRepairSession() {
+    if (!this.isCurrent() || !this.repairConsent || this.repairBudget <= 0 || this.busy) return;
+    this.busy = true;
+    this.repairKey ||= crypto.randomUUID();
+    this.http.post<any>('/api/v1/intelligence/workflow/repair-sessions', { reviewId: this.review.recordId, idempotencyKey: this.repairKey, maxAttempts: 2, maxCostUsd: this.repairBudget }).subscribe({ next: session => { this.repairSession = session; this.busy = false;
+      const url = new URL(window.location.href); url.searchParams.set('repairSessionId', session.sessionId); window.history.replaceState(window.history.state, '', url.toString());
+      this.nextRepairAttempt(); }, error: e => this.fail(e) });
+  }
+  nextRepairAttempt() {
+    if (this.repairSession?.state !== 'READY' || this.busy) return;
+    this.busy = true;
+    this.http.post<any>(`/api/v1/intelligence/workflow/repair-sessions/${this.repairSession.sessionId}/step`, {}).subscribe({ next: session => { this.repairSession = session; this.busy = false; this.changeDetector.markForCheck(); }, error: e => this.fail(e) });
+  }
+  decideRepair(decision: string) {
+    if (!this.repairSession) return;
+    this.http.post<any>(`/api/v1/intelligence/workflow/repair-sessions/${this.repairSession.sessionId}/decision`, { decision }).subscribe({ next: session => {
+      this.repairSession = session;
+      if (session.state === 'ACCEPTED') this.http.get<any>(`/api/v1/intelligence/workflow/records/${session.bestReviewId}`).subscribe({ next: review => this.acceptedVersion.emit({ contentId: session.contentId, promptVersionId: session.bestPromptVersionId, rawText: review.originalPrompt }), error: e => this.fail(e) });
+      this.changeDetector.markForCheck();
+    }, error: e => this.fail(e) });
+  }
+  reopenRepairSession(id: string) {
+    if (!id.trim()) return;
+    this.http.get<any>(`/api/v1/intelligence/workflow/repair-sessions/${encodeURIComponent(id.trim())}`).subscribe({ next: session => {
+      if (String(session.contentId) !== this.contentId || ![String(session.originalPromptVersionId), String(session.bestPromptVersionId)].includes(this.promptVersionId)) { this.error = 'Repair session belongs to another source version.'; return; }
+      this.repairSession = session; this.changeDetector.markForCheck();
+    }, error: e => this.fail(e) });
+  }
+  repairSessionId = '';
   restoredRecordId = '';
   private restoreSequence = 0;
   ngOnChanges(changes: SimpleChanges): void {
     if (!changes['contentId'] && !changes['promptVersionId']) return;
     this.review = null;
     this.qa = null;
+    this.repairKey = '';
+    this.repairSession = null;
     this.reviewedInputs = '';
     this.restoredRecordId = '';
     const sequence = ++this.restoreSequence;
     if (!this.contentId || !this.promptVersionId) return;
-    this.http.get<any[]>('/api/v1/intelligence/workflow/records?kind=REVIEW').subscribe({
+    const savedSessionId = new URL(window.location.href).searchParams.get('repairSessionId');
+    if (savedSessionId) this.reopenRepairSession(savedSessionId);
+    this.http.get<any[]>('/api/v1/intelligence/workflow/records?kind=REVIEW', { params: { contentId: this.contentId, promptVersionId: this.promptVersionId } }).subscribe({
       next: rows => {
         if (sequence !== this.restoreSequence) return;
         const saved = rows.find(row => String(row.contentId) === this.contentId && String(row.promptVersionId) === this.promptVersionId);
@@ -711,7 +764,7 @@ export class PostFamilyWorkflowComponent implements OnChanges {
         this.restoredRecordId = saved.recordId;
         this.profile = 'post-family-v1';
         const bound = saved.boundRequest || {};
-        for (const key of ['contentProfile', 'openingStrategy', 'generator', 'desiredDuration', 'qualityJustification', 'viewerQuestion', 'plannedEditedDuration', 'intentChangeReason'] as const) {
+        for (const key of ['contentProfile', 'openingStrategy', 'generator', 'desiredDuration', 'qualityJustification', 'viewerQuestion', 'plannedEditedDuration', 'intentChangeReason', 'lessonModelVersion'] as const) {
           if (bound[key] !== undefined) (this as any)[key] = bound[key];
         }
         this.intentRequirementsText = JSON.stringify(bound.intentRequirements || [], null, 2);
@@ -727,7 +780,7 @@ export class PostFamilyWorkflowComponent implements OnChanges {
         if (saved.decisionPolicyVersion === 'impact-review-v1' && bound.prompt === this.prompt) {
           this.reviewedInputs = this.inputSnapshot();
         } else this.error = 'Tarihsel inceleme: kaynak veya karar politikası değişmiş; yeni değerlendirme gerekli.';
-        this.http.get<any[]>('/api/v1/intelligence/workflow/records?kind=ACTUAL_RENDER_QA').subscribe({
+        this.http.get<any[]>('/api/v1/intelligence/workflow/records?kind=ACTUAL_RENDER_QA', { params: { bindingHash: saved.bindingHash } }).subscribe({
           next: records => {
             if (sequence !== this.restoreSequence) return;
             this.qa = records.find(row => row.bindingHash === saved.bindingHash) || null;
@@ -784,7 +837,7 @@ export class PostFamilyWorkflowComponent implements OnChanges {
   }
   loadSourceIntent() {
     this.busy = true;
-    this.http.get<any[]>('/api/v1/intelligence/workflow/records?kind=REVIEW').subscribe({
+    this.http.get<any[]>('/api/v1/intelligence/workflow/records?kind=REVIEW', { params: { contentId: this.contentId, promptVersionId: this.promptVersionId } }).subscribe({
       next: (rows) => {
         const source = rows.find(
           (r) =>
@@ -896,7 +949,8 @@ export class PostFamilyWorkflowComponent implements OnChanges {
       .subscribe({
         next: (r) => {
           this.review = r;
-          this.reviewedInputs = snapshot;
+          this.reviewedInputs = r.originalPrompt !== undefined && r.originalPrompt !== this.prompt ? '' : snapshot;
+          if (!this.reviewedInputs) this.error = 'Düzenlenen metni yeni immutable sürüm olarak kaydedin; sunucu kayıtlı kaynak sürümünü inceledi.';
           this.busy = false;
           this.changeDetector.markForCheck();
           this.qaPath = this.videoPath;

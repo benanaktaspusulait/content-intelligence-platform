@@ -31,6 +31,9 @@ interface DetectedField { source: string; interpretation: string; }
           }
           </td></tr>}</tbody></table></div>
       }
+      @if (rows().length) {
+        <details [open]="committed()"><summary>Saved exact row associations · batch {{ batchId() }}</summary><table class="data-table"><thead><tr><th>Source row</th><th>Canonical video</th><th>Exact variant</th><th>Evidence reason</th></tr></thead><tbody>@for (row of rows(); track row.id) {<tr><td>{{ row.sourceRowNumber }} · {{ row.matchStatus }}</td><td>{{ row.matchedVideoId || 'Unresolved' }}</td><td>{{ row.matchedVariantId || (row.matchedVideoId ? 'Original video' : 'Unresolved') }}</td><td>{{ row.matchReason || 'Source export matching' }}</td></tr>}</tbody></table></details>
+      }
       <footer class="commit-bar"><div><strong>{{ matchedRows() }} of {{ rowCount() }} rows matched</strong><small>Raw source remains append-only; blank metrics stay null.</small></div><button class="button button--primary" type="button" [disabled]="unresolvedRows() > 0 || !batchId() || loading() || committed()" (click)="commit()">{{ committed() ? 'Import committed' : loading() ? 'Working…' : 'Commit import' }} <span aria-hidden="true">→</span></button></footer>
     </section>
   `,

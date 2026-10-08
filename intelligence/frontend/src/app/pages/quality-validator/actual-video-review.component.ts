@@ -1,4 +1,4 @@
-import { Component, Input, inject } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
@@ -15,7 +15,7 @@ import { HttpClient } from '@angular/common/http';
     <p *ngIf="error">{{ error }}</p><p *ngIf="result">Plan fidelity: {{ result.planFidelity }} · Viewer usability: {{ result.viewerFacingUsability }} · {{ result.editorialRecommendation }} · Record {{ result.recordId }}</p>
   </section>`,
 })
-export class ActualVideoReviewComponent {
+export class ActualVideoReviewComponent implements OnChanges {
   private http = inject(HttpClient);
   @Input() videoId = '';
   start = 0; end: number | null = null; confirmed = false; busy = false; error = ''; result: any = null;
@@ -29,6 +29,14 @@ export class ActualVideoReviewComponent {
     { key: 'opening', label: 'Opening', values: ['READABLE_EARLY_DEVELOPMENT', 'READABLE_PROMISE', 'UNREADABLE', 'EXCESSIVELY_DELAYED'] },
     { key: 'ending', label: 'Ending', values: ['DELIVERS_PROMISE', 'PURPOSEFUL_UNRESOLVED', 'ARBITRARY_TRUNCATION', 'WEAK'] },
   ];
+  private sequence = 0;
+  ngOnChanges(changes: SimpleChanges): void {
+    if (!changes['videoId']) return;
+    const sequence = ++this.sequence;
+    this.result = null;
+    if (!this.videoId) return;
+    this.http.get<any[]>(`/api/v1/intelligence/workflow/videos/${this.videoId}/qa`).subscribe({ next: records => { if (sequence === this.sequence) this.result = records[0] || null; }, error: () => { if (sequence === this.sequence) this.error = 'Saved actual review could not be loaded.'; } });
+  }
   review(): void {
     if (!this.videoId || !this.confirmed || this.end === null || this.end <= this.start) return;
     const experience = Object.fromEntries(this.aspects.map(aspect => [aspect.key, {

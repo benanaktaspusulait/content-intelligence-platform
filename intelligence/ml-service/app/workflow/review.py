@@ -128,7 +128,7 @@ def binding_fingerprint(request: dict[str, Any]) -> str:
     )
     return sha256(
         json.dumps(
-            {**{key: request.get(key) for key in keys}, "decisionPolicyVersion": DECISION_POLICY_VERSION},
+            {**{key: request.get(key) for key in keys}, "decisionPolicyVersion": DECISION_POLICY_VERSION, **({"retrievedLessons": request["retrievedLessons"]} if request.get("retrievedLessons") else {})},
             sort_keys=True,
             ensure_ascii=False,
         )
@@ -1010,6 +1010,7 @@ def review_prompt(request: dict[str, Any], capabilities: dict[str, Any] | None =
         "repairPasses": 0,
         "verificationPasses": 0,
         "protectedIntent": request.get("protectedIntent") or [],
+        "retrievedLessons": request.get("retrievedLessons", []),
         "manualHandoff": {
             "allowed": True,
             "authorization": family8["renderAuthorization"],

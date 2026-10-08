@@ -233,6 +233,7 @@ export interface ImportRow {
   rawData: Record<string, string>;
   matchedVideoId: string | null;
   matchedVariantId?: string | null;
+  matchReason?: string | null;
   matchStatus: string;
   matchConfidence: number | null;
 }

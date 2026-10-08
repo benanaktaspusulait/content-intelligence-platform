@@ -293,4 +293,4 @@ J1 prompt-only→grounded assessment→save/reopen; J2 boundedrepair→newversio
 
 Minimum release live provider kullanmadan mock orchestration+real local file evidence ile değerlendirilebilir. Paid production readiness ayrıca B14 ile doğrulanır. Unknown semantic finding'leri PASS'e çevirmek, placeholdertrain'i trainedmodel diye sunmak veya lessonsave'i retrieval diye isimlendirmek kabul değildir.
 
-İş listesi onay/uygulama talimatını bekler. Audit sırasında özellik, schema, rules, production config veya user content değiştirilmedi.
+Uygulama kullanıcı tarafından onaylandı; güncel durum [fix progress](POMPOM_FIX_PROGRESS.md) dosyasındadır. Audit sırasında özellik, schema, rules, production config veya user content değiştirilmedi.

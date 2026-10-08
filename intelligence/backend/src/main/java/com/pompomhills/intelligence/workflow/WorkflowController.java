@@ -22,6 +22,17 @@ public class WorkflowController {
     return service.retrieveLessons(contentProfile, modelVersion, duration);
   }
 
+  @PostMapping("/regeneration-handoff")
+  public Map<String,Object> regenerationHandoff(@RequestBody Map<String,Object> request) { return service.regenerationHandoff(request); }
+
+  @GetMapping("/creative-role/readiness")
+  public Map<String, Object> creativeRoleReadiness() { return service.creativeRoleReadiness(); }
+
+  @PostMapping("/creative-role")
+  public Map<String, Object> creativeRole(@RequestBody Map<String, Object> request) {
+    return service.creativeRole(request);
+  }
+
   @PostMapping("/review")
   public Map<String, Object> review(@RequestBody WorkflowService.ReviewRequest request) {
     return service.runReview(request, true);
@@ -33,8 +44,10 @@ public class WorkflowController {
   }
 
   @GetMapping("/records")
-  public List<Map<String, Object>> records(@RequestParam(defaultValue = "REVIEW") String kind) {
-    return service.list(kind);
+  public List<Map<String, Object>> records(@RequestParam(defaultValue = "REVIEW") String kind,
+      @RequestParam(required = false) String contentId, @RequestParam(required = false) String promptVersionId,
+      @RequestParam(required = false) String bindingHash) {
+    return service.list(kind, contentId, promptVersionId, bindingHash);
   }
 
   @GetMapping(value = "/records/{id}/pdf", produces = "application/pdf")
@@ -58,6 +71,9 @@ public class WorkflowController {
   public Map<String, Object> importEdit(@PathVariable UUID videoId, @RequestBody Map<String, Object> request) {
     return service.importEditedVariant(videoId, request);
   }
+
+  @GetMapping("/videos/{videoId}/qa")
+  public List<Map<String, Object>> actualQaRecords(@PathVariable UUID videoId) { return service.actualQaRecords(videoId); }
 
   @PostMapping("/videos/{videoId}/qa")
   public Map<String, Object> qaWithoutPlan(@PathVariable UUID videoId, @RequestBody Map<String, Object> request) {

@@ -144,4 +144,15 @@ class VideoServicePathAliasTest {
 
     assertThat(aliases.findAllByVideoId(first.id())).hasSize(1);
   }
+  @Test
+  void unicodeEmptyWorkspaceSurvivesScanAndYamlUsesSamePromptContract() throws Exception {
+    Files.createDirectories(dataRoot.resolve("library"));
+    String name = "Işık ve Kedi " + java.util.UUID.randomUUID();
+    var created = service.createPromptWorkspaceFolder("library", name);
+    assertThat(service.promptWorkspaces("library")).anyMatch(folder -> folder.folderPath().equals(created.folderPath()) && folder.promptStatus().equals("NO_PROMPT"));
+    Files.writeString(dataRoot.resolve(created.folderPath()).resolve("source.yaml"), "prompt: Luca opens a box");
+    assertThat(service.promptFiles(created.folderPath())).hasSize(1);
+    assertThat(service.promptWorkspaces("library")).anyMatch(folder -> folder.folderPath().equals(created.folderPath()) && folder.promptStatus().equals("AVAILABLE"));
+  }
+
 }

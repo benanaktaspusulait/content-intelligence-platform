@@ -41,6 +41,8 @@ class ReviewRequest(BaseModel):
     intentRequirements: list[dict[str, Any]] = Field(default_factory=list)
     creativeEvidence: list[dict[str, Any]] = Field(default_factory=list)
     intentChangeReason: str = ""
+    lessonModelVersion: str = ""
+    retrievedLessons: list[dict[str, Any]] = Field(default_factory=list)
     structuredPlan: dict[str, Any] | None = None
     authorizationEvidence: dict[str, Any] = Field(default_factory=dict)
 
@@ -135,3 +137,29 @@ def critic(request: CriticRequest) -> dict[str, Any]:
             "calls": 0,
         }
     return {"bindingHash": reviewed["bindingHash"], "secondOpinion": opinion, "canonicalReview": reviewed}
+
+
+class CreativeRoleRequest(BaseModel):
+    model_config = ConfigDict(extra='forbid')
+    role: Literal['STORY', 'BUILD_PROMPT', 'MINIMAL_REPAIR']
+    text: str = Field(min_length=1, max_length=16000)
+    context: dict[str, Any] = Field(default_factory=dict)
+    maxCostUsd: float = Field(gt=0, le=20)
+
+
+@router.get('/creative-role/readiness')
+@router.post('/creative-role/readiness')
+def creative_role_readiness() -> dict[str, Any]:
+    from .creative_roles import role_readiness
+    return role_readiness()
+
+
+@router.post('/creative-role')
+def creative_role(request: CreativeRoleRequest) -> dict[str, Any]:
+    from .creative_roles import run_paid_role
+    try:
+        return run_paid_role(request.role, request.text, request.context, request.maxCostUsd)
+    except (ValueError, json.JSONDecodeError) as error:
+        raise HTTPException(409, str(error)) from error
+    except Exception as error:
+        raise HTTPException(502, {'status': 'PROVIDER_OUTCOME_UNKNOWN', 'retryAutomatically': False}) from error

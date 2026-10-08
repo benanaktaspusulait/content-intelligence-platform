@@ -165,4 +165,14 @@ class PerformanceImportServiceVariantTest {
     assertThat(importService.rows(preview.batchId()).getFirst().matchedVideoId()).isNull();
   }
 
+  @Test
+  void duplicateBytesWithDifferentContextAreNotSilentlyReused() {
+    String csv = "filename,views\nunknown-" + UUID.randomUUID() + ".mp4,100\n";
+    var file = new MockMultipartFile("file", "context.csv", "text/csv", csv.getBytes());
+    var first = importService.preview(file, "instagram", "UTC");
+    assertThat(importService.preview(file, "instagram", "UTC").batchId()).isEqualTo(first.batchId());
+    assertThatThrownBy(() -> importService.preview(file, "facebook", "UTC")).isInstanceOf(IllegalStateException.class);
+    assertThatThrownBy(() -> importService.preview(file, "instagram", "Europe/London")).isInstanceOf(IllegalStateException.class);
+  }
+
 }

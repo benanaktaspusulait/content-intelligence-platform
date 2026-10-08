@@ -1,5 +1,6 @@
 import { GeneralProducibility } from './family10-representation';
 import { GeneralProducibilityComponent } from './general-producibility.component';
+import { CreativeRoleComponent } from './creative-role.component';
 import { PostFamilyWorkflowComponent } from './post-family-workflow.component';
 import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -199,7 +200,7 @@ interface BeatEvidence { label: string; role: string; isAttempt: boolean; verb: 
 @Component({
   selector: 'app-quality-validator',
   standalone: true,
-  imports: [CommonModule, FormsModule, TimelineChartComponent, RouterLink, GeneralProducibilityComponent, PostFamilyWorkflowComponent],
+  imports: [CommonModule, FormsModule, TimelineChartComponent, RouterLink, GeneralProducibilityComponent, PostFamilyWorkflowComponent, CreativeRoleComponent],
   templateUrl: './quality-validator.component.html',
   styleUrls: ['./quality-validator.component.scss']
 })
@@ -433,6 +434,13 @@ Intensity: 4`;
   }
 
   ngOnDestroy(): void { this.promptEditor?.dispose(); }
+  useAcceptedRepair(value: {contentId: number; promptVersionId: number; rawText: string}): void {
+    this.contentId = String(value.contentId); this.promptVersionId = String(value.promptVersionId);
+    this.setPromptText(value.rawText); this.syncSavedVersionRoute(true);
+  }
+
+  useCreativeDraft(value: string): void { this.setPromptText(value); }
+
   private setPromptText(value: string): void {
     this.prompt = value;
     if (this.promptEditor && this.promptEditor.getValue() !== value) {
@@ -887,16 +895,17 @@ Intensity: 4`;
       return;
     }
     this.loading = true; this.error = null; this.report = null; this.validationRecordId = null;
-    this.http.post<{ id: number }>(`/api/v1/intelligence/contents/${Number(this.contentId)}/prompt-versions`, { rawText: this.prompt, parsedIr: '{}' }).subscribe({
+    this.http.post<{ id: number }>(`/api/v1/intelligence/contents/${Number(this.contentId)}/prompt-versions`, { rawText: this.prompt, parsedIr: '{}', parentPromptVersionId: Number(this.promptVersionId) || null }).subscribe({
       next: version => { this.promptVersionId = String(version.id); this.syncSavedVersionRoute(); this.loading = false; this.changeDetector.markForCheck(); },
       error: response => { this.error = response.error?.detail || response.error?.message || 'Prompt revision could not be saved'; this.loading = false; },
     });
   }
 
-  private syncSavedVersionRoute(): void {
+  private syncSavedVersionRoute(preserveRepairSession = false): void {
     this.router.navigate(['/quality/detail'], {
-      queryParams: { contentId: this.contentId, promptVersionId: this.promptVersionId },
+      queryParams: { contentId: this.contentId, promptVersionId: this.promptVersionId, ...(preserveRepairSession ? {} : { repairSessionId: null }) },
       replaceUrl: true,
+      queryParamsHandling: 'merge',
     });
   }
 

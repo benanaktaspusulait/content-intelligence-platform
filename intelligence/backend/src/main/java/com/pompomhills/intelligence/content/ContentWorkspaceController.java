@@ -128,12 +128,21 @@ public class ContentWorkspaceController {
 
   @PostMapping("/{contentId}/prompt-versions")
   @ResponseStatus(HttpStatus.CREATED)
+  @Transactional
   public PromptVersionSummary createPrompt(@PathVariable Long contentId, @RequestBody CreatePromptRequest request) {
     if (request.rawText() == null || request.rawText().isBlank()) throw new IllegalArgumentException("rawText is required");
-    jdbc.sql("SELECT id FROM contents WHERE id=:id").param("id", contentId).query(Long.class).optional().orElseThrow(() -> new IllegalArgumentException("content not found: " + contentId));
+    jdbc.sql("SELECT id FROM contents WHERE id=:id FOR UPDATE").param("id", contentId).query(Long.class).optional().orElseThrow(() -> new IllegalArgumentException("content not found: " + contentId));
+    String sourcePath = null;
+    if (request.parentPromptVersionId() != null) {
+      var parent = jdbc.sql("SELECT source_path FROM prompt_versions WHERE id=:parent AND content_id=:content")
+          .param("parent", request.parentPromptVersionId()).param("content", contentId)
+          .query((rs, ignored) -> new PromptParent(rs.getString("source_path"))).optional()
+          .orElseThrow(() -> new IllegalArgumentException("Parent version does not belong to content"));
+      sourcePath = parent.sourcePath();
+    }
     Integer version = jdbc.sql("SELECT COALESCE(MAX(version_number),0)+1 FROM prompt_versions WHERE content_id=:id").param("id", contentId).query(Integer.class).single();
-    Long id = jdbc.sql("INSERT INTO prompt_versions(content_id,version_number,raw_text,parsed_ir,created_at) VALUES (:content,:version,:text,CAST(:parsed AS jsonb),now()) RETURNING id")
-        .param("content", contentId).param("version", version).param("text", request.rawText()).param("parsed", request.parsedIr() == null ? "{}" : request.parsedIr()).query(Long.class).single();
+    Long id = jdbc.sql("INSERT INTO prompt_versions(content_id,version_number,raw_text,parsed_ir,source_path,parent_prompt_version_id,created_at) VALUES (:content,:version,:text,CAST(:parsed AS jsonb),:source,:parent,now()) RETURNING id")
+        .param("content", contentId).param("version", version).param("text", request.rawText()).param("source", sourcePath, java.sql.Types.VARCHAR).param("parent", request.parentPromptVersionId(), java.sql.Types.BIGINT).param("parsed", request.parsedIr() == null ? "{}" : request.parsedIr()).query(Long.class).single();
     return prompts(contentId).stream().filter(item -> item.id().equals(id)).findFirst().orElseThrow();
   }
 
@@ -181,7 +190,8 @@ public class ContentWorkspaceController {
   private Integer nullableInt(java.sql.ResultSet rs, String column) throws java.sql.SQLException { int value = rs.getInt(column); return rs.wasNull() ? null : value; }
 
   public record CreateContentRequest(String title, String description, String type) {}
-  public record CreatePromptRequest(String rawText, String parsedIr) {}
+  private record PromptParent(String sourcePath) {}
+  public record CreatePromptRequest(String rawText, String parsedIr, Long parentPromptVersionId) {}
   public record ImportFolderRequest(String relativeDirectory) {}
   public record PromptImportResponse(String relativeDirectory, int discovered, int imported, int unchanged) {}
   public record ContentSummary(Long id, String title, String description, String type, String status, java.time.Instant createdAt, java.time.Instant updatedAt, Long latestPromptVersionId, Integer latestPromptVersionNumber) {}

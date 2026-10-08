@@ -42,12 +42,15 @@ class OpenAIProvider(LLMProvider):
             model=self.model,
             messages=messages,  # type: ignore[arg-type]
             temperature=temperature,
+            **({"max_tokens": self.max_output_tokens} if hasattr(self, "max_output_tokens") else {}),
         )
 
         # ``message.content`` is ``str | None`` upstream (e.g. a tool-call-only
         # response has no text content). The ``LLMProvider`` interface promises
         # a ``str``, so a missing content is coerced to an empty string rather
         # than leaking ``None`` to callers.
+        usage = getattr(response, "usage", None)
+        self.last_usage = usage.model_dump() if usage is not None and hasattr(usage, "model_dump") else None
         content = response.choices[0].message.content
         return content if content is not None else ""
 

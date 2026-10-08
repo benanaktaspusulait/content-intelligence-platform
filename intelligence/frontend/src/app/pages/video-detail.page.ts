@@ -174,7 +174,8 @@ const VARIANT_TYPE_LABELS: Record<string, string> = {
                 <a class="button button--secondary button--compact" routerLink="/quality/detail" [queryParams]="{contentId: prompt.contentId, promptVersionId: prompt.promptVersionId}">Open Prompt Quality</a>
               } @else { <div class="compact-empty"><strong>No linked prompt version</strong><span>Original generation prompt is unverified. Plan fidelity cannot be inferred from folder proximity.</span><a class="button button--secondary button--compact" routerLink="/quality">Open Prompt Quality</a></div> }
               @if (creativeContext()?.sourceLink; as link) { <p>Saved source resolution: {{ link.origin }} · Prompt #{{ link.promptVersionId }} · {{ link.reason }} · {{ link.createdAt }}</p> }
-              @if (creativeContext()?.candidates?.length) {
+              @if (creativeContext()?.prompt?.linkage !== 'RENDER_ASSET') {
+                <label>Exact prompt version ID<input type="number" min="1" [(ngModel)]="sourcePromptVersionId" aria-label="Exact prompt version ID"></label>
                 <p>{{ creativeContext()?.evidenceStatus }} · Candidate versions require explicit evidence.</p>
                 <select aria-label="Source prompt version" [(ngModel)]="sourcePromptVersionId">
                   <option [ngValue]="null">Select exact version…</option>
