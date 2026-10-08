@@ -3,6 +3,7 @@ package com.pompom.publishersupport;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.pompom.publishercontract.PublishCommand;
+import com.pompom.publishercontract.PublisherCapability;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -70,6 +71,20 @@ class ProviderOperationRepositoryPostgresTest {
     } finally {
       workers.shutdownNow();
     }
+  }
+
+  @Test
+  void sameKeyCanBeClaimedIndependentlyPerCapability() {
+    PublishCommand command = command("capability-scoped-command");
+
+    ProviderOperationRepository.OperationClaim facebook =
+        repository.claim(command, PublisherCapability.FACEBOOK_REELS);
+    ProviderOperationRepository.OperationClaim instagram =
+        repository.claim(command, PublisherCapability.INSTAGRAM_REELS);
+
+    assertThat(facebook.newOperation()).isTrue();
+    assertThat(instagram.newOperation()).isTrue();
+    assertThat(facebook.operation().getId()).isNotEqualTo(instagram.operation().getId());
   }
 
   private ProviderOperationRepository.OperationClaim claimAfter(

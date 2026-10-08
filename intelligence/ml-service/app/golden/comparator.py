@@ -41,6 +41,459 @@ class AssertionComparison:
         }
 
 
+_MISSING = object()
+_REPRESENTATION_CATEGORY = "REPRESENTATION"
+_AGGREGATION_FIELDS = (
+    "score",
+    "scoredCount",
+    "denominator",
+    "passCount",
+    "failCount",
+    "unknownCount",
+    "notEvaluatedCount",
+    "notApplicableCount",
+    "serviceErrorCount",
+    "evaluationCoverage",
+    "aggregationState",
+)
+
+
+def _value_at(value: Any, path: tuple[str, ...]) -> Any:
+    current = value
+    for key in path:
+        if not isinstance(current, dict) or key not in current:
+            return _MISSING
+        current = current[key]
+    return current
+
+
+def _lossless_equal(left: Any, right: Any) -> bool:
+    if type(left) is not type(right):
+        return False
+    if isinstance(left, dict):
+        if set(left) != set(right):
+            return False
+        return all(_lossless_equal(left[key], right[key]) for key in left)
+    if isinstance(left, list):
+        return len(left) == len(right) and all(
+            _lossless_equal(left_item, right_item)
+            for left_item, right_item in zip(left, right, strict=True)
+        )
+    return left == right
+
+
+def _add_representation_mismatch(
+    mismatches: list[dict[str, Any]],
+    path: str,
+    expected: Any,
+    actual: Any,
+    *,
+    expected_source: str | None = None,
+    actual_source: str | None = None,
+) -> None:
+    mismatch = {
+        "category": _REPRESENTATION_CATEGORY,
+        "path": path,
+        "expected": None if expected is _MISSING else expected,
+        "actual": None if actual is _MISSING else actual,
+    }
+    if expected is _MISSING:
+        mismatch["expectedPresent"] = False
+    if actual is _MISSING:
+        mismatch["actualPresent"] = False
+    if expected_source is not None:
+        mismatch["expectedSource"] = expected_source
+    if actual_source is not None:
+        mismatch["actualSource"] = actual_source
+    mismatches.append(mismatch)
+
+
+def _compare_representation_sources(
+    mismatches: list[dict[str, Any]],
+    path: str,
+    sources: tuple[tuple[str, Any], ...],
+) -> None:
+    available = [(source, value) for source, value in sources if value is not _MISSING]
+    if len(available) < 2:
+        return
+    expected_source, expected = available[0]
+    for actual_source, actual in available[1:]:
+        if not _lossless_equal(expected, actual):
+            _add_representation_mismatch(
+                mismatches,
+                path,
+                expected,
+                actual,
+                expected_source=expected_source,
+                actual_source=actual_source,
+            )
+
+
+def _compare_lossless_projection(
+    mismatches: list[dict[str, Any]],
+    path: str,
+    expected: Any,
+    actual: Any,
+) -> None:
+    if expected is _MISSING or actual is _MISSING:
+        if expected is not actual:
+            _add_representation_mismatch(mismatches, path, expected, actual)
+        return
+    if type(expected) is not type(actual):
+        _add_representation_mismatch(mismatches, path, expected, actual)
+        return
+    if isinstance(expected, dict):
+        for key in dict.fromkeys([*expected.keys(), *actual.keys()]):
+            child_path = f"{path}.{key}" if path else str(key)
+            _compare_lossless_projection(
+                mismatches,
+                child_path,
+                expected.get(key, _MISSING),
+                actual.get(key, _MISSING),
+            )
+        return
+    if isinstance(expected, list):
+        if len(expected) != len(actual):
+            _add_representation_mismatch(mismatches, path, expected, actual)
+            return
+        for index, (expected_item, actual_item) in enumerate(zip(expected, actual, strict=True)):
+            _compare_lossless_projection(
+                mismatches,
+                f"{path}[{index}]",
+                expected_item,
+                actual_item,
+            )
+        return
+    if expected != actual:
+        _add_representation_mismatch(mismatches, path, expected, actual)
+
+
+def _compare_parser_timeout_representation(
+    snapshot: dict[str, Any],
+    mismatches: list[dict[str, Any]],
+) -> None:
+    for timeout_field in ("report", "assessment", "apiReport"):
+        value = _value_at(snapshot, (timeout_field,))
+        if value is not _MISSING and value is None:
+            continue
+        _add_representation_mismatch(mismatches, timeout_field, None, value)
+
+    aggregation = _value_at(snapshot, ("aggregation",))
+    if not isinstance(aggregation, dict):
+        _add_representation_mismatch(
+            mismatches,
+            "aggregation",
+            "NOT_EVALUATED_AGGREGATION",
+            aggregation,
+        )
+        return
+
+    expected_fields = {
+        "score": None,
+        "scoredCount": 0,
+        "denominator": 0,
+        "passCount": 0,
+        "failCount": 0,
+        "unknownCount": 0,
+        "notApplicableCount": 0,
+        "serviceErrorCount": 0,
+        "evaluationCoverage": 0.0,
+        "aggregationState": "NO_EVALUATED_ITEMS",
+    }
+    for aggregation_field, expected in expected_fields.items():
+        actual = _value_at(aggregation, (aggregation_field,))
+        if actual is _MISSING or not _lossless_equal(expected, actual):
+            _add_representation_mismatch(
+                mismatches,
+                f"aggregation.{aggregation_field}",
+                expected,
+                actual,
+            )
+    not_evaluated_count = _value_at(aggregation, ("notEvaluatedCount",))
+    if (
+        not isinstance(not_evaluated_count, int)
+        or isinstance(not_evaluated_count, bool)
+        or not_evaluated_count <= 0
+    ):
+        _add_representation_mismatch(
+            mismatches,
+            "aggregation.notEvaluatedCount",
+            "positive integer",
+            not_evaluated_count,
+        )
+
+
+def compare_representation_consistency(snapshot: dict[str, Any]) -> dict[str, Any]:
+    """Check lossless transport consistency without recomputing semantic outputs."""
+    result: dict[str, Any] = {
+        "checked": False,
+        "consistent": True,
+        "mismatches": [],
+    }
+    if not isinstance(snapshot, dict):
+        return result
+    asset_id = snapshot.get("assetId")
+    if asset_id is None:
+        asset_id = snapshot.get("goldenId")
+    if asset_id is not None:
+        result["assetId"] = asset_id
+
+    status = snapshot.get("status")
+    if status == "PARSER_TIMEOUT":
+        mismatches: list[dict[str, Any]] = []
+        _compare_parser_timeout_representation(snapshot, mismatches)
+        result.update({"checked": True, "consistent": not mismatches, "mismatches": mismatches})
+        return result
+    if status != "OK":
+        return result
+
+    report = _value_at(snapshot, ("report",))
+    assessment = _value_at(snapshot, ("assessment",))
+    api_report = _value_at(snapshot, ("apiReport",))
+    api_pre_render = _value_at(api_report, ("pre_render_assessment",))
+    mismatches = []
+
+    _compare_representation_sources(
+        mismatches,
+        "overall_score",
+        (
+            ("report.overallScore", _value_at(report, ("overallScore",))),
+            ("assessment.creative_score", _value_at(assessment, ("creative_score",))),
+            (
+                "assessment.family8.creativeQuality.creativeScore",
+                _value_at(assessment, ("family8", "creativeQuality", "creativeScore")),
+            ),
+            ("apiReport.overall_score", _value_at(api_report, ("overall_score",))),
+            ("apiReport.score_card.score", _value_at(api_report, ("score_card", "score"))),
+            (
+                "apiReport.pre_render_assessment.creative_score",
+                _value_at(api_pre_render, ("creative_score",)),
+            ),
+            (
+                "apiReport.pre_render_assessment.family8.creativeQuality.creativeScore",
+                _value_at(api_pre_render, ("family8", "creativeQuality", "creativeScore")),
+            ),
+        ),
+    )
+    _compare_representation_sources(
+        mismatches,
+        "familyScores",
+        (
+            ("report.familyScores", _value_at(report, ("familyScores",))),
+            (
+                "assessment.family8.creativeQuality.familyScores",
+                _value_at(assessment, ("family8", "creativeQuality", "familyScores")),
+            ),
+            ("apiReport.family_scores", _value_at(api_report, ("family_scores",))),
+            (
+                "apiReport.pre_render_assessment.family8.creativeQuality.familyScores",
+                _value_at(api_pre_render, ("family8", "creativeQuality", "familyScores")),
+            ),
+        ),
+    )
+    _compare_representation_sources(
+        mismatches,
+        "familyAssessments",
+        (
+            ("report.familyAssessments", _value_at(report, ("familyAssessments",))),
+            ("apiReport.family_assessments", _value_at(api_report, ("family_assessments",))),
+            (
+                "assessment.family_assessments",
+                _value_at(assessment, ("family_assessments",)),
+            ),
+            (
+                "apiReport.pre_render_assessment.family_assessments",
+                _value_at(api_pre_render, ("family_assessments",)),
+            ),
+        ),
+    )
+
+    aggregation_sources = (
+        ("snapshot.aggregation", _value_at(snapshot, ("aggregation",))),
+        ("assessment.aggregation", _value_at(assessment, ("aggregation",))),
+        (
+            "assessment.family8.evidenceCompleteness.aggregation",
+            _value_at(assessment, ("family8", "evidenceCompleteness", "aggregation")),
+        ),
+        (
+            "apiReport.pre_render_assessment.aggregation",
+            _value_at(api_pre_render, ("aggregation",)),
+        ),
+        (
+            "apiReport.pre_render_assessment.family8.evidenceCompleteness.aggregation",
+            _value_at(
+                api_pre_render,
+                ("family8", "evidenceCompleteness", "aggregation"),
+            ),
+        ),
+    )
+    for aggregation_field in _AGGREGATION_FIELDS:
+        _compare_representation_sources(
+            mismatches,
+            f"aggregation.{aggregation_field}",
+            tuple(
+                (source, _value_at(value, (aggregation_field,)))
+                for source, value in aggregation_sources
+            ),
+        )
+
+    _compare_representation_sources(
+        mismatches,
+        "family8.creativeQuality.creativeGrade",
+        (
+            (
+                "assessment.family8.creativeQuality.creativeGrade",
+                _value_at(assessment, ("family8", "creativeQuality", "creativeGrade")),
+            ),
+            ("assessment.creative_grade", _value_at(assessment, ("creative_grade",))),
+            (
+                "apiReport.pre_render_assessment.family8.creativeQuality.creativeGrade",
+                _value_at(
+                    api_pre_render,
+                    ("family8", "creativeQuality", "creativeGrade"),
+                ),
+            ),
+            (
+                "apiReport.pre_render_assessment.creative_grade",
+                _value_at(api_pre_render, ("creative_grade",)),
+            ),
+        ),
+    )
+    _compare_representation_sources(
+        mismatches,
+        "family8.evidenceCompleteness.status",
+        (
+            (
+                "assessment.family8.evidenceCompleteness.status",
+                _value_at(assessment, ("family8", "evidenceCompleteness", "status")),
+            ),
+            (
+                "assessment.evidence_completeness.status",
+                _value_at(assessment, ("evidence_completeness", "status")),
+            ),
+            (
+                "apiReport.pre_render_assessment.family8.evidenceCompleteness.status",
+                _value_at(
+                    api_pre_render,
+                    ("family8", "evidenceCompleteness", "status"),
+                ),
+            ),
+            (
+                "apiReport.pre_render_assessment.evidence_completeness.status",
+                _value_at(api_pre_render, ("evidence_completeness", "status")),
+            ),
+        ),
+    )
+    _compare_representation_sources(
+        mismatches,
+        "family8.evidenceCompleteness.evaluationCoverage",
+        (
+            (
+                "assessment.family8.evidenceCompleteness.evaluationCoverage",
+                _value_at(
+                    assessment,
+                    ("family8", "evidenceCompleteness", "evaluationCoverage"),
+                ),
+            ),
+            (
+                "assessment.evidence_completeness.evaluationCoverage",
+                _value_at(assessment, ("evidence_completeness", "evaluationCoverage")),
+            ),
+            (
+                "apiReport.pre_render_assessment.family8.evidenceCompleteness.evaluationCoverage",
+                _value_at(
+                    api_pre_render,
+                    ("family8", "evidenceCompleteness", "evaluationCoverage"),
+                ),
+            ),
+            (
+                "apiReport.pre_render_assessment.evidence_completeness.evaluationCoverage",
+                _value_at(
+                    api_pre_render,
+                    ("evidence_completeness", "evaluationCoverage"),
+                ),
+            ),
+        ),
+    )
+    _compare_representation_sources(
+        mismatches,
+        "family8.renderAuthorization.status",
+        (
+            (
+                "assessment.family8.renderAuthorization.status",
+                _value_at(assessment, ("family8", "renderAuthorization", "status")),
+            ),
+            (
+                "assessment.render_authorization.status",
+                _value_at(assessment, ("render_authorization", "status")),
+            ),
+            (
+                "apiReport.pre_render_assessment.family8.renderAuthorization.status",
+                _value_at(
+                    api_pre_render,
+                    ("family8", "renderAuthorization", "status"),
+                ),
+            ),
+            (
+                "apiReport.pre_render_assessment.render_authorization.status",
+                _value_at(api_pre_render, ("render_authorization", "status")),
+            ),
+        ),
+    )
+    _compare_representation_sources(
+        mismatches,
+        "family8.renderAuthorization.reasons",
+        (
+            (
+                "assessment.family8.renderAuthorization.reasons",
+                _value_at(assessment, ("family8", "renderAuthorization", "reasons")),
+            ),
+            (
+                "apiReport.pre_render_assessment.family8.renderAuthorization.reasons",
+                _value_at(
+                    api_pre_render,
+                    ("family8", "renderAuthorization", "reasons"),
+                ),
+            ),
+        ),
+    )
+
+    if isinstance(assessment, dict) and isinstance(api_pre_render, dict):
+        covered_projection_fields = {
+            "family8",
+            "aggregation",
+            "creative_score",
+            "creative_grade",
+            "assessment_coverage_percent",
+        }
+        for field in dict.fromkeys([*assessment.keys(), *api_pre_render.keys()]):
+            if field in covered_projection_fields:
+                continue
+            _compare_lossless_projection(
+                mismatches,
+                f"preRenderAssessment.{field}",
+                assessment.get(field, _MISSING),
+                api_pre_render.get(field, _MISSING),
+            )
+        _compare_representation_sources(
+            mismatches,
+            "preRenderAssessment.assessmentCoveragePercent",
+            (
+                (
+                    "assessment.assessment_coverage_percent",
+                    _value_at(assessment, ("assessment_coverage_percent",)),
+                ),
+                (
+                    "apiReport.pre_render_assessment.assessment_coverage_percent",
+                    _value_at(api_pre_render, ("assessment_coverage_percent",)),
+                ),
+            ),
+        )
+
+    result.update({"checked": True, "consistent": not mismatches, "mismatches": mismatches})
+    return result
+
+
 def _matches(actual: Any, expected: Any, assertion_type: str) -> bool:
     if assertion_type in {"EXACT", "ENUM", "STATUS"}:
         if actual == expected:
@@ -161,15 +614,23 @@ class GoldenRegressionReport:
     new_semantic_regressions: int = 0
     unexpected_policy_regressions: int = 0
     assertions: list[AssertionComparison] = field(default_factory=list)
+    representation_mismatches: int = 0
 
     @property
     def release_gate(self) -> str:
-        return "PASS" if self.new_semantic_regressions == 0 and self.unexpected_policy_regressions == 0 else "FAIL"
+        return (
+            "PASS"
+            if self.new_semantic_regressions == 0
+            and self.unexpected_policy_regressions == 0
+            and self.representation_mismatches == 0
+            else "FAIL"
+        )
 
     def to_dict(self) -> dict[str, Any]:
         return {
             "newSemanticRegressions": self.new_semantic_regressions,
             "unexpectedPolicyRegressions": self.unexpected_policy_regressions,
+            "representationMismatches": self.representation_mismatches,
             "releaseGate": self.release_gate,
             "assertions": [item.to_dict() for item in self.assertions],
         }
@@ -231,7 +692,9 @@ def extract_dimension_values(snapshot: dict[str, Any]) -> dict[str, Any]:
         "CENTRAL_MECHANIC": mechanic_payoff.mechanic_family,
         "MECHANIC_INTERACTION": mechanic_payoff.interaction_status,
         "ACTIVE_ATTEMPT_COUNT": story.get("attempts", attempts.get("count")),
-        "DISTINCT_STRATEGY_COUNT": story.get("distinct_strategies", len(set(attempts.get("strategyFamilies", [])))),
+        "DISTINCT_STRATEGY_COUNT": story.get(
+            "distinct_strategies", len(set(attempts.get("strategyFamilies", [])))
+        ),
         "DISTINCT_STRATEGIES": attempts.get("strategyFamilies", []),
         "ESCALATION": dimensions.get("ESCALATION"),
         "PROGRESSION": dimensions.get("PROGRESSION"),
@@ -247,7 +710,9 @@ def extract_dimension_values(snapshot: dict[str, Any]) -> dict[str, Any]:
         "SOUND_OFF_READABILITY": dimensions.get("SOUND_OFF_READABILITY"),
         "TIMING_PACING": temporal.get("status"),
         "CONTENT_FAMILY_FIT": dimensions.get("CONTENT_FAMILY_FIT"),
-        "FIRST_FRAME_ANOMALY_INTENT": (assessment.get("first_frame") or {}).get("textual_intent", {}).get("status"),
+        "FIRST_FRAME_ANOMALY_INTENT": (
+            (assessment.get("first_frame") or {}).get("textual_intent", {}).get("status")
+        ),
         "SPECIALIZED_RULE_APPLICABILITY": dimensions.get("ENGINE_PROFILE"),
         TEMPORAL_GENERATION_LOAD_DIMENSION: family6_status,
         **specialized_values,
@@ -272,6 +737,7 @@ def compare_cohort(
         "newSemanticRegressions": 0,
         "expectedPolicyChanges": 0,
         "unexpectedPolicyRegressions": 0,
+        "representationMismatches": 0,
     }
     for asset_id, truth_asset in truth.get("assets", {}).items():
         baseline_asset = (baseline.get("assets") or {}).get(asset_id, {})
@@ -280,6 +746,25 @@ def compare_cohort(
         baseline_values = extract_dimension_values(baseline_asset)
         current_values = extract_dimension_values(current_asset)
         known_issue = bool(baseline_asset.get("knownIssues"))
+        representation = compare_representation_consistency(current_asset)
+        for mismatch in representation["mismatches"]:
+            counts["representationMismatches"] += 1
+            assertions.append(
+                {
+                    "assetId": asset_id,
+                    "dimension": f"REPRESENTATION:{mismatch['path']}",
+                    "classification": "REPRESENTATION_MISMATCH",
+                    "category": mismatch["category"],
+                    "path": mismatch["path"],
+                    "expected": mismatch.get("expected"),
+                    "baseline": None,
+                    "current": mismatch.get("actual"),
+                    "confidence": None,
+                    "isNewSemanticRegression": False,
+                    "isUnexpectedPolicyRegression": False,
+                    "message": "Lossless Golden representation consistency mismatch.",
+                }
+            )
         for dimension, gold in (truth_asset.get("dimensions") or {}).items():
             if dimension == "SPECIALIZED_RULE_APPLICABILITY":
                 continue
@@ -351,7 +836,13 @@ def compare_cohort(
                     assertion_type="ENUM",
                     known_issue=known_issue,
                 )
-                assertions.append({"assetId": asset_id, "dimension": "REALIZATION_MODE", **mode_comparison.to_dict()})
+                assertions.append(
+                    {
+                        "assetId": asset_id,
+                        "dimension": "REALIZATION_MODE",
+                        **mode_comparison.to_dict(),
+                    }
+                )
                 if mode_comparison.classification == "PASS":
                     counts["passed"] += 1
                 elif mode_comparison.classification == "FAIL":
@@ -374,7 +865,13 @@ def compare_cohort(
                     assertion_type="ENUM",
                     known_issue=known_issue,
                 )
-                assertions.append({"assetId": asset_id, "dimension": "PAYOFF_RELATION", **relation_comparison.to_dict()})
+                assertions.append(
+                    {
+                        "assetId": asset_id,
+                        "dimension": "PAYOFF_RELATION",
+                        **relation_comparison.to_dict(),
+                    }
+                )
                 if relation_comparison.classification == "PASS":
                     counts["passed"] += 1
                 elif relation_comparison.classification == "FAIL":
@@ -396,12 +893,24 @@ def compare_cohort(
                 baseline=baseline_policy,
                 current=current_policy,
             ):
-                assertions.append({"assetId": asset_id, "dimension": "POLICY_OUTPUT", **policy_result.to_dict()})
+                assertions.append(
+                    {
+                        "assetId": asset_id,
+                        "dimension": "POLICY_OUTPUT",
+                        **policy_result.to_dict(),
+                    }
+                )
                 if policy_result.classification == "EXPECTED_POLICY_CHANGE":
                     counts["expectedPolicyChanges"] += 1
                 if policy_result.is_unexpected_policy_regression:
                     counts["unexpectedPolicyRegressions"] += 1
-    counts["releaseGate"] = "PASS" if counts["newSemanticRegressions"] == 0 and counts["unexpectedPolicyRegressions"] == 0 else "FAIL"
+    counts["releaseGate"] = (
+        "PASS"
+        if counts["newSemanticRegressions"] == 0
+        and counts["unexpectedPolicyRegressions"] == 0
+        and counts["representationMismatches"] == 0
+        else "FAIL"
+    )
     return {**counts, "assertions": assertions}
 
 
@@ -412,7 +921,7 @@ def compare_policy_fields(
     current: dict[str, Any],
 ) -> list[AssertionComparison]:
     results: list[AssertionComparison] = []
-    for field, specification in policy.items():
+    for policy_field, specification in policy.items():
         if isinstance(specification, dict):
             if "expected" not in specification:
                 continue
@@ -421,15 +930,20 @@ def compare_policy_fields(
         else:
             expected = specification
             tolerance = None
-        baseline_value = baseline.get(field)
-        current_value = current.get(field)
+        baseline_value = baseline.get(policy_field)
+        current_value = current.get(policy_field)
         if baseline_value == current_value:
             classification = "UNCHANGED"
-        elif isinstance(expected, (int, float)) and isinstance(current_value, (int, float)) and tolerance is not None and abs(current_value - expected) <= tolerance:
+        elif (
+            isinstance(expected, (int, float))
+            and isinstance(current_value, (int, float))
+            and tolerance is not None
+            and abs(current_value - expected) <= tolerance
+        ):
             classification = "EXPECTED_POLICY_CHANGE"
         elif current_value == expected:
             classification = "EXPECTED_POLICY_CHANGE"
-        elif _policy_change_is_improvement(field, baseline_value, current_value):
+        elif _policy_change_is_improvement(policy_field, baseline_value, current_value):
             classification = "EXPECTED_POLICY_CHANGE"
         else:
             classification = "UNEXPECTED_POLICY_REGRESSION"
@@ -440,7 +954,7 @@ def compare_policy_fields(
                 baseline=baseline_value,
                 current=current_value,
                 is_unexpected_policy_regression=classification == "UNEXPECTED_POLICY_REGRESSION",
-                message=f"Policy field: {field}",
+                message=f"Policy field: {policy_field}",
             )
         )
     return results
@@ -455,9 +969,22 @@ def _policy_projection(asset: dict[str, Any], cohort: dict[str, Any]) -> dict[st
         "creativeScore": report.get("overallScore"),
         "evidenceCompleteness": assessment.get("assessment_coverage_percent"),
         "renderAuthorization": (assessment.get("render_authorization") or {}).get("status"),
-        "blockers": sum(1 for item in evaluations if item.get("outcome") == "FAIL" and item.get("severity") == "BLOCKER"),
-        "criticals": sum(1 for item in evaluations if item.get("outcome") == "FAIL" and item.get("severity") == "CRITICAL"),
-        "warnings": sum(1 for item in evaluations if item.get("outcome") in {"FAIL", "PASS"} and item.get("severity") == "WARNING"),
+        "blockers": sum(
+            1
+            for item in evaluations
+            if item.get("outcome") == "FAIL" and item.get("severity") == "BLOCKER"
+        ),
+        "criticals": sum(
+            1
+            for item in evaluations
+            if item.get("outcome") == "FAIL" and item.get("severity") == "CRITICAL"
+        ),
+        "warnings": sum(
+            1
+            for item in evaluations
+            if item.get("outcome") in {"FAIL", "PASS"}
+            and item.get("severity") == "WARNING"
+        ),
         "unknowns": sum(1 for item in evaluations if item.get("outcome") == "UNKNOWN"),
         "notApplicable": sum(1 for item in evaluations if item.get("outcome") == "NOT_APPLICABLE"),
         "baselineStatus": asset.get("status"),
@@ -465,7 +992,12 @@ def _policy_projection(asset: dict[str, Any], cohort: dict[str, Any]) -> dict[st
 
 
 def _policy_change_is_improvement(field: str, baseline: Any, current: Any) -> bool:
-    if isinstance(baseline, (int, float)) and isinstance(current, (int, float)) and not isinstance(baseline, bool) and not isinstance(current, bool):
+    if (
+        isinstance(baseline, (int, float))
+        and isinstance(current, (int, float))
+        and not isinstance(baseline, bool)
+        and not isinstance(current, bool)
+    ):
         if field in {"blockers", "criticals", "warnings", "unknowns", "notApplicable"}:
             return current < baseline
         return current > baseline

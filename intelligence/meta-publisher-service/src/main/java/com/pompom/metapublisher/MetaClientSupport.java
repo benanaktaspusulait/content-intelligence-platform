@@ -3,6 +3,7 @@ package com.pompom.metapublisher;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.MissingNode;
+import com.pompom.metapublisher.storage.PublicMediaStorage;
 import com.pompom.publishercontract.PublishErrorClass;
 import com.pompom.publishersupport.ProviderErrorMapper;
 import com.pompom.publishersupport.RetryPolicy;
@@ -22,6 +23,7 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.function.Supplier;
+import java.util.regex.Pattern;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.ClientHttpRequestFactory;
@@ -31,8 +33,11 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.StreamUtils;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.client.RestClientException;
+import org.springframework.web.util.UriUtils;
 
 public final class MetaClientSupport {
+
+  private static final Pattern SAFE_PATH_SEGMENT = Pattern.compile("[A-Za-z0-9._~-]{1,200}");
 
   private static final Set<String> AUTH_CODES =
       Set.of("102", "190", "200", "458", "459", "463", "464", "467");
@@ -47,8 +52,96 @@ public final class MetaClientSupport {
   private final Duration requestTimeout;
   private final Duration uploadTimeout;
 
+  public static String pathSegment(String fieldName, String value) {
+    if (fieldName == null || fieldName.isBlank()) {
+      throw new IllegalArgumentException("path field name is required");
+    }
+    if (value == null
+        || ".".equals(value)
+        || "..".equals(value)
+        || !SAFE_PATH_SEGMENT.matcher(value).matches()) {
+      throw new IllegalArgumentException(fieldName + " is not a safe provider identifier");
+    }
+    return UriUtils.encodePathSegment(value, StandardCharsets.UTF_8);
+  }
+
+  public static String requireHttpsEndpoint(String fieldName, String value) {
+    if (fieldName == null || fieldName.isBlank()) {
+      throw new IllegalArgumentException("endpoint field name is required");
+    }
+    try {
+      URI uri = URI.create(value);
+      if (!"https".equalsIgnoreCase(uri.getScheme())
+          || uri.getHost() == null
+          || uri.getRawUserInfo() != null
+          || uri.getRawQuery() != null
+          || uri.getRawFragment() != null) {
+        throw new IllegalArgumentException(
+            fieldName + " must be an HTTPS origin without credentials");
+      }
+      canonicalPath(fieldName, uri);
+      return trimTrailingSlash(value);
+    } catch (RuntimeException failure) {
+      if (failure instanceof IllegalArgumentException illegalArgumentException) {
+        throw illegalArgumentException;
+      }
+      throw new IllegalArgumentException(fieldName + " must be a valid HTTPS endpoint", failure);
+    }
+  }
+
+  public static String requireSafeUploadUrl(
+      String fieldName, String value, String configuredBaseUrl) {
+    String base = requireHttpsEndpoint("ruploadBaseUrl", configuredBaseUrl);
+    if (!PublicMediaStorage.isSafeHttpsUrl(value)) {
+      throw new IllegalArgumentException(fieldName + " is not a safe HTTPS upload URL");
+    }
+    try {
+      URI baseUri = URI.create(base);
+      URI uploadUri = URI.create(value);
+      String basePath = canonicalPath("ruploadBaseUrl", baseUri);
+      String uploadPath = canonicalPath(fieldName, uploadUri);
+      if (!sameOrigin(baseUri, uploadUri)
+          || !(uploadPath.equals(basePath) || uploadPath.startsWith(basePath + "/"))) {
+        throw new IllegalArgumentException(fieldName + " is outside the configured upload origin");
+      }
+      return value;
+    } catch (RuntimeException failure) {
+      if (failure instanceof IllegalArgumentException illegalArgumentException) {
+        throw illegalArgumentException;
+      }
+      throw new IllegalArgumentException(fieldName + " is not a valid upload URL", failure);
+    }
+  }
+
+  private static String canonicalPath(String fieldName, URI uri) {
+    String path = uri.getPath() == null ? "" : uri.getPath();
+    for (String segment : path.split("/", -1)) {
+      if (".".equals(segment) || "..".equals(segment)) {
+        throw new IllegalArgumentException(fieldName + " must not contain dot-segment traversal");
+      }
+    }
+    String normalized = uri.normalize().getPath();
+    return normalized == null ? "" : normalized;
+  }
+
+  private static boolean sameOrigin(URI first, URI second) {
+    return first.getScheme().equalsIgnoreCase(second.getScheme())
+        && first.getHost().equalsIgnoreCase(second.getHost())
+        && first.getPort() == second.getPort();
+  }
+
   public static ClientHttpRequestFactory deadlineRequestFactory(
       MetaPublisherProperties properties) {
+    requireHttpsEndpoint(
+        "graphBaseUrl",
+        properties.graphBaseUrl() == null || properties.graphBaseUrl().isBlank()
+            ? "https://graph.facebook.com"
+            : properties.graphBaseUrl());
+    requireHttpsEndpoint(
+        "ruploadBaseUrl",
+        properties.ruploadBaseUrl() == null || properties.ruploadBaseUrl().isBlank()
+            ? "https://rupload.facebook.com/video-upload"
+            : properties.ruploadBaseUrl());
     Duration requestTimeout = positiveTimeout(properties.requestTimeout(), Duration.ofSeconds(120));
     Duration uploadTimeout = positiveTimeout(properties.uploadTimeout(), Duration.ofSeconds(600));
     JdkClientHttpRequestFactory graphFactory =
@@ -63,6 +156,10 @@ public final class MetaClientSupport {
         isUploadUri(uri)
             ? uploadFactory.createRequest(uri, method)
             : graphFactory.createRequest(uri, method);
+  }
+
+  private static String trimTrailingSlash(String value) {
+    return value.replaceAll("/+$", "");
   }
 
   private static Duration positiveTimeout(Duration value, Duration fallback) {

@@ -64,6 +64,22 @@ final class QualityReportSnapshots {
     }
   }
 
+  /**
+   * Returns the Family 8 authorization status unchanged, or null when its canonical path is not a
+   * valid string value. Legacy top-level authorization fields are intentionally ignored.
+   */
+  static String renderAuthorizationStatus(String json) {
+    Map<String, Object> assessment = preRenderAssessment(json);
+    if (assessment == null) return null;
+
+    Object family8 = assessment.get("family8");
+    if (!(family8 instanceof Map<?, ?> family8Map)) return null;
+    Object authorization = family8Map.get("renderAuthorization");
+    if (!(authorization instanceof Map<?, ?> authorizationMap)) return null;
+    Object status = authorizationMap.get("status");
+    return status instanceof String ? (String) status : null;
+  }
+
   /** SHA-256 (lowercase hex) of the UTF-8 prompt text, or null for null input. */
   static String fingerprint(String prompt) {
     if (prompt == null) {

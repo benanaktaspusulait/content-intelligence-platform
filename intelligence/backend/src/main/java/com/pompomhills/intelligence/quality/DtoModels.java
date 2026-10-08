@@ -61,7 +61,7 @@ record PriorityFixDto(
     String impact,
     String strategy) {}
 
-record ScoreCardDto(double score, String label, String color) {}
+record ScoreCardDto(Double score, String label, String color) {}
 
 record TimelineDataDto(
     List<BeatDto> beats,

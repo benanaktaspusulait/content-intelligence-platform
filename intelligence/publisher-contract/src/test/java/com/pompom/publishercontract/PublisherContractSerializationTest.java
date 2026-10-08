@@ -20,6 +20,18 @@ class PublisherContractSerializationTest {
   private final Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 
   @Test
+  void normalizesAndRejectsPublisherCapabilityValues() {
+    assertThat(PublisherCapability.of(" Facebook_Reels ").wireValue()).isEqualTo("facebook_reels");
+    assertThat(PublisherCapability.legacy().wireValue()).isEqualTo("legacy");
+
+    for (String invalid : List.of("", " ", "facebook-reels", "1facebook", "x".repeat(65))) {
+      assertThatThrownBy(() -> PublisherCapability.of(invalid))
+          .as("invalid publisher capability: %s", invalid)
+          .isInstanceOf(IllegalArgumentException.class);
+    }
+  }
+
+  @Test
   void serializesAndRoundTripsCompleteCommandFieldSet() throws Exception {
     UUID publicationJobId = UUID.fromString("11111111-1111-1111-1111-111111111111");
     UUID publicationAttemptId = UUID.fromString("22222222-2222-2222-2222-222222222222");

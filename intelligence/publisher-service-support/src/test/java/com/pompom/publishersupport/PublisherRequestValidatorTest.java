@@ -37,6 +37,12 @@ class PublisherRequestValidatorTest {
   }
 
   @Test
+  void acceptsTwoThousandTwoHundredEmojiCodePointsAtTheCaptionBound() {
+    assertThatCode(() -> validator.validate(command("emoji-caption", "title", "😀".repeat(2200))))
+        .doesNotThrowAnyException();
+  }
+
+  @Test
   void rejectsTitleAndCaptionBeyondProviderNeutralStorageBounds() {
     assertThatThrownBy(
             () ->

@@ -2,12 +2,14 @@ package com.pompom.publishersupport;
 
 import com.pompom.publishercontract.PublishCommand;
 import com.pompom.publishercontract.PublishResult;
+import com.pompom.publishercontract.PublisherCapability;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.PersistenceException;
 import java.time.Instant;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.UUID;
 import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,26 +42,39 @@ public class ProviderOperationRepository {
   /** Atomically claims a command key from the caller's transaction boundary. */
   @Transactional
   public OperationClaim claim(PublishCommand command) {
-    return claim(command, Instant.now());
+    return claim(command, PublisherCapability.legacy(), Instant.now());
   }
 
   @Transactional
   public OperationClaim claim(PublishCommand command, Instant startedAt) {
+    return claim(command, PublisherCapability.legacy(), startedAt);
+  }
+
+  @Transactional
+  public OperationClaim claim(PublishCommand command, PublisherCapability capability) {
+    return claim(command, capability, Instant.now());
+  }
+
+  @Transactional
+  public OperationClaim claim(
+      PublishCommand command, PublisherCapability capability, Instant startedAt) {
     requestValidator.validate(command);
+    Objects.requireNonNull(capability, "capability");
     Objects.requireNonNull(startedAt, "startedAt");
 
     Optional<ProviderOperationRecord> existing =
-        findByCommandIdempotencyKey(command.idempotencyKey());
+        findByCommandIdempotencyKey(capability, command.idempotencyKey());
     if (existing.isPresent()) {
       return existingClaim(command, existing.get());
     }
 
-    ProviderOperationRecord record = ProviderOperationRecord.started(command, startedAt);
+    ProviderOperationRecord record =
+        ProviderOperationRecord.started(command, capability, startedAt);
     if (isPostgres()) {
       int inserted = insertIfAbsent(record);
       entityManager.clear();
       ProviderOperationRecord stored =
-          findByCommandIdempotencyKey(command.idempotencyKey())
+          findByCommandIdempotencyKey(capability, command.idempotencyKey())
               .orElseThrow(
                   () ->
                       new IllegalStateException(
@@ -78,7 +93,7 @@ public class ProviderOperationRepository {
       // The unique database constraint is the final arbiter under a concurrent first claim.
       entityManager.clear();
       Optional<ProviderOperationRecord> concurrent =
-          findByCommandIdempotencyKey(command.idempotencyKey());
+          findByCommandIdempotencyKey(capability, command.idempotencyKey());
       if (concurrent.isPresent()) {
         return existingClaim(command, concurrent.get());
       }
@@ -89,22 +104,56 @@ public class ProviderOperationRepository {
   @Transactional(readOnly = true)
   public Optional<ProviderOperationRecord> findByCommandIdempotencyKey(
       String commandIdempotencyKey) {
-    if (commandIdempotencyKey == null || commandIdempotencyKey.isBlank()) {
+    return findByCommandIdempotencyKey(PublisherCapability.legacy(), commandIdempotencyKey);
+  }
+
+  @Transactional(readOnly = true)
+  public Optional<ProviderOperationRecord> findByCommandIdempotencyKey(
+      PublisherCapability capability, String commandIdempotencyKey) {
+    if (capability == null || commandIdempotencyKey == null || commandIdempotencyKey.isBlank()) {
       return Optional.empty();
     }
     return entityManager
         .createQuery(
             "select record from ProviderOperationRecord record "
-                + "where record.commandIdempotencyKey = :commandIdempotencyKey",
+                + "where record.publisherCapability = :publisherCapability "
+                + "and record.commandIdempotencyKey = :commandIdempotencyKey",
             ProviderOperationRecord.class)
+        .setParameter("publisherCapability", capability)
         .setParameter("commandIdempotencyKey", commandIdempotencyKey)
         .getResultStream()
         .findFirst();
   }
 
   @Transactional(readOnly = true)
+  public Optional<ProviderOperationRecord> findByPublicationAttemptId(
+      PublisherCapability capability, UUID publicationAttemptId) {
+    if (capability == null || publicationAttemptId == null) {
+      return Optional.empty();
+    }
+    return entityManager
+        .createQuery(
+            "select record from ProviderOperationRecord record "
+                + "where record.publisherCapability = :publisherCapability "
+                + "and record.publicationAttemptId = :publicationAttemptId "
+                + "order by record.updatedAt desc",
+            ProviderOperationRecord.class)
+        .setParameter("publisherCapability", capability)
+        .setParameter("publicationAttemptId", publicationAttemptId)
+        .setMaxResults(1)
+        .getResultStream()
+        .findFirst();
+  }
+
+  @Transactional(readOnly = true)
   public Optional<PublishResult> findExistingResult(String commandIdempotencyKey) {
-    return findByCommandIdempotencyKey(commandIdempotencyKey)
+    return findExistingResult(PublisherCapability.legacy(), commandIdempotencyKey);
+  }
+
+  @Transactional(readOnly = true)
+  public Optional<PublishResult> findExistingResult(
+      PublisherCapability capability, String commandIdempotencyKey) {
+    return findByCommandIdempotencyKey(capability, commandIdempotencyKey)
         .filter(record -> record.getStatus() != null)
         .map(ProviderOperationRecord::toPublishResult);
   }
@@ -114,17 +163,33 @@ public class ProviderOperationRepository {
    */
   @Transactional
   public ProviderOperationRecord recordResult(String commandIdempotencyKey, PublishResult result) {
-    return recordResult(commandIdempotencyKey, result, Instant.now());
+    return recordResult(PublisherCapability.legacy(), commandIdempotencyKey, result, Instant.now());
   }
 
   @Transactional
   public ProviderOperationRecord recordResult(
       String commandIdempotencyKey, PublishResult result, Instant completedAt) {
+    return recordResult(PublisherCapability.legacy(), commandIdempotencyKey, result, completedAt);
+  }
+
+  @Transactional
+  public ProviderOperationRecord recordResult(
+      PublisherCapability capability, String commandIdempotencyKey, PublishResult result) {
+    return recordResult(capability, commandIdempotencyKey, result, Instant.now());
+  }
+
+  @Transactional
+  public ProviderOperationRecord recordResult(
+      PublisherCapability capability,
+      String commandIdempotencyKey,
+      PublishResult result,
+      Instant completedAt) {
+    Objects.requireNonNull(capability, "capability");
     Objects.requireNonNull(commandIdempotencyKey, "commandIdempotencyKey");
     Objects.requireNonNull(result, "result");
     Objects.requireNonNull(completedAt, "completedAt");
     ProviderOperationRecord record =
-        findByCommandIdempotencyKey(commandIdempotencyKey)
+        findByCommandIdempotencyKey(capability, commandIdempotencyKey)
             .orElseThrow(
                 () ->
                     new IllegalArgumentException(
@@ -150,16 +215,17 @@ public class ProviderOperationRepository {
         .createNativeQuery(
             "INSERT INTO publisher_support.provider_operation_records ("
                 + "id, publication_job_id, publication_attempt_id, command_idempotency_key, "
-                + "command_fingerprint, started_at, reconciliation_required, created_at, "
-                + "updated_at, entity_version) "
+                + "publisher_capability, command_fingerprint, started_at, reconciliation_required, "
+                + "created_at, updated_at, entity_version) "
                 + "VALUES (:id, :publicationJobId, :publicationAttemptId, "
-                + ":commandIdempotencyKey, :commandFingerprint, :startedAt, FALSE, "
-                + ":createdAt, :updatedAt, 0) "
-                + "ON CONFLICT (command_idempotency_key) DO NOTHING")
-        .setParameter("id", java.util.UUID.randomUUID())
+                + ":commandIdempotencyKey, :publisherCapability, :commandFingerprint, :startedAt, "
+                + "FALSE, :createdAt, :updatedAt, 0) "
+                + "ON CONFLICT (publisher_capability, command_idempotency_key) DO NOTHING")
+        .setParameter("id", UUID.randomUUID())
         .setParameter("publicationJobId", record.getPublicationJobId())
         .setParameter("publicationAttemptId", record.getPublicationAttemptId())
         .setParameter("commandIdempotencyKey", record.getCommandIdempotencyKey())
+        .setParameter("publisherCapability", record.getPublisherCapability().wireValue())
         .setParameter("commandFingerprint", record.getCommandFingerprint())
         .setParameter("startedAt", record.getStartedAt())
         .setParameter("createdAt", now)

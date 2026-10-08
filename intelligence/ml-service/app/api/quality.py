@@ -100,7 +100,7 @@ class PriorityFixResponse(BaseModel):
 
 
 class ScoreCardResponse(BaseModel):
-    score: float
+    score: float | None
     label: str
     color: str
 
@@ -202,7 +202,7 @@ class ScoreBreakdownResponse(BaseModel):
 
 
 class QualityReportResponse(BaseModel):
-    overall_score: float
+    overall_score: float | None
     status: str
     ruleset_version: str
     blocker_count: int

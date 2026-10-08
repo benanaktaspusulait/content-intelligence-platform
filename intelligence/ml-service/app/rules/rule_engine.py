@@ -39,6 +39,7 @@ from app.quality.canonical_evidence import (
     strategy_family_for_beat,
 )
 from app.quality.contracts import (
+    EvaluationState,
     QualityReport,
     QualityStatus,
     RuleOutcome,
@@ -398,6 +399,9 @@ class RuleEngine:
         for family, rules in family_rules.items():
             aggregation = summarize_aggregation(_aggregation_rows(rules))
             counts = {outcome.value: sum(1 for rule in rules if rule.outcome is outcome) for outcome in RuleOutcome}
+            counts[EvaluationState.NOT_EVALUATED.value] = sum(
+                1 for rule in rules if rule.evaluation_state is EvaluationState.NOT_EVALUATED
+            )
             if counts[RuleOutcome.SERVICE_ERROR.value]:
                 state = "SERVICE_ERROR"
             elif any(is_evidence_gap(rule) for rule in rules):

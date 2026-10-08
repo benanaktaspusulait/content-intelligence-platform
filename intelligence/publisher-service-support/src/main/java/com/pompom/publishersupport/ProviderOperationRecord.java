@@ -4,6 +4,7 @@ import com.pompom.publishercontract.PublishCommand;
 import com.pompom.publishercontract.PublishErrorClass;
 import com.pompom.publishercontract.PublishResult;
 import com.pompom.publishercontract.PublishStatus;
+import com.pompom.publishercontract.PublisherCapability;
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
@@ -28,8 +29,8 @@ import java.util.UUID;
     schema = PublisherSupportFlywayConfiguration.SCHEMA,
     uniqueConstraints =
         @UniqueConstraint(
-            name = "uq_provider_operation_command_idempotency_key",
-            columnNames = "command_idempotency_key"))
+            name = "uq_provider_operation_capability_key",
+            columnNames = {"publisher_capability", "command_idempotency_key"}))
 public class ProviderOperationRecord {
 
   public static final int MAX_IDENTIFIER_LENGTH = 200;
@@ -46,6 +47,10 @@ public class ProviderOperationRecord {
 
   @Column(name = "command_idempotency_key", nullable = false, updatable = false, length = 200)
   private String commandIdempotencyKey;
+
+  @Convert(converter = PublisherCapabilityConverter.class)
+  @Column(name = "publisher_capability", nullable = false, updatable = false, length = 64)
+  private PublisherCapability publisherCapability;
 
   @Column(name = "command_fingerprint", nullable = false, updatable = false, length = 64)
   private String commandFingerprint;
@@ -95,10 +100,17 @@ public class ProviderOperationRecord {
   protected ProviderOperationRecord() {}
 
   static ProviderOperationRecord started(PublishCommand command, Instant startedAt) {
+    return started(command, PublisherCapability.legacy(), startedAt);
+  }
+
+  static ProviderOperationRecord started(
+      PublishCommand command, PublisherCapability publisherCapability, Instant startedAt) {
+    Objects.requireNonNull(publisherCapability, "publisherCapability");
     ProviderOperationRecord record = new ProviderOperationRecord();
     record.publicationJobId = command.publicationJobId();
     record.publicationAttemptId = command.publicationAttemptId();
     record.commandIdempotencyKey = command.idempotencyKey();
+    record.publisherCapability = publisherCapability;
     record.commandFingerprint = PublisherCommandFingerprint.sha256(command);
     record.startedAt = startedAt;
     record.reconciliationRequired = false;
@@ -218,6 +230,10 @@ public class ProviderOperationRecord {
     return commandIdempotencyKey;
   }
 
+  public PublisherCapability getPublisherCapability() {
+    return publisherCapability;
+  }
+
   public String getCommandFingerprint() {
     return commandFingerprint;
   }
@@ -272,6 +288,20 @@ public class ProviderOperationRecord {
 
   public Integer getEntityVersion() {
     return entityVersion;
+  }
+
+  @Converter
+  public static class PublisherCapabilityConverter
+      implements AttributeConverter<PublisherCapability, String> {
+    @Override
+    public String convertToDatabaseColumn(PublisherCapability capability) {
+      return capability == null ? null : capability.wireValue();
+    }
+
+    @Override
+    public PublisherCapability convertToEntityAttribute(String value) {
+      return value == null ? null : PublisherCapability.of(value);
+    }
   }
 
   @Converter

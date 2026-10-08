@@ -8,6 +8,7 @@ import com.pompom.publishercontract.PublishCommand;
 import com.pompom.publishercontract.PublishErrorClass;
 import com.pompom.publishercontract.PublishResult;
 import com.pompom.publishercontract.PublishStatus;
+import com.pompom.publishercontract.PublisherCapability;
 import java.time.Instant;
 import java.util.List;
 import java.util.Map;
@@ -55,6 +56,32 @@ class ProviderOperationRepositoryTest {
     assertThat(duplicate.newOperation()).isFalse();
     assertThat(duplicate.operation().getId()).isEqualTo(first.operation().getId());
     assertThat(duplicate.existingResult()).contains(completed);
+  }
+
+  @Test
+  void identicalCommandProjectionsDoNotShareOperationsAcrossCapabilities() {
+    PublishCommand command = command("same-capability-independent-command");
+
+    ProviderOperationRepository.OperationClaim facebook =
+        repository.claim(command, PublisherCapability.of("facebook_reels"));
+    ProviderOperationRepository.OperationClaim instagram =
+        repository.claim(command, PublisherCapability.of("instagram_reels"));
+
+    assertThat(facebook.newOperation()).isTrue();
+    assertThat(instagram.newOperation()).isTrue();
+    assertThat(facebook.operation().getId()).isNotEqualTo(instagram.operation().getId());
+    assertThat(facebook.operation().getPublisherCapability().wireValue())
+        .isEqualTo("facebook_reels");
+    assertThat(
+            repository.findByPublicationAttemptId(
+                PublisherCapability.of("facebook_reels"), command.publicationAttemptId()))
+        .map(ProviderOperationRecord::getId)
+        .contains(facebook.operation().getId());
+    assertThat(
+            repository.findByPublicationAttemptId(
+                PublisherCapability.of("instagram_reels"), command.publicationAttemptId()))
+        .map(ProviderOperationRecord::getId)
+        .contains(instagram.operation().getId());
   }
 
   @Test

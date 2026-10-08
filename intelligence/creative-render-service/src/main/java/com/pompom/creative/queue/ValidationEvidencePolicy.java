@@ -104,6 +104,12 @@ public class ValidationEvidencePolicy {
           "Validation record %d does not have two matching verified visual gates"
               .formatted(evidence.validationRecordId()));
     }
+    if (!firstFrame && !"AUTHORIZED".equals(evidence.renderAuthorization())) {
+      throw new ValidationEvidenceRejectedException(
+          "EVIDENCE_NOT_RENDER_AUTHORIZED",
+          "Validation record %d has no exact AUTHORIZED Family 8 render authorization"
+              .formatted(evidence.validationRecordId()));
+    }
   }
 
   private boolean hasVerifiedVisualGates(ValidationEvidenceDto evidence) {

@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { formatStateShare, isStateShareDanger, isStateShareWarning } from './state-share';
+import { formatEvaluationCoverage, formatNullableScore } from './family9-representation';
 import { toSpecializedApplicabilityRows } from './specialized-applicability';
 import type { SpecializedApplicability } from './specialized-applicability';
 import { TimelineChartComponent } from './timeline-chart.component';
@@ -20,7 +21,7 @@ interface PromptEditorInstance {
 const PROMPT_WORKSPACE_ROOT = 'library/POMPOM_HILLS_PRODUCTION/09_SOCIAL_REELS/new14092026';
 
 interface QualityReport {
-  overallScore: number;
+  overallScore: number | null;
   status: 'RENDER_READY' | 'NEEDS_REVISION' | 'BLOCKED' | 'SERVICE_ERROR';
   rulesetVersion: string;
   blockerCount: number;
@@ -76,7 +77,7 @@ interface PromptQualitySummary {
   validationRecordId: number;
   analyzedAt: string;
   rulesetVersion: string;
-  overallScore: number;
+  overallScore: number | null;
   status: string;
   creativeGrade?: string | null;
   readiness?: string | null;
@@ -135,7 +136,7 @@ interface QualityProvenance {
 }
 
 interface ScoreCard {
-  score: number;
+  score: number | null;
   label: string;
   color: string;
 }
@@ -216,6 +217,8 @@ export class QualityValidatorComponent implements AfterViewInit, OnDestroy {
   promptVersionId: string = '';
   validationRecordId: number | null = null;
   report: QualityReport | null = null;
+  readonly formatNullableScore = formatNullableScore;
+  readonly formatEvaluationCoverage = formatEvaluationCoverage;
   readonly toSpecializedApplicabilityRows = toSpecializedApplicabilityRows;
   loading: boolean = false;
   error: string | null = null;
@@ -627,7 +630,7 @@ Intensity: 4`;
   promptQualitySummary(record: { latestQuality?: PromptQualitySummary | null } | null): string {
     const quality = record?.latestQuality;
     if (!quality) return 'No prompt quality analysis yet';
-    return quality.summary || `${quality.status} · score ${quality.overallScore.toFixed(1)}`;
+    return quality.summary || `${quality.status} · score ${formatNullableScore(quality.overallScore)}`;
   }
 
   promptFolder(path: string, fallback: string): string {
@@ -901,6 +904,7 @@ Intensity: 4`;
     if (!this.report) return '';
     
     const score = this.report.overallScore;
+    if (score === null || score === undefined) return 'score-unavailable';
     if (score >= 92) return 'score-excellent';
     if (score >= 80) return 'score-good';
     if (score >= 70) return 'score-acceptable';

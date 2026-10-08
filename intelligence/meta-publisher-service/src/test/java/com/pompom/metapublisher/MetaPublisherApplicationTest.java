@@ -13,6 +13,7 @@ import com.pompom.metapublisher.service.MetaPublishService;
 import com.pompom.metapublisher.storage.PublicMediaStorage;
 import com.sun.net.httpserver.HttpServer;
 import java.net.InetSocketAddress;
+import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -38,6 +39,8 @@ import org.springframework.web.context.WebApplicationContext;
       "pompom.meta.upload-timeout=50ms"
     })
 class MetaPublisherApplicationTest {
+
+  private static final String RUPLOAD = "https://rupload.example/video-upload";
 
   @Autowired private ApplicationContext applicationContext;
   @Autowired private WebApplicationContext webApplicationContext;
@@ -88,6 +91,52 @@ class MetaPublisherApplicationTest {
     } finally {
       server.stop(0);
     }
+  }
+
+  @Test
+  void rejectsUnsafeGraphPathSegmentsAndNonHttpsEndpoints() {
+    assertThatThrownBy(() -> MetaClientSupport.pathSegment("providerId", "video/1"))
+        .isInstanceOf(IllegalArgumentException.class);
+    assertThatThrownBy(() -> MetaClientSupport.pathSegment("providerId", "video?1"))
+        .isInstanceOf(IllegalArgumentException.class);
+    assertThatThrownBy(() -> MetaClientSupport.pathSegment("providerId", "."))
+        .isInstanceOf(IllegalArgumentException.class);
+    assertThatThrownBy(() -> MetaClientSupport.pathSegment("providerId", ".."))
+        .isInstanceOf(IllegalArgumentException.class);
+    assertThatThrownBy(
+            () -> MetaClientSupport.requireHttpsEndpoint("graphBaseUrl", "http://graph.example"))
+        .isInstanceOf(IllegalArgumentException.class);
+    assertThat(MetaClientSupport.pathSegment("providerId", "video-1")).isEqualTo("video-1");
+    assertThat(MetaClientSupport.pathSegment("providerId", "video.1")).isEqualTo("video.1");
+  }
+
+  @Test
+  void rejectsRawAndEncodedDotSegmentsInRuploadPaths() {
+    for (String unsafePath : List.of("/video-upload/../evil", "/video-upload/./session")) {
+      assertThatThrownBy(
+              () ->
+                  MetaClientSupport.requireSafeUploadUrl(
+                      "facebookUploadUrl", "https://rupload.example" + unsafePath, RUPLOAD))
+          .isInstanceOf(IllegalArgumentException.class);
+    }
+    for (String encodedPath : List.of("/video-upload/%2e%2e/evil", "/video-upload/%2E/session")) {
+      assertThatThrownBy(
+              () ->
+                  MetaClientSupport.requireSafeUploadUrl(
+                      "facebookUploadUrl", "https://rupload.example" + encodedPath, RUPLOAD))
+          .isInstanceOf(IllegalArgumentException.class);
+    }
+    for (String unsafeBase : List.of("/video-upload/../evil", "/video-upload/%2e%2e/evil")) {
+      assertThatThrownBy(
+              () ->
+                  MetaClientSupport.requireHttpsEndpoint(
+                      "ruploadBaseUrl", "https://rupload.example" + unsafeBase))
+          .isInstanceOf(IllegalArgumentException.class);
+    }
+
+    String safeSignedUrl = RUPLOAD + "/session-1?X-Amz-Signature=abc";
+    assertThat(MetaClientSupport.requireSafeUploadUrl("facebookUploadUrl", safeSignedUrl, RUPLOAD))
+        .isEqualTo(safeSignedUrl);
   }
 
   @Test

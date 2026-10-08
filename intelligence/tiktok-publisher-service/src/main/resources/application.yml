@@ -1,0 +1,51 @@
+spring:
+  application:
+    name: pompom-tiktok-publisher-service
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/pompom}
+    username: ${SPRING_DATASOURCE_USERNAME:pompom}
+    password: ${SPRING_DATASOURCE_PASSWORD:pompom_local}
+  jpa:
+    hibernate:
+      ddl-auto: none
+  flyway:
+    enabled: false
+  jackson:
+    default-property-inclusion: non_null
+
+server:
+  port: ${SERVER_PORT:8083}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      probes:
+        enabled: true
+
+pompom:
+  tiktok:
+    write-enabled: ${TIKTOK_PUBLISH_SERVICE_WRITE_ENABLED:false}
+    publish-enabled: ${TIKTOK_ENABLE:false}
+    dry-run: ${TIKTOK_DRY_RUN:true}
+    internal-token: ${TIKTOK_PUBLISHER_INTERNAL_TOKEN:}
+    access-token: ${TIKTOK_ACCESS_TOKEN:}
+    api-base-url: ${TIKTOK_API_BASE:https://open.tiktokapis.com}
+    api-version: ${TIKTOK_API_VERSION:v2}
+    chunk-size: ${TIKTOK_CHUNK_SIZE:10485760}
+    max-file-size: ${TIKTOK_MAX_FILE_SIZE:301989888}
+    request-timeout: ${TIKTOK_REQUEST_TIMEOUT:120s}
+    upload-timeout: ${TIKTOK_UPLOAD_TIMEOUT:600s}
+    poll-timeout: ${TIKTOK_POLL_TIMEOUT:300s}
+    poll-interval: ${TIKTOK_POLL_INTERVAL:5s}
+    max-attempts: ${TIKTOK_MAX_ATTEMPTS:5}
+    creator-validation-enabled: ${TIKTOK_CREATOR_VALIDATION_ENABLED:true}
+    privacy-level: ${TIKTOK_PRIVACY_LEVEL:SELF_ONLY}
+    disable-duet: ${TIKTOK_DISABLE_DUET:false}
+    disable-comment: ${TIKTOK_DISABLE_COMMENT:false}
+    disable-stitch: ${TIKTOK_DISABLE_STITCH:false}
+    video-cover-timestamp-ms: ${TIKTOK_VIDEO_COVER_TIMESTAMP_MS:1000}
+    platform-account-id: ${TIKTOK_PLATFORM_ACCOUNT_ID:}

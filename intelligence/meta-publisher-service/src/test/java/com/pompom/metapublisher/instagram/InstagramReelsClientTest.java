@@ -131,6 +131,22 @@ class InstagramReelsClientTest {
   }
 
   @Test
+  void truncatesCaptionAtCodePointBoundaryForEmoji() {
+    String emojiCaption = "😀".repeat(2201);
+
+    String truncated = InstagramReelsClient.truncateCaption(emojiCaption);
+
+    assertThat(truncated.codePointCount(0, truncated.length())).isEqualTo(2200);
+    assertThat(truncated).endsWith("…").doesNotContain("\uFFFD");
+    assertThat(Character.isHighSurrogate(truncated.charAt(truncated.length() - 2))).isFalse();
+  }
+
+  @Test
+  void rejectsNullMediaReferencesAtTheSafeUrlBoundary() {
+    assertThat(PublicMediaStorage.isSafeHttpsUrl(null)).isFalse();
+  }
+
+  @Test
   void truncatesCaptionAtAuditedInstagramLimit() {
     assertThat(InstagramReelsClient.truncateCaption("x".repeat(2200))).hasSize(2200);
     String truncated = InstagramReelsClient.truncateCaption("x".repeat(2201));
@@ -339,6 +355,82 @@ class InstagramReelsClientTest {
       Files.deleteIfExists(source);
       Files.deleteIfExists(directory);
     }
+  }
+
+  @Test
+  void missingMediaIdAfterMediaPublishRequiresReconciliation() {
+    RestClient.Builder builder = RestClient.builder();
+    MockRestServiceServer server = MockRestServiceServer.bindTo(builder).build();
+    InstagramReelsClient client =
+        new InstagramReelsClient(
+            builder,
+            OBJECT_MAPPER,
+            properties(1, Duration.ZERO),
+            new ConfiguredPublicMediaStorage(properties(1, Duration.ZERO)));
+    server
+        .expect(requestTo(GRAPH + "/v26.0/ig-1/media"))
+        .andRespond(
+            withSuccess("{\"id\":\"container-before-publish\"}", MediaType.APPLICATION_JSON));
+    server
+        .expect(requestTo(GRAPH + "/v26.0/container-before-publish?fields=status_code,status"))
+        .andRespond(withSuccess("{\"status_code\":\"FINISHED\"}", MediaType.APPLICATION_JSON));
+    server
+        .expect(requestTo(GRAPH + "/v26.0/ig-1/media_publish"))
+        .andRespond(withSuccess("{}", MediaType.APPLICATION_JSON));
+
+    PublishResult result =
+        client.publish(command("https://cdn.example/reel.mp4", "caption", List.of()));
+
+    assertThat(result.status()).isEqualTo(PublishStatus.RECONCILIATION_REQUIRED);
+    assertThat(result.reconciliationRequired()).isTrue();
+    assertThat(result.providerVideoId()).isEqualTo("container-before-publish");
+    server.verify();
+  }
+
+  @Test
+  void reconciliationOfAContainerWithoutPublishedMediaEvidenceRemainsUncertain() {
+    RestClient.Builder builder = RestClient.builder();
+    MockRestServiceServer server = MockRestServiceServer.bindTo(builder).build();
+    InstagramReelsClient client =
+        new InstagramReelsClient(
+            builder,
+            OBJECT_MAPPER,
+            properties(1, Duration.ZERO),
+            new ConfiguredPublicMediaStorage(properties(1, Duration.ZERO)));
+    server
+        .expect(requestTo(GRAPH + "/v26.0/container-only?fields=id,permalink"))
+        .andExpect(method(HttpMethod.GET))
+        .andRespond(withSuccess("{\"id\":\"container-only\"}", MediaType.APPLICATION_JSON));
+
+    PublishResult result = client.reconcile("ig-1", "container-only", null);
+
+    assertThat(result.status()).isEqualTo(PublishStatus.RECONCILIATION_REQUIRED);
+    assertThat(result.reconciliationRequired()).isTrue();
+    server.verify();
+  }
+
+  @Test
+  void reconciliationRejectsAProviderObjectDifferentFromTheRequestedMedia() {
+    RestClient.Builder builder = RestClient.builder();
+    MockRestServiceServer server = MockRestServiceServer.bindTo(builder).build();
+    InstagramReelsClient client =
+        new InstagramReelsClient(
+            builder,
+            OBJECT_MAPPER,
+            properties(1, Duration.ZERO),
+            new ConfiguredPublicMediaStorage(properties(1, Duration.ZERO)));
+    server
+        .expect(requestTo(GRAPH + "/v26.0/media-requested?fields=id,permalink"))
+        .andRespond(
+            withSuccess(
+                "{\"id\":\"different-media\",\"permalink\":\"https://instagram.example/p/different\"}",
+                MediaType.APPLICATION_JSON));
+
+    PublishResult result = client.reconcile("ig-1", "media-requested", null);
+
+    assertThat(result.status()).isEqualTo(PublishStatus.RECONCILIATION_REQUIRED);
+    assertThat(result.reconciliationRequired()).isTrue();
+    server.verify();
   }
 
   private MetaPublisherProperties properties(int maxAttempts, Duration pollTimeout) {

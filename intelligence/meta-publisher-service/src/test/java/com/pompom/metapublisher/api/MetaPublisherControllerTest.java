@@ -23,6 +23,8 @@ import com.pompom.metapublisher.service.MetaPublishService;
 import com.pompom.publishercontract.PublishCommand;
 import com.pompom.publishercontract.PublishResult;
 import com.pompom.publishercontract.PublishStatus;
+import com.pompom.publishercontract.PublisherCapability;
+import com.pompom.publishersupport.ProviderOperationRecord;
 import com.pompom.publishersupport.ProviderOperationRepository;
 import com.pompom.publishersupport.PublisherRequestValidator;
 import java.time.Duration;
@@ -166,10 +168,16 @@ class MetaPublisherControllerTest {
     PublishResult existing = completedResult();
     when(claim.newOperation()).thenReturn(false);
     when(claim.existingResult()).thenReturn(Optional.of(existing));
-    when(repository.claim(any(PublishCommand.class))).thenReturn(claim);
+    when(repository.claim(any(PublishCommand.class), any(PublisherCapability.class)))
+        .thenReturn(claim);
 
     MetaPublishService service =
-        new MetaPublishService(repository, new PublisherRequestValidator(), facebook, instagram);
+        new MetaPublishService(
+            repository,
+            new PublisherRequestValidator(),
+            facebook,
+            instagram,
+            new MetaWriteCapabilityGuard(properties("page-1", "page-token", "page-1", "ig-token")));
 
     assertThat(service.publish(command(), "facebook_reels")).isEqualTo(existing);
     verifyNoInteractions(facebook, instagram);
@@ -184,10 +192,16 @@ class MetaPublisherControllerTest {
         mock(ProviderOperationRepository.OperationClaim.class);
     when(claim.newOperation()).thenReturn(false);
     when(claim.existingResult()).thenReturn(Optional.empty());
-    when(repository.claim(any(PublishCommand.class))).thenReturn(claim);
+    when(repository.claim(any(PublishCommand.class), any(PublisherCapability.class)))
+        .thenReturn(claim);
 
     MetaPublishService service =
-        new MetaPublishService(repository, new PublisherRequestValidator(), facebook, instagram);
+        new MetaPublishService(
+            repository,
+            new PublisherRequestValidator(),
+            facebook,
+            instagram,
+            new MetaWriteCapabilityGuard(properties("page-1", "page-token", "page-1", "ig-token")));
 
     PublishResult result = service.publish(command(), "facebook_reels");
 
@@ -206,17 +220,27 @@ class MetaPublisherControllerTest {
     PublishResult result = completedResult();
     when(claim.newOperation()).thenReturn(true);
     when(claim.existingResult()).thenReturn(Optional.empty());
-    when(repository.claim(any(PublishCommand.class))).thenReturn(claim);
+    when(repository.claim(any(PublishCommand.class), any(PublisherCapability.class)))
+        .thenReturn(claim);
     when(instagram.publish(any(PublishCommand.class))).thenReturn(result);
 
     MetaPublishService service =
-        new MetaPublishService(repository, new PublisherRequestValidator(), facebook, instagram);
+        new MetaPublishService(
+            repository,
+            new PublisherRequestValidator(),
+            facebook,
+            instagram,
+            new MetaWriteCapabilityGuard(properties("page-1", "page-token", "page-1", "ig-token")));
     PublishCommand publishCommand = command();
 
     assertThat(service.publish(publishCommand, "instagram_reels")).isEqualTo(result);
     verify(instagram).publish(any(PublishCommand.class));
     verify(facebook, never()).publish(any(PublishCommand.class));
-    verify(repository).recordResult(argThat(key -> key.startsWith("instagram_reels:")), eq(result));
+    verify(repository)
+        .recordResult(
+            eq(PublisherCapability.INSTAGRAM_REELS),
+            argThat(key -> key.startsWith("instagram_reels:")),
+            eq(result));
   }
 
   @Test
@@ -228,7 +252,12 @@ class MetaPublisherControllerTest {
     when(facebook.reconcile("page-1", "post-1", "video-1")).thenReturn(result);
 
     MetaPublishService service =
-        new MetaPublishService(repository, new PublisherRequestValidator(), facebook, instagram);
+        new MetaPublishService(
+            repository,
+            new PublisherRequestValidator(),
+            facebook,
+            instagram,
+            new MetaWriteCapabilityGuard(properties("page-1", "page-token", "page-1", "ig-token")));
     MetaPublishService.ReconcileCommand command =
         new MetaPublishService.ReconcileCommand(
             UUID.randomUUID(), "facebook_reels", "page-1", "post-1", "video-1", "trace-1");
@@ -236,7 +265,10 @@ class MetaPublisherControllerTest {
     assertThat(service.reconcile(command)).isEqualTo(result);
     verify(facebook).reconcile("page-1", "post-1", "video-1");
     verify(facebook, never()).publish(any(PublishCommand.class));
-    verifyNoInteractions(instagram, repository);
+    verifyNoInteractions(instagram);
+    verify(repository)
+        .findByPublicationAttemptId(
+            eq(PublisherCapability.FACEBOOK_REELS), eq(command.publicationAttemptId()));
   }
 
   @Test
@@ -249,7 +281,7 @@ class MetaPublisherControllerTest {
     List<String> claimedKeys = new ArrayList<>();
     when(claim.newOperation()).thenReturn(true);
     when(claim.existingResult()).thenReturn(Optional.empty());
-    when(repository.claim(any(PublishCommand.class)))
+    when(repository.claim(any(PublishCommand.class), any(PublisherCapability.class)))
         .thenAnswer(
             invocation -> {
               claimedKeys.add(invocation.getArgument(0, PublishCommand.class).idempotencyKey());
@@ -259,7 +291,12 @@ class MetaPublisherControllerTest {
     when(instagram.publish(any(PublishCommand.class))).thenReturn(completedResult());
 
     MetaPublishService service =
-        new MetaPublishService(repository, new PublisherRequestValidator(), facebook, instagram);
+        new MetaPublishService(
+            repository,
+            new PublisherRequestValidator(),
+            facebook,
+            instagram,
+            new MetaWriteCapabilityGuard(properties("page-1", "page-token", "page-1", "ig-token")));
     PublishCommand publishCommand = command();
 
     service.publish(publishCommand, "facebook_reels");
@@ -268,6 +305,178 @@ class MetaPublisherControllerTest {
     assertThat(claimedKeys).hasSize(2).doesNotHaveDuplicates();
     verify(facebook).publish(any(PublishCommand.class));
     verify(instagram).publish(any(PublishCommand.class));
+  }
+
+  @Test
+  void scopedRepositoryIdentityKeepsSameCommandProjectionIndependentAcrossCapabilities() {
+    ProviderOperationRepository repository = mock(ProviderOperationRepository.class);
+    FacebookReelsClient facebook = mock(FacebookReelsClient.class);
+    InstagramReelsClient instagram = mock(InstagramReelsClient.class);
+    ProviderOperationRepository.OperationClaim claim =
+        mock(ProviderOperationRepository.OperationClaim.class);
+    List<PublisherCapability> capabilities = new ArrayList<>();
+    when(claim.newOperation()).thenReturn(true);
+    when(claim.existingResult()).thenReturn(Optional.empty());
+    when(repository.claim(any(PublishCommand.class), any(PublisherCapability.class)))
+        .thenAnswer(
+            invocation -> {
+              capabilities.add(invocation.getArgument(1, PublisherCapability.class));
+              return claim;
+            });
+    when(facebook.publish(any(PublishCommand.class))).thenReturn(completedResult());
+    when(instagram.publish(any(PublishCommand.class))).thenReturn(completedResult());
+
+    MetaPublishService service =
+        new MetaPublishService(
+            repository,
+            new PublisherRequestValidator(),
+            facebook,
+            instagram,
+            new MetaWriteCapabilityGuard(true, INTERNAL_TOKEN));
+    PublishCommand publishCommand = command();
+
+    service.publish(publishCommand, "facebook_reels");
+    service.publish(publishCommand, "instagram_reels");
+
+    assertThat(capabilities)
+        .containsExactly(PublisherCapability.FACEBOOK_REELS, PublisherCapability.INSTAGRAM_REELS);
+    verify(facebook).publish(any(PublishCommand.class));
+    verify(instagram).publish(any(PublishCommand.class));
+  }
+
+  @Test
+  void reconciliationAdvancesTheExistingCapabilityScopedOperation() {
+    ProviderOperationRepository repository = mock(ProviderOperationRepository.class);
+    FacebookReelsClient facebook = mock(FacebookReelsClient.class);
+    InstagramReelsClient instagram = mock(InstagramReelsClient.class);
+    ProviderOperationRecord uncertain = mock(ProviderOperationRecord.class);
+    PublishResult completed = completedResult();
+    UUID attemptId = UUID.randomUUID();
+    when(uncertain.getCommandIdempotencyKey()).thenReturn("facebook_reels:bound-key");
+    when(repository.findByPublicationAttemptId(PublisherCapability.FACEBOOK_REELS, attemptId))
+        .thenReturn(Optional.of(uncertain));
+    when(facebook.reconcile("page-1", "post-1", "video-1")).thenReturn(completed);
+
+    MetaPublishService service =
+        new MetaPublishService(
+            repository,
+            new PublisherRequestValidator(),
+            facebook,
+            instagram,
+            new MetaWriteCapabilityGuard(true, INTERNAL_TOKEN));
+
+    PublishResult result =
+        service.reconcile(
+            new MetaPublishService.ReconcileCommand(
+                attemptId, "facebook_reels", "page-1", "post-1", "video-1", "trace-1"));
+
+    assertThat(result).isEqualTo(completed);
+    verify(repository)
+        .recordResult(PublisherCapability.FACEBOOK_REELS, "facebook_reels:bound-key", completed);
+    verify(facebook).reconcile("page-1", "post-1", "video-1");
+    verify(facebook, never()).publish(any(PublishCommand.class));
+    verifyNoInteractions(instagram);
+  }
+
+  @Test
+  void directServiceAdmissionFailsBeforeClaimWhenProviderCredentialsAreMissing() {
+    ProviderOperationRepository repository = mock(ProviderOperationRepository.class);
+    FacebookReelsClient facebook = mock(FacebookReelsClient.class);
+    InstagramReelsClient instagram = mock(InstagramReelsClient.class);
+    MetaPublishService service =
+        new MetaPublishService(
+            repository,
+            new PublisherRequestValidator(),
+            facebook,
+            instagram,
+            new MetaWriteCapabilityGuard(properties("page-1", "", "ig-1", "ig-token")));
+
+    assertThatThrownBy(() -> service.publish(command(), "facebook_reels"))
+        .isInstanceOf(MetaWriteCapabilityGuard.ForbiddenException.class);
+    verifyNoInteractions(repository, facebook, instagram);
+  }
+
+  @Test
+  void serviceAcceptsEmojiCaptionAtTheInstagramProviderCodePointLimit() {
+    ProviderOperationRepository repository = mock(ProviderOperationRepository.class);
+    FacebookReelsClient facebook = mock(FacebookReelsClient.class);
+    InstagramReelsClient instagram = mock(InstagramReelsClient.class);
+    ProviderOperationRepository.OperationClaim claim =
+        mock(ProviderOperationRepository.OperationClaim.class);
+    PublishCommand base = command();
+    PublishCommand emojiCommand =
+        new PublishCommand(
+            base.publicationJobId(),
+            base.publicationAttemptId(),
+            base.idempotencyKey(),
+            base.platformAccountId(),
+            base.assetReference(),
+            base.assetSha256(),
+            base.title(),
+            "😀".repeat(2200),
+            base.hashtags(),
+            base.isPrivate(),
+            base.providerOptions());
+    when(claim.newOperation()).thenReturn(true);
+    when(claim.existingResult()).thenReturn(Optional.empty());
+    when(repository.claim(any(PublishCommand.class), any(PublisherCapability.class)))
+        .thenReturn(claim);
+    when(instagram.publish(any(PublishCommand.class))).thenReturn(completedResult());
+
+    MetaPublishService service =
+        new MetaPublishService(
+            repository,
+            new PublisherRequestValidator(),
+            facebook,
+            instagram,
+            new MetaWriteCapabilityGuard(properties("page-1", "page-token", "page-1", "ig-token")));
+
+    service.publish(emojiCommand, "instagram_reels");
+
+    verify(instagram)
+        .publish(
+            argThat(
+                published ->
+                    published.caption().codePointCount(0, published.caption().length()) <= 2200));
+  }
+
+  @Test
+  void reconciliationDoesNotCrossMatchProviderPostAndVideoIdentityFields() {
+    ProviderOperationRepository repository = mock(ProviderOperationRepository.class);
+    FacebookReelsClient facebook = mock(FacebookReelsClient.class);
+    InstagramReelsClient instagram = mock(InstagramReelsClient.class);
+    when(facebook.reconcile("page-1", "post-requested", "video-requested"))
+        .thenReturn(
+            new PublishResult(
+                PublishStatus.COMPLETED,
+                "video-requested",
+                null,
+                "https://facebook.example/post-requested",
+                "trace-1",
+                null,
+                null,
+                false));
+
+    MetaPublishService service =
+        new MetaPublishService(
+            repository,
+            new PublisherRequestValidator(),
+            facebook,
+            instagram,
+            new MetaWriteCapabilityGuard(properties("page-1", "page-token", "page-1", "ig-token")));
+
+    PublishResult result =
+        service.reconcile(
+            new MetaPublishService.ReconcileCommand(
+                UUID.randomUUID(),
+                "facebook_reels",
+                "page-1",
+                "post-requested",
+                "video-requested",
+                "trace-1"));
+
+    assertThat(result.status()).isEqualTo(PublishStatus.RECONCILIATION_REQUIRED);
+    assertThat(result.reconciliationRequired()).isTrue();
   }
 
   @Test
@@ -318,6 +527,50 @@ class MetaPublisherControllerTest {
                 .content(OBJECT_MAPPER.writeValueAsString(malformed)))
         .andExpect(status().isBadRequest());
     verifyNoInteractions(service);
+  }
+
+  @Test
+  void malformedReconciliationIdentifierReturnsBadRequestBeforeDelegation() throws Exception {
+    MetaPublishService service = mock(MetaPublishService.class);
+    MockMvc mvc = mvc(service, new MetaWriteCapabilityGuard(false, INTERNAL_TOKEN));
+    MetaPublishService.ReconcileCommand malformed =
+        new MetaPublishService.ReconcileCommand(
+            UUID.randomUUID(), "facebook_reels", "page-1", "video/with/slash", null, null);
+
+    mvc.perform(
+            post("/internal/v1/reconcile")
+                .header(MetaWriteCapabilityGuard.INTERNAL_TOKEN_HEADER, INTERNAL_TOKEN)
+                .contentType("application/json")
+                .content(OBJECT_MAPPER.writeValueAsString(malformed)))
+        .andExpect(status().isBadRequest());
+    verifyNoInteractions(service);
+  }
+
+  @Test
+  void directReconciliationAdmissionFailsBeforeProviderReadWhenCredentialsAreMissing() {
+    ProviderOperationRepository repository = mock(ProviderOperationRepository.class);
+    FacebookReelsClient facebook = mock(FacebookReelsClient.class);
+    InstagramReelsClient instagram = mock(InstagramReelsClient.class);
+    MetaPublishService service =
+        new MetaPublishService(
+            repository,
+            new PublisherRequestValidator(),
+            facebook,
+            instagram,
+            new MetaWriteCapabilityGuard(properties("page-1", "", "ig-1", "ig-token")));
+
+    assertThatThrownBy(
+            () ->
+                service.reconcile(
+                    new MetaPublishService.ReconcileCommand(
+                        UUID.randomUUID(),
+                        "facebook_reels",
+                        "page-1",
+                        "post-1",
+                        "video-1",
+                        "trace-1")))
+        .isInstanceOf(MetaWriteCapabilityGuard.ForbiddenException.class);
+    verifyNoInteractions(repository, facebook, instagram);
   }
 
   private MetaPublisherProperties properties(

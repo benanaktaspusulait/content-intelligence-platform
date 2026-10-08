@@ -55,7 +55,7 @@ public interface PublicMediaStorage {
         }
       }
       return true;
-    } catch (IllegalArgumentException ignored) {
+    } catch (RuntimeException ignored) {
       return false;
     }
   }

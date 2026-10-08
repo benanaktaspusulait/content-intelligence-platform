@@ -41,6 +41,7 @@ def main() -> int:
         {
             "newSemanticRegressions": report["summary"]["newSemanticRegressions"],
             "unexpectedPolicyRegressions": report["summary"]["unexpectedPolicyRegressions"],
+            "representationMismatches": report["summary"]["representationMismatches"],
         },
         provider_mode=os.getenv("POMPOM_GOLDEN_PROVIDER_MODE", "FROZEN_DETERMINISTIC"),
     )

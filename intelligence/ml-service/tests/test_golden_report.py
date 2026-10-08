@@ -18,5 +18,6 @@ def test_baseline_report_has_release_gate_and_summary_metrics() -> None:
     assert report["baselineRulesetVersion"] == "1.7"
     assert report["summary"]["assets"] == 9
     assert "newSemanticRegressions" in report["summary"]
+    assert "representationMismatches" in report["summary"]
     assert report["releaseGate"] in {"PASS", "FAIL"}
     assert len(report["assets"]) == 9

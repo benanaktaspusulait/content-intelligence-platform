@@ -135,7 +135,7 @@ public class QualityReportPdfService {
     table.setSpacingAfter(6);
 
     Paragraph score = new Paragraph();
-    score.add(new Chunk(oneDecimal(report.overallScore()), fonts.scoreBig(statusColor)));
+    score.add(new Chunk(scoreText(report.overallScore()), fonts.scoreBig(statusColor)));
     score.add(new Chunk(" /100", fonts.muted));
     PdfPCell scoreCell = plainCell(SURFACE, 12);
     scoreCell.addElement(score);
@@ -216,7 +216,7 @@ public class QualityReportPdfService {
                   + "  ·  Denominator: "
                   + orDash(str(aggregation.get("denominator")))
                   + "  ·  Evaluation coverage: "
-                  + orDash(str(aggregation.get("evaluationCoverage")))
+                  + formatRatioPercent(aggregation.get("evaluationCoverage"))
                   + "  ·  State: "
                   + orDash(str(aggregation.get("aggregationState"))),
               fonts.body));
@@ -258,7 +258,7 @@ public class QualityReportPdfService {
               "Evidence completeness: "
                   + orDash(str(evidence.get("status")))
                   + " · coverage "
-                  + orDash(str(evidence.get("evaluationCoverage"))),
+                  + formatRatioPercent(evidence.get("evaluationCoverage")),
               fonts.body));
       document.add(
           new Paragraph(
@@ -268,10 +268,14 @@ public class QualityReportPdfService {
           if (reason instanceof Map<?, ?> detail) {
             document.add(
                 new Paragraph(
-                    "Authorization reason: "
+                    "Authorization reason: code "
                         + orDash(str(detail.get("code")))
-                        + " · "
-                        + orDash(str(detail.get("message"))),
+                        + " · source "
+                        + orDash(str(detail.get("source")))
+                        + " · message "
+                        + orDash(str(detail.get("message")))
+                        + " · references "
+                        + orDash(referenceText(detail.get("references"), detail.get("evidenceReferences"))),
                     fonts.muted));
           }
         }
@@ -305,7 +309,7 @@ public class QualityReportPdfService {
         table.addCell(cell(orDash(str(detail.get("status"))), fonts.small, null));
         table.addCell(cell(orDash(str(detail.get("confidence"))), fonts.small, null));
         table.addCell(cell(orDash(str(detail.get("reason"))), fonts.small, null));
-        table.addCell(cell(orDash(str(detail.get("evidence"))), fonts.small, null));
+        table.addCell(cell(orDash(applicabilityEvidence(detail)), fonts.small, null));
       }
       document.add(table);
     }
@@ -490,11 +494,24 @@ public class QualityReportPdfService {
     PdfPTable table = new PdfPTable(new float[] {32, 58, 10});
     table.setWidthPercentage(100);
     scores.entrySet().stream()
-        .filter(entry -> entry.getValue() != null)
-        .sorted((a, b) -> Double.compare(b.getValue(), a.getValue()))
+        .sorted(
+            (left, right) -> {
+              Double leftValue = left.getValue();
+              Double rightValue = right.getValue();
+              if (leftValue == null && rightValue == null) {
+                return String.valueOf(left.getKey()).compareTo(String.valueOf(right.getKey()));
+              }
+              if (leftValue == null) {
+                return 1;
+              }
+              if (rightValue == null) {
+                return -1;
+              }
+              return Double.compare(rightValue, leftValue);
+            })
         .forEach(
             entry -> {
-              double value = entry.getValue();
+              Double value = entry.getValue();
               PdfPCell name = plainCell(null, 4);
               name.setPhrase(new Phrase(clean(entry.getKey()), fonts.body));
               name.setVerticalAlignment(Element.ALIGN_MIDDLE);
@@ -502,11 +519,18 @@ public class QualityReportPdfService {
 
               PdfPCell bar = plainCell(null, 4);
               bar.setFixedHeight(16);
-              bar.setCellEvent(new BarEvent(value, familyScoreColor(value)));
+              if (value != null) {
+                bar.setCellEvent(new BarEvent(value, familyScoreColor(value)));
+              }
               table.addCell(bar);
 
               PdfPCell number = plainCell(null, 4);
-              number.setPhrase(new Phrase(String.format(Locale.ROOT, "%.0f", value), fonts.bold));
+              number.setPhrase(
+                  new Phrase(
+                      value == null
+                          ? "N/A"
+                          : String.format(Locale.ROOT, "%.0f", value),
+                      fonts.bold));
               number.setHorizontalAlignment(Element.ALIGN_RIGHT);
               number.setVerticalAlignment(Element.ALIGN_MIDDLE);
               table.addCell(number);
@@ -781,6 +805,53 @@ public class QualityReportPdfService {
 
   private static String oneDecimal(double value) {
     return String.format(Locale.ROOT, "%.1f", value);
+  }
+
+  private static String scoreText(Double value) {
+    return value == null ? "N/A" : oneDecimal(value);
+  }
+
+  private static String formatRatioPercent(Object value) {
+    if (value == null) {
+      return "—";
+    }
+    double ratio;
+    if (value instanceof Number number) {
+      ratio = number.doubleValue();
+    } else {
+      try {
+        ratio = Double.parseDouble(String.valueOf(value));
+      } catch (NumberFormatException e) {
+        return "—";
+      }
+    }
+    if (!Double.isFinite(ratio)) {
+      return "—";
+    }
+    return Math.round(Math.max(0.0, Math.min(1.0, ratio)) * 100.0) + "%";
+  }
+
+  private static String applicabilityEvidence(Map<?, ?> detail) {
+    String canonical = evidenceText(detail.get("evidenceReferences"));
+    return !canonical.isEmpty() ? canonical : evidenceText(detail.get("evidence"));
+  }
+
+  private static String referenceText(Object primary, Object fallback) {
+    String references = evidenceText(primary);
+    return !references.isEmpty() ? references : evidenceText(fallback);
+  }
+
+  private static String evidenceText(Object value) {
+    if (value instanceof List<?> list) {
+      List<String> references = new ArrayList<>();
+      for (Object item : list) {
+        if (item != null && !String.valueOf(item).isBlank()) {
+          references.add(String.valueOf(item));
+        }
+      }
+      return String.join(", ", references);
+    }
+    return str(value).trim();
   }
 
   private static String number(Double value) {

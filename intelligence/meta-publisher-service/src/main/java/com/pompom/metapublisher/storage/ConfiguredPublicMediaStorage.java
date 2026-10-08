@@ -102,6 +102,15 @@ public class ConfiguredPublicMediaStorage implements PublicMediaStorage {
     }
   }
 
+  private boolean isHttps(String value) {
+    try {
+      URI uri = URI.create(value);
+      return "https".equalsIgnoreCase(uri.getScheme());
+    } catch (RuntimeException ignored) {
+      return false;
+    }
+  }
+
   private boolean isHttp(String value) {
     try {
       URI uri = URI.create(value);

@@ -9,7 +9,8 @@ public enum PublisherCapability {
   FACEBOOK_REELS("facebook_reels"),
   INSTAGRAM_REELS("instagram_reels"),
   TIKTOK_VIDEO("tiktok_video"),
-  YOUTUBE_SHORTS("youtube_shorts");
+  YOUTUBE_SHORTS("youtube_shorts"),
+  LEGACY("legacy");
 
   private final String wireValue;
 
@@ -29,5 +30,16 @@ public enum PublisherCapability {
         .findFirst()
         .orElseThrow(
             () -> new IllegalArgumentException("Unknown publisher capability: " + wireValue));
+  }
+
+  public static PublisherCapability of(String wireValue) {
+    if (wireValue == null) {
+      throw new IllegalArgumentException("Publisher capability is required");
+    }
+    return fromWireValue(wireValue.trim().toLowerCase(java.util.Locale.ROOT));
+  }
+
+  public static PublisherCapability legacy() {
+    return LEGACY;
   }
 }

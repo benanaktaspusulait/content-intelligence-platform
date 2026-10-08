@@ -53,7 +53,8 @@ public final class PublisherRequestValidator {
       throw new IllegalArgumentException(
           "title exceeds the shared maximum of " + MAX_TITLE_LENGTH + " characters");
     }
-    if (command.caption() != null && command.caption().length() > MAX_CAPTION_LENGTH) {
+    if (command.caption() != null
+        && command.caption().codePointCount(0, command.caption().length()) > MAX_CAPTION_LENGTH) {
       throw new IllegalArgumentException(
           "caption exceeds the shared maximum of " + MAX_CAPTION_LENGTH + " characters");
     }

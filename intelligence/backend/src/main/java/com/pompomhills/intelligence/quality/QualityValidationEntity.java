@@ -22,7 +22,7 @@ public class QualityValidationEntity {
   @Column(name = "ruleset_version", length = 10, nullable = false)
   private String rulesetVersion;
 
-  @Column(name = "overall_score", nullable = false)
+  @Column(name = "overall_score")
   private Double overallScore;
 
   @Column(name = "status", length = 20, nullable = false)

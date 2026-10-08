@@ -9,6 +9,8 @@ import java.time.Instant;
 import java.util.Map;
 import java.util.UUID;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 /**
  * Every predicate here corresponds to a hard precondition from the design doc (Slice B item 5,
@@ -356,7 +358,8 @@ class ValidationEvidencePolicyTest {
 
   @Test
   void rejectsFinalRenderWhenCanonicalAuthorizationIsBlockedDespiteLegacyReadyStatus() {
-    ValidationEvidenceDto evidence = withRenderAuthorization(renderReadyEvidence(), "BLOCKED_PENDING_EVIDENCE");
+    ValidationEvidenceDto evidence =
+        withRenderAuthorization(renderReadyEvidence(), "BLOCKED_PENDING_EVIDENCE");
 
     assertThatThrownBy(() -> policy.validate(request(), evidence, now))
         .isInstanceOf(ValidationEvidenceRejectedException.class)
@@ -367,6 +370,29 @@ class ValidationEvidencePolicyTest {
   @Test
   void rejectsFinalRenderWhenCanonicalAuthorizationIsMissing() {
     ValidationEvidenceDto evidence = withRenderAuthorization(renderReadyEvidence(), null);
+
+    assertThatThrownBy(() -> policy.validate(request(), evidence, now))
+        .isInstanceOf(ValidationEvidenceRejectedException.class)
+        .extracting(ex -> ((ValidationEvidenceRejectedException) ex).getErrorCode())
+        .isEqualTo("EVIDENCE_NOT_RENDER_AUTHORIZED");
+  }
+
+  @ParameterizedTest(name = "rejects blank or whitespace authorization [{0}]")
+  @ValueSource(strings = {"", "   "})
+  void rejectsFinalRenderWhenCanonicalAuthorizationIsBlankOrWhitespace(String renderAuthorization) {
+    ValidationEvidenceDto evidence =
+        withRenderAuthorization(renderReadyEvidence(), renderAuthorization);
+
+    assertThatThrownBy(() -> policy.validate(request(), evidence, now))
+        .isInstanceOf(ValidationEvidenceRejectedException.class)
+        .extracting(ex -> ((ValidationEvidenceRejectedException) ex).getErrorCode())
+        .isEqualTo("EVIDENCE_NOT_RENDER_AUTHORIZED");
+  }
+
+  @Test
+  void rejectsFinalRenderWhenCanonicalAuthorizationIsUnrecognized() {
+    ValidationEvidenceDto evidence =
+        withRenderAuthorization(renderReadyEvidence(), "SOMETHING_NEW");
 
     assertThatThrownBy(() -> policy.validate(request(), evidence, now))
         .isInstanceOf(ValidationEvidenceRejectedException.class)
@@ -399,7 +425,8 @@ class ValidationEvidencePolicyTest {
         now.plusSeconds(3600),
         false,
         true,
-        visualPasses());
+        visualPasses(),
+        "AUTHORIZED");
   }
 
   private ValidationEvidenceDto withRenderAuthorization(

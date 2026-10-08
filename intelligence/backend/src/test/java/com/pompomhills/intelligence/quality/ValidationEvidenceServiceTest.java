@@ -35,6 +35,37 @@ class ValidationEvidenceServiceTest {
     assertThat(evidence.status()).isEqualTo(ValidationDecisionStatus.RENDER_READY);
     assertThat(evidence.promptSha256()).hasSize(64);
     assertThat(evidence.independentRevalidationId()).isNotNull();
+    assertThat(evidence.renderAuthorization()).isNull();
+  }
+
+  @Test
+  void copiesFamily8RenderAuthorizationFromReportSnapshotInsteadOfLegacyStatus() {
+    QualityValidationEntity entity = completeEntity();
+    entity.setStatus("RENDER_READY");
+    entity.setReportJson(
+        "{\"preRenderAssessment\":{\"prompt_stage\":\"READY_FOR_FIRST_FRAME\","
+            + "\"render_authorization\":{\"status\":\"BLOCKED_PENDING_EVIDENCE\"},"
+            + "\"family8\":{\"renderAuthorization\":{\"status\":\"AUTHORIZED\"}}}}");
+    when(repository.findById(42L)).thenReturn(Optional.of(entity));
+    stubMatchingIndependentRevalidation(entity);
+
+    ValidationEvidenceResponse evidence = service.getEvidence(42L);
+
+    assertThat(evidence.renderAuthorization()).isEqualTo("AUTHORIZED");
+  }
+
+  @Test
+  void copiesUnrecognizedFamily8RenderAuthorizationUnchanged() {
+    QualityValidationEntity entity = completeEntity();
+    entity.setStatus("RENDER_READY");
+    entity.setReportJson(
+        "{\"preRenderAssessment\":{\"family8\":{\"renderAuthorization\":{\"status\":\"SOMETHING_NEW\"}}}}");
+    when(repository.findById(42L)).thenReturn(Optional.of(entity));
+    stubMatchingIndependentRevalidation(entity);
+
+    ValidationEvidenceResponse evidence = service.getEvidence(42L);
+
+    assertThat(evidence.renderAuthorization()).isEqualTo("SOMETHING_NEW");
   }
 
   @Test

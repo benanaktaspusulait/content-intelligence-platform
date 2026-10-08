@@ -46,7 +46,9 @@ class HttpIntelligenceValidationEvidenceClientTest {
                  "semanticModelVersion":"gpt-4o","producibilityValidatorVersion":"1.0",
                  "independentRevalidationId":"8e2c6f1a-0000-0000-0000-000000000000",
                  "independentlyRevalidatedAt":"2026-01-01T00:00:00Z",
-                 "validatedAt":"2026-01-01T00:00:00Z","expiresAt":"2026-01-02T00:00:00Z"}
+                 "validatedAt":"2026-01-01T00:00:00Z","expiresAt":"2026-01-02T00:00:00Z",
+                 "firstFrameEligible":false,"finalVideoEligible":true,"visualEvidence":{},
+                 "renderAuthorization":"AUTHORIZED"}
                 """,
                 MediaType.APPLICATION_JSON));
 
@@ -55,6 +57,48 @@ class HttpIntelligenceValidationEvidenceClientTest {
     assertThat(evidence.validationRecordId()).isEqualTo(42L);
     assertThat(evidence.contentId()).isEqualTo(10L);
     assertThat(evidence.status()).isEqualTo("RENDER_READY");
+    assertThat(evidence.renderAuthorization()).isEqualTo("AUTHORIZED");
+    server.verify();
+  }
+
+  @Test
+  void preservesUnrecognizedRenderAuthorizationFromWire() {
+    server
+        .expect(
+            once(), requestTo("http://intelligence.test/api/v1/internal/validation-evidence/43"))
+        .andRespond(
+            withSuccess(
+                """
+                {"validationRecordId":43,"contentId":10,"promptVersionId":11,
+                 "blockerCount":0,"criticalCount":0,"warningCount":0,
+                 "firstFrameEligible":false,"finalVideoEligible":true,
+                 "renderAuthorization":"SOMETHING_NEW"}
+                """,
+                MediaType.APPLICATION_JSON));
+
+    ValidationEvidenceDto evidence = client.getEvidence(43L);
+
+    assertThat(evidence.renderAuthorization()).isEqualTo("SOMETHING_NEW");
+    server.verify();
+  }
+
+  @Test
+  void deserializesOmittedRenderAuthorizationAsNull() {
+    server
+        .expect(
+            once(), requestTo("http://intelligence.test/api/v1/internal/validation-evidence/44"))
+        .andRespond(
+            withSuccess(
+                """
+                {"validationRecordId":44,"contentId":10,"promptVersionId":11,
+                 "blockerCount":0,"criticalCount":0,"warningCount":0,
+                 "firstFrameEligible":false,"finalVideoEligible":true}
+                """,
+                MediaType.APPLICATION_JSON));
+
+    ValidationEvidenceDto evidence = client.getEvidence(44L);
+
+    assertThat(evidence.renderAuthorization()).isNull();
     server.verify();
   }
 

@@ -12,7 +12,7 @@
       <div *ngIf="!qualityRecordsLoading && qualityRecords.length" class="quality-record-grid">
         <article *ngFor="let record of qualityRecords" class="quality-record-card">
           <div class="quality-record-heading"><div><strong>{{ record.title }}</strong><small>{{ record.sourcePath || 'Persisted content record' }}</small></div><span class="quality-state" [class.analyzed]="qualityState(record) === 'ANALYZED'">{{ qualityState(record) === 'ANALYZED' ? 'Analyzed' : 'Not analyzed' }}</span></div>
-          <div class="quality-record-meta"><span *ngIf="record.versionNumber">Prompt v{{ record.versionNumber }}</span><ng-container *ngIf="record.latestQuality as quality"><span>{{ quality.status }} · {{ quality.overallScore.toFixed(1) }}/100</span><span *ngIf="quality.creativeGrade">Creative {{ quality.creativeGrade }}</span><span *ngIf="quality.readiness">{{ quality.readiness.replaceAll('_', ' ') }}</span></ng-container></div>
+          <div class="quality-record-meta"><span *ngIf="record.versionNumber">Prompt v{{ record.versionNumber }}</span><ng-container *ngIf="record.latestQuality as quality"><span>{{ quality.status }} · {{ formatNullableScore(quality.overallScore) }}/100</span><span *ngIf="quality.creativeGrade">Creative {{ quality.creativeGrade }}</span><span *ngIf="quality.readiness">{{ quality.readiness.replaceAll('_', ' ') }}</span></ng-container></div>
           <p class="quality-record-summary">{{ promptQualitySummary(record) }}</p>
           <small *ngIf="record.latestQuality?.analyzedAt" class="quality-record-date">Analyzed {{ record.latestQuality?.analyzedAt | date:'medium' }}</small>
           <button *ngIf="record.latestQuality" type="button" class="btn btn-outline-secondary btn-sm" [disabled]="exportingPdf" (click)="exportQualityRecordPdf(record)">Export PDF</button><button *ngIf="record.promptVersionId && record.sourcePath" type="button" class="btn btn-outline-secondary btn-sm" (click)="openQualityRecord(record)">Open analysis</button>
@@ -44,7 +44,7 @@
       </div>
       <div *ngIf="selectedWorkspacePaths.length" class="folder-chips" aria-label="Selected prompt folders"><span *ngFor="let workspace of selectedPromptWorkspaces()">{{ workspace.creativeName }} <small>{{ workspace.promptCandidates.length }} prompts</small><button type="button" [attr.aria-label]="'Remove ' + workspace.creativeName" (click)="removeWorkspace(workspace.folderPath)">×</button></span></div>
       <div class="new-workspace-row"><input type="text" [(ngModel)]="newFolderName" placeholder="New folder name, e.g. hiccup_box" aria-label="New prompt workspace folder name"><input type="text" [(ngModel)]="futureVideoName" placeholder="Future video / creative name" aria-label="Future video or creative name"><button class="btn btn-outline-secondary btn-sm" type="button" (click)="createWorkspaceFolder()" [disabled]="creatingFolder || !newFolderName.trim()">{{ creatingFolder ? 'Creating…' : 'Create folder' }}</button></div>
-      <div *ngIf="selectedWorkspacePaths.length" class="prompt-asset-list"><section *ngFor="let workspace of selectedPromptWorkspaces()" class="prompt-asset-group"><header><div><strong>{{ workspace.creativeName }}</strong><small>{{ workspace.folderPath }}</small></div><span>{{ workspace.promptCandidates.length }} prompts · {{ workspace.videoCandidates.length ? workspace.videoCandidates.length + ' video' : 'No video yet' }}</span></header><div class="prompt-asset-items"><button *ngFor="let promptPath of workspace.promptCandidates" type="button" class="prompt-asset-option prompt-asset-option--quality" (click)="selectWorkspace(workspace, promptPath, workspace.videoCandidates.length === 1 ? workspace.videoCandidates[0] : undefined)"><span class="prompt-file__icon">P</span><span class="prompt-card-main"><strong>{{ promptRecord(workspace, promptPath)?.title || promptName(promptPath) }}</strong><small>{{ promptPath.split('/').pop() }} · {{ promptFolder(promptPath, workspace.folderPath) }}</small><small class="prompt-card-summary">{{ promptQualitySummary(promptRecord(workspace, promptPath)) }}</small></span><span class="prompt-card-result"><b [class.analyzed]="qualityState(promptRecord(workspace, promptPath)) === 'ANALYZED'">{{ qualityState(promptRecord(workspace, promptPath)) === 'ANALYZED' ? 'Analyzed' : 'Not analyzed' }}</b><small *ngIf="promptRecord(workspace, promptPath)?.latestQuality as quality">Score {{ quality.overallScore.toFixed(1) }} · {{ quality.creativeGrade || quality.status }}</small><small *ngIf="promptRecord(workspace, promptPath)?.latestQuality as quality">{{ quality.analyzedAt | date:'short' }}</small><em>Details →</em></span></button><button *ngIf="workspace.promptStatus === 'NO_PROMPT'" type="button" class="prompt-create-option" (click)="selectWorkspace(workspace)">Create prompt here →</button><div *ngIf="!workspace.promptCandidates.length && workspace.promptStatus !== 'NO_PROMPT'" class="empty-library">No prompt candidates found.</div></div></section></div>
+      <div *ngIf="selectedWorkspacePaths.length" class="prompt-asset-list"><section *ngFor="let workspace of selectedPromptWorkspaces()" class="prompt-asset-group"><header><div><strong>{{ workspace.creativeName }}</strong><small>{{ workspace.folderPath }}</small></div><span>{{ workspace.promptCandidates.length }} prompts · {{ workspace.videoCandidates.length ? workspace.videoCandidates.length + ' video' : 'No video yet' }}</span></header><div class="prompt-asset-items"><button *ngFor="let promptPath of workspace.promptCandidates" type="button" class="prompt-asset-option prompt-asset-option--quality" (click)="selectWorkspace(workspace, promptPath, workspace.videoCandidates.length === 1 ? workspace.videoCandidates[0] : undefined)"><span class="prompt-file__icon">P</span><span class="prompt-card-main"><strong>{{ promptRecord(workspace, promptPath)?.title || promptName(promptPath) }}</strong><small>{{ promptPath.split('/').pop() }} · {{ promptFolder(promptPath, workspace.folderPath) }}</small><small class="prompt-card-summary">{{ promptQualitySummary(promptRecord(workspace, promptPath)) }}</small></span><span class="prompt-card-result"><b [class.analyzed]="qualityState(promptRecord(workspace, promptPath)) === 'ANALYZED'">{{ qualityState(promptRecord(workspace, promptPath)) === 'ANALYZED' ? 'Analyzed' : 'Not analyzed' }}</b><small *ngIf="promptRecord(workspace, promptPath)?.latestQuality as quality">Score {{ formatNullableScore(quality.overallScore) }} · {{ quality.creativeGrade || quality.status }}</small><small *ngIf="promptRecord(workspace, promptPath)?.latestQuality as quality">{{ quality.analyzedAt | date:'short' }}</small><em>Details →</em></span></button><button *ngIf="workspace.promptStatus === 'NO_PROMPT'" type="button" class="prompt-create-option" (click)="selectWorkspace(workspace)">Create prompt here →</button><div *ngIf="!workspace.promptCandidates.length && workspace.promptStatus !== 'NO_PROMPT'" class="empty-library">No prompt candidates found.</div></div></section></div>
       <div *ngIf="!selectedWorkspacePaths.length && !promptWorkspacesLoading" class="empty-library workspace-selection-empty">Select one or more prompt folders above to see their prompts.</div>
     </div>
   </section>
@@ -115,22 +115,26 @@
     <div *ngIf="report.preRenderAssessment" class="pre-render-assessment card">
       <div class="card-header">
         <div><span class="eyebrow">PRE-RENDER CREATIVE READINESS</span><h2>Can this plan spend render credits?</h2></div>
-        <div class="readiness-summary"><strong>Creative grade {{ report.preRenderAssessment.creative_grade || report.preRenderAssessment.grade }}</strong><span>{{ report.preRenderAssessment.prompt_stage?.replaceAll('_', ' ') || report.preRenderAssessment.readiness.replaceAll('_', ' ') }}</span><small>Creative score {{ report.preRenderAssessment.creative_score ?? 'n/a' }}</small><small>Evidence {{ report.preRenderAssessment.evidence_completeness?.status || 'UNKNOWN' }} · {{ report.preRenderAssessment.assessment_coverage_percent }}% coverage</small><small *ngIf="report.preRenderAssessment.render_authorization">Video render: {{ report.preRenderAssessment.render_authorization.status.replaceAll('_', ' ') }}</small></div>
+        <div class="readiness-summary"><strong>Creative grade {{ report.preRenderAssessment.creative_grade || report.preRenderAssessment.grade }}</strong><span>{{ report.preRenderAssessment.prompt_stage?.replaceAll('_', ' ') || report.preRenderAssessment.readiness.replaceAll('_', ' ') }}</span><small>Creative score {{ formatNullableScore(report.preRenderAssessment.creative_score) }}</small><small>Evidence {{ report.preRenderAssessment.evidence_completeness?.status || 'UNKNOWN' }} · {{ report.preRenderAssessment.assessment_coverage_percent }}% coverage</small><small *ngIf="report.preRenderAssessment.render_authorization">Video render: {{ report.preRenderAssessment.render_authorization.status.replaceAll('_', ' ') }}</small></div>
       </div>
       <div class="card-body">
         <section *ngIf="report.preRenderAssessment.aggregation as aggregation" class="assessment-aggregation" aria-label="Evaluation aggregation">
           <h3>Evaluation aggregation</h3>
-          <p>Score: {{ aggregation.score ?? 'n/a' }} · Scored: {{ aggregation.scoredCount }} / {{ aggregation.denominator }} · Coverage: {{ aggregation.evaluationCoverage === null ? 'n/a' : (aggregation.evaluationCoverage * 100) + '%' }} · State: {{ aggregation.aggregationState }}</p>
+          <p>Score: {{ formatNullableScore(aggregation.score) }} · Scored: {{ aggregation.scoredCount }} / {{ aggregation.denominator }} · Coverage: {{ formatEvaluationCoverage(aggregation.evaluationCoverage, 'RATIO') }} · State: {{ aggregation.aggregationState }}</p>
           <p>PASS {{ aggregation.passCount }} · FAIL {{ aggregation.failCount }} · UNKNOWN {{ aggregation.unknownCount }} · NOT EVALUATED {{ aggregation.notEvaluatedCount }} · NOT APPLICABLE {{ aggregation.notApplicableCount }} · SERVICE ERROR {{ aggregation.serviceErrorCount }}</p>
         </section>
         <section *ngIf="report.preRenderAssessment.family8 as family8" class="family8-orthogonal-axis" aria-label="Family 8 orthogonal assessment">
           <h3>Creative Quality</h3>
-          <p>Score: {{ family8.creativeQuality.creativeScore ?? 'N/A' }} · Grade: {{ family8.creativeQuality.creativeGrade || 'N/A' }}</p>
+          <p>Score: {{ formatNullableScore(family8.creativeQuality.creativeScore) }} · Grade: {{ family8.creativeQuality.creativeGrade || 'N/A' }}</p>
           <h3>Evidence Completeness</h3>
-          <p>Status: {{ family8.evidenceCompleteness.status }} · Coverage: {{ family8.evidenceCompleteness.evaluationCoverage === null ? 'N/A' : (family8.evidenceCompleteness.evaluationCoverage * 100) + '%' }}</p>
+          <p>Status: {{ family8.evidenceCompleteness.status }} · Coverage: {{ formatEvaluationCoverage(family8.evidenceCompleteness.evaluationCoverage, 'RATIO') }}</p>
           <h3>Render Authorization</h3>
-          <p>Status: {{ family8.renderAuthorization.status.replaceAll('_', ' ') }}</p>
-          <p *ngFor="let reason of family8.renderAuthorization.reasons">{{ reason.code }} · {{ reason.message }}</p>
+          <p>Canonical status: <code>{{ family8.renderAuthorization.status }}</code></p>
+          <div *ngFor="let reason of family8.renderAuthorization.reasons" class="authorization-reason">
+            <p><strong>Code:</strong> {{ reason.code || 'N/A' }} · <strong>Message:</strong> {{ reason.message }}</p>
+            <p><strong>Source:</strong> {{ reason.source || 'N/A' }}</p>
+            <p><strong>References:</strong> {{ reason.references.length ? reason.references.join(', ') : 'None referenced' }}</p>
+          </div>
         </section>
         <p class="assessment-verdict">{{ report.preRenderAssessment.verdict }}</p>
         <div class="assessment-columns" aria-label="Specialized applicability">
@@ -172,7 +176,7 @@
     <!-- Score Card -->
     <div class="score-card card" [ngClass]="getScoreClass()">
       <div class="score-display">
-        <div class="score-number">{{ report.overallScore.toFixed(1) }}</div>
+        <div class="score-number">{{ formatNullableScore(report.overallScore) }}</div>
         <div class="score-max">/100</div>
       </div>
       <div class="score-label">{{ report.scoreCard.label }}</div>
@@ -331,7 +335,7 @@
             </div>
             <div class="family-score"
                  [attr.title]="isUnscoredFamily(entry[0]) ? 'No evaluable evidence for this family; not a creative score' : null">
-              {{ entry[1] === null ? 'n/a' : entry[1].toFixed(0) }}
+              {{ formatNullableScore(entry[1]) }}
             </div>
           </div>
         </div>

@@ -76,21 +76,35 @@ public class MetaWriteCapabilityGuard {
   public void assertPublishAllowed(
       String presentedToken, String callerEnabled, String capability, String platformAccountId) {
     assertInternalCaller(presentedToken);
-    if (!writeEnabled || !publishEnabled || !"true".equalsIgnoreCase(callerEnabled)) {
+    if (!"true".equalsIgnoreCase(callerEnabled)) {
+      throw new ForbiddenException();
+    }
+    assertProviderConfigured(capability, platformAccountId, true);
+  }
+
+  /**
+   * Checks the service-owned provider configuration before a provider operation is claimed.
+   * Reconciliation calls this with {@code requireWriteFlags=false} because provider reads are not
+   * provider writes.
+   */
+  public void assertProviderConfigured(
+      String capability, String platformAccountId, boolean requireWriteFlags) {
+    if (requireWriteFlags && (!writeEnabled || !publishEnabled)) {
       throw new ForbiddenException();
     }
     String normalizedCapability = normalizeCapability(capability);
-    if (requireProviderConfiguration) {
-      if ("facebook_reels".equals(normalizedCapability)
-          && (!matchesConfiguredTarget(platformAccountId, facebookPageId)
-              || facebookPageAccessToken.isBlank())) {
-        throw new ForbiddenException();
-      }
-      if ("instagram_reels".equals(normalizedCapability)
-          && (!matchesConfiguredTarget(platformAccountId, instagramAccountId)
-              || instagramAccessToken.isBlank())) {
-        throw new ForbiddenException();
-      }
+    if (!requireProviderConfiguration) {
+      return;
+    }
+    if ("facebook_reels".equals(normalizedCapability)
+        && (!matchesConfiguredTarget(platformAccountId, facebookPageId)
+            || facebookPageAccessToken.isBlank())) {
+      throw new ForbiddenException();
+    }
+    if ("instagram_reels".equals(normalizedCapability)
+        && (!matchesConfiguredTarget(platformAccountId, instagramAccountId)
+            || instagramAccessToken.isBlank())) {
+      throw new ForbiddenException();
     }
   }
 

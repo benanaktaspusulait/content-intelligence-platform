@@ -79,7 +79,11 @@ public class FacebookReelsClient {
         return failed(
             PublishErrorClass.VALIDATION, "Facebook asset file is not available", null, null, null);
       }
-      String edge = graph("/" + command.platformAccountId() + "/video_reels");
+      String edge =
+          graph(
+              "/"
+                  + MetaClientSupport.pathSegment("facebookPageId", command.platformAccountId())
+                  + "/video_reels");
       MetaClientSupport.MetaResponse start =
           http.postForm(
               edge,
@@ -98,8 +102,21 @@ public class FacebookReelsClient {
       }
 
       String uploadUrl = text(start.body(), "upload_url");
+      String configuredRuploadBase =
+          properties.ruploadBaseUrl() == null || properties.ruploadBaseUrl().isBlank()
+              ? "https://rupload.facebook.com/video-upload"
+              : properties.ruploadBaseUrl();
       if (uploadUrl == null || uploadUrl.isBlank()) {
-        uploadUrl = properties.ruploadBaseUrl() + "/" + version() + "/" + videoId;
+        uploadUrl =
+            MetaClientSupport.requireHttpsEndpoint("ruploadBaseUrl", configuredRuploadBase)
+                + "/"
+                + version()
+                + "/"
+                + MetaClientSupport.pathSegment("facebookVideoId", videoId);
+      } else {
+        uploadUrl =
+            MetaClientSupport.requireSafeUploadUrl(
+                "facebookUploadUrl", uploadUrl, configuredRuploadBase);
       }
       upload(command.assetReference(), uploadUrl, token, videoId);
       waitUntilReady(videoId, token);
@@ -128,6 +145,13 @@ public class FacebookReelsClient {
         postId = videoId;
       }
       String permalink = lookupPermalink(videoId, token);
+      if (!hasPublicationEvidence(completed.body(), permalink)) {
+        return reconciliationRequired(
+            postId, videoId, requestId, "Facebook publish returned no publication evidence");
+      }
+      if (postId == null || postId.isBlank()) {
+        postId = videoId;
+      }
       return new PublishResult(
           PublishStatus.COMPLETED, postId, videoId, permalink, requestId, null, null, false);
     } catch (MetaProviderException failure) {
@@ -167,26 +191,31 @@ public class FacebookReelsClient {
     try {
       MetaClientSupport.MetaResponse response =
           http.get(
-              graph("/" + identity + "?fields=id,permalink_url"),
+              graph(
+                  "/"
+                      + MetaClientSupport.pathSegment("facebookProviderId", identity)
+                      + "?fields=id,permalink_url"),
               token,
               RetryPolicy.SubmissionPhase.SUBMISSION_NOT_STARTED);
       String resolvedId = text(response.body(), "id");
-      if (resolvedId == null || resolvedId.isBlank()) {
-        return new PublishResult(
-            PublishStatus.RECONCILIATION_REQUIRED,
+      String permalink = text(response.body(), "permalink_url");
+      if (resolvedId == null
+          || resolvedId.isBlank()
+          || !resolvedId.equals(identity)
+          || !hasPublicationEvidence(response.body(), permalink)) {
+        return reconciliationRequired(
             providerPostId,
             providerVideoId,
-            null,
             response.providerRequestId(),
-            PublishErrorClass.RECONCILIATION_REQUIRED.wireValue(),
-            "Facebook provider identity was not found",
-            true);
+            "Facebook provider identity was not published or did not match the request");
       }
+      String resolvedPostId = providerVideoId == null ? resolvedId : providerPostId;
+      String resolvedVideoId = providerVideoId == null ? providerVideoId : resolvedId;
       return new PublishResult(
           PublishStatus.COMPLETED,
-          providerPostId,
-          providerVideoId == null ? resolvedId : providerVideoId,
-          text(response.body(), "permalink_url"),
+          resolvedPostId,
+          resolvedVideoId,
+          permalink,
           response.providerRequestId(),
           null,
           null,
@@ -245,7 +274,10 @@ public class FacebookReelsClient {
     while (true) {
       MetaClientSupport.MetaResponse response =
           http.get(
-              graph("/" + videoId + "?fields=status"),
+              graph(
+                  "/"
+                      + MetaClientSupport.pathSegment("facebookVideoId", videoId)
+                      + "?fields=status"),
               token,
               RetryPolicy.SubmissionPhase.SUBMISSION_NOT_STARTED);
       JsonNode status = response.body().path("status");
@@ -280,7 +312,10 @@ public class FacebookReelsClient {
     try {
       return text(
           http.get(
-                  graph("/" + videoId + "?fields=permalink_url"),
+                  graph(
+                      "/"
+                          + MetaClientSupport.pathSegment("facebookVideoId", videoId)
+                          + "?fields=permalink_url"),
                   token,
                   RetryPolicy.SubmissionPhase.SUBMISSION_NOT_STARTED)
               .body(),
@@ -303,6 +338,26 @@ public class FacebookReelsClient {
     }
   }
 
+  private boolean hasPublicationEvidence(JsonNode body, String permalink) {
+    return (permalink != null && !permalink.isBlank())
+        || "PUBLISHED".equalsIgnoreCase(text(body, "video_state"))
+        || "PUBLISHED".equalsIgnoreCase(text(body, "video_status"))
+        || (text(body, "post_id") != null && !text(body, "post_id").isBlank());
+  }
+
+  private PublishResult reconciliationRequired(
+      String providerPostId, String providerVideoId, String providerRequestId, String message) {
+    return new PublishResult(
+        PublishStatus.RECONCILIATION_REQUIRED,
+        providerPostId,
+        providerVideoId,
+        null,
+        providerRequestId,
+        PublishErrorClass.RECONCILIATION_REQUIRED.wireValue(),
+        message,
+        true);
+  }
+
   private PublishResult failed(
       PublishErrorClass errorClass,
       String message,
@@ -321,7 +376,11 @@ public class FacebookReelsClient {
   }
 
   private String graph(String path) {
-    String base = trimTrailingSlash(properties.graphBaseUrl());
+    String configured = properties.graphBaseUrl();
+    String base =
+        MetaClientSupport.requireHttpsEndpoint(
+            "graphBaseUrl",
+            configured == null || configured.isBlank() ? "https://graph.facebook.com" : configured);
     return base + "/" + version() + (path.startsWith("/") ? path : "/" + path);
   }
 
@@ -330,7 +389,11 @@ public class FacebookReelsClient {
     if (value == null || value.isBlank()) {
       return "v26.0";
     }
-    return value.startsWith("v") ? value : "v" + value;
+    String normalized = value.startsWith("v") ? value : "v" + value;
+    if (!normalized.matches("v\\d+(?:\\.\\d+){1,2}")) {
+      throw new IllegalArgumentException("graphVersion is not a safe provider version");
+    }
+    return normalized;
   }
 
   private void sleep(java.time.Duration duration) {

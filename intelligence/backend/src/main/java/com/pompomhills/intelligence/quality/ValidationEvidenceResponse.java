@@ -32,7 +32,52 @@ public record ValidationEvidenceResponse(
     Instant expiresAt,
     boolean firstFrameEligible,
     boolean finalVideoEligible,
-    Map<String, Object> visualEvidence) {
+    Map<String, Object> visualEvidence,
+    String renderAuthorization) {
+
+  /** Compatibility constructor for callers that predate the Family 8 authorization field. */
+  public ValidationEvidenceResponse(
+      long validationRecordId,
+      long contentId,
+      long promptVersionId,
+      String promptSha256,
+      ValidationDecisionStatus status,
+      int blockerCount,
+      int criticalCount,
+      int warningCount,
+      String deterministicRulesetVersion,
+      String semanticProvider,
+      String semanticModelVersion,
+      String producibilityValidatorVersion,
+      UUID independentRevalidationId,
+      Instant independentlyRevalidatedAt,
+      Instant validatedAt,
+      Instant expiresAt,
+      boolean firstFrameEligible,
+      boolean finalVideoEligible,
+      Map<String, Object> visualEvidence) {
+    this(
+        validationRecordId,
+        contentId,
+        promptVersionId,
+        promptSha256,
+        status,
+        blockerCount,
+        criticalCount,
+        warningCount,
+        deterministicRulesetVersion,
+        semanticProvider,
+        semanticModelVersion,
+        producibilityValidatorVersion,
+        independentRevalidationId,
+        independentlyRevalidatedAt,
+        validatedAt,
+        expiresAt,
+        firstFrameEligible,
+        finalVideoEligible,
+        visualEvidence,
+        null);
+  }
 
   public ValidationEvidenceResponse(
       long validationRecordId,
@@ -70,6 +115,7 @@ public record ValidationEvidenceResponse(
         expiresAt,
         false,
         false,
-        Map.of());
+        Map.of(),
+        null);
   }
 }

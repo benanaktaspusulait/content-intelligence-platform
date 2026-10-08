@@ -85,7 +85,8 @@ public class ValidationEvidenceService {
         entity.getExpiresAt(),
         isFirstFrameEligible(entity),
         ValidationVisualEvidenceProjection.finalVideoEligible(visualRows),
-        ValidationVisualEvidenceProjection.project(visualRows));
+        ValidationVisualEvidenceProjection.project(visualRows),
+        QualityReportSnapshots.renderAuthorizationStatus(entity.getReportJson()));
   }
 
   private boolean isFirstFrameEligible(QualityValidationEntity entity) {

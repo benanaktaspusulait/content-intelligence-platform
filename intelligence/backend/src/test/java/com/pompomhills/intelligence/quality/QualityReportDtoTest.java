@@ -3,6 +3,7 @@ package com.pompomhills.intelligence.quality;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.List;
 import java.util.Map;
 import org.junit.jupiter.api.Test;
 
@@ -244,6 +245,161 @@ class QualityReportDtoTest {
     assertThat(((java.util.List<Map<String, Object>>) authorization.get("reasons")).get(0))
         .containsEntry("code", "REQUIRED_EVIDENCE_MISSING")
         .containsEntry("message", "Visual evidence pending");
+  }
+
+
+  @SuppressWarnings("unchecked")
+  @Test
+  void preservesNullableScoresAggregationAndFamily8AxesThroughJsonRoundTrip() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.setPropertyNamingStrategy(
+        com.fasterxml.jackson.databind.PropertyNamingStrategies.SNAKE_CASE);
+
+    QualityReportDto original =
+        mapper.readValue(
+            """
+            {
+              "overall_score": null,
+              "status": "NEEDS_REVISION",
+              "ruleset_version": "1.7",
+              "family_scores": {"scored_family": 82.5, "unscored_family": null},
+              "score_card": {"score": null, "label": "Not evaluated", "color": "gray"},
+              "pre_render_assessment": {
+                "aggregation": {
+                  "score": null,
+                  "scoredCount": 2,
+                  "denominator": 2,
+                  "passCount": 1,
+                  "failCount": 1,
+                  "unknownCount": 1,
+                  "notEvaluatedCount": 1,
+                  "notApplicableCount": 1,
+                  "serviceErrorCount": 1,
+                  "evaluationCoverage": 0.75,
+                  "aggregationState": "PARTIAL"
+                },
+                "family8": {
+                  "creativeQuality": {
+                    "creativeScore": null,
+                    "creativeGrade": "A",
+                    "familyScores": {"unscored_family": null}
+                  },
+                  "evidenceCompleteness": {
+                    "status": "PARTIAL",
+                    "evaluationCoverage": 0.75,
+                    "aggregation": {"notEvaluatedCount": 1}
+                  },
+                  "renderAuthorization": {
+                    "status": "BLOCKED_PENDING_EVIDENCE",
+                    "reasons": [
+                      {
+                        "code": "REQUIRED_EVIDENCE_MISSING",
+                        "source": "EVIDENCE_COMPLETENESS",
+                        "message": "Visual evidence pending",
+                        "references": ["first-frame", "silhouette"]
+                      },
+                      {
+                        "code": "ASSESSMENT_TECHNICAL_FAILURE",
+                        "source": "ASSESSMENT",
+                        "message": "Independent validation pending",
+                        "references": ["validation-record"]
+                      }
+                    ]
+                  },
+                  "legacy": {"readiness": "READY_TO_RENDER"}
+                }
+              }
+            }
+            """,
+            QualityReportDto.class);
+
+    QualityReportDto roundTripped =
+        mapper.readValue(mapper.writeValueAsString(original), QualityReportDto.class);
+    var json = mapper.readTree(mapper.writeValueAsString(roundTripped));
+    Map<String, Object> preRender = roundTripped.preRenderAssessment();
+    Map<String, Object> aggregation = (Map<String, Object>) preRender.get("aggregation");
+    Map<String, Object> family8 = (Map<String, Object>) preRender.get("family8");
+    Map<String, Object> creative = (Map<String, Object>) family8.get("creativeQuality");
+    Map<String, Object> evidence = (Map<String, Object>) family8.get("evidenceCompleteness");
+    Map<String, Object> authorization = (Map<String, Object>) family8.get("renderAuthorization");
+
+    assertThat(json.has("overall_score")).isTrue();
+    assertThat(json.get("overall_score").isNull()).isTrue();
+    assertThat(json.get("score_card").has("score")).isTrue();
+    assertThat(json.get("score_card").get("score").isNull()).isTrue();
+    assertThat(json.get("family_scores").get("unscored_family").isNull()).isTrue();
+    assertThat(json.get("pre_render_assessment").get("family8").get("creativeQuality")
+        .get("creativeScore").isNull()).isTrue();
+
+    assertThat(aggregation)
+        .containsEntry("scoredCount", 2)
+        .containsEntry("denominator", 2)
+        .containsEntry("passCount", 1)
+        .containsEntry("failCount", 1)
+        .containsEntry("unknownCount", 1)
+        .containsEntry("notEvaluatedCount", 1)
+        .containsEntry("notApplicableCount", 1)
+        .containsEntry("serviceErrorCount", 1)
+        .containsEntry("evaluationCoverage", 0.75)
+        .containsEntry("aggregationState", "PARTIAL");
+    assertThat(creative.get("creativeScore")).isNull();
+    assertThat(creative.get("creativeGrade")).isEqualTo("A");
+    assertThat(((Map<String, Object>) creative.get("familyScores")).get("unscored_family"))
+        .isNull();
+    assertThat(evidence.get("status")).isEqualTo("PARTIAL");
+    assertThat(evidence.get("evaluationCoverage")).isEqualTo(0.75);
+    assertThat(authorization.get("status")).isEqualTo("BLOCKED_PENDING_EVIDENCE");
+    var reasons = (java.util.List<Map<String, Object>>) authorization.get("reasons");
+    assertThat(reasons).hasSize(2);
+    assertThat(reasons.get(0))
+        .containsEntry("code", "REQUIRED_EVIDENCE_MISSING")
+        .containsEntry("source", "EVIDENCE_COMPLETENESS")
+        .containsEntry("message", "Visual evidence pending")
+        .containsEntry("references", java.util.List.of("first-frame", "silhouette"));
+    assertThat(reasons.get(1))
+        .containsEntry("code", "ASSESSMENT_TECHNICAL_FAILURE")
+        .containsEntry("source", "ASSESSMENT")
+        .containsEntry("message", "Independent validation pending")
+        .containsEntry("references", java.util.List.of("validation-record"));
+  }
+
+  @Test
+  void preservesNullableScoresInStoredSnapshotRoundTrip() {
+    java.util.Map<String, Double> familyScores = new java.util.LinkedHashMap<>();
+    familyScores.put("unscored_family", null);
+    QualityReportDto original =
+        new QualityReportDto(
+            null,
+            "NEEDS_REVISION",
+            "1.7",
+            0,
+            0,
+            0,
+            familyScores,
+            List.of(),
+            List.of(),
+            List.of(),
+            List.of(),
+            List.of(),
+            new ScoreCardDto(null, "Not evaluated", "gray"),
+            new TimelineDataDto(List.of(), List.of(), List.of()),
+            1.0,
+            List.of(),
+            List.of(),
+            List.of(),
+            List.of(),
+            List.of(),
+            List.of(),
+            Map.of(),
+            new QualityProvenanceDto("parser", "rules", "provider", "model", null, "PRE_RENDER"));
+
+    String stored = QualityReportSnapshots.toJson(original);
+    QualityReportDto restored = QualityReportSnapshots.fromJson(stored);
+
+    assertThat(stored).contains("\"overallScore\":null", "\"score\":null");
+    assertThat(restored.overallScore()).isNull();
+    assertThat(restored.scoreCard().score()).isNull();
+    assertThat(restored.familyScores().get("unscored_family")).isNull();
   }
 
 }

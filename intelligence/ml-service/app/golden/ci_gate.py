@@ -26,14 +26,21 @@ def verify_manifest_hashes(
         if not prompt_path.is_file():
             raise GoldenGateFailure(f"GOLDEN_FIXTURE_DRIFT: missing {golden_id}")
         actual = hashlib.sha256(prompt_path.read_bytes()).hexdigest()
-        if actual != expected_hash or (approved_hashes is not None and actual != approved_hashes.get(golden_id)):
+        if actual != expected_hash or (
+            approved_hashes is not None
+            and actual != approved_hashes.get(golden_id)
+        ):
             raise GoldenGateFailure(f"GOLDEN_FIXTURE_DRIFT: hash mismatch for {golden_id}")
 
 
 def evaluate_ci_gate(report: dict[str, Any], *, provider_mode: str = "FROZEN_DETERMINISTIC") -> str:
     if provider_mode != "FROZEN_DETERMINISTIC":
         raise GoldenGateFailure("LIVE_PROVIDER_NOT_ALLOWED: deterministic Golden CI requires frozen mode")
-    required = ("newSemanticRegressions", "unexpectedPolicyRegressions")
+    required = (
+        "newSemanticRegressions",
+        "unexpectedPolicyRegressions",
+        "representationMismatches",
+    )
     if any(
         key not in report
         or isinstance(report[key], bool)
@@ -45,5 +52,7 @@ def evaluate_ci_gate(report: dict[str, Any], *, provider_mode: str = "FROZEN_DET
     if report["newSemanticRegressions"] != 0:
         return "FAIL"
     if report["unexpectedPolicyRegressions"] != 0:
+        return "FAIL"
+    if report["representationMismatches"] != 0:
         return "FAIL"
     return "PASS"

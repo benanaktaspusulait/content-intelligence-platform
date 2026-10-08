@@ -25,6 +25,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.test.web.client.ExpectedCount;
 import org.springframework.test.web.client.MockRestServiceServer;
 import org.springframework.web.client.RestClient;
 
@@ -147,7 +148,9 @@ class FacebookReelsClientTest {
                   MediaType.APPLICATION_JSON));
       server
           .expect(requestTo(GRAPH + "/v26.0/page-1/video_reels"))
-          .andRespond(withSuccess("{\"success\":true}", MediaType.APPLICATION_JSON));
+          .andRespond(
+              withSuccess(
+                  "{\"success\":true,\"post_id\":\"video-2\"}", MediaType.APPLICATION_JSON));
       server
           .expect(requestTo(GRAPH + "/v26.0/video-2?fields=permalink_url"))
           .andRespond(withSuccess("{}", MediaType.APPLICATION_JSON));
@@ -237,7 +240,9 @@ class FacebookReelsClientTest {
                 MediaType.APPLICATION_JSON));
     server
         .expect(requestTo(GRAPH + "/v26.0/page-1/video_reels"))
-        .andRespond(withSuccess("{\"success\":true}", MediaType.APPLICATION_JSON));
+        .andRespond(
+            withSuccess(
+                "{\"success\":true,\"post_id\":\"video-retry\"}", MediaType.APPLICATION_JSON));
     server
         .expect(requestTo(GRAPH + "/v26.0/video-retry?fields=permalink_url"))
         .andRespond(withSuccess("{}", MediaType.APPLICATION_JSON));
@@ -333,6 +338,139 @@ class FacebookReelsClientTest {
         .isEqualTo(PublishErrorClass.RECONCILIATION_REQUIRED.wireValue());
     assertThat(result.reconciliationRequired()).isTrue();
     server.verify();
+  }
+
+  @Test
+  void finishWithoutPublicationEvidenceRemainsReconciliationRequired() {
+    RestClient.Builder builder = RestClient.builder();
+    MockRestServiceServer server = MockRestServiceServer.bindTo(builder).build();
+    FacebookReelsClient client = new FacebookReelsClient(builder, OBJECT_MAPPER, properties(1));
+
+    server
+        .expect(requestTo(GRAPH + "/v26.0/page-1/video_reels"))
+        .andRespond(withSuccess("{\"video_id\":\"video-no-proof\"}", MediaType.APPLICATION_JSON));
+    server
+        .expect(requestTo(RUPLOAD + "/v26.0/video-no-proof"))
+        .andRespond(withSuccess("{\"success\":true}", MediaType.APPLICATION_JSON));
+    server
+        .expect(requestTo(GRAPH + "/v26.0/video-no-proof?fields=status"))
+        .andRespond(
+            withSuccess(
+                "{\"status\":{\"processing_phase\":{\"status\":\"complete\"}}}",
+                MediaType.APPLICATION_JSON));
+    server
+        .expect(requestTo(GRAPH + "/v26.0/page-1/video_reels"))
+        .andRespond(withSuccess("{\"success\":true}", MediaType.APPLICATION_JSON));
+    server
+        .expect(requestTo(GRAPH + "/v26.0/video-no-proof?fields=permalink_url"))
+        .andRespond(withSuccess("{\"id\":\"video-no-proof\"}", MediaType.APPLICATION_JSON));
+
+    PublishResult result = client.publish(command("https://cdn.example/video.mp4", "caption"));
+
+    assertThat(result.status()).isEqualTo(PublishStatus.RECONCILIATION_REQUIRED);
+    assertThat(result.reconciliationRequired()).isTrue();
+    server.verify();
+  }
+
+  @Test
+  void finishFailureAfterUploadIsReconciliationRequired() {
+    RestClient.Builder builder = RestClient.builder();
+    MockRestServiceServer server = MockRestServiceServer.bindTo(builder).build();
+    FacebookReelsClient client = new FacebookReelsClient(builder, OBJECT_MAPPER, properties(1));
+
+    server
+        .expect(requestTo(GRAPH + "/v26.0/page-1/video_reels"))
+        .andRespond(
+            withSuccess("{\"video_id\":\"video-finish-failure\"}", MediaType.APPLICATION_JSON));
+    server
+        .expect(requestTo(RUPLOAD + "/v26.0/video-finish-failure"))
+        .andRespond(withSuccess("{\"success\":true}", MediaType.APPLICATION_JSON));
+    server
+        .expect(requestTo(GRAPH + "/v26.0/video-finish-failure?fields=status"))
+        .andRespond(
+            withSuccess(
+                "{\"status\":{\"processing_phase\":{\"status\":\"complete\"}}}",
+                MediaType.APPLICATION_JSON));
+    server
+        .expect(requestTo(GRAPH + "/v26.0/page-1/video_reels"))
+        .andRespond(
+            withStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body("{\"error\":{\"message\":\"finish unavailable\"}}"));
+
+    PublishResult result = client.publish(command("https://cdn.example/video.mp4", "caption"));
+
+    assertThat(result.status()).isEqualTo(PublishStatus.RECONCILIATION_REQUIRED);
+    assertThat(result.providerVideoId()).isEqualTo("video-finish-failure");
+    server.verify();
+  }
+
+  @Test
+  void reconciliationWithoutPublishedEvidenceRemainsUncertain() {
+    RestClient.Builder builder = RestClient.builder();
+    MockRestServiceServer server = MockRestServiceServer.bindTo(builder).build();
+    FacebookReelsClient client = new FacebookReelsClient(builder, OBJECT_MAPPER, properties(1));
+    server
+        .expect(requestTo(GRAPH + "/v26.0/video-upload-session?fields=id,permalink_url"))
+        .andExpect(method(HttpMethod.GET))
+        .andRespond(withSuccess("{\"id\":\"video-upload-session\"}", MediaType.APPLICATION_JSON));
+
+    PublishResult result = client.reconcile("page-1", null, "video-upload-session");
+
+    assertThat(result.status()).isEqualTo(PublishStatus.RECONCILIATION_REQUIRED);
+    assertThat(result.reconciliationRequired()).isTrue();
+    server.verify();
+  }
+
+  @Test
+  void reconciliationRejectsAProviderObjectDifferentFromTheRequestedIdentity() {
+    RestClient.Builder builder = RestClient.builder();
+    MockRestServiceServer server = MockRestServiceServer.bindTo(builder).build();
+    FacebookReelsClient client = new FacebookReelsClient(builder, OBJECT_MAPPER, properties(1));
+    server
+        .expect(requestTo(GRAPH + "/v26.0/video-requested?fields=id,permalink_url"))
+        .andRespond(
+            withSuccess(
+                "{\"id\":\"different-video\",\"permalink_url\":\"https://facebook.example/p/different\"}",
+                MediaType.APPLICATION_JSON));
+
+    PublishResult result = client.reconcile("page-1", null, "video-requested");
+
+    assertThat(result.status()).isEqualTo(PublishStatus.RECONCILIATION_REQUIRED);
+    assertThat(result.reconciliationRequired()).isTrue();
+    server.verify();
+  }
+
+  @Test
+  void rejectsUnsafeProviderUploadUrlsBeforeSendingOAuth() {
+    for (String unsafeUploadUrl :
+        List.of(
+            "http://rupload.facebook.test/video-upload/session-unsafe",
+            "https://user@rupload.facebook.test/video-upload/session-unsafe",
+            "https://rupload.facebook.test/video-upload/session-unsafe?access_token=secret",
+            "https://rupload.facebook.test/video-upload/../evil",
+            "https://rupload.facebook.test/video-upload/./session-unsafe",
+            "https://rupload.facebook.test/video-upload/%2e%2e/evil",
+            "https://rupload.facebook.test/video-upload/%2E/session-unsafe")) {
+      RestClient.Builder builder = RestClient.builder();
+      MockRestServiceServer server = MockRestServiceServer.bindTo(builder).build();
+      FacebookReelsClient client = new FacebookReelsClient(builder, OBJECT_MAPPER, properties(1));
+      server
+          .expect(requestTo(GRAPH + "/v26.0/page-1/video_reels"))
+          .andRespond(
+              withSuccess(
+                  "{\"video_id\":\"video-unsafe-upload\",\"upload_url\":\""
+                      + unsafeUploadUrl
+                      + "\"}",
+                  MediaType.APPLICATION_JSON));
+      server.expect(ExpectedCount.never(), requestTo(unsafeUploadUrl));
+
+      PublishResult result = client.publish(command("https://cdn.example/video.mp4", "caption"));
+
+      assertThat(result.status()).isEqualTo(PublishStatus.RECONCILIATION_REQUIRED);
+      assertThat(result.reconciliationRequired()).isTrue();
+      server.verify();
+    }
   }
 
   private MetaPublisherProperties properties(int maxAttempts) {

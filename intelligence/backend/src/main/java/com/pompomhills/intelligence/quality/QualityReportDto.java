@@ -6,7 +6,7 @@ import java.util.Map;
 /**
  * Quality validation report from ML service.
  *
- * @param overallScore 0-100 quality score
+ * @param overallScore 0-100 quality score, or null when the report is not evaluable
  * @param status RENDER_READY, NEEDS_REVISION, BLOCKED, or SERVICE_ERROR
  * @param rulesetVersion Ruleset version used
  * @param blockerCount Number of blocker-level failures
@@ -33,7 +33,7 @@ import java.util.Map;
  * @param canonicalEvidenceConfidence Conservative confidence of canonical attempt evidence, or null when no attempt was parsed
  */
 public record QualityReportDto(
-    double overallScore,
+    Double overallScore,
     String status,
     String rulesetVersion,
     int blockerCount,
@@ -96,7 +96,7 @@ public record QualityReportDto(
    * Older service/tests do not provide prompt-intelligence fields yet.
    */
   public QualityReportDto(
-      double overallScore,
+      Double overallScore,
       String status,
       String rulesetVersion,
       int blockerCount,

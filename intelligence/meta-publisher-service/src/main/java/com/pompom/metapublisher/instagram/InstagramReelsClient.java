@@ -88,7 +88,11 @@ public class InstagramReelsClient {
             null);
       }
 
-      String mediaEdge = graph("/" + command.platformAccountId() + "/media");
+      String mediaEdge =
+          graph(
+              "/"
+                  + MetaClientSupport.pathSegment("instagramAccountId", command.platformAccountId())
+                  + "/media");
       Map<String, String> container = new LinkedHashMap<>();
       container.put("media_type", "REELS");
       container.put("video_url", hosted.url());
@@ -111,19 +115,19 @@ public class InstagramReelsClient {
       waitUntilReady(containerId, token);
       MetaClientSupport.MetaResponse published =
           http.postForm(
-              graph("/" + command.platformAccountId() + "/media_publish"),
+              graph(
+                  "/"
+                      + MetaClientSupport.pathSegment(
+                          "instagramAccountId", command.platformAccountId())
+                      + "/media_publish"),
               token,
               Map.of("creation_id", containerId),
               RetryPolicy.SubmissionPhase.SUBMISSION_STARTED);
       requestId = firstNonBlank(published.providerRequestId(), requestId);
       mediaId = text(published.body(), "id");
       if (mediaId == null || mediaId.isBlank()) {
-        return failed(
-            PublishErrorClass.PROVIDER_REJECTED,
-            "Instagram did not return a published media id",
-            requestId,
-            null,
-            containerId);
+        return reconciliationRequired(
+            null, containerId, requestId, "Instagram media publish returned no published media id");
       }
       String permalink = lookupPermalink(mediaId, token);
       return new PublishResult(
@@ -168,26 +172,32 @@ public class InstagramReelsClient {
     try {
       MetaClientSupport.MetaResponse response =
           http.get(
-              graph("/" + identity + "?fields=id,permalink"),
+              graph(
+                  "/"
+                      + MetaClientSupport.pathSegment("instagramProviderId", identity)
+                      + "?fields=id,permalink"),
               token,
               RetryPolicy.SubmissionPhase.SUBMISSION_NOT_STARTED);
       String resolvedId = text(response.body(), "id");
-      if (resolvedId == null || resolvedId.isBlank()) {
-        return new PublishResult(
-            PublishStatus.RECONCILIATION_REQUIRED,
+      String permalink = text(response.body(), "permalink");
+      if (resolvedId == null
+          || resolvedId.isBlank()
+          || !resolvedId.equals(identity)
+          || permalink == null
+          || permalink.isBlank()) {
+        return reconciliationRequired(
             providerPostId,
             providerVideoId,
-            null,
             response.providerRequestId(),
-            PublishErrorClass.RECONCILIATION_REQUIRED.wireValue(),
-            "Instagram provider identity was not found",
-            true);
+            "Instagram provider object was not published or did not match the request");
       }
+      String resolvedPostId = providerPostId == null ? null : resolvedId;
+      String resolvedVideoId = providerPostId == null ? resolvedId : providerVideoId;
       return new PublishResult(
           PublishStatus.COMPLETED,
-          providerPostId == null ? resolvedId : providerPostId,
-          providerVideoId,
-          text(response.body(), "permalink"),
+          resolvedPostId,
+          resolvedVideoId,
+          permalink,
           response.providerRequestId(),
           null,
           null,
@@ -198,10 +208,11 @@ public class InstagramReelsClient {
   }
 
   public static String truncateCaption(String caption) {
-    if (caption == null || caption.length() <= CAPTION_LIMIT) {
+    if (caption == null || caption.codePointCount(0, caption.length()) <= CAPTION_LIMIT) {
       return caption == null ? "" : caption;
     }
-    return caption.substring(0, CAPTION_LIMIT - 1).stripTrailing() + "…";
+    int end = caption.offsetByCodePoints(0, CAPTION_LIMIT - 1);
+    return caption.substring(0, end).stripTrailing() + "…";
   }
 
   private void waitUntilReady(String containerId, String token) {
@@ -209,7 +220,10 @@ public class InstagramReelsClient {
     while (true) {
       MetaClientSupport.MetaResponse response =
           http.get(
-              graph("/" + containerId + "?fields=status_code,status"),
+              graph(
+                  "/"
+                      + MetaClientSupport.pathSegment("instagramContainerId", containerId)
+                      + "?fields=status_code,status"),
               token,
               RetryPolicy.SubmissionPhase.SUBMISSION_NOT_STARTED);
       String code = text(response.body(), "status_code");
@@ -242,7 +256,10 @@ public class InstagramReelsClient {
     try {
       return text(
           http.get(
-                  graph("/" + mediaId + "?fields=permalink"),
+                  graph(
+                      "/"
+                          + MetaClientSupport.pathSegment("instagramMediaId", mediaId)
+                          + "?fields=permalink"),
                   token,
                   RetryPolicy.SubmissionPhase.SUBMISSION_NOT_STARTED)
               .body(),
@@ -280,6 +297,19 @@ public class InstagramReelsClient {
     return configured == null ? Boolean.toString(properties.shareToFeed()) : configured;
   }
 
+  private PublishResult reconciliationRequired(
+      String providerPostId, String providerVideoId, String providerRequestId, String message) {
+    return new PublishResult(
+        PublishStatus.RECONCILIATION_REQUIRED,
+        providerPostId,
+        providerVideoId,
+        null,
+        providerRequestId,
+        PublishErrorClass.RECONCILIATION_REQUIRED.wireValue(),
+        message,
+        true);
+  }
+
   private PublishResult failed(
       PublishErrorClass errorClass,
       String message,
@@ -298,16 +328,18 @@ public class InstagramReelsClient {
   }
 
   private String graph(String path) {
-    String base = properties.graphBaseUrl();
-    if (base == null || base.isBlank()) {
-      base = "https://graph.facebook.com";
-    }
-    base = base.replaceAll("/+$", "");
-    String version = properties.graphVersion();
-    if (version == null || version.isBlank()) {
-      version = "v26.0";
-    } else if (!version.startsWith("v")) {
+    String configured = properties.graphBaseUrl();
+    String base =
+        MetaClientSupport.requireHttpsEndpoint(
+            "graphBaseUrl",
+            configured == null || configured.isBlank() ? "https://graph.facebook.com" : configured);
+    String value = properties.graphVersion();
+    String version = value == null || value.isBlank() ? "v26.0" : value;
+    if (!version.startsWith("v")) {
       version = "v" + version;
+    }
+    if (!version.matches("v\\d+(?:\\.\\d+){1,2}")) {
+      throw new IllegalArgumentException("graphVersion is not a safe provider version");
     }
     return base + "/" + version + (path.startsWith("/") ? path : "/" + path);
   }

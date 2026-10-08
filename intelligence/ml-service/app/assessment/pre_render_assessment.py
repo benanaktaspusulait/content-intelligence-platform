@@ -187,7 +187,7 @@ def build_pre_render_assessment(ir: dict[str, Any], parser: Any, report: Any, ru
         },
         "grade": grade,
         "creative_grade": creative_grade,
-        "creative_score": round(float(report.overall_score), 2),
+        "creative_score": None if report.overall_score is None else round(float(report.overall_score), 2),
         "readiness": readiness,
         "prompt_stage": prompt_stage,
         "assessment_coverage_percent": coverage,

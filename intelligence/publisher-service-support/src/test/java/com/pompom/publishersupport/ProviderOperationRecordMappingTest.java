@@ -23,7 +23,7 @@ class ProviderOperationRecordMappingTest {
         .anySatisfy(
             uniqueConstraint ->
                 assertThat(uniqueConstraint.columnNames())
-                    .containsExactly("command_idempotency_key"));
+                    .containsExactly("publisher_capability", "command_idempotency_key"));
     assertThat(ProviderOperationRecord.class.getDeclaredFields())
         .noneMatch(field -> field.getName().toLowerCase().contains("token"));
     assertThat(ProviderOperationRecord.class.getDeclaredFields())
@@ -72,7 +72,20 @@ class ProviderOperationRecordMappingTest {
   }
 
   @Test
+  void migrationScopesExistingRowsByCapability() throws IOException {
+    String migration = readMigration("V2__scope_provider_operations_by_capability.sql");
+
+    assertThat(migration)
+        .contains("publisher_capability")
+        .contains("facebook_reels")
+        .contains("instagram_reels")
+        .contains("uq_provider_operation_capability_key")
+        .contains("idx_provider_operation_capability_attempt");
+  }
+
+  @Test
   void explicitlyMapsTheRequiredOperationColumns() {
+    assertThat(column("publisherCapability").name()).isEqualTo("publisher_capability");
     assertThat(column("commandIdempotencyKey").name()).isEqualTo("command_idempotency_key");
     assertThat(column("providerRequestId").name()).isEqualTo("provider_request_id");
     assertThat(column("commandFingerprint").name()).isEqualTo("command_fingerprint");
@@ -90,10 +103,12 @@ class ProviderOperationRecordMappingTest {
   }
 
   private String readMigration() throws IOException {
+    return readMigration("V1__create_provider_operation_records.sql");
+  }
+
+  private String readMigration(String migrationName) throws IOException {
     try (InputStream input =
-        getClass()
-            .getResourceAsStream(
-                "/db/publisher-support-migration/V1__create_provider_operation_records.sql")) {
+        getClass().getResourceAsStream("/db/publisher-support-migration/" + migrationName)) {
       if (input == null) {
         throw new AssertionError("provider operation migration is missing");
       }

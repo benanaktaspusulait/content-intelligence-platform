@@ -30,6 +30,7 @@ import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.NullSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.ArgumentCaptor;
 import org.springframework.transaction.TransactionDefinition;
@@ -157,14 +158,20 @@ class RenderJobQueueServiceTest {
     verify(repository, never()).save(any());
   }
 
-  @ParameterizedTest(name = "rejects queue admission for canonical authorization {0}")
+  @ParameterizedTest(
+      name = "rejects queue admission for canonical authorization not authorized [{0}]")
+  @NullSource
   @ValueSource(
       strings = {
+        "",
+        "   ",
         "BLOCKED_PENDING_EVIDENCE",
         "BLOCKED_CREATIVE_FAILURE",
-        "BLOCKED_TECHNICAL_FAILURE"
+        "BLOCKED_TECHNICAL_FAILURE",
+        "SOMETHING_NEW"
       })
-  void rejectsQueueAdmissionWhenCanonicalRenderAuthorizationIsBlocked(String renderAuthorization) {
+  void rejectsQueueAdmissionWhenCanonicalRenderAuthorizationIsNotAuthorized(
+      String renderAuthorization) {
     when(repository.findByIdempotencyKey("key-blocked")).thenReturn(Optional.empty());
     when(evidenceClient.getEvidence(42L))
         .thenReturn(withRenderAuthorization(renderReadyEvidence(), renderAuthorization));
@@ -284,7 +291,8 @@ class RenderJobQueueServiceTest {
         now.plusSeconds(3600),
         false,
         true,
-        visualPasses());
+        visualPasses(),
+        "AUTHORIZED");
   }
 
   private Map<String, Object> visualPasses() {

@@ -60,6 +60,17 @@ class ValidationEvidencePersistenceTest {
   }
 
   @Test
+  void persistsAndReadsBackARecordWithNullOverallScore() {
+    QualityValidationEntity entity = baseEntity();
+    entity.setOverallScore(null);
+
+    QualityValidationEntity saved = repository.saveAndFlush(entity);
+
+    QualityValidationEntity reloaded = repository.findById(saved.getId()).orElseThrow();
+    assertThat(reloaded.getOverallScore()).isNull();
+  }
+
+  @Test
   void rejectsNegativeBlockerCountAtTheDatabase() {
     QualityValidationEntity entity = baseEntity();
     entity.setBlockerCount(-1);

@@ -32,8 +32,12 @@ def build_regression_report(
     for assertion in comparison["assertions"]:
         assets.setdefault(assertion["assetId"], {"assertions": []})["assertions"].append(assertion)
     for asset_id, item in assets.items():
-        item["displayName"] = (truth.get("assets", {}).get(asset_id) or {}).get("displayName", asset_id)
-        item["corpusRole"] = (baseline.get("assets", {}).get(asset_id) or {}).get("corpusRole", "UNKNOWN")
+        item["displayName"] = (
+            (truth.get("assets", {}).get(asset_id) or {}).get("displayName", asset_id)
+        )
+        item["corpusRole"] = (
+            (baseline.get("assets", {}).get(asset_id) or {}).get("corpusRole", "UNKNOWN")
+        )
     summary = {
         "assets": len(assets),
         "goldAssertions": len(comparison["assertions"]),
@@ -44,6 +48,7 @@ def build_regression_report(
         "newSemanticRegressions": comparison["newSemanticRegressions"],
         "expectedPolicyChanges": comparison["expectedPolicyChanges"],
         "unexpectedPolicyRegressions": comparison["unexpectedPolicyRegressions"],
+        "representationMismatches": comparison["representationMismatches"],
         "goldReviewRequired": comparison["goldReviewRequired"],
     }
     return {
@@ -81,13 +86,27 @@ def render_markdown(report: dict[str, Any]) -> str:
         "newSemanticRegressions": "NEW semantic regressions",
         "expectedPolicyChanges": "Expected policy changes",
         "unexpectedPolicyRegressions": "Unexpected policy regressions",
+        "representationMismatches": "Representation mismatches",
         "goldReviewRequired": "Gold review required",
     }
     lines.extend(f"| {labels[key]} | {summary[key]} |" for key in labels)
     lines.extend(["", "## Asset Matrix", "", "| Asset | Corpus role | Assertions |", "|---|---|---:|"])
     for asset_id, asset in sorted(report["assets"].items()):
-        lines.append(f"| {asset['displayName']} (`{asset_id}`) | {asset['corpusRole']} | {len(asset['assertions'])} |")
-    lines.extend(["", "## Full-stack Fingerprint", "", "```json", json.dumps(report["fingerprint"], indent=2, sort_keys=True), "```", ""])
+        lines.append(
+            f"| {asset['displayName']} (`{asset_id}`) | "
+            f"{asset['corpusRole']} | {len(asset['assertions'])} |"
+        )
+    lines.extend(
+        [
+            "",
+            "## Full-stack Fingerprint",
+            "",
+            "```json",
+            json.dumps(report["fingerprint"], indent=2, sort_keys=True),
+            "```",
+            "",
+        ]
+    )
     return "\n".join(lines)
 
 

@@ -178,7 +178,8 @@ class RenderJobIdempotencyPostgresTest {
         now.plusSeconds(3600),
         false,
         true,
-        visualPasses());
+        visualPasses(),
+        "AUTHORIZED");
   }
 
   private Map<String, Object> visualPasses() {

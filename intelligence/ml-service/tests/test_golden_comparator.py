@@ -40,9 +40,10 @@ def test_policy_only_change_is_expected_when_policy_version_changed() -> None:
     assert result.is_unexpected_policy_regression is False
 
 
-def test_release_gate_requires_zero_new_and_unexpected_regressions() -> None:
+def test_release_gate_requires_zero_new_unexpected_and_representation_regressions() -> None:
     assert GoldenRegressionReport(new_semantic_regressions=1, unexpected_policy_regressions=0).release_gate == "FAIL"
     assert GoldenRegressionReport(new_semantic_regressions=0, unexpected_policy_regressions=1).release_gate == "FAIL"
+    assert GoldenRegressionReport(representation_mismatches=1).release_gate == "FAIL"
     assert GoldenRegressionReport(new_semantic_regressions=0, unexpected_policy_regressions=0).release_gate == "PASS"
 
 
@@ -464,3 +465,37 @@ def test_family6_stored_baseline_and_canonical_override_are_cohort_safe() -> Non
     }
     passed = compare_cohort(truth, baseline_with_canonical, current)
     assert passed["assertions"][0]["classification"] == "PASS"
+
+
+def test_cohort_representation_mismatch_is_independent_release_metric() -> None:
+    from app.golden.comparator import compare_cohort
+
+    truth = {"assets": {"asset-1": {"dimensions": {}}}}
+    snapshot = {
+        "goldenId": "asset-1",
+        "status": "OK",
+        "report": {"overallScore": 82.5},
+        "assessment": {"creative_score": 82.5},
+        "apiReport": {
+            "overall_score": 82.5,
+            "score_card": {"score": 0.0},
+        },
+    }
+
+    result = compare_cohort(
+        truth,
+        {"assets": {"asset-1": snapshot}},
+        {"assets": {"asset-1": snapshot}},
+    )
+
+    assert result["representationMismatches"] == 1
+    representation_rows = [
+        row for row in result["assertions"]
+        if row["classification"] == "REPRESENTATION_MISMATCH"
+    ]
+    assert len(representation_rows) == 1
+    assert representation_rows[0]["category"] == "REPRESENTATION"
+    assert representation_rows[0]["path"] == "overall_score"
+    assert result["newSemanticRegressions"] == 0
+    assert result["unexpectedPolicyRegressions"] == 0
+    assert result["releaseGate"] == "FAIL"
