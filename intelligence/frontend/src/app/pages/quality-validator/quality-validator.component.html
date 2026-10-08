@@ -49,6 +49,8 @@
     </div>
   </section>
 
+  <app-post-family-workflow *ngIf="detailMode" [prompt]="prompt" [contentId]="contentId" [promptVersionId]="promptVersionId" [sourcePath]="selectedPromptPath" [videoPath]="selectedWorkspaceVideoPath" (saveFinal)="saveWorkflowFinalPrompt($event)"></app-post-family-workflow>
+
   <!-- Prompt detail/editor is intentionally a separate route from the folder picker. -->
   <div *ngIf="detailMode" id="prompt-editor" class="prompt-section card">
     <div class="card-header">

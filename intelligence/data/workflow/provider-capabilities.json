@@ -1,0 +1,383 @@
+{
+  "version": "post-family-capabilities-v1",
+  "models": {
+    "SEEDANCE_2_0_MINI": {
+      "apiModelId": "byte-plus-seedance-2-mini",
+      "version": "openart-cli-schema-2026-10-08",
+      "modes": {
+        "image2video": {
+          "type": "object",
+          "properties": {
+            "prompt": {
+              "default": "",
+              "type": "string",
+              "maxLength": 30000
+            },
+            "videoCount": {
+              "default": 1,
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 8
+            },
+            "duration": {
+              "default": 5,
+              "type": "integer",
+              "minimum": 4,
+              "maximum": 15
+            },
+            "aspectRatio": {
+              "default": "16:9",
+              "type": "string",
+              "enum": [
+                "16:9",
+                "4:3",
+                "1:1",
+                "3:4",
+                "9:16",
+                "21:9",
+                "adaptive",
+                "auto"
+              ]
+            },
+            "resolution": {
+              "default": "720p",
+              "type": "string",
+              "enum": [
+                "480p",
+                "720p"
+              ]
+            },
+            "startFrame": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "const": "image"
+                },
+                "id": {
+                  "type": "string"
+                },
+                "url": {
+                  "type": "string"
+                },
+                "label": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "type",
+                "id",
+                "url",
+                "label"
+              ],
+              "additionalProperties": false
+            },
+            "endFrame": {
+              "anyOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "const": "image"
+                    },
+                    "id": {
+                      "type": "string"
+                    },
+                    "url": {
+                      "type": "string"
+                    },
+                    "label": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "type",
+                    "id",
+                    "url",
+                    "label"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "generateAudio": {
+              "default": true,
+              "type": "boolean"
+            },
+            "seed": {
+              "default": -1,
+              "type": "number"
+            }
+          },
+          "required": [
+            "startFrame"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "provenance": {
+        "source": "CONNECTED_OPENART_MODEL_FORM",
+        "command": "openart model form byte-plus-seedance-2-mini image2video --json --no-input",
+        "verifiedDate": "2026-10-08",
+        "schemaSha256": "e5458973228db9a1a6fd2185322e98e4f33595496e8c12cf9f22d69206ea1b94",
+        "liveGenerationVerified": false,
+        "cliVersion": "0.1.1 (commit 85fa0ad; built 2026-08-31)"
+      }
+    },
+    "SEEDANCE_2_0": {
+      "apiModelId": "byte-plus-seedance-2",
+      "version": "openart-cli-schema-2026-10-08",
+      "modes": {
+        "image2video": {
+          "type": "object",
+          "properties": {
+            "prompt": {
+              "default": "",
+              "type": "string",
+              "maxLength": 30000
+            },
+            "videoCount": {
+              "default": 1,
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 8
+            },
+            "duration": {
+              "default": 5,
+              "type": "integer",
+              "minimum": 4,
+              "maximum": 15
+            },
+            "aspectRatio": {
+              "default": "16:9",
+              "type": "string",
+              "enum": [
+                "16:9",
+                "4:3",
+                "1:1",
+                "3:4",
+                "9:16",
+                "21:9",
+                "adaptive",
+                "auto"
+              ]
+            },
+            "resolution": {
+              "default": "720p",
+              "type": "string",
+              "enum": [
+                "480p",
+                "720p",
+                "1080p",
+                "4k"
+              ]
+            },
+            "startFrame": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "const": "image"
+                },
+                "id": {
+                  "type": "string"
+                },
+                "url": {
+                  "type": "string"
+                },
+                "label": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "type",
+                "id",
+                "url",
+                "label"
+              ],
+              "additionalProperties": false
+            },
+            "endFrame": {
+              "anyOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "const": "image"
+                    },
+                    "id": {
+                      "type": "string"
+                    },
+                    "url": {
+                      "type": "string"
+                    },
+                    "label": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "type",
+                    "id",
+                    "url",
+                    "label"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "generateAudio": {
+              "default": true,
+              "type": "boolean"
+            },
+            "seed": {
+              "default": -1,
+              "type": "number"
+            },
+            "mode": {
+              "default": "normal",
+              "type": "string",
+              "enum": [
+                "normal",
+                "fast"
+              ]
+            }
+          },
+          "required": [
+            "startFrame"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "provenance": {
+        "source": "CONNECTED_OPENART_MODEL_FORM",
+        "command": "openart model form byte-plus-seedance-2 image2video --json --no-input",
+        "verifiedDate": "2026-10-08",
+        "schemaSha256": "0847bde8a326697edf41ceefd479ba654a27f9773513b2cc71a70edfc8de6dee",
+        "liveGenerationVerified": false,
+        "cliVersion": "0.1.1 (commit 85fa0ad; built 2026-08-31)"
+      }
+    },
+    "SEEDANCE_2_5": {
+      "apiModelId": "byte-plus-seedance-2-5",
+      "version": "openart-cli-schema-2026-10-08",
+      "modes": {
+        "image2video": {
+          "type": "object",
+          "properties": {
+            "prompt": {
+              "default": "",
+              "type": "string",
+              "maxLength": 30000
+            },
+            "videoCount": {
+              "default": 1,
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 8
+            },
+            "duration": {
+              "default": 5,
+              "type": "integer",
+              "minimum": 4,
+              "maximum": 30
+            },
+            "resolution": {
+              "default": "480p",
+              "type": "string",
+              "enum": [
+                "480p",
+                "720p",
+                "1080p"
+              ]
+            },
+            "startFrame": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "const": "image"
+                },
+                "id": {
+                  "type": "string"
+                },
+                "url": {
+                  "type": "string"
+                },
+                "label": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "type",
+                "id",
+                "url",
+                "label"
+              ],
+              "additionalProperties": false
+            },
+            "endFrame": {
+              "anyOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "const": "image"
+                    },
+                    "id": {
+                      "type": "string"
+                    },
+                    "url": {
+                      "type": "string"
+                    },
+                    "label": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "type",
+                    "id",
+                    "url",
+                    "label"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "generateAudio": {
+              "default": true,
+              "type": "boolean"
+            },
+            "seed": {
+              "default": -1,
+              "type": "number"
+            }
+          },
+          "required": [
+            "startFrame"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "provenance": {
+        "source": "CONNECTED_OPENART_MODEL_FORM",
+        "command": "openart model form byte-plus-seedance-2-5 image2video --json --no-input",
+        "verifiedDate": "2026-10-08",
+        "schemaSha256": "7d2bf3eabf3bc77ff299725a28b8138f9d13e52c9d141cb89cb8f47c24a6e425",
+        "liveGenerationVerified": false,
+        "cliVersion": "0.1.1 (commit 85fa0ad; built 2026-08-31)"
+      }
+    }
+  }
+}

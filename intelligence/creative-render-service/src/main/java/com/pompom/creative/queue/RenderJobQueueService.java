@@ -42,6 +42,7 @@ public class RenderJobQueueService {
   private final BudgetAlertService budgetAlertService;
   private final CreativeProductionContractService contractService;
   private final TransactionTemplate newTransaction;
+  @Autowired private com.pompom.creative.workflow.PostFamilyAdmissionClient workflowAdmission;
 
   @Autowired
   public RenderJobQueueService(
@@ -131,6 +132,10 @@ public class RenderJobQueueService {
     // must create zero rows and never even starts a database transaction.
     ValidationEvidenceDto evidence = evidenceClient.getEvidence(request.validationRecordId());
     policy.validate(request, evidence, Instant.now());
+    if (workflowAdmission != null) workflowAdmission.validate(request);
+    else if (request.jobType() != RenderJob.JobType.FIRST_FRAME
+        && request.openartParams() != null && request.openartParams().containsKey("workflowProfile"))
+      throw new IllegalStateException("Post-family admission client unavailable");
     ContentPromptSnapshot prompt =
         contentClient.fetch(request.contentId(), request.promptVersionId());
     if (prompt.contentId() != evidence.contentId()

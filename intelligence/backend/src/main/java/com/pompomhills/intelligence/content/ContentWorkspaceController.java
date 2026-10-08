@@ -79,6 +79,7 @@ public class ContentWorkspaceController {
   }
 
 
+  @PostMapping
   public ContentSummary create(@RequestBody CreateContentRequest request) {
     if (request.title() == null || request.title().isBlank()) throw new IllegalArgumentException("title is required");
     String type = request.type() == null ? "SHORT" : request.type().toUpperCase();

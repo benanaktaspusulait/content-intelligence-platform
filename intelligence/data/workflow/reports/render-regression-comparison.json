@@ -1,0 +1,115 @@
+{
+  "pre": {
+    "tests": 391,
+    "failures": 1,
+    "errors": 11,
+    "failingCases": {
+      "com.pompom.creative.queue.RenderJobIdempotencyPostgresTest.secondRequestWithSameKeyDifferentPayloadIsRejectedAfterFirstSucceeds": {
+        "type": "org.springframework.dao.InvalidDataAccessResourceUsageException",
+        "message": "could not execute statement [ERROR: column \"compiled_generation_constraints\" is of type jsonb but expression is of type character varying"
+      },
+      "com.pompom.creative.queue.RenderJobIdempotencyPostgresTest.concurrentRequestsWithTheSameIdempotencyKeyProduceExactlyOneJob": {
+        "type": "java.util.concurrent.ExecutionException",
+        "message": "org.springframework.dao.InvalidDataAccessResourceUsageException: could not execute statement [ERROR: column \"compiled_generation_constraints\" is of type jsonb but expression is of type character varying"
+      },
+      "com.pompom.creative.postrender.TemporalBeatAlignmentServiceTest.explainsWhenAPlanIsUnavailableInsteadOfClaimingNovelty": {
+        "type": "org.opentest4j.AssertionFailedError",
+        "message": ""
+      },
+      "com.pompom.creative.worker.RenderAttemptClaimPostgresTest.expiredLeaseIsReclaimed": {
+        "type": "org.springframework.dao.InvalidDataAccessResourceUsageException",
+        "message": "could not execute statement [ERROR: column \"compiled_generation_constraints\" is of type jsonb but expression is of type character varying"
+      },
+      "com.pompom.creative.worker.RenderAttemptClaimPostgresTest.activeLeaseIsNotStolen": {
+        "type": "org.springframework.dao.InvalidDataAccessResourceUsageException",
+        "message": "could not execute statement [ERROR: column \"compiled_generation_constraints\" is of type jsonb but expression is of type character varying"
+      },
+      "com.pompom.creative.worker.RenderAttemptClaimPostgresTest.uniqueAttemptNumberPerJobIsEnforcedByTheDatabase": {
+        "type": "org.springframework.dao.InvalidDataAccessResourceUsageException",
+        "message": "could not execute statement [ERROR: column \"compiled_generation_constraints\" is of type jsonb but expression is of type character varying"
+      },
+      "com.pompom.creative.worker.RenderAttemptClaimPostgresTest.claimingSetsLeaseOwnerAndExpiry": {
+        "type": "org.springframework.dao.InvalidDataAccessResourceUsageException",
+        "message": "could not execute statement [ERROR: column \"compiled_generation_constraints\" is of type jsonb but expression is of type character varying"
+      },
+      "com.pompom.creative.worker.RenderAttemptClaimPostgresTest.duePollTimeIsClaimed": {
+        "type": "org.springframework.dao.InvalidDataAccessResourceUsageException",
+        "message": "could not execute statement [ERROR: column \"compiled_generation_constraints\" is of type jsonb but expression is of type character varying"
+      },
+      "com.pompom.creative.worker.RenderAttemptClaimPostgresTest.terminalAttemptsAreNeverClaimed": {
+        "type": "org.springframework.dao.InvalidDataAccessResourceUsageException",
+        "message": "could not execute statement [ERROR: column \"compiled_generation_constraints\" is of type jsonb but expression is of type character varying"
+      },
+      "com.pompom.creative.worker.RenderAttemptClaimPostgresTest.nextPollAtInTheFutureIsNotClaimed": {
+        "type": "org.springframework.dao.InvalidDataAccessResourceUsageException",
+        "message": "could not execute statement [ERROR: column \"compiled_generation_constraints\" is of type jsonb but expression is of type character varying"
+      },
+      "com.pompom.creative.worker.RenderAttemptClaimPostgresTest.twoWorkersCannotClaimTheSameAttempt": {
+        "type": "org.springframework.dao.InvalidDataAccessResourceUsageException",
+        "message": "could not execute statement [ERROR: column \"compiled_generation_constraints\" is of type jsonb but expression is of type character varying"
+      },
+      "com.pompom.creative.migration.LegacyDataCopyMigrationTest.copyIsIdempotentWhenReExecuted": {
+        "type": "org.postgresql.util.PSQLException",
+        "message": "ERROR: null value in column \"asset_version\" of relation \"render_assets\" violates not-null constraint"
+      }
+    }
+  },
+  "post": {
+    "tests": 393,
+    "failures": 1,
+    "errors": 11,
+    "failingCases": {
+      "com.pompom.creative.queue.RenderJobIdempotencyPostgresTest.secondRequestWithSameKeyDifferentPayloadIsRejectedAfterFirstSucceeds": {
+        "type": "org.springframework.dao.InvalidDataAccessResourceUsageException",
+        "message": "could not execute statement [ERROR: column \"compiled_generation_constraints\" is of type jsonb but expression is of type character varying"
+      },
+      "com.pompom.creative.queue.RenderJobIdempotencyPostgresTest.concurrentRequestsWithTheSameIdempotencyKeyProduceExactlyOneJob": {
+        "type": "java.util.concurrent.ExecutionException",
+        "message": "org.springframework.dao.InvalidDataAccessResourceUsageException: could not execute statement [ERROR: column \"compiled_generation_constraints\" is of type jsonb but expression is of type character varying"
+      },
+      "com.pompom.creative.postrender.TemporalBeatAlignmentServiceTest.explainsWhenAPlanIsUnavailableInsteadOfClaimingNovelty": {
+        "type": "org.opentest4j.AssertionFailedError",
+        "message": ""
+      },
+      "com.pompom.creative.worker.RenderAttemptClaimPostgresTest.expiredLeaseIsReclaimed": {
+        "type": "org.springframework.dao.InvalidDataAccessResourceUsageException",
+        "message": "could not execute statement [ERROR: column \"compiled_generation_constraints\" is of type jsonb but expression is of type character varying"
+      },
+      "com.pompom.creative.worker.RenderAttemptClaimPostgresTest.activeLeaseIsNotStolen": {
+        "type": "org.springframework.dao.InvalidDataAccessResourceUsageException",
+        "message": "could not execute statement [ERROR: column \"compiled_generation_constraints\" is of type jsonb but expression is of type character varying"
+      },
+      "com.pompom.creative.worker.RenderAttemptClaimPostgresTest.uniqueAttemptNumberPerJobIsEnforcedByTheDatabase": {
+        "type": "org.springframework.dao.InvalidDataAccessResourceUsageException",
+        "message": "could not execute statement [ERROR: column \"compiled_generation_constraints\" is of type jsonb but expression is of type character varying"
+      },
+      "com.pompom.creative.worker.RenderAttemptClaimPostgresTest.claimingSetsLeaseOwnerAndExpiry": {
+        "type": "org.springframework.dao.InvalidDataAccessResourceUsageException",
+        "message": "could not execute statement [ERROR: column \"compiled_generation_constraints\" is of type jsonb but expression is of type character varying"
+      },
+      "com.pompom.creative.worker.RenderAttemptClaimPostgresTest.duePollTimeIsClaimed": {
+        "type": "org.springframework.dao.InvalidDataAccessResourceUsageException",
+        "message": "could not execute statement [ERROR: column \"compiled_generation_constraints\" is of type jsonb but expression is of type character varying"
+      },
+      "com.pompom.creative.worker.RenderAttemptClaimPostgresTest.terminalAttemptsAreNeverClaimed": {
+        "type": "org.springframework.dao.InvalidDataAccessResourceUsageException",
+        "message": "could not execute statement [ERROR: column \"compiled_generation_constraints\" is of type jsonb but expression is of type character varying"
+      },
+      "com.pompom.creative.worker.RenderAttemptClaimPostgresTest.nextPollAtInTheFutureIsNotClaimed": {
+        "type": "org.springframework.dao.InvalidDataAccessResourceUsageException",
+        "message": "could not execute statement [ERROR: column \"compiled_generation_constraints\" is of type jsonb but expression is of type character varying"
+      },
+      "com.pompom.creative.worker.RenderAttemptClaimPostgresTest.twoWorkersCannotClaimTheSameAttempt": {
+        "type": "org.springframework.dao.InvalidDataAccessResourceUsageException",
+        "message": "could not execute statement [ERROR: column \"compiled_generation_constraints\" is of type jsonb but expression is of type character varying"
+      },
+      "com.pompom.creative.migration.LegacyDataCopyMigrationTest.copyIsIdempotentWhenReExecuted": {
+        "type": "org.postgresql.util.PSQLException",
+        "message": "ERROR: null value in column \"asset_version\" of relation \"render_assets\" violates not-null constraint"
+      }
+    },
+    "finalUniqueExecutedCases": 394,
+    "additionalFocusedPassingCases": 1
+  },
+  "comparisonNote": "Full post run executed 393 cases; one additional admission HTTP-boundary case passed in the final focused run. Failure names unchanged from the 391-case pre-batch suite."
+}

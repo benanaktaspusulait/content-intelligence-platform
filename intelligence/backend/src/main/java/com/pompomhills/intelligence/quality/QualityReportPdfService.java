@@ -103,6 +103,84 @@ public class QualityReportPdfService {
     return out.toByteArray();
   }
 
+  /** Additive post-family snapshot export; historical Family report rendering is unchanged. */
+  public byte[] renderWorkflow(Map<String, Object> snapshot) {
+    ByteArrayOutputStream out = new ByteArrayOutputStream();
+    Document document = new Document(PageSize.A4, 36, 36, 40, 50);
+    try {
+      PdfWriter writer = PdfWriter.getInstance(document, out);
+      Fonts fonts = createFonts();
+      writer.setPageEvent(new FooterEvent(fonts.small));
+      document.addTitle("Pompom Hills - Etki temelli inceleme");
+      document.open();
+      document.add(new Paragraph("Etki temelli prompt / video incelemesi", fonts.title));
+      document.add(
+          new Paragraph(
+              clean(
+                  String.valueOf(
+                      snapshot.getOrDefault("decisionPolicyVersion", "HISTORICAL_POLICY"))),
+              fonts.muted));
+      document.add(
+          new Paragraph(
+              "TEST_CANDIDATE yayın izni değildir. Üretim/yayın için kanonik yetkilendirme ayrıca"
+                  + " gereklidir.",
+              fonts.body));
+      if (snapshot.get("operatorReport") instanceof List<?> rows) {
+        for (Object item : rows)
+          if (item instanceof Map<?, ?> row) {
+            document.add(new Paragraph(clean(String.valueOf(row.get("label"))), fonts.bold));
+            document.add(new Paragraph(clean(String.valueOf(row.get("text"))), fonts.body));
+          }
+      }
+      document.newPage();
+      document.add(
+          new Paragraph("Dört ayrı değerlendirme boyutu — kanıt ayrıntıları", fonts.title));
+      var dimensions =
+          snapshot.get("reviewDimensions") instanceof Map<?, ?> values ? values : Map.of();
+      var json = new com.fasterxml.jackson.databind.ObjectMapper().findAndRegisterModules();
+      for (String key :
+          List.of(
+              "promptPlanQuality",
+              "generatorExecutionRisk",
+              "actualRenderQuality",
+              "audienceDistributionOutcome")) {
+        document.add(new Paragraph(key, fonts.heading));
+        Object value = dimensions.get(key);
+        document.add(
+            new Paragraph(
+                clean(
+                    value == null
+                        ? "UNKNOWN — tarihsel kayıtta bu boyut yok"
+                        : json.writerWithDefaultPrettyPrinter().writeValueAsString(value)),
+                fonts.small));
+      }
+      document.add(
+          new Paragraph(
+              "Kanıt bağlantısı: " + clean(String.valueOf(snapshot.get("bindingHash"))),
+              fonts.small));
+      document.add(
+          new Paragraph(
+              "Yetki kapsamı: "
+                  + clean(
+                      String.valueOf(
+                          snapshot.getOrDefault("authorizationScope", "PROMPT_WORKFLOW"))),
+              fonts.small));
+      document.add(
+          new Paragraph(
+              "Family 8: " + clean(String.valueOf(snapshot.get("family8"))), fonts.small));
+      document.add(
+          new Paragraph(
+              "Ses değerlendirmesi: "
+                  + clean(String.valueOf(snapshot.getOrDefault("audioReview", "UNKNOWN"))),
+              fonts.small));
+    } catch (IOException | RuntimeException e) {
+      throw new QualityReportPdfException("Workflow PDF could not be rendered", e);
+    } finally {
+      if (document.isOpen()) document.close();
+    }
+    return out.toByteArray();
+  }
+
   // ===== Sections =====
 
   private void addHeader(

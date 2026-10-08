@@ -1,0 +1,167 @@
+Üretim incelemesi
+İş akışı profili
+Family 1–10 · tarihsel doğrulama
+Operasyonel yaratıcı iş akışı v1
+
+Family 1–10 sözleşmeleri korunur. Yeni profil, yaratıcı amacı ve seçilen jeneratörün yürütmesini ayrı inceler.
+
+Yetkili karakter referansları dosyalardan bağlanır; eksik referans yerine görünüm uydurulmaz.
+
+İçerik profili
+Kaynak temelli öneri
+Absürt fizik
+Merak / macera
+Eğitici
+Karma
+Belirsiz
+Açılış stratejisi
+Öneri
+Anında imkânsızlık
+Doğrudan sorun
+Merak / keşif
+İstenen süre (s)
+Jeneratör
+Kullanıcı tercihine göre öner
+Seedance 2.0 Mini
+Seedance 2.0
+Seedance 2.5
+İlk kare · mevcut medya yolu
+İlk kare · sağlayıcı URL
+2.0 kalite gerekçesi
+Görünüm oranı
+9:16
+16:9
+1:1
+İzleyicinin temel sorusu
+Korunacak yaratıcı niyet · kaynakta geçen ifadeler
+Kaynağa bağlı plan kanıtı · isteğe bağlı
+Karakter ve referans dosyaları
+Post-family incelemesini çalıştır
+
+İçerik: CURIOSITY_ADVENTURE · SOURCE_PROGRESSION_HYPOTHESIS
+
+Açılış: CURIOSITY_DISCOVERY · Metin planı HYPOTHESIS
+
+Önerilen / seçilen jeneratör: SEEDANCE_2_5 / SEEDANCE_2_5
+
+İstenen / desteklenen render / edit süresi: 25 / UNKNOWN / 25 s
+
+Sağlayıcı sözleşmesi: UNSUPPORTED · byte-plus-seedance-2-5
+
+Creative Quality: UNKNOWN · Evidence: INCOMPLETE
+
+Render Authorization: BLOCKED_PENDING_EVIDENCE
+
+Yetkili karakter/nesne referansı eksik veya doğrulanmadı.
+
+İstenen model/süre/ayar doğrulanmış sözleşmeyle desteklenmiyor.
+
+Sağlayıcının zorunlu yürütme girdileri eksik: startFrame
+
+Jeneratör yürütme incelemesi tamamlanmadı veya küçük düzeltme gerekiyor.
+
+Genel üretilebilirlik için kaynak kanıtı yetersiz.
+
+Son video kabulü için mevcut doğrulanmış görsel kapılar ve bağımsız revalidation gereklidir.
+
+General Producibility
+
+Canonical status: UNKNOWN
+
+Duration: 25 seconds · Source: metadata.duration
+
+Some required structured production evidence is unavailable.
+
+All production dimensions and evidence
+Dikkat → ilerleme → yeniden izleme hipotezi
+
+- HARD HOOK Luca looks through toy binoculars at stars. A beam sweeps across grass. WHOOSH - soft POP. Zipo drops gently into bush. Luca: "WHAT WAS THAT?!" Zipo pops up. Zipo: "Blip?"
+
+Son: - TWIST Luca enters room sadly. A small glowing stone sits on desk. It lights up. Zipo voice: "Blip blop, Luca!" Luca beams. CUT. No narration. No on-screen text. · CALLBACK_OR_LOOP_HYPOTHESIS
+
+İlk kare / gerçek açılış / kapak kanıtı: UNKNOWN / UNKNOWN / NOT_EVIDENCE_OF_OPENING
+
+Jeneratör yürütme incelemesi · UNKNOWN
+
+Yerel metin eleştirmeni görselleri/klibi incelemiş sayılmaz. DeepSeek ikinci görüşü sunucuda yapılandırılabilir; ücretli çağrı varsayılan olarak kapalıdır.
+
+İkinci görüş sağlayıcısı
+DeepSeek · metin portu
+OpenAI
+Claude
+Gemini
+Yapılandırılmış eleştirmen modeli
+İkinci görüşü çalıştırBağlı incelemeyle mevcut render kuyruğunu aç
+Kanıt ve belirsizlik
+En küçük düzeltme
+Değiştirilecek kaynak ifadesi
+Yeni ifade
+Tek yama + son prompt doğrulaması
+Son üretim prompt’u
+KopyalaEditöre aktar ve sürüm kaydetManuel render paketi indir
+
+Manuel paket render yetkisi veya kredi harcama onayı değildir. Son video mevcut kanonik kabul akışından geçer.
+
+Gerçek render QA
+Dönen videonun yerel medya yolu
+
+Gerçek klibi açıp her planlanan zaman aralığını inceleyin. Seyrek kareler hareket/temas/loop kanıtı değildir.
+
+0–1.2 s
+
+- HARD HOOK Luca looks through toy binoculars at stars. A beam sweeps across grass. WHOOSH - soft POP. Zipo drops gently into bush. Luca: "WHAT WAS THAT?!" Zipo pops up. Zipo: "Blip?"
+
+Kanıt yetersiz
+Gözlendi
+Eksik / çöktü
+1.2–5 s
+
+Luca kneels. Luca: "You're an alien!" Zipo points to Luca: "Blip blop?" Luca: "I'm Luca." Zipo taps chest: "Zipo!"
+
+Kanıt yetersiz
+Gözlendi
+Eksik / çöktü
+5–11 s
+
+- EARTH TOUR Luca shows flower. Zipo sniffs too hard and sneezes. Luca shows ladybird. Zipo salutes it. Luca gives biscuit. Zipo scans it before eating. Luca: "Welcome to Pompom Hills." Zipo: "Blip blop!"
+
+Kanıt yetersiz
+Gözlendi
+Eksik / çöktü
+11–17 s
+
+- EMOTIONAL TURN Larger soft blue beam appears. Zipo's wrist light flashes. Zipo becomes sad. Luca: "They found you?" Zipo: "Blip." Luca: "I'll miss you."
+
+Kanıt yetersiz
+Gözlendi
+Eksik / çöktü
+17–22 s
+
+They hug. Zipo floats upward. Luca waves.
+
+Kanıt yetersiz
+Gözlendi
+Eksik / çöktü
+22–25 s
+
+- TWIST Luca enters room sadly. A small glowing stone sits on desk. It lights up. Zipo voice: "Blip blop, Luca!" Luca beams. CUT. No narration. No on-screen text.
+
+Kanıt yetersiz
+Gözlendi
+Eksik / çöktü
+Bu aralıkları gerçek klipte inceleyip gözlemleri onayladım
+Deterministik analiz + plan karşılaştırması
+Yayın ve ölçüm ilişkisi
+
+Prompt → referanslar → render ayarları → gerçek video → edit varyantı → yayın ID → immutable ölçüm ayrı tutulur.
+
+Platform
+INSTAGRAM
+FACEBOOK
+YOUTUBE
+Yayın ID (metin)
+Edit varyant ID (varsa)
+Eşleştirme kanıtı
+Manuel ilişkiyi kaydetCSV/XLSX dosyasını mevcut import ekranında incele ve eşleştir
+Kaynaklı ölçüm kaydı ve karşılaştırma
+İnsan incelemesine açık ders / deney kaydı

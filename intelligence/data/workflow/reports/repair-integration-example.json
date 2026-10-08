@@ -1,0 +1,2370 @@
+{
+  "purpose": "TECHNICAL_BOUNDARY_CHECK_ON_REAL_PROMPT",
+  "initialReviewId": "4d8d21a3-7cd3-4c18-85a2-a7c1228dc40d",
+  "firstRepairStatus": 200,
+  "repeatRepairStatus": 409,
+  "paidCriticStatus": 403,
+  "repair": {
+    "workflowVersion": "post-family-v1",
+    "bindingHash": "cc66871fad866bbbc4d29af812d1876d708ca832ee5a01baeeed5eef39428558",
+    "authorizationEvidence": {},
+    "source": {
+      "artifact": "content:2/prompt:2",
+      "version": "2",
+      "sha256": "393c8d86fdc12ec1f4bdc6897ceecc2e76ece5c20d5d5392690fe00a9a69ed55"
+    },
+    "productionEvidence": {
+      "source": {
+        "artifact": "content:2/prompt:2",
+        "version": "2",
+        "sha256": "393c8d86fdc12ec1f4bdc6897ceecc2e76ece5c20d5d5392690fe00a9a69ed55"
+      },
+      "claims": [
+        {
+          "field": "beats",
+          "state": "OBSERVED",
+          "quote": "0.0–0.8 SEC",
+          "span": [
+            492,
+            503
+          ],
+          "sourceId": "content:2/prompt:2",
+          "sourceVersion": "2",
+          "sourceHash": "393c8d86fdc12ec1f4bdc6897ceecc2e76ece5c20d5d5392690fe00a9a69ed55",
+          "method": "LOCAL_SOURCE_PATTERN",
+          "methodVersion": "source-span-production-evidence-v1",
+          "provider": null,
+          "confidence": "HIGH"
+        },
+        {
+          "field": "beats",
+          "state": "OBSERVED",
+          "quote": "0.8–3.0 SEC",
+          "span": [
+            784,
+            795
+          ],
+          "sourceId": "content:2/prompt:2",
+          "sourceVersion": "2",
+          "sourceHash": "393c8d86fdc12ec1f4bdc6897ceecc2e76ece5c20d5d5392690fe00a9a69ed55",
+          "method": "LOCAL_SOURCE_PATTERN",
+          "methodVersion": "source-span-production-evidence-v1",
+          "provider": null,
+          "confidence": "HIGH"
+        },
+        {
+          "field": "beats",
+          "state": "OBSERVED",
+          "quote": "3.0–6.0 SEC",
+          "span": [
+            906,
+            917
+          ],
+          "sourceId": "content:2/prompt:2",
+          "sourceVersion": "2",
+          "sourceHash": "393c8d86fdc12ec1f4bdc6897ceecc2e76ece5c20d5d5392690fe00a9a69ed55",
+          "method": "LOCAL_SOURCE_PATTERN",
+          "methodVersion": "source-span-production-evidence-v1",
+          "provider": null,
+          "confidence": "HIGH"
+        },
+        {
+          "field": "beats",
+          "state": "OBSERVED",
+          "quote": "6.0–9.0 SEC",
+          "span": [
+            1109,
+            1120
+          ],
+          "sourceId": "content:2/prompt:2",
+          "sourceVersion": "2",
+          "sourceHash": "393c8d86fdc12ec1f4bdc6897ceecc2e76ece5c20d5d5392690fe00a9a69ed55",
+          "method": "LOCAL_SOURCE_PATTERN",
+          "methodVersion": "source-span-production-evidence-v1",
+          "provider": null,
+          "confidence": "HIGH"
+        },
+        {
+          "field": "beats",
+          "state": "OBSERVED",
+          "quote": "9.0–12.0 SEC",
+          "span": [
+            1391,
+            1403
+          ],
+          "sourceId": "content:2/prompt:2",
+          "sourceVersion": "2",
+          "sourceHash": "393c8d86fdc12ec1f4bdc6897ceecc2e76ece5c20d5d5392690fe00a9a69ed55",
+          "method": "LOCAL_SOURCE_PATTERN",
+          "methodVersion": "source-span-production-evidence-v1",
+          "provider": null,
+          "confidence": "HIGH"
+        },
+        {
+          "field": "beats",
+          "state": "OBSERVED",
+          "quote": "12.0–14.0 SEC",
+          "span": [
+            1552,
+            1565
+          ],
+          "sourceId": "content:2/prompt:2",
+          "sourceVersion": "2",
+          "sourceHash": "393c8d86fdc12ec1f4bdc6897ceecc2e76ece5c20d5d5392690fe00a9a69ed55",
+          "method": "LOCAL_SOURCE_PATTERN",
+          "methodVersion": "source-span-production-evidence-v1",
+          "provider": null,
+          "confidence": "HIGH"
+        },
+        {
+          "field": "beats",
+          "state": "OBSERVED",
+          "quote": "14.0–15.0 SEC",
+          "span": [
+            1660,
+            1673
+          ],
+          "sourceId": "content:2/prompt:2",
+          "sourceVersion": "2",
+          "sourceHash": "393c8d86fdc12ec1f4bdc6897ceecc2e76ece5c20d5d5392690fe00a9a69ed55",
+          "method": "LOCAL_SOURCE_PATTERN",
+          "methodVersion": "source-span-production-evidence-v1",
+          "provider": null,
+          "confidence": "HIGH"
+        },
+        {
+          "field": "fineMotorRequirement",
+          "state": "MISSING",
+          "quote": null,
+          "span": null,
+          "sourceId": "content:2/prompt:2",
+          "sourceVersion": "2",
+          "sourceHash": "393c8d86fdc12ec1f4bdc6897ceecc2e76ece5c20d5d5392690fe00a9a69ed55",
+          "methodVersion": "source-span-production-evidence-v1",
+          "confidence": null,
+          "reason": "Omission does not confirm absence."
+        },
+        {
+          "field": "contactPhysicsRequirement",
+          "state": "INFERRED",
+          "quote": "STICKY — the red ball sticks to surfaces instead of bouncing",
+          "span": [
+            167,
+            227
+          ],
+          "sourceId": "content:2/prompt:2",
+          "sourceVersion": "2",
+          "sourceHash": "393c8d86fdc12ec1f4bdc6897ceecc2e76ece5c20d5d5392690fe00a9a69ed55",
+          "method": "LOCAL_SOURCE_PATTERN",
+          "methodVersion": "source-span-production-evidence-v1",
+          "provider": null,
+          "confidence": "MEDIUM"
+        },
+        {
+          "field": "contactPhysicsRequirement",
+          "state": "INFERRED",
+          "quote": "Luca catches it",
+          "span": [
+            1469,
+            1484
+          ],
+          "sourceId": "content:2/prompt:2",
+          "sourceVersion": "2",
+          "sourceHash": "393c8d86fdc12ec1f4bdc6897ceecc2e76ece5c20d5d5392690fe00a9a69ed55",
+          "method": "LOCAL_SOURCE_PATTERN",
+          "methodVersion": "source-span-production-evidence-v1",
+          "provider": null,
+          "confidence": "MEDIUM"
+        },
+        {
+          "field": "contactPhysicsRequirement",
+          "state": "INFERRED",
+          "quote": "Luca carefully tosses the ball once between his hands",
+          "span": [
+            1584,
+            1637
+          ],
+          "sourceId": "content:2/prompt:2",
+          "sourceVersion": "2",
+          "sourceHash": "393c8d86fdc12ec1f4bdc6897ceecc2e76ece5c20d5d5392690fe00a9a69ed55",
+          "method": "LOCAL_SOURCE_PATTERN",
+          "methodVersion": "source-span-production-evidence-v1",
+          "provider": null,
+          "confidence": "MEDIUM"
+        },
+        {
+          "field": "contactPhysicsRequirement",
+          "state": "INFERRED",
+          "quote": "It drops directly onto his CHEEK and sticks there with a soft PLUP",
+          "span": [
+            1738,
+            1804
+          ],
+          "sourceId": "content:2/prompt:2",
+          "sourceVersion": "2",
+          "sourceHash": "393c8d86fdc12ec1f4bdc6897ceecc2e76ece5c20d5d5392690fe00a9a69ed55",
+          "method": "LOCAL_SOURCE_PATTERN",
+          "methodVersion": "source-span-production-evidence-v1",
+          "provider": null,
+          "confidence": "MEDIUM"
+        },
+        {
+          "field": "contactPhysicsRequirement",
+          "state": "INFERRED",
+          "quote": "It sticks to Luca’s cheek only, never covering his nose or mouth",
+          "span": [
+            1894,
+            1958
+          ],
+          "sourceId": "content:2/prompt:2",
+          "sourceVersion": "2",
+          "sourceHash": "393c8d86fdc12ec1f4bdc6897ceecc2e76ece5c20d5d5392690fe00a9a69ed55",
+          "method": "LOCAL_SOURCE_PATTERN",
+          "methodVersion": "source-span-production-evidence-v1",
+          "provider": null,
+          "confidence": "MEDIUM"
+        },
+        {
+          "field": "objectContinuity",
+          "state": "MISSING",
+          "quote": null,
+          "span": null,
+          "sourceId": "content:2/prompt:2",
+          "sourceVersion": "2",
+          "sourceHash": "393c8d86fdc12ec1f4bdc6897ceecc2e76ece5c20d5d5392690fe00a9a69ed55",
+          "methodVersion": "source-span-production-evidence-v1",
+          "confidence": null,
+          "reason": "Omission does not confirm absence."
+        },
+        {
+          "field": "characterContinuity",
+          "state": "MISSING",
+          "quote": null,
+          "span": null,
+          "sourceId": "content:2/prompt:2",
+          "sourceVersion": "2",
+          "sourceHash": "393c8d86fdc12ec1f4bdc6897ceecc2e76ece5c20d5d5392690fe00a9a69ed55",
+          "methodVersion": "source-span-production-evidence-v1",
+          "confidence": null,
+          "reason": "Omission does not confirm absence."
+        },
+        {
+          "field": "occlusionRequirement",
+          "state": "MISSING",
+          "quote": null,
+          "span": null,
+          "sourceId": "content:2/prompt:2",
+          "sourceVersion": "2",
+          "sourceHash": "393c8d86fdc12ec1f4bdc6897ceecc2e76ece5c20d5d5392690fe00a9a69ed55",
+          "methodVersion": "source-span-production-evidence-v1",
+          "confidence": null,
+          "reason": "Omission does not confirm absence."
+        },
+        {
+          "field": "exactCountDependency",
+          "state": "MISSING",
+          "quote": null,
+          "span": null,
+          "sourceId": "content:2/prompt:2",
+          "sourceVersion": "2",
+          "sourceHash": "393c8d86fdc12ec1f4bdc6897ceecc2e76ece5c20d5d5392690fe00a9a69ed55",
+          "methodVersion": "source-span-production-evidence-v1",
+          "confidence": null,
+          "reason": "Omission does not confirm absence."
+        },
+        {
+          "field": "transformationRequirement",
+          "state": "INFERRED",
+          "quote": "The ball stretches toward him like soft chewing gum while its center remains stuck to the wall",
+          "span": [
+            953,
+            1047
+          ],
+          "sourceId": "content:2/prompt:2",
+          "sourceVersion": "2",
+          "sourceHash": "393c8d86fdc12ec1f4bdc6897ceecc2e76ece5c20d5d5392690fe00a9a69ed55",
+          "method": "LOCAL_SOURCE_PATTERN",
+          "methodVersion": "source-span-production-evidence-v1",
+          "provider": null,
+          "confidence": "MEDIUM"
+        },
+        {
+          "field": "transformationRequirement",
+          "state": "INFERRED",
+          "quote": "This time the BALL stays stuck and the WOODEN WALL itself flexes slightly toward Luca like soft rubber",
+          "span": [
+            1196,
+            1298
+          ],
+          "sourceId": "content:2/prompt:2",
+          "sourceVersion": "2",
+          "sourceHash": "393c8d86fdc12ec1f4bdc6897ceecc2e76ece5c20d5d5392690fe00a9a69ed55",
+          "method": "LOCAL_SOURCE_PATTERN",
+          "methodVersion": "source-span-production-evidence-v1",
+          "provider": null,
+          "confidence": "MEDIUM"
+        },
+        {
+          "field": "simulationRequirement",
+          "state": "MISSING",
+          "quote": null,
+          "span": null,
+          "sourceId": "content:2/prompt:2",
+          "sourceVersion": "2",
+          "sourceHash": "393c8d86fdc12ec1f4bdc6897ceecc2e76ece5c20d5d5392690fe00a9a69ed55",
+          "methodVersion": "source-span-production-evidence-v1",
+          "confidence": null,
+          "reason": "Omission does not confirm absence."
+        },
+        {
+          "field": "spatialRequirement",
+          "state": "MISSING",
+          "quote": null,
+          "span": null,
+          "sourceId": "content:2/prompt:2",
+          "sourceVersion": "2",
+          "sourceHash": "393c8d86fdc12ec1f4bdc6897ceecc2e76ece5c20d5d5392690fe00a9a69ed55",
+          "methodVersion": "source-span-production-evidence-v1",
+          "confidence": null,
+          "reason": "Omission does not confirm absence."
+        },
+        {
+          "field": "sceneContinuityRequirement",
+          "state": "MISSING",
+          "quote": null,
+          "span": null,
+          "sourceId": "content:2/prompt:2",
+          "sourceVersion": "2",
+          "sourceHash": "393c8d86fdc12ec1f4bdc6897ceecc2e76ece5c20d5d5392690fe00a9a69ed55",
+          "methodVersion": "source-span-production-evidence-v1",
+          "confidence": null,
+          "reason": "Omission does not confirm absence."
+        },
+        {
+          "field": "textRequirement",
+          "state": "MISSING",
+          "quote": null,
+          "span": null,
+          "sourceId": "content:2/prompt:2",
+          "sourceVersion": "2",
+          "sourceHash": "393c8d86fdc12ec1f4bdc6897ceecc2e76ece5c20d5d5392690fe00a9a69ed55",
+          "methodVersion": "source-span-production-evidence-v1",
+          "confidence": null,
+          "reason": "Omission does not confirm absence."
+        },
+        {
+          "field": "segmentContinuityRequirement",
+          "state": "MISSING",
+          "quote": null,
+          "span": null,
+          "sourceId": "content:2/prompt:2",
+          "sourceVersion": "2",
+          "sourceHash": "393c8d86fdc12ec1f4bdc6897ceecc2e76ece5c20d5d5392690fe00a9a69ed55",
+          "methodVersion": "source-span-production-evidence-v1",
+          "confidence": null,
+          "reason": "Omission does not confirm absence."
+        }
+      ],
+      "videoPlanIR": {
+        "metadata": {
+          "generalProducibilityEvidence": {
+            "source": "POST_FAMILY_SOURCE_ENRICHMENT",
+            "sourceHash": "393c8d86fdc12ec1f4bdc6897ceecc2e76ece5c20d5d5392690fe00a9a69ed55",
+            "sourceVersion": "2",
+            "extractionVersion": "source-span-production-evidence-v1"
+          },
+          "duration": 15.0
+        },
+        "beats": [
+          {
+            "id": "source_0",
+            "startTime": 0.0,
+            "endTime": 0.8,
+            "action": "— HARD HOOK\nFIRST FRAME:\nLuca has JUST thrown the red ball at the wooden wall.\nInstead of bouncing back, the ball is already STUCK flat to the wall.\nLuca is frozen with both hands half-raised, eyes wide.\nThe impossible sticky ball must dominate the opening.\n\nSFX: THWIP — STICK.",
+            "sourceSpan": [
+              492,
+              784
+            ]
+          },
+          {
+            "id": "source_1",
+            "startTime": 0.8,
+            "endTime": 3.0,
+            "action": "— REACTION\nLuca walks straight to the ball and pulls it with one hand.\nIt will not move.\nHe uses both hands.",
+            "sourceSpan": [
+              784,
+              906
+            ]
+          },
+          {
+            "id": "source_2",
+            "startTime": 3.0,
+            "endTime": 6.0,
+            "action": "— FIRST ATTEMPT\nLuca pulls harder.\nThe ball stretches toward him like soft chewing gum while its center remains stuck to the wall.\nHe lets go.\n\nSNAP!\nThe ball instantly returns to the wall.",
+            "sourceSpan": [
+              906,
+              1109
+            ]
+          },
+          {
+            "id": "source_3",
+            "startTime": 6.0,
+            "endTime": 9.0,
+            "action": "— ESCALATION\nLuca grabs the ball again with both hands and leans backward.\nThis time the BALL stays stuck and the WOODEN WALL itself flexes slightly toward Luca like soft rubber.\nLuca’s eyes widen.\nHe immediately releases it.\n\nBOING!\nThe wall returns safely to normal.",
+            "sourceSpan": [
+              1109,
+              1391
+            ]
+          },
+          {
+            "id": "source_4",
+            "startTime": 9.0,
+            "endTime": 12.0,
+            "action": "— SECOND ATTEMPT\nThe ball finally drops from the wall by itself.\nLuca catches it.\nHe squeezes it gently.\nIt behaves like a normal ball.\nHe smiles.",
+            "sourceSpan": [
+              1391,
+              1552
+            ]
+          },
+          {
+            "id": "source_5",
+            "startTime": 12.0,
+            "endTime": 14.0,
+            "action": "— FAKE RESOLUTION\nLuca carefully tosses the ball once between his hands.\nNormal.\nHe relaxes.",
+            "sourceSpan": [
+              1552,
+              1660
+            ]
+          },
+          {
+            "id": "source_6",
+            "startTime": 14.0,
+            "endTime": 15.0,
+            "action": "— FINAL TWIST\nLuca gives the ball one tiny playful toss upward.\nIt drops directly onto his CHEEK and sticks there with a soft PLUP.\nLuca goes cross-eyed trying to look at it.\n\nPLUP! — HARD CUT.\n\nSAFETY\nThe ball is soft.\nIt sticks to Luca’s cheek only, never covering his nose or mouth.\n\nDIALOGUE\nNone.\n\nNO narrator.\nNO text overlay.\nNO logo.\nExclude watermarks.",
+            "sourceSpan": [
+              1660,
+              2036
+            ]
+          }
+        ],
+        "contactPhysicsRequirement": {
+          "required": true,
+          "precision": "HIGH",
+          "evidenceReferences": [
+            "content:2/prompt:2#chars=167-227",
+            "content:2/prompt:2#chars=1469-1484",
+            "content:2/prompt:2#chars=1584-1637",
+            "content:2/prompt:2#chars=1738-1804",
+            "content:2/prompt:2#chars=1894-1958"
+          ],
+          "reason": "STICKY — the red ball sticks to surfaces instead of bouncing; Luca catches it"
+        },
+        "transformationRequirement": {
+          "required": true,
+          "precision": "MODERATE",
+          "evidenceReferences": [
+            "content:2/prompt:2#chars=953-1047",
+            "content:2/prompt:2#chars=1196-1298"
+          ],
+          "reason": "The ball stretches toward him like soft chewing gum while its center remains stuck to the wall; This time the BALL stays stuck and the WOODEN WALL itself flexes slightly toward Luca like soft rubber"
+        }
+      },
+      "generalProducibility": {
+        "status": "RISKY",
+        "dimensions": {
+          "ENTITY_LOAD": {
+            "level": "UNKNOWN",
+            "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+            "evidenceReferences": [],
+            "material": false,
+            "requiresRedesign": false
+          },
+          "OBJECT_IDENTITY_CONTINUITY": {
+            "level": "UNKNOWN",
+            "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+            "evidenceReferences": [],
+            "material": false,
+            "requiresRedesign": false
+          },
+          "CHARACTER_IDENTITY_CONTINUITY": {
+            "level": "UNKNOWN",
+            "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+            "evidenceReferences": [],
+            "material": false,
+            "requiresRedesign": false
+          },
+          "FINE_MOTOR_PRECISION": {
+            "level": "UNKNOWN",
+            "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+            "evidenceReferences": [],
+            "material": false,
+            "requiresRedesign": false
+          },
+          "CONTACT_PHYSICS_COMPLEXITY": {
+            "level": "HIGH",
+            "reason": "STICKY — the red ball sticks to surfaces instead of bouncing; Luca catches it",
+            "evidenceReferences": [
+              "contactPhysicsRequirement",
+              "content:2/prompt:2#chars=1469-1484",
+              "content:2/prompt:2#chars=1584-1637",
+              "content:2/prompt:2#chars=167-227",
+              "content:2/prompt:2#chars=1738-1804",
+              "content:2/prompt:2#chars=1894-1958"
+            ],
+            "material": true,
+            "requiresRedesign": false
+          },
+          "OCCLUSION_HIDDEN_STATE": {
+            "level": "UNKNOWN",
+            "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+            "evidenceReferences": [],
+            "material": false,
+            "requiresRedesign": false
+          },
+          "EXACT_COUNT_DEPENDENCY": {
+            "level": "UNKNOWN",
+            "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+            "evidenceReferences": [],
+            "material": false,
+            "requiresRedesign": false
+          },
+          "MULTI_ENTITY_CONCURRENCY": {
+            "level": "UNKNOWN",
+            "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+            "evidenceReferences": [],
+            "material": false,
+            "requiresRedesign": false
+          },
+          "TRANSFORMATION_COMPLEXITY": {
+            "level": "MODERATE",
+            "reason": "The ball stretches toward him like soft chewing gum while its center remains stuck to the wall; This time the BALL stays stuck and the WOODEN WALL itself flexes slightly toward Luca like soft rubber",
+            "evidenceReferences": [
+              "transformationRequirement",
+              "content:2/prompt:2#chars=1196-1298",
+              "content:2/prompt:2#chars=953-1047"
+            ],
+            "material": true,
+            "requiresRedesign": false
+          },
+          "LIQUID_CLOTH_PARTICLE": {
+            "level": "UNKNOWN",
+            "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+            "evidenceReferences": [],
+            "material": false,
+            "requiresRedesign": false
+          },
+          "SPATIAL_RELATIONSHIP_COMPLEXITY": {
+            "level": "UNKNOWN",
+            "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+            "evidenceReferences": [],
+            "material": false,
+            "requiresRedesign": false
+          },
+          "CAMERA_ACTION_COUPLING": {
+            "level": "UNKNOWN",
+            "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+            "evidenceReferences": [],
+            "material": false,
+            "requiresRedesign": false
+          },
+          "MULTI_SCENE_CONTINUITY": {
+            "level": "UNKNOWN",
+            "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+            "evidenceReferences": [],
+            "material": false,
+            "requiresRedesign": false
+          },
+          "TEXT_LIP_SYNC_SYMBOL": {
+            "level": "UNKNOWN",
+            "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+            "evidenceReferences": [],
+            "material": false,
+            "requiresRedesign": false
+          },
+          "SEGMENT_CONTINUITY": {
+            "level": "UNKNOWN",
+            "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+            "evidenceReferences": [],
+            "material": false,
+            "requiresRedesign": false
+          }
+        },
+        "reasons": [
+          "STICKY — the red ball sticks to surfaces instead of bouncing; Luca catches it",
+          "The ball stretches toward him like soft chewing gum while its center remains stuck to the wall; This time the BALL stays stuck and the WOODEN WALL itself flexes slightly toward Luca like soft rubber",
+          "Some required structured production evidence is unavailable."
+        ],
+        "materialRisks": [
+          "CONTACT_PHYSICS_COMPLEXITY",
+          "TRANSFORMATION_COMPLEXITY"
+        ],
+        "unknownDimensions": [
+          "ENTITY_LOAD",
+          "OBJECT_IDENTITY_CONTINUITY",
+          "CHARACTER_IDENTITY_CONTINUITY",
+          "FINE_MOTOR_PRECISION",
+          "OCCLUSION_HIDDEN_STATE",
+          "EXACT_COUNT_DEPENDENCY",
+          "MULTI_ENTITY_CONCURRENCY",
+          "LIQUID_CLOTH_PARTICLE",
+          "SPATIAL_RELATIONSHIP_COMPLEXITY",
+          "CAMERA_ACTION_COUPLING",
+          "MULTI_SCENE_CONTINUITY",
+          "TEXT_LIP_SYNC_SYMBOL",
+          "SEGMENT_CONTINUITY"
+        ],
+        "durationSeconds": 15.0,
+        "durationSource": "metadata.duration",
+        "durationLoad": {
+          "level": "UNKNOWN",
+          "reason": "Timed, independently tracked action evidence is incomplete.",
+          "evidenceReferences": [],
+          "material": false,
+          "requiresRedesign": false,
+          "dependentStateChanges": 0,
+          "changesPerSecond": null
+        },
+        "provenance": {
+          "evaluatorVersion": "general-producibility-v1",
+          "source": "STRUCTURED_VIDEO_PLAN_IR",
+          "sourceEvidence": {
+            "source": "POST_FAMILY_SOURCE_ENRICHMENT",
+            "sourceHash": "393c8d86fdc12ec1f4bdc6897ceecc2e76ece5c20d5d5392690fe00a9a69ed55",
+            "sourceVersion": "2",
+            "extractionVersion": "source-span-production-evidence-v1"
+          },
+          "family6TemporalLoad": {
+            "status": "UNKNOWN",
+            "axes": [
+              {
+                "axis": "temporal_packing",
+                "level": "UNKNOWN",
+                "confidence": "LOW",
+                "evidenceReferences": [],
+                "reason": "Explicit duration and complete beat timing are unavailable."
+              },
+              {
+                "axis": "state_breadth",
+                "level": "UNKNOWN",
+                "confidence": "LOW",
+                "evidenceReferences": [
+                  "source_0",
+                  "source_1",
+                  "source_2",
+                  "source_3",
+                  "source_4",
+                  "source_5",
+                  "source_6"
+                ],
+                "reason": "Beat timing exists, but structured state-breadth fields are unavailable."
+              },
+              {
+                "axis": "continuity_memory",
+                "level": "UNKNOWN",
+                "confidence": "LOW",
+                "evidenceReferences": [
+                  "source_0",
+                  "source_1",
+                  "source_2",
+                  "source_3",
+                  "source_4",
+                  "source_5",
+                  "source_6"
+                ],
+                "reason": "Beat timing exists, but structured continuity state is unavailable."
+              },
+              {
+                "axis": "action_concurrency",
+                "level": "UNKNOWN",
+                "confidence": "LOW",
+                "evidenceReferences": [
+                  "source_0",
+                  "source_1",
+                  "source_2",
+                  "source_3",
+                  "source_4",
+                  "source_5",
+                  "source_6"
+                ],
+                "reason": "Beat timing exists, but structured actor/object concurrency evidence is unavailable."
+              }
+            ],
+            "severeAxisCount": 0,
+            "elevatedAxisCount": 0,
+            "highBasis": null,
+            "evidenceStatus": "UNKNOWN",
+            "version": "family6-temporal-generation-load-v1"
+          },
+          "authorizationPolicy": "EXISTING_POLICY_UNCHANGED"
+        }
+      },
+      "remainingUncertainty": [
+        "fineMotorRequirement",
+        "objectContinuity",
+        "characterContinuity",
+        "occlusionRequirement",
+        "exactCountDependency",
+        "simulationRequirement",
+        "spatialRequirement",
+        "sceneContinuityRequirement",
+        "textRequirement",
+        "segmentContinuityRequirement"
+      ]
+    },
+    "generalProducibility": {
+      "status": "RISKY",
+      "dimensions": {
+        "ENTITY_LOAD": {
+          "level": "UNKNOWN",
+          "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+          "evidenceReferences": [],
+          "material": false,
+          "requiresRedesign": false
+        },
+        "OBJECT_IDENTITY_CONTINUITY": {
+          "level": "UNKNOWN",
+          "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+          "evidenceReferences": [],
+          "material": false,
+          "requiresRedesign": false
+        },
+        "CHARACTER_IDENTITY_CONTINUITY": {
+          "level": "UNKNOWN",
+          "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+          "evidenceReferences": [],
+          "material": false,
+          "requiresRedesign": false
+        },
+        "FINE_MOTOR_PRECISION": {
+          "level": "UNKNOWN",
+          "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+          "evidenceReferences": [],
+          "material": false,
+          "requiresRedesign": false
+        },
+        "CONTACT_PHYSICS_COMPLEXITY": {
+          "level": "HIGH",
+          "reason": "STICKY — the red ball sticks to surfaces instead of bouncing; Luca catches it",
+          "evidenceReferences": [
+            "contactPhysicsRequirement",
+            "content:2/prompt:2#chars=1469-1484",
+            "content:2/prompt:2#chars=1584-1637",
+            "content:2/prompt:2#chars=167-227",
+            "content:2/prompt:2#chars=1738-1804",
+            "content:2/prompt:2#chars=1894-1958"
+          ],
+          "material": true,
+          "requiresRedesign": false
+        },
+        "OCCLUSION_HIDDEN_STATE": {
+          "level": "UNKNOWN",
+          "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+          "evidenceReferences": [],
+          "material": false,
+          "requiresRedesign": false
+        },
+        "EXACT_COUNT_DEPENDENCY": {
+          "level": "UNKNOWN",
+          "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+          "evidenceReferences": [],
+          "material": false,
+          "requiresRedesign": false
+        },
+        "MULTI_ENTITY_CONCURRENCY": {
+          "level": "UNKNOWN",
+          "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+          "evidenceReferences": [],
+          "material": false,
+          "requiresRedesign": false
+        },
+        "TRANSFORMATION_COMPLEXITY": {
+          "level": "MODERATE",
+          "reason": "The ball stretches toward him like soft chewing gum while its center remains stuck to the wall; This time the BALL stays stuck and the WOODEN WALL itself flexes slightly toward Luca like soft rubber",
+          "evidenceReferences": [
+            "transformationRequirement",
+            "content:2/prompt:2#chars=1196-1298",
+            "content:2/prompt:2#chars=953-1047"
+          ],
+          "material": true,
+          "requiresRedesign": false
+        },
+        "LIQUID_CLOTH_PARTICLE": {
+          "level": "UNKNOWN",
+          "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+          "evidenceReferences": [],
+          "material": false,
+          "requiresRedesign": false
+        },
+        "SPATIAL_RELATIONSHIP_COMPLEXITY": {
+          "level": "UNKNOWN",
+          "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+          "evidenceReferences": [],
+          "material": false,
+          "requiresRedesign": false
+        },
+        "CAMERA_ACTION_COUPLING": {
+          "level": "UNKNOWN",
+          "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+          "evidenceReferences": [],
+          "material": false,
+          "requiresRedesign": false
+        },
+        "MULTI_SCENE_CONTINUITY": {
+          "level": "UNKNOWN",
+          "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+          "evidenceReferences": [],
+          "material": false,
+          "requiresRedesign": false
+        },
+        "TEXT_LIP_SYNC_SYMBOL": {
+          "level": "UNKNOWN",
+          "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+          "evidenceReferences": [],
+          "material": false,
+          "requiresRedesign": false
+        },
+        "SEGMENT_CONTINUITY": {
+          "level": "UNKNOWN",
+          "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+          "evidenceReferences": [],
+          "material": false,
+          "requiresRedesign": false
+        }
+      },
+      "reasons": [
+        "STICKY — the red ball sticks to surfaces instead of bouncing; Luca catches it",
+        "The ball stretches toward him like soft chewing gum while its center remains stuck to the wall; This time the BALL stays stuck and the WOODEN WALL itself flexes slightly toward Luca like soft rubber",
+        "Some required structured production evidence is unavailable."
+      ],
+      "materialRisks": [
+        "CONTACT_PHYSICS_COMPLEXITY",
+        "TRANSFORMATION_COMPLEXITY"
+      ],
+      "unknownDimensions": [
+        "ENTITY_LOAD",
+        "OBJECT_IDENTITY_CONTINUITY",
+        "CHARACTER_IDENTITY_CONTINUITY",
+        "FINE_MOTOR_PRECISION",
+        "OCCLUSION_HIDDEN_STATE",
+        "EXACT_COUNT_DEPENDENCY",
+        "MULTI_ENTITY_CONCURRENCY",
+        "LIQUID_CLOTH_PARTICLE",
+        "SPATIAL_RELATIONSHIP_COMPLEXITY",
+        "CAMERA_ACTION_COUPLING",
+        "MULTI_SCENE_CONTINUITY",
+        "TEXT_LIP_SYNC_SYMBOL",
+        "SEGMENT_CONTINUITY"
+      ],
+      "durationSeconds": 15.0,
+      "durationSource": "metadata.duration",
+      "durationLoad": {
+        "level": "UNKNOWN",
+        "reason": "Timed, independently tracked action evidence is incomplete.",
+        "evidenceReferences": [],
+        "material": false,
+        "requiresRedesign": false,
+        "dependentStateChanges": 0,
+        "changesPerSecond": null
+      },
+      "provenance": {
+        "evaluatorVersion": "general-producibility-v1",
+        "source": "STRUCTURED_VIDEO_PLAN_IR",
+        "sourceEvidence": {
+          "source": "POST_FAMILY_SOURCE_ENRICHMENT",
+          "sourceHash": "393c8d86fdc12ec1f4bdc6897ceecc2e76ece5c20d5d5392690fe00a9a69ed55",
+          "sourceVersion": "2",
+          "extractionVersion": "source-span-production-evidence-v1"
+        },
+        "family6TemporalLoad": {
+          "status": "UNKNOWN",
+          "axes": [
+            {
+              "axis": "temporal_packing",
+              "level": "UNKNOWN",
+              "confidence": "LOW",
+              "evidenceReferences": [],
+              "reason": "Explicit duration and complete beat timing are unavailable."
+            },
+            {
+              "axis": "state_breadth",
+              "level": "UNKNOWN",
+              "confidence": "LOW",
+              "evidenceReferences": [
+                "source_0",
+                "source_1",
+                "source_2",
+                "source_3",
+                "source_4",
+                "source_5",
+                "source_6"
+              ],
+              "reason": "Beat timing exists, but structured state-breadth fields are unavailable."
+            },
+            {
+              "axis": "continuity_memory",
+              "level": "UNKNOWN",
+              "confidence": "LOW",
+              "evidenceReferences": [
+                "source_0",
+                "source_1",
+                "source_2",
+                "source_3",
+                "source_4",
+                "source_5",
+                "source_6"
+              ],
+              "reason": "Beat timing exists, but structured continuity state is unavailable."
+            },
+            {
+              "axis": "action_concurrency",
+              "level": "UNKNOWN",
+              "confidence": "LOW",
+              "evidenceReferences": [
+                "source_0",
+                "source_1",
+                "source_2",
+                "source_3",
+                "source_4",
+                "source_5",
+                "source_6"
+              ],
+              "reason": "Beat timing exists, but structured actor/object concurrency evidence is unavailable."
+            }
+          ],
+          "severeAxisCount": 0,
+          "elevatedAxisCount": 0,
+          "highBasis": null,
+          "evidenceStatus": "UNKNOWN",
+          "version": "family6-temporal-generation-load-v1"
+        },
+        "authorizationPolicy": "EXISTING_POLICY_UNCHANGED"
+      }
+    },
+    "routing": {
+      "contentProfile": "ABSURD_PHYSICS",
+      "basis": "SOURCE_PROGRESSION_HYPOTHESIS",
+      "confidence": "LOW",
+      "viewerQuestion": "",
+      "alternatives": [
+        "ABSURD_PHYSICS"
+      ],
+      "reason": "Kaynak mekanizması bir öneri üretir; operatör seçimi ile doğrulayın."
+    },
+    "applicability": {
+      "COMEDY": {
+        "status": "NOT_APPLICABLE",
+        "reason": "Yeni profilin evrensel zorunluluğu değildir.",
+        "profileVersion": "post-family-v1"
+      },
+      "THREE_ATTEMPTS": {
+        "status": "NOT_APPLICABLE",
+        "reason": "Yeni profilin evrensel zorunluluğu değildir.",
+        "profileVersion": "post-family-v1"
+      },
+      "FAKE_RESOLUTION": {
+        "status": "NOT_APPLICABLE",
+        "reason": "Yeni profilin evrensel zorunluluğu değildir.",
+        "profileVersion": "post-family-v1"
+      },
+      "RESOLVED_ENDING": {
+        "status": "NOT_APPLICABLE",
+        "reason": "Yeni profilin evrensel zorunluluğu değildir.",
+        "profileVersion": "post-family-v1"
+      }
+    },
+    "engagement": {
+      "stage": "PROMPT_REVIEW",
+      "status": "HYPOTHESIS",
+      "attentionPromise": "— HARD HOOK\nFIRST FRAME:\nLuca has JUST thrown the red ball at the wooden wall.\nInstead of bouncing back, the ball is already STUCK flat to the wall.\nLuca is frozen with both hands half-raised, eyes wide.\nThe impossible sticky ball must dominate the opening.\n\nSFX: THWIP — STICK.",
+      "progression": [
+        "— REACTION\nLuca walks straight to the ball and pulls it with one hand.\nIt will not move.\nHe uses both hands.",
+        "— FIRST ATTEMPT\nLuca pulls harder.\nThe ball stretches toward him like soft chewing gum while its center remains stuck to the wall.\nHe lets go.\n\nSNAP!\nThe ball instantly returns to the wall.",
+        "— ESCALATION\nLuca grabs the ball again with both hands and leans backward.\nThis time the BALL stays stuck and the WOODEN WALL itself flexes slightly toward Luca like soft rubber.\nLuca’s eyes widen.\nHe immediately releases it.\n\nBOING!\nThe wall returns safely to normal.",
+        "— SECOND ATTEMPT\nThe ball finally drops from the wall by itself.\nLuca catches it.\nHe squeezes it gently.\nIt behaves like a normal ball.\nHe smiles.",
+        "— FAKE RESOLUTION\nLuca carefully tosses the ball once between his hands.\nNormal.\nHe relaxes."
+      ],
+      "endingDelivery": "— FINAL TWIST\nLuca gives the ball one tiny playful toss upward.\nIt drops directly onto his CHEEK and sticks there with a soft PLUP.\nLuca goes cross-eyed trying to look at it.\n\nPLUP! — HARD CUT.\n\nSAFETY\nThe ball is soft.\nIt sticks to Luca’s cheek only, never covering his nose or mouth.\n\nDIALOGUE\nNone.\n\nNO narrator.\nNO text overlay.\nNO logo.\nExclude watermarks.",
+      "rewatchMechanism": "UNKNOWN",
+      "endingKind": "PLANNED_ENDING",
+      "limitations": [
+        "Ön değerlendirme hipotezdir; izlenme/retention yüzdesi tahmini değildir.",
+        "Cevapsız soru tek başına aynı videoyu tekrar izleme kanıtı değildir.",
+        "Durağanlık tek başına gereksiz ölü zaman değildir."
+      ]
+    },
+    "generation": {
+      "recommendedGenerator": "SEEDANCE_2_0_MINI",
+      "selectedGenerator": "SEEDANCE_2_0_MINI",
+      "apiModelId": "byte-plus-seedance-2-mini",
+      "desiredDuration": 15.0,
+      "supportedRenderDuration": 15.0,
+      "plannedEditedDuration": 15.0,
+      "capabilityStatus": "SUPPORTED",
+      "missingExecutionInputs": [
+        "startFrame"
+      ],
+      "capabilityProvenance": {
+        "source": "CONNECTED_OPENART_MODEL_FORM",
+        "command": "openart model form byte-plus-seedance-2-mini image2video --json --no-input",
+        "verifiedDate": "2026-10-08",
+        "schemaSha256": "e5458973228db9a1a6fd2185322e98e4f33595496e8c12cf9f22d69206ea1b94",
+        "liveGenerationVerified": false,
+        "cliVersion": "0.1.1 (commit 85fa0ad; built 2026-08-31)"
+      },
+      "profileVersion": "openart-cli-schema-2026-10-08",
+      "mode": "image2video",
+      "settings": {
+        "mode": "image2video",
+        "aspectRatio": "9:16"
+      },
+      "segments": [],
+      "reasons": [],
+      "selectionReason": "Konsept süresine göre kullanıcı üretim tercihi."
+    },
+    "opening": {
+      "strategy": "INSTANT_IMPOSSIBLE",
+      "designWindowSeconds": 2.0,
+      "plannedOpening": {
+        "status": "HYPOTHESIS",
+        "sourceSpan": [
+          492,
+          784
+        ],
+        "visualPromise": "— HARD HOOK\nFIRST FRAME:\nLuca has JUST thrown the red ball at the wooden wall.\nInstead of bouncing back, the ball is already STUCK flat to the wall.\nLuca is frozen with both hands half-raised, eyes wide.\nThe impossible sticky ball must dominate the opening.\n\nSFX: THWIP — STICK."
+      },
+      "actualFirstFrame": {
+        "status": "UNKNOWN"
+      },
+      "actualOpeningVideo": {
+        "status": "UNKNOWN"
+      },
+      "cover": {
+        "status": "NOT_EVIDENCE_OF_OPENING"
+      },
+      "alternatives": [],
+      "reason": "İlk iki saniye esnek tasarım penceresidir; ilk kare hareketin başarısını kanıtlamaz."
+    },
+    "executionReview": {
+      "stage": "GENERATOR_EXECUTION_REVIEW",
+      "status": "REWRITE",
+      "findings": [
+        {
+          "sourceSpan": [
+            953,
+            1047
+          ],
+          "sourceQuote": "The ball stretches toward him like soft chewing gum while its center remains stuck to the wall",
+          "riskCategory": "SIMULTANEOUS_ACTION_COMPETITION",
+          "category": "SIMULTANEOUS_ACTION_COMPETITION",
+          "plausibleFailure": "Hareketler aynı anda yarışabilir.",
+          "evidenceBasis": "GENERAL_HEURISTIC",
+          "confidence": "LOW",
+          "smallestChange": "Öncelikli hareketi belirt; uygunsa diğerini sonra başlat.",
+          "altersCreativeIntent": false
+        }
+      ],
+      "provider": "LOCAL",
+      "model": null,
+      "version": "local-execution-critic-v1",
+      "visualInspected": false,
+      "targetGenerator": "SEEDANCE_2_0_MINI",
+      "limitations": [
+        "Genel yazım sezgileri; seçilen modelin fiili performans kanıtı değildir."
+      ],
+      "calls": 0
+    },
+    "family8": {
+      "creativeQuality": {
+        "creativeScore": null,
+        "creativeGrade": null,
+        "familyScores": {}
+      },
+      "evidenceCompleteness": {
+        "status": "INCOMPLETE",
+        "evaluationCoverage": null,
+        "aggregation": {}
+      },
+      "renderAuthorization": {
+        "status": "BLOCKED_PENDING_EVIDENCE",
+        "reasons": [
+          {
+            "code": "REQUIRED_EVIDENCE_MISSING",
+            "source": "REFERENCE_ASSOCIATION",
+            "message": "Yetkili karakter/nesne referansı eksik veya doğrulanmadı.",
+            "references": []
+          },
+          {
+            "code": "REQUIRED_EVIDENCE_MISSING",
+            "source": "EXECUTION_INPUTS",
+            "message": "Sağlayıcının zorunlu yürütme girdileri eksik: startFrame",
+            "references": []
+          },
+          {
+            "code": "REQUIRED_EVIDENCE_MISSING",
+            "source": "EXECUTION_REVIEW",
+            "message": "Jeneratör yürütme incelemesi tamamlanmadı veya küçük düzeltme gerekiyor.",
+            "references": []
+          },
+          {
+            "code": "REQUIRED_EVIDENCE_MISSING",
+            "source": "FINAL_VIDEO_INTEGRITY",
+            "message": "Son video kabulü için mevcut doğrulanmış görsel kapılar ve bağımsız revalidation gereklidir.",
+            "references": []
+          }
+        ]
+      },
+      "legacy": {
+        "readiness": null
+      }
+    },
+    "originalPrompt": "Create a highly engaging 15-second vertical 9:16 Pompom Hills short.\n\nUSE THE OFFICIAL EXISTING LUCA CHARACTER REFERENCE EXACTLY.\nDo not redesign Luca.\n\nPHYSICAL RULE\nSTICKY — the red ball sticks to surfaces instead of bouncing.\n\nSETTING\nSimple sunny Pompom Hills garden.\nOne wooden play wall, green grass, minimal background.\n\nMAIN OBJECT\nOne bright red soft rubber ball.\n\nCAMERA\nSingle continuous visual flow.\nMedium shot with Luca and the wall both clearly visible.\nNo establishing shot.\n\n0.0–0.8 SEC — HARD HOOK\nFIRST FRAME:\nLuca has JUST thrown the red ball at the wooden wall.\nInstead of bouncing back, the ball is already STUCK flat to the wall.\nLuca is frozen with both hands half-raised, eyes wide.\nThe impossible sticky ball must dominate the opening.\n\nSFX: THWIP — STICK.\n\n0.8–3.0 SEC — REACTION\nLuca walks straight to the ball and pulls it with one hand.\nIt will not move.\nHe uses both hands.\n\n3.0–6.0 SEC — FIRST ATTEMPT\nLuca pulls harder.\nThe ball stretches toward him like soft chewing gum while its center remains stuck to the wall.\nHe lets go.\n\nSNAP!\nThe ball instantly returns to the wall.\n\n6.0–9.0 SEC — ESCALATION\nLuca grabs the ball again with both hands and leans backward.\nThis time the BALL stays stuck and the WOODEN WALL itself flexes slightly toward Luca like soft rubber.\nLuca’s eyes widen.\nHe immediately releases it.\n\nBOING!\nThe wall returns safely to normal.\n\n9.0–12.0 SEC — SECOND ATTEMPT\nThe ball finally drops from the wall by itself.\nLuca catches it.\nHe squeezes it gently.\nIt behaves like a normal ball.\nHe smiles.\n\n12.0–14.0 SEC — FAKE RESOLUTION\nLuca carefully tosses the ball once between his hands.\nNormal.\nHe relaxes.\n\n14.0–15.0 SEC — FINAL TWIST\nLuca gives the ball one tiny playful toss upward.\nIt drops directly onto his CHEEK and sticks there with a soft PLUP.\nLuca goes cross-eyed trying to look at it.\n\nPLUP! — HARD CUT.\n\nSAFETY\nThe ball is soft.\nIt sticks to Luca’s cheek only, never covering his nose or mouth.\n\nDIALOGUE\nNone.\n\nNO narrator.\nNO text overlay.\nNO logo.\nNO watermark.\n",
+    "finalPrompt": "Create a highly engaging 15-second vertical 9:16 Pompom Hills short.\n\nUSE THE OFFICIAL EXISTING LUCA CHARACTER REFERENCE EXACTLY.\nDo not redesign Luca.\n\nPHYSICAL RULE\nSTICKY — the red ball sticks to surfaces instead of bouncing.\n\nSETTING\nSimple sunny Pompom Hills garden.\nOne wooden play wall, green grass, minimal background.\n\nMAIN OBJECT\nOne bright red soft rubber ball.\n\nCAMERA\nSingle continuous visual flow.\nMedium shot with Luca and the wall both clearly visible.\nNo establishing shot.\n\n0.0–0.8 SEC — HARD HOOK\nFIRST FRAME:\nLuca has JUST thrown the red ball at the wooden wall.\nInstead of bouncing back, the ball is already STUCK flat to the wall.\nLuca is frozen with both hands half-raised, eyes wide.\nThe impossible sticky ball must dominate the opening.\n\nSFX: THWIP — STICK.\n\n0.8–3.0 SEC — REACTION\nLuca walks straight to the ball and pulls it with one hand.\nIt will not move.\nHe uses both hands.\n\n3.0–6.0 SEC — FIRST ATTEMPT\nLuca pulls harder.\nThe ball stretches toward him like soft chewing gum while its center remains stuck to the wall.\nHe lets go.\n\nSNAP!\nThe ball instantly returns to the wall.\n\n6.0–9.0 SEC — ESCALATION\nLuca grabs the ball again with both hands and leans backward.\nThis time the BALL stays stuck and the WOODEN WALL itself flexes slightly toward Luca like soft rubber.\nLuca’s eyes widen.\nHe immediately releases it.\n\nBOING!\nThe wall returns safely to normal.\n\n9.0–12.0 SEC — SECOND ATTEMPT\nThe ball finally drops from the wall by itself.\nLuca catches it.\nHe squeezes it gently.\nIt behaves like a normal ball.\nHe smiles.\n\n12.0–14.0 SEC — FAKE RESOLUTION\nLuca carefully tosses the ball once between his hands.\nNormal.\nHe relaxes.\n\n14.0–15.0 SEC — FINAL TWIST\nLuca gives the ball one tiny playful toss upward.\nIt drops directly onto his CHEEK and sticks there with a soft PLUP.\nLuca goes cross-eyed trying to look at it.\n\nPLUP! — HARD CUT.\n\nSAFETY\nThe ball is soft.\nIt sticks to Luca’s cheek only, never covering his nose or mouth.\n\nDIALOGUE\nNone.\n\nNO narrator.\nNO text overlay.\nNO logo.\nExclude watermarks.\n",
+    "patch": [
+      {
+        "start": 2016,
+        "end": 2029,
+        "sourceQuote": "NO watermark.",
+        "replacement": "Exclude watermarks."
+      }
+    ],
+    "changedSettings": {},
+    "repairPasses": 1,
+    "verificationPasses": 1,
+    "protectedIntent": [
+      "the red ball sticks to surfaces instead of bouncing",
+      "Luca goes cross-eyed trying to look at it"
+    ],
+    "manualHandoff": {
+      "allowed": true,
+      "authorization": {
+        "status": "BLOCKED_PENDING_EVIDENCE",
+        "reasons": [
+          {
+            "code": "REQUIRED_EVIDENCE_MISSING",
+            "source": "REFERENCE_ASSOCIATION",
+            "message": "Yetkili karakter/nesne referansı eksik veya doğrulanmadı.",
+            "references": []
+          },
+          {
+            "code": "REQUIRED_EVIDENCE_MISSING",
+            "source": "EXECUTION_INPUTS",
+            "message": "Sağlayıcının zorunlu yürütme girdileri eksik: startFrame",
+            "references": []
+          },
+          {
+            "code": "REQUIRED_EVIDENCE_MISSING",
+            "source": "EXECUTION_REVIEW",
+            "message": "Jeneratör yürütme incelemesi tamamlanmadı veya küçük düzeltme gerekiyor.",
+            "references": []
+          },
+          {
+            "code": "REQUIRED_EVIDENCE_MISSING",
+            "source": "FINAL_VIDEO_INTEGRITY",
+            "message": "Son video kabulü için mevcut doğrulanmış görsel kapılar ve bağımsız revalidation gereklidir.",
+            "references": []
+          }
+        ]
+      },
+      "notice": "İnceleme paketi dışa aktarımı render yetkisi veya kredi harcama onayı değildir."
+    },
+    "needsSavedPromptVersion": true,
+    "rationale": "Yerel kaynak yaması; aynı profil/ayar/referanslarla son metin yeniden doğrulandı.",
+    "diff": "--- original\n+++ final\n@@ -78,4 +78,4 @@\n NO narrator.\n NO text overlay.\n NO logo.\n-NO watermark.\n+Exclude watermarks.\n",
+    "boundRequest": {
+      "prompt": "Create a highly engaging 15-second vertical 9:16 Pompom Hills short.\n\nUSE THE OFFICIAL EXISTING LUCA CHARACTER REFERENCE EXACTLY.\nDo not redesign Luca.\n\nPHYSICAL RULE\nSTICKY — the red ball sticks to surfaces instead of bouncing.\n\nSETTING\nSimple sunny Pompom Hills garden.\nOne wooden play wall, green grass, minimal background.\n\nMAIN OBJECT\nOne bright red soft rubber ball.\n\nCAMERA\nSingle continuous visual flow.\nMedium shot with Luca and the wall both clearly visible.\nNo establishing shot.\n\n0.0–0.8 SEC — HARD HOOK\nFIRST FRAME:\nLuca has JUST thrown the red ball at the wooden wall.\nInstead of bouncing back, the ball is already STUCK flat to the wall.\nLuca is frozen with both hands half-raised, eyes wide.\nThe impossible sticky ball must dominate the opening.\n\nSFX: THWIP — STICK.\n\n0.8–3.0 SEC — REACTION\nLuca walks straight to the ball and pulls it with one hand.\nIt will not move.\nHe uses both hands.\n\n3.0–6.0 SEC — FIRST ATTEMPT\nLuca pulls harder.\nThe ball stretches toward him like soft chewing gum while its center remains stuck to the wall.\nHe lets go.\n\nSNAP!\nThe ball instantly returns to the wall.\n\n6.0–9.0 SEC — ESCALATION\nLuca grabs the ball again with both hands and leans backward.\nThis time the BALL stays stuck and the WOODEN WALL itself flexes slightly toward Luca like soft rubber.\nLuca’s eyes widen.\nHe immediately releases it.\n\nBOING!\nThe wall returns safely to normal.\n\n9.0–12.0 SEC — SECOND ATTEMPT\nThe ball finally drops from the wall by itself.\nLuca catches it.\nHe squeezes it gently.\nIt behaves like a normal ball.\nHe smiles.\n\n12.0–14.0 SEC — FAKE RESOLUTION\nLuca carefully tosses the ball once between his hands.\nNormal.\nHe relaxes.\n\n14.0–15.0 SEC — FINAL TWIST\nLuca gives the ball one tiny playful toss upward.\nIt drops directly onto his CHEEK and sticks there with a soft PLUP.\nLuca goes cross-eyed trying to look at it.\n\nPLUP! — HARD CUT.\n\nSAFETY\nThe ball is soft.\nIt sticks to Luca’s cheek only, never covering his nose or mouth.\n\nDIALOGUE\nNone.\n\nNO narrator.\nNO text overlay.\nNO logo.\nExclude watermarks.\n",
+      "profile": "post-family-v1",
+      "settings": {
+        "mode": "image2video",
+        "aspectRatio": "9:16"
+      },
+      "sourceId": "content:2/prompt:2",
+      "references": [],
+      "sourceVersion": "2",
+      "protectedIntent": [
+        "the red ball sticks to surfaces instead of bouncing",
+        "Luca goes cross-eyed trying to look at it"
+      ]
+    },
+    "parentReviewId": "4d8d21a3-7cd3-4c18-85a2-a7c1228dc40d",
+    "contentId": 2,
+    "promptVersionId": 2,
+    "recordId": "f3ba4733-c4f1-4c69-b481-acc9436574c2"
+  },
+  "savedFinalPromptVersionId": 4,
+  "finalReview": {
+    "workflowVersion": "post-family-v1",
+    "bindingHash": "c72d5ea9862a1e2beffea7b2fceea200a81f8321470fe9e336e478c5129263ac",
+    "authorizationEvidence": {},
+    "source": {
+      "artifact": "content:2/prompt:4",
+      "version": "4",
+      "sha256": "393c8d86fdc12ec1f4bdc6897ceecc2e76ece5c20d5d5392690fe00a9a69ed55"
+    },
+    "productionEvidence": {
+      "source": {
+        "artifact": "content:2/prompt:4",
+        "version": "4",
+        "sha256": "393c8d86fdc12ec1f4bdc6897ceecc2e76ece5c20d5d5392690fe00a9a69ed55"
+      },
+      "claims": [
+        {
+          "field": "beats",
+          "state": "OBSERVED",
+          "quote": "0.0–0.8 SEC",
+          "span": [
+            492,
+            503
+          ],
+          "sourceId": "content:2/prompt:4",
+          "sourceVersion": "4",
+          "sourceHash": "393c8d86fdc12ec1f4bdc6897ceecc2e76ece5c20d5d5392690fe00a9a69ed55",
+          "method": "LOCAL_SOURCE_PATTERN",
+          "methodVersion": "source-span-production-evidence-v1",
+          "provider": null,
+          "confidence": "HIGH"
+        },
+        {
+          "field": "beats",
+          "state": "OBSERVED",
+          "quote": "0.8–3.0 SEC",
+          "span": [
+            784,
+            795
+          ],
+          "sourceId": "content:2/prompt:4",
+          "sourceVersion": "4",
+          "sourceHash": "393c8d86fdc12ec1f4bdc6897ceecc2e76ece5c20d5d5392690fe00a9a69ed55",
+          "method": "LOCAL_SOURCE_PATTERN",
+          "methodVersion": "source-span-production-evidence-v1",
+          "provider": null,
+          "confidence": "HIGH"
+        },
+        {
+          "field": "beats",
+          "state": "OBSERVED",
+          "quote": "3.0–6.0 SEC",
+          "span": [
+            906,
+            917
+          ],
+          "sourceId": "content:2/prompt:4",
+          "sourceVersion": "4",
+          "sourceHash": "393c8d86fdc12ec1f4bdc6897ceecc2e76ece5c20d5d5392690fe00a9a69ed55",
+          "method": "LOCAL_SOURCE_PATTERN",
+          "methodVersion": "source-span-production-evidence-v1",
+          "provider": null,
+          "confidence": "HIGH"
+        },
+        {
+          "field": "beats",
+          "state": "OBSERVED",
+          "quote": "6.0–9.0 SEC",
+          "span": [
+            1109,
+            1120
+          ],
+          "sourceId": "content:2/prompt:4",
+          "sourceVersion": "4",
+          "sourceHash": "393c8d86fdc12ec1f4bdc6897ceecc2e76ece5c20d5d5392690fe00a9a69ed55",
+          "method": "LOCAL_SOURCE_PATTERN",
+          "methodVersion": "source-span-production-evidence-v1",
+          "provider": null,
+          "confidence": "HIGH"
+        },
+        {
+          "field": "beats",
+          "state": "OBSERVED",
+          "quote": "9.0–12.0 SEC",
+          "span": [
+            1391,
+            1403
+          ],
+          "sourceId": "content:2/prompt:4",
+          "sourceVersion": "4",
+          "sourceHash": "393c8d86fdc12ec1f4bdc6897ceecc2e76ece5c20d5d5392690fe00a9a69ed55",
+          "method": "LOCAL_SOURCE_PATTERN",
+          "methodVersion": "source-span-production-evidence-v1",
+          "provider": null,
+          "confidence": "HIGH"
+        },
+        {
+          "field": "beats",
+          "state": "OBSERVED",
+          "quote": "12.0–14.0 SEC",
+          "span": [
+            1552,
+            1565
+          ],
+          "sourceId": "content:2/prompt:4",
+          "sourceVersion": "4",
+          "sourceHash": "393c8d86fdc12ec1f4bdc6897ceecc2e76ece5c20d5d5392690fe00a9a69ed55",
+          "method": "LOCAL_SOURCE_PATTERN",
+          "methodVersion": "source-span-production-evidence-v1",
+          "provider": null,
+          "confidence": "HIGH"
+        },
+        {
+          "field": "beats",
+          "state": "OBSERVED",
+          "quote": "14.0–15.0 SEC",
+          "span": [
+            1660,
+            1673
+          ],
+          "sourceId": "content:2/prompt:4",
+          "sourceVersion": "4",
+          "sourceHash": "393c8d86fdc12ec1f4bdc6897ceecc2e76ece5c20d5d5392690fe00a9a69ed55",
+          "method": "LOCAL_SOURCE_PATTERN",
+          "methodVersion": "source-span-production-evidence-v1",
+          "provider": null,
+          "confidence": "HIGH"
+        },
+        {
+          "field": "fineMotorRequirement",
+          "state": "MISSING",
+          "quote": null,
+          "span": null,
+          "sourceId": "content:2/prompt:4",
+          "sourceVersion": "4",
+          "sourceHash": "393c8d86fdc12ec1f4bdc6897ceecc2e76ece5c20d5d5392690fe00a9a69ed55",
+          "methodVersion": "source-span-production-evidence-v1",
+          "confidence": null,
+          "reason": "Omission does not confirm absence."
+        },
+        {
+          "field": "contactPhysicsRequirement",
+          "state": "INFERRED",
+          "quote": "STICKY — the red ball sticks to surfaces instead of bouncing",
+          "span": [
+            167,
+            227
+          ],
+          "sourceId": "content:2/prompt:4",
+          "sourceVersion": "4",
+          "sourceHash": "393c8d86fdc12ec1f4bdc6897ceecc2e76ece5c20d5d5392690fe00a9a69ed55",
+          "method": "LOCAL_SOURCE_PATTERN",
+          "methodVersion": "source-span-production-evidence-v1",
+          "provider": null,
+          "confidence": "MEDIUM"
+        },
+        {
+          "field": "contactPhysicsRequirement",
+          "state": "INFERRED",
+          "quote": "Luca catches it",
+          "span": [
+            1469,
+            1484
+          ],
+          "sourceId": "content:2/prompt:4",
+          "sourceVersion": "4",
+          "sourceHash": "393c8d86fdc12ec1f4bdc6897ceecc2e76ece5c20d5d5392690fe00a9a69ed55",
+          "method": "LOCAL_SOURCE_PATTERN",
+          "methodVersion": "source-span-production-evidence-v1",
+          "provider": null,
+          "confidence": "MEDIUM"
+        },
+        {
+          "field": "contactPhysicsRequirement",
+          "state": "INFERRED",
+          "quote": "Luca carefully tosses the ball once between his hands",
+          "span": [
+            1584,
+            1637
+          ],
+          "sourceId": "content:2/prompt:4",
+          "sourceVersion": "4",
+          "sourceHash": "393c8d86fdc12ec1f4bdc6897ceecc2e76ece5c20d5d5392690fe00a9a69ed55",
+          "method": "LOCAL_SOURCE_PATTERN",
+          "methodVersion": "source-span-production-evidence-v1",
+          "provider": null,
+          "confidence": "MEDIUM"
+        },
+        {
+          "field": "contactPhysicsRequirement",
+          "state": "INFERRED",
+          "quote": "It drops directly onto his CHEEK and sticks there with a soft PLUP",
+          "span": [
+            1738,
+            1804
+          ],
+          "sourceId": "content:2/prompt:4",
+          "sourceVersion": "4",
+          "sourceHash": "393c8d86fdc12ec1f4bdc6897ceecc2e76ece5c20d5d5392690fe00a9a69ed55",
+          "method": "LOCAL_SOURCE_PATTERN",
+          "methodVersion": "source-span-production-evidence-v1",
+          "provider": null,
+          "confidence": "MEDIUM"
+        },
+        {
+          "field": "contactPhysicsRequirement",
+          "state": "INFERRED",
+          "quote": "It sticks to Luca’s cheek only, never covering his nose or mouth",
+          "span": [
+            1894,
+            1958
+          ],
+          "sourceId": "content:2/prompt:4",
+          "sourceVersion": "4",
+          "sourceHash": "393c8d86fdc12ec1f4bdc6897ceecc2e76ece5c20d5d5392690fe00a9a69ed55",
+          "method": "LOCAL_SOURCE_PATTERN",
+          "methodVersion": "source-span-production-evidence-v1",
+          "provider": null,
+          "confidence": "MEDIUM"
+        },
+        {
+          "field": "objectContinuity",
+          "state": "MISSING",
+          "quote": null,
+          "span": null,
+          "sourceId": "content:2/prompt:4",
+          "sourceVersion": "4",
+          "sourceHash": "393c8d86fdc12ec1f4bdc6897ceecc2e76ece5c20d5d5392690fe00a9a69ed55",
+          "methodVersion": "source-span-production-evidence-v1",
+          "confidence": null,
+          "reason": "Omission does not confirm absence."
+        },
+        {
+          "field": "characterContinuity",
+          "state": "MISSING",
+          "quote": null,
+          "span": null,
+          "sourceId": "content:2/prompt:4",
+          "sourceVersion": "4",
+          "sourceHash": "393c8d86fdc12ec1f4bdc6897ceecc2e76ece5c20d5d5392690fe00a9a69ed55",
+          "methodVersion": "source-span-production-evidence-v1",
+          "confidence": null,
+          "reason": "Omission does not confirm absence."
+        },
+        {
+          "field": "occlusionRequirement",
+          "state": "MISSING",
+          "quote": null,
+          "span": null,
+          "sourceId": "content:2/prompt:4",
+          "sourceVersion": "4",
+          "sourceHash": "393c8d86fdc12ec1f4bdc6897ceecc2e76ece5c20d5d5392690fe00a9a69ed55",
+          "methodVersion": "source-span-production-evidence-v1",
+          "confidence": null,
+          "reason": "Omission does not confirm absence."
+        },
+        {
+          "field": "exactCountDependency",
+          "state": "MISSING",
+          "quote": null,
+          "span": null,
+          "sourceId": "content:2/prompt:4",
+          "sourceVersion": "4",
+          "sourceHash": "393c8d86fdc12ec1f4bdc6897ceecc2e76ece5c20d5d5392690fe00a9a69ed55",
+          "methodVersion": "source-span-production-evidence-v1",
+          "confidence": null,
+          "reason": "Omission does not confirm absence."
+        },
+        {
+          "field": "transformationRequirement",
+          "state": "INFERRED",
+          "quote": "The ball stretches toward him like soft chewing gum while its center remains stuck to the wall",
+          "span": [
+            953,
+            1047
+          ],
+          "sourceId": "content:2/prompt:4",
+          "sourceVersion": "4",
+          "sourceHash": "393c8d86fdc12ec1f4bdc6897ceecc2e76ece5c20d5d5392690fe00a9a69ed55",
+          "method": "LOCAL_SOURCE_PATTERN",
+          "methodVersion": "source-span-production-evidence-v1",
+          "provider": null,
+          "confidence": "MEDIUM"
+        },
+        {
+          "field": "transformationRequirement",
+          "state": "INFERRED",
+          "quote": "This time the BALL stays stuck and the WOODEN WALL itself flexes slightly toward Luca like soft rubber",
+          "span": [
+            1196,
+            1298
+          ],
+          "sourceId": "content:2/prompt:4",
+          "sourceVersion": "4",
+          "sourceHash": "393c8d86fdc12ec1f4bdc6897ceecc2e76ece5c20d5d5392690fe00a9a69ed55",
+          "method": "LOCAL_SOURCE_PATTERN",
+          "methodVersion": "source-span-production-evidence-v1",
+          "provider": null,
+          "confidence": "MEDIUM"
+        },
+        {
+          "field": "simulationRequirement",
+          "state": "MISSING",
+          "quote": null,
+          "span": null,
+          "sourceId": "content:2/prompt:4",
+          "sourceVersion": "4",
+          "sourceHash": "393c8d86fdc12ec1f4bdc6897ceecc2e76ece5c20d5d5392690fe00a9a69ed55",
+          "methodVersion": "source-span-production-evidence-v1",
+          "confidence": null,
+          "reason": "Omission does not confirm absence."
+        },
+        {
+          "field": "spatialRequirement",
+          "state": "MISSING",
+          "quote": null,
+          "span": null,
+          "sourceId": "content:2/prompt:4",
+          "sourceVersion": "4",
+          "sourceHash": "393c8d86fdc12ec1f4bdc6897ceecc2e76ece5c20d5d5392690fe00a9a69ed55",
+          "methodVersion": "source-span-production-evidence-v1",
+          "confidence": null,
+          "reason": "Omission does not confirm absence."
+        },
+        {
+          "field": "sceneContinuityRequirement",
+          "state": "MISSING",
+          "quote": null,
+          "span": null,
+          "sourceId": "content:2/prompt:4",
+          "sourceVersion": "4",
+          "sourceHash": "393c8d86fdc12ec1f4bdc6897ceecc2e76ece5c20d5d5392690fe00a9a69ed55",
+          "methodVersion": "source-span-production-evidence-v1",
+          "confidence": null,
+          "reason": "Omission does not confirm absence."
+        },
+        {
+          "field": "textRequirement",
+          "state": "MISSING",
+          "quote": null,
+          "span": null,
+          "sourceId": "content:2/prompt:4",
+          "sourceVersion": "4",
+          "sourceHash": "393c8d86fdc12ec1f4bdc6897ceecc2e76ece5c20d5d5392690fe00a9a69ed55",
+          "methodVersion": "source-span-production-evidence-v1",
+          "confidence": null,
+          "reason": "Omission does not confirm absence."
+        },
+        {
+          "field": "segmentContinuityRequirement",
+          "state": "MISSING",
+          "quote": null,
+          "span": null,
+          "sourceId": "content:2/prompt:4",
+          "sourceVersion": "4",
+          "sourceHash": "393c8d86fdc12ec1f4bdc6897ceecc2e76ece5c20d5d5392690fe00a9a69ed55",
+          "methodVersion": "source-span-production-evidence-v1",
+          "confidence": null,
+          "reason": "Omission does not confirm absence."
+        }
+      ],
+      "videoPlanIR": {
+        "metadata": {
+          "generalProducibilityEvidence": {
+            "source": "POST_FAMILY_SOURCE_ENRICHMENT",
+            "sourceHash": "393c8d86fdc12ec1f4bdc6897ceecc2e76ece5c20d5d5392690fe00a9a69ed55",
+            "sourceVersion": "4",
+            "extractionVersion": "source-span-production-evidence-v1"
+          },
+          "duration": 15.0
+        },
+        "beats": [
+          {
+            "id": "source_0",
+            "startTime": 0.0,
+            "endTime": 0.8,
+            "action": "— HARD HOOK\nFIRST FRAME:\nLuca has JUST thrown the red ball at the wooden wall.\nInstead of bouncing back, the ball is already STUCK flat to the wall.\nLuca is frozen with both hands half-raised, eyes wide.\nThe impossible sticky ball must dominate the opening.\n\nSFX: THWIP — STICK.",
+            "sourceSpan": [
+              492,
+              784
+            ]
+          },
+          {
+            "id": "source_1",
+            "startTime": 0.8,
+            "endTime": 3.0,
+            "action": "— REACTION\nLuca walks straight to the ball and pulls it with one hand.\nIt will not move.\nHe uses both hands.",
+            "sourceSpan": [
+              784,
+              906
+            ]
+          },
+          {
+            "id": "source_2",
+            "startTime": 3.0,
+            "endTime": 6.0,
+            "action": "— FIRST ATTEMPT\nLuca pulls harder.\nThe ball stretches toward him like soft chewing gum while its center remains stuck to the wall.\nHe lets go.\n\nSNAP!\nThe ball instantly returns to the wall.",
+            "sourceSpan": [
+              906,
+              1109
+            ]
+          },
+          {
+            "id": "source_3",
+            "startTime": 6.0,
+            "endTime": 9.0,
+            "action": "— ESCALATION\nLuca grabs the ball again with both hands and leans backward.\nThis time the BALL stays stuck and the WOODEN WALL itself flexes slightly toward Luca like soft rubber.\nLuca’s eyes widen.\nHe immediately releases it.\n\nBOING!\nThe wall returns safely to normal.",
+            "sourceSpan": [
+              1109,
+              1391
+            ]
+          },
+          {
+            "id": "source_4",
+            "startTime": 9.0,
+            "endTime": 12.0,
+            "action": "— SECOND ATTEMPT\nThe ball finally drops from the wall by itself.\nLuca catches it.\nHe squeezes it gently.\nIt behaves like a normal ball.\nHe smiles.",
+            "sourceSpan": [
+              1391,
+              1552
+            ]
+          },
+          {
+            "id": "source_5",
+            "startTime": 12.0,
+            "endTime": 14.0,
+            "action": "— FAKE RESOLUTION\nLuca carefully tosses the ball once between his hands.\nNormal.\nHe relaxes.",
+            "sourceSpan": [
+              1552,
+              1660
+            ]
+          },
+          {
+            "id": "source_6",
+            "startTime": 14.0,
+            "endTime": 15.0,
+            "action": "— FINAL TWIST\nLuca gives the ball one tiny playful toss upward.\nIt drops directly onto his CHEEK and sticks there with a soft PLUP.\nLuca goes cross-eyed trying to look at it.\n\nPLUP! — HARD CUT.\n\nSAFETY\nThe ball is soft.\nIt sticks to Luca’s cheek only, never covering his nose or mouth.\n\nDIALOGUE\nNone.\n\nNO narrator.\nNO text overlay.\nNO logo.\nExclude watermarks.",
+            "sourceSpan": [
+              1660,
+              2036
+            ]
+          }
+        ],
+        "contactPhysicsRequirement": {
+          "required": true,
+          "precision": "HIGH",
+          "evidenceReferences": [
+            "content:2/prompt:4#chars=167-227",
+            "content:2/prompt:4#chars=1469-1484",
+            "content:2/prompt:4#chars=1584-1637",
+            "content:2/prompt:4#chars=1738-1804",
+            "content:2/prompt:4#chars=1894-1958"
+          ],
+          "reason": "STICKY — the red ball sticks to surfaces instead of bouncing; Luca catches it"
+        },
+        "transformationRequirement": {
+          "required": true,
+          "precision": "MODERATE",
+          "evidenceReferences": [
+            "content:2/prompt:4#chars=953-1047",
+            "content:2/prompt:4#chars=1196-1298"
+          ],
+          "reason": "The ball stretches toward him like soft chewing gum while its center remains stuck to the wall; This time the BALL stays stuck and the WOODEN WALL itself flexes slightly toward Luca like soft rubber"
+        }
+      },
+      "generalProducibility": {
+        "status": "RISKY",
+        "dimensions": {
+          "ENTITY_LOAD": {
+            "level": "UNKNOWN",
+            "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+            "evidenceReferences": [],
+            "material": false,
+            "requiresRedesign": false
+          },
+          "OBJECT_IDENTITY_CONTINUITY": {
+            "level": "UNKNOWN",
+            "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+            "evidenceReferences": [],
+            "material": false,
+            "requiresRedesign": false
+          },
+          "CHARACTER_IDENTITY_CONTINUITY": {
+            "level": "UNKNOWN",
+            "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+            "evidenceReferences": [],
+            "material": false,
+            "requiresRedesign": false
+          },
+          "FINE_MOTOR_PRECISION": {
+            "level": "UNKNOWN",
+            "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+            "evidenceReferences": [],
+            "material": false,
+            "requiresRedesign": false
+          },
+          "CONTACT_PHYSICS_COMPLEXITY": {
+            "level": "HIGH",
+            "reason": "STICKY — the red ball sticks to surfaces instead of bouncing; Luca catches it",
+            "evidenceReferences": [
+              "contactPhysicsRequirement",
+              "content:2/prompt:4#chars=1469-1484",
+              "content:2/prompt:4#chars=1584-1637",
+              "content:2/prompt:4#chars=167-227",
+              "content:2/prompt:4#chars=1738-1804",
+              "content:2/prompt:4#chars=1894-1958"
+            ],
+            "material": true,
+            "requiresRedesign": false
+          },
+          "OCCLUSION_HIDDEN_STATE": {
+            "level": "UNKNOWN",
+            "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+            "evidenceReferences": [],
+            "material": false,
+            "requiresRedesign": false
+          },
+          "EXACT_COUNT_DEPENDENCY": {
+            "level": "UNKNOWN",
+            "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+            "evidenceReferences": [],
+            "material": false,
+            "requiresRedesign": false
+          },
+          "MULTI_ENTITY_CONCURRENCY": {
+            "level": "UNKNOWN",
+            "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+            "evidenceReferences": [],
+            "material": false,
+            "requiresRedesign": false
+          },
+          "TRANSFORMATION_COMPLEXITY": {
+            "level": "MODERATE",
+            "reason": "The ball stretches toward him like soft chewing gum while its center remains stuck to the wall; This time the BALL stays stuck and the WOODEN WALL itself flexes slightly toward Luca like soft rubber",
+            "evidenceReferences": [
+              "transformationRequirement",
+              "content:2/prompt:4#chars=1196-1298",
+              "content:2/prompt:4#chars=953-1047"
+            ],
+            "material": true,
+            "requiresRedesign": false
+          },
+          "LIQUID_CLOTH_PARTICLE": {
+            "level": "UNKNOWN",
+            "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+            "evidenceReferences": [],
+            "material": false,
+            "requiresRedesign": false
+          },
+          "SPATIAL_RELATIONSHIP_COMPLEXITY": {
+            "level": "UNKNOWN",
+            "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+            "evidenceReferences": [],
+            "material": false,
+            "requiresRedesign": false
+          },
+          "CAMERA_ACTION_COUPLING": {
+            "level": "UNKNOWN",
+            "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+            "evidenceReferences": [],
+            "material": false,
+            "requiresRedesign": false
+          },
+          "MULTI_SCENE_CONTINUITY": {
+            "level": "UNKNOWN",
+            "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+            "evidenceReferences": [],
+            "material": false,
+            "requiresRedesign": false
+          },
+          "TEXT_LIP_SYNC_SYMBOL": {
+            "level": "UNKNOWN",
+            "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+            "evidenceReferences": [],
+            "material": false,
+            "requiresRedesign": false
+          },
+          "SEGMENT_CONTINUITY": {
+            "level": "UNKNOWN",
+            "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+            "evidenceReferences": [],
+            "material": false,
+            "requiresRedesign": false
+          }
+        },
+        "reasons": [
+          "STICKY — the red ball sticks to surfaces instead of bouncing; Luca catches it",
+          "The ball stretches toward him like soft chewing gum while its center remains stuck to the wall; This time the BALL stays stuck and the WOODEN WALL itself flexes slightly toward Luca like soft rubber",
+          "Some required structured production evidence is unavailable."
+        ],
+        "materialRisks": [
+          "CONTACT_PHYSICS_COMPLEXITY",
+          "TRANSFORMATION_COMPLEXITY"
+        ],
+        "unknownDimensions": [
+          "ENTITY_LOAD",
+          "OBJECT_IDENTITY_CONTINUITY",
+          "CHARACTER_IDENTITY_CONTINUITY",
+          "FINE_MOTOR_PRECISION",
+          "OCCLUSION_HIDDEN_STATE",
+          "EXACT_COUNT_DEPENDENCY",
+          "MULTI_ENTITY_CONCURRENCY",
+          "LIQUID_CLOTH_PARTICLE",
+          "SPATIAL_RELATIONSHIP_COMPLEXITY",
+          "CAMERA_ACTION_COUPLING",
+          "MULTI_SCENE_CONTINUITY",
+          "TEXT_LIP_SYNC_SYMBOL",
+          "SEGMENT_CONTINUITY"
+        ],
+        "durationSeconds": 15.0,
+        "durationSource": "metadata.duration",
+        "durationLoad": {
+          "level": "UNKNOWN",
+          "reason": "Timed, independently tracked action evidence is incomplete.",
+          "evidenceReferences": [],
+          "material": false,
+          "requiresRedesign": false,
+          "dependentStateChanges": 0,
+          "changesPerSecond": null
+        },
+        "provenance": {
+          "evaluatorVersion": "general-producibility-v1",
+          "source": "STRUCTURED_VIDEO_PLAN_IR",
+          "sourceEvidence": {
+            "source": "POST_FAMILY_SOURCE_ENRICHMENT",
+            "sourceHash": "393c8d86fdc12ec1f4bdc6897ceecc2e76ece5c20d5d5392690fe00a9a69ed55",
+            "sourceVersion": "4",
+            "extractionVersion": "source-span-production-evidence-v1"
+          },
+          "family6TemporalLoad": {
+            "status": "UNKNOWN",
+            "axes": [
+              {
+                "axis": "temporal_packing",
+                "level": "UNKNOWN",
+                "confidence": "LOW",
+                "evidenceReferences": [],
+                "reason": "Explicit duration and complete beat timing are unavailable."
+              },
+              {
+                "axis": "state_breadth",
+                "level": "UNKNOWN",
+                "confidence": "LOW",
+                "evidenceReferences": [
+                  "source_0",
+                  "source_1",
+                  "source_2",
+                  "source_3",
+                  "source_4",
+                  "source_5",
+                  "source_6"
+                ],
+                "reason": "Beat timing exists, but structured state-breadth fields are unavailable."
+              },
+              {
+                "axis": "continuity_memory",
+                "level": "UNKNOWN",
+                "confidence": "LOW",
+                "evidenceReferences": [
+                  "source_0",
+                  "source_1",
+                  "source_2",
+                  "source_3",
+                  "source_4",
+                  "source_5",
+                  "source_6"
+                ],
+                "reason": "Beat timing exists, but structured continuity state is unavailable."
+              },
+              {
+                "axis": "action_concurrency",
+                "level": "UNKNOWN",
+                "confidence": "LOW",
+                "evidenceReferences": [
+                  "source_0",
+                  "source_1",
+                  "source_2",
+                  "source_3",
+                  "source_4",
+                  "source_5",
+                  "source_6"
+                ],
+                "reason": "Beat timing exists, but structured actor/object concurrency evidence is unavailable."
+              }
+            ],
+            "severeAxisCount": 0,
+            "elevatedAxisCount": 0,
+            "highBasis": null,
+            "evidenceStatus": "UNKNOWN",
+            "version": "family6-temporal-generation-load-v1"
+          },
+          "authorizationPolicy": "EXISTING_POLICY_UNCHANGED"
+        }
+      },
+      "remainingUncertainty": [
+        "fineMotorRequirement",
+        "objectContinuity",
+        "characterContinuity",
+        "occlusionRequirement",
+        "exactCountDependency",
+        "simulationRequirement",
+        "spatialRequirement",
+        "sceneContinuityRequirement",
+        "textRequirement",
+        "segmentContinuityRequirement"
+      ]
+    },
+    "generalProducibility": {
+      "status": "RISKY",
+      "dimensions": {
+        "ENTITY_LOAD": {
+          "level": "UNKNOWN",
+          "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+          "evidenceReferences": [],
+          "material": false,
+          "requiresRedesign": false
+        },
+        "OBJECT_IDENTITY_CONTINUITY": {
+          "level": "UNKNOWN",
+          "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+          "evidenceReferences": [],
+          "material": false,
+          "requiresRedesign": false
+        },
+        "CHARACTER_IDENTITY_CONTINUITY": {
+          "level": "UNKNOWN",
+          "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+          "evidenceReferences": [],
+          "material": false,
+          "requiresRedesign": false
+        },
+        "FINE_MOTOR_PRECISION": {
+          "level": "UNKNOWN",
+          "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+          "evidenceReferences": [],
+          "material": false,
+          "requiresRedesign": false
+        },
+        "CONTACT_PHYSICS_COMPLEXITY": {
+          "level": "HIGH",
+          "reason": "STICKY — the red ball sticks to surfaces instead of bouncing; Luca catches it",
+          "evidenceReferences": [
+            "contactPhysicsRequirement",
+            "content:2/prompt:4#chars=1469-1484",
+            "content:2/prompt:4#chars=1584-1637",
+            "content:2/prompt:4#chars=167-227",
+            "content:2/prompt:4#chars=1738-1804",
+            "content:2/prompt:4#chars=1894-1958"
+          ],
+          "material": true,
+          "requiresRedesign": false
+        },
+        "OCCLUSION_HIDDEN_STATE": {
+          "level": "UNKNOWN",
+          "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+          "evidenceReferences": [],
+          "material": false,
+          "requiresRedesign": false
+        },
+        "EXACT_COUNT_DEPENDENCY": {
+          "level": "UNKNOWN",
+          "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+          "evidenceReferences": [],
+          "material": false,
+          "requiresRedesign": false
+        },
+        "MULTI_ENTITY_CONCURRENCY": {
+          "level": "UNKNOWN",
+          "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+          "evidenceReferences": [],
+          "material": false,
+          "requiresRedesign": false
+        },
+        "TRANSFORMATION_COMPLEXITY": {
+          "level": "MODERATE",
+          "reason": "The ball stretches toward him like soft chewing gum while its center remains stuck to the wall; This time the BALL stays stuck and the WOODEN WALL itself flexes slightly toward Luca like soft rubber",
+          "evidenceReferences": [
+            "transformationRequirement",
+            "content:2/prompt:4#chars=1196-1298",
+            "content:2/prompt:4#chars=953-1047"
+          ],
+          "material": true,
+          "requiresRedesign": false
+        },
+        "LIQUID_CLOTH_PARTICLE": {
+          "level": "UNKNOWN",
+          "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+          "evidenceReferences": [],
+          "material": false,
+          "requiresRedesign": false
+        },
+        "SPATIAL_RELATIONSHIP_COMPLEXITY": {
+          "level": "UNKNOWN",
+          "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+          "evidenceReferences": [],
+          "material": false,
+          "requiresRedesign": false
+        },
+        "CAMERA_ACTION_COUPLING": {
+          "level": "UNKNOWN",
+          "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+          "evidenceReferences": [],
+          "material": false,
+          "requiresRedesign": false
+        },
+        "MULTI_SCENE_CONTINUITY": {
+          "level": "UNKNOWN",
+          "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+          "evidenceReferences": [],
+          "material": false,
+          "requiresRedesign": false
+        },
+        "TEXT_LIP_SYNC_SYMBOL": {
+          "level": "UNKNOWN",
+          "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+          "evidenceReferences": [],
+          "material": false,
+          "requiresRedesign": false
+        },
+        "SEGMENT_CONTINUITY": {
+          "level": "UNKNOWN",
+          "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+          "evidenceReferences": [],
+          "material": false,
+          "requiresRedesign": false
+        }
+      },
+      "reasons": [
+        "STICKY — the red ball sticks to surfaces instead of bouncing; Luca catches it",
+        "The ball stretches toward him like soft chewing gum while its center remains stuck to the wall; This time the BALL stays stuck and the WOODEN WALL itself flexes slightly toward Luca like soft rubber",
+        "Some required structured production evidence is unavailable."
+      ],
+      "materialRisks": [
+        "CONTACT_PHYSICS_COMPLEXITY",
+        "TRANSFORMATION_COMPLEXITY"
+      ],
+      "unknownDimensions": [
+        "ENTITY_LOAD",
+        "OBJECT_IDENTITY_CONTINUITY",
+        "CHARACTER_IDENTITY_CONTINUITY",
+        "FINE_MOTOR_PRECISION",
+        "OCCLUSION_HIDDEN_STATE",
+        "EXACT_COUNT_DEPENDENCY",
+        "MULTI_ENTITY_CONCURRENCY",
+        "LIQUID_CLOTH_PARTICLE",
+        "SPATIAL_RELATIONSHIP_COMPLEXITY",
+        "CAMERA_ACTION_COUPLING",
+        "MULTI_SCENE_CONTINUITY",
+        "TEXT_LIP_SYNC_SYMBOL",
+        "SEGMENT_CONTINUITY"
+      ],
+      "durationSeconds": 15.0,
+      "durationSource": "metadata.duration",
+      "durationLoad": {
+        "level": "UNKNOWN",
+        "reason": "Timed, independently tracked action evidence is incomplete.",
+        "evidenceReferences": [],
+        "material": false,
+        "requiresRedesign": false,
+        "dependentStateChanges": 0,
+        "changesPerSecond": null
+      },
+      "provenance": {
+        "evaluatorVersion": "general-producibility-v1",
+        "source": "STRUCTURED_VIDEO_PLAN_IR",
+        "sourceEvidence": {
+          "source": "POST_FAMILY_SOURCE_ENRICHMENT",
+          "sourceHash": "393c8d86fdc12ec1f4bdc6897ceecc2e76ece5c20d5d5392690fe00a9a69ed55",
+          "sourceVersion": "4",
+          "extractionVersion": "source-span-production-evidence-v1"
+        },
+        "family6TemporalLoad": {
+          "status": "UNKNOWN",
+          "axes": [
+            {
+              "axis": "temporal_packing",
+              "level": "UNKNOWN",
+              "confidence": "LOW",
+              "evidenceReferences": [],
+              "reason": "Explicit duration and complete beat timing are unavailable."
+            },
+            {
+              "axis": "state_breadth",
+              "level": "UNKNOWN",
+              "confidence": "LOW",
+              "evidenceReferences": [
+                "source_0",
+                "source_1",
+                "source_2",
+                "source_3",
+                "source_4",
+                "source_5",
+                "source_6"
+              ],
+              "reason": "Beat timing exists, but structured state-breadth fields are unavailable."
+            },
+            {
+              "axis": "continuity_memory",
+              "level": "UNKNOWN",
+              "confidence": "LOW",
+              "evidenceReferences": [
+                "source_0",
+                "source_1",
+                "source_2",
+                "source_3",
+                "source_4",
+                "source_5",
+                "source_6"
+              ],
+              "reason": "Beat timing exists, but structured continuity state is unavailable."
+            },
+            {
+              "axis": "action_concurrency",
+              "level": "UNKNOWN",
+              "confidence": "LOW",
+              "evidenceReferences": [
+                "source_0",
+                "source_1",
+                "source_2",
+                "source_3",
+                "source_4",
+                "source_5",
+                "source_6"
+              ],
+              "reason": "Beat timing exists, but structured actor/object concurrency evidence is unavailable."
+            }
+          ],
+          "severeAxisCount": 0,
+          "elevatedAxisCount": 0,
+          "highBasis": null,
+          "evidenceStatus": "UNKNOWN",
+          "version": "family6-temporal-generation-load-v1"
+        },
+        "authorizationPolicy": "EXISTING_POLICY_UNCHANGED"
+      }
+    },
+    "routing": {
+      "contentProfile": "ABSURD_PHYSICS",
+      "basis": "SOURCE_PROGRESSION_HYPOTHESIS",
+      "confidence": "LOW",
+      "viewerQuestion": "",
+      "alternatives": [
+        "ABSURD_PHYSICS"
+      ],
+      "reason": "Kaynak mekanizması bir öneri üretir; operatör seçimi ile doğrulayın."
+    },
+    "applicability": {
+      "COMEDY": {
+        "status": "NOT_APPLICABLE",
+        "reason": "Yeni profilin evrensel zorunluluğu değildir.",
+        "profileVersion": "post-family-v1"
+      },
+      "THREE_ATTEMPTS": {
+        "status": "NOT_APPLICABLE",
+        "reason": "Yeni profilin evrensel zorunluluğu değildir.",
+        "profileVersion": "post-family-v1"
+      },
+      "FAKE_RESOLUTION": {
+        "status": "NOT_APPLICABLE",
+        "reason": "Yeni profilin evrensel zorunluluğu değildir.",
+        "profileVersion": "post-family-v1"
+      },
+      "RESOLVED_ENDING": {
+        "status": "NOT_APPLICABLE",
+        "reason": "Yeni profilin evrensel zorunluluğu değildir.",
+        "profileVersion": "post-family-v1"
+      }
+    },
+    "engagement": {
+      "stage": "PROMPT_REVIEW",
+      "status": "HYPOTHESIS",
+      "attentionPromise": "— HARD HOOK\nFIRST FRAME:\nLuca has JUST thrown the red ball at the wooden wall.\nInstead of bouncing back, the ball is already STUCK flat to the wall.\nLuca is frozen with both hands half-raised, eyes wide.\nThe impossible sticky ball must dominate the opening.\n\nSFX: THWIP — STICK.",
+      "progression": [
+        "— REACTION\nLuca walks straight to the ball and pulls it with one hand.\nIt will not move.\nHe uses both hands.",
+        "— FIRST ATTEMPT\nLuca pulls harder.\nThe ball stretches toward him like soft chewing gum while its center remains stuck to the wall.\nHe lets go.\n\nSNAP!\nThe ball instantly returns to the wall.",
+        "— ESCALATION\nLuca grabs the ball again with both hands and leans backward.\nThis time the BALL stays stuck and the WOODEN WALL itself flexes slightly toward Luca like soft rubber.\nLuca’s eyes widen.\nHe immediately releases it.\n\nBOING!\nThe wall returns safely to normal.",
+        "— SECOND ATTEMPT\nThe ball finally drops from the wall by itself.\nLuca catches it.\nHe squeezes it gently.\nIt behaves like a normal ball.\nHe smiles.",
+        "— FAKE RESOLUTION\nLuca carefully tosses the ball once between his hands.\nNormal.\nHe relaxes."
+      ],
+      "endingDelivery": "— FINAL TWIST\nLuca gives the ball one tiny playful toss upward.\nIt drops directly onto his CHEEK and sticks there with a soft PLUP.\nLuca goes cross-eyed trying to look at it.\n\nPLUP! — HARD CUT.\n\nSAFETY\nThe ball is soft.\nIt sticks to Luca’s cheek only, never covering his nose or mouth.\n\nDIALOGUE\nNone.\n\nNO narrator.\nNO text overlay.\nNO logo.\nExclude watermarks.",
+      "rewatchMechanism": "UNKNOWN",
+      "endingKind": "PLANNED_ENDING",
+      "limitations": [
+        "Ön değerlendirme hipotezdir; izlenme/retention yüzdesi tahmini değildir.",
+        "Cevapsız soru tek başına aynı videoyu tekrar izleme kanıtı değildir.",
+        "Durağanlık tek başına gereksiz ölü zaman değildir."
+      ]
+    },
+    "generation": {
+      "recommendedGenerator": "SEEDANCE_2_0_MINI",
+      "selectedGenerator": "SEEDANCE_2_0_MINI",
+      "apiModelId": "byte-plus-seedance-2-mini",
+      "desiredDuration": 15.0,
+      "supportedRenderDuration": 15.0,
+      "plannedEditedDuration": 15.0,
+      "capabilityStatus": "SUPPORTED",
+      "missingExecutionInputs": [
+        "startFrame"
+      ],
+      "capabilityProvenance": {
+        "source": "CONNECTED_OPENART_MODEL_FORM",
+        "command": "openart model form byte-plus-seedance-2-mini image2video --json --no-input",
+        "verifiedDate": "2026-10-08",
+        "schemaSha256": "e5458973228db9a1a6fd2185322e98e4f33595496e8c12cf9f22d69206ea1b94",
+        "liveGenerationVerified": false,
+        "cliVersion": "0.1.1 (commit 85fa0ad; built 2026-08-31)"
+      },
+      "profileVersion": "openart-cli-schema-2026-10-08",
+      "mode": "image2video",
+      "settings": {
+        "mode": "image2video",
+        "aspectRatio": "9:16"
+      },
+      "segments": [],
+      "reasons": [],
+      "selectionReason": "Konsept süresine göre kullanıcı üretim tercihi."
+    },
+    "opening": {
+      "strategy": "INSTANT_IMPOSSIBLE",
+      "designWindowSeconds": 2.0,
+      "plannedOpening": {
+        "status": "HYPOTHESIS",
+        "sourceSpan": [
+          492,
+          784
+        ],
+        "visualPromise": "— HARD HOOK\nFIRST FRAME:\nLuca has JUST thrown the red ball at the wooden wall.\nInstead of bouncing back, the ball is already STUCK flat to the wall.\nLuca is frozen with both hands half-raised, eyes wide.\nThe impossible sticky ball must dominate the opening.\n\nSFX: THWIP — STICK."
+      },
+      "actualFirstFrame": {
+        "status": "UNKNOWN"
+      },
+      "actualOpeningVideo": {
+        "status": "UNKNOWN"
+      },
+      "cover": {
+        "status": "NOT_EVIDENCE_OF_OPENING"
+      },
+      "alternatives": [],
+      "reason": "İlk iki saniye esnek tasarım penceresidir; ilk kare hareketin başarısını kanıtlamaz."
+    },
+    "executionReview": {
+      "stage": "GENERATOR_EXECUTION_REVIEW",
+      "status": "REWRITE",
+      "findings": [
+        {
+          "sourceSpan": [
+            953,
+            1047
+          ],
+          "sourceQuote": "The ball stretches toward him like soft chewing gum while its center remains stuck to the wall",
+          "riskCategory": "SIMULTANEOUS_ACTION_COMPETITION",
+          "category": "SIMULTANEOUS_ACTION_COMPETITION",
+          "plausibleFailure": "Hareketler aynı anda yarışabilir.",
+          "evidenceBasis": "GENERAL_HEURISTIC",
+          "confidence": "LOW",
+          "smallestChange": "Öncelikli hareketi belirt; uygunsa diğerini sonra başlat.",
+          "altersCreativeIntent": false
+        }
+      ],
+      "provider": "LOCAL",
+      "model": null,
+      "version": "local-execution-critic-v1",
+      "visualInspected": false,
+      "targetGenerator": "SEEDANCE_2_0_MINI",
+      "limitations": [
+        "Genel yazım sezgileri; seçilen modelin fiili performans kanıtı değildir."
+      ],
+      "calls": 0
+    },
+    "family8": {
+      "creativeQuality": {
+        "creativeScore": null,
+        "creativeGrade": null,
+        "familyScores": {}
+      },
+      "evidenceCompleteness": {
+        "status": "INCOMPLETE",
+        "evaluationCoverage": null,
+        "aggregation": {}
+      },
+      "renderAuthorization": {
+        "status": "BLOCKED_PENDING_EVIDENCE",
+        "reasons": [
+          {
+            "code": "REQUIRED_EVIDENCE_MISSING",
+            "source": "REFERENCE_ASSOCIATION",
+            "message": "Yetkili karakter/nesne referansı eksik veya doğrulanmadı.",
+            "references": []
+          },
+          {
+            "code": "REQUIRED_EVIDENCE_MISSING",
+            "source": "EXECUTION_INPUTS",
+            "message": "Sağlayıcının zorunlu yürütme girdileri eksik: startFrame",
+            "references": []
+          },
+          {
+            "code": "REQUIRED_EVIDENCE_MISSING",
+            "source": "EXECUTION_REVIEW",
+            "message": "Jeneratör yürütme incelemesi tamamlanmadı veya küçük düzeltme gerekiyor.",
+            "references": []
+          },
+          {
+            "code": "REQUIRED_EVIDENCE_MISSING",
+            "source": "FINAL_VIDEO_INTEGRITY",
+            "message": "Son video kabulü için mevcut doğrulanmış görsel kapılar ve bağımsız revalidation gereklidir.",
+            "references": []
+          }
+        ]
+      },
+      "legacy": {
+        "readiness": null
+      }
+    },
+    "originalPrompt": "Create a highly engaging 15-second vertical 9:16 Pompom Hills short.\n\nUSE THE OFFICIAL EXISTING LUCA CHARACTER REFERENCE EXACTLY.\nDo not redesign Luca.\n\nPHYSICAL RULE\nSTICKY — the red ball sticks to surfaces instead of bouncing.\n\nSETTING\nSimple sunny Pompom Hills garden.\nOne wooden play wall, green grass, minimal background.\n\nMAIN OBJECT\nOne bright red soft rubber ball.\n\nCAMERA\nSingle continuous visual flow.\nMedium shot with Luca and the wall both clearly visible.\nNo establishing shot.\n\n0.0–0.8 SEC — HARD HOOK\nFIRST FRAME:\nLuca has JUST thrown the red ball at the wooden wall.\nInstead of bouncing back, the ball is already STUCK flat to the wall.\nLuca is frozen with both hands half-raised, eyes wide.\nThe impossible sticky ball must dominate the opening.\n\nSFX: THWIP — STICK.\n\n0.8–3.0 SEC — REACTION\nLuca walks straight to the ball and pulls it with one hand.\nIt will not move.\nHe uses both hands.\n\n3.0–6.0 SEC — FIRST ATTEMPT\nLuca pulls harder.\nThe ball stretches toward him like soft chewing gum while its center remains stuck to the wall.\nHe lets go.\n\nSNAP!\nThe ball instantly returns to the wall.\n\n6.0–9.0 SEC — ESCALATION\nLuca grabs the ball again with both hands and leans backward.\nThis time the BALL stays stuck and the WOODEN WALL itself flexes slightly toward Luca like soft rubber.\nLuca’s eyes widen.\nHe immediately releases it.\n\nBOING!\nThe wall returns safely to normal.\n\n9.0–12.0 SEC — SECOND ATTEMPT\nThe ball finally drops from the wall by itself.\nLuca catches it.\nHe squeezes it gently.\nIt behaves like a normal ball.\nHe smiles.\n\n12.0–14.0 SEC — FAKE RESOLUTION\nLuca carefully tosses the ball once between his hands.\nNormal.\nHe relaxes.\n\n14.0–15.0 SEC — FINAL TWIST\nLuca gives the ball one tiny playful toss upward.\nIt drops directly onto his CHEEK and sticks there with a soft PLUP.\nLuca goes cross-eyed trying to look at it.\n\nPLUP! — HARD CUT.\n\nSAFETY\nThe ball is soft.\nIt sticks to Luca’s cheek only, never covering his nose or mouth.\n\nDIALOGUE\nNone.\n\nNO narrator.\nNO text overlay.\nNO logo.\nExclude watermarks.\n",
+    "finalPrompt": "Create a highly engaging 15-second vertical 9:16 Pompom Hills short.\n\nUSE THE OFFICIAL EXISTING LUCA CHARACTER REFERENCE EXACTLY.\nDo not redesign Luca.\n\nPHYSICAL RULE\nSTICKY — the red ball sticks to surfaces instead of bouncing.\n\nSETTING\nSimple sunny Pompom Hills garden.\nOne wooden play wall, green grass, minimal background.\n\nMAIN OBJECT\nOne bright red soft rubber ball.\n\nCAMERA\nSingle continuous visual flow.\nMedium shot with Luca and the wall both clearly visible.\nNo establishing shot.\n\n0.0–0.8 SEC — HARD HOOK\nFIRST FRAME:\nLuca has JUST thrown the red ball at the wooden wall.\nInstead of bouncing back, the ball is already STUCK flat to the wall.\nLuca is frozen with both hands half-raised, eyes wide.\nThe impossible sticky ball must dominate the opening.\n\nSFX: THWIP — STICK.\n\n0.8–3.0 SEC — REACTION\nLuca walks straight to the ball and pulls it with one hand.\nIt will not move.\nHe uses both hands.\n\n3.0–6.0 SEC — FIRST ATTEMPT\nLuca pulls harder.\nThe ball stretches toward him like soft chewing gum while its center remains stuck to the wall.\nHe lets go.\n\nSNAP!\nThe ball instantly returns to the wall.\n\n6.0–9.0 SEC — ESCALATION\nLuca grabs the ball again with both hands and leans backward.\nThis time the BALL stays stuck and the WOODEN WALL itself flexes slightly toward Luca like soft rubber.\nLuca’s eyes widen.\nHe immediately releases it.\n\nBOING!\nThe wall returns safely to normal.\n\n9.0–12.0 SEC — SECOND ATTEMPT\nThe ball finally drops from the wall by itself.\nLuca catches it.\nHe squeezes it gently.\nIt behaves like a normal ball.\nHe smiles.\n\n12.0–14.0 SEC — FAKE RESOLUTION\nLuca carefully tosses the ball once between his hands.\nNormal.\nHe relaxes.\n\n14.0–15.0 SEC — FINAL TWIST\nLuca gives the ball one tiny playful toss upward.\nIt drops directly onto his CHEEK and sticks there with a soft PLUP.\nLuca goes cross-eyed trying to look at it.\n\nPLUP! — HARD CUT.\n\nSAFETY\nThe ball is soft.\nIt sticks to Luca’s cheek only, never covering his nose or mouth.\n\nDIALOGUE\nNone.\n\nNO narrator.\nNO text overlay.\nNO logo.\nExclude watermarks.\n",
+    "patch": [],
+    "changedSettings": {},
+    "repairPasses": 0,
+    "verificationPasses": 0,
+    "protectedIntent": [
+      "the red ball sticks to surfaces instead of bouncing",
+      "Luca goes cross-eyed trying to look at it"
+    ],
+    "manualHandoff": {
+      "allowed": true,
+      "authorization": {
+        "status": "BLOCKED_PENDING_EVIDENCE",
+        "reasons": [
+          {
+            "code": "REQUIRED_EVIDENCE_MISSING",
+            "source": "REFERENCE_ASSOCIATION",
+            "message": "Yetkili karakter/nesne referansı eksik veya doğrulanmadı.",
+            "references": []
+          },
+          {
+            "code": "REQUIRED_EVIDENCE_MISSING",
+            "source": "EXECUTION_INPUTS",
+            "message": "Sağlayıcının zorunlu yürütme girdileri eksik: startFrame",
+            "references": []
+          },
+          {
+            "code": "REQUIRED_EVIDENCE_MISSING",
+            "source": "EXECUTION_REVIEW",
+            "message": "Jeneratör yürütme incelemesi tamamlanmadı veya küçük düzeltme gerekiyor.",
+            "references": []
+          },
+          {
+            "code": "REQUIRED_EVIDENCE_MISSING",
+            "source": "FINAL_VIDEO_INTEGRITY",
+            "message": "Son video kabulü için mevcut doğrulanmış görsel kapılar ve bağımsız revalidation gereklidir.",
+            "references": []
+          }
+        ]
+      },
+      "notice": "İnceleme paketi dışa aktarımı render yetkisi veya kredi harcama onayı değildir."
+    },
+    "boundRequest": {
+      "profile": "post-family-v1",
+      "settings": {
+        "mode": "image2video",
+        "aspectRatio": "9:16"
+      },
+      "protectedIntent": [
+        "the red ball sticks to surfaces instead of bouncing",
+        "Luca goes cross-eyed trying to look at it"
+      ],
+      "prompt": "Create a highly engaging 15-second vertical 9:16 Pompom Hills short.\n\nUSE THE OFFICIAL EXISTING LUCA CHARACTER REFERENCE EXACTLY.\nDo not redesign Luca.\n\nPHYSICAL RULE\nSTICKY — the red ball sticks to surfaces instead of bouncing.\n\nSETTING\nSimple sunny Pompom Hills garden.\nOne wooden play wall, green grass, minimal background.\n\nMAIN OBJECT\nOne bright red soft rubber ball.\n\nCAMERA\nSingle continuous visual flow.\nMedium shot with Luca and the wall both clearly visible.\nNo establishing shot.\n\n0.0–0.8 SEC — HARD HOOK\nFIRST FRAME:\nLuca has JUST thrown the red ball at the wooden wall.\nInstead of bouncing back, the ball is already STUCK flat to the wall.\nLuca is frozen with both hands half-raised, eyes wide.\nThe impossible sticky ball must dominate the opening.\n\nSFX: THWIP — STICK.\n\n0.8–3.0 SEC — REACTION\nLuca walks straight to the ball and pulls it with one hand.\nIt will not move.\nHe uses both hands.\n\n3.0–6.0 SEC — FIRST ATTEMPT\nLuca pulls harder.\nThe ball stretches toward him like soft chewing gum while its center remains stuck to the wall.\nHe lets go.\n\nSNAP!\nThe ball instantly returns to the wall.\n\n6.0–9.0 SEC — ESCALATION\nLuca grabs the ball again with both hands and leans backward.\nThis time the BALL stays stuck and the WOODEN WALL itself flexes slightly toward Luca like soft rubber.\nLuca’s eyes widen.\nHe immediately releases it.\n\nBOING!\nThe wall returns safely to normal.\n\n9.0–12.0 SEC — SECOND ATTEMPT\nThe ball finally drops from the wall by itself.\nLuca catches it.\nHe squeezes it gently.\nIt behaves like a normal ball.\nHe smiles.\n\n12.0–14.0 SEC — FAKE RESOLUTION\nLuca carefully tosses the ball once between his hands.\nNormal.\nHe relaxes.\n\n14.0–15.0 SEC — FINAL TWIST\nLuca gives the ball one tiny playful toss upward.\nIt drops directly onto his CHEEK and sticks there with a soft PLUP.\nLuca goes cross-eyed trying to look at it.\n\nPLUP! — HARD CUT.\n\nSAFETY\nThe ball is soft.\nIt sticks to Luca’s cheek only, never covering his nose or mouth.\n\nDIALOGUE\nNone.\n\nNO narrator.\nNO text overlay.\nNO logo.\nExclude watermarks.\n",
+      "sourceId": "content:2/prompt:4",
+      "sourceVersion": "4",
+      "references": []
+    },
+    "contentId": 2,
+    "promptVersionId": 4,
+    "recordId": "57f1d943-084c-4f7e-8a01-5735115162cc"
+  },
+  "noGenerationOrPublication": true
+}

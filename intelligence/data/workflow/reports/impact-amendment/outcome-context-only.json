@@ -1,0 +1,50 @@
+[
+  {
+    "target": "Noah / Walking Shoes",
+    "reportedApproximateViews": 89000,
+    "basis": "USER_REPORTED_APPROXIMATE",
+    "fixedHorizon": "UNKNOWN",
+    "verifiedPublicationId": null,
+    "usedInEvaluator": false
+  },
+  {
+    "target": "Upside-Down Chair",
+    "reportedApproximateViews": 64000,
+    "basis": "USER_REPORTED_APPROXIMATE",
+    "fixedHorizon": "UNKNOWN",
+    "verifiedPublicationId": null,
+    "usedInEvaluator": false
+  },
+  {
+    "target": "Missing Shoe",
+    "reportedApproximateViews": 45000,
+    "basis": "USER_REPORTED_APPROXIMATE",
+    "fixedHorizon": "UNKNOWN",
+    "verifiedPublicationId": null,
+    "usedInEvaluator": false
+  },
+  {
+    "target": "Tiny Door",
+    "reportedApproximateViews": 61000,
+    "basis": "USER_REPORTED_APPROXIMATE",
+    "fixedHorizon": "UNKNOWN",
+    "verifiedPublicationId": null,
+    "usedInEvaluator": false
+  },
+  {
+    "target": "Kiko / Soap",
+    "reportedApproximateViews": null,
+    "basis": "NO_AUDIENCE_EVIDENCE",
+    "fixedHorizon": "UNKNOWN",
+    "verifiedPublicationId": null,
+    "usedInEvaluator": false
+  },
+  {
+    "target": "Luca & Zipo",
+    "reportedApproximateViews": null,
+    "basis": "NO_AUDIENCE_EVIDENCE",
+    "fixedHorizon": "UNKNOWN",
+    "verifiedPublicationId": null,
+    "usedInEvaluator": false
+  }
+]

@@ -1,0 +1,75 @@
+{
+  "sourcePromptHash": "008e44ae353ac046eb2198384482d5bee38b44b6b4bd1ec37a14faf3ac691ea9",
+  "videoHash": "0c38bda790441af44f7f8d901f8ca9bf79cfafcc320a7c01a53baccc3f774f68",
+  "videoDurationSeconds": 15.104,
+  "sourcePromptPlanSeconds": [
+    22,
+    25
+  ],
+  "frameEvidenceMethod": "LOCAL_FFMPEG_STATIC_FRAME_INSPECTION",
+  "actualFrameZero": {
+    "timestampSeconds": 0,
+    "sha256": "a5f215c56196fa4e89e828cf2b398bc506619b9272ed5383b100e6ab2c1d388b",
+    "canonicalVisualGate": false
+  },
+  "sampling": [
+    {
+      "interval": [
+        0,
+        15.104
+      ],
+      "fps": 2,
+      "uncertaintySeconds": 0.25
+    },
+    {
+      "interval": [
+        8.5,
+        11.5
+      ],
+      "fps": 8,
+      "uncertaintySeconds": 0.125
+    }
+  ],
+  "observed": [
+    {
+      "interval": [
+        0,
+        2.5
+      ],
+      "description": "Başlangıçta dürbünlü çocuk, ardından ışın ve tek gözlü yeşil varlık kareleri görülüyor."
+    },
+    {
+      "interval": [
+        5.5,
+        7.5
+      ],
+      "description": "Uğurböceği ve bisküvi ile karşılaşma görüntüleri."
+    },
+    {
+      "interval": [
+        9.9,
+        11.5
+      ],
+      "description": "8 fps örneklerinde yükselmiş Zipo pozu yaklaşık 10.0 s civarında, sarılma pozu yaklaşık 10.375 s civarında görülüyor."
+    },
+    {
+      "interval": [
+        13,
+        14.5
+      ],
+      "description": "Masa üzerinde mavi taş ve çocuğun yakın yüz planı."
+    }
+  ],
+  "inferred": [
+    "Keşif → yakınlaşma → ayrılık → taş görüntüsü planın ilişkisel/duygusal niyetine aday karşılıklar sunuyor."
+  ],
+  "notEstablished": [
+    "Actual voice or transcript",
+    "Precise contact or continuous animation",
+    "Official-reference identity match",
+    "Measured audience response"
+  ],
+  "editorialDecision": "INSUFFICIENT_EVIDENCE",
+  "planFidelity": "PARTIAL",
+  "viewerFacingUsability": "UNKNOWN"
+}

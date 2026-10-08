@@ -1,0 +1,3830 @@
+{
+  "syntheticOnly": true,
+  "baselineCommit": "b42e7bb",
+  "sameInputsAndRegistry": true,
+  "paidCalls": 0,
+  "liveRenderAuthorizationExercised": false,
+  "prompt": {
+    "input": {
+      "prompt": "0-6 SEC\nLuca balances the ball while Zipo waves.",
+      "profile": "post-family-v1",
+      "sourceId": "synthetic",
+      "sourceVersion": "1",
+      "desiredDuration": 6,
+      "contentProfile": "CURIOSITY_ADVENTURE",
+      "generator": "SEEDANCE_2_0_MINI",
+      "settings": {
+        "mode": "image2video",
+        "aspectRatio": "9:16",
+        "resolution": "480p",
+        "startFrame": {
+          "type": "image",
+          "id": "frame.png",
+          "url": "https://example.test/frame.png",
+          "label": "frame"
+        }
+      },
+      "references": [
+        {
+          "kind": "CHARACTER",
+          "character": "Luca",
+          "status": "VERIFIED",
+          "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        },
+        {
+          "kind": "CHARACTER",
+          "character": "Zipo",
+          "status": "VERIFIED",
+          "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        },
+        {
+          "kind": "FIRST_FRAME",
+          "relativePath": "frame.png",
+          "status": "VERIFIED",
+          "sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+        }
+      ],
+      "authorizationEvidence": {
+        "renderAuthorization": "AUTHORIZED",
+        "promptSha256": "63038e96b593f25329e7c67ba6eef20953c62e034162f52aea6187b532198c97",
+        "finalVideoEligible": true,
+        "independentRevalidationId": "synthetic-independent",
+        "fresh": true,
+        "visualEvidence": {
+          "firstFrame": {
+            "status": "PASS",
+            "assetSha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+          }
+        }
+      }
+    },
+    "before": {
+      "workflowVersion": "post-family-v1",
+      "bindingHash": "9ed19b333422da29254cf89b8d6a11d137f645ff47eed4c10d6c8f7c0cde3ded",
+      "authorizationEvidence": {
+        "renderAuthorization": "AUTHORIZED",
+        "promptSha256": "63038e96b593f25329e7c67ba6eef20953c62e034162f52aea6187b532198c97",
+        "finalVideoEligible": true,
+        "independentRevalidationId": "synthetic-independent",
+        "fresh": true,
+        "visualEvidence": {
+          "firstFrame": {
+            "status": "PASS",
+            "assetSha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+          }
+        }
+      },
+      "source": {
+        "artifact": "synthetic",
+        "version": "1",
+        "sha256": "63038e96b593f25329e7c67ba6eef20953c62e034162f52aea6187b532198c97"
+      },
+      "productionEvidence": {
+        "source": {
+          "artifact": "synthetic",
+          "version": "1",
+          "sha256": "63038e96b593f25329e7c67ba6eef20953c62e034162f52aea6187b532198c97"
+        },
+        "claims": [
+          {
+            "field": "beats",
+            "state": "OBSERVED",
+            "quote": "0-6 SEC",
+            "span": [
+              0,
+              7
+            ],
+            "sourceId": "synthetic",
+            "sourceVersion": "1",
+            "sourceHash": "63038e96b593f25329e7c67ba6eef20953c62e034162f52aea6187b532198c97",
+            "method": "LOCAL_SOURCE_PATTERN",
+            "methodVersion": "source-span-production-evidence-v1",
+            "provider": null,
+            "confidence": "HIGH"
+          },
+          {
+            "field": "fineMotorRequirement",
+            "state": "MISSING",
+            "quote": null,
+            "span": null,
+            "sourceId": "synthetic",
+            "sourceVersion": "1",
+            "sourceHash": "63038e96b593f25329e7c67ba6eef20953c62e034162f52aea6187b532198c97",
+            "methodVersion": "source-span-production-evidence-v1",
+            "confidence": null,
+            "reason": "Omission does not confirm absence."
+          },
+          {
+            "field": "contactPhysicsRequirement",
+            "state": "INFERRED",
+            "quote": "Luca balances the ball while Zipo waves",
+            "span": [
+              8,
+              47
+            ],
+            "sourceId": "synthetic",
+            "sourceVersion": "1",
+            "sourceHash": "63038e96b593f25329e7c67ba6eef20953c62e034162f52aea6187b532198c97",
+            "method": "LOCAL_SOURCE_PATTERN",
+            "methodVersion": "source-span-production-evidence-v1",
+            "provider": null,
+            "confidence": "MEDIUM"
+          },
+          {
+            "field": "objectContinuity",
+            "state": "MISSING",
+            "quote": null,
+            "span": null,
+            "sourceId": "synthetic",
+            "sourceVersion": "1",
+            "sourceHash": "63038e96b593f25329e7c67ba6eef20953c62e034162f52aea6187b532198c97",
+            "methodVersion": "source-span-production-evidence-v1",
+            "confidence": null,
+            "reason": "Omission does not confirm absence."
+          },
+          {
+            "field": "characterContinuity",
+            "state": "MISSING",
+            "quote": null,
+            "span": null,
+            "sourceId": "synthetic",
+            "sourceVersion": "1",
+            "sourceHash": "63038e96b593f25329e7c67ba6eef20953c62e034162f52aea6187b532198c97",
+            "methodVersion": "source-span-production-evidence-v1",
+            "confidence": null,
+            "reason": "Omission does not confirm absence."
+          },
+          {
+            "field": "occlusionRequirement",
+            "state": "MISSING",
+            "quote": null,
+            "span": null,
+            "sourceId": "synthetic",
+            "sourceVersion": "1",
+            "sourceHash": "63038e96b593f25329e7c67ba6eef20953c62e034162f52aea6187b532198c97",
+            "methodVersion": "source-span-production-evidence-v1",
+            "confidence": null,
+            "reason": "Omission does not confirm absence."
+          },
+          {
+            "field": "exactCountDependency",
+            "state": "MISSING",
+            "quote": null,
+            "span": null,
+            "sourceId": "synthetic",
+            "sourceVersion": "1",
+            "sourceHash": "63038e96b593f25329e7c67ba6eef20953c62e034162f52aea6187b532198c97",
+            "methodVersion": "source-span-production-evidence-v1",
+            "confidence": null,
+            "reason": "Omission does not confirm absence."
+          },
+          {
+            "field": "transformationRequirement",
+            "state": "MISSING",
+            "quote": null,
+            "span": null,
+            "sourceId": "synthetic",
+            "sourceVersion": "1",
+            "sourceHash": "63038e96b593f25329e7c67ba6eef20953c62e034162f52aea6187b532198c97",
+            "methodVersion": "source-span-production-evidence-v1",
+            "confidence": null,
+            "reason": "Omission does not confirm absence."
+          },
+          {
+            "field": "simulationRequirement",
+            "state": "MISSING",
+            "quote": null,
+            "span": null,
+            "sourceId": "synthetic",
+            "sourceVersion": "1",
+            "sourceHash": "63038e96b593f25329e7c67ba6eef20953c62e034162f52aea6187b532198c97",
+            "methodVersion": "source-span-production-evidence-v1",
+            "confidence": null,
+            "reason": "Omission does not confirm absence."
+          },
+          {
+            "field": "spatialRequirement",
+            "state": "MISSING",
+            "quote": null,
+            "span": null,
+            "sourceId": "synthetic",
+            "sourceVersion": "1",
+            "sourceHash": "63038e96b593f25329e7c67ba6eef20953c62e034162f52aea6187b532198c97",
+            "methodVersion": "source-span-production-evidence-v1",
+            "confidence": null,
+            "reason": "Omission does not confirm absence."
+          },
+          {
+            "field": "sceneContinuityRequirement",
+            "state": "MISSING",
+            "quote": null,
+            "span": null,
+            "sourceId": "synthetic",
+            "sourceVersion": "1",
+            "sourceHash": "63038e96b593f25329e7c67ba6eef20953c62e034162f52aea6187b532198c97",
+            "methodVersion": "source-span-production-evidence-v1",
+            "confidence": null,
+            "reason": "Omission does not confirm absence."
+          },
+          {
+            "field": "textRequirement",
+            "state": "MISSING",
+            "quote": null,
+            "span": null,
+            "sourceId": "synthetic",
+            "sourceVersion": "1",
+            "sourceHash": "63038e96b593f25329e7c67ba6eef20953c62e034162f52aea6187b532198c97",
+            "methodVersion": "source-span-production-evidence-v1",
+            "confidence": null,
+            "reason": "Omission does not confirm absence."
+          },
+          {
+            "field": "segmentContinuityRequirement",
+            "state": "MISSING",
+            "quote": null,
+            "span": null,
+            "sourceId": "synthetic",
+            "sourceVersion": "1",
+            "sourceHash": "63038e96b593f25329e7c67ba6eef20953c62e034162f52aea6187b532198c97",
+            "methodVersion": "source-span-production-evidence-v1",
+            "confidence": null,
+            "reason": "Omission does not confirm absence."
+          }
+        ],
+        "videoPlanIR": {
+          "metadata": {
+            "generalProducibilityEvidence": {
+              "source": "POST_FAMILY_SOURCE_ENRICHMENT",
+              "sourceHash": "63038e96b593f25329e7c67ba6eef20953c62e034162f52aea6187b532198c97",
+              "sourceVersion": "1",
+              "extractionVersion": "source-span-production-evidence-v1"
+            },
+            "duration": 6.0
+          },
+          "beats": [
+            {
+              "id": "source_0",
+              "startTime": 0.0,
+              "endTime": 6.0,
+              "action": "Luca balances the ball while Zipo waves.",
+              "sourceSpan": [
+                0,
+                48
+              ]
+            }
+          ],
+          "contactPhysicsRequirement": {
+            "required": true,
+            "precision": "HIGH",
+            "evidenceReferences": [
+              "synthetic#chars=8-47"
+            ],
+            "reason": "Luca balances the ball while Zipo waves"
+          }
+        },
+        "generalProducibility": {
+          "status": "RISKY",
+          "dimensions": {
+            "ENTITY_LOAD": {
+              "level": "UNKNOWN",
+              "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+              "evidenceReferences": [],
+              "material": false,
+              "requiresRedesign": false
+            },
+            "OBJECT_IDENTITY_CONTINUITY": {
+              "level": "UNKNOWN",
+              "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+              "evidenceReferences": [],
+              "material": false,
+              "requiresRedesign": false
+            },
+            "CHARACTER_IDENTITY_CONTINUITY": {
+              "level": "UNKNOWN",
+              "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+              "evidenceReferences": [],
+              "material": false,
+              "requiresRedesign": false
+            },
+            "FINE_MOTOR_PRECISION": {
+              "level": "UNKNOWN",
+              "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+              "evidenceReferences": [],
+              "material": false,
+              "requiresRedesign": false
+            },
+            "CONTACT_PHYSICS_COMPLEXITY": {
+              "level": "HIGH",
+              "reason": "Luca balances the ball while Zipo waves",
+              "evidenceReferences": [
+                "contactPhysicsRequirement",
+                "synthetic#chars=8-47"
+              ],
+              "material": true,
+              "requiresRedesign": false
+            },
+            "OCCLUSION_HIDDEN_STATE": {
+              "level": "UNKNOWN",
+              "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+              "evidenceReferences": [],
+              "material": false,
+              "requiresRedesign": false
+            },
+            "EXACT_COUNT_DEPENDENCY": {
+              "level": "UNKNOWN",
+              "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+              "evidenceReferences": [],
+              "material": false,
+              "requiresRedesign": false
+            },
+            "MULTI_ENTITY_CONCURRENCY": {
+              "level": "UNKNOWN",
+              "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+              "evidenceReferences": [],
+              "material": false,
+              "requiresRedesign": false
+            },
+            "TRANSFORMATION_COMPLEXITY": {
+              "level": "UNKNOWN",
+              "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+              "evidenceReferences": [],
+              "material": false,
+              "requiresRedesign": false
+            },
+            "LIQUID_CLOTH_PARTICLE": {
+              "level": "UNKNOWN",
+              "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+              "evidenceReferences": [],
+              "material": false,
+              "requiresRedesign": false
+            },
+            "SPATIAL_RELATIONSHIP_COMPLEXITY": {
+              "level": "UNKNOWN",
+              "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+              "evidenceReferences": [],
+              "material": false,
+              "requiresRedesign": false
+            },
+            "CAMERA_ACTION_COUPLING": {
+              "level": "UNKNOWN",
+              "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+              "evidenceReferences": [],
+              "material": false,
+              "requiresRedesign": false
+            },
+            "MULTI_SCENE_CONTINUITY": {
+              "level": "UNKNOWN",
+              "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+              "evidenceReferences": [],
+              "material": false,
+              "requiresRedesign": false
+            },
+            "TEXT_LIP_SYNC_SYMBOL": {
+              "level": "UNKNOWN",
+              "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+              "evidenceReferences": [],
+              "material": false,
+              "requiresRedesign": false
+            },
+            "SEGMENT_CONTINUITY": {
+              "level": "UNKNOWN",
+              "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+              "evidenceReferences": [],
+              "material": false,
+              "requiresRedesign": false
+            }
+          },
+          "reasons": [
+            "Luca balances the ball while Zipo waves",
+            "Some required structured production evidence is unavailable."
+          ],
+          "materialRisks": [
+            "CONTACT_PHYSICS_COMPLEXITY"
+          ],
+          "unknownDimensions": [
+            "ENTITY_LOAD",
+            "OBJECT_IDENTITY_CONTINUITY",
+            "CHARACTER_IDENTITY_CONTINUITY",
+            "FINE_MOTOR_PRECISION",
+            "OCCLUSION_HIDDEN_STATE",
+            "EXACT_COUNT_DEPENDENCY",
+            "MULTI_ENTITY_CONCURRENCY",
+            "TRANSFORMATION_COMPLEXITY",
+            "LIQUID_CLOTH_PARTICLE",
+            "SPATIAL_RELATIONSHIP_COMPLEXITY",
+            "CAMERA_ACTION_COUPLING",
+            "MULTI_SCENE_CONTINUITY",
+            "TEXT_LIP_SYNC_SYMBOL",
+            "SEGMENT_CONTINUITY"
+          ],
+          "durationSeconds": 6.0,
+          "durationSource": "metadata.duration",
+          "durationLoad": {
+            "level": "UNKNOWN",
+            "reason": "Timed, independently tracked action evidence is incomplete.",
+            "evidenceReferences": [],
+            "material": false,
+            "requiresRedesign": false,
+            "dependentStateChanges": 0,
+            "changesPerSecond": null
+          },
+          "provenance": {
+            "evaluatorVersion": "general-producibility-v1",
+            "source": "STRUCTURED_VIDEO_PLAN_IR",
+            "sourceEvidence": {
+              "source": "POST_FAMILY_SOURCE_ENRICHMENT",
+              "sourceHash": "63038e96b593f25329e7c67ba6eef20953c62e034162f52aea6187b532198c97",
+              "sourceVersion": "1",
+              "extractionVersion": "source-span-production-evidence-v1"
+            },
+            "family6TemporalLoad": {
+              "status": "UNKNOWN",
+              "axes": [
+                {
+                  "axis": "temporal_packing",
+                  "level": "UNKNOWN",
+                  "confidence": "LOW",
+                  "evidenceReferences": [],
+                  "reason": "Explicit duration and complete beat timing are unavailable."
+                },
+                {
+                  "axis": "state_breadth",
+                  "level": "UNKNOWN",
+                  "confidence": "LOW",
+                  "evidenceReferences": [
+                    "source_0"
+                  ],
+                  "reason": "Beat timing exists, but structured state-breadth fields are unavailable."
+                },
+                {
+                  "axis": "continuity_memory",
+                  "level": "UNKNOWN",
+                  "confidence": "LOW",
+                  "evidenceReferences": [
+                    "source_0"
+                  ],
+                  "reason": "Beat timing exists, but structured continuity state is unavailable."
+                },
+                {
+                  "axis": "action_concurrency",
+                  "level": "UNKNOWN",
+                  "confidence": "LOW",
+                  "evidenceReferences": [
+                    "source_0"
+                  ],
+                  "reason": "Beat timing exists, but structured actor/object concurrency evidence is unavailable."
+                }
+              ],
+              "severeAxisCount": 0,
+              "elevatedAxisCount": 0,
+              "highBasis": null,
+              "evidenceStatus": "UNKNOWN",
+              "version": "family6-temporal-generation-load-v1"
+            },
+            "authorizationPolicy": "EXISTING_POLICY_UNCHANGED"
+          }
+        },
+        "remainingUncertainty": [
+          "fineMotorRequirement",
+          "objectContinuity",
+          "characterContinuity",
+          "occlusionRequirement",
+          "exactCountDependency",
+          "transformationRequirement",
+          "simulationRequirement",
+          "spatialRequirement",
+          "sceneContinuityRequirement",
+          "textRequirement",
+          "segmentContinuityRequirement"
+        ]
+      },
+      "generalProducibility": {
+        "status": "RISKY",
+        "dimensions": {
+          "ENTITY_LOAD": {
+            "level": "UNKNOWN",
+            "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+            "evidenceReferences": [],
+            "material": false,
+            "requiresRedesign": false
+          },
+          "OBJECT_IDENTITY_CONTINUITY": {
+            "level": "UNKNOWN",
+            "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+            "evidenceReferences": [],
+            "material": false,
+            "requiresRedesign": false
+          },
+          "CHARACTER_IDENTITY_CONTINUITY": {
+            "level": "UNKNOWN",
+            "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+            "evidenceReferences": [],
+            "material": false,
+            "requiresRedesign": false
+          },
+          "FINE_MOTOR_PRECISION": {
+            "level": "UNKNOWN",
+            "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+            "evidenceReferences": [],
+            "material": false,
+            "requiresRedesign": false
+          },
+          "CONTACT_PHYSICS_COMPLEXITY": {
+            "level": "HIGH",
+            "reason": "Luca balances the ball while Zipo waves",
+            "evidenceReferences": [
+              "contactPhysicsRequirement",
+              "synthetic#chars=8-47"
+            ],
+            "material": true,
+            "requiresRedesign": false
+          },
+          "OCCLUSION_HIDDEN_STATE": {
+            "level": "UNKNOWN",
+            "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+            "evidenceReferences": [],
+            "material": false,
+            "requiresRedesign": false
+          },
+          "EXACT_COUNT_DEPENDENCY": {
+            "level": "UNKNOWN",
+            "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+            "evidenceReferences": [],
+            "material": false,
+            "requiresRedesign": false
+          },
+          "MULTI_ENTITY_CONCURRENCY": {
+            "level": "UNKNOWN",
+            "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+            "evidenceReferences": [],
+            "material": false,
+            "requiresRedesign": false
+          },
+          "TRANSFORMATION_COMPLEXITY": {
+            "level": "UNKNOWN",
+            "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+            "evidenceReferences": [],
+            "material": false,
+            "requiresRedesign": false
+          },
+          "LIQUID_CLOTH_PARTICLE": {
+            "level": "UNKNOWN",
+            "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+            "evidenceReferences": [],
+            "material": false,
+            "requiresRedesign": false
+          },
+          "SPATIAL_RELATIONSHIP_COMPLEXITY": {
+            "level": "UNKNOWN",
+            "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+            "evidenceReferences": [],
+            "material": false,
+            "requiresRedesign": false
+          },
+          "CAMERA_ACTION_COUPLING": {
+            "level": "UNKNOWN",
+            "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+            "evidenceReferences": [],
+            "material": false,
+            "requiresRedesign": false
+          },
+          "MULTI_SCENE_CONTINUITY": {
+            "level": "UNKNOWN",
+            "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+            "evidenceReferences": [],
+            "material": false,
+            "requiresRedesign": false
+          },
+          "TEXT_LIP_SYNC_SYMBOL": {
+            "level": "UNKNOWN",
+            "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+            "evidenceReferences": [],
+            "material": false,
+            "requiresRedesign": false
+          },
+          "SEGMENT_CONTINUITY": {
+            "level": "UNKNOWN",
+            "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+            "evidenceReferences": [],
+            "material": false,
+            "requiresRedesign": false
+          }
+        },
+        "reasons": [
+          "Luca balances the ball while Zipo waves",
+          "Some required structured production evidence is unavailable."
+        ],
+        "materialRisks": [
+          "CONTACT_PHYSICS_COMPLEXITY"
+        ],
+        "unknownDimensions": [
+          "ENTITY_LOAD",
+          "OBJECT_IDENTITY_CONTINUITY",
+          "CHARACTER_IDENTITY_CONTINUITY",
+          "FINE_MOTOR_PRECISION",
+          "OCCLUSION_HIDDEN_STATE",
+          "EXACT_COUNT_DEPENDENCY",
+          "MULTI_ENTITY_CONCURRENCY",
+          "TRANSFORMATION_COMPLEXITY",
+          "LIQUID_CLOTH_PARTICLE",
+          "SPATIAL_RELATIONSHIP_COMPLEXITY",
+          "CAMERA_ACTION_COUPLING",
+          "MULTI_SCENE_CONTINUITY",
+          "TEXT_LIP_SYNC_SYMBOL",
+          "SEGMENT_CONTINUITY"
+        ],
+        "durationSeconds": 6.0,
+        "durationSource": "metadata.duration",
+        "durationLoad": {
+          "level": "UNKNOWN",
+          "reason": "Timed, independently tracked action evidence is incomplete.",
+          "evidenceReferences": [],
+          "material": false,
+          "requiresRedesign": false,
+          "dependentStateChanges": 0,
+          "changesPerSecond": null
+        },
+        "provenance": {
+          "evaluatorVersion": "general-producibility-v1",
+          "source": "STRUCTURED_VIDEO_PLAN_IR",
+          "sourceEvidence": {
+            "source": "POST_FAMILY_SOURCE_ENRICHMENT",
+            "sourceHash": "63038e96b593f25329e7c67ba6eef20953c62e034162f52aea6187b532198c97",
+            "sourceVersion": "1",
+            "extractionVersion": "source-span-production-evidence-v1"
+          },
+          "family6TemporalLoad": {
+            "status": "UNKNOWN",
+            "axes": [
+              {
+                "axis": "temporal_packing",
+                "level": "UNKNOWN",
+                "confidence": "LOW",
+                "evidenceReferences": [],
+                "reason": "Explicit duration and complete beat timing are unavailable."
+              },
+              {
+                "axis": "state_breadth",
+                "level": "UNKNOWN",
+                "confidence": "LOW",
+                "evidenceReferences": [
+                  "source_0"
+                ],
+                "reason": "Beat timing exists, but structured state-breadth fields are unavailable."
+              },
+              {
+                "axis": "continuity_memory",
+                "level": "UNKNOWN",
+                "confidence": "LOW",
+                "evidenceReferences": [
+                  "source_0"
+                ],
+                "reason": "Beat timing exists, but structured continuity state is unavailable."
+              },
+              {
+                "axis": "action_concurrency",
+                "level": "UNKNOWN",
+                "confidence": "LOW",
+                "evidenceReferences": [
+                  "source_0"
+                ],
+                "reason": "Beat timing exists, but structured actor/object concurrency evidence is unavailable."
+              }
+            ],
+            "severeAxisCount": 0,
+            "elevatedAxisCount": 0,
+            "highBasis": null,
+            "evidenceStatus": "UNKNOWN",
+            "version": "family6-temporal-generation-load-v1"
+          },
+          "authorizationPolicy": "EXISTING_POLICY_UNCHANGED"
+        }
+      },
+      "routing": {
+        "contentProfile": "CURIOSITY_ADVENTURE",
+        "basis": "OPERATOR_SELECTED",
+        "confidence": "HUMAN_REVIEWED",
+        "viewerQuestion": null,
+        "alternatives": []
+      },
+      "applicability": {
+        "COMEDY": {
+          "status": "NOT_APPLICABLE",
+          "reason": "Yeni profilin evrensel zorunluluğu değildir.",
+          "profileVersion": "post-family-v1"
+        },
+        "THREE_ATTEMPTS": {
+          "status": "NOT_APPLICABLE",
+          "reason": "Yeni profilin evrensel zorunluluğu değildir.",
+          "profileVersion": "post-family-v1"
+        },
+        "FAKE_RESOLUTION": {
+          "status": "NOT_APPLICABLE",
+          "reason": "Yeni profilin evrensel zorunluluğu değildir.",
+          "profileVersion": "post-family-v1"
+        },
+        "RESOLVED_ENDING": {
+          "status": "NOT_APPLICABLE",
+          "reason": "Yeni profilin evrensel zorunluluğu değildir.",
+          "profileVersion": "post-family-v1"
+        }
+      },
+      "engagement": {
+        "stage": "PROMPT_REVIEW",
+        "status": "HYPOTHESIS",
+        "attentionPromise": "Luca balances the ball while Zipo waves.",
+        "progression": [],
+        "endingDelivery": "Luca balances the ball while Zipo waves.",
+        "rewatchMechanism": "UNKNOWN",
+        "endingKind": "PLANNED_ENDING",
+        "limitations": [
+          "Ön değerlendirme hipotezdir; izlenme/retention yüzdesi tahmini değildir.",
+          "Cevapsız soru tek başına aynı videoyu tekrar izleme kanıtı değildir.",
+          "Durağanlık tek başına gereksiz ölü zaman değildir."
+        ]
+      },
+      "generation": {
+        "recommendedGenerator": "SEEDANCE_2_0_MINI",
+        "selectedGenerator": "SEEDANCE_2_0_MINI",
+        "apiModelId": "byte-plus-seedance-2-mini",
+        "desiredDuration": 6,
+        "supportedRenderDuration": 6,
+        "plannedEditedDuration": 6,
+        "capabilityStatus": "SUPPORTED",
+        "missingExecutionInputs": [],
+        "capabilityProvenance": {
+          "source": "CONNECTED_OPENART_MODEL_FORM",
+          "command": "openart model form byte-plus-seedance-2-mini image2video --json --no-input",
+          "verifiedDate": "2026-10-08",
+          "schemaSha256": "e5458973228db9a1a6fd2185322e98e4f33595496e8c12cf9f22d69206ea1b94",
+          "liveGenerationVerified": false,
+          "cliVersion": "0.1.1 (commit 85fa0ad; built 2026-08-31)"
+        },
+        "profileVersion": "openart-cli-schema-2026-10-08",
+        "mode": "image2video",
+        "settings": {
+          "mode": "image2video",
+          "aspectRatio": "9:16",
+          "resolution": "480p",
+          "startFrame": {
+            "type": "image",
+            "id": "frame.png",
+            "url": "https://example.test/frame.png",
+            "label": "frame"
+          }
+        },
+        "segments": [],
+        "reasons": [],
+        "selectionReason": "Konsept süresine göre kullanıcı üretim tercihi."
+      },
+      "opening": {
+        "strategy": "CURIOSITY_DISCOVERY",
+        "designWindowSeconds": 2.0,
+        "plannedOpening": {
+          "status": "HYPOTHESIS",
+          "sourceSpan": [
+            0,
+            48
+          ],
+          "visualPromise": "Luca balances the ball while Zipo waves."
+        },
+        "actualFirstFrame": {
+          "status": "PASS",
+          "assetSha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+          "basis": "CANONICAL_BOUND_FRAME_EVIDENCE"
+        },
+        "actualOpeningVideo": {
+          "status": "UNKNOWN"
+        },
+        "cover": {
+          "status": "NOT_EVIDENCE_OF_OPENING"
+        },
+        "alternatives": [],
+        "reason": "İlk iki saniye esnek tasarım penceresidir; ilk kare hareketin başarısını kanıtlamaz."
+      },
+      "executionReview": {
+        "stage": "GENERATOR_EXECUTION_REVIEW",
+        "status": "REWRITE",
+        "findings": [
+          {
+            "sourceSpan": [
+              8,
+              47
+            ],
+            "sourceQuote": "Luca balances the ball while Zipo waves",
+            "riskCategory": "SIMULTANEOUS_ACTION_COMPETITION",
+            "category": "SIMULTANEOUS_ACTION_COMPETITION",
+            "plausibleFailure": "Hareketler aynı anda yarışabilir.",
+            "evidenceBasis": "GENERAL_HEURISTIC",
+            "confidence": "LOW",
+            "smallestChange": "Öncelikli hareketi belirt; uygunsa diğerini sonra başlat.",
+            "altersCreativeIntent": false
+          }
+        ],
+        "provider": "LOCAL",
+        "model": null,
+        "version": "local-execution-critic-v1",
+        "visualInspected": false,
+        "targetGenerator": "SEEDANCE_2_0_MINI",
+        "limitations": [
+          "Genel yazım sezgileri; seçilen modelin fiili performans kanıtı değildir."
+        ],
+        "calls": 0
+      },
+      "family8": {
+        "creativeQuality": {
+          "creativeScore": null,
+          "creativeGrade": null,
+          "familyScores": {}
+        },
+        "evidenceCompleteness": {
+          "status": "INCOMPLETE",
+          "evaluationCoverage": null,
+          "aggregation": {}
+        },
+        "renderAuthorization": {
+          "status": "BLOCKED_PENDING_EVIDENCE",
+          "reasons": [
+            {
+              "code": "REQUIRED_EVIDENCE_MISSING",
+              "source": "EXECUTION_REVIEW",
+              "message": "Jeneratör yürütme incelemesi tamamlanmadı veya küçük düzeltme gerekiyor.",
+              "references": []
+            }
+          ]
+        },
+        "legacy": {
+          "readiness": null
+        }
+      },
+      "originalPrompt": "0-6 SEC\nLuca balances the ball while Zipo waves.",
+      "finalPrompt": "0-6 SEC\nLuca balances the ball while Zipo waves.",
+      "patch": [],
+      "changedSettings": {},
+      "repairPasses": 0,
+      "verificationPasses": 0,
+      "protectedIntent": [],
+      "manualHandoff": {
+        "allowed": true,
+        "authorization": {
+          "status": "BLOCKED_PENDING_EVIDENCE",
+          "reasons": [
+            {
+              "code": "REQUIRED_EVIDENCE_MISSING",
+              "source": "EXECUTION_REVIEW",
+              "message": "Jeneratör yürütme incelemesi tamamlanmadı veya küçük düzeltme gerekiyor.",
+              "references": []
+            }
+          ]
+        },
+        "notice": "İnceleme paketi dışa aktarımı render yetkisi veya kredi harcama onayı değildir."
+      }
+    },
+    "after": {
+      "decisionPolicyVersion": "impact-review-v1",
+      "planQuality": {
+        "status": "HYPOTHESIS",
+        "opening": {
+          "assessment": "UNKNOWN",
+          "visualFocus": "UNKNOWN",
+          "promise": "UNKNOWN",
+          "causeAtFrameZero": "UNKNOWN",
+          "plannedFirstBeat": "Luca balances the ball while Zipo waves."
+        },
+        "progression": {
+          "assessment": "UNKNOWN",
+          "mechanisms": []
+        },
+        "ending": {
+          "assessment": "UNKNOWN",
+          "functions": [],
+          "sameVideoReplay": "UNKNOWN",
+          "sequelCuriosity": "UNKNOWN",
+          "plannedLastBeat": "Luca balances the ball while Zipo waves."
+        },
+        "findings": [],
+        "invalidEvidence": [],
+        "recommendation": "MINIMAL_PROMPT_REPAIR",
+        "audienceModel": "Adult discovery; child-appropriate shared viewing",
+        "objective": [
+          "SCROLL_STOP",
+          "ATTENTION",
+          "COMPLETION",
+          "REWATCH_OR_SHARE_HYPOTHESIS"
+        ],
+        "limitations": [
+          "Source interpretations are planned experience, never actual frame evidence or predicted views.",
+          "Motion, repetition, holds and different verbs alone do not establish progression."
+        ]
+      },
+      "executionRisk": {
+        "status": "ADVISORY_RISK",
+        "findings": [
+          {
+            "rawResult": {
+              "sourceSpan": [
+                8,
+                47
+              ],
+              "sourceQuote": "Luca balances the ball while Zipo waves",
+              "riskCategory": "SIMULTANEOUS_ACTION_COMPETITION",
+              "category": "SIMULTANEOUS_ACTION_COMPETITION",
+              "plausibleFailure": "Hareketler aynı anda yarışabilir.",
+              "evidenceBasis": "GENERAL_HEURISTIC",
+              "confidence": "LOW",
+              "smallestChange": "Öncelikli hareketi belirt; uygunsa diğerini sonra başlat.",
+              "altersCreativeIntent": false
+            },
+            "applicability": "APPLICABLE",
+            "severity": "WARNING",
+            "basis": "GENERAL_HEURISTIC",
+            "confidence": "LOW",
+            "recommendation": "MINIMAL_PROMPT_REPAIR",
+            "authorizationBlocking": false,
+            "reason": "Speculative execution limitation is advisory; no confirmed essential failure."
+          }
+        ],
+        "selectedGenerator": "SEEDANCE_2_0_MINI",
+        "rawStatus": "REWRITE",
+        "visualInspected": false
+      },
+      "intentRequirements": [],
+      "actualRenderQuality": {
+        "status": "UNKNOWN",
+        "reason": "Actual video evidence required"
+      },
+      "audienceOutcome": {
+        "status": "NOT_JOINED"
+      },
+      "reviewDimensions": {
+        "promptPlanQuality": {
+          "status": "HYPOTHESIS",
+          "opening": {
+            "assessment": "UNKNOWN",
+            "visualFocus": "UNKNOWN",
+            "promise": "UNKNOWN",
+            "causeAtFrameZero": "UNKNOWN",
+            "plannedFirstBeat": "Luca balances the ball while Zipo waves."
+          },
+          "progression": {
+            "assessment": "UNKNOWN",
+            "mechanisms": []
+          },
+          "ending": {
+            "assessment": "UNKNOWN",
+            "functions": [],
+            "sameVideoReplay": "UNKNOWN",
+            "sequelCuriosity": "UNKNOWN",
+            "plannedLastBeat": "Luca balances the ball while Zipo waves."
+          },
+          "findings": [],
+          "invalidEvidence": [],
+          "recommendation": "MINIMAL_PROMPT_REPAIR",
+          "audienceModel": "Adult discovery; child-appropriate shared viewing",
+          "objective": [
+            "SCROLL_STOP",
+            "ATTENTION",
+            "COMPLETION",
+            "REWATCH_OR_SHARE_HYPOTHESIS"
+          ],
+          "limitations": [
+            "Source interpretations are planned experience, never actual frame evidence or predicted views.",
+            "Motion, repetition, holds and different verbs alone do not establish progression."
+          ]
+        },
+        "generatorExecutionRisk": {
+          "status": "ADVISORY_RISK",
+          "findings": [
+            {
+              "rawResult": {
+                "sourceSpan": [
+                  8,
+                  47
+                ],
+                "sourceQuote": "Luca balances the ball while Zipo waves",
+                "riskCategory": "SIMULTANEOUS_ACTION_COMPETITION",
+                "category": "SIMULTANEOUS_ACTION_COMPETITION",
+                "plausibleFailure": "Hareketler aynı anda yarışabilir.",
+                "evidenceBasis": "GENERAL_HEURISTIC",
+                "confidence": "LOW",
+                "smallestChange": "Öncelikli hareketi belirt; uygunsa diğerini sonra başlat.",
+                "altersCreativeIntent": false
+              },
+              "applicability": "APPLICABLE",
+              "severity": "WARNING",
+              "basis": "GENERAL_HEURISTIC",
+              "confidence": "LOW",
+              "recommendation": "MINIMAL_PROMPT_REPAIR",
+              "authorizationBlocking": false,
+              "reason": "Speculative execution limitation is advisory; no confirmed essential failure."
+            }
+          ],
+          "selectedGenerator": "SEEDANCE_2_0_MINI",
+          "rawStatus": "REWRITE",
+          "visualInspected": false
+        },
+        "actualRenderQuality": {
+          "status": "UNKNOWN"
+        },
+        "audienceDistributionOutcome": {
+          "status": "NOT_JOINED"
+        }
+      },
+      "operatorReport": [
+        {
+          "label": "KARAR",
+          "text": "Küçük prompt düzeltmesi önerilir"
+        },
+        {
+          "label": "İZLEME MEKANİZMASI",
+          "text": "Luca balances the ball while Zipo waves."
+        },
+        {
+          "label": "AÇILIŞ",
+          "text": "Luca balances the ball while Zipo waves."
+        },
+        {
+          "label": "İLERLEME",
+          "text": "Kanıt yetersiz"
+        },
+        {
+          "label": "FİNAL",
+          "text": "Planlanan final: Luca balances the ball while Zipo waves."
+        },
+        {
+          "label": "TEMEL OLAY/KİMLİK/ANLAŞILABİLİRLİK",
+          "text": "Gerçek video henüz incelenmedi"
+        },
+        {
+          "label": "TEKNİK KUSURLAR",
+          "text": "Doğrulanmış kusur kanıtı yok"
+        },
+        {
+          "label": "KUSURUN ETKİSİ",
+          "text": "Yalnız teknik temizlik yaratıcı değer kanıtı değildir"
+        },
+        {
+          "label": "EN KÜÇÜK MÜDAHALE",
+          "text": "MINIMAL_PROMPT_REPAIR"
+        },
+        {
+          "label": "PERFORMANS",
+          "text": "Kör inceleme tamamlanana kadar sonuç verisi ayrıdır; izlenme garantisi yok"
+        }
+      ],
+      "workflowVersion": "post-family-v1",
+      "bindingHash": "a18517098b1c5d47edcc35a1c766eb2e35d02fa31c9498883c10b7722d2ffb8c",
+      "authorizationEvidence": {
+        "renderAuthorization": "AUTHORIZED",
+        "promptSha256": "63038e96b593f25329e7c67ba6eef20953c62e034162f52aea6187b532198c97",
+        "finalVideoEligible": true,
+        "independentRevalidationId": "synthetic-independent",
+        "fresh": true,
+        "visualEvidence": {
+          "firstFrame": {
+            "status": "PASS",
+            "assetSha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+          }
+        }
+      },
+      "source": {
+        "artifact": "synthetic",
+        "version": "1",
+        "sha256": "63038e96b593f25329e7c67ba6eef20953c62e034162f52aea6187b532198c97"
+      },
+      "productionEvidence": {
+        "source": {
+          "artifact": "synthetic",
+          "version": "1",
+          "sha256": "63038e96b593f25329e7c67ba6eef20953c62e034162f52aea6187b532198c97"
+        },
+        "claims": [
+          {
+            "field": "beats",
+            "state": "OBSERVED",
+            "quote": "0-6 SEC",
+            "span": [
+              0,
+              7
+            ],
+            "sourceId": "synthetic",
+            "sourceVersion": "1",
+            "sourceHash": "63038e96b593f25329e7c67ba6eef20953c62e034162f52aea6187b532198c97",
+            "method": "LOCAL_SOURCE_PATTERN",
+            "methodVersion": "source-span-production-evidence-v1",
+            "provider": null,
+            "confidence": "HIGH"
+          },
+          {
+            "field": "fineMotorRequirement",
+            "state": "MISSING",
+            "quote": null,
+            "span": null,
+            "sourceId": "synthetic",
+            "sourceVersion": "1",
+            "sourceHash": "63038e96b593f25329e7c67ba6eef20953c62e034162f52aea6187b532198c97",
+            "methodVersion": "source-span-production-evidence-v1",
+            "confidence": null,
+            "reason": "Omission does not confirm absence."
+          },
+          {
+            "field": "contactPhysicsRequirement",
+            "state": "INFERRED",
+            "quote": "Luca balances the ball while Zipo waves",
+            "span": [
+              8,
+              47
+            ],
+            "sourceId": "synthetic",
+            "sourceVersion": "1",
+            "sourceHash": "63038e96b593f25329e7c67ba6eef20953c62e034162f52aea6187b532198c97",
+            "method": "LOCAL_SOURCE_PATTERN",
+            "methodVersion": "source-span-production-evidence-v1",
+            "provider": null,
+            "confidence": "MEDIUM"
+          },
+          {
+            "field": "objectContinuity",
+            "state": "MISSING",
+            "quote": null,
+            "span": null,
+            "sourceId": "synthetic",
+            "sourceVersion": "1",
+            "sourceHash": "63038e96b593f25329e7c67ba6eef20953c62e034162f52aea6187b532198c97",
+            "methodVersion": "source-span-production-evidence-v1",
+            "confidence": null,
+            "reason": "Omission does not confirm absence."
+          },
+          {
+            "field": "characterContinuity",
+            "state": "MISSING",
+            "quote": null,
+            "span": null,
+            "sourceId": "synthetic",
+            "sourceVersion": "1",
+            "sourceHash": "63038e96b593f25329e7c67ba6eef20953c62e034162f52aea6187b532198c97",
+            "methodVersion": "source-span-production-evidence-v1",
+            "confidence": null,
+            "reason": "Omission does not confirm absence."
+          },
+          {
+            "field": "occlusionRequirement",
+            "state": "MISSING",
+            "quote": null,
+            "span": null,
+            "sourceId": "synthetic",
+            "sourceVersion": "1",
+            "sourceHash": "63038e96b593f25329e7c67ba6eef20953c62e034162f52aea6187b532198c97",
+            "methodVersion": "source-span-production-evidence-v1",
+            "confidence": null,
+            "reason": "Omission does not confirm absence."
+          },
+          {
+            "field": "exactCountDependency",
+            "state": "MISSING",
+            "quote": null,
+            "span": null,
+            "sourceId": "synthetic",
+            "sourceVersion": "1",
+            "sourceHash": "63038e96b593f25329e7c67ba6eef20953c62e034162f52aea6187b532198c97",
+            "methodVersion": "source-span-production-evidence-v1",
+            "confidence": null,
+            "reason": "Omission does not confirm absence."
+          },
+          {
+            "field": "transformationRequirement",
+            "state": "MISSING",
+            "quote": null,
+            "span": null,
+            "sourceId": "synthetic",
+            "sourceVersion": "1",
+            "sourceHash": "63038e96b593f25329e7c67ba6eef20953c62e034162f52aea6187b532198c97",
+            "methodVersion": "source-span-production-evidence-v1",
+            "confidence": null,
+            "reason": "Omission does not confirm absence."
+          },
+          {
+            "field": "simulationRequirement",
+            "state": "MISSING",
+            "quote": null,
+            "span": null,
+            "sourceId": "synthetic",
+            "sourceVersion": "1",
+            "sourceHash": "63038e96b593f25329e7c67ba6eef20953c62e034162f52aea6187b532198c97",
+            "methodVersion": "source-span-production-evidence-v1",
+            "confidence": null,
+            "reason": "Omission does not confirm absence."
+          },
+          {
+            "field": "spatialRequirement",
+            "state": "MISSING",
+            "quote": null,
+            "span": null,
+            "sourceId": "synthetic",
+            "sourceVersion": "1",
+            "sourceHash": "63038e96b593f25329e7c67ba6eef20953c62e034162f52aea6187b532198c97",
+            "methodVersion": "source-span-production-evidence-v1",
+            "confidence": null,
+            "reason": "Omission does not confirm absence."
+          },
+          {
+            "field": "sceneContinuityRequirement",
+            "state": "MISSING",
+            "quote": null,
+            "span": null,
+            "sourceId": "synthetic",
+            "sourceVersion": "1",
+            "sourceHash": "63038e96b593f25329e7c67ba6eef20953c62e034162f52aea6187b532198c97",
+            "methodVersion": "source-span-production-evidence-v1",
+            "confidence": null,
+            "reason": "Omission does not confirm absence."
+          },
+          {
+            "field": "textRequirement",
+            "state": "MISSING",
+            "quote": null,
+            "span": null,
+            "sourceId": "synthetic",
+            "sourceVersion": "1",
+            "sourceHash": "63038e96b593f25329e7c67ba6eef20953c62e034162f52aea6187b532198c97",
+            "methodVersion": "source-span-production-evidence-v1",
+            "confidence": null,
+            "reason": "Omission does not confirm absence."
+          },
+          {
+            "field": "segmentContinuityRequirement",
+            "state": "MISSING",
+            "quote": null,
+            "span": null,
+            "sourceId": "synthetic",
+            "sourceVersion": "1",
+            "sourceHash": "63038e96b593f25329e7c67ba6eef20953c62e034162f52aea6187b532198c97",
+            "methodVersion": "source-span-production-evidence-v1",
+            "confidence": null,
+            "reason": "Omission does not confirm absence."
+          }
+        ],
+        "videoPlanIR": {
+          "metadata": {
+            "generalProducibilityEvidence": {
+              "source": "POST_FAMILY_SOURCE_ENRICHMENT",
+              "sourceHash": "63038e96b593f25329e7c67ba6eef20953c62e034162f52aea6187b532198c97",
+              "sourceVersion": "1",
+              "extractionVersion": "source-span-production-evidence-v1"
+            },
+            "duration": 6.0
+          },
+          "beats": [
+            {
+              "id": "source_0",
+              "startTime": 0.0,
+              "endTime": 6.0,
+              "action": "Luca balances the ball while Zipo waves.",
+              "sourceSpan": [
+                0,
+                48
+              ]
+            }
+          ],
+          "contactPhysicsRequirement": {
+            "required": true,
+            "precision": "HIGH",
+            "evidenceReferences": [
+              "synthetic#chars=8-47"
+            ],
+            "reason": "Luca balances the ball while Zipo waves"
+          }
+        },
+        "generalProducibility": {
+          "status": "RISKY",
+          "dimensions": {
+            "ENTITY_LOAD": {
+              "level": "UNKNOWN",
+              "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+              "evidenceReferences": [],
+              "material": false,
+              "requiresRedesign": false
+            },
+            "OBJECT_IDENTITY_CONTINUITY": {
+              "level": "UNKNOWN",
+              "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+              "evidenceReferences": [],
+              "material": false,
+              "requiresRedesign": false
+            },
+            "CHARACTER_IDENTITY_CONTINUITY": {
+              "level": "UNKNOWN",
+              "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+              "evidenceReferences": [],
+              "material": false,
+              "requiresRedesign": false
+            },
+            "FINE_MOTOR_PRECISION": {
+              "level": "UNKNOWN",
+              "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+              "evidenceReferences": [],
+              "material": false,
+              "requiresRedesign": false
+            },
+            "CONTACT_PHYSICS_COMPLEXITY": {
+              "level": "HIGH",
+              "reason": "Luca balances the ball while Zipo waves",
+              "evidenceReferences": [
+                "contactPhysicsRequirement",
+                "synthetic#chars=8-47"
+              ],
+              "material": true,
+              "requiresRedesign": false
+            },
+            "OCCLUSION_HIDDEN_STATE": {
+              "level": "UNKNOWN",
+              "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+              "evidenceReferences": [],
+              "material": false,
+              "requiresRedesign": false
+            },
+            "EXACT_COUNT_DEPENDENCY": {
+              "level": "UNKNOWN",
+              "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+              "evidenceReferences": [],
+              "material": false,
+              "requiresRedesign": false
+            },
+            "MULTI_ENTITY_CONCURRENCY": {
+              "level": "UNKNOWN",
+              "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+              "evidenceReferences": [],
+              "material": false,
+              "requiresRedesign": false
+            },
+            "TRANSFORMATION_COMPLEXITY": {
+              "level": "UNKNOWN",
+              "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+              "evidenceReferences": [],
+              "material": false,
+              "requiresRedesign": false
+            },
+            "LIQUID_CLOTH_PARTICLE": {
+              "level": "UNKNOWN",
+              "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+              "evidenceReferences": [],
+              "material": false,
+              "requiresRedesign": false
+            },
+            "SPATIAL_RELATIONSHIP_COMPLEXITY": {
+              "level": "UNKNOWN",
+              "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+              "evidenceReferences": [],
+              "material": false,
+              "requiresRedesign": false
+            },
+            "CAMERA_ACTION_COUPLING": {
+              "level": "UNKNOWN",
+              "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+              "evidenceReferences": [],
+              "material": false,
+              "requiresRedesign": false
+            },
+            "MULTI_SCENE_CONTINUITY": {
+              "level": "UNKNOWN",
+              "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+              "evidenceReferences": [],
+              "material": false,
+              "requiresRedesign": false
+            },
+            "TEXT_LIP_SYNC_SYMBOL": {
+              "level": "UNKNOWN",
+              "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+              "evidenceReferences": [],
+              "material": false,
+              "requiresRedesign": false
+            },
+            "SEGMENT_CONTINUITY": {
+              "level": "UNKNOWN",
+              "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+              "evidenceReferences": [],
+              "material": false,
+              "requiresRedesign": false
+            }
+          },
+          "reasons": [
+            "Luca balances the ball while Zipo waves",
+            "Some required structured production evidence is unavailable."
+          ],
+          "materialRisks": [
+            "CONTACT_PHYSICS_COMPLEXITY"
+          ],
+          "unknownDimensions": [
+            "ENTITY_LOAD",
+            "OBJECT_IDENTITY_CONTINUITY",
+            "CHARACTER_IDENTITY_CONTINUITY",
+            "FINE_MOTOR_PRECISION",
+            "OCCLUSION_HIDDEN_STATE",
+            "EXACT_COUNT_DEPENDENCY",
+            "MULTI_ENTITY_CONCURRENCY",
+            "TRANSFORMATION_COMPLEXITY",
+            "LIQUID_CLOTH_PARTICLE",
+            "SPATIAL_RELATIONSHIP_COMPLEXITY",
+            "CAMERA_ACTION_COUPLING",
+            "MULTI_SCENE_CONTINUITY",
+            "TEXT_LIP_SYNC_SYMBOL",
+            "SEGMENT_CONTINUITY"
+          ],
+          "durationSeconds": 6.0,
+          "durationSource": "metadata.duration",
+          "durationLoad": {
+            "level": "UNKNOWN",
+            "reason": "Timed, independently tracked action evidence is incomplete.",
+            "evidenceReferences": [],
+            "material": false,
+            "requiresRedesign": false,
+            "dependentStateChanges": 0,
+            "changesPerSecond": null
+          },
+          "provenance": {
+            "evaluatorVersion": "general-producibility-v1",
+            "source": "STRUCTURED_VIDEO_PLAN_IR",
+            "sourceEvidence": {
+              "source": "POST_FAMILY_SOURCE_ENRICHMENT",
+              "sourceHash": "63038e96b593f25329e7c67ba6eef20953c62e034162f52aea6187b532198c97",
+              "sourceVersion": "1",
+              "extractionVersion": "source-span-production-evidence-v1"
+            },
+            "family6TemporalLoad": {
+              "status": "UNKNOWN",
+              "axes": [
+                {
+                  "axis": "temporal_packing",
+                  "level": "UNKNOWN",
+                  "confidence": "LOW",
+                  "evidenceReferences": [],
+                  "reason": "Explicit duration and complete beat timing are unavailable."
+                },
+                {
+                  "axis": "state_breadth",
+                  "level": "UNKNOWN",
+                  "confidence": "LOW",
+                  "evidenceReferences": [
+                    "source_0"
+                  ],
+                  "reason": "Beat timing exists, but structured state-breadth fields are unavailable."
+                },
+                {
+                  "axis": "continuity_memory",
+                  "level": "UNKNOWN",
+                  "confidence": "LOW",
+                  "evidenceReferences": [
+                    "source_0"
+                  ],
+                  "reason": "Beat timing exists, but structured continuity state is unavailable."
+                },
+                {
+                  "axis": "action_concurrency",
+                  "level": "UNKNOWN",
+                  "confidence": "LOW",
+                  "evidenceReferences": [
+                    "source_0"
+                  ],
+                  "reason": "Beat timing exists, but structured actor/object concurrency evidence is unavailable."
+                }
+              ],
+              "severeAxisCount": 0,
+              "elevatedAxisCount": 0,
+              "highBasis": null,
+              "evidenceStatus": "UNKNOWN",
+              "version": "family6-temporal-generation-load-v1"
+            },
+            "authorizationPolicy": "EXISTING_POLICY_UNCHANGED"
+          }
+        },
+        "remainingUncertainty": [
+          "fineMotorRequirement",
+          "objectContinuity",
+          "characterContinuity",
+          "occlusionRequirement",
+          "exactCountDependency",
+          "transformationRequirement",
+          "simulationRequirement",
+          "spatialRequirement",
+          "sceneContinuityRequirement",
+          "textRequirement",
+          "segmentContinuityRequirement"
+        ]
+      },
+      "generalProducibility": {
+        "status": "RISKY",
+        "dimensions": {
+          "ENTITY_LOAD": {
+            "level": "UNKNOWN",
+            "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+            "evidenceReferences": [],
+            "material": false,
+            "requiresRedesign": false
+          },
+          "OBJECT_IDENTITY_CONTINUITY": {
+            "level": "UNKNOWN",
+            "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+            "evidenceReferences": [],
+            "material": false,
+            "requiresRedesign": false
+          },
+          "CHARACTER_IDENTITY_CONTINUITY": {
+            "level": "UNKNOWN",
+            "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+            "evidenceReferences": [],
+            "material": false,
+            "requiresRedesign": false
+          },
+          "FINE_MOTOR_PRECISION": {
+            "level": "UNKNOWN",
+            "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+            "evidenceReferences": [],
+            "material": false,
+            "requiresRedesign": false
+          },
+          "CONTACT_PHYSICS_COMPLEXITY": {
+            "level": "HIGH",
+            "reason": "Luca balances the ball while Zipo waves",
+            "evidenceReferences": [
+              "contactPhysicsRequirement",
+              "synthetic#chars=8-47"
+            ],
+            "material": true,
+            "requiresRedesign": false
+          },
+          "OCCLUSION_HIDDEN_STATE": {
+            "level": "UNKNOWN",
+            "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+            "evidenceReferences": [],
+            "material": false,
+            "requiresRedesign": false
+          },
+          "EXACT_COUNT_DEPENDENCY": {
+            "level": "UNKNOWN",
+            "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+            "evidenceReferences": [],
+            "material": false,
+            "requiresRedesign": false
+          },
+          "MULTI_ENTITY_CONCURRENCY": {
+            "level": "UNKNOWN",
+            "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+            "evidenceReferences": [],
+            "material": false,
+            "requiresRedesign": false
+          },
+          "TRANSFORMATION_COMPLEXITY": {
+            "level": "UNKNOWN",
+            "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+            "evidenceReferences": [],
+            "material": false,
+            "requiresRedesign": false
+          },
+          "LIQUID_CLOTH_PARTICLE": {
+            "level": "UNKNOWN",
+            "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+            "evidenceReferences": [],
+            "material": false,
+            "requiresRedesign": false
+          },
+          "SPATIAL_RELATIONSHIP_COMPLEXITY": {
+            "level": "UNKNOWN",
+            "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+            "evidenceReferences": [],
+            "material": false,
+            "requiresRedesign": false
+          },
+          "CAMERA_ACTION_COUPLING": {
+            "level": "UNKNOWN",
+            "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+            "evidenceReferences": [],
+            "material": false,
+            "requiresRedesign": false
+          },
+          "MULTI_SCENE_CONTINUITY": {
+            "level": "UNKNOWN",
+            "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+            "evidenceReferences": [],
+            "material": false,
+            "requiresRedesign": false
+          },
+          "TEXT_LIP_SYNC_SYMBOL": {
+            "level": "UNKNOWN",
+            "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+            "evidenceReferences": [],
+            "material": false,
+            "requiresRedesign": false
+          },
+          "SEGMENT_CONTINUITY": {
+            "level": "UNKNOWN",
+            "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+            "evidenceReferences": [],
+            "material": false,
+            "requiresRedesign": false
+          }
+        },
+        "reasons": [
+          "Luca balances the ball while Zipo waves",
+          "Some required structured production evidence is unavailable."
+        ],
+        "materialRisks": [
+          "CONTACT_PHYSICS_COMPLEXITY"
+        ],
+        "unknownDimensions": [
+          "ENTITY_LOAD",
+          "OBJECT_IDENTITY_CONTINUITY",
+          "CHARACTER_IDENTITY_CONTINUITY",
+          "FINE_MOTOR_PRECISION",
+          "OCCLUSION_HIDDEN_STATE",
+          "EXACT_COUNT_DEPENDENCY",
+          "MULTI_ENTITY_CONCURRENCY",
+          "TRANSFORMATION_COMPLEXITY",
+          "LIQUID_CLOTH_PARTICLE",
+          "SPATIAL_RELATIONSHIP_COMPLEXITY",
+          "CAMERA_ACTION_COUPLING",
+          "MULTI_SCENE_CONTINUITY",
+          "TEXT_LIP_SYNC_SYMBOL",
+          "SEGMENT_CONTINUITY"
+        ],
+        "durationSeconds": 6.0,
+        "durationSource": "metadata.duration",
+        "durationLoad": {
+          "level": "UNKNOWN",
+          "reason": "Timed, independently tracked action evidence is incomplete.",
+          "evidenceReferences": [],
+          "material": false,
+          "requiresRedesign": false,
+          "dependentStateChanges": 0,
+          "changesPerSecond": null
+        },
+        "provenance": {
+          "evaluatorVersion": "general-producibility-v1",
+          "source": "STRUCTURED_VIDEO_PLAN_IR",
+          "sourceEvidence": {
+            "source": "POST_FAMILY_SOURCE_ENRICHMENT",
+            "sourceHash": "63038e96b593f25329e7c67ba6eef20953c62e034162f52aea6187b532198c97",
+            "sourceVersion": "1",
+            "extractionVersion": "source-span-production-evidence-v1"
+          },
+          "family6TemporalLoad": {
+            "status": "UNKNOWN",
+            "axes": [
+              {
+                "axis": "temporal_packing",
+                "level": "UNKNOWN",
+                "confidence": "LOW",
+                "evidenceReferences": [],
+                "reason": "Explicit duration and complete beat timing are unavailable."
+              },
+              {
+                "axis": "state_breadth",
+                "level": "UNKNOWN",
+                "confidence": "LOW",
+                "evidenceReferences": [
+                  "source_0"
+                ],
+                "reason": "Beat timing exists, but structured state-breadth fields are unavailable."
+              },
+              {
+                "axis": "continuity_memory",
+                "level": "UNKNOWN",
+                "confidence": "LOW",
+                "evidenceReferences": [
+                  "source_0"
+                ],
+                "reason": "Beat timing exists, but structured continuity state is unavailable."
+              },
+              {
+                "axis": "action_concurrency",
+                "level": "UNKNOWN",
+                "confidence": "LOW",
+                "evidenceReferences": [
+                  "source_0"
+                ],
+                "reason": "Beat timing exists, but structured actor/object concurrency evidence is unavailable."
+              }
+            ],
+            "severeAxisCount": 0,
+            "elevatedAxisCount": 0,
+            "highBasis": null,
+            "evidenceStatus": "UNKNOWN",
+            "version": "family6-temporal-generation-load-v1"
+          },
+          "authorizationPolicy": "EXISTING_POLICY_UNCHANGED"
+        }
+      },
+      "routing": {
+        "contentProfile": "CURIOSITY_ADVENTURE",
+        "basis": "OPERATOR_SELECTED",
+        "confidence": "HUMAN_REVIEWED",
+        "viewerQuestion": null,
+        "alternatives": []
+      },
+      "applicability": {
+        "COMEDY": {
+          "status": "NOT_APPLICABLE",
+          "reason": "Yeni profilin evrensel zorunluluğu değildir.",
+          "profileVersion": "post-family-v1"
+        },
+        "THREE_ATTEMPTS": {
+          "status": "NOT_APPLICABLE",
+          "reason": "Yeni profilin evrensel zorunluluğu değildir.",
+          "profileVersion": "post-family-v1"
+        },
+        "FAKE_RESOLUTION": {
+          "status": "NOT_APPLICABLE",
+          "reason": "Yeni profilin evrensel zorunluluğu değildir.",
+          "profileVersion": "post-family-v1"
+        },
+        "RESOLVED_ENDING": {
+          "status": "NOT_APPLICABLE",
+          "reason": "Yeni profilin evrensel zorunluluğu değildir.",
+          "profileVersion": "post-family-v1"
+        },
+        "FRAME_ZERO_FULL_CAUSALITY": {
+          "status": "NOT_APPLICABLE",
+          "reason": "Yeni profilin evrensel zorunluluğu değildir.",
+          "profileVersion": "post-family-v1"
+        },
+        "INCREASING_PHYSICAL_INTENSITY": {
+          "status": "NOT_APPLICABLE",
+          "reason": "Yeni profilin evrensel zorunluluğu değildir.",
+          "profileVersion": "post-family-v1"
+        },
+        "BIGGEST_FINAL_EVENT": {
+          "status": "NOT_APPLICABLE",
+          "reason": "Yeni profilin evrensel zorunluluğu değildir.",
+          "profileVersion": "post-family-v1"
+        },
+        "SEAMLESS_LOOP": {
+          "status": "NOT_APPLICABLE",
+          "reason": "Yeni profilin evrensel zorunluluğu değildir.",
+          "profileVersion": "post-family-v1"
+        },
+        "FLAWLESS_ANIMATION": {
+          "status": "NOT_APPLICABLE",
+          "reason": "Yeni profilin evrensel zorunluluğu değildir.",
+          "profileVersion": "post-family-v1"
+        },
+        "UNIVERSAL_15_SECONDS": {
+          "status": "NOT_APPLICABLE",
+          "reason": "Yeni profilin evrensel zorunluluğu değildir.",
+          "profileVersion": "post-family-v1"
+        },
+        "ONE_CHARACTER_ONE_OBJECT": {
+          "status": "NOT_APPLICABLE",
+          "reason": "Yeni profilin evrensel zorunluluğu değildir.",
+          "profileVersion": "post-family-v1"
+        }
+      },
+      "engagement": {
+        "stage": "PROMPT_REVIEW",
+        "status": "HYPOTHESIS",
+        "attentionPromise": "Luca balances the ball while Zipo waves.",
+        "progression": [],
+        "endingDelivery": "Luca balances the ball while Zipo waves.",
+        "rewatchMechanism": "UNKNOWN",
+        "endingKind": "PLANNED_ENDING",
+        "limitations": [
+          "Ön değerlendirme hipotezdir; izlenme/retention yüzdesi tahmini değildir.",
+          "Cevapsız soru tek başına aynı videoyu tekrar izleme kanıtı değildir.",
+          "Durağanlık tek başına gereksiz ölü zaman değildir."
+        ]
+      },
+      "generation": {
+        "recommendedGenerator": "SEEDANCE_2_0_MINI",
+        "selectedGenerator": "SEEDANCE_2_0_MINI",
+        "apiModelId": "byte-plus-seedance-2-mini",
+        "desiredDuration": 6,
+        "supportedRenderDuration": 6,
+        "plannedEditedDuration": 6,
+        "capabilityStatus": "SUPPORTED",
+        "missingExecutionInputs": [],
+        "capabilityProvenance": {
+          "source": "CONNECTED_OPENART_MODEL_FORM",
+          "command": "openart model form byte-plus-seedance-2-mini image2video --json --no-input",
+          "verifiedDate": "2026-10-08",
+          "schemaSha256": "e5458973228db9a1a6fd2185322e98e4f33595496e8c12cf9f22d69206ea1b94",
+          "liveGenerationVerified": false,
+          "cliVersion": "0.1.1 (commit 85fa0ad; built 2026-08-31)"
+        },
+        "profileVersion": "openart-cli-schema-2026-10-08",
+        "mode": "image2video",
+        "settings": {
+          "mode": "image2video",
+          "aspectRatio": "9:16",
+          "resolution": "480p",
+          "startFrame": {
+            "type": "image",
+            "id": "frame.png",
+            "url": "https://example.test/frame.png",
+            "label": "frame"
+          }
+        },
+        "segments": [],
+        "reasons": [],
+        "selectionReason": "Konsept süresine göre kullanıcı üretim tercihi."
+      },
+      "opening": {
+        "strategy": "CURIOSITY_DISCOVERY",
+        "designWindowSeconds": 2.0,
+        "plannedOpening": {
+          "status": "HYPOTHESIS",
+          "sourceSpan": [
+            0,
+            48
+          ],
+          "visualPromise": "Luca balances the ball while Zipo waves."
+        },
+        "actualFirstFrame": {
+          "status": "PASS",
+          "assetSha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+          "basis": "CANONICAL_BOUND_FRAME_EVIDENCE"
+        },
+        "actualOpeningVideo": {
+          "status": "UNKNOWN"
+        },
+        "cover": {
+          "status": "NOT_EVIDENCE_OF_OPENING"
+        },
+        "alternatives": [],
+        "reason": "Odak ve görsel vaat erkenden okunmalı; frame zero tam nedensellik açıklaması zorunlu değildir. Tasarım penceresi kabul eşiği değildir."
+      },
+      "executionReview": {
+        "stage": "GENERATOR_EXECUTION_REVIEW",
+        "status": "REWRITE",
+        "findings": [
+          {
+            "sourceSpan": [
+              8,
+              47
+            ],
+            "sourceQuote": "Luca balances the ball while Zipo waves",
+            "riskCategory": "SIMULTANEOUS_ACTION_COMPETITION",
+            "category": "SIMULTANEOUS_ACTION_COMPETITION",
+            "plausibleFailure": "Hareketler aynı anda yarışabilir.",
+            "evidenceBasis": "GENERAL_HEURISTIC",
+            "confidence": "LOW",
+            "smallestChange": "Öncelikli hareketi belirt; uygunsa diğerini sonra başlat.",
+            "altersCreativeIntent": false
+          }
+        ],
+        "provider": "LOCAL",
+        "model": null,
+        "version": "local-execution-critic-v1",
+        "visualInspected": false,
+        "targetGenerator": "SEEDANCE_2_0_MINI",
+        "limitations": [
+          "Genel yazım sezgileri; seçilen modelin fiili performans kanıtı değildir."
+        ],
+        "calls": 0
+      },
+      "family8": {
+        "creativeQuality": {
+          "creativeScore": null,
+          "creativeGrade": null,
+          "familyScores": {}
+        },
+        "evidenceCompleteness": {
+          "status": "COMPLETE",
+          "evaluationCoverage": null,
+          "aggregation": {}
+        },
+        "renderAuthorization": {
+          "status": "AUTHORIZED",
+          "reasons": []
+        },
+        "legacy": {
+          "readiness": null
+        }
+      },
+      "originalPrompt": "0-6 SEC\nLuca balances the ball while Zipo waves.",
+      "finalPrompt": "0-6 SEC\nLuca balances the ball while Zipo waves.",
+      "patch": [],
+      "changedSettings": {},
+      "repairPasses": 0,
+      "verificationPasses": 0,
+      "protectedIntent": [],
+      "manualHandoff": {
+        "allowed": true,
+        "authorization": {
+          "status": "AUTHORIZED",
+          "reasons": []
+        },
+        "notice": "İnceleme paketi dışa aktarımı render yetkisi veya kredi harcama onayı değildir."
+      }
+    }
+  },
+  "polishDeviation": {
+    "plan": {
+      "bindingHash": "bound",
+      "decisionPolicyVersion": "impact-review-v1",
+      "intentRequirements": [
+        {
+          "id": "main",
+          "level": "ESSENTIAL",
+          "eventIds": [
+            "main"
+          ],
+          "sourceQuote": "Reveal"
+        }
+      ],
+      "events": [
+        {
+          "id": "main",
+          "start": 0,
+          "end": 3,
+          "intentLevel": "ESSENTIAL",
+          "requiresMotion": true
+        },
+        {
+          "id": "turn",
+          "start": 3,
+          "end": 6,
+          "intentLevel": "POLISH",
+          "requiresMotion": true
+        }
+      ]
+    },
+    "observation": {
+      "bindingHash": "bound",
+      "assetHash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "duration": 6,
+      "coverage": [
+        0,
+        6
+      ],
+      "events": [
+        {
+          "start": 0,
+          "end": 6,
+          "evidenceBasis": "HUMAN_REVIEWED_CLIP",
+          "reference": "synthetic:clip:0-6",
+          "observed": "Visible synthetic experience",
+          "inferred": "",
+          "uncertainty": "Synthetic only",
+          "confidence": "HIGH",
+          "id": "main",
+          "state": "PRESENT"
+        },
+        {
+          "start": 0,
+          "end": 6,
+          "evidenceBasis": "HUMAN_REVIEWED_CLIP",
+          "reference": "synthetic:clip:0-6",
+          "observed": "Visible synthetic experience",
+          "inferred": "",
+          "uncertainty": "Synthetic only",
+          "confidence": "HIGH",
+          "id": "turn",
+          "state": "ABSENT"
+        }
+      ],
+      "experience": {
+        "coreEventReadability": {
+          "start": 0,
+          "end": 6,
+          "evidenceBasis": "HUMAN_REVIEWED_CLIP",
+          "reference": "synthetic:clip:0-6",
+          "observed": "Visible synthetic experience",
+          "inferred": "",
+          "uncertainty": "Synthetic only",
+          "confidence": "HIGH",
+          "value": "ADEQUATE"
+        },
+        "identity": {
+          "start": 0,
+          "end": 6,
+          "evidenceBasis": "HUMAN_REVIEWED_CLIP",
+          "reference": "synthetic:clip:0-6",
+          "observed": "Visible synthetic experience",
+          "inferred": "",
+          "uncertainty": "Synthetic only",
+          "confidence": "HIGH",
+          "value": "RECOGNIZABLE"
+        },
+        "safety": {
+          "start": 0,
+          "end": 6,
+          "evidenceBasis": "HUMAN_REVIEWED_CLIP",
+          "reference": "synthetic:clip:0-6",
+          "observed": "Visible synthetic experience",
+          "inferred": "",
+          "uncertainty": "Synthetic only",
+          "confidence": "HIGH",
+          "value": "APPROPRIATE"
+        },
+        "coherence": {
+          "start": 0,
+          "end": 6,
+          "evidenceBasis": "HUMAN_REVIEWED_CLIP",
+          "reference": "synthetic:clip:0-6",
+          "observed": "Visible synthetic experience",
+          "inferred": "",
+          "uncertainty": "Synthetic only",
+          "confidence": "HIGH",
+          "value": "ADEQUATE"
+        },
+        "progression": {
+          "start": 0,
+          "end": 6,
+          "evidenceBasis": "HUMAN_REVIEWED_CLIP",
+          "reference": "synthetic:clip:0-6",
+          "observed": "Visible synthetic experience",
+          "inferred": "",
+          "uncertainty": "Synthetic only",
+          "confidence": "HIGH",
+          "value": "DEVELOPING"
+        }
+      },
+      "defects": [
+        {
+          "start": 0,
+          "end": 6,
+          "evidenceBasis": "HUMAN_REVIEWED_CLIP",
+          "reference": "synthetic:clip:0-6",
+          "observed": "Visible synthetic experience",
+          "inferred": "",
+          "uncertainty": "Synthetic only",
+          "confidence": "HIGH",
+          "type": "CONTACT",
+          "impact": "LOCAL_TOLERABLE",
+          "eventId": "main",
+          "durationSeconds": 0.2,
+          "recurrence": 1,
+          "affectedEntity": "hand",
+          "rawSeverity": "BLOCKING"
+        }
+      ]
+    },
+    "before": {
+      "stage": "ACTUAL_RENDER_QA",
+      "status": "REPAIR",
+      "bindingHash": "bound",
+      "assetHash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "events": [
+        {
+          "eventId": "main",
+          "status": "PRESENT",
+          "start": 0,
+          "end": 3,
+          "evidenceBasis": "HUMAN_REVIEWED_CLIP",
+          "reference": "synthetic:clip:0-6"
+        },
+        {
+          "eventId": "turn",
+          "status": "ABSENT",
+          "start": 3,
+          "end": 6,
+          "evidenceBasis": "HUMAN_REVIEWED_CLIP",
+          "reference": "synthetic:clip:0-6"
+        }
+      ],
+      "actualOpeningVideo": {
+        "status": "PRESENT",
+        "evidence": {
+          "eventId": "main",
+          "status": "PRESENT",
+          "start": 0,
+          "end": 3,
+          "evidenceBasis": "HUMAN_REVIEWED_CLIP",
+          "reference": "synthetic:clip:0-6"
+        }
+      },
+      "findings": [
+        {
+          "eventId": "turn",
+          "start": 3,
+          "end": 6,
+          "reason": "Planlanan olay bu aralıkta gözlenmedi.",
+          "repairLevel": "EDIT_FIRST",
+          "action": "Uygun mevcut segment/trim kontrolü yapın; otomatik rerender yok."
+        }
+      ],
+      "technicalAnalysis": null,
+      "limitations": [
+        "Seyrek kareler sürekli hareket, hassas temas veya kusursuz loop kanıtı değildir."
+      ],
+      "automaticRerender": false
+    },
+    "after": {
+      "status": "PASS",
+      "planFidelity": "PARTIAL",
+      "viewerFacingUsability": "USABLE",
+      "editorialRecommendation": "TEST_CANDIDATE",
+      "findings": [
+        {
+          "type": "CONTACT",
+          "start": 0,
+          "end": 6,
+          "evidenceBasis": "HUMAN_REVIEWED_CLIP",
+          "reference": "synthetic:clip:0-6",
+          "observed": "Visible synthetic experience",
+          "inferred": "",
+          "uncertainty": "Synthetic only",
+          "confidence": "HIGH",
+          "durationSeconds": 0.2,
+          "recurrence": 1,
+          "affectedEntity": "hand",
+          "eventId": "main",
+          "requirementId": null,
+          "rawSeverity": "BLOCKING",
+          "state": null,
+          "requiresMotion": null,
+          "impact": "LOCAL_TOLERABLE",
+          "value": null,
+          "rawResult": {
+            "type": "CONTACT",
+            "start": 0,
+            "end": 6,
+            "evidenceBasis": "HUMAN_REVIEWED_CLIP",
+            "reference": "synthetic:clip:0-6",
+            "observed": "Visible synthetic experience",
+            "inferred": "",
+            "uncertainty": "Synthetic only",
+            "confidence": "HIGH",
+            "durationSeconds": 0.2,
+            "recurrence": 1,
+            "affectedEntity": "hand",
+            "eventId": "main",
+            "requirementId": null,
+            "rawSeverity": "BLOCKING",
+            "state": null,
+            "requiresMotion": null,
+            "impact": "LOCAL_TOLERABLE",
+            "value": null
+          },
+          "applicability": "APPLICABLE",
+          "severity": "WARNING",
+          "viewerImpact": "LOCAL_TOLERABLE",
+          "essentialRequirementAffected": false,
+          "reason": "Visible synthetic experience",
+          "repairLevel": "KEEP_OR_EDIT",
+          "action": "Temel olayı koruyarak önce mevcut segment/kurgu olanağını kontrol et; otomatik rerender yok."
+        },
+        {
+          "type": "PLAN_DEVIATION",
+          "start": 3,
+          "end": 6,
+          "evidenceBasis": "HUMAN_REVIEWED_CLIP",
+          "reference": "synthetic:clip:0-6",
+          "observed": "Visible synthetic experience",
+          "inferred": "",
+          "uncertainty": "Synthetic only",
+          "confidence": "HIGH",
+          "durationSeconds": null,
+          "recurrence": null,
+          "affectedEntity": null,
+          "eventId": "turn",
+          "requirementId": null,
+          "rawSeverity": null,
+          "state": "ABSENT",
+          "requiresMotion": null,
+          "impact": null,
+          "value": null,
+          "rawResult": {
+            "type": "PLAN_DEVIATION",
+            "start": 3,
+            "end": 6,
+            "evidenceBasis": "HUMAN_REVIEWED_CLIP",
+            "reference": "synthetic:clip:0-6",
+            "observed": "Visible synthetic experience",
+            "inferred": "",
+            "uncertainty": "Synthetic only",
+            "confidence": "HIGH",
+            "durationSeconds": null,
+            "recurrence": null,
+            "affectedEntity": null,
+            "eventId": "turn",
+            "requirementId": null,
+            "rawSeverity": null,
+            "state": "ABSENT",
+            "requiresMotion": null,
+            "impact": null,
+            "value": null
+          },
+          "applicability": "APPLICABLE",
+          "severity": "WARNING",
+          "viewerImpact": "LOCAL_TOLERABLE",
+          "essentialRequirementAffected": false,
+          "reason": "Visible synthetic experience",
+          "repairLevel": "KEEP_OR_EDIT",
+          "action": "Temel olayı koruyarak önce mevcut segment/kurgu olanağını kontrol et; otomatik rerender yok."
+        }
+      ],
+      "experience": {
+        "coreEventReadability": {
+          "type": null,
+          "start": 0,
+          "end": 6,
+          "evidenceBasis": "HUMAN_REVIEWED_CLIP",
+          "reference": "synthetic:clip:0-6",
+          "observed": "Visible synthetic experience",
+          "inferred": "",
+          "uncertainty": "Synthetic only",
+          "confidence": "HIGH",
+          "durationSeconds": null,
+          "recurrence": null,
+          "affectedEntity": null,
+          "eventId": null,
+          "requirementId": null,
+          "rawSeverity": null,
+          "state": null,
+          "requiresMotion": null,
+          "impact": null,
+          "value": "ADEQUATE",
+          "status": "OBSERVED"
+        },
+        "identity": {
+          "type": null,
+          "start": 0,
+          "end": 6,
+          "evidenceBasis": "HUMAN_REVIEWED_CLIP",
+          "reference": "synthetic:clip:0-6",
+          "observed": "Visible synthetic experience",
+          "inferred": "",
+          "uncertainty": "Synthetic only",
+          "confidence": "HIGH",
+          "durationSeconds": null,
+          "recurrence": null,
+          "affectedEntity": null,
+          "eventId": null,
+          "requirementId": null,
+          "rawSeverity": null,
+          "state": null,
+          "requiresMotion": null,
+          "impact": null,
+          "value": "RECOGNIZABLE",
+          "status": "OBSERVED"
+        },
+        "safety": {
+          "type": null,
+          "start": 0,
+          "end": 6,
+          "evidenceBasis": "HUMAN_REVIEWED_CLIP",
+          "reference": "synthetic:clip:0-6",
+          "observed": "Visible synthetic experience",
+          "inferred": "",
+          "uncertainty": "Synthetic only",
+          "confidence": "HIGH",
+          "durationSeconds": null,
+          "recurrence": null,
+          "affectedEntity": null,
+          "eventId": null,
+          "requirementId": null,
+          "rawSeverity": null,
+          "state": null,
+          "requiresMotion": null,
+          "impact": null,
+          "value": "APPROPRIATE",
+          "status": "OBSERVED"
+        },
+        "coherence": {
+          "type": null,
+          "start": 0,
+          "end": 6,
+          "evidenceBasis": "HUMAN_REVIEWED_CLIP",
+          "reference": "synthetic:clip:0-6",
+          "observed": "Visible synthetic experience",
+          "inferred": "",
+          "uncertainty": "Synthetic only",
+          "confidence": "HIGH",
+          "durationSeconds": null,
+          "recurrence": null,
+          "affectedEntity": null,
+          "eventId": null,
+          "requirementId": null,
+          "rawSeverity": null,
+          "state": null,
+          "requiresMotion": null,
+          "impact": null,
+          "value": "ADEQUATE",
+          "status": "OBSERVED"
+        },
+        "progression": {
+          "type": null,
+          "start": 0,
+          "end": 6,
+          "evidenceBasis": "HUMAN_REVIEWED_CLIP",
+          "reference": "synthetic:clip:0-6",
+          "observed": "Visible synthetic experience",
+          "inferred": "",
+          "uncertainty": "Synthetic only",
+          "confidence": "HIGH",
+          "durationSeconds": null,
+          "recurrence": null,
+          "affectedEntity": null,
+          "eventId": null,
+          "requirementId": null,
+          "rawSeverity": null,
+          "state": null,
+          "requiresMotion": null,
+          "impact": null,
+          "value": "DEVELOPING",
+          "status": "OBSERVED"
+        },
+        "opening": {
+          "type": null,
+          "start": null,
+          "end": null,
+          "evidenceBasis": null,
+          "reference": null,
+          "observed": null,
+          "inferred": null,
+          "uncertainty": null,
+          "confidence": null,
+          "durationSeconds": null,
+          "recurrence": null,
+          "affectedEntity": null,
+          "eventId": null,
+          "requirementId": null,
+          "rawSeverity": null,
+          "state": null,
+          "requiresMotion": null,
+          "impact": null,
+          "value": "UNKNOWN",
+          "status": "UNKNOWN"
+        },
+        "ending": {
+          "type": null,
+          "start": null,
+          "end": null,
+          "evidenceBasis": null,
+          "reference": null,
+          "observed": null,
+          "inferred": null,
+          "uncertainty": null,
+          "confidence": null,
+          "durationSeconds": null,
+          "recurrence": null,
+          "affectedEntity": null,
+          "eventId": null,
+          "requirementId": null,
+          "rawSeverity": null,
+          "state": null,
+          "requiresMotion": null,
+          "impact": null,
+          "value": "UNKNOWN",
+          "status": "UNKNOWN"
+        },
+        "openingFrame": {
+          "type": null,
+          "start": null,
+          "end": null,
+          "evidenceBasis": null,
+          "reference": null,
+          "observed": null,
+          "inferred": null,
+          "uncertainty": null,
+          "confidence": null,
+          "durationSeconds": null,
+          "recurrence": null,
+          "affectedEntity": null,
+          "eventId": null,
+          "requirementId": null,
+          "rawSeverity": null,
+          "state": null,
+          "requiresMotion": null,
+          "impact": null,
+          "value": "UNKNOWN",
+          "status": "UNKNOWN"
+        }
+      },
+      "repairEconomics": {
+        "order": [
+          "KEEP_USABLE",
+          "EDIT_TRIM",
+          "INTERVAL_PROMPT_REPAIR",
+          "SUPPORTED_NECESSARY_SEGMENT",
+          "JUSTIFIED_FULL_RERENDER"
+        ],
+        "fullRerenderJustified": false,
+        "automaticExecution": false,
+        "essentialBenefit": null,
+        "defectAddressed": null,
+        "whySmallerInsufficient": null,
+        "remainingUncertainty": "No verified repair execution outcome",
+        "successProbability": null
+      },
+      "smallestIntervention": "Mevcut kullanılabilir çıktıyı koru; kontrollü test için editoryal aday",
+      "stage": "ACTUAL_RENDER_QA",
+      "decisionPolicyVersion": "impact-review-v1",
+      "bindingHash": "bound",
+      "assetHash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "events": [
+        {
+          "eventId": "main",
+          "status": "PRESENT",
+          "intentLevel": "ESSENTIAL",
+          "start": 0,
+          "end": 3,
+          "evidenceBasis": "HUMAN_REVIEWED_CLIP",
+          "reference": "synthetic:clip:0-6",
+          "observed": "Visible synthetic experience",
+          "inferred": "",
+          "uncertainty": "Synthetic only",
+          "observedStart": 0,
+          "observedEnd": 6
+        },
+        {
+          "eventId": "turn",
+          "status": "ABSENT",
+          "intentLevel": "POLISH",
+          "start": 3,
+          "end": 6,
+          "evidenceBasis": "HUMAN_REVIEWED_CLIP",
+          "reference": "synthetic:clip:0-6",
+          "observed": "Visible synthetic experience",
+          "inferred": "",
+          "uncertainty": "Synthetic only",
+          "observedStart": 0,
+          "observedEnd": 6
+        }
+      ],
+      "family8": {
+        "creativeQuality": {
+          "creativeScore": null,
+          "creativeGrade": null,
+          "familyScores": {}
+        },
+        "evidenceCompleteness": {
+          "status": "COMPLETE",
+          "evaluationCoverage": null,
+          "aggregation": {}
+        },
+        "renderAuthorization": {
+          "status": "AUTHORIZED",
+          "reasons": []
+        },
+        "legacy": {
+          "readiness": null
+        }
+      },
+      "fidelityEvidence": {
+        "plannedDuration": 6,
+        "actualDuration": 6,
+        "timingAlignment": "ALIGNED",
+        "reason": "Duration mismatch proves timing deviation, not loss of core event",
+        "eventCoverage": [
+          {
+            "eventId": "main",
+            "status": "PRESENT",
+            "intentLevel": "ESSENTIAL",
+            "start": 0,
+            "end": 3,
+            "evidenceBasis": "HUMAN_REVIEWED_CLIP",
+            "reference": "synthetic:clip:0-6",
+            "observed": "Visible synthetic experience",
+            "inferred": "",
+            "uncertainty": "Synthetic only",
+            "observedStart": 0,
+            "observedEnd": 6
+          },
+          {
+            "eventId": "turn",
+            "status": "ABSENT",
+            "intentLevel": "POLISH",
+            "start": 3,
+            "end": 6,
+            "evidenceBasis": "HUMAN_REVIEWED_CLIP",
+            "reference": "synthetic:clip:0-6",
+            "observed": "Visible synthetic experience",
+            "inferred": "",
+            "uncertainty": "Synthetic only",
+            "observedStart": 0,
+            "observedEnd": 6
+          }
+        ]
+      },
+      "authorizationScope": "EDITORIAL_ASSESSMENT_ONLY",
+      "publicationAuthorized": false,
+      "automaticRerender": false,
+      "renderAuthorizationUnchanged": true,
+      "actualFirstFrame": {
+        "type": null,
+        "start": null,
+        "end": null,
+        "evidenceBasis": null,
+        "reference": null,
+        "observed": null,
+        "inferred": null,
+        "uncertainty": null,
+        "confidence": null,
+        "durationSeconds": null,
+        "recurrence": null,
+        "affectedEntity": null,
+        "eventId": null,
+        "requirementId": null,
+        "rawSeverity": null,
+        "state": null,
+        "requiresMotion": null,
+        "impact": null,
+        "value": "UNKNOWN",
+        "status": "UNKNOWN",
+        "canonicalAuthorizationGate": false
+      },
+      "actualOpeningVideo": {
+        "status": "UNKNOWN",
+        "evidence": {
+          "type": null,
+          "start": null,
+          "end": null,
+          "evidenceBasis": null,
+          "reference": null,
+          "observed": null,
+          "inferred": null,
+          "uncertainty": null,
+          "confidence": null,
+          "durationSeconds": null,
+          "recurrence": null,
+          "affectedEntity": null,
+          "eventId": null,
+          "requirementId": null,
+          "rawSeverity": null,
+          "state": null,
+          "requiresMotion": null,
+          "impact": null,
+          "value": "UNKNOWN",
+          "status": "UNKNOWN"
+        }
+      },
+      "audioReview": {
+        "mode": "SOUND_OFF",
+        "status": "UNKNOWN",
+        "reason": "No verified actual audio/transcript evidence supplied"
+      },
+      "technicalAnalysis": null,
+      "reviewDimensions": {
+        "promptPlanQuality": {
+          "status": "UNKNOWN"
+        },
+        "generatorExecutionRisk": {
+          "status": "UNKNOWN"
+        },
+        "actualRenderQuality": {
+          "status": "PASS",
+          "planFidelity": "PARTIAL",
+          "viewerFacingUsability": "USABLE",
+          "editorialRecommendation": "TEST_CANDIDATE",
+          "findings": [
+            {
+              "type": "CONTACT",
+              "start": 0,
+              "end": 6,
+              "evidenceBasis": "HUMAN_REVIEWED_CLIP",
+              "reference": "synthetic:clip:0-6",
+              "observed": "Visible synthetic experience",
+              "inferred": "",
+              "uncertainty": "Synthetic only",
+              "confidence": "HIGH",
+              "durationSeconds": 0.2,
+              "recurrence": 1,
+              "affectedEntity": "hand",
+              "eventId": "main",
+              "requirementId": null,
+              "rawSeverity": "BLOCKING",
+              "state": null,
+              "requiresMotion": null,
+              "impact": "LOCAL_TOLERABLE",
+              "value": null,
+              "rawResult": {
+                "type": "CONTACT",
+                "start": 0,
+                "end": 6,
+                "evidenceBasis": "HUMAN_REVIEWED_CLIP",
+                "reference": "synthetic:clip:0-6",
+                "observed": "Visible synthetic experience",
+                "inferred": "",
+                "uncertainty": "Synthetic only",
+                "confidence": "HIGH",
+                "durationSeconds": 0.2,
+                "recurrence": 1,
+                "affectedEntity": "hand",
+                "eventId": "main",
+                "requirementId": null,
+                "rawSeverity": "BLOCKING",
+                "state": null,
+                "requiresMotion": null,
+                "impact": "LOCAL_TOLERABLE",
+                "value": null
+              },
+              "applicability": "APPLICABLE",
+              "severity": "WARNING",
+              "viewerImpact": "LOCAL_TOLERABLE",
+              "essentialRequirementAffected": false,
+              "reason": "Visible synthetic experience",
+              "repairLevel": "KEEP_OR_EDIT",
+              "action": "Temel olayı koruyarak önce mevcut segment/kurgu olanağını kontrol et; otomatik rerender yok."
+            },
+            {
+              "type": "PLAN_DEVIATION",
+              "start": 3,
+              "end": 6,
+              "evidenceBasis": "HUMAN_REVIEWED_CLIP",
+              "reference": "synthetic:clip:0-6",
+              "observed": "Visible synthetic experience",
+              "inferred": "",
+              "uncertainty": "Synthetic only",
+              "confidence": "HIGH",
+              "durationSeconds": null,
+              "recurrence": null,
+              "affectedEntity": null,
+              "eventId": "turn",
+              "requirementId": null,
+              "rawSeverity": null,
+              "state": "ABSENT",
+              "requiresMotion": null,
+              "impact": null,
+              "value": null,
+              "rawResult": {
+                "type": "PLAN_DEVIATION",
+                "start": 3,
+                "end": 6,
+                "evidenceBasis": "HUMAN_REVIEWED_CLIP",
+                "reference": "synthetic:clip:0-6",
+                "observed": "Visible synthetic experience",
+                "inferred": "",
+                "uncertainty": "Synthetic only",
+                "confidence": "HIGH",
+                "durationSeconds": null,
+                "recurrence": null,
+                "affectedEntity": null,
+                "eventId": "turn",
+                "requirementId": null,
+                "rawSeverity": null,
+                "state": "ABSENT",
+                "requiresMotion": null,
+                "impact": null,
+                "value": null
+              },
+              "applicability": "APPLICABLE",
+              "severity": "WARNING",
+              "viewerImpact": "LOCAL_TOLERABLE",
+              "essentialRequirementAffected": false,
+              "reason": "Visible synthetic experience",
+              "repairLevel": "KEEP_OR_EDIT",
+              "action": "Temel olayı koruyarak önce mevcut segment/kurgu olanağını kontrol et; otomatik rerender yok."
+            }
+          ],
+          "experience": {
+            "coreEventReadability": {
+              "type": null,
+              "start": 0,
+              "end": 6,
+              "evidenceBasis": "HUMAN_REVIEWED_CLIP",
+              "reference": "synthetic:clip:0-6",
+              "observed": "Visible synthetic experience",
+              "inferred": "",
+              "uncertainty": "Synthetic only",
+              "confidence": "HIGH",
+              "durationSeconds": null,
+              "recurrence": null,
+              "affectedEntity": null,
+              "eventId": null,
+              "requirementId": null,
+              "rawSeverity": null,
+              "state": null,
+              "requiresMotion": null,
+              "impact": null,
+              "value": "ADEQUATE",
+              "status": "OBSERVED"
+            },
+            "identity": {
+              "type": null,
+              "start": 0,
+              "end": 6,
+              "evidenceBasis": "HUMAN_REVIEWED_CLIP",
+              "reference": "synthetic:clip:0-6",
+              "observed": "Visible synthetic experience",
+              "inferred": "",
+              "uncertainty": "Synthetic only",
+              "confidence": "HIGH",
+              "durationSeconds": null,
+              "recurrence": null,
+              "affectedEntity": null,
+              "eventId": null,
+              "requirementId": null,
+              "rawSeverity": null,
+              "state": null,
+              "requiresMotion": null,
+              "impact": null,
+              "value": "RECOGNIZABLE",
+              "status": "OBSERVED"
+            },
+            "safety": {
+              "type": null,
+              "start": 0,
+              "end": 6,
+              "evidenceBasis": "HUMAN_REVIEWED_CLIP",
+              "reference": "synthetic:clip:0-6",
+              "observed": "Visible synthetic experience",
+              "inferred": "",
+              "uncertainty": "Synthetic only",
+              "confidence": "HIGH",
+              "durationSeconds": null,
+              "recurrence": null,
+              "affectedEntity": null,
+              "eventId": null,
+              "requirementId": null,
+              "rawSeverity": null,
+              "state": null,
+              "requiresMotion": null,
+              "impact": null,
+              "value": "APPROPRIATE",
+              "status": "OBSERVED"
+            },
+            "coherence": {
+              "type": null,
+              "start": 0,
+              "end": 6,
+              "evidenceBasis": "HUMAN_REVIEWED_CLIP",
+              "reference": "synthetic:clip:0-6",
+              "observed": "Visible synthetic experience",
+              "inferred": "",
+              "uncertainty": "Synthetic only",
+              "confidence": "HIGH",
+              "durationSeconds": null,
+              "recurrence": null,
+              "affectedEntity": null,
+              "eventId": null,
+              "requirementId": null,
+              "rawSeverity": null,
+              "state": null,
+              "requiresMotion": null,
+              "impact": null,
+              "value": "ADEQUATE",
+              "status": "OBSERVED"
+            },
+            "progression": {
+              "type": null,
+              "start": 0,
+              "end": 6,
+              "evidenceBasis": "HUMAN_REVIEWED_CLIP",
+              "reference": "synthetic:clip:0-6",
+              "observed": "Visible synthetic experience",
+              "inferred": "",
+              "uncertainty": "Synthetic only",
+              "confidence": "HIGH",
+              "durationSeconds": null,
+              "recurrence": null,
+              "affectedEntity": null,
+              "eventId": null,
+              "requirementId": null,
+              "rawSeverity": null,
+              "state": null,
+              "requiresMotion": null,
+              "impact": null,
+              "value": "DEVELOPING",
+              "status": "OBSERVED"
+            },
+            "opening": {
+              "type": null,
+              "start": null,
+              "end": null,
+              "evidenceBasis": null,
+              "reference": null,
+              "observed": null,
+              "inferred": null,
+              "uncertainty": null,
+              "confidence": null,
+              "durationSeconds": null,
+              "recurrence": null,
+              "affectedEntity": null,
+              "eventId": null,
+              "requirementId": null,
+              "rawSeverity": null,
+              "state": null,
+              "requiresMotion": null,
+              "impact": null,
+              "value": "UNKNOWN",
+              "status": "UNKNOWN"
+            },
+            "ending": {
+              "type": null,
+              "start": null,
+              "end": null,
+              "evidenceBasis": null,
+              "reference": null,
+              "observed": null,
+              "inferred": null,
+              "uncertainty": null,
+              "confidence": null,
+              "durationSeconds": null,
+              "recurrence": null,
+              "affectedEntity": null,
+              "eventId": null,
+              "requirementId": null,
+              "rawSeverity": null,
+              "state": null,
+              "requiresMotion": null,
+              "impact": null,
+              "value": "UNKNOWN",
+              "status": "UNKNOWN"
+            },
+            "openingFrame": {
+              "type": null,
+              "start": null,
+              "end": null,
+              "evidenceBasis": null,
+              "reference": null,
+              "observed": null,
+              "inferred": null,
+              "uncertainty": null,
+              "confidence": null,
+              "durationSeconds": null,
+              "recurrence": null,
+              "affectedEntity": null,
+              "eventId": null,
+              "requirementId": null,
+              "rawSeverity": null,
+              "state": null,
+              "requiresMotion": null,
+              "impact": null,
+              "value": "UNKNOWN",
+              "status": "UNKNOWN"
+            }
+          },
+          "repairEconomics": {
+            "order": [
+              "KEEP_USABLE",
+              "EDIT_TRIM",
+              "INTERVAL_PROMPT_REPAIR",
+              "SUPPORTED_NECESSARY_SEGMENT",
+              "JUSTIFIED_FULL_RERENDER"
+            ],
+            "fullRerenderJustified": false,
+            "automaticExecution": false,
+            "essentialBenefit": null,
+            "defectAddressed": null,
+            "whySmallerInsufficient": null,
+            "remainingUncertainty": "No verified repair execution outcome",
+            "successProbability": null
+          },
+          "smallestIntervention": "Mevcut kullanılabilir çıktıyı koru; kontrollü test için editoryal aday"
+        },
+        "audienceDistributionOutcome": {
+          "status": "NOT_JOINED"
+        }
+      },
+      "operatorReport": [
+        {
+          "label": "KARAR",
+          "text": "Kontrollü izleyici testi için editoryal aday"
+        },
+        {
+          "label": "İZLEME MEKANİZMASI",
+          "text": "İzleme gerekçesini değerlendirmek için kaynak kanıtı yetersiz"
+        },
+        {
+          "label": "AÇILIŞ",
+          "text": " Gerçek açılış hareketi için kanıt yetersiz. Planlanan vaat: UNKNOWN"
+        },
+        {
+          "label": "İLERLEME",
+          "text": "Visible synthetic experience"
+        },
+        {
+          "label": "FİNAL",
+          "text": "Planlanan final: UNKNOWN"
+        },
+        {
+          "label": "TEMEL OLAY/KİMLİK/ANLAŞILABİLİRLİK",
+          "text": "Temel deneyim okunabilir ve kullanılabilir"
+        },
+        {
+          "label": "TEKNİK KUSURLAR",
+          "text": "0–6 s: Visible synthetic experience; 3–6 s: Visible synthetic experience"
+        },
+        {
+          "label": "KUSURUN ETKİSİ",
+          "text": "Uyarı: Visible synthetic experience; Uyarı: Visible synthetic experience"
+        },
+        {
+          "label": "EN KÜÇÜK MÜDAHALE",
+          "text": "Mevcut kullanılabilir çıktıyı koru; kontrollü test için editoryal aday"
+        },
+        {
+          "label": "PERFORMANS",
+          "text": "Kör inceleme tamamlanana kadar sonuç verisi ayrıdır; izlenme garantisi yok"
+        }
+      ],
+      "limitations": [
+        "Seyrek kareler sürekli hareket, hassas temas veya kusursuz loop kanıtı değildir.",
+        "TEST_CANDIDATE yayın veya üretim izni değildir; kanonik operasyon kontrolleri ayrıca gereklidir."
+      ]
+    }
+  },
+  "essentialAbsentCounterexample": {
+    "status": "FAIL",
+    "planFidelity": "PARTIAL",
+    "viewerFacingUsability": "UNUSABLE",
+    "editorialRecommendation": "UNUSABLE_CONFIRMED_BLOCKER",
+    "findings": [
+      {
+        "type": "CONTACT",
+        "start": 0,
+        "end": 6,
+        "evidenceBasis": "HUMAN_REVIEWED_CLIP",
+        "reference": "synthetic:clip:0-6",
+        "observed": "Visible synthetic experience",
+        "inferred": "",
+        "uncertainty": "Synthetic only",
+        "confidence": "HIGH",
+        "durationSeconds": 0.2,
+        "recurrence": 1,
+        "affectedEntity": "hand",
+        "eventId": "main",
+        "requirementId": null,
+        "rawSeverity": "BLOCKING",
+        "state": null,
+        "requiresMotion": null,
+        "impact": "LOCAL_TOLERABLE",
+        "value": null,
+        "rawResult": {
+          "type": "CONTACT",
+          "start": 0,
+          "end": 6,
+          "evidenceBasis": "HUMAN_REVIEWED_CLIP",
+          "reference": "synthetic:clip:0-6",
+          "observed": "Visible synthetic experience",
+          "inferred": "",
+          "uncertainty": "Synthetic only",
+          "confidence": "HIGH",
+          "durationSeconds": 0.2,
+          "recurrence": 1,
+          "affectedEntity": "hand",
+          "eventId": "main",
+          "requirementId": null,
+          "rawSeverity": "BLOCKING",
+          "state": null,
+          "requiresMotion": null,
+          "impact": "LOCAL_TOLERABLE",
+          "value": null
+        },
+        "applicability": "APPLICABLE",
+        "severity": "WARNING",
+        "viewerImpact": "LOCAL_TOLERABLE",
+        "essentialRequirementAffected": false,
+        "reason": "Visible synthetic experience",
+        "repairLevel": "KEEP_OR_EDIT",
+        "action": "Temel olayı koruyarak önce mevcut segment/kurgu olanağını kontrol et; otomatik rerender yok."
+      },
+      {
+        "type": "PLAN_DEVIATION",
+        "start": 0,
+        "end": 3,
+        "evidenceBasis": "HUMAN_REVIEWED_CLIP",
+        "reference": "synthetic:clip:0-6",
+        "observed": "Visible synthetic experience",
+        "inferred": "",
+        "uncertainty": "Synthetic only",
+        "confidence": "HIGH",
+        "durationSeconds": null,
+        "recurrence": null,
+        "affectedEntity": null,
+        "eventId": "main",
+        "requirementId": null,
+        "rawSeverity": null,
+        "state": "ABSENT",
+        "requiresMotion": null,
+        "impact": null,
+        "value": null,
+        "rawResult": {
+          "type": "PLAN_DEVIATION",
+          "start": 0,
+          "end": 3,
+          "evidenceBasis": "HUMAN_REVIEWED_CLIP",
+          "reference": "synthetic:clip:0-6",
+          "observed": "Visible synthetic experience",
+          "inferred": "",
+          "uncertainty": "Synthetic only",
+          "confidence": "HIGH",
+          "durationSeconds": null,
+          "recurrence": null,
+          "affectedEntity": null,
+          "eventId": "main",
+          "requirementId": null,
+          "rawSeverity": null,
+          "state": "ABSENT",
+          "requiresMotion": null,
+          "impact": null,
+          "value": null
+        },
+        "applicability": "APPLICABLE",
+        "severity": "BLOCKING",
+        "viewerImpact": "CORE_EVENT_LOST",
+        "essentialRequirementAffected": true,
+        "reason": "Visible synthetic experience",
+        "repairLevel": "MATERIAL_REPAIR_REVIEW",
+        "action": "Temel olayı koruyarak önce mevcut segment/kurgu olanağını kontrol et; otomatik rerender yok."
+      },
+      {
+        "type": "PLAN_DEVIATION",
+        "start": 3,
+        "end": 6,
+        "evidenceBasis": "HUMAN_REVIEWED_CLIP",
+        "reference": "synthetic:clip:0-6",
+        "observed": "Visible synthetic experience",
+        "inferred": "",
+        "uncertainty": "Synthetic only",
+        "confidence": "HIGH",
+        "durationSeconds": null,
+        "recurrence": null,
+        "affectedEntity": null,
+        "eventId": "turn",
+        "requirementId": null,
+        "rawSeverity": null,
+        "state": "ABSENT",
+        "requiresMotion": null,
+        "impact": null,
+        "value": null,
+        "rawResult": {
+          "type": "PLAN_DEVIATION",
+          "start": 3,
+          "end": 6,
+          "evidenceBasis": "HUMAN_REVIEWED_CLIP",
+          "reference": "synthetic:clip:0-6",
+          "observed": "Visible synthetic experience",
+          "inferred": "",
+          "uncertainty": "Synthetic only",
+          "confidence": "HIGH",
+          "durationSeconds": null,
+          "recurrence": null,
+          "affectedEntity": null,
+          "eventId": "turn",
+          "requirementId": null,
+          "rawSeverity": null,
+          "state": "ABSENT",
+          "requiresMotion": null,
+          "impact": null,
+          "value": null
+        },
+        "applicability": "APPLICABLE",
+        "severity": "WARNING",
+        "viewerImpact": "LOCAL_TOLERABLE",
+        "essentialRequirementAffected": false,
+        "reason": "Visible synthetic experience",
+        "repairLevel": "KEEP_OR_EDIT",
+        "action": "Temel olayı koruyarak önce mevcut segment/kurgu olanağını kontrol et; otomatik rerender yok."
+      }
+    ],
+    "experience": {
+      "coreEventReadability": {
+        "type": null,
+        "start": 0,
+        "end": 6,
+        "evidenceBasis": "HUMAN_REVIEWED_CLIP",
+        "reference": "synthetic:clip:0-6",
+        "observed": "Visible synthetic experience",
+        "inferred": "",
+        "uncertainty": "Synthetic only",
+        "confidence": "HIGH",
+        "durationSeconds": null,
+        "recurrence": null,
+        "affectedEntity": null,
+        "eventId": null,
+        "requirementId": null,
+        "rawSeverity": null,
+        "state": null,
+        "requiresMotion": null,
+        "impact": null,
+        "value": "ADEQUATE",
+        "status": "OBSERVED"
+      },
+      "identity": {
+        "type": null,
+        "start": 0,
+        "end": 6,
+        "evidenceBasis": "HUMAN_REVIEWED_CLIP",
+        "reference": "synthetic:clip:0-6",
+        "observed": "Visible synthetic experience",
+        "inferred": "",
+        "uncertainty": "Synthetic only",
+        "confidence": "HIGH",
+        "durationSeconds": null,
+        "recurrence": null,
+        "affectedEntity": null,
+        "eventId": null,
+        "requirementId": null,
+        "rawSeverity": null,
+        "state": null,
+        "requiresMotion": null,
+        "impact": null,
+        "value": "RECOGNIZABLE",
+        "status": "OBSERVED"
+      },
+      "safety": {
+        "type": null,
+        "start": 0,
+        "end": 6,
+        "evidenceBasis": "HUMAN_REVIEWED_CLIP",
+        "reference": "synthetic:clip:0-6",
+        "observed": "Visible synthetic experience",
+        "inferred": "",
+        "uncertainty": "Synthetic only",
+        "confidence": "HIGH",
+        "durationSeconds": null,
+        "recurrence": null,
+        "affectedEntity": null,
+        "eventId": null,
+        "requirementId": null,
+        "rawSeverity": null,
+        "state": null,
+        "requiresMotion": null,
+        "impact": null,
+        "value": "APPROPRIATE",
+        "status": "OBSERVED"
+      },
+      "coherence": {
+        "type": null,
+        "start": 0,
+        "end": 6,
+        "evidenceBasis": "HUMAN_REVIEWED_CLIP",
+        "reference": "synthetic:clip:0-6",
+        "observed": "Visible synthetic experience",
+        "inferred": "",
+        "uncertainty": "Synthetic only",
+        "confidence": "HIGH",
+        "durationSeconds": null,
+        "recurrence": null,
+        "affectedEntity": null,
+        "eventId": null,
+        "requirementId": null,
+        "rawSeverity": null,
+        "state": null,
+        "requiresMotion": null,
+        "impact": null,
+        "value": "ADEQUATE",
+        "status": "OBSERVED"
+      },
+      "progression": {
+        "type": null,
+        "start": 0,
+        "end": 6,
+        "evidenceBasis": "HUMAN_REVIEWED_CLIP",
+        "reference": "synthetic:clip:0-6",
+        "observed": "Visible synthetic experience",
+        "inferred": "",
+        "uncertainty": "Synthetic only",
+        "confidence": "HIGH",
+        "durationSeconds": null,
+        "recurrence": null,
+        "affectedEntity": null,
+        "eventId": null,
+        "requirementId": null,
+        "rawSeverity": null,
+        "state": null,
+        "requiresMotion": null,
+        "impact": null,
+        "value": "DEVELOPING",
+        "status": "OBSERVED"
+      },
+      "opening": {
+        "type": null,
+        "start": null,
+        "end": null,
+        "evidenceBasis": null,
+        "reference": null,
+        "observed": null,
+        "inferred": null,
+        "uncertainty": null,
+        "confidence": null,
+        "durationSeconds": null,
+        "recurrence": null,
+        "affectedEntity": null,
+        "eventId": null,
+        "requirementId": null,
+        "rawSeverity": null,
+        "state": null,
+        "requiresMotion": null,
+        "impact": null,
+        "value": "UNKNOWN",
+        "status": "UNKNOWN"
+      },
+      "ending": {
+        "type": null,
+        "start": null,
+        "end": null,
+        "evidenceBasis": null,
+        "reference": null,
+        "observed": null,
+        "inferred": null,
+        "uncertainty": null,
+        "confidence": null,
+        "durationSeconds": null,
+        "recurrence": null,
+        "affectedEntity": null,
+        "eventId": null,
+        "requirementId": null,
+        "rawSeverity": null,
+        "state": null,
+        "requiresMotion": null,
+        "impact": null,
+        "value": "UNKNOWN",
+        "status": "UNKNOWN"
+      },
+      "openingFrame": {
+        "type": null,
+        "start": null,
+        "end": null,
+        "evidenceBasis": null,
+        "reference": null,
+        "observed": null,
+        "inferred": null,
+        "uncertainty": null,
+        "confidence": null,
+        "durationSeconds": null,
+        "recurrence": null,
+        "affectedEntity": null,
+        "eventId": null,
+        "requirementId": null,
+        "rawSeverity": null,
+        "state": null,
+        "requiresMotion": null,
+        "impact": null,
+        "value": "UNKNOWN",
+        "status": "UNKNOWN"
+      }
+    },
+    "repairEconomics": {
+      "order": [
+        "KEEP_USABLE",
+        "EDIT_TRIM",
+        "INTERVAL_PROMPT_REPAIR",
+        "SUPPORTED_NECESSARY_SEGMENT",
+        "JUSTIFIED_FULL_RERENDER"
+      ],
+      "fullRerenderJustified": false,
+      "automaticExecution": false,
+      "essentialBenefit": null,
+      "defectAddressed": null,
+      "whySmallerInsufficient": null,
+      "remainingUncertainty": "No verified repair execution outcome",
+      "successProbability": null
+    },
+    "smallestIntervention": "Gerekli temel olayı koruyan en küçük kurgu/segment müdahalesini değerlendir",
+    "stage": "ACTUAL_RENDER_QA",
+    "decisionPolicyVersion": "impact-review-v1",
+    "bindingHash": "bound",
+    "assetHash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "events": [
+      {
+        "eventId": "main",
+        "status": "ABSENT",
+        "intentLevel": "ESSENTIAL",
+        "start": 0,
+        "end": 3,
+        "evidenceBasis": "HUMAN_REVIEWED_CLIP",
+        "reference": "synthetic:clip:0-6",
+        "observed": "Visible synthetic experience",
+        "inferred": "",
+        "uncertainty": "Synthetic only",
+        "observedStart": 0,
+        "observedEnd": 6
+      },
+      {
+        "eventId": "turn",
+        "status": "ABSENT",
+        "intentLevel": "POLISH",
+        "start": 3,
+        "end": 6,
+        "evidenceBasis": "HUMAN_REVIEWED_CLIP",
+        "reference": "synthetic:clip:0-6",
+        "observed": "Visible synthetic experience",
+        "inferred": "",
+        "uncertainty": "Synthetic only",
+        "observedStart": 0,
+        "observedEnd": 6
+      }
+    ],
+    "family8": {
+      "creativeQuality": {
+        "creativeScore": null,
+        "creativeGrade": null,
+        "familyScores": {}
+      },
+      "evidenceCompleteness": {
+        "status": "COMPLETE",
+        "evaluationCoverage": null,
+        "aggregation": {}
+      },
+      "renderAuthorization": {
+        "status": "BLOCKED_CREATIVE_FAILURE",
+        "reasons": [
+          {
+            "code": "CREATIVE_BLOCKER",
+            "source": "POST_FAMILY_RENDER_IMPACT",
+            "message": "CORE_EVENT_LOST",
+            "references": [
+              "synthetic:clip:0-6"
+            ]
+          }
+        ]
+      },
+      "legacy": {
+        "readiness": null
+      }
+    },
+    "fidelityEvidence": {
+      "plannedDuration": 6,
+      "actualDuration": 6,
+      "timingAlignment": "ALIGNED",
+      "reason": "Duration mismatch proves timing deviation, not loss of core event",
+      "eventCoverage": [
+        {
+          "eventId": "main",
+          "status": "ABSENT",
+          "intentLevel": "ESSENTIAL",
+          "start": 0,
+          "end": 3,
+          "evidenceBasis": "HUMAN_REVIEWED_CLIP",
+          "reference": "synthetic:clip:0-6",
+          "observed": "Visible synthetic experience",
+          "inferred": "",
+          "uncertainty": "Synthetic only",
+          "observedStart": 0,
+          "observedEnd": 6
+        },
+        {
+          "eventId": "turn",
+          "status": "ABSENT",
+          "intentLevel": "POLISH",
+          "start": 3,
+          "end": 6,
+          "evidenceBasis": "HUMAN_REVIEWED_CLIP",
+          "reference": "synthetic:clip:0-6",
+          "observed": "Visible synthetic experience",
+          "inferred": "",
+          "uncertainty": "Synthetic only",
+          "observedStart": 0,
+          "observedEnd": 6
+        }
+      ]
+    },
+    "authorizationScope": "EDITORIAL_ASSESSMENT_ONLY",
+    "publicationAuthorized": false,
+    "automaticRerender": false,
+    "renderAuthorizationUnchanged": true,
+    "actualFirstFrame": {
+      "type": null,
+      "start": null,
+      "end": null,
+      "evidenceBasis": null,
+      "reference": null,
+      "observed": null,
+      "inferred": null,
+      "uncertainty": null,
+      "confidence": null,
+      "durationSeconds": null,
+      "recurrence": null,
+      "affectedEntity": null,
+      "eventId": null,
+      "requirementId": null,
+      "rawSeverity": null,
+      "state": null,
+      "requiresMotion": null,
+      "impact": null,
+      "value": "UNKNOWN",
+      "status": "UNKNOWN",
+      "canonicalAuthorizationGate": false
+    },
+    "actualOpeningVideo": {
+      "status": "UNKNOWN",
+      "evidence": {
+        "type": null,
+        "start": null,
+        "end": null,
+        "evidenceBasis": null,
+        "reference": null,
+        "observed": null,
+        "inferred": null,
+        "uncertainty": null,
+        "confidence": null,
+        "durationSeconds": null,
+        "recurrence": null,
+        "affectedEntity": null,
+        "eventId": null,
+        "requirementId": null,
+        "rawSeverity": null,
+        "state": null,
+        "requiresMotion": null,
+        "impact": null,
+        "value": "UNKNOWN",
+        "status": "UNKNOWN"
+      }
+    },
+    "audioReview": {
+      "mode": "SOUND_OFF",
+      "status": "UNKNOWN",
+      "reason": "No verified actual audio/transcript evidence supplied"
+    },
+    "technicalAnalysis": null,
+    "reviewDimensions": {
+      "promptPlanQuality": {
+        "status": "UNKNOWN"
+      },
+      "generatorExecutionRisk": {
+        "status": "UNKNOWN"
+      },
+      "actualRenderQuality": {
+        "status": "FAIL",
+        "planFidelity": "PARTIAL",
+        "viewerFacingUsability": "UNUSABLE",
+        "editorialRecommendation": "UNUSABLE_CONFIRMED_BLOCKER",
+        "findings": [
+          {
+            "type": "CONTACT",
+            "start": 0,
+            "end": 6,
+            "evidenceBasis": "HUMAN_REVIEWED_CLIP",
+            "reference": "synthetic:clip:0-6",
+            "observed": "Visible synthetic experience",
+            "inferred": "",
+            "uncertainty": "Synthetic only",
+            "confidence": "HIGH",
+            "durationSeconds": 0.2,
+            "recurrence": 1,
+            "affectedEntity": "hand",
+            "eventId": "main",
+            "requirementId": null,
+            "rawSeverity": "BLOCKING",
+            "state": null,
+            "requiresMotion": null,
+            "impact": "LOCAL_TOLERABLE",
+            "value": null,
+            "rawResult": {
+              "type": "CONTACT",
+              "start": 0,
+              "end": 6,
+              "evidenceBasis": "HUMAN_REVIEWED_CLIP",
+              "reference": "synthetic:clip:0-6",
+              "observed": "Visible synthetic experience",
+              "inferred": "",
+              "uncertainty": "Synthetic only",
+              "confidence": "HIGH",
+              "durationSeconds": 0.2,
+              "recurrence": 1,
+              "affectedEntity": "hand",
+              "eventId": "main",
+              "requirementId": null,
+              "rawSeverity": "BLOCKING",
+              "state": null,
+              "requiresMotion": null,
+              "impact": "LOCAL_TOLERABLE",
+              "value": null
+            },
+            "applicability": "APPLICABLE",
+            "severity": "WARNING",
+            "viewerImpact": "LOCAL_TOLERABLE",
+            "essentialRequirementAffected": false,
+            "reason": "Visible synthetic experience",
+            "repairLevel": "KEEP_OR_EDIT",
+            "action": "Temel olayı koruyarak önce mevcut segment/kurgu olanağını kontrol et; otomatik rerender yok."
+          },
+          {
+            "type": "PLAN_DEVIATION",
+            "start": 0,
+            "end": 3,
+            "evidenceBasis": "HUMAN_REVIEWED_CLIP",
+            "reference": "synthetic:clip:0-6",
+            "observed": "Visible synthetic experience",
+            "inferred": "",
+            "uncertainty": "Synthetic only",
+            "confidence": "HIGH",
+            "durationSeconds": null,
+            "recurrence": null,
+            "affectedEntity": null,
+            "eventId": "main",
+            "requirementId": null,
+            "rawSeverity": null,
+            "state": "ABSENT",
+            "requiresMotion": null,
+            "impact": null,
+            "value": null,
+            "rawResult": {
+              "type": "PLAN_DEVIATION",
+              "start": 0,
+              "end": 3,
+              "evidenceBasis": "HUMAN_REVIEWED_CLIP",
+              "reference": "synthetic:clip:0-6",
+              "observed": "Visible synthetic experience",
+              "inferred": "",
+              "uncertainty": "Synthetic only",
+              "confidence": "HIGH",
+              "durationSeconds": null,
+              "recurrence": null,
+              "affectedEntity": null,
+              "eventId": "main",
+              "requirementId": null,
+              "rawSeverity": null,
+              "state": "ABSENT",
+              "requiresMotion": null,
+              "impact": null,
+              "value": null
+            },
+            "applicability": "APPLICABLE",
+            "severity": "BLOCKING",
+            "viewerImpact": "CORE_EVENT_LOST",
+            "essentialRequirementAffected": true,
+            "reason": "Visible synthetic experience",
+            "repairLevel": "MATERIAL_REPAIR_REVIEW",
+            "action": "Temel olayı koruyarak önce mevcut segment/kurgu olanağını kontrol et; otomatik rerender yok."
+          },
+          {
+            "type": "PLAN_DEVIATION",
+            "start": 3,
+            "end": 6,
+            "evidenceBasis": "HUMAN_REVIEWED_CLIP",
+            "reference": "synthetic:clip:0-6",
+            "observed": "Visible synthetic experience",
+            "inferred": "",
+            "uncertainty": "Synthetic only",
+            "confidence": "HIGH",
+            "durationSeconds": null,
+            "recurrence": null,
+            "affectedEntity": null,
+            "eventId": "turn",
+            "requirementId": null,
+            "rawSeverity": null,
+            "state": "ABSENT",
+            "requiresMotion": null,
+            "impact": null,
+            "value": null,
+            "rawResult": {
+              "type": "PLAN_DEVIATION",
+              "start": 3,
+              "end": 6,
+              "evidenceBasis": "HUMAN_REVIEWED_CLIP",
+              "reference": "synthetic:clip:0-6",
+              "observed": "Visible synthetic experience",
+              "inferred": "",
+              "uncertainty": "Synthetic only",
+              "confidence": "HIGH",
+              "durationSeconds": null,
+              "recurrence": null,
+              "affectedEntity": null,
+              "eventId": "turn",
+              "requirementId": null,
+              "rawSeverity": null,
+              "state": "ABSENT",
+              "requiresMotion": null,
+              "impact": null,
+              "value": null
+            },
+            "applicability": "APPLICABLE",
+            "severity": "WARNING",
+            "viewerImpact": "LOCAL_TOLERABLE",
+            "essentialRequirementAffected": false,
+            "reason": "Visible synthetic experience",
+            "repairLevel": "KEEP_OR_EDIT",
+            "action": "Temel olayı koruyarak önce mevcut segment/kurgu olanağını kontrol et; otomatik rerender yok."
+          }
+        ],
+        "experience": {
+          "coreEventReadability": {
+            "type": null,
+            "start": 0,
+            "end": 6,
+            "evidenceBasis": "HUMAN_REVIEWED_CLIP",
+            "reference": "synthetic:clip:0-6",
+            "observed": "Visible synthetic experience",
+            "inferred": "",
+            "uncertainty": "Synthetic only",
+            "confidence": "HIGH",
+            "durationSeconds": null,
+            "recurrence": null,
+            "affectedEntity": null,
+            "eventId": null,
+            "requirementId": null,
+            "rawSeverity": null,
+            "state": null,
+            "requiresMotion": null,
+            "impact": null,
+            "value": "ADEQUATE",
+            "status": "OBSERVED"
+          },
+          "identity": {
+            "type": null,
+            "start": 0,
+            "end": 6,
+            "evidenceBasis": "HUMAN_REVIEWED_CLIP",
+            "reference": "synthetic:clip:0-6",
+            "observed": "Visible synthetic experience",
+            "inferred": "",
+            "uncertainty": "Synthetic only",
+            "confidence": "HIGH",
+            "durationSeconds": null,
+            "recurrence": null,
+            "affectedEntity": null,
+            "eventId": null,
+            "requirementId": null,
+            "rawSeverity": null,
+            "state": null,
+            "requiresMotion": null,
+            "impact": null,
+            "value": "RECOGNIZABLE",
+            "status": "OBSERVED"
+          },
+          "safety": {
+            "type": null,
+            "start": 0,
+            "end": 6,
+            "evidenceBasis": "HUMAN_REVIEWED_CLIP",
+            "reference": "synthetic:clip:0-6",
+            "observed": "Visible synthetic experience",
+            "inferred": "",
+            "uncertainty": "Synthetic only",
+            "confidence": "HIGH",
+            "durationSeconds": null,
+            "recurrence": null,
+            "affectedEntity": null,
+            "eventId": null,
+            "requirementId": null,
+            "rawSeverity": null,
+            "state": null,
+            "requiresMotion": null,
+            "impact": null,
+            "value": "APPROPRIATE",
+            "status": "OBSERVED"
+          },
+          "coherence": {
+            "type": null,
+            "start": 0,
+            "end": 6,
+            "evidenceBasis": "HUMAN_REVIEWED_CLIP",
+            "reference": "synthetic:clip:0-6",
+            "observed": "Visible synthetic experience",
+            "inferred": "",
+            "uncertainty": "Synthetic only",
+            "confidence": "HIGH",
+            "durationSeconds": null,
+            "recurrence": null,
+            "affectedEntity": null,
+            "eventId": null,
+            "requirementId": null,
+            "rawSeverity": null,
+            "state": null,
+            "requiresMotion": null,
+            "impact": null,
+            "value": "ADEQUATE",
+            "status": "OBSERVED"
+          },
+          "progression": {
+            "type": null,
+            "start": 0,
+            "end": 6,
+            "evidenceBasis": "HUMAN_REVIEWED_CLIP",
+            "reference": "synthetic:clip:0-6",
+            "observed": "Visible synthetic experience",
+            "inferred": "",
+            "uncertainty": "Synthetic only",
+            "confidence": "HIGH",
+            "durationSeconds": null,
+            "recurrence": null,
+            "affectedEntity": null,
+            "eventId": null,
+            "requirementId": null,
+            "rawSeverity": null,
+            "state": null,
+            "requiresMotion": null,
+            "impact": null,
+            "value": "DEVELOPING",
+            "status": "OBSERVED"
+          },
+          "opening": {
+            "type": null,
+            "start": null,
+            "end": null,
+            "evidenceBasis": null,
+            "reference": null,
+            "observed": null,
+            "inferred": null,
+            "uncertainty": null,
+            "confidence": null,
+            "durationSeconds": null,
+            "recurrence": null,
+            "affectedEntity": null,
+            "eventId": null,
+            "requirementId": null,
+            "rawSeverity": null,
+            "state": null,
+            "requiresMotion": null,
+            "impact": null,
+            "value": "UNKNOWN",
+            "status": "UNKNOWN"
+          },
+          "ending": {
+            "type": null,
+            "start": null,
+            "end": null,
+            "evidenceBasis": null,
+            "reference": null,
+            "observed": null,
+            "inferred": null,
+            "uncertainty": null,
+            "confidence": null,
+            "durationSeconds": null,
+            "recurrence": null,
+            "affectedEntity": null,
+            "eventId": null,
+            "requirementId": null,
+            "rawSeverity": null,
+            "state": null,
+            "requiresMotion": null,
+            "impact": null,
+            "value": "UNKNOWN",
+            "status": "UNKNOWN"
+          },
+          "openingFrame": {
+            "type": null,
+            "start": null,
+            "end": null,
+            "evidenceBasis": null,
+            "reference": null,
+            "observed": null,
+            "inferred": null,
+            "uncertainty": null,
+            "confidence": null,
+            "durationSeconds": null,
+            "recurrence": null,
+            "affectedEntity": null,
+            "eventId": null,
+            "requirementId": null,
+            "rawSeverity": null,
+            "state": null,
+            "requiresMotion": null,
+            "impact": null,
+            "value": "UNKNOWN",
+            "status": "UNKNOWN"
+          }
+        },
+        "repairEconomics": {
+          "order": [
+            "KEEP_USABLE",
+            "EDIT_TRIM",
+            "INTERVAL_PROMPT_REPAIR",
+            "SUPPORTED_NECESSARY_SEGMENT",
+            "JUSTIFIED_FULL_RERENDER"
+          ],
+          "fullRerenderJustified": false,
+          "automaticExecution": false,
+          "essentialBenefit": null,
+          "defectAddressed": null,
+          "whySmallerInsufficient": null,
+          "remainingUncertainty": "No verified repair execution outcome",
+          "successProbability": null
+        },
+        "smallestIntervention": "Gerekli temel olayı koruyan en küçük kurgu/segment müdahalesini değerlendir"
+      },
+      "audienceDistributionOutcome": {
+        "status": "NOT_JOINED"
+      }
+    },
+    "operatorReport": [
+      {
+        "label": "KARAR",
+        "text": "Doğrulanmış temel engel nedeniyle kullanılamaz"
+      },
+      {
+        "label": "İZLEME MEKANİZMASI",
+        "text": "İzleme gerekçesini değerlendirmek için kaynak kanıtı yetersiz"
+      },
+      {
+        "label": "AÇILIŞ",
+        "text": " Gerçek açılış hareketi için kanıt yetersiz. Planlanan vaat: UNKNOWN"
+      },
+      {
+        "label": "İLERLEME",
+        "text": "Visible synthetic experience"
+      },
+      {
+        "label": "FİNAL",
+        "text": "Planlanan final: UNKNOWN"
+      },
+      {
+        "label": "TEMEL OLAY/KİMLİK/ANLAŞILABİLİRLİK",
+        "text": "Doğrulanmış temel olay/kimlik/anlaşılabilirlik engeli"
+      },
+      {
+        "label": "TEKNİK KUSURLAR",
+        "text": "0–6 s: Visible synthetic experience; 0–3 s: Visible synthetic experience; 3–6 s: Visible synthetic experience"
+      },
+      {
+        "label": "KUSURUN ETKİSİ",
+        "text": "Uyarı: Visible synthetic experience; Temel engel: Visible synthetic experience; Uyarı: Visible synthetic experience"
+      },
+      {
+        "label": "EN KÜÇÜK MÜDAHALE",
+        "text": "Gerekli temel olayı koruyan en küçük kurgu/segment müdahalesini değerlendir"
+      },
+      {
+        "label": "PERFORMANS",
+        "text": "Kör inceleme tamamlanana kadar sonuç verisi ayrıdır; izlenme garantisi yok"
+      }
+    ],
+    "limitations": [
+      "Seyrek kareler sürekli hareket, hassas temas veya kusursuz loop kanıtı değildir.",
+      "TEST_CANDIDATE yayın veya üretim izni değildir; kanonik operasyon kontrolleri ayrıca gereklidir."
+    ]
+  }
+}

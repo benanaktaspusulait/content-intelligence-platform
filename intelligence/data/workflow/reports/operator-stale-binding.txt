@@ -1,0 +1,187 @@
+Üretim incelemesi
+İş akışı profili
+Family 1–10 · tarihsel doğrulama
+Operasyonel yaratıcı iş akışı v1
+
+Family 1–10 sözleşmeleri korunur. Yeni profil, yaratıcı amacı ve seçilen jeneratörün yürütmesini ayrı inceler.
+
+Yetkili karakter referansları dosyalardan bağlanır; eksik referans yerine görünüm uydurulmaz.
+
+İçerik profili
+Kaynak temelli öneri
+Absürt fizik
+Merak / macera
+Eğitici
+Karma
+Belirsiz
+Açılış stratejisi
+Öneri
+Anında imkânsızlık
+Doğrudan sorun
+Merak / keşif
+İstenen süre (s)
+Jeneratör
+Kullanıcı tercihine göre öner
+Seedance 2.0 Mini
+Seedance 2.0
+Seedance 2.5
+İlk kare · mevcut medya yolu
+İlk kare · sağlayıcı URL
+2.0 kalite gerekçesi
+Görünüm oranı
+9:16
+16:9
+1:1
+İzleyicinin temel sorusu
+Korunacak yaratıcı niyet · kaynakta geçen ifadeler
+Karakter ve referans dosyaları
+Post-family incelemesini çalıştır
+
+Prompt, sürüm, referans veya ayar değişti. Bu inceleme eski; yeniden çalıştırın.
+
+İçerik: ABSURD_PHYSICS · SOURCE_PROGRESSION_HYPOTHESIS
+
+Açılış: INSTANT_IMPOSSIBLE · Metin planı HYPOTHESIS
+
+Önerilen / seçilen jeneratör: SEEDANCE_2_0_MINI / SEEDANCE_2_0_MINI
+
+İstenen / desteklenen render / edit süresi: 15 / 15 / 15 s
+
+Sağlayıcı sözleşmesi: SUPPORTED · byte-plus-seedance-2-mini
+
+Creative Quality: UNKNOWN · Evidence: INCOMPLETE
+
+Render Authorization: BLOCKED_PENDING_EVIDENCE
+
+Yetkili karakter/nesne referansı eksik veya doğrulanmadı.
+
+Jeneratör yürütme incelemesi tamamlanmadı veya küçük düzeltme gerekiyor.
+
+Son video kabulü için mevcut doğrulanmış görsel kapılar ve bağımsız revalidation gereklidir.
+
+General Producibility
+
+Canonical status: RISKY
+
+Duration: 15 seconds · Source: metadata.duration
+
+STICKY — the red ball sticks to surfaces instead of bouncing; Luca catches it
+
+The ball stretches toward him like soft chewing gum while its center remains stuck to the wall; This time the BALL stays stuck and the WOODEN WALL itself flexes slightly toward Luca like soft rubber
+
+Some required structured production evidence is unavailable.
+
+CONTACT PHYSICS COMPLEXITY · HIGH
+
+STICKY — the red ball sticks to surfaces instead of bouncing; Luca catches it
+
+Evidence: contactPhysicsRequirement, content:2/prompt:2#chars=1469-1484, content:2/prompt:2#chars=1584-1637, content:2/prompt:2#chars=167-227, content:2/prompt:2#chars=1738-1804, content:2/prompt:2#chars=1894-1958
+TRANSFORMATION COMPLEXITY · MODERATE
+
+The ball stretches toward him like soft chewing gum while its center remains stuck to the wall; This time the BALL stays stuck and the WOODEN WALL itself flexes slightly toward Luca like soft rubber
+
+Evidence: transformationRequirement, content:2/prompt:2#chars=1196-1298, content:2/prompt:2#chars=953-1047
+All production dimensions and evidence
+Dikkat → ilerleme → yeniden izleme hipotezi
+
+— HARD HOOK FIRST FRAME: Luca has JUST thrown the red ball at the wooden wall. Instead of bouncing back, the ball is already STUCK flat to the wall. Luca is frozen with both hands half-raised, eyes wide. The impossible sticky ball must dominate the opening. SFX: THWIP — STICK.
+
+Son: — FINAL TWIST Luca gives the ball one tiny playful toss upward. It drops directly onto his CHEEK and sticks there with a soft PLUP. Luca goes cross-eyed trying to look at it. PLUP! — HARD CUT. SAFETY The ball is soft. It sticks to Luca’s cheek only, never covering his nose or mouth. DIALOGUE None. NO narrator. NO text overlay. NO logo. NO watermark. · UNKNOWN
+
+İlk kare / gerçek açılış / kapak kanıtı: UNKNOWN / UNKNOWN / NOT_EVIDENCE_OF_OPENING
+
+Jeneratör yürütme incelemesi · REWRITE
+SIMULTANEOUS_ACTION_COMPETITION · GENERAL_HEURISTIC · LOW
+The ball stretches toward him like soft chewing gum while its center remains stuck to the wall
+
+Hareketler aynı anda yarışabilir. Öncelikli hareketi belirt; uygunsa diğerini sonra başlat.
+
+Yerel metin eleştirmeni görselleri/klibi incelemiş sayılmaz. DeepSeek ikinci görüşü sunucuda yapılandırılabilir; ücretli çağrı varsayılan olarak kapalıdır.
+
+İkinci görüş sağlayıcısı
+DeepSeek · metin portu
+OpenAI
+Claude
+Gemini
+Yapılandırılmış eleştirmen modeli
+İkinci görüşü çalıştırBağlı incelemeyle mevcut render kuyruğunu aç
+Kanıt ve belirsizlik
+En küçük düzeltme
+Değiştirilecek kaynak ifadesi
+Yeni ifade
+Tek yama + son prompt doğrulaması
+Son üretim prompt’u
+KopyalaEditöre aktar ve sürüm kaydetManuel render paketi indir
+
+Manuel paket render yetkisi veya kredi harcama onayı değildir. Son video mevcut kanonik kabul akışından geçer.
+
+Gerçek render QA
+Dönen videonun yerel medya yolu
+
+Gerçek klibi açıp her planlanan zaman aralığını inceleyin. Seyrek kareler hareket/temas/loop kanıtı değildir.
+
+0–0.8 s
+
+— HARD HOOK FIRST FRAME: Luca has JUST thrown the red ball at the wooden wall. Instead of bouncing back, the ball is already STUCK flat to the wall. Luca is frozen with both hands half-raised, eyes wide. The impossible sticky ball must dominate the opening. SFX: THWIP — STICK.
+
+Kanıt yetersiz
+Gözlendi
+Eksik / çöktü
+0.8–3 s
+
+— REACTION Luca walks straight to the ball and pulls it with one hand. It will not move. He uses both hands.
+
+Kanıt yetersiz
+Gözlendi
+Eksik / çöktü
+3–6 s
+
+— FIRST ATTEMPT Luca pulls harder. The ball stretches toward him like soft chewing gum while its center remains stuck to the wall. He lets go. SNAP! The ball instantly returns to the wall.
+
+Kanıt yetersiz
+Gözlendi
+Eksik / çöktü
+6–9 s
+
+— ESCALATION Luca grabs the ball again with both hands and leans backward. This time the BALL stays stuck and the WOODEN WALL itself flexes slightly toward Luca like soft rubber. Luca’s eyes widen. He immediately releases it. BOING! The wall returns safely to normal.
+
+Kanıt yetersiz
+Gözlendi
+Eksik / çöktü
+9–12 s
+
+— SECOND ATTEMPT The ball finally drops from the wall by itself. Luca catches it. He squeezes it gently. It behaves like a normal ball. He smiles.
+
+Kanıt yetersiz
+Gözlendi
+Eksik / çöktü
+12–14 s
+
+— FAKE RESOLUTION Luca carefully tosses the ball once between his hands. Normal. He relaxes.
+
+Kanıt yetersiz
+Gözlendi
+Eksik / çöktü
+14–15 s
+
+— FINAL TWIST Luca gives the ball one tiny playful toss upward. It drops directly onto his CHEEK and sticks there with a soft PLUP. Luca goes cross-eyed trying to look at it. PLUP! — HARD CUT. SAFETY The ball is soft. It sticks to Luca’s cheek only, never covering his nose or mouth. DIALOGUE None. NO narrator. NO text overlay. NO logo. NO watermark.
+
+Kanıt yetersiz
+Gözlendi
+Eksik / çöktü
+Bu aralıkları gerçek klipte inceleyip gözlemleri onayladım
+Deterministik analiz + plan karşılaştırması
+Yayın ve ölçüm ilişkisi
+
+Prompt → referanslar → render ayarları → gerçek video → edit varyantı → yayın ID → immutable ölçüm ayrı tutulur.
+
+Platform
+INSTAGRAM
+FACEBOOK
+YOUTUBE
+Yayın ID (metin)
+Edit varyant ID (varsa)
+Eşleştirme kanıtı
+Manuel ilişkiyi kaydetCSV/XLSX dosyasını mevcut import ekranında incele ve eşleştir
+Kaynaklı ölçüm kaydı ve karşılaştırma
+İnsan incelemesine açık ders / deney kaydı

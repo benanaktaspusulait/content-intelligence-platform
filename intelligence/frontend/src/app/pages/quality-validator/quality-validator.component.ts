@@ -1,5 +1,6 @@
 import { GeneralProducibility } from './family10-representation';
 import { GeneralProducibilityComponent } from './general-producibility.component';
+import { PostFamilyWorkflowComponent } from './post-family-workflow.component';
 import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -199,7 +200,7 @@ interface BeatEvidence { label: string; role: string; isAttempt: boolean; verb: 
 @Component({
   selector: 'app-quality-validator',
   standalone: true,
-  imports: [CommonModule, FormsModule, TimelineChartComponent, RouterLink, GeneralProducibilityComponent],
+  imports: [CommonModule, FormsModule, TimelineChartComponent, RouterLink, GeneralProducibilityComponent, PostFamilyWorkflowComponent],
   templateUrl: './quality-validator.component.html',
   styleUrls: ['./quality-validator.component.scss']
 })
@@ -868,11 +869,17 @@ Intensity: 4`;
       title: this.contentTitle.trim(), type: this.contentType, description: 'Pompom Hills local production content',
     }).subscribe({
       next: content => this.http.post<{ id: number }>(`/api/v1/intelligence/contents/${content.id}/prompt-versions`, { rawText: this.prompt, parsedIr: '{}' }).subscribe({
-        next: promptVersion => { this.contentId = String(content.id); this.promptVersionId = String(promptVersion.id); this.validationRecordId = null; this.loading = false; },
+        next: promptVersion => { this.contentId = String(content.id); this.promptVersionId = String(promptVersion.id); this.validationRecordId = null; this.loading = false; this.changeDetector.markForCheck(); },
         error: response => { this.error = response.error?.detail || response.error?.message || 'Prompt version could not be created'; this.loading = false; },
       }),
       error: response => { this.error = response.error?.detail || response.error?.message || 'Content could not be created'; this.loading = false; },
     });
+  }
+
+  saveWorkflowFinalPrompt(finalPrompt: string): void {
+    this.setPromptText(finalPrompt);
+    if (this.contentId) this.createRevisionPromptVersion();
+    else this.createContentAndPrompt();
   }
 
   createRevisionPromptVersion(): void {
@@ -882,7 +889,7 @@ Intensity: 4`;
     }
     this.loading = true; this.error = null; this.report = null; this.validationRecordId = null;
     this.http.post<{ id: number }>(`/api/v1/intelligence/contents/${Number(this.contentId)}/prompt-versions`, { rawText: this.prompt, parsedIr: '{}' }).subscribe({
-      next: version => { this.promptVersionId = String(version.id); this.loading = false; },
+      next: version => { this.promptVersionId = String(version.id); this.loading = false; this.changeDetector.markForCheck(); },
       error: response => { this.error = response.error?.detail || response.error?.message || 'Prompt revision could not be saved'; this.loading = false; },
     });
   }

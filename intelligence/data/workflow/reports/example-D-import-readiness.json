@@ -1,0 +1,56 @@
+{
+  "sourcePath": "/Users/benanaktas/project/video/content-intelligence-platform/lab/performance_imports/known_observations.csv",
+  "sourceHash": "7760e207673915d8e8670e05cd09d55349aa016264950366a71a5eac8f7b3179",
+  "rows": [
+    {
+      "video_id": "4b5d0cfc9b928821",
+      "platform": "Facebook",
+      "published_at": "",
+      "views": "60000",
+      "reach": "",
+      "average_watch_seconds": "",
+      "three_second_views": "",
+      "fifteen_second_views": "",
+      "likes": "",
+      "comments": "",
+      "shares": "",
+      "saves": "",
+      "follows": "",
+      "country_distribution_json": "",
+      "source_note": "What’s Wrong? uploaded/tracker.md: approximately 60K organic Facebook views, no advertising",
+      "is_approximate": "1"
+    }
+  ],
+  "status": "UNMATCHED",
+  "reason": "Approximate contextual observations lack verified platform publication IDs and fixed observation windows; no video or cohort match inferred.",
+  "syntheticTechnicalCoverage": "test_post_family_feedback.py preserves 20-digit IDs; fixtures are not real performance evidence.",
+  "actualImportPreview": {
+    "batchId": "74e9652a-3645-4a88-ac6e-f7f9a40a757d",
+    "filename": "known_observations.csv",
+    "sha256": "7760e207673915d8e8670e05cd09d55349aa016264950366a71a5eac8f7b3179",
+    "columns": [
+      "video_id",
+      "platform",
+      "published_at",
+      "views",
+      "reach",
+      "average_watch_seconds",
+      "three_second_views",
+      "fifteen_second_views",
+      "likes",
+      "comments",
+      "shares",
+      "saves",
+      "follows",
+      "country_distribution_json",
+      "source_note",
+      "is_approximate"
+    ],
+    "rowCount": 1,
+    "matchedRows": 0,
+    "unresolvedRows": 1,
+    "duplicate": false,
+    "status": "PREVIEWED"
+  },
+  "commitPerformed": false
+}

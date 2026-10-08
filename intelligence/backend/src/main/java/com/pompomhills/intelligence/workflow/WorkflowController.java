@@ -1,0 +1,90 @@
+package com.pompomhills.intelligence.workflow;
+
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/api/v1/intelligence/workflow")
+public class WorkflowController {
+  private final WorkflowService service;
+
+  @org.springframework.beans.factory.annotation.Autowired
+  private com.pompomhills.intelligence.quality.QualityReportPdfService pdf;
+
+  public WorkflowController(WorkflowService service) {
+    this.service = service;
+  }
+
+  @PostMapping("/review")
+  public Map<String, Object> review(@RequestBody WorkflowService.ReviewRequest request) {
+    return service.runReview(request, true);
+  }
+
+  @GetMapping("/records/{id}")
+  public Map<String, Object> record(@PathVariable UUID id) {
+    return service.get(id);
+  }
+
+  @GetMapping("/records")
+  public List<Map<String, Object>> records(@RequestParam(defaultValue = "REVIEW") String kind) {
+    return service.list(kind);
+  }
+
+  @GetMapping(value = "/records/{id}/pdf", produces = "application/pdf")
+  public org.springframework.http.ResponseEntity<byte[]> report(@PathVariable UUID id) {
+    return org.springframework.http.ResponseEntity.ok()
+        .header("Content-Disposition", "inline; filename=pompom-impact-review.pdf")
+        .body(pdf.renderWorkflow(service.get(id)));
+  }
+
+  @PostMapping("/records/{id}/repair")
+  public Map<String, Object> repair(@PathVariable UUID id, @RequestBody Repair request) {
+    return service.repair(id, request.patches());
+  }
+
+  @PostMapping("/records/{id}/qa")
+  public Map<String, Object> qa(@PathVariable UUID id, @RequestBody Map<String, Object> request) {
+    return service.actualQa(id, request);
+  }
+
+  @PostMapping("/feedback/{kind}")
+  public Map<String, Object> feedback(
+      @PathVariable String kind, @RequestBody Map<String, Object> request) {
+    return service.feedback(kind, request);
+  }
+
+  @PostMapping("/learning/{kind}")
+  public Map<String, Object> learning(
+      @PathVariable String kind, @RequestBody Map<String, Object> request) {
+    return service.lesson(kind, request);
+  }
+
+  @PostMapping("/records/{id}/admission")
+  public Map<String, Object> admission(
+      @PathVariable UUID id, @RequestBody Map<String, Object> request) {
+    return service.admission(id, request);
+  }
+
+  @PostMapping("/records/{id}/critic")
+  public Map<String, Object> critic(
+      @PathVariable UUID id, @RequestBody Map<String, Object> request) {
+    return service.secondOpinion(id, request);
+  }
+
+  @PostMapping("/records/{id}/learning-review")
+  public Map<String, Object> learningReview(
+      @PathVariable UUID id, @RequestBody Map<String, Object> request) {
+    return service.reviewLearning(id, request);
+  }
+
+  @ExceptionHandler({IllegalArgumentException.class, IllegalStateException.class})
+  public org.springframework.http.ResponseEntity<Map<String, Object>> invalid(
+      RuntimeException error) {
+    return org.springframework.http.ResponseEntity.status(409)
+        .body(Map.of("status", "UNKNOWN", "detail", error.getMessage()));
+  }
+
+  public record Repair(List<Map<String, Object>> patches) {}
+}

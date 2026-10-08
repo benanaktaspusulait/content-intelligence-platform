@@ -1,0 +1,865 @@
+{
+  "syntheticOnly": true,
+  "render": {
+    "stage": "ACTUAL_RENDER_QA",
+    "status": "REPAIR",
+    "bindingHash": "synthetic",
+    "assetHash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "events": [
+      {
+        "eventId": "turn",
+        "status": "ABSENT",
+        "start": 0,
+        "end": 6,
+        "evidenceBasis": "HUMAN_REVIEWED_CLIP",
+        "reference": "synthetic:0-6"
+      }
+    ],
+    "actualOpeningVideo": {
+      "status": "ABSENT",
+      "evidence": {
+        "eventId": "turn",
+        "status": "ABSENT",
+        "start": 0,
+        "end": 6,
+        "evidenceBasis": "HUMAN_REVIEWED_CLIP",
+        "reference": "synthetic:0-6"
+      }
+    },
+    "findings": [
+      {
+        "eventId": "turn",
+        "start": 0,
+        "end": 6,
+        "reason": "Planlanan olay bu aral\u0131kta g\u00f6zlenmedi.",
+        "repairLevel": "EDIT_FIRST",
+        "action": "Uygun mevcut segment/trim kontrol\u00fc yap\u0131n; otomatik rerender yok."
+      }
+    ],
+    "technicalAnalysis": null,
+    "limitations": [
+      "Seyrek kareler s\u00fcrekli hareket, hassas temas veya kusursuz loop kan\u0131t\u0131 de\u011fildir."
+    ],
+    "automaticRerender": false
+  },
+  "prompt": {
+    "workflowVersion": "post-family-v1",
+    "bindingHash": "6533b163a61e534178793d60bca1f87c5867f6c56e8c7f7d5be322c3e2e67084",
+    "authorizationEvidence": {},
+    "source": {
+      "artifact": "synthetic",
+      "version": "1",
+      "sha256": "e357473b437f2fa11a1e4e8d764bdb3643780fa131534e56c0085eabab3479d7"
+    },
+    "productionEvidence": {
+      "source": {
+        "artifact": "synthetic",
+        "version": "1",
+        "sha256": "e357473b437f2fa11a1e4e8d764bdb3643780fa131534e56c0085eabab3479d7"
+      },
+      "claims": [
+        {
+          "field": "beats",
+          "state": "OBSERVED",
+          "quote": "0-6 SEC",
+          "span": [
+            0,
+            7
+          ],
+          "sourceId": "synthetic",
+          "sourceVersion": "1",
+          "sourceHash": "e357473b437f2fa11a1e4e8d764bdb3643780fa131534e56c0085eabab3479d7",
+          "method": "LOCAL_SOURCE_PATTERN",
+          "methodVersion": "source-span-production-evidence-v1",
+          "provider": null,
+          "confidence": "HIGH"
+        },
+        {
+          "field": "fineMotorRequirement",
+          "state": "MISSING",
+          "quote": null,
+          "span": null,
+          "sourceId": "synthetic",
+          "sourceVersion": "1",
+          "sourceHash": "e357473b437f2fa11a1e4e8d764bdb3643780fa131534e56c0085eabab3479d7",
+          "methodVersion": "source-span-production-evidence-v1",
+          "confidence": null,
+          "reason": "Omission does not confirm absence."
+        },
+        {
+          "field": "contactPhysicsRequirement",
+          "state": "MISSING",
+          "quote": null,
+          "span": null,
+          "sourceId": "synthetic",
+          "sourceVersion": "1",
+          "sourceHash": "e357473b437f2fa11a1e4e8d764bdb3643780fa131534e56c0085eabab3479d7",
+          "methodVersion": "source-span-production-evidence-v1",
+          "confidence": null,
+          "reason": "Omission does not confirm absence."
+        },
+        {
+          "field": "objectContinuity",
+          "state": "MISSING",
+          "quote": null,
+          "span": null,
+          "sourceId": "synthetic",
+          "sourceVersion": "1",
+          "sourceHash": "e357473b437f2fa11a1e4e8d764bdb3643780fa131534e56c0085eabab3479d7",
+          "methodVersion": "source-span-production-evidence-v1",
+          "confidence": null,
+          "reason": "Omission does not confirm absence."
+        },
+        {
+          "field": "characterContinuity",
+          "state": "MISSING",
+          "quote": null,
+          "span": null,
+          "sourceId": "synthetic",
+          "sourceVersion": "1",
+          "sourceHash": "e357473b437f2fa11a1e4e8d764bdb3643780fa131534e56c0085eabab3479d7",
+          "methodVersion": "source-span-production-evidence-v1",
+          "confidence": null,
+          "reason": "Omission does not confirm absence."
+        },
+        {
+          "field": "occlusionRequirement",
+          "state": "MISSING",
+          "quote": null,
+          "span": null,
+          "sourceId": "synthetic",
+          "sourceVersion": "1",
+          "sourceHash": "e357473b437f2fa11a1e4e8d764bdb3643780fa131534e56c0085eabab3479d7",
+          "methodVersion": "source-span-production-evidence-v1",
+          "confidence": null,
+          "reason": "Omission does not confirm absence."
+        },
+        {
+          "field": "exactCountDependency",
+          "state": "MISSING",
+          "quote": null,
+          "span": null,
+          "sourceId": "synthetic",
+          "sourceVersion": "1",
+          "sourceHash": "e357473b437f2fa11a1e4e8d764bdb3643780fa131534e56c0085eabab3479d7",
+          "methodVersion": "source-span-production-evidence-v1",
+          "confidence": null,
+          "reason": "Omission does not confirm absence."
+        },
+        {
+          "field": "transformationRequirement",
+          "state": "MISSING",
+          "quote": null,
+          "span": null,
+          "sourceId": "synthetic",
+          "sourceVersion": "1",
+          "sourceHash": "e357473b437f2fa11a1e4e8d764bdb3643780fa131534e56c0085eabab3479d7",
+          "methodVersion": "source-span-production-evidence-v1",
+          "confidence": null,
+          "reason": "Omission does not confirm absence."
+        },
+        {
+          "field": "simulationRequirement",
+          "state": "MISSING",
+          "quote": null,
+          "span": null,
+          "sourceId": "synthetic",
+          "sourceVersion": "1",
+          "sourceHash": "e357473b437f2fa11a1e4e8d764bdb3643780fa131534e56c0085eabab3479d7",
+          "methodVersion": "source-span-production-evidence-v1",
+          "confidence": null,
+          "reason": "Omission does not confirm absence."
+        },
+        {
+          "field": "spatialRequirement",
+          "state": "MISSING",
+          "quote": null,
+          "span": null,
+          "sourceId": "synthetic",
+          "sourceVersion": "1",
+          "sourceHash": "e357473b437f2fa11a1e4e8d764bdb3643780fa131534e56c0085eabab3479d7",
+          "methodVersion": "source-span-production-evidence-v1",
+          "confidence": null,
+          "reason": "Omission does not confirm absence."
+        },
+        {
+          "field": "sceneContinuityRequirement",
+          "state": "MISSING",
+          "quote": null,
+          "span": null,
+          "sourceId": "synthetic",
+          "sourceVersion": "1",
+          "sourceHash": "e357473b437f2fa11a1e4e8d764bdb3643780fa131534e56c0085eabab3479d7",
+          "methodVersion": "source-span-production-evidence-v1",
+          "confidence": null,
+          "reason": "Omission does not confirm absence."
+        },
+        {
+          "field": "textRequirement",
+          "state": "MISSING",
+          "quote": null,
+          "span": null,
+          "sourceId": "synthetic",
+          "sourceVersion": "1",
+          "sourceHash": "e357473b437f2fa11a1e4e8d764bdb3643780fa131534e56c0085eabab3479d7",
+          "methodVersion": "source-span-production-evidence-v1",
+          "confidence": null,
+          "reason": "Omission does not confirm absence."
+        },
+        {
+          "field": "segmentContinuityRequirement",
+          "state": "MISSING",
+          "quote": null,
+          "span": null,
+          "sourceId": "synthetic",
+          "sourceVersion": "1",
+          "sourceHash": "e357473b437f2fa11a1e4e8d764bdb3643780fa131534e56c0085eabab3479d7",
+          "methodVersion": "source-span-production-evidence-v1",
+          "confidence": null,
+          "reason": "Omission does not confirm absence."
+        }
+      ],
+      "videoPlanIR": {
+        "metadata": {
+          "generalProducibilityEvidence": {
+            "source": "POST_FAMILY_SOURCE_ENRICHMENT",
+            "sourceHash": "e357473b437f2fa11a1e4e8d764bdb3643780fa131534e56c0085eabab3479d7",
+            "sourceVersion": "1",
+            "extractionVersion": "source-span-production-evidence-v1"
+          },
+          "duration": 6.0
+        },
+        "beats": [
+          {
+            "id": "source_0",
+            "startTime": 0.0,
+            "endTime": 6.0,
+            "action": "Luca lifts the ball while Zipo waves.",
+            "sourceSpan": [
+              0,
+              45
+            ]
+          }
+        ]
+      },
+      "generalProducibility": {
+        "status": "UNKNOWN",
+        "dimensions": {
+          "ENTITY_LOAD": {
+            "level": "UNKNOWN",
+            "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+            "evidenceReferences": [],
+            "material": false,
+            "requiresRedesign": false
+          },
+          "OBJECT_IDENTITY_CONTINUITY": {
+            "level": "UNKNOWN",
+            "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+            "evidenceReferences": [],
+            "material": false,
+            "requiresRedesign": false
+          },
+          "CHARACTER_IDENTITY_CONTINUITY": {
+            "level": "UNKNOWN",
+            "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+            "evidenceReferences": [],
+            "material": false,
+            "requiresRedesign": false
+          },
+          "FINE_MOTOR_PRECISION": {
+            "level": "UNKNOWN",
+            "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+            "evidenceReferences": [],
+            "material": false,
+            "requiresRedesign": false
+          },
+          "CONTACT_PHYSICS_COMPLEXITY": {
+            "level": "UNKNOWN",
+            "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+            "evidenceReferences": [],
+            "material": false,
+            "requiresRedesign": false
+          },
+          "OCCLUSION_HIDDEN_STATE": {
+            "level": "UNKNOWN",
+            "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+            "evidenceReferences": [],
+            "material": false,
+            "requiresRedesign": false
+          },
+          "EXACT_COUNT_DEPENDENCY": {
+            "level": "UNKNOWN",
+            "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+            "evidenceReferences": [],
+            "material": false,
+            "requiresRedesign": false
+          },
+          "MULTI_ENTITY_CONCURRENCY": {
+            "level": "UNKNOWN",
+            "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+            "evidenceReferences": [],
+            "material": false,
+            "requiresRedesign": false
+          },
+          "TRANSFORMATION_COMPLEXITY": {
+            "level": "UNKNOWN",
+            "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+            "evidenceReferences": [],
+            "material": false,
+            "requiresRedesign": false
+          },
+          "LIQUID_CLOTH_PARTICLE": {
+            "level": "UNKNOWN",
+            "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+            "evidenceReferences": [],
+            "material": false,
+            "requiresRedesign": false
+          },
+          "SPATIAL_RELATIONSHIP_COMPLEXITY": {
+            "level": "UNKNOWN",
+            "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+            "evidenceReferences": [],
+            "material": false,
+            "requiresRedesign": false
+          },
+          "CAMERA_ACTION_COUPLING": {
+            "level": "UNKNOWN",
+            "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+            "evidenceReferences": [],
+            "material": false,
+            "requiresRedesign": false
+          },
+          "MULTI_SCENE_CONTINUITY": {
+            "level": "UNKNOWN",
+            "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+            "evidenceReferences": [],
+            "material": false,
+            "requiresRedesign": false
+          },
+          "TEXT_LIP_SYNC_SYMBOL": {
+            "level": "UNKNOWN",
+            "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+            "evidenceReferences": [],
+            "material": false,
+            "requiresRedesign": false
+          },
+          "SEGMENT_CONTINUITY": {
+            "level": "UNKNOWN",
+            "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+            "evidenceReferences": [],
+            "material": false,
+            "requiresRedesign": false
+          }
+        },
+        "reasons": [
+          "Some required structured production evidence is unavailable."
+        ],
+        "materialRisks": [],
+        "unknownDimensions": [
+          "ENTITY_LOAD",
+          "OBJECT_IDENTITY_CONTINUITY",
+          "CHARACTER_IDENTITY_CONTINUITY",
+          "FINE_MOTOR_PRECISION",
+          "CONTACT_PHYSICS_COMPLEXITY",
+          "OCCLUSION_HIDDEN_STATE",
+          "EXACT_COUNT_DEPENDENCY",
+          "MULTI_ENTITY_CONCURRENCY",
+          "TRANSFORMATION_COMPLEXITY",
+          "LIQUID_CLOTH_PARTICLE",
+          "SPATIAL_RELATIONSHIP_COMPLEXITY",
+          "CAMERA_ACTION_COUPLING",
+          "MULTI_SCENE_CONTINUITY",
+          "TEXT_LIP_SYNC_SYMBOL",
+          "SEGMENT_CONTINUITY"
+        ],
+        "durationSeconds": 6.0,
+        "durationSource": "metadata.duration",
+        "durationLoad": {
+          "level": "UNKNOWN",
+          "reason": "Timed, independently tracked action evidence is incomplete.",
+          "evidenceReferences": [],
+          "material": false,
+          "requiresRedesign": false,
+          "dependentStateChanges": 0,
+          "changesPerSecond": null
+        },
+        "provenance": {
+          "evaluatorVersion": "general-producibility-v1",
+          "source": "STRUCTURED_VIDEO_PLAN_IR",
+          "sourceEvidence": {
+            "source": "POST_FAMILY_SOURCE_ENRICHMENT",
+            "sourceHash": "e357473b437f2fa11a1e4e8d764bdb3643780fa131534e56c0085eabab3479d7",
+            "sourceVersion": "1",
+            "extractionVersion": "source-span-production-evidence-v1"
+          },
+          "family6TemporalLoad": {
+            "status": "UNKNOWN",
+            "axes": [
+              {
+                "axis": "temporal_packing",
+                "level": "UNKNOWN",
+                "confidence": "LOW",
+                "evidenceReferences": [],
+                "reason": "Explicit duration and complete beat timing are unavailable."
+              },
+              {
+                "axis": "state_breadth",
+                "level": "UNKNOWN",
+                "confidence": "LOW",
+                "evidenceReferences": [
+                  "source_0"
+                ],
+                "reason": "Beat timing exists, but structured state-breadth fields are unavailable."
+              },
+              {
+                "axis": "continuity_memory",
+                "level": "UNKNOWN",
+                "confidence": "LOW",
+                "evidenceReferences": [
+                  "source_0"
+                ],
+                "reason": "Beat timing exists, but structured continuity state is unavailable."
+              },
+              {
+                "axis": "action_concurrency",
+                "level": "UNKNOWN",
+                "confidence": "LOW",
+                "evidenceReferences": [
+                  "source_0"
+                ],
+                "reason": "Beat timing exists, but structured actor/object concurrency evidence is unavailable."
+              }
+            ],
+            "severeAxisCount": 0,
+            "elevatedAxisCount": 0,
+            "highBasis": null,
+            "evidenceStatus": "UNKNOWN",
+            "version": "family6-temporal-generation-load-v1"
+          },
+          "authorizationPolicy": "EXISTING_POLICY_UNCHANGED"
+        }
+      },
+      "remainingUncertainty": [
+        "fineMotorRequirement",
+        "contactPhysicsRequirement",
+        "objectContinuity",
+        "characterContinuity",
+        "occlusionRequirement",
+        "exactCountDependency",
+        "transformationRequirement",
+        "simulationRequirement",
+        "spatialRequirement",
+        "sceneContinuityRequirement",
+        "textRequirement",
+        "segmentContinuityRequirement"
+      ]
+    },
+    "generalProducibility": {
+      "status": "UNKNOWN",
+      "dimensions": {
+        "ENTITY_LOAD": {
+          "level": "UNKNOWN",
+          "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+          "evidenceReferences": [],
+          "material": false,
+          "requiresRedesign": false
+        },
+        "OBJECT_IDENTITY_CONTINUITY": {
+          "level": "UNKNOWN",
+          "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+          "evidenceReferences": [],
+          "material": false,
+          "requiresRedesign": false
+        },
+        "CHARACTER_IDENTITY_CONTINUITY": {
+          "level": "UNKNOWN",
+          "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+          "evidenceReferences": [],
+          "material": false,
+          "requiresRedesign": false
+        },
+        "FINE_MOTOR_PRECISION": {
+          "level": "UNKNOWN",
+          "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+          "evidenceReferences": [],
+          "material": false,
+          "requiresRedesign": false
+        },
+        "CONTACT_PHYSICS_COMPLEXITY": {
+          "level": "UNKNOWN",
+          "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+          "evidenceReferences": [],
+          "material": false,
+          "requiresRedesign": false
+        },
+        "OCCLUSION_HIDDEN_STATE": {
+          "level": "UNKNOWN",
+          "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+          "evidenceReferences": [],
+          "material": false,
+          "requiresRedesign": false
+        },
+        "EXACT_COUNT_DEPENDENCY": {
+          "level": "UNKNOWN",
+          "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+          "evidenceReferences": [],
+          "material": false,
+          "requiresRedesign": false
+        },
+        "MULTI_ENTITY_CONCURRENCY": {
+          "level": "UNKNOWN",
+          "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+          "evidenceReferences": [],
+          "material": false,
+          "requiresRedesign": false
+        },
+        "TRANSFORMATION_COMPLEXITY": {
+          "level": "UNKNOWN",
+          "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+          "evidenceReferences": [],
+          "material": false,
+          "requiresRedesign": false
+        },
+        "LIQUID_CLOTH_PARTICLE": {
+          "level": "UNKNOWN",
+          "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+          "evidenceReferences": [],
+          "material": false,
+          "requiresRedesign": false
+        },
+        "SPATIAL_RELATIONSHIP_COMPLEXITY": {
+          "level": "UNKNOWN",
+          "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+          "evidenceReferences": [],
+          "material": false,
+          "requiresRedesign": false
+        },
+        "CAMERA_ACTION_COUPLING": {
+          "level": "UNKNOWN",
+          "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+          "evidenceReferences": [],
+          "material": false,
+          "requiresRedesign": false
+        },
+        "MULTI_SCENE_CONTINUITY": {
+          "level": "UNKNOWN",
+          "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+          "evidenceReferences": [],
+          "material": false,
+          "requiresRedesign": false
+        },
+        "TEXT_LIP_SYNC_SYMBOL": {
+          "level": "UNKNOWN",
+          "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+          "evidenceReferences": [],
+          "material": false,
+          "requiresRedesign": false
+        },
+        "SEGMENT_CONTINUITY": {
+          "level": "UNKNOWN",
+          "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+          "evidenceReferences": [],
+          "material": false,
+          "requiresRedesign": false
+        }
+      },
+      "reasons": [
+        "Some required structured production evidence is unavailable."
+      ],
+      "materialRisks": [],
+      "unknownDimensions": [
+        "ENTITY_LOAD",
+        "OBJECT_IDENTITY_CONTINUITY",
+        "CHARACTER_IDENTITY_CONTINUITY",
+        "FINE_MOTOR_PRECISION",
+        "CONTACT_PHYSICS_COMPLEXITY",
+        "OCCLUSION_HIDDEN_STATE",
+        "EXACT_COUNT_DEPENDENCY",
+        "MULTI_ENTITY_CONCURRENCY",
+        "TRANSFORMATION_COMPLEXITY",
+        "LIQUID_CLOTH_PARTICLE",
+        "SPATIAL_RELATIONSHIP_COMPLEXITY",
+        "CAMERA_ACTION_COUPLING",
+        "MULTI_SCENE_CONTINUITY",
+        "TEXT_LIP_SYNC_SYMBOL",
+        "SEGMENT_CONTINUITY"
+      ],
+      "durationSeconds": 6.0,
+      "durationSource": "metadata.duration",
+      "durationLoad": {
+        "level": "UNKNOWN",
+        "reason": "Timed, independently tracked action evidence is incomplete.",
+        "evidenceReferences": [],
+        "material": false,
+        "requiresRedesign": false,
+        "dependentStateChanges": 0,
+        "changesPerSecond": null
+      },
+      "provenance": {
+        "evaluatorVersion": "general-producibility-v1",
+        "source": "STRUCTURED_VIDEO_PLAN_IR",
+        "sourceEvidence": {
+          "source": "POST_FAMILY_SOURCE_ENRICHMENT",
+          "sourceHash": "e357473b437f2fa11a1e4e8d764bdb3643780fa131534e56c0085eabab3479d7",
+          "sourceVersion": "1",
+          "extractionVersion": "source-span-production-evidence-v1"
+        },
+        "family6TemporalLoad": {
+          "status": "UNKNOWN",
+          "axes": [
+            {
+              "axis": "temporal_packing",
+              "level": "UNKNOWN",
+              "confidence": "LOW",
+              "evidenceReferences": [],
+              "reason": "Explicit duration and complete beat timing are unavailable."
+            },
+            {
+              "axis": "state_breadth",
+              "level": "UNKNOWN",
+              "confidence": "LOW",
+              "evidenceReferences": [
+                "source_0"
+              ],
+              "reason": "Beat timing exists, but structured state-breadth fields are unavailable."
+            },
+            {
+              "axis": "continuity_memory",
+              "level": "UNKNOWN",
+              "confidence": "LOW",
+              "evidenceReferences": [
+                "source_0"
+              ],
+              "reason": "Beat timing exists, but structured continuity state is unavailable."
+            },
+            {
+              "axis": "action_concurrency",
+              "level": "UNKNOWN",
+              "confidence": "LOW",
+              "evidenceReferences": [
+                "source_0"
+              ],
+              "reason": "Beat timing exists, but structured actor/object concurrency evidence is unavailable."
+            }
+          ],
+          "severeAxisCount": 0,
+          "elevatedAxisCount": 0,
+          "highBasis": null,
+          "evidenceStatus": "UNKNOWN",
+          "version": "family6-temporal-generation-load-v1"
+        },
+        "authorizationPolicy": "EXISTING_POLICY_UNCHANGED"
+      }
+    },
+    "routing": {
+      "contentProfile": "CURIOSITY_ADVENTURE",
+      "basis": "OPERATOR_SELECTED",
+      "confidence": "HUMAN_REVIEWED",
+      "viewerQuestion": null,
+      "alternatives": []
+    },
+    "applicability": {
+      "COMEDY": {
+        "status": "NOT_APPLICABLE",
+        "reason": "Yeni profilin evrensel zorunlulu\u011fu de\u011fildir.",
+        "profileVersion": "post-family-v1"
+      },
+      "THREE_ATTEMPTS": {
+        "status": "NOT_APPLICABLE",
+        "reason": "Yeni profilin evrensel zorunlulu\u011fu de\u011fildir.",
+        "profileVersion": "post-family-v1"
+      },
+      "FAKE_RESOLUTION": {
+        "status": "NOT_APPLICABLE",
+        "reason": "Yeni profilin evrensel zorunlulu\u011fu de\u011fildir.",
+        "profileVersion": "post-family-v1"
+      },
+      "RESOLVED_ENDING": {
+        "status": "NOT_APPLICABLE",
+        "reason": "Yeni profilin evrensel zorunlulu\u011fu de\u011fildir.",
+        "profileVersion": "post-family-v1"
+      }
+    },
+    "engagement": {
+      "stage": "PROMPT_REVIEW",
+      "status": "HYPOTHESIS",
+      "attentionPromise": "Luca lifts the ball while Zipo waves.",
+      "progression": [],
+      "endingDelivery": "Luca lifts the ball while Zipo waves.",
+      "rewatchMechanism": "UNKNOWN",
+      "endingKind": "PLANNED_ENDING",
+      "limitations": [
+        "\u00d6n de\u011ferlendirme hipotezdir; izlenme/retention y\u00fczdesi tahmini de\u011fildir.",
+        "Cevaps\u0131z soru tek ba\u015f\u0131na ayn\u0131 videoyu tekrar izleme kan\u0131t\u0131 de\u011fildir.",
+        "Dura\u011fanl\u0131k tek ba\u015f\u0131na gereksiz \u00f6l\u00fc zaman de\u011fildir."
+      ]
+    },
+    "generation": {
+      "recommendedGenerator": "SEEDANCE_2_0_MINI",
+      "selectedGenerator": "SEEDANCE_2_0_MINI",
+      "apiModelId": null,
+      "desiredDuration": 6,
+      "supportedRenderDuration": null,
+      "plannedEditedDuration": 6,
+      "capabilityStatus": "UNKNOWN",
+      "missingExecutionInputs": [],
+      "capabilityProvenance": null,
+      "profileVersion": null,
+      "mode": "image2video",
+      "settings": {},
+      "segments": [],
+      "reasons": [
+        "Se\u00e7ilen model/mod i\u00e7in do\u011frulanm\u0131\u015f ba\u011fl\u0131 sa\u011flay\u0131c\u0131 s\u00f6zle\u015fmesi yok."
+      ],
+      "selectionReason": "Konsept s\u00fcresine g\u00f6re kullan\u0131c\u0131 \u00fcretim tercihi."
+    },
+    "opening": {
+      "strategy": "CURIOSITY_DISCOVERY",
+      "designWindowSeconds": 2.0,
+      "plannedOpening": {
+        "status": "HYPOTHESIS",
+        "sourceSpan": [
+          0,
+          45
+        ],
+        "visualPromise": "Luca lifts the ball while Zipo waves."
+      },
+      "actualFirstFrame": {
+        "status": "UNKNOWN"
+      },
+      "actualOpeningVideo": {
+        "status": "UNKNOWN"
+      },
+      "cover": {
+        "status": "NOT_EVIDENCE_OF_OPENING"
+      },
+      "alternatives": [],
+      "reason": "\u0130lk iki saniye esnek tasar\u0131m penceresidir; ilk kare hareketin ba\u015far\u0131s\u0131n\u0131 kan\u0131tlamaz."
+    },
+    "executionReview": {
+      "stage": "GENERATOR_EXECUTION_REVIEW",
+      "status": "REWRITE",
+      "findings": [
+        {
+          "sourceSpan": [
+            8,
+            44
+          ],
+          "sourceQuote": "Luca lifts the ball while Zipo waves",
+          "riskCategory": "SIMULTANEOUS_ACTION_COMPETITION",
+          "category": "SIMULTANEOUS_ACTION_COMPETITION",
+          "plausibleFailure": "Hareketler ayn\u0131 anda yar\u0131\u015fabilir.",
+          "evidenceBasis": "GENERAL_HEURISTIC",
+          "confidence": "LOW",
+          "smallestChange": "\u00d6ncelikli hareketi belirt; uygunsa di\u011ferini sonra ba\u015flat.",
+          "altersCreativeIntent": false
+        }
+      ],
+      "provider": "LOCAL",
+      "model": null,
+      "version": "local-execution-critic-v1",
+      "visualInspected": false,
+      "targetGenerator": "SEEDANCE_2_0_MINI",
+      "limitations": [
+        "Genel yaz\u0131m sezgileri; se\u00e7ilen modelin fiili performans kan\u0131t\u0131 de\u011fildir."
+      ],
+      "calls": 0
+    },
+    "family8": {
+      "creativeQuality": {
+        "creativeScore": null,
+        "creativeGrade": null,
+        "familyScores": {}
+      },
+      "evidenceCompleteness": {
+        "status": "INCOMPLETE",
+        "evaluationCoverage": null,
+        "aggregation": {}
+      },
+      "renderAuthorization": {
+        "status": "BLOCKED_PENDING_EVIDENCE",
+        "reasons": [
+          {
+            "code": "REQUIRED_EVIDENCE_MISSING",
+            "source": "REFERENCE_ASSOCIATION",
+            "message": "Yetkili karakter/nesne referans\u0131 eksik veya do\u011frulanmad\u0131.",
+            "references": []
+          },
+          {
+            "code": "REQUIRED_EVIDENCE_MISSING",
+            "source": "GENERATOR_CAPABILITY",
+            "message": "\u0130stenen model/s\u00fcre/ayar do\u011frulanm\u0131\u015f s\u00f6zle\u015fmeyle desteklenmiyor.",
+            "references": []
+          },
+          {
+            "code": "REQUIRED_EVIDENCE_MISSING",
+            "source": "EXECUTION_REVIEW",
+            "message": "Jenerat\u00f6r y\u00fcr\u00fctme incelemesi tamamlanmad\u0131 veya k\u00fc\u00e7\u00fck d\u00fczeltme gerekiyor.",
+            "references": []
+          },
+          {
+            "code": "REQUIRED_EVIDENCE_MISSING",
+            "source": "GENERAL_PRODUCIBILITY",
+            "message": "Genel \u00fcretilebilirlik i\u00e7in kaynak kan\u0131t\u0131 yetersiz.",
+            "references": []
+          },
+          {
+            "code": "REQUIRED_EVIDENCE_MISSING",
+            "source": "FINAL_VIDEO_INTEGRITY",
+            "message": "Son video kabul\u00fc i\u00e7in mevcut do\u011frulanm\u0131\u015f g\u00f6rsel kap\u0131lar ve ba\u011f\u0131ms\u0131z revalidation gereklidir.",
+            "references": []
+          }
+        ]
+      },
+      "legacy": {
+        "readiness": null
+      }
+    },
+    "originalPrompt": "0-6 SEC\nLuca lifts the ball while Zipo waves.",
+    "finalPrompt": "0-6 SEC\nLuca lifts the ball while Zipo waves.",
+    "patch": [],
+    "changedSettings": {},
+    "repairPasses": 0,
+    "verificationPasses": 0,
+    "protectedIntent": [],
+    "manualHandoff": {
+      "allowed": true,
+      "authorization": {
+        "status": "BLOCKED_PENDING_EVIDENCE",
+        "reasons": [
+          {
+            "code": "REQUIRED_EVIDENCE_MISSING",
+            "source": "REFERENCE_ASSOCIATION",
+            "message": "Yetkili karakter/nesne referans\u0131 eksik veya do\u011frulanmad\u0131.",
+            "references": []
+          },
+          {
+            "code": "REQUIRED_EVIDENCE_MISSING",
+            "source": "GENERATOR_CAPABILITY",
+            "message": "\u0130stenen model/s\u00fcre/ayar do\u011frulanm\u0131\u015f s\u00f6zle\u015fmeyle desteklenmiyor.",
+            "references": []
+          },
+          {
+            "code": "REQUIRED_EVIDENCE_MISSING",
+            "source": "EXECUTION_REVIEW",
+            "message": "Jenerat\u00f6r y\u00fcr\u00fctme incelemesi tamamlanmad\u0131 veya k\u00fc\u00e7\u00fck d\u00fczeltme gerekiyor.",
+            "references": []
+          },
+          {
+            "code": "REQUIRED_EVIDENCE_MISSING",
+            "source": "GENERAL_PRODUCIBILITY",
+            "message": "Genel \u00fcretilebilirlik i\u00e7in kaynak kan\u0131t\u0131 yetersiz.",
+            "references": []
+          },
+          {
+            "code": "REQUIRED_EVIDENCE_MISSING",
+            "source": "FINAL_VIDEO_INTEGRITY",
+            "message": "Son video kabul\u00fc i\u00e7in mevcut do\u011frulanm\u0131\u015f g\u00f6rsel kap\u0131lar ve ba\u011f\u0131ms\u0131z revalidation gereklidir.",
+            "references": []
+          }
+        ]
+      },
+      "notice": "\u0130nceleme paketi d\u0131\u015fa aktar\u0131m\u0131 render yetkisi veya kredi harcama onay\u0131 de\u011fildir."
+    }
+  }
+}

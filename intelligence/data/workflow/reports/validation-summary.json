@@ -1,0 +1,42 @@
+{
+  "baseCommit": "ef5d231abd6cc85ad0c394b99517cfa2570b3e0f",
+  "frozenPreBatchMlPassed": 641,
+  "currentMlPassed": 673,
+  "newWorkflowMlPassed": 32,
+  "backend": {
+    "executedTests": 64,
+    "failures": 0,
+    "errors": 0
+  },
+  "renderFocusedPassed": 37,
+  "frontendQualityFocusedPassed": 31,
+  "frontendFullPassed": 48,
+  "frontendFullKnownFailures": 9,
+  "renderFull": {
+    "executedTests": 394,
+    "failures": 1,
+    "errors": 11
+  },
+  "renderPreBatchKnownFailures": 1,
+  "renderPreBatchKnownErrors": 11,
+  "newFrontendFailingCases": [],
+  "newRenderFailingCases": [],
+  "golden": {
+    "assets": 9,
+    "expectedPolicyChanges": 0,
+    "goldAssertions": 323,
+    "goldReviewRequired": 66,
+    "improvedFromBaseline": 0,
+    "newSemanticRegressions": 0,
+    "representationMismatches": 0,
+    "semanticFailed": 5,
+    "semanticPassed": 104,
+    "unchangedKnownIssues": 54,
+    "unexpectedPolicyRegressions": 0
+  },
+  "paidCalls": 0,
+  "generatedMedia": 0,
+  "publications": 0,
+  "commitsCreated": 0,
+  "liveProviderGenerationVerified": false
+}

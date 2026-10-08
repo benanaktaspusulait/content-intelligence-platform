@@ -211,6 +211,36 @@ public class QualityMlClient {
     }
   }
 
+  public Map<String, Object> workflow(String operation, Map<String, Object> request) {
+    if (!List.of("review", "repair", "feedback", "critic").contains(operation)) {
+      throw new IllegalArgumentException("Unsupported workflow operation");
+    }
+    try {
+      var call =
+          HttpRequest.newBuilder(URI.create(mlServiceUrl + "/api/v1/workflow/" + operation))
+              .timeout(Duration.ofSeconds(25))
+              .header("Content-Type", "application/json")
+              .POST(
+                  HttpRequest.BodyPublishers.ofString(
+                      mlObjectMapper.writeValueAsString(request), StandardCharsets.UTF_8))
+              .build();
+      var response =
+          httpClient.send(call, HttpResponse.BodyHandlers.ofString(StandardCharsets.UTF_8));
+      if (response.statusCode() == 403)
+        throw new org.springframework.web.server.ResponseStatusException(
+            org.springframework.http.HttpStatus.FORBIDDEN,
+            "Ücretli ikinci görüş kapalı; sunucuda onaylı kapsam/bütçe yapılandırması gerekir.");
+      if (response.statusCode() != 200)
+        throw new MlServiceException("Workflow service returned HTTP " + response.statusCode());
+      return readBody(response.body(), new TypeReference<Map<String, Object>>() {});
+    } catch (InterruptedException interrupted) {
+      Thread.currentThread().interrupt();
+      throw new MlServiceException("Workflow service interrupted", interrupted);
+    } catch (java.io.IOException unavailable) {
+      throw new MlServiceException("Workflow service unavailable", unavailable);
+    }
+  }
+
   private <T> T readBody(String body, Class<T> type) {
     if (body == null || body.isBlank()) {
       throw new MlServiceException("ML service returned an empty response");

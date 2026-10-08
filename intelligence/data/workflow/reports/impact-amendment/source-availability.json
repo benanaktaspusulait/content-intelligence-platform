@@ -1,0 +1,113 @@
+[
+  {
+    "target": "Noah / Walking Shoes",
+    "artifacts": [
+      {
+        "path": "/Users/benanaktas/project/video/yuvarlak-dunya/POMPOM_HILLS_PRODUCTION/09_SOCIAL_REELS/new14092026/Absurd_Moments/05_noah_walking_shoes/01_video_prompt.txt",
+        "sha256": "512dd0fe6b8ddd87e6bb4df3846bc1a094398c295572fced3043504c5a34613a",
+        "bytes": 1930
+      },
+      {
+        "path": "/Users/benanaktas/project/video/yuvarlak-dunya/POMPOM_HILLS_PRODUCTION/09_SOCIAL_REELS/new14092026/Absurd_Moments/05_noah_walking_shoes/02_first_scene_image_prompt.txt",
+        "sha256": "a33c84eadc6bc3321e29a925ba70b93c470aac85ddf7cfa4173fbc25b3970c24",
+        "bytes": 306
+      },
+      {
+        "path": "/Users/benanaktas/project/video/yuvarlak-dunya/POMPOM_HILLS_PRODUCTION/09_SOCIAL_REELS/new14092026/Absurd_Moments/05_noah_walking_shoes/05_noah_walking_shoes_hd.mp4",
+        "sha256": "aad6cff0bea47d499bb0676ae863e15c6c2cf8fcf4ad9acb92af23e12603c43a",
+        "bytes": 17896273
+      }
+    ],
+    "reviewStatus": "TARGET_AVAILABLE_NOT_AUTOMATICALLY_REVIEWED"
+  },
+  {
+    "target": "Upside-Down Chair",
+    "artifacts": [
+      {
+        "path": "/Users/benanaktas/project/video/yuvarlak-dunya/POMPOM_HILLS_PRODUCTION/09_SOCIAL_REELS/new14092026/What’s Wrong? uploaded/1-The Upside-Down Chair/1-The Upside-Down Chair_hd.mp4",
+        "sha256": "eaa36bdc65957b38613230d71f493b660d5668104b19d975d54c03fccedbe6ca",
+        "bytes": 13369042
+      },
+      {
+        "path": "/Users/benanaktas/project/video/yuvarlak-dunya/POMPOM_HILLS_PRODUCTION/09_SOCIAL_REELS/new14092026/What’s Wrong? uploaded/1-The Upside-Down Chair/prompt.md",
+        "sha256": "6db5f744f51dca45b4be2133e8d88648b839e5d1fb5b742be5f1aaa3d016502a",
+        "bytes": 3619
+      }
+    ],
+    "reviewStatus": "TARGET_AVAILABLE_NOT_AUTOMATICALLY_REVIEWED"
+  },
+  {
+    "target": "Missing Shoe",
+    "artifacts": [
+      {
+        "path": "/Users/benanaktas/project/video/yuvarlak-dunya/POMPOM_HILLS_PRODUCTION/09_SOCIAL_REELS/new14092026/english learning uploaded/3-“Where is it?” — Luca’s Missing Shoe/3-“Where is it?” — Luca’s Missing Shoe_hd.mp4",
+        "sha256": "0caf54f29585082141ba47881e04259ab9df73b1d37c542aac7c5c76b571c19f",
+        "bytes": 15292210
+      },
+      {
+        "path": "/Users/benanaktas/project/video/yuvarlak-dunya/POMPOM_HILLS_PRODUCTION/09_SOCIAL_REELS/new14092026/english learning uploaded/3-“Where is it?” — Luca’s Missing Shoe/prompt.md",
+        "sha256": "016c6728e5d8b18c564748d439c88f56a635a64cf69a1f77c4162bd74fbeac75",
+        "bytes": 1297
+      }
+    ],
+    "reviewStatus": "TARGET_AVAILABLE_NOT_AUTOMATICALLY_REVIEWED"
+  },
+  {
+    "target": "Tiny Door",
+    "artifacts": [
+      {
+        "path": "/Users/benanaktas/project/video/yuvarlak-dunya/POMPOM_HILLS_PRODUCTION/09_SOCIAL_REELS/new14092026/What’s Wrong? uploaded/4-The Tiny Door/4-The Tiny Door_hd.mp4",
+        "sha256": "c0c2a4bdc4e491a52fde16e6d2940a8a6d942230d42250460e90a5f5ca01d7ea",
+        "bytes": 15189581
+      },
+      {
+        "path": "/Users/benanaktas/project/video/yuvarlak-dunya/POMPOM_HILLS_PRODUCTION/09_SOCIAL_REELS/new14092026/What’s Wrong? uploaded/4-The Tiny Door/prompt.md",
+        "sha256": "8270013d8030e43e862a4c51992cfcce6576795a1baf30a9091d729a2f47f3fe",
+        "bytes": 3193
+      }
+    ],
+    "reviewStatus": "TARGET_AVAILABLE_NOT_AUTOMATICALLY_REVIEWED"
+  },
+  {
+    "target": "Kiko / Soap",
+    "artifacts": [
+      {
+        "path": "/Users/benanaktas/project/video/yuvarlak-dunya/POMPOM_HILLS_PRODUCTION/09_SOCIAL_REELS/new14092026/chaplin_set/09_kiko_vs_soap/openart-cgt-20261009001257-fdt8t_1791476239750_a77e7ae9.mp4",
+        "sha256": "ca3ade7d52f5ebd13ade959b9261b59258c67f4aaadf33cccbd36bbc762761e7",
+        "bytes": 3831575
+      },
+      {
+        "path": "/Users/benanaktas/project/video/yuvarlak-dunya/POMPOM_HILLS_PRODUCTION/09_SOCIAL_REELS/new14092026/chaplin_set/09_kiko_vs_soap/openart-cgt-20261009001257-fdt8t_1791476239750_a77e7ae9_hd.mp4",
+        "sha256": "56b645dc97ed1836e579681db38ee1242db31399d6fa0c5d7c6113373f8c1fe9",
+        "bytes": 5679066
+      },
+      {
+        "path": "/Users/benanaktas/project/video/yuvarlak-dunya/POMPOM_HILLS_PRODUCTION/09_SOCIAL_REELS/new14092026/chaplin_set/09_kiko_vs_soap/openart_prompt.md",
+        "sha256": "ba68aacd5192d55413ee9c68a6d634fe8f3c43b9d46db729ef4fe64a707d97f5",
+        "bytes": 3806
+      }
+    ],
+    "reviewStatus": "TARGET_AVAILABLE_NOT_AUTOMATICALLY_REVIEWED"
+  },
+  {
+    "target": "Luca & Zipo",
+    "artifacts": [
+      {
+        "path": "/Users/benanaktas/project/video/yuvarlak-dunya/POMPOM_HILLS_PRODUCTION/09_SOCIAL_REELS/new14092026/classic story-1/08_luca_and_zipo/01_video_prompt.txt",
+        "sha256": "008e44ae353ac046eb2198384482d5bee38b44b6b4bd1ec37a14faf3ac691ea9",
+        "bytes": 1313
+      },
+      {
+        "path": "/Users/benanaktas/project/video/yuvarlak-dunya/POMPOM_HILLS_PRODUCTION/09_SOCIAL_REELS/new14092026/classic story-1/08_luca_and_zipo/02_first_scene_image_prompt.txt",
+        "sha256": "ef380234667b4d13675a895c53fe8e1e0d139b6e8e5961a99421f462dd0b5327",
+        "bytes": 356
+      },
+      {
+        "path": "/Users/benanaktas/project/video/yuvarlak-dunya/POMPOM_HILLS_PRODUCTION/09_SOCIAL_REELS/new14092026/classic story-1/08_luca_and_zipo/08_luca_and_zipo_hd.mp4",
+        "sha256": "0c38bda790441af44f7f8d901f8ca9bf79cfafcc320a7c01a53baccc3f774f68",
+        "bytes": 16398486
+      }
+    ],
+    "reviewStatus": "TARGET_AVAILABLE_NOT_AUTOMATICALLY_REVIEWED"
+  }
+]

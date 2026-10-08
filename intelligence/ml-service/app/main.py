@@ -6,6 +6,7 @@ from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 
 from .api.quality import router as quality_router
+from .workflow.api import router as workflow_router
 from .config import settings
 from .contracts import (
     LivePredictionRequest,
@@ -29,6 +30,7 @@ app = FastAPI(title="Pompom Creative Intelligence ML", version="0.1.0")
 
 # Quality engine endpoints are mounted once under a single prefix.
 app.include_router(quality_router, prefix="/api/v1/quality")
+app.include_router(workflow_router)
 
 # Initialize only analyzers that do not require optional external services.
 dead_air_analyzer = DeadAirAnalyzer()

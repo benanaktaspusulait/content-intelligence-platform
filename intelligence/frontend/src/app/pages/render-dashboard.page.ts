@@ -940,6 +940,8 @@ export class RenderDashboardPage implements OnInit, OnDestroy {
   queuePromptVersionId = signal('');
   queueValidationId = signal('');
   queueJobType = signal('VIDEO');
+  workflowReview:any=null;
+  workflowReviewId='';
   queueModel = signal('byte-plus-seedance-2-mini');
   queueFirstFramePath = signal('');
   queueLoading = signal(false);
@@ -1023,12 +1025,15 @@ export class RenderDashboardPage implements OnInit, OnDestroy {
       this.queueError.set('Content, prompt version, and validation record IDs are required.');
       return;
     }
+    if(this.queueJobType() !== 'FIRST_FRAME' && this.workflowReviewId && (!this.workflowReview || this.workflowReview.family8?.renderAuthorization?.status !== 'AUTHORIZED')) {
+      this.queueError.set('Post-family kanıtı eksik veya yetki bekliyor. İnceleme ekranında tamamlayın.'); return;
+    }
     this.queueLoading.set(true); this.queueError.set(''); this.queuedJobId.set('');
     const firstFramePath = this.queueFirstFramePath().trim();
     this.http.post<{ renderJobId: string }>('/api/v1/render-jobs', {
       contentId, promptVersionId, validationRecordId,
       jobType: this.queueJobType(), openartModel: this.queueModel().trim() || 'byte-plus-seedance-2-mini',
-      openartParams: firstFramePath ? { firstFrameImageId: firstFramePath } : {}, requestPromptSha256: null,
+      openartParams: this.workflowReview ? {workflowProfile:'post-family-v1',workflowReviewId:this.workflowReviewId,workflowBindingHash:this.workflowReview.bindingHash,durationSeconds:this.workflowReview.generation.supportedRenderDuration,aspectRatio:this.workflowReview.generation.settings.aspectRatio,firstFrameImageId:firstFramePath} : (firstFramePath ? { firstFrameImageId: firstFramePath } : {}), requestPromptSha256: null,
     }, { headers: { 'Idempotency-Key': crypto.randomUUID() } }).subscribe({
       next: response => { this.queueLoading.set(false); this.queuedJobId.set(response.renderJobId); this.loadJobs(0); },
       error: err => { this.queueLoading.set(false); this.queueError.set(err.error?.detail || err.error?.message || 'Render could not be queued.'); },
@@ -1118,6 +1123,9 @@ export class RenderDashboardPage implements OnInit, OnDestroy {
       this.queueContentId.set(params.get('contentId') || '');
       this.queuePromptVersionId.set(params.get('promptVersionId') || '');
       this.queueValidationId.set(params.get('validationRecordId') || '');
+      this.workflowReviewId=params.get('workflowReviewId')||'';
+      this.workflowReview=null;
+      if(this.workflowReviewId) this.http.get<any>(`/api/v1/intelligence/workflow/records/${this.workflowReviewId}`).subscribe({next:r=>{this.workflowReview=r;this.queueModel.set(r.generation.apiModelId||'');this.queueFirstFramePath.set(r.generation.settings?.startFrame?.id||'');},error:()=>this.queueError.set('Post-family inceleme kaydı yüklenemedi; render kabulü kapalı.')});
     });
     this.connectLiveNotifications();
     this.loadOpenArtReferences();

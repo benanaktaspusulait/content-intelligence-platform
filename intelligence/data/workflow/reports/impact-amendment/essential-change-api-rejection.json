@@ -1,0 +1,9 @@
+{
+  "httpStatus": 409,
+  "response": {
+    "status": "UNKNOWN",
+    "detail": "Essential intent changed: explicit intentChangeReason required; historical review is preserved"
+  },
+  "persistedNewReview": false,
+  "syntheticMutationRequestOnly": true
+}
