@@ -64,6 +64,18 @@ class VideoPromptLineageTest {
   @org.springframework.test.context.bean.override.mockito.MockitoBean
   com.pompomhills.intelligence.quality.QualityMlClient workflowMl;
 
+  @org.springframework.test.context.bean.override.mockito.MockitoSpyBean
+  com.pompomhills.intelligence.modelregistry.StatisticalTrainingService training;
+
+  @Autowired com.pompomhills.intelligence.modelregistry.api.ModelRegistryController modelRegistry;
+  @Autowired com.pompomhills.intelligence.prediction.PredictionService predictions;
+
+  @org.springframework.test.context.bean.override.mockito.MockitoBean
+  com.pompomhills.intelligence.creative.CreativeFingerprintRepository fingerprints;
+
+  @org.springframework.test.context.bean.override.mockito.MockitoBean
+  com.pompomhills.intelligence.prediction.ml.MlPredictionClient predictionMl;
+
   @Test
   void
       folderVersionsStayAmbiguousUntilExactOperatorSelectionAndReconstructionNeverBecomesOriginal() {
@@ -598,39 +610,234 @@ class VideoPromptLineageTest {
                         .SourceAliasRequest(version.id(), root + "/新しい/prompt.yaml", "Bad bytes")))
         .isInstanceOf(IllegalArgumentException.class);
   }
+
   @Test
   void exactRenderKeepsOldVersionAndConflictingAssetLineageStaysAmbiguous() {
-    UUID video=insertVideo("rendered.mp4");
-    long content=jdbc.sql("INSERT INTO contents(title,type) VALUES ('render source','REEL') RETURNING id").query(Long.class).single();
-    long first=jdbc.sql("INSERT INTO prompt_versions(content_id,version_number,raw_text) VALUES (:content,1,'Exact original') RETURNING id").param("content",content).query(Long.class).single();
-    long newer=workspace.createPrompt(content,new com.pompomhills.intelligence.content.ContentWorkspaceController.CreatePromptRequest("Newer text","{}",first)).id();
-    for(long prompt:java.util.List.of(first,newer)) {
-      UUID job=jdbc.sql("INSERT INTO render_jobs(content_id,prompt_version_id,job_type,openart_model,status) VALUES (:content,:prompt,'VIDEO','fixture','COMPLETE') RETURNING id").param("content",content).param("prompt",prompt).query(UUID.class).single();
-      jdbc.sql("INSERT INTO render_assets(render_job_id,content_id,asset_type,relative_path,file_size_bytes,width,height) VALUES (:job,:content,'VIDEO',:path,1,640,360)").param("job",job).param("content",content).param("path","test/"+video+".mp4").update();
-      if(prompt==first) assertThat(contexts.get(video).prompt().promptVersionId()).isEqualTo(first);
+    UUID video = insertVideo("rendered.mp4");
+    long content =
+        jdbc.sql("INSERT INTO contents(title,type) VALUES ('render source','REEL') RETURNING id")
+            .query(Long.class)
+            .single();
+    long first =
+        jdbc.sql(
+                "INSERT INTO prompt_versions(content_id,version_number,raw_text) VALUES"
+                    + " (:content,1,'Exact original') RETURNING id")
+            .param("content", content)
+            .query(Long.class)
+            .single();
+    long newer =
+        workspace
+            .createPrompt(
+                content,
+                new com.pompomhills.intelligence.content.ContentWorkspaceController
+                    .CreatePromptRequest("Newer text", "{}", first))
+            .id();
+    for (long prompt : java.util.List.of(first, newer)) {
+      UUID job =
+          jdbc.sql(
+                  "INSERT INTO"
+                      + " render_jobs(content_id,prompt_version_id,job_type,openart_model,status)"
+                      + " VALUES (:content,:prompt,'VIDEO','fixture','COMPLETE') RETURNING id")
+              .param("content", content)
+              .param("prompt", prompt)
+              .query(UUID.class)
+              .single();
+      jdbc.sql(
+              "INSERT INTO"
+                  + " render_assets(render_job_id,content_id,asset_type,relative_path,file_size_bytes,width,height)"
+                  + " VALUES (:job,:content,'VIDEO',:path,1,640,360)")
+          .param("job", job)
+          .param("content", content)
+          .param("path", "test/" + video + ".mp4")
+          .update();
+      if (prompt == first)
+        assertThat(contexts.get(video).prompt().promptVersionId()).isEqualTo(first);
     }
     assertThat(contexts.get(video).prompt()).isNull();
     assertThat(contexts.get(video).evidenceStatus()).isEqualTo("PROMPT_AMBIGUOUS");
     assertThat(contexts.get(video).candidates()).hasSize(2);
-    assertThatThrownBy(()->contexts.link(video,first,"ORIGINAL","Cannot overwrite conflicting render records")).isInstanceOf(IllegalStateException.class);
+    assertThatThrownBy(
+            () ->
+                contexts.link(
+                    video, first, "ORIGINAL", "Cannot overwrite conflicting render records"))
+        .isInstanceOf(IllegalStateException.class);
   }
 
   @Test
   void secondAttemptPlateauKeepsBestIndependentVersionInsteadOfLatest() throws Exception {
-    var started=repairs.start(repairReviewFixture(3),"two-attempts",2,1);
-    UUID id=UUID.fromString(String.valueOf(started.get("sessionId")));
-    org.mockito.Mockito.when(workflowMl.workflow(org.mockito.ArgumentMatchers.eq("creative-role"),org.mockito.ArgumentMatchers.anyMap())).thenReturn(java.util.Map.of("role","MINIMAL_REPAIR","provider","openai","model","fixture","result",java.util.Map.of("patches",java.util.List.of(java.util.Map.of("sourceQuote","CUT","start",13,"end",16,"replacement","Hold"))),"costUpperBoundUsd",0.01));
-    org.mockito.Mockito.when(workflowMl.workflow(org.mockito.ArgumentMatchers.eq("repair"),org.mockito.ArgumentMatchers.anyMap())).thenReturn(java.util.Map.of("finalPrompt","Luca pushes. Hold","diff","first"),java.util.Map.of("finalPrompt","Luca pushes. Wait","diff","second"));
-    var improved=java.util.Map.<String,Object>of("bindingHash","first-independent","planQuality",java.util.Map.of("status","PASS"),"executionRisk",java.util.Map.of("status","PASS"),"executionReview",java.util.Map.of("findings",java.util.List.of(java.util.Map.of("confidence","HIGH"),java.util.Map.of("confidence","HIGH"))));
-    var plateau=java.util.Map.<String,Object>of("bindingHash","second-independent","planQuality",java.util.Map.of("status","PASS"),"executionRisk",java.util.Map.of("status","PASS"),"executionReview",java.util.Map.of("findings",java.util.List.of(java.util.Map.of("confidence","HIGH"),java.util.Map.of("confidence","HIGH"))));
-    org.mockito.Mockito.when(workflowMl.workflow(org.mockito.ArgumentMatchers.eq("review"),org.mockito.ArgumentMatchers.anyMap())).thenReturn(improved,plateau);
-    var first=repairs.step(id);assertThat(first.get("state")).isEqualTo("READY");
-    var second=repairs.step(id);assertThat(second.get("stopReason")).isEqualTo("NO_IMPROVEMENT");
+    var started = repairs.start(repairReviewFixture(3), "two-attempts", 2, 1);
+    UUID id = UUID.fromString(String.valueOf(started.get("sessionId")));
+    org.mockito.Mockito.when(
+            workflowMl.workflow(
+                org.mockito.ArgumentMatchers.eq("creative-role"),
+                org.mockito.ArgumentMatchers.anyMap()))
+        .thenReturn(
+            java.util.Map.of(
+                "role",
+                "MINIMAL_REPAIR",
+                "provider",
+                "openai",
+                "model",
+                "fixture",
+                "result",
+                java.util.Map.of(
+                    "patches",
+                    java.util.List.of(
+                        java.util.Map.of(
+                            "sourceQuote", "CUT", "start", 13, "end", 16, "replacement", "Hold"))),
+                "costUpperBoundUsd",
+                0.01));
+    org.mockito.Mockito.when(
+            workflowMl.workflow(
+                org.mockito.ArgumentMatchers.eq("repair"), org.mockito.ArgumentMatchers.anyMap()))
+        .thenReturn(
+            java.util.Map.of("finalPrompt", "Luca pushes. Hold", "diff", "first"),
+            java.util.Map.of("finalPrompt", "Luca pushes. Wait", "diff", "second"));
+    var improved =
+        java.util.Map.<String, Object>of(
+            "bindingHash",
+            "first-independent",
+            "planQuality",
+            java.util.Map.of("status", "PASS"),
+            "executionRisk",
+            java.util.Map.of("status", "PASS"),
+            "executionReview",
+            java.util.Map.of(
+                "findings",
+                java.util.List.of(
+                    java.util.Map.of("confidence", "HIGH"),
+                    java.util.Map.of("confidence", "HIGH"))));
+    var plateau =
+        java.util.Map.<String, Object>of(
+            "bindingHash",
+            "second-independent",
+            "planQuality",
+            java.util.Map.of("status", "PASS"),
+            "executionRisk",
+            java.util.Map.of("status", "PASS"),
+            "executionReview",
+            java.util.Map.of(
+                "findings",
+                java.util.List.of(
+                    java.util.Map.of("confidence", "HIGH"),
+                    java.util.Map.of("confidence", "HIGH"))));
+    org.mockito.Mockito.when(
+            workflowMl.workflow(
+                org.mockito.ArgumentMatchers.eq("review"), org.mockito.ArgumentMatchers.anyMap()))
+        .thenReturn(improved, plateau);
+    var first = repairs.step(id);
+    assertThat(first.get("state")).isEqualTo("READY");
+    var second = repairs.step(id);
+    assertThat(second.get("stopReason")).isEqualTo("NO_IMPROVEMENT");
     assertThat(second.get("bestPromptVersionId")).isEqualTo(first.get("bestPromptVersionId"));
     assertThat(second.get("attempts")).isEqualTo(2);
-    assertThat((java.util.List<?>)second.get("history")).hasSize(2);
-    assertThat(repairs.decide(id,"ACCEPTED").get("bestReviewId")).isEqualTo(first.get("bestReviewId"));
-    repairs.step(id);org.mockito.Mockito.verify(workflowMl,org.mockito.Mockito.times(2)).workflow(org.mockito.ArgumentMatchers.eq("creative-role"),org.mockito.ArgumentMatchers.anyMap());
+    assertThat((java.util.List<?>) second.get("history")).hasSize(2);
+    assertThat(repairs.decide(id, "ACCEPTED").get("bestReviewId"))
+        .isEqualTo(first.get("bestReviewId"));
+    repairs.step(id);
+    org.mockito.Mockito.verify(workflowMl, org.mockito.Mockito.times(2))
+        .workflow(
+            org.mockito.ArgumentMatchers.eq("creative-role"),
+            org.mockito.ArgumentMatchers.anyMap());
   }
 
+  @Test
+  void verifiedPromotionChangesActualInferenceSelectionAndRollbackRestoresPreviousArtifact()
+      throws Exception {
+    String platform = "model-fixture-" + UUID.randomUUID();
+    UUID first = UUID.randomUUID(), second = UUID.randomUUID();
+    for (UUID id : java.util.List.of(first, second))
+      jdbc.sql(
+              "INSERT INTO"
+                  + " model_versions(id,version,model_type,platform,training_dataset_version,feature_version,knowledge_cutoff,metrics,artifact_path,status,trained_at)"
+                  + " VALUES"
+                  + " (:id,:version,'prediction',:platform,'fixture','prerender-v5-motion-intensity-v1','2025-01-01T00:00:00Z',CAST(:metrics"
+                  + " AS jsonb),:path,:status,now())")
+          .param("id", id)
+          .param("version", id.toString())
+          .param("platform", platform)
+          .param("path", "models/statistical/" + id + ".json")
+          .param("status", id.equals(first) ? "CHAMPION" : "CHALLENGER")
+          .param(
+              "metrics",
+              "{\"pipelineVersion\":\"grouped-ridge-72h-v1\",\"artifactSha256\":\""
+                  + "a".repeat(64)
+                  + "\"}")
+          .update();
+    org.mockito.Mockito.doReturn(
+            java.util.Map.of(
+                "verified",
+                true,
+                "promotionEligible",
+                true,
+                "featureVersion",
+                "prerender-v5-motion-intensity-v1",
+                "knowledgeCutoff",
+                "2025-01-01T00:00:00Z"))
+        .when(training)
+        .verify(
+            org.mockito.ArgumentMatchers.eq(platform),
+            org.mockito.ArgumentMatchers.anyString(),
+            org.mockito.ArgumentMatchers.anyMap());
+    var mvc =
+        org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup(modelRegistry)
+            .build();
+    mvc.perform(
+            org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post(
+                    "/api/v1/models/" + second + "/promote")
+                .contentType("application/json")
+                .content("{\"reason\":\"Verified fixture holdout\"}"))
+        .andExpect(
+            org.springframework.test.web.servlet.result.MockMvcResultMatchers.status().isOk());
+    UUID video = insertVideo("model-selection.mp4");
+    var fingerprint =
+        org.mockito.Mockito.mock(
+            com.pompomhills.intelligence.creative.CreativeFingerprintEntity.class);
+    var analysis =
+        org.mockito.Mockito.mock(
+            com.pompomhills.intelligence.creative.CreativeAnalysisEntity.class);
+    org.mockito.Mockito.when(fingerprint.getAnalysis()).thenReturn(analysis);
+    org.mockito.Mockito.when(analysis.getSemanticVideoEvidence()).thenReturn(java.util.Map.of());
+    org.mockito.Mockito.when(analysis.getAnalysisVersion()).thenReturn("fixture-v1");
+    org.mockito.Mockito.when(fingerprint.getFeatures())
+        .thenReturn(java.util.Map.of("overallMotionIntensity", java.util.Map.of("value", 0.5)));
+    org.mockito.Mockito.when(fingerprints.findFirstByVideoIdOrderByCreatedAtDesc(video))
+        .thenReturn(java.util.Optional.of(fingerprint));
+    org.mockito.Mockito.when(
+            predictionMl.prepublish(
+                org.mockito.ArgumentMatchers.eq(platform),
+                org.mockito.ArgumentMatchers.anyMap(),
+                org.mockito.ArgumentMatchers.any(),
+                org.mockito.ArgumentMatchers.anyMap()))
+        .thenAnswer(
+            invocation -> {
+              java.util.Map<String, Object> reference = invocation.getArgument(3);
+              return new com.pompomhills.intelligence.prediction.ml.MlPredictionClient
+                  .PredictionResponse(
+                  "v1",
+                  String.valueOf(reference.get("modelVersion")),
+                  "fixture",
+                  "prerender-v5-motion-intensity-v1",
+                  "LOW",
+                  30,
+                  java.util.Map.of());
+            });
+    assertThat(predictions.generate(video, platform).modelVersion()).isEqualTo(second.toString());
+    mvc.perform(
+            org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post(
+                    "/api/v1/models/" + first + "/rollback")
+                .contentType("application/json")
+                .content("{\"reason\":\"Restore prior verified artifact\"}"))
+        .andExpect(
+            org.springframework.test.web.servlet.result.MockMvcResultMatchers.status().isOk());
+    assertThat(predictions.generate(video, platform).modelVersion()).isEqualTo(first.toString());
+    assertThat(predictions.history(video)).hasSize(2);
+  }
+
+  @Test
+  void trainingWithoutVerifiedMatureSnapshotsCannotCreateArtifact() {
+    assertThatThrownBy(() -> training.train("instagram", "Eligibility fixture"))
+        .isInstanceOf(org.springframework.web.server.ResponseStatusException.class)
+        .hasMessageContaining("30 verified mature");
+  }
 }

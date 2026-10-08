@@ -356,6 +356,13 @@ class AnalysisJobServiceIdempotencyTest {
     assertThat(jobs.get(queued.job().id()).state()).isEqualTo("FAILED");
     assertThatThrownBy(() -> jobs.retry(queued.job().id()))
         .isInstanceOf(IllegalStateException.class);
+    assertThatThrownBy(() -> jobs.enqueue(video))
+        .isInstanceOf(IllegalStateException.class)
+        .hasMessageContaining("Provider outcome unknown");
+    assertThat(
+            jdbc.queryForObject(
+                "SELECT count(*) FROM analysis_jobs WHERE video_id=?", Integer.class, video))
+        .isEqualTo(1);
   }
 
   @Test

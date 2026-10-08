@@ -83,11 +83,19 @@ class PostFamilyAdmissionTest {
       server.stop(0);
     }
   }
+
   @Test
   void regenerationCannotSkipSourceBoundAdmission() {
     var client = new PostFamilyAdmissionClient("http://localhost:1");
-    var request = new QueueRenderJobRequest(1,2,3,RenderJob.JobType.VIDEO,"model",Map.of("regenerationHandoffId",java.util.UUID.randomUUID().toString()),null);
+    var request =
+        new QueueRenderJobRequest(
+            1,
+            2,
+            3,
+            RenderJob.JobType.VIDEO,
+            "model",
+            Map.of("regenerationHandoffId", java.util.UUID.randomUUID().toString()),
+            null);
     assertThatThrownBy(() -> client.validate(request)).isInstanceOf(IllegalArgumentException.class);
   }
-
 }

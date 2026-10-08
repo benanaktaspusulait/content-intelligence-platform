@@ -30,6 +30,28 @@ public class ModelRegistryController {
     this.json = json;
   }
 
+  @org.springframework.beans.factory.annotation.Autowired(required = false)
+  private com.pompomhills.intelligence.modelregistry.StatisticalTrainingService training;
+
+  @PostMapping("/train")
+  @Transactional
+  ModelView train(@RequestBody TrainRequest request) {
+    var artifact = training.train(request.platform(), request.reason());
+    return register(
+        new RegisterModel(
+            String.valueOf(artifact.get("modelVersion")),
+            "prediction",
+            request.platform(),
+            String.valueOf(artifact.get("datasetVersion")),
+            String.valueOf(artifact.get("featureVersion")),
+            Instant.parse(String.valueOf(artifact.get("knowledgeCutoff"))),
+            artifact,
+            String.valueOf(artifact.get("artifactPath")),
+            Instant.parse(String.valueOf(artifact.get("trainedAt")))));
+  }
+
+  public record TrainRequest(String platform, String reason) {}
+
   @GetMapping
   List<ModelView> list() {
     return jdbc.sql(
@@ -59,10 +81,11 @@ public class ModelRegistryController {
         .param("platform", request.platform().toLowerCase())
         .param("dataset", request.trainingDatasetVersion())
         .param("feature", request.featureVersion())
-        .param("cutoff", request.knowledgeCutoff())
+        .param(
+            "cutoff", OffsetDateTime.ofInstant(request.knowledgeCutoff(), java.time.ZoneOffset.UTC))
         .param("metrics", writeJson(request.metrics()))
         .param("artifact", request.artifactPath(), java.sql.Types.VARCHAR)
-        .param("trained", request.trainedAt())
+        .param("trained", OffsetDateTime.ofInstant(request.trainedAt(), java.time.ZoneOffset.UTC))
         .update();
     return get(id);
   }
@@ -74,9 +97,56 @@ public class ModelRegistryController {
     if (!"CHALLENGER".equals(challenger.status())) {
       throw new IllegalStateException("Only a challenger can be promoted");
     }
-    throw new org.springframework.web.server.ResponseStatusException(
-        org.springframework.http.HttpStatus.NOT_IMPLEMENTED,
-        "Promotion unavailable: artifact verification and registry-controlled inference are not connected; cold-start prediction remains active");
+    return activate(challenger, request, false);
+  }
+
+  @PostMapping("/{id}/rollback")
+  @Transactional
+  ModelView rollback(@PathVariable UUID id, @RequestBody Promotion request) {
+    var model = get(id);
+    if (!"RETIRED".equals(model.status()))
+      throw new IllegalArgumentException("Rollback requires a previously retired model");
+    return activate(model, request, true);
+  }
+
+  private ModelView activate(ModelView model, Promotion request, boolean rollback) {
+    if (training == null || !"grouped-ridge-72h-v1".equals(model.metrics().get("pipelineVersion")))
+      throw new org.springframework.web.server.ResponseStatusException(
+          org.springframework.http.HttpStatus.NOT_IMPLEMENTED,
+          "Legacy model has no connected trained artifact; registry unchanged");
+    if (request == null || request.reason() == null || request.reason().isBlank())
+      throw new IllegalArgumentException("Explicit activation reason required");
+    var verified = training.verify(model.platform(), model.artifactPath(), model.metrics());
+    if (!model.featureVersion().equals(verified.get("featureVersion"))
+        || !model
+            .knowledgeCutoff()
+            .equals(Instant.parse(String.valueOf(verified.get("knowledgeCutoff")))))
+      throw new IllegalStateException("Registry identity does not match artifact");
+    if (!rollback && !Boolean.TRUE.equals(verified.get("promotionEligible")))
+      throw new IllegalStateException(
+          "Temporal holdout does not improve the baseline; challenger remains inactive");
+    jdbc.sql("SELECT pg_advisory_xact_lock(hashtext(:key))")
+        .param("key", "model:" + model.platform() + ":" + model.modelType())
+        .query((rs, ignored) -> true)
+        .single();
+    jdbc.sql(
+            "UPDATE model_versions SET status='RETIRED' WHERE platform=:platform AND"
+                + " model_type=:type AND status='CHAMPION'")
+        .param("platform", model.platform())
+        .param("type", model.modelType())
+        .update();
+    jdbc.sql("UPDATE model_versions SET status='CHAMPION' WHERE id=:id")
+        .param("id", model.id())
+        .update();
+    jdbc.sql(
+            "INSERT INTO audit_events(actor,action,entity_type,entity_id,reason,new_state) VALUES"
+                + " ('local-user',:action,'MODEL_VERSION',:id,:reason,CAST(:state AS jsonb))")
+        .param("action", rollback ? "MODEL_ROLLBACK" : "MODEL_PROMOTE")
+        .param("id", model.id())
+        .param("reason", request.reason())
+        .param("state", writeJson(verified))
+        .update();
+    return get(model.id());
   }
 
   private ModelView get(UUID id) {

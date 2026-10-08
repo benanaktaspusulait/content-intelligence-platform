@@ -54,6 +54,23 @@ public class AnalysisJobService {
       return new EnqueueResult(false, active.get());
     }
 
+    if (!force
+        && jdbc.sql(
+                """
+                SELECT EXISTS(SELECT 1 FROM analysis_jobs WHERE video_id=:video AND state='FAILED'
+                  AND COALESCE(request_payload->>'analysisVersion',:current)=:version
+                  AND request_payload->>'recoveryStatus'='PROVIDER_OUTCOME_UNKNOWN')
+                """)
+            .param("video", videoId)
+            .param("current", VideoService.CURRENT_ANALYSIS_VERSION)
+            .param("version", analysisVersion)
+            .query(Boolean.class)
+            .single()) {
+      throw new IllegalStateException(
+          "Provider outcome unknown. Reconcile the failed job before explicitly requesting a new"
+              + " analysis.");
+    }
+
     UUID id = UUID.randomUUID();
     try {
       jdbc.sql(

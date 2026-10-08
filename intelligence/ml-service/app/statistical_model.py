@@ -9,7 +9,7 @@ import statistics
 from .config import settings
 
 VERSION = "grouped-ridge-72h-v1"
-FEATURE = "prerender-motion-intensity-v1"
+FEATURE = "prerender-v5-motion-intensity-v1"
 
 
 def time(value):
@@ -20,16 +20,16 @@ def time(value):
 
 
 def feature(values):
-    item = values.get("motionIntensity")
+    item = values.get("overallMotionIntensity")
     if not isinstance(item, dict) or not isinstance(item.get("value"), (int, float)) or isinstance(item["value"], bool):
-        raise ValueError("Versioned pre-publish motionIntensity feature required")
+        raise ValueError("Versioned pre-publish overallMotionIntensity feature required")
     value = float(item["value"])
     if not math.isfinite(value) or not 0 <= value <= 1:
         raise ValueError("Finite normalized feature required")
     return value
 
 
-def fit(request):
+def fit(request, persist=True):
     now = datetime.now(timezone.utc)
     eligible = []
     identities = set()
@@ -68,7 +68,7 @@ def fit(request):
     dataset = [{k:v for k,v in row.items() if k not in {"x","y","published","measured"}} for row in eligible]
     dataset_hash = hashlib.sha256(json.dumps(dataset, sort_keys=True).encode()).hexdigest()
     artifact = {"pipelineVersion": VERSION, "featureVersion": FEATURE, "platform": request.platform, "datasetVersion": request.dataset_version,
-        "datasetSha256": dataset_hash, "featureKeys": ["motionIntensity.value"], "horizonMinutes":4320,
+        "datasetSha256": dataset_hash, "featureKeys": ["overallMotionIntensity.value"], "horizonMinutes":4320,
         "trainingCutoff": max(r["measured"] for r in train_rows).isoformat(), "knowledgeCutoff": max(r["measured"] for r in eligible).isoformat(), "trainedAt": now.isoformat(),
         "intercept": intercept, "slope": slope, "sampleSize":len(train_rows), "holdoutSize":len(test_rows),
         "metrics": {"logMAE":mae, "baselineLogMAE":baseline, "promotionEligible":mae < baseline},
@@ -77,6 +77,8 @@ def fit(request):
         "intervalLog80": sorted(errors)[min(len(errors)-1,math.ceil(len(errors)*.8)-1)], "intervalLog50": statistics.median(errors)}
     raw = json.dumps(artifact,sort_keys=True,allow_nan=False).encode()
     digest = hashlib.sha256(raw).hexdigest()
+    if not persist:
+        return {**artifact,"artifactCreated":False,"status":"BACKTEST_COMPLETED"}
     root = settings.data_root / "models/statistical"
     root.mkdir(parents=True,exist_ok=True)
     dataset_file=root / (dataset_hash+".dataset.json")
@@ -97,6 +99,9 @@ def load(reference, platform, cutoff=None):
         raise ValueError("Invalid artifact location")
     raw=path.read_bytes()
     if hashlib.sha256(raw).hexdigest()!=reference["artifactSha256"]: raise ValueError("Artifact hash mismatch")
+    expected_version = VERSION + "-" + reference["artifactSha256"][:12]
+    if reference.get("modelVersion") != expected_version:
+        raise ValueError("Artifact model version mismatch")
     artifact=json.loads(raw)
     if artifact["pipelineVersion"]!=VERSION or artifact["featureVersion"]!=FEATURE or artifact["platform"]!=platform: raise ValueError("Artifact schema/platform mismatch")
     if cutoff is not None and time(artifact["knowledgeCutoff"])>cutoff: raise ValueError("Model knowledge is newer than prediction cutoff")

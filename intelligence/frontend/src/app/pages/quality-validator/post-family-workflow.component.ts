@@ -266,9 +266,14 @@ import { GeneralProducibilityComponent } from './general-producibility.component
         >
         <details>
           <summary>Kanıt ve belirsizlik</summary>
-          <p *ngFor="let claim of r.productionEvidence?.claims">
-            {{ claim.field }} · {{ claim.state }} · {{ claim.quote || claim.reason }}
-          </p>
+          <p>Extraction: {{ r.productionEvidence?.videoPlanIR?.metadata?.generalProducibilityEvidence?.extractionVersion || 'UNKNOWN' }} · Source quote coverage: {{ evidenceCoverage(r.productionEvidence) }}. Quote coverage does not establish complete entity or effect tracking.</p>
+          <article *ngFor="let claim of r.productionEvidence?.claims">
+            <strong>{{ claim.field }} · {{ claim.state }}</strong>
+            <blockquote *ngIf="claim.quote">{{ claim.quote }}</blockquote>
+            <p>{{ claim.reason }}</p>
+            <small>Source {{ claim.sourceId || r.source?.artifact || 'UNKNOWN' }} · version {{ claim.sourceVersion || r.source?.version || 'UNKNOWN' }} · span {{ claim.span?.join('–') || 'UNKNOWN' }} · method {{ claim.methodVersion || 'UNKNOWN' }} · confidence {{ claim.confidence || 'UNKNOWN' }}</small>
+          </article>
+          <p>Unresolved requirements: {{ r.productionEvidence?.remainingUncertainty?.join(', ') || 'No missing extracted dependency; other unsupported effects may remain UNKNOWN.' }}</p>
           <small>{{ r.source?.sha256 }} · sürüm {{ r.source?.version }}</small>
         </details>
         <h3>Render öncesi temel niyet</h3>
@@ -485,7 +490,7 @@ import { GeneralProducibilityComponent } from './general-producibility.component
             çıkarılmaz.
           </p>
         </details>
-        <button type="button" (click)="validateCanonicalProfile()" [disabled]="busy || !isCurrent">Canonical profil doğrulamasını kaydet</button><p *ngIf="canonicalValidationId">{{ canonicalMessage }}</p><details>
+        <button type="button" (click)="validateCanonicalProfile()" [disabled]="busy || !isCurrent()">Canonical profil doğrulamasını kaydet</button><p *ngIf="canonicalValidationId">{{ canonicalMessage }}</p><details>
           <summary>İnsan incelemesine açık ders / deney kaydı</summary>
           <label>Ders kapsamı<select [(ngModel)]="lessonScope"><option value="ACTUAL_EXECUTION">Doğrulanmış actual video</option><option value="PROMPT_FIX">Kabul edilmiş prompt onarımı</option></select></label><label>Hipotez<textarea [(ngModel)]="lessonHypothesis"></textarea></label
           ><label>Karşı örnekler<input [(ngModel)]="counterexamples" /></label
@@ -647,6 +652,17 @@ export class PostFamilyWorkflowComponent implements OnChanges {
   ];
   plannedEditedDuration: number | null = null;
   viewerQuestion = '';
+  evidenceCoverage(evidence: any): string {
+    const total = Array.from(this.prompt).length;
+    if (!total) return 'UNKNOWN';
+    const intervals: number[][] = (evidence?.claims || []).map((claim: any) => claim.span)
+      .filter((span: any) => Array.isArray(span) && span.length === 2 && Number.isInteger(span[0]) && Number.isInteger(span[1]) && span[0] >= 0 && span[1] > span[0] && span[1] <= total)
+      .sort((a: number[], b: number[]) => a[0] - b[0]);
+    let count = 0, end = 0;
+    for (const span of intervals) { count += Math.max(0, span[1] - Math.max(end, span[0])); end = Math.max(end, span[1]); }
+    return `${count}/${total} Unicode characters (${Math.round(100 * count / total)}%)`;
+  }
+
   protectedIntent = '';
   firstFramePath = '';
   firstFrameUrl = '';
@@ -1151,7 +1167,7 @@ export class PostFamilyWorkflowComponent implements OnChanges {
   canonicalValidationId: number | null = null;
   canonicalMessage = ''; 
   validateCanonicalProfile() {
-    if(!this.review?.recordId || !this.isCurrent) return;
+    if(!this.review?.recordId || !this.isCurrent()) return;
     this.busy=true;
     this.http.post<any>(`/api/v1/intelligence/workflow/records/${this.review.recordId}/canonical-validation`,{}).subscribe({
       next: value => {this.canonicalValidationId=value.validationRecordId; this.busy=false; this.canonicalMessage=`Canonical profile validation #${this.canonicalValidationId}: ${value.report?.status || 'recorded'}. Visual gates and independent revalidation remain required. Review again to bind the new canonical evidence.`;this.changeDetector.markForCheck();},

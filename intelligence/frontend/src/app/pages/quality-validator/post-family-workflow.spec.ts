@@ -127,4 +127,23 @@ describe('post-family operator workflow', () => {
     c.intentRequirementsText = '[]';
     expect(c.isCurrent()).toBe(false);
   });
+  it('restores an exact bounded repair session without making a provider request', async () => {
+    const fixture=await setup();const component=fixture.componentInstance;const http=TestBed.inject(HttpTestingController);
+    component.reopenRepairSession('saved-session');
+    http.expectOne('/api/v1/intelligence/workflow/repair-sessions/saved-session').flush({sessionId:'saved-session',contentId:1,originalPromptVersionId:2,bestPromptVersionId:3,bestReviewId:'verified-best',state:'STOPPED',attempts:2,maxAttempts:2,reservedCostUsd:.02,history:[{promptVersionId:3,reviewId:'verified-best',diff:'exact patch'}]});
+    expect(component.repairSession.bestReviewId).toBe('verified-best');http.expectNone(r=>r.method==='POST');http.verify();fixture.destroy();TestBed.resetTestingModule();
+  });
+  it('stale inputs cannot request canonical profile admission', async () => {
+    const fixture=await setup();const component=fixture.componentInstance;const http=TestBed.inject(HttpTestingController);
+    component.review={recordId:'old-review'};component.desiredDuration=20;component.validateCanonicalProfile();
+    http.expectNone(r=>r.method==='POST');http.verify();fixture.destroy();TestBed.resetTestingModule();
+  });
+
+  it('reports overlapping source quote coverage using Unicode spans without claiming completeness', async () => {
+    const f = await setup();
+    f.componentInstance.prompt = '🎈abcd';
+    expect(f.componentInstance.evidenceCoverage({claims: [{span:[0,3]}, {span:[2,4]}, {span:[-1,2]}, {span:[0,99]}]})).toBe('4/5 Unicode characters (80%)');
+    expect(f.componentInstance.evidenceCoverage({claims:[]})).toBe('0/5 Unicode characters (0%)');
+  });
+
 });

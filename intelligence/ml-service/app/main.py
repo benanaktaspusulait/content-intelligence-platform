@@ -228,12 +228,12 @@ def verify_artifact(request: dict[str, object]) -> dict[str, object]:
 
 @app.post("/v1/evaluation/backtest")
 def backtest(request: TrainingRequest) -> dict[str, object]:
-    return {
-        "method": "EXPANDING_WINDOW",
-        "platform": request.platform,
-        "sampleSize": len(request.rows),
-        "promotionEligible": False,
-    }
+    from .statistical_model import fit
+    try:
+        return fit(request,persist=False)
+    except ValueError as error:
+        raise HTTPException(409,str(error)) from error
+
 
 
 @app.post("/api/v1/qa/dead-air", response_model=DeadAirResponse)

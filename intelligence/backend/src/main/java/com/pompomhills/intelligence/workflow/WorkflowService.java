@@ -85,7 +85,9 @@ public class WorkflowService {
         Long latest =
             jdbc.sql(
                     "SELECT q.id FROM quality_validations q WHERE content_id=:content AND"
-                        + " prompt_version_id=:prompt AND (:canonical IS NULL OR q.id=:canonical) ORDER BY EXISTS(SELECT 1 FROM quality_validation_visual_evidence ve WHERE ve.validation_record_id=q.id) DESC,q.id DESC LIMIT 1")
+                        + " prompt_version_id=:prompt AND (:canonical IS NULL OR q.id=:canonical)"
+                        + " ORDER BY EXISTS(SELECT 1 FROM quality_validation_visual_evidence ve"
+                        + " WHERE ve.validation_record_id=q.id) DESC,q.id DESC LIMIT 1")
                 .param("content", request.contentId())
                 .param("prompt", request.promptVersionId())
                 .param("canonical", input.get("canonicalValidationId"), java.sql.Types.BIGINT)
@@ -373,7 +375,21 @@ public class WorkflowService {
     String role = String.valueOf(request.get("role"));
     if (!List.of("STORY", "BUILD_PROMPT", "MINIMAL_REPAIR").contains(role))
       throw new IllegalArgumentException("Unsupported creative role");
-    var result = new LinkedHashMap<>(ml.workflow("creative-role", request));
+    var verifiedRequest = new LinkedHashMap<>(request);
+    var context = new LinkedHashMap<>(map(request.get("context")));
+    context.remove("retrievedLessons");
+    var scope = map(context.remove("lessonContext"));
+    var lessons =
+        scope.get("duration") instanceof Number duration
+            ? retrieveLessons(
+                String.valueOf(scope.get("contentProfile")),
+                String.valueOf(scope.get("modelVersion")),
+                duration.doubleValue())
+            : List.<Map<String, Object>>of();
+    context.put("retrievedLessons", lessons);
+    verifiedRequest.put("context", context);
+    var result = new LinkedHashMap<>(ml.workflow("creative-role", verifiedRequest));
+    result.put("retrievedLessons", lessons);
     result.put("validationStatus", "NOT_VALIDATED");
     result.put("recordId", save("CREATIVE_ROLE", null, result));
     return result;

@@ -50,12 +50,12 @@ public class PredictionDataReadinessService {
     int eligible = ((Number) counts.get("eligible")).intValue();
     String status = eligible == 0 ? "NO_DATA"
         : eligible < MINIMUM_ELIGIBLE_ROWS ? "INSUFFICIENT_DATA"
-        : eligible < EXPERIMENTAL_READY_ROWS ? "EXPERIMENTAL_READY" : "TRAINING_READY";
+        : eligible < EXPERIMENTAL_READY_ROWS ? "EXPERIMENTAL_READY" : "TRAINING_DATA_REVIEW_REQUIRED";
     String note = eligible < MINIMUM_ELIGIBLE_ROWS
         ? "Need at least 3 eligible organic observations; no numeric forecast is available."
         : eligible < EXPERIMENTAL_READY_ROWS
             ? "Evidence is available for experiments, but the production model gate is not met."
-            : "Training eligibility is met; chronological validation is still required before activation.";
+            : "Row count alone is insufficient: training still requires verified 72H publication labels, pre-publish snapshots and independent parent groups.";
     return new Readiness(platform, eligible, ((Number) counts.get("organic")).intValue(),
         ((Number) counts.get("paid")).intValue(), ((Number) counts.get("incomplete")).intValue(),
         status, note, MINIMUM_ELIGIBLE_ROWS, EXPERIMENTAL_READY_ROWS);

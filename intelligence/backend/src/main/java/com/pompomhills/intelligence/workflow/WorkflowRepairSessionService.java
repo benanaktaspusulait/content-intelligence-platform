@@ -147,7 +147,11 @@ public class WorkflowRepairSessionService {
     attempt.put("sourceReviewId", best.get("recordId"));
     boolean providerStarted = false;
     try {
-      var actionable = maps(map(best.get("executionReview")).get("findings"));
+      var actionable = new ArrayList<>(maps(map(best.get("executionReview")).get("findings")));
+      actionable.addAll(
+          maps(map(best.get("planQuality")).get("findings")).stream()
+              .filter(finding -> "BLOCKING".equals(finding.get("severity")))
+              .toList());
       if (actionable.isEmpty()
           || actionable.stream()
               .allMatch(
@@ -186,9 +190,15 @@ public class WorkflowRepairSessionService {
                       "intentRequirements",
                       best.getOrDefault("intentRequirements", List.of()),
                       "findings",
-                      map(best.get("executionReview")).getOrDefault("findings", List.of()),
-                      "retrievedLessons",
-                      bound.getOrDefault("retrievedLessons", List.of())),
+                      actionable,
+                      "lessonContext",
+                      Map.of(
+                          "contentProfile",
+                          bound.getOrDefault("contentProfile", "UNKNOWN"),
+                          "modelVersion",
+                          bound.getOrDefault("lessonModelVersion", ""),
+                          "duration",
+                          bound.get("desiredDuration") instanceof Number duration ? duration : 0)),
                   "maxCostUsd",
                   remaining));
       attempt.put("providerProposal", proposal);
@@ -323,8 +333,10 @@ public class WorkflowRepairSessionService {
 
   private void save(UUID id, Map<String, Object> value, String state) {
     jdbc.sql(
-            "UPDATE workflow_repair_sessions SET payload=CAST(:payload AS"
-                + " jsonb),state=:state,updated_at=now() WHERE id=:id AND state='RUNNING'")
+            "UPDATE workflow_repair_sessions SET payload=CASE WHEN state='RUNNING' THEN"
+                + " CAST(:payload AS jsonb) ELSE jsonb_set(payload,'{history}',CAST(:payload AS"
+                + " jsonb)->'history') END,state=CASE WHEN state='RUNNING' THEN :state ELSE state"
+                + " END,updated_at=now() WHERE id=:id AND state IN ('RUNNING','CANCELLED')")
         .param("id", id)
         .param("payload", write(value))
         .param("state", state)

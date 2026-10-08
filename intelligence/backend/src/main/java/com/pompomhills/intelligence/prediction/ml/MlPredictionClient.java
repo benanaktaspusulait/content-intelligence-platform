@@ -15,9 +15,17 @@ public class MlPredictionClient {
 
   public PredictionResponse prepublish(
       String platform, Map<String, Object> fingerprint, Instant cutoff) {
+    return prepublish(platform, fingerprint, cutoff, null);
+  }
+
+  public PredictionResponse prepublish(
+      String platform,
+      Map<String, Object> fingerprint,
+      Instant cutoff,
+      Map<String, Object> modelReference) {
     return rest.post()
         .uri("/v1/prediction/prepublish")
-        .body(new PredictionRequest("v1", platform, fingerprint, cutoff))
+        .body(new PredictionRequest("v1", platform, fingerprint, cutoff, modelReference))
         .retrieve()
         .body(PredictionResponse.class);
   }
@@ -38,7 +46,8 @@ public class MlPredictionClient {
       String contractVersion,
       String platform,
       Map<String, Object> fingerprint,
-      Instant knowledgeCutoff) {}
+      Instant knowledgeCutoff,
+      Map<String, Object> modelReference) {}
 
   public record LivePredictionRequest(
       String contractVersion,

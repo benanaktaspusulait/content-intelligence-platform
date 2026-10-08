@@ -27,4 +27,14 @@ describe('Import exact variant workflow', () => {
   expect(fixture.nativeElement.textContent).toContain('Exact edited publication checked');
   http.verify(); fixture.destroy(); TestBed.resetTestingModule();
  });
+ it('reopens a committed corrected batch with its original context and exact association using GET only', async () => {
+  await TestBed.configureTestingModule({ imports:[ImportDataPage], providers:[provideHttpClient(),provideHttpClientTesting(),provideRouter([]),{provide:ActivatedRoute,useValue:{snapshot:{queryParamMap:{get:()=> 'corrected-batch'}}}}]}).compileComponents();
+  const fixture=TestBed.createComponent(ImportDataPage);const http=TestBed.inject(HttpTestingController);
+  http.expectOne('/api/v1/imports/corrected-batch').flush({batchId:'corrected-batch',filename:'corrected.csv',columns:['views'],rowCount:1,matchedRows:1,unresolvedRows:0,status:'COMMITTED',platform:'facebook',timezone:'Europe/London',correctionOfBatchId:'original-batch',correctionReason:'Exact source correction'});
+  http.expectOne('/api/v1/imports/corrected-batch/rows').flush([{id:'row',sourceRowNumber:2,rawData:{views:'0'},matchedVideoId:'canonical-video',matchedVariantId:'exact-variant',matchReason:'Checked publication',matchStatus:'MANUAL'}]);
+  http.expectOne(r=>r.url==='/api/v1/videos').flush({last:true,content:[]});fixture.detectChanges();
+  expect(fixture.nativeElement.textContent).toContain('Europe/London');expect(fixture.nativeElement.textContent).toContain('original-batch');expect(fixture.nativeElement.textContent).toContain('exact-variant');
+  http.expectNone(r=>r.method==='POST');http.verify();fixture.destroy();TestBed.resetTestingModule();
+ });
+
 });

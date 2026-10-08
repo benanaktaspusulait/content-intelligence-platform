@@ -238,6 +238,9 @@ export interface ImportRow {
   matchedVideoId: string | null;
   matchedVariantId?: string | null;
   matchReason?: string | null;
+  observationId?: string | null;
+  correctionOfObservationId?: string | null;
+  correctionReason?: string | null;
   matchStatus: string;
   matchConfidence: number | null;
 }
@@ -588,6 +591,13 @@ export class CreativeIntelligenceService {
 
   getTestPlanner(): Observable<TestPlannerView> {
     return this.http.get<TestPlannerView>(`${this.baseUrl}/test-planner`);
+  }
+
+  trainModel(platform: string, reason: string): Observable<ModelVersionRecord> {
+    return this.http.post<ModelVersionRecord>(`${this.baseUrl}/models/train`, {platform,reason});
+  }
+  rollbackModel(id: string, reason: string): Observable<ModelVersionRecord> {
+    return this.http.post<ModelVersionRecord>(`${this.baseUrl}/models/${id}/rollback`, {reason});
   }
 
   getModels(): Observable<ModelVersionRecord[]> {

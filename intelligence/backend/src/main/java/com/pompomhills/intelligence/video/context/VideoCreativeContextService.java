@@ -167,7 +167,12 @@ public class VideoCreativeContextService {
         .single()) {
       throw new IllegalArgumentException("Prompt version not found");
     }
-    if (jdbc.sql("SELECT EXISTS(SELECT 1 FROM render_assets WHERE relative_path=:path AND asset_type='VIDEO')").param("path",video.getRelativePath()).query(Boolean.class).single()) {
+    if (jdbc.sql(
+            "SELECT EXISTS(SELECT 1 FROM render_assets WHERE relative_path=:path AND"
+                + " asset_type='VIDEO')")
+        .param("path", video.getRelativePath())
+        .query(Boolean.class)
+        .single()) {
       throw new IllegalStateException(
           "Verified render lineage cannot be overwritten by manual selection");
     }

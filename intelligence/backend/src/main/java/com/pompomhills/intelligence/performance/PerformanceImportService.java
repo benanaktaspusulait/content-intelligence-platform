@@ -246,6 +246,9 @@ public class PerformanceImportService {
             """
             SELECT id,sheet_name,source_row_number,raw_data::text,matched_video_id,matched_variant_id,match_status,
                    match_confidence,
+                   (SELECT o.id FROM performance_observations o WHERE o.import_row_id=import_rows.id) observation_id,
+                   (SELECT c.correction_of_id FROM performance_observation_corrections c JOIN performance_observations o ON o.id=c.observation_id WHERE o.import_row_id=import_rows.id) correction_of_observation_id,
+                   (SELECT c.reason FROM performance_observation_corrections c JOIN performance_observations o ON o.id=c.observation_id WHERE o.import_row_id=import_rows.id) correction_reason,
                    (SELECT reason FROM audit_events audit WHERE audit.entity_id=import_rows.id
                     AND audit.action='MANUAL_IMPORT_MATCH' ORDER BY audit.created_at DESC LIMIT 1) match_reason
             FROM import_rows WHERE import_batch_id=:id
@@ -263,7 +266,10 @@ public class PerformanceImportService {
                     rs.getObject("matched_variant_id", UUID.class),
                     rs.getString("match_status"),
                     (Double) rs.getObject("match_confidence"),
-                    rs.getString("match_reason")))
+                    rs.getString("match_reason"),
+                    rs.getObject("observation_id", UUID.class),
+                    rs.getObject("correction_of_observation_id", UUID.class),
+                    rs.getString("correction_reason")))
         .list();
   }
 
@@ -924,7 +930,10 @@ public class PerformanceImportService {
       UUID matchedVariantId,
       String matchStatus,
       Double matchConfidence,
-      String matchReason) {}
+      String matchReason,
+      UUID observationId,
+      UUID correctionOfObservationId,
+      String correctionReason) {}
 
   public record ImportPreview(
       UUID batchId,

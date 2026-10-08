@@ -54,7 +54,7 @@ export function mediaVariant(filename: string): string {
 
 export function isHdFile(filename: string): boolean {
   const stem = filename.replace(/\.[^.]+$/, '').toLowerCase();
-  return /_hd(?:_[a-z0-9]+)?$/.test(stem) || stem.endsWith('_hd_1080x1920');
+  return /[-_]hd(?:[-_][a-z0-9]+)?$/.test(stem) || stem.endsWith('_hd_1080x1920');
 }
 
 export function variantGroupKey(file: MediaFile, folderPath: string): string {

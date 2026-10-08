@@ -49,7 +49,11 @@ public class PredictionService {
             .orElseThrow(() -> new IllegalStateException("Analyse the video before prediction"));
     var cutoff = clock.instant();
     UUID snapshotId = createFeatureSnapshot(videoId, platform, fingerprint, cutoff);
-    var response = ml.prepublish(platform, fingerprint.getFeatures(), cutoff);
+    var active = activeModel(platform, cutoff);
+    var response =
+        active == null
+            ? ml.prepublish(platform, fingerprint.getFeatures(), cutoff)
+            : ml.prepublish(platform, fingerprint.getFeatures(), cutoff, active);
     Map<String, Object> payload = new LinkedHashMap<>(response.payload());
     payload.put("featureSnapshotId", snapshotId.toString());
     var entity =
@@ -68,25 +72,57 @@ public class PredictionService {
     return map(predictions.save(entity));
   }
 
-  private UUID createFeatureSnapshot(UUID videoId, String platform,
+  private Map<String, Object> activeModel(String platform, java.time.Instant cutoff) {
+    return jdbc.sql(
+            """
+            SELECT version,artifact_path,metrics::text FROM model_versions WHERE lower(platform)=lower(:platform)
+              AND model_type='prediction' AND status='CHAMPION' AND knowledge_cutoff<=:cutoff
+              AND metrics->>'pipelineVersion'='grouped-ridge-72h-v1'
+            """)
+        .param("platform", platform)
+        .param("cutoff", java.time.OffsetDateTime.ofInstant(cutoff, java.time.ZoneOffset.UTC))
+        .query(
+            (rs, ignored) -> {
+              var metrics = json.readValue(rs.getString("metrics"), Map.class);
+              return Map.<String, Object>of(
+                  "modelVersion",
+                  rs.getString("version"),
+                  "artifactPath",
+                  rs.getString("artifact_path"),
+                  "artifactSha256",
+                  metrics.get("artifactSha256"));
+            })
+        .optional()
+        .orElse(null);
+  }
+
+  private UUID createFeatureSnapshot(
+      UUID videoId,
+      String platform,
       com.pompomhills.intelligence.creative.CreativeFingerprintEntity fingerprint,
       java.time.Instant cutoff) {
     UUID id = UUID.randomUUID();
     Map<String, Object> semantic = fingerprint.getAnalysis().getSemanticVideoEvidence();
-    String semanticVersion = String.valueOf(semantic.getOrDefault("schemaVersion",
-        semantic.getOrDefault("version", "UNKNOWN")));
-    jdbc.sql("""
-        INSERT INTO prediction_feature_snapshots
-          (id,video_id,platform,feature_schema_version,source_analysis_version,
-           semantic_schema_version,knowledge_cutoff,features)
-        VALUES (:id,:video,:platform,:featureVersion,:analysisVersion,
-                :semanticVersion,:cutoff,CAST(:features AS jsonb))
-        """)
-        .param("id", id).param("video", videoId).param("platform", platform)
+    String semanticVersion =
+        String.valueOf(
+            semantic.getOrDefault("schemaVersion", semantic.getOrDefault("version", "UNKNOWN")));
+    jdbc.sql(
+            """
+            INSERT INTO prediction_feature_snapshots
+              (id,video_id,platform,feature_schema_version,source_analysis_version,
+               semantic_schema_version,knowledge_cutoff,features)
+            VALUES (:id,:video,:platform,:featureVersion,:analysisVersion,
+                    :semanticVersion,:cutoff,CAST(:features AS jsonb))
+            """)
+        .param("id", id)
+        .param("video", videoId)
+        .param("platform", platform)
         .param("featureVersion", "prediction-feature-snapshot-v1")
         .param("analysisVersion", fingerprint.getAnalysis().getAnalysisVersion())
-        .param("semanticVersion", semanticVersion).param("cutoff", cutoff)
-        .param("features", json.writeValueAsString(fingerprint.getFeatures())).update();
+        .param("semanticVersion", semanticVersion)
+        .param("cutoff", java.time.OffsetDateTime.ofInstant(cutoff, java.time.ZoneOffset.UTC))
+        .param("features", json.writeValueAsString(fingerprint.getFeatures()))
+        .update();
     return id;
   }
 

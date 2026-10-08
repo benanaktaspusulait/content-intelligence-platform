@@ -1091,7 +1091,7 @@ export class VideoDetailPage implements OnDestroy {
         this.loadPlatformReadiness(video.id);
         this.loadPublicationCopy(folder, generation);
         this.service.getMediaFiles(folder, false).subscribe({
-          next: files => { if (generation === this.loadGeneration) { const hdFiles = files.filter(file => isHdFile(file.name)); this.files.set(hdFiles); this.loading.set(false); const selected = hdFiles.find(file => file.relativePath === video.relativePath) || hdFiles[0]; if (selected) this.activateVariant(selected, video); else this.error.set('No HD media remains in this folder.'); } },
+          next: files => { if (generation === this.loadGeneration) { const hdFiles = files.filter(file => file.relativePath === video.relativePath || isHdFile(file.name)); this.files.set(hdFiles); this.loading.set(false); const selected = hdFiles.find(file => file.relativePath === video.relativePath) || hdFiles[0]; if (selected) this.activateVariant(selected, video); else this.error.set('No HD media remains in this folder.'); } },
           error: response => { if (generation === this.loadGeneration) { this.loading.set(false); this.error.set(response.error?.message || 'Could not load folder variants.'); } },
         });
       },
@@ -1179,7 +1179,7 @@ export class VideoDetailPage implements OnDestroy {
     this.service.getMediaFiles(folder, false).subscribe({
       next: files => {
         if (generation !== this.loadGeneration) return;
-        const hdFiles = files.filter(file => isHdFile(file.name));
+        const hdFiles = files.filter(file => file.relativePath === requestedFile || isHdFile(file.name));
         this.files.set(hdFiles); this.loading.set(false);
         const selected = hdFiles.find(file => file.relativePath === requestedFile) || hdFiles[0];
         if (selected) this.activateVariant(selected); else this.error.set('No HD media remains in this folder.');

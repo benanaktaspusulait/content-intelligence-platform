@@ -25,7 +25,9 @@ public class PostFamilyAdmissionClient {
     Map<String, Object> params = request.openartParams();
     if (params == null) return;
     if (!params.containsKey("workflowProfile")) {
-      if (params.containsKey("regenerationHandoffId")) throw new IllegalArgumentException("Regeneration handoff requires source-bound post-family admission");
+      if (params.containsKey("regenerationHandoffId"))
+        throw new IllegalArgumentException(
+            "Regeneration handoff requires source-bound post-family admission");
       return;
     }
     if (!"post-family-v1".equals(params.get("workflowProfile")))

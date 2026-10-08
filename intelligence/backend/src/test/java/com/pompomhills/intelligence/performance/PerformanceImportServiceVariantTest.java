@@ -103,6 +103,11 @@ class PerformanceImportServiceVariantTest {
             "Corrected source export");
     importService.commit(corrected.batchId());
     importService.commit(corrected.batchId());
+    assertThat(importService.rows(original.batchId()).getFirst().observationId()).isEqualTo(old);
+    assertThat(importService.rows(corrected.batchId()).getFirst().correctionOfObservationId())
+        .isEqualTo(old);
+    assertThat(importService.rows(corrected.batchId()).getFirst().correctionReason())
+        .isEqualTo("Corrected source export");
     assertThat(importService.get(corrected.batchId()).correctionOfBatchId())
         .isEqualTo(original.batchId());
     assertThat(
