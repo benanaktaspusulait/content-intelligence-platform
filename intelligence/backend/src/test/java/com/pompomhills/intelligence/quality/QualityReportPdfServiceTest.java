@@ -70,7 +70,20 @@ class QualityReportPdfServiceTest {
                     Map.of(
                         "status", "APPLICABLE",
                         "confidence", "MEDIUM",
-                        "reason", "Same-rule stalemate"))),
+                        "reason", "Same-rule stalemate")),
+                "aggregation",
+                Map.ofEntries(
+                    Map.entry("score", 70.0),
+                    Map.entry("scoredCount", 2),
+                    Map.entry("denominator", 2),
+                    Map.entry("passCount", 1),
+                    Map.entry("failCount", 1),
+                    Map.entry("unknownCount", 1),
+                    Map.entry("notEvaluatedCount", 1),
+                    Map.entry("notApplicableCount", 1),
+                    Map.entry("serviceErrorCount", 0),
+                    Map.entry("evaluationCoverage", 0.75),
+                    Map.entry("aggregationState", "PARTIAL"))),
             Map.of(),
             Map.of(),
             0.95);
@@ -94,6 +107,8 @@ class QualityReportPdfServiceTest {
     assertThat(text)
         .contains("STUBBORN_RETURN_PAYOFF", "APPLICABLE", "MEDIUM", "Same-rule stalemate");
     assertThat(text).contains("Canonical evidence confidence");
+    assertThat(text).contains("Evaluation aggregation", "Scored", "Evaluation coverage", "PARTIAL");
+    assertThat(text).contains("NOT EVALUATED", "NOT APPLICABLE", "SERVICE ERRORS");
     assertThat(text).contains("5%", "20%");
     assertThat(text).doesNotContain("533%", "2000%");
   }

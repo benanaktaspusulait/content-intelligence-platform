@@ -9,6 +9,7 @@ from __future__ import annotations
 from collections.abc import Iterable
 from typing import Any
 
+from ..quality.aggregation import AggregationRow, summarize_aggregation
 from ..quality.canonical_evidence import (
     attempt_beats,
     attempt_evidence,
@@ -27,8 +28,26 @@ from ..quality.canonical_evidence import (
 
 def build_pre_render_assessment(ir: dict[str, Any], parser: Any, report: Any, ruleset_version: str) -> dict[str, Any]:
     evaluations = tuple(report.evaluations)
-    applicable = tuple(e for e in evaluations if e.outcome.value not in {"NOT_APPLICABLE"})
-    evaluated = tuple(e for e in applicable if not is_evidence_gap(e))
+    aggregation = summarize_aggregation(
+        AggregationRow(
+            rule_id=evaluation.rule_id,
+            outcome=evaluation.outcome,
+            evaluation_state=evaluation.evaluation_state,
+            family=evaluation.family,
+            reason=evaluation.message,
+        )
+        for evaluation in evaluations
+    )
+    applicable = tuple(
+        evaluation
+        for evaluation in evaluations
+        if evaluation.outcome is None or evaluation.outcome.value != "NOT_APPLICABLE"
+    )
+    evaluated = tuple(
+        evaluation
+        for evaluation in applicable
+        if evaluation.outcome is not None and not is_evidence_gap(evaluation)
+    )
     coverage = round(len(evaluated) * 100 / max(len(applicable), 1))
 
     story = story_density_evidence(ir)
@@ -80,6 +99,7 @@ def build_pre_render_assessment(ir: dict[str, Any], parser: Any, report: Any, ru
 
     return {
         "name": "PRE_RENDER_CREATIVE_READINESS",
+        "aggregation": aggregation.to_dict(),
         "specialized_applicability": {
             rule_id: evidence.to_dict()
             for rule_id, evidence in specialized_applicability.items()
@@ -511,12 +531,15 @@ def _render_authorization(
     creative_failures = [
         evaluation.rule_id
         for evaluation in report.evaluations
-        if evaluation.outcome.value == "FAIL" and not is_evidence_gap(evaluation)
+        if evaluation.outcome is not None
+        and evaluation.outcome.value == "FAIL"
+        and not is_evidence_gap(evaluation)
     ]
     technical = [
         evaluation.rule_id
         for evaluation in report.evaluations
-        if evaluation.outcome.value == "SERVICE_ERROR"
+        if evaluation.outcome is not None
+        and evaluation.outcome.value == "SERVICE_ERROR"
     ]
     pending_items = list(pending)
     if first_frame["visual_verification"]["status"] == "PENDING" and "first-frame visual verification" not in pending_items:
@@ -565,7 +588,13 @@ def _creative_grade(evaluations: Iterable[Any]) -> str:
     fail closed on absent evidence) are reported under evidence completeness instead, so
     "we could not tell" never reads as "the plan is weak".
     """
-    creative = [item for item in evaluations if not is_evidence_gap(item) and item.outcome.value != "NOT_APPLICABLE"]
+    creative = [
+        item
+        for item in evaluations
+        if item.outcome is not None
+        and not is_evidence_gap(item)
+        and item.outcome.value != "NOT_APPLICABLE"
+    ]
     if not creative:
         return "INCOMPLETE"
     failed = [item for item in creative if item.outcome.value == "FAIL"]

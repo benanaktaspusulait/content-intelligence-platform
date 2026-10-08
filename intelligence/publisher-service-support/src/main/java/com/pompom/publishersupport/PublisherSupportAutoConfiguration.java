@@ -2,6 +2,7 @@ package com.pompom.publishersupport;
 
 import javax.sql.DataSource;
 import org.flywaydb.core.Flyway;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -42,8 +43,17 @@ public class PublisherSupportAutoConfiguration {
 
   @Bean(name = "publisherSupportFlywayInitializer")
   @DependsOn("flywayInitializer")
+  @ConditionalOnBean(name = {"publisherSupportFlyway", "flywayInitializer"})
+  FlywayMigrationInitializer publisherSupportFlywayInitializerAfterConsumerFlyway(
+      @Qualifier("publisherSupportFlyway") Flyway publisherSupportFlyway) {
+    return new FlywayMigrationInitializer(publisherSupportFlyway);
+  }
+
+  @Bean(name = "publisherSupportFlywayInitializer")
   @ConditionalOnBean(name = "publisherSupportFlyway")
-  FlywayMigrationInitializer publisherSupportFlywayInitializer(Flyway publisherSupportFlyway) {
+  @ConditionalOnMissingBean(name = "flywayInitializer")
+  FlywayMigrationInitializer publisherSupportFlywayInitializerWithoutConsumerFlyway(
+      @Qualifier("publisherSupportFlyway") Flyway publisherSupportFlyway) {
     return new FlywayMigrationInitializer(publisherSupportFlyway);
   }
 }

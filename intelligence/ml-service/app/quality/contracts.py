@@ -44,6 +44,13 @@ class RuleOutcome(StrEnum):
     SERVICE_ERROR = "SERVICE_ERROR"
 
 
+class EvaluationState(StrEnum):
+    """Whether a semantic evaluation row actually ran."""
+
+    EVALUATED = "EVALUATED"
+    NOT_EVALUATED = "NOT_EVALUATED"
+
+
 class Severity(StrEnum):
     """Severity level attached to a rule evaluation."""
 
@@ -136,6 +143,7 @@ class RuleEvaluation:
     required_value: Any = None
     threshold_value: Any = None
     details: dict[str, Any] = field(default_factory=dict)
+    evaluation_state: EvaluationState = EvaluationState.EVALUATED
 
     @property
     def passed(self) -> bool:
@@ -166,7 +174,7 @@ class QualityReport:
     Counts are derived accessors so they can never contradict ``evaluations``.
     """
 
-    overall_score: float
+    overall_score: float | None
     status: QualityStatus
     family_scores: dict[str, float | None]
     evaluations: tuple[RuleEvaluation, ...]
@@ -239,7 +247,8 @@ class QualityReport:
     @property
     def is_render_ready(self) -> bool:
         return (
-            self.overall_score >= 92
+            self.overall_score is not None
+            and self.overall_score >= 92
             and self.blocker_count == 0
             and self.critical_count == 0
             and self.service_error_count == 0
@@ -247,7 +256,7 @@ class QualityReport:
 
     @property
     def needs_redesign(self) -> bool:
-        return self.overall_score < 80 or self.blocker_count > 0
+        return self.overall_score is None or self.overall_score < 80 or self.blocker_count > 0
 
 
 @dataclass(frozen=True)
@@ -322,7 +331,7 @@ class EnhancedQualityReport:
     parser_metadata: ParserMetadata
 
     @property
-    def overall_score(self) -> float:
+    def overall_score(self) -> float | None:
         return self.base_report.overall_score
 
     @property

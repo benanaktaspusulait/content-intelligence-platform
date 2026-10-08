@@ -7,18 +7,10 @@ not-applicable, and service-error evidence.
 
 from __future__ import annotations
 
+from collections.abc import Iterable
 from dataclasses import dataclass
-from enum import StrEnum
-from typing import Iterable
 
-from .contracts import RuleOutcome
-
-
-class EvaluationState(StrEnum):
-    """Whether a semantic evaluation row actually ran."""
-
-    EVALUATED = "EVALUATED"
-    NOT_EVALUATED = "NOT_EVALUATED"
+from .contracts import EvaluationState, RuleOutcome
 
 
 @dataclass(frozen=True)

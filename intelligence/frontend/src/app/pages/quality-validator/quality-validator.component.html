@@ -118,6 +118,11 @@
         <div class="readiness-summary"><strong>Creative grade {{ report.preRenderAssessment.creative_grade || report.preRenderAssessment.grade }}</strong><span>{{ report.preRenderAssessment.prompt_stage?.replaceAll('_', ' ') || report.preRenderAssessment.readiness.replaceAll('_', ' ') }}</span><small>Creative score {{ report.preRenderAssessment.creative_score ?? 'n/a' }}</small><small>Evidence {{ report.preRenderAssessment.evidence_completeness?.status || 'UNKNOWN' }} · {{ report.preRenderAssessment.assessment_coverage_percent }}% coverage</small><small *ngIf="report.preRenderAssessment.render_authorization">Video render: {{ report.preRenderAssessment.render_authorization.status.replaceAll('_', ' ') }}</small></div>
       </div>
       <div class="card-body">
+        <section *ngIf="report.preRenderAssessment.aggregation as aggregation" class="assessment-aggregation" aria-label="Evaluation aggregation">
+          <h3>Evaluation aggregation</h3>
+          <p>Score: {{ aggregation.score ?? 'n/a' }} · Scored: {{ aggregation.scoredCount }} / {{ aggregation.denominator }} · Coverage: {{ aggregation.evaluationCoverage === null ? 'n/a' : (aggregation.evaluationCoverage * 100) + '%' }} · State: {{ aggregation.aggregationState }}</p>
+          <p>PASS {{ aggregation.passCount }} · FAIL {{ aggregation.failCount }} · UNKNOWN {{ aggregation.unknownCount }} · NOT EVALUATED {{ aggregation.notEvaluatedCount }} · NOT APPLICABLE {{ aggregation.notApplicableCount }} · SERVICE ERROR {{ aggregation.serviceErrorCount }}</p>
+        </section>
         <p class="assessment-verdict">{{ report.preRenderAssessment.verdict }}</p>
         <div class="assessment-columns" aria-label="Specialized applicability">
           <section *ngFor="let row of toSpecializedApplicabilityRows(report.preRenderAssessment.specialized_applicability)">

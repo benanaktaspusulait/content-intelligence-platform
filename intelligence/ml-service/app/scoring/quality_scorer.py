@@ -41,7 +41,7 @@ class QualityTrend:
     """Track quality changes across versions."""
 
     version: int
-    score: float
+    score: float | None
     status: str
     timestamp: str
 
@@ -289,6 +289,18 @@ class QualityScorer:
         """Create summary card data for UI."""
 
         score = quality_report.overall_score
+        if score is None:
+            return {
+                "score": None,
+                "label": "Not evaluated",
+                "color": "gray",
+                "status": quality_report.status.value,
+                "blockers": quality_report.blocker_count,
+                "criticals": quality_report.critical_count,
+                "warnings": quality_report.warning_count,
+                "passes": quality_report.pass_count,
+                "is_render_ready": quality_report.is_render_ready,
+            }
         if score >= 92:
             color, label = "green", "Excellent"
         elif score >= 80:
@@ -420,7 +432,8 @@ class QualityScorer:
         )
 
         if previous_report:
-            trend.score_delta = enhanced_report.overall_score - previous_report.overall_score
+            if enhanced_report.overall_score is not None and previous_report.overall_score is not None:
+                trend.score_delta = enhanced_report.overall_score - previous_report.overall_score
             current_families = {b.family: b.score for b in enhanced_report.score_breakdowns}
             previous_families = {b.family: b.score for b in previous_report.score_breakdowns}
             for family in current_families:

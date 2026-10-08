@@ -9,6 +9,7 @@ from unittest.mock import patch
 
 from ..api.quality import convert_quality_report
 from ..assessment.pre_render_assessment import build_pre_render_assessment
+from ..quality.aggregation import AggregationRow, EvaluationState, summarize_aggregation
 from ..parser.prompt_parser import parse_prompt
 from ..quality.canonical_evidence import (
     attempt_evidence,
@@ -43,6 +44,7 @@ class GoldenRun:
     enhanced_report: EnhancedQualityReport | None = None
     assessment: dict[str, Any] | None = None
     api_report: dict[str, Any] | None = None
+    aggregation: dict[str, Any] | None = None
     known_issues: list[dict[str, Any]] = field(default_factory=list)
     error: str | None = None
 
@@ -70,6 +72,7 @@ class GoldenRun:
             "report": None if self.report is None else _report_dict(self.report),
             "assessment": self.assessment,
             "apiReport": self.api_report,
+            "aggregation": self.aggregation,
         }
 
     def _canonical_evidence(self) -> dict[str, Any]:
@@ -201,6 +204,35 @@ def _frozen_semantic_mode(ir: dict[str, Any]) -> Iterator[None]:
         yield
 
 
+def _aggregation_from_report(report: QualityReport) -> dict[str, Any]:
+    rows = tuple(
+        AggregationRow(
+            rule_id=evaluation.rule_id,
+            outcome=evaluation.outcome,
+            evaluation_state=evaluation.evaluation_state,
+            family=evaluation.family,
+            reason=evaluation.message,
+        )
+        for evaluation in report.evaluations
+    )
+    return summarize_aggregation(rows).to_dict()
+
+
+def _not_evaluated_aggregation(ruleset_path: str | Path) -> dict[str, Any]:
+    rule_engine = RuleEngine(str(ruleset_path))
+    rows = tuple(
+        AggregationRow(
+            rule_id=str(rule["id"]),
+            outcome=None,
+            evaluation_state=EvaluationState.NOT_EVALUATED,
+            family=str(rule.get("family", "unknown")),
+            reason="Downstream evaluation did not run because deterministic parsing timed out.",
+        )
+        for rule in rule_engine.ruleset.get("rules", [])
+    )
+    return summarize_aggregation(rows).to_dict()
+
+
 def run_golden_asset(
     asset: dict[str, Any],
     *,
@@ -229,6 +261,7 @@ def run_golden_asset(
             status="PARSER_TIMEOUT",
             known_issues=[{"code": "PARSER_DISCOVERY_TIMEOUT", "message": str(error)}],
             error=str(error),
+            aggregation=_not_evaluated_aggregation(ruleset_path),
         )
     parsed = _frozen_parse_result(parsed)
     try:
@@ -258,4 +291,5 @@ def run_golden_asset(
         enhanced_report=enhanced,
         assessment=assessment,
         api_report=api_report,
+        aggregation=_aggregation_from_report(report),
     )

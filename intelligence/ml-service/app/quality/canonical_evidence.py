@@ -14,7 +14,7 @@ from collections.abc import Iterable
 from dataclasses import dataclass
 from typing import Any, Literal
 
-from .contracts import RuleEvaluation, RuleOutcome
+from .contracts import EvaluationState, RuleEvaluation, RuleOutcome
 
 CANONICAL_EVIDENCE_VERSION = "canonical-attempt-evidence-v2"
 UNSPECIFIED_VERB = "UNSPECIFIED"
@@ -914,12 +914,16 @@ def story_density_evidence(video_plan_ir: dict[str, Any]) -> StoryDensityEvidenc
 
 
 def is_evidence_gap(evaluation: RuleEvaluation) -> bool:
+    if evaluation.evaluation_state is EvaluationState.NOT_EVALUATED:
+        return True
     if evaluation.outcome in (RuleOutcome.UNKNOWN, RuleOutcome.SERVICE_ERROR):
         return True
     return evaluation.outcome is RuleOutcome.FAIL and evaluation.details.get("failureBasis") == EVIDENCE_INCOMPLETE_FAILURE
 
 
 def evidence_gap_kind(evaluation: RuleEvaluation) -> str:
+    if evaluation.evaluation_state is EvaluationState.NOT_EVALUATED:
+        return "NOT_EVALUATED"
     if evaluation.outcome is RuleOutcome.UNKNOWN:
         return "UNKNOWN"
     if evaluation.outcome is RuleOutcome.SERVICE_ERROR:

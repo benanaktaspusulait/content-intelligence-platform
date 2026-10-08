@@ -41,7 +41,7 @@ def test_pass_pass_fail_scores_all_three_rows() -> None:
     assert summary.aggregation_state == "EVALUATED"
 
 
-def test_unknown_is_not_scored_but_lowers_coverage() -> None:
+def test_unknown_is_not_scored_but_counts_as_semantically_evaluated_for_coverage() -> None:
     summary = summarize_aggregation([
         evaluated("r1", RuleOutcome.PASS),
         evaluated("r2", RuleOutcome.PASS),

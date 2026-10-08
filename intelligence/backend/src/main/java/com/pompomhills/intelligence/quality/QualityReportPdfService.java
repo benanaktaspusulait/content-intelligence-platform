@@ -201,6 +201,42 @@ public class QualityReportPdfService {
             "Recommended changes", "→", strings(assessment.get("recommended_changes")), BLUE, fonts));
     document.add(columns);
 
+    Object aggregationObject = assessment.get("aggregation");
+    if (aggregationObject instanceof Map<?, ?> aggregation) {
+      Paragraph aggregationHeading = new Paragraph("Evaluation aggregation", fonts.bold);
+      aggregationHeading.setSpacingBefore(4);
+      aggregationHeading.setSpacingAfter(4);
+      document.add(aggregationHeading);
+      document.add(
+          new Paragraph(
+              "Score: "
+                  + orDash(str(aggregation.get("score")))
+                  + "  ·  Scored: "
+                  + orDash(str(aggregation.get("scoredCount")))
+                  + "  ·  Denominator: "
+                  + orDash(str(aggregation.get("denominator")))
+                  + "  ·  Evaluation coverage: "
+                  + orDash(str(aggregation.get("evaluationCoverage")))
+                  + "  ·  State: "
+                  + orDash(str(aggregation.get("aggregationState"))),
+              fonts.body));
+      document.add(
+          new Paragraph(
+              "PASS: "
+                  + orDash(str(aggregation.get("passCount")))
+                  + "  ·  FAIL: "
+                  + orDash(str(aggregation.get("failCount")))
+                  + "  ·  UNKNOWN: "
+                  + orDash(str(aggregation.get("unknownCount")))
+                  + "  ·  NOT EVALUATED: "
+                  + orDash(str(aggregation.get("notEvaluatedCount")))
+                  + "  ·  NOT APPLICABLE: "
+                  + orDash(str(aggregation.get("notApplicableCount")))
+                  + "  ·  SERVICE ERRORS: "
+                  + orDash(str(aggregation.get("serviceErrorCount"))),
+              fonts.muted));
+    }
+
     List<Map.Entry<?, ?>> applicabilityRows = new ArrayList<>();
     if (assessment.get("specialized_applicability") instanceof Map<?, ?> applicability) {
       for (Map.Entry<?, ?> entry : applicability.entrySet()) {

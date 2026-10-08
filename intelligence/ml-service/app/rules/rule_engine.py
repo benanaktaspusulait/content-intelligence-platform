@@ -26,6 +26,7 @@ from app.llm.semantic_checks import (
     find_duplicate_strategy_pairs,
 )
 from app.qa.character_verifier import CharacterVerifier
+from app.quality.aggregation import AggregationRow, summarize_aggregation
 from app.quality.canonical_evidence import (
     EVIDENCE_INCOMPLETE_FAILURE,
     attempt_beats,
@@ -49,6 +50,19 @@ from app.quality.family_weights import CANONICAL_FAMILY_WEIGHTS
 # Re-export the canonical types so existing ``from app.rules.rule_engine
 # import RuleEvaluation, QualityReport`` call sites keep working.
 RuleEvaluationType = _RuleEvaluation
+
+
+def _aggregation_rows(evaluations: list[RuleEvaluationType]) -> tuple[AggregationRow, ...]:
+    return tuple(
+        AggregationRow(
+            rule_id=evaluation.rule_id,
+            outcome=evaluation.outcome,
+            evaluation_state=evaluation.evaluation_state,
+            family=evaluation.family,
+            reason=evaluation.message,
+        )
+        for evaluation in evaluations
+    )
 
 
 def RuleEvaluation(
@@ -318,8 +332,10 @@ class RuleEngine:
         # Determine status (fail closed on service errors)
         if service_error_count > 0:
             status = QualityStatus.SERVICE_ERROR
-        elif overall_score >= 92 and blocker_count == 0 and critical_count == 0:
+        elif overall_score is not None and overall_score >= 92 and blocker_count == 0 and critical_count == 0:
             status = QualityStatus.RENDER_READY
+        elif overall_score is None:
+            status = QualityStatus.NEEDS_REVISION
         elif overall_score < 80 or blocker_count > 0:
             status = QualityStatus.BLOCKED
         else:
@@ -348,7 +364,9 @@ class RuleEngine:
             scored = [
                 rule
                 for rule in rules
-                if rule.outcome in {RuleOutcome.PASS, RuleOutcome.FAIL} and not is_evidence_gap(rule)
+                if rule.evaluation_state.value == "EVALUATED"
+                and rule.outcome in {RuleOutcome.PASS, RuleOutcome.FAIL}
+                and not is_evidence_gap(rule)
             ]
             if not scored:
                 family_scores[family] = None
@@ -363,13 +381,10 @@ class RuleEngine:
                     total_score += 40
                 else:
                     total_score += 70
-            if any(rule.outcome is RuleOutcome.SERVICE_ERROR for rule in rules):
-                family_scores[family] = None
-            else:
-                # UNKNOWN and NOT_APPLICABLE reduce evidence coverage but do not
-                # erase the evaluated PASS/FAIL signal. The score is explicitly an
-                # evaluated-subset score; the family assessment remains PARTIAL.
-                family_scores[family] = total_score / len(scored)
+            # UNKNOWN, NOT_APPLICABLE, NOT_EVALUATED and SERVICE_ERROR do not enter
+            # the numeric denominator. A service error remains explicit in the
+            # aggregation summary but does not erase valid PASS/FAIL score.
+            family_scores[family] = total_score / len(scored)
         return family_scores
 
     def _calculate_family_assessments(
@@ -381,6 +396,7 @@ class RuleEngine:
             family_rules.setdefault(evaluation.family, []).append(evaluation)
         scores = self._calculate_family_scores(evaluations)
         for family, rules in family_rules.items():
+            aggregation = summarize_aggregation(_aggregation_rows(rules))
             counts = {outcome.value: sum(1 for rule in rules if rule.outcome is outcome) for outcome in RuleOutcome}
             if counts[RuleOutcome.SERVICE_ERROR.value]:
                 state = "SERVICE_ERROR"
@@ -403,6 +419,8 @@ class RuleEngine:
                 "status": state,
                 "score": scores.get(family),
                 "evidenceCoverage": round(100 * evaluated_count / max(len(rules), 1)),
+                "evaluationCoverage": aggregation.evaluation_coverage,
+                "aggregation": aggregation.to_dict(),
                 "counts": counts,
                 "reasons": [rule.message for rule in rules if rule.outcome in {RuleOutcome.UNKNOWN, RuleOutcome.SERVICE_ERROR}],
             }
@@ -410,7 +428,7 @@ class RuleEngine:
 
     def _calculate_overall_score(
         self, family_scores: dict[str, float | None], evaluations: list[RuleEvaluationType]
-    ) -> float:
+    ) -> float | None:
         """Calculate weighted overall score from fully evaluated families only."""
         weighted_sum = 0.0
         total_weight = 0.0
@@ -420,7 +438,7 @@ class RuleEngine:
             weight = CANONICAL_FAMILY_WEIGHTS.get(family, 0.05)
             weighted_sum += score * weight
             total_weight += weight
-        return weighted_sum / total_weight if total_weight > 0 else 0.0
+        return weighted_sum / total_weight if total_weight > 0 else None
 
     # ========================================
     # RULE EVALUATORS

@@ -152,4 +152,51 @@ class QualityReportDtoTest {
     assertThat(dto.timelineData()).isNotNull();
     assertThat(dto.provenance()).isNotNull();
   }
+
+  @SuppressWarnings("unchecked")
+  @Test
+  void preservesFamily7AggregationThroughJsonRoundTrip() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.setPropertyNamingStrategy(
+        com.fasterxml.jackson.databind.PropertyNamingStrategies.SNAKE_CASE);
+
+    QualityReportDto dto =
+        mapper.readValue(
+            """
+            {
+              "overall_score": null,
+              "status": "NEEDS_REVISION",
+              "ruleset_version": "1.7",
+              "pre_render_assessment": {
+                "aggregation": {
+                  "score": null,
+                  "scoredCount": 0,
+                  "denominator": 0,
+                  "passCount": 0,
+                  "failCount": 0,
+                  "unknownCount": 1,
+                  "notEvaluatedCount": 0,
+                  "notApplicableCount": 0,
+                  "serviceErrorCount": 0,
+                  "evaluationCoverage": 1.0,
+                  "aggregationState": "NO_SCORED_ITEMS"
+                }
+              }
+            }
+            """,
+            QualityReportDto.class);
+
+    QualityReportDto roundTripped =
+        mapper.readValue(mapper.writeValueAsString(dto), QualityReportDto.class);
+    Map<String, Object> aggregation =
+        (Map<String, Object>) roundTripped.preRenderAssessment().get("aggregation");
+
+    assertThat(aggregation)
+        .containsEntry("scoredCount", 0)
+        .containsEntry("unknownCount", 1)
+        .containsEntry("evaluationCoverage", 1.0)
+        .containsEntry("aggregationState", "NO_SCORED_ITEMS");
+    assertThat(aggregation.get("score")).isNull();
+  }
+
 }
