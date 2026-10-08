@@ -1,0 +1,105 @@
+{
+  "backend": {
+    "total": 69,
+    "suites": [
+      {
+        "suite": "VideoPromptLineageTest",
+        "tests": 16,
+        "errors": 0,
+        "failures": 0,
+        "skipped": 0
+      },
+      {
+        "suite": "ValidationEvidenceServiceTest",
+        "tests": 14,
+        "errors": 0,
+        "failures": 0,
+        "skipped": 0
+      },
+      {
+        "suite": "IntelligenceQualityValidationServiceTest",
+        "tests": 10,
+        "errors": 0,
+        "failures": 0,
+        "skipped": 0
+      },
+      {
+        "suite": "WorkflowServiceTest",
+        "tests": 6,
+        "errors": 0,
+        "failures": 0,
+        "skipped": 0
+      },
+      {
+        "suite": "WorkflowTransportTest",
+        "tests": 2,
+        "errors": 0,
+        "failures": 0,
+        "skipped": 0
+      },
+      {
+        "suite": "WorkflowImpactReportTest",
+        "tests": 1,
+        "errors": 0,
+        "failures": 0,
+        "skipped": 0
+      },
+      {
+        "suite": "AnalysisJobServiceIdempotencyTest",
+        "tests": 13,
+        "errors": 0,
+        "failures": 0,
+        "skipped": 0
+      },
+      {
+        "suite": "PerformanceImportServiceVariantTest",
+        "tests": 7,
+        "errors": 0,
+        "failures": 0,
+        "skipped": 0
+      }
+    ]
+  },
+  "creative-render-service": {
+    "total": 39,
+    "suites": [
+      {
+        "suite": "PostFamilyAdmissionTest",
+        "tests": 4,
+        "errors": 0,
+        "failures": 0,
+        "skipped": 0
+      },
+      {
+        "suite": "RenderJobQueueServiceTest",
+        "tests": 13,
+        "errors": 0,
+        "failures": 0,
+        "skipped": 0
+      },
+      {
+        "suite": "ValidationEvidencePolicyTest",
+        "tests": 22,
+        "errors": 0,
+        "failures": 0,
+        "skipped": 0
+      }
+    ]
+  },
+  "frontend": {
+    "tests": 69,
+    "files": 13,
+    "log": "frontend-tests.log",
+    "scope": "all discovered tests"
+  },
+  "ml": {
+    "tests": 734,
+    "warnings": 154,
+    "log": "ml-tests.log",
+    "scope": "full suite"
+  },
+  "paidProviderCalls": 0,
+  "productionModelPromotion": false,
+  "branch": "master",
+  "isolatedDatabase": "pompom_workflow_local"
+}

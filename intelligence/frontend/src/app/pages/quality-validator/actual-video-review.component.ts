@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, SimpleChanges, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnChanges, SimpleChanges, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
@@ -17,6 +17,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class ActualVideoReviewComponent implements OnChanges {
   private http = inject(HttpClient);
+  private changeDetector = inject(ChangeDetectorRef);
   @Input() videoId = '';
   start = 0; end: number | null = null; confirmed = false; busy = false; error = ''; result: any = null;
   values: Record<string, string> = {}; descriptions: Record<string, string> = {};
@@ -33,19 +34,20 @@ export class ActualVideoReviewComponent implements OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     if (!changes['videoId']) return;
     const sequence = ++this.sequence;
-    this.result = null;
+    this.result = null; this.error = ''; this.busy = false; this.confirmed = false; this.start = 0; this.end = null; this.values = {}; this.descriptions = {};
     if (!this.videoId) return;
-    this.http.get<any[]>(`/api/v1/intelligence/workflow/videos/${this.videoId}/qa`).subscribe({ next: records => { if (sequence === this.sequence) this.result = records[0] || null; }, error: () => { if (sequence === this.sequence) this.error = 'Saved actual review could not be loaded.'; } });
+    this.http.get<any[]>(`/api/v1/intelligence/workflow/videos/${this.videoId}/qa`).subscribe({ next: records => { if (sequence === this.sequence) {this.result = records[0] || null; this.changeDetector.markForCheck();} }, error: () => { if (sequence === this.sequence) {this.error = 'Saved actual review could not be loaded.';this.changeDetector.markForCheck();} } });
   }
   review(): void {
-    if (!this.videoId || !this.confirmed || this.end === null || this.end <= this.start) return;
+    if (this.busy || !this.videoId || !this.confirmed || this.end === null || this.end <= this.start) return;
     const experience = Object.fromEntries(this.aspects.map(aspect => [aspect.key, {
       value: this.values[aspect.key] || 'UNKNOWN', start: this.start, end: this.end,
       observed: this.descriptions[aspect.key] || '', confidence: 'HIGH', evidenceBasis: 'HUMAN_REVIEWED_CLIP', reference: this.videoId,
     }]));
+    const sequence = this.sequence;
     this.busy = true; this.error = '';
     this.http.post<any>(`/api/v1/intelligence/workflow/videos/${this.videoId}/qa`, {
       humanReviewed: true, observation: { coverage: [this.start, this.end], experience },
-    }).subscribe({ next: result => { this.result = result; this.busy = false; }, error: response => { this.error = response.error?.detail || 'Actual review failed.'; this.busy = false; } });
+    }).subscribe({ next: result => { if(sequence!==this.sequence) return; this.result = result; this.busy = false; this.changeDetector.markForCheck(); }, error: response => {if(sequence!==this.sequence) return; this.error = response.error?.detail || 'Actual review failed.'; this.busy = false; this.changeDetector.markForCheck(); } });
   }
 }

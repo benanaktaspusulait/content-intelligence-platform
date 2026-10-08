@@ -1,7 +1,30 @@
 {
-  "statusCode": 409,
-  "body": {
-    "status": "UNKNOWN",
-    "detail": "Unsupported workflow operation"
-  }
+  "enabled": false,
+  "liveVerified": false,
+  "roles": [
+    {
+      "role": "STORY",
+      "provider": "deepseek",
+      "model": "",
+      "configured": false,
+      "modality": "TEXT_ONLY",
+      "automaticFallback": false
+    },
+    {
+      "role": "BUILD_PROMPT",
+      "provider": "openai",
+      "model": "",
+      "configured": false,
+      "modality": "TEXT_ONLY",
+      "automaticFallback": false
+    },
+    {
+      "role": "MINIMAL_REPAIR",
+      "provider": "openai",
+      "model": "",
+      "configured": false,
+      "modality": "TEXT_ONLY",
+      "automaticFallback": false
+    }
+  ]
 }

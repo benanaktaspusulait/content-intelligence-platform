@@ -1,0 +1,56 @@
+........................................................................ [  9%]
+........................................................................ [ 19%]
+........................................................................ [ 29%]
+........................................................................ [ 39%]
+........................................................................ [ 49%]
+........................................................................ [ 58%]
+........................................................................ [ 68%]
+........................................................................ [ 78%]
+........................................................................ [ 88%]
+........................................................................ [ 98%]
+..............                                                           [100%]
+=============================== warnings summary ===============================
+tests/test_api_conversions.py: 10 warnings
+tests/test_autofix_loop.py: 2 warnings
+tests/test_canonical_beat_evidence.py: 12 warnings
+tests/test_duration_parsing.py: 2 warnings
+tests/test_failed_cases.py: 4 warnings
+tests/test_family10_freeze_gate.py: 9 warnings
+tests/test_family2_escalation.py: 6 warnings
+tests/test_family3_goal_realization.py: 1 warning
+tests/test_family4_mechanic_payoff.py: 4 warnings
+tests/test_family5_specialized_applicability.py: 9 warnings
+tests/test_family6_golden_contract.py: 2 warnings
+tests/test_family7_aggregation_representation.py: 2 warnings
+tests/test_family7_missing_evaluation.py: 1 warning
+tests/test_family8_integration.py: 2 warnings
+tests/test_family9_golden_representation.py: 8 warnings
+tests/test_family9_representation_consistency.py: 5 warnings
+tests/test_golden_provenance.py: 1 warning
+tests/test_golden_representation_contract.py: 1 warning
+tests/test_integration_e2e.py: 6 warnings
+tests/test_parser_contract.py: 21 warnings
+tests/test_pompom_golden_baseline.py: 11 warnings
+tests/test_prompt_quality_consistency_golden.py: 1 warning
+tests/test_prompt_quality_second_pass.py: 18 warnings
+tests/test_quality_router.py: 1 warning
+tests/test_quality_scorer.py: 5 warnings
+tests/test_regression_checker.py: 4 warnings
+tests/test_rule_engine_contract.py: 4 warnings
+tests/test_ruleset_1_6_story_density.py: 1 warning
+  /Users/benanaktas/project/video/content-intelligence-platform/intelligence/ml-service/app/parser/prompt_parser.py:178: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+    "createdAt": datetime.utcnow().isoformat() + "Z",
+
+tests/test_llm_providers.py::test_get_provider_gemini
+  /Users/benanaktas/project/video/content-intelligence-platform/intelligence/ml-service/app/llm/gemini_provider.py:3: FutureWarning: 
+  
+  All support for the `google.generativeai` package has ended. It will no longer be receiving 
+  updates or bug fixes. Please switch to the `google.genai` package as soon as possible.
+  See README for more details:
+  
+  https://github.com/google-gemini/deprecated-generative-ai-python/blob/main/README.md
+  
+    import google.generativeai as genai
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+734 passed, 154 warnings in 39.64s

@@ -690,7 +690,17 @@ public class WorkflowService {
     var request = new LinkedHashMap<>(input);
     request.put("relativePath", video.relativePath());
     var plan = new LinkedHashMap<String, Object>();
-    plan.put("bindingHash", "actual-only:" + videoId + ":" + UUID.randomUUID());
+    try {
+      String identity = "actual-only:" + videoId + ":" + UUID.randomUUID();
+      plan.put(
+          "bindingHash",
+          HexFormat.of()
+              .formatHex(
+                  MessageDigest.getInstance("SHA-256")
+                      .digest(identity.getBytes(java.nio.charset.StandardCharsets.UTF_8))));
+    } catch (java.security.NoSuchAlgorithmException error) {
+      throw new IllegalStateException("Actual-only binding could not be created", error);
+    }
     plan.put("lineageStatus", "UNAVAILABLE");
     plan.put("decisionPolicyVersion", "impact-review-v1");
     return actualQaBound(plan, null, request);

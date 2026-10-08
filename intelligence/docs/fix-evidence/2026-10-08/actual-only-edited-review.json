@@ -1,0 +1,4486 @@
+{
+  "status": "UNKNOWN",
+  "planFidelity": "NOT_EVALUATED",
+  "lineageStatus": "UNAVAILABLE",
+  "planFidelityReason": "Original generation prompt unavailable; actual viewing evidence assessed separately",
+  "viewerFacingUsability": "UNKNOWN",
+  "editorialRecommendation": "INSUFFICIENT_EVIDENCE",
+  "findings": [],
+  "experience": {
+    "coreEventReadability": {
+      "type": null,
+      "start": null,
+      "end": null,
+      "evidenceBasis": null,
+      "reference": null,
+      "observed": null,
+      "inferred": null,
+      "uncertainty": null,
+      "confidence": null,
+      "durationSeconds": null,
+      "recurrence": null,
+      "affectedEntity": null,
+      "eventId": null,
+      "requirementId": null,
+      "rawSeverity": null,
+      "state": null,
+      "requiresMotion": null,
+      "impact": null,
+      "value": "UNKNOWN",
+      "status": "UNKNOWN"
+    },
+    "identity": {
+      "type": null,
+      "start": null,
+      "end": null,
+      "evidenceBasis": null,
+      "reference": null,
+      "observed": null,
+      "inferred": null,
+      "uncertainty": null,
+      "confidence": null,
+      "durationSeconds": null,
+      "recurrence": null,
+      "affectedEntity": null,
+      "eventId": null,
+      "requirementId": null,
+      "rawSeverity": null,
+      "state": null,
+      "requiresMotion": null,
+      "impact": null,
+      "value": "UNKNOWN",
+      "status": "UNKNOWN"
+    },
+    "safety": {
+      "type": null,
+      "start": null,
+      "end": null,
+      "evidenceBasis": null,
+      "reference": null,
+      "observed": null,
+      "inferred": null,
+      "uncertainty": null,
+      "confidence": null,
+      "durationSeconds": null,
+      "recurrence": null,
+      "affectedEntity": null,
+      "eventId": null,
+      "requirementId": null,
+      "rawSeverity": null,
+      "state": null,
+      "requiresMotion": null,
+      "impact": null,
+      "value": "UNKNOWN",
+      "status": "UNKNOWN"
+    },
+    "coherence": {
+      "type": null,
+      "start": null,
+      "end": null,
+      "evidenceBasis": null,
+      "reference": null,
+      "observed": null,
+      "inferred": null,
+      "uncertainty": null,
+      "confidence": null,
+      "durationSeconds": null,
+      "recurrence": null,
+      "affectedEntity": null,
+      "eventId": null,
+      "requirementId": null,
+      "rawSeverity": null,
+      "state": null,
+      "requiresMotion": null,
+      "impact": null,
+      "value": "UNKNOWN",
+      "status": "UNKNOWN"
+    },
+    "progression": {
+      "type": null,
+      "start": null,
+      "end": null,
+      "evidenceBasis": null,
+      "reference": null,
+      "observed": null,
+      "inferred": null,
+      "uncertainty": null,
+      "confidence": null,
+      "durationSeconds": null,
+      "recurrence": null,
+      "affectedEntity": null,
+      "eventId": null,
+      "requirementId": null,
+      "rawSeverity": null,
+      "state": null,
+      "requiresMotion": null,
+      "impact": null,
+      "value": "UNKNOWN",
+      "status": "UNKNOWN"
+    },
+    "opening": {
+      "type": null,
+      "start": null,
+      "end": null,
+      "evidenceBasis": null,
+      "reference": null,
+      "observed": null,
+      "inferred": null,
+      "uncertainty": null,
+      "confidence": null,
+      "durationSeconds": null,
+      "recurrence": null,
+      "affectedEntity": null,
+      "eventId": null,
+      "requirementId": null,
+      "rawSeverity": null,
+      "state": null,
+      "requiresMotion": null,
+      "impact": null,
+      "value": "UNKNOWN",
+      "status": "UNKNOWN"
+    },
+    "ending": {
+      "type": null,
+      "start": null,
+      "end": null,
+      "evidenceBasis": null,
+      "reference": null,
+      "observed": null,
+      "inferred": null,
+      "uncertainty": null,
+      "confidence": null,
+      "durationSeconds": null,
+      "recurrence": null,
+      "affectedEntity": null,
+      "eventId": null,
+      "requirementId": null,
+      "rawSeverity": null,
+      "state": null,
+      "requiresMotion": null,
+      "impact": null,
+      "value": "UNKNOWN",
+      "status": "UNKNOWN"
+    },
+    "openingFrame": {
+      "type": null,
+      "start": null,
+      "end": null,
+      "evidenceBasis": null,
+      "reference": null,
+      "observed": null,
+      "inferred": null,
+      "uncertainty": null,
+      "confidence": null,
+      "durationSeconds": null,
+      "recurrence": null,
+      "affectedEntity": null,
+      "eventId": null,
+      "requirementId": null,
+      "rawSeverity": null,
+      "state": null,
+      "requiresMotion": null,
+      "impact": null,
+      "value": "UNKNOWN",
+      "status": "UNKNOWN"
+    }
+  },
+  "repairEconomics": {
+    "order": [
+      "KEEP_USABLE",
+      "EDIT_TRIM",
+      "INTERVAL_PROMPT_REPAIR",
+      "SUPPORTED_NECESSARY_SEGMENT",
+      "JUSTIFIED_FULL_RERENDER"
+    ],
+    "fullRerenderJustified": false,
+    "automaticExecution": false,
+    "essentialBenefit": null,
+    "defectAddressed": null,
+    "whySmallerInsufficient": null,
+    "remainingUncertainty": "No verified repair execution outcome",
+    "successProbability": null
+  },
+  "smallestIntervention": "Kan\u0131t aral\u0131\u011f\u0131n\u0131 tamamla",
+  "stage": "ACTUAL_RENDER_QA",
+  "decisionPolicyVersion": "impact-review-v1",
+  "bindingHash": "a895885f99dc2389f8c2b7d1160f0ffbdd67b692020b2619d8dd09454037ecb1",
+  "assetHash": "7626749e7834ecfe1183cfc0e804f79182ee34b1802e2908ea898c85cdaa2762",
+  "events": [],
+  "family8": {
+    "creativeQuality": {
+      "creativeScore": null,
+      "creativeGrade": null,
+      "familyScores": {}
+    },
+    "evidenceCompleteness": {
+      "status": "INCOMPLETE",
+      "evaluationCoverage": null,
+      "aggregation": {}
+    },
+    "renderAuthorization": {
+      "status": "BLOCKED_PENDING_EVIDENCE",
+      "reasons": [
+        {
+          "code": "REQUIRED_EVIDENCE_MISSING",
+          "source": "ACTUAL_VIEWING_EXPERIENCE",
+          "message": "Actual-video/source-supported experience incomplete",
+          "references": []
+        }
+      ]
+    },
+    "legacy": {
+      "readiness": null
+    }
+  },
+  "fidelityEvidence": {
+    "plannedDuration": null,
+    "actualDuration": 12.083,
+    "timingAlignment": "ALIGNED",
+    "reason": "Duration mismatch proves timing deviation, not loss of core event",
+    "eventCoverage": []
+  },
+  "authorizationScope": "EDITORIAL_ASSESSMENT_ONLY",
+  "publicationAuthorized": false,
+  "automaticRerender": false,
+  "renderAuthorizationUnchanged": true,
+  "actualFirstFrame": {
+    "type": null,
+    "start": null,
+    "end": null,
+    "evidenceBasis": null,
+    "reference": null,
+    "observed": null,
+    "inferred": null,
+    "uncertainty": null,
+    "confidence": null,
+    "durationSeconds": null,
+    "recurrence": null,
+    "affectedEntity": null,
+    "eventId": null,
+    "requirementId": null,
+    "rawSeverity": null,
+    "state": null,
+    "requiresMotion": null,
+    "impact": null,
+    "value": "UNKNOWN",
+    "status": "UNKNOWN",
+    "canonicalAuthorizationGate": false
+  },
+  "actualOpeningVideo": {
+    "status": "UNKNOWN",
+    "evidence": {
+      "type": null,
+      "start": null,
+      "end": null,
+      "evidenceBasis": null,
+      "reference": null,
+      "observed": null,
+      "inferred": null,
+      "uncertainty": null,
+      "confidence": null,
+      "durationSeconds": null,
+      "recurrence": null,
+      "affectedEntity": null,
+      "eventId": null,
+      "requirementId": null,
+      "rawSeverity": null,
+      "state": null,
+      "requiresMotion": null,
+      "impact": null,
+      "value": "UNKNOWN",
+      "status": "UNKNOWN"
+    }
+  },
+  "audioReview": {
+    "mode": "SOUND_OFF",
+    "status": "UNKNOWN",
+    "reason": "No verified actual audio/transcript evidence supplied"
+  },
+  "technicalAnalysis": {
+    "contractVersion": "v1",
+    "metadata": {
+      "durationMs": 12083,
+      "width": 1080,
+      "height": 1920,
+      "fps": 24.0,
+      "aspectRatio": 0.5625,
+      "codec": "h264",
+      "audioPresent": true,
+      "sha256": "7626749e7834ecfe1183cfc0e804f79182ee34b1802e2908ea898c85cdaa2762"
+    },
+    "analysisVersion": "sampled-visual-motion-v5",
+    "analysisType": "SAMPLED_VISUAL_MOTION_V5",
+    "primaryEngine": "SAMPLED_VISUAL_MOTION_V5",
+    "secondaryEngines": [
+      "STRUCTURAL_NOVELTY",
+      "PERCEPTUAL_HASH"
+    ],
+    "classification": "HIGH_MOTION_EVIDENCE",
+    "motionHeuristicScore": 100.0,
+    "measurementConfidence": 0.9906,
+    "measurementQuality": {
+      "decodeSuccessRatio": 0.98,
+      "timelineCoverage": 0.9931,
+      "duplicateTimestampRatio": 0.0,
+      "timestampAccuracy": 1.0,
+      "validPairCount": 48
+    },
+    "reason": "V5 combines deterministic temporal evidence with contextual hold, rebound, hook, payoff, loop, recurrence, and provenance-aware readiness evidence. It does not infer platform performance or fabricate semantic actions.",
+    "storyboardPath": "storyboards/7626749e7834ecfe1183cfc0e804f79182ee34b1802e2908ea898c85cdaa2762-v4.jpg",
+    "timeline": [],
+    "features": {
+      "motionIntensity": {
+        "label": "VERY_HIGH",
+        "value": 0.9999
+      },
+      "temporalConsistency": {
+        "label": "STEADY",
+        "variation": "STEADY"
+      },
+      "visualNovelty": {
+        "version": "visual-novelty-v1",
+        "mediumOffsetSeconds": 1.25,
+        "points": [
+          {
+            "timestamp": 0.0,
+            "comparisonOffset": 1.25,
+            "structuralSimilarity": 0.14871,
+            "perceptualHashDistance": 0.46875,
+            "embeddingDistance": null,
+            "embeddingStatus": "NOT_EVALUATED",
+            "novelty": 0.77479
+          },
+          {
+            "timestamp": 0.25,
+            "comparisonOffset": 1.25,
+            "structuralSimilarity": 0.2792,
+            "perceptualHashDistance": 0.40625,
+            "embeddingDistance": null,
+            "embeddingStatus": "NOT_EVALUATED",
+            "novelty": 0.65789
+          },
+          {
+            "timestamp": 0.5,
+            "comparisonOffset": 1.25,
+            "structuralSimilarity": 0.01713,
+            "perceptualHashDistance": 0.5,
+            "embeddingDistance": null,
+            "embeddingStatus": "NOT_EVALUATED",
+            "novelty": 0.8863
+          },
+          {
+            "timestamp": 0.75,
+            "comparisonOffset": 1.25,
+            "structuralSimilarity": 0.03802,
+            "perceptualHashDistance": 0.5,
+            "embeddingDistance": null,
+            "embeddingStatus": "NOT_EVALUATED",
+            "novelty": 0.86958
+          },
+          {
+            "timestamp": 1.0,
+            "comparisonOffset": 1.25,
+            "structuralSimilarity": 0.05909,
+            "perceptualHashDistance": 0.5625,
+            "embeddingDistance": null,
+            "embeddingStatus": "NOT_EVALUATED",
+            "novelty": 0.86523
+          },
+          {
+            "timestamp": 1.25,
+            "comparisonOffset": 1.25,
+            "structuralSimilarity": 0.0,
+            "perceptualHashDistance": 0.59375,
+            "embeddingDistance": null,
+            "embeddingStatus": "NOT_EVALUATED",
+            "novelty": 0.91875
+          },
+          {
+            "timestamp": 1.5,
+            "comparisonOffset": 1.25,
+            "structuralSimilarity": 0.06087,
+            "perceptualHashDistance": 0.5,
+            "embeddingDistance": null,
+            "embeddingStatus": "NOT_EVALUATED",
+            "novelty": 0.8513
+          },
+          {
+            "timestamp": 1.75,
+            "comparisonOffset": 1.25,
+            "structuralSimilarity": 0.0,
+            "perceptualHashDistance": 0.46875,
+            "embeddingDistance": null,
+            "embeddingStatus": "NOT_EVALUATED",
+            "novelty": 0.89375
+          },
+          {
+            "timestamp": 2.0,
+            "comparisonOffset": 1.25,
+            "structuralSimilarity": 0.0,
+            "perceptualHashDistance": 0.5625,
+            "embeddingDistance": null,
+            "embeddingStatus": "NOT_EVALUATED",
+            "novelty": 0.9125
+          },
+          {
+            "timestamp": 2.25,
+            "comparisonOffset": 1.25,
+            "structuralSimilarity": 0.02828,
+            "perceptualHashDistance": 0.5625,
+            "embeddingDistance": null,
+            "embeddingStatus": "NOT_EVALUATED",
+            "novelty": 0.88987
+          },
+          {
+            "timestamp": 2.5,
+            "comparisonOffset": 1.25,
+            "structuralSimilarity": 0.04768,
+            "perceptualHashDistance": 0.5625,
+            "embeddingDistance": null,
+            "embeddingStatus": "NOT_EVALUATED",
+            "novelty": 0.87436
+          },
+          {
+            "timestamp": 2.75,
+            "comparisonOffset": 1.25,
+            "structuralSimilarity": 0.71632,
+            "perceptualHashDistance": 0.09375,
+            "embeddingDistance": null,
+            "embeddingStatus": "NOT_EVALUATED",
+            "novelty": 0.2457
+          },
+          {
+            "timestamp": 3.0,
+            "comparisonOffset": 1.25,
+            "structuralSimilarity": 0.67704,
+            "perceptualHashDistance": 0.21875,
+            "embeddingDistance": null,
+            "embeddingStatus": "NOT_EVALUATED",
+            "novelty": 0.30212
+          },
+          {
+            "timestamp": 3.25,
+            "comparisonOffset": 1.25,
+            "structuralSimilarity": 0.61575,
+            "perceptualHashDistance": 0.21875,
+            "embeddingDistance": null,
+            "embeddingStatus": "NOT_EVALUATED",
+            "novelty": 0.35115
+          },
+          {
+            "timestamp": 3.5,
+            "comparisonOffset": 1.25,
+            "structuralSimilarity": 0.66385,
+            "perceptualHashDistance": 0.25,
+            "embeddingDistance": null,
+            "embeddingStatus": "NOT_EVALUATED",
+            "novelty": 0.31892
+          },
+          {
+            "timestamp": 3.75,
+            "comparisonOffset": 1.25,
+            "structuralSimilarity": 0.62028,
+            "perceptualHashDistance": 0.1875,
+            "embeddingDistance": null,
+            "embeddingStatus": "NOT_EVALUATED",
+            "novelty": 0.34127
+          },
+          {
+            "timestamp": 4.0,
+            "comparisonOffset": 1.25,
+            "structuralSimilarity": 0.18499,
+            "perceptualHashDistance": 0.4375,
+            "embeddingDistance": null,
+            "embeddingStatus": "NOT_EVALUATED",
+            "novelty": 0.73951
+          },
+          {
+            "timestamp": 4.25,
+            "comparisonOffset": 1.25,
+            "structuralSimilarity": 0.20094,
+            "perceptualHashDistance": 0.46875,
+            "embeddingDistance": null,
+            "embeddingStatus": "NOT_EVALUATED",
+            "novelty": 0.733
+          },
+          {
+            "timestamp": 4.5,
+            "comparisonOffset": 1.25,
+            "structuralSimilarity": 0.15251,
+            "perceptualHashDistance": 0.4375,
+            "embeddingDistance": null,
+            "embeddingStatus": "NOT_EVALUATED",
+            "novelty": 0.76549
+          },
+          {
+            "timestamp": 4.75,
+            "comparisonOffset": 1.25,
+            "structuralSimilarity": 0.04304,
+            "perceptualHashDistance": 0.46875,
+            "embeddingDistance": null,
+            "embeddingStatus": "NOT_EVALUATED",
+            "novelty": 0.85932
+          },
+          {
+            "timestamp": 5.0,
+            "comparisonOffset": 1.25,
+            "structuralSimilarity": 0.06578,
+            "perceptualHashDistance": 0.4375,
+            "embeddingDistance": null,
+            "embeddingStatus": "NOT_EVALUATED",
+            "novelty": 0.83488
+          },
+          {
+            "timestamp": 5.25,
+            "comparisonOffset": 1.25,
+            "structuralSimilarity": 0.20066,
+            "perceptualHashDistance": 0.46875,
+            "embeddingDistance": null,
+            "embeddingStatus": "NOT_EVALUATED",
+            "novelty": 0.73322
+          },
+          {
+            "timestamp": 5.5,
+            "comparisonOffset": 1.25,
+            "structuralSimilarity": 0.26915,
+            "perceptualHashDistance": 0.53125,
+            "embeddingDistance": null,
+            "embeddingStatus": "NOT_EVALUATED",
+            "novelty": 0.69093
+          },
+          {
+            "timestamp": 5.75,
+            "comparisonOffset": 1.25,
+            "structuralSimilarity": 0.18375,
+            "perceptualHashDistance": 0.4375,
+            "embeddingDistance": null,
+            "embeddingStatus": "NOT_EVALUATED",
+            "novelty": 0.7405
+          },
+          {
+            "timestamp": 6.0,
+            "comparisonOffset": 1.25,
+            "structuralSimilarity": 0.16869,
+            "perceptualHashDistance": 0.53125,
+            "embeddingDistance": null,
+            "embeddingStatus": "NOT_EVALUATED",
+            "novelty": 0.7713
+          },
+          {
+            "timestamp": 6.25,
+            "comparisonOffset": 1.25,
+            "structuralSimilarity": 0.1922,
+            "perceptualHashDistance": 0.53125,
+            "embeddingDistance": null,
+            "embeddingStatus": "NOT_EVALUATED",
+            "novelty": 0.75249
+          },
+          {
+            "timestamp": 6.5,
+            "comparisonOffset": 1.25,
+            "structuralSimilarity": 0.78028,
+            "perceptualHashDistance": 0.09375,
+            "embeddingDistance": null,
+            "embeddingStatus": "NOT_EVALUATED",
+            "novelty": 0.19453
+          },
+          {
+            "timestamp": 6.75,
+            "comparisonOffset": 1.25,
+            "structuralSimilarity": 0.65141,
+            "perceptualHashDistance": 0.21875,
+            "embeddingDistance": null,
+            "embeddingStatus": "NOT_EVALUATED",
+            "novelty": 0.32262
+          },
+          {
+            "timestamp": 7.0,
+            "comparisonOffset": 1.25,
+            "structuralSimilarity": 0.40954,
+            "perceptualHashDistance": 0.375,
+            "embeddingDistance": null,
+            "embeddingStatus": "NOT_EVALUATED",
+            "novelty": 0.54737
+          },
+          {
+            "timestamp": 7.25,
+            "comparisonOffset": 1.25,
+            "structuralSimilarity": 0.44654,
+            "perceptualHashDistance": 0.28125,
+            "embeddingDistance": null,
+            "embeddingStatus": "NOT_EVALUATED",
+            "novelty": 0.49902
+          },
+          {
+            "timestamp": 7.5,
+            "comparisonOffset": 1.25,
+            "structuralSimilarity": 0.43108,
+            "perceptualHashDistance": 0.3125,
+            "embeddingDistance": null,
+            "embeddingStatus": "NOT_EVALUATED",
+            "novelty": 0.51763
+          },
+          {
+            "timestamp": 7.75,
+            "comparisonOffset": 1.25,
+            "structuralSimilarity": 0.42625,
+            "perceptualHashDistance": 0.3125,
+            "embeddingDistance": null,
+            "embeddingStatus": "NOT_EVALUATED",
+            "novelty": 0.5215
+          },
+          {
+            "timestamp": 8.0,
+            "comparisonOffset": 1.25,
+            "structuralSimilarity": 0.44028,
+            "perceptualHashDistance": 0.28125,
+            "embeddingDistance": null,
+            "embeddingStatus": "NOT_EVALUATED",
+            "novelty": 0.50402
+          },
+          {
+            "timestamp": 8.25,
+            "comparisonOffset": 1.25,
+            "structuralSimilarity": 0.77985,
+            "perceptualHashDistance": 0.125,
+            "embeddingDistance": null,
+            "embeddingStatus": "NOT_EVALUATED",
+            "novelty": 0.20112
+          },
+          {
+            "timestamp": 8.5,
+            "comparisonOffset": 1.25,
+            "structuralSimilarity": 0.83975,
+            "perceptualHashDistance": 0.09375,
+            "embeddingDistance": null,
+            "embeddingStatus": "NOT_EVALUATED",
+            "novelty": 0.14695
+          },
+          {
+            "timestamp": 8.75,
+            "comparisonOffset": 1.25,
+            "structuralSimilarity": 0.83648,
+            "perceptualHashDistance": 0.15625,
+            "embeddingDistance": null,
+            "embeddingStatus": "NOT_EVALUATED",
+            "novelty": 0.16207
+          },
+          {
+            "timestamp": 9.0,
+            "comparisonOffset": 1.25,
+            "structuralSimilarity": 0.78562,
+            "perceptualHashDistance": 0.1875,
+            "embeddingDistance": null,
+            "embeddingStatus": "NOT_EVALUATED",
+            "novelty": 0.209
+          },
+          {
+            "timestamp": 9.25,
+            "comparisonOffset": 1.25,
+            "structuralSimilarity": 0.76358,
+            "perceptualHashDistance": 0.1875,
+            "embeddingDistance": null,
+            "embeddingStatus": "NOT_EVALUATED",
+            "novelty": 0.22664
+          },
+          {
+            "timestamp": 9.5,
+            "comparisonOffset": 1.25,
+            "structuralSimilarity": 0.01978,
+            "perceptualHashDistance": 0.4375,
+            "embeddingDistance": null,
+            "embeddingStatus": "NOT_EVALUATED",
+            "novelty": 0.87168
+          },
+          {
+            "timestamp": 9.75,
+            "comparisonOffset": 1.25,
+            "structuralSimilarity": 0.0,
+            "perceptualHashDistance": 0.4375,
+            "embeddingDistance": null,
+            "embeddingStatus": "NOT_EVALUATED",
+            "novelty": 0.8875
+          },
+          {
+            "timestamp": 10.0,
+            "comparisonOffset": 1.25,
+            "structuralSimilarity": 0.04448,
+            "perceptualHashDistance": 0.4375,
+            "embeddingDistance": null,
+            "embeddingStatus": "NOT_EVALUATED",
+            "novelty": 0.85191
+          },
+          {
+            "timestamp": 10.25,
+            "comparisonOffset": 1.25,
+            "structuralSimilarity": 0.05347,
+            "perceptualHashDistance": 0.40625,
+            "embeddingDistance": null,
+            "embeddingStatus": "NOT_EVALUATED",
+            "novelty": 0.83848
+          },
+          {
+            "timestamp": 10.5,
+            "comparisonOffset": 1.25,
+            "structuralSimilarity": 0.17286,
+            "perceptualHashDistance": 0.4375,
+            "embeddingDistance": null,
+            "embeddingStatus": "NOT_EVALUATED",
+            "novelty": 0.74921
+          },
+          {
+            "timestamp": 10.75,
+            "comparisonOffset": 1.25,
+            "structuralSimilarity": 0.24645,
+            "perceptualHashDistance": 0.375,
+            "embeddingDistance": null,
+            "embeddingStatus": "NOT_EVALUATED",
+            "novelty": 0.67784
+          }
+        ],
+        "averageNovelty": 0.62507,
+        "status": "AVAILABLE"
+      },
+      "actionBeatNovelty": {
+        "status": "PARTIAL",
+        "plannedStrategyNovelty": {
+          "status": "NOT_EVALUATED",
+          "reason": "NO_STRUCTURED_PLAN"
+        },
+        "observedVisualBeatNovelty": {
+          "status": "AVAILABLE",
+          "level": "WEAK",
+          "distinctBeatChanges": 0,
+          "reason": "Deterministic temporal and visual-state changes."
+        },
+        "observedSemanticActionNovelty": {
+          "status": "NOT_EVALUATED",
+          "reason": "SEMANTIC_VISION_NOT_CONFIGURED"
+        },
+        "combinedAssessment": "WEAK",
+        "repetitionContext": "REVIEW_CONTEXT_REQUIRED"
+      },
+      "planRenderFidelity": {
+        "status": "NOT_AVAILABLE",
+        "reason": "No structured production plan or source generation prompt is linked to this analysis.",
+        "provenance": "NO_PLAN_OR_PROMPT"
+      },
+      "repetitiveMotion": {
+        "version": "repetitive-motion-evidence-v1",
+        "status": "AVAILABLE",
+        "averageShortMotion": 0.99988,
+        "averageVisualNovelty": 0.62507,
+        "continuousMotion": true,
+        "lowStateNovelty": false,
+        "repeatedPatternCandidate": false,
+        "recurrence": {
+          "version": "multi-lag-recurrence-v1",
+          "detected": false,
+          "startSeconds": null,
+          "endSeconds": null,
+          "durationSeconds": 0.0,
+          "recurrenceStrength": 0.47473,
+          "dominantLagSeconds": 0.5,
+          "estimatedCycles": 24.17,
+          "visualStateRecurrence": false,
+          "motionPatternRecurrence": false,
+          "evidenceQuality": "MULTI_LAG_SSIM_AND_MOTION_AUTOCORRELATION",
+          "lags": [
+            {
+              "lagSeconds": 0.5,
+              "visualSimilarity": 0.57964,
+              "motionAutocorrelation": 0.27988,
+              "recurrenceStrength": 0.47473,
+              "comparisonCount": 47,
+              "estimatedCycles": 24.17
+            },
+            {
+              "lagSeconds": 0.75,
+              "visualSimilarity": 0.50148,
+              "motionAutocorrelation": 0.22898,
+              "recurrenceStrength": 0.4061,
+              "comparisonCount": 46,
+              "estimatedCycles": 16.11
+            },
+            {
+              "lagSeconds": 1.0,
+              "visualSimilarity": 0.45236,
+              "motionAutocorrelation": 0.20094,
+              "recurrenceStrength": 0.36436,
+              "comparisonCount": 45,
+              "estimatedCycles": 12.08
+            },
+            {
+              "lagSeconds": 1.5,
+              "visualSimilarity": 0.37768,
+              "motionAutocorrelation": -0.02569,
+              "recurrenceStrength": 0.24549,
+              "comparisonCount": 43,
+              "estimatedCycles": 8.06
+            },
+            {
+              "lagSeconds": 2.0,
+              "visualSimilarity": 0.33814,
+              "motionAutocorrelation": -0.21177,
+              "recurrenceStrength": 0.21979,
+              "comparisonCount": 41,
+              "estimatedCycles": 6.04
+            },
+            {
+              "lagSeconds": 2.25,
+              "visualSimilarity": 0.33001,
+              "motionAutocorrelation": -0.08415,
+              "recurrenceStrength": 0.21451,
+              "comparisonCount": 40,
+              "estimatedCycles": 5.37
+            },
+            {
+              "lagSeconds": 2.5,
+              "visualSimilarity": 0.31193,
+              "motionAutocorrelation": 0.06361,
+              "recurrenceStrength": 0.22502,
+              "comparisonCount": 39,
+              "estimatedCycles": 4.83
+            },
+            {
+              "lagSeconds": 3.0,
+              "visualSimilarity": 0.32989,
+              "motionAutocorrelation": -0.10843,
+              "recurrenceStrength": 0.21443,
+              "comparisonCount": 37,
+              "estimatedCycles": 4.03
+            }
+          ]
+        },
+        "classification": "LOW",
+        "interpretation": "No prolonged high-motion/low-novelty pattern was established."
+      },
+      "hook": {
+        "status": "MODERATE",
+        "windowSeconds": 1.5,
+        "subjectPresence": null,
+        "subjectPresenceStatus": "NOT_EVALUATED",
+        "objectPresence": null,
+        "objectPresenceStatus": "NOT_EVALUATED",
+        "anomalyReadable": null,
+        "anomalyReadableStatus": "NOT_EVALUATED",
+        "expressionReadable": null,
+        "expressionStatus": "NOT_EVALUATED",
+        "directCameraGaze": null,
+        "directCameraGazeStatus": "NOT_EVALUATED",
+        "textOverlay": {
+          "status": "NOT_EVALUATED",
+          "reason": "OCR/text detection is not configured."
+        },
+        "visualOpeningActivity": 1.0,
+        "reason": "The opening contains measurable visual activity, but semantic subject/object readability is not configured."
+      },
+      "payoff": {
+        "status": "UNKNOWN",
+        "visualEndingEmphasis": "AVAILABLE",
+        "semanticResolutionStatus": "NOT_EVALUATED",
+        "consequenceDetected": "NOT_EVALUATED",
+        "characterReactionDetected": "NOT_EVALUATED",
+        "objectStateChange": "NOT_EVALUATED",
+        "motionRebound": "NOT_ESTABLISHED",
+        "planAlignment": "NOT_EVALUATED",
+        "payoffWindow": "ENDING_WINDOW",
+        "evidenceCoverage": "DETERMINISTIC_ONLY",
+        "reason": "Semantic resolution, character reaction and plan alignment were not evaluated; motion evidence alone does not establish a payoff."
+      },
+      "loop": {
+        "status": "PARTIAL",
+        "visualEvidence": "MODERATE",
+        "visualEndpointSimilarity": 0.8165,
+        "semanticContinuity": null,
+        "semanticContinuityStatus": "NOT_EVALUATED",
+        "semanticContinuityReason": "SEMANTIC_VISION_NOT_CONFIGURED",
+        "overall": "MODERATE",
+        "reason": "Visual endpoint similarity is available; semantic loop continuity is not verified."
+      }
+    },
+    "evidence": {
+      "sampleTimes": [
+        0.0,
+        0.25,
+        0.5,
+        0.75,
+        1.0,
+        1.25,
+        1.5,
+        1.75,
+        2.0,
+        2.25,
+        2.5,
+        2.75,
+        3.0,
+        3.25,
+        3.5,
+        3.75,
+        4.0,
+        4.25,
+        4.5,
+        4.75,
+        5.0,
+        5.25,
+        5.5,
+        5.75,
+        6.0,
+        6.25,
+        6.5,
+        6.75,
+        7.0,
+        7.25,
+        7.5,
+        7.75,
+        8.0,
+        8.25,
+        8.5,
+        8.75,
+        9.0,
+        9.25,
+        9.5,
+        9.75,
+        10.0,
+        10.25,
+        10.5,
+        10.75,
+        11.0,
+        11.25,
+        11.5,
+        11.75,
+        12.0
+      ],
+      "intervals": [
+        {
+          "startTime": 0.0,
+          "endTime": 0.25,
+          "deltaTSeconds": 0.25,
+          "rawPixelDifference": 0.145751,
+          "visualChangeRate": 0.5830047733599613,
+          "timeNormalizedChange": 0.5830047733599613,
+          "preClampNormalizedMotion": 4.858373111333011,
+          "normalizedShortMotion": 1.0,
+          "normalizedMotionIntensity": 1.0,
+          "finalMotion": 1.0,
+          "wasClipped": true,
+          "normalizationSaturated": true,
+          "smoothedMotion": 1.0
+        },
+        {
+          "startTime": 0.25,
+          "endTime": 0.5,
+          "deltaTSeconds": 0.25,
+          "rawPixelDifference": 0.195152,
+          "visualChangeRate": 0.7806081608569353,
+          "timeNormalizedChange": 0.7806081608569353,
+          "preClampNormalizedMotion": 6.505068007141127,
+          "normalizedShortMotion": 1.0,
+          "normalizedMotionIntensity": 1.0,
+          "finalMotion": 1.0,
+          "wasClipped": true,
+          "normalizationSaturated": true,
+          "smoothedMotion": 1.0
+        },
+        {
+          "startTime": 0.5,
+          "endTime": 0.75,
+          "deltaTSeconds": 0.25,
+          "rawPixelDifference": 0.130114,
+          "visualChangeRate": 0.5204545887799564,
+          "timeNormalizedChange": 0.5204545887799564,
+          "preClampNormalizedMotion": 4.3371215731663035,
+          "normalizedShortMotion": 1.0,
+          "normalizedMotionIntensity": 1.0,
+          "finalMotion": 1.0,
+          "wasClipped": true,
+          "normalizationSaturated": true,
+          "smoothedMotion": 1.0
+        },
+        {
+          "startTime": 0.75,
+          "endTime": 1.0,
+          "deltaTSeconds": 0.25,
+          "rawPixelDifference": 0.156359,
+          "visualChangeRate": 0.6254360097434035,
+          "timeNormalizedChange": 0.6254360097434035,
+          "preClampNormalizedMotion": 5.2119667478616964,
+          "normalizedShortMotion": 1.0,
+          "normalizedMotionIntensity": 1.0,
+          "finalMotion": 1.0,
+          "wasClipped": true,
+          "normalizationSaturated": true,
+          "smoothedMotion": 1.0
+        },
+        {
+          "startTime": 1.0,
+          "endTime": 1.25,
+          "deltaTSeconds": 0.25,
+          "rawPixelDifference": 0.158723,
+          "visualChangeRate": 0.6348919072258533,
+          "timeNormalizedChange": 0.6348919072258533,
+          "preClampNormalizedMotion": 5.290765893548778,
+          "normalizedShortMotion": 1.0,
+          "normalizedMotionIntensity": 1.0,
+          "finalMotion": 1.0,
+          "wasClipped": true,
+          "normalizationSaturated": true,
+          "smoothedMotion": 1.0
+        },
+        {
+          "startTime": 1.25,
+          "endTime": 1.5,
+          "deltaTSeconds": 0.25,
+          "rawPixelDifference": 0.041863,
+          "visualChangeRate": 0.1674520621520213,
+          "timeNormalizedChange": 0.1674520621520213,
+          "preClampNormalizedMotion": 1.3954338512668443,
+          "normalizedShortMotion": 1.0,
+          "normalizedMotionIntensity": 1.0,
+          "finalMotion": 1.0,
+          "wasClipped": true,
+          "normalizationSaturated": true,
+          "smoothedMotion": 1.0
+        },
+        {
+          "startTime": 1.5,
+          "endTime": 1.75,
+          "deltaTSeconds": 0.25,
+          "rawPixelDifference": 0.140297,
+          "visualChangeRate": 0.5611876588598402,
+          "timeNormalizedChange": 0.5611876588598402,
+          "preClampNormalizedMotion": 4.676563823832002,
+          "normalizedShortMotion": 1.0,
+          "normalizedMotionIntensity": 1.0,
+          "finalMotion": 1.0,
+          "wasClipped": true,
+          "normalizationSaturated": true,
+          "smoothedMotion": 1.0
+        },
+        {
+          "startTime": 1.75,
+          "endTime": 2.0,
+          "deltaTSeconds": 0.25,
+          "rawPixelDifference": 0.140096,
+          "visualChangeRate": 0.5603853107601064,
+          "timeNormalizedChange": 0.5603853107601064,
+          "preClampNormalizedMotion": 4.6698775896675535,
+          "normalizedShortMotion": 1.0,
+          "normalizedMotionIntensity": 1.0,
+          "finalMotion": 1.0,
+          "wasClipped": true,
+          "normalizationSaturated": true,
+          "smoothedMotion": 1.0
+        },
+        {
+          "startTime": 2.0,
+          "endTime": 2.25,
+          "deltaTSeconds": 0.25,
+          "rawPixelDifference": 0.104877,
+          "visualChangeRate": 0.4195095467199225,
+          "timeNormalizedChange": 0.4195095467199225,
+          "preClampNormalizedMotion": 3.4959128893326876,
+          "normalizedShortMotion": 1.0,
+          "normalizedMotionIntensity": 1.0,
+          "finalMotion": 1.0,
+          "wasClipped": true,
+          "normalizationSaturated": true,
+          "smoothedMotion": 1.0
+        },
+        {
+          "startTime": 2.25,
+          "endTime": 2.5,
+          "deltaTSeconds": 0.25,
+          "rawPixelDifference": 0.027323,
+          "visualChangeRate": 0.1092927408617768,
+          "timeNormalizedChange": 0.1092927408617768,
+          "preClampNormalizedMotion": 0.9107728405148067,
+          "normalizedShortMotion": 0.9107728405148067,
+          "normalizedMotionIntensity": 1.0,
+          "finalMotion": 0.9107728405148067,
+          "wasClipped": false,
+          "normalizationSaturated": false,
+          "smoothedMotion": 1.0
+        },
+        {
+          "startTime": 2.5,
+          "endTime": 2.75,
+          "deltaTSeconds": 0.25,
+          "rawPixelDifference": 0.199544,
+          "visualChangeRate": 0.7981741860324377,
+          "timeNormalizedChange": 0.7981741860324377,
+          "preClampNormalizedMotion": 6.651451550270314,
+          "normalizedShortMotion": 1.0,
+          "normalizedMotionIntensity": 1.0,
+          "finalMotion": 1.0,
+          "wasClipped": true,
+          "normalizationSaturated": true,
+          "smoothedMotion": 1.0
+        },
+        {
+          "startTime": 2.75,
+          "endTime": 3.0,
+          "deltaTSeconds": 0.25,
+          "rawPixelDifference": 0.072361,
+          "visualChangeRate": 0.289443438332123,
+          "timeNormalizedChange": 0.289443438332123,
+          "preClampNormalizedMotion": 2.4120286527676917,
+          "normalizedShortMotion": 1.0,
+          "normalizedMotionIntensity": 1.0,
+          "finalMotion": 1.0,
+          "wasClipped": true,
+          "normalizationSaturated": true,
+          "smoothedMotion": 1.0
+        },
+        {
+          "startTime": 3.0,
+          "endTime": 3.25,
+          "deltaTSeconds": 0.25,
+          "rawPixelDifference": 0.042813,
+          "visualChangeRate": 0.1712504614500121,
+          "timeNormalizedChange": 0.1712504614500121,
+          "preClampNormalizedMotion": 1.427087178750101,
+          "normalizedShortMotion": 1.0,
+          "normalizedMotionIntensity": 1.0,
+          "finalMotion": 1.0,
+          "wasClipped": true,
+          "normalizationSaturated": true,
+          "smoothedMotion": 1.0
+        },
+        {
+          "startTime": 3.25,
+          "endTime": 3.5,
+          "deltaTSeconds": 0.25,
+          "rawPixelDifference": 0.034729,
+          "visualChangeRate": 0.1389149872912128,
+          "timeNormalizedChange": 0.1389149872912128,
+          "preClampNormalizedMotion": 1.15762489409344,
+          "normalizedShortMotion": 1.0,
+          "normalizedMotionIntensity": 1.0,
+          "finalMotion": 1.0,
+          "wasClipped": true,
+          "normalizationSaturated": true,
+          "smoothedMotion": 1.0
+        },
+        {
+          "startTime": 3.5,
+          "endTime": 3.75,
+          "deltaTSeconds": 0.25,
+          "rawPixelDifference": 0.021525,
+          "visualChangeRate": 0.08609902263374486,
+          "timeNormalizedChange": 0.08609902263374486,
+          "preClampNormalizedMotion": 0.7174918552812072,
+          "normalizedShortMotion": 0.7174918552812072,
+          "normalizedMotionIntensity": 1.0,
+          "finalMotion": 0.7174918552812072,
+          "wasClipped": false,
+          "normalizationSaturated": false,
+          "smoothedMotion": 1.0
+        },
+        {
+          "startTime": 3.75,
+          "endTime": 4.0,
+          "deltaTSeconds": 0.25,
+          "rawPixelDifference": 0.0618,
+          "visualChangeRate": 0.247198536976519,
+          "timeNormalizedChange": 0.247198536976519,
+          "preClampNormalizedMotion": 2.0599878081376586,
+          "normalizedShortMotion": 1.0,
+          "normalizedMotionIntensity": 1.0,
+          "finalMotion": 1.0,
+          "wasClipped": true,
+          "normalizationSaturated": true,
+          "smoothedMotion": 1.0
+        },
+        {
+          "startTime": 4.0,
+          "endTime": 4.25,
+          "deltaTSeconds": 0.25,
+          "rawPixelDifference": 0.072506,
+          "visualChangeRate": 0.29002503177196803,
+          "timeNormalizedChange": 0.29002503177196803,
+          "preClampNormalizedMotion": 2.4168752647664005,
+          "normalizedShortMotion": 1.0,
+          "normalizedMotionIntensity": 1.0,
+          "finalMotion": 1.0,
+          "wasClipped": true,
+          "normalizationSaturated": true,
+          "smoothedMotion": 1.0
+        },
+        {
+          "startTime": 4.25,
+          "endTime": 4.5,
+          "deltaTSeconds": 0.25,
+          "rawPixelDifference": 0.017096,
+          "visualChangeRate": 0.06838245884773662,
+          "timeNormalizedChange": 0.06838245884773662,
+          "preClampNormalizedMotion": 0.5698538237311386,
+          "normalizedShortMotion": 0.5698538237311386,
+          "normalizedMotionIntensity": 1.0,
+          "finalMotion": 0.5698538237311386,
+          "wasClipped": false,
+          "normalizationSaturated": false,
+          "smoothedMotion": 1.0
+        },
+        {
+          "startTime": 4.5,
+          "endTime": 4.75,
+          "deltaTSeconds": 0.25,
+          "rawPixelDifference": 0.036263,
+          "visualChangeRate": 0.1450507519365771,
+          "timeNormalizedChange": 0.1450507519365771,
+          "preClampNormalizedMotion": 1.2087562661381426,
+          "normalizedShortMotion": 1.0,
+          "normalizedMotionIntensity": 1.0,
+          "finalMotion": 1.0,
+          "wasClipped": true,
+          "normalizationSaturated": true,
+          "smoothedMotion": 1.0
+        },
+        {
+          "startTime": 4.75,
+          "endTime": 5.0,
+          "deltaTSeconds": 0.25,
+          "rawPixelDifference": 0.044821,
+          "visualChangeRate": 0.17928396574679253,
+          "timeNormalizedChange": 0.17928396574679253,
+          "preClampNormalizedMotion": 1.4940330478899377,
+          "normalizedShortMotion": 1.0,
+          "normalizedMotionIntensity": 1.0,
+          "finalMotion": 1.0,
+          "wasClipped": true,
+          "normalizationSaturated": true,
+          "smoothedMotion": 1.0
+        },
+        {
+          "startTime": 5.0,
+          "endTime": 5.25,
+          "deltaTSeconds": 0.25,
+          "rawPixelDifference": 0.192794,
+          "visualChangeRate": 0.771176130174292,
+          "timeNormalizedChange": 0.771176130174292,
+          "preClampNormalizedMotion": 6.426467751452433,
+          "normalizedShortMotion": 1.0,
+          "normalizedMotionIntensity": 1.0,
+          "finalMotion": 1.0,
+          "wasClipped": true,
+          "normalizationSaturated": true,
+          "smoothedMotion": 1.0
+        },
+        {
+          "startTime": 5.25,
+          "endTime": 5.5,
+          "deltaTSeconds": 0.25,
+          "rawPixelDifference": 0.092937,
+          "visualChangeRate": 0.37174779865649965,
+          "timeNormalizedChange": 0.37174779865649965,
+          "preClampNormalizedMotion": 3.0978983221374974,
+          "normalizedShortMotion": 1.0,
+          "normalizedMotionIntensity": 1.0,
+          "finalMotion": 1.0,
+          "wasClipped": true,
+          "normalizationSaturated": true,
+          "smoothedMotion": 1.0
+        },
+        {
+          "startTime": 5.5,
+          "endTime": 5.75,
+          "deltaTSeconds": 0.25,
+          "rawPixelDifference": 0.078721,
+          "visualChangeRate": 0.31488244371822804,
+          "timeNormalizedChange": 0.31488244371822804,
+          "preClampNormalizedMotion": 2.624020364318567,
+          "normalizedShortMotion": 1.0,
+          "normalizedMotionIntensity": 1.0,
+          "finalMotion": 1.0,
+          "wasClipped": true,
+          "normalizationSaturated": true,
+          "smoothedMotion": 1.0
+        },
+        {
+          "startTime": 5.75,
+          "endTime": 6.0,
+          "deltaTSeconds": 0.25,
+          "rawPixelDifference": 0.080171,
+          "visualChangeRate": 0.3206825602154442,
+          "timeNormalizedChange": 0.3206825602154442,
+          "preClampNormalizedMotion": 2.6723546684620354,
+          "normalizedShortMotion": 1.0,
+          "normalizedMotionIntensity": 1.0,
+          "finalMotion": 1.0,
+          "wasClipped": true,
+          "normalizationSaturated": true,
+          "smoothedMotion": 1.0
+        },
+        {
+          "startTime": 6.0,
+          "endTime": 6.25,
+          "deltaTSeconds": 0.25,
+          "rawPixelDifference": 0.049452,
+          "visualChangeRate": 0.19780911099007503,
+          "timeNormalizedChange": 0.19780911099007503,
+          "preClampNormalizedMotion": 1.6484092582506253,
+          "normalizedShortMotion": 1.0,
+          "normalizedMotionIntensity": 1.0,
+          "finalMotion": 1.0,
+          "wasClipped": true,
+          "normalizationSaturated": true,
+          "smoothedMotion": 1.0
+        },
+        {
+          "startTime": 6.25,
+          "endTime": 6.5,
+          "deltaTSeconds": 0.25,
+          "rawPixelDifference": 0.179467,
+          "visualChangeRate": 0.7178663156620673,
+          "timeNormalizedChange": 0.7178663156620673,
+          "preClampNormalizedMotion": 5.982219297183894,
+          "normalizedShortMotion": 1.0,
+          "normalizedMotionIntensity": 1.0,
+          "finalMotion": 1.0,
+          "wasClipped": true,
+          "normalizationSaturated": true,
+          "smoothedMotion": 1.0
+        },
+        {
+          "startTime": 6.5,
+          "endTime": 6.75,
+          "deltaTSeconds": 0.25,
+          "rawPixelDifference": 0.055826,
+          "visualChangeRate": 0.22330257504236262,
+          "timeNormalizedChange": 0.22330257504236262,
+          "preClampNormalizedMotion": 1.8608547920196885,
+          "normalizedShortMotion": 1.0,
+          "normalizedMotionIntensity": 1.0,
+          "finalMotion": 1.0,
+          "wasClipped": true,
+          "normalizationSaturated": true,
+          "smoothedMotion": 1.0
+        },
+        {
+          "startTime": 6.75,
+          "endTime": 7.0,
+          "deltaTSeconds": 0.25,
+          "rawPixelDifference": 0.027621,
+          "visualChangeRate": 0.110484477124183,
+          "timeNormalizedChange": 0.110484477124183,
+          "preClampNormalizedMotion": 0.9207039760348583,
+          "normalizedShortMotion": 0.9207039760348583,
+          "normalizedMotionIntensity": 1.0,
+          "finalMotion": 0.9207039760348583,
+          "wasClipped": false,
+          "normalizationSaturated": false,
+          "smoothedMotion": 1.0
+        },
+        {
+          "startTime": 7.0,
+          "endTime": 7.25,
+          "deltaTSeconds": 0.25,
+          "rawPixelDifference": 0.060041,
+          "visualChangeRate": 0.2401651839748245,
+          "timeNormalizedChange": 0.2401651839748245,
+          "preClampNormalizedMotion": 2.001376533123538,
+          "normalizedShortMotion": 1.0,
+          "normalizedMotionIntensity": 0.9941073085612846,
+          "finalMotion": 1.0,
+          "wasClipped": true,
+          "normalizationSaturated": true,
+          "smoothedMotion": 0.994107
+        },
+        {
+          "startTime": 7.25,
+          "endTime": 7.5,
+          "deltaTSeconds": 0.25,
+          "rawPixelDifference": 0.029823,
+          "visualChangeRate": 0.11929287702735415,
+          "timeNormalizedChange": 0.11929287702735415,
+          "preClampNormalizedMotion": 0.9941073085612846,
+          "normalizedShortMotion": 0.9941073085612846,
+          "normalizedMotionIntensity": 1.0,
+          "finalMotion": 0.9941073085612846,
+          "wasClipped": false,
+          "normalizationSaturated": false,
+          "smoothedMotion": 1.0
+        },
+        {
+          "startTime": 7.5,
+          "endTime": 7.75,
+          "deltaTSeconds": 0.25,
+          "rawPixelDifference": 0.035439,
+          "visualChangeRate": 0.14175443294601792,
+          "timeNormalizedChange": 0.14175443294601792,
+          "preClampNormalizedMotion": 1.181286941216816,
+          "normalizedShortMotion": 1.0,
+          "normalizedMotionIntensity": 1.0,
+          "finalMotion": 1.0,
+          "wasClipped": true,
+          "normalizationSaturated": true,
+          "smoothedMotion": 1.0
+        },
+        {
+          "startTime": 7.75,
+          "endTime": 8.0,
+          "deltaTSeconds": 0.25,
+          "rawPixelDifference": 0.03949,
+          "visualChangeRate": 0.15796162400145242,
+          "timeNormalizedChange": 0.15796162400145242,
+          "preClampNormalizedMotion": 1.31634686667877,
+          "normalizedShortMotion": 1.0,
+          "normalizedMotionIntensity": 1.0,
+          "finalMotion": 1.0,
+          "wasClipped": true,
+          "normalizationSaturated": true,
+          "smoothedMotion": 1.0
+        },
+        {
+          "startTime": 8.0,
+          "endTime": 8.25,
+          "deltaTSeconds": 0.25,
+          "rawPixelDifference": 0.101706,
+          "visualChangeRate": 0.40682479272573224,
+          "timeNormalizedChange": 0.40682479272573224,
+          "preClampNormalizedMotion": 3.390206606047769,
+          "normalizedShortMotion": 1.0,
+          "normalizedMotionIntensity": 1.0,
+          "finalMotion": 1.0,
+          "wasClipped": true,
+          "normalizationSaturated": true,
+          "smoothedMotion": 1.0
+        },
+        {
+          "startTime": 8.25,
+          "endTime": 8.5,
+          "deltaTSeconds": 0.25,
+          "rawPixelDifference": 0.063565,
+          "visualChangeRate": 0.2542584952190753,
+          "timeNormalizedChange": 0.2542584952190753,
+          "preClampNormalizedMotion": 2.118820793492294,
+          "normalizedShortMotion": 1.0,
+          "normalizedMotionIntensity": 1.0,
+          "finalMotion": 1.0,
+          "wasClipped": true,
+          "normalizationSaturated": true,
+          "smoothedMotion": 1.0
+        },
+        {
+          "startTime": 8.5,
+          "endTime": 8.75,
+          "deltaTSeconds": 0.25,
+          "rawPixelDifference": 0.045945,
+          "visualChangeRate": 0.1837800850278383,
+          "timeNormalizedChange": 0.1837800850278383,
+          "preClampNormalizedMotion": 1.5315007085653192,
+          "normalizedShortMotion": 1.0,
+          "normalizedMotionIntensity": 1.0,
+          "finalMotion": 1.0,
+          "wasClipped": true,
+          "normalizationSaturated": true,
+          "smoothedMotion": 1.0
+        },
+        {
+          "startTime": 8.75,
+          "endTime": 9.0,
+          "deltaTSeconds": 0.25,
+          "rawPixelDifference": 0.0391,
+          "visualChangeRate": 0.1564003721859114,
+          "timeNormalizedChange": 0.1564003721859114,
+          "preClampNormalizedMotion": 1.303336434882595,
+          "normalizedShortMotion": 1.0,
+          "normalizedMotionIntensity": 1.0,
+          "finalMotion": 1.0,
+          "wasClipped": true,
+          "normalizationSaturated": true,
+          "smoothedMotion": 1.0
+        },
+        {
+          "startTime": 9.0,
+          "endTime": 9.25,
+          "deltaTSeconds": 0.25,
+          "rawPixelDifference": 0.042875,
+          "visualChangeRate": 0.17150107419511015,
+          "timeNormalizedChange": 0.17150107419511015,
+          "preClampNormalizedMotion": 1.4291756182925848,
+          "normalizedShortMotion": 1.0,
+          "normalizedMotionIntensity": 1.0,
+          "finalMotion": 1.0,
+          "wasClipped": true,
+          "normalizationSaturated": true,
+          "smoothedMotion": 1.0
+        },
+        {
+          "startTime": 9.25,
+          "endTime": 9.5,
+          "deltaTSeconds": 0.25,
+          "rawPixelDifference": 0.041775,
+          "visualChangeRate": 0.16710014221738076,
+          "timeNormalizedChange": 0.16710014221738076,
+          "preClampNormalizedMotion": 1.3925011851448397,
+          "normalizedShortMotion": 1.0,
+          "normalizedMotionIntensity": 1.0,
+          "finalMotion": 1.0,
+          "wasClipped": true,
+          "normalizationSaturated": true,
+          "smoothedMotion": 1.0
+        },
+        {
+          "startTime": 9.5,
+          "endTime": 9.75,
+          "deltaTSeconds": 0.25,
+          "rawPixelDifference": 0.045231,
+          "visualChangeRate": 0.18092511649721615,
+          "timeNormalizedChange": 0.18092511649721615,
+          "preClampNormalizedMotion": 1.507709304143468,
+          "normalizedShortMotion": 1.0,
+          "normalizedMotionIntensity": 1.0,
+          "finalMotion": 1.0,
+          "wasClipped": true,
+          "normalizationSaturated": true,
+          "smoothedMotion": 1.0
+        },
+        {
+          "startTime": 9.75,
+          "endTime": 10.0,
+          "deltaTSeconds": 0.25,
+          "rawPixelDifference": 0.04443,
+          "visualChangeRate": 0.17771976367707576,
+          "timeNormalizedChange": 0.17771976367707576,
+          "preClampNormalizedMotion": 1.480998030642298,
+          "normalizedShortMotion": 1.0,
+          "normalizedMotionIntensity": 1.0,
+          "finalMotion": 1.0,
+          "wasClipped": true,
+          "normalizationSaturated": true,
+          "smoothedMotion": 1.0
+        },
+        {
+          "startTime": 10.0,
+          "endTime": 10.25,
+          "deltaTSeconds": 0.25,
+          "rawPixelDifference": 0.070708,
+          "visualChangeRate": 0.28283197924231424,
+          "timeNormalizedChange": 0.28283197924231424,
+          "preClampNormalizedMotion": 2.356933160352619,
+          "normalizedShortMotion": 1.0,
+          "normalizedMotionIntensity": 1.0,
+          "finalMotion": 1.0,
+          "wasClipped": true,
+          "normalizationSaturated": true,
+          "smoothedMotion": 1.0
+        },
+        {
+          "startTime": 10.25,
+          "endTime": 10.5,
+          "deltaTSeconds": 0.25,
+          "rawPixelDifference": 0.051188,
+          "visualChangeRate": 0.2047504538852578,
+          "timeNormalizedChange": 0.2047504538852578,
+          "preClampNormalizedMotion": 1.7062537823771484,
+          "normalizedShortMotion": 1.0,
+          "normalizedMotionIntensity": 1.0,
+          "finalMotion": 1.0,
+          "wasClipped": true,
+          "normalizationSaturated": true,
+          "smoothedMotion": 1.0
+        },
+        {
+          "startTime": 10.5,
+          "endTime": 10.75,
+          "deltaTSeconds": 0.25,
+          "rawPixelDifference": 0.20675,
+          "visualChangeRate": 0.8269988350278383,
+          "timeNormalizedChange": 0.8269988350278383,
+          "preClampNormalizedMotion": 6.89165695856532,
+          "normalizedShortMotion": 1.0,
+          "normalizedMotionIntensity": 1.0,
+          "finalMotion": 1.0,
+          "wasClipped": true,
+          "normalizationSaturated": true,
+          "smoothedMotion": 1.0
+        },
+        {
+          "startTime": 10.75,
+          "endTime": 11.0,
+          "deltaTSeconds": 0.25,
+          "rawPixelDifference": 0.084854,
+          "visualChangeRate": 0.33941787702735415,
+          "timeNormalizedChange": 0.33941787702735415,
+          "preClampNormalizedMotion": 2.8284823085612847,
+          "normalizedShortMotion": 1.0,
+          "normalizedMotionIntensity": 1.0,
+          "finalMotion": 1.0,
+          "wasClipped": true,
+          "normalizationSaturated": true,
+          "smoothedMotion": 1.0
+        },
+        {
+          "startTime": 11.0,
+          "endTime": 11.25,
+          "deltaTSeconds": 0.25,
+          "rawPixelDifference": 0.157701,
+          "visualChangeRate": 0.6308034374243525,
+          "timeNormalizedChange": 0.6308034374243525,
+          "preClampNormalizedMotion": 5.2566953118696045,
+          "normalizedShortMotion": 1.0,
+          "normalizedMotionIntensity": 1.0,
+          "finalMotion": 1.0,
+          "wasClipped": true,
+          "normalizationSaturated": true,
+          "smoothedMotion": 1.0
+        },
+        {
+          "startTime": 11.25,
+          "endTime": 11.5,
+          "deltaTSeconds": 0.25,
+          "rawPixelDifference": 0.133789,
+          "visualChangeRate": 0.5351542150810942,
+          "timeNormalizedChange": 0.5351542150810942,
+          "preClampNormalizedMotion": 4.459618459009119,
+          "normalizedShortMotion": 1.0,
+          "normalizedMotionIntensity": 1.0,
+          "finalMotion": 1.0,
+          "wasClipped": true,
+          "normalizationSaturated": true,
+          "smoothedMotion": 1.0
+        },
+        {
+          "startTime": 11.5,
+          "endTime": 11.75,
+          "deltaTSeconds": 0.25,
+          "rawPixelDifference": 0.156123,
+          "visualChangeRate": 0.6244921477850399,
+          "timeNormalizedChange": 0.6244921477850399,
+          "preClampNormalizedMotion": 5.204101231541999,
+          "normalizedShortMotion": 1.0,
+          "normalizedMotionIntensity": 1.0,
+          "finalMotion": 1.0,
+          "wasClipped": true,
+          "normalizationSaturated": true,
+          "smoothedMotion": 1.0
+        },
+        {
+          "startTime": 11.75,
+          "endTime": 12.0,
+          "deltaTSeconds": 0.25,
+          "rawPixelDifference": 0.093631,
+          "visualChangeRate": 0.37452382897603487,
+          "timeNormalizedChange": 0.37452382897603487,
+          "preClampNormalizedMotion": 3.121031908133624,
+          "normalizedShortMotion": 1.0,
+          "normalizedMotionIntensity": 1.0,
+          "finalMotion": 1.0,
+          "wasClipped": true,
+          "normalizationSaturated": true,
+          "smoothedMotion": 1.0
+        }
+      ],
+      "temporalProfile": {
+        "version": "sampled-visual-motion-v5",
+        "segments": [
+          {
+            "segmentIndex": 0,
+            "startSeconds": 0.0,
+            "endSeconds": 1.343,
+            "averageMotion": 1.0,
+            "motionDensity": 1.0,
+            "peakMotion": 1.0,
+            "minimumMotion": 1.0,
+            "motionVariability": 0.0,
+            "coverage": 1.0,
+            "validIntervalCount": 6,
+            "relativeToPrevious": null,
+            "relativeToOverall": 0.0001,
+            "relativeToNext": 0.0,
+            "sampledIntervalCount": 6,
+            "clippedIntervalRatio": 1.0,
+            "preClampMean": 4.5998,
+            "preClampP50": 5.0352,
+            "preClampP90": 5.8979,
+            "finalMean": 1.0
+          },
+          {
+            "segmentIndex": 1,
+            "startSeconds": 1.343,
+            "endSeconds": 2.685,
+            "averageMotion": 1.0,
+            "motionDensity": 1.0,
+            "peakMotion": 1.0,
+            "minimumMotion": 1.0,
+            "motionVariability": 0.0,
+            "coverage": 1.0,
+            "validIntervalCount": 6,
+            "relativeToPrevious": 0.0,
+            "relativeToOverall": 0.0001,
+            "relativeToNext": 0.0,
+            "sampledIntervalCount": 6,
+            "clippedIntervalRatio": 0.8333,
+            "preClampMean": 3.6333,
+            "preClampP50": 4.0829,
+            "preClampP90": 5.664,
+            "finalMean": 1.0
+          },
+          {
+            "segmentIndex": 2,
+            "startSeconds": 2.685,
+            "endSeconds": 4.028,
+            "averageMotion": 1.0,
+            "motionDensity": 1.0,
+            "peakMotion": 1.0,
+            "minimumMotion": 1.0,
+            "motionVariability": 0.0,
+            "coverage": 1.0,
+            "validIntervalCount": 7,
+            "relativeToPrevious": 0.0,
+            "relativeToOverall": 0.0001,
+            "relativeToNext": 0.0,
+            "sampledIntervalCount": 7,
+            "clippedIntervalRatio": 0.8571,
+            "preClampMean": 2.4061,
+            "preClampP50": 2.06,
+            "preClampP90": 4.1107,
+            "finalMean": 1.0
+          },
+          {
+            "segmentIndex": 3,
+            "startSeconds": 4.028,
+            "endSeconds": 5.37,
+            "averageMotion": 1.0,
+            "motionDensity": 1.0,
+            "peakMotion": 1.0,
+            "minimumMotion": 1.0,
+            "motionVariability": 0.0,
+            "coverage": 1.0,
+            "validIntervalCount": 6,
+            "relativeToPrevious": 0.0,
+            "relativeToOverall": 0.0001,
+            "relativeToNext": 0.0,
+            "sampledIntervalCount": 6,
+            "clippedIntervalRatio": 0.8333,
+            "preClampMean": 2.5356,
+            "preClampP50": 1.9555,
+            "preClampP90": 4.7622,
+            "finalMean": 1.0
+          },
+          {
+            "segmentIndex": 4,
+            "startSeconds": 5.37,
+            "endSeconds": 6.713,
+            "averageMotion": 1.0,
+            "motionDensity": 1.0,
+            "peakMotion": 1.0,
+            "minimumMotion": 1.0,
+            "motionVariability": 0.0,
+            "coverage": 1.0,
+            "validIntervalCount": 6,
+            "relativeToPrevious": 0.0,
+            "relativeToOverall": 0.0001,
+            "relativeToNext": -0.0011,
+            "sampledIntervalCount": 6,
+            "clippedIntervalRatio": 1.0,
+            "preClampMean": 2.981,
+            "preClampP50": 2.6482,
+            "preClampP90": 4.5401,
+            "finalMean": 1.0
+          },
+          {
+            "segmentIndex": 5,
+            "startSeconds": 6.713,
+            "endSeconds": 8.055,
+            "averageMotion": 0.9989,
+            "motionDensity": 1.0,
+            "peakMotion": 1.0,
+            "minimumMotion": 0.9941,
+            "motionVariability": 0.0023,
+            "coverage": 1.0,
+            "validIntervalCount": 7,
+            "relativeToPrevious": -0.0011,
+            "relativeToOverall": -0.001,
+            "relativeToNext": 0.0011,
+            "sampledIntervalCount": 7,
+            "clippedIntervalRatio": 0.7143,
+            "preClampMean": 1.6664,
+            "preClampP50": 1.3163,
+            "preClampP90": 2.5569,
+            "finalMean": 0.9989
+          },
+          {
+            "segmentIndex": 6,
+            "startSeconds": 8.055,
+            "endSeconds": 9.398,
+            "averageMotion": 1.0,
+            "motionDensity": 1.0,
+            "peakMotion": 1.0,
+            "minimumMotion": 1.0,
+            "motionVariability": 0.0,
+            "coverage": 1.0,
+            "validIntervalCount": 6,
+            "relativeToPrevious": 0.0011,
+            "relativeToOverall": 0.0001,
+            "relativeToNext": 0.0,
+            "sampledIntervalCount": 6,
+            "clippedIntervalRatio": 1.0,
+            "preClampMean": 1.8609,
+            "preClampP50": 1.4803,
+            "preClampP90": 2.7545,
+            "finalMean": 1.0
+          },
+          {
+            "segmentIndex": 7,
+            "startSeconds": 9.398,
+            "endSeconds": 10.74,
+            "averageMotion": 1.0,
+            "motionDensity": 1.0,
+            "peakMotion": 1.0,
+            "minimumMotion": 1.0,
+            "motionVariability": 0.0,
+            "coverage": 1.0,
+            "validIntervalCount": 6,
+            "relativeToPrevious": 0.0,
+            "relativeToOverall": 0.0001,
+            "relativeToNext": 0.0,
+            "sampledIntervalCount": 6,
+            "clippedIntervalRatio": 1.0,
+            "preClampMean": 2.556,
+            "preClampP50": 1.607,
+            "preClampP90": 4.6243,
+            "finalMean": 1.0
+          },
+          {
+            "segmentIndex": 8,
+            "startSeconds": 10.74,
+            "endSeconds": 12.083,
+            "averageMotion": 1.0,
+            "motionDensity": 1.0,
+            "peakMotion": 1.0,
+            "minimumMotion": 1.0,
+            "motionVariability": 0.0,
+            "coverage": 0.9382,
+            "validIntervalCount": 6,
+            "relativeToPrevious": 0.0,
+            "relativeToOverall": 0.0001,
+            "relativeToNext": null,
+            "sampledIntervalCount": 6,
+            "clippedIntervalRatio": 1.0,
+            "preClampMean": 4.6269,
+            "preClampP50": 4.8319,
+            "preClampP90": 6.0742,
+            "finalMean": 1.0
+          }
+        ],
+        "activityDrops": [],
+        "activitySpikes": [],
+        "variation": "STEADY",
+        "overallMotion": 0.9999,
+        "status": "AVAILABLE",
+        "motionPoints": [
+          {
+            "timestamp": 0.0,
+            "shortRangeMotion": 1.0,
+            "smoothedMotion": 1.0
+          },
+          {
+            "timestamp": 0.25,
+            "shortRangeMotion": 1.0,
+            "smoothedMotion": 1.0
+          },
+          {
+            "timestamp": 0.5,
+            "shortRangeMotion": 1.0,
+            "smoothedMotion": 1.0
+          },
+          {
+            "timestamp": 0.75,
+            "shortRangeMotion": 1.0,
+            "smoothedMotion": 1.0
+          },
+          {
+            "timestamp": 1.0,
+            "shortRangeMotion": 1.0,
+            "smoothedMotion": 1.0
+          },
+          {
+            "timestamp": 1.25,
+            "shortRangeMotion": 1.0,
+            "smoothedMotion": 1.0
+          },
+          {
+            "timestamp": 1.5,
+            "shortRangeMotion": 1.0,
+            "smoothedMotion": 1.0
+          },
+          {
+            "timestamp": 1.75,
+            "shortRangeMotion": 1.0,
+            "smoothedMotion": 1.0
+          },
+          {
+            "timestamp": 2.0,
+            "shortRangeMotion": 1.0,
+            "smoothedMotion": 1.0
+          },
+          {
+            "timestamp": 2.25,
+            "shortRangeMotion": 0.91077,
+            "smoothedMotion": 1.0
+          },
+          {
+            "timestamp": 2.5,
+            "shortRangeMotion": 1.0,
+            "smoothedMotion": 1.0
+          },
+          {
+            "timestamp": 2.75,
+            "shortRangeMotion": 1.0,
+            "smoothedMotion": 1.0
+          },
+          {
+            "timestamp": 3.0,
+            "shortRangeMotion": 1.0,
+            "smoothedMotion": 1.0
+          },
+          {
+            "timestamp": 3.25,
+            "shortRangeMotion": 1.0,
+            "smoothedMotion": 1.0
+          },
+          {
+            "timestamp": 3.5,
+            "shortRangeMotion": 0.71749,
+            "smoothedMotion": 1.0
+          },
+          {
+            "timestamp": 3.75,
+            "shortRangeMotion": 1.0,
+            "smoothedMotion": 1.0
+          },
+          {
+            "timestamp": 4.0,
+            "shortRangeMotion": 1.0,
+            "smoothedMotion": 1.0
+          },
+          {
+            "timestamp": 4.25,
+            "shortRangeMotion": 0.56985,
+            "smoothedMotion": 1.0
+          },
+          {
+            "timestamp": 4.5,
+            "shortRangeMotion": 1.0,
+            "smoothedMotion": 1.0
+          },
+          {
+            "timestamp": 4.75,
+            "shortRangeMotion": 1.0,
+            "smoothedMotion": 1.0
+          },
+          {
+            "timestamp": 5.0,
+            "shortRangeMotion": 1.0,
+            "smoothedMotion": 1.0
+          },
+          {
+            "timestamp": 5.25,
+            "shortRangeMotion": 1.0,
+            "smoothedMotion": 1.0
+          },
+          {
+            "timestamp": 5.5,
+            "shortRangeMotion": 1.0,
+            "smoothedMotion": 1.0
+          },
+          {
+            "timestamp": 5.75,
+            "shortRangeMotion": 1.0,
+            "smoothedMotion": 1.0
+          },
+          {
+            "timestamp": 6.0,
+            "shortRangeMotion": 1.0,
+            "smoothedMotion": 1.0
+          },
+          {
+            "timestamp": 6.25,
+            "shortRangeMotion": 1.0,
+            "smoothedMotion": 1.0
+          },
+          {
+            "timestamp": 6.5,
+            "shortRangeMotion": 1.0,
+            "smoothedMotion": 1.0
+          },
+          {
+            "timestamp": 6.75,
+            "shortRangeMotion": 0.9207,
+            "smoothedMotion": 1.0
+          },
+          {
+            "timestamp": 7.0,
+            "shortRangeMotion": 1.0,
+            "smoothedMotion": 0.99411
+          },
+          {
+            "timestamp": 7.25,
+            "shortRangeMotion": 0.99411,
+            "smoothedMotion": 1.0
+          },
+          {
+            "timestamp": 7.5,
+            "shortRangeMotion": 1.0,
+            "smoothedMotion": 1.0
+          },
+          {
+            "timestamp": 7.75,
+            "shortRangeMotion": 1.0,
+            "smoothedMotion": 1.0
+          },
+          {
+            "timestamp": 8.0,
+            "shortRangeMotion": 1.0,
+            "smoothedMotion": 1.0
+          },
+          {
+            "timestamp": 8.25,
+            "shortRangeMotion": 1.0,
+            "smoothedMotion": 1.0
+          },
+          {
+            "timestamp": 8.5,
+            "shortRangeMotion": 1.0,
+            "smoothedMotion": 1.0
+          },
+          {
+            "timestamp": 8.75,
+            "shortRangeMotion": 1.0,
+            "smoothedMotion": 1.0
+          },
+          {
+            "timestamp": 9.0,
+            "shortRangeMotion": 1.0,
+            "smoothedMotion": 1.0
+          },
+          {
+            "timestamp": 9.25,
+            "shortRangeMotion": 1.0,
+            "smoothedMotion": 1.0
+          },
+          {
+            "timestamp": 9.5,
+            "shortRangeMotion": 1.0,
+            "smoothedMotion": 1.0
+          },
+          {
+            "timestamp": 9.75,
+            "shortRangeMotion": 1.0,
+            "smoothedMotion": 1.0
+          },
+          {
+            "timestamp": 10.0,
+            "shortRangeMotion": 1.0,
+            "smoothedMotion": 1.0
+          },
+          {
+            "timestamp": 10.25,
+            "shortRangeMotion": 1.0,
+            "smoothedMotion": 1.0
+          },
+          {
+            "timestamp": 10.5,
+            "shortRangeMotion": 1.0,
+            "smoothedMotion": 1.0
+          },
+          {
+            "timestamp": 10.75,
+            "shortRangeMotion": 1.0,
+            "smoothedMotion": 1.0
+          },
+          {
+            "timestamp": 11.0,
+            "shortRangeMotion": 1.0,
+            "smoothedMotion": 1.0
+          },
+          {
+            "timestamp": 11.25,
+            "shortRangeMotion": 1.0,
+            "smoothedMotion": 1.0
+          },
+          {
+            "timestamp": 11.5,
+            "shortRangeMotion": 1.0,
+            "smoothedMotion": 1.0
+          },
+          {
+            "timestamp": 11.75,
+            "shortRangeMotion": 1.0,
+            "smoothedMotion": 1.0
+          }
+        ],
+        "lowMotionCandidates": [],
+        "troughs": [],
+        "spikes": [],
+        "visualNovelty": {
+          "version": "visual-novelty-v1",
+          "mediumOffsetSeconds": 1.25,
+          "points": [
+            {
+              "timestamp": 0.0,
+              "comparisonOffset": 1.25,
+              "structuralSimilarity": 0.14871,
+              "perceptualHashDistance": 0.46875,
+              "embeddingDistance": null,
+              "embeddingStatus": "NOT_EVALUATED",
+              "novelty": 0.77479
+            },
+            {
+              "timestamp": 0.25,
+              "comparisonOffset": 1.25,
+              "structuralSimilarity": 0.2792,
+              "perceptualHashDistance": 0.40625,
+              "embeddingDistance": null,
+              "embeddingStatus": "NOT_EVALUATED",
+              "novelty": 0.65789
+            },
+            {
+              "timestamp": 0.5,
+              "comparisonOffset": 1.25,
+              "structuralSimilarity": 0.01713,
+              "perceptualHashDistance": 0.5,
+              "embeddingDistance": null,
+              "embeddingStatus": "NOT_EVALUATED",
+              "novelty": 0.8863
+            },
+            {
+              "timestamp": 0.75,
+              "comparisonOffset": 1.25,
+              "structuralSimilarity": 0.03802,
+              "perceptualHashDistance": 0.5,
+              "embeddingDistance": null,
+              "embeddingStatus": "NOT_EVALUATED",
+              "novelty": 0.86958
+            },
+            {
+              "timestamp": 1.0,
+              "comparisonOffset": 1.25,
+              "structuralSimilarity": 0.05909,
+              "perceptualHashDistance": 0.5625,
+              "embeddingDistance": null,
+              "embeddingStatus": "NOT_EVALUATED",
+              "novelty": 0.86523
+            },
+            {
+              "timestamp": 1.25,
+              "comparisonOffset": 1.25,
+              "structuralSimilarity": 0.0,
+              "perceptualHashDistance": 0.59375,
+              "embeddingDistance": null,
+              "embeddingStatus": "NOT_EVALUATED",
+              "novelty": 0.91875
+            },
+            {
+              "timestamp": 1.5,
+              "comparisonOffset": 1.25,
+              "structuralSimilarity": 0.06087,
+              "perceptualHashDistance": 0.5,
+              "embeddingDistance": null,
+              "embeddingStatus": "NOT_EVALUATED",
+              "novelty": 0.8513
+            },
+            {
+              "timestamp": 1.75,
+              "comparisonOffset": 1.25,
+              "structuralSimilarity": 0.0,
+              "perceptualHashDistance": 0.46875,
+              "embeddingDistance": null,
+              "embeddingStatus": "NOT_EVALUATED",
+              "novelty": 0.89375
+            },
+            {
+              "timestamp": 2.0,
+              "comparisonOffset": 1.25,
+              "structuralSimilarity": 0.0,
+              "perceptualHashDistance": 0.5625,
+              "embeddingDistance": null,
+              "embeddingStatus": "NOT_EVALUATED",
+              "novelty": 0.9125
+            },
+            {
+              "timestamp": 2.25,
+              "comparisonOffset": 1.25,
+              "structuralSimilarity": 0.02828,
+              "perceptualHashDistance": 0.5625,
+              "embeddingDistance": null,
+              "embeddingStatus": "NOT_EVALUATED",
+              "novelty": 0.88987
+            },
+            {
+              "timestamp": 2.5,
+              "comparisonOffset": 1.25,
+              "structuralSimilarity": 0.04768,
+              "perceptualHashDistance": 0.5625,
+              "embeddingDistance": null,
+              "embeddingStatus": "NOT_EVALUATED",
+              "novelty": 0.87436
+            },
+            {
+              "timestamp": 2.75,
+              "comparisonOffset": 1.25,
+              "structuralSimilarity": 0.71632,
+              "perceptualHashDistance": 0.09375,
+              "embeddingDistance": null,
+              "embeddingStatus": "NOT_EVALUATED",
+              "novelty": 0.2457
+            },
+            {
+              "timestamp": 3.0,
+              "comparisonOffset": 1.25,
+              "structuralSimilarity": 0.67704,
+              "perceptualHashDistance": 0.21875,
+              "embeddingDistance": null,
+              "embeddingStatus": "NOT_EVALUATED",
+              "novelty": 0.30212
+            },
+            {
+              "timestamp": 3.25,
+              "comparisonOffset": 1.25,
+              "structuralSimilarity": 0.61575,
+              "perceptualHashDistance": 0.21875,
+              "embeddingDistance": null,
+              "embeddingStatus": "NOT_EVALUATED",
+              "novelty": 0.35115
+            },
+            {
+              "timestamp": 3.5,
+              "comparisonOffset": 1.25,
+              "structuralSimilarity": 0.66385,
+              "perceptualHashDistance": 0.25,
+              "embeddingDistance": null,
+              "embeddingStatus": "NOT_EVALUATED",
+              "novelty": 0.31892
+            },
+            {
+              "timestamp": 3.75,
+              "comparisonOffset": 1.25,
+              "structuralSimilarity": 0.62028,
+              "perceptualHashDistance": 0.1875,
+              "embeddingDistance": null,
+              "embeddingStatus": "NOT_EVALUATED",
+              "novelty": 0.34127
+            },
+            {
+              "timestamp": 4.0,
+              "comparisonOffset": 1.25,
+              "structuralSimilarity": 0.18499,
+              "perceptualHashDistance": 0.4375,
+              "embeddingDistance": null,
+              "embeddingStatus": "NOT_EVALUATED",
+              "novelty": 0.73951
+            },
+            {
+              "timestamp": 4.25,
+              "comparisonOffset": 1.25,
+              "structuralSimilarity": 0.20094,
+              "perceptualHashDistance": 0.46875,
+              "embeddingDistance": null,
+              "embeddingStatus": "NOT_EVALUATED",
+              "novelty": 0.733
+            },
+            {
+              "timestamp": 4.5,
+              "comparisonOffset": 1.25,
+              "structuralSimilarity": 0.15251,
+              "perceptualHashDistance": 0.4375,
+              "embeddingDistance": null,
+              "embeddingStatus": "NOT_EVALUATED",
+              "novelty": 0.76549
+            },
+            {
+              "timestamp": 4.75,
+              "comparisonOffset": 1.25,
+              "structuralSimilarity": 0.04304,
+              "perceptualHashDistance": 0.46875,
+              "embeddingDistance": null,
+              "embeddingStatus": "NOT_EVALUATED",
+              "novelty": 0.85932
+            },
+            {
+              "timestamp": 5.0,
+              "comparisonOffset": 1.25,
+              "structuralSimilarity": 0.06578,
+              "perceptualHashDistance": 0.4375,
+              "embeddingDistance": null,
+              "embeddingStatus": "NOT_EVALUATED",
+              "novelty": 0.83488
+            },
+            {
+              "timestamp": 5.25,
+              "comparisonOffset": 1.25,
+              "structuralSimilarity": 0.20066,
+              "perceptualHashDistance": 0.46875,
+              "embeddingDistance": null,
+              "embeddingStatus": "NOT_EVALUATED",
+              "novelty": 0.73322
+            },
+            {
+              "timestamp": 5.5,
+              "comparisonOffset": 1.25,
+              "structuralSimilarity": 0.26915,
+              "perceptualHashDistance": 0.53125,
+              "embeddingDistance": null,
+              "embeddingStatus": "NOT_EVALUATED",
+              "novelty": 0.69093
+            },
+            {
+              "timestamp": 5.75,
+              "comparisonOffset": 1.25,
+              "structuralSimilarity": 0.18375,
+              "perceptualHashDistance": 0.4375,
+              "embeddingDistance": null,
+              "embeddingStatus": "NOT_EVALUATED",
+              "novelty": 0.7405
+            },
+            {
+              "timestamp": 6.0,
+              "comparisonOffset": 1.25,
+              "structuralSimilarity": 0.16869,
+              "perceptualHashDistance": 0.53125,
+              "embeddingDistance": null,
+              "embeddingStatus": "NOT_EVALUATED",
+              "novelty": 0.7713
+            },
+            {
+              "timestamp": 6.25,
+              "comparisonOffset": 1.25,
+              "structuralSimilarity": 0.1922,
+              "perceptualHashDistance": 0.53125,
+              "embeddingDistance": null,
+              "embeddingStatus": "NOT_EVALUATED",
+              "novelty": 0.75249
+            },
+            {
+              "timestamp": 6.5,
+              "comparisonOffset": 1.25,
+              "structuralSimilarity": 0.78028,
+              "perceptualHashDistance": 0.09375,
+              "embeddingDistance": null,
+              "embeddingStatus": "NOT_EVALUATED",
+              "novelty": 0.19453
+            },
+            {
+              "timestamp": 6.75,
+              "comparisonOffset": 1.25,
+              "structuralSimilarity": 0.65141,
+              "perceptualHashDistance": 0.21875,
+              "embeddingDistance": null,
+              "embeddingStatus": "NOT_EVALUATED",
+              "novelty": 0.32262
+            },
+            {
+              "timestamp": 7.0,
+              "comparisonOffset": 1.25,
+              "structuralSimilarity": 0.40954,
+              "perceptualHashDistance": 0.375,
+              "embeddingDistance": null,
+              "embeddingStatus": "NOT_EVALUATED",
+              "novelty": 0.54737
+            },
+            {
+              "timestamp": 7.25,
+              "comparisonOffset": 1.25,
+              "structuralSimilarity": 0.44654,
+              "perceptualHashDistance": 0.28125,
+              "embeddingDistance": null,
+              "embeddingStatus": "NOT_EVALUATED",
+              "novelty": 0.49902
+            },
+            {
+              "timestamp": 7.5,
+              "comparisonOffset": 1.25,
+              "structuralSimilarity": 0.43108,
+              "perceptualHashDistance": 0.3125,
+              "embeddingDistance": null,
+              "embeddingStatus": "NOT_EVALUATED",
+              "novelty": 0.51763
+            },
+            {
+              "timestamp": 7.75,
+              "comparisonOffset": 1.25,
+              "structuralSimilarity": 0.42625,
+              "perceptualHashDistance": 0.3125,
+              "embeddingDistance": null,
+              "embeddingStatus": "NOT_EVALUATED",
+              "novelty": 0.5215
+            },
+            {
+              "timestamp": 8.0,
+              "comparisonOffset": 1.25,
+              "structuralSimilarity": 0.44028,
+              "perceptualHashDistance": 0.28125,
+              "embeddingDistance": null,
+              "embeddingStatus": "NOT_EVALUATED",
+              "novelty": 0.50402
+            },
+            {
+              "timestamp": 8.25,
+              "comparisonOffset": 1.25,
+              "structuralSimilarity": 0.77985,
+              "perceptualHashDistance": 0.125,
+              "embeddingDistance": null,
+              "embeddingStatus": "NOT_EVALUATED",
+              "novelty": 0.20112
+            },
+            {
+              "timestamp": 8.5,
+              "comparisonOffset": 1.25,
+              "structuralSimilarity": 0.83975,
+              "perceptualHashDistance": 0.09375,
+              "embeddingDistance": null,
+              "embeddingStatus": "NOT_EVALUATED",
+              "novelty": 0.14695
+            },
+            {
+              "timestamp": 8.75,
+              "comparisonOffset": 1.25,
+              "structuralSimilarity": 0.83648,
+              "perceptualHashDistance": 0.15625,
+              "embeddingDistance": null,
+              "embeddingStatus": "NOT_EVALUATED",
+              "novelty": 0.16207
+            },
+            {
+              "timestamp": 9.0,
+              "comparisonOffset": 1.25,
+              "structuralSimilarity": 0.78562,
+              "perceptualHashDistance": 0.1875,
+              "embeddingDistance": null,
+              "embeddingStatus": "NOT_EVALUATED",
+              "novelty": 0.209
+            },
+            {
+              "timestamp": 9.25,
+              "comparisonOffset": 1.25,
+              "structuralSimilarity": 0.76358,
+              "perceptualHashDistance": 0.1875,
+              "embeddingDistance": null,
+              "embeddingStatus": "NOT_EVALUATED",
+              "novelty": 0.22664
+            },
+            {
+              "timestamp": 9.5,
+              "comparisonOffset": 1.25,
+              "structuralSimilarity": 0.01978,
+              "perceptualHashDistance": 0.4375,
+              "embeddingDistance": null,
+              "embeddingStatus": "NOT_EVALUATED",
+              "novelty": 0.87168
+            },
+            {
+              "timestamp": 9.75,
+              "comparisonOffset": 1.25,
+              "structuralSimilarity": 0.0,
+              "perceptualHashDistance": 0.4375,
+              "embeddingDistance": null,
+              "embeddingStatus": "NOT_EVALUATED",
+              "novelty": 0.8875
+            },
+            {
+              "timestamp": 10.0,
+              "comparisonOffset": 1.25,
+              "structuralSimilarity": 0.04448,
+              "perceptualHashDistance": 0.4375,
+              "embeddingDistance": null,
+              "embeddingStatus": "NOT_EVALUATED",
+              "novelty": 0.85191
+            },
+            {
+              "timestamp": 10.25,
+              "comparisonOffset": 1.25,
+              "structuralSimilarity": 0.05347,
+              "perceptualHashDistance": 0.40625,
+              "embeddingDistance": null,
+              "embeddingStatus": "NOT_EVALUATED",
+              "novelty": 0.83848
+            },
+            {
+              "timestamp": 10.5,
+              "comparisonOffset": 1.25,
+              "structuralSimilarity": 0.17286,
+              "perceptualHashDistance": 0.4375,
+              "embeddingDistance": null,
+              "embeddingStatus": "NOT_EVALUATED",
+              "novelty": 0.74921
+            },
+            {
+              "timestamp": 10.75,
+              "comparisonOffset": 1.25,
+              "structuralSimilarity": 0.24645,
+              "perceptualHashDistance": 0.375,
+              "embeddingDistance": null,
+              "embeddingStatus": "NOT_EVALUATED",
+              "novelty": 0.67784
+            }
+          ],
+          "averageNovelty": 0.62507,
+          "status": "AVAILABLE"
+        },
+        "repetitiveMotion": {
+          "version": "repetitive-motion-evidence-v1",
+          "status": "AVAILABLE",
+          "averageShortMotion": 0.99988,
+          "averageVisualNovelty": 0.62507,
+          "continuousMotion": true,
+          "lowStateNovelty": false,
+          "repeatedPatternCandidate": false,
+          "recurrence": {
+            "version": "multi-lag-recurrence-v1",
+            "detected": false,
+            "startSeconds": null,
+            "endSeconds": null,
+            "durationSeconds": 0.0,
+            "recurrenceStrength": 0.47473,
+            "dominantLagSeconds": 0.5,
+            "estimatedCycles": 24.17,
+            "visualStateRecurrence": false,
+            "motionPatternRecurrence": false,
+            "evidenceQuality": "MULTI_LAG_SSIM_AND_MOTION_AUTOCORRELATION",
+            "lags": [
+              {
+                "lagSeconds": 0.5,
+                "visualSimilarity": 0.57964,
+                "motionAutocorrelation": 0.27988,
+                "recurrenceStrength": 0.47473,
+                "comparisonCount": 47,
+                "estimatedCycles": 24.17
+              },
+              {
+                "lagSeconds": 0.75,
+                "visualSimilarity": 0.50148,
+                "motionAutocorrelation": 0.22898,
+                "recurrenceStrength": 0.4061,
+                "comparisonCount": 46,
+                "estimatedCycles": 16.11
+              },
+              {
+                "lagSeconds": 1.0,
+                "visualSimilarity": 0.45236,
+                "motionAutocorrelation": 0.20094,
+                "recurrenceStrength": 0.36436,
+                "comparisonCount": 45,
+                "estimatedCycles": 12.08
+              },
+              {
+                "lagSeconds": 1.5,
+                "visualSimilarity": 0.37768,
+                "motionAutocorrelation": -0.02569,
+                "recurrenceStrength": 0.24549,
+                "comparisonCount": 43,
+                "estimatedCycles": 8.06
+              },
+              {
+                "lagSeconds": 2.0,
+                "visualSimilarity": 0.33814,
+                "motionAutocorrelation": -0.21177,
+                "recurrenceStrength": 0.21979,
+                "comparisonCount": 41,
+                "estimatedCycles": 6.04
+              },
+              {
+                "lagSeconds": 2.25,
+                "visualSimilarity": 0.33001,
+                "motionAutocorrelation": -0.08415,
+                "recurrenceStrength": 0.21451,
+                "comparisonCount": 40,
+                "estimatedCycles": 5.37
+              },
+              {
+                "lagSeconds": 2.5,
+                "visualSimilarity": 0.31193,
+                "motionAutocorrelation": 0.06361,
+                "recurrenceStrength": 0.22502,
+                "comparisonCount": 39,
+                "estimatedCycles": 4.83
+              },
+              {
+                "lagSeconds": 3.0,
+                "visualSimilarity": 0.32989,
+                "motionAutocorrelation": -0.10843,
+                "recurrenceStrength": 0.21443,
+                "comparisonCount": 37,
+                "estimatedCycles": 4.03
+              }
+            ]
+          },
+          "classification": "LOW",
+          "interpretation": "No prolonged high-motion/low-novelty pattern was established."
+        },
+        "recurrence": {
+          "version": "multi-lag-recurrence-v1",
+          "detected": false,
+          "startSeconds": null,
+          "endSeconds": null,
+          "durationSeconds": 0.0,
+          "recurrenceStrength": 0.47473,
+          "dominantLagSeconds": 0.5,
+          "estimatedCycles": 24.17,
+          "visualStateRecurrence": false,
+          "motionPatternRecurrence": false,
+          "evidenceQuality": "MULTI_LAG_SSIM_AND_MOTION_AUTOCORRELATION",
+          "lags": [
+            {
+              "lagSeconds": 0.5,
+              "visualSimilarity": 0.57964,
+              "motionAutocorrelation": 0.27988,
+              "recurrenceStrength": 0.47473,
+              "comparisonCount": 47,
+              "estimatedCycles": 24.17
+            },
+            {
+              "lagSeconds": 0.75,
+              "visualSimilarity": 0.50148,
+              "motionAutocorrelation": 0.22898,
+              "recurrenceStrength": 0.4061,
+              "comparisonCount": 46,
+              "estimatedCycles": 16.11
+            },
+            {
+              "lagSeconds": 1.0,
+              "visualSimilarity": 0.45236,
+              "motionAutocorrelation": 0.20094,
+              "recurrenceStrength": 0.36436,
+              "comparisonCount": 45,
+              "estimatedCycles": 12.08
+            },
+            {
+              "lagSeconds": 1.5,
+              "visualSimilarity": 0.37768,
+              "motionAutocorrelation": -0.02569,
+              "recurrenceStrength": 0.24549,
+              "comparisonCount": 43,
+              "estimatedCycles": 8.06
+            },
+            {
+              "lagSeconds": 2.0,
+              "visualSimilarity": 0.33814,
+              "motionAutocorrelation": -0.21177,
+              "recurrenceStrength": 0.21979,
+              "comparisonCount": 41,
+              "estimatedCycles": 6.04
+            },
+            {
+              "lagSeconds": 2.25,
+              "visualSimilarity": 0.33001,
+              "motionAutocorrelation": -0.08415,
+              "recurrenceStrength": 0.21451,
+              "comparisonCount": 40,
+              "estimatedCycles": 5.37
+            },
+            {
+              "lagSeconds": 2.5,
+              "visualSimilarity": 0.31193,
+              "motionAutocorrelation": 0.06361,
+              "recurrenceStrength": 0.22502,
+              "comparisonCount": 39,
+              "estimatedCycles": 4.83
+            },
+            {
+              "lagSeconds": 3.0,
+              "visualSimilarity": 0.32989,
+              "motionAutocorrelation": -0.10843,
+              "recurrenceStrength": 0.21443,
+              "comparisonCount": 37,
+              "estimatedCycles": 4.03
+            }
+          ]
+        },
+        "saturationDiagnostics": {
+          "overallClippedRatio": 0.89583,
+          "openingClippedRatio": 0.92308,
+          "middleClippedRatio": 0.84,
+          "endingClippedRatio": 1.0,
+          "preClampMean": 2.87859,
+          "preClampP50": 2.23788,
+          "preClampP90": 5.4982,
+          "finalMean": 0.98152,
+          "warning": "MOTION_SCALE_SATURATION"
+        },
+        "dimensions": {
+          "motionIntensity": "VERY_HIGH",
+          "temporalConsistency": "STEADY",
+          "visualNovelty": "HIGH",
+          "actionBeatNovelty": "WEAK",
+          "planRenderFidelity": "NOT_EVALUATED"
+        },
+        "temporalTrend": {
+          "version": "temporal-trend-profile-v1",
+          "status": "AVAILABLE",
+          "slopeStatus": "TECHNICAL_MEASUREMENT_ONLY",
+          "slopeUnit": "normalized_motion_per_second",
+          "overallSlope": -1e-05,
+          "earlySlope": 0.0,
+          "middleSlope": -0.00041,
+          "lateSlope": -0.0,
+          "segmentDeltas": [
+            {
+              "fromSegment": 0,
+              "toSegment": 1,
+              "deltaActivity": 0.0,
+              "deltaActivityPerSecond": 0.0,
+              "direction": "FLAT"
+            },
+            {
+              "fromSegment": 1,
+              "toSegment": 2,
+              "deltaActivity": 0.0,
+              "deltaActivityPerSecond": 0.0,
+              "direction": "FLAT"
+            },
+            {
+              "fromSegment": 2,
+              "toSegment": 3,
+              "deltaActivity": 0.0,
+              "deltaActivityPerSecond": 0.0,
+              "direction": "FLAT"
+            },
+            {
+              "fromSegment": 3,
+              "toSegment": 4,
+              "deltaActivity": 0.0,
+              "deltaActivityPerSecond": 0.0,
+              "direction": "FLAT"
+            },
+            {
+              "fromSegment": 4,
+              "toSegment": 5,
+              "deltaActivity": -0.0011,
+              "deltaActivityPerSecond": -0.0008,
+              "direction": "FLAT"
+            },
+            {
+              "fromSegment": 5,
+              "toSegment": 6,
+              "deltaActivity": 0.0011,
+              "deltaActivityPerSecond": 0.0008,
+              "direction": "FLAT"
+            },
+            {
+              "fromSegment": 6,
+              "toSegment": 7,
+              "deltaActivity": 0.0,
+              "deltaActivityPerSecond": 0.0,
+              "direction": "FLAT"
+            },
+            {
+              "fromSegment": 7,
+              "toSegment": 8,
+              "deltaActivity": 0.0,
+              "deltaActivityPerSecond": 0.0,
+              "direction": "FLAT"
+            }
+          ],
+          "risingRunCount": 0,
+          "fallingRunCount": 0,
+          "longestRisingRun": 0,
+          "longestFallingRun": 0,
+          "netChange": 0.0,
+          "finalReboundMagnitude": 0.0,
+          "trendShape": "STEADY_HIGH",
+          "shape": "STEADY_HIGH",
+          "localDipEvidence": [],
+          "events": [],
+          "recoveryEvidence": [],
+          "localEventCount": 0,
+          "recoveryCount": 0,
+          "strongestDipSeverity": null,
+          "humanSummary": "No local activity events detected.",
+          "interpretation": "Temporal motion trend only; it is not semantic creative escalation or a performance prediction."
+        },
+        "temporalActivityEvents": [],
+        "structuralRetentionRisk": {
+          "status": "AVAILABLE",
+          "version": "structural-retention-risk-v1",
+          "calibrationStatus": "UNCALIBRATED_HEURISTIC",
+          "windows": [],
+          "summary": "No structural attention windows detected",
+          "limitations": [
+            "No retention curve was used.",
+            "A local activity dip does not establish audience drop-off.",
+            "Use imported retention time-series for calibrated drop-window prediction."
+          ]
+        },
+        "legacyHoldEvents": [],
+        "temporalEmphasis": [],
+        "lowMotionEvidence": {
+          "status": "AVAILABLE",
+          "durationSeconds": 0,
+          "intervalCount": 0,
+          "intervals": [],
+          "interpretation": "Absolute low visual-change intervals; not audience retention or a creative verdict.",
+          "summary": "None detected",
+          "provenance": "V5_ABSOLUTE_LOW_MOTION_DETECTOR"
+        },
+        "holdEvidenceStatus": "NOT_EVALUATED",
+        "reboundEvidence": {
+          "status": "AVAILABLE",
+          "localRecoveryStatus": "NONE_DETECTED",
+          "sustainedRisingActivity": false,
+          "localRecoveryCount": 0,
+          "finalRebound": false
+        },
+        "hook": {
+          "status": "MODERATE",
+          "windowSeconds": 1.5,
+          "subjectPresence": null,
+          "subjectPresenceStatus": "NOT_EVALUATED",
+          "objectPresence": null,
+          "objectPresenceStatus": "NOT_EVALUATED",
+          "anomalyReadable": null,
+          "anomalyReadableStatus": "NOT_EVALUATED",
+          "expressionReadable": null,
+          "expressionStatus": "NOT_EVALUATED",
+          "directCameraGaze": null,
+          "directCameraGazeStatus": "NOT_EVALUATED",
+          "textOverlay": {
+            "status": "NOT_EVALUATED",
+            "reason": "OCR/text detection is not configured."
+          },
+          "visualOpeningActivity": 1.0,
+          "reason": "The opening contains measurable visual activity, but semantic subject/object readability is not configured."
+        },
+        "payoff": {
+          "status": "UNKNOWN",
+          "visualEndingEmphasis": "AVAILABLE",
+          "semanticResolutionStatus": "NOT_EVALUATED",
+          "consequenceDetected": "NOT_EVALUATED",
+          "characterReactionDetected": "NOT_EVALUATED",
+          "objectStateChange": "NOT_EVALUATED",
+          "motionRebound": "NOT_ESTABLISHED",
+          "planAlignment": "NOT_EVALUATED",
+          "payoffWindow": "ENDING_WINDOW",
+          "evidenceCoverage": "DETERMINISTIC_ONLY",
+          "reason": "Semantic resolution, character reaction and plan alignment were not evaluated; motion evidence alone does not establish a payoff."
+        },
+        "loop": {
+          "status": "PARTIAL",
+          "visualEvidence": "MODERATE",
+          "visualEndpointSimilarity": 0.8165,
+          "semanticContinuity": null,
+          "semanticContinuityStatus": "NOT_EVALUATED",
+          "semanticContinuityReason": "SEMANTIC_VISION_NOT_CONFIGURED",
+          "overall": "MODERATE",
+          "reason": "Visual endpoint similarity is available; semantic loop continuity is not verified."
+        },
+        "actionBeatNovelty": {
+          "status": "PARTIAL",
+          "plannedStrategyNovelty": {
+            "status": "NOT_EVALUATED",
+            "reason": "NO_STRUCTURED_PLAN"
+          },
+          "observedVisualBeatNovelty": {
+            "status": "AVAILABLE",
+            "level": "WEAK",
+            "distinctBeatChanges": 0,
+            "reason": "Deterministic temporal and visual-state changes."
+          },
+          "observedSemanticActionNovelty": {
+            "status": "NOT_EVALUATED",
+            "reason": "SEMANTIC_VISION_NOT_CONFIGURED"
+          },
+          "combinedAssessment": "WEAK",
+          "repetitionContext": "REVIEW_CONTEXT_REQUIRED"
+        },
+        "planRenderFidelity": {
+          "status": "NOT_AVAILABLE",
+          "reason": "No structured production plan or source generation prompt is linked to this analysis.",
+          "provenance": "NO_PLAN_OR_PROMPT"
+        },
+        "canonicalAssessments": {
+          "version": "semantic-fusion-v1",
+          "hook": {
+            "version": "hook-assessment-v1",
+            "status": "AVAILABLE",
+            "strength": "MODERATE",
+            "coverage": "VISUAL_ONLY",
+            "semanticReadability": null,
+            "visualOpeningSupport": 1.0,
+            "expressionSupport": null,
+            "textSupport": null,
+            "transcriptSupport": "NOT_AVAILABLE",
+            "planAlignment": "NOT_AVAILABLE",
+            "summary": "The opening contains measurable visual activity, but semantic subject/object readability is not configured.",
+            "limitations": [
+              "Semantic opening evidence is unavailable."
+            ],
+            "evidenceReferences": [
+              "V5 temporalProfile.hook",
+              "semanticVideoEvidence.opening"
+            ]
+          },
+          "payoff": {
+            "version": "payoff-assessment-v1",
+            "evidenceStatus": "UNKNOWN",
+            "strength": "UNKNOWN",
+            "semanticStatus": "UNKNOWN",
+            "visualEndingEmphasis": "AVAILABLE",
+            "motionRebound": "NOT_ESTABLISHED",
+            "emotionalResolution": null,
+            "stateChange": null,
+            "planAlignment": "NOT_AVAILABLE",
+            "timingConfidence": null,
+            "characterReaction": null,
+            "stateResolution": null,
+            "summary": "Payoff cannot be resolved from the available evidence.",
+            "limitations": [
+              "Semantic payoff evidence is unavailable."
+            ]
+          },
+          "loop": {
+            "version": "loop-assessment-v1",
+            "evidenceStatus": "UNKNOWN",
+            "strength": "MODERATE",
+            "visualEvidence": "MODERATE",
+            "semanticEvidence": "UNKNOWN",
+            "actionContinuity": null,
+            "planIntent": "NOT_AVAILABLE",
+            "summary": "Visual endpoint evidence is moderate; semantic loop evidence is unknown.",
+            "limitations": [
+              "Semantic loop evidence is unavailable."
+            ]
+          },
+          "temporalStructure": {
+            "version": "temporal-structure-assessment-v1",
+            "status": "UNKNOWN",
+            "interpretation": "UNKNOWN",
+            "events": [],
+            "summary": "No semantic context was available for temporal events.",
+            "limitations": [
+              "Contextual semantic beat evidence is unavailable."
+            ]
+          },
+          "planRenderFidelity": {
+            "status": "NOT_AVAILABLE",
+            "reason": "No resolved production plan or matching source prompt was available in this analysis."
+          },
+          "coverage": {
+            "percent": 20,
+            "missing": [
+              "beats",
+              "payoff",
+              "loop",
+              "temporal structure"
+            ]
+          },
+          "semanticEvidenceAvailable": false,
+          "semanticEvidenceIdentity": null
+        }
+      },
+      "visualNovelty": {
+        "version": "visual-novelty-v1",
+        "mediumOffsetSeconds": 1.25,
+        "points": [
+          {
+            "timestamp": 0.0,
+            "comparisonOffset": 1.25,
+            "structuralSimilarity": 0.14871,
+            "perceptualHashDistance": 0.46875,
+            "embeddingDistance": null,
+            "embeddingStatus": "NOT_EVALUATED",
+            "novelty": 0.77479
+          },
+          {
+            "timestamp": 0.25,
+            "comparisonOffset": 1.25,
+            "structuralSimilarity": 0.2792,
+            "perceptualHashDistance": 0.40625,
+            "embeddingDistance": null,
+            "embeddingStatus": "NOT_EVALUATED",
+            "novelty": 0.65789
+          },
+          {
+            "timestamp": 0.5,
+            "comparisonOffset": 1.25,
+            "structuralSimilarity": 0.01713,
+            "perceptualHashDistance": 0.5,
+            "embeddingDistance": null,
+            "embeddingStatus": "NOT_EVALUATED",
+            "novelty": 0.8863
+          },
+          {
+            "timestamp": 0.75,
+            "comparisonOffset": 1.25,
+            "structuralSimilarity": 0.03802,
+            "perceptualHashDistance": 0.5,
+            "embeddingDistance": null,
+            "embeddingStatus": "NOT_EVALUATED",
+            "novelty": 0.86958
+          },
+          {
+            "timestamp": 1.0,
+            "comparisonOffset": 1.25,
+            "structuralSimilarity": 0.05909,
+            "perceptualHashDistance": 0.5625,
+            "embeddingDistance": null,
+            "embeddingStatus": "NOT_EVALUATED",
+            "novelty": 0.86523
+          },
+          {
+            "timestamp": 1.25,
+            "comparisonOffset": 1.25,
+            "structuralSimilarity": 0.0,
+            "perceptualHashDistance": 0.59375,
+            "embeddingDistance": null,
+            "embeddingStatus": "NOT_EVALUATED",
+            "novelty": 0.91875
+          },
+          {
+            "timestamp": 1.5,
+            "comparisonOffset": 1.25,
+            "structuralSimilarity": 0.06087,
+            "perceptualHashDistance": 0.5,
+            "embeddingDistance": null,
+            "embeddingStatus": "NOT_EVALUATED",
+            "novelty": 0.8513
+          },
+          {
+            "timestamp": 1.75,
+            "comparisonOffset": 1.25,
+            "structuralSimilarity": 0.0,
+            "perceptualHashDistance": 0.46875,
+            "embeddingDistance": null,
+            "embeddingStatus": "NOT_EVALUATED",
+            "novelty": 0.89375
+          },
+          {
+            "timestamp": 2.0,
+            "comparisonOffset": 1.25,
+            "structuralSimilarity": 0.0,
+            "perceptualHashDistance": 0.5625,
+            "embeddingDistance": null,
+            "embeddingStatus": "NOT_EVALUATED",
+            "novelty": 0.9125
+          },
+          {
+            "timestamp": 2.25,
+            "comparisonOffset": 1.25,
+            "structuralSimilarity": 0.02828,
+            "perceptualHashDistance": 0.5625,
+            "embeddingDistance": null,
+            "embeddingStatus": "NOT_EVALUATED",
+            "novelty": 0.88987
+          },
+          {
+            "timestamp": 2.5,
+            "comparisonOffset": 1.25,
+            "structuralSimilarity": 0.04768,
+            "perceptualHashDistance": 0.5625,
+            "embeddingDistance": null,
+            "embeddingStatus": "NOT_EVALUATED",
+            "novelty": 0.87436
+          },
+          {
+            "timestamp": 2.75,
+            "comparisonOffset": 1.25,
+            "structuralSimilarity": 0.71632,
+            "perceptualHashDistance": 0.09375,
+            "embeddingDistance": null,
+            "embeddingStatus": "NOT_EVALUATED",
+            "novelty": 0.2457
+          },
+          {
+            "timestamp": 3.0,
+            "comparisonOffset": 1.25,
+            "structuralSimilarity": 0.67704,
+            "perceptualHashDistance": 0.21875,
+            "embeddingDistance": null,
+            "embeddingStatus": "NOT_EVALUATED",
+            "novelty": 0.30212
+          },
+          {
+            "timestamp": 3.25,
+            "comparisonOffset": 1.25,
+            "structuralSimilarity": 0.61575,
+            "perceptualHashDistance": 0.21875,
+            "embeddingDistance": null,
+            "embeddingStatus": "NOT_EVALUATED",
+            "novelty": 0.35115
+          },
+          {
+            "timestamp": 3.5,
+            "comparisonOffset": 1.25,
+            "structuralSimilarity": 0.66385,
+            "perceptualHashDistance": 0.25,
+            "embeddingDistance": null,
+            "embeddingStatus": "NOT_EVALUATED",
+            "novelty": 0.31892
+          },
+          {
+            "timestamp": 3.75,
+            "comparisonOffset": 1.25,
+            "structuralSimilarity": 0.62028,
+            "perceptualHashDistance": 0.1875,
+            "embeddingDistance": null,
+            "embeddingStatus": "NOT_EVALUATED",
+            "novelty": 0.34127
+          },
+          {
+            "timestamp": 4.0,
+            "comparisonOffset": 1.25,
+            "structuralSimilarity": 0.18499,
+            "perceptualHashDistance": 0.4375,
+            "embeddingDistance": null,
+            "embeddingStatus": "NOT_EVALUATED",
+            "novelty": 0.73951
+          },
+          {
+            "timestamp": 4.25,
+            "comparisonOffset": 1.25,
+            "structuralSimilarity": 0.20094,
+            "perceptualHashDistance": 0.46875,
+            "embeddingDistance": null,
+            "embeddingStatus": "NOT_EVALUATED",
+            "novelty": 0.733
+          },
+          {
+            "timestamp": 4.5,
+            "comparisonOffset": 1.25,
+            "structuralSimilarity": 0.15251,
+            "perceptualHashDistance": 0.4375,
+            "embeddingDistance": null,
+            "embeddingStatus": "NOT_EVALUATED",
+            "novelty": 0.76549
+          },
+          {
+            "timestamp": 4.75,
+            "comparisonOffset": 1.25,
+            "structuralSimilarity": 0.04304,
+            "perceptualHashDistance": 0.46875,
+            "embeddingDistance": null,
+            "embeddingStatus": "NOT_EVALUATED",
+            "novelty": 0.85932
+          },
+          {
+            "timestamp": 5.0,
+            "comparisonOffset": 1.25,
+            "structuralSimilarity": 0.06578,
+            "perceptualHashDistance": 0.4375,
+            "embeddingDistance": null,
+            "embeddingStatus": "NOT_EVALUATED",
+            "novelty": 0.83488
+          },
+          {
+            "timestamp": 5.25,
+            "comparisonOffset": 1.25,
+            "structuralSimilarity": 0.20066,
+            "perceptualHashDistance": 0.46875,
+            "embeddingDistance": null,
+            "embeddingStatus": "NOT_EVALUATED",
+            "novelty": 0.73322
+          },
+          {
+            "timestamp": 5.5,
+            "comparisonOffset": 1.25,
+            "structuralSimilarity": 0.26915,
+            "perceptualHashDistance": 0.53125,
+            "embeddingDistance": null,
+            "embeddingStatus": "NOT_EVALUATED",
+            "novelty": 0.69093
+          },
+          {
+            "timestamp": 5.75,
+            "comparisonOffset": 1.25,
+            "structuralSimilarity": 0.18375,
+            "perceptualHashDistance": 0.4375,
+            "embeddingDistance": null,
+            "embeddingStatus": "NOT_EVALUATED",
+            "novelty": 0.7405
+          },
+          {
+            "timestamp": 6.0,
+            "comparisonOffset": 1.25,
+            "structuralSimilarity": 0.16869,
+            "perceptualHashDistance": 0.53125,
+            "embeddingDistance": null,
+            "embeddingStatus": "NOT_EVALUATED",
+            "novelty": 0.7713
+          },
+          {
+            "timestamp": 6.25,
+            "comparisonOffset": 1.25,
+            "structuralSimilarity": 0.1922,
+            "perceptualHashDistance": 0.53125,
+            "embeddingDistance": null,
+            "embeddingStatus": "NOT_EVALUATED",
+            "novelty": 0.75249
+          },
+          {
+            "timestamp": 6.5,
+            "comparisonOffset": 1.25,
+            "structuralSimilarity": 0.78028,
+            "perceptualHashDistance": 0.09375,
+            "embeddingDistance": null,
+            "embeddingStatus": "NOT_EVALUATED",
+            "novelty": 0.19453
+          },
+          {
+            "timestamp": 6.75,
+            "comparisonOffset": 1.25,
+            "structuralSimilarity": 0.65141,
+            "perceptualHashDistance": 0.21875,
+            "embeddingDistance": null,
+            "embeddingStatus": "NOT_EVALUATED",
+            "novelty": 0.32262
+          },
+          {
+            "timestamp": 7.0,
+            "comparisonOffset": 1.25,
+            "structuralSimilarity": 0.40954,
+            "perceptualHashDistance": 0.375,
+            "embeddingDistance": null,
+            "embeddingStatus": "NOT_EVALUATED",
+            "novelty": 0.54737
+          },
+          {
+            "timestamp": 7.25,
+            "comparisonOffset": 1.25,
+            "structuralSimilarity": 0.44654,
+            "perceptualHashDistance": 0.28125,
+            "embeddingDistance": null,
+            "embeddingStatus": "NOT_EVALUATED",
+            "novelty": 0.49902
+          },
+          {
+            "timestamp": 7.5,
+            "comparisonOffset": 1.25,
+            "structuralSimilarity": 0.43108,
+            "perceptualHashDistance": 0.3125,
+            "embeddingDistance": null,
+            "embeddingStatus": "NOT_EVALUATED",
+            "novelty": 0.51763
+          },
+          {
+            "timestamp": 7.75,
+            "comparisonOffset": 1.25,
+            "structuralSimilarity": 0.42625,
+            "perceptualHashDistance": 0.3125,
+            "embeddingDistance": null,
+            "embeddingStatus": "NOT_EVALUATED",
+            "novelty": 0.5215
+          },
+          {
+            "timestamp": 8.0,
+            "comparisonOffset": 1.25,
+            "structuralSimilarity": 0.44028,
+            "perceptualHashDistance": 0.28125,
+            "embeddingDistance": null,
+            "embeddingStatus": "NOT_EVALUATED",
+            "novelty": 0.50402
+          },
+          {
+            "timestamp": 8.25,
+            "comparisonOffset": 1.25,
+            "structuralSimilarity": 0.77985,
+            "perceptualHashDistance": 0.125,
+            "embeddingDistance": null,
+            "embeddingStatus": "NOT_EVALUATED",
+            "novelty": 0.20112
+          },
+          {
+            "timestamp": 8.5,
+            "comparisonOffset": 1.25,
+            "structuralSimilarity": 0.83975,
+            "perceptualHashDistance": 0.09375,
+            "embeddingDistance": null,
+            "embeddingStatus": "NOT_EVALUATED",
+            "novelty": 0.14695
+          },
+          {
+            "timestamp": 8.75,
+            "comparisonOffset": 1.25,
+            "structuralSimilarity": 0.83648,
+            "perceptualHashDistance": 0.15625,
+            "embeddingDistance": null,
+            "embeddingStatus": "NOT_EVALUATED",
+            "novelty": 0.16207
+          },
+          {
+            "timestamp": 9.0,
+            "comparisonOffset": 1.25,
+            "structuralSimilarity": 0.78562,
+            "perceptualHashDistance": 0.1875,
+            "embeddingDistance": null,
+            "embeddingStatus": "NOT_EVALUATED",
+            "novelty": 0.209
+          },
+          {
+            "timestamp": 9.25,
+            "comparisonOffset": 1.25,
+            "structuralSimilarity": 0.76358,
+            "perceptualHashDistance": 0.1875,
+            "embeddingDistance": null,
+            "embeddingStatus": "NOT_EVALUATED",
+            "novelty": 0.22664
+          },
+          {
+            "timestamp": 9.5,
+            "comparisonOffset": 1.25,
+            "structuralSimilarity": 0.01978,
+            "perceptualHashDistance": 0.4375,
+            "embeddingDistance": null,
+            "embeddingStatus": "NOT_EVALUATED",
+            "novelty": 0.87168
+          },
+          {
+            "timestamp": 9.75,
+            "comparisonOffset": 1.25,
+            "structuralSimilarity": 0.0,
+            "perceptualHashDistance": 0.4375,
+            "embeddingDistance": null,
+            "embeddingStatus": "NOT_EVALUATED",
+            "novelty": 0.8875
+          },
+          {
+            "timestamp": 10.0,
+            "comparisonOffset": 1.25,
+            "structuralSimilarity": 0.04448,
+            "perceptualHashDistance": 0.4375,
+            "embeddingDistance": null,
+            "embeddingStatus": "NOT_EVALUATED",
+            "novelty": 0.85191
+          },
+          {
+            "timestamp": 10.25,
+            "comparisonOffset": 1.25,
+            "structuralSimilarity": 0.05347,
+            "perceptualHashDistance": 0.40625,
+            "embeddingDistance": null,
+            "embeddingStatus": "NOT_EVALUATED",
+            "novelty": 0.83848
+          },
+          {
+            "timestamp": 10.5,
+            "comparisonOffset": 1.25,
+            "structuralSimilarity": 0.17286,
+            "perceptualHashDistance": 0.4375,
+            "embeddingDistance": null,
+            "embeddingStatus": "NOT_EVALUATED",
+            "novelty": 0.74921
+          },
+          {
+            "timestamp": 10.75,
+            "comparisonOffset": 1.25,
+            "structuralSimilarity": 0.24645,
+            "perceptualHashDistance": 0.375,
+            "embeddingDistance": null,
+            "embeddingStatus": "NOT_EVALUATED",
+            "novelty": 0.67784
+          }
+        ],
+        "averageNovelty": 0.62507,
+        "status": "AVAILABLE"
+      },
+      "repetitiveMotion": {
+        "version": "repetitive-motion-evidence-v1",
+        "status": "AVAILABLE",
+        "averageShortMotion": 0.99988,
+        "averageVisualNovelty": 0.62507,
+        "continuousMotion": true,
+        "lowStateNovelty": false,
+        "repeatedPatternCandidate": false,
+        "recurrence": {
+          "version": "multi-lag-recurrence-v1",
+          "detected": false,
+          "startSeconds": null,
+          "endSeconds": null,
+          "durationSeconds": 0.0,
+          "recurrenceStrength": 0.47473,
+          "dominantLagSeconds": 0.5,
+          "estimatedCycles": 24.17,
+          "visualStateRecurrence": false,
+          "motionPatternRecurrence": false,
+          "evidenceQuality": "MULTI_LAG_SSIM_AND_MOTION_AUTOCORRELATION",
+          "lags": [
+            {
+              "lagSeconds": 0.5,
+              "visualSimilarity": 0.57964,
+              "motionAutocorrelation": 0.27988,
+              "recurrenceStrength": 0.47473,
+              "comparisonCount": 47,
+              "estimatedCycles": 24.17
+            },
+            {
+              "lagSeconds": 0.75,
+              "visualSimilarity": 0.50148,
+              "motionAutocorrelation": 0.22898,
+              "recurrenceStrength": 0.4061,
+              "comparisonCount": 46,
+              "estimatedCycles": 16.11
+            },
+            {
+              "lagSeconds": 1.0,
+              "visualSimilarity": 0.45236,
+              "motionAutocorrelation": 0.20094,
+              "recurrenceStrength": 0.36436,
+              "comparisonCount": 45,
+              "estimatedCycles": 12.08
+            },
+            {
+              "lagSeconds": 1.5,
+              "visualSimilarity": 0.37768,
+              "motionAutocorrelation": -0.02569,
+              "recurrenceStrength": 0.24549,
+              "comparisonCount": 43,
+              "estimatedCycles": 8.06
+            },
+            {
+              "lagSeconds": 2.0,
+              "visualSimilarity": 0.33814,
+              "motionAutocorrelation": -0.21177,
+              "recurrenceStrength": 0.21979,
+              "comparisonCount": 41,
+              "estimatedCycles": 6.04
+            },
+            {
+              "lagSeconds": 2.25,
+              "visualSimilarity": 0.33001,
+              "motionAutocorrelation": -0.08415,
+              "recurrenceStrength": 0.21451,
+              "comparisonCount": 40,
+              "estimatedCycles": 5.37
+            },
+            {
+              "lagSeconds": 2.5,
+              "visualSimilarity": 0.31193,
+              "motionAutocorrelation": 0.06361,
+              "recurrenceStrength": 0.22502,
+              "comparisonCount": 39,
+              "estimatedCycles": 4.83
+            },
+            {
+              "lagSeconds": 3.0,
+              "visualSimilarity": 0.32989,
+              "motionAutocorrelation": -0.10843,
+              "recurrenceStrength": 0.21443,
+              "comparisonCount": 37,
+              "estimatedCycles": 4.03
+            }
+          ]
+        },
+        "classification": "LOW",
+        "interpretation": "No prolonged high-motion/low-novelty pattern was established."
+      },
+      "presentation": {
+        "medianLuminance": 0.2765,
+        "luminanceP10": 0.2388,
+        "luminanceP90": 0.3133,
+        "averageSaturation": 0.5875,
+        "exposureConsistency": 0.8743,
+        "status": "AVAILABLE"
+      },
+      "dimensions": {
+        "motionIntensity": "VERY_HIGH",
+        "temporalConsistency": "STEADY",
+        "visualNovelty": "HIGH",
+        "actionBeatNovelty": "NOT_EVALUATED",
+        "planRenderFidelity": "NOT_EVALUATED"
+      },
+      "temporalActivityEvents": [],
+      "hook": {
+        "status": "MODERATE",
+        "windowSeconds": 1.5,
+        "subjectPresence": null,
+        "subjectPresenceStatus": "NOT_EVALUATED",
+        "objectPresence": null,
+        "objectPresenceStatus": "NOT_EVALUATED",
+        "anomalyReadable": null,
+        "anomalyReadableStatus": "NOT_EVALUATED",
+        "expressionReadable": null,
+        "expressionStatus": "NOT_EVALUATED",
+        "directCameraGaze": null,
+        "directCameraGazeStatus": "NOT_EVALUATED",
+        "textOverlay": {
+          "status": "NOT_EVALUATED",
+          "reason": "OCR/text detection is not configured."
+        },
+        "visualOpeningActivity": 1.0,
+        "reason": "The opening contains measurable visual activity, but semantic subject/object readability is not configured."
+      },
+      "payoff": {
+        "status": "UNKNOWN",
+        "visualEndingEmphasis": "AVAILABLE",
+        "semanticResolutionStatus": "NOT_EVALUATED",
+        "consequenceDetected": "NOT_EVALUATED",
+        "characterReactionDetected": "NOT_EVALUATED",
+        "objectStateChange": "NOT_EVALUATED",
+        "motionRebound": "NOT_ESTABLISHED",
+        "planAlignment": "NOT_EVALUATED",
+        "payoffWindow": "ENDING_WINDOW",
+        "evidenceCoverage": "DETERMINISTIC_ONLY",
+        "reason": "Semantic resolution, character reaction and plan alignment were not evaluated; motion evidence alone does not establish a payoff."
+      },
+      "loop": {
+        "status": "PARTIAL",
+        "visualEvidence": "MODERATE",
+        "visualEndpointSimilarity": 0.8165,
+        "semanticContinuity": null,
+        "semanticContinuityStatus": "NOT_EVALUATED",
+        "semanticContinuityReason": "SEMANTIC_VISION_NOT_CONFIGURED",
+        "overall": "MODERATE",
+        "reason": "Visual endpoint similarity is available; semantic loop continuity is not verified."
+      },
+      "actionBeatNovelty": {
+        "status": "PARTIAL",
+        "plannedStrategyNovelty": {
+          "status": "NOT_EVALUATED",
+          "reason": "NO_STRUCTURED_PLAN"
+        },
+        "observedVisualBeatNovelty": {
+          "status": "AVAILABLE",
+          "level": "WEAK",
+          "distinctBeatChanges": 0,
+          "reason": "Deterministic temporal and visual-state changes."
+        },
+        "observedSemanticActionNovelty": {
+          "status": "NOT_EVALUATED",
+          "reason": "SEMANTIC_VISION_NOT_CONFIGURED"
+        },
+        "combinedAssessment": "WEAK",
+        "repetitionContext": "REVIEW_CONTEXT_REQUIRED"
+      },
+      "planRenderFidelity": {
+        "status": "NOT_AVAILABLE",
+        "reason": "No structured production plan or source generation prompt is linked to this analysis.",
+        "provenance": "NO_PLAN_OR_PROMPT"
+      },
+      "semanticFrameSelection": {
+        "version": "semantic-frame-selection-v2",
+        "assetHash": "7626749e7834ecfe1183cfc0e804f79182ee34b1802e2908ea898c85cdaa2762",
+        "durationSeconds": 12.083,
+        "maxFrames": 8,
+        "targetFrames": 8,
+        "cacheHit": true,
+        "selectedFrameCount": 7,
+        "selectedFrames": [
+          {
+            "timestampSeconds": 0.0,
+            "selectionReason": "OPENING_ANCHOR",
+            "relatedEventId": null,
+            "relatedBeatId": null,
+            "framePath": "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/data/semantic-frames/7626749e7834ecfe1183cfc0/frame-01-000.000.jpg",
+            "frameAvailable": true,
+            "frameHash": "e3affb1796e6ae61414db67594535e81957c3f64c7d2cbd83c1a5d4baf357882",
+            "preparedImageHash": "e3affb1796e6ae61414db67594535e81957c3f64c7d2cbd83c1a5d4baf357882",
+            "width": 1080,
+            "height": 1920
+          },
+          {
+            "timestampSeconds": 0.5,
+            "selectionReason": "OPENING_ANCHOR",
+            "relatedEventId": null,
+            "relatedBeatId": null,
+            "framePath": "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/data/semantic-frames/7626749e7834ecfe1183cfc0/frame-02-000.500.jpg",
+            "frameAvailable": true,
+            "frameHash": "840cb91adacda1d1dac7a0d000d7b3c51131643af0fda8894b7498f34bfccf09",
+            "preparedImageHash": "840cb91adacda1d1dac7a0d000d7b3c51131643af0fda8894b7498f34bfccf09",
+            "width": 1080,
+            "height": 1920
+          },
+          {
+            "timestampSeconds": 1.0,
+            "selectionReason": "OPENING_ANCHOR",
+            "relatedEventId": null,
+            "relatedBeatId": null,
+            "framePath": "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/data/semantic-frames/7626749e7834ecfe1183cfc0/frame-03-001.000.jpg",
+            "frameAvailable": true,
+            "frameHash": "42ed39625de9309eea614ca4c2dad952d1b42f6e55598ad70bddc44d2371b6f3",
+            "preparedImageHash": "42ed39625de9309eea614ca4c2dad952d1b42f6e55598ad70bddc44d2371b6f3",
+            "width": 1080,
+            "height": 1920
+          },
+          {
+            "timestampSeconds": 1.5,
+            "selectionReason": "OPENING_ANCHOR",
+            "relatedEventId": null,
+            "relatedBeatId": null,
+            "framePath": "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/data/semantic-frames/7626749e7834ecfe1183cfc0/frame-04-001.500.jpg",
+            "frameAvailable": true,
+            "frameHash": "9099dada4ebb5493a0279d4bad90b1cf0a9b590c89d5a6d105351c95937f620a",
+            "preparedImageHash": "9099dada4ebb5493a0279d4bad90b1cf0a9b590c89d5a6d105351c95937f620a",
+            "width": 1080,
+            "height": 1920
+          },
+          {
+            "timestampSeconds": 10.583,
+            "selectionReason": "ENDING_ANCHOR",
+            "relatedEventId": null,
+            "relatedBeatId": null,
+            "framePath": "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/data/semantic-frames/7626749e7834ecfe1183cfc0/frame-05-010.583.jpg",
+            "frameAvailable": true,
+            "frameHash": "860d15eab9e99315f36315c65beecf83481ce804e50e1c95999df909bee6bf2e",
+            "preparedImageHash": "860d15eab9e99315f36315c65beecf83481ce804e50e1c95999df909bee6bf2e",
+            "width": 1080,
+            "height": 1920
+          },
+          {
+            "timestampSeconds": 11.083,
+            "selectionReason": "ENDING_ANCHOR",
+            "relatedEventId": null,
+            "relatedBeatId": null,
+            "framePath": "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/data/semantic-frames/7626749e7834ecfe1183cfc0/frame-06-011.083.jpg",
+            "frameAvailable": true,
+            "frameHash": "1c8ccb0a73984e03c1cc02bd9cfccad18ad8bfadb486f9bf103871f63772f920",
+            "preparedImageHash": "1c8ccb0a73984e03c1cc02bd9cfccad18ad8bfadb486f9bf103871f63772f920",
+            "width": 1080,
+            "height": 1920
+          },
+          {
+            "timestampSeconds": 11.583,
+            "selectionReason": "ENDING_ANCHOR",
+            "relatedEventId": null,
+            "relatedBeatId": null,
+            "framePath": "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/data/semantic-frames/7626749e7834ecfe1183cfc0/frame-07-011.583.jpg",
+            "frameAvailable": true,
+            "frameHash": "e89ee4f66c3d902cbfc5550504ee43e0ff2eef364aababf9280cc9904bbf861e",
+            "preparedImageHash": "e89ee4f66c3d902cbfc5550504ee43e0ff2eef364aababf9280cc9904bbf861e",
+            "width": 1080,
+            "height": 1920
+          }
+        ],
+        "coverage": {
+          "openingAnchors": 4,
+          "endingAnchors": 3,
+          "v5Events": 0,
+          "planBeats": 0
+        }
+      },
+      "canonicalAssessments": {
+        "version": "semantic-fusion-v1",
+        "hook": {
+          "version": "hook-assessment-v1",
+          "status": "AVAILABLE",
+          "strength": "MODERATE",
+          "coverage": "VISUAL_ONLY",
+          "semanticReadability": null,
+          "visualOpeningSupport": 1.0,
+          "expressionSupport": null,
+          "textSupport": null,
+          "transcriptSupport": "NOT_AVAILABLE",
+          "planAlignment": "NOT_AVAILABLE",
+          "summary": "The opening contains measurable visual activity, but semantic subject/object readability is not configured.",
+          "limitations": [
+            "Semantic opening evidence is unavailable."
+          ],
+          "evidenceReferences": [
+            "V5 temporalProfile.hook",
+            "semanticVideoEvidence.opening"
+          ]
+        },
+        "payoff": {
+          "version": "payoff-assessment-v1",
+          "evidenceStatus": "UNKNOWN",
+          "strength": "UNKNOWN",
+          "semanticStatus": "UNKNOWN",
+          "visualEndingEmphasis": "AVAILABLE",
+          "motionRebound": "NOT_ESTABLISHED",
+          "emotionalResolution": null,
+          "stateChange": null,
+          "planAlignment": "NOT_AVAILABLE",
+          "timingConfidence": null,
+          "characterReaction": null,
+          "stateResolution": null,
+          "summary": "Payoff cannot be resolved from the available evidence.",
+          "limitations": [
+            "Semantic payoff evidence is unavailable."
+          ]
+        },
+        "loop": {
+          "version": "loop-assessment-v1",
+          "evidenceStatus": "UNKNOWN",
+          "strength": "MODERATE",
+          "visualEvidence": "MODERATE",
+          "semanticEvidence": "UNKNOWN",
+          "actionContinuity": null,
+          "planIntent": "NOT_AVAILABLE",
+          "summary": "Visual endpoint evidence is moderate; semantic loop evidence is unknown.",
+          "limitations": [
+            "Semantic loop evidence is unavailable."
+          ]
+        },
+        "temporalStructure": {
+          "version": "temporal-structure-assessment-v1",
+          "status": "UNKNOWN",
+          "interpretation": "UNKNOWN",
+          "events": [],
+          "summary": "No semantic context was available for temporal events.",
+          "limitations": [
+            "Contextual semantic beat evidence is unavailable."
+          ]
+        },
+        "planRenderFidelity": {
+          "status": "NOT_AVAILABLE",
+          "reason": "No resolved production plan or matching source prompt was available in this analysis."
+        },
+        "coverage": {
+          "percent": 20,
+          "missing": [
+            "beats",
+            "payoff",
+            "loop",
+            "temporal structure"
+          ]
+        },
+        "semanticEvidenceAvailable": false,
+        "semanticEvidenceIdentity": null
+      }
+    },
+    "sampling": {
+      "requestedSamples": 50,
+      "decodedSamples": 49,
+      "failedSamples": 1,
+      "failedRequestedTimes": [
+        12.083
+      ],
+      "duplicateSamples": 0,
+      "duplicateTimestampRatio": 0.0,
+      "timestampAccuracy": 1.0,
+      "temporalCoverage": 0.9931,
+      "requestedTimes": [
+        0.0,
+        0.25,
+        0.5,
+        0.75,
+        1.0,
+        1.25,
+        1.5,
+        1.75,
+        2.0,
+        2.25,
+        2.5,
+        2.75,
+        3.0,
+        3.25,
+        3.5,
+        3.75,
+        4.0,
+        4.25,
+        4.5,
+        4.75,
+        5.0,
+        5.25,
+        5.5,
+        5.75,
+        6.0,
+        6.25,
+        6.5,
+        6.75,
+        7.0,
+        7.25,
+        7.5,
+        7.75,
+        8.0,
+        8.25,
+        8.5,
+        8.75,
+        9.0,
+        9.25,
+        9.5,
+        9.75,
+        10.0,
+        10.25,
+        10.5,
+        10.75,
+        11.0,
+        11.25,
+        11.5,
+        11.75,
+        12.0,
+        12.083
+      ],
+      "validPairCount": 48,
+      "coverage": 0.9931,
+      "decodeSuccessRatio": 0.98,
+      "sampleTimestamps": [
+        {
+          "requestedTimestamp": 0.0,
+          "actualTimestamp": 0.0,
+          "timestampError": 0.0
+        },
+        {
+          "requestedTimestamp": 0.25,
+          "actualTimestamp": 0.25,
+          "timestampError": 0.0
+        },
+        {
+          "requestedTimestamp": 0.5,
+          "actualTimestamp": 0.5,
+          "timestampError": 0.0
+        },
+        {
+          "requestedTimestamp": 0.75,
+          "actualTimestamp": 0.75,
+          "timestampError": 0.0
+        },
+        {
+          "requestedTimestamp": 1.0,
+          "actualTimestamp": 1.0,
+          "timestampError": 0.0
+        },
+        {
+          "requestedTimestamp": 1.25,
+          "actualTimestamp": 1.25,
+          "timestampError": 0.0
+        },
+        {
+          "requestedTimestamp": 1.5,
+          "actualTimestamp": 1.5,
+          "timestampError": 0.0
+        },
+        {
+          "requestedTimestamp": 1.75,
+          "actualTimestamp": 1.75,
+          "timestampError": 0.0
+        },
+        {
+          "requestedTimestamp": 2.0,
+          "actualTimestamp": 2.0,
+          "timestampError": 0.0
+        },
+        {
+          "requestedTimestamp": 2.25,
+          "actualTimestamp": 2.25,
+          "timestampError": 0.0
+        },
+        {
+          "requestedTimestamp": 2.5,
+          "actualTimestamp": 2.5,
+          "timestampError": 0.0
+        },
+        {
+          "requestedTimestamp": 2.75,
+          "actualTimestamp": 2.75,
+          "timestampError": 0.0
+        },
+        {
+          "requestedTimestamp": 3.0,
+          "actualTimestamp": 3.0,
+          "timestampError": 0.0
+        },
+        {
+          "requestedTimestamp": 3.25,
+          "actualTimestamp": 3.25,
+          "timestampError": 0.0
+        },
+        {
+          "requestedTimestamp": 3.5,
+          "actualTimestamp": 3.5,
+          "timestampError": 0.0
+        },
+        {
+          "requestedTimestamp": 3.75,
+          "actualTimestamp": 3.75,
+          "timestampError": 0.0
+        },
+        {
+          "requestedTimestamp": 4.0,
+          "actualTimestamp": 4.0,
+          "timestampError": 0.0
+        },
+        {
+          "requestedTimestamp": 4.25,
+          "actualTimestamp": 4.25,
+          "timestampError": 0.0
+        },
+        {
+          "requestedTimestamp": 4.5,
+          "actualTimestamp": 4.5,
+          "timestampError": 0.0
+        },
+        {
+          "requestedTimestamp": 4.75,
+          "actualTimestamp": 4.75,
+          "timestampError": 0.0
+        },
+        {
+          "requestedTimestamp": 5.0,
+          "actualTimestamp": 5.0,
+          "timestampError": 0.0
+        },
+        {
+          "requestedTimestamp": 5.25,
+          "actualTimestamp": 5.25,
+          "timestampError": 0.0
+        },
+        {
+          "requestedTimestamp": 5.5,
+          "actualTimestamp": 5.5,
+          "timestampError": 0.0
+        },
+        {
+          "requestedTimestamp": 5.75,
+          "actualTimestamp": 5.75,
+          "timestampError": 0.0
+        },
+        {
+          "requestedTimestamp": 6.0,
+          "actualTimestamp": 6.0,
+          "timestampError": 0.0
+        },
+        {
+          "requestedTimestamp": 6.25,
+          "actualTimestamp": 6.25,
+          "timestampError": 0.0
+        },
+        {
+          "requestedTimestamp": 6.5,
+          "actualTimestamp": 6.5,
+          "timestampError": 0.0
+        },
+        {
+          "requestedTimestamp": 6.75,
+          "actualTimestamp": 6.75,
+          "timestampError": 0.0
+        },
+        {
+          "requestedTimestamp": 7.0,
+          "actualTimestamp": 7.0,
+          "timestampError": 0.0
+        },
+        {
+          "requestedTimestamp": 7.25,
+          "actualTimestamp": 7.25,
+          "timestampError": 0.0
+        },
+        {
+          "requestedTimestamp": 7.5,
+          "actualTimestamp": 7.5,
+          "timestampError": 0.0
+        },
+        {
+          "requestedTimestamp": 7.75,
+          "actualTimestamp": 7.75,
+          "timestampError": 0.0
+        },
+        {
+          "requestedTimestamp": 8.0,
+          "actualTimestamp": 8.0,
+          "timestampError": 0.0
+        },
+        {
+          "requestedTimestamp": 8.25,
+          "actualTimestamp": 8.25,
+          "timestampError": 0.0
+        },
+        {
+          "requestedTimestamp": 8.5,
+          "actualTimestamp": 8.5,
+          "timestampError": 0.0
+        },
+        {
+          "requestedTimestamp": 8.75,
+          "actualTimestamp": 8.75,
+          "timestampError": 0.0
+        },
+        {
+          "requestedTimestamp": 9.0,
+          "actualTimestamp": 9.0,
+          "timestampError": 0.0
+        },
+        {
+          "requestedTimestamp": 9.25,
+          "actualTimestamp": 9.25,
+          "timestampError": 0.0
+        },
+        {
+          "requestedTimestamp": 9.5,
+          "actualTimestamp": 9.5,
+          "timestampError": 0.0
+        },
+        {
+          "requestedTimestamp": 9.75,
+          "actualTimestamp": 9.75,
+          "timestampError": 0.0
+        },
+        {
+          "requestedTimestamp": 10.0,
+          "actualTimestamp": 10.0,
+          "timestampError": 0.0
+        },
+        {
+          "requestedTimestamp": 10.25,
+          "actualTimestamp": 10.25,
+          "timestampError": 0.0
+        },
+        {
+          "requestedTimestamp": 10.5,
+          "actualTimestamp": 10.5,
+          "timestampError": 0.0
+        },
+        {
+          "requestedTimestamp": 10.75,
+          "actualTimestamp": 10.75,
+          "timestampError": 0.0
+        },
+        {
+          "requestedTimestamp": 11.0,
+          "actualTimestamp": 11.0,
+          "timestampError": 0.0
+        },
+        {
+          "requestedTimestamp": 11.25,
+          "actualTimestamp": 11.25,
+          "timestampError": 0.0
+        },
+        {
+          "requestedTimestamp": 11.5,
+          "actualTimestamp": 11.5,
+          "timestampError": 0.0
+        },
+        {
+          "requestedTimestamp": 11.75,
+          "actualTimestamp": 11.75,
+          "timestampError": 0.0
+        },
+        {
+          "requestedTimestamp": 12.0,
+          "actualTimestamp": 12.0,
+          "timestampError": 0.0
+        }
+      ]
+    },
+    "motion": {
+      "openingMotionIntensity": 1.0,
+      "overallMotionIntensity": 0.9999,
+      "motionIntervalDensity": 1.0,
+      "endingMotionEvidence": 1.0,
+      "motionEscalationProxy": 0.0,
+      "motionEscalationProxyStatus": "TECHNICAL_ONLY",
+      "lowMotionCandidates": [],
+      "changeRateUnit": "mean grayscale pixel change per second"
+    },
+    "visualSimilarity": {
+      "firstLastVisualSimilarity": 0.8165
+    },
+    "darkFrameCandidates": [],
+    "semanticVideoEvidence": {
+      "status": "NOT_REQUESTED",
+      "evidenceId": null,
+      "videoId": null,
+      "variantId": null,
+      "assetHash": "7626749e7834ecfe1183cfc0e804f79182ee34b1802e2908ea898c85cdaa2762",
+      "provider": null,
+      "model": null,
+      "modelVersion": null,
+      "schemaVersion": "semantic-evidence-v1",
+      "analyzerVersion": "semantic-video-intelligence-v1",
+      "frameSelection": {
+        "version": "semantic-frame-selection-v2",
+        "assetHash": "7626749e7834ecfe1183cfc0e804f79182ee34b1802e2908ea898c85cdaa2762",
+        "durationSeconds": 12.083,
+        "maxFrames": 8,
+        "targetFrames": 8,
+        "cacheHit": true,
+        "selectedFrameCount": 7,
+        "selectedFrames": [
+          {
+            "timestampSeconds": 0.0,
+            "selectionReason": "OPENING_ANCHOR",
+            "relatedEventId": null,
+            "relatedBeatId": null,
+            "framePath": "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/data/semantic-frames/7626749e7834ecfe1183cfc0/frame-01-000.000.jpg",
+            "frameAvailable": true,
+            "frameHash": "e3affb1796e6ae61414db67594535e81957c3f64c7d2cbd83c1a5d4baf357882",
+            "preparedImageHash": "e3affb1796e6ae61414db67594535e81957c3f64c7d2cbd83c1a5d4baf357882",
+            "width": 1080,
+            "height": 1920
+          },
+          {
+            "timestampSeconds": 0.5,
+            "selectionReason": "OPENING_ANCHOR",
+            "relatedEventId": null,
+            "relatedBeatId": null,
+            "framePath": "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/data/semantic-frames/7626749e7834ecfe1183cfc0/frame-02-000.500.jpg",
+            "frameAvailable": true,
+            "frameHash": "840cb91adacda1d1dac7a0d000d7b3c51131643af0fda8894b7498f34bfccf09",
+            "preparedImageHash": "840cb91adacda1d1dac7a0d000d7b3c51131643af0fda8894b7498f34bfccf09",
+            "width": 1080,
+            "height": 1920
+          },
+          {
+            "timestampSeconds": 1.0,
+            "selectionReason": "OPENING_ANCHOR",
+            "relatedEventId": null,
+            "relatedBeatId": null,
+            "framePath": "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/data/semantic-frames/7626749e7834ecfe1183cfc0/frame-03-001.000.jpg",
+            "frameAvailable": true,
+            "frameHash": "42ed39625de9309eea614ca4c2dad952d1b42f6e55598ad70bddc44d2371b6f3",
+            "preparedImageHash": "42ed39625de9309eea614ca4c2dad952d1b42f6e55598ad70bddc44d2371b6f3",
+            "width": 1080,
+            "height": 1920
+          },
+          {
+            "timestampSeconds": 1.5,
+            "selectionReason": "OPENING_ANCHOR",
+            "relatedEventId": null,
+            "relatedBeatId": null,
+            "framePath": "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/data/semantic-frames/7626749e7834ecfe1183cfc0/frame-04-001.500.jpg",
+            "frameAvailable": true,
+            "frameHash": "9099dada4ebb5493a0279d4bad90b1cf0a9b590c89d5a6d105351c95937f620a",
+            "preparedImageHash": "9099dada4ebb5493a0279d4bad90b1cf0a9b590c89d5a6d105351c95937f620a",
+            "width": 1080,
+            "height": 1920
+          },
+          {
+            "timestampSeconds": 10.583,
+            "selectionReason": "ENDING_ANCHOR",
+            "relatedEventId": null,
+            "relatedBeatId": null,
+            "framePath": "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/data/semantic-frames/7626749e7834ecfe1183cfc0/frame-05-010.583.jpg",
+            "frameAvailable": true,
+            "frameHash": "860d15eab9e99315f36315c65beecf83481ce804e50e1c95999df909bee6bf2e",
+            "preparedImageHash": "860d15eab9e99315f36315c65beecf83481ce804e50e1c95999df909bee6bf2e",
+            "width": 1080,
+            "height": 1920
+          },
+          {
+            "timestampSeconds": 11.083,
+            "selectionReason": "ENDING_ANCHOR",
+            "relatedEventId": null,
+            "relatedBeatId": null,
+            "framePath": "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/data/semantic-frames/7626749e7834ecfe1183cfc0/frame-06-011.083.jpg",
+            "frameAvailable": true,
+            "frameHash": "1c8ccb0a73984e03c1cc02bd9cfccad18ad8bfadb486f9bf103871f63772f920",
+            "preparedImageHash": "1c8ccb0a73984e03c1cc02bd9cfccad18ad8bfadb486f9bf103871f63772f920",
+            "width": 1080,
+            "height": 1920
+          },
+          {
+            "timestampSeconds": 11.583,
+            "selectionReason": "ENDING_ANCHOR",
+            "relatedEventId": null,
+            "relatedBeatId": null,
+            "framePath": "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/data/semantic-frames/7626749e7834ecfe1183cfc0/frame-07-011.583.jpg",
+            "frameAvailable": true,
+            "frameHash": "e89ee4f66c3d902cbfc5550504ee43e0ff2eef364aababf9280cc9904bbf861e",
+            "preparedImageHash": "e89ee4f66c3d902cbfc5550504ee43e0ff2eef364aababf9280cc9904bbf861e",
+            "width": 1080,
+            "height": 1920
+          }
+        ],
+        "coverage": {
+          "openingAnchors": 4,
+          "endingAnchors": 3,
+          "v5Events": 0,
+          "planBeats": 0
+        }
+      },
+      "opening": {
+        "status": "UNKNOWN"
+      },
+      "characters": [],
+      "objects": [],
+      "beats": [],
+      "storyArc": {
+        "arcType": "UNKNOWN",
+        "sequence": [],
+        "status": "UNKNOWN"
+      },
+      "emotionalArc": {
+        "status": "UNKNOWN"
+      },
+      "payoff": {
+        "status": "UNKNOWN"
+      },
+      "ending": {
+        "status": "UNKNOWN"
+      },
+      "loop": {
+        "status": "UNKNOWN"
+      },
+      "textEvidence": {
+        "status": "UNKNOWN"
+      },
+      "semanticCoverage": "NONE",
+      "confidence": null,
+      "limitations": [
+        "No vision-capable semantic provider is configured."
+      ],
+      "provenance": {
+        "selectedFrameTimestamps": [
+          0.0,
+          0.5,
+          1.0,
+          1.5,
+          10.583,
+          11.083,
+          11.583
+        ],
+        "frameSelectionVersion": "semantic-frame-selection-v2",
+        "inputTokens": null,
+        "outputTokens": null,
+        "estimatedCost": null,
+        "actualCost": null,
+        "requestId": null
+      }
+    }
+  },
+  "reviewDimensions": {
+    "promptPlanQuality": {
+      "status": "UNKNOWN"
+    },
+    "generatorExecutionRisk": {
+      "status": "UNKNOWN"
+    },
+    "actualRenderQuality": {
+      "status": "UNKNOWN",
+      "planFidelity": "NOT_EVALUATED",
+      "lineageStatus": "UNAVAILABLE",
+      "planFidelityReason": "Original generation prompt unavailable; actual viewing evidence assessed separately",
+      "viewerFacingUsability": "UNKNOWN",
+      "editorialRecommendation": "INSUFFICIENT_EVIDENCE",
+      "findings": [],
+      "experience": {
+        "coreEventReadability": {
+          "type": null,
+          "start": null,
+          "end": null,
+          "evidenceBasis": null,
+          "reference": null,
+          "observed": null,
+          "inferred": null,
+          "uncertainty": null,
+          "confidence": null,
+          "durationSeconds": null,
+          "recurrence": null,
+          "affectedEntity": null,
+          "eventId": null,
+          "requirementId": null,
+          "rawSeverity": null,
+          "state": null,
+          "requiresMotion": null,
+          "impact": null,
+          "value": "UNKNOWN",
+          "status": "UNKNOWN"
+        },
+        "identity": {
+          "type": null,
+          "start": null,
+          "end": null,
+          "evidenceBasis": null,
+          "reference": null,
+          "observed": null,
+          "inferred": null,
+          "uncertainty": null,
+          "confidence": null,
+          "durationSeconds": null,
+          "recurrence": null,
+          "affectedEntity": null,
+          "eventId": null,
+          "requirementId": null,
+          "rawSeverity": null,
+          "state": null,
+          "requiresMotion": null,
+          "impact": null,
+          "value": "UNKNOWN",
+          "status": "UNKNOWN"
+        },
+        "safety": {
+          "type": null,
+          "start": null,
+          "end": null,
+          "evidenceBasis": null,
+          "reference": null,
+          "observed": null,
+          "inferred": null,
+          "uncertainty": null,
+          "confidence": null,
+          "durationSeconds": null,
+          "recurrence": null,
+          "affectedEntity": null,
+          "eventId": null,
+          "requirementId": null,
+          "rawSeverity": null,
+          "state": null,
+          "requiresMotion": null,
+          "impact": null,
+          "value": "UNKNOWN",
+          "status": "UNKNOWN"
+        },
+        "coherence": {
+          "type": null,
+          "start": null,
+          "end": null,
+          "evidenceBasis": null,
+          "reference": null,
+          "observed": null,
+          "inferred": null,
+          "uncertainty": null,
+          "confidence": null,
+          "durationSeconds": null,
+          "recurrence": null,
+          "affectedEntity": null,
+          "eventId": null,
+          "requirementId": null,
+          "rawSeverity": null,
+          "state": null,
+          "requiresMotion": null,
+          "impact": null,
+          "value": "UNKNOWN",
+          "status": "UNKNOWN"
+        },
+        "progression": {
+          "type": null,
+          "start": null,
+          "end": null,
+          "evidenceBasis": null,
+          "reference": null,
+          "observed": null,
+          "inferred": null,
+          "uncertainty": null,
+          "confidence": null,
+          "durationSeconds": null,
+          "recurrence": null,
+          "affectedEntity": null,
+          "eventId": null,
+          "requirementId": null,
+          "rawSeverity": null,
+          "state": null,
+          "requiresMotion": null,
+          "impact": null,
+          "value": "UNKNOWN",
+          "status": "UNKNOWN"
+        },
+        "opening": {
+          "type": null,
+          "start": null,
+          "end": null,
+          "evidenceBasis": null,
+          "reference": null,
+          "observed": null,
+          "inferred": null,
+          "uncertainty": null,
+          "confidence": null,
+          "durationSeconds": null,
+          "recurrence": null,
+          "affectedEntity": null,
+          "eventId": null,
+          "requirementId": null,
+          "rawSeverity": null,
+          "state": null,
+          "requiresMotion": null,
+          "impact": null,
+          "value": "UNKNOWN",
+          "status": "UNKNOWN"
+        },
+        "ending": {
+          "type": null,
+          "start": null,
+          "end": null,
+          "evidenceBasis": null,
+          "reference": null,
+          "observed": null,
+          "inferred": null,
+          "uncertainty": null,
+          "confidence": null,
+          "durationSeconds": null,
+          "recurrence": null,
+          "affectedEntity": null,
+          "eventId": null,
+          "requirementId": null,
+          "rawSeverity": null,
+          "state": null,
+          "requiresMotion": null,
+          "impact": null,
+          "value": "UNKNOWN",
+          "status": "UNKNOWN"
+        },
+        "openingFrame": {
+          "type": null,
+          "start": null,
+          "end": null,
+          "evidenceBasis": null,
+          "reference": null,
+          "observed": null,
+          "inferred": null,
+          "uncertainty": null,
+          "confidence": null,
+          "durationSeconds": null,
+          "recurrence": null,
+          "affectedEntity": null,
+          "eventId": null,
+          "requirementId": null,
+          "rawSeverity": null,
+          "state": null,
+          "requiresMotion": null,
+          "impact": null,
+          "value": "UNKNOWN",
+          "status": "UNKNOWN"
+        }
+      },
+      "repairEconomics": {
+        "order": [
+          "KEEP_USABLE",
+          "EDIT_TRIM",
+          "INTERVAL_PROMPT_REPAIR",
+          "SUPPORTED_NECESSARY_SEGMENT",
+          "JUSTIFIED_FULL_RERENDER"
+        ],
+        "fullRerenderJustified": false,
+        "automaticExecution": false,
+        "essentialBenefit": null,
+        "defectAddressed": null,
+        "whySmallerInsufficient": null,
+        "remainingUncertainty": "No verified repair execution outcome",
+        "successProbability": null
+      },
+      "smallestIntervention": "Kan\u0131t aral\u0131\u011f\u0131n\u0131 tamamla"
+    },
+    "audienceDistributionOutcome": {
+      "status": "NOT_JOINED"
+    }
+  },
+  "operatorReport": [
+    {
+      "label": "KARAR",
+      "text": "Karar i\u00e7in kan\u0131t yetersiz"
+    },
+    {
+      "label": "\u0130ZLEME MEKAN\u0130ZMASI",
+      "text": "\u0130zleme gerek\u00e7esini de\u011ferlendirmek i\u00e7in kaynak kan\u0131t\u0131 yetersiz"
+    },
+    {
+      "label": "A\u00c7ILI\u015e",
+      "text": " Ger\u00e7ek a\u00e7\u0131l\u0131\u015f hareketi i\u00e7in kan\u0131t yetersiz. Planlanan vaat: UNKNOWN"
+    },
+    {
+      "label": "\u0130LERLEME",
+      "text": "Ger\u00e7ek ilerleme i\u00e7in kan\u0131t yetersiz. Planlanan de\u011fi\u015fim: UNKNOWN"
+    },
+    {
+      "label": "F\u0130NAL",
+      "text": "Planlanan final: UNKNOWN"
+    },
+    {
+      "label": "TEMEL OLAY/K\u0130ML\u0130K/ANLA\u015eILAB\u0130L\u0130RL\u0130K",
+      "text": "Ger\u00e7ek video deneyimi i\u00e7in kan\u0131t yetersiz"
+    },
+    {
+      "label": "TEKN\u0130K KUSURLAR",
+      "text": "Do\u011frulanm\u0131\u015f kusur kan\u0131t\u0131 yok"
+    },
+    {
+      "label": "KUSURUN ETK\u0130S\u0130",
+      "text": "Yaln\u0131z teknik temizlik yarat\u0131c\u0131 de\u011fer kan\u0131t\u0131 de\u011fildir"
+    },
+    {
+      "label": "EN K\u00dc\u00c7\u00dcK M\u00dcDAHALE",
+      "text": "Kan\u0131t aral\u0131\u011f\u0131n\u0131 tamamla"
+    },
+    {
+      "label": "PERFORMANS",
+      "text": "K\u00f6r inceleme tamamlanana kadar sonu\u00e7 verisi ayr\u0131d\u0131r; izlenme garantisi yok"
+    }
+  ],
+  "limitations": [
+    "Seyrek kareler s\u00fcrekli hareket, hassas temas veya kusursuz loop kan\u0131t\u0131 de\u011fildir.",
+    "TEST_CANDIDATE yay\u0131n veya \u00fcretim izni de\u011fildir; kanonik operasyon kontrolleri ayr\u0131ca gereklidir."
+  ],
+  "reviewId": null,
+  "videoId": "4befb9da-f665-4786-99cb-1574f28624b6",
+  "relativePath": "library/fix-fixtures/AUDIT_FIXTURE_EDITED.mp4",
+  "recordId": "44403d44-a9b7-408b-a34a-7e5d869447fc"
+}

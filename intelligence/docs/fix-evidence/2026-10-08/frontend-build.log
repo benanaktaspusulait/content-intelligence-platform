@@ -1,0 +1,22 @@
+
+> frontend@0.0.0 build
+> ng build --configuration development
+
+❯ Building...
+✔ Building...
+Initial chunk files | Names         |  Raw size
+main.js             | main          |   2.93 MB | 
+styles.css          | styles        | 234.45 kB | 
+chunk-XSXJULYR.js   | -             |   1.75 kB | 
+
+                    | Initial total |   3.17 MB
+
+Lazy chunk files    | Names         |  Raw size
+chunk-S7KUESLU.js   | editor-api    |   4.47 MB | 
+chunk-CCUGDQHM.css  | -             |  83.43 kB | 
+main.css            | -             |  83.42 kB | 
+
+Application bundle generation complete. [6.694 seconds] - 2026-10-08T21:30:17.410Z
+
+Output location: /Users/benanaktas/project/video/content-intelligence-platform/intelligence/frontend/dist/frontend
+

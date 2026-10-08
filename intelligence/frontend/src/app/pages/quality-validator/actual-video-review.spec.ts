@@ -11,7 +11,21 @@ describe('Actual-only review', () => {
   const http = TestBed.inject(HttpTestingController);
   http.expectOne('/api/v1/intelligence/workflow/videos/exact-video/qa').flush([{ recordId: 'saved', planFidelity: 'NOT_EVALUATED', viewerFacingUsability: 'UNKNOWN' }]);
   expect(fixture.componentInstance.result.recordId).toBe('saved');
+  await fixture.whenStable();
+  expect(fixture.nativeElement.textContent).toContain('Record saved');
+  expect(fixture.nativeElement.textContent).toContain('Plan fidelity: NOT_EVALUATED');
   http.expectNone(request => request.method === 'POST'); http.verify();
   fixture.destroy(); TestBed.resetTestingModule();
  });
+ it('clears clip-specific human evidence and ignores delayed records from the previous video', async () => {
+  await TestBed.configureTestingModule({imports:[ActualVideoReviewComponent],providers:[provideHttpClient(),provideHttpClientTesting()]}).compileComponents();
+  const fixture=TestBed.createComponent(ActualVideoReviewComponent); const http=TestBed.inject(HttpTestingController);
+  fixture.componentRef.setInput('videoId','old');fixture.detectChanges();const old=http.expectOne('/api/v1/intelligence/workflow/videos/old/qa');
+  fixture.componentInstance.confirmed=true;fixture.componentInstance.end=12;fixture.componentInstance.descriptions={identity:'Old clip observation'};
+  fixture.componentRef.setInput('videoId','new');fixture.detectChanges();
+  old.flush([{recordId:'old-record'}]);http.expectOne('/api/v1/intelligence/workflow/videos/new/qa').flush([{recordId:'new-record',planFidelity:'NOT_EVALUATED',viewerFacingUsability:'UNKNOWN'}]);
+  await fixture.whenStable();expect(fixture.componentInstance.confirmed).toBe(false);expect(fixture.componentInstance.end).toBeNull();expect(fixture.componentInstance.descriptions).toEqual({});
+  expect(fixture.nativeElement.textContent).toContain('new-record');expect(fixture.nativeElement.textContent).not.toContain('old-record');http.verify();fixture.destroy();TestBed.resetTestingModule();
+ });
+
 });
