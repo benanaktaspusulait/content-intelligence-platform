@@ -37,7 +37,7 @@ public class PredictionDataReadinessService {
           COUNT(*) FILTER (WHERE po.paid=true) AS paid,
           COUNT(*) FILTER (WHERE po.video_id IS NULL OR po.publication_timestamp IS NULL
             OR po.measurement_timestamp IS NULL) AS incomplete
-        FROM performance_observations po
+        FROM effective_performance_observations po
         WHERE UPPER(po.platform)=:platform
         """).param("platform", storedPlatform).query((rs, ignored) -> {
           Map<String, Object> values = new java.util.LinkedHashMap<>();

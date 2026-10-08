@@ -31,7 +31,7 @@ public class DiscoveryProfileService {
                 """
                 SELECT id,measurement_timestamp,views,follows,followers_percentage,
                        nonfollowers_percentage,recommendation_percentage
-                FROM performance_observations
+                FROM effective_performance_observations
                 WHERE video_id=:video AND platform=:platform
                   AND COALESCE(measurement_timestamp,created_at)<=:cutoff
                   AND variant_id IS NOT DISTINCT FROM :variant
@@ -61,7 +61,7 @@ public class DiscoveryProfileService {
                        COALESCE(co.observed_at,po.measurement_timestamp,po.created_at) observed_at,
                        co.data_quality_status
                 FROM country_observations co
-                JOIN performance_observations po ON po.id=co.performance_observation_id
+                JOIN effective_performance_observations po ON po.id=co.performance_observation_id
                 WHERE po.video_id=:video AND po.platform=:platform AND co.country_code='US'
                   AND COALESCE(co.observed_at,po.measurement_timestamp,po.created_at)<=:cutoff
                   AND po.variant_id IS NOT DISTINCT FROM :variant

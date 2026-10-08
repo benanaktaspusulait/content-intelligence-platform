@@ -1020,6 +1020,7 @@ export class RenderDashboardPage implements OnInit, OnDestroy {
   }
 
   queueRender(): void {
+    if (this.queueLoading()) return;
     const contentId = Number(this.queueContentId());
     const promptVersionId = Number(this.queuePromptVersionId());
     const validationRecordId = Number(this.queueValidationId());
@@ -1037,7 +1038,7 @@ export class RenderDashboardPage implements OnInit, OnDestroy {
       contentId, promptVersionId, validationRecordId,
       jobType: this.queueJobType(), openartModel: this.queueModel().trim() || 'byte-plus-seedance-2-mini',
       openartParams: this.workflowReview ? {workflowProfile:'post-family-v1',workflowReviewId:this.workflowReviewId,workflowBindingHash:this.workflowReview.bindingHash,durationSeconds:this.workflowReview.generation.supportedRenderDuration,aspectRatio:this.workflowReview.generation.settings.aspectRatio,firstFrameImageId:firstFramePath,...(this.regenerationHandoff ? {regenerationHandoffId:this.regenerationHandoffId,parentVideoId:this.regenerationHandoff.parentVideoId,parentVariantId:this.regenerationHandoff.parentVariantId,parentAssetHash:this.regenerationHandoff.parentAssetHash} : {})} : (firstFramePath ? { firstFrameImageId: firstFramePath } : {}), requestPromptSha256: null,
-    }, { headers: { 'Idempotency-Key': crypto.randomUUID() } }).subscribe({
+    }, { headers: { 'Idempotency-Key': this.regenerationHandoffId && this.queueJobType() === 'VIDEO' ? this.regenerationHandoffId : crypto.randomUUID() } }).subscribe({
       next: response => { this.queueLoading.set(false); this.queuedJobId.set(response.renderJobId); this.loadJobs(0); },
       error: err => { this.queueLoading.set(false); this.queueError.set(err.error?.detail || err.error?.message || 'Render could not be queued.'); },
     });

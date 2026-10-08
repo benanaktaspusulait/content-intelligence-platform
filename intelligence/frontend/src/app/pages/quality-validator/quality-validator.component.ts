@@ -234,6 +234,7 @@ export class QualityValidatorComponent implements AfterViewInit, OnDestroy {
   promptDirectoriesLoading = false;
   importMessage = '';
   selectedPromptPath = '';
+  linkedVideos: {videoId: string; relativePath: string}[] = [];
   promptFilesLoading = false;
   selectedPromptLoading = false;
   promptWorkspaces: PromptWorkspace[] = [];
@@ -313,6 +314,7 @@ Intensity: 4`;
         if (!version) { this.error = 'Prompt version could not be found.'; this.selectedPromptLoading = false; return; }
         this.contentId = String(contentId); this.promptVersionId = String(promptVersionId); this.contentTitle = `Content #${contentId}`; this.contentType = 'REEL';
         this.setPromptText(version.rawText || ''); this.selectedPromptPath = version.sourcePath || ''; this.selectedPromptLoading = false;
+        this.http.get<{videoId: string; relativePath: string}[]>(`/api/v1/intelligence/contents/${contentId}/prompt-versions/${promptVersionId}/videos`).subscribe({next: videos => { this.linkedVideos=videos; this.selectedWorkspaceVideoPath=videos.length === 1 ? videos[0].relativePath : ''; this.changeDetector.markForCheck(); }, error: () => {this.linkedVideos=[];this.changeDetector.markForCheck();}});
         this.http.get<any>(`/api/v1/intelligence/contents/${contentId}`).subscribe({ next: content => { this.contentTitle = content.title || this.contentTitle; this.contentType = content.type || this.contentType; this.changeDetector.detectChanges(); }, error: () => this.changeDetector.detectChanges() });
         this.changeDetector.detectChanges(); this.restoreStoredReport();
       },
@@ -898,6 +900,17 @@ Intensity: 4`;
     this.http.post<{ id: number }>(`/api/v1/intelligence/contents/${Number(this.contentId)}/prompt-versions`, { rawText: this.prompt, parsedIr: '{}', parentPromptVersionId: Number(this.promptVersionId) || null }).subscribe({
       next: version => { this.promptVersionId = String(version.id); this.syncSavedVersionRoute(); this.loading = false; this.changeDetector.markForCheck(); },
       error: response => { this.error = response.error?.detail || response.error?.message || 'Prompt revision could not be saved'; this.loading = false; },
+    });
+  }
+
+  aliasPath = '';
+  aliasReason = '';
+  reconcileSourcePath(): void {
+    if (!this.contentId || !this.promptVersionId || !this.aliasPath.trim() || !this.aliasReason.trim()) return;
+    this.loading = true;
+    this.http.post<{sourcePath: string}>(`/api/v1/intelligence/contents/${this.contentId}/source-alias`, {promptVersionId: Number(this.promptVersionId), relativePath: this.aliasPath.trim(), reason: this.aliasReason.trim()}).subscribe({
+      next: result => { this.selectedPromptPath=result.sourcePath; this.loading=false; this.changeDetector.markForCheck(); },
+      error: response => { this.error=response.error?.message || 'Source path reconciliation failed'; this.loading=false; this.changeDetector.markForCheck(); }
     });
   }
 

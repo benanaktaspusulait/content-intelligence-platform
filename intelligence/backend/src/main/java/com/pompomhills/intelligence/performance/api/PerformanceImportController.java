@@ -29,8 +29,10 @@ public class PerformanceImportController {
   PerformanceImportService.ImportPreview preview(
       @RequestPart("file") MultipartFile file,
       @RequestParam(required = false) String platform,
-      @RequestParam(defaultValue = "UTC") String timezone) {
-    return service.preview(file, platform, timezone);
+      @RequestParam(defaultValue = "UTC") String timezone,
+      @RequestParam(required = false) UUID correctionOfBatchId,
+      @RequestParam(required = false) String correctionReason) {
+    return service.preview(file, platform, timezone, correctionOfBatchId, correctionReason);
   }
 
   @GetMapping("/{id}")

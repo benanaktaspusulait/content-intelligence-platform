@@ -44,6 +44,7 @@ class ReviewRequest(BaseModel):
     lessonModelVersion: str = ""
     retrievedLessons: list[dict[str, Any]] = Field(default_factory=list)
     structuredPlan: dict[str, Any] | None = None
+    canonicalValidationId: int | None = None
     authorizationEvidence: dict[str, Any] = Field(default_factory=dict)
 
 

@@ -48,6 +48,7 @@ class ValidateRequest(BaseModel):
     )
     evaluation_stage: Literal["PRE_RENDER", "POST_RENDER"] = "PRE_RENDER"
     visual_evidence: dict[str, Any] | None = None
+    workflow_context: dict[str, Any] | None = None
 
 
 class CompareVersionsRequest(BaseModel):
@@ -144,6 +145,7 @@ class PreRenderDimensionResponse(BaseModel):
 
 
 class PreRenderAssessmentResponse(BaseModel):
+    canonicalProfileAdmission: dict[str, Any] | None = Field(default=None, exclude_if=lambda value: value is None)
     name: str
     general_producibility: dict[str, Any] | None = None
     family8: dict[str, Any] | None = None
@@ -365,12 +367,26 @@ async def validate_prompt(request: ValidateRequest) -> QualityReportResponse:
     # Evaluate
     report = engine.evaluate(ir, evaluation_stage=request.evaluation_stage)
 
+    projection = None
+    if request.workflow_context is not None:
+        from app.workflow.api import ReviewRequest, capabilities
+        from app.workflow.admission import project_admission
+        try:
+            context = ReviewRequest.model_validate({**request.workflow_context, "prompt": request.prompt}).model_dump()
+            report, projection = project_admission(report, engine, context, capabilities())
+            ruleset_version = report.ruleset_version
+        except ValueError as error:
+            raise HTTPException(409, str(error)) from error
+
     # Enhance with scoring
     scorer = QualityScorer()
     enhanced = scorer.create_enhanced_report(report, ir, parse_result.metadata)
 
     # Convert to response model
-    return convert_quality_report(enhanced, ruleset_version, request.evaluation_stage, ir)
+    response = convert_quality_report(enhanced, ruleset_version, request.evaluation_stage, ir)
+    if projection is not None:
+        response.pre_render_assessment.canonicalProfileAdmission = projection
+    return response
 
 
 @router.post("/compare-versions", response_model=RegressionReportResponse)

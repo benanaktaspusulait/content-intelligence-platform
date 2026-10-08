@@ -485,20 +485,20 @@ import { GeneralProducibilityComponent } from './general-producibility.component
             çıkarılmaz.
           </p>
         </details>
-        <details>
+        <button type="button" (click)="validateCanonicalProfile()" [disabled]="busy || !isCurrent">Canonical profil doğrulamasını kaydet</button><p *ngIf="canonicalValidationId">{{ canonicalMessage }}</p><details>
           <summary>İnsan incelemesine açık ders / deney kaydı</summary>
-          <label>Hipotez<textarea [(ngModel)]="lessonHypothesis"></textarea></label
+          <label>Ders kapsamı<select [(ngModel)]="lessonScope"><option value="ACTUAL_EXECUTION">Doğrulanmış actual video</option><option value="PROMPT_FIX">Kabul edilmiş prompt onarımı</option></select></label><label>Hipotez<textarea [(ngModel)]="lessonHypothesis"></textarea></label
           ><label>Karşı örnekler<input [(ngModel)]="counterexamples" /></label
           ><button
             type="button"
             (click)="saveLesson('LESSON')"
-            [disabled]="!lessonHypothesis || !measurement"
+            [disabled]="!lessonHypothesis || (lessonScope === 'PROMPT_FIX' ? repairSession?.state !== 'ACCEPTED' : !qa)"
           >
             Ders adayı kaydet</button
           ><button
             type="button"
             (click)="saveLesson('EXPERIMENT')"
-            [disabled]="!lessonHypothesis || !measurement"
+            [disabled]="!lessonHypothesis || (lessonScope === 'PROMPT_FIX' ? repairSession?.state !== 'ACCEPTED' : !qa)"
           >
             Deney sonucu kaydet
           </button>
@@ -693,6 +693,7 @@ export class PostFamilyWorkflowComponent implements OnChanges {
     this.http.get<any[]>('/api/v1/intelligence/workflow/learning/retrieve', { params: { contentProfile: this.contentProfile, modelVersion: this.lessonModelVersion, duration: this.desiredDuration || 0 } }).subscribe({ next: lessons => { this.retrievedLessons = lessons; this.changeDetector.markForCheck(); }, error: e => this.fail(e) });
   }
   lessonHypothesis = '';
+  lessonScope = 'ACTUAL_EXECUTION';
   counterexamples = '';
   lesson: any = null;
   encode = encodeURIComponent;
@@ -764,6 +765,7 @@ export class PostFamilyWorkflowComponent implements OnChanges {
         this.restoredRecordId = saved.recordId;
         this.profile = 'post-family-v1';
         const bound = saved.boundRequest || {};
+        this.canonicalValidationId = bound.canonicalValidationId || bound.authorizationEvidence?.validationRecordId || null;
         for (const key of ['contentProfile', 'openingStrategy', 'generator', 'desiredDuration', 'qualityJustification', 'viewerQuestion', 'plannedEditedDuration', 'intentChangeReason', 'lessonModelVersion'] as const) {
           if (bound[key] !== undefined) (this as any)[key] = bound[key];
         }
@@ -795,6 +797,7 @@ export class PostFamilyWorkflowComponent implements OnChanges {
   private options() {
     return {
       profile: this.profile,
+      canonicalValidationId: this.canonicalValidationId,
       lessonModelVersion: this.lessonModelVersion,
       contentProfile: this.contentProfile,
       openingStrategy: this.openingStrategy,
@@ -1145,16 +1148,28 @@ export class PostFamilyWorkflowComponent implements OnChanges {
       error: (e) => this.fail(e),
     });
   }
+  canonicalValidationId: number | null = null;
+  canonicalMessage = ''; 
+  validateCanonicalProfile() {
+    if(!this.review?.recordId || !this.isCurrent) return;
+    this.busy=true;
+    this.http.post<any>(`/api/v1/intelligence/workflow/records/${this.review.recordId}/canonical-validation`,{}).subscribe({
+      next: value => {this.canonicalValidationId=value.validationRecordId; this.busy=false; this.canonicalMessage=`Canonical profile validation #${this.canonicalValidationId}: ${value.report?.status || 'recorded'}. Visual gates and independent revalidation remain required. Review again to bind the new canonical evidence.`;this.changeDetector.markForCheck();},
+      error: response => {this.busy=false;this.error=response.error?.message || 'Canonical profile validation failed';this.changeDetector.markForCheck();}
+    });
+  }
+
   saveLesson(kind: string) {
     this.http
       .post<any>(`/api/v1/intelligence/workflow/learning/${kind}`, {
         hypothesis: this.lessonHypothesis,
-        evidenceBasis: [this.measurement.recordId, this.qa?.recordId],
+        lessonScope: this.lessonScope,
+        evidenceBasis: this.lessonScope === 'PROMPT_FIX' ? [this.repairSession?.history?.find((attempt: any) => attempt.reviewId === this.repairSession.bestReviewId)?.repairRecordId].filter(Boolean) : [this.qa?.recordId].filter(Boolean),
         sampleSize: 1,
         targetModelVersion: this.review.generation.profileVersion,
         settings: this.review.generation.settings,
         contentProfile: this.review.routing.contentProfile,
-        durationRange: [this.videoDuration, this.videoDuration],
+        durationRange: [this.lessonScope === 'PROMPT_FIX' ? this.desiredDuration : this.videoDuration, this.lessonScope === 'PROMPT_FIX' ? this.desiredDuration : this.videoDuration],
         observedResult: this.qa?.status || 'UNKNOWN',
         counterexamples: this.counterexamples,
       })

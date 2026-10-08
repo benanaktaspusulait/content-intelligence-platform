@@ -16,6 +16,9 @@ TRAJECTORIES = (
 
 
 def prepublish(request: PredictionRequest) -> PredictionResponse:
+    if request.model_reference is not None:
+        from .statistical_model import infer
+        return PredictionResponse(**infer(request))
     targets: list[dict[str, Any]] = []
     for horizon in HORIZONS:
         targets.append(
@@ -56,7 +59,7 @@ def prepublish(request: PredictionRequest) -> PredictionResponse:
 
 
 def live(request: LivePredictionRequest) -> PredictionResponse:
-    response = prepublish(request)
+    response = prepublish(request.model_copy(update={"model_reference":None}))
     payload = dict(response.payload)
     payload["liveSignals"] = request.live_features
     payload["reachFurtherUsed"] = bool(request.live_features.get("reachFurtherObserved"))

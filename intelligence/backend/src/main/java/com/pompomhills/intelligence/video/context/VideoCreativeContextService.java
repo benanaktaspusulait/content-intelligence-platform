@@ -62,10 +62,10 @@ public class VideoCreativeContextService {
                         rs.getBoolean("manually_confirmed")))
             .list();
 
-    PromptContext prompt =
+    List<PromptContext> rendered =
         jdbc.sql(
                 """
-                SELECT linked.content_id,linked.title,linked.type,linked.status,
+                SELECT DISTINCT linked.content_id,linked.title,linked.type,linked.status,
                        linked.prompt_version_id,linked.version_number,linked.raw_text,
                        linked.parsed_ir,linked.source_path,linked.created_at,linked.linkage
                 FROM videos v
@@ -79,19 +79,17 @@ public class VideoCreativeContextService {
                   JOIN prompt_versions pv ON pv.id=rj.prompt_version_id
                   WHERE ra.relative_path=v.relative_path
                     AND ra.asset_type='VIDEO'
-                  ORDER BY ra.is_current DESC,ra.created_at DESC,pv.version_number DESC
-                  LIMIT 1
                 ) linked ON true
                 WHERE v.id=:videoId AND linked.content_id IS NOT NULL
                 """)
             .param("videoId", videoId)
             .query((rs, ignored) -> mapPrompt(rs))
-            .optional()
-            .orElse(null);
+            .list();
+    PromptContext prompt = rendered.size() == 1 ? rendered.getFirst() : null;
 
     VideoEntity video =
         videos.findById(videoId).orElseThrow(() -> new IllegalArgumentException("Video not found"));
-    if (prompt == null) {
+    if (rendered.isEmpty()) {
       prompt =
           jdbc.sql(
                   """
@@ -124,6 +122,7 @@ public class VideoCreativeContextService {
             .param("videoId", videoId)
             .query((rs, ignored) -> mapPrompt(rs))
             .list();
+    if (rendered.size() > 1) candidates = rendered;
     PromptSourceResolution resolution = promptResolver.resolve(video);
     String evidenceStatus =
         prompt != null
@@ -168,7 +167,7 @@ public class VideoCreativeContextService {
         .single()) {
       throw new IllegalArgumentException("Prompt version not found");
     }
-    if (get(videoId).prompt() != null && "RENDER_ASSET".equals(get(videoId).prompt().linkage())) {
+    if (jdbc.sql("SELECT EXISTS(SELECT 1 FROM render_assets WHERE relative_path=:path AND asset_type='VIDEO')").param("path",video.getRelativePath()).query(Boolean.class).single()) {
       throw new IllegalStateException(
           "Verified render lineage cannot be overwritten by manual selection");
     }

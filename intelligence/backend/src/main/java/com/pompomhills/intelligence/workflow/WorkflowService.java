@@ -69,7 +69,10 @@ public class WorkflowService {
     input.remove("retrievedLessons");
     if (input.get("lessonModelVersion") instanceof String model
         && input.get("desiredDuration") instanceof Number duration) {
-      input.put("retrievedLessons", retrieveLessons(String.valueOf(input.get("contentProfile")), model, duration.doubleValue()));
+      input.put(
+          "retrievedLessons",
+          retrieveLessons(
+              String.valueOf(input.get("contentProfile")), model, duration.doubleValue()));
     }
     input.remove("authorizationEvidence");
     if (request.contentId() != null && request.promptVersionId() != null) {
@@ -81,10 +84,11 @@ public class WorkflowService {
       if (jdbc != null && authorization != null) {
         Long latest =
             jdbc.sql(
-                    "SELECT id FROM quality_validations WHERE content_id=:content AND"
-                        + " prompt_version_id=:prompt ORDER BY id DESC LIMIT 1")
+                    "SELECT q.id FROM quality_validations q WHERE content_id=:content AND"
+                        + " prompt_version_id=:prompt AND (:canonical IS NULL OR q.id=:canonical) ORDER BY EXISTS(SELECT 1 FROM quality_validation_visual_evidence ve WHERE ve.validation_record_id=q.id) DESC,q.id DESC LIMIT 1")
                 .param("content", request.contentId())
                 .param("prompt", request.promptVersionId())
+                .param("canonical", input.get("canonicalValidationId"), java.sql.Types.BIGINT)
                 .query(Long.class)
                 .optional()
                 .orElse(null);
@@ -94,6 +98,7 @@ public class WorkflowService {
             var canonical = json.convertValue(facts, new TypeReference<Map<String, Object>>() {});
             canonical.put(
                 "fresh", facts.expiresAt() != null && facts.expiresAt().isAfter(Instant.now()));
+            canonical.put("deterministicRulesetVersion", facts.deterministicRulesetVersion());
             input.put("authorizationEvidence", canonical);
           } catch (RuntimeException incomplete) {
             input.put(
@@ -228,37 +233,136 @@ public class WorkflowService {
 
   public Map<String, Object> regenerationHandoff(Map<String, Object> input) {
     UUID parentVideo = UUID.fromString(String.valueOf(input.get("parentVideoId")));
-    var qa = getByKind(UUID.fromString(String.valueOf(input.get("qaRecordId"))),"ACTUAL_RENDER_QA");
-    var review = getByKind(UUID.fromString(String.valueOf(input.get("reviewId"))),"REVIEW");
+    var qa =
+        getByKind(UUID.fromString(String.valueOf(input.get("qaRecordId"))), "ACTUAL_RENDER_QA");
+    var review = getByKind(UUID.fromString(String.valueOf(input.get("reviewId"))), "REVIEW");
     String reason = String.valueOf(input.getOrDefault("reason", ""));
-    if (reason.isBlank() || !Boolean.TRUE.equals(map(qa.get("repairEconomics")).get("fullRerenderJustified"))) throw new IllegalArgumentException("Evidence-bound full rerender justification is required");
+    if (reason.isBlank()
+        || !Boolean.TRUE.equals(map(qa.get("repairEconomics")).get("fullRerenderJustified")))
+      throw new IllegalArgumentException("Evidence-bound full rerender justification is required");
     var parent = videos.get(parentVideo);
-    UUID variantId = input.get("parentVariantId") == null ? null : UUID.fromString(String.valueOf(input.get("parentVariantId")));
-    String path = variantId == null ? parent.relativePath() : variantService.get(parentVideo,variantId).generatedPath();
-    if (!path.equals(qa.get("relativePath"))) throw new IllegalArgumentException("QA is not bound to the selected exact parent file");
+    UUID variantId =
+        input.get("parentVariantId") == null
+            ? null
+            : UUID.fromString(String.valueOf(input.get("parentVariantId")));
+    String path =
+        variantId == null
+            ? parent.relativePath()
+            : variantService.get(parentVideo, variantId).generatedPath();
+    if (!path.equals(qa.get("relativePath")))
+      throw new IllegalArgumentException("QA is not bound to the selected exact parent file");
     UUID artifactVideo = UUID.fromString(String.valueOf(qa.get("videoId")));
-    String hash = jdbc.sql("SELECT content_hash FROM videos WHERE id=:id").param("id",artifactVideo).query(String.class).single();
-    if (!hash.equals(qa.get("assetHash"))) throw new IllegalArgumentException("Parent actual-video hash changed");
-    var sourceReview = getByKind(UUID.fromString(String.valueOf(qa.get("reviewId"))),"REVIEW");
-    if (!java.util.Objects.equals(String.valueOf(sourceReview.get("contentId")),String.valueOf(review.get("contentId")))) throw new IllegalArgumentException("Regeneration source belongs to another content");
-    boolean descendant = jdbc.sql("WITH RECURSIVE ancestry AS (SELECT id,parent_prompt_version_id FROM prompt_versions WHERE id=:new UNION ALL SELECT pv.id,pv.parent_prompt_version_id FROM prompt_versions pv JOIN ancestry ON pv.id=ancestry.parent_prompt_version_id) SELECT EXISTS(SELECT 1 FROM ancestry WHERE id=:old)")
-        .param("new",((Number)review.get("promptVersionId")).longValue()).param("old",((Number)sourceReview.get("promptVersionId")).longValue()).query(Boolean.class).single();
-    if (!descendant) throw new IllegalArgumentException("Regeneration prompt must preserve exact parent source ancestry");
-    var record = new LinkedHashMap<String,Object>(); record.put("parentVideoId",parentVideo.toString()); record.put("parentVariantId",variantId); record.put("parentAssetHash",hash);
-    record.put("qaRecordId",qa.get("recordId")); record.put("reviewId",review.get("recordId")); record.put("bindingHash",review.get("bindingHash"));
-    record.put("contentId",review.get("contentId")); record.put("promptVersionId",review.get("promptVersionId")); record.put("reason",reason);
-    record.put("generation",review.get("generation")); record.put("executionScope","FULL_VIDEO_ONLY"); record.put("status","HANDOFF_PENDING_CANONICAL_AUTHORIZATION"); record.put("automaticExecution",false);
-    record.put("recordId",save("REGENERATION_HANDOFF",String.valueOf(review.get("bindingHash")),record)); return record;
+    String hash =
+        jdbc.sql("SELECT content_hash FROM videos WHERE id=:id")
+            .param("id", artifactVideo)
+            .query(String.class)
+            .single();
+    if (!hash.equals(qa.get("assetHash")) || !hash.equals(currentMediaHash(path)))
+      throw new IllegalArgumentException("Parent actual-video hash changed");
+    var sourceReview = getByKind(UUID.fromString(String.valueOf(qa.get("reviewId"))), "REVIEW");
+    if (!java.util.Objects.equals(
+        String.valueOf(sourceReview.get("contentId")), String.valueOf(review.get("contentId"))))
+      throw new IllegalArgumentException("Regeneration source belongs to another content");
+    boolean descendant =
+        jdbc.sql(
+                "WITH RECURSIVE ancestry AS (SELECT id,parent_prompt_version_id FROM"
+                    + " prompt_versions WHERE id=:new UNION ALL SELECT"
+                    + " pv.id,pv.parent_prompt_version_id FROM prompt_versions pv JOIN ancestry ON"
+                    + " pv.id=ancestry.parent_prompt_version_id) SELECT EXISTS(SELECT 1 FROM"
+                    + " ancestry WHERE id=:old)")
+            .param("new", ((Number) review.get("promptVersionId")).longValue())
+            .param("old", ((Number) sourceReview.get("promptVersionId")).longValue())
+            .query(Boolean.class)
+            .single();
+    if (!descendant)
+      throw new IllegalArgumentException(
+          "Regeneration prompt must preserve exact parent source ancestry");
+    var record = new LinkedHashMap<String, Object>();
+    record.put("parentVideoId", parentVideo.toString());
+    record.put("parentVariantId", variantId);
+    record.put("parentAssetHash", hash);
+    record.put("qaRecordId", qa.get("recordId"));
+    record.put("reviewId", review.get("recordId"));
+    record.put("bindingHash", review.get("bindingHash"));
+    record.put("contentId", review.get("contentId"));
+    record.put("promptVersionId", review.get("promptVersionId"));
+    record.put("reason", reason);
+    record.put("generation", review.get("generation"));
+    record.put("executionScope", "FULL_VIDEO_ONLY");
+    record.put("status", "HANDOFF_PENDING_CANONICAL_AUTHORIZATION");
+    record.put("automaticExecution", false);
+    String fingerprint;
+    try {
+      fingerprint =
+          HexFormat.of()
+              .formatHex(
+                  MessageDigest.getInstance("SHA-256").digest(json.writeValueAsBytes(record)));
+    } catch (Exception error) {
+      throw new IllegalStateException("Regeneration fingerprint unavailable", error);
+    }
+    record.put("handoffFingerprint", fingerprint);
+    var replay = regenerationReplay(fingerprint);
+    if (replay.isPresent()) return replay.get();
+    try {
+      record.put(
+          "recordId",
+          save("REGENERATION_HANDOFF", String.valueOf(review.get("bindingHash")), record));
+    } catch (org.springframework.dao.DataIntegrityViolationException concurrent) {
+      return regenerationReplay(fingerprint).orElseThrow(() -> concurrent);
+    }
+    return record;
   }
 
-  private void validateRegenerationHandoff(Map<String,Object> params,Map<String,Object> review) {
+  private java.util.Optional<Map<String, Object>> regenerationReplay(String fingerprint) {
+    return jdbc.sql(
+            "SELECT id FROM post_family_workflow_events WHERE kind='REGENERATION_HANDOFF' AND"
+                + " payload->>'handoffFingerprint'=:fingerprint")
+        .param("fingerprint", fingerprint)
+        .query(UUID.class)
+        .optional()
+        .map(this::get);
+  }
+
+  private String currentMediaHash(String path) {
+    try {
+      var digest = MessageDigest.getInstance("SHA-256");
+      try (var stream =
+          new java.security.DigestInputStream(
+              media.resolve(path).resource().getInputStream(), digest)) {
+        stream.transferTo(java.io.OutputStream.nullOutputStream());
+      }
+      return HexFormat.of().formatHex(digest.digest());
+    } catch (java.io.IOException | java.security.NoSuchAlgorithmException error) {
+      throw new IllegalStateException("Parent media hash could not be verified", error);
+    }
+  }
+
+  private void validateRegenerationHandoff(Map<String, Object> params, Map<String, Object> review) {
     if (!params.containsKey("regenerationHandoffId")) return;
-    var handoff = getByKind(UUID.fromString(String.valueOf(params.get("regenerationHandoffId"))),"REGENERATION_HANDOFF");
-    if (!"FULL_VIDEO_ONLY".equals(handoff.get("executionScope")) || !java.util.Objects.equals(handoff.get("bindingHash"),review.get("bindingHash")) || !java.util.Objects.equals(handoff.get("reviewId"),review.get("recordId"))) throw new IllegalStateException("Regeneration source binding is stale");
-    var qa = getByKind(UUID.fromString(String.valueOf(handoff.get("qaRecordId"))),"ACTUAL_RENDER_QA");
-    String hash = jdbc.sql("SELECT content_hash FROM videos WHERE id=:id").param("id",UUID.fromString(String.valueOf(qa.get("videoId")))).query(String.class).single();
-    if (!hash.equals(handoff.get("parentAssetHash")) || !Boolean.TRUE.equals(map(qa.get("repairEconomics")).get("fullRerenderJustified"))) throw new IllegalStateException("Regeneration parent evidence is stale");
-    for (String key : List.of("parentVideoId","parentVariantId","parentAssetHash")) if (!java.util.Objects.equals(String.valueOf(handoff.get(key)),String.valueOf(params.get(key)))) throw new IllegalStateException("Regeneration lineage must match the reviewed immutable handoff");
+    var handoff =
+        getByKind(
+            UUID.fromString(String.valueOf(params.get("regenerationHandoffId"))),
+            "REGENERATION_HANDOFF");
+    if (!"FULL_VIDEO_ONLY".equals(handoff.get("executionScope"))
+        || !java.util.Objects.equals(handoff.get("bindingHash"), review.get("bindingHash"))
+        || !java.util.Objects.equals(handoff.get("reviewId"), review.get("recordId")))
+      throw new IllegalStateException("Regeneration source binding is stale");
+    var qa =
+        getByKind(UUID.fromString(String.valueOf(handoff.get("qaRecordId"))), "ACTUAL_RENDER_QA");
+    String hash =
+        jdbc.sql("SELECT content_hash FROM videos WHERE id=:id")
+            .param("id", UUID.fromString(String.valueOf(qa.get("videoId"))))
+            .query(String.class)
+            .single();
+    if (!hash.equals(handoff.get("parentAssetHash"))
+        || !hash.equals(currentMediaHash(String.valueOf(qa.get("relativePath"))))
+        || !Boolean.TRUE.equals(map(qa.get("repairEconomics")).get("fullRerenderJustified")))
+      throw new IllegalStateException("Regeneration parent evidence is stale");
+    for (String key : List.of("parentVideoId", "parentVariantId", "parentAssetHash"))
+      if (!java.util.Objects.equals(
+          String.valueOf(handoff.get(key)), String.valueOf(params.get(key))))
+        throw new IllegalStateException(
+            "Regeneration lineage must match the reviewed immutable handoff");
   }
 
   public Map<String, Object> creativeRoleReadiness() {
@@ -267,7 +371,8 @@ public class WorkflowService {
 
   public Map<String, Object> creativeRole(Map<String, Object> request) {
     String role = String.valueOf(request.get("role"));
-    if (!List.of("STORY", "BUILD_PROMPT", "MINIMAL_REPAIR").contains(role)) throw new IllegalArgumentException("Unsupported creative role");
+    if (!List.of("STORY", "BUILD_PROMPT", "MINIMAL_REPAIR").contains(role))
+      throw new IllegalArgumentException("Unsupported creative role");
     var result = new LinkedHashMap<>(ml.workflow("creative-role", request));
     result.put("validationStatus", "NOT_VALIDATED");
     result.put("recordId", save("CREATIVE_ROLE", null, result));
@@ -296,7 +401,8 @@ public class WorkflowService {
 
   public Map<String, Object> reviewLearning(UUID id, Map<String, Object> input) {
     var record = get(id);
-    if (!List.of("PENDING_HUMAN_REVIEW", "APPROVED", "REJECTED").contains(record.get("reviewStatus")))
+    if (!List.of("PENDING_HUMAN_REVIEW", "APPROVED", "REJECTED")
+        .contains(record.get("reviewStatus")))
       throw new IllegalArgumentException("Only pending learning records can be reviewed");
     if (!List.of("APPROVED", "REJECTED", "REVOKED").contains(input.get("decision"))
         || !(input.get("reason") instanceof String reason)
@@ -314,34 +420,78 @@ public class WorkflowService {
   }
 
   public List<Map<String, Object>> retrieveLessons(String profile, String model, double duration) {
-    if (!Double.isFinite(duration) || duration <= 0 || profile == null || model == null) return List.of();
-    return jdbc.sql("""
-        SELECT id,payload::text payload FROM (
-          SELECT DISTINCT ON (payload->>'parentRecordId') id,payload,created_at
-          FROM post_family_workflow_events WHERE kind='LEARNING_REVIEW'
-          ORDER BY payload->>'parentRecordId',created_at DESC,id DESC
-        ) latest WHERE payload->>'reviewStatus'='APPROVED'
-          AND payload->>'contentProfile'=:profile AND payload->>'targetModelVersion'=:model
-        ORDER BY created_at DESC LIMIT 100
-        """).param("profile", profile).param("model", model).query((rs, ignored) -> {
-          var result = read(rs.getString("payload")); result.put("recordId", rs.getString("id")); return result;
-        }).list().stream().filter(lesson -> {
-          var range = lesson.get("durationRange");
-          if (!(range instanceof List<?> values) || values.size() != 2
-              || !(values.get(0) instanceof Number low) || !(values.get(1) instanceof Number high)
-              || duration < low.doubleValue() || duration > high.doubleValue()) return false;
-          if (!(lesson.get("sampleSize") instanceof Number size) || size.intValue() < 1) return false;
-          if (!(lesson.get("evidenceBasis") instanceof List<?> evidence) || evidence.isEmpty()) return false;
-          boolean verified = false;
-          for (Object reference : evidence) {
-            try {
-              var record = get(UUID.fromString(String.valueOf(reference)));
-              verified |= record.get("verificationPasses") instanceof Number count && count.intValue() > 0;
-              verified |= "USABLE".equals(record.get("viewerFacingUsability"));
-            } catch (IllegalArgumentException unavailable) { return false; }
-          }
-          return verified;
-        }).limit(5).toList();
+    if (!Double.isFinite(duration) || duration <= 0 || profile == null || model == null)
+      return List.of();
+    return jdbc
+        .sql(
+            """
+            SELECT id,payload::text payload FROM (
+              SELECT DISTINCT ON (payload->>'parentRecordId') id,payload,created_at
+              FROM post_family_workflow_events WHERE kind='LEARNING_REVIEW'
+              ORDER BY payload->>'parentRecordId',created_at DESC,id DESC
+            ) latest WHERE payload->>'reviewStatus'='APPROVED'
+              AND payload->>'contentProfile'=:profile AND payload->>'targetModelVersion'=:model
+            ORDER BY created_at DESC LIMIT 100
+            """)
+        .param("profile", profile)
+        .param("model", model)
+        .query(
+            (rs, ignored) -> {
+              var result = read(rs.getString("payload"));
+              result.put("recordId", rs.getString("id"));
+              return result;
+            })
+        .list()
+        .stream()
+        .filter(
+            lesson -> {
+              if (!List.of("ACTUAL_EXECUTION", "PROMPT_FIX")
+                  .contains(String.valueOf(lesson.get("lessonScope")))) return false;
+              var range = lesson.get("durationRange");
+              if (!(range instanceof List<?> values)
+                  || values.size() != 2
+                  || !(values.get(0) instanceof Number low)
+                  || !(values.get(1) instanceof Number high)
+                  || duration < low.doubleValue()
+                  || duration > high.doubleValue()) return false;
+              if (!(lesson.get("sampleSize") instanceof Number size) || size.intValue() < 1)
+                return false;
+              if (!(lesson.get("evidenceBasis") instanceof List<?> evidence) || evidence.isEmpty())
+                return false;
+              boolean verified = false;
+              for (Object reference : evidence) {
+                try {
+                  var record =
+                      getByKind(
+                          UUID.fromString(String.valueOf(reference)),
+                          "PROMPT_FIX".equals(lesson.get("lessonScope"))
+                              ? "REPAIR"
+                              : "ACTUAL_RENDER_QA");
+                  if ("PROMPT_FIX".equals(lesson.get("lessonScope"))
+                      && record.get("verificationPasses") instanceof Number count
+                      && count.intValue() > 0) {
+                    verified |=
+                        jdbc.sql(
+                                "SELECT EXISTS(SELECT 1 FROM workflow_repair_sessions s CROSS JOIN"
+                                    + " LATERAL jsonb_array_elements(s.payload->'history') attempt"
+                                    + " WHERE s.state='ACCEPTED' AND"
+                                    + " attempt->>'repairRecordId'=:repair AND"
+                                    + " attempt->>'reviewId'=s.payload->>'bestReviewId')")
+                            .param("repair", String.valueOf(reference))
+                            .query(Boolean.class)
+                            .single();
+                  }
+                  verified |=
+                      "ACTUAL_EXECUTION".equals(lesson.get("lessonScope"))
+                          && "USABLE".equals(record.get("viewerFacingUsability"));
+                } catch (IllegalArgumentException unavailable) {
+                  return false;
+                }
+              }
+              return verified;
+            })
+        .limit(5)
+        .toList();
   }
 
   public List<Map<String, Object>> verifiedReferences(Object value) {
@@ -392,15 +542,16 @@ public class WorkflowService {
           "Only one repair is allowed for this review; save the final revision before a new"
               + " review");
     var result =
-        new LinkedHashMap<>(ml.workflow(
-            "repair",
-            Map.of(
-                "request",
-                previous.get("boundRequest"),
-                "patches",
-                patches,
-                "repairPasses",
-                previous.getOrDefault("repairPasses", 0))));
+        new LinkedHashMap<>(
+            ml.workflow(
+                "repair",
+                Map.of(
+                    "request",
+                    previous.get("boundRequest"),
+                    "patches",
+                    patches,
+                    "repairPasses",
+                    previous.getOrDefault("repairPasses", 0))));
     var changed = new LinkedHashMap<>(map(previous.get("boundRequest")));
     changed.put("prompt", result.get("finalPrompt"));
     result.put("boundRequest", changed);
@@ -425,31 +576,79 @@ public class WorkflowService {
     var original = videos.get(videoId);
     String path = String.valueOf(input.get("relativePath"));
     String reason = String.valueOf(input.getOrDefault("reason", ""));
-    if (reason.isBlank() || original.relativePath().equals(path)) throw new IllegalArgumentException("Distinct edited file and review reason are required");
-    UUID parentId = input.get("parentVariantId") == null ? null : UUID.fromString(String.valueOf(input.get("parentVariantId")));
+    if (reason.isBlank() || original.relativePath().equals(path))
+      throw new IllegalArgumentException("Distinct edited file and review reason are required");
+    UUID parentId =
+        input.get("parentVariantId") == null
+            ? null
+            : UUID.fromString(String.valueOf(input.get("parentVariantId")));
     if (parentId != null) variantService.get(videoId, parentId);
     var artifact = videos.ingest(path, null);
-    if (artifact.id().equals(videoId)) throw new IllegalArgumentException("Edited file has original bytes; no new edited result exists");
-    var operations = input.get("editOperations") instanceof List<?> list ? new ArrayList<Object>(list) : List.<Object>of();
-    var existing = variantService.list(videoId).stream().filter(variant -> variant.generatedPath().equals(path)).findFirst();
-    var variant = existing.orElseGet(() -> variantService.create(videoId, parentId, com.pompomhills.intelligence.video.VideoVariantType.CUSTOM_EDIT, path, operations));
-    if (!java.util.Objects.equals(variant.parentVariantId(), parentId) || !variant.editOperations().equals(operations)) throw new IllegalArgumentException("Existing variant has different parent or edit provenance");
+    if (artifact.id().equals(videoId))
+      throw new IllegalArgumentException(
+          "Edited file has original bytes; no new edited result exists");
+    var operations =
+        input.get("editOperations") instanceof List<?> list
+            ? new ArrayList<Object>(list)
+            : List.<Object>of();
+    var existing =
+        variantService.list(videoId).stream()
+            .filter(variant -> variant.generatedPath().equals(path))
+            .findFirst();
+    var variant =
+        existing.orElseGet(
+            () ->
+                variantService.create(
+                    videoId,
+                    parentId,
+                    com.pompomhills.intelligence.video.VideoVariantType.CUSTOM_EDIT,
+                    path,
+                    operations));
+    if (!java.util.Objects.equals(variant.parentVariantId(), parentId)
+        || !variant.editOperations().equals(operations))
+      throw new IllegalArgumentException(
+          "Existing variant has different parent or edit provenance");
     var record = new LinkedHashMap<String, Object>();
-    record.put("videoId", videoId.toString()); record.put("variantId", variant.id().toString());
-    record.put("parentVariantId", parentId); record.put("artifactVideoId", artifact.id().toString());
-    record.put("relativePath", path); record.put("durationMs", artifact.durationMs());
-    record.put("artifactHash", jdbc.sql("SELECT content_hash FROM videos WHERE id=:id").param("id", artifact.id()).query(String.class).single());
-    record.put("originalHash", jdbc.sql("SELECT content_hash FROM videos WHERE id=:id").param("id", videoId).query(String.class).single());
-    record.put("editOperations", operations); record.put("operationVerification", "OPERATOR_REPORTED");
-    record.put("fileVerification", "HASH_AND_METADATA_VERIFIED"); record.put("reason", reason);
+    record.put("videoId", videoId.toString());
+    record.put("variantId", variant.id().toString());
+    record.put("parentVariantId", parentId);
+    record.put("artifactVideoId", artifact.id().toString());
+    record.put("relativePath", path);
+    record.put("durationMs", artifact.durationMs());
+    record.put(
+        "artifactHash",
+        jdbc.sql("SELECT content_hash FROM videos WHERE id=:id")
+            .param("id", artifact.id())
+            .query(String.class)
+            .single());
+    record.put(
+        "originalHash",
+        jdbc.sql("SELECT content_hash FROM videos WHERE id=:id")
+            .param("id", videoId)
+            .query(String.class)
+            .single());
+    record.put("editOperations", operations);
+    record.put("operationVerification", "OPERATOR_REPORTED");
+    record.put("fileVerification", "HASH_AND_METADATA_VERIFIED");
+    record.put("reason", reason);
     record.put("recordId", save("EDIT_HANDOFF", null, record));
     return record;
   }
 
   public List<Map<String, Object>> actualQaRecords(UUID videoId) {
     videos.get(videoId);
-    return jdbc.sql("SELECT id,payload::text payload FROM post_family_workflow_events WHERE kind='ACTUAL_RENDER_QA' AND payload->>'videoId'=:video AND payload->>'lineageStatus'='UNAVAILABLE' ORDER BY created_at DESC LIMIT 1")
-        .param("video", videoId.toString()).query((rs, ignored) -> { var result = read(rs.getString("payload")); result.put("recordId", rs.getString("id")); return result; }).list();
+    return jdbc.sql(
+            "SELECT id,payload::text payload FROM post_family_workflow_events WHERE"
+                + " kind='ACTUAL_RENDER_QA' AND payload->>'videoId'=:video AND"
+                + " payload->>'lineageStatus'='UNAVAILABLE' ORDER BY created_at DESC LIMIT 1")
+        .param("video", videoId.toString())
+        .query(
+            (rs, ignored) -> {
+              var result = read(rs.getString("payload"));
+              result.put("recordId", rs.getString("id"));
+              return result;
+            })
+        .list();
   }
 
   public Map<String, Object> actualQaWithoutPlan(UUID videoId, Map<String, Object> input) {
@@ -463,7 +662,8 @@ public class WorkflowService {
     return actualQaBound(plan, null, request);
   }
 
-  private Map<String, Object> actualQaBound(Map<String, Object> review, UUID id, Map<String, Object> input) {
+  private Map<String, Object> actualQaBound(
+      Map<String, Object> review, UUID id, Map<String, Object> input) {
     String path = String.valueOf(input.get("relativePath"));
     var video = videos.ingest(path, null);
     var analysis = videoMl.analyse(path, VideoService.CURRENT_ANALYSIS_VERSION, Map.of(), false);
@@ -707,14 +907,20 @@ public class WorkflowService {
             "counterexamples"))
       if (!value.containsKey(field)) throw new IllegalArgumentException("Required field: " + field);
     var record = new LinkedHashMap<>(value);
+    record.putIfAbsent("lessonScope", "UNKNOWN");
     record.put("reviewStatus", "PENDING_HUMAN_REVIEW");
     record.put("automaticallyApplied", false);
     record.put("recordId", save(kind, null, record));
     return record;
   }
 
-  public Map<String,Object> getByKind(UUID id,String kind) {
-    if (!jdbc.sql("SELECT EXISTS(SELECT 1 FROM post_family_workflow_events WHERE id=:id AND kind=:kind)").param("id",id).param("kind",kind).query(Boolean.class).single()) throw new IllegalArgumentException("Workflow record kind mismatch");
+  public Map<String, Object> getByKind(UUID id, String kind) {
+    if (!jdbc.sql(
+            "SELECT EXISTS(SELECT 1 FROM post_family_workflow_events WHERE id=:id AND kind=:kind)")
+        .param("id", id)
+        .param("kind", kind)
+        .query(Boolean.class)
+        .single()) throw new IllegalArgumentException("Workflow record kind mismatch");
     return get(id);
   }
 
@@ -734,7 +940,8 @@ public class WorkflowService {
     return list(kind, null, null, null);
   }
 
-  public List<Map<String, Object>> list(String kind, String contentId, String promptVersionId, String bindingHash) {
+  public List<Map<String, Object>> list(
+      String kind, String contentId, String promptVersionId, String bindingHash) {
     return jdbc.sql(
             "SELECT id,payload::text payload FROM post_family_workflow_events WHERE kind=:kind"
                 + " AND (CAST(:content AS text) IS NULL OR payload->>'contentId'=:content)"
@@ -766,6 +973,8 @@ public class WorkflowService {
           .param("payload", json.writeValueAsString(value))
           .update();
       return id;
+    } catch (org.springframework.dao.DataIntegrityViolationException error) {
+      throw error;
     } catch (Exception error) {
       throw new IllegalStateException("Cannot persist workflow event", error);
     }

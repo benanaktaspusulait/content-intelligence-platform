@@ -33,7 +33,7 @@ public class PlatformGrowthProfileService {
         jdbc.sql(
                 """
                 SELECT measurement_timestamp,views,metric_semantics,source
-                FROM performance_observations
+                FROM effective_performance_observations
                 WHERE video_id=:video AND platform=:platform
                   AND publication_timestamp IS NOT NULL
                   AND measurement_timestamp IS NOT NULL
@@ -103,7 +103,7 @@ public class PlatformGrowthProfileService {
   private Instant earliestPublication(UUID videoId, String platform, Instant cutoff, UUID variantId) {
     return jdbc.sql(
             """
-            SELECT min(publication_timestamp) FROM performance_observations
+            SELECT min(publication_timestamp) FROM effective_performance_observations
             WHERE video_id=:video AND platform=:platform AND publication_timestamp IS NOT NULL
               AND measurement_timestamp<=:cutoff AND variant_id IS NOT DISTINCT FROM :variant
             """)

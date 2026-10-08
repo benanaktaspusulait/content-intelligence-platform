@@ -13,7 +13,7 @@ interface DetectedField { source: string; interpretation: string; }
       <section class="section-band upload-panel">
         <div class="section-heading"><div><span class="eyebrow">SOURCE FILE</span><h2>Platform export</h2></div><span class="status-badge status-badge--green">CSV</span></div>
         <label class="file-drop"><input type="file" accept=".csv,.tsv,.xlsx" (change)="fileSelected($event)"><span class="upload-icon" aria-hidden="true">↑</span><strong>{{ fileName() || 'Choose a platform export' }}</strong><small>{{ rowCount() ? rowCount() + ' rows staged' : 'CSV, TSV or XLSX · up to 250 MB' }}</small><span class="button button--secondary">Browse files</span></label>
-        <dl class="compact-facts source-facts"><div><dt>Platform</dt><dd><select [value]="platform()" (change)="platform.set(selectValue($event))"><option value="instagram">Instagram</option><option value="facebook">Facebook</option><option value="tiktok">TikTok</option><option value="youtube">YouTube</option></select></dd></div><div><dt>Matched rows</dt><dd>{{ matchedRows() }}</dd></div><div><dt>Storage</dt><dd>Raw + normalized</dd></div></dl>
+        <label>Corrects committed batch (optional)<input [value]="correctionBatch()" (input)="correctionBatch.set(inputValue($event))" placeholder="Exact batch UUID"></label><label>Correction reason<input [value]="correctionReason()" (input)="correctionReason.set(inputValue($event))"></label><p>Corrected exports require a correction_of_id observation UUID in every row. Prior observations remain stored.</p><dl class="compact-facts source-facts"><div><dt>Platform</dt><dd><select [value]="platform()" (change)="platform.set(selectValue($event))"><option value="instagram">Instagram</option><option value="facebook">Facebook</option><option value="tiktok">TikTok</option><option value="youtube">YouTube</option></select></dd></div><div><dt>Timezone</dt><dd>{{ timezone() }}</dd></div><div><dt>Correction of</dt><dd>{{ correctionBatch() || 'None' }}</dd></div><div><dt>Matched rows</dt><dd>{{ matchedRows() }}</dd></div><div><dt>Storage</dt><dd>Raw + normalized</dd></div></dl>
       </section>
       <aside class="section-band validation-panel"><span class="eyebrow">VALIDATION</span><h2>{{ unresolvedRows() }} unresolved rows</h2><p>Only exact video IDs or unique filenames are accepted.</p><div class="validation-meter"><span [style.width.%]="matchCoverage()"></span></div><small>{{ matchCoverage() }}% row coverage</small><ul><li class="passed">{{ mappings().length }} fields detected</li><li class="passed">{{ matchedRows() }} exact matches</li><li class="warning">{{ unresolvedRows() }} rows need review</li></ul>@if (error()) { <p class="amber-text">{{ error() }}</p> }</aside>
     </div>
@@ -48,6 +48,9 @@ export class ImportDataPage {
   protected readonly committed = signal(false);
   protected readonly mappings = signal<DetectedField[]>([]);
   protected readonly platform = signal('instagram');
+  protected readonly timezone = signal(Intl.DateTimeFormat().resolvedOptions().timeZone);
+  protected readonly correctionBatch = signal('');
+  protected readonly correctionReason = signal('');
   protected readonly rows = signal<ImportRow[]>([]);
   protected readonly videos = signal<{ id: string; title: string }[]>([]);
   protected readonly batchId = signal('');
@@ -67,6 +70,7 @@ export class ImportDataPage {
       this.loading.set(true);
       this.service.getImportBatch(savedBatch).subscribe({
         next: preview => {
+          this.platform.set(preview.platform || this.platform()); this.timezone.set(preview.timezone || this.timezone()); this.correctionBatch.set(preview.correctionOfBatchId || ''); this.correctionReason.set(preview.correctionReason || '');
           this.batchId.set(preview.batchId); this.fileName.set(preview.filename);
           this.rowCount.set(preview.rowCount); this.matchedRows.set(preview.matchedRows); this.unresolvedRows.set(preview.unresolvedRows);
           this.committed.set(preview.status === 'COMMITTED');
@@ -106,10 +110,12 @@ export class ImportDataPage {
   protected fileSelected(event: Event): void {
     const file = (event.target as HTMLInputElement).files?.[0];
     if (!file) return;
-    this.fileName.set(file.name); this.loading.set(true); this.error.set(''); this.committed.set(false);
-    this.service.previewImport(file, this.platform(), Intl.DateTimeFormat().resolvedOptions().timeZone).subscribe({
+    this.fileName.set(file.name); this.loading.set(true); this.error.set(''); this.committed.set(false); this.rows.set([]); this.batchId.set('');
+    this.service.previewImport(file, this.platform(), this.timezone(), this.correctionBatch() || undefined, this.correctionReason()).subscribe({
       next: preview => {
-        this.batchId.set(preview.batchId); this.router.navigate([], { relativeTo: this.route, queryParams: { batchId: preview.batchId }, replaceUrl: true }); this.rowCount.set(preview.rowCount); this.matchedRows.set(preview.matchedRows); this.unresolvedRows.set(preview.unresolvedRows);
+        this.platform.set(preview.platform || this.platform()); this.timezone.set(preview.timezone || this.timezone()); this.correctionBatch.set(preview.correctionOfBatchId || ''); this.correctionReason.set(preview.correctionReason || '');
+          this.batchId.set(preview.batchId); this.router.navigate([], { relativeTo: this.route, queryParams: { batchId: preview.batchId }, replaceUrl: true }); this.rowCount.set(preview.rowCount); this.matchedRows.set(preview.matchedRows); this.unresolvedRows.set(preview.unresolvedRows);
+        this.committed.set(preview.status === 'COMMITTED'); this.step.set(preview.status === 'COMMITTED' ? 3 : 2);
         this.mappings.set(preview.columns.map(column => ({ source: column, interpretation: this.interpretation(column) })));
         this.service.getImportRows(preview.batchId).subscribe({
           next: rows => { this.rows.set(rows); this.loading.set(false); },
@@ -119,6 +125,7 @@ export class ImportDataPage {
       error: response => { this.error.set(response.error?.message || 'Import preview failed.'); this.loading.set(false); },
     });
   }
+  protected inputValue(event: Event): string { return (event.target as HTMLInputElement).value; }
   protected selectValue(event: Event): string { return (event.target as HTMLSelectElement).value; }
   protected resolveRow(row: ImportRow): void {
     const selection = this.selections()[row.id];

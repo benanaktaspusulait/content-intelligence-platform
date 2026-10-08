@@ -63,9 +63,10 @@ public class ValidationEvidenceService {
 
     ValidationDecisionStatus status = resolveStatus(entity);
 
-    var visualRows = visualEvidence == null
-        ? java.util.List.<ValidationVisualEvidenceEntity>of()
-        : visualEvidence.findByValidationRecordIdOrderBySubmittedAtAscIdAsc(entity.getId());
+    var visualRows =
+        visualEvidence == null
+            ? java.util.List.<ValidationVisualEvidenceEntity>of()
+            : visualEvidence.findByValidationRecordIdOrderBySubmittedAtAscIdAsc(entity.getId());
     return new ValidationEvidenceResponse(
         entity.getId(),
         entity.getContentId(),
@@ -86,15 +87,35 @@ public class ValidationEvidenceService {
         isFirstFrameEligible(entity),
         ValidationVisualEvidenceProjection.finalVideoEligible(visualRows),
         ValidationVisualEvidenceProjection.project(visualRows),
-        QualityReportSnapshots.renderAuthorizationStatus(entity.getReportJson()));
+        profileRenderAuthorization(entity, status, visualRows));
+  }
+
+  private String profileRenderAuthorization(
+      QualityValidationEntity entity,
+      ValidationDecisionStatus status,
+      java.util.List<ValidationVisualEvidenceEntity> rows) {
+    var assessment = QualityReportSnapshots.preRenderAssessment(entity.getReportJson());
+    if (assessment != null
+        && assessment.get("canonicalProfileAdmission") instanceof java.util.Map<?, ?> projection
+        && "profile-admission-v1".equals(projection.get("version"))
+        && entity.getDeterministicRulesetVersion().contains("+profile-admission-v1:")
+        && Boolean.TRUE.equals(projection.get("requiredEvidencePreserved"))) {
+      return status == ValidationDecisionStatus.RENDER_READY
+              && ValidationVisualEvidenceProjection.finalVideoEligible(rows)
+          ? "AUTHORIZED"
+          : "BLOCKED_PENDING_EVIDENCE";
+    }
+    return QualityReportSnapshots.renderAuthorizationStatus(entity.getReportJson());
   }
 
   private boolean isFirstFrameEligible(QualityValidationEntity entity) {
-    java.util.Map<String, Object> assessment = QualityReportSnapshots.preRenderAssessment(entity.getReportJson());
+    java.util.Map<String, Object> assessment =
+        QualityReportSnapshots.preRenderAssessment(entity.getReportJson());
     if (assessment == null) return false;
     Object promptStage = assessment.get("prompt_stage");
     Object authorization = assessment.get("render_authorization");
-    if (!("READY_FOR_FIRST_FRAME".equals(promptStage)) || !(authorization instanceof java.util.Map<?, ?> map)) {
+    if (!("READY_FOR_FIRST_FRAME".equals(promptStage))
+        || !(authorization instanceof java.util.Map<?, ?> map)) {
       return false;
     }
     return !"BLOCKED_CREATIVE_FAILURE".equals(map.get("status"));
@@ -141,13 +162,15 @@ public class ValidationEvidenceService {
    */
   private ValidationDecisionStatus resolveStatus(QualityValidationEntity entity) {
     ValidationDecisionStatus storedStatus = parseStatus(entity.getStatus());
-    var visualRows = visualEvidence == null
-        ? java.util.List.<ValidationVisualEvidenceEntity>of()
-        : visualEvidence.findByValidationRecordIdOrderBySubmittedAtAscIdAsc(entity.getId());
+    var visualRows =
+        visualEvidence == null
+            ? java.util.List.<ValidationVisualEvidenceEntity>of()
+            : visualEvidence.findByValidationRecordIdOrderBySubmittedAtAscIdAsc(entity.getId());
     boolean visualReady = ValidationVisualEvidenceProjection.finalVideoEligible(visualRows);
-    QualityValidationEntity revalidation = entity.getIndependentRevalidationId() == null
-        ? null
-        : repository.findByValidationRunId(entity.getIndependentRevalidationId()).orElse(null);
+    QualityValidationEntity revalidation =
+        entity.getIndependentRevalidationId() == null
+            ? null
+            : repository.findByValidationRunId(entity.getIndependentRevalidationId()).orElse(null);
     boolean visualRevalidationPath = visualReady && revalidation != null;
     if (storedStatus != ValidationDecisionStatus.RENDER_READY && !visualRevalidationPath) {
       return storedStatus;
@@ -188,9 +211,9 @@ public class ValidationEvidenceService {
         && java.util.Objects.equals(primary.getPromptVersionId(), revalidation.getPromptVersionId())
         && java.util.Objects.equals(primary.getPromptSha256(), revalidation.getPromptSha256())
         && java.util.Objects.equals(
-            primary.getDeterministicRulesetVersion(),
-            revalidation.getDeterministicRulesetVersion())
-        && java.util.Objects.equals(primary.getSemanticProvider(), revalidation.getSemanticProvider())
+            primary.getDeterministicRulesetVersion(), revalidation.getDeterministicRulesetVersion())
+        && java.util.Objects.equals(
+            primary.getSemanticProvider(), revalidation.getSemanticProvider())
         && java.util.Objects.equals(
             primary.getSemanticModelVersion(), revalidation.getSemanticModelVersion());
   }

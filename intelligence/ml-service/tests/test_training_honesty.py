@@ -6,9 +6,9 @@ def test_training_does_not_claim_an_artifact_for_placeholder_rows():
     response = TestClient(app).post('/v1/training/train', json={
         'contractVersion': 'v1', 'platform': 'instagram',
         'datasetVersion': 'synthetic', 'rows': [{} for _ in range(30)]})
-    assert response.status_code == 501
+    assert response.status_code == 409
     assert response.json()['detail']['artifactCreated'] is False
-    assert response.json()['detail']['status'] == 'TRAINING_NOT_IMPLEMENTED'
+    assert response.json()['detail']['status'] == 'TRAINING_DATA_INELIGIBLE'
 
 
 def test_small_dataset_is_not_eligible():

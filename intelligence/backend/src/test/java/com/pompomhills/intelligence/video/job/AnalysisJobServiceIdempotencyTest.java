@@ -2,7 +2,6 @@ package com.pompomhills.intelligence.video.job;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyMap;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -77,7 +76,8 @@ class AnalysisJobServiceIdempotencyTest {
   void isolateDatabaseAndStubMl() {
     scheduledTasks.getScheduledTasks().forEach(task -> task.cancel(false));
     jdbc.update("TRUNCATE videos CASCADE");
-    when(ml.analyse(anyString(), anyString(), anyMap(), anyBoolean())).thenReturn(stubResponse(VideoService.CURRENT_ANALYSIS_VERSION));
+    when(ml.analyse(anyString(), anyString(), anyMap(), anyBoolean()))
+        .thenReturn(stubResponse(VideoService.CURRENT_ANALYSIS_VERSION));
   }
 
   /**
@@ -158,7 +158,8 @@ class AnalysisJobServiceIdempotencyTest {
 
     assertThat(result.created()).isFalse();
     assertThat(result.job()).isNull();
-    org.mockito.Mockito.verify(ml, org.mockito.Mockito.never()).analyse(anyString(), anyString(), anyMap(), anyBoolean());
+    org.mockito.Mockito.verify(ml, org.mockito.Mockito.never())
+        .analyse(anyString(), anyString(), anyMap(), anyBoolean());
   }
 
   // Requirement 4: a new analysis version does not force a second job through this plan's
@@ -169,12 +170,17 @@ class AnalysisJobServiceIdempotencyTest {
     UUID videoId = freshUnanalysedVideo();
     jobs.enqueue(videoId);
     jobs.processNext(); // persists an analysis with analysisVersion "creative-v1"
-    when(ml.analyse(anyString(), anyString(), anyMap(), anyBoolean())).thenReturn(stubResponse("creative-v2")); // a hypothetically newer version
+    when(ml.analyse(anyString(), anyString(), anyMap(), anyBoolean()))
+        .thenReturn(stubResponse("creative-v2")); // a hypothetically newer version
 
     var result = jobs.enqueue(videoId);
 
     assertThat(result.created()).isFalse();
-    assertThat(analyses.findFirstByVideoIdOrderByCreatedAtDesc(videoId).orElseThrow().getAnalysisVersion())
+    assertThat(
+            analyses
+                .findFirstByVideoIdOrderByCreatedAtDesc(videoId)
+                .orElseThrow()
+                .getAnalysisVersion())
         .isEqualTo(VideoService.CURRENT_ANALYSIS_VERSION);
   }
 
@@ -196,7 +202,8 @@ class AnalysisJobServiceIdempotencyTest {
   @Test
   void workerFailureEndsInFailed() {
     UUID videoId = freshUnanalysedVideo();
-    when(ml.analyse(anyString(), anyString(), anyMap(), anyBoolean())).thenThrow(new RuntimeException("ML unavailable"));
+    when(ml.analyse(anyString(), anyString(), anyMap(), anyBoolean()))
+        .thenThrow(new RuntimeException("ML unavailable"));
     var enqueued = jobs.enqueue(videoId);
 
     jobs.processNext();
@@ -210,14 +217,17 @@ class AnalysisJobServiceIdempotencyTest {
   @Test
   void retryDoesNotCreateDuplicateAnalysisRows() {
     UUID videoId = freshUnanalysedVideo();
-    when(ml.analyse(anyString(), anyString(), anyMap(), anyBoolean())).thenThrow(new RuntimeException("transient failure"));
+    when(ml.analyse(anyString(), anyString(), anyMap(), anyBoolean()))
+        .thenThrow(new RuntimeException("transient failure"));
     var enqueued = jobs.enqueue(videoId);
     jobs.processNext(); // fails, job is now FAILED with available_at 10s in the future
     // Re-stubbing with when(ml.analyse(any())).thenReturn(...) here would itself invoke
     // ml.analyse(any()) to register the new stub, which would immediately re-trigger the
     // still-active thenThrow(...) stub above instead of replacing it. doReturn(...).when(...)
     // configures the stub without invoking the mock, so it correctly replaces the throwing stub.
-    doReturn(stubResponse(VideoService.CURRENT_ANALYSIS_VERSION)).when(ml).analyse(anyString(), anyString(), anyMap(), anyBoolean());
+    doReturn(stubResponse(VideoService.CURRENT_ANALYSIS_VERSION))
+        .when(ml)
+        .analyse(anyString(), anyString(), anyMap(), anyBoolean());
 
     jobs.retry(enqueued.job().id()); // flips FAILED back to QUEUED with available_at=now()
     jobs.processNext(); // succeeds this time
@@ -239,7 +249,8 @@ class AnalysisJobServiceIdempotencyTest {
   // pre-existing in processNext(), exercised concurrently here) and two concurrent enqueue() calls
   // for the same video cannot both create an active job (the V34 unique index from Task 2).
   @Test
-  void concurrentEnqueueCallsForTheSameVideoProduceExactlyOneActiveJob() throws InterruptedException {
+  void concurrentEnqueueCallsForTheSameVideoProduceExactlyOneActiveJob()
+      throws InterruptedException {
     UUID videoId = freshUnanalysedVideo();
     int attempts = 8;
     ExecutorService pool = Executors.newFixedThreadPool(attempts);
@@ -278,26 +289,31 @@ class AnalysisJobServiceIdempotencyTest {
     // globally oldest QUEUED row with no video scoping (pre-existing behavior), so queuedVideo's
     // job must not be older than any job this test still expects processNext() to claim.
     UUID failedVideo = freshUnanalysedVideo();
-    when(ml.analyse(anyString(), anyString(), anyMap(), anyBoolean())).thenThrow(new RuntimeException("boom"));
+    when(ml.analyse(anyString(), anyString(), anyMap(), anyBoolean()))
+        .thenThrow(new RuntimeException("boom"));
     jobs.enqueue(failedVideo);
     jobs.processNext();
     // doReturn(...).when(...) instead of when(...).thenReturn(...): see the comment in
     // retryDoesNotCreateDuplicateAnalysisRows for why re-stubbing over an active thenThrow(...)
     // must avoid invoking the mock method directly.
-    doReturn(stubResponse(VideoService.CURRENT_ANALYSIS_VERSION)).when(ml).analyse(anyString(), anyString(), anyMap(), anyBoolean());
+    doReturn(stubResponse(VideoService.CURRENT_ANALYSIS_VERSION))
+        .when(ml)
+        .analyse(anyString(), anyString(), anyMap(), anyBoolean());
     assertThat(jobs.findLatestByVideoId(failedVideo).orElseThrow().state()).isEqualTo("FAILED");
     assertThat(jobs.findActiveByVideoId(failedVideo)).isEmpty();
 
     UUID completedVideo = freshUnanalysedVideo();
     jobs.enqueue(completedVideo);
     jobs.processNext();
-    assertThat(jobs.findLatestByVideoId(completedVideo).orElseThrow().state()).isEqualTo("COMPLETED");
+    assertThat(jobs.findLatestByVideoId(completedVideo).orElseThrow().state())
+        .isEqualTo("COMPLETED");
     assertThat(videoService.hasCurrentAnalysis(completedVideo)).isTrue();
 
     UUID queuedVideo = freshUnanalysedVideo();
     var queuedJob = jobs.enqueue(queuedVideo).job();
     assertThat(jobs.findActiveByVideoId(queuedVideo).orElseThrow().state()).isEqualTo("QUEUED");
-    assertThat(queuedJob.state()).isEqualTo("QUEUED"); // sanity: original reference unaffected by the other two videos
+    assertThat(queuedJob.state())
+        .isEqualTo("QUEUED"); // sanity: original reference unaffected by the other two videos
   }
 
   // Requirement 10: ingest + analysis never invokes the same expensive ML work twice for the same
@@ -313,8 +329,10 @@ class AnalysisJobServiceIdempotencyTest {
 
     jobs.enqueue(videoId); // must not call ML again, since an analysis already exists
 
-    org.mockito.Mockito.verify(ml, org.mockito.Mockito.never()).analyse(anyString(), anyString(), anyMap(), anyBoolean());
+    org.mockito.Mockito.verify(ml, org.mockito.Mockito.never())
+        .analyse(anyString(), anyString(), anyMap(), anyBoolean());
   }
+
   @Test
   void requestedVersionsHaveSeparateActiveIdentity() {
     UUID video = freshUnanalysedVideo();
@@ -322,17 +340,36 @@ class AnalysisJobServiceIdempotencyTest {
     var v5 = jobs.enqueue(video, false, VideoService.V5_ANALYSIS_VERSION);
     assertThat(v4.created()).isTrue();
     assertThat(v5.created()).isTrue();
-    assertThat(jobs.enqueue(video, false, VideoService.V4_ANALYSIS_VERSION).job().id()).isEqualTo(v4.job().id());
+    assertThat(jobs.enqueue(video, false, VideoService.V4_ANALYSIS_VERSION).job().id())
+        .isEqualTo(v4.job().id());
   }
 
   @Test
   void expiredWorkerRequiresReconciliationAndCannotBlindlyRetry() {
     UUID video = freshUnanalysedVideo();
     var queued = jobs.enqueue(video);
-    jdbc.update("UPDATE analysis_jobs SET state='RUNNING',started_at=now()-interval '16 minutes' WHERE id=?", queued.job().id());
+    jdbc.update(
+        "UPDATE analysis_jobs SET state='RUNNING',started_at=now()-interval '16 minutes' WHERE"
+            + " id=?",
+        queued.job().id());
     assertThat(jobs.recoverExpiredJobs()).isEqualTo(1);
     assertThat(jobs.get(queued.job().id()).state()).isEqualTo("FAILED");
-    assertThatThrownBy(() -> jobs.retry(queued.job().id())).isInstanceOf(IllegalStateException.class);
+    assertThatThrownBy(() -> jobs.retry(queued.job().id()))
+        .isInstanceOf(IllegalStateException.class);
   }
 
+  @Test
+  void expiredWorkerWithExactDurableResultCompletesWithoutAnotherProviderCall() {
+    UUID video = freshUnanalysedVideo();
+    var queued = jobs.enqueue(video);
+    jdbc.update(
+        "UPDATE analysis_jobs SET state='RUNNING',started_at=now()-interval '16 minutes' WHERE"
+            + " id=?",
+        queued.job().id());
+    videoService.analyse(video, VideoService.CURRENT_ANALYSIS_VERSION);
+    org.mockito.Mockito.clearInvocations(ml);
+    assertThat(jobs.recoverExpiredJobs()).isEqualTo(1);
+    assertThat(jobs.get(queued.job().id()).state()).isEqualTo("COMPLETED");
+    org.mockito.Mockito.verifyNoInteractions(ml);
+  }
 }

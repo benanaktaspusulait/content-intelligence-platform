@@ -56,7 +56,7 @@ public class VideoAnalysisWorkbenchService {
                                ORDER BY j.created_at DESC LIMIT 1) aj ON true
             LEFT JOIN LATERAL (SELECT count(*) AS publications FROM video_publications p WHERE p.video_id=v.id) pub ON true
             LEFT JOIN LATERAL (SELECT max(o.views) AS observed_views,count(*)::int AS observation_count
-                               FROM performance_observations o WHERE o.video_id=v.id) perf ON true
+                               FROM effective_performance_observations o WHERE o.video_id=v.id) perf ON true
             """ + where + order + " LIMIT :limit OFFSET :offset")
         .params(params)
         .param("current", VideoService.CURRENT_ANALYSIS_VERSION)
@@ -128,7 +128,7 @@ public class VideoAnalysisWorkbenchService {
       LEFT JOIN LATERAL (SELECT a.* FROM creative_analyses a WHERE a.video_id=v.id ORDER BY (a.analysis_version=:current) DESC,a.created_at DESC LIMIT 1) ca ON true
       LEFT JOIN LATERAL (SELECT j.state FROM analysis_jobs j WHERE j.video_id=v.id ORDER BY j.created_at DESC LIMIT 1) aj ON true
       LEFT JOIN LATERAL (SELECT count(*) AS publications FROM video_publications p WHERE p.video_id=v.id) pub ON true
-      LEFT JOIN LATERAL (SELECT max(o.views) AS observed_views,count(*)::int AS observation_count FROM performance_observations o WHERE o.video_id=v.id) perf ON true
+      LEFT JOIN LATERAL (SELECT max(o.views) AS observed_views,count(*)::int AS observation_count FROM effective_performance_observations o WHERE o.video_id=v.id) perf ON true
       """; }
   private java.util.Map<String,Object> params(String a,String t,String p,UUID c,String r,Boolean u,String q){var m=new java.util.HashMap<String,Object>();m.put("current",VideoService.CURRENT_ANALYSIS_VERSION);if(a!=null&&!a.isBlank())m.put("analysisStatus",a);if(t!=null&&!t.isBlank())m.put("triage",t);if(p!=null&&!p.isBlank())m.put("publicationState",p);if(c!=null)m.put("characterId",c);if(r!=null&&!r.isBlank())m.put("characterRole",r);if(u!=null)m.put("unresolvedCharacter",u);if(q!=null&&!q.isBlank())m.put("query",q.toLowerCase());return m;}
   private String whereClause(String a,String t,String p,UUID c,String r,Boolean u,String q){StringBuilder s=new StringBuilder(" WHERE 1=1 ");if(a!=null&&!a.isBlank())s.append(" AND (CASE WHEN aj.state IN ('QUEUED','RUNNING') THEN 'RUNNING' WHEN aj.state='FAILED' THEN 'FAILED' WHEN ca.id IS NULL THEN 'MISSING' WHEN ca.analysis_version=:current THEN 'CURRENT' ELSE 'STALE' END)=:analysisStatus");if(t!=null&&!t.isBlank())s.append(" AND (CASE WHEN aj.state IN ('QUEUED','RUNNING','FAILED') OR ca.id IS NULL THEN 'INCOMPLETE' WHEN ca.classification='BAD' THEN 'REGENERATE' WHEN ca.classification='AVERAGE_FIXABLE' THEN 'EDIT_PLAN' WHEN ca.classification IN ('GOOD','WINNER_CANDIDATE') THEN 'READY' ELSE 'REVIEW' END)=:triage");if(p!=null&&!p.isBlank())s.append(" AND (CASE WHEN pub.publications>0 THEN 'PUBLISHED' ELSE 'UNPUBLISHED' END)=:publicationState");if(c!=null)s.append(" AND EXISTS (SELECT 1 FROM video_characters fvc WHERE fvc.video_id=v.id AND fvc.character_id=:characterId)");if(r!=null&&!r.isBlank())s.append(" AND EXISTS (SELECT 1 FROM video_characters fvr WHERE fvr.video_id=v.id AND fvr.role=:characterRole)");if(Boolean.TRUE.equals(u))s.append(" AND NOT EXISTS (SELECT 1 FROM video_characters fvu WHERE fvu.video_id=v.id)");if(q!=null&&!q.isBlank())s.append(" AND (lower(v.original_filename) LIKE '%'||:query||'%' OR lower(v.relative_path) LIKE '%'||:query||'%')");return s.toString();}

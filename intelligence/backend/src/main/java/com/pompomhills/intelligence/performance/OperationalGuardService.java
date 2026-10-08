@@ -131,7 +131,7 @@ public class OperationalGuardService {
             FROM (
               SELECT DISTINCT ON (video_id,variant_id)
                 recommendation_percentage AS metric_value
-              FROM performance_observations
+              FROM effective_performance_observations
               WHERE platform=:platform AND publication_timestamp IS NOT NULL
                 AND COALESCE(measurement_timestamp,created_at) >=
                     publication_timestamp + (:maturityHours * interval '1 hour')
@@ -156,7 +156,7 @@ public class OperationalGuardService {
             FROM (
               SELECT DISTINCT ON (video_id,variant_id)
                 completion_rate,average_watch_seconds
-              FROM performance_observations
+              FROM effective_performance_observations
               WHERE platform=:platform AND publication_timestamp IS NOT NULL
                 AND COALESCE(measurement_timestamp,created_at) >=
                     publication_timestamp + (:maturityHours * interval '1 hour')

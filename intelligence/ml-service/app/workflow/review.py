@@ -937,6 +937,7 @@ def review_prompt(request: dict[str, Any], capabilities: dict[str, Any] | None =
         and canonical.get("finalVideoEligible") is True
         and canonical.get("independentRevalidationId") is not None
         and canonical.get("fresh") is True
+        and ("+profile-admission-v1:" not in str(canonical.get("deterministicRulesetVersion", "")) or str(canonical["deterministicRulesetVersion"]).endswith(":" + binding_fingerprint(request)))
     )
     if not integrity:
         pending(

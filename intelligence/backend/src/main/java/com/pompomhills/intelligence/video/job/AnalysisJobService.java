@@ -63,7 +63,9 @@ public class AnalysisJobService {
               """)
           .param("id", id)
           .param("video", videoId)
-          .param("payload", writeJson(Map.of("contractVersion", "v1", "analysisVersion", analysisVersion)))
+          .param(
+              "payload",
+              writeJson(Map.of("contractVersion", "v1", "analysisVersion", analysisVersion)))
           .update();
     } catch (DataIntegrityViolationException raceLoss) {
       // Another concurrent request won the V34 unique-index race and already created the active
@@ -81,13 +83,18 @@ public class AnalysisJobService {
   }
 
   public Optional<JobView> findActiveByIdentity(UUID videoId, String analysisVersion) {
-    return jdbc.sql("""
-        SELECT id,video_id,job_type,state,attempts,max_attempts,error_message,created_at,started_at,completed_at
-        FROM analysis_jobs WHERE video_id=:video AND state IN ('QUEUED','RUNNING')
-          AND COALESCE(request_payload->>'analysisVersion',:current)=:version
-        ORDER BY created_at DESC LIMIT 1
-        """).param("video", videoId).param("current", VideoService.CURRENT_ANALYSIS_VERSION)
-        .param("version", analysisVersion).query((rs, ignored) -> map(rs)).optional();
+    return jdbc.sql(
+            """
+            SELECT id,video_id,job_type,state,attempts,max_attempts,error_message,created_at,started_at,completed_at
+            FROM analysis_jobs WHERE video_id=:video AND state IN ('QUEUED','RUNNING')
+              AND COALESCE(request_payload->>'analysisVersion',:current)=:version
+            ORDER BY created_at DESC LIMIT 1
+            """)
+        .param("video", videoId)
+        .param("current", VideoService.CURRENT_ANALYSIS_VERSION)
+        .param("version", analysisVersion)
+        .query((rs, ignored) -> map(rs))
+        .optional();
   }
 
   public Optional<JobView> findActiveByVideoId(UUID videoId) {
@@ -142,13 +149,28 @@ public class AnalysisJobService {
   }
 
   public int recoverExpiredJobs() {
-    // A lost worker may have already charged the provider. Never blindly resubmit.
-    return jdbc.sql("""
-        UPDATE analysis_jobs SET state='FAILED',completed_at=now(),
-          error_message='Worker lease expired; provider outcome unknown. Reconcile before explicit new analysis.',
-          request_payload=request_payload || '{"recoveryStatus":"PROVIDER_OUTCOME_UNKNOWN"}'::jsonb
-        WHERE state='RUNNING' AND started_at < now() - interval '15 minutes'
-        """).update();
+    // Reconcile a durable result saved before the worker crashed, using the requested identity.
+    int reconciled =
+        jdbc.sql(
+                """
+                UPDATE analysis_jobs j SET state='COMPLETED',completed_at=now(),error_message=NULL,
+                  result_payload=jsonb_build_object('analysisId',a.id,'videoId',a.video_id,'classification',a.classification,'recoveryStatus','DURABLE_RESULT_RECONCILED')
+                FROM creative_analyses a WHERE j.state='RUNNING' AND j.started_at<now()-interval '15 minutes'
+                  AND a.video_id=j.video_id AND a.analysis_version=COALESCE(j.request_payload->>'analysisVersion',:current)
+                  AND a.created_at>=j.started_at
+                """)
+            .param("current", VideoService.CURRENT_ANALYSIS_VERSION)
+            .update();
+    // An absent checkpoint cannot prove that the provider did not charge. Never resubmit it.
+    return reconciled
+        + jdbc.sql(
+                """
+                UPDATE analysis_jobs SET state='FAILED',completed_at=now(),
+                  error_message='Worker lease expired; provider outcome unknown. Reconcile before explicit new analysis.',
+                  request_payload=request_payload || '{"recoveryStatus":"PROVIDER_OUTCOME_UNKNOWN"}'::jsonb
+                WHERE state='RUNNING' AND started_at < now() - interval '15 minutes'
+                """)
+            .update();
   }
 
   @Scheduled(fixedDelayString = "${pompom.jobs.poll-delay-ms:2000}")
@@ -170,7 +192,8 @@ public class AnalysisJobService {
             .query(
                 (rs, ignored) ->
                     new ClaimedJob(
-                        rs.getObject("id", UUID.class), rs.getObject("video_id", UUID.class),
+                        rs.getObject("id", UUID.class),
+                        rs.getObject("video_id", UUID.class),
                         analysisVersion(rs.getString("request_payload"))))
             .optional();
     if (claimed.isEmpty()) return;
@@ -181,7 +204,7 @@ public class AnalysisJobService {
               """
               UPDATE analysis_jobs
               SET state='COMPLETED',result_payload=CAST(:result AS jsonb),completed_at=now()
-              WHERE id=:id
+              WHERE id=:id AND state='RUNNING'
               """)
           .param("id", job.id())
           .param(
@@ -198,7 +221,7 @@ public class AnalysisJobService {
               UPDATE analysis_jobs
               SET state='FAILED',error_message=:error,completed_at=now(),
                   available_at=now() + interval '10 seconds'
-              WHERE id=:id
+              WHERE id=:id AND state='RUNNING'
               """)
           .param("id", job.id())
           .param("error", error.getMessage())

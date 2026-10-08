@@ -51,6 +51,7 @@ class PredictionRequest(BaseModel):
     platform: Literal["instagram", "facebook", "tiktok", "youtube"]
     fingerprint: dict[str, Any]
     knowledge_cutoff: datetime = Field(alias="knowledgeCutoff")
+    model_reference: dict[str, Any] | None = Field(None, alias="modelReference")
 
 
 class LivePredictionRequest(PredictionRequest):

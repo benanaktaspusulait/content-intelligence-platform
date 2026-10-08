@@ -72,6 +72,85 @@ class PerformanceImportServiceVariantTest {
   }
 
   @Test
+  void correctedExportPreservesOriginalAndRequiresExactObservationIdentity() {
+    UUID video = insertVideo("corrected-" + UUID.randomUUID() + ".mp4");
+    String headers =
+        "videoid,platformcontentid,publicationtimestamp,measurementtimestamp,metricsemantics,views,correction_of_id\n";
+    String identity =
+        video + ",18446744073709551615,2026-01-01T00:00:00Z,2026-01-04T00:00:00Z,CUMULATIVE,";
+    var original =
+        importService.preview(
+            new MockMultipartFile(
+                "file", "original.csv", "text/csv", (headers + identity + "100,\n").getBytes()),
+            "instagram",
+            "UTC");
+    importService.commit(original.batchId());
+    UUID old =
+        jdbc.sql("SELECT id FROM performance_observations WHERE video_id=:id")
+            .param("id", video)
+            .query(UUID.class)
+            .single();
+    var corrected =
+        importService.preview(
+            new MockMultipartFile(
+                "file",
+                "corrected.csv",
+                "text/csv",
+                (headers + identity + "120," + old + "\n").getBytes()),
+            "instagram",
+            "UTC",
+            original.batchId(),
+            "Corrected source export");
+    importService.commit(corrected.batchId());
+    importService.commit(corrected.batchId());
+    assertThat(importService.get(corrected.batchId()).correctionOfBatchId())
+        .isEqualTo(original.batchId());
+    assertThat(
+            jdbc.sql("SELECT views FROM performance_observations WHERE id=:id")
+                .param("id", old)
+                .query(Long.class)
+                .single())
+        .isEqualTo(100);
+    assertThat(
+            jdbc.sql("SELECT views FROM effective_performance_observations WHERE video_id=:id")
+                .param("id", video)
+                .query(Long.class)
+                .list())
+        .containsExactly(120L);
+    assertThat(
+            jdbc.sql("SELECT count(*) FROM performance_observations WHERE video_id=:id")
+                .param("id", video)
+                .query(Long.class)
+                .single())
+        .isEqualTo(2);
+    var bad =
+        importService.preview(
+            new MockMultipartFile(
+                "file",
+                "bad.csv",
+                "text/csv",
+                (headers
+                        + identity.replace("18446744073709551615", "different-publication")
+                        + "130,"
+                        + old
+                        + "\n")
+                    .getBytes()),
+            "instagram",
+            "UTC",
+            original.batchId(),
+            "Incorrect identity fixture");
+    assertThatThrownBy(() -> importService.commit(bad.batchId()))
+        .isInstanceOf(IllegalArgumentException.class);
+    assertThat(importService.get(bad.batchId()).status()).isEqualTo("PREVIEWED");
+    assertThat(
+            jdbc.sql("SELECT count(*) FROM performance_observations WHERE video_id=:id")
+                .param("id", video)
+                .query(Long.class)
+                .single())
+        .isEqualTo(2);
+  }
+
+  @Test
   void importRowWithAnExplicitVariantIdPersistsItOnTheObservation() throws IOException {
     UUID videoId = insertVideo("my-video.mp4");
     UUID variantId = insertVariant(videoId);
@@ -140,15 +219,21 @@ class PerformanceImportServiceVariantTest {
             .orElse(null);
     assertThat(persistedVariant).isNull();
   }
+
   @Test
   void manualMatchPersistsExactVariantAndClearsItWhenOriginalIsSelected() {
     UUID video = insertVideo("manual.mp4");
     UUID variant = insertVariant(video);
     String csv = "filename,views\nmissing-" + UUID.randomUUID() + ".mp4,100\n";
-    var preview = importService.preview(new MockMultipartFile("file", "manual.csv", "text/csv", csv.getBytes()), "instagram", "UTC");
+    var preview =
+        importService.preview(
+            new MockMultipartFile("file", "manual.csv", "text/csv", csv.getBytes()),
+            "instagram",
+            "UTC");
     UUID row = importService.rows(preview.batchId()).getFirst().id();
     importService.resolve(preview.batchId(), row, video, variant, "Verified edited publication");
-    assertThat(importService.rows(preview.batchId()).getFirst().matchedVariantId()).isEqualTo(variant);
+    assertThat(importService.rows(preview.batchId()).getFirst().matchedVariantId())
+        .isEqualTo(variant);
     importService.resolve(preview.batchId(), row, video, null, "Corrected to original publication");
     assertThat(importService.rows(preview.batchId()).getFirst().matchedVariantId()).isNull();
   }
@@ -158,9 +243,16 @@ class PerformanceImportServiceVariantTest {
     UUID video = insertVideo("manual-target.mp4");
     UUID foreignVariant = insertVariant(insertVideo("foreign.mp4"));
     String csv = "filename,views\nmissing-" + UUID.randomUUID() + ".mp4,100\n";
-    var preview = importService.preview(new MockMultipartFile("file", "manual.csv", "text/csv", csv.getBytes()), "instagram", "UTC");
+    var preview =
+        importService.preview(
+            new MockMultipartFile("file", "manual.csv", "text/csv", csv.getBytes()),
+            "instagram",
+            "UTC");
     UUID row = importService.rows(preview.batchId()).getFirst().id();
-    assertThatThrownBy(() -> importService.resolve(preview.batchId(), row, video, foreignVariant, "Wrong selection"))
+    assertThatThrownBy(
+            () ->
+                importService.resolve(
+                    preview.batchId(), row, video, foreignVariant, "Wrong selection"))
         .isInstanceOf(IllegalArgumentException.class);
     assertThat(importService.rows(preview.batchId()).getFirst().matchedVideoId()).isNull();
   }
@@ -170,9 +262,11 @@ class PerformanceImportServiceVariantTest {
     String csv = "filename,views\nunknown-" + UUID.randomUUID() + ".mp4,100\n";
     var file = new MockMultipartFile("file", "context.csv", "text/csv", csv.getBytes());
     var first = importService.preview(file, "instagram", "UTC");
-    assertThat(importService.preview(file, "instagram", "UTC").batchId()).isEqualTo(first.batchId());
-    assertThatThrownBy(() -> importService.preview(file, "facebook", "UTC")).isInstanceOf(IllegalStateException.class);
-    assertThatThrownBy(() -> importService.preview(file, "instagram", "Europe/London")).isInstanceOf(IllegalStateException.class);
+    assertThat(importService.preview(file, "instagram", "UTC").batchId())
+        .isEqualTo(first.batchId());
+    assertThatThrownBy(() -> importService.preview(file, "facebook", "UTC"))
+        .isInstanceOf(IllegalStateException.class);
+    assertThatThrownBy(() -> importService.preview(file, "instagram", "Europe/London"))
+        .isInstanceOf(IllegalStateException.class);
   }
-
 }

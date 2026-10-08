@@ -93,6 +93,21 @@ class RenderJobQueueServiceTest {
   }
 
   @Test
+  void profileAuthorizedRegenerationQueuesParentBoundAttemptWithMockCredits() throws Exception {
+    var admission=mock(com.pompom.creative.workflow.PostFamilyAdmissionClient.class);
+    var field=RenderJobQueueService.class.getDeclaredField("workflowAdmission");field.setAccessible(true);field.set(service,admission);
+    var parent=UUID.randomUUID().toString();var handoff=UUID.randomUUID().toString();
+    var request=new QueueRenderJobRequest(10,11,42,RenderJob.JobType.VIDEO,"fixture-model",Map.of("workflowProfile","post-family-v1","workflowReviewId",UUID.randomUUID().toString(),"workflowBindingHash","a".repeat(64),"regenerationHandoffId",handoff,"parentVideoId",parent),null);
+    when(repository.findByIdempotencyKey(handoff)).thenReturn(Optional.empty());
+    when(evidenceClient.getEvidence(42L)).thenReturn(withRenderAuthorization(renderReadyEvidence(),"AUTHORIZED"));
+    var response=service.queue(handoff,request);
+    assertThat(response.replay()).isFalse();verify(admission).validate(request);
+    var captor=ArgumentCaptor.forClass(RenderJob.class);verify(repository).save(captor.capture());
+    assertThat(captor.getValue().getOpenartParams()).contains(parent).contains(handoff);
+    verify(attemptRepository).save(any(RenderAttempt.class));verify(creditTrackingService).recordEstimatedUsage(captor.getValue());
+  }
+
+  @Test
   void queuesANewJobWhenEvidenceIsAcceptedAndKeyIsUnused() {
     when(repository.findByIdempotencyKey("key-1")).thenReturn(Optional.empty());
     when(evidenceClient.getEvidence(42L)).thenReturn(renderReadyEvidence());

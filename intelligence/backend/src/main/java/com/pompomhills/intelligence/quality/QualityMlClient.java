@@ -64,6 +64,14 @@ public class QualityMlClient {
   /** Re-run prompt policy with explicit verified visual evidence attached to the IR. */
   public QualityReportDto validatePrompt(
       String prompt, String rulesetVersion, Map<String, Object> visualEvidence) {
+    return validatePromptForWorkflow(prompt, rulesetVersion, visualEvidence, null);
+  }
+
+  public QualityReportDto validatePromptForWorkflow(
+      String prompt,
+      String rulesetVersion,
+      Map<String, Object> visualEvidence,
+      Map<String, Object> workflowContext) {
     log.debug("Calling ML service: /validate");
 
     var request = new java.util.LinkedHashMap<String, Object>();
@@ -71,12 +79,12 @@ public class QualityMlClient {
     request.put("ruleset_version", rulesetVersion != null ? rulesetVersion : "latest");
     request.put("evaluation_stage", "PRE_RENDER");
     if (visualEvidence != null) request.put("visual_evidence", visualEvidence);
+    if (workflowContext != null) request.put("workflow_context", workflowContext);
 
     try {
       String requestBody = mlObjectMapper.writeValueAsString(request);
       HttpRequest httpRequest =
-          HttpRequest.newBuilder(
-                  URI.create(mlServiceUrl + "/api/v1/quality/validate"))
+          HttpRequest.newBuilder(URI.create(mlServiceUrl + "/api/v1/quality/validate"))
               .timeout(Duration.ofSeconds(180))
               .header("Content-Type", "application/json")
               .POST(HttpRequest.BodyPublishers.ofString(requestBody, StandardCharsets.UTF_8))
@@ -86,8 +94,7 @@ public class QualityMlClient {
       String body = response.body();
       if (response.statusCode() >= 400 && response.statusCode() < 500) {
         throw new QualityValidationException(
-            "Validation failed: HTTP " + response.statusCode() + " " + body,
-            "VALIDATION_ERROR");
+            "Validation failed: HTTP " + response.statusCode() + " " + body, "VALIDATION_ERROR");
       }
       if (response.statusCode() >= 500) {
         throw new MlServiceException("ML service error: HTTP " + response.statusCode());
@@ -126,11 +133,11 @@ public class QualityMlClient {
 
     String body =
         restClient
-        .post()
-        .uri("/api/v1/quality/compare-versions")
-        .body(request)
-        .retrieve()
-        .body(String.class);
+            .post()
+            .uri("/api/v1/quality/compare-versions")
+            .body(request)
+            .retrieve()
+            .body(String.class);
     return readBody(body, RegressionReportDto.class);
   }
 
@@ -142,12 +149,7 @@ public class QualityMlClient {
   public List<RulesetVersionDto> listRulesets() {
     log.debug("Calling ML service: /rulesets");
 
-    String body =
-        restClient
-        .get()
-        .uri("/api/v1/quality/rulesets")
-        .retrieve()
-        .body(String.class);
+    String body = restClient.get().uri("/api/v1/quality/rulesets").retrieve().body(String.class);
     return readBody(body, new TypeReference<List<RulesetVersionDto>>() {});
   }
 
@@ -162,16 +164,16 @@ public class QualityMlClient {
 
     String body =
         restClient
-        .get()
-        .uri("/api/v1/quality/rulesets/{version}", version)
-        .retrieve()
-        .onStatus(
-            HttpStatusCode::is4xxClientError,
-            (req, res) -> {
-              throw new QualityValidationException(
-                  "Ruleset not found: " + version, "RULESET_NOT_FOUND");
-            })
-        .body(String.class);
+            .get()
+            .uri("/api/v1/quality/rulesets/{version}", version)
+            .retrieve()
+            .onStatus(
+                HttpStatusCode::is4xxClientError,
+                (req, res) -> {
+                  throw new QualityValidationException(
+                      "Ruleset not found: " + version, "RULESET_NOT_FOUND");
+                })
+            .body(String.class);
     return readBody(body, RulesetVersionDto.class);
   }
 
@@ -187,10 +189,10 @@ public class QualityMlClient {
 
     String body =
         restClient
-        .get()
-        .uri("/api/v1/quality/rulesets/compare/{from}/{to}", fromVersion, toVersion)
-        .retrieve()
-        .body(String.class);
+            .get()
+            .uri("/api/v1/quality/rulesets/compare/{from}/{to}", fromVersion, toVersion)
+            .retrieve()
+            .body(String.class);
     return readBody(body, RulesetComparisonDto.class);
   }
 
@@ -203,8 +205,7 @@ public class QualityMlClient {
     log.debug("Calling ML service: /health");
 
     try {
-      String body =
-          restClient.get().uri("/api/v1/quality/health").retrieve().body(String.class);
+      String body = restClient.get().uri("/api/v1/quality/health").retrieve().body(String.class);
       return readBody(body, HealthDto.class);
     } catch (Exception ex) {
       return new HealthDto("DOWN", ex.getMessage());

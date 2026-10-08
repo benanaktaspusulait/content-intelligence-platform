@@ -29,14 +29,14 @@ public class PlatformGrowthResearchService {
   private PlatformTempo platform(String platform) {
     int total =
         jdbc.sql(
-                "SELECT count(DISTINCT video_id) FROM performance_observations WHERE platform=:platform")
+                "SELECT count(DISTINCT video_id) FROM effective_performance_observations WHERE platform=:platform")
             .param("platform", platform)
             .query(Integer.class)
             .single();
     List<UUID> ids =
         jdbc.sql(
                 """
-                SELECT DISTINCT p.video_id FROM performance_observations p
+                SELECT DISTINCT p.video_id FROM effective_performance_observations p
                 WHERE p.platform=:platform
                   AND NOT EXISTS (SELECT 1 FROM intervention_events i
                                   WHERE i.video_id=p.video_id AND i.platform=:platform)

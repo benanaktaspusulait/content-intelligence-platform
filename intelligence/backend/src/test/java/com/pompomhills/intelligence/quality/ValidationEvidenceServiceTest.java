@@ -23,6 +23,39 @@ class ValidationEvidenceServiceTest {
   }
 
   @Test
+  void profileAdmissionRequiresMatchingIndependentRunAndBothVisualGates() {
+    var entity = completeEntity();
+    entity.setStatus("RENDER_READY");
+    entity.setDeterministicRulesetVersion("1.7+profile-admission-v1:" + "a".repeat(64));
+    entity.setReportJson(
+        "{\"preRenderAssessment\":{\"canonicalProfileAdmission\":{\"version\":\"profile-admission-v1\",\"requiredEvidencePreserved\":true}}}");
+    when(repository.findById(42L)).thenReturn(Optional.of(entity));
+    stubMatchingIndependentRevalidation(entity);
+    var visuals = mock(ValidationVisualEvidenceRepository.class);
+    var profileService = new ValidationEvidenceService(repository, visuals);
+    when(visuals.findByValidationRecordIdOrderBySubmittedAtAscIdAsc(42L))
+        .thenReturn(java.util.List.of());
+    assertThat(profileService.getEvidence(42L).renderAuthorization())
+        .isEqualTo("BLOCKED_PENDING_EVIDENCE");
+    UUID evidenceSet = UUID.randomUUID(), asset = UUID.randomUUID();
+    var rows = new java.util.ArrayList<ValidationVisualEvidenceEntity>();
+    for (String gate : java.util.List.of("FIRST_FRAME", "SILHOUETTE")) {
+      var row = new ValidationVisualEvidenceEntity();
+      row.setVisualGate(gate);
+      row.setStatus("PASS");
+      row.setEvidenceSetId(evidenceSet);
+      row.setRenderAssetId(asset);
+      row.setAssetSha256("b".repeat(64));
+      rows.add(row);
+    }
+    when(visuals.findByValidationRecordIdOrderBySubmittedAtAscIdAsc(42L)).thenReturn(rows);
+    assertThat(profileService.getEvidence(42L).renderAuthorization()).isEqualTo("AUTHORIZED");
+    entity.setIndependentlyRevalidatedAt(null);
+    assertThat(profileService.getEvidence(42L).renderAuthorization())
+        .isEqualTo("BLOCKED_PENDING_EVIDENCE");
+  }
+
+  @Test
   void returnsCompleteRecordAsRenderReady() {
     QualityValidationEntity entity = completeEntity();
     entity.setStatus("RENDER_READY");
@@ -83,6 +116,7 @@ class ValidationEvidenceServiceTest {
     assertThat(evidence.visualEvidence().get("firstFrame")).isNotNull();
     assertThat(entity.getReportJson()).contains("READY_FOR_FIRST_FRAME");
   }
+
   @Test
   void missingRecordThrowsNotFound() {
     when(repository.findById(404L)).thenReturn(Optional.empty());

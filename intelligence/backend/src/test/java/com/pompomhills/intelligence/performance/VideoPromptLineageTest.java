@@ -56,10 +56,13 @@ class VideoPromptLineageTest {
   }
 
   @Autowired VideoCreativeContextService contexts;
+  @Autowired com.pompomhills.intelligence.common.config.PompomProperties configuration;
   @Autowired com.pompomhills.intelligence.workflow.WorkflowService workflow;
   @Autowired com.pompomhills.intelligence.content.ContentWorkspaceController workspace;
   @Autowired com.pompomhills.intelligence.workflow.WorkflowRepairSessionService repairs;
-  @org.springframework.test.context.bean.override.mockito.MockitoBean com.pompomhills.intelligence.quality.QualityMlClient workflowMl;
+
+  @org.springframework.test.context.bean.override.mockito.MockitoBean
+  com.pompomhills.intelligence.quality.QualityMlClient workflowMl;
 
   @Test
   void
@@ -96,81 +99,538 @@ class VideoPromptLineageTest {
     assertThatThrownBy(() -> contexts.link(video, first, "ORIGINAL", " "))
         .isInstanceOf(IllegalArgumentException.class);
   }
+
   @Test
   void retrievalExcludesWrongScopeAndLatestRevocation() {
-    UUID qa = UUID.randomUUID(); UUID lesson = UUID.randomUUID(); UUID approved = UUID.randomUUID();
-    jdbc.sql("INSERT INTO post_family_workflow_events(id,kind,payload) VALUES (:id,'ACTUAL_RENDER_QA','{\"viewerFacingUsability\":\"USABLE\"}')").param("id", qa).update();
-    String payload = "{\"parentRecordId\":\"" + lesson + "\",\"reviewStatus\":\"APPROVED\",\"contentProfile\":\"EDUCATIONAL\",\"targetModelVersion\":\"model-v1\",\"durationRange\":[10,20],\"sampleSize\":1,\"evidenceBasis\":[\"" + qa + "\"]}";
-    jdbc.sql("INSERT INTO post_family_workflow_events(id,kind,payload) VALUES (:id,'LEARNING_REVIEW',CAST(:payload AS jsonb))").param("id", approved).param("payload", payload).update();
+    UUID qa = UUID.randomUUID();
+    UUID lesson = UUID.randomUUID();
+    UUID approved = UUID.randomUUID();
+    jdbc.sql(
+            "INSERT INTO post_family_workflow_events(id,kind,payload) VALUES"
+                + " (:id,'ACTUAL_RENDER_QA','{\"viewerFacingUsability\":\"USABLE\"}')")
+        .param("id", qa)
+        .update();
+    String payload =
+        "{\"parentRecordId\":\""
+            + lesson
+            + "\",\"reviewStatus\":\"APPROVED\",\"lessonScope\":\"ACTUAL_EXECUTION\",\"contentProfile\":\"EDUCATIONAL\",\"targetModelVersion\":\"model-v1\",\"durationRange\":[10,20],\"sampleSize\":1,\"evidenceBasis\":[\""
+            + qa
+            + "\"]}";
+    jdbc.sql(
+            "INSERT INTO post_family_workflow_events(id,kind,payload) VALUES"
+                + " (:id,'LEARNING_REVIEW',CAST(:payload AS jsonb))")
+        .param("id", approved)
+        .param("payload", payload)
+        .update();
     assertThat(workflow.retrieveLessons("EDUCATIONAL", "model-v1", 15)).hasSize(1);
     assertThat(workflow.retrieveLessons("EDUCATIONAL", "model-v1", 30)).isEmpty();
     assertThat(workflow.retrieveLessons("CURIOSITY_ADVENTURE", "model-v1", 15)).isEmpty();
-    workflow.reviewLearning(approved, java.util.Map.of("decision", "REVOKED", "reason", "Evidence no longer reliable"));
+    workflow.reviewLearning(
+        approved, java.util.Map.of("decision", "REVOKED", "reason", "Evidence no longer reliable"));
     assertThat(workflow.retrieveLessons("EDUCATIONAL", "model-v1", 15)).isEmpty();
   }
 
   @Test
   void promotionCannotChangeRegistryWithoutActiveArtifactInference() throws Exception {
-    UUID challenger = UUID.randomUUID(); UUID champion = UUID.randomUUID();
+    UUID challenger = UUID.randomUUID();
+    UUID champion = UUID.randomUUID();
     String platform = "test-" + challenger;
     for (UUID id : java.util.List.of(challenger, champion)) {
-      jdbc.sql("INSERT INTO model_versions(id,version,model_type,platform,training_dataset_version,feature_version,knowledge_cutoff,metrics,status,trained_at) VALUES (:id,:version,'prediction',:platform,'fixture','fixture',now(),'{}',:status,now())")
-          .param("id", id).param("version", id.toString()).param("platform", platform)
-          .param("status", id.equals(champion) ? "CHAMPION" : "CHALLENGER").update();
+      jdbc.sql(
+              "INSERT INTO"
+                  + " model_versions(id,version,model_type,platform,training_dataset_version,feature_version,knowledge_cutoff,metrics,status,trained_at)"
+                  + " VALUES"
+                  + " (:id,:version,'prediction',:platform,'fixture','fixture',now(),'{}',:status,now())")
+          .param("id", id)
+          .param("version", id.toString())
+          .param("platform", platform)
+          .param("status", id.equals(champion) ? "CHAMPION" : "CHALLENGER")
+          .update();
     }
-    var controller = new com.pompomhills.intelligence.modelregistry.api.ModelRegistryController(jdbc, new tools.jackson.databind.ObjectMapper());
-    var mvc = org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup(controller).build();
-    mvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post("/api/v1/models/" + challenger + "/promote"))
-        .andExpect(org.springframework.test.web.servlet.result.MockMvcResultMatchers.status().isNotImplemented());
-    assertThat(jdbc.sql("SELECT status FROM model_versions WHERE id=:id").param("id", challenger).query(String.class).single()).isEqualTo("CHALLENGER");
-    assertThat(jdbc.sql("SELECT status FROM model_versions WHERE id=:id").param("id", champion).query(String.class).single()).isEqualTo("CHAMPION");
+    var controller =
+        new com.pompomhills.intelligence.modelregistry.api.ModelRegistryController(
+            jdbc, new tools.jackson.databind.ObjectMapper());
+    var mvc =
+        org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup(controller)
+            .build();
+    mvc.perform(
+            org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post(
+                "/api/v1/models/" + challenger + "/promote"))
+        .andExpect(
+            org.springframework.test.web.servlet.result.MockMvcResultMatchers.status()
+                .isNotImplemented());
+    assertThat(
+            jdbc.sql("SELECT status FROM model_versions WHERE id=:id")
+                .param("id", challenger)
+                .query(String.class)
+                .single())
+        .isEqualTo("CHALLENGER");
+    assertThat(
+            jdbc.sql("SELECT status FROM model_versions WHERE id=:id")
+                .param("id", champion)
+                .query(String.class)
+                .single())
+        .isEqualTo("CHAMPION");
   }
 
   @Test
   void savedRevisionPreservesExactParentSourceAndRejectsCrossContentParent() {
-    Long content = jdbc.sql("INSERT INTO contents(title,type) VALUES ('revision fixture','REEL') RETURNING id").query(Long.class).single();
-    Long parent = jdbc.sql("INSERT INTO prompt_versions(content_id,version_number,raw_text,source_path) VALUES (:content,1,'Original','library/fixture/prompt.txt') RETURNING id")
-        .param("content", content).query(Long.class).single();
-    var revision = workspace.createPrompt(content, new com.pompomhills.intelligence.content.ContentWorkspaceController.CreatePromptRequest("Edited", "{}", parent));
+    Long content =
+        jdbc.sql("INSERT INTO contents(title,type) VALUES ('revision fixture','REEL') RETURNING id")
+            .query(Long.class)
+            .single();
+    Long parent =
+        jdbc.sql(
+                "INSERT INTO prompt_versions(content_id,version_number,raw_text,source_path) VALUES"
+                    + " (:content,1,'Original','library/fixture/prompt.txt') RETURNING id")
+            .param("content", content)
+            .query(Long.class)
+            .single();
+    var revision =
+        workspace.createPrompt(
+            content,
+            new com.pompomhills.intelligence.content.ContentWorkspaceController.CreatePromptRequest(
+                "Edited", "{}", parent));
     assertThat(revision.sourcePath()).isEqualTo("library/fixture/prompt.txt");
-    assertThat(jdbc.sql("SELECT parent_prompt_version_id FROM prompt_versions WHERE id=:id").param("id", revision.id()).query(Long.class).single()).isEqualTo(parent);
-    Long other = jdbc.sql("INSERT INTO contents(title,type) VALUES ('other','REEL') RETURNING id").query(Long.class).single();
-    assertThatThrownBy(() -> workspace.createPrompt(other, new com.pompomhills.intelligence.content.ContentWorkspaceController.CreatePromptRequest("Wrong parent", "{}", parent))).isInstanceOf(IllegalArgumentException.class);
+    assertThat(
+            jdbc.sql("SELECT parent_prompt_version_id FROM prompt_versions WHERE id=:id")
+                .param("id", revision.id())
+                .query(Long.class)
+                .single())
+        .isEqualTo(parent);
+    Long other =
+        jdbc.sql("INSERT INTO contents(title,type) VALUES ('other','REEL') RETURNING id")
+            .query(Long.class)
+            .single();
+    assertThatThrownBy(
+            () ->
+                workspace.createPrompt(
+                    other,
+                    new com.pompomhills.intelligence.content.ContentWorkspaceController
+                        .CreatePromptRequest("Wrong parent", "{}", parent)))
+        .isInstanceOf(IllegalArgumentException.class);
   }
 
   @Test
   void sourceScopedRestoreFindsSavedReviewEvenBehindMoreThanTwoHundredUnrelatedRecords() {
     UUID saved = UUID.randomUUID();
-    jdbc.sql("INSERT INTO post_family_workflow_events(id,kind,payload,created_at) VALUES (:id,'REVIEW','{\"contentId\":888,\"promptVersionId\":999}',now()-interval '1 day')").param("id", saved).update();
-    jdbc.sql("INSERT INTO post_family_workflow_events(id,kind,payload) SELECT gen_random_uuid(),'REVIEW','{\"contentId\":1,\"promptVersionId\":2}'::jsonb FROM generate_series(1,201)").update();
+    jdbc.sql(
+            "INSERT INTO post_family_workflow_events(id,kind,payload,created_at) VALUES"
+                + " (:id,'REVIEW','{\"contentId\":888,\"promptVersionId\":999}',now()-interval '1"
+                + " day')")
+        .param("id", saved)
+        .update();
+    jdbc.sql(
+            "INSERT INTO post_family_workflow_events(id,kind,payload) SELECT"
+                + " gen_random_uuid(),'REVIEW','{\"contentId\":1,\"promptVersionId\":2}'::jsonb"
+                + " FROM generate_series(1,201)")
+        .update();
     assertThat(workflow.list("REVIEW", "888", "999", null)).hasSize(1);
-    assertThat(workflow.list("REVIEW", "888", "999", null).getFirst().get("recordId")).isEqualTo(saved.toString());
+    assertThat(workflow.list("REVIEW", "888", "999", null).getFirst().get("recordId"))
+        .isEqualTo(saved.toString());
   }
 
   @Test
   void boundedRepairCreatesIndependentVersionAndReplayCannotMakeMoreCalls() throws Exception {
-    Long content = jdbc.sql("INSERT INTO contents(title,type) VALUES ('repair fixture','REEL') RETURNING id").query(Long.class).single();
-    Long parent = jdbc.sql("INSERT INTO prompt_versions(content_id,version_number,raw_text) VALUES (:content,1,'Luca pushes. CUT') RETURNING id").param("content", content).query(Long.class).single();
+    Long content =
+        jdbc.sql("INSERT INTO contents(title,type) VALUES ('repair fixture','REEL') RETURNING id")
+            .query(Long.class)
+            .single();
+    Long parent =
+        jdbc.sql(
+                "INSERT INTO prompt_versions(content_id,version_number,raw_text) VALUES"
+                    + " (:content,1,'Luca pushes. CUT') RETURNING id")
+            .param("content", content)
+            .query(Long.class)
+            .single();
     UUID review = UUID.randomUUID();
-    var bound = java.util.Map.of("profile","post-family-v1","prompt","Luca pushes. CUT","sourceId","fixture","sourceVersion",parent.toString(),"protectedIntent",java.util.List.of("Luca pushes."));
-    var original = new java.util.LinkedHashMap<String,Object>();
-    original.put("contentId",content); original.put("promptVersionId",parent); original.put("decisionPolicyVersion","impact-review-v1"); original.put("boundRequest",bound);
-    original.put("planQuality",java.util.Map.of("status","PASS")); original.put("executionRisk",java.util.Map.of("status","PASS"));
-    original.put("executionReview",java.util.Map.of("findings",java.util.List.of(java.util.Map.of("confidence","HIGH","evidenceBasis","MODEL_DOCUMENTED"))));
-    jdbc.sql("INSERT INTO post_family_workflow_events(id,kind,payload) VALUES (:id,'REVIEW',CAST(:payload AS jsonb))").param("id",review).param("payload",new com.fasterxml.jackson.databind.ObjectMapper().writeValueAsString(original)).update();
-    org.mockito.Mockito.when(workflowMl.workflow(org.mockito.ArgumentMatchers.eq("creative-role"),org.mockito.ArgumentMatchers.anyMap())).thenReturn(java.util.Map.of("role","MINIMAL_REPAIR","provider","openai","model","fixture-model","result",java.util.Map.of("patches",java.util.List.of(java.util.Map.of("start",13,"end",16,"sourceQuote","CUT","replacement","Hold."))),"costUpperBoundUsd",0.01));
-    org.mockito.Mockito.when(workflowMl.workflow(org.mockito.ArgumentMatchers.eq("repair"),org.mockito.ArgumentMatchers.anyMap())).thenReturn(java.util.Map.of("finalPrompt","Luca pushes. Hold.","bindingHash","repair","diff","CUT -> Hold."));
-    org.mockito.Mockito.when(workflowMl.workflow(org.mockito.ArgumentMatchers.eq("review"),org.mockito.ArgumentMatchers.anyMap())).thenReturn(java.util.Map.of("bindingHash","independent","decisionPolicyVersion","impact-review-v1","originalPrompt","Luca pushes. Hold.","planQuality",java.util.Map.of("status","PASS"),"executionRisk",java.util.Map.of("status","PASS"),"executionReview",java.util.Map.of("findings",java.util.List.of())));
-    var started = repairs.start(review,"single-call",2,1);
+    var bound =
+        java.util.Map.of(
+            "profile",
+            "post-family-v1",
+            "prompt",
+            "Luca pushes. CUT",
+            "sourceId",
+            "fixture",
+            "sourceVersion",
+            parent.toString(),
+            "protectedIntent",
+            java.util.List.of("Luca pushes."));
+    var original = new java.util.LinkedHashMap<String, Object>();
+    original.put("contentId", content);
+    original.put("promptVersionId", parent);
+    original.put("decisionPolicyVersion", "impact-review-v1");
+    original.put("boundRequest", bound);
+    original.put("planQuality", java.util.Map.of("status", "PASS"));
+    original.put("executionRisk", java.util.Map.of("status", "PASS"));
+    original.put(
+        "executionReview",
+        java.util.Map.of(
+            "findings",
+            java.util.List.of(
+                java.util.Map.of("confidence", "HIGH", "evidenceBasis", "MODEL_DOCUMENTED"))));
+    jdbc.sql(
+            "INSERT INTO post_family_workflow_events(id,kind,payload) VALUES"
+                + " (:id,'REVIEW',CAST(:payload AS jsonb))")
+        .param("id", review)
+        .param(
+            "payload",
+            new com.fasterxml.jackson.databind.ObjectMapper().writeValueAsString(original))
+        .update();
+    org.mockito.Mockito.when(
+            workflowMl.workflow(
+                org.mockito.ArgumentMatchers.eq("creative-role"),
+                org.mockito.ArgumentMatchers.anyMap()))
+        .thenReturn(
+            java.util.Map.of(
+                "role",
+                "MINIMAL_REPAIR",
+                "provider",
+                "openai",
+                "model",
+                "fixture-model",
+                "result",
+                java.util.Map.of(
+                    "patches",
+                    java.util.List.of(
+                        java.util.Map.of(
+                            "start", 13, "end", 16, "sourceQuote", "CUT", "replacement", "Hold."))),
+                "costUpperBoundUsd",
+                0.01));
+    org.mockito.Mockito.when(
+            workflowMl.workflow(
+                org.mockito.ArgumentMatchers.eq("repair"), org.mockito.ArgumentMatchers.anyMap()))
+        .thenReturn(
+            java.util.Map.of(
+                "finalPrompt",
+                "Luca pushes. Hold.",
+                "bindingHash",
+                "repair",
+                "diff",
+                "CUT -> Hold."));
+    org.mockito.Mockito.when(
+            workflowMl.workflow(
+                org.mockito.ArgumentMatchers.eq("review"), org.mockito.ArgumentMatchers.anyMap()))
+        .thenReturn(
+            java.util.Map.of(
+                "bindingHash",
+                "independent",
+                "decisionPolicyVersion",
+                "impact-review-v1",
+                "originalPrompt",
+                "Luca pushes. Hold.",
+                "planQuality",
+                java.util.Map.of("status", "PASS"),
+                "executionRisk",
+                java.util.Map.of("status", "PASS"),
+                "executionReview",
+                java.util.Map.of("findings", java.util.List.of())));
+    var started = repairs.start(review, "single-call", 2, 1);
     UUID session = UUID.fromString(String.valueOf(started.get("sessionId")));
-    assertThat(repairs.start(review,"single-call",2,1).get("sessionId")).isEqualTo(session.toString());
+    assertThat(repairs.start(review, "single-call", 2, 1).get("sessionId"))
+        .isEqualTo(session.toString());
     var finished = repairs.step(session);
     assertThat(finished.get("state")).isEqualTo("STOPPED");
-    assertThat(((Number)finished.get("bestPromptVersionId")).longValue()).isNotEqualTo(parent.longValue());
+    assertThat(((Number) finished.get("bestPromptVersionId")).longValue())
+        .isNotEqualTo(parent.longValue());
     assertThat(finished.get("stopReason")).isEqualTo("INDEPENDENT_REVIEW_CLEAR");
-    repairs.step(session); repairs.decide(session,"ACCEPTED");
-    org.mockito.Mockito.verify(workflowMl,org.mockito.Mockito.times(1)).workflow(org.mockito.ArgumentMatchers.eq("creative-role"),org.mockito.ArgumentMatchers.anyMap());
-    assertThat(jdbc.sql("SELECT raw_text FROM prompt_versions WHERE id=:id").param("id",parent).query(String.class).single()).isEqualTo("Luca pushes. CUT");
+    repairs.step(session);
+    repairs.decide(session, "ACCEPTED");
+    org.mockito.Mockito.verify(workflowMl, org.mockito.Mockito.times(1))
+        .workflow(
+            org.mockito.ArgumentMatchers.eq("creative-role"),
+            org.mockito.ArgumentMatchers.anyMap());
+    assertThat(
+            jdbc.sql("SELECT raw_text FROM prompt_versions WHERE id=:id")
+                .param("id", parent)
+                .query(String.class)
+                .single())
+        .isEqualTo("Luca pushes. CUT");
+  }
+
+  @Test
+  void regenerationPreservesExactParentAndReplayThenRejectsChangedBytes() throws Exception {
+    UUID video = insertVideo("regeneration-parent.mp4");
+    String path = "test/" + video + ".mp4";
+    var file = configuration.dataRoot().resolve(path);
+    java.nio.file.Files.createDirectories(file.getParent());
+    byte[] bytes = ("controlled lineage fixture " + video).getBytes();
+    java.nio.file.Files.write(file, bytes);
+    String hash =
+        java.util.HexFormat.of()
+            .formatHex(java.security.MessageDigest.getInstance("SHA-256").digest(bytes));
+    jdbc.sql("UPDATE videos SET content_hash=:hash WHERE id=:id")
+        .param("hash", hash)
+        .param("id", video)
+        .update();
+    Long content =
+        jdbc.sql(
+                "INSERT INTO contents(title,type) VALUES ('regeneration fixture','REEL') RETURNING"
+                    + " id")
+            .query(Long.class)
+            .single();
+    Long parent =
+        jdbc.sql(
+                "INSERT INTO prompt_versions(content_id,version_number,raw_text) VALUES"
+                    + " (:content,1,'Original') RETURNING id")
+            .param("content", content)
+            .query(Long.class)
+            .single();
+    var revision =
+        workspace.createPrompt(
+            content,
+            new com.pompomhills.intelligence.content.ContentWorkspaceController.CreatePromptRequest(
+                "Repaired", "{}", parent));
+    UUID originalReview = UUID.randomUUID(), nextReview = UUID.randomUUID(), qa = UUID.randomUUID();
+    var mapper = new com.fasterxml.jackson.databind.ObjectMapper();
+    for (var entry :
+        java.util.List.of(
+            java.util.Map.entry(originalReview, parent),
+            java.util.Map.entry(nextReview, revision.id()))) {
+      var payload =
+          java.util.Map.of(
+              "contentId",
+              content,
+              "promptVersionId",
+              entry.getValue(),
+              "bindingHash",
+              "a".repeat(64),
+              "generation",
+              java.util.Map.of("apiModelId", "fixture-model"));
+      jdbc.sql(
+              "INSERT INTO post_family_workflow_events(id,kind,payload) VALUES"
+                  + " (:id,'REVIEW',CAST(:payload AS jsonb))")
+          .param("id", entry.getKey())
+          .param("payload", mapper.writeValueAsString(payload))
+          .update();
+    }
+    var qaPayload =
+        java.util.Map.of(
+            "videoId",
+            video.toString(),
+            "relativePath",
+            path,
+            "assetHash",
+            hash,
+            "reviewId",
+            originalReview.toString(),
+            "repairEconomics",
+            java.util.Map.of("fullRerenderJustified", true));
+    jdbc.sql(
+            "INSERT INTO post_family_workflow_events(id,kind,payload) VALUES"
+                + " (:id,'ACTUAL_RENDER_QA',CAST(:payload AS jsonb))")
+        .param("id", qa)
+        .param("payload", mapper.writeValueAsString(qaPayload))
+        .update();
+    var request =
+        java.util.Map.<String, Object>of(
+            "parentVideoId",
+            video.toString(),
+            "qaRecordId",
+            qa.toString(),
+            "reviewId",
+            nextReview.toString(),
+            "reason",
+            "Controlled mock QA justifies a full attempt");
+    var handoff = workflow.regenerationHandoff(request);
+    assertThat(handoff.get("parentAssetHash")).isEqualTo(hash);
+    assertThat(handoff.get("executionScope")).isEqualTo("FULL_VIDEO_ONLY");
+    assertThat(String.valueOf(workflow.regenerationHandoff(request).get("recordId")))
+        .isEqualTo(String.valueOf(handoff.get("recordId")));
+    java.nio.file.Files.writeString(file, "changed bytes");
+    assertThatThrownBy(() -> workflow.regenerationHandoff(request))
+        .isInstanceOf(IllegalArgumentException.class);
+    org.mockito.Mockito.verifyNoInteractions(workflowMl);
+  }
+
+  private UUID repairReviewFixture(int findingCount) throws Exception {
+    Long content =
+        jdbc.sql(
+                "INSERT INTO contents(title,type) VALUES ('session stop fixture','REEL') RETURNING"
+                    + " id")
+            .query(Long.class)
+            .single();
+    Long prompt =
+        jdbc.sql(
+                "INSERT INTO prompt_versions(content_id,version_number,raw_text) VALUES"
+                    + " (:content,1,'Luca pushes. CUT') RETURNING id")
+            .param("content", content)
+            .query(Long.class)
+            .single();
+    UUID id = UUID.randomUUID();
+    var findings = new java.util.ArrayList<java.util.Map<String, Object>>();
+    for (int n = 0; n < findingCount; n++)
+      findings.add(java.util.Map.of("confidence", "HIGH", "evidenceBasis", "MODEL_DOCUMENTED"));
+    var payload =
+        java.util.Map.of(
+            "contentId",
+            content,
+            "promptVersionId",
+            prompt,
+            "decisionPolicyVersion",
+            "impact-review-v1",
+            "boundRequest",
+            java.util.Map.of("profile", "post-family-v1", "prompt", "Luca pushes. CUT"),
+            "planQuality",
+            java.util.Map.of("status", "PASS"),
+            "executionRisk",
+            java.util.Map.of("status", "PASS"),
+            "executionReview",
+            java.util.Map.of("findings", findings));
+    jdbc.sql(
+            "INSERT INTO post_family_workflow_events(id,kind,payload) VALUES"
+                + " (:id,'REVIEW',CAST(:payload AS jsonb))")
+        .param("id", id)
+        .param(
+            "payload",
+            new com.fasterxml.jackson.databind.ObjectMapper().writeValueAsString(payload))
+        .update();
+    return id;
+  }
+
+  @Test
+  void cancelledSessionAndEvidenceOnlySourceMakeZeroProviderCalls() throws Exception {
+    var started = repairs.start(repairReviewFixture(1), "cancel", 2, 1);
+    UUID id = UUID.fromString(String.valueOf(started.get("sessionId")));
+    repairs.decide(id, "CANCELLED");
+    assertThat(repairs.step(id).get("state")).isEqualTo("CANCELLED");
+    var evidence = repairs.start(repairReviewFixture(0), "evidence", 2, 1);
+    var stopped = repairs.step(UUID.fromString(String.valueOf(evidence.get("sessionId"))));
+    assertThat(stopped.get("stopReason")).isEqualTo("TOLERANT_ONLY_OR_EVIDENCE_NEEDED");
+    assertThat(stopped.get("reservedCostUsd")).isEqualTo(0.0);
+    org.mockito.Mockito.verifyNoInteractions(workflowMl);
+  }
+
+  @Test
+  void timedOutSessionReservesCeilingAndCannotRunAgain() throws Exception {
+    var started = repairs.start(repairReviewFixture(1), "expired", 2, 1);
+    UUID id = UUID.fromString(String.valueOf(started.get("sessionId")));
+    jdbc.sql(
+            "UPDATE workflow_repair_sessions SET"
+                + " state='RUNNING',attempts=1,updated_at=now()-interval '16 minutes' WHERE id=:id")
+        .param("id", id)
+        .update();
+    var stopped = repairs.get(id);
+    assertThat(stopped.get("stopReason")).isEqualTo("PROVIDER_OUTCOME_UNKNOWN");
+    assertThat(stopped.get("reservedCostUsd")).isEqualTo(1.0);
+    assertThat(repairs.step(id).get("state")).isEqualTo("STOPPED");
+    org.mockito.Mockito.verifyNoInteractions(workflowMl);
+  }
+
+  @Test
+  void cancellationDuringProviderRetainsCostAndProposalWithoutCreatingVersion() throws Exception {
+    var started = repairs.start(repairReviewFixture(1), "during-call", 2, 1);
+    UUID id = UUID.fromString(String.valueOf(started.get("sessionId")));
+    org.mockito.Mockito.when(
+            workflowMl.workflow(
+                org.mockito.ArgumentMatchers.eq("creative-role"),
+                org.mockito.ArgumentMatchers.anyMap()))
+        .thenAnswer(
+            invocation -> {
+              repairs.decide(id, "CANCELLED");
+              return java.util.Map.of(
+                  "role",
+                  "MINIMAL_REPAIR",
+                  "provider",
+                  "openai",
+                  "model",
+                  "fixture",
+                  "result",
+                  java.util.Map.of("patches", java.util.List.of()),
+                  "costUpperBoundUsd",
+                  0.01);
+            });
+    var stopped = repairs.step(id);
+    assertThat(stopped.get("state")).isEqualTo("CANCELLED");
+    assertThat(stopped.get("reservedCostUsd")).isEqualTo(0.01);
+    assertThat((java.util.List<?>) stopped.get("history")).hasSize(1);
+    assertThat(stopped.get("bestPromptVersionId"))
+        .isEqualTo(started.get("originalPromptVersionId"));
+    org.mockito.Mockito.verify(workflowMl, org.mockito.Mockito.never())
+        .workflow(org.mockito.ArgumentMatchers.eq("repair"), org.mockito.ArgumentMatchers.anyMap());
+  }
+
+  @Test
+  void movedPromptKeepsContentIdentityAndHistoricalSnapshotWhileMismatchedBytesReject()
+      throws Exception {
+    String root = "test/moved-" + UUID.randomUUID();
+    var old = configuration.dataRoot().resolve(root + "/old/prompt.txt");
+    var moved = configuration.dataRoot().resolve(root + "/新しい/prompt.yaml");
+    java.nio.file.Files.createDirectories(old.getParent());
+    java.nio.file.Files.createDirectories(moved.getParent());
+    java.nio.file.Files.writeString(old, "Authoritative source text");
+    workspace.importFolder(
+        new com.pompomhills.intelligence.content.ContentWorkspaceController.ImportFolderRequest(
+            root));
+    long content =
+        jdbc.sql("SELECT id FROM contents WHERE source_path=:path")
+            .param("path", root + "/old/prompt.txt")
+            .query(Long.class)
+            .single();
+    var version = workspace.prompts(content).getFirst();
+    java.nio.file.Files.move(old, moved);
+    workspace.reconcileSourcePath(
+        content,
+        new com.pompomhills.intelligence.content.ContentWorkspaceController.SourceAliasRequest(
+            version.id(), root + "/新しい/prompt.yaml", "Operator moved the same file"));
+    workspace.importFolder(
+        new com.pompomhills.intelligence.content.ContentWorkspaceController.ImportFolderRequest(
+            root));
+    assertThat(
+            jdbc.sql("SELECT count(*) FROM contents WHERE source_path LIKE :root")
+                .param("root", root + "/%")
+                .query(Long.class)
+                .single())
+        .isEqualTo(1);
+    assertThat(
+            workspace.prompts(content).stream()
+                .anyMatch(
+                    v ->
+                        v.id().equals(version.id())
+                            && v.sourcePath().equals(root + "/old/prompt.txt")))
+        .isTrue();
+    java.nio.file.Files.writeString(moved, "Different source");
+    assertThatThrownBy(
+            () ->
+                workspace.reconcileSourcePath(
+                    content,
+                    new com.pompomhills.intelligence.content.ContentWorkspaceController
+                        .SourceAliasRequest(version.id(), root + "/新しい/prompt.yaml", "Bad bytes")))
+        .isInstanceOf(IllegalArgumentException.class);
+  }
+  @Test
+  void exactRenderKeepsOldVersionAndConflictingAssetLineageStaysAmbiguous() {
+    UUID video=insertVideo("rendered.mp4");
+    long content=jdbc.sql("INSERT INTO contents(title,type) VALUES ('render source','REEL') RETURNING id").query(Long.class).single();
+    long first=jdbc.sql("INSERT INTO prompt_versions(content_id,version_number,raw_text) VALUES (:content,1,'Exact original') RETURNING id").param("content",content).query(Long.class).single();
+    long newer=workspace.createPrompt(content,new com.pompomhills.intelligence.content.ContentWorkspaceController.CreatePromptRequest("Newer text","{}",first)).id();
+    for(long prompt:java.util.List.of(first,newer)) {
+      UUID job=jdbc.sql("INSERT INTO render_jobs(content_id,prompt_version_id,job_type,openart_model,status) VALUES (:content,:prompt,'VIDEO','fixture','COMPLETE') RETURNING id").param("content",content).param("prompt",prompt).query(UUID.class).single();
+      jdbc.sql("INSERT INTO render_assets(render_job_id,content_id,asset_type,relative_path,file_size_bytes,width,height) VALUES (:job,:content,'VIDEO',:path,1,640,360)").param("job",job).param("content",content).param("path","test/"+video+".mp4").update();
+      if(prompt==first) assertThat(contexts.get(video).prompt().promptVersionId()).isEqualTo(first);
+    }
+    assertThat(contexts.get(video).prompt()).isNull();
+    assertThat(contexts.get(video).evidenceStatus()).isEqualTo("PROMPT_AMBIGUOUS");
+    assertThat(contexts.get(video).candidates()).hasSize(2);
+    assertThatThrownBy(()->contexts.link(video,first,"ORIGINAL","Cannot overwrite conflicting render records")).isInstanceOf(IllegalStateException.class);
+  }
+
+  @Test
+  void secondAttemptPlateauKeepsBestIndependentVersionInsteadOfLatest() throws Exception {
+    var started=repairs.start(repairReviewFixture(3),"two-attempts",2,1);
+    UUID id=UUID.fromString(String.valueOf(started.get("sessionId")));
+    org.mockito.Mockito.when(workflowMl.workflow(org.mockito.ArgumentMatchers.eq("creative-role"),org.mockito.ArgumentMatchers.anyMap())).thenReturn(java.util.Map.of("role","MINIMAL_REPAIR","provider","openai","model","fixture","result",java.util.Map.of("patches",java.util.List.of(java.util.Map.of("sourceQuote","CUT","start",13,"end",16,"replacement","Hold"))),"costUpperBoundUsd",0.01));
+    org.mockito.Mockito.when(workflowMl.workflow(org.mockito.ArgumentMatchers.eq("repair"),org.mockito.ArgumentMatchers.anyMap())).thenReturn(java.util.Map.of("finalPrompt","Luca pushes. Hold","diff","first"),java.util.Map.of("finalPrompt","Luca pushes. Wait","diff","second"));
+    var improved=java.util.Map.<String,Object>of("bindingHash","first-independent","planQuality",java.util.Map.of("status","PASS"),"executionRisk",java.util.Map.of("status","PASS"),"executionReview",java.util.Map.of("findings",java.util.List.of(java.util.Map.of("confidence","HIGH"),java.util.Map.of("confidence","HIGH"))));
+    var plateau=java.util.Map.<String,Object>of("bindingHash","second-independent","planQuality",java.util.Map.of("status","PASS"),"executionRisk",java.util.Map.of("status","PASS"),"executionReview",java.util.Map.of("findings",java.util.List.of(java.util.Map.of("confidence","HIGH"),java.util.Map.of("confidence","HIGH"))));
+    org.mockito.Mockito.when(workflowMl.workflow(org.mockito.ArgumentMatchers.eq("review"),org.mockito.ArgumentMatchers.anyMap())).thenReturn(improved,plateau);
+    var first=repairs.step(id);assertThat(first.get("state")).isEqualTo("READY");
+    var second=repairs.step(id);assertThat(second.get("stopReason")).isEqualTo("NO_IMPROVEMENT");
+    assertThat(second.get("bestPromptVersionId")).isEqualTo(first.get("bestPromptVersionId"));
+    assertThat(second.get("attempts")).isEqualTo(2);
+    assertThat((java.util.List<?>)second.get("history")).hasSize(2);
+    assertThat(repairs.decide(id,"ACCEPTED").get("bestReviewId")).isEqualTo(first.get("bestReviewId"));
+    repairs.step(id);org.mockito.Mockito.verify(workflowMl,org.mockito.Mockito.times(2)).workflow(org.mockito.ArgumentMatchers.eq("creative-role"),org.mockito.ArgumentMatchers.anyMap());
   }
 
 }

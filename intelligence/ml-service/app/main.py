@@ -176,7 +176,10 @@ def assess_retention(request: RetentionAssessmentRequest) -> dict[str, object]:
 
 @app.post("/v1/prediction/prepublish", response_model=PredictionResponse, response_model_by_alias=True)
 def predict_prepublish(request: PredictionRequest) -> PredictionResponse:
-    return prepublish(request)
+    try:
+        return prepublish(request)
+    except ValueError as error:
+        raise HTTPException(409, str(error)) from error
 
 
 @app.post("/v1/prediction/live", response_model=PredictionResponse, response_model_by_alias=True)
@@ -205,16 +208,22 @@ def train(request: TrainingRequest) -> dict[str, object]:
         raise HTTPException(
             status_code=409, detail="At least 30 completed historical videos are required for a challenger"
         )
-    raise HTTPException(
-        status_code=501,
-        detail={
-            "status": "TRAINING_NOT_IMPLEMENTED",
-            "datasetVersion": request.dataset_version,
-            "rowCount": len(request.rows),
-            "artifactCreated": False,
-            "reason": "No trained artifact or evaluation pipeline is connected; cold-start inference remains active",
-        },
-    )
+    from .statistical_model import fit
+    try:
+        return fit(request)
+    except ValueError as error:
+        raise HTTPException(409, detail={"status":"TRAINING_DATA_INELIGIBLE","artifactCreated":False,"reason":str(error)}) from error
+
+
+@app.post("/v1/training/verify-artifact")
+def verify_artifact(request: dict[str, object]) -> dict[str, object]:
+    from .statistical_model import load
+    try:
+        model=load(request, str(request.get("platform")))
+        return {"verified":True, "artifactSha256":request["artifactSha256"], "featureVersion":model["featureVersion"], "promotionEligible":model["metrics"]["promotionEligible"], "pipelineVersion":model["pipelineVersion"], "knowledgeCutoff":model["knowledgeCutoff"]}
+    except (ValueError,KeyError,TypeError) as error:
+        raise HTTPException(409, str(error)) from error
+
 
 
 @app.post("/v1/evaluation/backtest")

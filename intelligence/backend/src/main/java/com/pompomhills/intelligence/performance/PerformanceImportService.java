@@ -57,6 +57,29 @@ public class PerformanceImportService {
 
   @Transactional
   public ImportPreview preview(MultipartFile upload, String platform, String timezone) {
+    return preview(upload, platform, timezone, null, null);
+  }
+
+  @Transactional
+  public ImportPreview preview(
+      MultipartFile upload,
+      String platform,
+      String timezone,
+      UUID correctionOfBatchId,
+      String correctionReason) {
+    if (correctionOfBatchId != null) {
+      var previous = get(correctionOfBatchId);
+      if (!"COMMITTED".equals(previous.status())
+          || correctionReason == null
+          || correctionReason.isBlank())
+        throw new IllegalArgumentException(
+            "Correction requires a committed original batch and explicit reason");
+      if (!java.util.Objects.equals(previous.platform(), normalizePlatform(platform))
+          || !java.util.Objects.equals(
+              previous.timezone(), timezone == null || timezone.isBlank() ? "UTC" : timezone))
+        throw new IllegalArgumentException(
+            "Correction must preserve original platform/timezone context");
+    }
     if (upload.isEmpty()) throw new IllegalArgumentException("Import file is empty");
     String originalName = Optional.ofNullable(upload.getOriginalFilename()).orElse("import.csv");
     Path rawDirectory = properties.dataRoot().resolve("imports/raw").toAbsolutePath().normalize();
@@ -72,12 +95,24 @@ public class PerformanceImportService {
       var duplicate = findByHash(hash);
       if (duplicate.isPresent()) {
         Files.deleteIfExists(temporary);
-        var context = jdbc.sql("SELECT platform,timezone_assumption FROM import_batches WHERE id=:id")
-            .param("id", duplicate.get().batchId()).query((rs, ignored) -> new String[] {rs.getString("platform"), rs.getString("timezone_assumption")}).single();
+        var context =
+            jdbc.sql("SELECT platform,timezone_assumption FROM import_batches WHERE id=:id")
+                .param("id", duplicate.get().batchId())
+                .query(
+                    (rs, ignored) ->
+                        new String[] {
+                          rs.getString("platform"), rs.getString("timezone_assumption")
+                        })
+                .single();
         String requestedTimezone = timezone == null || timezone.isBlank() ? "UTC" : timezone;
-        if (!java.util.Objects.equals(context[0], normalizePlatform(platform)) || !java.util.Objects.equals(context[1], requestedTimezone)) {
-          throw new IllegalStateException("Identical source bytes were imported with a different platform or timezone; reuse the original context or provide a corrected export");
+        if (!java.util.Objects.equals(context[0], normalizePlatform(platform))
+            || !java.util.Objects.equals(context[1], requestedTimezone)) {
+          throw new IllegalStateException(
+              "Identical source bytes were imported with a different platform or timezone; reuse"
+                  + " the original context or provide a corrected export");
         }
+        if (!java.util.Objects.equals(duplicate.get().correctionOfBatchId(), correctionOfBatchId))
+          throw new IllegalStateException("Duplicate bytes have a different correction lineage");
         return duplicate.get().withDuplicate(true);
       }
       UUID batchId = UUID.randomUUID();
@@ -91,6 +126,10 @@ public class PerformanceImportService {
       long matched = matches.stream().filter(item -> item.videoId() != null).count();
       Map<String, Object> report = new LinkedHashMap<>();
       report.put("columns", parsed.columns());
+      report.put("platform", normalizePlatform(platform));
+      report.put("timezone", timezone == null || timezone.isBlank() ? "UTC" : timezone);
+      report.put("correctionOfBatchId", correctionOfBatchId);
+      report.put("correctionReason", correctionReason);
       report.put("rowCount", parsed.rows().size());
       report.put("matchedRows", matched);
       report.put("unresolvedRows", parsed.rows().size() - matched);
@@ -141,7 +180,11 @@ public class PerformanceImportService {
           matched,
           parsed.rows().size() - matched,
           false,
-          "PREVIEWED");
+          "PREVIEWED",
+          normalizePlatform(platform),
+          timezone == null || timezone.isBlank() ? "UTC" : timezone,
+          correctionOfBatchId,
+          correctionReason);
     } catch (IOException | NoSuchAlgorithmException error) {
       throw new IllegalStateException("Could not stage import: " + error.getMessage(), error);
     }
@@ -152,7 +195,8 @@ public class PerformanceImportService {
     ImportPreview preview = get(batchId);
     int unresolved =
         jdbc.sql(
-                "SELECT count(*) FROM import_rows WHERE import_batch_id=:id AND match_status='UNRESOLVED'")
+                "SELECT count(*) FROM import_rows WHERE import_batch_id=:id AND"
+                    + " match_status='UNRESOLVED'")
             .param("id", batchId)
             .query(Integer.class)
             .single();
@@ -184,7 +228,9 @@ public class PerformanceImportService {
             .list();
     rows.forEach(
         row -> {
-          writeObservation(row, platform);
+          UUID observation = writeObservation(row, platform);
+          if (preview.correctionOfBatchId() != null)
+            linkCorrection(observation, row, platform, preview);
           writeExplicitPlatformState(row, platform, batchId);
         });
     jdbc.sql("UPDATE import_batches SET status='COMMITTED' WHERE id=:id AND status='PREVIEWED'")
@@ -227,7 +273,8 @@ public class PerformanceImportService {
   }
 
   @Transactional
-  public ImportPreview resolve(UUID batchId, UUID rowId, UUID videoId, UUID variantId, String reason) {
+  public ImportPreview resolve(
+      UUID batchId, UUID rowId, UUID videoId, UUID variantId, String reason) {
     String status =
         jdbc.sql("SELECT status FROM import_batches WHERE id=:id")
             .param("id", batchId)
@@ -244,12 +291,24 @@ public class PerformanceImportService {
             .single();
     if (!videoExists) throw new IllegalArgumentException("Video not found: " + videoId);
 
-    if (variantId != null && !jdbc.sql("SELECT EXISTS(SELECT 1 FROM video_variants WHERE id=:variant AND video_id=:video)")
-        .param("variant", variantId).param("video", videoId).query(Boolean.class).single()) {
+    if (variantId != null
+        && !jdbc.sql(
+                "SELECT EXISTS(SELECT 1 FROM video_variants WHERE id=:variant AND video_id=:video)")
+            .param("variant", variantId)
+            .param("video", videoId)
+            .query(Boolean.class)
+            .single()) {
       throw new IllegalArgumentException("Variant does not belong to the selected video");
     }
-    UUID previousVariant = jdbc.sql("SELECT matched_variant_id FROM import_rows WHERE id=:row AND import_batch_id=:batch")
-        .param("row", rowId).param("batch", batchId).query(UUID.class).optional().orElse(null);
+    UUID previousVariant =
+        jdbc.sql(
+                "SELECT matched_variant_id FROM import_rows WHERE id=:row AND"
+                    + " import_batch_id=:batch")
+            .param("row", rowId)
+            .param("batch", batchId)
+            .query(UUID.class)
+            .optional()
+            .orElse(null);
     UUID previous =
         jdbc.sql(
                 "SELECT matched_video_id FROM import_rows WHERE id=:row AND import_batch_id=:batch")
@@ -294,7 +353,7 @@ public class PerformanceImportService {
   public ImportPreview get(UUID batchId) {
     return jdbc.sql(
             """
-            SELECT id,source_filename,source_hash,quality_report::text,status
+            SELECT id,source_filename,source_hash,(quality_report || jsonb_build_object('platform',platform,'timezone',timezone_assumption))::text quality_report,status
             FROM import_batches WHERE id=:id
             """)
         .param("id", batchId)
@@ -313,7 +372,7 @@ public class PerformanceImportService {
   private Optional<ImportPreview> findByHash(String hash) {
     return jdbc.sql(
             """
-            SELECT id,source_filename,source_hash,quality_report::text,status
+            SELECT id,source_filename,source_hash,(quality_report || jsonb_build_object('platform',platform,'timezone',timezone_assumption))::text quality_report,status
             FROM import_batches WHERE source_hash=:hash
             """)
         .param("hash", hash)
@@ -372,7 +431,13 @@ public class PerformanceImportService {
           number(report, "matchedRows"),
           number(report, "unresolvedRows"),
           false,
-          status);
+          status,
+          (String) report.get("platform"),
+          (String) report.get("timezone"),
+          report.get("correctionOfBatchId") == null
+              ? null
+              : UUID.fromString(String.valueOf(report.get("correctionOfBatchId"))),
+          (String) report.get("correctionReason"));
     } catch (JacksonException error) {
       throw new IllegalStateException("Stored import report is invalid", error);
     }
@@ -424,7 +489,8 @@ public class PerformanceImportService {
       UUID variantId = UUID.fromString(explicitVariantId);
       boolean belongsToVideo =
           jdbc.sql(
-                  "SELECT EXISTS(SELECT 1 FROM video_variants WHERE id=:variant AND video_id=:video)")
+                  "SELECT EXISTS(SELECT 1 FROM video_variants WHERE id=:variant AND"
+                      + " video_id=:video)")
               .param("variant", variantId)
               .param("video", videoId)
               .query(Boolean.class)
@@ -443,7 +509,7 @@ public class PerformanceImportService {
     return null;
   }
 
-  private void writeObservation(CommitRow row, String platform) {
+  private UUID writeObservation(CommitRow row, String platform) {
     Map<String, String> values = normalize(row.raw());
     String semantics =
         Optional.ofNullable(first(values, "metricsemantics", "metric_semantics"))
@@ -455,23 +521,23 @@ public class PerformanceImportService {
     UUID observationId =
         jdbc.sql(
                 """
-            INSERT INTO performance_observations
-              (import_row_id,video_id,variant_id,platform,platform_content_id,publication_timestamp,
-               measurement_timestamp,metric_semantics,views,reach,unique_viewers,
-               three_second_views,fifteen_second_views,average_watch_seconds,total_watch_seconds,
-               likes,comments,shares,saves,follows,recommendation_percentage,
-               followers_percentage,nonfollowers_percentage,paid,plays,completion_rate,skip_rate,
-               profile_visits,follows_attributed,source,source_version,raw_payload_json,
-               data_quality_status)
-            VALUES
-              (:row,:video,:variant,:platform,:contentId,:published,:measured,:semantics,:views,:reach,
-               :uniqueViewers,:threeSecond,:fifteenSecond,:averageWatch,:totalWatch,
-               :likes,:comments,:shares,:saves,:follows,:recommendation,
-               :followers,:nonfollowers,:paid,:plays,:completion,:skipRate,:profileVisits,
-               :followsAttributed,'CSV',:sourceVersion,CAST(:rawPayload AS jsonb),'IMPORTED')
-            ON CONFLICT (import_row_id) DO NOTHING
-            RETURNING id
-            """)
+                INSERT INTO performance_observations
+                  (import_row_id,video_id,variant_id,platform,platform_content_id,publication_timestamp,
+                   measurement_timestamp,metric_semantics,views,reach,unique_viewers,
+                   three_second_views,fifteen_second_views,average_watch_seconds,total_watch_seconds,
+                   likes,comments,shares,saves,follows,recommendation_percentage,
+                   followers_percentage,nonfollowers_percentage,paid,plays,completion_rate,skip_rate,
+                   profile_visits,follows_attributed,source,source_version,raw_payload_json,
+                   data_quality_status)
+                VALUES
+                  (:row,:video,:variant,:platform,:contentId,:published,:measured,:semantics,:views,:reach,
+                   :uniqueViewers,:threeSecond,:fifteenSecond,:averageWatch,:totalWatch,
+                   :likes,:comments,:shares,:saves,:follows,:recommendation,
+                   :followers,:nonfollowers,:paid,:plays,:completion,:skipRate,:profileVisits,
+                   :followsAttributed,'CSV',:sourceVersion,CAST(:rawPayload AS jsonb),'IMPORTED')
+                ON CONFLICT (import_row_id) DO NOTHING
+                RETURNING id
+                """)
             .param("row", row.id())
             .param("video", row.videoId())
             .param("variant", row.variantId(), Types.OTHER)
@@ -569,6 +635,56 @@ public class PerformanceImportService {
                         .single());
     writeCountryObservations(observationId, values);
     writeNewAudienceQualityMetric(observationId, values);
+    return observationId;
+  }
+
+  private void linkCorrection(
+      UUID observation, CommitRow row, String platform, ImportPreview preview) {
+    String target = first(normalize(row.raw()), "correction_of_id", "correctionofid");
+    if (target == null)
+      throw new IllegalArgumentException(
+          "Every corrected row requires an exact correction_of_id observation UUID");
+    UUID old = UUID.fromString(target);
+    boolean exact =
+        jdbc.sql(
+                """
+                SELECT EXISTS(SELECT 1 FROM performance_observations old JOIN import_rows r ON r.id=old.import_row_id
+                  JOIN performance_observations replacement ON replacement.id=:new
+                  WHERE old.id=:old AND r.import_batch_id=:batch
+                  AND old.video_id=replacement.video_id AND old.variant_id IS NOT DISTINCT FROM replacement.variant_id
+                  AND old.platform=replacement.platform AND old.platform_content_id IS NOT NULL
+                  AND old.platform_content_id=replacement.platform_content_id
+                  AND old.publication_timestamp IS NOT NULL AND old.publication_timestamp=replacement.publication_timestamp
+                  AND old.measurement_timestamp IS NOT NULL AND old.measurement_timestamp=replacement.measurement_timestamp
+                  AND old.metric_semantics=replacement.metric_semantics)
+                """)
+            .param("new", observation)
+            .param("old", old)
+            .param("batch", preview.correctionOfBatchId())
+            .query(Boolean.class)
+            .single();
+    if (!exact)
+      throw new IllegalArgumentException(
+          "Correction identity, variant, publication, measurement and semantics must exactly match"
+              + " the previous observation");
+    var existing =
+        jdbc.sql(
+                "SELECT observation_id FROM performance_observation_corrections WHERE"
+                    + " correction_of_id=:old")
+            .param("old", old)
+            .query(UUID.class)
+            .optional();
+    if (existing.isPresent() && !existing.get().equals(observation))
+      throw new IllegalStateException(
+          "Observation already corrected; correct the latest observation instead");
+    jdbc.sql(
+            "INSERT INTO"
+                + " performance_observation_corrections(observation_id,correction_of_id,reason)"
+                + " VALUES (:new,:old,:reason) ON CONFLICT(observation_id) DO NOTHING")
+        .param("new", observation)
+        .param("old", old)
+        .param("reason", preview.correctionReason())
+        .update();
   }
 
   private void writeCountryObservations(UUID observationId, Map<String, String> values) {
@@ -819,10 +935,26 @@ public class PerformanceImportService {
       long matchedRows,
       long unresolvedRows,
       boolean duplicate,
-      String status) {
+      String status,
+      String platform,
+      String timezone,
+      UUID correctionOfBatchId,
+      String correctionReason) {
     ImportPreview withDuplicate(boolean value) {
       return new ImportPreview(
-          batchId, filename, sha256, columns, rowCount, matchedRows, unresolvedRows, value, status);
+          batchId,
+          filename,
+          sha256,
+          columns,
+          rowCount,
+          matchedRows,
+          unresolvedRows,
+          value,
+          status,
+          platform,
+          timezone,
+          correctionOfBatchId,
+          correctionReason);
     }
 
     ImportPreview withStatus(String value) {
@@ -835,7 +967,11 @@ public class PerformanceImportService {
           matchedRows,
           unresolvedRows,
           duplicate,
-          value);
+          value,
+          platform,
+          timezone,
+          correctionOfBatchId,
+          correctionReason);
     }
   }
 }

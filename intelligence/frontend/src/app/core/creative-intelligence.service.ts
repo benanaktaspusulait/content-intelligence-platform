@@ -216,6 +216,10 @@ interface PredictionApiRecord {
 }
 
 export interface ImportPreview {
+  platform?: string;
+  timezone?: string;
+  correctionOfBatchId?: string | null;
+  correctionReason?: string | null;
   batchId: string;
   filename: string;
   columns: string[];
@@ -618,9 +622,10 @@ export class CreativeIntelligenceService {
     return this.http.put<void>(`${this.baseUrl}/videos/${videoId}/characters`, { characters });
   }
 
-  previewImport(file: File, platform: string, timezone: string): Observable<ImportPreview> {
+  previewImport(file: File, platform: string, timezone: string, correctionOfBatchId?: string, correctionReason?: string): Observable<ImportPreview> {
     const body = new FormData();
     body.append('file', file);
+    if (correctionOfBatchId) { body.append('correctionOfBatchId', correctionOfBatchId); body.append('correctionReason', correctionReason || ''); }
     return this.http.post<ImportPreview>(`${this.baseUrl}/imports/preview`, body, {
       params: { platform, timezone },
     });

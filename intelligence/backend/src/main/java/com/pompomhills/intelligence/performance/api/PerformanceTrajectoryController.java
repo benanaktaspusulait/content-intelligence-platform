@@ -37,7 +37,7 @@ public class PerformanceTrajectoryController {
         jdbc.sql(
                 """
                 SELECT measurement_timestamp,views,metric_semantics,source
-                FROM performance_observations
+                FROM effective_performance_observations
                 WHERE video_id=:video AND platform=:platform AND measurement_timestamp IS NOT NULL
                   AND variant_id IS NOT DISTINCT FROM :variant
                 ORDER BY measurement_timestamp

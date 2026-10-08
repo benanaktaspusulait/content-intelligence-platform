@@ -103,6 +103,61 @@ public class IntelligenceQualityValidationService {
     return new IntelligenceValidateResponse(saved.getId(), report);
   }
 
+  @Transactional
+  public IntelligenceValidateResponse validateWorkflowProfile(
+      java.util.Map<String, Object> review) {
+    var snapshot =
+        contentPrompts.load(
+            ((Number) review.get("contentId")).longValue(),
+            ((Number) review.get("promptVersionId")).longValue());
+    @SuppressWarnings("unchecked")
+    var bound = (java.util.Map<String, Object>) review.get("boundRequest");
+    if (!snapshot.promptText().equals(bound.get("prompt")))
+      throw new IllegalArgumentException("Review source is stale");
+    var report = mlClient.validatePromptForWorkflow(snapshot.promptText(), "latest", null, bound);
+    var entity =
+        buildEntity(snapshot.promptText(), snapshot, report, Instant.now(), UUID.randomUUID());
+    if ("RENDER_READY".equals(report.status())) {
+      String base = report.rulesetVersion().split("\\+", 2)[0];
+      var independentReport =
+          mlClient.validatePromptForWorkflow(snapshot.promptText(), base, null, bound);
+      var independent =
+          buildEntity(
+              snapshot.promptText(), snapshot, independentReport, Instant.now(), UUID.randomUUID());
+      repository.saveAndFlush(independent);
+      if (sameAuthorizationDecision(report, independentReport)) {
+        entity.setIndependentRevalidationId(independent.getValidationRunId());
+        entity.setIndependentlyRevalidatedAt(independent.getValidatedAt());
+      }
+    }
+    var saved = repository.save(entity);
+    return new IntelligenceValidateResponse(saved.getId(), report);
+  }
+
+  @SuppressWarnings("unchecked")
+  private java.util.Map<String, Object> profileContext(QualityValidationEntity entity) {
+    var assessment = QualityReportSnapshots.preRenderAssessment(entity.getReportJson());
+    if (assessment == null
+        || !(assessment.get("canonicalProfileAdmission") instanceof java.util.Map<?, ?> projection))
+      return null;
+    return projection.get("boundRequest") instanceof java.util.Map<?, ?> context
+        ? (java.util.Map<String, Object>) context
+        : null;
+  }
+
+  private QualityReportDto validateVisual(
+      QualityValidationEntity parent, java.util.Map<String, Object> visualEvidence) {
+    var context = profileContext(parent);
+    return context == null
+        ? mlClient.validatePrompt(
+            parent.getPromptText(), parent.getRulesetVersion(), visualEvidence)
+        : mlClient.validatePromptForWorkflow(
+            parent.getPromptText(),
+            parent.getRulesetVersion().split("\\+", 2)[0],
+            visualEvidence,
+            context);
+  }
+
   private QualityValidationEntity buildEntity(
       String prompt,
       ContentPromptSnapshot snapshot,
@@ -187,8 +242,7 @@ public class IntelligenceQualityValidationService {
     if (parent.getContentId() == null || parent.getPromptVersionId() == null) return;
     ContentPromptSnapshot snapshot =
         contentPrompts.load(parent.getContentId(), parent.getPromptVersionId());
-    QualityReportDto first =
-        mlClient.validatePrompt(parent.getPromptText(), parent.getRulesetVersion(), visualEvidence);
+    QualityReportDto first = validateVisual(parent, visualEvidence);
     Instant firstAt = Instant.now();
     UUID firstRunId = UUID.randomUUID();
     QualityValidationEntity firstEntity =
@@ -196,8 +250,7 @@ public class IntelligenceQualityValidationService {
     repository.saveAndFlush(firstEntity);
     if (!"RENDER_READY".equals(first.status())) return;
 
-    QualityReportDto independent =
-        mlClient.validatePrompt(parent.getPromptText(), parent.getRulesetVersion(), visualEvidence);
+    QualityReportDto independent = validateVisual(parent, visualEvidence);
     Instant independentAt = Instant.now();
     UUID independentRunId = UUID.randomUUID();
     QualityValidationEntity independentEntity =

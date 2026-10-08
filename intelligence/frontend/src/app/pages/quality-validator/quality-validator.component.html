@@ -51,6 +51,7 @@
   </section>
 
   <app-creative-role (draft)="useCreativeDraft($event)"></app-creative-role>
+  <label *ngIf="detailMode && linkedVideos.length">Exact linked video<select [(ngModel)]="selectedWorkspaceVideoPath"><option value="">Select exact video…</option><option *ngFor="let video of linkedVideos" [value]="video.relativePath">{{video.relativePath}} · {{video.videoId}}</option></select></label>
   <app-post-family-workflow *ngIf="detailMode" [prompt]="prompt" [contentId]="contentId" [promptVersionId]="promptVersionId" [sourcePath]="selectedPromptPath" [videoPath]="selectedWorkspaceVideoPath" (saveFinal)="saveWorkflowFinalPrompt($event)" (acceptedVersion)="useAcceptedRepair($event)"></app-post-family-workflow>
 
   <!-- Prompt detail/editor is intentionally a separate route from the folder picker. -->
@@ -66,7 +67,7 @@
         <label>Content title<input type="text" [(ngModel)]="contentTitle" [disabled]="loading" placeholder="Kiko's Mat Mystery" /></label>
         <label>Type<select [(ngModel)]="contentType" [disabled]="loading"><option value="SHORT">Short</option><option value="REEL">Reel</option><option value="EPISODE">Episode</option></select></label>
         <div class="prompt-actions"><button class="btn btn-outline-secondary btn-sm" type="button" (click)="createContentAndPrompt()" [disabled]="loading || !contentTitle || prompt.length < 100">Create workspace version</button><button class="btn btn-outline-secondary btn-sm" type="button" (click)="createRevisionPromptVersion()" [disabled]="loading || !contentId || prompt.length < 100">Save revision</button></div>
-        <small *ngIf="contentId && promptVersionId">Linked workspace prompt: validation uses the immutable stored version and can produce render evidence.</small>
+        <details *ngIf="contentId && promptVersionId"><summary>Reconcile moved prompt source</summary><label>Existing new relative path<input [(ngModel)]="aliasPath"></label><label>Reason<input [(ngModel)]="aliasReason"></label><button type="button" (click)="reconcileSourcePath()" [disabled]="loading || !aliasPath.trim() || !aliasReason.trim()">Verify bytes and preserve content identity</button></details><small *ngIf="contentId && promptVersionId">Linked workspace prompt: validation uses the immutable stored version and can produce render evidence.</small>
         <small *ngIf="!contentId || !promptVersionId">Draft mode: create a workspace version before render authorization.</small>
         <a *ngIf="validationRecordId" class="btn btn-outline-secondary btn-sm" [href]="renderQueueUrl()">Open render queue</a>
       </div>
