@@ -162,16 +162,20 @@ public class QualityReportPdfService {
 
   private void addGeneralProducibility(Document document, Object projection, Fonts fonts)
       throws DocumentException {
-    section(document, "General Producibility", fonts);
+    String status =
+        projection instanceof Map<?, ?> value ? orDash(str(value.get("status"))) : "UNKNOWN";
+    Paragraph introduction = new Paragraph("General Producibility\n", fonts.heading);
+    introduction.add(new Chunk("General Producibility: " + status, fonts.bold));
+    introduction.setSpacingBefore(14);
+    introduction.setSpacingAfter(5);
+    introduction.setKeepTogether(true);
+    document.add(introduction);
     if (!(projection instanceof Map<?, ?> evidence)) {
-      document.add(new Paragraph("General Producibility: UNKNOWN", fonts.body));
       document.add(
           new Paragraph(
               "No production feasibility evidence in this historical report.", fonts.muted));
       return;
     }
-    document.add(
-        new Paragraph("General Producibility: " + orDash(str(evidence.get("status"))), fonts.bold));
     document.add(
         new Paragraph(
             "Duration: "
@@ -198,12 +202,13 @@ public class QualityReportPdfService {
         Paragraph heading =
             new Paragraph(str(entry.getKey()) + " · " + orDash(str(risk.get("level"))), fonts.bold);
         heading.setSpacingBefore(5);
-        document.add(heading);
-        document.add(new Paragraph(orDash(str(risk.get("reason"))), fonts.body));
-        document.add(
-            new Paragraph(
-                "Evidence: " + orDash(referenceText(risk.get("evidenceReferences"), null)),
+        heading.add(new Chunk("\n" + orDash(str(risk.get("reason"))), fonts.body));
+        heading.add(
+            new Chunk(
+                "\nEvidence: " + orDash(referenceText(risk.get("evidenceReferences"), null)),
                 fonts.muted));
+        heading.setKeepTogether(true);
+        document.add(heading);
       }
     }
     if (evidence.get("durationLoad") instanceof Map<?, ?> load) {

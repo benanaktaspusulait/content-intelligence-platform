@@ -1,0 +1,89 @@
+{
+  "family": "FAMILY_10",
+  "status": "APPROVED / FROZEN",
+  "comparisonBase": "79c369b",
+  "validatedDate": "2026-10-08",
+  "focusedMlPassed": 69,
+  "family6Passed": 19,
+  "family7Passed": 24,
+  "family8Passed": 16,
+  "family9MlPassed": 11,
+  "fullMlPassed": 641,
+  "backendRelevantPassed": 47,
+  "frontendRepresentationPassed": 21,
+  "frontendFullPassed": 44,
+  "frontendPreExistingFailed": 9,
+  "frontendBuild": "PASS",
+  "renderAuthorizationRegressionPassed": 29,
+  "ruffFamily10": "PASS",
+  "ruffInherited": {
+    "app/api/quality.py": {
+      "preExisting": 0,
+      "current": 0,
+      "newIssues": []
+    },
+    "app/assessment/pre_render_assessment.py": {
+      "preExisting": 61,
+      "current": 61,
+      "newIssues": []
+    },
+    "app/golden/deterministic_runner.py": {
+      "preExisting": 10,
+      "current": 10,
+      "newIssues": []
+    }
+  },
+  "mypyFamily10StrictScoped": "PASS",
+  "mypyInherited": {
+    "baselineImportErrors": 28,
+    "currentImportErrors": 28,
+    "sameInheritedErrors": true,
+    "newErrors": []
+  },
+  "spotlessTargeted": "PASS",
+  "diffCheck": "PASS",
+  "protectedSemanticDiff": "EMPTY",
+  "goldenReleaseGate": "PASS",
+  "goldenSummary": {
+    "assets": 9,
+    "expectedPolicyChanges": 4,
+    "goldAssertions": 323,
+    "goldReviewRequired": 61,
+    "improvedFromBaseline": 28,
+    "newSemanticRegressions": 0,
+    "representationMismatches": 0,
+    "semanticFailed": 5,
+    "semanticPassed": 75,
+    "unchangedKnownIssues": 52,
+    "unexpectedPolicyRegressions": 0,
+    "family10Assertions": 248,
+    "family10FailedAssertions": 0,
+    "family10RepresentationMismatches": 0,
+    "pipelineUnknownAssets": 9
+  },
+  "productionEvidenceMode": "FROZEN_PARSER_IR",
+  "reviewEvidenceMode": "MANUAL_SOURCE_REVIEW",
+  "sourceReviewedStatuses": {
+    "sticky-ball-01": "RISKY",
+    "ball-crocodile-01": "RISKY",
+    "upside-chair-01": "RISKY",
+    "lamp-01": "RISKY",
+    "snack-box-01": "RISKY",
+    "box-cat-01": "PRODUCIBLE",
+    "spot-cat-01": "RISKY",
+    "sneaky-door-01": "RISKY",
+    "island-journal-01": "RISKY"
+  },
+  "pipelineStatuses": {
+    "sticky-ball-01": "UNKNOWN",
+    "ball-crocodile-01": "UNKNOWN",
+    "upside-chair-01": "UNKNOWN",
+    "lamp-01": "UNKNOWN",
+    "snack-box-01": "UNKNOWN",
+    "box-cat-01": "UNKNOWN",
+    "spot-cat-01": "UNKNOWN",
+    "sneaky-door-01": "UNKNOWN",
+    "island-journal-01": "UNKNOWN"
+  },
+  "postFamilyWorkStarted": false
+}
