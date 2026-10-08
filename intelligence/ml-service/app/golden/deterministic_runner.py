@@ -23,6 +23,7 @@ from ..quality.contracts import EnhancedQualityReport, ParseResult, QualityRepor
 from ..rules import rule_engine as rule_engine_module
 from ..rules.rule_engine import RuleEngine
 from ..scoring.quality_scorer import QualityScorer
+from ..quality.general_producibility import general_producibility_evidence, general_producibility_from_parse
 from .provenance import GoldenFingerprint, build_golden_fingerprint
 
 
@@ -69,6 +70,10 @@ class GoldenRun:
             },
             "videoPlanIR": None if self.parse_result is None else self.parse_result.video_plan_ir,
             "canonicalEvidence": None if self.parse_result is None else self._canonical_evidence(),
+            "generalProducibility": general_producibility_evidence(None)
+            if self.parse_result is None else general_producibility_from_parse(
+                self.parse_result.video_plan_ir, self.parse_result.metadata
+            ),
             "report": None if self.report is None else _report_dict(self.report),
             "assessment": self.assessment,
             "apiReport": self.api_report,
@@ -101,6 +106,7 @@ class GoldenRun:
                 for rule_id, evidence in specialized_applicability.items()
             },
             "temporalGenerationLoad": temporal_generation_load.to_dict(),
+            "generalProducibility": general_producibility_from_parse(ir, self.parse_result.metadata),
             "beatAudit": beat_audit(ir),
         }
 

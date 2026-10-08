@@ -10,6 +10,7 @@ from collections.abc import Iterable
 from typing import Any
 
 from .family8_projection import project_family8
+from ..quality.general_producibility import general_producibility_from_parse
 from ..quality.aggregation import AggregationRow, summarize_aggregation
 from ..quality.canonical_evidence import (
     attempt_beats,
@@ -142,6 +143,7 @@ def build_pre_render_assessment(ir: dict[str, Any], parser: Any, report: Any, ru
 
     return {
         "name": "PRE_RENDER_CREATIVE_READINESS",
+        "general_producibility": general_producibility_from_parse(ir, parser),
         "family8": family8,
         "aggregation": aggregation.to_dict(),
         "specialized_applicability": {

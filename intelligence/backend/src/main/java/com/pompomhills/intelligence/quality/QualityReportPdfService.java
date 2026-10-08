@@ -38,9 +38,9 @@ import org.springframework.stereotype.Service;
  * Renders a {@link QualityReportDto} into a PDF document entirely on the backend.
  *
  * <p>The layout mirrors the quality detail page: score card, pre-render readiness, priority fixes,
- * evaluation coverage, validation evidence, failed rules, family score bars, the timeline chart
- * (as a PNG snapshot supplied by the client) and the beat / state / consequence breakdown. DejaVu
- * Sans is embedded so non-ASCII content (for example Turkish characters) renders correctly.
+ * evaluation coverage, validation evidence, failed rules, family score bars, the timeline chart (as
+ * a PNG snapshot supplied by the client) and the beat / state / consequence breakdown. DejaVu Sans
+ * is embedded so non-ASCII content (for example Turkish characters) renders correctly.
  */
 @Service
 public class QualityReportPdfService {
@@ -142,7 +142,8 @@ public class QualityReportPdfService {
     if (report.scoreCard() != null && notBlank(report.scoreCard().label())) {
       scoreCell.addElement(new Paragraph(clean(report.scoreCard().label()), fonts.bold));
     }
-    Paragraph status = new Paragraph(clean(orDash(report.status())), fonts.colored(fonts.bold, statusColor));
+    Paragraph status =
+        new Paragraph(clean(orDash(report.status())), fonts.colored(fonts.bold, statusColor));
     status.setSpacingBefore(4);
     scoreCell.addElement(status);
     table.addCell(scoreCell);
@@ -157,6 +158,80 @@ public class QualityReportPdfService {
     countsCell.addElement(counts);
     table.addCell(countsCell);
     document.add(table);
+  }
+
+  private void addGeneralProducibility(Document document, Object projection, Fonts fonts)
+      throws DocumentException {
+    section(document, "General Producibility", fonts);
+    if (!(projection instanceof Map<?, ?> evidence)) {
+      document.add(new Paragraph("General Producibility: UNKNOWN", fonts.body));
+      document.add(
+          new Paragraph(
+              "No production feasibility evidence in this historical report.", fonts.muted));
+      return;
+    }
+    document.add(
+        new Paragraph("General Producibility: " + orDash(str(evidence.get("status"))), fonts.bold));
+    document.add(
+        new Paragraph(
+            "Duration: "
+                + (evidence.get("durationSeconds") == null
+                    ? "UNKNOWN"
+                    : str(evidence.get("durationSeconds")) + " seconds")
+                + " · Source: "
+                + orDash(str(evidence.get("durationSource"))),
+            fonts.body));
+    if (evidence.get("reasons") instanceof List<?> reasons) {
+      for (Object reason : reasons) document.add(new Paragraph(str(reason), fonts.body));
+    }
+    if (evidence.get("dimensions") instanceof Map<?, ?> dimensions) {
+      List<Map.Entry<?, ?>> rows = new ArrayList<>(dimensions.entrySet());
+      rows.sort(
+          java.util.Comparator.comparingInt(
+              entry ->
+                  entry.getValue() instanceof Map<?, ?> risk
+                          && Boolean.TRUE.equals(risk.get("material"))
+                      ? 0
+                      : 1));
+      for (Map.Entry<?, ?> entry : rows) {
+        if (!(entry.getValue() instanceof Map<?, ?> risk)) continue;
+        Paragraph heading =
+            new Paragraph(str(entry.getKey()) + " · " + orDash(str(risk.get("level"))), fonts.bold);
+        heading.setSpacingBefore(5);
+        document.add(heading);
+        document.add(new Paragraph(orDash(str(risk.get("reason"))), fonts.body));
+        document.add(
+            new Paragraph(
+                "Evidence: " + orDash(referenceText(risk.get("evidenceReferences"), null)),
+                fonts.muted));
+      }
+    }
+    if (evidence.get("durationLoad") instanceof Map<?, ?> load) {
+      document.add(
+          new Paragraph(
+              "Duration load: "
+                  + orDash(str(load.get("level")))
+                  + " · "
+                  + orDash(str(load.get("reason"))),
+              fonts.body));
+    }
+    if (evidence.get("provenance") instanceof Map<?, ?> provenance) {
+      document.add(
+          new Paragraph(
+              "Evaluator: "
+                  + orDash(str(provenance.get("evaluatorVersion")))
+                  + " · Source: "
+                  + orDash(str(provenance.get("source"))),
+              fonts.muted));
+      if (provenance.get("sourceEvidence") instanceof Map<?, ?> source && !source.isEmpty()) {
+        document.add(
+            new Paragraph("Source evidence: " + orDash(str(source.get("source"))), fonts.muted));
+        document.add(
+            new Paragraph("Prompt hash: " + orDash(str(source.get("promptHash"))), fonts.muted));
+        document.add(
+            new Paragraph("Fixture: " + orDash(str(source.get("fixtureVersion"))), fonts.muted));
+      }
+    }
   }
 
   private void addPreRenderAssessment(Document document, QualityReportDto report, Fonts fonts)
@@ -194,11 +269,17 @@ public class QualityReportPdfService {
     PdfPTable columns = new PdfPTable(3);
     columns.setWidthPercentage(100);
     columns.setSpacingAfter(6);
-    columns.addCell(bulletColumn("Strengths", "✓", strings(assessment.get("strengths")), GREEN, fonts));
-    columns.addCell(bulletColumn("Needs attention", "⚠", strings(assessment.get("concerns")), AMBER, fonts));
+    columns.addCell(
+        bulletColumn("Strengths", "✓", strings(assessment.get("strengths")), GREEN, fonts));
+    columns.addCell(
+        bulletColumn("Needs attention", "⚠", strings(assessment.get("concerns")), AMBER, fonts));
     columns.addCell(
         bulletColumn(
-            "Recommended changes", "→", strings(assessment.get("recommended_changes")), BLUE, fonts));
+            "Recommended changes",
+            "→",
+            strings(assessment.get("recommended_changes")),
+            BLUE,
+            fonts));
     document.add(columns);
 
     Object aggregationObject = assessment.get("aggregation");
@@ -239,13 +320,17 @@ public class QualityReportPdfService {
 
     Object family8Object = assessment.get("family8");
     if (family8Object instanceof Map<?, ?> family8) {
-      Paragraph family8Heading = new Paragraph("Creative quality / Evidence completeness / Render authorization", fonts.bold);
+      Paragraph family8Heading =
+          new Paragraph(
+              "Creative quality / Evidence completeness / Render authorization", fonts.bold);
       family8Heading.setSpacingBefore(6);
       family8Heading.setSpacingAfter(4);
       document.add(family8Heading);
       Map<?, ?> creative = family8.get("creativeQuality") instanceof Map<?, ?> map ? map : Map.of();
-      Map<?, ?> evidence = family8.get("evidenceCompleteness") instanceof Map<?, ?> map ? map : Map.of();
-      Map<?, ?> authorization = family8.get("renderAuthorization") instanceof Map<?, ?> map ? map : Map.of();
+      Map<?, ?> evidence =
+          family8.get("evidenceCompleteness") instanceof Map<?, ?> map ? map : Map.of();
+      Map<?, ?> authorization =
+          family8.get("renderAuthorization") instanceof Map<?, ?> map ? map : Map.of();
       document.add(
           new Paragraph(
               "Creative quality: score "
@@ -275,12 +360,16 @@ public class QualityReportPdfService {
                         + " · message "
                         + orDash(str(detail.get("message")))
                         + " · references "
-                        + orDash(referenceText(detail.get("references"), detail.get("evidenceReferences"))),
+                        + orDash(
+                            referenceText(
+                                detail.get("references"), detail.get("evidenceReferences"))),
                     fonts.muted));
           }
         }
       }
     }
+
+    addGeneralProducibility(document, assessment.get("general_producibility"), fonts);
 
     List<Map.Entry<?, ?>> applicabilityRows = new ArrayList<>();
     if (assessment.get("specialized_applicability") instanceof Map<?, ?> applicability) {
@@ -291,8 +380,7 @@ public class QualityReportPdfService {
       }
     }
     if (!applicabilityRows.isEmpty()) {
-      applicabilityRows.sort(
-          (left, right) -> str(left.getKey()).compareTo(str(right.getKey())));
+      applicabilityRows.sort((left, right) -> str(left.getKey()).compareTo(str(right.getKey())));
       Paragraph applicabilityHeading = new Paragraph("Specialized applicability", fonts.bold);
       applicabilityHeading.setSpacingBefore(4);
       applicabilityHeading.setSpacingAfter(4);
@@ -338,8 +426,7 @@ public class QualityReportPdfService {
         }
         String recommendation = str(dimension.get("recommendation"));
         if (attention && !recommendation.isEmpty()) {
-          detail.addElement(
-              new Paragraph("What to change: " + clean(recommendation), fonts.small));
+          detail.addElement(new Paragraph("What to change: " + clean(recommendation), fonts.small));
         }
         table.addCell(detail);
       }
@@ -366,7 +453,10 @@ public class QualityReportPdfService {
 
       Paragraph head = new Paragraph();
       head.add(new Chunk("#" + index++ + "  ", fonts.bold));
-      head.add(new Chunk(clean(orDash(fix.severity())) + "  ", fonts.colored(fonts.bold, severityColor(fix.severity()))));
+      head.add(
+          new Chunk(
+              clean(orDash(fix.severity())) + "  ",
+              fonts.colored(fonts.bold, severityColor(fix.severity()))));
       head.add(new Chunk(clean(orDash(fix.ruleName())), fonts.bold));
       head.add(new Chunk("   " + clean(orDash(fix.family())), fonts.muted));
       cell.addElement(head);
@@ -441,20 +531,26 @@ public class QualityReportPdfService {
       document.add(
           labelled(
               "Semantic model: ",
-              orDash(provenance.semanticProvider()) + " / " + orDash(provenance.semanticModelVersion()),
+              orDash(provenance.semanticProvider())
+                  + " / "
+                  + orDash(provenance.semanticModelVersion()),
               fonts));
       document.add(
           labelled(
               "Versions: ",
-              "parser " + orDash(provenance.parserVersion()) + ", rule engine "
+              "parser "
+                  + orDash(provenance.parserVersion())
+                  + ", rule engine "
                   + orDash(provenance.ruleEngineVersion()),
               fonts));
     }
     if (!orEmpty(report.evidenceMissing()).isEmpty()) {
-      document.add(labelled("Missing evidence: ", String.join(", ", report.evidenceMissing()), fonts));
+      document.add(
+          labelled("Missing evidence: ", String.join(", ", report.evidenceMissing()), fonts));
     }
     if (!orEmpty(report.parserWarnings()).isEmpty()) {
-      document.add(labelled("Parser warnings: ", String.join(" · ", report.parserWarnings()), fonts));
+      document.add(
+          labelled("Parser warnings: ", String.join(" · ", report.parserWarnings()), fonts));
     }
     if (!orEmpty(report.parserAssumptions()).isEmpty()) {
       document.add(
@@ -474,7 +570,11 @@ public class QualityReportPdfService {
     table.setHeaderRows(1);
     header(table, fonts, "Severity", "Rule", "Family", "Message", "Actual", "Threshold");
     for (RuleEvaluationDto rule : failed) {
-      table.addCell(cell(orDash(rule.severity()), fonts.colored(fonts.small, severityColor(rule.severity())), null));
+      table.addCell(
+          cell(
+              orDash(rule.severity()),
+              fonts.colored(fonts.small, severityColor(rule.severity())),
+              null));
       table.addCell(cell(orDash(rule.ruleId()), fonts.small, null));
       table.addCell(cell(orDash(rule.family()), fonts.small, null));
       table.addCell(cell(orDash(rule.message()), fonts.small, null));
@@ -527,9 +627,7 @@ public class QualityReportPdfService {
               PdfPCell number = plainCell(null, 4);
               number.setPhrase(
                   new Phrase(
-                      value == null
-                          ? "N/A"
-                          : String.format(Locale.ROOT, "%.0f", value),
+                      value == null ? "N/A" : String.format(Locale.ROOT, "%.0f", value),
                       fonts.bold));
               number.setHorizontalAlignment(Element.ALIGN_RIGHT);
               number.setVerticalAlignment(Element.ALIGN_MIDDLE);
@@ -584,7 +682,11 @@ public class QualityReportPdfService {
       table.setHeaderRows(1);
       header(table, fonts, "Time", "Action", "Consequence", "Intensity");
       for (BeatDto beat : beats) {
-        table.addCell(cell(oneDecimal(beat.startTime()) + "s - " + oneDecimal(beat.endTime()) + "s", fonts.small, null));
+        table.addCell(
+            cell(
+                oneDecimal(beat.startTime()) + "s - " + oneDecimal(beat.endTime()) + "s",
+                fonts.small,
+                null));
         table.addCell(cell(orDash(beat.action()), fonts.small, null));
         String consequence = (beat.isNewConsequence() ? "NEW  " : "") + orDash(beat.consequence());
         table.addCell(cell(consequence, fonts.small, null));
@@ -610,7 +712,10 @@ public class QualityReportPdfService {
         boolean dominant = isDominantStateShare(segment.percentage());
         table.addCell(cell(orDash(segment.stateId()), fonts.small, null));
         table.addCell(
-            cell(oneDecimal(segment.startTime()) + "s - " + oneDecimal(segment.endTime()) + "s", fonts.small, null));
+            cell(
+                oneDecimal(segment.startTime()) + "s - " + oneDecimal(segment.endTime()) + "s",
+                fonts.small,
+                null));
         table.addCell(
             cell(
                 formatStateShare(segment.percentage()) + (dominant ? "  (above 30%)" : ""),
@@ -740,10 +845,7 @@ public class QualityReportPdfService {
     paragraph.add(new Chunk(clean(outcome), fonts.bold));
     paragraph.add(
         new Chunk(
-            "  ·  "
-                + clean(orDash(rule.ruleId()))
-                + "  ·  "
-                + clean(orDash(rule.message())),
+            "  ·  " + clean(orDash(rule.ruleId())) + "  ·  " + clean(orDash(rule.message())),
             fonts.small));
     return paragraph;
   }
@@ -955,7 +1057,12 @@ public class QualityReportPdfService {
             "DejaVuSans.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED, true, regularFontBytes, null);
     BaseFont bold =
         BaseFont.createFont(
-            "DejaVuSans-Bold.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED, true, boldFontBytes, null);
+            "DejaVuSans-Bold.ttf",
+            BaseFont.IDENTITY_H,
+            BaseFont.EMBEDDED,
+            true,
+            boldFontBytes,
+            null);
     return new Fonts(regular, bold);
   }
 
@@ -1037,8 +1144,7 @@ public class QualityReportPdfService {
     @Override
     public void onEndPage(PdfWriter writer, Document document) {
       Phrase footer =
-          new Phrase(
-              "Pompom Creative Intelligence  ·  Page " + writer.getPageNumber(), font);
+          new Phrase("Pompom Creative Intelligence  ·  Page " + writer.getPageNumber(), font);
       ColumnText.showTextAligned(
           writer.getDirectContent(),
           Element.ALIGN_CENTER,

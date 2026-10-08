@@ -136,6 +136,7 @@
             <p><strong>References:</strong> {{ reason.references.length ? reason.references.join(', ') : 'None referenced' }}</p>
           </div>
         </section>
+        <app-general-producibility [assessment]="report.preRenderAssessment.general_producibility"></app-general-producibility>
         <p class="assessment-verdict">{{ report.preRenderAssessment.verdict }}</p>
         <div class="assessment-columns" aria-label="Specialized applicability">
           <section *ngFor="let row of toSpecializedApplicabilityRows(report.preRenderAssessment.specialized_applicability)">

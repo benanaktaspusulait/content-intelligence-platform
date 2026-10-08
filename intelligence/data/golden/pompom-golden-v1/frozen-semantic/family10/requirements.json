@@ -1,0 +1,1009 @@
+{
+  "fixtureVersion": "family10-reviewed-v1",
+  "evidenceMode": "MANUAL_SOURCE_REVIEW",
+  "scope": "FAMILY_10_ONLY",
+  "assets": {
+    "sticky-ball-01": {
+      "goldenId": "sticky-ball-01",
+      "promptHash": "378a39e7d625d5e4e36cd23436b53b0d410b326f02a3c77406853cc51e965e01",
+      "expectedStatus": "RISKY",
+      "reviewNote": "The absurd rule is feasible; exact catches, attachment and reversible deformation are the risks.",
+      "sourceEvidence": [
+        {
+          "quote": "The ball stretches toward him like soft chewing gum while its center remains stuck to the wall.",
+          "startLine": 37,
+          "endLine": 37,
+          "reference": "sticky-ball-01:L37-L37"
+        },
+        {
+          "quote": "This time the BALL stays stuck and the WOODEN WALL itself flexes slightly toward Luca like soft rubber.",
+          "startLine": 45,
+          "endLine": 45,
+          "reference": "sticky-ball-01:L45-L45"
+        },
+        {
+          "quote": "Luca catches it.",
+          "startLine": 54,
+          "endLine": 54,
+          "reference": "sticky-ball-01:L54-L54"
+        },
+        {
+          "quote": "Luca carefully tosses the ball once between his hands.",
+          "startLine": 60,
+          "endLine": 60,
+          "reference": "sticky-ball-01:L60-L60"
+        },
+        {
+          "quote": "It drops directly onto his CHEEK and sticks there with a soft PLUP.",
+          "startLine": 66,
+          "endLine": 66,
+          "reference": "sticky-ball-01:L66-L66"
+        }
+      ],
+      "videoPlanIR": {
+        "metadata": {
+          "duration": 15,
+          "generationMode": "SINGLE",
+          "generalProducibilityEvidence": {
+            "source": "FAMILY10_REVIEWED_FROZEN_PROMPT",
+            "promptHash": "378a39e7d625d5e4e36cd23436b53b0d410b326f02a3c77406853cc51e965e01",
+            "fixtureVersion": "family10-reviewed-v1",
+            "evidenceReferences": [
+              "sticky-ball-01:L37-L37",
+              "sticky-ball-01:L45-L45",
+              "sticky-ball-01:L54-L54",
+              "sticky-ball-01:L60-L60",
+              "sticky-ball-01:L66-L66"
+            ]
+          }
+        },
+        "characters": {
+          "primary": "Luca",
+          "count": 1
+        },
+        "setting": {
+          "mainProps": [
+            "red ball",
+            "wooden wall"
+          ],
+          "objectCount": 2
+        },
+        "beats": [
+          {
+            "id": "sticky-ball-01-reviewed-sequence",
+            "startTime": 0,
+            "endTime": 15,
+            "action": "The ball stretches toward him like soft chewing gum while its center remains stuck to the wall. This time the BALL stays stuck and the WOODEN WALL itself flexes slightly toward Luca like soft rubber. Luca catches it. Luca carefully tosses the ball once between his hands. It drops directly onto his CHEEK and sticks there with a soft PLUP.",
+            "consequence": "Source sequence ends as specified.",
+            "actors": [
+              "Luca"
+            ],
+            "objects": [
+              "red ball",
+              "wooden wall"
+            ],
+            "visualStateId": "sticky-ball-01"
+          }
+        ],
+        "contactPhysicsRequirement": {
+          "required": true,
+          "precision": "HIGH",
+          "essential": true,
+          "reason": "Catch, inter-hand transfer and cheek contact preserve the intended attachment.",
+          "evidenceReferences": [
+            "sticky-ball-01:L37-L37",
+            "sticky-ball-01:L45-L45",
+            "sticky-ball-01:L54-L54",
+            "sticky-ball-01:L60-L60",
+            "sticky-ball-01:L66-L66"
+          ]
+        },
+        "transformationRequirement": {
+          "required": true,
+          "complexity": "MODERATE",
+          "reversible": true,
+          "reason": "Ball and wall deformation must recover their original shapes.",
+          "evidenceReferences": [
+            "sticky-ball-01:L37-L37",
+            "sticky-ball-01:L45-L45",
+            "sticky-ball-01:L54-L54",
+            "sticky-ball-01:L60-L60",
+            "sticky-ball-01:L66-L66"
+          ]
+        }
+      }
+    },
+    "ball-crocodile-01": {
+      "goldenId": "ball-crocodile-01",
+      "promptHash": "a4f76d88158463b989250ddfec943677d1f848db3a86bbae9200871516c8ccba",
+      "expectedStatus": "RISKY",
+      "reviewNote": "Multiplication is not blocked; exact early counts and concurrent ball handling are material risks.",
+      "sourceEvidence": [
+        {
+          "quote": "It spits out THREE colourful balls in quick succession.",
+          "startLine": 69,
+          "endLine": 69,
+          "reference": "ball-crocodile-01:L69-L69"
+        },
+        {
+          "quote": "A burst of SIX soft balls fires out rapidly.",
+          "startLine": 90,
+          "endLine": 90,
+          "reference": "ball-crocodile-01:L90-L90"
+        },
+        {
+          "quote": "Luca jumps backward while balls bounce around his feet.",
+          "startLine": 92,
+          "endLine": 92,
+          "reference": "ball-crocodile-01:L92-L92"
+        },
+        {
+          "quote": "The crocodile returns exactly ONE ball.",
+          "startLine": 112,
+          "endLine": 112,
+          "reference": "ball-crocodile-01:L112-L112"
+        },
+        {
+          "quote": "Dozens of balls bounce everywhere.",
+          "startLine": 143,
+          "endLine": 143,
+          "reference": "ball-crocodile-01:L143-L143"
+        }
+      ],
+      "videoPlanIR": {
+        "metadata": {
+          "duration": 15,
+          "generationMode": "SINGLE",
+          "generalProducibilityEvidence": {
+            "source": "FAMILY10_REVIEWED_FROZEN_PROMPT",
+            "promptHash": "a4f76d88158463b989250ddfec943677d1f848db3a86bbae9200871516c8ccba",
+            "fixtureVersion": "family10-reviewed-v1",
+            "evidenceReferences": [
+              "ball-crocodile-01:L69-L69",
+              "ball-crocodile-01:L90-L90",
+              "ball-crocodile-01:L92-L92",
+              "ball-crocodile-01:L112-L112",
+              "ball-crocodile-01:L143-L143"
+            ]
+          }
+        },
+        "characters": {
+          "primary": "Luca",
+          "count": 2
+        },
+        "setting": {
+          "mainProps": [
+            "soft balls"
+          ],
+          "objectCount": 1
+        },
+        "beats": [
+          {
+            "id": "ball-crocodile-01-reviewed-sequence",
+            "startTime": 0,
+            "endTime": 15,
+            "action": "It spits out THREE colourful balls in quick succession. A burst of SIX soft balls fires out rapidly. Luca jumps backward while balls bounce around his feet. The crocodile returns exactly ONE ball. Dozens of balls bounce everywhere.",
+            "consequence": "Source sequence ends as specified.",
+            "actors": [
+              "Luca",
+              "crocodile"
+            ],
+            "objects": [
+              "soft balls"
+            ],
+            "visualStateId": "ball-crocodile-01",
+            "simultaneous": true,
+            "independentMotion": true,
+            "movingEntities": [
+              "Luca",
+              "crocodile",
+              "ball_1",
+              "ball_2",
+              "ball_3",
+              "ball_4",
+              "ball_5",
+              "ball_6"
+            ]
+          }
+        ],
+        "exactCountDependency": {
+          "required": true,
+          "requiredCount": [
+            1,
+            3,
+            6
+          ],
+          "acrossStages": true,
+          "reason": "One, three and six are explicit stage quantities; final dozens are approximate.",
+          "evidenceReferences": [
+            "ball-crocodile-01:L69-L69",
+            "ball-crocodile-01:L90-L90",
+            "ball-crocodile-01:L92-L92",
+            "ball-crocodile-01:L112-L112",
+            "ball-crocodile-01:L143-L143"
+          ]
+        },
+        "contactPhysicsRequirement": {
+          "required": true,
+          "precision": "HIGH",
+          "reason": "Targeted throws into a mouth, catches and blocks form a physical dependency chain.",
+          "evidenceReferences": [
+            "ball-crocodile-01:L69-L69",
+            "ball-crocodile-01:L90-L90",
+            "ball-crocodile-01:L92-L92",
+            "ball-crocodile-01:L112-L112",
+            "ball-crocodile-01:L143-L143"
+          ]
+        },
+        "simulationRequirement": {
+          "required": true,
+          "complexity": "MODERATE",
+          "reason": "Many loose bouncing balls surround the actor; no liquid simulation is required.",
+          "evidenceReferences": [
+            "ball-crocodile-01:L69-L69",
+            "ball-crocodile-01:L90-L90",
+            "ball-crocodile-01:L92-L92",
+            "ball-crocodile-01:L112-L112",
+            "ball-crocodile-01:L143-L143"
+          ]
+        }
+      }
+    },
+    "upside-chair-01": {
+      "goldenId": "upside-chair-01",
+      "promptHash": "6db5f744f51dca45b4be2133e8d88648b839e5d1fb5b742be5f1aaa3d016502a",
+      "expectedStatus": "RISKY",
+      "reviewNote": "Source review is assessable despite the frozen parser timeout; broad impossible rotation alone does not block.",
+      "sourceEvidence": [
+        {
+          "quote": "Kiko is already halfway into the sitting motion before noticing.",
+          "startLine": 34,
+          "endLine": 34,
+          "reference": "upside-chair-01:L34-L34"
+        },
+        {
+          "quote": "She freezes inches above it.",
+          "startLine": 36,
+          "endLine": 36,
+          "reference": "upside-chair-01:L36-L36"
+        },
+        {
+          "quote": "The ENTIRE chair suddenly flips upside down WITH Kiko on it.",
+          "startLine": 132,
+          "endLine": 132,
+          "reference": "upside-chair-01:L132-L132"
+        },
+        {
+          "quote": "Exact English dialogue REQUIRED:",
+          "startLine": 146,
+          "endLine": 146,
+          "reference": "upside-chair-01:L146-L146"
+        },
+        {
+          "quote": "Visible mouth movement.\nAccurate lip-sync.",
+          "startLine": 168,
+          "endLine": 169,
+          "reference": "upside-chair-01:L168-L169"
+        }
+      ],
+      "videoPlanIR": {
+        "metadata": {
+          "duration": 17,
+          "generationMode": "SINGLE",
+          "generalProducibilityEvidence": {
+            "source": "FAMILY10_REVIEWED_FROZEN_PROMPT",
+            "promptHash": "6db5f744f51dca45b4be2133e8d88648b839e5d1fb5b742be5f1aaa3d016502a",
+            "fixtureVersion": "family10-reviewed-v1",
+            "evidenceReferences": [
+              "upside-chair-01:L34-L34",
+              "upside-chair-01:L36-L36",
+              "upside-chair-01:L132-L132",
+              "upside-chair-01:L146-L146",
+              "upside-chair-01:L168-L169"
+            ]
+          }
+        },
+        "characters": {
+          "primary": "Kiko",
+          "count": 1
+        },
+        "setting": {
+          "mainProps": [
+            "chair"
+          ],
+          "objectCount": 1
+        },
+        "beats": [
+          {
+            "id": "upside-chair-01-reviewed-sequence",
+            "startTime": 0,
+            "endTime": 17,
+            "action": "Kiko is already halfway into the sitting motion before noticing. She freezes inches above it. The ENTIRE chair suddenly flips upside down WITH Kiko on it. Exact English dialogue REQUIRED: Visible mouth movement.\nAccurate lip-sync.",
+            "consequence": "Source sequence ends as specified.",
+            "actors": [
+              "Kiko"
+            ],
+            "objects": [
+              "chair"
+            ],
+            "visualStateId": "upside-chair-01"
+          }
+        ],
+        "contactPhysicsRequirement": {
+          "required": true,
+          "precision": "HIGH",
+          "essential": true,
+          "reason": "Near-chair sitting and the final attached body/chair flip require controlled contact.",
+          "evidenceReferences": [
+            "upside-chair-01:L34-L34",
+            "upside-chair-01:L36-L36",
+            "upside-chair-01:L132-L132",
+            "upside-chair-01:L146-L146",
+            "upside-chair-01:L168-L169"
+          ]
+        },
+        "characterContinuity": {
+          "required": true,
+          "largePoseChanges": true,
+          "reason": "Kiko remains the same character through seated and upside-down poses.",
+          "evidenceReferences": [
+            "upside-chair-01:L34-L34",
+            "upside-chair-01:L36-L36",
+            "upside-chair-01:L132-L132",
+            "upside-chair-01:L146-L146",
+            "upside-chair-01:L168-L169"
+          ]
+        },
+        "dialogueRequirement": {
+          "required": true,
+          "lipSyncRequired": true,
+          "reason": "Exact audible lines and accurate visible lip-sync are mandatory.",
+          "evidenceReferences": [
+            "upside-chair-01:L34-L34",
+            "upside-chair-01:L36-L36",
+            "upside-chair-01:L132-L132",
+            "upside-chair-01:L146-L146",
+            "upside-chair-01:L168-L169"
+          ]
+        }
+      }
+    },
+    "lamp-01": {
+      "goldenId": "lamp-01",
+      "promptHash": "e2a4c2b2e3ab5ed7927831c2c264e779c9d9b251b6e979e997c1c271bd7ff0bc",
+      "expectedStatus": "RISKY",
+      "reviewNote": "Ordinary lamp switching is low risk; mirror/reflection coherence and mandatory lip-sync are material.",
+      "sourceEvidence": [
+        {
+          "quote": "She uses a small mirror or reflective object to “watch” the lamp indirectly.",
+          "startLine": 84,
+          "endLine": 84,
+          "reference": "lamp-01:L84-L84"
+        },
+        {
+          "quote": "MANDATORY SPOKEN DIALOGUE / LIP-SYNC LOCK:",
+          "startLine": 58,
+          "endLine": 58,
+          "reference": "lamp-01:L58-L58"
+        },
+        {
+          "quote": "Speech is REQUIRED.",
+          "startLine": 59,
+          "endLine": 59,
+          "reference": "lamp-01:L59-L59"
+        }
+      ],
+      "videoPlanIR": {
+        "metadata": {
+          "duration": 15,
+          "generationMode": "SINGLE",
+          "generalProducibilityEvidence": {
+            "source": "FAMILY10_REVIEWED_FROZEN_PROMPT",
+            "promptHash": "e2a4c2b2e3ab5ed7927831c2c264e779c9d9b251b6e979e997c1c271bd7ff0bc",
+            "fixtureVersion": "family10-reviewed-v1",
+            "evidenceReferences": [
+              "lamp-01:L84-L84",
+              "lamp-01:L58-L58",
+              "lamp-01:L59-L59"
+            ]
+          }
+        },
+        "characters": {
+          "primary": "Kiko",
+          "count": 1
+        },
+        "setting": {
+          "mainProps": [
+            "main lamp",
+            "small mirror",
+            "second light"
+          ],
+          "objectCount": 3
+        },
+        "beats": [
+          {
+            "id": "lamp-01-reviewed-sequence",
+            "startTime": 0,
+            "endTime": 15,
+            "action": "She uses a small mirror or reflective object to “watch” the lamp indirectly. MANDATORY SPOKEN DIALOGUE / LIP-SYNC LOCK: Speech is REQUIRED.",
+            "consequence": "Source sequence ends as specified.",
+            "actors": [
+              "Kiko"
+            ],
+            "objects": [
+              "main lamp",
+              "small mirror",
+              "second light"
+            ],
+            "visualStateId": "lamp-01"
+          }
+        ],
+        "spatialRequirement": {
+          "required": true,
+          "precision": "HIGH",
+          "essential": true,
+          "reason": "Indirect observation through a mirror requires a coherent reflected spatial relation.",
+          "evidenceReferences": [
+            "lamp-01:L84-L84",
+            "lamp-01:L58-L58",
+            "lamp-01:L59-L59"
+          ]
+        },
+        "dialogueRequirement": {
+          "required": true,
+          "lipSyncRequired": true,
+          "reason": "The explicit dialogue/lip-sync lock requires precise speech synchronization.",
+          "evidenceReferences": [
+            "lamp-01:L84-L84",
+            "lamp-01:L58-L58",
+            "lamp-01:L59-L59"
+          ]
+        }
+      }
+    },
+    "snack-box-01": {
+      "goldenId": "snack-box-01",
+      "promptHash": "513554d245fefa31659587f26144ec53cbc099b867da9180114305dc845b1154",
+      "expectedStatus": "RISKY",
+      "reviewNote": "Intentional hidden content replacement is not an unchanged-object continuity failure; speech and contact timing remain risky.",
+      "sourceEvidence": [
+        {
+          "quote": "Its only trick is that contents change between openings.",
+          "startLine": 50,
+          "endLine": 50,
+          "reference": "snack-box-01:L50-L50"
+        },
+        {
+          "quote": "The lid suddenly flips shut or the cracker pops back down out of reach.",
+          "startLine": 90,
+          "endLine": 90,
+          "reference": "snack-box-01:L90-L90"
+        },
+        {
+          "quote": "MANDATORY SPOKEN DIALOGUE / LIP-SYNC LOCK:",
+          "startLine": 59,
+          "endLine": 59,
+          "reference": "snack-box-01:L59-L59"
+        },
+        {
+          "quote": "Speech is REQUIRED.",
+          "startLine": 60,
+          "endLine": 60,
+          "reference": "snack-box-01:L60-L60"
+        }
+      ],
+      "videoPlanIR": {
+        "metadata": {
+          "duration": 15,
+          "generationMode": "SINGLE",
+          "generalProducibilityEvidence": {
+            "source": "FAMILY10_REVIEWED_FROZEN_PROMPT",
+            "promptHash": "513554d245fefa31659587f26144ec53cbc099b867da9180114305dc845b1154",
+            "fixtureVersion": "family10-reviewed-v1",
+            "evidenceReferences": [
+              "snack-box-01:L50-L50",
+              "snack-box-01:L90-L90",
+              "snack-box-01:L59-L59",
+              "snack-box-01:L60-L60"
+            ]
+          }
+        },
+        "characters": {
+          "primary": "Mimi",
+          "count": 1
+        },
+        "setting": {
+          "mainProps": [
+            "snack box",
+            "contents"
+          ],
+          "objectCount": 2
+        },
+        "beats": [
+          {
+            "id": "snack-box-01-reviewed-sequence",
+            "startTime": 0,
+            "endTime": 15,
+            "action": "Its only trick is that contents change between openings. The lid suddenly flips shut or the cracker pops back down out of reach. MANDATORY SPOKEN DIALOGUE / LIP-SYNC LOCK: Speech is REQUIRED.",
+            "consequence": "Source sequence ends as specified.",
+            "actors": [
+              "Mimi"
+            ],
+            "objects": [
+              "snack box",
+              "contents"
+            ],
+            "visualStateId": "snack-box-01"
+          }
+        ],
+        "contactPhysicsRequirement": {
+          "required": true,
+          "precision": "MODERATE",
+          "reason": "Lid/hand or cracker/reach timing must coincide, without fine finger manipulation.",
+          "evidenceReferences": [
+            "snack-box-01:L50-L50",
+            "snack-box-01:L90-L90",
+            "snack-box-01:L59-L59",
+            "snack-box-01:L60-L60"
+          ]
+        },
+        "dialogueRequirement": {
+          "required": true,
+          "lipSyncRequired": true,
+          "reason": "The explicit dialogue/lip-sync lock requires precise speech synchronization.",
+          "evidenceReferences": [
+            "snack-box-01:L50-L50",
+            "snack-box-01:L90-L90",
+            "snack-box-01:L59-L59",
+            "snack-box-01:L60-L60"
+          ]
+        },
+        "objectContinuity": {
+          "required": true,
+          "precision": "LOW",
+          "reason": "The visible box stays identical; hidden contents intentionally change.",
+          "evidenceReferences": [
+            "snack-box-01:L50-L50",
+            "snack-box-01:L90-L90",
+            "snack-box-01:L59-L59",
+            "snack-box-01:L60-L60"
+          ]
+        },
+        "transformationRequirement": {
+          "required": true,
+          "complexity": "LOW",
+          "reason": "Broad content swaps happen while hidden; no detailed visible morph is necessary.",
+          "evidenceReferences": [
+            "snack-box-01:L50-L50",
+            "snack-box-01:L90-L90",
+            "snack-box-01:L59-L59",
+            "snack-box-01:L60-L60"
+          ]
+        }
+      }
+    },
+    "box-cat-01": {
+      "goldenId": "box-cat-01",
+      "promptHash": "d93add25456b009ad9937920d1d40d56cbbd517ba6883b743f99a6c6f60bb854",
+      "expectedStatus": "PRODUCIBLE",
+      "reviewNote": "Sequential broad gestures, short cat repositioning and rigid-box lifting have no material precision dependency.",
+      "sourceEvidence": [
+        {
+          "quote": "Luca gently gestures the cat out of the box without touching it.",
+          "startLine": 17,
+          "endLine": 17,
+          "reference": "box-cat-01:L17-L17"
+        },
+        {
+          "quote": "Luca lifts the rigid empty box, moves it a short distance, and sets it down.",
+          "startLine": 20,
+          "endLine": 20,
+          "reference": "box-cat-01:L20-L20"
+        },
+        {
+          "quote": "one continuous fixed-camera shot",
+          "startLine": 9,
+          "endLine": 9,
+          "reference": "box-cat-01:L9-L9"
+        },
+        {
+          "quote": "- no child-cat body contact",
+          "startLine": 39,
+          "endLine": 39,
+          "reference": "box-cat-01:L39-L39"
+        },
+        {
+          "quote": "- no realistic fur simulation",
+          "startLine": 40,
+          "endLine": 40,
+          "reference": "box-cat-01:L40-L40"
+        }
+      ],
+      "videoPlanIR": {
+        "metadata": {
+          "duration": 15,
+          "generationMode": "SINGLE",
+          "generalProducibilityEvidence": {
+            "source": "FAMILY10_REVIEWED_FROZEN_PROMPT",
+            "promptHash": "d93add25456b009ad9937920d1d40d56cbbd517ba6883b743f99a6c6f60bb854",
+            "fixtureVersion": "family10-reviewed-v1",
+            "evidenceReferences": [
+              "box-cat-01:L17-L17",
+              "box-cat-01:L20-L20",
+              "box-cat-01:L9-L9",
+              "box-cat-01:L39-L39",
+              "box-cat-01:L40-L40"
+            ]
+          }
+        },
+        "characters": {
+          "primary": "Luca",
+          "count": 2
+        },
+        "setting": {
+          "mainProps": [
+            "rigid toy box"
+          ],
+          "objectCount": 1
+        },
+        "beats": [
+          {
+            "id": "box-cat-01-reviewed-sequence",
+            "startTime": 0,
+            "endTime": 15,
+            "action": "Luca gently gestures the cat out of the box without touching it. Luca lifts the rigid empty box, moves it a short distance, and sets it down. one continuous fixed-camera shot - no child-cat body contact - no realistic fur simulation",
+            "consequence": "Source sequence ends as specified.",
+            "actors": [
+              "Luca",
+              "cat"
+            ],
+            "objects": [
+              "rigid toy box"
+            ],
+            "visualStateId": "box-cat-01"
+          }
+        ]
+      }
+    },
+    "spot-cat-01": {
+      "goldenId": "spot-cat-01",
+      "promptHash": "76ea701ceb81d9bc4bc0ac6b9ed6998cea84c8423bb4fa1fa9793d9c523622e5",
+      "expectedStatus": "RISKY",
+      "reviewNote": "Risk is target/timing precision rather than historical performance or any exact object counting.",
+      "sourceEvidence": [
+        {
+          "quote": "At the same moment, the cat is curling into that exact spot just before Kiko sits.",
+          "startLine": 14,
+          "endLine": 14,
+          "reference": "spot-cat-01:L14-L14"
+        },
+        {
+          "quote": "Kiko pretends to sit in one spot, then quickly changes direction and commits to another.",
+          "startLine": 23,
+          "endLine": 23,
+          "reference": "spot-cat-01:L23-L23"
+        },
+        {
+          "quote": "At the exact moment she truly commits, the cat makes one final short move into the spot and curls up.",
+          "startLine": 26,
+          "endLine": 26,
+          "reference": "spot-cat-01:L26-L26"
+        }
+      ],
+      "videoPlanIR": {
+        "metadata": {
+          "duration": 15,
+          "generationMode": "SINGLE",
+          "generalProducibilityEvidence": {
+            "source": "FAMILY10_REVIEWED_FROZEN_PROMPT",
+            "promptHash": "76ea701ceb81d9bc4bc0ac6b9ed6998cea84c8423bb4fa1fa9793d9c523622e5",
+            "fixtureVersion": "family10-reviewed-v1",
+            "evidenceReferences": [
+              "spot-cat-01:L14-L14",
+              "spot-cat-01:L23-L23",
+              "spot-cat-01:L26-L26"
+            ]
+          }
+        },
+        "characters": {
+          "primary": "Kiko",
+          "count": 2
+        },
+        "setting": {
+          "mainProps": [
+            "sitting target"
+          ],
+          "objectCount": 1
+        },
+        "beats": [
+          {
+            "id": "spot-cat-01-reviewed-sequence",
+            "startTime": 0,
+            "endTime": 15,
+            "action": "At the same moment, the cat is curling into that exact spot just before Kiko sits. Kiko pretends to sit in one spot, then quickly changes direction and commits to another. At the exact moment she truly commits, the cat makes one final short move into the spot and curls up.",
+            "consequence": "Source sequence ends as specified.",
+            "actors": [
+              "Kiko",
+              "cat"
+            ],
+            "objects": [
+              "sitting target"
+            ],
+            "visualStateId": "spot-cat-01"
+          }
+        ],
+        "spatialRequirement": {
+          "required": true,
+          "precision": "HIGH",
+          "essential": true,
+          "reason": "The cat must preempt Kiko at the same selected sitting target, including the decoy change.",
+          "evidenceReferences": [
+            "spot-cat-01:L14-L14",
+            "spot-cat-01:L23-L23",
+            "spot-cat-01:L26-L26"
+          ]
+        },
+        "contactPhysicsRequirement": {
+          "required": true,
+          "precision": "MODERATE",
+          "reason": "Near-contact avoidance must stay coordinated while Kiko stops above the target.",
+          "evidenceReferences": [
+            "spot-cat-01:L14-L14",
+            "spot-cat-01:L23-L23",
+            "spot-cat-01:L26-L26"
+          ]
+        }
+      }
+    },
+    "sneaky-door-01": {
+      "goldenId": "sneaky-door-01",
+      "promptHash": "f85635f1f10b4834ade72f8091a4a2f2698525d474f02285fa374b56c9c14392",
+      "expectedStatus": "RISKY",
+      "reviewNote": "Multi-segment continuity is explicit and generator-agnostic; no stitching execution is introduced.",
+      "sourceEvidence": [
+        {
+          "quote": "- 15 seconds total: 3 × 5-second clips",
+          "startLine": 5,
+          "endLine": 5,
+          "reference": "sneaky-door-01:L5-L5"
+        },
+        {
+          "quote": "Export the unmodified final frame as `@image2`. Reject it if Mimi, door, world, colour or camera drifted.",
+          "startLine": 31,
+          "endLine": 31,
+          "reference": "sneaky-door-01:L31-L31"
+        },
+        {
+          "quote": "- Dialogue is exact and appears once per listed line.",
+          "startLine": 60,
+          "endLine": 60,
+          "reference": "sneaky-door-01:L60-L60"
+        },
+        {
+          "quote": "- No darkening, HDR, saturation, gloss, sharpening or world-layout drift.",
+          "startLine": 63,
+          "endLine": 63,
+          "reference": "sneaky-door-01:L63-L63"
+        }
+      ],
+      "videoPlanIR": {
+        "metadata": {
+          "duration": 15,
+          "generationMode": "MULTI_SEGMENT",
+          "generalProducibilityEvidence": {
+            "source": "FAMILY10_REVIEWED_FROZEN_PROMPT",
+            "promptHash": "f85635f1f10b4834ade72f8091a4a2f2698525d474f02285fa374b56c9c14392",
+            "fixtureVersion": "family10-reviewed-v1",
+            "evidenceReferences": [
+              "sneaky-door-01:L5-L5",
+              "sneaky-door-01:L31-L31",
+              "sneaky-door-01:L60-L60",
+              "sneaky-door-01:L63-L63"
+            ]
+          }
+        },
+        "characters": {
+          "primary": "Mimi",
+          "count": 2
+        },
+        "setting": {
+          "mainProps": [
+            "front door"
+          ],
+          "objectCount": 1
+        },
+        "beats": [
+          {
+            "id": "sneaky-door-01-reviewed-sequence",
+            "startTime": 0,
+            "endTime": 15,
+            "action": "- 15 seconds total: 3 × 5-second clips Export the unmodified final frame as `@image2`. Reject it if Mimi, door, world, colour or camera drifted. - Dialogue is exact and appears once per listed line. - No darkening, HDR, saturation, gloss, sharpening or world-layout drift.",
+            "consequence": "Source sequence ends as specified.",
+            "actors": [
+              "Mimi",
+              "Kiko"
+            ],
+            "objects": [
+              "front door"
+            ],
+            "visualStateId": "sneaky-door-01"
+          }
+        ],
+        "segmentContinuityRequirement": {
+          "required": true,
+          "precision": "HIGH",
+          "essential": true,
+          "reason": "Three independent clips must preserve actor, door, environment and camera state at handoff.",
+          "evidenceReferences": [
+            "sneaky-door-01:L5-L5",
+            "sneaky-door-01:L31-L31",
+            "sneaky-door-01:L60-L60",
+            "sneaky-door-01:L63-L63"
+          ]
+        },
+        "characterContinuity": {
+          "required": true,
+          "acrossSegments": true,
+          "precision": "HIGH",
+          "reason": "Mimi identity and the later Kiko entrance remain locked across generated clips.",
+          "evidenceReferences": [
+            "sneaky-door-01:L5-L5",
+            "sneaky-door-01:L31-L31",
+            "sneaky-door-01:L60-L60",
+            "sneaky-door-01:L63-L63"
+          ]
+        },
+        "objectContinuity": {
+          "required": true,
+          "acrossSegments": true,
+          "precision": "HIGH",
+          "reason": "The same door geometry, material and exposure carry across frame anchors.",
+          "evidenceReferences": [
+            "sneaky-door-01:L5-L5",
+            "sneaky-door-01:L31-L31",
+            "sneaky-door-01:L60-L60",
+            "sneaky-door-01:L63-L63"
+          ]
+        },
+        "dialogueRequirement": {
+          "required": true,
+          "precision": "MODERATE",
+          "reason": "Exact audible lines are required; the card does not independently specify accurate lip-sync.",
+          "evidenceReferences": [
+            "sneaky-door-01:L5-L5",
+            "sneaky-door-01:L31-L31",
+            "sneaky-door-01:L60-L60",
+            "sneaky-door-01:L63-L63"
+          ]
+        }
+      }
+    },
+    "island-journal-01": {
+      "goldenId": "island-journal-01",
+      "promptHash": "2ef992226b13e968e43f065a6cad606039c3d7af27e92577ec754d9d342830de",
+      "expectedStatus": "RISKY",
+      "reviewNote": "Length and slow montage are not production failures; exact cross-scene journal identity is material.",
+      "sourceEvidence": [
+        {
+          "quote": "10.0-16.0 SEC",
+          "startLine": 31,
+          "endLine": 31,
+          "reference": "island-journal-01:L31-L31"
+        },
+        {
+          "quote": "They find a small cave. Inside: an old wooden chest.",
+          "startLine": 32,
+          "endLine": 32,
+          "reference": "island-journal-01:L32-L32"
+        },
+        {
+          "quote": "SMASH CUT: Luca wakes in his own bed.",
+          "startLine": 45,
+          "endLine": 45,
+          "reference": "island-journal-01:L45-L45"
+        },
+        {
+          "quote": "Then notices the SAME journal in his hand.",
+          "startLine": 47,
+          "endLine": 47,
+          "reference": "island-journal-01:L47-L47"
+        },
+        {
+          "quote": "No narration. No on-screen text.",
+          "startLine": 51,
+          "endLine": 51,
+          "reference": "island-journal-01:L51-L51"
+        }
+      ],
+      "videoPlanIR": {
+        "metadata": {
+          "duration": 25.5,
+          "generationMode": "SINGLE",
+          "generalProducibilityEvidence": {
+            "source": "FAMILY10_REVIEWED_FROZEN_PROMPT",
+            "promptHash": "2ef992226b13e968e43f065a6cad606039c3d7af27e92577ec754d9d342830de",
+            "fixtureVersion": "family10-reviewed-v1",
+            "evidenceReferences": [
+              "island-journal-01:L31-L31",
+              "island-journal-01:L32-L32",
+              "island-journal-01:L45-L45",
+              "island-journal-01:L47-L47",
+              "island-journal-01:L51-L51"
+            ]
+          }
+        },
+        "characters": {
+          "primary": "Luca",
+          "count": 2
+        },
+        "setting": {
+          "mainProps": [
+            "journal",
+            "coconut",
+            "map",
+            "chest"
+          ],
+          "objectCount": 4
+        },
+        "beats": [
+          {
+            "id": "island-journal-01-reviewed-sequence",
+            "startTime": 0,
+            "endTime": 25.5,
+            "action": "10.0-16.0 SEC They find a small cave. Inside: an old wooden chest. SMASH CUT: Luca wakes in his own bed. Then notices the SAME journal in his hand. No narration. No on-screen text.",
+            "consequence": "Source sequence ends as specified.",
+            "actors": [
+              "Luca",
+              "guest"
+            ],
+            "objects": [
+              "journal",
+              "coconut",
+              "map",
+              "chest"
+            ],
+            "visualStateId": "island-journal-01"
+          }
+        ],
+        "sceneContinuityRequirement": {
+          "required": true,
+          "precision": "HIGH",
+          "essential": true,
+          "reason": "The same journal must transfer from dream island to bedroom across a scene cut.",
+          "evidenceReferences": [
+            "island-journal-01:L31-L31",
+            "island-journal-01:L32-L32",
+            "island-journal-01:L45-L45",
+            "island-journal-01:L47-L47",
+            "island-journal-01:L51-L51"
+          ]
+        },
+        "objectContinuity": {
+          "required": true,
+          "acrossScenes": true,
+          "precision": "HIGH",
+          "reason": "Journal identity is essential to the final cross-scene state transfer.",
+          "evidenceReferences": [
+            "island-journal-01:L31-L31",
+            "island-journal-01:L32-L32",
+            "island-journal-01:L45-L45",
+            "island-journal-01:L47-L47",
+            "island-journal-01:L51-L51"
+          ]
+        },
+        "characterContinuity": {
+          "required": true,
+          "acrossScenes": true,
+          "reason": "Luca persists across beach, cave and bedroom.",
+          "evidenceReferences": [
+            "island-journal-01:L31-L31",
+            "island-journal-01:L32-L32",
+            "island-journal-01:L45-L45",
+            "island-journal-01:L47-L47",
+            "island-journal-01:L51-L51"
+          ]
+        }
+      }
+    }
+  }
+}
