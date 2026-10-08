@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { formatStateShare, isStateShareDanger, isStateShareWarning } from './state-share';
-import { formatEvaluationCoverage, formatNullableScore } from './family9-representation';
+import { formatCreativeGrade, formatEvaluationCoverage, formatNullableScore, formatReadiness } from './family9-representation';
 import { toSpecializedApplicabilityRows } from './specialized-applicability';
 import type { SpecializedApplicability } from './specialized-applicability';
 import { TimelineChartComponent } from './timeline-chart.component';
@@ -53,7 +53,7 @@ interface FirstFrameAssessment { textual_intent: { status: string; reason: strin
 interface RenderAuthorization { status: string; final_video_render: string; creative_failures: string[]; pending_evidence_blockers: string[]; technical_failures: string[]; reason: string; }
 interface Family7Aggregation { score: number | null; scoredCount: number; denominator: number; passCount: number; failCount: number; unknownCount: number; notEvaluatedCount: number; notApplicableCount: number; serviceErrorCount: number; evaluationCoverage: number | null; aggregationState: string; }
 interface Family8Assessment { creativeQuality: { creativeScore: number | null; creativeGrade: string | null; familyScores: Record<string, number | null> }; evidenceCompleteness: { status: string; evaluationCoverage: number | null; aggregation: Record<string, any> }; renderAuthorization: { status: string; reasons: Array<{ code: string; source: string; message: string; references: string[] }> }; legacy: { grade?: string; readiness?: string }; }
-interface PreRenderAssessment { name: string; family8?: Family8Assessment; aggregation?: Family7Aggregation | null; engine_profile?: Record<string, any>; story_structure?: Record<string, any>; temporal_complexity?: Record<string, any>; grade: string; creative_grade?: string | null; creative_score?: number | null; prompt_stage?: string; first_frame?: FirstFrameAssessment; render_authorization?: RenderAuthorization; evidence_completeness?: EvidenceCompleteness | null; specialized_applicability: Record<string, SpecializedApplicability>; readiness: string; assessment_coverage_percent: number; verdict: string; strengths: string[]; concerns: string[]; recommended_changes: string[]; dimensions: PreRenderDimension[]; stable_intent: string[]; provenance: Record<string, any>; }
+interface PreRenderAssessment { name: string; family8?: Family8Assessment; aggregation?: Family7Aggregation | null; engine_profile?: Record<string, any>; story_structure?: Record<string, any>; temporal_complexity?: Record<string, any>; grade?: string | null; creative_grade?: string | null; creative_score?: number | null; prompt_stage?: string | null; first_frame?: FirstFrameAssessment; render_authorization?: RenderAuthorization; evidence_completeness?: EvidenceCompleteness | null; specialized_applicability: Record<string, SpecializedApplicability>; readiness?: string | null; assessment_coverage_percent: number; verdict: string; strengths: string[]; concerns: string[]; recommended_changes: string[]; dimensions: PreRenderDimension[]; stable_intent: string[]; provenance: Record<string, any>; }
 
 interface LinkedValidationResponse { validationRecordId: number; report: QualityReport; }
 interface StoredValidation { validationRecordId: number; report: QualityReport; analyzedAt: string; }
@@ -218,7 +218,9 @@ export class QualityValidatorComponent implements AfterViewInit, OnDestroy {
   validationRecordId: number | null = null;
   report: QualityReport | null = null;
   readonly formatNullableScore = formatNullableScore;
+  readonly formatCreativeGrade = formatCreativeGrade;
   readonly formatEvaluationCoverage = formatEvaluationCoverage;
+  readonly formatReadiness = formatReadiness;
   readonly toSpecializedApplicabilityRows = toSpecializedApplicabilityRows;
   loading: boolean = false;
   error: string | null = null;

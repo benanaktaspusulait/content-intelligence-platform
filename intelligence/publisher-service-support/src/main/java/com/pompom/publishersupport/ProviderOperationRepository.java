@@ -6,6 +6,7 @@ import com.pompom.publishercontract.PublisherCapability;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.PersistenceException;
+import java.time.Duration;
 import java.time.Instant;
 import java.util.Objects;
 import java.util.Optional;
@@ -254,6 +255,19 @@ public class ProviderOperationRepository {
       return newOperation || operation.getStatus() == null
           ? Optional.empty()
           : Optional.of(operation.toPublishResult());
+    }
+
+    public boolean isStale(Instant now, Duration staleAfter) {
+      Objects.requireNonNull(now, "now");
+      Objects.requireNonNull(staleAfter, "staleAfter");
+      if (staleAfter.isZero() || staleAfter.isNegative()) {
+        throw new IllegalArgumentException("stale claim threshold must be positive");
+      }
+      Instant startedAt = operation.getStartedAt();
+      return !newOperation
+          && operation.getStatus() == null
+          && startedAt != null
+          && !now.isBefore(startedAt.plus(staleAfter));
     }
   }
 }

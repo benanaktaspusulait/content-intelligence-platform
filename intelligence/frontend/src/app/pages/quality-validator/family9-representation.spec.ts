@@ -1,7 +1,9 @@
 import {
   formatAuthorizationReason,
+  formatCreativeGrade,
   formatEvaluationCoverage,
   formatNullableScore,
+  formatReadiness,
 } from './family9-representation';
 
 describe('Family 9 representation consistency', () => {
@@ -35,5 +37,25 @@ describe('Family 9 representation consistency', () => {
     expect(formatted.source).toBe('EVIDENCE_COMPLETENESS');
     expect(formatted.message).toBe('Visual evidence pending');
     expect(formatted.references).toEqual(['first-frame', 'silhouette']);
+  });
+
+  it('prefers Family 8 creative grade, then canonical grade, and never legacy grade', () => {
+    expect(formatCreativeGrade({
+      family8: { creativeQuality: { creativeGrade: 'A' } },
+      creative_grade: 'B',
+    })).toBe('A');
+    expect(formatCreativeGrade({
+      family8: { creativeQuality: { creativeGrade: null } },
+      creative_grade: 'B',
+    })).toBe('B');
+    expect(formatCreativeGrade({ grade: 'A' })).toBe('N/A');
+    expect(formatCreativeGrade(undefined)).toBe('N/A');
+  });
+
+  it('formats prompt stage or legacy readiness safely without mixing canonical axes', () => {
+    expect(formatReadiness('BLOCKED_PENDING_EVIDENCE', 'READY_TO_RENDER')).toBe('BLOCKED PENDING EVIDENCE');
+    expect(formatReadiness(undefined, 'READY_TO_RENDER')).toBe('READY TO RENDER');
+    expect(formatReadiness(undefined, undefined)).toBe('N/A');
+    expect(formatReadiness('', '')).toBe('N/A');
   });
 });

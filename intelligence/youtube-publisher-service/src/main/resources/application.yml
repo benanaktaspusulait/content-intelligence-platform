@@ -1,0 +1,50 @@
+spring:
+  application:
+    name: pompom-youtube-publisher-service
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/pompom}
+    username: ${SPRING_DATASOURCE_USERNAME:pompom}
+    password: ${SPRING_DATASOURCE_PASSWORD:pompom_local}
+  jpa:
+    hibernate:
+      ddl-auto: none
+  flyway:
+    enabled: false
+  jackson:
+    default-property-inclusion: non_null
+
+server:
+  port: ${SERVER_PORT:8084}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      probes:
+        enabled: true
+
+pompom:
+  youtube:
+    write-enabled: ${YOUTUBE_PUBLISH_SERVICE_WRITE_ENABLED:false}
+    publish-enabled: ${YOUTUBE_ENABLE:false}
+    dry-run: ${YOUTUBE_DRY_RUN:true}
+    internal-token: ${YOUTUBE_PUBLISHER_INTERNAL_TOKEN:}
+    client-id: ${YOUTUBE_CLIENT_ID:}
+    client-secret: ${YOUTUBE_CLIENT_SECRET:}
+    access-token: ${YOUTUBE_ACCESS_TOKEN:}
+    refresh-token: ${YOUTUBE_REFRESH_TOKEN:}
+    token-url: ${YOUTUBE_TOKEN_URL:https://oauth2.googleapis.com/token}
+    api-base-url: ${YOUTUBE_API_BASE:https://www.googleapis.com/youtube/v3}
+    upload-base-url: ${YOUTUBE_UPLOAD_BASE:https://www.googleapis.com/upload/youtube/v3}
+    chunk-size: ${YOUTUBE_CHUNK_SIZE:10485760}
+    max-file-size: ${YOUTUBE_MAX_FILE_SIZE:536870912}
+    request-timeout: ${YOUTUBE_REQUEST_TIMEOUT:120s}
+    upload-timeout: ${YOUTUBE_UPLOAD_TIMEOUT:600s}
+    max-attempts: ${YOUTUBE_MAX_ATTEMPTS:5}
+    default-category-id: ${YOUTUBE_DEFAULT_CATEGORY_ID:22}
+    default-privacy-status: ${YOUTUBE_PRIVACY:public}
+    platform-account-id: ${YOUTUBE_PLATFORM_ACCOUNT_ID:}
+

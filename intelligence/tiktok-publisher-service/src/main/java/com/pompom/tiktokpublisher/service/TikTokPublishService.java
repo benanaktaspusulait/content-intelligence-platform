@@ -183,7 +183,9 @@ public class TikTokPublishService {
     }
     ProviderOperationRecord record = operation.orElseThrow();
     if (record.getStatus() == PublishStatus.COMPLETED
-        || record.getStatus() == PublishStatus.FAILED) {
+        || record.getStatus() == PublishStatus.FAILED
+        || (record.getStatus() == PublishStatus.RECONCILIATION_REQUIRED
+            && result.status() == PublishStatus.RECONCILIATION_REQUIRED)) {
       return;
     }
     operationRepository.recordResult(capability, record.getCommandIdempotencyKey(), result);

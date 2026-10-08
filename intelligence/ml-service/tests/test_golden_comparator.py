@@ -475,11 +475,17 @@ def test_cohort_representation_mismatch_is_independent_release_metric() -> None:
         "goldenId": "asset-1",
         "status": "OK",
         "report": {"overallScore": 82.5},
-        "assessment": {"creative_score": 82.5},
+        "assessment": {
+            "creative_score": 82.5,
+            "family8": {"creativeQuality": {"creativeScore": 82.5}},
+        },
         "apiReport": {
             "overall_score": 82.5,
             "score_card": {"score": 0.0},
-            "pre_render_assessment": {"creative_score": 82.5},
+            "pre_render_assessment": {
+                "creative_score": 82.5,
+                "family8": {"creativeQuality": {"creativeScore": 82.5}},
+            },
         },
     }
 

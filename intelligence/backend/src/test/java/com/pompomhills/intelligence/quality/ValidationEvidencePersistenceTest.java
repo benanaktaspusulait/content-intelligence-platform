@@ -60,6 +60,17 @@ class ValidationEvidencePersistenceTest {
   }
 
   @Test
+  void persistsAndReadsBackAPrecisionSensitiveOverallScore() {
+    QualityValidationEntity entity = baseEntity();
+    entity.setOverallScore(82.567);
+
+    QualityValidationEntity saved = repository.saveAndFlush(entity);
+
+    QualityValidationEntity reloaded = repository.findById(saved.getId()).orElseThrow();
+    assertThat(reloaded.getOverallScore()).isEqualTo(82.567);
+  }
+
+  @Test
   void persistsAndReadsBackARecordWithNullOverallScore() {
     QualityValidationEntity entity = baseEntity();
     entity.setOverallScore(null);

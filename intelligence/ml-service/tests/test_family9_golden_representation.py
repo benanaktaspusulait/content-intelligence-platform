@@ -70,11 +70,19 @@ def coherent_snapshot() -> dict[str, Any]:
         "creative_grade": "A",
         "assessment_coverage_percent": 75,
         "aggregation": family8["evidenceCompleteness"]["aggregation"],
+        "evidence_completeness": {
+            "status": family8["evidenceCompleteness"]["status"],
+            "evaluationCoverage": family8["evidenceCompleteness"]["evaluationCoverage"],
+        },
+        "render_authorization": {
+            "status": family8["renderAuthorization"]["status"],
+        },
         "family8": family8,
     }
     return {
         "goldenId": "family9-synthetic",
         "status": "OK",
+        "aggregation": deepcopy(family8["evidenceCompleteness"]["aggregation"]),
         "report": {
             "overallScore": None,
             "familyScores": {"family9_sticky_ball": None},
@@ -124,6 +132,22 @@ def test_null_score_mutation_is_not_silently_coerced_to_zero() -> None:
     assert any("score" in mismatch["path"] for mismatch in result["mismatches"])
 
 
+def test_missing_nested_authorization_reasons_is_a_representation_mismatch() -> None:
+    snapshot = coherent_snapshot()
+    del snapshot["apiReport"]["pre_render_assessment"]["family8"]["renderAuthorization"]["reasons"]
+
+    result = compare_representation_consistency(snapshot)
+
+    assert result["consistent"] is False
+    mismatch = next(
+        mismatch
+        for mismatch in result["mismatches"]
+        if mismatch["path"] == "family8.renderAuthorization.reasons"
+    )
+    assert mismatch["expectedPresent"] is True
+    assert mismatch["actualPresent"] is False
+
+
 def test_frozen_manifest_runner_checks_all_nine_assets_and_quarantines_parser_timeout(
     monkeypatch,
 ) -> None:
@@ -149,6 +173,8 @@ def test_frozen_manifest_runner_checks_all_nine_assets_and_quarantines_parser_ti
 
         assert comparison["checked"] is True
         assert comparison["assetId"] == asset["goldenId"]
+        assert comparison["consistent"] is True
+        assert comparison["mismatches"] == []
 
     assert set(checked) == {asset["goldenId"] for asset in assets}
     timeout_run, timeout_comparison = checked["upside-chair-01"]

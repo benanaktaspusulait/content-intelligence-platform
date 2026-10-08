@@ -209,6 +209,7 @@ class TikTokContentClientReviewFindingsTest {
   void appliesRequestTimeoutToApiUrisAndUploadTimeoutToSignedUploadUris() throws Exception {
     HttpServer server = HttpServer.create(new InetSocketAddress("127.0.0.1", 0), 0);
     server.createContext("/v2/probe", exchange -> delayedResponse(exchange, 300));
+    server.createContext("/v2/upload", exchange -> delayedResponse(exchange, 100));
     server.createContext("/upload/session", exchange -> delayedResponse(exchange, 100));
     server.start();
     try {
@@ -238,6 +239,15 @@ class TikTokContentClientReviewFindingsTest {
                   client
                       .put()
                       .uri(base + "/upload/session")
+                      .body(new byte[] {1})
+                      .retrieve()
+                      .toBodilessEntity())
+          .doesNotThrowAnyException();
+      assertThatCode(
+              () ->
+                  client
+                      .put()
+                      .uri(base + "/v2/upload")
                       .body(new byte[] {1})
                       .retrieve()
                       .toBodilessEntity())

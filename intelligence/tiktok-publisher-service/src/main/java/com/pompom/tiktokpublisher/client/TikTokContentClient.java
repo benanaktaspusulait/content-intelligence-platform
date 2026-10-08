@@ -30,6 +30,7 @@ import java.util.concurrent.TimeoutException;
 import java.util.function.Supplier;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.http.client.ClientHttpResponse;
@@ -99,7 +100,7 @@ public class TikTokContentClient {
     uploadFactory.setReadTimeout(uploadTimeout);
     URI apiBase = URI.create(properties.apiBaseUrl());
     return (uri, method) ->
-        isUploadUri(uri, apiBase, properties.apiVersion())
+        isUploadUri(uri, method, apiBase, properties.apiVersion())
             ? uploadFactory.createRequest(uri, method)
             : apiFactory.createRequest(uri, method);
   }
@@ -760,7 +761,10 @@ public class TikTokContentClient {
     return (size + chunkSize - 1) / chunkSize;
   }
 
-  private static boolean isUploadUri(URI uri, URI apiBase, String apiVersion) {
+  private static boolean isUploadUri(URI uri, HttpMethod method, URI apiBase, String apiVersion) {
+    if (HttpMethod.PUT.equals(method)) {
+      return true;
+    }
     if (uri.getHost() == null || apiBase.getHost() == null) {
       return true;
     }
@@ -770,7 +774,13 @@ public class TikTokContentClient {
     if (requestPath.equals(versionPath) || requestPath.startsWith(versionPath + "/")) {
       return false;
     }
-    return true;
+    return !sameOrigin(uri, apiBase);
+  }
+
+  private static boolean sameOrigin(URI first, URI second) {
+    return first.getScheme().equalsIgnoreCase(second.getScheme())
+        && first.getHost().equalsIgnoreCase(second.getHost())
+        && first.getPort() == second.getPort();
   }
 
   private static boolean isSafeIdentifier(String value) {

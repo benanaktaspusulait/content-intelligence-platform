@@ -97,10 +97,9 @@ def _add_representation_mismatch(
         "expected": None if expected is _MISSING else expected,
         "actual": None if actual is _MISSING else actual,
     }
-    if expected is _MISSING:
-        mismatch["expectedPresent"] = False
-    if actual is _MISSING:
-        mismatch["actualPresent"] = False
+    if expected is _MISSING or actual is _MISSING:
+        mismatch["expectedPresent"] = expected is not _MISSING
+        mismatch["actualPresent"] = actual is not _MISSING
     if expected_source is not None:
         mismatch["expectedSource"] = expected_source
     if actual_source is not None:
@@ -114,11 +113,11 @@ def _compare_representation_sources(
     sources: tuple[tuple[str, Any], ...],
 ) -> None:
     available = [(source, value) for source, value in sources if value is not _MISSING]
-    if len(available) < 2:
+    if not available:
         return
     expected_source, expected = available[0]
-    for actual_source, actual in available[1:]:
-        if not _lossless_equal(expected, actual):
+    for actual_source, actual in sources:
+        if actual is _MISSING or not _lossless_equal(expected, actual):
             _add_representation_mismatch(
                 mismatches,
                 path,
@@ -318,14 +317,6 @@ def compare_representation_consistency(snapshot: dict[str, Any]) -> dict[str, An
         (
             ("report.familyAssessments", _value_at(report, ("familyAssessments",))),
             ("apiReport.family_assessments", _value_at(api_report, ("family_assessments",))),
-            (
-                "assessment.family_assessments",
-                _value_at(assessment, ("family_assessments",)),
-            ),
-            (
-                "apiReport.pre_render_assessment.family_assessments",
-                _value_at(api_pre_render, ("family_assessments",)),
-            ),
         ),
     )
 
@@ -417,21 +408,10 @@ def compare_representation_consistency(snapshot: dict[str, Any]) -> dict[str, An
                 ),
             ),
             (
-                "assessment.evidence_completeness.evaluationCoverage",
-                _value_at(assessment, ("evidence_completeness", "evaluationCoverage")),
-            ),
-            (
                 "apiReport.pre_render_assessment.family8.evidenceCompleteness.evaluationCoverage",
                 _value_at(
                     api_pre_render,
                     ("family8", "evidenceCompleteness", "evaluationCoverage"),
-                ),
-            ),
-            (
-                "apiReport.pre_render_assessment.evidence_completeness.evaluationCoverage",
-                _value_at(
-                    api_pre_render,
-                    ("evidence_completeness", "evaluationCoverage"),
                 ),
             ),
         ),

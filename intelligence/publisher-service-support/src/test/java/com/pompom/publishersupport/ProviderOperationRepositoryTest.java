@@ -9,6 +9,7 @@ import com.pompom.publishercontract.PublishErrorClass;
 import com.pompom.publishercontract.PublishResult;
 import com.pompom.publishercontract.PublishStatus;
 import com.pompom.publishercontract.PublisherCapability;
+import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
 import java.util.Map;
@@ -200,6 +201,38 @@ class ProviderOperationRepositoryTest {
     assertThatThrownBy(() -> repository.recordResult(command.idempotencyKey(), oversized))
         .isInstanceOf(RuntimeException.class)
         .hasMessageContaining("providerPostId");
+  }
+
+  @Test
+  void distinguishesFreshAndStaleInFlightClaimsAndPersistsReconciliation() {
+    PublishCommand staleCommand = command("stale-in-flight-command");
+    Instant startedAt = Instant.parse("2026-10-07T12:00:00Z");
+
+    repository.claim(staleCommand, startedAt);
+    ProviderOperationRepository.OperationClaim stale = repository.claim(staleCommand);
+    PublishCommand freshCommand = command("fresh-in-flight-command");
+    repository.claim(freshCommand, Instant.parse("2026-10-08T11:59:00Z"));
+    ProviderOperationRepository.OperationClaim fresh = repository.claim(freshCommand);
+
+    assertThat(stale.isStale(Instant.parse("2026-10-08T12:01:00Z"), Duration.ofMinutes(5)))
+        .isTrue();
+    assertThat(fresh.isStale(Instant.parse("2026-10-08T12:01:00Z"), Duration.ofMinutes(5)))
+        .isFalse();
+
+    PublishResult reconciliation =
+        new PublishResult(
+            PublishStatus.RECONCILIATION_REQUIRED,
+            null,
+            null,
+            null,
+            null,
+            PublishErrorClass.RECONCILIATION_REQUIRED.wireValue(),
+            "stale claim requires reconciliation",
+            true);
+    repository.recordResult(
+        staleCommand.idempotencyKey(), reconciliation, Instant.parse("2026-10-08T12:01:00Z"));
+
+    assertThat(repository.claim(staleCommand).existingResult()).contains(reconciliation);
   }
 
   @SpringBootConfiguration
