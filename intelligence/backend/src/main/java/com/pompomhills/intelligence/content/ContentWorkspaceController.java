@@ -220,6 +220,33 @@ public class ContentWorkspaceController {
                   () -> new IllegalArgumentException("Parent version does not belong to content"));
       sourcePath = parent.sourcePath();
     }
+    java.util.UUID roleId =
+        request.creativeRoleRecordId() == null
+            ? null
+            : java.util.UUID.fromString(request.creativeRoleRecordId());
+    if (roleId == null && request.parentPromptVersionId() != null)
+      roleId =
+          jdbc.sql(
+                  "SELECT creative_role_record_id FROM prompt_creative_provenance WHERE"
+                      + " prompt_version_id=:parent")
+              .param("parent", request.parentPromptVersionId())
+              .query(java.util.UUID.class)
+              .optional()
+              .orElse(null);
+    String rolePrompt = null;
+    if (roleId != null)
+      rolePrompt =
+          jdbc.sql(
+                  "SELECT payload->'result'->>'prompt' FROM post_family_workflow_events WHERE"
+                      + " id=:id AND kind='CREATIVE_ROLE' AND payload->>'role'='BUILD_PROMPT'")
+              .param("id", roleId)
+              .query(String.class)
+              .optional()
+              .filter(value -> !value.isBlank())
+              .orElseThrow(
+                  () ->
+                      new IllegalArgumentException(
+                          "Draft provenance requires a saved BUILD_PROMPT record"));
     Integer version =
         jdbc.sql(
                 "SELECT COALESCE(MAX(version_number),0)+1 FROM prompt_versions WHERE"
@@ -241,6 +268,15 @@ public class ContentWorkspaceController {
             .param("parsed", request.parsedIr() == null ? "{}" : request.parsedIr())
             .query(Long.class)
             .single();
+    if (roleId != null)
+      jdbc.sql(
+              "INSERT INTO"
+                  + " prompt_creative_provenance(prompt_version_id,creative_role_record_id,operator_edited)"
+                  + " VALUES (:version,:role,:edited)")
+          .param("version", id)
+          .param("role", roleId)
+          .param("edited", !request.rawText().equals(rolePrompt))
+          .update();
     return prompts(contentId).stream()
         .filter(item -> item.id().equals(id))
         .findFirst()
@@ -248,14 +284,33 @@ public class ContentWorkspaceController {
   }
 
   @GetMapping("/{contentId}/prompt-versions/{promptVersionId}/videos")
-  public List<java.util.Map<String,Object>> linkedVideos(@PathVariable Long contentId,@PathVariable Long promptVersionId) {
-    if(jdbc.sql("SELECT count(*) FROM prompt_versions WHERE id=:prompt AND content_id=:content").param("prompt",promptVersionId).param("content",contentId).query(Long.class).single()==0) throw new IllegalArgumentException("Prompt version does not belong to content");
-    return jdbc.sql("""
-        SELECT DISTINCT v.id,v.relative_path FROM videos v WHERE
-          EXISTS(SELECT 1 FROM render_assets ra JOIN render_jobs rj ON rj.id=ra.render_job_id WHERE ra.relative_path=v.relative_path AND ra.asset_type='VIDEO' AND rj.prompt_version_id=:prompt AND rj.content_id=:content)
-          OR EXISTS(SELECT 1 FROM video_prompt_links l WHERE l.id=(SELECT max(id) FROM video_prompt_links WHERE video_id=v.id) AND l.origin='ORIGINAL' AND l.video_hash=v.content_hash AND l.prompt_version_id=:prompt)
-        ORDER BY v.relative_path
-        """).param("prompt",promptVersionId).param("content",contentId).query((rs,ignored)->java.util.Map.<String,Object>of("videoId",rs.getString("id"),"relativePath",rs.getString("relative_path"),"promptVersionId",promptVersionId)).list();
+  public List<java.util.Map<String, Object>> linkedVideos(
+      @PathVariable Long contentId, @PathVariable Long promptVersionId) {
+    if (jdbc.sql("SELECT count(*) FROM prompt_versions WHERE id=:prompt AND content_id=:content")
+            .param("prompt", promptVersionId)
+            .param("content", contentId)
+            .query(Long.class)
+            .single()
+        == 0) throw new IllegalArgumentException("Prompt version does not belong to content");
+    return jdbc.sql(
+            """
+            SELECT DISTINCT v.id,v.relative_path FROM videos v WHERE
+              EXISTS(SELECT 1 FROM render_assets ra JOIN render_jobs rj ON rj.id=ra.render_job_id WHERE ra.relative_path=v.relative_path AND ra.asset_type='VIDEO' AND rj.prompt_version_id=:prompt AND rj.content_id=:content)
+              OR EXISTS(SELECT 1 FROM video_prompt_links l WHERE l.id=(SELECT max(id) FROM video_prompt_links WHERE video_id=v.id) AND l.origin='ORIGINAL' AND l.video_hash=v.content_hash AND l.prompt_version_id=:prompt)
+            ORDER BY v.relative_path
+            """)
+        .param("prompt", promptVersionId)
+        .param("content", contentId)
+        .query(
+            (rs, ignored) ->
+                java.util.Map.<String, Object>of(
+                    "videoId",
+                    rs.getString("id"),
+                    "relativePath",
+                    rs.getString("relative_path"),
+                    "promptVersionId",
+                    promptVersionId))
+        .list();
   }
 
   @PostMapping("/{contentId}/source-alias")
@@ -420,7 +475,48 @@ public class ContentWorkspaceController {
 
   private record PromptParent(String sourcePath) {}
 
-  public record CreatePromptRequest(String rawText, String parsedIr, Long parentPromptVersionId) {}
+  @GetMapping("/{contentId}/prompt-versions/{promptVersionId}/creative-provenance")
+  public java.util.Map<String, Object> creativeProvenance(
+      @PathVariable Long contentId, @PathVariable Long promptVersionId) {
+    jdbc.sql("SELECT id FROM prompt_versions WHERE id=:prompt AND content_id=:content")
+        .param("prompt", promptVersionId)
+        .param("content", contentId)
+        .query(Long.class)
+        .optional()
+        .orElseThrow(
+            () -> new IllegalArgumentException("Prompt version does not belong to content"));
+    return jdbc.sql(
+            """
+            SELECT e.id,e.payload->>'provider' provider,e.payload->>'model' model,
+                   e.payload->>'sourceStoryRecordId' story,p.operator_edited
+            FROM prompt_creative_provenance p JOIN prompt_versions pv ON pv.id=p.prompt_version_id
+            JOIN post_family_workflow_events e ON e.id=p.creative_role_record_id
+            WHERE pv.content_id=:content AND pv.id=:prompt
+            """)
+        .param("content", contentId)
+        .param("prompt", promptVersionId)
+        .query(
+            (rs, index) -> {
+              java.util.Map<String, Object> value = new java.util.LinkedHashMap<>();
+              value.put("origin", "BUILD_PROMPT");
+              value.put("creativeRoleRecordId", rs.getObject("id").toString());
+              value.put("provider", rs.getString("provider"));
+              value.put("model", rs.getString("model"));
+              value.put("sourceStoryRecordId", rs.getString("story"));
+              value.put("operatorEdited", rs.getBoolean("operator_edited"));
+              value.put("validationStatus", "NOT_VALIDATED");
+              return value;
+            })
+        .optional()
+        .orElseGet(() -> java.util.Map.of("origin", "MANUAL_OR_LEGACY"));
+  }
+
+  public record CreatePromptRequest(
+      String rawText, String parsedIr, Long parentPromptVersionId, String creativeRoleRecordId) {
+    public CreatePromptRequest(String rawText, String parsedIr, Long parentPromptVersionId) {
+      this(rawText, parsedIr, parentPromptVersionId, null);
+    }
+  }
 
   public record ImportFolderRequest(String relativeDirectory) {}
 

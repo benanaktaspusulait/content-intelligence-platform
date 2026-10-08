@@ -72,7 +72,7 @@ public class WorkflowService {
       input.put(
           "retrievedLessons",
           retrieveLessons(
-              String.valueOf(input.get("contentProfile")), model, duration.doubleValue()));
+              String.valueOf(input.get("contentProfile")), model, duration.doubleValue(), input));
     }
     input.remove("authorizationEvidence");
     if (request.contentId() != null && request.promptVersionId() != null) {
@@ -375,6 +375,12 @@ public class WorkflowService {
     String role = String.valueOf(request.get("role"));
     if (!List.of("STORY", "BUILD_PROMPT", "MINIMAL_REPAIR").contains(role))
       throw new IllegalArgumentException("Unsupported creative role");
+    if (map(request.get("context")).get("sourceStoryRecordId") instanceof String storyId
+        && !storyId.isBlank()) {
+      var story = getByKind(UUID.fromString(storyId), "CREATIVE_ROLE");
+      if (!"STORY".equals(story.get("role")))
+        throw new IllegalArgumentException("Story provenance requires an exact STORY record");
+    }
     var verifiedRequest = new LinkedHashMap<>(request);
     var context = new LinkedHashMap<>(map(request.get("context")));
     context.remove("retrievedLessons");
@@ -384,12 +390,15 @@ public class WorkflowService {
             ? retrieveLessons(
                 String.valueOf(scope.get("contentProfile")),
                 String.valueOf(scope.get("modelVersion")),
-                duration.doubleValue())
+                duration.doubleValue(),
+                scope)
             : List.<Map<String, Object>>of();
     context.put("retrievedLessons", lessons);
     verifiedRequest.put("context", context);
     var result = new LinkedHashMap<>(ml.workflow("creative-role", verifiedRequest));
     result.put("retrievedLessons", lessons);
+    result.put("sourceStoryRecordId", context.get("sourceStoryRecordId"));
+    result.put("sourceRequest", verifiedRequest);
     result.put("validationStatus", "NOT_VALIDATED");
     result.put("recordId", save("CREATIVE_ROLE", null, result));
     return result;
@@ -436,6 +445,11 @@ public class WorkflowService {
   }
 
   public List<Map<String, Object>> retrieveLessons(String profile, String model, double duration) {
+    return retrieveLessons(profile, model, duration, Map.of());
+  }
+
+  public List<Map<String, Object>> retrieveLessons(
+      String profile, String model, double duration, Map<String, Object> target) {
     if (!Double.isFinite(duration) || duration <= 0 || profile == null || model == null)
       return List.of();
     return jdbc
@@ -474,40 +488,88 @@ public class WorkflowService {
                 return false;
               if (!(lesson.get("evidenceBasis") instanceof List<?> evidence) || evidence.isEmpty())
                 return false;
-              boolean verified = false;
+              var sources = new java.util.HashSet<String>();
+              var references = new java.util.HashSet<String>();
               for (Object reference : evidence) {
+                if (!references.add(String.valueOf(reference))) continue;
                 try {
+                  boolean repair = "PROMPT_FIX".equals(lesson.get("lessonScope"));
                   var record =
                       getByKind(
                           UUID.fromString(String.valueOf(reference)),
-                          "PROMPT_FIX".equals(lesson.get("lessonScope"))
-                              ? "REPAIR"
-                              : "ACTUAL_RENDER_QA");
-                  if ("PROMPT_FIX".equals(lesson.get("lessonScope"))
-                      && record.get("verificationPasses") instanceof Number count
-                      && count.intValue() > 0) {
-                    verified |=
+                          repair ? "REPAIR" : "ACTUAL_RENDER_QA");
+                  String sourceReview;
+                  if (repair) {
+                    if (!(record.get("verificationPasses") instanceof Number count)
+                        || count.intValue() <= 0) return false;
+                    sourceReview =
                         jdbc.sql(
-                                "SELECT EXISTS(SELECT 1 FROM workflow_repair_sessions s CROSS JOIN"
-                                    + " LATERAL jsonb_array_elements(s.payload->'history') attempt"
-                                    + " WHERE s.state='ACCEPTED' AND"
-                                    + " attempt->>'repairRecordId'=:repair AND"
-                                    + " attempt->>'reviewId'=s.payload->>'bestReviewId')")
+                                "SELECT s.payload->>'bestReviewId' FROM workflow_repair_sessions s"
+                                    + " CROSS JOIN LATERAL"
+                                    + " jsonb_array_elements(s.payload->'history') attempt WHERE"
+                                    + " s.state='ACCEPTED' AND attempt->>'repairRecordId'=:repair"
+                                    + " AND attempt->>'reviewId'=s.payload->>'bestReviewId' ORDER"
+                                    + " BY s.updated_at DESC LIMIT 1")
                             .param("repair", String.valueOf(reference))
-                            .query(Boolean.class)
-                            .single();
+                            .query(String.class)
+                            .optional()
+                            .orElse(null);
+                  } else {
+                    if (!"USABLE".equals(record.get("viewerFacingUsability"))
+                        || !"SOURCE_BOUND".equals(record.get("lineageStatus"))) return false;
+                    sourceReview = (String) record.get("reviewId");
                   }
-                  verified |=
-                      "ACTUAL_EXECUTION".equals(lesson.get("lessonScope"))
-                          && "USABLE".equals(record.get("viewerFacingUsability"));
-                } catch (IllegalArgumentException unavailable) {
+                  if (sourceReview == null) return false;
+                  var review = getByKind(UUID.fromString(sourceReview), "REVIEW");
+                  var generation = map(review.get("generation"));
+                  var bound = map(review.get("boundRequest"));
+                  Object evidenceDuration =
+                      repair ? bound.get("desiredDuration") : record.get("duration");
+                  if (!profile.equals(map(review.get("routing")).get("contentProfile"))
+                      || !model.equals(generation.get("profileVersion"))
+                      || !map(lesson.get("settings")).equals(map(generation.get("settings")))
+                      || !(evidenceDuration instanceof Number sourceDuration)
+                      || sourceDuration.doubleValue() < low.doubleValue()
+                      || sourceDuration.doubleValue() > high.doubleValue()) return false;
+                  if (!repair
+                      && !java.util.Objects.equals(
+                          record.get("bindingHash"), review.get("bindingHash"))) return false;
+                  if (target.get("settings") instanceof Map<?, ?>
+                      && !lessonSettings(target.get("settings"))
+                          .equals(lessonSettings(generation.get("settings")))) return false;
+                  if (target.get("generator") instanceof String generator
+                      && !List.of("", "AUTO").contains(generator)
+                      && !generator.equals(generation.get("selectedGenerator"))) return false;
+                  String source =
+                      repair
+                          ? String.valueOf(review.get("contentId"))
+                          : String.valueOf(record.get("videoId"));
+                  if (source.equals("null")) return false;
+                  sources.add(source);
+                } catch (IllegalArgumentException | ClassCastException unavailable) {
                   return false;
                 }
               }
-              return verified;
+              return sources.size() >= size.intValue();
             })
         .limit(5)
+        .map(
+            lesson -> {
+              lesson.put(
+                  "retrievalReason",
+                  "Approved, source-bound evidence matches profile, model, settings and duration;"
+                      + " latest review retained");
+              return lesson;
+            })
         .toList();
+  }
+
+  private static Map<String, Object> lessonSettings(Object value) {
+    var settings = new LinkedHashMap<>(map(value));
+    settings.remove(
+        "startFrame"); // Asset identity stays source-bound; it is not a generation capability
+                       // setting.
+    return settings;
   }
 
   public List<Map<String, Object>> verifiedReferences(Object value) {
@@ -731,23 +793,24 @@ public class WorkflowService {
     observed.put(
         "events",
         maps(observed.get("events")).stream()
-            .map(item -> checkedObservation(item, humanReviewed, stillsReviewed, path))
+            .map(item -> checkedObservation(item, humanReviewed, stillsReviewed, path, video.id()))
             .toList());
     observed.put(
         "defects",
         maps(observed.get("defects")).stream()
-            .map(item -> checkedObservation(item, humanReviewed, stillsReviewed, path))
+            .map(item -> checkedObservation(item, humanReviewed, stillsReviewed, path, video.id()))
             .toList());
     var experience = new LinkedHashMap<String, Object>();
     for (var entry : map(observed.get("experience")).entrySet())
       experience.put(
           entry.getKey(),
-          checkedObservation(map(entry.getValue()), humanReviewed, stillsReviewed, path));
+          checkedObservation(
+              map(entry.getValue()), humanReviewed, stillsReviewed, path, video.id()));
     observed.put("experience", experience);
     observed.put(
         "repairProposal",
         checkedObservation(
-            map(observed.get("repairProposal")), humanReviewed, stillsReviewed, path));
+            map(observed.get("repairProposal")), humanReviewed, stillsReviewed, path, video.id()));
     // Intent comes only from the immutable pre-render review, never from observation input.
     var requirements = maps(review.get("intentRequirements"));
     List<Map<String, Object>> events = new ArrayList<>();
@@ -798,9 +861,29 @@ public class WorkflowService {
     qa.put("reviewId", id == null ? null : id.toString());
     qa.put("lineageStatus", id == null ? "UNAVAILABLE" : "SOURCE_BOUND");
     qa.put("videoId", video.id().toString());
+    qa.put("duration", actualDuration);
     qa.put("relativePath", path);
     qa.put("recordId", save("ACTUAL_RENDER_QA", String.valueOf(review.get("bindingHash")), qa));
     return qa;
+  }
+
+  static Map<String, Object> checkedObservation(
+      Map<String, Object> item,
+      boolean reviewed,
+      boolean stillsReviewed,
+      String path,
+      UUID videoId) {
+    var bound = new LinkedHashMap<>(item);
+    if (videoId.toString().equals(item.get("reference"))
+        && item.get("start") instanceof Number start
+        && item.get("end") instanceof Number end
+        && Double.isFinite(start.doubleValue())
+        && Double.isFinite(end.doubleValue())
+        && start.doubleValue() >= 0
+        && end.doubleValue() > start.doubleValue()) {
+      bound.put("reference", path + "#t=" + start.doubleValue() + "-" + end.doubleValue());
+    }
+    return checkedObservation(bound, reviewed, stillsReviewed, path);
   }
 
   static Map<String, Object> checkedObservation(

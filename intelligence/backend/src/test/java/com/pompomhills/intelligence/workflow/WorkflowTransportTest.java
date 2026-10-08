@@ -12,6 +12,40 @@ import org.springframework.web.client.RestClient;
 
 class WorkflowTransportTest {
   @Test
+  void artifactVerificationSendsHashDerivedImmutableModelVersion() throws Exception {
+    var server = HttpServer.create(new InetSocketAddress("127.0.0.1", 0), 0);
+    var received = new java.util.concurrent.atomic.AtomicReference<String>();
+    server.createContext(
+        "/v1/training/verify-artifact",
+        exchange -> {
+          received.set(
+              new String(exchange.getRequestBody().readAllBytes(), StandardCharsets.UTF_8));
+          byte[] response = "{\"verified\":true}".getBytes(StandardCharsets.UTF_8);
+          exchange.getResponseHeaders().set("Content-Type", "application/json");
+          exchange.sendResponseHeaders(200, response.length);
+          exchange.getResponseBody().write(response);
+          exchange.close();
+        });
+    server.start();
+    try {
+      var service =
+          new com.pompomhills.intelligence.modelregistry.StatisticalTrainingService(
+              null,
+              RestClient.builder()
+                  .baseUrl("http://127.0.0.1:" + server.getAddress().getPort())
+                  .build(),
+              new tools.jackson.databind.ObjectMapper());
+      service.verify(
+          "instagram",
+          "models/statistical/fixture.json",
+          Map.of("pipelineVersion", "grouped-ridge-72h-v1", "artifactSha256", "a".repeat(64)));
+      assertThat(received.get()).contains("grouped-ridge-72h-v1-aaaaaaaaaaaa");
+    } finally {
+      server.stop(0);
+    }
+  }
+
+  @Test
   void sendsCompleteJsonOverHttpOneAndPreservesBindingKeys() throws Exception {
     var server = HttpServer.create(new InetSocketAddress("127.0.0.1", 0), 0);
     server.createContext(

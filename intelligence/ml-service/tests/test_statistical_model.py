@@ -69,3 +69,20 @@ def test_registry_model_version_must_match_immutable_artifact(tmp_path, monkeypa
     model = fit(request())
     with pytest.raises(ValueError, match="model version mismatch"):
         load({**model, "modelVersion": "forged-version"}, "instagram")
+
+
+def test_artifact_http_verification_preserves_registry_identity_and_rejects_forgery(tmp_path, monkeypatch):
+    from fastapi.testclient import TestClient
+    from app.main import app
+    monkeypatch.setattr(settings, "data_root", tmp_path)
+    model = fit(request())
+    reference = {key: model[key] for key in ("modelVersion", "artifactPath", "artifactSha256")}
+    with TestClient(app) as client:
+        response = client.post("/v1/training/verify-artifact", json={**reference, "platform": "instagram"})
+        assert response.status_code == 200
+        assert response.json()["modelVersion"] == model["modelVersion"]
+        assert response.json()["datasetVersion"] == "fixture-verified-v1"
+        assert response.json()["verified"]
+        assert client.post("/v1/training/verify-artifact", json={**reference, "platform":"instagram", "modelVersion":"forged"}).status_code == 409
+        del reference["modelVersion"]
+        assert client.post("/v1/training/verify-artifact", json={**reference,"platform":"instagram"}).status_code == 409

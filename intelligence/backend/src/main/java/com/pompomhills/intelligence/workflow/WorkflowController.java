@@ -31,8 +31,18 @@ public class WorkflowController {
   public List<Map<String, Object>> retrieve(
       @RequestParam String contentProfile,
       @RequestParam String modelVersion,
-      @RequestParam double duration) {
-    return service.retrieveLessons(contentProfile, modelVersion, duration);
+      @RequestParam double duration,
+      @RequestParam(defaultValue = "AUTO") String generator,
+      @RequestParam(defaultValue = "{}") String settings) {
+    try {
+      var context = new java.util.LinkedHashMap<String, Object>();
+      context.put("generator", generator);
+      var parsed = new com.fasterxml.jackson.databind.ObjectMapper().readValue(settings, Map.class);
+      if (!parsed.isEmpty()) context.put("settings", parsed);
+      return service.retrieveLessons(contentProfile, modelVersion, duration, context);
+    } catch (com.fasterxml.jackson.core.JsonProcessingException invalid) {
+      throw new IllegalArgumentException("Settings must be a JSON object", invalid);
+    }
   }
 
   @PostMapping("/regeneration-handoff")

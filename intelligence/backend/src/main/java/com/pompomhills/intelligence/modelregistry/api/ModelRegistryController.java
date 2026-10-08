@@ -117,7 +117,9 @@ public class ModelRegistryController {
     if (request == null || request.reason() == null || request.reason().isBlank())
       throw new IllegalArgumentException("Explicit activation reason required");
     var verified = training.verify(model.platform(), model.artifactPath(), model.metrics());
-    if (!model.featureVersion().equals(verified.get("featureVersion"))
+    if (!model.version().equals(verified.get("modelVersion"))
+        || !model.trainingDatasetVersion().equals(verified.get("datasetVersion"))
+        || !model.featureVersion().equals(verified.get("featureVersion"))
         || !model
             .knowledgeCutoff()
             .equals(Instant.parse(String.valueOf(verified.get("knowledgeCutoff")))))
@@ -129,6 +131,9 @@ public class ModelRegistryController {
         .param("key", "model:" + model.platform() + ":" + model.modelType())
         .query((rs, ignored) -> true)
         .single();
+    if (!(rollback ? "RETIRED" : "CHALLENGER").equals(get(model.id()).status()))
+      throw new IllegalStateException(
+          "Model status changed during activation; retry the explicit decision");
     jdbc.sql(
             "UPDATE model_versions SET status='RETIRED' WHERE platform=:platform AND"
                 + " model_type=:type AND status='CHAMPION'")

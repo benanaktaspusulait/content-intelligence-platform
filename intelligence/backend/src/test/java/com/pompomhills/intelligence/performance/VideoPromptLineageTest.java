@@ -77,6 +77,76 @@ class VideoPromptLineageTest {
   com.pompomhills.intelligence.prediction.ml.MlPredictionClient predictionMl;
 
   @Test
+  void creativeDraftRetainsExactStoryProviderAndModelAfterEditedVersionReopens() {
+    org.mockito.Mockito.when(
+            workflowMl.workflow(
+                org.mockito.ArgumentMatchers.eq("creative-role"),
+                org.mockito.ArgumentMatchers.anyMap()))
+        .thenAnswer(
+            invocation -> {
+              java.util.Map<String, Object> input = invocation.getArgument(1);
+              boolean story = "STORY".equals(input.get("role"));
+              return new java.util.LinkedHashMap<>(
+                  java.util.Map.of(
+                      "role",
+                      input.get("role"),
+                      "provider",
+                      "LOCAL_MOCK",
+                      "model",
+                      "fixture-model",
+                      "result",
+                      story
+                          ? java.util.Map.of("alternatives", java.util.List.of("fixture-story"))
+                          : java.util.Map.of("prompt", "fixture-draft")));
+            });
+    var story =
+        workflow.creativeRole(
+            java.util.Map.of("role", "STORY", "text", "fixture", "maxCostUsd", 1));
+    var draft =
+        workflow.creativeRole(
+            java.util.Map.of(
+                "role",
+                "BUILD_PROMPT",
+                "text",
+                "edited fixture story",
+                "maxCostUsd",
+                1,
+                "context",
+                java.util.Map.of("sourceStoryRecordId", String.valueOf(story.get("recordId")))));
+    Long content =
+        jdbc.sql("INSERT INTO contents(title,type) VALUES ('creative fixture','REEL') RETURNING id")
+            .query(Long.class)
+            .single();
+    var saved =
+        workspace.createPrompt(
+            content,
+            new com.pompomhills.intelligence.content.ContentWorkspaceController.CreatePromptRequest(
+                "fixture-draft edited", "{}", null, String.valueOf(draft.get("recordId"))));
+    assertThat(workspace.creativeProvenance(content, saved.id()))
+        .containsEntry("sourceStoryRecordId", String.valueOf(story.get("recordId")))
+        .containsEntry("provider", "LOCAL_MOCK")
+        .containsEntry("model", "fixture-model")
+        .containsEntry("operatorEdited", true)
+        .containsEntry("validationStatus", "NOT_VALIDATED");
+    assertThatThrownBy(
+            () ->
+                workspace.createPrompt(
+                    content,
+                    new com.pompomhills.intelligence.content.ContentWorkspaceController
+                        .CreatePromptRequest(
+                        "wrong", "{}", null, String.valueOf(story.get("recordId")))))
+        .isInstanceOf(IllegalArgumentException.class);
+    assertThat(
+            jdbc.sql("SELECT count(*) FROM prompt_versions WHERE content_id=:id")
+                .param("id", content)
+                .query(Integer.class)
+                .single())
+        .isEqualTo(1);
+    assertThatThrownBy(() -> workspace.creativeProvenance(-1L, saved.id()))
+        .isInstanceOf(IllegalArgumentException.class);
+  }
+
+  @Test
   void savedEditLineageReopensFromBothParentAndArtifactWithoutNewAnalysis() {
     UUID parent = insertVideo("parent.mp4"),
         artifact = insertVideo("edited.mp4"),
@@ -138,15 +208,29 @@ class VideoPromptLineageTest {
     UUID qa = UUID.randomUUID();
     UUID lesson = UUID.randomUUID();
     UUID approved = UUID.randomUUID();
+    UUID sourceReview = UUID.randomUUID();
     jdbc.sql(
             "INSERT INTO post_family_workflow_events(id,kind,payload) VALUES"
-                + " (:id,'ACTUAL_RENDER_QA','{\"viewerFacingUsability\":\"USABLE\"}')")
+                + " (:id,'REVIEW',CAST(:payload AS jsonb))")
+        .param("id", sourceReview)
+        .param(
+            "payload",
+            "{\"bindingHash\":\"fixture-binding\",\"routing\":{\"contentProfile\":\"EDUCATIONAL\"},\"generation\":{\"profileVersion\":\"model-v1\",\"selectedGenerator\":\"fixture-generator\",\"settings\":{\"aspectRatio\":\"9:16\"}},\"boundRequest\":{\"desiredDuration\":15}}")
+        .update();
+    jdbc.sql(
+            "INSERT INTO post_family_workflow_events(id,kind,payload) VALUES"
+                + " (:id,'ACTUAL_RENDER_QA',CAST(:payload AS jsonb))")
         .param("id", qa)
+        .param(
+            "payload",
+            "{\"viewerFacingUsability\":\"USABLE\",\"lineageStatus\":\"SOURCE_BOUND\",\"bindingHash\":\"fixture-binding\",\"duration\":15,\"videoId\":\"fixture-video\",\"reviewId\":\""
+                + sourceReview
+                + "\"}")
         .update();
     String payload =
         "{\"parentRecordId\":\""
             + lesson
-            + "\",\"reviewStatus\":\"APPROVED\",\"lessonScope\":\"ACTUAL_EXECUTION\",\"contentProfile\":\"EDUCATIONAL\",\"targetModelVersion\":\"model-v1\",\"durationRange\":[10,20],\"sampleSize\":1,\"evidenceBasis\":[\""
+            + "\",\"reviewStatus\":\"APPROVED\",\"lessonScope\":\"ACTUAL_EXECUTION\",\"contentProfile\":\"EDUCATIONAL\",\"targetModelVersion\":\"model-v1\",\"durationRange\":[10,20],\"settings\":{\"aspectRatio\":\"9:16\"},\"sampleSize\":1,\"evidenceBasis\":[\""
             + qa
             + "\"]}";
     jdbc.sql(
@@ -156,6 +240,17 @@ class VideoPromptLineageTest {
         .param("payload", payload)
         .update();
     assertThat(workflow.retrieveLessons("EDUCATIONAL", "model-v1", 15)).hasSize(1);
+    assertThat(
+            workflow.retrieveLessons(
+                "EDUCATIONAL",
+                "model-v1",
+                15,
+                java.util.Map.of("settings", java.util.Map.of("aspectRatio", "16:9"))))
+        .isEmpty();
+    assertThat(
+            workflow.retrieveLessons(
+                "EDUCATIONAL", "model-v1", 15, java.util.Map.of("generator", "wrong-generator")))
+        .isEmpty();
     assertThat(workflow.retrieveLessons("EDUCATIONAL", "model-v1", 30)).isEmpty();
     assertThat(workflow.retrieveLessons("CURIOSITY_ADVENTURE", "model-v1", 15)).isEmpty();
     workflow.reviewLearning(
@@ -785,16 +880,23 @@ class VideoPromptLineageTest {
                   + "a".repeat(64)
                   + "\"}")
           .update();
-    org.mockito.Mockito.doReturn(
-            java.util.Map.of(
-                "verified",
-                true,
-                "promotionEligible",
-                true,
-                "featureVersion",
-                "prerender-v5-motion-intensity-v1",
-                "knowledgeCutoff",
-                "2025-01-01T00:00:00Z"))
+    org.mockito.Mockito.doAnswer(
+            invocation -> {
+              String path = invocation.getArgument(1);
+              return java.util.Map.of(
+                  "verified",
+                  true,
+                  "promotionEligible",
+                  true,
+                  "featureVersion",
+                  "prerender-v5-motion-intensity-v1",
+                  "knowledgeCutoff",
+                  "2025-01-01T00:00:00Z",
+                  "datasetVersion",
+                  "fixture",
+                  "modelVersion",
+                  path.substring(path.lastIndexOf('/') + 1, path.length() - 5));
+            })
         .when(training)
         .verify(
             org.mockito.ArgumentMatchers.eq(platform),

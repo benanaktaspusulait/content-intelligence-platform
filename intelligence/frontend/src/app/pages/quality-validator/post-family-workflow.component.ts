@@ -706,7 +706,7 @@ export class PostFamilyWorkflowComponent implements OnChanges {
   lessonModelVersion = '';
   retrievedLessons: any[] = [];
   retrieveLessons() {
-    this.http.get<any[]>('/api/v1/intelligence/workflow/learning/retrieve', { params: { contentProfile: this.contentProfile, modelVersion: this.lessonModelVersion, duration: this.desiredDuration || 0 } }).subscribe({ next: lessons => { this.retrievedLessons = lessons; this.changeDetector.markForCheck(); }, error: e => this.fail(e) });
+    this.http.get<any[]>('/api/v1/intelligence/workflow/learning/retrieve', { params: { contentProfile: this.contentProfile, modelVersion: this.lessonModelVersion, duration: this.desiredDuration || 0, generator:this.generator, settings:JSON.stringify(this.options().settings) } }).subscribe({ next: lessons => { this.retrievedLessons = lessons; this.changeDetector.markForCheck(); }, error: e => this.fail(e) });
   }
   lessonHypothesis = '';
   lessonScope = 'ACTUAL_EXECUTION';
@@ -1186,7 +1186,7 @@ export class PostFamilyWorkflowComponent implements OnChanges {
         settings: this.review.generation.settings,
         contentProfile: this.review.routing.contentProfile,
         durationRange: [this.lessonScope === 'PROMPT_FIX' ? this.desiredDuration : this.videoDuration, this.lessonScope === 'PROMPT_FIX' ? this.desiredDuration : this.videoDuration],
-        observedResult: this.qa?.status || 'UNKNOWN',
+        observedResult: this.lessonScope === 'PROMPT_FIX' ? this.review?.executionReview?.status || 'UNKNOWN' : this.qa?.viewerFacingUsability || 'UNKNOWN',
         counterexamples: this.counterexamples,
       })
       .subscribe({

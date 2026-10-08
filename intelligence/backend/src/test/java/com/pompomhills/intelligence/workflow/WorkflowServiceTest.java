@@ -248,4 +248,34 @@ class WorkflowServiceTest {
     assertThat(WorkflowService.checkedObservation(motion, false, true, "clip.mp4"))
         .containsEntry("confidence", "UNKNOWN");
   }
+
+  @Test
+  void actualOnlyHumanEvidenceBindsExactVideoIdToServerResolvedFileAndInterval() {
+    var video = java.util.UUID.randomUUID();
+    var observation =
+        Map.<String, Object>of(
+            "reference",
+            video.toString(),
+            "start",
+            0,
+            "end",
+            12.0,
+            "evidenceBasis",
+            "HUMAN_REVIEWED_CLIP",
+            "value",
+            "ADEQUATE");
+    var verified =
+        WorkflowService.checkedObservation(observation, true, false, "library/edited.mp4", video);
+    assertThat(verified)
+        .containsEntry("reference", "library/edited.mp4#t=0.0-12.0")
+        .containsEntry("value", "ADEQUATE");
+    assertThat(
+            WorkflowService.checkedObservation(
+                observation, false, false, "library/edited.mp4", video))
+        .containsEntry("value", "UNKNOWN");
+    assertThat(
+            WorkflowService.checkedObservation(
+                observation, true, false, "library/edited.mp4", java.util.UUID.randomUUID()))
+        .containsEntry("value", "UNKNOWN");
+  }
 }

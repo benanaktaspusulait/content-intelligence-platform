@@ -220,7 +220,7 @@ def verify_artifact(request: dict[str, object]) -> dict[str, object]:
     from .statistical_model import load
     try:
         model=load(request, str(request.get("platform")))
-        return {"verified":True, "artifactSha256":request["artifactSha256"], "featureVersion":model["featureVersion"], "promotionEligible":model["metrics"]["promotionEligible"], "pipelineVersion":model["pipelineVersion"], "knowledgeCutoff":model["knowledgeCutoff"]}
+        return {"verified":True, "artifactSha256":request["artifactSha256"], "featureVersion":model["featureVersion"], "promotionEligible":model["metrics"]["promotionEligible"], "pipelineVersion":model["pipelineVersion"], "knowledgeCutoff":model["knowledgeCutoff"], "modelVersion":request["modelVersion"], "datasetVersion":model["datasetVersion"]}
     except (ValueError,KeyError,TypeError) as error:
         raise HTTPException(409, str(error)) from error
 

@@ -51,6 +51,7 @@
   </section>
 
   <app-creative-role (draft)="useCreativeDraft($event)"></app-creative-role>
+  <p *ngIf="creativeProvenance as provenance">Prompt origin: {{ provenance.origin }} · {{ provenance.provider }} {{ provenance.model }} · {{ provenance.creativeRoleRecordId }} · story {{ provenance.sourceStoryRecordId || 'manual source' }} · {{ provenance.operatorEdited ? 'Operator edited draft' : 'Original saved draft' }} · {{ provenance.validationStatus }}</p>
   <label *ngIf="detailMode && linkedVideos.length">Exact linked video<select [(ngModel)]="selectedWorkspaceVideoPath"><option value="">Select exact video…</option><option *ngFor="let video of linkedVideos" [value]="video.relativePath">{{video.relativePath}} · {{video.videoId}}</option></select></label>
   <app-post-family-workflow *ngIf="detailMode" [prompt]="prompt" [contentId]="contentId" [promptVersionId]="promptVersionId" [sourcePath]="selectedPromptPath" [videoPath]="selectedWorkspaceVideoPath" (saveFinal)="saveWorkflowFinalPrompt($event)" (acceptedVersion)="useAcceptedRepair($event)"></app-post-family-workflow>
 

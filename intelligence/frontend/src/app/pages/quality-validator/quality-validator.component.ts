@@ -314,6 +314,8 @@ Intensity: 4`;
         if (!version) { this.error = 'Prompt version could not be found.'; this.selectedPromptLoading = false; return; }
         this.contentId = String(contentId); this.promptVersionId = String(promptVersionId); this.contentTitle = `Content #${contentId}`; this.contentType = 'REEL';
         this.setPromptText(version.rawText || ''); this.selectedPromptPath = version.sourcePath || ''; this.selectedPromptLoading = false;
+        this.creativeDraftRecordId=null;
+        this.http.get<any>(`/api/v1/intelligence/contents/${contentId}/prompt-versions/${promptVersionId}/creative-provenance`).subscribe({next: provenance => {this.creativeProvenance=provenance;this.changeDetector.markForCheck();},error: () => {this.creativeProvenance=null;this.changeDetector.markForCheck();}});
         this.http.get<{videoId: string; relativePath: string}[]>(`/api/v1/intelligence/contents/${contentId}/prompt-versions/${promptVersionId}/videos`).subscribe({next: videos => { this.linkedVideos=videos; this.selectedWorkspaceVideoPath=videos.length === 1 ? videos[0].relativePath : ''; this.changeDetector.markForCheck(); }, error: () => {this.linkedVideos=[];this.changeDetector.markForCheck();}});
         this.http.get<any>(`/api/v1/intelligence/contents/${contentId}`).subscribe({ next: content => { this.contentTitle = content.title || this.contentTitle; this.contentType = content.type || this.contentType; this.changeDetector.detectChanges(); }, error: () => this.changeDetector.detectChanges() });
         this.changeDetector.detectChanges(); this.restoreStoredReport();
@@ -441,7 +443,9 @@ Intensity: 4`;
     this.setPromptText(value.rawText); this.syncSavedVersionRoute(true);
   }
 
-  useCreativeDraft(value: string): void { this.setPromptText(value); }
+  creativeDraftRecordId: string | null = null;
+  creativeProvenance: any = null;
+  useCreativeDraft(value: {prompt:string;recordId:string}): void { this.setPromptText(value.prompt);this.creativeDraftRecordId=value.recordId;this.creativeProvenance={origin:'BUILD_PROMPT',creativeRoleRecordId:value.recordId,validationStatus:'NOT_VALIDATED'}; }
 
   private setPromptText(value: string): void {
     this.prompt = value;
@@ -877,7 +881,7 @@ Intensity: 4`;
     this.http.post<{ id: number }>('/api/v1/intelligence/contents', {
       title: this.contentTitle.trim(), type: this.contentType, description: 'Pompom Hills local production content',
     }).subscribe({
-      next: content => this.http.post<{ id: number }>(`/api/v1/intelligence/contents/${content.id}/prompt-versions`, { rawText: this.prompt, parsedIr: '{}' }).subscribe({
+      next: content => this.http.post<{ id: number }>(`/api/v1/intelligence/contents/${content.id}/prompt-versions`, { rawText: this.prompt, parsedIr: '{}', creativeRoleRecordId:this.creativeDraftRecordId }).subscribe({
         next: promptVersion => { this.contentId = String(content.id); this.promptVersionId = String(promptVersion.id); this.syncSavedVersionRoute(); this.validationRecordId = null; this.loading = false; this.changeDetector.markForCheck(); },
         error: response => { this.error = response.error?.detail || response.error?.message || 'Prompt version could not be created'; this.loading = false; },
       }),
@@ -897,7 +901,7 @@ Intensity: 4`;
       return;
     }
     this.loading = true; this.error = null; this.report = null; this.validationRecordId = null;
-    this.http.post<{ id: number }>(`/api/v1/intelligence/contents/${Number(this.contentId)}/prompt-versions`, { rawText: this.prompt, parsedIr: '{}', parentPromptVersionId: Number(this.promptVersionId) || null }).subscribe({
+    this.http.post<{ id: number }>(`/api/v1/intelligence/contents/${Number(this.contentId)}/prompt-versions`, { rawText: this.prompt, parsedIr: '{}', creativeRoleRecordId:this.creativeDraftRecordId, parentPromptVersionId: Number(this.promptVersionId) || null }).subscribe({
       next: version => { this.promptVersionId = String(version.id); this.syncSavedVersionRoute(); this.loading = false; this.changeDetector.markForCheck(); },
       error: response => { this.error = response.error?.detail || response.error?.message || 'Prompt revision could not be saved'; this.loading = false; },
     });

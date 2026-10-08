@@ -132,7 +132,16 @@ public class StatisticalTrainingService {
     var verified =
         ml.post()
             .uri("/v1/training/verify-artifact")
-            .body(Map.of("platform", platform, "artifactPath", path, "artifactSha256", hash))
+            .body(
+                Map.of(
+                    "platform",
+                    platform,
+                    "artifactPath",
+                    path,
+                    "artifactSha256",
+                    hash,
+                    "modelVersion",
+                    "grouped-ridge-72h-v1-" + hash.substring(0, 12)))
             .retrieve()
             .body(Map.class);
     if (verified == null || !Boolean.TRUE.equals(verified.get("verified")))
