@@ -9,6 +9,7 @@ import com.pompom.publishersupport.RetryPolicy;
 import com.pompom.publishersupport.SecretRedactor;
 import java.io.IOException;
 import java.net.URI;
+import java.net.http.HttpClient;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.Locale;
@@ -23,7 +24,9 @@ import java.util.concurrent.TimeoutException;
 import java.util.function.Supplier;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.http.client.ClientHttpResponse;
+import org.springframework.http.client.JdkClientHttpRequestFactory;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.StreamUtils;
 import org.springframework.web.client.RestClient;
@@ -44,13 +47,36 @@ public final class MetaClientSupport {
   private final Duration requestTimeout;
   private final Duration uploadTimeout;
 
+  public static ClientHttpRequestFactory deadlineRequestFactory(
+      MetaPublisherProperties properties) {
+    Duration requestTimeout = positiveTimeout(properties.requestTimeout(), Duration.ofSeconds(120));
+    Duration uploadTimeout = positiveTimeout(properties.uploadTimeout(), Duration.ofSeconds(600));
+    JdkClientHttpRequestFactory graphFactory =
+        new JdkClientHttpRequestFactory(
+            HttpClient.newBuilder().connectTimeout(requestTimeout).build());
+    graphFactory.setReadTimeout(requestTimeout);
+    JdkClientHttpRequestFactory uploadFactory =
+        new JdkClientHttpRequestFactory(
+            HttpClient.newBuilder().connectTimeout(uploadTimeout).build());
+    uploadFactory.setReadTimeout(uploadTimeout);
+    return (uri, method) ->
+        isUploadUri(uri)
+            ? uploadFactory.createRequest(uri, method)
+            : graphFactory.createRequest(uri, method);
+  }
+
+  private static Duration positiveTimeout(Duration value, Duration fallback) {
+    return value == null || value.isZero() || value.isNegative() ? fallback : value;
+  }
+
+  private static boolean isUploadUri(URI uri) {
+    String host = uri.getHost() == null ? "" : uri.getHost().toLowerCase(Locale.ROOT);
+    String path = uri.getPath() == null ? "" : uri.getPath().toLowerCase(Locale.ROOT);
+    return host.contains("rupload") || path.contains("video-upload");
+  }
+
   public MetaClientSupport(RestClient.Builder builder, ObjectMapper objectMapper, int maxAttempts) {
-    this(
-        builder,
-        objectMapper,
-        maxAttempts,
-        Duration.ofSeconds(120),
-        Duration.ofSeconds(600));
+    this(builder, objectMapper, maxAttempts, Duration.ofSeconds(120), Duration.ofSeconds(600));
   }
 
   public MetaClientSupport(
@@ -215,8 +241,7 @@ public final class MetaClientSupport {
       throw new MetaProviderException(
           "Meta " + operationName + " timed out",
           null,
-          new ProviderErrorMapper.Classification(
-              PublishErrorClass.TRANSIENT, true, true),
+          new ProviderErrorMapper.Classification(PublishErrorClass.TRANSIENT, true, true),
           failure);
     } catch (InterruptedException failure) {
       Thread.currentThread().interrupt();

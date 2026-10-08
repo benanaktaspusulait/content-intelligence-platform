@@ -10,6 +10,7 @@ from collections.abc import Iterable
 from typing import Any
 
 from .family8_projection import project_family8
+from ..quality.aggregation import AggregationRow, summarize_aggregation
 from ..quality.canonical_evidence import (
     attempt_beats,
     attempt_evidence,

@@ -354,6 +354,26 @@ class ValidationEvidencePolicyTest {
         .isEqualTo("FIRST_FRAME_NOT_ELIGIBLE");
   }
 
+  @Test
+  void rejectsFinalRenderWhenCanonicalAuthorizationIsBlockedDespiteLegacyReadyStatus() {
+    ValidationEvidenceDto evidence = withRenderAuthorization(renderReadyEvidence(), "BLOCKED_PENDING_EVIDENCE");
+
+    assertThatThrownBy(() -> policy.validate(request(), evidence, now))
+        .isInstanceOf(ValidationEvidenceRejectedException.class)
+        .extracting(ex -> ((ValidationEvidenceRejectedException) ex).getErrorCode())
+        .isEqualTo("EVIDENCE_NOT_RENDER_AUTHORIZED");
+  }
+
+  @Test
+  void rejectsFinalRenderWhenCanonicalAuthorizationIsMissing() {
+    ValidationEvidenceDto evidence = withRenderAuthorization(renderReadyEvidence(), null);
+
+    assertThatThrownBy(() -> policy.validate(request(), evidence, now))
+        .isInstanceOf(ValidationEvidenceRejectedException.class)
+        .extracting(ex -> ((ValidationEvidenceRejectedException) ex).getErrorCode())
+        .isEqualTo("EVIDENCE_NOT_RENDER_AUTHORIZED");
+  }
+
   private QueueRenderJobRequest request() {
     return new QueueRenderJobRequest(
         10L, 11L, 42L, RenderJob.JobType.VIDEO, "model-x", Map.of("seed", 1), null);
@@ -380,6 +400,31 @@ class ValidationEvidencePolicyTest {
         false,
         true,
         visualPasses());
+  }
+
+  private ValidationEvidenceDto withRenderAuthorization(
+      ValidationEvidenceDto base, String renderAuthorization) {
+    return new ValidationEvidenceDto(
+        base.validationRecordId(),
+        base.contentId(),
+        base.promptVersionId(),
+        base.promptSha256(),
+        base.status(),
+        base.blockerCount(),
+        base.criticalCount(),
+        base.warningCount(),
+        base.deterministicRulesetVersion(),
+        base.semanticProvider(),
+        base.semanticModelVersion(),
+        base.producibilityValidatorVersion(),
+        base.independentRevalidationId(),
+        base.independentlyRevalidatedAt(),
+        base.validatedAt(),
+        base.expiresAt(),
+        base.firstFrameEligible(),
+        base.finalVideoEligible(),
+        base.visualEvidence(),
+        renderAuthorization);
   }
 
   private Map<String, Object> visualPasses() {

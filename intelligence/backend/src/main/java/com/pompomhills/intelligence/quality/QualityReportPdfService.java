@@ -237,6 +237,47 @@ public class QualityReportPdfService {
               fonts.muted));
     }
 
+    Object family8Object = assessment.get("family8");
+    if (family8Object instanceof Map<?, ?> family8) {
+      Paragraph family8Heading = new Paragraph("Creative quality / Evidence completeness / Render authorization", fonts.bold);
+      family8Heading.setSpacingBefore(6);
+      family8Heading.setSpacingAfter(4);
+      document.add(family8Heading);
+      Map<?, ?> creative = family8.get("creativeQuality") instanceof Map<?, ?> map ? map : Map.of();
+      Map<?, ?> evidence = family8.get("evidenceCompleteness") instanceof Map<?, ?> map ? map : Map.of();
+      Map<?, ?> authorization = family8.get("renderAuthorization") instanceof Map<?, ?> map ? map : Map.of();
+      document.add(
+          new Paragraph(
+              "Creative quality: score "
+                  + orDash(str(creative.get("creativeScore")))
+                  + " · grade "
+                  + orDash(str(creative.get("creativeGrade"))),
+              fonts.body));
+      document.add(
+          new Paragraph(
+              "Evidence completeness: "
+                  + orDash(str(evidence.get("status")))
+                  + " · coverage "
+                  + orDash(str(evidence.get("evaluationCoverage"))),
+              fonts.body));
+      document.add(
+          new Paragraph(
+              "Render authorization: " + orDash(str(authorization.get("status"))), fonts.body));
+      if (authorization.get("reasons") instanceof List<?> reasons) {
+        for (Object reason : reasons) {
+          if (reason instanceof Map<?, ?> detail) {
+            document.add(
+                new Paragraph(
+                    "Authorization reason: "
+                        + orDash(str(detail.get("code")))
+                        + " · "
+                        + orDash(str(detail.get("message"))),
+                    fonts.muted));
+          }
+        }
+      }
+    }
+
     List<Map.Entry<?, ?>> applicabilityRows = new ArrayList<>();
     if (assessment.get("specialized_applicability") instanceof Map<?, ?> applicability) {
       for (Map.Entry<?, ?> entry : applicability.entrySet()) {

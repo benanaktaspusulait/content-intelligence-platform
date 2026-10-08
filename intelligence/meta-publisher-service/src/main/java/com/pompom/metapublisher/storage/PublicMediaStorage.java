@@ -6,9 +6,27 @@ import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Locale;
 import java.util.Optional;
+import java.util.Set;
 
 /** Provider-neutral boundary for producing an HTTPS URL that Meta can fetch. */
 public interface PublicMediaStorage {
+
+  Set<String> APPROVED_SIGNED_QUERY_KEYS =
+      Set.of(
+          "xamzalgorithm",
+          "xamzdate",
+          "xamzexpires",
+          "xamzsignedheaders",
+          "xamzsignature",
+          "signature",
+          "sig",
+          "expires",
+          "expiry",
+          "st",
+          "se",
+          "sp",
+          "sr",
+          "sv");
 
   Optional<HostedMedia> host(PublishCommand command);
 
@@ -17,9 +35,11 @@ public interface PublicMediaStorage {
   static boolean isSafeHttpsUrl(String value) {
     try {
       URI uri = URI.create(value);
-      if (!"https".equalsIgnoreCase(uri.getScheme())
+      if (uri.getScheme() == null
+          || !"https".equalsIgnoreCase(uri.getScheme())
           || uri.getHost() == null
-          || (uri.getUserInfo() != null && !uri.getUserInfo().isBlank())) {
+          || uri.getUserInfo() != null
+          || uri.getRawFragment() != null) {
         return false;
       }
       String query = uri.getRawQuery();
@@ -30,15 +50,7 @@ public interface PublicMediaStorage {
         String key = parameter.split("=", 2)[0];
         String decoded = URLDecoder.decode(key, StandardCharsets.UTF_8);
         String normalized = decoded.replaceAll("[^A-Za-z0-9]", "").toLowerCase(Locale.ROOT);
-        if (normalized.contains("accesstoken")
-            || normalized.equals("token")
-            || normalized.contains("authorization")
-            || normalized.contains("password")
-            || normalized.contains("secret")
-            || normalized.contains("apikey")
-            || normalized.contains("credential")
-            || normalized.contains("clientsecret")
-            || normalized.contains("oauth")) {
+        if (!APPROVED_SIGNED_QUERY_KEYS.contains(normalized)) {
           return false;
         }
       }

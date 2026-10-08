@@ -71,6 +71,16 @@ class QualityReportPdfServiceTest {
                         "status", "APPLICABLE",
                         "confidence", "MEDIUM",
                         "reason", "Same-rule stalemate")),
+                "family8",
+                Map.of(
+                    "creativeQuality", Map.of("creativeScore", 70.0, "creativeGrade", "A"),
+                    "evidenceCompleteness", Map.of("status", "PARTIAL", "evaluationCoverage", 0.75),
+                    "renderAuthorization", Map.of(
+                        "status", "BLOCKED_PENDING_EVIDENCE",
+                        "reasons", List.of(Map.of(
+                            "code", "REQUIRED_EVIDENCE_MISSING",
+                            "message", "Visual evidence pending"))),
+                    "legacy", Map.of("readiness", "READY_TO_RENDER")),
                 "aggregation",
                 Map.ofEntries(
                     Map.entry("score", 70.0),
@@ -108,6 +118,8 @@ class QualityReportPdfServiceTest {
         .contains("STUBBORN_RETURN_PAYOFF", "APPLICABLE", "MEDIUM", "Same-rule stalemate");
     assertThat(text).contains("Canonical evidence confidence");
     assertThat(text).contains("Evaluation aggregation", "Scored", "Evaluation coverage", "PARTIAL");
+    assertThat(text).contains("Creative quality", "Evidence completeness", "Render authorization");
+    assertThat(text).contains("REQUIRED_EVIDENCE_MISSING", "Visual evidence pending");
     assertThat(text).contains("NOT EVALUATED", "NOT APPLICABLE", "SERVICE ERRORS");
     assertThat(text).contains("5%", "20%");
     assertThat(text).doesNotContain("533%", "2000%");

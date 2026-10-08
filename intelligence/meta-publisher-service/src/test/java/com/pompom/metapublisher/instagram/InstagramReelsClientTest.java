@@ -206,6 +206,44 @@ class InstagramReelsClientTest {
   }
 
   @Test
+  void rejectsCredentialAliasesInHttpsMediaUrls() {
+    InstagramReelsClient client =
+        new InstagramReelsClient(
+            RestClient.builder(),
+            OBJECT_MAPPER,
+            properties(1, Duration.ZERO),
+            new ConfiguredPublicMediaStorage(properties(1, Duration.ZERO)));
+
+    for (String url :
+        List.of(
+            "https://cdn.example/reel.mp4?accessKey=secret",
+            "https://cdn.example/reel.mp4?AWSAccessKeyId=secret")) {
+      PublishResult result = client.publish(command(url, "caption", List.of()));
+      assertThat(result.status()).isEqualTo(PublishStatus.FAILED);
+      assertThat(result.errorClass()).isEqualTo(PublishErrorClass.UNSUPPORTED.wireValue());
+      assertThat(result.message()).doesNotContain("secret");
+    }
+  }
+
+  @Test
+  void rejectsUserInfoAndCredentialFragmentsInHttpsMediaUrls() {
+    InstagramReelsClient client =
+        new InstagramReelsClient(
+            RestClient.builder(),
+            OBJECT_MAPPER,
+            properties(1, Duration.ZERO),
+            new ConfiguredPublicMediaStorage(properties(1, Duration.ZERO)));
+
+    for (String url :
+        List.of(
+            "https://@cdn.example/reel.mp4", "https://cdn.example/reel.mp4#access_token=secret")) {
+      PublishResult result = client.publish(command(url, "caption", List.of()));
+      assertThat(result.status()).isEqualTo(PublishStatus.FAILED);
+      assertThat(result.errorClass()).isEqualTo(PublishErrorClass.UNSUPPORTED.wireValue());
+    }
+  }
+
+  @Test
   void reconcilesExistingMediaWithReadOnlyGraphLookup() {
     RestClient.Builder builder = RestClient.builder();
     MockRestServiceServer server = MockRestServiceServer.bindTo(builder).build();

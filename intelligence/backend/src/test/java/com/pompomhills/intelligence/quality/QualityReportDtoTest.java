@@ -199,4 +199,51 @@ class QualityReportDtoTest {
     assertThat(aggregation.get("score")).isNull();
   }
 
+  @SuppressWarnings("unchecked")
+  @Test
+  void preservesFamily8OrthogonalAxesAndAuthorizationReasons() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.setPropertyNamingStrategy(
+        com.fasterxml.jackson.databind.PropertyNamingStrategies.SNAKE_CASE);
+
+    QualityReportDto dto =
+        mapper.readValue(
+            """
+            {
+              "overall_score": null,
+              "status": "NEEDS_REVISION",
+              "ruleset_version": "1.7",
+              "pre_render_assessment": {
+                "family8": {
+                  "creativeQuality": {"creativeScore": null, "creativeGrade": "A", "familyScores": {"producibility": null}},
+                  "evidenceCompleteness": {"status": "PARTIAL", "evaluationCoverage": 0.5, "aggregation": {"aggregationState": "NO_SCORED_ITEMS"}},
+                  "renderAuthorization": {
+                    "status": "BLOCKED_PENDING_EVIDENCE",
+                    "reasons": [{"code": "REQUIRED_EVIDENCE_MISSING", "source": "EVIDENCE", "message": "Visual evidence pending", "references": ["first-frame"]}]
+                  },
+                  "legacy": {"readiness": "READY_TO_RENDER"}
+                }
+              }
+            }
+            """,
+            QualityReportDto.class);
+
+    QualityReportDto roundTripped =
+        mapper.readValue(mapper.writeValueAsString(dto), QualityReportDto.class);
+    Map<String, Object> family8 =
+        (Map<String, Object>) roundTripped.preRenderAssessment().get("family8");
+    Map<String, Object> creative = (Map<String, Object>) family8.get("creativeQuality");
+    Map<String, Object> authorization = (Map<String, Object>) family8.get("renderAuthorization");
+
+    assertThat(creative.get("creativeScore")).isNull();
+    assertThat(creative.get("creativeGrade")).isEqualTo("A");
+    assertThat(((Map<String, Object>) creative.get("familyScores")).get("producibility")).isNull();
+    assertThat(((Map<String, Object>) family8.get("evidenceCompleteness")).get("status"))
+        .isEqualTo("PARTIAL");
+    assertThat(authorization.get("status")).isEqualTo("BLOCKED_PENDING_EVIDENCE");
+    assertThat(((java.util.List<Map<String, Object>>) authorization.get("reasons")).get(0))
+        .containsEntry("code", "REQUIRED_EVIDENCE_MISSING")
+        .containsEntry("message", "Visual evidence pending");
+  }
+
 }

@@ -285,6 +285,36 @@ class FacebookReelsClientTest {
   }
 
   @Test
+  void appliesConfiguredRequestDeadlineBeforeProviderResponseArrives() throws InterruptedException {
+    RestClient.Builder builder = RestClient.builder();
+    MockRestServiceServer server = MockRestServiceServer.bindTo(builder).build();
+    FacebookReelsClient client =
+        new FacebookReelsClient(
+            builder,
+            OBJECT_MAPPER,
+            properties(1, Duration.ofSeconds(1), Duration.ofMillis(10), Duration.ofSeconds(1)));
+    server
+        .expect(requestTo(GRAPH + "/v26.0/page-1/video_reels"))
+        .andRespond(
+            request -> {
+              try {
+                Thread.sleep(100);
+              } catch (InterruptedException failure) {
+                Thread.currentThread().interrupt();
+              }
+              return withSuccess("{\"video_id\":\"video-slow\"}", MediaType.APPLICATION_JSON)
+                  .createResponse(request);
+            });
+
+    PublishResult result = client.publish(command("https://cdn.example/video.mp4", "caption"));
+
+    assertThat(result.status()).isEqualTo(PublishStatus.RECONCILIATION_REQUIRED);
+    assertThat(result.message()).contains("timed out");
+    Thread.sleep(120);
+    server.verify();
+  }
+
+  @Test
   void mapsServerFailureBeforeCompletionToReconciliationRequired() {
     RestClient.Builder builder = RestClient.builder();
     MockRestServiceServer server = MockRestServiceServer.bindTo(builder).build();
@@ -306,10 +336,16 @@ class FacebookReelsClientTest {
   }
 
   private MetaPublisherProperties properties(int maxAttempts) {
-    return properties(maxAttempts, Duration.ofSeconds(1));
+    return properties(
+        maxAttempts, Duration.ofSeconds(1), Duration.ofSeconds(1), Duration.ofSeconds(1));
   }
 
   private MetaPublisherProperties properties(int maxAttempts, Duration pollTimeout) {
+    return properties(maxAttempts, pollTimeout, Duration.ofSeconds(1), Duration.ofSeconds(1));
+  }
+
+  private MetaPublisherProperties properties(
+      int maxAttempts, Duration pollTimeout, Duration requestTimeout, Duration uploadTimeout) {
     return new MetaPublisherProperties(
         true,
         true,
@@ -321,8 +357,8 @@ class FacebookReelsClientTest {
         TOKEN,
         "",
         "",
-        Duration.ofSeconds(1),
-        Duration.ofSeconds(1),
+        requestTimeout,
+        uploadTimeout,
         pollTimeout,
         Duration.ZERO,
         maxAttempts,

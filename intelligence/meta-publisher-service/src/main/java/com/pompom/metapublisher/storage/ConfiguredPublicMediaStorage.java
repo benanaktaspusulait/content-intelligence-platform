@@ -30,7 +30,7 @@ public class ConfiguredPublicMediaStorage implements PublicMediaStorage {
     if (PublicMediaStorage.isSafeHttpsUrl(assetReference)) {
       return Optional.of(new HostedMedia(assetReference, false));
     }
-    if (isHttp(assetReference)) {
+    if (isHttps(assetReference) || isHttp(assetReference)) {
       return Optional.empty();
     }
 

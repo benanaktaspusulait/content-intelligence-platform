@@ -14,6 +14,7 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.HexFormat;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.UUID;
 import org.springframework.stereotype.Service;
@@ -192,15 +193,14 @@ public class MetaPublishService {
     try {
       return HexFormat.of()
           .formatHex(
-              MessageDigest.getInstance("SHA-256")
-                  .digest(value.getBytes(StandardCharsets.UTF_8)));
+              MessageDigest.getInstance("SHA-256").digest(value.getBytes(StandardCharsets.UTF_8)));
     } catch (NoSuchAlgorithmException exception) {
       throw new IllegalStateException("SHA-256 is unavailable", exception);
     }
   }
 
   private String normalizeCapability(String capability) {
-    String normalized = capability == null ? "" : capability.trim().toLowerCase();
+    String normalized = capability == null ? "" : capability.trim().toLowerCase(Locale.ROOT);
     if (!"facebook_reels".equals(normalized) && !"instagram_reels".equals(normalized)) {
       throw new IllegalArgumentException("unsupported publisher capability");
     }
@@ -231,8 +231,7 @@ public class MetaPublishService {
       String providerPostId,
       String providerVideoId,
       String providerRequestId) {
-    @jakarta.validation.constraints.AssertTrue(message = "provider identity is required")
-    public boolean hasProviderIdentity() {
+    @jakarta.validation.constraints.AssertTrue(message = "provider identity is required") public boolean hasProviderIdentity() {
       return (providerPostId != null && !providerPostId.isBlank())
           || (providerVideoId != null && !providerVideoId.isBlank());
     }

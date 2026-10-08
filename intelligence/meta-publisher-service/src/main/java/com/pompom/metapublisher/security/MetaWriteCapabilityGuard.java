@@ -69,8 +69,7 @@ public class MetaWriteCapabilityGuard {
     }
   }
 
-  public void assertPublishAllowed(
-      String presentedToken, String callerEnabled, String capability) {
+  public void assertPublishAllowed(String presentedToken, String callerEnabled, String capability) {
     assertPublishAllowed(presentedToken, callerEnabled, capability, null);
   }
 

@@ -29,6 +29,8 @@ import java.util.Optional;
 import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.ArgumentCaptor;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.support.AbstractPlatformTransactionManager;
@@ -121,6 +123,30 @@ class RenderJobQueueServiceTest {
   }
 
   @Test
+  void queuesFinalVideoWhenCanonicalRenderAuthorizationIsAuthorized() {
+    when(repository.findByIdempotencyKey("key-authorized")).thenReturn(Optional.empty());
+    when(evidenceClient.getEvidence(42L))
+        .thenReturn(withRenderAuthorization(renderReadyEvidence(), "AUTHORIZED"));
+
+    QueueRenderJobResponse response = service.queue("key-authorized", request());
+
+    assertThat(response.replay()).isFalse();
+    assertThat(response.renderJobId()).isNotNull();
+
+    ArgumentCaptor<RenderJob> jobCaptor = ArgumentCaptor.forClass(RenderJob.class);
+    verify(repository).save(jobCaptor.capture());
+    RenderJob saved = jobCaptor.getValue();
+
+    ArgumentCaptor<RenderAttempt> attemptCaptor = ArgumentCaptor.forClass(RenderAttempt.class);
+    verify(attemptRepository).save(attemptCaptor.capture());
+    RenderAttempt savedAttempt = attemptCaptor.getValue();
+    assertThat(savedAttempt.getRenderJobId()).isEqualTo(saved.getId());
+    assertThat(savedAttempt.getAttemptNumber()).isEqualTo(1);
+    assertThat(savedAttempt.getStage()).isEqualTo(RenderExecutionStage.QUEUED);
+    verify(creditTrackingService).recordEstimatedUsage(saved);
+  }
+
+  @Test
   void rejectsAndCreatesNoRowWhenEvidenceIsNotRenderReady() {
     when(repository.findByIdempotencyKey("key-1")).thenReturn(Optional.empty());
     when(evidenceClient.getEvidence(42L)).thenReturn(withStatus(renderReadyEvidence(), "BLOCKED"));
@@ -129,6 +155,29 @@ class RenderJobQueueServiceTest {
         .isInstanceOf(ValidationEvidenceRejectedException.class);
 
     verify(repository, never()).save(any());
+  }
+
+  @ParameterizedTest(name = "rejects queue admission for canonical authorization {0}")
+  @ValueSource(
+      strings = {
+        "BLOCKED_PENDING_EVIDENCE",
+        "BLOCKED_CREATIVE_FAILURE",
+        "BLOCKED_TECHNICAL_FAILURE"
+      })
+  void rejectsQueueAdmissionWhenCanonicalRenderAuthorizationIsBlocked(String renderAuthorization) {
+    when(repository.findByIdempotencyKey("key-blocked")).thenReturn(Optional.empty());
+    when(evidenceClient.getEvidence(42L))
+        .thenReturn(withRenderAuthorization(renderReadyEvidence(), renderAuthorization));
+
+    assertThatThrownBy(() -> service.queue("key-blocked", request()))
+        .isInstanceOf(ValidationEvidenceRejectedException.class)
+        .extracting(ex -> ((ValidationEvidenceRejectedException) ex).getErrorCode())
+        .isEqualTo("EVIDENCE_NOT_RENDER_AUTHORIZED");
+
+    verify(contentClient, never()).fetch(anyLong(), anyLong());
+    verify(repository, never()).save(any());
+    verify(attemptRepository, never()).save(any());
+    verify(creditTrackingService, never()).recordEstimatedUsage(any(RenderJob.class));
   }
 
   @Test
@@ -158,6 +207,31 @@ class RenderJobQueueServiceTest {
         .isInstanceOf(IdempotencyKeyConflictException.class);
 
     verify(repository, never()).save(any());
+  }
+
+  private ValidationEvidenceDto withRenderAuthorization(
+      ValidationEvidenceDto base, String renderAuthorization) {
+    return new ValidationEvidenceDto(
+        base.validationRecordId(),
+        base.contentId(),
+        base.promptVersionId(),
+        base.promptSha256(),
+        base.status(),
+        base.blockerCount(),
+        base.criticalCount(),
+        base.warningCount(),
+        base.deterministicRulesetVersion(),
+        base.semanticProvider(),
+        base.semanticModelVersion(),
+        base.producibilityValidatorVersion(),
+        base.independentRevalidationId(),
+        base.independentlyRevalidatedAt(),
+        base.validatedAt(),
+        base.expiresAt(),
+        base.firstFrameEligible(),
+        base.finalVideoEligible(),
+        base.visualEvidence(),
+        renderAuthorization);
   }
 
   private RenderJob existingJobFor(String idempotencyKey, QueueRenderJobRequest request) {

@@ -18,8 +18,9 @@ public class MetaPublisherApplication {
   }
 
   @Bean
-  RestClient.Builder restClientBuilder() {
-    return RestClient.builder();
+  RestClient.Builder restClientBuilder(MetaPublisherProperties properties) {
+    return RestClient.builder()
+        .requestFactory(MetaClientSupport.deadlineRequestFactory(properties));
   }
 
   @Bean

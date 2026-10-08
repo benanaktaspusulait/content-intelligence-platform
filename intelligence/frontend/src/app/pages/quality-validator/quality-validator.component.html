@@ -123,6 +123,15 @@
           <p>Score: {{ aggregation.score ?? 'n/a' }} · Scored: {{ aggregation.scoredCount }} / {{ aggregation.denominator }} · Coverage: {{ aggregation.evaluationCoverage === null ? 'n/a' : (aggregation.evaluationCoverage * 100) + '%' }} · State: {{ aggregation.aggregationState }}</p>
           <p>PASS {{ aggregation.passCount }} · FAIL {{ aggregation.failCount }} · UNKNOWN {{ aggregation.unknownCount }} · NOT EVALUATED {{ aggregation.notEvaluatedCount }} · NOT APPLICABLE {{ aggregation.notApplicableCount }} · SERVICE ERROR {{ aggregation.serviceErrorCount }}</p>
         </section>
+        <section *ngIf="report.preRenderAssessment.family8 as family8" class="family8-orthogonal-axis" aria-label="Family 8 orthogonal assessment">
+          <h3>Creative Quality</h3>
+          <p>Score: {{ family8.creativeQuality.creativeScore ?? 'N/A' }} · Grade: {{ family8.creativeQuality.creativeGrade || 'N/A' }}</p>
+          <h3>Evidence Completeness</h3>
+          <p>Status: {{ family8.evidenceCompleteness.status }} · Coverage: {{ family8.evidenceCompleteness.evaluationCoverage === null ? 'N/A' : (family8.evidenceCompleteness.evaluationCoverage * 100) + '%' }}</p>
+          <h3>Render Authorization</h3>
+          <p>Status: {{ family8.renderAuthorization.status.replaceAll('_', ' ') }}</p>
+          <p *ngFor="let reason of family8.renderAuthorization.reasons">{{ reason.code }} · {{ reason.message }}</p>
+        </section>
         <p class="assessment-verdict">{{ report.preRenderAssessment.verdict }}</p>
         <div class="assessment-columns" aria-label="Specialized applicability">
           <section *ngFor="let row of toSpecializedApplicabilityRows(report.preRenderAssessment.specialized_applicability)">

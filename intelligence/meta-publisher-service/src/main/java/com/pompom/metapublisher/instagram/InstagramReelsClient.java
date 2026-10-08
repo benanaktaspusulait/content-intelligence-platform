@@ -150,7 +150,11 @@ public class InstagramReelsClient {
   public PublishResult reconcile(String accountId, String providerPostId, String providerVideoId) {
     String token = properties.instagramAccessToken();
     String identity = firstNonBlank(providerPostId, providerVideoId);
-    if (token == null || token.isBlank() || identity == null) {
+    if (token == null
+        || token.isBlank()
+        || identity == null
+        || properties.instagramAccountId() == null
+        || !properties.instagramAccountId().equals(accountId)) {
       return new PublishResult(
           PublishStatus.RECONCILIATION_REQUIRED,
           providerPostId,

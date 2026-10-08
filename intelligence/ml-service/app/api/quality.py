@@ -145,6 +145,7 @@ class PreRenderDimensionResponse(BaseModel):
 
 class PreRenderAssessmentResponse(BaseModel):
     name: str
+    family8: dict[str, Any] | None = None
     aggregation: dict[str, Any] | None = None
     specialized_applicability: dict[str, dict[str, Any]] = Field(default_factory=dict)
     engine_profile: dict[str, Any] | None = None

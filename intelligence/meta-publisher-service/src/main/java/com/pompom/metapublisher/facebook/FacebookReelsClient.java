@@ -77,11 +77,7 @@ public class FacebookReelsClient {
       }
       if (!localAssetAvailable(command.assetReference())) {
         return failed(
-            PublishErrorClass.VALIDATION,
-            "Facebook asset file is not available",
-            null,
-            null,
-            null);
+            PublishErrorClass.VALIDATION, "Facebook asset file is not available", null, null, null);
       }
       String edge = graph("/" + command.platformAccountId() + "/video_reels");
       MetaClientSupport.MetaResponse start =
@@ -153,7 +149,11 @@ public class FacebookReelsClient {
   public PublishResult reconcile(String accountId, String providerPostId, String providerVideoId) {
     String token = properties.facebookPageAccessToken();
     String identity = firstNonBlank(providerVideoId, providerPostId);
-    if (token == null || token.isBlank() || identity == null) {
+    if (token == null
+        || token.isBlank()
+        || identity == null
+        || properties.facebookPageId() == null
+        || !properties.facebookPageId().equals(accountId)) {
       return new PublishResult(
           PublishStatus.RECONCILIATION_REQUIRED,
           providerPostId,

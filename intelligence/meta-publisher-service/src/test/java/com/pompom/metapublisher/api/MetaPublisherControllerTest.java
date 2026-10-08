@@ -289,7 +289,8 @@ class MetaPublisherControllerTest {
   @Test
   void enabledServiceRejectsPublishForAnUnconfiguredTargetAccount() throws Exception {
     MetaPublishService service = mock(MetaPublishService.class);
-    MetaPublisherProperties properties = properties("different-page", "page-token", "ig-1", "ig-token");
+    MetaPublisherProperties properties =
+        properties("different-page", "page-token", "ig-1", "ig-token");
     MockMvc mvc = mvc(service, new MetaWriteCapabilityGuard(properties));
 
     mvc.perform(
