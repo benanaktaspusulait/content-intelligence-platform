@@ -17,6 +17,11 @@ public class WorkflowController {
     this.service = service;
   }
 
+  @GetMapping("/learning/retrieve")
+  public List<Map<String, Object>> retrieve(@RequestParam String contentProfile, @RequestParam String modelVersion, @RequestParam double duration) {
+    return service.retrieveLessons(contentProfile, modelVersion, duration);
+  }
+
   @PostMapping("/review")
   public Map<String, Object> review(@RequestBody WorkflowService.ReviewRequest request) {
     return service.runReview(request, true);
@@ -47,6 +52,16 @@ public class WorkflowController {
   @PostMapping("/records/{id}/qa")
   public Map<String, Object> qa(@PathVariable UUID id, @RequestBody Map<String, Object> request) {
     return service.actualQa(id, request);
+  }
+
+  @PostMapping("/videos/{videoId}/edited-variant")
+  public Map<String, Object> importEdit(@PathVariable UUID videoId, @RequestBody Map<String, Object> request) {
+    return service.importEditedVariant(videoId, request);
+  }
+
+  @PostMapping("/videos/{videoId}/qa")
+  public Map<String, Object> qaWithoutPlan(@PathVariable UUID videoId, @RequestBody Map<String, Object> request) {
+    return service.actualQaWithoutPlan(videoId, request);
   }
 
   @PostMapping("/feedback/{kind}")

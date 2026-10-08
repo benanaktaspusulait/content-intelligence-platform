@@ -205,11 +205,16 @@ def train(request: TrainingRequest) -> dict[str, object]:
         raise HTTPException(
             status_code=409, detail="At least 30 completed historical videos are required for a challenger"
         )
-    return {
-        "status": "CHALLENGER_CREATED",
-        "datasetVersion": request.dataset_version,
-        "rowCount": len(request.rows),
-    }
+    raise HTTPException(
+        status_code=501,
+        detail={
+            "status": "TRAINING_NOT_IMPLEMENTED",
+            "datasetVersion": request.dataset_version,
+            "rowCount": len(request.rows),
+            "artifactCreated": False,
+            "reason": "No trained artifact or evaluation pipeline is connected; cold-start inference remains active",
+        },
+    )
 
 
 @app.post("/v1/evaluation/backtest")

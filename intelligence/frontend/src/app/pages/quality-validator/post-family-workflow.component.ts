@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, EventEmitter, Input, Output, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, Output, OnChanges, SimpleChanges, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { GeneralProducibilityComponent } from './general-producibility.component';
@@ -10,6 +10,7 @@ import { GeneralProducibilityComponent } from './general-producibility.component
   imports: [CommonModule, FormsModule, GeneralProducibilityComponent],
   template: ` <section class="workflow" aria-label="Operasyonel yaratıcı iş akışı">
     <h2>Üretim incelemesi</h2>
+    <p *ngIf="restoredRecordId">Kayıtlı inceleme yeniden açıldı · {{ restoredRecordId }} · yeni sağlayıcı çağrısı yapılmadı.</p>
     <label
       >İş akışı profili
       <select [(ngModel)]="profile">
@@ -25,6 +26,7 @@ import { GeneralProducibilityComponent } from './general-producibility.component
       Yetkili karakter referansları dosyalardan bağlanır; eksik referans yerine görünüm uydurulmaz.
     </p>
     <ng-container *ngIf="profile === 'post-family-v1'">
+      <details><summary>Onaylı ilgili dersler</summary><label>Dersin hedef model / profil sürümü<input [(ngModel)]="lessonModelVersion"></label><button type="button" (click)="retrieveLessons()" [disabled]="!lessonModelVersion || !desiredDuration || contentProfile === 'AUTO'">İlgili doğrulanmış dersleri getir</button><p *ngFor="let lesson of retrievedLessons">{{ lesson.hypothesis }} · {{ lesson.recordId }} · {{ lesson.reviewReason }}</p><p>Sonraki inceleme isteği dersleri sunucuda tekrar doğrular; ders bir kural veya render izni oluşturmaz.</p></details>
       <div class="inputs">
         <label
           >İçerik profili<select [(ngModel)]="contentProfile">
@@ -579,7 +581,7 @@ import { GeneralProducibilityComponent } from './general-producibility.component
     `,
   ],
 })
-export class PostFamilyWorkflowComponent {
+export class PostFamilyWorkflowComponent implements OnChanges {
   private http = inject(HttpClient);
   private changeDetector = inject(ChangeDetectorRef);
   @Input() prompt = '';
@@ -681,13 +683,66 @@ export class PostFamilyWorkflowComponent {
   opinion: any = null;
   nearOrganicThreshold = 0.05;
   learningReason = '';
+  lessonModelVersion = '';
+  retrievedLessons: any[] = [];
+  retrieveLessons() {
+    this.http.get<any[]>('/api/v1/intelligence/workflow/learning/retrieve', { params: { contentProfile: this.contentProfile, modelVersion: this.lessonModelVersion, duration: this.desiredDuration || 0 } }).subscribe({ next: lessons => { this.retrievedLessons = lessons; this.changeDetector.markForCheck(); }, error: e => this.fail(e) });
+  }
   lessonHypothesis = '';
   counterexamples = '';
   lesson: any = null;
   encode = encodeURIComponent;
+  restoredRecordId = '';
+  private restoreSequence = 0;
+  ngOnChanges(changes: SimpleChanges): void {
+    if (!changes['contentId'] && !changes['promptVersionId']) return;
+    this.review = null;
+    this.qa = null;
+    this.reviewedInputs = '';
+    this.restoredRecordId = '';
+    const sequence = ++this.restoreSequence;
+    if (!this.contentId || !this.promptVersionId) return;
+    this.http.get<any[]>('/api/v1/intelligence/workflow/records?kind=REVIEW').subscribe({
+      next: rows => {
+        if (sequence !== this.restoreSequence) return;
+        const saved = rows.find(row => String(row.contentId) === this.contentId && String(row.promptVersionId) === this.promptVersionId);
+        if (!saved) return;
+        this.review = saved;
+        this.restoredRecordId = saved.recordId;
+        this.profile = 'post-family-v1';
+        const bound = saved.boundRequest || {};
+        for (const key of ['contentProfile', 'openingStrategy', 'generator', 'desiredDuration', 'qualityJustification', 'viewerQuestion', 'plannedEditedDuration', 'intentChangeReason'] as const) {
+          if (bound[key] !== undefined) (this as any)[key] = bound[key];
+        }
+        this.intentRequirementsText = JSON.stringify(bound.intentRequirements || [], null, 2);
+        this.creativeEvidenceText = JSON.stringify(bound.creativeEvidence || [], null, 2);
+        this.protectedIntent = (bound.protectedIntent || []).join('\n');
+        this.structuredPlanText = bound.structuredPlan ? JSON.stringify(bound.structuredPlan, null, 2) : '';
+        this.references = (bound.references || []).filter((ref: any) => ref.kind !== 'FIRST_FRAME');
+        const frame = (bound.references || []).find((ref: any) => ref.kind === 'FIRST_FRAME');
+        this.firstFramePath = frame?.relativePath || '';
+        this.firstFrameUrl = bound.settings?.startFrame?.url || '';
+        this.aspectRatio = bound.settings?.aspectRatio || '9:16';
+        this.qaPath = this.videoPath;
+        if (saved.decisionPolicyVersion === 'impact-review-v1' && bound.prompt === this.prompt) {
+          this.reviewedInputs = this.inputSnapshot();
+        } else this.error = 'Tarihsel inceleme: kaynak veya karar politikası değişmiş; yeni değerlendirme gerekli.';
+        this.http.get<any[]>('/api/v1/intelligence/workflow/records?kind=ACTUAL_RENDER_QA').subscribe({
+          next: records => {
+            if (sequence !== this.restoreSequence) return;
+            this.qa = records.find(row => row.bindingHash === saved.bindingHash) || null;
+            this.changeDetector.markForCheck();
+          }, error: e => this.fail(e),
+        });
+        this.changeDetector.markForCheck();
+      }, error: e => this.fail(e),
+    });
+  }
+
   private options() {
     return {
       profile: this.profile,
+      lessonModelVersion: this.lessonModelVersion,
       contentProfile: this.contentProfile,
       openingStrategy: this.openingStrategy,
       generator: this.generator,

@@ -21,7 +21,6 @@ interface PromptEditorInstance {
   dispose(): void;
 }
 
-const PROMPT_WORKSPACE_ROOT = 'library/POMPOM_HILLS_PRODUCTION/09_SOCIAL_REELS/new14092026';
 
 interface QualityReport {
   overallScore: number | null;
@@ -228,7 +227,7 @@ export class QualityValidatorComponent implements AfterViewInit, OnDestroy {
   loading: boolean = false;
   error: string | null = null;
   promptFiles: PromptFile[] = [];
-  promptLibraryRoot = 'library/POMPOM_HILLS_PRODUCTION';
+  promptLibraryRoot = 'library';
   promptDirectories: PromptDirectory[] = [];
   selectedPromptDirectory = '';
   promptDirectoriesLoading = false;
@@ -341,7 +340,7 @@ Intensity: 4`;
 
   loadPromptWorkspaces(): void {
     this.promptWorkspacesLoading = true;
-    this.http.get<PromptWorkspace[]>(`/api/v1/videos/prompt-workspaces?relativeDirectory=${encodeURIComponent(PROMPT_WORKSPACE_ROOT)}`).subscribe({
+    this.http.get<PromptWorkspace[]>(`/api/v1/videos/prompt-workspaces?relativeDirectory=${encodeURIComponent(this.promptLibraryRoot)}`).subscribe({
       next: workspaces => {
         this.promptWorkspaces = workspaces;
         this.promptWorkspacesLoading = false;
@@ -492,7 +491,7 @@ Intensity: 4`;
     const name = this.newFolderName.trim();
     if (!name) return;
     this.creatingFolder = true;
-    this.http.post<PromptWorkspace>('/api/v1/videos/prompt-workspaces/folders', { parentDirectory: PROMPT_WORKSPACE_ROOT, folderName: name }).subscribe({
+    this.http.post<PromptWorkspace>('/api/v1/videos/prompt-workspaces/folders', { parentDirectory: this.promptLibraryRoot, folderName: name }).subscribe({
       next: workspace => { this.creatingFolder = false; this.newFolderName = ''; this.promptWorkspaces = [workspace, ...this.promptWorkspaces]; this.selectWorkspace(workspace); },
       error: response => { this.creatingFolder = false; this.error = response.error?.message || 'Prompt workspace folder could not be created.'; },
     });
@@ -869,7 +868,7 @@ Intensity: 4`;
       title: this.contentTitle.trim(), type: this.contentType, description: 'Pompom Hills local production content',
     }).subscribe({
       next: content => this.http.post<{ id: number }>(`/api/v1/intelligence/contents/${content.id}/prompt-versions`, { rawText: this.prompt, parsedIr: '{}' }).subscribe({
-        next: promptVersion => { this.contentId = String(content.id); this.promptVersionId = String(promptVersion.id); this.validationRecordId = null; this.loading = false; this.changeDetector.markForCheck(); },
+        next: promptVersion => { this.contentId = String(content.id); this.promptVersionId = String(promptVersion.id); this.syncSavedVersionRoute(); this.validationRecordId = null; this.loading = false; this.changeDetector.markForCheck(); },
         error: response => { this.error = response.error?.detail || response.error?.message || 'Prompt version could not be created'; this.loading = false; },
       }),
       error: response => { this.error = response.error?.detail || response.error?.message || 'Content could not be created'; this.loading = false; },
@@ -889,8 +888,15 @@ Intensity: 4`;
     }
     this.loading = true; this.error = null; this.report = null; this.validationRecordId = null;
     this.http.post<{ id: number }>(`/api/v1/intelligence/contents/${Number(this.contentId)}/prompt-versions`, { rawText: this.prompt, parsedIr: '{}' }).subscribe({
-      next: version => { this.promptVersionId = String(version.id); this.loading = false; this.changeDetector.markForCheck(); },
+      next: version => { this.promptVersionId = String(version.id); this.syncSavedVersionRoute(); this.loading = false; this.changeDetector.markForCheck(); },
       error: response => { this.error = response.error?.detail || response.error?.message || 'Prompt revision could not be saved'; this.loading = false; },
+    });
+  }
+
+  private syncSavedVersionRoute(): void {
+    this.router.navigate(['/quality/detail'], {
+      queryParams: { contentId: this.contentId, promptVersionId: this.promptVersionId },
+      replaceUrl: true,
     });
   }
 

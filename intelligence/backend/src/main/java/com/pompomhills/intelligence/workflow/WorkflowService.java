@@ -31,6 +31,7 @@ public class WorkflowService {
   private final JdbcClient jdbc;
   private final MlVideoClient videoMl;
   @Autowired private ValidationEvidenceService authorization;
+  @Autowired private com.pompomhills.intelligence.video.VideoVariantService variantService;
 
   @Autowired
   public WorkflowService(
@@ -64,6 +65,12 @@ public class WorkflowService {
     if (!"post-family-v1".equals(request.options().get("profile")))
       throw new IllegalArgumentException("Explicit post-family-v1 profile required");
     var input = new LinkedHashMap<String, Object>(request.options());
+    // Resolve approved evidence again on every request; clients cannot inject revoked lessons.
+    input.remove("retrievedLessons");
+    if (input.get("lessonModelVersion") instanceof String model
+        && input.get("desiredDuration") instanceof Number duration) {
+      input.put("retrievedLessons", retrieveLessons(String.valueOf(input.get("contentProfile")), model, duration.doubleValue()));
+    }
     input.remove("authorizationEvidence");
     if (request.contentId() != null && request.promptVersionId() != null) {
       var snapshot = prompts.load(request.contentId(), request.promptVersionId());
@@ -240,21 +247,52 @@ public class WorkflowService {
 
   public Map<String, Object> reviewLearning(UUID id, Map<String, Object> input) {
     var record = get(id);
-    if (!"PENDING_HUMAN_REVIEW".equals(record.get("reviewStatus")))
+    if (!List.of("PENDING_HUMAN_REVIEW", "APPROVED", "REJECTED").contains(record.get("reviewStatus")))
       throw new IllegalArgumentException("Only pending learning records can be reviewed");
-    if (!List.of("APPROVED", "REJECTED").contains(input.get("decision"))
+    if (!List.of("APPROVED", "REJECTED", "REVOKED").contains(input.get("decision"))
         || !(input.get("reason") instanceof String reason)
         || reason.isBlank())
       throw new IllegalArgumentException("Explicit decision and review reason required");
     var review = new LinkedHashMap<>(record);
     review.remove("recordId");
-    review.put("parentRecordId", id.toString());
+    review.put("parentRecordId", record.getOrDefault("parentRecordId", id.toString()));
     review.put("reviewStatus", input.get("decision"));
     review.put("reviewReason", input.get("reason"));
     review.put("reviewedAt", Instant.now().toString());
     review.put("automaticallyApplied", false);
     review.put("recordId", save("LEARNING_REVIEW", null, review));
     return review;
+  }
+
+  public List<Map<String, Object>> retrieveLessons(String profile, String model, double duration) {
+    if (duration <= 0 || profile == null || model == null) return List.of();
+    return jdbc.sql("""
+        SELECT id,payload::text payload FROM (
+          SELECT DISTINCT ON (payload->>'parentRecordId') id,payload,created_at
+          FROM post_family_workflow_events WHERE kind='LEARNING_REVIEW'
+          ORDER BY payload->>'parentRecordId',created_at DESC,id DESC
+        ) latest WHERE payload->>'reviewStatus'='APPROVED'
+          AND payload->>'contentProfile'=:profile AND payload->>'targetModelVersion'=:model
+        ORDER BY created_at DESC LIMIT 100
+        """).param("profile", profile).param("model", model).query((rs, ignored) -> {
+          var result = read(rs.getString("payload")); result.put("recordId", rs.getString("id")); return result;
+        }).list().stream().filter(lesson -> {
+          var range = lesson.get("durationRange");
+          if (!(range instanceof List<?> values) || values.size() != 2
+              || !(values.get(0) instanceof Number low) || !(values.get(1) instanceof Number high)
+              || duration < low.doubleValue() || duration > high.doubleValue()) return false;
+          if (!(lesson.get("sampleSize") instanceof Number size) || size.intValue() < 1) return false;
+          if (!(lesson.get("evidenceBasis") instanceof List<?> evidence) || evidence.isEmpty()) return false;
+          boolean verified = false;
+          for (Object reference : evidence) {
+            try {
+              var record = get(UUID.fromString(String.valueOf(reference)));
+              verified |= record.get("verificationPasses") instanceof Number count && count.intValue() > 0;
+              verified |= "USABLE".equals(record.get("viewerFacingUsability"));
+            } catch (IllegalArgumentException unavailable) { return false; }
+          }
+          return verified;
+        }).limit(5).toList();
   }
 
   public List<Map<String, Object>> verifiedReferences(Object value) {
@@ -330,6 +368,47 @@ public class WorkflowService {
         || Boolean.TRUE.equals(review.get("needsSavedPromptVersion")))
       throw new IllegalArgumentException(
           "Current source-bound impact review required; save/review changed intent first");
+    return actualQaBound(review, id, input);
+  }
+
+  @org.springframework.transaction.annotation.Transactional
+  public Map<String, Object> importEditedVariant(UUID videoId, Map<String, Object> input) {
+    var original = videos.get(videoId);
+    String path = String.valueOf(input.get("relativePath"));
+    String reason = String.valueOf(input.getOrDefault("reason", ""));
+    if (reason.isBlank() || original.relativePath().equals(path)) throw new IllegalArgumentException("Distinct edited file and review reason are required");
+    UUID parentId = input.get("parentVariantId") == null ? null : UUID.fromString(String.valueOf(input.get("parentVariantId")));
+    if (parentId != null) variantService.get(videoId, parentId);
+    var artifact = videos.ingest(path, null);
+    if (artifact.id().equals(videoId)) throw new IllegalArgumentException("Edited file has original bytes; no new edited result exists");
+    var operations = input.get("editOperations") instanceof List<?> list ? new ArrayList<Object>(list) : List.<Object>of();
+    var existing = variantService.list(videoId).stream().filter(variant -> variant.generatedPath().equals(path)).findFirst();
+    var variant = existing.orElseGet(() -> variantService.create(videoId, parentId, com.pompomhills.intelligence.video.VideoVariantType.CUSTOM_EDIT, path, operations));
+    if (!java.util.Objects.equals(variant.parentVariantId(), parentId) || !variant.editOperations().equals(operations)) throw new IllegalArgumentException("Existing variant has different parent or edit provenance");
+    var record = new LinkedHashMap<String, Object>();
+    record.put("videoId", videoId.toString()); record.put("variantId", variant.id().toString());
+    record.put("parentVariantId", parentId); record.put("artifactVideoId", artifact.id().toString());
+    record.put("relativePath", path); record.put("durationMs", artifact.durationMs());
+    record.put("artifactHash", jdbc.sql("SELECT content_hash FROM videos WHERE id=:id").param("id", artifact.id()).query(String.class).single());
+    record.put("originalHash", jdbc.sql("SELECT content_hash FROM videos WHERE id=:id").param("id", videoId).query(String.class).single());
+    record.put("editOperations", operations); record.put("operationVerification", "OPERATOR_REPORTED");
+    record.put("fileVerification", "HASH_AND_METADATA_VERIFIED"); record.put("reason", reason);
+    record.put("recordId", save("EDIT_HANDOFF", null, record));
+    return record;
+  }
+
+  public Map<String, Object> actualQaWithoutPlan(UUID videoId, Map<String, Object> input) {
+    var video = videos.get(videoId);
+    var request = new LinkedHashMap<>(input);
+    request.put("relativePath", video.relativePath());
+    var plan = new LinkedHashMap<String, Object>();
+    plan.put("bindingHash", "actual-only:" + videoId + ":" + UUID.randomUUID());
+    plan.put("lineageStatus", "UNAVAILABLE");
+    plan.put("decisionPolicyVersion", "impact-review-v1");
+    return actualQaBound(plan, null, request);
+  }
+
+  private Map<String, Object> actualQaBound(Map<String, Object> review, UUID id, Map<String, Object> input) {
     String path = String.valueOf(input.get("relativePath"));
     var video = videos.ingest(path, null);
     var analysis = videoMl.analyse(path, VideoService.CURRENT_ANALYSIS_VERSION, Map.of(), false);
@@ -408,6 +487,7 @@ public class WorkflowService {
     plan.put("planQuality", review.get("planQuality"));
     plan.put("executionRisk", review.get("executionRisk"));
     plan.put("decisionPolicyVersion", review.get("decisionPolicyVersion"));
+    if (id == null) plan.put("lineageStatus", "UNAVAILABLE");
     var qa =
         ml.workflow(
             "feedback",
@@ -416,7 +496,8 @@ public class WorkflowService {
                 "ACTUAL_RENDER_QA",
                 "payload",
                 Map.of("plan", plan, "observation", observed)));
-    qa.put("reviewId", id.toString());
+    qa.put("reviewId", id == null ? null : id.toString());
+    qa.put("lineageStatus", id == null ? "UNAVAILABLE" : "SOURCE_BOUND");
     qa.put("videoId", video.id().toString());
     qa.put("relativePath", path);
     qa.put("recordId", save("ACTUAL_RENDER_QA", String.valueOf(review.get("bindingHash")), qa));

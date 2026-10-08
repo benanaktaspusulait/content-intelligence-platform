@@ -46,21 +46,24 @@ public class VideoPromptSourceResolver {
       List<Path> prompts = eligiblePromptFiles(folder);
       String stem = normalizeStem(stripExtension(file.getFileName().toString()));
       List<Path> exact = prompts.stream().filter(candidate -> isExactCandidate(stem, candidate)).toList();
-      if (!exact.isEmpty()) return read(video, exact.get(0), PromptSourceResolution.Status.MATCHED_SIDECAR, "EXACT_SIDECAR", "HIGH", prompts);
-      List<Path> namedPrompt = prompts.stream().filter(this::isCanonicalPromptFile).toList();
-      if (namedPrompt.size() == 1) {
-        return read(video, namedPrompt.get(0), PromptSourceResolution.Status.MATCHED_SIDECAR,
-            "CANONICAL_PROMPT_FILENAME", "HIGH", prompts);
-      }
+      if (exact.size() > 1) return result(PromptSourceResolution.Status.AMBIGUOUS,
+          video.getRelativePath(), null, null, "MULTIPLE_EXACT_SIDECARS", "UNKNOWN", exact.size(),
+          relative(root, exact), "Multiple sidecars require operator selection");
+      if (exact.size() == 1) return read(video, exact.get(0), PromptSourceResolution.Status.MATCHED_SIDECAR, "EXACT_SIDECAR", "HIGH", prompts);
       long videoCount;
       try (Stream<Path> files = Files.list(folder)) {
         videoCount = files.filter(Files::isRegularFile).filter(this::isVideo).count();
+      }
+      List<Path> namedPrompt = prompts.stream().filter(this::isCanonicalPromptFile).toList();
+      if (namedPrompt.size() == 1 && videoCount == 1) {
+        return read(video, namedPrompt.get(0), PromptSourceResolution.Status.MATCHED_SIDECAR,
+            "CANONICAL_PROMPT_FILENAME", "HIGH", prompts);
       }
       if (prompts.size() == 1 && videoCount == 1) {
         return read(video, prompts.get(0), PromptSourceResolution.Status.MATCHED_SINGLE_FOLDER_PROMPT,
             "SINGLE_FOLDER_PROMPT", "MEDIUM", prompts);
       }
-      if (prompts.size() > 1) {
+      if (prompts.size() > 1 || prompts.size() == 1 && videoCount > 1) {
         return result(PromptSourceResolution.Status.AMBIGUOUS, video.getRelativePath(), null, null,
             "MULTIPLE_PROMPT_CANDIDATES", "UNKNOWN", prompts.size(), relative(root, prompts),
             "Multiple prompt files could describe this video");
@@ -82,11 +85,7 @@ public class VideoPromptSourceResolver {
         return result(PromptSourceResolution.Status.ERROR, video.getRelativePath(), promptPath, null,
             method, "UNKNOWN", candidates.size(), relative(root, candidates), "Prompt file exceeds size limit");
       }
-      String text = jdbc.sql("SELECT raw_text FROM prompt_versions WHERE source_path=:path ORDER BY version_number DESC LIMIT 1")
-          .param("path", promptPath).query(String.class).optional().orElseGet(() -> {
-            try { return Files.readString(path, StandardCharsets.UTF_8); }
-            catch (IOException error) { throw new IllegalStateException(error); }
-          });
+      String text = Files.readString(path, StandardCharsets.UTF_8);
       return new PromptSourceResolution(status, video.getRelativePath(), promptPath, text, method,
           confidence, candidates.size(), relative(root, candidates), null);
     } catch (RuntimeException | IOException error) {
@@ -122,7 +121,7 @@ public class VideoPromptSourceResolver {
   /** Metadata files share the folder with the production prompt; only canonical prompt names may disambiguate them. */
   private boolean isCanonicalPromptFile(Path file) {
     String stem = stripExtension(file.getFileName().toString()).toLowerCase(Locale.ROOT)
-        .replaceAll("[^a-z0-9]+", "_").replaceAll("_+", "_").replaceAll("^_|_$", "");
+        .replaceAll("[^\\p{L}\\p{N}]+", "_").replaceAll("_+", "_").replaceAll("^_|_$", "");
     return stem.equals("prompt") || stem.startsWith("prompt_")
         || stem.equals("video_prompt") || stem.startsWith("video_prompt_")
         || stem.equals("generation_prompt") || stem.startsWith("generation_prompt_")
@@ -130,7 +129,7 @@ public class VideoPromptSourceResolver {
   }
 
   private String normalizeStem(String value) {
-    String normalized = value.toLowerCase(Locale.ROOT).replaceAll("[^a-z0-9]+", "_");
+    String normalized = value.toLowerCase(Locale.ROOT).replaceAll("[^\\p{L}\\p{N}]+", "_");
     boolean changed;
     do {
       String next = normalized.replaceFirst("(_prompt|-prompt|_final|-final|_hd|_original)$", "");

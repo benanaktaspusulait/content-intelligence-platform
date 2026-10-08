@@ -1,6 +1,7 @@
 package com.pompomhills.intelligence.performance;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.io.IOException;
 import java.util.UUID;
@@ -39,7 +40,7 @@ class PerformanceImportServiceVariantTest {
   @Autowired JdbcClient jdbc;
   @Autowired PerformanceImportService importService;
 
-  private UUID insertVideo(String filename) {
+  protected UUID insertVideo(String filename) {
     UUID id = UUID.randomUUID();
     jdbc.sql(
             """
@@ -139,4 +140,29 @@ class PerformanceImportServiceVariantTest {
             .orElse(null);
     assertThat(persistedVariant).isNull();
   }
+  @Test
+  void manualMatchPersistsExactVariantAndClearsItWhenOriginalIsSelected() {
+    UUID video = insertVideo("manual.mp4");
+    UUID variant = insertVariant(video);
+    String csv = "filename,views\nmissing-" + UUID.randomUUID() + ".mp4,100\n";
+    var preview = importService.preview(new MockMultipartFile("file", "manual.csv", "text/csv", csv.getBytes()), "instagram", "UTC");
+    UUID row = importService.rows(preview.batchId()).getFirst().id();
+    importService.resolve(preview.batchId(), row, video, variant, "Verified edited publication");
+    assertThat(importService.rows(preview.batchId()).getFirst().matchedVariantId()).isEqualTo(variant);
+    importService.resolve(preview.batchId(), row, video, null, "Corrected to original publication");
+    assertThat(importService.rows(preview.batchId()).getFirst().matchedVariantId()).isNull();
+  }
+
+  @Test
+  void manualMatchRejectsCrossVideoVariantWithoutChangingTheRow() {
+    UUID video = insertVideo("manual-target.mp4");
+    UUID foreignVariant = insertVariant(insertVideo("foreign.mp4"));
+    String csv = "filename,views\nmissing-" + UUID.randomUUID() + ".mp4,100\n";
+    var preview = importService.preview(new MockMultipartFile("file", "manual.csv", "text/csv", csv.getBytes()), "instagram", "UTC");
+    UUID row = importService.rows(preview.batchId()).getFirst().id();
+    assertThatThrownBy(() -> importService.resolve(preview.batchId(), row, video, foreignVariant, "Wrong selection"))
+        .isInstanceOf(IllegalArgumentException.class);
+    assertThat(importService.rows(preview.batchId()).getFirst().matchedVideoId()).isNull();
+  }
+
 }

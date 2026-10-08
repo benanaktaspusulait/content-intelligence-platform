@@ -20,6 +20,7 @@ import { GeneralProducibility, generalProducibilityRows } from './family10-repre
             <small>Evidence: {{ value.dimensions[key].evidenceReferences.join(', ') || 'UNKNOWN' }}</small>
           </article>
         </div>
+        <aside *ngIf="value.unknownDimensions.length"><strong>Missing or unresolved source evidence</strong><p *ngFor="let key of value.unknownDimensions">{{ key }} · {{ value.dimensions[key]?.reason }} · {{ value.dimensions[key]?.evidenceReferences?.join(', ') || 'No grounded source reference' }}</p><p>Add an exact source quote and span in the source plan evidence form, then assess again. Unsupported effects remain UNKNOWN.</p></aside>
         <details>
           <summary>All production dimensions and evidence</summary>
           <article *ngFor="let risk of rows(value)">

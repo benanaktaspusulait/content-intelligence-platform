@@ -136,15 +136,7 @@ public class MediaContentService {
   }
 
   private boolean isSupportedTextFilename(String filename) {
-    return filename.equals("social.md")
-        || filename.equals("youtube.md")
-        || filename.equals("03_instagram_social.txt")
-        || filename.equals("prompt.md")
-        || filename.equals("prompt.txt")
-        || filename.equals("01_video_prompt.txt")
-        || filename.equals("video_prompt.txt")
-        || filename.endsWith("-prompt.md")
-        || filename.endsWith("_prompt.txt");
+    return java.util.List.of(".txt", ".md", ".json", ".yaml", ".yml").stream().anyMatch(filename::endsWith);
   }
 
   private String extension(Path file) {

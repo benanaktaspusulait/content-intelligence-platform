@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { forkJoin, map, Observable } from 'rxjs';
+import { EMPTY, expand, forkJoin, map, Observable, reduce } from 'rxjs';
 
 export type Platform = 'Instagram' | 'Facebook' | 'YouTube' | 'TikTok' | 'Unknown';
 export type VideoState = 'Observed' | 'Testing' | 'Queued' | 'Ingested';
@@ -110,7 +110,7 @@ export interface VideoApiRecord {
   ingestedAt: string;
 }
 
-interface VideoPage { content: VideoApiRecord[]; }
+interface VideoPage { content: VideoApiRecord[]; number?: number; last?: boolean; }
 
 export interface DirectoryIngestResult {
   relativeDirectory: string;
@@ -232,6 +232,7 @@ export interface ImportRow {
   sourceRowNumber: number;
   rawData: Record<string, string>;
   matchedVideoId: string | null;
+  matchedVariantId?: string | null;
   matchStatus: string;
   matchConfidence: number | null;
 }
@@ -518,6 +519,10 @@ export interface VideoCreativeContext {
     linkage: string;
   } | null;
   evidenceStatus: string;
+  candidates?: NonNullable<VideoCreativeContext['prompt']>[];
+  sourceLink?: { id: number; promptVersionId: number; origin: string; reason: string; videoHash: string; createdAt: string } | null;
+  sourceResolution?: { status: string; promptPath: string | null; promptText: string | null; candidates: string[]; errorMessage: string | null };
+
 }
 
 export interface ReachFurtherComparison {
@@ -624,12 +629,24 @@ export class CreativeIntelligenceService {
     return this.http.post<ImportPreview>(`${this.baseUrl}/imports/${batchId}/commit`, {});
   }
 
+  getImportBatch(batchId: string): Observable<ImportPreview> {
+    return this.http.get<ImportPreview>(`${this.baseUrl}/imports/${batchId}`);
+  }
+
   getImportRows(batchId: string): Observable<ImportRow[]> {
     return this.http.get<ImportRow[]>(`${this.baseUrl}/imports/${batchId}/rows`);
   }
 
-  resolveImportRow(batchId: string, rowId: string, videoId: string, reason = 'Manual exact selection'): Observable<ImportPreview> {
-    return this.http.post<ImportPreview>(`${this.baseUrl}/imports/${batchId}/rows/${rowId}/match`, { videoId, reason });
+  getImportVideoChoices(): Observable<{ id: string; title: string }[]> {
+    const fetchPage = (page: number) => this.http.get<VideoPage>(`${this.baseUrl}/videos`, { params: { size: 200, page, sort: 'id,asc' } });
+    return fetchPage(0).pipe(
+      expand((page, index) => page.last === false ? fetchPage(index + 1) : EMPTY, 1),
+      reduce((all, page) => [...all, ...page.content.map(video => ({ id: video.id, title: video.originalFilename }))], [] as { id: string; title: string }[]),
+    );
+  }
+
+  resolveImportRow(batchId: string, rowId: string, videoId: string, reason = 'Manual exact selection', variantId: string | null = null): Observable<ImportPreview> {
+    return this.http.post<ImportPreview>(`${this.baseUrl}/imports/${batchId}/rows/${rowId}/match`, { videoId, variantId, reason });
   }
 
   getVideo(id: string): Observable<VideoApiRecord> {
@@ -686,6 +703,10 @@ export class CreativeIntelligenceService {
     return this.http.get<VideoVariant[]>(`${this.baseUrl}/videos/${videoId}/variants`);
   }
 
+  importEditedVariant(videoId: string, relativePath: string, parentVariantId: string | null, reason: string): Observable<{ variantId: string; artifactVideoId: string; artifactHash: string; durationMs: number; recordId: string }> {
+    return this.http.post<{ variantId: string; artifactVideoId: string; artifactHash: string; durationMs: number; recordId: string }>(`/api/v1/intelligence/workflow/videos/${videoId}/edited-variant`, { relativePath, parentVariantId, reason, editOperations: [{ operation: 'MANUAL_EDIT', reason }] });
+  }
+
   createVariant(videoId: string, request: CreateVariantRequest): Observable<VideoVariant> {
     return this.http.post<VideoVariant>(`${this.baseUrl}/videos/${videoId}/variants`, request);
   }
@@ -700,6 +721,10 @@ export class CreativeIntelligenceService {
 
   getPlatformCreativeReadiness(videoId: string, platform: string): Observable<PlatformCreativeReadiness> {
     return this.http.get<PlatformCreativeReadiness>(`${this.baseUrl}/videos/${videoId}/platform-readiness`, { params: { platform } });
+  }
+
+  linkVideoPrompt(videoId: string, promptVersionId: number, origin: string, reason: string): Observable<VideoCreativeContext> {
+    return this.http.post<VideoCreativeContext>(`${this.baseUrl}/videos/${videoId}/creative-context/prompt-link`, { promptVersionId, origin, reason });
   }
 
   getVideoCreativeContext(videoId: string): Observable<VideoCreativeContext> {

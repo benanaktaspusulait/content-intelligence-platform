@@ -340,7 +340,7 @@ public class VideoService {
       List<Path> files = descendants.filter(Files::isRegularFile).toList();
       List<Path> videoFiles = files.stream().filter(this::hasAllowedExtension).sorted().toList();
       List<Path> promptFiles = files.stream().filter(this::isPromptFile).sorted().toList();
-      if (videoFiles.isEmpty() && promptFiles.isEmpty()) return null;
+
       String folderPath = root.relativize(folder).toString().replace('\\', '/');
       List<String> videosInFolder = videoFiles.stream().map(file -> root.relativize(file).toString().replace('\\', '/')).toList();
       List<String> promptsInFolder = promptFiles.stream().map(file -> root.relativize(file).toString().replace('\\', '/')).toList();
@@ -362,10 +362,10 @@ public class VideoService {
 
   @Transactional
   public PromptWorkspace createPromptWorkspaceFolder(String parentDirectory, String folderName) {
-    if (folderName == null || !folderName.matches("[A-Za-z0-9][A-Za-z0-9._-]{0,99}")) {
+    if (folderName == null || !folderName.matches("[\\p{L}\\p{N}][\\p{L}\\p{N} ._-]{0,99}") || folderName.endsWith(".") || folderName.endsWith(" ")) {
       throw new IllegalArgumentException("Folder name must use letters, numbers, dot, underscore, or hyphen");
     }
-    String parentValue = parentDirectory == null || parentDirectory.isBlank() ? "library/POMPOM_HILLS_PRODUCTION/09_SOCIAL_REELS/new14092026" : parentDirectory;
+    String parentValue = parentDirectory == null || parentDirectory.isBlank() ? "library" : parentDirectory;
     Path root = properties.dataRoot().toAbsolutePath().normalize();
     Path parent = root.resolve(parentValue).normalize();
     Path folder = parent.resolve(folderName).normalize();
@@ -394,19 +394,18 @@ public class VideoService {
 
   private boolean isPromptFile(Path file) {
     String name = file.getFileName().toString().toLowerCase(java.util.Locale.ROOT);
-    if (!(name.endsWith(".md") || name.endsWith(".txt")) || name.contains("image")) return false;
-    if (name.startsWith("shot-") || name.startsWith("shot_")) return false;
-    return name.equals("prompt.md")
-        || name.equals("prompt.txt")
-        || name.equals("01_video_prompt.txt")
-        || name.equals("video_prompt.txt")
-        || name.endsWith("-prompt.md")
-        || name.endsWith("_prompt.txt");
+    return List.of(".txt", ".md", ".json", ".yaml", ".yml").stream().anyMatch(name::endsWith)
+        && !name.contains("image") && !name.contains("storyboard") && !name.endsWith(".jsonl");
   }
 
   @Transactional(readOnly = true)
   public boolean hasCurrentAnalysis(UUID videoId) {
-    return analyses.existsByVideoIdAndAnalysisVersion(videoId, CURRENT_ANALYSIS_VERSION);
+    return hasAnalysis(videoId, CURRENT_ANALYSIS_VERSION);
+  }
+
+  @Transactional(readOnly = true)
+  public boolean hasAnalysis(UUID videoId, String version) {
+    return analyses.existsByVideoIdAndAnalysisVersion(videoId, version);
   }
 
   @Transactional

@@ -1,6 +1,7 @@
 package com.pompomhills.intelligence.video.context;
 
 import java.time.Instant;
+import com.pompomhills.intelligence.video.prompt.PromptSourceResolution;
 import java.util.List;
 import java.util.UUID;
 
@@ -11,7 +12,12 @@ public final class VideoCreativeContextDtos {
       UUID videoId,
       List<CharacterContext> characters,
       PromptContext prompt,
-      String evidenceStatus) {}
+      String evidenceStatus,
+      List<PromptContext> candidates,
+      PromptSourceResolution sourceResolution,
+      SourceLink sourceLink) {}
+
+  public record SourceLink(long id, long promptVersionId, String origin, String reason, String videoHash, Instant createdAt) {}
 
   public record CharacterContext(
       UUID id,

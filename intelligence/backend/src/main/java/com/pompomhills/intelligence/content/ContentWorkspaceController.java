@@ -108,8 +108,8 @@ public class ContentWorkspaceController {
 
   @GetMapping("/{contentId}/prompt-versions")
   public List<PromptVersionSummary> prompts(@PathVariable Long contentId) {
-    return jdbc.sql("SELECT id,content_id,version_number,raw_text,parsed_ir,created_at FROM prompt_versions WHERE content_id=:id ORDER BY version_number DESC")
-        .param("id", contentId).query((rs, ignored) -> new PromptVersionSummary(rs.getLong("id"), rs.getLong("content_id"), rs.getInt("version_number"), rs.getString("raw_text"), rs.getString("parsed_ir"), rs.getObject("created_at", java.sql.Timestamp.class).toInstant())).list();
+    return jdbc.sql("SELECT id,content_id,version_number,raw_text,parsed_ir,source_path,source_sha256,created_at FROM prompt_versions WHERE content_id=:id ORDER BY version_number DESC")
+        .param("id", contentId).query((rs, ignored) -> new PromptVersionSummary(rs.getLong("id"), rs.getLong("content_id"), rs.getInt("version_number"), rs.getString("raw_text"), rs.getString("parsed_ir"), rs.getString("source_path"), rs.getString("source_sha256"), rs.getObject("created_at", java.sql.Timestamp.class).toInstant())).list();
   }
 
   @GetMapping("/prompt-library")
@@ -185,7 +185,7 @@ public class ContentWorkspaceController {
   public record ImportFolderRequest(String relativeDirectory) {}
   public record PromptImportResponse(String relativeDirectory, int discovered, int imported, int unchanged) {}
   public record ContentSummary(Long id, String title, String description, String type, String status, java.time.Instant createdAt, java.time.Instant updatedAt, Long latestPromptVersionId, Integer latestPromptVersionNumber) {}
-  public record PromptVersionSummary(Long id, Long contentId, Integer versionNumber, String rawText, String parsedIr, java.time.Instant createdAt) {}
+  public record PromptVersionSummary(Long id, Long contentId, Integer versionNumber, String rawText, String parsedIr, String sourcePath, String sourceSha256, java.time.Instant createdAt) {}
   public record PromptLibraryItem(Long contentId, String title, Long promptVersionId, Integer versionNumber, String rawText, String sourcePath) {}
   public record PromptQualityRecord(Long contentId, String title, String sourcePath, Long promptVersionId, Integer versionNumber, PromptQualitySummary latestQuality) {}
   public record PromptQualitySummary(Long validationRecordId, java.time.Instant analyzedAt, String rulesetVersion, Double overallScore, String status, String creativeGrade, String readiness, String summary) {}

@@ -241,11 +241,14 @@ def review_render(plan: dict[str, Any], observation: dict[str, Any]) -> dict[str
         if events and all(i["status"] == "PRESENT" for i in events)
         else "UNKNOWN"
     )
+    no_plan = plan.get("lineageStatus") in {"UNAVAILABLE", "AMBIGUOUS", "RECONSTRUCTED"}
+    if no_plan:
+        fidelity = "NOT_EVALUATED"
     required = ("coreEventReadability", "identity", "safety", "coherence", "progression")
     # Unclassified missing events cannot be retroactively declared harmless.
     unknown = (
         not asset_known
-        or not events
+        or (not events and not no_plan)
         or any(i["status"] == "UNKNOWN" for i in events)
         or any(experience[k]["value"] == "UNKNOWN" for k in required)
         or any(i["severity"] == "UNKNOWN" for i in findings)
@@ -329,6 +332,8 @@ def review_render(plan: dict[str, Any], observation: dict[str, Any]) -> dict[str
     actual = {
         "status": "FAIL" if blocked else "UNKNOWN" if unknown else "REPAIR" if weak else "PASS",
         "planFidelity": fidelity,
+        "lineageStatus": plan.get("lineageStatus", "SOURCE_BOUND"),
+        "planFidelityReason": "Original generation prompt unavailable; actual viewing evidence assessed separately" if no_plan else None,
         "viewerFacingUsability": usability,
         "editorialRecommendation": recommendation,
         "findings": findings,

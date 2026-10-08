@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
-import { CreativeIntelligenceService, ImportRow, VideoRecord } from '../core/creative-intelligence.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { CreativeIntelligenceService, ImportRow, VideoVariant } from '../core/creative-intelligence.service';
 
 interface DetectedField { source: string; interpretation: string; }
 
@@ -22,14 +23,22 @@ interface DetectedField { source: string; interpretation: string; }
       <div class="data-table-scroll"><table class="data-table mapping-table"><thead><tr><th>Source field</th><th>Backend interpretation</th></tr></thead><tbody>@for (field of mappings(); track field.source) {<tr><td><strong>{{ field.source }}</strong></td><td>{{ field.interpretation }}</td></tr>}</tbody></table></div>
       @if (unresolvedRows() > 0 && batchId()) {
         <div class="section-heading review-heading"><div><span class="eyebrow">MATCH REVIEW</span><h2>Resolve unmatched rows</h2></div><span class="status-badge status-badge--amber">{{ unresolvedRows() }} unresolved</span></div>
-        <div class="data-table-scroll"><table class="data-table"><thead><tr><th>Source row</th><th>Source identity</th><th>Match to canonical video</th></tr></thead><tbody>@for (row of unresolvedRowsList(); track row.id) {<tr><td>{{ row.sourceRowNumber }}</td><td class="code-value">{{ rowIdentity(row) }}</td><td><select [value]="''" (change)="resolveRow(row, $event)" [attr.aria-label]="'Resolve source row ' + row.sourceRowNumber"><option value="">Select video…</option>@for (video of videos(); track video.id) {<option [value]="video.id">{{ video.title }}</option>}</select></td></tr>}</tbody></table></div>
+        <div class="data-table-scroll"><table class="data-table"><thead><tr><th>Source row</th><th>Source identity</th><th>Match to canonical video</th></tr></thead><tbody>@for (row of unresolvedRowsList(); track row.id) {<tr><td>{{ row.sourceRowNumber }}</td><td class="code-value">{{ rowIdentity(row) }}</td><td><select [value]="selections()[row.id]?.videoId || ''" (change)="selectVideo(row, $event)" [attr.aria-label]="'Resolve source row ' + row.sourceRowNumber"><option value="">Select video…</option>@for (video of videos(); track video.id) {<option [value]="video.id">{{ video.title }}</option>}</select>
+          @if (selections()[row.id]; as selection) {
+            <select [value]="selection.variantId" (change)="selectVariant(row, $event)" [disabled]="!selection.ready" aria-label="Exact variant"><option value="">Original video</option>@for (variant of selection.variants; track variant.id) {<option [value]="variant.id">{{ variant.variantType }} · {{ variant.id }}</option>}</select>
+            <input aria-label="Match reason" placeholder="Evidence for this exact match" [value]="selection.reason" (input)="setReason(row, $event)">
+            <button type="button" [disabled]="loading() || !selection.ready || !selection.reason.trim()" (click)="resolveRow(row)">Confirm exact match</button>
+          }
+          </td></tr>}</tbody></table></div>
       }
-      <footer class="commit-bar"><div><strong>{{ matchedRows() }} of {{ rowCount() }} rows matched</strong><small>Raw source remains append-only; blank metrics stay null.</small></div><button class="button button--primary" type="button" [disabled]="unresolvedRows() > 0 || !batchId() || loading()" (click)="commit()">{{ committed() ? 'Import committed' : loading() ? 'Working…' : 'Commit import' }} <span aria-hidden="true">→</span></button></footer>
+      <footer class="commit-bar"><div><strong>{{ matchedRows() }} of {{ rowCount() }} rows matched</strong><small>Raw source remains append-only; blank metrics stay null.</small></div><button class="button button--primary" type="button" [disabled]="unresolvedRows() > 0 || !batchId() || loading() || committed()" (click)="commit()">{{ committed() ? 'Import committed' : loading() ? 'Working…' : 'Commit import' }} <span aria-hidden="true">→</span></button></footer>
     </section>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ImportDataPage {
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
   private readonly service = inject(CreativeIntelligenceService);
   protected readonly step = signal(2);
   protected readonly fileName = signal('');
@@ -37,7 +46,7 @@ export class ImportDataPage {
   protected readonly mappings = signal<DetectedField[]>([]);
   protected readonly platform = signal('instagram');
   protected readonly rows = signal<ImportRow[]>([]);
-  protected readonly videos = signal<VideoRecord[]>([]);
+  protected readonly videos = signal<{ id: string; title: string }[]>([]);
   protected readonly batchId = signal('');
   protected readonly rowCount = signal(0);
   protected readonly matchedRows = signal(0);
@@ -47,13 +56,57 @@ export class ImportDataPage {
   protected readonly unresolvedRowsList = computed(() => this.rows().filter(row => row.matchStatus === 'UNRESOLVED'));
   protected readonly matchCoverage = computed(() => this.rowCount() ? Math.round(this.matchedRows() / this.rowCount() * 100) : 0);
 
+  protected readonly selections = signal<Record<string, { videoId: string; variantId: string; reason: string; variants: VideoVariant[]; ready: boolean }>>({});
+
+  constructor() {
+    const savedBatch = this.route.snapshot.queryParamMap.get('batchId');
+    if (savedBatch) {
+      this.loading.set(true);
+      this.service.getImportBatch(savedBatch).subscribe({
+        next: preview => {
+          this.batchId.set(preview.batchId); this.fileName.set(preview.filename);
+          this.rowCount.set(preview.rowCount); this.matchedRows.set(preview.matchedRows); this.unresolvedRows.set(preview.unresolvedRows);
+          this.committed.set(preview.status === 'COMMITTED');
+          this.step.set(preview.status === 'COMMITTED' ? 3 : 2);
+          this.mappings.set(preview.columns.map(source => ({ source, interpretation: this.interpretation(source) })));
+          this.service.getImportRows(preview.batchId).subscribe({ next: rows => { this.rows.set(rows); this.loading.set(false); }, error: () => { this.error.set('Saved batch rows could not be loaded.'); this.loading.set(false); } });
+        }, error: () => { this.error.set('Saved import batch could not be opened.'); this.loading.set(false); },
+      });
+    }
+    this.service.getImportVideoChoices().subscribe({
+      next: videos => this.videos.set(videos),
+      error: () => this.error.set('Canonical videos could not be loaded. Reload to retry before matching.'),
+    });
+  }
+
+  protected selectVideo(row: ImportRow, event: Event): void {
+    const videoId = this.selectValue(event);
+    this.selections.update(current => ({ ...current, [row.id]: { videoId, variantId: '', reason: '', variants: [], ready: false } }));
+    if (!videoId) return;
+    this.service.listVariants(videoId).subscribe({
+      next: variants => {
+        if (this.selections()[row.id]?.videoId !== videoId) return;
+        this.selections.update(current => ({ ...current, [row.id]: { ...current[row.id], variants, ready: true } }));
+      },
+      error: () => this.error.set('Variants could not be loaded; this row has not been matched.'),
+    });
+  }
+  protected selectVariant(row: ImportRow, event: Event): void {
+    const variantId = this.selectValue(event);
+    this.selections.update(current => ({ ...current, [row.id]: { ...current[row.id], variantId } }));
+  }
+  protected setReason(row: ImportRow, event: Event): void {
+    const reason = (event.target as HTMLInputElement).value;
+    this.selections.update(current => ({ ...current, [row.id]: { ...current[row.id], reason } }));
+  }
+
   protected fileSelected(event: Event): void {
     const file = (event.target as HTMLInputElement).files?.[0];
     if (!file) return;
     this.fileName.set(file.name); this.loading.set(true); this.error.set(''); this.committed.set(false);
     this.service.previewImport(file, this.platform(), Intl.DateTimeFormat().resolvedOptions().timeZone).subscribe({
       next: preview => {
-        this.batchId.set(preview.batchId); this.rowCount.set(preview.rowCount); this.matchedRows.set(preview.matchedRows); this.unresolvedRows.set(preview.unresolvedRows);
+        this.batchId.set(preview.batchId); this.router.navigate([], { relativeTo: this.route, queryParams: { batchId: preview.batchId }, replaceUrl: true }); this.rowCount.set(preview.rowCount); this.matchedRows.set(preview.matchedRows); this.unresolvedRows.set(preview.unresolvedRows);
         this.mappings.set(preview.columns.map(column => ({ source: column, interpretation: this.interpretation(column) })));
         this.service.getImportRows(preview.batchId).subscribe({
           next: rows => { this.rows.set(rows); this.loading.set(false); },
@@ -64,11 +117,11 @@ export class ImportDataPage {
     });
   }
   protected selectValue(event: Event): string { return (event.target as HTMLSelectElement).value; }
-  protected resolveRow(row: ImportRow, event: Event): void {
-    const videoId = this.selectValue(event);
-    if (!videoId || !this.batchId()) return;
+  protected resolveRow(row: ImportRow): void {
+    const selection = this.selections()[row.id];
+    if (!selection?.ready || !selection.videoId || !selection.reason.trim() || !this.batchId()) return;
     this.loading.set(true); this.error.set('');
-    this.service.resolveImportRow(this.batchId(), row.id, videoId).subscribe({
+    this.service.resolveImportRow(this.batchId(), row.id, selection.videoId, selection.reason.trim(), selection.variantId || null).subscribe({
       next: preview => {
         this.matchedRows.set(preview.matchedRows); this.unresolvedRows.set(preview.unresolvedRows);
         this.service.getImportRows(this.batchId()).subscribe({ next: rows => { this.rows.set(rows); this.loading.set(false); }, error: response => { this.error.set(response.error?.message || 'Import rows could not be refreshed.'); this.loading.set(false); } });
@@ -78,7 +131,7 @@ export class ImportDataPage {
   }
   protected rowIdentity(row: ImportRow): string { return row.rawData['video_id'] || row.rawData['videoId'] || row.rawData['filename'] || row.rawData['file_name'] || `row ${row.sourceRowNumber}`; }
   protected commit(): void {
-    if (!this.batchId() || this.unresolvedRows() > 0) return;
+    if (!this.batchId() || this.unresolvedRows() > 0 || this.committed()) return;
     this.loading.set(true); this.error.set('');
     this.service.commitImport(this.batchId()).subscribe({
       next: () => { this.committed.set(true); this.step.set(3); this.loading.set(false); },

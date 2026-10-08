@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, inject, OnDestroy, signal } from '@angular/core';
+import { ActualVideoReviewComponent } from './quality-validator/actual-video-review.component';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { catchError, combineLatest, forkJoin, interval, Observable, of, startWith, Subscription, switchMap } from 'rxjs';
@@ -48,7 +49,7 @@ const VARIANT_TYPE_LABELS: Record<string, string> = {
 
 @Component({
   selector: 'app-video-detail-page',
-  imports: [RouterLink, FormsModule],
+  imports: [RouterLink, FormsModule, ActualVideoReviewComponent],
   template: `
     <header class="page-header detail-header">
       <div>
@@ -170,12 +171,36 @@ const VARIANT_TYPE_LABELS: Record<string, string> = {
                 <dl class="context-facts"><div><dt>Content</dt><dd>{{ prompt.title }}</dd></div><div><dt>Version</dt><dd>v{{ prompt.versionNumber }} · {{ readable(prompt.type) }} · {{ readable(prompt.status) }}</dd></div><div><dt>Source</dt><dd><code>{{ prompt.sourcePath || 'Render lineage' }}</code></dd></div></dl>
                 <details class="prompt-preview"><summary>View prompt text</summary><pre>{{ prompt.rawText }}</pre></details>
                 @if (prompt.parsedIr) { <details class="prompt-preview"><summary>View parsed plan</summary><pre>{{ prompt.parsedIr }}</pre></details> }
-                <a class="button button--secondary button--compact" routerLink="/quality">Open Prompt Quality</a>
-              } @else { <div class="compact-empty"><strong>No linked prompt version</strong><span>This video has no persisted render or folder prompt lineage yet.</span><a class="button button--secondary button--compact" routerLink="/quality">Open Prompt Quality</a></div> }
+                <a class="button button--secondary button--compact" routerLink="/quality/detail" [queryParams]="{contentId: prompt.contentId, promptVersionId: prompt.promptVersionId}">Open Prompt Quality</a>
+              } @else { <div class="compact-empty"><strong>No linked prompt version</strong><span>Original generation prompt is unverified. Plan fidelity cannot be inferred from folder proximity.</span><a class="button button--secondary button--compact" routerLink="/quality">Open Prompt Quality</a></div> }
+              @if (creativeContext()?.sourceLink; as link) { <p>Saved source resolution: {{ link.origin }} · Prompt #{{ link.promptVersionId }} · {{ link.reason }} · {{ link.createdAt }}</p> }
+              @if (creativeContext()?.candidates?.length) {
+                <p>{{ creativeContext()?.evidenceStatus }} · Candidate versions require explicit evidence.</p>
+                <select aria-label="Source prompt version" [(ngModel)]="sourcePromptVersionId">
+                  <option [ngValue]="null">Select exact version…</option>
+                  @for (candidate of creativeContext()!.candidates!; track candidate.promptVersionId) {
+                    <option [ngValue]="candidate.promptVersionId">{{ candidate.title }} · v{{ candidate.versionNumber }} · #{{ candidate.promptVersionId }}</option>
+                  }
+                </select>
+                <select aria-label="Prompt origin" [(ngModel)]="sourcePromptOrigin"><option value="ORIGINAL">Confirmed original</option><option value="RECONSTRUCTED">Reconstructed candidate</option></select>
+                <input aria-label="Source evidence reason" [(ngModel)]="sourcePromptReason" placeholder="Evidence for this selection">
+                <button type="button" class="button button--secondary" [disabled]="!sourcePromptVersionId || !sourcePromptReason.trim() || creativeContextLoading()" (click)="confirmSourcePrompt()">Save source resolution</button>
+              }
+              @if (creativeContext()?.sourceResolution; as source) {
+                <details><summary>Filesystem candidate evidence · {{ source.status }}</summary><p>{{ source.promptPath }} · {{ source.errorMessage }}</p><pre>{{ source.promptText }}</pre><p>Candidate evidence alone does not establish the original generation version.</p></details>
+              }
             </section>
           </div>
         }
       </section>
+      <section class="section-band"><h3>Import manual edit result</h3><p>Save the edited file under configured media storage, then register it. The original stays unchanged. Operation descriptions are operator reports; file hash and duration are measured.</p>
+        <input aria-label="Edited media path" [(ngModel)]="editedPath" placeholder="library/.../edited.mp4">
+        <select aria-label="Parent variant" [(ngModel)]="editParentId"><option value="">Original video</option>@for (variant of videoVariants(); track variant.id) {<option [value]="variant.id">{{ variant.variantType }} · {{ variant.id }}</option>}</select>
+        <input aria-label="Edit reason" [(ngModel)]="editedReason" placeholder="What was changed and why">
+        <button type="button" (click)="importEdited()" [disabled]="!editedPath || !editedReason.trim()">Verify and register edited file</button>
+        @if (editedResult; as edited) { <p>Variant {{ edited.variantId }} · {{ edited.durationMs / 1000 }} seconds · Hash {{ edited.artifactHash }}</p><app-actual-video-review [videoId]="edited.artifactVideoId" /> }
+      </section>
+      @if (!creativeContext()?.prompt) { <app-actual-video-review [videoId]="creativeContext()?.videoId || ''" /> }
       }
 
       @if (activeTab() === 'overview') {
@@ -560,6 +585,32 @@ export class VideoDetailPage implements OnDestroy {
   protected readonly discovery = signal<DiscoveryProfile | null>(null);
   protected readonly platform = signal<PlatformKey>('facebook');
   protected readonly activeTab = signal<'overview' | 'creative' | 'publication' | 'performance' | 'evidence'>('overview');
+  protected editedPath = '';
+  protected editedReason = '';
+  protected editParentId = '';
+  protected editedResult: { variantId: string; artifactVideoId: string; artifactHash: string; durationMs: number; recordId: string } | null = null;
+  protected importEdited(): void {
+    const id = this.creativeContext()?.videoId;
+    if (!id || !this.editedPath || !this.editedReason.trim()) return;
+    this.service.importEditedVariant(id, this.editedPath, this.editParentId || null, this.editedReason.trim()).subscribe({
+      next: result => { this.editedResult = result; },
+      error: response => this.message.set(response.error?.detail || response.error?.message || 'Edited file import failed.'),
+    });
+  }
+
+  protected sourcePromptVersionId: number | null = null;
+  protected sourcePromptOrigin = 'ORIGINAL';
+  protected sourcePromptReason = '';
+  protected confirmSourcePrompt(): void {
+    const context = this.creativeContext();
+    if (!context || !this.sourcePromptVersionId || !this.sourcePromptReason.trim()) return;
+    this.creativeContextLoading.set(true);
+    this.service.linkVideoPrompt(context.videoId, this.sourcePromptVersionId, this.sourcePromptOrigin, this.sourcePromptReason.trim()).subscribe({
+      next: result => { this.creativeContext.set(result); this.creativeContextLoading.set(false); },
+      error: response => { this.creativeContextError.set(response.error?.message || 'Source resolution could not be saved.'); this.creativeContextLoading.set(false); },
+    });
+  }
+
   protected readonly creativeContext = signal<VideoCreativeContext | null>(null);
   protected readonly creativeContextLoading = signal(false);
   protected readonly creativeContextError = signal('');

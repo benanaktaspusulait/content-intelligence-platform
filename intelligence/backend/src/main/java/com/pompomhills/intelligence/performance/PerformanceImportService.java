@@ -72,6 +72,12 @@ public class PerformanceImportService {
       var duplicate = findByHash(hash);
       if (duplicate.isPresent()) {
         Files.deleteIfExists(temporary);
+        var context = jdbc.sql("SELECT platform,timezone_assumption FROM import_batches WHERE id=:id")
+            .param("id", duplicate.get().batchId()).query((rs, ignored) -> new String[] {rs.getString("platform"), rs.getString("timezone_assumption")}).single();
+        String requestedTimezone = timezone == null || timezone.isBlank() ? "UTC" : timezone;
+        if (!java.util.Objects.equals(context[0], normalizePlatform(platform)) || !java.util.Objects.equals(context[1], requestedTimezone)) {
+          throw new IllegalStateException("Identical source bytes were imported with a different platform or timezone; reuse the original context or provide a corrected export");
+        }
         return duplicate.get().withDuplicate(true);
       }
       UUID batchId = UUID.randomUUID();
@@ -192,7 +198,7 @@ public class PerformanceImportService {
     get(batchId);
     return jdbc.sql(
             """
-            SELECT id,sheet_name,source_row_number,raw_data::text,matched_video_id,match_status,
+            SELECT id,sheet_name,source_row_number,raw_data::text,matched_video_id,matched_variant_id,match_status,
                    match_confidence
             FROM import_rows WHERE import_batch_id=:id
             ORDER BY sheet_name,source_row_number
@@ -206,6 +212,7 @@ public class PerformanceImportService {
                     rs.getInt("source_row_number"),
                     readMap(rs.getString("raw_data")),
                     rs.getObject("matched_video_id", UUID.class),
+                    rs.getObject("matched_variant_id", UUID.class),
                     rs.getString("match_status"),
                     (Double) rs.getObject("match_confidence")))
         .list();
@@ -213,6 +220,11 @@ public class PerformanceImportService {
 
   @Transactional
   public ImportPreview resolve(UUID batchId, UUID rowId, UUID videoId, String reason) {
+    return resolve(batchId, rowId, videoId, null, reason);
+  }
+
+  @Transactional
+  public ImportPreview resolve(UUID batchId, UUID rowId, UUID videoId, UUID variantId, String reason) {
     String status =
         jdbc.sql("SELECT status FROM import_batches WHERE id=:id")
             .param("id", batchId)
@@ -229,6 +241,12 @@ public class PerformanceImportService {
             .single();
     if (!videoExists) throw new IllegalArgumentException("Video not found: " + videoId);
 
+    if (variantId != null && !jdbc.sql("SELECT EXISTS(SELECT 1 FROM video_variants WHERE id=:variant AND video_id=:video)")
+        .param("variant", variantId).param("video", videoId).query(Boolean.class).single()) {
+      throw new IllegalArgumentException("Variant does not belong to the selected video");
+    }
+    UUID previousVariant = jdbc.sql("SELECT matched_variant_id FROM import_rows WHERE id=:row AND import_batch_id=:batch")
+        .param("row", rowId).param("batch", batchId).query(UUID.class).optional().orElse(null);
     UUID previous =
         jdbc.sql(
                 "SELECT matched_video_id FROM import_rows WHERE id=:row AND import_batch_id=:batch")
@@ -241,10 +259,11 @@ public class PerformanceImportService {
         jdbc.sql(
                 """
                 UPDATE import_rows
-                SET matched_video_id=:video,match_status='MANUAL',match_confidence=1.0
+                SET matched_video_id=:video,matched_variant_id=:variant,match_status='MANUAL',match_confidence=1.0
                 WHERE id=:row AND import_batch_id=:batch
                 """)
             .param("video", videoId)
+            .param("variant", variantId, Types.OTHER)
             .param("row", rowId)
             .param("batch", batchId)
             .update();
@@ -254,12 +273,14 @@ public class PerformanceImportService {
             """
             INSERT INTO audit_events(actor,action,entity_type,entity_id,reason,old_state,new_state)
             VALUES ('local-user','MANUAL_IMPORT_MATCH','IMPORT_ROW',:row,:reason,
-                    jsonb_build_object('videoId',CAST(:previous AS uuid)),
-                    jsonb_build_object('videoId',CAST(:video AS uuid)))
+                    jsonb_build_object('videoId',CAST(:previous AS uuid),'variantId',CAST(:previousVariant AS uuid)),
+                    jsonb_build_object('videoId',CAST(:video AS uuid),'variantId',CAST(:variant AS uuid)))
             """)
         .param("row", rowId)
         .param("reason", reason == null || reason.isBlank() ? "Manual exact selection" : reason)
         .param("previous", previous, Types.OTHER)
+        .param("previousVariant", previousVariant, Types.OTHER)
+        .param("variant", variantId, Types.OTHER)
         .param("video", videoId)
         .update();
     refreshMatchCounts(batchId);
@@ -781,6 +802,7 @@ public class PerformanceImportService {
       int sourceRowNumber,
       Map<String, String> rawData,
       UUID matchedVideoId,
+      UUID matchedVariantId,
       String matchStatus,
       Double matchConfidence) {}
 

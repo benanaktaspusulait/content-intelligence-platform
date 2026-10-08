@@ -13,7 +13,7 @@ describe('CreativeIntelligenceService discovery profile', () => {
     http = TestBed.inject(HttpTestingController);
   });
 
-  afterEach(() => http.verify());
+  afterEach(() => { http.verify(); TestBed.resetTestingModule(); });
 
   it('requests the selected platform discovery profile', () => {
     const response: DiscoveryProfile = {
@@ -44,7 +44,7 @@ describe('CreativeIntelligenceService variants', () => {
     http = TestBed.inject(HttpTestingController);
   });
 
-  afterEach(() => http.verify());
+  afterEach(() => { http.verify(); TestBed.resetTestingModule(); });
 
   it('lists variants for a video', () => {
     const response: VideoVariant[] = [{
@@ -92,7 +92,7 @@ describe('CreativeIntelligenceService analysis', () => {
     http = TestBed.inject(HttpTestingController);
   });
 
-  afterEach(() => http.verify());
+  afterEach(() => { http.verify(); TestBed.resetTestingModule(); });
 
   it('triggers analysis via POST and returns the status response', () => {
     const response: AnalysisStatus = {
@@ -103,7 +103,7 @@ describe('CreativeIntelligenceService analysis', () => {
 
     service.triggerAnalysis('video-1').subscribe(status => expect(status).toEqual(response));
 
-    const request = http.expectOne('/api/v1/videos/video-1/analysis');
+    const request = http.expectOne(r => r.url === '/api/v1/videos/video-1/analysis' && r.method === 'POST');
     expect(request.request.method).toBe('POST');
     request.flush(response);
   });
@@ -121,5 +121,32 @@ describe('CreativeIntelligenceService analysis', () => {
     const request = http.expectOne('/api/v1/videos/video-1/analysis/status');
     expect(request.request.method).toBe('GET');
     request.flush(response);
+  });
+});
+
+
+describe('Import exact identity', () => {
+  let service: CreativeIntelligenceService;
+  let http: HttpTestingController;
+  beforeEach(() => {
+    TestBed.configureTestingModule({ providers: [provideHttpClient(), provideHttpClientTesting()] });
+    service = TestBed.inject(CreativeIntelligenceService);
+    http = TestBed.inject(HttpTestingController);
+  });
+  afterEach(() => { http.verify(); TestBed.resetTestingModule(); });
+  it('loads all pages of canonical choices', () => {
+    let result: { id: string; title: string }[] = [];
+    service.getImportVideoChoices().subscribe(value => result = value);
+    http.expectOne(r => r.url === '/api/v1/videos' && r.params.get('page') === '0')
+      .flush({ content: [{ id: 'one', originalFilename: 'one.mp4' }], number: 0, last: false });
+    http.expectOne(r => r.url === '/api/v1/videos' && r.params.get('page') === '1')
+      .flush({ content: [{ id: 'two', originalFilename: 'two.mp4' }], number: 1, last: true });
+    expect(result).toEqual([{ id: 'one', title: 'one.mp4' }, { id: 'two', title: 'two.mp4' }]);
+  });
+  it('sends exact variant and evidence reason', () => {
+    service.resolveImportRow('batch', 'row', 'video', 'Publication verified', 'variant').subscribe();
+    const request = http.expectOne('/api/v1/imports/batch/rows/row/match');
+    expect(request.request.body).toEqual({ videoId: 'video', variantId: 'variant', reason: 'Publication verified' });
+    request.flush({});
   });
 });

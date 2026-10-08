@@ -51,8 +51,8 @@ public class PerformanceImportController {
   @PostMapping("/{id}/rows/{rowId}/match")
   PerformanceImportService.ImportPreview resolve(
       @PathVariable UUID id, @PathVariable UUID rowId, @Valid @RequestBody MatchRequest request) {
-    return service.resolve(id, rowId, request.videoId(), request.reason());
+    return service.resolve(id, rowId, request.videoId(), request.variantId(), request.reason());
   }
 
-  record MatchRequest(@NotNull UUID videoId, String reason) {}
+  record MatchRequest(@NotNull UUID videoId, UUID variantId, String reason) {}
 }

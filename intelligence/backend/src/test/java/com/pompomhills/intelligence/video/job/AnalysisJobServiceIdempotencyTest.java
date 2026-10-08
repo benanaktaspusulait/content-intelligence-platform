@@ -1,6 +1,7 @@
 package com.pompomhills.intelligence.video.job;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyMap;
@@ -76,7 +77,7 @@ class AnalysisJobServiceIdempotencyTest {
   void isolateDatabaseAndStubMl() {
     scheduledTasks.getScheduledTasks().forEach(task -> task.cancel(false));
     jdbc.update("TRUNCATE videos CASCADE");
-    when(ml.analyse(anyString(), anyString(), anyMap(), anyBoolean())).thenReturn(stubResponse("creative-v1"));
+    when(ml.analyse(anyString(), anyString(), anyMap(), anyBoolean())).thenReturn(stubResponse(VideoService.CURRENT_ANALYSIS_VERSION));
   }
 
   /**
@@ -174,7 +175,7 @@ class AnalysisJobServiceIdempotencyTest {
 
     assertThat(result.created()).isFalse();
     assertThat(analyses.findFirstByVideoIdOrderByCreatedAtDesc(videoId).orElseThrow().getAnalysisVersion())
-        .isEqualTo("creative-v1");
+        .isEqualTo(VideoService.CURRENT_ANALYSIS_VERSION);
   }
 
   // Requirement 5: worker success persists analysis and ends in COMPLETED/ANALYSED.
@@ -216,7 +217,7 @@ class AnalysisJobServiceIdempotencyTest {
     // ml.analyse(any()) to register the new stub, which would immediately re-trigger the
     // still-active thenThrow(...) stub above instead of replacing it. doReturn(...).when(...)
     // configures the stub without invoking the mock, so it correctly replaces the throwing stub.
-    doReturn(stubResponse("creative-v1")).when(ml).analyse(anyString(), anyString(), anyMap(), anyBoolean());
+    doReturn(stubResponse(VideoService.CURRENT_ANALYSIS_VERSION)).when(ml).analyse(anyString(), anyString(), anyMap(), anyBoolean());
 
     jobs.retry(enqueued.job().id()); // flips FAILED back to QUEUED with available_at=now()
     jobs.processNext(); // succeeds this time
@@ -283,7 +284,7 @@ class AnalysisJobServiceIdempotencyTest {
     // doReturn(...).when(...) instead of when(...).thenReturn(...): see the comment in
     // retryDoesNotCreateDuplicateAnalysisRows for why re-stubbing over an active thenThrow(...)
     // must avoid invoking the mock method directly.
-    doReturn(stubResponse("creative-v1")).when(ml).analyse(any());
+    doReturn(stubResponse(VideoService.CURRENT_ANALYSIS_VERSION)).when(ml).analyse(anyString(), anyString(), anyMap(), anyBoolean());
     assertThat(jobs.findLatestByVideoId(failedVideo).orElseThrow().state()).isEqualTo("FAILED");
     assertThat(jobs.findActiveByVideoId(failedVideo)).isEmpty();
 
@@ -314,4 +315,24 @@ class AnalysisJobServiceIdempotencyTest {
 
     org.mockito.Mockito.verify(ml, org.mockito.Mockito.never()).analyse(anyString(), anyString(), anyMap(), anyBoolean());
   }
+  @Test
+  void requestedVersionsHaveSeparateActiveIdentity() {
+    UUID video = freshUnanalysedVideo();
+    var v4 = jobs.enqueue(video, false, VideoService.V4_ANALYSIS_VERSION);
+    var v5 = jobs.enqueue(video, false, VideoService.V5_ANALYSIS_VERSION);
+    assertThat(v4.created()).isTrue();
+    assertThat(v5.created()).isTrue();
+    assertThat(jobs.enqueue(video, false, VideoService.V4_ANALYSIS_VERSION).job().id()).isEqualTo(v4.job().id());
+  }
+
+  @Test
+  void expiredWorkerRequiresReconciliationAndCannotBlindlyRetry() {
+    UUID video = freshUnanalysedVideo();
+    var queued = jobs.enqueue(video);
+    jdbc.update("UPDATE analysis_jobs SET state='RUNNING',started_at=now()-interval '16 minutes' WHERE id=?", queued.job().id());
+    assertThat(jobs.recoverExpiredJobs()).isEqualTo(1);
+    assertThat(jobs.get(queued.job().id()).state()).isEqualTo("FAILED");
+    assertThatThrownBy(() -> jobs.retry(queued.job().id())).isInstanceOf(IllegalStateException.class);
+  }
+
 }

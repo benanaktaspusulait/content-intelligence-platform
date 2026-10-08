@@ -74,29 +74,9 @@ public class ModelRegistryController {
     if (!"CHALLENGER".equals(challenger.status())) {
       throw new IllegalStateException("Only a challenger can be promoted");
     }
-    String reason =
-        request == null || request.reason() == null || request.reason().isBlank()
-            ? "temporal validation approved"
-            : request.reason();
-    jdbc.sql(
-            """
-            UPDATE model_versions SET status='RETIRED'
-            WHERE platform=:platform AND model_type=:type AND status='CHAMPION'
-            """)
-        .param("platform", challenger.platform())
-        .param("type", challenger.modelType())
-        .update();
-    jdbc.sql("UPDATE model_versions SET status='CHAMPION' WHERE id=:id").param("id", id).update();
-    jdbc.sql(
-            """
-            INSERT INTO audit_events(actor,action,entity_type,entity_id,reason,new_state)
-            VALUES ('local-operator','MODEL_PROMOTION','ModelVersion',:id,:reason,
-                    CAST('{"status":"CHAMPION"}' AS jsonb))
-            """)
-        .param("id", id)
-        .param("reason", reason)
-        .update();
-    return get(id);
+    throw new org.springframework.web.server.ResponseStatusException(
+        org.springframework.http.HttpStatus.NOT_IMPLEMENTED,
+        "Promotion unavailable: artifact verification and registry-controlled inference are not connected; cold-start prediction remains active");
   }
 
   private ModelView get(UUID id) {

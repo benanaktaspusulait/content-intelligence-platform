@@ -27,6 +27,7 @@
       <div class="actions"><button class="btn btn-primary btn-sm" type="button" (click)="startNewPrompt()" [disabled]="loading">New prompt</button><button class="btn btn-outline-secondary btn-sm" type="button" (click)="loadPromptWorkspaces()" [disabled]="promptWorkspacesLoading">Refresh</button></div>
     </div>
     <div class="card-body">
+      <label>Prompt root · relative to configured media storage<input [(ngModel)]="promptLibraryRoot" aria-label="Prompt workspace root"></label>
       <div *ngIf="promptWorkspacesLoading" class="loading-library">Loading prompt folders…</div>
       <div *ngIf="!promptWorkspacesLoading" class="workspace-folder-combobox">
         <label for="prompt-folder-search">Find a prompt, video, or subfolder topic</label>

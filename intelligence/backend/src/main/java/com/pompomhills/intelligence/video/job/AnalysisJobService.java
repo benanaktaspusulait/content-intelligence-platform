@@ -45,11 +45,11 @@ public class AnalysisJobService {
             .single();
     if (!exists) throw new IllegalArgumentException("Video not found: " + videoId);
 
-    if (!force && videos.hasCurrentAnalysis(videoId)) {
+    if (!force && videos.hasAnalysis(videoId, analysisVersion)) {
       return new EnqueueResult(false, null);
     }
 
-    var active = findActiveByVideoId(videoId);
+    var active = findActiveByIdentity(videoId, analysisVersion);
     if (active.isPresent()) {
       return new EnqueueResult(false, active.get());
     }
@@ -70,7 +70,7 @@ public class AnalysisJobService {
       // job; fetch and return that one instead of failing the request.
       return new EnqueueResult(
           false,
-          findActiveByVideoId(videoId)
+          findActiveByIdentity(videoId, analysisVersion)
               .orElseThrow(
                   () ->
                       new IllegalStateException(
@@ -80,12 +80,22 @@ public class AnalysisJobService {
     return new EnqueueResult(true, get(id));
   }
 
+  public Optional<JobView> findActiveByIdentity(UUID videoId, String analysisVersion) {
+    return jdbc.sql("""
+        SELECT id,video_id,job_type,state,attempts,max_attempts,error_message,created_at,started_at,completed_at
+        FROM analysis_jobs WHERE video_id=:video AND state IN ('QUEUED','RUNNING')
+          AND COALESCE(request_payload->>'analysisVersion',:current)=:version
+        ORDER BY created_at DESC LIMIT 1
+        """).param("video", videoId).param("current", VideoService.CURRENT_ANALYSIS_VERSION)
+        .param("version", analysisVersion).query((rs, ignored) -> map(rs)).optional();
+  }
+
   public Optional<JobView> findActiveByVideoId(UUID videoId) {
     return jdbc.sql(
             """
             SELECT id,video_id,job_type,state,attempts,max_attempts,error_message,request_payload,
                    created_at,started_at,completed_at
-            FROM analysis_jobs WHERE video_id=:video AND state IN ('QUEUED','RUNNING')
+            FROM analysis_jobs WHERE video_id=:video AND state IN ('QUEUED','RUNNING') ORDER BY created_at DESC LIMIT 1
             """)
         .param("video", videoId)
         .query((rs, ignored) -> map(rs))
@@ -123,6 +133,7 @@ public class AnalysisJobService {
                 """
                 UPDATE analysis_jobs SET state='QUEUED',error_message=NULL,available_at=now()
                 WHERE id=:id AND state='FAILED' AND attempts<max_attempts
+                  AND COALESCE(request_payload->>'recoveryStatus','') <> 'PROVIDER_OUTCOME_UNKNOWN'
                 """)
             .param("id", id)
             .update();
@@ -130,8 +141,19 @@ public class AnalysisJobService {
     return get(id);
   }
 
+  public int recoverExpiredJobs() {
+    // A lost worker may have already charged the provider. Never blindly resubmit.
+    return jdbc.sql("""
+        UPDATE analysis_jobs SET state='FAILED',completed_at=now(),
+          error_message='Worker lease expired; provider outcome unknown. Reconcile before explicit new analysis.',
+          request_payload=request_payload || '{"recoveryStatus":"PROVIDER_OUTCOME_UNKNOWN"}'::jsonb
+        WHERE state='RUNNING' AND started_at < now() - interval '15 minutes'
+        """).update();
+  }
+
   @Scheduled(fixedDelayString = "${pompom.jobs.poll-delay-ms:2000}")
   public void processNext() {
+    recoverExpiredJobs();
     var claimed =
         jdbc.sql(
                 """

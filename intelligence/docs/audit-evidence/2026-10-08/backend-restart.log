@@ -50,3 +50,15 @@
 2026-10-08T19:30:58.969+01:00  INFO 34049 --- [pompom-creative-intelligence] [nio-8085-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
 2026-10-08T19:30:58.970+01:00  INFO 34049 --- [pompom-creative-intelligence] [nio-8085-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
 2026-10-08T19:30:58.978+01:00  INFO 34049 --- [pompom-creative-intelligence] [nio-8085-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 8 ms
+2026-10-08T19:45:44.993+01:00  INFO 34049 --- [pompom-creative-intelligence] [ionShutdownHook] o.s.boot.tomcat.GracefulShutdown         : Commencing graceful shutdown. Waiting for active requests to complete
+2026-10-08T19:45:45.012+01:00  INFO 34049 --- [pompom-creative-intelligence] [tomcat-shutdown] o.s.boot.tomcat.GracefulShutdown         : Graceful shutdown complete
+2026-10-08T19:45:45.042+01:00  INFO 34049 --- [pompom-creative-intelligence] [ionShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-10-08T19:45:45.058+01:00  INFO 34049 --- [pompom-creative-intelligence] [ionShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2026-10-08T19:45:45.062+01:00  INFO 34049 --- [pompom-creative-intelligence] [ionShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+[ERROR] Failed to execute goal org.springframework.boot:spring-boot-maven-plugin:4.1.1:run (default-cli) on project creative-intelligence-backend: Process terminated with exit code: 143 -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoExecutionException

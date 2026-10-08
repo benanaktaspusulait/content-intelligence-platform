@@ -14,8 +14,34 @@ describe('post-family operator workflow', () => {
     fixture.componentRef.setInput('contentId', '1');
     fixture.componentRef.setInput('promptVersionId', '2');
     fixture.detectChanges();
+    TestBed.inject(HttpTestingController).expectOne('/api/v1/intelligence/workflow/records?kind=REVIEW').flush([]);
     return fixture;
   }
+  it('restores the exact saved version using read requests and invalidates changed settings', async () => {
+    await TestBed.configureTestingModule({ imports: [PostFamilyWorkflowComponent], providers: [provideHttpClient(), provideHttpClientTesting()] }).compileComponents();
+    const fixture = TestBed.createComponent(PostFamilyWorkflowComponent);
+    const component = fixture.componentInstance;
+    fixture.componentRef.setInput('prompt', 'Luca opens a box.');
+    fixture.componentRef.setInput('contentId', '7');
+    fixture.componentRef.setInput('promptVersionId', '9');
+    fixture.detectChanges();
+    const http = TestBed.inject(HttpTestingController);
+    http.expectOne('/api/v1/intelligence/workflow/records?kind=REVIEW').flush([
+      { recordId: 'other', contentId: 7, promptVersionId: 8 },
+      { recordId: 'saved', contentId: 7, promptVersionId: 9, bindingHash: 'binding', decisionPolicyVersion: 'impact-review-v1', boundRequest: { prompt: 'Luca opens a box.', generator: 'SEEDANCE_2_5', desiredDuration: 15, settings: { aspectRatio: '16:9' } } },
+    ]);
+    http.expectOne('/api/v1/intelligence/workflow/records?kind=ACTUAL_RENDER_QA').flush([{ recordId: 'qa', bindingHash: 'binding', videoId: 'exact-video' }]);
+    expect(component.restoredRecordId).toBe('saved');
+    expect(component.generator).toBe('SEEDANCE_2_5');
+    expect(component.qa.videoId).toBe('exact-video');
+    expect(component.isCurrent()).toBe(true);
+    component.desiredDuration = 20;
+    expect(component.isCurrent()).toBe(false);
+    http.expectNone(request => request.method === 'POST');
+    http.verify();
+    fixture.destroy();
+    TestBed.resetTestingModule();
+  });
   it('requires explicit post-family selection and does not generate media', async () => {
     const fixture = await setup();
     expect(fixture.componentInstance.profile).toBe('FROZEN');

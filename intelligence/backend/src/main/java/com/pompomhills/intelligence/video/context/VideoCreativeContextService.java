@@ -75,36 +75,57 @@ public class VideoCreativeContextService {
         .query((rs, ignored) -> mapPrompt(rs))
         .optional().orElse(null);
 
+    VideoEntity video = videos.findById(videoId).orElseThrow(() -> new IllegalArgumentException("Video not found"));
     if (prompt == null) {
       prompt = jdbc.sql("""
           SELECT c.id content_id,c.title,c.type::text,c.status::text,
                  pv.id prompt_version_id,pv.version_number,pv.raw_text,pv.parsed_ir::text,
-                 pv.source_path,pv.created_at,'FOLDER_SOURCE' linkage
+                 pv.source_path,pv.created_at,'MANUAL_ORIGINAL' linkage
+          FROM video_prompt_links link
+          JOIN prompt_versions pv ON pv.id=link.prompt_version_id
+          JOIN contents c ON c.id=pv.content_id
+          WHERE link.id=(SELECT max(id) FROM video_prompt_links WHERE video_id=:videoId)
+            AND link.origin='ORIGINAL' AND link.video_hash=:hash
+          """).param("videoId", videoId).param("hash", video.getContentHash())
+          .query((rs, ignored) -> mapPrompt(rs)).optional().orElse(null);
+    }
+    List<PromptContext> candidates = jdbc.sql("""
+          SELECT c.id content_id,c.title,c.type::text,c.status::text,
+                 pv.id prompt_version_id,pv.version_number,pv.raw_text,pv.parsed_ir::text,
+                 pv.source_path,pv.created_at,'UNVERIFIED_FOLDER_CANDIDATE' linkage
           FROM videos v
           JOIN contents c ON regexp_replace(c.source_path,'/[^/]+$','')=regexp_replace(v.relative_path,'/[^/]+$','')
           JOIN prompt_versions pv ON pv.content_id=c.id
-          WHERE v.id=:videoId
-          ORDER BY pv.version_number DESC,pv.created_at DESC
-          LIMIT 1
-          """).param("videoId", videoId)
-          .query((rs, ignored) -> mapPrompt(rs))
-          .optional().orElse(null);
-    }
+          WHERE v.id=:videoId ORDER BY c.id,pv.version_number
+          """).param("videoId", videoId).query((rs, ignored) -> mapPrompt(rs)).list();
+    PromptSourceResolution resolution = promptResolver.resolve(video);
+    String evidenceStatus = prompt != null ? "CHARACTER_AND_PROMPT_LINKED"
+        : candidates.size() > 1 || resolution.status() == PromptSourceResolution.Status.AMBIGUOUS
+            ? "PROMPT_AMBIGUOUS" : "PROMPT_UNVERIFIED_OR_UNAVAILABLE";
+    var sourceLink = jdbc.sql("SELECT id,prompt_version_id,origin,reason,video_hash,created_at FROM video_prompt_links WHERE video_id=:video ORDER BY id DESC LIMIT 1")
+        .param("video", videoId).query((rs, ignored) -> new VideoCreativeContextDtos.SourceLink(rs.getLong("id"), rs.getLong("prompt_version_id"), rs.getString("origin"), rs.getString("reason"), rs.getString("video_hash"), instant(rs, "created_at"))).optional().orElse(null);
+    return new Response(videoId, characters, prompt, evidenceStatus, candidates, resolution, sourceLink);
+  }
 
-    if (prompt == null) {
-      VideoEntity video = videos.findById(videoId).orElse(null);
-      if (video != null) {
-        PromptSourceResolution resolution = promptResolver.resolve(video);
-        if (resolution.matched()) {
-          prompt = new PromptContext(null, resolution.promptPath(), "REEL", "SOURCE_RESOLVED",
-              null, null, resolution.promptText(), null, resolution.promptPath(), null,
-              "FOLDER_SOURCE_RESOLUTION");
-        }
-      }
+  @Transactional
+  public Response link(UUID videoId, long promptVersionId, String origin, String reason) {
+    if (!List.of("ORIGINAL", "RECONSTRUCTED").contains(origin) || reason == null || reason.isBlank()) {
+      throw new IllegalArgumentException("Explicit origin and evidence reason are required");
     }
-
-    String evidenceStatus = prompt == null ? "CHARACTER_DATA_ONLY" : "CHARACTER_AND_PROMPT_LINKED";
-    return new Response(videoId, characters, prompt, evidenceStatus);
+    VideoEntity video = videos.findById(videoId).orElseThrow(() -> new IllegalArgumentException("Video not found"));
+    if (!jdbc.sql("SELECT EXISTS(SELECT 1 FROM prompt_versions WHERE id=:id)")
+        .param("id", promptVersionId).query(Boolean.class).single()) {
+      throw new IllegalArgumentException("Prompt version not found");
+    }
+    if (get(videoId).prompt() != null && "RENDER_ASSET".equals(get(videoId).prompt().linkage())) {
+      throw new IllegalStateException("Verified render lineage cannot be overwritten by manual selection");
+    }
+    jdbc.sql("""
+        INSERT INTO video_prompt_links(video_id,prompt_version_id,origin,reason,video_hash)
+        VALUES (:video,:prompt,:origin,:reason,:hash)
+        """).param("video", videoId).param("prompt", promptVersionId).param("origin", origin)
+        .param("reason", reason.trim()).param("hash", video.getContentHash()).update();
+    return get(videoId);
   }
 
   private PromptContext mapPrompt(ResultSet rs) throws SQLException {
