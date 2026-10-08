@@ -1,0 +1,264 @@
+{
+  "scope": "existing system audit only",
+  "runtime": "isolated database mutations; production read-only",
+  "ml": {
+    "run": 64,
+    "passed": 64,
+    "failed": 0,
+    "exit": 0,
+    "durationSeconds": 0.43
+  },
+  "backend": {
+    "run": 30,
+    "passed": 27,
+    "failed": 3,
+    "errors": 0,
+    "skipped": 0,
+    "exit": 1,
+    "classes": [
+      {
+        "class": "WorkflowServiceTest",
+        "tests": "6",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0",
+        "time": "0.209",
+        "cases": [
+          {
+            "name": "linkedReviewUsesStoredPromptAndCannotBeOverriddenByOptions",
+            "failure": null
+          },
+          {
+            "name": "finalAdmissionNeverAcceptsLegacyReadinessOrChangedBinding",
+            "failure": null
+          },
+          {
+            "name": "explicitPostFamilyProfileIsRequired",
+            "failure": null
+          },
+          {
+            "name": "editorialCandidateCannotAuthorizeRenderAndUngroundedObservationIsUnknown",
+            "failure": null
+          },
+          {
+            "name": "admissionRechecksGeneratorDurationFrameHashAndFinalBinding",
+            "failure": null
+          },
+          {
+            "name": "essentialSignatureUsesSourceSupportedIntentAndStillsCannotAuthorizeMotion",
+            "failure": null
+          }
+        ]
+      },
+      {
+        "class": "WorkflowTransportTest",
+        "tests": "1",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0",
+        "time": "0.063",
+        "cases": [
+          {
+            "name": "sendsCompleteJsonOverHttpOneAndPreservesBindingKeys",
+            "failure": null
+          }
+        ]
+      },
+      {
+        "class": "WorkflowImpactReportTest",
+        "tests": "1",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0",
+        "time": "0.159",
+        "cases": [
+          {
+            "name": "preservesFourDimensionsFidelityUsabilityAndTurkishReportInPdf",
+            "failure": null
+          }
+        ]
+      },
+      {
+        "class": "AnalysisJobServiceIdempotencyTest",
+        "tests": "10",
+        "failures": "3",
+        "errors": "0",
+        "skipped": "0",
+        "time": "19.388",
+        "cases": [
+          {
+            "name": "readHelpersDistinguishEachJobState",
+            "failure": "\nexpected: \"COMPLETED\"\n but was: \"FAILED\""
+          },
+          {
+            "name": "concurrentEnqueueCallsForTheSameVideoProduceExactlyOneActiveJob",
+            "failure": null
+          },
+          {
+            "name": "completedCurrentVersionAnalysisDoesNotCallMlAgain",
+            "failure": "\nExpecting value to be false but was true"
+          },
+          {
+            "name": "existingAnalysisOfAnyVersionSkipsEnqueueRegardlessOfHypotheticalNewerVersion",
+            "failure": "\nExpecting value to be false but was true"
+          },
+          {
+            "name": "ingestThenEnqueueNeverCallsMlTwiceForTheSameVideo",
+            "failure": null
+          },
+          {
+            "name": "duplicateRequestWhileQueuedReturnsTheSameActiveJob",
+            "failure": null
+          },
+          {
+            "name": "workerFailureEndsInFailed",
+            "failure": null
+          },
+          {
+            "name": "retryDoesNotCreateDuplicateAnalysisRows",
+            "failure": null
+          },
+          {
+            "name": "firstAnalysisRequestCreatesOneJob",
+            "failure": null
+          },
+          {
+            "name": "workerSuccessPersistsAnalysisAndEndsInCompleted",
+            "failure": null
+          }
+        ]
+      },
+      {
+        "class": "PerformanceImportServiceVariantTest",
+        "tests": "3",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0",
+        "time": "7.151",
+        "cases": [
+          {
+            "name": "importRowWithAnExplicitVariantIdPersistsItOnTheObservation",
+            "failure": null
+          },
+          {
+            "name": "importRowWithAVariantIdThatBelongsToADifferentVideoLeavesVariantNull",
+            "failure": null
+          },
+          {
+            "name": "importRowWithNoVariantIdLeavesVariantNull",
+            "failure": null
+          }
+        ]
+      },
+      {
+        "class": "VideoVariantServiceTest",
+        "tests": "7",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0",
+        "time": "0.361",
+        "cases": [
+          {
+            "name": "createRejectsAVideoIdThatDoesNotExist",
+            "failure": null
+          },
+          {
+            "name": "listReturnsEmptyWhenNoVariantsExistForTheVideo",
+            "failure": null
+          },
+          {
+            "name": "createPersistsAValidVariantAndReturnsItsView",
+            "failure": null
+          },
+          {
+            "name": "getRejectsAVariantIdThatDoesNotBelongToTheRequestedVideo",
+            "failure": null
+          },
+          {
+            "name": "createRejectsAParentVariantIdThatDoesNotBelongToTheSameVideo",
+            "failure": null
+          },
+          {
+            "name": "createTranslatesADuplicateGeneratedPathIntoADomainException",
+            "failure": null
+          },
+          {
+            "name": "listRejectsAVideoIdThatDoesNotExist",
+            "failure": null
+          }
+        ]
+      },
+      {
+        "class": "ContentPromptQueryServiceTest",
+        "tests": "2",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0",
+        "time": "0.107",
+        "cases": [
+          {
+            "name": "hashesUtf8PromptText",
+            "failure": null
+          },
+          {
+            "name": "rejectsPromptOwnedByAnotherContent",
+            "failure": null
+          }
+        ]
+      }
+    ]
+  },
+  "frontend": {
+    "passed": 14,
+    "files": 2,
+    "exit": 0,
+    "testSeconds": 1.55,
+    "buildSeconds": 4.255
+  },
+  "render": {
+    "run": 37,
+    "passed": 37,
+    "classes": [
+      {
+        "class": "ValidationEvidencePolicyTest",
+        "tests": "22",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0",
+        "time": "0.156"
+      },
+      {
+        "class": "RenderJobQueueServiceTest",
+        "tests": "12",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0",
+        "time": "1.061"
+      },
+      {
+        "class": "PostFamilyAdmissionTest",
+        "tests": "3",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0",
+        "time": "0.501"
+      }
+    ]
+  },
+  "restart": {
+    "recordPayloadUnchanged": true
+  },
+  "realSourceF10": {
+    "RISKY": 7,
+    "UNKNOWN": 2
+  },
+  "fullSuitesThisAudit": false,
+  "livePaidProviders": false,
+  "publishing": false,
+  "appCodeChangedByAgent": false,
+  "uiSavedVersionRouteBug": {
+    "savedVersionId": 8,
+    "routeVersionId": 6,
+    "refreshRestoresOldVersion": true
+  }
+}

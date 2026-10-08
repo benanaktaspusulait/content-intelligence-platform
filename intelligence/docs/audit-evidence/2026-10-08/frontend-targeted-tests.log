@@ -1,0 +1,27 @@
+
+> frontend@0.0.0 test
+> ng test --watch=false --include=src/app/pages/quality-validator/post-family-workflow.spec.ts --include=src/app/pages/video-library.page.spec.ts
+
+❯ Building...
+✔ Building...
+Initial chunk files                                      | Names                                                 |  Raw size
+styles.css                                               | styles                                                | 234.41 kB | 
+spec-app-pages-quality-validator-post-family-workflow.js | spec-app-pages-quality-validator-post-family-workflow | 151.20 kB | 
+spec-app-pages-video-library.page.js                     | spec-app-pages-video-library.page                     |  85.45 kB | 
+chunk-RSTWSNOR.js                                        | -                                                     |   4.75 kB | 
+init-testbed.js                                          | init-testbed                                          |   1.21 kB | 
+vitest-mock-patch.js                                     | vitest-mock-patch                                     | 974 bytes | 
+
+                                                         | Initial total                                         | 478.00 kB
+
+Application bundle generation complete. [4.255 seconds] - 2026-10-08T18:29:08.301Z
+
+
+ RUN  v4.1.11 /Users/benanaktas/project/video/content-intelligence-platform/intelligence/frontend
+
+
+ Test Files  2 passed (2)
+      Tests  14 passed (14)
+   Start at  19:29:08
+   Duration  1.55s (transform 267ms, setup 466ms, import 327ms, tests 314ms, environment 1.58s)
+

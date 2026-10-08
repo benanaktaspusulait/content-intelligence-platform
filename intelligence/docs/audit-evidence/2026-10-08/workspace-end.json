@@ -1,0 +1,13 @@
+{
+  "timeUtc": "2026-10-08T18:40:37.280325+00:00",
+  "branch": "master",
+  "head": "de82bea39e50bdc5f6adcbde81be3159326c1256",
+  "status": "",
+  "worktrees": "/Users/benanaktas/project/video/content-intelligence-platform   de82bea [master]\n/Users/benanaktas/.kiro/worktrees/content-intelligence-family5  72e59a3 [family5-specialized-applicability]\n/Users/benanaktas/.kiro/worktrees/content-intelligence-family6  ffdafc7 [family6-temporal-generation-load]\n",
+  "sourceHashChanges": [],
+  "sourceFilesChecked": 830,
+  "agentApplicationEdits": false,
+  "agentCommitStageReset": false,
+  "concurrentHeadChange": true,
+  "concurrentEvidenceImpact": "No audited application source hashes changed; documentation auto-committed by another process."
+}

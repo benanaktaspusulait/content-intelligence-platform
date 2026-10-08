@@ -1,0 +1,26 @@
+[
+  {
+    "class": "ValidationEvidencePolicyTest",
+    "tests": "22",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.156"
+  },
+  {
+    "class": "RenderJobQueueServiceTest",
+    "tests": "12",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "1.061"
+  },
+  {
+    "class": "PostFamilyAdmissionTest",
+    "tests": "3",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.501"
+  }
+]

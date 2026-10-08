@@ -1,0 +1,30 @@
+[
+  {
+    "method": "POST",
+    "url": "http://127.0.0.1:4215/api/v1/intelligence/workflow/review",
+    "status": 200,
+    "request": "{\"contentId\":5,\"promptVersionId\":6,\"prompt\":\"0-2 SEC\\nLuca searches a box.\\n2-4 SEC\\nA clue narrows the search.\\n4-6 SEC\\nLuca finds the shoe.\\nNo watermark. Keep the image readable.\",\"sourcePath\":\"\",\"options\":{\"profile\":\"post-family-v1\",\"contentProfile\":\"AUTO\",\"openingStrategy\":\"AUTO\",\"generator\":\"AUTO\",\"desiredDuration\":null,\"qualityJustification\":\"\",\"viewerQuestion\":\"\",\"plannedEditedDuration\":null,\"structuredPlan\":null,\"intentRequirements\":[],\"creativeEvidence\":[],\"intentChangeReason\":\"\",\"protectedIntent\":[\"Luca finds the shoe.\"],\"references\":[],\"settings\":{\"mode\":\"image2video\",\"aspectRatio\":\"9:16\",\"resolution\":\"480p\"},\"segments\":[]}}",
+    "response": null
+  },
+  {
+    "method": "GET",
+    "url": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNSIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBmaWxsPSJXaW5kb3dUZXh0IiBkPSJNMjAgM2gtMVYxaC0ydjJIN1YxSDV2Mkg0Yy0xLjEgMC0yIC45LTIgMnYxNmMwIDEuMS45IDIgMiAyaDE2YzEuMSAwIDItLjkgMi0yVjVjMC0xLjEtLjktMi0yLTJ6bTAgMThINFY4aDE2djEzeiIvPjxwYXRoIGZpbGw9Im5vbmUiIGQ9Ik0wIDBoMjR2MjRIMHoiLz48L3N2Zz4=",
+    "status": 200,
+    "request": null,
+    "response": null
+  },
+  {
+    "method": "POST",
+    "url": "http://127.0.0.1:4215/api/v1/intelligence/workflow/records/d2781345-606c-4451-827d-8e397f0cc741/repair",
+    "status": 200,
+    "request": "{\"patches\":[{\"start\":93,\"end\":106,\"sourceQuote\":\"No watermark.\",\"replacement\":\"No visible watermark.\"}]}",
+    "response": null
+  },
+  {
+    "method": "POST",
+    "url": "http://127.0.0.1:4215/api/v1/intelligence/contents/5/prompt-versions",
+    "status": 201,
+    "request": "{\"rawText\":\"0-2 SEC\\nLuca searches a box.\\n2-4 SEC\\nA clue narrows the search.\\n4-6 SEC\\nLuca finds the shoe.\\nNo visible watermark. Keep the image readable.\",\"parsedIr\":\"{}\"}",
+    "response": null
+  }
+]

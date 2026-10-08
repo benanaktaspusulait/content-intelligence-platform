@@ -2,6 +2,10 @@
 
 AI-powered creative intelligence platform for video content creation, optimization, and distribution across social media platforms (TikTok, YouTube Shorts, Instagram Reels).
 
+## 2026-10-08 operational audit
+
+Current runtime/UI evidence and remaining work are in [Pompom end-to-end audit](POMPOM_END_TO_END_AUDIT.md) and [prioritized backlog](POMPOM_END_TO_END_BACKLOG.md). Feature checkmarks below are historical context; they are not journey-level verification. No backlog implementation was performed in this audit.
+
 ## Features
 
 ### Phase 1: Foundation & Core Domain ✅

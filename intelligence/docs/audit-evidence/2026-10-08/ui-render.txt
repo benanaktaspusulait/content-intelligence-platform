@@ -1,0 +1,93 @@
+- complementary
+  - link "Pompom Creative Intelligence home" [ref=e1]
+    - strong
+      - StaticText "Pompom"
+    - StaticText "CREATIVE INTELLIGENCE"
+  - StaticText "WORKSPACE"
+  - navigation "Primary navigation" [ref=e2]
+    - link "Overview" [ref=e4]
+      - StaticText "Overview"
+    - link "Video Library" [ref=e5]
+      - StaticText "Video Library"
+    - link "Characters" [ref=e6]
+      - StaticText "Characters"
+    - link "Prompt Quality" [ref=e7]
+      - StaticText "Prompt Quality"
+    - link "Rule Governance" [ref=e8]
+      - StaticText "Rule Governance"
+    - link "Experiments" [ref=e9]
+      - StaticText "Experiments"
+    - link "Test Planner" [ref=e10]
+      - StaticText "Test Planner"
+    - link "Predictions" [ref=e11]
+      - StaticText "Predictions"
+    - link "Performance" [ref=e12]
+      - StaticText "Performance"
+    - link "Import Data" [ref=e13]
+      - StaticText "Import Data"
+    - link "Model Reliability" [ref=e14]
+      - StaticText "Model Reliability"
+    - link "Reach Further" [ref=e15]
+      - StaticText "Reach Further"
+    - link "Meta Analytics" [ref=e16]
+      - StaticText "Meta Analytics"
+    - link "Model Versions" [ref=e17]
+      - StaticText "Model Versions"
+    - link "Operations" [ref=e18]
+      - StaticText "Operations"
+  - sectionfooter
+    - strong
+      - StaticText "Local workspace"
+    - StaticText "Persisted evidence only"
+- main
+  - sectionheader
+    - heading "Render Pipeline Dashboard" [level=1, ref=e19]
+    - paragraph
+      - StaticText "Monitor render jobs, QA results, and production status"
+    - StaticText "Live stream: RECONNECTING"
+    - StaticText "0"
+    - StaticText "Queued"
+    - StaticText "0"
+    - StaticText "Generating"
+    - StaticText "0"
+    - StaticText "Complete"
+    - StaticText "0"
+    - StaticText "Abandoned"
+  - generic
+    - StaticText "QUEUE RENDER"
+    - heading "Start a validated render" [level=2, ref=e20]
+    - StaticText "Validation evidence required"
+    - generic
+      - LabelText
+        - StaticText "Content ID"
+        - spinbutton "Content ID" [ref=e24]
+      - LabelText
+        - StaticText "Prompt version ID"
+        - spinbutton "Prompt version ID" [ref=e25]
+      - LabelText
+        - StaticText "Validation record ID"
+        - spinbutton "Validation record ID" [ref=e26]
+      - LabelText
+        - StaticText "Job type"
+        - combobox "Job type" [expanded=false, ref=e27]: VIDEO
+          - MenuListPopup
+            - option "VIDEO" [selected, ref=e30]
+            - option "FIRST_FRAME" [ref=e31]
+      - LabelText
+        - StaticText "OpenArt model"
+        - textbox "OpenArt model" [ref=e28]: byte-plus-seedance-2-mini
+          - StaticText "byte-plus-seedance-2-mini"
+      - LabelText
+        - StaticText "First-frame path or HTTPS URL"
+        - textbox "First-frame path or HTTPS URL" [ref=e29]
+      - button "Queue render" [ref=e23]
+  - generic
+    - StaticText "OPENART REFERENCES"
+    - heading "Workspace character catalog" [level=2, ref=e21]
+    - button "Sync workspace assets" [ref=e22]
+    - paragraph
+      - StaticText "OpenArt references could not be loaded."
+    - StaticText "No synced workspace references"
+  - paragraph
+    - StaticText "Failed to load render jobs: Http failure response for http://127.0.0.1:4215/api/v1/render-jobs?page=0&size=50: 404 Not Found"
+  - button "Retry" [ref=e3]

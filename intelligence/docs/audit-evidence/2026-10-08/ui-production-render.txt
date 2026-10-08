@@ -1,0 +1,85 @@
+- complementary
+  - link "Pompom Creative Intelligence home" [ref=e1]
+    - strong
+      - StaticText "Pompom"
+    - StaticText "CREATIVE INTELLIGENCE"
+  - StaticText "WORKSPACE"
+  - navigation "Primary navigation" [ref=e2]
+    - link "Overview" [ref=e3]
+      - StaticText "Overview"
+    - link "Video Library" [ref=e4]
+      - StaticText "Video Library"
+    - link "Characters" [ref=e5]
+      - StaticText "Characters"
+    - link "Prompt Quality" [ref=e6]
+      - StaticText "Prompt Quality"
+    - link "Rule Governance" [ref=e7]
+      - StaticText "Rule Governance"
+    - link "Experiments" [ref=e8]
+      - StaticText "Experiments"
+    - link "Test Planner" [ref=e9]
+      - StaticText "Test Planner"
+    - link "Predictions" [ref=e10]
+      - StaticText "Predictions"
+    - link "Performance" [ref=e11]
+      - StaticText "Performance"
+    - link "Import Data" [ref=e12]
+      - StaticText "Import Data"
+    - link "Model Reliability" [ref=e13]
+      - StaticText "Model Reliability"
+    - link "Reach Further" [ref=e14]
+      - StaticText "Reach Further"
+    - link "Meta Analytics" [ref=e15]
+      - StaticText "Meta Analytics"
+    - link "Model Versions" [ref=e16]
+      - StaticText "Model Versions"
+    - link "Operations" [ref=e17]
+      - StaticText "Operations"
+  - sectionfooter
+    - strong
+      - StaticText "Local workspace"
+    - StaticText "Persisted evidence only"
+- main
+  - sectionheader
+    - heading "Render Pipeline Dashboard" [level=1, ref=e18]
+    - paragraph
+      - StaticText "Monitor render jobs, QA results, and production status"
+    - StaticText "Live stream: CONNECTED"
+    - StaticText "0"
+    - StaticText "Queued"
+    - StaticText "0"
+    - StaticText "Generating"
+    - StaticText "0"
+    - StaticText "Complete"
+    - StaticText "0"
+    - StaticText "Abandoned"
+  - generic
+    - StaticText "QUEUE RENDER"
+    - heading "Start a validated render" [level=2, ref=e19]
+    - StaticText "Validation evidence required"
+    - generic
+      - LabelText
+        - StaticText "Content ID"
+        - spinbutton "Content ID" [ref=e21]
+      - LabelText
+        - StaticText "Prompt version ID"
+        - spinbutton "Prompt version ID" [ref=e22]
+      - LabelText
+        - StaticText "Validation record ID"
+        - spinbutton "Validation record ID" [ref=e23]
+      - LabelText
+        - StaticText "Job type"
+        - combobox "Job type" [expanded=false, ref=e24]: VIDEO
+          - MenuListPopup
+            - option "VIDEO" [selected, ref=e27]
+            - option "FIRST_FRAME" [ref=e28]
+      - LabelText
+        - StaticText "OpenArt model"
+        - textbox "OpenArt model" [ref=e25]: byte-plus-seedance-2-mini
+          - StaticText "byte-plus-seedance-2-mini"
+      - LabelText
+        - StaticText "First-frame path or HTTPS URL"
+        - textbox "First-frame path or HTTPS URL" [ref=e26]
+      - button "Queue render" [ref=e20]
+  - paragraph
+    - StaticText "No render jobs found"

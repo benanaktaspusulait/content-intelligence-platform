@@ -1,0 +1,55 @@
+- complementary
+  - link "Pompom Creative Intelligence home" [ref=e1]
+    - strong
+      - StaticText "Pompom"
+    - StaticText "CREATIVE INTELLIGENCE"
+  - StaticText "WORKSPACE"
+  - navigation "Primary navigation" [ref=e2]
+    - link "Overview" [ref=e3]
+      - StaticText "Overview"
+    - link "Video Library" [ref=e4]
+      - StaticText "Video Library"
+    - link "Characters" [ref=e5]
+      - StaticText "Characters"
+    - link "Prompt Quality" [ref=e6]
+      - StaticText "Prompt Quality"
+    - link "Rule Governance" [ref=e7]
+      - StaticText "Rule Governance"
+    - link "Experiments" [ref=e8]
+      - StaticText "Experiments"
+    - link "Test Planner" [ref=e9]
+      - StaticText "Test Planner"
+    - link "Predictions" [ref=e10]
+      - StaticText "Predictions"
+    - link "Performance" [ref=e11]
+      - StaticText "Performance"
+    - link "Import Data" [ref=e12]
+      - StaticText "Import Data"
+    - link "Model Reliability" [ref=e13]
+      - StaticText "Model Reliability"
+    - link "Reach Further" [ref=e14]
+      - StaticText "Reach Further"
+    - link "Meta Analytics" [ref=e15]
+      - StaticText "Meta Analytics"
+    - link "Model Versions" [ref=e16]
+      - StaticText "Model Versions"
+    - link "Operations" [ref=e17]
+      - StaticText "Operations"
+  - sectionfooter
+    - strong
+      - StaticText "Local workspace"
+    - StaticText "Persisted evidence only"
+- main
+  - sectionheader
+    - StaticText "MODEL REGISTRY"
+    - heading "Model Versions" [level=1, ref=e18]
+    - paragraph
+      - StaticText "Persisted model versions and backend-controlled promotion state."
+  - generic
+    - StaticText "PERSISTED REGISTRY"
+    - heading "0 versions" [level=2, ref=e19]
+    - StaticText "Backend policy"
+    - strong
+      - StaticText "No model versions registered"
+    - paragraph
+      - StaticText "Training and registration must happen through the existing backend workflow."

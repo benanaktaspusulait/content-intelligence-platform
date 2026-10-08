@@ -1,0 +1,14 @@
+[
+  {
+    "method": "POST",
+    "url": "http://127.0.0.1:4215/api/v1/imports/preview?platform=instagram&timezone=Europe/London",
+    "status": 200,
+    "response": null
+  },
+  {
+    "method": "GET",
+    "url": "http://127.0.0.1:4215/api/v1/imports/74e9652a-3645-4a88-ac6e-f7f9a40a757d/rows",
+    "status": 200,
+    "response": null
+  }
+]

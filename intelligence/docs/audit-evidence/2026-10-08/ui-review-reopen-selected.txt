@@ -1,0 +1,155 @@
+- generic
+  - complementary
+    - link "Pompom Creative Intelligence home" [ref=e1]
+      - strong
+        - StaticText "Pompom"
+      - StaticText "CREATIVE INTELLIGENCE"
+    - StaticText "WORKSPACE"
+    - navigation "Primary navigation" [ref=e2]
+      - link "Overview" [ref=e5]
+        - StaticText "Overview"
+      - link "Video Library" [ref=e6]
+        - StaticText "Video Library"
+      - link "Characters" [ref=e7]
+        - StaticText "Characters"
+      - link "Prompt Quality" [ref=e8]
+        - StaticText "Prompt Quality"
+      - link "Rule Governance" [ref=e9]
+        - StaticText "Rule Governance"
+      - link "Experiments" [ref=e10]
+        - StaticText "Experiments"
+      - link "Test Planner" [ref=e11]
+        - StaticText "Test Planner"
+      - link "Predictions" [ref=e12]
+        - StaticText "Predictions"
+      - link "Performance" [ref=e13]
+        - StaticText "Performance"
+      - link "Import Data" [ref=e14]
+        - StaticText "Import Data"
+      - link "Model Reliability" [ref=e15]
+        - StaticText "Model Reliability"
+      - link "Reach Further" [ref=e16]
+        - StaticText "Reach Further"
+      - link "Meta Analytics" [ref=e17]
+        - StaticText "Meta Analytics"
+      - link "Model Versions" [ref=e18]
+        - StaticText "Model Versions"
+      - link "Operations" [ref=e19]
+        - StaticText "Operations"
+    - sectionfooter
+      - strong
+        - StaticText "Local workspace"
+      - StaticText "Persisted evidence only"
+  - main
+    - heading "🎯 Pompom Creative Quality Engine" [level=1, ref=e3]
+    - paragraph
+      - StaticText "Exploratory prompt analysis. This screen does not authorize a render."
+    - region "Operasyonel yaratıcı iş akışı" [ref=e4]
+      - heading "Üretim incelemesi" [level=2, ref=e20]
+      - LabelText
+        - StaticText "İş akışı profili"
+        - combobox "İş akışı profili" [expanded=false, ref=e28]: Operasyonel yaratıcı iş akışı v1
+          - MenuListPopup
+            - option "Family 1–10 · tarihsel doğrulama" [ref=e43]
+            - option "Operasyonel yaratıcı iş akışı v1" [selected, ref=e44]
+      - paragraph
+        - StaticText "Family 1–10 sözleşmeleri korunur. Yeni profil, yaratıcı amacı ve seçilen jeneratörün yürütmesini ayrı inceler."
+      - paragraph
+        - StaticText "Yetkili karakter referansları dosyalardan bağlanır; eksik referans yerine görünüm uydurulmaz."
+      - LabelText
+        - StaticText "İçerik profili"
+        - combobox "İçerik profili" [expanded=false, ref=e29]: Kaynak temelli öneri
+          - MenuListPopup
+            - option "Kaynak temelli öneri" [selected, ref=e45]
+            - option "Absürt fizik" [ref=e46]
+            - option "Merak / macera" [ref=e47]
+            - option "Eğitici" [ref=e48]
+            - option "Karma" [ref=e49]
+            - option "Belirsiz" [ref=e50]
+      - LabelText
+        - StaticText "Açılış stratejisi"
+        - combobox "Açılış stratejisi" [expanded=false, ref=e30]: Öneri
+          - MenuListPopup
+            - option "Öneri" [selected, ref=e51]
+            - option "Anında imkânsızlık" [ref=e52]
+            - option "Doğrudan sorun" [ref=e53]
+            - option "Merak / keşif" [ref=e54]
+      - LabelText
+        - StaticText "İstenen süre (s)"
+        - spinbutton "İstenen süre (s)" [ref=e31]
+      - LabelText
+        - StaticText "Jeneratör"
+        - combobox "Jeneratör" [expanded=false, ref=e32]: Kullanıcı tercihine göre öner
+          - MenuListPopup
+            - option "Kullanıcı tercihine göre öner" [selected, ref=e55]
+            - option "Seedance 2.0 Mini" [ref=e56]
+            - option "Seedance 2.0" [ref=e57]
+            - option "Seedance 2.5" [ref=e58]
+      - LabelText
+        - StaticText "İlk kare · mevcut medya yolu"
+        - textbox "İlk kare · mevcut medya yolu" [ref=e33]
+      - LabelText
+        - StaticText "İlk kare · sağlayıcı URL"
+        - textbox "İlk kare · sağlayıcı URL" [ref=e34]
+      - LabelText
+        - StaticText "2.0 kalite gerekçesi"
+        - textbox "2.0 kalite gerekçesi" [ref=e35]
+      - LabelText
+        - StaticText "Görünüm oranı"
+        - combobox "Görünüm oranı" [expanded=false, ref=e36]: 9:16
+          - MenuListPopup
+            - option "9:16" [selected, ref=e59]
+            - option "16:9" [ref=e60]
+            - option "1:1" [ref=e61]
+      - LabelText
+        - StaticText "İzleyicinin temel sorusu"
+        - textbox "İzleyicinin temel sorusu" [ref=e37]
+      - LabelText
+        - StaticText "Korunacak yaratıcı niyet · kaynakta geçen ifadeler"
+        - textbox "Korunacak yaratıcı niyet · kaynakta geçen ifadeler" [ref=e38]
+      - LabelText
+        - StaticText "Önceki temel niyeti değiştiriyorsanız karar gerekçesi"
+        - textbox "Önceki temel niyeti değiştiriyorsanız karar gerekçesi" [ref=e39]
+      - button "Bu kaynak sürümünün son niyet bildirimlerini yükle" [ref=e21]
+      - group
+        - DisclosureTriangle "Kaynağa bağlı plan kanıtı · isteğe bağlı" [expanded=false]
+          - StaticText "Kaynağa bağlı plan kanıtı · isteğe bağlı"
+      - group
+        - DisclosureTriangle "Karakter ve referans dosyaları" [expanded=false]
+          - StaticText "Karakter ve referans dosyaları"
+      - button "Post-family incelemesini çalıştır" [ref=e22]
+    - generic
+      - StaticText "PROMPT DETAIL"
+      - heading "Workflow example B · 08_luca_and_zipo" [level=2, ref=e23]
+      - link "Back to folders" [ref=e24]
+      - LabelText
+        - StaticText "Content title"
+        - textbox "Content title" [ref=e40]: Workflow example B · 08_luca_and_zipo
+          - StaticText "Workflow example B · 08_luca_and_zipo"
+      - LabelText
+        - StaticText "Type"
+        - combobox "Type" [expanded=false, ref=e41]: Reel
+          - MenuListPopup
+            - option "Short" [ref=e62]
+            - option "Reel" [selected, ref=e63]
+            - option "Episode" [ref=e64]
+      - button "Create workspace version" [ref=e25]
+      - button "Save revision" [ref=e26]
+      - StaticText "Linked workspace prompt: validation uses the immutable stored version and can produce render evidence."
+      - region "Prompt source editor" [ref=e27]
+        - StaticText "PROMPT SOURCE"
+        - strong
+          - StaticText "Editable prompt"
+        - StaticText "Markdown · 1313 characters"
+        - code
+          - generic
+            - textbox "Editor content" [ref=e65]
+      - StaticText "1313 characters"
+      - button "Analyze prompt" [ref=e42]
+    - generic
+      - strong
+        - StaticText "Error:"
+      - StaticText " Prompt workspace root must be inside the configured data root"
+  - generic
+    - alert
+    - alert

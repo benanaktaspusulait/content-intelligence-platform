@@ -1,0 +1,349 @@
+- complementary
+  - link "Pompom Creative Intelligence home" [ref=e1]
+    - strong
+      - StaticText "Pompom"
+    - StaticText "CREATIVE INTELLIGENCE"
+  - StaticText "WORKSPACE"
+  - navigation "Primary navigation" [ref=e2]
+    - link "Overview" [ref=e7]
+      - StaticText "Overview"
+    - link "Video Library" [ref=e8]
+      - StaticText "Video Library"
+    - link "Characters" [ref=e9]
+      - StaticText "Characters"
+    - link "Prompt Quality" [ref=e10]
+      - StaticText "Prompt Quality"
+    - link "Rule Governance" [ref=e11]
+      - StaticText "Rule Governance"
+    - link "Experiments" [ref=e12]
+      - StaticText "Experiments"
+    - link "Test Planner" [ref=e13]
+      - StaticText "Test Planner"
+    - link "Predictions" [ref=e14]
+      - StaticText "Predictions"
+    - link "Performance" [ref=e15]
+      - StaticText "Performance"
+    - link "Import Data" [ref=e16]
+      - StaticText "Import Data"
+    - link "Model Reliability" [ref=e17]
+      - StaticText "Model Reliability"
+    - link "Reach Further" [ref=e18]
+      - StaticText "Reach Further"
+    - link "Meta Analytics" [ref=e19]
+      - StaticText "Meta Analytics"
+    - link "Model Versions" [ref=e20]
+      - StaticText "Model Versions"
+    - link "Operations" [ref=e21]
+      - StaticText "Operations"
+  - sectionfooter
+    - strong
+      - StaticText "Local workspace"
+    - StaticText "Persisted evidence only"
+- main
+  - sectionheader
+    - link "← Video Library" [ref=e22]
+    - StaticText "VIDEO REVIEW STUDIO"
+    - heading "B" [level=1, ref=e23]
+    - paragraph
+      - StaticText "library/workflow-examples/B"
+    - StaticText "ANALYSED"
+    - StaticText "1 variant"
+  - region "Video and variants" [ref=e3]
+    - Video "Preview 08_luca_and_zipo_hd.mp4"
+      - generic
+        - button "play" [ref=e48]
+        - generic
+          - slider "volume" [ref=e51]: 100
+          - button "mute" [ref=e52]
+        - button "enter full screen" [ref=e49]
+        - button "show more media controls" [ref=e50]
+      - slider "video time scrubber" [ref=e47]: 0
+    - StaticText "SELECTED VARIANT"
+    - strong
+      - StaticText "HD"
+    - StaticText "08_luca_and_zipo_hd.mp4"
+    - StaticText "Evidence record linked"
+    - complementary "Video variants"
+      - StaticText "FOLDER VERSIONS"
+      - strong
+        - StaticText "Compare variants"
+      - button "1 HD 08_luca_and_zipo_hd.mp4 15.6 MB · ANALYSED" [ref=e39]
+        - StaticText "1"
+        - strong
+          - StaticText "HD"
+        - StaticText "08_luca_and_zipo_hd.mp4"
+        - emphasis
+          - StaticText "15.6 MB · ANALYSED"
+  - navigation "Video detail sections" [ref=e4]
+    - button "Overview" [ref=e24]
+    - button "Creative" [ref=e25]
+    - button "Publication" [ref=e26]
+    - button "Performance" [ref=e27]
+    - button "Evidence" [ref=e28]
+  - generic
+    - StaticText "SOURCE FACTS"
+    - heading "Technical details" [level=2, ref=e29]
+    - StaticText "Real file metadata"
+    - region "VIDEO" [ref=e30]
+      - heading "VIDEO" [level=3, ref=e40]
+      - DescriptionList
+        - term "Duration"
+        - definition
+          - StaticText "15.1s"
+        - term "Resolution"
+        - definition
+          - StaticText "1080 × 1920"
+        - term "Frame rate"
+        - definition
+          - StaticText "24.00 fps"
+    - region "FILE" [ref=e31]
+      - heading "FILE" [level=3, ref=e41]
+      - DescriptionList
+        - term "Size"
+        - definition
+          - StaticText "15.6 MB"
+        - term "Format"
+        - definition
+          - StaticText "MP4"
+        - term "Modified"
+        - definition
+          - StaticText "8 Oct 2026, 18:14"
+    - region "EVIDENCE" [ref=e32]
+      - heading "EVIDENCE" [level=3, ref=e42]
+      - DescriptionList
+        - term "Ingest state"
+        - definition
+          - StaticText "ANALYSED"
+        - term "Ingested"
+        - definition
+          - StaticText "8 Oct 2026, 17:46"
+        - term "Audio / codec"
+        - definition
+          - StaticText "Audio / h264"
+  - region "Sampled visual-motion evidence" [ref=e5]
+    - StaticText "VISUAL MOTION ANALYSIS"
+    - heading "Sampled visual-motion evidence" [level=2, ref=e33]
+    - button "Reanalyze" [ref=e34]
+    - strong
+      - StaticText "INTERPRETATION"
+    - StaticText "This is a sampled visual-motion heuristic. It does not use views, reach, likes, comments, follows or retention data."
+    - region "Human-readable motion interpretation" [ref=e35]
+      - StaticText "WHAT THE EVIDENCE SAYS"
+      - heading "Human-readable motion interpretation" [level=3, ref=e43]
+      - StaticText "Motion evidence only"
+      - StaticText "Visual activity"
+      - strong
+        - StaticText "Strong"
+      - StaticText "Sampled visual change through the timeline."
+      - StaticText "Motion variation"
+      - strong
+        - StaticText "Steady"
+      - StaticText "This describes motion, not story progression."
+      - StaticText "Opening/ending relationship"
+      - strong
+        - StaticText "High"
+      - StaticText "Visual similarity does not prove a semantic loop."
+      - StaticText "Local activity changes"
+      - strong
+        - StaticText "None detected"
+      - StaticText "Canonical V5 temporal events; relative dips are separate from absolute low motion."
+      - StaticText "Visual novelty"
+      - strong
+        - StaticText "HIGH"
+      - StaticText "Medium-range structural and perceptual state change."
+      - StaticText "Repetition evidence"
+      - strong
+        - StaticText "Low"
+      - StaticText "High motion with low state novelty, not a performance verdict."
+      - StaticText "Action / beat novelty"
+      - strong
+        - StaticText "WEAK"
+      - StaticText "Plan-side semantic evidence is separate from pixels."
+      - StaticText "Plan / render fidelity"
+      - strong
+        - StaticText "Not Available"
+      - StaticText "Aligned when a structured production plan is available."
+      - StaticText "Opening hook"
+      - strong
+        - StaticText "Moderate"
+      - StaticText "The opening contains measurable visual activity, but semantic subject/object readability is not configured."
+      - StaticText "Temporal emphasis"
+      - strong
+        - StaticText "Unknown"
+      - StaticText "No semantic context was available for temporal events."
+      - StaticText "Payoff"
+      - strong
+        - StaticText "Unknown"
+      - StaticText "Payoff cannot be resolved from the available evidence. Motion support: NOT_ESTABLISHED."
+      - StaticText "Loop evidence"
+      - strong
+        - StaticText "Visual endpoint evidence is moderate; semantic loop evidence is unknown."
+      - StaticText "Visual endpoint evidence is separate from semantic loop verification."
+      - StaticText "Readiness coverage"
+      - strong
+        - StaticText "20%"
+      - StaticText "Missing: beats, payoff, loop, temporal structure."
+      - StaticText "Temporal motion trend"
+      - strong
+        - StaticText "Steady High"
+      - StaticText "No local activity events detected. Temporal motion trend only; it is not semantic creative escalation or a performance prediction."
+      - StaticText "Temporal structure"
+      - strong
+        - StaticText "Steady High"
+      - StaticText "No local activity events detected. Temporal motion trend only; it is not semantic creative escalation or a performance prediction."
+      - StaticText "Local recovery"
+      - strong
+        - StaticText "None detected"
+      - StaticText "Recovery is distinct from a final rebound."
+      - StaticText "Final rebound"
+      - strong
+        - StaticText "Not established"
+      - StaticText "Measured recovery from the preceding segment."
+      - StaticText "Structural attention windows"
+      - strong
+        - StaticText "None detected"
+      - StaticText "Uncalibrated structural evidence only; never a predicted viewer drop."
+      - StaticText "PLATFORM LENS"
+      - heading "Creative fit by platform" [level=3, ref=e44]
+      - StaticText "Policy hypothesis · not prediction"
+      - StaticText "INSTAGRAM REELS"
+      - strong
+        - StaticText "B · UNKNOWN"
+      - StaticText "GOOD FIT · 67% evidence"
+      - StaticText "FACEBOOK REELS"
+      - strong
+        - StaticText "B · UNKNOWN"
+      - StaticText "GOOD FIT · 67% evidence"
+      - StaticText "TIKTOK"
+      - strong
+        - StaticText "B · UNKNOWN"
+      - StaticText "GOOD FIT · 67% evidence"
+      - StaticText "YOUTUBE SHORTS"
+      - strong
+        - StaticText "INCOMPLETE · UNKNOWN"
+      - StaticText "INSUFFICIENT EVIDENCE · 67% evidence"
+    - region "Observed story and meaning" [ref=e36]
+      - StaticText "SEMANTIC VIDEO UNDERSTANDING"
+      - heading "Observed story and meaning" [level=2, ref=e45]
+      - StaticText "NOT_REQUESTED"
+      - strong
+        - StaticText "Semantic layer not requested"
+      - paragraph
+        - StaticText "No vision-capable semantic provider is configured."
+    - region "Motion by segment" [ref=e37]
+      - StaticText "LOCAL TIMELINE"
+      - heading "Motion by segment" [level=3, ref=e46]
+      - StaticText "sampled-visual-motion-v5"
+      - table "Local motion segment timeline"
+        - row
+          - StaticText "TIME"
+          - StaticText "ACTIVITY"
+          - StaticText "DENSITY"
+          - StaticText "COVERAGE"
+          - StaticText "SHAPE"
+          - StaticText "EVENT"
+        - row
+          - StaticText "0–1.51s"
+          - StaticText "1"
+          - StaticText "100%"
+          - StaticText "100%"
+          - StaticText "Stable"
+          - StaticText "—"
+        - row
+          - StaticText "1.51–3.021s"
+          - StaticText "1"
+          - StaticText "100%"
+          - StaticText "100%"
+          - StaticText "Stable"
+          - StaticText "—"
+        - row
+          - StaticText "3.021–4.531s"
+          - StaticText "1"
+          - StaticText "100%"
+          - StaticText "100%"
+          - StaticText "Stable"
+          - StaticText "—"
+        - row
+          - StaticText "4.531–6.042s"
+          - StaticText "1"
+          - StaticText "100%"
+          - StaticText "100%"
+          - StaticText "Stable"
+          - StaticText "—"
+        - row
+          - StaticText "6.042–7.552s"
+          - StaticText "0.999"
+          - StaticText "100%"
+          - StaticText "100%"
+          - StaticText "Stable"
+          - StaticText "—"
+        - row
+          - StaticText "7.552–9.062s"
+          - StaticText "1"
+          - StaticText "100%"
+          - StaticText "100%"
+          - StaticText "Stable"
+          - StaticText "—"
+        - row
+          - StaticText "9.062–10.573s"
+          - StaticText "1"
+          - StaticText "100%"
+          - StaticText "100%"
+          - StaticText "Stable"
+          - StaticText "—"
+        - row
+          - StaticText "10.573–12.083s"
+          - StaticText "1"
+          - StaticText "100%"
+          - StaticText "100%"
+          - StaticText "Stable"
+          - StaticText "—"
+        - row
+          - StaticText "12.083–13.594s"
+          - StaticText "1"
+          - StaticText "100%"
+          - StaticText "100%"
+          - StaticText "Stable"
+          - StaticText "—"
+        - row
+          - StaticText "13.594–15.104s"
+          - StaticText "1"
+          - StaticText "100%"
+          - StaticText "93%"
+          - StaticText "Stable"
+          - StaticText "—"
+      - paragraph
+        - StaticText "Activity is duration-weighted sampled visual change. It is not a story, audience, or retention measurement."
+    - group
+      - DisclosureTriangle "Technical details" [expanded=false]
+        - StaticText "Technical details"
+  - region "Latest imported platform evidence" [ref=e6]
+    - StaticText "OBSERVED PERFORMANCE"
+    - heading "Latest imported platform evidence" [level=2, ref=e38]
+    - StaticText "Facebook"
+    - StaticText "Views"
+    - strong
+      - StaticText "—"
+    - StaticText "No imported value"
+    - StaticText "Reach"
+    - strong
+      - StaticText "—"
+    - StaticText "No imported value"
+    - StaticText "Likes"
+    - strong
+      - StaticText "—"
+    - StaticText "No imported value"
+    - StaticText "Comments"
+    - strong
+      - StaticText "—"
+    - StaticText "No imported value"
+    - StaticText "Shares"
+    - strong
+      - StaticText "—"
+    - StaticText "No imported value"
+    - StaticText "Follows"
+    - strong
+      - StaticText "—"
+    - StaticText "No imported value"
+    - paragraph
+      - StaticText "Observed performance is evidence from the selected platform. It does not rewrite the creative assessment score."

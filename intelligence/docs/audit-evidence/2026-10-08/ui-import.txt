@@ -1,0 +1,121 @@
+- complementary
+  - link "Pompom Creative Intelligence home" [ref=e1]
+    - strong
+      - StaticText "Pompom"
+    - StaticText "CREATIVE INTELLIGENCE"
+  - StaticText "WORKSPACE"
+  - navigation "Primary navigation" [ref=e2]
+    - link "Overview" [ref=e3]
+      - StaticText "Overview"
+    - link "Video Library" [ref=e4]
+      - StaticText "Video Library"
+    - link "Characters" [ref=e5]
+      - StaticText "Characters"
+    - link "Prompt Quality" [ref=e6]
+      - StaticText "Prompt Quality"
+    - link "Rule Governance" [ref=e7]
+      - StaticText "Rule Governance"
+    - link "Experiments" [ref=e8]
+      - StaticText "Experiments"
+    - link "Test Planner" [ref=e9]
+      - StaticText "Test Planner"
+    - link "Predictions" [ref=e10]
+      - StaticText "Predictions"
+    - link "Performance" [ref=e11]
+      - StaticText "Performance"
+    - link "Import Data" [ref=e12]
+      - StaticText "Import Data"
+    - link "Model Reliability" [ref=e13]
+      - StaticText "Model Reliability"
+    - link "Reach Further" [ref=e14]
+      - StaticText "Reach Further"
+    - link "Meta Analytics" [ref=e15]
+      - StaticText "Meta Analytics"
+    - link "Model Versions" [ref=e16]
+      - StaticText "Model Versions"
+    - link "Operations" [ref=e17]
+      - StaticText "Operations"
+  - sectionfooter
+    - strong
+      - StaticText "Local workspace"
+    - StaticText "Persisted evidence only"
+- main
+  - sectionheader
+    - StaticText "DATA INTAKE"
+    - heading "Import Data" [level=1, ref=e18]
+    - paragraph
+      - StaticText "Validate platform exports before they enter the evidence store."
+    - StaticText "STEP 2 OF 3"
+  - list "Import progress"
+    - listitem [level=1]
+      - StaticText "1"
+      - strong
+        - StaticText "Source"
+      - StaticText "Selected"
+    - listitem [level=1]
+      - StaticText "2"
+      - strong
+        - StaticText "Map fields"
+      - StaticText "Review schema"
+    - listitem [level=1]
+      - StaticText "3"
+      - strong
+        - StaticText "Commit"
+      - StaticText "Confirm import"
+  - generic
+    - StaticText "SOURCE FILE"
+    - heading "Platform export" [level=2, ref=e19]
+    - StaticText "CSV"
+    - LabelText [ref=e20] clickable [cursor:pointer]
+      - button "Choose a platform export CSV, TSV or XLSX · up to 250 MB Browse files" [ref=e23]: No file chosen
+      - strong
+        - StaticText "Choose a platform export"
+      - StaticText "CSV, TSV or XLSX · up to 250 MB"
+      - StaticText "Browse files"
+    - DescriptionList
+      - term "Platform"
+      - definition
+        - combobox [expanded=false, ref=e25]: Instagram
+          - MenuListPopup
+            - option "Instagram" [selected, ref=e28]
+            - option "Facebook" [ref=e29]
+            - option "TikTok" [ref=e30]
+            - option "YouTube" [ref=e31]
+      - term "Matched rows"
+      - definition
+        - StaticText "0"
+      - term "Storage"
+      - definition
+        - StaticText "Raw + normalized"
+  - complementary
+    - StaticText "VALIDATION"
+    - heading "0 unresolved rows" [level=2, ref=e21]
+    - paragraph
+      - StaticText "Only exact video IDs or unique filenames are accepted."
+    - StaticText "0% row coverage"
+    - list
+      - listitem [level=1]
+        - StaticText "✓"
+        - StaticText "0 fields detected"
+      - listitem [level=1]
+        - StaticText "✓"
+        - StaticText "0 exact matches"
+      - listitem [level=1]
+        - StaticText "!"
+        - StaticText "0 rows need review"
+  - generic
+    - StaticText "DETECTED SCHEMA"
+    - heading "Backend field interpretation" [level=2, ref=e22]
+    - StaticText "Read-only preview"
+    - paragraph
+      - StaticText "The import service uses the source column names and keeps the original payload. These interpretations are informational; no client-side mapping is silently applied."
+    - table
+      - rowgroup
+        - row
+          - columnheader "SOURCE FIELD" [ref=e26]
+          - columnheader "BACKEND INTERPRETATION" [ref=e27]
+    - sectionfooter
+      - strong
+        - StaticText "0 of 0 rows matched"
+      - StaticText "Raw source remains append-only; blank metrics stay null."
+      - button "Commit import" [disabled, ref=e24]

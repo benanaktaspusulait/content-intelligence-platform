@@ -1,0 +1,100 @@
+- complementary
+  - link "Pompom Creative Intelligence home" [ref=e1]
+    - strong
+      - StaticText "Pompom"
+    - StaticText "CREATIVE INTELLIGENCE"
+  - StaticText "WORKSPACE"
+  - navigation "Primary navigation" [ref=e2]
+    - link "Overview" [ref=e4]
+      - StaticText "Overview"
+    - link "Video Library" [ref=e5]
+      - StaticText "Video Library"
+    - link "Characters" [ref=e6]
+      - StaticText "Characters"
+    - link "Prompt Quality" [ref=e7]
+      - StaticText "Prompt Quality"
+    - link "Rule Governance" [ref=e8]
+      - StaticText "Rule Governance"
+    - link "Experiments" [ref=e9]
+      - StaticText "Experiments"
+    - link "Test Planner" [ref=e10]
+      - StaticText "Test Planner"
+    - link "Predictions" [ref=e11]
+      - StaticText "Predictions"
+    - link "Performance" [ref=e12]
+      - StaticText "Performance"
+    - link "Import Data" [ref=e13]
+      - StaticText "Import Data"
+    - link "Model Reliability" [ref=e14]
+      - StaticText "Model Reliability"
+    - link "Reach Further" [ref=e15]
+      - StaticText "Reach Further"
+    - link "Meta Analytics" [ref=e16]
+      - StaticText "Meta Analytics"
+    - link "Model Versions" [ref=e17]
+      - StaticText "Model Versions"
+    - link "Operations" [ref=e18]
+      - StaticText "Operations"
+  - sectionfooter
+    - strong
+      - StaticText "Local workspace"
+    - StaticText "Persisted evidence only"
+- main
+  - heading "🎯 Pompom Creative Quality Engine" [level=1, ref=e3]
+  - paragraph
+    - StaticText "Exploratory prompt analysis. This screen does not authorize a render."
+  - generic
+    - StaticText "PERSISTED QUALITY RECORDS"
+    - heading "Prompt analysis overview" [level=2, ref=e19]
+    - paragraph
+      - StaticText "Each canonical content/prompt record shows whether Prompt Quality has been run and its latest result."
+    - button "Refresh" [ref=e20]
+    - article
+      - generic
+        - strong
+          - StaticText "Workflow example B · 08_luca_and_zipo"
+        - StaticText "Persisted content record"
+      - StaticText "Not analyzed"
+      - StaticText "Prompt v1"
+      - paragraph
+        - StaticText "No prompt quality analysis yet"
+    - article
+      - generic
+        - strong
+          - StaticText "Workflow example A · 01_luca_sticky_ball"
+        - StaticText "Persisted content record"
+      - StaticText "Not analyzed"
+      - StaticText "Prompt v2"
+      - paragraph
+        - StaticText "No prompt quality analysis yet"
+    - article
+      - generic
+        - strong
+          - StaticText "Workflow example A · 01_luca_sticky_ball"
+        - StaticText "Persisted content record"
+      - StaticText "Not analyzed"
+      - StaticText "Prompt v1"
+      - paragraph
+        - StaticText "No prompt quality analysis yet"
+  - generic
+    - StaticText "PROMPT ASSET LIBRARY"
+    - heading "Select prompt folders" [level=2, ref=e21]
+    - paragraph
+      - StaticText "Choose one or more folders; their prompt files appear below."
+    - button "New prompt" [ref=e22]
+    - button "Refresh" [ref=e23]
+    - generic
+      - LabelText
+        - StaticText "FIND A PROMPT, VIDEO, OR SUBFOLDER TOPIC"
+      - StaticText "Search also scans nested prompt/video paths; results stay grouped by top-level workspace."
+      - combobox "FIND A PROMPT, VIDEO, OR SUBFOLDER TOPIC" [expanded=false, ref=e27]
+      - button "Toggle prompt folder choices" [ref=e28]
+        - StaticText "⌄"
+    - textbox "New prompt workspace folder name" [ref=e24]
+    - textbox "Future video or creative name" [ref=e25]
+    - button "Create folder" [disabled, ref=e26]
+    - StaticText "Select one or more prompt folders above to see their prompts."
+  - generic
+    - strong
+      - StaticText "Error:"
+    - StaticText " Prompt workspace root must be inside the configured data root"

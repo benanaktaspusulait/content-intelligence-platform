@@ -1,0 +1,677 @@
+- generic
+  - complementary
+    - link "Pompom Creative Intelligence home" [ref=e1]
+      - strong
+        - StaticText "Pompom"
+      - StaticText "CREATIVE INTELLIGENCE"
+    - StaticText "WORKSPACE"
+    - navigation "Primary navigation" [ref=e2]
+      - link "Overview" [ref=e5]
+        - StaticText "Overview"
+      - link "Video Library" [ref=e6]
+        - StaticText "Video Library"
+      - link "Characters" [ref=e7]
+        - StaticText "Characters"
+      - link "Prompt Quality" [ref=e8]
+        - StaticText "Prompt Quality"
+      - link "Rule Governance" [ref=e9]
+        - StaticText "Rule Governance"
+      - link "Experiments" [ref=e10]
+        - StaticText "Experiments"
+      - link "Test Planner" [ref=e11]
+        - StaticText "Test Planner"
+      - link "Predictions" [ref=e12]
+        - StaticText "Predictions"
+      - link "Performance" [ref=e13]
+        - StaticText "Performance"
+      - link "Import Data" [ref=e14]
+        - StaticText "Import Data"
+      - link "Model Reliability" [ref=e15]
+        - StaticText "Model Reliability"
+      - link "Reach Further" [ref=e16]
+        - StaticText "Reach Further"
+      - link "Meta Analytics" [ref=e17]
+        - StaticText "Meta Analytics"
+      - link "Model Versions" [ref=e18]
+        - StaticText "Model Versions"
+      - link "Operations" [ref=e19]
+        - StaticText "Operations"
+    - sectionfooter
+      - strong
+        - StaticText "Local workspace"
+      - StaticText "Persisted evidence only"
+  - main
+    - heading "🎯 Pompom Creative Quality Engine" [level=1, ref=e3]
+    - paragraph
+      - StaticText "Exploratory prompt analysis. This screen does not authorize a render."
+    - region "Operasyonel yaratıcı iş akışı" [ref=e4]
+      - heading "Üretim incelemesi" [level=2, ref=e20]
+      - LabelText
+        - StaticText "İş akışı profili"
+        - combobox "İş akışı profili" [expanded=false, ref=e44]: Operasyonel yaratıcı iş akışı v1
+          - MenuListPopup
+            - option "Family 1–10 · tarihsel doğrulama" [ref=e121]
+            - option "Operasyonel yaratıcı iş akışı v1" [selected, ref=e122]
+      - paragraph
+        - StaticText "Family 1–10 sözleşmeleri korunur. Yeni profil, yaratıcı amacı ve seçilen jeneratörün yürütmesini ayrı inceler."
+      - paragraph
+        - StaticText "Yetkili karakter referansları dosyalardan bağlanır; eksik referans yerine görünüm uydurulmaz."
+      - LabelText
+        - StaticText "İçerik profili"
+        - combobox "İçerik profili" [expanded=false, ref=e45]: Kaynak temelli öneri
+          - MenuListPopup
+            - option "Kaynak temelli öneri" [selected, ref=e123]
+            - option "Absürt fizik" [ref=e124]
+            - option "Merak / macera" [ref=e125]
+            - option "Eğitici" [ref=e126]
+            - option "Karma" [ref=e127]
+            - option "Belirsiz" [ref=e128]
+      - LabelText
+        - StaticText "Açılış stratejisi"
+        - combobox "Açılış stratejisi" [expanded=false, ref=e46]: Öneri
+          - MenuListPopup
+            - option "Öneri" [selected, ref=e129]
+            - option "Anında imkânsızlık" [ref=e130]
+            - option "Doğrudan sorun" [ref=e131]
+            - option "Merak / keşif" [ref=e132]
+      - LabelText
+        - StaticText "İstenen süre (s)"
+        - spinbutton "İstenen süre (s)" [ref=e47]
+      - LabelText
+        - StaticText "Jeneratör"
+        - combobox "Jeneratör" [expanded=false, ref=e48]: Kullanıcı tercihine göre öner
+          - MenuListPopup
+            - option "Kullanıcı tercihine göre öner" [selected, ref=e133]
+            - option "Seedance 2.0 Mini" [ref=e134]
+            - option "Seedance 2.0" [ref=e135]
+            - option "Seedance 2.5" [ref=e136]
+      - LabelText
+        - StaticText "İlk kare · mevcut medya yolu"
+        - textbox "İlk kare · mevcut medya yolu" [ref=e49]
+      - LabelText
+        - StaticText "İlk kare · sağlayıcı URL"
+        - textbox "İlk kare · sağlayıcı URL" [ref=e50]
+      - LabelText
+        - StaticText "2.0 kalite gerekçesi"
+        - textbox "2.0 kalite gerekçesi" [ref=e51]
+      - LabelText
+        - StaticText "Görünüm oranı"
+        - combobox "Görünüm oranı" [expanded=false, ref=e52]: 9:16
+          - MenuListPopup
+            - option "9:16" [selected, ref=e137]
+            - option "16:9" [ref=e138]
+            - option "1:1" [ref=e139]
+      - LabelText
+        - StaticText "İzleyicinin temel sorusu"
+        - textbox "İzleyicinin temel sorusu" [ref=e53]
+      - LabelText
+        - StaticText "Korunacak yaratıcı niyet · kaynakta geçen ifadeler"
+        - textbox "Korunacak yaratıcı niyet · kaynakta geçen ifadeler" [ref=e54]
+      - LabelText
+        - StaticText "Önceki temel niyeti değiştiriyorsanız karar gerekçesi"
+        - textbox "Önceki temel niyeti değiştiriyorsanız karar gerekçesi" [ref=e55]
+      - button "Bu kaynak sürümünün son niyet bildirimlerini yükle" [ref=e21]
+      - group
+        - DisclosureTriangle "Kaynağa bağlı plan kanıtı · isteğe bağlı" [expanded=false]
+          - StaticText "Kaynağa bağlı plan kanıtı · isteğe bağlı"
+      - group
+        - DisclosureTriangle "Karakter ve referans dosyaları" [expanded=false]
+          - StaticText "Karakter ve referans dosyaları"
+      - button "Post-family incelemesini çalıştır" [ref=e22]
+      - paragraph
+        - strong
+          - StaticText "KARAR"
+        - LineBreak "\n"
+        - StaticText "Gerekli sonraki üretim/kanıt adımına geç"
+      - paragraph
+        - strong
+          - StaticText "İZLEME MEKANİZMASI"
+        - LineBreak "\n"
+        - StaticText "Tanışma ve birlikte keşiften ayrılık kaygısına geçiş, izleme deneyimini daha fazla fiziksel karmaşa gerektirmeden değiştiriyor."
+      - paragraph
+        - strong
+          - StaticText "AÇILIŞ"
+        - LineBreak "\n"
+        - StaticText "Yıldızlara bakan çocuğun dikkatini çeken ışın, kim geliyor sorusunu planlıyor; ilk kare tam mekanizmayı açıklamak zorunda değil."
+      - paragraph
+        - strong
+          - StaticText "İLERLEME"
+        - LineBreak "\n"
+        - StaticText "Tanışma ve birlikte keşiften ayrılık kaygısına geçiş, izleme deneyimini daha fazla fiziksel karmaşa gerektirmeden değiştiriyor."
+      - paragraph
+        - strong
+          - StaticText "FİNAL"
+        - LineBreak "\n"
+        - StaticText "Planlanan final: Planın masa taşı ve tanıdık ses dönüşü ayrılığı yeniden çerçeveliyor; gerçek ses/video karşılığı ayrıca doğrulanmalı."
+      - paragraph
+        - strong
+          - StaticText "TEMEL OLAY/KİMLİK/ANLAŞILABİLİRLİK"
+        - LineBreak "\n"
+        - StaticText "Gerçek video henüz incelenmedi"
+      - paragraph
+        - strong
+          - StaticText "TEKNİK KUSURLAR"
+        - LineBreak "\n"
+        - StaticText "Doğrulanmış kusur kanıtı yok"
+      - paragraph
+        - strong
+          - StaticText "KUSURUN ETKİSİ"
+        - LineBreak "\n"
+        - StaticText "Yalnız teknik temizlik yaratıcı değer kanıtı değildir"
+      - paragraph
+        - strong
+          - StaticText "EN KÜÇÜK MÜDAHALE"
+        - LineBreak "\n"
+        - StaticText "PROCEED_NEXT_EVIDENCE_STEP"
+      - paragraph
+        - strong
+          - StaticText "PERFORMANS"
+        - LineBreak "\n"
+        - StaticText "Kör inceleme tamamlanana kadar sonuç verisi ayrıdır; izlenme garantisi yok"
+      - article
+        - strong
+          - StaticText "Prompt / plan kalitesi"
+        - paragraph
+          - StaticText "HYPOTHESIS · PROCEED_NEXT_EVIDENCE_STEP"
+      - article
+        - strong
+          - StaticText "Jeneratör yürütme riski"
+        - paragraph
+          - StaticText "UNKNOWN"
+      - article
+        - strong
+          - StaticText "Gerçek render kalitesi"
+        - paragraph
+          - StaticText "Plan sadakati: UNKNOWN · Kullanılabilirlik: UNKNOWN"
+      - article
+        - strong
+          - StaticText "İzleyici / dağıtım sonucu"
+        - paragraph
+          - StaticText "Henüz ilişkilendirilmedi"
+      - link "Bu kayıt için PDF raporu" [ref=e23]
+      - group
+        - DisclosureTriangle "Ham plan, jeneratör ve yetkilendirme kanıtı" [expanded=false]
+          - StaticText "Ham plan, jeneratör ve yetkilendirme kanıtı"
+      - LabelText
+        - StaticText "İkinci görüş sağlayıcısı"
+        - combobox "İkinci görüş sağlayıcısı" [expanded=false, ref=e56]: DeepSeek · metin portu
+          - MenuListPopup
+            - option "DeepSeek · metin portu" [selected, ref=e140]
+            - option "OpenAI" [ref=e141]
+            - option "Claude" [ref=e142]
+            - option "Gemini" [ref=e143]
+      - LabelText
+        - StaticText "Yapılandırılmış eleştirmen modeli"
+        - textbox "Yapılandırılmış eleştirmen modeli" [ref=e57]
+      - button "İkinci görüşü çalıştır" [disabled, ref=e24]
+      - link "Bağlı incelemeyle mevcut render kuyruğunu aç" [ref=e25]
+      - group
+        - DisclosureTriangle "Kanıt ve belirsizlik" [expanded=false]
+          - StaticText "Kanıt ve belirsizlik"
+      - heading "Render öncesi temel niyet" [level=3, ref=e26]
+      - paragraph
+        - StaticText "Önem düzeyi bu kaynak sürümüne bağlanır. Değişince yeniden inceleyin; video sonucuna göre geriye dönük değiştirilmez."
+      - article
+        - paragraph
+          - StaticText "0–1.2 s · - HARD HOOK Luca looks through toy binoculars at stars. A beam sweeps across grass. WHOOSH - soft POP. Zipo drops gently into bush. Luca: \"WHAT WAS THAT?!\" Zipo pops up. Zipo: \"Blip?\""
+        - button "Temel olay" [ref=e58]
+        - button "Esnek tercih" [ref=e59]
+        - button "Görsel incelik" [ref=e60]
+      - article
+        - paragraph
+          - StaticText "1.2–5 s · Luca kneels. Luca: \"You're an alien!\" Zipo points to Luca: \"Blip blop?\" Luca: \"I'm Luca.\" Zipo taps chest: \"Zipo!\""
+        - button "Temel olay" [ref=e61]
+        - button "Esnek tercih" [ref=e62]
+        - button "Görsel incelik" [ref=e63]
+      - article
+        - paragraph
+          - StaticText "5–11 s · - EARTH TOUR Luca shows flower. Zipo sniffs too hard and sneezes. Luca shows ladybird. Zipo salutes it. Luca gives biscuit. Zipo scans it before eating. Luca: \"Welcome to Pompom Hills.\" Zipo: \"Blip blop!\""
+        - button "Temel olay" [ref=e64]
+        - button "Esnek tercih" [ref=e65]
+        - button "Görsel incelik" [ref=e66]
+      - article
+        - paragraph
+          - StaticText "11–17 s · - EMOTIONAL TURN Larger soft blue beam appears. Zipo's wrist light flashes. Zipo becomes sad. Luca: \"They found you?\" Zipo: \"Blip.\" Luca: \"I'll miss you.\""
+        - button "Temel olay" [ref=e67]
+        - button "Esnek tercih" [ref=e68]
+        - button "Görsel incelik" [ref=e69]
+      - article
+        - paragraph
+          - StaticText "17–22 s · They hug. Zipo floats upward. Luca waves."
+        - button "Temel olay" [ref=e70]
+        - button "Esnek tercih" [ref=e71]
+        - button "Görsel incelik" [ref=e72]
+      - article
+        - paragraph
+          - StaticText "22–25 s · - TWIST Luca enters room sadly. A small glowing stone sits on desk. It lights up. Zipo voice: \"Blip blop, Luca!\" Luca beams. CUT. No narration. No on-screen text."
+        - button "Temel olay" [ref=e73]
+        - button "Esnek tercih" [ref=e74]
+        - button "Görsel incelik" [ref=e75]
+      - group
+        - DisclosureTriangle "Kaynağa bağlı niyet ve yaratıcı yorum ayrıntıları" [expanded=false]
+          - StaticText "Kaynağa bağlı niyet ve yaratıcı yorum ayrıntıları"
+      - heading "En küçük düzeltme" [level=3, ref=e27]
+      - LabelText
+        - StaticText "Değiştirilecek kaynak ifadesi"
+        - textbox "Değiştirilecek kaynak ifadesi" [ref=e76]
+      - LabelText
+        - StaticText "Yeni ifade"
+        - textbox "Yeni ifade" [ref=e77]
+      - button "Tek yama + son prompt doğrulaması" [disabled, ref=e28]
+      - LabelText
+        - StaticText "Son üretim prompt’u"
+        - textbox "Son üretim prompt’u" [ref=e78]: Create a premium 22-25 second vertical 9:16 Pompom Hills Instagram Reel.
+
+MAIN CHARACTER:
+LUCA - official reference exactly.
+
+GUEST:
+ZIPO - original tiny friendly alien: soft mint-green skin, one large central eye, two small antennae, tiny rounded body, glowing blue wrist light. Cute, non-scary, no franchise resemblance.
+
+SETTING:
+Pompom Hills garden at night.
+
+0.0-1.2 SEC - HARD HOOK
+Luca looks through toy binoculars at stars.
+A beam sweeps across grass.
+WHOOSH - soft POP.
+Zipo drops gently into bush.
+Luca: "WHAT WAS THAT?!"
+Zipo pops up.
+Zipo: "Blip?"
+
+1.2-5.0 SEC
+Luca kneels.
+Luca: "You're an alien!"
+Zipo points to Luca: "Blip blop?"
+Luca: "I'm Luca."
+Zipo taps chest: "Zipo!"
+
+5.0-11.0 SEC - EARTH TOUR
+Luca shows flower. Zipo sniffs too hard and sneezes.
+Luca shows ladybird. Zipo salutes it.
+Luca gives biscuit. Zipo scans it before eating.
+Luca: "Welcome to Pompom Hills."
+Zipo: "Blip blop!"
+
+11.0-17.0 SEC - EMOTIONAL TURN
+Larger soft blue beam appears. Zipo's wrist light flashes.
+Zipo becomes sad.
+Luca: "They found you?"
+Zipo: "Blip."
+Luca: "I'll miss you."
+
+17.0-22.0 SEC
+They hug. Zipo floats upward. Luca waves.
+
+22.0-25.0 SEC - TWIST
+Luca enters room sadly.
+A small glowing stone sits on desk.
+It lights up.
+Zipo voice: "Blip blop, Luca!"
+Luca beams.
+CUT.
+
+No narration. No on-screen text.
+
+          - generic
+            - StaticText "Create a premium 22-25 second vertical 9:16 Pompom Hills Instagram Reel."
+            - LineBreak "\n"
+            - LineBreak "\n"
+            - StaticText "MAIN CHARACTER:"
+            - LineBreak "\n"
+            - StaticText "LUCA - official reference exactly."
+            - LineBreak "\n"
+            - LineBreak "\n"
+            - StaticText "GUEST:"
+            - LineBreak "\n"
+            - StaticText "ZIPO - original tiny friendly alien: soft mint-green skin, one large central eye, two small antennae, tiny rounded body, glowing blue wrist light. Cute, non-scary, no franchise resemblance."
+            - LineBreak "\n"
+            - LineBreak "\n"
+            - StaticText "SETTING:"
+            - LineBreak "\n"
+            - StaticText "Pompom Hills garden at night."
+            - LineBreak "\n"
+            - LineBreak "\n"
+            - StaticText "0.0-1.2 SEC - HARD HOOK"
+            - LineBreak "\n"
+            - StaticText "Luca looks through toy binoculars at stars."
+            - LineBreak "\n"
+            - StaticText "A beam sweeps across grass."
+            - LineBreak "\n"
+            - StaticText "WHOOSH - soft POP."
+            - LineBreak "\n"
+            - StaticText "Zipo drops gently into bush."
+            - LineBreak "\n"
+            - StaticText "Luca: \"WHAT WAS THAT?!\""
+            - LineBreak "\n"
+            - StaticText "Zipo pops up."
+            - LineBreak "\n"
+            - StaticText "Zipo: \"Blip?\""
+            - LineBreak "\n"
+            - LineBreak "\n"
+            - StaticText "1.2-5.0 SEC"
+            - LineBreak "\n"
+            - StaticText "Luca kneels."
+            - LineBreak "\n"
+            - StaticText "Luca: \"You're an alien!\""
+            - LineBreak "\n"
+            - StaticText "Zipo points to Luca: \"Blip blop?\""
+            - LineBreak "\n"
+            - StaticText "Luca: \"I'm Luca.\""
+            - LineBreak "\n"
+            - StaticText "Zipo taps chest: \"Zipo!\""
+            - LineBreak "\n"
+            - LineBreak "\n"
+            - StaticText "5.0-11.0 SEC - EARTH TOUR"
+            - LineBreak "\n"
+            - StaticText "Luca shows flower. Zipo sniffs too hard and sneezes."
+            - LineBreak "\n"
+            - StaticText "Luca shows ladybird. Zipo salutes it."
+            - LineBreak "\n"
+            - StaticText "Luca gives biscuit. Zipo scans it before eating."
+            - LineBreak "\n"
+            - StaticText "Luca: \"Welcome to Pompom Hills.\""
+            - LineBreak "\n"
+            - StaticText "Zipo: \"Blip blop!\""
+            - LineBreak "\n"
+            - LineBreak "\n"
+            - StaticText "11.0-17.0 SEC - EMOTIONAL TURN"
+            - LineBreak "\n"
+            - StaticText "Larger soft blue beam appears. Zipo's wrist light flashes."
+            - LineBreak "\n"
+            - StaticText "Zipo becomes sad."
+            - LineBreak "\n"
+            - StaticText "Luca: \"They found you?\""
+            - LineBreak "\n"
+            - StaticText "Zipo: \"Blip.\""
+            - LineBreak "\n"
+            - StaticText "Luca: \"I'll miss you.\""
+            - LineBreak "\n"
+            - LineBreak "\n"
+            - StaticText "17.0-22.0 SEC"
+            - LineBreak "\n"
+            - StaticText "They hug. Zipo floats upward. Luca waves."
+            - LineBreak "\n"
+            - LineBreak "\n"
+            - StaticText "22.0-25.0 SEC - TWIST"
+            - LineBreak "\n"
+            - StaticText "Luca enters room sadly."
+            - LineBreak "\n"
+            - StaticText "A small glowing stone sits on desk."
+            - LineBreak "\n"
+            - StaticText "It lights up."
+            - LineBreak "\n"
+            - StaticText "Zipo voice: \"Blip blop, Luca!\""
+            - LineBreak "\n"
+            - StaticText "Luca beams."
+            - LineBreak "\n"
+            - StaticText "CUT."
+            - LineBreak "\n"
+            - LineBreak "\n"
+            - StaticText "No narration. No on-screen text."
+            - LineBreak "\n"
+      - button "Kopyala" [ref=e29]
+      - button "Editöre aktar ve sürüm kaydet" [ref=e30]
+      - button "Manuel render paketi indir" [ref=e31]
+      - paragraph
+        - StaticText "Manuel paket render yetkisi veya kredi harcama onayı değildir. Son video mevcut kanonik kabul akışından geçer."
+      - heading "Gerçek render QA" [level=3, ref=e32]
+      - LabelText
+        - StaticText "Dönen videonun yerel medya yolu"
+        - textbox "Dönen videonun yerel medya yolu" [ref=e79]
+      - paragraph
+        - StaticText "Gerçek klibi açıp her planlanan zaman aralığını inceleyin. Seyrek kareler hareket/temas/loop kanıtı değildir."
+      - article
+        - strong
+          - StaticText "0–1.2 s"
+        - paragraph
+          - StaticText "- HARD HOOK Luca looks through toy binoculars at stars. A beam sweeps across grass. WHOOSH - soft POP. Zipo drops gently into bush. Luca: \"WHAT WAS THAT?!\" Zipo pops up. Zipo: \"Blip?\""
+        - LabelText
+          - StaticText "Gerçekte gözlenen başlangıç (s)"
+          - spinbutton "Gerçekte gözlenen başlangıç (s)" [ref=e102]
+        - LabelText
+          - StaticText "Gerçekte gözlenen son (s)"
+          - spinbutton "Gerçekte gözlenen son (s)" [ref=e103]
+        - combobox [expanded=false, ref=e80]
+          - MenuListPopup
+            - option "Kanıt yetersiz" [ref=e144]
+            - option "Gözlendi" [ref=e145]
+            - option "Eksik / çöktü" [ref=e146]
+      - article
+        - strong
+          - StaticText "1.2–5 s"
+        - paragraph
+          - StaticText "Luca kneels. Luca: \"You're an alien!\" Zipo points to Luca: \"Blip blop?\" Luca: \"I'm Luca.\" Zipo taps chest: \"Zipo!\""
+        - LabelText
+          - StaticText "Gerçekte gözlenen başlangıç (s)"
+          - spinbutton "Gerçekte gözlenen başlangıç (s)" [ref=e104]
+        - LabelText
+          - StaticText "Gerçekte gözlenen son (s)"
+          - spinbutton "Gerçekte gözlenen son (s)" [ref=e105]
+        - combobox [expanded=false, ref=e81]
+          - MenuListPopup
+            - option "Kanıt yetersiz" [ref=e147]
+            - option "Gözlendi" [ref=e148]
+            - option "Eksik / çöktü" [ref=e149]
+      - article
+        - strong
+          - StaticText "5–11 s"
+        - paragraph
+          - StaticText "- EARTH TOUR Luca shows flower. Zipo sniffs too hard and sneezes. Luca shows ladybird. Zipo salutes it. Luca gives biscuit. Zipo scans it before eating. Luca: \"Welcome to Pompom Hills.\" Zipo: \"Blip blop!\""
+        - LabelText
+          - StaticText "Gerçekte gözlenen başlangıç (s)"
+          - spinbutton "Gerçekte gözlenen başlangıç (s)" [ref=e106]
+        - LabelText
+          - StaticText "Gerçekte gözlenen son (s)"
+          - spinbutton "Gerçekte gözlenen son (s)" [ref=e107]
+        - combobox [expanded=false, ref=e82]
+          - MenuListPopup
+            - option "Kanıt yetersiz" [ref=e150]
+            - option "Gözlendi" [ref=e151]
+            - option "Eksik / çöktü" [ref=e152]
+      - article
+        - strong
+          - StaticText "11–17 s"
+        - paragraph
+          - StaticText "- EMOTIONAL TURN Larger soft blue beam appears. Zipo's wrist light flashes. Zipo becomes sad. Luca: \"They found you?\" Zipo: \"Blip.\" Luca: \"I'll miss you.\""
+        - LabelText
+          - StaticText "Gerçekte gözlenen başlangıç (s)"
+          - spinbutton "Gerçekte gözlenen başlangıç (s)" [ref=e108]
+        - LabelText
+          - StaticText "Gerçekte gözlenen son (s)"
+          - spinbutton "Gerçekte gözlenen son (s)" [ref=e109]
+        - combobox [expanded=false, ref=e83]
+          - MenuListPopup
+            - option "Kanıt yetersiz" [ref=e153]
+            - option "Gözlendi" [ref=e154]
+            - option "Eksik / çöktü" [ref=e155]
+      - article
+        - strong
+          - StaticText "17–22 s"
+        - paragraph
+          - StaticText "They hug. Zipo floats upward. Luca waves."
+        - LabelText
+          - StaticText "Gerçekte gözlenen başlangıç (s)"
+          - spinbutton "Gerçekte gözlenen başlangıç (s)" [ref=e110]
+        - LabelText
+          - StaticText "Gerçekte gözlenen son (s)"
+          - spinbutton "Gerçekte gözlenen son (s)" [ref=e111]
+        - combobox [expanded=false, ref=e84]
+          - MenuListPopup
+            - option "Kanıt yetersiz" [ref=e156]
+            - option "Gözlendi" [ref=e157]
+            - option "Eksik / çöktü" [ref=e158]
+      - article
+        - strong
+          - StaticText "22–25 s"
+        - paragraph
+          - StaticText "- TWIST Luca enters room sadly. A small glowing stone sits on desk. It lights up. Zipo voice: \"Blip blop, Luca!\" Luca beams. CUT. No narration. No on-screen text."
+        - LabelText
+          - StaticText "Gerçekte gözlenen başlangıç (s)"
+          - spinbutton "Gerçekte gözlenen başlangıç (s)" [ref=e112]
+        - LabelText
+          - StaticText "Gerçekte gözlenen son (s)"
+          - spinbutton "Gerçekte gözlenen son (s)" [ref=e113]
+        - combobox [expanded=false, ref=e85]
+          - MenuListPopup
+            - option "Kanıt yetersiz" [ref=e159]
+            - option "Gözlendi" [ref=e160]
+            - option "Eksik / çöktü" [ref=e161]
+      - LabelText
+        - StaticText "İncelenen aralık başlangıcı (s)"
+        - spinbutton "İncelenen aralık başlangıcı (s)" [ref=e86]: 0
+          - StaticText "0"
+      - LabelText
+        - StaticText "İncelenen aralık sonu (s)"
+        - spinbutton "İncelenen aralık sonu (s)" [ref=e87]
+      - article
+        - strong
+          - StaticText "Temel olayın okunabilirliği"
+        - combobox [expanded=false, ref=e88]
+          - MenuListPopup
+            - option "Kanıt yetersiz" [ref=e162]
+            - option "ADEQUATE" [ref=e163]
+            - option "UNREADABLE" [ref=e164]
+        - LabelText
+          - StaticText "Bu aralıkta gerçekten gözlenen şey"
+          - textbox "Bu aralıkta gerçekten gözlenen şey" [ref=e114]
+      - article
+        - strong
+          - StaticText "Kimlik"
+        - combobox [expanded=false, ref=e89]
+          - MenuListPopup
+            - option "Kanıt yetersiz" [ref=e165]
+            - option "RECOGNIZABLE" [ref=e166]
+            - option "UNRECOGNIZABLE" [ref=e167]
+        - LabelText
+          - StaticText "Bu aralıkta gerçekten gözlenen şey"
+          - textbox "Bu aralıkta gerçekten gözlenen şey" [ref=e115]
+      - article
+        - strong
+          - StaticText "Çocukla paylaşım için içerik güvenliği"
+        - combobox [expanded=false, ref=e90]
+          - MenuListPopup
+            - option "Kanıt yetersiz" [ref=e168]
+            - option "APPROPRIATE" [ref=e169]
+            - option "UNSAFE" [ref=e170]
+        - LabelText
+          - StaticText "Bu aralıkta gerçekten gözlenen şey"
+          - textbox "Bu aralıkta gerçekten gözlenen şey" [ref=e116]
+      - article
+        - strong
+          - StaticText "Bütün olarak anlaşılabilirlik"
+        - combobox [expanded=false, ref=e91]
+          - MenuListPopup
+            - option "Kanıt yetersiz" [ref=e171]
+            - option "ADEQUATE" [ref=e172]
+            - option "DESTROYED" [ref=e173]
+        - LabelText
+          - StaticText "Bu aralıkta gerçekten gözlenen şey"
+          - textbox "Bu aralıkta gerçekten gözlenen şey" [ref=e117]
+      - article
+        - strong
+          - StaticText "İzleme deneyiminin gelişimi"
+        - combobox [expanded=false, ref=e92]
+          - MenuListPopup
+            - option "Kanıt yetersiz" [ref=e174]
+            - option "DEVELOPING" [ref=e175]
+            - option "PURPOSEFUL_REPETITION" [ref=e176]
+            - option "WEAK" [ref=e177]
+        - LabelText
+          - StaticText "Bu aralıkta gerçekten gözlenen şey"
+          - textbox "Bu aralıkta gerçekten gözlenen şey" [ref=e118]
+      - article
+        - strong
+          - StaticText "Gerçek açılış"
+        - combobox [expanded=false, ref=e93]
+          - MenuListPopup
+            - option "Kanıt yetersiz" [ref=e178]
+            - option "READABLE_EARLY_DEVELOPMENT" [ref=e179]
+            - option "READABLE_PROMISE" [ref=e180]
+            - option "UNREADABLE" [ref=e181]
+            - option "EXCESSIVELY_DELAYED" [ref=e182]
+        - LabelText
+          - StaticText "Bu aralıkta gerçekten gözlenen şey"
+          - textbox "Bu aralıkta gerçekten gözlenen şey" [ref=e119]
+      - article
+        - strong
+          - StaticText "Gerçek final"
+        - combobox [expanded=false, ref=e94]
+          - MenuListPopup
+            - option "Kanıt yetersiz" [ref=e183]
+            - option "DELIVERS_PROMISE" [ref=e184]
+            - option "PURPOSEFUL_UNRESOLVED" [ref=e185]
+            - option "ARBITRARY_TRUNCATION" [ref=e186]
+            - option "WEAK" [ref=e187]
+        - LabelText
+          - StaticText "Bu aralıkta gerçekten gözlenen şey"
+          - textbox "Bu aralıkta gerçekten gözlenen şey" [ref=e120]
+      - group
+        - DisclosureTriangle "Aralığa bağlı kusur ve müdahale kanıtı" [expanded=false]
+          - StaticText "Aralığa bağlı kusur ve müdahale kanıtı"
+      - checkbox "Bu aralıkları gerçek klipte inceleyip gözlemleri onayladım" [checked=false, ref=e33]
+      - checkbox "Bu gerçek videodan çıkarılan kareleri inceledim; yalnız durağan görünüm/poz bulguları için kanıt" [checked=false, ref=e34]
+      - button "Deterministik analiz + plan karşılaştırması" [disabled, ref=e35]
+      - heading "Yayın ve ölçüm ilişkisi" [level=3, ref=e36]
+      - paragraph
+        - StaticText "Prompt → referanslar → render ayarları → gerçek video → edit varyantı → yayın ID → immutable ölçüm ayrı tutulur."
+      - LabelText
+        - StaticText "Platform"
+        - combobox "Platform" [expanded=false, ref=e95]: INSTAGRAM
+          - MenuListPopup
+            - option "INSTAGRAM" [selected, ref=e188]
+            - option "FACEBOOK" [ref=e189]
+            - option "YOUTUBE" [ref=e190]
+      - LabelText
+        - StaticText "Yayın ID (metin)"
+        - textbox "Yayın ID (metin)" [ref=e96]
+      - LabelText
+        - StaticText "Edit varyant ID (varsa)"
+        - textbox "Edit varyant ID (varsa)" [ref=e97]
+      - LabelText
+        - StaticText "Eşleştirme kanıtı"
+        - textbox "Eşleştirme kanıtı" [ref=e98]
+      - button "Manuel ilişkiyi kaydet" [disabled, ref=e37]
+      - link "CSV/XLSX dosyasını mevcut import ekranında incele ve eşleştir" [ref=e38]
+      - group
+        - DisclosureTriangle "Kaynaklı ölçüm kaydı ve karşılaştırma" [expanded=false]
+          - StaticText "Kaynaklı ölçüm kaydı ve karşılaştırma"
+      - group
+        - DisclosureTriangle "İnsan incelemesine açık ders / deney kaydı" [expanded=false]
+          - StaticText "İnsan incelemesine açık ders / deney kaydı"
+    - generic
+      - StaticText "PROMPT DETAIL"
+      - heading "Workflow example B · 08_luca_and_zipo" [level=2, ref=e39]
+      - link "Back to folders" [ref=e40]
+      - LabelText
+        - StaticText "Content title"
+        - textbox "Content title" [ref=e99]: Workflow example B · 08_luca_and_zipo
+          - StaticText "Workflow example B · 08_luca_and_zipo"
+      - LabelText
+        - StaticText "Type"
+        - combobox "Type" [expanded=false, ref=e100]: Reel
+          - MenuListPopup
+            - option "Short" [ref=e191]
+            - option "Reel" [selected, ref=e192]
+            - option "Episode" [ref=e193]
+      - button "Create workspace version" [ref=e41]
+      - button "Save revision" [ref=e42]
+      - StaticText "Linked workspace prompt: validation uses the immutable stored version and can produce render evidence."
+      - region "Prompt source editor" [ref=e43]
+        - StaticText "PROMPT SOURCE"
+        - strong
+          - StaticText "Editable prompt"
+        - StaticText "Markdown · 1313 characters"
+        - code
+          - generic
+            - textbox "Editor content" [ref=e194]
+      - StaticText "1313 characters"
+      - button "Analyze prompt" [ref=e101]
+    - generic
+      - strong
+        - StaticText "Error:"
+      - StaticText " Prompt workspace root must be inside the configured data root"
+  - generic
+    - alert
+    - alert

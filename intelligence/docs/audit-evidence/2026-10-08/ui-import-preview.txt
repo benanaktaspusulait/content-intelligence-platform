@@ -1,0 +1,217 @@
+- complementary
+  - link "Pompom Creative Intelligence home" [ref=e1]
+    - strong
+      - StaticText "Pompom"
+    - StaticText "CREATIVE INTELLIGENCE"
+  - StaticText "WORKSPACE"
+  - navigation "Primary navigation" [ref=e2]
+    - link "Overview" [ref=e3]
+      - StaticText "Overview"
+    - link "Video Library" [ref=e4]
+      - StaticText "Video Library"
+    - link "Characters" [ref=e5]
+      - StaticText "Characters"
+    - link "Prompt Quality" [ref=e6]
+      - StaticText "Prompt Quality"
+    - link "Rule Governance" [ref=e7]
+      - StaticText "Rule Governance"
+    - link "Experiments" [ref=e8]
+      - StaticText "Experiments"
+    - link "Test Planner" [ref=e9]
+      - StaticText "Test Planner"
+    - link "Predictions" [ref=e10]
+      - StaticText "Predictions"
+    - link "Performance" [ref=e11]
+      - StaticText "Performance"
+    - link "Import Data" [ref=e12]
+      - StaticText "Import Data"
+    - link "Model Reliability" [ref=e13]
+      - StaticText "Model Reliability"
+    - link "Reach Further" [ref=e14]
+      - StaticText "Reach Further"
+    - link "Meta Analytics" [ref=e15]
+      - StaticText "Meta Analytics"
+    - link "Model Versions" [ref=e16]
+      - StaticText "Model Versions"
+    - link "Operations" [ref=e17]
+      - StaticText "Operations"
+  - sectionfooter
+    - strong
+      - StaticText "Local workspace"
+    - StaticText "Persisted evidence only"
+- main
+  - sectionheader
+    - StaticText "DATA INTAKE"
+    - heading "Import Data" [level=1, ref=e18]
+    - paragraph
+      - StaticText "Validate platform exports before they enter the evidence store."
+    - StaticText "STEP 2 OF 3"
+  - list "Import progress"
+    - listitem [level=1]
+      - StaticText "1"
+      - strong
+        - StaticText "Source"
+      - StaticText "Selected"
+    - listitem [level=1]
+      - StaticText "2"
+      - strong
+        - StaticText "Map fields"
+      - StaticText "Review schema"
+    - listitem [level=1]
+      - StaticText "3"
+      - strong
+        - StaticText "Commit"
+      - StaticText "Confirm import"
+  - generic
+    - StaticText "SOURCE FILE"
+    - heading "Platform export" [level=2, ref=e19]
+    - StaticText "CSV"
+    - LabelText [ref=e20] clickable [cursor:pointer]
+      - button "known_observations.csv 1 rows staged Browse files" [ref=e24]: known_observations.csv
+      - strong
+        - StaticText "known_observations.csv"
+      - StaticText "1 rows staged"
+      - StaticText "Browse files"
+    - DescriptionList
+      - term "Platform"
+      - definition
+        - combobox [expanded=false, ref=e26]: Instagram
+          - MenuListPopup
+            - option "Instagram" [selected, ref=e64]
+            - option "Facebook" [ref=e65]
+            - option "TikTok" [ref=e66]
+            - option "YouTube" [ref=e67]
+      - term "Matched rows"
+      - definition
+        - StaticText "0"
+      - term "Storage"
+      - definition
+        - StaticText "Raw + normalized"
+  - complementary
+    - StaticText "VALIDATION"
+    - heading "1 unresolved rows" [level=2, ref=e21]
+    - paragraph
+      - StaticText "Only exact video IDs or unique filenames are accepted."
+    - StaticText "0% row coverage"
+    - list
+      - listitem [level=1]
+        - StaticText "✓"
+        - StaticText "16 fields detected"
+      - listitem [level=1]
+        - StaticText "✓"
+        - StaticText "0 exact matches"
+      - listitem [level=1]
+        - StaticText "!"
+        - StaticText "1 rows need review"
+  - generic
+    - StaticText "DETECTED SCHEMA"
+    - heading "Backend field interpretation" [level=2, ref=e22]
+    - StaticText "Read-only preview"
+    - paragraph
+      - StaticText "The import service uses the source column names and keeps the original payload. These interpretations are informational; no client-side mapping is silently applied."
+    - table
+      - rowgroup
+        - row
+          - columnheader "SOURCE FIELD" [ref=e59]
+          - columnheader "BACKEND INTERPRETATION" [ref=e60]
+      - row
+        - cell "video_id" [ref=e27]
+          - strong
+            - StaticText "video_id"
+        - cell "Canonical video match key" [ref=e28]
+      - row
+        - cell "platform" [ref=e29]
+          - strong
+            - StaticText "platform"
+        - cell "Raw payload retained; no recognized interpretation" [ref=e30]
+      - row
+        - cell "published_at" [ref=e31]
+          - strong
+            - StaticText "published_at"
+        - cell "Publication timestamp" [ref=e32]
+      - row
+        - cell "views" [ref=e33]
+          - strong
+            - StaticText "views"
+        - cell "Views metric" [ref=e34]
+      - row
+        - cell "reach" [ref=e35]
+          - strong
+            - StaticText "reach"
+        - cell "Reach metric" [ref=e36]
+      - row
+        - cell "average_watch_seconds" [ref=e37]
+          - strong
+            - StaticText "average_watch_seconds"
+        - cell "Raw payload retained; no recognized interpretation" [ref=e38]
+      - row
+        - cell "three_second_views" [ref=e39]
+          - strong
+            - StaticText "three_second_views"
+        - cell "Views metric" [ref=e40]
+      - row
+        - cell "fifteen_second_views" [ref=e41]
+          - strong
+            - StaticText "fifteen_second_views"
+        - cell "Views metric" [ref=e42]
+      - row
+        - cell "likes" [ref=e43]
+          - strong
+            - StaticText "likes"
+        - cell "Raw payload retained; no recognized interpretation" [ref=e44]
+      - row
+        - cell "comments" [ref=e45]
+          - strong
+            - StaticText "comments"
+        - cell "Raw payload retained; no recognized interpretation" [ref=e46]
+      - row
+        - cell "shares" [ref=e47]
+          - strong
+            - StaticText "shares"
+        - cell "Raw payload retained; no recognized interpretation" [ref=e48]
+      - row
+        - cell "saves" [ref=e49]
+          - strong
+            - StaticText "saves"
+        - cell "Raw payload retained; no recognized interpretation" [ref=e50]
+      - row
+        - cell "follows" [ref=e51]
+          - strong
+            - StaticText "follows"
+        - cell "Raw payload retained; no recognized interpretation" [ref=e52]
+      - row
+        - cell "country_distribution_json" [ref=e53]
+          - strong
+            - StaticText "country_distribution_json"
+        - cell "Raw payload retained; no recognized interpretation" [ref=e54]
+      - row
+        - cell "source_note" [ref=e55]
+          - strong
+            - StaticText "source_note"
+        - cell "Raw payload retained; no recognized interpretation" [ref=e56]
+      - row
+        - cell "is_approximate" [ref=e57]
+          - strong
+            - StaticText "is_approximate"
+        - cell "Raw payload retained; no recognized interpretation" [ref=e58]
+    - StaticText "MATCH REVIEW"
+    - heading "Resolve unmatched rows" [level=2, ref=e23]
+    - StaticText "1 unresolved"
+    - table
+      - rowgroup
+        - row
+          - columnheader "SOURCE ROW" [ref=e68]
+          - columnheader "SOURCE IDENTITY" [ref=e69]
+          - columnheader "MATCH TO CANONICAL VIDEO" [ref=e70]
+      - row
+        - cell "2" [ref=e61]
+        - cell "4b5d0cfc9b928821" [ref=e62]
+        - cell "Select video…" [ref=e63]
+          - combobox "Resolve source row 2" [expanded=false, ref=e71]: Select video…
+            - MenuListPopup
+              - option "Select video…" [selected, ref=e72]
+    - sectionfooter
+      - strong
+        - StaticText "0 of 1 rows matched"
+      - StaticText "Raw source remains append-only; blank metrics stay null."
+      - button "Commit import" [disabled, ref=e25]

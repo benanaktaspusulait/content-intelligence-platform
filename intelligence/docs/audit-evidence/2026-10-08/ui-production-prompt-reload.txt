@@ -1,0 +1,98 @@
+- generic
+  - complementary
+    - link "Pompom Creative Intelligence home" [ref=e1]
+      - strong
+        - StaticText "Pompom"
+      - StaticText "CREATIVE INTELLIGENCE"
+    - StaticText "WORKSPACE"
+    - navigation "Primary navigation" [ref=e2]
+      - link "Overview" [ref=e4]
+        - StaticText "Overview"
+      - link "Video Library" [ref=e5]
+        - StaticText "Video Library"
+      - link "Characters" [ref=e6]
+        - StaticText "Characters"
+      - link "Prompt Quality" [ref=e7]
+        - StaticText "Prompt Quality"
+      - link "Rule Governance" [ref=e8]
+        - StaticText "Rule Governance"
+      - link "Experiments" [ref=e9]
+        - StaticText "Experiments"
+      - link "Test Planner" [ref=e10]
+        - StaticText "Test Planner"
+      - link "Predictions" [ref=e11]
+        - StaticText "Predictions"
+      - link "Performance" [ref=e12]
+        - StaticText "Performance"
+      - link "Import Data" [ref=e13]
+        - StaticText "Import Data"
+      - link "Model Reliability" [ref=e14]
+        - StaticText "Model Reliability"
+      - link "Reach Further" [ref=e15]
+        - StaticText "Reach Further"
+      - link "Meta Analytics" [ref=e16]
+        - StaticText "Meta Analytics"
+      - link "Model Versions" [ref=e17]
+        - StaticText "Model Versions"
+      - link "Operations" [ref=e18]
+        - StaticText "Operations"
+    - sectionfooter
+      - strong
+        - StaticText "Local workspace"
+      - StaticText "Persisted evidence only"
+  - main
+    - heading "🎯 Pompom Creative Quality Engine" [level=1, ref=e3]
+    - paragraph
+      - StaticText "Exploratory prompt analysis. This screen does not authorize a render."
+    - generic
+      - StaticText "PROMPT DETAIL"
+      - heading "absurd-2" [level=2, ref=e19]
+      - paragraph
+        - StaticText "library/POMPOM_HILLS_PRODUCTION/09_SOCIAL_REELS/new14092026/absurd-2"
+      - link "Back to folders" [ref=e20]
+      - LabelText
+        - StaticText "Content title"
+        - textbox "Content title" [ref=e24]: 02 Buyuyen Top
+          - StaticText "02 Buyuyen Top"
+      - LabelText
+        - StaticText "Type"
+        - combobox "Type" [expanded=false, ref=e25]: Reel
+          - MenuListPopup
+            - option "Short" [ref=e27]
+            - option "Reel" [selected, ref=e28]
+            - option "Episode" [ref=e29]
+      - button "Create workspace version" [ref=e21]
+      - button "Save revision" [disabled, ref=e22]
+      - StaticText "Draft mode: create a workspace version before render authorization."
+      - region "Prompt source editor" [ref=e23]
+        - StaticText "PROMPT SOURCE"
+        - strong
+          - StaticText "Editable prompt"
+        - StaticText "Markdown · 7542 characters"
+        - code
+          - generic
+            - textbox "Editor content" [ref=e30]: # Kiko vs The Growing Ball — FINAL PRODUCTION PROMPT
+## OpenArt / Seedance 2.0 Mini
+
+Create a very fast, high-retention 15-second vertical Pompom Hills **Absurd Moments** short.
+
+This prompt is built around **Predictable Rule + Unpredictable Escalation**. The viewer must understand the impossible rule almost immediately, while the visible consequence becomes larger, stronger, longer, denser, or more spatially dominant without introducing a second magic rule.
+
+
+              - generic
+                - StaticText "# Kiko vs The Growing Ball — FINAL PRODUCTION PROMPT"
+                - LineBreak "\n"
+                - StaticText "## OpenArt / Seedance 2.0 Mini"
+                - LineBreak "\n"
+                - LineBreak "\n"
+                - StaticText "Create a very fast, high-retention 15-second vertical Pompom Hills **Absurd Moments** short."
+                - LineBreak "\n"
+                - LineBreak "\n"
+                - StaticText "This prompt is built around **Predictable Rule + Unpredictable Escalation**. The viewer must understand the impossible rule almost immediately, while the visible consequence becomes larger, stronger, longer, denser, or more spatially dominant without introducing a second magic rule."
+                - LineBreak "\n"
+                - LineBreak "\n"
+      - StaticText "7542 characters"
+      - button "Analyze prompt" [ref=e26]
+  - generic
+    - alert
+    - alert

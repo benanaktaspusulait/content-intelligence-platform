@@ -1,0 +1,352 @@
+{
+  "scope": "synthetic stateless calls; source inspected to establish no training/paid side effects",
+  "probes": [
+    {
+      "endpoint": "/v1/training/train",
+      "request": {
+        "contractVersion": "v1",
+        "platform": "instagram",
+        "datasetVersion": "audit-synthetic-30",
+        "rows": [
+          {},
+          {},
+          {},
+          {},
+          {},
+          {},
+          {},
+          {},
+          {},
+          {},
+          {},
+          {},
+          {},
+          {},
+          {},
+          {},
+          {},
+          {},
+          {},
+          {},
+          {},
+          {},
+          {},
+          {},
+          {},
+          {},
+          {},
+          {},
+          {},
+          {}
+        ]
+      },
+      "status": 200,
+      "response": {
+        "status": "CHALLENGER_CREATED",
+        "datasetVersion": "audit-synthetic-30",
+        "rowCount": 30
+      }
+    },
+    {
+      "endpoint": "/v1/prediction/prepublish",
+      "request": {
+        "contractVersion": "v1",
+        "platform": "instagram",
+        "fingerprint": {},
+        "knowledgeCutoff": "2026-10-08T18:00:00Z"
+      },
+      "status": 200,
+      "response": {
+        "contractVersion": "v1",
+        "modelVersion": "cold-start-baseline-v1",
+        "datasetVersion": "instagram-no-observed-training-data",
+        "featureVersion": "creative-fingerprint-v1",
+        "confidence": "LOW",
+        "comparableSampleSize": 0,
+        "payload": {
+          "platform": "instagram",
+          "targets": [
+            {
+              "horizonMinutes": 30,
+              "metric": "views",
+              "expectedValue": null,
+              "interval50": [
+                null,
+                null
+              ],
+              "interval80": [
+                null,
+                null
+              ],
+              "bandProbabilities": {
+                "LOW": 0.166667,
+                "PARTIAL": 0.166667,
+                "MEANINGFUL_EXPANSION": 0.166667,
+                "STRONG": 0.166667,
+                "PERSISTENT": 0.166667,
+                "BREAKOUT": 0.166667
+              },
+              "trajectoryProbabilities": {
+                "EARLY_STALL": 0.142857,
+                "SLOW_GROWTH": 0.142857,
+                "FAST_START_STALL": 0.142857,
+                "SECOND_WAVE": 0.142857,
+                "MULTI_WAVE": 0.142857,
+                "PERSISTENT_GROWTH": 0.142857,
+                "LATE_BREAKOUT": 0.142857
+              }
+            },
+            {
+              "horizonMinutes": 60,
+              "metric": "views",
+              "expectedValue": null,
+              "interval50": [
+                null,
+                null
+              ],
+              "interval80": [
+                null,
+                null
+              ],
+              "bandProbabilities": {
+                "LOW": 0.166667,
+                "PARTIAL": 0.166667,
+                "MEANINGFUL_EXPANSION": 0.166667,
+                "STRONG": 0.166667,
+                "PERSISTENT": 0.166667,
+                "BREAKOUT": 0.166667
+              },
+              "trajectoryProbabilities": {
+                "EARLY_STALL": 0.142857,
+                "SLOW_GROWTH": 0.142857,
+                "FAST_START_STALL": 0.142857,
+                "SECOND_WAVE": 0.142857,
+                "MULTI_WAVE": 0.142857,
+                "PERSISTENT_GROWTH": 0.142857,
+                "LATE_BREAKOUT": 0.142857
+              }
+            },
+            {
+              "horizonMinutes": 120,
+              "metric": "views",
+              "expectedValue": null,
+              "interval50": [
+                null,
+                null
+              ],
+              "interval80": [
+                null,
+                null
+              ],
+              "bandProbabilities": {
+                "LOW": 0.166667,
+                "PARTIAL": 0.166667,
+                "MEANINGFUL_EXPANSION": 0.166667,
+                "STRONG": 0.166667,
+                "PERSISTENT": 0.166667,
+                "BREAKOUT": 0.166667
+              },
+              "trajectoryProbabilities": {
+                "EARLY_STALL": 0.142857,
+                "SLOW_GROWTH": 0.142857,
+                "FAST_START_STALL": 0.142857,
+                "SECOND_WAVE": 0.142857,
+                "MULTI_WAVE": 0.142857,
+                "PERSISTENT_GROWTH": 0.142857,
+                "LATE_BREAKOUT": 0.142857
+              }
+            },
+            {
+              "horizonMinutes": 180,
+              "metric": "views",
+              "expectedValue": null,
+              "interval50": [
+                null,
+                null
+              ],
+              "interval80": [
+                null,
+                null
+              ],
+              "bandProbabilities": {
+                "LOW": 0.166667,
+                "PARTIAL": 0.166667,
+                "MEANINGFUL_EXPANSION": 0.166667,
+                "STRONG": 0.166667,
+                "PERSISTENT": 0.166667,
+                "BREAKOUT": 0.166667
+              },
+              "trajectoryProbabilities": {
+                "EARLY_STALL": 0.142857,
+                "SLOW_GROWTH": 0.142857,
+                "FAST_START_STALL": 0.142857,
+                "SECOND_WAVE": 0.142857,
+                "MULTI_WAVE": 0.142857,
+                "PERSISTENT_GROWTH": 0.142857,
+                "LATE_BREAKOUT": 0.142857
+              }
+            },
+            {
+              "horizonMinutes": 360,
+              "metric": "views",
+              "expectedValue": null,
+              "interval50": [
+                null,
+                null
+              ],
+              "interval80": [
+                null,
+                null
+              ],
+              "bandProbabilities": {
+                "LOW": 0.166667,
+                "PARTIAL": 0.166667,
+                "MEANINGFUL_EXPANSION": 0.166667,
+                "STRONG": 0.166667,
+                "PERSISTENT": 0.166667,
+                "BREAKOUT": 0.166667
+              },
+              "trajectoryProbabilities": {
+                "EARLY_STALL": 0.142857,
+                "SLOW_GROWTH": 0.142857,
+                "FAST_START_STALL": 0.142857,
+                "SECOND_WAVE": 0.142857,
+                "MULTI_WAVE": 0.142857,
+                "PERSISTENT_GROWTH": 0.142857,
+                "LATE_BREAKOUT": 0.142857
+              }
+            },
+            {
+              "horizonMinutes": 720,
+              "metric": "views",
+              "expectedValue": null,
+              "interval50": [
+                null,
+                null
+              ],
+              "interval80": [
+                null,
+                null
+              ],
+              "bandProbabilities": {
+                "LOW": 0.166667,
+                "PARTIAL": 0.166667,
+                "MEANINGFUL_EXPANSION": 0.166667,
+                "STRONG": 0.166667,
+                "PERSISTENT": 0.166667,
+                "BREAKOUT": 0.166667
+              },
+              "trajectoryProbabilities": {
+                "EARLY_STALL": 0.142857,
+                "SLOW_GROWTH": 0.142857,
+                "FAST_START_STALL": 0.142857,
+                "SECOND_WAVE": 0.142857,
+                "MULTI_WAVE": 0.142857,
+                "PERSISTENT_GROWTH": 0.142857,
+                "LATE_BREAKOUT": 0.142857
+              }
+            },
+            {
+              "horizonMinutes": 1440,
+              "metric": "views",
+              "expectedValue": null,
+              "interval50": [
+                null,
+                null
+              ],
+              "interval80": [
+                null,
+                null
+              ],
+              "bandProbabilities": {
+                "LOW": 0.166667,
+                "PARTIAL": 0.166667,
+                "MEANINGFUL_EXPANSION": 0.166667,
+                "STRONG": 0.166667,
+                "PERSISTENT": 0.166667,
+                "BREAKOUT": 0.166667
+              },
+              "trajectoryProbabilities": {
+                "EARLY_STALL": 0.142857,
+                "SLOW_GROWTH": 0.142857,
+                "FAST_START_STALL": 0.142857,
+                "SECOND_WAVE": 0.142857,
+                "MULTI_WAVE": 0.142857,
+                "PERSISTENT_GROWTH": 0.142857,
+                "LATE_BREAKOUT": 0.142857
+              }
+            },
+            {
+              "horizonMinutes": 2880,
+              "metric": "views",
+              "expectedValue": null,
+              "interval50": [
+                null,
+                null
+              ],
+              "interval80": [
+                null,
+                null
+              ],
+              "bandProbabilities": {
+                "LOW": 0.166667,
+                "PARTIAL": 0.166667,
+                "MEANINGFUL_EXPANSION": 0.166667,
+                "STRONG": 0.166667,
+                "PERSISTENT": 0.166667,
+                "BREAKOUT": 0.166667
+              },
+              "trajectoryProbabilities": {
+                "EARLY_STALL": 0.142857,
+                "SLOW_GROWTH": 0.142857,
+                "FAST_START_STALL": 0.142857,
+                "SECOND_WAVE": 0.142857,
+                "MULTI_WAVE": 0.142857,
+                "PERSISTENT_GROWTH": 0.142857,
+                "LATE_BREAKOUT": 0.142857
+              }
+            },
+            {
+              "horizonMinutes": 10080,
+              "metric": "views",
+              "expectedValue": null,
+              "interval50": [
+                null,
+                null
+              ],
+              "interval80": [
+                null,
+                null
+              ],
+              "bandProbabilities": {
+                "LOW": 0.166667,
+                "PARTIAL": 0.166667,
+                "MEANINGFUL_EXPANSION": 0.166667,
+                "STRONG": 0.166667,
+                "PERSISTENT": 0.166667,
+                "BREAKOUT": 0.166667
+              },
+              "trajectoryProbabilities": {
+                "EARLY_STALL": 0.142857,
+                "SLOW_GROWTH": 0.142857,
+                "FAST_START_STALL": 0.142857,
+                "SECOND_WAVE": 0.142857,
+                "MULTI_WAVE": 0.142857,
+                "PERSISTENT_GROWTH": 0.142857,
+                "LATE_BREAKOUT": 0.142857
+              }
+            }
+          ],
+          "creativeQualityEvidence": null,
+          "positiveFactors": [],
+          "negativeFactors": [],
+          "uncertaintyReasons": [
+            "No comparable platform observations have been supplied",
+            "Uniform probabilities are an explicit cold-start prior"
+          ],
+          "notice": "Historical estimate only; not a guarantee and not a claim about platform algorithms."
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,93 @@
+- generic
+  - complementary
+    - link "Pompom Creative Intelligence home" [ref=e1]
+      - strong
+        - StaticText "Pompom"
+      - StaticText "CREATIVE INTELLIGENCE"
+    - StaticText "WORKSPACE"
+    - navigation "Primary navigation" [ref=e2]
+      - link "Overview" [ref=e5]
+        - StaticText "Overview"
+      - link "Video Library" [ref=e6]
+        - StaticText "Video Library"
+      - link "Characters" [ref=e7]
+        - StaticText "Characters"
+      - link "Prompt Quality" [ref=e8]
+        - StaticText "Prompt Quality"
+      - link "Rule Governance" [ref=e9]
+        - StaticText "Rule Governance"
+      - link "Experiments" [ref=e10]
+        - StaticText "Experiments"
+      - link "Test Planner" [ref=e11]
+        - StaticText "Test Planner"
+      - link "Predictions" [ref=e12]
+        - StaticText "Predictions"
+      - link "Performance" [ref=e13]
+        - StaticText "Performance"
+      - link "Import Data" [ref=e14]
+        - StaticText "Import Data"
+      - link "Model Reliability" [ref=e15]
+        - StaticText "Model Reliability"
+      - link "Reach Further" [ref=e16]
+        - StaticText "Reach Further"
+      - link "Meta Analytics" [ref=e17]
+        - StaticText "Meta Analytics"
+      - link "Model Versions" [ref=e18]
+        - StaticText "Model Versions"
+      - link "Operations" [ref=e19]
+        - StaticText "Operations"
+    - sectionfooter
+      - strong
+        - StaticText "Local workspace"
+      - StaticText "Persisted evidence only"
+  - main
+    - heading "🎯 Pompom Creative Quality Engine" [level=1, ref=e3]
+    - paragraph
+      - StaticText "Exploratory prompt analysis. This screen does not authorize a render."
+    - region "Operasyonel yaratıcı iş akışı" [ref=e4]
+      - heading "Üretim incelemesi" [level=2, ref=e20]
+      - LabelText
+        - StaticText "İş akışı profili"
+        - combobox "İş akışı profili" [expanded=false, ref=e26]: Family 1–10 · tarihsel doğrulama
+          - MenuListPopup
+            - option "Family 1–10 · tarihsel doğrulama" [selected, ref=e30]
+            - option "Operasyonel yaratıcı iş akışı v1" [ref=e31]
+      - paragraph
+        - StaticText "Family 1–10 sözleşmeleri korunur. Yeni profil, yaratıcı amacı ve seçilen jeneratörün yürütmesini ayrı inceler."
+      - paragraph
+        - StaticText "Yetkili karakter referansları dosyalardan bağlanır; eksik referans yerine görünüm uydurulmaz."
+    - generic
+      - StaticText "PROMPT DETAIL"
+      - heading "AUDIT FIXTURE — disposable prompt-only" [level=2, ref=e21]
+      - link "Back to folders" [ref=e22]
+      - LabelText
+        - StaticText "Content title"
+        - textbox "Content title" [ref=e27]: AUDIT FIXTURE — disposable prompt-only
+          - StaticText "AUDIT FIXTURE — disposable prompt-only"
+      - LabelText
+        - StaticText "Type"
+        - combobox "Type" [expanded=false, ref=e28]: Reel
+          - MenuListPopup
+            - option "Short" [ref=e32]
+            - option "Reel" [selected, ref=e33]
+            - option "Episode" [ref=e34]
+      - button "Create workspace version" [ref=e23]
+      - button "Save revision" [ref=e24]
+      - StaticText "Linked workspace prompt: validation uses the immutable stored version and can produce render evidence."
+      - region "Prompt source editor" [ref=e25]
+        - StaticText "PROMPT SOURCE"
+        - strong
+          - StaticText "Editable prompt"
+        - StaticText "Markdown · 131 characters"
+        - code
+          - generic
+            - textbox "Editor content" [ref=e35]
+      - StaticText "131 characters"
+      - button "Analyze prompt" [ref=e29]
+    - generic
+      - strong
+        - StaticText "Error:"
+      - StaticText " Prompt workspace root must be inside the configured data root"
+  - generic
+    - alert
+    - alert
