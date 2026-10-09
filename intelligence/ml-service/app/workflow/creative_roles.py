@@ -36,7 +36,25 @@ def perform_role(role: str, text: str, context: dict[str, Any], provider: LLMPro
         'MINIMAL_REPAIR': 'Return JSON patches: at most three minimal edits with integer Unicode code point start/end, exact sourceQuote and replacement. Preserve protected intent and ESSENTIAL source quotes. Never return approval or rewrite the entire prompt.',
     }[role]
     safe_context = {key: context[key] for key in ('protectedIntent', 'intentRequirements', 'findings', 'retrievedLessons', 'constraints', 'storyGenerationMode', 'lockedRequirements', 'permittedVariation', 'mainCharacter', 'character', 'characterRecord', 'characterReferences', 'referenceBindings', 'preferences', 'profile', 'candidates', 'candidateIds', 'sourceRequestId', 'sourceFingerprint', 'previousReview', 'currentRevision', 'previousRevision', 'targetDuration', 'aspectRatio', 'reviewPolicyVersion', 'selectedGenerator', 'generatorCapabilities', 'targetConfiguration') if key in context}
-    value = json.loads(provider.complete(json.dumps({'text': text, 'context': safe_context}, ensure_ascii=False), system=system, temperature=0))
+    raw_response = provider.complete(json.dumps({'text': text, 'context': safe_context}, ensure_ascii=False), system=system, temperature=0)
+    if not isinstance(raw_response, str) or not raw_response.strip():
+        raise ValueError(f'{ROLES[role].title()} returned an empty JSON response')
+    candidate_response = raw_response.strip()
+    if candidate_response.startswith('```'):
+        candidate_response = re.sub(r'^```(?:json)?\s*|\s*```$', '', candidate_response, flags=re.IGNORECASE | re.DOTALL).strip()
+    try:
+        value = json.loads(candidate_response)
+    except json.JSONDecodeError as error:
+        # Some configured text endpoints wrap an otherwise valid object in a
+        # short preamble. Recover only a complete object; never invent fields.
+        start, end = candidate_response.find('{'), candidate_response.rfind('}')
+        if start >= 0 and end > start:
+            try:
+                value = json.loads(candidate_response[start:end + 1])
+            except json.JSONDecodeError:
+                raise ValueError(f'{ROLES[role].title()} returned invalid JSON') from error
+        else:
+            raise ValueError(f'{ROLES[role].title()} returned invalid JSON') from error
     if not isinstance(value, dict):
         raise ValueError('Role result must be an object')
     if role == 'STORY_REVIEW':
