@@ -194,6 +194,19 @@ public class WebhookController {
         .orElse(ResponseEntity.notFound().build());
   }
 
+  /** Replay one failed or ambiguous inbound event after an operator review. */
+  @PostMapping("/{eventId}/replay")
+  public ResponseEntity<WebhookEvent> replayWebhookEvent(@PathVariable UUID eventId) {
+    return webhookService
+        .getWebhookEvent(eventId)
+        .map(
+            event -> {
+              webhookService.processWebhookEvent(event);
+              return ResponseEntity.ok(event);
+            })
+        .orElse(ResponseEntity.notFound().build());
+  }
+
   /** Get webhooks for publication job. */
   @GetMapping("/job/{jobId}")
   public ResponseEntity<List<WebhookEvent>> getWebhooksForJob(@PathVariable UUID jobId) {
