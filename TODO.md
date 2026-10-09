@@ -10,7 +10,7 @@ Publisher migration is now an explicitly authorized companion workstream. It mus
 - [x] Confirm the three target publisher services: Meta (Facebook + Instagram), TikTok, and YouTube.
 - [x] Record the migration architecture and Python-removal gates in the publisher migration plan.
 - [x] Keep the current Python publisher tree intact until Java parity, cutover, and reference-removal gates pass.
-- [ ] Define the provider-neutral Java publisher contract and normalized request/result/error model.
+- [x] Define the provider-neutral Java publisher contract and normalized request/result/error model.
 - [ ] Create the Meta publisher microservice for Facebook Page and Instagram Professional/Reels protocols.
 - [ ] Create the TikTok publisher microservice with chunked upload and status reconciliation.
 - [ ] Create the YouTube publisher microservice with OAuth refresh and resumable upload.
