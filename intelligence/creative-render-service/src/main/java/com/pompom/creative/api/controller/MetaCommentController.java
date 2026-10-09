@@ -58,6 +58,9 @@ public class MetaCommentController {
   @PostMapping("/reconcile")
   public ResponseEntity<MetaCommentReconciliationService.ReconciliationResult> reconcile(
       @RequestParam(defaultValue = "50") int limit) {
+    if (reconciliation == null) {
+      return ResponseEntity.status(503).build();
+    }
     return ResponseEntity.ok(reconciliation.reconcile(limit));
   }
 

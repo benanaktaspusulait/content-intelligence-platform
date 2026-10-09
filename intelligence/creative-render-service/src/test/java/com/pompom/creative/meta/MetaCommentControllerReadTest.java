@@ -24,4 +24,10 @@ class MetaCommentControllerReadTest {
     verify(comments).findTop100ByOrderByCreatedAtDesc();
     verify(replies).findTop100ByOrderByCreatedAtDesc();
   }
+
+  @Test
+  void reconciliationReportsUnavailableWhenCompatibilityControllerHasNoService() {
+    var controller = new MetaCommentController(mock(MetaCommentModerationService.class), mock(MetaCommentReplyDeliveryService.class));
+    assertThat(controller.reconcile(10).getStatusCode().value()).isEqualTo(503);
+  }
 }
