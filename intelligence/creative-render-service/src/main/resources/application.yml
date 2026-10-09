@@ -66,6 +66,8 @@ pompom:
   meta:
     publish-enabled: ${META_PUBLISH_ENABLED:false}
     comment-reply-enabled: ${META_COMMENT_REPLY_ENABLED:false}
+    webhook-alert-threshold: ${META_WEBHOOK_ALERT_THRESHOLD:50}
+    webhook-alert-interval-ms: ${META_WEBHOOK_ALERT_INTERVAL_MS:60000}
   publishers:
     meta-base-url: ${META_PUBLISHER_BASE_URL:http://meta-publisher-service:8082}
     tiktok-base-url: ${TIKTOK_PUBLISHER_BASE_URL:http://tiktok-publisher-service:8083}
