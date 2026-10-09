@@ -4,6 +4,7 @@ import json
 import math
 import os
 import re
+from difflib import SequenceMatcher
 from typing import Any
 
 from app.llm.provider import LLMProvider
@@ -31,7 +32,7 @@ def perform_role(role: str, text: str, context: dict[str, Any], provider: LLMPro
     system = {
         'STORY_REVIEW': '''Review every supplied story candidate together. Return ONLY one JSON object matching this exact STORY_REVIEW contract; never omit a key and never return markdown. Required top-level keys: reviewId, sourceRequestId, sourceFingerprint, reviewModel, reviewModelVersion, reviewPolicyVersion, reviewTimestamp, reviewStatus, diversityAssessment, comparativeFindings, candidateReviews, recommendedCandidateId, recommendationReason, overallConcerns, usageAndCost, evidenceLimitations, revisionComparison. Set sourceRequestId and sourceFingerprint exactly to the values supplied in context (they may be null). reviewStatus must be COMPLETED, PARTIAL, SERVICE_ERROR, or INSUFFICIENT_EVIDENCE. candidateReviews must contain exactly one object for each supplied candidate, each with its exact candidateId; use concise structured findings and do not invent candidates. recommendedCandidateId must be one supplied candidateId or null. Use arrays/objects for the remaining evidence fields even when empty. Compare structure rather than wording, preserve source fidelity, mark uncertainty honestly, and never grant render authorization.''',
         'STORY': 'Return JSON alternatives: one to three story candidates. Respect the requested generation mode and locked requirements. For EXPLORE_DIFFERENT_STORIES vary meaningful narrative structure; for IMPROVE_EXISTING_STORY preserve locked events and ending while offering refinements. Preserve the supplied characters and intent. No production authorization.',
-        'BUILD_PROMPT': 'Return JSON prompt: a production prompt string. Use only supplied story, references and constraints. Do not invent character appearance or evidence. No production authorization.',
+        'BUILD_PROMPT': '''Return ONLY JSON with a single `prompt` string. Transform the approved story into a production-ready video-generation prompt; do not paraphrase or paste the story. Preserve every required event, character, first-frame condition, timing and hard cut. The prompt must be explicit and executable for a video model and use this structure: TITLE/FORMAT (duration and aspect ratio), GLOBAL VISUAL STYLE, CHARACTER/CONTINUITY, TIMED SHOT PLAN with 0-3s, 3-6s, 6-10s, 10-13s and 13-15s beats (each beat must state camera/framing, visible action and spatial staging), AUDIO, NEGATIVE CONSTRAINTS, and FINAL CUT. Include the supplied first-frame requirement in the opening shot, make the multiplication readable, keep Mimi visible when notes attach, and state the final hard cut. Use only supplied story, references and constraints; never invent appearance or evidence. No production authorization.''',
         'MINIMAL_REPAIR': 'Return JSON patches: at most three minimal edits with integer Unicode code point start/end, exact sourceQuote and replacement. Preserve protected intent and ESSENTIAL source quotes. Never return approval or rewrite the entire prompt.',
     }[role]
     safe_context = {key: context[key] for key in ('protectedIntent', 'intentRequirements', 'findings', 'retrievedLessons', 'constraints', 'storyGenerationMode', 'lockedRequirements', 'permittedVariation', 'mainCharacter', 'preferences', 'profile', 'candidates', 'candidateIds', 'sourceRequestId', 'sourceFingerprint', 'previousReview', 'currentRevision', 'previousRevision', 'targetDuration', 'aspectRatio', 'reviewPolicyVersion') if key in context}
@@ -89,6 +90,13 @@ def perform_role(role: str, text: str, context: dict[str, Any], provider: LLMPro
     elif role == 'BUILD_PROMPT':
         if not isinstance(value.get('prompt'), str) or not value['prompt'].strip() or len(value['prompt']) > 16000:
             raise ValueError('Bounded production prompt required')
+        prompt = value['prompt'].strip()
+        source = text.strip()
+        markers = ('camera', 'shot', 'framing', 'seconds', 'duration', 'audio', 'sound', 'continuity', 'negative', 'hard cut')
+        if len(prompt) < 240 or sum(marker in prompt.lower() for marker in markers) < 4:
+            raise ValueError('Production prompt must include timed shots, camera direction, continuity, audio and final-cut details')
+        if SequenceMatcher(None, prompt.lower(), source.lower()).ratio() > 0.9 and len(prompt) <= len(source) * 1.35:
+            raise ValueError('Production prompt cannot be a restatement of the approved story')
     else:
         patches = value.get('patches')
         if not isinstance(patches, list) or len(patches) > 3:

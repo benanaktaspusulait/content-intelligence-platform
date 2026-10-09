@@ -10,7 +10,7 @@ class FixtureProvider:
 
 @pytest.mark.parametrize('role,result,provider_name', [
     ('STORY', {'alternatives': ['A grounded story']}, 'deepseek'),
-    ('BUILD_PROMPT', {'prompt': 'A grounded prompt'}, 'openai'),
+    ('BUILD_PROMPT', {'prompt': 'TITLE/FORMAT 15 seconds 9:16. GLOBAL VISUAL STYLE grounded. CHARACTER/CONTINUITY Mimi remains visible. TIMED SHOT PLAN: 0-3s opening camera close shot; 3-6s action; 6-10s escalation; 10-13s reveal. AUDIO and sound. NEGATIVE CONSTRAINTS. FINAL CUT hard cut.'}, 'openai'),
     ('MINIMAL_REPAIR', {'patches': [{'start': 0, 'end': 3, 'sourceQuote': 'CUT', 'replacement': 'Hold'}]}, 'openai'),
 ])
 def test_roles_route_explicitly_and_never_self_validate(role, result, provider_name):
