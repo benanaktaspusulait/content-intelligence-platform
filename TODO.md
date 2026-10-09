@@ -78,7 +78,7 @@ Publisher migration is now an explicitly authorized companion workstream. It mus
 **Product decision:** Implement Facebook Page comments/replies and Instagram post/Reel comments/replies together. Instagram DM, Messenger, private conversations, unsolicited outbound messages, and automatic AI replies are explicitly out of scope.
 
 - [x] Add `META_COMMENT_REPLY_ENABLED=false` with a server-side fail-closed guard; `META_PUBLISH_ENABLED` remains separate and unchanged.
-- [ ] Verify required official comment-read/reply scopes; never add them to the read-only analytics OAuth flow.
+- [x] Verify required official comment-read/reply scopes; never add them to the read-only analytics OAuth flow.
 - [x] Add durable canonical models for `MetaComment`, `MetaCommentReply`, `MetaCommentThread`, and delivery attempts; keep the shape extensible for future private conversations without implementing them.
 - [x] Normalize Facebook Page and Instagram post/Reel comment/reply webhook payloads with provider event IDs and deduplication.
 - [x] Add comment ingestion through the existing Facebook/Instagram webhook endpoints.
