@@ -597,6 +597,7 @@ export class PostFamilyWorkflowComponent implements OnChanges, OnDestroy {
   @Input() promptVersionId = '';
   @Input() sourcePath = '';
   @Input() videoPath = '';
+  @Input() workflowProfile = 'FROZEN';
   @Output() saveFinal = new EventEmitter<string>();
   @Output() acceptedVersion = new EventEmitter<{contentId: number; promptVersionId: number; rawText: string; repairSessionId: string}>();
   profile = 'FROZEN';
@@ -804,7 +805,8 @@ export class PostFamilyWorkflowComponent implements OnChanges, OnDestroy {
   restoredRecordId = '';
   private restoreSequence = 0;
   ngOnChanges(changes: SimpleChanges): void {
-    if (!changes['contentId'] && !changes['promptVersionId']) return;
+    if (changes['workflowProfile']) this.profile = changes['workflowProfile'].currentValue || 'FROZEN';
+    if (!changes['contentId'] && !changes['promptVersionId'] && !changes['workflowProfile']) return;
     this.review = null;
     this.qa = null;
     this.repairKey = '';

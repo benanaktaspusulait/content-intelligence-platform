@@ -246,6 +246,7 @@ export class QualityValidatorComponent implements AfterViewInit, OnDestroy {
   workspaceQuery = '';
   workspaceMenuOpen = false;
   detailMode = false;
+  studioMode = false;
   selectedWorkspace: PromptWorkspace | null = null;
   selectedWorkspacePaths: string[] = [];
   selectedWorkspaceVideoPath = '';
@@ -300,6 +301,7 @@ Intensity: 4`;
 
   constructor(private http: HttpClient, private router: Router, private route: ActivatedRoute, private changeDetector: ChangeDetectorRef) {
     this.detailMode = this.route.snapshot.url.some(segment => segment.path === 'detail');
+    this.studioMode = this.route.snapshot.queryParamMap.get('studio') === '1';
     this.loadPromptWorkspaces();
     this.loadQualityRecords();
     if (this.detailMode) this.loadLinkedPromptFromRoute();
