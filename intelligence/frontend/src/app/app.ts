@@ -21,6 +21,7 @@ export class App {
     { label: 'Video Library', icon: 'VL', route: '/videos' },
     { label: 'Characters', icon: 'CH', route: '/characters' },
     { label: 'Prompt Quality', icon: 'PQ', route: '/quality' },
+    { label: 'Yeni Video', icon: 'NV', route: '/quality/new' },
     { label: 'Rule Governance', icon: 'RG', route: '/rule-governance' },
     { label: 'Experiments', icon: 'EX', route: '/experiments' },
     { label: 'Test Planner', icon: 'TP', route: '/test-planner' },

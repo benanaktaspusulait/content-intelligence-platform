@@ -422,6 +422,27 @@ public class WorkflowService {
     return approval;
   }
 
+  public Map<String, Object> saveStudioSession(Map<String, Object> request) {
+    String sessionId = String.valueOf(request.getOrDefault("sessionId", "")).trim();
+    if (sessionId.isBlank()) sessionId = UUID.randomUUID().toString();
+    var payload = new LinkedHashMap<String, Object>(request);
+    payload.put("sessionId", sessionId);
+    payload.put("updatedAt", java.time.Instant.now().toString());
+    payload.put("recordId", save("CREATIVE_STUDIO_SESSION", sessionId, payload));
+    return payload;
+  }
+
+  public Map<String, Object> getStudioSession(UUID sessionId) {
+    return jdbc.sql(
+            "SELECT id,payload::text payload FROM post_family_workflow_events WHERE kind='CREATIVE_STUDIO_SESSION' AND payload->>'sessionId'=:session ORDER BY created_at DESC LIMIT 1")
+        .param("session", sessionId.toString())
+        .query((rs, ignored) -> {
+          var value = read(rs.getString("payload"));
+          value.put("recordId", rs.getString("id"));
+          return value;
+        }).optional().orElseThrow(() -> new IllegalArgumentException("Creative studio session not found"));
+  }
+
   public Map<String, Object> secondOpinion(UUID id, Map<String, Object> options) {
     var review = get(id);
     var result =

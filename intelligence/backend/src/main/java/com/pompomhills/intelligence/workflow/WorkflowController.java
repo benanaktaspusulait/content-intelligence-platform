@@ -66,6 +66,24 @@ public class WorkflowController {
     return service.approveStory(id, request);
   }
 
+  @PostMapping("/studio-sessions")
+  public Map<String, Object> createStudioSession(@RequestBody Map<String, Object> request) {
+    return service.saveStudioSession(request);
+  }
+
+  @GetMapping("/studio-sessions/{id}")
+  public Map<String, Object> studioSession(@PathVariable UUID id) {
+    return service.getStudioSession(id);
+  }
+
+  @PutMapping("/studio-sessions/{id}")
+  public Map<String, Object> updateStudioSession(
+      @PathVariable UUID id, @RequestBody Map<String, Object> request) {
+    request = new java.util.LinkedHashMap<>(request);
+    request.put("sessionId", id.toString());
+    return service.saveStudioSession(request);
+  }
+
   @PostMapping("/review")
   public Map<String, Object> review(@RequestBody WorkflowService.ReviewRequest request) {
     return service.runReview(request, true);

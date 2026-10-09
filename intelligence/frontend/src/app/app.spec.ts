@@ -15,7 +15,7 @@ describe('App', () => {
     const fixture = TestBed.createComponent(App);
     fixture.detectChanges();
     const links = fixture.nativeElement.querySelectorAll('.primary-nav a');
-    expect(links.length).toBe(15);
+    expect(links.length).toBe(16);
     expect(fixture.nativeElement.textContent).toContain('Meta Analytics');
     expect(fixture.nativeElement.textContent).toContain('Operations');
     expect(fixture.nativeElement.textContent).toContain('Creative Intelligence');
