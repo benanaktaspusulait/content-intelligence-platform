@@ -103,11 +103,11 @@ Publisher migration is now an explicitly authorized companion workstream. It mus
 ## Phase 5 — Verification and release gate
 
 - [ ] Add mock Graph API contract tests for every GET/POST route.
-- [ ] Add tests that prove all Meta publish routes remain blocked by default.
-- [ ] Add tests that prove read-only Meta OAuth never requests publish scopes.
-- [ ] Run backend tests and record unrelated baseline failures separately.
-- [ ] Run creative-render-service tests and package.
-- [ ] Run frontend tests and production build.
+- [x] Add tests that prove all Meta publish routes remain blocked by default.
+- [x] Add tests that prove read-only Meta OAuth never requests publish scopes.
+- [x] Run backend tests and record unrelated baseline failures separately.
+- [x] Run creative-render-service tests and package.
+- [x] Run frontend tests and production build.
 - [ ] Add an opt-in read-only Meta smoke test requiring `META_LIVE_TEST=true`.
 - [ ] Do not run a live publish/reply test until explicit confirmation and a dedicated test Page/account are provided.
 
@@ -130,7 +130,7 @@ Publisher migration is now an explicitly authorized companion workstream. It mus
 - [ ] Dashboard exposes read-only analytics and human-approved public comment replies without hidden publish side effects.
 - [x] Backend/frontend/package gates are green except explicitly documented unrelated baseline failures.
 - [ ] Live read-only smoke passes with a dedicated Meta test account.
-- [ ] No publish/reply live test is run without explicit approval.
+- [x] No publish/reply live test is run without explicit approval.
 
 ---
 
