@@ -143,6 +143,32 @@ class MetaConnectionLifecycleServiceTest {
   }
 
   @Test
+  void refreshesConnectionBeforeExpiryWindow() {
+    MetaConnectionEntity entity = connectedEntity();
+    entity.setExpiresAt(ISSUED_AT.plusSeconds(120));
+    when(repository.findByIdAndOwnerKey(entity.getId(), "owner-1"))
+        .thenReturn(Optional.of(entity));
+    when(repository.save(any(MetaConnectionEntity.class)))
+        .thenAnswer(invocation -> invocation.getArgument(0));
+    when(provider.supportsRefresh()).thenReturn(true);
+    when(provider.refresh(any(MetaProviderAdapter.StoredTokens.class)))
+        .thenReturn(
+            new MetaProviderAdapter.TokenRefreshResult(
+                "refreshed-user",
+                "refreshed-page",
+                "refreshed-refresh",
+                ISSUED_AT,
+                ISSUED_AT.plusSeconds(3600)));
+
+    MetaConnectionResponse response = service.refreshIfNeeded(entity.getId());
+
+    assertThat(response.expiresAt()).isEqualTo(ISSUED_AT.plusSeconds(3600));
+    assertThat(entity.decryptTokens(new MetaTokenEncryptionService("test-encryption-key")).pageAccessToken())
+        .isEqualTo("refreshed-page");
+    verify(provider).refresh(any(MetaProviderAdapter.StoredTokens.class));
+  }
+
+  @Test
   void disconnectsAndClearsEncryptedMaterialWithoutPretendingToRevoke() {
     MetaConnectionEntity entity = connectedEntity();
     when(repository.findByIdAndOwnerKey(entity.getId(), "owner-1"))

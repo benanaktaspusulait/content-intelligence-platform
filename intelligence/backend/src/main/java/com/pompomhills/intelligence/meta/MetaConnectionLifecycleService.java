@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 /** Owns durable, owner-scoped Meta connection state and fail-closed capability admission. */
 @Service
 public class MetaConnectionLifecycleService {
+  private static final long REFRESH_SKEW_SECONDS = 300;
   private static final String PAGES_SHOW_LIST = "pages_show_list";
   private static final String PAGES_READ_ENGAGEMENT = "pages_read_engagement";
   private static final String PAGES_READ_USER_CONTENT = "pages_read_user_content";
@@ -133,7 +134,8 @@ public class MetaConnectionLifecycleService {
       return toResponse(entity);
     }
     Instant now = clock.instant();
-    if (entity.getExpiresAt() != null && now.isBefore(entity.getExpiresAt())) {
+    if (entity.getExpiresAt() != null
+        && now.plusSeconds(REFRESH_SKEW_SECONDS).isBefore(entity.getExpiresAt())) {
       return toResponse(entity);
     }
     if (!provider.supportsRefresh()) {
