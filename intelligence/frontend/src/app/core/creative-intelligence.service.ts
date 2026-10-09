@@ -130,6 +130,7 @@ export interface MediaFile {
   variantId: string | null;
   thumbnailPath?: string | null;
   characters?: Array<{ id: string; name: string; participation: string; role: string; source: string; confidence: string }>;
+  analyzed?: boolean;
 }
 
 export interface WorkbenchCharacter {
@@ -733,6 +734,10 @@ export class CreativeIntelligenceService {
 
   getAnalysisStatus(videoId: string): Observable<AnalysisStatus> {
     return this.http.get<AnalysisStatus>(`${this.baseUrl}/videos/${videoId}/analysis/status`);
+  }
+
+  exportAnalysisPdf(videoId: string): Observable<Blob> {
+    return this.http.get(`${this.baseUrl}/videos/${videoId}/analysis/report.pdf`, { responseType: 'blob' });
   }
 
   getPlatformCreativeReadiness(videoId: string, platform: string): Observable<PlatformCreativeReadiness> {

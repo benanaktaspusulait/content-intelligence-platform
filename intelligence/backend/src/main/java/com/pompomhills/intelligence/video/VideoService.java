@@ -700,7 +700,8 @@ public class VideoService {
         ingested == null ? null : ingested.getStatus().name(),
         variantId,
         findThumbnail(root, file),
-        ingested == null ? List.of() : characters.getOrDefault(ingested.getId(), List.of()));
+        ingested == null ? List.of() : characters.getOrDefault(ingested.getId(), List.of()),
+        ingested != null && analyses.existsByVideoIdAndAnalysisVersion(ingested.getId(), CURRENT_ANALYSIS_VERSION));
   }
 
   private Map<UUID, List<MediaCharacter>> loadMediaCharacters(

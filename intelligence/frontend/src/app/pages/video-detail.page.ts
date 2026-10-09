@@ -49,6 +49,7 @@ const VARIANT_TYPE_LABELS: Record<string, string> = {
 
 @Component({
   selector: 'app-video-detail-page',
+  host: { class: 'video-detail-page' },
   imports: [RouterLink, FormsModule, ActualVideoReviewComponent],
   template: `
     <header class="page-header detail-header">
@@ -238,7 +239,7 @@ const VARIANT_TYPE_LABELS: Record<string, string> = {
 
       <section class="section-band creative-analysis-panel" aria-labelledby="creative-analysis-heading">
         <div class="section-heading"><div><span class="eyebrow">VISUAL MOTION ANALYSIS</span><h2 id="creative-analysis-heading">Sampled visual-motion evidence</h2></div>
-          <button class="button button--primary" type="button" [disabled]="triggeringAnalysis() || analysisStatus()?.jobState === 'QUEUED' || analysisStatus()?.jobState === 'RUNNING'" (click)="triggerAnalysis()">{{ triggeringAnalysis() ? 'Starting…' : analysisStatus()?.jobState === 'QUEUED' || analysisStatus()?.jobState === 'RUNNING' ? (analysisStatus()!.jobState === 'QUEUED' ? 'Queued…' : 'Running…') : analysisStatus()?.hasCompletedAnalysis ? 'Reanalyze' : 'Run analysis' }}</button>
+          <div class="header-actions"><button class="button button--primary" type="button" [disabled]="triggeringAnalysis() || analysisStatus()?.jobState === 'QUEUED' || analysisStatus()?.jobState === 'RUNNING'" (click)="triggerAnalysis()">{{ triggeringAnalysis() ? 'Starting…' : analysisStatus()?.jobState === 'QUEUED' || analysisStatus()?.jobState === 'RUNNING' ? (analysisStatus()!.jobState === 'QUEUED' ? 'Queued…' : 'Running…') : analysisStatus()?.hasCompletedAnalysis ? 'Reanalyze' : 'Run analysis' }}</button><button class="button button--secondary analysis-pdf-button" type="button" [disabled]="!analysisStatus()?.hasCompletedAnalysis || exportingAnalysisPdf()" (click)="exportAnalysisPdf()">{{ exportingAnalysisPdf() ? 'Generating PDF…' : 'Export analysis PDF' }}</button></div>
         </div>
         @if (analysisFeedback()) { <p class="analysis-feedback" [class.analysis-feedback--error]="analysisFeedbackKind() === 'error'" role="status">{{ analysisFeedback() }}</p> }
         <div class="assessment-notice"><strong>Interpretation</strong><span>This is a sampled visual-motion heuristic. It does not use views, reach, likes, comments, follows or retention data.</span></div>
@@ -657,6 +658,7 @@ export class VideoDetailPage implements OnDestroy {
   protected readonly analysisFeedback = signal('');
   protected readonly analysisFeedbackKind = signal<'info' | 'success' | 'error'>('info');
   protected readonly analysisRunActive = signal(false);
+  protected readonly exportingAnalysisPdf = signal(false);
 
   protected readonly folderName = computed(() => this.readableFolder(this.folderPath()));
   protected readonly mediaUrl = computed(() => this.activeFile() ? this.service.mediaContentUrl(this.activeFile()!.relativePath) : '');
@@ -764,6 +766,29 @@ export class VideoDetailPage implements OnDestroy {
     this.service.triggerAnalysis(id, true).subscribe({
       next: status => { this.triggeringAnalysis.set(false); this.analysisStatus.set(status); this.analysisFeedback.set(status.jobState === 'RUNNING' ? 'Analysis is running…' : 'Analysis is queued…'); this.pollAnalysisStatus(id); },
       error: response => { this.triggeringAnalysis.set(false); this.analysisRunActive.set(false); this.analysisFeedbackKind.set('error'); this.analysisFeedback.set(response.error?.message || 'Could not start analysis.'); },
+    });
+  }
+  protected exportAnalysisPdf(): void {
+    const id = this.video()?.id;
+    if (!id || !this.analysisStatus()?.hasCompletedAnalysis || this.exportingAnalysisPdf()) return;
+    this.exportingAnalysisPdf.set(true);
+    this.service.exportAnalysisPdf(id).subscribe({
+      next: blob => {
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `${this.video()?.originalFilename || 'video'}-analysis-report.pdf`;
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        window.setTimeout(() => URL.revokeObjectURL(url), 1000);
+        this.exportingAnalysisPdf.set(false);
+      },
+      error: response => {
+        this.exportingAnalysisPdf.set(false);
+        this.analysisFeedbackKind.set('error');
+        this.analysisFeedback.set(response.error?.message || 'PDF export failed.');
+      },
     });
   }
   protected updateCopy(platform: CaptionPlatform, field: 'title' | 'body' | 'hashtags' | 'tags', value: string): void {

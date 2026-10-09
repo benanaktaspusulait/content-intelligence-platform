@@ -36,6 +36,7 @@ public class VideoController {
   private final AnalysisJobService jobService;
   private final CreativeAnalysisRepository analyses;
   private final PlatformCreativeReadinessService platformReadiness;
+  private final VideoAnalysisPdfService analysisPdf;
 
   @Autowired
   public VideoController(
@@ -43,12 +44,14 @@ public class VideoController {
       MediaContentService mediaContent,
       AnalysisJobService jobService,
       CreativeAnalysisRepository analyses,
-      PlatformCreativeReadinessService platformReadiness) {
+      PlatformCreativeReadinessService platformReadiness,
+      VideoAnalysisPdfService analysisPdf) {
     this.service = service;
     this.mediaContent = mediaContent;
     this.jobService = jobService;
     this.analyses = analyses;
     this.platformReadiness = platformReadiness;
+    this.analysisPdf = analysisPdf;
   }
 
   public VideoController(
@@ -56,7 +59,7 @@ public class VideoController {
       MediaContentService mediaContent,
       AnalysisJobService jobService,
       CreativeAnalysisRepository analyses) {
-    this(service, mediaContent, jobService, analyses, null);
+    this(service, mediaContent, jobService, analyses, null, new VideoAnalysisPdfService());
   }
 
   @PostMapping("/ingest")
@@ -158,6 +161,18 @@ public class VideoController {
       @PathVariable UUID id,
       @RequestParam(defaultValue = VideoService.CURRENT_ANALYSIS_VERSION) String analysisVersion) {
     return statusFor(id, analysisVersion);
+  }
+
+  @GetMapping(value = "/{id}/analysis/report.pdf", produces = MediaType.APPLICATION_PDF_VALUE)
+  public ResponseEntity<byte[]> exportAnalysisPdf(@PathVariable UUID id) {
+    var status = statusFor(id, VideoService.CURRENT_ANALYSIS_VERSION);
+    var video = service.get(id);
+    byte[] pdf = analysisPdf.render(video.originalFilename(), status);
+    String filename = video.originalFilename().replaceAll("[^A-Za-z0-9._-]+", "-") + "-analysis-report.pdf";
+    return ResponseEntity.ok()
+        .header(HttpHeaders.CONTENT_DISPOSITION, ContentDisposition.attachment().filename(filename).build().toString())
+        .contentType(MediaType.APPLICATION_PDF)
+        .body(pdf);
   }
 
   @GetMapping("/{id}/platform-readiness")

@@ -34,7 +34,8 @@ public final class VideoDtos {
       String status,
       UUID variantId,
       String thumbnailPath,
-      List<MediaCharacter> characters) {}
+      List<MediaCharacter> characters,
+      boolean analyzed) {}
 
   public record MediaCharacter(UUID id, String name, String participation, String role,
       String source, String confidence) {}

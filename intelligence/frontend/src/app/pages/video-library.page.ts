@@ -118,6 +118,7 @@ export function resultCountLabel(groupCount: number, fileCount: number): string 
     <section class="filter-bar" aria-label="Video filters">
       <label class="search-field"><span aria-hidden="true">⌕</span><input type="search" placeholder="Search filename or path" aria-label="Search videos" [value]="query()" (input)="setQuery($event)"></label>
       <label><span>Evidence</span><select aria-label="Filter by evidence state" [value]="evidenceState()" (change)="setEvidenceState($event)"><option>All</option><option>Not ingested</option><option>Ingested</option></select></label>
+      <label><span>Analysis</span><select aria-label="Filter by analysis state" [value]="analysisState()" (change)="setAnalysisState($event)"><option>All</option><option>Analyzed</option><option>Not analyzed</option></select></label>
       <label><span>Character</span><select aria-label="Filter by character" [value]="characterId()" (change)="characterId.set(value($event)); loadSelectedFiles()"><option value="">Any character</option>@for (character of characters(); track character.id) { <option [value]="character.id">{{ character.name }}</option> }</select></label>
       <label><span>Role</span><select aria-label="Filter by character role" [value]="characterRole()" (change)="characterRole.set(value($event)); loadSelectedFiles()"><option value="">Any role</option><option value="PRIMARY">Primary</option><option value="SECONDARY">Secondary</option><option value="BACKGROUND">Background</option><option value="UNKNOWN">Unknown</option></select></label>
       <label class="check-filter"><input type="checkbox" [checked]="unresolvedCharacter()" (change)="unresolvedCharacter.set(($any($event.target)).checked); loadSelectedFiles()"><span>Unresolved</span></label>
@@ -150,6 +151,7 @@ export function resultCountLabel(groupCount: number, fileCount: number): string 
                       <div class="media-variant__meta"><span class="tabular">{{ fileSize(file.sizeBytes) }}</span><span>{{ modified(file.modifiedAt) }}</span></div>
                       <div class="media-variant__state">
                         <span class="status-badge" [class.status-badge--green]="file.ingested">{{ file.ingested ? (file.status || 'Ingested') : 'Not ingested' }}</span>
+                        @if (file.ingested) { <span class="status-badge" [class.status-badge--green]="file.analyzed">{{ file.analyzed ? 'Analyzed' : 'Not analyzed' }}</span> }
                         @if (file.videoId) { <a class="button button--compact" [routerLink]="['/videos', file.videoId]" [attr.aria-label]="'Open evidence record for ' + file.displayName">Evidence ↗</a> }
                         @else { <button class="button button--compact" type="button" [disabled]="processingPath() === file.relativePath" (click)="ingestFile(file)">{{ processingPath() === file.relativePath ? 'Processing…' : 'Ingest' }}</button> }
                       </div>
@@ -195,6 +197,7 @@ export class VideoLibraryPage {
   protected readonly query = signal('');
   protected readonly thumbnailPreview = signal<{ url: string; alt: string } | null>(null);
   protected readonly evidenceState = signal<'All' | 'Not ingested' | 'Ingested'>('All');
+  protected readonly analysisState = signal<'All' | 'Analyzed' | 'Not analyzed'>('All');
   protected readonly characterId = signal('');
   protected readonly characterRole = signal('');
   protected readonly unresolvedCharacter = signal(false);
@@ -224,7 +227,9 @@ export class VideoLibraryPage {
   });
   protected readonly filteredFiles = computed(() => this.displayFiles().filter(item => {
     const search = this.query().trim().toLowerCase();
-    return (!search || `${item.displayName} ${item.name} ${item.folderPath}`.toLowerCase().includes(search)) && (this.evidenceState() === 'All' || (this.evidenceState() === 'Ingested' ? item.ingested : !item.ingested));
+    return (!search || `${item.displayName} ${item.name} ${item.folderPath}`.toLowerCase().includes(search))
+      && (this.evidenceState() === 'All' || (this.evidenceState() === 'Ingested' ? item.ingested : !item.ingested))
+      && (this.analysisState() === 'All' || (this.analysisState() === 'Analyzed' ? item.analyzed === true : item.analyzed !== true));
   }));
   protected readonly visibleGroups = computed(() => groupMediaFilesByFolder(this.filteredFiles()));
   protected readonly resultCount = computed(() => resultCountLabel(this.visibleGroups().length, this.filteredFiles().length));
@@ -284,7 +289,8 @@ export class VideoLibraryPage {
   }
   protected setQuery(event: Event): void { this.query.set((event.target as HTMLInputElement).value); }
   protected setEvidenceState(event: Event): void { this.evidenceState.set((event.target as HTMLSelectElement).value as 'All' | 'Not ingested' | 'Ingested'); }
-  protected resetFilters(): void { this.query.set(''); this.evidenceState.set('All'); this.characterId.set(''); this.characterRole.set(''); this.unresolvedCharacter.set(false); this.loadSelectedFiles(); }
+  protected setAnalysisState(event: Event): void { this.analysisState.set((event.target as HTMLSelectElement).value as 'All' | 'Analyzed' | 'Not analyzed'); }
+  protected resetFilters(): void { this.query.set(''); this.evidenceState.set('All'); this.analysisState.set('All'); this.characterId.set(''); this.characterRole.set(''); this.unresolvedCharacter.set(false); this.loadSelectedFiles(); }
   protected value(event: Event): string { return (event.target as HTMLSelectElement).value; }
   protected extension(name: string): string { return name.includes('.') ? name.split('.').pop()!.toUpperCase() : 'VIDEO'; }
   protected fileSize(bytes: number | null): string { return bytes === null ? 'Unavailable' : new Intl.NumberFormat('en', { style: 'unit', unit: 'megabyte', maximumFractionDigits: 1 }).format(bytes / 1_000_000); }

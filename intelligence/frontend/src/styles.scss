@@ -46,6 +46,12 @@
   .quality-validator-container .timeline-preview { break-inside: auto; page-break-inside: auto; }
   .quality-validator-container .plan-details pre { max-height: none; overflow: visible; }
   .quality-validator-container .family-bar-fill { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+  .sidebar, .mobile-header, .nav-scrim, .video-detail-page .detail-header,
+  .video-detail-page .detail-tabs, .video-detail-page .variant-rail,
+  .video-detail-page .video-stage, .video-detail-page .selected-file-bar,
+  .video-detail-page .analysis-pdf-button, .video-detail-page button { display: none !important; }
+  .workspace { margin-left: 0; padding: 0; }
+  .video-detail-page .section-band { break-inside: avoid; page-break-inside: avoid; }
 }
 html { min-width: 320px; min-height: 100%; background: var(--paper); }
 body { margin: 0; min-height: 100dvh; background: var(--paper); color: var(--ink); font-size: 14px; line-height: 1.45; }
