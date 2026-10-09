@@ -66,4 +66,7 @@ export class MetaReadService {
   getOperationsStatus(): Observable<{ health: string; commentReplyEnabled: boolean; commentCount: number; pendingWebhookCount: number }> {
     return this.http.get<{ health: string; commentReplyEnabled: boolean; commentCount: number; pendingWebhookCount: number }>(`${this.baseUrl}/operations/status`);
   }
+  reconcileComments(limit = 100): Observable<{ processed: number }> {
+    return this.http.post<{ processed: number }>(`${this.baseUrl}/comments/reconcile`, {}, { params: new HttpParams().set('limit', String(limit)) });
+  }
 }
