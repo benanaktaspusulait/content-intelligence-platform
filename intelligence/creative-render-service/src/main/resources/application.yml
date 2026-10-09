@@ -66,6 +66,16 @@ pompom:
   meta:
     publish-enabled: ${META_PUBLISH_ENABLED:false}
     comment-reply-enabled: ${META_COMMENT_REPLY_ENABLED:false}
+  publishers:
+    meta-base-url: ${META_PUBLISHER_BASE_URL:http://meta-publisher-service:8082}
+    tiktok-base-url: ${TIKTOK_PUBLISHER_BASE_URL:http://tiktok-publisher-service:8083}
+    youtube-base-url: ${YOUTUBE_PUBLISHER_BASE_URL:http://youtube-publisher-service:8084}
+    meta-internal-token: ${META_PUBLISHER_INTERNAL_TOKEN:}
+    tiktok-internal-token: ${TIKTOK_PUBLISHER_INTERNAL_TOKEN:}
+    youtube-internal-token: ${YOUTUBE_PUBLISHER_INTERNAL_TOKEN:}
+    meta-enabled: ${META_PUBLISHER_CLIENT_ENABLED:false}
+    tiktok-enabled: ${TIKTOK_PUBLISHER_CLIENT_ENABLED:false}
+    youtube-enabled: ${YOUTUBE_PUBLISHER_CLIENT_ENABLED:false}
   openart:
     enabled: ${OPENART_ENABLED:false}
     mock:

@@ -9,6 +9,7 @@ import com.pompom.creative.oauth.PlatformType;
 import com.pompom.creative.publisher.PlatformPublisher;
 import com.pompom.creative.publisher.dto.PublishRequest;
 import com.pompom.creative.publisher.dto.PublishResponse;
+import com.pompom.creative.publisher.internal.InternalPublisherRegistry;
 import com.pompom.creative.repository.PublicationAttemptRepository;
 import com.pompom.creative.repository.PublicationJobRepository;
 import java.time.Instant;
@@ -30,6 +31,7 @@ public class PublicationAttemptOrchestrator {
   private final Map<String, PlatformPublisher> publishers;
   private final TransactionTemplate transactionTemplate;
   private final MetaPublicationGuard metaPublicationGuard;
+  private final InternalPublisherRegistry internalPublisherRegistry;
 
   @Autowired
   public PublicationAttemptOrchestrator(
@@ -37,12 +39,14 @@ public class PublicationAttemptOrchestrator {
       PublicationJobRepository jobRepository,
       Map<String, PlatformPublisher> publishers,
       TransactionTemplate transactionTemplate,
-      MetaPublicationGuard metaPublicationGuard) {
+      MetaPublicationGuard metaPublicationGuard,
+      InternalPublisherRegistry internalPublisherRegistry) {
     this.attemptRepository = attemptRepository;
     this.jobRepository = jobRepository;
     this.publishers = publishers;
     this.transactionTemplate = transactionTemplate;
     this.metaPublicationGuard = metaPublicationGuard;
+    this.internalPublisherRegistry = internalPublisherRegistry;
   }
 
   /** Compatibility constructor for focused publication tests. */
@@ -56,7 +60,8 @@ public class PublicationAttemptOrchestrator {
         jobRepository,
         publishers,
         transactionTemplate,
-        new MetaPublicationGuard(true));
+        new MetaPublicationGuard(true),
+        null);
   }
 
   public void processAttempt(UUID attemptId, String leaseOwner) {
@@ -248,6 +253,9 @@ public class PublicationAttemptOrchestrator {
   }
 
   private PlatformPublisher getPublisher(PlatformType platform) {
+    if (internalPublisherRegistry != null) {
+      return internalPublisherRegistry.get(platform);
+    }
     String beanName =
         switch (platform) {
           case TIKTOK -> "tikTokPublisher";
