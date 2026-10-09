@@ -15,7 +15,9 @@ describe('post-family operator workflow', () => {
     fixture.componentRef.setInput('contentId', '1');
     fixture.componentRef.setInput('promptVersionId', '2');
     fixture.detectChanges();
-    TestBed.inject(HttpTestingController).expectOne(r => r.url === '/api/v1/intelligence/workflow/records?kind=REVIEW').flush([]);
+    const setupHttp = TestBed.inject(HttpTestingController);
+    setupHttp.expectOne(r => r.url === '/api/v1/intelligence/workflow/records?kind=REVIEW').flush([]);
+    setupHttp.expectOne('/api/v1/characters').flush([{ name: 'Luca' }]);
     return fixture;
   }
   it('restores the exact saved version using read requests and invalidates changed settings', async () => {
@@ -31,6 +33,7 @@ describe('post-family operator workflow', () => {
       { recordId: 'other', contentId: 7, promptVersionId: 8 },
       { recordId: 'saved', contentId: 7, promptVersionId: 9, bindingHash: 'binding', decisionPolicyVersion: 'impact-review-v1', boundRequest: { prompt: 'Luca opens a box.', generator: 'SEEDANCE_2_5', desiredDuration: 15, settings: { aspectRatio: '16:9' } } },
     ]);
+    http.expectOne('/api/v1/characters').flush([{ name: 'Luca' }]);
     http.expectOne(r => r.url === '/api/v1/intelligence/workflow/records?kind=ACTUAL_RENDER_QA').flush([{ recordId: 'qa', bindingHash: 'binding', videoId: 'exact-video' }]);
     expect(component.restoredRecordId).toBe('saved');
     expect(component.generator).toBe('SEEDANCE_2_5');
@@ -89,6 +92,9 @@ describe('post-family operator workflow', () => {
     expect(c.timedRanges.map(range => [range.start, range.end])).toEqual([[0, 3], [3, 6], [6, 10], [10, 13], [13, 15]]);
     expect(c.timedRanges.every(range => range.quote.length > 0)).toBe(true);
     expect(c.extractedIntent).toContain('Mimi enters');
+    expect(c.sourceEvents).toHaveLength(5);
+    expect(c.sourceEvents[0].evidence).toBe('SOURCE_EVENT_CANDIDATE');
+    expect(c.sourceEvents[4].semanticStatus).toBe('PENDING');
   });
   it('keeps missing source identity incomplete and restores saved settings without a 9:16 fallback', async () => {
     const f = await setup();
