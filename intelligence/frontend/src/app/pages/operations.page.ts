@@ -9,6 +9,12 @@ export const enabledPublicationPlatforms = ['TIKTOK', 'YOUTUBE'] as const;
 export function isPublicationPlatformEnabled(platform: string): boolean {
   return (enabledPublicationPlatforms as readonly string[]).includes(platform);
 }
+export function isPublicationCancellable(status: string): boolean {
+  return ['QUEUED', 'UPLOADING', 'PROCESSING'].includes(status);
+}
+export function isScheduleCancellable(status: string): boolean {
+  return !['COMPLETED', 'CANCELLED', 'FAILED'].includes(status);
+}
 interface QaReview { id: string; decision?: string; decisionReason?: string; requiresHumanReview?: boolean; createdAt?: string; }
 interface BudgetStatus { budgetLimit?: number; usedCredits?: number; remainingCredits?: number; level?: string; totalJobs?: number; }
 interface NotificationRecord { id: string; title: string; message?: string; priority: string; isRead: boolean; createdAt: string; }
@@ -76,8 +82,8 @@ export class OperationsPage {
 
   protected number(value: number | undefined): string { return value === undefined ? '—' : new Intl.NumberFormat('en').format(value); }
   protected date(value: string | undefined): string { return value ? new Date(value).toLocaleString('en-GB', { dateStyle: 'medium', timeStyle: 'short' }) : '—'; }
-  protected canCancelPublication(job: PublicationJob): boolean { return ['QUEUED', 'UPLOADING', 'PROCESSING'].includes(job.status); }
-  protected canCancelSchedule(item: ScheduledPublication): boolean { return !['COMPLETED', 'CANCELLED', 'FAILED'].includes(item.status); }
+  protected canCancelPublication(job: PublicationJob): boolean { return isPublicationCancellable(job.status); }
+  protected canCancelSchedule(item: ScheduledPublication): boolean { return isScheduleCancellable(item.status); }
   protected cancelPublication(job: PublicationJob): void {
     this.actionId.set(job.id);
     this.http.post(`/api/v1/publications/${job.id}/cancel`, {}).subscribe({ next: () => { this.actionId.set(null); this.load(); }, error: response => { this.actionId.set(null); this.error.set(response.error?.message || 'Publication could not be cancelled.'); } });
