@@ -16,7 +16,7 @@ Publisher migration is now an explicitly authorized companion workstream. It mus
 - [x] Create the YouTube publisher microservice with OAuth refresh and resumable upload.
 - [x] Replace render-service in-process publisher bean dispatch with internal publisher-service clients.
 - [x] Add Docker/Compose service definitions, internal routing, health checks, credential configuration, and no-browser-secret boundaries.
-- [ ] Add Java provider contract/parity tests before any Python deletion.
+- [x] Add Java provider contract/parity tests before any Python deletion.
 - [ ] Verify no runtime or documentation path invokes Python publisher code.
 - [ ] Remove `publisher/` Python code, SQLite ledgers, Python dependencies, and stale integration docs only after all removal gates pass.
 - [ ] Re-run backend/render/frontend/package/release checks and update `META_INTEGRATION_READINESS.md`.
