@@ -11,6 +11,8 @@ describe('creative studio idea-first workflow', () => {
     const fixture=TestBed.createComponent(CreativeStudioPage); const page=fixture.componentInstance; const http=TestBed.inject(HttpTestingController);
     fixture.detectChanges();
     http.expectOne('/api/v1/intelligence/workflow/creative-role/readiness').flush({enabled:true,storyModel:'fixture',promptModel:'fixture'});
+    http.expectOne('/api/v1/characters').flush([]);
+    http.expectOne('/api/v1/videos/prompt-workspaces?relativeDirectory=library/POMPOM_HILLS_PRODUCTION/09_SOCIAL_REELS/new14092026').flush([]);
     page.idea='Kiko sınava giriyor'; page.storyConsent=true; page.budget=0.01; page.requestStories();
     const story=http.expectOne('/api/v1/intelligence/workflow/creative-role'); expect(story.request.body.text).toBe('Kiko sınava giriyor'); story.flush({recordId:'story-1',result:{alternatives:['Kiko kalemiyle konuşur.']}});
     await fixture.whenStable(); page.selectStory(page.candidates[0]); page.approveStory();

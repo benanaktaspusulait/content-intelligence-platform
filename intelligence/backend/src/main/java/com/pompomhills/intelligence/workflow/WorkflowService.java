@@ -378,7 +378,7 @@ public class WorkflowService {
     if (!List.of("STORY", "BUILD_PROMPT", "MINIMAL_REPAIR").contains(role))
       throw new IllegalArgumentException("Unsupported creative role");
     if (map(request.get("context")).get("sourceStoryRecordId") instanceof String storyId
-        && !storyId.isBlank()) {
+        && !storyId.isBlank() && !"MANUAL_STORY".equals(storyId)) {
       var story = getByKind(UUID.fromString(storyId), "CREATIVE_ROLE");
       if (!"STORY".equals(story.get("role")))
         throw new IllegalArgumentException("Story provenance requires an exact STORY record");
