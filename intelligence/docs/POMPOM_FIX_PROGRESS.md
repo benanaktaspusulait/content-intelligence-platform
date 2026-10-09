@@ -57,26 +57,26 @@ The implementation/files/tests in the item table above remain the authoritative 
 
 | Item | Current status / dependencies | UI evidence / remaining gap | Live status |
 |---|---|---|---|
-| B01 | Implemented; source foundation | Exact source/alias/reopen fixtures; full combined J5 acceptance still pending | No new live call |
+| B01 | Implemented; source foundation | Exact source/alias/reopen fixtures; J5 parent lineage now exercised in the isolated queue | No new live call |
 | B02 | Locally accepted; B01 | Prior exact-import browser/persistence/reopen | Local data |
 | B03 | Locally accepted; B01/B04/provider port | New J2 automatic browser loop, accepted best and session reload; full paid loop separate | Mock loop; earlier live single-role text |
 | B04 | Locally accepted; B01 | Prior saved route/QA plus new accepted repair/session refresh | GET-only reopen |
 | B05 | Locally accepted; B01/B04 | Prior actual-only browser and honest UNKNOWN/fidelity | Live vision pending |
 | B06 | Locally accepted; B01/B04/B05 | Prior actual edited-file import, hashes/duration/parent/reopen | Operator-reported editing |
-| B07 | Partial acceptance; B01/B03/B04/B10 implemented | Positive handoff/queue tests exist; combined real browser→queue→reopen positive/denied evidence still pending | No live generation |
-| B08 | Service acceptance; B03/B11/B16 contract ready | Prior real API approval→next request consumption→revocation; complete browser lesson journey still pending | Source facts mocked |
-| B09 | Service acceptance; B01/B04 | Crash/identity/recovery tests; full restart/status browser journey still pending | No blind paid retry |
-| B10 | Service acceptance; B01/B04 | Source-bound applicability/admission tests; full positive combined J5 runtime pending | Live visual proof pending |
+| B07 | Local acceptance; B01/B03/B04/B10 implemented | Browser handoff → source-bound render admission → persisted queue → reload/replay passed; denied authorization creates zero jobs | No live generation |
+| B08 | Browser/local acceptance; B03/B11/B16 contract ready | Browser lesson candidate → approval → next request consumes 1 lesson; revoke → next request consumes 0 | Source facts mocked |
+| B09 | Local acceptance; B01/B04 | Version-aware V4/V5 status, expired lease recovery and browser failure/reopen evidence passed; blind retry remains blocked | No blind paid retry |
+| B10 | Local acceptance; B01/B04 | Source-bound applicability/admission and positive J5 queue runtime passed | Live visual proof pending |
 | B11 | Locally accepted; shared port ready | New full story/edit/build/save/reopen browser chain with provenance | Mock batch; earlier authorized text calls |
 | B12 | Implemented; B01 | Source-bound UI coverage; authoritative source enrichment remains conditional | Unknown stays unknown |
 | B13 | Implemented; no prerequisite | Honest API/regression evidence; empty-registry browser and API capture now show 0 registered versions and explicit cold-start; no train/promotion action | Cold start |
-| B14 | Partial; B03/B07/B10/B11 | Local transport/contracts and prior text evidence; controlled wider live procedure/vision/generated output outstanding | No paid calls authorized in this batch |
+| B14 | Local readiness/transport acceptance; B03/B07/B10/B11 | Adapter contract, capability matrix, exact duration/aspect/resolution/frame transport and unsupported-setting fail-closed tests pass. Wider live vision/generated output remains externally gated | No new paid call |
 | B15 | Locally accepted; configured root | Prior Unicode/YAML/empty-folder import/reopen; isolated proxy integration under verification | Local filesystem |
 | B16 | Locally accepted; B01/B02 | Prior corrected import→commit→reopen/dedup evidence | Synthetic CSV data |
 | B17 | Deferred actual training | Existing synthetic lifecycle evidence only; no fitting/promotion this batch | Production cold start |
 
-Resume: complete B07/B10 J5 combined queue runtime (positive and denied), B08 browser lesson consumption/revocation, B09 restart/reopen UI, B14 local parameter handoff/procedure. Do not issue blanket daily-use completion or deploy this new UI based on the earlier production smoke alone.
+Resume: only B14 wider live vision/generated-media acceptance and the B17 real-data prerequisite remain. Do not issue blanket daily-use completion or deploy this new UI based on the earlier production smoke alone.
 
 B13 read-only UI/API checkpoint completed: `b13-models-api.json` is an empty persisted registry; `b13-models-ui.txt` and visually inspected `b13-models.png` show 0 versions, no registered model and explicit cold-start. No training endpoint was invoked. Render 8087 is healthy and the frontend proxy now routes render-jobs to that service while intelligence remains on 8086. Disposable initialization required moving its already-installed pgcrypto extension from public to creative_render before render V2; this fresh initialization-order limitation remains open, and no production or historical migration was altered.
 
-Final checkpoint HEAD `6131098` (automatically advanced). J5 browser negative control: render page with pending post-family authorization rejects Queue render with “Post-family kanıtı eksik veya yetki bekliyor”; actual isolated render-jobs GET remains empty (`j5-denied-ui.txt`, `j5-jobs-after-denied.json`). Positive parent-linked queue acceptance is still pending. Correct model-registry API is `/api/v1/models`, not the intelligence-prefixed path; evidence now captures the actual [] response. Owned runtime sessions: backend 16493, fixture 23979, frontend 12600, render 86972; all separate from production. Resume at positive J5 fixture and full render proxy routing, then B08/B09 browser journeys.
+Final checkpoint HEAD `0cc5463` (automatically advanced). J5 browser negative control rejects pending authorization with “Post-family kanıtı eksik veya yetki bekliyor” and creates zero jobs. Positive parent-linked handoff → admission → queue → reload/replay persisted one job, one attempt and one credit estimate; worker and OpenArt remained disabled. B08 lesson consumption/revocation captured context counts [1,0]. B09 V4 failure status remains isolated from V5 NOT_STARTED, and expired V5 recovery is PROVIDER_OUTCOME_UNKNOWN. Render JSON binding and fresh-install pgcrypto search-path tests pass. B14 local contract suites and 62 ML execution/workflow tests pass; requested duration, aspect ratio, resolution and frame are retained, while unsupported settings remain UNSUPPORTED. Remaining external work is B14 live vision/generated-media verification and the B17 real data prerequisite; no blanket completion claim is made.
