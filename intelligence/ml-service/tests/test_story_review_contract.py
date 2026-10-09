@@ -32,3 +32,29 @@ def test_story_review_rejects_unknown_recommendation() -> None:
         assert 'candidate IDs' in str(error) or 'recommendation' in str(error)
     else:
         raise AssertionError('malformed recommendation should fail closed')
+
+
+def test_story_review_canonicalizes_ordinal_candidate_aliases() -> None:
+    class AliasProvider(FakeReviewProvider):
+        def complete(self, prompt, system, temperature=0):
+            value = super().complete(prompt, system, temperature)
+            import json
+            payload = json.loads(value)
+            for index, item in enumerate(payload['candidateReviews'], 1):
+                item['candidateId'] = f'candidate-{index}'
+            payload['recommendedCandidateId'] = 'candidate-2'
+            return json.dumps(payload)
+
+    result = perform_role('STORY_REVIEW', 'story', {
+        'sourceRequestId': 'story-1', 'sourceFingerprint': 'src-1',
+        'candidates': [
+            {'candidateId': 'uuid-candidate-1', 'text': 'one'},
+            {'candidateId': 'uuid-candidate-2', 'text': 'two'},
+            {'candidateId': 'uuid-candidate-3', 'text': 'three'},
+        ],
+    }, AliasProvider(), 'fixture')
+    review = result['result']
+    assert [item['candidateId'] for item in review['candidateReviews']] == [
+        'uuid-candidate-1', 'uuid-candidate-2', 'uuid-candidate-3'
+    ]
+    assert review['recommendedCandidateId'] == 'uuid-candidate-2'

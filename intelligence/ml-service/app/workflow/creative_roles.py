@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 import math
 import os
+import re
 from typing import Any
 
 from app.llm.provider import LLMProvider
@@ -51,10 +52,28 @@ def perform_role(role: str, text: str, context: dict[str, Any], provider: LLMPro
         if not isinstance(reviews, list) or len(reviews) != len(candidate_ids):
             raise ValueError('STORY_REVIEW must include exactly one review per candidate')
         review_ids = [str(item.get('candidateId')) for item in reviews if isinstance(item, dict)]
-        if len(review_ids) != len(set(review_ids)) or set(review_ids) != set(candidate_ids):
+        if len(review_ids) != len(set(review_ids)):
             raise ValueError('STORY_REVIEW candidate IDs do not match the request')
-        if value.get('recommendedCandidateId') is not None and str(value.get('recommendedCandidateId')) not in candidate_ids:
-            raise ValueError('STORY_REVIEW recommendation must reference a supplied candidate or null')
+        if set(review_ids) != set(candidate_ids):
+            # Some models preserve candidate order but shorten UUID-backed IDs to
+            # candidate-1/candidate-2. Canonicalize those ordinal aliases while
+            # still failing closed for missing, duplicate, or ambiguous IDs.
+            ordinals = []
+            for review_id in review_ids:
+                match = re.search(r'(?:candidate[-_ ]?)?(\d+)$', review_id.lower())
+                ordinals.append(int(match.group(1)) if match else None)
+            if ordinals != list(range(1, len(candidate_ids) + 1)):
+                raise ValueError('STORY_REVIEW candidate IDs do not match the request')
+            for item, ordinal in zip(reviews, ordinals):
+                item['candidateId'] = candidate_ids[ordinal - 1]
+            review_ids = candidate_ids
+        recommendation = value.get('recommendedCandidateId')
+        if recommendation is not None and str(recommendation) not in candidate_ids:
+            match = re.search(r'(?:candidate[-_ ]?)?(\d+)$', str(recommendation).lower())
+            if match and 1 <= int(match.group(1)) <= len(candidate_ids):
+                value['recommendedCandidateId'] = candidate_ids[int(match.group(1)) - 1]
+            else:
+                raise ValueError('STORY_REVIEW recommendation must reference a supplied candidate or null')
         if value.get('reviewStatus') not in {'COMPLETED', 'PARTIAL', 'SERVICE_ERROR', 'INSUFFICIENT_EVIDENCE'}:
             raise ValueError('Unsupported STORY_REVIEW status')
     elif role == 'STORY':
