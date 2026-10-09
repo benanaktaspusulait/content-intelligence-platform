@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Value;
 
 /** Read-only operational snapshot for the local render service. */
 @RestController
@@ -22,6 +23,8 @@ public class OperationalStatusController {
   private final PublicationService publications;
   private final ScheduledPublishingService schedules;
   private final CreditTrackingService credits;
+  @Value("${pompom.meta.publish-enabled:false}")
+  private boolean metaPublishEnabled;
 
   @GetMapping("/status")
   public OperationalStatus status() {
@@ -44,7 +47,8 @@ public class OperationalStatusController {
             budget.getUsedCredits(),
             budget.getRemainingCredits(),
             budget.getLevel().name(),
-            budget.getTotalJobs()));
+            budget.getTotalJobs()),
+        metaPublishEnabled ? "META_PUBLISH_CONFIGURED" : "META_PUBLISH_DISABLED");
   }
 
   public record OperationalStatus(
@@ -53,7 +57,8 @@ public class OperationalStatusController {
       Map<String, Integer> renderJobs,
       Map<String, Long> publications,
       Map<String, Long> schedules,
-      BudgetSnapshot budget) {}
+      BudgetSnapshot budget,
+      String publicationStatus) {}
 
   public record BudgetSnapshot(
       BigDecimal budgetLimit,
