@@ -431,6 +431,8 @@ Intensity: 4`;
     if (workspace) this.toggleWorkspace(workspace);
   }
 
+  scrollToQualityStep(id: string): void { document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+
   ngAfterViewInit(): void {
     if (!this.promptMonaco) return;
     import('monaco-editor/esm/vs/editor/editor.api').then(monaco => {

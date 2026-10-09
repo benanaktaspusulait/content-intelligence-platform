@@ -63,9 +63,10 @@
     <div><span class="eyebrow">CREATIVE STUDIO</span><h2>Want to create something new?</h2><p>Start with an idea and let DeepSeek develop a story before OpenAI creates your production prompt.</p></div>
     <div class="actions"><a class="btn btn-primary btn-sm" routerLink="/quality/new">Create New Video</a><a class="btn btn-outline-secondary btn-sm" routerLink="/quality/detail">I Have an Existing Prompt</a></div>
   </section>
+  <nav *ngIf="detailMode" class="quality-step-nav" aria-label="Quality workflow steps"><button type="button" class="quality-step is-active" (click)="scrollToQualityStep('prompt-editor')"><span>1</span><strong>Prompt</strong><small>Review and edit</small></button><button type="button" class="quality-step" (click)="scrollToQualityStep('production-review')"><span>2</span><strong>Production review</strong><small>Validate workflow</small></button><button type="button" class="quality-step" [disabled]="!report" (click)="scrollToQualityStep('analysis-report')"><span>3</span><strong>Analysis</strong><small>Quality evidence</small></button><button type="button" class="quality-step" [disabled]="!report" (click)="scrollToQualityStep('priority-fixes')"><span>4</span><strong>Repair</strong><small>Priority fixes</small></button><button type="button" class="quality-step" [disabled]="!report" (click)="scrollToQualityStep('render-readiness')"><span>5</span><strong>Render &amp; QA</strong><small>Readiness checks</small></button></nav>
   <p *ngIf="creativeProvenance as provenance">Prompt origin: {{ provenance.origin }}<ng-container *ngIf="provenance.origin === 'BUILD_PROMPT'"> · {{ provenance.provider }} {{ provenance.model }} · {{ provenance.creativeRoleRecordId }} · story {{ provenance.sourceStoryRecordId || 'manual source' }} · {{ provenance.operatorEdited ? 'Operator edited draft' : 'Original saved draft' }} · {{ provenance.validationStatus }}</ng-container></p>
   <label *ngIf="detailMode && linkedVideos.length">Exact linked video<select [(ngModel)]="selectedWorkspaceVideoPath"><option value="">Select exact video…</option><option *ngFor="let video of linkedVideos" [value]="video.relativePath">{{video.relativePath}} · {{video.videoId}}</option></select></label>
-  <app-post-family-workflow *ngIf="detailMode" [prompt]="prompt" [contentId]="contentId" [promptVersionId]="promptVersionId" [sourcePath]="selectedPromptPath" [videoPath]="selectedWorkspaceVideoPath" [workflowProfile]="studioMode ? 'post-family-v1' : 'FROZEN'" (saveFinal)="saveWorkflowFinalPrompt($event)" (acceptedVersion)="useAcceptedRepair($event)"></app-post-family-workflow>
+  <div *ngIf="detailMode" id="production-review" class="quality-step-anchor"><app-post-family-workflow *ngIf="detailMode" [prompt]="prompt" [contentId]="contentId" [promptVersionId]="promptVersionId" [sourcePath]="selectedPromptPath" [videoPath]="selectedWorkspaceVideoPath" [workflowProfile]="studioMode ? 'post-family-v1' : 'FROZEN'" (saveFinal)="saveWorkflowFinalPrompt($event)" (acceptedVersion)="useAcceptedRepair($event)"></app-post-family-workflow></div>
 
   <p *ngIf="importMessage">{{ importMessage }}</p>
   <!-- Prompt detail/editor is intentionally a separate route from the folder picker. -->
@@ -118,7 +119,7 @@
   </div>
 
   <!-- Quality Report -->
-  <div *ngIf="report" class="report-section">
+  <div *ngIf="report" id="analysis-report" class="report-section">
 
     <div class="report-toolbar">
       <div>
@@ -232,7 +233,7 @@
     <!-- Priority Fixes -->
     <div *ngIf="report.priorityFixes && report.priorityFixes.length > 0" class="priority-fixes card">
       <div class="card-header">
-        <h2>🔧 Priority Fixes</h2>
+        <h2 id="priority-fixes">🔧 Priority Fixes</h2>
         <span class="badge badge-secondary">{{ report.priorityFixes.length }}</span>
       </div>
       <div class="card-body">
@@ -260,7 +261,7 @@
 
     <div *ngIf="report.serviceErrors.length || report.unknownRules.length || report.notApplicableRules.length" class="failed-rules card">
       <div class="card-header">
-        <h2>Evaluation Coverage</h2>
+        <h2 id="render-readiness">Evaluation Coverage</h2>
       </div>
       <div class="card-body">
         <p><strong>Service errors:</strong> {{ report.serviceErrors.length }}</p>
