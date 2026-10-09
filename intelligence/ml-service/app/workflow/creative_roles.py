@@ -164,11 +164,12 @@ def run_paid_role(role: str, text: str, context: dict[str, Any], max_cost_usd: f
     if not all(math.isfinite(v) and v > 0 for v in (input_rate, output_rate, max_cost_usd)):
         raise ValueError('Verified server price configuration and explicit positive budget required')
     payload_bytes = len(json.dumps({'text': text, 'context': context}, ensure_ascii=False).encode('utf-8'))
-    upper_bound = ((payload_bytes + 2000) * input_rate + 2000 * output_rate) / 1_000_000
+    output_token_limit = 4000 if role == 'STORY' else 2000
+    upper_bound = ((payload_bytes + 2000) * input_rate + output_token_limit * output_rate) / 1_000_000
     if payload_bytes > 24000 or upper_bound > max_cost_usd:
         raise ValueError('Request exceeds approved cost ceiling')
     provider = DeepSeekTextProvider(model) if role == 'STORY' else OpenAIProvider(model=model)
-    provider.max_output_tokens = 2000
+    provider.max_output_tokens = output_token_limit
     provider.json_output = True
     result = perform_role(role, text, context, provider, model)
     result['costUpperBoundUsd'] = upper_bound
