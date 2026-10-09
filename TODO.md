@@ -216,6 +216,19 @@ Implementation follows the approved visual-reference prompt and stays inside the
 - [x] Historical assets remain readable and no paid live-provider tests were run without explicit later authorization.
 # Quality Engine UX Consolidation & Workflow Integration — TODO
 
+# Production Prompt Engine Quality Upgrade — current work
+
+This section tracks the targeted production-prompt upgrade. Provider calls remain disabled for local verification; no paid generation or rendering is performed by this implementation pass.
+
+- [x] P01-P04 Capture a typed, persisted production prompt specification before prompt text generation.
+- [x] P05-P08 Bind selected character identity, authoritative references, source intent and evidence limitations.
+- [x] P09-P12 Resolve the selected target generator explicitly and carry it through the request lineage without silently falling back to AUTO.
+- [x] P13-P18 Generate a readable OpenArt prompt from the approved story and structured visual plan.
+- [x] P19-P22 Run material quality checks for opening, progression, mechanism, continuity, timing and final beat.
+- [x] P23-P26 Surface plan, requirements, risks, references and technical settings in Creative Studio.
+- [x] P27-P30 Preserve lineage through saved creative-role records, prompt versions and the existing B03 repair flow.
+- [x] P31-P33 Add local contract/regression tests and deploy only after the relevant checks pass.
+
 ## Slice A — Route and bundle identity
 - [x] Identify the served Quality route, source component, shared shell, and deployed bundle.
 - [x] Read current audit, backlog, fix progress, and Creative Studio implementation docs.

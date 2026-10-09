@@ -32,10 +32,10 @@ def perform_role(role: str, text: str, context: dict[str, Any], provider: LLMPro
     system = {
         'STORY_REVIEW': '''Review every supplied story candidate together. Return ONLY one JSON object matching this exact STORY_REVIEW contract; never omit a key and never return markdown. Required top-level keys: reviewId, sourceRequestId, sourceFingerprint, reviewModel, reviewModelVersion, reviewPolicyVersion, reviewTimestamp, reviewStatus, diversityAssessment, comparativeFindings, candidateReviews, recommendedCandidateId, recommendationReason, overallConcerns, usageAndCost, evidenceLimitations, revisionComparison. Set sourceRequestId and sourceFingerprint exactly to the values supplied in context (they may be null). reviewStatus must be COMPLETED, PARTIAL, SERVICE_ERROR, or INSUFFICIENT_EVIDENCE. candidateReviews must contain exactly one object for each supplied candidate, each with its exact candidateId; use concise structured findings and do not invent candidates. recommendedCandidateId must be one supplied candidateId or null. Use arrays/objects for the remaining evidence fields even when empty. Compare structure rather than wording, preserve source fidelity, mark uncertainty honestly, and never grant render authorization.''',
         'STORY': 'Return JSON alternatives: one to three story candidates. Respect the requested generation mode and locked requirements. For EXPLORE_DIFFERENT_STORIES vary meaningful narrative structure; for IMPROVE_EXISTING_STORY preserve locked events and ending while offering refinements. Preserve the supplied characters and intent. No production authorization.',
-        'BUILD_PROMPT': '''Return ONLY JSON with a single `prompt` string. Transform the approved story into a production-ready OpenArt video prompt; do not paraphrase or paste the story. Preserve every required event, character, first-frame condition, timing and hard cut. Write a readable multi-paragraph prompt with a blank line between these exact headings: TITLE / FORMAT, VISUAL STYLE, CHARACTER / CONTINUITY, TIMED SHOT PLAN, AUDIO, NEGATIVE CONSTRAINTS, FINAL CUT. The TIMED SHOT PLAN must contain 0-3s, 3-6s, 6-10s, 10-13s and 13-15s beats; every beat must state camera/framing, visible action and spatial staging. Include the first-frame requirement in the opening shot, make multiplication readable, keep Mimi visible when notes attach, and state the final hard cut. This is the complete prompt to paste into OpenArt, so do not add analysis, JSON inside the string, provider commentary or approval language. Use only supplied story, references and constraints; never invent appearance or evidence. No production authorization.''',
+        'BUILD_PROMPT': '''Return ONLY JSON with exactly two top-level keys: `prompt` and `productionPlan`. Transform the approved story into a production-ready OpenArt video prompt; do not paraphrase or paste the story. Preserve every required event, character, first-frame condition, timing and hard cut. Write a readable multi-paragraph prompt with a blank line between these exact headings: TITLE / FORMAT, VISUAL STYLE, CHARACTER / CONTINUITY, TIMED SHOT PLAN, AUDIO, NEGATIVE CONSTRAINTS, FINAL CUT. The TIMED SHOT PLAN must contain 0-3s, 3-6s, 6-10s, 10-13s and 13-15s beats; every beat must state camera/framing, visible action and spatial staging. Include the first-frame requirement in the opening shot, make multiplication readable, keep the main character visible when the mechanism acts, and state the final hard cut. `productionPlan` must be a structured object with these keys: sourceIdentity, creativeObjective, characterBindings, visualExecution, productionConstraints, intentClassification, evidenceLimitations, generatorRisks, referencePlan. visualExecution must contain openingState, beats (one object per timed beat), mechanism, continuity, and endingState. Each beat must contain time, framing, action, staging and consequence. Use only supplied story, references and constraints; never invent appearance or evidence. Mark missing evidence explicitly. Do not add provider commentary, approval language or production authorization.''',
         'MINIMAL_REPAIR': 'Return JSON patches: at most three minimal edits with integer Unicode code point start/end, exact sourceQuote and replacement. Preserve protected intent and ESSENTIAL source quotes. Never return approval or rewrite the entire prompt.',
     }[role]
-    safe_context = {key: context[key] for key in ('protectedIntent', 'intentRequirements', 'findings', 'retrievedLessons', 'constraints', 'storyGenerationMode', 'lockedRequirements', 'permittedVariation', 'mainCharacter', 'preferences', 'profile', 'candidates', 'candidateIds', 'sourceRequestId', 'sourceFingerprint', 'previousReview', 'currentRevision', 'previousRevision', 'targetDuration', 'aspectRatio', 'reviewPolicyVersion') if key in context}
+    safe_context = {key: context[key] for key in ('protectedIntent', 'intentRequirements', 'findings', 'retrievedLessons', 'constraints', 'storyGenerationMode', 'lockedRequirements', 'permittedVariation', 'mainCharacter', 'character', 'characterRecord', 'characterReferences', 'referenceBindings', 'preferences', 'profile', 'candidates', 'candidateIds', 'sourceRequestId', 'sourceFingerprint', 'previousReview', 'currentRevision', 'previousRevision', 'targetDuration', 'aspectRatio', 'reviewPolicyVersion', 'selectedGenerator', 'generatorCapabilities', 'targetConfiguration') if key in context}
     value = json.loads(provider.complete(json.dumps({'text': text, 'context': safe_context}, ensure_ascii=False), system=system, temperature=0))
     if not isinstance(value, dict):
         raise ValueError('Role result must be an object')
@@ -51,7 +51,7 @@ def perform_role(role: str, text: str, context: dict[str, Any], provider: LLMPro
         candidate_ids = [str(item.get('candidateId')) for item in candidates if isinstance(item, dict)]
         reviews = value.get('candidateReviews')
         if not isinstance(reviews, list) or len(reviews) != len(candidate_ids):
-            raise ValueError('STORY_REVIEW must include exactly one review per candidate')
+            raise ValueError('STORY_REVIEW candidate IDs must include exactly one review per candidate')
         review_ids = [str(item.get('candidateId')) for item in reviews if isinstance(item, dict)]
         if len(review_ids) != len(set(review_ids)):
             raise ValueError('STORY_REVIEW candidate IDs do not match the request')
@@ -98,6 +98,30 @@ def perform_role(role: str, text: str, context: dict[str, Any], provider: LLMPro
             raise ValueError('Production prompt must include timed shots, camera direction, continuity, audio and final-cut details')
         if SequenceMatcher(None, prompt.lower(), source.lower()).ratio() > 0.9 and len(prompt) <= len(source) * 1.35:
             raise ValueError('Production prompt cannot be a restatement of the approved story')
+        plan = value.get('productionPlan')
+        required_plan = ('sourceIdentity', 'creativeObjective', 'characterBindings', 'visualExecution', 'productionConstraints', 'intentClassification', 'evidenceLimitations', 'generatorRisks', 'referencePlan')
+        if not isinstance(plan, dict) or any(key not in plan for key in required_plan):
+            raise ValueError('Production prompt specification is incomplete')
+        execution = plan.get('visualExecution')
+        if not isinstance(execution, dict) or not isinstance(execution.get('openingState'), (str, dict)) or not isinstance(execution.get('mechanism'), (str, dict)) or not isinstance(execution.get('endingState'), (str, dict)) or not isinstance(execution.get('continuity'), (str, list, dict)):
+            raise ValueError('Production prompt visual execution plan is incomplete')
+        beats = execution.get('beats')
+        if not isinstance(beats, list) or len(beats) < 5:
+            raise ValueError('Production prompt must contain five bounded visual beats')
+        for beat in beats:
+            if not isinstance(beat, dict) or any(not isinstance(beat.get(key), str) or not beat[key].strip() for key in ('time', 'framing', 'action', 'staging', 'consequence')):
+                raise ValueError('Every production beat must include time, framing, action, staging and consequence')
+        quality_findings: list[dict[str, str]] = []
+        if not any('0-3' in str(beat.get('time', '')).replace('–', '-') for beat in beats):
+            quality_findings.append({'code': 'OPENING_BEAT_UNCLEAR', 'severity': 'MATERIAL', 'message': 'The plan does not identify a 0-3s opening beat.'})
+        if not any('13-15' in str(beat.get('time', '')).replace('–', '-') for beat in beats):
+            quality_findings.append({'code': 'ENDING_BEAT_UNCLEAR', 'severity': 'MATERIAL', 'message': 'The plan does not identify a 13-15s final beat.'})
+        if not plan.get('evidenceLimitations'):
+            quality_findings.append({'code': 'EVIDENCE_LIMITATION_MISSING', 'severity': 'WARNING', 'message': 'Evidence limitations must be explicit, including when no reference asset was supplied.'})
+        if not plan.get('generatorRisks'):
+            quality_findings.append({'code': 'GENERATOR_RISK_UNREPORTED', 'severity': 'WARNING', 'message': 'The target generator has no recorded risk assessment.'})
+        value['qualityFindings'] = quality_findings
+        value['productionPlan'] = plan
     else:
         patches = value.get('patches')
         if not isinstance(patches, list) or len(patches) > 3:
