@@ -50,10 +50,11 @@ public class InstagramMetricsClient implements PlatformMetricsClient {
             + "/"
             + platformVideoId
             + "?fields=like_count,comments_count,media_type,timestamp"
-            + "&access_token="
-            + accessToken;
+            ;
 
-    String mediaResponse = restClient.get().uri(mediaUrl).retrieve().body(String.class);
+    String mediaResponse =
+        restClient.get().uri(mediaUrl).headers(headers -> headers.setBearerAuth(accessToken))
+            .retrieve().body(String.class);
 
     JsonNode mediaJson = objectMapper.readTree(mediaResponse);
 
@@ -72,10 +73,11 @@ public class InstagramMetricsClient implements PlatformMetricsClient {
             + platformVideoId
             + "/insights"
             + "?metric=impressions,reach,saves,plays,shares,total_interactions"
-            + "&access_token="
-            + accessToken;
+            ;
 
-    String insightsResponse = restClient.get().uri(insightsUrl).retrieve().body(String.class);
+    String insightsResponse =
+        restClient.get().uri(insightsUrl).headers(headers -> headers.setBearerAuth(accessToken))
+            .retrieve().body(String.class);
 
     JsonNode insightsJson = objectMapper.readTree(insightsResponse);
 

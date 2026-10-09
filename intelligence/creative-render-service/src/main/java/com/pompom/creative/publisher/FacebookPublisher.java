@@ -80,12 +80,12 @@ public class FacebookPublisher implements PlatformPublisher {
           restClientBuilder
               .build()
               .get()
-              .uri(
-                  GRAPH_API_BASE_URL
+                  .uri(
+                      GRAPH_API_BASE_URL
                       + "/"
                       + videoId
-                      + "?fields=id,permalink_url&access_token="
-                      + token)
+                      + "?fields=id,permalink_url")
+              .headers(headers -> headers.setBearerAuth(token))
               .retrieve()
               .body(String.class);
       JsonNode json = objectMapper.readTree(response);

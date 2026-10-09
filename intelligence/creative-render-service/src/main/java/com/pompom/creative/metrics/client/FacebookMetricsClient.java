@@ -34,9 +34,11 @@ public class FacebookMetricsClient implements PlatformMetricsClient {
             + "/"
             + platformVideoId
             + "?fields=id,views,likes.summary(true),comments.summary(true),shares"
-            + "&access_token="
-            + token;
-    String body = restClientBuilder.build().get().uri(url).retrieve().body(String.class);
+            ;
+    String body =
+        restClientBuilder.build().get().uri(url)
+            .headers(headers -> headers.setBearerAuth(token))
+            .retrieve().body(String.class);
     JsonNode json = objectMapper.readTree(body);
     if (json.has("error")) {
       throw new IOException(
