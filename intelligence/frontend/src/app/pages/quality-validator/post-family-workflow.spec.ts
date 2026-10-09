@@ -80,7 +80,7 @@ describe('post-family operator workflow', () => {
     const f = await setup();
     f.componentInstance.platformContentId = '99999999999999999999';
     expect(f.componentInstance.platformContentId).toBe('99999999999999999999');
-    expect(f.nativeElement.textContent).toContain('referans');
+    expect(f.nativeElement.textContent).toContain('reference');
   });
   it('binds a local patch to Unicode code points and the exact source quote', async () => {
     const f = await setup();
