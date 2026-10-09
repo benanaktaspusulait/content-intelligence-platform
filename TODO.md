@@ -29,9 +29,9 @@ Publisher migration is now an explicitly authorized companion workstream. It mus
 - [x] Read-only OAuth entry/callback: `/api/v1/meta/oauth/start`, `/api/v1/meta/oauth/callback`
 - [x] Instagram analytics snapshot persistence with exact local matching
 - [x] Angular Meta connection, Reel list, and Reel analytics screens
-- [ ] Full Meta production safety: current render-service publication paths can still reach Facebook/Instagram publishers
-- [ ] Unified durable Meta connection/token lifecycle
-- [ ] Facebook read-only insights
+- [x] Full Meta production safety: current render-service publication paths can still reach Facebook/Instagram publishers
+- [x] Unified durable Meta connection/token lifecycle
+- [x] Facebook read-only insights
 - [ ] Comments/messages/replies
 
 ## Phase 0 — Fail-closed publishing safety (P0)
@@ -123,12 +123,12 @@ Publisher migration is now an explicitly authorized companion workstream. It mus
 
 ## Definition of Done
 
-- [ ] Meta publishing is fail-closed by default at controller, service, worker, and UI layers.
-- [ ] Read-only OAuth is durable, refreshable, revocable, and scope-verified.
-- [ ] Facebook and Instagram analytics are unified, persisted, provenance-aware, and honest about missing data.
+- [x] Meta publishing is fail-closed by default at controller, service, worker, and UI layers.
+- [x] Read-only OAuth is durable, refreshable, revocable, and scope-verified.
+- [x] Facebook and Instagram analytics are unified, persisted, provenance-aware, and honest about missing data.
 - [ ] Public Facebook/Instagram comments have typed persistence, webhook deduplication, moderation, approval, idempotency, and audited replies.
 - [ ] Dashboard exposes read-only analytics and human-approved public comment replies without hidden publish side effects.
-- [ ] Backend/frontend/package gates are green except explicitly documented unrelated baseline failures.
+- [x] Backend/frontend/package gates are green except explicitly documented unrelated baseline failures.
 - [ ] Live read-only smoke passes with a dedicated Meta test account.
 - [ ] No publish/reply live test is run without explicit approval.
 
