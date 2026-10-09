@@ -27,4 +27,15 @@ class MetaCommentReconciliationServiceTest {
     verify(webhookService).processWebhookEvent(comment);
     verify(webhookService, never()).processWebhookEvent(publish);
   }
+
+  @Test
+  void clampsNonPositiveLimitToOneAndSkipsOtherPlatforms() {
+    WebhookEvent instagram = WebhookEvent.builder().platform(PlatformType.INSTAGRAM).eventType("comment.created").build();
+    WebhookEventRepository repository = mock(WebhookEventRepository.class);
+    WebhookService webhookService = mock(WebhookService.class);
+    when(repository.findByIsProcessedFalseAndRetryCountLessThan(3)).thenReturn(List.of(instagram));
+    var result = new MetaCommentReconciliationService(repository, webhookService).reconcile(0);
+    assertThat(result.replayed()).isEqualTo(1);
+    verify(webhookService).processWebhookEvent(instagram);
+  }
 }
