@@ -13,6 +13,7 @@ describe('creative studio idea-first workflow', () => {
     http.expectOne('/api/v1/intelligence/workflow/creative-role/readiness').flush({enabled:true,storyModel:'fixture',promptModel:'fixture'});
     http.expectOne('/api/v1/characters').flush([]);
     http.expectOne('/api/v1/videos/prompt-workspaces?relativeDirectory=library/POMPOM_HILLS_PRODUCTION/09_SOCIAL_REELS/new14092026').flush([]);
+    http.expectOne('/api/v1/intelligence/workflow/records?kind=CREATIVE_ROLE').flush([]);
     page.idea='Kiko sınava giriyor'; page.storyConsent=true; page.budget=0.01; page.requestStories();
     const story=http.expectOne('/api/v1/intelligence/workflow/creative-role'); expect(story.request.body.text).toBe('Kiko sınava giriyor'); story.flush({recordId:'story-1',result:{alternatives:['Kiko kalemiyle konuşur.']}});
     await fixture.whenStable(); page.selectStory(page.candidates[0]); page.approveStory();
@@ -20,5 +21,27 @@ describe('creative studio idea-first workflow', () => {
     await fixture.whenStable(); page.promptConsent=true; page.buildPrompt();
     const build=http.expectOne('/api/v1/intelligence/workflow/creative-role'); expect(build.request.body.role).toBe('BUILD_PROMPT'); expect(build.request.body.context.sourceStoryRecordId).toBe('story-1'); expect(build.request.body.text).toContain('kalemiyle'); build.flush({recordId:'builder-1',result:{prompt:'Kiko enters a classroom and the pencil moves.'}});
     expect(page.builderRecordId).toBe('builder-1'); http.match(r=>r.method==='PUT').forEach(r=>r.flush({})); http.verify(); fixture.destroy(); TestBed.resetTestingModule();
+  });
+});
+
+describe('saved story reuse', () => {
+  it('hydrates a saved STORY record without requesting the provider again', async () => {
+    localStorage.removeItem('pompom.creative-studio.v1');
+    await TestBed.configureTestingModule({imports:[CreativeStudioPage],providers:[provideHttpClient(),provideHttpClientTesting(),provideRouter([])]}).compileComponents();
+    const fixture=TestBed.createComponent(CreativeStudioPage); const page=fixture.componentInstance; const http=TestBed.inject(HttpTestingController);
+    fixture.detectChanges();
+    http.expectOne('/api/v1/intelligence/workflow/creative-role/readiness').flush({enabled:true,roles:[{role:'STORY',configured:true,model:'fixture'}]});
+    http.expectOne('/api/v1/characters').flush([]);
+    http.expectOne('/api/v1/videos/prompt-workspaces?relativeDirectory=library/POMPOM_HILLS_PRODUCTION/09_SOCIAL_REELS/new14092026').flush([]);
+    http.expectOne('/api/v1/intelligence/workflow/records?kind=CREATIVE_ROLE').flush([{recordId:'saved-1',role:'STORY',sourceRequest:{text:'Kiko finds a door'},alternatives:['Kiko opens the door and finds a tiny stage.']}]);
+    await fixture.whenStable();
+    expect(page.savedStories).toHaveLength(1);
+    page.useSavedStory(page.savedStories[0]);
+    expect(page.stage).toBe('STORY');
+    expect(page.storyRecordId).toBe('saved-1');
+    expect(page.selectedStory).toContain('tiny stage');
+    expect(http.match(r=>r.method==='POST')).toHaveLength(0);
+    http.match(r=>r.method==='PUT').forEach(r=>r.flush({}));
+    http.verify(); fixture.destroy(); TestBed.resetTestingModule();
   });
 });
