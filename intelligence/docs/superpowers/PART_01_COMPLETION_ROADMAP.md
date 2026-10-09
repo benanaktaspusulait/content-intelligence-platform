@@ -330,7 +330,7 @@ actually pass.
 
 **Status: ✅ Done.** Executed via `subagent-driven-development`, 8 tasks, each with an
 implementer → review → fix-round cycle. Plan doc:
-`docs/superpowers/plans/2026-10-03-plan-a-outcome-model-api-contract.md`.
+the completed implementation plan retained in Git history.
 
 Final state: Python test suite 312/312 passing, `ruff`/`mypy --strict` clean. Java test
 suite 62/62 passing, `BUILD SUCCESS`. Full-plan diff reviewed holistically (not just

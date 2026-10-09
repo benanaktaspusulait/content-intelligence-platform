@@ -270,7 +270,7 @@ results.
 **Status: ✅ Done (backend-only — see open follow-ups below).** Executed via
 `subagent-driven-development`, 4 tasks, each with an implementer → review → fix-round cycle (no
 fix rounds were actually needed — every task was Approved on first review). Plan doc:
-`docs/superpowers/plans/2026-10-03-part02-plan-a-observation-mathematics.md`.
+the completed implementation plan retained in Git history.
 
 Final state: Spring test suite 78/78 passing, `BUILD SUCCESS`. Full-plan diff reviewed
 holistically (not just per-task) and found Approved-with-follow-ups — no cross-task
@@ -337,7 +337,7 @@ files.
 implementer → review → fix-round cycle (no fix rounds were actually needed — every task was
 Approved on first review, though two tasks' implementers found and fixed real bugs in the plan's
 own draft code before that approval). Plan doc:
-`docs/superpowers/plans/2026-10-03-part02-plan-b1-variant-domain.md`.
+the completed implementation plan retained in Git history.
 
 Final state: Spring test suite 92/92 passing, `BUILD SUCCESS`. Full-plan diff reviewed
 holistically and found fully Approved — no cross-task inconsistency, no global-constraint
@@ -389,7 +389,7 @@ implementer subagent timed out with no side effects; the controller completed th
 directly). Every task was Approved on first review — no fix rounds needed, though three
 implementation-time bugs were found and fixed by implementers/controller before each task's
 review (not left for the reviewer to catch). Plan doc:
-`docs/superpowers/plans/2026-10-03-part02-plan-b2a-variant-aware-backend.md`.
+the completed implementation plan retained in Git history.
 
 Final state: Spring test suite 103/103 passing, `BUILD SUCCESS`. Full-plan diff reviewed
 holistically and found fully Approved — no cross-task inconsistency, no global-constraint
@@ -459,7 +459,7 @@ re-dispatched, per this session's established precedent. Every task reached Appr
 with minor notes on first review — no fix rounds needed, though two of the four tasks' implementers
 caught and correctly fixed real false-positive bugs in the plan's own draft test fixtures before
 review (not left for the reviewer to catch). Plan doc:
-`docs/superpowers/plans/2026-10-04-part02-plan-b2b-frontend-variant-consumption.md`.
+the completed implementation plan retained in Git history.
 
 Final state: backend Spring suite 104/104 passing, `BUILD SUCCESS`; frontend suite 19/20 passing
 (1 pre-existing, unrelated `app.spec.ts` nav-link-count failure, confirmed via `git stash` to
@@ -537,7 +537,7 @@ proceed directly without further prerequisites from this plan.
 **Status: ✅ Done.** Executed via `subagent-driven-development`, 6 tasks + final review. One task
 (the final controller task) required a planning revision mid-execution after a real discovery; one
 task required a fix round after review found a genuine Critical gap. Plan doc:
-`docs/superpowers/plans/2026-10-04-part02-plan-c-creative-analysis-completion.md`.
+the completed implementation plan retained in Git history.
 
 **A real architecture decision was made mid-plan, not just an implementation detail:** the
 original roadmap text for this plan was ambiguous about whether `AnalysisJobService` (a complete,

@@ -1,292 +1,39 @@
-# Pompom Creative Intelligence System
+# Pompom Intelligence documentation
 
-AI-powered creative intelligence platform for video content creation, optimization, and distribution across social media platforms (TikTok, YouTube Shorts, Instagram Reels).
+Start with the current [fix and acceptance status](POMPOM_FIX_PROGRESS.md) and [Docker deployment / live text-role evidence](fix-evidence/live-2026-10-09/README.md). The existing application runs at [localhost:4200](http://localhost:4200). Deployment and successful text calls do not establish generated-video acceptance or production-model readiness.
 
-## 2026-10-08 operational audit
+Completed implementation plans, superseded investigation prompts and pre-fix reports were removed during the 2026-10-09 cleanup. They remain recoverable in Git history. Frozen calibration contracts, source citations, unresolved work and evidence supporting the current status remain here.
 
-Current runtime/UI evidence and remaining work are in [Pompom end-to-end audit](POMPOM_END_TO_END_AUDIT.md) and [prioritized backlog](POMPOM_END_TO_END_BACKLOG.md). Feature checkmarks below are historical context; they are not journey-level verification. No backlog implementation was performed in this audit.
+## Operation and development
 
-## Features
+- [Local development](LOCAL_DEVELOPMENT.md), [operations](OPERATIONS.md), [testing](TESTING.md)
+- [Usage guide](USAGE_GUIDE.md), [Angular UI](ANGULAR_UI.md), [OpenArt setup](OPENART_SETUP.md)
+- [Meta integration readiness](META_INTEGRATION_READINESS.md), [publisher migration readiness](PUBLISHER_MIGRATION_READINESS.md)
 
-### Phase 1: Foundation & Core Domain ✅
-- Content management with prompt versioning
-- Render job orchestration
-- Asset library management
-- Database schema with Flyway migrations
+## Architecture and contracts
 
-### Phase 2: Render Pipeline ✅
-- OpenArt API integration (video generation)
-- Credit tracking and budget alerts
-- QA service with decision engine
-- Golden test framework
+- [Domain model](DOMAIN_MODEL.md), [database](DATABASE.md), [architecture decisions](adr/)
+- [Master architecture](superpowers/specs/2026-09-30-master-architecture.md)
+- [Video Plan IR](VIDEO_PLAN_IR_SCHEMA.md), [quality family schemas](QUALITY_FAMILY_SCHEMAS.md)
+- [Video analysis](VIDEO_ANALYSIS.md), [character intelligence](CHARACTER_INTELLIGENCE.md)
+- [Post-render creative assessment](POST_RENDER_CREATIVE_ASSESSMENT.md), [assessment and insights](POST_RENDER_ASSESSMENT_AND_INSIGHTS.md)
+- [Short-form retention assessment](SHORT_FORM_RETENTION_ASSESSMENT.md), [creative heuristics](CREATIVE_HEURISTIC_REVIEW.md)
+- [Semantic routing and cost policy](SEMANTIC_AI_COST_OPTIMIZATION_PLAN.md)
 
-### Phase 3: OAuth & Publishing ✅
-- OAuth2 flows (TikTok, YouTube, Instagram)
-- Multi-platform publishers
-- Publication state tracking
-- Credential management with encryption
-- Scheduled publishing
-- AI-powered caption generation
-- Webhook system for platform callbacks
-- Publication history export (CSV/JSON)
+## Observation and learning
 
-### Phase 4: Learning Engine ✅
-- Scheduled metrics collection (T+30m, 1h, 6h, 24h, 7d, 30d)
-- Performance classification (10 categories)
-- Trajectory analysis (9 shapes, velocity/acceleration)
-- Correlation analysis (Pearson r)
-- Rule mining (IF-THEN patterns)
-- Winner catalog & benchmarking (4 tiers)
+- [Performance import](PERFORMANCE_IMPORT.md), [experimentation](EXPERIMENTATION.md)
+- [Prediction model](PREDICTION_MODEL.md), [model evaluation](MODEL_EVALUATION.md)
+- [Platform tempo and interventions](PLATFORM_TEMPO_AND_INTERVENTIONS.md), [Reach Further analysis](REACH_FURTHER_ANALYSIS.md)
 
-### Phase 5: Real Platform Integration ✅
-- TikTok Content Posting API & Research API
-- YouTube Data API v3 & Analytics
-- Instagram Graph API (requires an externally hosted public media URL)
-- Real API metrics collection with mock fallback
+## Acceptance, calibration and evidence
 
-### Phase 6: Real-time Features ✅
-- WebSocket infrastructure (STOMP, /ws endpoint)
-- Real-time render progress streaming
-- Live metrics updates
-- Email notifications (HTML templates)
-- In-app notification system
-- SSE endpoints (/notifications, /metrics, /heartbeat)
+- [Current status](POMPOM_FIX_PROGRESS.md), [original acceptance criteria](POMPOM_END_TO_END_BACKLOG.md), [original audit](POMPOM_END_TO_END_AUDIT.md)
+- [Latest deployment evidence](fix-evidence/live-2026-10-09/README.md), [local fixes on 9 October](fix-evidence/2026-10-09/README.md), [local fixes on 8 October](fix-evidence/2026-10-08/README.md)
+- [Golden architecture](GOLDEN_CALIBRATION_ARCHITECTURE.md), [regression workflow](GOLDEN_REGRESSION_WORKFLOW.md), [baseline](GOLDEN_V17_BASELINE_REPORT.md), [infrastructure contract audit](GOLDEN_CALIBRATION_AUDIT.md)
+- Frozen calibration records: [Family 1](FAMILY_1_CALIBRATION_REPORT.md), [Family 2](FAMILY_2_CALIBRATION_REPORT.md), [Family 3](FAMILY_3_CALIBRATION_REPORT.md), [Family 4](FAMILY_4_CALIBRATION_REPORT.md), [Family 5](FAMILY_5_GOLD_REVIEW_REPORT.md), [Family 10](FAMILY10_CALIBRATION.md)
+- [Family 4 source review](FAMILY_4_GOLD_REVIEW_REPORT.md) is directly cited by frozen Gold Truth and must remain available.
+- Open calibration debt: [Family 5 follow-up](FAMILY_5_GENERIC_BASELINE_DIVERGENCE_FOLLOWUP.md), [investigation findings](FAMILY_5_GENERIC_BASELINE_DIVERGENCE_INVESTIGATION_REPORT.md)
+- Earlier completion records with outstanding follow-ups: [Part 1](superpowers/PART_01_COMPLETION_ROADMAP.md), [Part 2](superpowers/PART_02_COMPLETION_ROADMAP.md), [semantic provenance design](superpowers/plans/PLAN_C0_SEMANTIC_PROVENANCE.md)
 
-### Phase 7: Advanced Analytics ✅
-- Predictive performance scoring (pre-publish)
-- Success probability & viral potential
-- A/B testing framework with statistical analysis
-- Optimal publish time recommendations
-- Content improvement recommendations
-- Anomaly detection (Z-score)
-- Trend analysis (moving averages)
-
-### Phase 8: Production Readiness ✅
-- Prometheus metrics integration
-- Rate limiting (100 req/min)
-- Structured logging (Logstash)
-- Custom health checks (disk space)
-- Response compression
-- Caching configuration
-
-## Tech Stack
-
-**Backend:**
-- Java 21
-- Spring Boot 4.1.1
-- Spring Data JPA
-- Spring WebSocket
-- PostgreSQL with Flyway
-- Micrometer + Prometheus
-
-**Key Libraries:**
-- Lombok (boilerplate reduction)
-- Jackson (JSON processing)
-- JavaMailSender (email)
-- SockJS (WebSocket fallback)
-- Apache POI (Excel export)
-- Apache Commons CSV
-
-## Quick Start
-
-### Prerequisites
-- Java 21+
-- PostgreSQL 15+
-- Maven 3.9+
-- Platform API credentials (TikTok/YouTube/Instagram)
-
-### Setup
-
-1. **Clone repository**
-```bash
-git clone <repository-url>
-cd Pompom_Creative_Intelligence/backend
-```
-
-2. **Configure database**
-```bash
-createdb pompom
-```
-
-3. **Set environment variables**
-```bash
-export DB_URL=jdbc:postgresql://localhost:5432/pompom
-export DB_USERNAME=pompom
-export DB_PASSWORD=your_password
-
-# Platform OAuth
-export TIKTOK_CLIENT_ID=your_client_id
-export TIKTOK_CLIENT_SECRET=your_secret
-export YOUTUBE_CLIENT_ID=your_client_id
-export YOUTUBE_CLIENT_SECRET=your_secret
-export INSTAGRAM_APP_ID=your_app_id
-export INSTAGRAM_APP_SECRET=your_secret
-
-# Security
-export ENCRYPTION_KEY=$(openssl rand -base64 32)
-
-# Email (optional)
-export MAIL_HOST=smtp.gmail.com
-export MAIL_USERNAME=your_email
-export MAIL_PASSWORD=your_password
-export EMAIL_NOTIFICATIONS_ENABLED=true
-
-# OpenArt (optional)
-export OPENART_API_KEY=your_api_key
-export OPENART_ENABLED=true
-```
-
-4. **Build and run**
-```bash
-mvn clean install
-mvn spring-boot:run
-```
-
-5. **Access application**
-- API: http://localhost:8080
-- Swagger UI: http://localhost:8080/swagger-ui.html
-- Health: http://localhost:8080/actuator/health
-- Metrics: http://localhost:8080/actuator/prometheus
-
-## API Endpoints
-
-### Render Jobs
-- `POST /api/v1/render/queue` - Queue render job
-- `GET /api/v1/render/{jobId}` - Get job status
-- `GET /api/v1/render/jobs` - List all jobs
-
-### Publications
-- `POST /api/v1/publish` - Publish to platform
-- `GET /api/v1/publish/{jobId}` - Get publication status
-- `GET /api/v1/publish/scheduled` - List scheduled publications
-
-### Metrics
-- `POST /api/v1/metrics/schedule/{jobId}` - Schedule metrics collection
-- `GET /api/v1/metrics/timeline/{jobId}` - Get metrics timeline
-- `POST /api/v1/metrics/manual` - Manual metrics entry
-
-### Analytics
-- `POST /api/v1/analytics/predict` - Predict performance
-- `POST /api/v1/analytics/ab-test` - Create A/B test
-- `GET /api/v1/analytics/recommendations` - Get recommendations
-- `GET /api/v1/analytics/trends` - Analyze trends
-
-### WebSocket
-- Connect: `ws://localhost:8080/ws`
-- Topics:
-  - `/topic/render/progress` - Render updates
-  - `/topic/metrics/updates` - Metrics updates
-  - `/topic/notifications` - Notifications
-
-### SSE
-- `GET /api/v1/sse/notifications` - Stream notifications
-- `GET /api/v1/sse/metrics/{jobId}` - Stream metrics
-- `GET /api/v1/sse/heartbeat` - Keepalive
-
-## Database Schema
-
-**24 migrations** (V1-V24):
-- Contents, prompt versions
-- Render jobs, assets, QA results
-- Golden tests, reference prompts
-- Platform credentials (encrypted)
-- Publication jobs
-- Scheduled publications
-- Publication analytics
-- Webhooks, webhook deliveries
-- Video metrics, collection jobs
-- Performance classifications
-- Trajectory analyses
-- Correlation analyses
-- Rule candidates
-- Winner entries
-- Notifications
-- Performance predictions
-- A/B tests
-
-## Configuration
-
-Key configuration files:
-- `application.yml` - Main configuration
-- `application-local.yml` - Local development
-- `application-docker.yml` - Docker deployment
-- `logback-spring.xml` - Logging configuration
-
-## Monitoring
-
-**Prometheus Metrics:**
-- `pompom.render.jobs.created` - Render jobs created (by type)
-- `pompom.render.jobs.completed` - Render jobs completed (by type, status)
-- `pompom.render.duration` - Render duration histogram
-- `pompom.publications.created` - Publications created (by platform)
-- `pompom.publications.completed` - Publications completed (by platform, status)
-
-**Health Checks:**
-- Database connectivity
-- Disk space monitoring
-- Custom health indicators
-
-## Development
-
-### Running tests
-```bash
-mvn test
-```
-
-### Code formatting
-```bash
-mvn spotless:apply
-```
-
-### Database migrations
-```bash
-mvn flyway:migrate
-mvn flyway:info
-```
-
-## Production Deployment
-
-### Docker
-```bash
-docker build -t pompom-creative:latest .
-docker run -p 8080:8080 \
-  -e DB_URL=... \
-  pompom-creative:latest
-```
-
-### Kubernetes
-See `k8s/` directory for manifests.
-
-### Environment Variables
-All sensitive configuration via environment variables (12-factor app).
-
-## Security
-
-- ✅ OAuth2 token encryption (AES-256)
-- ✅ Rate limiting (100 req/min)
-- ✅ Webhook signature verification
-- ✅ SQL injection prevention (JPA)
-- ✅ CORS configuration
-- ✅ HTTPS recommended for production
-
-## Performance
-
-- ✅ Database connection pooling
-- ✅ Response compression (gzip)
-- ✅ Async task execution
-- ✅ Caching support
-- ✅ Scheduled batch processing
-
-## License
-
-Proprietary - Pompom Hills Production
-
-## Support
-
-For issues and questions, contact: admin@pompomhills.com
-
----
-
-**Version:** 1.0.0  
-**Last Updated:** September 2026  
-**Status:** Production Ready ✅
+Historical reports describe the state at their recorded date. Use the current status and deployment evidence for present acceptance claims.
