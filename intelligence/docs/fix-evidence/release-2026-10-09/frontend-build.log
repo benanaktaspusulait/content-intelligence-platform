@@ -1,0 +1,47 @@
+
+> frontend@0.0.0 build
+> ng build
+
+❯ Building...
+✔ Building...
+Initial chunk files | Names                         |  Raw size | Estimated transfer size
+styles-C7KIBF2O.css | styles                        | 201.59 kB |                28.51 kB
+chunk-766S2CZT.js   | -                             | 182.41 kB |                53.03 kB
+chunk-AH7IGRX7.js   | -                             |  90.74 kB |                22.93 kB
+chunk-EXPJSNKL.js   | -                             |  23.02 kB |                 7.29 kB
+main-PHW2ECNY.js    | main                          |   6.64 kB |                 1.95 kB
+chunk-3RHWOS5U.js   | -                             | 705 bytes |               705 bytes
+
+                    | Initial total                 | 505.11 kB |               114.41 kB
+
+Lazy chunk files    | Names                         |  Raw size | Estimated transfer size
+chunk-6OJFWOB7.js   | editor-api                    |   2.28 MB |               470.00 kB
+chunk-K33LZ6ES.js   | quality-validator-component   | 185.25 kB |                37.97 kB
+chunk-T4PL3ADN.js   | video-detail-page             |  99.09 kB |                22.59 kB
+main-QCIVHFPX.css   | -                             |  68.26 kB |                 9.89 kB
+chunk-J55MCTV6.css  | -                             |  68.26 kB |                 9.89 kB
+chunk-B53GJZPN.js   | render-dashboard-page         |  44.87 kB |                10.59 kB
+chunk-VRTROBDM.js   | -                             |  36.31 kB |                 7.62 kB
+chunk-J3B7HFIO.js   | -                             |  23.07 kB |                 6.51 kB
+chunk-T45DN7Y3.js   | operations-page               |  18.41 kB |                 4.36 kB
+chunk-VU4TFZBN.js   | rule-governance-page          |  15.64 kB |                 3.73 kB
+chunk-C3DI6BDY.js   | import-data-page              |  15.59 kB |                 4.54 kB
+chunk-ZUOWGZ3H.js   | video-analysis-workbench-page |  14.54 kB |                 4.08 kB
+chunk-E6SKPTFS.js   | predictions-page              |  11.96 kB |                 3.38 kB
+chunk-IDYTUTTB.js   | meta-connection-page          |   9.81 kB |                 3.13 kB
+chunk-RH6PGBOK.js   | reach-further-research-page   |   9.47 kB |                 2.87 kB
+...and 12 more lazy chunks files. Use "--verbose" to show all the files.
+
+Application bundle generation complete. [10.600 seconds] - 2026-10-09T09:00:50.885Z
+
+▲ [WARNING] bundle initial exceeded maximum budget. Budget 500.00 kB was not met by 5.11 kB with a total of 505.11 kB.
+
+
+▲ [WARNING] angular:styles/component:scss;c06fd17c85cdbc218e6739ce30047a095563bd10862e4af8cccc77c403ca5f51;/Users/benanaktas/project/video/content-intelligence-platform/intelligence/frontend/src/app/pages/render-dashboard.page.ts exceeded maximum budget. Budget 4.00 kB was not met by 1.79 kB with a total of 5.79 kB.
+
+
+▲ [WARNING] src/app/pages/quality-validator/quality-validator.component.scss exceeded maximum budget. Budget 4.00 kB was not met by 15.97 kB with a total of 19.97 kB.
+
+
+Output location: /Users/benanaktas/project/video/content-intelligence-platform/intelligence/frontend/dist/frontend
+

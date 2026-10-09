@@ -1,0 +1,74 @@
+Pompom
+CREATIVE INTELLIGENCE
+WORKSPACE
+OV
+Overview
+VL
+Video Library
+CH
+Characters
+PQ
+Prompt Quality
+RG
+Rule Governance
+EX
+Experiments
+TP
+Test Planner
+PR
+Predictions
+PF
+Performance
+IM
+Import Data
+MR
+Model Reliability
+RF
+Reach Further
+MA
+Meta Analytics
+MV
+Model Versions
+OP
+Operations
+Local workspace
+Persisted evidence only
+🎯 Pompom Creative Quality Engine
+
+Exploratory prompt analysis. This screen does not authorize a render.
+
+Optional story and production prompt assistance
+
+Prompt origin: BUILD_PROMPT · openai LOCAL_MOCK-BUILD_PROMPT · 2d50e057-df53-446d-bd71-5d623d6a8afa · story 8602f70d-eb76-4868-84d2-726d19bd0559 · Original saved draft · NOT_VALIDATED
+
+Üretim incelemesi
+İş akışı profili
+Family 1–10 · tarihsel doğrulama
+Operasyonel yaratıcı iş akışı v1
+
+Family 1–10 sözleşmeleri korunur. Yeni profil, yaratıcı amacı ve seçilen jeneratörün yürütmesini ayrı inceler.
+
+Yetkili karakter referansları dosyalardan bağlanır; eksik referans yerine görünüm uydurulmaz.
+
+PROMPT DETAIL
+LOCAL_MOCK J2 automatic repair plateau
+Back to folders
+Content title
+Type
+Short
+Reel
+Episode
+Create workspace version
+Save revision
+Reconcile moved prompt source
+Linked workspace prompt: validation uses the immutable stored version and can produce render evidence.
+PROMPT SOURCE
+Editable prompt
+Markdown · 166 characters
+1
+2
+0-15 SEC
+Luca pushes a small box slowly across the grass. The camera holds a clear view of Luca and 
+the box. LOCAL_MOCK production prompt fixture; no generated video.
+166 characters
+Analyze prompt

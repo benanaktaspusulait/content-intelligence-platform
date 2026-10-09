@@ -1,0 +1,471 @@
+Üretim incelemesi
+
+Kayıtlı inceleme yeniden açıldı · 04bcd7f1-a935-4811-a41c-7c2d951e021c · yeni sağlayıcı çağrısı yapılmadı.
+
+İş akışı profili
+Family 1–10 · tarihsel doğrulama
+Operasyonel yaratıcı iş akışı v1
+
+Family 1–10 sözleşmeleri korunur. Yeni profil, yaratıcı amacı ve seçilen jeneratörün yürütmesini ayrı inceler.
+
+Yetkili karakter referansları dosyalardan bağlanır; eksik referans yerine görünüm uydurulmaz.
+
+Onaylı ilgili dersler
+İçerik profili
+Kaynak temelli öneri
+Absürt fizik
+Merak / macera
+Eğitici
+Karma
+Belirsiz
+Açılış stratejisi
+Öneri
+Anında imkânsızlık
+Doğrudan sorun
+Merak / keşif
+İstenen süre (s)
+Jeneratör
+Kullanıcı tercihine göre öner
+Seedance 2.0 Mini
+Seedance 2.0
+Seedance 2.5
+İlk kare · mevcut medya yolu
+İlk kare · sağlayıcı URL
+2.0 kalite gerekçesi
+Görünüm oranı
+9:16
+16:9
+1:1
+İzleyicinin temel sorusu
+Korunacak yaratıcı niyet · kaynakta geçen ifadeler
+Önceki temel niyeti değiştiriyorsanız karar gerekçesi
+Bu kaynak sürümünün son niyet bildirimlerini yükle
+Kaynağa bağlı plan kanıtı · isteğe bağlı
+Karakter ve referans dosyaları
+Post-family incelemesini çalıştır
+
+KARAR
+Gerekli sonraki üretim/kanıt adımına geç
+
+İZLEME MEKANİZMASI
+Luca pushes. Hold.
+
+AÇILIŞ
+Luca pushes. Hold.
+
+İLERLEME
+Kanıt yetersiz
+
+FİNAL
+Planlanan final: Luca pushes. Hold.
+
+TEMEL OLAY/KİMLİK/ANLAŞILABİLİRLİK
+Gerçek video henüz incelenmedi
+
+TEKNİK KUSURLAR
+Doğrulanmış kusur kanıtı yok
+
+KUSURUN ETKİSİ
+Yalnız teknik temizlik yaratıcı değer kanıtı değildir
+
+EN KÜÇÜK MÜDAHALE
+PROCEED_NEXT_EVIDENCE_STEP
+
+PERFORMANS
+Kör inceleme tamamlanana kadar sonuç verisi ayrıdır; izlenme garantisi yok
+
+Prompt / plan kalitesi
+
+PASS ·
+
+Jeneratör yürütme riski
+
+PASS
+
+Gerçek render kalitesi
+
+Plan sadakati: UNKNOWN · Kullanılabilirlik: UNKNOWN
+
+İzleyici / dağıtım sonucu
+
+Henüz ilişkilendirilmedi
+
+Bu kayıt için PDF raporu
+Ham plan, jeneratör ve yetkilendirme kanıtı
+İkinci görüş sağlayıcısı
+DeepSeek · metin portu
+OpenAI
+Claude
+Gemini
+Yapılandırılmış eleştirmen modeli
+İkinci görüşü çalıştırBağlı incelemeyle mevcut render kuyruğunu aç
+Kanıt ve belirsizlik
+Render öncesi temel niyet
+
+Önem düzeyi bu kaynak sürümüne bağlanır. Değişince yeniden inceleyin; video sonucuna göre geriye dönük değiştirilmez.
+
+0–15 s · Luca pushes. Hold.
+
+Temel olayEsnek tercihGörsel incelik
+Kaynağa bağlı niyet ve yaratıcı yorum ayrıntıları
+Bounded repair session · at most two attempts
+Maximum total cost (USD)
+I approve the configured repair provider within this session budget.
+Start bounded repair
+Saved session ID
+Reopen session
+
+68180641-0c5e-4e72-9b31-037d67d1ca40 · ACCEPTED · NO_IMPROVEMENT · attempts 2/2 · reserved ceiling 0.002 (actual spend may be unknown)
+
+Best independently reviewed prompt version: 2
+
+Original · prompt version 1
+[
+  {
+    "confidence": "HIGH",
+    "sourceSpan": [
+      0,
+      0
+    ],
+    "sourceQuote": "CUT",
+    "riskCategory": "LOCAL_MOCK_FIXTURE_0",
+    "evidenceBasis": "UNVERIFIED_HYPOTHESIS",
+    "smallestChange": "Fixture-only patch",
+    "plausibleFailure": "Synthetic contract test finding; no observed render claim"
+  },
+  {
+    "confidence": "HIGH",
+    "sourceSpan": [
+      0,
+      0
+    ],
+    "sourceQuote": "CUT",
+    "riskCategory": "LOCAL_MOCK_FIXTURE_1",
+    "evidenceBasis": "UNVERIFIED_HYPOTHESIS",
+    "smallestChange": "Fixture-only patch",
+    "plausibleFailure": "Synthetic contract test finding; no observed render claim"
+  },
+  {
+    "confidence": "HIGH",
+    "sourceSpan": [
+      0,
+      0
+    ],
+    "sourceQuote": "CUT",
+    "riskCategory": "LOCAL_MOCK_FIXTURE_2",
+    "evidenceBasis": "UNVERIFIED_HYPOTHESIS",
+    "smallestChange": "Fixture-only patch",
+    "plausibleFailure": "Synthetic contract test finding; no observed render claim"
+  }
+]
+{
+  "status": "PASS",
+  "fixture": "LOCAL_MOCK"
+}
+Best independently reviewed candidate · prompt version 2
+[
+  {
+    "confidence": "HIGH",
+    "sourceSpan": [
+      0,
+      0
+    ],
+    "sourceQuote": "Hold.",
+    "riskCategory": "LOCAL_MOCK_FIXTURE_0",
+    "evidenceBasis": "UNVERIFIED_HYPOTHESIS",
+    "smallestChange": "Fixture-only patch",
+    "plausibleFailure": "Synthetic contract test finding; no observed render claim"
+  },
+  {
+    "confidence": "HIGH",
+    "sourceSpan": [
+      0,
+      0
+    ],
+    "sourceQuote": "Hold.",
+    "riskCategory": "LOCAL_MOCK_FIXTURE_1",
+    "evidenceBasis": "UNVERIFIED_HYPOTHESIS",
+    "smallestChange": "Fixture-only patch",
+    "plausibleFailure": "Synthetic contract test finding; no observed render claim"
+  }
+]
+{
+  "status": "PASS",
+  "fixture": "LOCAL_MOCK"
+}
+[
+  {
+    "diff": "--- original\n+++ final\n@@ -1,2 +1,2 @@\n 0-15 SEC\n-Luca pushes. CUT+Luca pushes. Hold.",
+    "score": 2,
+    "stage": "INDEPENDENTLY_REVIEWED",
+    "number": 1,
+    "reviewId": "04bcd7f1-a935-4811-a41c-7c2d951e021c",
+    "repairRecordId": "4172727f-c21d-437e-810c-04f51f94bc97",
+    "sourceReviewId": "2553a8ac-d3a4-4594-8a09-381d8a2ea72e",
+    "promptVersionId": 2,
+    "providerProposal": {
+      "role": "MINIMAL_REPAIR",
+      "calls": 1,
+      "model": "LOCAL_MOCK-MINIMAL_REPAIR",
+      "result": {
+        "patches": [
+          {
+            "end": 25,
+            "start": 22,
+            "replacement": "Hold.",
+            "sourceQuote": "CUT"
+          }
+        ]
+      },
+      "fixture": true,
+      "provider": "openai",
+      "recordId": "c69f9e9a-604e-47dc-9e9f-b356c3f74b1e",
+      "sourceRequest": {
+        "role": "MINIMAL_REPAIR",
+        "text": "0-15 SEC\nLuca pushes. CUT",
+        "context": {
+          "findings": [
+            {
+              "confidence": "HIGH",
+              "sourceSpan": [
+                0,
+                0
+              ],
+              "sourceQuote": "CUT",
+              "riskCategory": "LOCAL_MOCK_FIXTURE_0",
+              "evidenceBasis": "UNVERIFIED_HYPOTHESIS",
+              "smallestChange": "Fixture-only patch",
+              "plausibleFailure": "Synthetic contract test finding; no observed render claim"
+            },
+            {
+              "confidence": "HIGH",
+              "sourceSpan": [
+                0,
+                0
+              ],
+              "sourceQuote": "CUT",
+              "riskCategory": "LOCAL_MOCK_FIXTURE_1",
+              "evidenceBasis": "UNVERIFIED_HYPOTHESIS",
+              "smallestChange": "Fixture-only patch",
+              "plausibleFailure": "Synthetic contract test finding; no observed render claim"
+            },
+            {
+              "confidence": "HIGH",
+              "sourceSpan": [
+                0,
+                0
+              ],
+              "sourceQuote": "CUT",
+              "riskCategory": "LOCAL_MOCK_FIXTURE_2",
+              "evidenceBasis": "UNVERIFIED_HYPOTHESIS",
+              "smallestChange": "Fixture-only patch",
+              "plausibleFailure": "Synthetic contract test finding; no observed render claim"
+            }
+          ],
+          "protectedIntent": [
+            "Luca pushes."
+          ],
+          "retrievedLessons": [],
+          "intentRequirements": [
+            {
+              "id": "protected-1",
+              "basis": "EXPLICIT_PROTECTED_SOURCE_ANCHOR",
+              "level": "ESSENTIAL",
+              "status": "SOURCE_SUPPORTED",
+              "eventIds": [
+                "source_0"
+              ],
+              "sourceHash": "6718d10de1dc0b86caba212b13b9bf4b8132333c9a2971475258a6668c6c308b",
+              "sourceSpan": [
+                9,
+                21
+              ],
+              "sourceQuote": "Luca pushes."
+            }
+          ]
+        },
+        "maxCostUsd": 0.1
+      },
+      "actualPaidCalls": 0,
+      "visualInspected": false,
+      "retrievedLessons": [],
+      "validationStatus": "NOT_VALIDATED",
+      "costUpperBoundUsd": 0.001,
+      "sourceStoryRecordId": null
+    }
+  },
+  {
+    "diff": "--- original\n+++ final\n@@ -1,2 +1,2 @@\n 0-15 SEC\n-Luca pushes. Hold.+Luca pushes. Wait.",
+    "score": 2,
+    "stage": "INDEPENDENTLY_REVIEWED",
+    "number": 2,
+    "reviewId": "6a26ebad-222d-4634-b197-35cdd820a65f",
+    "repairRecordId": "c64da93f-cc1b-4bb4-8133-473795c5d6ee",
+    "sourceReviewId": "04bcd7f1-a935-4811-a41c-7c2d951e021c",
+    "promptVersionId": 3,
+    "providerProposal": {
+      "role": "MINIMAL_REPAIR",
+      "calls": 1,
+      "model": "LOCAL_MOCK-MINIMAL_REPAIR",
+      "result": {
+        "patches": [
+          {
+            "end": 27,
+            "start": 22,
+            "replacement": "Wait.",
+            "sourceQuote": "Hold."
+          }
+        ]
+      },
+      "fixture": true,
+      "provider": "openai",
+      "recordId": "f2894173-8153-422a-b685-21e9c3343962",
+      "sourceRequest": {
+        "role": "MINIMAL_REPAIR",
+        "text": "0-15 SEC\nLuca pushes. Hold.",
+        "context": {
+          "findings": [
+            {
+              "confidence": "HIGH",
+              "sourceSpan": [
+                0,
+                0
+              ],
+              "sourceQuote": "Hold.",
+              "riskCategory": "LOCAL_MOCK_FIXTURE_0",
+              "evidenceBasis": "UNVERIFIED_HYPOTHESIS",
+              "smallestChange": "Fixture-only patch",
+              "plausibleFailure": "Synthetic contract test finding; no observed render claim"
+            },
+            {
+              "confidence": "HIGH",
+              "sourceSpan": [
+                0,
+                0
+              ],
+              "sourceQuote": "Hold.",
+              "riskCategory": "LOCAL_MOCK_FIXTURE_1",
+              "evidenceBasis": "UNVERIFIED_HYPOTHESIS",
+              "smallestChange": "Fixture-only patch",
+              "plausibleFailure": "Synthetic contract test finding; no observed render claim"
+            }
+          ],
+          "protectedIntent": [
+            "Luca pushes."
+          ],
+          "retrievedLessons": [],
+          "intentRequirements": [
+            {
+              "id": "protected-1",
+              "basis": "EXPLICIT_PROTECTED_SOURCE_ANCHOR",
+              "level": "ESSENTIAL",
+              "status": "SOURCE_SUPPORTED",
+              "eventIds": [
+                "source_0"
+              ],
+              "sourceHash": "e65eaad3dba977f8765b0478f73f421c046f27d7d51c6a8ac964f4a299fe7305",
+              "sourceSpan": [
+                9,
+                21
+              ],
+              "sourceQuote": "Luca pushes."
+            }
+          ]
+        },
+        "maxCostUsd": 0.099
+      },
+      "actualPaidCalls": 0,
+      "visualInspected": false,
+      "retrievedLessons": [],
+      "validationStatus": "NOT_VALIDATED",
+      "costUpperBoundUsd": 0.001,
+      "sourceStoryRecordId": null
+    }
+  }
+]
+Next bounded attemptAccept best candidateRejectCancel
+En küçük düzeltme
+Değiştirilecek kaynak ifadesi
+Yeni ifade
+Tek yama + son prompt doğrulaması
+Son üretim prompt’u
+KopyalaEditöre aktar ve sürüm kaydetManuel render paketi indir
+
+Manuel paket render yetkisi veya kredi harcama onayı değildir. Son video mevcut kanonik kabul akışından geçer.
+
+Gerçek render QA
+Dönen videonun yerel medya yolu
+
+Gerçek klibi açıp her planlanan zaman aralığını inceleyin. Seyrek kareler hareket/temas/loop kanıtı değildir.
+
+0–15 s
+
+Luca pushes. Hold.
+
+Gerçekte gözlenen başlangıç (s)
+Gerçekte gözlenen son (s)
+Kanıt yetersiz
+Gözlendi
+Eksik / çöktü
+İncelenen aralık başlangıcı (s)
+İncelenen aralık sonu (s)
+Temel olayın okunabilirliği
+Kanıt yetersiz
+ADEQUATE
+UNREADABLE
+Bu aralıkta gerçekten gözlenen şey
+Kimlik
+Kanıt yetersiz
+RECOGNIZABLE
+UNRECOGNIZABLE
+Bu aralıkta gerçekten gözlenen şey
+Çocukla paylaşım için içerik güvenliği
+Kanıt yetersiz
+APPROPRIATE
+UNSAFE
+Bu aralıkta gerçekten gözlenen şey
+Bütün olarak anlaşılabilirlik
+Kanıt yetersiz
+ADEQUATE
+DESTROYED
+Bu aralıkta gerçekten gözlenen şey
+İzleme deneyiminin gelişimi
+Kanıt yetersiz
+DEVELOPING
+PURPOSEFUL_REPETITION
+WEAK
+Bu aralıkta gerçekten gözlenen şey
+Gerçek açılış
+Kanıt yetersiz
+READABLE_EARLY_DEVELOPMENT
+READABLE_PROMISE
+UNREADABLE
+EXCESSIVELY_DELAYED
+Bu aralıkta gerçekten gözlenen şey
+Gerçek final
+Kanıt yetersiz
+DELIVERS_PROMISE
+PURPOSEFUL_UNRESOLVED
+ARBITRARY_TRUNCATION
+WEAK
+Bu aralıkta gerçekten gözlenen şey
+Aralığa bağlı kusur ve müdahale kanıtı
+Bu aralıkları gerçek klipte inceleyip gözlemleri onayladım
+Bu gerçek videodan çıkarılan kareleri inceledim; yalnız durağan görünüm/poz bulguları için kanıt
+Deterministik analiz + plan karşılaştırması
+Justified full-video regeneration handoff
+Yayın ve ölçüm ilişkisi
+
+Prompt → referanslar → render ayarları → gerçek video → edit varyantı → yayın ID → immutable ölçüm ayrı tutulur.
+
+Platform
+INSTAGRAM
+FACEBOOK
+YOUTUBE
+Yayın ID (metin)
+Edit varyant ID (varsa)
+Eşleştirme kanıtı
+Manuel ilişkiyi kaydetCSV/XLSX dosyasını mevcut import ekranında incele ve eşleştir
+Kaynaklı ölçüm kaydı ve karşılaştırma
+Canonical profil doğrulamasını kaydet
+İnsan incelemesine açık ders / deney kaydı

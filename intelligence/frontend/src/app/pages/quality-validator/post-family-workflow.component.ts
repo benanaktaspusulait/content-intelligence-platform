@@ -598,7 +598,7 @@ export class PostFamilyWorkflowComponent implements OnChanges, OnDestroy {
   @Input() sourcePath = '';
   @Input() videoPath = '';
   @Output() saveFinal = new EventEmitter<string>();
-  @Output() acceptedVersion = new EventEmitter<{contentId: number; promptVersionId: number; rawText: string}>();
+  @Output() acceptedVersion = new EventEmitter<{contentId: number; promptVersionId: number; rawText: string; repairSessionId: string}>();
   profile = 'FROZEN';
   contentProfile = 'AUTO';
   openingStrategy = 'AUTO';
@@ -737,6 +737,7 @@ export class PostFamilyWorkflowComponent implements OnChanges, OnDestroy {
     if (!this.isCurrent() || !this.repairConsent || this.repairBudget <= 0 || this.busy) return;
     this.busy = true;
     this.autoRepair = true;
+    this.repairOriginalReview = null; this.repairBestReview = null;
     const sequence = this.restoreSequence;
     const operation = ++this.repairOperation;
     this.repairKey ||= crypto.randomUUID();
@@ -773,7 +774,7 @@ export class PostFamilyWorkflowComponent implements OnChanges, OnDestroy {
       if (sequence !== this.restoreSequence || operation !== this.repairOperation || this.repairSession?.sessionId !== sessionId) return;
       this.repairSession = session;
       this.busy = false;
-      if (session.state === 'ACCEPTED') this.http.get<any>(`/api/v1/intelligence/workflow/records/${session.bestReviewId}`).subscribe({ next: review => { if (sequence === this.restoreSequence && this.repairSession?.sessionId === sessionId) this.acceptedVersion.emit({ contentId: session.contentId, promptVersionId: session.bestPromptVersionId, rawText: review.originalPrompt }); }, error: e => { if (sequence === this.restoreSequence) this.fail(e); } });
+      if (session.state === 'ACCEPTED') this.http.get<any>(`/api/v1/intelligence/workflow/records/${session.bestReviewId}`).subscribe({ next: review => { if (sequence === this.restoreSequence && this.repairSession?.sessionId === sessionId) this.acceptedVersion.emit({ contentId: session.contentId, promptVersionId: session.bestPromptVersionId, rawText: review.originalPrompt, repairSessionId: session.sessionId }); }, error: e => { if (sequence === this.restoreSequence) this.fail(e); } });
       this.changeDetector.markForCheck();
     }, error: e => this.fail(e) });
   }

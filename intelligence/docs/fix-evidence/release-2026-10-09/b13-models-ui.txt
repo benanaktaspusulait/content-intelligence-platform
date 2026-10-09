@@ -1,0 +1,54 @@
+Pompom
+CREATIVE INTELLIGENCE
+WORKSPACE
+OV
+Overview
+VL
+Video Library
+CH
+Characters
+PQ
+Prompt Quality
+RG
+Rule Governance
+EX
+Experiments
+TP
+Test Planner
+PR
+Predictions
+PF
+Performance
+IM
+Import Data
+MR
+Model Reliability
+RF
+Reach Further
+MA
+Meta Analytics
+MV
+Model Versions
+OP
+Operations
+Local workspace
+Persisted evidence only
+MODEL REGISTRY
+Model Versions
+
+Historical model registrations. Pre-publish predictions use a verified statistical champion when available; otherwise cold-start remains active. Live predictions retain their separate baseline.
+
+Training platform
+Instagram
+Facebook
+TikTok
+ReasonTrain verified 72H challenger
+
+Requires 30 independent parent videos, verified publications and pre-publish feature snapshots. Training does not activate the challenger.
+
+PERSISTED REGISTRY
+0 versions
+Backend policy
+No model versions registered
+
+Training and registration must happen through the existing backend workflow.

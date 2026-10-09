@@ -1,0 +1,49 @@
+
+> frontend@0.0.0 test
+> ng test --watch=false
+
+❯ Building...
+✔ Building...
+Initial chunk files                                           | Names                                                      |  Raw size
+spec-app-pages-video-detail.page.js                           | spec-app-pages-video-detail.page                           | 296.58 kB | 
+spec-app-pages-quality-validator-repair-route.js              | spec-app-pages-quality-validator-repair-route              | 285.92 kB | 
+spec-app-pages-quality-validator-family10-representation.js   | spec-app-pages-quality-validator-family10-representation   | 269.41 kB | 
+styles.css                                                    | styles                                                     | 234.41 kB | 
+chunk-GIBZOMSL.js                                             | -                                                          | 177.43 kB | 
+chunk-XXJNNRS6.js                                             | -                                                          |  66.67 kB | 
+spec-app-pages-import-data.page.js                            | spec-app-pages-import-data.page                            |  49.52 kB | 
+spec-app-pages-meta-connection.page.js                        | spec-app-pages-meta-connection.page                        |  35.36 kB | 
+chunk-5NBKW4XQ.js                                             | -                                                          |  18.81 kB | 
+spec-app-pages-overview.page.js                               | spec-app-pages-overview.page                               |  16.46 kB | 
+chunk-IEZOKNJO.js                                             | -                                                          |  14.05 kB | 
+chunk-2C2FFLUH.js                                             | -                                                          |  13.98 kB | 
+chunk-QTFZYNNF.js                                             | -                                                          |  12.76 kB | 
+spec-app-pages-quality-validator-post-family-workflow.js      | spec-app-pages-quality-validator-post-family-workflow      |  12.01 kB | 
+spec-app-app.js                                               | spec-app-app                                               |   9.79 kB | 
+spec-app-pages-video-library.page.js                          | spec-app-pages-video-library.page                          |   7.67 kB | 
+spec-app-core-creative-intelligence.service.js                | spec-app-core-creative-intelligence.service                |   7.05 kB | 
+chunk-RSTWSNOR.js                                             | -                                                          |   4.75 kB | 
+spec-app-pages-quality-validator-actual-video-review.js       | spec-app-pages-quality-validator-actual-video-review       |   4.00 kB | 
+spec-app-pages-quality-validator-creative-role.component.js   | spec-app-pages-quality-validator-creative-role.component   |   2.74 kB | 
+spec-app-pages-quality-validator-family9-representation.js    | spec-app-pages-quality-validator-family9-representation    |   2.60 kB | 
+spec-app-pages-quality-validator-specialized-applicability.js | spec-app-pages-quality-validator-specialized-applicability |   2.05 kB | 
+spec-app-pages-quality-validator-state-share.js               | spec-app-pages-quality-validator-state-share               |   1.46 kB | 
+init-testbed.js                                               | init-testbed                                               |   1.21 kB | 
+chunk-XLPNUVTH.js                                             | -                                                          |   1.11 kB | 
+vitest-mock-patch.js                                          | vitest-mock-patch                                          | 974 bytes | 
+chunk-MGE7KF4B.js                                             | -                                                          | 805 bytes | 
+chunk-ASGXJCFG.js                                             | -                                                          | 634 bytes | 
+
+                                                              | Initial total                                              |   1.55 MB
+
+Application bundle generation complete. [5.914 seconds] - 2026-10-09T09:00:36.637Z
+
+
+ RUN  v4.1.11 /Users/benanaktas/project/video/content-intelligence-platform/intelligence/frontend
+
+
+ Test Files  15 passed (15)
+      Tests  75 passed (75)
+   Start at  10:00:36
+   Duration  2.58s (transform 2.24s, setup 3.70s, import 3.76s, tests 1.77s, environment 16.97s)
+

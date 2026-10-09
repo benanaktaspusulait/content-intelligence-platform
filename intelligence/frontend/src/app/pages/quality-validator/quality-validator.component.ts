@@ -433,9 +433,9 @@ Intensity: 4`;
   }
 
   ngOnDestroy(): void { this.promptEditor?.dispose(); }
-  useAcceptedRepair(value: {contentId: number; promptVersionId: number; rawText: string}): void {
+  useAcceptedRepair(value: {contentId: number; promptVersionId: number; rawText: string; repairSessionId: string}): void {
     this.contentId = String(value.contentId); this.promptVersionId = String(value.promptVersionId);
-    this.setPromptText(value.rawText); this.syncSavedVersionRoute(true);
+    this.setPromptText(value.rawText); this.syncSavedVersionRoute(value.repairSessionId);
   }
 
   creativeDraftRecordId: string | null = null;
@@ -925,9 +925,9 @@ Intensity: 4`;
     });
   }
 
-  private syncSavedVersionRoute(preserveRepairSession = false): void {
+  private syncSavedVersionRoute(repairSessionId?: string): void {
     this.router.navigate(['/quality/detail'], {
-      queryParams: { contentId: this.contentId, promptVersionId: this.promptVersionId, ...(preserveRepairSession ? {} : { repairSessionId: null }) },
+      queryParams: { contentId: this.contentId, promptVersionId: this.promptVersionId, repairSessionId: repairSessionId || null },
       replaceUrl: true,
       queryParamsHandling: 'merge',
     });

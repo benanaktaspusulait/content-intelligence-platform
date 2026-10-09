@@ -39,7 +39,7 @@ class Handler(BaseHTTPRequestHandler):
      quote='CUT' if 'CUT' in text else 'Hold.'; start=text.index(quote)
      result={'patches':[{'start':start,'end':start+len(quote),'sourceQuote':quote,'replacement':'Hold.' if quote=='CUT' else 'Wait.'}]}
     elif role=='STORY': result={'alternatives':['LOCAL_MOCK story: Luca pushes a box.']}
-    else:result={'prompt':'0-15 SEC\nLuca pushes. CUT'}
+    else:result={'prompt':'0-15 SEC\nLuca pushes a small box slowly across the grass. The camera holds a clear view of Luca and the box. LOCAL_MOCK production prompt fixture; no generated video.'}
     return self.send({'role':role,'provider':'deepseek' if role=='STORY' else 'openai','model':'LOCAL_MOCK-'+role,'fixture':True,'result':result,'costUpperBoundUsd':.001,'calls':1,'actualPaidCalls':0,'validationStatus':'NOT_VALIDATED','visualInspected':False})
    return self.send({'detail':'Unsupported fixture endpoint'},404)
   except Exception as error:return self.send({'detail':str(error)},409)
