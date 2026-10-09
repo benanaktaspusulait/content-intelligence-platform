@@ -13,7 +13,7 @@ Publisher migration is now an explicitly authorized companion workstream. It mus
 - [x] Define the provider-neutral Java publisher contract and normalized request/result/error model.
 - [x] Create the Meta publisher microservice for Facebook Page and Instagram Professional/Reels protocols.
 - [x] Create the TikTok publisher microservice with chunked upload and status reconciliation.
-- [ ] Create the YouTube publisher microservice with OAuth refresh and resumable upload.
+- [x] Create the YouTube publisher microservice with OAuth refresh and resumable upload.
 - [ ] Replace render-service in-process publisher bean dispatch with internal publisher-service clients.
 - [ ] Add Docker/Compose service definitions, internal routing, health checks, credential configuration, and no-browser-secret boundaries.
 - [ ] Add Java provider contract/parity tests before any Python deletion.
