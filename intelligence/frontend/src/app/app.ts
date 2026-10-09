@@ -16,6 +16,7 @@ interface NavigationItem {
 })
 export class App {
   protected readonly navOpen = signal(false);
+  protected readonly navCollapsed = signal(false);
   protected readonly navigation: NavigationItem[] = [
     { label: 'Overview', icon: 'OV', route: '/overview' },
     { label: 'Video Library', icon: 'VL', route: '/videos' },
@@ -37,5 +38,9 @@ export class App {
 
   protected closeNavigation(): void {
     this.navOpen.set(false);
+  }
+
+  protected toggleSidebar(): void {
+    this.navCollapsed.update(value => !value);
   }
 }

@@ -20,4 +20,14 @@ describe('App', () => {
     expect(fixture.nativeElement.textContent).toContain('Operations');
     expect(fixture.nativeElement.textContent).toContain('Creative Intelligence');
   });
+
+  it('collapses the desktop navigation rail to free workspace width', () => {
+    const fixture = TestBed.createComponent(App);
+    fixture.detectChanges();
+    const toggle = fixture.nativeElement.querySelector('.sidebar-toggle') as HTMLButtonElement;
+    toggle.click();
+    fixture.detectChanges();
+    expect(fixture.nativeElement.querySelector('.app-frame--nav-collapsed')).toBeTruthy();
+    expect(toggle.getAttribute('aria-label')).toBe('Expand navigation');
+  });
 });

@@ -1,4 +1,4 @@
-<div class="app-frame">
+<div class="app-frame" [class.app-frame--nav-collapsed]="navCollapsed()">
   <header class="mobile-header">
     <a class="brand brand--mobile" routerLink="/overview" aria-label="Pompom Creative Intelligence home">
       <img class="brand-logo" src="pompom-loop-emblem.png" alt="" aria-hidden="true">
@@ -14,11 +14,12 @@
       <img class="brand-logo" src="pompom-loop-emblem.png" alt="" aria-hidden="true">
       <span class="brand-copy"><strong>Pompom</strong><small>Creative Intelligence</small></span>
     </a>
+    <button class="sidebar-toggle" type="button" [attr.aria-label]="navCollapsed() ? 'Expand navigation' : 'Collapse navigation'" [attr.title]="navCollapsed() ? 'Expand navigation' : 'Collapse navigation'" (click)="toggleSidebar()"><span aria-hidden="true">{{ navCollapsed() ? '»' : '«' }}</span><span class="sidebar-toggle-label">{{ navCollapsed() ? 'Expand' : 'Collapse' }}</span></button>
 
     <div class="rail-label">WORKSPACE</div>
     <nav class="primary-nav" aria-label="Primary navigation">
       @for (item of navigation; track item.route) {
-        <a [routerLink]="item.route" routerLinkActive="is-active" (click)="closeNavigation()">
+        <a [routerLink]="item.route" routerLinkActive="is-active" [attr.title]="item.label" (click)="closeNavigation()">
           <span class="nav-icon" aria-hidden="true">{{ item.icon }}</span>
           <span>{{ item.label }}</span>
         </a>
