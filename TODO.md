@@ -32,7 +32,7 @@ Publisher migration is now an explicitly authorized companion workstream. It mus
 - [x] Full Meta production safety: current render-service publication paths can still reach Facebook/Instagram publishers
 - [x] Unified durable Meta connection/token lifecycle
 - [x] Facebook read-only insights
-- [ ] Comments/messages/replies
+- [x] Public comments and human-approved replies; private messages remain explicitly out of scope.
 
 ## Phase 0 — Fail-closed publishing safety (P0)
 
@@ -84,7 +84,7 @@ Publisher migration is now an explicitly authorized companion workstream. It mus
 - [x] Add comment ingestion through the existing Facebook/Instagram webhook endpoints.
 - [x] Add comment/reply polling and reconciliation for missed events.
 - [x] Add moderation state: `RECEIVED`, `PENDING_REVIEW`, `APPROVED`, `REJECTED`, `SENT`, `FAILED`, `RETRYABLE`.
-- [ ] Add optional AI reply-draft generation; drafts never send automatically.
+- [ ] Add optional AI reply-draft generation; intentionally deferred until a separate provider/budget contract is approved. Current drafts are human-authored and never send automatically.
 - [x] Require human approval before every outbound public comment reply.
 - [x] Add provider-specific Facebook and Instagram comment-reply adapters behind one canonical service.
 - [x] Enforce `META_COMMENT_REPLY_ENABLED` immediately before every provider write.
@@ -102,7 +102,7 @@ Publisher migration is now an explicitly authorized companion workstream. It mus
 
 ## Phase 5 — Verification and release gate
 
-- [ ] Add mock Graph API contract tests for every GET/POST route.
+- [ ] Add mock Graph API contract tests for every remaining OAuth/disconnect/snapshot route; current Page, content, insights, Reel, pagination, and comment contracts are covered.
 - [x] Add tests that prove all Meta publish routes remain blocked by default.
 - [x] Add tests that prove read-only Meta OAuth never requests publish scopes.
 - [x] Run backend tests and record unrelated baseline failures separately.

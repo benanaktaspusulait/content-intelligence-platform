@@ -1,5 +1,18 @@
 # Meta Integration Readiness
 
+## 2026-10-09 implementation update
+
+This document contains an earlier audit snapshot. The current repository now includes the following verified local implementation beyond that snapshot:
+
+- Durable Meta connection lifecycle, bounded Graph reads, Page/Instagram insights, pagination, and opt-in read-only smoke coverage.
+- Typed Facebook/Instagram comment persistence, webhook normalization/deduplication, bounded reconciliation, moderation/approval/reply delivery, and audit-safe operations metrics.
+- Angular comment review and reconciliation UI at `/meta/comments`.
+- Meta operations status at `/api/v1/meta/operations/status`, including webhook lag and reply workflow counters.
+- Local/mock contract tests for Graph reads, webhook monitoring, reply workflows, media safety, OAuth state ownership, and frontend request wiring.
+- Docker Compose deployment verified with healthy backend, render, ML, frontend, PostgreSQL, Meta publisher, TikTok publisher, and YouTube publisher containers.
+
+Live Meta read/write verification remains external-account dependent. Publishing and comment replies remain disabled by default.
+
 ## Audit scope and evidence
 
 This report audits the current repository/runtime evidence for the approved Meta scope:
