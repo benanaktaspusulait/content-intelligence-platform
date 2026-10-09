@@ -127,6 +127,17 @@ class CliRealOpenArtAdapterTest {
   }
 
   @Test
+  void exercisesTheConfiguredRequestPathForSeedanceModelFamilies() throws Exception {
+    for (String model : List.of("seedance-2.0-mini", "seedance-2.0", "seedance-2.5")) {
+      adapter.generateVideo(OpenArtVideoRequest.builder().promptText("opening state").model(model).firstFrameImageId("/tmp/frame.png").durationSeconds(5).aspectRatio("16:9").resolution("480p").build());
+    }
+    List<String> commands = Files.readAllLines(commandLog);
+    for (String model : List.of("seedance-2.0-mini", "seedance-2.0", "seedance-2.5")) {
+      assertThat(commands).anyMatch(line -> line.contains("generate video opening state") && line.contains("--model " + model) && line.contains("--image /tmp/frame.png") && line.contains("--duration 5"));
+    }
+  }
+
+  @Test
   void listsWorkspaceReferenceAssetsWithProviderIdentity() {
     assertThat(adapter.listReferenceAssets())
         .containsExactly(

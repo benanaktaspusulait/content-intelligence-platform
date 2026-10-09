@@ -166,6 +166,11 @@ public class RenderJobQueueService {
         throw new ValidationEvidenceRejectedException(
             "VISUAL_REFERENCE_PLAN_INVALID", "Visual reference plan ID is invalid");
       }
+      if (visualReferencePlanning == null) {
+        throw new ValidationEvidenceRejectedException(
+            "VISUAL_REFERENCE_PLANNER_UNAVAILABLE",
+            "Visual reference admission is unavailable; no render job was created");
+      }
       visualReferencePlanning.validateForRender(
           planId,
           request.contentId(),

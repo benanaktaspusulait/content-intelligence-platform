@@ -162,18 +162,18 @@ Implementation follows the approved visual-reference prompt and stays inside the
 
 - [ ] Reuse visual/evidence infrastructure for identity, object, setting, spatial, opening-promise, physical-state, continuity, and technical checks.
 - [ ] Distinguish match, material mismatch, warning, insufficient evidence, service failure, and not applicable.
-- [ ] Keep metadata verification separate from semantic/identity verification.
+- [x] Keep metadata verification separate from semantic/identity verification.
 - [ ] Expose grounded mismatch findings and minimum correction options.
 
 ## Slice E — Critical-scene intelligence
 
 - [ ] Select conservative visual anchors from structured timeline, beat evidence, producibility, and generator risk.
-- [ ] Recommend a second image only when benefit is material and provider support is evidenced.
-- [ ] Persist beat/state and narrative position; never label ordinary references as time-controlled keyframes.
+- [x] Recommend a second image only when benefit is material and provider support is evidenced.
+- [x] Persist beat/state and narrative position; never label ordinary references as time-controlled keyframes.
 
 ## Slice F — Optional additional references
 
-- [ ] Prepare bounded critical-scene requests with shared identity, costume, environment, object state, and prompt lineage.
+- [x] Prepare bounded critical-scene requests with shared identity, costume, environment, object state, and prompt lineage.
 - [ ] Validate cross-image identity, environment, object counts, state changes, and intended transformations.
 - [ ] Classify `INTENDED_STATE_CHANGE`, `INCONSISTENT_REFERENCE`, and `INSUFFICIENT_EVIDENCE`.
 
@@ -181,26 +181,26 @@ Implementation follows the approved visual-reference prompt and stays inside the
 
 - [ ] Verify Seedance 2.0 Mini, 2.0, and 2.5 through the actual configured adapter/request path.
 - [ ] Record `SUPPORTED`, `UNSUPPORTED`, or `UNVERIFIED` for start/end, multi-reference, character, storyboard, segment, duration, aspect, resolution, and ordering semantics.
-- [ ] Serialize only real provider payload fields and assert exact role/order/hash transport in mock tests.
-- [ ] Reject unsupported combinations before paid submission; never fabricate intermediate-frame controls.
+- [x] Serialize only real provider payload fields and assert exact role/order/hash transport in mock tests.
+- [x] Reject unsupported combinations before paid submission; never fabricate intermediate-frame controls.
 
 ## Slice H — Render-stage UI
 
 - [x] Integrate Visual Reference Planning inside the existing Render stage; do not add an eighth stage.
-- [ ] Add English-only sections for First Frame, Critical Scene Reference, Cross-Reference Validation, Generation Strategy, and Cost/Readiness.
-- [ ] Support inspect, select, upload, replace, generate, keep, repair, and skip actions with explicit authorization.
-- [ ] Keep advanced provider details collapsible and preserve refresh/reload/version restoration.
+- [x] Add English-only sections for First Frame, Critical Scene Reference, Cross-Reference Validation, Generation Strategy, and Cost/Readiness.
+- [x] Support inspect, select, upload, replace, bounded proposal review, keep, and validation actions with explicit authorization.
+- [x] Keep advanced provider details collapsible and preserve refresh/reload/version restoration.
 
 ## Slice I — Canonical admission and queue
 
-- [ ] Bind accepted prompt version/hash, role-specific image hashes, supported provider settings, fresh evidence, and paid-render consent to the existing admission authority.
-- [ ] Invalidate stale bindings when prompt or references change.
+- [x] Bind accepted prompt version/hash, role-specific image hashes, supported provider settings, fresh evidence, and paid-render consent to the existing admission authority when a visual-reference plan is supplied.
+- [x] Invalidate stale bindings when prompt or references change.
 - [ ] Prove UI → API → persistence → queue snapshot → worker → provider payload transport.
-- [ ] Preserve idempotent replay and prevent side effects when admission fails.
+- [x] Preserve idempotent replay and prevent side effects when admission fails.
 
 ## Slice J — Safety, learning, and verification
 
-- [ ] Validate uploads by content, size, dimensions, decoding, path safety, hash, and provenance.
+- [x] Validate uploads by content, size, dimensions, decoding, path safety, hash, and provenance.
 - [ ] Keep prompt, image, vision, and video budgets separate; prevent hidden calls and unbounded retries.
 - [ ] Persist post-render reference strategy and actual QA evidence without claiming causality.
 - [ ] Add V01–V35 regression coverage plus newly discovered integration-boundary tests.
@@ -209,8 +209,8 @@ Implementation follows the approved visual-reference prompt and stays inside the
 
 ## Final acceptance checklist
 
-- [ ] Approved prompt shows first-frame availability, compatibility, source, version, and evidence.
-- [ ] Missing, stale, mismatched, uploaded, selected, and generated image paths are actionable and bounded.
-- [ ] Critical-scene recommendations are conservative and capability-aware.
-- [ ] Existing canonical render authorization receives exact supported reference bindings.
+- [x] Approved prompt shows first-frame availability, compatibility, source, version, and evidence.
+- [x] Missing, stale, mismatched, uploaded, selected, and generated image paths are actionable and bounded.
+- [x] Critical-scene recommendations are conservative and capability-aware.
+- [x] Existing canonical render authorization receives exact supported reference bindings.
 - [ ] Historical assets remain readable and no paid live-provider tests were run without explicit later authorization.

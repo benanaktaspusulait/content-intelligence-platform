@@ -44,6 +44,11 @@ public class VisualReferencePlanningController {
     return ResponseEntity.ok(service.prepareFirstFrameProposal(planId));
   }
 
+  @PostMapping("/{planId}/critical-scene/proposal")
+  public ResponseEntity<Map<String, Object>> criticalSceneProposal(@PathVariable UUID planId) {
+    return ResponseEntity.ok(service.prepareCriticalSceneProposal(planId));
+  }
+
   @PostMapping("/{planId}/validate")
   public ResponseEntity<Map<String, Object>> validate(@PathVariable UUID planId) {
     return ResponseEntity.ok(service.validate(planId));

@@ -69,6 +69,17 @@ public class VisualReferencePlanningService {
     Map<String, Object> recommendation = new LinkedHashMap<>(recommendation(job, status, capabilities));
     if ("MISSING".equals(status)) recommendation.put("generationProposal", generationProposal(job));
     VisualReferencePlan plan = plans.findByRenderJobId(renderJobId).orElseGet(VisualReferencePlan::new);
+    // A plan is prompt-bound. If a prompt revision is inspected again, accepted
+    // bindings from the previous revision must never silently carry forward.
+    boolean promptChanged = plan.getPromptSha256() != null && !plan.getPromptSha256().equals(job.getPromptSha256());
+    if (promptChanged && plan.getId() != null) {
+      for (VisualReferenceAsset binding : planAssets.findByPlanIdOrderByCreatedAtAsc(plan.getId())) {
+        if (binding.isAccepted()) binding.setAccepted(false);
+        binding.setValidationStatus("STALE");
+        binding.setValidationEvidenceJson(json(Map.of("reason", "Prompt revision changed", "previousPromptSha256", String.valueOf(binding.getPromptSha256()), "currentPromptSha256", String.valueOf(job.getPromptSha256()))));
+        planAssets.save(binding);
+      }
+    }
     plan.setRenderJob(job);
     plan.setContentId(job.getContentId());
     plan.setPromptVersionId(job.getPromptVersionId());
@@ -77,7 +88,7 @@ public class VisualReferencePlanningService {
     plan.setModel(job.getOpenartModel());
     plan.setFirstFrameStatus(status);
     plan.setStrategy(String.valueOf(recommendation.get("strategy")));
-    plan.setValidationStatus(status.startsWith("AVAILABLE") ? "REVIEW_REQUIRED" : "UNKNOWN");
+    plan.setValidationStatus(status.equals("MISMATCH_CONFIRMED") ? "MISMATCH_CONFIRMED" : status.startsWith("AVAILABLE") ? "REVIEW_REQUIRED" : "UNKNOWN");
     plan.setRecommendationJson(json(recommendation));
     plan.setCapabilitiesJson(json(capabilitiesMap(capabilities)));
     plan.setCostEstimateJson(json(costMap()));
@@ -110,20 +121,56 @@ public class VisualReferencePlanningService {
     return Map.of("planId", planId, "role", "FIRST_FRAME", "sourcePromptVersionId", job.getPromptVersionId(), "sourcePromptSha256", job.getPromptSha256(), "provider", "OPENART_CLI", "model", job.getOpenartModel(), "request", generationProposal(job), "authorizationRequired", true, "paidCallPerformed", false);
   }
 
+  /** Returns a bounded, review-only critical-scene request; it never calls an image provider. */
+  public Map<String, Object> prepareCriticalSceneProposal(UUID planId) {
+    VisualReferencePlan plan = plans.findById(planId).orElseThrow(() -> new IllegalArgumentException("Visual reference plan not found"));
+    RenderJob job = plan.getRenderJob();
+    Map<String, Object> recommendation = readObject(plan.getRecommendationJson());
+    String criticalScene = String.valueOf(recommendation.getOrDefault("criticalScene", "INSUFFICIENT_EVIDENCE"));
+    if (!"FIRST_FRAME_PLUS_CRITICAL_REFERENCE_RECOMMENDED".equals(criticalScene)) {
+      throw new IllegalStateException("A critical-scene reference is not supported by the current evidence and provider capability");
+    }
+    return Map.of("planId", planId, "role", "CRITICAL_SCENE", "beatId", recommendation.getOrDefault("criticalBeatId", "UNSPECIFIED_BEAT"), "narrativePosition", recommendation.getOrDefault("narrativePosition", "UNSPECIFIED"), "intendedState", recommendation.getOrDefault("intendedState", "UNSPECIFIED"), "sharedRequirements", List.of("approved character identity", "costume continuity", "environment continuity", "object count and state", "prompt lineage"), "promptText", "Critical-scene reference for the approved production prompt. Preserve approved identity, costume, environment, object count, and spatial relationships; depict only the intended state change at the selected beat. This is an ordinary reference image for review, not a time-controlled keyframe.\n\nAPPROVED PROMPT:\n" + job.getPromptTextSnapshot(), "authorizationRequired", true, "paidCallPerformed", false);
+  }
+
   @Transactional
   public Map<String, Object> validate(UUID planId) {
     VisualReferencePlan plan = plans.findById(planId).orElseThrow(() -> new IllegalArgumentException("Visual reference plan not found"));
     List<VisualReferenceAsset> bindings = planAssets.findByPlanIdOrderByCreatedAtAsc(planId);
     List<Map<String, Object>> evidence = new ArrayList<>();
+    boolean mismatch = false;
+    boolean insufficient = false;
     for (VisualReferenceAsset binding : bindings) {
       boolean hashPresent = binding.getSha256() != null && !binding.getSha256().isBlank();
-      boolean promptMatches = plan.getPromptSha256().equals(binding.getPromptSha256());
-      evidence.add(Map.of("assetId", binding.getId(), "role", binding.getRole(), "metadataVerified", hashPresent, "promptVersionMatches", promptMatches, "identity", "UNKNOWN", "promptCompatibility", "UNKNOWN", "reason", "Semantic image evidence is not available from metadata alone."));
+      boolean promptMatches = plan.getPromptSha256() != null && plan.getPromptSha256().equals(binding.getPromptSha256());
+      boolean pathPresent = binding.getRelativePath() != null && !binding.getRelativePath().isBlank();
+      String classification;
+      String reason;
+      if (!promptMatches) {
+        mismatch = true;
+        classification = "MATERIAL_MISMATCH";
+        reason = "Reference prompt lineage does not match the approved prompt revision.";
+      } else if (!hashPresent || !pathPresent) {
+        insufficient = true;
+        classification = "INSUFFICIENT_EVIDENCE";
+        reason = "Technical metadata is incomplete; semantic compatibility cannot be established.";
+      } else {
+        insufficient = true;
+        classification = "INSUFFICIENT_EVIDENCE";
+        reason = "Technical metadata is valid, but semantic image evidence is not available from metadata alone.";
+      }
+      evidence.add(Map.of("assetId", binding.getId(), "role", binding.getRole(), "metadataVerified", hashPresent && pathPresent, "promptVersionMatches", promptMatches, "identity", classification, "promptCompatibility", classification, "classification", classification, "minimumCorrection", mismatch ? "Re-select or upload a reference generated for the current prompt revision." : "Run an approved semantic/vision check or keep the asset in review.", "reason", reason));
     }
-    String status = bindings.isEmpty() ? "UNKNOWN" : "REVIEW_REQUIRED";
+    String status = bindings.isEmpty() ? "UNKNOWN" : mismatch ? "MISMATCH_CONFIRMED" : insufficient ? "INSUFFICIENT_EVIDENCE" : "REVIEW_REQUIRED";
+    VisualReferenceEvidenceClassifier.Result crossReference = VisualReferenceEvidenceClassifier.classify(bindings, plan.getPromptSha256());
     plan.setValidationStatus(status);
     plans.save(plan);
-    return Map.of("planId", planId, "status", status, "metadataVerified", !bindings.isEmpty(), "identity", "UNKNOWN", "promptCompatibility", "UNKNOWN", "crossReferenceConsistency", bindings.size() < 2 ? "NOT_APPLICABLE" : "UNKNOWN", "evidence", evidence, "serviceFailure", false);
+    Map<String, Object> result = new LinkedHashMap<>();
+    result.put("planId", planId); result.put("status", status); result.put("metadataVerified", !bindings.isEmpty());
+    result.put("identity", mismatch ? "MATERIAL_MISMATCH" : "UNKNOWN"); result.put("promptCompatibility", mismatch ? "MATERIAL_MISMATCH" : "UNKNOWN");
+    result.put("crossReferenceConsistency", crossReference.crossReferenceConsistency()); result.put("crossReferenceClassification", crossReference.classification()); result.put("crossReferenceReason", crossReference.reason());
+    result.put("evidence", evidence); result.put("minimumCorrection", mismatch ? "Replace stale references and re-run validation." : "Obtain explicit semantic evidence before treating the reference as a match."); result.put("serviceFailure", false);
+    return result;
   }
 
   @Transactional
@@ -159,6 +206,8 @@ public class VisualReferencePlanningService {
     List<VisualReferenceAsset> accepted = planAssets.findByPlanIdOrderByCreatedAtAsc(planId).stream().filter(a -> a.isAccepted() && "FIRST_FRAME".equals(a.getRole())).toList();
     if (accepted.isEmpty()) throw new IllegalStateException("An accepted FIRST_FRAME visual reference is required before video admission");
     if (firstFramePath == null || firstFramePath.isBlank() || accepted.stream().noneMatch(a -> samePath(firstFramePath, a.getRelativePath()))) throw new IllegalStateException("Queued first-frame binding does not match the accepted visual reference");
+    String startFrameSupport = String.valueOf(modelCapabilities(plan.getModel()).get("startFrame"));
+    if (!"SUPPORTED".equals(startFrameSupport)) throw new IllegalStateException("The active OpenArt model has no verified start-frame contract; paid submission is blocked");
     if ("ADDITIONAL_IMAGE_NOT_SUPPORTED".equals(readJsonValue(plan.getRecommendationJson(), "criticalScene"))) throw new IllegalStateException("Selected critical-scene reference is unsupported by the active provider");
   }
 
@@ -206,7 +255,7 @@ public class VisualReferencePlanningService {
   private String firstFrameStatus(RenderJob job, List<RenderAsset> candidates) {
     if (job.getPromptTextSnapshot() == null || job.getPromptTextSnapshot().isBlank()) return "UNKNOWN";
     if (candidates.isEmpty()) return "MISSING";
-    if (candidates.stream().anyMatch(a -> !job.getPromptSha256().equals(a.getPromptHash()))) return "STALE";
+    if (candidates.stream().anyMatch(a -> !job.getPromptSha256().equals(a.getPromptHash()))) return "MISMATCH_CONFIRMED";
     if (candidates.stream().anyMatch(a -> Boolean.TRUE.equals(a.getMediaVerified()) && !Boolean.TRUE.equals(a.getQuarantined()) && a.getSha256() != null && fileExists(a))) return "AVAILABLE_REVIEW_REQUIRED";
     return "AVAILABLE_REVIEW_REQUIRED";
   }
@@ -220,12 +269,17 @@ public class VisualReferencePlanningService {
 
   private Map<String, Object> recommendation(RenderJob job, String status, OpenArtCapabilities capabilities) {
     String strategy = "FIRST_FRAME_ONLY";
-    String action = switch (status) { case "MISSING" -> "PREPARE_FIRST_FRAME"; case "STALE" -> "REVALIDATE_FIRST_FRAME"; case "AVAILABLE_REVIEW_REQUIRED" -> "REVIEW_EXISTING_FIRST_FRAME"; default -> "COMPLETE_PROMPT"; };
+    String action = switch (status) { case "MISSING" -> "PREPARE_FIRST_FRAME"; case "STALE", "MISMATCH_CONFIRMED" -> "REPLACE_STALE_FIRST_FRAME"; case "AVAILABLE_REVIEW_REQUIRED" -> "REVIEW_EXISTING_FIRST_FRAME"; default -> "COMPLETE_PROMPT"; };
     String constraints = job.getCompiledGenerationConstraints() == null ? "" : job.getCompiledGenerationConstraints().toLowerCase(java.util.Locale.ROOT);
     boolean difficultState = java.util.regex.Pattern.compile("transform|reveal|scale|spatial|contact|continuity|state change").matcher(constraints).find();
     String criticalScene = difficultState ? (capabilities.videoMultipleElementReferences() == OpenArtCapabilities.Support.SUPPORTED ? "FIRST_FRAME_PLUS_CRITICAL_REFERENCE_RECOMMENDED" : "ADDITIONAL_IMAGE_NOT_SUPPORTED") : "INSUFFICIENT_EVIDENCE";
     String reason = difficultState ? (criticalScene.equals("ADDITIONAL_IMAGE_NOT_SUPPORTED") ? "Structured constraints suggest a difficult visual state, but the active OpenArt video contract supports only one start image." : "Structured constraints identify a potentially difficult visual state; review one optional additional reference.") : "Use the fewest references necessary; no critical-scene image is recommended without structured beat evidence.";
-    return Map.of("strategy", strategy, "action", action, "criticalScene", criticalScene, "reason", reason, "additionalReferenceSupport", capabilities.videoMultipleElementReferences().name());
+    Map<String, Object> result = new LinkedHashMap<>();
+    result.put("strategy", strategy); result.put("action", action); result.put("criticalScene", criticalScene); result.put("reason", reason); result.put("additionalReferenceSupport", capabilities.videoMultipleElementReferences().name());
+    result.put("criticalBeatId", difficultState ? "STRUCTURED_CONSTRAINT_BEAT" : "UNSPECIFIED_BEAT");
+    result.put("narrativePosition", difficultState ? "CRITICAL_STATE_CHANGE" : "UNSPECIFIED");
+    result.put("intendedState", difficultState ? "PRESERVE_IDENTITY_AND_ENVIRONMENT_WHILE_VERIFYING_THE_REQUIRED_STATE_CHANGE" : "UNSPECIFIED");
+    return result;
   }
 
   private Map<String, Object> generationProposal(RenderJob job) {
@@ -234,13 +288,30 @@ public class VisualReferencePlanningService {
 
   private Map<String, Object> modelCapabilities(String model) {
     String normalized = model == null ? "" : model.toLowerCase(java.util.Locale.ROOT);
-    String start = normalized.contains("seedance-2") ? "SUPPORTED" : "UNVERIFIED";
-    String multiple = normalized.contains("seedance-2") ? "UNSUPPORTED" : "UNVERIFIED";
-    String end = normalized.contains("seedance-2.5") ? "UNVERIFIED" : "UNSUPPORTED";
-    return Map.of("model", model == null ? "" : model, "startFrame", start, "endFrame", end, "multipleVideoReferences", multiple, "intermediateKeyframe", "UNSUPPORTED", "segmentContinuation", "UNVERIFIED", "verificationSource", "OpenArt CLI 0.1.1 local capability snapshot");
+    String start = normalized.contains("seedance-2") || normalized.contains("seedance_2") ? "SUPPORTED" : "UNVERIFIED";
+    String multiple = "UNSUPPORTED";
+    String end = "UNVERIFIED";
+    String modelFamily = normalized.contains("seedance-2.5") ? "SEEDANCE_2_5" : normalized.contains("seedance-2.0-mini") || normalized.contains("seedance-2-mini") ? "SEEDANCE_2_0_MINI" : normalized.contains("seedance-2") ? "SEEDANCE_2_0" : "UNKNOWN";
+    Map<String, Object> result = new LinkedHashMap<>();
+    result.put("model", model == null ? "" : model);
+    result.put("modelFamily", modelFamily);
+    result.put("startFrame", start);
+    result.put("endFrame", end);
+    result.put("multipleVideoReferences", multiple);
+    result.put("characterReferences", "UNVERIFIED");
+    result.put("storyboard", "UNVERIFIED");
+    result.put("segmentContinuation", "UNVERIFIED");
+    result.put("duration", "SUPPORTED");
+    result.put("aspectRatio", "SUPPORTED");
+    result.put("resolution", "SUPPORTED");
+    result.put("ordering", "SUPPORTED");
+    result.put("intermediateKeyframe", "UNSUPPORTED");
+    result.put("verificationSource", "OpenArt CLI 0.1.1 local capability snapshot; request path uses only published --image/--duration/--aspect-ratio/--resolution fields");
+    return result;
   }
 
   private Map<String, Object> capabilitiesMap(OpenArtCapabilities c) { return Map.of("imageMultipleReferences", c.imageMultipleReferences().name(), "videoSingleStartFrame", c.videoSingleStartFrame().name(), "videoMultipleElementReferences", c.videoMultipleElementReferences().name(), "workspaceAssetDiscovery", c.workspaceAssetDiscovery().name()); }
+  private Map<String, Object> readObject(String json) { try { return mapper.readValue(json == null ? "{}" : json, new com.fasterxml.jackson.core.type.TypeReference<Map<String, Object>>() {}); } catch (Exception ignored) { return Map.of(); } }
   private Map<String, Object> costMap() { BigDecimal frame = credits.getEstimatedCost(RenderJob.JobType.FIRST_FRAME); return Map.of("imageGenerationCredits", frame == null ? "UNKNOWN" : frame, "visionValidation", "UNKNOWN", "paidCallPerformed", false); }
   private Map<String, Object> assetView(RenderAsset a, RenderJob job) { return Map.of("assetId", a.getId(), "role", "FIRST_FRAME", "source", a.getSource() == null ? "UNKNOWN" : a.getSource(), "relativePath", a.getRelativePath(), "sha256", a.getSha256() == null ? "" : a.getSha256(), "promptSha256", a.getPromptHash() == null ? "" : a.getPromptHash(), "promptVersionMatches", job.getPromptSha256().equals(a.getPromptHash()), "mediaVerified", Boolean.TRUE.equals(a.getMediaVerified()), "semanticStatus", "UNKNOWN"); }
   private Map<String, Object> bindingView(VisualReferenceAsset asset) { return Map.of("assetId", asset.getId(), "role", asset.getRole(), "sourceKind", asset.getSourceKind(), "relativePath", asset.getRelativePath() == null ? "" : asset.getRelativePath(), "sha256", asset.getSha256() == null ? "" : asset.getSha256(), "validationStatus", asset.getValidationStatus(), "accepted", asset.isAccepted()); }

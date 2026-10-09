@@ -168,6 +168,7 @@ interface VisualReferencePlan {
   promptReady: boolean;
   firstFrameStatus: string;
   firstFrameCandidates: Array<{ assetId: string; role: string; source: string; relativePath: string; sha256: string; promptVersionMatches: boolean; mediaVerified: boolean; semanticStatus: string }>;
+  referenceBindings?: Array<{ assetId: string; role: string; sourceKind: string; relativePath: string; sha256: string; validationStatus: string; accepted: boolean }>;
   recommendation: { strategy: string; action: string; criticalScene: string; reason: string; additionalReferenceSupport: string };
   capabilities: OpenArtCapabilities;
   modelCapabilities?: { model: string; startFrame: string; endFrame: string; multipleVideoReferences: string; intermediateKeyframe: string; segmentContinuation: string; verificationSource: string };
@@ -294,12 +295,24 @@ interface VisualEvidenceResponse {
                         <div><span class="metric-label">Provider capability</span><strong>Start frame: {{ visualReferencePlan()?.modelCapabilities?.startFrame || visualReferencePlan()?.capabilities?.videoSingleStartFrame }}</strong><small>Additional video references: {{ visualReferencePlan()?.modelCapabilities?.multipleVideoReferences || visualReferencePlan()?.capabilities?.videoMultipleElementReferences }}</small></div>
                         <div><span class="metric-label">Cost and evidence</span><strong>{{ visualReferencePlan()?.cost?.imageGenerationCredits }} image credits</strong><small>Semantic validation: {{ visualReferencePlan()?.cost?.visionValidation }} · no paid call performed</small></div>
                       </div>
-                      @if (visualReferencePlan()?.generationProposal; as proposal) { <div class="visual-reference-proposal"><span class="metric-label">First-frame proposal</span><p>{{ proposal.promptText }}</p><button type="button" class="details-button" (click)="prepareVisualReferenceProposal()">{{ visualReferenceProposal() ? 'Proposal prepared' : 'Review bounded generation request' }}</button>@if (visualReferenceProposal(); as prepared) { <details open><summary>Request details</summary><pre>{{ prepared.request.promptText }}</pre><small>Authorization required · paid call performed: {{ prepared.paidCallPerformed }}</small></details> }</div> }
+                      @if (visualReferencePlan()?.generationProposal; as proposal) { <div class="visual-reference-proposal"><span class="metric-label">First-frame proposal</span><p>{{ proposal.promptText }}</p><button type="button" class="details-button" (click)="prepareVisualReferenceProposal()">{{ visualReferenceProposal() ? 'Proposal prepared' : 'Review bounded generation request' }}</button>@if (visualReferenceProposal(); as prepared) { <details><summary>Request details</summary><pre>{{ prepared.request.promptText }}</pre><small>Authorization required · paid call performed: {{ prepared.paidCallPerformed }}</small></details> }</div> }
                       @if ((visualReferencePlan()?.firstFrameCandidates?.length ?? 0) > 0) {
                         <div class="visual-reference-candidates"><span class="metric-label">Existing first-frame candidates</span>@for (candidate of visualReferencePlan()?.firstFrameCandidates ?? []; track candidate.assetId) { <div class="visual-reference-candidate"><span>{{ candidate.relativePath }}</span><small>{{ candidate.mediaVerified ? 'Metadata verified' : 'Metadata review required' }} · {{ candidate.promptVersionMatches ? 'Prompt version matches' : 'STALE' }} · semantic {{ candidate.semanticStatus }}</small><button type="button" class="details-button" (click)="acceptVisualReference(candidate.assetId)" [disabled]="!candidate.promptVersionMatches || !candidate.mediaVerified">Accept as first frame</button></div> }</div>
                       }
                       <div class="visual-reference-tools"><label class="details-button">Upload replacement<input type="file" accept="image/png,image/jpeg,image/webp,image/gif" hidden (change)="uploadVisualReference($event)" /></label><button type="button" class="details-button" (click)="validateVisualReferences()">Validate evidence</button></div>
-                      @if (visualReferenceValidation(); as validation) { <div class="visual-reference-validation"><strong>Evidence: {{ validation.status }}</strong><span>Metadata: {{ validation.metadataVerified ? 'verified' : 'not verified' }} · Identity: {{ validation.identity }} · Prompt compatibility: {{ validation.promptCompatibility }}</span></div> }
+                      @for (binding of visualReferencePlan()?.referenceBindings ?? []; track binding.assetId) { @if (!binding.accepted && binding.role === 'FIRST_FRAME') { <div class="visual-reference-candidate"><span>{{ binding.relativePath }}</span><small>{{ binding.validationStatus }} · {{ binding.sha256 }}</small><button type="button" class="details-button" (click)="acceptImportedVisualReference(binding.assetId)">Accept uploaded first frame</button></div> } }
+                      @if (visualReferenceValidation(); as validation) {
+                        <div class="visual-reference-validation">
+                          <strong>Evidence: {{ validation.status }}</strong>
+                          <span>Metadata: {{ validation.metadataVerified ? 'verified' : 'not verified' }} · Identity: {{ validation.identity }} · Prompt compatibility: {{ validation.promptCompatibility }}</span>
+                          @if (validation.minimumCorrection) {
+                            <small>{{ validation.minimumCorrection }}</small>
+                          }
+                          @for (item of validation.evidence ?? []; track item.assetId) {
+                            <small>{{ item.role }} · {{ item.classification }} · {{ item.reason }}</small>
+                          }
+                        </div>
+                      }
                     }
                   }
                   @if (visualReferenceError() && visualReferencePlan()?.renderJobId === job.id) { <p class="queue-error">{{ visualReferenceError() }}</p> }
@@ -1082,6 +1095,15 @@ export class RenderDashboardPage implements OnInit, OnDestroy {
     this.http.post(`/api/v1/visual-reference-plans/${plan.planId}/validate`, {}).subscribe({
       next: result => this.visualReferenceValidation.set(result),
       error: err => this.visualReferenceError.set(err.error?.detail || err.error?.message || 'Visual evidence validation failed.'),
+    });
+  }
+
+  acceptImportedVisualReference(referenceAssetId: string): void {
+    const plan = this.visualReferencePlan();
+    if (!plan) return;
+    this.http.post(`/api/v1/visual-reference-plans/${plan.planId}/first-frame/imported/${referenceAssetId}/accept`, {}).subscribe({
+      next: () => this.inspectVisualReferences({ id: plan.renderJobId } as RenderJob),
+      error: err => this.visualReferenceError.set(err.error?.detail || err.error?.message || 'The uploaded first frame could not be accepted.'),
     });
   }
 
