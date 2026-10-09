@@ -95,7 +95,7 @@ Publisher migration is now an explicitly authorized companion workstream. It mus
 
 - [x] Verify Meta webhook signatures in every environment; fail closed when a configured secret is absent.
 - [x] Separate publication-status webhook parsing from public-comment event parsing; DM/Messenger event parsing remains out of scope.
-- [ ] Persist raw event identity safely without storing unnecessary personal data.
+- [x] Persist raw event identity safely without storing unnecessary personal data.
 - [x] Add replay/reconciliation endpoint for failed or ambiguous inbound events.
 - [ ] Add operational dashboards for token health, API errors, rate limits, webhook lag, and reply delivery.
 - [ ] Add alerting without including tokens, message bodies, or sensitive user data in logs.
