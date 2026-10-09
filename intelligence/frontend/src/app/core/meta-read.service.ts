@@ -59,4 +59,8 @@ export class MetaReadService {
   createCommentDraft(commentId: string, draftText: string): Observable<unknown> {
     return this.http.post(`${this.baseUrl}/comments/${commentId}/replies/draft`, { draftText, idempotencyKey: crypto.randomUUID() });
   }
+  submitCommentReply(replyId: string): Observable<unknown> { return this.http.post(`${this.baseUrl}/comments/replies/${replyId}/submit`, {}); }
+  approveCommentReply(replyId: string, reviewer: string): Observable<unknown> { return this.http.post(`${this.baseUrl}/comments/replies/${replyId}/approve`, { reviewer }); }
+  rejectCommentReply(replyId: string, reviewer: string, reason: string): Observable<unknown> { return this.http.post(`${this.baseUrl}/comments/replies/${replyId}/reject`, { reviewer, reason }); }
+  sendCommentReply(replyId: string): Observable<unknown> { return this.http.post(`${this.baseUrl}/comments/replies/${replyId}/send`, {}); }
 }
