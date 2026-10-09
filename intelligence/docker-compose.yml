@@ -163,7 +163,7 @@ services:
     depends_on:
       postgres: { condition: service_healthy }
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8082/actuator/health"]
+      test: ["CMD", "wget", "-q", "-O", "-", "http://localhost:8082/actuator/health"]
       interval: 5s
       timeout: 3s
       start_period: 20s
@@ -186,7 +186,7 @@ services:
     depends_on:
       postgres: { condition: service_healthy }
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8083/actuator/health"]
+      test: ["CMD", "wget", "-q", "-O", "-", "http://localhost:8083/actuator/health"]
       interval: 5s
       timeout: 3s
       start_period: 20s
@@ -212,7 +212,7 @@ services:
     depends_on:
       postgres: { condition: service_healthy }
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8084/actuator/health"]
+      test: ["CMD", "wget", "-q", "-O", "-", "http://localhost:8084/actuator/health"]
       interval: 5s
       timeout: 3s
       start_period: 20s
