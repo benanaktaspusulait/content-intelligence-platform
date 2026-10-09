@@ -1,0 +1,25 @@
+{
+  "scope": "LOCAL_MOCK, real browser create/refresh/select/import and real HTTP/persistence",
+  "contentId": 2,
+  "promptVersionId": 3,
+  "sourceSha256": "c0197608c22df38130122bec350eeb144e265b0cd0a570d01fdfa5d15e385055",
+  "saved": {
+    "id": 3,
+    "contentId": 2,
+    "versionNumber": 1,
+    "rawText": "title: LOCAL_MOCK Türkçe prompt-only\nprompt: |\n  0-15 SEC\n  A pendulum swings. LOCAL_MOCK source fixture.\n",
+    "parsedIr": "{}",
+    "sourcePath": "library/LOCAL_MOCK Türkçe boş 20261009/prompt.yaml",
+    "sourceSha256": "c0197608c22df38130122bec350eeb144e265b0cd0a570d01fdfa5d15e385055",
+    "createdAt": "2026-10-09T07:30:16.095789Z"
+  },
+  "checks": [
+    "empty Unicode folder survives UI refresh",
+    "prompt-only YAML discovered without video",
+    "source import reachable from detail UI",
+    "exact imported version replaces draft URL",
+    "stored UTF-8 source matches original SHA256",
+    "duplicate source import preserves unsaved editor text"
+  ],
+  "databaseSourceSha256": "c0197608c22df38130122bec350eeb144e265b0cd0a570d01fdfa5d15e385055"
+}

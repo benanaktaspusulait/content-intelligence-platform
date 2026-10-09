@@ -313,7 +313,7 @@ Intensity: 4`;
         const version = versions.find(item => item.id === promptVersionId);
         if (!version) { this.error = 'Prompt version could not be found.'; this.selectedPromptLoading = false; return; }
         this.contentId = String(contentId); this.promptVersionId = String(promptVersionId); this.contentTitle = `Content #${contentId}`; this.contentType = 'REEL';
-        this.setPromptText(version.rawText || ''); this.selectedPromptPath = version.sourcePath || ''; this.selectedPromptLoading = false;
+        this.setPromptText(version.rawText || ''); this.selectedPromptPath = version.sourcePath || ''; this.selectedPromptDirectory=version.sourcePath ? this.promptFolder(version.sourcePath,this.promptLibraryRoot) : ''; this.selectedPromptLoading = false;
         this.creativeDraftRecordId=null;
         this.http.get<any>(`/api/v1/intelligence/contents/${contentId}/prompt-versions/${promptVersionId}/creative-provenance`).subscribe({next: provenance => {if(this.contentId!==String(contentId)||this.promptVersionId!==String(promptVersionId))return;this.creativeProvenance=provenance;this.changeDetector.markForCheck();},error: () => {this.creativeProvenance=null;this.changeDetector.markForCheck();}});
         this.http.get<{videoId: string; relativePath: string}[]>(`/api/v1/intelligence/contents/${contentId}/prompt-versions/${promptVersionId}/videos`).subscribe({next: videos => { this.linkedVideos=videos; this.selectedWorkspaceVideoPath=videos.length === 1 ? videos[0].relativePath : ''; this.changeDetector.markForCheck(); }, error: () => {this.linkedVideos=[];this.changeDetector.markForCheck();}});
@@ -537,16 +537,27 @@ Intensity: 4`;
     this.loading = true;
     this.importMessage = '';
     this.http.post<{ discovered: number; imported: number; unchanged: number }>('/api/v1/intelligence/contents/import-folder', { relativeDirectory: this.selectedPromptDirectory }).subscribe({
-      next: result => { this.loading = false; this.importMessage = `${result.imported} prompt(s) imported to DB; ${result.unchanged} unchanged.`; this.loadDbPromptLibrary(); },
+      next: result => { this.loading = false; this.importMessage = `${result.imported} prompt(s) imported to DB; ${result.unchanged} unchanged.`; this.loadDbPromptLibrary(true); },
       error: response => { this.loading = false; this.error = response.error?.detail || response.error?.message || 'Prompt folder could not be imported.'; },
     });
   }
 
-  loadDbPromptLibrary(): void {
+  loadDbPromptLibrary(bindSelected = false): void {
     if (!this.selectedPromptDirectory) return;
     this.promptFilesLoading = true;
     this.http.get<PromptFile[]>(`/api/v1/intelligence/contents/prompt-library?sourceDirectory=${encodeURIComponent(this.selectedPromptDirectory)}`).subscribe({
-      next: files => { if (files.length) this.promptFiles = files.map(file => ({ ...file, name: file.sourcePath?.split('/').pop() || file.title || 'Prompt', relativePath: file.sourcePath || '', folder: this.selectedPromptDirectory, sizeBytes: null, modifiedAt: null })); this.promptFilesLoading = false; },
+      next: files => {
+        if (files.length) this.promptFiles = files.map(file => ({ ...file, name: file.sourcePath?.split('/').pop() || file.title || 'Prompt', relativePath: file.sourcePath || '', folder: this.selectedPromptDirectory, sizeBytes: null, modifiedAt: null }));
+        this.promptFilesLoading = false;
+        if (bindSelected) {
+          const selected=this.promptFiles.find(file => file.sourcePath===this.selectedPromptPath && file.rawText===this.prompt);
+          if (selected?.contentId && selected.promptVersionId) {
+            this.selectPromptFile(selected);
+            this.router.navigate(['/quality/detail'], {queryParams:{contentId:selected.contentId,promptVersionId:selected.promptVersionId},replaceUrl:true});
+          }
+        }
+        this.changeDetector.markForCheck();
+      },
       error: response => { this.error = response.error?.detail || response.error?.message || 'DB prompt library could not be loaded.'; this.promptFilesLoading = false; },
     });
   }

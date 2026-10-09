@@ -51,16 +51,18 @@
   </section>
 
   <app-creative-role (draft)="useCreativeDraft($event)"></app-creative-role>
-  <p *ngIf="creativeProvenance as provenance">Prompt origin: {{ provenance.origin }} · {{ provenance.provider }} {{ provenance.model }} · {{ provenance.creativeRoleRecordId }} · story {{ provenance.sourceStoryRecordId || 'manual source' }} · {{ provenance.operatorEdited ? 'Operator edited draft' : 'Original saved draft' }} · {{ provenance.validationStatus }}</p>
+  <p *ngIf="creativeProvenance as provenance">Prompt origin: {{ provenance.origin }}<ng-container *ngIf="provenance.origin === 'BUILD_PROMPT'"> · {{ provenance.provider }} {{ provenance.model }} · {{ provenance.creativeRoleRecordId }} · story {{ provenance.sourceStoryRecordId || 'manual source' }} · {{ provenance.operatorEdited ? 'Operator edited draft' : 'Original saved draft' }} · {{ provenance.validationStatus }}</ng-container></p>
   <label *ngIf="detailMode && linkedVideos.length">Exact linked video<select [(ngModel)]="selectedWorkspaceVideoPath"><option value="">Select exact video…</option><option *ngFor="let video of linkedVideos" [value]="video.relativePath">{{video.relativePath}} · {{video.videoId}}</option></select></label>
   <app-post-family-workflow *ngIf="detailMode" [prompt]="prompt" [contentId]="contentId" [promptVersionId]="promptVersionId" [sourcePath]="selectedPromptPath" [videoPath]="selectedWorkspaceVideoPath" (saveFinal)="saveWorkflowFinalPrompt($event)" (acceptedVersion)="useAcceptedRepair($event)"></app-post-family-workflow>
 
+  <p *ngIf="importMessage">{{ importMessage }}</p>
   <!-- Prompt detail/editor is intentionally a separate route from the folder picker. -->
   <div *ngIf="detailMode" id="prompt-editor" class="prompt-section card">
     <div class="card-header">
       <div><span class="eyebrow">PROMPT DETAIL</span><h2>{{ selectedWorkspace?.creativeName || contentTitle || 'New prompt' }}</h2><p *ngIf="selectedWorkspace">{{ selectedWorkspace.folderPath }}</p></div>
       <div class="actions">
         <a class="btn btn-outline-secondary btn-sm" routerLink="/quality">Back to folders</a>
+        <button *ngIf="selectedPromptDirectory" class="btn btn-outline-secondary btn-sm" type="button" [disabled]="loading || selectedPromptLoading" (click)="importSelectedFolder()">Import source folder versions</button>
       </div>
     </div>
     <div class="card-body">

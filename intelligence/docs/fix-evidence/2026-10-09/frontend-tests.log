@@ -5,32 +5,32 @@
 ❯ Building...
 ✔ Building...
 Initial chunk files                                           | Names                                                      |  Raw size
-spec-app-pages-video-detail.page.js                           | spec-app-pages-video-detail.page                           | 296.58 kB | 
-spec-app-pages-quality-validator-family10-representation.js   | spec-app-pages-quality-validator-family10-representation   | 269.41 kB | 
-styles.css                                                    | styles                                                     | 234.41 kB | 
-spec-app-pages-quality-validator-post-family-workflow.js      | spec-app-pages-quality-validator-post-family-workflow      | 179.47 kB | 
-chunk-XXJNNRS6.js                                             | -                                                          |  66.67 kB | 
-spec-app-pages-import-data.page.js                            | spec-app-pages-import-data.page                            |  49.52 kB | 
-spec-app-pages-meta-connection.page.js                        | spec-app-pages-meta-connection.page                        |  35.36 kB | 
-spec-app-pages-quality-validator-creative-role.component.js   | spec-app-pages-quality-validator-creative-role.component   |  21.47 kB | 
-spec-app-pages-overview.page.js                               | spec-app-pages-overview.page                               |  16.46 kB | 
-chunk-IEZOKNJO.js                                             | -                                                          |  14.05 kB | 
-chunk-2C2FFLUH.js                                             | -                                                          |  13.98 kB | 
-chunk-QTFZYNNF.js                                             | -                                                          |  12.76 kB | 
-spec-app-app.js                                               | spec-app-app                                               |   9.79 kB | 
-spec-app-pages-video-library.page.js                          | spec-app-pages-video-library.page                          |   7.67 kB | 
-spec-app-core-creative-intelligence.service.js                | spec-app-core-creative-intelligence.service                |   7.05 kB | 
-chunk-RSTWSNOR.js                                             | -                                                          |   4.75 kB | 
-spec-app-pages-quality-validator-actual-video-review.js       | spec-app-pages-quality-validator-actual-video-review       |   4.00 kB | 
-spec-app-pages-quality-validator-family9-representation.js    | spec-app-pages-quality-validator-family9-representation    |   3.34 kB | 
-spec-app-pages-quality-validator-specialized-applicability.js | spec-app-pages-quality-validator-specialized-applicability |   2.49 kB | 
-spec-app-pages-quality-validator-state-share.js               | spec-app-pages-quality-validator-state-share               |   1.98 kB | 
-init-testbed.js                                               | init-testbed                                               |   1.21 kB | 
-vitest-mock-patch.js                                          | vitest-mock-patch                                          | 974 bytes | 
+spec-app-pages-video-detail.page.js                           | spec-app-pages-video-detail.page                           | 296.58 kB |
+spec-app-pages-quality-validator-family10-representation.js   | spec-app-pages-quality-validator-family10-representation   | 269.41 kB |
+styles.css                                                    | styles                                                     | 234.41 kB |
+spec-app-pages-quality-validator-post-family-workflow.js      | spec-app-pages-quality-validator-post-family-workflow      | 179.47 kB |
+chunk-XXJNNRS6.js                                             | -                                                          |  66.67 kB |
+spec-app-pages-import-data.page.js                            | spec-app-pages-import-data.page                            |  49.52 kB |
+spec-app-pages-meta-connection.page.js                        | spec-app-pages-meta-connection.page                        |  35.36 kB |
+spec-app-pages-quality-validator-creative-role.component.js   | spec-app-pages-quality-validator-creative-role.component   |  21.47 kB |
+spec-app-pages-overview.page.js                               | spec-app-pages-overview.page                               |  16.46 kB |
+chunk-IEZOKNJO.js                                             | -                                                          |  14.05 kB |
+chunk-2C2FFLUH.js                                             | -                                                          |  13.98 kB |
+chunk-QTFZYNNF.js                                             | -                                                          |  12.76 kB |
+spec-app-app.js                                               | spec-app-app                                               |   9.79 kB |
+spec-app-pages-video-library.page.js                          | spec-app-pages-video-library.page                          |   7.67 kB |
+spec-app-core-creative-intelligence.service.js                | spec-app-core-creative-intelligence.service                |   7.05 kB |
+chunk-RSTWSNOR.js                                             | -                                                          |   4.75 kB |
+spec-app-pages-quality-validator-actual-video-review.js       | spec-app-pages-quality-validator-actual-video-review       |   4.00 kB |
+spec-app-pages-quality-validator-family9-representation.js    | spec-app-pages-quality-validator-family9-representation    |   3.34 kB |
+spec-app-pages-quality-validator-specialized-applicability.js | spec-app-pages-quality-validator-specialized-applicability |   2.49 kB |
+spec-app-pages-quality-validator-state-share.js               | spec-app-pages-quality-validator-state-share               |   1.98 kB |
+init-testbed.js                                               | init-testbed                                               |   1.21 kB |
+vitest-mock-patch.js                                          | vitest-mock-patch                                          | 974 bytes |
 
                                                               | Initial total                                              |   1.25 MB
 
-Application bundle generation complete. [4.167 seconds] - 2026-10-08T23:25:22.295Z
+Application bundle generation complete. [4.415 seconds] - 2026-10-09T07:31:27.296Z
 
 
  RUN  v4.1.11 /Users/benanaktas/project/video/content-intelligence-platform/intelligence/frontend
@@ -38,6 +38,6 @@ Application bundle generation complete. [4.167 seconds] - 2026-10-08T23:25:22.29
 
  Test Files  14 passed (14)
       Tests  71 passed (71)
-   Start at  00:25:22
-   Duration  2.34s (transform 2.29s, setup 3.05s, import 3.37s, tests 1.38s, environment 14.70s)
+   Start at  08:31:27
+   Duration  2.35s (transform 2.63s, setup 2.96s, import 3.86s, tests 1.95s, environment 13.81s)
 

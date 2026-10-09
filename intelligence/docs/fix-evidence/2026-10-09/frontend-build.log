@@ -5,18 +5,18 @@
 ❯ Building...
 ✔ Building...
 Initial chunk files | Names         |  Raw size
-main.js             | main          |   2.93 MB | 
-styles.css          | styles        | 234.45 kB | 
-chunk-XSXJULYR.js   | -             |   1.75 kB | 
+main.js             | main          |   2.94 MB |
+styles.css          | styles        | 234.45 kB |
+chunk-XSXJULYR.js   | -             |   1.75 kB |
 
                     | Initial total |   3.17 MB
 
 Lazy chunk files    | Names         |  Raw size
-chunk-S7KUESLU.js   | editor-api    |   4.47 MB | 
-chunk-CCUGDQHM.css  | -             |  83.43 kB | 
-main.css            | -             |  83.42 kB | 
+chunk-S7KUESLU.js   | editor-api    |   4.47 MB |
+chunk-CCUGDQHM.css  | -             |  83.43 kB |
+main.css            | -             |  83.42 kB |
 
-Application bundle generation complete. [6.101 seconds] - 2026-10-08T23:25:31.773Z
+Application bundle generation complete. [6.370 seconds] - 2026-10-09T07:31:38.301Z
 
 Output location: /Users/benanaktas/project/video/content-intelligence-platform/intelligence/frontend/dist/frontend
 

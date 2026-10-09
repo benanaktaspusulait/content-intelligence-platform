@@ -1,0 +1,6 @@
+{
+  "scope": "LOCAL_MOCK source fixture",
+  "relativePath": "library/LOCAL_MOCK Türkçe boş 20261009/prompt.yaml",
+  "sha256": "c0197608c22df38130122bec350eeb144e265b0cd0a570d01fdfa5d15e385055",
+  "rawText": "title: LOCAL_MOCK Türkçe prompt-only\nprompt: |\n  0-15 SEC\n  A pendulum swings. LOCAL_MOCK source fixture.\n"
+}
