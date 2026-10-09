@@ -4,9 +4,12 @@ import com.pompom.creative.domain.MetaCommentReply;
 import com.pompom.creative.meta.MetaCommentModerationService;
 import com.pompom.creative.meta.MetaCommentReplyDeliveryService;
 import com.pompom.creative.meta.MetaCommentReconciliationService;
+import com.pompom.creative.repository.MetaCommentRepository;
 import com.pompom.creative.oauth.MetaCommentReplyDisabledException;
 import java.util.UUID;
+import java.util.List;
 import lombok.Data;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,20 +21,29 @@ public class MetaCommentController {
   private final MetaCommentModerationService moderation;
   private final MetaCommentReplyDeliveryService delivery;
   private final MetaCommentReconciliationService reconciliation;
+  private final MetaCommentRepository comments;
 
   /** Compatibility constructor for isolated controller tests. */
+  @Autowired
   public MetaCommentController(
       MetaCommentModerationService moderation, MetaCommentReplyDeliveryService delivery) {
-    this(moderation, delivery, null);
+    this(moderation, delivery, null, null);
   }
 
   public MetaCommentController(
       MetaCommentModerationService moderation,
       MetaCommentReplyDeliveryService delivery,
-      MetaCommentReconciliationService reconciliation) {
+      MetaCommentReconciliationService reconciliation,
+      MetaCommentRepository comments) {
     this.moderation = moderation;
     this.delivery = delivery;
     this.reconciliation = reconciliation;
+    this.comments = comments;
+  }
+
+  @GetMapping
+  public ResponseEntity<List<com.pompom.creative.domain.MetaComment>> list() {
+    return ResponseEntity.ok(comments == null ? List.of() : comments.findTop100ByOrderByCreatedAtDesc());
   }
 
   @PostMapping("/reconcile")
