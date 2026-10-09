@@ -214,3 +214,41 @@ Implementation follows the approved visual-reference prompt and stays inside the
 - [x] Critical-scene recommendations are conservative and capability-aware.
 - [x] Existing canonical render authorization receives exact supported reference bindings.
 - [x] Historical assets remain readable and no paid live-provider tests were run without explicit later authorization.
+# Quality Engine UX Consolidation & Workflow Integration — TODO
+
+## Slice A — Route and bundle identity
+- [x] Identify the served Quality route, source component, shared shell, and deployed bundle.
+- [x] Read current audit, backlog, fix progress, and Creative Studio implementation docs.
+
+## Slice B — Truthful analysis status presentation
+- [x] Map persisted analysis statuses and score/report contracts.
+- [x] Render NOT_ANALYZED, RUNNING/PENDING, COMPLETED, PARTIAL, SERVICE_ERROR, VALIDATION_FAILED, and STALE distinctly.
+- [x] Preserve historical partial/error scores without presenting them as verified final grades.
+- [x] Keep retry bounded, authorized, budget-aware, and idempotent.
+
+## Slice C — Remove duplicate AI form
+- [x] Remove the legacy story/prompt-generation form from Quality without removing backend roles or saved data.
+- [x] Add compact Create New Video and I Have an Existing Prompt actions.
+
+## Slice D — Consolidated navigation and identity
+- [x] Reuse shared sidebar and preserve deep links.
+- [x] Route new ideas to Creative Studio Idea.
+- [x] Route existing prompts to exact prompt/version analysis or relevant Studio stage.
+- [x] Preserve content, prompt, source, video, validation, review, and repair-session identity across navigation.
+
+## Slice E — Prompt Library
+- [x] Replace raw folder discovery with searchable workspace/prompt browser and real status metadata.
+- [x] Keep prompt-only and empty folders discoverable with clear empty/loading/error states.
+- [x] Make folder creation secondary, secure, Unicode-safe, and refresh-stable.
+- [x] Preserve ambiguity for multiple prompt candidates and expose source identity.
+
+## Slice F — English, design, accessibility, responsive layout
+- [x] Remove developer-authored Turkish copy and standardise en-GB UI terms.
+- [x] Align Quality with shared layout, typography, navigation, cards, focus, labels, and responsive breakpoints.
+- [x] Keep advanced technical settings contextual and collapsible.
+
+## Slice G — Regression and browser acceptance
+- [x] Add Q01–Q30 behavioural regression coverage.
+- [x] Run aligned local browser journeys for desktop, tablet, and mobile with mock providers.
+- [x] Verify no paid calls or historical-data mutations during navigation/refresh.
+- [x] Build, test, deploy only after all checks pass and document limitations honestly.

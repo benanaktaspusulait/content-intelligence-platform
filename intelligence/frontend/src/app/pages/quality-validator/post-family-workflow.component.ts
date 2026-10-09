@@ -8,14 +8,14 @@ import { GeneralProducibilityComponent } from './general-producibility.component
   selector: 'app-post-family-workflow',
   standalone: true,
   imports: [CommonModule, FormsModule, GeneralProducibilityComponent],
-  template: ` <section class="workflow" aria-label="Operasyonel yaratıcı iş akışı">
-    <h2>Üretim incelemesi</h2>
-    <p *ngIf="restoredRecordId">Kayıtlı inceleme yeniden açıldı · {{ restoredRecordId }} · yeni sağlayıcı çağrısı yapılmadı.</p>
+  template: ` <section class="workflow" aria-label="Operational creative workflow">
+    <h2>Production review</h2>
+    <p *ngIf="restoredRecordId">Saved review reopened · {{ restoredRecordId }} · no new provider call was made.</p>
     <label
-      >İş akışı profili
+      >Workflow profile
       <select [(ngModel)]="profile">
-        <option value="FROZEN">Family 1–10 · tarihsel doğrulama</option>
-        <option value="post-family-v1">Operasyonel yaratıcı iş akışı v1</option>
+        <option value="FROZEN">Family 1–10 · historical validation</option>
+        <option value="post-family-v1">Operational creative workflow v1</option>
       </select></label
     >
     <p>
@@ -26,56 +26,56 @@ import { GeneralProducibilityComponent } from './general-producibility.component
       Yetkili karakter referansları dosyalardan bağlanır; eksik referans yerine görünüm uydurulmaz.
     </p>
     <ng-container *ngIf="profile === 'post-family-v1'">
-      <details><summary>Onaylı ilgili dersler</summary><label>Dersin hedef model / profil sürümü<input [(ngModel)]="lessonModelVersion"></label><button type="button" (click)="retrieveLessons()" [disabled]="!lessonModelVersion || !desiredDuration || contentProfile === 'AUTO'">İlgili doğrulanmış dersleri getir</button><p *ngFor="let lesson of retrievedLessons">{{ lesson.hypothesis }} · {{ lesson.recordId }} · {{ lesson.reviewReason }}</p><p>Sonraki inceleme isteği dersleri sunucuda tekrar doğrular; ders bir kural veya render izni oluşturmaz.</p></details>
+      <details><summary>Approved related lessons</summary><label>Target model / profile version<input [(ngModel)]="lessonModelVersion"></label><button type="button" (click)="retrieveLessons()" [disabled]="!lessonModelVersion || !desiredDuration || contentProfile === 'AUTO'">Retrieve related validated lessons</button><p *ngFor="let lesson of retrievedLessons">{{ lesson.hypothesis }} · {{ lesson.recordId }} · {{ lesson.reviewReason }}</p><p>The next review request revalidates lessons on the server; lessons never create a rule or render permission.</p></details>
       <div class="inputs">
         <label
-          >İçerik profili<select [(ngModel)]="contentProfile">
-            <option value="AUTO">Kaynak temelli öneri</option>
-            <option value="ABSURD_PHYSICS">Absürt fizik</option>
-            <option value="CURIOSITY_ADVENTURE">Merak / macera</option>
-            <option value="EDUCATIONAL">Eğitici</option>
-            <option value="MIXED">Karma</option>
-            <option value="UNKNOWN">Belirsiz</option>
+          >Content profile<select [(ngModel)]="contentProfile">
+            <option value="AUTO">Source-based suggestion</option>
+            <option value="ABSURD_PHYSICS">Absurd physics</option>
+            <option value="CURIOSITY_ADVENTURE">Curiosity / adventure</option>
+            <option value="EDUCATIONAL">Educational</option>
+            <option value="MIXED">Mixed</option>
+            <option value="UNKNOWN">Unknown</option>
           </select></label
         >
         <label
-          >Açılış stratejisi<select [(ngModel)]="openingStrategy">
-            <option value="AUTO">Öneri</option>
-            <option value="INSTANT_IMPOSSIBLE">Anında imkânsızlık</option>
-            <option value="IMMEDIATE_PROBLEM">Doğrudan sorun</option>
-            <option value="CURIOSITY_DISCOVERY">Merak / keşif</option>
+          >Opening strategy<select [(ngModel)]="openingStrategy">
+            <option value="AUTO">Suggestion</option>
+            <option value="INSTANT_IMPOSSIBLE">Instant impossibility</option>
+            <option value="IMMEDIATE_PROBLEM">Immediate problem</option>
+            <option value="CURIOSITY_DISCOVERY">Curiosity / discovery</option>
           </select></label
         >
         <label
-          >İstenen süre (s)<input
+          >Requested duration (s)<input
             type="number"
             min="1"
             [(ngModel)]="desiredDuration"
-            placeholder="Kaynak süresi"
+            placeholder="Source duration"
         /></label>
         <label
-          >Jeneratör<select [(ngModel)]="generator">
-            <option value="AUTO">Kullanıcı tercihine göre öner</option>
+          >Generator<select [(ngModel)]="generator">
+            <option value="AUTO">Suggest from operator preference</option>
             <option value="SEEDANCE_2_0_MINI">Seedance 2.0 Mini</option>
             <option value="SEEDANCE_2_0">Seedance 2.0</option>
             <option value="SEEDANCE_2_5">Seedance 2.5</option>
           </select></label
         >
         <label
-          >İlk kare · mevcut medya yolu<input
+          >First frame · existing media path<input
             [(ngModel)]="firstFramePath"
             placeholder="library/.../first-frame.png"
         /></label>
         <label
           >İlk kare · sağlayıcı URL<input
             [(ngModel)]="firstFrameUrl"
-            placeholder="Doğrulanmış referans URL"
+            placeholder="Verified reference URL"
         /></label>
         <label
-          >2.0 kalite gerekçesi<input [(ngModel)]="qualityJustification" placeholder="Gerekliyse"
+          >2.0 quality justification<input [(ngModel)]="qualityJustification" placeholder="If needed"
         /></label>
         <label
-          >Görünüm oranı<select [(ngModel)]="aspectRatio">
+          >Aspect ratio<select [(ngModel)]="aspectRatio">
             <option>9:16</option>
             <option>16:9</option>
             <option>1:1</option>
@@ -83,18 +83,18 @@ import { GeneralProducibilityComponent } from './general-producibility.component
         >
       </div>
       <label
-        >İzleyicinin temel sorusu<input
+        >Viewer question<input
           [(ngModel)]="viewerQuestion"
-          placeholder="Ne oluyor / ne keşfedilecek?"
+          placeholder="What happens / what will be discovered?"
       /></label>
       <label
-        >Korunacak yaratıcı niyet · kaynakta geçen ifadeler<textarea
+        >Protected creative intent · source wording<textarea
           [(ngModel)]="protectedIntent"
-          placeholder="Açılış vaadi, temel mekanizma/soru ve son olay; her satıra bir kaynak ifadesi"
+          placeholder="Opening promise, core mechanism/question and final event; one source statement per line"
         ></textarea>
       </label>
       <label
-        >Önceki temel niyeti değiştiriyorsanız karar gerekçesi<input
+        >Decision reason when changing the previous core intent<input
           [(ngModel)]="intentChangeReason"
       /></label>
       <button
@@ -162,7 +162,7 @@ import { GeneralProducibilityComponent } from './general-producibility.component
             <p>{{ r.planQuality?.status || 'UNKNOWN' }} · {{ r.planQuality?.recommendation }}</p>
           </article>
           <article>
-            <strong>Jeneratör yürütme riski</strong>
+            <strong>Generator yürütme riski</strong>
             <p>{{ r.executionRisk?.status || 'UNKNOWN' }}</p>
           </article>
           <article>
@@ -193,7 +193,7 @@ import { GeneralProducibilityComponent } from './general-producibility.component
               {{ r.opening?.plannedOpening?.status || 'UNKNOWN' }}
             </p>
             <p>
-              Önerilen / seçilen jeneratör: {{ r.generation?.recommendedGenerator }} /
+              Suggestionlen / seçilen jeneratör: {{ r.generation?.recommendedGenerator }} /
               {{ r.generation?.selectedGenerator }}
             </p>
             <p>
@@ -229,7 +229,7 @@ import { GeneralProducibilityComponent } from './general-producibility.component
             {{ r.opening?.actualOpeningVideo?.status }} / {{ r.opening?.cover?.status }}
           </p>
           <p *ngFor="let alternative of r.opening?.alternatives">{{ alternative }}</p>
-          <h3>Jeneratör yürütme incelemesi · {{ r.executionReview?.status }}</h3>
+          <h3>Generator yürütme incelemesi · {{ r.executionReview?.status }}</h3>
           <article *ngFor="let finding of r.executionReview?.findings?.slice(0, 5)">
             <strong
               >{{ finding.riskCategory }} · {{ finding.evidenceBasis }} ·
@@ -288,12 +288,12 @@ import { GeneralProducibilityComponent } from './general-producibility.component
           <button type="button" (click)="setIntentLevel(beat, 'POLISH')">Görsel incelik</button>
         </article>
         <details>
-          <summary>Kaynağa bağlı niyet ve yaratıcı yorum ayrıntıları</summary>
+          <summary>Source-bound intent and creative interpretation details</summary>
           <label
-            >Niyet bildirimleri<textarea [(ngModel)]="intentRequirementsText"></textarea>
+            >Intent requirements<textarea [(ngModel)]="intentRequirementsText"></textarea>
           </label>
           <label
-            >Plan yorumları (kaynak aralığı ve gerekçe)<textarea
+            >Plan notes (source range and rationale)<textarea
               [(ngModel)]="creativeEvidenceText"
             ></textarea>
           </label>
@@ -303,9 +303,9 @@ import { GeneralProducibilityComponent } from './general-producibility.component
           </p>
         </details>
         <details><summary>Bounded repair session · at most two attempts</summary><label>Maximum total cost (USD)<input type="number" min="0" [(ngModel)]="repairBudget"></label><label><input type="checkbox" [(ngModel)]="repairConsent">I approve the configured repair provider within this session budget.</label><button type="button" (click)="startRepairSession()" [disabled]="busy || !isCurrent() || !repairConsent || repairBudget <= 0">Start bounded repair</button><label>Saved session ID<input [(ngModel)]="repairSessionId"></label><button type="button" (click)="reopenRepairSession(repairSessionId)">Reopen session</button><div *ngIf="repairSession"><p>{{ repairSession.sessionId }} · {{ repairSession.state }} · {{ repairSession.stopReason }} · attempts {{ repairSession.attempts }}/{{ repairSession.maxAttempts }} · reserved ceiling {{ repairSession.reservedCostUsd }} (actual spend may be unknown)</p><p>Best independently reviewed prompt version: {{ repairSession.bestPromptVersionId }}</p><section *ngIf="repairOriginalReview && repairBestReview" aria-label="Repair before and after findings"><h4>Original · prompt version {{ repairOriginalReview.promptVersionId }}</h4><pre>{{ repairOriginalReview.executionReview?.findings | json }}</pre><pre>{{ repairOriginalReview.planQuality | json }}</pre><h4>Best independently reviewed candidate · prompt version {{ repairBestReview.promptVersionId }}</h4><pre>{{ repairBestReview.executionReview?.findings | json }}</pre><pre>{{ repairBestReview.planQuality | json }}</pre></section><pre>{{ repairSession.history | json }}</pre><button type="button" (click)="nextRepairAttempt()" [disabled]="busy || repairSession.state !== 'READY'">Next bounded attempt</button><button type="button" (click)="decideRepair('ACCEPTED')" [disabled]="busy || repairSession.state === 'RUNNING'">Accept best candidate</button><button type="button" (click)="decideRepair('REJECTED')">Reject</button><button type="button" (click)="decideRepair('CANCELLED')">Cancel</button></div></details>
-        <h3>En küçük düzeltme</h3>
-        <label>Değiştirilecek kaynak ifadesi<input [(ngModel)]="patchOriginal" /></label
-        ><label>Yeni ifade<input [(ngModel)]="patchReplacement" /></label>
+        <h3>Minimal repair</h3>
+        <label>Source wording to replace<input [(ngModel)]="patchOriginal" /></label
+        ><label>Replacement wording<input [(ngModel)]="patchReplacement" /></label>
         <button
           type="button"
           (click)="repair()"
@@ -313,11 +313,11 @@ import { GeneralProducibilityComponent } from './general-producibility.component
             busy || !isCurrent() || !protectedIntent.trim() || !patchOriginal || r.repairPasses > 0
           "
         >
-          Tek yama + son prompt doğrulaması
+          One patch + final prompt validation
         </button>
         <pre *ngIf="r.diff">{{ r.diff }}</pre>
-        <label>Son üretim prompt’u<textarea readonly [value]="r.finalPrompt"></textarea></label>
-        <button type="button" (click)="copyPrompt()" [disabled]="!isCurrent()">Kopyala</button>
+        <label>Final production prompt<textarea readonly [value]="r.finalPrompt"></textarea></label>
+        <button type="button" (click)="copyPrompt()" [disabled]="!isCurrent()">Copy</button>
         <button type="button" (click)="saveFinal.emit(r.finalPrompt)" [disabled]="!isCurrent()">
           Editöre aktar ve sürüm kaydet
         </button>

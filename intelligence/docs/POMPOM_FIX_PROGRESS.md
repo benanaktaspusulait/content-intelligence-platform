@@ -113,3 +113,10 @@ Local validation: render-service compile passed; OpenArt capability/reference/mo
 - Added V01–V35 regression contract coverage and worker transport coverage for accepted first-frame bindings.
 - Post-render evidence now persists visual-reference strategy context and explicitly records that it makes no causal performance claim.
 - Local browser smoke journeys covered quality and render routes; no paid provider call was made.
+
+
+### Quality Engine UX consolidation checkpoint — 2026-10-09
+
+Implemented and deployed the Quality workflow consolidation on `master`. The Quality route now presents truthful persisted states (not analysed, running/pending, completed, needs attention, service error), search and state filters, verified versus diagnostic scores, and bounded actions. The duplicate legacy story/prompt form was removed from Quality while backend creative-role records and the dedicated Creative Studio route remain intact. Added compact Create New Video and I Have an Existing Prompt entry points, preserved exact content/prompt/source/video identity routes, moved the raw prompt root into advanced diagnostics, and added responsive summary/card layout. Developer-authored Quality workflow labels were standardised to English/en-GB, including the post-family review controls.
+
+Validation: frontend production build passed (only the existing 500 kB initial bundle warning remains); frontend tests passed 16/16 files and 76/76 tests. Browser smoke on `http://localhost:4200/quality` confirmed the shared sidebar, new filters, advanced diagnostics disclosure, compact Creative Studio actions, and navigation to `/quality/new`, whose title and seven-stage Idea-first workflow were confirmed. Docker Compose frontend was rebuilt and restarted; localhost frontend served the new bundle. No paid provider call, render, or historical-data mutation was performed.

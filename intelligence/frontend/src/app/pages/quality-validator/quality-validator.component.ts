@@ -1,6 +1,5 @@
 import { GeneralProducibility } from './family10-representation';
 import { GeneralProducibilityComponent } from './general-producibility.component';
-import { CreativeRoleComponent } from './creative-role.component';
 import { PostFamilyWorkflowComponent } from './post-family-workflow.component';
 import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, HostListener, OnDestroy, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -200,7 +199,7 @@ interface BeatEvidence { label: string; role: string; isAttempt: boolean; verb: 
 @Component({
   selector: 'app-quality-validator',
   standalone: true,
-  imports: [CommonModule, FormsModule, TimelineChartComponent, RouterLink, GeneralProducibilityComponent, PostFamilyWorkflowComponent, CreativeRoleComponent],
+  imports: [CommonModule, FormsModule, TimelineChartComponent, RouterLink, GeneralProducibilityComponent, PostFamilyWorkflowComponent],
   templateUrl: './quality-validator.component.html',
   styleUrls: ['./quality-validator.component.scss']
 })
@@ -241,6 +240,8 @@ export class QualityValidatorComponent implements AfterViewInit, OnDestroy {
   selectedPromptLoading = false;
   promptWorkspaces: PromptWorkspace[] = [];
   qualityRecords: PromptQualityRecord[] = [];
+  qualityFilter: 'ALL' | 'NOT_ANALYZED' | 'COMPLETED' | 'NEEDS_ATTENTION' | 'SERVICE_ERROR' = 'ALL';
+  qualitySearch = '';
   qualityRecordsLoading = false;
   promptWorkspacesLoading = false;
   workspaceQuery = '';
@@ -671,7 +672,37 @@ Intensity: 4`;
   }
 
   qualityState(record: { latestQuality?: PromptQualitySummary | null } | null): string {
-    return record?.latestQuality ? 'ANALYZED' : 'NOT_ANALYZED';
+    const status = record?.latestQuality?.status;
+    if (!status) return 'NOT_ANALYZED';
+    if (status === 'SERVICE_ERROR') return 'SERVICE_ERROR';
+    if (['RENDER_READY', 'COMPLETED', 'PASS'].includes(status)) return 'COMPLETED';
+    if (['RUNNING', 'PENDING'].includes(status)) return 'RUNNING';
+    return 'NEEDS_ATTENTION';
+  }
+
+  visibleQualityRecords(): PromptQualityRecord[] {
+    const query = this.qualitySearch.trim().toLocaleLowerCase('en-GB');
+    return this.qualityRecords.filter(record => {
+      const matchesQuery = !query || `${record.title} ${record.sourcePath || ''} ${record.versionNumber || ''}`.toLocaleLowerCase('en-GB').includes(query);
+      const state = this.qualityState(record);
+      const matchesFilter = this.qualityFilter === 'ALL' || (this.qualityFilter === 'NOT_ANALYZED' && state === 'NOT_ANALYZED') || (this.qualityFilter === 'COMPLETED' && state === 'COMPLETED') || (this.qualityFilter === 'SERVICE_ERROR' && state === 'SERVICE_ERROR') || (this.qualityFilter === 'NEEDS_ATTENTION' && ['NEEDS_ATTENTION', 'RUNNING'].includes(state));
+      return matchesQuery && matchesFilter;
+    });
+  }
+
+  countQualityState(state: string): number { return this.qualityRecords.filter(record => this.qualityState(record) === state).length; }
+
+  qualitySummaryText(record: PromptQualityRecord): string {
+    const quality = record.latestQuality;
+    if (!quality) return 'No quality analysis has been run for this prompt version.';
+    if (quality.status === 'SERVICE_ERROR') return 'The analysis could not be completed because a required service failed.';
+    if (['PENDING', 'RUNNING'].includes(quality.status)) return 'Quality analysis is still running.';
+    if (quality.status === 'PARTIAL' || quality.status === 'COMPLETED_WITH_WARNINGS') return 'Some evaluation results are unavailable; review the recorded limitations.';
+    return quality.summary || 'Quality analysis completed.';
+  }
+
+  hasVerifiedScore(quality: PromptQualitySummary | null | undefined): boolean {
+    return !!quality && ['RENDER_READY', 'COMPLETED', 'PASS'].includes(quality.status) && quality.overallScore !== null && quality.overallScore !== undefined;
   }
 
   promptQualitySummary(record: { latestQuality?: PromptQualitySummary | null } | null): string {
