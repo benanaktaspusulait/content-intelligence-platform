@@ -375,7 +375,7 @@ public class WorkflowService {
 
   public Map<String, Object> creativeRole(Map<String, Object> request) {
     String role = String.valueOf(request.get("role"));
-    if (!List.of("STORY", "BUILD_PROMPT", "MINIMAL_REPAIR").contains(role))
+    if (!List.of("STORY", "STORY_REVIEW", "BUILD_PROMPT", "MINIMAL_REPAIR").contains(role))
       throw new IllegalArgumentException("Unsupported creative role");
     if (map(request.get("context")).get("sourceStoryRecordId") instanceof String storyId
         && !storyId.isBlank() && !"MANUAL_STORY".equals(storyId)) {
@@ -423,6 +423,10 @@ public class WorkflowService {
     approval.put("role", "STORY_APPROVAL");
     approval.put("storyRecordId", storyRecordId.toString());
     approval.put("approvedText", approvedText);
+    approval.put("candidateId", request.get("candidateId"));
+    approval.put("revisionId", request.get("revisionId"));
+    approval.put("contentFingerprint", request.get("contentFingerprint"));
+    approval.put("reviewRecordId", request.get("reviewRecordId"));
     approval.put("originalStory", story.get("result"));
     approval.put("approvedAt", java.time.Instant.now().toString());
     approval.put("recordId", save("STORY_APPROVAL", storyRecordId.toString(), approval));

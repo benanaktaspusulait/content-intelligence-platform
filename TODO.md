@@ -285,3 +285,36 @@ Implementation follows the approved visual-reference prompt and stays inside the
 - [x] Add required structural, fixture, budget, lineage, and regression tests.
 - [x] Run short-idea and detailed-story browser journeys with mock providers.
 - [x] Update progress documentation, build, test, and deploy only after all checks pass.
+
+# OpenAI Story Review & Iterative Revision Validation — TODO
+
+## Slice A — Optional STORY_REVIEW role
+- [x] Add a separate STORY_REVIEW role routed to OpenAI through the existing provider abstraction.
+- [x] Define validated collection review input/output contracts with candidate IDs, fingerprints, provenance, findings, recommendation, cost and limitations.
+- [x] Enforce explicit consent, positive budget, one bounded collection call, no automatic retry, and LOCAL_MOCK/live provenance.
+
+## Slice B — Story review analysis
+- [x] Review all candidates together for opening, coherence, progression, ending, generator risk and source fidelity.
+- [x] Reuse story-structure diversity evidence and distinguish DISTINCT/PARTIALLY_DISTINCT/NEAR_DUPLICATES/INSUFFICIENT_EVIDENCE.
+- [x] Support CONFIRMED_ISSUE, POTENTIAL_RISK, NOT_DETECTED, INSUFFICIENT_EVIDENCE, NOT_APPLICABLE and SERVICE_ERROR semantics.
+
+## Slice C — Review UI and recommendation
+- [x] Add Review Stories with OpenAI controls with model, count, budget, consent and status.
+- [x] Show compact per-card review status and a full OpenAI Story Comparison report.
+- [x] Keep recommendation advisory and allow human override.
+
+## Slice D — Revision lifecycle
+- [x] Add exact candidate/revision fingerprints and immutable review history.
+- [x] Mark edited stories and affected reviews stale without erasing historical evidence.
+- [x] Add Review Updated Story, resolved/remaining/new findings, and bounded iterative review.
+- [x] Preserve locked requirements and invalidate incompatible downstream prompt readiness.
+
+## Slice E — BUILD_PROMPT lineage
+- [x] Pass only the exact approved current story revision plus bounded selected concerns to BUILD_PROMPT.
+- [x] Preserve source story, candidate, revision, review, approval and prompt lineage across refresh/reopen.
+- [x] Ensure optional review failure never becomes render authorization failure.
+
+## Slice F — Verification
+- [x] Add provider-role, schema, budget, fingerprint, staleness, finding-diff, idempotency and lineage tests.
+- [x] Run mock desktop/mobile browser journeys for initial and updated story review.
+- [x] Update progress documentation and deploy only after every checkbox is complete.

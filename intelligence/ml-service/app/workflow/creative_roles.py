@@ -10,7 +10,7 @@ from app.llm.openai_provider import OpenAIProvider
 from .deepseek import DeepSeekTextProvider
 from .story_quality import analyse_story_candidates
 
-ROLES = {'STORY': 'deepseek', 'BUILD_PROMPT': 'openai', 'MINIMAL_REPAIR': 'openai'}
+ROLES = {'STORY': 'deepseek', 'STORY_REVIEW': 'openai', 'BUILD_PROMPT': 'openai', 'MINIMAL_REPAIR': 'openai'}
 
 
 def role_readiness() -> dict[str, Any]:
@@ -28,15 +28,36 @@ def perform_role(role: str, text: str, context: dict[str, Any], provider: LLMPro
     if any(context.get(key) for key in ('image', 'images', 'video')):
         raise ValueError('Creative roles are text-only; visual evidence was not supplied')
     system = {
+        'STORY_REVIEW': 'Review every supplied story candidate together. Return the validated STORY_REVIEW JSON contract with no render authorization. Compare structure rather than wording; preserve source fidelity and mark uncertainty honestly.',
         'STORY': 'Return JSON alternatives: one to three story candidates. Respect the requested generation mode and locked requirements. For EXPLORE_DIFFERENT_STORIES vary meaningful narrative structure; for IMPROVE_EXISTING_STORY preserve locked events and ending while offering refinements. Preserve the supplied characters and intent. No production authorization.',
         'BUILD_PROMPT': 'Return JSON prompt: a production prompt string. Use only supplied story, references and constraints. Do not invent character appearance or evidence. No production authorization.',
         'MINIMAL_REPAIR': 'Return JSON patches: at most three minimal edits with integer Unicode code point start/end, exact sourceQuote and replacement. Preserve protected intent and ESSENTIAL source quotes. Never return approval or rewrite the entire prompt.',
     }[role]
-    safe_context = {key: context[key] for key in ('protectedIntent', 'intentRequirements', 'findings', 'retrievedLessons', 'constraints', 'storyGenerationMode', 'lockedRequirements', 'permittedVariation', 'mainCharacter', 'preferences', 'profile') if key in context}
+    safe_context = {key: context[key] for key in ('protectedIntent', 'intentRequirements', 'findings', 'retrievedLessons', 'constraints', 'storyGenerationMode', 'lockedRequirements', 'permittedVariation', 'mainCharacter', 'preferences', 'profile', 'candidates', 'candidateIds', 'sourceRequestId', 'sourceFingerprint', 'previousReview', 'currentRevision', 'previousRevision', 'targetDuration', 'aspectRatio', 'reviewPolicyVersion') if key in context}
     value = json.loads(provider.complete(json.dumps({'text': text, 'context': safe_context}, ensure_ascii=False), system=system, temperature=0))
     if not isinstance(value, dict):
         raise ValueError('Role result must be an object')
-    if role == 'STORY':
+    if role == 'STORY_REVIEW':
+        required = ('reviewId', 'sourceRequestId', 'sourceFingerprint', 'reviewModel', 'reviewModelVersion', 'reviewPolicyVersion', 'reviewTimestamp', 'reviewStatus', 'diversityAssessment', 'comparativeFindings', 'candidateReviews', 'recommendedCandidateId', 'recommendationReason', 'overallConcerns', 'usageAndCost', 'evidenceLimitations', 'revisionComparison')
+        if any(key not in value for key in required):
+            raise ValueError('Structured STORY_REVIEW contract is incomplete')
+        if context.get('sourceRequestId') is not None and str(value.get('sourceRequestId')) != str(context.get('sourceRequestId')):
+            raise ValueError('STORY_REVIEW source request identity does not match')
+        if context.get('sourceFingerprint') is not None and str(value.get('sourceFingerprint')) != str(context.get('sourceFingerprint')):
+            raise ValueError('STORY_REVIEW source fingerprint does not match')
+        candidates = context.get('candidates') if isinstance(context.get('candidates'), list) else []
+        candidate_ids = [str(item.get('candidateId')) for item in candidates if isinstance(item, dict)]
+        reviews = value.get('candidateReviews')
+        if not isinstance(reviews, list) or len(reviews) != len(candidate_ids):
+            raise ValueError('STORY_REVIEW must include exactly one review per candidate')
+        review_ids = [str(item.get('candidateId')) for item in reviews if isinstance(item, dict)]
+        if len(review_ids) != len(set(review_ids)) or set(review_ids) != set(candidate_ids):
+            raise ValueError('STORY_REVIEW candidate IDs do not match the request')
+        if value.get('recommendedCandidateId') is not None and str(value.get('recommendedCandidateId')) not in candidate_ids:
+            raise ValueError('STORY_REVIEW recommendation must reference a supplied candidate or null')
+        if value.get('reviewStatus') not in {'COMPLETED', 'PARTIAL', 'SERVICE_ERROR', 'INSUFFICIENT_EVIDENCE'}:
+            raise ValueError('Unsupported STORY_REVIEW status')
+    elif role == 'STORY':
         alternatives = value.get('alternatives')
         if not isinstance(alternatives, list) or not 1 <= len(alternatives) <= 3:
             raise ValueError('One to three bounded story alternatives required')
