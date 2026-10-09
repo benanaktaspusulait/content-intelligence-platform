@@ -65,8 +65,8 @@ Publisher migration is now an explicitly authorized companion workstream. It mus
 - [x] Create a provider-neutral `MetaAnalyticsProvider` interface for Page, post, Reel, account, and media insights.
 - [x] Add a real Facebook Graph read client; do not route Facebook analytics through `InstagramMetricsClient`.
 - [x] Add Facebook Page/post/Reel insight endpoints and durable snapshots.
-- [ ] Preserve `null`/`PARTIAL`/`UNAVAILABLE` metric semantics; never convert missing provider fields to zero.
-- [ ] Add pagination and bounded limits for all account/content reads.
+- [x] Preserve `null`/`PARTIAL`/`UNAVAILABLE` metric semantics; never convert missing provider fields to zero.
+- [x] Add pagination and bounded limits for all account/content reads.
 - [ ] Keep exact local matching and provenance for every imported Meta object.
 - [ ] Add source key/idempotency to all Meta snapshot writes.
 - [ ] Add unified analytics DTOs independent of publication-job identity.
