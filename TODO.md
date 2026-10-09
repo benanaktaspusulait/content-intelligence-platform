@@ -50,7 +50,7 @@ Publisher migration is now an explicitly authorized companion workstream. It mus
 ## Phase 1 — OAuth and connection lifecycle
 
 - [x] Choose one canonical Meta connection owner: backend read-only Meta connection; do not silently reuse render-service write credentials.
-- [ ] Persist backend read-only OAuth state/tokens securely instead of process-local `MetaOAuthTokenStore`.
+- [x] Persist backend read-only OAuth state/tokens securely instead of process-local `MetaOAuthTokenStore`.
 - [ ] Store token expiry, refresh state, scopes, user identity, Page ID, and Instagram account ID.
 - [ ] Add refresh-before-expiry behavior and explicit revoke/disconnect endpoint.
 - [ ] Add connection status for `CONNECTED`, `DEGRADED`, `EXPIRED`, `REVOKED`, and `NOT_CONFIGURED`.
