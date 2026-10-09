@@ -1,0 +1,22 @@
+Optional story and production prompt assistance
+
+Existing prompts can proceed directly to review. Story uses configured DeepSeek; prompt construction uses configured OpenAI. Server configuration and an explicit budget are required.
+
+Server execution: enabled · live verification: not performed
+
+STORY · deepseek · LOCAL_MOCK-deepseek · credentials/model configured
+
+BUILD_PROMPT · openai · LOCAL_MOCK-openai · credentials/model configured
+
+MINIMAL_REPAIR · openai · LOCAL_MOCK-openai · credentials/model configured
+
+ConstraintsLesson content profile
+Curiosity
+Educational
+Absurd physics
+Lesson model/profile versionLesson generatorLesson aspect ratioPlanned durationMaximum cost (USD)I approve this single text role call within this budget.Request story alternativesBuild production prompt
+0-15 SEC
+Luca pushes a small box slowly across the grass. The camera holds a clear view of Luca and the box. LOCAL_MOCK production prompt fixture; no generated video.
+Use draft in editor
+
+openai · LOCAL_MOCK-BUILD_PROMPT · 59d274fe-9ab7-45c1-8ddb-1b2ce584600c · NOT_VALIDATED · Cost ceiling 0.001

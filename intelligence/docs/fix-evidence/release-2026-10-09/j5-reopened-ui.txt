@@ -1,0 +1,77 @@
+Pompom
+CREATIVE INTELLIGENCE
+WORKSPACE
+OV
+Overview
+VL
+Video Library
+CH
+Characters
+PQ
+Prompt Quality
+RG
+Rule Governance
+EX
+Experiments
+TP
+Test Planner
+PR
+Predictions
+PF
+Performance
+IM
+Import Data
+MR
+Model Reliability
+RF
+Reach Further
+MA
+Meta Analytics
+MV
+Model Versions
+OP
+Operations
+Local workspace
+Persisted evidence only
+Render Pipeline Dashboard
+
+Monitor render jobs, QA results, and production status
+
+Live stream: RECONNECTING
+1
+Queued
+0
+Generating
+0
+Complete
+0
+Abandoned
+QUEUE RENDER
+Start a validated render
+Validation evidence required
+Content IDPrompt version IDValidation record IDJob type
+VIDEO
+FIRST_FRAME
+OpenArt modelFirst-frame path or HTTPS URLQueue render
+OPENART REFERENCES
+Workspace character catalog
+Sync workspace assets
+
+Image references: SUPPORTED · First-frame video: SUPPORTED · Multi-element video: UNSUPPORTED
+
+No synced workspace references
+LOCAL_MOCK J5 parent-linked queue acceptance
+1c08d6e8
+VIDEO
+v2
+Attempt 1/3
+QUEUED
+Waiting in queue...
+100 credits
+Attempt history
+#1
+QUEUED
+Queued: just now
+Cancel render
+Page 1 of 1 · 1 total jobs
+PreviousNext

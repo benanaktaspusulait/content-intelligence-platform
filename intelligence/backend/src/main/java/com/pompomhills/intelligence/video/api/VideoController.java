@@ -171,7 +171,7 @@ public class VideoController {
 
   private VideoDtos.AnalysisStatusResponse statusFor(UUID id, String analysisVersion) {
     service.ensureCanonicalAssessments(id, analysisVersion);
-    var active = jobService.findActiveByVideoId(id);
+    var active = jobService.findActiveByIdentity(id, analysisVersion);
     if (active.isPresent()) {
       var job = active.get();
       return new VideoDtos.AnalysisStatusResponse(
@@ -211,10 +211,10 @@ public class VideoController {
           analysis.getPresentation(),
           analysis.getSemanticVideoEvidence());
     }
-    var latest = jobService.findLatestByVideoId(id);
+    var latest = jobService.findLatestByIdentity(id, analysisVersion);
     if (latest.isEmpty()) {
       var legacy = analyses.findFirstByVideoIdOrderByCreatedAtDesc(id);
-      if (legacy.isPresent()) {
+      if (legacy.isPresent() && "LEGACY".equals(legacy.get().getAnalysisType())) {
         var analysis = legacy.get();
         return new VideoDtos.AnalysisStatusResponse(
             id,

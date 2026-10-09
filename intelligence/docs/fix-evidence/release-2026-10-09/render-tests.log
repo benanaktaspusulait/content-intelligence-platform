@@ -1,0 +1,312 @@
+Mockito is currently self-attaching to enable the inline-mock-maker. This will no longer work in future releases of the JDK. Please add Mockito as an agent to your build as described in Mockito's documentation: https://javadoc.io/doc/org.mockito/mockito-core/latest/org.mockito/org/mockito/Mockito.html#0.3
+OpenJDK 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended
+WARNING: A Java agent has been loaded dynamically (/Users/benanaktas/.m2/repository/net/bytebuddy/byte-buddy-agent/1.18.11/byte-buddy-agent-1.18.11.jar)
+WARNING: If a serviceability tool is in use, please run with -XX:+EnableDynamicAgentLoading to hide this warning
+WARNING: If a serviceability tool is not in use, please run with -Djdk.instrument.traceUsage for more information
+WARNING: Dynamic loading of agents will be disallowed by default in a future release
+10:15:09.533 [main] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.pompom.creative.service.RenderJobQueuePersistenceTest]: RenderJobQueuePersistenceTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+10:15:09.635 [main] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.pompom.creative.CreativeRenderServiceApplication for test class com.pompom.creative.service.RenderJobQueuePersistenceTest
+10:15:09.674 [main] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.pompom.creative.service.RenderJobQueuePersistenceTest]: RenderJobQueuePersistenceTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+10:15:09.676 [main] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.pompom.creative.CreativeRenderServiceApplication for test class com.pompom.creative.service.RenderJobQueuePersistenceTest
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v4.1.1)
+
+2026-10-09T10:15:09.852+01:00  INFO 88788 --- [           main] c.p.c.s.RenderJobQueuePersistenceTest    : Starting RenderJobQueuePersistenceTest using Java 21.0.7 with PID 88788 (started by benanaktas in /Users/benanaktas/project/video/content-intelligence-platform/intelligence/creative-render-service)
+2026-10-09T10:15:09.852+01:00  INFO 88788 --- [           main] c.p.c.s.RenderJobQueuePersistenceTest    : The following 1 profile is active: "test"
+2026-10-09T10:15:10.597+01:00  INFO 88788 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-10-09T10:15:10.691+01:00  INFO 88788 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 88 ms. Found 34 JPA repository interfaces.
+2026-10-09T10:15:11.205+01:00  INFO 88788 --- [           main] org.hibernate.orm.jpa                    : HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-10-09T10:15:11.234+01:00  INFO 88788 --- [           main] org.hibernate.orm.core                   : HHH000001: Hibernate ORM core version 7.4.5.Final
+2026-10-09T10:15:11.368+01:00  INFO 88788 --- [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-10-09T10:15:11.384+01:00  INFO 88788 --- [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-10-09T10:15:11.493+01:00  INFO 88788 --- [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection conn0: url=jdbc:h2:mem:creative-render user=SA
+2026-10-09T10:15:11.494+01:00  INFO 88788 --- [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-10-09T10:15:11.527+01:00  INFO 88788 --- [           main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [jdbc:h2:mem:creative-render]
+	Database driver: H2 JDBC Driver
+	Database dialect: H2Dialect
+	Database version: 2.4.240
+	Default catalog/schema: CREATIVE-RENDER/PUBLIC
+	Autocommit mode: undefined/unknown
+	Isolation level: READ_COMMITTED [default READ_COMMITTED]
+	JDBC fetch size: 100
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-10-09T10:15:12.514+01:00  INFO 88788 --- [           main] org.hibernate.orm.core                   : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-10-09T10:15:12.582+01:00  INFO 88788 --- [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-10-09T10:15:12.655+01:00  INFO 88788 --- [           main] o.s.d.j.r.query.QueryEnhancerFactories   : Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-10-09T10:15:13.494+01:00  INFO 88788 --- [           main] c.p.c.service.AssetLibraryManager        : AssetLibraryManager initialized with data root: /tmp/pompom-data
+2026-10-09T10:15:13.719+01:00  WARN 88788 --- [           main] c.p.creative.security.EncryptionService  : No encryption key provided, generating random key (NOT FOR PRODUCTION)
+2026-10-09T10:15:14.063+01:00  INFO 88788 --- [           main] c.p.c.metrics.MetricsCollectorService    : Initialized metrics clients for platforms: [TIKTOK, FACEBOOK, INSTAGRAM, YOUTUBE]
+2026-10-09T10:15:14.109+01:00  INFO 88788 --- [           main] c.p.c.config.OpenArtConfiguration        : Using MOCK OpenArt adapter (testing/development)
+2026-10-09T10:15:14.495+01:00  WARN 88788 --- [           main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-10-09T10:15:15.033+01:00  INFO 88788 --- [           main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 1 endpoint beneath base path '/actuator'
+2026-10-09T10:15:15.066+01:00  INFO 88788 --- [           main] o.s.m.s.b.SimpleBrokerMessageHandler     : Starting...
+2026-10-09T10:15:15.066+01:00  INFO 88788 --- [           main] o.s.m.s.b.SimpleBrokerMessageHandler     : BrokerAvailabilityEvent[available=true, SimpleBrokerMessageHandler [org.springframework.messaging.simp.broker.DefaultSubscriptionRegistry@502a5a1d]]
+2026-10-09T10:15:15.067+01:00  INFO 88788 --- [           main] o.s.m.s.b.SimpleBrokerMessageHandler     : Started.
+2026-10-09T10:15:15.076+01:00  INFO 88788 --- [           main] c.p.c.s.RenderJobQueuePersistenceTest    : Started RenderJobQueuePersistenceTest in 5.372 seconds (process running for 7.641)
+2026-10-09T10:15:15.128+01:00  WARN 88788 --- [           main] o.s.core.events.SpringDocAppInitializer  : SpringDoc /v3/api-docs endpoint is enabled by default. To disable it in production, set the property 'springdoc.api-docs.enabled=false'
+2026-10-09T10:15:15.128+01:00  WARN 88788 --- [           main] o.s.core.events.SpringDocAppInitializer  : SpringDoc /swagger-ui.html endpoint is enabled by default. To disable it in production, set the property 'springdoc.swagger-ui.enabled=false'
+2026-10-09T10:15:15.144+01:00  INFO 88788 --- [           main] c.p.c.service.RenderJobOrchestrator      : Queueing render job: contentId=42, promptVersionId=7, jobType=FIRST_FRAME
+2026-10-09T10:15:15.177+01:00 ERROR 88788 --- [MessageBroker-7] o.s.s.s.TaskUtils$LoggingErrorHandler    : Unexpected error occurred in scheduled task
+
+org.springframework.jdbc.BadSqlGrammarException: PreparedStatementCallback; bad SQL grammar [WITH eligible AS (
+    SELECT id
+    FROM publication_attempts
+    WHERE stage = 'QUEUED'
+      AND eligible_at <= ?
+      AND (lease_expires_at IS NULL OR lease_expires_at <= ?)
+    ORDER BY eligible_at
+    FOR UPDATE SKIP LOCKED
+    LIMIT ?
+)
+UPDATE publication_attempts
+SET lease_owner = ?, lease_expires_at = ?, updated_at = ?
+FROM eligible
+WHERE publication_attempts.id = eligible.id
+RETURNING publication_attempts.id
+]
+	at org.springframework.jdbc.support.SQLExceptionSubclassTranslator.doTranslate(SQLExceptionSubclassTranslator.java:112) ~[spring-jdbc-7.0.9.jar:7.0.9]
+	at org.springframework.jdbc.support.AbstractFallbackSQLExceptionTranslator.translate(AbstractFallbackSQLExceptionTranslator.java:102) ~[spring-jdbc-7.0.9.jar:7.0.9]
+	at org.springframework.jdbc.core.JdbcTemplate.translateException(JdbcTemplate.java:1549) ~[spring-jdbc-7.0.9.jar:7.0.9]
+	at org.springframework.jdbc.core.JdbcTemplate.execute(JdbcTemplate.java:689) ~[spring-jdbc-7.0.9.jar:7.0.9]
+	at org.springframework.jdbc.core.JdbcTemplate.query(JdbcTemplate.java:732) ~[spring-jdbc-7.0.9.jar:7.0.9]
+	at org.springframework.jdbc.core.JdbcTemplate.query(JdbcTemplate.java:757) ~[spring-jdbc-7.0.9.jar:7.0.9]
+	at org.springframework.jdbc.core.JdbcTemplate.query(JdbcTemplate.java:825) ~[spring-jdbc-7.0.9.jar:7.0.9]
+	at com.pompom.creative.worker.JdbcPublicationAttemptClaimRepository.claimQueuedAttempts(JdbcPublicationAttemptClaimRepository.java:45) ~[classes/:na]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[na:na]
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:359) ~[spring-aop-7.0.9.jar:7.0.9]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:190) ~[spring-aop-7.0.9.jar:7.0.9]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:158) ~[spring-aop-7.0.9.jar:7.0.9]
+	at org.springframework.dao.support.PersistenceExceptionTranslationInterceptor.invoke(PersistenceExceptionTranslationInterceptor.java:135) ~[spring-tx-7.0.9.jar:7.0.9]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179) ~[spring-aop-7.0.9.jar:7.0.9]
+	at org.springframework.transaction.interceptor.TransactionInterceptor$1.proceedWithInvocation(TransactionInterceptor.java:133) ~[spring-tx-7.0.9.jar:7.0.9]
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:371) ~[spring-tx-7.0.9.jar:7.0.9]
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:130) ~[spring-tx-7.0.9.jar:7.0.9]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179) ~[spring-aop-7.0.9.jar:7.0.9]
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:719) ~[spring-aop-7.0.9.jar:7.0.9]
+	at com.pompom.creative.worker.JdbcPublicationAttemptClaimRepository$$SpringCGLIB$$0.claimQueuedAttempts(<generated>) ~[classes/:na]
+	at com.pompom.creative.worker.PublicationWorker.tick(PublicationWorker.java:43) ~[classes/:na]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[na:na]
+	at org.springframework.scheduling.support.ScheduledMethodRunnable.runInternal(ScheduledMethodRunnable.java:128) ~[spring-context-7.0.9.jar:7.0.9]
+	at org.springframework.scheduling.support.ScheduledMethodRunnable.lambda$run$1(ScheduledMethodRunnable.java:122) ~[spring-context-7.0.9.jar:7.0.9]
+	at io.micrometer.observation.Observation.observe(Observation.java:569) ~[micrometer-observation-1.17.1.jar:1.17.1]
+	at org.springframework.scheduling.support.ScheduledMethodRunnable.run(ScheduledMethodRunnable.java:122) ~[spring-context-7.0.9.jar:7.0.9]
+	at org.springframework.scheduling.config.Task$OutcomeTrackingRunnable.run(Task.java:88) ~[spring-context-7.0.9.jar:7.0.9]
+	at org.springframework.scheduling.support.DelegatingErrorHandlingRunnable.run(DelegatingErrorHandlingRunnable.java:54) ~[spring-context-7.0.9.jar:7.0.9]
+	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:572) ~[na:na]
+	at java.base/java.util.concurrent.FutureTask.runAndReset(FutureTask.java:358) ~[na:na]
+	at java.base/java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:305) ~[na:na]
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144) ~[na:na]
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642) ~[na:na]
+	at java.base/java.lang.Thread.run(Thread.java:1583) ~[na:na]
+Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "WITH eligible AS (\000a    SELECT id\000a    FROM publication_attempts\000a    WHERE stage = 'QUEUED'\000a      AND eligible_at <= ?\000a      AND (lease_expires_at IS NULL OR lease_expires_at <= ?)\000a    ORDER BY eligible_at\000a    FOR UPDATE SKIP LOCKED\000a    [*]LIMIT ?\000a)\000aUPDATE publication_attempts\000aSET lease_owner = ?, lease_expires_at = ?, updated_at = ?\000aFROM eligible\000aWHERE publication_attempts.id = eligible.id\000aRETURNING publication_attempts.id\000a"; expected ")"; SQL statement:
+WITH eligible AS (
+    SELECT id
+    FROM publication_attempts
+    WHERE stage = 'QUEUED'
+      AND eligible_at <= ?
+      AND (lease_expires_at IS NULL OR lease_expires_at <= ?)
+    ORDER BY eligible_at
+    FOR UPDATE SKIP LOCKED
+    LIMIT ?
+)
+UPDATE publication_attempts
+SET lease_owner = ?, lease_expires_at = ?, updated_at = ?
+FROM eligible
+WHERE publication_attempts.id = eligible.id
+RETURNING publication_attempts.id
+ [42001-240]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:514) ~[h2-2.4.240.jar:2.4.240]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:489) ~[h2-2.4.240.jar:2.4.240]
+	at org.h2.message.DbException.getSyntaxError(DbException.java:261) ~[h2-2.4.240.jar:2.4.240]
+	at org.h2.command.ParserBase.getSyntaxError(ParserBase.java:762) ~[h2-2.4.240.jar:2.4.240]
+	at org.h2.command.ParserBase.read(ParserBase.java:369) ~[h2-2.4.240.jar:2.4.240]
+	at org.h2.command.Parser.parseSingleCommonTableExpression(Parser.java:7079) ~[h2-2.4.240.jar:2.4.240]
+	at org.h2.command.Parser.parseQueryExpression(Parser.java:2503) ~[h2-2.4.240.jar:2.4.240]
+	at org.h2.command.Parser.parseQuery(Parser.java:2482) ~[h2-2.4.240.jar:2.4.240]
+	at org.h2.command.Parser.parsePrepared(Parser.java:613) ~[h2-2.4.240.jar:2.4.240]
+	at org.h2.command.Parser.parse(Parser.java:584) ~[h2-2.4.240.jar:2.4.240]
+	at org.h2.command.Parser.parse(Parser.java:564) ~[h2-2.4.240.jar:2.4.240]
+	at org.h2.command.Parser.prepareCommand(Parser.java:487) ~[h2-2.4.240.jar:2.4.240]
+	at org.h2.engine.SessionLocal.prepareLocal(SessionLocal.java:647) ~[h2-2.4.240.jar:2.4.240]
+	at org.h2.engine.SessionLocal.prepareCommand(SessionLocal.java:563) ~[h2-2.4.240.jar:2.4.240]
+	at org.h2.jdbc.JdbcConnection.prepareCommand(JdbcConnection.java:1160) ~[h2-2.4.240.jar:2.4.240]
+	at org.h2.jdbc.JdbcPreparedStatement.<init>(JdbcPreparedStatement.java:93) ~[h2-2.4.240.jar:2.4.240]
+	at org.h2.jdbc.JdbcConnection.prepareStatement(JdbcConnection.java:315) ~[h2-2.4.240.jar:2.4.240]
+	at com.zaxxer.hikari.pool.ProxyConnection.prepareStatement(ProxyConnection.java:328) ~[HikariCP-7.0.2.jar:na]
+	at com.zaxxer.hikari.pool.HikariProxyConnection.prepareStatement(HikariProxyConnection.java) ~[HikariCP-7.0.2.jar:na]
+	at org.springframework.jdbc.core.JdbcTemplate$SimplePreparedStatementCreator.createPreparedStatement(JdbcTemplate.java:1710) ~[spring-jdbc-7.0.9.jar:7.0.9]
+	at org.springframework.jdbc.core.JdbcTemplate.execute(JdbcTemplate.java:668) ~[spring-jdbc-7.0.9.jar:7.0.9]
+	... 32 common frames omitted
+
+2026-10-09T10:15:15.186+01:00  INFO 88788 --- [           main] c.p.c.service.RenderJobOrchestrator      : Created render job: id=e05ecf27-b2e4-4b40-b39e-8a0fcf1e208e, status=QUEUED, estimatedCredits=10
+2026-10-09T10:15:15.235+01:00  INFO 88788 --- [           main] org.testcontainers.DockerClientFactory   : Testcontainers version: 2.0.2
+2026-10-09T10:15:15.395+01:00  INFO 88788 --- [           main] o.t.d.DockerClientProviderStrategy       : Loaded org.testcontainers.dockerclient.UnixSocketClientProviderStrategy from ~/.testcontainers.properties, will try it first
+2026-10-09T10:15:15.595+01:00  INFO 88788 --- [           main] o.t.d.DockerClientProviderStrategy       : Found Docker environment with Docker accessed via Unix socket (/Users/benanaktas/.docker/run/docker.sock)
+2026-10-09T10:15:15.596+01:00  INFO 88788 --- [           main] org.testcontainers.DockerClientFactory   : Docker host IP address is localhost
+2026-10-09T10:15:15.612+01:00  INFO 88788 --- [           main] org.testcontainers.DockerClientFactory   : Connected to docker: 
+  Server Version: 29.2.1
+  API Version: 1.53
+  Operating System: Docker Desktop
+  Total Memory: 11948 MB
+  Labels: 
+    com.docker.desktop.address=unix:///Users/benanaktas/Library/Containers/com.docker.docker/Data/docker-cli.sock
+2026-10-09T10:15:15.620+01:00  INFO 88788 --- [           main] org.testcontainers.images.PullPolicy     : Image pull policy will be performed by: DefaultPullPolicy()
+2026-10-09T10:15:15.621+01:00  INFO 88788 --- [           main] o.t.utility.ImageNameSubstitutor         : Image name substitution will be performed by: DefaultImageNameSubstitutor (composite of 'ConfigurationFileImageNameSubstitutor' and 'PrefixingImageNameSubstitutor')
+2026-10-09T10:15:15.759+01:00  INFO 88788 --- [           main] tc.testcontainers/ryuk:0.13.0            : Creating container for image: testcontainers/ryuk:0.13.0
+2026-10-09T10:15:15.949+01:00  INFO 88788 --- [           main] o.t.utility.RegistryAuthLocator          : Credential helper/store (docker-credential-desktop) does not have credentials for https://index.docker.io/v1/
+2026-10-09T10:15:16.103+01:00  INFO 88788 --- [           main] tc.testcontainers/ryuk:0.13.0            : Container testcontainers/ryuk:0.13.0 is starting: f7e67f33fd578fa2c204e2eb20d53a994fc0c125e8cd766c658d03d5d578fa9c
+2026-10-09T10:15:17.020+01:00  INFO 88788 --- [           main] tc.testcontainers/ryuk:0.13.0            : Container testcontainers/ryuk:0.13.0 started in PT1.260862S
+2026-10-09T10:15:17.028+01:00  INFO 88788 --- [           main] o.t.utility.RyukResourceReaper           : Ryuk started - will monitor and terminate Testcontainers containers on JVM exit
+2026-10-09T10:15:17.029+01:00  INFO 88788 --- [           main] org.testcontainers.DockerClientFactory   : Checking the system...
+2026-10-09T10:15:17.029+01:00  INFO 88788 --- [           main] org.testcontainers.DockerClientFactory   : ✔︎ Docker server version should be at least 1.6.0
+2026-10-09T10:15:17.035+01:00  INFO 88788 --- [           main] tc.postgres:17-alpine                    : Creating container for image: postgres:17-alpine
+2026-10-09T10:15:17.155+01:00  INFO 88788 --- [           main] tc.postgres:17-alpine                    : Container postgres:17-alpine is starting: 07b07f588cefbfdcc78371f201bc2847e02823d0a4602e6f6d465bded611534d
+2026-10-09T10:15:19.951+01:00  INFO 88788 --- [           main] tc.postgres:17-alpine                    : Container postgres:17-alpine started in PT2.91578S
+2026-10-09T10:15:19.958+01:00  INFO 88788 --- [           main] tc.postgres:17-alpine                    : Container is started (JDBC URL: jdbc:postgresql://localhost:57079/creative_render_test?loggerLevel=OFF)
+2026-10-09T10:15:20.193+01:00 ERROR 88788 --- [MessageBroker-4] o.s.s.s.TaskUtils$LoggingErrorHandler    : Unexpected error occurred in scheduled task
+
+org.springframework.jdbc.BadSqlGrammarException: PreparedStatementCallback; bad SQL grammar [WITH eligible AS (
+    SELECT id
+    FROM publication_attempts
+    WHERE stage = 'QUEUED'
+      AND eligible_at <= ?
+      AND (lease_expires_at IS NULL OR lease_expires_at <= ?)
+    ORDER BY eligible_at
+    FOR UPDATE SKIP LOCKED
+    LIMIT ?
+)
+UPDATE publication_attempts
+SET lease_owner = ?, lease_expires_at = ?, updated_at = ?
+FROM eligible
+WHERE publication_attempts.id = eligible.id
+RETURNING publication_attempts.id
+]
+	at org.springframework.jdbc.support.SQLExceptionSubclassTranslator.doTranslate(SQLExceptionSubclassTranslator.java:112) ~[spring-jdbc-7.0.9.jar:7.0.9]
+	at org.springframework.jdbc.support.AbstractFallbackSQLExceptionTranslator.translate(AbstractFallbackSQLExceptionTranslator.java:102) ~[spring-jdbc-7.0.9.jar:7.0.9]
+	at org.springframework.jdbc.core.JdbcTemplate.translateException(JdbcTemplate.java:1549) ~[spring-jdbc-7.0.9.jar:7.0.9]
+	at org.springframework.jdbc.core.JdbcTemplate.execute(JdbcTemplate.java:689) ~[spring-jdbc-7.0.9.jar:7.0.9]
+	at org.springframework.jdbc.core.JdbcTemplate.query(JdbcTemplate.java:732) ~[spring-jdbc-7.0.9.jar:7.0.9]
+	at org.springframework.jdbc.core.JdbcTemplate.query(JdbcTemplate.java:757) ~[spring-jdbc-7.0.9.jar:7.0.9]
+	at org.springframework.jdbc.core.JdbcTemplate.query(JdbcTemplate.java:825) ~[spring-jdbc-7.0.9.jar:7.0.9]
+	at com.pompom.creative.worker.JdbcPublicationAttemptClaimRepository.claimQueuedAttempts(JdbcPublicationAttemptClaimRepository.java:45) ~[classes/:na]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[na:na]
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:359) ~[spring-aop-7.0.9.jar:7.0.9]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:190) ~[spring-aop-7.0.9.jar:7.0.9]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:158) ~[spring-aop-7.0.9.jar:7.0.9]
+	at org.springframework.dao.support.PersistenceExceptionTranslationInterceptor.invoke(PersistenceExceptionTranslationInterceptor.java:135) ~[spring-tx-7.0.9.jar:7.0.9]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179) ~[spring-aop-7.0.9.jar:7.0.9]
+	at org.springframework.transaction.interceptor.TransactionInterceptor$1.proceedWithInvocation(TransactionInterceptor.java:133) ~[spring-tx-7.0.9.jar:7.0.9]
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:371) ~[spring-tx-7.0.9.jar:7.0.9]
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:130) ~[spring-tx-7.0.9.jar:7.0.9]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179) ~[spring-aop-7.0.9.jar:7.0.9]
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:719) ~[spring-aop-7.0.9.jar:7.0.9]
+	at com.pompom.creative.worker.JdbcPublicationAttemptClaimRepository$$SpringCGLIB$$0.claimQueuedAttempts(<generated>) ~[classes/:na]
+	at com.pompom.creative.worker.PublicationWorker.tick(PublicationWorker.java:43) ~[classes/:na]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[na:na]
+	at org.springframework.scheduling.support.ScheduledMethodRunnable.runInternal(ScheduledMethodRunnable.java:128) ~[spring-context-7.0.9.jar:7.0.9]
+	at org.springframework.scheduling.support.ScheduledMethodRunnable.lambda$run$1(ScheduledMethodRunnable.java:122) ~[spring-context-7.0.9.jar:7.0.9]
+	at io.micrometer.observation.Observation.observe(Observation.java:569) ~[micrometer-observation-1.17.1.jar:1.17.1]
+	at org.springframework.scheduling.support.ScheduledMethodRunnable.run(ScheduledMethodRunnable.java:122) ~[spring-context-7.0.9.jar:7.0.9]
+	at org.springframework.scheduling.config.Task$OutcomeTrackingRunnable.run(Task.java:88) ~[spring-context-7.0.9.jar:7.0.9]
+	at org.springframework.scheduling.support.DelegatingErrorHandlingRunnable.run(DelegatingErrorHandlingRunnable.java:54) ~[spring-context-7.0.9.jar:7.0.9]
+	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:572) ~[na:na]
+	at java.base/java.util.concurrent.FutureTask.runAndReset(FutureTask.java:358) ~[na:na]
+	at java.base/java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:305) ~[na:na]
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144) ~[na:na]
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642) ~[na:na]
+	at java.base/java.lang.Thread.run(Thread.java:1583) ~[na:na]
+Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "WITH eligible AS (\000a    SELECT id\000a    FROM publication_attempts\000a    WHERE stage = 'QUEUED'\000a      AND eligible_at <= ?\000a      AND (lease_expires_at IS NULL OR lease_expires_at <= ?)\000a    ORDER BY eligible_at\000a    FOR UPDATE SKIP LOCKED\000a    [*]LIMIT ?\000a)\000aUPDATE publication_attempts\000aSET lease_owner = ?, lease_expires_at = ?, updated_at = ?\000aFROM eligible\000aWHERE publication_attempts.id = eligible.id\000aRETURNING publication_attempts.id\000a"; expected ")"; SQL statement:
+WITH eligible AS (
+    SELECT id
+    FROM publication_attempts
+    WHERE stage = 'QUEUED'
+      AND eligible_at <= ?
+      AND (lease_expires_at IS NULL OR lease_expires_at <= ?)
+    ORDER BY eligible_at
+    FOR UPDATE SKIP LOCKED
+    LIMIT ?
+)
+UPDATE publication_attempts
+SET lease_owner = ?, lease_expires_at = ?, updated_at = ?
+FROM eligible
+WHERE publication_attempts.id = eligible.id
+RETURNING publication_attempts.id
+ [42001-240]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:514) ~[h2-2.4.240.jar:2.4.240]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:489) ~[h2-2.4.240.jar:2.4.240]
+	at org.h2.message.DbException.getSyntaxError(DbException.java:261) ~[h2-2.4.240.jar:2.4.240]
+	at org.h2.command.ParserBase.getSyntaxError(ParserBase.java:762) ~[h2-2.4.240.jar:2.4.240]
+	at org.h2.command.ParserBase.read(ParserBase.java:369) ~[h2-2.4.240.jar:2.4.240]
+	at org.h2.command.Parser.parseSingleCommonTableExpression(Parser.java:7079) ~[h2-2.4.240.jar:2.4.240]
+	at org.h2.command.Parser.parseQueryExpression(Parser.java:2503) ~[h2-2.4.240.jar:2.4.240]
+	at org.h2.command.Parser.parseQuery(Parser.java:2482) ~[h2-2.4.240.jar:2.4.240]
+	at org.h2.command.Parser.parsePrepared(Parser.java:613) ~[h2-2.4.240.jar:2.4.240]
+	at org.h2.command.Parser.parse(Parser.java:584) ~[h2-2.4.240.jar:2.4.240]
+	at org.h2.command.Parser.parse(Parser.java:564) ~[h2-2.4.240.jar:2.4.240]
+	at org.h2.command.Parser.prepareCommand(Parser.java:487) ~[h2-2.4.240.jar:2.4.240]
+	at org.h2.engine.SessionLocal.prepareLocal(SessionLocal.java:647) ~[h2-2.4.240.jar:2.4.240]
+	at org.h2.engine.SessionLocal.prepareCommand(SessionLocal.java:563) ~[h2-2.4.240.jar:2.4.240]
+	at org.h2.jdbc.JdbcConnection.prepareCommand(JdbcConnection.java:1160) ~[h2-2.4.240.jar:2.4.240]
+	at org.h2.jdbc.JdbcPreparedStatement.<init>(JdbcPreparedStatement.java:93) ~[h2-2.4.240.jar:2.4.240]
+	at org.h2.jdbc.JdbcConnection.prepareStatement(JdbcConnection.java:315) ~[h2-2.4.240.jar:2.4.240]
+	at com.zaxxer.hikari.pool.ProxyConnection.prepareStatement(ProxyConnection.java:328) ~[HikariCP-7.0.2.jar:na]
+	at com.zaxxer.hikari.pool.HikariProxyConnection.prepareStatement(HikariProxyConnection.java) ~[HikariCP-7.0.2.jar:na]
+	at org.springframework.jdbc.core.JdbcTemplate$SimplePreparedStatementCreator.createPreparedStatement(JdbcTemplate.java:1710) ~[spring-jdbc-7.0.9.jar:7.0.9]
+	at org.springframework.jdbc.core.JdbcTemplate.execute(JdbcTemplate.java:668) ~[spring-jdbc-7.0.9.jar:7.0.9]
+	... 32 common frames omitted
+
+2026-10-09T10:15:20.212+01:00  INFO 88788 --- [           main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:postgresql://localhost:57079/creative_render_test?loggerLevel=OFF (PostgreSQL 17.11)
+2026-10-09T10:15:20.265+01:00  INFO 88788 --- [           main] o.f.core.internal.database.base.Schema   : Creating schema "creative_render" ...
+2026-10-09T10:15:20.277+01:00  INFO 88788 --- [           main] o.f.c.i.s.JdbcTableSchemaHistory         : Creating Schema History table "creative_render"."flyway_schema_history" ...
+2026-10-09T10:15:20.344+01:00  INFO 88788 --- [           main] o.f.core.internal.command.DbMigrate      : Current version of schema "creative_render": null
+2026-10-09T10:15:20.419+01:00  INFO 88788 --- [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "creative_render" to version "1 - create creative render schema"
+2026-10-09T10:15:20.589+01:00  INFO 88788 --- [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "creative_render" to version "2 - copy and verify legacy creative data"
+2026-10-09T10:15:20.600+01:00  INFO 88788 --- [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "creative_render" to version "3 - add validation evidence and idempotency"
+2026-10-09T10:15:20.616+01:00  INFO 88788 --- [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "creative_render" to version "4 - create render attempts and leases"
+2026-10-09T10:15:20.636+01:00  INFO 88788 --- [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "creative_render" to version "5 - harden assets qa and publication identity"
+2026-10-09T10:15:20.659+01:00  INFO 88788 --- [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "creative_render" to version "6 - create durable publication attempts"
+2026-10-09T10:15:20.677+01:00  INFO 88788 --- [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "creative_render" to version "7 - create durable oauth state"
+2026-10-09T10:15:20.688+01:00  INFO 88788 --- [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "creative_render" to version "8 - add webhook delivery identity"
+2026-10-09T10:15:20.697+01:00  INFO 88788 --- [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "creative_render" to version "9 - create qa human reviews"
+2026-10-09T10:15:20.709+01:00  INFO 88788 --- [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "creative_render" to version "10 - add metrics collection leases"
+2026-10-09T10:15:20.719+01:00  INFO 88788 --- [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "creative_render" to version "11 - create caption versions"
+2026-10-09T10:15:20.732+01:00  INFO 88788 --- [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "creative_render" to version "12 - create post render evaluations"
+2026-10-09T10:15:20.746+01:00  INFO 88788 --- [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "creative_render" to version "13 - extend qa human reviews to post render evaluations"
+2026-10-09T10:15:20.757+01:00  INFO 88788 --- [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "creative_render" to version "14 - create post render assessments"
+2026-10-09T10:15:20.768+01:00  INFO 88788 --- [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "creative_render" to version "15 - create creative production contract snapshot"
+2026-10-09T10:15:20.778+01:00  INFO 88788 --- [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "creative_render" to version "16 - make openart usage idempotent"
+2026-10-09T10:15:20.786+01:00  INFO 88788 --- [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "creative_render" to version "17 - backfill legacy render attempts"
+2026-10-09T10:15:20.794+01:00  INFO 88788 --- [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "creative_render" to version "18 - create openart reference assets"
+2026-10-09T10:15:20.805+01:00  INFO 88788 --- [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "creative_render" to version "19 - add multi stage render attempt fields"
+2026-10-09T10:15:20.814+01:00  INFO 88788 --- [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "creative_render" to version "20 - extend render asset lineage"
+2026-10-09T10:15:20.827+01:00  INFO 88788 --- [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "creative_render" to version "21 - create meta public comment domain"
+2026-10-09T10:15:20.850+01:00  INFO 88788 --- [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "creative_render" to version "22 - extend meta comment delivery states"
+2026-10-09T10:15:20.862+01:00  INFO 88788 --- [           main] o.f.core.internal.command.DbMigrate      : Successfully applied 22 migrations to schema "creative_render", now at version v22 (execution time 00:00.311s)
+2026-10-09T10:15:20.877+01:00  WARN 88788 --- [           main] org.hibernate.orm.connections.pooling    : HHH10001002: Using built-in connection pool (not intended for production use)
+2026-10-09T10:15:20.908+01:00  INFO 88788 --- [           main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [jdbc:postgresql://localhost:57079/creative_render_test?loggerLevel=OFF]
+	Database driver: PostgreSQL JDBC Driver
+	Database dialect: PostgreSQLDialect
+	Database version: 17.11
+	Default catalog/schema: creative_render_test/public
+	Autocommit mode: false
+	Isolation level: READ_COMMITTED
+	JDBC fetch size: none
+	Pool: DriverManagerConnectionProvider
+	Minimum pool size: 1
+	Maximum pool size: 20
+2026-10-09T10:15:21.015+01:00  INFO 88788 --- [           main] org.hibernate.orm.core                   : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)

@@ -37,6 +37,7 @@ public class OpenArtCreditLog {
   @Column(name = "operation", nullable = false, length = 50)
   private String operation;
 
+  @org.hibernate.annotations.JdbcTypeCode(org.hibernate.type.SqlTypes.JSON)
   @Column(name = "operation_metadata", columnDefinition = "jsonb")
   private String operationMetadata;
 

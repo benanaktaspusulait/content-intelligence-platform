@@ -70,6 +70,28 @@ class VideoControllerAnalysisTest {
   }
 
   @Test
+  void statusUsesRequestedVersionForActiveAndFailedJobs() {
+    var video = freshUnanalysedVideo();
+    var v4 = analysisJobService.enqueue(video.getId(), false, "sampled-visual-motion-v4").job();
+    var v5 = analysisJobService.enqueue(video.getId(), false, "sampled-visual-motion-v5").job();
+    var path = "/api/v1/videos/" + video.getId() + "/analysis/status?analysisVersion=";
+    for (var version : List.of("sampled-visual-motion-v4", "sampled-visual-motion-v5")) {
+      var status = rest.get().uri(path + version).exchange()
+          .returnResult(VideoDtos.AnalysisStatusResponse.class).getResponseBody();
+      assertThat(status.jobId()).isEqualTo((version.endsWith("v4") ? v4 : v5).id().toString());
+    }
+    jdbc.update("UPDATE analysis_jobs SET state='FAILED',error_message='V4 only' WHERE id=?", v4.id());
+    jdbc.update("DELETE FROM analysis_jobs WHERE id=?", v5.id());
+    var failed = rest.get().uri(path + "sampled-visual-motion-v4").exchange()
+        .returnResult(VideoDtos.AnalysisStatusResponse.class).getResponseBody();
+    assertThat(failed.jobState()).isEqualTo("FAILED");
+    var untouched = rest.get().uri(path + "sampled-visual-motion-v5").exchange()
+        .returnResult(VideoDtos.AnalysisStatusResponse.class).getResponseBody();
+    assertThat(untouched.jobState()).isEqualTo("NOT_STARTED");
+    assertThat(untouched.jobId()).isNull();
+  }
+
+  @Test
   void firstAnalysisRequestReturns202WithAQueuedJob() {
     var video = freshUnanalysedVideo();
 
@@ -160,7 +182,7 @@ class VideoControllerAnalysisTest {
     return new MlVideoClient.MlAnalysisResponse(
         "v1",
         new MlVideoClient.Metadata(10000L, 1080, 1920, 30.0, 0.5625, "h264", true, "h"),
-        "creative-v1",
+        com.pompomhills.intelligence.video.VideoService.CURRENT_ANALYSIS_VERSION,
         "engine-a",
         List.of(),
         "GOOD",

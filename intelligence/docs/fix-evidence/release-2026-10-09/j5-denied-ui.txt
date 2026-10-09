@@ -1,0 +1,67 @@
+Pompom
+CREATIVE INTELLIGENCE
+WORKSPACE
+OV
+Overview
+VL
+Video Library
+CH
+Characters
+PQ
+Prompt Quality
+RG
+Rule Governance
+EX
+Experiments
+TP
+Test Planner
+PR
+Predictions
+PF
+Performance
+IM
+Import Data
+MR
+Model Reliability
+RF
+Reach Further
+MA
+Meta Analytics
+MV
+Model Versions
+OP
+Operations
+Local workspace
+Persisted evidence only
+Render Pipeline Dashboard
+
+Monitor render jobs, QA results, and production status
+
+Live stream: RECONNECTING
+0
+Queued
+0
+Generating
+0
+Complete
+0
+Abandoned
+QUEUE RENDER
+Start a validated render
+Validation evidence required
+Content IDPrompt version IDValidation record IDJob type
+VIDEO
+FIRST_FRAME
+OpenArt modelFirst-frame path or HTTPS URLQueue render
+
+Post-family kanıtı eksik veya yetki bekliyor. İnceleme ekranında tamamlayın.
+
+OPENART REFERENCES
+Workspace character catalog
+Sync workspace assets
+
+Image references: SUPPORTED · First-frame video: SUPPORTED · Multi-element video: UNSUPPORTED
+
+No synced workspace references
+
+No render jobs found

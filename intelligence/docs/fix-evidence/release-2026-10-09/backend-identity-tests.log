@@ -1,0 +1,250 @@
+10:21:57.597 [main] INFO org.testcontainers.DockerClientFactory -- Testcontainers version: 2.0.2
+10:21:57.804 [main] INFO org.testcontainers.dockerclient.DockerClientProviderStrategy -- Loaded org.testcontainers.dockerclient.UnixSocketClientProviderStrategy from ~/.testcontainers.properties, will try it first
+10:21:58.156 [main] INFO org.testcontainers.dockerclient.DockerClientProviderStrategy -- Found Docker environment with Docker accessed via Unix socket (/Users/benanaktas/.docker/run/docker.sock)
+10:21:58.157 [main] INFO org.testcontainers.DockerClientFactory -- Docker host IP address is localhost
+10:21:58.173 [main] INFO org.testcontainers.DockerClientFactory -- Connected to docker: 
+  Server Version: 29.2.1
+  API Version: 1.53
+  Operating System: Docker Desktop
+  Total Memory: 11948 MB
+  Labels: 
+    com.docker.desktop.address=unix:///Users/benanaktas/Library/Containers/com.docker.docker/Data/docker-cli.sock
+10:21:58.181 [main] INFO org.testcontainers.images.PullPolicy -- Image pull policy will be performed by: DefaultPullPolicy()
+10:21:58.183 [main] INFO org.testcontainers.utility.ImageNameSubstitutor -- Image name substitution will be performed by: DefaultImageNameSubstitutor (composite of 'ConfigurationFileImageNameSubstitutor' and 'PrefixingImageNameSubstitutor')
+10:21:58.337 [main] INFO tc.testcontainers/ryuk:0.13.0 -- Creating container for image: testcontainers/ryuk:0.13.0
+10:21:59.189 [main] INFO org.testcontainers.utility.RegistryAuthLocator -- Credential helper/store (docker-credential-desktop) does not have credentials for https://index.docker.io/v1/
+10:21:59.773 [main] INFO tc.testcontainers/ryuk:0.13.0 -- Container testcontainers/ryuk:0.13.0 is starting: 0408f967c2de1f48ea08ed5375a6913b6d24c306be816670e885e43d84b8b234
+10:22:00.872 [main] INFO tc.testcontainers/ryuk:0.13.0 -- Container testcontainers/ryuk:0.13.0 started in PT2.534349S
+10:22:00.877 [main] INFO org.testcontainers.utility.RyukResourceReaper -- Ryuk started - will monitor and terminate Testcontainers containers on JVM exit
+10:22:00.877 [main] INFO org.testcontainers.DockerClientFactory -- Checking the system...
+10:22:00.877 [main] INFO org.testcontainers.DockerClientFactory -- ✔︎ Docker server version should be at least 1.6.0
+10:22:00.958 [main] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.pompomhills.intelligence.video.job.AnalysisJobServiceIdempotencyTest]: AnalysisJobServiceIdempotencyTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+10:22:01.047 [main] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.pompomhills.intelligence.PompomCreativeIntelligenceApplication for test class com.pompomhills.intelligence.video.job.AnalysisJobServiceIdempotencyTest
+10:22:01.092 [main] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.pompomhills.intelligence.video.job.AnalysisJobServiceIdempotencyTest]: AnalysisJobServiceIdempotencyTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+10:22:01.093 [main] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.pompomhills.intelligence.PompomCreativeIntelligenceApplication for test class com.pompomhills.intelligence.video.job.AnalysisJobServiceIdempotencyTest
+10:22:01.111 [main] INFO tc.postgres:17-alpine -- Creating container for image: postgres:17-alpine
+10:22:01.249 [main] INFO tc.postgres:17-alpine -- Container postgres:17-alpine is starting: cdcfe6d38d4408a62bbb4215947c6866f17eb95e8d0156bff730b2ac7157ad81
+10:22:03.549 [main] INFO tc.postgres:17-alpine -- Container postgres:17-alpine started in PT2.437751S
+10:22:03.554 [main] INFO tc.postgres:17-alpine -- Container is started (JDBC URL: jdbc:postgresql://localhost:57580/test?loggerLevel=OFF)
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v4.1.1)
+
+2026-10-09T10:22:03.815+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] .i.v.j.AnalysisJobServiceIdempotencyTest : Starting AnalysisJobServiceIdempotencyTest using Java 21.0.7 with PID 90967 (started by benanaktas in /Users/benanaktas/project/video/content-intelligence-platform/intelligence/backend)
+2026-10-09T10:22:03.816+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] .i.v.j.AnalysisJobServiceIdempotencyTest : No active profile set, falling back to 1 default profile: "default"
+2026-10-09T10:22:04.674+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-10-09T10:22:04.744+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 63 ms. Found 19 JPA repository interfaces.
+Mockito is currently self-attaching to enable the inline-mock-maker. This will no longer work in future releases of the JDK. Please add Mockito as an agent to your build as described in Mockito's documentation: https://javadoc.io/doc/org.mockito/mockito-core/latest/org.mockito/org/mockito/Mockito.html#0.3
+OpenJDK 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended
+WARNING: A Java agent has been loaded dynamically (/Users/benanaktas/.m2/repository/net/bytebuddy/byte-buddy-agent/1.18.11/byte-buddy-agent-1.18.11.jar)
+WARNING: If a serviceability tool is in use, please run with -XX:+EnableDynamicAgentLoading to hide this warning
+WARNING: If a serviceability tool is not in use, please run with -Djdk.instrument.traceUsage for more information
+WARNING: Dynamic loading of agents will be disallowed by default in a future release
+2026-10-09T10:22:06.040+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-10-09T10:22:06.401+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@16df0ebd
+2026-10-09T10:22:06.402+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-10-09T10:22:06.423+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:postgresql://localhost:57580/test?loggerLevel=OFF (PostgreSQL 17.11)
+2026-10-09T10:22:06.528+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] o.f.c.i.s.JdbcTableSchemaHistory         : Schema history table "public"."flyway_schema_history" does not exist yet
+2026-10-09T10:22:06.531+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbValidate     : Successfully validated 55 migrations (execution time 00:00.060s)
+2026-10-09T10:22:06.550+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] o.f.c.i.s.JdbcTableSchemaHistory         : Creating Schema History table "public"."flyway_schema_history" ...
+2026-10-09T10:22:06.617+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Current version of schema "public": << Empty Schema >>
+2026-10-09T10:22:06.639+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "1 - initial schema"
+2026-10-09T10:22:06.962+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "2 - platform state observations"
+2026-10-09T10:22:06.993+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "3 - intervention events append only"
+2026-10-09T10:22:07.005+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "4 - seed canonical characters"
+2026-10-09T10:22:07.024+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "5 - observation quality and discovery metrics"
+2026-10-09T10:22:07.060+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "6 - quality validations"
+2026-10-09T10:22:07.107+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "7 - create contents and prompt versions"
+2026-10-09T10:22:07.142+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "8 - create validation runs and failed rules"
+2026-10-09T10:22:07.193+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "9 - create reference prompts and golden tests"
+2026-10-09T10:22:07.215+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "10 - create render jobs and assets"
+2026-10-09T10:22:07.250+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "11 - create render qa and credit log"
+2026-10-09T10:22:07.273+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "12 - create platform credentials"
+2026-10-09T10:22:07.289+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "13 - create publication jobs"
+2026-10-09T10:22:07.304+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "14 - create scheduled publications"
+2026-10-09T10:22:07.320+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "15 - create publication analytics"
+2026-10-09T10:22:07.345+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "16 - create webhook events"
+2026-10-09T10:22:07.373+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "17 - create video metrics"
+2026-10-09T10:22:07.401+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "18 - create performance classifications"
+2026-10-09T10:22:07.418+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "19 - create trajectory analyses"
+2026-10-09T10:22:07.435+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "20 - create correlation analyses"
+2026-10-09T10:22:07.448+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "21 - create rule candidates"
+2026-10-09T10:22:07.464+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "22 - create winner entries"
+2026-10-09T10:22:07.481+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "23 - create notifications"
+2026-10-09T10:22:07.497+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "24 - create analytics tables"
+2026-10-09T10:22:07.518+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "25 - add strategic tracking"
+2026-10-09T10:22:07.536+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "26 - create reach further tracking"
+2026-10-09T10:22:07.552+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "27 - create follower metrics"
+2026-10-09T10:22:07.566+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "28 - add external publication identity"
+2026-10-09T10:22:07.576+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "29 - add meta readonly snapshot fields"
+2026-10-09T10:22:07.591+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "30 - add immutable validation evidence"
+2026-10-09T10:22:07.608+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "31 - complete quality validation evidence"
+2026-10-09T10:22:07.620+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "32 - add video path aliases and intervention variant"
+2026-10-09T10:22:07.633+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "33 - add matched variant id to import rows"
+2026-10-09T10:22:07.643+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "34 - prevent duplicate active analysis jobs"
+2026-10-09T10:22:07.655+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "35 - create governed rule evolution"
+2026-10-09T10:22:07.697+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "36 - operational guard decisions"
+2026-10-09T10:22:07.713+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "37 - version sampled visual motion analysis"
+2026-10-09T10:22:07.723+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "38 - allow versioned video analysis classifications"
+2026-10-09T10:22:07.731+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "39 - add prompt source tracking"
+2026-10-09T10:22:07.743+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "40 - video character associations"
+2026-10-09T10:22:07.775+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "41 - prediction feature snapshots"
+2026-10-09T10:22:07.786+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "42 - store quality report snapshot"
+2026-10-09T10:22:07.796+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "43 - create quality validation visual evidence"
+2026-10-09T10:22:07.810+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "44 - create meta connection state"
+2026-10-09T10:22:07.826+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "45 - allow nullable quality validation overall score"
+2026-10-09T10:22:07.853+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "46 - post family workflow events"
+2026-10-09T10:22:07.863+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "47 - bounded workflow repair"
+2026-10-09T10:22:07.870+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "48 - explicit video prompt lineage"
+2026-10-09T10:22:07.880+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "49 - analysis job version identity"
+2026-10-09T10:22:07.890+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "50 - prompt parent version links"
+2026-10-09T10:22:07.897+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "51 - bounded repair sessions"
+2026-10-09T10:22:07.907+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "52 - idempotent regeneration handoffs"
+2026-10-09T10:22:07.914+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "53 - performance correction lineage"
+2026-10-09T10:22:07.929+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "54 - content source path aliases"
+2026-10-09T10:22:07.940+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "55 - prompt creative provenance"
+2026-10-09T10:22:07.953+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Successfully applied 55 migrations to schema "public", now at version v55 (execution time 00:00.869s)
+2026-10-09T10:22:08.066+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] org.hibernate.orm.jpa                    : HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-10-09T10:22:08.107+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] org.hibernate.orm.core                   : HHH000001: Hibernate ORM core version 7.4.5.Final
+2026-10-09T10:22:08.271+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-10-09T10:22:08.362+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [jdbc:postgresql://localhost:57580/test?loggerLevel=OFF]
+	Database driver: PostgreSQL JDBC Driver
+	Database dialect: PostgreSQLDialect
+	Database version: 17.11
+	Default catalog/schema: test/public
+	Autocommit mode: undefined/unknown
+	Isolation level: READ_COMMITTED [default READ_COMMITTED]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-10-09T10:22:09.156+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] org.hibernate.orm.core                   : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-10-09T10:22:09.160+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-10-09T10:22:09.213+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] o.s.d.j.r.query.QueryEnhancerFactories   : Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-10-09T10:22:09.931+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] c.p.i.quality.QualityMlClient            : ML client initialized with base URL: http://localhost:8001
+2026-10-09T10:22:11.426+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 4 endpoints beneath base path '/actuator'
+2026-10-09T10:22:11.493+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] .i.v.j.AnalysisJobServiceIdempotencyTest : Started AnalysisJobServiceIdempotencyTest in 7.885 seconds (process running for 14.42)
+2026-10-09T10:22:11.547+01:00  WARN 90967 --- [pompom-creative-intelligence] [           main] o.s.core.events.SpringDocAppInitializer  : SpringDoc /v3/api-docs endpoint is enabled by default. To disable it in production, set the property 'springdoc.api-docs.enabled=false'
+2026-10-09T10:22:11.547+01:00  WARN 90967 --- [pompom-creative-intelligence] [           main] o.s.core.events.SpringDocAppInitializer  : SpringDoc /swagger-ui.html endpoint is enabled by default. To disable it in production, set the property 'springdoc.swagger-ui.enabled=false'
+2026-10-09T10:22:13.991+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.pompomhills.intelligence.video.api.VideoControllerAnalysisTest]: VideoControllerAnalysisTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-10-09T10:22:14.069+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.pompomhills.intelligence.PompomCreativeIntelligenceApplication for test class com.pompomhills.intelligence.video.api.VideoControllerAnalysisTest
+2026-10-09T10:22:14.072+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.pompomhills.intelligence.video.api.VideoControllerAnalysisTest]: VideoControllerAnalysisTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-10-09T10:22:14.074+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.pompomhills.intelligence.PompomCreativeIntelligenceApplication for test class com.pompomhills.intelligence.video.api.VideoControllerAnalysisTest
+2026-10-09T10:22:14.080+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] tc.postgres:17-alpine                    : Creating container for image: postgres:17-alpine
+2026-10-09T10:22:14.264+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] tc.postgres:17-alpine                    : Container postgres:17-alpine is starting: 2d224672b1c058cc5267b6983b93fc9323b801ce819eb85384e4f276b420d140
+2026-10-09T10:22:16.987+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] tc.postgres:17-alpine                    : Container postgres:17-alpine started in PT2.905043S
+2026-10-09T10:22:16.992+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] tc.postgres:17-alpine                    : Container is started (JDBC URL: jdbc:postgresql://localhost:57616/test?loggerLevel=OFF)
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v4.1.1)
+
+2026-10-09T10:22:17.083+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] c.p.i.v.api.VideoControllerAnalysisTest  : Starting VideoControllerAnalysisTest using Java 21.0.7 with PID 90967 (started by benanaktas in /Users/benanaktas/project/video/content-intelligence-platform/intelligence/backend)
+2026-10-09T10:22:17.083+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] c.p.i.v.api.VideoControllerAnalysisTest  : No active profile set, falling back to 1 default profile: "default"
+2026-10-09T10:22:17.368+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-10-09T10:22:17.397+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 26 ms. Found 19 JPA repository interfaces.
+2026-10-09T10:22:17.554+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] o.s.boot.tomcat.TomcatWebServer          : Tomcat initialized with port 0 (http)
+2026-10-09T10:22:17.566+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-10-09T10:22:17.566+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/11.0.24]
+2026-10-09T10:22:17.597+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] b.w.c.s.WebApplicationContextInitializer : Root WebApplicationContext: initialization completed in 510 ms
+2026-10-09T10:22:17.806+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Starting...
+2026-10-09T10:22:17.919+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-2 - Added connection org.postgresql.jdbc.PgConnection@6cc676d7
+2026-10-09T10:22:17.921+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Start completed.
+2026-10-09T10:22:18.016+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:postgresql://localhost:57616/test?loggerLevel=OFF (PostgreSQL 17.11)
+2026-10-09T10:22:18.324+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] o.f.c.i.s.JdbcTableSchemaHistory         : Schema history table "public"."flyway_schema_history" does not exist yet
+2026-10-09T10:22:18.328+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbValidate     : Successfully validated 55 migrations (execution time 00:00.030s)
+2026-10-09T10:22:18.357+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] o.f.c.i.s.JdbcTableSchemaHistory         : Creating Schema History table "public"."flyway_schema_history" ...
+2026-10-09T10:22:18.392+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Current version of schema "public": << Empty Schema >>
+2026-10-09T10:22:18.401+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "1 - initial schema"
+2026-10-09T10:22:18.578+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "2 - platform state observations"
+2026-10-09T10:22:18.606+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "3 - intervention events append only"
+2026-10-09T10:22:18.618+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "4 - seed canonical characters"
+2026-10-09T10:22:18.631+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "5 - observation quality and discovery metrics"
+2026-10-09T10:22:18.656+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "6 - quality validations"
+2026-10-09T10:22:18.696+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "7 - create contents and prompt versions"
+2026-10-09T10:22:18.717+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "8 - create validation runs and failed rules"
+2026-10-09T10:22:18.759+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "9 - create reference prompts and golden tests"
+2026-10-09T10:22:18.784+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "10 - create render jobs and assets"
+2026-10-09T10:22:18.820+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "11 - create render qa and credit log"
+2026-10-09T10:22:18.840+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "12 - create platform credentials"
+2026-10-09T10:22:18.852+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "13 - create publication jobs"
+2026-10-09T10:22:18.872+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "14 - create scheduled publications"
+2026-10-09T10:22:18.888+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "15 - create publication analytics"
+2026-10-09T10:22:18.901+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "16 - create webhook events"
+2026-10-09T10:22:18.918+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "17 - create video metrics"
+2026-10-09T10:22:18.980+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "18 - create performance classifications"
+2026-10-09T10:22:18.998+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "19 - create trajectory analyses"
+2026-10-09T10:22:19.075+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "20 - create correlation analyses"
+2026-10-09T10:22:19.092+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "21 - create rule candidates"
+2026-10-09T10:22:19.111+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "22 - create winner entries"
+2026-10-09T10:22:19.131+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "23 - create notifications"
+2026-10-09T10:22:19.146+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "24 - create analytics tables"
+2026-10-09T10:22:19.166+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "25 - add strategic tracking"
+2026-10-09T10:22:19.184+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "26 - create reach further tracking"
+2026-10-09T10:22:19.197+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "27 - create follower metrics"
+2026-10-09T10:22:19.208+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "28 - add external publication identity"
+2026-10-09T10:22:19.222+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "29 - add meta readonly snapshot fields"
+2026-10-09T10:22:19.234+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "30 - add immutable validation evidence"
+2026-10-09T10:22:19.247+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "31 - complete quality validation evidence"
+2026-10-09T10:22:19.256+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "32 - add video path aliases and intervention variant"
+2026-10-09T10:22:19.274+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "33 - add matched variant id to import rows"
+2026-10-09T10:22:19.281+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "34 - prevent duplicate active analysis jobs"
+2026-10-09T10:22:19.289+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "35 - create governed rule evolution"
+2026-10-09T10:22:19.326+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "36 - operational guard decisions"
+2026-10-09T10:22:19.339+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "37 - version sampled visual motion analysis"
+2026-10-09T10:22:19.345+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "38 - allow versioned video analysis classifications"
+2026-10-09T10:22:19.351+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "39 - add prompt source tracking"
+2026-10-09T10:22:19.362+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "40 - video character associations"
+2026-10-09T10:22:19.400+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "41 - prediction feature snapshots"
+2026-10-09T10:22:19.419+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "42 - store quality report snapshot"
+2026-10-09T10:22:19.454+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "43 - create quality validation visual evidence"
+2026-10-09T10:22:19.476+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "44 - create meta connection state"
+2026-10-09T10:22:19.495+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "45 - allow nullable quality validation overall score"
+2026-10-09T10:22:19.528+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "46 - post family workflow events"
+2026-10-09T10:22:19.537+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "47 - bounded workflow repair"
+2026-10-09T10:22:19.544+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "48 - explicit video prompt lineage"
+2026-10-09T10:22:19.557+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "49 - analysis job version identity"
+2026-10-09T10:22:19.567+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "50 - prompt parent version links"
+2026-10-09T10:22:19.574+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "51 - bounded repair sessions"
+2026-10-09T10:22:19.588+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "52 - idempotent regeneration handoffs"
+2026-10-09T10:22:19.597+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "53 - performance correction lineage"
+2026-10-09T10:22:19.612+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "54 - content source path aliases"
+2026-10-09T10:22:19.624+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "55 - prompt creative provenance"
+2026-10-09T10:22:19.635+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Successfully applied 55 migrations to schema "public", now at version v55 (execution time 00:00.844s)
+2026-10-09T10:22:19.657+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] org.hibernate.orm.jpa                    : HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-10-09T10:22:19.671+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-10-09T10:22:19.678+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [jdbc:postgresql://localhost:57616/test?loggerLevel=OFF]
+	Database driver: PostgreSQL JDBC Driver
+	Database dialect: PostgreSQLDialect
+	Database version: 17.11
+	Default catalog/schema: test/public
+	Autocommit mode: undefined/unknown
+	Isolation level: READ_COMMITTED [default READ_COMMITTED]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-10-09T10:22:19.814+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] org.hibernate.orm.core                   : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-10-09T10:22:19.815+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-10-09T10:22:19.930+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] c.p.i.quality.QualityMlClient            : ML client initialized with base URL: http://localhost:8001
+2026-10-09T10:22:20.127+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 4 endpoints beneath base path '/actuator'
+2026-10-09T10:22:20.142+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] o.s.boot.tomcat.TomcatWebServer          : Tomcat started on port 57628 (http) with context path '/'
+2026-10-09T10:22:20.145+01:00  INFO 90967 --- [pompom-creative-intelligence] [           main] c.p.i.v.api.VideoControllerAnalysisTest  : Started VideoControllerAnalysisTest in 3.13 seconds (process running for 23.073)
+2026-10-09T10:22:20.147+01:00  WARN 90967 --- [pompom-creative-intelligence] [           main] o.s.core.events.SpringDocAppInitializer  : SpringDoc /v3/api-docs endpoint is enabled by default. To disable it in production, set the property 'springdoc.api-docs.enabled=false'
+2026-10-09T10:22:20.147+01:00  WARN 90967 --- [pompom-creative-intelligence] [           main] o.s.core.events.SpringDocAppInitializer  : SpringDoc /swagger-ui.html endpoint is enabled by default. To disable it in production, set the property 'springdoc.swagger-ui.enabled=false'
+2026-10-09T10:22:20.307+01:00  INFO 90967 --- [pompom-creative-intelligence] [o-auto-1-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-10-09T10:22:20.307+01:00  INFO 90967 --- [pompom-creative-intelligence] [o-auto-1-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2026-10-09T10:22:20.308+01:00  INFO 90967 --- [pompom-creative-intelligence] [o-auto-1-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms

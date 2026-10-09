@@ -1,0 +1,5 @@
+                  id                  | state  | attempts |                                                                         request_payload                                                                          |                                      error_message                                      
+--------------------------------------+--------+----------+------------------------------------------------------------------------------------------------------------------------------------------------------------------+-----------------------------------------------------------------------------------------
+ 1ad870da-c05a-43cf-bb16-e019ea8a4ab1 | FAILED |        1 | {"fixture": "LOCAL_MOCK abandoned lease; provider outcome unknown", "recoveryStatus": "PROVIDER_OUTCOME_UNKNOWN", "analysisVersion": "sampled-visual-motion-v4"} | Worker lease expired; provider outcome unknown. Reconcile before explicit new analysis.
+(1 row)
+

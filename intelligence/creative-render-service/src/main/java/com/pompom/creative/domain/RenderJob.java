@@ -62,10 +62,12 @@ public class RenderJob {
   private String creativeContractStatus;
 
   @Setter(AccessLevel.NONE)
+  @org.hibernate.annotations.JdbcTypeCode(org.hibernate.type.SqlTypes.JSON)
   @Column(name = "creative_contract_snapshot", columnDefinition = "jsonb", updatable = false)
   private String creativeContractSnapshot;
 
   @Setter(AccessLevel.NONE)
+  @org.hibernate.annotations.JdbcTypeCode(org.hibernate.type.SqlTypes.JSON)
   @Column(name = "compiled_generation_constraints", columnDefinition = "jsonb", updatable = false)
   private String compiledGenerationConstraints;
 

@@ -1,0 +1,13 @@
+{
+  "contentId": 2,
+  "originalPromptVersionId": 5,
+  "promptVersionId": 6,
+  "validationId": 2,
+  "reviewId": "388ce8f7-851c-4a65-9e2e-2eeb9e5e27ea",
+  "parentVideoId": "7089baf0-7d80-4571-a1e5-5d5b20337cf1",
+  "qaRecordId": "680518dc-3151-448d-ba65-752636673725",
+  "frame": "library/fix-fixtures/J5-frame.jpg",
+  "frameHash": "e89ee4f66c3d902cbfc5550504ee43e0ff2eef364aababf9280cc9904bbf861e",
+  "parentHash": "7626749e7834ecfe1183cfc0e804f79182ee34b1802e2908ea898c85cdaa2762",
+  "fixture": "LOCAL_MOCK grades; real copied bytes/persistence/admission"
+}

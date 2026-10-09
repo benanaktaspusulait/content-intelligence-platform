@@ -43,6 +43,7 @@ final class RenderMigrationSupport {
         .defaultSchema(SCHEMA)
         .createSchemas(true)
         .locations(LOCATION)
+        .callbacks(new com.pompom.creative.config.RenderMigrationSearchPath())
         .load()
         .migrate();
   }

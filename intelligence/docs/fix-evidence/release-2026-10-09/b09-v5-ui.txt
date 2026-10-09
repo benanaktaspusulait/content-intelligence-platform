@@ -1,0 +1,114 @@
+Pompom
+CREATIVE INTELLIGENCE
+WORKSPACE
+OV
+Overview
+VL
+Video Library
+CH
+Characters
+PQ
+Prompt Quality
+RG
+Rule Governance
+EX
+Experiments
+TP
+Test Planner
+PR
+Predictions
+PF
+Performance
+IM
+Import Data
+MR
+Model Reliability
+RF
+Reach Further
+MA
+Meta Analytics
+MV
+Model Versions
+OP
+Operations
+Local workspace
+Persisted evidence only
+← Video Library
+VIDEO REVIEW STUDIO
+Fix-Fixtures
+
+library/fix-fixtures
+
+READY
+1 variant
+SELECTED VARIANT
+Original
+AUDIT_FIXTURE_EDITED.mp4
+Evidence record linked
+FOLDER VERSIONS
+Compare variants
+1
+Original
+AUDIT_FIXTURE_EDITED.mp4
+12.7 MB · READY
+Overview
+Creative
+Publication
+Performance
+Evidence
+SOURCE FACTS
+Technical details
+Real file metadata
+VIDEO
+Duration
+12.1s
+Resolution
+1080 × 1920
+Frame rate
+24.00 fps
+FILE
+Size
+12.7 MB
+Format
+MP4
+Modified
+9 Oct 2026, 00:19
+EVIDENCE
+Ingest state
+READY
+Ingested
+9 Oct 2026, 10:09
+Audio / codec
+No audio / h264
+VISUAL MOTION ANALYSIS
+Sampled visual-motion evidence
+Run analysis
+INTERPRETATION
+This is a sampled visual-motion heuristic. It does not use views, reach, likes, comments, follows or retention data.
+No analysis yet
+
+Trigger visual-motion analysis to measure sampled frame-change evidence.
+
+OBSERVED PERFORMANCE
+Latest imported platform evidence
+Facebook
+Views
+—
+No imported value
+Reach
+—
+No imported value
+Likes
+—
+No imported value
+Comments
+—
+No imported value
+Shares
+—
+No imported value
+Follows
+—
+No imported value
+
+Observed performance is evidence from the selected platform. It does not rewrite the creative assessment score.

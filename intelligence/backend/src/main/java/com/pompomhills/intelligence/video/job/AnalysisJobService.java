@@ -138,6 +138,20 @@ public class AnalysisJobService {
         .optional();
   }
 
+  public Optional<JobView> findLatestByIdentity(UUID videoId, String analysisVersion) {
+    return jdbc.sql("""
+            SELECT id,video_id,job_type,state,attempts,max_attempts,error_message,
+                   created_at,started_at,completed_at
+            FROM analysis_jobs WHERE video_id=:video
+              AND COALESCE(request_payload->>'analysisVersion',:current)=:version
+            ORDER BY created_at DESC LIMIT 1
+            """)
+        .param("video", videoId)
+        .param("current", VideoService.CURRENT_ANALYSIS_VERSION)
+        .param("version", analysisVersion)
+        .query((rs, ignored) -> map(rs)).optional();
+  }
+
   public JobView get(UUID id) {
     return jdbc.sql(
             """

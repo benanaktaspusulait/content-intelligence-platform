@@ -1,0 +1,207 @@
+Üretim incelemesi
+
+Kayıtlı inceleme yeniden açıldı · 04bcd7f1-a935-4811-a41c-7c2d951e021c · yeni sağlayıcı çağrısı yapılmadı.
+
+İş akışı profili
+Family 1–10 · tarihsel doğrulama
+Operasyonel yaratıcı iş akışı v1
+
+Family 1–10 sözleşmeleri korunur. Yeni profil, yaratıcı amacı ve seçilen jeneratörün yürütmesini ayrı inceler.
+
+Yetkili karakter referansları dosyalardan bağlanır; eksik referans yerine görünüm uydurulmaz.
+
+Onaylı ilgili dersler
+İçerik profili
+Kaynak temelli öneri
+Absürt fizik
+Merak / macera
+Eğitici
+Karma
+Belirsiz
+Açılış stratejisi
+Öneri
+Anında imkânsızlık
+Doğrudan sorun
+Merak / keşif
+İstenen süre (s)
+Jeneratör
+Kullanıcı tercihine göre öner
+Seedance 2.0 Mini
+Seedance 2.0
+Seedance 2.5
+İlk kare · mevcut medya yolu
+İlk kare · sağlayıcı URL
+2.0 kalite gerekçesi
+Görünüm oranı
+9:16
+16:9
+1:1
+İzleyicinin temel sorusu
+Korunacak yaratıcı niyet · kaynakta geçen ifadeler
+Önceki temel niyeti değiştiriyorsanız karar gerekçesi
+Bu kaynak sürümünün son niyet bildirimlerini yükle
+Kaynağa bağlı plan kanıtı · isteğe bağlı
+Karakter ve referans dosyaları
+Post-family incelemesini çalıştır
+
+KARAR
+Gerekli sonraki üretim/kanıt adımına geç
+
+İZLEME MEKANİZMASI
+Luca pushes. Hold.
+
+AÇILIŞ
+Luca pushes. Hold.
+
+İLERLEME
+Kanıt yetersiz
+
+FİNAL
+Planlanan final: Luca pushes. Hold.
+
+TEMEL OLAY/KİMLİK/ANLAŞILABİLİRLİK
+Gerçek video henüz incelenmedi
+
+TEKNİK KUSURLAR
+Doğrulanmış kusur kanıtı yok
+
+KUSURUN ETKİSİ
+Yalnız teknik temizlik yaratıcı değer kanıtı değildir
+
+EN KÜÇÜK MÜDAHALE
+PROCEED_NEXT_EVIDENCE_STEP
+
+PERFORMANS
+Kör inceleme tamamlanana kadar sonuç verisi ayrıdır; izlenme garantisi yok
+
+Prompt / plan kalitesi
+
+PASS ·
+
+Jeneratör yürütme riski
+
+PASS
+
+Gerçek render kalitesi
+
+Plan sadakati: UNKNOWN · Kullanılabilirlik: UNKNOWN
+
+İzleyici / dağıtım sonucu
+
+Henüz ilişkilendirilmedi
+
+Bu kayıt için PDF raporu
+Ham plan, jeneratör ve yetkilendirme kanıtı
+İkinci görüş sağlayıcısı
+DeepSeek · metin portu
+OpenAI
+Claude
+Gemini
+Yapılandırılmış eleştirmen modeli
+İkinci görüşü çalıştırBağlı incelemeyle mevcut render kuyruğunu aç
+Kanıt ve belirsizlik
+Render öncesi temel niyet
+
+Önem düzeyi bu kaynak sürümüne bağlanır. Değişince yeniden inceleyin; video sonucuna göre geriye dönük değiştirilmez.
+
+0–15 s · Luca pushes. Hold.
+
+Temel olayEsnek tercihGörsel incelik
+Kaynağa bağlı niyet ve yaratıcı yorum ayrıntıları
+Bounded repair session · at most two attempts
+En küçük düzeltme
+Değiştirilecek kaynak ifadesi
+Yeni ifade
+Tek yama + son prompt doğrulaması
+Son üretim prompt’u
+KopyalaEditöre aktar ve sürüm kaydetManuel render paketi indir
+
+Manuel paket render yetkisi veya kredi harcama onayı değildir. Son video mevcut kanonik kabul akışından geçer.
+
+Gerçek render QA
+Dönen videonun yerel medya yolu
+
+Gerçek klibi açıp her planlanan zaman aralığını inceleyin. Seyrek kareler hareket/temas/loop kanıtı değildir.
+
+0–15 s
+
+Luca pushes. Hold.
+
+Gerçekte gözlenen başlangıç (s)
+Gerçekte gözlenen son (s)
+Kanıt yetersiz
+Gözlendi
+Eksik / çöktü
+İncelenen aralık başlangıcı (s)
+İncelenen aralık sonu (s)
+Temel olayın okunabilirliği
+Kanıt yetersiz
+ADEQUATE
+UNREADABLE
+Bu aralıkta gerçekten gözlenen şey
+Kimlik
+Kanıt yetersiz
+RECOGNIZABLE
+UNRECOGNIZABLE
+Bu aralıkta gerçekten gözlenen şey
+Çocukla paylaşım için içerik güvenliği
+Kanıt yetersiz
+APPROPRIATE
+UNSAFE
+Bu aralıkta gerçekten gözlenen şey
+Bütün olarak anlaşılabilirlik
+Kanıt yetersiz
+ADEQUATE
+DESTROYED
+Bu aralıkta gerçekten gözlenen şey
+İzleme deneyiminin gelişimi
+Kanıt yetersiz
+DEVELOPING
+PURPOSEFUL_REPETITION
+WEAK
+Bu aralıkta gerçekten gözlenen şey
+Gerçek açılış
+Kanıt yetersiz
+READABLE_EARLY_DEVELOPMENT
+READABLE_PROMISE
+UNREADABLE
+EXCESSIVELY_DELAYED
+Bu aralıkta gerçekten gözlenen şey
+Gerçek final
+Kanıt yetersiz
+DELIVERS_PROMISE
+PURPOSEFUL_UNRESOLVED
+ARBITRARY_TRUNCATION
+WEAK
+Bu aralıkta gerçekten gözlenen şey
+Aralığa bağlı kusur ve müdahale kanıtı
+Bu aralıkları gerçek klipte inceleyip gözlemleri onayladım
+Bu gerçek videodan çıkarılan kareleri inceledim; yalnız durağan görünüm/poz bulguları için kanıt
+Deterministik analiz + plan karşılaştırması
+Justified full-video regeneration handoff
+Yayın ve ölçüm ilişkisi
+
+Prompt → referanslar → render ayarları → gerçek video → edit varyantı → yayın ID → immutable ölçüm ayrı tutulur.
+
+Platform
+INSTAGRAM
+FACEBOOK
+YOUTUBE
+Yayın ID (metin)
+Edit varyant ID (varsa)
+Eşleştirme kanıtı
+Manuel ilişkiyi kaydetCSV/XLSX dosyasını mevcut import ekranında incele ve eşleştir
+Kaynaklı ölçüm kaydı ve karşılaştırma
+Canonical profil doğrulamasını kaydet
+İnsan incelemesine açık ders / deney kaydı
+Ders kapsamı
+Doğrulanmış actual video
+Kabul edilmiş prompt onarımı
+Hipotez
+Karşı örnekler
+Ders adayı kaydetDeney sonucu kaydet
+
+APPROVED · donmuş kurallara otomatik uygulanmaz.
+
+Geri çekme gerekçesi
+Onaylı dersi geri çek

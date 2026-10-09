@@ -31,6 +31,12 @@ class Handler(BaseHTTPRequestHandler):
     count=3 if 'CUT' in value['prompt'] else 2
     findings=[{'confidence':'HIGH','evidenceBasis':'UNVERIFIED_HYPOTHESIS','riskCategory':'LOCAL_MOCK_FIXTURE_'+str(i),'plausibleFailure':'Synthetic contract test finding; no observed render claim','smallestChange':'Fixture-only patch','sourceQuote':'CUT' if 'CUT' in value['prompt'] else 'Hold.','sourceSpan':[0,0]} for i in range(count)]
     reviewed.update(fixture='LOCAL_MOCK independent critic',planQuality={'status':'PASS','fixture':'LOCAL_MOCK'},executionRisk={'status':'PASS','fixture':'LOCAL_MOCK'},executionReview={'status':'REWRITE','findings':findings},repairPasses=0)
+    if value['prompt'].startswith('LOCAL_MOCK_J5'):
+     # Isolated synthetic fixture only: actual backend evidence still must authorize.
+     canonical=value.get('authorizationEvidence',{})
+     if canonical.get('renderAuthorization')=='AUTHORIZED':
+      reviewed['family8']['renderAuthorization']={'status':'AUTHORIZED','fixture':'LOCAL_MOCK'}
+     reviewed['generation'].update(capabilityStatus='SUPPORTED',mode='image2video',apiModelId='byte-plus-seedance-2-mini',supportedRenderDuration=6,settings={'aspectRatio':'9:16','resolution':'480p','startFrame':{'id':'library/fix-fixtures/J5-frame.jpg'}},segments=[])
     return self.send(reviewed)
    if action=='repair':return self.send(repair_prompt(value['request'],value['patches'],CAP))
    if action=='creative-role':
