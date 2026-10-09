@@ -1,0 +1,37 @@
+{
+  "role": "BUILD_PROMPT",
+  "provider": "openai",
+  "model": "gpt-4o-mini-2024-07-18",
+  "result": {
+    "prompt": "A round toy rolls across a smooth surface, stopping abruptly as it encounters a floating pebble, creating a moment of curiosity during a test-only deployment."
+  },
+  "calls": 1,
+  "visualInspected": false,
+  "validationStatus": "NOT_VALIDATED",
+  "usage": {
+    "completion_tokens": 35,
+    "prompt_tokens": 88,
+    "total_tokens": 123,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": 0,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": 0,
+      "text_tokens": null
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": null,
+      "cached_tokens": 0,
+      "image_tokens": null,
+      "text_tokens": null
+    }
+  },
+  "costUpperBoundUsd": 0.0015328499999999999,
+  "approvedCostCeilingUsd": 0.01,
+  "status": "PASS",
+  "elapsedSeconds": 3.495,
+  "transport": "deployed ML HTTP endpoint",
+  "priceSource": "https://developers.openai.com/api/docs/models/gpt-4o-mini",
+  "estimatedCostUsdUpperBound": 3.42e-05
+}

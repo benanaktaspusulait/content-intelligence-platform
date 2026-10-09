@@ -44,3 +44,24 @@ def test_cost_ceiling_is_checked_before_constructing_paid_provider(monkeypatch):
     monkeypatch.setenv('WORKFLOW_BUILD_PROMPT_OUTPUT_USD_PER_MILLION', '1000')
     with pytest.raises(ValueError, match='cost ceiling'):
         run_paid_role('BUILD_PROMPT', 'Story', {}, 0.001)
+
+
+def test_paid_repair_enforces_json_at_provider_boundary(monkeypatch):
+    from unittest.mock import MagicMock, patch
+    monkeypatch.setenv('OPENAI_API_KEY', 'fixture-key')
+    monkeypatch.setenv('WORKFLOW_CREATIVE_ROLES_ENABLED', 'true')
+    monkeypatch.setenv('WORKFLOW_MINIMAL_REPAIR_MODEL', 'fixture-model')
+    monkeypatch.setenv('WORKFLOW_MINIMAL_REPAIR_INPUT_USD_PER_MILLION', '0.15')
+    monkeypatch.setenv('WORKFLOW_MINIMAL_REPAIR_OUTPUT_USD_PER_MILLION', '0.6')
+    content = json.dumps({'patches': [{'start': 0, 'end': 3, 'sourceQuote': 'CUT', 'replacement': 'Hold'}]})
+    with patch('app.llm.openai_provider.OpenAI') as sdk:
+        client = sdk.return_value
+        client.chat.completions.create.return_value = MagicMock(
+            choices=[MagicMock(message=MagicMock(content=content))], usage=None)
+        result = run_paid_role('MINIMAL_REPAIR', 'CUT at end', {}, 0.01)
+        request = client.chat.completions.create.call_args.kwargs
+        assert request['response_format'] == {'type': 'json_object'}
+        assert request['max_tokens'] == 2000
+        client.chat.completions.create.assert_called_once()
+        assert result['result']['patches'][0]['sourceQuote'] == 'CUT'
+        assert result['validationStatus'] == 'NOT_VALIDATED'

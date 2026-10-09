@@ -1,0 +1,117 @@
+{
+  "httpChecks": [
+    {
+      "path": "/",
+      "status": 200
+    },
+    {
+      "path": "/quality/detail?contentId=1&promptVersionId=1",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/intelligence/contents/quality-summary",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/intelligence/contents/1/prompt-versions/1/creative-provenance",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/models",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/intelligence/workflow/creative-role/readiness",
+      "status": 200,
+      "body": {
+        "enabled": true,
+        "liveVerified": false,
+        "roles": [
+          {
+            "role": "STORY",
+            "provider": "deepseek",
+            "model": "deepseek-flash",
+            "configured": true,
+            "modality": "TEXT_ONLY",
+            "automaticFallback": false
+          },
+          {
+            "role": "BUILD_PROMPT",
+            "provider": "openai",
+            "model": "gpt-4o-mini-2024-07-18",
+            "configured": true,
+            "modality": "TEXT_ONLY",
+            "automaticFallback": false
+          },
+          {
+            "role": "MINIMAL_REPAIR",
+            "provider": "openai",
+            "model": "gpt-4o-mini-2024-07-18",
+            "configured": true,
+            "modality": "TEXT_ONLY",
+            "automaticFallback": false
+          }
+        ]
+      }
+    },
+    {
+      "path": "/api/v1/intelligence/workflow/learning/retrieve?contentProfile=CURIOSITY_ADVENTURE&modelVersion=openart-cli-schema-2026-10-08&duration=15",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/render-jobs",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/qa/reviews/pending",
+      "status": 200
+    }
+  ],
+  "containers": [
+    {
+      "service": "backend",
+      "image": "sha256:380545ba326cdd2c8ae38579753ac4ecac7cfc8b55f9c6b3959adf39046e384d",
+      "status": "running",
+      "health": "healthy"
+    },
+    {
+      "service": "ml-service",
+      "image": "sha256:ee0d05cd45eb44e90fb763be8261437740d5e7fb94c6dff0939d3b57498f7de7",
+      "status": "running",
+      "health": "healthy"
+    },
+    {
+      "service": "creative-render-service",
+      "image": "sha256:97db554867fc7009d3b6311c347cb9858afd00ce776b62de3e2be3bf60fcc9e2",
+      "status": "running",
+      "health": "healthy"
+    },
+    {
+      "service": "frontend",
+      "image": "sha256:732544e1b484cd62593a0cb8e18ca8a14e2bdbb505460302e0c0d9bc0350dfdf",
+      "status": "running",
+      "health": "not-configured"
+    },
+    {
+      "service": "postgres",
+      "image": "sha256:25a89970a83255ae96484d709005bb35aa71f7455f941bc1634514f31c5d5c62",
+      "status": "running",
+      "health": "healthy"
+    }
+  ],
+  "beforeRows": {
+    "videos": 49,
+    "prompt_versions": 3,
+    "contents": 3,
+    "migration": "43"
+  },
+  "afterRows": {
+    "videos": 49,
+    "prompt_versions": 3,
+    "contents": 3,
+    "migration": "55",
+    "failedMigrations": 0
+  },
+  "rowCountsPreserved": true,
+  "sourceRevision": "f5dbbffc8dc90b4cd0140c7c4623912ddbd4bb67"
+}

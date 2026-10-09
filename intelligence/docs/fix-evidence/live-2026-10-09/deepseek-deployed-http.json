@@ -1,0 +1,40 @@
+{
+  "role": "STORY",
+  "provider": "deepseek",
+  "model": "deepseek-flash",
+  "result": {
+    "alternatives": [
+      "A round toy discovered a floating pebble during a test-only deployment smoke test."
+    ]
+  },
+  "calls": 1,
+  "visualInspected": false,
+  "validationStatus": "NOT_VALIDATED",
+  "usage": {
+    "completion_tokens": 509,
+    "prompt_tokens": 117,
+    "total_tokens": 626,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": null,
+      "reasoning_tokens": 486,
+      "rejected_prediction_tokens": null,
+      "text_tokens": null
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": null,
+      "cache_write_tokens": null,
+      "cached_tokens": 0,
+      "image_tokens": null,
+      "text_tokens": null
+    },
+    "prompt_cache_hit_tokens": 0,
+    "prompt_cache_miss_tokens": 117
+  },
+  "costUpperBoundUsd": 0.0030543000000000002,
+  "approvedCostCeilingUsd": 0.01,
+  "status": "PASS",
+  "transport": "deployed ML HTTP endpoint",
+  "elapsedSeconds": 5.759,
+  "estimatedCostUsdUpperBound": 0.0006459
+}

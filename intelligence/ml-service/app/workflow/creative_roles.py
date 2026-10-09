@@ -71,6 +71,7 @@ def run_paid_role(role: str, text: str, context: dict[str, Any], max_cost_usd: f
         raise ValueError('Request exceeds approved cost ceiling')
     provider = DeepSeekTextProvider(model) if role == 'STORY' else OpenAIProvider(model=model)
     provider.max_output_tokens = 2000
+    provider.json_output = True
     result = perform_role(role, text, context, provider, model)
     result['costUpperBoundUsd'] = upper_bound
     result['approvedCostCeilingUsd'] = max_cost_usd

@@ -43,6 +43,7 @@ class OpenAIProvider(LLMProvider):
             messages=messages,  # type: ignore[arg-type]
             temperature=temperature,
             **({"max_tokens": self.max_output_tokens} if hasattr(self, "max_output_tokens") else {}),
+            **({"response_format": {"type": "json_object"}} if getattr(self, "json_output", False) else {}),
         )
 
         # ``message.content`` is ``str | None`` upstream (e.g. a tool-call-only

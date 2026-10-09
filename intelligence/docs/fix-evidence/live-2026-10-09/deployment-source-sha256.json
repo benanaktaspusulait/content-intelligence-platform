@@ -1,0 +1,7 @@
+{
+  "intelligence/docker-compose.yml": "74af47066fa948a65ae8e547a4735c4d757dc3a25296a6bbc4fa30da72b94012",
+  "intelligence/frontend/src/app/app.routes.ts": "a56b2c9014e476a0b85261538bddd135a5a6d6a6ff4d62a343859c7353ac06ff",
+  "intelligence/ml-service/app/llm/openai_provider.py": "5646d335c321b199c829a8ac3f050ff26171ed9e50c1d3d7569fafd39695c127",
+  "intelligence/ml-service/app/workflow/creative_roles.py": "c297ede53613bcd2d25af7f7cfa6f09c4a9c4f10b5062cb7fbd90b0e30b18dbc",
+  "intelligence/ml-service/tests/test_creative_roles.py": "b61393e4b62364b9e09bdde7891f6c34be7781540a2cd1a4fe6dfcc1ad003bb8"
+}

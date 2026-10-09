@@ -1,0 +1,44 @@
+{
+  "role": "MINIMAL_REPAIR",
+  "provider": "openai",
+  "model": "gpt-4o-mini-2024-07-18",
+  "result": {
+    "patches": [
+      {
+        "start": 14,
+        "end": 25,
+        "sourceQuote": "discoveries",
+        "replacement": "discovers"
+      }
+    ]
+  },
+  "calls": 1,
+  "visualInspected": false,
+  "validationStatus": "NOT_VALIDATED",
+  "usage": {
+    "completion_tokens": 45,
+    "prompt_tokens": 94,
+    "total_tokens": 139,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": 0,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": 0,
+      "text_tokens": null
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": null,
+      "cached_tokens": 0,
+      "image_tokens": null,
+      "text_tokens": null
+    }
+  },
+  "costUpperBoundUsd": 0.00152655,
+  "approvedCostCeilingUsd": 0.01,
+  "status": "PASS",
+  "elapsedSeconds": 1.594,
+  "transport": "updated application adapter before redeploy",
+  "priceSource": "https://developers.openai.com/api/docs/models/gpt-4o-mini",
+  "estimatedCostUsdUpperBound": 4.11e-05
+}

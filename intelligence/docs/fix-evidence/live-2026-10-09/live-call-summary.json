@@ -1,0 +1,30 @@
+{
+  "verifiedSuccessfulPaidCalls": 5,
+  "paidAttempts": 7,
+  "unknownOrUnmeasuredAttempts": [
+    {
+      "attempt": 1,
+      "reason": "The process could not persist evidence because its output directory was initially absent; provider outcome and usage not recoverable."
+    },
+    {
+      "attempt": 5,
+      "reason": "OpenAI minimal repair returned non-JSON before the fix; usage was not captured by the rejected endpoint response."
+    }
+  ],
+  "maxCostUsdPerAttempt": 0.01,
+  "testCeilingUsd": 0.07,
+  "verifiedCallsEstimatedCostUsdUpperBound": 0.0019494,
+  "invoiceCostVerified": false,
+  "testedRoles": [
+    "STORY",
+    "BUILD_PROMPT",
+    "MINIMAL_REPAIR"
+  ],
+  "notTested": [
+    "vision QA",
+    "video generation",
+    "publishing",
+    "production statistical training or promotion"
+  ],
+  "completedAt": "2026-10-09T08:13:41.923132+00:00"
+}

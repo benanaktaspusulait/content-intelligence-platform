@@ -17,6 +17,8 @@ services:
     build: ./ml-service
     env_file:
       - ./backend/.env
+      - path: ./ml-service/.env
+        required: false
     environment:
       POMPOM_DATA_ROOT: /data
       POMPOM_SEMANTIC_ENABLED: ${POMPOM_SEMANTIC_ENABLED:-false}

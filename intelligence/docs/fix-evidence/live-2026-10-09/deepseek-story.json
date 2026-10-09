@@ -1,0 +1,44 @@
+{
+  "role": "STORY",
+  "provider": "deepseek",
+  "model": "deepseek-flash",
+  "result": {
+    "alternatives": [
+      "The round toy rolled forward and discovered a pebble floating in midair.",
+      "A round toy found a floating pebble and stared in surprise at the impossible little stone.",
+      "When a round toy discovered a floating pebble, it gently poked the hovering rock."
+    ]
+  },
+  "calls": 1,
+  "visualInspected": false,
+  "validationStatus": "NOT_VALIDATED",
+  "usage": {
+    "completion_tokens": 960,
+    "prompt_tokens": 117,
+    "total_tokens": 1077,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": null,
+      "reasoning_tokens": 900,
+      "rejected_prediction_tokens": null,
+      "text_tokens": null
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": null,
+      "cache_write_tokens": null,
+      "cached_tokens": 0,
+      "image_tokens": null,
+      "text_tokens": null
+    },
+    "prompt_cache_hit_tokens": 0,
+    "prompt_cache_miss_tokens": 117
+  },
+  "costUpperBoundUsd": 0.0030537,
+  "approvedCostCeilingUsd": 0.01,
+  "status": "PASS",
+  "elapsedSeconds": 5.168,
+  "priceSource": "https://api-docs.deepseek.com/quick_start/pricing/",
+  "priceBasis": "2026-10-09 peak cache-miss upper bound, USD per million input 0.3 / output 1.2",
+  "scope": "one real text-only STORY call; no render or publish",
+  "estimatedCostUsdUpperBound": 0.0011871
+}
