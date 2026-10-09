@@ -118,6 +118,15 @@ services:
       OPENART_MONTHLY_BUDGET: ${OPENART_MONTHLY_BUDGET:-1000}
       OPENART_WARNING_THRESHOLD: ${OPENART_WARNING_THRESHOLD:-0.2}
       OPENART_ALERT_ENABLED: ${OPENART_ALERT_ENABLED:-true}
+      META_PUBLISHER_BASE_URL: http://meta-publisher-service:8082
+      TIKTOK_PUBLISHER_BASE_URL: http://tiktok-publisher-service:8083
+      YOUTUBE_PUBLISHER_BASE_URL: http://youtube-publisher-service:8084
+      META_PUBLISHER_INTERNAL_TOKEN: ${META_PUBLISHER_INTERNAL_TOKEN:-}
+      TIKTOK_PUBLISHER_INTERNAL_TOKEN: ${TIKTOK_PUBLISHER_INTERNAL_TOKEN:-}
+      YOUTUBE_PUBLISHER_INTERNAL_TOKEN: ${YOUTUBE_PUBLISHER_INTERNAL_TOKEN:-}
+      META_PUBLISHER_CLIENT_ENABLED: ${META_PUBLISHER_CLIENT_ENABLED:-false}
+      TIKTOK_PUBLISHER_CLIENT_ENABLED: ${TIKTOK_PUBLISHER_CLIENT_ENABLED:-false}
+      YOUTUBE_PUBLISHER_CLIENT_ENABLED: ${YOUTUBE_PUBLISHER_CLIENT_ENABLED:-false}
     expose: ["8081"]
     volumes:
       - "./data:/data"
@@ -133,6 +142,74 @@ services:
       interval: 5s
       timeout: 3s
       start_period: 30s
+      retries: 20
+
+  meta-publisher-service:
+    build: ./meta-publisher-service
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/${POSTGRES_DB:-pompom}
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER:-pompom}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD:-pompom_local}
+      META_PUBLISHER_INTERNAL_TOKEN: ${META_PUBLISHER_INTERNAL_TOKEN:-}
+      META_PUBLISH_ENABLED: ${META_PUBLISH_ENABLED:-false}
+      META_PUBLISH_SERVICE_WRITE_ENABLED: ${META_PUBLISH_SERVICE_WRITE_ENABLED:-false}
+      META_PUBLISH_PAGE_ID: ${META_PUBLISH_PAGE_ID:-}
+      META_PUBLISH_PAGE_ACCESS_TOKEN: ${META_PUBLISH_PAGE_ACCESS_TOKEN:-}
+      META_PUBLISH_INSTAGRAM_ACCOUNT_ID: ${META_PUBLISH_INSTAGRAM_ACCOUNT_ID:-}
+      META_PUBLISH_INSTAGRAM_ACCESS_TOKEN: ${META_PUBLISH_INSTAGRAM_ACCESS_TOKEN:-}
+    expose: ["8082"]
+    depends_on:
+      postgres: { condition: service_healthy }
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8082/actuator/health"]
+      interval: 5s
+      timeout: 3s
+      start_period: 20s
+      retries: 20
+
+  tiktok-publisher-service:
+    build: ./tiktok-publisher-service
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/${POSTGRES_DB:-pompom}
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER:-pompom}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD:-pompom_local}
+      TIKTOK_PUBLISHER_INTERNAL_TOKEN: ${TIKTOK_PUBLISHER_INTERNAL_TOKEN:-}
+      TIKTOK_ENABLE: ${TIKTOK_ENABLE:-false}
+      TIKTOK_PUBLISH_SERVICE_WRITE_ENABLED: ${TIKTOK_PUBLISH_SERVICE_WRITE_ENABLED:-false}
+      TIKTOK_ACCESS_TOKEN: ${TIKTOK_ACCESS_TOKEN:-}
+      TIKTOK_PLATFORM_ACCOUNT_ID: ${TIKTOK_PLATFORM_ACCOUNT_ID:-}
+    expose: ["8083"]
+    depends_on:
+      postgres: { condition: service_healthy }
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8083/actuator/health"]
+      interval: 5s
+      timeout: 3s
+      start_period: 20s
+      retries: 20
+
+  youtube-publisher-service:
+    build: ./youtube-publisher-service
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/${POSTGRES_DB:-pompom}
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER:-pompom}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD:-pompom_local}
+      YOUTUBE_PUBLISHER_INTERNAL_TOKEN: ${YOUTUBE_PUBLISHER_INTERNAL_TOKEN:-}
+      YOUTUBE_ENABLE: ${YOUTUBE_ENABLE:-false}
+      YOUTUBE_PUBLISH_SERVICE_WRITE_ENABLED: ${YOUTUBE_PUBLISH_SERVICE_WRITE_ENABLED:-false}
+      YOUTUBE_ACCESS_TOKEN: ${YOUTUBE_ACCESS_TOKEN:-}
+      YOUTUBE_REFRESH_TOKEN: ${YOUTUBE_REFRESH_TOKEN:-}
+      YOUTUBE_CLIENT_ID: ${YOUTUBE_CLIENT_ID:-}
+      YOUTUBE_CLIENT_SECRET: ${YOUTUBE_CLIENT_SECRET:-}
+      YOUTUBE_PLATFORM_ACCOUNT_ID: ${YOUTUBE_PLATFORM_ACCOUNT_ID:-}
+    expose: ["8084"]
+    depends_on:
+      postgres: { condition: service_healthy }
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8084/actuator/health"]
+      interval: 5s
+      timeout: 3s
+      start_period: 20s
       retries: 20
 
   frontend:

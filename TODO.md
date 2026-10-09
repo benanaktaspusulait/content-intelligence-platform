@@ -15,7 +15,7 @@ Publisher migration is now an explicitly authorized companion workstream. It mus
 - [x] Create the TikTok publisher microservice with chunked upload and status reconciliation.
 - [x] Create the YouTube publisher microservice with OAuth refresh and resumable upload.
 - [x] Replace render-service in-process publisher bean dispatch with internal publisher-service clients.
-- [ ] Add Docker/Compose service definitions, internal routing, health checks, credential configuration, and no-browser-secret boundaries.
+- [x] Add Docker/Compose service definitions, internal routing, health checks, credential configuration, and no-browser-secret boundaries.
 - [ ] Add Java provider contract/parity tests before any Python deletion.
 - [ ] Verify no runtime or documentation path invokes Python publisher code.
 - [ ] Remove `publisher/` Python code, SQLite ledgers, Python dependencies, and stale integration docs only after all removal gates pass.
