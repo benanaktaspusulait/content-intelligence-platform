@@ -1,7 +1,6 @@
 package com.pompomhills.intelligence.meta;
 
 import java.util.concurrent.atomic.AtomicReference;
-import org.springframework.stereotype.Component;
 
 /**
  * Holds the tokens obtained via the OAuth authorization flow, in process memory only. Neither token
@@ -13,7 +12,7 @@ import org.springframework.stereotype.Component;
  * verification). Both are derived from the same successful authorization and take precedence over
  * their statically configured fallbacks when present.
  */
-@Component
+@Deprecated(forRemoval = false)
 public class MetaOAuthTokenStore {
   private final AtomicReference<String> userAccessToken = new AtomicReference<>();
   private final AtomicReference<String> pageAccessToken = new AtomicReference<>();

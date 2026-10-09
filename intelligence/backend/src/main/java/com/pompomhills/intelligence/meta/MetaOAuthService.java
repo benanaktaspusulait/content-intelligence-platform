@@ -31,13 +31,22 @@ public class MetaOAuthService implements MetaProviderAdapter {
   public MetaOAuthService(
       MetaOAuthProperties oauthProperties,
       MetaReadProperties readProperties,
-      MetaOAuthTokenStore ignoredLegacyTokenStore,
       @Qualifier("metaReadRestClient") RestClient restClient,
       Clock clock) {
     this.oauthProperties = oauthProperties;
     this.readProperties = readProperties;
     this.restClient = restClient;
     this.clock = clock;
+  }
+
+  /** Compatibility constructor for isolated provider tests; tokens are persisted by lifecycle. */
+  public MetaOAuthService(
+      MetaOAuthProperties oauthProperties,
+      MetaReadProperties readProperties,
+      MetaOAuthTokenStore ignoredLegacyTokenStore,
+      @Qualifier("metaReadRestClient") RestClient restClient,
+      Clock clock) {
+    this(oauthProperties, readProperties, restClient, clock);
   }
 
   /** Compatibility constructor for isolated provider tests. */

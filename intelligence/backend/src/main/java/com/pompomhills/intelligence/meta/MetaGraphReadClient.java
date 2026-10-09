@@ -48,6 +48,23 @@ public final class MetaGraphReadClient {
       @Qualifier("metaReadRestClient") RestClient restClient,
       ObjectMapper objectMapper,
       MetaReadProperties properties,
+      MetaConnectionRepository connectionRepository,
+      MetaTokenEncryptionService tokenEncryption,
+      Clock clock) {
+    this.restClient = restClient;
+    this.objectMapper = objectMapper;
+    this.properties = properties;
+    this.oauthTokenStore = null;
+    this.connectionRepository = connectionRepository;
+    this.tokenEncryption = tokenEncryption;
+    this.clock = clock;
+  }
+
+  /** Compatibility constructor for isolated tests. Production reads use the durable connection. */
+  public MetaGraphReadClient(
+      RestClient restClient,
+      ObjectMapper objectMapper,
+      MetaReadProperties properties,
       MetaOAuthTokenStore oauthTokenStore,
       MetaConnectionRepository connectionRepository,
       MetaTokenEncryptionService tokenEncryption,
@@ -80,7 +97,7 @@ public final class MetaGraphReadClient {
       String token = durable.get().decryptTokens(tokenEncryption).pageAccessToken();
       return token == null ? "" : token;
     }
-    String oauthToken = oauthTokenStore.getPageAccessToken();
+    String oauthToken = oauthTokenStore == null ? null : oauthTokenStore.getPageAccessToken();
     return oauthToken != null && !oauthToken.isBlank() ? oauthToken : properties.accessToken();
   }
 
@@ -94,7 +111,8 @@ public final class MetaGraphReadClient {
       String token = durable.get().decryptTokens(tokenEncryption).userAccessToken();
       return token == null ? "" : token;
     }
-    String oauthUserToken = oauthTokenStore.getUserAccessToken();
+    String oauthUserToken =
+        oauthTokenStore == null ? null : oauthTokenStore.getUserAccessToken();
     return oauthUserToken != null && !oauthUserToken.isBlank()
         ? oauthUserToken
         : properties.userAccessToken();
