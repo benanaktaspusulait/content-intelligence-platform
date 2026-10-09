@@ -70,7 +70,7 @@ Publisher migration is now an explicitly authorized companion workstream. It mus
 - [x] Keep exact local matching and provenance for every imported Meta object.
 - [x] Add source key/idempotency to all Meta snapshot writes.
 - [x] Add unified analytics DTOs independent of publication-job identity.
-- [ ] Add backend tests for Facebook and Instagram success, partial metrics, provider errors, pagination, and exact matching.
+- [x] Add backend tests for Facebook and Instagram success, partial metrics, provider errors, pagination, and exact matching.
 - [x] Add Angular Facebook/Page/account analytics views and snapshot history.
 
 ## Phase 3 — Public comment engagement (Facebook + Instagram only)
@@ -89,7 +89,7 @@ Publisher migration is now an explicitly authorized companion workstream. It mus
 - [x] Add provider-specific Facebook and Instagram comment-reply adapters behind one canonical service.
 - [x] Enforce `META_COMMENT_REPLY_ENABLED` immediately before every provider write.
 - [x] Add frontend public-comment review, draft approval, reply status, and audit views; do not add DM/Messenger UI.
-- [ ] Add realistic webhook, deduplication, moderation, approval, idempotency, and reply tests.
+- [x] Add realistic webhook, deduplication, moderation, approval, idempotency, and reply tests.
 
 ## Phase 4 — Webhooks and operations
 
@@ -97,8 +97,8 @@ Publisher migration is now an explicitly authorized companion workstream. It mus
 - [x] Separate publication-status webhook parsing from public-comment event parsing; DM/Messenger event parsing remains out of scope.
 - [x] Persist raw event identity safely without storing unnecessary personal data.
 - [x] Add replay/reconciliation endpoint for failed or ambiguous inbound events.
-- [ ] Add operational dashboards for token health, API errors, rate limits, webhook lag, and reply delivery.
-- [ ] Add alerting without including tokens, message bodies, or sensitive user data in logs.
+- [x] Add operational dashboards for token health, API errors, rate limits, webhook lag, and reply delivery.
+- [x] Add alerting without including tokens, message bodies, or sensitive user data in logs.
 
 ## Phase 5 — Verification and release gate
 
@@ -108,7 +108,7 @@ Publisher migration is now an explicitly authorized companion workstream. It mus
 - [x] Run backend tests and record unrelated baseline failures separately.
 - [x] Run creative-render-service tests and package.
 - [x] Run frontend tests and production build.
-- [ ] Add an opt-in read-only Meta smoke test requiring `META_LIVE_TEST=true`.
+- [x] Add an opt-in read-only Meta smoke test requiring `META_LIVE_TEST=true`.
 - [ ] Do not run a live publish/reply test until explicit confirmation and a dedicated test Page/account are provided.
 
 ## Explicit non-goals
@@ -126,8 +126,8 @@ Publisher migration is now an explicitly authorized companion workstream. It mus
 - [x] Meta publishing is fail-closed by default at controller, service, worker, and UI layers.
 - [x] Read-only OAuth is durable, refreshable, revocable, and scope-verified.
 - [x] Facebook and Instagram analytics are unified, persisted, provenance-aware, and honest about missing data.
-- [ ] Public Facebook/Instagram comments have typed persistence, webhook deduplication, moderation, approval, idempotency, and audited replies.
-- [ ] Dashboard exposes read-only analytics and human-approved public comment replies without hidden publish side effects.
+- [x] Public Facebook/Instagram comments have typed persistence, webhook deduplication, moderation, approval, idempotency, and audited replies.
+- [x] Dashboard exposes read-only analytics and human-approved public comment replies without hidden publish side effects.
 - [x] Backend/frontend/package gates are green except explicitly documented unrelated baseline failures.
 - [ ] Live read-only smoke passes with a dedicated Meta test account.
 - [x] No publish/reply live test is run without explicit approval.
