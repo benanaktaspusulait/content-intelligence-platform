@@ -38,7 +38,7 @@ class FacebookMetricsClientTest {
   @Test
   void readsFacebookVideoMetricsWithoutTurningMissingFieldsIntoZero() throws Exception {
     server
-        .expect(requestTo(org.hamcrest.Matchers.containsString("/v18.0/video-1")))
+        .expect(requestTo(org.hamcrest.Matchers.containsString("/v26.0/video-1")))
         .andRespond(
             withSuccess(
                 "{\"id\":\"video-1\",\"views\":1200,"
