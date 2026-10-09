@@ -4,6 +4,7 @@ import { provideHttpClientTesting, HttpTestingController } from '@angular/common
 import { PostFamilyWorkflowComponent } from './post-family-workflow.component';
 
 describe('post-family operator workflow', () => {
+  afterEach(() => window.history.replaceState(window.history.state, '', window.location.pathname));
   async function setup() {
     await TestBed.configureTestingModule({
       imports: [PostFamilyWorkflowComponent],
@@ -132,6 +133,47 @@ describe('post-family operator workflow', () => {
     component.reopenRepairSession('saved-session');
     http.expectOne('/api/v1/intelligence/workflow/repair-sessions/saved-session').flush({sessionId:'saved-session',contentId:1,originalPromptVersionId:2,bestPromptVersionId:3,bestReviewId:'verified-best',state:'STOPPED',attempts:2,maxAttempts:2,reservedCostUsd:.02,history:[{promptVersionId:3,reviewId:'verified-best',diff:'exact patch'}]});
     expect(component.repairSession.bestReviewId).toBe('verified-best');http.expectNone(r=>r.method==='POST');http.verify();fixture.destroy();TestBed.resetTestingModule();
+  });
+  async function startAutomaticRepair() {
+    const fixture = await setup();
+    const component = fixture.componentInstance;
+    const http = TestBed.inject(HttpTestingController);
+    component.review = { recordId: 'review' };
+    component.isCurrent = () => true;
+    component.repairConsent = true; component.repairBudget = 0.1;
+    component.startRepairSession();
+    http.expectOne('/api/v1/intelligence/workflow/repair-sessions').flush({ sessionId: 'bounded', state: 'READY', attempts: 0, maxAttempts: 2 });
+    return { fixture, component, http };
+  }
+  it('automatically advances only independently reviewed improvements within two attempts', async () => {
+    const { fixture, component, http } = await startAutomaticRepair();
+    const path = '/api/v1/intelligence/workflow/repair-sessions/bounded/step';
+    http.expectOne(path).flush({ sessionId: 'bounded', state: 'READY', attempts: 1, maxAttempts: 2, stopReason: 'NEXT_ATTEMPT_AVAILABLE', history: [{ stage: 'INDEPENDENTLY_REVIEWED' }] });
+    http.expectOne(path).flush({ sessionId: 'bounded', state: 'STOPPED', attempts: 2, maxAttempts: 2, stopReason: 'ATTEMPT_LIMIT' });
+    expect(component.repairSession.attempts).toBe(2);
+    http.expectNone(r => r.method === 'POST'); http.verify(); fixture.destroy();
+  });
+  it('does not advance or overwrite cancellation when a previous attempt responds late', async () => {
+    const { fixture, component, http } = await startAutomaticRepair();
+    const attempt = http.expectOne('/api/v1/intelligence/workflow/repair-sessions/bounded/step');
+    component.decideRepair('CANCELLED');
+    http.expectOne('/api/v1/intelligence/workflow/repair-sessions/bounded/decision').flush({ sessionId: 'bounded', state: 'CANCELLED' });
+    attempt.flush({ sessionId: 'bounded', state: 'READY', attempts: 1, maxAttempts: 2, stopReason: 'NEXT_ATTEMPT_AVAILABLE', history: [{ stage: 'INDEPENDENTLY_REVIEWED' }] });
+    expect(component.repairSession.state).toBe('CANCELLED');
+    http.expectNone(r => r.method === 'POST'); http.verify(); fixture.destroy();
+  });
+  it('never resumes automatic provider work from GET or after the screen is destroyed', async () => {
+    const { fixture, component, http } = await startAutomaticRepair();
+    const attempt = http.expectOne('/api/v1/intelligence/workflow/repair-sessions/bounded/step');
+    fixture.destroy();
+    attempt.flush({ sessionId: 'bounded', state: 'READY', attempts: 1, maxAttempts: 2, stopReason: 'NEXT_ATTEMPT_AVAILABLE', history: [{ stage: 'INDEPENDENTLY_REVIEWED' }] });
+    http.expectNone(r => r.method === 'POST'); http.verify();
+    TestBed.resetTestingModule();
+    window.history.replaceState(window.history.state, '', window.location.pathname);
+    const reopened = await setup(); const rehttp = TestBed.inject(HttpTestingController);
+    reopened.componentInstance.reopenRepairSession('bounded');
+    rehttp.expectOne('/api/v1/intelligence/workflow/repair-sessions/bounded').flush({ sessionId: 'bounded', contentId: 1, originalPromptVersionId: 2, state: 'READY', attempts: 1, maxAttempts: 2 });
+    rehttp.expectNone(r => r.method === 'POST'); rehttp.verify(); reopened.destroy();
   });
   it('stale inputs cannot request canonical profile admission', async () => {
     const fixture=await setup();const component=fixture.componentInstance;const http=TestBed.inject(HttpTestingController);

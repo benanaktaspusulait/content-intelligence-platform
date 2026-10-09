@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, EventEmitter, Input, Output, OnChanges, SimpleChanges, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, Output, OnChanges, OnDestroy, SimpleChanges, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { GeneralProducibilityComponent } from './general-producibility.component';
@@ -302,7 +302,7 @@ import { GeneralProducibilityComponent } from './general-producibility.component
             taşıyabilir. Kaynaksız yorum UNKNOWN kalır.
           </p>
         </details>
-        <details><summary>Bounded repair session · at most two attempts</summary><label>Maximum total cost (USD)<input type="number" min="0" [(ngModel)]="repairBudget"></label><label><input type="checkbox" [(ngModel)]="repairConsent">I approve the configured repair provider within this session budget.</label><button type="button" (click)="startRepairSession()" [disabled]="busy || !isCurrent() || !repairConsent || repairBudget <= 0">Start bounded repair</button><label>Saved session ID<input [(ngModel)]="repairSessionId"></label><button type="button" (click)="reopenRepairSession(repairSessionId)">Reopen session</button><div *ngIf="repairSession"><p>{{ repairSession.sessionId }} · {{ repairSession.state }} · {{ repairSession.stopReason }} · attempts {{ repairSession.attempts }}/{{ repairSession.maxAttempts }} · reserved ceiling {{ repairSession.reservedCostUsd }} (actual spend may be unknown)</p><p>Best independently reviewed prompt version: {{ repairSession.bestPromptVersionId }}</p><pre>{{ repairSession.history | json }}</pre><button type="button" (click)="nextRepairAttempt()" [disabled]="busy || repairSession.state !== 'READY'">Next bounded attempt</button><button type="button" (click)="decideRepair('ACCEPTED')" [disabled]="busy || repairSession.state === 'RUNNING'">Accept best candidate</button><button type="button" (click)="decideRepair('REJECTED')">Reject</button><button type="button" (click)="decideRepair('CANCELLED')">Cancel</button></div></details>
+        <details><summary>Bounded repair session · at most two attempts</summary><label>Maximum total cost (USD)<input type="number" min="0" [(ngModel)]="repairBudget"></label><label><input type="checkbox" [(ngModel)]="repairConsent">I approve the configured repair provider within this session budget.</label><button type="button" (click)="startRepairSession()" [disabled]="busy || !isCurrent() || !repairConsent || repairBudget <= 0">Start bounded repair</button><label>Saved session ID<input [(ngModel)]="repairSessionId"></label><button type="button" (click)="reopenRepairSession(repairSessionId)">Reopen session</button><div *ngIf="repairSession"><p>{{ repairSession.sessionId }} · {{ repairSession.state }} · {{ repairSession.stopReason }} · attempts {{ repairSession.attempts }}/{{ repairSession.maxAttempts }} · reserved ceiling {{ repairSession.reservedCostUsd }} (actual spend may be unknown)</p><p>Best independently reviewed prompt version: {{ repairSession.bestPromptVersionId }}</p><section *ngIf="repairOriginalReview && repairBestReview" aria-label="Repair before and after findings"><h4>Original · prompt version {{ repairOriginalReview.promptVersionId }}</h4><pre>{{ repairOriginalReview.executionReview?.findings | json }}</pre><pre>{{ repairOriginalReview.planQuality | json }}</pre><h4>Best independently reviewed candidate · prompt version {{ repairBestReview.promptVersionId }}</h4><pre>{{ repairBestReview.executionReview?.findings | json }}</pre><pre>{{ repairBestReview.planQuality | json }}</pre></section><pre>{{ repairSession.history | json }}</pre><button type="button" (click)="nextRepairAttempt()" [disabled]="busy || repairSession.state !== 'READY'">Next bounded attempt</button><button type="button" (click)="decideRepair('ACCEPTED')" [disabled]="busy || repairSession.state === 'RUNNING'">Accept best candidate</button><button type="button" (click)="decideRepair('REJECTED')">Reject</button><button type="button" (click)="decideRepair('CANCELLED')">Cancel</button></div></details>
         <h3>En küçük düzeltme</h3>
         <label>Değiştirilecek kaynak ifadesi<input [(ngModel)]="patchOriginal" /></label
         ><label>Yeni ifade<input [(ngModel)]="patchReplacement" /></label>
@@ -589,7 +589,7 @@ import { GeneralProducibilityComponent } from './general-producibility.component
     `,
   ],
 })
-export class PostFamilyWorkflowComponent implements OnChanges {
+export class PostFamilyWorkflowComponent implements OnChanges, OnDestroy {
   private http = inject(HttpClient);
   private changeDetector = inject(ChangeDetectorRef);
   @Input() prompt = '';
@@ -728,34 +728,76 @@ export class PostFamilyWorkflowComponent implements OnChanges {
   repairBudget = 0;
   repairConsent = false;
   repairSession: any = null;
+  repairOriginalReview: any = null;
+  repairBestReview: any = null;
   private repairKey = '';
+  private autoRepair = false;
+  private repairOperation = 0;
   startRepairSession() {
     if (!this.isCurrent() || !this.repairConsent || this.repairBudget <= 0 || this.busy) return;
     this.busy = true;
+    this.autoRepair = true;
+    const sequence = this.restoreSequence;
+    const operation = ++this.repairOperation;
     this.repairKey ||= crypto.randomUUID();
-    this.http.post<any>('/api/v1/intelligence/workflow/repair-sessions', { reviewId: this.review.recordId, idempotencyKey: this.repairKey, maxAttempts: 2, maxCostUsd: this.repairBudget }).subscribe({ next: session => { this.repairSession = session; this.busy = false;
+    this.http.post<any>('/api/v1/intelligence/workflow/repair-sessions', { reviewId: this.review.recordId, idempotencyKey: this.repairKey, maxAttempts: 2, maxCostUsd: this.repairBudget }).subscribe({ next: session => {
+      if (sequence !== this.restoreSequence || operation !== this.repairOperation) return;
+      this.repairSession = session; this.repairSessionId = session.sessionId; this.busy = false;
       const url = new URL(window.location.href); url.searchParams.set('repairSessionId', session.sessionId); window.history.replaceState(window.history.state, '', url.toString());
-      this.nextRepairAttempt(); }, error: e => this.fail(e) });
+      this.nextRepairAttempt(true); }, error: e => { if (sequence === this.restoreSequence && operation === this.repairOperation) { this.autoRepair = false; this.fail(e); } } });
   }
-  nextRepairAttempt() {
+  nextRepairAttempt(continueAutomatically = false) {
     if (this.repairSession?.state !== 'READY' || this.busy) return;
+    if (this.repairSession.attempts >= Math.min(this.repairSession.maxAttempts, 2)) return;
+    const sequence = this.restoreSequence;
+    const operation = this.repairOperation;
+    const sessionId = this.repairSession.sessionId;
+    const previousAttempts = this.repairSession.attempts;
     this.busy = true;
-    this.http.post<any>(`/api/v1/intelligence/workflow/repair-sessions/${this.repairSession.sessionId}/step`, {}).subscribe({ next: session => { this.repairSession = session; this.busy = false; this.changeDetector.markForCheck(); }, error: e => this.fail(e) });
+    this.http.post<any>(`/api/v1/intelligence/workflow/repair-sessions/${sessionId}/step`, {}).subscribe({ next: session => {
+      if (sequence !== this.restoreSequence || operation !== this.repairOperation || this.repairSession?.sessionId !== sessionId) return;
+      this.repairSession = session; this.busy = false; this.changeDetector.markForCheck();
+      if (continueAutomatically && this.autoRepair && session.state === 'READY'
+          && session.stopReason === 'NEXT_ATTEMPT_AVAILABLE' && session.attempts > previousAttempts
+          && session.history?.at(-1)?.stage === 'INDEPENDENTLY_REVIEWED') this.nextRepairAttempt(true);
+      else { this.autoRepair = false; this.loadRepairComparison(session); }
+    }, error: e => { if (sequence === this.restoreSequence && operation === this.repairOperation && this.repairSession?.sessionId === sessionId) { this.autoRepair = false; this.fail(e); } } });
   }
   decideRepair(decision: string) {
     if (!this.repairSession) return;
+    this.autoRepair = false;
+    const sequence = this.restoreSequence;
+    const operation = ++this.repairOperation;
+    const sessionId = this.repairSession.sessionId;
     this.http.post<any>(`/api/v1/intelligence/workflow/repair-sessions/${this.repairSession.sessionId}/decision`, { decision }).subscribe({ next: session => {
+      if (sequence !== this.restoreSequence || operation !== this.repairOperation || this.repairSession?.sessionId !== sessionId) return;
       this.repairSession = session;
-      if (session.state === 'ACCEPTED') this.http.get<any>(`/api/v1/intelligence/workflow/records/${session.bestReviewId}`).subscribe({ next: review => this.acceptedVersion.emit({ contentId: session.contentId, promptVersionId: session.bestPromptVersionId, rawText: review.originalPrompt }), error: e => this.fail(e) });
+      this.busy = false;
+      if (session.state === 'ACCEPTED') this.http.get<any>(`/api/v1/intelligence/workflow/records/${session.bestReviewId}`).subscribe({ next: review => { if (sequence === this.restoreSequence && this.repairSession?.sessionId === sessionId) this.acceptedVersion.emit({ contentId: session.contentId, promptVersionId: session.bestPromptVersionId, rawText: review.originalPrompt }); }, error: e => { if (sequence === this.restoreSequence) this.fail(e); } });
       this.changeDetector.markForCheck();
     }, error: e => this.fail(e) });
   }
   reopenRepairSession(id: string) {
     if (!id.trim()) return;
+    this.autoRepair = false;
+    const sequence = this.restoreSequence;
+    const operation = ++this.repairOperation;
     this.http.get<any>(`/api/v1/intelligence/workflow/repair-sessions/${encodeURIComponent(id.trim())}`).subscribe({ next: session => {
+      if (sequence !== this.restoreSequence || operation !== this.repairOperation) return;
       if (String(session.contentId) !== this.contentId || ![String(session.originalPromptVersionId), String(session.bestPromptVersionId)].includes(this.promptVersionId)) { this.error = 'Repair session belongs to another source version.'; return; }
-      this.repairSession = session; this.changeDetector.markForCheck();
+      this.repairSession = session; this.repairSessionId = session.sessionId; this.loadRepairComparison(session); this.changeDetector.markForCheck();
     }, error: e => this.fail(e) });
+  }
+  ngOnDestroy(): void { this.autoRepair = false; this.repairOperation++; this.restoreSequence++; }
+  private loadRepairComparison(session: any): void {
+    if (!session.originalReviewId || !session.bestReviewId) return;
+    const sequence = this.restoreSequence, operation = this.repairOperation;
+    for (const [field, id] of [['repairOriginalReview', session.originalReviewId], ['repairBestReview', session.bestReviewId]] as const) {
+      this.http.get<any>(`/api/v1/intelligence/workflow/records/${id}`).subscribe({ next: review => {
+        if (sequence !== this.restoreSequence || operation !== this.repairOperation || this.repairSession?.sessionId !== session.sessionId) return;
+        this[field] = review; this.changeDetector.markForCheck();
+      }, error: e => { if (sequence === this.restoreSequence && operation === this.repairOperation) this.fail(e); } });
+    }
   }
   repairSessionId = '';
   restoredRecordId = '';
@@ -765,7 +807,14 @@ export class PostFamilyWorkflowComponent implements OnChanges {
     this.review = null;
     this.qa = null;
     this.repairKey = '';
+    this.autoRepair = false;
+    this.repairOperation++;
     this.repairSession = null;
+    this.repairOriginalReview = null;
+    this.repairBestReview = null;
+    this.busy = false;
+    this.repairConsent = false;
+    this.repairBudget = 0;
     this.reviewedInputs = '';
     this.restoredRecordId = '';
     const sequence = ++this.restoreSequence;

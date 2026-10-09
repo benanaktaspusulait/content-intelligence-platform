@@ -1,0 +1,8 @@
+{
+  "contentId": 1,
+  "promptVersionId": 1,
+  "reviewId": "2553a8ac-d3a4-4594-8a09-381d8a2ea72e",
+  "prompt": "0-15 SEC\nLuca pushes. CUT",
+  "decisionPolicyVersion": "impact-review-v1",
+  "fixture": "LOCAL_MOCK provider/critic; real immutable storage and patch validation"
+}
