@@ -2,7 +2,7 @@ import { GeneralProducibility } from './family10-representation';
 import { GeneralProducibilityComponent } from './general-producibility.component';
 import { CreativeRoleComponent } from './creative-role.component';
 import { PostFamilyWorkflowComponent } from './post-family-workflow.component';
-import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, HostListener, OnDestroy, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
@@ -206,6 +206,7 @@ interface BeatEvidence { label: string; role: string; isAttempt: boolean; verb: 
 })
 export class QualityValidatorComponent implements AfterViewInit, OnDestroy {
   @ViewChild('promptMonaco') private promptMonaco?: ElementRef<HTMLDivElement>;
+  @ViewChild('workspaceFolderCombobox') private workspaceFolderCombobox?: ElementRef<HTMLElement>;
   @ViewChild(TimelineChartComponent, { read: ElementRef }) private timelineChart?: ElementRef<HTMLElement>;
   private promptEditor: PromptEditorInstance | null = null;
   private updatingPromptEditor = false;
@@ -228,7 +229,8 @@ export class QualityValidatorComponent implements AfterViewInit, OnDestroy {
   loading: boolean = false;
   error: string | null = null;
   promptFiles: PromptFile[] = [];
-  promptLibraryRoot = 'library';
+  // Keep prompt discovery aligned with the Video Library's configured media root.
+  promptLibraryRoot = 'library/POMPOM_HILLS_PRODUCTION/09_SOCIAL_REELS/new14092026';
   promptDirectories: PromptDirectory[] = [];
   selectedPromptDirectory = '';
   promptDirectoriesLoading = false;
@@ -375,6 +377,24 @@ Intensity: 4`;
   toggleWorkspaceMenu(event: MouseEvent): void { event.stopPropagation(); this.workspaceMenuOpen = !this.workspaceMenuOpen; }
   closeWorkspaceMenu(): void { this.workspaceMenuOpen = false; }
   setWorkspaceQuery(event: Event): void { this.workspaceQuery = (event.target as HTMLInputElement).value; this.workspaceMenuOpen = true; }
+
+  @HostListener('document:click', ['$event'])
+  handleWorkspaceOutsideClick(event: MouseEvent): void {
+    if (!this.workspaceMenuOpen) return;
+    const target = event.target as Node | null;
+    if (!target || !this.workspaceFolderCombobox?.nativeElement.contains(target)) {
+      this.closeWorkspaceMenu();
+      this.changeDetector.markForCheck();
+    }
+  }
+
+  @HostListener('window:scroll')
+  handleWorkspaceScroll(): void {
+    if (this.workspaceMenuOpen) {
+      this.closeWorkspaceMenu();
+      this.changeDetector.markForCheck();
+    }
+  }
 
   selectedPromptWorkspaces(): PromptWorkspace[] {
     const selected = new Set(this.selectedWorkspacePaths);
@@ -673,9 +693,9 @@ Intensity: 4`;
     this.selectedPromptPath = ''; this.validationRecordId = null; this.report = null; this.error = null;
     if (!this.detailMode) {
       this.clearWorkspaceSelection();
+      this.router.navigate(['/quality/detail']);
       return;
     }
-    this.router.navigate(['/quality']);
   }
 
   titleFromFolder(folder: string): string {

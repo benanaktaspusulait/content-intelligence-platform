@@ -14,8 +14,13 @@
           <div class="quality-record-heading"><div><strong>{{ record.title }}</strong><small>{{ record.sourcePath || 'Persisted content record' }}</small></div><span class="quality-state" [class.analyzed]="qualityState(record) === 'ANALYZED'">{{ qualityState(record) === 'ANALYZED' ? 'Analyzed' : 'Not analyzed' }}</span></div>
           <div class="quality-record-meta"><span *ngIf="record.versionNumber">Prompt v{{ record.versionNumber }}</span><ng-container *ngIf="record.latestQuality as quality"><span>{{ quality.status }} · {{ formatNullableScore(quality.overallScore) }}/100</span><span *ngIf="quality.creativeGrade">Creative {{ quality.creativeGrade }}</span><span *ngIf="quality.readiness">{{ quality.readiness.replaceAll('_', ' ') }}</span></ng-container></div>
           <p class="quality-record-summary">{{ promptQualitySummary(record) }}</p>
-          <small *ngIf="record.latestQuality?.analyzedAt" class="quality-record-date">Analyzed {{ record.latestQuality?.analyzedAt | date:'medium' }}</small>
-          <button *ngIf="record.latestQuality" type="button" class="btn btn-outline-secondary btn-sm" [disabled]="exportingPdf" (click)="exportQualityRecordPdf(record)">Export PDF</button><button *ngIf="record.promptVersionId" type="button" class="btn btn-outline-secondary btn-sm" (click)="openQualityRecord(record)">Open analysis</button>
+          <div class="quality-record-footer">
+            <small *ngIf="record.latestQuality?.analyzedAt" class="quality-record-date">Analyzed {{ record.latestQuality?.analyzedAt | date:'medium' }}</small>
+            <div class="quality-record-actions">
+              <button *ngIf="record.latestQuality" type="button" class="btn btn-outline-secondary btn-sm" [disabled]="exportingPdf" (click)="exportQualityRecordPdf(record)">Export PDF</button>
+              <button *ngIf="record.promptVersionId" type="button" class="btn btn-outline-secondary btn-sm" (click)="openQualityRecord(record)">Open analysis</button>
+            </div>
+          </div>
         </article>
       </div>
     </div>
@@ -24,12 +29,12 @@
   <section *ngIf="!detailMode" class="workspace-picker card">
     <div class="card-header">
       <div><span class="eyebrow">PROMPT ASSET LIBRARY</span><h2>Select prompt folders</h2><p>Choose one or more folders; their prompt files appear below.</p></div>
-      <div class="actions"><button class="btn btn-primary btn-sm" type="button" (click)="startNewPrompt()" [disabled]="loading">New prompt</button><button class="btn btn-outline-secondary btn-sm" type="button" (click)="loadPromptWorkspaces()" [disabled]="promptWorkspacesLoading">Refresh</button></div>
+      <div class="actions"><button class="btn btn-primary btn-sm" type="button" routerLink="/quality/detail" (click)="startNewPrompt()" [disabled]="loading">New prompt</button><button class="btn btn-outline-secondary btn-sm" type="button" (click)="loadPromptWorkspaces()" [disabled]="promptWorkspacesLoading">Refresh</button></div>
     </div>
     <div class="card-body">
       <label>Prompt root · relative to configured media storage<input [(ngModel)]="promptLibraryRoot" aria-label="Prompt workspace root"></label>
       <div *ngIf="promptWorkspacesLoading" class="loading-library">Loading prompt folders…</div>
-      <div *ngIf="!promptWorkspacesLoading" class="workspace-folder-combobox">
+      <div #workspaceFolderCombobox *ngIf="!promptWorkspacesLoading" class="workspace-folder-combobox">
         <label for="prompt-folder-search">Find a prompt, video, or subfolder topic</label>
         <small class="workspace-search-hint">Search also scans nested prompt/video paths; results stay grouped by top-level workspace.</small>
         <div class="workspace-folder-search" [class.is-open]="workspaceMenuOpen">
