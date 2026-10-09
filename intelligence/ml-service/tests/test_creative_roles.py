@@ -22,6 +22,12 @@ def test_creative_role_reports_empty_provider_response():
     with pytest.raises(ValueError, match='empty JSON response'):
         perform_role('STORY', 'Idea', {}, provider, 'configured-model')
 
+
+def test_story_candidates_are_bounded_when_provider_overproduces():
+    provider = FixtureProvider({'alternatives': ['one', 'two', 'three', 'four']})
+    response = perform_role('STORY', 'Idea', {}, provider, 'configured-model')
+    assert len(response['result']['alternatives']) == 3
+
 @pytest.mark.parametrize('role,result,provider_name', [
     ('STORY', {'alternatives': ['A grounded story']}, 'deepseek'),
     ('BUILD_PROMPT', {'prompt': 'TITLE / FORMAT 15 seconds 9:16.\n\nVISUAL STYLE grounded.\n\nCHARACTER / CONTINUITY Mimi remains visible.\n\nTIMED SHOT PLAN: 0-3s opening camera close shot; 3-6s action; 6-10s escalation; 10-13s reveal; 13-15s ending.\n\nAUDIO and sound.\n\nNEGATIVE CONSTRAINTS.\n\nFINAL CUT hard cut.', 'productionPlan': {'sourceIdentity': {'storyRevisionId': 'fixture'}, 'creativeObjective': 'Make the note movement readable.', 'characterBindings': [{'name': 'Mimi', 'status': 'supplied'}], 'visualExecution': {'openingState': 'Mimi is visible.', 'beats': [{'time': '0-3s', 'framing': 'close shot', 'action': 'Mimi holds a note.', 'staging': 'cabinet behind her.', 'consequence': 'setup visible.'}, {'time': '3-6s', 'framing': 'medium shot', 'action': 'note flips.', 'staging': 'in front of cabinet.', 'consequence': 'note reaches face.'}, {'time': '6-10s', 'framing': 'medium shot', 'action': 'Mimi reacts.', 'staging': 'center frame.', 'consequence': 'escalation.'}, {'time': '10-13s', 'framing': 'wide shot', 'action': 'notes multiply.', 'staging': 'around Mimi.', 'consequence': 'coverage grows.'}, {'time': '13-15s', 'framing': 'wide shot', 'action': 'Mimi is covered.', 'staging': 'cabinet behind her.', 'consequence': 'hard cut.'}], 'mechanism': 'Notes move visibly.', 'continuity': 'Mimi remains visible.', 'endingState': 'Hard cut.'}, 'productionConstraints': {'duration': 15, 'aspectRatio': '9:16'}, 'intentClassification': {'status': 'PRESERVE'}, 'evidenceLimitations': [], 'generatorRisks': [], 'referencePlan': {'status': 'NO_REFERENCE_SUPPLIED'}}}, 'openai'),

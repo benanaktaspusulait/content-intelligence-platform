@@ -35,7 +35,7 @@ def perform_role(role: str, text: str, context: dict[str, Any], provider: LLMPro
         'BUILD_PROMPT': '''Return ONLY JSON with exactly two top-level keys: `prompt` and `productionPlan`. Transform the approved story into a production-ready OpenArt video prompt; do not paraphrase or paste the story. Preserve every required event, character, first-frame condition, timing and hard cut. Write a readable multi-paragraph prompt with a blank line between these exact headings: TITLE / FORMAT, VISUAL STYLE, CHARACTER / CONTINUITY, TIMED SHOT PLAN, AUDIO, NEGATIVE CONSTRAINTS, FINAL CUT. The TIMED SHOT PLAN must contain 0-3s, 3-6s, 6-10s, 10-13s and 13-15s beats; every beat must state camera/framing, visible action and spatial staging. Include the first-frame requirement in the opening shot, make multiplication readable, keep the main character visible when the mechanism acts, and state the final hard cut. `productionPlan` must be a structured object with these keys: sourceIdentity, creativeObjective, characterBindings, visualExecution, productionConstraints, intentClassification, evidenceLimitations, generatorRisks, referencePlan. visualExecution must contain openingState, beats (one object per timed beat), mechanism, continuity, and endingState. Each beat must contain time, framing, action, staging and consequence. Use only supplied story, references and constraints; never invent appearance or evidence. Mark missing evidence explicitly. Do not add provider commentary, approval language or production authorization.''',
         'MINIMAL_REPAIR': 'Return JSON patches: at most three minimal edits with integer Unicode code point start/end, exact sourceQuote and replacement. Preserve protected intent and ESSENTIAL source quotes. Never return approval or rewrite the entire prompt.',
     }[role]
-    safe_context = {key: context[key] for key in ('protectedIntent', 'intentRequirements', 'findings', 'retrievedLessons', 'constraints', 'storyGenerationMode', 'lockedRequirements', 'permittedVariation', 'mainCharacter', 'character', 'characterRecord', 'characterReferences', 'referenceBindings', 'preferences', 'profile', 'candidates', 'candidateIds', 'sourceRequestId', 'sourceFingerprint', 'previousReview', 'currentRevision', 'previousRevision', 'targetDuration', 'aspectRatio', 'reviewPolicyVersion', 'selectedGenerator', 'generatorCapabilities', 'targetConfiguration') if key in context}
+    safe_context = {key: context[key] for key in ('protectedIntent', 'intentRequirements', 'findings', 'retrievedLessons', 'constraints', 'storyGenerationMode', 'lockedRequirements', 'permittedVariation', 'mainCharacter', 'character', 'characterRecord', 'characterReferences', 'referenceBindings', 'preferences', 'profile', 'candidates', 'candidateIds', 'requestedAlternativeCount', 'sourceRequestId', 'sourceFingerprint', 'previousReview', 'currentRevision', 'previousRevision', 'targetDuration', 'aspectRatio', 'reviewPolicyVersion', 'selectedGenerator', 'generatorCapabilities', 'targetConfiguration') if key in context}
     raw_response = provider.complete(json.dumps({'text': text, 'context': safe_context}, ensure_ascii=False), system=system, temperature=0)
     if not isinstance(raw_response, str) or not raw_response.strip():
         raise ValueError(f'{ROLES[role].title()} returned an empty JSON response')
@@ -97,6 +97,11 @@ def perform_role(role: str, text: str, context: dict[str, Any], provider: LLMPro
             raise ValueError('Unsupported STORY_REVIEW status')
     elif role == 'STORY':
         alternatives = value.get('alternatives')
+        if isinstance(alternatives, list) and len(alternatives) > 3:
+            # The provider may overproduce despite the bounded request. Keep
+            # the first three candidates, which is the product contract.
+            alternatives = alternatives[:3]
+            value['alternatives'] = alternatives
         if not isinstance(alternatives, list) or not 1 <= len(alternatives) <= 3:
             raise ValueError('One to three bounded story alternatives required')
         for candidate in alternatives:
