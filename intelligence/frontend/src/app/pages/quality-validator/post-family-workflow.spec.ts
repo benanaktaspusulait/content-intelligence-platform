@@ -95,6 +95,10 @@ describe('post-family operator workflow', () => {
     expect(c.sourceEvents).toHaveLength(5);
     expect(c.sourceEvents[0].evidence).toBe('SOURCE_EVENT_CANDIDATE');
     expect(c.sourceEvents[4].semanticStatus).toBe('PENDING');
+    expect(c.sourceEvents[0].action).not.toMatch(/^s:/);
+    c.toggleSourceQuote(c.sourceEvents[1].id);
+    expect(c.isSourceQuoteOpen(c.sourceEvents[1].id)).toBe(true);
+    expect(c.sourceEvents[1].sourceQuote).toContain('The note flips');
   });
   it('keeps missing source identity incomplete and restores saved settings without a 9:16 fallback', async () => {
     const f = await setup();
