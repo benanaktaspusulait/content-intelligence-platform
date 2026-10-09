@@ -19,7 +19,7 @@ Publisher migration is now an explicitly authorized companion workstream. It mus
 - [x] Add Java provider contract/parity tests before any Python deletion.
 - [x] Verify no runtime or documentation path invokes Python publisher code.
 - [x] Remove `publisher/` Python code, SQLite ledgers, Python dependencies, and stale integration docs only after all removal gates pass.
-- [ ] Re-run backend/render/frontend/package/release checks and update `META_INTEGRATION_READINESS.md`.
+- [x] Re-run backend/render/frontend/package/release checks and update `META_INTEGRATION_READINESS.md`.
 
 ## Current baseline
 
