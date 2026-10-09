@@ -8,6 +8,7 @@ from typing import Any
 from app.llm.provider import LLMProvider
 from app.llm.openai_provider import OpenAIProvider
 from .deepseek import DeepSeekTextProvider
+from .story_quality import analyse_story_candidates
 
 ROLES = {'STORY': 'deepseek', 'BUILD_PROMPT': 'openai', 'MINIMAL_REPAIR': 'openai'}
 
@@ -27,18 +28,24 @@ def perform_role(role: str, text: str, context: dict[str, Any], provider: LLMPro
     if any(context.get(key) for key in ('image', 'images', 'video')):
         raise ValueError('Creative roles are text-only; visual evidence was not supplied')
     system = {
-        'STORY': 'Return JSON alternatives: one to three distinct story strings. Preserve the supplied characters and intent. No production authorization.',
+        'STORY': 'Return JSON alternatives: one to three story candidates. Respect the requested generation mode and locked requirements. For EXPLORE_DIFFERENT_STORIES vary meaningful narrative structure; for IMPROVE_EXISTING_STORY preserve locked events and ending while offering refinements. Preserve the supplied characters and intent. No production authorization.',
         'BUILD_PROMPT': 'Return JSON prompt: a production prompt string. Use only supplied story, references and constraints. Do not invent character appearance or evidence. No production authorization.',
         'MINIMAL_REPAIR': 'Return JSON patches: at most three minimal edits with integer Unicode code point start/end, exact sourceQuote and replacement. Preserve protected intent and ESSENTIAL source quotes. Never return approval or rewrite the entire prompt.',
     }[role]
-    safe_context = {key: context[key] for key in ('protectedIntent', 'intentRequirements', 'findings', 'retrievedLessons', 'constraints') if key in context}
+    safe_context = {key: context[key] for key in ('protectedIntent', 'intentRequirements', 'findings', 'retrievedLessons', 'constraints', 'storyGenerationMode', 'lockedRequirements', 'permittedVariation', 'mainCharacter', 'preferences', 'profile') if key in context}
     value = json.loads(provider.complete(json.dumps({'text': text, 'context': safe_context}, ensure_ascii=False), system=system, temperature=0))
     if not isinstance(value, dict):
         raise ValueError('Role result must be an object')
     if role == 'STORY':
         alternatives = value.get('alternatives')
-        if not isinstance(alternatives, list) or not 1 <= len(alternatives) <= 3 or any(not isinstance(v, str) or not v.strip() or len(v) > 12000 for v in alternatives):
+        if not isinstance(alternatives, list) or not 1 <= len(alternatives) <= 3:
             raise ValueError('One to three bounded story alternatives required')
+        for candidate in alternatives:
+            if isinstance(candidate, str):
+                if not candidate.strip() or len(candidate) > 12000: raise ValueError('Bounded story alternative text required')
+            elif not isinstance(candidate, dict) or not isinstance(candidate.get('text') or candidate.get('description'), str) or len((candidate.get('text') or candidate.get('description')))>12000:
+                raise ValueError('Story alternatives must contain bounded text')
+        value['storyQuality'] = analyse_story_candidates(alternatives, context)
     elif role == 'BUILD_PROMPT':
         if not isinstance(value.get('prompt'), str) or not value['prompt'].strip() or len(value['prompt']) > 16000:
             raise ValueError('Bounded production prompt required')

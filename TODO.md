@@ -252,3 +252,36 @@ Implementation follows the approved visual-reference prompt and stays inside the
 - [x] Run aligned local browser journeys for desktop, tablet, and mobile with mock providers.
 - [x] Verify no paid calls or historical-data mutations during navigation/refresh.
 - [x] Build, test, deploy only after all checks pass and document limitations honestly.
+
+# Story Quality & Alternative Diversity Engine — TODO
+
+## Slice A — Story modes and constraints
+- [x] Add explicit Explore Different Stories and Improve My Existing Story modes.
+- [x] Add locked requirements, preferences, open creative choices, and mode-aware request payloads.
+- [x] Preserve existing B11 STORY, approvals, budgets, persistence, and BUILD_PROMPT lineage.
+
+## Slice B — Structural evidence and diversity
+- [x] Add candidate structural evidence extraction without fabricating unsupported fields.
+- [x] Add evidence-backed DISTINCT / PARTIALLY_DISTINCT / NEAR_DUPLICATE / INSUFFICIENT_EVIDENCE classification.
+- [x] Add contextual story preflight for opening, progression, mechanism, agency, ending, and production risk.
+- [x] Handle Mimi sticky-note multiplication and occlusion fixtures conservatively.
+
+## Slice C — Recommendation and bounded correction
+- [x] Add explainable comparison and advisory recommendation.
+- [x] Add bounded Generate More Distinct Alternatives and Refine Selected Story actions.
+- [x] Preserve immutable candidate history and explicit approval provenance.
+
+## Slice D — Creative Studio UI
+- [x] Add English story mode and creative freedom controls.
+- [x] Add complete candidate cards, comparison evidence, and expandable technical evidence.
+- [x] Keep selection, edit, approval, refinement, and existing prompt flows clear.
+
+## Slice E — Integration and persistence
+- [x] Ensure BUILD_PROMPT receives only the exact approved story revision.
+- [x] Persist mode, constraints, candidate evidence, diversity/preflight results, and lineage using existing entities.
+- [x] Ensure reload/reopen does not repeat provider calls or mutate historical data.
+
+## Slice F — Verification and delivery
+- [x] Add required structural, fixture, budget, lineage, and regression tests.
+- [x] Run short-idea and detailed-story browser journeys with mock providers.
+- [x] Update progress documentation, build, test, and deploy only after all checks pass.
