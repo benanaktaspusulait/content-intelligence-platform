@@ -160,27 +160,27 @@ Implementation follows the approved visual-reference prompt and stays inside the
 
 ## Slice D — Prompt/image consistency
 
-- [ ] Reuse visual/evidence infrastructure for identity, object, setting, spatial, opening-promise, physical-state, continuity, and technical checks.
-- [ ] Distinguish match, material mismatch, warning, insufficient evidence, service failure, and not applicable.
+- [x] Reuse visual/evidence infrastructure for identity, object, setting, spatial, opening-promise, physical-state, continuity, and technical checks.
+- [x] Distinguish match, material mismatch, warning, insufficient evidence, service failure, and not applicable.
 - [x] Keep metadata verification separate from semantic/identity verification.
-- [ ] Expose grounded mismatch findings and minimum correction options.
+- [x] Expose grounded mismatch findings and minimum correction options.
 
 ## Slice E — Critical-scene intelligence
 
-- [ ] Select conservative visual anchors from structured timeline, beat evidence, producibility, and generator risk.
+- [x] Select conservative visual anchors from structured timeline, beat evidence, producibility, and generator risk.
 - [x] Recommend a second image only when benefit is material and provider support is evidenced.
 - [x] Persist beat/state and narrative position; never label ordinary references as time-controlled keyframes.
 
 ## Slice F — Optional additional references
 
 - [x] Prepare bounded critical-scene requests with shared identity, costume, environment, object state, and prompt lineage.
-- [ ] Validate cross-image identity, environment, object counts, state changes, and intended transformations.
-- [ ] Classify `INTENDED_STATE_CHANGE`, `INCONSISTENT_REFERENCE`, and `INSUFFICIENT_EVIDENCE`.
+- [x] Validate cross-image identity, environment, object counts, state changes, and intended transformations.
+- [x] Classify `INTENDED_STATE_CHANGE`, `INCONSISTENT_REFERENCE`, and `INSUFFICIENT_EVIDENCE`.
 
 ## Slice G — Capability-aware OpenArt transport
 
-- [ ] Verify Seedance 2.0 Mini, 2.0, and 2.5 through the actual configured adapter/request path.
-- [ ] Record `SUPPORTED`, `UNSUPPORTED`, or `UNVERIFIED` for start/end, multi-reference, character, storyboard, segment, duration, aspect, resolution, and ordering semantics.
+- [x] Verify Seedance 2.0 Mini, 2.0, and 2.5 through the actual configured adapter/request path.
+- [x] Record `SUPPORTED`, `UNSUPPORTED`, or `UNVERIFIED` for start/end, multi-reference, character, storyboard, segment, duration, aspect, resolution, and ordering semantics.
 - [x] Serialize only real provider payload fields and assert exact role/order/hash transport in mock tests.
 - [x] Reject unsupported combinations before paid submission; never fabricate intermediate-frame controls.
 
@@ -195,17 +195,17 @@ Implementation follows the approved visual-reference prompt and stays inside the
 
 - [x] Bind accepted prompt version/hash, role-specific image hashes, supported provider settings, fresh evidence, and paid-render consent to the existing admission authority when a visual-reference plan is supplied.
 - [x] Invalidate stale bindings when prompt or references change.
-- [ ] Prove UI → API → persistence → queue snapshot → worker → provider payload transport.
+- [x] Prove UI → API → persistence → queue snapshot → worker → provider payload transport.
 - [x] Preserve idempotent replay and prevent side effects when admission fails.
 
 ## Slice J — Safety, learning, and verification
 
 - [x] Validate uploads by content, size, dimensions, decoding, path safety, hash, and provenance.
-- [ ] Keep prompt, image, vision, and video budgets separate; prevent hidden calls and unbounded retries.
-- [ ] Persist post-render reference strategy and actual QA evidence without claiming causality.
-- [ ] Add V01–V35 regression coverage plus newly discovered integration-boundary tests.
-- [ ] Run browser journeys for missing, mismatched, critical-reference, unsupported-model, and existing-image paths on desktop/mobile.
-- [ ] Update implementation progress docs and deploy only locally verified changes.
+- [x] Keep prompt, image, vision, and video budgets separate; prevent hidden calls and unbounded retries.
+- [x] Persist post-render reference strategy and actual QA evidence without claiming causality.
+- [x] Add V01–V35 regression coverage plus newly discovered integration-boundary tests.
+- [x] Run browser journeys for missing, mismatched, critical-reference, unsupported-model, and existing-image paths on desktop/mobile.
+- [x] Update implementation progress docs and deploy only locally verified changes.
 
 ## Final acceptance checklist
 
@@ -213,4 +213,4 @@ Implementation follows the approved visual-reference prompt and stays inside the
 - [x] Missing, stale, mismatched, uploaded, selected, and generated image paths are actionable and bounded.
 - [x] Critical-scene recommendations are conservative and capability-aware.
 - [x] Existing canonical render authorization receives exact supported reference bindings.
-- [ ] Historical assets remain readable and no paid live-provider tests were run without explicit later authorization.
+- [x] Historical assets remain readable and no paid live-provider tests were run without explicit later authorization.

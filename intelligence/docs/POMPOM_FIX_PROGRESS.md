@@ -104,3 +104,12 @@ Reconciled the existing RenderAsset, RenderAttempt, canonical admission, OpenArt
 Render dashboard now exposes Visual Reference Planning inside the existing Render stage: first-frame status, source/version/hash evidence, provider capability, estimated image cost, upload, proposal review, validation and acceptance actions. Nginx routes the new API and upload size is capped at 20 MB. VIDEO queue admission validates a supplied visual-reference plan against the exact content/prompt version and accepted first-frame binding before creating a job; legacy jobs without a plan remain readable.
 
 Local validation: render-service compile passed; OpenArt capability/reference/mock adapter tests passed; frontend production build passed with existing Angular budget warnings. Docker Compose render-service and frontend images were rebuilt and deployed. Render health is UP and a nonexistent-plan request fails closed with HTTP 409. No paid image-generation, semantic vision, OpenArt rendering or production-media mutation was performed. Remaining work is prompt/image semantic validation with an authorized vision provider, critical-scene evidence from structured beats, full provider-model capability verification, browser journey coverage, and end-to-end positive/negative admission fixtures.
+## Visual reference completion checkpoint — 2026-10-09
+
+- Added conservative evidence classifier with `MATERIAL_MISMATCH`, `INCONSISTENT_REFERENCE`, `INTENDED_STATE_CHANGE`, `INSUFFICIENT_EVIDENCE`, and `NOT_APPLICABLE` outcomes.
+- Added structured critical-scene proposal with beat, narrative position, intended state, shared identity/environment/object requirements, and explicit non-keyframe wording.
+- Added separate prompt/image/vision/video budget policy with bounded retries.
+- Verified Seedance 2.0 Mini, 2.0, and 2.5 through the configured CLI request path in mock adapter tests.
+- Added V01–V35 regression contract coverage and worker transport coverage for accepted first-frame bindings.
+- Post-render evidence now persists visual-reference strategy context and explicitly records that it makes no causal performance claim.
+- Local browser smoke journeys covered quality and render routes; no paid provider call was made.

@@ -207,6 +207,14 @@ public class PostRenderEvidenceExtractor {
     evidence.put("opening", opening);
     evidence.put("semanticLoop", semanticLoop);
     evidence.put("character", character);
+    Map<String, Object> visualReference = new LinkedHashMap<>();
+    Map<String, Object> providerBinding = providerParameters(asset.getRenderJob());
+    Object planId = providerBinding.get("visualReferencePlanId");
+    visualReference.put("planId", planId);
+    visualReference.put("strategy", planId == null ? "NONE" : "PLAN_BOUND");
+    visualReference.put("strategyStatus", planId == null ? EvidenceStatus.NOT_APPLICABLE.name() : EvidenceStatus.AVAILABLE.name());
+    visualReference.put("causality", "Reference strategy is persisted as render context; no causal performance claim is made.");
+    evidence.put("visualReference", visualReference);
 
     return new RenderEvidenceIR(
         asset.getId(),
@@ -245,6 +253,15 @@ public class PostRenderEvidenceExtractor {
     try {
       return new ObjectMapper()
           .readValue(job.getCreativeContractSnapshot(), new TypeReference<>() {});
+    } catch (Exception ignored) {
+      return Map.of();
+    }
+  }
+
+  private Map<String, Object> providerParameters(com.pompom.creative.domain.RenderJob job) {
+    if (job == null || job.getOpenartParams() == null) return Map.of();
+    try {
+      return new ObjectMapper().readValue(job.getOpenartParams(), new TypeReference<>() {});
     } catch (Exception ignored) {
       return Map.of();
     }

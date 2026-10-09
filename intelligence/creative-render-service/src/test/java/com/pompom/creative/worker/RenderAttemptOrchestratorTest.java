@@ -14,6 +14,7 @@ import com.pompom.creative.openart.OpenArtAdapter;
 import com.pompom.creative.openart.OpenArtReferenceResolver;
 import com.pompom.creative.openart.dto.DownloadResult;
 import com.pompom.creative.openart.dto.OpenArtImageRequest;
+import com.pompom.creative.openart.dto.OpenArtVideoRequest;
 import com.pompom.creative.openart.dto.OpenArtJobResponse;
 import com.pompom.creative.openart.dto.OpenArtJobStatus;
 import com.pompom.creative.postrender.PostRenderDecision;
@@ -155,6 +156,22 @@ class RenderAttemptOrchestratorTest {
     verify(openArtAdapter).generateImage(imageRequest.capture());
     assertThat(imageRequest.getValue().getReferenceImagePaths())
         .containsExactly("/tmp/kiko.png", "/tmp/mimi.png");
+  }
+
+  @Test
+  void queuedVideoStageTransportsAcceptedVisualReferenceBindingToProviderPayload() {
+    job.setJobType(RenderJob.JobType.VIDEO);
+    job.setOpenartParams("{\"firstFrameImageId\":\"/data/content/1/visual-references/frame.png\",\"visualReferencePlanId\":\"plan-1\",\"durationSeconds\":8,\"aspectRatio\":\"9:16\"}");
+    RenderAttempt attempt = attempt(RenderExecutionStage.QUEUED);
+    when(openArtAdapter.generateVideo(any())).thenReturn(OpenArtJobResponse.builder().jobId("provider-video-1").status("QUEUED").build());
+
+    orchestrator.processAttempt(attempt.getId(), LEASE_OWNER);
+
+    ArgumentCaptor<OpenArtVideoRequest> request = ArgumentCaptor.forClass(OpenArtVideoRequest.class);
+    verify(openArtAdapter).generateVideo(request.capture());
+    assertThat(request.getValue().getFirstFrameImageId()).isEqualTo("/data/content/1/visual-references/frame.png");
+    assertThat(request.getValue().getDurationSeconds()).isEqualTo(8);
+    verify(submissionStateService).markSubmitted(attempt.getId(), job.getId(), "provider-video-1", null, RenderProviderOperation.VIDEO);
   }
 
   @Test

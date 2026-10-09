@@ -47,7 +47,7 @@ public class TemporalBeatAlignmentService {
               "actionBeatNovelty",
                   Map.of(
                       "status",
-                      observed.get("status"),
+                      "PLAN_NOT_AVAILABLE",
                       "planned",
                       "NOT_EVALUATED",
                       "observedVisually",
