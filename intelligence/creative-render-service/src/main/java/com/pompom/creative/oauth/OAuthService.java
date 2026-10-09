@@ -55,6 +55,9 @@ public class OAuthService {
   @Value("${pompom.oauth.instagram.app-secret:}")
   private String instagramAppSecret;
 
+  @Value("${pompom.meta.publish-enabled:false}")
+  private boolean metaPublishEnabled;
+
   /**
    * Generate OAuth authorization URL for a platform.
    *
@@ -63,6 +66,7 @@ public class OAuthService {
    * @return Authorization URL to redirect user to
    */
   public String generateAuthorizationUrl(PlatformType platform, String state) {
+    ensurePlatformEnabled(platform);
     log.info("Generating authorization URL for platform: {}", platform);
 
     String clientId = getClientId(platform);
@@ -98,6 +102,7 @@ public class OAuthService {
    * @return OAuth token with access/refresh tokens
    */
   public OAuthToken exchangeCodeForToken(PlatformType platform, String code) {
+    ensurePlatformEnabled(platform);
     log.info("Exchanging authorization code for token: platform={}", platform);
 
     try {
@@ -139,6 +144,7 @@ public class OAuthService {
    * @return New OAuth token
    */
   public OAuthToken refreshAccessToken(PlatformType platform, String refreshToken) {
+    ensurePlatformEnabled(platform);
     log.info("Refreshing access token: platform={}", platform);
 
     try {
@@ -246,6 +252,9 @@ public class OAuthService {
 
   /** Validate that platform credentials are configured. */
   public boolean isPlatformConfigured(PlatformType platform) {
+    if (isMetaWritePlatform(platform) && !metaPublishEnabled) {
+      return false;
+    }
     String clientId = getClientId(platform);
     String clientSecret = getClientSecret(platform);
 
@@ -253,5 +262,19 @@ public class OAuthService {
         && !clientId.isEmpty()
         && clientSecret != null
         && !clientSecret.isEmpty();
+  }
+
+  public boolean isMetaPublicationEnabled() {
+    return metaPublishEnabled;
+  }
+
+  private void ensurePlatformEnabled(PlatformType platform) {
+    if (isMetaWritePlatform(platform) && !metaPublishEnabled) {
+      throw new IllegalStateException("Meta publication OAuth is disabled.");
+    }
+  }
+
+  private boolean isMetaWritePlatform(PlatformType platform) {
+    return platform == PlatformType.FACEBOOK || platform == PlatformType.INSTAGRAM;
   }
 }

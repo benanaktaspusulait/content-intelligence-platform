@@ -55,7 +55,7 @@ Publisher migration is now an explicitly authorized companion workstream. It mus
 - [x] Add refresh-before-expiry behavior and explicit revoke/disconnect endpoint.
 - [x] Add connection status for `CONNECTED`, `DEGRADED`, `EXPIRED`, `REVOKED`, and `NOT_CONFIGURED`.
 - [x] Remove write scopes from the read-only OAuth flow permanently.
-- [ ] Keep render-service write OAuth routes disabled while `META_PUBLISH_ENABLED=false`.
+- [x] Keep render-service write OAuth routes disabled while `META_PUBLISH_ENABLED=false`.
 - [ ] Stop putting Meta tokens in URL query parameters where the provider/client contract permits Authorization headers.
 - [ ] Normalize Graph API version configuration; remove the current v18/v26 split for read versus render clients.
 - [ ] Add OAuth callback, expiry, refresh, revoke, and scope regression tests.

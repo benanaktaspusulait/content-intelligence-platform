@@ -1,6 +1,7 @@
 package com.pompom.creative.oauth;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pompom.creative.oauth.dto.OAuthToken;
@@ -86,6 +87,20 @@ class OAuthServiceTest {
 
     // Then
     assertThat(facebookConfigured).isFalse();
+  }
+
+  @Test
+  void metaPublicationOAuthFailsClosedWhilePublishingIsDisabled() {
+    ReflectionTestUtils.setField(oauthService, "facebookAppId", "facebook-app");
+    ReflectionTestUtils.setField(oauthService, "facebookAppSecret", "facebook-secret");
+    ReflectionTestUtils.setField(oauthService, "metaPublishEnabled", false);
+
+    assertThat(oauthService.isMetaPublicationEnabled()).isFalse();
+    assertThat(oauthService.isPlatformConfigured(PlatformType.FACEBOOK)).isFalse();
+    assertThatThrownBy(
+            () -> oauthService.generateAuthorizationUrl(PlatformType.FACEBOOK, "state"))
+        .isInstanceOf(IllegalStateException.class)
+        .hasMessage("Meta publication OAuth is disabled.");
   }
 
   @Test

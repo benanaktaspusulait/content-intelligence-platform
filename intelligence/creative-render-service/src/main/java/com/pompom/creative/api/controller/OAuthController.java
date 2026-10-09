@@ -36,7 +36,12 @@ public class OAuthController {
       return ResponseEntity.badRequest().body(Map.of("error", "Invalid platform: " + platform));
     }
 
-    // Check if platform is configured
+    if ((platformType == PlatformType.FACEBOOK || platformType == PlatformType.INSTAGRAM)
+        && !oauthService.isMetaPublicationEnabled()) {
+      return ResponseEntity.status(403)
+          .body(Map.of("error", "Meta publication OAuth is disabled."));
+    }
+
     if (!oauthService.isPlatformConfigured(platformType)) {
       return ResponseEntity.badRequest()
           .body(Map.of("error", "Platform not configured: " + platform));
