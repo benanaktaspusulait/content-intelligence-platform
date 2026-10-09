@@ -5,6 +5,7 @@ import com.pompom.creative.meta.MetaCommentModerationService;
 import com.pompom.creative.meta.MetaCommentReplyDeliveryService;
 import com.pompom.creative.meta.MetaCommentReconciliationService;
 import com.pompom.creative.repository.MetaCommentRepository;
+import com.pompom.creative.repository.MetaCommentReplyRepository;
 import com.pompom.creative.oauth.MetaCommentReplyDisabledException;
 import java.util.UUID;
 import java.util.List;
@@ -22,23 +23,31 @@ public class MetaCommentController {
   private final MetaCommentReplyDeliveryService delivery;
   private final MetaCommentReconciliationService reconciliation;
   private final MetaCommentRepository comments;
+  private final MetaCommentReplyRepository replies;
 
   /** Compatibility constructor for isolated controller tests. */
-  @Autowired
   public MetaCommentController(
       MetaCommentModerationService moderation, MetaCommentReplyDeliveryService delivery) {
-    this(moderation, delivery, null, null);
+    this(moderation, delivery, null, null, null);
   }
 
+  @Autowired
   public MetaCommentController(
       MetaCommentModerationService moderation,
       MetaCommentReplyDeliveryService delivery,
       MetaCommentReconciliationService reconciliation,
-      MetaCommentRepository comments) {
+      MetaCommentRepository comments,
+      MetaCommentReplyRepository replies) {
     this.moderation = moderation;
     this.delivery = delivery;
     this.reconciliation = reconciliation;
     this.comments = comments;
+    this.replies = replies;
+  }
+
+  @GetMapping("/replies")
+  public ResponseEntity<List<MetaCommentReply>> listReplies() {
+    return ResponseEntity.ok(replies == null ? List.of() : replies.findTop100ByOrderByCreatedAtDesc());
   }
 
   @GetMapping

@@ -3,6 +3,7 @@ package com.pompom.creative.repository;
 import com.pompom.creative.domain.MetaCommentReply;
 import jakarta.persistence.LockModeType;
 import java.util.Optional;
+import java.util.List;
 import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Lock;
@@ -17,4 +18,6 @@ public interface MetaCommentReplyRepository extends JpaRepository<MetaCommentRep
   @Lock(LockModeType.PESSIMISTIC_WRITE)
   @Query("select reply from MetaCommentReply reply where reply.id = :replyId")
   Optional<MetaCommentReply> findByIdForUpdate(@Param("replyId") UUID replyId);
+
+  List<MetaCommentReply> findTop100ByOrderByCreatedAtDesc();
 }
