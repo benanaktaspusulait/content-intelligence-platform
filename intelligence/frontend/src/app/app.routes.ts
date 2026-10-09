@@ -22,6 +22,7 @@ export const routes: Routes = [
   { path: 'meta/connection', loadComponent: () => import('./pages/meta-connection.page').then((m) => m.MetaConnectionPage), title: 'Meta Connection · Pompom CI' },
   { path: 'meta/reels', loadComponent: () => import('./pages/meta-reels.page').then((m) => m.MetaReelsPage), title: 'Instagram Reels · Pompom CI' },
   { path: 'meta/reels/:mediaId', loadComponent: () => import('./pages/meta-reel-analytics.page').then((m) => m.MetaReelAnalyticsPage), title: 'Reel Analytics · Pompom CI' },
+  { path: 'meta/comments', loadComponent: () => import('./pages/meta-comments.page').then((m) => m.MetaCommentsPage), title: 'Comment Review · Pompom CI' },
   { path: 'models', loadComponent: () => import('./pages/models.page').then((m) => m.ModelsPage), title: 'Model Versions · Pompom CI' },
   { path: 'operations', loadComponent: () => import('./pages/operations.page').then((m) => m.OperationsPage), title: 'Operations · Pompom CI' },
   { path: '', pathMatch: 'full', redirectTo: 'overview' },

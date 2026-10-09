@@ -88,7 +88,7 @@ Publisher migration is now an explicitly authorized companion workstream. It mus
 - [x] Require human approval before every outbound public comment reply.
 - [x] Add provider-specific Facebook and Instagram comment-reply adapters behind one canonical service.
 - [x] Enforce `META_COMMENT_REPLY_ENABLED` immediately before every provider write.
-- [ ] Add frontend public-comment review, draft approval, reply status, and audit views; do not add DM/Messenger UI.
+- [x] Add frontend public-comment review, draft approval, reply status, and audit views; do not add DM/Messenger UI.
 - [ ] Add realistic webhook, deduplication, moderation, approval, idempotency, and reply tests.
 
 ## Phase 4 — Webhooks and operations

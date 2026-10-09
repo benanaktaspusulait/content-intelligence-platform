@@ -127,3 +127,14 @@ export interface MetaSnapshotResult {
   unavailableReason: string | null;
   metrics: MetaMetrics;
 }
+
+export type MetaCommentStatus = 'RECEIVED' | 'PENDING_REVIEW' | 'APPROVED' | 'REJECTED' | 'RESOLVED';
+export interface MetaComment {
+  id: string;
+  externalCommentId: string;
+  authorDisplayName: string | null;
+  text: string;
+  moderationStatus: MetaCommentStatus;
+  providerCreatedAt: string | null;
+  thread: { platform: string; externalObjectId: string };
+}

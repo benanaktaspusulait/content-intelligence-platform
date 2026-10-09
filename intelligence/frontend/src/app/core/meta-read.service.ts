@@ -9,6 +9,7 @@ import {
   MetaReelsPage,
   MetaReelSummary,
   MetaSnapshotResult,
+  MetaComment,
 } from './meta-read.models';
 
 /** Read-only client for the Meta analytics API. All reads are GET; snapshots are append-only. */
@@ -52,5 +53,10 @@ export class MetaReadService {
       `${this.baseUrl}/instagram/reels/${mediaId}/snapshots`,
       {},
     );
+  }
+
+  listComments(): Observable<MetaComment[]> { return this.http.get<MetaComment[]>(`${this.baseUrl}/comments`); }
+  createCommentDraft(commentId: string, draftText: string): Observable<unknown> {
+    return this.http.post(`${this.baseUrl}/comments/${commentId}/replies/draft`, { draftText, idempotencyKey: crypto.randomUUID() });
   }
 }
