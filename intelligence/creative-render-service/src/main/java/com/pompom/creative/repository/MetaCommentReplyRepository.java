@@ -20,4 +20,6 @@ public interface MetaCommentReplyRepository extends JpaRepository<MetaCommentRep
   Optional<MetaCommentReply> findByIdForUpdate(@Param("replyId") UUID replyId);
 
   List<MetaCommentReply> findTop100ByOrderByCreatedAtDesc();
+
+  long countByStatus(MetaCommentReply.Status status);
 }
