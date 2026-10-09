@@ -29,7 +29,7 @@
   <section *ngIf="!detailMode" class="workspace-picker card">
     <div class="card-header">
       <div><span class="eyebrow">PROMPT ASSET LIBRARY</span><h2>Select prompt folders</h2><p>Choose one or more folders; their prompt files appear below.</p></div>
-      <div class="actions"><button class="btn btn-primary btn-sm" type="button" routerLink="/quality/detail" (click)="startNewPrompt()" [disabled]="loading">New prompt</button><button class="btn btn-outline-secondary btn-sm" type="button" (click)="loadPromptWorkspaces()" [disabled]="promptWorkspacesLoading">Refresh</button></div>
+      <div class="actions"><button class="btn btn-primary btn-sm" type="button" routerLink="/quality/new">Yeni video oluştur</button><a class="btn btn-outline-secondary btn-sm" routerLink="/quality/detail">Elimde hazır prompt var</a><button class="btn btn-outline-secondary btn-sm" type="button" (click)="loadPromptWorkspaces()" [disabled]="promptWorkspacesLoading">Refresh</button></div>
     </div>
     <div class="card-body">
       <label>Prompt root · relative to configured media storage<input [(ngModel)]="promptLibraryRoot" aria-label="Prompt workspace root"></label>

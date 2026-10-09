@@ -406,6 +406,22 @@ public class WorkflowService {
     return result;
   }
 
+  public Map<String, Object> approveStory(UUID storyRecordId, Map<String, Object> request) {
+    var story = getByKind(storyRecordId, "CREATIVE_ROLE");
+    if (!"STORY".equals(story.get("role")))
+      throw new IllegalArgumentException("Only a STORY role record can be approved");
+    String approvedText = String.valueOf(request.getOrDefault("approvedText", "")).trim();
+    if (approvedText.isBlank()) throw new IllegalArgumentException("approvedText is required");
+    var approval = new LinkedHashMap<String, Object>();
+    approval.put("role", "STORY_APPROVAL");
+    approval.put("storyRecordId", storyRecordId.toString());
+    approval.put("approvedText", approvedText);
+    approval.put("originalStory", story.get("result"));
+    approval.put("approvedAt", java.time.Instant.now().toString());
+    approval.put("recordId", save("STORY_APPROVAL", storyRecordId.toString(), approval));
+    return approval;
+  }
+
   public Map<String, Object> secondOpinion(UUID id, Map<String, Object> options) {
     var review = get(id);
     var result =

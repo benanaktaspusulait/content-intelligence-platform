@@ -5,6 +5,7 @@ export const routes: Routes = [
   { path: 'render', loadComponent: () => import('./pages/render-dashboard.page').then((m) => m.RenderDashboardPage), title: 'Render Pipeline · Pompom CI' },
   { path: 'rule-governance', loadComponent: () => import('./pages/rule-governance.page').then((m) => m.RuleGovernancePage), title: 'Rule Governance · Pompom CI' },
   { path: 'quality/detail', loadComponent: () => import('./pages/quality-validator/quality-validator.component').then((m) => m.QualityValidatorComponent), title: 'Prompt Detail · Pompom CI' },
+  { path: 'quality/new', loadComponent: () => import('./pages/creative-studio.page').then((m) => m.CreativeStudioPage), title: 'Yeni Video · Pompom CI' },
   { path: 'quality', loadComponent: () => import('./pages/quality-validator/quality-validator.component').then((m) => m.QualityValidatorComponent), title: 'Prompt Quality · Pompom CI' },
   { path: 'videos', loadComponent: () => import('./pages/video-library.page').then((m) => m.VideoLibraryPage), title: 'Video Library · Pompom CI' },
   { path: 'videos/workbench', loadComponent: () => import('./pages/video-analysis-workbench.page').then((m) => m.VideoAnalysisWorkbenchPage), title: 'Analysis Workbench · Pompom CI' },
