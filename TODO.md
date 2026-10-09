@@ -131,3 +131,86 @@ Publisher migration is now an explicitly authorized companion workstream. It mus
 - [ ] Backend/frontend/package gates are green except explicitly documented unrelated baseline failures.
 - [ ] Live read-only smoke passes with a dedicated Meta test account.
 - [ ] No publish/reply live test is run without explicit approval.
+
+---
+
+# Intelligent Visual Reference Engine — TODO
+
+Implementation follows the approved visual-reference prompt and stays inside the existing seven-stage workflow. No paid image-generation, vision, OpenArt rendering, publishing, or production-media mutation is allowed during local implementation.
+
+## Slice A — Reconcile existing contracts
+
+- [x] Read current audit/backlog/progress docs and Render-stage implementation.
+- [x] Inventory existing image assets, first-frame bindings, evidence records, authorization checks, and provider adapters.
+- [x] Inventory OpenArt capability snapshots, request schemas, model IDs, and worker serialization.
+- [x] Map reusable contracts and document gaps without duplicating render/validation pipelines.
+
+## Slice B — Versioned visual-reference state
+
+- [x] Add or reuse explicit roles: `CHARACTER_REFERENCE`, `SCENE_REFERENCE`, `FIRST_FRAME`, `CRITICAL_SCENE`, `END_FRAME`, `TRANSITION_REFERENCE`.
+- [x] Persist immutable reference-plan, asset provenance, hashes, prompt/version lineage, beat/state, validation, and operator acceptance.
+- [x] Preserve historical one-image records and prevent prompt revisions from silently inheriting incompatible evidence.
+
+## Slice C — First-frame inspection and proposal
+
+- [x] Inspect exact accepted prompt, story revision, characters, authoritative references, opening state, existing bindings, and file evidence without paid calls.
+- [x] Implement statuses: `AVAILABLE_AND_COMPATIBLE`, `AVAILABLE_REVIEW_REQUIRED`, `MISMATCH_CONFIRMED`, `MISSING`, `STALE`, `UNKNOWN`.
+- [x] Handle missing/empty/unsaved prompts without speculative generation.
+- [x] Prepare bounded first-frame generation requests using the exact opening scene, references, framing, dimensions, and authorized cost.
+
+## Slice D — Prompt/image consistency
+
+- [ ] Reuse visual/evidence infrastructure for identity, object, setting, spatial, opening-promise, physical-state, continuity, and technical checks.
+- [ ] Distinguish match, material mismatch, warning, insufficient evidence, service failure, and not applicable.
+- [ ] Keep metadata verification separate from semantic/identity verification.
+- [ ] Expose grounded mismatch findings and minimum correction options.
+
+## Slice E — Critical-scene intelligence
+
+- [ ] Select conservative visual anchors from structured timeline, beat evidence, producibility, and generator risk.
+- [ ] Recommend a second image only when benefit is material and provider support is evidenced.
+- [ ] Persist beat/state and narrative position; never label ordinary references as time-controlled keyframes.
+
+## Slice F — Optional additional references
+
+- [ ] Prepare bounded critical-scene requests with shared identity, costume, environment, object state, and prompt lineage.
+- [ ] Validate cross-image identity, environment, object counts, state changes, and intended transformations.
+- [ ] Classify `INTENDED_STATE_CHANGE`, `INCONSISTENT_REFERENCE`, and `INSUFFICIENT_EVIDENCE`.
+
+## Slice G — Capability-aware OpenArt transport
+
+- [ ] Verify Seedance 2.0 Mini, 2.0, and 2.5 through the actual configured adapter/request path.
+- [ ] Record `SUPPORTED`, `UNSUPPORTED`, or `UNVERIFIED` for start/end, multi-reference, character, storyboard, segment, duration, aspect, resolution, and ordering semantics.
+- [ ] Serialize only real provider payload fields and assert exact role/order/hash transport in mock tests.
+- [ ] Reject unsupported combinations before paid submission; never fabricate intermediate-frame controls.
+
+## Slice H — Render-stage UI
+
+- [x] Integrate Visual Reference Planning inside the existing Render stage; do not add an eighth stage.
+- [ ] Add English-only sections for First Frame, Critical Scene Reference, Cross-Reference Validation, Generation Strategy, and Cost/Readiness.
+- [ ] Support inspect, select, upload, replace, generate, keep, repair, and skip actions with explicit authorization.
+- [ ] Keep advanced provider details collapsible and preserve refresh/reload/version restoration.
+
+## Slice I — Canonical admission and queue
+
+- [ ] Bind accepted prompt version/hash, role-specific image hashes, supported provider settings, fresh evidence, and paid-render consent to the existing admission authority.
+- [ ] Invalidate stale bindings when prompt or references change.
+- [ ] Prove UI → API → persistence → queue snapshot → worker → provider payload transport.
+- [ ] Preserve idempotent replay and prevent side effects when admission fails.
+
+## Slice J — Safety, learning, and verification
+
+- [ ] Validate uploads by content, size, dimensions, decoding, path safety, hash, and provenance.
+- [ ] Keep prompt, image, vision, and video budgets separate; prevent hidden calls and unbounded retries.
+- [ ] Persist post-render reference strategy and actual QA evidence without claiming causality.
+- [ ] Add V01–V35 regression coverage plus newly discovered integration-boundary tests.
+- [ ] Run browser journeys for missing, mismatched, critical-reference, unsupported-model, and existing-image paths on desktop/mobile.
+- [ ] Update implementation progress docs and deploy only locally verified changes.
+
+## Final acceptance checklist
+
+- [ ] Approved prompt shows first-frame availability, compatibility, source, version, and evidence.
+- [ ] Missing, stale, mismatched, uploaded, selected, and generated image paths are actionable and bounded.
+- [ ] Critical-scene recommendations are conservative and capability-aware.
+- [ ] Existing canonical render authorization receives exact supported reference bindings.
+- [ ] Historical assets remain readable and no paid live-provider tests were run without explicit later authorization.

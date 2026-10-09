@@ -15,6 +15,7 @@ import com.pompom.creative.service.BudgetAlertService;
 import com.pompom.creative.service.CreditTrackingService;
 import java.time.Instant;
 import java.util.Optional;
+import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
@@ -43,6 +44,7 @@ public class RenderJobQueueService {
   private final CreativeProductionContractService contractService;
   private final TransactionTemplate newTransaction;
   @Autowired private com.pompom.creative.workflow.PostFamilyAdmissionClient workflowAdmission;
+  @Autowired private com.pompom.creative.visual.VisualReferencePlanningService visualReferencePlanning;
 
   @Autowired
   public RenderJobQueueService(
@@ -153,6 +155,22 @@ public class RenderJobQueueService {
     if (prompt.promptText() == null || prompt.promptText().isBlank()) {
       throw new ValidationEvidenceRejectedException(
           "PROMPT_TEXT_EMPTY", "Canonical approved prompt text is empty");
+    }
+    if (request.jobType() == RenderJob.JobType.VIDEO
+        && request.openartParams() != null
+        && request.openartParams().get("visualReferencePlanId") != null) {
+      UUID planId;
+      try {
+        planId = UUID.fromString(String.valueOf(request.openartParams().get("visualReferencePlanId")));
+      } catch (IllegalArgumentException error) {
+        throw new ValidationEvidenceRejectedException(
+            "VISUAL_REFERENCE_PLAN_INVALID", "Visual reference plan ID is invalid");
+      }
+      visualReferencePlanning.validateForRender(
+          planId,
+          request.contentId(),
+          request.promptVersionId(),
+          String.valueOf(request.openartParams().get("firstFrameImageId")));
     }
     CreativeProductionContractService.ContractCompilation contract =
         contractService.compile(prompt, evidence.deterministicRulesetVersion());

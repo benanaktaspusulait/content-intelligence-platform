@@ -397,7 +397,14 @@ public class WorkflowService {
             : List.<Map<String, Object>>of();
     context.put("retrievedLessons", lessons);
     verifiedRequest.put("context", context);
-    var result = new LinkedHashMap<>(ml.workflow("creative-role", verifiedRequest));
+    Map<String, Object> workflowResponse;
+    try {
+      workflowResponse = ml.workflow("creative-role", verifiedRequest);
+    } catch (RuntimeException error) {
+      String detail = error.getMessage() == null ? "The ML service rejected the request" : error.getMessage();
+      throw new IllegalStateException("Creative role request failed: " + detail, error);
+    }
+    var result = new LinkedHashMap<>(workflowResponse);
     result.put("retrievedLessons", lessons);
     result.put("sourceStoryRecordId", context.get("sourceStoryRecordId"));
     result.put("sourceRequest", verifiedRequest);

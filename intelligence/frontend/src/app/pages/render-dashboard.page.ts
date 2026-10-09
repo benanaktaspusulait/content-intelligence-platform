@@ -160,6 +160,21 @@ interface OpenArtCapabilities {
   workspaceAssetDiscovery: string;
 }
 
+interface VisualReferencePlan {
+  planId: string;
+  renderJobId: string;
+  promptVersionId: number;
+  promptSha256: string;
+  promptReady: boolean;
+  firstFrameStatus: string;
+  firstFrameCandidates: Array<{ assetId: string; role: string; source: string; relativePath: string; sha256: string; promptVersionMatches: boolean; mediaVerified: boolean; semanticStatus: string }>;
+  recommendation: { strategy: string; action: string; criticalScene: string; reason: string; additionalReferenceSupport: string };
+  capabilities: OpenArtCapabilities;
+  modelCapabilities?: { model: string; startFrame: string; endFrame: string; multipleVideoReferences: string; intermediateKeyframe: string; segmentContinuation: string; verificationSource: string };
+  generationProposal?: { promptText: string; model: string; referenceRoles: string[]; aspectRatio: string; dimensions: string; costStatus: string };
+  cost: { imageGenerationCredits: number | string; visionValidation: string; paidCallPerformed: boolean };
+}
+
 interface VisualEvidenceResponse {
   validationRecordId: number;
   visualEvidenceId: number;
@@ -264,6 +279,31 @@ interface VisualEvidenceResponse {
                     }
                   </div>
                 </div>
+
+                <section class="visual-reference-inline">
+                  <div class="visual-reference-inline__heading">
+                    <div><span class="contract-eyebrow">VISUAL REFERENCE PLANNING</span><strong>Check first-frame evidence before generation</strong></div>
+                    <button type="button" class="details-button" (click)="inspectVisualReferences(job)" [disabled]="visualReferenceLoading() === job.id">{{ visualReferenceLoading() === job.id ? 'Checking…' : 'Check Visual References' }}</button>
+                  </div>
+                  @if (visualReferencePlan()?.renderJobId === job.id) {
+                    @if (!visualReferencePlan()?.promptReady) { <p class="visual-reference-warning">Complete and save the production prompt before preparing visual references.</p> }
+                    @else {
+                      <div class="visual-reference-grid">
+                        <div><span class="metric-label">First frame</span><strong>{{ visualReferencePlan()?.firstFrameStatus }}</strong><small>{{ visualReferencePlan()?.recommendation?.action }}</small></div>
+                        <div><span class="metric-label">Strategy</span><strong>{{ visualReferencePlan()?.recommendation?.strategy }}</strong><small>{{ visualReferencePlan()?.recommendation?.reason }}</small></div>
+                        <div><span class="metric-label">Provider capability</span><strong>Start frame: {{ visualReferencePlan()?.modelCapabilities?.startFrame || visualReferencePlan()?.capabilities?.videoSingleStartFrame }}</strong><small>Additional video references: {{ visualReferencePlan()?.modelCapabilities?.multipleVideoReferences || visualReferencePlan()?.capabilities?.videoMultipleElementReferences }}</small></div>
+                        <div><span class="metric-label">Cost and evidence</span><strong>{{ visualReferencePlan()?.cost?.imageGenerationCredits }} image credits</strong><small>Semantic validation: {{ visualReferencePlan()?.cost?.visionValidation }} · no paid call performed</small></div>
+                      </div>
+                      @if (visualReferencePlan()?.generationProposal; as proposal) { <div class="visual-reference-proposal"><span class="metric-label">First-frame proposal</span><p>{{ proposal.promptText }}</p><button type="button" class="details-button" (click)="prepareVisualReferenceProposal()">{{ visualReferenceProposal() ? 'Proposal prepared' : 'Review bounded generation request' }}</button>@if (visualReferenceProposal(); as prepared) { <details open><summary>Request details</summary><pre>{{ prepared.request.promptText }}</pre><small>Authorization required · paid call performed: {{ prepared.paidCallPerformed }}</small></details> }</div> }
+                      @if ((visualReferencePlan()?.firstFrameCandidates?.length ?? 0) > 0) {
+                        <div class="visual-reference-candidates"><span class="metric-label">Existing first-frame candidates</span>@for (candidate of visualReferencePlan()?.firstFrameCandidates ?? []; track candidate.assetId) { <div class="visual-reference-candidate"><span>{{ candidate.relativePath }}</span><small>{{ candidate.mediaVerified ? 'Metadata verified' : 'Metadata review required' }} · {{ candidate.promptVersionMatches ? 'Prompt version matches' : 'STALE' }} · semantic {{ candidate.semanticStatus }}</small><button type="button" class="details-button" (click)="acceptVisualReference(candidate.assetId)" [disabled]="!candidate.promptVersionMatches || !candidate.mediaVerified">Accept as first frame</button></div> }</div>
+                      }
+                      <div class="visual-reference-tools"><label class="details-button">Upload replacement<input type="file" accept="image/png,image/jpeg,image/webp,image/gif" hidden (change)="uploadVisualReference($event)" /></label><button type="button" class="details-button" (click)="validateVisualReferences()">Validate evidence</button></div>
+                      @if (visualReferenceValidation(); as validation) { <div class="visual-reference-validation"><strong>Evidence: {{ validation.status }}</strong><span>Metadata: {{ validation.metadataVerified ? 'verified' : 'not verified' }} · Identity: {{ validation.identity }} · Prompt compatibility: {{ validation.promptCompatibility }}</span></div> }
+                    }
+                  }
+                  @if (visualReferenceError() && visualReferencePlan()?.renderJobId === job.id) { <p class="queue-error">{{ visualReferenceError() }}</p> }
+                </section>
 
                 @if (job.creativeContractStatus) {
                   <div class="production-contract-summary">
@@ -593,6 +633,25 @@ interface VisualEvidenceResponse {
     .job-progress {
       margin: 1rem 0;
     }
+
+    .visual-reference-inline { margin: 1rem 0; padding: 1rem; border: 1px solid #263330; border-radius: 8px; background: #101616; }
+    .visual-reference-inline__heading { display:flex; align-items:center; justify-content:space-between; gap:1rem; }
+    .visual-reference-inline__heading > div { display:grid; gap:.25rem; }
+    .visual-reference-inline__heading strong { color:#d7ff7c; }
+    .visual-reference-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); gap:.75rem; margin-top:.8rem; }
+    .visual-reference-grid > div { display:grid; gap:.3rem; padding:.75rem; border:1px solid #263330; border-radius:6px; background:#151d1c; }
+    .visual-reference-grid strong { color:#fff; font-size:.9rem; }
+    .visual-reference-grid small, .visual-reference-candidate small { color:#b9c7c2; line-height:1.4; }
+    .visual-reference-warning { color:#ffd28a; }
+    .visual-reference-proposal { display:grid; gap:.5rem; margin-top:1rem; padding:.75rem; border:1px solid #66572c; border-radius:6px; background:#1d1a10; }
+    .visual-reference-proposal p { margin:0; color:#e8e4d2; white-space:pre-wrap; line-height:1.45; max-height:12rem; overflow:auto; }
+    .visual-reference-proposal pre { margin:0; max-height:16rem; overflow:auto; white-space:pre-wrap; color:#d7ff7c; font-size:.75rem; }
+    .visual-reference-tools { display:flex; flex-wrap:wrap; gap:.6rem; margin-top:1rem; }
+    .visual-reference-validation { display:grid; gap:.25rem; margin-top:.75rem; padding:.65rem; border-left:3px solid #f39c12; color:#f4e5b0; }
+    .visual-reference-candidates { display:grid; gap:.5rem; margin-top:1rem; }
+    .visual-reference-candidate { display:grid; grid-template-columns:minmax(0,1fr) auto auto; align-items:center; gap:.75rem; padding:.65rem; border:1px solid #263330; border-radius:6px; }
+    .visual-reference-candidate > span { overflow-wrap:anywhere; color:#fff; }
+    @media(max-width:700px) { .visual-reference-inline__heading, .visual-reference-candidate { grid-template-columns:1fr; display:grid; align-items:stretch; } }
 
     .progress-bar {
       height: 8px;
@@ -968,6 +1027,11 @@ export class RenderDashboardPage implements OnInit, OnDestroy {
   referenceCapabilities = signal<OpenArtCapabilities | null>(null);
   referenceSyncLoading = signal(false);
   referenceError = signal('');
+  visualReferencePlan = signal<VisualReferencePlan | null>(null);
+  visualReferenceLoading = signal<string | null>(null);
+  visualReferenceError = signal('');
+  visualReferenceProposal = signal<any | null>(null);
+  visualReferenceValidation = signal<any | null>(null);
 
   private readonly apiUrl = '/api/v1/render-jobs';
   private notificationStream: EventSource | null = null;
@@ -979,6 +1043,55 @@ export class RenderDashboardPage implements OnInit, OnDestroy {
     this.http.get<RenderAsset>(`/api/v1/render-assets/${id}`).subscribe({
       next: asset => { this.asset.set(asset); this.assetLoading.set(false); },
       error: err => { this.assetError.set(err.error?.detail || err.error?.message || 'The render asset could not be read.'); this.assetLoading.set(false); },
+    });
+  }
+
+  inspectVisualReferences(job: RenderJob): void {
+    this.visualReferenceLoading.set(job.id);
+    this.visualReferenceError.set('');
+    this.http.post<VisualReferencePlan>(`/api/v1/visual-reference-plans/render-jobs/${job.id}/inspect`, {}).subscribe({
+      next: plan => { this.visualReferencePlan.set(plan); this.visualReferenceProposal.set(null); this.visualReferenceLoading.set(null); },
+      error: err => { this.visualReferenceLoading.set(null); this.visualReferenceError.set(err.error?.detail || err.error?.message || 'Visual reference planning could not be completed.'); },
+    });
+  }
+
+  prepareVisualReferenceProposal(): void {
+    const plan = this.visualReferencePlan();
+    if (!plan) return;
+    this.http.post(`/api/v1/visual-reference-plans/${plan.planId}/first-frame/proposal`, {}).subscribe({
+      next: proposal => this.visualReferenceProposal.set(proposal),
+      error: err => this.visualReferenceError.set(err.error?.detail || err.error?.message || 'The first-frame proposal could not be prepared.'),
+    });
+  }
+
+  uploadVisualReference(event: Event): void {
+    const plan = this.visualReferencePlan();
+    const file = (event.target as HTMLInputElement).files?.[0];
+    if (!plan || !file) return;
+    const form = new FormData(); form.append('file', file);
+    this.visualReferenceError.set('');
+    this.http.post(`/api/v1/visual-reference-plans/${plan.planId}/first-frame/upload`, form).subscribe({
+      next: () => this.inspectVisualReferences({ id: plan.renderJobId } as RenderJob),
+      error: err => this.visualReferenceError.set(err.error?.detail || err.error?.message || 'The image could not be uploaded.'),
+    });
+  }
+
+  validateVisualReferences(): void {
+    const plan = this.visualReferencePlan();
+    if (!plan) return;
+    this.http.post(`/api/v1/visual-reference-plans/${plan.planId}/validate`, {}).subscribe({
+      next: result => this.visualReferenceValidation.set(result),
+      error: err => this.visualReferenceError.set(err.error?.detail || err.error?.message || 'Visual evidence validation failed.'),
+    });
+  }
+
+  acceptVisualReference(renderAssetId: string): void {
+    const plan = this.visualReferencePlan();
+    if (!plan) return;
+    this.visualReferenceError.set('');
+    this.http.post(`/api/v1/visual-reference-plans/${plan.planId}/first-frame/accept`, { renderAssetId }).subscribe({
+      next: () => this.inspectVisualReferences({ id: plan.renderJobId } as RenderJob),
+      error: err => this.visualReferenceError.set(err.error?.detail || err.error?.message || 'The first frame could not be accepted.'),
     });
   }
 
@@ -1037,7 +1150,7 @@ export class RenderDashboardPage implements OnInit, OnDestroy {
     this.http.post<{ renderJobId: string }>('/api/v1/render-jobs', {
       contentId, promptVersionId, validationRecordId,
       jobType: this.queueJobType(), openartModel: this.queueModel().trim() || 'byte-plus-seedance-2-mini',
-      openartParams: this.workflowReview ? {workflowProfile:'post-family-v1',workflowReviewId:this.workflowReviewId,workflowBindingHash:this.workflowReview.bindingHash,durationSeconds:this.workflowReview.generation.supportedRenderDuration,aspectRatio:this.workflowReview.generation.settings.aspectRatio,firstFrameImageId:firstFramePath,...(this.regenerationHandoff ? {regenerationHandoffId:this.regenerationHandoffId,parentVideoId:this.regenerationHandoff.parentVideoId,parentVariantId:this.regenerationHandoff.parentVariantId,parentAssetHash:this.regenerationHandoff.parentAssetHash} : {})} : (firstFramePath ? { firstFrameImageId: firstFramePath } : {}), requestPromptSha256: null,
+      openartParams: this.workflowReview ? {workflowProfile:'post-family-v1',workflowReviewId:this.workflowReviewId,workflowBindingHash:this.workflowReview.bindingHash,durationSeconds:this.workflowReview.generation.supportedRenderDuration,aspectRatio:this.workflowReview.generation.settings.aspectRatio,firstFrameImageId:firstFramePath,...(this.visualReferencePlan() ? {visualReferencePlanId:this.visualReferencePlan()?.planId} : {}),...(this.regenerationHandoff ? {regenerationHandoffId:this.regenerationHandoffId,parentVideoId:this.regenerationHandoff.parentVideoId,parentVariantId:this.regenerationHandoff.parentVariantId,parentAssetHash:this.regenerationHandoff.parentAssetHash} : {})} : (firstFramePath ? { firstFrameImageId: firstFramePath, ...(this.visualReferencePlan() ? {visualReferencePlanId:this.visualReferencePlan()?.planId} : {}) } : {}), requestPromptSha256: null,
     }, { headers: { 'Idempotency-Key': this.regenerationHandoffId && this.queueJobType() === 'VIDEO' ? this.regenerationHandoffId : crypto.randomUUID() } }).subscribe({
       next: response => { this.queueLoading.set(false); this.queuedJobId.set(response.renderJobId); this.loadJobs(0); },
       error: err => { this.queueLoading.set(false); this.queueError.set(err.error?.detail || err.error?.message || 'Render could not be queued.'); },
