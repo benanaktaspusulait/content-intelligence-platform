@@ -63,4 +63,7 @@ export class MetaReadService {
   approveCommentReply(replyId: string, reviewer: string): Observable<unknown> { return this.http.post(`${this.baseUrl}/comments/replies/${replyId}/approve`, { reviewer }); }
   rejectCommentReply(replyId: string, reviewer: string, reason: string): Observable<unknown> { return this.http.post(`${this.baseUrl}/comments/replies/${replyId}/reject`, { reviewer, reason }); }
   sendCommentReply(replyId: string): Observable<unknown> { return this.http.post(`${this.baseUrl}/comments/replies/${replyId}/send`, {}); }
+  getOperationsStatus(): Observable<{ health: string; commentReplyEnabled: boolean; commentCount: number; pendingWebhookCount: number }> {
+    return this.http.get<{ health: string; commentReplyEnabled: boolean; commentCount: number; pendingWebhookCount: number }>(`${this.baseUrl}/operations/status`);
+  }
 }
