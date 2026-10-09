@@ -102,7 +102,16 @@ def perform_role(role: str, text: str, context: dict[str, Any], provider: LLMPro
         for candidate in alternatives:
             if isinstance(candidate, str):
                 if not candidate.strip() or len(candidate) > 12000: raise ValueError('Bounded story alternative text required')
-            elif not isinstance(candidate, dict) or not isinstance(candidate.get('text') or candidate.get('description'), str) or len((candidate.get('text') or candidate.get('description')))>12000:
+            elif isinstance(candidate, dict):
+                # DeepSeek often returns a useful structured candidate using
+                # `synopsis`/`logline` rather than the UI's canonical `text`.
+                # Canonicalize that bounded field before quality analysis and
+                # persistence; do not discard the richer structured fields.
+                candidate_text = candidate.get('text') or candidate.get('description') or candidate.get('synopsis') or candidate.get('logline') or candidate.get('corePremise')
+                if not isinstance(candidate_text, str) or not candidate_text.strip() or len(candidate_text) > 12000:
+                    raise ValueError('Story alternatives must contain bounded text')
+                candidate.setdefault('text', candidate_text.strip())
+            else:
                 raise ValueError('Story alternatives must contain bounded text')
         value['storyQuality'] = analyse_story_candidates(alternatives, context)
     elif role == 'BUILD_PROMPT':
