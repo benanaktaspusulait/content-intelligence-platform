@@ -8,145 +8,19 @@ import { GeneralProducibilityComponent } from './general-producibility.component
   selector: 'app-post-family-workflow',
   standalone: true,
   imports: [CommonModule, FormsModule, GeneralProducibilityComponent],
-  template: ` <section class="workflow" aria-label="Operational creative workflow">
-    <h2>Production review</h2>
-    <p *ngIf="restoredRecordId">Saved review reopened · {{ restoredRecordId }} · no new provider call was made.</p>
-    <label
-      >Workflow profile
-      <select [(ngModel)]="profile">
-        <option value="FROZEN">Family 1–10 · historical validation</option>
-        <option value="post-family-v1">Operational creative workflow v1</option>
-      </select></label
-    >
-    <p>
-      Family 1–10 sözleşmeleri korunur. Yeni profil, yaratıcı amacı ve seçilen jeneratörün
-      yürütmesini ayrı inceler.
-    </p>
-    <p>
-      Yetkili karakter referansları dosyalardan bağlanır; eksik referans yerine görünüm uydurulmaz.
-    </p>
-    <ng-container *ngIf="profile === 'post-family-v1'">
-      <details><summary>Approved related lessons</summary><label>Target model / profile version<input [(ngModel)]="lessonModelVersion"></label><button type="button" (click)="retrieveLessons()" [disabled]="!lessonModelVersion || !desiredDuration || contentProfile === 'AUTO'">Retrieve related validated lessons</button><p *ngFor="let lesson of retrievedLessons">{{ lesson.hypothesis }} · {{ lesson.recordId }} · {{ lesson.reviewReason }}</p><p>The next review request revalidates lessons on the server; lessons never create a rule or render permission.</p></details>
-      <div class="inputs">
-        <label
-          >Content profile<select [(ngModel)]="contentProfile">
-            <option value="AUTO">Source-based suggestion</option>
-            <option value="ABSURD_PHYSICS">Absurd physics</option>
-            <option value="CURIOSITY_ADVENTURE">Curiosity / adventure</option>
-            <option value="EDUCATIONAL">Educational</option>
-            <option value="MIXED">Mixed</option>
-            <option value="UNKNOWN">Unknown</option>
-          </select></label
-        >
-        <label
-          >Opening strategy<select [(ngModel)]="openingStrategy">
-            <option value="AUTO">Suggestion</option>
-            <option value="INSTANT_IMPOSSIBLE">Instant impossibility</option>
-            <option value="IMMEDIATE_PROBLEM">Immediate problem</option>
-            <option value="CURIOSITY_DISCOVERY">Curiosity / discovery</option>
-          </select></label
-        >
-        <label
-          >Requested duration (s)<input
-            type="number"
-            min="1"
-            [(ngModel)]="desiredDuration"
-            placeholder="Source duration"
-        /></label>
-        <label
-          >Generator<select [(ngModel)]="generator">
-            <option value="AUTO">Suggest from operator preference</option>
-            <option value="SEEDANCE_2_0_MINI">Seedance 2.0 Mini</option>
-            <option value="SEEDANCE_2_0">Seedance 2.0</option>
-            <option value="SEEDANCE_2_5">Seedance 2.5</option>
-          </select></label
-        >
-        <label
-          >First frame · existing media path<input
-            [(ngModel)]="firstFramePath"
-            placeholder="library/.../first-frame.png"
-        /></label>
-        <label
-          >İlk kare · sağlayıcı URL<input
-            [(ngModel)]="firstFrameUrl"
-            placeholder="Verified reference URL"
-        /></label>
-        <label
-          >2.0 quality justification<input [(ngModel)]="qualityJustification" placeholder="If needed"
-        /></label>
-        <label
-          >Aspect ratio<select [(ngModel)]="aspectRatio">
-            <option>9:16</option>
-            <option>16:9</option>
-            <option>1:1</option>
-          </select></label
-        >
-      </div>
-      <label
-        >Viewer question<input
-          [(ngModel)]="viewerQuestion"
-          placeholder="What happens / what will be discovered?"
-      /></label>
-      <label
-        >Protected creative intent · source wording<textarea
-          [(ngModel)]="protectedIntent"
-          placeholder="Opening promise, core mechanism/question and final event; one source statement per line"
-        ></textarea>
-      </label>
-      <label
-        >Decision reason when changing the previous core intent<input
-          [(ngModel)]="intentChangeReason"
-      /></label>
-      <button
-        type="button"
-        (click)="loadSourceIntent()"
-        [disabled]="busy || !contentId || !promptVersionId"
-      >
-        Bu kaynak sürümünün son niyet bildirimlerini yükle
-      </button>
-      <details>
-        <summary>Kaynağa bağlı plan kanıtı · isteğe bağlı</summary>
-        <label
-          >Beat planı JSON (sourceSpan, sourceQuote, action, actors, objects, startTime,
-          endTime)<textarea
-            [(ngModel)]="structuredPlanText"
-            placeholder="Gerçek kaynak aralıkları; eksik kanıtı yokluk saymayın"
-          ></textarea></label
-        ><label
-          >Planlanan edit süresi (s)<input
-            type="number"
-            min="1"
-            [(ngModel)]="plannedEditedDuration"
-        /></label>
-      </details>
-      <details>
-        <summary>Karakter ve referans dosyaları</summary>
-        <div class="inputs">
-          <label>Karakter adı<input [(ngModel)]="referenceCharacter" /></label
-          ><label
-            >Yetkili dosyanın medya yolu<input
-              [(ngModel)]="referencePath"
-              placeholder="library/.../reference.png"
-          /></label>
-        </div>
-        <button
-          type="button"
-          (click)="addReference()"
-          [disabled]="!referenceCharacter || !referencePath"
-        >
-          Referansı bağla
-        </button>
-        <p *ngFor="let ref of references; let i = index">
-          {{ ref.character }} · {{ ref.relativePath }}
-          <button type="button" (click)="references.splice(i, 1)">Kaldır</button>
-        </p>
-        <p *ngIf="!references.length">Referans eksik: kimlik kanıtı UNKNOWN.</p>
-      </details>
-      <button type="button" (click)="runReview()" [disabled]="busy || !prompt.trim()">
-        {{ busy ? 'İnceleniyor…' : 'Post-family incelemesini çalıştır' }}
-      </button>
-      <p class="error" *ngIf="error">{{ error }}</p>
-      <ng-container *ngIf="review as r">
+  template: `
+  <section class="workflow production-review" aria-label="Production review">
+    <header class="review-hero"><div><span class="eyebrow">STEP 4 · PRODUCTION REVIEW</span><h2>Production Review</h2><p>Confirm your creative intent, production settings and references before analysis.</p></div><span class="status-pill" [class.status-pill--ready]="prompt.trim()">{{ prompt.trim() ? 'READY TO REVIEW' : 'MISSING PROMPT' }}</span></header>
+    <p *ngIf="restoredRecordId" class="restore-note">Saved review reopened · {{ restoredRecordId }} · no new provider call was made.</p>
+    <section class="review-card intent-card"><header><div><span class="card-kicker">CREATIVE INTENT</span><h3>What must be preserved</h3></div><span class="source-badge">{{ protectedIntent ? 'Saved source' : 'Prepared from prompt' }}</span></header><p class="intent-summary">{{ protectedIntent || prompt.slice(0, 420) || 'Creative intent is unavailable until an approved story or saved prompt is selected.' }}</p><div class="intent-actions"><button type="button" class="button button--primary" (click)="confirmIntent()" [disabled]="!prompt.trim()">Confirm intent</button><button type="button" class="button button--secondary" (click)="intentEditing=!intentEditing">{{ intentEditing ? 'Hide intent editor' : 'Edit intent' }}</button><details><summary>View source evidence</summary><p>Source: approved story / saved prompt · version {{ promptVersionId || 'UNKNOWN' }}</p></details></div><textarea *ngIf="intentEditing" [(ngModel)]="protectedIntent" rows="4" placeholder="Edit only when the source-backed creative intent needs correction"></textarea></section>
+    <section class="review-card"><header><div><span class="card-kicker">PRODUCTION SETTINGS</span><h3>Inherited workflow settings</h3></div><button type="button" class="button button--secondary" (click)="settingsEditing=!settingsEditing">{{ settingsEditing ? 'Done' : 'Edit settings' }}</button></header><div class="settings-grid"><div><span>Main character</span><strong>{{ characterLabel || 'Unknown' }}</strong><small>{{ characterLabel ? 'Approved catalog / saved source' : 'Missing authoritative character record' }}</small></div><div><span>Content profile</span><strong>{{ contentProfileLabel }}</strong><small>Saved workflow selection</small></div><div><span>Target duration</span><strong>{{ desiredDuration ? desiredDuration + ' seconds' : 'Missing' }}</strong><small>{{ desiredDuration ? 'Inherited from saved production settings' : 'Needs confirmation' }}</small></div><div><span>Aspect ratio</span><strong>{{ aspectRatio || 'Missing' }}</strong><small>{{ aspectRatio ? 'Inherited from saved production settings' : 'Needs confirmation' }}</small></div><div><span>Target generator</span><strong>{{ generatorLabel }}</strong><small>Capability verification remains server-controlled</small></div><div><span>Opening strategy</span><strong>{{ openingStrategyLabel }}</strong><small>System suggestion when available</small></div></div><div *ngIf="settingsEditing" class="settings-editor"><label>Content profile<select [(ngModel)]="contentProfile"><option value="AUTO">Source-based suggestion</option><option value="ABSURD_PHYSICS">Absurd Physics</option><option value="CURIOSITY_ADVENTURE">Curiosity / adventure</option><option value="EDUCATIONAL">Educational</option><option value="MIXED">Mixed</option></select></label><label>Target duration (seconds)<input type="number" min="1" [(ngModel)]="desiredDuration"></label><label>Aspect ratio<select [(ngModel)]="aspectRatio"><option>9:16</option><option>16:9</option><option>1:1</option></select></label><label>Target generator<select [(ngModel)]="generator"><option value="AUTO">System suggestion</option><option value="SEEDANCE_2_0_MINI">Seedance 2.0 Mini</option><option value="SEEDANCE_2_0">Seedance 2.0</option><option value="SEEDANCE_2_5">Seedance 2.5</option></select></label></div></section>
+    <section class="review-two-column"><section class="review-card"><header><div><span class="card-kicker">VISUAL REFERENCES</span><h3>Character and first frame</h3></div><span class="status-pill">{{ firstFrameStatus }}</span></header><div class="reference-summary"><div><strong>{{ referenceCharacter || 'Character reference' }}</strong><span>{{ references.length ? references.length + ' validated reference(s)' : 'Approved character reference unavailable' }}</span></div><div><strong>First frame</strong><span>{{ firstFrameStatus }}</span></div></div><button type="button" class="button button--secondary" (click)="referencesOpen=!referencesOpen">{{ referencesOpen ? 'Hide reference details' : 'Manage references' }}</button><div *ngIf="referencesOpen" class="advanced-details"><p *ngFor="let ref of references">{{ ref.character || 'Character' }} · {{ ref.relativePath }}</p><p *ngIf="!references.length">Approved character reference unavailable.</p></div></section><section class="review-card"><header><div><span class="card-kicker">RELEVANT PREVIOUS LESSONS</span><h3>Approved lessons</h3></div><span class="status-pill">{{ retrievedLessons.length ? retrievedLessons.length + ' found' : 'None found' }}</span></header><p>{{ retrievedLessons.length ? 'Applicable verified lessons are attached to this review.' : 'No verified applicable lessons available.' }}</p><details *ngIf="retrievedLessons.length"><summary>View lesson provenance</summary><p *ngFor="let lesson of retrievedLessons">{{ lesson.hypothesis }} · {{ lesson.recordId }}</p></details></section></section>
+    <section class="review-card execution-card"><header><div><span class="card-kicker">VISUAL EXECUTION PLAN</span><h3>Source-backed production beats</h3></div><span class="status-pill">{{ review?.productionEvidence?.videoPlanIR?.beats?.length || 0 }} events</span></header><div *ngIf="review?.productionEvidence?.videoPlanIR?.beats?.length; else noBeatEvidence" class="beat-list"><article *ngFor="let beat of review.productionEvidence.videoPlanIR.beats"><strong>{{ beat.startTime != null ? beat.startTime + '–' + beat.endTime + ' s' : 'Sequence position' }}</strong><p>{{ beat.action }}</p><small>{{ beat.sourceQuote || 'Additional evidence required' }}</small></article></div><ng-template #noBeatEvidence><p class="missing-state">No source-backed beat evidence is prepared yet. Analysis may record UNKNOWN where evidence is unavailable.</p></ng-template><details class="advanced-details"><summary>Advanced evidence details</summary><p>Source-bound extraction and raw structured data remain available for diagnostics; ordinary review does not require hand-written JSON.</p><textarea [(ngModel)]="structuredPlanText" rows="3" placeholder="Advanced developer-only evidence editor"></textarea></details></section>
+    <section class="review-card readiness-card"><header><div><span class="card-kicker">READINESS</span><h3>Outstanding requirements</h3></div><span class="status-pill" [class.status-pill--ready]="!error">{{ error ? 'NEEDS ATTENTION' : 'READY' }}</span></header><p *ngIf="!error">The exact prompt version and saved source identity are ready for independent quality analysis.</p><p *ngIf="error" class="error">{{ error }}</p><details class="advanced-details"><summary>Validation policy and diagnostics</summary><p>Policy: current approved Family 1–10 contract · workflow profile: {{ profile }} · prompt version: {{ promptVersionId || 'UNKNOWN' }}</p></details><button type="button" class="button button--primary primary-action" (click)="runReview()" [disabled]="busy || !prompt.trim()">{{ busy ? 'Preparing evidence…' : 'Continue to Quality Analysis →' }}</button></section>
+    <details class="advanced-details technical-settings"><summary>Advanced details</summary><label>Workflow policy<select [(ngModel)]="profile"><option value="FROZEN">Current approved policy</option><option value="post-family-v1">Operational creative workflow v1</option></select></label><label>Opening strategy<select [(ngModel)]="openingStrategy"><option value="AUTO">System suggestion</option><option value="INSTANT_IMPOSSIBLE">Instant impossibility</option><option value="IMMEDIATE_PROBLEM">Immediate problem</option><option value="CURIOSITY_DISCOVERY">Curiosity / discovery</option></select></label><label>Viewer engagement promise (optional)<input [(ngModel)]="viewerQuestion" placeholder="Optional source-backed question or promise"></label><label>First-frame diagnostics path<input [(ngModel)]="firstFramePath"></label><label>First-frame provider diagnostics<input [(ngModel)]="firstFrameUrl"></label><button type="button" (click)="loadSourceIntent()" [disabled]="busy || !contentId || !promptVersionId">Reload source evidence</button></details>
+    <p class="error" *ngIf="error && !readinessCardShown">{{ error }}</p>
+  </section>
+<ng-container *ngIf="review as r">
         <p class="error" *ngIf="!isCurrent()">
           Prompt, sürüm, referans veya ayar değişti. Bu inceleme eski; yeniden çalıştırın.
         </p>
@@ -519,10 +393,10 @@ import { GeneralProducibilityComponent } from './general-producibility.component
           <div *ngIf="lesson?.reviewStatus === 'APPROVED'"><label>Geri çekme gerekçesi<input [(ngModel)]="learningReason"></label><button type="button" (click)="reviewLesson('REVOKED')" [disabled]="!learningReason.trim()">Onaylı dersi geri çek</button></div>
         </details>
       </ng-container>
-    </ng-container>
-  </section>`,
+`,
   styles: [
     `
+      .production-review{padding:24px;background:#f7f9fc}.review-hero{display:flex;justify-content:space-between;gap:20px;align-items:flex-start;margin-bottom:20px}.review-hero h2{margin:4px 0;font-size:1.7rem;color:#263f56}.review-hero p{margin:0;color:#68747c;font-size:.95rem}.eyebrow,.card-kicker{color:#5f8435;font-size:.7rem;font-weight:800;letter-spacing:.08em}.review-card{display:grid;gap:14px;margin:14px 0;padding:20px;border:1px solid #d8e1ec;border-radius:12px;background:#fff;box-shadow:0 4px 16px rgba(38,63,86,.05)}.review-card header{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}.review-card h3{margin:3px 0 0;color:#263f56;font-size:1.12rem}.status-pill,.source-badge{display:inline-flex;align-items:center;white-space:nowrap;padding:5px 9px;border-radius:999px;background:#fff5de;color:#855b15;font-size:.67rem;font-weight:800}.status-pill--ready{background:#e8f3dc;color:#31583b}.intent-summary{margin:0;padding:13px;border-left:4px solid #8fbd36;background:#f5faed;color:#40515a;line-height:1.55;white-space:pre-wrap}.intent-actions{display:flex;flex-wrap:wrap;align-items:center;gap:8px}.intent-actions details{padding:0;margin-left:auto}.button{display:inline-flex;align-items:center;justify-content:center;padding:9px 13px;border:1px solid #cbd6ce;border-radius:7px;background:#fff;color:#31583b;font-weight:800;cursor:pointer}.button--primary{background:#31583b;color:#fff;border-color:#31583b}.button:disabled{opacity:.5;cursor:default}.settings-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.settings-grid>div{display:grid;gap:4px;padding:12px;border:1px solid #e1e8ee;border-radius:8px;background:#fbfcfd}.settings-grid span,.reference-summary span{color:#68747c;font-size:.7rem;font-weight:800;text-transform:uppercase}.settings-grid strong{font-size:.95rem;color:#263f56}.settings-grid small{color:#68747c;font-size:.72rem}.settings-editor{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;padding-top:8px;border-top:1px solid #e4e9e5}.review-two-column{display:grid;grid-template-columns:1fr 1fr;gap:14px}.review-two-column .review-card{margin:0}.reference-summary{display:grid;grid-template-columns:1fr 1fr;gap:12px}.reference-summary>div{display:grid;gap:4px;padding:12px;border:1px solid #e1e8ee;border-radius:8px}.reference-summary strong{color:#263f56}.beat-list{display:grid;gap:9px}.beat-list article{display:grid;gap:4px;margin:0;padding:12px;border:1px solid #dfe7ee;border-radius:8px;background:#fbfcfd}.beat-list article strong{color:#31583b}.beat-list article p,.beat-list article small{margin:0;color:#40515a}.missing-state{margin:0;padding:14px;background:#fff9ed;border:1px solid #ecd2a2;border-radius:8px;color:#855b15}.advanced-details{color:#52616b}.advanced-details summary{cursor:pointer;font-weight:800}.readiness-card{border-color:#cbded0}.primary-action{justify-self:start}.restore-note{padding:10px 12px;border-radius:7px;background:#edf5fb;color:#40515a}.technical-settings{margin-top:16px;padding:12px 0}.technical-settings label{max-width:420px}.error{color:#983520}@media(max-width:900px){.settings-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.settings-editor{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:600px){.production-review{padding:14px}.review-hero{display:grid}.review-two-column,.settings-grid,.settings-editor,.reference-summary{grid-template-columns:1fr}.review-card{padding:15px}.intent-actions details{margin-left:0}.primary-action{width:100%}}
       .workflow {
         border: 1px solid #ccd7e4;
         border-radius: 12px;
@@ -600,13 +474,21 @@ export class PostFamilyWorkflowComponent implements OnChanges, OnDestroy {
   @Input() workflowProfile = 'FROZEN';
   @Output() saveFinal = new EventEmitter<string>();
   @Output() acceptedVersion = new EventEmitter<{contentId: number; promptVersionId: number; rawText: string; repairSessionId: string}>();
+  intentEditing = false; settingsEditing = false; referencesOpen = false; intentConfirmed = false; readinessCardShown = true;
   profile = 'FROZEN';
   contentProfile = 'AUTO';
+  get contentProfileLabel():string{return this.contentProfile === 'AUTO' ? 'Source-based suggestion' : this.contentProfile.replaceAll('_',' ');}
+  get generatorLabel():string{return this.generator === 'AUTO' ? 'System suggestion' : this.generator.replaceAll('_',' ');}
+  get openingStrategyLabel():string{return this.openingStrategy === 'AUTO' ? 'System suggestion' : this.openingStrategy.replaceAll('_',' ');}
+  get characterLabel():string{return this.referenceCharacter || (this.references[0]?.character || 'Unknown');}
+  get firstFrameStatus():string{return this.firstFramePath || this.firstFrameUrl ? 'Needs validation' : 'Not yet available';}
+  confirmIntent(){this.intentConfirmed=true;this.intentRequirementsText=JSON.stringify(this.protectedIntent.split('\n').map(value=>value.trim()).filter(Boolean));this.changeDetector.markForCheck();}
+
   openingStrategy = 'AUTO';
   generator = 'AUTO';
   desiredDuration: number | null = null;
   qualityJustification = '';
-  aspectRatio = '9:16';
+  aspectRatio = '';
   structuredPlanText = '';
   intentRequirementsText = '[]';
   creativeEvidenceText = '[]';
@@ -820,6 +702,7 @@ export class PostFamilyWorkflowComponent implements OnChanges, OnDestroy {
     this.repairBudget = 0;
     this.reviewedInputs = '';
     this.restoredRecordId = '';
+    this.hydrateSettingsFromPrompt();
     const sequence = ++this.restoreSequence;
     if (!this.contentId || !this.promptVersionId) return;
     const savedSessionId = new URL(window.location.href).searchParams.get('repairSessionId');
@@ -862,6 +745,7 @@ export class PostFamilyWorkflowComponent implements OnChanges, OnDestroy {
     });
   }
 
+  private hydrateSettingsFromPrompt(){const text=this.prompt||'';const duration=text.match(/(?:duration|target duration|length)\s*[:=]?\s*(\d{1,2})\s*(?:s|sec|seconds)?/i)||text.match(/\b(5|8|10|12|15|20|25|30)\s*(?:s|sec|seconds)\b/i);if(!this.desiredDuration&&duration)this.desiredDuration=Number(duration[1]);const ratio=text.match(/\b(9:16|16:9|1:1)\b/);if(!this.aspectRatio&&ratio)this.aspectRatio=ratio[1];}
   private options() {
     return {
       profile: this.profile,
