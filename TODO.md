@@ -62,7 +62,7 @@ Publisher migration is now an explicitly authorized companion workstream. It mus
 
 ## Phase 2 — Unified read-only analytics
 
-- [ ] Create a provider-neutral `MetaAnalyticsProvider` interface for Page, post, Reel, account, and media insights.
+- [x] Create a provider-neutral `MetaAnalyticsProvider` interface for Page, post, Reel, account, and media insights.
 - [x] Add a real Facebook Graph read client; do not route Facebook analytics through `InstagramMetricsClient`.
 - [ ] Add Facebook Page/post/Reel insight endpoints and durable snapshots.
 - [ ] Preserve `null`/`PARTIAL`/`UNAVAILABLE` metric semantics; never convert missing provider fields to zero.
