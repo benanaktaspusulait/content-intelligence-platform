@@ -36,20 +36,20 @@ public class InterventionService {
               jsonb_strip_nulls(jsonb_build_object('notes',:notes,'viewsBefore',CAST(:before AS bigint),
                 'viewsAfter',CAST(:after AS bigint),'channelType',:channelType,
                 'externalChannelRef',:externalChannelRef,'externalChannelLabel',:externalChannelLabel,
-                'campaignTag',:campaignTag))
+                'campaignTag',:campaignTag)))
             """)
         .param("id", id)
         .param("video", videoId)
         .param("platform", platform)
         .param("type", eventType)
         .param("time", OffsetDateTime.ofInstant(request.eventTime(), ZoneOffset.UTC))
-        .param("notes", request.notes())
-        .param("before", request.viewsBefore())
-        .param("after", request.viewsAfter())
-        .param("channelType", request.channelType())
-        .param("externalChannelRef", request.externalChannelRef())
-        .param("externalChannelLabel", request.externalChannelLabel())
-        .param("campaignTag", request.campaignTag())
+        .param("notes", request.notes(), java.sql.Types.VARCHAR)
+        .param("before", request.viewsBefore(), java.sql.Types.BIGINT)
+        .param("after", request.viewsAfter(), java.sql.Types.BIGINT)
+        .param("channelType", request.channelType(), java.sql.Types.VARCHAR)
+        .param("externalChannelRef", request.externalChannelRef(), java.sql.Types.VARCHAR)
+        .param("externalChannelLabel", request.externalChannelLabel(), java.sql.Types.VARCHAR)
+        .param("campaignTag", request.campaignTag(), java.sql.Types.VARCHAR)
         .update();
     jdbc.sql(
             """
