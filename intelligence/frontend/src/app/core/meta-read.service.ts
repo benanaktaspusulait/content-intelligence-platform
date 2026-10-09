@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import {
   MetaConnection,
   MetaPageContent,
+  MetaPageInsights,
   MetaReelAnalytics,
   MetaReelsPage,
   MetaReelSummary,
@@ -23,6 +24,11 @@ export class MetaReadService {
 
   getPageContent(): Observable<MetaPageContent> {
     return this.http.get<MetaPageContent>(`${this.baseUrl}/page/content`);
+  }
+
+  getPageInsights(objectId?: string | null): Observable<MetaPageInsights> {
+    const suffix = objectId ? `/${encodeURIComponent(objectId)}` : '';
+    return this.http.get<MetaPageInsights>(`${this.baseUrl}/page/insights${suffix}`);
   }
 
   listReels(after?: string | null, limit = 25): Observable<MetaReelsPage> {

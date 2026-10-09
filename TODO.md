@@ -71,7 +71,7 @@ Publisher migration is now an explicitly authorized companion workstream. It mus
 - [x] Add source key/idempotency to all Meta snapshot writes.
 - [x] Add unified analytics DTOs independent of publication-job identity.
 - [ ] Add backend tests for Facebook and Instagram success, partial metrics, provider errors, pagination, and exact matching.
-- [ ] Add Angular Facebook/Page/account analytics views and snapshot history.
+- [x] Add Angular Facebook/Page/account analytics views and snapshot history.
 
 ## Phase 3 — Public comment engagement (Facebook + Instagram only)
 

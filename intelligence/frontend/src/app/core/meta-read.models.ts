@@ -107,6 +107,15 @@ export interface MetaPageContent {
   apiVersion: string;
 }
 
+export interface MetaPageInsights {
+  objectId: string;
+  availability: MetaPageContentAvailability;
+  reason: string | null;
+  metrics: Record<string, number>;
+  snapshots: Array<{ measuredAt: string; metrics: Record<string, number> }>;
+  apiVersion: string;
+}
+
 export interface MetaSnapshotResult {
   mediaId: string;
   observationId: string | null;

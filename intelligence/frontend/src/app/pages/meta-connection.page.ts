@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { MetaReadService } from '../core/meta-read.service';
-import { MetaConnection, MetaPageContent } from '../core/meta-read.models';
+import { MetaConnection, MetaPageContent, MetaPageInsights } from '../core/meta-read.models';
 
 interface OAuthNotice {
   message: string;
@@ -150,6 +150,16 @@ const OAUTH_NOTICES: Record<string, OAuthNotice> = {
         }
       }
 
+      @if (pageInsights(); as insights) {
+        <section class="section-band">
+          <div><span class="eyebrow">PAGE INSIGHTS · READ ONLY</span><h2>Facebook Page analytics</h2><p>Live values and durable snapshot count from the connected Page.</p></div>
+          <div class="comparison-groups">
+            @for (entry of insightEntries(insights.metrics); track entry[0]) { <div><span>{{ entry[0] }}</span><strong>{{ entry[1] }}</strong></div> }
+            <div><span>Snapshots</span><strong>{{ insights.snapshots.length }}</strong></div>
+          </div>
+        </section>
+      }
+
       <section class="section-band">
         <div>
           <span class="eyebrow">NEXT</span>
@@ -172,6 +182,7 @@ export class MetaConnectionPage {
   protected readonly pageContent = signal<MetaPageContent | null>(null);
   protected readonly pageContentLoading = signal(false);
   protected readonly pageContentError = signal('');
+  protected readonly pageInsights = signal<MetaPageInsights | null>(null);
   protected readonly insightsGap = computed(() => {
     const data = this.connection();
     if (!data) return false;
@@ -196,12 +207,17 @@ export class MetaConnectionPage {
         this.connection.set(data);
         this.loading.set(false);
         this.loadPageContent();
+        this.service.getPageInsights(data.page?.id).subscribe({ next: insights => this.pageInsights.set(insights), error: () => this.pageInsights.set(null) });
       },
       error: response => {
         this.loading.set(false);
         this.error.set(response.error?.message || 'The Meta connection could not be validated.');
       },
     });
+  }
+
+  protected insightEntries(metrics: Record<string, number>): Array<[string, number]> {
+    return Object.entries(metrics);
   }
 
   protected loadPageContent(): void {
