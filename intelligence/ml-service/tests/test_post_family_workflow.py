@@ -118,3 +118,18 @@ def test_explicit_no_lipsync_is_not_a_required_text_dependency():
         {"prompt": "0-6 SEC\nLuca watches the ball. No lip-sync.", "sourceId": "local", "sourceVersion": "1"}
     )
     assert evidence["videoPlanIR"].get("textRequirement", {}).get("required") is not True
+
+
+def test_lessons_match_resolved_target_capability_and_binding_excludes_mismatches():
+    value = {**request(), "generator":"SEEDANCE_2_0_MINI", "contentProfile":"EDUCATIONAL"}
+    lesson = {"recordId":"approved-fixture", "targetModelVersion":"fixture-cap-v1", "contentProfile":"EDUCATIONAL", "settings":{"aspectRatio":"9:16"}}
+    caps = {"SEEDANCE_2_0_MINI":{"version":"fixture-cap-v1", "modes":{}}}
+    good = review_prompt({**value,"retrievedLessons":[lesson]},caps)
+    assert good["retrievedLessons"] == [lesson]
+    plain = review_prompt(value,caps)
+    for invalid in ({**lesson,"targetModelVersion":"wrong"},{**lesson,"contentProfile":"ABSURD_PHYSICS"},{**lesson,"settings":{"aspectRatio":"16:9"}}):
+        result = review_prompt({**value,"retrievedLessons":[invalid]},caps)
+        assert result["retrievedLessons"] == []
+        assert result["bindingHash"] == plain["bindingHash"]
+    assert good["bindingHash"] != plain["bindingHash"]
+    assert review_prompt({**value,"retrievedLessons":[lesson]})["retrievedLessons"] == []

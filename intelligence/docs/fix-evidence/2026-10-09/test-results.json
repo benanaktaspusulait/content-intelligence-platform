@@ -1,0 +1,107 @@
+{
+  "scope": "local-only; real disposable databases and local HTTP, provider/semantic facts explicitly mocked",
+  "backend": [
+    {
+      "name": "com.pompomhills.intelligence.performance.VideoPromptLineageTest",
+      "tests": "17",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "9.136"
+    },
+    {
+      "name": "com.pompomhills.intelligence.workflow.WorkflowServiceTest",
+      "tests": "7",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.983"
+    },
+    {
+      "name": "com.pompomhills.intelligence.workflow.WorkflowTransportTest",
+      "tests": "3",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.504"
+    },
+    {
+      "name": "com.pompomhills.intelligence.workflow.WorkflowImpactReportTest",
+      "tests": "1",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.163"
+    },
+    {
+      "name": "com.pompomhills.intelligence.quality.ValidationEvidenceServiceTest",
+      "tests": "14",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.408"
+    },
+    {
+      "name": "com.pompomhills.intelligence.quality.IntelligenceQualityValidationServiceTest",
+      "tests": "10",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.193"
+    },
+    {
+      "name": "com.pompomhills.intelligence.video.job.AnalysisJobServiceIdempotencyTest",
+      "tests": "13",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "12.405"
+    },
+    {
+      "name": "com.pompomhills.intelligence.performance.PerformanceImportServiceVariantTest",
+      "tests": "7",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "33.638"
+    }
+  ],
+  "render": [
+    {
+      "name": "com.pompom.creative.workflow.PostFamilyAdmissionTest",
+      "tests": "4",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.576"
+    },
+    {
+      "name": "com.pompom.creative.queue.RenderJobQueueServiceTest",
+      "tests": "13",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.971"
+    },
+    {
+      "name": "com.pompom.creative.queue.ValidationEvidencePolicyTest",
+      "tests": "22",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.063"
+    }
+  ],
+  "backendTotal": 72,
+  "renderTotal": 39,
+  "frontend": {
+    "tests": 71,
+    "files": 14,
+    "build": "PASS"
+  },
+  "ml": {
+    "tests": 736,
+    "warnings": 154
+  },
+  "providerCalls": 0
+}

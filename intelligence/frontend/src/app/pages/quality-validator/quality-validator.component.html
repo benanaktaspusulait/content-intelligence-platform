@@ -15,7 +15,7 @@
           <div class="quality-record-meta"><span *ngIf="record.versionNumber">Prompt v{{ record.versionNumber }}</span><ng-container *ngIf="record.latestQuality as quality"><span>{{ quality.status }} · {{ formatNullableScore(quality.overallScore) }}/100</span><span *ngIf="quality.creativeGrade">Creative {{ quality.creativeGrade }}</span><span *ngIf="quality.readiness">{{ quality.readiness.replaceAll('_', ' ') }}</span></ng-container></div>
           <p class="quality-record-summary">{{ promptQualitySummary(record) }}</p>
           <small *ngIf="record.latestQuality?.analyzedAt" class="quality-record-date">Analyzed {{ record.latestQuality?.analyzedAt | date:'medium' }}</small>
-          <button *ngIf="record.latestQuality" type="button" class="btn btn-outline-secondary btn-sm" [disabled]="exportingPdf" (click)="exportQualityRecordPdf(record)">Export PDF</button><button *ngIf="record.promptVersionId && record.sourcePath" type="button" class="btn btn-outline-secondary btn-sm" (click)="openQualityRecord(record)">Open analysis</button>
+          <button *ngIf="record.latestQuality" type="button" class="btn btn-outline-secondary btn-sm" [disabled]="exportingPdf" (click)="exportQualityRecordPdf(record)">Export PDF</button><button *ngIf="record.promptVersionId" type="button" class="btn btn-outline-secondary btn-sm" (click)="openQualityRecord(record)">Open analysis</button>
         </article>
       </div>
     </div>

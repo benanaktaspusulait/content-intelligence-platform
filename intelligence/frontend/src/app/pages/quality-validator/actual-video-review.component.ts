@@ -7,6 +7,7 @@ import { HttpClient } from '@angular/common/http';
   selector: 'app-actual-video-review', standalone: true, imports: [CommonModule, FormsModule],
   template: `<section class="section-band"><h3>Actual clip review · original prompt unavailable</h3>
     <p>Describe only what you inspected in this clip. Original plan fidelity remains NOT_EVALUATED.</p>
+    <p *ngIf="durationSeconds !== null">Measured clip duration: {{ durationSeconds }} seconds. Safety, coherence and progression need evidence covering the full clip.</p>
     <label>Reviewed start (seconds)<input type="number" [(ngModel)]="start"></label>
     <label>Reviewed end (seconds)<input type="number" [(ngModel)]="end"></label>
     <div *ngFor="let aspect of aspects"><label>{{ aspect.label }}<select [(ngModel)]="values[aspect.key]"><option value="UNKNOWN">Insufficient evidence</option><option *ngFor="let value of aspect.values" [value]="value">{{ value }}</option></select></label><input [(ngModel)]="descriptions[aspect.key]" [attr.aria-label]="aspect.label + ' observation'" placeholder="What was actually observed"></div>
@@ -19,6 +20,7 @@ export class ActualVideoReviewComponent implements OnChanges {
   private http = inject(HttpClient);
   private changeDetector = inject(ChangeDetectorRef);
   @Input() videoId = '';
+  @Input() durationSeconds: number | null = null;
   start = 0; end: number | null = null; confirmed = false; busy = false; error = ''; result: any = null;
   values: Record<string, string> = {}; descriptions: Record<string, string> = {};
   aspects = [
@@ -32,9 +34,11 @@ export class ActualVideoReviewComponent implements OnChanges {
   ];
   private sequence = 0;
   ngOnChanges(changes: SimpleChanges): void {
+    const measured = this.durationSeconds !== null && Number.isFinite(this.durationSeconds) && this.durationSeconds > 0 ? this.durationSeconds : null;
+    if (changes['durationSeconds'] && !this.confirmed && this.end === null) this.end = measured;
     if (!changes['videoId']) return;
     const sequence = ++this.sequence;
-    this.result = null; this.error = ''; this.busy = false; this.confirmed = false; this.start = 0; this.end = null; this.values = {}; this.descriptions = {};
+    this.result = null; this.error = ''; this.busy = false; this.confirmed = false; this.start = 0; this.end = measured; this.values = {}; this.descriptions = {};
     if (!this.videoId) return;
     this.http.get<any[]>(`/api/v1/intelligence/workflow/videos/${this.videoId}/qa`).subscribe({ next: records => { if (sequence === this.sequence) {this.result = records[0] || null; this.changeDetector.markForCheck();} }, error: () => { if (sequence === this.sequence) {this.error = 'Saved actual review could not be loaded.';this.changeDetector.markForCheck();} } });
   }

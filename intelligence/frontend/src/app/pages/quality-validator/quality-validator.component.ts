@@ -315,7 +315,7 @@ Intensity: 4`;
         this.contentId = String(contentId); this.promptVersionId = String(promptVersionId); this.contentTitle = `Content #${contentId}`; this.contentType = 'REEL';
         this.setPromptText(version.rawText || ''); this.selectedPromptPath = version.sourcePath || ''; this.selectedPromptLoading = false;
         this.creativeDraftRecordId=null;
-        this.http.get<any>(`/api/v1/intelligence/contents/${contentId}/prompt-versions/${promptVersionId}/creative-provenance`).subscribe({next: provenance => {this.creativeProvenance=provenance;this.changeDetector.markForCheck();},error: () => {this.creativeProvenance=null;this.changeDetector.markForCheck();}});
+        this.http.get<any>(`/api/v1/intelligence/contents/${contentId}/prompt-versions/${promptVersionId}/creative-provenance`).subscribe({next: provenance => {if(this.contentId!==String(contentId)||this.promptVersionId!==String(promptVersionId))return;this.creativeProvenance=provenance;this.changeDetector.markForCheck();},error: () => {this.creativeProvenance=null;this.changeDetector.markForCheck();}});
         this.http.get<{videoId: string; relativePath: string}[]>(`/api/v1/intelligence/contents/${contentId}/prompt-versions/${promptVersionId}/videos`).subscribe({next: videos => { this.linkedVideos=videos; this.selectedWorkspaceVideoPath=videos.length === 1 ? videos[0].relativePath : ''; this.changeDetector.markForCheck(); }, error: () => {this.linkedVideos=[];this.changeDetector.markForCheck();}});
         this.http.get<any>(`/api/v1/intelligence/contents/${contentId}`).subscribe({ next: content => { this.contentTitle = content.title || this.contentTitle; this.contentType = content.type || this.contentType; this.changeDetector.detectChanges(); }, error: () => this.changeDetector.detectChanges() });
         this.changeDetector.detectChanges(); this.restoreStoredReport();
@@ -325,11 +325,6 @@ Intensity: 4`;
   }
 
   openQualityRecord(record: PromptQualityRecord): void {
-    const workspace = record.sourcePath ? this.promptWorkspaces.find(item => record.sourcePath?.startsWith(item.folderPath)) : null;
-    if (workspace) {
-      this.selectWorkspace(workspace, record.sourcePath || undefined, workspace.videoCandidates.length === 1 ? workspace.videoCandidates[0] : undefined);
-      return;
-    }
     if (record.promptVersionId) {
       this.router.navigate(['/quality/detail'], { queryParams: { contentId: record.contentId, promptVersionId: record.promptVersionId } });
     }
@@ -557,6 +552,7 @@ Intensity: 4`;
   }
 
   selectPromptFile(file: PromptFile): void {
+    this.creativeDraftRecordId=null;this.creativeProvenance=null;
     this.selectedPromptPath = file.relativePath;
     this.selectedPromptLoading = true;
     this.error = null;

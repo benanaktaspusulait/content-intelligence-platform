@@ -4,6 +4,15 @@ import { HttpTestingController, provideHttpClientTesting } from '@angular/common
 import { ActualVideoReviewComponent } from './actual-video-review.component';
 
 describe('Actual-only review', () => {
+ it('uses measured duration precisely without attesting inspection or submitting on refresh', async () => {
+  await TestBed.configureTestingModule({imports:[ActualVideoReviewComponent],providers:[provideHttpClient(),provideHttpClientTesting()]}).compileComponents();
+  const fixture=TestBed.createComponent(ActualVideoReviewComponent);const http=TestBed.inject(HttpTestingController);
+  fixture.componentRef.setInput('videoId','exact');fixture.componentRef.setInput('durationSeconds',12.083);fixture.detectChanges();
+  http.expectOne('/api/v1/intelligence/workflow/videos/exact/qa').flush([]);await fixture.whenStable();
+  expect(fixture.componentInstance.end).toBe(12.083);expect(fixture.componentInstance.confirmed).toBe(false);
+  expect(fixture.nativeElement.textContent).toContain('12.083 seconds');http.expectNone(r=>r.method==='POST');http.verify();fixture.destroy();TestBed.resetTestingModule();
+ });
+
  it('reopens the exact video record through GET without running analysis', async () => {
   await TestBed.configureTestingModule({ imports: [ActualVideoReviewComponent], providers: [provideHttpClient(), provideHttpClientTesting()] }).compileComponents();
   const fixture = TestBed.createComponent(ActualVideoReviewComponent);

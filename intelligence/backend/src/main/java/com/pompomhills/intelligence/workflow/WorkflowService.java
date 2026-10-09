@@ -118,6 +118,8 @@ public class WorkflowService {
     }
     input.put("references", verifiedReferences(input.get("references")));
     var result = new LinkedHashMap<>(ml.workflow("review", input));
+    if (result.get("retrievedLessons") instanceof List<?> matchedLessons)
+      input.put("retrievedLessons", matchedLessons);
     result.put("boundRequest", input);
     result.put("contentId", request.contentId());
     result.put("promptVersionId", request.promptVersionId());
@@ -452,6 +454,10 @@ public class WorkflowService {
       String profile, String model, double duration, Map<String, Object> target) {
     if (!Double.isFinite(duration) || duration <= 0 || profile == null || model == null)
       return List.of();
+    if (!target.isEmpty()
+        && (!(target.get("generator") instanceof String generator)
+            || generator.isBlank()
+            || "AUTO".equals(generator))) return List.of();
     return jdbc
         .sql(
             """
@@ -482,10 +488,15 @@ public class WorkflowService {
                   || values.size() != 2
                   || !(values.get(0) instanceof Number low)
                   || !(values.get(1) instanceof Number high)
+                  || !Double.isFinite(low.doubleValue())
+                  || !Double.isFinite(high.doubleValue())
+                  || low.doubleValue() <= 0
+                  || high.doubleValue() < low.doubleValue()
                   || duration < low.doubleValue()
                   || duration > high.doubleValue()) return false;
-              if (!(lesson.get("sampleSize") instanceof Number size) || size.intValue() < 1)
-                return false;
+              if (!(lesson.get("sampleSize") instanceof Number size)
+                  || size.intValue() < 1
+                  || size.doubleValue() != size.intValue()) return false;
               if (!(lesson.get("evidenceBasis") instanceof List<?> evidence) || evidence.isEmpty())
                 return false;
               var sources = new java.util.HashSet<String>();
@@ -545,6 +556,17 @@ public class WorkflowService {
                           ? String.valueOf(review.get("contentId"))
                           : String.valueOf(record.get("videoId"));
                   if (source.equals("null")) return false;
+                  if (!repair) {
+                    if (!(record.get("assetHash") instanceof String hash)
+                        || !hash.matches("[a-f0-9]{64}")) return false;
+                    if (!jdbc.sql(
+                            "SELECT EXISTS(SELECT 1 FROM videos WHERE id=:video AND"
+                                + " content_hash=:hash)")
+                        .param("video", UUID.fromString(source))
+                        .param("hash", hash)
+                        .query(Boolean.class)
+                        .single()) return false;
+                  }
                   sources.add(source);
                 } catch (IllegalArgumentException | ClassCastException unavailable) {
                   return false;
@@ -568,7 +590,7 @@ public class WorkflowService {
     var settings = new LinkedHashMap<>(map(value));
     settings.remove(
         "startFrame"); // Asset identity stays source-bound; it is not a generation capability
-                       // setting.
+    // setting.
     return settings;
   }
 

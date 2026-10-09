@@ -1,0 +1,1123 @@
+{
+  "scope": "LOCAL SYNTHETIC TEST_FIXTURE ONLY",
+  "database": "pompom_completion_20261009",
+  "providerCalls": 0,
+  "productionModelPromoted": false,
+  "seededIndependentParents": 40,
+  "insufficientData": {
+    "timestamp": "2026-10-08T23:14:01.583Z",
+    "status": 409,
+    "error": "Conflict",
+    "path": "/api/v1/models/train"
+  },
+  "before": {
+    "id": "cf166001-d73c-4b07-aeec-e91118feaab7",
+    "videoId": "4e362ad1-95c4-4271-aa85-689e1b8ce965",
+    "platform": "instagram",
+    "predictionType": "PRE_PUBLISH",
+    "status": "DRAFT",
+    "modelVersion": "cold-start-baseline-v1",
+    "datasetVersion": "instagram-no-observed-training-data",
+    "featureVersion": "creative-fingerprint-v1",
+    "knowledgeCutoff": "2026-10-08T23:14:01.861002Z",
+    "payload": {
+      "platform": "instagram",
+      "targets": [
+        {
+          "horizonMinutes": 30,
+          "metric": "views",
+          "expectedValue": null,
+          "interval50": [
+            null,
+            null
+          ],
+          "interval80": [
+            null,
+            null
+          ],
+          "bandProbabilities": {
+            "LOW": 0.166667,
+            "PARTIAL": 0.166667,
+            "MEANINGFUL_EXPANSION": 0.166667,
+            "STRONG": 0.166667,
+            "PERSISTENT": 0.166667,
+            "BREAKOUT": 0.166667
+          },
+          "trajectoryProbabilities": {
+            "EARLY_STALL": 0.142857,
+            "SLOW_GROWTH": 0.142857,
+            "FAST_START_STALL": 0.142857,
+            "SECOND_WAVE": 0.142857,
+            "MULTI_WAVE": 0.142857,
+            "PERSISTENT_GROWTH": 0.142857,
+            "LATE_BREAKOUT": 0.142857
+          }
+        },
+        {
+          "horizonMinutes": 60,
+          "metric": "views",
+          "expectedValue": null,
+          "interval50": [
+            null,
+            null
+          ],
+          "interval80": [
+            null,
+            null
+          ],
+          "bandProbabilities": {
+            "LOW": 0.166667,
+            "PARTIAL": 0.166667,
+            "MEANINGFUL_EXPANSION": 0.166667,
+            "STRONG": 0.166667,
+            "PERSISTENT": 0.166667,
+            "BREAKOUT": 0.166667
+          },
+          "trajectoryProbabilities": {
+            "EARLY_STALL": 0.142857,
+            "SLOW_GROWTH": 0.142857,
+            "FAST_START_STALL": 0.142857,
+            "SECOND_WAVE": 0.142857,
+            "MULTI_WAVE": 0.142857,
+            "PERSISTENT_GROWTH": 0.142857,
+            "LATE_BREAKOUT": 0.142857
+          }
+        },
+        {
+          "horizonMinutes": 120,
+          "metric": "views",
+          "expectedValue": null,
+          "interval50": [
+            null,
+            null
+          ],
+          "interval80": [
+            null,
+            null
+          ],
+          "bandProbabilities": {
+            "LOW": 0.166667,
+            "PARTIAL": 0.166667,
+            "MEANINGFUL_EXPANSION": 0.166667,
+            "STRONG": 0.166667,
+            "PERSISTENT": 0.166667,
+            "BREAKOUT": 0.166667
+          },
+          "trajectoryProbabilities": {
+            "EARLY_STALL": 0.142857,
+            "SLOW_GROWTH": 0.142857,
+            "FAST_START_STALL": 0.142857,
+            "SECOND_WAVE": 0.142857,
+            "MULTI_WAVE": 0.142857,
+            "PERSISTENT_GROWTH": 0.142857,
+            "LATE_BREAKOUT": 0.142857
+          }
+        },
+        {
+          "horizonMinutes": 180,
+          "metric": "views",
+          "expectedValue": null,
+          "interval50": [
+            null,
+            null
+          ],
+          "interval80": [
+            null,
+            null
+          ],
+          "bandProbabilities": {
+            "LOW": 0.166667,
+            "PARTIAL": 0.166667,
+            "MEANINGFUL_EXPANSION": 0.166667,
+            "STRONG": 0.166667,
+            "PERSISTENT": 0.166667,
+            "BREAKOUT": 0.166667
+          },
+          "trajectoryProbabilities": {
+            "EARLY_STALL": 0.142857,
+            "SLOW_GROWTH": 0.142857,
+            "FAST_START_STALL": 0.142857,
+            "SECOND_WAVE": 0.142857,
+            "MULTI_WAVE": 0.142857,
+            "PERSISTENT_GROWTH": 0.142857,
+            "LATE_BREAKOUT": 0.142857
+          }
+        },
+        {
+          "horizonMinutes": 360,
+          "metric": "views",
+          "expectedValue": null,
+          "interval50": [
+            null,
+            null
+          ],
+          "interval80": [
+            null,
+            null
+          ],
+          "bandProbabilities": {
+            "LOW": 0.166667,
+            "PARTIAL": 0.166667,
+            "MEANINGFUL_EXPANSION": 0.166667,
+            "STRONG": 0.166667,
+            "PERSISTENT": 0.166667,
+            "BREAKOUT": 0.166667
+          },
+          "trajectoryProbabilities": {
+            "EARLY_STALL": 0.142857,
+            "SLOW_GROWTH": 0.142857,
+            "FAST_START_STALL": 0.142857,
+            "SECOND_WAVE": 0.142857,
+            "MULTI_WAVE": 0.142857,
+            "PERSISTENT_GROWTH": 0.142857,
+            "LATE_BREAKOUT": 0.142857
+          }
+        },
+        {
+          "horizonMinutes": 720,
+          "metric": "views",
+          "expectedValue": null,
+          "interval50": [
+            null,
+            null
+          ],
+          "interval80": [
+            null,
+            null
+          ],
+          "bandProbabilities": {
+            "LOW": 0.166667,
+            "PARTIAL": 0.166667,
+            "MEANINGFUL_EXPANSION": 0.166667,
+            "STRONG": 0.166667,
+            "PERSISTENT": 0.166667,
+            "BREAKOUT": 0.166667
+          },
+          "trajectoryProbabilities": {
+            "EARLY_STALL": 0.142857,
+            "SLOW_GROWTH": 0.142857,
+            "FAST_START_STALL": 0.142857,
+            "SECOND_WAVE": 0.142857,
+            "MULTI_WAVE": 0.142857,
+            "PERSISTENT_GROWTH": 0.142857,
+            "LATE_BREAKOUT": 0.142857
+          }
+        },
+        {
+          "horizonMinutes": 1440,
+          "metric": "views",
+          "expectedValue": null,
+          "interval50": [
+            null,
+            null
+          ],
+          "interval80": [
+            null,
+            null
+          ],
+          "bandProbabilities": {
+            "LOW": 0.166667,
+            "PARTIAL": 0.166667,
+            "MEANINGFUL_EXPANSION": 0.166667,
+            "STRONG": 0.166667,
+            "PERSISTENT": 0.166667,
+            "BREAKOUT": 0.166667
+          },
+          "trajectoryProbabilities": {
+            "EARLY_STALL": 0.142857,
+            "SLOW_GROWTH": 0.142857,
+            "FAST_START_STALL": 0.142857,
+            "SECOND_WAVE": 0.142857,
+            "MULTI_WAVE": 0.142857,
+            "PERSISTENT_GROWTH": 0.142857,
+            "LATE_BREAKOUT": 0.142857
+          }
+        },
+        {
+          "horizonMinutes": 2880,
+          "metric": "views",
+          "expectedValue": null,
+          "interval50": [
+            null,
+            null
+          ],
+          "interval80": [
+            null,
+            null
+          ],
+          "bandProbabilities": {
+            "LOW": 0.166667,
+            "PARTIAL": 0.166667,
+            "MEANINGFUL_EXPANSION": 0.166667,
+            "STRONG": 0.166667,
+            "PERSISTENT": 0.166667,
+            "BREAKOUT": 0.166667
+          },
+          "trajectoryProbabilities": {
+            "EARLY_STALL": 0.142857,
+            "SLOW_GROWTH": 0.142857,
+            "FAST_START_STALL": 0.142857,
+            "SECOND_WAVE": 0.142857,
+            "MULTI_WAVE": 0.142857,
+            "PERSISTENT_GROWTH": 0.142857,
+            "LATE_BREAKOUT": 0.142857
+          }
+        },
+        {
+          "horizonMinutes": 10080,
+          "metric": "views",
+          "expectedValue": null,
+          "interval50": [
+            null,
+            null
+          ],
+          "interval80": [
+            null,
+            null
+          ],
+          "bandProbabilities": {
+            "LOW": 0.166667,
+            "PARTIAL": 0.166667,
+            "MEANINGFUL_EXPANSION": 0.166667,
+            "STRONG": 0.166667,
+            "PERSISTENT": 0.166667,
+            "BREAKOUT": 0.166667
+          },
+          "trajectoryProbabilities": {
+            "EARLY_STALL": 0.142857,
+            "SLOW_GROWTH": 0.142857,
+            "FAST_START_STALL": 0.142857,
+            "SECOND_WAVE": 0.142857,
+            "MULTI_WAVE": 0.142857,
+            "PERSISTENT_GROWTH": 0.142857,
+            "LATE_BREAKOUT": 0.142857
+          }
+        }
+      ],
+      "creativeQualityEvidence": 0.5,
+      "positiveFactors": [],
+      "negativeFactors": [],
+      "uncertaintyReasons": [
+        "No comparable platform observations have been supplied",
+        "Uniform probabilities are an explicit cold-start prior"
+      ],
+      "notice": "Historical estimate only; not a guarantee and not a claim about platform algorithms.",
+      "featureSnapshotId": "03845ab7-de80-4584-b730-e6cf08093c4c"
+    },
+    "confidence": "LOW",
+    "comparableSampleSize": 0,
+    "lockedAt": null
+  },
+  "challenger": {
+    "id": "98923df8-4811-4131-b20e-211366d69a56",
+    "version": "grouped-ridge-72h-v1-7280e67f697d",
+    "modelType": "prediction",
+    "platform": "instagram",
+    "trainingDatasetVersion": "verified-72h-7e87f44a-22b4-4c0b-abb6-55ac39afe75c",
+    "featureVersion": "prerender-v5-motion-intensity-v1",
+    "knowledgeCutoff": "2025-07-18T00:00:00Z",
+    "metrics": {
+      "slope": 2.301942701657743,
+      "status": "CHALLENGER_CREATED",
+      "metrics": {
+        "logMAE": 0.19684333923179065,
+        "baselineLogMAE": 0.8043004410581395,
+        "promotionEligible": true
+      },
+      "platform": "instagram",
+      "intercept": 2.338658901055505,
+      "trainedAt": "2026-10-08T23:14:02.043961+00:00",
+      "sampleSize": 28,
+      "testGroups": [
+        "54fa7a01-29f4-4551-bf80-2ff72415a6ac",
+        "0044c96d-283e-4206-b298-bb272a83b18e",
+        "fab9ce97-5739-4957-995d-1b5660b0f006",
+        "3a1811f1-4d1a-43d1-b80b-256fdf77c8b8",
+        "27f77b0e-bb02-4f80-8910-bd4efd01654d",
+        "68ada886-e15e-4e2b-9323-adfae4d6e0f0",
+        "abb15a5e-e0b9-4f3b-8693-f9bf1e73040b",
+        "856c7fc4-86fa-4fcf-8d2a-6841433ee0d7",
+        "d3b3f248-939a-4c23-9ad2-4b5fcfa7f4e7",
+        "dee6fd2c-f84e-456f-ba78-5b9b34e0c790",
+        "80bf66fc-d2b1-4ccd-885a-7fe26b1bd531",
+        "1dc24657-cdb7-4853-8922-07da8d9ce485"
+      ],
+      "featureKeys": [
+        "overallMotionIntensity.value"
+      ],
+      "holdoutSize": 12,
+      "trainGroups": [
+        "4e362ad1-95c4-4271-aa85-689e1b8ce965",
+        "4ee17f66-9604-4e3a-8da6-66b1b89780ad",
+        "1a1528f6-feec-4358-8158-08ccd4577940",
+        "716ebdbc-24c7-46f8-8bee-303712120853",
+        "77650525-9805-4ff4-b9c4-177600b2e2b5",
+        "05678c91-0277-4839-9305-6e02176bd035",
+        "e6379206-8a5c-49bd-a94a-a53f3b7f03d2",
+        "5412c817-f884-4371-a689-a08e9881a2b6",
+        "50ca58f5-fe95-4285-b6f3-70646ae0eef1",
+        "25cab9a5-6809-484f-9859-81bb4264fe16",
+        "4e59cc55-cc8d-43be-a369-ec4f2de60382",
+        "2986391f-c0ec-4f83-8107-051371301256",
+        "33a0510b-09c0-45c5-8aa2-0f0388679bcd",
+        "7d26f44c-3259-42f0-a9a9-7fc5e11bce9f",
+        "1f74c8b1-6d8e-4e6a-b07d-380652995bad",
+        "5ebfaf43-9a43-448d-8aa6-3f01d72efc0c",
+        "be94a63f-63f9-4469-b957-e2e959e7dbef",
+        "317cc0d9-9dc6-44fe-87c8-8ce6e3ee1421",
+        "4a144e67-6d44-4552-8efc-800968dfe923",
+        "69c1791d-f501-4a05-a6d9-e0c209934a54",
+        "3e843614-6de8-460f-81b7-093ca417cc8b",
+        "d9e32b6f-58be-4bcf-a044-95fc3dc4f0ee",
+        "3b84bc33-9ff3-4a99-8ae5-84df7575d6e7",
+        "f9023004-a361-4e6d-b566-20a6fe8dd45b",
+        "ff0cc999-4ade-4f18-a051-2cdff44e4326",
+        "e0e61ec4-7727-4a44-bada-3a4072d2f60d",
+        "bf850b70-3126-40d2-9aae-d9cf773131a8",
+        "56332ee1-5801-4103-a0fa-c248297a5abe"
+      ],
+      "artifactPath": "models/statistical/7280e67f697df178128dc538ff90817e6f2b295f2166c54d9492e9b6dea5b449.json",
+      "modelVersion": "grouped-ridge-72h-v1-7280e67f697d",
+      "datasetSha256": "ef15441f7c4182fb0d9b4c46a2921d2ccb89e7b9c3ec120b040019fe8455310a",
+      "intervalLog50": 0.18572759230779967,
+      "intervalLog80": 0.3566106710508663,
+      "artifactSha256": "7280e67f697df178128dc538ff90817e6f2b295f2166c54d9492e9b6dea5b449",
+      "datasetVersion": "verified-72h-7e87f44a-22b4-4c0b-abb6-55ac39afe75c",
+      "featureVersion": "prerender-v5-motion-intensity-v1",
+      "horizonMinutes": 4320,
+      "trainingCutoff": "2025-05-19T00:00:00+00:00",
+      "artifactCreated": true,
+      "knowledgeCutoff": "2025-07-18T00:00:00+00:00",
+      "pipelineVersion": "grouped-ridge-72h-v1",
+      "testObservationIds": [
+        "ef0bd354-7511-43e7-904a-e018dc698c2f",
+        "0ddd3ca3-9ede-4e1c-82d5-8798f8d8f698",
+        "ad7938ad-4a0f-4e1c-ac36-1d4d5726fa2e",
+        "996cb929-12f6-47a1-8dc0-ba3f8bd89c7c",
+        "93fa3dfb-9e77-48c2-9399-d078d6f896a7",
+        "cb56c8e6-d197-4d0a-8937-c10d108d3d6e",
+        "5fd13dc8-a50b-4b45-9a71-a8c686a92bdb",
+        "721252a1-1d4e-4157-ab77-023c9ddc61e1",
+        "52de4fc5-e3ef-4ac5-829a-84e236347824",
+        "c2848115-6a9f-4e43-b945-82403afb76ac",
+        "93130981-2383-43f1-ae4f-c29838338b1b",
+        "0f1312de-5d34-41d6-8e12-cb83beacd90b"
+      ],
+      "trainObservationIds": [
+        "8d0e8c38-d6ac-4c55-acbb-8f4956584188",
+        "8a579b32-d1ee-4f0b-861a-8530dc74e12f",
+        "9737cb99-58fe-4bd5-97b4-afaac65d6772",
+        "2fb6f770-8b1a-498f-92e1-b5ddb66fbb36",
+        "f82836a6-ce62-4bf1-91cf-2d710ccaca3c",
+        "fa91ba2a-66bc-45bb-961f-845a86cbd510",
+        "9c7a1b1b-31d5-4558-bccd-5f59bb4b314c",
+        "72117cc0-f5bd-4b3a-be78-8c6fde3d84c3",
+        "08adb210-8836-4e71-a62c-14f9d8aaa25b",
+        "f2b1d49a-ce70-4272-94b6-fb47698a39d5",
+        "90c26216-3818-4743-b1f2-3587e851151e",
+        "d033953e-a210-46a9-88c6-59686c7b7ccd",
+        "e25f9fde-2e22-46e3-97ef-5de427d70015",
+        "da07172a-7e5d-451f-848c-61b65cf983f5",
+        "6c597642-b20f-4d7f-b05c-54b306057c76",
+        "ebe5e7f7-c862-4f9e-baab-1a759719f9d3",
+        "aed21c94-c1be-4730-bc18-57a0d8df85e2",
+        "c52d6311-dea1-45d0-801f-6179d5deeb95",
+        "be7d9898-ba0d-4d64-bdb4-58efb86a5e0c",
+        "ef91905a-1f58-4bc3-b631-1f290e358d5a",
+        "0263b095-4a33-4b5a-a0f2-86aa0ae43222",
+        "3087260a-6cea-4689-a602-dc54e1a6f0a8",
+        "c3874824-0482-460d-962f-ed266ee03d20",
+        "a62c69f9-ff48-410d-a061-37a9fbd03095",
+        "eddfdeb7-8933-437c-904c-9e3e0b749ae4",
+        "a0a41051-2fe6-4670-9642-201d002281b1",
+        "746bfe41-c00b-40d3-af9a-f2aa8f9759de",
+        "d9dd45b6-26c3-42d0-9418-1c17bf036619"
+      ]
+    },
+    "artifactPath": "models/statistical/7280e67f697df178128dc538ff90817e6f2b295f2166c54d9492e9b6dea5b449.json",
+    "status": "CHALLENGER",
+    "trainedAt": "2026-10-08T23:14:02.043961Z"
+  },
+  "unpromoted": {
+    "id": "84cdef8d-8062-47f2-a481-c5647ccb5561",
+    "videoId": "4e362ad1-95c4-4271-aa85-689e1b8ce965",
+    "platform": "instagram",
+    "predictionType": "PRE_PUBLISH",
+    "status": "DRAFT",
+    "modelVersion": "cold-start-baseline-v1",
+    "datasetVersion": "instagram-no-observed-training-data",
+    "featureVersion": "creative-fingerprint-v1",
+    "knowledgeCutoff": "2026-10-08T23:14:02.063629Z",
+    "payload": {
+      "platform": "instagram",
+      "targets": [
+        {
+          "horizonMinutes": 30,
+          "metric": "views",
+          "expectedValue": null,
+          "interval50": [
+            null,
+            null
+          ],
+          "interval80": [
+            null,
+            null
+          ],
+          "bandProbabilities": {
+            "LOW": 0.166667,
+            "PARTIAL": 0.166667,
+            "MEANINGFUL_EXPANSION": 0.166667,
+            "STRONG": 0.166667,
+            "PERSISTENT": 0.166667,
+            "BREAKOUT": 0.166667
+          },
+          "trajectoryProbabilities": {
+            "EARLY_STALL": 0.142857,
+            "SLOW_GROWTH": 0.142857,
+            "FAST_START_STALL": 0.142857,
+            "SECOND_WAVE": 0.142857,
+            "MULTI_WAVE": 0.142857,
+            "PERSISTENT_GROWTH": 0.142857,
+            "LATE_BREAKOUT": 0.142857
+          }
+        },
+        {
+          "horizonMinutes": 60,
+          "metric": "views",
+          "expectedValue": null,
+          "interval50": [
+            null,
+            null
+          ],
+          "interval80": [
+            null,
+            null
+          ],
+          "bandProbabilities": {
+            "LOW": 0.166667,
+            "PARTIAL": 0.166667,
+            "MEANINGFUL_EXPANSION": 0.166667,
+            "STRONG": 0.166667,
+            "PERSISTENT": 0.166667,
+            "BREAKOUT": 0.166667
+          },
+          "trajectoryProbabilities": {
+            "EARLY_STALL": 0.142857,
+            "SLOW_GROWTH": 0.142857,
+            "FAST_START_STALL": 0.142857,
+            "SECOND_WAVE": 0.142857,
+            "MULTI_WAVE": 0.142857,
+            "PERSISTENT_GROWTH": 0.142857,
+            "LATE_BREAKOUT": 0.142857
+          }
+        },
+        {
+          "horizonMinutes": 120,
+          "metric": "views",
+          "expectedValue": null,
+          "interval50": [
+            null,
+            null
+          ],
+          "interval80": [
+            null,
+            null
+          ],
+          "bandProbabilities": {
+            "LOW": 0.166667,
+            "PARTIAL": 0.166667,
+            "MEANINGFUL_EXPANSION": 0.166667,
+            "STRONG": 0.166667,
+            "PERSISTENT": 0.166667,
+            "BREAKOUT": 0.166667
+          },
+          "trajectoryProbabilities": {
+            "EARLY_STALL": 0.142857,
+            "SLOW_GROWTH": 0.142857,
+            "FAST_START_STALL": 0.142857,
+            "SECOND_WAVE": 0.142857,
+            "MULTI_WAVE": 0.142857,
+            "PERSISTENT_GROWTH": 0.142857,
+            "LATE_BREAKOUT": 0.142857
+          }
+        },
+        {
+          "horizonMinutes": 180,
+          "metric": "views",
+          "expectedValue": null,
+          "interval50": [
+            null,
+            null
+          ],
+          "interval80": [
+            null,
+            null
+          ],
+          "bandProbabilities": {
+            "LOW": 0.166667,
+            "PARTIAL": 0.166667,
+            "MEANINGFUL_EXPANSION": 0.166667,
+            "STRONG": 0.166667,
+            "PERSISTENT": 0.166667,
+            "BREAKOUT": 0.166667
+          },
+          "trajectoryProbabilities": {
+            "EARLY_STALL": 0.142857,
+            "SLOW_GROWTH": 0.142857,
+            "FAST_START_STALL": 0.142857,
+            "SECOND_WAVE": 0.142857,
+            "MULTI_WAVE": 0.142857,
+            "PERSISTENT_GROWTH": 0.142857,
+            "LATE_BREAKOUT": 0.142857
+          }
+        },
+        {
+          "horizonMinutes": 360,
+          "metric": "views",
+          "expectedValue": null,
+          "interval50": [
+            null,
+            null
+          ],
+          "interval80": [
+            null,
+            null
+          ],
+          "bandProbabilities": {
+            "LOW": 0.166667,
+            "PARTIAL": 0.166667,
+            "MEANINGFUL_EXPANSION": 0.166667,
+            "STRONG": 0.166667,
+            "PERSISTENT": 0.166667,
+            "BREAKOUT": 0.166667
+          },
+          "trajectoryProbabilities": {
+            "EARLY_STALL": 0.142857,
+            "SLOW_GROWTH": 0.142857,
+            "FAST_START_STALL": 0.142857,
+            "SECOND_WAVE": 0.142857,
+            "MULTI_WAVE": 0.142857,
+            "PERSISTENT_GROWTH": 0.142857,
+            "LATE_BREAKOUT": 0.142857
+          }
+        },
+        {
+          "horizonMinutes": 720,
+          "metric": "views",
+          "expectedValue": null,
+          "interval50": [
+            null,
+            null
+          ],
+          "interval80": [
+            null,
+            null
+          ],
+          "bandProbabilities": {
+            "LOW": 0.166667,
+            "PARTIAL": 0.166667,
+            "MEANINGFUL_EXPANSION": 0.166667,
+            "STRONG": 0.166667,
+            "PERSISTENT": 0.166667,
+            "BREAKOUT": 0.166667
+          },
+          "trajectoryProbabilities": {
+            "EARLY_STALL": 0.142857,
+            "SLOW_GROWTH": 0.142857,
+            "FAST_START_STALL": 0.142857,
+            "SECOND_WAVE": 0.142857,
+            "MULTI_WAVE": 0.142857,
+            "PERSISTENT_GROWTH": 0.142857,
+            "LATE_BREAKOUT": 0.142857
+          }
+        },
+        {
+          "horizonMinutes": 1440,
+          "metric": "views",
+          "expectedValue": null,
+          "interval50": [
+            null,
+            null
+          ],
+          "interval80": [
+            null,
+            null
+          ],
+          "bandProbabilities": {
+            "LOW": 0.166667,
+            "PARTIAL": 0.166667,
+            "MEANINGFUL_EXPANSION": 0.166667,
+            "STRONG": 0.166667,
+            "PERSISTENT": 0.166667,
+            "BREAKOUT": 0.166667
+          },
+          "trajectoryProbabilities": {
+            "EARLY_STALL": 0.142857,
+            "SLOW_GROWTH": 0.142857,
+            "FAST_START_STALL": 0.142857,
+            "SECOND_WAVE": 0.142857,
+            "MULTI_WAVE": 0.142857,
+            "PERSISTENT_GROWTH": 0.142857,
+            "LATE_BREAKOUT": 0.142857
+          }
+        },
+        {
+          "horizonMinutes": 2880,
+          "metric": "views",
+          "expectedValue": null,
+          "interval50": [
+            null,
+            null
+          ],
+          "interval80": [
+            null,
+            null
+          ],
+          "bandProbabilities": {
+            "LOW": 0.166667,
+            "PARTIAL": 0.166667,
+            "MEANINGFUL_EXPANSION": 0.166667,
+            "STRONG": 0.166667,
+            "PERSISTENT": 0.166667,
+            "BREAKOUT": 0.166667
+          },
+          "trajectoryProbabilities": {
+            "EARLY_STALL": 0.142857,
+            "SLOW_GROWTH": 0.142857,
+            "FAST_START_STALL": 0.142857,
+            "SECOND_WAVE": 0.142857,
+            "MULTI_WAVE": 0.142857,
+            "PERSISTENT_GROWTH": 0.142857,
+            "LATE_BREAKOUT": 0.142857
+          }
+        },
+        {
+          "horizonMinutes": 10080,
+          "metric": "views",
+          "expectedValue": null,
+          "interval50": [
+            null,
+            null
+          ],
+          "interval80": [
+            null,
+            null
+          ],
+          "bandProbabilities": {
+            "LOW": 0.166667,
+            "PARTIAL": 0.166667,
+            "MEANINGFUL_EXPANSION": 0.166667,
+            "STRONG": 0.166667,
+            "PERSISTENT": 0.166667,
+            "BREAKOUT": 0.166667
+          },
+          "trajectoryProbabilities": {
+            "EARLY_STALL": 0.142857,
+            "SLOW_GROWTH": 0.142857,
+            "FAST_START_STALL": 0.142857,
+            "SECOND_WAVE": 0.142857,
+            "MULTI_WAVE": 0.142857,
+            "PERSISTENT_GROWTH": 0.142857,
+            "LATE_BREAKOUT": 0.142857
+          }
+        }
+      ],
+      "creativeQualityEvidence": 0.5,
+      "positiveFactors": [],
+      "negativeFactors": [],
+      "uncertaintyReasons": [
+        "No comparable platform observations have been supplied",
+        "Uniform probabilities are an explicit cold-start prior"
+      ],
+      "notice": "Historical estimate only; not a guarantee and not a claim about platform algorithms.",
+      "featureSnapshotId": "b66fb6ab-114e-4d15-af90-761632fe087e"
+    },
+    "confidence": "LOW",
+    "comparableSampleSize": 0,
+    "lockedAt": null
+  },
+  "promoted": {
+    "id": "98923df8-4811-4131-b20e-211366d69a56",
+    "version": "grouped-ridge-72h-v1-7280e67f697d",
+    "modelType": "prediction",
+    "platform": "instagram",
+    "trainingDatasetVersion": "verified-72h-7e87f44a-22b4-4c0b-abb6-55ac39afe75c",
+    "featureVersion": "prerender-v5-motion-intensity-v1",
+    "knowledgeCutoff": "2025-07-18T00:00:00Z",
+    "metrics": {
+      "slope": 2.301942701657743,
+      "status": "CHALLENGER_CREATED",
+      "metrics": {
+        "logMAE": 0.19684333923179065,
+        "baselineLogMAE": 0.8043004410581395,
+        "promotionEligible": true
+      },
+      "platform": "instagram",
+      "intercept": 2.338658901055505,
+      "trainedAt": "2026-10-08T23:14:02.043961+00:00",
+      "sampleSize": 28,
+      "testGroups": [
+        "54fa7a01-29f4-4551-bf80-2ff72415a6ac",
+        "0044c96d-283e-4206-b298-bb272a83b18e",
+        "fab9ce97-5739-4957-995d-1b5660b0f006",
+        "3a1811f1-4d1a-43d1-b80b-256fdf77c8b8",
+        "27f77b0e-bb02-4f80-8910-bd4efd01654d",
+        "68ada886-e15e-4e2b-9323-adfae4d6e0f0",
+        "abb15a5e-e0b9-4f3b-8693-f9bf1e73040b",
+        "856c7fc4-86fa-4fcf-8d2a-6841433ee0d7",
+        "d3b3f248-939a-4c23-9ad2-4b5fcfa7f4e7",
+        "dee6fd2c-f84e-456f-ba78-5b9b34e0c790",
+        "80bf66fc-d2b1-4ccd-885a-7fe26b1bd531",
+        "1dc24657-cdb7-4853-8922-07da8d9ce485"
+      ],
+      "featureKeys": [
+        "overallMotionIntensity.value"
+      ],
+      "holdoutSize": 12,
+      "trainGroups": [
+        "4e362ad1-95c4-4271-aa85-689e1b8ce965",
+        "4ee17f66-9604-4e3a-8da6-66b1b89780ad",
+        "1a1528f6-feec-4358-8158-08ccd4577940",
+        "716ebdbc-24c7-46f8-8bee-303712120853",
+        "77650525-9805-4ff4-b9c4-177600b2e2b5",
+        "05678c91-0277-4839-9305-6e02176bd035",
+        "e6379206-8a5c-49bd-a94a-a53f3b7f03d2",
+        "5412c817-f884-4371-a689-a08e9881a2b6",
+        "50ca58f5-fe95-4285-b6f3-70646ae0eef1",
+        "25cab9a5-6809-484f-9859-81bb4264fe16",
+        "4e59cc55-cc8d-43be-a369-ec4f2de60382",
+        "2986391f-c0ec-4f83-8107-051371301256",
+        "33a0510b-09c0-45c5-8aa2-0f0388679bcd",
+        "7d26f44c-3259-42f0-a9a9-7fc5e11bce9f",
+        "1f74c8b1-6d8e-4e6a-b07d-380652995bad",
+        "5ebfaf43-9a43-448d-8aa6-3f01d72efc0c",
+        "be94a63f-63f9-4469-b957-e2e959e7dbef",
+        "317cc0d9-9dc6-44fe-87c8-8ce6e3ee1421",
+        "4a144e67-6d44-4552-8efc-800968dfe923",
+        "69c1791d-f501-4a05-a6d9-e0c209934a54",
+        "3e843614-6de8-460f-81b7-093ca417cc8b",
+        "d9e32b6f-58be-4bcf-a044-95fc3dc4f0ee",
+        "3b84bc33-9ff3-4a99-8ae5-84df7575d6e7",
+        "f9023004-a361-4e6d-b566-20a6fe8dd45b",
+        "ff0cc999-4ade-4f18-a051-2cdff44e4326",
+        "e0e61ec4-7727-4a44-bada-3a4072d2f60d",
+        "bf850b70-3126-40d2-9aae-d9cf773131a8",
+        "56332ee1-5801-4103-a0fa-c248297a5abe"
+      ],
+      "artifactPath": "models/statistical/7280e67f697df178128dc538ff90817e6f2b295f2166c54d9492e9b6dea5b449.json",
+      "modelVersion": "grouped-ridge-72h-v1-7280e67f697d",
+      "datasetSha256": "ef15441f7c4182fb0d9b4c46a2921d2ccb89e7b9c3ec120b040019fe8455310a",
+      "intervalLog50": 0.18572759230779967,
+      "intervalLog80": 0.3566106710508663,
+      "artifactSha256": "7280e67f697df178128dc538ff90817e6f2b295f2166c54d9492e9b6dea5b449",
+      "datasetVersion": "verified-72h-7e87f44a-22b4-4c0b-abb6-55ac39afe75c",
+      "featureVersion": "prerender-v5-motion-intensity-v1",
+      "horizonMinutes": 4320,
+      "trainingCutoff": "2025-05-19T00:00:00+00:00",
+      "artifactCreated": true,
+      "knowledgeCutoff": "2025-07-18T00:00:00+00:00",
+      "pipelineVersion": "grouped-ridge-72h-v1",
+      "testObservationIds": [
+        "ef0bd354-7511-43e7-904a-e018dc698c2f",
+        "0ddd3ca3-9ede-4e1c-82d5-8798f8d8f698",
+        "ad7938ad-4a0f-4e1c-ac36-1d4d5726fa2e",
+        "996cb929-12f6-47a1-8dc0-ba3f8bd89c7c",
+        "93fa3dfb-9e77-48c2-9399-d078d6f896a7",
+        "cb56c8e6-d197-4d0a-8937-c10d108d3d6e",
+        "5fd13dc8-a50b-4b45-9a71-a8c686a92bdb",
+        "721252a1-1d4e-4157-ab77-023c9ddc61e1",
+        "52de4fc5-e3ef-4ac5-829a-84e236347824",
+        "c2848115-6a9f-4e43-b945-82403afb76ac",
+        "93130981-2383-43f1-ae4f-c29838338b1b",
+        "0f1312de-5d34-41d6-8e12-cb83beacd90b"
+      ],
+      "trainObservationIds": [
+        "8d0e8c38-d6ac-4c55-acbb-8f4956584188",
+        "8a579b32-d1ee-4f0b-861a-8530dc74e12f",
+        "9737cb99-58fe-4bd5-97b4-afaac65d6772",
+        "2fb6f770-8b1a-498f-92e1-b5ddb66fbb36",
+        "f82836a6-ce62-4bf1-91cf-2d710ccaca3c",
+        "fa91ba2a-66bc-45bb-961f-845a86cbd510",
+        "9c7a1b1b-31d5-4558-bccd-5f59bb4b314c",
+        "72117cc0-f5bd-4b3a-be78-8c6fde3d84c3",
+        "08adb210-8836-4e71-a62c-14f9d8aaa25b",
+        "f2b1d49a-ce70-4272-94b6-fb47698a39d5",
+        "90c26216-3818-4743-b1f2-3587e851151e",
+        "d033953e-a210-46a9-88c6-59686c7b7ccd",
+        "e25f9fde-2e22-46e3-97ef-5de427d70015",
+        "da07172a-7e5d-451f-848c-61b65cf983f5",
+        "6c597642-b20f-4d7f-b05c-54b306057c76",
+        "ebe5e7f7-c862-4f9e-baab-1a759719f9d3",
+        "aed21c94-c1be-4730-bc18-57a0d8df85e2",
+        "c52d6311-dea1-45d0-801f-6179d5deeb95",
+        "be7d9898-ba0d-4d64-bdb4-58efb86a5e0c",
+        "ef91905a-1f58-4bc3-b631-1f290e358d5a",
+        "0263b095-4a33-4b5a-a0f2-86aa0ae43222",
+        "3087260a-6cea-4689-a602-dc54e1a6f0a8",
+        "c3874824-0482-460d-962f-ed266ee03d20",
+        "a62c69f9-ff48-410d-a061-37a9fbd03095",
+        "eddfdeb7-8933-437c-904c-9e3e0b749ae4",
+        "a0a41051-2fe6-4670-9642-201d002281b1",
+        "746bfe41-c00b-40d3-af9a-f2aa8f9759de",
+        "d9dd45b6-26c3-42d0-9418-1c17bf036619"
+      ]
+    },
+    "artifactPath": "models/statistical/7280e67f697df178128dc538ff90817e6f2b295f2166c54d9492e9b6dea5b449.json",
+    "status": "CHAMPION",
+    "trainedAt": "2026-10-08T23:14:02.043961Z"
+  },
+  "after": {
+    "id": "97abfd81-03ed-494f-9c26-297587d00403",
+    "videoId": "4e362ad1-95c4-4271-aa85-689e1b8ce965",
+    "platform": "instagram",
+    "predictionType": "PRE_PUBLISH",
+    "status": "DRAFT",
+    "modelVersion": "grouped-ridge-72h-v1-7280e67f697d",
+    "datasetVersion": "verified-72h-7e87f44a-22b4-4c0b-abb6-55ac39afe75c",
+    "featureVersion": "prerender-v5-motion-intensity-v1",
+    "knowledgeCutoff": "2026-10-08T23:14:02.092590Z",
+    "payload": {
+      "platform": "instagram",
+      "targets": [
+        {
+          "horizonMinutes": 4320,
+          "metric": "views",
+          "expectedValue": 31.773827404715984,
+          "interval50": [
+            26.21865706238461,
+            38.46277585599622
+          ],
+          "interval80": [
+            21.943153758661897,
+            45.81674429125031
+          ]
+        }
+      ],
+      "artifactSha256": "7280e67f697df178128dc538ff90817e6f2b295f2166c54d9492e9b6dea5b449",
+      "notice": "Historical 72H estimate from a small statistical model; no platform causal or winner claim",
+      "uncertaintyReasons": [
+        "Single feature baseline; interval calibration is limited by holdout size"
+      ],
+      "featureSnapshotId": "42588577-25cd-436a-a020-4b7f042b5294"
+    },
+    "confidence": "LOW",
+    "comparableSampleSize": 28,
+    "lockedAt": null
+  },
+  "replacement": {
+    "id": "c822e0cf-c9a2-4037-9822-ad21b6564a3a",
+    "version": "grouped-ridge-72h-v1-44b85c0c9885",
+    "modelType": "prediction",
+    "platform": "instagram",
+    "trainingDatasetVersion": "verified-72h-632eed67-0d63-404c-97fe-c7eab6b63ab1",
+    "featureVersion": "prerender-v5-motion-intensity-v1",
+    "knowledgeCutoff": "2025-07-18T00:00:00Z",
+    "metrics": {
+      "slope": 2.301942701657743,
+      "status": "CHALLENGER_CREATED",
+      "metrics": {
+        "logMAE": 0.19684333923179065,
+        "baselineLogMAE": 0.8043004410581395,
+        "promotionEligible": true
+      },
+      "platform": "instagram",
+      "intercept": 2.338658901055505,
+      "trainedAt": "2026-10-08T23:14:02.133702+00:00",
+      "sampleSize": 28,
+      "testGroups": [
+        "54fa7a01-29f4-4551-bf80-2ff72415a6ac",
+        "0044c96d-283e-4206-b298-bb272a83b18e",
+        "fab9ce97-5739-4957-995d-1b5660b0f006",
+        "3a1811f1-4d1a-43d1-b80b-256fdf77c8b8",
+        "27f77b0e-bb02-4f80-8910-bd4efd01654d",
+        "68ada886-e15e-4e2b-9323-adfae4d6e0f0",
+        "abb15a5e-e0b9-4f3b-8693-f9bf1e73040b",
+        "856c7fc4-86fa-4fcf-8d2a-6841433ee0d7",
+        "d3b3f248-939a-4c23-9ad2-4b5fcfa7f4e7",
+        "dee6fd2c-f84e-456f-ba78-5b9b34e0c790",
+        "80bf66fc-d2b1-4ccd-885a-7fe26b1bd531",
+        "1dc24657-cdb7-4853-8922-07da8d9ce485"
+      ],
+      "featureKeys": [
+        "overallMotionIntensity.value"
+      ],
+      "holdoutSize": 12,
+      "trainGroups": [
+        "4e362ad1-95c4-4271-aa85-689e1b8ce965",
+        "4ee17f66-9604-4e3a-8da6-66b1b89780ad",
+        "1a1528f6-feec-4358-8158-08ccd4577940",
+        "716ebdbc-24c7-46f8-8bee-303712120853",
+        "77650525-9805-4ff4-b9c4-177600b2e2b5",
+        "05678c91-0277-4839-9305-6e02176bd035",
+        "e6379206-8a5c-49bd-a94a-a53f3b7f03d2",
+        "5412c817-f884-4371-a689-a08e9881a2b6",
+        "50ca58f5-fe95-4285-b6f3-70646ae0eef1",
+        "25cab9a5-6809-484f-9859-81bb4264fe16",
+        "4e59cc55-cc8d-43be-a369-ec4f2de60382",
+        "2986391f-c0ec-4f83-8107-051371301256",
+        "33a0510b-09c0-45c5-8aa2-0f0388679bcd",
+        "7d26f44c-3259-42f0-a9a9-7fc5e11bce9f",
+        "1f74c8b1-6d8e-4e6a-b07d-380652995bad",
+        "5ebfaf43-9a43-448d-8aa6-3f01d72efc0c",
+        "be94a63f-63f9-4469-b957-e2e959e7dbef",
+        "317cc0d9-9dc6-44fe-87c8-8ce6e3ee1421",
+        "4a144e67-6d44-4552-8efc-800968dfe923",
+        "69c1791d-f501-4a05-a6d9-e0c209934a54",
+        "3e843614-6de8-460f-81b7-093ca417cc8b",
+        "d9e32b6f-58be-4bcf-a044-95fc3dc4f0ee",
+        "3b84bc33-9ff3-4a99-8ae5-84df7575d6e7",
+        "f9023004-a361-4e6d-b566-20a6fe8dd45b",
+        "ff0cc999-4ade-4f18-a051-2cdff44e4326",
+        "e0e61ec4-7727-4a44-bada-3a4072d2f60d",
+        "bf850b70-3126-40d2-9aae-d9cf773131a8",
+        "56332ee1-5801-4103-a0fa-c248297a5abe"
+      ],
+      "artifactPath": "models/statistical/44b85c0c9885b348f6c3be9f5533b7a0254e592e111b5eb7ec94d649f7af745e.json",
+      "modelVersion": "grouped-ridge-72h-v1-44b85c0c9885",
+      "datasetSha256": "ef15441f7c4182fb0d9b4c46a2921d2ccb89e7b9c3ec120b040019fe8455310a",
+      "intervalLog50": 0.18572759230779967,
+      "intervalLog80": 0.3566106710508663,
+      "artifactSha256": "44b85c0c9885b348f6c3be9f5533b7a0254e592e111b5eb7ec94d649f7af745e",
+      "datasetVersion": "verified-72h-632eed67-0d63-404c-97fe-c7eab6b63ab1",
+      "featureVersion": "prerender-v5-motion-intensity-v1",
+      "horizonMinutes": 4320,
+      "trainingCutoff": "2025-05-19T00:00:00+00:00",
+      "artifactCreated": true,
+      "knowledgeCutoff": "2025-07-18T00:00:00+00:00",
+      "pipelineVersion": "grouped-ridge-72h-v1",
+      "testObservationIds": [
+        "ef0bd354-7511-43e7-904a-e018dc698c2f",
+        "0ddd3ca3-9ede-4e1c-82d5-8798f8d8f698",
+        "ad7938ad-4a0f-4e1c-ac36-1d4d5726fa2e",
+        "996cb929-12f6-47a1-8dc0-ba3f8bd89c7c",
+        "93fa3dfb-9e77-48c2-9399-d078d6f896a7",
+        "cb56c8e6-d197-4d0a-8937-c10d108d3d6e",
+        "5fd13dc8-a50b-4b45-9a71-a8c686a92bdb",
+        "721252a1-1d4e-4157-ab77-023c9ddc61e1",
+        "52de4fc5-e3ef-4ac5-829a-84e236347824",
+        "c2848115-6a9f-4e43-b945-82403afb76ac",
+        "93130981-2383-43f1-ae4f-c29838338b1b",
+        "0f1312de-5d34-41d6-8e12-cb83beacd90b"
+      ],
+      "trainObservationIds": [
+        "8d0e8c38-d6ac-4c55-acbb-8f4956584188",
+        "8a579b32-d1ee-4f0b-861a-8530dc74e12f",
+        "9737cb99-58fe-4bd5-97b4-afaac65d6772",
+        "2fb6f770-8b1a-498f-92e1-b5ddb66fbb36",
+        "f82836a6-ce62-4bf1-91cf-2d710ccaca3c",
+        "fa91ba2a-66bc-45bb-961f-845a86cbd510",
+        "9c7a1b1b-31d5-4558-bccd-5f59bb4b314c",
+        "72117cc0-f5bd-4b3a-be78-8c6fde3d84c3",
+        "08adb210-8836-4e71-a62c-14f9d8aaa25b",
+        "f2b1d49a-ce70-4272-94b6-fb47698a39d5",
+        "90c26216-3818-4743-b1f2-3587e851151e",
+        "d033953e-a210-46a9-88c6-59686c7b7ccd",
+        "e25f9fde-2e22-46e3-97ef-5de427d70015",
+        "da07172a-7e5d-451f-848c-61b65cf983f5",
+        "6c597642-b20f-4d7f-b05c-54b306057c76",
+        "ebe5e7f7-c862-4f9e-baab-1a759719f9d3",
+        "aed21c94-c1be-4730-bc18-57a0d8df85e2",
+        "c52d6311-dea1-45d0-801f-6179d5deeb95",
+        "be7d9898-ba0d-4d64-bdb4-58efb86a5e0c",
+        "ef91905a-1f58-4bc3-b631-1f290e358d5a",
+        "0263b095-4a33-4b5a-a0f2-86aa0ae43222",
+        "3087260a-6cea-4689-a602-dc54e1a6f0a8",
+        "c3874824-0482-460d-962f-ed266ee03d20",
+        "a62c69f9-ff48-410d-a061-37a9fbd03095",
+        "eddfdeb7-8933-437c-904c-9e3e0b749ae4",
+        "a0a41051-2fe6-4670-9642-201d002281b1",
+        "746bfe41-c00b-40d3-af9a-f2aa8f9759de",
+        "d9dd45b6-26c3-42d0-9418-1c17bf036619"
+      ]
+    },
+    "artifactPath": "models/statistical/44b85c0c9885b348f6c3be9f5533b7a0254e592e111b5eb7ec94d649f7af745e.json",
+    "status": "CHALLENGER",
+    "trainedAt": "2026-10-08T23:14:02.133702Z"
+  },
+  "replaced": {
+    "id": "d6e9a4e4-333d-49ff-aa00-9b361839e19d",
+    "videoId": "4e362ad1-95c4-4271-aa85-689e1b8ce965",
+    "platform": "instagram",
+    "predictionType": "PRE_PUBLISH",
+    "status": "DRAFT",
+    "modelVersion": "grouped-ridge-72h-v1-44b85c0c9885",
+    "datasetVersion": "verified-72h-632eed67-0d63-404c-97fe-c7eab6b63ab1",
+    "featureVersion": "prerender-v5-motion-intensity-v1",
+    "knowledgeCutoff": "2026-10-08T23:14:02.155576Z",
+    "payload": {
+      "platform": "instagram",
+      "targets": [
+        {
+          "horizonMinutes": 4320,
+          "metric": "views",
+          "expectedValue": 31.773827404715984,
+          "interval50": [
+            26.21865706238461,
+            38.46277585599622
+          ],
+          "interval80": [
+            21.943153758661897,
+            45.81674429125031
+          ]
+        }
+      ],
+      "artifactSha256": "44b85c0c9885b348f6c3be9f5533b7a0254e592e111b5eb7ec94d649f7af745e",
+      "notice": "Historical 72H estimate from a small statistical model; no platform causal or winner claim",
+      "uncertaintyReasons": [
+        "Single feature baseline; interval calibration is limited by holdout size"
+      ],
+      "featureSnapshotId": "71008415-8fff-4f21-99ee-589d5095b977"
+    },
+    "confidence": "LOW",
+    "comparableSampleSize": 28,
+    "lockedAt": null
+  },
+  "rolledBack": {
+    "id": "9d113ac9-e228-4843-9b93-f851bff3b7e7",
+    "videoId": "4e362ad1-95c4-4271-aa85-689e1b8ce965",
+    "platform": "instagram",
+    "predictionType": "PRE_PUBLISH",
+    "status": "DRAFT",
+    "modelVersion": "grouped-ridge-72h-v1-7280e67f697d",
+    "datasetVersion": "verified-72h-7e87f44a-22b4-4c0b-abb6-55ac39afe75c",
+    "featureVersion": "prerender-v5-motion-intensity-v1",
+    "knowledgeCutoff": "2026-10-08T23:14:02.179190Z",
+    "payload": {
+      "platform": "instagram",
+      "targets": [
+        {
+          "horizonMinutes": 4320,
+          "metric": "views",
+          "expectedValue": 31.773827404715984,
+          "interval50": [
+            26.21865706238461,
+            38.46277585599622
+          ],
+          "interval80": [
+            21.943153758661897,
+            45.81674429125031
+          ]
+        }
+      ],
+      "artifactSha256": "7280e67f697df178128dc538ff90817e6f2b295f2166c54d9492e9b6dea5b449",
+      "notice": "Historical 72H estimate from a small statistical model; no platform causal or winner claim",
+      "uncertaintyReasons": [
+        "Single feature baseline; interval calibration is limited by holdout size"
+      ],
+      "featureSnapshotId": "77af20f4-5e3e-491d-8f35-30f176360bd5"
+    },
+    "confidence": "LOW",
+    "comparableSampleSize": 28,
+    "lockedAt": null
+  },
+  "checks": [
+    "backend collected exact verified 72H context",
+    "real ML statistical fit persisted artifact",
+    "real verify HTTP accepted hash-derived model identity",
+    "challenger leaves cold-start inference unchanged",
+    "promotion changes backend-served inference",
+    "replacement selects second artifact",
+    "rollback restores first artifact and prediction parity",
+    "historical prediction retains immutable model version"
+  ]
+}

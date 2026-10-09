@@ -142,6 +142,14 @@ class VideoPromptLineageTest {
                 .query(Integer.class)
                 .single())
         .isEqualTo(1);
+    var revised =
+        workspace.createPrompt(
+            content,
+            new com.pompomhills.intelligence.content.ContentWorkspaceController.CreatePromptRequest(
+                "fixture further edit", "{}", saved.id()));
+    assertThat(workspace.creativeProvenance(content, revised.id()))
+        .containsEntry("creativeRoleRecordId", String.valueOf(draft.get("recordId")))
+        .containsEntry("operatorEdited", true);
     assertThatThrownBy(() -> workspace.creativeProvenance(-1L, saved.id()))
         .isInstanceOf(IllegalArgumentException.class);
   }
@@ -208,6 +216,12 @@ class VideoPromptLineageTest {
     UUID qa = UUID.randomUUID();
     UUID lesson = UUID.randomUUID();
     UUID approved = UUID.randomUUID();
+    UUID sourceVideo = insertVideo("lesson-source.mp4");
+    String sourceHash = UUID.randomUUID().toString().replace("-", "").repeat(2);
+    jdbc.sql("UPDATE videos SET content_hash=:hash WHERE id=:id")
+        .param("hash", sourceHash)
+        .param("id", sourceVideo)
+        .update();
     UUID sourceReview = UUID.randomUUID();
     jdbc.sql(
             "INSERT INTO post_family_workflow_events(id,kind,payload) VALUES"
@@ -223,7 +237,11 @@ class VideoPromptLineageTest {
         .param("id", qa)
         .param(
             "payload",
-            "{\"viewerFacingUsability\":\"USABLE\",\"lineageStatus\":\"SOURCE_BOUND\",\"bindingHash\":\"fixture-binding\",\"duration\":15,\"videoId\":\"fixture-video\",\"reviewId\":\""
+            "{\"viewerFacingUsability\":\"USABLE\",\"lineageStatus\":\"SOURCE_BOUND\",\"bindingHash\":\"fixture-binding\",\"duration\":15,\"videoId\":\""
+                + sourceVideo
+                + "\",\"assetHash\":\""
+                + sourceHash
+                + "\",\"reviewId\":\""
                 + sourceReview
                 + "\"}")
         .update();
@@ -245,7 +263,40 @@ class VideoPromptLineageTest {
                 "EDUCATIONAL",
                 "model-v1",
                 15,
-                java.util.Map.of("settings", java.util.Map.of("aspectRatio", "16:9"))))
+                java.util.Map.of(
+                    "generator",
+                    "fixture-generator",
+                    "settings",
+                    java.util.Map.of("aspectRatio", "9:16"))))
+        .hasSize(1);
+    assertThat(
+            workflow.retrieveLessons(
+                "EDUCATIONAL", "model-v1", 15, java.util.Map.of("generator", "AUTO")))
+        .isEmpty();
+    for (String invalid :
+        java.util.List.of(
+            payload.replace("\"sampleSize\":1", "\"sampleSize\":2"),
+            payload.replace(qa.toString(), qa + "\",\"" + UUID.randomUUID()),
+            payload.replace("9:16", "16:9"))) {
+      jdbc.sql(
+              "INSERT INTO post_family_workflow_events(id,kind,payload) VALUES"
+                  + " (:id,'LEARNING_REVIEW',CAST(:payload AS jsonb))")
+          .param("id", UUID.randomUUID())
+          .param("payload", invalid.replace(lesson.toString(), UUID.randomUUID().toString()))
+          .update();
+    }
+    assertThat(workflow.retrieveLessons("EDUCATIONAL", "model-v1", 15)).hasSize(1);
+
+    assertThat(
+            workflow.retrieveLessons(
+                "EDUCATIONAL",
+                "model-v1",
+                15,
+                java.util.Map.of(
+                    "generator",
+                    "fixture-generator",
+                    "settings",
+                    java.util.Map.of("aspectRatio", "16:9"))))
         .isEmpty();
     assertThat(
             workflow.retrieveLessons(

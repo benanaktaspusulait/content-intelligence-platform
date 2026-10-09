@@ -866,6 +866,16 @@ def review_prompt(request: dict[str, Any], capabilities: dict[str, Any] | None =
     evidence = enrich_production_evidence(request)
     routing = route_content(request, evidence)
     generation = generation_plan(request, evidence, capabilities or {})
+    # Approval is checked by the backend; the resolved target capability must match too.
+    requested_lessons = request.get("retrievedLessons") or []
+    def stable_settings(value):
+        return {key: value[key] for key in value if key != "startFrame"}
+    matched_lessons = [lesson for lesson in requested_lessons
+        if generation.get("profileVersion")
+        and lesson.get("targetModelVersion") == generation["profileVersion"]
+        and lesson.get("contentProfile") == routing.get("contentProfile")
+        and stable_settings(lesson.get("settings") or {}) == stable_settings(generation.get("settings") or {})]
+    request = {**request, "retrievedLessons": matched_lessons}
     execution = LocalExecutionCritic().review(request, evidence, generation)
     intent = intent_requirements(request, evidence)
     quality = plan_quality(request, evidence)

@@ -1,0 +1,146 @@
+{
+  "scope": "LOCAL_MOCK records + real local HTTP/persistence/reopen; no provider execution",
+  "providerCalls": 0,
+  "readiness": {
+    "enabled": false,
+    "liveVerified": false,
+    "roles": [
+      {
+        "role": "STORY",
+        "provider": "deepseek",
+        "model": "",
+        "configured": false,
+        "modality": "TEXT_ONLY",
+        "automaticFallback": false
+      },
+      {
+        "role": "BUILD_PROMPT",
+        "provider": "openai",
+        "model": "",
+        "configured": false,
+        "modality": "TEXT_ONLY",
+        "automaticFallback": false
+      },
+      {
+        "role": "MINIMAL_REPAIR",
+        "provider": "openai",
+        "model": "",
+        "configured": false,
+        "modality": "TEXT_ONLY",
+        "automaticFallback": false
+      }
+    ]
+  },
+  "storyId": "6e7983b0-48a2-4740-a551-c4ae19307ed5",
+  "draftId": "600667ec-fe25-4b4e-a7fe-9926f35533e0",
+  "contentId": 1,
+  "promptVersionId": 2,
+  "provenance": {
+    "origin": "BUILD_PROMPT",
+    "creativeRoleRecordId": "600667ec-fe25-4b4e-a7fe-9926f35533e0",
+    "provider": "LOCAL_MOCK",
+    "model": "fixture-build-model",
+    "sourceStoryRecordId": "6e7983b0-48a2-4740-a551-c4ae19307ed5",
+    "operatorEdited": true,
+    "validationStatus": "NOT_VALIDATED"
+  },
+  "approvedLesson": {
+    "settings": {
+      "mode": "image2video",
+      "resolution": "480p",
+      "aspectRatio": "9:16"
+    },
+    "hypothesis": "LOCAL_MOCK fixture verifies source-bound retrieval",
+    "sampleSize": 1,
+    "lessonScope": "ACTUAL_EXECUTION",
+    "reviewStatus": "APPROVED",
+    "durationRange": [
+      15,
+      15
+    ],
+    "evidenceBasis": [
+      "e9826e8f-4481-4350-9e6c-50c1b9ef0269"
+    ],
+    "contentProfile": "EDUCATIONAL",
+    "observedResult": "LOCAL_MOCK only",
+    "counterexamples": [],
+    "targetModelVersion": "openart-cli-schema-2026-10-08",
+    "automaticallyApplied": false,
+    "parentRecordId": "63776d2a-1626-4bdd-8888-db54b11c2211",
+    "reviewReason": "LOCAL_MOCK acceptance only",
+    "reviewedAt": "2026-10-08T23:18:22.009053Z",
+    "recordId": "2e6e8e53-4fbe-44d7-8d41-57b4808b5473"
+  },
+  "retrieved": [
+    {
+      "settings": {
+        "mode": "image2video",
+        "resolution": "480p",
+        "aspectRatio": "9:16"
+      },
+      "hypothesis": "LOCAL_MOCK fixture verifies source-bound retrieval",
+      "reviewedAt": "2026-10-08T23:18:22.009053Z",
+      "sampleSize": 1,
+      "lessonScope": "ACTUAL_EXECUTION",
+      "reviewReason": "LOCAL_MOCK acceptance only",
+      "reviewStatus": "APPROVED",
+      "durationRange": [
+        15,
+        15
+      ],
+      "evidenceBasis": [
+        "e9826e8f-4481-4350-9e6c-50c1b9ef0269"
+      ],
+      "contentProfile": "EDUCATIONAL",
+      "observedResult": "LOCAL_MOCK only",
+      "parentRecordId": "63776d2a-1626-4bdd-8888-db54b11c2211",
+      "counterexamples": [],
+      "targetModelVersion": "openart-cli-schema-2026-10-08",
+      "automaticallyApplied": false,
+      "recordId": "2e6e8e53-4fbe-44d7-8d41-57b4808b5473",
+      "retrievalReason": "Approved, source-bound evidence matches profile, model, settings and duration; latest review retained"
+    }
+  ],
+  "reviewId": "170f2312-a0d5-43d3-b51b-4ba1de831f36",
+  "boundLessonIds": [
+    "2e6e8e53-4fbe-44d7-8d41-57b4808b5473"
+  ],
+  "revoked": {
+    "settings": {
+      "mode": "image2video",
+      "resolution": "480p",
+      "aspectRatio": "9:16"
+    },
+    "hypothesis": "LOCAL_MOCK fixture verifies source-bound retrieval",
+    "reviewedAt": "2026-10-08T23:18:22.102721Z",
+    "sampleSize": 1,
+    "lessonScope": "ACTUAL_EXECUTION",
+    "reviewReason": "LOCAL_MOCK revocation acceptance",
+    "reviewStatus": "REVOKED",
+    "durationRange": [
+      15,
+      15
+    ],
+    "evidenceBasis": [
+      "e9826e8f-4481-4350-9e6c-50c1b9ef0269"
+    ],
+    "contentProfile": "EDUCATIONAL",
+    "observedResult": "LOCAL_MOCK only",
+    "parentRecordId": "63776d2a-1626-4bdd-8888-db54b11c2211",
+    "counterexamples": [],
+    "targetModelVersion": "openart-cli-schema-2026-10-08",
+    "automaticallyApplied": false,
+    "recordId": "2ccff687-af80-4ac9-9ba3-6ccf5b34e08d"
+  },
+  "freshReviewId": "912669b4-d35d-4cac-896b-63aea5908de7",
+  "historicalBinding": "d15681ee861d6aede36f8092557ea032c9f3b6eb77e47c4bc890fd2d3fbda2ec",
+  "freshBinding": "0b2de43506deaa78fa552d800bf1f8bf9dbf0232a2d6a6c7cf5ba69616926f57",
+  "checks": [
+    "edited draft retains story/provider/model metadata",
+    "descendant revision inherits source provenance",
+    "pending lesson excluded",
+    "approved lesson injected into real resolved-capability review",
+    "reopened review keeps original lesson snapshot",
+    "revocation excludes next request and changes binding"
+  ]
+}

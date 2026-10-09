@@ -199,10 +199,10 @@ const VARIANT_TYPE_LABELS: Record<string, string> = {
         <input aria-label="Edited media path" [(ngModel)]="editedPath" placeholder="library/.../edited.mp4">
         <select aria-label="Parent variant" [(ngModel)]="editParentId"><option value="">Original video</option>@for (variant of videoVariants(); track variant.id) {<option [value]="variant.id">{{ variant.variantType }} · {{ variant.id }}</option>}</select>
         <input aria-label="Edit reason" [(ngModel)]="editedReason" placeholder="What was changed and why">
-        <button type="button" (click)="importEdited()" [disabled]="!editedPath || !editedReason.trim()">Verify and register edited file</button>
-        @if (editedResult; as edited) { <p>Variant {{ edited.variantId }} · {{ edited.durationMs / 1000 }} seconds · Hash {{ edited.artifactHash }}</p><app-actual-video-review [videoId]="edited.artifactVideoId" /> }
+        <button type="button" (click)="importEdited()" [disabled]="editedImportBusy() || !editedPath || !editedReason.trim()">Verify and register edited file</button>
+        @if (editedResult; as edited) { <p>Variant {{ edited.variantId }} · {{ edited.durationMs / 1000 }} seconds · Hash {{ edited.artifactHash }}</p><app-actual-video-review [videoId]="edited.artifactVideoId" [durationSeconds]="edited.durationMs / 1000" /> }
       </section>
-      @if (!creativeContext()?.prompt) { <app-actual-video-review [videoId]="creativeContext()?.videoId || ''" /> }
+      @if (!creativeContext()?.prompt) { <app-actual-video-review [videoId]="creativeContext()?.videoId || ''" [durationSeconds]="video() ? video()!.durationMs / 1000 : null" /> }
       }
 
       @if (activeTab() === 'overview') {
@@ -588,16 +588,18 @@ export class VideoDetailPage implements OnDestroy {
   protected readonly platform = signal<PlatformKey>('facebook');
   protected readonly activeTab = signal<'overview' | 'creative' | 'publication' | 'performance' | 'evidence'>('overview');
   protected readonly editHistory = signal<Array<{videoId:string; artifactVideoId:string; variantId:string; relativePath:string; artifactHash:string; durationMs:number; reason:string; recordId:string}>>([]);
+  protected readonly editedImportBusy = signal(false);
   protected editedPath = '';
   protected editedReason = '';
   protected editParentId = '';
   protected editedResult: { variantId: string; artifactVideoId: string; artifactHash: string; durationMs: number; recordId: string } | null = null;
   protected importEdited(): void {
     const id = this.creativeContext()?.videoId;
-    if (!id || !this.editedPath || !this.editedReason.trim()) return;
+    if (this.editedImportBusy() || !id || !this.editedPath || !this.editedReason.trim()) return;
+    this.editedImportBusy.set(true);
     this.service.importEditedVariant(id, this.editedPath, this.editParentId || null, this.editedReason.trim()).subscribe({
-      next: result => { this.editedResult = result; this.loadEditHistory(id); },
-      error: response => this.message.set(response.error?.detail || response.error?.message || 'Edited file import failed.'),
+      next: result => { this.editedImportBusy.set(false); this.editedResult = result; this.loadEditHistory(id); },
+      error: response => { this.editedImportBusy.set(false); this.message.set(response.error?.detail || response.error?.message || 'Edited file import failed.'); },
     });
   }
 
