@@ -31,7 +31,7 @@ import org.springframework.web.client.RestClient;
 @RequiredArgsConstructor
 public class FacebookPublisher implements PlatformPublisher {
 
-  private static final String GRAPH_API_VERSION = "v18.0";
+  private static final String GRAPH_API_VERSION = "v26.0";
   private static final String GRAPH_API_BASE_URL =
       "https://graph.facebook.com/" + GRAPH_API_VERSION;
 

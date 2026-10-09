@@ -16,7 +16,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 @RequiredArgsConstructor
 public class InstagramCommentReplyAdapter implements MetaCommentReplyPort {
 
-  private static final String GRAPH_API_BASE = "https://graph.facebook.com/v18.0";
+  private static final String GRAPH_API_BASE = "https://graph.facebook.com/v26.0";
 
   private final CredentialManager credentialManager;
   private final RestClient.Builder restClientBuilder;

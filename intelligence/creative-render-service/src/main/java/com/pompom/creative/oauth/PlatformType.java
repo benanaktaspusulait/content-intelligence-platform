@@ -12,8 +12,8 @@ public enum PlatformType {
       "https://oauth2.googleapis.com/token"),
   FACEBOOK(
       "Facebook",
-      "https://www.facebook.com/v18.0/dialog/oauth",
-      "https://graph.facebook.com/v18.0/oauth/access_token"),
+      "https://www.facebook.com/v26.0/dialog/oauth",
+      "https://graph.facebook.com/v26.0/oauth/access_token"),
   INSTAGRAM(
       "Instagram",
       "https://api.instagram.com/oauth/authorize",
