@@ -1,5 +1,6 @@
 package com.pompom.creative.api.controller;
 
+import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
@@ -41,8 +42,8 @@ class RenderAssetMediaControllerTest {
         RenderAsset.builder().id(UUID.randomUUID()).assetType(RenderAsset.AssetType.VIDEO).build();
     media = tempDir.resolve("render-v1.mp4");
     Files.writeString(media, "0123456789", StandardCharsets.UTF_8);
-    when(assetRepository.findById(asset.getId())).thenReturn(Optional.of(asset));
-    when(assetLibraryManager.resolveStoredPath(asset)).thenReturn(media);
+    lenient().when(assetRepository.findById(asset.getId())).thenReturn(Optional.of(asset));
+    lenient().when(assetLibraryManager.resolveStoredPath(asset)).thenReturn(media);
     mvc =
         MockMvcBuilders.standaloneSetup(
                 new RenderAssetController(
@@ -71,5 +72,18 @@ class RenderAssetMediaControllerTest {
         .andExpect(
             header()
                 .string("Content-Disposition", org.hamcrest.Matchers.containsString("attachment")));
+  }
+
+  @Test
+  void returnsNotFoundForUnknownAsset() throws Exception {
+    UUID unknown = UUID.randomUUID();
+    when(assetRepository.findById(unknown)).thenReturn(Optional.empty());
+    mvc.perform(get("/api/v1/render-assets/{id}/media", unknown)).andExpect(status().isNotFound());
+  }
+
+  @Test
+  void rejectsMultiRangeRequests() throws Exception {
+    mvc.perform(get("/api/v1/render-assets/{id}/media", asset.getId()).header("Range", "bytes=0-1,3-4"))
+        .andExpect(status().isRequestedRangeNotSatisfiable());
   }
 }
