@@ -44,7 +44,7 @@ Publisher migration is now an explicitly authorized companion workstream. It mus
 - [x] Keep TikTok/YouTube behavior unchanged unless explicitly configured.
 - [x] Hide Facebook/Instagram queue/schedule controls in `frontend/src/app/pages/operations.page.ts` while the provider is disabled.
 - [x] Add backend guard regression coverage for disabled Meta platforms.
-- [ ] Add frontend test proving disabled Meta platforms cannot be submitted.
+- [x] Add frontend test proving disabled Meta platforms cannot be submitted.
 - [ ] Add an operational status field showing `META_PUBLISH_DISABLED`.
 
 ## Phase 1 — OAuth and connection lifecycle
