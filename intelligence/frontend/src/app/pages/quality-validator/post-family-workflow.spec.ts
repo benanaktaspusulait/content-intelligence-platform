@@ -82,6 +82,25 @@ describe('post-family operator workflow', () => {
     expect(f.componentInstance.platformContentId).toBe('99999999999999999999');
     expect(f.nativeElement.textContent).toContain('reference');
   });
+  it('extracts source timing without treating every range as a major beat', async () => {
+    const f = await setup();
+    const c = f.componentInstance;
+    c.prompt = 'Mimi / ANIMATION (15s, 16:9)\n0–3s: Mimi enters.\n3-6s: The note flips.\n6.0-10.0s: Notes multiply.\n10-13s: Mimi hides.\n00:13-00:15: Hard cut.';
+    expect(c.timedRanges.map(range => [range.start, range.end])).toEqual([[0, 3], [3, 6], [6, 10], [10, 13], [13, 15]]);
+    expect(c.timedRanges.every(range => range.quote.length > 0)).toBe(true);
+    expect(c.extractedIntent).toContain('Mimi enters');
+  });
+  it('keeps missing source identity incomplete and restores saved settings without a 9:16 fallback', async () => {
+    const f = await setup();
+    const c = f.componentInstance;
+    expect(c.analysisReady).toBe(true);
+    c.aspectRatio = '';
+    c.prompt = '15 seconds, 16:9';
+    c['hydrateSettingsFromPrompt']();
+    expect(c.aspectRatio).toBe('16:9');
+    expect(c.desiredDuration).toBe(15);
+    expect(c.aspectRatio).not.toBe('9:16');
+  });
   it('binds a local patch to Unicode code points and the exact source quote', async () => {
     const f = await setup();
     const c = f.componentInstance;

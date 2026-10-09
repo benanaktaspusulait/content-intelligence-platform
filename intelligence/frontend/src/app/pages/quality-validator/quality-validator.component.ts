@@ -437,10 +437,11 @@ Intensity: 4`;
     if (!this.promptMonaco) return;
     import('monaco-editor/esm/vs/editor/editor.api').then(monaco => {
       if (!this.promptMonaco) return;
+      monaco.editor.defineTheme('pompom-production-dark', { base: 'vs-dark', inherit: true, rules: [{ token: '', foreground: 'F8FAFC' }, { token: 'comment', foreground: '94A3B8' }, { token: 'string', foreground: 'E2E8F0' }, { token: 'keyword', foreground: 'C4B5FD' }], colors: { 'editor.background': '#0B0D12', 'editor.foreground': '#F8FAFC', 'editorGutter.background': '#0B0D12', 'editorLineNumber.foreground': '#B5C1D3', 'editorLineNumber.activeForeground': '#FFFFFF', 'editorCursor.foreground': '#FFFFFF', 'editor.selectionBackground': '#24476B', 'editor.inactiveSelectionBackground': '#1A344F', 'editor.lineHighlightBackground': '#151A24', 'editorWidget.background': '#111827', 'editorWidget.border': '#334155', 'scrollbarSlider.background': '#47556988', 'scrollbarSlider.hoverBackground': '#64748Baa' } });
       this.promptEditor = monaco.editor.create(this.promptMonaco.nativeElement, {
         value: this.prompt,
         language: 'markdown',
-        theme: 'vs-light',
+        theme: 'pompom-production-dark',
         automaticLayout: true,
         minimap: { enabled: false },
         wordWrap: 'on',

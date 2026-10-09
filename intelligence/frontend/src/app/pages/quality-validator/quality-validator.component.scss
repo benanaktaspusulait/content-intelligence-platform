@@ -82,13 +82,13 @@
 .prompt-actions, .linked-context > small, .linked-context > a { grid-column: 1 / -1; }
 .prompt-actions { display: flex; flex-wrap: wrap; gap: 8px; }
 .linked-context > small { color: #68747c; font-size: .72rem; }
-.prompt-editor-panel { width: 100%; min-width: 0; max-width: 100%; padding: 12px; border: 1px solid #dfe5e8; border-radius: 8px; background: #fbfcfd; }
+.prompt-editor-panel { width: 100%; min-width: 0; max-width: 100%; padding: 12px; border: 1px solid #334155; border-radius: 8px; background: #0B0D12; }
 .prompt-editor-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-width: 0; margin-bottom: 8px; color: #68747c; font-size: .72rem; }
 .prompt-editor-heading > div { display: grid; gap: 2px; min-width: 0; }
-.prompt-editor-heading strong { color: #2c3e50; font-size: .85rem; }
-.prompt-editor-heading > span { white-space: nowrap; }
+.prompt-editor-heading strong { color: #F8FAFC; font-size: .85rem; }
+.prompt-editor-heading > span { white-space: nowrap; color: #B5C1D3; }
 .prompt-editor-shell { position: relative; width: 100%; min-width: 0; max-width: 100%; overflow: hidden; contain: layout paint; }
-.prompt-monaco { display: block; position: relative; width: 100%; max-width: 100%; height: 520px; min-width: 0; border: 1px solid #d8dee5; border-radius: 7px; overflow: hidden; }
+.prompt-monaco { background: #0B0D12; display: block; position: relative; width: 100%; max-width: 100%; height: 520px; min-width: 0; border: 1px solid #d8dee5; border-radius: 7px; overflow: hidden; }
 .prompt-monaco .monaco-editor, .prompt-monaco .overflow-guard { max-width: 100%; }
 .workspace-choices { display: grid; gap: 5px; }
 .workspace-choices button, .workspace-open { padding: 6px 8px; color: #31583b; background: white; border: 1px solid #cbd6ce; border-radius: 5px; text-align: left; cursor: pointer; }
