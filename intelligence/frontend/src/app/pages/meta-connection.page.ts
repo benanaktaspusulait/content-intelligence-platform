@@ -207,7 +207,13 @@ export class MetaConnectionPage {
         this.connection.set(data);
         this.loading.set(false);
         this.loadPageContent();
-        this.service.getPageInsights(data.page?.id).subscribe({ next: insights => this.pageInsights.set(insights), error: () => this.pageInsights.set(null) });
+        // Keep the connection screen resilient when an older injected read client is present.
+        const insightsReader = (this.service as Partial<MetaReadService>).getPageInsights;
+        if (typeof insightsReader === 'function') {
+          insightsReader.call(this.service, data.page?.id).subscribe({ next: insights => this.pageInsights.set(insights), error: () => this.pageInsights.set(null) });
+        } else {
+          this.pageInsights.set(null);
+        }
       },
       error: response => {
         this.loading.set(false);

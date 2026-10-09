@@ -18,6 +18,7 @@ describe('post-family operator workflow', () => {
     const setupHttp = TestBed.inject(HttpTestingController);
     setupHttp.expectOne(r => r.url === '/api/v1/intelligence/workflow/records?kind=REVIEW').flush([]);
     setupHttp.expectOne('/api/v1/characters').flush([{ name: 'Luca' }]);
+    setupHttp.expectOne('/api/v1/intelligence/workflow/production-settings?contentId=1&promptVersionId=2').flush({});
     return fixture;
   }
   it('restores the exact saved version using read requests and invalidates changed settings', async () => {

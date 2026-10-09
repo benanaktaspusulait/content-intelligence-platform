@@ -84,6 +84,23 @@ public class WorkflowController {
     return service.saveStudioSession(request);
   }
 
+  @GetMapping("/studio-sessions/by-prompt")
+  public Map<String, Object> studioSessionForPrompt(
+      @RequestParam Long contentId, @RequestParam Long promptVersionId) {
+    return service.getStudioSessionForPrompt(contentId, promptVersionId);
+  }
+
+  @PostMapping("/production-settings")
+  public Map<String, Object> productionSettings(@RequestBody Map<String, Object> request) {
+    return service.saveProductionSettings(request);
+  }
+
+  @GetMapping("/production-settings")
+  public Map<String, Object> productionSettingsForPrompt(
+      @RequestParam Long contentId, @RequestParam Long promptVersionId) {
+    return service.getProductionSettings(contentId, promptVersionId);
+  }
+
   @PostMapping("/review")
   public Map<String, Object> review(@RequestBody WorkflowService.ReviewRequest request) {
     return service.runReview(request, true);

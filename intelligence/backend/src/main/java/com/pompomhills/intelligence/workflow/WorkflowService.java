@@ -454,6 +454,40 @@ public class WorkflowService {
         }).optional().orElseThrow(() -> new IllegalArgumentException("Creative studio session not found"));
   }
 
+  public Map<String, Object> getStudioSessionForPrompt(Long contentId, Long promptVersionId) {
+    return jdbc.sql(
+            "SELECT id,payload::text payload FROM post_family_workflow_events "
+                + "WHERE kind='CREATIVE_STUDIO_SESSION' AND payload->>'contentId'=:content "
+                + "AND payload->>'promptVersionId'=:prompt ORDER BY created_at DESC LIMIT 1")
+        .param("content", String.valueOf(contentId))
+        .param("prompt", String.valueOf(promptVersionId))
+        .query((rs, ignored) -> {
+          var value = read(rs.getString("payload"));
+          value.put("recordId", rs.getString("id"));
+          return value;
+        }).optional().orElseThrow(() -> new IllegalArgumentException("Creative studio settings not found"));
+  }
+
+  public Map<String, Object> saveProductionSettings(Map<String, Object> request) {
+    if (request.get("contentId") == null || request.get("promptVersionId") == null)
+      throw new IllegalArgumentException("contentId and promptVersionId are required");
+    var payload = new LinkedHashMap<String, Object>(request);
+    payload.put("savedAt", Instant.now().toString());
+    payload.put("recordId", save("PRODUCTION_SETTINGS",
+        String.valueOf(request.get("contentId")) + "/" + request.get("promptVersionId"), payload));
+    return payload;
+  }
+
+  public Map<String, Object> getProductionSettings(Long contentId, Long promptVersionId) {
+    return jdbc.sql(
+            "SELECT id,payload::text payload FROM post_family_workflow_events WHERE kind='PRODUCTION_SETTINGS' "
+                + "AND payload->>'contentId'=:content AND payload->>'promptVersionId'=:prompt "
+                + "ORDER BY created_at DESC LIMIT 1")
+        .param("content", String.valueOf(contentId)).param("prompt", String.valueOf(promptVersionId))
+        .query((rs, ignored) -> { var value = read(rs.getString("payload")); value.put("recordId", rs.getString("id")); return value; })
+        .optional().orElseThrow(() -> new IllegalArgumentException("Production settings not found"));
+  }
+
   public Map<String, Object> secondOpinion(UUID id, Map<String, Object> options) {
     var review = get(id);
     var result =

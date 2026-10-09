@@ -235,6 +235,7 @@ export class QualityValidatorComponent implements AfterViewInit, OnDestroy {
   promptDirectoriesLoading = false;
   importMessage = '';
   selectedPromptPath = '';
+  sourceReconciliationRequested = false;
   linkedVideos: {videoId: string; relativePath: string}[] = [];
   promptFilesLoading = false;
   selectedPromptLoading = false;
@@ -303,6 +304,7 @@ Intensity: 4`;
   constructor(private http: HttpClient, private router: Router, private route: ActivatedRoute, private changeDetector: ChangeDetectorRef) {
     this.detailMode = this.route.snapshot.url.some(segment => segment.path === 'detail');
     this.studioMode = this.route.snapshot.queryParamMap.get('studio') === '1';
+    this.sourceReconciliationRequested = this.route.snapshot.queryParamMap.get('reconcile') === '1';
     this.loadPromptWorkspaces();
     this.loadQualityRecords();
     if (this.detailMode) this.loadLinkedPromptFromRoute();
