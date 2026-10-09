@@ -310,6 +310,27 @@ public final class MetaGraphReadClient {
         .body(PagePostsResponse.class);
   }
 
+  /** Reads read-only insights for a Facebook Page or Page post object. */
+  public InstagramInsightsResponse getObjectInsights(String objectId, String metrics) {
+    String validatedId = requireNumericId(objectId);
+    return withAuth(
+            restClient
+                .get()
+                .uri(
+                    uriBuilder ->
+                        uriBuilder
+                            .pathSegment(properties.apiVersion(), validatedId, "insights")
+                            .queryParam("metric", metrics)
+                            .build()))
+        .retrieve()
+        .onStatus(
+            status -> status.isError(),
+            (request, response) -> {
+              throw mapError(response.getStatusCode().value(), response.getBody());
+            })
+        .body(InstagramInsightsResponse.class);
+  }
+
   public InstagramAccount getInstagramAccount() {
     return withAuth(
             restClient
