@@ -82,7 +82,7 @@ Publisher migration is now an explicitly authorized companion workstream. It mus
 - [x] Add durable canonical models for `MetaComment`, `MetaCommentReply`, `MetaCommentThread`, and delivery attempts; keep the shape extensible for future private conversations without implementing them.
 - [x] Normalize Facebook Page and Instagram post/Reel comment/reply webhook payloads with provider event IDs and deduplication.
 - [x] Add comment ingestion through the existing Facebook/Instagram webhook endpoints.
-- [ ] Add comment/reply polling and reconciliation for missed events.
+- [x] Add comment/reply polling and reconciliation for missed events.
 - [x] Add moderation state: `RECEIVED`, `PENDING_REVIEW`, `APPROVED`, `REJECTED`, `SENT`, `FAILED`, `RETRYABLE`.
 - [ ] Add optional AI reply-draft generation; drafts never send automatically.
 - [x] Require human approval before every outbound public comment reply.

@@ -3,21 +3,42 @@ package com.pompom.creative.api.controller;
 import com.pompom.creative.domain.MetaCommentReply;
 import com.pompom.creative.meta.MetaCommentModerationService;
 import com.pompom.creative.meta.MetaCommentReplyDeliveryService;
+import com.pompom.creative.meta.MetaCommentReconciliationService;
 import com.pompom.creative.oauth.MetaCommentReplyDisabledException;
 import java.util.UUID;
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 /** Human-review API for public Facebook/Instagram comment reply drafts. */
 @RestController
 @RequestMapping("/api/v1/meta/comments")
-@RequiredArgsConstructor
 public class MetaCommentController {
 
   private final MetaCommentModerationService moderation;
   private final MetaCommentReplyDeliveryService delivery;
+  private final MetaCommentReconciliationService reconciliation;
+
+  /** Compatibility constructor for isolated controller tests. */
+  public MetaCommentController(
+      MetaCommentModerationService moderation, MetaCommentReplyDeliveryService delivery) {
+    this(moderation, delivery, null);
+  }
+
+  public MetaCommentController(
+      MetaCommentModerationService moderation,
+      MetaCommentReplyDeliveryService delivery,
+      MetaCommentReconciliationService reconciliation) {
+    this.moderation = moderation;
+    this.delivery = delivery;
+    this.reconciliation = reconciliation;
+  }
+
+  @PostMapping("/reconcile")
+  public ResponseEntity<MetaCommentReconciliationService.ReconciliationResult> reconcile(
+      @RequestParam(defaultValue = "50") int limit) {
+    return ResponseEntity.ok(reconciliation.reconcile(limit));
+  }
 
   @PostMapping("/{commentId}/replies/draft")
   public ResponseEntity<MetaCommentReply> createDraft(
