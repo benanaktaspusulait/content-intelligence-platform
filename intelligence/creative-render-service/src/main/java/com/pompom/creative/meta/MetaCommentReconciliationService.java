@@ -5,12 +5,14 @@ import com.pompom.creative.repository.WebhookEventRepository;
 import com.pompom.creative.webhook.WebhookService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /** Replays bounded failed Meta comment webhook deliveries to close event gaps. */
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class MetaCommentReconciliationService {
   private final WebhookEventRepository webhookEvents;
   private final WebhookService webhookService;
@@ -28,6 +30,7 @@ public class MetaCommentReconciliationService {
       webhookService.processWebhookEvent(event);
       processed++;
     }
+    log.info("Meta comment reconciliation completed: candidates={}, replayed={}", candidates.size(), processed);
     return new ReconciliationResult(candidates.size(), processed);
   }
 
