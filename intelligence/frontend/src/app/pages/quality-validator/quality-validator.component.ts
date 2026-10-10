@@ -220,6 +220,7 @@ export class QualityValidatorComponent implements AfterViewInit, OnDestroy {
   promptVersionId: string = '';
   validationRecordId: number | null = null;
   report: QualityReport | null = null;
+  reportTab: 'overview' | 'evidence' | 'issues' | 'timeline' = 'overview';
   readonly formatNullableScore = formatNullableScore;
   readonly formatCreativeGrade = formatCreativeGrade;
   readonly formatEvaluationCoverage = formatEvaluationCoverage;

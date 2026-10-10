@@ -135,7 +135,14 @@
       </button>
     </div>
 
-    <div *ngIf="report.preRenderAssessment" class="pre-render-assessment card">
+    <nav class="report-tabs" aria-label="Analysis report sections" role="tablist">
+      <button type="button" role="tab" [attr.aria-selected]="reportTab === 'overview'" [class.is-active]="reportTab === 'overview'" (click)="reportTab = 'overview'">Overview <small>Score & readiness</small></button>
+      <button type="button" role="tab" [attr.aria-selected]="reportTab === 'evidence'" [class.is-active]="reportTab === 'evidence'" (click)="reportTab = 'evidence'">Evidence <small>Coverage & families</small></button>
+      <button type="button" role="tab" [attr.aria-selected]="reportTab === 'issues'" [class.is-active]="reportTab === 'issues'" (click)="reportTab = 'issues'">Issues & repairs <small>Rules & priority fixes</small></button>
+      <button type="button" role="tab" [attr.aria-selected]="reportTab === 'timeline'" [class.is-active]="reportTab === 'timeline'" (click)="reportTab = 'timeline'">Timeline <small>Beats & visual states</small></button>
+    </nav>
+
+    <div *ngIf="reportTab === 'overview' && report.preRenderAssessment" class="pre-render-assessment card">
       <div class="card-header">
         <div><span class="eyebrow">PRE-RENDER CREATIVE READINESS</span><h2>Can this plan spend render credits?</h2></div>
         <div class="readiness-summary"><strong>Creative grade {{ formatCreativeGrade(report.preRenderAssessment) }}</strong><span>{{ formatReadiness(report.preRenderAssessment.prompt_stage, report.preRenderAssessment.readiness) }}</span><small>Creative score {{ formatNullableScore(report.preRenderAssessment.creative_score) }}</small><small>Evidence {{ report.preRenderAssessment.evidence_completeness?.status || 'UNKNOWN' }} · {{ report.preRenderAssessment.assessment_coverage_percent }}% coverage</small><small *ngIf="report.preRenderAssessment.render_authorization">Video render: {{ report.preRenderAssessment.render_authorization.status.replaceAll('_', ' ') }}</small></div>
@@ -198,7 +205,7 @@
     </div>
     
     <!-- Score Card -->
-    <div class="score-card card" [ngClass]="getScoreClass()">
+    <div *ngIf="reportTab === 'overview'" class="score-card card" [ngClass]="getScoreClass()">
       <div class="score-display">
         <div class="score-number">{{ formatNullableScore(report.overallScore) }}</div>
         <div class="score-max">/100</div>
@@ -233,7 +240,7 @@
     </div>
 
     <!-- Priority Fixes -->
-    <div *ngIf="report.priorityFixes && report.priorityFixes.length > 0" class="priority-fixes card">
+    <div *ngIf="reportTab === 'issues' && report.priorityFixes && report.priorityFixes.length > 0" class="priority-fixes card">
       <div class="card-header">
         <h2 id="priority-fixes">🔧 Priority Fixes</h2>
         <span class="badge badge-secondary">{{ report.priorityFixes.length }}</span>
@@ -261,7 +268,7 @@
       </div>
     </div>
 
-    <div *ngIf="report.serviceErrors.length || report.unknownRules.length || report.notApplicableRules.length" class="failed-rules card">
+    <div *ngIf="reportTab === 'issues' && (report.serviceErrors.length || report.unknownRules.length || report.notApplicableRules.length)" class="failed-rules card">
       <div class="card-header">
         <h2 id="render-readiness">Evaluation Coverage</h2>
       </div>
@@ -278,7 +285,7 @@
       </div>
     </div>
 
-    <div class="family-scores card">
+    <div *ngIf="reportTab === 'evidence'" class="family-scores card">
       <div class="card-header"><h2>Validation Evidence</h2></div>
       <div class="card-body">
         <p><strong>Parser confidence:</strong> {{ report.parserConfidence | percent:'1.0-0' }}</p>
@@ -290,7 +297,7 @@
     </div>
 
     <!-- Failed Rules -->
-    <div *ngIf="report.failedRules && report.failedRules.length > 0" class="failed-rules card">
+    <div *ngIf="reportTab === 'issues' && report.failedRules && report.failedRules.length > 0" class="failed-rules card">
       <div class="card-header">
         <h2>❌ Failed Rules</h2>
         <span class="badge badge-danger">{{ report.failedRules.length }}</span>
@@ -342,7 +349,7 @@
     </div>
 
     <!-- Family Scores -->
-    <div class="family-scores card">
+    <div *ngIf="reportTab === 'evidence'" class="family-scores card">
       <div class="card-header">
         <h2>📊 Quality Family Scores</h2>
       </div>
@@ -367,7 +374,7 @@
     </div>
 
     <!-- Timeline Visualization -->
-    <div *ngIf="report.timelineData" class="timeline-visualization card">
+    <div *ngIf="reportTab === 'timeline' && report.timelineData" class="timeline-visualization card">
       <div class="card-header">
         <h2>📈 Timeline Visualization</h2>
         <span class="badge badge-info">Interactive Chart</span>
@@ -378,7 +385,7 @@
     </div>
 
     <!-- Timeline Preview -->
-    <div *ngIf="report.timelineData" class="timeline-preview card">
+    <div *ngIf="reportTab === 'timeline' && report.timelineData" class="timeline-preview card">
       <div class="card-header">
         <h2>⏱️ Timeline Overview</h2>
         <span class="badge badge-info">{{ report.timelineData.beats.length }} beats</span>
