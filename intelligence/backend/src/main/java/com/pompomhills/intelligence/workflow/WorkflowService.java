@@ -1181,7 +1181,7 @@ public class WorkflowService {
   public List<Map<String, Object>> list(
       String kind, String contentId, String promptVersionId, String bindingHash) {
     return jdbc.sql(
-            "SELECT id,payload::text payload FROM post_family_workflow_events WHERE kind=:kind"
+            "SELECT id,created_at,payload::text payload FROM post_family_workflow_events WHERE kind=:kind"
                 + " AND (CAST(:content AS text) IS NULL OR payload->>'contentId'=:content)"
                 + " AND (CAST(:prompt AS text) IS NULL OR payload->>'promptVersionId'=:prompt)"
                 + " AND (CAST(:binding AS text) IS NULL OR payload->>'bindingHash'=:binding)"
@@ -1194,6 +1194,7 @@ public class WorkflowService {
             (rs, ignored) -> {
               var result = read(rs.getString("payload"));
               result.put("recordId", rs.getString("id"));
+              result.put("createdAt", rs.getObject("created_at", java.time.OffsetDateTime.class).toInstant().toString());
               return result;
             })
         .list();
@@ -1201,6 +1202,7 @@ public class WorkflowService {
 
   private UUID save(String kind, String binding, Map<String, Object> value) {
     UUID id = UUID.randomUUID();
+    value.putIfAbsent("createdAt", java.time.Instant.now().toString());
     try {
       jdbc.sql(
               "INSERT INTO post_family_workflow_events(id,kind,binding_sha256,payload)"

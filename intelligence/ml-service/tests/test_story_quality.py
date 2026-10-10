@@ -7,7 +7,8 @@ def test_rephrasings_are_near_duplicates() -> None:
         'Mimi quickly yanks the sticky notes off, then ends covered in notes.',
         'Mimi removes the notes and finally is covered by sticky notes.',
     ], {'profile': 'ABSURD_PHYSICS'})
-    assert result['classification'] in {'NEAR_DUPLICATE', 'PARTIALLY_DISTINCT'}
+    assert result['classification'] == 'NEAR_DUPLICATE'
+    assert result['variationClass'] == 'PARAPHRASE_OR_NEAR_DUPLICATE'
     assert result['method'] == 'story-structure-v1'
 
 

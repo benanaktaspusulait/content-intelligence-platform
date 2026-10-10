@@ -365,3 +365,17 @@ Scope: consolidated from the latest Stage Actions, PDF Export, Source Evidence a
 - [x] Render and inspect every current PDF page for wrapping, pagination, findings and section-boundary contamination as an automated regression.
 - [x] Verify responsive/mobile Stage 4 action bar and Stage 5 export toolbar layout through breakpoint CSS coverage and browser smoke inspection.
 - [x] Record remaining unsupported capabilities and mock/live-provider boundaries in the current evidence report.
+
+# Idea → Story → Prompt targeted quality fixes — 2026-10-10
+
+- [x] Carry one canonical target configuration (aspect ratio, duration, generator, profile and character) through STORY and BUILD_PROMPT requests.
+- [x] Reject provider prompts that contradict confirmed production settings before persistence.
+- [x] Add focused 9:16/16:9 conflict regression coverage and keep the accepted draft unvalidated on conflict.
+- [x] Compare normalized story mechanisms and causal event sequences instead of treating wording/camera vocabulary as material diversity.
+- [x] Expose `MATERIAL_VARIATION`, `LIMITED_VARIATION`, `PARAPHRASE_OR_NEAR_DUPLICATE` and `INSUFFICIENT_EVIDENCE` classifications alongside the canonical status.
+- [x] Ask the independent reviewer for grounded evidence across opening, progression, constraints, generator risk, ending and sibling originality.
+- [x] Surface local-versus-independent review disagreement and persist actual workflow record timestamps/provenance.
+- [x] Add a non-blocking detailed-story mode suggestion without overriding the operator's selected mode.
+- [x] Preserve saved-story reuse without a provider call and distinguish generated, approved, draft-built and saved prompt states in Workflow Summary.
+- [x] Keep editable prompt formatting readable while preserving the provider response and exact approved story identity.
+- [x] Build and deploy frontend, backend and ML changes; verify all active service health endpoints.

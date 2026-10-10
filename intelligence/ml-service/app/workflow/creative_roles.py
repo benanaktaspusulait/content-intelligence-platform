@@ -24,13 +24,47 @@ def role_readiness() -> dict[str, Any]:
         for role, provider in ROLES.items()]}
 
 
+def _validate_production_settings(prompt: str, plan: dict[str, Any], context: dict[str, Any]) -> list[str]:
+    target = context.get('targetConfiguration') if isinstance(context.get('targetConfiguration'), dict) else {}
+    expected_ratio = str(target.get('aspectRatio') or context.get('aspectRatio') or '').strip()
+    expected_duration = target.get('duration') or context.get('targetDuration')
+    expected_generator = str(target.get('selectedGenerator') or context.get('selectedGenerator') or '').strip()
+    expected_profile = str(target.get('contentProfile') or context.get('profile') or '').strip()
+    if not any((expected_ratio, expected_duration, expected_generator, expected_profile)):
+        return []
+    constraints = plan.get('productionConstraints') if isinstance(plan.get('productionConstraints'), dict) else {}
+    conflicts: list[str] = []
+    if expected_ratio:
+        ratios = set(re.findall(r'(?<!\d)(?:9:16|16:9|1:1)(?!\d)', prompt))
+        plan_ratio = str(constraints.get('aspectRatio') or '').strip()
+        if expected_ratio not in ratios:
+            conflicts.append(f'prompt does not state the selected aspect ratio {expected_ratio}')
+        if plan_ratio and plan_ratio != expected_ratio:
+            conflicts.append(f'production plan says {plan_ratio} but the selected aspect ratio is {expected_ratio}')
+        if any(r != expected_ratio for r in ratios):
+            conflicts.append(f'prompt contains conflicting aspect ratio(s): {", ".join(sorted(ratios - {expected_ratio}))}')
+    if expected_duration:
+        plan_duration = str(constraints.get('duration') or '')
+        if plan_duration and plan_duration not in {str(expected_duration), f'{expected_duration}s'}:
+            conflicts.append(f'production plan says duration {plan_duration} but the selected duration is {expected_duration}s')
+    if expected_generator:
+        plan_generator = str(constraints.get('generator') or constraints.get('targetGenerator') or '').strip()
+        if plan_generator and plan_generator.lower() != expected_generator.lower():
+            conflicts.append(f'production plan targets {plan_generator} but the selected generator is {expected_generator}')
+    if expected_profile:
+        plan_profile = str(constraints.get('contentProfile') or '').strip()
+        if plan_profile and plan_profile.lower() != expected_profile.lower():
+            conflicts.append(f'production plan uses {plan_profile} but the selected content profile is {expected_profile}')
+    return conflicts
+
+
 def perform_role(role: str, text: str, context: dict[str, Any], provider: LLMProvider, model: str) -> dict[str, Any]:
     if role not in ROLES or not text.strip() or len(text.encode('utf-8')) > 16000:
         raise ValueError('Supported role and bounded text required')
     if any(context.get(key) for key in ('image', 'images', 'video')):
         raise ValueError('Creative roles are text-only; visual evidence was not supplied')
     system = {
-        'STORY_REVIEW': '''Review every supplied story candidate together. Return ONLY one JSON object matching this exact STORY_REVIEW contract; never omit a key and never return markdown. Required top-level keys: reviewId, sourceRequestId, sourceFingerprint, reviewModel, reviewModelVersion, reviewPolicyVersion, reviewTimestamp, reviewStatus, diversityAssessment, comparativeFindings, candidateReviews, recommendedCandidateId, recommendationReason, overallConcerns, usageAndCost, evidenceLimitations, revisionComparison. Set sourceRequestId and sourceFingerprint exactly to the values supplied in context (they may be null). reviewStatus must be COMPLETED, PARTIAL, SERVICE_ERROR, or INSUFFICIENT_EVIDENCE. candidateReviews must contain exactly one object for each supplied candidate, each with its exact candidateId; use concise structured findings and do not invent candidates. recommendedCandidateId must be one supplied candidateId or null. Use arrays/objects for the remaining evidence fields even when empty. Compare structure rather than wording, preserve source fidelity, mark uncertainty honestly, and never grant render authorization.''',
+        'STORY_REVIEW': '''Review every supplied story candidate together. Return ONLY one JSON object matching this exact STORY_REVIEW contract; never omit a key and never return markdown. Required top-level keys: reviewId, sourceRequestId, sourceFingerprint, reviewModel, reviewModelVersion, reviewPolicyVersion, reviewTimestamp, reviewStatus, diversityAssessment, comparativeFindings, candidateReviews, recommendedCandidateId, recommendationReason, overallConcerns, usageAndCost, evidenceLimitations, revisionComparison. Set sourceRequestId and sourceFingerprint exactly to the values supplied in context (they may be null); the saved record timestamp is authoritative, so do not use a fixture date. reviewStatus must be COMPLETED, PARTIAL, SERVICE_ERROR, or INSUFFICIENT_EVIDENCE. candidateReviews must contain exactly one object for each supplied candidate, each with its exact candidateId. Assess concept coherence, opening visual promise, causal consistency, event progression, originality against siblings, curiosity/rewatch, generator difficulty, source constraints, ending/payoff, and material differences. For every material finding include dimension, finding, supportingTextEvidence, severity, confidenceOrEvidenceStatus and suggestedMinimalImprovement. Use concise structured findings and do not invent candidates. recommendedCandidateId must be one supplied candidateId or null; if no evidence supports a preference, return null and explain that. Use arrays/objects for the remaining evidence fields even when empty. Compare actual mechanisms and event progressions rather than wording, preserve source fidelity, mark uncertainty honestly, and never grant render authorization.''',
         'STORY': '''Return ONLY one JSON object matching this schema: {"alternatives":[{"candidateId":"candidate-1","title":"short title","text":"complete story"}]}. Return one to three alternatives, never zero and never more than three. Each candidate must include a non-empty candidateId, title and text string. Respect the requested generation mode and locked requirements. For EXPLORE_DIFFERENT_STORIES vary meaningful narrative structure; for IMPROVE_EXISTING_STORY preserve locked events and ending while offering refinements. Preserve supplied characters and intent. Do not return markdown, reasoning, commentary or production authorization.''',
         'BUILD_PROMPT': '''Return ONLY JSON with exactly two top-level keys: `prompt` and `productionPlan`. Transform the approved story into a production-ready OpenArt video prompt; do not paraphrase or paste the story. Preserve every required event, character, first-frame condition, timing and hard cut. Write a readable multi-paragraph prompt with a blank line between these exact headings: TITLE / FORMAT, VISUAL STYLE, CHARACTER / CONTINUITY, TIMED SHOT PLAN, AUDIO, NEGATIVE CONSTRAINTS, FINAL CUT. The TIMED SHOT PLAN must contain 0-3s, 3-6s, 6-10s, 10-13s and 13-15s beats; every beat must state camera/framing, visible action and spatial staging. Include the first-frame requirement in the opening shot, make multiplication readable, keep the main character visible when the mechanism acts, and state the final hard cut. `productionPlan` must be a structured object with these keys: sourceIdentity, creativeObjective, characterBindings, visualExecution, productionConstraints, intentClassification, evidenceLimitations, generatorRisks, referencePlan. visualExecution must contain openingState, beats (one object per timed beat), mechanism, continuity, and endingState. Each beat must contain time, framing, action, staging and consequence. Use only supplied story, references and constraints; never invent appearance or evidence. Mark missing evidence explicitly. Do not add provider commentary, approval language or production authorization.''',
         'MINIMAL_REPAIR': 'Return JSON patches: at most three minimal edits with integer Unicode code point start/end, exact sourceQuote and replacement. Preserve protected intent and ESSENTIAL source quotes. Never return approval or rewrite the entire prompt.',
@@ -160,6 +194,10 @@ def perform_role(role: str, text: str, context: dict[str, Any], provider: LLMPro
             quality_findings.append({'code': 'EVIDENCE_LIMITATION_MISSING', 'severity': 'WARNING', 'message': 'Evidence limitations must be explicit, including when no reference asset was supplied.'})
         if not plan.get('generatorRisks'):
             quality_findings.append({'code': 'GENERATOR_RISK_UNREPORTED', 'severity': 'WARNING', 'message': 'The target generator has no recorded risk assessment.'})
+        conflicts = _validate_production_settings(prompt, plan, context)
+        if conflicts:
+            quality_findings.extend({'code': 'CONFIRMED_SETTING_CONFLICT', 'severity': 'MATERIAL', 'message': item} for item in conflicts)
+            raise ValueError('Production prompt conflicts with confirmed settings: ' + '; '.join(conflicts))
         value['qualityFindings'] = quality_findings
         value['productionPlan'] = plan
     else:
