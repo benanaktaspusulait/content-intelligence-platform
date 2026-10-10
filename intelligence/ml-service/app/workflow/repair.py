@@ -64,7 +64,7 @@ def repair_prompt(
         repairPasses=1,
         verificationPasses=1,
         needsSavedPromptVersion=final != original,
-        rationale="Yerel kaynak yaması; aynı profil/ayar/referanslarla son metin yeniden doğrulandı.",
+        rationale="Local source patch; the final text was revalidated with the same profile/settings/references.",
         diff="".join(
             difflib.unified_diff(
                 original.splitlines(True), final.splitlines(True), fromfile="original", tofile="final"

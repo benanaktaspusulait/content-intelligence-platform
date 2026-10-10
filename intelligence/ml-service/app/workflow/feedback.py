@@ -109,14 +109,14 @@ def review_render(plan: dict[str, Any], observation: dict[str, Any]) -> dict[str
                 "severity": severity,
                 "viewerImpact": impact if sufficient else "UNKNOWN",
                 "essentialRequirementAffected": essential,
-                "reason": item.get("observed") or "Gözlem eksik",
+                "reason": item.get("observed") or "Observation missing",
                 "repairLevel": "MATERIAL_REPAIR_REVIEW"
                 if severity == "BLOCKING"
                 else "KEEP_OR_EDIT"
                 if severity == "WARNING"
                 else "MORE_EVIDENCE",
                 "action": (
-                    "Temel olayı koruyarak önce mevcut segment/kurgu olanağını kontrol et; "
+                    "Preserve the core event and first check whether the existing segment/edit is sufficient; "
                     "otomatik rerender yok."
                 ),
             }
@@ -339,11 +339,11 @@ def review_render(plan: dict[str, Any], observation: dict[str, Any]) -> dict[str
         "findings": findings,
         "experience": experience,
         "repairEconomics": repair_economics,
-        "smallestIntervention": "Gerekli temel olayı koruyan en küçük kurgu/segment müdahalesini değerlendir"
+        "smallestIntervention": "Evaluate the smallest edit/segment intervention that preserves the required core event"
         if blocked or weak
-        else "Kanıt aralığını tamamla"
+        else "Complete the evidence range"
         if unknown
-        else "Mevcut kullanılabilir çıktıyı koru; kontrollü test için editoryal aday",
+        else "Preserve the usable existing output; editorial candidate for controlled testing",
     }
     return {
         **actual,
@@ -384,10 +384,10 @@ def review_render(plan: dict[str, Any], observation: dict[str, Any]) -> dict[str
         },
         "operatorReport": operator_report(plan.get("planQuality") or {}, plan.get("executionRisk") or {}, actual),
         "limitations": [
-            "Seyrek kareler sürekli hareket, hassas temas veya kusursuz loop kanıtı değildir.",
+            "Sparse frames are not evidence of continuous motion, precise contact or a perfect loop.",
             (
-                "TEST_CANDIDATE yayın veya üretim izni değildir; "
-                "kanonik operasyon kontrolleri ayrıca gereklidir."
+                "TEST_CANDIDATE is not publication or production permission; "
+                "canonical operational checks are still required."
             ),
         ],
     }
@@ -513,8 +513,8 @@ def measure_observation(raw: dict[str, Any], near_organic_threshold: float = 0.0
             ),
         },
         "limitations": [
-            "Lifetime değerlerden geçmiş 1h/3h/24h/72h snapshot türetilmedi.",
-            "Audience response, distribution ve sonuç ayrı tutulur; korelasyon nedensellik değildir.",
+            "Past 1h/3h/24h/72h snapshots were not derived from lifetime values.",
+            "Audience response, distribution and outcomes are kept separate; correlation is not causation.",
         ],
     }
 
@@ -537,5 +537,5 @@ def compare_cohort(
             for name in ("PAID", "NEAR_ORGANIC", "UNKNOWN")
         },
         "causalConclusion": None,
-        "notice": "Yalnızca aynı gerçek observation window karşılaştırılır; süre ayrıca korunur.",
+        "notice": "Only the same actual observation window is compared; duration is preserved separately.",
     }

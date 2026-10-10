@@ -366,7 +366,7 @@ def route_content(request: dict[str, Any], evidence: dict[str, Any]) -> dict[str
         "confidence": "LOW",
         "viewerQuestion": request.get("viewerQuestion"),
         "alternatives": candidates,
-        "reason": "Kaynak mekanizması bir öneri üretir; operatör seçimi ile doğrulayın.",
+        "reason": "The source mechanism is a proposal; verify it through operator selection.",
     }
 
 
@@ -418,9 +418,9 @@ def generation_plan(
                     reasons.append(f"Unsupported structured setting: {key}")
         status = "SUPPORTED" if supported else "UNSUPPORTED"
         if not supported:
-            reasons.append("İstenen süre/ayar sözleşmede yok; başka modele veya süreye otomatik geçilmedi.")
+            reasons.append("The requested duration/setting is not covered by the contract; no automatic fallback to another model or duration was made.")
     else:
-        reasons.append("Seçilen model/mod için doğrulanmış bağlı sağlayıcı sözleşmesi yok.")
+        reasons.append("No verified provider contract is bound to the selected model/mode.")
     return {
         "recommendedGenerator": preferred,
         "selectedGenerator": selected,
@@ -437,7 +437,7 @@ def generation_plan(
         "segments": request.get("segments") or [],
         "reasons": reasons,
         "selectionReason": request.get("qualityJustification")
-        or "Konsept süresine göre kullanıcı üretim tercihi.",
+        or "User production preference for the concept duration.",
     }
 
 
@@ -673,23 +673,23 @@ def operator_report(
 ) -> list[dict[str, str]]:
     actual = actual or {}
     defects = actual.get("findings") or []
-    severity_labels = {"WARNING": "Uyarı", "BLOCKING": "Temel engel", "UNKNOWN": "Kanıt yetersiz"}
+    severity_labels = {"WARNING": "Warning", "BLOCKING": "Blocking issue", "UNKNOWN": "Insufficient evidence"}
     decision_labels = {
-        "PROCEED_NEXT_EVIDENCE_STEP": "Gerekli sonraki üretim/kanıt adımına geç",
-        "MINIMAL_PROMPT_REPAIR": "Küçük prompt düzeltmesi önerilir",
-        "MATERIAL_CONCEPT_REPAIR": "İzleme deneyimini koruyan kavram düzeltmesi gerekir",
-        "INSUFFICIENT_EVIDENCE": "Karar için kanıt yetersiz",
-        "TEST_CANDIDATE": "Kontrollü izleyici testi için editoryal aday",
-        "EDIT_RECOMMENDED": "Kurgu düzenlemesi önerilir",
-        "UNUSABLE_CONFIRMED_BLOCKER": "Doğrulanmış temel engel nedeniyle kullanılamaz",
-        "RERENDER_MATERIALLY_JUSTIFIED": "Temel faydası gerekçelendirilmiş yeniden render önerisi",
+        "PROCEED_NEXT_EVIDENCE_STEP": "Proceed to the next evidence step",
+        "MINIMAL_PROMPT_REPAIR": "A small prompt repair is recommended",
+        "MATERIAL_CONCEPT_REPAIR": "A concept repair is needed to preserve the viewing experience",
+        "INSUFFICIENT_EVIDENCE": "Insufficient evidence for a decision",
+        "TEST_CANDIDATE": "Editorial candidate for a controlled audience test",
+        "EDIT_RECOMMENDED": "An edit is recommended",
+        "UNUSABLE_CONFIRMED_BLOCKER": "Unusable due to a confirmed blocking issue",
+        "RERENDER_MATERIALLY_JUSTIFIED": "Rerender recommended with a justified material benefit",
     }
     decision = actual.get("editorialRecommendation") or plan.get("recommendation")
     progression = plan.get("progression", {})
     mechanism = (
         progression.get("rationale")
         or plan.get("opening", {}).get("plannedFirstBeat")
-        or "İzleme gerekçesini değerlendirmek için kaynak kanıtı yetersiz"
+        or "Insufficient source evidence to assess the viewing rationale"
     )
 
     experience = actual.get("experience", {})
@@ -703,26 +703,26 @@ def operator_report(
         else:
             opening_text = (
                 str(opening_frame.get("observed") or "")
-                + " Gerçek açılış hareketi için kanıt yetersiz. Planlanan vaat: "
+                + " Insufficient evidence for actual opening movement. Planned promise: "
                 + str(opening_text or "UNKNOWN")
             )
         progression_fact = experience.get("progression", {})
         progression_text = (
             progression_fact.get("observed")
             if progression_fact.get("status") == "OBSERVED"
-            else "Gerçek ilerleme için kanıt yetersiz. Planlanan değişim: "
+            else "Insufficient evidence for actual progression. Planned change: "
             + str(progression_text or "UNKNOWN")
         )
 
     return [
-        {"label": label, "text": str(value or "Kanıt yetersiz")}
+        {"label": label, "text": str(value or "Insufficient evidence")}
         for label, value in (
-            ("KARAR", decision_labels.get(str(decision), str(decision or "Kanıt yetersiz"))),
-            ("İZLEME MEKANİZMASI", mechanism),
-            ("AÇILIŞ", opening_text),
-            ("İLERLEME", progression_text),
+            ("DECISION", decision_labels.get(str(decision), str(decision or "Insufficient evidence"))),
+            ("VIEWING MECHANISM", mechanism),
+            ("OPENING", opening_text),
+            ("PROGRESSION", progression_text),
             (
-                "FİNAL",
+                "ENDING",
                 actual.get("experience", {}).get("ending", {}).get("observed")
                 if actual.get("experience", {}).get("ending", {}).get("status") == "OBSERVED"
                 else "Planlanan final: "
@@ -733,38 +733,38 @@ def operator_report(
                 ),
             ),
             (
-                "TEMEL OLAY/KİMLİK/ANLAŞILABİLİRLİK",
+                "CORE EVENT / IDENTITY / COMPREHENSIBILITY",
                 {
-                    "USABLE": "Temel deneyim okunabilir ve kullanılabilir",
-                    "UNUSABLE": "Doğrulanmış temel olay/kimlik/anlaşılabilirlik engeli",
-                    "READABLE_BUT_CREATIVELY_WEAK": "Okunabilir; izleme deneyiminin gelişimi zayıf",
-                    "UNKNOWN": "Gerçek video deneyimi için kanıt yetersiz",
-                }.get(actual.get("viewerFacingUsability", ""), "Gerçek video henüz incelenmedi"),
+                    "USABLE": "Core experience is readable and usable",
+                    "UNUSABLE": "Confirmed core event, identity or comprehensibility blocker",
+                    "READABLE_BUT_CREATIVELY_WEAK": "Readable; viewing experience progression is weak",
+                    "UNKNOWN": "Insufficient evidence for the actual video experience",
+                }.get(actual.get("viewerFacingUsability", ""), "Actual video has not been reviewed"),
             ),
             (
-                "TEKNİK KUSURLAR",
+                "TECHNICAL DEFECTS",
                 "; ".join(
                     f"{d.get('start')}–{d.get('end')} s: "
                     f"{d.get('observed') or d.get('type', 'PLAN_DEVIATION')}"
                     for d in defects
                 )
-                or "Doğrulanmış kusur kanıtı yok",
+                or "No confirmed defect evidence",
             ),
             (
-                "KUSURUN ETKİSİ",
+                "DEFECT IMPACT",
                 "; ".join(
                     f"{severity_labels.get(d.get('severity'), d.get('severity'))}: "
                     f"{d.get('inferred') or d.get('reason') or d.get('viewerImpact')}"
                     for d in defects
                 )
-                or "Yalnız teknik temizlik yaratıcı değer kanıtı değildir",
+                or "Technical cleanup alone is not evidence of creative value",
             ),
             (
-                "EN KÜÇÜK MÜDAHALE",
+                "SMALLEST INTERVENTION",
                 actual.get("smallestIntervention")
                 or ("MINIMAL_PROMPT_REPAIR" if execution.get("findings") else plan.get("recommendation")),
             ),
-            ("PERFORMANS", "Kör inceleme tamamlanana kadar sonuç verisi ayrıdır; izlenme garantisi yok"),
+            ("PERFORMANCE", "Outcome data remains separate until blind review is complete; no viewing guarantee"),
         )
     ]
 
@@ -796,9 +796,9 @@ def engagement_review(request: dict[str, Any], evidence: dict[str, Any]) -> dict
         if ending
         else "UNKNOWN",
         "limitations": [
-            "Ön değerlendirme hipotezdir; izlenme/retention yüzdesi tahmini değildir.",
-            "Cevapsız soru tek başına aynı videoyu tekrar izleme kanıtı değildir.",
-            "Durağanlık tek başına gereksiz ölü zaman değildir.",
+            "The pre-assessment is a hypothesis; it is not a viewing or retention percentage forecast.",
+            "An unanswered question alone is not evidence of replay.",
+            "Stillness alone is not evidence of unnecessary dead time.",
         ],
     }
 
@@ -844,16 +844,16 @@ def opening_review(
         "actualOpeningVideo": {"status": "UNKNOWN"},
         "cover": {"status": "NOT_EVIDENCE_OF_OPENING"},
         "alternatives": [
-            "Nesne önce: anormalliği/öğrenme sorusunu okunur göster.",
-            "Tepki + sorun: karakter ile görsel nedenini aynı kadrajda göster.",
-            "Aksiyon önce: sonucu doğuran hareketle aç.",
+            "Object first: make the anomaly or learning question readable.",
+            "Reaction + problem: show the character and visual cause in the same frame.",
+            "Action first: open with the movement that causes the result.",
         ]
         if not beats
         else [],
         "reason": (
-            "Odak ve görsel vaat erkenden okunmalı; "
-            "frame zero tam nedensellik açıklaması zorunlu değildir. "
-            "Tasarım penceresi kabul eşiği değildir."
+            "Focus and the visual promise should be readable early; "
+            "frame zero does not need to explain complete causality. "
+            "The design window is not an acceptance threshold."
         ),
     }
 
@@ -904,32 +904,32 @@ def review_prompt(request: dict[str, Any], capabilities: dict[str, Any] | None =
         )
 
     if not reference_ready:
-        pending("Yetkili karakter/nesne referansı eksik veya doğrulanmadı.", "REFERENCE_ASSOCIATION")
+        pending("An authoritative character/object reference is missing or unverified.", "REFERENCE_ASSOCIATION")
     if generation["capabilityStatus"] != "SUPPORTED":
-        pending("İstenen model/süre/ayar doğrulanmış sözleşmeyle desteklenmiyor.", "GENERATOR_CAPABILITY")
+        pending("The requested model/duration/setting is not supported by a verified contract.", "GENERATOR_CAPABILITY")
     if generation["missingExecutionInputs"]:
         pending(
-            "Sağlayıcının zorunlu yürütme girdileri eksik: "
+            "Required provider execution inputs are missing: "
             + ", ".join(generation["missingExecutionInputs"]),
             "EXECUTION_INPUTS",
         )
     if execution["status"] == "UNKNOWN":
         pending(
-            "Jeneratör yürütme incelemesi tamamlanmadı veya küçük düzeltme gerekiyor.", "EXECUTION_REVIEW"
+            "Generator execution review is incomplete or a minor repair is needed.", "EXECUTION_REVIEW"
         )
     if evidence["generalProducibility"]["status"] == "UNKNOWN":
-        pending("Genel üretilebilirlik için kaynak kanıtı yetersiz.", "GENERAL_PRODUCIBILITY")
+        pending("Insufficient source evidence for general producibility.", "GENERAL_PRODUCIBILITY")
     if any(c["state"] == "CONTRADICTORY" for c in evidence["claims"]):
         reasons.append(
             {
                 "code": "ASSESSMENT_TECHNICAL_FAILURE",
                 "source": "SOURCE_INTEGRITY",
-                "message": "Çelişkili kaynak kanıtı.",
+                "message": "Contradictory source evidence.",
                 "references": [],
             }
         )
     if quality["invalidEvidence"] or any(i["status"] == "UNKNOWN" for i in intent):
-        pending("Temel niyet/yaratıcı yorum gerçek kaynakla doğrulanmadı.", "INTENT_SOURCE_INTEGRITY")
+        pending("Core intent/creative interpretation was not verified against the source.", "INTENT_SOURCE_INTEGRITY")
     for finding in quality["findings"]:
         if finding["severity"] == "BLOCKING":
             reasons.append(
@@ -951,7 +951,7 @@ def review_prompt(request: dict[str, Any], capabilities: dict[str, Any] | None =
     )
     if not integrity:
         pending(
-            "Son video kabulü için mevcut doğrulanmış görsel kapılar ve bağımsız revalidation gereklidir.",
+            "Existing verified visual gates and independent revalidation are required for final video acceptance.",
             "FINAL_VIDEO_INTEGRITY",
         )
     family8 = project_family8(
@@ -964,7 +964,7 @@ def review_prompt(request: dict[str, Any], capabilities: dict[str, Any] | None =
     applicability = {
         key: {
             "status": "NOT_APPLICABLE",
-            "reason": "Yeni profilin evrensel zorunluluğu değildir.",
+            "reason": "This is not a universal requirement of the new profile.",
             "profileVersion": VERSION,
         }
         for key in (
@@ -1025,6 +1025,6 @@ def review_prompt(request: dict[str, Any], capabilities: dict[str, Any] | None =
         "manualHandoff": {
             "allowed": True,
             "authorization": family8["renderAuthorization"],
-            "notice": "İnceleme paketi dışa aktarımı render yetkisi veya kredi harcama onayı değildir.",
+            "notice": "Exporting the review package does not authorize rendering or spending credits.",
         },
     }

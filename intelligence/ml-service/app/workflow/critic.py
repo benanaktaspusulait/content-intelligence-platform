@@ -27,20 +27,20 @@ class LocalExecutionCritic:
             (
                 "SIMULTANEOUS_ACTION_COMPETITION",
                 r"[^.\n]*\b(?:while|simultaneously)\b[^.\n]*",
-                "Hareketler aynı anda yarışabilir.",
-                "Öncelikli hareketi belirt; uygunsa diğerini sonra başlat.",
+                "Actions may compete at the same time.",
+                "Identify the priority action; start the other one later when appropriate.",
             ),
             (
                 "COREFERENCE",
                 r"[^.\n]*\b(?:it|they|this|that)\b[^.\n]*",
-                "Zamir birden fazla varlığa işaret edebilir.",
-                "Zamiri doğrulanmış varlık adıyla değiştir.",
+                "A pronoun may refer to more than one entity.",
+                "Replace the pronoun with the verified entity name.",
             ),
             (
                 "PREMATURE_ENDING",
                 r"(?im)^.*\b(?:CUT|END|FADE OUT)\b.*$",
-                "Bitiş komutu sonraki olaydan önce gelebilir.",
-                "Bitiş komutunu yalnızca son olayın ardından kullan.",
+                "The ending command may appear before the next event.",
+                "Use the ending command only after the final event.",
             ),
         )
         for category, pattern, failure, change in patterns:
@@ -78,7 +78,7 @@ class LocalExecutionCritic:
             "version": "local-execution-critic-v1",
             "visualInspected": False,
             "targetGenerator": generation["selectedGenerator"],
-            "limitations": ["Genel yazım sezgileri; seçilen modelin fiili performans kanıtı değildir."],
+            "limitations": ["General writing heuristics; not evidence of the selected model’s actual performance."],
             "calls": 0,
         }
 
