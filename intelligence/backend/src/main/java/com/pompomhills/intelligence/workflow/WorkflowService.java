@@ -1298,9 +1298,72 @@ public class WorkflowService {
               var result = read(rs.getString("payload"));
               result.put("recordId", rs.getString("id"));
               result.put("createdAt", rs.getObject("created_at", java.time.OffsetDateTime.class).toInstant().toString());
+              var lifecycle = latestLifecycle(UUID.fromString(rs.getString("id")));
+              result.put("lifecycleStatus", lifecycle.getOrDefault("status", inferredLifecycle(result)));
+              if (lifecycle.containsKey("reason")) result.put("lifecycleReason", lifecycle.get("reason"));
+              if (lifecycle.containsKey("title")) result.put("title", lifecycle.get("title"));
               return result;
             })
         .list();
+  }
+
+  private Map<String, Object> latestLifecycle(UUID targetId) {
+    return jdbc.sql("SELECT payload::text FROM post_family_workflow_events WHERE kind='CREATIVE_STUDIO_LIFECYCLE' AND payload->>'targetRecordId'=:target ORDER BY created_at DESC,id DESC LIMIT 1")
+        .param("target", targetId.toString()).query(String.class).optional().map(this::read).orElse(Map.of());
+  }
+
+  private String inferredLifecycle(Map<String, Object> record) {
+    if ("STORY_APPROVAL".equals(record.get("role")) || "APPROVED".equals(record.get("status"))) return "APPROVED";
+    if ("STORY".equals(record.get("role")) && record.get("recordId") != null) {
+      boolean approved = jdbc.sql("SELECT EXISTS(SELECT 1 FROM post_family_workflow_events WHERE kind='STORY_APPROVAL' AND payload->>'storyRecordId'=:id)")
+          .param("id", String.valueOf(record.get("recordId"))).query(Boolean.class).single();
+      if (approved) return "APPROVED";
+    }
+    if ("BUILD_PROMPT".equals(record.get("role")) || record.containsKey("prompt")) return "DRAFT";
+    return "DRAFT";
+  }
+
+  @Transactional
+  public Map<String, Object> changeLifecycle(UUID id, Map<String, Object> request) {
+    var record = get(id);
+    String requested = String.valueOf(request.getOrDefault("status", "")).trim().toUpperCase(java.util.Locale.ROOT);
+    if (!List.of("DRAFT", "IN_REVIEW", "APPROVED", "ARCHIVED", "DELETED").contains(requested))
+      throw new IllegalArgumentException("Unsupported lifecycle status");
+    String current = String.valueOf(latestLifecycle(id).getOrDefault("status", inferredLifecycle(record)));
+    if ("DELETED".equals(requested)) {
+      if ("APPROVED".equals(current) || hasProtectedReferences(id, record))
+        throw new IllegalStateException("This record is referenced by approved or downstream evidence. Archive it instead of deleting it.");
+    }
+    if ("APPROVED".equals(requested) && !"STORY_APPROVAL".equals(record.get("role")))
+      throw new IllegalArgumentException("Only an explicit story approval can create APPROVED lifecycle state");
+    var event = new LinkedHashMap<String, Object>();
+    event.put("targetRecordId", id.toString()); event.put("targetKind", "CREATIVE_ROLE");
+    event.put("status", requested); event.put("previousStatus", current);
+    event.put("reason", request.getOrDefault("reason", "Operator lifecycle action"));
+    if (request.get("title") != null) event.put("title", String.valueOf(request.get("title")));
+    event.put("changedAt", Instant.now().toString());
+    event.put("recordId", save("CREATIVE_STUDIO_LIFECYCLE", id.toString(), event));
+    return Map.of("targetRecordId", id.toString(), "status", requested, "previousStatus", current, "recordId", event.get("recordId"));
+  }
+
+  private boolean hasProtectedReferences(UUID id, Map<String, Object> record) {
+    String idText = id.toString();
+    return jdbc.sql("SELECT EXISTS(SELECT 1 FROM post_family_workflow_events WHERE kind IN ('STORY_APPROVAL','CREATIVE_ROLE','REVIEW','ACTUAL_RENDER_QA') AND id<>:id AND payload::text LIKE :needle)")
+        .param("id", id).param("needle", "%" + idText + "%").query(Boolean.class).single();
+  }
+
+  @Transactional
+  public Map<String, Object> duplicateCreativeRole(UUID id) {
+    var source = getByKind(id, "CREATIVE_ROLE");
+    if (!"STORY".equals(source.get("role"))) throw new IllegalArgumentException("Only a saved story can be duplicated");
+    var copy = new LinkedHashMap<String, Object>(source);
+    copy.remove("recordId"); copy.remove("createdAt"); copy.put("sourceRecordId", id.toString());
+    copy.put("lifecycleStatus", "DRAFT"); copy.put("duplicatedAt", Instant.now().toString());
+    copy.put("title", String.valueOf(copy.getOrDefault("title", "Saved story")) + " (Copy)");
+    var result = new LinkedHashMap<String, Object>(); result.put("role", "STORY"); result.put("sourceRecordId", id.toString());
+    result.put("alternatives", map(source.get("result")).getOrDefault("alternatives", List.of())); result.put("title", copy.get("title"));
+    copy.put("result", result); copy.put("recordId", save("CREATIVE_ROLE", null, copy));
+    return copy;
   }
 
   private UUID save(String kind, String binding, Map<String, Object> value) {

@@ -131,6 +131,16 @@ public class WorkflowController {
     return service.list(kind, contentId, promptVersionId, bindingHash);
   }
 
+  @PostMapping("/records/{id}/lifecycle")
+  public Map<String, Object> lifecycle(@PathVariable UUID id, @RequestBody Map<String, Object> request) {
+    return service.changeLifecycle(id, request);
+  }
+
+  @PostMapping("/records/{id}/duplicate")
+  public Map<String, Object> duplicate(@PathVariable UUID id) {
+    return service.duplicateCreativeRole(id);
+  }
+
   @GetMapping(value = "/records/{id}/pdf", produces = "application/pdf")
   public org.springframework.http.ResponseEntity<byte[]> report(@PathVariable UUID id) {
     return org.springframework.http.ResponseEntity.ok()
