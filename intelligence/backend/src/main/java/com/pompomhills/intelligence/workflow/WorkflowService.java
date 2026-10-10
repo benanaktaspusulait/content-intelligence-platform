@@ -573,6 +573,31 @@ public class WorkflowService {
         .optional().orElseThrow(() -> new IllegalArgumentException("Production settings not found"));
   }
 
+  /** Persist the review-only visual preparation artifact without invoking an image provider. */
+  public Map<String, Object> saveVisualPreparation(Map<String, Object> request) {
+    if (request.get("contentId") == null || request.get("promptVersionId") == null)
+      throw new IllegalArgumentException("contentId and promptVersionId are required");
+    String specification = String.valueOf(request.getOrDefault("firstFrameSpecification", "")).trim();
+    String imagePrompt = String.valueOf(request.getOrDefault("firstFrameImagePrompt", "")).trim();
+    if (specification.isBlank() || imagePrompt.isBlank())
+      throw new IllegalArgumentException("First-frame specification and image prompt are required");
+    var payload = new LinkedHashMap<String, Object>(request);
+    payload.put("status", String.valueOf(request.getOrDefault("status", "READY_FOR_REVIEW")));
+    payload.put("providerCallPerformed", false);
+    payload.put("savedAt", Instant.now().toString());
+    String binding = sha256(String.join("\n", String.valueOf(request.get("contentId")), String.valueOf(request.get("promptVersionId")), specification, imagePrompt));
+    payload.put("bindingHash", binding);
+    payload.put("recordId", save("VISUAL_PREPARATION", binding, payload));
+    return payload;
+  }
+
+  public Map<String, Object> getVisualPreparation(Long contentId, Long promptVersionId) {
+    return jdbc.sql("SELECT id,payload::text payload FROM post_family_workflow_events WHERE kind='VISUAL_PREPARATION' AND payload->>'contentId'=:content AND payload->>'promptVersionId'=:prompt ORDER BY created_at DESC LIMIT 1")
+        .param("content", String.valueOf(contentId)).param("prompt", String.valueOf(promptVersionId))
+        .query((rs, ignored) -> { var value = read(rs.getString("payload")); value.put("recordId", rs.getString("id")); return value; })
+        .optional().orElseThrow(() -> new IllegalArgumentException("Visual preparation not found"));
+  }
+
   public Map<String, Object> secondOpinion(UUID id, Map<String, Object> options) {
     var review = get(id);
     var result =
@@ -1295,6 +1320,14 @@ public class WorkflowService {
       throw error;
     } catch (Exception error) {
       throw new IllegalStateException("Cannot persist workflow event", error);
+    }
+  }
+
+  private static String sha256(String value) {
+    try {
+      return HexFormat.of().formatHex(MessageDigest.getInstance("SHA-256").digest(value.getBytes(java.nio.charset.StandardCharsets.UTF_8)));
+    } catch (java.security.NoSuchAlgorithmException error) {
+      throw new IllegalStateException("SHA-256 is unavailable", error);
     }
   }
 

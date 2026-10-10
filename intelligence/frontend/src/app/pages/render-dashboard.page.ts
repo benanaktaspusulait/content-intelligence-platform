@@ -226,7 +226,7 @@ interface VisualEvidenceResponse {
           @if (workflowReviewId) {
             <div class="guided-render-heading"><div><span class="eyebrow">RENDER PREPARATION &amp; VIDEO GENERATION</span><h2>Prepare and approve visual inputs before generating the video</h2><p class="muted">The saved workflow records supply the content, prompt version, settings and authorization. Technical IDs are resolved automatically.</p></div><span class="data-freshness">{{ renderTab() === 'visual' ? 'Visual Preparation' : 'Video Generation' }}</span></div>
             <nav class="render-tabs" aria-label="Render sections"><button type="button" [class.active]="renderTab() === 'visual'" (click)="renderTab.set('visual')">Visual Preparation<small>References, first frame and review</small></button><button type="button" [class.active]="renderTab() === 'video'" (click)="renderTab.set('video')">Video Generation<small>Canonical authorization and queue</small></button></nav>
-            @if (renderTab() === 'visual') { <div class="guided-render-grid"><div><span class="metric-label">Character reference</span><strong>{{ workflowReview?.generation?.settings?.characterReference?.status || 'Needs review' }}</strong><small>Select or attach an authoritative asset in Visual Reference Planning below.</small></div><div><span class="metric-label">First frame</span><strong>{{ queueFirstFramePath() ? 'Candidate bound' : 'Not prepared' }}</strong><small>Accepted image evidence is required before paid video submission.</small></div><div><span class="metric-label">Production prompt</span><strong>Saved revision {{ queuePromptVersionId() }}</strong><small>Prompt lineage is immutable and loaded from the review record.</small></div><div><span class="metric-label">Provider capability</span><strong>{{ referenceCapabilities()?.videoSingleStartFrame || 'Verification pending' }}</strong><small>No provider call is made by opening this screen.</small></div></div><p class="visual-reference-warning">Open an existing render job's <b>Check Visual References</b> section below to inspect, upload, validate or accept a first-frame asset. Queue remains closed until the accepted binding is present.</p> }
+            @if (renderTab() === 'visual') { <div class="guided-render-grid"><div><span class="metric-label">Character reference</span><strong>{{ workflowReview?.generation?.settings?.characterReference?.status || 'Needs review' }}</strong><small>Select or attach an authoritative asset in Visual Reference Planning below.</small></div><div><span class="metric-label">First frame</span><strong>{{ queueFirstFramePath() ? 'Candidate bound' : 'Not prepared' }}</strong><small>Accepted image evidence is required before paid video submission.</small></div><div><span class="metric-label">Production prompt</span><strong>Saved revision {{ queuePromptVersionId() }}</strong><small>Prompt lineage is immutable and loaded from the review record.</small></div><div><span class="metric-label">Provider capability</span><strong>{{ referenceCapabilities()?.videoSingleStartFrame || 'Verification pending' }}</strong><small>No provider call is made by opening this screen.</small></div></div><section class="first-frame-preparation"><div><span class="metric-label">FIRST FRAME SPECIFICATION</span><h3>Source-consistent opening image</h3><p class="muted">This is a saved review artifact. Preparing or editing it never calls an image provider.</p></div><label>Visual specification<textarea rows="5" [value]="firstFrameSpecification()" (input)="firstFrameSpecification.set(($any($event.target)).value)"></textarea></label><label>First frame image prompt<textarea rows="6" [value]="firstFrameImagePrompt()" (input)="firstFrameImagePrompt.set(($any($event.target)).value)"></textarea></label><div class="guided-render-actions"><button type="button" class="queue-button" (click)="draftFirstFramePrompt()">Build from saved prompt</button><button type="button" class="queue-button" [disabled]="visualPreparationSaving() || !firstFrameSpecification().trim() || !firstFrameImagePrompt().trim()" (click)="saveVisualPreparation()">{{ visualPreparationSaving() ? 'Saving…' : (visualPreparation() ? 'Save new preparation revision' : 'Save preparation') }}</button></div><p *ngIf="visualPreparationError()" class="queue-error">{{ visualPreparationError() }}</p><p *ngIf="visualPreparation()" class="queue-success">Saved {{ visualPreparation()?.savedAt }} · provider call performed: {{ visualPreparation()?.providerCallPerformed ? 'YES' : 'NO' }}</p></section><p class="visual-reference-warning">Existing first-frame candidates and upload/acceptance remain available through the existing job-bound Visual Reference Planning controls below. Queue remains closed until the accepted binding is present.</p> }
             @if (renderTab() === 'video') { <div class="guided-render-grid"><div><span class="metric-label">Authorization</span><strong>{{ workflowReview?.family8?.renderAuthorization?.status || 'UNKNOWN' }}</strong><small>{{ workflowReview?.family8?.renderAuthorization?.reason || 'Canonical Family 8 decision is required.' }}</small></div><div><span class="metric-label">Generator</span><strong>{{ queueModel() || 'Configured model unavailable' }}</strong><small>{{ workflowReview?.generation?.settings?.aspectRatio || 'Aspect ratio unresolved' }} · {{ workflowReview?.generation?.supportedRenderDuration || 'Duration unresolved' }}s</small></div><div><span class="metric-label">First frame</span><strong>{{ queueFirstFramePath() ? 'Bound' : 'Missing' }}</strong><small>Visual acceptance is separate from video authorization.</small></div></div> }
           } @else {
             <div class="queue-panel-heading"><div><span class="eyebrow">QUEUE RENDER</span><h2>Start a validated render</h2></div><span class="data-freshness">Validation evidence required</span></div>
@@ -1022,6 +1022,11 @@ export class RenderDashboardPage implements OnInit, OnDestroy {
   renderTab = signal<'visual' | 'video'>('visual');
   workflowReview:any=null;
   workflowReviewId='';
+  visualPreparation = signal<any | null>(null);
+  firstFrameSpecification = signal('');
+  firstFrameImagePrompt = signal('');
+  visualPreparationSaving = signal(false);
+  visualPreparationError = signal('');
   regenerationHandoffId = '';
   regenerationHandoff: any = null;
   queueModel = signal('byte-plus-seedance-2-mini');
@@ -1265,6 +1270,34 @@ export class RenderDashboardPage implements OnInit, OnDestroy {
     });
   }
 
+  draftFirstFramePrompt(): void {
+    const review = this.workflowReview;
+    const source = String(review?.boundRequest?.prompt || review?.originalPrompt || '').trim();
+    const settings = review?.generation?.settings || review?.boundRequest?.settings || {};
+    const character = review?.boundRequest?.mainCharacter || review?.boundRequest?.mainCharacterName || 'the approved main character';
+    const ratio = settings.aspectRatio || 'the saved aspect ratio';
+    const opening = source.split(/\n\s*(?:3|[1-9]\d*)\s*[-–—]/, 1)[0].replace(/^.*?(?:TIMED SHOT PLAN|OPENING)\s*/is, '').trim();
+    this.firstFrameSpecification.set(`Character: ${character}.\nScene and opening state: ${opening || 'Use the exact opening state from the approved production prompt.'}\nObject relationship: preserve every object and contact relationship stated in the opening.\nCamera and framing: clear readable composition at ${ratio}; keep the character and central object visible.\nContinuity: the composition must transition into the next saved production beat.\nRestrictions: use only approved character identity and source-supported details; no extra characters or invented mechanisms.`);
+    this.firstFrameImagePrompt.set(`Create the first frame of the approved video prompt. Show ${character} in the exact saved opening situation: ${opening || 'the source-approved opening state'}. Preserve the authoritative character design, clothing, object relationship and environment. Compose a readable ${ratio} image with the character and central object clearly visible, ready to continue into the next planned beat. Do not add characters, props, mechanisms or story events that are not in the approved source.`);
+  }
+
+  saveVisualPreparation(): void {
+    if (!this.workflowReview || !this.firstFrameSpecification().trim() || !this.firstFrameImagePrompt().trim()) return;
+    this.visualPreparationSaving.set(true); this.visualPreparationError.set('');
+    this.http.post<any>('/api/v1/intelligence/workflow/visual-preparation', {
+      contentId: this.queueContentId(), promptVersionId: this.queuePromptVersionId(), reviewId: this.workflowReviewId,
+      firstFrameSpecification: this.firstFrameSpecification(), firstFrameImagePrompt: this.firstFrameImagePrompt(),
+      status: 'READY_FOR_REVIEW', providerCallPerformed: false,
+      aspectRatio: this.workflowReview?.generation?.settings?.aspectRatio || this.workflowReview?.boundRequest?.settings?.aspectRatio || null,
+      generator: this.queueModel(),
+    }).subscribe({ next: value => { this.visualPreparation.set(value); this.visualPreparationSaving.set(false); }, error: err => { this.visualPreparationSaving.set(false); this.visualPreparationError.set(err.error?.detail || err.error?.message || 'Visual preparation could not be saved.'); } });
+  }
+
+  private loadVisualPreparation(): void {
+    if (!this.queueContentId() || !this.queuePromptVersionId()) return;
+    this.http.get<any>('/api/v1/intelligence/workflow/visual-preparation', { params: { contentId: this.queueContentId(), promptVersionId: this.queuePromptVersionId() } }).subscribe({ next: value => { this.visualPreparation.set(value); this.firstFrameSpecification.set(String(value.firstFrameSpecification || '')); this.firstFrameImagePrompt.set(String(value.firstFrameImagePrompt || '')); }, error: () => {} });
+  }
+
   ngOnInit() {
     this.route.queryParamMap.subscribe(params => {
       this.queueContentId.set(params.get('contentId') || '');
@@ -1275,7 +1308,8 @@ export class RenderDashboardPage implements OnInit, OnDestroy {
       this.regenerationHandoff = null;
       if (this.regenerationHandoffId) this.http.get<any>(`/api/v1/intelligence/workflow/records/${this.regenerationHandoffId}`).subscribe({ next: handoff => { this.regenerationHandoff = handoff; }, error: () => this.queueError.set('Regeneration handoff could not be loaded.') });
       this.workflowReview=null;
-      if(this.workflowReviewId) this.http.get<any>(`/api/v1/intelligence/workflow/records/${this.workflowReviewId}`).subscribe({next:r=>{this.workflowReview=r;this.queueModel.set(r.generation.apiModelId||'');this.queueFirstFramePath.set(r.generation.settings?.startFrame?.id||'');},error:()=>this.queueError.set('Post-family review record could not be loaded; render acceptance is disabled.')});
+      this.visualPreparation.set(null); this.firstFrameSpecification.set(''); this.firstFrameImagePrompt.set('');
+      if(this.workflowReviewId) this.http.get<any>(`/api/v1/intelligence/workflow/records/${this.workflowReviewId}`).subscribe({next:r=>{this.workflowReview=r;this.queueModel.set(r.generation.apiModelId||'');this.queueFirstFramePath.set(r.generation.settings?.startFrame?.id||'');this.loadVisualPreparation();},error:()=>this.queueError.set('Post-family review record could not be loaded; render acceptance is disabled.')});
     });
     this.connectLiveNotifications();
     this.loadOpenArtReferences();

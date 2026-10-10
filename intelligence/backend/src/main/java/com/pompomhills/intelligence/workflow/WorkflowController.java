@@ -101,6 +101,17 @@ public class WorkflowController {
     return service.getProductionSettings(contentId, promptVersionId);
   }
 
+  @PostMapping("/visual-preparation")
+  public Map<String, Object> visualPreparation(@RequestBody Map<String, Object> request) {
+    return service.saveVisualPreparation(request);
+  }
+
+  @GetMapping("/visual-preparation")
+  public Map<String, Object> visualPreparationForPrompt(
+      @RequestParam Long contentId, @RequestParam Long promptVersionId) {
+    return service.getVisualPreparation(contentId, promptVersionId);
+  }
+
   @PostMapping("/review")
   public Map<String, Object> review(@RequestBody WorkflowService.ReviewRequest request) {
     return service.runReview(request, true);

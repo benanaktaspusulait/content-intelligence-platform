@@ -162,3 +162,7 @@ Production Review now reports the narrower “Eligible for preliminary quality a
 The ML timeline parser now rejects invalid/overlapping/out-of-duration intervals, records exact source spans and quotes, and stops event extraction before AUDIO, NEGATIVE CONSTRAINTS, FINAL CUT and related headings. Provider-free regression fixtures cover the Mimi five-range timeline, exact quote traceability, heading isolation and overlap rejection.
 
 Step 7 receives a guided Visual Preparation / Video Generation presentation when opened with an existing workflow review. Technical IDs remain hidden in that context, canonical authorization remains backend-enforced, and existing visual-reference planning, upload, validation and acceptance infrastructure is reused. No image or video provider call is made by opening or switching tabs. Live image/video generation remains separately authorized and was not invoked.
+
+### Visual preparation persistence checkpoint — 2026-10-10
+
+A source-consistent First Frame Specification and editable First Frame Image Prompt can now be derived from the exact saved review, reviewed without a provider call, and persisted as an append-only `VISUAL_PREPARATION` record bound to content and prompt version. Reopening Render restores the latest saved preparation. Creative Intent and Production Settings now restore their persisted approval/saved timestamps instead of inferring confirmation from populated fields. Video queue authorization remains separate and fail-closed.
