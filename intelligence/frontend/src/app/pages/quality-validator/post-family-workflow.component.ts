@@ -22,7 +22,7 @@ import { GeneralProducibilityComponent } from './general-producibility.component
   </section>
 <ng-container *ngIf="review as r">
         <p class="error" *ngIf="!isCurrent()">
-          Prompt, sürüm, referans veya ayar değişti. Bu inceleme eski; yeniden çalıştırın.
+          Prompt, version, reference or setting changed. This review is stale; run it again.
         </p>
         <div class="facts" *ngIf="(qa || r).operatorReport as report">
           <p *ngFor="let row of report">
@@ -36,48 +36,48 @@ import { GeneralProducibilityComponent } from './general-producibility.component
             <p>{{ r.planQuality?.status || 'UNKNOWN' }} · {{ r.planQuality?.recommendation }}</p>
           </article>
           <article>
-            <strong>Generator yürütme riski</strong>
+            <strong>Generator execution risk</strong>
             <p>{{ r.executionRisk?.status || 'UNKNOWN' }}</p>
           </article>
           <article>
-            <strong>Gerçek render kalitesi</strong>
+            <strong>Actual render quality</strong>
             <p>
-              Plan sadakati: {{ qa?.planFidelity || 'UNKNOWN' }} · Kullanılabilirlik:
+              Plan fidelity: {{ qa?.planFidelity || 'UNKNOWN' }} · Usability:
               {{ qa?.viewerFacingUsability || 'UNKNOWN' }}
             </p>
           </article>
           <article>
-            <strong>İzleyici / dağıtım sonucu</strong>
-            <p>{{ measurement ? 'Ölçüm ayrı kayıtta' : 'Henüz ilişkilendirilmedi' }}</p>
+            <strong>Audience / distribution outcome</strong>
+            <p>{{ measurement ? 'Measurement is stored separately' : 'Not associated yet' }}</p>
           </article>
         </div>
         <a
           [href]="'/api/v1/intelligence/workflow/records/' + (qa?.recordId || r.recordId) + '/pdf'"
           target="_blank"
-          >Bu kayıt için PDF raporu</a
+          >PDF report for this record</a
         >
         <details>
-          <summary>Ham plan, jeneratör ve yetkilendirme kanıtı</summary>
+          <summary>Raw plan, generator and authorization evidence</summary>
           <div class="facts">
             <p>
-              İçerik: <strong>{{ r.routing?.contentProfile }}</strong> · {{ r.routing?.basis }}
+              Content: <strong>{{ r.routing?.contentProfile }}</strong> · {{ r.routing?.basis }}
             </p>
             <p>
-              Açılış: <strong>{{ r.opening?.strategy }}</strong> · Metin planı
+              Opening: <strong>{{ r.opening?.strategy }}</strong> · Text plan
               {{ r.opening?.plannedOpening?.status || 'UNKNOWN' }}
             </p>
             <p>
-              Suggestionlen / seçilen jeneratör: {{ r.generation?.recommendedGenerator }} /
+              Suggested / selected generator: {{ r.generation?.recommendedGenerator }} /
               {{ r.generation?.selectedGenerator }}
             </p>
             <p>
-              İstenen / desteklenen render / edit süresi:
+              Requested / supported render / edit duration:
               {{ r.generation?.desiredDuration ?? 'UNKNOWN' }} /
               {{ r.generation?.supportedRenderDuration ?? 'UNKNOWN' }} /
               {{ r.generation?.plannedEditedDuration ?? 'UNKNOWN' }} s
             </p>
             <p>
-              Sağlayıcı sözleşmesi: {{ r.generation?.capabilityStatus }} ·
+              Provider contract: {{ r.generation?.capabilityStatus }} ·
               {{ r.generation?.apiModelId || 'UNKNOWN' }}
             </p>
             <p>
@@ -95,15 +95,15 @@ import { GeneralProducibilityComponent } from './general-producibility.component
             *ngIf="r.generalProducibility?.dimensions"
             [assessment]="r.generalProducibility"
           ></app-general-producibility>
-          <h3>Dikkat → ilerleme → yeniden izleme hipotezi</h3>
+          <h3>Attention → progression → rewatch hypothesis</h3>
           <p>{{ r.engagement?.attentionPromise }}</p>
           <p>Son: {{ r.engagement?.endingDelivery }} · {{ r.engagement?.rewatchMechanism }}</p>
           <p>
-            İlk kare / gerçek açılış / kapak kanıtı: {{ r.opening?.actualFirstFrame?.status }} /
+            First frame / actual opening / cover evidence: {{ r.opening?.actualFirstFrame?.status }} /
             {{ r.opening?.actualOpeningVideo?.status }} / {{ r.opening?.cover?.status }}
           </p>
           <p *ngFor="let alternative of r.opening?.alternatives">{{ alternative }}</p>
-          <h3>Generator yürütme incelemesi · {{ r.executionReview?.status }}</h3>
+          <h3>Generator execution review · {{ r.executionReview?.status }}</h3>
           <article *ngFor="let finding of r.executionReview?.findings?.slice(0, 5)">
             <strong
               >{{ finding.riskCategory }} · {{ finding.evidenceBasis }} ·
@@ -113,33 +113,33 @@ import { GeneralProducibilityComponent } from './general-producibility.component
             <p>{{ finding.plausibleFailure }} {{ finding.smallestChange }}</p>
           </article>
           <p>
-            Yerel metin eleştirmeni görselleri/klibi incelemiş sayılmaz. DeepSeek ikinci görüşü
-            sunucuda yapılandırılabilir; ücretli çağrı varsayılan olarak kapalıdır.
+            The local text critic does not inspect visuals or clips. DeepSeek second opinion
+            can be configured on the server; paid calls are disabled by default.
           </p>
         </details>
         <label
-          >İkinci görüş sağlayıcısı<select [(ngModel)]="criticProvider">
+          >Second-opinion provider<select [(ngModel)]="criticProvider">
             <option value="deepseek">DeepSeek · metin portu</option>
             <option value="openai">OpenAI</option>
             <option value="claude">Claude</option>
             <option value="gemini">Gemini</option>
           </select></label
-        ><label>Yapılandırılmış eleştirmen modeli<input [(ngModel)]="criticModel" /></label
+        ><label>Structured critic model<input [(ngModel)]="criticModel" /></label
         ><button
           type="button"
           (click)="secondOpinion()"
           [disabled]="busy || !isCurrent() || !criticModel"
         >
-          İkinci görüşü çalıştır
+          Run second opinion
         </button>
         <p *ngIf="opinion">
-          İkinci görüş: {{ opinion.secondOpinion?.status }} · kanonik yetkiyi değiştirmez.
+          Second opinion: {{ opinion.secondOpinion?.status }} · does not change canonical authorization.
         </p>
         <a [href]="renderLink()" *ngIf="r.contentId && r.promptVersionId"
-          >Bağlı incelemeyle mevcut render kuyruğunu aç</a
+          >Open the current render queue for this review</a
         >
         <details>
-          <summary>Kanıt ve belirsizlik</summary>
+          <summary>Evidence and uncertainty</summary>
           <p>Extraction: {{ r.productionEvidence?.videoPlanIR?.metadata?.generalProducibilityEvidence?.extractionVersion || 'UNKNOWN' }} · Source quote coverage: {{ evidenceCoverage(r.productionEvidence) }}. Quote coverage does not establish complete entity or effect tracking.</p>
           <article *ngFor="let claim of r.productionEvidence?.claims">
             <strong>{{ claim.field }} · {{ claim.state }}</strong>
@@ -148,18 +148,18 @@ import { GeneralProducibilityComponent } from './general-producibility.component
             <small>Source {{ claim.sourceId || r.source?.artifact || 'UNKNOWN' }} · version {{ claim.sourceVersion || r.source?.version || 'UNKNOWN' }} · span {{ claim.span?.join('–') || 'UNKNOWN' }} · method {{ claim.methodVersion || 'UNKNOWN' }} · confidence {{ claim.confidence || 'UNKNOWN' }}</small>
           </article>
           <p>Unresolved requirements: {{ r.productionEvidence?.remainingUncertainty?.join(', ') || 'No missing extracted dependency; other unsupported effects may remain UNKNOWN.' }}</p>
-          <small>{{ r.source?.sha256 }} · sürüm {{ r.source?.version }}</small>
+          <small>{{ r.source?.sha256 }} · version {{ r.source?.version }}</small>
         </details>
-        <h3>Render öncesi temel niyet</h3>
+        <h3>Core intent before render</h3>
         <p>
-          Önem düzeyi bu kaynak sürümüne bağlanır. Değişince yeniden inceleyin; video sonucuna göre
-          geriye dönük değiştirilmez.
+          Importance is bound to this source version. Re-review when it changes; it is not changed retroactively
+          based on the video result.
         </p>
         <article *ngFor="let beat of r.productionEvidence?.videoPlanIR?.beats">
           <p>{{ beat.startTime }}–{{ beat.endTime }} s · {{ beat.action }}</p>
-          <button type="button" (click)="setIntentLevel(beat, 'ESSENTIAL')">Temel olay</button>
-          <button type="button" (click)="setIntentLevel(beat, 'FLEXIBLE')">Esnek tercih</button>
-          <button type="button" (click)="setIntentLevel(beat, 'POLISH')">Görsel incelik</button>
+          <button type="button" (click)="setIntentLevel(beat, 'ESSENTIAL')">Core event</button>
+          <button type="button" (click)="setIntentLevel(beat, 'FLEXIBLE')">Flexible preference</button>
+          <button type="button" (click)="setIntentLevel(beat, 'POLISH')">Visual polish</button>
         </article>
         <details>
           <summary>Source-bound intent and creative interpretation details</summary>
@@ -172,8 +172,8 @@ import { GeneralProducibilityComponent } from './general-producibility.component
             ></textarea>
           </label>
           <p>
-            İlerleme bilgi, ilişki, duygu, fizik veya ritimle gelişebilir. Final birden fazla işlev
-            taşıyabilir. Kaynaksız yorum UNKNOWN kalır.
+            Progression may develop through information, relationships, emotion, physics or rhythm. The ending may serve
+            more than one function. Unsupported interpretation remains UNKNOWN.
           </p>
         </details>
         <details><summary>Bounded repair session · at most two attempts</summary><label>Maximum total cost (USD)<input type="number" min="0" [(ngModel)]="repairBudget"></label><label><input type="checkbox" [(ngModel)]="repairConsent">I approve the configured repair provider within this session budget.</label><button type="button" (click)="startRepairSession()" [disabled]="busy || !isCurrent() || !repairConsent || repairBudget <= 0">Start bounded repair</button><label>Saved session ID<input [(ngModel)]="repairSessionId"></label><button type="button" (click)="reopenRepairSession(repairSessionId)">Reopen session</button><div *ngIf="repairSession"><p>{{ repairSession.sessionId }} · {{ repairSession.state }} · {{ repairSession.stopReason }} · attempts {{ repairSession.attempts }}/{{ repairSession.maxAttempts }} · reserved ceiling {{ repairSession.reservedCostUsd }} (actual spend may be unknown)</p><p>Best independently reviewed prompt version: {{ repairSession.bestPromptVersionId }}</p><section *ngIf="repairOriginalReview && repairBestReview" aria-label="Repair before and after findings"><h4>Original · prompt version {{ repairOriginalReview.promptVersionId }}</h4><pre>{{ repairOriginalReview.executionReview?.findings | json }}</pre><pre>{{ repairOriginalReview.planQuality | json }}</pre><h4>Best independently reviewed candidate · prompt version {{ repairBestReview.promptVersionId }}</h4><pre>{{ repairBestReview.executionReview?.findings | json }}</pre><pre>{{ repairBestReview.planQuality | json }}</pre></section><pre>{{ repairSession.history | json }}</pre><button type="button" (click)="nextRepairAttempt()" [disabled]="busy || repairSession.state !== 'READY'">Next bounded attempt</button><button type="button" (click)="decideRepair('ACCEPTED')" [disabled]="busy || repairSession.state === 'RUNNING'">Accept best candidate</button><button type="button" (click)="decideRepair('REJECTED')">Reject</button><button type="button" (click)="decideRepair('CANCELLED')">Cancel</button></div></details>
@@ -193,84 +193,81 @@ import { GeneralProducibilityComponent } from './general-producibility.component
         <label>Final production prompt<textarea readonly [value]="r.finalPrompt"></textarea></label>
         <button type="button" (click)="copyPrompt()" [disabled]="!isCurrent()">Copy</button>
         <button type="button" (click)="saveFinal.emit(r.finalPrompt)" [disabled]="!isCurrent()">
-          Editöre aktar ve sürüm kaydet
+          Transfer to editor and save version
         </button>
         <button type="button" (click)="exportHandoff()" [disabled]="!isCurrent()">
-          Manuel render paketi indir
+          Download manual render package
         </button>
         <p>
-          Manuel paket render yetkisi veya kredi harcama onayı değildir. Son video mevcut kanonik
-          kabul akışından geçer.
+          The manual package does not authorize rendering or spending credits. The final video still follows the canonical
+          acceptance flow.
         </p>
-        <h3>Gerçek render QA</h3>
+        <h3>Actual render QA</h3>
         <label
-          >Dönen videonun yerel medya yolu<input
+          >Returned video local media path<input
             [(ngModel)]="qaPath"
             placeholder="library/.../video.mp4"
         /></label>
         <p>
-          Gerçek klibi açıp her planlanan zaman aralığını inceleyin. Seyrek kareler
-          hareket/temas/loop kanıtı değildir.
+          Open the actual clip and inspect every planned time range. Sparse frames are not evidence of motion/contact/loop.
         </p>
         <a *ngIf="qaPath" [href]="'/api/v1/videos/content?path=' + encode(qaPath)" target="_blank"
-          >Gerçek videoyu aç</a
+          >Open actual video</a
         >
         <article *ngFor="let beat of r.productionEvidence?.videoPlanIR?.beats">
           <strong>{{ beat.startTime }}–{{ beat.endTime }} s</strong>
           <p>{{ beat.action }}</p>
           <label
-            >Gerçekte gözlenen başlangıç (s)<input type="number" [(ngModel)]="qaStarts[beat.id]"
+            >Observed start (s)<input type="number" [(ngModel)]="qaStarts[beat.id]"
           /></label>
           <label
-            >Gerçekte gözlenen son (s)<input type="number" [(ngModel)]="qaEnds[beat.id]"
+            >Observed end (s)<input type="number" [(ngModel)]="qaEnds[beat.id]"
           /></label>
           <select [(ngModel)]="qaStates[beat.id]">
-            <option value="UNKNOWN">Kanıt yetersiz</option>
-            <option value="PRESENT">Gözlendi</option>
-            <option value="ABSENT">Eksik / çöktü</option>
+            <option value="UNKNOWN">Insufficient evidence</option>
+            <option value="PRESENT">Observed</option>
+            <option value="ABSENT">Missing / failed</option>
           </select>
         </article>
-        <label>İncelenen aralık başlangıcı (s)<input type="number" [(ngModel)]="qaStart" /></label>
-        <label>İncelenen aralık sonu (s)<input type="number" [(ngModel)]="qaEnd" /></label>
+        <label>Reviewed range start (s)<input type="number" [(ngModel)]="qaStart" /></label>
+        <label>Reviewed range end (s)<input type="number" [(ngModel)]="qaEnd" /></label>
         <article *ngFor="let aspect of qaAspects">
           <strong>{{ aspect.label }}</strong>
           <select [(ngModel)]="qaExperience[aspect.key]">
-            <option value="UNKNOWN">Kanıt yetersiz</option>
+            <option value="UNKNOWN">Insufficient evidence</option>
             <option *ngFor="let value of aspect.values" [value]="value">{{ value }}</option>
           </select>
           <label
-            >Bu aralıkta gerçekten gözlenen şey<input [(ngModel)]="qaDescriptions[aspect.key]"
+            >What was actually observed in this range<input [(ngModel)]="qaDescriptions[aspect.key]"
           /></label>
         </article>
         <details>
-          <summary>Aralığa bağlı kusur ve müdahale kanıtı</summary>
-          <label>Kusurlar<textarea [(ngModel)]="qaDefectsText"></textarea></label>
-          <label>Gerekçeli rerender önerisi<textarea [(ngModel)]="qaRepairText"></textarea></label>
+          <summary>Range-specific defect and intervention evidence</summary>
+          <label>Defects<textarea [(ngModel)]="qaDefectsText"></textarea></label>
+          <label>Justified rerender recommendation<textarea [(ngModel)]="qaRepairText"></textarea></label>
           <p>
-            Her kusur için tür, zaman, gözlem, çıkarım/belirsizlik, etkilenen olay/niyet ve izleyici
-            etkisi gerekir. Teknik tür tek başına önem düzeyi belirlemez.
+            Each defect needs a type, time, observation, inference/uncertainty, affected event/intent and audience
+            impact. A technical type alone does not determine importance.
           </p>
         </details>
         <label
-          ><input type="checkbox" [(ngModel)]="clipReviewed" />Bu aralıkları gerçek klipte inceleyip
-          gözlemleri onayladım</label
+          ><input type="checkbox" [(ngModel)]="clipReviewed" />I inspected these ranges in the actual clip and confirm the observations</label
         >
         <label
-          ><input type="checkbox" [(ngModel)]="stillsReviewed" />Bu gerçek videodan çıkarılan
-          kareleri inceledim; yalnız durağan görünüm/poz bulguları için kanıt</label
+          ><input type="checkbox" [(ngModel)]="stillsReviewed" />I inspected stills extracted from this video; they are evidence only for static appearance/pose findings</label
         >
         <button type="button" (click)="runQa()" [disabled]="busy || !isCurrent() || !qaPath">
-          Deterministik analiz + plan karşılaştırması
+          Deterministic analysis + plan comparison
         </button>
         <p *ngIf="qa">ACTUAL_RENDER_QA: {{ qa.status }} · Video {{ qa.videoId }}</p>
         <p *ngFor="let finding of qa?.findings">
           {{ finding.start }}–{{ finding.end }} s · {{ finding.reason }} {{ finding.action }}
         </p>
         <details><summary>Justified full-video regeneration handoff</summary><p>Requires a verified actual review with material full-rerender justification and exact prompt ancestry. Queue authorization and budget controls still apply.</p><label>Parent actual QA record<input [(ngModel)]="regenerationQaId" [placeholder]="qa?.recordId || ''"></label><label>Parent video ID<input [(ngModel)]="regenerationParentVideoId" [placeholder]="qa?.videoId || ''"></label><label>Parent variant ID (optional)<input [(ngModel)]="regenerationParentVariantId"></label><label>Why this new full-video attempt is justified<input [(ngModel)]="regenerationReason"></label><button type="button" (click)="createRegenerationHandoff()" [disabled]="!isCurrent() || !regenerationReason.trim()">Create immutable handoff</button><p *ngIf="regenerationHandoff">{{ regenerationHandoff.status }} · {{ regenerationHandoff.executionScope }}</p><a *ngIf="regenerationHandoff" [href]="regenerationLink()">Review authorized queue settings</a></details>
-        <h3>Yayın ve ölçüm ilişkisi</h3>
+        <h3>Publication and measurement association</h3>
         <p>
-          Prompt → referanslar → render ayarları → gerçek video → edit varyantı → yayın ID →
-          immutable ölçüm ayrı tutulur.
+          Prompt → references → render settings → actual video → edited variant → publication ID →
+          immutable measurement are kept separate.
         </p>
         <div class="inputs">
           <label
@@ -279,12 +276,12 @@ import { GeneralProducibilityComponent } from './general-producibility.component
               <option>FACEBOOK</option>
               <option>YOUTUBE</option>
             </select></label
-          ><label>Yayın ID (metin)<input type="text" [(ngModel)]="platformContentId" /></label
+          ><label>Publication ID (text)<input type="text" [(ngModel)]="platformContentId" /></label
           ><label>Edit varyant ID (varsa)<input [(ngModel)]="variantId" /></label
           ><label
-            >Eşleştirme kanıtı<input
+            >Association evidence<input
               [(ngModel)]="associationReason"
-              placeholder="Doğrulanmış permalink / manuel inceleme gerekçesi"
+              placeholder="Verified permalink / manual review reason"
           /></label>
         </div>
         <button
@@ -292,16 +289,16 @@ import { GeneralProducibilityComponent } from './general-producibility.component
           (click)="associate()"
           [disabled]="busy || !qa?.videoId || !platformContentId || !associationReason"
         >
-          Manuel ilişkiyi kaydet
+          Save manual association
         </button>
         <p *ngIf="association">
-          İlişki: {{ association.status }} · {{ association.platformContentId }}
+          Association: {{ association.status }} · {{ association.platformContentId }}
         </p>
-        <a href="/import">CSV/XLSX dosyasını mevcut import ekranında incele ve eşleştir</a>
+        <a href="/import">Review and map the CSV/XLSX file in the import screen</a>
         <details>
-          <summary>Kaynaklı ölçüm kaydı ve karşılaştırma</summary>
+          <summary>Source-backed measurement record and comparison</summary>
           <div class="inputs">
-            <label>Ölçüm kaynağı / import satırı<input [(ngModel)]="measurementSource" /></label
+            <label>Measurement source / import row<input [(ngModel)]="measurementSource" /></label
             ><label
               >Observation window<select [(ngModel)]="horizon">
                 <option>UNKNOWN</option>
@@ -311,15 +308,15 @@ import { GeneralProducibilityComponent } from './general-producibility.component
                 <option>24H</option>
                 <option>72H</option>
               </select></label
-            ><label>Ölçüm zamanı<input type="datetime-local" [(ngModel)]="measuredAt" /></label
+            ><label>Measurement time<input type="datetime-local" [(ngModel)]="measuredAt" /></label
             ><label
-              >Gerçek video süresi (s)<input type="number" [(ngModel)]="videoDuration" /></label
+              >Actual video duration (s)<input type="number" [(ngModel)]="videoDuration" /></label
             ><label>Reach<input type="number" [(ngModel)]="reach" /></label
             ><label>Views / plays<input type="number" [(ngModel)]="views" /></label
             ><label>Ortalama izleme (s)<input type="number" [(ngModel)]="watchSeconds" /></label
             ><label>Paid Reach<input type="number" [(ngModel)]="paidReach" /></label
             ><label
-              >Paid watch-time payı (0–1)<input type="number" [(ngModel)]="paidWatchShare"
+              >Paid watch-time share (0–1)<input type="number" [(ngModel)]="paidWatchShare"
             /></label>
           </div>
           <button
@@ -327,7 +324,7 @@ import { GeneralProducibilityComponent } from './general-producibility.component
             (click)="saveMeasurement()"
             [disabled]="busy || !association || !measurementSource || !measuredAt"
           >
-            Ölçümü ayrı snapshot olarak kaydet
+            Save measurement as a separate snapshot
           </button>
           <ng-container *ngIf="measurement"
             ><p>
@@ -335,18 +332,18 @@ import { GeneralProducibilityComponent } from './general-producibility.component
               {{ measurement.outcome?.views?.value ?? 'UNKNOWN' }}
             </p>
             <p>
-              Ortalama izleme / gerçek süre oranı:
+              Average watch / actual duration ratio:
               {{ measurement.audience?.averageWatchDurationRatio?.value ?? 'UNKNOWN' }} ·
-              intentional replay oranı değildir.
+              This is not an intentional replay rate.
             </p>
             <p>
-              Dağıtım: {{ measurement.distribution?.cohort }} · Paid Reach payı
+              Distribution: {{ measurement.distribution?.cohort }} · Paid Reach share
               {{ measurement.distribution?.paidReachShare?.value ?? 'UNKNOWN' }} · paid watch-time
-              payı ayrı.
+              share is separate.
             </p></ng-container
           >
           <label
-            >Near-organic Paid Reach eşiği (0–1)<input
+            >Near-organic Paid Reach threshold (0–1)<input
               type="number"
               min="0"
               max="1"
@@ -357,40 +354,39 @@ import { GeneralProducibilityComponent } from './general-producibility.component
             (click)="compare()"
             [disabled]="busy || !['1H', '3H', '24H', '72H'].includes(horizon)"
           >
-            Aynı zaman penceresi kohortlarını karşılaştır
+            Compare cohorts in the same time window
           </button>
           <p *ngIf="cohort">
-            Dahil {{ cohort.included }} · dışarıda {{ cohort.excluded }} · nedensel sonuç
-            çıkarılmaz.
+            Included {{ cohort.included }} · excluded {{ cohort.excluded }} · no causal conclusion is drawn.
           </p>
         </details>
-        <button type="button" (click)="validateCanonicalProfile()" [disabled]="busy || !isCurrent()">Canonical profil doğrulamasını kaydet</button><p *ngIf="canonicalValidationId">{{ canonicalMessage }}</p><details>
-          <summary>İnsan incelemesine açık ders / deney kaydı</summary>
-          <label>Ders kapsamı<select [(ngModel)]="lessonScope"><option value="ACTUAL_EXECUTION">Doğrulanmış actual video</option><option value="PROMPT_FIX">Kabul edilmiş prompt onarımı</option></select></label><label>Hipotez<textarea [(ngModel)]="lessonHypothesis"></textarea></label
-          ><label>Karşı örnekler<input [(ngModel)]="counterexamples" /></label
+        <button type="button" (click)="validateCanonicalProfile()" [disabled]="busy || !isCurrent()">Save canonical profile validation</button><p *ngIf="canonicalValidationId">{{ canonicalMessage }}</p><details>
+          <summary>Human-reviewed lesson / experiment record</summary>
+          <label>Lesson scope<select [(ngModel)]="lessonScope"><option value="ACTUAL_EXECUTION">Verified actual video</option><option value="PROMPT_FIX">Accepted prompt repair</option></select></label><label>Hypothesis<textarea [(ngModel)]="lessonHypothesis"></textarea></label
+          ><label>Counterexamples<input [(ngModel)]="counterexamples" /></label
           ><button
             type="button"
             (click)="saveLesson('LESSON')"
             [disabled]="!lessonHypothesis || (lessonScope === 'PROMPT_FIX' ? repairSession?.state !== 'ACCEPTED' : !qa)"
           >
-            Ders adayı kaydet</button
+            Save lesson candidate</button
           ><button
             type="button"
             (click)="saveLesson('EXPERIMENT')"
             [disabled]="!lessonHypothesis || (lessonScope === 'PROMPT_FIX' ? repairSession?.state !== 'ACCEPTED' : !qa)"
           >
-            Deney sonucu kaydet
+            Save experiment result
           </button>
-          <p *ngIf="lesson">{{ lesson.reviewStatus }} · donmuş kurallara otomatik uygulanmaz.</p>
+          <p *ngIf="lesson">{{ lesson.reviewStatus }} · not automatically applied to frozen rules.</p>
           <ng-container *ngIf="lesson?.reviewStatus === 'PENDING_HUMAN_REVIEW'"
-            ><label>İnsan incelemesi gerekçesi<input [(ngModel)]="learningReason" /></label
+            ><label>Human review reason<input [(ngModel)]="learningReason" /></label
             ><button type="button" (click)="reviewLesson('APPROVED')" [disabled]="!learningReason">
-              Dersi / deneyi onayla</button
+              Approve lesson / experiment</button
             ><button type="button" (click)="reviewLesson('REJECTED')" [disabled]="!learningReason">
-              Reddet
+              Reject
             </button></ng-container
           >
-          <div *ngIf="lesson?.reviewStatus === 'APPROVED'"><label>Geri çekme gerekçesi<input [(ngModel)]="learningReason"></label><button type="button" (click)="reviewLesson('REVOKED')" [disabled]="!learningReason.trim()">Onaylı dersi geri çek</button></div>
+          <div *ngIf="lesson?.reviewStatus === 'APPROVED'"><label>Revocation reason<input [(ngModel)]="learningReason"></label><button type="button" (click)="reviewLesson('REVOKED')" [disabled]="!learningReason.trim()">Revoke approved lesson</button></div>
         </details>
       </ng-container>
 `,
@@ -535,24 +531,24 @@ export class PostFamilyWorkflowComponent implements OnChanges, OnDestroy {
   qaAspects = [
     {
       key: 'coreEventReadability',
-      label: 'Temel olayın okunabilirliği',
+      label: 'Core event readability',
       values: ['ADEQUATE', 'UNREADABLE'],
     },
-    { key: 'identity', label: 'Kimlik', values: ['RECOGNIZABLE', 'UNRECOGNIZABLE'] },
+    { key: 'identity', label: 'Identity', values: ['RECOGNIZABLE', 'UNRECOGNIZABLE'] },
     {
       key: 'safety',
-      label: 'Çocukla paylaşım için içerik güvenliği',
+      label: 'Content safety for children',
       values: ['APPROPRIATE', 'UNSAFE'],
     },
-    { key: 'coherence', label: 'Bütün olarak anlaşılabilirlik', values: ['ADEQUATE', 'DESTROYED'] },
+    { key: 'coherence', label: 'Overall comprehensibility', values: ['ADEQUATE', 'DESTROYED'] },
     {
       key: 'progression',
-      label: 'İzleme deneyiminin gelişimi',
+      label: 'Viewing experience progression',
       values: ['DEVELOPING', 'PURPOSEFUL_REPETITION', 'WEAK'],
     },
     {
       key: 'opening',
-      label: 'Gerçek açılış',
+      label: 'Actual opening',
       values: [
         'READABLE_EARLY_DEVELOPMENT',
         'READABLE_PROMISE',
@@ -562,7 +558,7 @@ export class PostFamilyWorkflowComponent implements OnChanges, OnDestroy {
     },
     {
       key: 'ending',
-      label: 'Gerçek final',
+      label: 'Actual ending',
       values: ['DELIVERS_PROMISE', 'PURPOSEFUL_UNRESOLVED', 'ARBITRARY_TRUNCATION', 'WEAK'],
     },
   ];
@@ -773,7 +769,7 @@ export class PostFamilyWorkflowComponent implements OnChanges, OnDestroy {
         this.qaPath = this.videoPath;
         if (saved.decisionPolicyVersion === 'impact-review-v1' && bound.prompt === this.prompt) {
           this.reviewedInputs = this.inputSnapshot();
-        } else this.error = 'Tarihsel inceleme: kaynak veya karar politikası değişmiş; yeni değerlendirme gerekli.';
+        } else this.error = 'Historical review: source or decision policy changed; a new evaluation is required.';
         this.http.get<any[]>('/api/v1/intelligence/workflow/records?kind=ACTUAL_RENDER_QA', { params: { bindingHash: saved.bindingHash } }).subscribe({
           next: records => {
             if (sequence !== this.restoreSequence) return;
@@ -858,7 +854,7 @@ export class PostFamilyWorkflowComponent implements OnChanges, OnDestroy {
           );
           this.protectedIntent = (source.boundRequest?.protectedIntent || []).join('\n');
           this.error = '';
-        } else this.error = 'Bu kaynak sürümüne ait etki incelemesi bulunamadı.';
+        } else this.error = 'No impact review found for this source version.';
         this.busy = false;
         this.changeDetector.markForCheck();
       },
@@ -885,7 +881,7 @@ export class PostFamilyWorkflowComponent implements OnChanges, OnDestroy {
           sourceSpan: beat.sourceSpan,
           sourceQuote: quote,
           eventIds: [beat.id],
-          rationale: 'Operatörün render öncesi kaynak olay tercihi',
+          rationale: 'Operator source-event preference before render',
         },
       ],
       null,
@@ -932,14 +928,14 @@ export class PostFamilyWorkflowComponent implements OnChanges, OnDestroy {
       return;
     }
     if (this.structuredPlanText.trim() && !this.parsedPlan()) {
-      this.error = 'Kaynağa bağlı plan JSON olarak okunamadı; kaynak kanıtı güncellenmedi.';
+      this.error = 'The source-bound plan could not be read as JSON; source evidence was not updated.';
       return;
     }
     if (
       !this.parseList(this.intentRequirementsText) ||
       !this.parseList(this.creativeEvidenceText)
     ) {
-      this.error = 'Niyet/yorum bildirimleri okunamadı; kaynak incelemesi yapılmadı.';
+      this.error = 'Intent/comment declarations could not be read; source review was not run.';
       return;
     }
     this.busy = true;
@@ -958,7 +954,7 @@ export class PostFamilyWorkflowComponent implements OnChanges, OnDestroy {
         next: (r) => {
           this.review = r;
           this.reviewedInputs = r.originalPrompt !== undefined && r.originalPrompt !== this.prompt ? '' : snapshot;
-          if (!this.reviewedInputs) this.error = 'Düzenlenen metni yeni immutable sürüm olarak kaydedin; sunucu kayıtlı kaynak sürümünü inceledi.';
+          if (!this.reviewedInputs) this.error = 'Save the edited text as a new immutable version; the server reviewed the saved source version.';
           this.busy = false;
           this.analysisJustCompleted = true;
           this.changeDetector.markForCheck();
@@ -981,7 +977,7 @@ export class PostFamilyWorkflowComponent implements OnChanges, OnDestroy {
   repair() {
     const start = this.prompt.indexOf(this.patchOriginal);
     if (start < 0 || this.prompt.indexOf(this.patchOriginal, start + 1) >= 0) {
-      this.error = 'Yama ifadesi kaynakta tam bir kez bulunmalı.';
+      this.error = 'The patch text must occur exactly once in the source.';
       return;
     }
     this.busy = true;
@@ -1023,11 +1019,11 @@ export class PostFamilyWorkflowComponent implements OnChanges, OnDestroy {
     try {
       repairProposal = JSON.parse(this.qaRepairText);
     } catch {
-      this.error = 'Müdahale kanıtı okunamadı';
+      this.error = 'Intervention evidence could not be read';
       return;
     }
     if (!defects || !repairProposal || Array.isArray(repairProposal)) {
-      this.error = 'Kusur/müdahale kanıtı okunamadı';
+      this.error = 'Defect/intervention evidence could not be read';
       return;
     }
     this.busy = true;
@@ -1043,12 +1039,12 @@ export class PostFamilyWorkflowComponent implements OnChanges, OnDestroy {
       reference: `${this.qaPath}#t=${this.qaStarts[b.id] ?? b.startTime},${this.qaEnds[b.id] ?? b.endTime}`,
       observed:
         this.qaStates[b.id] === 'PRESENT'
-          ? 'Operatör bu plan olayını gerçek klip aralığında gözledi.'
+          ? 'The operator observed this planned event in the actual clip range.'
           : this.qaStates[b.id] === 'ABSENT'
-            ? 'Operatör bu plan olayının gerçek klip aralığında bulunmadığını gözledi.'
+            ? 'The operator observed that this planned event was absent from the actual clip range.'
             : '',
       inferred: '',
-      uncertainty: 'Operatör gözlemi; otomatik semantik doğrulama yapılmadı',
+      uncertainty: 'Operator observation; no automatic semantic validation was performed',
       confidence: this.clipReviewed ? 'MEDIUM' : 'UNKNOWN',
     }));
     const experience = Object.fromEntries(
@@ -1060,7 +1056,7 @@ export class PostFamilyWorkflowComponent implements OnChanges, OnDestroy {
           end,
           observed: this.qaDescriptions[a.key] || '',
           inferred: '',
-          uncertainty: 'Operatör gözlemi; ses/transkript kanıtı yok',
+          uncertainty: 'Operator observation; no audio/transcript evidence',
           confidence: this.clipReviewed ? 'MEDIUM' : 'UNKNOWN',
           evidenceBasis: this.clipReviewed ? 'HUMAN_REVIEWED_CLIP' : 'SAMPLED_STILLS',
           reference: `${this.qaPath}#t=${this.qaStart},${end}`,
@@ -1234,6 +1230,6 @@ export class PostFamilyWorkflowComponent implements OnChanges, OnDestroy {
     this.error =
       error.error?.detail ||
       error.error?.message ||
-      'İşlem tamamlanamadı; kanıt UNKNOWN olarak kalır.';
+      'The operation could not be completed; evidence remains UNKNOWN.';
   }
 }

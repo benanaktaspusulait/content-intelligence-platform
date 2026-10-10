@@ -1164,7 +1164,7 @@ export class RenderDashboardPage implements OnInit, OnDestroy {
       return;
     }
     if(this.queueJobType() !== 'FIRST_FRAME' && this.workflowReviewId && (!this.workflowReview || this.workflowReview.family8?.renderAuthorization?.status !== 'AUTHORIZED')) {
-      this.queueError.set('Post-family kanıtı eksik veya yetki bekliyor. İnceleme ekranında tamamlayın.'); return;
+      this.queueError.set('Post-family evidence is missing or awaiting authorization. Complete it in the review screen.'); return;
     }
     if (this.regenerationHandoffId && !this.regenerationHandoff) { this.queueError.set('Regeneration handoff has not been loaded; queue admission is closed.'); return; }
     this.queueLoading.set(true); this.queueError.set(''); this.queuedJobId.set('');
@@ -1267,7 +1267,7 @@ export class RenderDashboardPage implements OnInit, OnDestroy {
       this.regenerationHandoff = null;
       if (this.regenerationHandoffId) this.http.get<any>(`/api/v1/intelligence/workflow/records/${this.regenerationHandoffId}`).subscribe({ next: handoff => { this.regenerationHandoff = handoff; }, error: () => this.queueError.set('Regeneration handoff could not be loaded.') });
       this.workflowReview=null;
-      if(this.workflowReviewId) this.http.get<any>(`/api/v1/intelligence/workflow/records/${this.workflowReviewId}`).subscribe({next:r=>{this.workflowReview=r;this.queueModel.set(r.generation.apiModelId||'');this.queueFirstFramePath.set(r.generation.settings?.startFrame?.id||'');},error:()=>this.queueError.set('Post-family inceleme kaydı yüklenemedi; render kabulü kapalı.')});
+      if(this.workflowReviewId) this.http.get<any>(`/api/v1/intelligence/workflow/records/${this.workflowReviewId}`).subscribe({next:r=>{this.workflowReview=r;this.queueModel.set(r.generation.apiModelId||'');this.queueFirstFramePath.set(r.generation.settings?.startFrame?.id||'');},error:()=>this.queueError.set('Post-family review record could not be loaded; render acceptance is disabled.')});
     });
     this.connectLiveNotifications();
     this.loadOpenArtReferences();

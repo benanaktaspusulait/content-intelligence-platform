@@ -144,7 +144,7 @@ describe('post-family operator workflow', () => {
     expect(req.request.body.options.views).toBeUndefined();
     req.flush({
       recordId: 'r',
-      operatorReport: [{ label: 'KARAR', text: 'Kanıt adımına geç' }],
+      operatorReport: [{ label: 'DECISION', text: 'Proceed to evidence' }],
       reviewDimensions: {
         promptPlanQuality: { status: 'HYPOTHESIS' },
         generatorExecutionRisk: { status: 'ADVISORY_RISK' },
@@ -153,8 +153,8 @@ describe('post-family operator workflow', () => {
       },
     });
     await f.whenStable();
-    expect(f.nativeElement.textContent).toContain('Kanıt adımına geç');
-    expect(f.nativeElement.textContent).toContain('İzleyici / dağıtım sonucu');
+    expect(f.nativeElement.textContent).toContain('Proceed to evidence');
+    expect(f.nativeElement.textContent).toContain('Audience / distribution outcome');
     c.intentRequirementsText = '[]';
     expect(c.isCurrent()).toBe(false);
   });
