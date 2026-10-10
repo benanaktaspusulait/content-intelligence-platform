@@ -46,7 +46,7 @@ import { GeneralProducibilityComponent } from './general-producibility.component
         <nav class="stage-subtabs analysis-tabs" aria-label="Quality Analysis sections" role="tablist">
           <button *ngFor="let tab of analysisTabs" type="button" role="tab" [attr.aria-selected]="activeAnalysisTab === tab.id" [class.is-active]="activeAnalysisTab === tab.id" (click)="selectAnalysisTab(tab.id)">{{ tab.title }}<small>{{ tab.description }}</small></button>
         </nav>
-        <div class="analysis-stage-toolbar"><span><b>Saved analysis</b><small>{{ r.recordId ? 'Current analysis run' : 'Analysis identity unavailable' }} · {{ r.promptVersionId || promptVersionId || 'UNKNOWN' }}</small></span><a class="button button--primary" [class.disabled-link]="!isCurrent()" [attr.aria-disabled]="!isCurrent()" [href]="isCurrent() ? '/api/v1/intelligence/workflow/records/' + (qa?.recordId || r.recordId) + '/pdf' : null" target="_blank" download>⇩ Export Analysis PDF</a></div>
+        <div class="analysis-stage-toolbar"><span><b>Saved analysis</b><small>{{ r.recordId ? 'Run ' + r.recordId.slice(0, 8) : 'Analysis identity unavailable' }} · {{ r.promptVersionId || promptVersionId || 'UNKNOWN' }} · {{ analysisExportState }}</small></span><span class="toolbar-action"><a class="button button--primary" [class.disabled-link]="analysisExportState !== 'ANALYSIS_AVAILABLE'" [attr.aria-disabled]="analysisExportState !== 'ANALYSIS_AVAILABLE'" [href]="analysisExportState === 'ANALYSIS_AVAILABLE' ? '/api/v1/intelligence/workflow/records/' + r.recordId + '/pdf' : null" target="_blank" download>⇩ Export Analysis PDF</a><small>{{ analysisExportMessage }}</small></span></div>
         <ng-container *ngIf="activeAnalysisTab === 'summary'">
         <p class="error" *ngIf="!isCurrent()">
           Prompt, version, reference or setting changed. This review is stale; run it again.
@@ -554,6 +554,17 @@ export class PostFamilyWorkflowComponent implements OnChanges, OnDestroy {
     this.persistUiLocation();
     this.stageChanged.emit(stage);
     this.changeDetector.markForCheck();
+  }
+  get analysisExportState(): 'ANALYSIS_AVAILABLE' | 'ANALYSIS_RUNNING' | 'NO_ANALYSIS' | 'ANALYSIS_FAILED' | 'ANALYSIS_STALE' {
+    if (!this.review) return 'NO_ANALYSIS';
+    const status = String(this.review.reviewStatus || this.review.status || '').toUpperCase();
+    if (['RUNNING', 'PENDING', 'IN_PROGRESS'].includes(status)) return 'ANALYSIS_RUNNING';
+    if (['FAILED', 'SERVICE_ERROR', 'ERROR'].includes(status)) return 'ANALYSIS_FAILED';
+    if (!this.isCurrent()) return 'ANALYSIS_STALE';
+    return 'ANALYSIS_AVAILABLE';
+  }
+  get analysisExportMessage(): string {
+    return ({ ANALYSIS_AVAILABLE: 'Download the saved report for this exact analysis run.', ANALYSIS_RUNNING: 'The analysis is still running.', NO_ANALYSIS: 'Run Quality Analysis before exporting.', ANALYSIS_FAILED: 'A failed analysis cannot be exported as a successful report.', ANALYSIS_STALE: 'This report is stale for the current prompt or settings.' } as Record<string, string>)[this.analysisExportState];
   }
   get nextAnalysisAction(): string {
     const recommendation = String(this.review?.planQuality?.recommendation || this.review?.recommendation || '').toUpperCase();
