@@ -368,6 +368,8 @@ public class QualityReportPdfService {
         .replace("Karar için kanıt yetersiz", "Insufficient evidence for a decision")
         .replace("izleme gerekçesini değerlendirmek için kaynak evidence yetersiz", "Insufficient source evidence to evaluate viewing rationale")
         .replace("İzleme gerekçesini değerlendirmek için kaynak evidence yetersiz", "Insufficient source evidence to evaluate viewing rationale")
+        .replace("İzleme gerekçesini değerlendirmek için kaynak evidenceı yetersiz", "Insufficient source evidence to evaluate viewing rationale")
+        .replace("izleme gerekçesini değerlendirmek için kaynak evidenceı yetersiz", "Insufficient source evidence to evaluate viewing rationale")
         .replace("Planlanan final", "Planned ending")
         .replace("Gerçek video henüz incelenmedi", "The final video has not been reviewed yet")
         .replace("Doğrulanmış kusur kanıtı yok", "No verified defect evidence")
