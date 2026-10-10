@@ -58,6 +58,42 @@ def _validate_production_settings(prompt: str, plan: dict[str, Any], context: di
     return conflicts
 
 
+def _complete_confirmed_settings(prompt: str, plan: dict[str, Any], context: dict[str, Any]) -> tuple[str, dict[str, Any]]:
+    """Make confirmed operator settings explicit in the persisted prompt contract.
+
+    Providers occasionally return a valid structured prompt while omitting a
+    setting that was already confirmed in the workflow. We can fill only an
+    absent setting deterministically; a conflicting provider value is left
+    untouched so the existing fail-closed validation still rejects it.
+    """
+    target = context.get('targetConfiguration') if isinstance(context.get('targetConfiguration'), dict) else {}
+    expected_ratio = str(target.get('aspectRatio') or context.get('aspectRatio') or '').strip()
+    expected_duration = target.get('duration') or context.get('targetDuration')
+    expected_generator = str(target.get('selectedGenerator') or context.get('selectedGenerator') or '').strip()
+    expected_profile = str(target.get('contentProfile') or context.get('profile') or '').strip()
+    constraints = plan.get('productionConstraints') if isinstance(plan.get('productionConstraints'), dict) else {}
+    if not isinstance(plan.get('productionConstraints'), dict):
+        plan['productionConstraints'] = constraints
+    additions: list[str] = []
+    if expected_ratio:
+        ratios = set(re.findall(r'(?<!\d)(?:9:16|16:9|1:1)(?!\d)', prompt))
+        if not ratios:
+            additions.append(f'Aspect ratio: {expected_ratio}.')
+            constraints.setdefault('aspectRatio', expected_ratio)
+    if expected_duration and not re.search(rf'(?<!\d){re.escape(str(expected_duration))}\s*(?:s|sec|secs|seconds)\b', prompt, re.IGNORECASE):
+        additions.append(f'Target duration: {expected_duration}s.')
+        constraints.setdefault('duration', expected_duration)
+    if expected_generator and not re.search(re.escape(expected_generator), prompt, re.IGNORECASE):
+        additions.append(f'Target generator: {expected_generator}.')
+        constraints.setdefault('generator', expected_generator)
+    if expected_profile and not re.search(re.escape(expected_profile), prompt, re.IGNORECASE):
+        additions.append(f'Content profile: {expected_profile}.')
+        constraints.setdefault('contentProfile', expected_profile)
+    if additions:
+        prompt = prompt.rstrip() + '\n\nPRODUCTION SETTINGS\n' + ' '.join(additions)
+    return prompt, plan
+
+
 def perform_role(role: str, text: str, context: dict[str, Any], provider: LLMProvider, model: str) -> dict[str, Any]:
     if role not in ROLES or not text.strip() or len(text.encode('utf-8')) > 16000:
         raise ValueError('Supported role and bounded text required')
@@ -194,6 +230,8 @@ def perform_role(role: str, text: str, context: dict[str, Any], provider: LLMPro
             quality_findings.append({'code': 'EVIDENCE_LIMITATION_MISSING', 'severity': 'WARNING', 'message': 'Evidence limitations must be explicit, including when no reference asset was supplied.'})
         if not plan.get('generatorRisks'):
             quality_findings.append({'code': 'GENERATOR_RISK_UNREPORTED', 'severity': 'WARNING', 'message': 'The target generator has no recorded risk assessment.'})
+        prompt, plan = _complete_confirmed_settings(prompt, plan, context)
+        value['prompt'] = prompt
         conflicts = _validate_production_settings(prompt, plan, context)
         if conflicts:
             quality_findings.extend({'code': 'CONFIRMED_SETTING_CONFLICT', 'severity': 'MATERIAL', 'message': item} for item in conflicts)

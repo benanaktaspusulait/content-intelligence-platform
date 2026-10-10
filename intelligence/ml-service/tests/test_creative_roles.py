@@ -70,6 +70,15 @@ def test_build_prompt_rejects_conflicting_confirmed_aspect_ratio():
     with pytest.raises(ValueError, match='confirmed settings'):
         perform_role('BUILD_PROMPT', 'Mimi story', {'targetConfiguration': {'aspectRatio': '9:16'}}, FixtureProvider(result), 'configured')
 
+def test_build_prompt_completes_missing_confirmed_aspect_ratio():
+    result = {
+        'prompt': 'TITLE / FORMAT 15 seconds.\n\nVISUAL STYLE bright.\n\nCHARACTER / CONTINUITY Mimi remains visible.\n\nTIMED SHOT PLAN: 0-3s opening camera; 3-6s action; 6-10s escalation; 10-13s reveal; 13-15s ending.\n\nAUDIO playful sound.\n\nNEGATIVE CONSTRAINTS no extra characters.\n\nFINAL CUT hard cut.',
+        'productionPlan': {'sourceIdentity': {}, 'creativeObjective': 'x', 'characterBindings': [], 'visualExecution': {'openingState': 'x', 'mechanism': 'x', 'continuity': 'x', 'endingState': 'x', 'beats': [{'time': t, 'framing': 'x', 'action': 'x', 'staging': 'x', 'consequence': 'x'} for t in ('0-3s','3-6s','6-10s','10-13s','13-15s')]}, 'productionConstraints': {}, 'intentClassification': {}, 'evidenceLimitations': ['x'], 'generatorRisks': ['x'], 'referencePlan': {}}
+    }
+    response = perform_role('BUILD_PROMPT', 'Mimi story', {'targetConfiguration': {'aspectRatio': '9:16'}}, FixtureProvider(result), 'configured')
+    assert 'Aspect ratio: 9:16.' in response['result']['prompt']
+    assert response['result']['productionPlan']['productionConstraints']['aspectRatio'] == '9:16'
+
 def test_invalid_patch_quote_is_rejected():
     provider = FixtureProvider({'patches': [{'start': 0, 'end': 3, 'sourceQuote': 'wrong', 'replacement': 'Hold'}]})
     with pytest.raises(ValueError): perform_role('MINIMAL_REPAIR', 'CUT', {}, provider, 'configured')
