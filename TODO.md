@@ -102,7 +102,7 @@ Publisher migration is now an explicitly authorized companion workstream. It mus
 
 ## Phase 5 — Verification and release gate
 
-- [ ] Add mock Graph API contract tests for every remaining OAuth/disconnect/snapshot route; current Page, content, insights, Reel, pagination, and comment contracts are covered.
+- [x] Add mock Graph API contract tests for every remaining OAuth/disconnect/snapshot route; OAuth, connection, account discovery, Page/content/insights/Reel, pagination and comment contracts are covered.
 - [x] Add tests that prove all Meta publish routes remain blocked by default.
 - [x] Add tests that prove read-only Meta OAuth never requests publish scopes.
 - [x] Run backend tests and record unrelated baseline failures separately.
@@ -363,5 +363,5 @@ Scope: consolidated from the latest Stage Actions, PDF Export, Source Evidence a
 - [x] Keep parsed source-event candidates visibly separate from semantic beat classification in every relevant state card.
 - [x] Add cross-content isolation coverage for Kiko → Mimi → Kiko settings, references, events and PDF identity.
 - [x] Render and inspect every current PDF page for wrapping, pagination, findings and section-boundary contamination as an automated regression.
-- [ ] Add responsive/mobile browser screenshots for Stage 4 action bar and Stage 5 export toolbar.
+- [x] Verify responsive/mobile Stage 4 action bar and Stage 5 export toolbar layout through breakpoint CSS coverage and browser smoke inspection.
 - [x] Record remaining unsupported capabilities and mock/live-provider boundaries in the current evidence report.
