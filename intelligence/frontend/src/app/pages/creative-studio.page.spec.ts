@@ -49,3 +49,43 @@ describe('saved story reuse', () => {
     http.verify(); fixture.destroy(); TestBed.resetTestingModule();
   });
 });
+
+describe('step 1 journey safety', () => {
+  async function createPage() {
+    localStorage.removeItem('pompom.creative-studio.v1');
+    await TestBed.configureTestingModule({imports:[CreativeStudioPage],providers:[provideHttpClient(),provideHttpClientTesting(),provideRouter([])]}).compileComponents();
+    const fixture=TestBed.createComponent(CreativeStudioPage); const page=fixture.componentInstance; const http=TestBed.inject(HttpTestingController);
+    fixture.detectChanges();
+    http.expectOne('/api/v1/intelligence/workflow/creative-role/readiness').flush({enabled:true,roles:[{role:'STORY',configured:true,model:'fixture'}]});
+    http.expectOne('/api/v1/characters').flush([]);
+    http.expectOne('/api/v1/videos/prompt-workspaces?relativeDirectory=library/POMPOM_HILLS_PRODUCTION/09_SOCIAL_REELS/new14092026').flush([]);
+    http.expectOne('/api/v1/intelligence/workflow/records?kind=CREATIVE_ROLE').flush([]);
+    http.expectOne('/api/v1/intelligence/workflow/records?kind=STORY_APPROVAL').flush([]);
+    return {fixture,page,http};
+  }
+  it('preserves an unsaved new draft while reusing a saved story', async () => {
+    const {fixture,page,http}=await createPage();
+    page.idea='A new unsubmitted idea'; page.title='Unsaved title'; page.persist();
+    page.savedStories=[{recordId:'saved-2',idea:'Saved source',result:{alternatives:['Saved candidate']}}];
+    page.useSavedStory(page.savedStories[0]);
+    expect(page.activeJourney).toBe('SAVED');
+    expect(page.selectedStory).toBe('Saved candidate');
+    expect(page.newDraftSnapshot.idea).toBe('A new unsubmitted idea');
+    page.selectJourney('NEW');
+    expect(page.idea).toBe('A new unsubmitted idea');
+    expect(page.title).toBe('Unsaved title');
+    http.match(r=>r.method==='PUT').forEach(r=>r.flush({}));
+    http.verify(); fixture.destroy(); TestBed.resetTestingModule();
+  });
+  it('persists input type and generation strategy independently and removes the empty advanced section', async () => {
+    const {fixture,page,http}=await createPage();
+    page.inputMode='DETAILED_STORY'; page.storyMode='IMPROVE_EXISTING_STORY'; page.onStoryModeChange(); page.persist();
+    const saved=JSON.parse(localStorage.getItem('pompom.creative-studio.v1')!);
+    expect(saved.inputMode).toBe('DETAILED_STORY');
+    expect(saved.storyMode).toBe('IMPROVE_EXISTING_STORY');
+    fixture.detectChanges();
+    expect(fixture.nativeElement.textContent).not.toContain('Advanced Settings');
+    http.match(r=>r.method==='PUT').forEach(r=>r.flush({}));
+    http.verify(); fixture.destroy(); TestBed.resetTestingModule();
+  });
+});
