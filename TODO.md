@@ -351,13 +351,13 @@ Scope: consolidated from the latest Stage Actions, PDF Export, Source Evidence a
 ## Still to implement and verify
 - [ ] Add explicit stage-action tests for all four Production Review tabs and prove no duplicate primary action.
 - [ ] Add explicit Stage 5 toolbar tests for all four Analysis tabs, same run identity and no provider request.
-- [ ] Add disabled/export-state handling for NO_ANALYSIS, RUNNING, FAILED and STALE analysis records.
+- [x] Add disabled/export-state handling for NO_ANALYSIS, RUNNING, FAILED and STALE analysis records.
 - [ ] Verify PDF export against the selected content ID, prompt version/hash, analysis run ID and policy in browser.
 - [ ] Add browser acceptance evidence for navigating from References directly to Stage 5 and back to Prompt.
 - [ ] Persist an explicitly accepted Opening Strategy and verify it survives refresh without another acceptance prompt.
-- [ ] Add non-destructive content-profile mismatch advisory for discovery-oriented Kiko source with ABSURD_PHYSICS selected.
+- [x] Add non-destructive content-profile mismatch advisory for discovery-oriented Kiko source with ABSURD_PHYSICS selected.
 - [ ] Separate Creative Intent “missing source data” from parser limitation, semantic pending and source-identity mismatch states.
-- [ ] Normalize literal escaped-newline display text while preserving immutable original source quote and offsets.
+- [x] Normalize literal escaped-newline display text while preserving immutable original source quote and offsets.
 - [ ] Add Golden Path Kiko, actual-newline, Mimi-boundary, multiline, legacy, Unicode-dash and invalid-range parser fixtures.
 - [ ] Verify actor/object/action/source-quote IDs and exact source spans for Golden Path Kiko in the persisted record.
 - [ ] Keep parsed source-event candidates visibly separate from semantic beat classification in every relevant state card.
