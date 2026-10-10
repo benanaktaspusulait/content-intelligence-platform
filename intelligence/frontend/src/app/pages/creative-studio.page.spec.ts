@@ -88,4 +88,29 @@ describe('step 1 journey safety', () => {
     http.match(r=>r.method==='PUT').forEach(r=>r.flush({}));
     http.verify(); fixture.destroy(); TestBed.resetTestingModule();
   });
+  it('keeps reusable work collapsed until the operator explicitly starts a new story', async () => {
+    const {fixture,page,http}=await createPage();
+    page.savedStories=[{recordId:'saved-3',idea:'Saved source',result:{alternatives:['Saved candidate']}}];
+    page.savedStoriesLoading=false;
+    page.activeJourney='RESUME';
+    await fixture.whenStable();
+    fixture.detectChanges();
+    expect(page.activeJourney).toBe('RESUME');
+    expect(fixture.nativeElement.querySelector('.new-story-form')).toBeNull();
+    page.selectJourney('NEW');
+    expect(page.activeJourney).toBe('NEW');
+    http.match(r=>r.method==='PUT').forEach(r=>r.flush({}));
+    http.verify(); fixture.destroy(); TestBed.resetTestingModule();
+  });
+  it('does not expose technical workspace paths in the ordinary option label', async () => {
+    const {fixture,page,http}=await createPage();
+    page.selectJourney('NEW');
+    page.workspaces=[{creativeName:'Mimi Studio',folderPath:'library/POMPOM_HILLS_PRODUCTION/secret/long/path'}];
+    fixture.detectChanges();
+    const option=fixture.nativeElement.querySelector('select option[title]') as HTMLOptionElement;
+    expect(option.textContent?.trim()).toBe('Mimi Studio');
+    expect(option.title).toContain('library/POMPOM_HILLS_PRODUCTION');
+    http.match(r=>r.method==='PUT').forEach(r=>r.flush({}));
+    http.verify(); fixture.destroy(); TestBed.resetTestingModule();
+  });
 });
