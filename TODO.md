@@ -331,3 +331,37 @@ This section tracks the targeted production-prompt upgrade. Provider calls remai
 - [x] Add provider-role, schema, budget, fingerprint, staleness, finding-diff, idempotency and lineage tests.
 - [x] Run mock desktop/mobile browser journeys for initial and updated story review.
 - [x] Update progress documentation and deploy only after every checkbox is complete.
+
+# Latest Quality Analysis / Stage Actions Remediation — outstanding audit
+
+Scope: consolidated from the latest Stage Actions, PDF Export, Source Evidence and Production Review remediation prompt. These checkboxes are intentionally conservative: a checkbox is marked complete only after implementation and a matching verification.
+
+## Verified complete in current branch
+- [x] Stage 4 has one shared progression action outside the Overview card.
+- [x] Stage 5 has one shared Export Analysis PDF toolbar action.
+- [x] Duplicate editable Production Configuration controls removed from Advanced Details.
+- [x] Opening Strategy distinguishes suggested/unconfirmed from operator-confirmed display.
+- [x] Literal escaped-newline timeline regression fixture added and passing.
+- [x] References tab prioritizes visual assets and keeps lessons compact.
+- [x] Persistent saved-review restoration banner removed.
+- [x] PDF report has separated execution, creative assessment, evidence, authorization and recommendation signals.
+- [x] PDF endpoint output downloaded and rendered to PNG for visual inspection on 2026-10-10.
+- [x] Frontend regression suite passes 88 tests; deployed frontend/backend services are healthy.
+
+## Still to implement and verify
+- [ ] Add explicit stage-action tests for all four Production Review tabs and prove no duplicate primary action.
+- [ ] Add explicit Stage 5 toolbar tests for all four Analysis tabs, same run identity and no provider request.
+- [ ] Add disabled/export-state handling for NO_ANALYSIS, RUNNING, FAILED and STALE analysis records.
+- [ ] Verify PDF export against the selected content ID, prompt version/hash, analysis run ID and policy in browser.
+- [ ] Add browser acceptance evidence for navigating from References directly to Stage 5 and back to Prompt.
+- [ ] Persist an explicitly accepted Opening Strategy and verify it survives refresh without another acceptance prompt.
+- [ ] Add non-destructive content-profile mismatch advisory for discovery-oriented Kiko source with ABSURD_PHYSICS selected.
+- [ ] Separate Creative Intent “missing source data” from parser limitation, semantic pending and source-identity mismatch states.
+- [ ] Normalize literal escaped-newline display text while preserving immutable original source quote and offsets.
+- [ ] Add Golden Path Kiko, actual-newline, Mimi-boundary, multiline, legacy, Unicode-dash and invalid-range parser fixtures.
+- [ ] Verify actor/object/action/source-quote IDs and exact source spans for Golden Path Kiko in the persisted record.
+- [ ] Keep parsed source-event candidates visibly separate from semantic beat classification in every relevant state card.
+- [ ] Add cross-content isolation browser coverage for Kiko → Mimi → Kiko settings, references, events and PDF identity.
+- [ ] Render and inspect every current PDF page for wrapping, pagination, findings and section-boundary contamination as an automated regression.
+- [ ] Add responsive/mobile browser screenshots for Stage 4 action bar and Stage 5 export toolbar.
+- [ ] Record remaining unsupported capabilities and mock/live-provider boundaries in the current evidence report.

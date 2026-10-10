@@ -65,6 +65,14 @@ describe('post-family operator workflow', () => {
     expect(component.productionTabs.map(tab => tab.title)).toEqual(['Overview', 'Creative & Settings', 'Execution Plan', 'References']);
     fixture.destroy();
   });
+  it('shows a non-destructive profile mismatch advisory without overriding the operator', async () => {
+    const f = await setup();
+    const c = f.componentInstance;
+    c.prompt = 'Kiko discovers a shiny box, finds colorful ribbons and forms a rainbow arch.';
+    c.contentProfile = 'ABSURD_PHYSICS';
+    expect(c.profileMismatch).toBe(true);
+    expect(c.contentProfile).toBe('ABSURD_PHYSICS');
+  });
   it('reviews the immutable version with all three generators available', async () => {
     const f = await setup();
     f.componentInstance.profile = 'post-family-v1';
