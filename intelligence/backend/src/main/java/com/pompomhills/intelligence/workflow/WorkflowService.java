@@ -404,20 +404,89 @@ public class WorkflowService {
             : List.<Map<String, Object>>of();
     context.put("retrievedLessons", lessons);
     verifiedRequest.put("context", context);
+    // BUILD_PROMPT is resumable. The exact approved story revision and target
+    // configuration form the request identity; a changed budget must never
+    // turn the same request into another paid provider call.
+    String requestFingerprint = creativeRoleFingerprint(role, verifiedRequest);
+    if ("BUILD_PROMPT".equals(role)) {
+      var saved = findCreativeRoleByFingerprint(requestFingerprint);
+      if (saved.isPresent() && saved.get().get("result") instanceof Map<?, ?>) {
+        var replay = new LinkedHashMap<>(saved.get());
+        replay.put("recordId", saved.get().get("recordId"));
+        replay.put("reused", true);
+        replay.put("calls", 0);
+        replay.put("attemptState", "REUSED_SAVED_RESULT");
+        replay.put("requestFingerprint", requestFingerprint);
+        return replay;
+      }
+    }
     Map<String, Object> workflowResponse;
     try {
       workflowResponse = ml.workflow("creative-role", verifiedRequest);
     } catch (RuntimeException error) {
       String detail = error.getMessage() == null ? "The ML service rejected the request" : error.getMessage();
+      var failed = new LinkedHashMap<String, Object>();
+      failed.put("role", role);
+      failed.put("sourceStoryRecordId", context.get("sourceStoryRecordId"));
+      failed.put("sourceRequest", verifiedRequest);
+      failed.put("requestFingerprint", requestFingerprint);
+      failed.put("attemptState", "FAILED");
+      failed.put("validationStatus", "UNKNOWN");
+      failed.put("attemptDiagnostics", Map.of(
+          "provider", role.equals("STORY") ? "deepseek" : "openai",
+          "error", detail,
+          "persisted", true,
+          "retryAutomatically", false));
+      try {
+        failed.put("recordId", save("CREATIVE_ROLE", null, failed));
+      } catch (RuntimeException persistenceError) {
+        // Preserve the provider error as the user-facing outcome even if the
+        // diagnostic append itself cannot be written.
+      }
       throw new IllegalStateException("Creative role request failed: " + detail, error);
     }
     var result = new LinkedHashMap<>(workflowResponse);
     result.put("retrievedLessons", lessons);
     result.put("sourceStoryRecordId", context.get("sourceStoryRecordId"));
     result.put("sourceRequest", verifiedRequest);
+    result.put("requestFingerprint", requestFingerprint);
+    result.put("attemptState", "SAVED");
+    result.put("attemptDiagnostics", Map.of(
+        "provider", result.getOrDefault("provider", "unknown"),
+        "model", result.getOrDefault("model", "unknown"),
+        "calls", result.getOrDefault("calls", 0),
+        "validationStatus", result.getOrDefault("validationStatus", "NOT_VALIDATED"),
+        "persisted", true));
     result.put("validationStatus", "NOT_VALIDATED");
     result.put("recordId", save("CREATIVE_ROLE", null, result));
     return result;
+  }
+
+  private String creativeRoleFingerprint(String role, Map<String, Object> request) {
+    try {
+      var canonical = new LinkedHashMap<String, Object>();
+      canonical.put("role", role);
+      canonical.put("text", request.get("text"));
+      canonical.put("context", request.get("context"));
+      return HexFormat.of().formatHex(
+          MessageDigest.getInstance("SHA-256").digest(json.writeValueAsBytes(canonical)));
+    } catch (Exception error) {
+      throw new IllegalStateException("Creative role request identity unavailable", error);
+    }
+  }
+
+  private java.util.Optional<Map<String, Object>> findCreativeRoleByFingerprint(String fingerprint) {
+    return jdbc.sql(
+            "SELECT id,payload::text payload FROM post_family_workflow_events "
+                + "WHERE kind='CREATIVE_ROLE' AND payload->>'role'='BUILD_PROMPT' "
+                + "AND payload->>'requestFingerprint'=:fingerprint "
+                + "ORDER BY created_at DESC,id DESC LIMIT 1")
+        .param("fingerprint", fingerprint)
+        .query((rs, ignored) -> {
+          var value = read(rs.getString("payload"));
+          value.put("recordId", rs.getString("id"));
+          return value;
+        }).optional();
   }
 
   public Map<String, Object> approveStory(UUID storyRecordId, Map<String, Object> request) {
