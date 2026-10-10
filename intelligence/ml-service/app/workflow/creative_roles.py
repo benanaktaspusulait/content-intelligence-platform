@@ -287,8 +287,15 @@ def perform_role(role: str, text: str, context: dict[str, Any], provider: LLMPro
         for patch in patches:
             if not isinstance(patch, dict) or any(type(patch.get(k)) is not int for k in ('start', 'end')) or not 0 <= patch['start'] < patch['end'] <= len(text) or patch.get('sourceQuote') != text[patch['start']:patch['end']] or not isinstance(patch.get('replacement'), str):
                 raise ValueError('Patch must bind to the exact source span')
+    response_metadata = getattr(provider, 'last_response_metadata', None) or {
+        'apiStatus': 'COMPLETED',
+        'promptPresent': bool(value.get('prompt')) if role == 'BUILD_PROMPT' else None,
+        'promptLength': len(value.get('prompt', '')) if role == 'BUILD_PROMPT' else None,
+    }
     return {'role': role, 'provider': ROLES[role], 'model': model, 'result': value,
-            'calls': 1, 'visualInspected': False, 'validationStatus': 'NOT_VALIDATED', 'usage': getattr(provider, 'last_usage', None)}
+            'calls': 1, 'visualInspected': False, 'validationStatus': 'NOT_VALIDATED',
+            'usage': getattr(provider, 'last_usage', None),
+            'providerResponseMetadata': response_metadata}
 
 
 def run_paid_role(role: str, text: str, context: dict[str, Any], max_cost_usd: float) -> dict[str, Any]:

@@ -53,6 +53,14 @@ class OpenAIProvider(LLMProvider):
         usage = getattr(response, "usage", None)
         self.last_usage = usage.model_dump() if usage is not None and hasattr(usage, "model_dump") else None
         content = response.choices[0].message.content
+        choice = response.choices[0]
+        self.last_response_metadata = {
+            "requestId": getattr(response, "id", None),
+            "finishReason": getattr(choice, "finish_reason", None),
+            "promptPresent": bool(content and content.strip()),
+            "promptLength": len(content or ""),
+            "apiStatus": "COMPLETED",
+        }
         return content if content is not None else ""
 
     def complete_images(

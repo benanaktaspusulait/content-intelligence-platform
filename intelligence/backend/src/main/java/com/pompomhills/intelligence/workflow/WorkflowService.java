@@ -19,6 +19,7 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /** Append-only operational adapters over existing prompt, media and ML services. */
 @Service
@@ -380,6 +381,7 @@ public class WorkflowService {
     return ml.workflow("creative-role/readiness", Map.of());
   }
 
+  @Transactional
   public Map<String, Object> creativeRole(Map<String, Object> request) {
     String role = String.valueOf(request.get("role"));
     if (!List.of("STORY", "STORY_REVIEW", "BUILD_PROMPT", "MINIMAL_REPAIR").contains(role))
@@ -409,6 +411,13 @@ public class WorkflowService {
     // turn the same request into another paid provider call.
     String requestFingerprint = creativeRoleFingerprint(role, verifiedRequest);
     if ("BUILD_PROMPT".equals(role)) {
+      // Serialize identical requests across tabs/processes while the provider
+      // call is in progress. The first transaction commits the durable result;
+      // the next caller then replays it without another provider call.
+      jdbc.sql("SELECT pg_advisory_xact_lock(hashtext(:fingerprint))")
+          .param("fingerprint", requestFingerprint)
+          .query((rs, rowNum) -> rs.getObject(1))
+          .list();
       var saved = findCreativeRoleByFingerprint(requestFingerprint);
       if (saved.isPresent() && saved.get().get("result") instanceof Map<?, ?>) {
         var replay = new LinkedHashMap<>(saved.get());
