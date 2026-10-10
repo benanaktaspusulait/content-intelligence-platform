@@ -111,74 +111,243 @@ public class QualityReportPdfService {
       PdfWriter writer = PdfWriter.getInstance(document, out);
       Fonts fonts = createFonts();
       writer.setPageEvent(new FooterEvent(fonts.small));
-      document.addTitle("Pompom Hills - Etki temelli inceleme");
+      document.addTitle("Pompom Hills - Production Review");
       document.open();
-      document.add(new Paragraph("Etki temelli prompt / video incelemesi", fonts.title));
-      document.add(
-          new Paragraph(
-              clean(
-                  String.valueOf(
-                      snapshot.getOrDefault("decisionPolicyVersion", "HISTORICAL_POLICY"))),
-              fonts.muted));
-      document.add(
-          new Paragraph(
-              "TEST_CANDIDATE yayın izni değildir. Üretim/yayın için kanonik yetkilendirme ayrıca"
-                  + " gereklidir.",
-              fonts.body));
-      if (snapshot.get("operatorReport") instanceof List<?> rows) {
-        for (Object item : rows)
-          if (item instanceof Map<?, ?> row) {
-            document.add(new Paragraph(clean(String.valueOf(row.get("label"))), fonts.bold));
-            document.add(new Paragraph(clean(String.valueOf(row.get("text"))), fonts.body));
-          }
-      }
-      document.newPage();
-      document.add(
-          new Paragraph("Dört ayrı değerlendirme boyutu — kanıt ayrıntıları", fonts.title));
-      var dimensions =
-          snapshot.get("reviewDimensions") instanceof Map<?, ?> values ? values : Map.of();
-      var json = new com.fasterxml.jackson.databind.ObjectMapper().findAndRegisterModules();
-      for (String key :
-          List.of(
-              "promptPlanQuality",
-              "generatorExecutionRisk",
-              "actualRenderQuality",
-              "audienceDistributionOutcome")) {
-        document.add(new Paragraph(key, fonts.heading));
-        Object value = dimensions.get(key);
-        document.add(
-            new Paragraph(
-                clean(
-                    value == null
-                        ? "UNKNOWN — tarihsel kayıtta bu boyut yok"
-                        : json.writerWithDefaultPrettyPrinter().writeValueAsString(value)),
-                fonts.small));
-      }
-      document.add(
-          new Paragraph(
-              "Kanıt bağlantısı: " + clean(String.valueOf(snapshot.get("bindingHash"))),
-              fonts.small));
-      document.add(
-          new Paragraph(
-              "Yetki kapsamı: "
-                  + clean(
-                      String.valueOf(
-                          snapshot.getOrDefault("authorizationScope", "PROMPT_WORKFLOW"))),
-              fonts.small));
-      document.add(
-          new Paragraph(
-              "Family 8: " + clean(String.valueOf(snapshot.get("family8"))), fonts.small));
-      document.add(
-          new Paragraph(
-              "Ses değerlendirmesi: "
-                  + clean(String.valueOf(snapshot.getOrDefault("audioReview", "UNKNOWN"))),
-              fonts.small));
+      addWorkflowHeader(document, snapshot, fonts);
+      addWorkflowSummary(document, snapshot, fonts);
+      addWorkflowDimensions(document, snapshot, fonts);
+      addWorkflowEvidence(document, snapshot, fonts);
+      addWorkflowBeats(document, snapshot, fonts);
+      addWorkflowNextSteps(document, snapshot, fonts);
     } catch (IOException | RuntimeException e) {
       throw new QualityReportPdfException("Workflow PDF could not be rendered", e);
     } finally {
       if (document.isOpen()) document.close();
     }
     return out.toByteArray();
+  }
+
+  private void addWorkflowHeader(Document document, Map<String, Object> snapshot, Fonts fonts)
+      throws DocumentException {
+    document.add(new Paragraph("PRODUCTION REVIEW", fonts.eyebrow));
+    document.add(new Paragraph("Creative Intelligence Report", fonts.title));
+    document.add(new Paragraph("Evidence-led review of the saved production workflow", fonts.muted));
+    PdfPTable banner = new PdfPTable(new float[] {68, 32});
+    banner.setWidthPercentage(100);
+    banner.setSpacingBefore(10);
+    banner.setSpacingAfter(12);
+    PdfPCell left = plainCell(new Color(0xEAF4EE), 10);
+    left.addElement(new Paragraph("DECISION", fonts.eyebrow));
+    left.addElement(new Paragraph(humanize(snapshot.get("decision"), "Review completed"), fonts.heading));
+    left.addElement(new Paragraph("Policy: " + humanize(snapshot.get("decisionPolicyVersion"), "Historical policy"), fonts.muted));
+    banner.addCell(left);
+    PdfPCell right = plainCell(new Color(0xEAF1FB), 10);
+    right.addElement(new Paragraph("RECORD", fonts.eyebrow));
+    right.addElement(new Paragraph("Saved workflow", fonts.bold));
+    right.addElement(new Paragraph("Binding " + shortValue(snapshot.get("bindingHash")), fonts.muted));
+    banner.addCell(right);
+    document.add(banner);
+  }
+
+  private void addWorkflowSummary(Document document, Map<String, Object> snapshot, Fonts fonts)
+      throws DocumentException {
+    section(document, "Executive summary", fonts);
+    String summary = firstText(snapshot, "summary", "reviewSummary", "operatorSummary");
+    if (summary.isBlank()) summary = "The saved workflow was reviewed against the configured creative and production requirements.";
+    document.add(new Paragraph(summary, fonts.body));
+    PdfPTable cards = new PdfPTable(new float[] {25, 25, 25, 25});
+    cards.setWidthPercentage(100);
+    cards.setSpacingBefore(8);
+    cards.addCell(metricCell("PROMPT PLAN", dimensionStatus(snapshot, "promptPlanQuality"), BLUE, fonts));
+    cards.addCell(metricCell("GENERATOR RISK", dimensionStatus(snapshot, "generatorExecutionRisk"), ORANGE, fonts));
+    cards.addCell(metricCell("RENDER QUALITY", dimensionStatus(snapshot, "actualRenderQuality"), GREEN, fonts));
+    cards.addCell(metricCell("AUDIENCE", dimensionStatus(snapshot, "audienceDistributionOutcome"), AMBER, fonts));
+    document.add(cards);
+  }
+
+  private void addWorkflowDimensions(Document document, Map<String, Object> snapshot, Fonts fonts)
+      throws DocumentException {
+    section(document, "Review dimensions", fonts);
+    Map<?, ?> dimensions = snapshot.get("reviewDimensions") instanceof Map<?, ?> m ? m : Map.of();
+    PdfPTable table = new PdfPTable(new float[] {26, 16, 58});
+    table.setWidthPercentage(100);
+    table.setHeaderRows(1);
+    header(table, fonts, "Dimension", "Status", "What this means");
+    List<String[]> rows = List.of(
+        new String[] {"Prompt plan quality", "promptPlanQuality", "Whether the prompt preserves the approved creative intent and beat structure."},
+        new String[] {"Generator execution risk", "generatorExecutionRisk", "Practical risks that could make the prompt difficult for a video generator to execute."},
+        new String[] {"Actual render quality", "actualRenderQuality", "Observed output quality from available render evidence."},
+        new String[] {"Audience distribution outcome", "audienceDistributionOutcome", "Expected clarity, retention and audience-facing outcome."});
+    for (String[] row : rows) {
+      Map<?, ?> value = dimensions.get(row[1]) instanceof Map<?, ?> m ? m : Map.of();
+      String status = humanize(value.get("status"), value.isEmpty() ? "UNKNOWN" : "Recorded");
+      table.addCell(cell(row[0], fonts.bold, null));
+      table.addCell(cell(status, fonts.colored(fonts.small, statusColor(status)), null));
+      String detail = firstText(value, "summary", "assessment", "reason", "message");
+      if (detail.isBlank()) detail = row[2];
+      table.addCell(cell(detail, fonts.small, null));
+    }
+    document.add(table);
+  }
+
+  private void addWorkflowEvidence(Document document, Map<String, Object> snapshot, Fonts fonts)
+      throws DocumentException {
+    section(document, "Evidence and production settings", fonts);
+    PdfPTable table = new PdfPTable(new float[] {30, 70});
+    table.setWidthPercentage(100);
+    table.setHeaderRows(1);
+    header(table, fonts, "Evidence item", "Recorded value");
+    addEvidenceRow(table, fonts, "Authorization scope", snapshot.getOrDefault("authorizationScope", "PROMPT_WORKFLOW"));
+    addEvidenceRow(table, fonts, "Family 8 status", snapshot.getOrDefault("family8", "UNKNOWN"));
+    addEvidenceRow(table, fonts, "Audio review", snapshot.getOrDefault("audioReview", "UNKNOWN"));
+    addEvidenceRow(table, fonts, "Binding reference", snapshot.getOrDefault("bindingHash", "UNKNOWN"));
+    addEvidenceRow(table, fonts, "Evidence state", snapshot.getOrDefault("evidenceStatus", "Recorded in workflow"));
+    document.add(table);
+    if (snapshot.get("operatorReport") instanceof List<?> rows && !rows.isEmpty()) {
+      document.add(new Paragraph("Reviewer notes", fonts.heading));
+      for (Object item : rows) if (item instanceof Map<?, ?> row) {
+        String label = englishLabel(row.get("label"));
+        String text = englishText(row.get("text") == null ? "" : String.valueOf(row.get("text")));
+        if (!text.isBlank()) document.add(labelled(label + ": ", text, fonts));
+      }
+    }
+  }
+
+  private void addWorkflowBeats(Document document, Map<String, Object> snapshot, Fonts fonts)
+      throws DocumentException {
+    Object raw = snapshot.get("beats");
+    if (!(raw instanceof List<?> beats) || beats.isEmpty()) return;
+    section(document, "Timed beat plan", fonts);
+    PdfPTable table = new PdfPTable(new float[] {14, 18, 18, 50});
+    table.setWidthPercentage(100);
+    table.setHeaderRows(1);
+    header(table, fonts, "Beat", "Time", "Framing", "Action");
+    int i = 1;
+    for (Object item : beats) if (item instanceof Map<?, ?> beat) {
+      table.addCell(cell(String.valueOf(i++), fonts.bold, null));
+      table.addCell(cell(firstText(beat, "time", "timeRange", "duration"), fonts.small, null));
+      table.addCell(cell(firstText(beat, "framing", "shot", "camera"), fonts.small, null));
+      table.addCell(cell(englishText(firstText(beat, "action", "description", "text")), fonts.small, null));
+    }
+    document.add(table);
+  }
+
+  private void addWorkflowNextSteps(Document document, Map<String, Object> snapshot, Fonts fonts)
+      throws DocumentException {
+    section(document, "Readiness and next actions", fonts);
+    String authorization = humanize(snapshot.get("authorizationStatus"), "Review evidence before rendering");
+    PdfPCell box = plainCell(new Color(0xFFF5DE), 10);
+    box.addElement(new Paragraph("CURRENT READINESS", fonts.eyebrow));
+    box.addElement(new Paragraph(authorization, fonts.heading));
+    box.addElement(new Paragraph("This report records analysis evidence. Rendering and publishing still require their own explicit authorization.", fonts.body));
+    PdfPTable wrap = new PdfPTable(1);
+    wrap.setWidthPercentage(100);
+    wrap.addCell(box);
+    document.add(wrap);
+    document.add(new Paragraph("Recommended next actions", fonts.heading));
+    for (String action : List.of("Resolve UNKNOWN evidence items where source material is available.", "Review the timed beat plan and generator risks.", "Authorize rendering only after the approved prompt and evidence are final.")) {
+      document.add(new Paragraph("• " + action, fonts.body));
+    }
+  }
+
+  private void addEvidenceRow(PdfPTable table, Fonts fonts, String label, Object value) {
+    table.addCell(cell(label, fonts.bold, null));
+    String rendered = "Family 8 status".equals(label) ? family8Summary(value) : englishText(value == null ? "UNKNOWN" : String.valueOf(value));
+    table.addCell(cell(rendered, fonts.small, null));
+  }
+
+  private String family8Summary(Object value) {
+    if (!(value instanceof Map<?, ?> family8)) return englishText(value == null ? "UNKNOWN" : String.valueOf(value));
+    Map<?, ?> creative = family8.get("creativeQuality") instanceof Map<?, ?> m ? m : Map.of();
+    Map<?, ?> evidence = family8.get("evidenceCompleteness") instanceof Map<?, ?> m ? m : Map.of();
+    Map<?, ?> authorization = family8.get("renderAuthorization") instanceof Map<?, ?> m ? m : Map.of();
+    StringBuilder result = new StringBuilder();
+    appendSummary(result, "Creative quality", creative.get("creativeGrade"), creative.get("creativeScore"));
+    appendSummary(result, "Evidence completeness", evidence.get("status"), evidence.get("evaluationCoverage"));
+    appendSummary(result, "Render authorization", authorization.get("status"), null);
+    return result.isEmpty() ? "Recorded" : result.toString();
+  }
+
+  private void appendSummary(StringBuilder result, String label, Object status, Object score) {
+    if (status == null && score == null) return;
+    if (result.length() > 0) result.append("  ·  ");
+    result.append(label).append(": ").append(humanize(status, "UNKNOWN"));
+    if (score != null && !String.valueOf(score).equals("null")) result.append(" (" ).append(humanize(score, "UNKNOWN")).append(")");
+  }
+
+  private PdfPCell metricCell(String label, String value, Color color, Fonts fonts) {
+    PdfPCell cell = plainCell(new Color(0xF7, 0xF9, 0xFB), 8);
+    cell.setBorderColor(color);
+    cell.setBorderWidth(1.2f);
+    cell.addElement(new Paragraph(label, fonts.eyebrow));
+    cell.addElement(new Paragraph(value, fonts.colored(fonts.bold, color)));
+    return cell;
+  }
+
+  private String dimensionStatus(Map<String, Object> snapshot, String key) {
+    Map<?, ?> dimensions = snapshot.get("reviewDimensions") instanceof Map<?, ?> m ? m : Map.of();
+    Map<?, ?> value = dimensions.get(key) instanceof Map<?, ?> m ? m : Map.of();
+    return humanize(value.get("status"), "UNKNOWN");
+  }
+
+  private String firstText(Map<?, ?> map, String... keys) {
+    for (String key : keys) {
+      Object value = map.get(key);
+      if (value != null && !String.valueOf(value).isBlank() && !"null".equalsIgnoreCase(String.valueOf(value))) return englishText(String.valueOf(value));
+    }
+    return "";
+  }
+
+  private String humanize(Object value, String fallback) {
+    if (value == null || String.valueOf(value).isBlank() || "null".equalsIgnoreCase(String.valueOf(value))) return fallback;
+    return englishText(String.valueOf(value)).replace('_', ' ');
+  }
+
+  private String shortValue(Object value) {
+    String text = value == null ? "UNKNOWN" : String.valueOf(value);
+    return text.length() > 18 ? text.substring(0, 18) + "…" : text;
+  }
+
+  private String englishLabel(Object value) {
+    String text = value == null ? "Review note" : String.valueOf(value).trim().replaceFirst("\\s*:$", "");
+    return switch (text.toUpperCase(Locale.ROOT)) {
+      case "KARAR" -> "Decision";
+      case "İZLEME MEKANİZMASI", "IZLEME MEKANIZMASI" -> "Viewing mechanism";
+      case "AÇILIŞ", "ACILIS" -> "Opening";
+      case "İLERLEME", "ILERLEME" -> "Progression";
+      case "FİNAL", "FINAL" -> "Ending";
+      case "TEMEL OLAY/KİMLİK/ANLAŞILABİLİRLİK", "TEMEL OLAY/KIMLIK/ANLASILABILIRLIK" -> "Core event / identity / clarity";
+      case "TEKNİK KUSURLAR", "TEKNIK KUSURLAR" -> "Technical defects";
+      case "KUSURUN ETKİSİ", "KUSURUN ETKISI" -> "Defect impact";
+      case "EN KÜÇÜK MÜDAHALE", "EN KUCUK MUDAHALE" -> "Smallest intervention";
+      case "PERFORMANS" -> "Performance";
+      default -> englishText(text);
+    };
+  }
+
+  private String englishText(String value) {
+    if (value == null) return "";
+    return value.replace(": :", ":")
+        .replace(" : ", ": ")
+        .replace("Dört ayrı değerlendirme boyutu", "Four review dimensions")
+        .replace("Etki temelli prompt / video incelemesi", "Impact-based prompt and video review")
+        .replace("Yayın izni değildir", "Does not authorize publishing")
+        .replace("Yetkili karakter/nesne referansı eksik veya doğrulanmadı.", "Authorized character or object reference is missing or unverified.")
+        .replace("Sağlayıcının zorunlu yürütme girdileri eksik: startFrame", "Required generator execution input is missing: startFrame")
+        .replace("Çelişkili kaynak evidenceı.", "Conflicting source evidence.")
+        .replace("Son video kabulü için mevcut doğrulanmış görsel kapılar ve bağımsız revalidation gereklidir.", "Verified visual gates and independent revalidation are required before final video acceptance.")
+        .replace("Küçük prompt düzeltmesi önerilir", "A small prompt correction is recommended")
+        .replace("Kanıt yetersiz", "Insufficient evidence")
+        .replace("Planlanan final", "Planned ending")
+        .replace("Gerçek video henüz incelenmedi", "The final video has not been reviewed yet")
+        .replace("Doğrulanmış kusur kanıtı yok", "No verified defect evidence")
+        .replace("Doğrulanmış kusur evidenceı yok", "No verified defect evidence")
+        .replace("Yalnız teknik temizlik yaratıcı değer kanıtı değildir", "Technical cleanliness alone is not creative value evidence")
+        .replace("Yalnız teknik temizlik yaratıcı değer evidenceı değildir", "Technical cleanliness alone is not creative value evidence")
+        .replace("Kör inceleme tamamlanana kadar sonuç verisi ayrıdır; izlenme garantisi yok", "Performance data remains separate until blind review is complete; no viewing guarantee")
+        .replace("kanıt", "evidence")
+        .replace("bilinmiyor", "UNKNOWN")
+        .replace("tarihsel kayıtta bu boyut yok", "No historical evidence was recorded for this dimension");
   }
 
   // ===== Sections =====
