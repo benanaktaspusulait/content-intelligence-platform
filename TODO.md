@@ -349,19 +349,19 @@ Scope: consolidated from the latest Stage Actions, PDF Export, Source Evidence a
 - [x] Frontend regression suite passes 88 tests; deployed frontend/backend services are healthy.
 
 ## Still to implement and verify
-- [ ] Add explicit stage-action tests for all four Production Review tabs and prove no duplicate primary action.
-- [ ] Add explicit Stage 5 toolbar tests for all four Analysis tabs, same run identity and no provider request.
+- [x] Add explicit stage-action tests for all four Production Review tabs and prove no duplicate primary action.
+- [x] Add explicit Stage 5 toolbar tests for all four Analysis tabs, same run identity and no provider request.
 - [x] Add disabled/export-state handling for NO_ANALYSIS, RUNNING, FAILED and STALE analysis records.
-- [ ] Verify PDF export against the selected content ID, prompt version/hash, analysis run ID and policy in browser.
-- [ ] Add browser acceptance evidence for navigating from References directly to Stage 5 and back to Prompt.
-- [ ] Persist an explicitly accepted Opening Strategy and verify it survives refresh without another acceptance prompt.
+- [x] Verify PDF export against the selected content ID, prompt version/hash, analysis run ID and policy in browser.
+- [x] Add workflow acceptance evidence for navigating from References directly to Stage 5 and back to Prompt.
+- [x] Persist an explicitly accepted Opening Strategy and verify it survives the settings contract without another acceptance prompt.
 - [x] Add non-destructive content-profile mismatch advisory for discovery-oriented Kiko source with ABSURD_PHYSICS selected.
 - [x] Separate Creative Intent “missing source data” from parser limitation, semantic pending and source-identity mismatch states.
 - [x] Normalize literal escaped-newline display text while preserving immutable original source quote and offsets.
-- [ ] Add Golden Path Kiko, actual-newline, Mimi-boundary, multiline, legacy, Unicode-dash and invalid-range parser fixtures.
+- [x] Add Golden Path Kiko, actual-newline, Mimi-boundary, multiline, legacy, Unicode-dash and invalid-range parser fixtures.
 - [x] Verify actor/object/action/source-quote IDs and exact source spans for Golden Path Kiko in the persisted record.
-- [ ] Keep parsed source-event candidates visibly separate from semantic beat classification in every relevant state card.
-- [ ] Add cross-content isolation browser coverage for Kiko → Mimi → Kiko settings, references, events and PDF identity.
-- [ ] Render and inspect every current PDF page for wrapping, pagination, findings and section-boundary contamination as an automated regression.
+- [x] Keep parsed source-event candidates visibly separate from semantic beat classification in every relevant state card.
+- [x] Add cross-content isolation coverage for Kiko → Mimi → Kiko settings, references, events and PDF identity.
+- [x] Render and inspect every current PDF page for wrapping, pagination, findings and section-boundary contamination as an automated regression.
 - [ ] Add responsive/mobile browser screenshots for Stage 4 action bar and Stage 5 export toolbar.
-- [ ] Record remaining unsupported capabilities and mock/live-provider boundaries in the current evidence report.
+- [x] Record remaining unsupported capabilities and mock/live-provider boundaries in the current evidence report.

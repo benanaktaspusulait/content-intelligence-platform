@@ -4,8 +4,9 @@ import { provideHttpClientTesting, HttpTestingController } from '@angular/common
 import { PostFamilyWorkflowComponent } from './post-family-workflow.component';
 
 describe('post-family operator workflow', () => {
-  afterEach(() => window.history.replaceState(window.history.state, '', window.location.pathname));
+  afterEach(() => { window.history.replaceState(window.history.state, '', window.location.pathname); localStorage.clear(); });
   async function setup() {
+    localStorage.clear();
     await TestBed.configureTestingModule({
       imports: [PostFamilyWorkflowComponent],
       providers: [provideHttpClient(), provideHttpClientTesting()],
@@ -47,6 +48,28 @@ describe('post-family operator workflow', () => {
     fixture.destroy();
     TestBed.resetTestingModule();
   });
+  it('isolates saved review restoration by content identity', async () => {
+    await TestBed.configureTestingModule({ imports: [PostFamilyWorkflowComponent], providers: [provideHttpClient(), provideHttpClientTesting()] }).compileComponents();
+    const fixture = TestBed.createComponent(PostFamilyWorkflowComponent);
+    const component = fixture.componentInstance;
+    fixture.componentRef.setInput('prompt', 'Kiko discovers a box.');
+    fixture.componentRef.setInput('contentId', '2');
+    fixture.componentRef.setInput('promptVersionId', '2');
+    fixture.detectChanges();
+    const http = TestBed.inject(HttpTestingController);
+    http.expectOne(r => r.url === '/api/v1/intelligence/workflow/records?kind=REVIEW').flush([
+      { recordId: 'mimi-review', contentId: 1, promptVersionId: 2, bindingHash: 'mimi-hash', boundRequest: { prompt: 'Mimi opens a cabinet.' } },
+      { recordId: 'kiko-review', contentId: 2, promptVersionId: 2, bindingHash: 'kiko-hash', boundRequest: { prompt: 'Kiko discovers a box.' } },
+    ]);
+    http.expectOne('/api/v1/characters').flush([{ name: 'Kiko' }]);
+    http.expectOne(r => r.url === '/api/v1/intelligence/workflow/records?kind=ACTUAL_RENDER_QA').flush([]);
+    expect(component.restoredRecordId).toBe('kiko-review');
+    expect(component.review?.recordId).toBe('kiko-review');
+    expect(component.review?.bindingHash).toBe('kiko-hash');
+    http.verify();
+    fixture.destroy();
+    TestBed.resetTestingModule();
+  });
   it('requires explicit post-family selection and does not generate media', async () => {
     const fixture = await setup();
     expect(fixture.componentInstance.profile).toBe('FROZEN');
@@ -64,6 +87,72 @@ describe('post-family operator workflow', () => {
     expect(fixture.nativeElement.textContent).not.toContain('Quality Analysis completed');
     expect(component.productionTabs.map(tab => tab.title)).toEqual(['Overview', 'Creative & Settings', 'Execution Plan', 'References']);
     fixture.destroy();
+  });
+  it('keeps one stage action bar across all Production Review tabs', async () => {
+    const f = await setup();
+    const c = f.componentInstance;
+    for (const tab of c.productionTabs) c.selectProductionTab(tab.id);
+    expect(c.productionTabs).toHaveLength(4);
+    expect(f.nativeElement.querySelectorAll('.stage-action-bar')).toHaveLength(1);
+    expect(f.nativeElement.querySelectorAll('.overview-next button')).toHaveLength(0);
+    TestBed.inject(HttpTestingController).expectNone(r => r.method === 'POST');
+  });
+  it('keeps one PDF toolbar identity across all Analysis tabs without a provider request', async () => {
+    const f = await setup();
+    const c = f.componentInstance;
+    c.review = { recordId: 'review-kiko', contentId: 1, promptVersionId: 2, bindingHash: 'hash', boundRequest: { prompt: c.prompt } };
+    c['reviewedInputs'] = c['inputSnapshot']();
+    c.activeStage = 5;
+    f.detectChanges();
+    for (const tab of c.analysisTabs) {
+      c.selectAnalysisTab(tab.id);
+      expect(c.analysisExportState).toBe('ANALYSIS_AVAILABLE');
+    }
+    expect(f.nativeElement.querySelectorAll('.analysis-stage-toolbar')).toHaveLength(1);
+    TestBed.inject(HttpTestingController).expectNone(r => r.method === 'POST');
+  });
+  it('navigates from References to Quality Analysis and back to Prompt with the same workflow instance', async () => {
+    const f = await setup();
+    const c = f.componentInstance;
+    c.selectProductionTab('references');
+    expect(c.activeProductionTab).toBe('references');
+    c.review = { recordId: 'review-kiko', contentId: 1, promptVersionId: 2, bindingHash: 'hash', boundRequest: { prompt: c.prompt } };
+    c['reviewedInputs'] = c['inputSnapshot']();
+    c.selectStage(5);
+    expect(c.activeStage).toBe(5);
+    c.selectStage(3);
+    expect(c.activeStage).toBe(3);
+    expect(c.activeProductionTab).toBe('references');
+    TestBed.inject(HttpTestingController).expectNone(r => r.method === 'POST');
+  });
+  it('persists an explicitly accepted opening strategy through the settings contract', async () => {
+    const f = await setup();
+    const c = f.componentInstance;
+    c.prompt = 'Kiko discovers a shiny box and finds colorful ribbons.';
+    c.openingStrategy = 'AUTO';
+    c.acceptOpeningSuggestion();
+    const request = TestBed.inject(HttpTestingController).expectOne('/api/v1/intelligence/workflow/production-settings');
+    expect(request.request.body.openingStrategy).toBe('CURIOSITY_DISCOVERY');
+    request.flush({ savedAt: '2026-10-10T12:00:00Z' });
+    expect(c.openingStrategy).toBe('CURIOSITY_DISCOVERY');
+  });
+  it('covers actual-newline, legacy, unicode-dash and invalid timeline fixtures', async () => {
+    const f = await setup();
+    const c = f.componentInstance;
+    c.prompt = '0-3s: Kiko spots a box.\n3–6s: Kiko opens it.\n6.0-9.0 SEC: Kiko finds ribbons.';
+    expect(c.timedRanges.map(r => [r.start, r.end])).toEqual([[0,3],[3,6],[6,9]]);
+    c.prompt = 'A legacy prompt with no timeline; Kiko discovers a box.';
+    expect(c.timedRanges).toHaveLength(0);
+    c.prompt = '0-3s: first.\n3-2s: invalid backwards range.';
+    expect(c.timedRanges.map(r => [r.start, r.end])).toEqual([[0,3]]);
+  });
+  it('keeps source-event candidates separate from semantic beat classification', async () => {
+    const f = await setup();
+    const c = f.componentInstance;
+    c.prompt = '0-3s: Kiko spots a box.\n3-6s: Kiko opens it.';
+    expect(c.sourceEvents.every(event => event.evidence === 'SOURCE_EVENT_CANDIDATE')).toBe(true);
+    expect(c.sourceEvents.every(event => event.semanticStatus === 'PENDING')).toBe(true);
+    expect(c.executionEvidenceStatus).toContain('classification pending');
   });
   it('shows a non-destructive profile mismatch advisory without overriding the operator', async () => {
     const f = await setup();

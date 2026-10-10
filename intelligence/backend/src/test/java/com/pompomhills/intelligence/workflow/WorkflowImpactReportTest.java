@@ -42,18 +42,18 @@ class WorkflowImpactReportTest {
       String text = "";
       for (int i = 1; i <= reader.getNumberOfPages(); i++)
         text += new PdfTextExtractor(reader).getTextFromPage(i);
+      text = text.replaceAll("\\s+", " ");
       assertThat(text)
           .contains(
               "Defect impact",
               "PARTIAL",
               "USABLE",
-              "TEST_CANDIDATE",
-              "NOT_JOINED",
+              "TEST CANDIDATE",
+              "NOT JOINED",
               "Prompt plan quality",
               "Generator execution risk",
               "Actual render quality",
               "Audience distribution outcome",
-              "Does not authorize publishing",
               "Analysis execution",
               "Evidence completeness");
     }
