@@ -115,6 +115,16 @@ describe('post-family operator workflow', () => {
     expect(c.isSourceQuoteOpen(c.sourceEvents[1].id)).toBe(true);
     expect(c.sourceEvents[1].sourceQuote).toContain('The note flips');
   });
+  it('splits literal escaped-newline timelines into bounded source events', async () => {
+    const f = await setup();
+    const c = f.componentInstance;
+    c.prompt = 'TITLE / FORMAT\nKiko Discovery\nTIMED SHOT PLAN\n0.0-3.0 SEC: Kiko spots a shiny box\\n3.0-6.0 SEC: Kiko opens the box with excitement\\n6.0-9.0 SEC: Kiko discovers colorful ribbons inside\\n9.0-12.0 SEC: Kiko pulls ribbons into patterns\\n12.0-15.0 SEC: The ribbons form a rainbow arch';
+    expect(c.timedRanges.map(range => [range.start, range.end])).toEqual([[0, 3], [3, 6], [6, 9], [9, 12], [12, 15]]);
+    expect(c.timedRanges[0].quote).toContain('spots a shiny box');
+    expect(c.timedRanges[0].quote).not.toContain('opens the box');
+    expect(c.timedRanges[4].quote).toContain('rainbow arch');
+    expect(c.sourceEvents[0].semanticStatus).toBe('PENDING');
+  });
   it('stops the final timed shot at the next document section and preserves multiline spans', async () => {
     const f = await setup();
     const c = f.componentInstance;
