@@ -94,6 +94,52 @@ def _complete_confirmed_settings(prompt: str, plan: dict[str, Any], context: dic
     return prompt, plan
 
 
+def _nested_response_value(value: dict[str, Any], keys: tuple[str, ...], depth: int = 0) -> Any:
+    """Recover a contract field from shallow provider wrappers without guessing text."""
+    if depth > 3:
+        return None
+    for key in keys:
+        candidate = value.get(key)
+        if isinstance(candidate, str) and candidate.strip():
+            return candidate.strip()
+    for key in ('result', 'data', 'response', 'output', 'content'):
+        nested = value.get(key)
+        if isinstance(nested, dict):
+            found = _nested_response_value(nested, keys, depth + 1)
+            if found is not None:
+                return found
+    return None
+
+
+def _nested_response_dict(value: dict[str, Any], keys: tuple[str, ...], depth: int = 0) -> dict[str, Any] | None:
+    if depth > 3:
+        return None
+    for key in keys:
+        candidate = value.get(key)
+        if isinstance(candidate, dict):
+            return candidate
+    for key in ('result', 'data', 'response', 'output', 'content'):
+        nested = value.get(key)
+        if isinstance(nested, dict):
+            found = _nested_response_dict(nested, keys, depth + 1)
+            if found is not None:
+                return found
+    return None
+
+
+def _normalise_build_prompt_response(value: dict[str, Any]) -> dict[str, Any]:
+    """Accept documented casing/wrapper variants while keeping one stored contract."""
+    if not isinstance(value.get('prompt'), str) or not value.get('prompt', '').strip():
+        prompt = _nested_response_value(value, ('productionPrompt', 'openArtPrompt', 'promptText', 'production_prompt', 'openart_prompt', 'prompt'))
+        if isinstance(prompt, str):
+            value['prompt'] = prompt
+    if not isinstance(value.get('productionPlan'), dict):
+        plan = _nested_response_dict(value, ('production_plan', 'productionPlan', 'plan', 'specification'))
+        if plan is not None:
+            value['productionPlan'] = plan
+    return value
+
+
 def perform_role(role: str, text: str, context: dict[str, Any], provider: LLMProvider, model: str) -> dict[str, Any]:
     if role not in ROLES or not text.strip() or len(text.encode('utf-8')) > 16000:
         raise ValueError('Supported role and bounded text required')
@@ -193,11 +239,7 @@ def perform_role(role: str, text: str, context: dict[str, Any], provider: LLMPro
         # Keep the provider boundary strict while tolerating the key spellings
         # commonly returned by otherwise valid JSON-mode responses. The
         # canonical persisted contract remains `prompt`.
-        if not isinstance(value.get('prompt'), str) or not value.get('prompt', '').strip():
-            for alias in ('productionPrompt', 'openArtPrompt', 'promptText'):
-                if isinstance(value.get(alias), str) and value[alias].strip():
-                    value['prompt'] = value[alias].strip()
-                    break
+        value = _normalise_build_prompt_response(value)
         if not isinstance(value.get('prompt'), str) or not value['prompt'].strip() or len(value['prompt']) > 16000:
             raise ValueError('OpenAI response must include a bounded production prompt in the `prompt` field')
         prompt = value['prompt'].strip()

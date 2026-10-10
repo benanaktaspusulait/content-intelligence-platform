@@ -61,6 +61,13 @@ def test_build_prompt_canonicalizes_provider_prompt_alias():
     response = perform_role('BUILD_PROMPT', 'Mimi opens a box.', {}, FixtureProvider(result), 'configured-model')
     assert response['result']['prompt'].startswith('TITLE / FORMAT')
 
+def test_build_prompt_canonicalizes_nested_provider_response():
+    prompt = 'TITLE / FORMAT 15 seconds 9:16.\n\nVISUAL STYLE bright.\n\nCHARACTER / CONTINUITY Mimi remains visible.\n\nTIMED SHOT PLAN: 0-3s opening camera close shot; 3-6s action; 6-10s escalation; 10-13s reveal; 13-15s ending.\n\nAUDIO playful sound.\n\nNEGATIVE CONSTRAINTS no extra characters.\n\nFINAL CUT hard cut.'
+    plan = {'sourceIdentity': {}, 'creativeObjective': 'Make the action readable.', 'characterBindings': [], 'visualExecution': {'openingState': 'Mimi is visible.', 'mechanism': 'Notes move visibly.', 'continuity': 'Mimi remains visible.', 'endingState': 'Hard cut.', 'beats': [{'time': time, 'framing': 'medium shot', 'action': 'Action.', 'staging': 'Center frame.', 'consequence': 'The beat advances.'} for time in ('0-3s', '3-6s', '6-10s', '10-13s', '13-15s')]}, 'productionConstraints': {}, 'intentClassification': {}, 'evidenceLimitations': ['No visual reference supplied'], 'generatorRisks': ['Keep the notes readable.'], 'referencePlan': {}}
+    response = perform_role('BUILD_PROMPT', 'Mimi opens a box.', {}, FixtureProvider({'result': {'production_prompt': prompt, 'production_plan': plan}}), 'configured')
+    assert response['result']['prompt'] == prompt
+    assert response['result']['productionPlan'] == plan
+
 
 def test_build_prompt_rejects_conflicting_confirmed_aspect_ratio():
     result = {
