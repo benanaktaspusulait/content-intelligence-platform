@@ -42,6 +42,25 @@ def test_roles_route_explicitly_and_never_self_validate(role, result, provider_n
     assert len(provider.calls) == 1
     assert provider.calls[0][0]['context']['retrievedLessons'][0]['recordId'] == 'verified'
 
+
+def test_build_prompt_canonicalizes_provider_prompt_alias():
+    result = {
+        'productionPrompt': 'TITLE / FORMAT 15 seconds 9:16.\n\nVISUAL STYLE bright.\n\nCHARACTER / CONTINUITY Mimi remains visible.\n\nTIMED SHOT PLAN: 0-3s opening camera close shot; 3-6s action; 6-10s escalation; 10-13s reveal; 13-15s ending.\n\nAUDIO playful sound.\n\nNEGATIVE CONSTRAINTS no extra characters.\n\nFINAL CUT hard cut.',
+        'productionPlan': {
+            'sourceIdentity': {}, 'creativeObjective': 'Make the action readable.',
+            'characterBindings': [], 'visualExecution': {
+                'openingState': 'Mimi is visible.', 'mechanism': 'Notes move visibly.',
+                'continuity': 'Mimi remains visible.', 'endingState': 'Hard cut.',
+                'beats': [{'time': time, 'framing': 'medium shot', 'action': 'Action.', 'staging': 'Center frame.', 'consequence': 'The beat advances.'}
+                          for time in ('0-3s', '3-6s', '6-10s', '10-13s', '13-15s')]
+            },
+            'productionConstraints': {}, 'intentClassification': {}, 'evidenceLimitations': ['No visual reference supplied'],
+            'generatorRisks': ['Keep the notes readable.'], 'referencePlan': {}
+        }
+    }
+    response = perform_role('BUILD_PROMPT', 'Mimi opens a box.', {}, FixtureProvider(result), 'configured-model')
+    assert response['result']['prompt'].startswith('TITLE / FORMAT')
+
 def test_invalid_patch_quote_is_rejected():
     provider = FixtureProvider({'patches': [{'start': 0, 'end': 3, 'sourceQuote': 'wrong', 'replacement': 'Hold'}]})
     with pytest.raises(ValueError): perform_role('MINIMAL_REPAIR', 'CUT', {}, provider, 'configured')

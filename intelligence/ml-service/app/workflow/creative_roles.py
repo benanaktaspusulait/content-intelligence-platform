@@ -120,8 +120,16 @@ def perform_role(role: str, text: str, context: dict[str, Any], provider: LLMPro
                 raise ValueError('Story alternatives must contain bounded text')
         value['storyQuality'] = analyse_story_candidates(alternatives, context)
     elif role == 'BUILD_PROMPT':
+        # Keep the provider boundary strict while tolerating the key spellings
+        # commonly returned by otherwise valid JSON-mode responses. The
+        # canonical persisted contract remains `prompt`.
+        if not isinstance(value.get('prompt'), str) or not value.get('prompt', '').strip():
+            for alias in ('productionPrompt', 'openArtPrompt', 'promptText'):
+                if isinstance(value.get(alias), str) and value[alias].strip():
+                    value['prompt'] = value[alias].strip()
+                    break
         if not isinstance(value.get('prompt'), str) or not value['prompt'].strip() or len(value['prompt']) > 16000:
-            raise ValueError('Bounded production prompt required')
+            raise ValueError('OpenAI response must include a bounded production prompt in the `prompt` field')
         prompt = value['prompt'].strip()
         source = text.strip()
         markers = ('camera', 'shot', 'framing', 'seconds', 'duration', 'audio', 'sound', 'continuity', 'negative', 'hard cut')
