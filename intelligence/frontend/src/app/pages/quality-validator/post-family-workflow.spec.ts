@@ -53,6 +53,17 @@ describe('post-family operator workflow', () => {
     expect(fixture.nativeElement.textContent).toContain('Family 1–10');
     TestBed.inject(HttpTestingController).expectNone('/api/v1/render-jobs');
   });
+  it('keeps downstream analysis, repair and video QA out of the production review stage', async () => {
+    const fixture = await setup();
+    const component = fixture.componentInstance;
+    expect(component.activeStage).toBe(4);
+    expect(fixture.nativeElement.textContent).toContain('Production Review');
+    expect(fixture.nativeElement.textContent).not.toContain('Actual render QA');
+    expect(fixture.nativeElement.textContent).not.toContain('Bounded repair session');
+    expect(fixture.nativeElement.textContent).not.toContain('Quality Analysis completed');
+    expect(component.productionTabs.map(tab => tab.title)).toEqual(['Overview', 'Creative & Settings', 'Execution Plan', 'References']);
+    fixture.destroy();
+  });
   it('reviews the immutable version with all three generators available', async () => {
     const f = await setup();
     f.componentInstance.profile = 'post-family-v1';

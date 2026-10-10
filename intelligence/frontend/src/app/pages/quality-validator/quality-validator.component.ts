@@ -207,6 +207,7 @@ export class QualityValidatorComponent implements AfterViewInit, OnDestroy {
   @ViewChild('promptMonaco') private promptMonaco?: ElementRef<HTMLDivElement>;
   @ViewChild('workspaceFolderCombobox') private workspaceFolderCombobox?: ElementRef<HTMLElement>;
   @ViewChild(TimelineChartComponent, { read: ElementRef }) private timelineChart?: ElementRef<HTMLElement>;
+  @ViewChild(PostFamilyWorkflowComponent) postFamilyWorkflow?: PostFamilyWorkflowComponent;
   private promptEditor: PromptEditorInstance | null = null;
   private updatingPromptEditor = false;
   exportingPdf = false;
@@ -220,6 +221,7 @@ export class QualityValidatorComponent implements AfterViewInit, OnDestroy {
   promptVersionId: string = '';
   validationRecordId: number | null = null;
   report: QualityReport | null = null;
+  studioStage = 4;
   reportTab: 'overview' | 'evidence' | 'issues' | 'timeline' = 'overview';
   readonly formatNullableScore = formatNullableScore;
   readonly formatCreativeGrade = formatCreativeGrade;
@@ -434,7 +436,21 @@ Intensity: 4`;
     if (workspace) this.toggleWorkspace(workspace);
   }
 
-  scrollToQualityStep(id: string): void { document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+  scrollToQualityStep(id: string): void {
+    if (id === 'prompt-editor') {
+      this.studioStage = 3;
+      document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      return;
+    }
+    const stage = ({'production-review': 4, 'analysis-report': 5, 'priority-fixes': 6, 'render-readiness': 7, 'video-qa': 8} as Record<string, number>)[id];
+    if (stage && this.postFamilyWorkflow) {
+      this.studioStage = stage;
+      this.postFamilyWorkflow.selectStage(stage);
+      document.getElementById('production-review')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      return;
+    }
+    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
 
   ngAfterViewInit(): void {
     if (!this.promptMonaco) return;
