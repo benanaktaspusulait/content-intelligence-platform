@@ -547,13 +547,40 @@ class PromptParser:
         matches = re.finditer(beat_pattern, text, re.IGNORECASE | re.MULTILINE)
 
         beat_id = 1
+        previous_end: float | None = None
         for match in matches:
             start_time = float(match.group(1))
             end_time = float(match.group(2))
+            raw_source = match.group(0)
+            # A timed body ends at the next prompt-level section.  The older
+            # multiline expression intentionally accepted continuation lines,
+            # so trim headings here before semantic extraction and provenance
+            # mapping.  This keeps AUDIO/NEGATIVE CONSTRAINTS/FINAL CUT out of
+            # the event while retaining the exact event bytes and offsets.
+            section_boundary = re.search(
+                r"\n\s*(?:AUDIO|NEGATIVE CONSTRAINTS|FINAL CUT|REFERENCES|CHARACTER|VISUAL STYLE)\s*:",
+                raw_source,
+                re.IGNORECASE,
+            )
+            if section_boundary:
+                raw_source = raw_source[: section_boundary.start()]
             description = match.group(3).strip()
+            if section_boundary:
+                body_offset = match.start(3) - match.start()
+                description = match.group(3)[: max(0, section_boundary.start() - body_offset)].strip()
 
             if end_time <= start_time:
                 self.warnings.append(f"Invalid time range: {start_time}-{end_time}, skipping beat")
+                continue
+            if start_time < 0 or end_time > float(duration):
+                self.warnings.append(
+                    f"Time range {start_time}-{end_time} exceeds the declared duration {duration}, skipping beat"
+                )
+                continue
+            if previous_end is not None and start_time < previous_end:
+                self.warnings.append(
+                    f"Overlapping time range {start_time}-{end_time} follows a beat ending at {previous_end}, skipping beat"
+                )
                 continue
 
             beat = self._create_beat_from_description(
@@ -562,8 +589,15 @@ class PromptParser:
                 end_time=end_time,
                 description=description,
             )
+            # Keep the exact immutable source span for downstream evidence linking.
+            # The timestamp and body are intentionally preserved verbatim here;
+            # semantic fields are derived separately and never replace this quote.
+            beat["sourceSpan"] = [match.start(), match.start() + len(raw_source)]
+            beat["sourceQuote"] = raw_source.strip()
+            beat["evidenceStatus"] = "SOURCE_VERIFIED"
 
             beats.append(beat)
+            previous_end = end_time
             beat_id += 1
 
         if not beats:
