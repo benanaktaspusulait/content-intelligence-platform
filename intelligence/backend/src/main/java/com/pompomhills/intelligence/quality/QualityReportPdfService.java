@@ -375,6 +375,7 @@ public class QualityReportPdfService {
         .replace("kaynak evidenceı yetersiz", "insufficient source evidence")
         .replace("kaynak evidence yetersiz", "insufficient source evidence")
         .replaceAll("(?i)kaynak\\s+evidence.\\s+yetersiz", "insufficient source evidence")
+        .replaceAll("(?i)kaynak.*yetersiz", "insufficient source evidence")
         .replace("Planlanan final", "Planned ending")
         .replace("Gerçek video henüz incelenmedi", "The final video has not been reviewed yet")
         .replace("Doğrulanmış kusur kanıtı yok", "No verified defect evidence")
