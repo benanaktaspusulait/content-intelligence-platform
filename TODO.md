@@ -390,3 +390,12 @@ Scope: consolidated from the latest Stage Actions, PDF Export, Source Evidence a
 - [x] Clear stale approval, builder and prompt identities when selecting a different saved story revision.
 - [x] Preserve canonical quality/render gates when continuing to the saved prompt workflow.
 - [x] Verify the Mimi saved workflow in the local browser: saved prompt opened and Quality Analysis reached without a provider call.
+
+## Critical end-to-end workflow recovery (2026-10-10)
+
+- [x] Preserve the saved Content → Prompt Version → Review lineage while resuming existing work without provider calls.
+- [x] Add contextual Findings Resolution actions for source extraction, operator intent, references, first frame, repair, and post-render QA.
+- [x] Explain local generator critic scope separately from General Producibility and canonical render authorization.
+- [x] Add a bound Render preparation preflight showing saved IDs, generator, settings, references, first-frame state, capability and exact authorization.
+- [x] Keep render preparation no-cost and preserve the existing render queue authorization/budget guards.
+- [ ] Live provider/image/video calls remain external-gated and require separate explicit operational verification.
