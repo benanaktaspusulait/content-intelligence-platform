@@ -9,7 +9,7 @@ import { GeneralProducibilityComponent } from './general-producibility.component
   standalone: true,
   imports: [CommonModule, FormsModule, GeneralProducibilityComponent],
   template: `
-  <section class="workflow production-review" aria-label="Production review">
+  <section *ngIf="activeStage === 4" class="workflow production-review" aria-label="Production review">
     <nav *ngIf="activeStage === 4" class="stage-subtabs" aria-label="Production Review sections" role="tablist">
       <button *ngFor="let tab of productionTabs" type="button" role="tab" [class.is-active]="activeProductionTab === tab.id" [attr.aria-selected]="activeProductionTab === tab.id" (click)="selectProductionTab(tab.id)">{{ tab.title }}<small>{{ tab.description }}</small></button>
     </nav>
@@ -36,24 +36,28 @@ import { GeneralProducibilityComponent } from './general-producibility.component
     <section *ngIf="activeProductionTab === 'creative'" class="review-card intent-card"><header><div><span class="card-kicker">CREATIVE INTENT</span><h3>What must be preserved</h3></div><span class="source-badge">{{ intentConfirmed ? 'Confirmed source' : (protectedIntent ? 'Approved source' : 'Prompt-derived evidence') }}</span></header><div class="intent-grid"><div><span>Main character</span><strong>{{ characterLabel }}</strong><small>Catalog/source identity</small></div><div><span>Central object / situation</span><strong>{{ intentObject }}</strong><small>Source-backed extraction</small></div><div><span>Core mechanism</span><strong>{{ intentMechanism }}</strong><small>Prompt evidence; semantic approval pending</small></div><div><span>Essential progression</span><strong>{{ intentProgression }}</strong><small>Observable consequence</small></div><div><span>Essential ending</span><strong>{{ intentEnding }}</strong><small>Later source evidence</small></div><div><span>Needs clarification</span><strong>{{ intentAmbiguity }}</strong><small>Unresolved source relationship</small></div></div><div class="intent-actions"><button type="button" class="button button--primary" (click)="confirmIntent()" [disabled]="!intentAvailable">{{ intentConfirmed ? 'Intent confirmed' : 'Confirm supported intent' }}</button><button type="button" class="button button--secondary" (click)="intentEditing=!intentEditing">{{ intentEditing ? 'Hide intent editor' : 'Correct intent' }}</button><details><summary>View source evidence</summary><p>Source: approved story / saved prompt · version {{ promptVersionId || 'UNKNOWN' }}</p><p>{{ extractedIntent || 'No meaningful intent evidence found.' }}</p></details></div><textarea *ngIf="intentEditing" [(ngModel)]="protectedIntent" rows="4" placeholder="Add an operator correction; this will remain distinct from extracted evidence"></textarea></section>
     <section *ngIf="activeProductionTab === 'creative'" class="review-card"><header><div><span class="card-kicker">CREATIVE & SETTINGS</span><h3>Inherited workflow settings</h3></div><div class="intent-actions"><span class="status-pill" [class.status-pill--ready]="settingsStatus==='CONFIRMED'">{{ settingsStatus }}</span><button type="button" class="button button--secondary" (click)="settingsEditing=!settingsEditing">{{ settingsEditing ? 'Close settings' : 'Edit settings' }}</button></div></header><div class="settings-grid"><div><span>Main character</span><strong>{{ characterLabel || 'Unknown' }}</strong><small>{{ characterResolvedFromCatalog ? 'Catalog identity recognized from source prompt' : (characterLabel ? 'Saved source association' : 'Missing authoritative character record') }}</small></div><div><span>Content profile</span><strong>{{ contentProfileLabel }}</strong><small>{{ contentProfileHint }}</small></div><div><span>Target duration</span><strong>{{ desiredDuration ? desiredDuration + ' seconds' : 'Missing' }}</strong><small>{{ durationConflict ? 'Conflict: saved setting ' + savedDuration + 's · prompt text ' + promptDuration + 's' : (savedDuration ? 'Saved production setting' : (promptDuration ? 'Read from source prompt; confirm if authoritative' : 'Needs confirmation')) }}</small></div><div><span>Aspect ratio</span><strong>{{ aspectRatio || 'Missing' }}</strong><small>{{ aspectConflict ? 'Conflict: saved setting ' + savedAspectRatio + ' · prompt text ' + promptAspectRatio : (savedAspectRatio ? 'Saved production setting' : (promptAspectRatio ? 'Read from source prompt; confirm if authoritative' : 'Needs confirmation')) }}</small></div><div><span>Target generator</span><strong>{{ generatorLabel }}</strong><small>{{ generatorHint }}</small></div><div><span>Opening strategy</span><strong>{{ openingStrategyLabel }}</strong><small>{{ openingStrategyHint }}</small></div></div><div *ngIf="settingsEditing" class="settings-editor"><label>Content profile<select [(ngModel)]="contentProfile"><option value="AUTO">Source-based suggestion</option><option value="ABSURD_PHYSICS">Absurd Physics</option><option value="CURIOSITY_ADVENTURE">Curiosity / adventure</option><option value="EDUCATIONAL">Educational</option><option value="MIXED">Mixed</option></select></label><label>Target duration (seconds)<input type="number" min="1" [(ngModel)]="desiredDuration"></label><label>Aspect ratio<select [(ngModel)]="aspectRatio"><option value="">Needs confirmation</option><option>9:16</option><option>16:9</option><option>1:1</option></select></label><label>Target generator<select [(ngModel)]="generator"><option value="AUTO">System suggestion</option><option value="SEEDANCE_2_0_MINI">Seedance 2.0 Mini</option><option value="SEEDANCE_2_0">Seedance 2.0</option><option value="SEEDANCE_2_5">Seedance 2.5</option></select></label><button type="button" class="button button--primary settings-apply" (click)="applySettings()" [disabled]="busy || !contentId || !promptVersionId">{{ settingsSavedAt ? 'Apply changes' : 'Save settings' }}</button><small class="setting-note" *ngIf="settingsSavedAt">Saved {{ settingsSavedAt | date:'medium' }}</small></div></section>
     <section *ngIf="activeProductionTab === 'references'" class="review-two-column"><section class="review-card"><header><div><span class="card-kicker">VISUAL REFERENCES</span><h3>Character and first frame</h3></div><span class="status-pill">{{ firstFrameStatus }}</span></header><div class="reference-summary"><div><strong>{{ referenceCharacter || 'Character reference' }}</strong><span>{{ references.length ? references.length + ' validated reference(s)' : 'Approved character reference unavailable' }}</span></div><div><strong>First frame</strong><span>{{ firstFrameStatus }}</span></div></div><button type="button" class="button button--secondary" (click)="referencesOpen=!referencesOpen">{{ referencesOpen ? 'Hide reference details' : 'Manage references' }}</button><p class="setting-note">The first frame defines the opening composition. Prepare, validate and accept it in Render after Quality Analysis; this screen never triggers image generation.</p><div *ngIf="referencesOpen" class="advanced-details"><p *ngFor="let ref of references">{{ ref.character || 'Character' }} · {{ ref.relativePath }}</p><p *ngIf="!references.length">Approved character reference unavailable.</p></div></section><section class="review-card"><header><div><span class="card-kicker">RELEVANT PREVIOUS LESSONS</span><h3>Approved lessons</h3></div><span class="status-pill">{{ retrievedLessons.length ? retrievedLessons.length + ' found' : 'None found' }}</span></header><p>{{ retrievedLessons.length ? 'Applicable verified lessons are attached to this review.' : 'No verified applicable lessons available.' }}</p><details *ngIf="retrievedLessons.length"><summary>View lesson provenance</summary><p *ngFor="let lesson of retrievedLessons">{{ lesson.hypothesis }} · {{ lesson.recordId }}</p></details></section></section>
-    <section *ngIf="activeProductionTab === 'execution'" class="review-card execution-card"><header><div><span class="card-kicker">VISUAL EXECUTION PLAN</span><h3>Source-backed production beats</h3></div><span class="status-pill">{{ review?.productionEvidence?.videoPlanIR?.beats?.length || 0 }} semantic events · {{ timedRanges.length }} timed ranges</span></header><div *ngIf="review?.productionEvidence?.videoPlanIR?.beats?.length; else sourceEventEvidence" class="beat-list"><article *ngFor="let beat of review.productionEvidence.videoPlanIR.beats"><strong>{{ beat.startTime != null ? beat.startTime + '–' + beat.endTime + ' s' : 'Sequence position' }}</strong><p>{{ beat.action }}</p><small>{{ beat.sourceQuote || 'Source quote unavailable — source evidence could not be resolved.' }}</small></article></div><ng-template #sourceEventEvidence><div *ngIf="sourceEvents.length; else noBeatEvidence" class="beat-list"><article *ngFor="let event of sourceEvents"><strong>{{ event.start }}–{{ event.end }} s · {{ event.evidence }}</strong><p><b>{{ event.actor }}</b> · {{ event.object }}</p><p>{{ event.action }}</p><small>{{ event.consequence }} · Semantic significance: {{ event.semanticStatus }}</small><button type="button" class="source-quote-toggle" [attr.aria-expanded]="isSourceQuoteOpen(event.id)" (click)="toggleSourceQuote(event.id)">{{ isSourceQuoteOpen(event.id) ? 'Hide source quote' : 'Show source quote' }}</button><div *ngIf="isSourceQuoteOpen(event.id)" class="source-quote-panel"><span>Exact source · prompt version {{ promptVersionId || 'UNKNOWN' }}</span><p>{{ event.sourceQuote || 'Source quote unavailable — source evidence could not be resolved.' }}</p></div></article></div></ng-template><ng-template #noBeatEvidence><p class="missing-state">No source-backed timing or event evidence is available. Analysis may record UNKNOWN.</p></ng-template><details class="advanced-details"><summary>Advanced evidence details</summary><p>Source-bound extraction and raw structured data remain available for diagnostics; ordinary review does not require hand-written JSON.</p><dl class="diagnostic-list"><div><dt>Extraction</dt><dd>Deterministic timed-source extraction</dd></div><div><dt>Source version</dt><dd>{{ promptVersionId || 'UNKNOWN' }}</dd></div><div><dt>Evidence state</dt><dd>{{ review?.productionEvidence?.videoPlanIR?.beats?.length ? 'SEMANTIC_ANALYSIS_AVAILABLE' : (sourceEvents.length ? 'SOURCE_EVENT_CANDIDATES' : 'MISSING') }}</dd></div><div><dt>Event count</dt><dd>{{ sourceEvents.length }}</dd></div></dl><details class="developer-json"><summary>Developer-only raw JSON</summary><pre>{{ sourceEvents | json }}</pre></details></details></section>
+    <section *ngIf="activeProductionTab === 'execution'" class="review-card execution-card"><header><div><span class="card-kicker">VISUAL EXECUTION PLAN</span><h3>Source-backed production beats</h3></div><span class="status-pill">{{ executionEvidenceStatus }} · {{ timedRanges.length }} timed ranges</span></header><div *ngIf="review?.productionEvidence?.videoPlanIR?.beats?.length; else sourceEventEvidence" class="beat-list"><article *ngFor="let beat of review.productionEvidence.videoPlanIR.beats"><strong>{{ beat.startTime != null ? beat.startTime + '–' + beat.endTime + ' s' : 'Sequence position' }}</strong><p>{{ beat.action }}</p><small>{{ beat.sourceQuote || 'Source quote unavailable — source evidence could not be resolved.' }}</small></article></div><ng-template #sourceEventEvidence><div *ngIf="sourceEvents.length; else noBeatEvidence" class="beat-list"><article *ngFor="let event of sourceEvents"><strong>{{ event.start }}–{{ event.end }} s · {{ event.evidence }}</strong><p><b>{{ event.actor }}</b> · {{ event.object }}</p><p>{{ event.action }}</p><small>{{ event.consequence }} · Semantic significance: {{ event.semanticStatus }}</small><button type="button" class="source-quote-toggle" [attr.aria-expanded]="isSourceQuoteOpen(event.id)" (click)="toggleSourceQuote(event.id)">{{ isSourceQuoteOpen(event.id) ? 'Hide source quote' : 'Show source quote' }}</button><div *ngIf="isSourceQuoteOpen(event.id)" class="source-quote-panel"><span>Exact source · prompt version {{ promptVersionId || 'UNKNOWN' }}</span><p>{{ event.sourceQuote || 'Source quote unavailable — source evidence could not be resolved.' }}</p></div></article></div></ng-template><ng-template #noBeatEvidence><p class="missing-state">No source-backed timing or event evidence is available. Analysis may record UNKNOWN.</p></ng-template><details class="advanced-details"><summary>Advanced evidence details</summary><p>Source-bound extraction and raw structured data remain available for diagnostics; ordinary review does not require hand-written JSON.</p><dl class="diagnostic-list"><div><dt>Extraction</dt><dd>Deterministic timed-source extraction</dd></div><div><dt>Source version</dt><dd>{{ promptVersionId || 'UNKNOWN' }}</dd></div><div><dt>Evidence state</dt><dd>{{ semanticClassificationStatus }}</dd></div><div><dt>Event count</dt><dd>{{ sourceEvents.length }}</dd></div></dl><details class="developer-json"><summary>Developer-only raw JSON</summary><pre>{{ sourceEvents | json }}</pre></details></details></section>
 
     <details *ngIf="activeProductionTab === 'creative'" class="advanced-details technical-settings"><summary>Advanced details</summary><div class="advanced-groups"><section><h4>Production configuration</h4><label>Content profile<select [(ngModel)]="contentProfile"><option value="AUTO">Unconfirmed suggestion</option><option value="ABSURD_PHYSICS">Absurd Physics</option><option value="CURIOSITY_ADVENTURE">Curiosity / adventure</option><option value="EDUCATIONAL">Educational</option><option value="MIXED">Mixed</option></select></label><p class="setting-note">{{ contentProfileHint }} <button *ngIf="contentProfile==='AUTO' && profileProposal.status==='SUGGESTED'" type="button" (click)="acceptProfileSuggestion()">Accept {{ profileProposal.value.replaceAll('_',' ') }}</button></p><label>Opening strategy<select [(ngModel)]="openingStrategy"><option value="AUTO">Unconfirmed suggestion</option><option value="INSTANT_IMPOSSIBLE">Instant impossibility</option><option value="IMMEDIATE_PROBLEM">Immediate problem</option><option value="CURIOSITY_DISCOVERY">Curiosity / discovery</option></select></label><p class="setting-note">{{ openingStrategyHint }} <button *ngIf="openingStrategy==='AUTO' && openingProposal.status==='SUGGESTED'" type="button" (click)="acceptOpeningSuggestion()">Accept {{ openingProposal.value.replaceAll('_',' ') }}</button></p><label>Target duration (seconds)<input type="number" min="1" [(ngModel)]="desiredDuration"></label><label>Aspect ratio<select [(ngModel)]="aspectRatio"><option value="">Needs confirmation</option><option>9:16</option><option>16:9</option><option>1:1</option></select></label><label>Generator<select [(ngModel)]="generator"><option value="AUTO">Unconfirmed suggestion</option><option value="SEEDANCE_2_0_MINI">Seedance 2.0 Mini</option><option value="SEEDANCE_2_0">Seedance 2.0</option><option value="SEEDANCE_2_5">Seedance 2.5</option></select></label><p class="setting-note">{{ generatorHint }} <button *ngIf="generator==='AUTO'" type="button" (click)="acceptGeneratorSuggestion()">Accept {{ generatorLabel }}</button></p></section><section><h4>Creative context</h4><p><b>Protected intent provenance:</b> {{ protectedIntent ? 'Operator-confirmed source intent' : 'Prompt-derived; not yet confirmed' }}</p><p><b>Applicable lessons:</b> {{ retrievedLessons.length ? retrievedLessons.length + ' verified lesson(s)' : 'None found' }}</p><p><b>First-frame responsibility:</b> Render step owns visual preparation, generation, validation and acceptance.</p></section><section><h4>Visual reference diagnostics</h4><p><b>Character identity:</b> {{ characterLabel }} · {{ characterResolvedFromCatalog ? 'catalog recognized' : 'saved association or unresolved' }}</p><p><b>Character assets:</b> {{ references.length ? references.length + ' validated reference(s)' : 'Unavailable' }}</p><p><b>First frame:</b> {{ firstFrameStatus }} · no generation is triggered here.</p></section><section><h4>Developer diagnostics</h4><dl class="diagnostic-list"><div><dt>Workflow policy</dt><dd>{{ profile }}</dd></div><div><dt>Prompt version</dt><dd>{{ promptVersionId || 'UNKNOWN' }}</dd></div><div><dt>Content ID</dt><dd>{{ contentId || 'UNKNOWN' }}</dd></div><div><dt>Prompt hash</dt><dd>{{ review?.boundRequest?.promptSha256 || 'Available in saved prompt version endpoint' }}</dd></div><div><dt>Source reload</dt><dd><button type="button" (click)="loadSourceIntent()" [disabled]="busy || !contentId || !promptVersionId">Reload source evidence</button></dd></div></dl></section></div></details>
     <p class="error" *ngIf="error && !readinessCardShown">{{ error }}</p>
   </section>
 <ng-container *ngIf="review as r"><ng-container *ngIf="activeStage >= 5"><ng-container *ngIf="activeStage === 5">
+        <nav class="stage-subtabs analysis-tabs" aria-label="Quality Analysis sections" role="tablist">
+          <button *ngFor="let tab of analysisTabs" type="button" role="tab" [attr.aria-selected]="activeAnalysisTab === tab.id" [class.is-active]="activeAnalysisTab === tab.id" (click)="selectAnalysisTab(tab.id)">{{ tab.title }}<small>{{ tab.description }}</small></button>
+        </nav>
+        <ng-container *ngIf="activeAnalysisTab === 'summary'">
         <p class="error" *ngIf="!isCurrent()">
           Prompt, version, reference or setting changed. This review is stale; run it again.
         </p>
         <div class="facts" *ngIf="(qa || r).operatorReport as report">
           <p *ngFor="let row of report">
             <strong>{{ row.label }}</strong
-            ><br />{{ row.text }}
+            ><br />{{ cleanAnalysisText(row.text) }}
           </p>
         </div>
         <div class="inputs">
           <article>
-            <strong>Prompt / plan kalitesi</strong>
+            <strong>Prompt / plan quality</strong>
             <p>{{ r.planQuality?.status || 'UNKNOWN' }} · {{ r.planQuality?.recommendation }}</p>
           </article>
           <article>
@@ -72,12 +76,14 @@ import { GeneralProducibilityComponent } from './general-producibility.component
             <p>{{ measurement ? 'Measurement is stored separately' : 'Not associated yet' }}</p>
           </article>
         </div>
+        <section class="analysis-summary-decision" aria-label="Analysis decision summary"><div><span>Analysis status</span><strong>{{ r.reviewStatus || r.status || 'COMPLETED' }}</strong></div><div><span>Creative quality</span><strong>{{ r.family8?.creativeQuality?.creativeGrade || r.planQuality?.status || 'UNKNOWN' }}</strong></div><div><span>Render authorization</span><strong>{{ r.family8?.renderAuthorization?.status || 'UNKNOWN' }}</strong></div><div><span>Recommendation</span><strong>{{ r.planQuality?.recommendation || r.recommendation || 'No supported recommendation recorded' }}</strong></div></section>
         <a
           [href]="'/api/v1/intelligence/workflow/records/' + (qa?.recordId || r.recordId) + '/pdf'"
           target="_blank"
           >PDF report for this record</a
         >
-        <details>
+        </ng-container>
+        <details *ngIf="activeAnalysisTab === 'feasibility'">
           <summary>Raw plan, generator and authorization evidence</summary>
           <div class="facts">
             <p>
@@ -118,7 +124,7 @@ import { GeneralProducibilityComponent } from './general-producibility.component
           ></app-general-producibility>
           <h3>Attention → progression → rewatch hypothesis</h3>
           <p>{{ r.engagement?.attentionPromise }}</p>
-          <p>Son: {{ r.engagement?.endingDelivery }} · {{ r.engagement?.rewatchMechanism }}</p>
+          <p>Ending: {{ cleanAnalysisText(r.engagement?.endingDelivery) }} · {{ r.engagement?.rewatchMechanism }}</p>
           <p>
             First frame / actual opening / cover evidence: {{ r.opening?.actualFirstFrame?.status }} /
             {{ r.opening?.actualOpeningVideo?.status }} / {{ r.opening?.cover?.status }}
@@ -138,28 +144,28 @@ import { GeneralProducibilityComponent } from './general-producibility.component
             can be configured on the server; paid calls are disabled by default.
           </p>
         </details>
-        <label
+        <label *ngIf="activeAnalysisTab === 'evidence'"
           >Second-opinion provider<select [(ngModel)]="criticProvider">
-            <option value="deepseek">DeepSeek · metin portu</option>
+            <option value="deepseek">DeepSeek · text provider</option>
             <option value="openai">OpenAI</option>
             <option value="claude">Claude</option>
             <option value="gemini">Gemini</option>
           </select></label
-        ><label>Structured critic model<input [(ngModel)]="criticModel" /></label
-        ><button
+        ><label *ngIf="activeAnalysisTab === 'evidence'">Structured critic model<input [(ngModel)]="criticModel" /></label
+        ><button *ngIf="activeAnalysisTab === 'evidence'"
           type="button"
           (click)="secondOpinion()"
           [disabled]="busy || !isCurrent() || !criticModel"
         >
           Run second opinion
         </button>
-        <p *ngIf="opinion">
+        <p *ngIf="opinion && activeAnalysisTab === 'evidence'">
           Second opinion: {{ opinion.secondOpinion?.status }} · does not change canonical authorization.
         </p>
-        <a [href]="renderLink()" *ngIf="r.contentId && r.promptVersionId"
+        <a [href]="renderLink()" *ngIf="activeAnalysisTab === 'feasibility' && r.contentId && r.promptVersionId"
           >Open the current render queue for this review</a
         >
-        <details>
+        <details *ngIf="activeAnalysisTab === 'evidence'">
           <summary>Evidence and uncertainty</summary>
           <p>Extraction: {{ r.productionEvidence?.videoPlanIR?.metadata?.generalProducibilityEvidence?.extractionVersion || 'UNKNOWN' }} · Source quote coverage: {{ evidenceCoverage(r.productionEvidence) }}. Quote coverage does not establish complete entity or effect tracking.</p>
           <article *ngFor="let claim of r.productionEvidence?.claims">
@@ -171,6 +177,7 @@ import { GeneralProducibilityComponent } from './general-producibility.component
           <p>Unresolved requirements: {{ r.productionEvidence?.remainingUncertainty?.join(', ') || 'No missing extracted dependency; other unsupported effects may remain UNKNOWN.' }}</p>
           <small>{{ r.source?.sha256 }} · version {{ r.source?.version }}</small>
         </details>
+        <ng-container *ngIf="activeAnalysisTab === 'evidence'">
         <h3>Core intent before render</h3>
         <p>
           Importance is bound to this source version. Re-review when it changes; it is not changed retroactively
@@ -197,6 +204,9 @@ import { GeneralProducibilityComponent } from './general-producibility.component
             more than one function. Unsupported interpretation remains UNKNOWN.
           </p>
         </details>
+        </ng-container>
+        <section *ngIf="activeAnalysisTab === 'creative'" class="analysis-tab-panel creative-quality-panel"><h3>Creative Quality</h3><div class="analysis-summary-grid"><article><span>Opening</span><strong>{{ r.engagement?.attentionPromise || r.opening?.strategy || 'UNKNOWN' }}</strong><small>Source and AI interpretation remain separate from actual video observation.</small></article><article><span>Progression</span><strong>{{ r.engagement?.progression || r.engagement?.endingDelivery || 'UNKNOWN' }}</strong><small>Unsupported progression remains UNKNOWN.</small></article><article><span>Ending</span><strong>{{ cleanAnalysisText(r.engagement?.endingDelivery || r.opening?.plannedEnding?.status || 'UNKNOWN') }}</strong></article><article><span>Rewatch rationale</span><strong>{{ r.engagement?.rewatchMechanism || 'UNKNOWN' }}</strong></article></div><p class="missing-state">Actual first-frame and video observations are owned by Video QA and are not asserted here.</p></section>
+        <section *ngIf="activeAnalysisTab === 'feasibility'" class="analysis-tab-panel feasibility-summary"><h3>Production Feasibility</h3><p>Canonical render authorization: <strong>{{ r.family8?.renderAuthorization?.status || 'UNKNOWN' }}</strong></p><p>Generator execution risk: <strong>{{ r.executionRisk?.status || 'UNKNOWN' }}</strong></p><p>Evidence coverage: <strong>{{ evidenceCoverage(r.productionEvidence) }}</strong></p></section>
         </ng-container><ng-container *ngIf="activeStage === 6"><details><summary>Bounded repair session · at most two attempts</summary><label>Maximum total cost (USD)<input type="number" min="0" [(ngModel)]="repairBudget"></label><label><input type="checkbox" [(ngModel)]="repairConsent">I approve the configured repair provider within this session budget.</label><button type="button" (click)="startRepairSession()" [disabled]="busy || !isCurrent() || !repairConsent || repairBudget <= 0">Start bounded repair</button><label>Saved session ID<input [(ngModel)]="repairSessionId"></label><button type="button" (click)="reopenRepairSession(repairSessionId)">Reopen session</button><div *ngIf="repairSession"><p>{{ repairSession.sessionId }} · {{ repairSession.state }} · {{ repairSession.stopReason }} · attempts {{ repairSession.attempts }}/{{ repairSession.maxAttempts }} · reserved ceiling {{ repairSession.reservedCostUsd }} (actual spend may be unknown)</p><p>Best independently reviewed prompt version: {{ repairSession.bestPromptVersionId }}</p><section *ngIf="repairOriginalReview && repairBestReview" aria-label="Repair before and after findings"><h4>Original · prompt version {{ repairOriginalReview.promptVersionId }}</h4><pre>{{ repairOriginalReview.executionReview?.findings | json }}</pre><pre>{{ repairOriginalReview.planQuality | json }}</pre><h4>Best independently reviewed candidate · prompt version {{ repairBestReview.promptVersionId }}</h4><pre>{{ repairBestReview.executionReview?.findings | json }}</pre><pre>{{ repairBestReview.planQuality | json }}</pre></section><pre>{{ repairSession.history | json }}</pre><button type="button" (click)="nextRepairAttempt()" [disabled]="busy || repairSession.state !== 'READY'">Next bounded attempt</button><button type="button" (click)="decideRepair('ACCEPTED')" [disabled]="busy || repairSession.state === 'RUNNING'">Accept best candidate</button><button type="button" (click)="decideRepair('REJECTED')">Reject</button><button type="button" (click)="decideRepair('CANCELLED')">Cancel</button></div></details>
         <h3>Minimal repair</h3>
         <label>Source wording to replace<input [(ngModel)]="patchOriginal" /></label
@@ -504,6 +514,7 @@ export class PostFamilyWorkflowComponent implements OnChanges, OnDestroy {
   @Output() acceptedVersion = new EventEmitter<{contentId: number; promptVersionId: number; rawText: string; repairSessionId: string}>();
   activeStage = 4;
   activeProductionTab: 'overview' | 'creative' | 'execution' | 'references' = 'overview';
+  activeAnalysisTab: 'summary' | 'creative' | 'feasibility' | 'evidence' = 'summary';
   readonly studioStages = [
     { id: 1, title: 'Idea', status: 'Brief' },
     { id: 2, title: 'Story', status: 'Approved story' },
@@ -513,6 +524,12 @@ export class PostFamilyWorkflowComponent implements OnChanges, OnDestroy {
     { id: 6, title: 'Repair', status: 'Optional' },
     { id: 7, title: 'Render', status: 'Authorization' },
     { id: 8, title: 'Video QA', status: 'Actual video' },
+  ];
+  readonly analysisTabs = [
+    { id: 'summary' as const, title: 'Summary', description: 'Decision and next action' },
+    { id: 'creative' as const, title: 'Creative Quality', description: 'Opening, progression and ending' },
+    { id: 'feasibility' as const, title: 'Production Feasibility', description: 'Risks and authorization' },
+    { id: 'evidence' as const, title: 'Evidence & Diagnostics', description: 'Source spans and developer evidence' },
   ];
   readonly productionTabs = [
     { id: 'overview' as const, title: 'Overview', description: 'Summary and next action' },
@@ -525,13 +542,17 @@ export class PostFamilyWorkflowComponent implements OnChanges, OnDestroy {
     this.activeStage = stage;
     this.persistUiLocation();
   }
+  selectAnalysisTab(tab: 'summary' | 'creative' | 'feasibility' | 'evidence') {
+    this.activeAnalysisTab = tab;
+    this.persistUiLocation();
+  }
   selectProductionTab(tab: 'overview' | 'creative' | 'execution' | 'references') {
     this.activeProductionTab = tab;
     this.persistUiLocation();
   }
   private persistUiLocation() {
     if (typeof localStorage === 'undefined' || !this.contentId || !this.promptVersionId) return;
-    localStorage.setItem(`pompom-studio-location:${this.contentId}:${this.promptVersionId}`, JSON.stringify({ stage: this.activeStage, tab: this.activeProductionTab }));
+    localStorage.setItem(`pompom-studio-location:${this.contentId}:${this.promptVersionId}`, JSON.stringify({ stage: this.activeStage, tab: this.activeProductionTab, analysisTab: this.activeAnalysisTab }));
   }
   private restoreUiLocation() {
     if (typeof localStorage === 'undefined' || !this.contentId || !this.promptVersionId) return;
@@ -539,6 +560,7 @@ export class PostFamilyWorkflowComponent implements OnChanges, OnDestroy {
       const saved = JSON.parse(localStorage.getItem(`pompom-studio-location:${this.contentId}:${this.promptVersionId}`) || '{}');
       if (Number.isInteger(saved.stage) && saved.stage >= 4 && saved.stage <= 8 && (saved.stage === 4 || this.review)) this.activeStage = saved.stage;
       if (['overview', 'creative', 'execution', 'references'].includes(saved.tab)) this.activeProductionTab = saved.tab;
+      if (['summary', 'creative', 'feasibility', 'evidence'].includes(saved.analysisTab)) this.activeAnalysisTab = saved.analysisTab;
     } catch { /* ignore corrupt UI-only state */ }
   }
   intentEditing = false; settingsEditing = false; referencesOpen = false; intentConfirmed = false; readinessCardShown = true;
@@ -559,7 +581,9 @@ export class PostFamilyWorkflowComponent implements OnChanges, OnDestroy {
   get analysisReady(){return !!this.contentId && !!this.promptVersionId && !!this.prompt.trim();}
   get intentAvailable(){return !!(this.protectedIntent.trim() || this.extractedIntent.trim());}
   get evidenceIncomplete(){return !this.references.length || !this.review?.productionEvidence?.videoPlanIR?.beats?.length;}
-  get executionEvidenceStatus(): string { const beats=this.review?.productionEvidence?.videoPlanIR?.beats?.length || 0; return beats ? `${beats} semantic event(s) available` : this.sourceEvents.length ? `${this.sourceEvents.length} source event candidate(s) · classification pending` : 'No source event evidence yet'; }
+  cleanAnalysisText(value: unknown): string { const text=String(value ?? 'UNKNOWN'); return text.replace(/\s*(?:AUDIO|NEGATIVE CONSTRAINTS|FINAL CUT)\s*:?[\s\S]*$/i, '').replace(/Planlanan final\s*:/i, 'Planned ending:').trim() || 'UNKNOWN'; }
+  get semanticClassificationStatus(): string { const evidence=this.review?.productionEvidence || {}; const metadata=evidence.videoPlanIR?.metadata || {}; return String(metadata.semanticClassificationStatus || evidence.semanticStatus || 'PENDING'); }
+  get executionEvidenceStatus(): string { const beats=this.review?.productionEvidence?.videoPlanIR?.beats?.length || 0; const status=this.semanticClassificationStatus.toUpperCase(); return ['COMPLETED','CONFIRMED','OBSERVED'].includes(status) ? `${beats} semantically evaluated event(s)` : beats ? `${beats} parsed source event(s) · semantic classification pending` : this.sourceEvents.length ? `${this.sourceEvents.length} source event candidate(s) · classification pending` : 'No source event evidence yet'; }
   get referenceStatus(): string { return this.references.length ? `${this.references.length} validated reference(s)` : 'No approved character reference'; }
 
   get intentObject(){const text=(this.prompt||'').toLowerCase();if(/sticky note|sticky notes/.test(text))return 'Sticky notes around Mimi and the toy cabinet';if(/\b(note|cabinet|box|ball|door)\b/.test(text))return (text.match(/\b(note|cabinet|box|ball|door)\b/)||['Unresolved object'])[0];return 'Unresolved';}
@@ -569,7 +593,7 @@ export class PostFamilyWorkflowComponent implements OnChanges, OnDestroy {
   get intentAmbiguity(){const text=(this.prompt||'').toLowerCase();if(/multiply|multipli/.test(text))return 'Whether multiplication and pursuit are independent effects or one consequence.';return 'No unresolved mechanism was explicitly identified.';}
   settingsSavedAt: string | null = null;
   applySettings(){ if(!this.contentId || !this.promptVersionId) return; this.busy=true; this.error=''; this.http.post<any>('/api/v1/intelligence/workflow/production-settings',{contentId:this.contentId,promptVersionId:this.promptVersionId,contentProfile:this.contentProfile,openingStrategy:this.openingStrategy,generator:this.generator,desiredDuration:this.desiredDuration,aspectRatio:this.aspectRatio,qualityJustification:this.qualityJustification}).subscribe({next:r=>{this.settingsSavedAt=r.savedAt||new Date().toISOString();this.savedDuration=this.desiredDuration;this.savedAspectRatio=this.aspectRatio;this.settingsEditing=false;this.busy=false;this.changeDetector.markForCheck();},error:e=>this.fail(e)}); }
-  private restorePersistedSettings(sequence:number){ if(!this.contentId||!this.promptVersionId)return; this.http.get<any>('/api/v1/intelligence/workflow/production-settings',{params:{contentId:this.contentId,promptVersionId:this.promptVersionId}}).subscribe({next:s=>{if(sequence!==this.restoreSequence)return; this.contentProfile=s.contentProfile??this.contentProfile;this.openingStrategy=s.openingStrategy??this.openingStrategy;this.generator=s.generator??this.generator;this.desiredDuration=s.desiredDuration??this.desiredDuration;this.aspectRatio=s.aspectRatio??this.aspectRatio;this.savedDuration=this.desiredDuration;this.savedAspectRatio=this.aspectRatio;this.settingsSavedAt=s.savedAt||null;this.changeDetector.markForCheck();},error:()=>{this.http.get<any>('/api/v1/intelligence/workflow/studio-sessions/by-prompt',{params:{contentId:this.contentId,promptVersionId:this.promptVersionId}}).subscribe({next:s=>{if(sequence!==this.restoreSequence)return; this.contentProfile=s.profile??this.contentProfile;this.generator=s.targetGenerator??this.generator;this.desiredDuration=s.duration??this.desiredDuration;this.aspectRatio=s.aspectRatio??this.aspectRatio;this.savedDuration=this.desiredDuration;this.savedAspectRatio=this.aspectRatio;this.settingsSavedAt=s.updatedAt||null;this.changeDetector.markForCheck();},error:()=>{}});}}); }
+  private restorePersistedSettings(sequence:number){ if(!this.contentId||!this.promptVersionId)return; this.http.get<any>('/api/v1/intelligence/workflow/production-settings',{params:{contentId:this.contentId,promptVersionId:this.promptVersionId}}).subscribe({next:s=>{if(sequence!==this.restoreSequence)return; this.contentProfile=s.contentProfile??this.contentProfile;this.openingStrategy=s.openingStrategy??this.openingStrategy;this.generator=s.generator??this.generator;this.desiredDuration=s.desiredDuration??this.desiredDuration;this.aspectRatio=s.aspectRatio??this.aspectRatio;this.savedDuration=this.desiredDuration;this.savedAspectRatio=this.aspectRatio;this.settingsSavedAt=s.savedAt||null;this.changeDetector.markForCheck();},error:()=>{this.http.get<any>('/api/v1/intelligence/workflow/studio-sessions/by-prompt',{params:{contentId:this.contentId,promptVersionId:this.promptVersionId}}).subscribe({next:s=>{if(sequence!==this.restoreSequence)return; this.contentProfile=s.profile??this.contentProfile;this.generator=s.targetGenerator??this.generator;this.desiredDuration=s.duration??this.desiredDuration;this.aspectRatio=s.aspectRatio??this.aspectRatio;this.savedDuration=this.desiredDuration;this.savedAspectRatio=this.aspectRatio;this.savedAspectRatioProvenance = 'STUDIO_SESSION';this.settingsSavedAt=s.updatedAt||null;this.changeDetector.markForCheck();},error:()=>{}});}}); }
   get settingsStatus(){if(this.durationConflict||this.aspectConflict)return 'CONFLICT';if(!this.desiredDuration||!this.aspectRatio)return 'NEEDS CONFIRMATION';if(this.contentProfile==='AUTO'||this.generator==='AUTO'||this.openingStrategy==='AUTO')return 'PARTIALLY AVAILABLE';return 'CONFIRMED';}
   get sourceEvents(){return this.timedRanges.map((range,index)=>{const quote=range.quote.replace(/^\d{1,2}(?::\d{2})?\s*(?:-|–|—|to)\s*\d{1,2}(?::\d{2})?\s*(?:s|sec|secs|seconds)?\s*:?\s*/i,'').trim();const lower=quote.toLowerCase();const object=/sticky note|sticky notes|notes?|cabinet/.test(lower)?(lower.includes('cabinet')?'sticky note / cabinet':'sticky notes'):'Unresolved';const consequence=/cover|covered/.test(lower)?'Final state: Mimi is covered, with only her eyes visible.':/multiply|multipli/.test(lower)?'Apparent multiplication and return are explicit; causal relationship remains unresolved.':/stick|attach|flip|turn/.test(lower)?'Visible attachment or direction change is described in the source.':'Observable consequence requires semantic assessment.';return {id:`source-event-${index+1}`,start:range.start,end:range.end,actor:this.characterLabel==='Unknown'?'Unresolved':this.characterLabel,object,action:quote||'No action text extracted',consequence,sourceQuote:range.quote,evidence:'SOURCE_EVENT_CANDIDATE',semanticStatus:'PENDING'};});}
   isSourceQuoteOpen(id:string){return !!this.openSourceQuotes[id];}
@@ -578,8 +602,9 @@ export class PostFamilyWorkflowComponent implements OnChanges, OnDestroy {
   acceptOpeningSuggestion(){if(this.openingProposal.status==='SUGGESTED')this.openingStrategy=this.openingProposal.value;}
   acceptGeneratorSuggestion(){this.generator=this.generatorProposal.value;}
   get durationConflict(){return this.savedDuration != null && this.promptDuration != null && this.savedDuration !== this.promptDuration;}
+  get aspectRatioProvenanceLabel(): string { return this.savedAspectRatioProvenance === 'OPERATOR_PRODUCTION_SETTINGS' ? 'Explicit operator setting' : this.savedAspectRatioProvenance === 'STUDIO_SESSION' ? 'Studio session setting' : this.savedAspectRatioProvenance === 'CANONICAL_REVIEW_BINDING' ? 'Recorded in review binding; override history unavailable' : 'Needs confirmation'; }
   get aspectConflict(){return !!this.savedAspectRatio && !!this.promptAspectRatio && this.savedAspectRatio !== this.promptAspectRatio;}
-  get timedRanges():Array<{start:number;end:number;quote:string}>{const text=this.prompt||'';const ranges:Array<{start:number;end:number;quote:string}>=[];const add=(start:number,end:number,index:number)=>{if(end<=start)return;const lineEnd=text.indexOf('\n',index)<0?text.length:text.indexOf('\n',index);if(!ranges.some(range=>range.start===start&&range.end===end))ranges.push({start,end,quote:text.slice(index,lineEnd).trim()});};let match:RegExpExecArray|null;const clock=/((?:\d{1,2}):(?:\d{2}))\s*(?:-|–|—|to)\s*((?:\d{1,2}):(?:\d{2}))\s*:?[ \t]*/gi;while((match=clock.exec(text))){const parse=(value:string)=>{const parts=value.split(':').map(Number);return parts[0]*60+parts[1];};add(parse(match[1]),parse(match[2]),match.index);}const seconds=/(\d+(?:\.\d+)?)\s*(?:-|–|—|to)\s*(\d+(?:\.\d+)?)\s*(?:s|sec|secs|seconds)?\s*:/gi;while((match=seconds.exec(text))){add(Number(match[1]),Number(match[2]),match.index);}return ranges.sort((a,b)=>a.start-b.start||a.end-b.end);}
+  get timedRanges():Array<{start:number;end:number;quote:string;quoteStart:number;quoteEnd:number}>{const text=this.prompt||'';const ranges:Array<{start:number;end:number;quote:string;quoteStart:number;quoteEnd:number}>=[];const add=(start:number,end:number,index:number,matchEnd:number)=>{if(end<=start)return;const rest=text.slice(matchEnd);const nextTimed=rest.search(/\n\s*(?:(?:\d{1,2}:\d{2})\s*(?:-|–|—|to)\s*(?:\d{1,2}:\d{2})|(?:\d+(?:\.\d+)?)\s*(?:-|–|—|to)\s*(?:\d+(?:\.\d+)?)\s*(?:s|sec|secs|seconds)?\s*:)/i);const nextSection=rest.search(/\n\s*(?:AUDIO|NEGATIVE CONSTRAINTS|FINAL CUT|REFERENCES|CHARACTER|VISUAL STYLE)\s*:?(?:\s*\n|\s*$)/i);const offsets=[text.length];if(nextTimed>=0)offsets.push(matchEnd+nextTimed);if(nextSection>=0)offsets.push(matchEnd+nextSection);const quoteEnd=Math.min(...offsets);if(!ranges.some(range=>range.start===start&&range.end===end))ranges.push({start,end,quote:text.slice(index,quoteEnd).trim(),quoteStart:index,quoteEnd});};let match:RegExpExecArray|null;const clock=/((?:\d{1,2}):(?:\d{2}))\s*(?:-|–|—|to)\s*((?:\d{1,2}):(?:\d{2}))\s*:?[ \t]*/gi;while((match=clock.exec(text))){const parse=(value:string)=>{const parts=value.split(':').map(Number);return parts[0]*60+parts[1];};add(parse(match[1]),parse(match[2]),match.index,clock.lastIndex);}const seconds=/(\d+(?:\.\d+)?)\s*(?:-|–|—|to)\s*(\d+(?:\.\d+)?)\s*(?:s|sec|secs|seconds)?\s*:/gi;while((match=seconds.exec(text))){add(Number(match[1]),Number(match[2]),match.index,seconds.lastIndex);}return ranges.sort((a,b)=>a.start-b.start||a.end-b.end);}
   get extractedIntent():string{const text=this.prompt||'';const heading=/(TITLE\s*\/\s*FORMAT|VISUAL STYLE|CHARACTER\s*\/\s*CONTINUITY|TIMED SHOT PLAN|AUDIO|NEGATIVE CONSTRAINTS|FINAL CUT)\s*:?[ \t]*/gi;const matches=Array.from(text.matchAll(heading));const useful:string[]=[];for(let index=0;index<matches.length;index++){const label=matches[index][1].toUpperCase();if(!/CHARACTER|TIMED SHOT PLAN/.test(label))continue;const start=(matches[index].index||0)+matches[index][0].length;const end=index+1<matches.length?(matches[index+1].index||text.length):text.length;const body=text.slice(start,end).trim();if(body)useful.push(body);}if(useful.length)return useful.join(' ').slice(0,520);return text.split(/\r?\n/).map(line=>line.trim()).filter(Boolean).filter(line=>!/(TITLE|FORMAT|VISUAL STYLE|AUDIO|NEGATIVE CONSTRAINTS|FINAL CUT)\s*:?[ \t]*/i.test(line)).join(' ').slice(0,520);}
   confirmIntent(){if(!this.intentAvailable)return;this.intentConfirmed=true;const source=this.protectedIntent.trim()||this.extractedIntent;this.intentRequirementsText=JSON.stringify([{id:'character',level:'ESSENTIAL',value:this.characterLabel,sourceQuote:source,sourceVersion:this.promptVersionId},{id:'mechanism',level:'ESSENTIAL',value:this.intentMechanism,sourceQuote:source,sourceVersion:this.promptVersionId},{id:'ending',level:'ESSENTIAL',value:this.intentEnding,sourceQuote:source,sourceVersion:this.promptVersionId},{id:'ambiguity',level:'UNRESOLVED',value:this.intentAmbiguity,sourceQuote:source,sourceVersion:this.promptVersionId}]);this.changeDetector.markForCheck();}
 
@@ -591,6 +616,7 @@ export class PostFamilyWorkflowComponent implements OnChanges, OnDestroy {
   qualityJustification = '';
   aspectRatio = '';
   savedAspectRatio = '';
+  savedAspectRatioProvenance = '';
   promptAspectRatio = '';
   structuredPlanText = '';
   intentRequirementsText = '[]';
@@ -809,7 +835,8 @@ export class PostFamilyWorkflowComponent implements OnChanges, OnDestroy {
     this.restoredRecordId = '';
     this.activeStage = 4;
     this.activeProductionTab = 'overview';
-    this.savedDuration = null; this.savedAspectRatio = '';
+    this.activeAnalysisTab = 'summary';
+    this.savedDuration = null; this.savedAspectRatio = ''; this.savedAspectRatioProvenance = '';
     this.hydrateSettingsFromPrompt();
     this.resolveCharacterIdentity();
     const sequence = ++this.restoreSequence;
@@ -840,6 +867,7 @@ export class PostFamilyWorkflowComponent implements OnChanges, OnDestroy {
         this.firstFramePath = frame?.relativePath || '';
         this.firstFrameUrl = bound.settings?.startFrame?.url || '';
         this.savedAspectRatio = bound.settings?.aspectRatio || bound.aspectRatio || '';
+        this.savedAspectRatioProvenance = this.savedAspectRatio ? 'CANONICAL_REVIEW_BINDING' : '';
         if (this.savedAspectRatio) this.aspectRatio = this.savedAspectRatio;
         else this.hydrateSettingsFromPrompt();
         if (!this.referenceCharacter && (bound.mainCharacter || bound.mainCharacterName)) this.referenceCharacter = String(bound.mainCharacter || bound.mainCharacterName);

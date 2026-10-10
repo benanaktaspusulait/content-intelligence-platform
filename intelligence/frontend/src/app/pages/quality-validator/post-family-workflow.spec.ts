@@ -58,6 +58,7 @@ describe('post-family operator workflow', () => {
     const component = fixture.componentInstance;
     expect(component.activeStage).toBe(4);
     expect(fixture.nativeElement.textContent).toContain('Continue to Quality Analysis');
+    expect(fixture.nativeElement.querySelector('.analysis-tabs')).toBeNull();
     expect(fixture.nativeElement.textContent).not.toContain('Actual render QA');
     expect(fixture.nativeElement.textContent).not.toContain('Bounded repair session');
     expect(fixture.nativeElement.textContent).not.toContain('Quality Analysis completed');
@@ -87,6 +88,8 @@ describe('post-family operator workflow', () => {
     });
     await f.whenStable();
     expect(f.nativeElement.textContent).toContain('BLOCKED_PENDING_EVIDENCE');
+    expect(f.nativeElement.textContent).toContain('Summary');
+    expect(f.nativeElement.textContent).not.toContain('Raw plan, generator and authorization evidence');
     expect(f.componentInstance.isCurrent()).toBe(true);
     f.componentInstance.generator = 'SEEDANCE_2_0';
     expect(f.componentInstance.isCurrent()).toBe(false);
@@ -111,6 +114,37 @@ describe('post-family operator workflow', () => {
     c.toggleSourceQuote(c.sourceEvents[1].id);
     expect(c.isSourceQuoteOpen(c.sourceEvents[1].id)).toBe(true);
     expect(c.sourceEvents[1].sourceQuote).toContain('The note flips');
+  });
+  it('stops the final timed shot at the next document section and preserves multiline spans', async () => {
+    const f = await setup();
+    const c = f.componentInstance;
+    c.prompt = `TITLE / FORMAT
+Mimi / Animated Short
+
+TIMED SHOT PLAN
+0-3s: Mimi holds the note.
+3-6s: The note flips in the air.
+6-10s: Mimi peels it off.
+10-13s: Notes multiply and return.
+13-15s: Mimi is covered completely;
+only her wide eyes remain.
+
+AUDIO
+Playful music and paper sounds.
+
+NEGATIVE CONSTRAINTS
+No dark themes.
+
+FINAL CUT
+Hard cut.`;
+    const finalRange = c.timedRanges.at(-1)!;
+    expect(c.timedRanges.map(range => [range.start, range.end])).toEqual([[0, 3], [3, 6], [6, 10], [10, 13], [13, 15]]);
+    expect(finalRange.quote).toContain('only her wide eyes remain');
+    expect(finalRange.quote).not.toContain('AUDIO');
+    expect(finalRange.quote).not.toContain('NEGATIVE CONSTRAINTS');
+    expect(finalRange.quote).not.toContain('FINAL CUT');
+    expect(finalRange.quoteStart).toBeGreaterThanOrEqual(0);
+    expect(finalRange.quoteEnd).toBeGreaterThan(finalRange.quoteStart);
   });
   it('keeps missing source identity incomplete and restores saved settings without a 9:16 fallback', async () => {
     const f = await setup();
