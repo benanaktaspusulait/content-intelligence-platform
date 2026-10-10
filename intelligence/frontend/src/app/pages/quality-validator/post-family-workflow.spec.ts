@@ -132,6 +132,8 @@ describe('post-family operator workflow', () => {
     expect(c.timedRanges[0].quote).not.toContain('opens the box');
     expect(c.timedRanges[4].quote).toContain('rainbow arch');
     expect(c.sourceEvents[0].semanticStatus).toBe('PENDING');
+    expect(c.sourceEvents[0].object).toBe('shiny box');
+    expect(c.sourceEvents[2].object).toBe('ribbons');
   });
   it('stops the final timed shot at the next document section and preserves multiline spans', async () => {
     const f = await setup();
