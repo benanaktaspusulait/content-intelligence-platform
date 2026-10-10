@@ -14,6 +14,7 @@ describe('creative studio idea-first workflow', () => {
     http.expectOne('/api/v1/characters').flush([]);
     http.expectOne('/api/v1/videos/prompt-workspaces?relativeDirectory=library/POMPOM_HILLS_PRODUCTION/09_SOCIAL_REELS/new14092026').flush([]);
     http.expectOne('/api/v1/intelligence/workflow/records?kind=CREATIVE_ROLE').flush([]);
+    http.expectOne('/api/v1/intelligence/workflow/records?kind=STORY_APPROVAL').flush([]);
     page.idea='Kiko sınava giriyor'; page.storyConsent=true; page.budget=0.01; page.requestStories();
     const story=http.expectOne('/api/v1/intelligence/workflow/creative-role'); expect(story.request.body.text).toBe('Kiko sınava giriyor'); story.flush({recordId:'story-1',result:{alternatives:['Kiko kalemiyle konuşur.']}});
     await fixture.whenStable(); page.selectStory(page.candidates[0]); page.approveStory();
@@ -34,12 +35,15 @@ describe('saved story reuse', () => {
     http.expectOne('/api/v1/characters').flush([]);
     http.expectOne('/api/v1/videos/prompt-workspaces?relativeDirectory=library/POMPOM_HILLS_PRODUCTION/09_SOCIAL_REELS/new14092026').flush([]);
     http.expectOne('/api/v1/intelligence/workflow/records?kind=CREATIVE_ROLE').flush([{recordId:'saved-1',role:'STORY',sourceRequest:{text:'Kiko finds a door'},alternatives:['Kiko opens the door and finds a tiny stage.']}]);
+    http.expectOne('/api/v1/intelligence/workflow/records?kind=STORY_APPROVAL').flush([]);
     await fixture.whenStable();
     expect(page.savedStories).toHaveLength(1);
     page.useSavedStory(page.savedStories[0]);
     expect(page.stage).toBe('STORY');
     expect(page.storyRecordId).toBe('saved-1');
     expect(page.selectedStory).toContain('tiny stage');
+    expect(page.activeJourney).toBe('SAVED');
+    expect(page.storyCandidates(page.savedStories[0])).toHaveLength(1);
     expect(http.match(r=>r.method==='POST')).toHaveLength(0);
     http.match(r=>r.method==='PUT').forEach(r=>r.flush({}));
     http.verify(); fixture.destroy(); TestBed.resetTestingModule();
