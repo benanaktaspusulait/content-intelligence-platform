@@ -356,10 +356,10 @@ Scope: consolidated from the latest Stage Actions, PDF Export, Source Evidence a
 - [ ] Add browser acceptance evidence for navigating from References directly to Stage 5 and back to Prompt.
 - [ ] Persist an explicitly accepted Opening Strategy and verify it survives refresh without another acceptance prompt.
 - [x] Add non-destructive content-profile mismatch advisory for discovery-oriented Kiko source with ABSURD_PHYSICS selected.
-- [ ] Separate Creative Intent “missing source data” from parser limitation, semantic pending and source-identity mismatch states.
+- [x] Separate Creative Intent “missing source data” from parser limitation, semantic pending and source-identity mismatch states.
 - [x] Normalize literal escaped-newline display text while preserving immutable original source quote and offsets.
 - [ ] Add Golden Path Kiko, actual-newline, Mimi-boundary, multiline, legacy, Unicode-dash and invalid-range parser fixtures.
-- [ ] Verify actor/object/action/source-quote IDs and exact source spans for Golden Path Kiko in the persisted record.
+- [x] Verify actor/object/action/source-quote IDs and exact source spans for Golden Path Kiko in the persisted record.
 - [ ] Keep parsed source-event candidates visibly separate from semantic beat classification in every relevant state card.
 - [ ] Add cross-content isolation browser coverage for Kiko → Mimi → Kiko settings, references, events and PDF identity.
 - [ ] Render and inspect every current PDF page for wrapping, pagination, findings and section-boundary contamination as an automated regression.
