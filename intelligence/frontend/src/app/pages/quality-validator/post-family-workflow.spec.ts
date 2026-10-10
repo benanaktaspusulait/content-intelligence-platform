@@ -50,14 +50,14 @@ describe('post-family operator workflow', () => {
   it('requires explicit post-family selection and does not generate media', async () => {
     const fixture = await setup();
     expect(fixture.componentInstance.profile).toBe('FROZEN');
-    expect(fixture.nativeElement.textContent).toContain('Family 1–10');
+    expect(fixture.nativeElement.textContent).toContain('WORKFLOW OVERVIEW');
     TestBed.inject(HttpTestingController).expectNone('/api/v1/render-jobs');
   });
   it('keeps downstream analysis, repair and video QA out of the production review stage', async () => {
     const fixture = await setup();
     const component = fixture.componentInstance;
     expect(component.activeStage).toBe(4);
-    expect(fixture.nativeElement.textContent).toContain('Production Review');
+    expect(fixture.nativeElement.textContent).toContain('Continue to Quality Analysis');
     expect(fixture.nativeElement.textContent).not.toContain('Actual render QA');
     expect(fixture.nativeElement.textContent).not.toContain('Bounded repair session');
     expect(fixture.nativeElement.textContent).not.toContain('Quality Analysis completed');
