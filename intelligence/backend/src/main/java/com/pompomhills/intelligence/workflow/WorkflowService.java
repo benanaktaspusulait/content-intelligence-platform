@@ -504,6 +504,18 @@ public class WorkflowService {
       throw new IllegalArgumentException("Only a STORY role record can be approved");
     String approvedText = String.valueOf(request.getOrDefault("approvedText", "")).trim();
     if (approvedText.isBlank()) throw new IllegalArgumentException("approvedText is required");
+    String candidateId = String.valueOf(request.getOrDefault("candidateId", "")).trim();
+    String revisionId = String.valueOf(request.getOrDefault("revisionId", "")).trim();
+    String fingerprint = String.valueOf(request.getOrDefault("contentFingerprint", "")).trim();
+    if (candidateId.isBlank() || revisionId.isBlank() || fingerprint.isBlank())
+      throw new IllegalArgumentException("A candidate ID, exact revision ID and content fingerprint are required for approval");
+    String candidateText = storyCandidateText(story, storyRecordId, candidateId);
+    if (candidateText == null || !candidateText.trim().equals(approvedText))
+      throw new IllegalArgumentException("The selected candidate does not match the saved story text");
+    String expectedFingerprint = storyFingerprint(approvedText);
+    if (!expectedFingerprint.equals(fingerprint)
+        || !(candidateId + "-revision-" + expectedFingerprint).equals(revisionId))
+      throw new IllegalArgumentException("The approval revision does not match the selected candidate content");
     var approval = new LinkedHashMap<String, Object>();
     approval.put("role", "STORY_APPROVAL");
     approval.put("storyRecordId", storyRecordId.toString());
@@ -516,6 +528,85 @@ public class WorkflowService {
     approval.put("approvedAt", java.time.Instant.now().toString());
     approval.put("recordId", save("STORY_APPROVAL", storyRecordId.toString(), approval));
     return approval;
+  }
+
+  @Transactional
+  public Map<String, Object> saveStoryRevision(UUID storyRecordId, Map<String, Object> request) {
+    var source = getByKind(storyRecordId, "CREATIVE_ROLE");
+    if (!"STORY".equals(source.get("role")))
+      throw new IllegalArgumentException("Only a saved STORY record can be revised");
+    String parentCandidateId = String.valueOf(request.getOrDefault("candidateId", "")).trim();
+    String parentRevisionId = String.valueOf(request.getOrDefault("revisionId", "")).trim();
+    String revisedText = String.valueOf(request.getOrDefault("text", "")).trim();
+    if (revisedText.isBlank()) throw new IllegalArgumentException("Revised story text is required");
+    String parentText = storyCandidateText(source, storyRecordId, parentCandidateId);
+    if (parentText == null || parentRevisionId.isBlank()
+        || !(parentCandidateId + "-revision-" + storyFingerprint(parentText.trim())).equals(parentRevisionId))
+      throw new IllegalArgumentException("The source candidate revision is missing or does not match the saved story");
+
+    var context = new LinkedHashMap<String, Object>();
+    Object rawRequest = source.get("sourceRequest");
+    if (rawRequest instanceof Map<?, ?> requestMap && requestMap.get("context") instanceof Map<?, ?> contextMap)
+      contextMap.forEach((key, value) -> context.put(String.valueOf(key), value));
+    context.put("parentStoryRecordId", storyRecordId.toString());
+    context.put("parentCandidateId", parentCandidateId);
+    context.put("parentRevisionId", parentRevisionId);
+    var sourceRequest = new LinkedHashMap<String, Object>();
+    sourceRequest.put("role", "STORY_REVISION");
+    Object sourceText = rawRequest instanceof Map<?, ?> requestMap ? requestMap.get("text") : null;
+    sourceRequest.put("text", sourceText == null ? "" : String.valueOf(sourceText));
+    sourceRequest.put("context", context);
+
+    String candidateId = "candidate-1";
+    String fingerprint = storyFingerprint(revisedText);
+    var alternative = new LinkedHashMap<String, Object>();
+    alternative.put("candidateId", candidateId);
+    alternative.put("title", "Edited story");
+    alternative.put("text", revisedText);
+    var result = new LinkedHashMap<String, Object>();
+    result.put("role", "STORY");
+    result.put("alternatives", List.of(alternative));
+    result.put("revisionId", candidateId + "-revision-" + fingerprint);
+    result.put("parentStoryRecordId", storyRecordId.toString());
+    var revision = new LinkedHashMap<String, Object>();
+    revision.put("role", "STORY");
+    revision.put("sourceRequest", sourceRequest);
+    revision.put("sourceRecordId", storyRecordId.toString());
+    revision.put("title", request.getOrDefault("title", source.getOrDefault("title", "Untitled story session")));
+    revision.put("revisionType", "OPERATOR_EDIT");
+    revision.put("result", result);
+    revision.put("recordId", save("CREATIVE_ROLE", null, revision));
+    return revision;
+  }
+
+  private String storyCandidateText(Map<String, Object> story, UUID storyRecordId, String candidateId) {
+    if (candidateId == null || candidateId.isBlank()) return null;
+    Object raw = map(story.get("result")).get("alternatives");
+    if (!(raw instanceof List<?> alternatives)) return null;
+    for (int i = 0; i < alternatives.size(); i++) {
+      Object item = alternatives.get(i);
+      String id;
+      String text;
+      if (item instanceof Map<?, ?> candidate) {
+        id = String.valueOf(candidate.get("candidateId") == null ? "" : candidate.get("candidateId")).trim();
+        Object candidateText = candidate.get("text") == null ? candidate.get("description") : candidate.get("text");
+        text = candidateText == null ? "" : String.valueOf(candidateText);
+      } else {
+        id = storyRecordId + "-candidate-" + (i + 1);
+        text = String.valueOf(item);
+      }
+      if (id.equals(candidateId)) return text;
+    }
+    return null;
+  }
+
+  private String storyFingerprint(String value) {
+    int hash = 0x811c9dc5;
+    for (int i = 0; i < value.length(); i++) {
+      hash ^= value.charAt(i);
+      hash *= 0x01000193;
+    }
+    return String.format(java.util.Locale.ROOT, "%08x", hash);
   }
 
   public Map<String, Object> saveStudioSession(Map<String, Object> request) {
@@ -1302,6 +1393,7 @@ public class WorkflowService {
               result.put("lifecycleStatus", lifecycle.getOrDefault("status", inferredLifecycle(result)));
               if (lifecycle.containsKey("reason")) result.put("lifecycleReason", lifecycle.get("reason"));
               if (lifecycle.containsKey("title")) result.put("title", lifecycle.get("title"));
+              if (lifecycle.containsKey("changedAt")) result.put("lifecycleChangedAt", lifecycle.get("changedAt"));
               return result;
             })
         .list();
@@ -1315,9 +1407,7 @@ public class WorkflowService {
   private String inferredLifecycle(Map<String, Object> record) {
     if ("STORY_APPROVAL".equals(record.get("role")) || "APPROVED".equals(record.get("status"))) return "APPROVED";
     if ("STORY".equals(record.get("role")) && record.get("recordId") != null) {
-      boolean approved = jdbc.sql("SELECT EXISTS(SELECT 1 FROM post_family_workflow_events WHERE kind='STORY_APPROVAL' AND payload->>'storyRecordId'=:id)")
-          .param("id", String.valueOf(record.get("recordId"))).query(Boolean.class).single();
-      if (approved) return "APPROVED";
+      if (hasExactStoryApproval(record)) return "APPROVED";
     }
     if ("BUILD_PROMPT".equals(record.get("role")) || record.containsKey("prompt")) return "DRAFT";
     return "DRAFT";
@@ -1329,12 +1419,18 @@ public class WorkflowService {
     String requested = String.valueOf(request.getOrDefault("status", "")).trim().toUpperCase(java.util.Locale.ROOT);
     if (!List.of("DRAFT", "IN_REVIEW", "APPROVED", "ARCHIVED", "DELETED").contains(requested))
       throw new IllegalArgumentException("Unsupported lifecycle status");
-    String current = String.valueOf(latestLifecycle(id).getOrDefault("status", inferredLifecycle(record)));
+    var previousLifecycle = latestLifecycle(id);
+    String current = String.valueOf(previousLifecycle.getOrDefault("status", inferredLifecycle(record)));
+    if ("ARCHIVED".equals(current) && "DRAFT".equals(requested)) {
+      String restoreTo = String.valueOf(previousLifecycle.getOrDefault("previousStatus", "DRAFT"));
+      if (List.of("DRAFT", "IN_REVIEW", "APPROVED").contains(restoreTo)) requested = restoreTo;
+    }
     if ("DELETED".equals(requested)) {
       if ("APPROVED".equals(current) || hasProtectedReferences(id, record))
         throw new IllegalStateException("This record is referenced by approved or downstream evidence. Archive it instead of deleting it.");
     }
-    if ("APPROVED".equals(requested) && !"STORY_APPROVAL".equals(record.get("role")))
+    if ("APPROVED".equals(requested) && !"STORY_APPROVAL".equals(record.get("role"))
+        && !("STORY".equals(record.get("role")) && hasExactStoryApproval(record)))
       throw new IllegalArgumentException("Only an explicit story approval can create APPROVED lifecycle state");
     var event = new LinkedHashMap<String, Object>();
     event.put("targetRecordId", id.toString()); event.put("targetKind", "CREATIVE_ROLE");
@@ -1343,12 +1439,36 @@ public class WorkflowService {
     if (request.get("title") != null) event.put("title", String.valueOf(request.get("title")));
     event.put("changedAt", Instant.now().toString());
     event.put("recordId", save("CREATIVE_STUDIO_LIFECYCLE", id.toString(), event));
-    return Map.of("targetRecordId", id.toString(), "status", requested, "previousStatus", current, "recordId", event.get("recordId"));
+    return Map.of("targetRecordId", id.toString(), "status", requested, "previousStatus", current, "changedAt", event.get("changedAt"), "recordId", event.get("recordId"));
+  }
+
+  private boolean hasExactStoryApproval(Map<String, Object> story) {
+    Object rawId = story.get("recordId");
+    if (rawId == null) return false;
+    UUID storyId;
+    try { storyId = UUID.fromString(String.valueOf(rawId)); }
+    catch (IllegalArgumentException ignored) { return false; }
+    var source = getByKind(storyId, "CREATIVE_ROLE");
+    var approvals = jdbc.sql("SELECT payload::text FROM post_family_workflow_events WHERE kind='STORY_APPROVAL' AND payload->>'storyRecordId'=:id ORDER BY created_at DESC")
+        .param("id", storyId.toString()).query(String.class).list();
+    for (String jsonPayload : approvals) {
+      var approval = read(jsonPayload);
+      String candidateId = String.valueOf(approval.getOrDefault("candidateId", "")).trim();
+      String revisionId = String.valueOf(approval.getOrDefault("revisionId", "")).trim();
+      String fingerprint = String.valueOf(approval.getOrDefault("contentFingerprint", "")).trim();
+      String approvedText = String.valueOf(approval.getOrDefault("approvedText", "")).trim();
+      String candidateText = storyCandidateText(source, storyId, candidateId);
+      if (candidateText != null && !approvedText.isBlank() && approvedText.equals(candidateText.trim())) {
+        String expected = storyFingerprint(approvedText);
+        if (expected.equals(fingerprint) && (candidateId + "-revision-" + expected).equals(revisionId)) return true;
+      }
+    }
+    return false;
   }
 
   private boolean hasProtectedReferences(UUID id, Map<String, Object> record) {
     String idText = id.toString();
-    return jdbc.sql("SELECT EXISTS(SELECT 1 FROM post_family_workflow_events WHERE kind IN ('STORY_APPROVAL','CREATIVE_ROLE','REVIEW','ACTUAL_RENDER_QA') AND id<>:id AND payload::text LIKE :needle)")
+    return jdbc.sql("SELECT EXISTS(SELECT 1 FROM post_family_workflow_events WHERE kind NOT IN ('CREATIVE_STUDIO_SESSION','CREATIVE_STUDIO_LIFECYCLE') AND id<>:id AND payload::text LIKE :needle)")
         .param("id", id).param("needle", "%" + idText + "%").query(Boolean.class).single();
   }
 

@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.pompomhills.intelligence.character.CharacterService;
+import com.pompomhills.intelligence.workflow.WorkflowService;
 import com.pompomhills.intelligence.performance.DiscoveryProfileService;
 import com.pompomhills.intelligence.performance.InterventionService;
 import com.pompomhills.intelligence.performance.PerformanceImportService;
@@ -57,6 +58,7 @@ class PlatformIntegrationTest {
   @Autowired InterventionService interventions;
   @Autowired DiscoveryProfileService discoveryProfiles;
   @Autowired CharacterService characters;
+  @Autowired WorkflowService workflow;
 
   private UUID videoId;
 
@@ -84,6 +86,79 @@ class PlatformIntegrationTest {
         true,
         "ANALYSED",
         OffsetDateTime.now(ZoneOffset.UTC));
+  }
+
+  @Test
+  void savedStoryApprovalRequiresExactCandidateAndRestoreKeepsApprovedState() throws Exception {
+    UUID storyId = UUID.randomUUID();
+    String text = "Mimi finds a blue note and follows it.";
+    String fingerprint = storyFingerprintForTest(text);
+    String payload = """
+        {"role":"STORY","sourceRequest":{"text":"Mimi idea","context":{"title":"Mimi's Note"}},
+         "result":{"role":"STORY","alternatives":[{"candidateId":"candidate-1","title":"Blue note","text":"%s"}]}}
+        """.formatted(text);
+    jdbc.update("INSERT INTO post_family_workflow_events(id,kind,binding_sha256,payload) VALUES (?,'CREATIVE_ROLE',null,CAST(? AS jsonb))", storyId, payload);
+
+    assertThatThrownBy(() -> workflow.approveStory(storyId, java.util.Map.of(
+        "approvedText", text, "candidateId", "candidate-2",
+        "revisionId", "candidate-2-revision-" + fingerprint, "contentFingerprint", fingerprint)))
+        .hasMessageContaining("does not match");
+
+    workflow.approveStory(storyId, java.util.Map.of(
+        "approvedText", text, "candidateId", "candidate-1",
+        "revisionId", "candidate-1-revision-" + fingerprint, "contentFingerprint", fingerprint));
+    assertThatThrownBy(() -> workflow.changeLifecycle(storyId, java.util.Map.of("status", "DELETED")))
+        .hasMessageContaining("Archive it instead");
+    var duplicate = workflow.duplicateCreativeRole(storyId);
+    assertThat(duplicate.get("lifecycleStatus")).isEqualTo("DRAFT");
+    assertThat(workflow.list("STORY_APPROVAL").stream()
+        .noneMatch(row -> duplicate.get("recordId").equals(row.get("storyRecordId")))).isTrue();
+    var archived = workflow.changeLifecycle(storyId, java.util.Map.of("status", "ARCHIVED"));
+    assertThat(archived.get("status")).isEqualTo("ARCHIVED");
+    var restored = workflow.changeLifecycle(storyId, java.util.Map.of("status", "DRAFT"));
+    assertThat(restored.get("status")).isEqualTo("APPROVED");
+  }
+
+  @Test
+  void independentDraftCanBeSafelySoftDeleted() {
+    UUID storyId = UUID.randomUUID();
+    String payload = """
+        {"role":"STORY","sourceRequest":{"text":"An independent draft"},
+         "result":{"role":"STORY","alternatives":[{"candidateId":"candidate-1","text":"A standalone saved draft."}]}}
+        """;
+    jdbc.update("INSERT INTO post_family_workflow_events(id,kind,binding_sha256,payload) VALUES (?,'CREATIVE_ROLE',null,CAST(? AS jsonb))", storyId, payload);
+    var deleted = workflow.changeLifecycle(storyId, java.util.Map.of("status", "DELETED", "reason", "Operator confirmed"));
+    assertThat(deleted.get("status")).isEqualTo("DELETED");
+    assertThat(workflow.get(storyId)).containsEntry("role", "STORY");
+  }
+
+  @Test
+  void operatorStoryEditCreatesNewDraftWithExactParentLineage() {
+    UUID storyId = UUID.randomUUID();
+    String original = "Mimi finds a blue note.";
+    String revised = "Mimi finds a blue note and follows it to a tiny stage.";
+    String fingerprint = storyFingerprintForTest(original);
+    String payload = """
+        {"role":"STORY","title":"Mimi's Note","sourceRequest":{"text":"Mimi idea","context":{"title":"Mimi's Note"}},
+         "result":{"role":"STORY","alternatives":[{"candidateId":"candidate-1","text":"%s"}]}}
+        """.formatted(original);
+    jdbc.update("INSERT INTO post_family_workflow_events(id,kind,binding_sha256,payload) VALUES (?,'CREATIVE_ROLE',null,CAST(? AS jsonb))", storyId, payload);
+
+    var revision = workflow.saveStoryRevision(storyId, java.util.Map.of(
+        "candidateId", "candidate-1", "revisionId", "candidate-1-revision-" + fingerprint,
+        "text", revised, "title", "Mimi's Note"));
+    assertThat(revision.get("revisionType")).isEqualTo("OPERATOR_EDIT");
+    assertThat(revision.get("sourceRecordId")).isEqualTo(storyId.toString());
+    assertThat(((java.util.Map<?, ?>) revision.get("sourceRequest")).get("context").toString())
+        .contains(storyId.toString(), "candidate-1-revision-" + fingerprint);
+    assertThat(workflow.list("STORY_APPROVAL").stream()
+        .noneMatch(row -> storyId.toString().equals(row.get("storyRecordId")))).isTrue();
+  }
+
+  private String storyFingerprintForTest(String value) {
+    int hash = 0x811c9dc5;
+    for (int i = 0; i < value.length(); i++) hash = (hash ^ value.charAt(i)) * 0x01000193;
+    return String.format("%08x", hash);
   }
 
   @Test

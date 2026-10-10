@@ -66,6 +66,12 @@ public class WorkflowController {
     return service.approveStory(id, request);
   }
 
+  @PostMapping("/records/{id}/story-revisions")
+  public Map<String, Object> saveStoryRevision(
+      @PathVariable UUID id, @RequestBody Map<String, Object> request) {
+    return service.saveStoryRevision(id, request);
+  }
+
   @PostMapping("/studio-sessions")
   public Map<String, Object> createStudioSession(@RequestBody Map<String, Object> request) {
     return service.saveStudioSession(request);
