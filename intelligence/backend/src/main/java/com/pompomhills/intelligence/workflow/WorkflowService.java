@@ -117,7 +117,14 @@ public class WorkflowService {
       input.put("sourceVersion", "DRAFT");
     }
     input.put("references", verifiedReferences(input.get("references")));
-    var result = new LinkedHashMap<>(ml.workflow("review", input));
+    // Recommendation provenance belongs to the persisted workflow record, not to the
+    // provider contract. Keep it in `boundRequest` while sending only schema-approved
+    // fields to the ML service (its request model rejects unknown properties).
+    var providerInput = new LinkedHashMap<String, Object>(input);
+    providerInput.remove("contentProfileRecommendation");
+    providerInput.remove("openingStrategyRecommendation");
+    providerInput.remove("generatorRecommendation");
+    var result = new LinkedHashMap<>(ml.workflow("review", providerInput));
     if (result.get("retrievedLessons") instanceof List<?> matchedLessons)
       input.put("retrievedLessons", matchedLessons);
     result.put("boundRequest", input);
