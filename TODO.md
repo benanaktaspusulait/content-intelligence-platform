@@ -379,3 +379,14 @@ Scope: consolidated from the latest Stage Actions, PDF Export, Source Evidence a
 - [x] Preserve saved-story reuse without a provider call and distinguish generated, approved, draft-built and saved prompt states in Workflow Summary.
 - [x] Keep editable prompt formatting readable while preserving the provider response and exact approved story identity.
 - [x] Build and deploy frontend, backend and ML changes; verify all active service health endpoints.
+
+# Resume existing work without AI calls — 2026-10-10
+
+- [x] Resolve the current workflow checkpoint from persisted session, approval, builder and prompt-version identities.
+- [x] Show Continue Existing Work above paid generation controls with actions for approved story, saved prompt and quality analysis.
+- [x] Reuse an approved saved story revision without DeepSeek and preserve its candidate/approval identity.
+- [x] Add explicit no-provider continuation for manually supplied detailed stories.
+- [x] Keep generation consent/budget independent from reuse and manual continuation.
+- [x] Clear stale approval, builder and prompt identities when selecting a different saved story revision.
+- [x] Preserve canonical quality/render gates when continuing to the saved prompt workflow.
+- [x] Verify the Mimi saved workflow in the local browser: saved prompt opened and Quality Analysis reached without a provider call.
