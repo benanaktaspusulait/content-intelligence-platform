@@ -163,6 +163,22 @@ public class QualityReportPdfService {
     cards.addCell(metricCell("RENDER QUALITY", dimensionStatus(snapshot, "actualRenderQuality"), GREEN, fonts));
     cards.addCell(metricCell("AUDIENCE", dimensionStatus(snapshot, "audienceDistributionOutcome"), AMBER, fonts));
     document.add(cards);
+    addWorkflowStatusBlock(document, snapshot, fonts);
+  }
+
+  private void addWorkflowStatusBlock(Document document, Map<String, Object> snapshot, Fonts fonts)
+      throws DocumentException {
+    PdfPTable table = new PdfPTable(new float[] {36, 64});
+    table.setWidthPercentage(100);
+    table.setSpacingBefore(10);
+    table.setHeaderRows(1);
+    header(table, fonts, "Decision signal", "Recorded interpretation");
+    addEvidenceRow(table, fonts, "Analysis execution", snapshot.getOrDefault("analysisExecutionStatus", "COMPLETED"));
+    addEvidenceRow(table, fonts, "Creative assessment", snapshot.getOrDefault("creativeAssessmentStatus", dimensionStatus(snapshot, "promptPlanQuality")));
+    addEvidenceRow(table, fonts, "Evidence completeness", snapshot.getOrDefault("evidenceStatus", "INCOMPLETE"));
+    addEvidenceRow(table, fonts, "Render authorization", snapshot.getOrDefault("authorizationStatus", "BLOCKED_UNTIL_EVIDENCE"));
+    addEvidenceRow(table, fonts, "Recommendation", snapshot.getOrDefault("recommendation", "Review required findings"));
+    document.add(table);
   }
 
   private void addWorkflowDimensions(Document document, Map<String, Object> snapshot, Fonts fonts)
@@ -207,7 +223,7 @@ public class QualityReportPdfService {
       document.add(new Paragraph("Reviewer notes", fonts.heading));
       for (Object item : rows) if (item instanceof Map<?, ?> row) {
         String label = englishLabel(row.get("label"));
-        String text = englishText(row.get("text") == null ? "" : String.valueOf(row.get("text")));
+        String text = cleanSourceSectionText(englishText(row.get("text") == null ? "" : String.valueOf(row.get("text"))));
         if (!text.isBlank()) document.add(labelled(label + ": ", text, fonts));
       }
     }
@@ -227,7 +243,7 @@ public class QualityReportPdfService {
       table.addCell(cell(String.valueOf(i++), fonts.bold, null));
       table.addCell(cell(firstText(beat, "time", "timeRange", "duration"), fonts.small, null));
       table.addCell(cell(firstText(beat, "framing", "shot", "camera"), fonts.small, null));
-      table.addCell(cell(englishText(firstText(beat, "action", "description", "text")), fonts.small, null));
+      table.addCell(cell(cleanSourceSectionText(englishText(firstText(beat, "action", "description", "text"))), fonts.small, null));
     }
     document.add(table);
   }
@@ -287,7 +303,12 @@ public class QualityReportPdfService {
   private String dimensionStatus(Map<String, Object> snapshot, String key) {
     Map<?, ?> dimensions = snapshot.get("reviewDimensions") instanceof Map<?, ?> m ? m : Map.of();
     Map<?, ?> value = dimensions.get(key) instanceof Map<?, ?> m ? m : Map.of();
-    return humanize(value.get("status"), "UNKNOWN");
+    if (value.get("status") != null) return humanize(value.get("status"), "UNKNOWN");
+    List<String> signals = new ArrayList<>();
+    for (String field : List.of("planFidelity", "viewerFacingUsability", "editorialRecommendation", "evaluationCoverage")) {
+      if (value.get(field) != null) signals.add(humanize(value.get(field), "UNKNOWN"));
+    }
+    return signals.isEmpty() ? "UNKNOWN" : String.join(" · ", signals);
   }
 
   private String firstText(Map<?, ?> map, String... keys) {
@@ -325,6 +346,12 @@ public class QualityReportPdfService {
     };
   }
 
+  private String cleanSourceSectionText(String value) {
+    if (value == null) return "";
+    String cleaned = value.replaceFirst("(?is)\\s*(?:AUDIO|NEGATIVE CONSTRAINTS|FINAL CUT)\\s*:?[\\s\\S]*$", "");
+    return cleaned.replaceFirst("(?i)Planlanan final\\s*:", "Planned ending:").trim();
+  }
+
   private String englishText(String value) {
     if (value == null) return "";
     return value.replace(": :", ":")
@@ -347,7 +374,8 @@ public class QualityReportPdfService {
         .replace("Kör inceleme tamamlanana kadar sonuç verisi ayrıdır; izlenme garantisi yok", "Performance data remains separate until blind review is complete; no viewing guarantee")
         .replace("kanıt", "evidence")
         .replace("bilinmiyor", "UNKNOWN")
-        .replace("tarihsel kayıtta bu boyut yok", "No historical evidence was recorded for this dimension");
+        .replace("tarihsel kayıtta bu boyut yok", "No historical evidence was recorded for this dimension")
+        .replace("Yerel sapma; temel olay okunabilir.", "Local deviation; the core event remains readable.");
   }
 
   // ===== Sections =====

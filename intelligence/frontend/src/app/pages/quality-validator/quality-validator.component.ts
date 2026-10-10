@@ -222,6 +222,14 @@ export class QualityValidatorComponent implements AfterViewInit, OnDestroy {
   validationRecordId: number | null = null;
   report: QualityReport | null = null;
   studioStage = 4;
+  get workflowStageHeading(): { eyebrow: string; title: string; description: string } {
+    const stage = this.postFamilyWorkflow?.activeStage || this.studioStage;
+    if (stage === 5) return { eyebrow: 'STEP 5 · QUALITY ANALYSIS', title: 'Quality Analysis', description: 'Review creative quality, production feasibility and evidence before deciding the next action.' };
+    if (stage === 6) return { eyebrow: 'STEP 6 · REPAIR', title: 'Repair', description: 'Apply a bounded, evidence-backed prompt repair when the review recommends one.' };
+    if (stage === 7) return { eyebrow: 'STEP 7 · RENDER', title: 'Render readiness', description: 'Prepare the first frame, verify provider capabilities and authorize generation.' };
+    if (stage === 8) return { eyebrow: 'STEP 8 · VIDEO QA', title: 'Video QA', description: 'Compare the rendered video with the approved source and record observations.' };
+    return { eyebrow: 'STEP 4 · PRODUCTION REVIEW', title: 'Validate the production plan', description: 'Confirm source intent, references, generator settings and render handoff before analysis.' };
+  }
   reportTab: 'overview' | 'evidence' | 'issues' | 'timeline' = 'overview';
   readonly formatNullableScore = formatNullableScore;
   readonly formatCreativeGrade = formatCreativeGrade;

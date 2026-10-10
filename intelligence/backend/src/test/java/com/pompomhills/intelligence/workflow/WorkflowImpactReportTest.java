@@ -11,7 +11,7 @@ import org.openpdf.text.pdf.parser.PdfTextExtractor;
 
 class WorkflowImpactReportTest {
   @Test
-  void preservesFourDimensionsFidelityUsabilityAndTurkishReportInPdf() throws Exception {
+  void rendersFourDimensionsWithEnglishDecisionDashboardInPdf() throws Exception {
     Map<String, Object> snapshot =
         Map.of(
             "decisionPolicyVersion",
@@ -44,16 +44,18 @@ class WorkflowImpactReportTest {
         text += new PdfTextExtractor(reader).getTextFromPage(i);
       assertThat(text)
           .contains(
-              "KUSURUN ETKİSİ",
+              "Defect impact",
               "PARTIAL",
               "USABLE",
               "TEST_CANDIDATE",
               "NOT_JOINED",
-              "promptPlanQuality",
-              "generatorExecutionRisk",
-              "actualRenderQuality",
-              "audienceDistributionOutcome",
-              "yayın izni değildir");
+              "Prompt plan quality",
+              "Generator execution risk",
+              "Actual render quality",
+              "Audience distribution outcome",
+              "Does not authorize publishing",
+              "Analysis execution",
+              "Evidence completeness");
     }
   }
 }
