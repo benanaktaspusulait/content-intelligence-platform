@@ -156,6 +156,45 @@ class PlatformIntegrationTest {
   }
 
   @Test
+  void productionPromptBuildDoesNotFailWhenOptionalOpenArtReferenceCatalogIsNotInstalled() {
+    assertThat(jdbc.queryForObject("SELECT to_regclass('public.openart_reference_assets')", String.class))
+        .isNull();
+    UUID storyId = UUID.randomUUID();
+    String text = "Mimi puts a sticky note on the cabinet, but it sticks to her paw.";
+    String fingerprint = storyFingerprintForTest(text);
+    String payload = """
+        {"role":"STORY","result":{"alternatives":[{"candidateId":"candidate-1","title":"Sticky note","text":"%s"}]}}
+        """.formatted(text);
+    jdbc.update("INSERT INTO post_family_workflow_events(id,kind,binding_sha256,payload) VALUES (?,'CREATIVE_ROLE',null,CAST(? AS jsonb))", storyId, payload);
+    var approval = workflow.approveStory(storyId, java.util.Map.of("approvedText", text,
+        "candidateId", "candidate-1", "revisionId", "candidate-1-revision-" + fingerprint,
+        "contentFingerprint", fingerprint));
+    doReturn(java.util.Map.of("result", java.util.Map.of("prompt", "A bounded production prompt."),
+        "provider", "mock", "calls", 1)).when(workflowMl)
+        .workflow(org.mockito.ArgumentMatchers.eq("creative-role"), org.mockito.ArgumentMatchers.anyMap());
+    var request = new java.util.LinkedHashMap<String, Object>();
+    request.put("role", "BUILD_PROMPT");
+    request.put("text", text);
+    request.put("maxCostUsd", 0.05);
+    request.put("context", java.util.Map.of(
+        "sourceStoryRecordId", storyId.toString(), "candidateId", "candidate-1",
+        "approvalRecordId", approval.get("recordId"),
+        "storyRevisionId", "candidate-1-revision-" + fingerprint,
+        "targetConfiguration", java.util.Map.of("duration", 15, "aspectRatio", "9:16",
+            "selectedGenerator", "SEEDANCE_2_0_MINI", "contentProfile", "ABSURD_PHYSICS",
+            "mainCharacter", "Mimi"),
+        "lessonContext", java.util.Map.of("contentProfile", "ABSURD_PHYSICS", "modelVersion", "",
+            "duration", 15, "generator", "SEEDANCE_2_0_MINI")));
+
+    var built = workflow.creativeRole(request);
+
+    assertThat(((java.util.Map<?, ?>) built.get("result")).get("prompt"))
+        .isEqualTo("A bounded production prompt.");
+    assertThat(built.get("attemptState")).isEqualTo("SAVED");
+    verify(workflowMl, times(1)).workflow(org.mockito.ArgumentMatchers.eq("creative-role"), org.mockito.ArgumentMatchers.anyMap());
+  }
+
+  @Test
   void legacyPromptMigrationRecoversExactLineageIsIdempotentAndPreservesOriginalRecord() {
     UUID storyId = UUID.randomUUID();
     UUID promptId = UUID.randomUUID();

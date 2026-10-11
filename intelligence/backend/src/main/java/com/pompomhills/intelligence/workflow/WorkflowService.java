@@ -732,7 +732,10 @@ public class WorkflowService {
                 "status", "VERIFIED", "sha256", sha);
           } catch (Exception error) { return null; }
         }).list().stream().filter(java.util.Objects::nonNull).toList();
-    try {
+    boolean openArtCatalogAvailable = Boolean.TRUE.equals(jdbc.sql(
+            "SELECT to_regclass('public.openart_reference_assets') IS NOT NULL")
+        .query(Boolean.class).single());
+    if (openArtCatalogAvailable) {
       var openArtReferences = jdbc.sql("SELECT id::text id,canonical_key,display_name,source,media_type,provider_asset_id,local_path,sha256,status FROM openart_reference_assets WHERE status='AVAILABLE' AND lower(media_type) LIKE 'image%' AND (lower(canonical_key) IN (:name,'character/'||:name,'characters/'||:name) OR lower(display_name)=:name) ORDER BY source,canonical_key")
           .param("name", characterName.toLowerCase(java.util.Locale.ROOT))
           .query((rs, ignored) -> {
@@ -752,9 +755,6 @@ public class WorkflowService {
                 "displayName", rs.getString("display_name"), "source", source, "status", "VERIFIED", "sha256", sha);
           }).list().stream().filter(java.util.Objects::nonNull).toList();
       if (!openArtReferences.isEmpty()) references = openArtReferences;
-    } catch (org.springframework.dao.DataAccessException unavailableCatalog) {
-      // Older installations may not yet have the optional OpenArt reference catalog migration.
-      // The canonical character record remains usable, but no unverified reference is claimed.
     }
     context.put("characterReferences", references);
   }
