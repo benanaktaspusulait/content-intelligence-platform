@@ -28,8 +28,8 @@ public class VisualReferencePlan {
   @GeneratedValue(strategy = GenerationType.UUID)
   private UUID id;
 
-  @OneToOne(fetch = FetchType.LAZY, optional = false)
-  @JoinColumn(name = "render_job_id", nullable = false, unique = true)
+  @OneToOne(fetch = FetchType.LAZY, optional = true)
+  @JoinColumn(name = "render_job_id", nullable = true)
   private com.pompom.creative.domain.RenderJob renderJob;
 
   @Column(name = "content_id", nullable = false)

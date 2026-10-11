@@ -45,6 +45,7 @@ class PostFamilyAdmissionTest {
   void pendingBackendVerdictCannotAuthorizeFinalVideo() throws Exception {
     var server =
         com.sun.net.httpserver.HttpServer.create(new java.net.InetSocketAddress("127.0.0.1", 0), 0);
+    var postedBody = new java.util.concurrent.atomic.AtomicReference<String>();
     server.createContext(
         "/api/v1/intelligence/workflow/records/",
         exchange -> {
@@ -53,7 +54,7 @@ class PostFamilyAdmissionTest {
                       + "a".repeat(64)
                       + "\"}")
                   .getBytes(java.nio.charset.StandardCharsets.UTF_8);
-          exchange.getRequestBody().readAllBytes();
+          postedBody.set(new String(exchange.getRequestBody().readAllBytes(), java.nio.charset.StandardCharsets.UTF_8));
           exchange.getResponseHeaders().add("Content-Type", "application/json");
           exchange.sendResponseHeaders(200, bytes.length);
           exchange.getResponseBody().write(bytes);
@@ -79,6 +80,7 @@ class PostFamilyAdmissionTest {
                   "a".repeat(64)),
               null);
       assertThatThrownBy(() -> client.validate(request)).isInstanceOf(IllegalStateException.class);
+      assertThat(new com.fasterxml.jackson.databind.ObjectMapper().readTree(postedBody.get()).path("validationRecordId").asLong()).isEqualTo(3L);
     } finally {
       server.stop(0);
     }

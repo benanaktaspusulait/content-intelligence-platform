@@ -143,6 +143,8 @@ class WorkflowServiceTest {
                 1,
                 "promptVersionId",
                 2,
+                "validationRecordId",
+                77,
                 "bindingHash",
                 "binding",
                 "model",
@@ -156,6 +158,9 @@ class WorkflowServiceTest {
                     "firstFrameImageId",
                     "library/frame.png")));
     assertThat(service.admission(id, queued)).containsEntry("renderAuthorization", "AUTHORIZED");
+    var reviewRequest = org.mockito.ArgumentCaptor.forClass(WorkflowService.ReviewRequest.class);
+    verify(service).runReview(reviewRequest.capture(), eq(false));
+    assertThat(reviewRequest.getValue().options()).containsEntry("canonicalValidationId", 77L);
     queued.put("model", "different-model");
     assertThatThrownBy(() -> service.admission(id, queued))
         .isInstanceOf(IllegalStateException.class);
@@ -277,5 +282,14 @@ class WorkflowServiceTest {
             WorkflowService.checkedObservation(
                 observation, true, false, "library/edited.mp4", java.util.UUID.randomUUID()))
         .containsEntry("value", "UNKNOWN");
+  }
+
+  @Test
+  void productionSettingsCannotBeSavedAgainstAnotherProjectPromptEvenWithSameTitle() {
+    var content = mock(ContentPromptQueryService.class);
+    when(content.load(8L, 7L)).thenReturn(new ContentPromptSnapshot("v1", 7, "Same title", "REEL", "DRAFT", 7, 1, "Stored prompt", "{}", "a".repeat(64)));
+    var service = new WorkflowService(content, null, null, null, new ObjectMapper(), null, null);
+    assertThatThrownBy(() -> service.saveProductionSettings(Map.of("contentId", 8L, "promptVersionId", 7L, "aspectRatio", "9:16")))
+        .isInstanceOf(IllegalArgumentException.class).hasMessageContaining("exact content");
   }
 }

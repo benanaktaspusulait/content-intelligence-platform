@@ -1,8 +1,11 @@
 FROM maven:3.9.9-amazoncorretto-21 AS build
 WORKDIR /workspace
-COPY pom.xml .
-COPY src src
-RUN mvn -q -Dmaven.test.skip=true package
+COPY intelligence/publisher-contract/pom.xml publisher-contract/pom.xml
+COPY intelligence/publisher-contract/src publisher-contract/src
+RUN mvn -q -f publisher-contract/pom.xml -DskipTests install
+COPY intelligence/creative-render-service/pom.xml creative-render-service/pom.xml
+COPY intelligence/creative-render-service/src creative-render-service/src
+RUN mvn -q -f creative-render-service/pom.xml -Dmaven.test.skip=true package
 
 FROM amazoncorretto:21-alpine
 ARG TARGETARCH
@@ -24,8 +27,8 @@ RUN apk add --no-cache bash ca-certificates curl ffmpeg tar \
     && install -m 0755 /tmp/openart /usr/local/bin/openart \
     && rm -f "/tmp/${OPENART_ARCHIVE}" /tmp/openart /tmp/openart-checksums.txt
 WORKDIR /app
-COPY --from=build /workspace/target/creative-render-service-*.jar app.jar
-COPY tools/upscale.sh /opt/pompom/tools/upscale.sh
+COPY --from=build /workspace/creative-render-service/target/creative-render-service-*.jar app.jar
+COPY intelligence/creative-render-service/tools/upscale.sh /opt/pompom/tools/upscale.sh
 RUN chmod 0755 /opt/pompom/tools/upscale.sh
 EXPOSE 8081
 HEALTHCHECK --interval=5s --timeout=3s --start-period=30s --retries=20 \

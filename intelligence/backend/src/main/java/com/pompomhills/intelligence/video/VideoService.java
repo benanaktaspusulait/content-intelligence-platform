@@ -481,6 +481,23 @@ public class VideoService {
     }
   }
 
+  /** Resolve only an explicit canonical creative destination, without creating it. */
+  public void requirePromptWorkspace(String folderPath) {
+    String base = "library/POMPOM_HILLS_PRODUCTION/09_SOCIAL_REELS/new14092026";
+    if (folderPath == null || folderPath.isBlank())
+      throw new IllegalArgumentException("Select a workspace or create one before continuing");
+    if (promptWorkspaces(base).stream().noneMatch(workspace -> folderPath.equals(workspace.folderPath())))
+      throw new IllegalArgumentException("Workspace is unavailable. Select an existing workspace or create one");
+    try {
+      Path root = properties.dataRoot().toRealPath();
+      Path destination = root.resolve(folderPath).toRealPath();
+      if (!destination.startsWith(root) || !Files.isDirectory(destination))
+        throw new IllegalArgumentException("Workspace must stay inside the configured project root");
+    } catch (IOException unavailable) {
+      throw new IllegalArgumentException("Workspace is unavailable. Select another workspace", unavailable);
+    }
+  }
+
   private Long nullableLong(java.sql.ResultSet rs, String column) throws java.sql.SQLException {
     long value = rs.getLong(column);
     return rs.wasNull() ? null : value;

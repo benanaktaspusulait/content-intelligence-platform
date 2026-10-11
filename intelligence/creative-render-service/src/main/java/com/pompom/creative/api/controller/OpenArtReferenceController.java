@@ -23,6 +23,18 @@ public class OpenArtReferenceController {
   private final OpenArtReferenceCatalogService catalog;
   private final OpenArtAdapter adapter;
 
+  @org.springframework.beans.factory.annotation.Value("${pompom.openart.enabled:false}")
+  private boolean providerEnabled;
+  @org.springframework.beans.factory.annotation.Value("${pompom.openart.mock.enabled:true}")
+  private boolean mockEnabled;
+
+  /** Configuration only: opening settings never runs CLI availability or credit commands. */
+  @GetMapping("/configuration")
+  public java.util.Map<String, Object> configuration() {
+    return java.util.Map.of("provider", "OPENART_CLI", "configured", providerEnabled && !mockEnabled,
+        "enabled", providerEnabled, "mock", mockEnabled, "liveVerified", false, "providerCallPerformed", false);
+  }
+
   @GetMapping("/capabilities")
   public OpenArtCapabilities capabilities() {
     return adapter.capabilities();
@@ -32,6 +44,16 @@ public class OpenArtReferenceController {
   public List<OpenArtReferenceAsset> list(
       @RequestParam(value = "canonicalKey", required = false) String canonicalKey) {
     return catalog.list(canonicalKey);
+  }
+
+  @org.springframework.beans.factory.annotation.Value("${pompom.data-root:/data}")
+  private String dataRoot;
+
+  @GetMapping("/{id}/media")
+  public ResponseEntity<org.springframework.core.io.Resource> localMedia(@org.springframework.web.bind.annotation.PathVariable java.util.UUID id) {
+    var resource = new org.springframework.core.io.FileSystemResource(catalog.localImage(id, Path.of(dataRoot)));
+    return ResponseEntity.ok().contentType(org.springframework.http.MediaTypeFactory.getMediaType(resource).orElse(org.springframework.http.MediaType.APPLICATION_OCTET_STREAM))
+        .header(org.springframework.http.HttpHeaders.CACHE_CONTROL, "private, no-store").body(resource);
   }
 
   @PostMapping("/sync")

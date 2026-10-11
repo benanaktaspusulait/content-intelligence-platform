@@ -221,9 +221,18 @@ public class QualityReportPdfService {
     document.add(table);
     if (snapshot.get("operatorReport") instanceof List<?> rows && !rows.isEmpty()) {
       document.add(new Paragraph("Reviewer notes", fonts.heading));
+      String viewingMechanism = rows.stream()
+          .filter(Map.class::isInstance)
+          .map(Map.class::cast)
+          .filter(row -> englishLabel(row.get("label")).equalsIgnoreCase("Viewing mechanism"))
+          .map(row -> cleanSourceSectionText(englishText(row.get("text") == null ? "" : String.valueOf(row.get("text")))))
+          .findFirst().orElse("");
       for (Object item : rows) if (item instanceof Map<?, ?> row) {
         String label = englishLabel(row.get("label"));
         String text = cleanSourceSectionText(englishText(row.get("text") == null ? "" : String.valueOf(row.get("text"))));
+        if (label.equalsIgnoreCase("Opening") && !viewingMechanism.isBlank() && text.equals(viewingMechanism)) {
+          text = "Same source observation as the viewing mechanism; no separate opening assessment was recorded.";
+        }
         if (!text.isBlank()) document.add(labelled(label + ": ", text, fonts));
       }
     }
@@ -349,7 +358,10 @@ public class QualityReportPdfService {
   private String cleanSourceSectionText(String value) {
     if (value == null) return "";
     String cleaned = value.replaceFirst("(?is)\\s*(?:AUDIO|NEGATIVE CONSTRAINTS|FINAL CUT)\\s*:?[\\s\\S]*$", "");
-    return cleaned.replaceFirst("(?i)Planlanan final\\s*:", "Planned ending:").trim();
+    return cleaned.replaceFirst("(?i)Planlanan final\\s*:", "Planned ending:")
+        .replaceAll(":\\s*:", ":")
+        .replaceFirst("^\\s*:\\s*", "")
+        .trim();
   }
 
   private String englishText(String value) {

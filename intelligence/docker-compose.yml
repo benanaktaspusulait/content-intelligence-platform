@@ -93,7 +93,9 @@ services:
       retries: 20
 
   creative-render-service:
-    build: ./creative-render-service
+    build:
+      context: ..
+      dockerfile: intelligence/creative-render-service/Dockerfile
     environment:
       SPRING_PROFILES_ACTIVE: ${CREATIVE_RENDER_PROFILE:-development}
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/${POSTGRES_DB:-pompom}

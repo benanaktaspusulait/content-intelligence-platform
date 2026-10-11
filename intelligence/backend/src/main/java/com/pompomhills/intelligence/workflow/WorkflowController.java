@@ -140,9 +140,14 @@ public class WorkflowController {
   }
 
   @GetMapping("/visual-preparation")
-  public Map<String, Object> visualPreparationForPrompt(
+  public org.springframework.http.ResponseEntity<Map<String, Object>> visualPreparationForPrompt(
       @RequestParam Long contentId, @RequestParam Long promptVersionId) {
-    return service.getVisualPreparation(contentId, promptVersionId);
+    try {
+      return org.springframework.http.ResponseEntity.ok(
+          service.getVisualPreparation(contentId, promptVersionId));
+    } catch (IllegalArgumentException missing) {
+      return org.springframework.http.ResponseEntity.notFound().build();
+    }
   }
 
   @PostMapping("/review")

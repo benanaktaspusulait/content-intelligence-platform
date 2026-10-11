@@ -6,4 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface VisualReferencePlanRepository extends JpaRepository<VisualReferencePlan, UUID> {
   Optional<VisualReferencePlan> findByRenderJobId(UUID renderJobId);
+  Optional<VisualReferencePlan> findFirstByContentIdAndPromptVersionIdAndRenderJobIsNullOrderByUpdatedAtDesc(Long contentId, Long promptVersionId);
 }

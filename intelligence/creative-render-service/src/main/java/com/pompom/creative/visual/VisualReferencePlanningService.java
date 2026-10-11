@@ -9,6 +9,7 @@ import com.pompom.creative.openart.OpenArtCapabilities;
 import com.pompom.creative.repository.RenderAssetRepository;
 import com.pompom.creative.repository.RenderAttemptRepository;
 import com.pompom.creative.repository.RenderJobRepository;
+import com.pompom.creative.intelligence.IntelligenceContentClient;
 import com.pompom.creative.service.CreditTrackingService;
 import java.math.BigDecimal;
 import java.nio.file.Files;
@@ -30,6 +31,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class VisualReferencePlanningService {
   private final RenderJobRepository jobs;
+  private final IntelligenceContentClient content;
   private final RenderAttemptRepository attempts;
   private final RenderAssetRepository assets;
   private final VisualReferencePlanRepository plans;
@@ -41,6 +43,7 @@ public class VisualReferencePlanningService {
 
   public VisualReferencePlanningService(
       RenderJobRepository jobs,
+      IntelligenceContentClient content,
       RenderAttemptRepository attempts,
       RenderAssetRepository assets,
       VisualReferencePlanRepository plans,
@@ -50,6 +53,7 @@ public class VisualReferencePlanningService {
       ObjectMapper mapper,
       @Value("${pompom.data.root:/tmp/pompom-data}") String dataRoot) {
     this.jobs = jobs;
+    this.content = content;
     this.attempts = attempts;
     this.assets = assets;
     this.plans = plans;
@@ -58,6 +62,90 @@ public class VisualReferencePlanningService {
     this.credits = credits;
     this.mapper = mapper;
     this.dataRoot = Path.of(dataRoot).toAbsolutePath().normalize();
+  }
+
+  /** Create or restore a prompt-bound visual preparation plan before any RenderJob exists. */
+  @Transactional
+  public Map<String, Object> inspectPrompt(Long contentId, Long promptVersionId, String requestedModel) {
+    return promptView(contentId, promptVersionId, requestedModel, true);
+  }
+
+  /** Page restoration must not create or update planning records. */
+  @Transactional(readOnly = true)
+  public Map<String, Object> readPrompt(Long contentId, Long promptVersionId, String requestedModel) {
+    return promptView(contentId, promptVersionId, requestedModel, false);
+  }
+
+  private Map<String, Object> promptView(Long contentId, Long promptVersionId, String requestedModel, boolean persist) {
+    var snapshot = content.fetch(contentId, promptVersionId);
+    if (snapshot.contentId() != contentId || snapshot.promptVersionId() != promptVersionId) throw new IllegalStateException("Immutable prompt snapshot belongs to a different project or version");
+    if (snapshot.promptText() == null || snapshot.promptText().isBlank()
+        || snapshot.promptSha256() == null || !snapshot.promptSha256().matches("[0-9a-f]{64}"))
+      throw new IllegalStateException("A complete immutable prompt snapshot is required for visual preparation");
+    String model = requestedModel == null || requestedModel.isBlank() ? "" : requestedModel.trim();
+    VisualReferencePlan plan = plans.findFirstByContentIdAndPromptVersionIdAndRenderJobIsNullOrderByUpdatedAtDesc(contentId, promptVersionId)
+        .orElseGet(VisualReferencePlan::new);
+    boolean stale = plan.getPromptSha256() != null && !plan.getPromptSha256().equals(snapshot.promptSha256());
+    if (persist && stale) {
+      for (VisualReferenceAsset binding : planAssets.findByPlanIdOrderByCreatedAtAsc(plan.getId())) {
+        if (binding.isAccepted()) binding.setAccepted(false);
+        binding.setValidationStatus("STALE");
+      }
+    }
+    String status = preRenderFirstFrameStatus(contentId, snapshot.promptSha256());
+    var openArtCapabilities = openArt.capabilities();
+    Map<String, Object> recommendation = new LinkedHashMap<>();
+    recommendation.put("strategy", "FIRST_FRAME_ONLY");
+    recommendation.put("action", "MISSING".equals(status) ? "UPLOAD_OR_SELECT_FIRST_FRAME" : "REVIEW_EXISTING_FIRST_FRAME");
+    recommendation.put("criticalScene", "INSUFFICIENT_EVIDENCE");
+    recommendation.put("reason", "Visual planning is provider-free; first-frame identity and semantic evidence remain UNKNOWN until reviewed.");
+    recommendation.put("additionalReferenceSupport", openArtCapabilities.videoMultipleElementReferences().name());
+    String selectedModel = model.isBlank() ? plan.getModel() : model;
+    if (selectedModel == null || selectedModel.isBlank()) selectedModel = "UNKNOWN";
+    if (persist) {
+    plan.setRenderJob(null);
+    plan.setContentId(contentId);
+    plan.setPromptVersionId(promptVersionId);
+    plan.setPromptSha256(snapshot.promptSha256());
+    plan.setProvider("OPENART_CLI");
+    plan.setModel(selectedModel);
+    plan.setFirstFrameStatus(status);
+    plan.setStrategy("FIRST_FRAME_ONLY");
+    plan.setValidationStatus("MISSING".equals(status) ? "UNKNOWN" : "REVIEW_REQUIRED");
+    plan.setRecommendationJson(json(recommendation));
+    plan.setCapabilitiesJson(json(capabilitiesMap(openArtCapabilities)));
+    plan.setCostEstimateJson(json(costMap()));
+    plan = plans.save(plan);
+    }
+    List<Map<String, Object>> candidates = assets.findByContentIdOrderByCreatedAtDesc(contentId).stream()
+        .filter(a -> a.getAssetType() == RenderAsset.AssetType.FIRST_FRAME)
+        .map(a -> assetView(a, snapshot.promptSha256())).toList();
+    Map<String, Object> result = new LinkedHashMap<>();
+    result.put("planId", plan.getId());
+    result.put("contentId", contentId);
+    result.put("promptVersionId", promptVersionId);
+    result.put("promptVersionNumber", snapshot.promptVersionNumber());
+    result.put("promptSha256", snapshot.promptSha256());
+    result.put("promptReady", true);
+    result.put("firstFrameStatus", status);
+    result.put("firstFrameCandidates", candidates);
+    result.put("referenceBindings", plan.getId() == null || stale ? List.of() : planAssets.findByPlanIdOrderByCreatedAtAsc(plan.getId()).stream().map(this::bindingView).toList());
+    result.put("recommendation", recommendation);
+    result.put("capabilities", capabilitiesMap(openArtCapabilities));
+    result.put("modelCapabilities", modelCapabilities(selectedModel));
+    result.put("cost", costMap());
+    result.put("generationProposal", null);
+    result.put("paidCallPerformed", false);
+    return result;
+  }
+
+  private String preRenderFirstFrameStatus(Long contentId, String promptHash) {
+    var candidates = assets.findByContentIdOrderByCreatedAtDesc(contentId).stream()
+        .filter(a -> a.getAssetType() == RenderAsset.AssetType.FIRST_FRAME).toList();
+    if (candidates.isEmpty()) return "MISSING";
+    boolean matching = candidates.stream().anyMatch(a -> promptHash.equals(a.getPromptHash()));
+    if (!matching && candidates.stream().anyMatch(a -> !promptHash.equals(a.getPromptHash()))) return "MISMATCH_CONFIRMED";
+    return "AVAILABLE_REVIEW_REQUIRED";
   }
 
   @Transactional
@@ -117,8 +205,10 @@ public class VisualReferencePlanningService {
   public Map<String, Object> prepareFirstFrameProposal(UUID planId) {
     VisualReferencePlan plan = plans.findById(planId).orElseThrow(() -> new IllegalArgumentException("Visual reference plan not found"));
     RenderJob job = plan.getRenderJob();
-    if (job.getPromptTextSnapshot() == null || job.getPromptTextSnapshot().isBlank()) throw new IllegalStateException("Complete and save the production prompt before preparing visual references");
-    return Map.of("planId", planId, "role", "FIRST_FRAME", "sourcePromptVersionId", job.getPromptVersionId(), "sourcePromptSha256", job.getPromptSha256(), "provider", "OPENART_CLI", "model", job.getOpenartModel(), "request", generationProposal(job), "authorizationRequired", true, "paidCallPerformed", false);
+    var snapshot = job == null ? content.fetch(plan.getContentId(), plan.getPromptVersionId()) : null;
+    String prompt = job == null ? snapshot.promptText() : job.getPromptTextSnapshot();
+    if (prompt == null || prompt.isBlank()) throw new IllegalStateException("Complete and save the production prompt before preparing visual references");
+    return Map.of("planId", planId, "role", "FIRST_FRAME", "sourcePromptVersionId", plan.getPromptVersionId(), "sourcePromptSha256", plan.getPromptSha256(), "provider", "OPENART_CLI", "model", plan.getModel(), "request", Map.of("promptText", "Opening still for the accepted production prompt. Show only the exact opening state; preserve approved identity and object relationships.\n\nACCEPTED PRODUCTION PROMPT:\n" + prompt, "model", plan.getModel(), "referenceRoles", List.of("CHARACTER_REFERENCE"), "aspectRatio", "FROM_APPROVED_RENDER_SETTINGS", "dimensions", "FROM_PROVIDER_CAPABILITY", "costStatus", "ESTIMATE_ONLY"), "authorizationRequired", true, "paidCallPerformed", false);
   }
 
   /** Returns a bounded, review-only critical-scene request; it never calls an image provider. */
@@ -206,9 +296,25 @@ public class VisualReferencePlanningService {
     List<VisualReferenceAsset> accepted = planAssets.findByPlanIdOrderByCreatedAtAsc(planId).stream().filter(a -> a.isAccepted() && "FIRST_FRAME".equals(a.getRole())).toList();
     if (accepted.isEmpty()) throw new IllegalStateException("An accepted FIRST_FRAME visual reference is required before video admission");
     if (firstFramePath == null || firstFramePath.isBlank() || accepted.stream().noneMatch(a -> samePath(firstFramePath, a.getRelativePath()))) throw new IllegalStateException("Queued first-frame binding does not match the accepted visual reference");
+    var snapshot = content.fetch(contentId, promptVersionId);
+    if (!plan.getPromptSha256().equals(snapshot.promptSha256())) throw new IllegalStateException("Accepted visual plan prompt is stale");
+    for (var binding : accepted) if (samePath(firstFramePath, binding.getRelativePath())) verifiedImagePath(binding.getRelativePath(), binding.getSha256());
     String startFrameSupport = String.valueOf(modelCapabilities(plan.getModel()).get("startFrame"));
     if (!"SUPPORTED".equals(startFrameSupport)) throw new IllegalStateException("The active OpenArt model has no verified start-frame contract; paid submission is blocked");
     if ("ADDITIONAL_IMAGE_NOT_SUPPORTED".equals(readJsonValue(plan.getRecommendationJson(), "criticalScene"))) throw new IllegalStateException("Selected critical-scene reference is unsupported by the active provider");
+  }
+
+  public void validateForRender(UUID planId, Long contentId, Long promptVersionId, String firstFramePath, String model, Map<String, Object> params) {
+    var plan = plans.findById(planId).orElseThrow();
+    if (!plan.getModel().equals(model)) throw new IllegalStateException("Accepted first frame generator is stale");
+    validateForRender(planId, contentId, promptVersionId, firstFramePath);
+    var binding = planAssets.findByPlanIdOrderByCreatedAtAsc(planId).stream()
+        .filter(a -> a.isAccepted() && "FIRST_FRAME".equals(a.getRole()) && samePath(firstFramePath, a.getRelativePath())).findFirst().orElseThrow();
+    String ratio = String.valueOf(params.getOrDefault("aspectRatio", ""));
+    if (!ratio.equals(readJsonValue(binding.getValidationEvidenceJson(), "aspectRatio"))) throw new IllegalStateException("Accepted first frame aspect ratio is stale");
+    for (String field : List.of("characterReferenceAssetId", "mode")) {
+      if (!String.valueOf(params.get(field) == null ? "" : params.get(field)).equals(readJsonValue(binding.getValidationEvidenceJson(), field))) throw new IllegalStateException("Accepted first frame " + field + " is stale");
+    }
   }
 
   private String extension(String contentType) { return switch (contentType) { case "image/jpeg" -> "jpg"; case "image/webp" -> "webp"; case "image/gif" -> "gif"; default -> "png"; }; }
@@ -217,12 +323,19 @@ public class VisualReferencePlanningService {
 
   @Transactional
   public Map<String, Object> acceptFirstFrame(UUID planId, UUID renderAssetId) {
+    return acceptFirstFrame(planId, renderAssetId, Map.of());
+  }
+
+  @Transactional
+  public Map<String, Object> acceptFirstFrame(UUID planId, UUID renderAssetId, Map<String, Object> contract) {
     VisualReferencePlan plan = plans.findById(planId).orElseThrow(() -> new IllegalArgumentException("Visual reference plan not found"));
     RenderAsset asset = assets.findById(renderAssetId).orElseThrow(() -> new IllegalArgumentException("Render asset not found"));
     if (asset.getAssetType() != RenderAsset.AssetType.FIRST_FRAME) throw new IllegalArgumentException("Only a FIRST_FRAME asset can be accepted");
-    if (!plan.getRenderJob().getPromptSha256().equals(asset.getPromptHash())) throw new IllegalStateException("First frame belongs to a different prompt version");
+    if (!plan.getPromptSha256().equals(asset.getPromptHash()) || !plan.getContentId().equals(asset.getContentId())) throw new IllegalStateException("First frame belongs to a different content or prompt version");
     if (!Boolean.TRUE.equals(asset.getMediaVerified()) || Boolean.TRUE.equals(asset.getQuarantined()) || asset.getSha256() == null) throw new IllegalStateException("First frame needs technical validation before acceptance");
-    VisualReferenceAsset binding = VisualReferenceAsset.builder().plan(plan).role("FIRST_FRAME").sourceKind("EXISTING").renderAssetId(asset.getId()).relativePath(asset.getRelativePath()).sha256(asset.getSha256()).promptSha256(asset.getPromptHash()).validationStatus("METADATA_VERIFIED").validationEvidenceJson(json(Map.of("mediaVerified", true, "semanticStatus", "UNKNOWN"))).accepted(true).build();
+    var evidence = acceptanceEvidence(plan, asset.getRelativePath(), asset.getSha256(), contract);
+    invalidateAcceptedFrames(plan);
+    VisualReferenceAsset binding = VisualReferenceAsset.builder().plan(plan).role("FIRST_FRAME").sourceKind("EXISTING").renderAssetId(asset.getId()).relativePath(asset.getRelativePath()).sha256(asset.getSha256()).promptSha256(asset.getPromptHash()).validationStatus("METADATA_VERIFIED").validationEvidenceJson(json(evidence)).accepted(true).build();
     planAssets.save(binding);
     plan.setFirstFrameStatus("AVAILABLE_REVIEW_REQUIRED");
     plan.setValidationStatus("REVIEW_REQUIRED");
@@ -232,17 +345,31 @@ public class VisualReferencePlanningService {
 
   @Transactional
   public Map<String, Object> acceptImportedFirstFrame(UUID planId, UUID referenceAssetId) {
+    return acceptImportedFirstFrame(planId, referenceAssetId, Map.of());
+  }
+
+  @Transactional
+  public Map<String, Object> acceptImportedFirstFrame(UUID planId, UUID referenceAssetId, Map<String, Object> contract) {
     VisualReferencePlan plan = plans.findById(planId).orElseThrow(() -> new IllegalArgumentException("Visual reference plan not found"));
     VisualReferenceAsset binding = planAssets.findById(referenceAssetId).orElseThrow(() -> new IllegalArgumentException("Visual reference asset not found"));
     if (!planId.equals(binding.getPlan().getId()) || !"FIRST_FRAME".equals(binding.getRole())) throw new IllegalArgumentException("Reference asset is not a first-frame candidate for this plan");
     if (!plan.getPromptSha256().equals(binding.getPromptSha256())) throw new IllegalStateException("Uploaded first frame belongs to a different prompt version");
     if (!"METADATA_VERIFIED".equals(binding.getValidationStatus())) throw new IllegalStateException("Uploaded first frame needs technical validation before acceptance");
+    var evidence = acceptanceEvidence(plan, binding.getRelativePath(), binding.getSha256(), contract);
+    invalidateAcceptedFrames(plan);
+    binding.setValidationEvidenceJson(json(evidence));
     binding.setAccepted(true);
     planAssets.save(binding);
     plan.setFirstFrameStatus("AVAILABLE_REVIEW_REQUIRED");
     plan.setValidationStatus("REVIEW_REQUIRED");
     plans.save(plan);
     return Map.of("planId", planId, "assetId", referenceAssetId, "role", "FIRST_FRAME", "accepted", true, "semanticStatus", "UNKNOWN");
+  }
+
+  private void invalidateAcceptedFrames(VisualReferencePlan plan) {
+    for (var previous : planAssets.findByPlanIdOrderByCreatedAtAsc(plan.getId())) {
+      if ("FIRST_FRAME".equals(previous.getRole()) && previous.isAccepted()) { previous.setAccepted(false); planAssets.save(previous); }
+    }
   }
 
   private List<RenderAsset> firstFrameCandidates(RenderJob job) {
@@ -287,11 +414,25 @@ public class VisualReferencePlanningService {
   }
 
   private Map<String, Object> modelCapabilities(String model) {
-    String normalized = model == null ? "" : model.toLowerCase(java.util.Locale.ROOT);
-    String start = normalized.contains("seedance-2") || normalized.contains("seedance_2") ? "SUPPORTED" : "UNVERIFIED";
+    com.fasterxml.jackson.databind.JsonNode selected = mapper.createObjectNode();
+    String family = "UNKNOWN";
+    String registryVersion = "Provider capability registry unavailable";
+    try {
+      var registry = mapper.readTree(dataRoot.resolve("workflow/provider-capabilities.json").toFile());
+      var entries = registry.path("models").fields();
+      while (entries.hasNext()) {
+        var entry = entries.next();
+        if (entry.getValue().path("apiModelId").asText().equals(model)) {
+          selected = entry.getValue(); family = entry.getKey();
+          registryVersion = selected.path("version").asText(registry.path("version").asText()); break;
+        }
+      }
+    } catch (IOException ignored) { /* Missing registry is UNKNOWN, never supported. */ }
+    var properties = selected.path("modes").path("image2video").path("properties");
+    String start = properties.has("startFrame") ? "SUPPORTED" : "UNVERIFIED";
     String multiple = "UNSUPPORTED";
-    String end = "UNVERIFIED";
-    String modelFamily = normalized.contains("seedance-2.5") ? "SEEDANCE_2_5" : normalized.contains("seedance-2.0-mini") || normalized.contains("seedance-2-mini") ? "SEEDANCE_2_0_MINI" : normalized.contains("seedance-2") ? "SEEDANCE_2_0" : "UNKNOWN";
+    String end = properties.has("endFrame") ? "SUPPORTED" : "UNVERIFIED";
+    String modelFamily = family;
     Map<String, Object> result = new LinkedHashMap<>();
     result.put("model", model == null ? "" : model);
     result.put("modelFamily", modelFamily);
@@ -301,19 +442,86 @@ public class VisualReferencePlanningService {
     result.put("characterReferences", "UNVERIFIED");
     result.put("storyboard", "UNVERIFIED");
     result.put("segmentContinuation", "UNVERIFIED");
-    result.put("duration", "SUPPORTED");
-    result.put("aspectRatio", "SUPPORTED");
-    result.put("resolution", "SUPPORTED");
+    result.put("duration", properties.has("duration") ? "SUPPORTED" : "UNVERIFIED");
+    result.put("aspectRatio", properties.has("aspectRatio") ? "SUPPORTED" : "UNVERIFIED");
+    result.put("resolution", properties.has("resolution") ? "SUPPORTED" : "UNVERIFIED");
     result.put("ordering", "SUPPORTED");
     result.put("intermediateKeyframe", "UNSUPPORTED");
-    result.put("verificationSource", "OpenArt CLI 0.1.1 local capability snapshot; request path uses only published --image/--duration/--aspect-ratio/--resolution fields");
+    result.put("verificationSource", registryVersion);
     return result;
   }
 
   private Map<String, Object> capabilitiesMap(OpenArtCapabilities c) { return Map.of("imageMultipleReferences", c.imageMultipleReferences().name(), "videoSingleStartFrame", c.videoSingleStartFrame().name(), "videoMultipleElementReferences", c.videoMultipleElementReferences().name(), "workspaceAssetDiscovery", c.workspaceAssetDiscovery().name()); }
   private Map<String, Object> readObject(String json) { try { return mapper.readValue(json == null ? "{}" : json, new com.fasterxml.jackson.core.type.TypeReference<Map<String, Object>>() {}); } catch (Exception ignored) { return Map.of(); } }
   private Map<String, Object> costMap() { BigDecimal frame = credits.getEstimatedCost(RenderJob.JobType.FIRST_FRAME); return Map.of("imageGenerationCredits", frame == null ? "UNKNOWN" : frame, "visionValidation", "UNKNOWN", "paidCallPerformed", false); }
-  private Map<String, Object> assetView(RenderAsset a, RenderJob job) { return Map.of("assetId", a.getId(), "role", "FIRST_FRAME", "source", a.getSource() == null ? "UNKNOWN" : a.getSource(), "relativePath", a.getRelativePath(), "sha256", a.getSha256() == null ? "" : a.getSha256(), "promptSha256", a.getPromptHash() == null ? "" : a.getPromptHash(), "promptVersionMatches", job.getPromptSha256().equals(a.getPromptHash()), "mediaVerified", Boolean.TRUE.equals(a.getMediaVerified()), "semanticStatus", "UNKNOWN"); }
-  private Map<String, Object> bindingView(VisualReferenceAsset asset) { return Map.of("assetId", asset.getId(), "role", asset.getRole(), "sourceKind", asset.getSourceKind(), "relativePath", asset.getRelativePath() == null ? "" : asset.getRelativePath(), "sha256", asset.getSha256() == null ? "" : asset.getSha256(), "validationStatus", asset.getValidationStatus(), "accepted", asset.isAccepted()); }
+  private Map<String, Object> assetView(RenderAsset a, RenderJob job) { return assetView(a, job.getPromptSha256()); }
+  private Map<String, Object> assetView(RenderAsset a, String promptHash) {
+    boolean matches = promptHash.equals(a.getPromptHash());
+    boolean verified = Boolean.TRUE.equals(a.getMediaVerified()) && !Boolean.TRUE.equals(a.getQuarantined()) && fileExists(a);
+    Map<String, Object> result = new LinkedHashMap<>();
+    result.put("assetId", a.getId()); result.put("role", "FIRST_FRAME");
+    result.put("source", a.getSource() == null ? "UNKNOWN" : a.getSource());
+    result.put("relativePath", a.getRelativePath()); result.put("sha256", a.getSha256() == null ? "" : a.getSha256());
+    result.put("promptSha256", a.getPromptHash() == null ? "" : a.getPromptHash());
+    result.put("promptVersionMatches", matches); result.put("mediaVerified", verified);
+    result.put("quarantined", Boolean.TRUE.equals(a.getQuarantined()));
+    result.put("eligible", matches && verified && a.getSha256() != null); result.put("semanticStatus", "UNKNOWN");
+    return result;
+  }
+  private Map<String, Object> bindingView(VisualReferenceAsset asset) {
+    Map<String, Object> view = new LinkedHashMap<>();
+    view.put("assetId", asset.getId()); view.put("role", asset.getRole());
+    view.put("sourceKind", asset.getSourceKind()); view.put("relativePath", asset.getRelativePath());
+    view.put("sha256", asset.getSha256()); view.put("validationStatus", asset.getValidationStatus());
+    view.put("accepted", asset.isAccepted()); view.put("createdAt", asset.getCreatedAt());
+    try { view.put("evidence", mapper.readValue(asset.getValidationEvidenceJson(), Map.class)); }
+    catch (Exception ignored) { view.put("evidence", Map.of()); }
+    view.put("mediaUrl", "/api/v1/visual-reference-plans/" + asset.getPlan().getId() + "/assets/" + asset.getId() + "/media");
+    return view;
+  }
+
+  @Transactional(readOnly = true)
+  public Path referenceMedia(UUID planId, UUID assetId) {
+    VisualReferenceAsset binding = planAssets.findById(assetId).orElseThrow(() -> new IllegalArgumentException("Visual reference asset not found"));
+    if (!planId.equals(binding.getPlan().getId())) throw new IllegalArgumentException("Asset belongs to a different plan");
+    return verifiedImagePath(binding.getRelativePath(), binding.getSha256());
+  }
+
+  private Path verifiedImagePath(String storedPath, String checksum) {
+    if (storedPath == null || checksum == null) throw new IllegalStateException("Image provenance is missing");
+    Path path = Path.of(storedPath);
+    if (!path.isAbsolute()) path = dataRoot.resolve(path);
+    path = path.toAbsolutePath().normalize();
+    try {
+      if (!path.toRealPath().startsWith(dataRoot.toRealPath()) || !Files.isRegularFile(path)) throw new IllegalStateException("Image is outside the asset store");
+      byte[] bytes = Files.readAllBytes(path);
+      if (!checksum.equals(HexFormat.of().formatHex(MessageDigest.getInstance("SHA-256").digest(bytes)))) throw new IllegalStateException("Image checksum changed; upload and accept the current image again");
+      if (javax.imageio.ImageIO.read(path.toFile()) == null) throw new IllegalStateException("Asset is not a decodable image");
+      return path;
+    } catch (IOException | NoSuchAlgorithmException e) { throw new IllegalStateException("Stored image is unavailable", e); }
+  }
+
+  private Map<String, Object> acceptanceEvidence(VisualReferencePlan plan, String path, String checksum, Map<String, Object> contract) {
+    var snapshot = content.fetch(plan.getContentId(), plan.getPromptVersionId());
+    if (!plan.getPromptSha256().equals(snapshot.promptSha256())) throw new IllegalStateException("Plan prompt is stale");
+    String ratio = String.valueOf(contract.getOrDefault("aspectRatio", ""));
+    if (!List.of("9:16", "16:9", "1:1", "4:3", "3:4").contains(ratio)) throw new IllegalArgumentException("A supported target aspect ratio is required for acceptance");
+    String model = String.valueOf(contract.getOrDefault("model", ""));
+    if (!plan.getModel().equals(model)) throw new IllegalStateException("Selected generator differs from the saved visual plan");
+    Path imagePath = verifiedImagePath(path, checksum);
+    try {
+      var image = javax.imageio.ImageIO.read(imagePath.toFile());
+      String[] parts = ratio.split(":");
+      double expected = Double.parseDouble(parts[0]) / Double.parseDouble(parts[1]);
+      if (image.getWidth() < 64 || image.getHeight() < 64 || image.getWidth() > 8192 || image.getHeight() > 8192 || Math.abs((double) image.getWidth() / image.getHeight() / expected - 1) > .02) throw new IllegalArgumentException("Image dimensions do not match the target aspect ratio " + ratio);
+      Map<String, Object> evidence = new LinkedHashMap<>();
+      contract.forEach((key, value) -> evidence.put(key, value == null ? "" : value));
+      evidence.put("width", image.getWidth()); evidence.put("height", image.getHeight());
+      evidence.put("contentId", plan.getContentId()); evidence.put("promptVersionId", plan.getPromptVersionId());
+      evidence.put("promptHash", plan.getPromptSha256()); evidence.put("checksum", checksum);
+      evidence.put("acceptedAt", java.time.Instant.now().toString()); evidence.put("semanticStatus", "UNKNOWN");
+      return evidence;
+    } catch (IOException e) { throw new IllegalStateException("Image cannot be decoded", e); }
+  }
   private String json(Object value) { try { return mapper.writeValueAsString(value); } catch (JsonProcessingException e) { throw new IllegalStateException("Could not serialize visual reference plan", e); } }
 }

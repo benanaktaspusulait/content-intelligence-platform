@@ -31,8 +31,6 @@ class RuleGovernanceServiceTest {
     service = new RuleGovernanceService(candidates, evidence, conflicts, reviews, changesets, versions, health);
     candidate = new RuleCandidateEntity("tenant-a", "HOOK_001", "Hook", "first frame is legible", "legibility improves retention", ScopeType.GLOBAL, null, EvidenceLevel.OBSERVED_ASSOCIATION, RiskTier.MEDIUM, "correlation", "1");
     when(candidates.findById(any())).thenReturn(Optional.of(candidate));
-    when(conflicts.countByCandidateIdAndResolutionStatus(any(), eq("OPEN"))).thenReturn(0L);
-    when(candidates.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
   }
 
   @Test

@@ -190,6 +190,9 @@ public class WorkflowService {
         || !String.valueOf(stored.get("promptVersionId"))
             .equals(String.valueOf(queued.get("promptVersionId"))))
       throw new IllegalStateException("Saved prompt version binding required");
+    var admissionRequest = new LinkedHashMap<>(map(stored.get("boundRequest")));
+    if (queued.get("validationRecordId") instanceof Number validationId)
+      admissionRequest.put("canonicalValidationId", validationId.longValue());
     var fresh =
         runReview(
             new ReviewRequest(
@@ -197,7 +200,7 @@ public class WorkflowService {
                 ((Number) stored.get("promptVersionId")).longValue(),
                 null,
                 null,
-                map(stored.get("boundRequest"))),
+                admissionRequest),
             false);
     String binding = String.valueOf(queued.get("bindingHash"));
     requireAuthorized(stored, binding);
@@ -577,6 +580,16 @@ public class WorkflowService {
     String role = String.valueOf(request.get("role"));
     if (!List.of("STORY", "STORY_REVIEW", "BUILD_PROMPT", "MINIMAL_REPAIR").contains(role))
       throw new IllegalArgumentException("Unsupported creative role");
+    if ("STORY".equals(role)) {
+      if (!Boolean.TRUE.equals(request.get("generationAuthorized")))
+        throw new IllegalArgumentException("Explicit authorization for this story-generation operation is required");
+      if (!(request.get("maxCostUsd") instanceof Number ceiling)
+          || !Double.isFinite(ceiling.doubleValue()) || ceiling.doubleValue() <= 0)
+        throw new IllegalArgumentException("A positive authorized cost ceiling is required");
+      if (String.valueOf(request.getOrDefault("text", "")).isBlank())
+        throw new IllegalArgumentException("Enter an idea before requesting story generation");
+      videos.requirePromptWorkspace(String.valueOf(map(request.get("context")).getOrDefault("workspacePath", "")));
+    }
     if (map(request.get("context")).get("sourceStoryRecordId") instanceof String storyId
         && !storyId.isBlank() && !"MANUAL_STORY".equals(storyId)) {
       var story = getByKind(UUID.fromString(storyId), "CREATIVE_ROLE");
@@ -584,6 +597,8 @@ public class WorkflowService {
         throw new IllegalArgumentException("Story provenance requires an exact STORY record");
     }
     var verifiedRequest = new LinkedHashMap<>(request);
+    // Authorization is enforced here; the strict provider contract accepts only role/text/context/budget.
+    verifiedRequest.remove("generationAuthorized");
     var context = new LinkedHashMap<>(map(request.get("context")));
     if ("BUILD_PROMPT".equals(role)) {
       context.put("promptBuilderContractVersion", BUILD_PROMPT_CONTRACT_VERSION);
@@ -922,7 +937,13 @@ public class WorkflowService {
   public Map<String, Object> saveProductionSettings(Map<String, Object> request) {
     if (request.get("contentId") == null || request.get("promptVersionId") == null)
       throw new IllegalArgumentException("contentId and promptVersionId are required");
+    long contentId = Long.parseLong(String.valueOf(request.get("contentId")));
+    long promptVersionId = Long.parseLong(String.valueOf(request.get("promptVersionId")));
+    var snapshot = prompts.load(contentId, promptVersionId);
+    if (snapshot.contentId() != contentId || snapshot.promptVersionId() != promptVersionId)
+      throw new IllegalArgumentException("Production settings require the exact content and immutable prompt version");
     var payload = new LinkedHashMap<String, Object>(request);
+    payload.put("promptHash", snapshot.promptSha256());
     payload.put("savedAt", Instant.now().toString());
     payload.put("recordId", save("PRODUCTION_SETTINGS",
         String.valueOf(request.get("contentId")) + "/" + request.get("promptVersionId"), payload));
@@ -1040,7 +1061,18 @@ public class WorkflowService {
     String imagePrompt = String.valueOf(request.getOrDefault("firstFrameImagePrompt", "")).trim();
     if (specification.isBlank() || imagePrompt.isBlank())
       throw new IllegalArgumentException("First-frame specification and image prompt are required");
+    long contentId = Long.parseLong(String.valueOf(request.get("contentId")));
+    long promptVersionId = Long.parseLong(String.valueOf(request.get("promptVersionId")));
+    var snapshot = prompts.load(contentId, promptVersionId);
+    if (snapshot.contentId() != contentId || snapshot.promptVersionId() != promptVersionId)
+      throw new IllegalArgumentException("Visual specification source identity does not match");
+    if (request.get("reviewId") == null) throw new IllegalArgumentException("An exact saved analysis review is required");
+    var review = get(UUID.fromString(String.valueOf(request.get("reviewId"))));
+    if (!String.valueOf(contentId).equals(String.valueOf(review.get("contentId"))) || !String.valueOf(promptVersionId).equals(String.valueOf(review.get("promptVersionId"))))
+      throw new IllegalArgumentException("Visual specification analysis belongs to another project or prompt");
     var payload = new LinkedHashMap<String, Object>(request);
+    payload.put("promptHash", snapshot.promptSha256());
+    payload.put("promptVersionNumber", snapshot.promptVersionNumber());
     payload.put("status", String.valueOf(request.getOrDefault("status", "READY_FOR_REVIEW")));
     payload.put("providerCallPerformed", false);
     payload.put("savedAt", Instant.now().toString());

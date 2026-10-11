@@ -175,7 +175,7 @@ public class RenderJobQueueService {
           planId,
           request.contentId(),
           request.promptVersionId(),
-          String.valueOf(request.openartParams().get("firstFrameImageId")));
+          String.valueOf(request.openartParams().get("firstFrameImageId")), request.openartModel(), request.openartParams());
     }
     CreativeProductionContractService.ContractCompilation contract =
         contractService.compile(prompt, evidence.deterministicRulesetVersion());

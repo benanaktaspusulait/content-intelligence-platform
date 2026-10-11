@@ -2,6 +2,8 @@ package com.pompom.creative.queue;
 
 import com.pompom.creative.evidence.ValidationEvidenceDto;
 import java.time.Instant;
+import java.math.BigDecimal;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 /**
@@ -17,6 +19,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class ValidationEvidencePolicy {
 
+  @Value("${pompom.openart.cost.first-frame-usd:0}")
+  private BigDecimal firstFrameCostUsd = BigDecimal.ZERO;
+
   public void validate(QueueRenderJobRequest request, ValidationEvidenceDto evidence, Instant now) {
     boolean firstFrame =
         request.jobType() == com.pompom.creative.domain.RenderJob.JobType.FIRST_FRAME;
@@ -31,6 +36,26 @@ public class ValidationEvidencePolicy {
           "FIRST_FRAME_NOT_ELIGIBLE",
           "Validation record %d has no eligible prompt-stage first-frame decision"
               .formatted(evidence.validationRecordId()));
+    }
+    if (firstFrame) {
+      Object params = request.openartParams() == null ? null : request.openartParams().get("paidCallAuthorization");
+      Object ceilingValue = request.openartParams() == null ? null : request.openartParams().get("maxCostUsd");
+      BigDecimal ceiling = decimal(ceilingValue);
+      if (!Boolean.TRUE.equals(params) || ceiling == null || ceiling.signum() <= 0) {
+        throw new ValidationEvidenceRejectedException(
+            "FIRST_FRAME_PAID_CALL_NOT_AUTHORIZED",
+            "First-frame generation requires explicit paid-call authorization and a positive USD ceiling");
+      }
+      if (firstFrameCostUsd == null || firstFrameCostUsd.signum() <= 0) {
+        throw new ValidationEvidenceRejectedException(
+            "FIRST_FRAME_USD_ESTIMATE_UNAVAILABLE",
+            "First-frame provider cost cannot be compared with the USD ceiling; generation is disabled");
+      }
+      if (ceiling.compareTo(firstFrameCostUsd) < 0) {
+        throw new ValidationEvidenceRejectedException(
+            "FIRST_FRAME_COST_EXCEEDS_CEILING",
+            "The configured first-frame estimate exceeds the authorized USD ceiling");
+      }
     }
     if (!firstFrame && evidence.blockerCount() > 0) {
       throw new ValidationEvidenceRejectedException(
@@ -110,6 +135,14 @@ public class ValidationEvidencePolicy {
           "Validation record %d has no exact AUTHORIZED Family 8 render authorization"
               .formatted(evidence.validationRecordId()));
     }
+  }
+
+  private BigDecimal decimal(Object value) {
+    if (value instanceof Number number) return new BigDecimal(number.toString());
+    if (value instanceof String text) {
+      try { return new BigDecimal(text.trim()); } catch (NumberFormatException ignored) { return null; }
+    }
+    return null;
   }
 
   private boolean hasVerifiedVisualGates(ValidationEvidenceDto evidence) {

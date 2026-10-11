@@ -137,6 +137,57 @@ describe('post-family operator workflow', () => {
     expect(f.nativeElement.querySelectorAll('.analysis-stage-toolbar')).toHaveLength(1);
     TestBed.inject(HttpTestingController).expectNone(r => r.method === 'POST');
   });
+  it('routes the analysis summary CTA to findings instead of forcing a prompt repair', async () => {
+    const f = await setup();
+    const c = f.componentInstance;
+    c.review = { recordId: 'analysis-1', contentId: 1, promptVersionId: 2, bindingHash: 'hash', family8: { renderAuthorization: { status: 'BLOCKED_PENDING_EVIDENCE', reasons: [] } }, boundRequest: { prompt: c.prompt } };
+    c['reviewedInputs'] = c['inputSnapshot']();
+    c.activeStage = 5;
+    expect(c.nextAnalysisAction).toBe('Resolve Outstanding Findings');
+    c.continueFromAnalysis();
+    expect(c.activeStage).toBe(4);
+    expect(c.activeProductionTab).toBe('creative');
+    TestBed.inject(HttpTestingController).expectNone(r => r.method === 'POST');
+  });
+  it('reuses the exact current saved review when continuing to Quality Analysis', async () => {
+    const f = await setup();
+    const c = f.componentInstance;
+    c.profile = 'post-family-v1';
+    c.review = { recordId: 'saved-review', contentId: 1, promptVersionId: 2, boundRequest: { prompt: c.prompt } };
+    c['reviewedInputs'] = c['inputSnapshot']();
+    c.continueToQualityAnalysis();
+    expect(c.activeStage).toBe(5);
+    TestBed.inject(HttpTestingController).expectNone(r => r.method === 'POST');
+    f.destroy();
+  });
+  it('surfaces every canonical authorization reason as a stable actionable finding', async () => {
+    const f = await setup();
+    const c = f.componentInstance;
+    c.review = { recordId: 'analysis-1', contentId: 1, promptVersionId: 2, bindingHash: 'hash', family8: { renderAuthorization: { status: 'BLOCKED_TECHNICAL_FAILURE', reasons: [{ code: 'CONTRADICTORY_SOURCE_EVIDENCE', source: 'TIMELINE_SOURCE', message: 'Two source spans conflict', references: ['prompt-v2:10-25', 'prompt-v2:90-110'] }] } }, boundRequest: { prompt: c.prompt } };
+    c['reviewedInputs'] = c['inputSnapshot']();
+    const item = c.resolutionItems().find(value => value.id === 'AUTHORIZATION:CONTRADICTORY_SOURCE_EVIDENCE');
+    expect(item).toMatchObject({ category: 'SOURCE_EVIDENCE_CONTRADICTION', blocking: true, target: 4, status: 'UNVERIFIED', revalidationRequired: true });
+    expect(item.evidence).toContain('prompt-v2:10-25');
+    c.resolveFinding(item);
+    expect(c.activeStage).toBe(4);
+    expect(c.activeProductionTab).toBe('execution');
+    TestBed.inject(HttpTestingController).expectNone(r => r.method === 'POST');
+  });
+  it('keeps prompt version, database ID and analysis identity in Render Preparation navigation', async () => {
+    const f = await setup();
+    const c = f.componentInstance;
+    f.componentRef.setInput('promptVersionNumber', 1);
+    c.review = { recordId: 'analysis-8', contentId: 7, promptVersionId: 8, bindingHash: 'hash', boundRequest: { prompt: c.prompt } };
+    const route = new URL(c.renderPreparationLink(), 'http://localhost');
+    expect(route.searchParams.get('contentId')).toBe('7');
+    expect(route.searchParams.get('promptVersionId')).toBe('8');
+    expect(route.searchParams.get('promptVersionNumber')).toBe('1');
+    expect(route.searchParams.get('analysisId')).toBe('analysis-8');
+    expect(route.searchParams.get('workflowReviewId')).toBe('analysis-8');
+    expect(c.authorizationLabel('BLOCKED_TECHNICAL_FAILURE')).toContain('Rendering blocked');
+    expect(c.authorizationLabel(null)).toContain('unknown');
+    TestBed.inject(HttpTestingController).expectNone(r => r.method === 'POST');
+  });
   it('navigates from References to Quality Analysis and back to Prompt with the same workflow instance', async () => {
     const f = await setup();
     const c = f.componentInstance;
@@ -426,6 +477,22 @@ Hard cut.`;
     f.componentInstance.prompt = '🎈abcd';
     expect(f.componentInstance.evidenceCoverage({claims: [{span:[0,3]}, {span:[2,4]}, {span:[-1,2]}, {span:[0,99]}]})).toBe('4/5 Unicode characters (80%)');
     expect(f.componentInstance.evidenceCoverage({claims:[]})).toBe('0/5 Unicode characters (0%)');
+  });
+
+  it('cleans report punctuation, avoids duplicate opening claims and preserves timed-range evidence', async () => {
+    const f = await setup();
+    const component = f.componentInstance;
+    component.prompt = '0-6s: Mimi opens a box. 6-15s: Notes follow Mimi.';
+    expect(component.cleanAnalysisText('Planned ending: : Mimi hides.')).toBe('Planned ending: Mimi hides.');
+    expect(component.cleanAnalysisText(': Mimi opens a box.')).toBe('Mimi opens a box.');
+    const rows = component.analysisReportRows([
+      { label: 'VIEWING MECHANISM', text: ': Mimi opens a box.' },
+      { label: 'OPENING', text: 'Mimi opens a box.' },
+      { label: 'PROGRESSION', text: 'Insufficient evidence' },
+    ]);
+    expect(rows[1].text).toContain('Same source observation');
+    expect(rows[2].text).toContain('2 timed source range(s) were extracted');
+    f.destroy();
   });
 
 });

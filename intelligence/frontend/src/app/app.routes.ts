@@ -1,8 +1,11 @@
-import { Routes } from '@angular/router';
+import { Routes, Router } from '@angular/router';
+import { inject } from '@angular/core';
 
 export const routes: Routes = [
   { path: 'overview', loadComponent: () => import('./pages/overview.page').then((m) => m.OverviewPage), title: 'Overview · Pompom CI' },
-  { path: 'render', loadComponent: () => import('./pages/render-dashboard.page').then((m) => m.RenderDashboardPage), title: 'Render Pipeline · Pompom CI' },
+  { path: 'render-preparation', loadComponent: () => import('./pages/render-preparation.page').then(m => m.RenderPreparationPage), title: 'Render Preparation · Pompom CI' },
+  { path: 'render-jobs', loadComponent: () => import('./pages/render-dashboard.page').then(m => m.RenderDashboardPage), title: 'Render Jobs · Pompom CI' },
+  { path: 'render', canActivate: [route => inject(Router).createUrlTree([route.queryParamMap.has('workflowReviewId') || route.queryParamMap.has('contentId') ? '/render-preparation' : '/render-jobs'], { queryParams: route.queryParams })], loadComponent: () => import('./pages/render-dashboard.page').then(m => m.RenderDashboardPage) },
   { path: 'rule-governance', loadComponent: () => import('./pages/rule-governance.page').then((m) => m.RuleGovernancePage), title: 'Rule Governance · Pompom CI' },
   { path: 'quality/detail', loadComponent: () => import('./pages/quality-validator/quality-validator.component').then((m) => m.QualityValidatorComponent), title: 'Prompt Detail · Pompom CI' },
   { path: 'quality/new', loadComponent: () => import('./pages/creative-studio.page').then((m) => m.CreativeStudioPage), title: 'Create New Video · Pompom CI' },

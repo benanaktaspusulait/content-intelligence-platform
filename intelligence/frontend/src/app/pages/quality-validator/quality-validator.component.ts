@@ -219,6 +219,7 @@ export class QualityValidatorComponent implements AfterViewInit, OnDestroy {
   contentType: string = 'SHORT';
   contentId: string = '';
   promptVersionId: string = '';
+  promptVersionNumber: number | null = null;
   validationRecordId: number | null = null;
   report: QualityReport | null = null;
   studioStage = 4;
@@ -226,7 +227,7 @@ export class QualityValidatorComponent implements AfterViewInit, OnDestroy {
     const stage = this.postFamilyWorkflow?.activeStage || this.studioStage;
     if (stage === 5) return { eyebrow: 'STEP 5 · QUALITY ANALYSIS', title: 'Quality Analysis', description: 'Review creative quality, production feasibility and evidence before deciding the next action.' };
     if (stage === 6) return { eyebrow: 'STEP 6 · REPAIR', title: 'Repair', description: 'Apply a bounded, evidence-backed prompt repair when the review recommends one.' };
-    if (stage === 7) return { eyebrow: 'STEP 7 · RENDER', title: 'Render readiness', description: 'Prepare the first frame, verify provider capabilities and authorize generation.' };
+    if (stage === 7) return { eyebrow: 'STEP 7 · RENDER', title: 'Render Preparation', description: 'Prepare the first frame, verify provider capabilities and authorize generation.' };
     if (stage === 8) return { eyebrow: 'STEP 8 · VIDEO QA', title: 'Video QA', description: 'Compare the rendered video with the approved source and record observations.' };
     return { eyebrow: 'STEP 4 · PRODUCTION REVIEW', title: 'Validate the production plan', description: 'Confirm source intent, references, generator settings and render handoff before analysis.' };
   }
@@ -315,6 +316,8 @@ Intensity: 4`;
   constructor(private http: HttpClient, private router: Router, private route: ActivatedRoute, private changeDetector: ChangeDetectorRef) {
     this.detailMode = this.route.snapshot.url.some(segment => segment.path === 'detail');
     this.studioMode = this.route.snapshot.queryParamMap.get('studio') === '1';
+    const requestedStage = Number(this.route.snapshot.queryParamMap.get('stage'));
+    if (this.studioMode && Number.isInteger(requestedStage) && requestedStage >= 4 && requestedStage <= 8) this.studioStage = requestedStage;
     this.sourceReconciliationRequested = this.route.snapshot.queryParamMap.get('reconcile') === '1';
     this.loadPromptWorkspaces();
     this.loadQualityRecords();
@@ -330,7 +333,7 @@ Intensity: 4`;
       next: versions => {
         const version = versions.find(item => item.id === promptVersionId);
         if (!version) { this.error = 'Prompt version could not be found.'; this.selectedPromptLoading = false; return; }
-        this.contentId = String(contentId); this.promptVersionId = String(promptVersionId); this.contentTitle = `Content #${contentId}`; this.contentType = 'REEL';
+        this.contentId = String(contentId); this.promptVersionId = String(promptVersionId); this.promptVersionNumber = Number.isInteger(version.versionNumber) ? Number(version.versionNumber) : null; this.contentTitle = `Content #${contentId}`; this.contentType = 'REEL';
         this.setPromptText(version.rawText || ''); this.selectedPromptPath = version.sourcePath || ''; this.selectedPromptDirectory=version.sourcePath ? this.promptFolder(version.sourcePath,this.promptLibraryRoot) : ''; this.selectedPromptLoading = false;
         this.creativeDraftRecordId=null;
         this.http.get<any>(`/api/v1/intelligence/contents/${contentId}/prompt-versions/${promptVersionId}/creative-provenance`).subscribe({next: provenance => {if(this.contentId!==String(contentId)||this.promptVersionId!==String(promptVersionId))return;this.creativeProvenance=provenance;this.changeDetector.markForCheck();},error: () => {this.creativeProvenance=null;this.changeDetector.markForCheck();}});
@@ -521,6 +524,7 @@ Intensity: 4`;
     this.contentType = workspace.folderPath.includes('SOCIAL_REELS') ? 'REEL' : 'SHORT';
     this.contentId = '';
     this.promptVersionId = '';
+    this.promptVersionNumber = null;
     this.validationRecordId = null;
     this.report = null;
     this.error = null;

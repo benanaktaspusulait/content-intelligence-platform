@@ -13,13 +13,14 @@ describe('creative studio idea-first workflow', () => {
     await TestBed.configureTestingModule({imports:[CreativeStudioPage],providers:[provideHttpClient(),provideHttpClientTesting(),provideRouter([])]}).compileComponents();
     const fixture=TestBed.createComponent(CreativeStudioPage); const page=fixture.componentInstance; const http=TestBed.inject(HttpTestingController);
     fixture.detectChanges();
-    http.expectOne('/api/v1/intelligence/workflow/creative-role/readiness').flush({enabled:true,storyModel:'fixture',promptModel:'fixture'});
+    http.expectOne('/api/v1/intelligence/workflow/creative-role/readiness').flush({enabled:true,roles:[{role:'STORY',configured:true,model:'fixture'},{role:'BUILD_PROMPT',configured:true,model:'fixture'}]});
     http.expectOne('/api/v1/characters').flush([]);
     http.expectOne('/api/v1/videos/prompt-workspaces?relativeDirectory=library/POMPOM_HILLS_PRODUCTION/09_SOCIAL_REELS/new14092026').flush([]);
     http.expectOne('/api/v1/intelligence/workflow/records?kind=CREATIVE_ROLE').flush([]);
     http.expectOne('/api/v1/intelligence/workflow/records?kind=STORY_APPROVAL').flush([]);
+    http.expectOne('/api/v1/intelligence/workflow/idea-drafts').flush([]);
     http.expectOne('/api/v1/intelligence/workflow/records?kind=CREATIVE_STUDIO_SESSION').flush([]);
-    page.idea='Kiko sınava giriyor'; page.storyConsent=true; page.budget=0.01; page.requestStories();
+    page.idea='Kiko sınava giriyor'; page.workspacePath='library/fixture'; page.prepareStoryGeneration(); page.storyConsent=true; page.budget=0.01; page.requestStories();
     const story=http.expectOne('/api/v1/intelligence/workflow/creative-role'); expect(story.request.body.text).toBe('Kiko sınava giriyor'); story.flush({recordId:'story-1',result:{alternatives:['Kiko kalemiyle konuşur.']}});
     await fixture.whenStable(); page.selectStory(page.candidates[0]); page.approveStory();
     const approval=http.expectOne('/api/v1/intelligence/workflow/creative-role/story-1/approve-story'); expect(approval.request.body.approvedText).toContain('kalemiyle'); approval.flush({recordId:'approval-1'});
@@ -40,6 +41,7 @@ describe('saved story reuse', () => {
     http.expectOne('/api/v1/videos/prompt-workspaces?relativeDirectory=library/POMPOM_HILLS_PRODUCTION/09_SOCIAL_REELS/new14092026').flush([]);
     http.expectOne('/api/v1/intelligence/workflow/records?kind=CREATIVE_ROLE').flush([{recordId:'saved-1',role:'STORY',sourceRequest:{text:'Kiko finds a door'},alternatives:['Kiko opens the door and finds a tiny stage.']}]);
     http.expectOne('/api/v1/intelligence/workflow/records?kind=STORY_APPROVAL').flush([]);
+    http.expectOne('/api/v1/intelligence/workflow/idea-drafts').flush([]);
     http.expectOne('/api/v1/intelligence/workflow/records?kind=CREATIVE_STUDIO_SESSION').flush([]);
     await fixture.whenStable();
     expect(page.savedStories).toHaveLength(1);
@@ -66,6 +68,7 @@ describe('step 1 journey safety', () => {
     http.expectOne('/api/v1/videos/prompt-workspaces?relativeDirectory=library/POMPOM_HILLS_PRODUCTION/09_SOCIAL_REELS/new14092026').flush([]);
     http.expectOne('/api/v1/intelligence/workflow/records?kind=CREATIVE_ROLE').flush([]);
     http.expectOne('/api/v1/intelligence/workflow/records?kind=STORY_APPROVAL').flush([]);
+    http.expectOne('/api/v1/intelligence/workflow/idea-drafts').flush([]);
     http.expectOne('/api/v1/intelligence/workflow/records?kind=CREATIVE_STUDIO_SESSION').flush([]);
     return {fixture,page,http};
   }
@@ -166,6 +169,31 @@ describe('step 1 journey safety', () => {
     http.verify(); fixture.destroy(); TestBed.resetTestingModule();
   });
 
+  it('keeps saved-project actions unavailable until story, approval and session indexes are loaded', async () => {
+    localStorage.removeItem('pompom.creative-studio.v1');
+    await TestBed.configureTestingModule({imports:[CreativeStudioPage],providers:[provideHttpClient(),provideHttpClientTesting(),provideRouter([])]}).compileComponents();
+    const fixture=TestBed.createComponent(CreativeStudioPage); const page=fixture.componentInstance; const http=TestBed.inject(HttpTestingController);
+    fixture.detectChanges();
+    http.expectOne('/api/v1/intelligence/workflow/creative-role/readiness').flush({enabled:true});
+    http.expectOne('/api/v1/characters').flush([]);
+    http.expectOne('/api/v1/videos/prompt-workspaces?relativeDirectory=library/POMPOM_HILLS_PRODUCTION/09_SOCIAL_REELS/new14092026').flush([]);
+    http.expectOne('/api/v1/intelligence/workflow/records?kind=CREATIVE_ROLE').flush([{recordId:'story-indexed',role:'STORY',lifecycleStatus:'APPROVED',result:{alternatives:[{candidateId:'candidate-1',text:'Saved story.'}]}}]);
+    const approvals=http.expectOne('/api/v1/intelligence/workflow/records?kind=STORY_APPROVAL');
+    const sessions=http.expectOne('/api/v1/intelligence/workflow/records?kind=CREATIVE_STUDIO_SESSION');
+    fixture.detectChanges();
+    expect(page.savedStoriesLoading).toBe(true);
+    expect(fixture.nativeElement.querySelector('[aria-label="Saved projects"]')).toBeNull();
+    approvals.flush([{recordId:'approval-indexed',storyRecordId:'story-indexed',candidateId:'candidate-1',revisionId:`candidate-1-revision-${fingerprint('Saved story.')}`,contentFingerprint:fingerprint('Saved story.'),approvedText:'Saved story.'}]);
+    sessions.flush([]);
+    fixture.detectChanges();
+    expect(page.savedStoriesLoading).toBe(false);
+    expect(fixture.nativeElement.querySelector('[aria-label="Saved projects"]')).not.toBeNull();
+    expect(fixture.nativeElement.textContent).toContain('Continue to Prompt');
+    expect(http.match(r=>r.method==='POST')).toHaveLength(0);
+    expect(http.match(r=>r.method==='PUT')).toHaveLength(0);
+    http.verify(); fixture.destroy(); TestBed.resetTestingModule();
+  });
+
   it('keeps similar generation sessions separate and uses their stored canonical title', async () => {
     const {fixture,page,http}=await createPage();
     const text='Mimi stands before a messy cabinet and a sticky note.';
@@ -200,6 +228,139 @@ describe('step 1 journey safety', () => {
     http.verify(); fixture.destroy(); TestBed.resetTestingModule();
   });
 
+  it('keeps project review separate from exact story approval and does not retain a stale approval on selection', async () => {
+    const {fixture,page,http}=await createPage();
+    const textA='Mimi follows a note to a tiny stage.'; const hashA=fingerprint(textA);
+    const textB='Mimi hides from a note under a table.'; const hashB=fingerprint(textB);
+    const approved:any={recordId:'story-approved',title:'Mimi’s Sticky Note Mystery',lifecycleStatus:'APPROVED',result:{alternatives:[{candidateId:'candidate-1',text:textA}]}};
+    const inReview:any={recordId:'story-review',title:'Mimi’s Sticky Note Mystery',lifecycleStatus:'IN_REVIEW',result:{alternatives:[{candidateId:'candidate-1',text:textB}]}};
+    page.savedStories=[approved,inReview];
+    page.savedApprovals=[{recordId:'approval-a',storyRecordId:'story-approved',candidateId:'candidate-1',revisionId:`candidate-1-revision-${hashA}`,contentFingerprint:hashA,approvedText:textA},
+      {recordId:'approval-invalid-b',storyRecordId:'story-review',candidateId:'None',revisionId:'-revision-deadbeef',contentFingerprint:'',approvedText:textB}];
+    page.useSavedStory(approved);
+    expect(page.approvalRecordId).toBe('approval-a');
+    page.builderRecordId='builder-a'; page.builderResult={prompt:'Prompt from project A'}; page.draftPrompt='Prompt from project A';
+    page.useSavedStory(inReview);
+    expect(page.savedLifecycle(inReview)).toBe('IN_REVIEW');
+    expect(page.savedApprovalFor(inReview)).toBeNull();
+    expect(page.approvalRecordId).toBe('');
+    expect(page.builderRecordId).toBe('');
+    expect(page.draftPrompt).toBe('');
+    expect(page.storyApprovalStatus).toBe('REVIEW_REQUIRED');
+    expect(page.nextAction).toBe('Review Story');
+    expect(http.match(r=>r.method==='PUT')).toHaveLength(0);
+    http.verify(); fixture.destroy(); TestBed.resetTestingModule();
+  });
+
+  it('keeps the explicitly selected candidate in review and persists approval only after the operator action', async () => {
+    const {fixture,page,http}=await createPage();
+    const story:any={recordId:'story-in-review',title:'Mimi’s Sticky Note Mystery',lifecycleStatus:'IN_REVIEW',result:{alternatives:[{candidateId:'candidate-1',text:'Candidate one.'},{candidateId:'candidate-2',text:'Candidate two.'}]}};
+    page.savedStories=[story];
+    page.savedStudioSessions=[{sessionId:'session-review',storyRecordId:'story-in-review',selectedCandidateIdValue:'candidate-2',profile:'ABSURD_PHYSICS',duration:15,aspectRatio:'9:16'}];
+    page.useSavedStory(story);
+    expect(page.stage).toBe('STORY');
+    expect(page.selectedCandidateId).toBe('candidate-2');
+    expect(page.selectedStory).toBe('Candidate two.');
+    expect(page.approvalRecordId).toBe('');
+    expect(page.storyApprovalStatus).toBe('REVIEW_REQUIRED');
+    expect(http.match(r=>r.method==='POST')).toHaveLength(0);
+    page.reviewSavedStory();
+    page.selectStory(page.candidates[1]);
+    page.approveStory();
+    const approval=http.expectOne('/api/v1/intelligence/workflow/creative-role/story-in-review/approve-story');
+    expect(approval.request.body.candidateId).toBe('candidate-2');
+    expect(approval.request.body.approvedText).toBe('Candidate two.');
+    expect(approval.request.body.revisionId).toBe(`candidate-2-revision-${fingerprint('Candidate two.')}`);
+    approval.flush({recordId:'approval-candidate-2'});
+    expect(page.approvalRecordId).toBe('approval-candidate-2');
+    expect(page.stage).toBe('PROMPT');
+    expect(http.match(r=>r.method==='POST')).toHaveLength(0);
+    http.match(r=>r.method==='PUT').forEach(r=>r.flush({}));
+    http.verify(); fixture.destroy(); TestBed.resetTestingModule();
+  });
+
+  it('explains a missing compatible saved prompt while preserving the approved story and paid-call gate', async () => {
+    const {fixture,page,http}=await createPage();
+    const text='Mimi follows one impossible sticky note.'; const hash=fingerprint(text);
+    const story:any={recordId:'story-approved-without-prompt',lifecycleStatus:'APPROVED',result:{alternatives:[{candidateId:'candidate-1',text}]}};
+    page.savedStories=[story];
+    page.savedApprovals=[{recordId:'approval-exact',storyRecordId:story.recordId,candidateId:'candidate-1',revisionId:`candidate-1-revision-${hash}`,contentFingerprint:hash,approvedText:text}];
+    page.useSavedStory(story);
+    page.continueApprovedStory();
+    fixture.detectChanges();
+    expect(page.savedPromptRecoveryRequired).toBe(true);
+    expect(fixture.nativeElement.textContent).toContain('Production prompt needs to be created');
+    expect(fixture.nativeElement.textContent).toContain('no compatible saved production prompt was found');
+    expect(page.approvalRecordId).toBe('approval-exact');
+    expect(page.storyRecordId).toBe(story.recordId);
+    expect(page.promptConsent).toBe(false);
+    expect(http.match(r=>r.method==='POST')).toHaveLength(0);
+    expect(http.match(r=>r.method==='PUT')).toHaveLength(0);
+    http.verify(); fixture.destroy(); TestBed.resetTestingModule();
+  });
+
+  it('does not let a stale session candidate replace the approved immutable revision', async () => {
+    const {fixture,page,http}=await createPage();
+    const approvedText='Candidate one is the approved immutable story.'; const hash=fingerprint(approvedText);
+    const story:any={recordId:'story-approved-session-stale',lifecycleStatus:'APPROVED',result:{alternatives:[{candidateId:'candidate-1',text:approvedText},{candidateId:'candidate-2',text:'Candidate two is an unapproved edit.'}]}};
+    page.savedStories=[story];
+    page.savedApprovals=[{recordId:'approval-candidate-1',storyRecordId:story.recordId,candidateId:'candidate-1',revisionId:`candidate-1-revision-${hash}`,contentFingerprint:hash,approvedText}];
+    page.savedStudioSessions=[{sessionId:'session-stale-candidate',storyRecordId:story.recordId,selectedCandidateIdValue:'candidate-2'}];
+    page.useSavedStory(story);
+    expect(page.approvalRecordId).toBe('approval-candidate-1');
+    expect(page.selectedCandidateId).toBe('candidate-1');
+    expect(page.selectedStory).toBe(approvedText);
+    page.continueApprovedStory();
+    expect(page.stage).toBe('PROMPT');
+    expect(page.selectedStory).toBe(approvedText);
+    expect(http.match(r=>r.method==='POST')).toHaveLength(0);
+    expect(http.match(r=>r.method==='PUT')).toHaveLength(0);
+    http.verify(); fixture.destroy(); TestBed.resetTestingModule();
+  });
+
+  it('ignores a stale server-session response after switching to a different saved project', async () => {
+    const {fixture,page,http}=await createPage();
+    page.sessionId='shared-session'; page.storyRecordId='story-current'; page.stage='STORY'; page.selectedStory='Current project story';
+    (page as any).restoreServer({sessionId:'shared-session',storyRecordId:'story-other',stage:'PROMPT',selectedStory:'Other project story',builderRecordId:'builder-other'});
+    expect(page.storyRecordId).toBe('story-current');
+    expect(page.selectedStory).toBe('Current project story');
+    expect(page.builderRecordId).toBe('');
+    expect(page.sessionId).not.toBe('shared-session');
+    expect(http.match(r=>r.method==='PUT')).toHaveLength(0);
+    http.verify(); fixture.destroy(); TestBed.resetTestingModule();
+  });
+
+  it('restores exact prompt settings and editor for a same-title project without sharing its session identity', async () => {
+    const {fixture,page,http}=await createPage();
+    const text='Mimi follows a note to a tiny stage.'; const hash=fingerprint(text);
+    const story:any={recordId:'story-exact-a',title:'Mimi Sticky Note Mystery',lifecycleStatus:'APPROVED',result:{alternatives:[{candidateId:'candidate-1',text}]}};
+    const other:any={recordId:'story-exact-b',title:'Mimi Sticky Note Mystery',lifecycleStatus:'APPROVED',result:{alternatives:[{candidateId:'candidate-1',text:'Another project story.'}]}};
+    page.savedStories=[story,other];
+    page.savedApprovals=[{recordId:'approval-exact-a',storyRecordId:'story-exact-a',candidateId:'candidate-1',revisionId:`candidate-1-revision-${hash}`,contentFingerprint:hash,approvedText:text},
+      {recordId:'approval-exact-b',storyRecordId:'story-exact-b',candidateId:'candidate-1',revisionId:`candidate-1-revision-${fingerprint('Another project story.')}`,contentFingerprint:fingerprint('Another project story.'),approvedText:'Another project story.'}];
+    const target={duration:8,aspectRatio:'16:9',selectedGenerator:'SEEDANCE_2_5',contentProfile:'EDUCATIONAL',mainCharacter:'Mimi'};
+    (page as any).savedBuildRecords=[{recordId:'build-exact-a',role:'BUILD_PROMPT',requestFingerprint:'fingerprint-a',sourceRequest:{context:{sourceStoryRecordId:'story-exact-a',candidateId:'candidate-1',storyRevisionId:`candidate-1-revision-${hash}`,targetConfiguration:target}},result:{prompt:'Exact project A production prompt.'}},
+      {recordId:'build-exact-b',role:'BUILD_PROMPT',requestFingerprint:'fingerprint-b',sourceRequest:{context:{sourceStoryRecordId:'story-exact-b',candidateId:'candidate-1',storyRevisionId:`candidate-1-revision-${fingerprint('Another project story.')}`,targetConfiguration:{...target,duration:15,aspectRatio:'9:16',contentProfile:'ABSURD_PHYSICS'}}},result:{prompt:'Project B prompt.'}}];
+    page.sessionId='shared-old-session';
+    page.savedStudioSessions=[{sessionId:'shared-old-session',storyRecordId:'story-exact-a',title:'Mimi Sticky Note Mystery',profile:'EDUCATIONAL',duration:8,aspectRatio:'16:9'},
+      {sessionId:'shared-old-session',storyRecordId:'story-exact-b',title:'Mimi Sticky Note Mystery',profile:'ABSURD_PHYSICS',duration:15,aspectRatio:'9:16',selectedCandidateIdValue:'candidate-1',approvalRecordId:'approval-exact-b',builderRecordId:'build-exact-b',contentId:'90',promptVersionId:'12',detailUrl:'/quality/detail?contentId=90&promptVersionId=12&studio=1'}];
+    page.useSavedStory(other);
+    expect(page.sessionId).not.toBe('shared-old-session');
+    expect(page.canonicalSavedPrompt?.recordId).toBe('build-exact-b');
+    expect(page.contentId).toBe('90');
+    expect(page.promptVersionId).toBe('12');
+    expect(page.detailUrl).toContain('promptVersionId=12');
+    page.openCanonicalSavedPrompt();
+    expect(page.draftPrompt).toBe('Project B prompt.');
+    expect(page.profile).toBe('ABSURD_PHYSICS');
+    expect(page.duration).toBe(15);
+    expect(page.aspectRatio).toBe('9:16');
+    expect(page.targetGenerator).toBe('SEEDANCE_2_5');
+    expect(http.match(r=>r.method==='POST')).toHaveLength(0);
+    expect(http.match(r=>r.method==='PUT')).toHaveLength(0);
+    http.verify(); fixture.destroy(); TestBed.resetTestingModule();
+  });
+
   it('opens only the selected saved prompt and makes no provider call', async () => {
     const {fixture,page,http}=await createPage();
     const text='Mimi follows a note to a tiny stage.';
@@ -209,7 +370,7 @@ describe('step 1 journey safety', () => {
     page.savedApprovals=[{recordId:'approval-a',storyRecordId:'story-a',candidateId:'candidate-1',revisionId:`candidate-1-revision-${hash}`,contentFingerprint:hash,approvedText:text}];
     (page as any).savedBuildRecords=[
       {recordId:'build-other',role:'BUILD_PROMPT',sourceRequest:{context:{sourceStoryRecordId:'story-b',storyRevisionId:`candidate-1-revision-${hash}`,targetConfiguration:{duration:15,aspectRatio:'9:16',selectedGenerator:'SEEDANCE_2_0_MINI',contentProfile:'AUTO',mainCharacter:''}}},result:{prompt:'Wrong project prompt'}},
-      {recordId:'build-a',role:'BUILD_PROMPT',sourceRequest:{context:{sourceStoryRecordId:'story-a',storyRevisionId:`candidate-1-revision-${hash}`,targetConfiguration:{duration:15,aspectRatio:'9:16',selectedGenerator:'SEEDANCE_2_0_MINI',contentProfile:'AUTO',mainCharacter:''}}},result:{prompt:'Exact saved prompt'}}
+      {recordId:'build-a',role:'BUILD_PROMPT',requestFingerprint:'fingerprint-a',sourceRequest:{context:{sourceStoryRecordId:'story-a',storyRevisionId:`candidate-1-revision-${hash}`,targetConfiguration:{duration:15,aspectRatio:'9:16',selectedGenerator:'SEEDANCE_2_0_MINI',contentProfile:'AUTO',mainCharacter:''}}},result:{prompt:'Exact saved prompt'}}
     ];
     page.useSavedStory(story);
     expect(page.canonicalSavedPrompt?.recordId).toBe('build-a');

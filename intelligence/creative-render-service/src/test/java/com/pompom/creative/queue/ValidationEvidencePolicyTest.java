@@ -293,10 +293,11 @@ class ValidationEvidencePolicyTest {
   }
 
   @Test
-  void firstFrameMayUsePromptStageEligibilityWhileFinalVideoEvidenceIsPending() {
+  void firstFrameFailsClosedWhenProviderUsdEstimateIsNotConfigured() {
     QueueRenderJobRequest firstFrame =
         new QueueRenderJobRequest(
-            10L, 11L, 42L, RenderJob.JobType.FIRST_FRAME, "model-x", Map.of("seed", 1), null);
+            10L, 11L, 42L, RenderJob.JobType.FIRST_FRAME, "model-x",
+            Map.of("paidCallAuthorization", true, "maxCostUsd", 0.20), null);
     ValidationEvidenceDto pendingVideoEvidence =
         new ValidationEvidenceDto(
             42L,
@@ -319,8 +320,39 @@ class ValidationEvidencePolicyTest {
             false,
             Map.of());
 
-    assertThatCode(() -> policy.validate(firstFrame, pendingVideoEvidence, now))
-        .doesNotThrowAnyException();
+    assertThatThrownBy(() -> policy.validate(firstFrame, pendingVideoEvidence, now))
+        .isInstanceOf(ValidationEvidenceRejectedException.class)
+        .extracting(ex -> ((ValidationEvidenceRejectedException) ex).getErrorCode())
+        .isEqualTo("FIRST_FRAME_USD_ESTIMATE_UNAVAILABLE");
+  }
+
+  @Test
+  void firstFrameRequiresExplicitPaidCallAuthorizationBeforeProviderCostChecks() {
+    QueueRenderJobRequest firstFrame =
+        new QueueRenderJobRequest(
+            10L, 11L, 42L, RenderJob.JobType.FIRST_FRAME, "model-x", Map.of("seed", 1), null);
+    ValidationEvidenceDto eligibleEvidence = new ValidationEvidenceDto(
+        42L, 10L, 11L, "a".repeat(64), "BLOCKED", 2, 3, 0, "1.5", "openai", "gpt-4o",
+        null, null, null, now.minusSeconds(60), now.plusSeconds(3600), true, false, Map.of());
+    assertThatThrownBy(() -> policy.validate(firstFrame, eligibleEvidence, now))
+        .isInstanceOf(ValidationEvidenceRejectedException.class)
+        .extracting(ex -> ((ValidationEvidenceRejectedException) ex).getErrorCode())
+        .isEqualTo("FIRST_FRAME_PAID_CALL_NOT_AUTHORIZED");
+  }
+
+  @Test
+  void firstFrameRequiresCeilingToCoverConfiguredProviderUsdEstimate() {
+    org.springframework.test.util.ReflectionTestUtils.setField(policy, "firstFrameCostUsd", new java.math.BigDecimal("0.10"));
+    QueueRenderJobRequest firstFrame = new QueueRenderJobRequest(
+        10L, 11L, 42L, RenderJob.JobType.FIRST_FRAME, "model-x",
+        Map.of("paidCallAuthorization", true, "maxCostUsd", 0.05), null);
+    ValidationEvidenceDto eligibleEvidence = new ValidationEvidenceDto(
+        42L, 10L, 11L, "a".repeat(64), "BLOCKED", 2, 3, 0, "1.5", "openai", "gpt-4o",
+        null, null, null, now.minusSeconds(60), now.plusSeconds(3600), true, false, Map.of());
+    assertThatThrownBy(() -> policy.validate(firstFrame, eligibleEvidence, now))
+        .isInstanceOf(ValidationEvidenceRejectedException.class)
+        .extracting(ex -> ((ValidationEvidenceRejectedException) ex).getErrorCode())
+        .isEqualTo("FIRST_FRAME_COST_EXCEEDS_CEILING");
   }
 
   @Test

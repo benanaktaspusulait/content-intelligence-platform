@@ -49,6 +49,8 @@ public class PostFamilyAdmissionClient {
                     request.contentId(),
                     "promptVersionId",
                     request.promptVersionId(),
+                    "validationRecordId",
+                    request.validationRecordId(),
                     "model",
                     request.openartModel(),
                     "settings",

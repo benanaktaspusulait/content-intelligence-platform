@@ -1,0 +1,11 @@
+        kind         | count 
+---------------------+-------
+ prompt_versions     |     8
+ workflow_events     |   140
+ quality_validations |     9
+ repair_sessions     |     0
+ render_jobs         |     0
+ credits             |     0
+ plans               |     0
+(7 rows)
+

@@ -11,6 +11,27 @@ import org.openpdf.text.pdf.parser.PdfTextExtractor;
 class QualityReportPdfServiceTest {
 
   @Test
+  void workflowPdfCleansSourcePunctuationAndDoesNotRepeatTheSameOpeningClaim() throws Exception {
+    Map<String, Object> snapshot = Map.of(
+        "operatorReport", List.of(
+            Map.of("label", "VIEWING MECHANISM", "text", ": Mimi opens a box."),
+            Map.of("label", "OPENING", "text", "Mimi opens a box."),
+            Map.of("label", "ENDING", "text", "Planned ending: : Mimi hides.")));
+    byte[] pdf = new QualityReportPdfService().renderWorkflow(snapshot);
+    PdfReader reader = new PdfReader(pdf);
+    StringBuilder text = new StringBuilder();
+    PdfTextExtractor extractor = new PdfTextExtractor(reader);
+    for (int page = 1; page <= reader.getNumberOfPages(); page++) text.append(extractor.getTextFromPage(page));
+
+    assertThat(text.toString()).contains("Mimi opens a box.");
+    assertThat(text.toString()).contains("Same source observation as the viewing mechanism");
+    assertThat(text.toString()).contains("Planned ending: Mimi hides.");
+    assertThat(text.toString()).doesNotContain(": :");
+    assertThat(text.toString().split("Mimi opens a box\\.", -1)).hasSize(2);
+    reader.close();
+  }
+
+  @Test
   void treatsTimelineSharesAsZeroToOneHundredPercentValues() {
     assertThat(QualityReportPdfService.formatStateShare(5.33)).isEqualTo("5%");
     assertThat(QualityReportPdfService.formatStateShare(20.0)).isEqualTo("20%");

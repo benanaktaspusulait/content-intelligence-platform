@@ -96,23 +96,46 @@ class VideoPromptLineageTest {
                       "fixture-model",
                       "result",
                       story
-                          ? java.util.Map.of("alternatives", java.util.List.of("fixture-story"))
+                          ? java.util.Map.of(
+                              "alternatives",
+                              java.util.List.of(
+                                  java.util.Map.of(
+                                      "candidateId", "fixture-candidate-1",
+                                      "title", "Fixture story",
+                                      "text", "fixture-story")))
                           : java.util.Map.of("prompt", "fixture-draft")));
             });
     var story =
         workflow.creativeRole(
             java.util.Map.of("role", "STORY", "text", "fixture", "maxCostUsd", 1));
+    String storyRecordId = String.valueOf(story.get("recordId"));
+    String candidateId = "fixture-candidate-1";
+    String storyText = "fixture-story";
+    String storyFingerprint = storyFingerprintForTest(storyText);
+    String storyRevisionId = candidateId + "-revision-" + storyFingerprint;
+    var approval =
+        workflow.approveStory(
+            UUID.fromString(storyRecordId),
+            java.util.Map.of(
+                "approvedText", storyText,
+                "candidateId", candidateId,
+                "revisionId", storyRevisionId,
+                "contentFingerprint", storyFingerprint));
     var draft =
         workflow.creativeRole(
             java.util.Map.of(
                 "role",
                 "BUILD_PROMPT",
                 "text",
-                "edited fixture story",
+                storyText,
                 "maxCostUsd",
                 1,
                 "context",
-                java.util.Map.of("sourceStoryRecordId", String.valueOf(story.get("recordId")))));
+                java.util.Map.of(
+                    "sourceStoryRecordId", storyRecordId,
+                    "candidateId", candidateId,
+                    "storyRevisionId", storyRevisionId,
+                    "approvalRecordId", approval.get("recordId"))));
     Long content =
         jdbc.sql("INSERT INTO contents(title,type) VALUES ('creative fixture','REEL') RETURNING id")
             .query(Long.class)
@@ -123,7 +146,7 @@ class VideoPromptLineageTest {
             new com.pompomhills.intelligence.content.ContentWorkspaceController.CreatePromptRequest(
                 "fixture-draft edited", "{}", null, String.valueOf(draft.get("recordId"))));
     assertThat(workspace.creativeProvenance(content, saved.id()))
-        .containsEntry("sourceStoryRecordId", String.valueOf(story.get("recordId")))
+        .containsEntry("sourceStoryRecordId", storyRecordId)
         .containsEntry("provider", "LOCAL_MOCK")
         .containsEntry("model", "fixture-model")
         .containsEntry("operatorEdited", true)
@@ -152,6 +175,12 @@ class VideoPromptLineageTest {
         .containsEntry("operatorEdited", true);
     assertThatThrownBy(() -> workspace.creativeProvenance(-1L, saved.id()))
         .isInstanceOf(IllegalArgumentException.class);
+  }
+
+  private String storyFingerprintForTest(String value) {
+    int hash = 0x811c9dc5;
+    for (int i = 0; i < value.length(); i++) hash = (hash ^ value.charAt(i)) * 0x01000193;
+    return String.format(java.util.Locale.ROOT, "%08x", hash);
   }
 
   @Test

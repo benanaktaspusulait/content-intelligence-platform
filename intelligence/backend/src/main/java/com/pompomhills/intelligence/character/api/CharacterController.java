@@ -61,6 +61,26 @@ public class CharacterController {
         .body(resource);
   }
 
+  @GetMapping("/{characterId}/workspace-references")
+  public List<java.util.Map<String, Object>> workspaceReferences(@PathVariable UUID characterId) {
+    return references.workspaceReferences(characterId);
+  }
+
+  @GetMapping("/{characterId}/workspace-references/image")
+  public org.springframework.http.ResponseEntity<org.springframework.core.io.Resource> workspaceImage(@PathVariable UUID characterId, @RequestParam String relativePath) {
+    var resource = new org.springframework.core.io.FileSystemResource(references.workspaceImage(characterId, relativePath));
+    return org.springframework.http.ResponseEntity.ok().contentType(org.springframework.http.MediaTypeFactory.getMediaType(resource).orElse(org.springframework.http.MediaType.APPLICATION_OCTET_STREAM))
+        .header(org.springframework.http.HttpHeaders.CACHE_CONTROL, "private, no-store").body(resource);
+  }
+
+  @PostMapping("/{characterId}/workspace-references/import")
+  @ResponseStatus(HttpStatus.CREATED)
+  public java.util.Map<String, Object> importWorkspace(@PathVariable UUID characterId, @Valid @RequestBody ImportWorkspace request) {
+    return references.importWorkspace(characterId, request.relativePath());
+  }
+
+  public record ImportWorkspace(@NotBlank String relativePath) {}
+
   @PostMapping(value = "/{characterId}/references", consumes = org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE)
   @ResponseStatus(HttpStatus.CREATED)
   public java.util.Map<String, Object> uploadReference(@PathVariable UUID characterId,

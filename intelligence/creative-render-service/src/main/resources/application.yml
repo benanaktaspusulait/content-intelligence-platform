@@ -96,4 +96,6 @@ pompom:
         email: ${OPENART_ALERT_EMAIL:}
     cost:
       first-frame: ${OPENART_FIRST_FRAME_COST:10}
+      # Paid first-frame generation stays disabled unless a verified USD estimate exists.
+      first-frame-usd: ${OPENART_FIRST_FRAME_COST_USD:0}
       video: ${OPENART_VIDEO_COST:100}

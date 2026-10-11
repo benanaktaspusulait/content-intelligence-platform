@@ -33,10 +33,33 @@ public class VisualReferencePlanningController {
     return ResponseEntity.ok(service.inspect(renderJobId));
   }
 
+  @GetMapping("/prompts/{contentId}/{promptVersionId}")
+  public ResponseEntity<Map<String, Object>> readPrompt(@PathVariable Long contentId, @PathVariable Long promptVersionId,
+      @org.springframework.web.bind.annotation.RequestParam(defaultValue = "") String model) {
+    return ResponseEntity.ok(service.readPrompt(contentId, promptVersionId, model));
+  }
+
+  @GetMapping("/{planId}/assets/{assetId}/media")
+  public ResponseEntity<org.springframework.core.io.Resource> referenceMedia(@PathVariable UUID planId, @PathVariable UUID assetId) throws java.io.IOException {
+    var path = service.referenceMedia(planId, assetId);
+    String type = java.nio.file.Files.probeContentType(path);
+    return ResponseEntity.ok().contentType(MediaType.parseMediaType(type == null ? "application/octet-stream" : type))
+        .body(new org.springframework.core.io.FileSystemResource(path));
+  }
+
+  @PostMapping("/prompts/{contentId}/{promptVersionId}/inspect")
+  public ResponseEntity<Map<String, Object>> inspectPrompt(
+      @PathVariable Long contentId,
+      @PathVariable Long promptVersionId,
+      @RequestBody(required = false) Map<String, Object> request) {
+    String model = request == null ? "" : String.valueOf(request.getOrDefault("model", ""));
+    return ResponseEntity.ok(service.inspectPrompt(contentId, promptVersionId, model));
+  }
+
   @PostMapping("/{planId}/first-frame/accept")
   public ResponseEntity<Map<String, Object>> acceptFirstFrame(
       @PathVariable UUID planId, @RequestBody AcceptFirstFrameRequest request) {
-    return ResponseEntity.ok(service.acceptFirstFrame(planId, request.renderAssetId()));
+    return ResponseEntity.ok(service.acceptFirstFrame(planId, request.renderAssetId(), request.contract()));
   }
 
   @PostMapping("/{planId}/first-frame/proposal")
@@ -62,11 +85,18 @@ public class VisualReferencePlanningController {
 
   @PostMapping("/{planId}/first-frame/imported/{referenceAssetId}/accept")
   public ResponseEntity<Map<String, Object>> acceptImportedFirstFrame(
-      @PathVariable UUID planId, @PathVariable UUID referenceAssetId) {
-    return ResponseEntity.ok(service.acceptImportedFirstFrame(planId, referenceAssetId));
+      @PathVariable UUID planId, @PathVariable UUID referenceAssetId, @RequestBody Map<String, Object> contract) {
+    return ResponseEntity.ok(service.acceptImportedFirstFrame(planId, referenceAssetId, contract));
   }
 
-  public record AcceptFirstFrameRequest(UUID renderAssetId) {}
+  public record AcceptFirstFrameRequest(UUID renderAssetId, String aspectRatio, String model, String characterReferenceAssetId, String mode) {
+    Map<String, Object> contract() {
+      Map<String, Object> result = new java.util.LinkedHashMap<>();
+      result.put("aspectRatio", aspectRatio == null ? "" : aspectRatio); result.put("model", model == null ? "" : model);
+      result.put("characterReferenceAssetId", characterReferenceAssetId == null ? "" : characterReferenceAssetId);
+      result.put("mode", mode == null ? "" : mode); return result;
+    }
+  }
 
   @org.springframework.web.bind.annotation.ExceptionHandler({IllegalArgumentException.class, IllegalStateException.class})
   public ResponseEntity<Map<String, Object>> invalid(RuntimeException error) {

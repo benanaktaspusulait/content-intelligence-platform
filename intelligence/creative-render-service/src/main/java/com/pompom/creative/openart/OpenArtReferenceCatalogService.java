@@ -54,6 +54,21 @@ public class OpenArtReferenceCatalogService {
         : repository.findByCanonicalKeyIgnoreCaseOrderBySourceAsc(canonicalKey.trim());
   }
 
+  /** Local previews use existing catalog identity; this never fetches remote provider URLs. */
+  @Transactional(readOnly = true)
+  public Path localImage(java.util.UUID id, Path dataRoot) {
+    var asset = repository.findById(id).orElseThrow(() -> new IllegalArgumentException("Reference asset not found"));
+    if (asset.getSource() != OpenArtReferenceAsset.ReferenceSource.LOCAL || asset.getLocalPath() == null
+        || asset.getStatus() != OpenArtReferenceAsset.ReferenceStatus.AVAILABLE) throw new IllegalArgumentException("Local reference preview is unavailable");
+    Path path = Path.of(asset.getLocalPath()).toAbsolutePath().normalize();
+    try {
+      if (!Files.isRegularFile(path) || !path.toRealPath().startsWith(dataRoot.toRealPath())) throw new IllegalArgumentException("Reference preview is outside the asset store");
+      if (!checksum(path).equals(asset.getSha256())) throw new IllegalArgumentException("Reference image changed; refresh the catalog explicitly");
+      if (javax.imageio.ImageIO.read(path.toFile()) == null) throw new IllegalArgumentException("Reference is not a decodable image");
+      return path;
+    } catch (IOException e) { throw new IllegalArgumentException("Reference preview file is unavailable", e); }
+  }
+
   private OpenArtReferenceAsset upsertWorkspaceAsset(OpenArtReferenceDescriptor descriptor) {
     String key = normalizeKey(descriptor.label());
     OpenArtReferenceAsset asset =

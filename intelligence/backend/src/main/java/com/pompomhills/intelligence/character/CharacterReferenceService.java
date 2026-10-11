@@ -78,7 +78,12 @@ public class CharacterReferenceService {
     if (file == null || file.isEmpty() || file.getSize() > MAX_BYTES)
       throw new IllegalArgumentException("Choose a non-empty image smaller than 15 MB");
     try {
-      byte[] bytes = file.getBytes();
+      return storeImage(characterId, file.getBytes(), description);
+    } catch (IOException error) { throw new IllegalStateException("Unable to read character reference", error); }
+  }
+
+  private Map<String, Object> storeImage(UUID characterId, byte[] bytes, String description) {
+    try {
       String extension = imageExtension(bytes);
       String sha = HexFormat.of().formatHex(MessageDigest.getInstance("SHA-256").digest(bytes));
       Path folder = dataRoot.resolve("character-references").resolve(characterId.toString()).normalize();
@@ -99,6 +104,43 @@ public class CharacterReferenceService {
     } catch (IOException | NoSuchAlgorithmException error) {
       throw new IllegalStateException("Unable to store character reference", error);
     }
+  }
+
+  /** Discover existing local artwork without writing catalog records or approving identity. */
+  @Transactional(readOnly = true)
+  public List<Map<String, Object>> workspaceReferences(UUID characterId) {
+    var character = characters.findById(characterId).orElseThrow(() -> new IllegalArgumentException("Character not found"));
+    Path directory = dataRoot.resolve("library/01-CHARACTERS/drawings");
+    if (!Files.isDirectory(directory)) return List.of();
+    String name = character.getName().toLowerCase(java.util.Locale.ROOT).replaceAll("[^a-z0-9_-]", "");
+    try (var files = Files.list(directory)) {
+      return files.filter(Files::isRegularFile).filter(path -> path.getFileName().toString().toLowerCase(java.util.Locale.ROOT).matches(java.util.regex.Pattern.quote(name) + "\\.(png|jpg|jpeg|webp)"))
+          .map(path -> {
+            String relative = dataRoot.relativize(path).toString().replace('\\', '/');
+            return Map.<String, Object>of("relativePath", relative, "displayName", path.getFileName().toString(), "status", "UNREVIEWED",
+                "previewUrl", "/api/v1/characters/" + characterId + "/workspace-references/image?relativePath=" + java.net.URLEncoder.encode(relative, java.nio.charset.StandardCharsets.UTF_8));
+          }).toList();
+    } catch (IOException e) { throw new IllegalStateException("Workspace reference discovery failed", e); }
+  }
+
+  @Transactional(readOnly = true)
+  public Path workspaceImage(UUID characterId, String relativePath) {
+    boolean discovered = workspaceReferences(characterId).stream().anyMatch(row -> row.get("relativePath").equals(relativePath));
+    if (!discovered) throw new IllegalArgumentException("Select an existing workspace candidate for this character");
+    Path path = dataRoot.resolve(relativePath).normalize();
+    try {
+      if (!path.toRealPath().startsWith(dataRoot.resolve("library").toRealPath())) throw new IllegalArgumentException("Workspace reference is outside the library");
+      if (Files.size(path) > MAX_BYTES) throw new IllegalArgumentException("Workspace image exceeds 15 MB");
+      imageExtension(Files.readAllBytes(path));
+      return path;
+    } catch (IOException e) { throw new IllegalStateException("Workspace image cannot be read", e); }
+  }
+
+  @Transactional
+  public Map<String, Object> importWorkspace(UUID characterId, String relativePath) {
+    Path path = workspaceImage(characterId, relativePath);
+    try { return storeImage(characterId, Files.readAllBytes(path), "Imported from workspace: " + relativePath + ". Identity requires operator review."); }
+    catch (IOException e) { throw new IllegalStateException("Workspace reference import failed", e); }
   }
 
   @Transactional

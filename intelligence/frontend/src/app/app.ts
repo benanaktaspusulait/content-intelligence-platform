@@ -33,6 +33,7 @@ export class App {
     { label: 'Reach Further', icon: 'RF', route: '/research' },
     { label: 'Meta Analytics', icon: 'MA', route: '/meta/connection' },
     { label: 'Model Versions', icon: 'MV', route: '/models' },
+    { label: 'Render Jobs', icon: 'RJ', route: '/render-jobs' },
     { label: 'Operations', icon: 'OP', route: '/operations' },
   ];
 
