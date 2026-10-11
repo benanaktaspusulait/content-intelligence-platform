@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,6 +25,8 @@ import org.springframework.transaction.annotation.Transactional;
 /** Append-only operational adapters over existing prompt, media and ML services. */
 @Service
 public class WorkflowService {
+  private static final String BUILD_PROMPT_CONTRACT_VERSION = "openart-production-prompt-v2";
+  @Value("${WORKFLOW_BUILD_PROMPT_MODEL:}") private String buildPromptModel;
   private final ContentPromptQueryService prompts;
   private final QualityMlClient ml;
   private final MediaContentService media;
@@ -381,6 +384,193 @@ public class WorkflowService {
     return ml.workflow("creative-role/readiness", Map.of());
   }
 
+  /** Rebuilds a current read model from an immutable saved BUILD_PROMPT record, locally only. */
+  @Transactional
+  public Map<String, Object> revalidateProductionSpec(UUID sourceRecordId) {
+    var source = getByKind(sourceRecordId, "CREATIVE_ROLE");
+    if (!"BUILD_PROMPT".equals(source.get("role")))
+      throw new IllegalArgumentException("Only a saved BUILD_PROMPT record can be migrated");
+    var savedResult = map(source.get("result"));
+    String prompt = String.valueOf(savedResult.getOrDefault("prompt", ""));
+    if (prompt.isBlank()) throw new IllegalArgumentException("The saved prompt is empty; it cannot be revalidated");
+    var sourceRequest = map(source.get("sourceRequest"));
+    var context = map(sourceRequest.get("context"));
+    var target = map(context.get("targetConfiguration"));
+    String approvedStory = "";
+    var identity = new LinkedHashMap<String, Object>();
+    String migrationVersion = "openart-production-prompt-v2-legacy-migration-evidence-v7";
+    identity.put("savedPromptRecordId", sourceRecordId.toString());
+    identity.put("savedPromptVersion", "BUILD_PROMPT_RECORD");
+    identity.put("storyRecordId", "UNKNOWN");
+    identity.put("storyRevisionId", "UNKNOWN");
+    identity.put("approvalRecordId", "UNKNOWN");
+    identity.put("storyTitle", "UNKNOWN");
+    identity.put("projectTitle", "UNKNOWN");
+    identity.put("workspacePath", "UNKNOWN");
+
+    String storyIdText = String.valueOf(context.getOrDefault("sourceStoryRecordId", "")).trim();
+    String candidateId = String.valueOf(context.getOrDefault("candidateId", "")).trim();
+    String revisionId = String.valueOf(context.getOrDefault("storyRevisionId", "")).trim();
+    if (!storyIdText.isBlank() && !"MANUAL_STORY".equals(storyIdText)) {
+      UUID storyId;
+      try { storyId = UUID.fromString(storyIdText); }
+      catch (IllegalArgumentException invalid) { throw new IllegalArgumentException("Saved story pointer is malformed", invalid); }
+      var story = getByKind(storyId, "CREATIVE_ROLE");
+      if (!"STORY".equals(story.get("role")))
+        throw new IllegalArgumentException("Saved story pointer does not resolve to a STORY record");
+      // Older BUILD_PROMPT requests omitted candidateId even though they stored
+      // an immutable revision id. Recover it only when the revision hash
+      // matches an actual candidate in the exact linked story record.
+      if (candidateId.isBlank() && !revisionId.isBlank()) {
+        int marker = revisionId.lastIndexOf("-revision-");
+        if (marker > 0) {
+          String revisionCandidate = revisionId.substring(0, marker);
+          String revisionFingerprint = revisionId.substring(marker + "-revision-".length());
+          String candidate = storyCandidateText(story, storyId, revisionCandidate);
+          if (candidate != null && revisionFingerprint.equals(storyFingerprint(candidate.trim())))
+            candidateId = revisionCandidate;
+        }
+      }
+      Map<String, Object> session = latestStudioSessionForStory(storyId.toString());
+      if (candidateId.isBlank()) {
+        String sessionCandidate = String.valueOf(session.getOrDefault("selectedCandidateIdValue", "")).trim();
+        Object rawFingerprints = session.get("reviewedStoryFingerprints");
+        Map<String, Object> fingerprints = map(rawFingerprints);
+        String sessionFingerprint = String.valueOf(fingerprints.getOrDefault(sessionCandidate, "")).trim();
+        String candidate = storyCandidateText(story, storyId, sessionCandidate);
+        if (candidate != null && !sessionCandidate.isBlank()
+            && sessionFingerprint.equals(storyFingerprint(candidate.trim()))
+            && revisionId.equals(sessionCandidate + "-revision-" + sessionFingerprint))
+          candidateId = sessionCandidate;
+      }
+      String candidateText = storyCandidateText(story, storyId, candidateId);
+      boolean exactRevision = candidateText != null
+          && revisionId.equals(candidateId + "-revision-" + storyFingerprint(candidateText.trim()));
+      identity.put("storyRecordId", storyId.toString());
+      identity.put("storyRevisionId", revisionId.isBlank() ? "UNKNOWN" : revisionId);
+      if (!candidateId.isBlank()) identity.put("candidateId", candidateId);
+      if (!session.isEmpty()) {
+        identity.put("workspaceSessionId", session.getOrDefault("sessionId", "UNKNOWN"));
+        identity.put("projectTitle", session.getOrDefault("title", "UNKNOWN"));
+        identity.put("workspacePath", session.getOrDefault("workspacePath", "UNKNOWN"));
+        if (session.get("contentId") != null && !String.valueOf(session.get("contentId")).isBlank())
+          identity.put("contentId", session.get("contentId"));
+        if (session.get("promptVersionId") != null && !String.valueOf(session.get("promptVersionId")).isBlank())
+          identity.put("promptVersionId", session.get("promptVersionId"));
+        identity.put("workspaceProvenance", "EXACT_STORY_ID_SESSION_SNAPSHOT");
+      }
+      if (exactRevision) {
+        var approval = findExactStoryApproval(storyId, candidateId, revisionId, candidateText.trim());
+        identity.put("sourceLineageStatus", approval == null ? "EXACT_STORY_POINTER_NO_EXACT_APPROVAL" : "EXACT_APPROVED_STORY_LINEAGE");
+        if (approval != null) {
+          identity.put("approvalRecordId", approval.get("id"));
+          approvedStory = candidateText.trim();
+        }
+        var alternative = storyAlternative(story, candidateId);
+        identity.put("storyTitle", alternative.getOrDefault("title", "UNKNOWN"));
+      } else {
+        identity.put("sourceLineageStatus", "CANDIDATE_OR_REVISION_POINTER_UNVERIFIED");
+      }
+    } else {
+      identity.put("sourceLineageStatus", "NO_CANONICAL_STORY_POINTER");
+    }
+
+    String characterName = String.valueOf(target.getOrDefault("mainCharacter", context.getOrDefault("mainCharacter", ""))).trim();
+    var characterRecord = map(context.get("characterRecord"));
+    if (!characterName.isBlank() && characterRecord.get("id") != null) {
+      String characterId = String.valueOf(characterRecord.get("id"));
+      var catalog = jdbc.sql("SELECT id,name,status,active FROM characters WHERE id=:id AND lower(name)=lower(:name)")
+          .param("id", UUID.fromString(characterId)).param("name", characterName)
+          .query((rs, row) -> Map.<String, Object>of("id", rs.getString("id"), "name", rs.getString("name"),
+              "status", rs.getString("status"), "active", rs.getBoolean("active"))).optional().orElse(null);
+      if (catalog != null) {
+        var confirmed = new LinkedHashMap<String, Object>(catalog);
+        confirmed.put("catalogVerified", true);
+        context.put("characterRecord", confirmed);
+        var refs = jdbc.sql("SELECT id,relative_path,description FROM character_references WHERE character_id=:id ORDER BY created_at")
+            .param("id", UUID.fromString(characterId)).query((rs, row) -> Map.<String, Object>of(
+                "id", rs.getString("id"), "relativePath", rs.getString("relative_path"),
+                "description", rs.getString("description") == null ? "" : rs.getString("description"))).list();
+        context.put("characterReferences", refs.stream().map(ref -> Map.<String, Object>of(
+            "id", ref.get("id"), "relativePath", ref.get("relativePath"), "verified", false,
+            "verificationStatus", "NOT_VERIFIED")).toList());
+        identity.put("characterCatalogId", characterId);
+        identity.put("characterCatalogStatus", catalog.get("status"));
+      }
+    }
+    var mlContext = new LinkedHashMap<String, Object>();
+    mlContext.put("sourceIdentity", identity);
+    mlContext.put("targetConfiguration", target);
+    mlContext.put("mainCharacter", characterName);
+    mlContext.put("characterRecord", context.get("characterRecord"));
+    mlContext.put("characterReferences", context.getOrDefault("characterReferences", List.of()));
+
+    String sourcePromptSha256 = sha256(prompt);
+    String fingerprint = sha256(sourceRecordId + "\n" + migrationVersion + "\n" + sourcePromptSha256);
+    jdbc.sql("SELECT pg_advisory_xact_lock(hashtext(:fingerprint))").param("fingerprint", fingerprint).query((rs, row) -> rs.getObject(1)).list();
+    var existing = jdbc.sql("SELECT id,payload::text payload,created_at FROM post_family_workflow_events WHERE kind='PRODUCTION_SPEC_MIGRATION' AND payload->>'idempotencyFingerprint'=:fingerprint ORDER BY created_at DESC LIMIT 1")
+        .param("fingerprint", fingerprint).query((rs, row) -> {
+          var value = read(rs.getString("payload"));
+          value.put("recordId", rs.getString("id"));
+          value.put("createdAt", rs.getObject("created_at", java.time.OffsetDateTime.class).toInstant().toString());
+          return value;
+        }).optional();
+    if (existing.isPresent()) return existing.get();
+
+    var request = new LinkedHashMap<String, Object>();
+    request.put("prompt", prompt);
+    request.put("approvedStory", approvedStory);
+    request.put("context", mlContext);
+    var projection = ml.workflow("creative-role/revalidate-production-spec", request);
+    var migration = new LinkedHashMap<String, Object>();
+    migration.put("migrationVersion", migrationVersion);
+    migration.put("originRecordId", sourceRecordId.toString());
+    migration.put("sourceRecordId", sourceRecordId.toString());
+    migration.put("sourcePromptSha256", sourcePromptSha256);
+    migration.put("idempotencyFingerprint", fingerprint);
+    migration.put("createdAt", Instant.now().toString());
+    migration.put("migrationMethod", "LOCAL_DETERMINISTIC_NO_PROVIDER_CALL");
+    migration.put("sourceLineage", identity);
+    migration.put("result", projection);
+    migration.put("validationStatus", "NOT_VALIDATED");
+    migration.put("providerCalls", 0);
+    migration.put("recordId", save("PRODUCTION_SPEC_MIGRATION", fingerprint, migration));
+    return migration;
+  }
+
+  private Map<String, Object> findExactStoryApproval(UUID storyId, String candidateId, String revisionId, String candidateText) {
+    var rows = jdbc.sql("SELECT id,payload::text payload FROM post_family_workflow_events WHERE kind='STORY_APPROVAL' AND payload->>'storyRecordId'=:story ORDER BY created_at DESC")
+        .param("story", storyId.toString()).query((rs, row) -> Map.of("id", rs.getString("id"), "payload", rs.getString("payload"))).list();
+    for (var row : rows) {
+      var approval = read(String.valueOf(row.get("payload")));
+      if (candidateId.equals(String.valueOf(approval.getOrDefault("candidateId", "")))
+          && revisionId.equals(String.valueOf(approval.getOrDefault("revisionId", "")))
+          && candidateText.equals(String.valueOf(approval.getOrDefault("approvedText", "")).trim())
+          && storyFingerprint(candidateText).equals(String.valueOf(approval.getOrDefault("contentFingerprint", ""))))
+        return Map.of("id", row.get("id"), "payload", approval);
+    }
+    return null;
+  }
+
+  private Map<String, Object> storyAlternative(Map<String, Object> story, String candidateId) {
+    Object raw = map(story.get("result")).get("alternatives");
+    if (raw instanceof List<?> alternatives) for (Object item : alternatives) {
+      if (item instanceof Map<?, ?> candidate && candidateId.equals(String.valueOf(candidate.get("candidateId")))) {
+        var result = new LinkedHashMap<String, Object>();
+        result.put("title", candidate.get("title") == null ? "UNKNOWN" : candidate.get("title"));
+        Object candidateText = candidate.get("text") == null ? candidate.get("description") : candidate.get("text");
+        result.put("text", candidateText == null ? "" : candidateText);
+        return result;
+      }
+    }
+    return Map.of();
+  }
+
+  private Map<String, Object> latestStudioSessionForStory(String storyId) {
+    return jdbc.sql("SELECT payload::text FROM post_family_workflow_events WHERE kind='CREATIVE_STUDIO_SESSION' AND payload->>'storyRecordId'=:story ORDER BY created_at DESC LIMIT 1")
+        .param("story", storyId).query(String.class).optional().map(this::read).orElse(Map.of());
+  }
+
   @Transactional
   public Map<String, Object> creativeRole(Map<String, Object> request) {
     String role = String.valueOf(request.get("role"));
@@ -394,6 +584,22 @@ public class WorkflowService {
     }
     var verifiedRequest = new LinkedHashMap<>(request);
     var context = new LinkedHashMap<>(map(request.get("context")));
+    if ("BUILD_PROMPT".equals(role)) {
+      context.put("promptBuilderContractVersion", BUILD_PROMPT_CONTRACT_VERSION);
+      Object storyId = context.get("sourceStoryRecordId");
+      if (storyId != null && !"MANUAL_STORY".equals(String.valueOf(storyId))) {
+        UUID sourceId = UUID.fromString(String.valueOf(storyId));
+        var story = getByKind(sourceId, "CREATIVE_ROLE");
+        String candidateId = String.valueOf(context.getOrDefault("candidateId", ""));
+        String revisionId = String.valueOf(context.getOrDefault("storyRevisionId", ""));
+        String candidate = storyCandidateText(story, sourceId, candidateId);
+        if (candidate == null || !candidate.trim().equals(String.valueOf(request.getOrDefault("text", "")).trim())
+            || !(candidateId + "-revision-" + storyFingerprint(candidate.trim())).equals(revisionId)
+            || !hasStoryApproval(sourceId, candidateId, revisionId, String.valueOf(context.getOrDefault("approvalRecordId", ""))))
+          throw new IllegalArgumentException("BUILD_PROMPT requires the exact approved story candidate and revision");
+      }
+      bindCanonicalCharacterReferences(context);
+    }
     context.remove("retrievedLessons");
     var scope = map(context.remove("lessonContext"));
     var lessons =
@@ -477,11 +683,79 @@ public class WorkflowService {
       canonical.put("role", role);
       canonical.put("text", request.get("text"));
       canonical.put("context", request.get("context"));
+      if ("BUILD_PROMPT".equals(role)) {
+        canonical.put("builderContractVersion", BUILD_PROMPT_CONTRACT_VERSION);
+        canonical.put("builderModel", buildPromptModel == null ? "" : buildPromptModel);
+      }
       return HexFormat.of().formatHex(
           MessageDigest.getInstance("SHA-256").digest(json.writeValueAsBytes(canonical)));
     } catch (Exception error) {
       throw new IllegalStateException("Creative role request identity unavailable", error);
     }
+  }
+
+  private void bindCanonicalCharacterReferences(Map<String, Object> context) {
+    context.put("characterReferences", List.of());
+    var target = map(context.get("targetConfiguration"));
+    String characterName = String.valueOf(target.getOrDefault("mainCharacter", context.getOrDefault("mainCharacter", ""))).trim();
+    if (characterName.isBlank() || jdbc == null) return;
+    var provided = map(context.get("characterRecord"));
+    String rawId = String.valueOf(provided.getOrDefault("id", "")).trim();
+    Map<String, Object> canonical;
+    if (!rawId.isBlank()) {
+      UUID characterId;
+      try { characterId = UUID.fromString(rawId); } catch (IllegalArgumentException error) { characterId = null; }
+      canonical = characterId == null ? Map.of() : jdbc.sql("SELECT id::text id,name,status,notes,active FROM characters WHERE id=:id AND active=true")
+          .param("id", characterId).query((rs, ignored) -> Map.<String, Object>of("id", rs.getString("id"), "name", rs.getString("name"), "status", rs.getString("status"), "notes", rs.getString("notes") == null ? "" : rs.getString("notes"), "active", rs.getBoolean("active"))).optional().orElse(Map.of());
+    } else {
+      canonical = jdbc.sql("SELECT id::text id,name,status,notes,active FROM characters WHERE lower(name)=lower(:name) AND active=true")
+          .param("name", characterName).query((rs, ignored) -> Map.<String, Object>of("id", rs.getString("id"), "name", rs.getString("name"), "status", rs.getString("status"), "notes", rs.getString("notes") == null ? "" : rs.getString("notes"), "active", rs.getBoolean("active"))).optional().orElse(Map.of());
+    }
+    if (!canonical.isEmpty() && !characterName.equalsIgnoreCase(String.valueOf(canonical.get("name"))))
+      throw new IllegalArgumentException("Selected character ID and name do not match the canonical character catalog");
+    context.put("characterRecord", canonical);
+    if (canonical.isEmpty()) { context.put("characterReferences", List.of()); return; }
+    UUID characterId = UUID.fromString(String.valueOf(canonical.get("id")));
+    String rootValue = System.getenv().getOrDefault("POMPOM_DATA_ROOT", "/data");
+    java.nio.file.Path root = java.nio.file.Path.of(rootValue).toAbsolutePath().normalize();
+    var references = jdbc.sql("SELECT id::text id,relative_path,description FROM character_references WHERE character_id=:id ORDER BY created_at,id")
+        .param("id", characterId).query((rs, ignored) -> {
+          String relative = rs.getString("relative_path");
+          java.nio.file.Path resolved = root.resolve(relative).normalize();
+          if (!resolved.startsWith(root) || !java.nio.file.Files.isRegularFile(resolved)) return null;
+          try {
+            byte[] bytes = java.nio.file.Files.readAllBytes(resolved);
+            String sha = HexFormat.of().formatHex(MessageDigest.getInstance("SHA-256").digest(bytes));
+            return Map.<String, Object>of("id", rs.getString("id"), "relativePath", relative,
+                "description", rs.getString("description") == null ? "" : rs.getString("description"),
+                "status", "VERIFIED", "sha256", sha);
+          } catch (Exception error) { return null; }
+        }).list().stream().filter(java.util.Objects::nonNull).toList();
+    try {
+      var openArtReferences = jdbc.sql("SELECT id::text id,canonical_key,display_name,source,media_type,provider_asset_id,local_path,sha256,status FROM openart_reference_assets WHERE status='AVAILABLE' AND lower(media_type) LIKE 'image%' AND (lower(canonical_key) IN (:name,'character/'||:name,'characters/'||:name) OR lower(display_name)=:name) ORDER BY source,canonical_key")
+          .param("name", characterName.toLowerCase(java.util.Locale.ROOT))
+          .query((rs, ignored) -> {
+            String source = rs.getString("source");
+            String assetId = rs.getString("provider_asset_id");
+            String relative = rs.getString("local_path");
+            String sha = rs.getString("sha256");
+            if ("LOCAL".equals(source)) {
+              if (relative == null) return null;
+              java.nio.file.Path resolved = root.resolve(relative).normalize();
+              if (!resolved.startsWith(root) || !java.nio.file.Files.isRegularFile(resolved)) return null;
+              try {
+                sha = HexFormat.of().formatHex(MessageDigest.getInstance("SHA-256").digest(java.nio.file.Files.readAllBytes(resolved)));
+              } catch (Exception error) { return null; }
+            } else if (assetId == null || sha == null || sha.isBlank()) return null;
+            return Map.<String, Object>of("id", rs.getString("id"), "canonicalKey", rs.getString("canonical_key"),
+                "displayName", rs.getString("display_name"), "source", source, "status", "VERIFIED", "sha256", sha);
+          }).list().stream().filter(java.util.Objects::nonNull).toList();
+      if (!openArtReferences.isEmpty()) references = openArtReferences;
+    } catch (org.springframework.dao.DataAccessException unavailableCatalog) {
+      // Older installations may not yet have the optional OpenArt reference catalog migration.
+      // The canonical character record remains usable, but no unverified reference is claimed.
+    }
+    context.put("characterReferences", references);
   }
 
   private java.util.Optional<Map<String, Object>> findCreativeRoleByFingerprint(String fingerprint) {
@@ -1462,6 +1736,22 @@ public class WorkflowService {
         String expected = storyFingerprint(approvedText);
         if (expected.equals(fingerprint) && (candidateId + "-revision-" + expected).equals(revisionId)) return true;
       }
+    }
+    return false;
+  }
+
+  private boolean hasStoryApproval(UUID storyId, String candidateId, String revisionId, String approvalRecordId) {
+    var approvals = jdbc.sql("SELECT id,payload::text FROM post_family_workflow_events WHERE kind='STORY_APPROVAL' AND payload->>'storyRecordId'=:id ORDER BY created_at DESC")
+        .param("id", storyId.toString()).query((rs, row) -> Map.of("id", rs.getString("id"), "payload", rs.getString("payload"))).list();
+    for (var row : approvals) {
+      if (!approvalRecordId.isBlank() && !approvalRecordId.equals(row.get("id"))) continue;
+      var approval = read(String.valueOf(row.get("payload")));
+      if (!candidateId.equals(String.valueOf(approval.getOrDefault("candidateId", "")))
+          || !revisionId.equals(String.valueOf(approval.getOrDefault("revisionId", "")))) continue;
+      String text = String.valueOf(approval.getOrDefault("approvedText", "")).trim();
+      String fingerprint = String.valueOf(approval.getOrDefault("contentFingerprint", "")).trim();
+      if (!text.isBlank() && fingerprint.equals(storyFingerprint(text))
+          && revisionId.equals(candidateId + "-revision-" + fingerprint)) return true;
     }
     return false;
   }

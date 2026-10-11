@@ -60,6 +60,11 @@ public class WorkflowController {
     return service.creativeRole(request);
   }
 
+  @PostMapping("/records/{id}/revalidate-production-spec")
+  public Map<String, Object> revalidateProductionSpec(@PathVariable UUID id) {
+    return service.revalidateProductionSpec(id);
+  }
+
   @PostMapping("/creative-role/{id}/approve-story")
   public Map<String, Object> approveStory(
       @PathVariable UUID id, @RequestBody Map<String, Object> request) {

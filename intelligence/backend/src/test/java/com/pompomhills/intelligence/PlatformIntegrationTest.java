@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.pompomhills.intelligence.character.CharacterService;
 import com.pompomhills.intelligence.workflow.WorkflowService;
+import com.pompomhills.intelligence.quality.QualityMlClient;
 import com.pompomhills.intelligence.performance.DiscoveryProfileService;
 import com.pompomhills.intelligence.performance.InterventionService;
 import com.pompomhills.intelligence.performance.PerformanceImportService;
@@ -22,6 +23,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Primary;
+import org.springframework.context.annotation.Import;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.mock.web.MockMultipartFile;
@@ -30,10 +34,22 @@ import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.times;
 
 @SpringBootTest
 @Testcontainers(disabledWithoutDocker = true)
+@Import(PlatformIntegrationTest.WorkflowMlMockConfiguration.class)
 class PlatformIntegrationTest {
+  @org.springframework.boot.test.context.TestConfiguration
+  static class WorkflowMlMockConfiguration {
+    @Bean
+    @Primary
+    QualityMlClient workflowMlMock() {
+      return org.mockito.Mockito.mock(QualityMlClient.class);
+    }
+  }
   @Container
   static final PostgreSQLContainer<?> DATABASE =
       new PostgreSQLContainer<>("postgres:17-alpine")
@@ -59,6 +75,7 @@ class PlatformIntegrationTest {
   @Autowired DiscoveryProfileService discoveryProfiles;
   @Autowired CharacterService characters;
   @Autowired WorkflowService workflow;
+  @Autowired QualityMlClient workflowMl;
 
   private UUID videoId;
 
@@ -117,6 +134,92 @@ class PlatformIntegrationTest {
     assertThat(archived.get("status")).isEqualTo("ARCHIVED");
     var restored = workflow.changeLifecycle(storyId, java.util.Map.of("status", "DRAFT"));
     assertThat(restored.get("status")).isEqualTo("APPROVED");
+  }
+
+  @Test
+  void productionPromptRequiresExactSavedStoryApprovalBeforeProviderDispatch() {
+    UUID storyId = UUID.randomUUID();
+    String text = "Mimi places a note on the cabinet, but it sticks to her paw.";
+    String fingerprint = storyFingerprintForTest(text);
+    String payload = """
+        {"role":"STORY","sourceRequest":{"text":"Mimi note idea"},
+         "result":{"role":"STORY","alternatives":[{"candidateId":"candidate-1","title":"Note","text":"%s"}]}}
+        """.formatted(text);
+    jdbc.update("INSERT INTO post_family_workflow_events(id,kind,binding_sha256,payload) VALUES (?,'CREATIVE_ROLE',null,CAST(? AS jsonb))", storyId, payload);
+    var request = java.util.Map.<String, Object>of(
+        "role", "BUILD_PROMPT", "text", text, "maxCostUsd", 0.05,
+        "context", java.util.Map.of("sourceStoryRecordId", storyId.toString(), "candidateId", "candidate-1",
+            "storyRevisionId", "candidate-1-revision-" + fingerprint, "approvalRecordId", "missing-approval"));
+    assertThatThrownBy(() -> workflow.creativeRole(request))
+        .hasMessageContaining("exact approved story candidate and revision");
+  }
+
+  @Test
+  void legacyPromptMigrationRecoversExactLineageIsIdempotentAndPreservesOriginalRecord() {
+    UUID storyId = UUID.randomUUID();
+    UUID promptId = UUID.randomUUID();
+    String text = "Mimi stands by a messy cabinet. A sticky note sticks to her paw. She hides behind it.";
+    String fingerprint = storyFingerprintForTest(text);
+    String storyPayload = """
+        {"role":"STORY","result":{"alternatives":[{"candidateId":"candidate-1","title":"The Note","text":"%s"}]}}
+        """.formatted(text);
+    jdbc.update("INSERT INTO post_family_workflow_events(id,kind,binding_sha256,payload) VALUES (?,'CREATIVE_ROLE',null,CAST(? AS jsonb))", storyId, storyPayload);
+    var approval = workflow.approveStory(storyId, java.util.Map.of("approvedText", text,
+        "candidateId", "candidate-1", "revisionId", "candidate-1-revision-" + fingerprint,
+        "contentFingerprint", fingerprint));
+    workflow.saveStudioSession(java.util.Map.of("sessionId", UUID.randomUUID().toString(),
+        "storyRecordId", storyId.toString(), "title", "Mimi Note Project",
+        "workspacePath", "library/pompom/mimi"));
+    String prompt = "TIMED SHOT PLAN: 0-3s: Mimi stands by the cabinet. 3-6s: A sticky note sticks to her paw. 6-8s: Mimi hides behind the cabinet.";
+    String buildPayload = """
+        {"role":"BUILD_PROMPT","calls":1,"provider":"openai","sourceRequest":{"role":"BUILD_PROMPT","text":"%s","context":{"sourceStoryRecordId":"%s","candidateId":"candidate-1","storyRevisionId":"candidate-1-revision-%s","targetConfiguration":{"duration":8,"aspectRatio":"9:16","selectedGenerator":"SEEDANCE_2_0_MINI","contentProfile":"ABSURD_PHYSICS","mainCharacter":"Mimi"},"characterRecord":{"id":"00000000-0000-0000-0000-000000000003","name":"Mimi"}}},"result":{"prompt":"%s","productionPlan":{"legacy":"preserved"}}}
+        """.formatted(text, storyId, fingerprint, prompt);
+    jdbc.update("INSERT INTO post_family_workflow_events(id,kind,binding_sha256,payload) VALUES (?,'CREATIVE_ROLE',null,CAST(? AS jsonb))", promptId, buildPayload);
+    var projection = java.util.Map.<String, Object>of("prompt", prompt, "providerCalls", 0,
+        "validationStatus", "NOT_VALIDATED", "productionPlan", java.util.Map.of("builderContractVersion", "openart-production-prompt-v2"));
+    doReturn(projection).when(workflowMl).workflow(org.mockito.ArgumentMatchers.eq("creative-role/revalidate-production-spec"), org.mockito.ArgumentMatchers.anyMap());
+
+    var first = workflow.revalidateProductionSpec(promptId);
+    var second = workflow.revalidateProductionSpec(promptId);
+    assertThat(String.valueOf(first.get("recordId"))).isEqualTo(String.valueOf(second.get("recordId")));
+    assertThat(first.get("providerCalls")).isEqualTo(0);
+    assertThat(((java.util.Map<?, ?>) first.get("sourceLineage")).get("storyRecordId")).isEqualTo(storyId.toString());
+    assertThat(((java.util.Map<?, ?>) first.get("sourceLineage")).get("approvalRecordId")).isEqualTo(String.valueOf(approval.get("recordId")));
+    assertThat(((java.util.Map<?, ?>) first.get("sourceLineage")).get("projectTitle")).isEqualTo("Mimi Note Project");
+    assertThat(jdbc.queryForObject("SELECT payload->'result'->>'prompt' FROM post_family_workflow_events WHERE id=?", String.class, promptId)).isEqualTo(prompt);
+    assertThat(jdbc.queryForObject("SELECT payload->'result'->'productionPlan'->>'legacy' FROM post_family_workflow_events WHERE id=?", String.class, promptId)).isEqualTo("preserved");
+    assertThat(jdbc.queryForObject("SELECT count(*) FROM post_family_workflow_events WHERE kind='PRODUCTION_SPEC_MIGRATION' AND payload->>'sourceRecordId'=?", Integer.class, promptId.toString())).isEqualTo(1);
+    assertThat(jdbc.queryForObject("SELECT count(*) FROM prompt_versions", Integer.class)).isZero();
+    verify(workflowMl, times(1)).workflow(org.mockito.ArgumentMatchers.eq("creative-role/revalidate-production-spec"), org.mockito.ArgumentMatchers.anyMap());
+  }
+
+  @Test
+  void legacyMigrationDoesNotGuessMissingApprovalOrTreatBuildTextAsApprovedSource() {
+    UUID storyId = UUID.randomUUID();
+    UUID promptId = UUID.randomUUID();
+    String text = "Mimi finds a note and follows it.";
+    String fingerprint = storyFingerprintForTest(text);
+    String storyPayload = """
+        {"role":"STORY","result":{"alternatives":[{"candidateId":"candidate-1","title":"Note","text":"%s"}]}}
+        """.formatted(text);
+    jdbc.update("INSERT INTO post_family_workflow_events(id,kind,binding_sha256,payload) VALUES (?,'CREATIVE_ROLE',null,CAST(? AS jsonb))", storyId, storyPayload);
+    String prompt = "0-3s: Mimi finds a note.";
+    String buildPayload = """
+        {"role":"BUILD_PROMPT","sourceRequest":{"role":"BUILD_PROMPT","text":"%s","context":{"sourceStoryRecordId":"%s","candidateId":"candidate-1","storyRevisionId":"candidate-1-revision-%s","targetConfiguration":{"duration":3,"aspectRatio":"9:16"}}},"result":{"prompt":"%s"}}
+        """.formatted(text, storyId, fingerprint, prompt);
+    jdbc.update("INSERT INTO post_family_workflow_events(id,kind,binding_sha256,payload) VALUES (?,'CREATIVE_ROLE',null,CAST(? AS jsonb))", promptId, buildPayload);
+    var projection = java.util.Map.<String, Object>of("prompt", prompt, "providerCalls", 0, "productionPlan", java.util.Map.of());
+    doReturn(projection).when(workflowMl).workflow(org.mockito.ArgumentMatchers.eq("creative-role/revalidate-production-spec"), org.mockito.ArgumentMatchers.anyMap());
+
+    org.mockito.Mockito.clearInvocations(workflowMl);
+    var migrated = workflow.revalidateProductionSpec(promptId);
+    org.mockito.ArgumentCaptor<java.util.Map<String, Object>> request = org.mockito.ArgumentCaptor.forClass(java.util.Map.class);
+    verify(workflowMl).workflow(org.mockito.ArgumentMatchers.eq("creative-role/revalidate-production-spec"), request.capture());
+    assertThat(request.getValue().get("approvedStory")).isEqualTo("");
+    var lineage = (java.util.Map<?, ?>) migrated.get("sourceLineage");
+    assertThat(lineage.get("storyRecordId")).isEqualTo(storyId.toString());
+    assertThat(lineage.get("approvalRecordId")).isEqualTo("UNKNOWN");
+    assertThat(lineage.get("sourceLineageStatus")).isEqualTo("EXACT_STORY_POINTER_NO_EXACT_APPROVAL");
   }
 
   @Test

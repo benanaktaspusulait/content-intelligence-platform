@@ -148,6 +148,13 @@ class CreativeRoleRequest(BaseModel):
     maxCostUsd: float = Field(gt=0, le=20)
 
 
+class LegacyProductionSpecMigrationRequest(BaseModel):
+    model_config = ConfigDict(extra='forbid')
+    prompt: str = Field(min_length=1, max_length=50000)
+    approvedStory: str = Field(default='', max_length=16000)
+    context: dict[str, Any] = Field(default_factory=dict)
+
+
 @router.get('/creative-role/readiness')
 @router.post('/creative-role/readiness')
 def creative_role_readiness() -> dict[str, Any]:
@@ -164,3 +171,18 @@ def creative_role(request: CreativeRoleRequest) -> dict[str, Any]:
         raise HTTPException(409, str(error)) from error
     except Exception as error:
         raise HTTPException(502, {'status': 'PROVIDER_OUTCOME_UNKNOWN', 'retryAutomatically': False}) from error
+
+
+@router.post('/creative-role/revalidate-production-spec')
+def revalidate_production_spec(request: LegacyProductionSpecMigrationRequest) -> dict[str, Any]:
+    """Local deterministic migration. This route never obtains a provider adapter."""
+    from .creative_roles import migrate_legacy_production_spec
+    context = dict(request.context)
+    context['generatorCapabilities'] = capabilities().get(
+        str((context.get('targetConfiguration') or {}).get('selectedGenerator') or ''),
+        {'status': 'UNKNOWN', 'source': 'provider-capabilities.json has no selected generator'},
+    )
+    try:
+        return migrate_legacy_production_spec(request.prompt, request.approvedStory, context)
+    except (ValueError, TypeError, KeyError) as error:
+        raise HTTPException(409, str(error)) from error

@@ -1,7 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting, HttpTestingController } from '@angular/common/http/testing';
-import { provideRouter } from '@angular/router';
+import { provideRouter, Router } from '@angular/router';
+import { vi } from 'vitest';
 import { CreativeStudioPage } from './creative-studio.page';
 
 function fingerprint(value:string){let hash=0x811c9dc5;for(let i=0;i<value.length;i++)hash=Math.imul(hash^value.charCodeAt(i),0x01000193);return (hash>>>0).toString(16).padStart(8,'0');}
@@ -23,7 +24,7 @@ describe('creative studio idea-first workflow', () => {
     await fixture.whenStable(); page.selectStory(page.candidates[0]); page.approveStory();
     const approval=http.expectOne('/api/v1/intelligence/workflow/creative-role/story-1/approve-story'); expect(approval.request.body.approvedText).toContain('kalemiyle'); approval.flush({recordId:'approval-1'});
     await fixture.whenStable(); page.promptConsent=true; page.buildPrompt();
-    const build=http.expectOne('/api/v1/intelligence/workflow/creative-role'); expect(build.request.body.role).toBe('BUILD_PROMPT'); expect(build.request.body.context.sourceStoryRecordId).toBe('story-1'); expect(build.request.body.text).toContain('kalemiyle'); build.flush({recordId:'builder-1',result:{prompt:'Kiko enters a classroom and the pencil moves.'}});
+    const build=http.expectOne('/api/v1/intelligence/workflow/creative-role'); expect(build.request.body.role).toBe('BUILD_PROMPT'); expect(build.request.body.context.sourceStoryRecordId).toBe('story-1'); expect(build.request.body.context.candidateId).toBe(page.selectedCandidateId); expect(build.request.body.context.approvalRecordId).toBe('approval-1'); expect(build.request.body.context.storyRevisionId).toContain('candidate-1-revision-'); expect(build.request.body.text).toContain('kalemiyle'); build.flush({recordId:'builder-1',result:{prompt:'Kiko enters a classroom and the pencil moves.'}});
     expect(page.builderRecordId).toBe('builder-1'); http.match(r=>r.method==='PUT').forEach(r=>r.flush({})); http.verify(); fixture.destroy(); TestBed.resetTestingModule();
   });
 });
@@ -207,8 +208,8 @@ describe('step 1 journey safety', () => {
     page.savedStories=[story];
     page.savedApprovals=[{recordId:'approval-a',storyRecordId:'story-a',candidateId:'candidate-1',revisionId:`candidate-1-revision-${hash}`,contentFingerprint:hash,approvedText:text}];
     (page as any).savedBuildRecords=[
-      {recordId:'build-other',role:'BUILD_PROMPT',sourceRequest:{context:{sourceStoryRecordId:'story-b',storyRevisionId:`candidate-1-revision-${hash}`}},result:{prompt:'Wrong project prompt'}},
-      {recordId:'build-a',role:'BUILD_PROMPT',sourceRequest:{context:{sourceStoryRecordId:'story-a',storyRevisionId:`candidate-1-revision-${hash}`}},result:{prompt:'Exact saved prompt'}}
+      {recordId:'build-other',role:'BUILD_PROMPT',sourceRequest:{context:{sourceStoryRecordId:'story-b',storyRevisionId:`candidate-1-revision-${hash}`,targetConfiguration:{duration:15,aspectRatio:'9:16',selectedGenerator:'SEEDANCE_2_0_MINI',contentProfile:'AUTO',mainCharacter:''}}},result:{prompt:'Wrong project prompt'}},
+      {recordId:'build-a',role:'BUILD_PROMPT',sourceRequest:{context:{sourceStoryRecordId:'story-a',storyRevisionId:`candidate-1-revision-${hash}`,targetConfiguration:{duration:15,aspectRatio:'9:16',selectedGenerator:'SEEDANCE_2_0_MINI',contentProfile:'AUTO',mainCharacter:''}}},result:{prompt:'Exact saved prompt'}}
     ];
     page.useSavedStory(story);
     expect(page.canonicalSavedPrompt?.recordId).toBe('build-a');
@@ -251,6 +252,97 @@ describe('step 1 journey safety', () => {
     expect(source.result.alternatives[0].text).toBe(text);
     expect(page.storySessionLabel(page.savedStories[0])).toContain('parent story-p');
     expect(http.match(r=>r.method==='POST')).toHaveLength(0);
+    http.match(r=>r.method==='PUT').forEach(r=>r.flush({}));
+    http.verify(); fixture.destroy(); TestBed.resetTestingModule();
+  });
+
+  it('saves a changed prompt as an immutable child version and routes to Production Review', async () => {
+    const {fixture,page,http}=await createPage();
+    page.contentId='12'; page.promptVersionId='3'; page.builderRecordId='builder-1';
+    page.savedPromptBaseline='Original saved prompt'; page.draftPrompt='Operator edited prompt';
+    const router=TestBed.inject(Router); vi.spyOn(router,'navigateByUrl').mockResolvedValue(true);
+    expect(page.promptDirty).toBe(true);
+    page.savePrompt();
+    const save=http.expectOne('/api/v1/intelligence/contents/12/prompt-versions');
+    expect(save.request.body.rawText).toBe('Operator edited prompt');
+    expect(save.request.body.parentPromptVersionId).toBe(3);
+    expect(save.request.body.creativeRoleRecordId).toBe('builder-1');
+    save.flush({id:4});
+    expect(page.promptVersionId).toBe('4');
+    expect(page.savedPromptBaseline).toBe('Operator edited prompt');
+    expect(page.stage).toBe('PRODUCTION_REVIEW');
+    expect(router.navigateByUrl).toHaveBeenCalledWith('/quality/detail?contentId=12&promptVersionId=4&studio=1');
+    http.match(r=>r.method==='PUT').forEach(r=>r.flush({}));
+    http.verify(); fixture.destroy(); TestBed.resetTestingModule();
+  });
+
+  it('marks a built prompt incompatible when target settings change', async () => {
+    const {fixture,page,http}=await createPage();
+    page.duration=15; page.aspectRatio='9:16'; page.targetGenerator='SEEDANCE_2_0_MINI'; page.profile='ABSURD_PHYSICS';
+    page.builderResult={productionPlan:{builderContractVersion:'openart-production-prompt-v2',productionConstraints:{duration:15,aspectRatio:'9:16',generator:'SEEDANCE_2_0_MINI',contentProfile:'ABSURD_PHYSICS'}}};
+    expect(page.builderInputMismatch).toBe(false);
+    page.aspectRatio='16:9';
+    expect(page.builderInputMismatch).toBe(true);
+    page.aspectRatio='9:16'; page.builderResult.productionPlan.builderContractVersion='legacy';
+    expect(page.builderInputMismatch).toBe(true);
+    http.match(r=>r.method==='PUT').forEach(r=>r.flush({}));
+    http.verify(); fixture.destroy(); TestBed.resetTestingModule();
+  });
+
+  it('revalidates a legacy saved prompt locally and exposes preliminary review without a paid role call', async () => {
+    const {fixture,page,http}=await createPage();
+    page.stage='PROMPT'; page.builderRecordId='123e4567-e89b-12d3-a456-426614174000'; page.draftPrompt='Exact immutable saved prompt text';
+    page.builderResult={prompt:page.draftPrompt,productionPlan:{builderContractVersion:'legacy',productionConstraints:{duration:15,aspectRatio:'9:16',generator:'SEEDANCE_2_0_MINI',contentProfile:'ABSURD_PHYSICS'}}};
+    page.duration=15; page.aspectRatio='9:16'; page.targetGenerator='SEEDANCE_2_0_MINI'; page.profile='ABSURD_PHYSICS';
+    expect(page.builderInputMismatch).toBe(true);
+    fixture.detectChanges();
+    expect(fixture.nativeElement.textContent).toContain('Revalidate Saved Draft — No AI Call');
+    page.revalidateSavedDraft();
+    const request=http.expectOne('/api/v1/intelligence/workflow/records/123e4567-e89b-12d3-a456-426614174000/revalidate-production-spec');
+    expect(request.request.method).toBe('POST');
+    request.flush({recordId:'migration-1',migrationVersion:'openart-production-prompt-v2-legacy-migration',providerCalls:0,createdAt:'2026-10-11T12:00:00Z',result:{prompt:page.draftPrompt,validationStatus:'NOT_VALIDATED',productionPlan:{builderContractVersion:'openart-production-prompt-v2',productionConstraints:{duration:15,aspectRatio:'9:16',generator:'SEEDANCE_2_0_MINI',contentProfile:'ABSURD_PHYSICS'},characterBindings:[{name:'Mimi',identityStatus:'CATALOG_CONFIRMED',referenceStatus:'MISSING_OR_UNVERIFIED',visualAppearanceStatus:'UNKNOWN_NO_APPROVED_VISUAL_REFERENCE'}],storyPromptFidelity:{status:'NOT_EVALUATED',sourceSentenceCount:null,traceableSentenceCount:null},evidenceLimitations:['Unknown remains unknown']}}});
+    expect(page.builderMigration.recordId).toBe('migration-1');
+    expect(page.builderResult.prompt).toBe('Exact immutable saved prompt text');
+    expect(page.builderInputMismatch).toBe(false);
+    expect(page.builderResult.productionPlan.storyPromptFidelity.status).toBe('NOT_EVALUATED');
+    expect(page.activeContextCharacter).toBe('Mimi');
+    expect(page.activeContextProfile).toBe('ABSURD_PHYSICS');
+    expect(page.activeContextDuration).toBe(15);
+    expect(page.activeContextAspectRatio).toBe('9:16');
+    expect(page.nextAction).toBe('Review locally recovered saved prompt');
+    expect(http.match(r=>r.url.includes('/creative-role') && r.method==='POST')).toHaveLength(0);
+    fixture.detectChanges();
+    expect(fixture.nativeElement.textContent).toContain('Review Existing Draft');
+    expect(page.builderMigrationRefreshAvailable).toBe(true);
+    expect(fixture.nativeElement.textContent).toContain('Refresh Local Evidence — No AI Call');
+    expect(fixture.nativeElement.textContent).toContain('Identity: CATALOG CONFIRMED');
+    http.match(r=>r.method==='PUT').forEach(r=>r.flush({}));
+    http.verify(); fixture.destroy(); TestBed.resetTestingModule();
+  });
+
+  it('keeps downstream stage tabs locked until their own evidence milestone exists', async () => {
+    const {fixture,page,http}=await createPage();
+    expect(page.canVisit('ANALYSIS')).toBe(false);
+    expect(page.stageAvailabilityReason('ANALYSIS')).toContain('Production Review');
+    page.promptVersionId='42';
+    expect(page.canVisit('PRODUCTION_REVIEW')).toBe(true);
+    expect(page.canVisit('ANALYSIS')).toBe(false);
+    fixture.detectChanges();
+    const analysis=Array.from(fixture.nativeElement.querySelectorAll('button[aria-label]')).find((button:any)=>button.getAttribute('aria-label').startsWith('Quality Analysis:')) as HTMLButtonElement;
+    expect(analysis).toBeTruthy();
+    expect(analysis.disabled).toBe(true);
+    expect(analysis.title).toContain('Production Review');
+    http.match(r=>r.method==='PUT').forEach(r=>r.flush({}));
+    http.verify(); fixture.destroy(); TestBed.resetTestingModule();
+  });
+
+  it('reuses an unchanged prompt version without creating another revision', async () => {
+    const {fixture,page,http}=await createPage();
+    page.contentId='12'; page.promptVersionId='3'; page.savedPromptBaseline='Same prompt'; page.draftPrompt='Same prompt';
+    const router=TestBed.inject(Router); vi.spyOn(router,'navigateByUrl').mockResolvedValue(true);
+    page.savePrompt();
+    expect(http.match(r=>r.method==='POST')).toHaveLength(0);
+    expect(router.navigateByUrl).toHaveBeenCalledWith('/quality/detail?contentId=12&promptVersionId=3&studio=1');
     http.match(r=>r.method==='PUT').forEach(r=>r.flush({}));
     http.verify(); fixture.destroy(); TestBed.resetTestingModule();
   });
