@@ -15,10 +15,13 @@ import org.springframework.web.bind.annotation.*;
 public class CharacterController {
   private final CharacterService service;
   private final com.pompomhills.intelligence.character.VideoCharacterAssociationService associations;
+  private final com.pompomhills.intelligence.character.CharacterReferenceService references;
 
-  public CharacterController(CharacterService service, com.pompomhills.intelligence.character.VideoCharacterAssociationService associations) {
+  public CharacterController(CharacterService service, com.pompomhills.intelligence.character.VideoCharacterAssociationService associations,
+      com.pompomhills.intelligence.character.CharacterReferenceService references) {
     this.service = service;
     this.associations = associations;
+    this.references = references;
   }
 
   @PostMapping
@@ -35,6 +38,41 @@ public class CharacterController {
   @GetMapping("/coverage")
   public List<CharacterService.CharacterCoverageView> coverage() {
     return service.coverage();
+  }
+
+  @GetMapping("/{characterId}/references")
+  public List<java.util.Map<String, Object>> references(@PathVariable UUID characterId) {
+    return references.list(characterId).stream().map(row -> {
+      java.util.Map<String, Object> result = new java.util.LinkedHashMap<>(row);
+      result.put("previewUrl", "/api/v1/characters/" + characterId + "/references/" + row.get("id") + "/image");
+      return result;
+    }).toList();
+  }
+
+  @GetMapping("/{characterId}/references/{referenceId}/image")
+  public org.springframework.http.ResponseEntity<org.springframework.core.io.Resource> referenceImage(
+      @PathVariable UUID characterId, @PathVariable UUID referenceId) {
+    java.nio.file.Path path = references.imagePath(characterId, referenceId);
+    var resource = new org.springframework.core.io.FileSystemResource(path);
+    var media = org.springframework.http.MediaTypeFactory.getMediaType(resource)
+        .orElse(org.springframework.http.MediaType.APPLICATION_OCTET_STREAM);
+    return org.springframework.http.ResponseEntity.ok().contentType(media)
+        .header(org.springframework.http.HttpHeaders.CACHE_CONTROL, "private, no-store")
+        .body(resource);
+  }
+
+  @PostMapping(value = "/{characterId}/references", consumes = org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE)
+  @ResponseStatus(HttpStatus.CREATED)
+  public java.util.Map<String, Object> uploadReference(@PathVariable UUID characterId,
+      @RequestPart("file") org.springframework.web.multipart.MultipartFile file,
+      @RequestParam(defaultValue = "") String description) {
+    return references.upload(characterId, file, description);
+  }
+
+  @PostMapping("/{characterId}/references/{referenceId}/approve")
+  public java.util.Map<String, Object> approveReference(@PathVariable UUID characterId,
+      @PathVariable UUID referenceId, @Valid @RequestBody ApproveReference request) {
+    return references.approve(characterId, referenceId, request.reviewer());
   }
 
   @PostMapping("/{characterId}/videos/{videoId}")
@@ -69,4 +107,6 @@ public class CharacterController {
       Double screenTimeRatio,
       Double actionShare,
       Double speakingShare) {}
+
+  public record ApproveReference(@NotBlank String reviewer) {}
 }

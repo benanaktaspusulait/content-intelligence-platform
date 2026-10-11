@@ -48,6 +48,32 @@ describe('post-family operator workflow', () => {
     fixture.destroy();
     TestBed.resetTestingModule();
   });
+  it('restores the approved character reference binding for the exact saved prompt version', async () => {
+    await TestBed.configureTestingModule({ imports: [PostFamilyWorkflowComponent], providers: [provideHttpClient(), provideHttpClientTesting()] }).compileComponents();
+    const fixture = TestBed.createComponent(PostFamilyWorkflowComponent);
+    const component = fixture.componentInstance;
+    fixture.componentRef.setInput('prompt', 'Mimi stands beside a cabinet.');
+    fixture.componentRef.setInput('contentId', '7');
+    fixture.componentRef.setInput('promptVersionId', '9');
+    fixture.detectChanges();
+    const http = TestBed.inject(HttpTestingController);
+    http.expectOne(r => r.url === '/api/v1/intelligence/workflow/records?kind=REVIEW').flush([
+      { recordId: 'review-7-9', contentId: 7, promptVersionId: 9, bindingHash: 'review-hash', decisionPolicyVersion: 'impact-review-v1', boundRequest: { prompt: 'Mimi stands beside a cabinet.' } },
+    ]);
+    http.expectOne('/api/v1/characters').flush([{ id: 'mimi-id', name: 'Mimi' }]);
+    const assetRequest = http.expectOne('/api/v1/characters/mimi-id/references');
+    assetRequest.flush([{ id: 'ref-v3', status: 'APPROVED', sha256: 'stable-sha256', relativePath: 'character-references/mimi/ref-v3.png', version: 3 }]);
+    http.expectOne(r => r.url === '/api/v1/intelligence/workflow/production-review/reference-binding' && r.params.get('contentId') === '7' && r.params.get('promptVersionId') === '9')
+      .flush({ contentId: '7', promptVersionId: '9', characterId: 'mimi-id', referenceId: 'ref-v3', sha256: 'stable-sha256', version: 3, approvalStatus: 'APPROVED' });
+    http.expectOne(r => r.url === '/api/v1/intelligence/workflow/records?kind=ACTUAL_RENDER_QA' && r.params.get('bindingHash') === 'review-hash').flush([]);
+    expect(component.selectedReferenceId).toBe('ref-v3');
+    expect(component.references[0]).toMatchObject({ id: 'ref-v3', sha256: 'stable-sha256', version: 3, status: 'APPROVED' });
+    expect((component as any).inputSnapshot()).toContain('stable-sha256');
+    http.expectNone(request => request.method === 'POST');
+    http.verify();
+    fixture.destroy();
+    TestBed.resetTestingModule();
+  });
   it('isolates saved review restoration by content identity', async () => {
     await TestBed.configureTestingModule({ imports: [PostFamilyWorkflowComponent], providers: [provideHttpClient(), provideHttpClientTesting()] }).compileComponents();
     const fixture = TestBed.createComponent(PostFamilyWorkflowComponent);
@@ -211,6 +237,36 @@ describe('post-family operator workflow', () => {
     c.toggleSourceQuote(c.sourceEvents[1].id);
     expect(c.isSourceQuoteOpen(c.sourceEvents[1].id)).toBe(true);
     expect(c.sourceEvents[1].sourceQuote).toContain('The note flips');
+  });
+  it('separates sticky notes from the cabinet, proposes only source-supported roles and keeps causal ambiguity actionable', async () => {
+    const f = await setup();
+    const c = f.componentInstance;
+    c.prompt = 'Mimi Animation 15s 9:16\n0-3s: Mimi holds a sticky note in front of the toy cabinet.\n3-6s: The note sticks to Mimi instead of the cabinet.\n6-10s: The notes multiply and fly back onto Mimi.\n10-13s: The notes follow Mimi behind the cabinet.\n13-15s: Notes cover Mimi, leaving only her eyes.';
+    const events = c.sourceEvents;
+    expect(events.map(event => event.primaryObject)).toEqual(['Sticky notes','Sticky notes','Sticky notes','Sticky notes','Sticky notes']);
+    expect(events[0].environment).toContain('Toy cabinet');
+    expect(events[0].proposedRole).toBe('SETUP');
+    expect(events[1].proposedRole).toBe('TRIGGER');
+    expect(events[2].proposedRole).toBe('ESCALATION');
+    expect(events[4].proposedRole).toBe('PAYOFF');
+    expect(events.every(event => event.semanticStatus === 'PENDING')).toBe(true);
+    expect(c.creativeConflicts[0].status).toContain('not a confirmed contradiction');
+    expect(c.creativeConflicts[0].sourceEvidence).toContain('notes multiply');
+    c.selectProductionTab('execution');
+    const http=TestBed.inject(HttpTestingController);
+    http.expectOne(r=>r.url==='/api/v1/intelligence/workflow/production-review/decisions').flush({decisions:[]});
+    const original=c.prompt;
+    c.setEventDraft(events[1].id,'role','TRIGGER');
+    c.setEventDraft(events[1].id,'primaryObject','Sticky note');
+    c.saveEventClassification(events[1]);
+    const save=http.expectOne('/api/v1/intelligence/workflow/production-review/decisions');
+    expect(save.request.body.sourceQuote).toBe(events[1].sourceQuote);
+    expect(save.request.body.primaryObject).toBe('Sticky note');
+    expect(save.request.body.provenance).toBeUndefined();
+    expect(c.prompt).toBe(original);
+    save.flush({decisionType:'EVENT_CLASSIFICATION',decisionId:events[1].id,decision:'TRIGGER',primaryObject:'Sticky note',provenance:'OPERATOR_CONFIRMED'});
+    expect(c.prompt).toBe(original);
+    http.verify();
   });
   it('splits literal escaped-newline timelines into bounded source events', async () => {
     const f = await setup();

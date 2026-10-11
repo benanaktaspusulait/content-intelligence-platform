@@ -112,6 +112,28 @@ public class WorkflowController {
     return service.getProductionSettings(contentId, promptVersionId);
   }
 
+  @GetMapping("/production-review/decisions")
+  public Map<String, Object> productionReviewDecisions(
+      @RequestParam Long contentId, @RequestParam Long promptVersionId) {
+    return service.getProductionReviewDecisions(contentId, promptVersionId);
+  }
+
+  @PostMapping("/production-review/decisions")
+  public Map<String, Object> saveProductionReviewDecision(@RequestBody Map<String, Object> request) {
+    return service.saveProductionReviewDecision(request);
+  }
+
+  @GetMapping("/production-review/reference-binding")
+  public Map<String, Object> productionReferenceBinding(
+      @RequestParam Long contentId, @RequestParam Long promptVersionId) {
+    return service.getProductionReferenceBinding(contentId, promptVersionId);
+  }
+
+  @PostMapping("/production-review/reference-binding")
+  public Map<String, Object> saveProductionReferenceBinding(@RequestBody Map<String, Object> request) {
+    return service.saveProductionReferenceBinding(request);
+  }
+
   @PostMapping("/visual-preparation")
   public Map<String, Object> visualPreparation(@RequestBody Map<String, Object> request) {
     return service.saveVisualPreparation(request);

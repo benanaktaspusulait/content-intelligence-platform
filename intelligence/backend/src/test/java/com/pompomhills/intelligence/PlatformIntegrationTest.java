@@ -74,6 +74,7 @@ class PlatformIntegrationTest {
   @Autowired InterventionService interventions;
   @Autowired DiscoveryProfileService discoveryProfiles;
   @Autowired CharacterService characters;
+  @Autowired com.pompomhills.intelligence.character.CharacterReferenceService characterReferences;
   @Autowired WorkflowService workflow;
   @Autowired QualityMlClient workflowMl;
 
@@ -233,6 +234,59 @@ class PlatformIntegrationTest {
     var deleted = workflow.changeLifecycle(storyId, java.util.Map.of("status", "DELETED", "reason", "Operator confirmed"));
     assertThat(deleted.get("status")).isEqualTo("DELETED");
     assertThat(workflow.get(storyId)).containsEntry("role", "STORY");
+  }
+
+  @Test
+  void productionReviewDecisionsAreAppendOnlyAndBoundToExactPromptEvidence() {
+    long contentId = jdbc.queryForObject(
+        "INSERT INTO contents(title,type,status) VALUES ('Step 4 test','REEL','DRAFT') RETURNING id", Long.class);
+    String source = "0-3s: Mimi holds a sticky note. 3-6s: The note sticks to Mimi instead of the cabinet.";
+    long promptVersionId = jdbc.queryForObject(
+        "INSERT INTO prompt_versions(content_id,version_number,raw_text) VALUES (?,1,?) RETURNING id",
+        Long.class, contentId, source);
+    var decision = workflow.saveProductionReviewDecision(java.util.Map.of(
+        "contentId", contentId, "promptVersionId", promptVersionId,
+        "decisionType", "EVENT_CLASSIFICATION", "decisionId", "source-event-2",
+        "decision", "TRIGGER", "primaryObject", "Sticky note",
+        "sourceQuote", "3-6s: The note sticks to Mimi instead of the cabinet."));
+    assertThat(decision).containsEntry("provenance", "OPERATOR_CONFIRMED");
+    assertThat(decision.get("sourceFingerprint")).isNotEqualTo("UNKNOWN");
+    var savedDecision = (java.util.Map<?, ?>) ((java.util.List<?>) workflow
+        .getProductionReviewDecisions(contentId, promptVersionId).get("decisions")).getFirst();
+    assertThat(savedDecision.get("decision")).isEqualTo("TRIGGER");
+    assertThat(savedDecision.get("primaryObject")).isEqualTo("Sticky note");
+    assertThatThrownBy(() -> workflow.saveProductionReviewDecision(java.util.Map.of(
+        "contentId", contentId, "promptVersionId", promptVersionId,
+        "decisionType", "EVENT_CLASSIFICATION", "decisionId", "source-event-2",
+        "decision", "PAYOFF", "sourceQuote", "invented source quote")))
+        .isInstanceOf(IllegalArgumentException.class).hasMessageContaining("exact text");
+    assertThat(jdbc.queryForObject("SELECT count(*) FROM prompt_versions WHERE content_id=?", Integer.class, contentId))
+        .isEqualTo(1);
+  }
+
+  @Test
+  void uploadedCharacterReferenceRequiresExplicitApprovalAndStoresStableHash() throws Exception {
+    var character = characters.create("Reference Test Mimi", com.pompomhills.intelligence.character.CharacterStatus.NEW, "test identity");
+    var image = new java.awt.image.BufferedImage(1, 1, java.awt.image.BufferedImage.TYPE_INT_RGB);
+    var buffer = new java.io.ByteArrayOutputStream();
+    javax.imageio.ImageIO.write(image, "png", buffer);
+    var upload = new org.springframework.mock.web.MockMultipartFile("file", "mimi.png", "image/png", buffer.toByteArray());
+    var pending = characterReferences.upload(character.id(), upload, "Canonical test image");
+    assertThat(pending).containsEntry("status", "PENDING_REVIEW").containsEntry("providerCallPerformed", false);
+    String referenceId = String.valueOf(pending.get("id"));
+    assertThat(characterReferences.list(character.id())).singleElement().satisfies(row -> {
+      assertThat(row.get("sha256")).isEqualTo(pending.get("sha256"));
+      assertThat(row.get("status")).isEqualTo("PENDING_REVIEW");
+    });
+    var approved = characterReferences.approve(character.id(), UUID.fromString(referenceId), "Reviewer");
+    assertThat(approved).containsEntry("status", "APPROVED").containsEntry("approvedBy", "Reviewer");
+    assertThat(characterReferences.imagePath(character.id(), UUID.fromString(referenceId))).exists();
+    long contentId=jdbc.queryForObject("INSERT INTO contents(title,type,status) VALUES ('Reference binding test','REEL','DRAFT') RETURNING id",Long.class);
+    long promptVersionId=jdbc.queryForObject("INSERT INTO prompt_versions(content_id,version_number,raw_text) VALUES (?,1,?) RETURNING id",Long.class,contentId,"Reference Test Mimi holds a note.");
+    var binding=workflow.saveProductionReferenceBinding(java.util.Map.of("contentId",contentId,"promptVersionId",promptVersionId,"characterId",character.id().toString(),"referenceId",referenceId));
+    assertThat(binding).containsEntry("approvalStatus","APPROVED").containsEntry("sha256",pending.get("sha256"));
+    assertThat(workflow.getProductionReferenceBinding(contentId,promptVersionId).get("referenceId")).isEqualTo(referenceId);
+    jdbc.update("DELETE FROM characters WHERE id=?", character.id());
   }
 
   @Test

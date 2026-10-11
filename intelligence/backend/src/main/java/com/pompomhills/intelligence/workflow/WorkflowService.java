@@ -27,6 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class WorkflowService {
   private static final String BUILD_PROMPT_CONTRACT_VERSION = "openart-production-prompt-v2";
   @Value("${WORKFLOW_BUILD_PROMPT_MODEL:}") private String buildPromptModel;
+  @Value("${pompom.data-root:/tmp/pompom-data}") private String workflowDataRoot;
   private final ContentPromptQueryService prompts;
   private final QualityMlClient ml;
   private final MediaContentService media;
@@ -936,6 +937,99 @@ public class WorkflowService {
         .param("content", String.valueOf(contentId)).param("prompt", String.valueOf(promptVersionId))
         .query((rs, ignored) -> { var value = read(rs.getString("payload")); value.put("recordId", rs.getString("id")); return value; })
         .optional().orElseThrow(() -> new IllegalArgumentException("Production settings not found"));
+  }
+
+  /** Append operator-reviewed Step 4 interpretations without changing the immutable prompt. */
+  public Map<String, Object> saveProductionReviewDecision(Map<String, Object> request) {
+    Object content = request.get("contentId");
+    Object version = request.get("promptVersionId");
+    String decisionType = String.valueOf(request.getOrDefault("decisionType", "")).trim();
+    String decisionId = String.valueOf(request.getOrDefault("decisionId", "")).trim();
+    String decision = String.valueOf(request.getOrDefault("decision", "")).trim();
+    if (content == null || version == null || decisionType.isBlank() || decisionId.isBlank()
+        || decision.isBlank())
+      throw new IllegalArgumentException("contentId, promptVersionId, decisionType, decisionId and decision are required");
+    if (!List.of("EVENT_CLASSIFICATION", "CREATIVE_CONFLICT").contains(decisionType))
+      throw new IllegalArgumentException("Unsupported production review decision type");
+    String savedPrompt = jdbc.sql("SELECT raw_text FROM prompt_versions WHERE content_id=:content AND id=:version")
+        .param("content", Long.valueOf(String.valueOf(content)))
+        .param("version", Long.valueOf(String.valueOf(version)))
+        .query(String.class).optional().orElseThrow(() -> new IllegalArgumentException("The selected immutable prompt version does not belong to this content"));
+    String sourceEvidence = String.valueOf(request.getOrDefault("sourceQuote", request.getOrDefault("sourceEvidence", "")));
+    List<String> evidenceParts = decisionType.equals("CREATIVE_CONFLICT")
+        ? sourceEvidence.lines().map(String::trim).filter(line -> !line.isBlank()).toList()
+        : List.of(sourceEvidence.trim());
+    if (evidenceParts.isEmpty() || evidenceParts.stream().anyMatch(part -> !savedPrompt.contains(part)))
+      throw new IllegalArgumentException("The operator decision must cite exact text from the selected immutable prompt version");
+    var payload = new LinkedHashMap<String, Object>(request);
+    payload.put("contentId", String.valueOf(content));
+    payload.put("promptVersionId", String.valueOf(version));
+    payload.put("provenance", "OPERATOR_CONFIRMED");
+    payload.put("savedAt", Instant.now().toString());
+    payload.put("sourceFingerprint", sha256(savedPrompt));
+    String binding = sha256(String.join("\n", String.valueOf(content), String.valueOf(version), decisionType, decisionId));
+    payload.put("recordId", save("PRODUCTION_REVIEW_DECISION", binding, payload));
+    return payload;
+  }
+
+  public Map<String, Object> getProductionReviewDecisions(Long contentId, Long promptVersionId) {
+    var rows = jdbc.sql("SELECT id,payload::text payload FROM post_family_workflow_events "
+            + "WHERE kind='PRODUCTION_REVIEW_DECISION' AND payload->>'contentId'=:content "
+            + "AND payload->>'promptVersionId'=:prompt ORDER BY created_at,id")
+        .param("content", String.valueOf(contentId)).param("prompt", String.valueOf(promptVersionId))
+        .query((rs, ignored) -> { var value = read(rs.getString("payload")); value.put("recordId", rs.getString("id")); return value; }).list();
+    var latest = new LinkedHashMap<String, Object>();
+    for (var row : rows) latest.put(String.valueOf(row.get("decisionType")) + ":" + row.get("decisionId"), row);
+    return Map.of("contentId", contentId, "promptVersionId", promptVersionId,
+        "decisions", List.copyOf(latest.values()));
+  }
+
+  public Map<String, Object> saveProductionReferenceBinding(Map<String, Object> request) {
+    long contentId = Long.parseLong(String.valueOf(request.get("contentId")));
+    long promptVersionId = Long.parseLong(String.valueOf(request.get("promptVersionId")));
+    UUID characterId = UUID.fromString(String.valueOf(request.get("characterId")));
+    UUID referenceId = UUID.fromString(String.valueOf(request.get("referenceId")));
+    var version = jdbc.sql("SELECT raw_text FROM prompt_versions WHERE content_id=:content AND id=:version")
+        .param("content", contentId).param("version", promptVersionId).query(String.class).optional()
+        .orElseThrow(() -> new IllegalArgumentException("The selected immutable prompt version does not belong to this content"));
+    var character = jdbc.sql("SELECT name FROM characters WHERE id=:id AND active=true")
+        .param("id", characterId).query(String.class).optional()
+        .orElseThrow(() -> new IllegalArgumentException("Character is not in the active canonical registry"));
+    if (!java.util.regex.Pattern.compile("\\b" + java.util.regex.Pattern.quote(character) + "\\b", java.util.regex.Pattern.CASE_INSENSITIVE).matcher(version).find())
+      throw new IllegalArgumentException("The selected character does not match the source prompt version");
+    var asset = jdbc.sql("SELECT relative_path,description,sha256,approval_status,version_number FROM character_references WHERE id=:id AND character_id=:character")
+        .param("id", referenceId).param("character", characterId)
+        .query((rs, row) -> Map.of("relativePath", rs.getString("relative_path"), "description", rs.getString("description") == null ? "" : rs.getString("description"), "sha256", rs.getString("sha256") == null ? "" : rs.getString("sha256"), "status", rs.getString("approval_status"), "version", rs.getInt("version_number")))
+        .optional().orElseThrow(() -> new IllegalArgumentException("Reference does not belong to the selected character"));
+    if (!"APPROVED".equals(asset.get("status")) || String.valueOf(asset.get("sha256")).isBlank())
+      throw new IllegalArgumentException("Only an approved reference with a verified hash can be bound");
+    java.nio.file.Path root = java.nio.file.Path.of(workflowDataRoot).toAbsolutePath().normalize();
+    java.nio.file.Path image = root.resolve(String.valueOf(asset.get("relativePath"))).normalize();
+    if (!image.startsWith(root) || !java.nio.file.Files.isRegularFile(image))
+      throw new IllegalArgumentException("Approved reference image is missing from local storage");
+    try {
+      String currentHash = HexFormat.of().formatHex(MessageDigest.getInstance("SHA-256").digest(java.nio.file.Files.readAllBytes(image)));
+      if (!currentHash.equals(asset.get("sha256"))) throw new IllegalArgumentException("Approved reference image hash changed; review and upload the image again");
+    } catch (java.io.IOException | java.security.NoSuchAlgorithmException error) {
+      throw new IllegalStateException("Unable to verify approved character reference", error);
+    }
+    var payload = new LinkedHashMap<String, Object>();
+    payload.put("contentId", String.valueOf(contentId)); payload.put("promptVersionId", String.valueOf(promptVersionId));
+    payload.put("characterId", characterId.toString()); payload.put("character", character);
+    payload.put("referenceId", referenceId.toString()); payload.put("relativePath", asset.get("relativePath"));
+    payload.put("sha256", asset.get("sha256")); payload.put("version", asset.get("version"));
+    payload.put("description", asset.get("description")); payload.put("approvalStatus", "APPROVED");
+    payload.put("provenance", "CANONICAL_CHARACTER_REFERENCE_APPROVAL"); payload.put("savedAt", Instant.now().toString());
+    String binding = sha256(String.join("\n", String.valueOf(contentId), String.valueOf(promptVersionId), referenceId.toString(), String.valueOf(asset.get("sha256"))));
+    payload.put("recordId", save("PRODUCTION_CHARACTER_REFERENCE_BINDING", binding, payload));
+    return payload;
+  }
+
+  public Map<String, Object> getProductionReferenceBinding(Long contentId, Long promptVersionId) {
+    return jdbc.sql("SELECT id,payload::text payload FROM post_family_workflow_events WHERE kind='PRODUCTION_CHARACTER_REFERENCE_BINDING' AND payload->>'contentId'=:content AND payload->>'promptVersionId'=:prompt ORDER BY created_at DESC,id DESC LIMIT 1")
+        .param("content", String.valueOf(contentId)).param("prompt", String.valueOf(promptVersionId))
+        .query((rs, row) -> { var result = read(rs.getString("payload")); result.put("recordId", rs.getString("id")); return result; })
+        .optional().orElse(Map.of("contentId", contentId, "promptVersionId", promptVersionId, "status", "MISSING"));
   }
 
   /** Persist the review-only visual preparation artifact without invoking an image provider. */
