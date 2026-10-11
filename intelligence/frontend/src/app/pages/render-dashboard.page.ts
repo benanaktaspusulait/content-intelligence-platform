@@ -1,7 +1,6 @@
 import { Component, OnDestroy, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { ActivatedRoute } from '@angular/router';
 import { interval } from 'rxjs';
 import { startWith, switchMap } from 'rxjs/operators';
 
@@ -140,42 +139,6 @@ interface RenderAsset {
   creditsActual?: number;
 }
 
-interface OpenArtReferenceAsset {
-  id: string;
-  canonicalKey: string;
-  displayName: string;
-  source: 'LOCAL' | 'OPENART_WORKSPACE';
-  mediaType: string;
-  providerAssetId?: string;
-  providerUrl?: string;
-  localPath?: string;
-  sha256?: string;
-  status: string;
-}
-
-interface OpenArtCapabilities {
-  imageMultipleReferences: string;
-  videoSingleStartFrame: string;
-  videoMultipleElementReferences: string;
-  workspaceAssetDiscovery: string;
-}
-
-interface VisualReferencePlan {
-  planId: string;
-  renderJobId: string;
-  promptVersionId: number;
-  promptSha256: string;
-  promptReady: boolean;
-  firstFrameStatus: string;
-  firstFrameCandidates: Array<{ assetId: string; role: string; source: string; relativePath: string; sha256: string; promptVersionMatches: boolean; mediaVerified: boolean; semanticStatus: string }>;
-  referenceBindings?: Array<{ assetId: string; role: string; sourceKind: string; relativePath: string; sha256: string; validationStatus: string; accepted: boolean }>;
-  recommendation: { strategy: string; action: string; criticalScene: string; reason: string; additionalReferenceSupport: string };
-  capabilities: OpenArtCapabilities;
-  modelCapabilities?: { model: string; startFrame: string; endFrame: string; multipleVideoReferences: string; intermediateKeyframe: string; segmentContinuation: string; verificationSource: string };
-  generationProposal?: { promptText: string; model: string; referenceRoles: string[]; aspectRatio: string; dimensions: string; costStatus: string };
-  cost: { imageGenerationCredits: number | string; visionValidation: string; paidCallPerformed: boolean };
-}
-
 interface VisualEvidenceResponse {
   validationRecordId: number;
   visualEvidenceId: number;
@@ -192,11 +155,11 @@ interface VisualEvidenceResponse {
   standalone: true,
   imports: [CommonModule],
   template: `
-    <div class="render-dashboard">
+    <div class="workspace render-dashboard">
       <header class="dashboard-header">
         <div class="header-content">
           <div class="title-section">
-            <h1>Render Pipeline Dashboard</h1>
+            <h1>Render Jobs</h1>
             <p class="subtitle">Monitor render jobs, QA results, and production status</p>
             <span class="live-indicator">Live stream: {{ liveState() }}</span>
           </div>
@@ -215,32 +178,13 @@ interface VisualEvidenceResponse {
             </div>
             <div class="stat-card alert">
               <div class="stat-value">{{ stats().abandoned }}</div>
-              <div class="stat-label">Abandoned</div>
+              <div class="stat-label">Failed / abandoned</div>
             </div>
           </div>
         </div>
       </header>
 
       <div class="dashboard-content">
-        <section class="queue-panel guided-render-panel">
-          @if (workflowReviewId) {
-            <div class="guided-render-heading"><div><span class="eyebrow">RENDER PREPARATION &amp; VIDEO GENERATION</span><h2>Prepare and approve visual inputs before generating the video</h2><p class="muted">The saved workflow records supply the content, prompt version, settings and authorization. Technical IDs are resolved automatically.</p></div><span class="data-freshness">{{ renderTab() === 'visual' ? 'Visual Preparation' : 'Video Generation' }}</span></div>
-            <nav class="render-tabs" aria-label="Render sections"><button type="button" [class.active]="renderTab() === 'visual'" (click)="renderTab.set('visual')">Visual Preparation<small>References, first frame and review</small></button><button type="button" [class.active]="renderTab() === 'video'" (click)="renderTab.set('video')">Video Generation<small>Canonical authorization and queue</small></button></nav>
-            @if (renderTab() === 'visual') { <div class="guided-render-grid"><div><span class="metric-label">Character reference</span><strong>{{ workflowReview?.generation?.settings?.characterReference?.status || 'Needs review' }}</strong><small>Select or attach an authoritative asset in Visual Reference Planning below.</small></div><div><span class="metric-label">First frame</span><strong>{{ queueFirstFramePath() ? 'Candidate bound' : 'Not prepared' }}</strong><small>Accepted image evidence is required before paid video submission.</small></div><div><span class="metric-label">Production prompt</span><strong>Saved revision {{ queuePromptVersionId() }}</strong><small>Prompt lineage is immutable and loaded from the review record.</small></div><div><span class="metric-label">Provider capability</span><strong>{{ referenceCapabilities()?.videoSingleStartFrame || 'Verification pending' }}</strong><small>No provider call is made by opening this screen.</small></div></div><section class="first-frame-preparation"><div><span class="metric-label">FIRST FRAME SPECIFICATION</span><h3>Source-consistent opening image</h3><p class="muted">This is a saved review artifact. Preparing or editing it never calls an image provider.</p></div><label>Visual specification<textarea rows="5" [value]="firstFrameSpecification()" (input)="firstFrameSpecification.set(($any($event.target)).value)"></textarea></label><label>First frame image prompt<textarea rows="6" [value]="firstFrameImagePrompt()" (input)="firstFrameImagePrompt.set(($any($event.target)).value)"></textarea></label><div class="guided-render-actions"><button type="button" class="queue-button" (click)="draftFirstFramePrompt()">Build from saved prompt</button><button type="button" class="queue-button" [disabled]="visualPreparationSaving() || !firstFrameSpecification().trim() || !firstFrameImagePrompt().trim()" (click)="saveVisualPreparation()">{{ visualPreparationSaving() ? 'Saving…' : (visualPreparation() ? 'Save new preparation revision' : 'Save preparation') }}</button></div><p *ngIf="visualPreparationError()" class="queue-error">{{ visualPreparationError() }}</p><p *ngIf="visualPreparation()" class="queue-success">Saved {{ visualPreparation()?.savedAt }} · provider call performed: {{ visualPreparation()?.providerCallPerformed ? 'YES' : 'NO' }}</p></section><p class="visual-reference-warning">Existing first-frame candidates and upload/acceptance remain available through the existing job-bound Visual Reference Planning controls below. Queue remains closed until the accepted binding is present.</p> }
-            @if (renderTab() === 'video') { <div class="guided-render-grid"><div><span class="metric-label">Authorization</span><strong>{{ workflowReview?.family8?.renderAuthorization?.status || 'UNKNOWN' }}</strong><small>{{ workflowReview?.family8?.renderAuthorization?.reason || 'Canonical Family 8 decision is required.' }}</small></div><div><span class="metric-label">Generator</span><strong>{{ queueModel() || 'Configured model unavailable' }}</strong><small>{{ workflowReview?.generation?.settings?.aspectRatio || 'Aspect ratio unresolved' }} · {{ workflowReview?.generation?.supportedRenderDuration || 'Duration unresolved' }}s</small></div><div><span class="metric-label">First frame</span><strong>{{ queueFirstFramePath() ? 'Bound' : 'Missing' }}</strong><small>Visual acceptance is separate from video authorization.</small></div></div> }
-          } @else {
-            <div class="queue-panel-heading"><div><span class="eyebrow">QUEUE RENDER</span><h2>Start a validated render</h2></div><span class="data-freshness">Validation evidence required</span></div>
-            <div class="queue-fields"><label>Content ID<input type="number" min="1" [value]="queueContentId()" (input)="queueContentId.set(($any($event.target)).value)" /></label><label>Prompt version ID<input type="number" min="1" [value]="queuePromptVersionId()" (input)="queuePromptVersionId.set(($any($event.target)).value)" /></label><label>Validation record ID<input type="number" min="1" [value]="queueValidationId()" (input)="queueValidationId.set(($any($event.target)).value)" /></label><label>Job type<select [value]="queueJobType()" (change)="queueJobType.set(($any($event.target)).value)"><option value="VIDEO">VIDEO</option><option value="FIRST_FRAME">FIRST_FRAME</option></select></label><label>OpenArt model<input type="text" [value]="queueModel()" (input)="queueModel.set(($any($event.target)).value)" /></label>@if (queueJobType() === 'VIDEO') { <label class="wide-field">First-frame path or HTTPS URL<input type="text" placeholder="/data/library/.../first-frame.png" [value]="queueFirstFramePath()" (input)="queueFirstFramePath.set(($any($event.target)).value)" /></label> }<button type="button" class="queue-button" [disabled]="queueLoading()" (click)="queueRender()">{{ queueLoading() ? 'Queueing…' : 'Queue render' }}</button></div>
-          }
-          @if (queueError()) { <p class="queue-error">{{ queueError() }}</p> }
-          @if (queuedJobId()) { <p class="queue-success">Render queued: {{ queuedJobId() }}</p> }
-        </section>
-        <section class="section-band openart-reference-panel">
-          <div class="section-heading"><div><span class="eyebrow">OPENART REFERENCES</span><h2>Workspace character catalog</h2></div><button type="button" class="queue-button" [disabled]="referenceSyncLoading()" (click)="syncOpenArtReferences()">{{ referenceSyncLoading() ? 'Syncing…' : 'Sync workspace assets' }}</button></div>
-          @if (referenceError()) { <p class="queue-error">{{ referenceError() }}</p> }
-          @if (referenceCapabilities(); as caps) { <p class="muted">Image references: {{ caps.imageMultipleReferences }} · First-frame video: {{ caps.videoSingleStartFrame }} · Multi-element video: {{ caps.videoMultipleElementReferences }}</p> }
-          <div class="reference-chips">@for (reference of referenceAssets(); track reference.id) { <span class="status-badge">{{ reference.displayName }} · {{ reference.source }}</span> } @empty { <span class="muted">No synced workspace references</span> }</div>
-        </section>
         <div class="jobs-list">
           @if (loading()) {
             <div class="loading-state">
@@ -254,7 +198,7 @@ interface VisualEvidenceResponse {
             </div>
           } @else if (jobs().length === 0) {
             <div class="empty-state">
-              <p>No render jobs found</p>
+              <p>No render jobs yet.</p><a href="/quality">Resume a creative project</a>
             </div>
           } @else {
             @for (job of jobs(); track job.id) {
@@ -288,42 +232,7 @@ interface VisualEvidenceResponse {
                   </div>
                 </div>
 
-                <section class="visual-reference-inline">
-                  <div class="visual-reference-inline__heading">
-                    <div><span class="contract-eyebrow">VISUAL REFERENCE PLANNING</span><strong>Check first-frame evidence before generation</strong></div>
-                    <button type="button" class="details-button" (click)="inspectVisualReferences(job)" [disabled]="visualReferenceLoading() === job.id">{{ visualReferenceLoading() === job.id ? 'Checking…' : 'Check Visual References' }}</button>
-                  </div>
-                  @if (visualReferencePlan()?.renderJobId === job.id) {
-                    @if (!visualReferencePlan()?.promptReady) { <p class="visual-reference-warning">Complete and save the production prompt before preparing visual references.</p> }
-                    @else {
-                      <div class="visual-reference-grid">
-                        <div><span class="metric-label">First frame</span><strong>{{ visualReferencePlan()?.firstFrameStatus }}</strong><small>{{ visualReferencePlan()?.recommendation?.action }}</small></div>
-                        <div><span class="metric-label">Strategy</span><strong>{{ visualReferencePlan()?.recommendation?.strategy }}</strong><small>{{ visualReferencePlan()?.recommendation?.reason }}</small></div>
-                        <div><span class="metric-label">Provider capability</span><strong>Start frame: {{ visualReferencePlan()?.modelCapabilities?.startFrame || visualReferencePlan()?.capabilities?.videoSingleStartFrame }}</strong><small>Additional video references: {{ visualReferencePlan()?.modelCapabilities?.multipleVideoReferences || visualReferencePlan()?.capabilities?.videoMultipleElementReferences }}</small></div>
-                        <div><span class="metric-label">Cost and evidence</span><strong>{{ visualReferencePlan()?.cost?.imageGenerationCredits }} image credits</strong><small>Semantic validation: {{ visualReferencePlan()?.cost?.visionValidation }} · no paid call performed</small></div>
-                      </div>
-                      @if (visualReferencePlan()?.generationProposal; as proposal) { <div class="visual-reference-proposal"><span class="metric-label">First-frame proposal</span><p>{{ proposal.promptText }}</p><button type="button" class="details-button" (click)="prepareVisualReferenceProposal()">{{ visualReferenceProposal() ? 'Proposal prepared' : 'Review bounded generation request' }}</button>@if (visualReferenceProposal(); as prepared) { <details><summary>Request details</summary><pre>{{ prepared.request.promptText }}</pre><small>Authorization required · paid call performed: {{ prepared.paidCallPerformed }}</small></details> }</div> }
-                      @if ((visualReferencePlan()?.firstFrameCandidates?.length ?? 0) > 0) {
-                        <div class="visual-reference-candidates"><span class="metric-label">Existing first-frame candidates</span>@for (candidate of visualReferencePlan()?.firstFrameCandidates ?? []; track candidate.assetId) { <div class="visual-reference-candidate"><span>{{ candidate.relativePath }}</span><small>{{ candidate.mediaVerified ? 'Metadata verified' : 'Metadata review required' }} · {{ candidate.promptVersionMatches ? 'Prompt version matches' : 'STALE' }} · semantic {{ candidate.semanticStatus }}</small><button type="button" class="details-button" (click)="acceptVisualReference(candidate.assetId)" [disabled]="!candidate.promptVersionMatches || !candidate.mediaVerified">Accept as first frame</button></div> }</div>
-                      }
-                      <div class="visual-reference-tools"><label class="details-button">Upload replacement<input type="file" accept="image/png,image/jpeg,image/webp,image/gif" hidden (change)="uploadVisualReference($event)" /></label><button type="button" class="details-button" (click)="validateVisualReferences()">Validate evidence</button></div>
-                      @for (binding of visualReferencePlan()?.referenceBindings ?? []; track binding.assetId) { @if (!binding.accepted && binding.role === 'FIRST_FRAME') { <div class="visual-reference-candidate"><span>{{ binding.relativePath }}</span><small>{{ binding.validationStatus }} · {{ binding.sha256 }}</small><button type="button" class="details-button" (click)="acceptImportedVisualReference(binding.assetId)">Accept uploaded first frame</button></div> } }
-                      @if (visualReferenceValidation(); as validation) {
-                        <div class="visual-reference-validation">
-                          <strong>Evidence: {{ validation.status }}</strong>
-                          <span>Metadata: {{ validation.metadataVerified ? 'verified' : 'not verified' }} · Identity: {{ validation.identity }} · Prompt compatibility: {{ validation.promptCompatibility }}</span>
-                          @if (validation.minimumCorrection) {
-                            <small>{{ validation.minimumCorrection }}</small>
-                          }
-                          @for (item of validation.evidence ?? []; track item.assetId) {
-                            <small>{{ item.role }} · {{ item.classification }} · {{ item.reason }}</small>
-                          }
-                        </div>
-                      }
-                    }
-                  }
-                  @if (visualReferenceError() && visualReferencePlan()?.renderJobId === job.id) { <p class="queue-error">{{ visualReferenceError() }}</p> }
-                </section>
+
 
                 @if (job.creativeContractStatus) {
                   <div class="production-contract-summary">
@@ -499,7 +408,7 @@ interface VisualEvidenceResponse {
       </div>
       @if (assetLoading()) { <section class="section-band asset-detail"><span class="spinner"></span><strong>Loading render asset</strong></section> }
       @else if (assetError()) { <section class="section-band asset-detail"><strong>Asset detail unavailable</strong><p>{{ assetError() }}</p></section> }
-      @else if (asset(); as item) { <section class="section-band asset-detail"><div class="section-heading"><div><span class="eyebrow">DURABLE ASSET</span><h2>{{ item.assetType }} · version {{ item.assetVersion }}</h2></div><span class="status-badge">{{ item.mediaVerified ? 'MEDIA VERIFIED' : 'NOT VERIFIED' }}</span></div>@if (item.assetType === 'VIDEO') { <video class="asset-preview" controls preload="metadata" [src]="assetMediaUrl(item)"></video> } @else if (item.assetType === 'FIRST_FRAME') { <img class="asset-preview" [src]="assetMediaUrl(item)" [alt]="item.relativePath" /> }<dl class="compact-facts"><div><dt>Path</dt><dd><code>{{ item.relativePath }}</code></dd></div><div><dt>Dimensions</dt><dd>{{ item.width }} × {{ item.height }}</dd></div><div><dt>Original</dt><dd>{{ item.originalWidth || item.width }} × {{ item.originalHeight || item.height }}</dd></div><div><dt>Codec</dt><dd>{{ item.codec || '—' }}</dd></div><div><dt>SHA-256</dt><dd><code>{{ item.sha256 || '—' }}</code></dd></div><div><dt>Quarantine</dt><dd>{{ item.quarantined ? 'QUARANTINED' : 'Clear' }}</dd></div></dl><div class="asset-actions"><a class="queue-button" [href]="assetDownloadUrl(item)">Download HD</a>@if (item.originalRelativePath) { <a class="queue-button" [href]="assetDownloadUrl(item, true)">Download original</a> }</div>@if (item.assetType === 'FIRST_FRAME') { <button type="button" class="queue-button" (click)="useAsVideoFirstFrame(item)">Use as video first-frame</button> }</section> }
+      @else if (asset(); as item) { <section class="section-band asset-detail"><div class="section-heading"><div><span class="eyebrow">DURABLE ASSET</span><h2>{{ item.assetType }} · version {{ item.assetVersion }}</h2></div><span class="status-badge">{{ item.mediaVerified ? 'MEDIA VERIFIED' : 'NOT VERIFIED' }}</span></div>@if (item.assetType === 'VIDEO') { <video class="asset-preview" controls preload="metadata" [src]="assetMediaUrl(item)"></video> } @else if (item.assetType === 'FIRST_FRAME') { <img class="asset-preview" [src]="assetMediaUrl(item)" [alt]="item.relativePath" /> }<dl class="compact-facts"><div><dt>Path</dt><dd><code>{{ item.relativePath }}</code></dd></div><div><dt>Dimensions</dt><dd>{{ item.width }} × {{ item.height }}</dd></div><div><dt>Original</dt><dd>{{ item.originalWidth || item.width }} × {{ item.originalHeight || item.height }}</dd></div><div><dt>Codec</dt><dd>{{ item.codec || '—' }}</dd></div><div><dt>SHA-256</dt><dd><code>{{ item.sha256 || '—' }}</code></dd></div><div><dt>Quarantine</dt><dd>{{ item.quarantined ? 'QUARANTINED' : 'Clear' }}</dd></div></dl><div class="asset-actions"><a class="queue-button" [href]="assetDownloadUrl(item)">Download HD</a>@if (item.originalRelativePath) { <a class="queue-button" [href]="assetDownloadUrl(item, true)">Download original</a> }</div></section> }
       @if (asset()?.assetType === 'FIRST_FRAME') {
         <section class="section-band visual-evidence-panel">
           <div class="section-heading"><div><span class="eyebrow">VISUAL EVIDENCE</span><h2>Verify first-frame gates</h2></div><span class="status-badge">EXPLICIT VERIFIER RESULT REQUIRED</span></div>
@@ -519,488 +428,7 @@ interface VisualEvidenceResponse {
       }
     </div>
   `,
-  styles: [`
-    .render-dashboard {
-      min-height: 100vh;
-      background: #0a0a0a;
-      color: #ffffff;
-    }
-
-    .dashboard-header {
-      background: linear-gradient(135deg, #1a1a1a 0%, #0f0f0f 100%);
-      border-bottom: 1px solid #333;
-      padding: 2rem;
-    }
-
-    .header-content {
-      max-width: 1400px;
-      margin: 0 auto;
-    }
-
-    .title-section h1 {
-      font-size: 2rem;
-      font-weight: 600;
-      margin: 0 0 0.5rem 0;
-    }
-
-    .subtitle {
-      color: #888;
-      margin: 0;
-    }
-
-    .stats-section {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-      gap: 1rem;
-      margin-top: 2rem;
-    }
-
-    .stat-card {
-      background: #1a1a1a;
-      padding: 1rem;
-      border-radius: 8px;
-      border: 1px solid #333;
-      text-align: center;
-    }
-
-    .stat-card.alert {
-      border-color: #ff6b6b;
-    }
-
-    .stat-value {
-      font-size: 2rem;
-      font-weight: 700;
-      color: #4ecdc4;
-    }
-
-    .stat-card.alert .stat-value {
-      color: #ff6b6b;
-    }
-
-    .stat-label {
-      color: #888;
-      font-size: 0.875rem;
-      margin-top: 0.5rem;
-    }
-
-    .dashboard-content {
-      max-width: 1400px;
-      margin: 0 auto;
-      padding: 2rem;
-    }
-
-    .jobs-list {
-      display: flex;
-      flex-direction: column;
-      gap: 1.5rem;
-    }
-
-    .job-card {
-      background: #1a1a1a;
-      border: 1px solid #333;
-      border-radius: 12px;
-      padding: 1.5rem;
-      transition: border-color 0.2s;
-    }
-
-    .job-card:hover {
-      border-color: #4ecdc4;
-    }
-
-    .job-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      margin-bottom: 1rem;
-    }
-
-    .job-info h3 {
-      margin: 0 0 0.5rem 0;
-      font-size: 1.25rem;
-    }
-
-    .job-meta {
-      display: flex;
-      gap: 0.75rem;
-      flex-wrap: wrap;
-      font-size: 0.875rem;
-      color: #888;
-    }
-
-    .job-meta span {
-      padding: 0.25rem 0.5rem;
-      background: #0f0f0f;
-      border-radius: 4px;
-    }
-
-    .status-badge {
-      padding: 0.5rem 1rem;
-      border-radius: 6px;
-      font-weight: 600;
-      font-size: 0.875rem;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-
-    .status-queued { background: #3498db; }
-    .status-generating { background: #9b59b6; }
-    .status-polling { background: #f39c12; }
-    .status-downloading { background: #16a085; }
-    .status-complete { background: #27ae60; }
-    .status-failed { background: #e74c3c; }
-    .status-abandoned { background: #c0392b; }
-
-    .job-progress {
-      margin: 1rem 0;
-    }
-
-    .visual-reference-inline { margin: 1rem 0; padding: 1rem; border: 1px solid #263330; border-radius: 8px; background: #101616; }
-    .visual-reference-inline__heading { display:flex; align-items:center; justify-content:space-between; gap:1rem; }
-    .visual-reference-inline__heading > div { display:grid; gap:.25rem; }
-    .visual-reference-inline__heading strong { color:#d7ff7c; }
-    .visual-reference-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); gap:.75rem; margin-top:.8rem; }
-    .visual-reference-grid > div { display:grid; gap:.3rem; padding:.75rem; border:1px solid #263330; border-radius:6px; background:#151d1c; }
-    .visual-reference-grid strong { color:#fff; font-size:.9rem; }
-    .visual-reference-grid small, .visual-reference-candidate small { color:#b9c7c2; line-height:1.4; }
-    .visual-reference-warning { color:#ffd28a; }
-    .visual-reference-proposal { display:grid; gap:.5rem; margin-top:1rem; padding:.75rem; border:1px solid #66572c; border-radius:6px; background:#1d1a10; }
-    .visual-reference-proposal p { margin:0; color:#e8e4d2; white-space:pre-wrap; line-height:1.45; max-height:12rem; overflow:auto; }
-    .visual-reference-proposal pre { margin:0; max-height:16rem; overflow:auto; white-space:pre-wrap; color:#d7ff7c; font-size:.75rem; }
-    .visual-reference-tools { display:flex; flex-wrap:wrap; gap:.6rem; margin-top:1rem; }
-    .visual-reference-validation { display:grid; gap:.25rem; margin-top:.75rem; padding:.65rem; border-left:3px solid #f39c12; color:#f4e5b0; }
-    .visual-reference-candidates { display:grid; gap:.5rem; margin-top:1rem; }
-    .visual-reference-candidate { display:grid; grid-template-columns:minmax(0,1fr) auto auto; align-items:center; gap:.75rem; padding:.65rem; border:1px solid #263330; border-radius:6px; }
-    .visual-reference-candidate > span { overflow-wrap:anywhere; color:#fff; }
-    @media(max-width:700px) { .visual-reference-inline__heading, .visual-reference-candidate { grid-template-columns:1fr; display:grid; align-items:stretch; } }
-
-    .progress-bar {
-      height: 8px;
-      background: #0f0f0f;
-      border-radius: 4px;
-      overflow: hidden;
-    }
-
-    .progress-fill {
-      height: 100%;
-      background: linear-gradient(90deg, #4ecdc4, #44a08d);
-      transition: width 0.3s ease;
-    }
-
-    .progress-labels {
-      display: flex;
-      justify-content: space-between;
-      margin-top: 0.5rem;
-      font-size: 0.875rem;
-      color: #888;
-    }
-
-    .qa-results {
-      margin-top: 1.5rem;
-      padding: 1.5rem;
-      background: #0f0f0f;
-      border-radius: 8px;
-      border: 1px solid #333;
-    }
-
-    .qa-results.requires-review {
-      border-color: #ff6b6b;
-    }
-
-    .qa-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 1rem;
-    }
-
-    .qa-header h4 {
-      margin: 0;
-      font-size: 1rem;
-      color: #4ecdc4;
-    }
-
-    .qa-decision {
-      padding: 0.4rem 0.8rem;
-      border-radius: 6px;
-      font-weight: 600;
-      font-size: 0.875rem;
-    }
-
-    .qa-accept { background: #27ae60; }
-    .qa-rerender { background: #f39c12; }
-    .qa-abandon { background: #e74c3c; }
-
-    .qa-details {
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-    }
-
-    .qa-metrics {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 1rem;
-    }
-
-    .metric {
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
-    }
-
-    .metric-label {
-      font-size: 0.875rem;
-      color: #888;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-
-    .metric-value-bar {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-    }
-
-    .compliance-bar {
-      flex: 1;
-      height: 8px;
-      background: #1a1a1a;
-      border-radius: 4px;
-      overflow: hidden;
-    }
-
-    .compliance-fill {
-      height: 100%;
-      background: #27ae60;
-      transition: width 0.3s ease;
-    }
-
-    .compliance-fill.low {
-      background: #e74c3c;
-    }
-
-    .metric-value {
-      font-weight: 600;
-      color: #4ecdc4;
-    }
-
-    .details-button {
-      margin-top: 0.75rem;
-      padding: 0.5rem 0.75rem;
-      border: 1px solid #4ecdc4;
-      border-radius: 4px;
-      background: transparent;
-      color: #8de8df;
-      cursor: pointer;
-    }
-
-    .evidence-structure {
-      margin-top: 1rem;
-      padding: 1rem;
-      border: 1px solid #2f3d3b;
-      border-radius: 8px;
-      background: #101616;
-    }
-
-    .evidence-structure__grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 0.75rem;
-      margin-top: 0.8rem;
-    }
-
-    .evidence-structure__grid > div {
-      min-height: 120px;
-      padding: 0.8rem;
-      border: 1px solid #263330;
-      border-radius: 6px;
-      background: #151d1c;
-    }
-
-    .evidence-structure strong {
-      display: block;
-      margin-top: 0.25rem;
-      color: #d7ff7c;
-    }
-
-    .evidence-structure p,
-    .evidence-structure small {
-      color: #b9c7c2;
-      font-size: 0.78rem;
-      line-height: 1.45;
-    }
-
-    .rule-results {
-      display: grid;
-      gap: 0.5rem;
-      margin-top: 0.75rem;
-    }
-
-    .rule-result {
-      padding: 0.7rem;
-      border-left: 3px solid #27ae60;
-      background: #151515;
-    }
-
-    .rule-result.rule-failed {
-      border-left-color: #ff6b6b;
-    }
-
-    .rule-result-heading {
-      display: flex;
-      justify-content: space-between;
-      gap: 1rem;
-    }
-
-    .rule-result-meta {
-      margin-top: 0.2rem;
-      color: #999;
-      font-size: 0.75rem;
-    }
-
-    .rule-result p {
-      margin: 0.4rem 0;
-      color: #ddd;
-      font-size: 0.82rem;
-    }
-
-    .rule-result code {
-      color: #9ad8d2;
-      font-size: 0.72rem;
-      word-break: break-word;
-    }
-
-    .qa-checks {
-      display: flex;
-      gap: 1rem;
-      flex-wrap: wrap;
-    }
-
-    .check-item {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      padding: 0.5rem 1rem;
-      background: #1a1a1a;
-      border-radius: 6px;
-      font-size: 0.875rem;
-    }
-
-    .check-item.failed {
-      background: rgba(231, 76, 60, 0.1);
-      border: 1px solid #e74c3c;
-    }
-
-    .check-icon {
-      font-size: 1.25rem;
-    }
-
-    .qa-reason {
-      padding: 1rem;
-      background: #1a1a1a;
-      border-radius: 6px;
-      font-size: 0.9rem;
-      color: #ccc;
-    }
-
-    .qa-reason p {
-      margin: 0;
-    }
-
-    .human-review-alert {
-      padding: 1rem;
-      background: rgba(255, 107, 107, 0.1);
-      border: 1px solid #ff6b6b;
-      border-radius: 6px;
-    }
-
-    .human-review-alert strong {
-      display: block;
-      margin-bottom: 0.5rem;
-      color: #ff6b6b;
-    }
-
-    .human-review-alert p {
-      margin: 0;
-      font-size: 0.875rem;
-    }
-
-    .job-error {
-      margin-top: 1rem;
-      padding: 1rem;
-      background: rgba(231, 76, 60, 0.1);
-      border: 1px solid #e74c3c;
-      border-radius: 6px;
-      font-size: 0.875rem;
-    }
-
-    .attempt-history {
-      display: grid;
-      gap: 0.45rem;
-      margin-top: 1rem;
-      padding-top: 0.75rem;
-      border-top: 1px solid #2d2d2d;
-      color: #a8a8a8;
-      font-size: 0.78rem;
-    }
-
-    .attempt-row {
-      display: grid;
-      grid-template-columns: 42px 1fr auto;
-      gap: 0.6rem;
-      padding: 0.35rem 0.5rem;
-      background: #151515;
-      border-radius: 4px;
-    }
-
-    .job-footer {
-      margin-top: 1rem;
-      padding-top: 1rem;
-      border-top: 1px solid #333;
-    }
-
-    .job-times {
-      display: flex;
-      gap: 1.5rem;
-      font-size: 0.875rem;
-      color: #888;
-    }
-
-    .loading-state, .error-state, .empty-state {
-      text-align: center;
-      padding: 4rem 2rem;
-      color: #888;
-    }
-
-    .spinner {
-      width: 40px;
-      height: 40px;
-      margin: 0 auto 1rem;
-      border: 4px solid #333;
-      border-top-color: #4ecdc4;
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-    }
-
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-
-    .error-state button {
-      margin-top: 1rem;
-      padding: 0.75rem 1.5rem;
-      background: #4ecdc4;
-      color: #0a0a0a;
-      border: none;
-      border-radius: 6px;
-      font-weight: 600;
-      cursor: pointer;
-    }
-
-    .error-state button:hover {
-      background: #44a08d;
-    }
-  `]
+  styleUrl: './render-dashboard.page.scss',
 })
 export class RenderDashboardPage implements OnInit, OnDestroy {
   jobs = signal<RenderJob[]>([]);
@@ -1015,25 +443,6 @@ export class RenderDashboardPage implements OnInit, OnDestroy {
   asset = signal<RenderAsset | null>(null);
   assetLoading = signal(false);
   assetError = signal('');
-  queueContentId = signal('');
-  queuePromptVersionId = signal('');
-  queueValidationId = signal('');
-  queueJobType = signal('VIDEO');
-  renderTab = signal<'visual' | 'video'>('visual');
-  workflowReview:any=null;
-  workflowReviewId='';
-  visualPreparation = signal<any | null>(null);
-  firstFrameSpecification = signal('');
-  firstFrameImagePrompt = signal('');
-  visualPreparationSaving = signal(false);
-  visualPreparationError = signal('');
-  regenerationHandoffId = '';
-  regenerationHandoff: any = null;
-  queueModel = signal('byte-plus-seedance-2-mini');
-  queueFirstFramePath = signal('');
-  queueLoading = signal(false);
-  queueError = signal('');
-  queuedJobId = signal('');
   reviewer = signal('local-user');
   reviewToken = signal('');
   reviewNotes = signal('');
@@ -1049,20 +458,10 @@ export class RenderDashboardPage implements OnInit, OnDestroy {
   visualSubmitting = signal(false);
   visualEvidenceError = signal('');
   visualEvidenceResult = signal<VisualEvidenceResponse | null>(null);
-  referenceAssets = signal<OpenArtReferenceAsset[]>([]);
-  referenceCapabilities = signal<OpenArtCapabilities | null>(null);
-  referenceSyncLoading = signal(false);
-  referenceError = signal('');
-  visualReferencePlan = signal<VisualReferencePlan | null>(null);
-  visualReferenceLoading = signal<string | null>(null);
-  visualReferenceError = signal('');
-  visualReferenceProposal = signal<any | null>(null);
-  visualReferenceValidation = signal<any | null>(null);
-
   private readonly apiUrl = '/api/v1/render-jobs';
   private notificationStream: EventSource | null = null;
 
-  constructor(private http: HttpClient, private route: ActivatedRoute) {}
+  constructor(private http: HttpClient) {}
 
   loadAsset(id: string) {
     this.assetLoading.set(true); this.assetError.set(''); this.asset.set(null); this.visualEvidenceError.set(''); this.visualEvidenceResult.set(null); this.visualEvidenceSetId.set(crypto.randomUUID());
@@ -1072,76 +471,12 @@ export class RenderDashboardPage implements OnInit, OnDestroy {
     });
   }
 
-  inspectVisualReferences(job: RenderJob): void {
-    this.visualReferenceLoading.set(job.id);
-    this.visualReferenceError.set('');
-    this.http.post<VisualReferencePlan>(`/api/v1/visual-reference-plans/render-jobs/${job.id}/inspect`, {}).subscribe({
-      next: plan => { this.visualReferencePlan.set(plan); this.visualReferenceProposal.set(null); this.visualReferenceLoading.set(null); },
-      error: err => { this.visualReferenceLoading.set(null); this.visualReferenceError.set(err.error?.detail || err.error?.message || 'Visual reference planning could not be completed.'); },
-    });
-  }
-
-  prepareVisualReferenceProposal(): void {
-    const plan = this.visualReferencePlan();
-    if (!plan) return;
-    this.http.post(`/api/v1/visual-reference-plans/${plan.planId}/first-frame/proposal`, {}).subscribe({
-      next: proposal => this.visualReferenceProposal.set(proposal),
-      error: err => this.visualReferenceError.set(err.error?.detail || err.error?.message || 'The first-frame proposal could not be prepared.'),
-    });
-  }
-
-  uploadVisualReference(event: Event): void {
-    const plan = this.visualReferencePlan();
-    const file = (event.target as HTMLInputElement).files?.[0];
-    if (!plan || !file) return;
-    const form = new FormData(); form.append('file', file);
-    this.visualReferenceError.set('');
-    this.http.post(`/api/v1/visual-reference-plans/${plan.planId}/first-frame/upload`, form).subscribe({
-      next: () => this.inspectVisualReferences({ id: plan.renderJobId } as RenderJob),
-      error: err => this.visualReferenceError.set(err.error?.detail || err.error?.message || 'The image could not be uploaded.'),
-    });
-  }
-
-  validateVisualReferences(): void {
-    const plan = this.visualReferencePlan();
-    if (!plan) return;
-    this.http.post(`/api/v1/visual-reference-plans/${plan.planId}/validate`, {}).subscribe({
-      next: result => this.visualReferenceValidation.set(result),
-      error: err => this.visualReferenceError.set(err.error?.detail || err.error?.message || 'Visual evidence validation failed.'),
-    });
-  }
-
-  acceptImportedVisualReference(referenceAssetId: string): void {
-    const plan = this.visualReferencePlan();
-    if (!plan) return;
-    this.http.post(`/api/v1/visual-reference-plans/${plan.planId}/first-frame/imported/${referenceAssetId}/accept`, {}).subscribe({
-      next: () => this.inspectVisualReferences({ id: plan.renderJobId } as RenderJob),
-      error: err => this.visualReferenceError.set(err.error?.detail || err.error?.message || 'The uploaded first frame could not be accepted.'),
-    });
-  }
-
-  acceptVisualReference(renderAssetId: string): void {
-    const plan = this.visualReferencePlan();
-    if (!plan) return;
-    this.visualReferenceError.set('');
-    this.http.post(`/api/v1/visual-reference-plans/${plan.planId}/first-frame/accept`, { renderAssetId }).subscribe({
-      next: () => this.inspectVisualReferences({ id: plan.renderJobId } as RenderJob),
-      error: err => this.visualReferenceError.set(err.error?.detail || err.error?.message || 'The first frame could not be accepted.'),
-    });
-  }
-
   assetMediaUrl(asset: RenderAsset, original = false): string {
     return `/api/v1/render-assets/${asset.id}/${original ? 'original' : 'media'}`;
   }
 
   assetDownloadUrl(asset: RenderAsset, original = false): string {
     return `/api/v1/render-assets/${asset.id}/${original ? 'original/download' : 'download'}`;
-  }
-
-  useAsVideoFirstFrame(asset: RenderAsset): void {
-    this.queueJobType.set('VIDEO');
-    this.queueFirstFramePath.set(asset.relativePath.startsWith('/') ? asset.relativePath : `/data/${asset.relativePath}`);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   submitVisualEvidence(): void {
@@ -1164,31 +499,6 @@ export class RenderDashboardPage implements OnInit, OnDestroy {
     }).subscribe({
       next: result => { this.visualSubmitting.set(false); this.visualEvidenceResult.set(result); },
       error: err => { this.visualSubmitting.set(false); this.visualEvidenceError.set(err.error?.detail || err.error?.message || 'Visual evidence could not be submitted.'); },
-    });
-  }
-
-  queueRender(): void {
-    if (this.queueLoading()) return;
-    const contentId = Number(this.queueContentId());
-    const promptVersionId = Number(this.queuePromptVersionId());
-    const validationRecordId = Number(this.queueValidationId());
-    if (![contentId, promptVersionId, validationRecordId].every(Number.isInteger) || [contentId, promptVersionId, validationRecordId].some(value => value <= 0)) {
-      this.queueError.set('Content, prompt version, and validation record IDs are required.');
-      return;
-    }
-    if(this.queueJobType() !== 'FIRST_FRAME' && this.workflowReviewId && (!this.workflowReview || this.workflowReview.family8?.renderAuthorization?.status !== 'AUTHORIZED')) {
-      this.queueError.set('Post-family evidence is missing or awaiting authorization. Complete it in the review screen.'); return;
-    }
-    if (this.regenerationHandoffId && !this.regenerationHandoff) { this.queueError.set('Regeneration handoff has not been loaded; queue admission is closed.'); return; }
-    this.queueLoading.set(true); this.queueError.set(''); this.queuedJobId.set('');
-    const firstFramePath = this.queueFirstFramePath().trim();
-    this.http.post<{ renderJobId: string }>('/api/v1/render-jobs', {
-      contentId, promptVersionId, validationRecordId,
-      jobType: this.queueJobType(), openartModel: this.queueModel().trim() || 'byte-plus-seedance-2-mini',
-      openartParams: this.workflowReview ? {workflowProfile:'post-family-v1',workflowReviewId:this.workflowReviewId,workflowBindingHash:this.workflowReview.bindingHash,durationSeconds:this.workflowReview.generation.supportedRenderDuration,aspectRatio:this.workflowReview.generation.settings.aspectRatio,firstFrameImageId:firstFramePath,...(this.visualReferencePlan() ? {visualReferencePlanId:this.visualReferencePlan()?.planId} : {}),...(this.regenerationHandoff ? {regenerationHandoffId:this.regenerationHandoffId,parentVideoId:this.regenerationHandoff.parentVideoId,parentVariantId:this.regenerationHandoff.parentVariantId,parentAssetHash:this.regenerationHandoff.parentAssetHash} : {})} : (firstFramePath ? { firstFrameImageId: firstFramePath, ...(this.visualReferencePlan() ? {visualReferencePlanId:this.visualReferencePlan()?.planId} : {}) } : {}), requestPromptSha256: null,
-    }, { headers: { 'Idempotency-Key': this.regenerationHandoffId && this.queueJobType() === 'VIDEO' ? this.regenerationHandoffId : crypto.randomUUID() } }).subscribe({
-      next: response => { this.queueLoading.set(false); this.queuedJobId.set(response.renderJobId); this.loadJobs(0); },
-      error: err => { this.queueLoading.set(false); this.queueError.set(err.error?.detail || err.error?.message || 'Render could not be queued.'); },
     });
   }
 
@@ -1250,92 +560,18 @@ export class RenderDashboardPage implements OnInit, OnDestroy {
   }
 
 
-  syncOpenArtReferences(): void {
-    this.referenceSyncLoading.set(true);
-    this.referenceError.set('');
-    this.http.post<{ workspaceAssets: number; localAssets: number }>('/api/v1/openart/references/sync', { workspace: true, local: [] }).subscribe({
-      next: () => { this.referenceSyncLoading.set(false); this.loadOpenArtReferences(); },
-      error: err => { this.referenceSyncLoading.set(false); this.referenceError.set(err.error?.detail || err.error?.message || 'OpenArt references could not be synced.'); },
-    });
-  }
-
-  private loadOpenArtReferences(): void {
-    this.http.get<OpenArtReferenceAsset[]>('/api/v1/openart/references').subscribe({
-      next: references => this.referenceAssets.set(references),
-      error: err => this.referenceError.set(err.error?.detail || err.error?.message || 'OpenArt references could not be loaded.'),
-    });
-    this.http.get<OpenArtCapabilities>('/api/v1/openart/references/capabilities').subscribe({
-      next: capabilities => this.referenceCapabilities.set(capabilities),
-      error: () => this.referenceCapabilities.set(null),
-    });
-  }
-
-  draftFirstFramePrompt(): void {
-    const review = this.workflowReview;
-    const source = String(review?.boundRequest?.prompt || review?.originalPrompt || '').trim();
-    const settings = review?.generation?.settings || review?.boundRequest?.settings || {};
-    const character = review?.boundRequest?.mainCharacter || review?.boundRequest?.mainCharacterName || 'the approved main character';
-    const ratio = settings.aspectRatio || 'the saved aspect ratio';
-    const opening = source.split(/\n\s*(?:3|[1-9]\d*)\s*[-–—]/, 1)[0].replace(/^.*?(?:TIMED SHOT PLAN|OPENING)\s*/is, '').trim();
-    this.firstFrameSpecification.set(`Character: ${character}.\nScene and opening state: ${opening || 'Use the exact opening state from the approved production prompt.'}\nObject relationship: preserve every object and contact relationship stated in the opening.\nCamera and framing: clear readable composition at ${ratio}; keep the character and central object visible.\nContinuity: the composition must transition into the next saved production beat.\nRestrictions: use only approved character identity and source-supported details; no extra characters or invented mechanisms.`);
-    this.firstFrameImagePrompt.set(`Create the first frame of the approved video prompt. Show ${character} in the exact saved opening situation: ${opening || 'the source-approved opening state'}. Preserve the authoritative character design, clothing, object relationship and environment. Compose a readable ${ratio} image with the character and central object clearly visible, ready to continue into the next planned beat. Do not add characters, props, mechanisms or story events that are not in the approved source.`);
-  }
-
-  saveVisualPreparation(): void {
-    if (!this.workflowReview || !this.firstFrameSpecification().trim() || !this.firstFrameImagePrompt().trim()) return;
-    this.visualPreparationSaving.set(true); this.visualPreparationError.set('');
-    this.http.post<any>('/api/v1/intelligence/workflow/visual-preparation', {
-      contentId: this.queueContentId(), promptVersionId: this.queuePromptVersionId(), reviewId: this.workflowReviewId,
-      firstFrameSpecification: this.firstFrameSpecification(), firstFrameImagePrompt: this.firstFrameImagePrompt(),
-      status: 'READY_FOR_REVIEW', providerCallPerformed: false,
-      aspectRatio: this.workflowReview?.generation?.settings?.aspectRatio || this.workflowReview?.boundRequest?.settings?.aspectRatio || null,
-      generator: this.queueModel(),
-    }).subscribe({ next: value => { this.visualPreparation.set(value); this.visualPreparationSaving.set(false); }, error: err => { this.visualPreparationSaving.set(false); this.visualPreparationError.set(err.error?.detail || err.error?.message || 'Visual preparation could not be saved.'); } });
-  }
-
-  private loadVisualPreparation(): void {
-    if (!this.queueContentId() || !this.queuePromptVersionId()) return;
-    this.http.get<any>('/api/v1/intelligence/workflow/visual-preparation', { params: { contentId: this.queueContentId(), promptVersionId: this.queuePromptVersionId() } }).subscribe({ next: value => { this.visualPreparation.set(value); this.firstFrameSpecification.set(String(value.firstFrameSpecification || '')); this.firstFrameImagePrompt.set(String(value.firstFrameImagePrompt || '')); }, error: () => {} });
-  }
-
+  private pollingSubscription?: import('rxjs').Subscription;
   ngOnInit() {
-    this.route.queryParamMap.subscribe(params => {
-      this.queueContentId.set(params.get('contentId') || '');
-      this.queuePromptVersionId.set(params.get('promptVersionId') || '');
-      this.queueValidationId.set(params.get('validationRecordId') || '');
-      this.workflowReviewId=params.get('workflowReviewId')||'';
-      this.regenerationHandoffId = params.get('regenerationHandoffId') || '';
-      this.regenerationHandoff = null;
-      if (this.regenerationHandoffId) this.http.get<any>(`/api/v1/intelligence/workflow/records/${this.regenerationHandoffId}`).subscribe({ next: handoff => { this.regenerationHandoff = handoff; }, error: () => this.queueError.set('Regeneration handoff could not be loaded.') });
-      this.workflowReview=null;
-      this.visualPreparation.set(null); this.firstFrameSpecification.set(''); this.firstFrameImagePrompt.set('');
-      if(this.workflowReviewId) this.http.get<any>(`/api/v1/intelligence/workflow/records/${this.workflowReviewId}`).subscribe({next:r=>{this.workflowReview=r;this.queueModel.set(r.generation.apiModelId||'');this.queueFirstFramePath.set(r.generation.settings?.startFrame?.id||'');this.loadVisualPreparation();},error:()=>this.queueError.set('Post-family review record could not be loaded; render acceptance is disabled.')});
-    });
     this.connectLiveNotifications();
-    this.loadOpenArtReferences();
-    // Poll every 5 seconds
-    interval(5000)
-      .pipe(
-        startWith(0),
-        switchMap(() => this.http.get<Page<RenderJob>>(`${this.apiUrl}?page=${this.pageNumber()}&size=50`))
-      )
-      .subscribe({
-        next: (page) => {
-          this.jobs.set(page.content);
-          this.pageNumber.set(page.number); this.totalPages.set(page.totalPages); this.totalElements.set(page.totalElements);
-          this.updateStats(page.content);
-          this.loading.set(false);
-          this.error.set(null);
-        },
-        error: (err) => {
-          this.error.set('Failed to load render jobs: ' + err.message);
-          this.loading.set(false);
-        }
-      });
+    this.pollingSubscription = interval(5000).pipe(startWith(0), switchMap(() => this.http.get<Page<RenderJob>>(`${this.apiUrl}?page=${this.pageNumber()}&size=50`))).subscribe({
+      next: page => { this.jobs.set(page.content); this.pageNumber.set(page.number); this.totalPages.set(page.totalPages); this.totalElements.set(page.totalElements); this.updateStats(page.content); this.loading.set(false); this.error.set(null); },
+      error: err => { this.error.set('Failed to load render jobs: ' + err.message); this.loading.set(false); }
+    });
   }
 
   ngOnDestroy() {
     this.notificationStream?.close();
+    this.pollingSubscription?.unsubscribe();
   }
 
   private connectLiveNotifications(): void {
@@ -1368,7 +604,7 @@ export class RenderDashboardPage implements OnInit, OnDestroy {
       queued: jobs.filter(j => j.status === 'QUEUED').length,
       generating: jobs.filter(j => ['GENERATING', 'POLLING', 'DOWNLOADING'].includes(j.status)).length,
       complete: jobs.filter(j => j.status === 'COMPLETE').length,
-      abandoned: jobs.filter(j => j.status === 'ABANDONED').length
+      abandoned: jobs.filter(j => ['FAILED','ABANDONED'].includes(j.status)).length
     };
     this.stats.set(stats);
   }
