@@ -155,7 +155,7 @@ interface VisualEvidenceResponse {
   standalone: true,
   imports: [CommonModule],
   template: `
-    <div class="workspace render-dashboard">
+    <div class="render-dashboard">
       <header class="dashboard-header">
         <div class="header-content">
           <div class="title-section">
