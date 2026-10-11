@@ -132,6 +132,16 @@ public class IdeaDraftService {
   @Transactional
   public Map<String, Object> save(Map<String, Object> request) {
     var state = normalizedState(map(request.get("state")));
+    // Workspace provisioning belongs to the validated save transaction.  The UI may
+    // omit workspacePath for the first draft; subsequent saves carry the canonical
+    // filesystem identity returned here.
+    if (text(state, "workspacePath").isBlank()) {
+      var workspace = videos.provisionDefaultPromptWorkspace("POMPOM_HILLS_PRODUCTION");
+      if (workspace == null || workspace.folderPath() == null || workspace.folderPath().isBlank())
+        throw new IllegalArgumentException(
+            "Select a workspace or create one before saving; default workspace could not be provisioned");
+      state.put("workspacePath", workspace.folderPath());
+    }
     validateWorkspace(state);
     if (sourceText(state).isBlank())
       throw new IllegalArgumentException("Enter source text before saving a draft");

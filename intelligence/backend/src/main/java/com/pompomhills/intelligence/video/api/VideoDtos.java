@@ -91,6 +91,8 @@ public final class VideoDtos {
 
   public record CreatePromptWorkspaceFolderRequest(String parentDirectory, String folderName) {}
 
+  public record DefaultPromptWorkspaceRequest(String workflow) {}
+
   public record MetadataUpdateRequest(
       @jakarta.validation.constraints.NotBlank String relativePath, String content) {}
 

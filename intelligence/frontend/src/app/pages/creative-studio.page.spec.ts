@@ -93,7 +93,7 @@ describe('step 1 journey safety', () => {
     expect(saved.inputMode).toBe('DETAILED_STORY');
     expect(saved.storyMode).toBe('IMPROVE_EXISTING_STORY');
     fixture.detectChanges();
-    expect(fixture.nativeElement.textContent).not.toContain('Advanced Settings');
+    expect(fixture.nativeElement.textContent).toContain('Advanced Settings / Destination');
     http.match(r=>r.method==='PUT').forEach(r=>r.flush({}));
     http.verify(); fixture.destroy(); TestBed.resetTestingModule();
   });

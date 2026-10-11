@@ -33,7 +33,7 @@ class IdeaDraftServiceTest {
   }
 
   @Test
-  void missingWorkspaceIsActionableAndHasNoSideEffects() {
+  void failedDefaultWorkspaceProvisioningIsActionableAndHasNoSideEffects() {
     var videos = mock(VideoService.class);
     var contents = mock(ContentWorkspaceController.class);
     var service = new IdeaDraftService(null, new ObjectMapper(), videos, contents);
@@ -49,7 +49,8 @@ class IdeaDraftServiceTest {
                         Map.of("inputMode", "IDEA", "idea", "A short idea"))))
         .isInstanceOf(IllegalArgumentException.class)
         .hasMessageContaining("Select a workspace");
-    verifyNoInteractions(videos, contents);
+    verify(videos).provisionDefaultPromptWorkspace("POMPOM_HILLS_PRODUCTION");
+    verifyNoInteractions(contents);
   }
 
   @Test

@@ -119,6 +119,12 @@ public class VideoController {
     return service.createPromptWorkspaceFolder(request.parentDirectory(), request.folderName());
   }
 
+  @PostMapping("/prompt-workspaces/default")
+  public VideoDtos.PromptWorkspace provisionDefaultPromptWorkspace(
+      @RequestBody(required = false) VideoDtos.DefaultPromptWorkspaceRequest request) {
+    return service.provisionDefaultPromptWorkspace(request == null ? null : request.workflow());
+  }
+
   @GetMapping("/content")
   public ResponseEntity<Resource> content(@RequestParam("path") String relativePath) {
     var media = mediaContent.resolve(relativePath);

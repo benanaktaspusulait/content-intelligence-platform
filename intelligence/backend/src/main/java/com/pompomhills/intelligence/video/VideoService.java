@@ -35,11 +35,18 @@ import java.util.stream.Stream;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.jdbc.core.simple.JdbcClient;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class VideoService {
+  private static final String FALLBACK_WORKSPACE_PARENT = "library/POMPOM_HILLS_PRODUCTION/09_SOCIAL_REELS/new14092026";
+  private static final String FALLBACK_WORKSPACE_NAME = "pompom-default";
+  @Value("${pompom.workspace.default-parent:${POMPOM_DEFAULT_WORKSPACE_PARENT:library/POMPOM_HILLS_PRODUCTION/09_SOCIAL_REELS/new14092026}}")
+  private String configuredDefaultWorkspaceParent;
+  @Value("${pompom.workspace.default-name:${POMPOM_DEFAULT_WORKSPACE_NAME:pompom-default}}")
+  private String configuredDefaultWorkspaceName;
   private final VideoRepository videos;
   private final CreativeAnalysisRepository analyses;
   private final CreativeFingerprintRepository fingerprints;
@@ -497,6 +504,35 @@ public class VideoService {
           .sorted(Comparator.comparing(PromptWorkspace::folderPath, String.CASE_INSENSITIVE_ORDER)).toList();
     } catch (IOException unavailable) {
       throw new IllegalStateException("Workspaces could not be loaded. Check the configured library folder", unavailable);
+    }
+  }
+
+  /** Idempotently provisions the single reusable destination for the Pompom Hills workflow. */
+  @Transactional
+  public PromptWorkspace provisionDefaultPromptWorkspace(String workflow) {
+    if (workflow != null && !workflow.isBlank() && !"POMPOM_HILLS_PRODUCTION".equals(workflow)) {
+      throw new IllegalArgumentException("Unsupported workspace workflow");
+    }
+    String parentValue = configuredDefaultWorkspaceParent == null || configuredDefaultWorkspaceParent.isBlank()
+        ? FALLBACK_WORKSPACE_PARENT : configuredDefaultWorkspaceParent.trim();
+    String nameValue = configuredDefaultWorkspaceName == null || configuredDefaultWorkspaceName.isBlank()
+        ? FALLBACK_WORKSPACE_NAME : configuredDefaultWorkspaceName.trim();
+    String expected = parentValue + "/" + nameValue;
+    var existing = promptWorkspaceDestinations().stream()
+        .filter(row -> expected.equals(row.folderPath()))
+        .findFirst();
+    if (existing.isPresent()) return existing.get();
+    Path root = properties.dataRoot().toAbsolutePath().normalize();
+    Path parent = root.resolve(parentValue).normalize();
+    Path folder = parent.resolve(nameValue).normalize();
+    if (!parent.startsWith(root) || !folder.startsWith(root) || !Files.isDirectory(parent))
+      throw new IllegalArgumentException("Default workspace parent is unavailable");
+    try {
+      Files.createDirectories(folder);
+      return new PromptWorkspace(nameValue, expected, List.of(), null, null,
+          "NO_PROMPT", List.of(), "NOT_ANALYZED", Instant.now().toString());
+    } catch (IOException error) {
+      throw new IllegalStateException("Default workspace could not be provisioned", error);
     }
   }
 
