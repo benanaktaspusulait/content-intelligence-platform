@@ -5,7 +5,7 @@
 ❯ Building...
 ✔ Building...
 Initial chunk files                                           | Names                                                      |  Raw size
-chunk-V3FXWZCN.js                                             | -                                                          | 423.04 kB | 
+chunk-AIYS3Y3Q.js                                             | -                                                          | 423.21 kB | 
 chunk-CV2GGD4H.js                                             | -                                                          | 380.02 kB | 
 chunk-IMIWSFJN.js                                             | -                                                          | 281.83 kB | 
 spec-app-pages-quality-validator-family10-representation.js   | spec-app-pages-quality-validator-family10-representation   | 269.41 kB | 
@@ -21,8 +21,8 @@ chunk-32DFMEOH.js                                             | -               
 spec-app-pages-quality-validator-post-family-workflow.js      | spec-app-pages-quality-validator-post-family-workflow      |  31.02 kB | 
 spec-app-pages-quality-validator-creative-role.component.js   | spec-app-pages-quality-validator-creative-role.component   |  27.80 kB | 
 spec-app-pages-render-preparation.page.js                     | spec-app-pages-render-preparation.page                     |  25.22 kB | 
+spec-app-pages-creative-studio.idea.js                        | spec-app-pages-creative-studio.idea                        |  17.55 kB | 
 spec-app-pages-video-detail.page.js                           | spec-app-pages-video-detail.page                           |  17.29 kB | 
-spec-app-pages-creative-studio.idea.js                        | spec-app-pages-creative-studio.idea                        |  17.02 kB | 
 chunk-3BZCMYJ6.js                                             | -                                                          |  15.51 kB | 
 chunk-IEZOKNJO.js                                             | -                                                          |  14.05 kB | 
 chunk-2C2FFLUH.js                                             | -                                                          |  13.98 kB | 
@@ -72,7 +72,7 @@ chunk-JZU4ASXB.js                                             | operations-page 
 chunk-DUIO2NXY.js                                             | quality-validator-component                                | 330 bytes | 
 ...and 8 more lazy chunks files. Use "--verbose" to show all the files.
 
-Application bundle generation complete. [12.256 seconds] - 2026-10-11T21:56:00.266Z
+Application bundle generation complete. [13.540 seconds] - 2026-10-11T21:58:44.217Z
 
 ▲ [WARNING] NG8113: TimelineChartComponent is not used within the template of QualityValidatorComponent [plugin angular-compiler]
 
@@ -93,7 +93,7 @@ Application bundle generation complete. [12.256 seconds] - 2026-10-11T21:56:00.2
 
 
  Test Files  23 passed (23)
-      Tests  180 passed (180)
-   Start at  22:56:00
-   Duration  3.77s (transform 4.85s, setup 4.69s, import 6.78s, tests 6.39s, environment 23.27s)
+      Tests  181 passed (181)
+   Start at  22:58:44
+   Duration  3.94s (transform 3.95s, setup 4.46s, import 6.79s, tests 7.46s, environment 24.78s)
 

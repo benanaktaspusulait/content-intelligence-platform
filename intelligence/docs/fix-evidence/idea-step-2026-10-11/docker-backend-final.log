@@ -1,0 +1,65 @@
+ Image intelligence-backend Building 
+ Image intelligence-ml-service Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 1.17kB done
+#1 DONE 0.0s
+
+#2 [internal] load build definition from Dockerfile
+#2 transferring dockerfile: 559B done
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/maven:3.9.9-amazoncorretto-21
+#3 DONE 0.0s
+
+#4 [internal] load metadata for docker.io/library/amazoncorretto:21-alpine
+#4 DONE 0.9s
+
+#5 [internal] load .dockerignore
+#5 transferring context: 59B done
+#5 DONE 0.0s
+
+#6 [stage-1 1/4] FROM docker.io/library/amazoncorretto:21-alpine@sha256:b7451ecea0f2a02b9597493bb57c4014f43c41db4b470a8aee7228d7a0279025
+#6 DONE 0.0s
+
+#7 [build 1/6] FROM docker.io/library/maven:3.9.9-amazoncorretto-21
+#7 DONE 0.0s
+
+#8 [internal] load build context
+#8 transferring context: 61.80kB 0.0s done
+#8 DONE 0.0s
+
+#9 [build 3/6] COPY pom.xml .
+#9 CACHED
+
+#10 [build 2/6] WORKDIR /workspace
+#10 CACHED
+
+#11 [build 4/6] RUN mvn -q -DskipTests dependency:go-offline
+#11 CACHED
+
+#12 [build 5/6] COPY src src
+#12 DONE 0.1s
+
+#13 [build 6/6] RUN mvn -q -Dmaven.test.skip=true package
+#13 DONE 8.8s
+
+#14 [stage-1 2/4] RUN apk add --no-cache curl
+#14 CACHED
+
+#15 [stage-1 3/4] WORKDIR /app
+#15 CACHED
+
+#16 [stage-1 4/4] COPY --from=build /workspace/target/creative-intelligence-backend-*.jar app.jar
+#16 DONE 0.2s
+
+#17 exporting to image
+#17 exporting layers
+#17 exporting layers 0.2s done
+#17 writing image sha256:2c56a4e95dee4541aecd6f9e0af56046269adae01afd2d65c375093afde1004a
+#17 writing image sha256:2c56a4e95dee4541aecd6f9e0af56046269adae01afd2d65c375093afde1004a done
+#17 naming to docker.io/library/intelligence-backend done
+#17 DONE 0.2s
+
+#18 resolving provenance for metadata file
+#18 DONE 0.0s
+ Image intelligence-backend Built 

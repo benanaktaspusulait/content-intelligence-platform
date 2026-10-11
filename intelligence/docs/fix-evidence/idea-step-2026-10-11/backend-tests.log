@@ -1,36 +1,36 @@
-22:52:39.050 [main] INFO org.testcontainers.DockerClientFactory -- Testcontainers version: 2.0.2
-22:52:39.258 [main] INFO org.testcontainers.dockerclient.DockerClientProviderStrategy -- Loaded org.testcontainers.dockerclient.UnixSocketClientProviderStrategy from ~/.testcontainers.properties, will try it first
-22:52:39.592 [main] INFO org.testcontainers.dockerclient.DockerClientProviderStrategy -- Found Docker environment with Environment variables, system properties and defaults. Resolved dockerHost=unix:///Users/benanaktas/.docker/run/docker.sock
-22:52:39.593 [main] INFO org.testcontainers.DockerClientFactory -- Docker host IP address is localhost
-22:52:39.606 [main] INFO org.testcontainers.DockerClientFactory -- Connected to docker: 
+23:01:39.495 [main] INFO org.testcontainers.DockerClientFactory -- Testcontainers version: 2.0.2
+23:01:39.682 [main] INFO org.testcontainers.dockerclient.DockerClientProviderStrategy -- Loaded org.testcontainers.dockerclient.UnixSocketClientProviderStrategy from ~/.testcontainers.properties, will try it first
+23:01:39.964 [main] INFO org.testcontainers.dockerclient.DockerClientProviderStrategy -- Found Docker environment with Environment variables, system properties and defaults. Resolved dockerHost=unix:///Users/benanaktas/.docker/run/docker.sock
+23:01:39.966 [main] INFO org.testcontainers.DockerClientFactory -- Docker host IP address is localhost
+23:01:39.983 [main] INFO org.testcontainers.DockerClientFactory -- Connected to docker: 
   Server Version: 29.2.1
   API Version: 1.53
   Operating System: Docker Desktop
   Total Memory: 11948 MB
   Labels: 
     com.docker.desktop.address=unix:///Users/benanaktas/Library/Containers/com.docker.docker/Data/docker-cli.sock
-22:52:39.619 [main] INFO org.testcontainers.images.PullPolicy -- Image pull policy will be performed by: DefaultPullPolicy()
-22:52:39.620 [main] INFO org.testcontainers.utility.ImageNameSubstitutor -- Image name substitution will be performed by: DefaultImageNameSubstitutor (composite of 'ConfigurationFileImageNameSubstitutor' and 'PrefixingImageNameSubstitutor')
-22:52:39.644 [main] INFO tc.testcontainers/ryuk:0.13.0 -- Creating container for image: testcontainers/ryuk:0.13.0
-22:52:39.764 [main] INFO org.testcontainers.utility.RegistryAuthLocator -- Credential helper/store (docker-credential-desktop) does not have credentials for https://index.docker.io/v1/
-22:52:39.862 [main] INFO tc.testcontainers/ryuk:0.13.0 -- Container testcontainers/ryuk:0.13.0 is starting: 92206dcf9ad9229b59fbe17af911c4ba2121c8dea767db54924b0ae9eaf90325
-22:52:40.374 [main] INFO tc.testcontainers/ryuk:0.13.0 -- Container testcontainers/ryuk:0.13.0 started in PT0.729323S
-22:52:40.379 [main] INFO org.testcontainers.utility.RyukResourceReaper -- Ryuk started - will monitor and terminate Testcontainers containers on JVM exit
-22:52:40.380 [main] INFO org.testcontainers.DockerClientFactory -- Checking the system...
-22:52:40.380 [main] INFO org.testcontainers.DockerClientFactory -- ✔︎ Docker server version should be at least 1.6.0
-22:52:40.389 [main] INFO tc.postgres:17-alpine -- Creating container for image: postgres:17-alpine
-22:52:40.426 [main] INFO tc.postgres:17-alpine -- Container postgres:17-alpine is starting: d306ce0d48b73651eb753a2480c0b4e16dea171c61f58d0074d28915776d026a
-22:52:41.647 [main] INFO tc.postgres:17-alpine -- Container postgres:17-alpine started in PT1.257667S
-22:52:41.647 [main] INFO tc.postgres:17-alpine -- Container is started (JDBC URL: jdbc:postgresql://localhost:60541/pompom?loggerLevel=OFF)
+23:01:39.990 [main] INFO org.testcontainers.images.PullPolicy -- Image pull policy will be performed by: DefaultPullPolicy()
+23:01:39.996 [main] INFO org.testcontainers.utility.ImageNameSubstitutor -- Image name substitution will be performed by: DefaultImageNameSubstitutor (composite of 'ConfigurationFileImageNameSubstitutor' and 'PrefixingImageNameSubstitutor')
+23:01:40.032 [main] INFO tc.testcontainers/ryuk:0.13.0 -- Creating container for image: testcontainers/ryuk:0.13.0
+23:01:40.215 [main] INFO org.testcontainers.utility.RegistryAuthLocator -- Credential helper/store (docker-credential-desktop) does not have credentials for https://index.docker.io/v1/
+23:01:40.312 [main] INFO tc.testcontainers/ryuk:0.13.0 -- Container testcontainers/ryuk:0.13.0 is starting: c25d899f1fbc3279edb9aa1b078cd4100963cf8c62fa63f3310b91b8cebe56ef
+23:01:40.557 [main] INFO tc.testcontainers/ryuk:0.13.0 -- Container testcontainers/ryuk:0.13.0 started in PT0.524978S
+23:01:40.562 [main] INFO org.testcontainers.utility.RyukResourceReaper -- Ryuk started - will monitor and terminate Testcontainers containers on JVM exit
+23:01:40.562 [main] INFO org.testcontainers.DockerClientFactory -- Checking the system...
+23:01:40.562 [main] INFO org.testcontainers.DockerClientFactory -- ✔︎ Docker server version should be at least 1.6.0
+23:01:40.570 [main] INFO tc.postgres:17-alpine -- Creating container for image: postgres:17-alpine
+23:01:40.594 [main] INFO tc.postgres:17-alpine -- Container postgres:17-alpine is starting: 0485c40cafe74c700c11e961c4a520067bc6f9e445420e3eabaa2abd8fbd2d78
+23:01:41.758 [main] INFO tc.postgres:17-alpine -- Container postgres:17-alpine started in PT1.187594S
+23:01:41.760 [main] INFO tc.postgres:17-alpine -- Container is started (JDBC URL: jdbc:postgresql://localhost:61185/pompom?loggerLevel=OFF)
 Mockito is currently self-attaching to enable the inline-mock-maker. This will no longer work in future releases of the JDK. Please add Mockito as an agent to your build as described in Mockito's documentation: https://javadoc.io/doc/org.mockito/mockito-core/latest/org.mockito/org/mockito/Mockito.html#0.3
-OpenJDK 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended
 WARNING: A Java agent has been loaded dynamically (/Users/benanaktas/.m2/repository/net/bytebuddy/byte-buddy-agent/1.18.11/byte-buddy-agent-1.18.11.jar)
 WARNING: If a serviceability tool is in use, please run with -XX:+EnableDynamicAgentLoading to hide this warning
 WARNING: If a serviceability tool is not in use, please run with -Djdk.instrument.traceUsage for more information
 WARNING: Dynamic loading of agents will be disallowed by default in a future release
-22:52:44.033 [main] INFO tc.postgres:17-alpine -- Creating container for image: postgres:17-alpine
-22:52:44.093 [main] INFO tc.postgres:17-alpine -- Container postgres:17-alpine is starting: c05e7db41ca8e5e902d6fc6a9aeb21907fb37b402d348bc94d7896a790285501
-22:52:45.466 [main] INFO tc.postgres:17-alpine -- Container postgres:17-alpine started in PT1.433009S
-22:52:45.466 [main] INFO tc.postgres:17-alpine -- Container is started (JDBC URL: jdbc:postgresql://localhost:60596/pompom?loggerLevel=OFF)
-22:52:47.979 [main] INFO com.pompomhills.intelligence.quality.QualityMlClient -- ML client initialized with base URL: http://127.0.0.1:60640
-22:52:48.076 [main] INFO com.pompomhills.intelligence.quality.QualityMlClient -- ML client initialized with base URL: http://127.0.0.1:60642
+OpenJDK 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended
+23:01:44.171 [main] INFO tc.postgres:17-alpine -- Creating container for image: postgres:17-alpine
+23:01:44.297 [main] INFO tc.postgres:17-alpine -- Container postgres:17-alpine is starting: 6baacd6edfe949ee5f85769b9fa6bad8e7d114cf016c2a69f506c9776f14f353
+23:01:45.542 [main] INFO tc.postgres:17-alpine -- Container postgres:17-alpine started in PT1.371352S
+23:01:45.543 [main] INFO tc.postgres:17-alpine -- Container is started (JDBC URL: jdbc:postgresql://localhost:61243/pompom?loggerLevel=OFF)
+23:01:46.584 [main] INFO com.pompomhills.intelligence.quality.QualityMlClient -- ML client initialized with base URL: http://127.0.0.1:61289
+23:01:46.640 [main] INFO com.pompomhills.intelligence.quality.QualityMlClient -- ML client initialized with base URL: http://127.0.0.1:61291

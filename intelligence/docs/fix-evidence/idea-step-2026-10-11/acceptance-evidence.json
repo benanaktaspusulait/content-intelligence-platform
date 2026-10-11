@@ -23,14 +23,14 @@
     "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/backend/src/test/java/com/pompomhills/intelligence/workflow/IdeaDraftPostgresTest.java"
   ],
   "frontend": {
-    "tests": 180,
+    "tests": 181,
     "test_files": 23,
     "failures": 0,
     "production_build": "PASS",
     "warning": "Nonfatal bundle/style size warnings and existing unused quality-component imports."
   },
   "backend": {
-    "tests": 25,
+    "tests": 26,
     "suites": [
       {
         "name": "com.pompomhills.intelligence.workflow.IdeaDraftServiceTest",
@@ -41,7 +41,7 @@
       },
       {
         "name": "com.pompomhills.intelligence.workflow.IdeaDraftPostgresTest",
-        "tests": "8",
+        "tests": "9",
         "failures": "0",
         "errors": "0",
         "skipped": "0"
@@ -141,11 +141,26 @@
     "02-idea-unsaved.png": "real browser acceptance",
     "05b-prompt-transition.png": "real browser acceptance",
     "11-save-error.png": "real browser acceptance",
-    "01-clean.png": "real browser acceptance",
+    "01-clean.png": "actual clean DB before acceptance saves",
     "04b-story-transition.png": "real browser acceptance",
     "06-generation-authorization.png": "real browser acceptance",
     "08-mobile.png": "real browser acceptance"
   },
-  "live_frontend_image": "sha256:22c544b21c5598f9010c700d6cb0e961cd2ab20c88294e7536247d89d1c2b7ea",
-  "frontend_image_matches_built_image": true
+  "live_frontend_image": "sha256:1d8333c2033a052f41f9c4e2e7109d8dd350be684f118107ec79906a46fcf13f",
+  "frontend_image_matches_built_image": true,
+  "authorization_primary_action_tdd": "First failure: 2 primary buttons; fixed to one, 181 final frontend tests pass",
+  "live_backend_image": "sha256:2c56a4e95dee4541aecd6f9e0af56046269adae01afd2d65c375093afde1004a",
+  "backend_image_matches_built_image": true,
+  "final_database": {
+    "drafts": 3,
+    "contents": 1,
+    "prompt_versions": 1,
+    "operator_stories": 1,
+    "story_approvals": 0,
+    "paid_roles": 0,
+    "render_jobs": 0,
+    "characters": 6,
+    "videos": 50,
+    "workflow_events": 6
+  }
 }

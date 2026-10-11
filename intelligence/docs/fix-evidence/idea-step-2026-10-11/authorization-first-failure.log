@@ -1,0 +1,59 @@
+
+> frontend@0.0.0 test
+> ng test --watch=false --include=src/app/pages/creative-studio.idea.spec.ts
+
+❯ Building...
+✔ Building...
+Initial chunk files                    | Names                               |  Raw size
+spec-app-pages-creative-studio.idea.js | spec-app-pages-creative-studio.idea | 440.49 kB | 
+styles.css                             | styles                              | 237.88 kB | 
+chunk-RSTWSNOR.js                      | -                                   |   4.75 kB | 
+init-testbed.js                        | init-testbed                        |   1.21 kB | 
+vitest-mock-patch.js                   | vitest-mock-patch                   | 974 bytes | 
+
+                                       | Initial total                       | 685.30 kB
+
+Application bundle generation complete. [12.507 seconds] - 2026-10-11T21:58:14.839Z
+
+▲ [WARNING] NG8113: TimelineChartComponent is not used within the template of QualityValidatorComponent [plugin angular-compiler]
+
+    src/app/pages/quality-validator/quality-validator.component.ts:202:39:
+      202 │ ...odule, FormsModule, TimelineChartComponent, RouterLink, Genera...
+          ╵                        ~~~~~~~~~~~~~~~~~~~~~~
+
+
+▲ [WARNING] NG8113: GeneralProducibilityComponent is not used within the template of QualityValidatorComponent [plugin angular-compiler]
+
+    src/app/pages/quality-validator/quality-validator.component.ts:202:75:
+      202 │ ...ent, RouterLink, GeneralProducibilityComponent, PostFamilyWork...
+          ╵                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+
+ RUN  v4.1.11 /Users/benanaktas/project/video/content-intelligence-platform/intelligence/frontend
+
+ ❯ |frontend| src/app/pages/creative-studio.idea.spec.ts (22 tests | 1 failed) 918ms
+     × shows one primary action while preparing paid generation 44ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |frontend| src/app/pages/creative-studio.idea.spec.ts > Idea entry ownership and free persistence > shows one primary action while preparing paid generation
+AssertionError: expected 2 to be 1 // Object.is equality
+
+- Expected
++ Received
+
+- 1
++ 2
+
+ ❯ src/app/pages/creative-studio.idea.spec.ts:36:346
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 21 passed (22)
+   Start at  22:58:15
+   Duration  2.27s (transform 252ms, setup 214ms, import 364ms, tests 918ms, environment 603ms)
+

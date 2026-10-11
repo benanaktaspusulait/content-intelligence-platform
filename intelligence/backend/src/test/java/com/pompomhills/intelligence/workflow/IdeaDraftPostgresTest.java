@@ -264,4 +264,13 @@ class IdeaDraftPostgresTest {
         .isZero();
     verifyNoInteractions(contents);
   }
+  @Test void sameRevisionCheckpointsUseActualTimeDespiteDifferentTimestampPrecision() throws Exception {
+    UUID id=UUID.randomUUID();
+    for(var checkpoint:List.of(Map.of("checkpoint","IDEA","updatedAt","2026-10-11T12:00:00.120Z"),Map.of("checkpoint","STORY","updatedAt","2026-10-11T12:00:00.120100Z"))) {
+      var payload=new LinkedHashMap<String,Object>(checkpoint);payload.put("draftId",id.toString());payload.put("ideaDraft",true);payload.put("revision",1);payload.put("state",state("DETAILED_STORY","Human story"));
+      jdbc.sql("INSERT INTO post_family_workflow_events(id,kind,payload) VALUES(:id,'CREATIVE_STUDIO_SESSION',CAST(:payload AS jsonb))").param("id",UUID.randomUUID()).param("payload",new ObjectMapper().writeValueAsString(payload)).update();
+    }
+    assertThat(service.get(id,"library/work")).containsEntry("checkpoint","STORY");assertThat(service.list().get(0)).containsEntry("checkpoint","STORY");
+  }
+
 }

@@ -1,20 +1,20 @@
- Image intelligence-backend Building 
  Image intelligence-ml-service Building 
- Image intelligence-frontend Building 
  Image intelligence-creative-render-service Building 
+ Image intelligence-frontend Building 
+ Image intelligence-backend Building 
 #1 [internal] load local bake definitions
 #1 reading from stdin 2.27kB done
 #1 DONE 0.0s
 
 #2 [internal] load build definition from Dockerfile
-#2 transferring dockerfile: 304B done
-#2 DONE 0.0s
+#2 transferring dockerfile: 304B 0.0s done
+#2 DONE 0.1s
 
-#3 [internal] load metadata for docker.io/library/nginx:1.29-alpine
-#3 DONE 0.6s
+#3 [internal] load metadata for docker.io/library/node:22.22-alpine
+#3 DONE 1.0s
 
-#4 [internal] load metadata for docker.io/library/node:22.22-alpine
-#4 DONE 0.6s
+#4 [internal] load metadata for docker.io/library/nginx:1.29-alpine
+#4 DONE 1.0s
 
 #5 [internal] load .dockerignore
 #5 transferring context: 91B done
@@ -27,81 +27,81 @@
 #7 DONE 0.0s
 
 #8 [internal] load build context
-#8 transferring context: 185.35kB done
+#8 transferring context: 185.91kB 0.0s done
 #8 DONE 0.0s
 
-#9 [build 2/6] WORKDIR /workspace
+#9 [build 3/6] COPY package*.json ./
 #9 CACHED
 
-#10 [build 3/6] COPY package*.json ./
+#10 [build 2/6] WORKDIR /workspace
 #10 CACHED
 
 #11 [build 4/6] RUN npm ci
 #11 CACHED
 
 #12 [build 5/6] COPY . .
-#12 DONE 0.0s
+#12 DONE 0.1s
 
 #13 [build 6/6] RUN npm run build
-#13 0.282 
-#13 0.282 > frontend@0.0.0 build
-#13 0.282 > ng build
-#13 0.282 
-#13 0.963 ❯ Building...
-#13 25.11 ✔ Building...
-#13 25.12 Initial chunk files | Names                         |  Raw size | Estimated transfer size
-#13 25.12 styles-74PIG2MI.css | styles                        | 204.48 kB |                28.80 kB
-#13 25.12 chunk-ANYMCDSL.js   | -                             | 183.13 kB |                53.17 kB
-#13 25.12 chunk-OLZ3XFDA.js   | -                             |  95.62 kB |                24.12 kB
-#13 25.12 chunk-6QRON4PN.js   | -                             |  24.60 kB |                 7.34 kB
-#13 25.12 main-NPZELKT3.js    | main                          |   8.03 kB |                 2.26 kB
-#13 25.12 chunk-3RHWOS5U.js   | -                             | 705 bytes |               705 bytes
-#13 25.12 
-#13 25.12                     | Initial total                 | 516.56 kB |               116.40 kB
-#13 25.12 
-#13 25.12 Lazy chunk files    | Names                         |  Raw size | Estimated transfer size
-#13 25.12 chunk-6OJFWOB7.js   | editor-api                    |   2.28 MB |               470.00 kB
-#13 25.12 chunk-WK6FWRTK.js   | quality-validator-component   | 262.82 kB |                51.94 kB
-#13 25.12 chunk-NPW33JIV.js   | creative-studio-page          | 189.10 kB |                34.40 kB
-#13 25.12 chunk-WELVRCDP.js   | video-detail-page             | 100.18 kB |                22.83 kB
-#13 25.12 chunk-XC3JCF7C.js   | render-preparation-page       |  81.13 kB |                17.04 kB
-#13 25.12 main-QCIVHFPX.css   | -                             |  68.26 kB |                 9.89 kB
-#13 25.12 chunk-J55MCTV6.css  | -                             |  68.26 kB |                 9.89 kB
-#13 25.12 chunk-BPJLJD4Q.js   | render-dashboard-page         |  49.69 kB |                10.08 kB
-#13 25.12 chunk-ABLPL5MB.js   | -                             |  38.29 kB |                 8.04 kB
-#13 25.12 chunk-SJJTR7Y6.js   | -                             |  23.86 kB |                 6.63 kB
-#13 25.12 chunk-DF7PPQK7.js   | operations-page               |  19.09 kB |                 4.53 kB
-#13 25.12 chunk-J7TMJWXJ.js   | rule-governance-page          |  15.64 kB |                 3.74 kB
-#13 25.12 chunk-HFY3X543.js   | import-data-page              |  15.59 kB |                 4.54 kB
-#13 25.12 chunk-CVM24Q5S.js   | video-analysis-workbench-page |  14.55 kB |                 4.09 kB
-#13 25.12 chunk-OVGRJMAW.js   | predictions-page              |  11.96 kB |                 3.37 kB
-#13 25.12 ...and 15 more lazy chunks files. Use "--verbose" to show all the files.
-#13 25.12 
-#13 25.12 Application bundle generation complete. [24.149 seconds] - 2026-10-11T21:56:15.035Z
-#13 25.12 
-#13 25.12 ▲ [WARNING] NG8113: TimelineChartComponent is not used within the template of QualityValidatorComponent [plugin angular-compiler]
-#13 25.12 
-#13 25.12     src/app/pages/quality-validator/quality-validator.component.ts:202:39:
-#13 25.12       202 │ ...odule, FormsModule, TimelineChartComponent, RouterLink, Genera...
-#13 25.12           ╵                        ~~~~~~~~~~~~~~~~~~~~~~
-#13 25.12 
-#13 25.12 
-#13 25.12 ▲ [WARNING] NG8113: GeneralProducibilityComponent is not used within the template of QualityValidatorComponent [plugin angular-compiler]
-#13 25.12 
-#13 25.12     src/app/pages/quality-validator/quality-validator.component.ts:202:75:
-#13 25.12       202 │ ...ent, RouterLink, GeneralProducibilityComponent, PostFamilyWork...
-#13 25.12           ╵                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#13 25.12 
-#13 25.12 
-#13 25.12 ▲ [WARNING] bundle initial exceeded maximum budget. Budget 500.00 kB was not met by 16.56 kB with a total of 516.56 kB.
-#13 25.12 
-#13 25.12 
-#13 25.12 ▲ [WARNING] angular:styles/component:scss;7b14b3ff5acbb763954df7cd8af2c34d6d3b0fd3f2c8e36867910ccbc7e2657f;/workspace/src/app/pages/creative-studio.page.ts exceeded maximum budget. Budget 26.00 kB was not met by 301 bytes with a total of 26.30 kB.
-#13 25.12 
-#13 25.12 
-#13 25.12 Output location: /workspace/dist/frontend
-#13 25.12 
-#13 DONE 25.5s
+#13 0.400 
+#13 0.400 > frontend@0.0.0 build
+#13 0.400 > ng build
+#13 0.400 
+#13 1.231 ❯ Building...
+#13 27.52 ✔ Building...
+#13 27.52 Initial chunk files | Names                         |  Raw size | Estimated transfer size
+#13 27.52 styles-74PIG2MI.css | styles                        | 204.48 kB |                28.80 kB
+#13 27.52 chunk-ANYMCDSL.js   | -                             | 183.13 kB |                53.17 kB
+#13 27.52 chunk-OLZ3XFDA.js   | -                             |  95.62 kB |                24.12 kB
+#13 27.52 chunk-6QRON4PN.js   | -                             |  24.60 kB |                 7.34 kB
+#13 27.52 main-2ID7ARP3.js    | main                          |   8.03 kB |                 2.26 kB
+#13 27.52 chunk-3RHWOS5U.js   | -                             | 705 bytes |               705 bytes
+#13 27.52 
+#13 27.52                     | Initial total                 | 516.56 kB |               116.39 kB
+#13 27.52 
+#13 27.52 Lazy chunk files    | Names                         |  Raw size | Estimated transfer size
+#13 27.52 chunk-6OJFWOB7.js   | editor-api                    |   2.28 MB |               470.00 kB
+#13 27.52 chunk-WK6FWRTK.js   | quality-validator-component   | 262.82 kB |                51.94 kB
+#13 27.52 chunk-BBRFVUEO.js   | creative-studio-page          | 189.18 kB |                34.37 kB
+#13 27.52 chunk-WELVRCDP.js   | video-detail-page             | 100.18 kB |                22.83 kB
+#13 27.52 chunk-XC3JCF7C.js   | render-preparation-page       |  81.13 kB |                17.04 kB
+#13 27.52 main-QCIVHFPX.css   | -                             |  68.26 kB |                 9.89 kB
+#13 27.52 chunk-J55MCTV6.css  | -                             |  68.26 kB |                 9.89 kB
+#13 27.52 chunk-BPJLJD4Q.js   | render-dashboard-page         |  49.69 kB |                10.08 kB
+#13 27.52 chunk-ABLPL5MB.js   | -                             |  38.29 kB |                 8.04 kB
+#13 27.52 chunk-SJJTR7Y6.js   | -                             |  23.86 kB |                 6.63 kB
+#13 27.52 chunk-DF7PPQK7.js   | operations-page               |  19.09 kB |                 4.53 kB
+#13 27.52 chunk-J7TMJWXJ.js   | rule-governance-page          |  15.64 kB |                 3.74 kB
+#13 27.52 chunk-HFY3X543.js   | import-data-page              |  15.59 kB |                 4.54 kB
+#13 27.52 chunk-CVM24Q5S.js   | video-analysis-workbench-page |  14.55 kB |                 4.09 kB
+#13 27.52 chunk-OVGRJMAW.js   | predictions-page              |  11.96 kB |                 3.37 kB
+#13 27.52 ...and 15 more lazy chunks files. Use "--verbose" to show all the files.
+#13 27.52 
+#13 27.52 Application bundle generation complete. [26.286 seconds] - 2026-10-11T21:59:00.700Z
+#13 27.52 
+#13 27.52 ▲ [WARNING] NG8113: TimelineChartComponent is not used within the template of QualityValidatorComponent [plugin angular-compiler]
+#13 27.52 
+#13 27.52     src/app/pages/quality-validator/quality-validator.component.ts:202:39:
+#13 27.52       202 │ ...odule, FormsModule, TimelineChartComponent, RouterLink, Genera...
+#13 27.52           ╵                        ~~~~~~~~~~~~~~~~~~~~~~
+#13 27.52 
+#13 27.52 
+#13 27.52 ▲ [WARNING] NG8113: GeneralProducibilityComponent is not used within the template of QualityValidatorComponent [plugin angular-compiler]
+#13 27.52 
+#13 27.52     src/app/pages/quality-validator/quality-validator.component.ts:202:75:
+#13 27.52       202 │ ...ent, RouterLink, GeneralProducibilityComponent, PostFamilyWork...
+#13 27.52           ╵                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#13 27.52 
+#13 27.52 
+#13 27.52 ▲ [WARNING] bundle initial exceeded maximum budget. Budget 500.00 kB was not met by 16.56 kB with a total of 516.56 kB.
+#13 27.52 
+#13 27.52 
+#13 27.52 ▲ [WARNING] angular:styles/component:scss;7b14b3ff5acbb763954df7cd8af2c34d6d3b0fd3f2c8e36867910ccbc7e2657f;/workspace/src/app/pages/creative-studio.page.ts exceeded maximum budget. Budget 26.00 kB was not met by 301 bytes with a total of 26.30 kB.
+#13 27.52 
+#13 27.52 
+#13 27.53 Output location: /workspace/dist/frontend
+#13 27.53 
+#13 DONE 27.9s
 
 #14 [stage-1 2/3] COPY nginx.conf /etc/nginx/conf.d/default.conf
 #14 CACHED
@@ -111,9 +111,9 @@
 
 #16 exporting to image
 #16 exporting layers 0.0s done
-#16 writing image sha256:22c544b21c5598f9010c700d6cb0e961cd2ab20c88294e7536247d89d1c2b7ea done
+#16 writing image sha256:1d8333c2033a052f41f9c4e2e7109d8dd350be684f118107ec79906a46fcf13f done
 #16 naming to docker.io/library/intelligence-frontend done
-#16 DONE 0.0s
+#16 DONE 0.1s
 
 #17 resolving provenance for metadata file
 #17 DONE 0.0s

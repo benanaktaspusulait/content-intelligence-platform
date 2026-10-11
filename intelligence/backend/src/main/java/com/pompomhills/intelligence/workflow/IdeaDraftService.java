@@ -165,7 +165,7 @@ public class IdeaDraftService {
 
   public List<Map<String, Object>> list() {
     return jdbc.sql(
-            "SELECT DISTINCT ON (payload->>'draftId') payload::text FROM post_family_workflow_events WHERE kind='CREATIVE_STUDIO_SESSION' AND payload->>'ideaDraft'='true' ORDER BY payload->>'draftId',(payload->>'revision')::int DESC,payload->>'updatedAt' DESC,created_at DESC,id DESC")
+            "SELECT DISTINCT ON (payload->>'draftId') payload::text FROM post_family_workflow_events WHERE kind='CREATIVE_STUDIO_SESSION' AND payload->>'ideaDraft'='true' ORDER BY payload->>'draftId',(payload->>'revision')::int DESC,(payload->>'updatedAt')::timestamptz DESC,created_at DESC,id DESC")
         .query((rs, i) -> read(rs.getString(1)))
         .list();
   }
@@ -185,7 +185,7 @@ public class IdeaDraftService {
 
   private Optional<Map<String, Object>> find(UUID id) {
     return jdbc.sql(
-            "SELECT payload::text FROM post_family_workflow_events WHERE kind='CREATIVE_STUDIO_SESSION' AND payload->>'ideaDraft'='true' AND payload->>'draftId'=:id ORDER BY (payload->>'revision')::int DESC,payload->>'updatedAt' DESC,created_at DESC,id DESC LIMIT 1")
+            "SELECT payload::text FROM post_family_workflow_events WHERE kind='CREATIVE_STUDIO_SESSION' AND payload->>'ideaDraft'='true' AND payload->>'draftId'=:id ORDER BY (payload->>'revision')::int DESC,(payload->>'updatedAt')::timestamptz DESC,created_at DESC,id DESC LIMIT 1")
         .param("id", id.toString())
         .query(String.class)
         .optional()
