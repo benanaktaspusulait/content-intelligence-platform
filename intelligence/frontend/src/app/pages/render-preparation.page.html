@@ -262,10 +262,8 @@
               } @empty {
                 <div class="empty inline">
                   <h3>No reference assets found for this project.</h3>
-                  <p>
-                    Check the local workspace below or upload a character image. An image requires
-                    explicit approval before binding.
-                  </p>
+                  <p>Check the local workspace below or upload a character image using the Upload Reference control. An image requires explicit approval before it can be bound.</p>
+                  <button class="button" (click)="loadWorkspaceReferences()">Find local workspace images</button>
                 </div>
               }
             </div>
