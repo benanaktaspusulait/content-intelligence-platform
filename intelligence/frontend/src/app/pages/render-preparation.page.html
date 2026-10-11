@@ -1,0 +1,880 @@
+<div class="workspace">
+<main class="preparation">
+  <nav class="breadcrumb" aria-label="Breadcrumb">
+    <a routerLink="/quality">Creative Studio</a><span>/</span><span>Render Preparation</span>
+  </nav>
+  <nav class="studio-steps" aria-label="Creative Studio steps">
+    @for (step of steps; track step; let i = $index) {
+      @if (i === 6) {
+        <span class="current" aria-current="step"
+          ><small>{{ i + 1 }}</small
+          >{{ step }}</span
+        >
+      } @else {
+        <a [href]="qualityLink(i + 1)"
+          ><small>{{ i + 1 }}</small
+          >{{ step }}</a
+        >
+      }
+    }
+  </nav>
+  <header class="page-heading">
+    <div>
+      <span class="eyebrow">CREATIVE STUDIO · STEP 7</span>
+      <h1>Render Preparation</h1>
+      <p>Prepare the visual inputs for your approved production prompt.</p>
+    </div>
+    <span class="status" [class.ready]="canQueue()">{{
+      canQueue() ? 'Rendering authorized' : 'Rendering not authorized'
+    }}</span>
+  </header>
+  @if (contextLoading()) {
+    <section class="panel empty" aria-live="polite">
+      <h2>Restoring the saved workflow…</h2>
+      <p>Loading exact source identities and preparation evidence.</p>
+    </section>
+  } @else if (!workflowReview) {
+    <section class="panel empty">
+      <h2>Open a saved creative project</h2>
+      <p>
+        Render Preparation needs the exact content, immutable prompt and saved analysis. Open it
+        from the matching Quality Analysis record.
+      </p>
+      @if (queueError()) {
+        <p class="error" role="alert">{{ queueError() }}</p>
+      }
+      <a class="button primary" routerLink="/quality">Open Quality Analysis</a>
+    </section>
+  } @else {
+    <section class="context" aria-label="Selected project">
+      <div>
+        <small>PROJECT</small><strong>{{ title }}</strong>
+      </div>
+      <div>
+        <small>PRODUCTION PROMPT</small
+        ><strong
+          >Prompt v{{
+            visualReferencePlan()?.promptVersionNumber || promptVersionNumber || 'unknown'
+          }}
+          · ID {{ queuePromptVersionId() }}</strong
+        >
+      </div>
+      <div>
+        <small>GENERATOR</small><strong>{{ generatorLabel }}</strong>
+      </div>
+      <div>
+        <small>DURATION / FORMAT</small
+        ><strong
+          >{{ settings.desiredDuration || 'Unresolved' }}s · {{ ratio || 'Unresolved' }}</strong
+        >
+      </div>
+    </section>
+    <nav class="tabs" role="tablist" aria-label="Preparation sections">
+      @for (item of tabs; track item.id) {
+        <button
+          type="button"
+          role="tab"
+          [id]="'tab-' + item.id"
+          [attr.aria-selected]="tab() === item.id"
+          [attr.tabindex]="tab() === item.id ? 0 : -1"
+          (keydown)="onTabKeydown($event, item.id)"
+          aria-controls="preparation-panel"
+          [class.active]="tab() === item.id"
+          (click)="selectTab(item.id)"
+        >
+          {{ item.label }}
+        </button>
+      }
+    </nav>
+    <section
+      class="panel tab-panel"
+      id="preparation-panel"
+      role="tabpanel"
+      [attr.aria-labelledby]="'tab-' + tab()"
+    >
+      @if (tab() === 'overview') {
+        <div class="section-heading">
+          <div>
+            <span class="eyebrow">PREPARATION CHECKLIST</span>
+            <h2>One saved prompt. Every input accounted for.</h2>
+            <p>
+              Provider capability describes supported inputs. Canonical authorization decides
+              whether rendering may proceed.
+            </p>
+          </div>
+          <span class="status">{{
+            characterReady && frameReady ? 'Evidence review required' : 'Preparation incomplete'
+          }}</span>
+        </div>
+        <div class="checklist">
+          <article>
+            <div>
+              <h3>Production prompt</h3>
+              <p>
+                Saved immutable Prompt v{{
+                  visualReferencePlan()?.promptVersionNumber || promptVersionNumber || 'unknown'
+                }}
+                · ID {{ queuePromptVersionId() }}
+              </p>
+            </div>
+            <span class="status ready">Available</span
+            ><a [href]="qualityLink(3)">Inspect prompt →</a>
+          </article>
+          <article>
+            <div>
+              <h3>Creative review</h3>
+              <p>Saved analysis for this exact prompt. Source limitations remain until reviewed.</p>
+            </div>
+            <span class="status ready">Analysis available</span
+            ><a [href]="qualityLink(5)">Review findings →</a>
+          </article>
+          <article>
+            <div>
+              <h3>Character reference</h3>
+              <p>
+                {{
+                  characterReady
+                    ? 'Approved asset bound with stable version and checksum.'
+                    : 'Select an approved canonical character image; a character name is not image evidence.'
+                }}
+              </p>
+            </div>
+            <span class="status" [class.ready]="characterReady">{{
+              characterReady ? 'Bound' : 'Needs action'
+            }}</span
+            ><button (click)="selectTab('characters', 'character-selection')">
+              Select reference →
+            </button>
+          </article>
+          <article>
+            <div>
+              <h3>First frame</h3>
+              <p>
+                {{
+                  frameReady
+                    ? 'An image has been explicitly accepted. Canonical visual evidence is checked separately.'
+                    : 'Prepare, inspect and explicitly accept the opening image.'
+                }}
+              </p>
+            </div>
+            <span class="status" [class.ready]="frameReady">{{
+              frameReady ? 'Image accepted' : 'Needs action'
+            }}</span
+            ><button (click)="selectTab('first-frame', 'frame-specification')">
+              Prepare image →
+            </button>
+          </article>
+          <article>
+            <div>
+              <h3>Provider capability</h3>
+              <p>
+                {{ workflowReview?.generation?.status || 'Contract verification pending' }} · first
+                frame support
+                {{
+                  visualReferencePlan()?.modelCapabilities?.startFrame ||
+                    referenceCapabilities()?.videoSingleStartFrame ||
+                    'unknown'
+                }}
+              </p>
+            </div>
+            <span class="status">{{
+              workflowReview?.generation?.capabilityStatus || 'Review contract'
+            }}</span
+            ><button (click)="selectTab('settings', 'generator')">Review settings →</button>
+          </article>
+          <article>
+            <div>
+              <h3>Canonical render authorization</h3>
+              <p>
+                {{
+                  workflowReview?.family8?.renderAuthorization?.reason ||
+                    'Review all blocking reasons for this exact saved request.'
+                }}
+              </p>
+            </div>
+            <span class="status" [class.ready]="canQueue()">{{
+              canQueue() ? 'Authorized' : 'Blocked / unverified'
+            }}</span
+            ><button (click)="selectTab('review')">Review requirements →</button>
+          </article>
+        </div>
+        <div class="next-action">
+          <div>
+            <span class="eyebrow">NEXT REQUIRED ACTION</span><strong>{{ nextLabel }}</strong>
+          </div>
+          <button class="button primary" (click)="selectTab(nextTab)">Continue →</button>
+        </div>
+      }
+      @if (tab() === 'characters') {
+        <div class="section-heading">
+          <div>
+            <span class="eyebrow">CHARACTER IDENTITY</span>
+            <h2>{{ characterName || 'Resolve character identity' }}</h2>
+            <p>
+              Use the existing character catalog. Uploads remain pending until you inspect and
+              explicitly approve them.
+            </p>
+          </div>
+          <button class="button" (click)="loadCharacters()">Refresh catalog</button>
+        </div>
+        @if (referenceError()) {
+          <p class="error" role="alert">{{ referenceError() }}</p>
+        }
+        @if (characterLoading) {
+          <p aria-live="polite">Loading character images…</p>
+        }
+        <div class="character-workspace">
+          <div id="character-selection" tabindex="-1">
+            <h3>Select Existing Reference</h3>
+            <div class="asset-gallery">
+              @for (ref of characterReferences; track ref.id) {
+                <article
+                  class="asset-tile"
+                  [class.selected]="characterBinding?.referenceId === ref.id"
+                >
+                  <button
+                    class="image-button"
+                    (click)="selectedCharacterReference = ref"
+                    [attr.aria-label]="'Preview character reference version ' + ref.version"
+                  >
+                    <img
+                      [src]="ref.previewUrl"
+                      [alt]="characterName + ' reference version ' + ref.version"
+                      loading="lazy"
+                    /></button
+                  ><strong>Version {{ ref.version }} · {{ ref.status }}</strong
+                  ><small>{{ ref.description || 'Character catalog image' }}</small
+                  ><small>Checksum {{ ref.sha256?.slice(0, 12) || 'Unverified' }}</small>
+                  @if (ref.status === 'APPROVED') {
+                    <button class="button" (click)="bindCharacterReference(ref)">
+                      {{
+                        characterBinding?.referenceId === ref.id
+                          ? 'Selected reference'
+                          : 'Select reference'
+                      }}
+                    </button>
+                  } @else {
+                    <button class="button" (click)="selectedCharacterReference = ref">
+                      Preview before approval
+                    </button>
+                  }
+                </article>
+              } @empty {
+                <div class="empty inline">
+                  <h3>No reference assets found for this project.</h3>
+                  <p>
+                    Check the local workspace below or upload a character image. An image requires
+                    explicit approval before binding.
+                  </p>
+                </div>
+              }
+            </div>
+            <label class="upload-control"
+              >Upload Reference<input
+                type="file"
+                accept="image/png,image/jpeg,image/webp"
+                [disabled]="!characterId"
+                (change)="uploadCharacter($event)"
+            /></label>
+            @if (!characterId) {
+              <p>
+                Resolve the source character in
+                <a [href]="qualityLink(4)">Production Review</a> before uploading.
+              </p>
+            }
+            <h3>Existing local workspace images</h3>
+            <button class="button" (click)="loadWorkspaceReferences()">
+              Find local reference images
+            </button>
+            <div class="asset-gallery">
+              @for (image of workspaceReferences; track image.relativePath) {
+                <article class="asset-tile">
+                  <img
+                    [src]="workspaceImageUrl(image.relativePath)"
+                    [alt]="image.name || image.relativePath"
+                    loading="lazy"
+                  /><strong>{{ image.name || image.relativePath }}</strong
+                  ><button
+                    class="button"
+                    [disabled]="!characterId || referenceImporting"
+                    (click)="importWorkspaceReference(image)"
+                  >
+                    Import for review
+                  </button>
+                </article>
+              }
+            </div>
+            @if (workspaceSearched && !workspaceReferences.length) {
+              <p>No local images were found in the character drawings directory.</p>
+            }
+          </div>
+          <aside class="reference-preview">
+            @if (selectedCharacterReference) {
+              <img
+                [src]="selectedCharacterReference.previewUrl"
+                [alt]="characterName + ' selected reference'"
+              />
+              <h3>Reference preview</h3>
+              <p>
+                {{ selectedCharacterReference.status }} · version
+                {{ selectedCharacterReference.version }}
+              </p>
+              @if (selectedCharacterReference.status !== 'APPROVED') {
+                <p>
+                  Inspect character identity before approval. Upload does not establish approval.
+                </p>
+                <button
+                  class="button primary"
+                  (click)="approveCharacter(selectedCharacterReference)"
+                >
+                  Verify / Approve Reference
+                </button>
+              }
+              <details>
+                <summary>Provenance and identity</summary>
+                <pre>{{ selectedCharacterReference | json }}</pre>
+              </details>
+            } @else {
+              <div class="empty">
+                <h3>Inspect the character image</h3>
+                <p>Select a thumbnail to inspect identity and provenance here.</p>
+              </div>
+            }
+          </aside>
+        </div>
+      }
+      @if (tab() === 'first-frame') {
+        <div class="section-heading">
+          <div>
+            <span class="eyebrow">OPENING IMAGE WORKSPACE</span>
+            <h2>Make the first frame tangible.</h2>
+            <p>
+              Build from the saved source, choose an image, inspect it, then accept it. These
+              actions do not call a paid provider.
+            </p>
+          </div>
+          <span class="status" [class.ready]="frameReady">{{
+            frameReady ? 'Image accepted' : 'No accepted image'
+          }}</span>
+        </div>
+        <div class="frame-workspace">
+          <div class="frame-editor">
+            <label for="frame-specification"
+              >Opening image specification<textarea
+                id="frame-specification"
+                rows="8"
+                [value]="firstFrameSpecification()"
+                (input)="firstFrameSpecification.set($any($event.target).value)"
+                placeholder="Main subject, location, visible objects, opening state, framing, visual style, identity requirements and opening promise — grounded in the saved source."
+              ></textarea>
+            </label>
+            <label for="image-prompt"
+              >Image prompt<textarea
+                id="image-prompt"
+                rows="6"
+                [value]="firstFrameImagePrompt()"
+                (input)="firstFrameImagePrompt.set($any($event.target).value)"
+                placeholder="Build from the saved prompt, then review and edit the opening-image instructions."
+              ></textarea>
+            </label>
+            <div class="actions">
+              <button class="button" (click)="draftFirstFramePrompt()">
+                Build From Saved Prompt</button
+              ><button
+                class="button primary"
+                [disabled]="
+                  visualPreparationSaving() ||
+                  !firstFrameSpecification().trim() ||
+                  !firstFrameImagePrompt().trim()
+                "
+                (click)="saveVisualPreparation()"
+              >
+                {{ visualPreparationSaving() ? 'Saving…' : 'Save Specification' }}
+              </button>
+            </div>
+            <p class="help">
+              Both text fields are required to save. Saving creates preparation evidence without
+              generating an image.
+            </p>
+            @if (visualPreparationError()) {
+              <p class="error" role="alert">{{ visualPreparationError() }}</p>
+            }
+            @if (visualPreparation()) {
+              <p class="success">
+                Specification saved {{ visualPreparation()?.savedAt }} · no provider call performed.
+              </p>
+            }
+            <details class="source">
+              <summary>Inspect exact source evidence</summary>
+              <p class="source-text">
+                {{
+                  workflowReview?.boundRequest?.prompt ||
+                    workflowReview?.originalPrompt ||
+                    'Source text unavailable — return to Production Review.'
+                }}
+              </p>
+              <p>
+                Character identity is defined by the approved catalog reference. Unsupported
+                appearance details must remain unspecified.
+              </p>
+            </details>
+            <section class="image-sources">
+              <h3>Choose the image source</h3>
+              <div class="actions">
+                <button
+                  class="button"
+                  [disabled]="visualReferenceLoading() === 'prompt'"
+                  (click)="inspectPromptVisualReferences()"
+                >
+                  {{ visualReferenceLoading() === 'prompt' ? 'Loading…' : 'Load existing images' }}
+                </button>
+              </div>
+              <p class="help">
+                Loads existing images and explicitly creates a saved visual plan if needed.
+              </p>
+              <label class="upload-control"
+                >Upload Image<input
+                  type="file"
+                  accept="image/png,image/jpeg,image/webp"
+                  [disabled]="
+                    inputsChanged || settingsDirty() || visualReferenceLoading() === 'prompt'
+                  "
+                  (change)="uploadPromptFirstFrame($event)"
+              /></label>
+              @if (inputsChanged || settingsDirty()) {
+                <p class="help">
+                  Refresh the saved Production Review after settings or character changes before
+                  uploading or accepting.
+                </p>
+              }
+              <button class="button" disabled aria-describedby="ai-reason">
+                Generate Image with AI
+              </button>
+              <p id="ai-reason" class="help">
+                Unavailable: this workflow has no authorized image-provider path with cost consent,
+                a server budget ceiling and persisted provenance. Existing images and uploads work
+                without generation.
+              </p>
+            </section>
+            @if (visualReferenceError()) {
+              <p class="error" role="alert">{{ visualReferenceError() }}</p>
+            }
+            <div class="asset-gallery frame-gallery">
+              @for (
+                image of visualReferencePlan()?.firstFrameCandidates || [];
+                track image.assetId
+              ) {
+                <article
+                  class="asset-tile"
+                  [class.selected]="selectedImage?.assetId === image.assetId"
+                >
+                  <button
+                    class="image-button"
+                    (click)="selectImage(image, false)"
+                    aria-label="Preview existing first frame"
+                  >
+                    <img
+                      [src]="imageUrl(image, false)"
+                      alt="Existing first-frame candidate"
+                      loading="lazy"
+                    /></button
+                  ><small
+                    >{{ image.mediaVerified ? 'Media verified' : 'Unverified' }} ·
+                    {{ image.promptVersionMatches ? 'Prompt matches' : 'Different prompt' }}</small
+                  ><button class="button" (click)="selectImage(image, false)">Preview image</button>
+                </article>
+              }
+              @for (image of visualReferencePlan()?.referenceBindings || []; track image.assetId) {
+                @if (image.role === 'FIRST_FRAME') {
+                  <article
+                    class="asset-tile"
+                    [class.selected]="selectedImage?.assetId === image.assetId"
+                  >
+                    <button
+                      class="image-button"
+                      (click)="selectImage(image, true)"
+                      aria-label="Preview uploaded first frame"
+                    >
+                      <img
+                        [src]="imageUrl(image, true)"
+                        alt="Uploaded first-frame candidate"
+                        loading="lazy"
+                      /></button
+                    ><small
+                      >{{
+                        image.accepted && frameContextMatches(image)
+                          ? 'Accepted'
+                          : image.accepted
+                            ? 'Stale acceptance · review again'
+                            : 'Needs acceptance'
+                      }}
+                      · {{ image.validationStatus }}</small
+                    ><button class="button" (click)="selectImage(image, true)">
+                      Preview image
+                    </button>
+                  </article>
+                }
+              }
+            </div>
+            @if (
+              !visualReferencePlan()?.firstFrameCandidates?.length &&
+              !visualReferencePlan()?.referenceBindings?.length
+            ) {
+              <p class="help">
+                No first-frame images exist for this exact prompt. Load existing images or upload
+                one after establishing the plan.
+              </p>
+            }
+          </div>
+          <aside class="frame-preview">
+            <div class="portrait" [style.aspect-ratio]="ratio.replace(':', ' / ') || '9 / 16'">
+              @if (selectedImage && !previewError) {
+                <img
+                  [src]="imageUrl(selectedImage, selectedImageImported)"
+                  alt="Selected opening image preview"
+                  (load)="onPreviewLoad($event)"
+                  (error)="previewError = true"
+                />
+              } @else {
+                <div class="preview-empty">
+                  <span class="frame-mark">▧</span>
+                  <h3>{{ previewError ? 'Preview unavailable' : 'Your opening image' }}</h3>
+                  <p>
+                    {{
+                      previewError
+                        ? 'The image could not be retrieved. Refresh the image catalog to verify the file.'
+                        : 'Choose an existing image or upload a local file to inspect the actual opening frame.'
+                    }}
+                  </p>
+                  <strong>{{ ratio || '9:16' }} preview</strong>
+                </div>
+              }
+            </div>
+            <div class="preview-info">
+              <h3>First-frame review</h3>
+              <p>
+                {{ previewDimensions || 'Resolution available after image loads' }} ·
+                {{ ratio || 'Ratio unresolved' }}
+              </p>
+              @if (selectedImage) {
+                <span
+                  class="status"
+                  [class.ready]="selectedImage.accepted && frameContextMatches(selectedImage)"
+                  >{{
+                    selectedImage.accepted && frameContextMatches(selectedImage)
+                      ? 'Accepted image'
+                      : selectedImage.accepted
+                        ? 'Stale acceptance · changed inputs'
+                        : 'Awaiting explicit acceptance'
+                  }}</span
+                >
+                <p class="help">
+                  {{ selectedImage.validationStatus || selectedImage.semanticStatus }} · checksum
+                  {{ selectedImage.sha256?.slice(0, 16) }}
+                </p>
+                <button
+                  class="button primary"
+                  [disabled]="
+                    previewError ||
+                    !previewDimensions ||
+                    (selectedImage.accepted && frameContextMatches(selectedImage)) ||
+                    inputsChanged ||
+                    settingsDirty() ||
+                    (!selectedImageImported && !selectedImage.eligible) ||
+                    (selectedImageImported &&
+                      selectedImage.validationStatus !== 'METADATA_VERIFIED')
+                  "
+                  (click)="acceptSelectedFrame()"
+                >
+                  Accept First Frame
+                </button>
+                <p class="help">
+                  Acceptance requires verified media, the correct ratio and current source/settings.
+                  It does not grant canonical render authorization.
+                </p>
+                <details>
+                  <summary>Asset and provenance details</summary>
+                  <pre>{{ selectedImage | json }}</pre>
+                </details>
+              }
+              @if (selectedCharacterReference) {
+                <div class="character-context">
+                  <img
+                    [src]="selectedCharacterReference.previewUrl"
+                    alt="Approved character identity reference"
+                  />
+                  <div>
+                    <strong>{{ characterName }}</strong
+                    ><small>{{
+                      characterBinding ? 'Bound character reference' : 'Preview only · not bound'
+                    }}</small>
+                  </div>
+                </div>
+              }
+            </div>
+          </aside>
+        </div>
+      }
+      @if (tab() === 'settings') {
+        <div class="section-heading">
+          <div>
+            <span class="eyebrow">PROVIDER CONTRACT</span>
+            <h2>Generator Settings</h2>
+            <p>
+              Persist the intended settings, then refresh the saved review. Changing a contract
+              invalidates readiness for the previous input set.
+            </p>
+          </div>
+        </div>
+        <div class="settings-form">
+          <label for="generator"
+            >Generator<select id="generator" [(ngModel)]="settings.generator">
+              <option value="SEEDANCE_2_0_MINI">Seedance 2.0 Mini</option>
+              <option value="SEEDANCE_2_0">Seedance 2.0</option>
+              <option value="SEEDANCE_2_5">Seedance 2.5</option>
+            </select></label
+          ><label>Generation mode<input readonly [value]="acceptanceContext().mode" /></label
+          ><label
+            >Target duration (seconds)<input
+              type="number"
+              min="1"
+              max="120"
+              [(ngModel)]="settings.desiredDuration" /></label
+          ><label
+            >Aspect ratio<select [(ngModel)]="settings.aspectRatio">
+              <option value="9:16">9:16 portrait</option>
+              <option value="16:9">16:9 landscape</option>
+              <option value="1:1">1:1 square</option>
+            </select></label
+          ><label class="wide"
+            >Quality justification<textarea
+              rows="3"
+              [(ngModel)]="settings.qualityJustification"
+              placeholder="Explain full-model quality or a longer-duration choice."
+            ></textarea>
+          </label>
+        </div>
+        <p class="help">
+          Mini is preferred where its registry contract supports the request. Evaluate Seedance 2.5
+          for concepts beyond 15 seconds; selection alone does not prove capability.
+        </p>
+        <div class="actions">
+          <button
+            class="button primary"
+            [disabled]="settingsSaving || !settings.desiredDuration || !settings.aspectRatio"
+            (click)="saveSettings()"
+          >
+            {{ settingsSaving ? 'Saving…' : 'Save Generator Settings' }}</button
+          ><a class="button" [href]="qualityLink(4)">Refresh Production Review</a>
+        </div>
+        @if (settingsError) {
+          <p class="error" role="alert">{{ settingsError }}</p>
+        }
+        <div class="contract-status">
+          <article>
+            <small>PROVIDER CONFIGURATION</small
+            ><strong>{{
+              providerConfiguration?.configured === false
+                ? 'Unavailable'
+                : providerConfiguration?.configured === true
+                  ? 'Configured'
+                  : 'Configuration unknown'
+            }}</strong>
+            @if (providerConfiguration?.mock) {
+              <p>Mock mode enabled; live rendering is unavailable.</p>
+            }
+          </article>
+          <article>
+            <small>CAPABILITY CONTRACT</small
+            ><strong>{{
+              workflowReview?.generation?.capabilityStatus ||
+                workflowReview?.generation?.status ||
+                'Unknown'
+            }}</strong>
+            <p>Registry evidence only; no provider request.</p>
+          </article>
+          <article>
+            <small>INPUT READINESS</small
+            ><strong>{{
+              characterReady && frameReady && !inputsChanged
+                ? 'Prepared · evidence review required'
+                : 'Incomplete or changed'
+            }}</strong>
+          </article>
+          <article>
+            <small>AUTHORIZATION</small
+            ><strong>{{ canQueue() ? 'Authorized' : 'Blocked / unverified' }}</strong>
+          </article>
+        </div>
+        <details>
+          <summary>Supported execution inputs and contract evidence</summary>
+          <pre>{{ workflowReview?.generation | json }}</pre>
+        </details>
+      }
+      @if (tab() === 'review') {
+        <div class="section-heading">
+          <div>
+            <span class="eyebrow">FINAL INPUT REVIEW</span>
+            <h2>Review exactly what will be rendered.</h2>
+            <p>
+              Queueing is explicit and remains closed until canonical authorization and current
+              visual evidence agree.
+            </p>
+          </div>
+          <span class="status" [class.ready]="canQueue()">{{
+            canQueue() ? 'Authorized' : 'Rendering blocked'
+          }}</span>
+        </div>
+        <dl class="review-summary">
+          <div>
+            <dt>Source / prompt</dt>
+            <dd>
+              {{ title }} · Prompt v{{
+                visualReferencePlan()?.promptVersionNumber || promptVersionNumber || 'unknown'
+              }}
+              · ID {{ queuePromptVersionId() }}
+            </dd>
+          </div>
+          <div>
+            <dt>Character reference</dt>
+            <dd>
+              {{
+                characterReady
+                  ? characterName + ' · approved version ' + characterBinding.version
+                  : 'Missing approved character binding'
+              }}
+            </dd>
+          </div>
+          <div>
+            <dt>Accepted first frame</dt>
+            <dd>
+              {{
+                frameReady
+                  ? 'Explicit acceptance saved · canonical visual gates checked separately'
+                  : 'No accepted image'
+              }}
+            </dd>
+          </div>
+          <div>
+            <dt>Provider / duration / format</dt>
+            <dd>{{ generatorLabel }} · {{ settings.desiredDuration }}s · {{ ratio }}</dd>
+          </div>
+          <div>
+            <dt>Saved analysis</dt>
+            <dd>
+              Exact immutable prompt analysis restored ·
+              <a [href]="qualityLink(5)">Inspect findings</a>
+            </dd>
+          </div>
+          <div>
+            <dt>Canonical authorization</dt>
+            <dd>{{ authorizationLabel() }}</dd>
+          </div>
+        </dl>
+        @if (inputsChanged || settingsDirty() || acceptedSinceValidation) {
+          <p class="notice">
+            Inputs changed or acceptance is newer than the current validation. Refresh Production
+            Review and canonical analysis for this exact contract.
+          </p>
+        }
+        <h3>Unresolved warnings and blocking reasons</h3>
+        <p>
+          {{
+            humanReason(
+              workflowReview?.family8?.renderAuthorization?.reason ||
+                'No current canonical explanation is available.'
+            )
+          }}
+        </p>
+        <ul class="blockers">
+          @for (
+            reason of workflowReview?.family8?.renderAuthorization?.reasons || [];
+            track $index
+          ) {
+            <li>{{ humanReason(reason) }}</li>
+          }
+        </ul>
+        <p class="help">
+          Source contradictions remain unresolved until reviewed against the saved source. Uploading
+          or accepting an image cannot resolve them.
+        </p>
+        <div class="actions">
+          @if (!characterReady || !frameReady) {
+            <button class="button primary" (click)="selectTab(nextTab)">
+              Resolve Outstanding Requirements
+            </button>
+          } @else if (canQueue()) {
+            <button class="button primary" [disabled]="queueLoading()" (click)="queueRender()">
+              {{ queueLoading() ? 'Queueing…' : 'Queue Video Render' }}
+            </button>
+          } @else {
+            <span class="blocked-action">Rendering Blocked — Review Reasons</span>
+          }
+          <button
+            class="button"
+            [disabled]="queueLoading() || inputsChanged || settingsDirty()"
+            (click)="revalidateRenderReadiness()"
+          >
+            Revalidate Render Readiness</button
+          ><a class="button" [href]="qualityLink(4)">Review source and refresh analysis</a>
+        </div>
+        <p class="help">
+          Revalidation saves canonical evidence. A changed source/settings contract must first
+          receive a fresh saved Production Review. A supported provider contract never grants
+          authorization.
+        </p>
+        <details>
+          <summary>Technical identities and outgoing provider input</summary>
+          <dl class="review-summary">
+            <div>
+              <dt>Content ID</dt>
+              <dd>{{ queueContentId() }}</dd>
+            </div>
+            <div>
+              <dt>Prompt database ID</dt>
+              <dd>{{ queuePromptVersionId() }}</dd>
+            </div>
+            <div>
+              <dt>Analysis / workflow review</dt>
+              <dd>{{ workflowReviewId }}</dd>
+            </div>
+            <div>
+              <dt>Prompt SHA-256</dt>
+              <dd>
+                {{
+                  visualReferencePlan()?.promptSha256 ||
+                    workflowReview?.boundRequest?.promptSha256 ||
+                    'Unavailable'
+                }}
+              </dd>
+            </div>
+            <div>
+              <dt>Validation record</dt>
+              <dd>{{ queueValidationId() || 'Missing / invalidated' }}</dd>
+            </div>
+          </dl>
+          <pre>{{ workflowReview?.family8?.renderAuthorization | json }}</pre>
+          <pre>{{ acceptanceContext() | json }}</pre>
+          <pre>{{ workflowReview?.boundRequest | json }}</pre>
+        </details>
+      }
+    </section>
+    @if (queueError()) {
+      <p class="error" role="alert">{{ queueError() }}</p>
+    }
+    @if (queuedJobId()) {
+      <p class="success">
+        Render queued: {{ queuedJobId() }} · <a routerLink="/render-jobs">View Render Jobs</a> ·
+        <a [href]="qualityLink(8)">Continue to Video QA</a>
+      </p>
+    }
+    <footer class="page-footer">
+      <a class="button" [href]="qualityLink(5)">← Back to Findings</a>
+      <div>
+        <small>NEXT ACTION</small><strong>{{ nextLabel }}</strong>
+      </div>
+      <button class="button primary" (click)="selectTab(nextTab)">Continue →</button>
+    </footer>
+  }
+</main>
+</div>
