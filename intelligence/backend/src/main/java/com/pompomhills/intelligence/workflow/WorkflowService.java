@@ -813,6 +813,8 @@ public class WorkflowService {
     approval.put("candidateId", request.get("candidateId"));
     approval.put("revisionId", request.get("revisionId"));
     approval.put("contentFingerprint", request.get("contentFingerprint"));
+    approval.put("sourceType", request.getOrDefault("sourceType", "GENERATED_CANDIDATE"));
+    approval.put("sourceRevisionId", request.get("sourceRevisionId"));
     approval.put("reviewRecordId", request.get("reviewRecordId"));
     approval.put("originalStory", story.get("result"));
     approval.put("approvedAt", java.time.Instant.now().toString());
@@ -871,6 +873,15 @@ public class WorkflowService {
 
   private String storyCandidateText(Map<String, Object> story, UUID storyRecordId, String candidateId) {
     if (candidateId == null || candidateId.isBlank()) return null;
+    if ("ORIGINAL_SOURCE".equals(candidateId)) {
+      Object sourceRequest = story.get("sourceRequest");
+      if (sourceRequest instanceof Map<?, ?> source) {
+        Object sourceText = source.get("text");
+        return sourceText == null ? null : String.valueOf(sourceText);
+      }
+      Object sourceText = story.get("text");
+      return sourceText == null ? null : String.valueOf(sourceText);
+    }
     Object raw = map(story.get("result")).get("alternatives");
     if (!(raw instanceof List<?> alternatives)) return null;
     for (int i = 0; i < alternatives.size(); i++) {

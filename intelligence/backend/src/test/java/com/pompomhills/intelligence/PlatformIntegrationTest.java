@@ -156,6 +156,42 @@ class PlatformIntegrationTest {
   }
 
   @Test
+  void originalSourceApprovalPreservesUnicodeLineageAndBuildsPromptFromExactSource() {
+    UUID storyId = UUID.randomUUID();
+    String text = "Mimi’nin notu çığlık atar; ğüşİ karakterleri korunur.";
+    String fingerprint = storyFingerprintForTest(text);
+    String payload = """
+        {"role":"STORY","sourceRequest":{"text":"%s","context":{"storyGenerationMode":"IMPROVE_EXISTING_STORY"}},
+         "result":{"role":"STORY","alternatives":[
+           {"candidateId":"candidate-1","title":"Refinement","text":"Başka bir aday metin."},
+           {"candidateId":"candidate-2","title":"Another","text":"İkinci aday metin."},
+           {"candidateId":"candidate-3","title":"Third","text":"Üçüncü aday metin."}]}}
+        """.formatted(text);
+    jdbc.update("INSERT INTO post_family_workflow_events(id,kind,binding_sha256,payload) VALUES (?,'CREATIVE_ROLE',null,CAST(? AS jsonb))", storyId, payload);
+
+    var approval = workflow.approveStory(storyId, java.util.Map.of(
+        "approvedText", text, "candidateId", "ORIGINAL_SOURCE", "sourceType", "ORIGINAL_SOURCE",
+        "sourceRevisionId", fingerprint, "revisionId", "ORIGINAL_SOURCE-revision-" + fingerprint,
+        "contentFingerprint", fingerprint));
+    assertThat(approval).containsEntry("candidateId", "ORIGINAL_SOURCE")
+        .containsEntry("sourceType", "ORIGINAL_SOURCE")
+        .containsEntry("sourceRevisionId", fingerprint)
+        .containsEntry("approvedText", text);
+
+    doReturn(java.util.Map.of("result", java.util.Map.of("prompt", "Exact approved prompt."), "provider", "mock", "calls", 1))
+        .when(workflowMl).workflow(org.mockito.ArgumentMatchers.eq("creative-role"), org.mockito.ArgumentMatchers.anyMap());
+    var request = new java.util.LinkedHashMap<String, Object>();
+    request.put("role", "BUILD_PROMPT"); request.put("text", text); request.put("maxCostUsd", 0.05);
+    request.put("context", java.util.Map.of("sourceStoryRecordId", storyId.toString(), "candidateId", "ORIGINAL_SOURCE",
+        "approvalRecordId", approval.get("recordId"), "storyRevisionId", "ORIGINAL_SOURCE-revision-" + fingerprint,
+        "targetConfiguration", java.util.Map.of("duration", 15, "aspectRatio", "9:16", "selectedGenerator", "SEEDANCE_2_0_MINI", "contentProfile", "ABSURD_PHYSICS"),
+        "lessonContext", java.util.Map.of("contentProfile", "ABSURD_PHYSICS", "modelVersion", "", "duration", 15, "generator", "SEEDANCE_2_0_MINI")));
+    var built = workflow.creativeRole(request);
+    assertThat(((java.util.Map<?, ?>) built.get("result")).get("prompt")).isEqualTo("Exact approved prompt.");
+    verify(workflowMl, times(1)).workflow(org.mockito.ArgumentMatchers.eq("creative-role"), org.mockito.ArgumentMatchers.anyMap());
+  }
+
+  @Test
   void productionPromptBuildDoesNotFailWhenOptionalOpenArtReferenceCatalogIsNotInstalled() {
     assertThat(jdbc.queryForObject("SELECT to_regclass('public.openart_reference_assets')", String.class))
         .isNull();
