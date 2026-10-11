@@ -1,0 +1,37 @@
+{
+  "scope": "P0 test data leakage investigation; no destructive cleanup performed",
+  "rootCause": {
+    "conclusion": "The three records were written by the manual browser acceptance session against the ordinary Docker PostgreSQL database.",
+    "evidence": [
+      "HAR /tmp/pompom-idea-NBbDHeH5/live.har contains POST requests at 2026-10-11T21:45:56Z, 21:48:46Z and 21:50:12Z matching the database created_at values.",
+      "The POST sequence is exactly the Idea, Detailed Story and Existing Production Prompt acceptance flow; no test runner log contains these titles.",
+      "Backend integration tests configure PostgreSQLContainer JDBC URLs through DynamicPropertySource, separate from the Docker app at jdbc:postgresql://postgres:5432/pompom."
+    ]
+  },
+  "applicationDatabase": {
+    "database": "pompom",
+    "host": "Docker postgres service / 172.18.0.2:5432",
+    "visibleDrafts": 3,
+    "workflowEventsForTargets": 6,
+    "renderJobsForContent9": 0,
+    "qualityValidationsForContent9": 0,
+    "videoPromptLinksForPrompt9": 0
+  },
+  "isolationChange": {
+    "guard": "intelligence/scripts/assert-isolated-test-database.sh",
+    "documentation": "intelligence/scripts/README-isolated-acceptance.md",
+    "sameTargetCheck": "PASS: guard refused the ordinary application target with exit 1"
+  },
+  "cleanup": {
+    "status": "EXECUTED",
+    "manifest": "/Users/benanaktas/.local/share/pompom/creative-studio-backups/20261011T222048Z/manifest.json",
+    "executionResult": "/Users/benanaktas/.local/share/pompom/creative-studio-backups/20261011T222048Z/execution-result.json",
+    "backup": "synthetic-records-dry-run.json",
+    "scope": "3 draft identities, 6 workflow events, content 9, prompt version 9, and only dependent rows shown in the dry-run backup",
+    "deleteExecuted": true,
+    "deletedRows": 8
+  },
+  "limitations": [
+    "The browser acceptance flow is now required to invoke the isolation guard before any mutating request; the prior manual flow was the identified source of leakage."
+  ]
+}

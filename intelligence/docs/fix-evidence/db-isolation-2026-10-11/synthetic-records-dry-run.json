@@ -1,0 +1,368 @@
+{
+  "contents": [
+    {
+      "id": 9,
+      "type": "REEL",
+      "title": "Sticky Note Production Prompt",
+      "status": "DRAFT",
+      "created_at": "2026-10-11T21:50:12.820436",
+      "updated_at": "2026-10-11T21:50:12.820436",
+      "description": "Vertical 9:16 video, 15 seconds. Mimi stands in a quiet hallway with a yellow sticky note on her sleeve. Wide shot establishes the hallway; medium shot shows her noticing the note; close-up reveals the handwritten arrow. She follows it to a cupboard, pauses, and leaves the mystery unresolved. Keep character identity and lighting consistent. No captions or dialogue.",
+      "source_path": null,
+      "content_lane": "STOCK",
+      "render_status": "NOT_STARTED",
+      "engine_variant": null,
+      "creative_engine": null,
+      "current_render_asset_id": null,
+      "first_frame_anomaly_type": null,
+      "hook_visible_first_frame": false
+    }
+  ],
+  "database": "pompom",
+  "draftIds": [
+    "94a750a7-9c98-41ed-ac71-f89e459a7108",
+    "74b061ad-7588-4787-a8d9-e1e3e5f73e9e",
+    "c07eec72-64fe-4364-b218-8b0f89fa548a"
+  ],
+  "capturedAt": "2026-10-11T22:18:54.298644+00:00",
+  "renderJobs": null,
+  "promptVersions": [
+    {
+      "id": 9,
+      "raw_text": "Vertical 9:16 video, 15 seconds. Mimi stands in a quiet hallway with a yellow sticky note on her sleeve. Wide shot establishes the hallway; medium shot shows her noticing the note; close-up reveals the handwritten arrow. She follows it to a cupboard, pauses, and leaves the mystery unresolved. Keep character identity and lighting consistent. No captions or dialogue.",
+      "parsed_ir": {},
+      "content_id": 9,
+      "created_at": "2026-10-11T21:50:12.820436",
+      "source_path": null,
+      "source_sha256": null,
+      "version_number": 1,
+      "parent_prompt_version_id": null
+    }
+  ],
+  "workflowEvents": [
+    {
+      "id": "5f5805f9-a920-417e-9572-b73d97579d07",
+      "kind": "CREATIVE_STUDIO_SESSION",
+      "payload": {
+        "state": {
+          "idea": "Mimi finds sticky notes that keep following her.",
+          "title": "Sticky Note Idea",
+          "profile": "AUTO",
+          "duration": 15,
+          "inputMode": "IDEA",
+          "storyMode": "EXPLORE_DIFFERENT_STORIES",
+          "aspectRatio": "9:16",
+          "preferences": [],
+          "sourceTexts": {
+            "IDEA": "Mimi finds sticky notes that keep following her.",
+            "DETAILED_STORY": "",
+            "EXISTING_PROMPT": ""
+          },
+          "workspacePath": "library/POMPOM_HILLS_PRODUCTION/09_SOCIAL_REELS/new14092026/absurd-2",
+          "candidateCount": 3,
+          "durationPreset": "15",
+          "mainCharacterId": "",
+          "targetGenerator": "SEEDANCE_2_0_MINI",
+          "lockedRequirements": [
+            "PRESERVE_CORE_PREMISE"
+          ]
+        },
+        "status": "DRAFT",
+        "draftId": "94a750a7-9c98-41ed-ac71-f89e459a7108",
+        "recordId": "5f5805f9-a920-417e-9572-b73d97579d07",
+        "revision": 1,
+        "createdAt": "2026-10-11T21:45:56.698855510Z",
+        "ideaDraft": true,
+        "sessionId": "94a750a7-9c98-41ed-ac71-f89e459a7108",
+        "updatedAt": "2026-10-11T21:45:56.699136510Z",
+        "checkpoint": "IDEA",
+        "sourceType": "OPERATOR"
+      },
+      "created_at": "2026-10-11T21:45:56.693888+00:00",
+      "binding_sha256": "94a750a7-9c98-41ed-ac71-f89e459a7108"
+    },
+    {
+      "id": "6be5797d-0e29-4839-bcf6-c2b1ac1ff14d",
+      "kind": "CREATIVE_STUDIO_SESSION",
+      "payload": {
+        "state": {
+          "idea": "Mimi finds a trail of sticky notes in the hallway. She follows it to a cupboard and discovers that each note points to the next. She places the last note on her notebook, pauses, and chooses to leave the mystery open.",
+          "title": "Sticky Note Story",
+          "profile": "AUTO",
+          "duration": 15,
+          "inputMode": "DETAILED_STORY",
+          "storyMode": "IMPROVE_EXISTING_STORY",
+          "storyText": "Mimi finds a trail of sticky notes in the hallway. She follows it to a cupboard and discovers that each note points to the next. She places the last note on her notebook, pauses, and chooses to leave the mystery open.",
+          "aspectRatio": "9:16",
+          "preferences": [],
+          "sourceTexts": {
+            "IDEA": "",
+            "DETAILED_STORY": "Mimi finds a trail of sticky notes in the hallway. She follows it to a cupboard and discovers that each note points to the next. She places the last note on her notebook, pauses, and chooses to leave the mystery open.",
+            "EXISTING_PROMPT": ""
+          },
+          "workspacePath": "library/POMPOM_HILLS_PRODUCTION/09_SOCIAL_REELS/new14092026/absurd-2",
+          "candidateCount": 3,
+          "durationPreset": "15",
+          "mainCharacterId": "",
+          "targetGenerator": "SEEDANCE_2_0_MINI",
+          "lockedRequirements": [
+            "PRESERVE_CORE_PREMISE"
+          ]
+        },
+        "status": "DRAFT",
+        "draftId": "74b061ad-7588-4787-a8d9-e1e3e5f73e9e",
+        "recordId": "6be5797d-0e29-4839-bcf6-c2b1ac1ff14d",
+        "revision": 1,
+        "createdAt": "2026-10-11T21:48:46.788006547Z",
+        "ideaDraft": true,
+        "sessionId": "74b061ad-7588-4787-a8d9-e1e3e5f73e9e",
+        "updatedAt": "2026-10-11T21:48:46.788098505Z",
+        "checkpoint": "IDEA",
+        "sourceType": "OPERATOR"
+      },
+      "created_at": "2026-10-11T21:48:46.786392+00:00",
+      "binding_sha256": "74b061ad-7588-4787-a8d9-e1e3e5f73e9e"
+    },
+    {
+      "id": "0219a73a-34a8-4975-ab01-ee6d9608da84",
+      "kind": "CREATIVE_ROLE",
+      "payload": {
+        "role": "STORY",
+        "title": "Sticky Note Story",
+        "result": {
+          "role": "STORY",
+          "sourceType": "OPERATOR",
+          "alternatives": [
+            {
+              "text": "Mimi finds a trail of sticky notes in the hallway. She follows it to a cupboard and discovers that each note points to the next. She places the last note on her notebook, pauses, and chooses to leave the mystery open.",
+              "title": "Sticky Note Story",
+              "candidateId": "operator-story-1"
+            }
+          ]
+        },
+        "recordId": "0219a73a-34a8-4975-ab01-ee6d9608da84",
+        "createdAt": "2026-10-11T21:48:46.801422755Z",
+        "sourceType": "OPERATOR",
+        "revisionType": "OPERATOR_IMPORT",
+        "sourceRequest": {
+          "role": "OPERATOR_STORY",
+          "text": "Mimi finds a trail of sticky notes in the hallway. She follows it to a cupboard and discovers that each note points to the next. She places the last note on her notebook, pauses, and chooses to leave the mystery open.",
+          "context": {
+            "idea": "Mimi finds a trail of sticky notes in the hallway. She follows it to a cupboard and discovers that each note points to the next. She places the last note on her notebook, pauses, and chooses to leave the mystery open.",
+            "title": "Sticky Note Story",
+            "profile": "AUTO",
+            "duration": 15,
+            "inputMode": "DETAILED_STORY",
+            "storyMode": "IMPROVE_EXISTING_STORY",
+            "storyText": "Mimi finds a trail of sticky notes in the hallway. She follows it to a cupboard and discovers that each note points to the next. She places the last note on her notebook, pauses, and chooses to leave the mystery open.",
+            "aspectRatio": "9:16",
+            "preferences": [],
+            "sourceTexts": {
+              "IDEA": "",
+              "DETAILED_STORY": "Mimi finds a trail of sticky notes in the hallway. She follows it to a cupboard and discovers that each note points to the next. She places the last note on her notebook, pauses, and chooses to leave the mystery open.",
+              "EXISTING_PROMPT": ""
+            },
+            "workspacePath": "library/POMPOM_HILLS_PRODUCTION/09_SOCIAL_REELS/new14092026/absurd-2",
+            "candidateCount": 3,
+            "durationPreset": "15",
+            "mainCharacterId": "",
+            "targetGenerator": "SEEDANCE_2_0_MINI",
+            "lockedRequirements": [
+              "PRESERVE_CORE_PREMISE"
+            ]
+          }
+        }
+      },
+      "created_at": "2026-10-11T21:48:46.798328+00:00",
+      "binding_sha256": null
+    },
+    {
+      "id": "9595f6fa-acb3-4c01-a88b-337e49f16f93",
+      "kind": "CREATIVE_STUDIO_SESSION",
+      "payload": {
+        "idea": "Mimi finds a trail of sticky notes in the hallway. She follows it to a cupboard and discovers that each note points to the next. She places the last note on her notebook, pauses, and chooses to leave the mystery open.",
+        "state": {
+          "idea": "Mimi finds a trail of sticky notes in the hallway. She follows it to a cupboard and discovers that each note points to the next. She places the last note on her notebook, pauses, and chooses to leave the mystery open.",
+          "title": "Sticky Note Story",
+          "profile": "AUTO",
+          "duration": 15,
+          "inputMode": "DETAILED_STORY",
+          "storyMode": "IMPROVE_EXISTING_STORY",
+          "storyText": "Mimi finds a trail of sticky notes in the hallway. She follows it to a cupboard and discovers that each note points to the next. She places the last note on her notebook, pauses, and chooses to leave the mystery open.",
+          "aspectRatio": "9:16",
+          "preferences": [],
+          "sourceTexts": {
+            "IDEA": "",
+            "DETAILED_STORY": "Mimi finds a trail of sticky notes in the hallway. She follows it to a cupboard and discovers that each note points to the next. She places the last note on her notebook, pauses, and chooses to leave the mystery open.",
+            "EXISTING_PROMPT": ""
+          },
+          "workspacePath": "library/POMPOM_HILLS_PRODUCTION/09_SOCIAL_REELS/new14092026/absurd-2",
+          "candidateCount": 3,
+          "durationPreset": "15",
+          "mainCharacterId": "",
+          "targetGenerator": "SEEDANCE_2_0_MINI",
+          "lockedRequirements": [
+            "PRESERVE_CORE_PREMISE"
+          ]
+        },
+        "title": "Sticky Note Story",
+        "result": {
+          "role": "STORY",
+          "sourceType": "OPERATOR",
+          "alternatives": [
+            {
+              "text": "Mimi finds a trail of sticky notes in the hallway. She follows it to a cupboard and discovers that each note points to the next. She places the last note on her notebook, pauses, and chooses to leave the mystery open.",
+              "title": "Sticky Note Story",
+              "candidateId": "operator-story-1"
+            }
+          ]
+        },
+        "status": "DRAFT",
+        "draftId": "74b061ad-7588-4787-a8d9-e1e3e5f73e9e",
+        "profile": "AUTO",
+        "duration": 15,
+        "recordId": "9595f6fa-acb3-4c01-a88b-337e49f16f93",
+        "revision": 1,
+        "createdAt": "2026-10-11T21:48:46.788006547Z",
+        "ideaDraft": true,
+        "inputMode": "DETAILED_STORY",
+        "sessionId": "74b061ad-7588-4787-a8d9-e1e3e5f73e9e",
+        "storyMode": "IMPROVE_EXISTING_STORY",
+        "storyText": "Mimi finds a trail of sticky notes in the hallway. She follows it to a cupboard and discovers that each note points to the next. She places the last note on her notebook, pauses, and chooses to leave the mystery open.",
+        "updatedAt": "2026-10-11T21:48:46.804969380Z",
+        "checkpoint": "STORY",
+        "sourceType": "OPERATOR",
+        "aspectRatio": "9:16",
+        "preferences": [],
+        "sourceTexts": {
+          "IDEA": "",
+          "DETAILED_STORY": "Mimi finds a trail of sticky notes in the hallway. She follows it to a cupboard and discovers that each note points to the next. She places the last note on her notebook, pauses, and chooses to leave the mystery open.",
+          "EXISTING_PROMPT": ""
+        },
+        "storyRecordId": "0219a73a-34a8-4975-ab01-ee6d9608da84",
+        "workspacePath": "library/POMPOM_HILLS_PRODUCTION/09_SOCIAL_REELS/new14092026/absurd-2",
+        "candidateCount": 3,
+        "durationPreset": "15",
+        "mainCharacterId": "",
+        "targetGenerator": "SEEDANCE_2_0_MINI",
+        "lockedRequirements": [
+          "PRESERVE_CORE_PREMISE"
+        ]
+      },
+      "created_at": "2026-10-11T21:48:46.798328+00:00",
+      "binding_sha256": "74b061ad-7588-4787-a8d9-e1e3e5f73e9e"
+    },
+    {
+      "id": "1fff9b70-6bc4-44bd-8267-d610d52197f3",
+      "kind": "CREATIVE_STUDIO_SESSION",
+      "payload": {
+        "state": {
+          "idea": "Vertical 9:16 video, 15 seconds. Mimi stands in a quiet hallway with a yellow sticky note on her sleeve. Wide shot establishes the hallway; medium shot shows her noticing the note; close-up reveals the handwritten arrow. She follows it to a cupboard, pauses, and leaves the mystery unresolved. Keep character identity and lighting consistent. No captions or dialogue.",
+          "title": "Sticky Note Production Prompt",
+          "profile": "AUTO",
+          "duration": 15,
+          "inputMode": "EXISTING_PROMPT",
+          "storyMode": "EXPLORE_DIFFERENT_STORIES",
+          "promptText": "Vertical 9:16 video, 15 seconds. Mimi stands in a quiet hallway with a yellow sticky note on her sleeve. Wide shot establishes the hallway; medium shot shows her noticing the note; close-up reveals the handwritten arrow. She follows it to a cupboard, pauses, and leaves the mystery unresolved. Keep character identity and lighting consistent. No captions or dialogue.",
+          "aspectRatio": "9:16",
+          "preferences": [],
+          "sourceTexts": {
+            "IDEA": "",
+            "DETAILED_STORY": "",
+            "EXISTING_PROMPT": "Vertical 9:16 video, 15 seconds. Mimi stands in a quiet hallway with a yellow sticky note on her sleeve. Wide shot establishes the hallway; medium shot shows her noticing the note; close-up reveals the handwritten arrow. She follows it to a cupboard, pauses, and leaves the mystery unresolved. Keep character identity and lighting consistent. No captions or dialogue."
+          },
+          "workspacePath": "library/POMPOM_HILLS_PRODUCTION/09_SOCIAL_REELS/new14092026/absurd-2",
+          "candidateCount": 3,
+          "durationPreset": "15",
+          "mainCharacterId": "",
+          "targetGenerator": "SEEDANCE_2_0_MINI",
+          "lockedRequirements": [
+            "PRESERVE_CORE_PREMISE"
+          ]
+        },
+        "status": "DRAFT",
+        "draftId": "c07eec72-64fe-4364-b218-8b0f89fa548a",
+        "recordId": "1fff9b70-6bc4-44bd-8267-d610d52197f3",
+        "revision": 1,
+        "createdAt": "2026-10-11T21:50:12.809937837Z",
+        "ideaDraft": true,
+        "sessionId": "c07eec72-64fe-4364-b218-8b0f89fa548a",
+        "updatedAt": "2026-10-11T21:50:12.810250045Z",
+        "checkpoint": "IDEA",
+        "sourceType": "OPERATOR"
+      },
+      "created_at": "2026-10-11T21:50:12.808007+00:00",
+      "binding_sha256": "c07eec72-64fe-4364-b218-8b0f89fa548a"
+    },
+    {
+      "id": "0152d592-696d-4b3e-b517-28444d14a41f",
+      "kind": "CREATIVE_STUDIO_SESSION",
+      "payload": {
+        "idea": "Vertical 9:16 video, 15 seconds. Mimi stands in a quiet hallway with a yellow sticky note on her sleeve. Wide shot establishes the hallway; medium shot shows her noticing the note; close-up reveals the handwritten arrow. She follows it to a cupboard, pauses, and leaves the mystery unresolved. Keep character identity and lighting consistent. No captions or dialogue.",
+        "state": {
+          "idea": "Vertical 9:16 video, 15 seconds. Mimi stands in a quiet hallway with a yellow sticky note on her sleeve. Wide shot establishes the hallway; medium shot shows her noticing the note; close-up reveals the handwritten arrow. She follows it to a cupboard, pauses, and leaves the mystery unresolved. Keep character identity and lighting consistent. No captions or dialogue.",
+          "title": "Sticky Note Production Prompt",
+          "profile": "AUTO",
+          "duration": 15,
+          "inputMode": "EXISTING_PROMPT",
+          "storyMode": "EXPLORE_DIFFERENT_STORIES",
+          "promptText": "Vertical 9:16 video, 15 seconds. Mimi stands in a quiet hallway with a yellow sticky note on her sleeve. Wide shot establishes the hallway; medium shot shows her noticing the note; close-up reveals the handwritten arrow. She follows it to a cupboard, pauses, and leaves the mystery unresolved. Keep character identity and lighting consistent. No captions or dialogue.",
+          "aspectRatio": "9:16",
+          "preferences": [],
+          "sourceTexts": {
+            "IDEA": "",
+            "DETAILED_STORY": "",
+            "EXISTING_PROMPT": "Vertical 9:16 video, 15 seconds. Mimi stands in a quiet hallway with a yellow sticky note on her sleeve. Wide shot establishes the hallway; medium shot shows her noticing the note; close-up reveals the handwritten arrow. She follows it to a cupboard, pauses, and leaves the mystery unresolved. Keep character identity and lighting consistent. No captions or dialogue."
+          },
+          "workspacePath": "library/POMPOM_HILLS_PRODUCTION/09_SOCIAL_REELS/new14092026/absurd-2",
+          "candidateCount": 3,
+          "durationPreset": "15",
+          "mainCharacterId": "",
+          "targetGenerator": "SEEDANCE_2_0_MINI",
+          "lockedRequirements": [
+            "PRESERVE_CORE_PREMISE"
+          ]
+        },
+        "title": "Sticky Note Production Prompt",
+        "status": "DRAFT",
+        "draftId": "c07eec72-64fe-4364-b218-8b0f89fa548a",
+        "profile": "AUTO",
+        "rawText": "Vertical 9:16 video, 15 seconds. Mimi stands in a quiet hallway with a yellow sticky note on her sleeve. Wide shot establishes the hallway; medium shot shows her noticing the note; close-up reveals the handwritten arrow. She follows it to a cupboard, pauses, and leaves the mystery unresolved. Keep character identity and lighting consistent. No captions or dialogue.",
+        "duration": 15,
+        "recordId": "0152d592-696d-4b3e-b517-28444d14a41f",
+        "revision": 1,
+        "contentId": "9",
+        "createdAt": "2026-10-11T21:50:12.809937837Z",
+        "ideaDraft": true,
+        "inputMode": "EXISTING_PROMPT",
+        "sessionId": "c07eec72-64fe-4364-b218-8b0f89fa548a",
+        "storyMode": "EXPLORE_DIFFERENT_STORIES",
+        "updatedAt": "2026-10-11T21:50:12.844722712Z",
+        "checkpoint": "PRODUCTION_REVIEW",
+        "promptText": "Vertical 9:16 video, 15 seconds. Mimi stands in a quiet hallway with a yellow sticky note on her sleeve. Wide shot establishes the hallway; medium shot shows her noticing the note; close-up reveals the handwritten arrow. She follows it to a cupboard, pauses, and leaves the mystery unresolved. Keep character identity and lighting consistent. No captions or dialogue.",
+        "sourceType": "OPERATOR",
+        "aspectRatio": "9:16",
+        "preferences": [],
+        "sourceTexts": {
+          "IDEA": "",
+          "DETAILED_STORY": "",
+          "EXISTING_PROMPT": "Vertical 9:16 video, 15 seconds. Mimi stands in a quiet hallway with a yellow sticky note on her sleeve. Wide shot establishes the hallway; medium shot shows her noticing the note; close-up reveals the handwritten arrow. She follows it to a cupboard, pauses, and leaves the mystery unresolved. Keep character identity and lighting consistent. No captions or dialogue."
+        },
+        "promptSource": "USER_SUPPLIED",
+        "workspacePath": "library/POMPOM_HILLS_PRODUCTION/09_SOCIAL_REELS/new14092026/absurd-2",
+        "candidateCount": 3,
+        "durationPreset": "15",
+        "mainCharacterId": "",
+        "promptVersionId": "9",
+        "targetGenerator": "SEEDANCE_2_0_MINI",
+        "lockedRequirements": [
+          "PRESERVE_CORE_PREMISE"
+        ]
+      },
+      "created_at": "2026-10-11T21:50:12.820436+00:00",
+      "binding_sha256": "c07eec72-64fe-4364-b218-8b0f89fa548a"
+    }
+  ],
+  "videoPromptLinks": null,
+  "qualityValidations": null
+}

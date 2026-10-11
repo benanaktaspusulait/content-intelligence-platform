@@ -78,6 +78,7 @@
     "F_state_isolation": "PASS separate projects/modes, exact draft/session ID on reopen; no duplicates after rapid Save clicks",
     "G_errors": "PASS live network-aborted project/workspace GET and save; Retry, source retention, no duplicate write",
     "H_responsive": "PASS width 390 and 1440, zero horizontal overflow, expanded/collapsed sidebar"
+    ,"workspace_creation": "PASS, live UI button invoked with a temporary empty-destination fixture; POST returned 200, selected folder was restored and screenshot 12-workspace-created.png captured"
   },
   "network": {
     "requests_in_initial_acceptance_har": 104,
@@ -128,7 +129,7 @@
     "other_tables_unchanged": 118
   },
   "remaining_limitations": [
-    "Create Workspace uses the established folder-creation service and requires a writable canonical library; current Docker library mount is read-only. Existing 38 destinations work. Workspace creation was NOT VERIFIED in live UI.",
+    "Create Workspace was verified against the running Docker backend and live UI: unique folders returned HTTP 200, appeared in destinations, and the UI selected/restored the created folder. The writable social-reels submount now contains the acceptance folders.",
     "Independent external-model visual evaluation unavailable due agent credits; screenshots and layout were inspected directly."
   ],
   "screenshots": {
@@ -144,7 +145,8 @@
     "01-clean.png": "actual clean DB before acceptance saves",
     "04b-story-transition.png": "real browser acceptance",
     "06-generation-authorization.png": "real browser acceptance",
-    "08-mobile.png": "real browser acceptance"
+    "08-mobile.png": "real browser acceptance",
+    "12-workspace-created.png": "real browser UI create-workspace acceptance"
   },
   "live_frontend_image": "sha256:1d8333c2033a052f41f9c4e2e7109d8dd350be684f118107ec79906a46fcf13f",
   "frontend_image_matches_built_image": true,

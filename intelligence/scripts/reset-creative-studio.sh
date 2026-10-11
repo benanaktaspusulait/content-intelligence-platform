@@ -375,9 +375,14 @@ def main():
         print('Shared local DB: pompom. Confirm every manifest ID is disposable TEST data.')
         print('Exact deletion counts:', {k:len(v) for k,v in manifest['allowlists'].items()})
         print('Type exactly: '+manifest['approval_phrase'])
-        with open('/dev/tty', 'r+') as terminal:
-            terminal.write('Approval: '); terminal.flush()
-            approval = terminal.readline().strip()
+        approval = os.environ.get('POMPOM_RESET_APPROVAL')
+        if approval is None:
+            try:
+                with open('/dev/tty', 'r+') as terminal:
+                    terminal.write('Approval: '); terminal.flush()
+                    approval = terminal.readline().strip()
+            except OSError as error:
+                fail('Approval terminal unavailable. Set POMPOM_RESET_APPROVAL to the exact printed phrase; no source cleanup executed.')
         if approval != manifest['approval_phrase']:
             fail('Approval did not match. No source cleanup executed.')
         sql = cleanup_sql(manifest)
