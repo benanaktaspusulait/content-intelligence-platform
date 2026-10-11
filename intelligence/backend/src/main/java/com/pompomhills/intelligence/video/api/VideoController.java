@@ -108,6 +108,11 @@ public class VideoController {
     return service.promptWorkspaces(relativeDirectory);
   }
 
+  @GetMapping("/prompt-workspaces/destinations")
+  public List<VideoDtos.PromptWorkspace> promptWorkspaceDestinations() {
+    return service.promptWorkspaceDestinations();
+  }
+
   @PostMapping("/prompt-workspaces/folders")
   public VideoDtos.PromptWorkspace createPromptWorkspaceFolder(
       @RequestBody VideoDtos.CreatePromptWorkspaceFolderRequest request) {

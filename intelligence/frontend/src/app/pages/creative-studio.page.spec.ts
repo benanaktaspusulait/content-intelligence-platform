@@ -15,7 +15,7 @@ describe('creative studio idea-first workflow', () => {
     fixture.detectChanges();
     http.expectOne('/api/v1/intelligence/workflow/creative-role/readiness').flush({enabled:true,roles:[{role:'STORY',configured:true,model:'fixture'},{role:'BUILD_PROMPT',configured:true,model:'fixture'}]});
     http.expectOne('/api/v1/characters').flush([]);
-    http.expectOne('/api/v1/videos/prompt-workspaces?relativeDirectory=library/POMPOM_HILLS_PRODUCTION/09_SOCIAL_REELS/new14092026').flush([]);
+    http.expectOne('/api/v1/videos/prompt-workspaces/destinations').flush([]);
     http.expectOne('/api/v1/intelligence/workflow/records?kind=CREATIVE_ROLE').flush([]);
     http.expectOne('/api/v1/intelligence/workflow/records?kind=STORY_APPROVAL').flush([]);
     http.expectOne('/api/v1/intelligence/workflow/idea-drafts').flush([]);
@@ -38,7 +38,7 @@ describe('saved story reuse', () => {
     fixture.detectChanges();
     http.expectOne('/api/v1/intelligence/workflow/creative-role/readiness').flush({enabled:true,roles:[{role:'STORY',configured:true,model:'fixture'}]});
     http.expectOne('/api/v1/characters').flush([]);
-    http.expectOne('/api/v1/videos/prompt-workspaces?relativeDirectory=library/POMPOM_HILLS_PRODUCTION/09_SOCIAL_REELS/new14092026').flush([]);
+    http.expectOne('/api/v1/videos/prompt-workspaces/destinations').flush([]);
     http.expectOne('/api/v1/intelligence/workflow/records?kind=CREATIVE_ROLE').flush([{recordId:'saved-1',role:'STORY',sourceRequest:{text:'Kiko finds a door'},alternatives:['Kiko opens the door and finds a tiny stage.']}]);
     http.expectOne('/api/v1/intelligence/workflow/records?kind=STORY_APPROVAL').flush([]);
     http.expectOne('/api/v1/intelligence/workflow/idea-drafts').flush([]);
@@ -65,7 +65,7 @@ describe('step 1 journey safety', () => {
     fixture.detectChanges();
     http.expectOne('/api/v1/intelligence/workflow/creative-role/readiness').flush({enabled:true,roles:[{role:'STORY',configured:true,model:'fixture'}]});
     http.expectOne('/api/v1/characters').flush([]);
-    http.expectOne('/api/v1/videos/prompt-workspaces?relativeDirectory=library/POMPOM_HILLS_PRODUCTION/09_SOCIAL_REELS/new14092026').flush([]);
+    http.expectOne('/api/v1/videos/prompt-workspaces/destinations').flush([]);
     http.expectOne('/api/v1/intelligence/workflow/records?kind=CREATIVE_ROLE').flush([]);
     http.expectOne('/api/v1/intelligence/workflow/records?kind=STORY_APPROVAL').flush([]);
     http.expectOne('/api/v1/intelligence/workflow/idea-drafts').flush([]);
@@ -176,10 +176,11 @@ describe('step 1 journey safety', () => {
     fixture.detectChanges();
     http.expectOne('/api/v1/intelligence/workflow/creative-role/readiness').flush({enabled:true});
     http.expectOne('/api/v1/characters').flush([]);
-    http.expectOne('/api/v1/videos/prompt-workspaces?relativeDirectory=library/POMPOM_HILLS_PRODUCTION/09_SOCIAL_REELS/new14092026').flush([]);
+    http.expectOne('/api/v1/videos/prompt-workspaces/destinations').flush([]);
     http.expectOne('/api/v1/intelligence/workflow/records?kind=CREATIVE_ROLE').flush([{recordId:'story-indexed',role:'STORY',lifecycleStatus:'APPROVED',result:{alternatives:[{candidateId:'candidate-1',text:'Saved story.'}]}}]);
     const approvals=http.expectOne('/api/v1/intelligence/workflow/records?kind=STORY_APPROVAL');
     const sessions=http.expectOne('/api/v1/intelligence/workflow/records?kind=CREATIVE_STUDIO_SESSION');
+    http.expectOne('/api/v1/intelligence/workflow/idea-drafts').flush([]);
     fixture.detectChanges();
     expect(page.savedStoriesLoading).toBe(true);
     expect(fixture.nativeElement.querySelector('[aria-label="Saved projects"]')).toBeNull();

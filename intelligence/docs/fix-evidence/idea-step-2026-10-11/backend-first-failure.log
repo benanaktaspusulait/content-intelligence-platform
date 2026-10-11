@@ -1,0 +1,51 @@
+[ERROR] COMPILATION ERROR : 
+[ERROR] /Users/benanaktas/project/video/content-intelligence-platform/intelligence/backend/src/test/java/com/pompomhills/intelligence/workflow/IdeaDraftServiceTest.java:[13,17] cannot find symbol
+  symbol:   variable IdeaDraftService
+  location: class com.pompomhills.intelligence.workflow.IdeaDraftServiceTest
+[ERROR] /Users/benanaktas/project/video/content-intelligence-platform/intelligence/backend/src/test/java/com/pompomhills/intelligence/workflow/IdeaDraftServiceTest.java:[18,21] cannot find symbol
+  symbol:   class IdeaDraftService
+  location: class com.pompomhills.intelligence.workflow.IdeaDraftServiceTest
+[ERROR] /Users/benanaktas/project/video/content-intelligence-platform/intelligence/backend/src/test/java/com/pompomhills/intelligence/workflow/IdeaDraftServiceTest.java:[24,16] cannot find symbol
+  symbol:   variable IdeaDraftService
+  location: class com.pompomhills.intelligence.workflow.IdeaDraftServiceTest
+[ERROR] /Users/benanaktas/project/video/content-intelligence-platform/intelligence/backend/src/test/java/com/pompomhills/intelligence/workflow/IdeaDraftServiceTest.java:[25,16] cannot find symbol
+  symbol:   variable IdeaDraftService
+  location: class com.pompomhills.intelligence.workflow.IdeaDraftServiceTest
+[ERROR] /Users/benanaktas/project/video/content-intelligence-platform/intelligence/backend/src/test/java/com/pompomhills/intelligence/workflow/IdeaDraftServiceTest.java:[28,28] cannot find symbol
+  symbol:   variable IdeaDraftService
+  location: class com.pompomhills.intelligence.workflow.IdeaDraftServiceTest
+[ERROR] /Users/benanaktas/project/video/content-intelligence-platform/intelligence/backend/src/test/java/com/pompomhills/intelligence/workflow/IdeaDraftServiceTest.java:[29,28] cannot find symbol
+  symbol:   variable IdeaDraftService
+  location: class com.pompomhills.intelligence.workflow.IdeaDraftServiceTest
+[ERROR] /Users/benanaktas/project/video/content-intelligence-platform/intelligence/backend/src/test/java/com/pompomhills/intelligence/workflow/IdeaDraftServiceTest.java:[30,28] cannot find symbol
+  symbol:   variable IdeaDraftService
+  location: class com.pompomhills.intelligence.workflow.IdeaDraftServiceTest
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-compiler-plugin:3.15.0:testCompile (default-testCompile) on project creative-intelligence-backend: Compilation failure: Compilation failure: 
+[ERROR] /Users/benanaktas/project/video/content-intelligence-platform/intelligence/backend/src/test/java/com/pompomhills/intelligence/workflow/IdeaDraftServiceTest.java:[13,17] cannot find symbol
+[ERROR]   symbol:   variable IdeaDraftService
+[ERROR]   location: class com.pompomhills.intelligence.workflow.IdeaDraftServiceTest
+[ERROR] /Users/benanaktas/project/video/content-intelligence-platform/intelligence/backend/src/test/java/com/pompomhills/intelligence/workflow/IdeaDraftServiceTest.java:[18,21] cannot find symbol
+[ERROR]   symbol:   class IdeaDraftService
+[ERROR]   location: class com.pompomhills.intelligence.workflow.IdeaDraftServiceTest
+[ERROR] /Users/benanaktas/project/video/content-intelligence-platform/intelligence/backend/src/test/java/com/pompomhills/intelligence/workflow/IdeaDraftServiceTest.java:[24,16] cannot find symbol
+[ERROR]   symbol:   variable IdeaDraftService
+[ERROR]   location: class com.pompomhills.intelligence.workflow.IdeaDraftServiceTest
+[ERROR] /Users/benanaktas/project/video/content-intelligence-platform/intelligence/backend/src/test/java/com/pompomhills/intelligence/workflow/IdeaDraftServiceTest.java:[25,16] cannot find symbol
+[ERROR]   symbol:   variable IdeaDraftService
+[ERROR]   location: class com.pompomhills.intelligence.workflow.IdeaDraftServiceTest
+[ERROR] /Users/benanaktas/project/video/content-intelligence-platform/intelligence/backend/src/test/java/com/pompomhills/intelligence/workflow/IdeaDraftServiceTest.java:[28,28] cannot find symbol
+[ERROR]   symbol:   variable IdeaDraftService
+[ERROR]   location: class com.pompomhills.intelligence.workflow.IdeaDraftServiceTest
+[ERROR] /Users/benanaktas/project/video/content-intelligence-platform/intelligence/backend/src/test/java/com/pompomhills/intelligence/workflow/IdeaDraftServiceTest.java:[29,28] cannot find symbol
+[ERROR]   symbol:   variable IdeaDraftService
+[ERROR]   location: class com.pompomhills.intelligence.workflow.IdeaDraftServiceTest
+[ERROR] /Users/benanaktas/project/video/content-intelligence-platform/intelligence/backend/src/test/java/com/pompomhills/intelligence/workflow/IdeaDraftServiceTest.java:[30,28] cannot find symbol
+[ERROR]   symbol:   variable IdeaDraftService
+[ERROR]   location: class com.pompomhills.intelligence.workflow.IdeaDraftServiceTest
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException

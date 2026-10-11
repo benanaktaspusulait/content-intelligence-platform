@@ -27,7 +27,7 @@ describe('Creative Studio after an approved test-data reset', () => {
     const http = TestBed.inject(HttpTestingController);
     fixture.detectChanges();
     http.expectOne('/api/v1/characters').flush(characters);
-    http.expectOne('/api/v1/videos/prompt-workspaces?relativeDirectory=library/POMPOM_HILLS_PRODUCTION/09_SOCIAL_REELS/new14092026').flush([]);
+    http.expectOne('/api/v1/videos/prompt-workspaces/destinations').flush([]);
     http.expectOne('/api/v1/intelligence/workflow/creative-role/readiness').flush({ enabled: true, liveVerified: false, roles: [] });
     for (const kind of ['CREATIVE_ROLE', 'STORY_APPROVAL', 'CREATIVE_STUDIO_SESSION']) {
       http.expectOne(`/api/v1/intelligence/workflow/records?kind=${kind}`).flush([]);

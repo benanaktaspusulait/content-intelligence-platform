@@ -1,0 +1,151 @@
+{
+  "scope": "Step 1 Idea only; downstream transition verification, no Step 2 redesign",
+  "root_causes": [
+    "Three input modes shared one source; manual paths used synthetic approvals or unsaved prompt text.",
+    "Save Draft was absent; form edits appended sessions, and saved list covered generated stories only.",
+    "Empty, filtered and failed project loads were conflated.",
+    "Workspace dropdown recursively scanned all media; canonical inventory actually contains 38 destinations.",
+    "Paid controls were permanently displayed and authorization was not operation-scoped.",
+    "Running frontend image predated new code; final Docker image rebuilt and recreated.",
+    "Unsaved and saved state needed independent source buffers, concurrency guards and stable draft/session identity."
+  ],
+  "modified_files": [
+    "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/frontend/src/app/pages/creative-studio.page.ts",
+    "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/frontend/src/app/pages/creative-studio.page.spec.ts",
+    "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/frontend/src/app/pages/creative-studio.clean-state.spec.ts",
+    "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/frontend/src/app/pages/creative-studio.idea.spec.ts",
+    "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/backend/src/main/java/com/pompomhills/intelligence/workflow/IdeaDraftService.java",
+    "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/backend/src/main/java/com/pompomhills/intelligence/workflow/IdeaDraftController.java",
+    "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/backend/src/main/java/com/pompomhills/intelligence/workflow/WorkflowService.java",
+    "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/backend/src/main/java/com/pompomhills/intelligence/video/VideoService.java",
+    "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/backend/src/main/java/com/pompomhills/intelligence/video/api/VideoController.java",
+    "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/backend/src/test/java/com/pompomhills/intelligence/workflow/IdeaDraftServiceTest.java",
+    "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/backend/src/test/java/com/pompomhills/intelligence/workflow/IdeaDraftPostgresTest.java"
+  ],
+  "frontend": {
+    "tests": 180,
+    "test_files": 23,
+    "failures": 0,
+    "production_build": "PASS",
+    "warning": "Nonfatal bundle/style size warnings and existing unused quality-component imports."
+  },
+  "backend": {
+    "tests": 25,
+    "suites": [
+      {
+        "name": "com.pompomhills.intelligence.workflow.IdeaDraftServiceTest",
+        "tests": "5",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0"
+      },
+      {
+        "name": "com.pompomhills.intelligence.workflow.IdeaDraftPostgresTest",
+        "tests": "8",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0"
+      },
+      {
+        "name": "com.pompomhills.intelligence.workflow.WorkflowServiceTest",
+        "tests": "8",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0"
+      },
+      {
+        "name": "com.pompomhills.intelligence.workflow.SavedStoryApprovalPostgresTest",
+        "tests": "1",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0"
+      },
+      {
+        "name": "com.pompomhills.intelligence.workflow.WorkflowTransportTest",
+        "tests": "3",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0"
+      }
+    ]
+  },
+  "live_scenarios": {
+    "A_clean_load": "PASS, zero pre-existing workflow rows, no writes or paid requests",
+    "B_free_idea_save_and_refresh": "PASS, exact draft 94a750a7-9c98-41ed-ac71-f89e459a7108, revision 1, source and destination restored",
+    "C_operator_story": "PASS, draft 74b061ad-7588-4787-a8d9-e1e3e5f73e9e, story 0219a73a-34a8-4975-ab01-ee6d9608da84, no approval",
+    "D_user_prompt": "PASS, draft c07eec72-64fe-4364-b218-8b0f89fa548a, actual prompt version 9, no story/approval",
+    "E_generation_safety": "PASS disabled in live UI without budget/consent; exactly one operation in mocked frontend/backend tests",
+    "F_state_isolation": "PASS separate projects/modes, exact draft/session ID on reopen; no duplicates after rapid Save clicks",
+    "G_errors": "PASS live network-aborted project/workspace GET and save; Retry, source retention, no duplicate write",
+    "H_responsive": "PASS width 390 and 1440, zero horizontal overflow, expanded/collapsed sidebar"
+  },
+  "network": {
+    "requests_in_initial_acceptance_har": 104,
+    "paid_generation_posts": [],
+    "render_mutations": [],
+    "delete_requests": [],
+    "mutation_trace": [
+      {
+        "method": "POST",
+        "path": "/api/v1/intelligence/workflow/idea-drafts",
+        "status": 200
+      },
+      {
+        "method": "POST",
+        "path": "/api/v1/intelligence/workflow/idea-drafts",
+        "status": 200
+      },
+      {
+        "method": "POST",
+        "path": "/api/v1/intelligence/workflow/idea-drafts/74b061ad-7588-4787-a8d9-e1e3e5f73e9e/continue",
+        "status": 200
+      },
+      {
+        "method": "POST",
+        "path": "/api/v1/intelligence/workflow/idea-drafts",
+        "status": 200
+      },
+      {
+        "method": "POST",
+        "path": "/api/v1/intelligence/workflow/idea-drafts/c07eec72-64fe-4364-b218-8b0f89fa548a/continue",
+        "status": 200
+      },
+      {
+        "method": "POST",
+        "path": "/api/v1/intelligence/quality/validations/latest",
+        "status": 204
+      }
+    ],
+    "note": "quality/validations/latest POST is a read lookup; database validations stayed empty."
+  },
+  "preservation": {
+    "tables_checked": 121,
+    "changed_only_acceptance_persistence": [
+      "public.post_family_workflow_events",
+      "public.contents",
+      "public.prompt_versions"
+    ],
+    "other_tables_unchanged": 118
+  },
+  "remaining_limitations": [
+    "Create Workspace uses the established folder-creation service and requires a writable canonical library; current Docker library mount is read-only. Existing 38 destinations work. Workspace creation was NOT VERIFIED in live UI.",
+    "Independent external-model visual evaluation unavailable due agent credits; screenshots and layout were inspected directly."
+  ],
+  "screenshots": {
+    "04-detailed-story.png": "real browser acceptance",
+    "05-existing-prompt.png": "real browser acceptance",
+    "03-idea-saved.png": "real browser acceptance",
+    "09-final-desktop.png": "real browser acceptance",
+    "10-sidebar-collapsed.png": "real browser acceptance",
+    "07-load-errors.png": "real browser acceptance",
+    "02-idea-unsaved.png": "real browser acceptance",
+    "05b-prompt-transition.png": "real browser acceptance",
+    "11-save-error.png": "real browser acceptance",
+    "01-clean.png": "real browser acceptance",
+    "04b-story-transition.png": "real browser acceptance",
+    "06-generation-authorization.png": "real browser acceptance",
+    "08-mobile.png": "real browser acceptance"
+  },
+  "live_frontend_image": "sha256:22c544b21c5598f9010c700d6cb0e961cd2ab20c88294e7536247d89d1c2b7ea",
+  "frontend_image_matches_built_image": true
+}

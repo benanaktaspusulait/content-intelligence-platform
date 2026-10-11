@@ -1,0 +1,99 @@
+
+> frontend@0.0.0 test
+> ng test --watch=false
+
+❯ Building...
+✔ Building...
+Initial chunk files                                           | Names                                                      |  Raw size
+chunk-V3FXWZCN.js                                             | -                                                          | 423.04 kB | 
+chunk-CV2GGD4H.js                                             | -                                                          | 380.02 kB | 
+chunk-IMIWSFJN.js                                             | -                                                          | 281.83 kB | 
+spec-app-pages-quality-validator-family10-representation.js   | spec-app-pages-quality-validator-family10-representation   | 269.41 kB | 
+chunk-HEQ5VATW.js                                             | -                                                          | 248.89 kB | 
+styles.css                                                    | styles                                                     | 237.88 kB | 
+chunk-Z23VZ5M3.js                                             | -                                                          | 203.44 kB | 
+chunk-MOLSMEJJ.js                                             | -                                                          | 143.98 kB | 
+chunk-FQYAPLOY.js                                             | -                                                          |  69.14 kB | 
+chunk-YKP2L7DI.js                                             | -                                                          |  59.02 kB | 
+chunk-3K7AKTDW.js                                             | -                                                          |  44.84 kB | 
+spec-app-pages-creative-studio.page.js                        | spec-app-pages-creative-studio.page                        |  40.85 kB | 
+chunk-32DFMEOH.js                                             | -                                                          |  35.01 kB | 
+spec-app-pages-quality-validator-post-family-workflow.js      | spec-app-pages-quality-validator-post-family-workflow      |  31.02 kB | 
+spec-app-pages-quality-validator-creative-role.component.js   | spec-app-pages-quality-validator-creative-role.component   |  27.80 kB | 
+spec-app-pages-render-preparation.page.js                     | spec-app-pages-render-preparation.page                     |  25.22 kB | 
+spec-app-pages-video-detail.page.js                           | spec-app-pages-video-detail.page                           |  17.29 kB | 
+spec-app-pages-creative-studio.idea.js                        | spec-app-pages-creative-studio.idea                        |  17.02 kB | 
+chunk-3BZCMYJ6.js                                             | -                                                          |  15.51 kB | 
+chunk-IEZOKNJO.js                                             | -                                                          |  14.05 kB | 
+chunk-2C2FFLUH.js                                             | -                                                          |  13.98 kB | 
+chunk-XCS6SPA5.js                                             | -                                                          |  12.90 kB | 
+spec-app-app.js                                               | spec-app-app                                               |  12.28 kB | 
+chunk-2F4CLSBO.js                                             | -                                                          |  10.75 kB | 
+spec-app-pages-video-library.page.js                          | spec-app-pages-video-library.page                          |   7.67 kB | 
+spec-app-core-creative-intelligence.service.js                | spec-app-core-creative-intelligence.service                |   7.05 kB | 
+spec-app-pages-import-data.page.js                            | spec-app-pages-import-data.page                            |   4.85 kB | 
+chunk-RSTWSNOR.js                                             | -                                                          |   4.75 kB | 
+spec-app-pages-creative-studio.clean-state.js                 | spec-app-pages-creative-studio.clean-state                 |   4.54 kB | 
+spec-app-pages-quality-validator-actual-video-review.js       | spec-app-pages-quality-validator-actual-video-review       |   4.00 kB | 
+chunk-C5YUMCKH.js                                             | -                                                          |   2.93 kB | 
+spec-app-pages-quality-validator-family9-representation.js    | spec-app-pages-quality-validator-family9-representation    |   2.60 kB | 
+spec-app-pages-render-dashboard.page.js                       | spec-app-pages-render-dashboard.page                       |   2.59 kB | 
+spec-app-pages-quality-validator-specialized-applicability.js | spec-app-pages-quality-validator-specialized-applicability |   2.05 kB | 
+spec-app-pages-meta-connection.page.js                        | spec-app-pages-meta-connection.page                        |   1.97 kB | 
+spec-app-pages-quality-validator-state-share.js               | spec-app-pages-quality-validator-state-share               |   1.46 kB | 
+spec-app-pages-operations.page.js                             | spec-app-pages-operations.page                             |   1.33 kB | 
+init-testbed.js                                               | init-testbed                                               |   1.21 kB | 
+spec-app-pages-meta-comments.page.js                          | spec-app-pages-meta-comments.page                          |   1.16 kB | 
+spec-app-pages-quality-validator-repair-route.js              | spec-app-pages-quality-validator-repair-route              |   1.15 kB | 
+chunk-XLPNUVTH.js                                             | -                                                          |   1.11 kB | 
+spec-app-pages-overview.page.js                               | spec-app-pages-overview.page                               |   1.10 kB | 
+vitest-mock-patch.js                                          | vitest-mock-patch                                          | 974 bytes | 
+chunk-MGE7KF4B.js                                             | -                                                          | 805 bytes | 
+spec-app-core-meta-read.service.js                            | spec-app-core-meta-read.service                            | 686 bytes | 
+chunk-ASGXJCFG.js                                             | -                                                          | 634 bytes | 
+
+                                                              | Initial total                                              |   2.69 MB
+
+Lazy chunk files                                              | Names                                                      |  Raw size
+chunk-VTPW7IFN.js                                             | rule-governance-page                                       |  46.41 kB | 
+chunk-NQSJWZ7A.js                                             | video-analysis-workbench-page                              |  43.38 kB | 
+chunk-JF4EOAWV.js                                             | predictions-page                                           |  39.73 kB | 
+chunk-76WJ52VC.js                                             | character-lab-page                                         |  35.31 kB | 
+chunk-O5U2HKYI.js                                             | reach-further-research-page                                |  33.65 kB | 
+chunk-DVMCGWQG.js                                             | meta-reel-analytics-page                                   |  23.05 kB | 
+chunk-BHLFOV4P.js                                             | experiments-page                                           |  23.04 kB | 
+chunk-MN5FJPDO.js                                             | models-page                                                |  21.07 kB | 
+chunk-AOAO5DVS.js                                             | performance-page                                           |  19.59 kB | 
+chunk-PC3YZKYY.js                                             | meta-reels-page                                            |  12.91 kB | 
+chunk-VEL3KQ2Y.js                                             | reliability-page                                           |  11.36 kB | 
+chunk-IJBYII4P.js                                             | test-planner-page                                          |  10.67 kB | 
+chunk-NNWCN37Z.js                                             | video-library-page                                         | 470 bytes | 
+chunk-JZU4ASXB.js                                             | operations-page                                            | 390 bytes | 
+chunk-DUIO2NXY.js                                             | quality-validator-component                                | 330 bytes | 
+...and 8 more lazy chunks files. Use "--verbose" to show all the files.
+
+Application bundle generation complete. [12.256 seconds] - 2026-10-11T21:56:00.266Z
+
+▲ [WARNING] NG8113: TimelineChartComponent is not used within the template of QualityValidatorComponent [plugin angular-compiler]
+
+    src/app/pages/quality-validator/quality-validator.component.ts:202:39:
+      202 │ ...odule, FormsModule, TimelineChartComponent, RouterLink, Genera...
+          ╵                        ~~~~~~~~~~~~~~~~~~~~~~
+
+
+▲ [WARNING] NG8113: GeneralProducibilityComponent is not used within the template of QualityValidatorComponent [plugin angular-compiler]
+
+    src/app/pages/quality-validator/quality-validator.component.ts:202:75:
+      202 │ ...ent, RouterLink, GeneralProducibilityComponent, PostFamilyWork...
+          ╵                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+
+ RUN  v4.1.11 /Users/benanaktas/project/video/content-intelligence-platform/intelligence/frontend
+
+
+ Test Files  23 passed (23)
+      Tests  180 passed (180)
+   Start at  22:56:00
+   Duration  3.77s (transform 4.85s, setup 4.69s, import 6.78s, tests 6.39s, environment 23.27s)
+

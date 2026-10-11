@@ -482,11 +482,28 @@ public class VideoService {
   }
 
   /** Resolve only an explicit canonical creative destination, without creating it. */
+  public List<PromptWorkspace> promptWorkspaceDestinations() {
+    Path root = properties.dataRoot().toAbsolutePath().normalize();
+    Path base = root.resolve("library/POMPOM_HILLS_PRODUCTION/09_SOCIAL_REELS/new14092026");
+    if (!Files.isDirectory(base)) return List.of();
+    try (Stream<Path> folders = Files.list(base)) {
+      Path realRoot = root.toRealPath();
+      return folders.filter(Files::isDirectory).filter(folder -> {
+        try { return folder.toRealPath().startsWith(realRoot); }
+        catch (IOException invalid) { return false; }
+      }).map(folder -> new PromptWorkspace(folder.getFileName().toString(),
+          root.relativize(folder).toString().replace('\\', '/'), List.of(), null, null,
+          "NO_PROMPT", List.of(), "NOT_ANALYZED", null))
+          .sorted(Comparator.comparing(PromptWorkspace::folderPath, String.CASE_INSENSITIVE_ORDER)).toList();
+    } catch (IOException unavailable) {
+      throw new IllegalStateException("Workspaces could not be loaded. Check the configured library folder", unavailable);
+    }
+  }
+
   public void requirePromptWorkspace(String folderPath) {
-    String base = "library/POMPOM_HILLS_PRODUCTION/09_SOCIAL_REELS/new14092026";
     if (folderPath == null || folderPath.isBlank())
       throw new IllegalArgumentException("Select a workspace or create one before continuing");
-    if (promptWorkspaces(base).stream().noneMatch(workspace -> folderPath.equals(workspace.folderPath())))
+    if (promptWorkspaceDestinations().stream().noneMatch(workspace -> folderPath.equals(workspace.folderPath())))
       throw new IllegalArgumentException("Workspace is unavailable. Select an existing workspace or create one");
     try {
       Path root = properties.dataRoot().toRealPath();
