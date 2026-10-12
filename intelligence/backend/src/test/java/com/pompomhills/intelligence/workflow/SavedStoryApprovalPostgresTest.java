@@ -1,8 +1,7 @@
 package com.pompomhills.intelligence.workflow;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verifyNoInteractions;
+import static org.assertj.core.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pompomhills.intelligence.quality.QualityMlClient;
@@ -30,12 +29,14 @@ class SavedStoryApprovalPostgresTest {
   private JdbcClient jdbc;
   private WorkflowService service;
   private QualityMlClient ml;
+  private org.springframework.transaction.support.TransactionTemplate tx;
 
   @BeforeEach
   void setUp() {
     var dataSource =
         new DriverManagerDataSource(DATABASE.getJdbcUrl(), DATABASE.getUsername(), DATABASE.getPassword());
     jdbc = JdbcClient.create(dataSource);
+    tx = new org.springframework.transaction.support.TransactionTemplate(new org.springframework.jdbc.datasource.DataSourceTransactionManager(dataSource));
     jdbc.sql("DROP TABLE IF EXISTS post_family_workflow_events").update();
     jdbc.sql(
             "CREATE TABLE post_family_workflow_events (id uuid PRIMARY KEY, kind varchar(80) NOT NULL,"
@@ -143,6 +144,91 @@ class SavedStoryApprovalPostgresTest {
     assertThat(service.list("CREATIVE_ROLE")).hasSize(2);
     assertThat(service.getByKind(unrelatedStoryId, "CREATIVE_ROLE").get("title"))
         .isEqualTo("A different project with the same display title");
+    verifyNoInteractions(ml);
+  }
+
+
+  private Map<String, Object> approvedBuildRequest() throws Exception {
+    UUID story = UUID.randomUUID();
+    String text = "Mimi'nin notu çoğalır. Mimi hapşırır.";
+    String revision = "candidate-2-revision-" + fingerprint(text);
+    insert(story, "CREATIVE_ROLE", Map.of("role", "STORY", "result", Map.of("alternatives",
+        List.of(Map.of("candidateId", "candidate-2", "text", text)))));
+    var approval = service.approveStory(story, Map.of("approvedText", text, "candidateId", "candidate-2",
+        "revisionId", revision, "contentFingerprint", fingerprint(text)));
+    return Map.of("role", "BUILD_PROMPT", "text", text, "maxCostUsd", .15,
+        "context", Map.of("sourceStoryRecordId", story.toString(), "candidateId", "candidate-2",
+            "storyRevisionId", revision, "approvalRecordId", approval.get("recordId"),
+            "targetConfiguration", Map.of("duration", 15, "aspectRatio", "9:16", "selectedGenerator", "SEEDANCE_2_0_MINI")));
+  }
+
+  @Test
+  void rejectedProviderResponseCommitsAndIdenticalRetryNeverCallsMlAgain() throws Exception {
+    var request = approvedBuildRequest();
+    when(ml.workflow(eq("creative-role"), anyMap())).thenReturn(Map.of(
+        "role", "BUILD_PROMPT", "attemptState", "PROVIDER_RESULT_REJECTED", "validationStatus", "REJECTED", "provider", "openai",
+        "calls", 1, "rejectedProviderResponse", "{\"productionPlan\":{\"invalid\":true}}",
+        "attemptDiagnostics", Map.of("error", "Beat 2: staging", "retryAutomatically", false)));
+    var first = tx.execute(status -> service.creativeRole(request));
+    assertThat(first).containsEntry("attemptState", "PROVIDER_RESULT_REJECTED").containsEntry("validationStatus", "REJECTED");
+    assertThat(service.getByKind(UUID.fromString(String.valueOf(first.get("recordId"))), "CREATIVE_ROLE"))
+        .containsEntry("rejectedProviderResponse", first.get("rejectedProviderResponse"));
+    var retry = new java.util.LinkedHashMap<>(request);
+    retry.put("maxCostUsd", .10);
+    var replay = tx.execute(status -> service.creativeRole(retry));
+    assertThat(replay).containsEntry("recordId", first.get("recordId").toString()).containsEntry("calls", 0)
+        .containsEntry("reused", true).containsEntry("attemptState", "PROVIDER_RESULT_REJECTED");
+    verify(ml, times(1)).workflow(eq("creative-role"), anyMap());
+  }
+
+  @Test
+  void completedRequestReplaysAndConcurrentIdenticalRequestsCallMlOnce() throws Exception {
+    var request = approvedBuildRequest();
+    var entered = new java.util.concurrent.CountDownLatch(1);
+    var release = new java.util.concurrent.CountDownLatch(1);
+    when(ml.workflow(eq("creative-role"), anyMap())).thenAnswer(call -> {
+      entered.countDown();
+      assertThat(release.await(5, java.util.concurrent.TimeUnit.SECONDS)).isTrue();
+      return Map.of("role", "BUILD_PROMPT", "provider", "openai", "calls", 1, "result", Map.of("prompt", "Stored fixture draft"));
+    });
+    try (var pool = java.util.concurrent.Executors.newFixedThreadPool(2)) {
+      var first = pool.submit(() -> tx.execute(status -> service.creativeRole(request)));
+      assertThat(entered.await(5, java.util.concurrent.TimeUnit.SECONDS)).isTrue();
+      var second = pool.submit(() -> tx.execute(status -> service.creativeRole(request)));
+      release.countDown();
+      var saved = first.get(10, java.util.concurrent.TimeUnit.SECONDS);
+      var replay = second.get(10, java.util.concurrent.TimeUnit.SECONDS);
+      assertThat(replay).containsEntry("recordId", saved.get("recordId").toString()).containsEntry("calls", 0)
+          .containsEntry("attemptState", "REUSED_SAVED_RESULT");
+      verify(ml, times(1)).workflow(eq("creative-role"), anyMap());
+    }
+  }
+
+  @Test
+  void wrongRevisionCandidateTextAndMissingApprovalStillFailBeforeMl() throws Exception {
+    var valid = approvedBuildRequest();
+    for (String field : List.of("candidateId", "storyRevisionId", "approvalRecordId")) {
+      var context = new java.util.LinkedHashMap<>((Map<String, Object>) valid.get("context"));
+      context.put(field, "wrong");
+      var request = new java.util.LinkedHashMap<>(valid);
+      request.put("context", context);
+      assertThatThrownBy(() -> tx.execute(status -> service.creativeRole(request)))
+          .isInstanceOf(IllegalArgumentException.class).hasMessageContaining("exact approved story");
+    }
+    var edited = new java.util.LinkedHashMap<>(valid);
+    edited.put("text", "A changed story");
+    assertThatThrownBy(() -> tx.execute(status -> service.creativeRole(edited)))
+        .isInstanceOf(IllegalArgumentException.class);
+    UUID unapprovedStory = UUID.randomUUID();
+    insert(unapprovedStory, "CREATIVE_ROLE", Map.of("role", "STORY", "result", Map.of("alternatives",
+        List.of(Map.of("candidateId", "candidate-2", "text", valid.get("text"))))));
+    var missingContext = new java.util.LinkedHashMap<>((Map<String, Object>) valid.get("context"));
+    missingContext.put("sourceStoryRecordId", unapprovedStory.toString());
+    missingContext.remove("approvalRecordId");
+    var missing = new java.util.LinkedHashMap<>(valid);
+    missing.put("context", missingContext);
+    assertThatThrownBy(() -> tx.execute(status -> service.creativeRole(missing)))
+        .isInstanceOf(IllegalArgumentException.class);
     verifyNoInteractions(ml);
   }
 

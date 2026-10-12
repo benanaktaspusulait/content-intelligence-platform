@@ -641,12 +641,14 @@ public class WorkflowService {
           .query((rs, rowNum) -> rs.getObject(1))
           .list();
       var saved = findCreativeRoleByFingerprint(requestFingerprint);
-      if (saved.isPresent() && saved.get().get("result") instanceof Map<?, ?>) {
+      if (saved.isPresent() && (saved.get().get("result") instanceof Map<?, ?>
+          || "PROVIDER_RESULT_REJECTED".equals(saved.get().get("attemptState")))) {
         var replay = new LinkedHashMap<>(saved.get());
         replay.put("recordId", saved.get().get("recordId"));
         replay.put("reused", true);
         replay.put("calls", 0);
-        replay.put("attemptState", "REUSED_SAVED_RESULT");
+        if (!"PROVIDER_RESULT_REJECTED".equals(saved.get().get("attemptState")))
+          replay.put("attemptState", "REUSED_SAVED_RESULT");
         replay.put("requestFingerprint", requestFingerprint);
         return replay;
       }
@@ -681,14 +683,16 @@ public class WorkflowService {
     result.put("sourceStoryRecordId", context.get("sourceStoryRecordId"));
     result.put("sourceRequest", verifiedRequest);
     result.put("requestFingerprint", requestFingerprint);
-    result.put("attemptState", "SAVED");
-    result.put("attemptDiagnostics", Map.of(
-        "provider", result.getOrDefault("provider", "unknown"),
-        "model", result.getOrDefault("model", "unknown"),
-        "calls", result.getOrDefault("calls", 0),
-        "validationStatus", result.getOrDefault("validationStatus", "NOT_VALIDATED"),
-        "persisted", true));
-    result.put("validationStatus", "NOT_VALIDATED");
+    boolean rejected = "PROVIDER_RESULT_REJECTED".equals(workflowResponse.get("attemptState"));
+    result.put("attemptState", rejected ? "PROVIDER_RESULT_REJECTED" : "SAVED");
+    var diagnostics = new LinkedHashMap<>(map(workflowResponse.get("attemptDiagnostics")));
+    diagnostics.put("provider", result.getOrDefault("provider", "unknown"));
+    diagnostics.put("model", result.getOrDefault("model", "unknown"));
+    diagnostics.put("calls", result.getOrDefault("calls", 0));
+    diagnostics.put("validationStatus", rejected ? "REJECTED" : "NOT_VALIDATED");
+    diagnostics.put("persisted", true);
+    result.put("attemptDiagnostics", diagnostics);
+    result.put("validationStatus", rejected ? "REJECTED" : "NOT_VALIDATED");
     result.put("recordId", save("CREATIVE_ROLE", null, result));
     return result;
   }

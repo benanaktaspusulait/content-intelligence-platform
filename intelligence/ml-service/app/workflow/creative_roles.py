@@ -562,7 +562,29 @@ def _nested_response_dict(value: dict[str, Any], keys: tuple[str, ...], depth: i
 
 def _normalise_build_prompt_response(value: dict[str, Any]) -> dict[str, Any]:
     """Accept documented casing/wrapper variants while keeping one stored contract."""
-    if not isinstance(value.get('prompt'), str) or not value.get('prompt', '').strip():
+    prompt_val = value.get('prompt')
+    if isinstance(prompt_val, dict):
+        # OpenAI may return prompt as a structured dict with heading keys
+        # (e.g. {"TITLE / FORMAT": "...", "VISUAL STYLE": "..."}).
+        # Flatten it to the expected plain-text string format.
+        parts = []
+        for key, val in prompt_val.items():
+            if isinstance(val, str):
+                parts.append(f'{key}\n{val}')
+            elif isinstance(val, list):
+                # TIMED SHOT PLAN is a list of beat dicts; serialize as text
+                beat_lines = []
+                for beat in val:
+                    if isinstance(beat, dict):
+                        beat_parts = [f"{b.get('time', '?')}: {b.get('subject', '?')} {b.get('action', '?')} {b.get('object', '?')} {b.get('stateChange', '?')} [{b.get('framing', '?')}] {b.get('staging', '?')} -> {b.get('consequence', '?')}" for b in [beat]]
+                        beat_lines.extend(beat_parts)
+                    else:
+                        beat_lines.append(str(beat))
+                parts.append(f'{key}\n{" ".join(beat_lines)}')
+            else:
+                parts.append(f'{key}\n{val}')
+        value['prompt'] = '\n\n'.join(parts)
+    elif not isinstance(prompt_val, str) or not prompt_val.strip():
         prompt = _nested_response_value(value, ('productionPrompt', 'openArtPrompt', 'promptText', 'production_prompt', 'openart_prompt', 'prompt'))
         if isinstance(prompt, str):
             value['prompt'] = prompt
@@ -581,13 +603,15 @@ def perform_role(role: str, text: str, context: dict[str, Any], provider: LLMPro
     system = {
         'STORY_REVIEW': '''Review every supplied story candidate together. Return ONLY one JSON object matching this exact STORY_REVIEW contract; never omit a key and never return markdown. Required top-level keys: reviewId, sourceRequestId, sourceFingerprint, reviewModel, reviewModelVersion, reviewPolicyVersion, reviewTimestamp, reviewStatus, diversityAssessment, comparativeFindings, candidateReviews, recommendedCandidateId, recommendationReason, overallConcerns, usageAndCost, evidenceLimitations, revisionComparison. Set sourceRequestId and sourceFingerprint exactly to the values supplied in context (they may be null); the saved record timestamp is authoritative, so do not use a fixture date. reviewStatus must be COMPLETED, PARTIAL, SERVICE_ERROR, or INSUFFICIENT_EVIDENCE. candidateReviews must contain exactly one object for each supplied candidate, each with its exact candidateId. Assess concept coherence, opening visual promise, causal consistency, event progression, originality against siblings, curiosity/rewatch, generator difficulty, source constraints, ending/payoff, and material differences. For every material finding include dimension, finding, supportingTextEvidence, severity, confidenceOrEvidenceStatus and suggestedMinimalImprovement. Use concise structured findings and do not invent candidates. recommendedCandidateId must be one supplied candidateId or null; if no evidence supports a preference, return null and explain that. Use arrays/objects for the remaining evidence fields even when empty. Compare actual mechanisms and event progressions rather than wording, preserve source fidelity, mark uncertainty honestly, and never grant render authorization.''',
         'STORY': '''Return ONLY one JSON object matching this schema: {"alternatives":[{"candidateId":"candidate-1","title":"short title","text":"complete story"}]}. Return exactly the number of alternatives requested in context.requestedAlternativeCount (between 1 and 3). Each candidate must include a non-empty candidateId, title and text string. When returning multiple alternatives, each must have a meaningfully different narrative body — do not reuse the same story text with only a different title. Vary at least one of: action/progression strategy, how the central physical rule causes consequences, escalation structure, visual discovery, or permitted payoff. The user supplied input in mode context.inputMode (IDEA = short concept, DETAILED_STORY = complete narrative). Respect context.storyGenerationMode: for EXPLORE_DIFFERENT_STORIES generate meaningfully different narrative directions from the supplied idea; for IMPROVE_EXISTING_STORY refine the supplied narrative while preserving only the explicitly locked requirements listed in context.lockedRequirements. The locked requirements are: PRESERVE_CORE_PREMISE (keep the central concept), PRESERVE_KEY_EVENTS (keep the major events in order), PRESERVE_ENDING (keep the final outcome). Only the requirements present in context.lockedRequirements are binding; do not silently lock requirements that are absent. Preserve supplied characters and intent. Do not return markdown, reasoning, commentary or production authorization.''',
-        'BUILD_PROMPT': '''Return ONLY JSON with exactly two top-level keys: `prompt` and `productionPlan`. Convert the approved story into a concrete, concise OpenArt video prompt: visible actions, object states, continuity, staging, selected aspect ratio/duration, and ending. Do not rewrite its premise. Preserve the exact character, central mechanism, essential progression, protected events, constraints and ending. Do not silently omit an essential event; mark uncertainty or material deviation in evidence instead. Use manageable actions, few cuts, uncluttered staging, and no invented reference claims. Use the selected content profile's objective; comedy is relevant only when the source/profile supports it. Separate source-confirmed facts from AI-derived execution suggestions. Prompt headings, each separated by a blank line: TITLE / FORMAT, VISUAL STYLE, CHARACTER / CONTINUITY, TIMED SHOT PLAN, AUDIO, NEGATIVE CONSTRAINTS, FINAL CUT. Make the timed plan cover the full selected duration with ordered, non-overlapping ranges; choose meaningful events from the source, not an arbitrary fixed beat count. Each plan beat must contain time, subject, action, object, stateChange, framing, staging, consequence, sourceEvidence (an exact verbatim quote from approved source or empty string), evidenceStatus, sourceRelationship (FAITHFUL_ADAPTATION, CLARIFICATION, OPTIONAL_EXECUTION_INTERPRETATION, MATERIAL_CREATIVE_DEVIATION, UNKNOWN), and importance (CORE, FLEXIBLE, POLISH, UNKNOWN). Never fabricate quotes. `visualExecution` must include openingState, beats, mechanism, continuity, endingState. `productionPlan` keys: sourceIdentity, creativeObjective, characterBindings, visualExecution, productionConstraints, intentClassification, evidenceLimitations, generatorRisks, referencePlan. If Mimi is selected, honor the supplied anthropomorphic-bunny identity requirement; do not invent unverified appearance details and state whether approved references are actually bound. Assess the first two seconds as planned text only using visible promise → immediate consequence/reveal → reason to continue; distinguish mystery from ordinary setup. Do not claim first-frame image evidence. Identify causal ambiguity without rewriting the premise. Risks need a cited source event, affected beat, confidence, smallest mitigation and next action; they are advisory unless evidence establishes a true blocker. Do not claim unverified generator behavior. Do not add provider commentary, approval language or render authorization.''',
+        'BUILD_PROMPT': '''Return ONLY JSON with exactly two top-level keys: `prompt` and `productionPlan`. Convert the approved story into a concrete, concise OpenArt video prompt: visible actions, object states, continuity, staging, selected aspect ratio/duration, and ending. Do not rewrite its premise. Preserve the exact character, central mechanism, essential progression, protected events, constraints and ending. Do not silently omit an essential event; mark uncertainty or material deviation in evidence instead. Use manageable actions, few cuts, uncluttered staging, and no invented reference claims. Use the selected content profile's objective; comedy is relevant only when the source/profile supports it. Separate source-confirmed facts from AI-derived execution suggestions. Prompt headings, each separated by a blank line: TITLE / FORMAT, VISUAL STYLE, CHARACTER / CONTINUITY, TIMED SHOT PLAN, AUDIO, NEGATIVE CONSTRAINTS, FINAL CUT. Make the timed plan cover the full selected duration with ordered, non-overlapping ranges; choose meaningful events from the source, not an arbitrary fixed beat count. Each plan beat must contain time, subject, action, object, stateChange, framing, staging, consequence, sourceEvidence (an exact verbatim quote from approved source or empty string), evidenceStatus, sourceRelationship (FAITHFUL_ADAPTATION, CLARIFICATION, OPTIONAL_EXECUTION_INTERPRETATION, MATERIAL_CREATIVE_DEVIATION, UNKNOWN), and importance (CORE, FLEXIBLE, POLISH, UNKNOWN). The beat fields time, framing, action, staging and consequence are REQUIRED non-empty JSON strings, never objects, arrays, null or omitted. Use time ranges like "0-3s". Describe staging and the visible consequence in plain text; put uncertainty in evidenceStatus or evidenceLimitations. Never fabricate quotes. `visualExecution` must include openingState, beats, mechanism, continuity, endingState. `productionPlan` keys: sourceIdentity, creativeObjective, characterBindings, visualExecution, productionConstraints, intentClassification, evidenceLimitations, generatorRisks, referencePlan. If Mimi is selected, honor the supplied anthropomorphic-bunny identity requirement; do not invent unverified appearance details and state whether approved references are actually bound. Assess the first two seconds as planned text only using visible promise → immediate consequence/reveal → reason to continue; distinguish mystery from ordinary setup. Do not claim first-frame image evidence. Identify causal ambiguity without rewriting the premise. Risks need a cited source event, affected beat, confidence, smallest mitigation and next action; they are advisory unless evidence establishes a true blocker. Do not claim unverified generator behavior. Do not add provider commentary, approval language or render authorization.''',
         'MINIMAL_REPAIR': 'Return JSON patches: at most three minimal edits with integer Unicode code point start/end, exact sourceQuote and replacement. Preserve protected intent and ESSENTIAL source quotes. Never return approval or rewrite the entire prompt.',
     }[role]
     safe_context = {key: context[key] for key in ('protectedIntent', 'intentRequirements', 'findings', 'retrievedLessons', 'constraints', 'inputMode', 'storyGenerationMode', 'lockedRequirements', 'permittedVariation', 'mainCharacter', 'character', 'characterRecord', 'characterReferences', 'referenceBindings', 'preferences', 'profile', 'candidates', 'candidateIds', 'requestedAlternativeCount', 'sourceRequestId', 'sourceFingerprint', 'previousReview', 'currentRevision', 'previousRevision', 'targetDuration', 'aspectRatio', 'reviewPolicyVersion', 'selectedGenerator', 'generatorCapabilities', 'targetConfiguration', 'storyTitle', 'promptBuilderContractVersion') if key in context}
     if role == 'BUILD_PROMPT':
         safe_context['generatorCapabilities'] = _configured_generator_capabilities(context)
     raw_response = provider.complete(json.dumps({'text': text, 'context': safe_context}, ensure_ascii=False), system=system, temperature=0)
+    if role == 'BUILD_PROMPT':
+        provider.last_creative_response = raw_response
     if not isinstance(raw_response, str) or not raw_response.strip():
         raise ValueError(f'{ROLES[role].title()} returned an empty JSON response')
     candidate_response = raw_response.strip()
@@ -688,7 +712,8 @@ def perform_role(role: str, text: str, context: dict[str, Any], provider: LLMPro
         plan = value.get('productionPlan')
         required_plan = ('sourceIdentity', 'creativeObjective', 'characterBindings', 'visualExecution', 'productionConstraints', 'intentClassification', 'evidenceLimitations', 'generatorRisks', 'referencePlan')
         if not isinstance(plan, dict) or any(key not in plan for key in required_plan):
-            raise ValueError('Production prompt specification is incomplete')
+            missing = [k for k in required_plan if k not in (plan or {})]
+            raise ValueError(f'Production prompt specification is incomplete; missing: {missing}')
         execution = plan.get('visualExecution')
         if not isinstance(execution, dict) or not isinstance(execution.get('openingState'), (str, dict)) or not isinstance(execution.get('mechanism'), (str, dict)) or not isinstance(execution.get('endingState'), (str, dict)) or not isinstance(execution.get('continuity'), (str, list, dict)):
             raise ValueError('Production prompt visual execution plan is incomplete')
@@ -696,10 +721,12 @@ def perform_role(role: str, text: str, context: dict[str, Any], provider: LLMPro
         if not isinstance(beats, list) or not beats:
             raise ValueError('Production prompt must contain at least one source-linked visual event')
         quality_findings: list[dict[str, str]] = []
-        for beat in beats:
+        for beat_index, beat in enumerate(beats, start=1):
             required_beat = ('time', 'framing', 'action', 'staging', 'consequence')
-            if not isinstance(beat, dict) or any(not isinstance(beat.get(key), str) or not beat[key].strip() for key in required_beat):
-                raise ValueError('Every production beat must include timing, executable staging and source traceability')
+            invalid_fields = [key for key in required_beat if not isinstance(beat, dict) or not isinstance(beat.get(key), str) or not beat[key].strip()]
+            if invalid_fields:
+                raise ValueError('Every production beat must include timing, executable staging and source traceability. '
+                                 f'Beat {beat_index}: required non-empty strings: {", ".join(invalid_fields)}')
             beat.setdefault('sourceEvidence', '')
             beat.setdefault('sourceRelationship', 'UNKNOWN')
             beat.setdefault('importance', 'UNKNOWN')
@@ -797,7 +824,21 @@ def run_paid_role(role: str, text: str, context: dict[str, Any], max_cost_usd: f
     provider = DeepSeekTextProvider(model) if role == 'STORY' else OpenAIProvider(model=model)
     provider.max_output_tokens = output_token_limit
     provider.json_output = True
-    result = perform_role(role, text, context, provider, model)
+    try:
+        result = perform_role(role, text, context, provider, model)
+    except ValueError as error:
+        # Preserve a received response so contract rejection cannot cause another paid call.
+        if role != 'BUILD_PROMPT' or not hasattr(provider, 'last_creative_response'):
+            raise
+        result = {'role': role, 'provider': ROLES[role], 'model': model, 'calls': 1,
+                  'attemptState': 'PROVIDER_RESULT_REJECTED', 'validationStatus': 'REJECTED',
+                  'rejectedProviderResponse': provider.last_creative_response,
+                  'attemptDiagnostics': {'errorCode': 'PRODUCTION_PLAN_CONTRACT_INVALID',
+                                         'error': str(error), 'providerOutcome': 'RESPONSE_RECEIVED',
+                                         'retryAutomatically': False},
+                  'usage': getattr(provider, 'last_usage', None),
+                  'providerResponseMetadata': getattr(provider, 'last_response_metadata', None),
+                  'visualInspected': False}
     result['costUpperBoundUsd'] = upper_bound
     result['approvedCostCeilingUsd'] = max_cost_usd
     return result

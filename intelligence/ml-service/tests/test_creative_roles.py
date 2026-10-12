@@ -298,3 +298,48 @@ def test_legacy_migration_does_not_guess_missing_ancestry_or_semantics():
     assert plan['storyPromptFidelity']['status'] == 'NOT_EVALUATED'
     assert plan['generatorCapabilityAssessment']['status'] == 'UNKNOWN'
     assert migrated['validationStatus'] == 'NOT_VALIDATED'
+
+
+@pytest.mark.parametrize('bad_value', [None, '', {'position': 'cabinet'}])
+def test_paid_build_retains_invalid_beat_response_without_accepting_or_retrying(monkeypatch, bad_value):
+    from app.workflow import creative_roles
+    from fastapi.testclient import TestClient
+    from app.main import app
+    result = production_fixture()
+    result['productionPlan']['visualExecution']['beats'][1]['staging'] = bad_value
+    provider = FixtureProvider(result)
+    provider.last_usage = {'total_tokens': 123}
+    provider.last_response_metadata = {'requestId': 'fixture-response', 'finishReason': 'stop'}
+    monkeypatch.setenv('WORKFLOW_CREATIVE_ROLES_ENABLED', 'true')
+    monkeypatch.setenv('WORKFLOW_BUILD_PROMPT_MODEL', 'fixture-model')
+    monkeypatch.setenv('WORKFLOW_BUILD_PROMPT_INPUT_USD_PER_MILLION', '0.15')
+    monkeypatch.setenv('WORKFLOW_BUILD_PROMPT_OUTPUT_USD_PER_MILLION', '0.6')
+    monkeypatch.setattr(creative_roles, 'OpenAIProvider', lambda **kwargs: provider)
+    response = TestClient(app).post('/api/v1/workflow/creative-role', json={
+        'role': 'BUILD_PROMPT', 'text': 'Mimi stands by the toy cabinet.', 'context': {}, 'maxCostUsd': .15})
+    assert response.status_code == 200
+    body = response.json()
+    assert body['attemptState'] == 'PROVIDER_RESULT_REJECTED'
+    assert body['validationStatus'] == 'REJECTED'
+    assert 'result' not in body
+    assert json.loads(body['rejectedProviderResponse']) == result
+    assert 'Beat 2' in body['attemptDiagnostics']['error']
+    assert 'staging' in body['attemptDiagnostics']['error']
+    assert body['attemptDiagnostics']['retryAutomatically'] is False
+    assert body['providerResponseMetadata']['requestId'] == 'fixture-response'
+    assert len(provider.calls) == 1
+    assert 'REQUIRED non-empty JSON strings' in provider.calls[0][1]
+
+
+def test_paid_valid_build_still_returns_a_draft(monkeypatch):
+    from app.workflow import creative_roles
+    provider = FixtureProvider(production_fixture())
+    for key, value in {'WORKFLOW_CREATIVE_ROLES_ENABLED': 'true', 'WORKFLOW_BUILD_PROMPT_MODEL': 'fixture',
+                       'WORKFLOW_BUILD_PROMPT_INPUT_USD_PER_MILLION': '.15',
+                       'WORKFLOW_BUILD_PROMPT_OUTPUT_USD_PER_MILLION': '.6'}.items():
+        monkeypatch.setenv(key, value)
+    monkeypatch.setattr(creative_roles, 'OpenAIProvider', lambda **kwargs: provider)
+    result = run_paid_role('BUILD_PROMPT', 'Mimi stands by the toy cabinet.', {}, .15)
+    assert result['validationStatus'] == 'NOT_VALIDATED'
+    assert result['result']['prompt']
+    assert len(provider.calls) == 1
