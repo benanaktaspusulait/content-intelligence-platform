@@ -105,9 +105,12 @@ class VideoPromptLineageTest {
                                       "text", "fixture-story")))
                           : java.util.Map.of("prompt", "fixture-draft")));
             });
-    var story =
-        workflow.creativeRole(
-            java.util.Map.of("role", "STORY", "text", "fixture", "maxCostUsd", 1));
+    UUID fixtureStoryId = UUID.randomUUID();
+    jdbc.sql("INSERT INTO post_family_workflow_events(id,kind,payload) VALUES(:id,'CREATIVE_ROLE',CAST(:payload AS jsonb))")
+        .param("id", fixtureStoryId)
+        .param("payload", "{\"role\":\"STORY\",\"result\":{\"alternatives\":[{\"candidateId\":\"fixture-candidate-1\",\"text\":\"fixture-story\"}]}}")
+        .update();
+    var story = java.util.Map.of("recordId", fixtureStoryId);
     String storyRecordId = String.valueOf(story.get("recordId"));
     String candidateId = "fixture-candidate-1";
     String storyText = "fixture-story";
@@ -175,6 +178,42 @@ class VideoPromptLineageTest {
         .containsEntry("operatorEdited", true);
     assertThatThrownBy(() -> workspace.creativeProvenance(-1L, saved.id()))
         .isInstanceOf(IllegalArgumentException.class);
+  }
+
+  @Autowired com.pompomhills.intelligence.content.ContentPromptQueryService promptSnapshots;
+
+  @Test
+  void legacyCorrectedDraftCreatesExactInitialVersionAndPreservesEditedProvenance() throws Exception {
+    String corrected = "TITLE / FORMAT\nMimi · 15s · 9:16\n\nTIMED SHOT PLAN\n0-15s: Mimi sneezes; notes stick to the cabinet.\n";
+    UUID role = UUID.randomUUID();
+    String story = UUID.randomUUID().toString();
+    String originalResponse = "{\"prompt\":\"Original provider prompt\"}";
+    var payload = java.util.Map.of("role", "BUILD_PROMPT", "provider", "LOCAL_MOCK", "model", "fixture",
+        "sourceStoryRecordId", story, "rejectedProviderResponse", originalResponse,
+        "sourceRequest", java.util.Map.of("text", "Approved Mimi story", "context", java.util.Map.of(
+            "sourceStoryRecordId", story, "candidateId", "candidate-2", "storyRevisionId", "candidate-2-revision-exact", "approvalRecordId", "approval")),
+        "result", java.util.Map.of("prompt", corrected, "productionPlan", java.util.Map.of("promptTextEdited", true)));
+    jdbc.sql("INSERT INTO post_family_workflow_events(id,kind,payload) VALUES(:id,'CREATIVE_ROLE',CAST(:payload AS jsonb))")
+        .param("id", role).param("payload", new com.fasterxml.jackson.databind.ObjectMapper().writeValueAsString(payload)).update();
+    String before = jdbc.sql("SELECT payload::text FROM post_family_workflow_events WHERE id=:id").param("id", role).query(String.class).single();
+    var content = workspace.create(new com.pompomhills.intelligence.content.ContentWorkspaceController.CreateContentRequest("Mimi baseline", "Fixture", "REEL"));
+    var initial = workspace.createPrompt(content.id(), new com.pompomhills.intelligence.content.ContentWorkspaceController.CreatePromptRequest(corrected, null, null, role.toString()));
+    assertThat(initial.versionNumber()).isEqualTo(1);
+    assertThat(initial.rawText()).isEqualTo(corrected);
+    assertThat(jdbc.sql("SELECT parent_prompt_version_id IS NULL FROM prompt_versions WHERE id=:id").param("id", initial.id()).query(Boolean.class).single()).isTrue();
+    assertThat(workspace.creativeProvenance(content.id(), initial.id()))
+        .containsEntry("operatorEdited", true).containsEntry("promptTextEdited", true)
+        .containsEntry("productionSpecificationStatus", "STALE")
+        .containsEntry("approvedStoryText", "Approved Mimi story").containsEntry("storyRevisionId", "candidate-2-revision-exact");
+    String hash = java.util.HexFormat.of().formatHex(java.security.MessageDigest.getInstance("SHA-256").digest(corrected.getBytes(java.nio.charset.StandardCharsets.UTF_8)));
+    assertThat(promptSnapshots.load(content.id(), initial.id()).promptSha256()).isEqualTo(hash);
+    var child = workspace.createPrompt(content.id(), new com.pompomhills.intelligence.content.ContentWorkspaceController.CreatePromptRequest(corrected+"Operator edit", null, initial.id()));
+    assertThat(child.versionNumber()).isEqualTo(2);
+    assertThat(promptSnapshots.load(content.id(), initial.id()).promptText()).isEqualTo(corrected);
+    assertThat(promptSnapshots.load(content.id(), initial.id()).promptSha256()).isEqualTo(hash);
+    assertThat(workspace.creativeProvenance(content.id(), child.id())).containsEntry("creativeRoleRecordId", role.toString());
+    assertThat(jdbc.sql("SELECT payload::text FROM post_family_workflow_events WHERE id=:id").param("id",role).query(String.class).single()).isEqualTo(before);
+    org.mockito.Mockito.verifyNoInteractions(workflowMl);
   }
 
   private String storyFingerprintForTest(String value) {

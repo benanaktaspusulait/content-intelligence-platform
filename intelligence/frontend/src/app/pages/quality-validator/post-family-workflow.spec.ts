@@ -22,6 +22,25 @@ describe('post-family operator workflow', () => {
     setupHttp.expectOne('/api/v1/intelligence/workflow/production-settings?contentId=1&promptVersionId=2').flush({});
     return fixture;
   }
+  it('shows stale provider evidence and approved source without importing old beats or approving review', async () => {
+    const fixture=await setup();const component=fixture.componentInstance;
+    fixture.componentRef.setInput('creativeProvenance',{creativeRoleRecordId:'builder',productionSpecificationStatus:'STALE',promptTextEdited:true,
+      approvedStoryText:'Approved Mimi story',storyRevisionId:'candidate-2-revision-exact',sourceStoryRecordId:'story',candidateId:'candidate-2',approvalRecordId:'approval',
+      productionPlan:{visualExecution:{beats:[{action:'Old provider event'}]}}});
+    fixture.detectChanges();
+    expect(fixture.nativeElement.textContent).toContain('Production Specification is STALE');
+    expect(fixture.nativeElement.textContent).toContain('Approved Mimi story');
+    expect(component.structuredPlanText).toBe('');expect(component.review).toBeNull();expect(component.intentConfirmed).toBe(false);
+    component.review={recordId:'old-quality'}; (component as any).reviewedInputs=(component as any).inputSnapshot();
+    expect(component.isCurrent()).toBe(true);
+    fixture.componentRef.setInput('promptVersionId','3');fixture.detectChanges();
+    const http=TestBed.inject(HttpTestingController);
+    http.expectOne(r=>r.url==='/api/v1/intelligence/workflow/records?kind=REVIEW').flush([]);
+    http.expectOne('/api/v1/intelligence/workflow/production-settings?contentId=1&promptVersionId=3').flush({});
+    expect(component.review).toBeNull();expect(component.qa).toBeNull();expect(component.isCurrent()).toBe(false);
+    http.expectNone(r=>r.method==='POST');http.verify();fixture.destroy();TestBed.resetTestingModule();
+  });
+
   it('restores the exact saved version using read requests and invalidates changed settings', async () => {
     await TestBed.configureTestingModule({ imports: [PostFamilyWorkflowComponent], providers: [provideHttpClient(), provideHttpClientTesting()] }).compileComponents();
     const fixture = TestBed.createComponent(PostFamilyWorkflowComponent);

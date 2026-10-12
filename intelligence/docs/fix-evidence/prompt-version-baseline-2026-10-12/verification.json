@@ -1,0 +1,49 @@
+{
+  "decision": "VERSIONED_BASELINE_ESTABLISHED",
+  "contentId": 10,
+  "promptVersionId": 10,
+  "versionNumber": 1,
+  "parentPromptVersionId": null,
+  "promptSha256": "0fe229774deb4b31a42145bad91cf10c91634ba00da39fa3e9d288b3a2e7bd98",
+  "exactTextPreserved": true,
+  "builderRecordUnchanged": true,
+  "providerResponsePreserved": true,
+  "oneVersionAfterReload": true,
+  "noCreativeRoleCallDelta": true,
+  "productionSpecificationStatus": "STALE",
+  "traceability": "UNKNOWN",
+  "humanAcceptanceRequired": true,
+  "qualityAnalysisExecuted": false,
+  "backendTests": {
+    "performance.VideoPromptLineageTest": {
+      "tests": 18,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "content.ContentPromptQueryServiceTest": {
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "content.InternalContentPromptControllerTest": {
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "content.ContentCreationMappingTest": {
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "frontendTests": {
+    "filesPassed": 14,
+    "testsPassed": 232
+  },
+  "legacyAuditGap": "Historical direct SQL mutation remains an audit limitation; new baseline does not restore lost history.",
+  "databaseFingerprintContract": "Manual version source_sha256 is null; canonical snapshot computes SHA256 from persisted raw_text."
+}

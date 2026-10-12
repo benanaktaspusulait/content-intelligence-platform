@@ -233,20 +233,18 @@ public class ContentWorkspaceController {
               .query(java.util.UUID.class)
               .optional()
               .orElse(null);
-    String rolePrompt = null;
+    CreativePromptSource roleSource = null;
     if (roleId != null)
-      rolePrompt =
+      roleSource =
           jdbc.sql(
-                  "SELECT payload->'result'->>'prompt' FROM post_family_workflow_events WHERE"
-                      + " id=:id AND kind='CREATIVE_ROLE' AND payload->>'role'='BUILD_PROMPT'")
+                  "SELECT payload->'result'->>'prompt' prompt, "
+                      + "COALESCE(payload->'result'->'productionPlan'->>'promptTextEdited','false')='true' edited "
+                      + "FROM post_family_workflow_events WHERE id=:id AND kind='CREATIVE_ROLE' AND payload->>'role'='BUILD_PROMPT'")
               .param("id", roleId)
-              .query(String.class)
+              .query((rs, ignored) -> new CreativePromptSource(rs.getString("prompt"), rs.getBoolean("edited")))
               .optional()
-              .filter(value -> !value.isBlank())
-              .orElseThrow(
-                  () ->
-                      new IllegalArgumentException(
-                          "Draft provenance requires a saved BUILD_PROMPT record"));
+              .filter(value -> value.rawText() != null && !value.rawText().isBlank())
+              .orElseThrow(() -> new IllegalArgumentException("Draft provenance requires a saved BUILD_PROMPT record"));
     Integer version =
         jdbc.sql(
                 "SELECT COALESCE(MAX(version_number),0)+1 FROM prompt_versions WHERE"
@@ -275,7 +273,7 @@ public class ContentWorkspaceController {
                   + " VALUES (:version,:role,:edited)")
           .param("version", id)
           .param("role", roleId)
-          .param("edited", !request.rawText().equals(rolePrompt))
+          .param("edited", roleSource.operatorEdited() || !request.rawText().equals(roleSource.rawText()))
           .update();
     return prompts(contentId).stream()
         .filter(item -> item.id().equals(id))
@@ -488,7 +486,12 @@ public class ContentWorkspaceController {
     return jdbc.sql(
             """
             SELECT e.id,e.payload->>'provider' provider,e.payload->>'model' model,
-                   e.payload->>'sourceStoryRecordId' story,p.operator_edited
+                   e.payload->>'sourceStoryRecordId' story,p.operator_edited,
+                   e.payload->'sourceRequest'->>'text' approved_story,
+                   e.payload->'sourceRequest'->'context'->>'storyRevisionId' story_revision,
+                   e.payload->'sourceRequest'->'context'->>'candidateId' candidate,
+                   e.payload->'sourceRequest'->'context'->>'approvalRecordId' approval,
+                   COALESCE(e.payload->'result'->'productionPlan'->>'promptTextEdited','false')='true' plan_edited
             FROM prompt_creative_provenance p JOIN prompt_versions pv ON pv.id=p.prompt_version_id
             JOIN post_family_workflow_events e ON e.id=p.creative_role_record_id
             WHERE pv.content_id=:content AND pv.id=:prompt
@@ -503,13 +506,22 @@ public class ContentWorkspaceController {
               value.put("provider", rs.getString("provider"));
               value.put("model", rs.getString("model"));
               value.put("sourceStoryRecordId", rs.getString("story"));
-              value.put("operatorEdited", rs.getBoolean("operator_edited"));
+              boolean edited = rs.getBoolean("operator_edited");
+              value.put("operatorEdited", edited);
+              value.put("approvedStoryText", rs.getString("approved_story"));
+              value.put("storyRevisionId", rs.getString("story_revision"));
+              value.put("candidateId", rs.getString("candidate"));
+              value.put("approvalRecordId", rs.getString("approval"));
+              value.put("promptTextEdited", rs.getBoolean("plan_edited") || edited);
+              value.put("productionSpecificationStatus", edited || rs.getBoolean("plan_edited") ? "STALE" : "NOT_VALIDATED");
               value.put("validationStatus", "NOT_VALIDATED");
               return value;
             })
         .optional()
         .orElseGet(() -> java.util.Map.of("origin", "MANUAL_OR_LEGACY"));
   }
+
+  private record CreativePromptSource(String rawText, boolean operatorEdited) {}
 
   public record CreatePromptRequest(
       String rawText, String parsedIr, Long parentPromptVersionId, String creativeRoleRecordId) {

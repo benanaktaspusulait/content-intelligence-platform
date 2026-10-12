@@ -1,0 +1,4 @@
+prompt_versions|1
+prompt_creative_provenance|1
+render_jobs|0
+publication_jobs|0

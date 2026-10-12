@@ -11,6 +11,8 @@ import { GeneralProducibilityComponent } from './general-producibility.component
   imports: [CommonModule, FormsModule, RouterModule, GeneralProducibilityComponent],
   template: `
   <section *ngIf="activeStage === 4" class="workflow production-review" aria-label="Production review">
+    <div *ngIf="creativeProvenance?.productionSpecificationStatus === 'STALE'" class="missing-state" role="alert"><strong>Production Specification is STALE</strong><p>The original provider plan predates this edited prompt. Its beats and source traceability are not current verified evidence for prompt version {{ promptVersionId }}. No previous quality PASS is inherited.</p></div>
+    <details *ngIf="creativeProvenance?.approvedStoryText" class="advanced-details"><summary>Approved story · {{ creativeProvenance.storyRevisionId }}</summary><p>{{ creativeProvenance.approvedStoryText }}</p><small>Story {{ creativeProvenance.sourceStoryRecordId }} · {{ creativeProvenance.candidateId }} · approval {{ creativeProvenance.approvalRecordId }}</small></details>
     <nav *ngIf="activeStage === 4" class="stage-subtabs" aria-label="Production Review sections" role="tablist">
       <button *ngFor="let tab of productionTabs" type="button" role="tab" [class.is-active]="activeProductionTab === tab.id" [attr.aria-selected]="activeProductionTab === tab.id" (click)="selectProductionTab(tab.id)">{{ tab.title }}<small>{{ tab.description }}</small></button>
     </nav>
@@ -522,6 +524,7 @@ export class PostFamilyWorkflowComponent implements OnChanges, OnDestroy {
   @Input() contentId = '';
   @Input() promptVersionId = '';
   @Input() promptVersionNumber: number | null = null;
+  @Input() creativeProvenance: any = null;
   @Input() contentTitle = '';
   @Input() sourcePath = '';
   @Input() videoPath = '';
@@ -1168,6 +1171,7 @@ export class PostFamilyWorkflowComponent implements OnChanges, OnDestroy {
   }
   private inputSnapshot() {
     return JSON.stringify({
+      creativeSource: this.creativeProvenance ? {recordId:this.creativeProvenance.creativeRoleRecordId,revision:this.creativeProvenance.storyRevisionId,specificationStatus:this.creativeProvenance.productionSpecificationStatus} : null,
       structuredPlanText: this.structuredPlanText,
       prompt: this.prompt,
       contentId: this.contentId,

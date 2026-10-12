@@ -1,0 +1,18 @@
+{
+  "workflowEventId": "1bbde0d2-efc2-46b8-920c-9f55e910ef59",
+  "correctedTextSha256": "0fe229774deb4b31a42145bad91cf10c91634ba00da39fa3e9d288b3a2e7bd98",
+  "approvedStoryRecordId": "bc1cf798-d20b-4b98-8b73-56e1581c3afc",
+  "approvedStoryRevision": "candidate-2-revision-7c63cc86",
+  "approvedStoryFingerprint": "7c63cc86",
+  "approvedTextMatchesBuildSource": true,
+  "providerResponseSha256": "0a3e2c8933ac820bbac4bfd9e4364e8a624192433764e6714ca9b72e3cac2913",
+  "providerResponseMetadata": {
+    "apiStatus": "COMPLETED",
+    "requestId": "chatcmpl-EYE9MEICEcesUDGvJUMjErCETZj3Q",
+    "finishReason": "stop",
+    "promptLength": 5649,
+    "promptPresent": true
+  },
+  "originalProductionPlanPromptTextEdited": true,
+  "legacyAuditGap": "Corrected workflow event had previously been changed by direct SQL. This task creates a new baseline; it does not restore prior immutability."
+}

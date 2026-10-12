@@ -418,6 +418,43 @@ describe('step 1 journey safety', () => {
     http.verify(); fixture.destroy(); TestBed.resetTestingModule();
   });
 
+  it('initializes the saved draft editor after the prompt host appears and replaces a removed host', async () => {
+    const {fixture,page,http}=await createPage();
+    const internals=page as any;const host=document.createElement('div');const dispose=vi.fn();
+    page.draftPrompt='Corrected prompt bytes';
+    internals.promptMonaco={nativeElement:host};
+    internals.promptEditor={getContainerDomNode:()=>document.createElement('div'),dispose};
+    const initialize=vi.spyOn(internals,'initializePromptEditor').mockImplementation(()=>{});
+    page.ngAfterViewChecked();
+    expect(dispose).toHaveBeenCalledOnce();expect(internals.promptEditor).toBeNull();
+    expect(initialize).toHaveBeenCalledOnce();expect(page.draftPrompt).toBe('Corrected prompt bytes');
+    http.match(r=>r.method==='PUT').forEach(r=>r.flush({}));http.verify();fixture.destroy();TestBed.resetTestingModule();
+  });
+
+  it('saves an unchanged first draft once, preserves corrected bytes, and reloads its identity', async () => {
+    const {fixture,page,http}=await createPage();
+    const raw='TITLE / FORMAT\nMimi 15s\n\nTIMED SHOT PLAN\n0-15s: Corrected action.\n';
+    page.contentId='12';page.builderRecordId='builder-recovered';page.builderResult={prompt:raw,productionPlan:{promptTextEdited:true}};
+    page.draftPrompt=raw;page.savedPromptBaseline=raw;
+    expect((page as any).formatPromptForEditor(raw)).toBe(raw);
+    expect(page.promptDirty).toBe(false);
+    vi.spyOn(TestBed.inject(Router),'navigateByUrl').mockResolvedValue(true);
+    page.savePrompt();page.savePrompt();
+    const save=http.expectOne('/api/v1/intelligence/contents/12/prompt-versions');
+    expect(save.request.body).toMatchObject({rawText:raw,parentPromptVersionId:null,creativeRoleRecordId:'builder-recovered'});
+    save.flush({id:42});
+    expect(page.promptVersionId).toBe('42');
+    http.match(r=>r.method==='PUT').forEach(r=>r.flush({}));
+    fixture.destroy();
+    const reloaded=TestBed.createComponent(CreativeStudioPage);reloaded.detectChanges();
+    http.match(r=>r.method==='GET').forEach(r=>r.flush([]));
+    expect(reloaded.componentInstance.promptVersionId).toBe('42');
+    expect(reloaded.componentInstance.draftPrompt).toBe(raw);
+    reloaded.componentInstance.savePrompt();
+    expect(http.match(r=>r.method==='POST')).toHaveLength(0);
+    http.match(r=>r.method==='PUT').forEach(r=>r.flush({}));http.verify();reloaded.destroy();TestBed.resetTestingModule();
+  });
+
   it('saves a changed prompt as an immutable child version and routes to Production Review', async () => {
     const {fixture,page,http}=await createPage();
     page.contentId='12'; page.promptVersionId='3'; page.builderRecordId='builder-1';

@@ -1,0 +1,224 @@
+Mockito is currently self-attaching to enable the inline-mock-maker. This will no longer work in future releases of the JDK. Please add Mockito as an agent to your build as described in Mockito's documentation: https://javadoc.io/doc/org.mockito/mockito-core/latest/org.mockito/org/mockito/Mockito.html#0.3
+WARNING: A Java agent has been loaded dynamically (/Users/benanaktas/.m2/repository/net/bytebuddy/byte-buddy-agent/1.18.11/byte-buddy-agent-1.18.11.jar)
+WARNING: If a serviceability tool is in use, please run with -XX:+EnableDynamicAgentLoading to hide this warning
+WARNING: If a serviceability tool is not in use, please run with -Djdk.instrument.traceUsage for more information
+WARNING: Dynamic loading of agents will be disallowed by default in a future release
+OpenJDK 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended
+20:24:59.797 [main] INFO org.hibernate.validator.internal.util.Version -- HV000001: Hibernate Validator 9.1.3.Final
+20:24:59.961 [main] INFO org.springframework.mock.web.MockServletContext -- Initializing Spring TestDispatcherServlet ''
+20:24:59.962 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Initializing Servlet ''
+20:24:59.964 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Completed initialization in 1 ms
+20:25:00.110 [main] INFO org.springframework.mock.web.MockServletContext -- Initializing Spring TestDispatcherServlet ''
+20:25:00.110 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Initializing Servlet ''
+20:25:00.110 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Completed initialization in 0 ms
+20:25:00.279 [main] INFO org.testcontainers.DockerClientFactory -- Testcontainers version: 2.0.2
+20:25:00.440 [main] INFO org.testcontainers.dockerclient.DockerClientProviderStrategy -- Loaded org.testcontainers.dockerclient.UnixSocketClientProviderStrategy from ~/.testcontainers.properties, will try it first
+20:25:00.881 [main] INFO org.testcontainers.dockerclient.DockerClientProviderStrategy -- Found Docker environment with Docker accessed via Unix socket (/Users/benanaktas/.docker/run/docker.sock)
+20:25:00.884 [main] INFO org.testcontainers.DockerClientFactory -- Docker host IP address is localhost
+20:25:00.906 [main] INFO org.testcontainers.DockerClientFactory -- Connected to docker: 
+  Server Version: 29.2.1
+  API Version: 1.53
+  Operating System: Docker Desktop
+  Total Memory: 11948 MB
+  Labels: 
+    com.docker.desktop.address=unix:///Users/benanaktas/Library/Containers/com.docker.docker/Data/docker-cli.sock
+20:25:00.917 [main] INFO org.testcontainers.images.PullPolicy -- Image pull policy will be performed by: DefaultPullPolicy()
+20:25:00.918 [main] INFO org.testcontainers.utility.ImageNameSubstitutor -- Image name substitution will be performed by: DefaultImageNameSubstitutor (composite of 'ConfigurationFileImageNameSubstitutor' and 'PrefixingImageNameSubstitutor')
+20:25:00.983 [main] INFO tc.testcontainers/ryuk:0.13.0 -- Creating container for image: testcontainers/ryuk:0.13.0
+20:25:01.173 [main] INFO org.testcontainers.utility.RegistryAuthLocator -- Credential helper/store (docker-credential-desktop) does not have credentials for https://index.docker.io/v1/
+20:25:01.308 [main] INFO tc.testcontainers/ryuk:0.13.0 -- Container testcontainers/ryuk:0.13.0 is starting: 9a6684a895cd06f9b1d41d0b9098b7bd007ad8d16a6caff85bd32a316dd37aab
+20:25:01.801 [main] INFO tc.testcontainers/ryuk:0.13.0 -- Container testcontainers/ryuk:0.13.0 started in PT0.817248S
+20:25:01.806 [main] INFO org.testcontainers.utility.RyukResourceReaper -- Ryuk started - will monitor and terminate Testcontainers containers on JVM exit
+20:25:01.806 [main] INFO org.testcontainers.DockerClientFactory -- Checking the system...
+20:25:01.806 [main] INFO org.testcontainers.DockerClientFactory -- ✔︎ Docker server version should be at least 1.6.0
+20:25:01.828 [main] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.pompomhills.intelligence.performance.VideoPromptLineageTest]: VideoPromptLineageTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+20:25:01.903 [main] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.pompomhills.intelligence.PompomCreativeIntelligenceApplication for test class com.pompomhills.intelligence.performance.VideoPromptLineageTest
+20:25:01.924 [main] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.pompomhills.intelligence.performance.VideoPromptLineageTest]: VideoPromptLineageTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+20:25:01.926 [main] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.pompomhills.intelligence.PompomCreativeIntelligenceApplication for test class com.pompomhills.intelligence.performance.VideoPromptLineageTest
+20:25:01.939 [main] INFO tc.postgres:17-alpine -- Creating container for image: postgres:17-alpine
+20:25:01.996 [main] INFO tc.postgres:17-alpine -- Container postgres:17-alpine is starting: a7914643caf08d81afa8945bad9539bad285fb97636b725d7d94fd4c6be9e0e0
+20:25:03.422 [main] INFO tc.postgres:17-alpine -- Container postgres:17-alpine started in PT1.482511S
+20:25:03.423 [main] INFO tc.postgres:17-alpine -- Container is started (JDBC URL: jdbc:postgresql://localhost:53013/pompom?loggerLevel=OFF)
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v4.1.1)
+
+2026-10-12T20:25:03.626+01:00  INFO 89020 --- [pompom-creative-intelligence] [           main] c.p.i.p.VideoPromptLineageTest           : Starting VideoPromptLineageTest using Java 21.0.7 with PID 89020 (started by benanaktas in /Users/benanaktas/project/video/content-intelligence-platform/intelligence/backend)
+2026-10-12T20:25:03.627+01:00  INFO 89020 --- [pompom-creative-intelligence] [           main] c.p.i.p.VideoPromptLineageTest           : No active profile set, falling back to 1 default profile: "default"
+2026-10-12T20:25:04.298+01:00  INFO 89020 --- [pompom-creative-intelligence] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-10-12T20:25:04.357+01:00  INFO 89020 --- [pompom-creative-intelligence] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 53 ms. Found 19 JPA repository interfaces.
+2026-10-12T20:25:04.878+01:00  INFO 89020 --- [pompom-creative-intelligence] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-10-12T20:25:05.003+01:00  INFO 89020 --- [pompom-creative-intelligence] [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@2176d934
+2026-10-12T20:25:05.004+01:00  INFO 89020 --- [pompom-creative-intelligence] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-10-12T20:25:05.017+01:00  INFO 89020 --- [pompom-creative-intelligence] [           main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:postgresql://localhost:53013/pompom?loggerLevel=OFF (PostgreSQL 17.11)
+2026-10-12T20:25:05.086+01:00  INFO 89020 --- [pompom-creative-intelligence] [           main] o.f.c.i.s.JdbcTableSchemaHistory         : Schema history table "public"."flyway_schema_history" does not exist yet
+2026-10-12T20:25:05.089+01:00  INFO 89020 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbValidate     : Successfully validated 58 migrations (execution time 00:00.028s)
+2026-10-12T20:25:05.099+01:00  INFO 89020 --- [pompom-creative-intelligence] [           main] o.f.c.i.s.JdbcTableSchemaHistory         : Creating Schema History table "public"."flyway_schema_history" ...
+2026-10-12T20:25:05.158+01:00  INFO 89020 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Current version of schema "public": << Empty Schema >>
+2026-10-12T20:25:05.177+01:00  INFO 89020 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "1 - initial schema"
+2026-10-12T20:25:05.327+01:00  INFO 89020 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "2 - platform state observations"
+2026-10-12T20:25:05.351+01:00  INFO 89020 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "3 - intervention events append only"
+2026-10-12T20:25:05.365+01:00  INFO 89020 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "4 - seed canonical characters"
+2026-10-12T20:25:05.378+01:00  INFO 89020 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "5 - observation quality and discovery metrics"
+2026-10-12T20:25:05.406+01:00  INFO 89020 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "6 - quality validations"
+2026-10-12T20:25:05.431+01:00  INFO 89020 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "7 - create contents and prompt versions"
+2026-10-12T20:25:05.451+01:00  INFO 89020 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "8 - create validation runs and failed rules"
+2026-10-12T20:25:05.474+01:00  INFO 89020 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "9 - create reference prompts and golden tests"
+2026-10-12T20:25:05.490+01:00  INFO 89020 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "10 - create render jobs and assets"
+2026-10-12T20:25:05.514+01:00  INFO 89020 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "11 - create render qa and credit log"
+2026-10-12T20:25:05.532+01:00  INFO 89020 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "12 - create platform credentials"
+2026-10-12T20:25:05.547+01:00  INFO 89020 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "13 - create publication jobs"
+2026-10-12T20:25:05.562+01:00  INFO 89020 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "14 - create scheduled publications"
+2026-10-12T20:25:05.580+01:00  INFO 89020 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "15 - create publication analytics"
+2026-10-12T20:25:05.599+01:00  INFO 89020 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "16 - create webhook events"
+2026-10-12T20:25:05.613+01:00  INFO 89020 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "17 - create video metrics"
+2026-10-12T20:25:05.637+01:00  INFO 89020 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "18 - create performance classifications"
+2026-10-12T20:25:05.651+01:00  INFO 89020 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "19 - create trajectory analyses"
+2026-10-12T20:25:05.668+01:00  INFO 89020 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "20 - create correlation analyses"
+2026-10-12T20:25:05.681+01:00  INFO 89020 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "21 - create rule candidates"
+2026-10-12T20:25:05.696+01:00  INFO 89020 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "22 - create winner entries"
+2026-10-12T20:25:05.712+01:00  INFO 89020 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "23 - create notifications"
+2026-10-12T20:25:05.725+01:00  INFO 89020 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "24 - create analytics tables"
+2026-10-12T20:25:05.741+01:00  INFO 89020 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "25 - add strategic tracking"
+2026-10-12T20:25:05.760+01:00  INFO 89020 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "26 - create reach further tracking"
+2026-10-12T20:25:05.773+01:00  INFO 89020 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "27 - create follower metrics"
+2026-10-12T20:25:05.788+01:00  INFO 89020 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "28 - add external publication identity"
+2026-10-12T20:25:05.798+01:00  INFO 89020 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "29 - add meta readonly snapshot fields"
+2026-10-12T20:25:05.810+01:00  INFO 89020 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "30 - add immutable validation evidence"
+2026-10-12T20:25:05.824+01:00  INFO 89020 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "31 - complete quality validation evidence"
+2026-10-12T20:25:05.838+01:00  INFO 89020 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "32 - add video path aliases and intervention variant"
+2026-10-12T20:25:05.851+01:00  INFO 89020 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "33 - add matched variant id to import rows"
+2026-10-12T20:25:05.858+01:00  INFO 89020 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "34 - prevent duplicate active analysis jobs"
+2026-10-12T20:25:05.866+01:00  INFO 89020 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "35 - create governed rule evolution"
+2026-10-12T20:25:05.912+01:00  INFO 89020 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "36 - operational guard decisions"
+2026-10-12T20:25:05.930+01:00  INFO 89020 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "37 - version sampled visual motion analysis"
+2026-10-12T20:25:05.937+01:00  INFO 89020 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "38 - allow versioned video analysis classifications"
+2026-10-12T20:25:05.945+01:00  INFO 89020 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "39 - add prompt source tracking"
+2026-10-12T20:25:05.953+01:00  INFO 89020 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "40 - video character associations"
+2026-10-12T20:25:05.969+01:00  INFO 89020 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "41 - prediction feature snapshots"
+2026-10-12T20:25:05.979+01:00  INFO 89020 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "42 - store quality report snapshot"
+2026-10-12T20:25:05.988+01:00  INFO 89020 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "43 - create quality validation visual evidence"
+2026-10-12T20:25:05.999+01:00  INFO 89020 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "44 - create meta connection state"
+2026-10-12T20:25:06.012+01:00  INFO 89020 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "45 - allow nullable quality validation overall score"
+2026-10-12T20:25:06.028+01:00  INFO 89020 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "46 - post family workflow events"
+2026-10-12T20:25:06.036+01:00  INFO 89020 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "47 - bounded workflow repair"
+2026-10-12T20:25:06.042+01:00  INFO 89020 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "48 - explicit video prompt lineage"
+2026-10-12T20:25:06.052+01:00  INFO 89020 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "49 - analysis job version identity"
+2026-10-12T20:25:06.063+01:00  INFO 89020 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "50 - prompt parent version links"
+2026-10-12T20:25:06.069+01:00  INFO 89020 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "51 - bounded repair sessions"
+2026-10-12T20:25:06.080+01:00  INFO 89020 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "52 - idempotent regeneration handoffs"
+2026-10-12T20:25:06.094+01:00  INFO 89020 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "53 - performance correction lineage"
+2026-10-12T20:25:06.121+01:00  INFO 89020 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "54 - content source path aliases"
+2026-10-12T20:25:06.130+01:00  INFO 89020 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "55 - prompt creative provenance"
+2026-10-12T20:25:06.138+01:00  INFO 89020 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "58 - meta page insight snapshots"
+2026-10-12T20:25:06.146+01:00  INFO 89020 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "59 - character reference review"
+2026-10-12T20:25:06.154+01:00  INFO 89020 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "60 - publication review acknowledgements"
+2026-10-12T20:25:06.165+01:00  INFO 89020 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Successfully applied 58 migrations to schema "public", now at version v60 (execution time 00:00.614s)
+2026-10-12T20:25:06.237+01:00  INFO 89020 --- [pompom-creative-intelligence] [           main] org.hibernate.orm.jpa                    : HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-10-12T20:25:06.279+01:00  INFO 89020 --- [pompom-creative-intelligence] [           main] org.hibernate.orm.core                   : HHH000001: Hibernate ORM core version 7.4.5.Final
+2026-10-12T20:25:06.426+01:00  INFO 89020 --- [pompom-creative-intelligence] [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-10-12T20:25:06.507+01:00  INFO 89020 --- [pompom-creative-intelligence] [           main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [jdbc:postgresql://localhost:53013/pompom?loggerLevel=OFF]
+	Database driver: PostgreSQL JDBC Driver
+	Database dialect: PostgreSQLDialect
+	Database version: 17.11
+	Default catalog/schema: pompom/public
+	Autocommit mode: undefined/unknown
+	Isolation level: READ_COMMITTED [default READ_COMMITTED]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-10-12T20:25:07.236+01:00  INFO 89020 --- [pompom-creative-intelligence] [           main] org.hibernate.orm.core                   : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-10-12T20:25:07.240+01:00  INFO 89020 --- [pompom-creative-intelligence] [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-10-12T20:25:07.306+01:00  INFO 89020 --- [pompom-creative-intelligence] [           main] o.s.d.j.r.query.QueryEnhancerFactories   : Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-10-12T20:25:08.861+01:00  INFO 89020 --- [pompom-creative-intelligence] [           main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 4 endpoints beneath base path '/actuator'
+2026-10-12T20:25:08.977+01:00  INFO 89020 --- [pompom-creative-intelligence] [           main] c.p.i.p.VideoPromptLineageTest           : Started VideoPromptLineageTest in 5.513 seconds (process running for 11.175)
+2026-10-12T20:25:09.148+01:00  WARN 89020 --- [pompom-creative-intelligence] [           main] o.s.core.events.SpringDocAppInitializer  : SpringDoc /v3/api-docs endpoint is enabled by default. To disable it in production, set the property 'springdoc.api-docs.enabled=false'
+2026-10-12T20:25:09.148+01:00  WARN 89020 --- [pompom-creative-intelligence] [           main] o.s.core.events.SpringDocAppInitializer  : SpringDoc /swagger-ui.html endpoint is enabled by default. To disable it in production, set the property 'springdoc.swagger-ui.enabled=false'
+2026-10-12T20:25:10.195+01:00  INFO 89020 --- [pompom-creative-intelligence] [           main] o.s.mock.web.MockServletContext          : Initializing Spring TestDispatcherServlet ''
+2026-10-12T20:25:10.196+01:00  INFO 89020 --- [pompom-creative-intelligence] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-10-12T20:25:10.197+01:00  INFO 89020 --- [pompom-creative-intelligence] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
+2026-10-12T20:25:10.353+01:00  INFO 89020 --- [pompom-creative-intelligence] [           main] o.s.mock.web.MockServletContext          : Initializing Spring TestDispatcherServlet ''
+2026-10-12T20:25:10.353+01:00  INFO 89020 --- [pompom-creative-intelligence] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-10-12T20:25:10.353+01:00  INFO 89020 --- [pompom-creative-intelligence] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 0 ms
+2026-10-12T20:25:11.301+01:00  WARN 89020 --- [pompom-creative-intelligence] [   scheduling-1] com.zaxxer.hikari.pool.PoolBase          : HikariPool-1 - Failed to validate connection org.postgresql.jdbc.PgConnection@2176d934 (This connection has been closed.). Possibly consider using a shorter maxLifetime value.
+2026-10-12T20:25:11.304+01:00  WARN 89020 --- [pompom-creative-intelligence] [   scheduling-1] com.zaxxer.hikari.pool.PoolBase          : HikariPool-1 - Failed to validate connection org.postgresql.jdbc.PgConnection@1bd2524f (This connection has been closed.). Possibly consider using a shorter maxLifetime value.
+2026-10-12T20:25:11.305+01:00  WARN 89020 --- [pompom-creative-intelligence] [   scheduling-1] com.zaxxer.hikari.pool.PoolBase          : HikariPool-1 - Failed to validate connection org.postgresql.jdbc.PgConnection@59884a14 (This connection has been closed.). Possibly consider using a shorter maxLifetime value.
+2026-10-12T20:25:11.305+01:00  WARN 89020 --- [pompom-creative-intelligence] [   scheduling-1] com.zaxxer.hikari.pool.PoolBase          : HikariPool-1 - Failed to validate connection org.postgresql.jdbc.PgConnection@63e311f0 (This connection has been closed.). Possibly consider using a shorter maxLifetime value.
+2026-10-12T20:25:11.306+01:00  WARN 89020 --- [pompom-creative-intelligence] [   scheduling-1] com.zaxxer.hikari.pool.PoolBase          : HikariPool-1 - Failed to validate connection org.postgresql.jdbc.PgConnection@3f4b4475 (This connection has been closed.). Possibly consider using a shorter maxLifetime value.
+2026-10-12T20:25:11.306+01:00  WARN 89020 --- [pompom-creative-intelligence] [   scheduling-1] com.zaxxer.hikari.pool.PoolBase          : HikariPool-1 - Failed to validate connection org.postgresql.jdbc.PgConnection@7df95496 (This connection has been closed.). Possibly consider using a shorter maxLifetime value.
+2026-10-12T20:25:11.306+01:00  WARN 89020 --- [pompom-creative-intelligence] [   scheduling-1] com.zaxxer.hikari.pool.PoolBase          : HikariPool-1 - Failed to validate connection org.postgresql.jdbc.PgConnection@7f8b6658 (This connection has been closed.). Possibly consider using a shorter maxLifetime value.
+2026-10-12T20:25:11.306+01:00  WARN 89020 --- [pompom-creative-intelligence] [   scheduling-1] com.zaxxer.hikari.pool.PoolBase          : HikariPool-1 - Failed to validate connection org.postgresql.jdbc.PgConnection@3b350f13 (This connection has been closed.). Possibly consider using a shorter maxLifetime value.
+2026-10-12T20:25:11.307+01:00  WARN 89020 --- [pompom-creative-intelligence] [   scheduling-1] com.zaxxer.hikari.pool.PoolBase          : HikariPool-1 - Failed to validate connection org.postgresql.jdbc.PgConnection@320ff6a1 (This connection has been closed.). Possibly consider using a shorter maxLifetime value.
+2026-10-12T20:25:11.307+01:00  WARN 89020 --- [pompom-creative-intelligence] [   scheduling-1] com.zaxxer.hikari.pool.PoolBase          : HikariPool-1 - Failed to validate connection org.postgresql.jdbc.PgConnection@5040b59a (This connection has been closed.). Possibly consider using a shorter maxLifetime value.
+2026-10-12T20:25:41.343+01:00 ERROR 89020 --- [pompom-creative-intelligence] [   scheduling-1] o.s.s.s.TaskUtils$LoggingErrorHandler    : Unexpected error occurred in scheduled task
+
+org.springframework.jdbc.CannotGetJdbcConnectionException: Failed to obtain JDBC Connection
+	at org.springframework.jdbc.datasource.DataSourceUtils.getConnection(DataSourceUtils.java:84) ~[spring-jdbc-7.0.9.jar:7.0.9]
+	at org.springframework.jdbc.core.JdbcTemplate.execute(JdbcTemplate.java:665) ~[spring-jdbc-7.0.9.jar:7.0.9]
+	at org.springframework.jdbc.core.JdbcTemplate.update(JdbcTemplate.java:966) ~[spring-jdbc-7.0.9.jar:7.0.9]
+	at org.springframework.jdbc.core.JdbcTemplate.update(JdbcTemplate.java:987) ~[spring-jdbc-7.0.9.jar:7.0.9]
+	at org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate.update(NamedParameterJdbcTemplate.java:339) ~[spring-jdbc-7.0.9.jar:7.0.9]
+	at org.springframework.jdbc.core.simple.DefaultJdbcClient$DefaultStatementSpec.update(DefaultJdbcClient.java:281) ~[spring-jdbc-7.0.9.jar:7.0.9]
+	at com.pompomhills.intelligence.video.job.AnalysisJobService.recoverExpiredJobs(AnalysisJobService.java:194) ~[classes/:na]
+	at com.pompomhills.intelligence.video.job.AnalysisJobService.processNext(AnalysisJobService.java:209) ~[classes/:na]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[na:na]
+	at org.springframework.scheduling.support.ScheduledMethodRunnable.runInternal(ScheduledMethodRunnable.java:128) ~[spring-context-7.0.9.jar:7.0.9]
+	at org.springframework.scheduling.support.ScheduledMethodRunnable.lambda$run$1(ScheduledMethodRunnable.java:122) ~[spring-context-7.0.9.jar:7.0.9]
+	at io.micrometer.observation.Observation.observe(Observation.java:569) ~[micrometer-observation-1.17.1.jar:1.17.1]
+	at org.springframework.scheduling.support.ScheduledMethodRunnable.run(ScheduledMethodRunnable.java:122) ~[spring-context-7.0.9.jar:7.0.9]
+	at org.springframework.scheduling.config.Task$OutcomeTrackingRunnable.run(Task.java:88) ~[spring-context-7.0.9.jar:7.0.9]
+	at org.springframework.scheduling.support.DelegatingErrorHandlingRunnable.run(DelegatingErrorHandlingRunnable.java:54) ~[spring-context-7.0.9.jar:7.0.9]
+	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:572) ~[na:na]
+	at java.base/java.util.concurrent.FutureTask.runAndReset(FutureTask.java:358) ~[na:na]
+	at java.base/java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:305) ~[na:na]
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144) ~[na:na]
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642) ~[na:na]
+	at java.base/java.lang.Thread.run(Thread.java:1583) ~[na:na]
+Caused by: java.sql.SQLTransientConnectionException: HikariPool-1 - Connection is not available, request timed out after 30012ms (total=0, active=0, idle=0, waiting=0)
+	at com.zaxxer.hikari.pool.HikariPool.createTimeoutException(HikariPool.java:714) ~[HikariCP-7.0.2.jar:na]
+	at com.zaxxer.hikari.pool.HikariPool.getConnection(HikariPool.java:184) ~[HikariCP-7.0.2.jar:na]
+	at com.zaxxer.hikari.pool.HikariPool.getConnection(HikariPool.java:142) ~[HikariCP-7.0.2.jar:na]
+	at com.zaxxer.hikari.HikariDataSource.getConnection(HikariDataSource.java:127) ~[HikariCP-7.0.2.jar:na]
+	at org.springframework.jdbc.datasource.DataSourceUtils.fetchConnection(DataSourceUtils.java:160) ~[spring-jdbc-7.0.9.jar:7.0.9]
+	at org.springframework.jdbc.datasource.DataSourceUtils.doGetConnection(DataSourceUtils.java:118) ~[spring-jdbc-7.0.9.jar:7.0.9]
+	at org.springframework.jdbc.datasource.DataSourceUtils.getConnection(DataSourceUtils.java:81) ~[spring-jdbc-7.0.9.jar:7.0.9]
+	... 21 common frames omitted
+Caused by: org.postgresql.util.PSQLException: Connection to localhost:53013 refused. Check that the hostname and port are correct and that the postmaster is accepting TCP/IP connections.
+	at org.postgresql.core.v3.ConnectionFactoryImpl.openConnectionImpl(ConnectionFactoryImpl.java:427) ~[postgresql-42.7.13.jar:42.7.13]
+	at org.postgresql.core.ConnectionFactory.openConnection(ConnectionFactory.java:52) ~[postgresql-42.7.13.jar:42.7.13]
+	at org.postgresql.jdbc.PgConnection.<init>(PgConnection.java:295) ~[postgresql-42.7.13.jar:42.7.13]
+	at org.postgresql.Driver.makeConnection(Driver.java:437) ~[postgresql-42.7.13.jar:42.7.13]
+	at org.postgresql.Driver.connect(Driver.java:305) ~[postgresql-42.7.13.jar:42.7.13]
+	at com.zaxxer.hikari.util.DriverDataSource.getConnection(DriverDataSource.java:144) ~[HikariCP-7.0.2.jar:na]
+	at com.zaxxer.hikari.pool.PoolBase.newConnection(PoolBase.java:373) ~[HikariCP-7.0.2.jar:na]
+	at com.zaxxer.hikari.pool.PoolBase.newPoolEntry(PoolBase.java:210) ~[HikariCP-7.0.2.jar:na]
+	at com.zaxxer.hikari.pool.HikariPool.createPoolEntry(HikariPool.java:488) ~[HikariCP-7.0.2.jar:na]
+	at com.zaxxer.hikari.pool.HikariPool$PoolEntryCreator.call(HikariPool.java:752) ~[HikariCP-7.0.2.jar:na]
+	at com.zaxxer.hikari.pool.HikariPool$PoolEntryCreator.call(HikariPool.java:731) ~[HikariCP-7.0.2.jar:na]
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:317) ~[na:na]
+	... 3 common frames omitted
+Caused by: java.net.ConnectException: Connection refused
+	at java.base/sun.nio.ch.Net.pollConnect(Native Method) ~[na:na]
+	at java.base/sun.nio.ch.Net.pollConnectNow(Net.java:682) ~[na:na]
+	at java.base/sun.nio.ch.NioSocketImpl.timedFinishConnect(NioSocketImpl.java:549) ~[na:na]
+	at java.base/sun.nio.ch.NioSocketImpl.connect(NioSocketImpl.java:592) ~[na:na]
+	at java.base/java.net.SocksSocketImpl.connect(SocksSocketImpl.java:327) ~[na:na]
+	at java.base/java.net.Socket.connect(Socket.java:751) ~[na:na]
+	at org.postgresql.core.PGStream.createSocket(PGStream.java:270) ~[postgresql-42.7.13.jar:42.7.13]
+	at org.postgresql.core.PGStream.<init>(PGStream.java:131) ~[postgresql-42.7.13.jar:42.7.13]
+	at org.postgresql.core.v3.ConnectionFactoryImpl.tryConnect(ConnectionFactoryImpl.java:221) ~[postgresql-42.7.13.jar:42.7.13]
+	at org.postgresql.core.v3.ConnectionFactoryImpl.openConnectionImpl(ConnectionFactoryImpl.java:367) ~[postgresql-42.7.13.jar:42.7.13]
+	... 14 common frames omitted
+
+2026-10-12T20:25:41.387+01:00  INFO 89020 --- [pompom-creative-intelligence] [ionShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-10-12T20:25:41.399+01:00  INFO 89020 --- [pompom-creative-intelligence] [ionShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+[ERROR] Surefire is going to kill self fork JVM. The exit has elapsed 30 seconds after System.exit(0).
