@@ -19,6 +19,8 @@ public interface RenderAssetRepository extends JpaRepository<RenderAsset, UUID> 
 
   List<RenderAsset> findByRenderJobId(UUID renderJobId);
 
+  List<RenderAsset> findByVideoId(UUID videoId);
+
   @Modifying
   @Query(
       "update RenderAsset a set a.isCurrent = false "

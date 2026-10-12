@@ -7,6 +7,8 @@ export const routes: Routes = [
   { path: 'render-jobs', loadComponent: () => import('./pages/render-dashboard.page').then(m => m.RenderDashboardPage), title: 'Render Jobs · Pompom CI' },
   { path: 'render', canActivate: [route => inject(Router).createUrlTree([route.queryParamMap.has('workflowReviewId') || route.queryParamMap.has('contentId') ? '/render-preparation' : '/render-jobs'], { queryParams: route.queryParams })], loadComponent: () => import('./pages/render-dashboard.page').then(m => m.RenderDashboardPage) },
   { path: 'rule-governance', loadComponent: () => import('./pages/rule-governance.page').then((m) => m.RuleGovernancePage), title: 'Rule Governance · Pompom CI' },
+  { path: 'prompt-workspace', loadComponent: () => import('./pages/prompt-workspace.page').then((m) => m.PromptWorkspacePage), title: 'Prompt Versions · Pompom CI' },
+  { path: 'content-history', loadComponent: () => import('./pages/content-history.page').then((m) => m.ContentHistoryPage), title: 'Content History · Pompom CI' },
   { path: 'quality/detail', loadComponent: () => import('./pages/quality-validator/quality-validator.component').then((m) => m.QualityValidatorComponent), title: 'Prompt Detail · Pompom CI' },
   { path: 'quality/new', loadComponent: () => import('./pages/creative-studio.page').then((m) => m.CreativeStudioPage), title: 'Create New Video · Pompom CI' },
   { path: 'quality', loadComponent: () => import('./pages/quality-validator/quality-validator.component').then((m) => m.QualityValidatorComponent), title: 'Prompt Quality · Pompom CI' },

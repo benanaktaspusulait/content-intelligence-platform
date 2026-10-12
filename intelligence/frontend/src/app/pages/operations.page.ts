@@ -20,6 +20,9 @@ interface BudgetStatus { budgetLimit?: number; usedCredits?: number; remainingCr
 interface NotificationRecord { id: string; title: string; message?: string; priority: string; isRead: boolean; createdAt: string; }
 interface OperationalStatus { status: string; observedAt: string; renderJobs: Record<string, number>; publicationStatus?: string; }
 interface ServiceHealth { status: string; message?: string; }
+interface WorkerLease { id: string; leaseOwner: string; leaseState: string; stage: string; leaseExpiresAt?: string; errorCode?: string; errorMessage?: string; }
+interface WorkerStatus { name: string; enabled: boolean; batchSize: number; leaseDuration: string; activeLeases: WorkerLease[]; stageCounts: Record<string, number>; recentErrors: Array<{ errorCode?: string; errorMessage?: string; stage: string }>; }
+interface WorkerDiagnostics { observedAt: string; render: WorkerStatus; publication: WorkerStatus; }
 
 @Component({
   selector: 'app-operations-page',
@@ -41,6 +44,59 @@ interface ServiceHealth { status: string; message?: string; }
         <section class="section-band"><div class="section-heading"><div><span class="eyebrow">HUMAN QA</span><h2>Pending review</h2></div><span class="data-freshness">Decision endpoint remains protected</span></div>@if (!reviews().length) { <div class="state-panel compact-state"><strong>No pending review records</strong><p>Nothing is waiting for human QA.</p></div> } @else { <table class="data-table"><thead><tr><th>Review ID</th><th>Decision</th><th>Reason</th><th>Created</th></tr></thead><tbody>@for (item of reviews(); track item.id) {<tr><td><code>{{ item.id }}</code></td><td>{{ item.decision || 'PENDING' }}</td><td>{{ item.decisionReason || 'No decision recorded' }}</td><td>{{ date(item.createdAt) }}</td></tr>}</tbody></table> }</section>
       <section class="section-band"><div class="section-heading"><div><span class="eyebrow">CREDITS</span><h2>Budget status</h2></div><span class="data-freshness">Reported by render service</span></div><dl class="compact-facts"><div><dt>Budget limit</dt><dd>{{ number(budget()?.budgetLimit) }}</dd></div><div><dt>Used credits</dt><dd>{{ number(budget()?.usedCredits) }}</dd></div><div><dt>Remaining credits</dt><dd>{{ number(budget()?.remainingCredits) }}</dd></div><div><dt>Level</dt><dd>{{ budget()?.level || '—' }}</dd></div><div><dt>Total jobs</dt><dd>{{ number(budget()?.totalJobs) }}</dd></div></dl></section>
       </div>
+      <!-- Worker Diagnostics -->
+      <section class="section-band">
+        <div class="section-heading">
+          <div><span class="eyebrow">WORKER DIAGNOSTICS</span><h2>Worker status</h2></div>
+          <span class="data-freshness">Individual worker lease and queue state</span>
+        </div>
+        @if (workerDiagnostics(); as wd) {
+          @for (worker of [wd.render, wd.publication]; track worker.name) {
+            <div style="margin-bottom:1.5rem">
+              <h3 style="margin-bottom:0.5rem">{{ worker.name.charAt(0).toUpperCase() + worker.name.slice(1) }} worker
+                @if (worker.enabled) { <span class="status-badge">Enabled</span> } @else { <span class="status-badge" style="background:#f0f0f0">Disabled</span> }
+                <small>Batch: {{ worker.batchSize }} · Lease: {{ worker.leaseDuration }}</small>
+              </h3>
+              <!-- Active leases -->
+              @if (worker.activeLeases.length > 0) {
+                <table class="data-table" style="margin-bottom:0.5rem">
+                  <thead><tr><th>Lease owner</th><th>Stage</th><th>State</th><th>Expires</th><th>Error</th></tr></thead>
+                  <tbody>@for (lease of worker.activeLeases; track lease.id) {
+                    <tr>
+                      <td><code>{{ lease.leaseOwner }}</code></td>
+                      <td>{{ lease.stage }}</td>
+                      <td><span class="status-badge" [@if (lease.leaseState === 'EXPIRED') { style='background:#fee;color:#c00' }]>{{ lease.leaseState }}</span></td>
+                      <td>{{ date(lease.leaseExpiresAt) }}</td>
+                      <td>@if (lease.errorMessage) { <small class="error-text">{{ lease.errorMessage }}</small> } @else { — }</td>
+                    </tr>
+                  }</tbody>
+                </table>
+              } @else { <p class="muted">No active leases.</p> }
+              <!-- Stage counts -->
+              <dl class="compact-facts">
+                @for (entry of stageEntries(worker.stageCounts); track entry.key) {
+                  <div><dt>{{ entry.key }}</dt><dd>{{ entry.value }}</dd></div>
+                }
+              </dl>
+              <!-- Recent errors -->
+              @if (worker.recentErrors.length > 0) {
+                <h4 style="margin-top:1rem;margin-bottom:0.5rem">Recent errors (last 20)</h4>
+                <table class="data-table">
+                  <thead><tr><th>Stage</th><th>Error code</th><th>Message</th></tr></thead>
+                  <tbody>@for (err of worker.recentErrors; track $index) {
+                    <tr>
+                      <td>{{ err.stage }}</td>
+                      <td><code>{{ err.errorCode || '—' }}</code></td>
+                      <td><small>{{ err.errorMessage || '—' }}</small></td>
+                    </tr>
+                  }</tbody>
+                </table>
+              }
+            </div>
+          }
+          <p class="muted">Observed: {{ date(wd.observedAt) }}</p>
+        } @else { <p class="muted">Worker diagnostics not available.</p> }
+      </section>
     }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -58,6 +114,7 @@ export class OperationsPage {
   protected readonly notifications = signal<NotificationRecord[]>([]);
   protected readonly unreadCount = signal(0);
   protected readonly actionId = signal<string | null>(null);
+  protected readonly workerDiagnostics = signal<WorkerDiagnostics | null>(null);
   protected queueForm = { renderAssetId: '', platform: 'TIKTOK', platformAccountId: '', title: '', caption: '', hashtags: '' };
   protected scheduleForm = { renderAssetId: '', platform: 'TIKTOK', platformAccountId: '', scheduledAt: '', timezone: Intl.DateTimeFormat().resolvedOptions().timeZone || 'UTC', title: '', caption: '' };
   protected readonly credits = () => this.budget()?.remainingCredits ?? '—';
@@ -74,8 +131,9 @@ export class OperationsPage {
       notifications: this.http.get<NotificationRecord[]>('/api/v1/notifications'),
       operational: this.http.get<OperationalStatus>('/api/v1/operational/status'),
       qualityHealth: this.http.get<ServiceHealth>('/api/quality/health'),
+      workerDiagnostics: this.http.get<WorkerDiagnostics>('/api/v1/operational/workers'),
     }).subscribe({
-      next: data => { this.publications.set(data.publications); this.scheduled.set(data.scheduled); this.reviews.set(data.reviews); this.budget.set(data.budget); this.notifications.set(data.notifications); this.unreadCount.set(data.notifications.filter(item => !item.isRead).length); this.operational.set(data.operational); this.qualityHealth.set(data.qualityHealth); this.loading.set(false); },
+      next: data => { this.publications.set(data.publications); this.scheduled.set(data.scheduled); this.reviews.set(data.reviews); this.budget.set(data.budget); this.notifications.set(data.notifications); this.unreadCount.set(data.notifications.filter(item => !item.isRead).length); this.operational.set(data.operational); this.qualityHealth.set(data.qualityHealth); this.workerDiagnostics.set(data.workerDiagnostics); this.loading.set(false); },
       error: response => { this.error.set(response.error?.detail || response.error?.message || 'The render service did not respond.'); this.loading.set(false); },
     });
   }
@@ -96,4 +154,7 @@ export class OperationsPage {
   protected schedulePublication(event: Event): void { event.preventDefault(); if (!isPublicationPlatformEnabled(this.scheduleForm.platform)) { this.error.set('This platform is disabled for publication.'); return; } this.actionId.set('schedule'); const scheduledAt = new Date(this.scheduleForm.scheduledAt).toISOString(); this.http.post('/api/v1/scheduled', { ...this.scheduleForm, scheduledAt, isPrivate: false }).subscribe({ next: () => { this.actionId.set(null); this.scheduleForm = { ...this.scheduleForm, renderAssetId: '', scheduledAt: '', title: '', caption: '' }; this.load(); }, error: response => { this.actionId.set(null); this.error.set(response.error?.message || 'Schedule could not be created.'); } }); }
   protected markRead(item: NotificationRecord): void { this.http.post(`/api/v1/notifications/${item.id}/read`, {}).subscribe({ next: () => { this.notifications.update(items => items.map(value => value.id === item.id ? { ...value, isRead: true } : value)); this.unreadCount.update(value => Math.max(0, value - 1)); }, error: response => this.error.set(response.error?.message || 'Notification could not be marked read.') }); }
   protected markAllRead(): void { this.http.post('/api/v1/notifications/read-all', {}).subscribe({ next: () => { this.notifications.update(items => items.map(item => ({ ...item, isRead: true }))); this.unreadCount.set(0); }, error: response => this.error.set(response.error?.message || 'Notifications could not be marked read.') }); }
+  protected stageEntries(counts: Record<string, number>): Array<{key: string; value: number}> {
+    return Object.entries(counts).map(([key, value]) => ({ key, value: value as number }));
+  }
 }

@@ -1,8 +1,10 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
-import { CreativeIntelligenceService, OperationalGuardSnapshot, ReachFurtherResearch } from '../core/creative-intelligence.service';
+import { FormsModule } from '@angular/forms';
+import { CreativeIntelligenceService, OperationalGuardSnapshot, ReachFurtherResearch, AcknowledgementView } from '../core/creative-intelligence.service';
 
 @Component({
   selector: 'app-performance-page',
+  imports: [FormsModule],
   template: `
     <header class="page-header"><div><span class="eyebrow">OBSERVED OUTCOMES</span><h1>Performance</h1><p>Canonical research profiles built from persisted observations.</p></div><label class="compact-control">Platform<select [value]="platform()" (change)="platform.set(selectValue($event)); load()"><option value="facebook">Facebook</option><option value="instagram">Instagram</option><option value="tiktok">TikTok</option></select></label></header>
     @if (loading()) { <div class="state-panel"><span class="spinner"></span><strong>Loading performance evidence</strong></div> }
@@ -12,7 +14,23 @@ import { CreativeIntelligenceService, OperationalGuardSnapshot, ReachFurtherRese
       @if (guards(); as guardSet) {
         <section class="section-band"><div class="section-heading"><div><span class="eyebrow">OPERATIONAL SIGNALS</span><h2>Distribution and retention health</h2></div><span class="status-badge">Descriptive only</span></div>
           @if (!guardSet.enabled || !guardSet.decisions.length) { <p class="muted">Insufficient evidence or operational guards are disabled.</p> }
-          @else { <div class="metric-strip">@for (guard of guardSet.decisions; track guard.guardType) { <div><span>{{ readable(guard.guardType) }}</span><strong>{{ readable(guard.state) }}</strong><small>{{ guard.evidenceCount }} mature observations · {{ guard.scopeType.toLowerCase() }} scope</small></div> }</div> }
+          @else {
+            <div class="metric-strip">@for (guard of guardSet.decisions; track guard.guardType) { <div><span>{{ readable(guard.guardType) }}</span><strong>{{ readable(guard.state) }}</strong><small>{{ guard.evidenceCount }} mature observations · {{ guard.scopeType.toLowerCase() }} scope</small>@if (guard.acknowledged) { <span class="status-badge" style="margin-left:0.5rem">Acknowledged</span> } @else if (guard.state === 'PUBLICATION_REVIEW_REQUIRED') { <button class="button button--compact" style="margin-left:0.5rem" type="button" (click)="showAcknowledgeForm(guard)">Acknowledge review</button> }</div> }</div>
+            @if (acknowledgeFormGuard()) {
+              <div class="state-panel" style="margin-top:1rem">
+                <h3>Acknowledge {{ readable(acknowledgeFormGuard()!.guardType) }} review</h3>
+                <p class="muted">Record that you have reviewed this signal. This does not block rendering or publication.</p>
+                <form (ngSubmit)="submitAcknowledgement()">
+                  <label>Notes<textarea [(ngModel)]="acknowledgeNotes" name="notes" rows="3" placeholder="Optional notes about your review"></textarea></label>
+                  <label>Actor<input [(ngModel)]="acknowledgeActor" name="actor" placeholder="Your name or identifier" /></label>
+                  <div style="display:flex;gap:0.5rem;margin-top:0.5rem">
+                    <button class="button" type="submit" [disabled]="acknowledging()">Submit acknowledgement</button>
+                    <button class="button button--secondary" type="button" (click)="cancelAcknowledgement()">Cancel</button>
+                  </div>
+                </form>
+              </div>
+            }
+          }
           <p class="muted">These signals support review and do not block rendering, quarantine assets, or make causal claims.</p>
         </section>
       }
@@ -29,6 +47,11 @@ export class PerformancePage {
   protected readonly error = signal('');
   protected readonly data = signal<ReachFurtherResearch | null>(null);
   protected readonly guards = signal<OperationalGuardSnapshot | null>(null);
+  protected readonly acknowledgeFormGuard = signal<OperationalGuardSnapshot['decisions'][number] | null>(null);
+  protected readonly acknowledging = signal(false);
+  protected acknowledgeNotes = '';
+  protected acknowledgeActor = 'anonymous';
+
   constructor() { this.load(); }
   protected load(): void {
     this.loading.set(true); this.error.set('');
@@ -39,4 +62,33 @@ export class PerformancePage {
   protected number(value: number | null | undefined): string { return value === null || value === undefined ? '—' : new Intl.NumberFormat('en').format(value); }
   protected date(value: string | null): string { return value ? new Date(value).toLocaleDateString() : '—'; }
   protected readable(value: string): string { return value.replaceAll('_', ' ').toLowerCase().replace(/(^|\s)\S/g, letter => letter.toUpperCase()); }
+  protected showAcknowledgeForm(guard: OperationalGuardSnapshot['decisions'][number]): void {
+    this.acknowledgeFormGuard.set(guard);
+    this.acknowledgeNotes = '';
+    this.acknowledgeActor = 'anonymous';
+  }
+  protected cancelAcknowledgement(): void {
+    this.acknowledgeFormGuard.set(null);
+  }
+  protected submitAcknowledgement(): void {
+    const guard = this.acknowledgeFormGuard();
+    if (!guard) return;
+    this.acknowledging.set(true);
+    this.service.acknowledgeGuardDecision(
+      this.platform(),
+      guard.id,
+      this.acknowledgeNotes || null,
+      this.acknowledgeActor || 'anonymous'
+    ).subscribe({
+      next: () => {
+        this.acknowledging.set(false);
+        this.acknowledgeFormGuard.set(null);
+        this.load();
+      },
+      error: response => {
+        this.acknowledging.set(false);
+        this.error.set(response.error?.message || 'Acknowledgement failed.');
+      },
+    });
+  }
 }

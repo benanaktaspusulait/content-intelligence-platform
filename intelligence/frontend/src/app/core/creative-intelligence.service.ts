@@ -416,6 +416,7 @@ export interface OperationalGuardDecision {
   metricValue: number | null;
   evaluatedAt: string;
   evidence: string;
+  acknowledged?: boolean;
 }
 
 export interface OperationalGuardSnapshot {
@@ -423,6 +424,15 @@ export interface OperationalGuardSnapshot {
   enabled: boolean;
   decisions: OperationalGuardDecision[];
   policyVersion: string;
+}
+
+export interface AcknowledgementView {
+  id: string;
+  platform: string;
+  guardDecisionId: string;
+  acknowledgedBy: string;
+  acknowledgedAt: string;
+  notes: string | null;
 }
 
 export interface CaptionResponse {
@@ -540,6 +550,100 @@ export interface ReachFurtherComparison {
   matched: { pairCount: number; observedMedianViews: number | null; controlMedianViews: number | null; comparisonEligible: boolean; method: string };
   limitations: string;
   causalDisclaimer: string;
+}
+
+// Prompt workspace types
+export interface ContentSummary {
+  id: number;
+  title: string;
+  description: string | null;
+  type: string;
+  status: string;
+  createdAt: string;
+  updatedAt: string;
+  latestPromptVersionId: number | null;
+  latestPromptVersionNumber: number | null;
+}
+
+export interface PromptVersionSummary {
+  id: number;
+  contentId: number;
+  versionNumber: number;
+  rawText: string | null;
+  parsedIr: string | null;
+  sourcePath: string | null;
+  sourceSha256: string | null;
+  createdAt: string;
+}
+
+export interface PromptQualitySummary {
+  validationRecordId: number;
+  analyzedAt: string | null;
+  rulesetVersion: string | null;
+  overallScore: number | null;
+  status: string | null;
+  creativeGrade: string | null;
+  readiness: string | null;
+  summary: string | null;
+}
+
+export interface PromptQualityRecord {
+  contentId: number;
+  title: string;
+  sourcePath: string | null;
+  promptVersionId: number | null;
+  versionNumber: number | null;
+  latestQuality: PromptQualitySummary | null;
+}
+
+export interface PromptLibraryItem {
+  contentId: number;
+  title: string;
+  promptVersionId: number;
+  versionNumber: number;
+  rawText: string | null;
+  sourcePath: string | null;
+}
+
+// Character reference types
+export interface CharacterReference {
+  id: string;
+  description: string | null;
+  previewUrl: string;
+  approved: boolean;
+  approvedBy: string | null;
+  approvedAt: string | null;
+  uploadedAt: string;
+}
+
+// Worker diagnostics types
+export interface WorkerStatus {
+  name: string;
+  enabled: boolean;
+  batchSize: number;
+  leaseDuration: string;
+  activeLeases: Array<Record<string, unknown>>;
+  stageCounts: Record<string, number>;
+  recentErrors: Array<Record<string, unknown>>;
+}
+
+export interface WorkerDiagnosticsSnapshot {
+  observedAt: string;
+  render: WorkerStatus;
+  publication: WorkerStatus;
+}
+
+// Caption version types
+export interface CaptionVersion {
+  id: string;
+  renderAssetId: string;
+  platform: string;
+  caption: string;
+  hashtags: string | null;
+  source: string;
+  createdBy: string | null;
+  createdAt: string;
+  entityVersion: number;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -826,6 +930,27 @@ export class CreativeIntelligenceService {
     });
   }
 
+  acknowledgeGuardDecision(platform: string, guardDecisionId: string, notes: string | null, actor = 'anonymous'): Observable<AcknowledgementView> {
+    return this.http.post<AcknowledgementView>(`${this.baseUrl}/performance/publication-review-acknowledgements`, {
+      guardDecisionId,
+      notes,
+    }, {
+      params: { platform, actor },
+    });
+  }
+
+  getLatestAcknowledgement(platform: string): Observable<AcknowledgementView | null> {
+    return this.http.get<AcknowledgementView | null>(`${this.baseUrl}/performance/publication-review-acknowledgements/latest`, {
+      params: { platform },
+    });
+  }
+
+  listAcknowledgements(platform: string): Observable<AcknowledgementView[]> {
+    return this.http.get<AcknowledgementView[]>(`${this.baseUrl}/performance/publication-review-acknowledgements`, {
+      params: { platform },
+    });
+  }
+
   generateCaption(request: {
     videoTitle: string;
     videoDescription: string;
@@ -847,6 +972,60 @@ export class CreativeIntelligenceService {
 
   getPlatformTempoResearch(): Observable<PlatformTempoResearch> {
     return this.http.get<PlatformTempoResearch>(`${this.baseUrl}/research/platform-tempo`);
+  }
+
+  // Prompt workspace methods
+  getContentWorkspaces(): Observable<ContentSummary[]> {
+    return this.http.get<ContentSummary[]>(`${this.baseUrl}/intelligence/contents`);
+  }
+
+  getContentWorkspace(contentId: number): Observable<ContentSummary> {
+    return this.http.get<ContentSummary>(`${this.baseUrl}/intelligence/contents/${contentId}`);
+  }
+
+  createContentWorkspace(request: { title: string; description?: string; type?: string }): Observable<ContentSummary> {
+    return this.http.post<ContentSummary>(`${this.baseUrl}/intelligence/contents`, request);
+  }
+
+  getPromptVersions(contentId: number): Observable<PromptVersionSummary[]> {
+    return this.http.get<PromptVersionSummary[]>(`${this.baseUrl}/intelligence/contents/${contentId}/prompt-versions`);
+  }
+
+  createPromptVersion(contentId: number, request: { rawText: string; parentPromptVersionId?: number }): Observable<PromptVersionSummary> {
+    return this.http.post<PromptVersionSummary>(`${this.baseUrl}/intelligence/contents/${contentId}/prompt-versions`, request);
+  }
+
+  getPromptLibrary(sourceDirectory: string): Observable<PromptLibraryItem[]> {
+    return this.http.get<PromptLibraryItem[]>(`${this.baseUrl}/intelligence/contents/prompt-library`, {
+      params: { sourceDirectory },
+    });
+  }
+
+  getPromptQualitySummary(): Observable<PromptQualityRecord[]> {
+    return this.http.get<PromptQualityRecord[]>(`${this.baseUrl}/intelligence/contents/quality-summary`);
+  }
+
+  getPromptCreativeProvenance(contentId: number, promptVersionId: number): Observable<Record<string, unknown>> {
+    return this.http.get<Record<string, unknown>>(`${this.baseUrl}/intelligence/contents/${contentId}/prompt-versions/${promptVersionId}/creative-provenance`);
+  }
+
+  getPromptLinkedVideos(contentId: number, promptVersionId: number): Observable<Array<{ videoId: string; relativePath: string }>> {
+    return this.http.get<Array<{ videoId: string; relativePath: string }>>(`${this.baseUrl}/intelligence/contents/${contentId}/prompt-versions/${promptVersionId}/videos`);
+  }
+
+  // Character reference methods
+  getCharacterReferences(characterId: string): Observable<CharacterReference[]> {
+    return this.http.get<CharacterReference[]>(`${this.baseUrl}/characters/${characterId}/references`);
+  }
+
+  // Worker diagnostics methods
+  getWorkerDiagnostics(): Observable<WorkerDiagnosticsSnapshot> {
+    return this.http.get<WorkerDiagnosticsSnapshot>('/api/v1/operational/workers');
+  }
+
+  // Caption version methods
+  getCaptionVersionsByVideo(videoId: string): Observable<CaptionVersion[]> {
+    return this.http.get<CaptionVersion[]>(`/api/v1/captions/versions/video/${videoId}`);
   }
 
   private videoRecords(): Observable<VideoRecord[]> {

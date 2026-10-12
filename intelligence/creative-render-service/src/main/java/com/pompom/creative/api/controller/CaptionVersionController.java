@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,6 +26,15 @@ public class CaptionVersionController {
   @GetMapping
   public List<CaptionVersion> list(@RequestParam UUID renderAssetId) {
     return repository.findByRenderAssetIdOrderByCreatedAtDesc(renderAssetId);
+  }
+
+  /**
+   * List all caption versions for a video, traversing through render assets.
+   * This enables historical caption browsing from the video detail page.
+   */
+  @GetMapping("/video/{videoId}")
+  public List<CaptionVersion> listByVideo(@PathVariable UUID videoId) {
+    return repository.findByVideoIdOrderByCreatedAtDesc(videoId);
   }
 
   @PostMapping

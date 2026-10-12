@@ -5,6 +5,7 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 import { catchError, combineLatest, forkJoin, interval, Observable, of, startWith, Subscription, switchMap } from 'rxjs';
 import {
   AnalysisStatus,
+  CaptionVersion,
   CharacterIdentity,
   CreativeIntelligenceService,
   VideoCharacterAssignment,
@@ -431,6 +432,31 @@ const VARIANT_TYPE_LABELS: Record<string, string> = {
             </article>
         </div>
       </section>
+
+      <!-- Historical caption versions -->
+      @if (activeTab() === 'publication') {
+      <section class="section-band" aria-labelledby="caption-history-heading">
+        <div class="section-heading">
+          <div><span class="eyebrow">CAPTION HISTORY</span><h2 id="caption-history-heading">Caption versions</h2></div>
+          <span class="data-freshness">Append-only caption version ledger</span>
+        </div>
+        @if (captionVersionsLoading()) { <div class="state-panel compact-state"><span class="spinner"></span><strong>Loading caption versions</strong></div> }
+        @else if (captionVersions().length === 0) { <div class="state-panel compact-state"><strong>No caption versions</strong><p>No caption version has been persisted for this video yet.</p></div> }
+        @else {
+          <table class="data-table">
+            <thead><tr><th>Platform</th><th>Caption</th><th>Source</th><th>Created by</th><th>Created</th></tr></thead>
+            <tbody>@for (cv of captionVersions(); track cv.id) {
+              <tr>
+                <td><span class="status-badge">{{ cv.platform }}</span></td>
+                <td><pre style="white-space:pre-wrap;word-break:break-word;margin:0;font-size:0.875rem;max-width:40ch">{{ cv.caption }}</pre></td>
+                <td><code>{{ cv.source }}</code>@if (cv.hashtags) { <small>{{ cv.hashtags }}</small> }</td>
+                <td>{{ cv.createdBy || '—' }}</td>
+                <td>{{ date(cv.createdAt) }}</td>
+              </tr>
+            }</tbody>
+          </table>
+        }
+      </section>
       }
 
       @if (activeTab() === 'performance') {
@@ -579,6 +605,8 @@ export class VideoDetailPage implements OnDestroy {
   protected readonly publicationCopy = signal<Record<CaptionPlatform, PublicationCopy>>({ INSTAGRAM: { ...EMPTY_PUBLICATION_COPY }, FACEBOOK: { ...EMPTY_PUBLICATION_COPY }, TIKTOK: { ...EMPTY_PUBLICATION_COPY }, YOUTUBE: { ...EMPTY_PUBLICATION_COPY } });
   protected readonly captionPlatform = signal<CaptionPlatform>('INSTAGRAM');
   protected readonly currentCaptionPlatform = computed(() => this.captionPlatforms.find(item => item.key === this.captionPlatform()) || this.captionPlatforms[0]);
+  protected readonly captionVersions = signal<CaptionVersion[]>([]);
+  protected readonly captionVersionsLoading = signal(false);
   protected readonly metadataLoading = signal(false);
   protected readonly metadataError = signal('');
   protected readonly savingCopy = signal<CaptionPlatform | null>(null);
@@ -1198,8 +1226,17 @@ export class VideoDetailPage implements OnDestroy {
     this.editHistory.set([]);
     this.service.getEditedHandoffs(videoId).subscribe({next: records => {if (this.video()?.id === videoId) this.editHistory.set(records);},error: () => this.message.set('Saved edit lineage could not be loaded. Reopen this video.')});
   }
+  private loadCaptionVersions(videoId: string): void {
+    this.captionVersionsLoading.set(true);
+    this.service.getCaptionVersionsByVideo(videoId).subscribe({
+      next: versions => { this.captionVersions.set(versions); this.captionVersionsLoading.set(false); },
+      error: () => { this.captionVersions.set([]); this.captionVersionsLoading.set(false); },
+    });
+  }
+
   private loadCreativeContext(videoId: string): void {
     this.loadEditHistory(videoId);
+    this.loadCaptionVersions(videoId);
     this.creativeContextLoading.set(true); this.creativeContextError.set(''); this.creativeContext.set(null);
     this.service.getVideoCreativeContext(videoId).subscribe({
       next: context => { this.creativeContext.set(context); this.creativeContextLoading.set(false); },
