@@ -251,20 +251,30 @@ export class CreativeStudioPage implements AfterViewInit, OnDestroy {
       const upper=String(explicitType).toUpperCase();
       if(['STRENGTH','CONCERN','OBSERVATION','UNKNOWN'].includes(upper)) return upper;
     }
-    // Heuristic: positive language indicators => STRENGTH
-    const positivePatterns=/\b(clear|strong|well|good|effective|compelling|coherent|satisfying|engaging|vivid|consistent|solid)\b/i;
-    const negativePatterns=/\b(weak|unclear|ambiguous|missing|lacking|confusing|inconsistent|broken|uncertain|risky|problem|issue|gap|insufficient)\b/i;
     const findingLower=findingText.toLowerCase();
     const dimensionLower=(dimensionText||'').toLowerCase();
     const combined=findingLower+' '+dimensionLower;
-    // If severity is HIGH/CRITICAL, it's a CONCERN
+    // If severity is HIGH/CRITICAL, it's a CONCERN regardless of other signals
     if(severityText){
       const sevUpper=severityText.toUpperCase();
       if(sevUpper==='HIGH'||sevUpper==='CRITICAL') return 'CONCERN';
     }
-    // Negative patterns => CONCERN
-    if(negativePatterns.test(combined)) return 'CONCERN';
-    // Positive patterns => STRENGTH
+    // Mixed-sentiment detection: check for comparative weakness clauses BEFORE positive keywords
+    // These patterns indicate a concern even if positive words are present
+    const comparativeWeakness=/\b(less|not as|not.*as|worse|weaker|poorer|inferior|below|short of|lacking|deficient)\b.*\b(engaging|compelling|clear|strong|effective|coherent|satisfying|vivid|consistent|solid|original|creative|interesting)\b/i;
+    const butClauseWithWeakness=/\b(but|however|although|though|yet|unfortunately|sadly)\b.*\b(less|weaker|worse|poorer|inferior|lacking|deficient|repetitive|repetit|redundant|boring|dull|flat|weak|unclear|ambiguous|confusing|inconsistent|broken|uncertain|risky|problem|issue|gap|insufficient|missing)\b/i;
+    const negativeWithReason=/\b(weak|unclear|ambiguous|missing|lacking|confusing|inconsistent|broken|uncertain|risky|problem|issue|gap|insufficient)\b/i;
+    const repetitivePhrasing=/\b(repetitive|repetit|redundant|overused|clich|formulaic)\b/i;
+    const lessOriginal=/\b(less|not as|not.*as)\b.*\b(original|creative|innovative|unique|fresh|novel)\b/i;
+    // If there's a comparative weakness clause, it's a CONCERN even with positive words
+    if(comparativeWeakness.test(findingLower)) return 'CONCERN';
+    if(butClauseWithWeakness.test(findingLower)) return 'CONCERN';
+    if(repetitivePhrasing.test(findingLower)) return 'CONCERN';
+    if(lessOriginal.test(findingLower)) return 'CONCERN';
+    // Pure negative patterns => CONCERN
+    if(negativeWithReason.test(combined)) return 'CONCERN';
+    // Positive patterns => STRENGTH (only after ruling out mixed/negative signals)
+    const positivePatterns=/\b(clear|strong|well|good|effective|compelling|coherent|satisfying|engaging|vivid|consistent|solid)\b/i;
     if(positivePatterns.test(combined)) return 'STRENGTH';
     // Dimension hints
     if(dimensionLower.includes('strength')) return 'STRENGTH';
@@ -276,7 +286,20 @@ export class CreativeStudioPage implements AfterViewInit, OnDestroy {
   reviewSimilarities():string[]{const value=this.storyReview?.comparativeFindings?.similarities;return Array.isArray(value)?value.map(item=>this.reviewValueText(item)):[];}
   reviewDifferences():string[]{const value=this.storyReview?.comparativeFindings?.differences;return Array.isArray(value)?value:[];}
   reviewOverallConcerns():string[]{const value=this.storyReview?.overallConcerns;return Array.isArray(value)?value.map(item=>this.reviewValueText(item)):[];}
-  reviewConcernsLabel():string{return Array.isArray(this.storyReview?.overallConcerns)?String(this.storyReview.overallConcerns.length):'Unknown';}
+  reviewConcernsLabel():string{
+    // Count typed CONCERN findings across all candidates, not just provider's overallConcerns array
+    if(!this.storyReview?.candidateReviews) return 'Unknown';
+    let concernCount=0;
+    for(const candidateReview of this.storyReview.candidateReviews){
+      const findings=this.normalizedReviewFindings(candidateReview.candidateId);
+      concernCount+=findings.filter((f:any)=>f.findingType==='CONCERN').length;
+    }
+    // Also include provider-reported overall concerns if they exist and don't overlap
+    const providerConcerns=Array.isArray(this.storyReview?.overallConcerns)?this.storyReview.overallConcerns.length:0;
+    // Use the maximum of the two counts to avoid double-counting but ensure we don't undercount
+    const count=Math.max(concernCount, providerConcerns);
+    return count>0?String(count):'Unknown';
+  }
   reviewDisagreement():string{const local=this.storyQuality?.variationClass||this.storyQuality?.classification;const external=this.storyReview?.diversityAssessment?.classification;return local&&external&&String(local).toLowerCase().replaceAll('_',' ')!==String(external).toLowerCase().replaceAll('_',' ')?`Local structural comparison reports ${String(local).replaceAll('_',' ')} while the independent review reports ${String(external).replaceAll('_',' ')}. Review the source evidence before selecting a candidate.`:'';}
   private normalizeStoryReview(value:any):any{
     if(!value) return value;
@@ -291,12 +314,27 @@ export class CreativeStudioPage implements AfterViewInit, OnDestroy {
     if(!review.recommendedCandidateId||review.recommendedCandidateId==='None'||review.recommendedCandidateId==='null') review.recommendedCandidateId=null;
     // Validate comparative claims against canonical evidence
     const classification=this.storyQuality?.classification;
-    if(classification==='NEAR_DUPLICATE'||classification==='INSUFFICIENT_EVIDENCE'){
+    const differences=this.storyQuality?.differences;
+    const hasSupportedDifferences=Array.isArray(differences)&&differences.length>0;
+    // NEAR_DUPLICATE, INSUFFICIENT_EVIDENCE, and PARTIALLY_DISTINCT without supported dimensions
+    // all indicate that canonical evidence cannot support a winner
+    const unsupportedComparison=classification==='NEAR_DUPLICATE'||classification==='INSUFFICIENT_EVIDENCE'||(classification==='PARTIALLY_DISTINCT'&&!hasSupportedDifferences);
+    if(unsupportedComparison){
+      const evidenceLabel=classification==='PARTIALLY_DISTINCT'&&!hasSupportedDifferences
+        ?'PARTIALLY DISTINCT but no supported different narrative dimensions were extracted'
+        :`canonical comparison shows ${classification.replaceAll('_',' ')}`;
       if(review.recommendedCandidateId){
-        review.evidenceLimitations=[...(review.evidenceLimitations||[]),`Provider recommends a candidate, but canonical comparison shows ${classification.replaceAll('_',' ')}. No material difference is established; the recommendation is a suggestion, not verified evidence.`];
+        review.evidenceLimitations=[...(review.evidenceLimitations||[]),`Provider recommends a candidate, but ${evidenceLabel}. No material difference is established; the recommendation is a suggestion, not verified evidence.`];
         review.recommendationReason=`Provider suggestion only · ${review.recommendationReason||'No reason given'}. Canonical evidence does not support a winner.`;
       } else if(review.recommendationReason&&!review.recommendationReason.toLowerCase().includes('suggestion')&&!review.recommendationReason.toLowerCase().includes('no preference')){
-        review.evidenceLimitations=[...(review.evidenceLimitations||[]),`Provider provides a recommendation, but canonical comparison shows ${classification.replaceAll('_',' ')}. Evidence is insufficient to verify superiority claims.`];
+        review.evidenceLimitations=[...(review.evidenceLimitations||[]),`Provider provides a recommendation reason, but ${evidenceLabel}. Evidence is insufficient to verify superiority claims.`];
+      }
+    }
+    // Always mark provider recommendations as AI suggestions, never as verified conclusions
+    if(review.recommendedCandidateId&&review.recommendationReason){
+      const reasonLower=review.recommendationReason.toLowerCase();
+      if(!reasonLower.includes('suggestion')&&!reasonLower.includes('ai')&&!reasonLower.includes('provider')){
+        review.recommendationReason=`AI suggestion · ${review.recommendationReason}. This is a provider claim, not independently verified evidence.`;
       }
     }
     // Ensure confidence is not invented
