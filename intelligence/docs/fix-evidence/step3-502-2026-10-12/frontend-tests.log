@@ -1,0 +1,46 @@
+
+> frontend@0.0.0 test
+> ng test --watch=false --include=src/app/pages/creative-studio*.spec.ts
+
+❯ Building...
+✔ Building...
+Initial chunk files                             | Names                                        |  Raw size
+chunk-BPQOH7YF.js                               | -                                            | 549.85 kB | 
+styles.css                                      | styles                                       | 237.88 kB | 
+spec-app-pages-creative-studio.story-review.js  | spec-app-pages-creative-studio.story-review  |  69.39 kB | 
+spec-app-pages-creative-studio.page.js          | spec-app-pages-creative-studio.page          |  40.86 kB | 
+spec-app-pages-creative-studio.idea.js          | spec-app-pages-creative-studio.idea          |  30.21 kB | 
+spec-app-pages-creative-studio.assessment.js    | spec-app-pages-creative-studio.assessment    |   6.51 kB | 
+spec-app-pages-creative-studio.build-outcome.js | spec-app-pages-creative-studio.build-outcome |   4.96 kB | 
+chunk-RSTWSNOR.js                               | -                                            |   4.75 kB | 
+spec-app-pages-creative-studio.clean-state.js   | spec-app-pages-creative-studio.clean-state   |   4.54 kB | 
+init-testbed.js                                 | init-testbed                                 |   1.21 kB | 
+vitest-mock-patch.js                            | vitest-mock-patch                            | 974 bytes | 
+
+                                                | Initial total                                | 951.14 kB
+
+Application bundle generation complete. [20.329 seconds] - 2026-10-12T17:12:14.056Z
+
+▲ [WARNING] NG8113: TimelineChartComponent is not used within the template of QualityValidatorComponent [plugin angular-compiler]
+
+    src/app/pages/quality-validator/quality-validator.component.ts:202:39:
+      202 │ ...odule, FormsModule, TimelineChartComponent, RouterLink, Genera...
+          ╵                        ~~~~~~~~~~~~~~~~~~~~~~
+
+
+▲ [WARNING] NG8113: GeneralProducibilityComponent is not used within the template of QualityValidatorComponent [plugin angular-compiler]
+
+    src/app/pages/quality-validator/quality-validator.component.ts:202:75:
+      202 │ ...ent, RouterLink, GeneralProducibilityComponent, PostFamilyWork...
+          ╵                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+
+ RUN  v4.1.11 /Users/benanaktas/project/video/content-intelligence-platform/intelligence/frontend
+
+
+ Test Files  6 passed (6)
+      Tests  165 passed (165)
+   Start at  18:12:14
+   Duration  4.99s (transform 1.73s, setup 2.37s, import 2.38s, tests 7.25s, environment 7.63s)
+

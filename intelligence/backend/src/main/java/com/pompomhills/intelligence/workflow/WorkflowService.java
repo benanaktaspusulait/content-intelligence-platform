@@ -641,14 +641,13 @@ public class WorkflowService {
           .query((rs, rowNum) -> rs.getObject(1))
           .list();
       var saved = findCreativeRoleByFingerprint(requestFingerprint);
-      if (saved.isPresent() && (saved.get().get("result") instanceof Map<?, ?>
-          || "PROVIDER_RESULT_REJECTED".equals(saved.get().get("attemptState")))) {
+      if (saved.isPresent() && saved.get().get("result") instanceof Map<?, ?>
+          && !"PROVIDER_RESULT_REJECTED".equals(saved.get().get("attemptState"))) {
         var replay = new LinkedHashMap<>(saved.get());
         replay.put("recordId", saved.get().get("recordId"));
         replay.put("reused", true);
         replay.put("calls", 0);
-        if (!"PROVIDER_RESULT_REJECTED".equals(saved.get().get("attemptState")))
-          replay.put("attemptState", "REUSED_SAVED_RESULT");
+        replay.put("attemptState", "REUSED_SAVED_RESULT");
         replay.put("requestFingerprint", requestFingerprint);
         return replay;
       }
@@ -684,15 +683,16 @@ public class WorkflowService {
     result.put("sourceRequest", verifiedRequest);
     result.put("requestFingerprint", requestFingerprint);
     boolean rejected = "PROVIDER_RESULT_REJECTED".equals(workflowResponse.get("attemptState"));
-    result.put("attemptState", rejected ? "PROVIDER_RESULT_REJECTED" : "SAVED");
+    boolean unknown = "PROVIDER_OUTCOME_UNKNOWN".equals(workflowResponse.get("attemptState"));
+    result.put("attemptState", rejected ? "PROVIDER_RESULT_REJECTED" : unknown ? "PROVIDER_OUTCOME_UNKNOWN" : "SAVED");
     var diagnostics = new LinkedHashMap<>(map(workflowResponse.get("attemptDiagnostics")));
     diagnostics.put("provider", result.getOrDefault("provider", "unknown"));
     diagnostics.put("model", result.getOrDefault("model", "unknown"));
-    diagnostics.put("calls", result.getOrDefault("calls", 0));
-    diagnostics.put("validationStatus", rejected ? "REJECTED" : "NOT_VALIDATED");
+    if (!unknown) diagnostics.put("calls", result.getOrDefault("calls", 0));
+    diagnostics.put("validationStatus", rejected ? "REJECTED" : unknown ? "UNKNOWN" : "NOT_VALIDATED");
     diagnostics.put("persisted", true);
     result.put("attemptDiagnostics", diagnostics);
-    result.put("validationStatus", rejected ? "REJECTED" : "NOT_VALIDATED");
+    result.put("validationStatus", rejected ? "REJECTED" : unknown ? "UNKNOWN" : "NOT_VALIDATED");
     result.put("recordId", save("CREATIVE_ROLE", null, result));
     return result;
   }

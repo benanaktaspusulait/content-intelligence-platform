@@ -41,6 +41,18 @@ describe('Step 3 rejected provider outcome safety',()=>{
     expect(http.match(r=>r.method==='POST')).toHaveLength(0);
     expect(fixture.nativeElement.textContent).toContain('Beat 2');
   });
+  it('keeps an unknown completion blocked without claiming a zero provider count',()=>{
+    const {fixture,page}=open();page.buildPrompt();
+    http.expectOne(r=>r.method==='POST').flush({recordId:'unknown',attemptState:'PROVIDER_OUTCOME_UNKNOWN',validationStatus:'UNKNOWN',
+      attemptDiagnostics:{exceptionType:'APITimeoutError',providerOutcome:'UNKNOWN',error:'OpenAI completion is unknown.',persisted:true,retryAutomatically:false}});
+    fixture.detectChanges();
+    expect(page.buildAttemptState).toBe('PROVIDER_OUTCOME_UNKNOWN');
+    expect(page.draftPrompt).toBe('');expect(page.builderRecordId).toBe('');
+    expect(page.promptConsent).toBe(false);expect(page.error).toContain('will not call the provider again');
+    expect(page.buildAttemptDiagnostics?.callsThisAction).toBe('UNKNOWN');
+    expect(fixture.nativeElement.textContent).toContain('Historical provider calls: UNKNOWN');
+    expect(http.match(r=>r.method==='POST')).toHaveLength(0);
+  });
   it('does not automatically retry an ambiguous HTTP error',()=>{
     const {page}=open();page.buildPrompt();
     http.expectOne(r=>r.method==='POST').flush({detail:'Provider outcome unknown. Do not retry automatically.'},{status:409,statusText:'Conflict'});

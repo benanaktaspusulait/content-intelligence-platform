@@ -182,6 +182,20 @@ class SavedStoryApprovalPostgresTest {
   }
 
   @Test
+  void unknownProviderOutcomeCommitsAndReplayCannotChargeAgain() throws Exception {
+    var request = approvedBuildRequest();
+    when(ml.workflow(eq("creative-role"), anyMap())).thenReturn(Map.of("role", "BUILD_PROMPT",
+        "provider", "openai", "attemptState", "PROVIDER_OUTCOME_UNKNOWN", "validationStatus", "UNKNOWN",
+        "attemptDiagnostics", Map.of("exceptionType", "APITimeoutError", "providerOutcome", "UNKNOWN", "retryAutomatically", false)));
+    var first = tx.execute(status -> service.creativeRole(request));
+    assertThat(first).containsEntry("attemptState", "PROVIDER_OUTCOME_UNKNOWN").doesNotContainKey("calls");
+    var replay = tx.execute(status -> service.creativeRole(request));
+    assertThat(replay).containsEntry("recordId", first.get("recordId").toString())
+        .containsEntry("calls", 0).containsEntry("attemptState", "PROVIDER_OUTCOME_UNKNOWN");
+    verify(ml, times(1)).workflow(eq("creative-role"), anyMap());
+  }
+
+  @Test
   void completedRequestReplaysAndConcurrentIdenticalRequestsCallMlOnce() throws Exception {
     var request = approvedBuildRequest();
     var entered = new java.util.concurrent.CountDownLatch(1);

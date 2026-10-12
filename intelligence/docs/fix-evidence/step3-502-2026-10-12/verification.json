@@ -1,0 +1,22 @@
+{
+  "historicalHttpStatus": 502,
+  "historicalTimestampLondon": "2026-10-12 18:10:09",
+  "historicalExceptionType": "UNKNOWN: generic handler did not log it",
+  "historicalProviderCompletion": "UNKNOWN",
+  "historicalPersistedBuildPrompt": false,
+  "backendDeployedMatchesTestedClass": true,
+  "backendClassSha256": "527ee222b074df91199f434140abcea1fa2c779b60d98b2c975bc7f6ef789ea8",
+  "mlDeployedMatchesTestedSource": true,
+  "mlSha256": "ad5bd53fcce7f28473357f8c1caaf605425acbcf79af7f1a7e65fa6307e703c4",
+  "productionCreativeRoleRecordsUnchanged": true,
+  "productionApprovalRecordsUnchanged": true,
+  "realOpenaiCallsByAgent": 0,
+  "realDeepseekCallsByAgent": 0,
+  "commitPushCommandsByAgent": 0,
+  "tests": {
+    "ml": 27,
+    "backend": 16,
+    "frontend": 165
+  },
+  "historicalRootExceptionResolved": false
+}

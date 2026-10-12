@@ -343,3 +343,50 @@ def test_paid_valid_build_still_returns_a_draft(monkeypatch):
     assert result['validationStatus'] == 'NOT_VALIDATED'
     assert result['result']['prompt']
     assert len(provider.calls) == 1
+
+
+def test_paid_build_records_timeout_as_unknown_without_retry_or_false_zero_calls(monkeypatch, caplog):
+    from app.workflow import creative_roles
+    from fastapi.testclient import TestClient
+    from app.main import app
+    import httpx
+    from openai import APITimeoutError
+    class TimeoutProvider:
+        invocations = 0
+        def complete(self, *args, **kwargs):
+            self.invocations += 1
+            raise APITimeoutError(request=httpx.Request('POST', 'https://example.invalid'))
+    provider = TimeoutProvider()
+    for key, value in {'WORKFLOW_CREATIVE_ROLES_ENABLED':'true','WORKFLOW_BUILD_PROMPT_MODEL':'fixture',
+                       'WORKFLOW_BUILD_PROMPT_INPUT_USD_PER_MILLION':'.15','WORKFLOW_BUILD_PROMPT_OUTPUT_USD_PER_MILLION':'.6'}.items():
+        monkeypatch.setenv(key,value)
+    monkeypatch.setattr(creative_roles,'OpenAIProvider',lambda **kwargs:provider)
+    response=TestClient(app).post('/api/v1/workflow/creative-role',json={
+        'role':'BUILD_PROMPT','text':'Approved story','context':{},'maxCostUsd':.15})
+    assert response.status_code == 200
+    body=response.json()
+    assert body['attemptState'] == 'PROVIDER_OUTCOME_UNKNOWN'
+    assert body['attemptDiagnostics']['exceptionType'] == 'APITimeoutError'
+    assert body['attemptDiagnostics']['providerOutcome'] == 'UNKNOWN'
+    assert 'calls' not in body
+    assert 'result' not in body and 'rejectedProviderResponse' not in body
+    assert provider.invocations == 1
+    assert 'APITimeoutError' in caplog.text
+    assert 'Approved story' not in caplog.text
+
+
+def test_post_response_processing_exception_retains_response(monkeypatch):
+    from app.workflow import creative_roles
+    provider=FixtureProvider(production_fixture())
+    for key,value in {'WORKFLOW_CREATIVE_ROLES_ENABLED':'true','WORKFLOW_BUILD_PROMPT_MODEL':'fixture',
+                      'WORKFLOW_BUILD_PROMPT_INPUT_USD_PER_MILLION':'.15','WORKFLOW_BUILD_PROMPT_OUTPUT_USD_PER_MILLION':'.6'}.items():
+        monkeypatch.setenv(key,value)
+    monkeypatch.setattr(creative_roles,'OpenAIProvider',lambda **kwargs:provider)
+    def fail(*args): raise TypeError('private payload must not be logged')
+    monkeypatch.setattr(creative_roles,'_evidence_backed_production_fields',fail)
+    result=run_paid_role('BUILD_PROMPT','Approved story',{},.15)
+    assert result['attemptState'] == 'PROVIDER_RESULT_REJECTED'
+    assert result['attemptDiagnostics']['exceptionType'] == 'TypeError'
+    assert result['rejectedProviderResponse']
+    assert 'private payload' not in result['attemptDiagnostics']['error']
+    assert len(provider.calls) == 1
