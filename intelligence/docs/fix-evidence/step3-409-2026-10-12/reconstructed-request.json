@@ -1,0 +1,37 @@
+{
+  "note": "Reconstructed from the exact persisted approved session; historical wire payload was not retained. No request dispatched.",
+  "request": {
+    "role": "BUILD_PROMPT",
+    "text": "Mimi, oyuncak dolabına 'Topla!' yazan bir yapışkan not yapıştırmak ister. Not, Mimi'nin parmağına yapışır. Mimi diğer eliyle çıkarmaya çalışırken not ikiye ayrılır ve iki eline de yapışır. Her çekişte notlar ikiye katlanarak çoğalır. Kısa sürede Mimi'nin kolları, bacakları ve yüzü notlarla kaplanır. Mimi aynada kendini görünce çığlık atar. Notlar o kadar çoğalır ki Mimi boğulacak gibi olur. Sonunda hapşırır ve tüm notlar uçuşarak dolabın üzerine yapışır. Mimi rahat bir nefes alır ama dolap hâlâ dağınıktır.",
+    "maxCostUsd": 0.15,
+    "context": {
+      "sourceStoryRecordId": "bc1cf798-d20b-4b98-8b73-56e1581c3afc",
+      "candidateId": "candidate-2",
+      "approvalRecordId": "20b77d13-848d-46d0-ab4b-bb9b6efb0836",
+      "storyRevisionId": "candidate-2-revision-7c63cc86",
+      "storyTitle": "Mimi Sticky",
+      "targetConfiguration": {
+        "duration": 15,
+        "aspectRatio": "9:16",
+        "selectedGenerator": "SEEDANCE_2_0_MINI",
+        "contentProfile": "AUTO",
+        "mainCharacter": "Mimi"
+      }
+    }
+  },
+  "lineageChecks": {
+    "storyRecordExists": true,
+    "candidateExists": true,
+    "exactTextMatches": true,
+    "approvalMatchesStory": true,
+    "revisionId": "candidate-2-revision-7c63cc86",
+    "contentFingerprint": "7c63cc86"
+  },
+  "historicalResponse": {
+    "status": "UNKNOWN",
+    "detail": "Creative role request failed: Workflow service returned HTTP 409: Every production beat must include timing, executable staging and source traceability"
+  },
+  "historicalRequestFingerprint": null,
+  "historicalCorrelationId": null,
+  "historicalResponseSource": "User supplied exact error text; retained gateway and ML access logs corroborate HTTP status."
+}

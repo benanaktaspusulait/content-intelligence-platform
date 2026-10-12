@@ -1,0 +1,37 @@
+{
+  "deployedBackendClassSha256": "280d25ce3a1fb4d65d65d280328aa05cf67ba2bd1251b87a14aa812a4e97bcd3",
+  "deployedBackendMatchesTestedClass": true,
+  "deployedMlSha256": "63078081c63a2141d47afc65d3bcb98aea2f2b50c48a4ca7e076860af2b049b9",
+  "deployedMlMatchesTestedSource": true,
+  "rolesUnchanged": true,
+  "approvalsUnchanged": true,
+  "realOpenaiCalls": 0,
+  "realDeepseekCalls": 0,
+  "renderJobsCreated": 0,
+  "publishJobsCreated": 0,
+  "commitOrPushCommandsByAgent": 0,
+  "externalCommitObserved": "88530e0",
+  "historicalProviderInvocation": "YES for the user-supplied latest error: returned JSON passed earlier prompt/plan checks before beat validation",
+  "historicalRawResponseRecoverable": false,
+  "historicalStoredBuildPromptCount": 0,
+  "diagnosticBeforeFix": {
+    "exceptionType": "ValueError",
+    "message": "Every production beat must include timing, executable staging and source traceability",
+    "mockProviderCalls": 1,
+    "responseRetained": false
+  },
+  "historicalOffendingBeatOrField": "UNKNOWN: original output was discarded",
+  "requiredStringFields": [
+    "time",
+    "framing",
+    "action",
+    "staging",
+    "consequence"
+  ],
+  "externalCommitsObserved": [
+    "88530e0",
+    "8bcf57c"
+  ],
+  "frontendLoadedMain": "main-IV7YSJJ2.js",
+  "frontendLoadedStudio": "chunk-NPGDOLQ6.js"
+}

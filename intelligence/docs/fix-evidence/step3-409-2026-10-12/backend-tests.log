@@ -1,0 +1,32 @@
+17:44:39.015 [main] INFO org.testcontainers.DockerClientFactory -- Testcontainers version: 2.0.2
+17:44:39.208 [main] INFO org.testcontainers.dockerclient.DockerClientProviderStrategy -- Loaded org.testcontainers.dockerclient.UnixSocketClientProviderStrategy from ~/.testcontainers.properties, will try it first
+17:44:39.741 [main] INFO org.testcontainers.dockerclient.DockerClientProviderStrategy -- Found Docker environment with Docker accessed via Unix socket (/Users/benanaktas/.docker/run/docker.sock)
+17:44:39.743 [main] INFO org.testcontainers.DockerClientFactory -- Docker host IP address is localhost
+17:44:39.813 [main] INFO org.testcontainers.DockerClientFactory -- Connected to docker: 
+  Server Version: 29.2.1
+  API Version: 1.53
+  Operating System: Docker Desktop
+  Total Memory: 11948 MB
+  Labels: 
+    com.docker.desktop.address=unix:///Users/benanaktas/Library/Containers/com.docker.docker/Data/docker-cli.sock
+17:44:39.896 [main] INFO org.testcontainers.images.PullPolicy -- Image pull policy will be performed by: DefaultPullPolicy()
+17:44:39.907 [main] INFO org.testcontainers.utility.ImageNameSubstitutor -- Image name substitution will be performed by: DefaultImageNameSubstitutor (composite of 'ConfigurationFileImageNameSubstitutor' and 'PrefixingImageNameSubstitutor')
+17:44:40.086 [main] INFO tc.testcontainers/ryuk:0.13.0 -- Creating container for image: testcontainers/ryuk:0.13.0
+17:44:40.319 [main] INFO org.testcontainers.utility.RegistryAuthLocator -- Credential helper/store (docker-credential-desktop) does not have credentials for https://index.docker.io/v1/
+17:44:40.533 [main] INFO tc.testcontainers/ryuk:0.13.0 -- Container testcontainers/ryuk:0.13.0 is starting: d13dd51cb1b2049360eaf8c0a2b96bb9e99c1dd57bebd6f67b4986054aa79517
+17:44:41.515 [main] INFO tc.testcontainers/ryuk:0.13.0 -- Container testcontainers/ryuk:0.13.0 started in PT1.429121S
+17:44:41.531 [main] INFO org.testcontainers.utility.RyukResourceReaper -- Ryuk started - will monitor and terminate Testcontainers containers on JVM exit
+17:44:41.531 [main] INFO org.testcontainers.DockerClientFactory -- Checking the system...
+17:44:41.532 [main] INFO org.testcontainers.DockerClientFactory -- ✔︎ Docker server version should be at least 1.6.0
+17:44:41.548 [main] INFO tc.postgres:17-alpine -- Creating container for image: postgres:17-alpine
+17:44:41.707 [main] INFO tc.postgres:17-alpine -- Container postgres:17-alpine is starting: 3da01c8dd893f0b64a96d437aa799ae065cfca9c9d8990ff6684464697cacbf1
+17:44:43.886 [main] INFO tc.postgres:17-alpine -- Container postgres:17-alpine started in PT2.337471S
+17:44:43.892 [main] INFO tc.postgres:17-alpine -- Container is started (JDBC URL: jdbc:postgresql://localhost:50773/pompom?loggerLevel=OFF)
+Mockito is currently self-attaching to enable the inline-mock-maker. This will no longer work in future releases of the JDK. Please add Mockito as an agent to your build as described in Mockito's documentation: https://javadoc.io/doc/org.mockito/mockito-core/latest/org.mockito/org/mockito/Mockito.html#0.3
+OpenJDK 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended
+WARNING: A Java agent has been loaded dynamically (/Users/benanaktas/.m2/repository/net/bytebuddy/byte-buddy-agent/1.18.11/byte-buddy-agent-1.18.11.jar)
+WARNING: If a serviceability tool is in use, please run with -XX:+EnableDynamicAgentLoading to hide this warning
+WARNING: If a serviceability tool is not in use, please run with -Djdk.instrument.traceUsage for more information
+WARNING: Dynamic loading of agents will be disallowed by default in a future release
+17:44:47.231 [main] INFO com.pompomhills.intelligence.quality.QualityMlClient -- ML client initialized with base URL: http://127.0.0.1:50845
+17:44:47.311 [main] INFO com.pompomhills.intelligence.quality.QualityMlClient -- ML client initialized with base URL: http://127.0.0.1:50847

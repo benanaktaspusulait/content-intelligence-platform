@@ -1,0 +1,20 @@
+..................................................F..                    [100%]
+=================================== FAILURES ===================================
+_____________________ test_rephrasings_are_near_duplicates _____________________
+
+    def test_rephrasings_are_near_duplicates() -> None:
+        result = analyse_story_candidates([
+            'Mimi pulls sticky notes away, then becomes covered in notes.',
+            'Mimi quickly yanks the sticky notes off, then ends covered in notes.',
+            'Mimi removes the notes and finally is covered by sticky notes.',
+        ], {'profile': 'ABSURD_PHYSICS'})
+>       assert result['classification'] == 'NEAR_DUPLICATE'
+E       AssertionError: assert 'PARTIALLY_DISTINCT' == 'NEAR_DUPLICATE'
+E         
+E         - NEAR_DUPLICATE
+E         + PARTIALLY_DISTINCT
+
+tests/test_story_quality.py:10: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_story_quality.py::test_rephrasings_are_near_duplicates - As...
+1 failed, 52 passed in 1.24s
