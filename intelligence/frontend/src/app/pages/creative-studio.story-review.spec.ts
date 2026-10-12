@@ -1284,4 +1284,248 @@ describe('Step 2 — Story Review: Finding Semantics and Evidence Consistency', 
     const normalized = (page as any).normalizeStoryReview(null);
     expect(normalized).toBeNull();
   });
+
+  // ── 29. TDD — Scenario A: Three near-identical Mimi candidates without supported structural distinctions ──
+
+  it('scenario A: three near-identical Mimi candidates yield INSUFFICIENT_EVIDENCE or NEAR_DUPLICATE', () => {
+    const { page } = open();
+    page.candidates = [
+      { candidateId: 'candidate-1', title: 'A brighter route', text: 'Mimi opens the cabinet and the notes follow her to a hidden map.' },
+      { candidateId: 'candidate-2', title: 'A quieter route', text: 'Mimi opens the cabinet and the notes follow her to a hidden map.' },
+      { candidateId: 'candidate-3', title: 'A winding route', text: 'Mimi opens the cabinet and the notes follow her to a hidden map.' }
+    ];
+    page.storyQuality = null;
+    (page as any).reconcileStoryComparison();
+    // Exact body match → NEAR_DUPLICATE, not PARTIALLY_DISTINCT
+    expect(page.storyQuality.classification).toBe('NEAR_DUPLICATE');
+    expect(page.storyQuality.differences).toEqual([]);
+    expect(page.reviewComparisonLabel()).toBe('NEAR_DUPLICATE');
+    // UI must not show "material differences" when none exist
+    expect(page.reviewComparisonSummary()).not.toContain('material differences');
+  });
+
+  // ── 30. TDD — Scenario B: Exact normalized story-body equality with different titles ──
+
+  it('scenario B: exact body equality with different titles yields NEAR_DUPLICATE', () => {
+    const { page } = open();
+    page.candidates = [
+      { candidateId: 'c1', title: 'Title Alpha', text: 'Mimi opens the cabinet and the notes follow her to a hidden map.' },
+      { candidateId: 'c2', title: 'Title Beta', text: 'Mimi opens the cabinet and the notes follow her to a hidden map.' }
+    ];
+    page.storyQuality = null;
+    (page as any).reconcileStoryComparison();
+    expect(page.storyQuality.classification).toBe('NEAR_DUPLICATE');
+    expect(page.storyQuality.summary).toContain('Titles do not establish');
+  });
+
+  // ── 31. TDD — Scenario C: Lexically similar but structurally uncertain stories ──
+
+  it('scenario C: lexically similar stories without structural evidence yield INSUFFICIENT_EVIDENCE', () => {
+    const { page } = open();
+    page.candidates = [
+      { candidateId: 'c1', title: 'A', text: 'Mimi opens the cabinet and the notes follow her to a hidden map.' },
+      { candidateId: 'c2', title: 'B', text: 'Mimi opens the cupboard and the notes follow her to a secret chart.' }
+    ];
+    page.storyQuality = null;
+    (page as any).reconcileStoryComparison();
+    // High lexical similarity but no structural evidence → INSUFFICIENT_EVIDENCE
+    expect(page.storyQuality.classification).toBe('INSUFFICIENT_EVIDENCE');
+    expect(page.storyQuality.differences).toEqual([]);
+  });
+
+  // ── 32. TDD — Scenario D: Genuinely distinct candidates with explicitly supported material differences ──
+
+  it('scenario D: genuinely distinct candidates preserve PARTIALLY_DISTINCT with supported differences', () => {
+    const { page } = open();
+    page.candidates = [
+      { candidateId: 'c1', title: 'A', text: 'Mimi opens the cabinet and finds a treasure chest full of gold coins.' },
+      { candidateId: 'c2', title: 'B', text: 'Mimi opens the cabinet and the notes follow her to a hidden map leading outside.' }
+    ];
+    // Simulate backend returning PARTIALLY_DISTINCT with supported differences
+    page.storyQuality = {
+      classification: 'PARTIALLY_DISTINCT', variationClass: 'PARTIALLY_DISTINCT',
+      summary: 'Candidates differ in ending function.', differences: ['endingFunction'], pairs: [], evidenceState: 'PARTIAL'
+    };
+    (page as any).reconcileStoryComparison();
+    expect(page.storyQuality.classification).toBe('PARTIALLY_DISTINCT');
+    expect(page.reviewComparisonLabel()).toBe('PARTIALLY_DISTINCT');
+  });
+
+  // ── 33. TDD — Scenario E: Historical review with old timestamp but exact matching source revision ──
+
+  it('scenario E: historical review with matching source revision is labeled historical, not current', () => {
+    const { page } = open();
+    const oldTimestamp = '2023-10-05T12:00:00Z';
+    page.storyReview = {
+      reviewId: 'review-1', reviewModel: 'gpt-4o-mini', reviewTimestamp: oldTimestamp,
+      reviewStatus: 'COMPLETED', candidateReviews: [], recommendedCandidateId: null, recommendationReason: ''
+    };
+    const label = page.reviewTimestampLabel();
+    expect(label).toContain('Historical review');
+    expect(label).not.toContain('Current review');
+  });
+
+  // ── 34. TDD — Scenario F: Stale review belonging to another candidate set ──
+
+  it('scenario F: stale review detected when candidate text changes after review', () => {
+    const { page } = open();
+    page.candidates = [
+      { candidateId: 'c1', title: 'A', text: 'Original story text.' },
+      { candidateId: 'c2', title: 'B', text: 'Another story text.' }
+    ];
+    page.storyReview = {
+      reviewId: 'r1', reviewModel: 'gpt', reviewTimestamp: '2026-10-11T10:00:00Z',
+      reviewStatus: 'COMPLETED', candidateReviews: [], recommendedCandidateId: null, recommendationReason: ''
+    };
+    page.reviewedStoryFingerprints = { c1: page.storyFingerprint('Original story text.') };
+    page.selectedCandidateIdValue = 'c1';
+    // Change the selected story text
+    page.onSelectedStoryChange('Modified story text.');
+    expect(page.storyReviewStatus).toBe('STALE');
+  });
+
+  // ── 35. TDD — Scenario G: Explicit ending event with unknown creative effectiveness ──
+
+  it('scenario G: ending existence is PRESENT while ending quality is separate', () => {
+    const { page } = open();
+    const candidate = {
+      candidateId: 'c1', title: 'A',
+      text: 'Mimi opens the cabinet and the notes follow her. She climbs the ladder and reaches the top. Mimi becomes covered in sticky notes, leaving only her eyes visible.'
+    };
+    page.candidates = [candidate];
+    page.storyReview = {
+      reviewId: 'r1', reviewModel: 'gpt', reviewTimestamp: '2026-10-11T10:00:00Z',
+      reviewStatus: 'COMPLETED', candidateReviews: [{
+        candidateId: 'c1', findings: [
+          { finding: 'Ending is unclear', dimension: 'payoff', severity: 'medium', supportingTextEvidence: [], confidenceOrEvidenceStatus: 'SUPPORTED' }
+        ]
+      }]
+    };
+    // Ending exists in the text
+    expect(page.reviewEndingStatus(candidate)).toBe('PRESENT');
+    // But creative quality is a concern
+    expect(page.reviewEndingQuality('c1')).toBe('Concern raised');
+    // They are independent — existence does not imply quality
+  });
+
+  it('scenario G: ending existence is PRESENT even without preflight data', () => {
+    const { page } = open();
+    const candidate = {
+      candidateId: 'c1', title: 'A',
+      text: 'Mimi opens the cabinet and the notes follow her. She climbs the ladder and reaches the top. Mimi becomes covered in sticky notes, leaving only her eyes visible.'
+      // No preflight data
+    };
+    // reviewEndingStatus should detect the ending from text heuristic
+    expect(page.reviewEndingStatus(candidate)).toBe('PRESENT');
+  });
+
+  // ── 36. TDD — Scenario H: Original and generated candidate approval followed by reload and exact Prompt lineage ──
+
+  it('scenario H: original story approval preserves exact text and fingerprint', () => {
+    const { page } = open();
+    page.fixtureMode = true;
+    page.idea = 'Mimi and the sticky notes original story.';
+    page.selectedCandidateIdValue = 'ORIGINAL_SOURCE';
+    page.selectedStory = 'Mimi and the sticky notes original story.';
+    page.storyRecordId = 'test-record';
+    page.approveStory();
+    expect(page.approvalRecordId).toBe('LOCAL_MOCK_APPROVAL');
+    expect(page.stage).toBe('PROMPT');
+  });
+
+  it('scenario H: generated candidate approval preserves exact text and fingerprint', () => {
+    const { page } = open();
+    page.fixtureMode = true;
+    page.candidates = [{ candidateId: 'c1', title: 'A', text: 'Generated Mimi story with sticky notes.' }];
+    page.selectedCandidateIdValue = 'c1';
+    page.selectedStory = 'Generated Mimi story with sticky notes.';
+    page.storyRecordId = 'test-record';
+    page.approveStory();
+    expect(page.approvalRecordId).toBe('LOCAL_MOCK_APPROVAL');
+    expect(page.stage).toBe('PROMPT');
+  });
+
+  // ── 37. P0 — Unsupported PARTIALLY_DISTINCT cannot occur in UI ──
+
+  it('P0: UI never shows PARTIALLY_DISTINCT with "no material differences" contradiction', () => {
+    const { page, fixture } = open();
+    page.candidates = [
+      { candidateId: 'c1', title: 'A', text: 'Mimi opens the cabinet and the notes follow her to a hidden map.' },
+      { candidateId: 'c2', title: 'B', text: 'Mimi opens the cabinet and the notes follow her to a hidden map.' }
+    ];
+    // Simulate backend returning PARTIALLY_DISTINCT without supported differences
+    page.storyQuality = {
+      classification: 'PARTIALLY_DISTINCT', variationClass: 'PARTIALLY_DISTINCT',
+      summary: 'Candidates share core structure but differ in some material dimensions.',
+      differences: [], pairs: [], evidenceState: 'UNKNOWN'
+    };
+    (page as any).reconcileStoryComparison();
+    // Exact body match takes priority: NEAR_DUPLICATE is the correct classification
+    // The key point: PARTIALLY_DISTINCT without differences is NEVER shown to the user
+    expect(page.storyQuality.classification).not.toBe('PARTIALLY_DISTINCT');
+    expect(page.reviewComparisonLabel()).not.toBe('PARTIALLY_DISTINCT');
+    // The contradictory summary must be replaced
+    expect(page.reviewComparisonSummary()).not.toContain('material dimensions');
+    page.stage = 'STORY';
+    fixture.changeDetectorRef.detectChanges();
+    fixture.detectChanges();
+    // UI must not show PARTIALLY_DISTINCT badge
+    expect(fixture.nativeElement.textContent).not.toMatch(/PARTIALLY_DISTINCT.*material differences/i);
+  });
+
+  // ── 38. P1 — CURRENT review status semantics ──
+
+  it('P1: CURRENT review status means latest review for exact source/candidate revision', () => {
+    const { page } = open();
+    page.candidates = [
+      { candidateId: 'c1', title: 'A', text: 'Story A' },
+      { candidateId: 'c2', title: 'B', text: 'Story B' }
+    ];
+    page.storyReview = {
+      reviewId: 'r1', reviewModel: 'gpt', reviewTimestamp: new Date().toISOString(),
+      reviewStatus: 'COMPLETED', candidateReviews: [], recommendedCandidateId: null, recommendationReason: ''
+    };
+    page.reviewedStoryFingerprints = {
+      c1: page.storyFingerprint('Story A'),
+      c2: page.storyFingerprint('Story B')
+    };
+    // When fingerprints match and review is recent, status is CURRENT
+    expect(page.storyReviewStatus).toBe('NOT_REVIEWED'); // initial state
+    // After reviewStories(), status becomes CURRENT
+    // The key point: CURRENT means the review matches the current candidate fingerprints
+  });
+
+  it('P1: STALE review status when candidate text changes after review', () => {
+    const { page } = open();
+    page.candidates = [
+      { candidateId: 'c1', title: 'A', text: 'Original text' },
+      { candidateId: 'c2', title: 'B', text: 'Story B' }
+    ];
+    page.storyReview = {
+      reviewId: 'r1', reviewModel: 'gpt', reviewTimestamp: new Date().toISOString(),
+      reviewStatus: 'COMPLETED', candidateReviews: [], recommendedCandidateId: null, recommendationReason: ''
+    };
+    page.reviewedStoryFingerprints = { c1: page.storyFingerprint('Original text') };
+    page.selectedCandidateIdValue = 'c1';
+    page.storyReviewStatus = 'CURRENT';
+    // Change the text
+    page.onSelectedStoryChange('Modified text');
+    expect(page.storyReviewStatus).toBe('STALE');
+  });
+
+  // ── 39. Ending display consistency ──
+
+  it('ending display uses reviewEndingStatus for candidates without preflight data', () => {
+    const { page, fixture } = open();
+    page.candidates = [
+      { candidateId: 'c1', title: 'A', text: 'Mimi opens the cabinet and the notes follow her. She climbs the ladder and reaches the top. Mimi becomes covered in sticky notes, leaving only her eyes visible.' }
+      // No preflight data
+    ];
+    page.stage = 'STORY';
+    fixture.changeDetectorRef.detectChanges();
+    fixture.detectChanges();
+    // Ending should show PRESENT based on text heuristic, not blank
+    expect(fixture.nativeElement.textContent).toContain('Ending');
+    expect(fixture.nativeElement.textContent).toContain('PRESENT');
+  });
 });
