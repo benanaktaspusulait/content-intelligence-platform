@@ -45,5 +45,55 @@ describe('Idea entry ownership and free persistence', () => {
   it('returns insufficient evidence for lexical differences without invented semantics',()=>{const {page}=open();page.candidates=[{candidateId:'a',title:'Same title',text:'A child opens a red door.'},{candidateId:'b',title:'Same title',text:'A storm crosses the empty harbour while lights fade.'}];page.storyQuality=null;(page as any).reconcileStoryComparison();expect(page.storyQuality.classification).toBe('INSUFFICIENT_EVIDENCE');expect(page.storyQuality.differences).toEqual([]);expect(page.storyQuality.evidenceState).toBe('UNKNOWN');});
   it('sends preservation settings and useful refinement directions without provider-side title comparison',()=>{const {page}=open();page.workspacePath='library/exact';page.sourceText='Türkçe kaynak hikâye';page.storyMode='IMPROVE_EXISTING_STORY';page.lockedRequirements=['PRESERVE_CORE_PREMISE'];page.prepareStoryGeneration();page.storyConsent=true;page.budget=.1;page.requestStories();const request=http.expectOne('/api/v1/intelligence/workflow/creative-role');expect(request.request.body.context.lockedRequirements).toEqual(['PRESERVE_CORE_PREMISE']);expect(request.request.body.context.refinementDirections.length).toBeGreaterThan(0);expect(request.request.body.context.permittedVariation.toLowerCase()).toContain('unchecked');request.flush({recordId:'story',result:{alternatives:[{candidateId:'a',title:'Title A',text:'Exact'}]}});http.match(r=>r.method==='PUT').forEach(r=>r.flush({}));});
   it('shows one primary action while preparing paid generation',()=>{const {page,fixture}=open();page.sourceText='A concept';page.workspacePath='library/exact';page.prepareStoryGeneration();fixture.changeDetectorRef.markForCheck();fixture.detectChanges();expect(fixture.nativeElement.querySelectorAll('.new-story-form .button--primary').length).toBe(1);expect(fixture.nativeElement.querySelector('.new-story-form .button--primary').textContent.trim()).toBe('Confirm generation');});
+  it('compact modal shows only selected candidate detail by default and comparison summary at top', () => {
+    const { page, fixture } = open();
+    page.storyReview = {
+      reviewId: 'test-review',
+      reviewModel: 'gpt-4o-mini',
+      reviewTimestamp: '2026-10-11T10:00:00Z',
+      reviewPolicyVersion: 'story-review-v1',
+      reviewStatus: 'COMPLETED',
+      diversityAssessment: { classification: 'INSUFFICIENT_EVIDENCE', summary: 'Cannot determine' },
+      comparativeFindings: [],
+      candidateReviews: [
+        { candidateId: 'a', overallStatus: 'STRONG_CANDIDATE', editorialRecommendation: 'STRONG_CANDIDATE', strengths: ['Clear opening'], concerns: [], materialFindings: [], suggestedMinimalImprovements: [], confidenceOrEvidenceStatus: 'SUPPORTED' },
+        { candidateId: 'b', overallStatus: 'NEEDS_REVISION', editorialRecommendation: 'NEEDS_REVISION', strengths: [], concerns: ['Weak ending'], materialFindings: [], suggestedMinimalImprovements: [], confidenceOrEvidenceStatus: 'POTENTIAL_RISK' }
+      ],
+      recommendedCandidateId: null,
+      recommendationReason: 'No preference supported',
+      overallConcerns: [],
+      usageAndCost: { provider: 'openai', costUpperBoundUsd: 0.01 },
+      evidenceLimitations: [],
+      revisionComparison: { resolved: [], remaining: [], newFindings: [] }
+    };
+    page.candidates = [
+      { candidateId: 'a', title: 'Story A', text: 'First candidate text' },
+      { candidateId: 'b', title: 'Story B', text: 'Second candidate text' }
+    ];
+    page.selectedCandidateIdValue = 'a';
+    page.storyQuality = { classification: 'INSUFFICIENT_EVIDENCE', summary: 'Cannot determine', pairs: [], differences: [], evidenceState: 'UNKNOWN' };
+    page.reviewDialogOpen = true;
+    page.stage = 'STORY';
+    // reviewDialogTab defaults to '' so reviewDialogSelectedId falls back to selectedCandidateId = 'a'
+    fixture.changeDetectorRef.markForCheck();
+    fixture.detectChanges();
+    const dialog = fixture.nativeElement.querySelector('[role="dialog"]');
+    expect(dialog).not.toBeNull();
+    // Comparison summary visible
+    expect(dialog.textContent).toContain('Canonical comparison');
+    expect(dialog.textContent).toContain('INSUFFICIENT EVIDENCE');
+    // Candidate selector tabs present
+    const tabs = fixture.nativeElement.querySelectorAll('[role="tab"]');
+    expect(tabs.length).toBe(2);
+    // Selected panel visible, other panel hidden
+    const panels = fixture.nativeElement.querySelectorAll('[role="tabpanel"]');
+    expect(panels.length).toBe(2);
+    expect((panels[0] as HTMLElement).hidden).toBe(false);   // 'a' is selected
+    expect((panels[1] as HTMLElement).hidden).toBe(true);    // 'b' is hidden
+    // Story text of selected candidate is visible
+    expect(panels[0].textContent).toContain('First candidate text');
+    // Story text of non-selected candidate is not visible (hidden)
+    expect(panels[1].textContent).toContain('Second candidate text'); // still in DOM but hidden
+  });
 
 });
