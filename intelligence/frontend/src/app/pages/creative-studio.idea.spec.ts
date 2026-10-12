@@ -96,4 +96,44 @@ describe('Idea entry ownership and free persistence', () => {
     expect(panels[1].textContent).toContain('Second candidate text'); // still in DOM but hidden
   });
 
+  it('renders structured findings as collapsed details elements, not all-expanded rows', () => {
+    const { page, fixture } = open();
+    page.storyReview = {
+      reviewId: 'r', reviewModel: 'gpt', reviewTimestamp: '2026-10-11T10:00:00Z',
+      reviewPolicyVersion: 'v1', reviewStatus: 'COMPLETED',
+      diversityAssessment: { classification: 'INSUFFICIENT_EVIDENCE', summary: 'Unknown' },
+      comparativeFindings: [],
+      candidateReviews: [{
+        candidateId: 'c1', overallStatus: 'STRONG_CANDIDATE', editorialRecommendation: 'STRONG_CANDIDATE',
+        strengths: [], concerns: [], materialFindings: [], suggestedMinimalImprovements: [],
+        confidenceOrEvidenceStatus: 'SUPPORTED',
+        findings: [
+          { finding: 'Clear opening', dimension: 'opening visual promise', severity: 'low', supportingTextEvidence: ['Mimi opens the cabinet'], confidenceOrEvidenceStatus: 'SUPPORTED', suggestedMinimalImprovement: 'None required' },
+          { finding: 'Ambiguous ending', dimension: 'ending/payoff', severity: 'medium', supportingTextEvidence: [], confidenceOrEvidenceStatus: 'POTENTIAL_RISK', suggestedMinimalImprovement: 'Clarify the final action' }
+        ]
+      }],
+      recommendedCandidateId: null, recommendationReason: '',
+      overallConcerns: [], usageAndCost: { provider: 'openai', costUpperBoundUsd: 0.01 },
+      evidenceLimitations: [], revisionComparison: { resolved: [], remaining: [], newFindings: [] }
+    };
+    page.candidates = [{ candidateId: 'c1', title: 'Test', text: 'A story' }];
+    page.selectedCandidateIdValue = 'c1';
+    page.reviewDialogOpen = true;
+    page.stage = 'STORY';
+    fixture.changeDetectorRef.markForCheck();
+    fixture.detectChanges();
+    const findingItems = fixture.nativeElement.querySelectorAll('.review-finding-item');
+    expect(findingItems.length).toBe(2);
+    // Findings are <details> elements — closed by default
+    for (const item of Array.from(findingItems)) {
+      expect((item as HTMLDetailsElement).open).toBe(false);
+    }
+    // The headline is visible in the summary
+    expect(fixture.nativeElement.querySelector('.review-finding-headline')?.textContent).toContain('Clear opening');
+    // The low-severity class is applied to the first finding
+    expect(fixture.nativeElement.querySelector('.review-finding-sev--low')).not.toBeNull();
+    // Text assessment disclaimer is present
+    expect(fixture.nativeElement.querySelector('.review-text-assessment-disclaimer')).not.toBeNull();
+  });
+
 });
