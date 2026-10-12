@@ -119,9 +119,15 @@ class RuleEngine:
         """
         resolved_path: str | Path
         if ruleset_path is None:
-            # Default to RULESET_1.0.yaml
-            base_path = Path(__file__).parent.parent.parent
-            resolved_path = base_path / "data" / "rules" / "RULESET_1.0.yaml"
+            # Default to latest RULESET (1.7)
+            # Check POMPOM_DATA_ROOT env var first (Docker), then fallback to relative path
+            import os
+            data_root = os.getenv("POMPOM_DATA_ROOT")
+            if data_root:
+                resolved_path = Path(data_root) / "rules" / "RULESET_1.7.yaml"
+            else:
+                base_path = Path(__file__).parent.parent.parent
+                resolved_path = base_path / "data" / "rules" / "RULESET_1.7.yaml"
         else:
             resolved_path = ruleset_path
 

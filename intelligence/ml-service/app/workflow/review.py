@@ -858,6 +858,93 @@ def opening_review(
     }
 
 
+def _run_canonical_evaluation(request: dict[str, Any]) -> dict[str, Any]:
+    """Run the canonical Rule Engine evaluation on the prompt.
+
+    This is provider-free and deterministic. Results are clearly separated
+    from LocalExecutionCritic output so the UI can distinguish them.
+    """
+    try:
+        from app.parser.prompt_parser import parse_prompt
+        from app.rules.rule_engine import RuleEngine
+        from app.quality.canonical_evidence import story_density_evidence
+
+        prompt_text = request.get("prompt", "")
+        if not prompt_text:
+            return {
+                "status": "NOT_EVALUATED",
+                "reason": "No prompt text available for canonical evaluation",
+                "rulesEvaluated": 0,
+                "passedRules": [],
+                "failedRules": [],
+                "unknownRules": [],
+                "notApplicableRules": [],
+            }
+
+        # Parse prompt into Video Plan IR
+        parse_result = parse_prompt(prompt_text)
+        video_plan_ir = parse_result.video_plan_ir
+
+        # Run canonical Rule Engine
+        engine = RuleEngine()
+        evaluations = engine.evaluate(video_plan_ir)
+
+        # Categorize results
+        passed = []
+        failed = []
+        unknown = []
+        not_applicable = []
+        for ev in evaluations:
+            entry = {
+                "ruleId": ev.rule_id,
+                "ruleName": ev.rule_name,
+                "family": ev.family,
+                "severity": ev.severity,
+                "outcome": ev.outcome.value if hasattr(ev.outcome, 'value') else str(ev.outcome),
+                "message": ev.message,
+                "details": ev.details or {},
+            }
+            if ev.outcome.value == "PASS" if hasattr(ev.outcome, 'value') else str(ev.outcome) == "PASS":
+                passed.append(entry)
+            elif ev.outcome.value == "FAIL" if hasattr(ev.outcome, 'value') else str(ev.outcome) == "FAIL":
+                failed.append(entry)
+            elif ev.outcome.value == "UNKNOWN" if hasattr(ev.outcome, 'value') else str(ev.outcome) == "UNKNOWN":
+                unknown.append(entry)
+            else:
+                not_applicable.append(entry)
+
+        # Compute score
+        density = story_density_evidence(video_plan_ir)
+        score = engine.compute_score(evaluations)
+
+        return {
+            "status": "EVALUATED",
+            "score": score,
+            "rulesEvaluated": len(evaluations),
+            "passedRules": passed,
+            "failedRules": failed,
+            "unknownRules": unknown,
+            "notApplicableRules": not_applicable,
+            "videoPlanIR": {
+                "beats": video_plan_ir.get("beats", []),
+                "coreMechanic": video_plan_ir.get("coreMechanic"),
+                "goalEvidence": video_plan_ir.get("goalEvidence"),
+                "recurrence": (video_plan_ir.get("coreMechanic") or {}).get("recurrence"),
+            },
+            "storyDensityEvidence": density.__dict__ if hasattr(density, '__dict__') else {},
+        }
+    except Exception as exc:
+        return {
+            "status": "ERROR",
+            "reason": str(exc),
+            "rulesEvaluated": 0,
+            "passedRules": [],
+            "failedRules": [],
+            "unknownRules": [],
+            "notApplicableRules": [],
+        }
+
+
 def review_prompt(request: dict[str, Any], capabilities: dict[str, Any] | None = None) -> dict[str, Any]:
     from .critic import LocalExecutionCritic
 
@@ -879,6 +966,8 @@ def review_prompt(request: dict[str, Any], capabilities: dict[str, Any] | None =
     execution = LocalExecutionCritic().review(request, evidence, generation)
     intent = intent_requirements(request, evidence)
     quality = plan_quality(request, evidence)
+    # Canonical Rule Engine evaluation (provider-free, deterministic)
+    canonical_evaluation = _run_canonical_evaluation(request)
     execution_risk = execution_decision(execution)
     references = request.get("references") or []
     named = set(re.findall(r"(?i)\b(Luca|Zipo|Kiko|Mimi|Pompom)\b", request["prompt"]))
@@ -998,6 +1087,7 @@ def review_prompt(request: dict[str, Any], capabilities: dict[str, Any] | None =
             "actualRenderQuality": {"status": "UNKNOWN"},
             "audienceDistributionOutcome": {"status": "NOT_JOINED"},
         },
+        "canonicalRuleEvaluation": canonical_evaluation,
         "operatorReport": operator_report(quality, execution_risk),
         "workflowVersion": VERSION,
         "bindingHash": sha256(

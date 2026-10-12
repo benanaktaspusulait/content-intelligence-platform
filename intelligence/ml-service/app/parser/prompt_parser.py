@@ -459,10 +459,27 @@ class PromptParser:
 
         enriched["recurrence"] = bool(
             len(beats) >= 2
-            and any(
-                beat.get("beatRole") == "TWIST"
-                and any(word in str(beat.get("consequence", "")).lower() for word in ("stick", "sticky", "again", "returns"))
-                for beat in beats
+            and (
+                # Original check: TWIST beat with recurrence-related consequence
+                any(
+                    beat.get("beatRole") == "TWIST"
+                    and any(word in str(beat.get("consequence", "")).lower() for word in ("stick", "sticky", "again", "returns"))
+                    for beat in beats
+                )
+                # Natural-language recurrence: explicit repeated physical rule
+                # e.g. "each pull doubles", "every time X happens, Y repeats", "repeatedly"
+                or bool(
+                    re.search(
+                        r"(?:each|every)\s+(?:pull|attempt|try|time|round|cycle)\s+(?:doubles?|triples?|multipl|increas|repeat|adds?|grows?|escalat)",
+                        text,
+                        re.IGNORECASE,
+                    )
+                    or re.search(
+                        r"(?:repeatedly|repeated\s+(?:action|attempt|try))",
+                        text,
+                        re.IGNORECASE,
+                    )
+                )
             )
         )
         return enriched
@@ -698,6 +715,16 @@ class PromptParser:
         }
     )
 
+    # Natural-language attempt phrases that indicate a goal-directed action
+    # even without an explicit [ATTEMPT: VERB] marker. These are common in
+    # production prompts written in natural language rather than structured
+    # beat notation. The pattern matches the subject (e.g. "Mimi") followed
+    # by one of these phrases and a verb phrase.
+    _NATURAL_ATTEMPT_PHRASES = re.compile(
+        r"\b(tries? to|attempts? to|tries? |attempts? |continues? to|keeps? (?:on )?|goes? on )\s*(\w+)",
+        re.IGNORECASE,
+    )
+
     # Articles/determiners that can lead a noun phrase using a word that is
     # ALSO in _INFERABLE_ATTEMPT_VERBS (e.g. "the push", "a turn") without
     # that word being used as a verb at all. A leading word followed
@@ -893,6 +920,8 @@ class PromptParser:
         """Canonicalize attempt evidence without promoting verb presence to an attempt.
 
         An explicit attempt marker or explicit ATTEMPT label is sufficient evidence.
+        A natural-language attempt phrase (e.g. "tries to", "attempts to") is also
+        sufficient evidence, as it explicitly signals a goal-directed action.
         A leading verb can nominate a candidate for audit, but cannot set ``isAttempt``;
         a narrative ESCALATION/REACTION/TWIST beat must not inflate active or distinct
         attempt counts merely because it says ``grabs`` or ``leans``.
@@ -908,6 +937,13 @@ class PromptParser:
                     f"Beat '{label}' is labelled as an attempt but no action verb could be identified."
                 )
             return True, verb, "STRUCTURED_PLAN_ROLE", None
+
+        # Check for natural-language attempt phrases like "tries to peel", "attempts to stick"
+        natural_match = self._NATURAL_ATTEMPT_PHRASES.search(content)
+        if natural_match:
+            verb = natural_match.group(2).strip().upper()
+            if verb and len(verb) > 1:
+                return True, verb, "NATURAL_LANGUAGE_ATTEMPT", None
 
         inferred, inferred_verb = self._infer_attempt_from_leading_verb(content)
         candidate = (
@@ -1055,7 +1091,23 @@ class PromptParser:
         return normalized[:50]  # Limit length
 
     def _extract_consequence(self, description: str, action: str = "") -> str:
-        """Extract result lines without duplicating the selected action sentence."""
+        """Extract result lines without duplicating the selected action sentence.
+
+        Supports two formats:
+        1. Multi-line: action on one line, consequence on subsequent lines.
+        2. Single-line with '->' separator: 'action -> consequence'.
+        """
+        # Check for single-line '->' separator first
+        if '->' in description:
+            parts = description.split('->', 1)
+            if len(parts) == 2:
+                consequence = parts[1].strip()
+                # Remove framing brackets like [close-up on...] from consequence
+                consequence = re.sub(r'\[.*?\]', '', consequence).strip()
+                if consequence:
+                    return consequence[:150]
+
+        # Fall back to multi-line extraction
         lines: list[str] = []
         action_text = action.strip().rstrip(".")
         action_seen = not bool(action_text)

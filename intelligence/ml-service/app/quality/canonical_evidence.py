@@ -874,14 +874,18 @@ def story_density_evidence(video_plan_ir: dict[str, Any]) -> StoryDensityEvidenc
     )
     resolution_words = _words(resolution_text)
     normal_state = bool(resolution_words.intersection({"NORMAL", "NORMALLY", "WORKS", "RESTORED"})) or "BACK TO NORMAL" in resolution_text
-    positive_reaction = any(term in resolution_text for term in ("smile", "smiles", "relax", "relaxes", "relieved"))
+    positive_reaction = any(term in resolution_text for term in ("smile", "smiles", "relax", "relaxes", "relieved", "relief"))
     fake_resolution = any(
         str(beat.get("beatRole", "")).upper() == "FAKE_RESOLUTION" or beat.get("consequenceType") == "fake_win"
         for beat in beats
     )
     implicit_realization = normal_state and (positive_reaction or fake_resolution)
-    realization_status = "AVAILABLE" if explicit_realization or implicit_realization else "UNKNOWN"
-    realization_mode = "EXPLICIT" if explicit_realization else "IMPLICIT_BUT_OBSERVABLE" if implicit_realization else None
+    # Also recognize explicit realization through reaction words in the resolution text
+    explicit_realization_reaction = any(
+        term in resolution_text for term in ("realize", "realizes", "understand", "understands", "decide", "decides", "notice", "notices", "sees herself", "sees himself")
+    )
+    realization_status = "AVAILABLE" if explicit_realization or explicit_realization_reaction or implicit_realization else "UNKNOWN"
+    realization_mode = "EXPLICIT" if explicit_realization or explicit_realization_reaction else "IMPLICIT_BUT_OBSERVABLE" if implicit_realization else None
     payoff = video_plan_ir.get("finalPayoff") or {}
     payoff_status = "AVAILABLE" if payoff.get("startsAt") is not None or any(
         str(beat.get("beatRole", "")).upper() in {"PAYOFF", "SOLUTION", "TWIST"} for beat in beats
