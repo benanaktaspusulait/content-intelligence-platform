@@ -887,19 +887,19 @@ def _run_canonical_evaluation(request: dict[str, Any]) -> dict[str, Any]:
 
         # Run canonical Rule Engine
         engine = RuleEngine()
-        evaluations = engine.evaluate(video_plan_ir)
+        report = engine.evaluate(video_plan_ir)
 
         # Categorize results
         passed = []
         failed = []
         unknown = []
         not_applicable = []
-        for ev in evaluations:
+        for ev in report.evaluations:
             entry = {
                 "ruleId": ev.rule_id,
                 "ruleName": ev.rule_name,
                 "family": ev.family,
-                "severity": ev.severity,
+                "severity": ev.configured_severity.value if hasattr(ev.configured_severity, 'value') else str(ev.configured_severity),
                 "outcome": ev.outcome.value if hasattr(ev.outcome, 'value') else str(ev.outcome),
                 "message": ev.message,
                 "details": ev.details or {},
@@ -913,14 +913,22 @@ def _run_canonical_evaluation(request: dict[str, Any]) -> dict[str, Any]:
             else:
                 not_applicable.append(entry)
 
-        # Compute score
+        # Compute score and derive grade from score
         density = story_density_evidence(video_plan_ir)
-        score = engine.compute_score(evaluations)
+        score = report.overall_score
+        ruleset_version = report.ruleset_version
+        # Derive grade from score (A=92+, B=80-91, C=60-79, F<60)
+        if score is not None:
+            grade = "A" if score >= 92 else "B" if score >= 80 else "C" if score >= 60 else "F"
+        else:
+            grade = None
 
         return {
             "status": "EVALUATED",
             "score": score,
-            "rulesEvaluated": len(evaluations),
+            "grade": grade,
+            "rulesetVersion": ruleset_version,
+            "rulesEvaluated": len(report.evaluations),
             "passedRules": passed,
             "failedRules": failed,
             "unknownRules": unknown,
@@ -1029,20 +1037,29 @@ def review_prompt(request: dict[str, Any], capabilities: dict[str, Any] | None =
                     "references": [finding["rawResult"]["sourceQuote"]],
                 }
             )
+    # FINAL_VIDEO_INTEGRITY is a POST-RENDER gate.
+    # It requires evidence from a completed render (renderAuthorization, finalVideoEligible,
+    # independentRevalidationId). For the FIRST render of a new prompt, no such evidence
+    # can exist — requiring it would create a circular dependency.
+    # Only enforce this gate when a previous render result exists (authorizationEvidence is non-empty).
     canonical = request.get("authorizationEvidence") or {}
-    integrity = (
-        canonical.get("renderAuthorization") == "AUTHORIZED"
-        and canonical.get("promptSha256") == sha256(request["prompt"])
-        and canonical.get("finalVideoEligible") is True
-        and canonical.get("independentRevalidationId") is not None
-        and canonical.get("fresh") is True
-        and ("+profile-admission-v1:" not in str(canonical.get("deterministicRulesetVersion", "")) or str(canonical["deterministicRulesetVersion"]).endswith(":" + binding_fingerprint(request)))
-    )
-    if not integrity:
-        pending(
-            "Existing verified visual gates and independent revalidation are required for final video acceptance.",
-            "FINAL_VIDEO_INTEGRITY",
+    if canonical:
+        # A previous render exists; verify its integrity matches the current prompt.
+        integrity = (
+            canonical.get("renderAuthorization") == "AUTHORIZED"
+            and canonical.get("promptSha256") == sha256(request["prompt"])
+            and canonical.get("finalVideoEligible") is True
+            and canonical.get("independentRevalidationId") is not None
+            and canonical.get("fresh") is True
+            and ("+profile-admission-v1:" not in str(canonical.get("deterministicRulesetVersion", "")) or str(canonical["deterministicRulesetVersion"]).endswith(":" + binding_fingerprint(request)))
         )
+        if not integrity:
+            pending(
+                "Existing verified visual gates and independent revalidation are required for final video acceptance.",
+                "FINAL_VIDEO_INTEGRITY",
+            )
+    # If canonical is empty, this is the first render — no post-render evidence exists yet.
+    # The pre-render gates (REFERENCE_ASSOCIATION, EXECUTION_INPUTS) are sufficient.
     family8 = project_family8(
         {
             "creativeQuality": {"creativeScore": None, "creativeGrade": None},

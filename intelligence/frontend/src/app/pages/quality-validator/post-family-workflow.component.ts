@@ -85,6 +85,68 @@ import { GeneralProducibilityComponent } from './general-producibility.component
         <section class="analysis-summary-decision" aria-label="Analysis decision summary"><div><span>Analysis status</span><strong>{{ r.reviewStatus || r.status || 'COMPLETED' }}</strong></div><div><span>Creative quality</span><strong>{{ r.family8?.creativeQuality?.creativeGrade || r.planQuality?.status || 'UNKNOWN' }}</strong></div><div><span>Render authorization</span><strong>{{ authorizationLabel(r.family8?.renderAuthorization?.status) }}</strong><small>{{ r.family8?.renderAuthorization?.status || 'UNKNOWN' }}</small></div><div><span>Recommendation</span><strong>{{ r.planQuality?.recommendation || r.recommendation || 'No supported recommendation recorded' }}</strong></div></section>
         <section id="findings-resolution" class="findings-resolution" aria-label="Findings resolution" *ngIf="resolutionItems().length"><header><div><span class="card-kicker">FINDINGS RESOLUTION</span><h3>What needs to happen next</h3><p>Each item is derived from this saved analysis run and canonical authorization result. These actions do not call a provider.</p></div></header><div class="resolution-list"><article *ngFor="let item of resolutionItems()" class="resolution-item" [class.resolution-item--blocking]="item.blocking"><div class="resolution-item__title"><span class="resolution-category">{{ item.category.replaceAll('_', ' ') }}</span><strong>{{ item.finding }}</strong></div><p>{{ item.why }}</p><small><b>Finding ID:</b> {{ item.id || item.category }} · <b>Status:</b> {{ item.status || 'NEEDS_ACTION' }} · <b>Impact:</b> {{ item.severity || (item.blocking ? 'BLOCKING' : 'REVIEW') }}</small><small><b>Evidence:</b> {{ item.evidence || item.why }}</small><small><b>Required action:</b> {{ item.action }} · <b>Owner:</b> {{ item.owner }} · <b>Revalidate:</b> {{ item.revalidationRequired === false ? 'No' : 'Yes' }} · <b>Prompt revision:</b> {{ item.promptRevisionRequired ? 'Required' : 'Not currently required' }}</small><a *ngIf="item.target === 7" class="button button--secondary" [href]="renderPreparationLink(item)">{{ item.button }}</a><button *ngIf="item.target !== 7" type="button" class="button button--secondary" (click)="resolveFinding(item)">{{ item.button }}</button></article></div></section>
 
+        <section class="canonical-rule-evaluation" aria-label="Canonical Rule Evaluation" *ngIf="r.canonicalRuleEvaluation as canonical">
+          <header>
+            <span class="card-kicker">CANONICAL RULE EVALUATION</span>
+            <h3>Deterministic rule-based quality assessment</h3>
+            <p>This section uses the existing canonical Rule Engine (F1–F10 families). It is separate from the Local Execution Review above and does not call a paid provider.</p>
+          </header>
+          <div class="canonical-summary-grid" *ngIf="canonical.status === 'EVALUATED'">
+            <div><span>Ruleset version</span><strong>{{ canonical.rulesetVersion || 'UNKNOWN' }}</strong></div>
+            <div><span>Overall score</span><strong>{{ canonical.score | number:'1.1-1' }} / 100</strong><small>Provisional text-based assessment; not proven video quality.</small></div>
+            <div><span>Grade</span><strong>{{ canonical.grade || 'UNKNOWN' }}</strong></div>
+            <div><span>Status</span><strong>{{ canonical.status }}</strong></div>
+            <div><span>Rules evaluated</span><strong>{{ canonical.rulesEvaluated || 0 }}</strong></div>
+            <div><span>PASS</span><strong class="outcome-pass">{{ (canonical.passedRules || []).length }}</strong></div>
+            <div><span>FAIL</span><strong class="outcome-fail">{{ (canonical.failedRules || []).length }}</strong></div>
+            <div><span>UNKNOWN</span><strong class="outcome-unknown">{{ (canonical.unknownRules || []).length }}</strong></div>
+            <div><span>NOT APPLICABLE</span><strong class="outcome-na">{{ (canonical.notApplicableRules || []).length }}</strong></div>
+          </div>
+          <div class="canonical-summary-grid" *ngIf="canonical.status === 'ERROR'">
+            <div><span>Status</span><strong class="outcome-error">ERROR</strong></div>
+            <div><span>Reason</span><strong>{{ canonical.reason || 'Unknown error' }}</strong></div>
+          </div>
+          <div class="canonical-summary-grid" *ngIf="canonical.status === 'NOT_EVALUATED'">
+            <div><span>Status</span><strong>NOT_EVALUATED</strong></div>
+            <div><span>Reason</span><strong>{{ canonical.reason || 'Canonical evaluation not available' }}</strong></div>
+          </div>
+          <div class="canonical-video-plan" *ngIf="canonical.videoPlanIR">
+            <h4>Extracted Video Plan IR</h4>
+            <p><b>Beats:</b> {{ canonical.videoPlanIR.beats?.length || 0 }}</p>
+            <p><b>Core mechanic:</b> {{ canonical.videoPlanIR.coreMechanic || 'UNKNOWN' }}</p>
+            <p><b>Goal evidence:</b> {{ canonical.videoPlanIR.goalEvidence || 'UNKNOWN' }}</p>
+            <p><b>Recurrence:</b> {{ canonical.videoPlanIR.recurrence !== undefined ? canonical.videoPlanIR.recurrence : 'UNKNOWN' }}</p>
+          </div>
+          <div class="canonical-rules-list" *ngIf="canonical.status === 'EVALUATED'">
+            <h4>Individual Rule Outcomes</h4>
+            <article *ngFor="let rule of canonical.passedRules" class="canonical-rule-item rule-pass">
+              <span class="rule-outcome-badge pass">PASS</span>
+              <strong>{{ rule.ruleId }}</strong>
+              <span class="rule-family">{{ rule.family }}</span>
+              <p>{{ rule.message }}</p>
+            </article>
+            <article *ngFor="let rule of canonical.failedRules" class="canonical-rule-item rule-fail">
+              <span class="rule-outcome-badge fail">{{ rule.severity || 'FAIL' }}</span>
+              <strong>{{ rule.ruleId }}</strong>
+              <span class="rule-family">{{ rule.family }}</span>
+              <p>{{ rule.message }}</p>
+              <small *ngIf="rule.details?.missing">Missing: {{ rule.details.missing.join(', ') }}</small>
+            </article>
+            <article *ngFor="let rule of canonical.unknownRules" class="canonical-rule-item rule-unknown">
+              <span class="rule-outcome-badge unknown">UNKNOWN</span>
+              <strong>{{ rule.ruleId }}</strong>
+              <span class="rule-family">{{ rule.family }}</span>
+              <p>{{ rule.message }}</p>
+            </article>
+            <article *ngFor="let rule of canonical.notApplicableRules" class="canonical-rule-item rule-na">
+              <span class="rule-outcome-badge na">NOT_APPLICABLE</span>
+              <strong>{{ rule.ruleId }}</strong>
+              <span class="rule-family">{{ rule.family }}</span>
+              <p>{{ rule.message }}</p>
+            </article>
+          </div>
+        </section>
+
         </ng-container>
         <details *ngIf="activeAnalysisTab === 'feasibility'">
           <summary>Raw plan, generator and authorization evidence</summary>
@@ -514,6 +576,37 @@ import { GeneralProducibilityComponent } from './general-producibility.component
       .source-details { margin:8px 0 14px; color:#526273; }
       .source-details summary { cursor:pointer; font-weight:600; }
       @media (max-width: 700px) { .analysis-stage-footer { flex-direction:column; align-items:stretch; } }
+      .canonical-rule-evaluation { display:grid; gap:14px; margin:20px 0; padding:18px; border:1px solid #d8e1ec; border-radius:12px; background:#f8fbfd; }
+      .canonical-rule-evaluation header h3 { margin:3px 0; color:#263f56; }
+      .canonical-rule-evaluation header p { margin:4px 0; color:#68747c; font-size:.82rem; }
+      .canonical-summary-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(160px, 1fr)); gap:10px; }
+      .canonical-summary-grid > div { display:grid; gap:3px; padding:10px; border:1px solid #dfe7ee; border-radius:8px; background:#fff; }
+      .canonical-summary-grid span { font-size:.68rem; color:#68747c; font-weight:800; text-transform:uppercase; }
+      .canonical-summary-grid strong { color:#263f56; font-size:.9rem; }
+      .canonical-video-plan { padding:12px; border:1px solid #dfe7ee; border-radius:8px; background:#fff; }
+      .canonical-video-plan h4 { margin:0 0 8px; color:#263f56; }
+      .canonical-rules-list { display:grid; gap:8px; }
+      .canonical-rules-list h4 { margin:0; color:#263f56; }
+      .canonical-rule-item { display:grid; gap:4px; padding:10px; border-radius:8px; border-left:4px solid #d4dce8; background:#fff; }
+      .canonical-rule-item.rule-pass { border-left-color:#5f8435; }
+      .canonical-rule-item.rule-fail { border-left-color:#b9503e; }
+      .canonical-rule-item.rule-unknown { border-left-color:#855b15; }
+      .canonical-rule-item.rule-na { border-left-color:#b8c5d5; }
+      .rule-outcome-badge { display:inline-block; font-size:.64rem; font-weight:800; padding:2px 6px; border-radius:4px; letter-spacing:.04em; }
+      .rule-outcome-badge.pass { background:#e8f5e0; color:#5f8435; }
+      .rule-outcome-badge.fail { background:#fde8e4; color:#b9503e; }
+      .rule-outcome-badge.unknown { background:#fdf3e0; color:#855b15; }
+      .rule-outcome-badge.na { background:#e8edf3; color:#52616b; }
+      .rule-outcome-badge.error { background:#fde8e4; color:#b9503e; }
+      .rule-family { font-size:.68rem; color:#68747c; text-transform:uppercase; }
+      .canonical-rule-item strong { color:#263f56; }
+      .canonical-rule-item p { margin:0; color:#40515a; font-size:.86rem; }
+      .canonical-rule-item small { color:#68747c; font-size:.78rem; }
+      .outcome-pass { color:#5f8435 !important; }
+      .outcome-fail { color:#b9503e !important; }
+      .outcome-unknown { color:#855b15 !important; }
+      .outcome-na { color:#52616b !important; }
+      .outcome-error { color:#b9503e !important; }
     `,
   ],
 })
