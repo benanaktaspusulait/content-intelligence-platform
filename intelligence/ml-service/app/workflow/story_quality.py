@@ -380,6 +380,17 @@ def analyse_story_candidates(candidates: list[Any], context: dict[str, Any]) -> 
             # Merge legacy and story-evidence differing dimensions
             all_differing = list(dict.fromkeys(differing + legacy_differing))
 
+            # Build dimension descriptions for supported differences
+            dim_descriptions: dict[str, dict[str, str]] = {}
+            if 'endingEvent' in all_differing:
+                end_i = ev_i.get('endingEvent')
+                end_j = ev_j.get('endingEvent')
+                if end_i and end_j:
+                    dim_descriptions['endingEvent'] = {
+                        str(i + 1): end_i[:200],
+                        str(j + 1): end_j[:200],
+                    }
+
             pairs.append({
                 'left': i + 1,
                 'right': j + 1,
@@ -387,6 +398,7 @@ def analyse_story_candidates(candidates: list[Any], context: dict[str, Any]) -> 
                 'sharedDimensions': list(dict.fromkeys(shared)),
                 'differentDimensions': all_differing,
                 'eventSequenceMatch': not structural_difference,
+                'dimensionDescriptions': dim_descriptions if dim_descriptions else None,
             })
 
     # Aggregate classification
