@@ -436,6 +436,9 @@ def analyse_story_candidates(candidates: list[Any], context: dict[str, Any]) -> 
         'INSUFFICIENT_EVIDENCE': 'INSUFFICIENT_EVIDENCE',
     }[classification]
 
+    # ── Deterministic candidate recommendation ──
+    recommendation = _recommend_candidate(assessments, pairs)
+
     return {
         'method': 'story-structure-v1',
         'classification': classification,
@@ -444,6 +447,7 @@ def analyse_story_candidates(candidates: list[Any], context: dict[str, Any]) -> 
         'summary': summary,
         'pairs': pairs,
         'differences': differences,
+        'recommendation': recommendation,
         'candidates': [
             {
                 'structuralEvidence': {k: v for k, v in e.items() if not k.startswith('_')},
@@ -458,4 +462,168 @@ def analyse_story_candidates(candidates: list[Any], context: dict[str, Any]) -> 
             }
             for e, pf, a in zip(evidence, preflight, assessments)
         ],
+    }
+
+
+def _recommend_candidate(assessments: list[dict[str, Any]], pairs: list[dict[str, Any]]) -> dict[str, Any]:
+    """Produce a deterministic preliminary recommendation from existing assessment evidence.
+
+    Rules:
+    1. No numeric scores — only comparative evidence.
+    2. UNKNOWN does not count as FAIL.
+    3. A candidate is preferred only when supported comparative evidence exists.
+    4. If candidates are tied, report the tie.
+    5. If evidence is insufficient, return no recommendation.
+
+    Returns a dict with:
+    - bestCandidateId: the preferred candidate or None
+    - reason: why this candidate is preferred
+    - whyNot: why other candidates are less preferred
+    - stillUnknown: dimensions that cannot determine a winner
+    - isTied: whether candidates are materially tied
+    """
+    if not assessments or len(assessments) < 2:
+        return {
+            'bestCandidateId': None,
+            'reason': 'Not enough candidates to compare.',
+            'whyNot': [],
+            'stillUnknown': [],
+            'isTied': False,
+        }
+
+    # Build per-candidate risk, strength, and unknown profiles
+    candidate_risks: list[set[str]] = []
+    candidate_strengths: list[set[str]] = []
+    candidate_unknowns: list[set[str]] = []
+
+    for a in assessments:
+        risk_dims = {item.get('dimension') for item in a.get('risks', []) if item.get('outcome') in ('WARNING', 'FAIL')}
+        strength_dims = {item.get('dimension') for item in a.get('strengths', []) if item.get('outcome') == 'PASS'}
+        unknown_dims = {item.get('dimension') for item in a.get('unknown', []) if item.get('dimension')}
+        candidate_risks.append(risk_dims)
+        candidate_strengths.append(strength_dims)
+        candidate_unknowns.append(unknown_dims)
+
+    # stillUnknown: only dimensions that are unknown for ALL candidates.
+    # A dimension unknown for one candidate but resolved for another should not
+    # appear as "still unknown" — that would contradict the recommendation
+    # when the resolved dimension is used as a differentiator.
+    if candidate_unknowns:
+        all_unknown_dims: set[str] = candidate_unknowns[0].copy()
+        for u in candidate_unknowns[1:]:
+            all_unknown_dims &= u
+    else:
+        all_unknown_dims = set()
+
+    # Find candidates with fewer risks than others
+    # A candidate is preferred if it has risks that others don't share (negative)
+    # or if others have risks it doesn't have (positive differentiator)
+    risk_counts = [len(r) for r in candidate_risks]
+    min_risks = min(risk_counts)
+
+    # Identify which candidates have the fewest risks
+    lowest_risk_indices = [i for i, c in enumerate(risk_counts) if c == min_risks]
+
+    # If all candidates have the same risk count, check for differentiating risks
+    if len(lowest_risk_indices) == len(assessments):
+        # All tied on risk count — check if any candidate has unique risks others don't have
+        # Find risks that are NOT shared by all candidates
+        if len(assessments) >= 2:
+            # Find candidates that have risks others don't
+            differentiating_risks: dict[int, set[str]] = {}
+            for i in range(len(assessments)):
+                # Risks that candidate i has but at least one other candidate doesn't
+                unique_risks = set()
+                for risk_dim in candidate_risks[i]:
+                    for j in range(len(assessments)):
+                        if i != j and risk_dim not in candidate_risks[j]:
+                            unique_risks.add(risk_dim)
+                if unique_risks:
+                    differentiating_risks[i] = unique_risks
+
+            # Find candidates that have FEWER unique risks (i.e., their risks are shared or they have none)
+            # Prefer candidates whose risks are shared by all (common risks) over those with unique risks
+            if differentiating_risks:
+                # Candidates NOT in differentiating_risks have no unique risks — they are preferred
+                clean_candidates = [i for i in range(len(assessments)) if i not in differentiating_risks]
+                if clean_candidates and len(clean_candidates) < len(assessments):
+                    # Some candidates have no unique risks — prefer them
+                    best_idx = clean_candidates[0]
+                    why_not = []
+                    for i, unique_r in differentiating_risks.items():
+                        why_not.append({
+                            'candidateIndex': i + 1,
+                            'reason': f'Has risk(s) not shared by all candidates: {", ".join(sorted(unique_r))}',
+                        })
+                    reason_parts = []
+                    if min_risks == 0:
+                        reason_parts.append('No supported risk signals detected')
+                    else:
+                        reason_parts.append(f'Shares the same risks as other candidates ({min_risks} risk(s))')
+                    # Check if this candidate has unique strengths
+                    if candidate_strengths[best_idx]:
+                        reason_parts.append(f'Supported strengths: {", ".join(sorted(candidate_strengths[best_idx]))}')
+
+                    return {
+                        'bestCandidateId': assessments[best_idx]['candidateId'],
+                        'reason': '; '.join(reason_parts),
+                        'whyNot': why_not,
+                        'stillUnknown': sorted(all_unknown_dims),
+                        'isTied': False,
+                    }
+
+    # If one candidate has strictly fewer risks
+    if len(lowest_risk_indices) == 1:
+        best_idx = lowest_risk_indices[0]
+        why_not = []
+        for i in range(len(assessments)):
+            if i != best_idx:
+                extra_risks = candidate_risks[i] - candidate_risks[best_idx]
+                if extra_risks:
+                    why_not.append({
+                        'candidateIndex': i + 1,
+                        'reason': f'Has additional risk(s): {", ".join(sorted(extra_risks))}',
+                    })
+                else:
+                    why_not.append({
+                        'candidateIndex': i + 1,
+                        'reason': f'Has {len(candidate_risks[i])} risk(s) vs {min_risks} for the recommended candidate',
+                    })
+        reason_parts = []
+        if min_risks == 0:
+            reason_parts.append('No supported risk signals detected')
+        else:
+            reason_parts.append(f'Fewest supported risks ({min_risks})')
+        if candidate_strengths[best_idx]:
+            reason_parts.append(f'Supported strengths: {", ".join(sorted(candidate_strengths[best_idx]))}')
+
+        return {
+            'bestCandidateId': assessments[best_idx]['candidateId'],
+            'reason': '; '.join(reason_parts),
+            'whyNot': why_not,
+            'stillUnknown': sorted(all_unknown_dims),
+            'isTied': False,
+        }
+
+    # All candidates are tied — same risk count and same risk profile
+    # Check if they also share the same strengths
+    all_same_strengths = all(candidate_strengths[i] == candidate_strengths[0] for i in range(len(assessments)))
+    all_same_risks = all(candidate_risks[i] == candidate_risks[0] for i in range(len(assessments)))
+
+    if all_same_strengths and all_same_risks:
+        return {
+            'bestCandidateId': None,
+            'reason': 'No evidence-supported recommendation yet.',
+            'whyNot': [],
+            'stillUnknown': sorted(all_unknown_dims),
+            'isTied': True,
+        }
+
+    # Tied on risks but different strengths — no defensible winner from strengths alone
+    return {
+        'bestCandidateId': None,
+        'reason': 'Candidates share similar risk profiles; no single candidate is clearly preferred by the available evidence.',
+        'whyNot': [],
+        'stillUnknown': sorted(all_unknown_dims),
+        'isTied': True,
     }
