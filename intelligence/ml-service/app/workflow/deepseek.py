@@ -2,12 +2,16 @@
 
 from __future__ import annotations
 
+import json
+import logging
 import os
 from typing import Any
 
 from openai import OpenAI
 
 from app.llm.provider import LLMProvider, UnsupportedProviderError
+
+logger = logging.getLogger(__name__)
 
 
 class DeepSeekTextProvider(LLMProvider):
@@ -30,6 +34,13 @@ class DeepSeekTextProvider(LLMProvider):
                 "This critic adapter is text-only; no visual evidence was inspected"
             )
         messages: Any = [{"role": "system", "content": system}, {"role": "user", "content": prompt}]
+        # DIAGNOSTIC: Log raw request context (redacted) for evidence tracing
+        try:
+            user_msg = json.loads(prompt) if isinstance(prompt, str) else {}
+            logger.info("DEEPSEEK_REQUEST model=%s context=%s", self.model,
+                json.dumps({k: user_msg.get(k) for k in ("context",)} if isinstance(user_msg, dict) else {}, ensure_ascii=False)[:500])
+        except Exception:
+            pass
         response = self.client.chat.completions.create(
             model=self.model,
             messages=messages,
@@ -37,6 +48,9 @@ class DeepSeekTextProvider(LLMProvider):
             response_format={"type": "json_object"},
             max_tokens=self.max_output_tokens,
         )
+        raw_content = response.choices[0].message.content or ""
+        # DIAGNOSTIC: Log raw response for evidence tracing
+        logger.info("DEEPSEEK_RESPONSE model=%s raw=%s", self.model, raw_content[:2000])
         usage = getattr(response, "usage", None)
         self.last_usage = usage.model_dump() if usage is not None and hasattr(usage, "model_dump") else None
-        return response.choices[0].message.content or ""
+        return raw_content

@@ -97,7 +97,8 @@ def analyse_story_candidates(candidates: list[Any], context: dict[str, Any]) -> 
     elif len(texts) < 2: classification = 'INSUFFICIENT_EVIDENCE'; summary = 'Only one valid story candidate was returned.'
     elif all(p.get('eventSequenceMatch') and len(p['sharedDimensions']) >= 2 for p in pairs): classification = 'NEAR_DUPLICATE'; summary = 'Candidates share the same normalized mechanism and causal event progression; wording differences do not establish distinct stories.'
     elif all(len(p['differentDimensions']) >= 3 for p in pairs): classification = 'DISTINCT'; summary = 'Candidates differ across multiple material narrative dimensions.'
-    else: classification = 'PARTIALLY_DISTINCT'; summary = 'Candidates share core structure but differ in some material dimensions.'
+    elif any(len(p['differentDimensions']) > 0 for p in pairs): classification = 'PARTIALLY_DISTINCT'; summary = 'Candidates share core structure but differ in some material dimensions.'
+    else: classification = 'INSUFFICIENT_EVIDENCE'; summary = 'No supported material differences or equivalences can be established from the available evidence.'
     differences = [f"Alternative {p['left']} vs {p['right']}: different {', '.join(p['differentDimensions']) or 'no supported dimensions'}; shared {', '.join(p['sharedDimensions']) or 'no extracted dimensions'}." for p in pairs]
     variation_class = {'DISTINCT': 'MATERIAL_VARIATION', 'PARTIALLY_DISTINCT': 'LIMITED_VARIATION', 'NEAR_DUPLICATE': 'PARAPHRASE_OR_NEAR_DUPLICATE', 'INSUFFICIENT_EVIDENCE': 'INSUFFICIENT_EVIDENCE'}[classification]
     return {'method': 'story-structure-v1', 'classification': classification, 'variationClass': variation_class, 'classificationReason': summary, 'summary': summary, 'pairs': pairs, 'differences': differences, 'candidates': [{'structuralEvidence': {k: v for k, v in e.items() if not k.startswith('_')}, 'preflight': pf} for e, pf in zip(evidence, preflight)]}
