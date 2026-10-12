@@ -7,7 +7,7 @@ import { Router, RouterLink } from '@angular/router';
 type Stage = 'IDEA' | 'STORY' | 'PROMPT' | 'PRODUCTION_REVIEW' | 'ANALYSIS' | 'REPAIR' | 'RENDER' | 'VIDEO_QA';
 type InputMode = 'IDEA' | 'DETAILED_STORY' | 'EXISTING_PROMPT';
 type Journey = 'RESUME' | 'SAVED' | 'NEW';
-interface StoryCandidate { candidateId: string; title: string; text: string; structuralEvidence?: any; preflight?: any; }
+interface StoryCandidate { candidateId: string; title: string; text: string; structuralEvidence?: any; preflight?: any; assessment?: any; }
 interface CharacterOption { id: string; name: string; raw?: any; }
 interface WorkspaceOption { folderPath: string; creativeName: string; }
 interface SavedStoryRecord { recordId: string; createdAt?: string; updatedAt?: string; idea?: string; title?: string; result: any; sourceType?: string; revisionId?: string; sourceRecordId?: string; candidateCount?: number; workspacePath?: string; contentId?: string; sourceContext?: any; lifecycleStatus?: string; }

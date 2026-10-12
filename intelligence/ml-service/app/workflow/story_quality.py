@@ -2,11 +2,16 @@
 
 This module never calls a provider and never grants render authorization. It deliberately
 returns ``None`` for unsupported fields instead of inventing story facts.
+
+Story-stage assessment is preliminary and never authorizes rendering.
+Step 5 remains the canonical full production-quality evaluation stage.
 """
 from __future__ import annotations
 import difflib
 import re
 from typing import Any
+
+from .story_evidence import extract_story_evidence
 
 _WORDS = re.compile(r"[\w']+", re.UNICODE)
 _RULE_TERMS = {
@@ -75,30 +80,382 @@ def _preflight(text: str, signature: dict[str, Any], context: dict[str, Any]) ->
     if 'contact continuity' in signature['productionSensitiveElements']: risks.append('Repeated attachment/contact needs clear continuity evidence.')
     return {'opening': 'SUPPORTED' if signature['openingVisualPromise'] else 'INSUFFICIENT_EVIDENCE', 'progression': 'SUPPORTED' if not any('progression' in c for c in concerns) else 'INSUFFICIENT_EVIDENCE', 'mechanism': 'NEEDS_CLARIFICATION' if any('second rule' in c for c in concerns) else ('SUPPORTED' if signature['_rules'] else 'INSUFFICIENT_EVIDENCE'), 'characterAgency': 'SUPPORTED' if any(w in lower for w in ('tries', 'pulls', 'shakes', 'runs', 'hides', 'opens')) else 'INSUFFICIENT_EVIDENCE', 'ending': signature['endingFunction'] or 'INSUFFICIENT_EVIDENCE', 'strengths': strengths, 'concerns': concerns, 'productionRisks': risks}
 
+def evaluate_story_candidate(text: str, context: dict[str, Any], candidate_id: str) -> dict[str, Any]:
+    """Evaluate a single story candidate and produce strengths, risks, and unknowns.
+
+    This is a preliminary story-stage assessment. It never authorizes rendering
+    and never claims visual evidence from text alone.
+
+    Returns a dict with:
+    - candidateId, fingerprint
+    - strengths: evidence-backed positive observations
+    - risks: evidence-backed weaknesses or concerns
+    - unknown: dimensions that cannot be determined from text alone
+    """
+    ev = extract_story_evidence(text, context)
+    strengths: list[dict[str, Any]] = []
+    risks: list[dict[str, Any]] = []
+    unknown: list[dict[str, Any]] = []
+
+    # ── Character goal ──
+    if ev['characterGoal']:
+        strengths.append({
+            'dimension': 'characterGoal',
+            'family': 'concept_strength',
+            'outcome': 'PASS',
+            'severity': 'INFO',
+            'message': 'The story describes a character situation or goal.',
+            'evidence': ev['characterGoal'][:150],
+        })
+    else:
+        unknown.append({
+            'dimension': 'characterGoal',
+            'family': 'concept_strength',
+            'outcome': 'UNKNOWN',
+            'message': 'Character goal or situation cannot be confidently extracted from the text.',
+        })
+
+    # ── Obstacle ──
+    if ev['obstacle']:
+        strengths.append({
+            'dimension': 'obstacle',
+            'family': 'concept_strength',
+            'outcome': 'PASS',
+            'severity': 'INFO',
+            'message': 'The story describes an obstacle or challenge.',
+            'evidence': ev['obstacle'][:150],
+        })
+    else:
+        unknown.append({
+            'dimension': 'obstacle',
+            'family': 'concept_strength',
+            'outcome': 'UNKNOWN',
+            'message': 'Obstacle or challenge cannot be confidently identified from the text.',
+        })
+
+    # ── Character initiative ──
+    if len(ev['distinctActions']) >= 2:
+        strengths.append({
+            'dimension': 'characterInitiative',
+            'family': 'concept_strength',
+            'outcome': 'PASS',
+            'severity': 'INFO',
+            'message': f'The character takes {len(ev["distinctActions"])} distinct actions.',
+            'evidence': ', '.join(ev['distinctActions'][:5]),
+        })
+    elif len(ev['distinctActions']) == 1:
+        risks.append({
+            'dimension': 'characterInitiative',
+            'family': 'concept_strength',
+            'outcome': 'WARNING',
+            'severity': 'WARNING',
+            'message': 'The character appears to take only one type of action.',
+            'evidence': ev['distinctActions'][0] if ev['distinctActions'] else '',
+        })
+    else:
+        unknown.append({
+            'dimension': 'characterInitiative',
+            'family': 'concept_strength',
+            'outcome': 'UNKNOWN',
+            'message': 'Character actions cannot be confidently extracted from the text.',
+        })
+
+    # ── Progression ──
+    if ev['progressionSignal']:
+        strengths.append({
+            'dimension': 'progression',
+            'family': 'progression',
+            'outcome': 'PASS',
+            'severity': 'INFO',
+            'message': 'The story contains cause-and-effect progression signals.',
+        })
+    else:
+        unknown.append({
+            'dimension': 'progression',
+            'family': 'progression',
+            'outcome': 'UNKNOWN',
+            'message': 'Meaningful progression cannot be confirmed from text alone; motion alone is not counted.',
+        })
+
+    # ── Escalation ──
+    if ev['escalationSignal']:
+        strengths.append({
+            'dimension': 'escalation',
+            'family': 'escalation',
+            'outcome': 'PASS',
+            'severity': 'INFO',
+            'message': 'The story contains escalation signals (increasing intensity or complexity).',
+        })
+    else:
+        unknown.append({
+            'dimension': 'escalation',
+            'family': 'escalation',
+            'outcome': 'UNKNOWN',
+            'message': 'Escalation cannot be confirmed from text alone.',
+        })
+
+    # ── Distinct attempts ──
+    if len(ev['distinctActions']) >= 3:
+        strengths.append({
+            'dimension': 'distinctAttempts',
+            'family': 'progression',
+            'outcome': 'PASS',
+            'severity': 'INFO',
+            'message': f'The story contains {len(ev["distinctActions"])} distinct action types, suggesting multiple attempts or strategies.',
+        })
+    elif len(ev['distinctActions']) >= 2:
+        unknown.append({
+            'dimension': 'distinctAttempts',
+            'family': 'progression',
+            'outcome': 'UNKNOWN',
+            'message': f'The story contains {len(ev["distinctActions"])} action types; whether these represent distinct attempts is uncertain without production plan.',
+        })
+
+    # ── Ending ──
+    if ev['endingEvent']:
+        if ev['endingClarity'] == 'PRESENT':
+            strengths.append({
+                'dimension': 'endingEvent',
+                'family': 'final_payoff',
+                'outcome': 'PASS',
+                'severity': 'INFO',
+                'message': 'The story describes a final event.',
+                'evidence': ev['endingEvent'][:150],
+            })
+            unknown.append({
+                'dimension': 'endingPayoff',
+                'family': 'final_payoff',
+                'outcome': 'UNKNOWN',
+                'message': 'A final event is described, but its creative effectiveness or audience payoff cannot be determined from text alone.',
+            })
+        elif ev['endingClarity'] == 'AMBIGUOUS':
+            unknown.append({
+                'dimension': 'endingEvent',
+                'family': 'final_payoff',
+                'outcome': 'UNKNOWN',
+                'message': 'The story has a final sentence, but whether it constitutes a clear ending is ambiguous.',
+                'evidence': ev['endingEvent'][:150],
+            })
+    else:
+        unknown.append({
+            'dimension': 'endingEvent',
+            'family': 'final_payoff',
+            'outcome': 'UNKNOWN',
+            'message': 'Ending event cannot be confidently identified from the text.',
+        })
+
+    # ── Repetition risk ──
+    if ev['repetitionRisk']:
+        risks.append({
+            'dimension': 'repetitionRisk',
+            'family': 'visual_novelty',
+            'outcome': 'WARNING',
+            'severity': 'WARNING',
+            'message': 'The story repeats the same action without clearly new consequences. This may reduce visual novelty.',
+        })
+
+    # ── Rule consistency (limited) ──
+    if ev['ruleConsistency'].get('consistent'):
+        unknown.append({
+            'dimension': 'ruleConsistency',
+            'family': 'consistency',
+            'outcome': 'UNKNOWN',
+            'message': 'No obvious rule contradictions detected, but full consistency check requires production plan analysis.',
+        })
+
+    # ── Visual quality (always unknown at story stage) ──
+    unknown.append({
+        'dimension': 'visualLegibility',
+        'family': 'visual_novelty',
+        'outcome': 'NOT_EVALUATED',
+        'message': 'Frame-zero visual legibility and hook strength cannot be assessed from story text alone.',
+    })
+    unknown.append({
+        'dimension': 'aiProducibility',
+        'family': 'ai_producibility',
+        'outcome': 'NOT_EVALUATED',
+        'message': 'AI producibility requires a production prompt and cannot be assessed from story text alone.',
+    })
+    unknown.append({
+        'dimension': 'pacing',
+        'family': 'progression',
+        'outcome': 'NOT_EVALUATED',
+        'message': 'Pacing and beat timing cannot be assessed without a production plan.',
+    })
+
+    return {
+        'candidateId': candidate_id,
+        'fingerprint': ev['fingerprint'],
+        'strengths': strengths,
+        'risks': risks,
+        'unknown': unknown,
+        'evidence': ev,
+    }
+
+
 def analyse_story_candidates(candidates: list[Any], context: dict[str, Any]) -> dict[str, Any]:
     texts = [v if isinstance(v, str) else str(v.get('text') or v.get('description') or '') for v in candidates]
+    candidate_ids = []
+    for v in candidates:
+        if isinstance(v, dict):
+            candidate_ids.append(v.get('candidateId', f'candidate-{len(candidate_ids)+1}'))
+        else:
+            candidate_ids.append(f'candidate-{len(candidate_ids)+1}')
+
+    # Extract story evidence for each candidate
+    story_evidence = [extract_story_evidence(t, context) for t in texts]
+
+    # Build per-candidate assessments
+    assessments = [
+        evaluate_story_candidate(t, context, candidate_ids[i])
+        for i, t in enumerate(texts)
+    ]
+
+    # Legacy signature and preflight (preserved for backward compatibility)
     evidence = [_signature(t, context) for t in texts]
     preflight = [_preflight(t, evidence[i], context) for i, t in enumerate(texts)]
+
+    # Pairwise comparison using story evidence for material dimensions
     pairs: list[dict[str, Any]] = []
     for i in range(len(texts)):
         for j in range(i + 1, len(texts)):
             lexical = difflib.SequenceMatcher(None, texts[i].lower(), texts[j].lower()).ratio()
-            shared = [key for key in ('primaryRuleOrQuestion', 'mainObjectOrSituation', 'endingFunction') if evidence[i].get(key) and evidence[i].get(key) == evidence[j].get(key)]
+
+            # Shared dimensions from legacy signature
+            shared = [key for key in ('primaryRuleOrQuestion', 'mainObjectOrSituation', 'endingFunction')
+                      if evidence[i].get(key) and evidence[i].get(key) == evidence[j].get(key)]
             if evidence[i].get('eventSequence') and evidence[i].get('eventSequence') == evidence[j].get('eventSequence'):
                 shared.append('causalEventProgression')
-            differing = [key for key in ('openingVisualPromise', 'characterGoal', 'majorStoryChanges', 'centralObstacle', 'escalation', 'endingFunction') if evidence[i].get(key) != evidence[j].get(key)]
-            # A sentence-level difference is evidence only when its normalized
-            # event sequence or mechanism also differs.
-            structural_difference = bool(set(evidence[i].get('eventSequence', [])) ^ set(evidence[j].get('eventSequence', [])))
+
+            # Material different dimensions from story evidence
+            ev_i = story_evidence[i]
+            ev_j = story_evidence[j]
+
+            differing: list[str] = []
+
+            # Compare event sequences (structural difference)
+            # eventSequence is list of lists (actions per sentence), so flatten to tuples for set ops
+            seq_i = [tuple(s) for s in ev_i.get('eventSequence', [])]
+            seq_j = [tuple(s) for s in ev_j.get('eventSequence', [])]
+            structural_difference = bool(set(seq_i) ^ set(seq_j))
+
+            # Compare distinct actions
+            actions_i = set(ev_i.get('distinctActions', []))
+            actions_j = set(ev_j.get('distinctActions', []))
+            if actions_i != actions_j and len(actions_i ^ actions_j) >= 2:
+                differing.append('characterActions')
+
+            # Compare escalation
+            if ev_i.get('escalationSignal') != ev_j.get('escalationSignal'):
+                differing.append('escalation')
+
+            # Compare ending clarity
+            if ev_i.get('endingClarity') != ev_j.get('endingClarity'):
+                differing.append('endingClarity')
+
+            # Compare ending events (textual difference in final event)
+            end_i = ev_i.get('endingEvent')
+            end_j = ev_j.get('endingEvent')
+            if end_i and end_j and end_i != end_j:
+                differing_lexical = difflib.SequenceMatcher(None, end_i.lower(), end_j.lower()).ratio()
+                if differing_lexical < 0.7:
+                    differing.append('endingEvent')
+
+            # Compare progression signals
+            if ev_i.get('progressionSignal') != ev_j.get('progressionSignal'):
+                differing.append('progression')
+
+            # Compare repetition risk
+            if ev_i.get('repetitionRisk') != ev_j.get('repetitionRisk'):
+                differing.append('repetitionRisk')
+
+            # Legacy differing dimensions (only if structural difference supports them)
+            legacy_differing = [key for key in ('openingVisualPromise', 'characterGoal', 'majorStoryChanges',
+                                                  'centralObstacle', 'escalation', 'endingFunction')
+                                if evidence[i].get(key) != evidence[j].get(key)]
             if not structural_difference:
-                differing = [key for key in differing if key in ('endingFunction',) and evidence[i].get(key) != evidence[j].get(key)]
-            pairs.append({'left': i + 1, 'right': j + 1, 'lexicalSimilarity': round(lexical, 3), 'sharedDimensions': list(dict.fromkeys(shared)), 'differentDimensions': differing, 'eventSequenceMatch': not structural_difference})
-    if not texts: classification = 'INSUFFICIENT_EVIDENCE'; summary = 'No valid story candidates were returned.'
-    elif len(texts) < 2: classification = 'INSUFFICIENT_EVIDENCE'; summary = 'Only one valid story candidate was returned.'
-    elif all(p.get('eventSequenceMatch') and len(p['sharedDimensions']) >= 2 for p in pairs): classification = 'NEAR_DUPLICATE'; summary = 'Candidates share the same normalized mechanism and causal event progression; wording differences do not establish distinct stories.'
-    elif all(len(p['differentDimensions']) >= 3 for p in pairs): classification = 'DISTINCT'; summary = 'Candidates differ across multiple material narrative dimensions.'
-    elif any(len(p['differentDimensions']) > 0 for p in pairs): classification = 'PARTIALLY_DISTINCT'; summary = 'Candidates share core structure but differ in some material dimensions.'
-    else: classification = 'INSUFFICIENT_EVIDENCE'; summary = 'No supported material differences or equivalences can be established from the available evidence.'
-    differences = [f"Alternative {p['left']} vs {p['right']}: different {', '.join(p['differentDimensions']) or 'no supported dimensions'}; shared {', '.join(p['sharedDimensions']) or 'no extracted dimensions'}." for p in pairs]
-    variation_class = {'DISTINCT': 'MATERIAL_VARIATION', 'PARTIALLY_DISTINCT': 'LIMITED_VARIATION', 'NEAR_DUPLICATE': 'PARAPHRASE_OR_NEAR_DUPLICATE', 'INSUFFICIENT_EVIDENCE': 'INSUFFICIENT_EVIDENCE'}[classification]
-    return {'method': 'story-structure-v1', 'classification': classification, 'variationClass': variation_class, 'classificationReason': summary, 'summary': summary, 'pairs': pairs, 'differences': differences, 'candidates': [{'structuralEvidence': {k: v for k, v in e.items() if not k.startswith('_')}, 'preflight': pf} for e, pf in zip(evidence, preflight)]}
+                legacy_differing = [key for key in legacy_differing if key in ('endingFunction',)
+                                     and evidence[i].get(key) != evidence[j].get(key)]
+
+            # Merge legacy and story-evidence differing dimensions
+            all_differing = list(dict.fromkeys(differing + legacy_differing))
+
+            pairs.append({
+                'left': i + 1,
+                'right': j + 1,
+                'lexicalSimilarity': round(lexical, 3),
+                'sharedDimensions': list(dict.fromkeys(shared)),
+                'differentDimensions': all_differing,
+                'eventSequenceMatch': not structural_difference,
+            })
+
+    # Aggregate classification
+    if not texts:
+        classification = 'INSUFFICIENT_EVIDENCE'
+        summary = 'No valid story candidates were returned.'
+    elif len(texts) < 2:
+        classification = 'INSUFFICIENT_EVIDENCE'
+        summary = 'Only one valid story candidate was returned.'
+    elif all(p.get('eventSequenceMatch') and len(p['sharedDimensions']) >= 2 for p in pairs):
+        classification = 'NEAR_DUPLICATE'
+        summary = 'Candidates share the same normalized mechanism and causal event progression; wording differences do not establish distinct stories.'
+    elif all(p.get('lexicalSimilarity', 0) > 0.6 and p.get('eventSequenceMatch') for p in pairs):
+        # High lexical similarity + same event structure = near-duplicate despite different words
+        classification = 'NEAR_DUPLICATE'
+        summary = 'Candidates share the same normalized mechanism and causal event progression; wording differences do not establish distinct stories.'
+    elif all(len(p['differentDimensions']) >= 3 for p in pairs):
+        # Check if differences are only surface-level (synonym swaps)
+        all_surface_diffs = all(
+            set(p.get('differentDimensions', [])) <= {'characterActions', 'endingEvent', 'openingVisualPromise'}
+            for p in pairs
+        )
+        if all_surface_diffs:
+            classification = 'PARTIALLY_DISTINCT'
+            summary = 'Candidates differ mainly in wording and surface-level action vocabulary; narrative structure is similar.'
+        else:
+            classification = 'DISTINCT'
+            summary = 'Candidates differ across multiple material narrative dimensions.'
+    elif all(len(p['differentDimensions']) >= 3 for p in pairs):
+        classification = 'DISTINCT'
+        summary = 'Candidates differ across multiple material narrative dimensions.'
+    elif any(len(p['differentDimensions']) > 0 for p in pairs):
+        classification = 'PARTIALLY_DISTINCT'
+        summary = 'Candidates share core structure but differ in some material dimensions.'
+    else:
+        classification = 'INSUFFICIENT_EVIDENCE'
+        summary = 'No supported material differences or equivalences can be established from the available evidence.'
+
+    differences = [
+        f"Alternative {p['left']} vs {p['right']}: different {', '.join(p['differentDimensions']) or 'no supported dimensions'}; shared {', '.join(p['sharedDimensions']) or 'no extracted dimensions'}."
+        for p in pairs
+    ]
+    variation_class = {
+        'DISTINCT': 'MATERIAL_VARIATION',
+        'PARTIALLY_DISTINCT': 'LIMITED_VARIATION',
+        'NEAR_DUPLICATE': 'PARAPHRASE_OR_NEAR_DUPLICATE',
+        'INSUFFICIENT_EVIDENCE': 'INSUFFICIENT_EVIDENCE',
+    }[classification]
+
+    return {
+        'method': 'story-structure-v1',
+        'classification': classification,
+        'variationClass': variation_class,
+        'classificationReason': summary,
+        'summary': summary,
+        'pairs': pairs,
+        'differences': differences,
+        'candidates': [
+            {
+                'structuralEvidence': {k: v for k, v in e.items() if not k.startswith('_')},
+                'preflight': pf,
+                'assessment': {
+                    'candidateId': a['candidateId'],
+                    'fingerprint': a['fingerprint'],
+                    'strengths': a['strengths'],
+                    'risks': a['risks'],
+                    'unknown': a['unknown'],
+                },
+            }
+            for e, pf, a in zip(evidence, preflight, assessments)
+        ],
+    }
