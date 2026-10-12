@@ -1,0 +1,58 @@
+
+> frontend@0.0.0 build
+> ng build
+
+❯ Building...
+✔ Building...
+Initial chunk files | Names                         |  Raw size | Estimated transfer size
+styles-74PIG2MI.css | styles                        | 204.48 kB |                28.80 kB
+chunk-EV556SJI.js   | -                             | 183.30 kB |                53.31 kB
+chunk-E6NKLTEV.js   | -                             |  95.62 kB |                24.08 kB
+chunk-IUG2ESWL.js   | -                             |  24.60 kB |                 7.34 kB
+main-ERQQ5E3I.js    | main                          |   8.31 kB |                 2.32 kB
+chunk-3RHWOS5U.js   | -                             | 705 bytes |               705 bytes
+
+                    | Initial total                 | 517.02 kB |               116.56 kB
+
+Lazy chunk files    | Names                         |  Raw size | Estimated transfer size
+chunk-6OJFWOB7.js   | editor-api                    |   2.28 MB |               470.00 kB
+chunk-N6OUYKTS.js   | quality-validator-component   | 262.82 kB |                51.88 kB
+chunk-GVKFVURI.js   | creative-studio-page          | 236.19 kB |                42.66 kB
+chunk-RDRASM3W.js   | video-detail-page             | 102.30 kB |                23.29 kB
+chunk-5VGUTIBX.js   | render-preparation-page       |  81.13 kB |                17.04 kB
+chunk-J55MCTV6.css  | -                             |  68.26 kB |                 9.89 kB
+main-QCIVHFPX.css   | -                             |  68.26 kB |                 9.89 kB
+chunk-6X5UIBTH.js   | render-dashboard-page         |  49.69 kB |                10.08 kB
+chunk-JWGJZOJ5.js   | -                             |  39.04 kB |                 8.16 kB
+chunk-LC2GBJ4U.js   | -                             |  23.86 kB |                 6.63 kB
+chunk-O5VFCAVK.js   | operations-page               |  22.36 kB |                 5.39 kB
+chunk-DYRL43OY.js   | rule-governance-page          |  15.64 kB |                 3.74 kB
+chunk-EURCV4SA.js   | import-data-page              |  15.59 kB |                 4.54 kB
+chunk-2TXV7TKM.js   | video-analysis-workbench-page |  14.55 kB |                 4.08 kB
+chunk-J732DL4B.js   | prompt-workspace-page         |  13.76 kB |                 3.67 kB
+...and 17 more lazy chunks files. Use "--verbose" to show all the files.
+
+Application bundle generation complete. [17.279 seconds] - 2026-10-12T15:01:59.185Z
+
+▲ [WARNING] NG8113: TimelineChartComponent is not used within the template of QualityValidatorComponent [plugin angular-compiler]
+
+    src/app/pages/quality-validator/quality-validator.component.ts:202:39:
+      202 │ ...odule, FormsModule, TimelineChartComponent, RouterLink, Genera...
+          ╵                        ~~~~~~~~~~~~~~~~~~~~~~
+
+
+▲ [WARNING] NG8113: GeneralProducibilityComponent is not used within the template of QualityValidatorComponent [plugin angular-compiler]
+
+    src/app/pages/quality-validator/quality-validator.component.ts:202:75:
+      202 │ ...ent, RouterLink, GeneralProducibilityComponent, PostFamilyWork...
+          ╵                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+▲ [WARNING] bundle initial exceeded maximum budget. Budget 500.00 kB was not met by 17.02 kB with a total of 517.02 kB.
+
+
+▲ [WARNING] angular:styles/component:scss;5e2b6bd86f338fe4d4673d4b43bd5ebcbd36763b3ab09971bb5a06c82425d9b0;/Users/benanaktas/project/video/content-intelligence-platform/intelligence/frontend/src/app/pages/creative-studio.page.ts exceeded maximum budget. Budget 26.00 kB was not met by 6.78 kB with a total of 32.78 kB.
+
+
+Output location: /Users/benanaktas/project/video/content-intelligence-platform/intelligence/frontend/dist/frontend
+

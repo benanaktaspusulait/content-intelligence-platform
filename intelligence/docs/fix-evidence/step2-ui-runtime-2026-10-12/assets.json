@@ -1,0 +1,476 @@
+{
+  "before": {
+    "assets": [
+      {
+        "id": "1ec5cd863ba7b9d3",
+        "kind": "script",
+        "name": "chunk-E6NKLTEV.js",
+        "sources": [
+          {
+            "kind": "resource",
+            "property": "other"
+          }
+        ],
+        "url": "http://localhost:4200/chunk-E6NKLTEV.js"
+      },
+      {
+        "id": "210e757762083a89",
+        "kind": "script",
+        "name": "chunk-3RHWOS5U.js",
+        "sources": [
+          {
+            "kind": "resource",
+            "property": "other"
+          }
+        ],
+        "url": "http://localhost:4200/chunk-3RHWOS5U.js"
+      },
+      {
+        "id": "4f7ca1020799a4e4",
+        "kind": "script",
+        "name": "main-5FHXSBI3.js",
+        "sources": [
+          {
+            "kind": "resource",
+            "property": "script"
+          }
+        ],
+        "url": "http://localhost:4200/main-5FHXSBI3.js"
+      },
+      {
+        "id": "50cfc0c5a62ef497",
+        "kind": "script",
+        "name": "chunk-IUG2ESWL.js",
+        "sources": [
+          {
+            "kind": "resource",
+            "property": "other"
+          }
+        ],
+        "url": "http://localhost:4200/chunk-IUG2ESWL.js"
+      },
+      {
+        "id": "d92dd94583f0fe7c",
+        "kind": "script",
+        "name": "chunk-EV556SJI.js",
+        "sources": [
+          {
+            "kind": "resource",
+            "property": "other"
+          }
+        ],
+        "url": "http://localhost:4200/chunk-EV556SJI.js"
+      },
+      {
+        "id": "a8ba0185c531db59",
+        "kind": "stylesheet",
+        "name": "styles-74PIG2MI.css",
+        "sources": [
+          {
+            "kind": "resource",
+            "property": "link"
+          }
+        ],
+        "url": "http://localhost:4200/styles-74PIG2MI.css"
+      },
+      {
+        "id": "530505c51db9c43a",
+        "kind": "image",
+        "name": "pompom-loop-emblem.png",
+        "sources": [
+          {
+            "kind": "resource",
+            "property": "img"
+          },
+          {
+            "kind": "resource",
+            "property": "other"
+          }
+        ],
+        "url": "http://localhost:4200/pompom-loop-emblem.png"
+      },
+      {
+        "id": "275c216434f05677",
+        "kind": "script",
+        "name": "chunk-3BS3UOGM.js",
+        "sources": [
+          {
+            "kind": "resource",
+            "property": "script"
+          }
+        ],
+        "url": "http://localhost:4200/chunk-3BS3UOGM.js"
+      },
+      {
+        "id": "12d896ac38717e88",
+        "kind": "script",
+        "name": "chunk-JWGJZOJ5.js",
+        "sources": [
+          {
+            "kind": "resource",
+            "property": "script"
+          }
+        ],
+        "url": "http://localhost:4200/chunk-JWGJZOJ5.js"
+      },
+      {
+        "id": "476f9ae1d3ce222e",
+        "kind": "other",
+        "name": "characters",
+        "sources": [
+          {
+            "kind": "resource",
+            "property": "xmlhttprequest"
+          }
+        ],
+        "url": "http://localhost:4200/api/v1/characters"
+      },
+      {
+        "id": "fc629c796e5b7a14",
+        "kind": "other",
+        "name": "destinations",
+        "sources": [
+          {
+            "kind": "resource",
+            "property": "xmlhttprequest"
+          }
+        ],
+        "url": "http://localhost:4200/api/v1/videos/prompt-workspaces/destinations"
+      },
+      {
+        "id": "e426386cb9c7b0a6",
+        "kind": "other",
+        "name": "records",
+        "sources": [
+          {
+            "kind": "resource",
+            "property": "xmlhttprequest"
+          }
+        ],
+        "url": "http://localhost:4200/api/v1/intelligence/workflow/records?kind=CREATIVE_ROLE"
+      },
+      {
+        "id": "9274f13bf2119c01",
+        "kind": "other",
+        "name": "records",
+        "sources": [
+          {
+            "kind": "resource",
+            "property": "xmlhttprequest"
+          }
+        ],
+        "url": "http://localhost:4200/api/v1/intelligence/workflow/records?kind=STORY_APPROVAL"
+      },
+      {
+        "id": "f81ed678d88f8f12",
+        "kind": "other",
+        "name": "records",
+        "sources": [
+          {
+            "kind": "resource",
+            "property": "xmlhttprequest"
+          }
+        ],
+        "url": "http://localhost:4200/api/v1/intelligence/workflow/records?kind=CREATIVE_STUDIO_SESSION"
+      },
+      {
+        "id": "6428a1875a7be75b",
+        "kind": "other",
+        "name": "idea-drafts",
+        "sources": [
+          {
+            "kind": "resource",
+            "property": "xmlhttprequest"
+          }
+        ],
+        "url": "http://localhost:4200/api/v1/intelligence/workflow/idea-drafts"
+      },
+      {
+        "id": "63099f98da1d55cf",
+        "kind": "other",
+        "name": "0884728f-202d-455c-8c9b-2d04e0a54101",
+        "sources": [
+          {
+            "kind": "resource",
+            "property": "xmlhttprequest"
+          }
+        ],
+        "url": "http://localhost:4200/api/v1/intelligence/workflow/studio-sessions/0884728f-202d-455c-8c9b-2d04e0a54101"
+      },
+      {
+        "id": "580e8db44cf469c4",
+        "kind": "other",
+        "name": "readiness",
+        "sources": [
+          {
+            "kind": "resource",
+            "property": "xmlhttprequest"
+          }
+        ],
+        "url": "http://localhost:4200/api/v1/intelligence/workflow/creative-role/readiness"
+      }
+    ],
+    "id": "6deee5dc-c5b2-4dfa-be19-20d6dad7778b",
+    "inlineSvgs": [],
+    "pageUrl": "http://localhost:4200/quality/new",
+    "summary": {
+      "byKind": {
+        "font": 0,
+        "image": 1,
+        "other": 8,
+        "script": 7,
+        "stylesheet": 1,
+        "video": 0
+      },
+      "inlineSvgCount": 0,
+      "totalCount": 17
+    }
+  },
+  "after": {
+    "assets": [
+      {
+        "id": "1ec5cd863ba7b9d3",
+        "kind": "script",
+        "name": "chunk-E6NKLTEV.js",
+        "sources": [
+          {
+            "kind": "resource",
+            "property": "other"
+          }
+        ],
+        "url": "http://localhost:4200/chunk-E6NKLTEV.js"
+      },
+      {
+        "id": "50cfc0c5a62ef497",
+        "kind": "script",
+        "name": "chunk-IUG2ESWL.js",
+        "sources": [
+          {
+            "kind": "resource",
+            "property": "other"
+          }
+        ],
+        "url": "http://localhost:4200/chunk-IUG2ESWL.js"
+      },
+      {
+        "id": "210e757762083a89",
+        "kind": "script",
+        "name": "chunk-3RHWOS5U.js",
+        "sources": [
+          {
+            "kind": "resource",
+            "property": "other"
+          }
+        ],
+        "url": "http://localhost:4200/chunk-3RHWOS5U.js"
+      },
+      {
+        "id": "adea4a0ea5a60071",
+        "kind": "script",
+        "name": "main-ERQQ5E3I.js",
+        "sources": [
+          {
+            "kind": "resource",
+            "property": "script"
+          }
+        ],
+        "url": "http://localhost:4200/main-ERQQ5E3I.js"
+      },
+      {
+        "id": "d92dd94583f0fe7c",
+        "kind": "script",
+        "name": "chunk-EV556SJI.js",
+        "sources": [
+          {
+            "kind": "resource",
+            "property": "other"
+          }
+        ],
+        "url": "http://localhost:4200/chunk-EV556SJI.js"
+      },
+      {
+        "id": "a8ba0185c531db59",
+        "kind": "stylesheet",
+        "name": "styles-74PIG2MI.css",
+        "sources": [
+          {
+            "kind": "resource",
+            "property": "link"
+          }
+        ],
+        "url": "http://localhost:4200/styles-74PIG2MI.css"
+      },
+      {
+        "id": "530505c51db9c43a",
+        "kind": "image",
+        "name": "pompom-loop-emblem.png",
+        "sources": [
+          {
+            "kind": "resource",
+            "property": "img"
+          },
+          {
+            "kind": "resource",
+            "property": "other"
+          },
+          {
+            "kind": "resource",
+            "property": "other"
+          }
+        ],
+        "url": "http://localhost:4200/pompom-loop-emblem.png"
+      },
+      {
+        "id": "29b94d9802f5566a",
+        "kind": "script",
+        "name": "chunk-GVKFVURI.js",
+        "sources": [
+          {
+            "kind": "resource",
+            "property": "script"
+          }
+        ],
+        "url": "http://localhost:4200/chunk-GVKFVURI.js"
+      },
+      {
+        "id": "12d896ac38717e88",
+        "kind": "script",
+        "name": "chunk-JWGJZOJ5.js",
+        "sources": [
+          {
+            "kind": "resource",
+            "property": "script"
+          }
+        ],
+        "url": "http://localhost:4200/chunk-JWGJZOJ5.js"
+      },
+      {
+        "id": "476f9ae1d3ce222e",
+        "kind": "other",
+        "name": "characters",
+        "sources": [
+          {
+            "kind": "resource",
+            "property": "xmlhttprequest"
+          }
+        ],
+        "url": "http://localhost:4200/api/v1/characters"
+      },
+      {
+        "id": "e426386cb9c7b0a6",
+        "kind": "other",
+        "name": "records",
+        "sources": [
+          {
+            "kind": "resource",
+            "property": "xmlhttprequest"
+          }
+        ],
+        "url": "http://localhost:4200/api/v1/intelligence/workflow/records?kind=CREATIVE_ROLE"
+      },
+      {
+        "id": "fc629c796e5b7a14",
+        "kind": "other",
+        "name": "destinations",
+        "sources": [
+          {
+            "kind": "resource",
+            "property": "xmlhttprequest"
+          }
+        ],
+        "url": "http://localhost:4200/api/v1/videos/prompt-workspaces/destinations"
+      },
+      {
+        "id": "9274f13bf2119c01",
+        "kind": "other",
+        "name": "records",
+        "sources": [
+          {
+            "kind": "resource",
+            "property": "xmlhttprequest"
+          }
+        ],
+        "url": "http://localhost:4200/api/v1/intelligence/workflow/records?kind=STORY_APPROVAL"
+      },
+      {
+        "id": "f81ed678d88f8f12",
+        "kind": "other",
+        "name": "records",
+        "sources": [
+          {
+            "kind": "resource",
+            "property": "xmlhttprequest"
+          }
+        ],
+        "url": "http://localhost:4200/api/v1/intelligence/workflow/records?kind=CREATIVE_STUDIO_SESSION"
+      },
+      {
+        "id": "6428a1875a7be75b",
+        "kind": "other",
+        "name": "idea-drafts",
+        "sources": [
+          {
+            "kind": "resource",
+            "property": "xmlhttprequest"
+          }
+        ],
+        "url": "http://localhost:4200/api/v1/intelligence/workflow/idea-drafts"
+      },
+      {
+        "id": "580e8db44cf469c4",
+        "kind": "other",
+        "name": "readiness",
+        "sources": [
+          {
+            "kind": "resource",
+            "property": "xmlhttprequest"
+          }
+        ],
+        "url": "http://localhost:4200/api/v1/intelligence/workflow/creative-role/readiness"
+      },
+      {
+        "id": "8a050b72649685c5",
+        "kind": "other",
+        "name": "8eb602a1-4e31-41c3-934f-4a3d5e659eba",
+        "sources": [
+          {
+            "kind": "resource",
+            "property": "xmlhttprequest"
+          }
+        ],
+        "url": "http://localhost:4200/api/v1/intelligence/workflow/studio-sessions/8eb602a1-4e31-41c3-934f-4a3d5e659eba"
+      },
+      {
+        "id": "f462ccd37b1f6b55",
+        "kind": "image",
+        "name": "favicon.ico",
+        "sources": [
+          {
+            "kind": "resource",
+            "property": "other"
+          },
+          {
+            "kind": "resource",
+            "property": "other"
+          }
+        ],
+        "url": "http://localhost:4200/favicon.ico"
+      }
+    ],
+    "id": "ef8bc670-e323-4510-a180-17bebcca621a",
+    "inlineSvgs": [],
+    "pageUrl": "http://localhost:4200/quality/new",
+    "summary": {
+      "byKind": {
+        "font": 0,
+        "image": 2,
+        "other": 8,
+        "script": 7,
+        "stylesheet": 1,
+        "video": 0
+      },
+      "inlineSvgCount": 0,
+      "totalCount": 18
+    }
+  }
+}

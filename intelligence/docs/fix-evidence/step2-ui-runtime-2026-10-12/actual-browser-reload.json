@@ -1,0 +1,71 @@
+{
+  "approval": "Workflow Summary\nSelected Saved Story\nSaved state is reused without a provider call.\nNEXT ACTION\nReview Story\nVIDEO TITLE\nSticky Note Avalanche\nMAIN CHARACTER\nMimi\nPROFILE\nAuto · recommendation pending\nTARGET DURATION\n15s\nASPECT RATIO\n9:16\nPROJECT REVIEW\nDraft\nSTORY APPROVAL\nDRAFT\nPROMPT STATUS\nNOT STARTED\nPROVIDER\nConfigured · not verified\nShow source content\n\nStory approval, prompt acceptance and render authorisation are separate decisions.",
+  "cards": [
+    {
+      "risks": [
+        "The character appears to take only one type of action.",
+        "The story repeats the same action without clearly new consequences. This may reduce visual novelty."
+      ],
+      "selected": true,
+      "strengths": [
+        "The story describes a character situation or goal.",
+        "The story describes an obstacle or challenge.",
+        "The story contains cause-and-effect progression signals.",
+        "The story contains escalation signals (increasing intensity or complexity).",
+        "The story describes a final event."
+      ],
+      "text": "Sticky Note Avalanche\nSelected\n\nRefinement of the supplied story\n\nMimi, oyuncak dolabına 'Topla!' yazan bir yapışkan not yapıştırmak ister. Ancak not, elinden kayıp Mimi'nin alnına yapışır. Mimi notu çıkarmaya çalışırken, her dokunuşunda notlar çoğalır ve vücuduna yayılır. Kısa sürede Mimi baştan aşağı yapışkan notlarla kaplanır. Çaresizce sallanır, zıplar, ama notlar daha da sıkı yapışır. Sonunda, tüm notlar aynı anda dile gelip 'Topla!' diye bağırır. Mimi, oyuncaklarını toplamaya başlar; notlar tek tek kaybolur.\n\nOpening:\nSUPPORTED ·\nProgression:\nINSUFFICIENT_EVIDENCE ·\nConcern: Meaningful progression is not evidenced; motion alone is not counted.\nEnding: PRESENT · Unknown\nPRELIMINARY\nStory text only\nStrengths\nThe story describes a character situation or goal.\nThe story describes an obstacle or challenge.\nThe story contains cause-and-effect progression signals.\nThe story contains escalation signals (increasing intensity or complexity).\nThe story describes a final event.\nRisks\nThe character appears to take only one type of action.\nThe story repeats the same action without clearly new consequences. This may reduce visual novelty.\nUnknown\nA final event is described, but its creative effectiveness or audience payoff cannot be determined from text alone.\nNo obvious rule contradictions detected, but full consistency check requires production plan analysis.\nFrame-zero visual legibility and hook strength cannot be assessed from story text alone.\nAI producibility requires a production prompt and cannot be assessed from story text alone.\nPacing and beat timing cannot be assessed without a production plan.\nSelected\nEdit Story\nRefine This Story",
+      "unknown": [
+        "A final event is described, but its creative effectiveness or audience payoff cannot be determined from text alone.",
+        "No obvious rule contradictions detected, but full consistency check requires production plan analysis.",
+        "Frame-zero visual legibility and hook strength cannot be assessed from story text alone.",
+        "AI producibility requires a production prompt and cannot be assessed from story text alone.",
+        "Pacing and beat timing cannot be assessed without a production plan."
+      ]
+    },
+    {
+      "risks": [],
+      "selected": false,
+      "strengths": [
+        "The story describes a character situation or goal.",
+        "The story describes an obstacle or challenge.",
+        "The character takes 2 distinct actions.",
+        "The story contains cause-and-effect progression signals.",
+        "The story contains escalation signals (increasing intensity or complexity).",
+        "The story describes a final event."
+      ],
+      "text": "The Note That Wouldn't Stick\nSelect this story\n\nRefinement of the supplied story\n\nMimi, oyuncak dolabına 'Topla!' yazan bir yapışkan not yapıştırmak ister. Notu dolaba doğru uzatır, ama not havada asılı kalır ve Mimi'nin etrafında dönmeye başlar. Mimi notu yakalamaya çalışırken, not sürekli yer değiştirir ve sonunda Mimi'nin sırtına yapışır. Mimi ne yaparsa yapsın notu çıkaramaz. Not, Mimi'nin her hareketini taklit eden bir gölge gibi olur. Mimi durur, not da durur. Mimi eğilir, not da eğilir. Sonunda Mimi pes eder ve oyuncaklarını toplamaya başlar; not yavaşça kaybolur.\n\nOpening:\nSUPPORTED ·\nProgression:\nINSUFFICIENT_EVIDENCE ·\nConcern: Meaningful progression is not evidenced; motion alone is not counted.\nEnding: PRESENT · Unknown\nPRELIMINARY\nStory text only\nStrengths\nThe story describes a character situation or goal.\nThe story describes an obstacle or challenge.\nThe character takes 2 distinct actions.\nThe story contains cause-and-effect progression signals.\nThe story contains escalation signals (increasing intensity or complexity).\nThe story describes a final event.\nUnknown\nThe story contains 2 action types; whether these represent distinct attempts is uncertain without production plan.\nA final event is described, but its creative effectiveness or audience payoff cannot be determined from text alone.\nNo obvious rule contradictions detected, but full consistency check requires production plan analysis.\nFrame-zero visual legibility and hook strength cannot be assessed from story text alone.\nAI producibility requires a production prompt and cannot be assessed from story text alone.\nPacing and beat timing cannot be assessed without a production plan.\nSelect Story\nEdit Story\nRefine This Story",
+      "unknown": [
+        "The story contains 2 action types; whether these represent distinct attempts is uncertain without production plan.",
+        "A final event is described, but its creative effectiveness or audience payoff cannot be determined from text alone.",
+        "No obvious rule contradictions detected, but full consistency check requires production plan analysis.",
+        "Frame-zero visual legibility and hook strength cannot be assessed from story text alone.",
+        "AI producibility requires a production prompt and cannot be assessed from story text alone.",
+        "Pacing and beat timing cannot be assessed without a production plan."
+      ]
+    },
+    {
+      "risks": [
+        "The character appears to take only one type of action.",
+        "The story repeats the same action without clearly new consequences. This may reduce visual novelty."
+      ],
+      "selected": false,
+      "strengths": [
+        "The story describes a character situation or goal.",
+        "The story describes an obstacle or challenge.",
+        "The story contains cause-and-effect progression signals.",
+        "The story contains escalation signals (increasing intensity or complexity).",
+        "The story describes a final event."
+      ],
+      "text": "Note Rebellion\nSelect this story\n\nRefinement of the supplied story\n\nMimi, oyuncak dolabına 'Topla!' yazan bir yapışkan not yapıştırmak ister. Notu dolaba koyar, ama not hemen Mimi'nin eline yapışır. Mimi notu silkelemeye çalışır, fakat not daha da güçlü yapışır. Derken, odadaki diğer yapışkan notlar da canlanır ve Mimi'ye doğru uçmaya başlar. Mimi kaçmaya çalışır ama notlar onu kovalar. Sonunda Mimi'yi yakalarlar ve her yeri notlarla kaplanır. Notlar hep birlikte 'Topla!' diye bağırır. Mimi oyuncaklarını toplamaya başlar; notlar tek tek düşer.\n\nOpening:\nSUPPORTED ·\nProgression:\nINSUFFICIENT_EVIDENCE ·\nConcern: Meaningful progression is not evidenced; motion alone is not counted.\nEnding: PRESENT · Unknown\nPRELIMINARY\nStory text only\nStrengths\nThe story describes a character situation or goal.\nThe story describes an obstacle or challenge.\nThe story contains cause-and-effect progression signals.\nThe story contains escalation signals (increasing intensity or complexity).\nThe story describes a final event.\nRisks\nThe character appears to take only one type of action.\nThe story repeats the same action without clearly new consequences. This may reduce visual novelty.\nUnknown\nA final event is described, but its creative effectiveness or audience payoff cannot be determined from text alone.\nNo obvious rule contradictions detected, but full consistency check requires production plan analysis.\nFrame-zero visual legibility and hook strength cannot be assessed from story text alone.\nAI producibility requires a production prompt and cannot be assessed from story text alone.\nPacing and beat timing cannot be assessed without a production plan.\nSelect Story\nEdit Story\nRefine This Story",
+      "unknown": [
+        "A final event is described, but its creative effectiveness or audience payoff cannot be determined from text alone.",
+        "No obvious rule contradictions detected, but full consistency check requires production plan analysis.",
+        "Frame-zero visual legibility and hook strength cannot be assessed from story text alone.",
+        "AI producibility requires a production prompt and cannot be assessed from story text alone.",
+        "Pacing and beat timing cannot be assessed without a production plan."
+      ]
+    }
+  ],
+  "comparison": "How Are These Stories Different?\nPARTIALLY DISTINCT\n\nCandidates share core structure but differ in some material dimensions.\n\nAlternative 1 vs 2: different ending Event, repetition Risk; shared no extracted dimensions.\nAlternative 1 vs 3: different no supported dimensions; shared no extracted dimensions.\nAlternative 2 vs 3: different ending Event, repetition Risk; shared no extracted dimensions.\nTechnical evidence"
+}

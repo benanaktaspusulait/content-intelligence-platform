@@ -1,0 +1,278 @@
+- complementary:
+  - link "Pompom Creative Intelligence home":
+    - /url: /overview
+    - strong: Pompom
+    - generic: Creative Intelligence
+  - button "Collapse navigation":
+    - generic: «
+    - generic: Collapse
+  - generic: WORKSPACE
+  - navigation "Primary navigation":
+    - link "Overview":
+      - /url: /overview
+      - generic: OV
+      - generic: Overview
+    - link "Video Library":
+      - /url: /videos
+      - generic: VL
+      - generic: Video Library
+    - link "Characters":
+      - /url: /characters
+      - generic: CH
+      - generic: Characters
+    - link "Prompt Quality":
+      - /url: /quality
+      - generic: PQ
+      - generic: Prompt Quality
+    - link "New Video":
+      - /url: /quality/new
+      - generic: NV
+      - generic: New Video
+    - link "Rule Governance":
+      - /url: /rule-governance
+      - generic: RG
+      - generic: Rule Governance
+    - link "Experiments":
+      - /url: /experiments
+      - generic: EX
+      - generic: Experiments
+    - link "Test Planner":
+      - /url: /test-planner
+      - generic: TP
+      - generic: Test Planner
+    - link "Predictions":
+      - /url: /predictions
+      - generic: PR
+      - generic: Predictions
+    - link "Performance":
+      - /url: /performance
+      - generic: PF
+      - generic: Performance
+    - link "Import Data":
+      - /url: /import
+      - generic: IM
+      - generic: Import Data
+    - link "Model Reliability":
+      - /url: /reliability
+      - generic: MR
+      - generic: Model Reliability
+    - link "Reach Further":
+      - /url: /research
+      - generic: RF
+      - generic: Reach Further
+    - link "Meta Analytics":
+      - /url: /meta/connection
+      - generic: MA
+      - generic: Meta Analytics
+    - link "Model Versions":
+      - /url: /models
+      - generic: MV
+      - generic: Model Versions
+    - link "Render Jobs":
+      - /url: /render-jobs
+      - generic: RJ
+      - generic: Render Jobs
+    - link "Operations":
+      - /url: /operations
+      - generic: OP
+      - generic: Operations
+  - strong: Local workspace
+  - generic: Persisted evidence only
+- main:
+  - main "Create New Video":
+    - generic: CREATIVE PRODUCTION STUDIO
+    - heading "Create New Video" [level=1]
+    - paragraph: Turn an idea into a validated production prompt, step by step.
+    - button "I Have an Existing Prompt"
+    - navigation "Production stages":
+      - 'button "Idea: Complete"':
+        - generic: "1"
+        - strong: Idea
+        - generic: Complete
+      - 'button "Story: Current · Needs review"':
+        - generic: "2"
+        - strong: Story
+        - generic: Current · Needs review
+      - 'button "Prompt: Locked — Approve the exact saved story revision first." [disabled]':
+        - generic: "3"
+        - strong: Prompt
+        - generic: Locked
+      - 'button "Production Review: Locked — Save the production prompt version first." [disabled]':
+        - generic: "4"
+        - strong: Production Review
+        - generic: Locked
+      - 'button "Quality Analysis: Locked — Complete Production Review from the saved prompt workspace first." [disabled]':
+        - generic: "5"
+        - strong: Quality Analysis
+        - generic: Locked
+      - 'button "Repair: Locked — Complete Quality Analysis and persist its findings first." [disabled]':
+        - generic: "6"
+        - strong: Repair
+        - generic: Locked
+      - 'button "Render Preparation: Locked — Complete analysis and any required repair evidence first." [disabled]':
+        - generic: "7"
+        - strong: Render Preparation
+        - generic: Locked
+      - 'button "Video QA: Locked — A rendered video and its persisted evidence are required first." [disabled]':
+        - generic: "8"
+        - strong: Video QA
+        - generic: Locked
+    - text: 2 · STORY
+    - heading "Review story refinements" [level=2]
+    - paragraph: These are refinements of your detailed story. Locked events and the ending remain visible.
+    - strong: OpenAI Story Review
+    - generic: Optional independent comparison; it does not approve or authorize rendering.
+    - text: Cost ceiling (USD)
+    - spinbutton "Cost ceiling (USD)": "0.01"
+    - checkbox "I authorise one OpenAI story review."
+    - text: I authorise one OpenAI story review.
+    - button "Review Stories with OpenAI" [disabled]
+    - generic: gpt-4o-mini-2024-07-18 · 3 stories · NOT REVIEWED
+    - strong: How Are These Stories Different?
+    - generic: PARTIALLY DISTINCT
+    - paragraph: Candidates share core structure but differ in some material dimensions.
+    - list:
+      - listitem: "Alternative 1 vs 2: different ending Event, repetition Risk; shared no extracted dimensions."
+      - listitem: "Alternative 1 vs 3: different no supported dimensions; shared no extracted dimensions."
+      - listitem: "Alternative 2 vs 3: different ending Event, repetition Risk; shared no extracted dimensions."
+    - generic "Technical evidence"
+    - article:
+      - generic: Original Story · No AI changes
+      - button "Select original"
+      - paragraph: Immutable source evidence for Improve My Existing Story.
+      - paragraph: Mimi, oyuncak dolabına “Topla!” yazan bir yapışkan not yapıştırmak ister. Ancak yapışkan notlar duvara değil, Mimi’ye yapışır. Mimi notlardan kurtulmaya çalıştıkça aynı tuhaf durum devam eder.
+      - button "Select Original Story"
+    - article:
+      - generic: Sticky Note Avalanche
+      - button "Selected"
+      - paragraph: Refinement of the supplied story
+      - paragraph: Mimi, oyuncak dolabına 'Topla!' yazan bir yapışkan not yapıştırmak ister. Ancak not, elinden kayıp Mimi'nin alnına yapışır. Mimi notu çıkarmaya çalışırken, her dokunuşunda notlar çoğalır ve vücuduna yayılır. Kısa sürede Mimi baştan aşağı yapışkan notlarla kaplanır. Çaresizce sallanır, zıplar, ama notlar daha da sıkı yapışır. Sonunda, tüm notlar aynı anda dile gelip 'Topla!' diye bağırır. Mimi, oyuncaklarını toplamaya başlar; notlar tek tek kaybolur.
+      - strong: "Opening:"
+      - text: SUPPORTED ·
+      - strong: "Progression:"
+      - text: INSUFFICIENT_EVIDENCE ·
+      - generic: "Concern: Meaningful progression is not evidenced; motion alone is not counted."
+      - strong: "Ending:"
+      - text: PRESENT · Unknown
+      - generic: PRELIMINARY
+      - text: Story text only
+      - generic: Strengths
+      - list:
+        - listitem: The story describes a character situation or goal.
+        - listitem: The story describes an obstacle or challenge.
+        - listitem: The story contains cause-and-effect progression signals.
+        - listitem: The story contains escalation signals (increasing intensity or complexity).
+        - listitem: The story describes a final event.
+      - generic: Risks
+      - list:
+        - listitem: The character appears to take only one type of action.
+        - listitem: The story repeats the same action without clearly new consequences. This may reduce visual novelty.
+      - generic: Unknown
+      - list:
+        - listitem: A final event is described, but its creative effectiveness or audience payoff cannot be determined from text alone.
+        - listitem: No obvious rule contradictions detected, but full consistency check requires production plan analysis.
+        - listitem: Frame-zero visual legibility and hook strength cannot be assessed from story text alone.
+        - listitem: AI producibility requires a production prompt and cannot be assessed from story text alone.
+        - listitem: Pacing and beat timing cannot be assessed without a production plan.
+      - button "Selected"
+      - button "Edit Story"
+      - button "Refine This Story"
+    - article:
+      - generic: The Note That Wouldn't Stick
+      - button "Select this story"
+      - paragraph: Refinement of the supplied story
+      - paragraph: Mimi, oyuncak dolabına 'Topla!' yazan bir yapışkan not yapıştırmak ister. Notu dolaba doğru uzatır, ama not havada asılı kalır ve Mimi'nin etrafında dönmeye başlar. Mimi notu yakalamaya çalışırken, not sürekli yer değiştirir ve sonunda Mimi'nin sırtına yapışır. Mimi ne yaparsa yapsın notu çıkaramaz. Not, Mimi'nin her hareketini taklit eden bir gölge gibi olur. Mimi durur, not da durur. Mimi eğilir, not da eğilir. Sonunda Mimi pes eder ve oyuncaklarını toplamaya başlar; not yavaşça kaybolur.
+      - strong: "Opening:"
+      - text: SUPPORTED ·
+      - strong: "Progression:"
+      - text: INSUFFICIENT_EVIDENCE ·
+      - generic: "Concern: Meaningful progression is not evidenced; motion alone is not counted."
+      - strong: "Ending:"
+      - text: PRESENT · Unknown
+      - generic: PRELIMINARY
+      - text: Story text only
+      - generic: Strengths
+      - list:
+        - listitem: The story describes a character situation or goal.
+        - listitem: The story describes an obstacle or challenge.
+        - listitem: The character takes 2 distinct actions.
+        - listitem: The story contains cause-and-effect progression signals.
+        - listitem: The story contains escalation signals (increasing intensity or complexity).
+        - listitem: The story describes a final event.
+      - generic: Unknown
+      - list:
+        - listitem: The story contains 2 action types; whether these represent distinct attempts is uncertain without production plan.
+        - listitem: A final event is described, but its creative effectiveness or audience payoff cannot be determined from text alone.
+        - listitem: No obvious rule contradictions detected, but full consistency check requires production plan analysis.
+        - listitem: Frame-zero visual legibility and hook strength cannot be assessed from story text alone.
+        - listitem: AI producibility requires a production prompt and cannot be assessed from story text alone.
+        - listitem: Pacing and beat timing cannot be assessed without a production plan.
+      - button "Select Story"
+      - button "Edit Story"
+      - button "Refine This Story"
+    - article:
+      - generic: Note Rebellion
+      - button "Select this story"
+      - paragraph: Refinement of the supplied story
+      - paragraph: Mimi, oyuncak dolabına 'Topla!' yazan bir yapışkan not yapıştırmak ister. Notu dolaba koyar, ama not hemen Mimi'nin eline yapışır. Mimi notu silkelemeye çalışır, fakat not daha da güçlü yapışır. Derken, odadaki diğer yapışkan notlar da canlanır ve Mimi'ye doğru uçmaya başlar. Mimi kaçmaya çalışır ama notlar onu kovalar. Sonunda Mimi'yi yakalarlar ve her yeri notlarla kaplanır. Notlar hep birlikte 'Topla!' diye bağırır. Mimi oyuncaklarını toplamaya başlar; notlar tek tek düşer.
+      - strong: "Opening:"
+      - text: SUPPORTED ·
+      - strong: "Progression:"
+      - text: INSUFFICIENT_EVIDENCE ·
+      - generic: "Concern: Meaningful progression is not evidenced; motion alone is not counted."
+      - strong: "Ending:"
+      - text: PRESENT · Unknown
+      - generic: PRELIMINARY
+      - text: Story text only
+      - generic: Strengths
+      - list:
+        - listitem: The story describes a character situation or goal.
+        - listitem: The story describes an obstacle or challenge.
+        - listitem: The story contains cause-and-effect progression signals.
+        - listitem: The story contains escalation signals (increasing intensity or complexity).
+        - listitem: The story describes a final event.
+      - generic: Risks
+      - list:
+        - listitem: The character appears to take only one type of action.
+        - listitem: The story repeats the same action without clearly new consequences. This may reduce visual novelty.
+      - generic: Unknown
+      - list:
+        - listitem: A final event is described, but its creative effectiveness or audience payoff cannot be determined from text alone.
+        - listitem: No obvious rule contradictions detected, but full consistency check requires production plan analysis.
+        - listitem: Frame-zero visual legibility and hook strength cannot be assessed from story text alone.
+        - listitem: AI producibility requires a production prompt and cannot be assessed from story text alone.
+        - listitem: Pacing and beat timing cannot be assessed without a production plan.
+      - button "Select Story"
+      - button "Edit Story"
+      - button "Refine This Story"
+    - text: Selected Story · editable
+    - textbox "Selected Story · editable": Mimi, oyuncak dolabına 'Topla!' yazan bir yapışkan not yapıştırmak ister. Ancak not, elinden kayıp Mimi'nin alnına yapışır. Mimi notu çıkarmaya çalışırken, her dokunuşunda notlar çoğalır ve vücuduna yayılır. Kısa sürede Mimi baştan aşağı yapışkan notlarla kaplanır. Çaresizce sallanır, zıplar, ama notlar daha da sıkı yapışır. Sonunda, tüm notlar aynı anda dile gelip 'Topla!' diye bağırır. Mimi, oyuncaklarını toplamaya başlar; notlar tek tek kaybolur.
+    - button "Back to Idea"
+    - button "Generate More Distinct Alternatives" [disabled]
+    - button "Approve Story and Continue to Prompt"
+    - complementary:
+      - heading "Workflow Summary" [level=2]
+      - strong: Selected Saved Story
+      - generic: Saved state is reused without a provider call.
+      - term: Next Action
+      - definition: Review Story
+      - term: Video Title
+      - definition: Mimi Yapiskan Not
+      - term: Main Character
+      - definition: Mimi
+      - term: Profile
+      - definition: Auto · recommendation pending
+      - term: Target Duration
+      - definition: 15s
+      - term: Aspect Ratio
+      - definition: 9:16
+      - term: Project Review
+      - definition: Draft
+      - term: Story Approval
+      - definition: DRAFT
+      - term: Prompt Status
+      - definition: NOT STARTED
+      - term: Provider
+      - definition: Configured · not verified
+      - generic "Show source content"
+      - paragraph: Story approval, prompt acceptance and render authorisation are separate decisions.
