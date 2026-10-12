@@ -488,7 +488,7 @@ describe('Step 2 — Story Review: Finding Semantics and Evidence Consistency', 
 
   // ── 11. Mixed-sentiment classification (P0 confirmed bugs) ──
 
-  it('classifies "Progression is clear but slightly less engaging than candidate-1" as CONCERN', () => {
+  it('classifies "Progression is clear but slightly less engaging than candidate-1" as MIXED', () => {
     const { page } = open();
     page.candidates = [{ candidateId: 'c1', title: 'A', text: 'A story' }];
     page.storyReview = {
@@ -500,8 +500,8 @@ describe('Step 2 — Story Review: Finding Semantics and Evidence Consistency', 
       }]
     };
     const findings = page.normalizedReviewFindings('c1');
-    expect(findings[0].findingType).toBe('CONCERN');
-    // The positive word "clear" must not override the comparative weakness
+    // Positive "clear" + comparative weakness "less engaging" => MIXED
+    expect(findings[0].findingType).toBe('MIXED');
     expect(findings[0].findingType).not.toBe('STRENGTH');
   });
 
@@ -521,7 +521,7 @@ describe('Step 2 — Story Review: Finding Semantics and Evidence Consistency', 
     expect(findings[0].findingType).not.toBe('OBSERVATION');
   });
 
-  it('classifies "but however although" weakness clauses as CONCERN', () => {
+  it('classifies "but however although" weakness clauses as MIXED when positive signal present', () => {
     const { page } = open();
     page.candidates = [{ candidateId: 'c1', title: 'A', text: 'A story' }];
     page.storyReview = {
@@ -535,12 +535,13 @@ describe('Step 2 — Story Review: Finding Semantics and Evidence Consistency', 
       }]
     };
     const findings = page.normalizedReviewFindings('c1');
-    expect(findings[0].findingType).toBe('CONCERN');
-    expect(findings[1].findingType).toBe('CONCERN');
-    expect(findings[2].findingType).toBe('CONCERN');
+    // All three have positive + negative => MIXED
+    expect(findings[0].findingType).toBe('MIXED');
+    expect(findings[1].findingType).toBe('MIXED');
+    expect(findings[2].findingType).toBe('MIXED');
   });
 
-  it('classifies "not as engaging as" comparative weakness as CONCERN', () => {
+  it('classifies "not as engaging as" comparative weakness as MIXED', () => {
     const { page } = open();
     page.candidates = [{ candidateId: 'c1', title: 'A', text: 'A story' }];
     page.storyReview = {
@@ -552,7 +553,8 @@ describe('Step 2 — Story Review: Finding Semantics and Evidence Consistency', 
       }]
     };
     const findings = page.normalizedReviewFindings('c1');
-    expect(findings[0].findingType).toBe('CONCERN');
+    // "Not as engaging as" contains "engaging" (positive) + "not as" (comparative weakness) => MIXED
+    expect(findings[0].findingType).toBe('MIXED');
   });
 
   // ── 12. Concern count aggregation (P0 confirmed bug) ──
@@ -699,6 +701,227 @@ describe('Step 2 — Story Review: Finding Semantics and Evidence Consistency', 
     page.selectedCandidateIdValue = 'candidate-1';
     page.selectedStory = 'Story A';
     // Fixture review should not set approval record
+    expect(page.approvalRecordId).toBeFalsy();
+  });
+
+  // ── 15. P0 — "lacks some engagement" mixed finding (confirmed bug) ──
+
+  it('classifies "Progression is clear but lacks some engagement" as MIXED', () => {
+    const { page } = open();
+    page.candidates = [{ candidateId: 'c1', title: 'A', text: 'A story' }];
+    page.storyReview = {
+      reviewId: 'r1', reviewModel: 'gpt', reviewTimestamp: '2026-10-11T10:00:00Z',
+      reviewStatus: 'COMPLETED', candidateReviews: [{
+        candidateId: 'c1', findings: [
+          { finding: 'Progression is clear but lacks some engagement.', dimension: 'progression', supportingTextEvidence: ['Clear setup but loses momentum'], confidenceOrEvidenceStatus: 'SUPPORTED' }
+        ]
+      }]
+    };
+    const findings = page.normalizedReviewFindings('c1');
+    // This is genuinely mixed: positive "clear" + negative "lacks engagement"
+    expect(findings[0].findingType).toBe('MIXED');
+    expect(findings[0].findingType).not.toBe('STRENGTH');
+    // Severity should be null for MIXED (not a pure CONCERN)
+    expect(findings[0].severity).toBeNull();
+  });
+
+  it('classifies "Progression is clear but slightly less engaging than candidate-1" as MIXED', () => {
+    const { page } = open();
+    page.candidates = [{ candidateId: 'c1', title: 'A', text: 'A story' }];
+    page.storyReview = {
+      reviewId: 'r1', reviewModel: 'gpt', reviewTimestamp: '2026-10-11T10:00:00Z',
+      reviewStatus: 'COMPLETED', candidateReviews: [{
+        candidateId: 'c1', findings: [
+          { finding: 'Progression is clear but slightly less engaging than candidate-1', dimension: 'progression', supportingTextEvidence: ['Clear setup but loses momentum'], confidenceOrEvidenceStatus: 'SUPPORTED' }
+        ]
+      }]
+    };
+    const findings = page.normalizedReviewFindings('c1');
+    // Comparative weakness with positive signal => MIXED
+    expect(findings[0].findingType).toBe('MIXED');
+    expect(findings[0].findingType).not.toBe('STRENGTH');
+  });
+
+  it('classifies "Good character setup but the pacing is weak" as MIXED', () => {
+    const { page } = open();
+    page.candidates = [{ candidateId: 'c1', title: 'A', text: 'A story' }];
+    page.storyReview = {
+      reviewId: 'r1', reviewModel: 'gpt', reviewTimestamp: '2026-10-11T10:00:00Z',
+      reviewStatus: 'COMPLETED', candidateReviews: [{
+        candidateId: 'c1', findings: [
+          { finding: 'Good character setup but the pacing is weak in the middle', dimension: 'pacing', supportingTextEvidence: [], confidenceOrEvidenceStatus: 'SUPPORTED' }
+        ]
+      }]
+    };
+    const findings = page.normalizedReviewFindings('c1');
+    expect(findings[0].findingType).toBe('MIXED');
+  });
+
+  it('classifies pure negative without positive signal as CONCERN', () => {
+    const { page } = open();
+    page.candidates = [{ candidateId: 'c1', title: 'A', text: 'A story' }];
+    page.storyReview = {
+      reviewId: 'r1', reviewModel: 'gpt', reviewTimestamp: '2026-10-11T10:00:00Z',
+      reviewStatus: 'COMPLETED', candidateReviews: [{
+        candidateId: 'c1', findings: [
+          { finding: 'The pacing is weak and the ending is unclear', dimension: 'pacing', supportingTextEvidence: [], confidenceOrEvidenceStatus: 'SUPPORTED' }
+        ]
+      }]
+    };
+    const findings = page.normalizedReviewFindings('c1');
+    // No positive signal, pure negative => CONCERN
+    expect(findings[0].findingType).toBe('CONCERN');
+  });
+
+  it('classifies "Less original due to repetitive phrasing" as CONCERN', () => {
+    const { page } = open();
+    page.candidates = [{ candidateId: 'c1', title: 'A', text: 'A story' }];
+    page.storyReview = {
+      reviewId: 'r1', reviewModel: 'gpt', reviewTimestamp: '2026-10-11T10:00:00Z',
+      reviewStatus: 'COMPLETED', candidateReviews: [{
+        candidateId: 'c1', findings: [
+          { finding: 'Less original due to repetitive phrasing', dimension: 'originality', supportingTextEvidence: ['Repeats same structure'], confidenceOrEvidenceStatus: 'SUPPORTED' }
+        ]
+      }]
+    };
+    const findings = page.normalizedReviewFindings('c1');
+    expect(findings[0].findingType).toBe('CONCERN');
+    expect(findings[0].findingType).not.toBe('OBSERVATION');
+  });
+
+  // ── 16. P0 — Concern count provenance ──
+
+  it('distinguishes canonical concerns from provider-reported concerns', () => {
+    const { page } = open();
+    page.candidates = [
+      { candidateId: 'c1', title: 'A', text: 'Story A' },
+      { candidateId: 'c2', title: 'B', text: 'Story B' }
+    ];
+    page.storyReview = {
+      reviewId: 'r1', reviewModel: 'gpt', reviewTimestamp: '2026-10-11T10:00:00Z',
+      reviewStatus: 'COMPLETED',
+      overallConcerns: ['Some provider concern'], // Provider reports 1 concern
+      candidateReviews: [
+        { candidateId: 'c1', findings: [
+          { finding: 'Clear opening', dimension: 'opening', supportingTextEvidence: [], confidenceOrEvidenceStatus: 'SUPPORTED' }
+        ]},
+        { candidateId: 'c2', findings: [
+          { finding: 'Weak ending', dimension: 'payoff', severity: 'high', supportingTextEvidence: ['No resolution'], confidenceOrEvidenceStatus: 'SUPPORTED' }
+        ]}
+      ], recommendedCandidateId: null, recommendationReason: ''
+    };
+    // 1 canonical CONCERN finding ("Weak ending") + 1 provider concern
+    // Canonical count takes precedence
+    const label = page.reviewConcernsLabel();
+    expect(label).toBe('1');
+    // Should NOT show "Provider: 1" when we have canonical concerns
+    expect(label).not.toContain('Provider');
+  });
+
+  it('shows provider concerns when no canonical concerns exist', () => {
+    const { page } = open();
+    page.candidates = [{ candidateId: 'c1', title: 'A', text: 'Story A' }];
+    page.storyReview = {
+      reviewId: 'r1', reviewModel: 'gpt', reviewTimestamp: '2026-10-11T10:00:00Z',
+      reviewStatus: 'COMPLETED',
+      overallConcerns: ['Provider concern 1', 'Provider concern 2'],
+      candidateReviews: [{
+        candidateId: 'c1', findings: [
+          { findingType: 'STRENGTH', finding: 'Clear opening', dimension: 'opening', supportingTextEvidence: [], confidenceOrEvidenceStatus: 'SUPPORTED' }
+        ]
+      }], recommendedCandidateId: null, recommendationReason: ''
+    };
+    const label = page.reviewConcernsLabel();
+    expect(label).toBe('Provider: 2');
+  });
+
+  // ── 17. P1 — PARTIALLY_DISTINCT contradiction fix ──
+
+  it('maps PARTIALLY_DISTINCT without supported differences to INSUFFICIENT_EVIDENCE in display', () => {
+    const { page } = open();
+    page.storyQuality = {
+      classification: 'PARTIALLY_DISTINCT', variationClass: 'PARTIALLY_DISTINCT',
+      summary: 'Partially distinct but no supported different narrative dimensions were extracted.',
+      differences: [], pairs: [], evidenceState: 'UNKNOWN'
+    };
+    expect(page.reviewComparisonLabel()).toBe('INSUFFICIENT_EVIDENCE');
+    expect(page.reviewComparisonSummary()).toContain('Insufficient evidence');
+    expect(page.reviewComparisonSummary()).not.toContain('material dimensions');
+  });
+
+  it('preserves PARTIALLY_DISTINCT when supported differences exist', () => {
+    const { page } = open();
+    page.storyQuality = {
+      classification: 'PARTIALLY_DISTINCT', variationClass: 'PARTIALLY_DISTINCT',
+      summary: 'Partially distinct with supported differences.',
+      differences: ['ending'], pairs: [], evidenceState: 'PARTIAL'
+    };
+    expect(page.reviewComparisonLabel()).toBe('PARTIALLY_DISTINCT');
+    expect(page.reviewComparisonSummary()).toBe('Partially distinct with supported differences.');
+  });
+
+  it('preserves NEAR_DUPLICATE classification', () => {
+    const { page } = open();
+    page.storyQuality = {
+      classification: 'NEAR_DUPLICATE', variationClass: 'NEAR_DUPLICATE',
+      summary: 'Candidates are near duplicates.',
+      differences: [], pairs: [], evidenceState: 'SAME'
+    };
+    expect(page.reviewComparisonLabel()).toBe('NEAR_DUPLICATE');
+  });
+
+  // ── 18. MIXED finding type in normalized findings ──
+
+  it('preserves MIXED finding type through normalization', () => {
+    const { page } = open();
+    page.candidates = [{ candidateId: 'c1', title: 'A', text: 'A story' }];
+    page.storyReview = {
+      reviewId: 'r1', reviewModel: 'gpt', reviewTimestamp: '2026-10-11T10:00:00Z',
+      reviewStatus: 'COMPLETED', candidateReviews: [{
+        candidateId: 'c1', findings: [
+          { findingType: 'MIXED', finding: 'Clear but lacks engagement', dimension: 'progression', supportingTextEvidence: [], confidenceOrEvidenceStatus: 'SUPPORTED' }
+        ]
+      }]
+    };
+    const findings = page.normalizedReviewFindings('c1');
+    expect(findings[0].findingType).toBe('MIXED');
+    expect(findings[0].severity).toBeNull();
+  });
+
+  // ── 19. Provider recommendation evidence status ──
+
+  it('marks provider recommendation as AI suggestion with evidence status', () => {
+    const { page } = open();
+    page.candidates = [
+      { candidateId: 'c1', title: 'A', text: 'Story A' },
+      { candidateId: 'c2', title: 'B', text: 'Story B' }
+    ];
+    page.storyQuality = { classification: 'MATERIAL_DIFFERENCE', differences: ['ending'], pairs: [] };
+    page.storyReview = {
+      reviewId: 'r1', reviewModel: 'gpt', reviewTimestamp: '2026-10-11T10:00:00Z',
+      reviewStatus: 'COMPLETED', recommendedCandidateId: 'c1',
+      recommendationReason: 'Candidate-1 has the strongest event progression',
+      candidateReviews: [], overallConcerns: [], evidenceLimitations: []
+    };
+    const normalized = (page as any).normalizeStoryReview(page.storyReview);
+    expect(normalized.recommendationReason).toContain('AI suggestion');
+    expect(normalized.recommendationReason).toContain('provider claim');
+    expect(normalized.recommendationReason).toContain('not independently verified');
+  });
+
+  it('does not auto-approve story based on provider recommendation', () => {
+    const { page } = open();
+    page.candidates = [
+      { candidateId: 'c1', title: 'A', text: 'Story A' },
+      { candidateId: 'c2', title: 'B', text: 'Story B' }
+    ];
+    page.storyReview = {
+      reviewId: 'r1', reviewModel: 'gpt', reviewTimestamp: '2026-10-11T10:00:00Z',
+      reviewStatus: 'COMPLETED', recommendedCandidateId: 'c1',
+      recommendationReason: 'Candidate 1 is best',
+      candidateReviews: [], overallConcerns: []
+    };
+    // Provider recommendation should not set approval
     expect(page.approvalRecordId).toBeFalsy();
   });
 });
