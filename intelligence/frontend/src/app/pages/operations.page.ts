@@ -65,7 +65,7 @@ interface WorkerDiagnostics { observedAt: string; render: WorkerStatus; publicat
                     <tr>
                       <td><code>{{ lease.leaseOwner }}</code></td>
                       <td>{{ lease.stage }}</td>
-                      <td><span class="status-badge" [@if (lease.leaseState === 'EXPIRED') { style='background:#fee;color:#c00' }]>{{ lease.leaseState }}</span></td>
+                      <td><span class="status-badge" [style.background]="lease.leaseState === 'EXPIRED' ? '#fee' : ''" [style.color]="lease.leaseState === 'EXPIRED' ? '#c00' : ''">{{ lease.leaseState }}</span></td>
                       <td>{{ date(lease.leaseExpiresAt) }}</td>
                       <td>@if (lease.errorMessage) { <small class="error-text">{{ lease.errorMessage }}</small> } @else { — }</td>
                     </tr>

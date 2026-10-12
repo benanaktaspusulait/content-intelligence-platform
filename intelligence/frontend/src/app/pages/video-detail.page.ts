@@ -70,7 +70,8 @@ const VARIANT_TYPE_LABELS: Record<string, string> = {
       <section class="state-panel section-band"><span class="spinner"></span><strong>Loading review studio</strong></section>
     } @else if (error()) {
       <section class="state-panel state-panel--error section-band"><strong>Video unavailable</strong><p>{{ error() }}</p><a class="button button--secondary" routerLink="/videos">Return to Video Library</a></section>
-    } @else if (activeFile()) {
+    } @else {
+      @if (activeFile()) {
       <section class="review-workspace" aria-label="Video and variants">
         <div class="video-inspection">
           <div class="video-stage" [class.video-stage--portrait]="isPortrait()">
@@ -440,9 +441,9 @@ const VARIANT_TYPE_LABELS: Record<string, string> = {
           <div><span class="eyebrow">CAPTION HISTORY</span><h2 id="caption-history-heading">Caption versions</h2></div>
           <span class="data-freshness">Append-only caption version ledger</span>
         </div>
-        @if (captionVersionsLoading()) { <div class="state-panel compact-state"><span class="spinner"></span><strong>Loading caption versions</strong></div> }
-        @else if (captionVersions().length === 0) { <div class="state-panel compact-state"><strong>No caption versions</strong><p>No caption version has been persisted for this video yet.</p></div> }
-        @else {
+        @if (captionVersionsLoading()) { <div class="state-panel compact-state"><span class="spinner"></span><strong>Loading caption versions</strong></div>
+        } @else if (captionVersions().length === 0) { <div class="state-panel compact-state"><strong>No caption versions</strong><p>No caption version has been persisted for this video yet.</p></div>
+        } @else {
           <table class="data-table">
             <thead><tr><th>Platform</th><th>Caption</th><th>Source</th><th>Created by</th><th>Created</th></tr></thead>
             <tbody>@for (cv of captionVersions(); track cv.id) {
@@ -551,8 +552,10 @@ const VARIANT_TYPE_LABELS: Record<string, string> = {
       }
       }
       }
+    }
+    }
 
-      @if (activeTab() === 'evidence' && activeFile()!.ingested) {
+      @if (activeTab() === 'evidence' && activeFile()?.ingested) {
           <div class="detail-grid">
             <section class="section-band evidence-ledger">
               <div class="section-heading"><div><span class="eyebrow">EVIDENCE LEDGER</span><h2>{{ isMeta() ? 'Reach Further and interventions' : 'Manual interventions' }}</h2></div></div>

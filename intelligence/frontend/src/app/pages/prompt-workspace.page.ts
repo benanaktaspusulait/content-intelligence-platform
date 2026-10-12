@@ -80,7 +80,7 @@ import { CreativeIntelligenceService, ContentSummary, PromptVersionSummary, Prom
               <table>
                 <thead><tr><th>Version</th><th>Source</th><th>Created</th><th>Actions</th></tr></thead>
                 <tbody>@for (pv of versions(); track pv.id) {
-                  <tr @if (selectedVersion()?.id === pv.id) { style="background:var(--surface-2,#f5f5f5)" }
+                  <tr [style.background]="selectedVersion()?.id === pv.id ? 'var(--surface-2,#f5f5f5)' : ''">
                     <td><strong>v{{ pv.versionNumber }}</strong></td>
                     <td><code>{{ pv.sourcePath ?? '—' }}</code></td>
                     <td>{{ date(pv.createdAt) }}</td>
@@ -131,10 +131,11 @@ import { CreativeIntelligenceService, ContentSummary, PromptVersionSummary, Prom
             @else if (provenance()) {
               <div class="state-panel">
                 <dl class="compact-facts">
-                  <div><dt>Origin</dt><dd>{{ provenance()!.origin || 'MANUAL_OR_LEGACY' }}</dd></div>
-                  @if (provenance()!.provider) { <div><dt>Provider</dt><dd>{{ provenance()!.provider }}</dd></div> }
-                  @if (provenance()!.model) { <div><dt>Model</dt><dd>{{ provenance()!.model }}</dd></div> }
-                  @if (provenance()!.operatorEdited !== undefined) { <div><dt>Operator edited</dt><dd>{{ provenance()!.operatorEdited ? 'Yes' : 'No' }}</dd></div> }
+                  @let p = provenance()!;
+                  <div><dt>Origin</dt><dd>{{ p['origin'] || 'MANUAL_OR_LEGACY' }}</dd></div>
+                  @if (p['provider']) { <div><dt>Provider</dt><dd>{{ p['provider'] }}</dd></div> }
+                  @if (p['model']) { <div><dt>Model</dt><dd>{{ p['model'] }}</dd></div> }
+                  @if (p['operatorEdited'] !== undefined) { <div><dt>Operator edited</dt><dd>{{ p['operatorEdited'] ? 'Yes' : 'No' }}</dd></div> }
                 </dl>
               </div>
             } @else { <p class="muted">No creative provenance recorded for this version.</p> }
@@ -157,10 +158,11 @@ import { CreativeIntelligenceService, ContentSummary, PromptVersionSummary, Prom
                 <tr>
                   <td><strong>{{ qr.title }}</strong></td>
                   <td>v{{ qr.versionNumber ?? '—' }}</td>
-                  <td>@if (qr.latestQuality?.creativeGrade) { <span class="status-badge">{{ qr.latestQuality.creativeGrade }}</span> } @else { <span class="muted">—</span> }</td>
-                  <td>{{ qr.latestQuality?.readiness ?? '—' }}</td>
-                  <td>{{ number(qr.latestQuality?.overallScore) }}</td>
-                  <td class="muted">{{ qr.latestQuality?.summary ?? '—' }}</td>
+                  @let lq = qr.latestQuality;
+                  <td>@if (lq && lq.creativeGrade) { <span class="status-badge">{{ lq.creativeGrade }}</span> } @else { <span class="muted">—</span> }</td>
+                  <td>{{ lq?.readiness ?? '—' }}</td>
+                  <td>{{ number(lq?.overallScore) }}</td>
+                  <td class="muted">{{ lq?.summary ?? '—' }}</td>
                 </tr>
               }</tbody>
             </table>
