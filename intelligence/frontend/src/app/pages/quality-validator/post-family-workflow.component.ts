@@ -68,7 +68,11 @@ import { GeneralProducibilityComponent } from './general-producibility.component
           </article>
           <article>
             <strong>Generator execution risk</strong>
-            <p>{{ r.executionRisk?.status || 'UNKNOWN' }}</p><small>Local prompt critic only; this does not establish provider success.</small>
+            <p>{{ r.executionRisk?.status || 'UNKNOWN' }}</p><small>Basic generator capability (duration, aspect ratio) — not a guarantee that complex physics or object-count mechanics will render correctly.</small>
+          </article>
+          <article *ngIf="r.generalProducibility">
+            <strong>Production complexity</strong>
+            <p>{{ r.generalProducibility?.overallStatus || 'UNKNOWN' }}</p><small>Text-based producibility assessment from LocalExecutionCritic; actual render success remains UNKNOWN.</small>
           </article>
           <article>
             <strong>Actual render quality</strong>
@@ -113,8 +117,8 @@ import { GeneralProducibilityComponent } from './general-producibility.component
           <div class="canonical-video-plan" *ngIf="canonical.videoPlanIR">
             <h4>Extracted Video Plan IR</h4>
             <p><b>Beats:</b> {{ canonical.videoPlanIR.beats?.length || 0 }}</p>
-            <p><b>Core mechanic:</b> {{ canonical.videoPlanIR.coreMechanic || 'UNKNOWN' }}</p>
-            <p><b>Goal evidence:</b> {{ canonical.videoPlanIR.goalEvidence || 'UNKNOWN' }}</p>
+            <p><b>Core mechanic:</b> {{ readableCoreMechanic(canonical.videoPlanIR.coreMechanic) }}</p>
+            <p><b>Goal evidence:</b> {{ readableGoalEvidence(canonical.videoPlanIR.goalEvidence) }}</p>
             <p><b>Recurrence:</b> {{ canonical.videoPlanIR.recurrence !== undefined ? canonical.videoPlanIR.recurrence : 'UNKNOWN' }}</p>
           </div>
           <div class="canonical-rules-list" *ngIf="canonical.status === 'EVALUATED'">
@@ -697,6 +701,7 @@ export class PostFamilyWorkflowComponent implements OnChanges, OnDestroy {
     if (/actual|video|render|opening/.test(unresolvedText) && !this.qa) items.push({category:'POST_RENDER_EVIDENCE', finding:'Actual video evidence is unavailable', why:'Output quality can only be established after a completed clip is inspected.', action:'Run Video QA after an authorized render; this is not a preliminary render prerequisite.', owner:'Video QA', button:'Open Video QA', blocking:false, target:8});
     if (String(r.planQuality?.recommendation || r.recommendation || '').toUpperCase().includes('REPAIR') || String(r.planQuality?.status || '').toUpperCase().includes('FAIL')) items.push({category:'UNRESOLVED_OR_UNSUPPORTED', finding:'The saved prompt has a confirmed quality defect', why:'The canonical review recommends a bounded correction before render.', action:'Open the existing bounded Repair stage and review the selected finding.', owner:'Repair', button:'Open repair plan', blocking:true, target:6});
     const canonicalReasons = Array.isArray(r.family8?.renderAuthorization?.reasons) ? r.family8.renderAuthorization.reasons : [];
+    const seenReferenceCodes = new Set<string>();
     for (const reason of canonicalReasons) {
       const code = String(reason?.code || 'UNKNOWN_AUTHORIZATION_REASON');
       const id = `AUTHORIZATION:${code}`;
@@ -705,8 +710,14 @@ export class PostFamilyWorkflowComponent implements OnChanges, OnDestroy {
       const normalized = `${code} ${message} ${reason?.source || ''}`.toLowerCase();
       const referenceIssue = /reference|character asset/.test(normalized);
       const frameIssue = /first.?frame|start.?frame/.test(normalized);
-      const sourceIssue = /source|contradict|span|parser/.test(normalized);
+      const sourceIssue = /contradict/.test(normalized) && !/missing|unavailable|insufficient/.test(normalized);
       const providerIssue = /provider|generator|capability|duration|aspect.?ratio|settings/.test(normalized);
+      // Deduplicate reference-related findings: if a REFERENCE_ASSOCIATION finding was already added,
+      // skip additional findings from the same underlying missing character reference
+      if (referenceIssue) {
+        if (seenReferenceCodes.has('reference')) continue;
+        seenReferenceCodes.add('reference');
+      }
       const target = sourceIssue ? 4 : referenceIssue || frameIssue || providerIssue ? 7 : 4;
       items.push({
         id, category: sourceIssue ? 'SOURCE_EVIDENCE_CONTRADICTION' : referenceIssue || frameIssue ? 'RENDER_INPUT_REQUIRED' : providerIssue ? 'PROVIDER_SETTINGS' : 'CANONICAL_AUTHORIZATION_BLOCKER',
@@ -822,6 +833,32 @@ export class PostFamilyWorkflowComponent implements OnChanges, OnDestroy {
     return rows;
   }
   cleanAnalysisText(value: unknown): string { const text=String(value ?? 'UNKNOWN'); return text.replace(/\s*(?:AUDIO|NEGATIVE CONSTRAINTS|FINAL CUT)\s*:?[\s\S]*$/i, '').replace(/Planlanan final\s*:/i, 'Planned ending:').replace(/:\s*:/g, ':').replace(/^\s*:\s*/, '').trim() || 'UNKNOWN'; }
+  readableCoreMechanic(mechanic: any): string {
+    if (!mechanic) return 'UNKNOWN';
+    if (typeof mechanic === 'string') return mechanic;
+    if (typeof mechanic === 'object') {
+      const parts: string[] = [];
+      if (mechanic.physicalRule) parts.push(mechanic.physicalRule);
+      if (mechanic.principalObject) parts.push('object: ' + mechanic.principalObject);
+      if (mechanic.triggeringAction) parts.push('trigger: ' + mechanic.triggeringAction);
+      if (mechanic.transformation) parts.push('result: ' + mechanic.transformation);
+      if (mechanic.recurrence) parts.push('recurring');
+      return parts.join('; ') || JSON.stringify(mechanic);
+    }
+    return String(mechanic);
+  }
+  readableGoalEvidence(goal: any): string {
+    if (!goal) return 'UNKNOWN';
+    if (typeof goal === 'string') return goal;
+    if (typeof goal === 'object') {
+      const parts: string[] = [];
+      if (goal.text) parts.push(goal.text);
+      if (goal.support) parts.push('supported by: ' + goal.support);
+      if (goal.confidence) parts.push('confidence: ' + goal.confidence);
+      return parts.join('; ') || JSON.stringify(goal);
+    }
+    return String(goal);
+  }
   get semanticClassificationStatus(): string { const evidence=this.review?.productionEvidence || {}; const metadata=evidence.videoPlanIR?.metadata || {}; return String(metadata.semanticClassificationStatus || evidence.semanticStatus || 'PENDING'); }
   get semanticEvidenceReady(): boolean { const status=this.semanticClassificationStatus.toUpperCase(); return ['COMPLETED','CONFIRMED','OBSERVED'].includes(status) && !this.timedRangeIssues.length; }
   get executionEvidenceStatus(): string { const reviewed=this.sourceEvents.filter(event=>event.savedRole).length;return `${this.sourceEvents.length} current source interval(s) · ${reviewed} operator-reviewed · independent semantic fidelity UNKNOWN`; }
@@ -1626,6 +1663,7 @@ export class PostFamilyWorkflowComponent implements OnChanges, OnDestroy {
   authorizationLabel(status: unknown): string {
     const value = String(status || 'UNKNOWN').toUpperCase();
     if (value === 'AUTHORIZED') return 'Authorized for this exact saved request';
+    if (value === 'BLOCKED_TECHNICAL_FAILURE') return 'Rendering blocked: a technical check failed';
     if (value.startsWith('BLOCKED')) return 'Rendering blocked: required production inputs or checks are missing';
     return 'Authorization unknown · rendering remains blocked';
   }

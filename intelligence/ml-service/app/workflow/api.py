@@ -47,6 +47,7 @@ class ReviewRequest(BaseModel):
     structuredPlan: dict[str, Any] | None = None
     canonicalValidationId: int | None = None
     authorizationEvidence: dict[str, Any] = Field(default_factory=dict)
+    acceptedStartFrame: bool = False
 
 
 def capabilities() -> dict[str, Any]:
