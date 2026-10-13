@@ -173,6 +173,20 @@ class OptimizationRecoveryRequest(BaseModel):
     diagnostics: dict[str, Any]
 
 
+class OptimizationAssessmentRequest(BaseModel):
+    model_config = ConfigDict(extra='forbid')
+    text: str = Field(min_length=1, max_length=16000)
+    context: dict[str, Any]
+    candidates: list[dict[str, Any]]
+    baselineScore: float | None = None
+
+
+@router.post('/optimization-assessment')
+def optimization_assessment(request: OptimizationAssessmentRequest) -> dict[str, Any]:
+    from .optimization_comparison import assess_comparison
+    return assess_comparison(request.text, request.candidates, request.context, request.baselineScore)
+
+
 @router.post('/optimization-recovery')
 def optimization_recovery(request: OptimizationRecoveryRequest) -> dict[str, Any]:
     from .creative_roles import perform_role, _optimization_validation_category
@@ -189,6 +203,7 @@ def optimization_recovery(request: OptimizationRecoveryRequest) -> dict[str, Any
         raise HTTPException(409, {'category': _optimization_validation_category(error),
                                  'detail': str(error), 'providerDispatched': False,
                                  'providerCallsThisOperation': 0,
+                                 'profileValidations': [c.get('profileValidation') for c in (getattr(provider, 'last_normalized_role_result', {}) or {}).get('candidates', [])],
                                  'profileValidation': getattr(error, 'profile_validation', None)}) from error
     result.update(calls=0, provider='saved-response',
                   rawProviderResult=deepcopy(request.providerResult),

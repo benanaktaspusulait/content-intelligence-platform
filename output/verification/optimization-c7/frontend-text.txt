@@ -1,0 +1,239 @@
+Pompom
+CREATIVE INTELLIGENCE
+«
+Collapse
+WORKSPACE
+OV
+Overview
+VL
+Video Library
+CH
+Characters
+PQ
+Prompt Quality
+NV
+New Video
+RG
+Rule Governance
+EX
+Experiments
+TP
+Test Planner
+PR
+Predictions
+PF
+Performance
+IM
+Import Data
+MR
+Model Reliability
+RF
+Reach Further
+MA
+Meta Analytics
+MV
+Model Versions
+RJ
+Render Jobs
+OP
+Operations
+Local workspace
+Persisted evidence only
+Prompt Quality
+
+Review saved prompts, analyse production readiness, and inspect previous results.
+
+1
+Idea
+Create or reuse
+2
+Story
+Select and approve
+3
+Prompt
+Review and edit
+4
+Production Review
+Validate workflow
+5
+Quality Analysis
+Quality evidence
+6
+Repair
+Priority fixes
+7
+Render Preparation
+Prepare visual inputs
+8
+Video QA
+Final evidence
+Source details
+STEP 6 · REPAIR
+Repair
+
+Apply a bounded, evidence-backed prompt repair when the review recommends one.
+
+STEP 6 · REPAIR DECISION
+No actionable prompt-text repair identified
+
+Saved canonical result: 85 / 100, grade B; PASS 4 · FAIL 0 · UNKNOWN 1 · NOT_APPLICABLE 3. No actionable canonical prompt-text failure is recorded. Outstanding evidence remains: REFERENCE_ASSOCIATION: An authoritative character/object reference is missing or unverified.; EXECUTION_INPUTS: Required provider execution inputs are missing: startFrame. UNKNOWN rules remain unverified: STUBBORN_RETURN_LOOP. Production critic, provider capability and complexity classifications are distinct and shown separately. Missing verified character reference and accepted start frame are Step 7 responsibilities, not text-repair tasks.
+
+QUALITY
+85 / 100 · Grade B
+CANONICAL FAILURES
+0
+TEXT REPAIR
+No repair justified
+EVIDENCE OUTSTANDING
+2
+
+No applicable canonical prompt-text failure or required text repair was identified.
+
+I confirm that no text repair is justified for this saved analysis. This does not resolve missing visual evidence.
+Approve No Repair & Continue
+
+Required character reference and accepted start frame remain outstanding; this decision does not mark F8 evidence resolved.
+
+Creative Optimization (optional)
+
+Generate two prompt candidates after explicit paid consent and a valid budget. Candidate scores are evidence only; they do not auto-select or authorize rendering.
+
+Load saved comparison / attempt
+Maximum total cost (USD)
+I explicitly authorize one creative optimization call within the configured budget.
+Generate two candidates
+Original
+Saved prompt
+Original
+
+Prompt v10: TITLE / FORMAT Mimi Sticky / 15s Video VISUAL STYLE Bright and colorful animation with a playful tone. CHARACTER / CONTINUITY Mimi, an anthropomorphic bunny, interacts with sticky notes in a humorous and chaotic manner. TIMED SHOT PLAN 0-2s: Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger [close-up on Mimi's hand] Mimi is in front of a toy cabinet, looking determined -> the note sticks to Mimi, not the cabinet 2-5s: Mimi tries to peel the stuck note away with her other hand; the note splits into two [medium shot of Mimi struggling] Mimi pulls at the note -> one note sticks to each hand 5-10s: Mimi continues to pull; each pull doubles the number of sticky notes [wide shot showing Mimi covered in notes] notes multiply from two to four to eight as she pulls, progressively covering her arms, legs and face -> Mimi is overwhelmed by notes 10-12s: Mimi sees herself in a mirror and screams [close-up on Mimi's shocked face] Mimi is startled by her reflection completely covered in notes -> Mimi is startled 12-15s: Mimi sneezes and the sticky notes fly off [medium shot of notes flying] notes scatter and stick to the cabinet -> Mimi breathes a sigh of relief but the cabinet remains messy AUDIO Playful background music with sound effects for sneezing and notes sticking. NEGATIVE CONSTRAINTS No dark themes or violence. FINAL CUT Mimi is relieved but the cabinet remains visibly messy. CHARACTER IDENTITY LOCK Mimi is the established anthropomorphic bunny character. Preserve that identity; do not render a human or invent unverified visual details. No approved visual reference is currently bound, so appearance details remain unverified. PRODUCTION SETTINGS Aspect ratio: 9:16. Target generator: SEEDANCE_2_0_MINI. Content profile: AUTO.
+
+Quality: 85/100 · Grade B
+
+Rules: 4 PASS · 0 FAIL · 1 UNKNOWN
+
+Keep the saved prompt unless a candidate is reviewed and selected.
+
+Keep Original
+Candidate A
+Opening clarity
+Draft
+
+Hypothesis: Extreme close-up of existing contact anomaly
+
+Quality: 85/100 · Grade B
+
+Rule differences (1.7): 4 PASS · 0 FAIL · 1 UNKNOWN
+
+Rule outcomes
+
+Story fidelity: { "storyRevisionId": "candidate-2-revision-7c63cc86", "approvedStoryCoverage": "PROMPT_SOURCE_EVENTS_PRESERVED; APPROVED_STORY_SEMANTIC_FIDELITY_UNKNOWN", "essentialEventsPreserved": true, "endingPreservedBySourceEventAnchor": true }
+
+Production risks: { "family8": { "status": "BLOCKED_PENDING_EVIDENCE", "reasons": [ { "code": "REQUIRED_EVIDENCE_MISSING", "source": "REFERENCE_ASSOCIATION", "message": "An authoritative character/object reference is missing or unverified.", "references": [] }, { "code": "REQUIRED_EVIDENCE_MISSING", "source": "EXECUTION_INPUTS", "message": "Required provider execution inputs are missing: startFrame", "references": [] } ] }, "generatorCapability": "SUPPORTED", "localExecutionCritic": { "calls": 0, "model": null, "stage": "GENERATOR_EXECUTION_REVIEW", "status": "PASS", "version": "local-execution-critic-v1", "findings": [], "provider": "LOCAL", "limitations": [ "General writing heuristics; not evidence of the selected model’s actual performance." ], "targetGenerator": "SEEDANCE_2_0_MINI", "visualInspected": false }, "productionComplexity": { "ending": { "functions": [], "assessment": "UNKNOWN", "plannedLastBeat": "Mimi sneezes and the sticky notes fly off", "sameVideoReplay": "UNKNOWN", "sequelCuriosity": "UNKNOWN" }, "status": "HYPOTHESIS", "opening": { "promise": "UNKNOWN", "assessment": "UNKNOWN", "visualFocus": "UNKNOWN", "causeAtFrameZero": "UNKNOWN", "plannedFirstBeat": "Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger" }, "findings": [], "objective": [ "SCROLL_STOP", "ATTENTION", "COMPLETION", "REWATCH_OR_SHARE_HYPOTHESIS" ], "limitations": [ "Source interpretations are planned experience, never actual frame evidence or predicted views.", "Motion, repetition, holds and different verbs alone do not establish progression." ], "progression": { "assessment": "UNKNOWN", "mechanisms": [] }, "audienceModel": "Adult discovery; child-appropriate shared viewing", "recommendation": "PROCEED_NEXT_EVIDENCE_STEP", "invalidEvidence": [] } }
+
+Remaining UNKNOWNs: { "canonicalRules": [ { "family": "progression", "ruleId": "STUBBORN_RETURN_LOOP", "details": { "engineProfile": { "active": false, "reason": "Return-loop candidate lacks one or more mandatory signals.", "source": "INFERRED", "profile": "DEFAULT", "signals": { "ESCALATION": false, "RECURRENCE": false, "SAFE_STATE": false, "NO_DEAD_RESET": true, "AUTONOMOUS_RETURN": false, "CHARACTER_INTERVENTION": true, "FIXED_VISIBLE_BOUNDARY": false, "SINGLE_DOMINANT_OBJECT": false }, "confidence": "LOW", "candidate_only": true, "recurrence_count": 0, "state_memory_cost": "LOW", "intervention_count": 2 }, "recommendation": "High-confidence Spoon-class engine profile: one object, one visible safe/danger boundary, autonomous return, recurrence, active intervention, escalation, and no dead reset.", "evaluation_stage": "PRE_RENDER" }, "message": "Return-loop candidate lacks one or more mandatory signals.", "outcome": "UNKNOWN", "ruleName": "Stubborn Return Loop", "severity": "BLOCKER" } ], "audienceOutcome": { "status": "NOT_JOINED" }, "actualRenderQuality": { "reason": "Actual video evidence required", "status": "UNKNOWN" } }
+
+--- original
++++ candidate-a
+ TITLE / FORMAT
+ Mimi Sticky / 15s Video
+ 
+ VISUAL STYLE
+ Bright and colorful animation with a playful tone.
+ 
+ CHARACTER / CONTINUITY
+ Mimi, an anthropomorphic bunny, interacts with sticky notes in a humorous and chaotic manner.
+ 
+ TIMED SHOT PLAN
+-0-2s: Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger [close-up on Mimi's hand] Mimi is in front of a toy cabinet, looking determined -> the note sticks to Mimi, not the cabinet
++0-2s: Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger [extreme close-up on Mimi's hand] Mimi is in front of a toy cabinet, looking determined -> the note sticks to Mimi, not the cabinet
+ 2-5s: Mimi tries to peel the stuck note away with her other hand; the note splits into two [medium shot of Mimi struggling] Mimi pulls at the note -> one note sticks to each hand
+ 5-10s: Mimi continues to pull; each pull doubles the number of sticky notes [wide shot showing Mimi covered in notes] notes multiply from two to four to eight as she pulls, progressively covering her arms, legs and face -> Mimi is overwhelmed by notes
+-10-12s: Mimi sees herself in a mirror and screams [close-up on Mimi's shocked face] Mimi is startled by her reflection completely covered in notes -> Mimi is startled
++10-12s: Mimi sees herself in a mirror and screams [extreme close-up on Mimi's shocked face] Mimi is startled by her reflection completely covered in notes -> Mimi is startled
+ 12-15s: Mimi sneezes and the sticky notes fly off [medium shot of notes flying] notes scatter and stick to the cabinet -> Mimi breathes a sigh of relief but the cabinet remains messy
+ 
+ AUDIO
+ Playful background music with sound effects for sneezing and notes sticking.
+ 
+ NEGATIVE CONSTRAINTS
+ No dark themes or violence.
+ 
+ FINAL CUT
+ Mimi is relieved but the cabinet remains visibly messy.
+ 
+ CHARACTER IDENTITY LOCK
+ Mimi is the established anthropomorphic bunny character. Preserve that identity; do not render a human or invent unverified visual details. No approved visual reference is currently bound, so appearance details remain unverified.
+ 
+ PRODUCTION SETTINGS
+-Aspect ratio: 9:16. Target generator: SEEDANCE_2_0_MINI. Content profile: AUTO.
++Aspect ratio: 9:16. Target generator: SEEDANCE_2_0_MINI. Content profile: ABSURD_PHYSICS.
+
+Full candidate prompt
+Review Candidate A
+Select candidate
+Candidate B
+Escalation timing
+Draft
+
+Hypothesis: More time on separation before multiplication
+
+Quality: 85/100 · Grade B
+
+Rule differences (1.7): 4 PASS · 0 FAIL · 1 UNKNOWN
+
+Rule outcomes
+
+Story fidelity: { "storyRevisionId": "candidate-2-revision-7c63cc86", "approvedStoryCoverage": "PROMPT_SOURCE_EVENTS_PRESERVED; APPROVED_STORY_SEMANTIC_FIDELITY_UNKNOWN", "essentialEventsPreserved": true, "endingPreservedBySourceEventAnchor": true }
+
+Production risks: { "family8": { "status": "BLOCKED_PENDING_EVIDENCE", "reasons": [ { "code": "REQUIRED_EVIDENCE_MISSING", "source": "REFERENCE_ASSOCIATION", "message": "An authoritative character/object reference is missing or unverified.", "references": [] }, { "code": "REQUIRED_EVIDENCE_MISSING", "source": "EXECUTION_INPUTS", "message": "Required provider execution inputs are missing: startFrame", "references": [] } ] }, "generatorCapability": "SUPPORTED", "localExecutionCritic": { "calls": 0, "model": null, "stage": "GENERATOR_EXECUTION_REVIEW", "status": "PASS", "version": "local-execution-critic-v1", "findings": [], "provider": "LOCAL", "limitations": [ "General writing heuristics; not evidence of the selected model’s actual performance." ], "targetGenerator": "SEEDANCE_2_0_MINI", "visualInspected": false }, "productionComplexity": { "ending": { "functions": [], "assessment": "UNKNOWN", "plannedLastBeat": "Mimi sneezes and the sticky notes fly off", "sameVideoReplay": "UNKNOWN", "sequelCuriosity": "UNKNOWN" }, "status": "HYPOTHESIS", "opening": { "promise": "UNKNOWN", "assessment": "UNKNOWN", "visualFocus": "UNKNOWN", "causeAtFrameZero": "UNKNOWN", "plannedFirstBeat": "Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger" }, "findings": [], "objective": [ "SCROLL_STOP", "ATTENTION", "COMPLETION", "REWATCH_OR_SHARE_HYPOTHESIS" ], "limitations": [ "Source interpretations are planned experience, never actual frame evidence or predicted views.", "Motion, repetition, holds and different verbs alone do not establish progression." ], "progression": { "assessment": "UNKNOWN", "mechanisms": [] }, "audienceModel": "Adult discovery; child-appropriate shared viewing", "recommendation": "PROCEED_NEXT_EVIDENCE_STEP", "invalidEvidence": [] } }
+
+Remaining UNKNOWNs: { "canonicalRules": [ { "family": "progression", "ruleId": "STUBBORN_RETURN_LOOP", "details": { "engineProfile": { "active": false, "reason": "Return-loop candidate lacks one or more mandatory signals.", "source": "INFERRED", "profile": "DEFAULT", "signals": { "ESCALATION": false, "RECURRENCE": false, "SAFE_STATE": false, "NO_DEAD_RESET": true, "AUTONOMOUS_RETURN": false, "CHARACTER_INTERVENTION": true, "FIXED_VISIBLE_BOUNDARY": false, "SINGLE_DOMINANT_OBJECT": false }, "confidence": "LOW", "candidate_only": true, "recurrence_count": 0, "state_memory_cost": "LOW", "intervention_count": 2 }, "recommendation": "High-confidence Spoon-class engine profile: one object, one visible safe/danger boundary, autonomous return, recurrence, active intervention, escalation, and no dead reset.", "evaluation_stage": "PRE_RENDER" }, "message": "Return-loop candidate lacks one or more mandatory signals.", "outcome": "UNKNOWN", "ruleName": "Stubborn Return Loop", "severity": "BLOCKER" } ], "audienceOutcome": { "status": "NOT_JOINED" }, "actualRenderQuality": { "reason": "Actual video evidence required", "status": "UNKNOWN" } }
+
+--- original
++++ candidate-b
+ TITLE / FORMAT
+ Mimi Sticky / 15s Video
+ 
+ VISUAL STYLE
+ Bright and colorful animation with a playful tone.
+ 
+ CHARACTER / CONTINUITY
+ Mimi, an anthropomorphic bunny, interacts with sticky notes in a humorous and chaotic manner.
+ 
+ TIMED SHOT PLAN
+ 0-2s: Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger [close-up on Mimi's hand] Mimi is in front of a toy cabinet, looking determined -> the note sticks to Mimi, not the cabinet
+-2-5s: Mimi tries to peel the stuck note away with her other hand; the note splits into two [medium shot of Mimi struggling] Mimi pulls at the note -> one note sticks to each hand
+-5-10s: Mimi continues to pull; each pull doubles the number of sticky notes [wide shot showing Mimi covered in notes] notes multiply from two to four to eight as she pulls, progressively covering her arms, legs and face -> Mimi is overwhelmed by notes
++2-6s: Mimi tries to peel the stuck note away with her other hand; the note splits into two [medium shot of Mimi struggling] Mimi pulls at the note -> one note sticks to each hand
++6-10s: Mimi continues to pull; each pull doubles the number of sticky notes [wide shot showing Mimi covered in notes] notes multiply from two to four to eight as she pulls, progressively covering her arms, legs and face -> Mimi is overwhelmed by notes
+ 10-12s: Mimi sees herself in a mirror and screams [close-up on Mimi's shocked face] Mimi is startled by her reflection completely covered in notes -> Mimi is startled
+ 12-15s: Mimi sneezes and the sticky notes fly off [medium shot of notes flying] notes scatter and stick to the cabinet -> Mimi breathes a sigh of relief but the cabinet remains messy
+ 
+ AUDIO
+ Playful background music with sound effects for sneezing and notes sticking.
+ 
+ NEGATIVE CONSTRAINTS
+ No dark themes or violence.
+ 
+ FINAL CUT
+ Mimi is relieved but the cabinet remains visibly messy.
+ 
+ CHARACTER IDENTITY LOCK
+ Mimi is the established anthropomorphic bunny character. Preserve that identity; do not render a human or invent unverified visual details. No approved visual reference is currently bound, so appearance details remain unverified.
+ 
+ PRODUCTION SETTINGS
+-Aspect ratio: 9:16. Target generator: SEEDANCE_2_0_MINI. Content profile: AUTO.
++Aspect ratio: 9:16. Target generator: SEEDANCE_2_0_MINI. Content profile: ABSURD_PHYSICS.
+
+Full candidate prompt
+Review Candidate B
+Select candidate
+
+Candidate scores are evidence only. They do not auto-select and do not grant render authorization.
+
+Approve Selected Revision
+Select and review a candidate with preserved story coverage before approval.
+Analysis details and provenance
+Current prompt · Prompt v1 / ID 10
+Optional Repair Tools

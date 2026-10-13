@@ -1,0 +1,141 @@
+{
+  "status": "OPTIMIZATION_PROFILE_CONTRACT_FIXED",
+  "attemptId": "c7f780ef-14f8-4d88-afe0-16127f2484fe",
+  "paidResponseRecordId": "d07ef5ae-f368-4c4e-b1d0-28385769e284",
+  "sourceAnalysisId": "9208e75a-b158-4ffb-94fe-03c15ca96395",
+  "1_exactRootCause": {
+    "file": "intelligence/ml-service/app/workflow/optimization_distinctness.py",
+    "function": "validate_execution_candidates",
+    "line": 54,
+    "comparison": "regex candidate prompt Content profile label versus context.targetConfiguration.contentProfile",
+    "cause": "Provider copied immutable baseline AUTO metadata; integration treated provider-echoed metadata as effective production settings. No provenance-preserving metadata mapping existed. Error said source-plan although provider response had no sourcePlan field."
+  },
+  "2_conflictingValues": {
+    "immutablePromptV10": "AUTO",
+    "persistedStep4": "ABSURD_PHYSICS",
+    "step5BoundAndEvaluated": "ABSURD_PHYSICS",
+    "optimizationRequestTarget": "ABSURD_PHYSICS",
+    "providerInstruction": "Keep selected context.targetConfiguration profile and replace stale production-settings label. Exact historical system request bytes were not stored; this instruction is reconstructed from deployed v4 code.",
+    "candidateAResponseLabel": "AUTO",
+    "candidateBResponseLabel": "AUTO",
+    "candidateASourcePlanField": "ABSENT in raw response; validator interpreted prompt label",
+    "candidateBSourcePlanField": "ABSENT in raw response; validator interpreted prompt label",
+    "validatorExpected": "ABSURD_PHYSICS",
+    "actualRejectionLabel": "AUTO"
+  },
+  "3_historicalEntryPoint": "sourceRequest.text includes immutable baseline PRODUCTION SETTINGS / Content profile: AUTO; provider copied it into both candidate prompts.",
+  "4_filesChanged": [
+    "intelligence/ml-service/app/workflow/optimization_profile_contract.py",
+    "intelligence/ml-service/app/workflow/creative_roles.py",
+    "intelligence/ml-service/app/workflow/api.py",
+    "intelligence/backend/src/main/java/com/pompomhills/intelligence/workflow/WorkflowService.java",
+    "intelligence/backend/src/main/java/com/pompomhills/intelligence/quality/QualityMlClient.java",
+    "intelligence/ml-service/tests/test_optimization_profile_contract.py",
+    "intelligence/ml-service/tests/test_optimization_failure_contract.py",
+    "intelligence/ml-service/tests/fixtures/optimization-c7-profile.json",
+    "intelligence/backend/src/test/resources/optimization-c7-profile.json",
+    "intelligence/backend/src/test/java/com/pompomhills/intelligence/workflow/WorkflowNoRepairDecisionPostgresTest.java",
+    "intelligence/backend/src/test/java/com/pompomhills/intelligence/workflow/WorkflowTransportTest.java"
+  ],
+  "5_requestResponseCorrections": [
+    "Server reads current version-bound production settings and rejects stale Step 5 profile or prompt/settings association.",
+    "Generation payload separates baselinePromptText, baselinePromptHistoricalProfile, targetContentProfile, approvedStory, protectedIntent, generatorSettings and optimizationObjectives with explicit server ownership.",
+    "Strict candidate schema requires targetContentProfile with only the server target allowed; narrative validators remain independent.",
+    "Candidate B instructions preserve beat count and order; only camera/framing and timing changes are supported.",
+    "Raw provider JSON text and parsed result retained before local validation; successful output also retains raw evidence."
+  ],
+  "6_validatorBehavior": {
+    "pureMetadata": "PROFILE_METADATA_MISMATCH: retain raw echo and raw prompt, map effective metadata from server settings, then run every existing validator.",
+    "materialConflict": "MATERIAL_CREATIVE_PROFILE_CONFLICT: reject explicit conflicting creative directives; no target change or semantic approval.",
+    "semanticFidelity": "UNKNOWN",
+    "effectiveSourcePlanProfile": "ABSURD_PHYSICS"
+  },
+  "7_paidResponseRecovery": {
+    "recoverable": "Original parsed result with exact prompt strings; historical raw response bytes were not retained.",
+    "liveBackendRecovery": {
+      "endpoint": "POST /api/v1/intelligence/workflow/records/9208e75a-b158-4ffb-94fe-03c15ca96395/creative-optimization",
+      "mode": "recoverAttemptRecordId only; no paid dispatch",
+      "responseStatus": 409,
+      "providerCallsThisOperation": 0,
+      "profileStatuses": [
+        "PROFILE_METADATA_MISMATCH",
+        "PROFILE_METADATA_MISMATCH"
+      ]
+    },
+    "candidateA": "Rejected: baseline first-beat staging sentence omitted.",
+    "candidateB": "Independently rejected: six candidate beats versus five source beats.",
+    "productionCandidatesPersisted": 0,
+    "historicalAttemptModified": false
+  },
+  "8_tests": {
+    "mlPassed": 119,
+    "backendPassed": {
+      "WorkflowNoRepairDecisionPostgresTest": 6,
+      "OptimizationFailureContractTest": 2,
+      "WorkflowTransportTest": 4
+    },
+    "frontendPassed": 57,
+    "coverage": [
+      "historical AUTO or other valid profile/current authoritative target",
+      "metadata mapping and enum formatting/raw evidence retention",
+      "material prompt or sourcePlan profile conflict",
+      "baseline duplicates and identical candidates",
+      "two distinct source-faithful complete candidates",
+      "actual c7 A and B rejection after profile mapping",
+      "zero-provider local recovery and idempotent comparison reuse",
+      "missing budget or usage evidence/stale prompt association",
+      "prompt version changed after provider dispatch",
+      "frontend duplicate button guard",
+      "Explicit AUTO creative targeting conflicts with ABSURD_PHYSICS and is rejected, separately from historical AUTO metadata."
+    ]
+  },
+  "9_mockedEndToEnd": {
+    "environment": "Disposable PostgreSQL Testcontainer, real WorkflowService, real QualityMlClient HTTP transport, deployed ML normalization/source-plan/canonical evaluation, mocked provider response, persisted comparison displayed in deployed frontend through read-only GET fixture proxy.",
+    "baseline": "Actual saved Content 10 / Prompt v10 / Step 4 and Step 5 snapshots.",
+    "sourceAnalysisId": "9208e75a-b158-4ffb-94fe-03c15ca96395",
+    "candidateCount": 2,
+    "candidates": [
+      {
+        "id": "candidate-a",
+        "profile": "ABSURD_PHYSICS",
+        "score": 85.0,
+        "grade": "B",
+        "rulesEvaluated": 8,
+        "ruleset": "1.7",
+        "F8": "BLOCKED_PENDING_EVIDENCE"
+      },
+      {
+        "id": "candidate-b",
+        "profile": "ABSURD_PHYSICS",
+        "score": 85.0,
+        "grade": "B",
+        "rulesEvaluated": 8,
+        "ruleset": "1.7",
+        "F8": "BLOCKED_PENDING_EVIDENCE"
+      }
+    ],
+    "autoApproval": false,
+    "autoPromptVersionCreation": false,
+    "frontendDisplayed": true
+  },
+  "10_deploymentVerification": {
+    "workflow/creative_roles.py": true,
+    "workflow/api.py": true,
+    "workflow/optimization_profile_contract.py": true,
+    "backendContractAndRecovery": true,
+    "backendRecoveryTransportAllowed": true
+  },
+  "11_paidCallIdempotencyAudit": {
+    "realOpenAICalls": 0,
+    "realDeepSeekCalls": 0,
+    "automaticRetry": false,
+    "sameFingerprintReservationAndDurableResultReusePreserved": true,
+    "recoveryDoesNotInvokePaidCreativeRole": true,
+    "missingBudgetFailsClosed": true,
+    "historicalAttemptStep4Step5AndPromptV10Unchanged": true,
+    "productionSQL": "Read-only SELECT only; fixture writes occur only in disposable tests.",
+    "imageVideoPublishingCommitPush": false
+  },
+  "12_authorizedGenerationReadiness": "Ready only for one separately operator-authorized attempt within the verified budget. No paid generation was executed; acceptance remains subject to all source/story/distinctness validators. Recovery of c7 does not require a new paid request.",
+  "visualInspection": "Two draft candidate cards visible with 85/B and ruleset 1.7, paid consent unchecked and Generate disabled. Existing narrow-card diagnostic text overflow observed; no UI redesign performed."
+}

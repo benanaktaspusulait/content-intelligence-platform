@@ -45,11 +45,12 @@ class WorkflowTransportTest {
     }
   }
 
-  @Test
-  void sendsCompleteJsonOverHttpOneAndPreservesBindingKeys() throws Exception {
+  @org.junit.jupiter.params.ParameterizedTest
+  @org.junit.jupiter.params.provider.ValueSource(strings={"review","optimization-recovery"})
+  void sendsCompleteJsonOverHttpOneAndPreservesBindingKeys(String operation) throws Exception {
     var server = HttpServer.create(new InetSocketAddress("127.0.0.1", 0), 0);
     server.createContext(
-        "/api/v1/workflow/review",
+        "/api/v1/workflow/" + operation,
         exchange -> {
           String body =
               new String(exchange.getRequestBody().readAllBytes(), StandardCharsets.UTF_8);
@@ -65,7 +66,7 @@ class WorkflowTransportTest {
       var client =
           new QualityMlClient(
               "http://127.0.0.1:" + server.getAddress().getPort(), RestClient.builder());
-      assertThat(client.workflow("review", Map.of("sourceVersion", "1")))
+      assertThat(client.workflow(operation, Map.of("sourceVersion", "1")))
           .containsEntry("bindingHash", "abc");
     } finally {
       server.stop(0);

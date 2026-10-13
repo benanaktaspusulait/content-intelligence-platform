@@ -48,11 +48,12 @@ def test_metadata_mapping_retains_raw_echo_without_false_semantic_approval(echo)
         assert c['profileValidation']['status']==('PROFILE_METADATA_MISMATCH' if echo=='AUTO' else 'PROFILE_ALIGNED')
 
 @pytest.mark.parametrize('location',['prompt','plan-directive','plan-instructions'])
-def test_material_wrong_profile_is_rejected(location):
+@pytest.mark.parametrize('wrong_profile',['AUTO','EDUCATIONAL'])
+def test_material_wrong_profile_is_rejected(location,wrong_profile):
     _,_,values=valid_optimization_fixture()
-    if location=='prompt':values[0]['prompt']=values[0]['prompt'].replace('VISUAL STYLE','VISUAL STYLE\nTarget content profile: EDUCATIONAL.')
-    if location=='plan-directive':values[0]['sourcePlan']={'creativeProfile':'EDUCATIONAL'}
-    if location=='plan-instructions':values[0]['sourcePlan']={'creativeInstructions':'Optimize for EDUCATIONAL'}
+    if location=='prompt':values[0]['prompt']=values[0]['prompt'].replace('VISUAL STYLE','VISUAL STYLE\nTarget content profile: '+wrong_profile+'.')
+    if location=='plan-directive':values[0]['sourcePlan']={'creativeProfile':wrong_profile}
+    if location=='plan-instructions':values[0]['sourcePlan']={'creativeInstructions':'Optimize for '+wrong_profile}
     with pytest.raises(ProfileContractError) as error:evaluate(values)
     assert error.value.profile_validation['status']=='MATERIAL_CREATIVE_PROFILE_CONFLICT'
 
@@ -73,6 +74,10 @@ def test_real_c7_response_profile_is_mapped_but_invalid_source_coverage_remains_
     mapped=deepcopy(raw['candidates']);normalize_candidate_profiles(request['text'],mapped,request['context'])
     assert all(c['profileValidation']['status']=='PROFILE_METADATA_MISMATCH' for c in mapped)
     assert all(c['sourcePlan']['contentProfile']=='ABSURD_PHYSICS' for c in mapped)
+    isolated=deepcopy(raw['candidates'])
+    isolated[0]['prompt']=request['text'].replace('[close-up on','[extreme close-up on',1)
+    with pytest.raises(ValueError,match='candidate-b: source-plan event coverage differs'):
+        perform_role('PROMPT_OPTIMIZATION',request['text'],request['context'],SavedProvider(isolated),'mock-isolation')
 
 
 def test_actual_local_recovery_api_cannot_create_provider_or_dispatch():

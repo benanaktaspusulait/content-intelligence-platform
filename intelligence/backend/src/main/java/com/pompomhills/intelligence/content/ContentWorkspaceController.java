@@ -20,6 +20,8 @@ public class ContentWorkspaceController {
   private final JdbcClient jdbc;
   private final VideoService videos;
   private final MediaContentService media;
+  @org.springframework.beans.factory.annotation.Autowired
+  private com.pompomhills.intelligence.workflow.WorkflowService optimizationWorkflow;
 
   public ContentWorkspaceController(
       JdbcClient jdbc, VideoService videos, MediaContentService media) {
@@ -297,6 +299,9 @@ public class ContentWorkspaceController {
               .orElse("");
       if (!latestAnalysis.equals(comparisonSource))
         throw new IllegalStateException("Candidate analysis is stale; revalidate before approval");
+      if (optimizationWorkflow == null) throw new IllegalStateException("Current candidate approval validation is unavailable");
+      optimizationWorkflow.requireCurrentOptimizationApproval(
+          java.util.UUID.fromString(request.optimizationComparisonId()), request.candidateId(), request.rawText());
 
       var existingVersion =
           jdbc.sql(

@@ -1,0 +1,71 @@
+{
+  "status": 409,
+  "response": {
+    "optimizationFailed": true,
+    "category": "SOURCE_PLAN_VALIDATION_FAILED",
+    "detail": "candidate-a: source-plan beat 1 narrative/staging/consequence coverage differs from baseline; independent story fidelity is not established",
+    "attemptState": "PROVIDER_RESULT_REJECTED",
+    "attemptId": "c7f780ef-14f8-4d88-afe0-16127f2484fe",
+    "roleRecordId": "d07ef5ae-f368-4c4e-b1d0-28385769e284",
+    "providerDispatched": false,
+    "providerCallOccurred": false,
+    "providerResponseReturned": true,
+    "candidatesSaved": false,
+    "retrySafe": false,
+    "retryRequiresOperatorAuthorization": true,
+    "tokenUsage": {
+      "inputTokens": 1701,
+      "outputTokens": 976
+    },
+    "actualCostUsd": 0.00084075,
+    "approvedCostCeilingUsd": 0.2,
+    "finishReason": "stop",
+    "profileValidations": [
+      {
+        "contractVersion": "optimization-profile-ownership-v1",
+        "candidateId": "candidate-a",
+        "historicalBaselineProfile": "AUTO",
+        "effectiveContentProfile": "ABSURD_PHYSICS",
+        "targetOwner": "SERVER_VERSION_BOUND_PRODUCTION_SETTINGS",
+        "productionSettingsRecordId": "2d90c69b-bcec-4871-9c4e-7e029906c974",
+        "rawProviderPrompt": "TITLE / FORMAT\nMimi Sticky / 15s Video\n\nVISUAL STYLE\nBright and colorful animation with a playful tone.\n\nCHARACTER / CONTINUITY\nMimi, an anthropomorphic bunny, interacts with sticky notes in a humorous and chaotic manner.\n\nTIMED SHOT PLAN\n0-2s: [extreme close-up on Mimi's finger with the sticky note clinging to it] Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger -> the note sticks to Mimi, not the cabinet\n2-5s: Mimi tries to peel the stuck note away with her other hand; the note splits into two [medium shot of Mimi struggling] Mimi pulls at the note -> one note sticks to each hand\n5-10s: Mimi continues to pull; each pull doubles the number of sticky notes [wide shot showing Mimi covered in notes] notes multiply from two to four to eight as she pulls, progressively covering her arms, legs and face -> Mimi is overwhelmed by notes\n10-12s: Mimi sees herself in a mirror and screams [close-up on Mimi's shocked face] Mimi is startled by her reflection completely covered in notes -> Mimi is startled\n12-15s: Mimi sneezes and the sticky notes fly off [medium shot of notes flying] notes scatter and stick to the cabinet -> Mimi breathes a sigh of relief but the cabinet remains messy\n\nAUDIO\nPlayful background music with sound effects for sneezing and notes sticking.\n\nNEGATIVE CONSTRAINTS\nNo dark themes or violence.\n\nFINAL CUT\nMimi is relieved but the cabinet remains visibly messy.\n\nCHARACTER IDENTITY LOCK\nMimi is the established anthropomorphic bunny character. Preserve that identity; do not render a human or invent unverified visual details. No approved visual reference is currently bound, so appearance details remain unverified.\n\nPRODUCTION SETTINGS\nAspect ratio: 9:16. Target generator: SEEDANCE_2_0_MINI. Content profile: AUTO.",
+        "providerProfileEcho": null,
+        "metadataMappings": [
+          {
+            "field": "productionSettings.contentProfile",
+            "rawValue": "AUTO",
+            "canonicalRawValue": "AUTO",
+            "effectiveValue": "ABSURD_PHYSICS",
+            "owner": "SERVER"
+          }
+        ],
+        "semanticFidelity": "UNKNOWN",
+        "status": "PROFILE_METADATA_MISMATCH",
+        "detail": "Effective metadata mapped from server settings; raw provider evidence retained."
+      },
+      {
+        "contractVersion": "optimization-profile-ownership-v1",
+        "candidateId": "candidate-b",
+        "historicalBaselineProfile": "AUTO",
+        "effectiveContentProfile": "ABSURD_PHYSICS",
+        "targetOwner": "SERVER_VERSION_BOUND_PRODUCTION_SETTINGS",
+        "productionSettingsRecordId": "2d90c69b-bcec-4871-9c4e-7e029906c974",
+        "rawProviderPrompt": "TITLE / FORMAT\nMimi Sticky / 15s Video\n\nVISUAL STYLE\nBright and colorful animation with a playful tone.\n\nCHARACTER / CONTINUITY\nMimi, an anthropomorphic bunny, interacts with sticky notes in a humorous and chaotic manner.\n\nTIMED SHOT PLAN\n0-2s: Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger [close-up on Mimi's hand] Mimi is in front of a toy cabinet, looking determined -> the note sticks to Mimi, not the cabinet\n2-5s: Mimi tries to peel the stuck note away with her other hand; the note splits into two [medium shot of Mimi struggling] Mimi pulls at the note -> one note sticks to each hand\n5-7s: [medium shot of Mimi pulling at the notes] Mimi continues to pull; each pull doubles the number of sticky notes -> notes multiply from two to four\n7-10s: [wide shot showing Mimi covered in notes] The notes continue to multiply from four to eight as she pulls, progressively covering her arms, legs and face -> Mimi is overwhelmed by notes\n10-12s: Mimi sees herself in a mirror and screams [close-up on Mimi's shocked face] Mimi is startled by her reflection completely covered in notes -> Mimi is startled\n12-15s: Mimi sneezes and the sticky notes fly off [medium shot of notes flying] notes scatter and stick to the cabinet -> Mimi breathes a sigh of relief but the cabinet remains messy\n\nAUDIO\nPlayful background music with sound effects for sneezing and notes sticking.\n\nNEGATIVE CONSTRAINTS\nNo dark themes or violence.\n\nFINAL CUT\nMimi is relieved but the cabinet remains visibly messy.\n\nCHARACTER IDENTITY LOCK\nMimi is the established anthropomorphic bunny character. Preserve that identity; do not render a human or invent unverified visual details. No approved visual reference is currently bound, so appearance details remain unverified.\n\nPRODUCTION SETTINGS\nAspect ratio: 9:16. Target generator: SEEDANCE_2_0_MINI. Content profile: AUTO.",
+        "providerProfileEcho": null,
+        "metadataMappings": [
+          {
+            "field": "productionSettings.contentProfile",
+            "rawValue": "AUTO",
+            "canonicalRawValue": "AUTO",
+            "effectiveValue": "ABSURD_PHYSICS",
+            "owner": "SERVER"
+          }
+        ],
+        "semanticFidelity": "UNKNOWN",
+        "status": "PROFILE_METADATA_MISMATCH",
+        "detail": "Effective metadata mapped from server settings; raw provider evidence retained."
+      }
+    ],
+    "providerCallsThisOperation": 0
+  }
+}

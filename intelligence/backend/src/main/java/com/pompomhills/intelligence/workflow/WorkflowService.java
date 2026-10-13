@@ -256,6 +256,13 @@ public class WorkflowService {
     roleRequest.put("context", context);
     roleRequest.put("maxCostUsd", budget.doubleValue());
     roleRequest.put("generationAuthorized", true);
+    var existingComparison = map(latestCreativeOptimization(analysisId).get("comparison"));
+    if (!request.containsKey("recoverAttemptRecordId") && !existingComparison.isEmpty()
+        && version.longValue() == jdbc.sql("SELECT max(id) FROM prompt_versions WHERE content_id=:content").param("content",content.longValue()).query(Long.class).single().longValue()
+        && source.promptText().equals(bound.get("prompt"))
+        && sha256(source.promptText()).equals(existingComparison.get("sourcePromptSha256"))
+        && maps(existingComparison.get("candidates")).stream().allMatch(c -> effectiveProfile.equals(map(c.get("sourcePlan")).get("contentProfile"))))
+      return assessOptimizationComparison(UUID.fromString(String.valueOf(existingComparison.get("recordId"))));
     var role = request.get("recoverAttemptRecordId") instanceof String savedId
         ? recoverOptimizationRole(UUID.fromString(savedId), roleRequest) : creativeRole(roleRequest, true);
     UUID roleRecordId = UUID.fromString(String.valueOf(role.get("recordId")));
@@ -349,19 +356,24 @@ public class WorkflowService {
     for (String key : List.of("contentId", "promptVersionId"))
       if (!String.valueOf(context.get(key)).equals(String.valueOf(originalContext.get(key))))
         throw new IllegalStateException("Saved provider response has stale " + key + "; recovery cannot change its association");
-    for (String key : List.of("analysisRunId", "approvedStoryText", "targetConfiguration"))
+    for (String key : List.of("analysisRunId", "approvedStoryText", "storyRevisionId", "storyApprovalRecordId", "targetConfiguration"))
       if (!java.util.Objects.equals(context.get(key), originalContext.get(key)))
         throw new IllegalStateException("Saved provider response has stale " + key + "; recovery cannot change its association");
-    var diagnostic = map(saved.get("attemptDiagnostics"));
+    var diagnostic = new LinkedHashMap<String,Object>(map(saved.get("attemptDiagnostics")));
+    diagnostic.putIfAbsent("actualCostUsd", saved.get("actualCostUsd"));
+    var savedUsage = map(saved.get("usage"));
+    if (!diagnostic.containsKey("tokenUsage") && savedUsage.get("prompt_tokens") != null && savedUsage.get("completion_tokens") != null)
+      diagnostic.put("tokenUsage", Map.of("inputTokens", savedUsage.get("prompt_tokens"), "outputTokens", savedUsage.get("completion_tokens")));
+    if (saved.get("rawProviderResult") instanceof Map<?,?>) diagnostic.putIfAbsent("providerResponseReturned", true);
     var usage = map(diagnostic.get("tokenUsage"));
     if (!(diagnostic.get("actualCostUsd") instanceof Number cost) || !Double.isFinite(cost.doubleValue()) || cost.doubleValue() < 0
         || !(originalRequest.get("maxCostUsd") instanceof Number ceiling) || !Double.isFinite(ceiling.doubleValue()) || ceiling.doubleValue() <= 0
         || cost.doubleValue() > ceiling.doubleValue() || cost.doubleValue() > ((Number)roleRequest.get("maxCostUsd")).doubleValue()
-        || !(usage.get("inputTokens") instanceof Number input) || input.longValue() < 0
-        || !(usage.get("outputTokens") instanceof Number output) || output.longValue() < 0
+        || !(usage.get("inputTokens") instanceof Number input) || !Double.isFinite(input.doubleValue()) || input.longValue() < 0 || input.doubleValue() != input.longValue()
+        || !(usage.get("outputTokens") instanceof Number output) || !Double.isFinite(output.doubleValue()) || output.longValue() < 0 || output.doubleValue() != output.longValue()
         || !Boolean.TRUE.equals(diagnostic.get("providerResponseReturned")) || diagnostic.get("usageError") != null)
       throw new IllegalStateException("Saved response lacks valid authorized budget and usage evidence; fail closed");
-    var providerResult = map(diagnostic.get("providerResultForRecovery"));
+    var providerResult = map(diagnostic.getOrDefault("providerResultForRecovery", saved.get("rawProviderResult")));
     if (providerResult.isEmpty()) throw new IllegalStateException("Saved response is not recoverable; no provider retry is performed");
     String fingerprint = "recovery:" + savedId + ":" + creativeRoleFingerprint("PROMPT_OPTIMIZATION", roleRequest);
     jdbc.sql("SELECT pg_advisory_xact_lock(hashtext(:fingerprint))").param("fingerprint", fingerprint).query((rs,n)->rs.getObject(1)).list();
@@ -387,6 +399,65 @@ public class WorkflowService {
     return result;
   }
 
+  public Map<String,Object> assessOptimizationComparison(UUID comparisonId) {
+    var value=new LinkedHashMap<String,Object>(getByKind(comparisonId,"CREATIVE_OPTIMIZATION"));
+    UUID analysisId=UUID.fromString(String.valueOf(value.get("sourceAnalysisId")));
+    var baseline=getByKind(analysisId,"REVIEW");
+    var role=getByKind(UUID.fromString(String.valueOf(value.get("roleRecordId"))),"CREATIVE_ROLE");
+    var request=map(role.get("sourceRequest"));var context=map(request.get("context"));
+    var bound=map(baseline.get("boundRequest"));
+    var content=baseline.get("contentId");var version=baseline.get("promptVersionId");
+    var stored=maps(map(role.get("result")).get("candidates"));var candidates=maps(value.get("candidates"));
+    boolean valid=String.valueOf(content).equals(String.valueOf(context.get("contentId")))
+        && String.valueOf(version).equals(String.valueOf(context.get("promptVersionId")))
+        && String.valueOf(version).equals(String.valueOf(value.get("sourcePromptVersionId")))
+        && analysisId.toString().equals(context.get("analysisRunId"))
+        && java.util.Objects.equals(request.get("text"),bound.get("prompt"))
+        && sha256(String.valueOf(request.get("text"))).equals(value.get("sourcePromptSha256"))
+        && java.util.Objects.equals(value.get("rulesetVersion"),map(baseline.get("canonicalRuleEvaluation")).get("rulesetVersion"))
+        && candidates.size()==2 && stored.size()==2;
+    for(var c:candidates) valid &= stored.stream().filter(x->java.util.Objects.equals(x.get("candidateId"),c.get("candidateId")) && java.util.Objects.equals(x.get("prompt"),c.get("prompt"))).count()==1
+        && java.util.Objects.equals(value.get("rulesetVersion"),map(map(c.get("review")).get("canonicalRuleEvaluation")).get("rulesetVersion"));
+    String latest=jdbc.sql("SELECT id::text FROM post_family_workflow_events WHERE kind='REVIEW' AND payload->>'contentId'=:content ORDER BY created_at DESC,id DESC LIMIT 1")
+        .param("content",String.valueOf(content)).query(String.class).optional().orElse("");
+    valid &= latest.equals(analysisId.toString());
+    Long latestVersion=jdbc.sql("SELECT max(id) FROM prompt_versions WHERE content_id=:content").param("content",Long.parseLong(String.valueOf(content))).query(Long.class).single();
+    valid &= String.valueOf(latestVersion).equals(String.valueOf(version));
+    var settings=getProductionSettings(Long.parseLong(String.valueOf(content)),Long.parseLong(String.valueOf(version)));
+    valid &= java.util.Objects.equals(settings.get("contentProfile"),map(context.get("targetConfiguration")).get("contentProfile"));
+    var input=new LinkedHashMap<String,Object>();input.put("text",request.get("text"));input.put("context",context);input.put("candidates",candidates);
+    input.put("baselineScore",map(baseline.get("canonicalRuleEvaluation")).get("score"));
+    var assessment=new LinkedHashMap<String,Object>(ml.workflow("optimization-assessment",input));
+    var diagnostics=map(role.get("attemptDiagnostics"));var original=map(diagnostics.get("originalAttemptDiagnostics"));
+    String attempt=String.valueOf(diagnostics.getOrDefault("attemptId",original.getOrDefault("attemptId",context.getOrDefault("attemptId","UNKNOWN"))));
+    String providerResponse=String.valueOf(diagnostics.getOrDefault("providerRequestId",original.getOrDefault("providerRequestId",map(role.get("providerResponseMetadata")).getOrDefault("providerRequestId","UNKNOWN"))));
+    var lineage=new LinkedHashMap<String,Object>();
+    lineage.put("contentId",content);lineage.put("promptVersionId",version);lineage.put("analysisRunId",analysisId.toString());
+    lineage.put("comparisonId",comparisonId.toString());lineage.put("roleRecordId",value.get("roleRecordId"));lineage.put("attemptId",attempt);
+    lineage.put("providerResponseId",providerResponse);lineage.put("rulesetVersion",value.get("rulesetVersion"));lineage.put("evaluationBindingHash",baseline.getOrDefault("bindingHash","UNKNOWN"));
+    assessment.put("lineage",lineage);assessment.put("lineageVerified",valid);
+    if (!valid) {assessment.put("recommendation","KEEP_ORIGINAL");assessment.put("conclusion","Candidate lineage, current baseline or candidate set is invalid or stale.");}
+    var enriched=new ArrayList<Map<String,Object>>();var classified=maps(assessment.get("candidates"));
+    for(var candidate:candidates) {
+      var copy=new LinkedHashMap<String,Object>(candidate);
+      var classification=classified.stream().filter(x->java.util.Objects.equals(x.get("candidateId"),copy.get("candidateId"))).findFirst().orElse(Map.of());
+      var current=new LinkedHashMap<String,Object>(classification);
+      if (!valid) {current.put("approvalEligible",false);current.put("approvalBlockReason","Stale, incomplete or conflicting candidate lineage.");}
+      copy.put("currentAssessment",current);copy.put("lineage",lineage);enriched.add(copy);
+    }
+    value.put("candidates",enriched);value.put("comparisonAssessment",assessment);
+    return value;
+  }
+
+  public void requireCurrentOptimizationApproval(UUID comparisonId,String candidateId,String text) {
+    var comparison=assessOptimizationComparison(comparisonId);
+    var candidate=maps(comparison.get("candidates")).stream().filter(c->candidateId.equals(c.get("candidateId")) && text.equals(c.get("prompt"))).findFirst()
+        .orElseThrow(()->new IllegalArgumentException("Selected candidate is not in the active comparison"));
+    var assessment=map(candidate.get("currentAssessment"));
+    if (!Boolean.TRUE.equals(assessment.get("approvalEligible")))
+      throw new IllegalArgumentException(String.valueOf(assessment.getOrDefault("approvalBlockReason","Current candidate approval contract failed")));
+  }
+
   public Map<String, Object> latestCreativeOptimization(UUID analysisId) {
     getByKind(analysisId, "REVIEW");
     return jdbc.sql(
@@ -400,7 +471,7 @@ public class WorkflowService {
           return value;
         })
         .optional()
-        .<Map<String, Object>>map(value -> Map.of("comparison", value))
+        .<Map<String, Object>>map(value -> Map.of("comparison", assessOptimizationComparison(UUID.fromString(String.valueOf(value.get("recordId"))))))
         .orElseGet(() -> {
           var empty = new LinkedHashMap<String, Object>();
           empty.put("comparison", null);
@@ -2642,7 +2713,7 @@ public class WorkflowService {
     result.put("providerResponseReturned",diagnostics.getOrDefault("providerResponseReturned",detail.contains("distinct unsaved revisions")));
     result.put("candidatesSaved",false);result.put("retrySafe",diagnostics.getOrDefault("retrySafe",false));
     result.put("retryRequiresOperatorAuthorization",true);
-    for(String key:List.of("tokenUsage","actualCostUsd","approvedCostCeilingUsd","finishReason")) if(diagnostics.get(key)!=null)result.put(key,diagnostics.get(key));
+    for(String key:List.of("tokenUsage","actualCostUsd","approvedCostCeilingUsd","finishReason","profileValidation","profileValidations","providerCallsThisOperation")) if(diagnostics.get(key)!=null)result.put(key,diagnostics.get(key));
     return result;
   }
 

@@ -276,6 +276,10 @@ class WorkflowNoRepairDecisionPostgresTest {
     var mapper = new ObjectMapper().findAndRegisterModules();
     var fixture = mapper.readValue(getClass().getResourceAsStream("/optimization-c7-profile.json"), Map.class);
     var baseline = (Map<String,Object>) fixture.get("baseline");
+    UUID seededAnalysisId=analysisId;
+    analysisId=UUID.fromString(String.valueOf(baseline.get("recordId")));
+    jdbc.sql("UPDATE post_family_workflow_events SET id=:id WHERE id=:old")
+        .param("id",analysisId).param("old",seededAnalysisId).update();
     var bound = (Map<String,Object>) baseline.get("boundRequest");
     String sourcePrompt = String.valueOf(bound.get("prompt"));
     jdbc.sql("UPDATE prompt_versions SET raw_text=:text WHERE id=10").param("text",sourcePrompt).update();
@@ -286,7 +290,7 @@ class WorkflowNoRepairDecisionPostgresTest {
     var providerValues = List.of(
         Map.of("candidateId","candidate-a","title","Opening clarity","hypothesis","Extreme close-up of existing contact anomaly", "prompt",sourcePrompt.replace("[close-up on", "[extreme close-up on")),
         Map.of("candidateId","candidate-b","title","Escalation timing","hypothesis","More time on separation before multiplication", "prompt",sourcePrompt.replace("2-5s:","2-6s:").replace("5-10s:","6-10s:")));
-    var http = java.net.http.HttpClient.newBuilder().version(java.net.http.HttpClient.Version.HTTP_1_1).build();
+    var transport = new QualityMlClient("http://localhost:8000", org.springframework.web.client.RestClient.builder());
     when(ml.workflow(anyString(),anyMap())).thenAnswer(invocation -> {
       String endpoint=invocation.getArgument(0); Map<String,Object> body=invocation.getArgument(1);
       if (endpoint.equals("creative-role")) {
@@ -294,10 +298,7 @@ class WorkflowNoRepairDecisionPostgresTest {
         body=Map.of("text",body.get("text"),"context",body.get("context"),"providerResult",Map.of("candidates",providerValues),"diagnostics",Map.of("model","mock-saved-response"));
         endpoint="optimization-recovery";
       }
-      var response=http.send(java.net.http.HttpRequest.newBuilder(java.net.URI.create("http://localhost:8000/api/v1/workflow/"+endpoint))
-          .header("Content-Type","application/json").POST(java.net.http.HttpRequest.BodyPublishers.ofString(mapper.writeValueAsString(body))).build(),java.net.http.HttpResponse.BodyHandlers.ofString());
-      assertThat(response.statusCode()).as(response.body()).isEqualTo(200);
-      return mapper.readValue(response.body(),Map.class);
+      return transport.workflow(endpoint,body);
     });
     var request=Map.<String,Object>of("contentId",10,"promptVersionId",10,"operatorAuthorized",true,"maxCostUsd",.2);
     var attempt=(Map<String,Object>)((Map<String,Object>)fixture.get("attempt")).get("payload");
@@ -311,6 +312,7 @@ class WorkflowNoRepairDecisionPostgresTest {
       assertThat((Map<String,Object>)candidate.get("sourcePlan")).containsEntry("contentProfile","ABSURD_PHYSICS");
       var review=(Map<String,Object>)candidate.get("review");
       assertThat((Map<String,Object>)review.get("canonicalRuleEvaluation")).containsEntry("status","EVALUATED").containsEntry("rulesetVersion","1.7");
+      assertThat(((Number)((Map<String,Object>)review.get("canonicalRuleEvaluation")).get("rulesEvaluated")).intValue()).isEqualTo(8);
       assertThat(String.valueOf(review.get("family8"))).contains("BLOCKED");
       assertThat(String.valueOf(candidate.get("fidelity"))).contains("SEMANTIC_FIDELITY_UNKNOWN");
     }
@@ -348,6 +350,11 @@ class WorkflowNoRepairDecisionPostgresTest {
     verify(ml,times(1)).workflow(eq("optimization-recovery"),anyMap());
     var envelope=service.latestCreativeOptimization(analysisId);
     java.nio.file.Files.writeString(java.nio.file.Path.of("/tmp/c7-e2e-comparison.json"),mapper.writeValueAsString(envelope));
+    jdbc.sql("INSERT INTO prompt_versions(content_id,id,raw_text) VALUES(10,11,'new immutable version')").update();
+    var stale=service.generateCreativeOptimization(analysisId,request,provenance);
+    assertThat(stale).containsEntry("optimizationFailed",true);
+    assertThat(String.valueOf(stale.get("detail"))).contains("stale candidate association rejected");
+    verify(ml,times(1)).workflow(eq("creative-role"),anyMap());
   }
 
   private Map<String, Object> request(UUID runId, String binding) {
