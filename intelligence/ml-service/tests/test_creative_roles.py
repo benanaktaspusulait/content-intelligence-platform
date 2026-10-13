@@ -579,3 +579,16 @@ def test_post_response_processing_exception_retains_response(monkeypatch):
     assert result['rejectedProviderResponse']
     assert 'private payload' not in result['attemptDiagnostics']['error']
     assert len(provider.calls) == 1
+
+def test_optimization_system_prompt_requires_structurally_distinct_timed_shot_plans():
+    """The system prompt must contain the structural-differentiation requirements
+    so the model cannot produce near-identical TIMED SHOT PLANs."""
+    from app.workflow.creative_roles import perform_role as _perform_role
+    import inspect, ast
+    src = inspect.getsource(_perform_role)
+    # Must require the first beat to differ between candidates
+    assert 'first timed beat' in src, \
+        "System prompt does not require the first timed beat to differ between candidates"
+    # Must require hypothesis to name a concrete structural change
+    assert 'actually implemented in the prompt body' in src, \
+        "System prompt does not require hypothesis to describe an actually implemented change"
