@@ -227,7 +227,7 @@ public class WorkflowService {
     if (essentialEvents.isEmpty())
       throw new IllegalStateException("Source-bound essential event anchors are unavailable");
     var context = new LinkedHashMap<String, Object>();
-    context.put("optimizationGenerationContractVersion", "execution-distinct-v2");
+    context.put("optimizationGenerationContractVersion", "execution-distinct-v3");
     context.put("analysisRunId", analysisId.toString());
     context.put("contentId", content.longValue());
     context.put("promptVersionId", version.longValue());
@@ -937,7 +937,9 @@ public class WorkflowService {
       failed.put("sourceStoryRecordId", context.get("sourceStoryRecordId"));
       failed.put("sourceRequest", verifiedRequest);
       failed.put("requestFingerprint", requestFingerprint);
-      boolean preDispatchRejection = isKnownPreDispatchRejection(detail);
+      boolean preDispatchRejection = isKnownPreDispatchRejection(detail)
+          || (error instanceof com.pompomhills.intelligence.quality.MlWorkflowException typedError
+              && Boolean.FALSE.equals(typedError.diagnostics().get("providerDispatched")));
       String failedState =
           preDispatchRejection
               ? "PRE_DISPATCH_REJECTED"

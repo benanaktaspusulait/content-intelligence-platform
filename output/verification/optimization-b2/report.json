@@ -1,0 +1,46 @@
+{
+  "attemptId": "b2dcb0c2-36ee-43ac-948b-dd2e64d71349",
+  "savedResultId": "c4ca805f-fd3c-42f7-b3b3-03f2adb93bda",
+  "historicalCategory": "STORY_FIDELITY_VALIDATION_FAILED",
+  "currentDeterministicCandidateAResult": "CANDIDATE_STRUCTURE_INVALID",
+  "findings": [
+    "Candidate A moves the existing close-up annotation without materially changing execution.",
+    "Candidate B omits source-linked escalation coverage.",
+    "Both candidates retain AUTO despite selected ABSURD_PHYSICS profile."
+  ],
+  "fixes": [
+    "Source-derived baseline execution summary supplied to generation.",
+    "Structural distinctness checked before generic narrative coverage diagnostics.",
+    "Source coverage and selected target configuration requirements clarified.",
+    "Pre-dispatch source contract errors retain safe retry semantics.",
+    "Generation contract version advanced to execution-distinct-v3."
+  ],
+  "regressionTests": {
+    "mlPassed": 102,
+    "backendPassed": 10,
+    "frontendPassed": 57
+  },
+  "deployment": {
+    "services": [
+      "ml-service",
+      "backend",
+      "frontend"
+    ],
+    "healthChecksPassed": true,
+    "deployedMlFilesMatchWorkspace": {
+      "optimization_distinctness.py": true,
+      "creative_roles.py": true,
+      "api.py": true
+    }
+  },
+  "historicalAttemptPromptVersionsAndApprovedSourceUnchanged": true,
+  "realProviderCallsThisTurn": 0,
+  "automaticRetry": false,
+  "candidatesAccepted": false,
+  "savedUsage": {
+    "inputTokens": 1283,
+    "outputTokens": 953,
+    "calculatedCostUsd": 0.00076425,
+    "invoiceVerified": false
+  }
+}

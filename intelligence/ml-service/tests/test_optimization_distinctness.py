@@ -58,3 +58,24 @@ def test_generic_character_object_and_supported_camera_timing_changes():
     ctx={'essentialEvents':['Nori lifts a wooden coin','Nori flips the coin','Nori catches the coin'],'targetConfiguration':{'duration':6},'approvedStoryText':'Nori lifts, flips and catches a wooden coin.'}
     result,_=evaluate(c,source,ctx)
     assert result['result']['candidates'][0]['optimizationObjective']!=result['result']['candidates'][1]['optimizationObjective']
+
+def test_actual_b2_response_is_nonmaterial_before_generic_fidelity_classification():
+    from pathlib import Path
+    fixture=json.loads((Path(__file__).parent/'fixtures/optimization-b2-rejected.json').read_text())
+    source=fixture['request']['text'];ctx=fixture['request']['context'];values=deepcopy(fixture['providerResult']['candidates'])
+    with pytest.raises(ValueError,match='candidate-a: materially unchanged execution') as failure:evaluate(values,source,ctx)
+    from app.workflow.creative_roles import _optimization_validation_category
+    assert _optimization_validation_category(failure.value)=='CANDIDATE_STRUCTURE_INVALID'
+    # The second candidate has a real timing change but loses source-linked escalation coverage.
+    _,_,valid=valid_optimization_fixture();values[0]=valid[0]
+    # Isolate B's source-coverage failure after correcting its independent stale settings label in the fixture only.
+    values[1]['prompt']=values[1]['prompt'].replace('Content profile: AUTO','Content profile: ABSURD_PHYSICS')
+    with pytest.raises(ValueError,match='candidate-b: source-plan beat') as failure:evaluate(values,source,ctx)
+    assert _optimization_validation_category(failure.value)=='SOURCE_PLAN_VALIDATION_FAILED'
+
+def test_provider_receives_concrete_baseline_camera_and_timing_decisions():
+    _,_,values=valid_optimization_fixture();result,provider=evaluate(values)
+    baseline=provider.payload['context']['baselineExecution']
+    assert baseline[0]['framing']=='CLOSE' and baseline[0]['startTime']==0 and baseline[0]['endTime']==2
+    assert baseline[0]['cameraMotion']=='UNSPECIFIED'
+    assert 'Do not propose the same existing shot' in provider.system

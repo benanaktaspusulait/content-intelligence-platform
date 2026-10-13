@@ -29,6 +29,10 @@ def _outside(text,beats):
     # The saved production target overrides a stale profile label, not story content.
     return _normalize(re.sub(r'Content profile:\s*[A-Z_]+','Content profile: TARGET',text,flags=re.I))
 
+def baseline_execution(text):
+    return [{'beatId':b['id'],'sourceSpan':b['sourceSpan'],'startTime':b['startTime'],'endTime':b['endTime'],
+             'framing':_signature(b)[2] or 'UNSPECIFIED','cameraMotion':_signature(b)[3] or 'UNSPECIFIED'} for b in _beats(text)]
+
 def validate_execution_candidates(source,candidates,context):
     baseline=_beats(source);target=context.get('targetConfiguration') or {};settings=target.get('settings') or {}
     duration=target.get('duration',baseline[-1]['endTime']);ratio=settings.get('aspectRatio') or target.get('aspectRatio')
@@ -38,21 +42,27 @@ def validate_execution_candidates(source,candidates,context):
         if len(beats)!=len(baseline):raise ValueError(f'{identity}: source-plan event coverage differs from baseline')
         if beats[0]['startTime']!=0 or beats[-1]['endTime']!=float(duration) or any(a['endTime']!=b['startTime'] for a,b in zip(beats,beats[1:])):
             raise ValueError(f'{identity}: source-plan timing must cover the configured duration without gaps or overlaps')
-        if any(_narrative(a)!=_narrative(b) for a,b in zip(baseline,beats)) or _outside(prompt,beats)!=protected:
-            raise ValueError(f'{identity}: approved source narrative, identity, physical rule or ending changed; candidate rejected')
+        signature=[_signature(b) for b in beats];before=[_signature(b) for b in baseline]
+        changes=[i for i,(a,b) in enumerate(zip(before,signature)) if a!=b]
+        if signatures and signature==signatures[0]:raise ValueError('Candidates share the same execution decisions; wording-only differences are rejected')
+        if not changes:raise ValueError(f'{identity}: materially unchanged execution; first beat remains {before[0][2] or "UNSPECIFIED"} framing, {before[0][3] or "UNSPECIFIED"} camera motion, {before[0][0]}-{before[0][1]}s. Moving camera brackets, paraphrases or deleting prose is not optimization')
+        if index==0 and before[0][2:]==signature[0][2:]:raise ValueError(f'{identity}: opening framing or camera decision must materially change')
+        if index==1 and not any(i in changes for i in range(1,max(2,len(beats)-1))):raise ValueError(f'{identity}: mid-section pacing or camera decision must materially change')
         if ratio and set(re.findall(r'\b(?:9:16|16:9|1:1)\b',prompt))!={ratio}:raise ValueError(f'{identity}: source-plan aspect ratio conflicts with target')
         for key,label in [('generator','Target generator'),('contentProfile','Content profile')]:
             expected=target.get(key)
             if expected and expected!='UNKNOWN' and not re.search(re.escape(label)+r':\s*'+re.escape(str(expected))+r'\b',prompt,re.I):raise ValueError(f'{identity}: source-plan {key} conflicts with target')
+        # Establish actual execution change before claiming a story-fidelity failure.
+        # Moving a bracket or deleting redundant prose is not an opening optimization.
+        for number,(original,revised) in enumerate(zip(baseline,beats),start=1):
+            if _narrative(original)!=_narrative(revised):
+                raise ValueError(f'{identity}: source-plan beat {number} narrative/staging/consequence coverage differs from baseline; independent story fidelity is not established')
+        if _outside(prompt,beats)!=protected:
+            raise ValueError(f'{identity}: source-plan protected text outside timed beats differs from baseline; identity, rule and ending coverage requires review')
         for source_beat,beat in zip(baseline,beats):
             allowed=_tokens(source_beat['sourceQuote'])|_CAMERA_WORDS
             annotations=' '.join(re.findall(r'\[([^\]]*)\]',beat['sourceQuote']))
             if _tokens(annotations)-allowed:raise ValueError(f'{identity}: unsupported annotation content; story fidelity remains unverified')
-        signature=[_signature(b) for b in beats];before=[_signature(b) for b in baseline]
-        changes=[i for i,(a,b) in enumerate(zip(before,signature)) if a!=b]
-        if not changes:raise ValueError(f'{identity}: materially unchanged execution; paraphrases and commentary do not constitute optimization')
-        if index==0 and before[0][2:]==signature[0][2:]:raise ValueError(f'{identity}: opening framing or camera decision must materially change')
-        if index==1 and not any(i in changes for i in range(1,max(2,len(beats)-1))):raise ValueError(f'{identity}: mid-section pacing or camera decision must materially change')
         evidence=[]
         for i in changes:
             evidence.append({'beatId':beats[i]['id'],'baselineSourceSpan':baseline[i]['sourceSpan'],'candidateSourceSpan':beats[i]['sourceSpan'],'baselineQuote':baseline[i]['sourceQuote'],'candidateQuote':beats[i]['sourceQuote'],'before':before[i],'after':signature[i]})

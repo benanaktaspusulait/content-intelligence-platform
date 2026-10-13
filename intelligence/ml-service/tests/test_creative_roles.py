@@ -126,11 +126,8 @@ def test_prompt_optimization_http_endpoint_uses_mock_provider_and_returns_verifi
 
 
 def test_prompt_optimization_rejects_provider_response_over_actual_cost_ceiling(monkeypatch):
-    source = 'Approved source prompt.'
-    provider = FixtureProvider({'candidates': [
-        {'candidateId': 'candidate-a', 'title': 'Opening', 'hypothesis': 'Clarify the opening.', 'prompt': source + '\nOpening revision.'},
-        {'candidateId': 'candidate-b', 'title': 'Pacing', 'hypothesis': 'Clarify the progression.', 'prompt': source + '\nPacing revision.'},
-    ]})
+    source, context, candidates = valid_optimization_fixture()
+    provider = FixtureProvider({'candidates': candidates})
     provider.last_usage = {'prompt_tokens': 100, 'completion_tokens': 400_000}
     provider.last_response_metadata = {'apiStatus': 'COMPLETED'}
     monkeypatch.setenv('WORKFLOW_CREATIVE_ROLES_ENABLED', 'true')
@@ -140,18 +137,15 @@ def test_prompt_optimization_rejects_provider_response_over_actual_cost_ceiling(
     monkeypatch.setattr('app.workflow.creative_roles.OpenAIProvider', lambda **kwargs: provider)
 
     with pytest.raises(ValueError, match='Actual provider cost exceeded the authorized cost ceiling'):
-        run_paid_role('PROMPT_OPTIMIZATION', source, {'essentialEvents': [source]}, 0.20)
+        run_paid_role('PROMPT_OPTIMIZATION', source, context, 0.20)
 
     assert len(provider.calls) == 1
 
 
 @pytest.mark.parametrize('usage', [None, {'prompt_tokens': 1}, {'prompt_tokens': -1, 'completion_tokens': 1}])
 def test_prompt_optimization_rejects_unverifiable_actual_provider_cost(monkeypatch, usage):
-    source = 'Approved source prompt.'
-    provider = FixtureProvider({'candidates': [
-        {'candidateId': 'candidate-a', 'title': 'Opening', 'hypothesis': 'Clarify the opening.', 'prompt': source + '\nOpening revision.'},
-        {'candidateId': 'candidate-b', 'title': 'Pacing', 'hypothesis': 'Clarify the progression.', 'prompt': source + '\nPacing revision.'},
-    ]})
+    source, context, candidates = valid_optimization_fixture()
+    provider = FixtureProvider({'candidates': candidates})
     provider.last_usage = usage
     provider.last_response_metadata = {'apiStatus': 'COMPLETED'}
     monkeypatch.setenv('WORKFLOW_CREATIVE_ROLES_ENABLED', 'true')
@@ -161,17 +155,14 @@ def test_prompt_optimization_rejects_unverifiable_actual_provider_cost(monkeypat
     monkeypatch.setattr('app.workflow.creative_roles.OpenAIProvider', lambda **kwargs: provider)
 
     with pytest.raises(ValueError, match='actual cost cannot be checked'):
-        run_paid_role('PROMPT_OPTIMIZATION', source, {'essentialEvents': [source]}, 0.20)
+        run_paid_role('PROMPT_OPTIMIZATION', source, context, 0.20)
 
     assert len(provider.calls) == 1
 
 
 def test_prompt_optimization_checks_actual_cost_before_rejecting_an_invalid_response(monkeypatch):
-    source = 'Approved source prompt.'
-    provider = FixtureProvider({'candidates': [
-        {'candidateId': 'candidate-a', 'title': 'Opening', 'hypothesis': 'Clarify the opening.', 'prompt': 'Changed source.'},
-        {'candidateId': 'candidate-b', 'title': 'Pacing', 'hypothesis': 'Clarify the progression.', 'prompt': 'Changed source.'},
-    ]})
+    source, context, candidates = valid_optimization_fixture()
+    provider = FixtureProvider({'candidates': candidates})
     provider.last_usage = {'prompt_tokens': 100, 'completion_tokens': 400_000}
     provider.last_response_metadata = {'apiStatus': 'COMPLETED'}
     monkeypatch.setenv('WORKFLOW_CREATIVE_ROLES_ENABLED', 'true')
@@ -181,7 +172,7 @@ def test_prompt_optimization_checks_actual_cost_before_rejecting_an_invalid_resp
     monkeypatch.setattr('app.workflow.creative_roles.OpenAIProvider', lambda **kwargs: provider)
 
     with pytest.raises(ValueError, match='Actual provider cost exceeded the authorized cost ceiling'):
-        run_paid_role('PROMPT_OPTIMIZATION', source, {'essentialEvents': [source]}, 0.20)
+        run_paid_role('PROMPT_OPTIMIZATION', source, context, 0.20)
 
     assert len(provider.calls) == 1
 
@@ -213,12 +204,11 @@ def test_prompt_optimization_missing_role_model_fails_before_provider_creation(m
       {'candidateId': 'candidate-b', 'title': 'B', 'hypothesis': 'B', 'prompt': 'A replacement ending.'}], 'omits an essential'),
 ])
 def test_prompt_optimization_rejects_incomplete_or_unfaithful_candidates(candidates, message):
-    source = 'Mimi wants to attach a note. Each pull doubles the notes. Mimi sneezes and the notes fly off.'
+    source,context,valid=valid_optimization_fixture()
+    if len(candidates)==2: candidates[0]=valid[0]
     provider = FixtureProvider({'candidates': candidates})
     with pytest.raises(ValueError, match=message):
-        perform_role('PROMPT_OPTIMIZATION', source, {
-            'essentialEvents': ['Mimi wants to attach a note.', 'Each pull doubles the notes.', 'Mimi sneezes and the notes fly off.'],
-        }, provider, 'configured-model')
+        perform_role('PROMPT_OPTIMIZATION',source,context,provider,'configured-model')
 
 
 @pytest.mark.parametrize('role,result,provider_name', [
@@ -577,36 +567,14 @@ def test_optimization_system_prompt_requires_structurally_distinct_timed_shot_pl
 
 
 def test_optimization_rejects_near_verbatim_baseline_paraphrase():
-    """A candidate that is a >90% similarity paraphrase of the baseline must be rejected."""
-    source = 'Mimi wants to attach a note. Each pull doubles the notes. Mimi sneezes and the notes fly off.'
-    events = ['Mimi wants to attach a note.', 'Each pull doubles the notes.', 'Mimi sneezes and the notes fly off.']
-    # Near-verbatim copy: source with only a tiny extra suffix — all anchors intact, similarity ~0.96
-    near_verbatim_a = source + ' Extra.'
-    candidate_b = source + '\nOpening frame: show the note already stuck to Mimi\'s finger.'
-    candidates = [
-        {'candidateId': 'candidate-a', 'title': 'Opening', 'hypothesis': 'Clarify the opening.',
-         'prompt': near_verbatim_a},
-        {'candidateId': 'candidate-b', 'title': 'Pacing', 'hypothesis': 'Clarify beat progression.',
-         'prompt': candidate_b},
-    ]
-    provider = FixtureProvider({'candidates': candidates})
-    with pytest.raises(ValueError, match='near-verbatim copy of the source'):
-        perform_role('PROMPT_OPTIMIZATION', source, {'essentialEvents': events}, provider, 'configured-model')
+    source,context,candidates=valid_optimization_fixture()
+    candidates[0]['prompt']=source.replace('Content profile: AUTO','Content profile: ABSURD_PHYSICS')+' Extra.'
+    with pytest.raises(ValueError,match='materially unchanged execution'):
+        perform_role('PROMPT_OPTIMIZATION',source,context,FixtureProvider({'candidates':candidates}),'fixture')
 
 
 def test_optimization_rejects_semantically_equivalent_ab_paraphrase():
-    """Candidate B that is a >82% similarity paraphrase of Candidate A must be rejected."""
-    source = 'Mimi wants to attach a note. Each pull doubles the notes. Mimi sneezes and the notes fly off.'
-    events = ['Mimi wants to attach a note.', 'Each pull doubles the notes.', 'Mimi sneezes and the notes fly off.']
-    candidate_a = source + '\nOpening frame: show the note already stuck to Mimi\'s finger.'
-    # Slightly reword candidate_a to produce a near-duplicate candidate_b
-    candidate_b = source + '\nOpening frame: show the note already adhered to Mimi\'s finger.'
-    candidates = [
-        {'candidateId': 'candidate-a', 'title': 'Opening', 'hypothesis': 'Show anomaly immediately.',
-         'prompt': candidate_a},
-        {'candidateId': 'candidate-b', 'title': 'Pacing', 'hypothesis': 'Improve pacing.',
-         'prompt': candidate_b},
-    ]
-    provider = FixtureProvider({'candidates': candidates})
-    with pytest.raises(ValueError, match='semantic near-duplicate of candidate-a'):
-        perform_role('PROMPT_OPTIMIZATION', source, {'essentialEvents': events}, provider, 'configured-model')
+    source,context,candidates=valid_optimization_fixture()
+    candidates[1]['prompt']=candidates[0]['prompt'].replace('extreme close-up','extreme close up')
+    with pytest.raises(ValueError,match='same execution decisions'):
+        perform_role('PROMPT_OPTIMIZATION',source,context,FixtureProvider({'candidates':candidates}),'fixture')

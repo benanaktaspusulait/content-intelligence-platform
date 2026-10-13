@@ -201,6 +201,7 @@ def creative_role(request: CreativeRoleRequest) -> dict[str, Any]:
         message = str(error)
         category = (
             'CONFIGURATION_ERROR' if 'configuration' in message.lower() or 'api key' in message.lower()
+            else 'SOURCE_PLAN_VALIDATION_FAILED' if 'source-plan' in message.lower()
             else 'COST_CEILING_EXCEEDED' if 'budget' in message.lower() or 'cost ceiling' in message.lower()
             else 'CANDIDATE_STRUCTURE_INVALID' if request.role == 'PROMPT_OPTIMIZATION'
             else 'REQUEST_VALIDATION_ERROR'

@@ -1,0 +1,57 @@
+{
+  "attemptId": "b2dcb0c2-36ee-43ac-948b-dd2e64d71349",
+  "request": {
+    "role": "PROMPT_OPTIMIZATION",
+    "text": "TITLE / FORMAT\nMimi Sticky / 15s Video\n\nVISUAL STYLE\nBright and colorful animation with a playful tone.\n\nCHARACTER / CONTINUITY\nMimi, an anthropomorphic bunny, interacts with sticky notes in a humorous and chaotic manner.\n\nTIMED SHOT PLAN\n0-2s: Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger [close-up on Mimi's hand] Mimi is in front of a toy cabinet, looking determined -> the note sticks to Mimi, not the cabinet\n2-5s: Mimi tries to peel the stuck note away with her other hand; the note splits into two [medium shot of Mimi struggling] Mimi pulls at the note -> one note sticks to each hand\n5-10s: Mimi continues to pull; each pull doubles the number of sticky notes [wide shot showing Mimi covered in notes] notes multiply from two to four to eight as she pulls, progressively covering her arms, legs and face -> Mimi is overwhelmed by notes\n10-12s: Mimi sees herself in a mirror and screams [close-up on Mimi's shocked face] Mimi is startled by her reflection completely covered in notes -> Mimi is startled\n12-15s: Mimi sneezes and the sticky notes fly off [medium shot of notes flying] notes scatter and stick to the cabinet -> Mimi breathes a sigh of relief but the cabinet remains messy\n\nAUDIO\nPlayful background music with sound effects for sneezing and notes sticking.\n\nNEGATIVE CONSTRAINTS\nNo dark themes or violence.\n\nFINAL CUT\nMimi is relieved but the cabinet remains visibly messy.\n\nCHARACTER IDENTITY LOCK\nMimi is the established anthropomorphic bunny character. Preserve that identity; do not render a human or invent unverified visual details. No approved visual reference is currently bound, so appearance details remain unverified.\n\nPRODUCTION SETTINGS\nAspect ratio: 9:16. Target generator: SEEDANCE_2_0_MINI. Content profile: AUTO.",
+    "context": {
+      "attemptId": "b2dcb0c2-36ee-43ac-948b-dd2e64d71349",
+      "contentId": 10,
+      "analysisRunId": "9208e75a-b158-4ffb-94fe-03c15ca96395",
+      "essentialEvents": [
+        "Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger",
+        "Mimi tries to peel the stuck note away with her other hand; the note splits into two",
+        "Mimi continues to pull; each pull doubles the number of sticky notes",
+        "Mimi sees herself in a mirror and screams",
+        "Mimi sneezes and the sticky notes fly off"
+      ],
+      "promptVersionId": 10,
+      "storyRevisionId": "candidate-2-revision-7c63cc86",
+      "retrievedLessons": [],
+      "approvedStoryText": "Mimi, oyuncak dolab\u0131na 'Topla!' yazan bir yap\u0131\u015fkan not yap\u0131\u015ft\u0131rmak ister. Not, Mimi'nin parma\u011f\u0131na yap\u0131\u015f\u0131r. Mimi di\u011fer eliyle \u00e7\u0131karmaya \u00e7al\u0131\u015f\u0131rken not ikiye ayr\u0131l\u0131r ve iki eline de yap\u0131\u015f\u0131r. Her \u00e7eki\u015fte notlar ikiye katlanarak \u00e7o\u011fal\u0131r. K\u0131sa s\u00fcrede Mimi'nin kollar\u0131, bacaklar\u0131 ve y\u00fcz\u00fc notlarla kaplan\u0131r. Mimi aynada kendini g\u00f6r\u00fcnce \u00e7\u0131\u011fl\u0131k atar. Notlar o kadar \u00e7o\u011fal\u0131r ki Mimi bo\u011fulacak gibi olur. Sonunda hap\u015f\u0131r\u0131r ve t\u00fcm notlar u\u00e7u\u015farak dolab\u0131n \u00fczerine yap\u0131\u015f\u0131r. Mimi rahat bir nefes al\u0131r ama dolap h\u00e2l\u00e2 da\u011f\u0131n\u0131kt\u0131r.",
+      "targetConfiguration": {
+        "duration": 15,
+        "settings": {
+          "mode": "image2video",
+          "resolution": "480p",
+          "aspectRatio": "9:16"
+        },
+        "generator": "SEEDANCE_2_0_MINI",
+        "contentProfile": "ABSURD_PHYSICS"
+      },
+      "storyApprovalRecordId": "20b77d13-848d-46d0-ab4b-bb9b6efb0836",
+      "optimizationGenerationContractVersion": "execution-distinct-v2"
+    },
+    "maxCostUsd": 0.2
+  },
+  "providerResult": {
+    "candidates": [
+      {
+        "title": "Enhanced Visual Clarity",
+        "prompt": "TITLE / FORMAT\nMimi Sticky / 15s Video\n\nVISUAL STYLE\nBright and colorful animation with a playful tone.\n\nCHARACTER / CONTINUITY\nMimi, an anthropomorphic bunny, interacts with sticky notes in a humorous and chaotic manner.\n\nTIMED SHOT PLAN\n0-2s: [close-up on Mimi's hand] Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger -> the note sticks to Mimi, not the cabinet\n2-5s: Mimi tries to peel the stuck note away with her other hand; the note splits into two [medium shot of Mimi struggling] Mimi pulls at the note -> one note sticks to each hand\n5-10s: Mimi continues to pull; each pull doubles the number of sticky notes [wide shot showing Mimi covered in notes] notes multiply from two to four to eight as she pulls, progressively covering her arms, legs and face -> Mimi is overwhelmed by notes\n10-12s: Mimi sees herself in a mirror and screams [close-up on Mimi's shocked face] Mimi is startled by her reflection completely covered in notes -> Mimi is startled\n12-15s: Mimi sneezes and the sticky notes fly off [medium shot of notes flying] notes scatter and stick to the cabinet -> Mimi breathes a sigh of relief but the cabinet remains messy\n\nAUDIO\nPlayful background music with sound effects for sneezing and notes sticking.\n\nNEGATIVE CONSTRAINTS\nNo dark themes or violence.\n\nFINAL CUT\nMimi is relieved but the cabinet remains visibly messy.\n\nCHARACTER IDENTITY LOCK\nMimi is the established anthropomorphic bunny character. Preserve that identity; do not render a human or invent unverified visual details. No approved visual reference is currently bound, so appearance details remain unverified.\n\nPRODUCTION SETTINGS\nAspect ratio: 9:16. Target generator: SEEDANCE_2_0_MINI. Content profile: AUTO.",
+        "hypothesis": "The first beat is restructured to provide immediate visibility of the sticky note anomaly by using a close-up shot on Mimi's hand.",
+        "candidateId": "candidate-a"
+      },
+      {
+        "title": "Pacing and Escalation Clarity",
+        "prompt": "TITLE / FORMAT\nMimi Sticky / 15s Video\n\nVISUAL STYLE\nBright and colorful animation with a playful tone.\n\nCHARACTER / CONTINUITY\nMimi, an anthropomorphic bunny, interacts with sticky notes in a humorous and chaotic manner.\n\nTIMED SHOT PLAN\n0-2s: Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger [medium shot of Mimi's determination] -> the note sticks to Mimi, not the cabinet\n2-5s: Mimi tries to peel the stuck note away with her other hand; the note splits into two [medium shot of Mimi struggling] Mimi pulls at the note -> one note sticks to each hand\n5-8s: Mimi continues to pull; each pull doubles the number of sticky notes [wide shot showing Mimi covered in notes] notes multiply from two to four as she pulls, progressively covering her arms -> Mimi is overwhelmed by notes\n8-10s: [close-up on Mimi's shocked face] Mimi sees herself in a mirror and screams -> Mimi is startled by her reflection completely covered in notes\n10-15s: Mimi sneezes and the sticky notes fly off [medium shot of notes flying] notes scatter and stick to the cabinet -> Mimi breathes a sigh of relief but the cabinet remains messy\n\nAUDIO\nPlayful background music with sound effects for sneezing and notes sticking.\n\nNEGATIVE CONSTRAINTS\nNo dark themes or violence.\n\nFINAL CUT\nMimi is relieved but the cabinet remains visibly messy.\n\nCHARACTER IDENTITY LOCK\nMimi is the established anthropomorphic bunny character. Preserve that identity; do not render a human or invent unverified visual details. No approved visual reference is currently bound, so appearance details remain unverified.\n\nPRODUCTION SETTINGS\nAspect ratio: 9:16. Target generator: SEEDANCE_2_0_MINI. Content profile: AUTO.",
+        "hypothesis": "The mid-section beats are restructured to show distinct escalation stages with clearer timing.",
+        "candidateId": "candidate-b"
+      }
+    ]
+  },
+  "tokenUsage": {
+    "inputTokens": 1283,
+    "outputTokens": 953
+  },
+  "actualCostUsd": 0.00076425
+}

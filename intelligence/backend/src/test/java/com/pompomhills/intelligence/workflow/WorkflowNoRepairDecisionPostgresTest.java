@@ -207,8 +207,8 @@ class WorkflowNoRepairDecisionPostgresTest {
         Map.of("candidateId", "candidate-a", "title", "Opening", "hypothesis", "Clarify the opening frame.", "prompt", sourcePrompt + "\nA"),
         Map.of("candidateId", "candidate-b", "title", "Pacing", "hypothesis", "Spread out the escalation.", "prompt", sourcePrompt + "\nB"));
     when(ml.workflow(eq("creative-role"), anyMap()))
-        .thenThrow(new IllegalStateException(
-            "Workflow service returned HTTP 409: Explicit server model configuration required; no fallback"))
+        .thenThrow(new com.pompomhills.intelligence.quality.MlWorkflowException(409,Map.of(
+            "detail","Source-plan validation failed before dispatch","category","SOURCE_PLAN_VALIDATION_FAILED","providerDispatched",false,"retrySafe",true)))
         .thenReturn(Map.of("role", "PROMPT_OPTIMIZATION", "provider", "openai", "model", "fixture",
             "result", Map.of("candidates", candidates), "attemptState", "SAVED"));
     when(ml.workflow(eq("source-plan"), anyMap()))
@@ -261,7 +261,7 @@ class WorkflowNoRepairDecisionPostgresTest {
     assertThat(jdbc.sql("SELECT count(*) FROM prompt_versions").query(Long.class).single()).isEqualTo(1L);
     var roleCalls=org.mockito.ArgumentCaptor.forClass(Map.class);
     verify(ml, times(2)).workflow(eq("creative-role"), roleCalls.capture());
-    assertThat(roleCalls.getAllValues()).allSatisfy(call -> assertThat((Map<String,Object>)call.get("context")).containsEntry("optimizationGenerationContractVersion","execution-distinct-v2"));
+    assertThat(roleCalls.getAllValues()).allSatisfy(call -> assertThat((Map<String,Object>)call.get("context")).containsEntry("optimizationGenerationContractVersion","execution-distinct-v3"));
     var reviewCalls = org.mockito.ArgumentCaptor.forClass(Map.class);
     verify(ml, times(4)).workflow(eq("review"), reviewCalls.capture());
     assertThat(reviewCalls.getAllValues())
