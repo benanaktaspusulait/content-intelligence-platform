@@ -1,0 +1,43 @@
+{
+  "attemptId": "da1e86af-9569-455e-ac52-1988b6a73c09",
+  "savedRecordId": "a17fdf94-8070-4072-bc56-b2835d2a313e",
+  "rootCause": "Provider nested candidate-b inside candidate-a; candidates array contained one item. JSON object mode did not enforce response shape.",
+  "finishReason": "stop",
+  "tokenUsage": {
+    "inputTokens": 1625,
+    "outputTokens": 991
+  },
+  "calculatedCostUsd": 0.0008383500000000001,
+  "historicalResponseRecoverable": true,
+  "candidatesAccepted": false,
+  "fix": [
+    "Strict JSON Schema on optimization provider request: exactly two flat candidate objects and no additional properties.",
+    "Retain candidate ID, distinctness, story, timing and target validation.",
+    "Include schema overhead in pre-dispatch budget estimation.",
+    "Generation contract execution-distinct-v4; no automatic retry.",
+    "Diagnostic reports actual candidate count and nested candidate-b."
+  ],
+  "testResults": {
+    "ml": 103,
+    "backend": 10,
+    "frontend": 57
+  },
+  "paidCallsDuringInvestigation": 0,
+  "providerSchemaDocumentation": "https://developers.openai.com/api/docs/guides/structured-outputs",
+  "deploymentVerified": {
+    "workflow/creative_roles.py": true,
+    "llm/openai_provider.py": true,
+    "backendContractV4": true
+  },
+  "deployedSavedResponseMockVerified": true,
+  "historicalAttemptAndPromptV10Unchanged": true,
+  "deploymentLog": "/tmp/da-deploy.log",
+  "filesChanged": [
+    "intelligence/ml-service/app/llm/openai_provider.py",
+    "intelligence/ml-service/app/workflow/creative_roles.py",
+    "intelligence/backend/src/main/java/com/pompomhills/intelligence/workflow/WorkflowService.java",
+    "intelligence/backend/src/test/java/com/pompomhills/intelligence/workflow/WorkflowNoRepairDecisionPostgresTest.java",
+    "intelligence/ml-service/tests/test_optimization_failure_contract.py",
+    "intelligence/ml-service/tests/fixtures/optimization-da-nested.json"
+  ]
+}

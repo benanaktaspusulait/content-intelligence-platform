@@ -616,6 +616,29 @@ def _normalise_build_prompt_response(value: dict[str, Any]) -> dict[str, Any]:
     return value
 
 
+OPTIMIZATION_RESPONSE_FORMAT = {
+    'type': 'json_schema',
+    'json_schema': {
+        'name': 'prompt_optimization_candidates', 'strict': True,
+        'schema': {
+            'type': 'object', 'additionalProperties': False, 'required': ['candidates'],
+            'properties': {'candidates': {
+                'type': 'array', 'minItems': 2, 'maxItems': 2,
+                'items': {
+                    'type': 'object', 'additionalProperties': False,
+                    'required': ['candidateId', 'title', 'hypothesis', 'prompt'],
+                    'properties': {
+                        'candidateId': {'type': 'string', 'enum': ['candidate-a', 'candidate-b']},
+                        'title': {'type': 'string'}, 'hypothesis': {'type': 'string'},
+                        'prompt': {'type': 'string'},
+                    },
+                },
+            }},
+        },
+    },
+}
+
+
 def perform_role(role: str, text: str, context: dict[str, Any], provider: LLMProvider, model: str) -> dict[str, Any]:
     if role not in ROLES or not text.strip() or len(text.encode('utf-8')) > 16000:
         raise ValueError('Supported role and bounded text required')
@@ -631,11 +654,31 @@ def perform_role(role: str, text: str, context: dict[str, Any], provider: LLMPro
     safe_context = {key: context[key] for key in ('protectedIntent', 'intentRequirements', 'findings', 'retrievedLessons', 'constraints', 'inputMode', 'storyGenerationMode', 'lockedRequirements', 'permittedVariation', 'mainCharacter', 'character', 'characterRecord', 'characterReferences', 'referenceBindings', 'preferences', 'profile', 'candidates', 'candidateIds', 'requestedAlternativeCount', 'sourceRequestId', 'sourceFingerprint', 'previousReview', 'currentRevision', 'previousRevision', 'targetDuration', 'aspectRatio', 'reviewPolicyVersion', 'selectedGenerator', 'generatorCapabilities', 'targetConfiguration', 'storyTitle', 'promptBuilderContractVersion', 'essentialEvents', 'approvedStoryText', 'optimizationGenerationContractVersion', 'baselineExecution', 'analysisRunId', 'promptVersionId', 'contentId') if key in context}
     if role == 'PROMPT_OPTIMIZATION':
         from .optimization_distinctness import baseline_execution
+        from .optimization_profile_contract import generation_contract
         safe_context['baselineExecution'] = baseline_execution(text)
+        # JSON mode guarantees syntax only. Enforce two flat candidate objects
+        # at generation; keep all semantic and source checks below unchanged.
+        provider.response_format = deepcopy(OPTIMIZATION_RESPONSE_FORMAT)
+        ownership = generation_contract(text, context)
+        if ownership:
+            items = provider.response_format['json_schema']['schema']['properties']['candidates']['items']
+            items['properties']['targetContentProfile'] = {'type': 'string', 'enum': [ownership['targetContentProfile']]}
+            items['required'].append('targetContentProfile')
+        system += (' The server owns the effective targetContentProfile in the profileOwnership contract. '
+                   'baselinePromptHistoricalProfile and labels inside baselinePromptText are historical only. '
+                   'Preserve the approved narrative, not obsolete production metadata. Return targetContentProfile '
+                   'as the supplied server value and use it in the PRODUCTION SETTINGS section of both complete prompts. '
+                   'Do not copy historical AUTO labels into effective candidate plans. Keep every narrative/staging/consequence '
+                   'sentence unchanged outside camera brackets; change execution, not source coverage.')
     if role == 'BUILD_PROMPT':
         safe_context['generatorCapabilities'] = _configured_generator_capabilities(context)
     provider.last_request_started = True
-    raw_response = provider.complete(json.dumps({'text': text, 'context': safe_context}, ensure_ascii=False), system=system, temperature=0)
+    payload = {'text': text, 'context': safe_context}
+    if role == 'PROMPT_OPTIMIZATION':
+        payload = {'baselinePromptText': text, 'context': safe_context}
+        if ownership:
+            payload['profileOwnership'] = {key: value for key, value in ownership.items() if key != 'baselinePromptText'}
+    raw_response = provider.complete(json.dumps(payload, ensure_ascii=False), system=system, temperature=0)
     provider.last_raw_response = raw_response
     if not isinstance(raw_response, str) or not raw_response.strip():
         raise ValueError(f'{ROLES[role].title()} returned an empty JSON response')
@@ -814,10 +857,21 @@ def perform_role(role: str, text: str, context: dict[str, Any], provider: LLMPro
     elif role == 'PROMPT_OPTIMIZATION':
         candidates = value.get('candidates')
         if not isinstance(candidates, list) or len(candidates) != 2:
-            raise ValueError('Exactly two prompt optimization candidates are required')
+            count = len(candidates) if isinstance(candidates, list) else 'missing/non-array'
+            nested = any(isinstance(item, dict) and 'candidate-b' in item for item in candidates) if isinstance(candidates, list) else False
+            raise ValueError(f'Exactly two prompt optimization candidates are required; received {count}'
+                             + ('; candidate-b was nested inside another candidate instead of a separate array item' if nested else ''))
         ids = [item.get('candidateId') for item in candidates if isinstance(item, dict)]
         if ids != ['candidate-a', 'candidate-b']:
             raise ValueError('Prompt optimization candidate IDs must be candidate-a and candidate-b')
+        if any(item.get('prompt') == text for item in candidates):
+            raise ValueError('Candidate prompt exactly matches the source; a revised prompt is required')
+        if candidates[0].get('prompt') == candidates[1].get('prompt'):
+            raise ValueError('Candidate prompt duplicates candidate-a; two distinct revisions are required')
+        from .optimization_profile_contract import normalize_candidate_profiles
+        # Preserve the original provider result above, then map only metadata.
+        if all(isinstance(item.get('prompt'), str) and item['prompt'].strip() for item in candidates):
+            normalize_candidate_profiles(text, candidates, context)
         prompts: list[str] = []
         essential = context.get('essentialEvents')
         if not isinstance(essential, list) or not essential or any(
@@ -861,6 +915,8 @@ def perform_role(role: str, text: str, context: dict[str, Any], provider: LLMPro
     }
     return {'role': role, 'provider': ROLES[role], 'model': model, 'result': value,
             'calls': 1, 'visualInspected': False, 'validationStatus': 'NOT_VALIDATED',
+            **({'rawProviderResult': deepcopy(provider.last_role_result), 'rawProviderResponse': raw_response}
+               if role == 'PROMPT_OPTIMIZATION' else {}),
             'usage': getattr(provider, 'last_usage', None),
             'providerResponseMetadata': response_metadata}
 
@@ -947,8 +1003,14 @@ def run_paid_role(role: str, text: str, context: dict[str, Any], max_cost_usd: f
         from .optimization_distinctness import baseline_execution
         context = {**context, 'baselineExecution': baseline_execution(text)}
     payload_bytes = len(json.dumps({'text': text, 'context': context}, ensure_ascii=False).encode('utf-8'))
+    if role == 'PROMPT_OPTIMIZATION':
+        from .optimization_profile_contract import generation_contract
+        ownership = generation_contract(text, context)
+        if ownership:
+            payload_bytes += len(json.dumps({k:v for k,v in ownership.items() if k != 'baselinePromptText'}, ensure_ascii=False).encode('utf-8'))
     output_token_limit = 4000 if role == 'STORY' else 2000
-    upper_bound = ((payload_bytes + 2000) * input_rate + output_token_limit * output_rate) / 1_000_000
+    schema_bytes = len(json.dumps(OPTIMIZATION_RESPONSE_FORMAT).encode('utf-8')) if role == 'PROMPT_OPTIMIZATION' else 0
+    upper_bound = ((payload_bytes + schema_bytes + 2000) * input_rate + output_token_limit * output_rate) / 1_000_000
     if payload_bytes > 24000 or upper_bound > max_cost_usd:
         raise ValueError('Request exceeds approved cost ceiling')
     provider = DeepSeekTextProvider(model) if role == 'STORY' else OpenAIProvider(model=model)
@@ -999,6 +1061,8 @@ def run_paid_role(role: str, text: str, context: dict[str, Any], max_cost_usd: f
                 'usageError': usage_error,
                 'attemptId': context.get('attemptId'),
                 'providerResultForRecovery': getattr(provider, 'last_role_result', None),
+                'rawProviderResponse': getattr(provider, 'last_raw_response', None),
+                'profileValidation': getattr(error, 'profile_validation', None),
             }
             logger.warning(
                 "Creative role attempt rejected category=%s attempt_id=%s provider_dispatched=true response_returned=%s provider_request_id=%s",

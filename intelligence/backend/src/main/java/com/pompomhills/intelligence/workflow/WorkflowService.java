@@ -210,6 +210,14 @@ public class WorkflowService {
       throw new IllegalStateException("Quality analysis is stale; reload Step 6 before optimizing");
     var source = prompts.load(content.longValue(), version.longValue());
     var bound = map(baseline.get("boundRequest"));
+    var productionSettings = getProductionSettings(content.longValue(), version.longValue());
+    if (!source.promptSha256().equals(String.valueOf(productionSettings.get("promptHash"))))
+      throw new IllegalStateException("Current production settings are not bound to the immutable prompt hash");
+    String effectiveProfile = String.valueOf(productionSettings.get("contentProfile")).trim().toUpperCase(java.util.Locale.ROOT).replace('-', '_').replace(' ', '_');
+    if (!List.of("AUTO", "ABSURD_PHYSICS", "CURIOSITY_ADVENTURE", "EDUCATIONAL", "MIXED", "UNKNOWN").contains(effectiveProfile))
+      throw new IllegalStateException("Persisted production content profile is invalid");
+    if (!effectiveProfile.equals(String.valueOf(bound.get("contentProfile"))))
+      throw new IllegalStateException("Current production profile differs from Step 5; explicitly revalidate the current settings first");
     var sourceEvidence = map(map(baseline.get("productionEvidence")).get("source"));
     if (!source.promptText().equals(bound.get("prompt"))
         || !sha256(source.promptText()).equals(String.valueOf(sourceEvidence.getOrDefault("sha256", ""))))
@@ -227,7 +235,9 @@ public class WorkflowService {
     if (essentialEvents.isEmpty())
       throw new IllegalStateException("Source-bound essential event anchors are unavailable");
     var context = new LinkedHashMap<String, Object>();
-    context.put("optimizationGenerationContractVersion", "execution-distinct-v3");
+    context.put("optimizationGenerationContractVersion", "profile-ownership-v1");
+    context.put("productionSettingsRecordId", productionSettings.get("recordId"));
+    context.put("protectedIntent", baseline.getOrDefault("protectedIntent", essentialEvents));
     context.put("analysisRunId", analysisId.toString());
     context.put("contentId", content.longValue());
     context.put("promptVersionId", version.longValue());
@@ -236,7 +246,7 @@ public class WorkflowService {
     context.put("storyApprovalRecordId", provenance.get("approvalRecordId"));
     context.put("essentialEvents", essentialEvents);
     context.put("targetConfiguration", Map.of(
-        "contentProfile", bound.getOrDefault("contentProfile", "UNKNOWN"),
+        "contentProfile", effectiveProfile,
         "generator", bound.getOrDefault("generator", "UNKNOWN"),
         "duration", bound.getOrDefault("desiredDuration", "UNKNOWN"),
         "settings", map(bound.get("settings"))));
@@ -246,12 +256,19 @@ public class WorkflowService {
     roleRequest.put("context", context);
     roleRequest.put("maxCostUsd", budget.doubleValue());
     roleRequest.put("generationAuthorized", true);
-    var role = creativeRole(roleRequest, true);
+    var role = request.get("recoverAttemptRecordId") instanceof String savedId
+        ? recoverOptimizationRole(UUID.fromString(savedId), roleRequest) : creativeRole(roleRequest, true);
     UUID roleRecordId = UUID.fromString(String.valueOf(role.get("recordId")));
     String roleAttemptState = String.valueOf(role.getOrDefault("attemptState", ""));
     if (!"SAVED".equals(roleAttemptState) && !"REUSED_SAVED_RESULT".equals(roleAttemptState)) {
       return optimizationFailure(role);
     }
+    var currentSource = prompts.load(content.longValue(), version.longValue());
+    Long currentVersion = jdbc.sql("SELECT max(id) FROM prompt_versions WHERE content_id=:content")
+        .param("content", content.longValue()).query(Long.class).single();
+    if (!source.promptText().equals(currentSource.promptText()) || currentVersion == null || version.longValue() != currentVersion.longValue()
+        || !productionSettings.get("recordId").equals(getProductionSettings(content.longValue(), version.longValue()).get("recordId")))
+      return optimizationLocalFailure(role, "SOURCE_PLAN_VALIDATION_FAILED", "Prompt version or production settings changed after dispatch; stale candidate association rejected.");
     var previousComparison =
         jdbc.sql(
                 "SELECT id,payload::text FROM post_family_workflow_events WHERE"
@@ -320,6 +337,54 @@ public class WorkflowService {
     try { comparison.put("recordId", save("CREATIVE_OPTIMIZATION", null, comparison)); }
     catch (RuntimeException error) { throw new IllegalStateException("CANDIDATE_PERSISTENCE_FAILED: comparison was not saved; provider attempt " + roleRecordId + " remains durable and can be reused without a paid call", error); }
     return comparison;
+  }
+
+  private Map<String, Object> recoverOptimizationRole(UUID savedId, Map<String, Object> roleRequest) {
+    var saved = getByKind(savedId, "CREATIVE_ROLE");
+    var originalRequest = map(saved.get("sourceRequest"));
+    var originalContext = map(originalRequest.get("context"));
+    var context = map(roleRequest.get("context"));
+    if (!"PROMPT_OPTIMIZATION".equals(saved.get("role")) || !roleRequest.get("text").equals(originalRequest.get("text")))
+      throw new IllegalStateException("Saved provider response does not match the immutable baseline");
+    for (String key : List.of("contentId", "promptVersionId"))
+      if (!String.valueOf(context.get(key)).equals(String.valueOf(originalContext.get(key))))
+        throw new IllegalStateException("Saved provider response has stale " + key + "; recovery cannot change its association");
+    for (String key : List.of("analysisRunId", "approvedStoryText", "targetConfiguration"))
+      if (!java.util.Objects.equals(context.get(key), originalContext.get(key)))
+        throw new IllegalStateException("Saved provider response has stale " + key + "; recovery cannot change its association");
+    var diagnostic = map(saved.get("attemptDiagnostics"));
+    var usage = map(diagnostic.get("tokenUsage"));
+    if (!(diagnostic.get("actualCostUsd") instanceof Number cost) || !Double.isFinite(cost.doubleValue()) || cost.doubleValue() < 0
+        || !(originalRequest.get("maxCostUsd") instanceof Number ceiling) || !Double.isFinite(ceiling.doubleValue()) || ceiling.doubleValue() <= 0
+        || cost.doubleValue() > ceiling.doubleValue() || cost.doubleValue() > ((Number)roleRequest.get("maxCostUsd")).doubleValue()
+        || !(usage.get("inputTokens") instanceof Number input) || input.longValue() < 0
+        || !(usage.get("outputTokens") instanceof Number output) || output.longValue() < 0
+        || !Boolean.TRUE.equals(diagnostic.get("providerResponseReturned")) || diagnostic.get("usageError") != null)
+      throw new IllegalStateException("Saved response lacks valid authorized budget and usage evidence; fail closed");
+    var providerResult = map(diagnostic.get("providerResultForRecovery"));
+    if (providerResult.isEmpty()) throw new IllegalStateException("Saved response is not recoverable; no provider retry is performed");
+    String fingerprint = "recovery:" + savedId + ":" + creativeRoleFingerprint("PROMPT_OPTIMIZATION", roleRequest);
+    jdbc.sql("SELECT pg_advisory_xact_lock(hashtext(:fingerprint))").param("fingerprint", fingerprint).query((rs,n)->rs.getObject(1)).list();
+    var reused = findCreativeRoleByFingerprint(fingerprint, "PROMPT_OPTIMIZATION");
+    if (reused.isPresent()) return reused.get();
+    Map<String,Object> result;
+    try {
+      result = new LinkedHashMap<>(ml.workflow("optimization-recovery", Map.of(
+          "text", roleRequest.get("text"), "context", context, "providerResult", providerResult, "diagnostics", diagnostic)));
+    } catch (com.pompomhills.intelligence.quality.MlWorkflowException error) {
+      var failed = new LinkedHashMap<>(saved);
+      var local = new LinkedHashMap<>(diagnostic);
+      local.putAll(error.diagnostics()); local.put("providerDispatched", false); local.put("providerCallsThisOperation", 0);
+      local.put("detail", error.getMessage()); local.put("retryAutomatically", false); local.put("retrySafe", false);
+      failed.put("attemptDiagnostics", local);
+      return failed;
+    }
+    result.put("sourceRequest", roleRequest); result.put("recoveredFromRecordId", savedId.toString());
+    result.put("requestFingerprint", fingerprint); result.put("attemptState", "SAVED");
+    result.put("attemptDiagnostics", Map.of("category", "RECOVERED_SAVED_RESPONSE", "providerCallsThisOperation", 0,
+        "candidatesSaved", true, "retryAutomatically", false, "originalAttemptDiagnostics", diagnostic));
+    result.put("recordId", saveCreativeAttempt(result));
+    return result;
   }
 
   public Map<String, Object> latestCreativeOptimization(UUID analysisId) {

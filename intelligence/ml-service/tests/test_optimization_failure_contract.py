@@ -4,7 +4,7 @@ from pathlib import Path
 from unittest.mock import MagicMock, patch
 import pytest
 from openai.types.chat import ChatCompletion
-from app.workflow.creative_roles import run_paid_role, CreativeRoleFailure
+from app.workflow.creative_roles import run_paid_role, CreativeRoleFailure, OPTIMIZATION_RESPONSE_FORMAT
 
 REQUEST=json.loads((Path(__file__).parent/'fixtures/optimization-failed-request.json').read_text())
 
@@ -47,6 +47,28 @@ def test_realistic_sdk_success_keeps_usage_candidate_contract_and_zero_automatic
         assert result['actualCostUsd']==pytest.approx(.00105) and result['approvedCostCeilingUsd']==.2
         assert len(result['result']['candidates'])==2 and result['validationStatus']=='NOT_VALIDATED'
         call=sdk.return_value.chat.completions.create.call_args.kwargs
-        assert call['response_format']=={'type':'json_object'} and call['max_tokens']==2000
+        assert call['response_format']['type']=='json_schema' and call['max_tokens']==2000
+        schema=call['response_format']['json_schema']
+        assert schema['strict'] is True
+        items=schema['schema']['properties']['candidates']
+        assert items['minItems']==items['maxItems']==2
+        assert items['items']['additionalProperties'] is False
+        assert set(items['items']['required'])=={'candidateId','title','hypothesis','prompt','targetContentProfile'}
+        assert items['items']['properties']['targetContentProfile']['enum']==['ABSURD_PHYSICS']
         assert sdk.call_args.kwargs['max_retries']==0
+        sdk.return_value.chat.completions.create.assert_called_once()
+
+def test_saved_nested_candidate_response_remains_rejected_and_recoverable(monkeypatch):
+    setup(monkeypatch)
+    fixture=json.loads((Path(__file__).parent/'fixtures/optimization-da-nested.json').read_text())
+    request=fixture['request']; recovered=fixture['response']
+    with patch('app.llm.openai_provider.OpenAI') as sdk:
+        sdk.return_value.chat.completions.create.return_value=sdk_response(json.dumps(recovered))
+        with pytest.raises(CreativeRoleFailure) as failure:
+            run_paid_role(request['role'],request['text'],request['context'],.2)
+        diagnostics=failure.value.diagnostics
+        assert diagnostics['category']=='CANDIDATE_STRUCTURE_INVALID'
+        assert 'received 1' in diagnostics['validationError'] and 'nested' in diagnostics['validationError']
+        assert diagnostics['providerResultForRecovery']==recovered
+        assert diagnostics['retrySafe'] is False and not diagnostics['candidatesSaved']
         sdk.return_value.chat.completions.create.assert_called_once()

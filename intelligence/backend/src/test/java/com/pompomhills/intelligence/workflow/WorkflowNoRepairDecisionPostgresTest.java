@@ -194,6 +194,7 @@ class WorkflowNoRepairDecisionPostgresTest {
     var source = Map.of(
         "sha256", HexFormat.of().formatHex(MessageDigest.getInstance("SHA-256").digest(sourcePrompt.getBytes(StandardCharsets.UTF_8))));
     var baseline = new LinkedHashMap<String, Object>();
+    service.saveProductionSettings(Map.of("contentId",10,"promptVersionId",10,"contentProfile","ABSURD_PHYSICS"));
     baseline.put("boundRequest", bound);
     baseline.put("productionEvidence", Map.of("source", source));
     baseline.put("canonicalRuleEvaluation", Map.of("rulesetVersion", "1.7", "score", 85, "grade", "B"));
@@ -261,12 +262,92 @@ class WorkflowNoRepairDecisionPostgresTest {
     assertThat(jdbc.sql("SELECT count(*) FROM prompt_versions").query(Long.class).single()).isEqualTo(1L);
     var roleCalls=org.mockito.ArgumentCaptor.forClass(Map.class);
     verify(ml, times(2)).workflow(eq("creative-role"), roleCalls.capture());
-    assertThat(roleCalls.getAllValues()).allSatisfy(call -> assertThat((Map<String,Object>)call.get("context")).containsEntry("optimizationGenerationContractVersion","execution-distinct-v3"));
+    assertThat(roleCalls.getAllValues()).allSatisfy(call -> assertThat((Map<String,Object>)call.get("context")).containsEntry("optimizationGenerationContractVersion","profile-ownership-v1"));
     var reviewCalls = org.mockito.ArgumentCaptor.forClass(Map.class);
     verify(ml, times(4)).workflow(eq("review"), reviewCalls.capture());
     assertThat(reviewCalls.getAllValues())
         .allSatisfy(call -> assertThat(call.get("acceptedStartFrame")).isEqualTo(false))
         .allSatisfy(call -> assertThat(call.get("authorizationEvidence")).isNull());
+  }
+
+  @Test
+  @org.junit.jupiter.api.condition.EnabledIfSystemProperty(named="optimization.liveMock", matches="true")
+  void actualSavedSettingsThroughDeployedMlAndComparisonPersistenceWithZeroPaidCalls() throws Exception {
+    var mapper = new ObjectMapper().findAndRegisterModules();
+    var fixture = mapper.readValue(getClass().getResourceAsStream("/optimization-c7-profile.json"), Map.class);
+    var baseline = (Map<String,Object>) fixture.get("baseline");
+    var bound = (Map<String,Object>) baseline.get("boundRequest");
+    String sourcePrompt = String.valueOf(bound.get("prompt"));
+    jdbc.sql("UPDATE prompt_versions SET raw_text=:text WHERE id=10").param("text",sourcePrompt).update();
+    jdbc.sql("UPDATE post_family_workflow_events SET payload=CAST(:payload AS jsonb) WHERE id=:id")
+        .param("payload",mapper.writeValueAsString(baseline)).param("id",analysisId).update();
+    when(prompts.load(10L,10L)).thenReturn(new ContentPromptSnapshot("v1",10,"Mimi","REEL","DRAFT",10,1,sourcePrompt,"{}","unused"));
+    service.saveProductionSettings((Map<String,Object>)fixture.get("productionSettings"));
+    var providerValues = List.of(
+        Map.of("candidateId","candidate-a","title","Opening clarity","hypothesis","Extreme close-up of existing contact anomaly", "prompt",sourcePrompt.replace("[close-up on", "[extreme close-up on")),
+        Map.of("candidateId","candidate-b","title","Escalation timing","hypothesis","More time on separation before multiplication", "prompt",sourcePrompt.replace("2-5s:","2-6s:").replace("5-10s:","6-10s:")));
+    var http = java.net.http.HttpClient.newBuilder().version(java.net.http.HttpClient.Version.HTTP_1_1).build();
+    when(ml.workflow(anyString(),anyMap())).thenAnswer(invocation -> {
+      String endpoint=invocation.getArgument(0); Map<String,Object> body=invocation.getArgument(1);
+      if (endpoint.equals("creative-role")) {
+        assertThat((Map<String,Object>)body.get("context")).containsEntry("optimizationGenerationContractVersion","profile-ownership-v1");
+        body=Map.of("text",body.get("text"),"context",body.get("context"),"providerResult",Map.of("candidates",providerValues),"diagnostics",Map.of("model","mock-saved-response"));
+        endpoint="optimization-recovery";
+      }
+      var response=http.send(java.net.http.HttpRequest.newBuilder(java.net.URI.create("http://localhost:8000/api/v1/workflow/"+endpoint))
+          .header("Content-Type","application/json").POST(java.net.http.HttpRequest.BodyPublishers.ofString(mapper.writeValueAsString(body))).build(),java.net.http.HttpResponse.BodyHandlers.ofString());
+      assertThat(response.statusCode()).as(response.body()).isEqualTo(200);
+      return mapper.readValue(response.body(),Map.class);
+    });
+    var request=Map.<String,Object>of("contentId",10,"promptVersionId",10,"operatorAuthorized",true,"maxCostUsd",.2);
+    var attempt=(Map<String,Object>)((Map<String,Object>)fixture.get("attempt")).get("payload");
+    var ctx=(Map<String,Object>)((Map<String,Object>)attempt.get("sourceRequest")).get("context");
+    var provenance=Map.<String,Object>of("approvedStoryText",ctx.get("approvedStoryText"),"approvalRecordId",ctx.get("storyApprovalRecordId"),"storyRevisionId",ctx.get("storyRevisionId"));
+    var comparison=service.generateCreativeOptimization(analysisId,request,provenance);
+    assertThat(comparison).doesNotContainKey("optimizationFailed");
+    var candidates=(List<Map<String,Object>>)comparison.get("candidates");
+    assertThat(candidates).hasSize(2);
+    for(var candidate:candidates) {
+      assertThat((Map<String,Object>)candidate.get("sourcePlan")).containsEntry("contentProfile","ABSURD_PHYSICS");
+      var review=(Map<String,Object>)candidate.get("review");
+      assertThat((Map<String,Object>)review.get("canonicalRuleEvaluation")).containsEntry("status","EVALUATED").containsEntry("rulesetVersion","1.7");
+      assertThat(String.valueOf(review.get("family8"))).contains("BLOCKED");
+      assertThat(String.valueOf(candidate.get("fidelity"))).contains("SEMANTIC_FIDELITY_UNKNOWN");
+    }
+    var replay=service.generateCreativeOptimization(analysisId,request,provenance);
+    assertThat(String.valueOf(replay.get("recordId"))).isEqualTo(String.valueOf(comparison.get("recordId")));
+    verify(ml,times(1)).workflow(eq("creative-role"),anyMap());
+    assertThat(jdbc.sql("SELECT count(*) FROM prompt_versions").query(Long.class).single()).isEqualTo(1L);
+    assertThat(jdbc.sql("SELECT raw_text FROM prompt_versions WHERE id=10").query(String.class).single()).isEqualTo(sourcePrompt);
+    assertThat(jdbc.sql("SELECT count(*) FROM post_family_workflow_events WHERE kind='CREATIVE_OPTIMIZATION'").query(Long.class).single()).isEqualTo(1L);
+    // Recover a mocked rejected response through the real zero-provider path.
+    var stored = mapper.convertValue(attempt, new com.fasterxml.jackson.core.type.TypeReference<Map<String,Object>>(){});
+    var savedRequest=(Map<String,Object>)stored.get("sourceRequest");
+    ((Map<String,Object>)savedRequest.get("context")).put("analysisRunId",analysisId.toString());
+    var diagnostic=(Map<String,Object>)stored.get("attemptDiagnostics");
+    diagnostic.put("providerResultForRecovery",Map.of("candidates",providerValues));
+    UUID recoveryId=UUID.randomUUID();
+    jdbc.sql("INSERT INTO post_family_workflow_events(id,kind,payload) VALUES(:id,'CREATIVE_ROLE',CAST(:payload AS jsonb))")
+        .param("id",recoveryId).param("payload",mapper.writeValueAsString(stored)).update();
+    var recoveryRequest=new LinkedHashMap<String,Object>(request);recoveryRequest.put("recoverAttemptRecordId",recoveryId.toString());
+    var recovered=service.generateCreativeOptimization(analysisId,recoveryRequest,provenance);
+    assertThat(recovered).doesNotContainKey("optimizationFailed");
+    var recoveredReplay=service.generateCreativeOptimization(analysisId,recoveryRequest,provenance);
+    assertThat(String.valueOf(recoveredReplay.get("recordId"))).isEqualTo(String.valueOf(recovered.get("recordId")));
+    verify(ml,times(1)).workflow(eq("optimization-recovery"),anyMap());
+    verify(ml,times(1)).workflow(eq("creative-role"),anyMap());
+    // Missing budget evidence and stale prompt association fail before local recovery.
+    diagnostic.remove("actualCostUsd");
+    jdbc.sql("UPDATE post_family_workflow_events SET payload=CAST(:payload AS jsonb) WHERE id=:id")
+        .param("id",recoveryId).param("payload",mapper.writeValueAsString(stored)).update();
+    assertThatThrownBy(()->service.generateCreativeOptimization(analysisId,recoveryRequest,provenance)).hasMessageContaining("budget and usage evidence");
+    ((Map<String,Object>)savedRequest.get("context")).put("promptVersionId",11);
+    jdbc.sql("UPDATE post_family_workflow_events SET payload=CAST(:payload AS jsonb) WHERE id=:id")
+        .param("id",recoveryId).param("payload",mapper.writeValueAsString(stored)).update();
+    assertThatThrownBy(()->service.generateCreativeOptimization(analysisId,recoveryRequest,provenance)).hasMessageContaining("stale promptVersionId");
+    verify(ml,times(1)).workflow(eq("optimization-recovery"),anyMap());
+    var envelope=service.latestCreativeOptimization(analysisId);
+    java.nio.file.Files.writeString(java.nio.file.Path.of("/tmp/c7-e2e-comparison.json"),mapper.writeValueAsString(envelope));
   }
 
   private Map<String, Object> request(UUID runId, String binding) {

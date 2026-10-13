@@ -165,6 +165,37 @@ class CreativeRoleRequest(BaseModel):
     maxCostUsd: float = Field(gt=0, le=20)
 
 
+class OptimizationRecoveryRequest(BaseModel):
+    model_config = ConfigDict(extra='forbid')
+    text: str = Field(min_length=1, max_length=16000)
+    context: dict[str, Any]
+    providerResult: dict[str, Any]
+    diagnostics: dict[str, Any]
+
+
+@router.post('/optimization-recovery')
+def optimization_recovery(request: OptimizationRecoveryRequest) -> dict[str, Any]:
+    from .creative_roles import perform_role, _optimization_validation_category
+    from copy import deepcopy
+    # No SDK, provider factory, paid configuration or network path is reachable.
+    class SavedResponse:
+        def complete(self, *args, **kwargs):
+            return json.dumps(request.providerResult, ensure_ascii=False)
+    provider = SavedResponse()
+    try:
+        result = perform_role('PROMPT_OPTIMIZATION', request.text, request.context,
+                              provider, str(request.diagnostics.get('model', 'saved-response')))
+    except ValueError as error:
+        raise HTTPException(409, {'category': _optimization_validation_category(error),
+                                 'detail': str(error), 'providerDispatched': False,
+                                 'providerCallsThisOperation': 0,
+                                 'profileValidation': getattr(error, 'profile_validation', None)}) from error
+    result.update(calls=0, provider='saved-response',
+                  rawProviderResult=deepcopy(request.providerResult),
+                  providerResponseMetadata=deepcopy(request.diagnostics))
+    return result
+
+
 class LegacyProductionSpecMigrationRequest(BaseModel):
     model_config = ConfigDict(extra='forbid')
     prompt: str = Field(min_length=1, max_length=50000)
