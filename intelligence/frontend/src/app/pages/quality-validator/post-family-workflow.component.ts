@@ -1100,6 +1100,7 @@ export class PostFamilyWorkflowComponent implements OnChanges, OnDestroy {
         this.creativeOptimizationComparison = null;
         this.creativeOptimizationSelectedCandidateId = null;
         this.creativeOptimizationReviewedCandidateId = null;
+        this.creativeOptimizationConsent = false;
         this.creativeOptimizationError = this.creativeOptimizationFailureMessage(response);
         this.changeDetector.markForCheck();
       },

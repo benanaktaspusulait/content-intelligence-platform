@@ -1,6 +1,7 @@
 import json
 import os
 import pytest
+from optimization_test_fixture import valid_optimization_fixture
 from app.workflow.creative_roles import migrate_legacy_production_spec, perform_role, run_paid_role, role_readiness
 
 class FixtureProvider:
@@ -52,14 +53,8 @@ def test_story_candidates_are_bounded_when_provider_overproduces():
 
 
 def test_prompt_optimization_requires_two_distinct_candidates_and_preserved_source_events():
-    source = 'Mimi wants to attach a note. Each pull doubles the notes. Mimi sneezes and the notes fly off.'
-    events = ['Mimi wants to attach a note.', 'Each pull doubles the notes.', 'Mimi sneezes and the notes fly off.']
-    candidates = [
-        {'candidateId': 'candidate-a', 'title': 'Clear opening', 'hypothesis': 'Make the anomaly visible immediately.',
-         'prompt': source + '\nOpening frame: show the note already stuck to Mimi’s finger.'},
-        {'candidateId': 'candidate-b', 'title': 'Measured escalation', 'hypothesis': 'Distribute the multiplication actions.',
-         'prompt': source + '\nUse three distinct, readable multiplication stages.'},
-    ]
+    source, context, candidates = valid_optimization_fixture()
+    events=context["essentialEvents"]
     provider = FixtureProvider({'candidates': candidates})
     response = perform_role('PROMPT_OPTIMIZATION', source, {'essentialEvents': events}, provider, 'configured-model')
     assert [item['candidateId'] for item in response['result']['candidates']] == ['candidate-a', 'candidate-b']
@@ -68,13 +63,7 @@ def test_prompt_optimization_requires_two_distinct_candidates_and_preserved_sour
 
 
 def test_paid_prompt_optimization_uses_its_explicit_role_model_and_budget(monkeypatch):
-    source = 'Mimi wants to attach a note. Each pull doubles the notes. Mimi sneezes and the notes fly off.'
-    candidates = [
-        {'candidateId': 'candidate-a', 'title': 'Opening', 'hypothesis': 'Show the anomaly immediately.',
-         'prompt': source + '\nOpening: the note is already stuck to Mimi’s finger.'},
-        {'candidateId': 'candidate-b', 'title': 'Pacing', 'hypothesis': 'Distribute escalation across clear beats.',
-         'prompt': source + '\nShow three separate doubling stages.'},
-    ]
+    source, context, candidates = valid_optimization_fixture()
     provider = FixtureProvider({'candidates': candidates})
     provider.last_usage = {'prompt_tokens': 100, 'completion_tokens': 100}
     selected_models = []
@@ -91,11 +80,7 @@ def test_paid_prompt_optimization_uses_its_explicit_role_model_and_budget(monkey
     result = run_paid_role(
         'PROMPT_OPTIMIZATION',
         source,
-        {'essentialEvents': [
-            'Mimi wants to attach a note.',
-            'Each pull doubles the notes.',
-            'Mimi sneezes and the notes fly off.',
-        ]},
+        context,
         0.20,
     )
 
@@ -114,11 +99,8 @@ def test_prompt_optimization_http_endpoint_uses_mock_provider_and_returns_verifi
     from app.main import app
     from app.workflow import creative_roles
 
-    source = 'Approved source prompt.'
-    provider = FixtureProvider({'candidates': [
-        {'candidateId': 'candidate-a', 'title': 'Opening', 'hypothesis': 'Clarify the opening.', 'prompt': source + '\nOpening revision.'},
-        {'candidateId': 'candidate-b', 'title': 'Pacing', 'hypothesis': 'Clarify the progression.', 'prompt': source + '\nPacing revision.'},
-    ]})
+    source, context, candidates = valid_optimization_fixture()
+    provider = FixtureProvider({"candidates": candidates})
     provider.last_usage = {'prompt_tokens': 100, 'completion_tokens': 100}
     for key, value in {
         'WORKFLOW_CREATIVE_ROLES_ENABLED': 'true',
@@ -132,7 +114,7 @@ def test_prompt_optimization_http_endpoint_uses_mock_provider_and_returns_verifi
     response = TestClient(app).post('/api/v1/workflow/creative-role', json={
         'role': 'PROMPT_OPTIMIZATION',
         'text': source,
-        'context': {'essentialEvents': [source]},
+        'context': context,
         'maxCostUsd': 0.20,
     })
 
@@ -592,3 +574,39 @@ def test_optimization_system_prompt_requires_structurally_distinct_timed_shot_pl
     # Must require hypothesis to name a concrete structural change
     assert 'actually implemented in the prompt body' in src, \
         "System prompt does not require hypothesis to describe an actually implemented change"
+
+
+def test_optimization_rejects_near_verbatim_baseline_paraphrase():
+    """A candidate that is a >90% similarity paraphrase of the baseline must be rejected."""
+    source = 'Mimi wants to attach a note. Each pull doubles the notes. Mimi sneezes and the notes fly off.'
+    events = ['Mimi wants to attach a note.', 'Each pull doubles the notes.', 'Mimi sneezes and the notes fly off.']
+    # Near-verbatim copy: source with only a tiny extra suffix — all anchors intact, similarity ~0.96
+    near_verbatim_a = source + ' Extra.'
+    candidate_b = source + '\nOpening frame: show the note already stuck to Mimi\'s finger.'
+    candidates = [
+        {'candidateId': 'candidate-a', 'title': 'Opening', 'hypothesis': 'Clarify the opening.',
+         'prompt': near_verbatim_a},
+        {'candidateId': 'candidate-b', 'title': 'Pacing', 'hypothesis': 'Clarify beat progression.',
+         'prompt': candidate_b},
+    ]
+    provider = FixtureProvider({'candidates': candidates})
+    with pytest.raises(ValueError, match='near-verbatim copy of the source'):
+        perform_role('PROMPT_OPTIMIZATION', source, {'essentialEvents': events}, provider, 'configured-model')
+
+
+def test_optimization_rejects_semantically_equivalent_ab_paraphrase():
+    """Candidate B that is a >82% similarity paraphrase of Candidate A must be rejected."""
+    source = 'Mimi wants to attach a note. Each pull doubles the notes. Mimi sneezes and the notes fly off.'
+    events = ['Mimi wants to attach a note.', 'Each pull doubles the notes.', 'Mimi sneezes and the notes fly off.']
+    candidate_a = source + '\nOpening frame: show the note already stuck to Mimi\'s finger.'
+    # Slightly reword candidate_a to produce a near-duplicate candidate_b
+    candidate_b = source + '\nOpening frame: show the note already adhered to Mimi\'s finger.'
+    candidates = [
+        {'candidateId': 'candidate-a', 'title': 'Opening', 'hypothesis': 'Show anomaly immediately.',
+         'prompt': candidate_a},
+        {'candidateId': 'candidate-b', 'title': 'Pacing', 'hypothesis': 'Improve pacing.',
+         'prompt': candidate_b},
+    ]
+    provider = FixtureProvider({'candidates': candidates})
+    with pytest.raises(ValueError, match='semantic near-duplicate of candidate-a'):
+        perform_role('PROMPT_OPTIMIZATION', source, {'essentialEvents': events}, provider, 'configured-model')

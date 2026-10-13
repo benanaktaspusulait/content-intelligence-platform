@@ -1197,7 +1197,7 @@ Hard cut.`;
     c.review={recordId:'pending-analysis'};c.creativeOptimizationConsent=true;c.creativeOptimizationBudget=.2;
     c.generateCreativeOptimizationCandidates();c.generateCreativeOptimizationCandidates();
     http.expectOne('/api/v1/intelligence/workflow/records/pending-analysis/creative-optimization').flush({category:'UNRESOLVED_ATTEMPT',detail:'Outcome unknown',attemptId:'pending-id',providerDispatched:true,providerResponseReturned:false,retrySafe:false,candidatesSaved:false},{status:502,statusText:'Bad Gateway'});
-    expect(c.creativeOptimizationError).toContain('UNRESOLVED_ATTEMPT');expect(c.creativeOptimizationComparison).toBeNull();expect(c.creativeOptimizationBusy).toBe(false);
+    expect(c.creativeOptimizationError).toContain('UNRESOLVED_ATTEMPT');expect(c.creativeOptimizationComparison).toBeNull();expect(c.creativeOptimizationBusy).toBe(false);expect(c.creativeOptimizationConsent).toBe(false);
     http.expectNone(r=>r.method==='POST');f.destroy();TestBed.resetTestingModule();
   });
 

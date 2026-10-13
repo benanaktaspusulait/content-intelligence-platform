@@ -259,7 +259,9 @@ class WorkflowNoRepairDecisionPostgresTest {
     assertThat(jdbc.sql("SELECT count(*) FROM post_family_workflow_events WHERE kind='REVIEW'")
         .query(Long.class).single()).isEqualTo(1L);
     assertThat(jdbc.sql("SELECT count(*) FROM prompt_versions").query(Long.class).single()).isEqualTo(1L);
-    verify(ml, times(2)).workflow(eq("creative-role"), anyMap());
+    var roleCalls=org.mockito.ArgumentCaptor.forClass(Map.class);
+    verify(ml, times(2)).workflow(eq("creative-role"), roleCalls.capture());
+    assertThat(roleCalls.getAllValues()).allSatisfy(call -> assertThat((Map<String,Object>)call.get("context")).containsEntry("optimizationGenerationContractVersion","execution-distinct-v2"));
     var reviewCalls = org.mockito.ArgumentCaptor.forClass(Map.class);
     verify(ml, times(4)).workflow(eq("review"), reviewCalls.capture());
     assertThat(reviewCalls.getAllValues())

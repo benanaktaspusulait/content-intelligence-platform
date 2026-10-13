@@ -1,0 +1,185 @@
+{
+  "finalStatus": "OPTIMIZATION_GENERATION_READY",
+  "contractVersion": "execution-distinct-v2",
+  "strategy": {
+    "candidateA": "First-frame anomaly visibility, framing/camera clarity and immediate curiosity, preserving the existing story event.",
+    "candidateB": "Mid-section beat progression, timing, escalation legibility and Seedance execution hypotheses.",
+    "providerOutput": "Exactly two complete production prompts; IDs candidate-a and candidate-b; distinct hypotheses; no automatic selection or approval."
+  },
+  "previousInstructionsRisk": "They required changed first-beat action while demanding verbatim essential event actions. Exact string rejection did not reject wording-only revisions. This created contradictory pressure and could produce baseline copies; it does not establish the unavailable historical model response.",
+  "changes": [
+    "Clarified protected narrative versus mutable camera/framing/timing layer in server instructions.",
+    "Added conservative baseline/candidate and sibling execution signatures for timing, shot class and camera motion.",
+    "Recognized known wording equivalents (close-up/tight shot, wide/long shot, static/locked-off).",
+    "Required A opening execution change, B mid-section execution change and different sibling opening decisions.",
+    "Retained exact baseline/sibling duplicate rejection and source-event anchors.",
+    "Protected timed narrative, order, identity, physical rule, ending and non-execution source sections.",
+    "Rejected unsupported same-beat annotation content including early ending events hidden in camera notes.",
+    "Validated contiguous timeline and configured duration, ratio, generator and profile.",
+    "Added source-span/quote evidence for differences; assigned explicit A/B objectives without semantic PASS.",
+    "Copied rejected parsed provider result before validation enrichment to retain an unmodified recoverable response.",
+    "Versioned server request context/fingerprint to isolate the new contract; repeated identical v2 requests still use existing durable replay/reservation semantics.",
+    "Cleared consent after errors to require fresh operator authorization."
+  ],
+  "distinctnessVerification": "Exact duplicates, identical siblings, camera paraphrases, commentary-only changes and shared execution signatures rejected. Different opening framing/static-camera proposals and mid-section timing changes accepted, with exact source and candidate quote/span evidence.",
+  "storyFidelityVerification": {
+    "sourceEvents": "verbatim source anchors and full timed narrative preserved in order",
+    "identityPhysicalRuleEnding": "protected text unchanged",
+    "approvedStorySemanticFidelity": "UNKNOWN; deterministic textual preservation is not independent semantic approval",
+    "generatorRenderSuccess": "UNKNOWN; no video generated or feasibility PASS fabricated"
+  },
+  "tests": {
+    "ML": 108,
+    "backend": 37,
+    "frontend": 57,
+    "failures": 0,
+    "paidProviderFixtureTests": "mocked only",
+    "persistenceRecovery": "existing isolated PostgreSQL rollback/reuse regression passed"
+  },
+  "deployment": {
+    "affectedServices": [
+      "ml-service",
+      "backend",
+      "frontend"
+    ],
+    "healthChecks": "passed",
+    "activeMock": {
+      "providerCalls": "MOCK_ONLY; zero real calls",
+      "mockCostUsd": 0.00105,
+      "validationStatus": "NOT_VALIDATED",
+      "candidates": [
+        {
+          "id": "candidate-a",
+          "objective": "FIRST_FRAME_ANOMALY_CLARITY_CURIOSITY",
+          "difference": {
+            "status": "MATERIAL_TEXT_EXECUTION_DIFFERENCE",
+            "method": "TIMING_FRAMING_CAMERA_SIGNATURE_V1",
+            "changes": [
+              {
+                "beatId": "beat_01",
+                "baselineSourceSpan": [
+                  239,
+                  498
+                ],
+                "candidateSourceSpan": [
+                  239,
+                  506
+                ],
+                "baselineQuote": "0-2s: Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger [close-up on Mimi's hand] Mimi is in front of a toy cabinet, looking determined -> the note sticks to Mimi, not the cabinet",
+                "candidateQuote": "0-2s: Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger [extreme close-up on Mimi's hand] Mimi is in front of a toy cabinet, looking determined -> the note sticks to Mimi, not the cabinet",
+                "before": [
+                  0.0,
+                  2.0,
+                  "CLOSE",
+                  null
+                ],
+                "after": [
+                  0.0,
+                  2.0,
+                  "EXTREME_CLOSE",
+                  null
+                ]
+              }
+            ],
+            "approvedStorySemanticFidelity": "UNKNOWN",
+            "generatorSuccess": "UNKNOWN",
+            "authorization": "NOT_EVALUATED"
+          }
+        },
+        {
+          "id": "candidate-b",
+          "objective": "BEAT_PROGRESSION_TIMING_ESCALATION_SEEDANCE_FEASIBILITY",
+          "difference": {
+            "status": "MATERIAL_TEXT_EXECUTION_DIFFERENCE",
+            "method": "TIMING_FRAMING_CAMERA_SIGNATURE_V1",
+            "changes": [
+              {
+                "beatId": "beat_02",
+                "baselineSourceSpan": [
+                  499,
+                  677
+                ],
+                "candidateSourceSpan": [
+                  499,
+                  677
+                ],
+                "baselineQuote": "2-5s: Mimi tries to peel the stuck note away with her other hand; the note splits into two [medium shot of Mimi struggling] Mimi pulls at the note -> one note sticks to each hand",
+                "candidateQuote": "2-6s: Mimi tries to peel the stuck note away with her other hand; the note splits into two [medium shot of Mimi struggling] Mimi pulls at the note -> one note sticks to each hand",
+                "before": [
+                  2.0,
+                  5.0,
+                  "MEDIUM",
+                  null
+                ],
+                "after": [
+                  2.0,
+                  6.0,
+                  "MEDIUM",
+                  null
+                ]
+              },
+              {
+                "beatId": "beat_03",
+                "baselineSourceSpan": [
+                  678,
+                  929
+                ],
+                "candidateSourceSpan": [
+                  678,
+                  929
+                ],
+                "baselineQuote": "5-10s: Mimi continues to pull; each pull doubles the number of sticky notes [wide shot showing Mimi covered in notes] notes multiply from two to four to eight as she pulls, progressively covering her arms, legs and face -> Mimi is overwhelmed by notes",
+                "candidateQuote": "6-10s: Mimi continues to pull; each pull doubles the number of sticky notes [wide shot showing Mimi covered in notes] notes multiply from two to four to eight as she pulls, progressively covering her arms, legs and face -> Mimi is overwhelmed by notes",
+                "before": [
+                  5.0,
+                  10.0,
+                  "WIDE",
+                  null
+                ],
+                "after": [
+                  6.0,
+                  10.0,
+                  "WIDE",
+                  null
+                ]
+              }
+            ],
+            "approvedStorySemanticFidelity": "UNKNOWN",
+            "generatorSuccess": "UNKNOWN",
+            "authorization": "NOT_EVALUATED"
+          }
+        }
+      ]
+    },
+    "deployedModuleSha256": "36df02e70e304658c4bb58f19d8708c183585ba306787617295311f7121c9dac"
+  },
+  "historicalIntegrity": {
+    "analysisId": "9208e75a-b158-4ffb-94fe-03c15ca96395",
+    "analysisJsonUnchanged": true,
+    "promptVersion10AndVersionsListUnchanged": true,
+    "approvedSourceProvenanceUnchanged": true,
+    "historicalFailedResponse": "Still unrecoverable; not replayed or overwritten"
+  },
+  "paidSafety": "No real calls in this task. New v2 generation requires separate explicit operator authorization and budget. Same v2 fingerprint remains serialized and durable; unresolved dispatch is not retried; successful saved response is reused with zero additional provider calls. Budget and authoritative token usage enforcement unchanged.",
+  "readiness": "One separately operator-authorized paid attempt under the new v2 contract is ready. Actual provider quality is not guaranteed; invalid responses remain rejected. No paid run was initiated.",
+  "files": [
+    "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/ml-service/app/workflow/optimization_distinctness.py",
+    "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/ml-service/app/workflow/creative_roles.py",
+    "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/backend/src/main/java/com/pompomhills/intelligence/workflow/WorkflowService.java",
+    "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/frontend/src/app/pages/quality-validator/post-family-workflow.component.ts",
+    "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/ml-service/tests/test_optimization_distinctness.py",
+    "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/ml-service/tests/optimization_test_fixture.py",
+    "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/ml-service/tests/test_creative_roles.py",
+    "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/ml-service/tests/test_optimization_failure_contract.py",
+    "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/backend/src/test/java/com/pompomhills/intelligence/workflow/WorkflowNoRepairDecisionPostgresTest.java",
+    "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/frontend/src/app/pages/quality-validator/post-family-workflow.spec.ts"
+  ],
+  "sideEffects": {
+    "realProviderCalls": 0,
+    "automaticPaidRetry": false,
+    "promptV10OrStoryEdits": false,
+    "scoreManipulation": false,
+    "imageOrVideoGeneration": false,
+    "commitOrPushCommands": false
+  }
+}

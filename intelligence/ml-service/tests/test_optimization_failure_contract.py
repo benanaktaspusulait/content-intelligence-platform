@@ -12,7 +12,8 @@ def setup(monkeypatch):
     for key,val in {'WORKFLOW_CREATIVE_ROLES_ENABLED':'true','WORKFLOW_PROMPT_OPTIMIZATION_MODEL':'gpt-4o-mini-2024-07-18','WORKFLOW_PROMPT_OPTIMIZATION_INPUT_USD_PER_MILLION':'.15','WORKFLOW_PROMPT_OPTIMIZATION_OUTPUT_USD_PER_MILLION':'.6','OPENAI_API_KEY':'fixture-not-a-key'}.items():monkeypatch.setenv(key,val)
 
 def candidates():
-    return [dict(candidateId='candidate-a',title='Opening',hypothesis='Clarify the opening.',prompt=REQUEST['text']+'\nUse legible opening framing.'),dict(candidateId='candidate-b',title='Pacing',hypothesis='Clarify beat progression.',prompt=REQUEST['text']+'\nUse legible progression staging.')]
+    from optimization_test_fixture import valid_optimization_fixture
+    return valid_optimization_fixture()[2]
 
 def sdk_response(content):
     return ChatCompletion.model_validate(dict(id='fixture-completion',object='chat.completion',created=1,model='gpt-4o-mini-2024-07-18',choices=[dict(index=0,message=dict(role='assistant',content=content),finish_reason='stop')],usage=dict(prompt_tokens=1000,completion_tokens=1500,total_tokens=2500)))
