@@ -1104,6 +1104,18 @@ public class WorkflowService {
         .optional().orElseThrow(() -> new IllegalArgumentException("Visual preparation not found"));
   }
 
+  /** Proxy to ML service start-frame generation endpoint. */
+  public Map<String, Object> generateStartFrame(Map<String, Object> request) {
+    if (request.get("contentId") == null || request.get("promptVersionId") == null)
+      throw new IllegalArgumentException("contentId and promptVersionId are required");
+    if (request.get("prompt") == null || String.valueOf(request.get("prompt")).isBlank())
+      throw new IllegalArgumentException("prompt text is required");
+    Object maxCost = request.getOrDefault("maxCostUsd", 0);
+    if (!(maxCost instanceof Number) || ((Number) maxCost).doubleValue() <= 0)
+      throw new IllegalArgumentException("maxCostUsd must be positive");
+    return ml.workflow("start-frame/generate", request);
+  }
+
   public Map<String, Object> secondOpinion(UUID id, Map<String, Object> options) {
     var review = get(id);
     var result =

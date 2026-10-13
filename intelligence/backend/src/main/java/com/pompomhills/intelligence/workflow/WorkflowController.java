@@ -150,6 +150,12 @@ public class WorkflowController {
     }
   }
 
+  /** Generate a start-frame candidate image from the saved production prompt. */
+  @PostMapping("/start-frame/generate")
+  public Map<String, Object> generateStartFrame(@RequestBody Map<String, Object> request) {
+    return service.generateStartFrame(request);
+  }
+
   @PostMapping("/review")
   public Map<String, Object> review(@RequestBody WorkflowService.ReviewRequest request) {
     return service.runReview(request, true);

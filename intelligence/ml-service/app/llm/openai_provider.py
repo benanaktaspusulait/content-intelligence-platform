@@ -1,6 +1,7 @@
 import os
 import base64
 import json
+import uuid
 from pathlib import Path
 from typing import Any
 
@@ -8,6 +9,23 @@ from openai import OpenAI
 
 from .provider import LLMProvider, UnsupportedProviderError
 from ..semantic_provider import SemanticAnalysisRequest, SemanticAnalysisResult
+
+
+def _resolve_dimensions(aspect_ratio: str) -> tuple[int, int]:
+    """Resolve aspect ratio string to (width, height) for image generation.
+    
+    Supports common ratios: 9:16, 16:9, 1:1, 4:3, 3:4.
+    Returns dimensions suitable for DALL-E (max 1024x1024 for standard, 
+    but aspect ratio controls shape).
+    """
+    ratio_map = {
+        "9:16": (768, 1024),
+        "16:9": (1024, 768),
+        "1:1": (1024, 1024),
+        "4:3": (1024, 768),
+        "3:4": (768, 1024),
+    }
+    return ratio_map.get(aspect_ratio, (1024, 1024))
 
 
 class OpenAIProvider(LLMProvider):
@@ -123,4 +141,68 @@ class OpenAIProvider(LLMProvider):
             "inputTokens": getattr(usage, "input_tokens", None) or getattr(usage, "prompt_tokens", None),
             "outputTokens": getattr(usage, "completion_tokens", None) or getattr(usage, "output_tokens", None),
             "requestId": getattr(response, "id", None),
+        }
+
+    def generate_image(
+        self,
+        prompt: str,
+        aspect_ratio: str = "9:16",
+        model: str = "dall-e-3",
+        quality: str = "standard",
+        style: str = "natural",
+        output_dir: str | None = None,
+    ) -> dict[str, Any]:
+        """Generate an image using DALL-E 3.
+        
+        Returns a dict with:
+        - image_path: path to the saved image file
+        - image_url: URL of the generated image (from OpenAI)
+        - sha256: SHA-256 hash of the saved image bytes
+        - width, height: image dimensions
+        - requestId: OpenAI request ID
+        - model: model used
+        - prompt: the prompt sent to the provider
+        """
+        import hashlib
+        import urllib.request
+        
+        dimensions = _resolve_dimensions(aspect_ratio)
+        
+        response = self.client.images.generate(
+            model=model,
+            prompt=prompt,
+            n=1,
+            size=f"{dimensions[0]}x{dimensions[1]}" if aspect_ratio != "1:1" else "1024x1024",
+            quality=quality,
+            style=style,
+            response_format="url",
+        )
+        
+        image_url = response.data[0].url
+        request_id = getattr(response, "id", None)
+        
+        # Download and save the image
+        if output_dir is None:
+            output_dir = os.getenv("IMAGE_OUTPUT_DIR", "/tmp/pompom-images")
+        
+        os.makedirs(output_dir, exist_ok=True)
+        filename = f"start-frame-{uuid.uuid4().hex}.png"
+        image_path = os.path.join(output_dir, filename)
+        
+        # Download image
+        urllib.request.urlretrieve(image_url, image_path)
+        
+        # Calculate SHA-256
+        image_bytes = Path(image_path).read_bytes()
+        sha256 = hashlib.sha256(image_bytes).hexdigest()
+        
+        return {
+            "image_path": image_path,
+            "image_url": image_url,
+            "sha256": sha256,
+            "width": dimensions[0],
+            "height": dimensions[1],
+            "requestId": request_id,
+            "model": model,
+            "prompt": prompt,
         }

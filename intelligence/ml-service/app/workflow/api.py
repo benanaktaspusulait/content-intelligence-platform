@@ -13,6 +13,7 @@ from app.config import settings
 from .feedback import compare_cohort, match_publication, measure_observation, review_render
 from .repair import repair_prompt
 from .review import review_prompt
+from .start_frame_generation import generate_start_frame
 
 router = APIRouter(prefix="/api/v1/workflow", tags=["post-family-workflow"])
 
@@ -186,3 +187,38 @@ def revalidate_production_spec(request: LegacyProductionSpecMigrationRequest) ->
         return migrate_legacy_production_spec(request.prompt, request.approvedStory, context)
     except (ValueError, TypeError, KeyError) as error:
         raise HTTPException(409, str(error)) from error
+
+
+class StartFrameRequest(BaseModel):
+    """Request to generate a start-frame candidate image."""
+    model_config = ConfigDict(extra='forbid')
+    prompt: str = Field(min_length=1, max_length=50000)
+    contentId: int = Field(gt=0)
+    promptVersionId: int = Field(gt=0)
+    characterName: str = ""
+    characterDescription: str = ""
+    aspectRatio: str = "9:16"
+    contentProfile: str = "AUTO"
+    generator: str = "SEEDANCE_2_0_MINI"
+    maxCostUsd: float = Field(gt=0, le=5.0)
+
+
+@router.post('/start-frame/generate')
+def generate_start_frame_endpoint(request: StartFrameRequest) -> dict[str, Any]:
+    """Generate a start-frame candidate image from the saved production prompt.
+    
+    Requires explicit cost authorization (maxCostUsd > 0).
+    The generated image is a CANDIDATE that must be explicitly accepted by the user
+    before satisfying F8 EXECUTION_INPUTS.
+    """
+    return generate_start_frame(
+        prompt_text=request.prompt,
+        content_id=request.contentId,
+        prompt_version_id=request.promptVersionId,
+        character_name=request.characterName,
+        character_description=request.characterDescription,
+        aspect_ratio=request.aspectRatio,
+        content_profile=request.contentProfile,
+        generator=request.generator,
+        max_cost_usd=request.maxCostUsd,
+    )

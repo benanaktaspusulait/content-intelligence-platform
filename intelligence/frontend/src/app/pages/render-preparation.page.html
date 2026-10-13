@@ -444,14 +444,64 @@
                   uploading or accepting.
                 </p>
               }
-              <button class="button" disabled aria-describedby="ai-reason">
-                Generate Image with AI
+              <button
+                class="button"
+                [disabled]="!canGenerateStartFrame() || startFrameGenerating()"
+                (click)="generateStartFrame()"
+                aria-describedby="start-frame-reason"
+              >
+                {{ startFrameGenerating() ? 'Generating...' : 'Generate Start Frame' }}
               </button>
-              <p id="ai-reason" class="help">
-                Unavailable: this workflow has no authorized image-provider path with cost consent,
-                a server budget ceiling and persisted provenance. Existing images and uploads work
-                without generation.
+              <p id="start-frame-reason" class="help">
+                @if (!canGenerateStartFrame()) {
+                  @if (!workflowReview) {
+                    Open a saved project first.
+                  } @else if (!characterReady) {
+                    Upload and verify a character reference first.
+                  } @else if (!ratio) {
+                    Aspect ratio must be resolved.
+                  } @else {
+                    Requires explicit cost authorization.
+                  }
+                } @else {
+                  Generates a start-frame candidate from the saved prompt's opening beat.
+                  Review and accept the candidate before rendering.
+                }
               </p>
+              @if (startFrameResult()) {
+                <section class="start-frame-candidate">
+                  <h3>Start Frame Candidate</h3>
+                  @if (startFrameResult()?.status === 'GENERATED') {
+                    <div class="candidate-preview">
+                      <img
+                        [src]="startFrameResult()?.imageUrl"
+                        alt="Generated start-frame candidate"
+                        (load)="onPreviewLoad($event)"
+                      />
+                      <p class="help">
+                        Candidate {{ startFrameResult()?.candidateId }} ·
+                        {{ startFrameResult()?.width }}×{{ startFrameResult()?.height }} ·
+                        Cost: ${{ startFrameResult()?.cost?.toFixed(2) }}
+                      </p>
+                      <div class="actions">
+                        <button class="button primary" (click)="acceptStartFrameCandidate()">
+                          Accept This Start Frame
+                        </button>
+                        <button class="button" (click)="regenerateStartFrame()">
+                          Regenerate
+                        </button>
+                        <button class="button" (click)="rejectStartFrameCandidate()">
+                          Reject
+                        </button>
+                      </div>
+                    </div>
+                  } @else if (startFrameResult()?.status === 'REJECTED_COST_CEILING') {
+                    <p class="error" role="alert">{{ startFrameResult()?.reason }}</p>
+                  } @else if (startFrameResult()?.status === 'PROVIDER_UNAVAILABLE') {
+                    <p class="error" role="alert">Image provider unavailable: {{ startFrameResult()?.reason }}</p>
+                  }
+                </section>
+              }
             </section>
             @if (visualReferenceError()) {
               <p class="error" role="alert">{{ visualReferenceError() }}</p>

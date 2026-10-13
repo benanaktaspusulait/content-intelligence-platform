@@ -129,6 +129,11 @@ export class RenderPreparationPage implements OnInit, OnDestroy {
   visualReferenceProposal = signal<any | null>(null);
   visualReferenceValidation = signal<any | null>(null);
 
+  // Start-frame generation state
+  startFrameGenerating = signal(false);
+  startFrameResult = signal<any | null>(null);
+  startFrameBudget = signal(0.10);
+
   constructor(
     private http: HttpClient,
     private route: ActivatedRoute,
@@ -765,6 +770,121 @@ export class RenderPreparationPage implements OnInit, OnDestroy {
     return !!this.visualReferencePlan()?.referenceBindings?.some(
       (ref) => ref.role === 'FIRST_FRAME' && ref.accepted && this.frameContextMatches(ref),
     );
+  }
+
+  /** Check if start-frame generation is available. */
+  canGenerateStartFrame(): boolean {
+    return (
+      !!this.workflowReview &&
+      !!this.workflowReviewId &&
+      this.workflowIdentityMatches(this.workflowReview) &&
+      this.characterReady &&
+      !!this.ratio &&
+      !this.inputsChanged &&
+      !this.settingsDirty() &&
+      this.startFrameBudget() > 0
+    );
+  }
+
+  /** Generate a start-frame candidate image. */
+  generateStartFrame(): void {
+    if (!this.canGenerateStartFrame() || this.startFrameGenerating()) return;
+    const sequence = this.workflowLoadSequence;
+    this.startFrameGenerating.set(true);
+    this.startFrameResult.set(null);
+    this.visualReferenceError.set('');
+
+    const prompt = String(
+      this.workflowReview?.boundRequest?.prompt ||
+      this.workflowReview?.originalPrompt ||
+      '',
+    ).trim();
+    const character =
+      this.workflowReview?.boundRequest?.mainCharacter ||
+      this.workflowReview?.boundRequest?.mainCharacterName ||
+      this.characterName ||
+      '';
+
+    this.http
+      .post<any>('/api/v1/intelligence/workflow/start-frame/generate', {
+        prompt,
+        contentId: Number(this.queueContentId()),
+        promptVersionId: Number(this.queuePromptVersionId()),
+        characterName: character,
+        characterDescription: this.characterBinding?.description || '',
+        aspectRatio: this.ratio,
+        contentProfile: this.workflowReview?.boundRequest?.contentProfile || 'AUTO',
+        generator: this.queueModel(),
+        maxCostUsd: this.startFrameBudget(),
+      })
+      .subscribe({
+        next: (result) => {
+          if (sequence !== this.workflowLoadSequence) return;
+          this.startFrameGenerating.set(false);
+          this.startFrameResult.set(result);
+          if (result.status !== 'GENERATED') {
+            this.visualReferenceError.set(
+              result.reason || 'Start-frame generation failed.',
+            );
+          }
+        },
+        error: (err) => {
+          if (sequence !== this.workflowLoadSequence) return;
+          this.startFrameGenerating.set(false);
+          this.visualReferenceError.set(
+            err.error?.detail ||
+              err.error?.message ||
+              'Start-frame generation request failed.',
+          );
+        },
+      });
+  }
+
+  /** Regenerate start frame (clears previous result). */
+  regenerateStartFrame(): void {
+    this.startFrameResult.set(null);
+    this.generateStartFrame();
+  }
+
+  /** Reject the current start-frame candidate. */
+  rejectStartFrameCandidate(): void {
+    this.startFrameResult.set(null);
+  }
+
+  /** Accept the generated start-frame candidate by uploading it. */
+  acceptStartFrameCandidate(): void {
+    const result = this.startFrameResult();
+    if (!result || result.status !== 'GENERATED') return;
+    // The generated image URL is from OpenAI; we accept it by recording the candidate
+    // and setting the first frame path. The user can then proceed to render.
+    this.visualReferenceError.set('');
+    // Store the candidate as accepted in the visual reference plan
+    const plan = this.visualReferencePlan();
+    if (!plan?.planId) {
+      this.visualReferenceError.set('Visual reference plan not loaded.');
+      return;
+    }
+    // Accept via the existing accept flow — the generated image URL is treated as the asset
+    this.http
+      .post(`/api/v1/visual-reference-plans/${plan.planId}/first-frame/accept`, {
+        renderAssetId: result.candidateId,
+        imageUrl: result.imageUrl,
+        sha256: result.sha256,
+        ...this.acceptanceContext(),
+      })
+      .subscribe({
+        next: () => {
+          this.persistAcceptedFrame(result.candidateId);
+          this.loadPlan();
+        },
+        error: (err) => {
+          this.visualReferenceError.set(
+            err.error?.detail ||
+              err.error?.message ||
+              'The generated start frame could not be accepted.',
+          );
+        },
+      });
   }
   frameContextMatches(ref: any): boolean {
     const evidence = ref.evidence || {};
