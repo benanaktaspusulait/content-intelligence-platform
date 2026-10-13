@@ -10,8 +10,12 @@ import com.pompomhills.intelligence.quality.QualityMlClient;
 import com.pompomhills.intelligence.video.MediaContentService;
 import com.pompomhills.intelligence.video.VideoService;
 import java.util.List;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.util.HexFormat;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.jdbc.core.simple.JdbcClient;
@@ -32,6 +36,8 @@ class WorkflowNoRepairDecisionPostgresTest {
 
   private JdbcClient jdbc;
   private WorkflowService service;
+  private QualityMlClient ml;
+  private ContentPromptQueryService prompts;
   private UUID analysisId;
   private String analysisBinding;
 
@@ -49,11 +55,12 @@ class WorkflowNoRepairDecisionPostgresTest {
             "CREATE TABLE post_family_workflow_events (id uuid PRIMARY KEY, kind varchar(80) NOT NULL,"
                 + " binding_sha256 varchar(128), payload jsonb NOT NULL, created_at timestamptz NOT NULL DEFAULT now())")
         .update();
-    var prompts = mock(ContentPromptQueryService.class);
+    prompts = mock(ContentPromptQueryService.class);
+    ml = mock(QualityMlClient.class);
     when(prompts.load(10L, 10L))
         .thenReturn(new ContentPromptSnapshot("v1", 10, "Mimi", "REEL", "DRAFT", 10, 1,
             PROMPT, "{}", "a".repeat(64)));
-    service = new WorkflowService(prompts, mock(QualityMlClient.class),
+    service = new WorkflowService(prompts, ml,
         mock(MediaContentService.class), mock(VideoService.class),
         new ObjectMapper().findAndRegisterModules(), jdbc, null);
     analysisId = UUID.randomUUID();
@@ -138,6 +145,98 @@ class WorkflowNoRepairDecisionPostgresTest {
         .hasMessageContaining("failed or unavailable");
     assertThat(jdbc.sql("SELECT count(*) FROM post_family_workflow_events WHERE kind='PRODUCTION_REVIEW_DECISION'")
         .query(Long.class).single()).isZero();
+  }
+
+  @Test
+  void creativeOptimizationRequiresExplicitAuthorizationAndCannotUseGenericRoleEndpoint() {
+    assertThatThrownBy(() -> service.generateCreativeOptimization(
+        analysisId, Map.of("contentId", 10, "promptVersionId", 10, "maxCostUsd", .25), Map.of()))
+        .isInstanceOf(IllegalArgumentException.class)
+        .hasMessageContaining("Explicit creative optimization authorization");
+    assertThatThrownBy(() -> service.creativeRole(Map.of(
+        "role", "PROMPT_OPTIMIZATION",
+        "generationAuthorized", true,
+        "maxCostUsd", .25,
+        "text", PROMPT,
+        "context", Map.of("analysisRunId", analysisId.toString(), "promptVersionId", 10, "essentialEvents", List.of("event")))))
+        .isInstanceOf(IllegalArgumentException.class)
+        .hasMessageContaining("source-bound Step 6 workflow");
+    verifyNoInteractions(ml);
+  }
+
+  @Test
+  void previewsTwoCandidatesLocallyAgainstSameRulesetWithoutPersistingReviewsOrVersions() throws Exception {
+    String firstEvent = "Mimi attaches a note to the cabinet.";
+    String secondEvent = "Every pull doubles the notes.";
+    String finalEvent = "Mimi sneezes and notes land on the cabinet.";
+    var events = List.of(
+        Map.of("id", "beat_01", "action", firstEvent),
+        Map.of("id", "beat_02", "action", secondEvent),
+        Map.of("id", "beat_03", "action", finalEvent));
+    String sourcePrompt = String.join(" ", List.of(PROMPT, firstEvent, secondEvent, finalEvent));
+    when(prompts.load(10L, 10L))
+        .thenReturn(new ContentPromptSnapshot("v1", 10, "Mimi", "REEL", "DRAFT", 10, 1,
+            sourcePrompt, "{}", "unused"));
+    var bound = Map.<String, Object>of(
+        "prompt", sourcePrompt,
+        "profile", "post-family-v1",
+        "contentProfile", "ABSURD_PHYSICS",
+        "generator", "SEEDANCE_2_0_MINI",
+        "desiredDuration", 15,
+        "settings", Map.of("aspectRatio", "9:16"),
+        "structuredPlan", Map.of("beats", events),
+        "references", List.of(),
+        "acceptedStartFrame", true,
+        "authorizationEvidence", Map.of("renderAuthorization", "AUTHORIZED"));
+    var source = Map.of(
+        "sha256", HexFormat.of().formatHex(MessageDigest.getInstance("SHA-256").digest(sourcePrompt.getBytes(StandardCharsets.UTF_8))));
+    var baseline = new LinkedHashMap<String, Object>();
+    baseline.put("boundRequest", bound);
+    baseline.put("productionEvidence", Map.of("source", source));
+    baseline.put("canonicalRuleEvaluation", Map.of("rulesetVersion", "1.7", "score", 85, "grade", "B"));
+    baseline.put("contentId", 10);
+    baseline.put("promptVersionId", 10);
+    jdbc.sql("UPDATE post_family_workflow_events SET payload=payload || CAST(:payload AS jsonb) WHERE id=:id")
+        .param("id", analysisId)
+        .param("payload", new ObjectMapper().writeValueAsString(baseline))
+        .update();
+    var candidates = List.of(
+        Map.of("candidateId", "candidate-a", "title", "Opening", "hypothesis", "Clarify the opening frame.", "prompt", sourcePrompt + "\nA"),
+        Map.of("candidateId", "candidate-b", "title", "Pacing", "hypothesis", "Spread out the escalation.", "prompt", sourcePrompt + "\nB"));
+    when(ml.workflow(eq("creative-role"), anyMap()))
+        .thenReturn(Map.of("role", "PROMPT_OPTIMIZATION", "provider", "openai", "model", "fixture",
+            "result", Map.of("candidates", candidates), "attemptState", "SAVED"));
+    when(ml.workflow(eq("source-plan"), anyMap()))
+        .thenAnswer(invocation -> {
+          var request = invocation.getArgument(1, Map.class);
+          return Map.of("videoPlanIR", Map.of("beats", List.of(Map.of(
+              "sourceQuote", request.get("prompt"), "sourceAction", "Mimi attaches a note"))));
+        });
+    when(ml.workflow(eq("review"), anyMap()))
+        .thenReturn(Map.of(
+            "canonicalRuleEvaluation", Map.of("rulesetVersion", "1.7", "score", 86, "grade", "B",
+                "failedRules", List.of(), "unknownRules", List.of()),
+            "executionReview", Map.of("status", "PASS", "findings", List.of()),
+            "planQuality", Map.of("status", "RISKY", "findings", List.of()),
+            "generation", Map.of("capabilityStatus", "SUPPORTED"),
+            "family8", Map.of("renderAuthorization", Map.of("status", "BLOCKED_PENDING_EVIDENCE")),
+            "actualRenderQuality", Map.of("status", "UNKNOWN"),
+            "audienceOutcome", Map.of("status", "UNKNOWN")));
+    var comparison = service.generateCreativeOptimization(analysisId,
+        Map.of("contentId", 10, "promptVersionId", 10, "operatorAuthorized", true, "maxCostUsd", .25),
+        Map.of("approvedStoryText", "Approved Mimi story", "approvalRecordId", "approval-1", "storyRevisionId", "revision-1"));
+    assertThat(comparison.get("rulesetVersion")).isEqualTo("1.7");
+    assertThat((List<?>) comparison.get("candidates")).hasSize(2);
+    assertThat(String.valueOf(((Map<?, ?>) ((List<?>) comparison.get("candidates")).get(0)).get("diff"))).contains("candidate-a");
+    assertThat(String.valueOf(service.latestCreativeOptimization(analysisId).get("comparison"))).contains("candidate-a");
+    assertThat(jdbc.sql("SELECT count(*) FROM post_family_workflow_events WHERE kind='REVIEW'")
+        .query(Long.class).single()).isEqualTo(1L);
+    assertThat(jdbc.sql("SELECT count(*) FROM prompt_versions").query(Long.class).single()).isEqualTo(1L);
+    var reviewCalls = org.mockito.ArgumentCaptor.forClass(Map.class);
+    verify(ml, times(2)).workflow(eq("review"), reviewCalls.capture());
+    assertThat(reviewCalls.getAllValues())
+        .allSatisfy(call -> assertThat(call.get("acceptedStartFrame")).isEqualTo(false))
+        .allSatisfy(call -> assertThat(call.get("authorizationEvidence")).isNull());
   }
 
   private Map<String, Object> request(UUID runId, String binding) {

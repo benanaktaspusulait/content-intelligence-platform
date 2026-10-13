@@ -61,6 +61,133 @@ class VideoPromptLineageTest {
   @Autowired com.pompomhills.intelligence.content.ContentWorkspaceController workspace;
   @Autowired com.pompomhills.intelligence.workflow.WorkflowRepairSessionService repairs;
 
+  @Test
+  void creativeOptimizationApprovalCreatesAnImmutableVersionOnlyAfterExplicitApproval()
+      throws Exception {
+    var content =
+        workspace.create(
+            new com.pompomhills.intelligence.content.ContentWorkspaceController
+                .CreateContentRequest("Optimization approval fixture", "Fixture", "REEL"));
+    String sourcePrompt = "Mimi attaches one note to the cabinet.";
+    String candidatePrompt = sourcePrompt + "\nShow the note already touching the cabinet in frame one.";
+    var source =
+        workspace.createPrompt(
+            content.id(),
+            new com.pompomhills.intelligence.content.ContentWorkspaceController.CreatePromptRequest(
+                sourcePrompt, "{}", null));
+    UUID analysisId = UUID.randomUUID();
+    UUID roleId = UUID.randomUUID();
+    UUID comparisonId = UUID.randomUUID();
+    String sourceHash =
+        java.util.HexFormat.of()
+            .formatHex(
+                java.security.MessageDigest.getInstance("SHA-256")
+                    .digest(sourcePrompt.getBytes(java.nio.charset.StandardCharsets.UTF_8)));
+    var mapper = new com.fasterxml.jackson.databind.ObjectMapper();
+
+    jdbc.sql("INSERT INTO post_family_workflow_events(id,kind,payload) VALUES(:id,'REVIEW',CAST(:payload AS jsonb))")
+        .param("id", analysisId)
+        .param("payload", mapper.writeValueAsString(java.util.Map.of("contentId", content.id())))
+        .update();
+    var candidate =
+        java.util.Map.of(
+            "candidateId", "candidate-a",
+            "prompt", candidatePrompt,
+            "fidelity", java.util.Map.of("essentialEventsPreserved", true),
+            "review",
+                java.util.Map.of(
+                    "canonicalRuleEvaluation", java.util.Map.of("rulesetVersion", "1.7")));
+    var rolePayload =
+        java.util.Map.of(
+            "role",
+            "PROMPT_OPTIMIZATION",
+            "sourceRequest",
+            java.util.Map.of(
+                "context",
+                java.util.Map.of(
+                    "analysisRunId",
+                    analysisId.toString(),
+                    "contentId",
+                    content.id().toString(),
+                    "promptVersionId",
+                    source.id().toString())),
+            "result",
+            java.util.Map.of("candidates", java.util.List.of(java.util.Map.of("candidateId", "candidate-a", "prompt", candidatePrompt))));
+    jdbc.sql("INSERT INTO post_family_workflow_events(id,kind,payload) VALUES(:id,'CREATIVE_ROLE',CAST(:payload AS jsonb))")
+        .param("id", roleId)
+        .param("payload", mapper.writeValueAsString(rolePayload))
+        .update();
+    var comparisonPayload =
+        java.util.Map.of(
+            "sourceAnalysisId", analysisId.toString(),
+            "sourcePromptVersionId", source.id().toString(),
+            "sourcePromptSha256", sourceHash,
+            "roleRecordId", roleId.toString(),
+            "rulesetVersion", "1.7",
+            "candidates", java.util.List.of(candidate));
+    jdbc.sql("INSERT INTO post_family_workflow_events(id,kind,payload) VALUES(:id,'CREATIVE_OPTIMIZATION',CAST(:payload AS jsonb))")
+        .param("id", comparisonId)
+        .param("payload", mapper.writeValueAsString(comparisonPayload))
+        .update();
+
+    var request =
+        new com.pompomhills.intelligence.content.ContentWorkspaceController.CreatePromptRequest(
+            candidatePrompt,
+            "{}",
+            source.id(),
+            roleId.toString(),
+            "candidate-a",
+            comparisonId.toString(),
+            true);
+    assertThatThrownBy(
+            () ->
+                workspace.createPrompt(
+                    content.id(),
+                    new com.pompomhills.intelligence.content.ContentWorkspaceController
+                        .CreatePromptRequest(
+                        candidatePrompt,
+                        "{}",
+                        source.id(),
+                        roleId.toString(),
+                        "candidate-a",
+                        comparisonId.toString(),
+                        false)))
+        .isInstanceOf(IllegalArgumentException.class);
+    assertThat(
+            jdbc.sql("SELECT count(*) FROM prompt_versions WHERE content_id=:content")
+                .param("content", content.id())
+                .query(Integer.class)
+                .single())
+        .isEqualTo(1);
+
+    var approved = workspace.createPrompt(content.id(), request);
+    assertThat(approved.versionNumber()).isEqualTo(2);
+    assertThat(approved.rawText()).isEqualTo(candidatePrompt);
+    assertThat(source.rawText()).isEqualTo(sourcePrompt);
+    assertThat(workspace.createPrompt(content.id(), request).id()).isEqualTo(approved.id());
+    assertThat(workspace.creativeProvenance(content.id(), approved.id()))
+        .containsEntry("origin", "PROMPT_OPTIMIZATION")
+        .doesNotContainKey("approvedStoryText")
+        .containsKey("creativeOptimizationProvenance");
+    assertThat(
+            jdbc.sql(
+                    "SELECT (parsed_ir->'creativeOptimizationProvenance')::text FROM prompt_versions WHERE id=:id")
+                .param("id", approved.id())
+                .query(String.class)
+                .single())
+        .contains(comparisonId.toString())
+        .contains("candidate-a")
+        .contains(analysisId.toString())
+        .contains("operatorApproved")
+        .contains("approvedAt");
+    assertThat(
+            jdbc.sql("SELECT count(*) FROM prompt_versions WHERE content_id=:content")
+                .param("content", content.id())
+                .query(Integer.class)
+                .single())
+        .isEqualTo(2);
+  }
+
   @org.springframework.test.context.bean.override.mockito.MockitoBean
   com.pompomhills.intelligence.quality.QualityMlClient workflowMl;
 

@@ -157,7 +157,7 @@ def critic(request: CriticRequest) -> dict[str, Any]:
 
 class CreativeRoleRequest(BaseModel):
     model_config = ConfigDict(extra='forbid')
-    role: Literal['STORY', 'STORY_REVIEW', 'BUILD_PROMPT', 'MINIMAL_REPAIR']
+    role: Literal['STORY', 'STORY_REVIEW', 'BUILD_PROMPT', 'MINIMAL_REPAIR', 'PROMPT_OPTIMIZATION']
     text: str = Field(min_length=1, max_length=16000)
     context: dict[str, Any] = Field(default_factory=dict)
     maxCostUsd: float = Field(gt=0, le=20)

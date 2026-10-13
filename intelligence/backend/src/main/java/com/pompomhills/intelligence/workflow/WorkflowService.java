@@ -179,6 +179,221 @@ public class WorkflowService {
     return result;
   }
 
+  @Transactional
+  public Map<String, Object> generateCreativeOptimization(
+      UUID analysisId, Map<String, Object> request, Map<String, Object> provenance) {
+    if (!Boolean.TRUE.equals(request.get("operatorAuthorized")))
+      throw new IllegalArgumentException("Explicit creative optimization authorization is required");
+    if (!(request.get("maxCostUsd") instanceof Number budget)
+        || !Double.isFinite(budget.doubleValue())
+        || budget.doubleValue() <= 0
+        || budget.doubleValue() > 20)
+      throw new IllegalArgumentException("A positive budget no greater than $20 is required");
+
+    var baseline = getByKind(analysisId, "REVIEW");
+    if (!(baseline.get("contentId") instanceof Number content)
+        || !(baseline.get("promptVersionId") instanceof Number version)
+        || !String.valueOf(content.longValue()).equals(String.valueOf(request.get("contentId")))
+        || !String.valueOf(version.longValue()).equals(String.valueOf(request.get("promptVersionId"))))
+      throw new IllegalArgumentException("The analysis must match the selected content and prompt version");
+    var latest =
+        jdbc.sql(
+                "SELECT id FROM post_family_workflow_events WHERE kind='REVIEW' AND"
+                    + " payload->>'contentId'=:content ORDER BY created_at DESC,id DESC LIMIT 1")
+            .param("content", String.valueOf(content.longValue()))
+            .query(UUID.class)
+            .optional()
+            .orElseThrow(() -> new IllegalStateException("Current saved quality analysis is unavailable"));
+    if (!analysisId.equals(latest))
+      throw new IllegalStateException("Quality analysis is stale; reload Step 6 before optimizing");
+    var source = prompts.load(content.longValue(), version.longValue());
+    var bound = map(baseline.get("boundRequest"));
+    var sourceEvidence = map(map(baseline.get("productionEvidence")).get("source"));
+    if (!source.promptText().equals(bound.get("prompt"))
+        || !sha256(source.promptText()).equals(String.valueOf(sourceEvidence.getOrDefault("sha256", ""))))
+      throw new IllegalStateException("Saved prompt source no longer matches the selected analysis");
+    if (String.valueOf(provenance.getOrDefault("approvedStoryText", "")).isBlank()
+        || String.valueOf(provenance.getOrDefault("approvalRecordId", "")).isBlank())
+      throw new IllegalStateException("Approved story provenance is unavailable for this prompt version");
+
+    var beats = maps(map(bound.get("structuredPlan")).get("beats"));
+    var essentialEvents = beats.stream()
+        .map(beat -> String.valueOf(beat.getOrDefault("action", "")).trim())
+        .filter(action -> !action.isBlank())
+        .distinct()
+        .toList();
+    if (essentialEvents.isEmpty())
+      throw new IllegalStateException("Source-bound essential event anchors are unavailable");
+    var context = new LinkedHashMap<String, Object>();
+    context.put("analysisRunId", analysisId.toString());
+    context.put("contentId", content.longValue());
+    context.put("promptVersionId", version.longValue());
+    context.put("approvedStoryText", provenance.get("approvedStoryText"));
+    context.put("storyRevisionId", provenance.get("storyRevisionId"));
+    context.put("storyApprovalRecordId", provenance.get("approvalRecordId"));
+    context.put("essentialEvents", essentialEvents);
+    context.put("targetConfiguration", Map.of(
+        "contentProfile", bound.getOrDefault("contentProfile", "UNKNOWN"),
+        "generator", bound.getOrDefault("generator", "UNKNOWN"),
+        "duration", bound.getOrDefault("desiredDuration", "UNKNOWN"),
+        "settings", map(bound.get("settings"))));
+    var roleRequest = new LinkedHashMap<String, Object>();
+    roleRequest.put("role", "PROMPT_OPTIMIZATION");
+    roleRequest.put("text", source.promptText());
+    roleRequest.put("context", context);
+    roleRequest.put("maxCostUsd", budget.doubleValue());
+    roleRequest.put("generationAuthorized", true);
+    var role = creativeRole(roleRequest, true);
+    UUID roleRecordId = UUID.fromString(String.valueOf(role.get("recordId")));
+    var previousComparison =
+        jdbc.sql(
+                "SELECT id,payload::text FROM post_family_workflow_events WHERE"
+                    + " kind='CREATIVE_OPTIMIZATION' AND payload->>'roleRecordId'=:role"
+                    + " ORDER BY created_at DESC,id DESC LIMIT 1")
+            .param("role", roleRecordId.toString())
+            .query((rs, ignored) -> {
+              var value = read(rs.getString(2));
+              value.put("recordId", rs.getString(1));
+              return value;
+            })
+            .optional();
+    if (previousComparison.isPresent()) return previousComparison.get();
+    var generated = maps(map(role.get("result")).get("candidates"));
+    if (generated.size() != 2)
+      throw new IllegalStateException("The optimization role did not return exactly two candidates");
+
+    var candidates = new ArrayList<Map<String, Object>>();
+    String baselineRuleset = String.valueOf(map(baseline.get("canonicalRuleEvaluation")).get("rulesetVersion"));
+    if (baselineRuleset.isBlank() || "null".equals(baselineRuleset))
+      throw new IllegalStateException("Baseline canonical ruleset identity is unavailable");
+    for (var candidate : generated) {
+      String candidateId = String.valueOf(candidate.get("candidateId"));
+      String text = String.valueOf(candidate.get("prompt"));
+      var candidateReview = reviewCreativeCandidate(analysisId, candidateId, text, bound);
+      String candidateRuleset =
+          String.valueOf(map(candidateReview.get("canonicalRuleEvaluation")).get("rulesetVersion"));
+      if (!baselineRuleset.equals(candidateRuleset))
+        throw new IllegalStateException("Candidate review ruleset differs from baseline; comparison is unavailable");
+      var summary = new LinkedHashMap<String, Object>(candidate);
+      summary.put("review", candidateReview);
+      summary.put("rulesetVersion", candidateRuleset);
+      summary.put("fidelity", Map.of(
+          "essentialEventsPreserved", true,
+          "approvedStoryCoverage", "PROMPT_SOURCE_EVENTS_PRESERVED; APPROVED_STORY_SEMANTIC_FIDELITY_UNKNOWN",
+          "storyRevisionId", provenance.getOrDefault("storyRevisionId", "UNKNOWN"),
+          "endingPreservedBySourceEventAnchor", true));
+      summary.put("productionRisks", Map.of(
+          "localExecutionCritic", candidateReview.getOrDefault("executionReview", Map.of()),
+          "productionComplexity", candidateReview.getOrDefault("planQuality", Map.of()),
+          "generatorCapability", map(candidateReview.get("generation")).getOrDefault("capabilityStatus", "UNKNOWN"),
+          "family8", map(candidateReview.get("family8")).getOrDefault("renderAuthorization", Map.of())));
+      summary.put("unknowns", Map.of(
+          "canonicalRules", map(candidateReview.get("canonicalRuleEvaluation")).getOrDefault("unknownRules", List.of()),
+          "actualRenderQuality", candidateReview.getOrDefault("actualRenderQuality", Map.of()),
+          "audienceOutcome", candidateReview.getOrDefault("audienceOutcome", Map.of())));
+      summary.put("diff", lineDiff(source.promptText(), text, candidateId));
+      candidates.add(summary);
+    }
+    var comparison = new LinkedHashMap<String, Object>();
+    comparison.put("sourceAnalysisId", analysisId.toString());
+    comparison.put("sourcePromptVersionId", version.longValue());
+    comparison.put("sourcePromptSha256", sha256(source.promptText()));
+    comparison.put("roleRecordId", roleRecordId.toString());
+    comparison.put("rulesetVersion", baselineRuleset);
+    comparison.put("candidates", candidates);
+    comparison.put("selection", null);
+    comparison.put("approval", null);
+    comparison.put("recordId", save("CREATIVE_OPTIMIZATION", null, comparison));
+    return comparison;
+  }
+
+  public Map<String, Object> latestCreativeOptimization(UUID analysisId) {
+    getByKind(analysisId, "REVIEW");
+    return jdbc.sql(
+            "SELECT id,payload::text FROM post_family_workflow_events WHERE"
+                + " kind='CREATIVE_OPTIMIZATION' AND payload->>'sourceAnalysisId'=:analysis"
+                + " ORDER BY created_at DESC,id DESC LIMIT 1")
+        .param("analysis", analysisId.toString())
+        .query((rs, ignored) -> {
+          var value = read(rs.getString(2));
+          value.put("recordId", rs.getString(1));
+          return value;
+        })
+        .optional()
+        .<Map<String, Object>>map(value -> Map.of("comparison", value))
+        .orElseGet(() -> {
+          var empty = new LinkedHashMap<String, Object>();
+          empty.put("comparison", null);
+          return empty;
+        });
+  }
+
+  private Map<String, Object> reviewCreativeCandidate(
+      UUID analysisId, String candidateId, String prompt, Map<String, Object> baselineRequest) {
+    var sourcePlan =
+        ml.workflow(
+            "source-plan",
+            Map.of(
+                "prompt",
+                prompt,
+                "sourceId",
+                "creative-optimization:" + analysisId + ":" + candidateId,
+                "sourceVersion",
+                "UNSAVED_CANDIDATE"));
+    var planBeats = maps(map(sourcePlan.get("videoPlanIR")).get("beats"));
+    var events = new ArrayList<Map<String, Object>>();
+    for (var beat : planBeats) {
+      String quote = String.valueOf(beat.getOrDefault("sourceQuote", ""));
+      if (quote.isBlank()) continue;
+      String action = String.valueOf(beat.getOrDefault("sourceAction", quote));
+      if (!quote.contains(action)) action = quote;
+      events.add(Map.of("sourceQuote", quote, "action", action));
+    }
+    var options = new LinkedHashMap<String, Object>();
+    for (String key : List.of(
+        "profile", "contentProfile", "openingStrategy", "desiredDuration",
+        "plannedEditedDuration", "generator", "qualityJustification", "viewerQuestion",
+        "settings", "references", "segments", "protectedIntent", "creativeEvidence",
+        "intentChangeReason", "lessonModelVersion", "retrievedLessons", "canonicalValidationId")) {
+      if (baselineRequest.containsKey(key)) options.put(key, baselineRequest.get(key));
+    }
+    options.put("structuredPlan", Map.of(
+        "evidenceStatus", "DETERMINISTIC_SOURCE_EVENTS_ONLY",
+        "sourceVersion", "UNSAVED_CANDIDATE",
+        "events", events));
+    options.put("acceptedStartFrame", false);
+    options.put("authorizationEvidence", Map.of());
+    return runReview(
+        new ReviewRequest(
+            null, null, prompt, "creative-optimization-" + candidateId, options),
+        false);
+  }
+
+  private static String lineDiff(String original, String candidate, String id) {
+    var before = original.lines().toList();
+    var after = candidate.lines().toList();
+    int[][] lcs = new int[before.size() + 1][after.size() + 1];
+    for (int i = before.size() - 1; i >= 0; i--)
+      for (int j = after.size() - 1; j >= 0; j--)
+        lcs[i][j] =
+            before.get(i).equals(after.get(j))
+                ? lcs[i + 1][j + 1] + 1
+                : Math.max(lcs[i + 1][j], lcs[i][j + 1]);
+    var diff = new StringBuilder("--- original\n+++ ").append(id).append('\n');
+    int i = 0, j = 0;
+    while (i < before.size() || j < after.size()) {
+      if (i < before.size() && j < after.size() && before.get(i).equals(after.get(j))) {
+        diff.append(' ').append(before.get(i++)).append('\n');
+        j++;
+      } else if (i < before.size() && (j == after.size() || lcs[i + 1][j] >= lcs[i][j + 1])) {
+        diff.append('-').append(before.get(i++)).append('\n');
+      } else {
+        diff.append('+').append(after.get(j++)).append('\n');
+      }
+    }
+    return diff.toString();
+  }
+
   static java.util.Set<String> essentialSignature(Map<String, Object> review) {
     var result = new java.util.TreeSet<String>();
     for (var requirement : maps(review.get("intentRequirements")))
@@ -583,17 +798,34 @@ public class WorkflowService {
 
   @Transactional
   public Map<String, Object> creativeRole(Map<String, Object> request) {
+    return creativeRole(request, false);
+  }
+
+  @Transactional
+  private Map<String, Object> creativeRole(Map<String, Object> request, boolean sourceBoundOptimization) {
     String role = String.valueOf(request.get("role"));
-    if (!List.of("STORY", "STORY_REVIEW", "BUILD_PROMPT", "MINIMAL_REPAIR").contains(role))
+    if (!List.of("STORY", "STORY_REVIEW", "BUILD_PROMPT", "MINIMAL_REPAIR", "PROMPT_OPTIMIZATION").contains(role))
       throw new IllegalArgumentException("Unsupported creative role");
-    if ("STORY".equals(role)) {
+    if ("PROMPT_OPTIMIZATION".equals(role) && !sourceBoundOptimization)
+      throw new IllegalArgumentException("Creative optimization must use the source-bound Step 6 workflow");
+    if ("STORY".equals(role) || "PROMPT_OPTIMIZATION".equals(role)) {
       if (!Boolean.TRUE.equals(request.get("generationAuthorized")))
-        throw new IllegalArgumentException("Explicit authorization for this story-generation operation is required");
+        throw new IllegalArgumentException("Explicit authorization for this paid creative operation is required");
       if (!(request.get("maxCostUsd") instanceof Number ceiling)
-          || !Double.isFinite(ceiling.doubleValue()) || ceiling.doubleValue() <= 0)
+          || !Double.isFinite(ceiling.doubleValue()) || ceiling.doubleValue() <= 0 || ceiling.doubleValue() > 20)
         throw new IllegalArgumentException("A positive authorized cost ceiling is required");
       if (String.valueOf(request.getOrDefault("text", "")).isBlank())
-        throw new IllegalArgumentException("Enter an idea before requesting story generation");
+        throw new IllegalArgumentException("Source text is required before requesting creative generation");
+      if ("PROMPT_OPTIMIZATION".equals(role)) {
+        var optimizationContext = map(request.get("context"));
+        if (String.valueOf(optimizationContext.getOrDefault("analysisRunId", "")).isBlank()
+            || String.valueOf(optimizationContext.getOrDefault("promptVersionId", "")).isBlank()
+            || !(optimizationContext.get("essentialEvents") instanceof List<?> events)
+            || events.isEmpty())
+          throw new IllegalArgumentException("Source analysis and essential events are required");
+      }
+    }
+    if ("STORY".equals(role)) {
       videos.requirePromptWorkspace(String.valueOf(map(request.get("context")).getOrDefault("workspacePath", "")));
     }
     if (map(request.get("context")).get("sourceStoryRecordId") instanceof String storyId
@@ -638,7 +870,7 @@ public class WorkflowService {
     // configuration form the request identity; a changed budget must never
     // turn the same request into another paid provider call.
     String requestFingerprint = creativeRoleFingerprint(role, verifiedRequest);
-    if ("BUILD_PROMPT".equals(role)) {
+    if ("BUILD_PROMPT".equals(role) || "PROMPT_OPTIMIZATION".equals(role)) {
       // Serialize identical requests across tabs/processes while the provider
       // call is in progress. The first transaction commits the durable result;
       // the next caller then replays it without another provider call.
@@ -646,16 +878,21 @@ public class WorkflowService {
           .param("fingerprint", requestFingerprint)
           .query((rs, rowNum) -> rs.getObject(1))
           .list();
-      var saved = findCreativeRoleByFingerprint(requestFingerprint);
-      if (saved.isPresent() && saved.get().get("result") instanceof Map<?, ?>
-          && !"PROVIDER_RESULT_REJECTED".equals(saved.get().get("attemptState"))) {
-        var replay = new LinkedHashMap<>(saved.get());
-        replay.put("recordId", saved.get().get("recordId"));
-        replay.put("reused", true);
-        replay.put("calls", 0);
-        replay.put("attemptState", "REUSED_SAVED_RESULT");
-        replay.put("requestFingerprint", requestFingerprint);
-        return replay;
+      var saved = findCreativeRoleByFingerprint(requestFingerprint, role);
+      if (saved.isPresent()) {
+        if (!(saved.get().get("result") instanceof Map<?, ?>)
+            || "PROVIDER_RESULT_REJECTED".equals(saved.get().get("attemptState"))) {
+          if ("PROMPT_OPTIMIZATION".equals(role))
+            throw new IllegalStateException("A prior optimization provider outcome is unresolved; do not automatically retry");
+        } else {
+          var replay = new LinkedHashMap<>(saved.get());
+          replay.put("recordId", saved.get().get("recordId"));
+          replay.put("reused", true);
+          replay.put("calls", 0);
+          replay.put("attemptState", "REUSED_SAVED_RESULT");
+          replay.put("requestFingerprint", requestFingerprint);
+          return replay;
+        }
       }
     }
     Map<String, Object> workflowResponse;
@@ -699,6 +936,11 @@ public class WorkflowService {
     diagnostics.put("persisted", true);
     result.put("attemptDiagnostics", diagnostics);
     result.put("validationStatus", rejected ? "REJECTED" : unknown ? "UNKNOWN" : "NOT_VALIDATED");
+    if ("PROMPT_OPTIMIZATION".equals(role))
+      result.put("operatorAuthorization", Map.of(
+          "operatorConfirmed", true,
+          "maxCostUsd", request.get("maxCostUsd"),
+          "authorizedAt", Instant.now().toString()));
     result.put("recordId", save("CREATIVE_ROLE", null, result));
     return result;
   }
@@ -713,6 +955,8 @@ public class WorkflowService {
         canonical.put("builderContractVersion", BUILD_PROMPT_CONTRACT_VERSION);
         canonical.put("builderModel", buildPromptModel == null ? "" : buildPromptModel);
       }
+      if ("PROMPT_OPTIMIZATION".equals(role))
+        canonical.put("optimizationModel", System.getenv().getOrDefault("WORKFLOW_PROMPT_OPTIMIZATION_MODEL", ""));
       return HexFormat.of().formatHex(
           MessageDigest.getInstance("SHA-256").digest(json.writeValueAsBytes(canonical)));
     } catch (Exception error) {
@@ -784,12 +1028,14 @@ public class WorkflowService {
     context.put("characterReferences", references);
   }
 
-  private java.util.Optional<Map<String, Object>> findCreativeRoleByFingerprint(String fingerprint) {
+  private java.util.Optional<Map<String, Object>> findCreativeRoleByFingerprint(
+      String fingerprint, String role) {
     return jdbc.sql(
             "SELECT id,payload::text payload FROM post_family_workflow_events "
-                + "WHERE kind='CREATIVE_ROLE' AND payload->>'role'='BUILD_PROMPT' "
+                + "WHERE kind='CREATIVE_ROLE' AND payload->>'role'=:role "
                 + "AND payload->>'requestFingerprint'=:fingerprint "
                 + "ORDER BY created_at DESC,id DESC LIMIT 1")
+        .param("role", role)
         .param("fingerprint", fingerprint)
         .query((rs, ignored) -> {
           var value = read(rs.getString("payload"));

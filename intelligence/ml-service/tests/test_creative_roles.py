@@ -50,6 +50,37 @@ def test_story_candidates_are_bounded_when_provider_overproduces():
     response = perform_role('STORY', 'Idea', {}, provider, 'configured-model')
     assert len(response['result']['alternatives']) == 3
 
+
+def test_prompt_optimization_requires_two_distinct_candidates_and_preserved_source_events():
+    source = 'Mimi wants to attach a note. Each pull doubles the notes. Mimi sneezes and the notes fly off.'
+    events = ['Mimi wants to attach a note.', 'Each pull doubles the notes.', 'Mimi sneezes and the notes fly off.']
+    candidates = [
+        {'candidateId': 'candidate-a', 'title': 'Clear opening', 'hypothesis': 'Make the anomaly visible immediately.',
+         'prompt': source + '\nOpening frame: show the note already stuck to Mimi’s finger.'},
+        {'candidateId': 'candidate-b', 'title': 'Measured escalation', 'hypothesis': 'Distribute the multiplication actions.',
+         'prompt': source + '\nUse three distinct, readable multiplication stages.'},
+    ]
+    provider = FixtureProvider({'candidates': candidates})
+    response = perform_role('PROMPT_OPTIMIZATION', source, {'essentialEvents': events}, provider, 'configured-model')
+    assert [item['candidateId'] for item in response['result']['candidates']] == ['candidate-a', 'candidate-b']
+    assert provider.calls[0][0]['context']['essentialEvents'] == events
+    assert response['visualInspected'] is False
+
+
+@pytest.mark.parametrize('candidates,message', [
+    ([{'candidateId': 'candidate-a', 'title': 'A', 'hypothesis': 'A', 'prompt': 'changed'}], 'Exactly two'),
+    ([{'candidateId': 'candidate-a', 'title': 'A', 'hypothesis': 'A', 'prompt': 'Mimi wants to attach a note. Each pull doubles the notes. Mimi sneezes and the notes fly off. Keep opening legible.'},
+      {'candidateId': 'candidate-b', 'title': 'B', 'hypothesis': 'B', 'prompt': 'A replacement ending.'}], 'omits an essential'),
+])
+def test_prompt_optimization_rejects_incomplete_or_unfaithful_candidates(candidates, message):
+    source = 'Mimi wants to attach a note. Each pull doubles the notes. Mimi sneezes and the notes fly off.'
+    provider = FixtureProvider({'candidates': candidates})
+    with pytest.raises(ValueError, match=message):
+        perform_role('PROMPT_OPTIMIZATION', source, {
+            'essentialEvents': ['Mimi wants to attach a note.', 'Each pull doubles the notes.', 'Mimi sneezes and the notes fly off.'],
+        }, provider, 'configured-model')
+
+
 @pytest.mark.parametrize('role,result,provider_name', [
     ('STORY', {'alternatives': ['A grounded story']}, 'deepseek'),
     ('BUILD_PROMPT', {'prompt': 'TITLE / FORMAT 15 seconds 9:16.\n\nVISUAL STYLE grounded.\n\nCHARACTER / CONTINUITY Mimi remains visible.\n\nTIMED SHOT PLAN: 0-3s opening camera close shot; 3-6s action; 6-10s escalation; 10-13s reveal; 13-15s ending.\n\nAUDIO and sound.\n\nNEGATIVE CONSTRAINTS.\n\nFINAL CUT hard cut.', 'productionPlan': {'sourceIdentity': {'storyRevisionId': 'fixture'}, 'creativeObjective': 'Make the note movement readable.', 'characterBindings': [{'name': 'Mimi', 'status': 'supplied'}], 'visualExecution': {'openingState': 'Mimi is visible.', 'beats': [{'time': '0-3s', 'framing': 'close shot', 'action': 'Mimi holds a note.', 'staging': 'cabinet behind her.', 'consequence': 'setup visible.'}, {'time': '3-6s', 'framing': 'medium shot', 'action': 'note flips.', 'staging': 'in front of cabinet.', 'consequence': 'note reaches face.'}, {'time': '6-10s', 'framing': 'medium shot', 'action': 'Mimi reacts.', 'staging': 'center frame.', 'consequence': 'escalation.'}, {'time': '10-13s', 'framing': 'wide shot', 'action': 'notes multiply.', 'staging': 'around Mimi.', 'consequence': 'coverage grows.'}, {'time': '13-15s', 'framing': 'wide shot', 'action': 'Mimi is covered.', 'staging': 'cabinet behind her.', 'consequence': 'hard cut.'}], 'mechanism': 'Notes move visibly.', 'continuity': 'Mimi remains visible.', 'endingState': 'Hard cut.'}, 'productionConstraints': {'duration': 15, 'aspectRatio': '9:16'}, 'intentClassification': {'status': 'PRESERVE'}, 'evidenceLimitations': [], 'generatorRisks': [], 'referencePlan': {'status': 'NO_REFERENCE_SUPPLIED'}}}, 'openai'),

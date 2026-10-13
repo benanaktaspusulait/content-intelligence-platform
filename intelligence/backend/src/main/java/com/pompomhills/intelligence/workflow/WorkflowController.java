@@ -21,10 +21,28 @@ public class WorkflowController {
   private com.pompomhills.intelligence.quality.IntelligenceQualityValidationService
       canonicalValidation;
 
+  @org.springframework.beans.factory.annotation.Autowired
+  private com.pompomhills.intelligence.content.ContentWorkspaceController contents;
+
   @PostMapping("/records/{id}/canonical-validation")
   public com.pompomhills.intelligence.quality.IntelligenceValidateResponse canonicalValidation(
       @PathVariable UUID id) {
     return canonicalValidation.validateWorkflowProfile(service.getByKind(id, "REVIEW"));
+  }
+
+  @GetMapping("/records/{id}/creative-optimization/latest")
+  public Map<String, Object> latestCreativeOptimization(@PathVariable UUID id) {
+    return service.latestCreativeOptimization(id);
+  }
+
+  @PostMapping("/records/{id}/creative-optimization")
+  public Map<String, Object> creativeOptimization(
+      @PathVariable UUID id, @RequestBody Map<String, Object> request) {
+    if (!(request.get("contentId") instanceof Number contentId)
+        || !(request.get("promptVersionId") instanceof Number promptVersionId))
+      throw new IllegalArgumentException("contentId and promptVersionId are required");
+    var provenance = contents.creativeProvenance(contentId.longValue(), promptVersionId.longValue());
+    return service.generateCreativeOptimization(id, request, provenance);
   }
 
   @GetMapping("/learning/retrieve")

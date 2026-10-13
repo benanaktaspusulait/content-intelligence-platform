@@ -14,7 +14,13 @@ from app.llm.openai_provider import OpenAIProvider
 from .deepseek import DeepSeekTextProvider
 from .story_quality import analyse_story_candidates
 
-ROLES = {'STORY': 'deepseek', 'STORY_REVIEW': 'openai', 'BUILD_PROMPT': 'openai', 'MINIMAL_REPAIR': 'openai'}
+ROLES = {
+    'STORY': 'deepseek',
+    'STORY_REVIEW': 'openai',
+    'BUILD_PROMPT': 'openai',
+    'MINIMAL_REPAIR': 'openai',
+    'PROMPT_OPTIMIZATION': 'openai',
+}
 
 
 def role_readiness() -> dict[str, Any]:
@@ -608,11 +614,12 @@ def perform_role(role: str, text: str, context: dict[str, Any], provider: LLMPro
         raise ValueError('Creative roles are text-only; visual evidence was not supplied')
     system = {
         'STORY_REVIEW': '''Review every supplied story candidate together. Return ONLY one JSON object matching this exact STORY_REVIEW contract; never omit a key and never return markdown. Required top-level keys: reviewId, sourceRequestId, sourceFingerprint, reviewModel, reviewModelVersion, reviewPolicyVersion, reviewTimestamp, reviewStatus, diversityAssessment, comparativeFindings, candidateReviews, recommendedCandidateId, recommendationReason, overallConcerns, usageAndCost, evidenceLimitations, revisionComparison. Set sourceRequestId and sourceFingerprint exactly to the values supplied in context (they may be null); the saved record timestamp is authoritative, so do not use a fixture date. reviewStatus must be COMPLETED, PARTIAL, SERVICE_ERROR, or INSUFFICIENT_EVIDENCE. candidateReviews must contain exactly one object for each supplied candidate, each with its exact candidateId. Assess concept coherence, opening visual promise, causal consistency, event progression, originality against siblings, curiosity/rewatch, generator difficulty, source constraints, ending/payoff, and material differences. For every material finding include dimension, finding, supportingTextEvidence, severity, confidenceOrEvidenceStatus and suggestedMinimalImprovement. Use concise structured findings and do not invent candidates. recommendedCandidateId must be one supplied candidateId or null; if no evidence supports a preference, return null and explain that. Use arrays/objects for the remaining evidence fields even when empty. Compare actual mechanisms and event progressions rather than wording, preserve source fidelity, mark uncertainty honestly, and never grant render authorization.''',
+        'PROMPT_OPTIMIZATION': '''Return ONLY JSON with exactly {"candidates":[{"candidateId":"candidate-a","title":"...","hypothesis":"...","prompt":"complete prompt text"},{"candidateId":"candidate-b","title":"...","hypothesis":"...","prompt":"complete prompt text"}]}. Produce exactly two alternatives to the complete source prompt, each with a distinct, testable creative hypothesis. Candidate A must focus on first-frame/early curiosity; Candidate B must focus on beat progression and execution feasibility. Preserve the source character, physical rule, primary goal, every essential event and the exact ending. Every `essentialEvents` phrase supplied in context must remain verbatim and unchanged in both prompts. Do not add narrative outcomes, characters, objects, or mechanics. Keep the configured profile, generator, duration, aspect ratio and approved story unchanged. Do not assert image/video observation, audience retention, rewatch success, or renderability. Treat first-frame, pacing, and execution claims as hypotheses. Do not recommend, rank or auto-select either candidate; never grant render authorization.''',
         'STORY': '''Return ONLY one JSON object matching this schema: {"alternatives":[{"candidateId":"candidate-1","title":"short title","text":"complete story"}]}. Return exactly the number of alternatives requested in context.requestedAlternativeCount (between 1 and 3). Each candidate must include a non-empty candidateId, title and text string. When returning multiple alternatives, each must have a meaningfully different narrative body — do not reuse the same story text with only a different title. Vary at least one of: action/progression strategy, how the central physical rule causes consequences, escalation structure, visual discovery, or permitted payoff. The user supplied input in mode context.inputMode (IDEA = short concept, DETAILED_STORY = complete narrative). Respect context.storyGenerationMode: for EXPLORE_DIFFERENT_STORIES generate meaningfully different narrative directions from the supplied idea; for IMPROVE_EXISTING_STORY refine the supplied narrative while preserving only the explicitly locked requirements listed in context.lockedRequirements. The locked requirements are: PRESERVE_CORE_PREMISE (keep the central concept), PRESERVE_KEY_EVENTS (keep the major events in order), PRESERVE_ENDING (keep the final outcome). Only the requirements present in context.lockedRequirements are binding; do not silently lock requirements that are absent. Preserve supplied characters and intent. Do not return markdown, reasoning, commentary or production authorization.''',
         'BUILD_PROMPT': '''Return ONLY JSON with exactly two top-level keys: `prompt` and `productionPlan`. Convert the approved story into a concrete, concise OpenArt video prompt: visible actions, object states, continuity, staging, selected aspect ratio/duration, and ending. Do not rewrite its premise. Preserve the exact character, central mechanism, essential progression, protected events, constraints and ending. Do not silently omit an essential event; mark uncertainty or material deviation in evidence instead. Use manageable actions, few cuts, uncluttered staging, and no invented reference claims. Use the selected content profile's objective; comedy is relevant only when the source/profile supports it. Separate source-confirmed facts from AI-derived execution suggestions. Prompt headings, each separated by a blank line: TITLE / FORMAT, VISUAL STYLE, CHARACTER / CONTINUITY, TIMED SHOT PLAN, AUDIO, NEGATIVE CONSTRAINTS, FINAL CUT. Make the timed plan cover the full selected duration with ordered, non-overlapping ranges; choose meaningful events from the source, not an arbitrary fixed beat count. Each plan beat must contain time, subject, action, object, stateChange, framing, staging, consequence, sourceEvidence (an exact verbatim quote from approved source or empty string), evidenceStatus, sourceRelationship (FAITHFUL_ADAPTATION, CLARIFICATION, OPTIONAL_EXECUTION_INTERPRETATION, MATERIAL_CREATIVE_DEVIATION, UNKNOWN), and importance (CORE, FLEXIBLE, POLISH, UNKNOWN). Never fabricate quotes. `visualExecution` must include openingState, beats, mechanism, continuity, endingState. `productionPlan` keys: sourceIdentity, creativeObjective, characterBindings, visualExecution, productionConstraints, intentClassification, evidenceLimitations, generatorRisks, referencePlan. If Mimi is selected, honor the supplied anthropomorphic-bunny identity requirement; do not invent unverified appearance details and state whether approved references are actually bound. Assess the first two seconds as planned text only using visible promise → immediate consequence/reveal → reason to continue; distinguish mystery from ordinary setup. Do not claim first-frame image evidence. Identify causal ambiguity without rewriting the premise. Risks need a cited source event, affected beat, confidence, smallest mitigation and next action; they are advisory unless evidence establishes a true blocker. Do not claim unverified generator behavior. Do not add provider commentary, approval language or render authorization.''',
         'MINIMAL_REPAIR': 'Return JSON patches: at most three minimal edits with integer Unicode code point start/end, exact sourceQuote and replacement. Preserve protected intent and ESSENTIAL source quotes. Never return approval or rewrite the entire prompt.',
     }[role]
-    safe_context = {key: context[key] for key in ('protectedIntent', 'intentRequirements', 'findings', 'retrievedLessons', 'constraints', 'inputMode', 'storyGenerationMode', 'lockedRequirements', 'permittedVariation', 'mainCharacter', 'character', 'characterRecord', 'characterReferences', 'referenceBindings', 'preferences', 'profile', 'candidates', 'candidateIds', 'requestedAlternativeCount', 'sourceRequestId', 'sourceFingerprint', 'previousReview', 'currentRevision', 'previousRevision', 'targetDuration', 'aspectRatio', 'reviewPolicyVersion', 'selectedGenerator', 'generatorCapabilities', 'targetConfiguration', 'storyTitle', 'promptBuilderContractVersion') if key in context}
+    safe_context = {key: context[key] for key in ('protectedIntent', 'intentRequirements', 'findings', 'retrievedLessons', 'constraints', 'inputMode', 'storyGenerationMode', 'lockedRequirements', 'permittedVariation', 'mainCharacter', 'character', 'characterRecord', 'characterReferences', 'referenceBindings', 'preferences', 'profile', 'candidates', 'candidateIds', 'requestedAlternativeCount', 'sourceRequestId', 'sourceFingerprint', 'previousReview', 'currentRevision', 'previousRevision', 'targetDuration', 'aspectRatio', 'reviewPolicyVersion', 'selectedGenerator', 'generatorCapabilities', 'targetConfiguration', 'storyTitle', 'promptBuilderContractVersion', 'essentialEvents', 'approvedStoryText', 'analysisRunId', 'promptVersionId', 'contentId') if key in context}
     if role == 'BUILD_PROMPT':
         safe_context['generatorCapabilities'] = _configured_generator_capabilities(context)
     raw_response = provider.complete(json.dumps({'text': text, 'context': safe_context}, ensure_ascii=False), system=system, temperature=0)
@@ -787,6 +794,38 @@ def perform_role(role: str, text: str, context: dict[str, Any], provider: LLMPro
             raise ValueError('Production prompt conflicts with confirmed settings: ' + '; '.join(conflicts))
         value['qualityFindings'] = quality_findings
         value['productionPlan'] = plan
+    elif role == 'PROMPT_OPTIMIZATION':
+        candidates = value.get('candidates')
+        if not isinstance(candidates, list) or len(candidates) != 2:
+            raise ValueError('Exactly two prompt optimization candidates are required')
+        ids = [item.get('candidateId') for item in candidates if isinstance(item, dict)]
+        if ids != ['candidate-a', 'candidate-b']:
+            raise ValueError('Prompt optimization candidate IDs must be candidate-a and candidate-b')
+        prompts: list[str] = []
+        essential = context.get('essentialEvents')
+        if not isinstance(essential, list) or not essential or any(
+            not isinstance(item, str) or not item.strip() or item not in text for item in essential
+        ):
+            raise ValueError('Source-supported essential event anchors are required')
+        for candidate in candidates:
+            if (
+                not isinstance(candidate.get('title'), str)
+                or not candidate['title'].strip()
+                or not isinstance(candidate.get('hypothesis'), str)
+                or not candidate['hypothesis'].strip()
+                or not isinstance(candidate.get('prompt'), str)
+                or not candidate['prompt'].strip()
+                or len(candidate['prompt']) > 16000
+            ):
+                raise ValueError('Each prompt optimization candidate must be complete and bounded')
+            candidate['prompt'] = candidate['prompt'].strip()
+            if candidate['prompt'] == text or candidate['prompt'] in prompts:
+                raise ValueError('Prompt optimization candidates must be distinct unsaved revisions')
+            if any(anchor not in candidate['prompt'] for anchor in essential):
+                raise ValueError('Candidate omits an essential source event; candidate rejected')
+            prompts.append(candidate['prompt'])
+        if len({str(item['hypothesis']).strip().casefold() for item in candidates}) != 2:
+            raise ValueError('Each candidate requires a distinct optimization hypothesis')
     else:
         patches = value.get('patches')
         if not isinstance(patches, list) or len(patches) > 3:

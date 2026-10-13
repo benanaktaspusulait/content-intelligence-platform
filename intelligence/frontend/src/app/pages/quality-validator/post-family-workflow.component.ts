@@ -308,6 +308,71 @@ import { GeneralProducibilityComponent } from './general-producibility.component
           <p *ngIf="decisionReadError" class="error" role="alert">{{ decisionReadError }}</p>
           <p class="setting-note">Required character reference and accepted start frame remain outstanding; this decision does not mark F8 evidence resolved.</p>
         </section>
+        <details class="creative-optimization-details">
+          <summary>Creative Optimization (optional)</summary>
+          <div class="creative-optimization-body">
+            <p class="setting-note">Generate two prompt candidates after explicit paid consent and a valid budget. Candidate scores are evidence only; they do not auto-select or authorize rendering.</p>
+            <div class="repair-fields">
+              <label class="repair-field" for="creative-optimization-budget">
+                <span>Maximum total cost (USD)</span>
+                <input #creativeOptimizationBudgetInput id="creative-optimization-budget" type="number" min="0.01" max="20" step="0.01" [disabled]="creativeOptimizationBusy" (input)="creativeOptimizationBudget = +($any($event.target).value || 0)">
+              </label>
+            </div>
+            <label class="repair-consent-row" for="creative-optimization-consent">
+              <input #creativeOptimizationConsentInput id="creative-optimization-consent" type="checkbox" [disabled]="creativeOptimizationBusy" (change)="creativeOptimizationConsent = $any($event.target).checked">
+              <span>I explicitly authorize one creative optimization call within the configured budget.</span>
+            </label>
+            <div class="repair-button-row">
+              <button #creativeOptimizationGenerateButton type="button" class="button button--primary button--compact" (click)="generateCreativeOptimizationCandidates()" [disabled]="creativeOptimizationBusy || !creativeOptimizationConsent || !validCreativeOptimizationBudget || !review?.recordId">Generate two candidates</button>
+            </div>
+            <p *ngIf="creativeOptimizationError" class="error" role="alert">{{ creativeOptimizationError }}</p>
+            <div *ngIf="creativeOptimizationComparison?.candidates?.length" class="creative-optimization-grid">
+              <article class="creative-optimization-card">
+                <header>
+                  <div><span class="card-kicker">Original</span><h4>Saved prompt</h4></div>
+                  <span class="status-pill" [class.status-pill--ready]="creativeOptimizationSelectedCandidateId === 'ORIGINAL'">Original</span>
+                </header>
+                <p><strong>Prompt v{{ promptVersionId }}:</strong> {{ prompt }}</p>
+                <p><strong>Quality:</strong> {{ review?.canonicalRuleEvaluation?.score ?? 'UNKNOWN' }}/100 · Grade {{ review?.canonicalRuleEvaluation?.grade ?? 'UNKNOWN' }}</p>
+                <p><strong>Rules:</strong> {{ review?.canonicalRuleEvaluation?.passedRules?.length ?? 0 }} PASS · {{ review?.canonicalRuleEvaluation?.failedRules?.length ?? 0 }} FAIL · {{ review?.canonicalRuleEvaluation?.unknownRules?.length ?? 0 }} UNKNOWN</p>
+                <p class="setting-note">Keep the saved prompt unless a candidate is reviewed and selected.</p>
+                <div class="creative-optimization-actions">
+                  <button type="button" class="button button--secondary button--compact" (click)="selectCreativeOptimizationCandidate('ORIGINAL')" [disabled]="creativeOptimizationBusy">Keep Original</button>
+                </div>
+              </article>
+              <article *ngFor="let candidate of creativeOptimizationComparison.candidates; let idx = index" class="creative-optimization-card" [class.is-selected]="creativeOptimizationSelectedCandidateId === candidate.candidateId">
+                <header>
+                  <div><span class="card-kicker">Candidate {{ idx === 0 ? 'A' : 'B' }}</span><h4>{{ candidate.title || ('Candidate ' + (idx === 0 ? 'A' : 'B')) }}</h4></div>
+                  <span class="status-pill" [class.status-pill--ready]="creativeOptimizationSelectedCandidateId === candidate.candidateId">{{ creativeOptimizationSelectedCandidateId === candidate.candidateId ? 'Selected' : 'Draft' }}</span>
+                </header>
+                <p><strong>Hypothesis:</strong> {{ candidate.hypothesis || 'No specific hypothesis recorded.' }}</p>
+                <p><strong>Quality:</strong> {{ candidate.review?.canonicalRuleEvaluation?.score ?? 'UNKNOWN' }}/100 · Grade {{ candidate.review?.canonicalRuleEvaluation?.grade ?? 'UNKNOWN' }}</p>
+                <p><strong>Rule differences ({{ candidate.rulesetVersion || creativeOptimizationComparison.rulesetVersion || 'UNKNOWN' }}):</strong>
+                  {{ candidate.review?.canonicalRuleEvaluation?.passedRules?.length ?? 0 }} PASS ·
+                  {{ candidate.review?.canonicalRuleEvaluation?.failedRules?.length ?? 0 }} FAIL ·
+                  {{ candidate.review?.canonicalRuleEvaluation?.unknownRules?.length ?? 0 }} UNKNOWN
+                </p>
+                <details><summary>Rule outcomes</summary><pre>{{ candidate.review?.canonicalRuleEvaluation | json }}</pre></details>
+                <p><strong>Story fidelity:</strong> {{ candidate.fidelity | json }}</p>
+                <p><strong>Production risks:</strong> {{ candidate.productionRisks | json }}</p>
+                <p><strong>Remaining UNKNOWNs:</strong> {{ candidate.unknowns | json }}</p>
+                <pre class="creative-optimization-diff">{{ candidate.diff || candidate.prompt || 'No diff available.' }}</pre>
+                <details><summary>Full candidate prompt</summary><pre class="creative-optimization-diff">{{ candidate.prompt || 'Candidate prompt unavailable.' }}</pre></details>
+                <div class="creative-optimization-actions">
+                  <button type="button" class="button button--secondary button--compact" (click)="reviewCreativeOptimizationCandidate(candidate.candidateId)" [disabled]="creativeOptimizationBusy">Review Candidate {{ idx === 0 ? 'A' : 'B' }}</button>
+                  <button type="button" class="button button--primary button--compact" (click)="selectCreativeOptimizationCandidate(candidate.candidateId)" [disabled]="creativeOptimizationBusy">Select candidate</button>
+                </div>
+              </article>
+            </div>
+            <div *ngIf="creativeOptimizationComparison?.candidates?.length" class="creative-optimization-approval">
+              <p class="setting-note">Candidate scores are evidence only. They do not auto-select and do not grant render authorization.</p>
+              <div class="repair-button-row">
+                <button type="button" class="button button--primary button--compact" (click)="approveSelectedCreativeOptimizationCandidate()" [disabled]="creativeOptimizationBusy || !creativeOptimizationApprovalEnabled">Approve Selected Revision</button>
+              </div>
+              <small *ngIf="!creativeOptimizationApprovalEnabled">Select and review a candidate with preserved story coverage before approval.</small>
+            </div>
+          </div>
+        </details>
         <details class="repair-secondary-details">
           <summary>Analysis details and provenance</summary>
           <div class="repair-secondary-grid">
@@ -340,7 +405,7 @@ import { GeneralProducibilityComponent } from './general-producibility.component
           <summary>Current prompt · Prompt v{{ promptVersionNumber ?? 'UNKNOWN' }} / ID {{ review?.promptVersionId || promptVersionId }}</summary>
           <div class="prompt-preview-toolbar">
             <span>Immutable saved prompt text · read-only</span>
-            <button type="button" class="button button--secondary button--compact" (click)="copySavedPrompt()" [disabled]="!isCurrent() || !prompt">Copy</button>
+            <button type="button" class="button button--secondary button--compact" (click)="copySavedPrompt()" [disabled]="!isCurrent() || !prompt">Copy saved prompt</button>
           </div>
           <div #promptPreviewEditor class="prompt-monaco" aria-label="Immutable prompt preview"></div>
           <label *ngIf="!promptPreviewEditorReady" class="prompt-fallback-label">Read-only prompt preview<textarea readonly [value]="prompt" aria-label="Current prompt text"></textarea></label>
@@ -348,17 +413,32 @@ import { GeneralProducibilityComponent } from './general-producibility.component
           <p *ngIf="copyStatus" role="status">{{ copyStatus }}</p>
         </details>
         <details class="repair-tools-details"><summary>Optional Repair Tools</summary>
-          <section class="bounded-repair-details">
-            <h3>Bounded repair session · maximum two attempts</h3>
+          <div class="repair-tools-group">
+            <h3>Bounded AI Repair</h3>
             <p>A provider call happens only after you explicitly approve the budget and start this session.</p>
-            <label>Maximum total cost (USD)<input class="repair-budget" type="number" min="0.01" max="20" step="0.01" [(ngModel)]="repairBudget"></label>
-            <small>Choose a total ceiling between $0.01 and $20.00 USD. Zero is not authorization.</small>
-            <label><input type="checkbox" [(ngModel)]="repairConsent">I approve the configured repair provider within this session budget.</label>
-            <button type="button" class="button button--primary button--compact" (click)="startRepairSession()" [disabled]="busy || !isCurrent() || !repairConsent || !validRepairBudget">Start bounded repair</button>
+            <div class="repair-fields">
+              <label class="repair-field">
+                <span>Maximum total cost (USD)</span>
+                <input class="repair-budget" type="number" min="0.01" max="20" step="0.01" [(ngModel)]="repairBudget">
+              </label>
+              <small>Choose a total ceiling between $0.01 and $20.00 USD. Zero is not authorization.</small>
+            </div>
+            <label class="repair-consent-row" for="repair-consent">
+              <input id="repair-consent" type="checkbox" [(ngModel)]="repairConsent">
+              <span>I approve the configured repair provider within this session budget.</span>
+            </label>
+            <div class="repair-button-row">
+              <button type="button" class="button button--primary button--compact" (click)="startRepairSession()" [disabled]="busy || !isCurrent() || !repairConsent || !validRepairBudget">Start bounded repair</button>
+            </div>
             <small *ngIf="!validRepairBudget">Enter a budget greater than zero and no more than $20.00.</small>
             <small *ngIf="!repairConsent">Provider authorization is required before a repair session can start.</small>
-            <label>Saved session ID<input [(ngModel)]="repairSessionId" placeholder="Session UUID"></label>
-            <button type="button" class="button button--secondary button--compact" (click)="reopenRepairSession(repairSessionId)" [disabled]="!validRepairSessionId">Reopen session</button>
+            <label class="repair-field">
+              <span>Saved session ID</span>
+              <input [(ngModel)]="repairSessionId" placeholder="Session UUID">
+            </label>
+            <div class="repair-button-row">
+              <button type="button" class="button button--secondary button--compact" (click)="reopenRepairSession(repairSessionId)" [disabled]="!validRepairSessionId">Reopen session</button>
+            </div>
             <small *ngIf="!validRepairSessionId">Enter a valid saved session ID to reopen a session.</small>
             <div *ngIf="repairSession">
               <p>{{ repairSession.sessionId }} · {{ repairSession.state }} · {{ repairSession.stopReason }} · attempts {{ repairSession.attempts }}/{{ repairSession.maxAttempts }} · reserved ceiling {{ repairSession.reservedCostUsd }} (actual spend may be unknown)</p>
@@ -368,40 +448,60 @@ import { GeneralProducibilityComponent } from './general-producibility.component
                 <h4>Best independently reviewed candidate · prompt version {{ repairBestReview.promptVersionId }}</h4><pre>{{ repairBestReview.executionReview?.findings | json }}</pre><pre>{{ repairBestReview.planQuality | json }}</pre>
               </section>
               <pre>{{ repairSession.history | json }}</pre>
-              <button type="button" class="button button--secondary button--compact" (click)="nextRepairAttempt()" [disabled]="busy || repairSession.state !== 'READY'">Next bounded attempt</button>
-              <button type="button" class="button button--primary button--compact" (click)="decideRepair('ACCEPTED')" [disabled]="busy || repairSession.state === 'RUNNING'">Accept best candidate</button>
-              <button type="button" class="button button--secondary button--compact" (click)="decideRepair('REJECTED')" [disabled]="busy || repairSession.state === 'RUNNING'">Reject</button>
-              <button type="button" class="button button--secondary button--compact" (click)="decideRepair('CANCELLED')" [disabled]="busy || repairSession.state === 'RUNNING'">Cancel</button>
+              <div class="repair-button-row">
+                <button type="button" class="button button--secondary button--compact" (click)="nextRepairAttempt()" [disabled]="busy || repairSession.state !== 'READY'">Next bounded attempt</button>
+                <button type="button" class="button button--primary button--compact" (click)="decideRepair('ACCEPTED')" [disabled]="busy || repairSession.state === 'RUNNING'">Accept best candidate</button>
+                <button type="button" class="button button--secondary button--compact" (click)="decideRepair('REJECTED')" [disabled]="busy || repairSession.state === 'RUNNING'">Reject</button>
+                <button type="button" class="button button--secondary button--compact" (click)="decideRepair('CANCELLED')" [disabled]="busy || repairSession.state === 'RUNNING'">Cancel</button>
+              </div>
             </div>
-          </section>
-          <section class="manual-repair-tools">
-            <h3>Minimal manual repair</h3>
+          </div>
+          <div class="repair-tools-group">
+            <h3>Minimal Manual Repair</h3>
             <p *ngIf="intentConfirmed && !protectedIntent.trim()" class="setting-note">
               Step 4 Creative Intent is already confirmed for this prompt. Its saved decision contains no protected-intent text; this is a separate patch-safety requirement, not a request to confirm intent again.
             </p>
             <p *ngIf="!intentConfirmed" class="missing-state">
               No current Step 4 Creative Intent confirmation is available for this prompt. Confirm supported intent in Production Review before preparing a patch.
             </p>
-            <label>Protected intent that must remain unchanged<input [(ngModel)]="protectedIntent" [disabled]="!intentConfirmed" /></label>
-            <label>Exact source wording to replace<input [(ngModel)]="patchOriginal" /></label>
-            <label>Replacement wording<input [(ngModel)]="patchReplacement" /></label>
-            <p>Only the exact selected wording is changed in a candidate. Protected intent remains unchanged; saving a candidate requires an explicit transfer to the versioned editor.</p>
-            <p *ngIf="manualPatchMessage" class="setting-note" role="status">{{ manualPatchMessage }}</p>
+            <label class="repair-field">
+              <span>Protected intent that must remain unchanged</span>
+              <textarea [(ngModel)]="protectedIntent" [disabled]="!intentConfirmed" rows="2" class="repair-field__text"></textarea>
+            </label>
+            <div class="repair-fields repair-fields--patch">
+              <label class="repair-field repair-field--inline">
+                <span>Exact source wording to replace</span>
+                <input [(ngModel)]="patchOriginal" class="repair-field__input">
+              </label>
+              <label class="repair-field repair-field--inline">
+                <span>Replacement wording</span>
+                <input [(ngModel)]="patchReplacement" class="repair-field__input">
+              </label>
+            </div>
+            <p class="repair-help">Only the exact selected wording is changed in a candidate. Protected intent remains unchanged; saving a candidate requires an explicit transfer to the versioned editor.</p>
+            <small *ngIf="manualPatchMessage" class="repair-field-help" role="status">{{ manualPatchMessage }}</small>
             <pre *ngIf="manualPatchPreview" aria-label="Manual patch preview">{{ manualPatchPreview }}</pre>
-            <button type="button" class="button button--secondary button--compact" (click)="repair()" [disabled]="busy || !isCurrent() || !intentConfirmed || !protectedIntent.trim() || !manualPatchValid || review?.repairPasses > 0">Preview and validate exact patch</button>
+            <div class="repair-button-row">
+              <button type="button" class="button button--secondary button--compact" (click)="repair()" [disabled]="busy || !isCurrent() || !intentConfirmed || !protectedIntent.trim() || !manualPatchValid || review?.repairPasses > 0">Preview and validate exact patch</button>
+            </div>
             <p *ngIf="error" class="error" role="alert">{{ error }}</p>
             <pre *ngIf="review?.diff">{{ review.diff }}</pre>
+          </div>
+          <div class="repair-tools-group">
+            <h3>Export and Advanced Actions</h3>
             <div class="repair-tool-actions">
               <button type="button" class="button button--secondary button--compact" (click)="exportHandoff()" [disabled]="!isCurrent()">Download manual render package</button>
             </div>
             <p *ngIf="copyStatus" role="status">{{ copyStatus }}</p>
-            <p>Preview, copy and export do not change prompt, story or analysis data. “Transfer to editor and save version” is an explicit action that creates a new immutable prompt version. The manual package is an evidence snapshot only; it does not authorize rendering or spend credits.</p>
+            <p class="repair-help">Preview, copy and export do not change prompt, story or analysis data. “Transfer to editor and save version” is an explicit action that creates a new immutable prompt version. The manual package is an evidence snapshot only; it does not authorize rendering or spend credits.</p>
             <details *ngIf="review?.finalPrompt && review?.finalPrompt !== prompt" class="repair-candidate-details">
               <summary>Unsaved repair candidate · not the immutable saved prompt</summary>
               <textarea readonly [value]="review.finalPrompt" aria-label="Unsaved repair candidate"></textarea>
-              <button type="button" class="button button--secondary button--compact" (click)="saveFinal.emit(review.finalPrompt)" [disabled]="!isCurrent()">Transfer candidate to versioned editor</button>
+              <div class="repair-button-row">
+                <button type="button" class="button button--secondary button--compact" (click)="saveFinal.emit(review.finalPrompt)" [disabled]="!isCurrent()">Transfer candidate to versioned editor</button>
+              </div>
             </details>
-          </section>
+          </div>
         </details>
         </ng-container>
         <section *ngIf="activeStage === 7" class="stage-empty-card render-stage-card">
@@ -681,10 +781,9 @@ import { GeneralProducibilityComponent } from './general-producibility.component
       .no-repair-confirm,.no-repair-saved{display:grid;gap:10px;padding:13px;border:1px solid #d2dfc4;border-radius:9px;background:#fff}.no-repair-confirm label{display:flex;align-items:flex-start;gap:9px;line-height:1.5}.no-repair-confirm input[type=checkbox]{margin-top:3px;flex:0 0 auto}.no-repair-saved{border-color:#9dbd83;background:#f5faed}.no-repair-saved span{overflow-wrap:anywhere;color:#40515a}.no-repair-confirm small{color:#855b15}.no-repair-saved .button{justify-self:start}
       .repair-secondary-details>summary,.repair-tools-details>summary,.current-prompt-card>summary,.repair-candidate-details>summary{cursor:pointer;font-weight:800;color:#263f56}.repair-secondary-details>summary,.repair-tools-details>summary,.current-prompt-card>summary{font-size:.96rem}.repair-secondary-details[open],.repair-tools-details[open],.current-prompt-card[open],.repair-candidate-details[open]{display:grid;gap:12px}.repair-secondary-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}.repair-secondary-grid>div{display:grid;align-content:start;gap:5px;min-width:0;padding:11px;border:1px solid #dfe7ee;border-radius:8px;background:#fff}.repair-secondary-details details{padding:10px;border:1px solid #dfe7ee;border-radius:8px;background:#fff}.repair-secondary-details details>summary{cursor:pointer;font-weight:750;color:#263f56}
       .current-prompt-card{background:#fff}.prompt-preview-toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;color:#52616b;font-size:.88rem}.prompt-monaco{width:100%;height:340px;min-height:260px;border:1px solid #cbd6ce;border-radius:8px;overflow:hidden}.prompt-fallback-label{display:grid;gap:6px}.prompt-fallback-label textarea,.repair-candidate-details textarea{width:100%;height:340px;min-height:260px;white-space:pre;overflow:auto;resize:vertical;font:13px/1.45 ui-monospace,SFMono-Regular,Menlo,monospace}.repair-candidate-details{background:#fff}.repair-candidate-details textarea{height:220px}
-      .repair-tools-details,.bounded-repair-details{background:#fff}.repair-tools-details>summary{padding:2px}.bounded-repair-details{display:grid;gap:10px}.bounded-repair-details h3,.manual-repair-tools h3{margin:0;color:#263f56}.bounded-repair-details label,.manual-repair-tools label{display:grid;gap:6px;font-weight:650;color:#35464f}.bounded-repair-details input:not([type=checkbox]),.manual-repair-tools input{max-width:100%;min-width:0;height:40px}.bounded-repair-details input.repair-budget{max-width:180px}.manual-repair-tools{display:grid;gap:11px;padding:14px;border:1px solid #dfe7ee;border-radius:9px;background:#fff}.manual-repair-tools textarea{min-height:180px}.repair-tool-actions{display:flex;flex-wrap:wrap;gap:8px}.repair-tool-actions button{margin:0}.button.button--compact,.repair-triage .button{min-height:40px;padding:0 14px;border-radius:7px;font-size:13px}.repair-triage .button{justify-self:start}.repair-triage button:disabled,.repair-tools-details button:disabled{opacity:.48;cursor:not-allowed}.repair-triage button:focus-visible,.repair-tools-details button:focus-visible,.current-prompt-card button:focus-visible{outline:3px solid #345f9a;outline-offset:2px}
-      .repair-tools-details button:not(.button){min-height:40px;width:fit-content;padding:0 14px;border:1px solid #cbd6ce;border-radius:7px;background:#fff;color:#263f56;font:inherit;font-weight:700}.repair-tools-details button:not(.button):disabled{opacity:.48;cursor:not-allowed}.repair-tools-details .error{color:#983520}
-      @media(max-width:900px){.repair-primary-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.repair-secondary-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-      @media(max-width:600px){.repair-triage,.current-prompt-card,.repair-secondary-details,.repair-candidate-details,.repair-tools-details{padding:13px}.repair-primary-grid,.repair-secondary-grid{grid-template-columns:1fr}.repair-primary-grid article{min-height:0}.prompt-preview-toolbar{align-items:flex-start}.prompt-monaco,.prompt-fallback-label textarea{height:320px;min-height:280px}.repair-triage .button{width:auto;max-width:100%}.repair-tools-details button:not(.button){width:auto}.bounded-repair-details input.repair-budget{max-width:160px}}
+      .creative-optimization-details{margin:0 0 14px;padding:16px;border:1px solid #d8e1ec;border-radius:12px;background:#f8fbfd}.creative-optimization-details summary{cursor:pointer;font-weight:800;color:#263f56}.creative-optimization-body{display:grid;gap:12px}.creative-optimization-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.creative-optimization-card{display:grid;gap:10px;padding:12px;border:1px solid #dfe7ee;border-radius:10px;background:#fff}.creative-optimization-card.is-selected{border-color:#8fbd36;background:#f5faed}.creative-optimization-card header{display:flex;justify-content:space-between;gap:8px;align-items:flex-start}.creative-optimization-card h4{margin:3px 0 0;color:#263f56}.creative-optimization-card p{margin:0;color:#40515a;line-height:1.45}.creative-optimization-actions{display:flex;flex-wrap:wrap;gap:8px}.creative-optimization-diff{margin:0;padding:10px;border:1px solid #dfe7ee;border-radius:8px;background:#fbfcfd;color:#263f56;white-space:pre-wrap;overflow-wrap:anywhere}.creative-optimization-approval{display:grid;gap:8px;padding-top:4px;border-top:1px solid #dfe7ee}.repair-tools-details,.repair-tools-group{background:#fff}.repair-tools-details>summary{padding:2px}.repair-tools-group{display:grid;gap:10px;padding:14px;border:1px solid #dfe7ee;border-radius:10px}.repair-tools-group + .repair-tools-group{margin-top:12px}.repair-tools-group h3{margin:0;color:#263f56}.repair-fields{display:grid;gap:8px}.repair-fields--patch{grid-template-columns:repeat(2,minmax(0,1fr));align-items:start}.repair-field{display:grid;gap:5px;min-width:0}.repair-field span{font-weight:650;color:#35464f;line-height:1.4}.repair-field input,.repair-field textarea{max-width:100%;min-width:0;width:100%;height:40px;border:1px solid #cbd6ce;border-radius:8px;padding:8px 10px;box-sizing:border-box;background:#fff;color:#1e2b36}.repair-field textarea{min-height:84px;resize:vertical}.repair-field__text{min-height:84px}.repair-field__input{height:40px}.repair-field--inline{max-width:100%}.repair-consent-row{display:flex;align-items:flex-start;gap:10px;cursor:pointer;font-weight:650;color:#35464f;line-height:1.5}.repair-consent-row input[type=checkbox]{margin-top:2px;flex:0 0 auto}.repair-help,.repair-field-help,.repair-tools-group small{margin:0;color:#52616b;line-height:1.45}.repair-button-row,.repair-tool-actions{display:flex;flex-wrap:wrap;align-items:center;gap:8px}.repair-button-row > .button,.repair-tool-actions > .button{width:auto;margin:0}.button.button--compact,.repair-triage .button{min-width:0;min-height:40px;height:40px;padding:0 14px;border-radius:8px;font-size:13px;line-height:1}.repair-triage .button{justify-self:start}.repair-triage button:disabled,.repair-tools-details button:disabled,.repair-button-row button:disabled,.repair-tool-actions button:disabled{opacity:.58;cursor:not-allowed}.repair-triage button:focus-visible,.repair-tools-details button:focus-visible,.current-prompt-card button:focus-visible,.repair-tools-details input:focus-visible,.repair-tools-details textarea:focus-visible{outline:3px solid #345f9a;outline-offset:2px}.repair-tools-details .error{color:#983520}
+      @media(max-width:900px){.repair-primary-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.repair-secondary-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.creative-optimization-grid{grid-template-columns:1fr}}
+      @media(max-width:600px){.repair-triage,.current-prompt-card,.repair-secondary-details,.repair-candidate-details,.repair-tools-details{padding:13px}.repair-primary-grid,.repair-secondary-grid,.repair-fields--patch{grid-template-columns:1fr}.repair-primary-grid article{min-height:0}.prompt-preview-toolbar{align-items:flex-start}.prompt-monaco,.prompt-fallback-label textarea{height:320px;min-height:280px}.repair-triage .button{width:auto;max-width:100%}.repair-button-row,.repair-tool-actions{display:grid;grid-template-columns:1fr}.repair-tool-actions .button,.repair-button-row .button{width:100%}.repair-field input,.repair-field textarea{font-size:16px}}
       .findings-resolution{display:grid;gap:12px;margin:16px 0;padding:16px;border:1px solid #d8e1ec;border-radius:12px;background:#f8fbfd}.findings-resolution header h3{margin:3px 0;color:#263f56}.findings-resolution header p{margin:4px 0;color:#68747c;font-size:.82rem}.resolution-list{display:grid;gap:9px}.resolution-item{display:grid;gap:6px;padding:12px;border:1px solid #dfe7ee;border-radius:9px;background:#fff}.resolution-item--blocking{border-left:4px solid #b9503e}.resolution-item__title{display:flex;gap:9px;align-items:center;flex-wrap:wrap}.resolution-item__title strong{color:#263f56}.resolution-category{font-size:.64rem;font-weight:800;color:#5f8435;letter-spacing:.06em}.resolution-item p{margin:0;color:#40515a}.resolution-item small{color:#68747c}.resolution-item .button{justify-self:start;margin:3px 0 0}.render-context-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}.render-context-grid>div,.render-preflight>div{display:grid;gap:4px;padding:10px;border:1px solid #dfe7ee;border-radius:8px;background:#fff}.render-context-grid span,.render-preflight span{font-size:.68rem;color:#68747c;font-weight:800;text-transform:uppercase}.render-context-grid strong,.render-preflight strong{color:#263f56;font-size:.86rem;overflow-wrap:anywhere}.render-preflight{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:9px}.render-preflight small{color:#855b15;font-size:.7rem}.render-stage-card{display:grid;gap:14px}
       .disabled-link { pointer-events:none; opacity:.5; }
       .analysis-stage-footer { display:flex; justify-content:space-between; gap:12px; align-items:center; margin:24px 0 4px; padding-top:16px; border-top:1px solid #d4dce8; }
@@ -900,6 +999,143 @@ export class PostFamilyWorkflowComponent implements OnChanges, OnDestroy {
   continueToRepair(): void {
     if (!this.review || !this.isCurrent()) return;
     this.selectStage(6);
+  }
+  get validCreativeOptimizationBudget(): boolean {
+    const value = Number(this.creativeOptimizationBudget);
+    return Number.isFinite(value) && value > 0 && value <= 20;
+  }
+  get creativeOptimizationApprovalEnabled(): boolean {
+    if (!this.creativeOptimizationComparison || !this.creativeOptimizationSelectedCandidateId) return false;
+    const candidate = this.creativeOptimizationSelectedCandidate;
+    if (!candidate) return false;
+    const reviewed = this.creativeOptimizationReviewedCandidateId === this.creativeOptimizationSelectedCandidateId;
+    if (!reviewed) return false;
+    const fidelity = candidate.fidelity ?? {};
+    const essential = candidate.essentialEventsPreserved ?? fidelity.essentialEventsPreserved ?? true;
+    const coverage = candidate.approvedStoryCoverage ?? fidelity.approvedStoryCoverage ?? fidelity.storyCoverage ?? null;
+    return Boolean(essential) && !!coverage;
+  }
+  get creativeOptimizationSelectedCandidate(): any {
+    if (!this.creativeOptimizationComparison) return null;
+    if (!this.creativeOptimizationSelectedCandidateId) return null;
+    return this.creativeOptimizationComparison.candidates.find((candidate: any) => candidate.candidateId === this.creativeOptimizationSelectedCandidateId) || null;
+  }
+  selectCreativeOptimizationCandidate(candidateId: string | null): void {
+    this.creativeOptimizationSelectedCandidateId = candidateId;
+    if (!candidateId) {
+      this.creativeOptimizationReviewedCandidateId = null;
+      this.creativeOptimizationError = '';
+      this.changeDetector.markForCheck();
+      return;
+    }
+    if (this.creativeOptimizationReviewedCandidateId !== candidateId) {
+      this.creativeOptimizationReviewedCandidateId = null;
+    }
+    this.creativeOptimizationError = '';
+    this.changeDetector.markForCheck();
+  }
+  reviewCreativeOptimizationCandidate(candidateId: string): void {
+    if (!this.creativeOptimizationComparison) return;
+    const candidate = this.creativeOptimizationComparison.candidates.find((item: any) => item.candidateId === candidateId);
+    if (!candidate) return;
+    this.creativeOptimizationSelectedCandidateId = candidateId;
+    this.creativeOptimizationReviewedCandidateId = candidateId;
+    this.creativeOptimizationError = '';
+    this.changeDetector.markForCheck();
+  }
+  loadLatestCreativeOptimization(): void {
+    if (!this.contentId || !this.promptVersionId || !this.review?.recordId) return;
+    this.creativeOptimizationError = '';
+    const latestPath = `/api/v1/intelligence/workflow/records/${encodeURIComponent(String(this.review.recordId))}/creative-optimization/latest`;
+    this.http.get<any>(latestPath).subscribe({
+      next: (payload) => {
+        this.creativeOptimizationComparison = payload?.comparison ?? null;
+        this.creativeOptimizationSelectedCandidateId = null;
+        this.creativeOptimizationReviewedCandidateId = null;
+        this.creativeOptimizationConsent = false;
+        this.creativeOptimizationBusy = false;
+        this.changeDetector.markForCheck();
+      },
+      error: () => {
+        this.creativeOptimizationComparison = null;
+        this.creativeOptimizationSelectedCandidateId = null;
+        this.creativeOptimizationReviewedCandidateId = null;
+        this.creativeOptimizationError = 'Creative optimization status is unavailable. No automatic candidate was approved.';
+        this.changeDetector.markForCheck();
+      },
+    });
+  }
+  generateCreativeOptimizationCandidates(): void {
+    if (!this.review?.recordId || !this.contentId || !this.promptVersionId) {
+      this.creativeOptimizationError = 'Current analysis and saved prompt version are required to generate creative candidates.';
+      return;
+    }
+    if (!this.creativeOptimizationConsent || !this.validCreativeOptimizationBudget) {
+      this.creativeOptimizationError = 'Explicit paid-call consent and a valid budget up to $20 are required before generation.';
+      return;
+    }
+    this.creativeOptimizationBusy = true;
+    this.creativeOptimizationError = '';
+    const generationPath = `/api/v1/intelligence/workflow/records/${encodeURIComponent(String(this.review.recordId))}/creative-optimization`;
+    this.http.post<any>(generationPath, {
+      contentId: Number(this.contentId),
+      promptVersionId: Number(this.promptVersionId),
+      operatorAuthorized: true,
+      maxCostUsd: Number(this.creativeOptimizationBudget),
+    }).subscribe({
+      next: (payload) => {
+        this.creativeOptimizationComparison = payload?.comparison ?? payload ?? null;
+        this.creativeOptimizationSelectedCandidateId = null;
+        this.creativeOptimizationReviewedCandidateId = null;
+        this.creativeOptimizationConsent = false;
+        this.creativeOptimizationBusy = false;
+        this.changeDetector.markForCheck();
+      },
+      error: (response) => {
+        this.creativeOptimizationBusy = false;
+        this.creativeOptimizationComparison = null;
+        this.creativeOptimizationSelectedCandidateId = null;
+        this.creativeOptimizationReviewedCandidateId = null;
+        this.creativeOptimizationError = response?.error?.detail || 'Creative optimization generation could not complete. No version was created.';
+        this.changeDetector.markForCheck();
+      },
+    });
+  }
+  approveSelectedCreativeOptimizationCandidate(): void {
+    const candidate = this.creativeOptimizationSelectedCandidate;
+    if (!candidate || !this.creativeOptimizationComparison || !this.creativeOptimizationApprovalEnabled) {
+      this.creativeOptimizationError = 'Review a candidate and confirm its fidelity before approving a revision.';
+      return;
+    }
+    this.creativeOptimizationBusy = true;
+    this.creativeOptimizationError = '';
+    const request = {
+      rawText: String(candidate.prompt || ''),
+      parentPromptVersionId: this.promptVersionId ? Number(this.promptVersionId) : null,
+      creativeRoleRecordId: this.creativeOptimizationComparison.roleRecordId || null,
+      candidateId: candidate.candidateId,
+      optimizationComparisonId: this.creativeOptimizationComparison.recordId || null,
+      operatorApproved: true,
+    };
+    this.http.post<any>(`/api/v1/intelligence/contents/${encodeURIComponent(String(this.contentId))}/prompt-versions`, request).subscribe({
+      next: (response) => {
+        const nextVersionId = response?.promptVersionId ?? response?.id ?? this.promptVersionId;
+        this.creativeOptimizationBusy = false;
+        this.creativeOptimizationSelectedCandidateId = null;
+        this.creativeOptimizationReviewedCandidateId = null;
+        this.creativeOptimizationComparison = null;
+        this.creativeOptimizationConsent = false;
+        this.changeDetector.markForCheck();
+        if (this.preparationRouter) {
+          void this.preparationRouter.navigate(['/quality/detail'], { queryParams: { contentId: this.contentId, promptVersionId: nextVersionId }, replaceUrl: true }).catch(() => undefined);
+        }
+      },
+      error: (response) => {
+        this.creativeOptimizationBusy = false;
+        this.creativeOptimizationError = response?.error?.detail || 'The selected revision could not be approved. No prompt version was created.';
+        this.changeDetector.markForCheck();
+      },
+    });
   }
   continueToQualityAnalysis(): void {
     if (this.review && this.isCurrent()) {
@@ -1566,6 +1802,14 @@ export class PostFamilyWorkflowComponent implements OnChanges, OnDestroy {
   }
   repairSessionId = '';
   restoredRecordId = '';
+  creativeOptimizationOpen = false;
+  creativeOptimizationComparison: any = null;
+  creativeOptimizationError = '';
+  creativeOptimizationBusy = false;
+  creativeOptimizationConsent = false;
+  creativeOptimizationBudget = 0;
+  creativeOptimizationSelectedCandidateId: string | null = null;
+  creativeOptimizationReviewedCandidateId: string | null = null;
   private restoreSequence = 0;
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['prompt'] && this.promptPreviewEditor && this.promptPreviewEditor.getValue() !== this.prompt) {
@@ -1579,6 +1823,14 @@ export class PostFamilyWorkflowComponent implements OnChanges, OnDestroy {
     this.review = null;
     this.sourcePlanEvidence=null;this.sourcePlanStatus='NOT_LOADED';this.sourcePlanRun='';
     this.qa = null;
+    this.creativeOptimizationOpen = false;
+    this.creativeOptimizationComparison = null;
+    this.creativeOptimizationError = '';
+    this.creativeOptimizationBusy = false;
+    this.creativeOptimizationConsent = false;
+    this.creativeOptimizationBudget = 0;
+    this.creativeOptimizationSelectedCandidateId = null;
+    this.creativeOptimizationReviewedCandidateId = null;
     this.repairKey = '';
     this.autoRepair = false;
     this.repairOperation++;

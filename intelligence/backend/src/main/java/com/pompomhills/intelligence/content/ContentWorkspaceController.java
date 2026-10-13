@@ -7,6 +7,7 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.util.HexFormat;
 import java.util.List;
+import java.util.Map;
 import org.springframework.http.HttpStatus;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.transaction.annotation.Transactional;
@@ -207,23 +208,118 @@ public class ContentWorkspaceController {
         .optional()
         .orElseThrow(() -> new IllegalArgumentException("content not found: " + contentId));
     String sourcePath = null;
+    String parentPromptText = null;
     if (request.parentPromptVersionId() != null) {
       var parent =
           jdbc.sql(
-                  "SELECT source_path FROM prompt_versions WHERE id=:parent AND"
+                  "SELECT source_path,raw_text FROM prompt_versions WHERE id=:parent AND"
                       + " content_id=:content")
               .param("parent", request.parentPromptVersionId())
               .param("content", contentId)
-              .query((rs, ignored) -> new PromptParent(rs.getString("source_path")))
+              .query((rs, ignored) -> new PromptParent(rs.getString("source_path"), rs.getString("raw_text")))
               .optional()
               .orElseThrow(
                   () -> new IllegalArgumentException("Parent version does not belong to content"));
       sourcePath = parent.sourcePath();
+      parentPromptText = parent.rawText();
     }
     java.util.UUID roleId =
         request.creativeRoleRecordId() == null
             ? null
             : java.util.UUID.fromString(request.creativeRoleRecordId());
+    boolean optimizationApproval = request.candidateId() != null;
+    if (optimizationApproval) {
+      if (roleId == null || request.optimizationComparisonId() == null
+          || !Boolean.TRUE.equals(request.operatorApproved())
+          || request.parentPromptVersionId() == null || parentPromptText == null)
+        throw new IllegalArgumentException("Explicit candidate approval and source provenance are required");
+      var comparisonSource =
+          jdbc.sql(
+                  "SELECT payload->>'sourceAnalysisId' FROM post_family_workflow_events"
+                      + " WHERE id=CAST(:comparison AS uuid) AND kind='CREATIVE_OPTIMIZATION'"
+                      + " AND payload->>'roleRecordId'=:role")
+              .param("comparison", request.optimizationComparisonId())
+              .param("role", roleId.toString())
+              .query(String.class)
+              .optional()
+              .orElseThrow(() -> new IllegalArgumentException("Optimization comparison provenance is unavailable"));
+      var approvedCandidate =
+          jdbc.sql(
+                  "SELECT c->>'prompt' FROM post_family_workflow_events role_event"
+                      + " CROSS JOIN LATERAL jsonb_array_elements(role_event.payload->'result'->'candidates') c"
+                      + " WHERE role_event.id=:role AND role_event.kind='CREATIVE_ROLE'"
+                      + " AND role_event.payload->>'role'='PROMPT_OPTIMIZATION'"
+                      + " AND c->>'candidateId'=:candidate"
+                      + " AND role_event.payload->'sourceRequest'->'context'->>'analysisRunId'=:analysis"
+                      + " AND role_event.payload->'sourceRequest'->'context'->>'contentId'=:content"
+                      + " AND role_event.payload->'sourceRequest'->'context'->>'promptVersionId'=:parent")
+              .param("role", roleId)
+              .param("candidate", request.candidateId())
+              .param("analysis", comparisonSource)
+              .param("content", contentId.toString())
+              .param("parent", request.parentPromptVersionId().toString())
+              .query(String.class)
+              .optional()
+              .orElseThrow(() -> new IllegalArgumentException("Candidate does not match its saved optimization source"));
+      if (!request.rawText().equals(approvedCandidate))
+        throw new IllegalArgumentException("Approved prompt text must match the exact selected candidate");
+
+      var comparison =
+          jdbc.sql(
+                  "SELECT EXISTS(SELECT 1 FROM post_family_workflow_events e"
+                      + " CROSS JOIN LATERAL jsonb_array_elements(e.payload->'candidates') c"
+                      + " WHERE e.id=CAST(:comparison AS uuid) AND e.kind='CREATIVE_OPTIMIZATION'"
+                      + " AND e.payload->>'roleRecordId'=:role"
+                      + " AND e.payload->>'sourcePromptVersionId'=:parent"
+                      + " AND e.payload->>'sourceAnalysisId'=:analysis"
+                      + " AND e.payload->>'sourcePromptSha256'=:sourceHash"
+                      + " AND c->>'candidateId'=:candidate AND c->>'prompt'=:text"
+                      + " AND c->'fidelity'->>'essentialEventsPreserved'='true'"
+                      + " AND c->'review'->'canonicalRuleEvaluation'->>'rulesetVersion'=e.payload->>'rulesetVersion')")
+              .param("comparison", request.optimizationComparisonId())
+              .param("role", roleId.toString())
+              .param("analysis", comparisonSource)
+              .param("parent", request.parentPromptVersionId().toString())
+              .param("sourceHash", sha256(parentPromptText))
+              .param("candidate", request.candidateId())
+              .param("text", request.rawText())
+              .query(Boolean.class)
+              .single();
+      if (!comparison)
+        throw new IllegalArgumentException("Candidate comparison is stale or its validation is incomplete");
+      var latestAnalysis =
+          jdbc.sql(
+                  "SELECT id::text FROM post_family_workflow_events WHERE kind='REVIEW'"
+                      + " AND payload->>'contentId'=:content ORDER BY created_at DESC,id DESC LIMIT 1")
+              .param("content", contentId.toString())
+              .query(String.class)
+              .optional()
+              .orElse("");
+      if (!latestAnalysis.equals(comparisonSource))
+        throw new IllegalStateException("Candidate analysis is stale; revalidate before approval");
+
+      var existingVersion =
+          jdbc.sql(
+                  "SELECT id FROM prompt_versions WHERE content_id=:content"
+                      + " AND parsed_ir->'creativeOptimizationProvenance'->>'comparisonId'=:comparison"
+                      + " AND parsed_ir->'creativeOptimizationProvenance'->>'candidateId'=:candidate")
+              .param("content", contentId)
+              .param("comparison", request.optimizationComparisonId())
+              .param("candidate", request.candidateId())
+              .query(Long.class)
+              .optional();
+      if (existingVersion.isPresent()) {
+        var existing = prompts(contentId).stream()
+            .filter(item -> item.id().equals(existingVersion.get()))
+            .findFirst()
+            .orElseThrow();
+        if (!request.rawText().equals(existing.rawText()))
+          throw new IllegalArgumentException("This approved candidate already has a different immutable version");
+        return existing;
+      }
+    } else if (request.optimizationComparisonId() != null || Boolean.TRUE.equals(request.operatorApproved())) {
+      throw new IllegalArgumentException("Candidate approval metadata is incomplete");
+    }
     if (roleId == null && request.parentPromptVersionId() != null)
       roleId =
           jdbc.sql(
@@ -234,7 +330,9 @@ public class ContentWorkspaceController {
               .optional()
               .orElse(null);
     CreativePromptSource roleSource = null;
-    if (roleId != null)
+    if (roleId != null && optimizationApproval)
+      roleSource = new CreativePromptSource(request.rawText(), false);
+    else if (roleId != null)
       roleSource =
           jdbc.sql(
                   "SELECT payload->'result'->>'prompt' prompt, "
@@ -245,6 +343,29 @@ public class ContentWorkspaceController {
               .optional()
               .filter(value -> value.rawText() != null && !value.rawText().isBlank())
               .orElseThrow(() -> new IllegalArgumentException("Draft provenance requires a saved BUILD_PROMPT record"));
+    String optimizationProvenance = "{}";
+    if (optimizationApproval) {
+      try {
+        optimizationProvenance =
+            new com.fasterxml.jackson.databind.ObjectMapper()
+                .writeValueAsString(java.util.Map.of(
+                    "creativeOptimizationProvenance",
+                    java.util.Map.of(
+                        "comparisonId", request.optimizationComparisonId(),
+                        "candidateId", request.candidateId(),
+                        "roleRecordId", roleId.toString(),
+                        "sourceAnalysisId",
+                            jdbc.sql(
+                                    "SELECT payload->>'sourceAnalysisId' FROM post_family_workflow_events"
+                                        + " WHERE id=CAST(:comparison AS uuid) AND kind='CREATIVE_OPTIMIZATION'")
+                                .param("comparison", request.optimizationComparisonId())
+                                .query(String.class)
+                                .single(),
+                        "operatorApproved", true)));
+      } catch (com.fasterxml.jackson.core.JsonProcessingException error) {
+        throw new IllegalStateException("Cannot preserve optimization approval provenance", error);
+      }
+    }
     Integer version =
         jdbc.sql(
                 "SELECT COALESCE(MAX(version_number),0)+1 FROM prompt_versions WHERE"
@@ -256,11 +377,17 @@ public class ContentWorkspaceController {
         jdbc.sql(
                 "INSERT INTO"
                     + " prompt_versions(content_id,version_number,raw_text,parsed_ir,source_path,parent_prompt_version_id,created_at)"
-                    + " VALUES (:content,:version,:text,CAST(:parsed AS"
-                    + " jsonb),:source,:parent,now()) RETURNING id")
+                    + " VALUES (:content,:version,:text,CAST(:parsed AS jsonb) ||"
+                    + " CASE WHEN :optimization THEN CAST(:provenance AS jsonb) ||"
+                    + " jsonb_build_object('creativeOptimizationProvenance',"
+                    + " (CAST(:provenance AS jsonb)->'creativeOptimizationProvenance') ||"
+                    + " jsonb_build_object('approvedAt',now())) ELSE '{}'::jsonb END,"
+                    + " :source,:parent,now()) RETURNING id")
             .param("content", contentId)
             .param("version", version)
             .param("text", request.rawText())
+            .param("optimization", optimizationApproval)
+            .param("provenance", optimizationProvenance)
             .param("source", sourcePath, java.sql.Types.VARCHAR)
             .param("parent", request.parentPromptVersionId(), java.sql.Types.BIGINT)
             .param("parsed", request.parsedIr() == null ? "{}" : request.parsedIr())
@@ -324,7 +451,7 @@ public class ContentWorkspaceController {
     var content =
         jdbc.sql("SELECT source_path FROM contents WHERE id=:id FOR UPDATE")
             .param("id", contentId)
-            .query((rs, ignored) -> new PromptParent(rs.getString("source_path")))
+            .query((rs, ignored) -> new PromptParent(rs.getString("source_path"), null))
             .optional()
             .orElseThrow(() -> new IllegalArgumentException("Content not found"));
     var source =
@@ -471,7 +598,7 @@ public class ContentWorkspaceController {
 
   public record CreateContentRequest(String title, String description, String type) {}
 
-  private record PromptParent(String sourcePath) {}
+  private record PromptParent(String sourcePath, String rawText) {}
 
   @GetMapping("/{contentId}/prompt-versions/{promptVersionId}/creative-provenance")
   public java.util.Map<String, Object> creativeProvenance(
@@ -485,13 +612,14 @@ public class ContentWorkspaceController {
             () -> new IllegalArgumentException("Prompt version does not belong to content"));
     return jdbc.sql(
             """
-            SELECT e.id,e.payload->>'provider' provider,e.payload->>'model' model,
+            SELECT e.id,e.payload->>'role' role,e.payload->>'provider' provider,e.payload->>'model' model,
                    e.payload->>'sourceStoryRecordId' story,p.operator_edited,
                    e.payload->'sourceRequest'->>'text' approved_story,
                    e.payload->'sourceRequest'->'context'->>'storyRevisionId' story_revision,
                    e.payload->'sourceRequest'->'context'->>'candidateId' candidate,
                    e.payload->'sourceRequest'->'context'->>'approvalRecordId' approval,
-                   COALESCE(e.payload->'result'->'productionPlan'->>'promptTextEdited','false')='true' plan_edited
+                   COALESCE(e.payload->'result'->'productionPlan'->>'promptTextEdited','false')='true' plan_edited,
+                   (pv.parsed_ir->'creativeOptimizationProvenance')::text optimization_provenance
             FROM prompt_creative_provenance p JOIN prompt_versions pv ON pv.id=p.prompt_version_id
             JOIN post_family_workflow_events e ON e.id=p.creative_role_record_id
             WHERE pv.content_id=:content AND pv.id=:prompt
@@ -501,19 +629,28 @@ public class ContentWorkspaceController {
         .query(
             (rs, index) -> {
               java.util.Map<String, Object> value = new java.util.LinkedHashMap<>();
-              value.put("origin", "BUILD_PROMPT");
+              boolean optimization = "PROMPT_OPTIMIZATION".equals(rs.getString("role"));
+              value.put("origin", optimization ? "PROMPT_OPTIMIZATION" : "BUILD_PROMPT");
               value.put("creativeRoleRecordId", rs.getObject("id").toString());
               value.put("provider", rs.getString("provider"));
               value.put("model", rs.getString("model"));
-              value.put("sourceStoryRecordId", rs.getString("story"));
               boolean edited = rs.getBoolean("operator_edited");
               value.put("operatorEdited", edited);
-              value.put("approvedStoryText", rs.getString("approved_story"));
-              value.put("storyRevisionId", rs.getString("story_revision"));
-              value.put("candidateId", rs.getString("candidate"));
-              value.put("approvalRecordId", rs.getString("approval"));
-              value.put("promptTextEdited", rs.getBoolean("plan_edited") || edited);
-              value.put("productionSpecificationStatus", edited || rs.getBoolean("plan_edited") ? "STALE" : "NOT_VALIDATED");
+              if (optimization) {
+                value.put(
+                    "creativeOptimizationProvenance",
+                    parseOptimizationProvenance(rs.getString("optimization_provenance")));
+              } else {
+                value.put("sourceStoryRecordId", rs.getString("story"));
+                value.put("approvedStoryText", rs.getString("approved_story"));
+                value.put("storyRevisionId", rs.getString("story_revision"));
+                value.put("candidateId", rs.getString("candidate"));
+                value.put("approvalRecordId", rs.getString("approval"));
+                value.put("promptTextEdited", rs.getBoolean("plan_edited") || edited);
+                value.put(
+                    "productionSpecificationStatus",
+                    edited || rs.getBoolean("plan_edited") ? "STALE" : "NOT_VALIDATED");
+              }
               value.put("validationStatus", "NOT_VALIDATED");
               return value;
             })
@@ -521,12 +658,35 @@ public class ContentWorkspaceController {
         .orElseGet(() -> java.util.Map.of("origin", "MANUAL_OR_LEGACY"));
   }
 
+  private static Map<String, Object> parseOptimizationProvenance(String json) {
+    if (json == null || json.isBlank()) return Map.of();
+    try {
+      return new com.fasterxml.jackson.databind.ObjectMapper()
+          .readValue(
+              json,
+              new com.fasterxml.jackson.core.type.TypeReference<Map<String, Object>>() {});
+    } catch (com.fasterxml.jackson.core.JsonProcessingException error) {
+      throw new IllegalStateException("Saved creative optimization provenance is invalid", error);
+    }
+  }
+
   private record CreativePromptSource(String rawText, boolean operatorEdited) {}
 
   public record CreatePromptRequest(
-      String rawText, String parsedIr, Long parentPromptVersionId, String creativeRoleRecordId) {
+      String rawText,
+      String parsedIr,
+      Long parentPromptVersionId,
+      String creativeRoleRecordId,
+      String candidateId,
+      String optimizationComparisonId,
+      Boolean operatorApproved) {
     public CreatePromptRequest(String rawText, String parsedIr, Long parentPromptVersionId) {
-      this(rawText, parsedIr, parentPromptVersionId, null);
+      this(rawText, parsedIr, parentPromptVersionId, null, null, null, null);
+    }
+
+    public CreatePromptRequest(
+        String rawText, String parsedIr, Long parentPromptVersionId, String creativeRoleRecordId) {
+      this(rawText, parsedIr, parentPromptVersionId, creativeRoleRecordId, null, null, null);
     }
   }
 

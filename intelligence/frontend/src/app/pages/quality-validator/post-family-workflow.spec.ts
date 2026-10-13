@@ -1,9 +1,12 @@
 import savedAnalysis from '../../../../../backend/src/test/resources/step5-analysis-snapshot.json';
 import { TestBed } from '@angular/core/testing';
+import { BrowserDynamicTestingModule, platformBrowserDynamicTesting } from '@angular/platform-browser-dynamic/testing';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting, HttpTestingController } from '@angular/common/http/testing';
 import { PostFamilyWorkflowComponent } from './post-family-workflow.component';
 import { vi } from 'vitest';
+
+TestBed.initTestEnvironment(BrowserDynamicTestingModule, platformBrowserDynamicTesting());
 
 describe('post-family operator workflow', () => {
   afterEach(() => { window.history.replaceState(window.history.state, '', window.location.pathname); localStorage.clear(); delete (navigator as any).clipboard; });
@@ -744,6 +747,31 @@ Hard cut.`;
     f.detectChanges();
     const tools = f.nativeElement.querySelector('.repair-tools-details') as HTMLDetailsElement;
     expect(tools.open).toBe(false);
+    expect(f.nativeElement.textContent).toContain('Bounded AI Repair');
+    expect(f.nativeElement.textContent).toContain('Minimal Manual Repair');
+    expect(f.nativeElement.textContent).toContain('Export and Advanced Actions');
+    const consentLabel = f.nativeElement.querySelector('label[for="repair-consent"]') as HTMLLabelElement;
+    const consentInput = f.nativeElement.querySelector('#repair-consent') as HTMLInputElement;
+    expect(consentLabel.control).toBe(consentInput);
+    expect(consentLabel.textContent).toContain('configured repair provider');
+    expect(f.nativeElement.querySelector('.repair-tools-group>div.repair-button-row')).not.toBeNull();
+    tools.open = true;
+    consentLabel.click();
+    f.detectChanges();
+    expect(consentInput.checked).toBe(true);
+    expect(c.repairConsent).toBe(true);
+    consentLabel.click();
+    f.detectChanges();
+    expect(consentInput.checked).toBe(false);
+    expect(c.repairConsent).toBe(false);
+    expect([...f.nativeElement.querySelectorAll('button')].some((button: HTMLButtonElement) =>
+      button.textContent?.trim() === 'Copy saved prompt')).toBe(true);
+    const startRepair = [...f.nativeElement.querySelectorAll('button')].find((button: HTMLButtonElement) =>
+      button.textContent?.trim() === 'Start bounded repair') as HTMLButtonElement;
+    const reopenSession = [...f.nativeElement.querySelectorAll('button')].find((button: HTMLButtonElement) =>
+      button.textContent?.trim() === 'Reopen session') as HTMLButtonElement;
+    expect(startRepair.disabled).toBe(true);
+    expect(reopenSession.disabled).toBe(true);
     const preview = f.nativeElement.querySelector('textarea[aria-label="Current prompt text"]') as HTMLTextAreaElement;
     expect(preview.value).toBe(prompt);
     const candidate = f.nativeElement.querySelector('textarea[aria-label="Unsaved repair candidate"]') as HTMLTextAreaElement;
@@ -961,6 +989,171 @@ Hard cut.`;
     expect(rows[1].text).toContain('Same source observation');
     expect(rows[2].text).toContain('2 timed source range(s) were extracted');
     f.destroy();
+  });
+
+
+  it('defaults creative optimization to a collapsed, opt-in flow with a guarded budget and no implicit approval', async () => {
+    const f = await setup();
+    const c = f.componentInstance;
+    c.review = { recordId: 'creative-analysis', contentId: 1, promptVersionId: 2, bindingHash: 'creative-binding' };
+    c.isCurrent = () => true;
+    c.activeStage = 6;
+    f.detectChanges();
+    const details = f.nativeElement.querySelector('details.creative-optimization-details') as HTMLDetailsElement;
+    expect(details.open).toBe(false);
+    const button = [...f.nativeElement.querySelectorAll('button')]
+      .find((item: HTMLButtonElement) => item.textContent?.trim() === 'Generate two candidates') as HTMLButtonElement;
+    expect(button).toBeTruthy();
+    expect(button.disabled).toBe(true);
+    const budget = f.nativeElement.querySelector('#creative-optimization-budget') as HTMLInputElement;
+    const consent = f.nativeElement.querySelector('#creative-optimization-consent') as HTMLInputElement;
+    budget.value = '0';
+    budget.dispatchEvent(new Event('input', { bubbles: true }));
+    consent.checked = true;
+    consent.dispatchEvent(new Event('change', { bubbles: true }));
+    f.detectChanges();
+    expect(button.disabled).toBe(true);
+    budget.value = '5';
+    budget.dispatchEvent(new Event('input', { bubbles: true }));
+    f.detectChanges();
+    expect(button.disabled).toBe(false);
+    budget.value = '21';
+    budget.dispatchEvent(new Event('input', { bubbles: true }));
+    f.detectChanges();
+    expect(button.disabled).toBe(true);
+    budget.value = '5';
+    budget.dispatchEvent(new Event('input', { bubbles: true }));
+    f.detectChanges();
+    c.generateCreativeOptimizationCandidates();
+    const request = TestBed.inject(HttpTestingController).expectOne(
+      '/api/v1/intelligence/workflow/records/creative-analysis/creative-optimization',
+    );
+    expect(request.request.body).toMatchObject({
+      contentId: 1,
+      promptVersionId: 2,
+      operatorAuthorized: true,
+      maxCostUsd: 5,
+    });
+    request.flush({
+      comparison: {
+        recordId: 'comparison-1',
+        roleRecordId: 'role-1',
+        sourceAnalysisId: 'creative-analysis',
+        sourcePromptVersionId: '2',
+        rulesetVersion: 'v1',
+        candidates: [{
+          candidateId: 'candidate-a',
+          title: 'Candidate A',
+          hypothesis: 'Improve first-frame causal legibility and early curiosity.',
+          prompt: 'Candidate prompt text',
+          rulesetVersion: '1.7',
+          review: { canonicalRuleEvaluation: { score: 85, grade: 'B', rulesetVersion: '1.7', passedRules: [], failedRules: [], unknownRules: [] } },
+          fidelity: { approvedStoryCoverage: 'PROMPT_SOURCE_EVENTS_PRESERVED; APPROVED_STORY_SEMANTIC_FIDELITY_UNKNOWN', essentialEventsPreserved: true },
+          productionRisks: { complexity: 'UNKNOWN' },
+          unknowns: { audienceOutcome: 'UNKNOWN' },
+          diff: 'Candidate diff',
+        }, {
+          candidateId: 'candidate-b',
+          title: 'Candidate B',
+          hypothesis: 'Improve beat progression and execution feasibility.',
+          prompt: 'Distinct candidate prompt text',
+          rulesetVersion: '1.7',
+          review: { canonicalRuleEvaluation: { score: 85, grade: 'B', rulesetVersion: '1.7', passedRules: [], failedRules: [], unknownRules: [] } },
+          fidelity: { approvedStoryCoverage: 'PROMPT_SOURCE_EVENTS_PRESERVED; APPROVED_STORY_SEMANTIC_FIDELITY_UNKNOWN', essentialEventsPreserved: true },
+          productionRisks: { complexity: 'UNKNOWN' },
+          unknowns: { audienceOutcome: 'UNKNOWN' },
+          diff: 'Distinct candidate diff',
+        }],
+      },
+    });
+    expect(c.creativeOptimizationComparison.candidates).toHaveLength(2);
+    expect(c.creativeOptimizationSelectedCandidateId).toBeNull();
+    expect(c.creativeOptimizationApprovalEnabled).toBe(false);
+    TestBed.inject(HttpTestingController).expectNone(r => r.method === 'POST');
+  });
+  it('requires explicit review before approving a candidate with source provenance', async () => {
+    const f = await setup();
+    const c = f.componentInstance;
+    c.review = { recordId: 'creative-analysis', contentId: 1, promptVersionId: 2, bindingHash: 'creative-binding' };
+    c.isCurrent = () => true;
+    c.creativeOptimizationComparison = {
+      recordId: 'comparison-1',
+      roleRecordId: 'role-1',
+      candidates: [{
+        candidateId: 'candidate-a',
+        title: 'Candidate A',
+        hypothesis: 'Play up the domino effect.',
+        prompt: 'Candidate prompt text',
+        rulesetVersion: '1.7',
+        review: { canonicalRuleEvaluation: { score: 85, grade: 'B', rulesetVersion: '1.7', passedRules: [], failedRules: [], unknownRules: [] } },
+        fidelity: { approvedStoryCoverage: 'PROMPT_SOURCE_EVENTS_PRESERVED; APPROVED_STORY_SEMANTIC_FIDELITY_UNKNOWN', essentialEventsPreserved: true },
+        productionRisks: { complexity: 'UNKNOWN' },
+        unknowns: { audienceOutcome: 'UNKNOWN' },
+        diff: 'Candidate diff',
+      }],
+    };
+    expect(c.creativeOptimizationApprovalEnabled).toBe(false);
+    c.reviewCreativeOptimizationCandidate('candidate-a');
+    c.selectCreativeOptimizationCandidate('candidate-a');
+    expect(c.creativeOptimizationApprovalEnabled).toBe(true);
+    c.approveSelectedCreativeOptimizationCandidate();
+    const request = TestBed.inject(HttpTestingController).expectOne('/api/v1/intelligence/contents/1/prompt-versions');
+    expect(request.request.body).toMatchObject({
+      rawText: 'Candidate prompt text',
+      parentPromptVersionId: 2,
+      creativeRoleRecordId: 'role-1',
+      candidateId: 'candidate-a',
+      optimizationComparisonId: 'comparison-1',
+      operatorApproved: true,
+    });
+    request.flush({ promptVersionId: 99 });
+    expect(c.creativeOptimizationComparison).toBeNull();
+    TestBed.inject(HttpTestingController).expectNone(r => r.method === 'POST');
+  });
+  it('reloads the latest creative optimization without auto-selecting or auto-approving', async () => {
+    const f = await setup();
+    const c = f.componentInstance;
+    const http = TestBed.inject(HttpTestingController);
+    c.review = { recordId: 'creative-analysis', contentId: 1, promptVersionId: 2, bindingHash: 'creative-binding' };
+    c.isCurrent = () => true;
+    c.loadLatestCreativeOptimization();
+    http.expectOne('/api/v1/intelligence/workflow/records/creative-analysis/creative-optimization/latest').flush({
+      comparison: {
+        recordId: 'comparison-1',
+        roleRecordId: 'role-1',
+        sourceAnalysisId: 'creative-analysis',
+        sourcePromptVersionId: '2',
+        rulesetVersion: 'v1',
+        candidates: [{
+          candidateId: 'candidate-a',
+          title: 'Candidate A',
+          hypothesis: 'Improve first-frame causal legibility and early curiosity.',
+          prompt: 'Candidate prompt text',
+          rulesetVersion: '1.7',
+          review: { canonicalRuleEvaluation: { score: 85, grade: 'B', rulesetVersion: '1.7', passedRules: [], failedRules: [], unknownRules: [] } },
+          fidelity: { approvedStoryCoverage: 'PROMPT_SOURCE_EVENTS_PRESERVED; APPROVED_STORY_SEMANTIC_FIDELITY_UNKNOWN', essentialEventsPreserved: true },
+          productionRisks: { complexity: 'UNKNOWN' },
+          unknowns: { audienceOutcome: 'UNKNOWN' },
+          diff: 'Candidate diff',
+        }, {
+          candidateId: 'candidate-b',
+          title: 'Candidate B',
+          hypothesis: 'Improve beat progression and execution feasibility.',
+          prompt: 'Distinct candidate prompt text',
+          rulesetVersion: '1.7',
+          review: { canonicalRuleEvaluation: { score: 85, grade: 'B', rulesetVersion: '1.7', passedRules: [], failedRules: [], unknownRules: [] } },
+          fidelity: { approvedStoryCoverage: 'PROMPT_SOURCE_EVENTS_PRESERVED; APPROVED_STORY_SEMANTIC_FIDELITY_UNKNOWN', essentialEventsPreserved: true },
+          productionRisks: { complexity: 'UNKNOWN' },
+          unknowns: { audienceOutcome: 'UNKNOWN' },
+          diff: 'Distinct candidate diff',
+        }],
+      },
+    });
+    expect(c.creativeOptimizationComparison.candidates).toHaveLength(2);
+    expect(c.creativeOptimizationSelectedCandidateId).toBeNull();
+    expect(c.creativeOptimizationReviewedCandidateId).toBeNull();
+    expect(c.creativeOptimizationApprovalEnabled).toBe(false);
+    TestBed.inject(HttpTestingController).expectNone(r => r.method === 'POST');
   });
 
 });
