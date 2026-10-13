@@ -563,6 +563,7 @@ import { GeneralProducibilityComponent } from './general-producibility.component
         white-space: pre-wrap;
         overflow-wrap: anywhere;
       }
+      .analysis-summary-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.analysis-summary-grid article{display:grid;gap:6px;min-width:0}.analysis-summary-grid span,.analysis-summary-grid small{display:block}.analysis-summary-grid strong{overflow-wrap:anywhere}@media(max-width:600px){.analysis-summary-grid{grid-template-columns:1fr}}
       .analysis-summary-decision {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:16px 0;padding:16px;border:1px solid #d8e1ec;border-radius:10px;background:#fff}.analysis-summary-decision>div{display:grid;gap:5px;min-width:0}.analysis-summary-decision span{color:#68747c;font-size:.75rem}.analysis-summary-decision strong{overflow-wrap:anywhere}.analysis-summary-decision small{display:block}.inputs article{min-width:0}.inputs p{overflow-wrap:anywhere}@media(max-width:600px){.analysis-summary-decision{grid-template-columns:1fr}}
       .facts {
         background: white;
