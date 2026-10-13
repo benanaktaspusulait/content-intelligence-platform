@@ -3,9 +3,10 @@ import { TestBed } from '@angular/core/testing';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting, HttpTestingController } from '@angular/common/http/testing';
 import { PostFamilyWorkflowComponent } from './post-family-workflow.component';
+import { vi } from 'vitest';
 
 describe('post-family operator workflow', () => {
-  afterEach(() => { window.history.replaceState(window.history.state, '', window.location.pathname); localStorage.clear(); });
+  afterEach(() => { window.history.replaceState(window.history.state, '', window.location.pathname); localStorage.clear(); delete (navigator as any).clipboard; });
   function flushReviewReads() {
     const http=TestBed.inject(HttpTestingController);
     http.match(r=>r.method==='GET' && r.url==='/api/v1/intelligence/workflow/production-review/decisions').forEach(r=>r.flush({decisions:[]}));
@@ -523,8 +524,13 @@ Hard cut.`;
     const c = f.componentInstance;
     c.prompt = '🎈0-6 SEC\nLuca pushes the box. CUT.';
     c.review = { recordId: 'r' };
+    c.isCurrent = () => true;
+    c.protectedIntent = 'Preserve the source intent.';
     c.patchOriginal = 'CUT.';
     c.patchReplacement = 'Hold.';
+    expect(c.manualPatchValid).toBe(true);
+    expect(c.manualPatchPreview).toBe('🎈0-6 SEC\nLuca pushes the box. Hold.');
+    expect(c.manualPatchMessage).toContain('candidate only');
     c.repair();
     const request = TestBed.inject(HttpTestingController).expectOne(
       '/api/v1/intelligence/workflow/records/r/repair',
@@ -533,6 +539,238 @@ Hard cut.`;
     expect(patch.sourceQuote).toBe('CUT.');
     expect(Array.from(c.prompt).slice(patch.start, patch.end).join('')).toBe('CUT.');
     request.flush({ finalPrompt: 'Verified final prompt', repairPasses: 1 });
+  });
+  it('rejects ambiguous patch text and stale review without requesting a repair', async () => {
+    const f = await setup();
+    const c = f.componentInstance;
+    c.review = { recordId: 'r' };
+    c.prompt = 'CUT. then CUT.';
+    c.patchOriginal = 'CUT.';
+    c.patchReplacement = 'Hold.';
+    c.isCurrent = () => true;
+    c.repair();
+    expect(c.error).toContain('exactly once');
+    TestBed.inject(HttpTestingController).expectNone(r => r.url.endsWith('/repair'));
+    c.prompt = 'CUT.';
+    c.isCurrent = () => false;
+    c.repair();
+    expect(c.error).toContain('current saved analysis');
+    TestBed.inject(HttpTestingController).expectNone(r => r.url.endsWith('/repair'));
+    f.destroy();
+    TestBed.resetTestingModule();
+  });
+  it('shows evidence-derived repair triage and navigates without persisting a false repair decision', async () => {
+    const f = await setup();
+    const c = f.componentInstance;
+    c.prompt = 'A saved prompt.\nContent profile: AUTO.';
+    c.contentProfile = 'ABSURD_PHYSICS';
+    c.review = {
+      recordId: 'analysis-current',
+      contentId: 1,
+      promptVersionId: 2,
+      boundRequest: { contentProfile: 'ABSURD_PHYSICS', prompt: c.prompt },
+      planQuality: { status: 'HYPOTHESIS', recommendation: 'PROCEED_NEXT_EVIDENCE_STEP', findings: [] },
+      canonicalRuleEvaluation: {
+        status: 'EVALUATED', score: 85, grade: 'B', failedRules: [],
+        passedRules: [{ ruleId: 'MINI_STORY_LOCK' }, { ruleId: 'GOAL_VISIBLE_EARLY' }, { ruleId: 'TEMPORAL_COMPLEXITY_SPLIT_GATE' }, { ruleId: 'BEAT_DENSITY_RULE' }],
+        unknownRules: [{ ruleId: 'STUBBORN_RETURN_LOOP' }],
+        notApplicableRules: [{ ruleId: 'CONTINUATION_LOCK' }],
+      },
+      executionRisk: { status: 'PASS' },
+      generation: { capabilityStatus: 'SUPPORTED' },
+      family8: { renderAuthorization: { status: 'BLOCKED_PENDING_EVIDENCE', reasons: [
+        { code: 'REQUIRED_EVIDENCE_MISSING', source: 'REFERENCE_ASSOCIATION', message: 'Verified character reference required' },
+        { code: 'REQUIRED_EVIDENCE_MISSING', source: 'EXECUTION_INPUTS', message: 'Accepted startFrame required' },
+      ] } },
+    };
+    c.isCurrent = () => true;
+    c.activeStage = 6;
+    const router = { navigateByUrl: vi.fn().mockResolvedValue(true) };
+    (c as any).preparationRouter = router;
+    f.detectChanges();
+    expect(f.nativeElement.textContent).toContain('Prompt-declared profile');
+    expect(f.nativeElement.textContent).toContain('Literal text in this immutable prompt; not production settings.');
+    expect(f.nativeElement.textContent).toContain('The effective saved production profile is ABSURD_PHYSICS');
+    expect(f.nativeElement.textContent).toContain('ABSURD_PHYSICS');
+    expect(f.nativeElement.textContent).toContain('No actionable prompt-text repair identified');
+    expect(f.nativeElement.textContent).toContain('85 / 100 · Grade B · 0 FAIL');
+    expect(f.nativeElement.textContent).toContain('STUBBORN_RETURN_LOOP');
+    expect(f.nativeElement.textContent).toContain('REFERENCE_ASSOCIATION: Verified character reference required');
+    expect(f.nativeElement.textContent).toContain('EXECUTION_INPUTS: Accepted startFrame required');
+    expect(f.nativeElement.textContent).toContain('Missing verified character reference and accepted start frame are Step 7 responsibilities');
+    c.continueWithoutTextRepair();
+    expect(router.navigateByUrl).toHaveBeenCalledWith(expect.stringContaining('/render-preparation?'));
+    expect(localStorage.getItem('pompom-repair-decision:1:2:analysis-current')).toBeNull();
+    expect(localStorage.getItem('pompom-studio-location:1:2')).toBeNull();
+    TestBed.inject(HttpTestingController).expectNone(r => r.method === 'POST');
+    f.destroy();
+    TestBed.resetTestingModule();
+  });
+  it('requires explicit applicable and repairable text evidence before elevating a plan finding', async () => {
+    const f = await setup();
+    const c = f.componentInstance;
+    c.review = {
+      recordId: 'analysis-triage',
+      planQuality: {
+        recommendation: 'PROCEED_NEXT_EVIDENCE_STEP',
+        findings: [
+          { id: 'unknown-note', scope: 'PROMPT_TEXT', repairable: true, applicability: 'UNKNOWN', severity: 'LOW' },
+          { id: 'optional-note', scope: 'PROMPT_TEXT', repairable: true, applicability: 'APPLICABLE', repairability: 'OPTIONAL', severity: 'LOW' },
+          { id: 'required-text-fix', scope: 'PROMPT_TEXT', repairable: true, applicability: 'APPLICABLE', repairability: 'REQUIRED', severity: 'HIGH' },
+        ],
+      },
+      canonicalRuleEvaluation: { status: 'EVALUATED', score: 70, grade: 'C', failedRules: [], passedRules: [], unknownRules: [], notApplicableRules: [] },
+      family8: { renderAuthorization: { status: 'AUTHORIZED', reasons: [] } },
+    };
+    c.isCurrent = () => true;
+    expect(c.actionableTextDefects).toEqual(['required-text-fix · HIGH · explicitly repairable']);
+    expect(c.repairRecommended).toBe(true);
+    c.review.canonicalRuleEvaluation.status = 'BLOCKED_TECHNICAL_FAILURE';
+    expect(c.technicalEvaluationStatus).toContain('Technical failure recorded');
+    expect(c.repairTriageTitle).toBe('Evaluation unavailable for repair triage');
+    TestBed.inject(HttpTestingController).expectNone(r => r.method === 'POST');
+    f.destroy();
+    TestBed.resetTestingModule();
+  });
+  it('keeps repair tools collapsed and previews, copies, transfers and exports exact-version metadata only on action', async () => {
+    const f = await setup();
+    const c = f.componentInstance;
+    const prompt = 'Content profile: AUTO.\nMimi opens a box.';
+    c.prompt = prompt;
+    c.contentId = '10';
+    c.promptVersionId = '20';
+    c.promptVersionNumber = 10;
+    c.contentProfile = 'ABSURD_PHYSICS';
+    c.generator = 'SEEDANCE_2_0_MINI';
+    c.desiredDuration = 15;
+    c.aspectRatio = '9:16';
+    c.review = {
+      recordId: 'analysis-10',
+      contentId: 10,
+      promptVersionId: 20,
+      bindingHash: 'binding-10-20',
+      source: { sha256: 'prompt-hash' },
+      boundRequest: { contentProfile: 'ABSURD_PHYSICS' },
+      finalPrompt: 'Validated prompt preview',
+      family8: { renderAuthorization: { status: 'BLOCKED_PENDING_EVIDENCE' } },
+    };
+    c.isCurrent = () => true;
+    c.activeStage = 6;
+    f.detectChanges();
+    const tools = f.nativeElement.querySelector('.repair-tools-details') as HTMLDetailsElement;
+    expect(tools.open).toBe(false);
+    const preview = f.nativeElement.querySelector('textarea[aria-label="Current prompt text"]') as HTMLTextAreaElement;
+    expect(preview.value).toBe(prompt);
+    const candidate = f.nativeElement.querySelector('textarea[aria-label="Unsaved repair candidate"]') as HTMLTextAreaElement;
+    expect(candidate.value).toBe('Validated prompt preview');
+    const writeText = vi.fn().mockResolvedValue(undefined);
+    Object.defineProperty(navigator, 'clipboard', { configurable: true, value: { writeText } });
+    await c.copyPrompt();
+    expect(writeText).toHaveBeenCalledWith('Validated prompt preview');
+    expect(c.copyStatus).toBe('Prompt preview copied.');
+    let transferred = '';
+    c.saveFinal.subscribe(value => transferred = value);
+    c.saveFinal.emit(c.review.finalPrompt);
+    expect(transferred).toBe('Validated prompt preview');
+    const snapshot = c.manualHandoffSnapshot(new Date('2026-10-13T12:00:00.000Z'))!;
+    expect(snapshot.recordId).toBe('analysis-10');
+    expect(snapshot.manualHandoff).toMatchObject({
+      schemaVersion: 'manual-render-package-v1',
+      exportedAt: '2026-10-13T12:00:00.000Z',
+      contentId: '10',
+      promptVersionId: '20',
+      promptVersionNumber: 10,
+      analysisId: 'analysis-10',
+      bindingHash: 'binding-10-20',
+      promptSha256: 'prompt-hash',
+      promptDeclaredProfile: 'AUTO',
+      profileUsedByAnalysis: 'ABSURD_PHYSICS',
+      effectiveSavedProfile: 'ABSURD_PHYSICS',
+      effectiveSettings: { generator: 'SEEDANCE_2_0_MINI', durationSeconds: 15, aspectRatio: '9:16' },
+      renderAuthorizationStatus: 'BLOCKED_PENDING_EVIDENCE',
+      authorizationGrantedByExport: false,
+      providerCalledByExport: false,
+    });
+    TestBed.inject(HttpTestingController).expectNone(r => r.method === 'POST');
+    f.destroy();
+    TestBed.resetTestingModule();
+  });
+  it('enforces the bounded repair budget before any provider session request', async () => {
+    const f = await setup();
+    const c = f.componentInstance;
+    c.review = { recordId: 'review' };
+    c.isCurrent = () => true;
+    c.repairConsent = true;
+    c.repairBudget = 20.01;
+    expect(c.validRepairBudget).toBe(false);
+    c.startRepairSession();
+    TestBed.inject(HttpTestingController).expectNone(r => r.url.endsWith('/repair-sessions'));
+    c.repairBudget = 20;
+    expect(c.validRepairBudget).toBe(true);
+    c.repairConsent = false;
+    c.startRepairSession();
+    TestBed.inject(HttpTestingController).expectNone(r => r.url.endsWith('/repair-sessions'));
+    f.destroy();
+    TestBed.resetTestingModule();
+  });
+  it('restores the newest analysis for the exact saved content and prompt version', async () => {
+    const f = await setup();
+    const c = f.componentInstance;
+    c.ngOnChanges({ contentId: { currentValue: '1' } as any });
+    flushReviewReads();
+    const http = TestBed.inject(HttpTestingController);
+    http.expectOne('/api/v1/characters').flush([{ name: 'Luca' }]);
+    http.expectOne(r => r.url === '/api/v1/intelligence/workflow/records?kind=REVIEW').flush([
+      {
+        recordId: 'newest-exact-review',
+        contentId: 1,
+        promptVersionId: 2,
+        createdAt: '2026-10-13T10:00:00Z',
+        decisionPolicyVersion: 'impact-review-v1',
+        boundRequest: { prompt: c.prompt, contentProfile: 'ABSURD_PHYSICS' },
+      },
+      {
+        recordId: 'older-exact-review',
+        contentId: 1,
+        promptVersionId: 2,
+        createdAt: '2026-10-12T10:00:00Z',
+        decisionPolicyVersion: 'impact-review-v1',
+        boundRequest: { prompt: c.prompt, contentProfile: 'AUTO' },
+      },
+      { recordId: 'other-version-review', contentId: 1, promptVersionId: 3 },
+    ]);
+    http.expectOne(r => r.url === '/api/v1/intelligence/workflow/records?kind=ACTUAL_RENDER_QA').flush([]);
+    http.expectOne(r => r.url === '/api/v1/intelligence/workflow/production-settings'
+      && r.params.get('contentId') === '1' && r.params.get('promptVersionId') === '2').flush({ contentProfile: 'ABSURD_PHYSICS' });
+    expect(c.restoredRecordId).toBe('newest-exact-review');
+    expect(c.review.recordId).toBe('newest-exact-review');
+    expect(c.evaluationProfile).toBe('ABSURD_PHYSICS');
+    http.expectNone(r => r.method === 'POST');
+    http.verify();
+    f.destroy();
+    TestBed.resetTestingModule();
+  });
+  it('rejects a repair session from a different content or prompt identity', async () => {
+    const f = await setup();
+    const c = f.componentInstance;
+    const http = TestBed.inject(HttpTestingController);
+    c.reopenRepairSession('wrong-content');
+    http.expectOne('/api/v1/intelligence/workflow/repair-sessions/wrong-content').flush({
+      sessionId: 'wrong-content', contentId: 99, originalPromptVersionId: 2, bestPromptVersionId: 2, state: 'STOPPED',
+    });
+    expect(c.repairSession).toBeNull();
+    expect(c.error).toContain('another source version');
+    c.error = '';
+    c.reopenRepairSession('wrong-prompt');
+    http.expectOne('/api/v1/intelligence/workflow/repair-sessions/wrong-prompt').flush({
+      sessionId: 'wrong-prompt', contentId: 1, originalPromptVersionId: 4, bestPromptVersionId: 5, state: 'STOPPED',
+    });
+    expect(c.repairSession).toBeNull();
+    expect(c.error).toContain('another source version');
+    http.expectNone(r => r.method === 'POST');
+    http.verify();
+    f.destroy();
+    TestBed.resetTestingModule();
   });
   it('keeps intent source-bound, review dimensions separate and outcomes outside evaluator input', async () => {
     const f = await setup();
