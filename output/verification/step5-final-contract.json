@@ -1,0 +1,91 @@
+{
+  "kind": "DETERMINISTIC_FIXTURE_ONLY_NO_PERSISTENCE",
+  "trackedPlan": {
+    "field": "trackedPlan",
+    "state": "OBSERVED",
+    "sourceHash": "0fe229774deb4b31a42145bad91cf10c91634ba00da39fa3e9d288b3a2e7bd98",
+    "methodVersion": "DETERMINISTIC_SOURCE_BOUND_BEATS_V1",
+    "confidence": "HIGH_TEXT_CORRESPONDENCE",
+    "semanticVerification": "NOT_PERFORMED"
+  },
+  "physicalRule": {
+    "physicalRule": "each pull doubles the number of sticky notes",
+    "physicalRuleEvidence": {
+      "state": "OBSERVED",
+      "sourceQuote": "each pull doubles the number of sticky notes",
+      "sourceSpan": [
+        709,
+        753
+      ],
+      "method": "EXPLICIT_REPEATED_ACTION_CLAUSE",
+      "semanticVerification": "NOT_PERFORMED"
+    },
+    "causeEffect": "Explicit repeated-action statement from prompt",
+    "consistency": null,
+    "mechanicCount": null,
+    "primaryObject": null,
+    "mechanicCarrier": "UNKNOWN",
+    "causalParticipants": null,
+    "abnormalProperty": "STICKS_TO_SURFACES",
+    "trigger": "CONTACT_OR_THROW",
+    "persistence": "PERSISTS_AFTER_CONTACT",
+    "releaseCondition": "FORCE_OR_SELF_RELEASE",
+    "recurrence": true
+  },
+  "canonicalStatus": "EVALUATED",
+  "fixtureCanonicalScore": 85.0,
+  "fixtureCanonicalGrade": "B",
+  "ruleset": "1.7",
+  "rulesEvaluated": 8,
+  "F8": {
+    "status": "BLOCKED_PENDING_EVIDENCE",
+    "reasons": [
+      {
+        "code": "REQUIRED_EVIDENCE_MISSING",
+        "source": "REFERENCE_ASSOCIATION",
+        "message": "An authoritative character/object reference is missing or unverified.",
+        "references": []
+      },
+      {
+        "code": "REQUIRED_EVIDENCE_MISSING",
+        "source": "EXECUTION_INPUTS",
+        "message": "Required provider execution inputs are missing: startFrame",
+        "references": []
+      }
+    ]
+  },
+  "historicalFixtureUnchanged": true,
+  "finalStatus": "CONTRACT_FIXED_READY_FOR_REVALIDATION",
+  "historicalRunId": "afb1cdb0-7a28-4540-b2b1-3e441c08df47",
+  "contentId": 10,
+  "promptVersionId": 10,
+  "profile": "ABSURD_PHYSICS",
+  "historicalLiveRunUnchanged": true,
+  "promptVersionsAndApprovedCreativeProvenanceUnchanged": true,
+  "persistedEvaluationPerformed": false,
+  "trackedPlanDefectInCurrentDeployedCode": false,
+  "physicalRuleSourceSpan": [
+    709,
+    753
+  ],
+  "parserDeployedSha256": "4613c3636dae1c94da144bb8c27a01d733df646c5212a0a916d584debf42229f",
+  "tests": {
+    "ML": 135,
+    "backend": 26,
+    "frontend": 42
+  },
+  "changesThisTurn": [
+    "intelligence/ml-service/app/parser/prompt_parser.py: explicit repeated-action physical rule source extraction",
+    "intelligence/ml-service/tests/test_step5_source_contract.py: source-backed rule and canonical path assertions",
+    "intelligence/frontend/src/app/pages/quality-validator/post-family-workflow.spec.ts: actual historical prompt producer contract assertions",
+    "intelligence/backend/src/test/java/com/pompomhills/intelligence/workflow/WorkflowServiceTest.java: explicit missing accepted-start-frame fixture"
+  ],
+  "sideEffects": {
+    "uiOrPdfDevelopment": false,
+    "paidProviderCalls": false,
+    "imageOrVideoGeneration": false,
+    "publishing": false,
+    "directDatabaseUpdates": false,
+    "commitOrPush": false
+  }
+}

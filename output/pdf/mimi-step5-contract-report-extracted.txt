@@ -1,0 +1,330 @@
+POMPOM HILLS CREATIVE INTELLIGENCE
+Quality Analysis Report
+Evidence-backed analysis of the saved production prompt
+This report uses the saved Step 5 analysis. It does not call any provider or rerun evaluation.
+Ruleset: 1.7 · Score: 85.0/100 · Grade: B · Status: EVALUATED · Rules evaluated: 8
+Individual Rule Outcomes
+ANALYSIS IDENTITY
+Saved run: afb1cdb0-7a28-4540-b2b1-3e441c08df47
+Analysed: 2026-10-13T10:40:08.546114797Z
+Settings: mode: image2video; resolution: 480p;
+aspectRatio: 9:16
+Content: 10
+Prompt version: 10
+Profile: ABSURD PHYSICS
+Generator: SEEDANCE 2 0 MINI
+Duration: 15 · Aspect ratio: 9:16
+Ruleset: 1.7
+Source: content:10/prompt:10
+Prompt SHA256:
+0fe229774deb4b31a42145bad91cf10c91634ba00da39f
+a3e9d288b3a2e7bd98
+QUALITY SCORE
+85.0 / 100
+Grade: B
+Export: 2026-10-13 12:49 UTC
+Executive Summary
+ANALYSIS
+COMPLETED
+CREATIVE
+HYPOTHESIS
+RENDER AUTH
+BLOCKED TECHNICAL
+FAILURE
+RECOMMENDATION
+PROCEED NEXT
+EVIDENCE STEP
+Canonical Rule Engine Report
+PASS
+4
+FAIL
+0
+UNKNOWN
+1
+NOT APPLICABLE
+3
+EVALUATED
+8
+Outcome Rule / recorded evidence
+PASS
+MINI_STORY_LOCK
+Family: concept strength | Configured severity: BLOCKER
+Readable mini-story arc: goal, obstruction, attempts, progression, realization and
+payoff are evidenced.
+PASS
+GOAL_VISIBLE_EARLY
+Family: hook strength | Configured severity: CRITICAL
+The character goal is available in the opening window.
+Pompom Creative Intelligence · Page 1Read-only source extraction - not revalidation
+Extraction identity: source-plan-display-v1:db57cf4e23c78b67978560fc4009b094fbe6dd89e5b6640648fd3cd5117fe72b
+Parent saved run: afb1cdb0-7a28-4540-b2b1-3e441c08df47
+Current parser fields are supplemental textual evidence. Historical IR, canonical score/grade and F8 remain
+unchanged. Independent semantic validation NOT_PERFORMED; authorization NOT_EVALUATED.
+Character: Mimi | OBSERVED
+Principal object: sticky note | OBSERVED
+Source entity provenance
+Historical canonical character/object fields: UNKNOWN / UNKNOWN
+Recorded physical mechanic: trigger: CONTACT_OR_THROW; recurrence: true; causeEffect: Action-based
+consequence; consistency: UNKNOWN; persistence: PERSISTS_AFTER_CONTACT; physicalRule: Inferred from
+beat actions; mechanicCount: UNKNOWN; primaryObject: UNKNOWN; mechanicCarrier: UNKNOWN;
+abnormalProperty: STICKS_TO_SURFACES; releaseCondition: FORCE_OR_SELF_RELEASE; causalParticipants:
+UNKNOWN
+Outcome Rule / recorded evidence
+PASS
+TEMPORAL_COMPLEXITY_SPLIT_GATE
+Family: generation executability | Configured severity: BLOCKER
+Temporal load is manageable for the selected generation plan.
+PASS
+BEAT_DENSITY_RULE
+Family: progression | Configured severity: CRITICAL
+5 canonical major beats fit the 15-second plan.
+UNKNOWN
+STUBBORN_RETURN_LOOP
+Family: progression | Configured severity: BLOCKER
+Return-loop candidate lacks one or more mandatory signals.
+NOT APPLICABLE
+CONTINUATION_LOCK
+Family: generation executability | Configured severity: BLOCKER
+Continuation lock applies only to SPLIT 2X15S plans.
+NOT APPLICABLE
+STUBBORN_RETURN_HOOK
+Family: hook strength | Configured severity: CRITICAL
+Stubborn-return hook exception applies only when the engine profile is explicitly or
+high-confidence active.
+NOT APPLICABLE
+STUBBORN_RETURN_PAYOFF
+Family: final payoff | Configured severity: CRITICAL
+Stubborn-return payoff exception is not active.
+Video Plan IR
+mainCharacter value: Mimi; state: OBSERVED; sourceSpan: 15; 19; sourceQuote: Mimi; method:
+DETERMINISTIC_SOURCE_PATTERN; semanticVerification: NOT_PERFORMED; reason:
+Exact source mention.
+principalObject value: sticky note; state: OBSERVED; sourceSpan: 288; 299; sourceQuote: sticky note;
+method: DETERMINISTIC_SOURCE_PATTERN; semanticVerification: NOT_PERFORMED;
+reason: Exact source mention.
+Pompom Creative Intelligence · Page 2Recorded goal evidence: source: EXPLICIT_TEXT; goalType: RETRIEVE_OR_CONTROL_OBJECT; description:
+peel the stuck note away with her other hand; the note splits into two [medium shot of Mimi struggling] Mimi
+pulls at the note -> one note sticks to each hand; obstruction: Inferred from beat actions; targetObject:
+UNKNOWN; intendedEffect: restore_or_control_normal_object_use; goalExplicitness: EXPLICIT
+Recurrence: true
+Timed Beats (5)
+Time Actor / object Action / consequence / source evidence
+0.0-2.0 s
+Actor: Mimi
+Object: sticky note
+actor: OBSERVED
+Quote: Mimi | span 245;
+249
+primaryObject:
+OBSERVED
+Quote: sticky note | span
+288; 299
+Action
+Mimi reaches toward the toy cabinet with a sticky note; instead
+of sticking to the cabinet, the note visibly clings to her finger
+Consequence
+the note sticks to Mimi, not the cabinet
+Source span: 239; 498 | TEXT_MATCHED
+2.0-5.0 s
+Actor: Mimi
+Object: note
+actor: OBSERVED
+Quote: Mimi | span 505;
+509
+primaryObject: INFERRED
+Quote: note | span 534;
+538
+Action
+Mimi tries to peel the stuck note away with her other hand; the
+note splits into two
+Consequence
+one note sticks to each hand
+Source span: 499; 677 | TEXT_MATCHED
+Head noun corresponds to the source-introduced object; continuity is
+not independently verified.
+5.0-10.0 s
+Actor: Mimi
+Object: sticky notes
+actor: OBSERVED
+Quote: Mimi | span 685;
+689
+primaryObject:
+OBSERVED
+Quote: sticky notes |
+span 741; 753
+Action
+Mimi continues to pull; each pull doubles the number of sticky
+notes
+Consequence
+Mimi is overwhelmed by notes
+Source span: 678; 929 | TEXT_MATCHED
+10.0-12.0 s
+Actor: Mimi
+Object: notes
+actor: OBSERVED
+Quote: Mimi | span 938;
+942
+primaryObject: INFERRED
+Quote: notes | span
+1071; 1076
+Action
+Mimi sees herself in a mirror and screams
+Consequence
+Mimi is startled
+Source span: 930; 1096 | TEXT_MATCHED
+Head noun corresponds to the source-introduced object; continuity is
+not independently verified.
+Pompom Creative Intelligence · Page 3Generator capability: SUPPORTED - schema snapshot openart-cli-schema-2026-10-08
+Capability provenance
+Time Actor / object Action / consequence / source evidence
+12.0-15.0 s
+Actor: Mimi
+Object: sticky notes
+actor: OBSERVED
+Quote: Mimi | span 1105;
+1109
+primaryObject:
+OBSERVED
+Quote: sticky notes |
+span 1126; 1138
+Action
+Mimi sneezes and the sticky notes fly off
+Consequence
+Mimi breathes a sigh of relief but the cabinet remains messy
+Source span: 1097; 1279 | TEXT_MATCHED
+Creative Quality Assessment
+Dimension Recorded
+status
+Explanation
+Opening / first-frame
+hook
+UNKNOWN Mimi reaches toward the toy cabinet with a sticky note; instead of
+sticking to the cabinet, the note visibly clings to her finger [close-
+up on Mimi's hand] Mimi is in front of a toy cabinet, looking
+determined -> the note sticks to Mimi, not the cabinet
+Beat progression UNKNOWN Insufficient evidence from text alone; planned beats exist but
+meaningful progression quality is unverified.
+Ending / payoff UNKNOWN Mimi sneezes and the sticky notes fly off [medium shot of notes
+flying] notes scatter and stick to the cabinet -> Mimi breathes a
+sigh of relief but the cabinet remains messy
+Physical rule
+consistency
+UNKNOWN Independent semantic and rendered physical consistency are
+UNKNOWN; inspect the saved IR above.
+Action variety UNKNOWN Distinct action variety is not independently verified by this export.
+Local Execution Critic
+Dimension Recorded
+status
+Explanation
+Plan quality HYPOTHESIS Text-based plan assessment; no image evidence.
+Local execution check PASS PASS means no local text findings were recorded; actual
+generator success is UNKNOWN.
+Production complexity RISKY Text-based producibility assessment; actual render success
+remains UNKNOWN.
+source CONNECTED_OPENART_MODEL_FORM
+command openart model form byte-plus-seedance-2-mini image2video --json --no-input
+cliVersion 0.1.1 (commit 85fa0ad; built 2026-08-31)
+schemaSha256 e5458973228db9a1a6fd2185322e98e4f33595496e8c12cf9f22d69206ea1b94
+verifiedDate 2026-10-08
+Pompom Creative Intelligence · Page 4Execution findings: None recorded
+Execution limitations: General writing heuristics; not evidence of the selected model’s actual performance.
+Material producibility risks: CONTACT_PHYSICS_COMPLEXITY; TRANSFORMATION_COMPLEXITY;
+SPATIAL_RELATIONSHIP_COMPLEXITY
+Unknown dimensions: ENTITY_LOAD; OBJECT_IDENTITY_CONTINUITY; CHARACTER_IDENTITY_CONTINUITY;
+FINE_MOTOR_PRECISION; OCCLUSION_HIDDEN_STATE; EXACT_COUNT_DEPENDENCY; MULTI_ENTITY_CONCURRENCY;
+LIQUID_CLOTH_PARTICLE; CAMERA_ACTION_COUPLING; MULTI_SCENE_CONTINUITY; TEXT_LIP_SYNC_SYMBOL;
+SEGMENT_CONTINUITY
+Duration load: level: UNKNOWN; reason: Timed, independently tracked action evidence is incomplete.; material: false;
+changesPerSecond: UNKNOWN; requiresRedesign: false; evidenceReferences: None recorded; dependentStateChanges: 0
+Source identity: sha256: 0fe229774deb4b31a42145bad91cf10c91634ba00da39fa3e9d288b3a2e7bd98;
+version: 10; artifact: content:10/prompt:10
+Production evidence provenance
+Independent semantic fidelity: UNKNOWN. Source ancestry and quote correspondence do not establish
+semantic approval. Rendered fidelity requires Video QA.
+Legacy provider traceability is separate. No approved-story linkage or sentence mapping is inferred by this export when
+absent from the saved run.
+Remaining uncertainty: fineMotorRequirement; objectContinuity; characterContinuity; occlusionRequirement;
+exactCountDependency; simulationRequirement; sceneContinuityRequirement; textRequirement;
+segmentContinuityRequirement; trackedPlan
+liveGenerationVerified false
+Material dimension Level Recorded reason / references
+CONTACT PHYSICS
+COMPLEXITY
+HIGH 0-2s: Mimi reaches toward the toy cabinet with a sticky note;
+instead of sticking to the cabinet, the note visibly clings to her
+finger [close-up on Mimi's hand] Mimi is in front of a toy cabinet,
+looking determined -> the note sticks to Mimi, not the cabinet; 2-
+5s: Mimi tries to peel the stuck note away with her other hand; the
+note splits into two [medium shot of Mimi struggling] Mimi pulls at
+the note -> one note sticks to each hand - references:
+contactPhysicsRequirement; content:10/prompt:10#chars=1097-
+1279; content:10/prompt:10#chars=239-498;
+content:10/prompt:10#chars=499-677
+TRANSFORMATION
+COMPLEXITY
+MODERATE Mimi, an anthropomorphic bunny, interacts with sticky notes in a
+humorous and chaotic manner; 2-5s: Mimi tries to peel the stuck
+note away with her other hand; the note splits into two [medium
+shot of Mimi struggling] Mimi pulls at the note -> one note sticks to
+each hand - references: transformationRequirement;
+content:10/prompt:10#chars=128-220;
+content:10/prompt:10#chars=1506-1561;
+content:10/prompt:10#chars=499-677
+SPATIAL RELATIONSHIP
+COMPLEXITY
+HIGH 10-12s: Mimi sees herself in a mirror and screams [close-up on
+Mimi's shocked face] Mimi is startled by her reflection completely
+covered in notes -> Mimi is startled - references:
+spatialRequirement; content:10/prompt:10#chars=930-1096
+Evidence & Source Traceability
+source POST_FAMILY_SOURCE_ENRICHMENT
+sourceHash 0fe229774deb4b31a42145bad91cf10c91634ba00da39fa3e9d288b3a2e7bd98
+sourceVersion 10
+extractionVersion source-span-production-evidence-v1
+Pompom Creative Intelligence · Page 5Recorded validation diagnostic: field: trackedPlan; state: CONTRADICTORY; reason: Plan spans do not match the source.;
+sourceHash: 0fe229774deb4b31a42145bad91cf10c91634ba00da39fa3e9d288b3a2e7bd98; methodVersion: source-span-
+production-evidence-v1
+Saved input-contract mismatch: deterministic events were supplied to a validator expecting source-bound
+beats. Recorded technical failure remains blocking. Runtime exception details and independently conflicting
+source spans were not saved; contradiction evidence is UNKNOWN.
+Creative evidence limitations: Source interpretations are planned experience, never actual frame evidence or predicted
+views.; Motion, repetition, holds and different verbs alone do not establish progression.
+Status: BLOCKED TECHNICAL FAILURE
+Authorization Reasons
+Saved input-contract mismatch: deterministic events were supplied to a validator expecting source-bound
+beats. Recorded technical failure remains blocking. Runtime exception details and independently conflicting
+source spans were not saved; contradiction evidence is UNKNOWN.
+Render authorization is not granted by this report. Explicit user approval remains mandatory.
+Plan findings: None recorded
+Local execution findings: None recorded
+REQUIRED_EVIDENCE_MISSING / REFERENCE_ASSOCIATION: Select and bind a verified canonical character
+reference in Step 7.
+REQUIRED_EVIDENCE_MISSING / EXECUTION_INPUTS: Prepare and accept a first frame in Step 7; generation
+is separately opt-in.
+ASSESSMENT_TECHNICAL_FAILURE / SOURCE_INTEGRITY: Inspect the saved validation diagnostic and input
+contract. No story change is justified by this failure alone.
+This export preserves run afb1cdb0-7a28-4540-b2b1-3e441c08df47. It does not rerun analysis, change the
+canonical score, or authorize render.
+Canonical outcomes and source intervals above are the recorded evidence. Independent story fidelity and
+actual rendered quality remain UNKNOWN.
+Resolve the recorded technical diagnostic, supply missing references and execution inputs, then
+independently revalidate the exact saved request. Explicit authorization is still required for rendering.
+F8 Render Authorization
+Code Source Historical message / evidence (not independently
+verified)
+REQUIRED_EVIDENCE_MIS
+SING
+REFERENCE_ASSOCIA
+TION
+An authoritative character/object reference is missing or
+unverified. - references: None recorded
+REQUIRED_EVIDENCE_MIS
+SING
+EXECUTION_INPUTS Required provider execution inputs are missing: startFrame -
+references: None recorded
+ASSESSMENT_TECHNICAL_
+FAILURE
+SOURCE_INTEGRITY Contradictory source evidence. - references: None recorded
+Findings Resolution
+Conclusions & Next Action
+Pompom Creative Intelligence · Page 6

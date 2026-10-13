@@ -34,6 +34,9 @@ describe('post-family operator workflow', () => {
     const plan=c['options']().structuredPlan;
     expect(plan.schemaVersion).toBe('source-bound-beats-v1');expect(plan.events).toBeUndefined();expect(plan.beats).toHaveLength(2);
     for(const beat of plan.beats){expect(Array.from(c.prompt).slice(...beat.sourceSpan).join('')).toBe(beat.sourceQuote);expect(beat.sourceQuote).toContain(beat.action);expect(beat.semanticStatus).toBe('PENDING');}
+    c.prompt=savedAnalysis.originalPrompt;
+    const livePlan=c['options']().structuredPlan;expect(livePlan.beats).toHaveLength(5);
+    for(const beat of livePlan.beats){expect(Array.from(c.prompt).slice(...beat.sourceSpan).join('')).toBe(beat.sourceQuote);expect(beat.sourceQuote).toContain(beat.action);expect(beat.semanticStatus).toBe('PENDING');}
     TestBed.inject(HttpTestingController).expectNone(r=>r.method==='POST');f.destroy();TestBed.resetTestingModule();
   });
   it('keeps read-only extraction distinct from the historical analysis', async () => {

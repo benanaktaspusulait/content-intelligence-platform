@@ -1,0 +1,61 @@
+STEP_5_CONTRACT_AND_PDF_VERIFIED
+Verified 2026-10-13. Content 10 / prompt version 10.
+Historical run afb1cdb0-7a28-4540-b2b1-3e441c08df47.
+
+1. ROOT CAUSE
+Step 4 frontend options() serialized structuredPlan.events from sourceEvents. The historical ML tracked-plan branch consumed structuredPlan.beats and exact sourceSpan/sourceQuote fields. Five deterministic events therefore appeared as zero tracked beats. This was a call-site/schema mapping defect, not demonstrated conflicting narrative evidence. The stored CONTRADICTORY diagnostic and ASSESSMENT_TECHNICAL_FAILURE status are preserved as historical evidence, with an explanation that independently conflicting spans were not saved.
+
+2. INTERFACES AND FILES
+Frontend options -> sourceBoundPlan -> WorkflowService review transport -> ML enrich_production_evidence -> F8 projection.
+Actual PDF button: GET http://localhost:4200/api/v1/intelligence/workflow/records/afb1cdb0-7a28-4540-b2b1-3e441c08df47/pdf
+No query parameters or request body. Nginx proxied to backend WorkflowController.report -> QualityReportPdfService.renderFullAnalysis. Actual browser response: 200, 60070 bytes. The actual downloaded file, not an HTTP fixture, was inspected.
+Supplemental read: GET /api/v1/intelligence/workflow/records/{run}/source-plan -> WorkflowService.sourcePlan -> QualityMlClient workflow(source-plan) -> local ML POST /api/v1/workflow/source-plan -> parser.source_plan_evidence. No persistence or rule evaluation in this operation.
+Changed source and regression files:
+/Users/benanaktas/project/video/content-intelligence-platform/intelligence/frontend/src/app/pages/quality-validator/post-family-workflow.component.ts
+/Users/benanaktas/project/video/content-intelligence-platform/intelligence/ml-service/app/workflow/review.py
+/Users/benanaktas/project/video/content-intelligence-platform/intelligence/ml-service/app/parser/prompt_parser.py
+/Users/benanaktas/project/video/content-intelligence-platform/intelligence/ml-service/app/workflow/api.py
+/Users/benanaktas/project/video/content-intelligence-platform/intelligence/backend/src/main/java/com/pompomhills/intelligence/quality/QualityMlClient.java
+/Users/benanaktas/project/video/content-intelligence-platform/intelligence/backend/src/main/java/com/pompomhills/intelligence/workflow/WorkflowService.java
+/Users/benanaktas/project/video/content-intelligence-platform/intelligence/backend/src/main/java/com/pompomhills/intelligence/workflow/WorkflowController.java
+/Users/benanaktas/project/video/content-intelligence-platform/intelligence/backend/src/main/java/com/pompomhills/intelligence/quality/QualityReportPdfService.java
+/Users/benanaktas/project/video/content-intelligence-platform/intelligence/frontend/src/app/pages/quality-validator/post-family-workflow.spec.ts
+/Users/benanaktas/project/video/content-intelligence-platform/intelligence/ml-service/tests/test_step5_source_contract.py
+/Users/benanaktas/project/video/content-intelligence-platform/intelligence/backend/src/test/java/com/pompomhills/intelligence/workflow/LiveAnalysisPdfTest.java
+/Users/benanaktas/project/video/content-intelligence-platform/intelligence/backend/src/test/java/com/pompomhills/intelligence/workflow/SourcePlanReadOnlyTest.java
+/Users/benanaktas/project/video/content-intelligence-platform/intelligence/backend/src/test/resources/step5-source-plan.json
+
+3. MINIMAL CORRECTION
+Frontend emits source-bound-beats-v1 with five timed beats and exact quotes/codepoint offsets. Java transport preserves the structured plan. ML validates each quote against the original saved text, actions against their quotes and participant evidence against quotes. Legacy deterministic events receive a separate candidate classification; they do not become reviewed tracked evidence. UTF-16 browser offsets are converted to Python codepoint offsets, including emoji cases.
+
+4. SOURCE-INTEGRITY SEMANTICS
+Valid exact spans: OBSERVED textual correspondence, semanticVerification NOT_PERFORMED. Missing spans/quotes: MISSING, SOURCE_SPANS_UNAVAILABLE, independent correspondence UNKNOWN. Incorrect present spans: INVALID, INVALID_SOURCE_BOUND_BEATS, technical failure. Empty incompatible beats: INVALID, EMPTY_TRACKED_BEATS. None is labeled a proven narrative contradiction. Historical CONTRADICTORY and its original F8 message remain explicitly recorded historical diagnostics.
+
+5. VIDEO PLAN IR
+Existing parser characters.primary was omitted by canonical projection; beats never populated actor; props depended on explicit prop sections. Generic declaration/source patterns now supply character/object evidence and exact quotes/spans without hardcoded Mimi or sticky notes. Bare AUDIO boundaries end the last beat. Canonical projection carries entity fields for future evaluations.
+Supplemental current source extraction: character Mimi OBSERVED; principal sticky note OBSERVED. All five actors OBSERVED. Objects by beat: sticky note OBSERVED; note INFERRED; sticky notes OBSERVED; notes INFERRED; sticky notes OBSERVED. Head-noun continuity is explicitly not independently verified. Unavailable entities remain UNKNOWN. SourceAction excludes timestamps, framing annotations, staging repetitions and separate arrow consequences.
+Extraction identity: source-plan-display-v1:db57cf4e23c78b67978560fc4009b094fbe6dd89e5b6640648fd3cd5117fe72b
+Source-bound, deterministic, READ_ONLY_SOURCE_EXTRACTION; semanticValidationStatus NOT_PERFORMED; authorizationStatus NOT_EVALUATED. It is supplemental evidence, not corrected live validation, and does not replace historical IR.
+
+6. QUALITY CONTRACTS AND F8
+Historical canonical score 85/B and Ruleset 1.7 are unchanged. Independent semantic fidelity remains UNKNOWN. Historical F8 remains BLOCKED_TECHNICAL_FAILURE with original SOURCE_INTEGRITY reason. Verified character reference (REFERENCE_ASSOCIATION) and accepted start frame (EXECUTION_INPUTS) remain required. An offline fixture test with the existing provider schema confirms fixing the contract removes the technical mismatch while both required evidence blockers remain. No live state-changing revalidation was performed.
+
+7. TESTS
+ML: 48 passed (source contracts, real saved fixture, generic extraction, parser, workflow and F8).
+Frontend: 42 passed (workflow, Unicode source-span transport, distinct read-only extraction and historical immutability).
+Backend/PDF: 21 passed (live export route, source hash validation/read-only service, full PDF, workflow impact and Family10 transport/representation).
+Backend package and frontend production build succeeded. git diff --check clean. Existing deprecation, dynamic-agent and bundle-budget warnings remain; no test failures.
+
+8. ACTUAL PDF AND VISUAL VERIFICATION
+Real Step 5 Export Analysis PDF button used after deployment.
+File: mimi-step5-contract-report.pdf, 6 A4 pages, 60070 bytes.
+SHA256: 60deb07acd7cd2dd6fd1c2f5446a0e628ea682e71aa68239e76b7862b6c7926d
+Text verified: same saved run, 85.0/100, Grade B, Ruleset 1.7; all eight IDs MINI_STORY_LOCK, GOAL_VISIBLE_EARLY, TEMPORAL_COMPLEXITY_SPLIT_GATE, BEAT_DENSITY_RULE, STUBBORN_RETURN_LOOP, CONTINUATION_LOCK, STUBBORN_RETURN_HOOK, STUBBORN_RETURN_PAYOFF; all five 0-2/2-5/5-10/10-12/12-15 beats, actor/object provenance, F8 reasons and findings resolution.
+Every page rasterized and visually inspected. Long rule IDs remain on readable lines; table headers repeat; beat rows expand vertically; action/consequence separated; provenance tables and historical labels present; no visible clipping, collisions, missing rows or blank pages. Supplemental provenance expands the earlier five-page document to six pages without removing coverage.
+UI shows the same run, historical 85/B and blocked F8, plus the same distinct extraction identity.
+
+9. HISTORICAL INTEGRITY
+Exact before/after JSON equality confirmed for the historical run, content 10 prompt versions, and prompt version 10 creative provenance. Original story, prompt and historical diagnostics/score/F8 were not rewritten.
+
+10. SIDE-EFFECT AUDIT
+Affected ML/backend/frontend services rebuilt and redeployed locally. No paid provider calls, video rendering, publishing, story/prompt edits, direct production DB writes, live state-changing revalidation, commit or push performed. Rule Engine and F8 authorization rules unchanged. Unrelated pre-existing update_prompt.py changes preserved. Stopped in Step 5 before Step 6 repair or Step 7 rendering.

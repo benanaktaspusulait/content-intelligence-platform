@@ -1,0 +1,484 @@
+{
+  "resultId": "source-plan-display-v1:db57cf4e23c78b67978560fc4009b094fbe6dd89e5b6640648fd3cd5117fe72b",
+  "kind": "READ_ONLY_SOURCE_EXTRACTION",
+  "parserVersion": "source-plan-display-v1",
+  "source": {
+    "artifact": "content:10/prompt:10",
+    "version": "10",
+    "sha256": "0fe229774deb4b31a42145bad91cf10c91634ba00da39fa3e9d288b3a2e7bd98"
+  },
+  "semanticValidationStatus": "NOT_PERFORMED",
+  "authorizationStatus": "NOT_EVALUATED",
+  "videoPlanIR": {
+    "mainCharacter": "Mimi",
+    "principalObject": "sticky note",
+    "entityEvidence": {
+      "mainCharacter": {
+        "value": "Mimi",
+        "state": "OBSERVED",
+        "sourceSpan": [
+          15,
+          19
+        ],
+        "sourceQuote": "Mimi",
+        "method": "DETERMINISTIC_SOURCE_PATTERN",
+        "semanticVerification": "NOT_PERFORMED",
+        "reason": "Exact source mention."
+      },
+      "principalObject": {
+        "value": "sticky note",
+        "state": "OBSERVED",
+        "sourceSpan": [
+          288,
+          299
+        ],
+        "sourceQuote": "sticky note",
+        "method": "DETERMINISTIC_SOURCE_PATTERN",
+        "semanticVerification": "NOT_PERFORMED",
+        "reason": "Exact source mention."
+      }
+    },
+    "beats": [
+      {
+        "id": "beat_01",
+        "startTime": 0.0,
+        "endTime": 2.0,
+        "duration": 2.0,
+        "action": "Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to t...",
+        "actionType": "transition",
+        "visualState": "character mimi reaches toward the toy cabinet with a sticky note; instead of sticking to t...",
+        "visualStateId": "character_mimi_reaches_toward_the_toy_cabinet_with",
+        "consequence": "the note sticks to Mimi, not the cabinet",
+        "consequenceType": "new",
+        "intensity": 5,
+        "motionAmount": "none",
+        "dialogue": null,
+        "readabilityDuration": 2.0,
+        "isReadable": true,
+        "isNewConsequence": true,
+        "similarToBeats": [],
+        "cycleGroup": null,
+        "isAttempt": false,
+        "primaryVerb": "",
+        "attemptSource": "NONE",
+        "attemptCandidate": null,
+        "attemptConfidence": null,
+        "attemptReason": null,
+        "strategyFamily": "UNSPECIFIED",
+        "actionStrategyFamily": "UNSPECIFIED",
+        "intendedStrategyFamily": "UNSPECIFIED",
+        "strategyRole": "INTENDED",
+        "strategyIntent": "DIRECT",
+        "primaryAction": "Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to t...",
+        "actor": "Mimi",
+        "goal": null,
+        "targetObject": null,
+        "intendedEffect": null,
+        "result": "the note sticks to Mimi, not the cabinet",
+        "distinctFromPreviousAttempt": null,
+        "beatLabel": "",
+        "beatRole": "",
+        "relatesToCoreProblem": true,
+        "sourceSpan": [
+          239,
+          498
+        ],
+        "sourceQuote": "0-2s: Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger [close-up on Mimi's hand] Mimi is in front of a toy cabinet, looking determined -> the note sticks to Mimi, not the cabinet",
+        "evidenceStatus": "SOURCE_VERIFIED",
+        "primaryObject": "sticky note",
+        "fieldEvidence": {
+          "actor": {
+            "value": "Mimi",
+            "state": "OBSERVED",
+            "sourceSpan": [
+              245,
+              249
+            ],
+            "sourceQuote": "Mimi",
+            "method": "DETERMINISTIC_SOURCE_PATTERN",
+            "semanticVerification": "NOT_PERFORMED",
+            "reason": "Exact source mention."
+          },
+          "primaryObject": {
+            "value": "sticky note",
+            "state": "OBSERVED",
+            "sourceSpan": [
+              288,
+              299
+            ],
+            "sourceQuote": "sticky note",
+            "method": "DETERMINISTIC_SOURCE_PATTERN",
+            "semanticVerification": "NOT_PERFORMED",
+            "reason": "Exact object phrase."
+          },
+          "action": {
+            "value": "Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger",
+            "state": "OBSERVED",
+            "sourceSpan": [
+              245,
+              374
+            ],
+            "sourceQuote": "Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger",
+            "method": "DETERMINISTIC_SOURCE_PATTERN",
+            "semanticVerification": "NOT_PERFORMED",
+            "reason": "Exact source mention."
+          }
+        },
+        "sourceAction": "Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger",
+        "sourceSpanStatus": "TEXT_MATCHED"
+      },
+      {
+        "id": "beat_02",
+        "startTime": 2.0,
+        "endTime": 5.0,
+        "duration": 3.0,
+        "action": "Mimi tries to peel the stuck note away with her other hand; the note splits into...",
+        "actionType": "interaction",
+        "visualState": "character mimi tries to peel the stuck note away with her other hand; the note splits into...",
+        "visualStateId": "character_mimi_tries_to_peel_the_stuck_note_away_w",
+        "consequence": "one note sticks to each hand",
+        "consequenceType": "new",
+        "intensity": 5,
+        "motionAmount": "none",
+        "dialogue": null,
+        "readabilityDuration": 3.0,
+        "isReadable": true,
+        "isNewConsequence": true,
+        "similarToBeats": [],
+        "cycleGroup": null,
+        "isAttempt": true,
+        "primaryVerb": "PEEL",
+        "attemptSource": "NATURAL_LANGUAGE_ATTEMPT",
+        "attemptCandidate": null,
+        "attemptConfidence": null,
+        "attemptReason": "Explicit attempt marker/role provides goal-directed evidence.",
+        "strategyFamily": "OTHER:PEEL",
+        "actionStrategyFamily": "OTHER:PEEL",
+        "intendedStrategyFamily": "OTHER:PEEL",
+        "strategyRole": "INTENDED",
+        "strategyIntent": "DIRECT",
+        "primaryAction": "Mimi tries to peel the stuck note away with her other hand; the note splits into...",
+        "actor": "Mimi",
+        "goal": "peel the stuck note away with her other hand; the note splits into two [medium shot of Mimi struggling] Mimi pulls at the note -> one note sticks to each hand",
+        "targetObject": null,
+        "intendedEffect": "restore_or_control_normal_object_use",
+        "result": "one note sticks to each hand",
+        "distinctFromPreviousAttempt": null,
+        "beatLabel": "",
+        "beatRole": "",
+        "relatesToCoreProblem": true,
+        "sourceSpan": [
+          499,
+          677
+        ],
+        "sourceQuote": "2-5s: Mimi tries to peel the stuck note away with her other hand; the note splits into two [medium shot of Mimi struggling] Mimi pulls at the note -> one note sticks to each hand",
+        "evidenceStatus": "SOURCE_VERIFIED",
+        "primaryObject": "note",
+        "fieldEvidence": {
+          "actor": {
+            "value": "Mimi",
+            "state": "OBSERVED",
+            "sourceSpan": [
+              505,
+              509
+            ],
+            "sourceQuote": "Mimi",
+            "method": "DETERMINISTIC_SOURCE_PATTERN",
+            "semanticVerification": "NOT_PERFORMED",
+            "reason": "Exact source mention."
+          },
+          "primaryObject": {
+            "value": "note",
+            "state": "INFERRED",
+            "sourceSpan": [
+              534,
+              538
+            ],
+            "sourceQuote": "note",
+            "method": "DETERMINISTIC_SOURCE_PATTERN",
+            "semanticVerification": "NOT_PERFORMED",
+            "reason": "Head noun corresponds to the source-introduced object; continuity is not independently verified."
+          },
+          "action": {
+            "value": "Mimi tries to peel the stuck note away with her other hand; the note splits into two",
+            "state": "OBSERVED",
+            "sourceSpan": [
+              505,
+              589
+            ],
+            "sourceQuote": "Mimi tries to peel the stuck note away with her other hand; the note splits into two",
+            "method": "DETERMINISTIC_SOURCE_PATTERN",
+            "semanticVerification": "NOT_PERFORMED",
+            "reason": "Exact source mention."
+          }
+        },
+        "sourceAction": "Mimi tries to peel the stuck note away with her other hand; the note splits into two",
+        "sourceSpanStatus": "TEXT_MATCHED"
+      },
+      {
+        "id": "beat_03",
+        "startTime": 5.0,
+        "endTime": 10.0,
+        "duration": 5.0,
+        "action": "Mimi continues to pull; each pull doubles the number of sticky notes [wide shot ...",
+        "actionType": "interaction",
+        "visualState": "character mimi continues to pull; each pull doubles the number of sticky notes [wide shot ...",
+        "visualStateId": "character_mimi_continues_to_pull_each_pull_doubles",
+        "consequence": "Mimi is overwhelmed by notes",
+        "consequenceType": "new",
+        "intensity": 5,
+        "motionAmount": "none",
+        "dialogue": null,
+        "readabilityDuration": 5.0,
+        "isReadable": true,
+        "isNewConsequence": true,
+        "similarToBeats": [],
+        "cycleGroup": null,
+        "isAttempt": true,
+        "primaryVerb": "PULL",
+        "attemptSource": "NATURAL_LANGUAGE_ATTEMPT",
+        "attemptCandidate": null,
+        "attemptConfidence": null,
+        "attemptReason": "Explicit attempt marker/role provides goal-directed evidence.",
+        "strategyFamily": "PULL",
+        "actionStrategyFamily": "PULL",
+        "intendedStrategyFamily": "PULL",
+        "strategyRole": "INTENDED",
+        "strategyIntent": "DIRECT",
+        "primaryAction": "Mimi continues to pull; each pull doubles the number of sticky notes [wide shot ...",
+        "actor": "Mimi",
+        "goal": "peel the stuck note away with her other hand; the note splits into two [medium shot of Mimi struggling] Mimi pulls at the note -> one note sticks to each hand",
+        "targetObject": null,
+        "intendedEffect": "restore_or_control_normal_object_use",
+        "result": "Mimi is overwhelmed by notes",
+        "distinctFromPreviousAttempt": null,
+        "beatLabel": "",
+        "beatRole": "",
+        "relatesToCoreProblem": true,
+        "sourceSpan": [
+          678,
+          929
+        ],
+        "sourceQuote": "5-10s: Mimi continues to pull; each pull doubles the number of sticky notes [wide shot showing Mimi covered in notes] notes multiply from two to four to eight as she pulls, progressively covering her arms, legs and face -> Mimi is overwhelmed by notes",
+        "evidenceStatus": "SOURCE_VERIFIED",
+        "primaryObject": "sticky notes",
+        "fieldEvidence": {
+          "actor": {
+            "value": "Mimi",
+            "state": "OBSERVED",
+            "sourceSpan": [
+              685,
+              689
+            ],
+            "sourceQuote": "Mimi",
+            "method": "DETERMINISTIC_SOURCE_PATTERN",
+            "semanticVerification": "NOT_PERFORMED",
+            "reason": "Exact source mention."
+          },
+          "primaryObject": {
+            "value": "sticky notes",
+            "state": "OBSERVED",
+            "sourceSpan": [
+              741,
+              753
+            ],
+            "sourceQuote": "sticky notes",
+            "method": "DETERMINISTIC_SOURCE_PATTERN",
+            "semanticVerification": "NOT_PERFORMED",
+            "reason": "Exact object phrase."
+          },
+          "action": {
+            "value": "Mimi continues to pull; each pull doubles the number of sticky notes",
+            "state": "OBSERVED",
+            "sourceSpan": [
+              685,
+              753
+            ],
+            "sourceQuote": "Mimi continues to pull; each pull doubles the number of sticky notes",
+            "method": "DETERMINISTIC_SOURCE_PATTERN",
+            "semanticVerification": "NOT_PERFORMED",
+            "reason": "Exact source mention."
+          }
+        },
+        "sourceAction": "Mimi continues to pull; each pull doubles the number of sticky notes",
+        "sourceSpanStatus": "TEXT_MATCHED"
+      },
+      {
+        "id": "beat_04",
+        "startTime": 10.0,
+        "endTime": 12.0,
+        "duration": 2.0,
+        "action": "Mimi sees herself in a mirror and screams [close-up on Mimi's shocked face] Mimi...",
+        "actionType": "interaction",
+        "visualState": "character mimi sees herself in a mirror and screams [close-up on mimi's shocked face] mimi...",
+        "visualStateId": "character_mimi_sees_herself_in_a_mirror_and_scream",
+        "consequence": "Mimi is startled",
+        "consequenceType": "new",
+        "intensity": 5,
+        "motionAmount": "none",
+        "dialogue": null,
+        "readabilityDuration": 2.0,
+        "isReadable": true,
+        "isNewConsequence": true,
+        "similarToBeats": [],
+        "cycleGroup": null,
+        "isAttempt": false,
+        "primaryVerb": "",
+        "attemptSource": "NONE",
+        "attemptCandidate": null,
+        "attemptConfidence": null,
+        "attemptReason": null,
+        "strategyFamily": "UNSPECIFIED",
+        "actionStrategyFamily": "UNSPECIFIED",
+        "intendedStrategyFamily": "UNSPECIFIED",
+        "strategyRole": "INTENDED",
+        "strategyIntent": "DIRECT",
+        "primaryAction": "Mimi sees herself in a mirror and screams [close-up on Mimi's shocked face] Mimi...",
+        "actor": "Mimi",
+        "goal": null,
+        "targetObject": null,
+        "intendedEffect": null,
+        "result": "Mimi is startled",
+        "distinctFromPreviousAttempt": null,
+        "beatLabel": "",
+        "beatRole": "",
+        "relatesToCoreProblem": true,
+        "sourceSpan": [
+          930,
+          1096
+        ],
+        "sourceQuote": "10-12s: Mimi sees herself in a mirror and screams [close-up on Mimi's shocked face] Mimi is startled by her reflection completely covered in notes -> Mimi is startled",
+        "evidenceStatus": "SOURCE_VERIFIED",
+        "primaryObject": "notes",
+        "fieldEvidence": {
+          "actor": {
+            "value": "Mimi",
+            "state": "OBSERVED",
+            "sourceSpan": [
+              938,
+              942
+            ],
+            "sourceQuote": "Mimi",
+            "method": "DETERMINISTIC_SOURCE_PATTERN",
+            "semanticVerification": "NOT_PERFORMED",
+            "reason": "Exact source mention."
+          },
+          "primaryObject": {
+            "value": "notes",
+            "state": "INFERRED",
+            "sourceSpan": [
+              1071,
+              1076
+            ],
+            "sourceQuote": "notes",
+            "method": "DETERMINISTIC_SOURCE_PATTERN",
+            "semanticVerification": "NOT_PERFORMED",
+            "reason": "Head noun corresponds to the source-introduced object; continuity is not independently verified."
+          },
+          "action": {
+            "value": "Mimi sees herself in a mirror and screams",
+            "state": "OBSERVED",
+            "sourceSpan": [
+              938,
+              979
+            ],
+            "sourceQuote": "Mimi sees herself in a mirror and screams",
+            "method": "DETERMINISTIC_SOURCE_PATTERN",
+            "semanticVerification": "NOT_PERFORMED",
+            "reason": "Exact source mention."
+          }
+        },
+        "sourceAction": "Mimi sees herself in a mirror and screams",
+        "sourceSpanStatus": "TEXT_MATCHED"
+      },
+      {
+        "id": "beat_05",
+        "startTime": 12.0,
+        "endTime": 15.0,
+        "duration": 3.0,
+        "action": "Mimi sneezes and the sticky notes fly off [medium shot of notes flying] notes sc...",
+        "actionType": "interaction",
+        "visualState": "character mimi sneezes and the sticky notes fly off [medium shot of notes flying] notes sc...",
+        "visualStateId": "character_mimi_sneezes_and_the_sticky_notes_fly_of",
+        "consequence": "Mimi breathes a sigh of relief but the cabinet remains messy",
+        "consequenceType": "new",
+        "intensity": 5,
+        "motionAmount": "none",
+        "dialogue": null,
+        "readabilityDuration": 3.0,
+        "isReadable": true,
+        "isNewConsequence": true,
+        "similarToBeats": [],
+        "cycleGroup": null,
+        "isAttempt": false,
+        "primaryVerb": "",
+        "attemptSource": "NONE",
+        "attemptCandidate": null,
+        "attemptConfidence": null,
+        "attemptReason": null,
+        "strategyFamily": "UNSPECIFIED",
+        "actionStrategyFamily": "UNSPECIFIED",
+        "intendedStrategyFamily": "UNSPECIFIED",
+        "strategyRole": "INTENDED",
+        "strategyIntent": "DIRECT",
+        "primaryAction": "Mimi sneezes and the sticky notes fly off [medium shot of notes flying] notes sc...",
+        "actor": "Mimi",
+        "goal": null,
+        "targetObject": null,
+        "intendedEffect": null,
+        "result": "Mimi breathes a sigh of relief but the cabinet remains messy",
+        "distinctFromPreviousAttempt": null,
+        "beatLabel": "",
+        "beatRole": "",
+        "relatesToCoreProblem": true,
+        "sourceSpan": [
+          1097,
+          1279
+        ],
+        "sourceQuote": "12-15s: Mimi sneezes and the sticky notes fly off [medium shot of notes flying] notes scatter and stick to the cabinet -> Mimi breathes a sigh of relief but the cabinet remains messy",
+        "evidenceStatus": "SOURCE_VERIFIED",
+        "primaryObject": "sticky notes",
+        "fieldEvidence": {
+          "actor": {
+            "value": "Mimi",
+            "state": "OBSERVED",
+            "sourceSpan": [
+              1105,
+              1109
+            ],
+            "sourceQuote": "Mimi",
+            "method": "DETERMINISTIC_SOURCE_PATTERN",
+            "semanticVerification": "NOT_PERFORMED",
+            "reason": "Exact source mention."
+          },
+          "primaryObject": {
+            "value": "sticky notes",
+            "state": "OBSERVED",
+            "sourceSpan": [
+              1126,
+              1138
+            ],
+            "sourceQuote": "sticky notes",
+            "method": "DETERMINISTIC_SOURCE_PATTERN",
+            "semanticVerification": "NOT_PERFORMED",
+            "reason": "Exact object phrase."
+          },
+          "action": {
+            "value": "Mimi sneezes and the sticky notes fly off",
+            "state": "OBSERVED",
+            "sourceSpan": [
+              1105,
+              1146
+            ],
+            "sourceQuote": "Mimi sneezes and the sticky notes fly off",
+            "method": "DETERMINISTIC_SOURCE_PATTERN",
+            "semanticVerification": "NOT_PERFORMED",
+            "reason": "Exact source mention."
+          }
+        },
+        "sourceAction": "Mimi sneezes and the sticky notes fly off",
+        "sourceSpanStatus": "TEXT_MATCHED"
+      }
+    ]
+  }
+}

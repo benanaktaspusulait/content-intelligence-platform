@@ -25,14 +25,15 @@ class WorkflowServiceTest {
         .thenAnswer(
             call -> Map.<String, Object>of("bindingHash", "binding", "input", call.getArgument(1)));
     var service =
-        new WorkflowService(
+        spy(new WorkflowService(
             content,
             ml,
             mock(MediaContentService.class),
             mock(VideoService.class),
             new ObjectMapper(),
             null,
-            null);
+            null));
+    doReturn(false).when(service).hasAcceptedStartFrame(1L, 2L);
     var result =
         service.runReview(
             new WorkflowService.ReviewRequest(
