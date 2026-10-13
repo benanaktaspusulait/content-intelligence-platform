@@ -275,8 +275,8 @@ def enrich_production_evidence(request: dict[str, Any]) -> dict[str, Any]:
     elif isinstance(supplied, dict):
         # Source-bound tracked plan: every beat must quote a real source span.
         tracked = supplied.get("beats") or []
-        valid = bool(tracked) and all(
-            valid_span(text, b.get("sourceSpan"), b.get("sourceQuote"))
+        valid = isinstance(tracked, list) and bool(tracked) and all(
+            isinstance(b, dict) and valid_span(text, b.get("sourceSpan"), b.get("sourceQuote"))
             and isinstance(b.get("action"), str)
             and b["action"] in b["sourceQuote"]
             and all(
@@ -286,6 +286,7 @@ def enrich_production_evidence(request: dict[str, Any]) -> dict[str, Any]:
             )
             for b in tracked
         )
+        missing_spans = isinstance(tracked, list) and bool(tracked) and any(not isinstance(b, dict) or b.get("sourceSpan") is None or b.get("sourceQuote") is None for b in tracked)
         if valid:
             ir["beats"] = deepcopy(tracked)
             claims.append(
@@ -293,8 +294,9 @@ def enrich_production_evidence(request: dict[str, Any]) -> dict[str, Any]:
                     "field": "trackedPlan",
                     "state": "OBSERVED",
                     "sourceHash": source["sha256"],
-                    "methodVersion": "OPERATOR_SOURCE_BOUND_PLAN_V1",
-                    "confidence": "HUMAN_REVIEWED",
+                    "methodVersion": "DETERMINISTIC_SOURCE_BOUND_BEATS_V1" if supplied.get("evidenceStatus") == "DETERMINISTIC_SOURCE_EVENTS_ONLY" else "OPERATOR_SOURCE_BOUND_PLAN_V1",
+                    "confidence": "HIGH_TEXT_CORRESPONDENCE" if supplied.get("evidenceStatus") == "DETERMINISTIC_SOURCE_EVENTS_ONLY" else "HUMAN_REVIEWED",
+                    "semanticVerification": "NOT_PERFORMED",
                 }
             )
             # To avoid treating unscreened omissions as LOW, retain incomplete
@@ -308,11 +310,11 @@ def enrich_production_evidence(request: dict[str, Any]) -> dict[str, Any]:
             claims.append(
                 {
                     "field": "trackedPlan",
-                    "state": "INVALID",
+                    "state": "MISSING" if missing_spans else "INVALID",
                     "sourceHash": source["sha256"],
                     "methodVersion": EXTRACTION_VERSION,
                     "reason": "Tracked plan requires non-empty beats with exact source spans, quotes and source-contained actions/participants.",
-                    "diagnosticCode": "EMPTY_TRACKED_BEATS" if not tracked else "INVALID_SOURCE_BOUND_BEATS",
+                    "diagnosticCode": "SOURCE_SPANS_UNAVAILABLE" if missing_spans else "EMPTY_TRACKED_BEATS" if not tracked else "INVALID_SOURCE_BOUND_BEATS",
                 }
             )
     projection = general_producibility_evidence(ir)
@@ -949,6 +951,10 @@ def _run_canonical_evaluation(request: dict[str, Any]) -> dict[str, Any]:
             "notApplicableRules": not_applicable,
             "videoPlanIR": {
                 "beats": video_plan_ir.get("beats", []),
+                "mainCharacter": video_plan_ir.get("mainCharacter"),
+                "principalObject": video_plan_ir.get("principalObject"),
+                "entityEvidence": video_plan_ir.get("entityEvidence"),
+                "characters": video_plan_ir.get("characters"),
                 "coreMechanic": video_plan_ir.get("coreMechanic"),
                 "goalEvidence": video_plan_ir.get("goalEvidence"),
                 "recurrence": (video_plan_ir.get("coreMechanic") or {}).get("recurrence"),
@@ -1036,6 +1042,8 @@ def review_prompt(request: dict[str, Any], capabilities: dict[str, Any] | None =
         )
     if evidence["generalProducibility"]["status"] == "UNKNOWN":
         pending("Insufficient source evidence for general producibility.", "GENERAL_PRODUCIBILITY")
+    if any(c["field"] == "trackedPlan" and c["state"] == "MISSING" for c in evidence["claims"]):
+        pending("Source-bound beat correspondence is UNKNOWN: source spans or quotes are unavailable.", "SOURCE_INTEGRITY")
     invalid_claims = [c for c in evidence["claims"] if c["state"] in {"CONTRADICTORY", "INVALID"}]
     if invalid_claims:
         reasons.append(

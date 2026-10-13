@@ -149,10 +149,8 @@ public class QualityReportPdfService {
       addCanonicalRules(document, review, fonts);
 
       // SECTION 4: Video Plan IR
-      addVideoPlanIR(document, review, fonts);
+      addVideoPlanIR(document, workflow, review, fonts);
 
-      // Keep section headings with their assessment tables.
-      document.newPage();
       // SECTION 5: Creative Quality
       addCreativeQuality(document, review, fonts);
 
@@ -162,7 +160,6 @@ public class QualityReportPdfService {
       // SECTION 7: Evidence & Source Traceability
       addEvidenceTraceability(document, workflow, review, fonts);
 
-      document.newPage();
       // SECTION 8: F8 Render Authorization
       addF8Authorization(document, review, fonts);
 
@@ -301,13 +298,11 @@ public class QualityReportPdfService {
     summary.addCell(metricCell("EVALUATED", String.valueOf(evaluated), BLUE, fonts));
     document.add(summary);
 
-    // Individual rule outcomes
     document.add(new Paragraph("Individual Rule Outcomes", fonts.heading));
-    PdfPTable table = new PdfPTable(new float[] {18, 14, 12, 16, 40});
-    table.setWidthPercentage(100);
-    table.setHeaderRows(1);
-    header(table, fonts, "Rule ID", "Family", "Outcome", "Severity", "Evidence");
-
+    PdfPTable table = new PdfPTable(new float[] {18, 82});
+    table.setWidthPercentage(100); table.setHeaderRows(1);
+    table.setSpacingBefore(10); table.setSpacingAfter(12);
+    header(table, fonts, "Outcome", "Rule / recorded evidence");
     for (List<?> list : List.of(
         canonical.get("passedRules") instanceof List<?> l ? l : List.of(),
         canonical.get("failedRules") instanceof List<?> l ? l : List.of(),
@@ -315,63 +310,76 @@ public class QualityReportPdfService {
         canonical.get("notApplicableRules") instanceof List<?> l ? l : List.of())) {
       for (Object item : list) {
         if (!(item instanceof Map<?, ?> rule)) continue;
-        String ruleId = workflowEvidenceText(rule.get("ruleId"));
-        String family = humanize(rule.get("family"), "UNKNOWN");
         String outcome = humanize(rule.get("outcome"), humanize(rule.get("status"), "UNKNOWN"));
-        String severity = humanize(rule.get("severity"), "UNKNOWN");
-        String message = humanize(rule.get("message"), "");
-        table.addCell(cell(ruleId, fonts.small, null));
-        table.addCell(cell(family, fonts.small, null));
-        table.addCell(cell(outcome, fonts.colored(fonts.small, outcome.contains("NOT APPLICABLE") ? MUTED : outcome.equals("UNKNOWN") ? ORANGE : statusColor(outcome)), null));
-        table.addCell(cell(severity, fonts.small, null));
-        table.addCell(cell(message, fonts.small, null));
+        table.addCell(cell(outcome, fonts.colored(fonts.body, outcome.contains("NOT APPLICABLE") ? MUTED : outcome.equals("UNKNOWN") ? ORANGE : statusColor(outcome)), null));
+        PdfPCell details = plainCell(Color.WHITE, 9);
+        details.addElement(new Paragraph(workflowEvidenceText(rule.get("ruleId")), fonts.bold));
+        details.addElement(new Paragraph("Family: " + humanize(rule.get("family"), "UNKNOWN") + " | Configured severity: " + humanize(rule.get("severity"), "UNKNOWN"), fonts.small));
+        details.addElement(new Paragraph(humanize(rule.get("message"), "UNKNOWN"), fonts.body));
+        table.addCell(details);
       }
     }
     document.add(table);
   }
 
-  private void addVideoPlanIR(Document document, Map<String, Object> review, Fonts fonts)
+  private void addVideoPlanIR(Document document, Map<String, Object> extraction, Map<String, Object> review, Fonts fonts)
       throws DocumentException {
     section(document, "Video Plan IR", fonts);
-    if (review == null || !(review.get("canonicalRuleEvaluation") instanceof Map<?, ?> canonical)
-        || !(canonical.get("videoPlanIR") instanceof Map<?, ?> ir)) {
-      document.add(new Paragraph("Video Plan IR not available.", fonts.muted));
-      return;
+    if (!(firstValue(review, "canonicalRuleEvaluation.videoPlanIR") instanceof Map<?,?> historical)) {
+      document.add(new Paragraph("Historical Video Plan IR not available (UNKNOWN).", fonts.muted)); return;
     }
-
-    String character = humanize(ir.get("mainCharacter"), "UNKNOWN");
-    String object = humanize(ir.get("principalObject"), "UNKNOWN");
-    String mechanic = workflowEvidenceText(ir.get("coreMechanic"));
-    String recurrence = humanize(ir.get("recurrence"), "UNKNOWN");
-
-    document.add(new Paragraph("Character: " + character, fonts.body));
-    document.add(new Paragraph("Principal object: " + object, fonts.body));
-    document.add(new Paragraph("Physical mechanic: " + mechanic, fonts.body));
-    document.add(new Paragraph("Goal evidence: " + workflowEvidenceText(ir.get("goalEvidence")), fonts.body));
-    document.add(new Paragraph("Recurrence: " + recurrence, fonts.body));
-
+    boolean current = extraction != null && "READ_ONLY_SOURCE_EXTRACTION".equals(extraction.get("kind"))
+        && firstValue(extraction,"source.sha256") != null
+        && firstValue(extraction,"source.sha256").equals(firstValue(review,"source.sha256"))
+        && extraction.get("videoPlanIR") instanceof Map<?,?>;
+    Map<?,?> ir = current ? (Map<?,?>)extraction.get("videoPlanIR") : historical;
+    if(current) {
+      document.add(new Paragraph("Read-only source extraction - not revalidation", fonts.bold));
+      document.add(new Paragraph("Extraction identity: " + workflowEvidenceText(extraction.get("resultId")), fonts.small));
+      document.add(new Paragraph("Parent saved run: " + review.get("recordId"), fonts.small));
+      document.add(new Paragraph("Current parser fields are supplemental textual evidence. Historical IR, canonical score/grade and F8 remain unchanged. Independent semantic validation NOT_PERFORMED; authorization NOT_EVALUATED.", fonts.body));
+    } else document.add(new Paragraph("Current source extraction unavailable (UNKNOWN); historical IR is displayed without enrichment.", fonts.muted));
+    document.add(new Paragraph("Character: " + humanize(ir.get("mainCharacter"), "UNKNOWN") + " | " + humanize(firstValue(extraction,"videoPlanIR.entityEvidence.mainCharacter.state"),"UNKNOWN"), fonts.body));
+    document.add(new Paragraph("Principal object: " + humanize(ir.get("principalObject"), "UNKNOWN") + " | " + humanize(firstValue(extraction,"videoPlanIR.entityEvidence.principalObject.state"),"UNKNOWN"), fonts.body));
+    if(current) provenanceTable(document,"Source entity provenance",firstValue(extraction,"videoPlanIR.entityEvidence"),fonts);
+    document.add(new Paragraph("Historical canonical character/object fields: " + humanize(historical.get("mainCharacter"),"UNKNOWN") + " / " + humanize(historical.get("principalObject"),"UNKNOWN"), fonts.small));
+    document.add(new Paragraph("Recorded physical mechanic: " + workflowEvidenceText(historical.get("coreMechanic")), fonts.body));
+    document.add(new Paragraph("Recorded goal evidence: " + workflowEvidenceText(historical.get("goalEvidence")), fonts.body));
+    document.add(new Paragraph("Recurrence: " + humanize(historical.get("recurrence"), "UNKNOWN"), fonts.body));
     if (ir.get("beats") instanceof List<?> beats && !beats.isEmpty()) {
       document.add(new Paragraph("Timed Beats (" + beats.size() + ")", fonts.heading));
-      PdfPTable table = new PdfPTable(new float[] {12, 12, 32, 12, 32});
-      table.setWidthPercentage(100);
-      table.setHeaderRows(1);
-      header(table, fonts, "Time", "Actor", "Action", "Object", "Consequence");
-
-      for (Object beatObj : beats) {
-        if (!(beatObj instanceof Map<?, ?> beat)) continue;
-        String time = humanize(beat.get("startTime"), "") + "-" + humanize(beat.get("endTime"), "");
-        String actor = humanize(beat.get("actor"), humanize(beat.get("character"), character));
-        String action = cleanSourceSectionText(workflowEvidenceText(beat.get("sourceQuote") == null ? beat.get("action") : beat.get("sourceQuote")));
-        String obj = humanize(beat.get("object"), humanize(beat.get("primaryObject"), object));
-        String consequence = cleanSourceSectionText(workflowEvidenceText(beat.get("consequence")));
-        table.addCell(cell(time, fonts.small, null));
-        table.addCell(cell(actor, fonts.small, null));
-        table.addCell(cell(action, fonts.small, null));
-        table.addCell(cell(obj, fonts.small, null));
-        table.addCell(cell(consequence, fonts.small, null));
+      PdfPTable table = new PdfPTable(new float[] {13, 24, 63});
+      table.setWidthPercentage(100); table.setHeaderRows(1);table.setSpacingBefore(10);table.setSpacingAfter(12);
+      header(table, fonts, "Time", "Actor / object", "Action / consequence / source evidence");
+      for(Object value: beats) {
+        if(!(value instanceof Map<?,?> beat))continue;
+        table.addCell(cell(humanize(beat.get("startTime"),"UNKNOWN") + "-" + humanize(beat.get("endTime"),"UNKNOWN") + " s",fonts.body,null));
+        PdfPCell entities=plainCell(Color.WHITE,8);
+        entities.addElement(new Paragraph("Actor: " + humanize(beat.get("actor"),"UNKNOWN"),fonts.bold));
+        entities.addElement(new Paragraph("Object: " + humanize(beat.get("primaryObject"),"UNKNOWN"),fonts.body));
+        Object fields=beat.get("fieldEvidence");
+        Map<?,?> fieldMap=fields instanceof Map<?,?> map?map:Map.of();
+        for(String field:List.of("actor","primaryObject")) {
+          Map<?,?> ev=fieldMap.get(field) instanceof Map<?,?> map?map:Map.of();
+          entities.addElement(new Paragraph(field + ": " + workflowEvidenceText(ev.get("state")),fonts.small));
+          if(ev.get("sourceQuote")!=null)entities.addElement(new Paragraph("Quote: " + ev.get("sourceQuote") + " | span " + workflowEvidenceText(ev.get("sourceSpan")),fonts.small));
+        }
+        table.addCell(entities);
+        PdfPCell action=plainCell(Color.WHITE,9);
+        String displayAction=current?workflowEvidenceText(beat.get("sourceAction")):cleanBeatAction(beat);
+        action.addElement(new Paragraph("Action",fonts.bold));action.addElement(new Paragraph(displayAction,fonts.body));
+        action.addElement(new Paragraph("Consequence",fonts.bold));action.addElement(new Paragraph(cleanSourceSectionText(workflowEvidenceText(beat.get("consequence"))),fonts.body));
+        action.addElement(new Paragraph("Source span: " + workflowEvidenceText(beat.get("sourceSpan")) + " | " + workflowEvidenceText(beat.get("sourceSpanStatus")),fonts.small));
+        if(fieldMap.get("primaryObject") instanceof Map<?,?> ev && "INFERRED".equals(ev.get("state")))action.addElement(new Paragraph(workflowEvidenceText(ev.get("reason")),fonts.small));
+        table.addCell(action);
       }
       document.add(table);
     }
+  }
+
+  private String cleanBeatAction(Map<?,?> beat) {
+    String quote=cleanSourceSectionText(workflowEvidenceText(beat.get("sourceQuote") == null ? beat.get("action") : beat.get("sourceQuote")));
+    return quote.replaceFirst("^\\d+(?:\\.\\d+)?\\s*[-–—]\\s*\\d+(?:\\.\\d+)?\\s*(?:s|sec|seconds)?\\s*:?\\s*", "").split("\\[|->|\\n",2)[0].trim();
   }
 
   private void addCreativeQuality(Document document, Map<String, Object> review, Fonts fonts)
@@ -382,10 +390,11 @@ public class QualityReportPdfService {
       return;
     }
 
-    PdfPTable table = new PdfPTable(new float[] {30, 16, 54});
+    PdfPTable table = new PdfPTable(new float[] {26, 18, 56});
     table.setWidthPercentage(100);
     table.setHeaderRows(1);
-    header(table, fonts, "Dimension", "Status", "Explanation");
+    table.setSpacingBefore(10);table.setSpacingAfter(12);
+    header(table, fonts, "Dimension", "Recorded status", "Explanation");
 
     // Opening
     String opening = "UNKNOWN";
@@ -460,10 +469,11 @@ public class QualityReportPdfService {
       producibility = humanize(gp.get("status"), humanize(gp.get("overallStatus"), "UNKNOWN"));
     }
 
-    PdfPTable table = new PdfPTable(new float[] {30, 16, 54});
+    PdfPTable table = new PdfPTable(new float[] {26, 18, 56});
     table.setWidthPercentage(100);
     table.setHeaderRows(1);
-    header(table, fonts, "Dimension", "Status", "Explanation");
+    table.setSpacingBefore(10);table.setSpacingAfter(12);
+    header(table, fonts, "Dimension", "Recorded status", "Explanation");
 
     table.addCell(cell("Plan quality", fonts.bold, null));
     table.addCell(cell(planQuality, fonts.colored(fonts.small, statusColor(planQuality)), null));
@@ -481,19 +491,19 @@ public class QualityReportPdfService {
 
     document.add(new Paragraph("Generator capability: " + workflowEvidenceText(firstValue(review, "generation.capabilityStatus"))
         + " - schema snapshot " + workflowEvidenceText(firstValue(review, "generation.profileVersion")), fonts.body));
-    document.add(new Paragraph("Capability provenance: " + workflowEvidenceText(firstValue(review, "generation.capabilityProvenance")), fonts.small));
+    provenanceTable(document,"Capability provenance",firstValue(review,"generation.capabilityProvenance"),fonts);
     document.add(new Paragraph("Execution findings: " + workflowEvidenceText(firstValue(review, "executionReview.findings")), fonts.small));
     document.add(new Paragraph("Execution limitations: " + workflowEvidenceText(firstValue(review, "executionReview.limitations")), fonts.small));
     document.add(new Paragraph("Material producibility risks: " + workflowEvidenceText(firstValue(review, "generalProducibility.materialRisks")), fonts.body));
     PdfPTable risksTable = new PdfPTable(new float[] {24, 12, 64});
-    risksTable.setWidthPercentage(100); risksTable.setHeaderRows(1);
+    risksTable.setWidthPercentage(100); risksTable.setHeaderRows(1);risksTable.setSpacingBefore(10);risksTable.setSpacingAfter(12);
     header(risksTable, fonts, "Material dimension", "Level", "Recorded reason / references");
     Object dimensions=firstValue(review, "generalProducibility.dimensions");
     for (Object key : listValue(firstValue(review, "generalProducibility.materialRisks"))) {
       if (!(dimensions instanceof Map<?,?> dims) || !(dims.get(key) instanceof Map<?,?> dimension)) continue;
       risksTable.addCell(cell(humanize(key, "UNKNOWN"), fonts.small, null));
       risksTable.addCell(cell(workflowEvidenceText(dimension.get("level")), fonts.small, null));
-      risksTable.addCell(cell(workflowEvidenceText(dimension.get("reason")) + " - references: " + workflowEvidenceText(dimension.get("evidenceReferences")), fonts.small, null));
+      risksTable.addCell(cell(workflowEvidenceText(dimension.get("reason")) + " - references: " + workflowEvidenceText(dimension.get("evidenceReferences")), fonts.body, null));
     }
     document.add(risksTable);
     document.add(new Paragraph("Unknown dimensions: " + workflowEvidenceText(firstValue(review, "generalProducibility.unknownDimensions")), fonts.small));
@@ -519,7 +529,7 @@ public class QualityReportPdfService {
       Map<String, Object> review, Fonts fonts) throws DocumentException {
     section(document, "Evidence & Source Traceability", fonts);
     document.add(new Paragraph("Source identity: " + workflowEvidenceText(firstValue(review, "source")), fonts.body));
-    document.add(new Paragraph("Production evidence provenance: " + workflowEvidenceText(firstValue(review, "generalProducibility.provenance.sourceEvidence")), fonts.small));
+    provenanceTable(document,"Production evidence provenance",firstValue(review,"generalProducibility.provenance.sourceEvidence"),fonts);
     document.add(new Paragraph("Independent semantic fidelity: UNKNOWN. Source ancestry and quote correspondence do not establish semantic approval. Rendered fidelity requires Video QA.", fonts.body));
     document.add(new Paragraph("Legacy provider traceability is separate. No approved-story linkage or sentence mapping is inferred by this export when absent from the saved run.", fonts.muted));
     document.add(new Paragraph("Remaining uncertainty: " + workflowEvidenceText(firstValue(review, "productionEvidence.remainingUncertainty")), fonts.body));
@@ -549,7 +559,8 @@ public class QualityReportPdfService {
       PdfPTable table = new PdfPTable(new float[] {24, 20, 56});
       table.setWidthPercentage(100);
       table.setHeaderRows(1);
-      header(table, fonts, "Code", "Source", "Recorded message / evidence");
+      table.setSpacingBefore(10);table.setSpacingAfter(12);
+      header(table, fonts, "Code", "Source", "Historical message / evidence (not independently verified)");
 
       for (Object reason : reasons) {
         if (reason instanceof Map<?, ?> r) {
@@ -620,6 +631,14 @@ public class QualityReportPdfService {
     String diagnostic=firstValue(review, "boundRequest.structuredPlan.events") != null && firstValue(review, "boundRequest.structuredPlan.beats") == null
         ? "Saved input-contract mismatch: deterministic events were supplied to a validator expecting source-bound beats. " : "";
     return diagnostic + "Recorded technical failure remains blocking. Runtime exception details and independently conflicting source spans were not saved; contradiction evidence is UNKNOWN.";
+  }
+
+  private void provenanceTable(Document document,String title,Object value,Fonts fonts) throws DocumentException {
+    document.add(new Paragraph(title,fonts.bold));
+    if(!(value instanceof Map<?,?> evidence)){document.add(new Paragraph("UNKNOWN",fonts.body));return;}
+    PdfPTable table=new PdfPTable(new float[]{26,74});table.setWidthPercentage(100);table.setSpacingBefore(8);table.setSpacingAfter(12);
+    for(var entry:evidence.entrySet()){table.addCell(cell(String.valueOf(entry.getKey()),fonts.small,null));table.addCell(cell(workflowEvidenceText(entry.getValue()),fonts.small,null));}
+    document.add(table);
   }
 
   private int intOf(Object val) {

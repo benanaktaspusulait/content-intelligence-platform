@@ -28,6 +28,21 @@ describe('post-family operator workflow', () => {
     setupHttp.expectOne('/api/v1/intelligence/workflow/production-settings?contentId=1&promptVersionId=2').flush({});
     return fixture;
   }
+  it('produces source-bound beats with codepoint offsets and no semantic approval', async () => {
+    const f=await setup();const c=f.componentInstance;
+    c.prompt='🎬 Duration: 5s\n0-2s: Nori holds a wooden coin.\n2-5s: Nori flips the coin.\nAUDIO\nMusic';
+    const plan=c['options']().structuredPlan;
+    expect(plan.schemaVersion).toBe('source-bound-beats-v1');expect(plan.events).toBeUndefined();expect(plan.beats).toHaveLength(2);
+    for(const beat of plan.beats){expect(Array.from(c.prompt).slice(...beat.sourceSpan).join('')).toBe(beat.sourceQuote);expect(beat.sourceQuote).toContain(beat.action);expect(beat.semanticStatus).toBe('PENDING');}
+    TestBed.inject(HttpTestingController).expectNone(r=>r.method==='POST');f.destroy();TestBed.resetTestingModule();
+  });
+  it('keeps read-only extraction distinct from the historical analysis', async () => {
+    const f=await setup();const c=f.componentInstance;const http=TestBed.inject(HttpTestingController);
+    c.review=structuredClone(savedAnalysis);const original=JSON.stringify(c.review);c.selectAnalysisTab('creative');
+    http.expectOne(`/api/v1/intelligence/workflow/records/${c.review.recordId}/source-plan`).flush({kind:'READ_ONLY_SOURCE_EXTRACTION',historicalRunId:c.review.recordId,source:c.review.source,resultId:'separate-extraction',videoPlanIR:{mainCharacter:'Mimi',principalObject:'sticky note',entityEvidence:{mainCharacter:{state:'OBSERVED'},principalObject:{state:'OBSERVED'}},beats:[]}});
+    expect(c.sourcePlanStatus).toBe('AVAILABLE');expect(JSON.stringify(c.review)).toBe(original);expect(c.review.family8.renderAuthorization.status).toBe('BLOCKED_TECHNICAL_FAILURE');
+    http.expectNone(r=>r.method==='POST');http.verify();f.destroy();TestBed.resetTestingModule();
+  });
   it('saves explicit intent, restores the reviewer decision and clears it on a version change', async () => {
     const f=await setup();const c=f.componentInstance;const http=TestBed.inject(HttpTestingController);
     c.confirmIntent();expect(c.intentConfirmed).toBe(false);

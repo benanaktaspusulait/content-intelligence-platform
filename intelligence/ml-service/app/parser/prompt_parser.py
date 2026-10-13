@@ -147,6 +147,8 @@ class PromptParser:
             "evidenceVersions": {"canonicalEvidence": CANONICAL_EVIDENCE_VERSION},
         }
 
+        self._attach_source_entities(video_plan_ir, prompt_text)
+
         # Calculate confidence
         confidence = self._calculate_confidence()
 
@@ -261,7 +263,7 @@ class PromptParser:
     def _find_primary_character(self, text: str) -> str:
         """Find main character name"""
         # Look for explicit markers
-        main_match = re.search(r"(?:MAIN CHARACTER|CHARACTER):\s*\n?\s*([A-Z][a-z]+)", text, re.IGNORECASE)
+        main_match = re.search(r"(?:MAIN CHARACTER|CHARACTER(?:\s*/\s*CONTINUITY)?)\s*:?[ \t]*\n?[ \t]*([A-Z][a-zA-Z0-9_-]+)", text, re.IGNORECASE)
         if main_match:
             return main_match.group(1).capitalize()
 
@@ -383,6 +385,29 @@ class PromptParser:
                 "mechanicCount": None,
                 "primaryObject": None,
                 "mechanicCarrier": "UNKNOWN",
+                "causalParticipants": None,
+            }
+
+        repeated_rule = re.search(
+            r"\b(?:each|every)\s+(?:pull|attempt|try|time|round|cycle)\s+"
+            r"(?:doubles?|triples?|multiplies|increases|repeats?|adds?|grows?|escalates)\b"
+            r"[^\n.;\[\]]*",
+            text, re.IGNORECASE,
+        )
+        if repeated_rule:
+            rule_text = repeated_rule.group().strip()
+            start = repeated_rule.start()
+            return {
+                "physicalRule": rule_text,
+                "physicalRuleEvidence": {
+                    "state": "OBSERVED", "sourceQuote": rule_text,
+                    "sourceSpan": [start, start + len(rule_text)],
+                    "method": "EXPLICIT_REPEATED_ACTION_CLAUSE",
+                    "semanticVerification": "NOT_PERFORMED",
+                },
+                "causeEffect": "Explicit repeated-action statement from prompt",
+                "consistency": consistency, "mechanicCount": None,
+                "primaryObject": None, "mechanicCarrier": "UNKNOWN",
                 "causalParticipants": None,
             }
 
@@ -575,7 +600,7 @@ class PromptParser:
             # mapping.  This keeps AUDIO/NEGATIVE CONSTRAINTS/FINAL CUT out of
             # the event while retaining the exact event bytes and offsets.
             section_boundary = re.search(
-                r"\n\s*(?:AUDIO|NEGATIVE CONSTRAINTS|FINAL CUT|REFERENCES|CHARACTER|VISUAL STYLE)\s*:",
+                r"\n[ \t]*(?:AUDIO|NEGATIVE CONSTRAINTS|FINAL CUT|REFERENCES|CHARACTER(?: IDENTITY LOCK)?|VISUAL STYLE|PRODUCTION SETTINGS)[ \t]*(?::|(?=\n|$))",
                 raw_source,
                 re.IGNORECASE,
             )
@@ -609,8 +634,10 @@ class PromptParser:
             # Keep the exact immutable source span for downstream evidence linking.
             # The timestamp and body are intentionally preserved verbatim here;
             # semantic fields are derived separately and never replace this quote.
-            beat["sourceSpan"] = [match.start(), match.start() + len(raw_source)]
-            beat["sourceQuote"] = raw_source.strip()
+            source_quote = raw_source.strip()
+            source_start = match.start() + len(raw_source) - len(raw_source.lstrip())
+            beat["sourceSpan"] = [source_start, source_start + len(source_quote)]
+            beat["sourceQuote"] = source_quote
             beat["evidenceStatus"] = "SOURCE_VERIFIED"
 
             beats.append(beat)
@@ -666,6 +693,67 @@ class PromptParser:
                 )
             )
         return beats
+
+    def _attach_source_entities(self, ir: dict[str, Any], text: str) -> None:
+        """Add source-linked display fields without inventing tracking or semantic approval."""
+        def evidence(value: str | None, match: re.Match[str] | None, offset: int = 0,
+                     state: str = "OBSERVED", reason: str = "Exact source mention.") -> dict[str, Any]:
+            return {"value": value, "state": state if match else "UNKNOWN", "sourceSpan":
+                    [offset + match.start(), offset + match.end()] if match else None,
+                    "sourceQuote": match.group() if match else None, "method": "DETERMINISTIC_SOURCE_PATTERN",
+                    "semanticVerification": "NOT_PERFORMED", "reason": reason if match else "No supported source mention."}
+
+        primary = (ir.get("characters") or {}).get("primary")
+        character_match = re.search(r"\b" + re.escape(primary) + r"\b", text) if primary and primary.lower() != "unknown" else None
+        ir["mainCharacter"] = primary if character_match else None
+        ir["entityEvidence"] = {"mainCharacter": evidence(ir["mainCharacter"], character_match)}
+        # Reuse explicit prop declarations first; otherwise retain a conservative
+        # object-introduction phrase from a timed source event (no character/object catalog).
+        introduced = None
+        for beat in ir.get("beats", []):
+            quote = beat.get("sourceQuote") or ""
+            match = re.search(r"\b(?:with|holds?|uses?|carries?|grabs?)\s+(?:a|an)\s+(?P<object>[a-z][a-z -]*?)(?=[;,.\[\]\n]|\s+(?:and|instead|while)\b|$)", quote, re.I)
+            if match:
+                start = beat["sourceSpan"][0] + match.start("object")
+                introduced = re.compile(re.escape(match.group("object"))).search(text, start)
+                break
+        props = (ir.get("setting") or {}).get("mainProps") or []
+        if props:
+            prop_match = re.search(re.escape(props[0]), text, re.I)
+            if prop_match:
+                introduced = prop_match
+        principal = introduced.group() if introduced else None
+        ir["principalObject"] = principal
+        ir["entityEvidence"]["principalObject"] = evidence(principal, introduced)
+        for beat in ir.get("beats", []):
+            quote = beat.get("sourceQuote") or ""
+            span = beat.get("sourceSpan")
+            matched = bool(span and text[span[0]:span[1]] == quote)
+            offset = span[0] if matched else 0
+            actor_match = re.search(r"\b" + re.escape(primary) + r"\b", quote) if primary and matched and character_match else None
+            object_match = None
+            object_state = "OBSERVED"
+            if principal and matched:
+                object_match = re.search(r"\b" + re.escape(principal) + r"s?\b", quote, re.I)
+                if not object_match:
+                    object_match = re.search(r"\b" + re.escape(principal.split()[-1]) + r"s?\b", quote, re.I)
+                    object_state = "INFERRED"
+            beat["actor"] = actor_match.group() if actor_match else None
+            beat["primaryObject"] = object_match.group() if object_match else None
+            beat["fieldEvidence"] = {"actor": evidence(beat["actor"], actor_match, offset),
+                "primaryObject": evidence(beat["primaryObject"], object_match, offset, object_state,
+                    "Exact object phrase." if object_state == "OBSERVED" else "Head noun corresponds to the source-introduced object; continuity is not independently verified.")}
+            # Preserve raw quote and analysis action; display only the first source
+            # action before framing/staging annotations and its separate arrow result.
+            body_match = re.match(r"\d+(?:\.\d+)?\s*[-–—]\s*\d+(?:\.\d+)?\s*(?:s|sec|seconds)?\s*:?\s*", quote, re.I)
+            body_start = body_match.end() if body_match else 0
+            body = quote[body_start:]
+            stop = min([i for i in (body.find("["), body.find("->"), body.find("\n")) if i >= 0] or [len(body)])
+            action = body[:stop].strip()
+            action_match = re.search(re.escape(action), quote) if action and matched else None
+            beat["sourceAction"] = action if action_match else None
+            beat["fieldEvidence"]["action"] = evidence(beat["sourceAction"], action_match, offset)
+            beat["sourceSpanStatus"] = "TEXT_MATCHED" if matched else "UNKNOWN"
 
     def _extract_attempt_marker(self, description: str) -> tuple[bool, str]:
         """Extract an explicit ``[ATTEMPT: VERB]`` marker from a beat description.
@@ -1409,3 +1497,16 @@ def parse_prompt(prompt_text: str, config: ParserConfig | None = None) -> ParseR
             evidence_missing=tuple(pm.get("evidence_missing", [])),
         ),
     )
+
+
+def source_plan_evidence(prompt: str, source_id: str, source_version: str) -> dict[str, Any]:
+    """Read-only parser projection; never runs rules, providers, persistence or authorization."""
+    import hashlib
+    version = "source-plan-display-v1"
+    source_hash = hashlib.sha256(prompt.encode()).hexdigest()
+    parsed = parse_prompt(prompt).video_plan_ir
+    identity = hashlib.sha256((version + "\n" + source_id + "\n" + source_version + "\n" + source_hash).encode()).hexdigest()
+    return {"resultId": version + ":" + identity, "kind": "READ_ONLY_SOURCE_EXTRACTION", "parserVersion": version,
+            "source": {"artifact": source_id, "version": source_version, "sha256": source_hash},
+            "semanticValidationStatus": "NOT_PERFORMED", "authorizationStatus": "NOT_EVALUATED",
+            "videoPlanIR": {key: parsed.get(key) for key in ("mainCharacter", "principalObject", "entityEvidence", "beats")}}

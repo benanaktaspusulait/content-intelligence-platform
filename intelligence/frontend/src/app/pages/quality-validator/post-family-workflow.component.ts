@@ -121,6 +121,7 @@ import { GeneralProducibilityComponent } from './general-producibility.component
             <p><b>Goal evidence:</b> {{ readableGoalEvidence(canonical.videoPlanIR.goalEvidence) }}</p>
             <p><b>Recurrence:</b> {{ canonical.videoPlanIR.recurrence !== undefined ? canonical.videoPlanIR.recurrence : 'UNKNOWN' }}</p>
           </div>
+          <section *ngIf="sourcePlanEvidence as extraction" class="read-only-source-plan"><h4>Read-only source extraction · not revalidation</h4><p>{{ extraction.resultId }} · parent run {{ extraction.historicalRunId }}</p><p>Historical canonical fields and 85/B are preserved. These current parser fields establish textual correspondence only; semantic fidelity and render authorization are not evaluated.</p><p><b>Source character:</b> {{ extraction.videoPlanIR?.mainCharacter || 'UNKNOWN' }} · {{ extraction.videoPlanIR?.entityEvidence?.mainCharacter?.state || 'UNKNOWN' }}</p><p><b>Source principal object:</b> {{ extraction.videoPlanIR?.principalObject || 'UNKNOWN' }} · {{ extraction.videoPlanIR?.entityEvidence?.principalObject?.state || 'UNKNOWN' }}</p><article *ngFor="let beat of extraction.videoPlanIR?.beats"><strong>{{ beat.startTime }}–{{ beat.endTime }}s</strong><p>Actor: {{ beat.actor || 'UNKNOWN' }} · {{ beat.fieldEvidence?.actor?.state || 'UNKNOWN' }}; object: {{ beat.primaryObject || 'UNKNOWN' }} · {{ beat.fieldEvidence?.primaryObject?.state || 'UNKNOWN' }}</p><p>Action: {{ beat.sourceAction || 'UNKNOWN' }}</p><p>Consequence: {{ cleanAnalysisText(beat.consequence) }}</p><small>Source span {{ beat.sourceSpan?.join('–') || 'UNKNOWN' }} · {{ beat.sourceSpanStatus || 'UNKNOWN' }} · independent semantic verification NOT_PERFORMED</small></article></section><p *ngIf="sourcePlanStatus==='UNKNOWN'" class="missing-state">Current parser extraction is unavailable (UNKNOWN). Historical analysis and authorization remain unchanged.</p>
           <div class="canonical-rules-list" *ngIf="canonical.status === 'EVALUATED'">
             <h4>Individual Rule Outcomes</h4>
             <article *ngFor="let rule of canonical.passedRules" class="canonical-rule-item rule-pass">
@@ -661,6 +662,7 @@ export class PostFamilyWorkflowComponent implements OnChanges, OnDestroy {
     if (stage === 7 && this.review) { void this.preparationRouter?.navigateByUrl(this.renderPreparationLink()); return; }
     if (stage > 4 && !this.review) return;
     this.activeStage = stage;
+    if(stage===5)this.loadSourcePlan();
     this.persistUiLocation();
     this.stageChanged.emit(stage);
     this.changeDetector.markForCheck();
@@ -758,8 +760,17 @@ export class PostFamilyWorkflowComponent implements OnChanges, OnDestroy {
     const text = String(value ?? '').trim();
     return text ? [text] : ['UNKNOWN'];
   }
+  sourcePlanEvidence: any = null;
+  sourcePlanStatus = 'NOT_LOADED';
+  private sourcePlanRun = '';
+  private loadSourcePlan(){
+    const id=this.review?.recordId;const sequence=this.restoreSequence;if(!id || this.sourcePlanRun===id)return;this.sourcePlanRun=id;this.sourcePlanStatus='LOADING';
+    this.http.get<any>(`/api/v1/intelligence/workflow/records/${encodeURIComponent(id)}/source-plan`).subscribe({next:projection=>{if(sequence!==this.restoreSequence || this.review?.recordId!==id)return;
+      const matched=projection?.historicalRunId===id && projection?.source?.sha256===this.review?.source?.sha256;this.sourcePlanEvidence=matched?projection:null;this.sourcePlanStatus=matched?'AVAILABLE':'UNKNOWN';this.changeDetector.markForCheck();},error:()=>{if(sequence===this.restoreSequence){this.sourcePlanStatus='UNKNOWN';this.changeDetector.markForCheck();}}});
+  }
   selectAnalysisTab(tab: 'summary' | 'creative' | 'feasibility' | 'evidence') {
     this.activeAnalysisTab = tab;
+    this.loadSourcePlan();
     this.persistUiLocation();
   }
   selectProductionTab(tab: 'overview' | 'creative' | 'execution' | 'references') {
@@ -1134,6 +1145,7 @@ export class PostFamilyWorkflowComponent implements OnChanges, OnDestroy {
     if (changes['workflowProfile']) this.profile = changes['workflowProfile'].currentValue || 'FROZEN';
     if (!changes['contentId'] && !changes['promptVersionId'] && !changes['workflowProfile']) return;
     this.review = null;
+    this.sourcePlanEvidence=null;this.sourcePlanStatus='NOT_LOADED';this.sourcePlanRun='';
     this.qa = null;
     this.repairKey = '';
     this.autoRepair = false;
@@ -1166,6 +1178,7 @@ export class PostFamilyWorkflowComponent implements OnChanges, OnDestroy {
         this.review = saved;
         this.restoreUiLocation();
         this.restoredRecordId = saved.recordId;
+        if(this.activeStage===5)this.loadSourcePlan();
         this.profile = 'post-family-v1';
         const bound = saved.boundRequest || {};
         this.canonicalValidationId = bound.canonicalValidationId || bound.authorizationEvidence?.validationRecordId || null;
@@ -1210,6 +1223,14 @@ export class PostFamilyWorkflowComponent implements OnChanges, OnDestroy {
 
   private resolveCharacterIdentity(){const sequence=this.restoreSequence+1;if(this.referenceCharacter||!this.prompt.trim())return;this.http.get<any[]>('/api/v1/characters').subscribe({next:rows=>{if(sequence!==this.restoreSequence)return;const text=this.prompt.toLowerCase();const match=(rows||[]).find(row=>{const names=[row.name,row.displayName,row.characterName,...(Array.isArray(row.aliases)?row.aliases:[])].filter(Boolean).map(String);return names.some(name=>new RegExp('\\b'+name.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'\\b','i').test(text));});if(match){this.referenceCharacter=String(match.name||match.displayName||match.characterName);this.characterId=String(match.id||'');this.characterResolvedFromCatalog=true;if(this.review)this.loadCharacterReferenceOptions();}this.changeDetector.markForCheck();},error:()=>{}});}
   private hydrateSettingsFromPrompt(){const text=this.prompt||'';const labelled=text.match(/(?:duration|target duration|length)\s*[:=]?\s*(\d{1,2})\s*(?:s|sec|seconds)?/i);const candidates=Array.from(text.matchAll(/\b(5|8|10|12|15|20|25|30)\s*(?:s|sec|seconds)\b/gi)).map(match=>Number(match[1]));const durationValue=labelled?Number(labelled[1]):(candidates.length?Math.max(...candidates):null);this.promptDuration=durationValue;if(!this.desiredDuration&&durationValue)this.desiredDuration=durationValue;const ratio=text.match(/\b(9:16|16:9|1:1)\b/);this.promptAspectRatio=ratio?ratio[1]:'';if(!this.aspectRatio&&ratio)this.aspectRatio=ratio[1];}
+  private sourceBoundPlan(){
+    const saved=this.parsedPlan();
+    if(saved && !(saved.evidenceStatus==='DETERMINISTIC_SOURCE_EVENTS_ONLY' && saved.events && !saved.beats))return saved;
+    return {schemaVersion:'source-bound-beats-v1',evidenceStatus:'DETERMINISTIC_SOURCE_EVENTS_ONLY',sourceVersion:this.promptVersionId,
+      beats:this.timedRanges.map((range,index)=>{const start=this.prompt.indexOf(range.quote,range.quoteStart);const event=this.sourceEvents[index];
+        return {id:event.id,startTime:range.start,endTime:range.end,action:event.action,sourceQuote:range.quote,
+          sourceSpan:start<0?null:[Array.from(this.prompt.slice(0,start)).length,Array.from(this.prompt.slice(0,start+range.quote.length)).length],semanticStatus:'PENDING'};})};
+  }
   private options() {
     return {
       profile: this.profile,
@@ -1225,7 +1246,7 @@ export class PostFamilyWorkflowComponent implements OnChanges, OnDestroy {
       qualityJustification: this.qualityJustification,
       viewerQuestion: this.viewerQuestion,
       plannedEditedDuration: this.plannedEditedDuration,
-      structuredPlan: this.parsedPlan() || { events: this.sourceEvents, evidenceStatus: 'DETERMINISTIC_SOURCE_EVENTS_ONLY', sourceVersion: this.promptVersionId },
+      structuredPlan: this.sourceBoundPlan(),
       intentRequirements: this.parseList(this.intentRequirementsText),
       creativeEvidence: this.parseList(this.creativeEvidenceText),
       intentChangeReason: this.intentChangeReason,

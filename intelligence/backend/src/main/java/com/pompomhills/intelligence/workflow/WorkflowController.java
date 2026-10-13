@@ -216,7 +216,21 @@ public class WorkflowController {
     return org.springframework.http.ResponseEntity.ok()
         .header("Content-Disposition", "attachment; filename=pompom-analysis-" + id + ".pdf")
         .header("Cache-Control", "no-store")
-        .body(analysis ? pdf.renderFullAnalysis(snapshot, snapshot) : pdf.renderWorkflow(snapshot));
+        .body(analysis ? pdf.renderFullAnalysis(sourcePlanForExport(id), snapshot) : pdf.renderWorkflow(snapshot));
+  }
+
+  @GetMapping("/records/{id}/source-plan")
+  public Map<String, Object> sourcePlan(@PathVariable UUID id) {
+    return service.sourcePlan(id);
+  }
+
+  private Map<String, Object> sourcePlanForExport(UUID id) {
+    try {
+      return service.sourcePlan(id);
+    } catch (RuntimeException unavailable) {
+      return Map.of("kind", "READ_ONLY_SOURCE_EXTRACTION", "status", "UNKNOWN",
+          "historicalRunId", id.toString(), "reason", "Current parser projection unavailable; historical evidence is preserved.");
+    }
   }
 
   @PostMapping("/records/{id}/repair")

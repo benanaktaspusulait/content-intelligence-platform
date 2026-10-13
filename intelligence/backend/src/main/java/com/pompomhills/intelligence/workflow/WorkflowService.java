@@ -1960,6 +1960,23 @@ public class WorkflowService {
     return get(id);
   }
 
+  /** Read-only parser projection of the exact saved review source, never a revalidation. */
+  public Map<String, Object> sourcePlan(UUID id) {
+    var review = getByKind(id, "REVIEW");
+    var source = map(review.get("source"));
+    String prompt = String.valueOf(review.getOrDefault("originalPrompt", ""));
+    if (prompt.isBlank() || !sha256(prompt).equals(source.get("sha256")))
+      throw new IllegalArgumentException("Saved review source hash does not match its prompt");
+    var result = new LinkedHashMap<>(ml.workflow("source-plan", Map.of(
+        "prompt", prompt, "sourceId", String.valueOf(source.get("artifact")),
+        "sourceVersion", String.valueOf(source.get("version")))));
+    if (!source.get("sha256").equals(map(result.get("source")).get("sha256"))
+        || !"READ_ONLY_SOURCE_EXTRACTION".equals(result.get("kind")))
+      throw new IllegalArgumentException("Source extraction is not bound to the saved prompt");
+    result.put("historicalRunId", id.toString());
+    return result;
+  }
+
   public Map<String, Object> get(UUID id) {
     var text =
         jdbc.sql("SELECT payload::text FROM post_family_workflow_events WHERE id=:id")

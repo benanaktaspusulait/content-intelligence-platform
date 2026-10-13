@@ -60,6 +60,19 @@ def review(request: ReviewRequest) -> dict[str, Any]:
     return review_prompt(request.model_dump(), capabilities())
 
 
+class SourcePlanRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    prompt: str = Field(min_length=1, max_length=50000)
+    sourceId: str
+    sourceVersion: str
+
+
+@router.post("/source-plan")
+def source_plan(request: SourcePlanRequest) -> dict[str, Any]:
+    from app.parser.prompt_parser import source_plan_evidence
+    return source_plan_evidence(request.prompt, request.sourceId, request.sourceVersion)
+
+
 class RepairRequest(BaseModel):
     request: ReviewRequest
     patches: list[dict[str, Any]]
