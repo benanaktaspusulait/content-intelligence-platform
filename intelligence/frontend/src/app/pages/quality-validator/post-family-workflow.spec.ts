@@ -1156,4 +1156,34 @@ Hard cut.`;
     TestBed.inject(HttpTestingController).expectNone(r => r.method === 'POST');
   });
 
+  it('explains optimization configuration, budget, provider, validation and idempotency failures', async () => {
+    const f = await setup();
+    const c = f.componentInstance;
+    expect(c.creativeOptimizationFailureMessage({
+      status: 409,
+      error: { detail: 'Explicit server model configuration required; no fallback' },
+    })).toContain('server-side AI model is not configured');
+    expect(c.creativeOptimizationFailureMessage({
+      status: 409,
+      error: { detail: 'Request exceeds approved cost ceiling' },
+    })).toContain('exceeds the configured cost ceiling');
+    expect(c.creativeOptimizationFailureMessage({
+      status: 409,
+      error: { detail: 'Actual provider cost exceeded the authorized cost ceiling' },
+    })).toContain('verifiable usage within the authorized cost ceiling');
+    expect(c.creativeOptimizationFailureMessage({
+      status: 502,
+      error: { detail: 'Workflow service unavailable' },
+    })).toContain('provider could not be reached');
+    expect(c.creativeOptimizationFailureMessage({
+      status: 409,
+      error: { detail: 'Candidate omits an essential source event' },
+    })).toContain('did not satisfy the candidate contract');
+    expect(c.creativeOptimizationFailureMessage({
+      status: 409,
+      error: { detail: 'A prior optimization provider outcome is unresolved' },
+    })).toContain('previous provider outcome is unresolved');
+    f.destroy();
+  });
+
 });

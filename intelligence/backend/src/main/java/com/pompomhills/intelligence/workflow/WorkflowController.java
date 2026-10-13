@@ -42,7 +42,16 @@ public class WorkflowController {
         || !(request.get("promptVersionId") instanceof Number promptVersionId))
       throw new IllegalArgumentException("contentId and promptVersionId are required");
     var provenance = contents.creativeProvenance(contentId.longValue(), promptVersionId.longValue());
-    return service.generateCreativeOptimization(id, request, provenance);
+    var result = service.generateCreativeOptimization(id, request, provenance);
+    if (Boolean.TRUE.equals(result.get("optimizationFailed"))) {
+      String detail = String.valueOf(result.getOrDefault("detail", "Creative Optimization did not complete."));
+      var status =
+          "PROVIDER_OUTCOME_UNKNOWN".equals(result.get("attemptState"))
+              ? org.springframework.http.HttpStatus.BAD_GATEWAY
+              : org.springframework.http.HttpStatus.CONFLICT;
+      throw new org.springframework.web.server.ResponseStatusException(status, detail);
+    }
+    return result;
   }
 
   @GetMapping("/learning/retrieve")

@@ -844,6 +844,20 @@ def perform_role(role: str, text: str, context: dict[str, Any], provider: LLMPro
             'providerResponseMetadata': response_metadata}
 
 
+def _verified_optimization_cost(usage: Any, input_rate: float, output_rate: float, max_cost_usd: float) -> float:
+    if not isinstance(usage, dict):
+        raise ValueError('Provider response omitted verifiable token usage; actual cost cannot be checked against the authorized ceiling')
+    input_tokens = usage.get('prompt_tokens', usage.get('input_tokens'))
+    output_tokens = usage.get('completion_tokens', usage.get('output_tokens'))
+    if any(isinstance(value, bool) or not isinstance(value, int) or value < 0
+           for value in (input_tokens, output_tokens)):
+        raise ValueError('Provider response contained invalid token usage; actual cost cannot be checked against the authorized ceiling')
+    actual_cost = (input_tokens * input_rate + output_tokens * output_rate) / 1_000_000
+    if actual_cost > max_cost_usd:
+        raise ValueError('Actual provider cost exceeded the authorized cost ceiling; candidate response rejected')
+    return actual_cost
+
+
 def run_paid_role(role: str, text: str, context: dict[str, Any], max_cost_usd: float) -> dict[str, Any]:
     if role not in ROLES:
         raise ValueError('Unknown creative role')
@@ -864,7 +878,16 @@ def run_paid_role(role: str, text: str, context: dict[str, Any], max_cost_usd: f
     provider = DeepSeekTextProvider(model) if role == 'STORY' else OpenAIProvider(model=model)
     provider.max_output_tokens = output_token_limit
     provider.json_output = True
-    result = perform_role(role, text, context, provider, model)
+    try:
+        result = perform_role(role, text, context, provider, model)
+    except ValueError:
+        response_metadata = getattr(provider, 'last_response_metadata', None)
+        if role == 'PROMPT_OPTIMIZATION' and isinstance(response_metadata, dict) and response_metadata.get('apiStatus') == 'COMPLETED':
+            _verified_optimization_cost(getattr(provider, 'last_usage', None), input_rate, output_rate, max_cost_usd)
+        raise
     result['costUpperBoundUsd'] = upper_bound
     result['approvedCostCeilingUsd'] = max_cost_usd
+    if role == 'PROMPT_OPTIMIZATION':
+        result['actualCostUsd'] = _verified_optimization_cost(
+            result.get('usage'), input_rate, output_rate, max_cost_usd)
     return result

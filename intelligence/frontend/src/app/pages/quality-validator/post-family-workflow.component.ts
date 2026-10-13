@@ -1096,10 +1096,51 @@ export class PostFamilyWorkflowComponent implements OnChanges, OnDestroy {
         this.creativeOptimizationComparison = null;
         this.creativeOptimizationSelectedCandidateId = null;
         this.creativeOptimizationReviewedCandidateId = null;
-        this.creativeOptimizationError = response?.error?.detail || 'Creative optimization generation could not complete. No version was created.';
+        this.creativeOptimizationError = this.creativeOptimizationFailureMessage(response);
         this.changeDetector.markForCheck();
       },
     });
+  }
+  creativeOptimizationFailureMessage(response: any): string {
+    const detail = String(response?.error?.detail ?? response?.error?.message ?? '').trim();
+    const normalized = detail.toLowerCase();
+    if (normalized.includes('explicit server model configuration required')) {
+      return 'Creative Optimization is unavailable because its server-side AI model is not configured. No candidates were generated. Configure the optimization role before retrying.';
+    }
+    if (normalized.includes('verified server price configuration')) {
+      return 'Creative Optimization pricing is not configured on the server. No candidates were generated; ask an administrator to configure role pricing.';
+    }
+    if (normalized.includes('request exceeds approved cost ceiling')
+        || normalized.includes('positive authorized cost ceiling')
+        || normalized.includes('positive budget no greater than')) {
+      return 'The request exceeds the configured cost ceiling. No candidates were generated; lower the scope or confirm an allowed budget.';
+    }
+    if (normalized.includes('actual provider cost')
+        || normalized.includes('actual cost cannot be checked')) {
+      return 'The provider response did not include verifiable usage within the authorized cost ceiling. No candidates were accepted; review the saved provider attempt before retrying.';
+    }
+    if (normalized.includes('prior optimization provider outcome is unresolved')
+        || normalized.includes('optimization outcome is unresolved')) {
+      return 'A previous provider outcome is unresolved. No automatic retry was made; review the saved attempt before requesting another generation.';
+    }
+    if (normalized.includes('invalid json')
+        || normalized.includes('candidate')
+        || normalized.includes('response must')
+        || normalized.includes('essential event')) {
+      return 'The provider response did not satisfy the candidate contract. No candidate was accepted and no prompt version was created; review the saved attempt before retrying.';
+    }
+    if (response?.status === 502
+        || normalized.includes('workflow service unavailable')
+        || normalized.includes('connection')
+        || normalized.includes('timeout')) {
+      return 'The configured AI provider could not be reached or its outcome is uncertain. No automatic retry was made; check provider connectivity and the saved attempt.';
+    }
+    if (normalized.includes('creative roles are disabled')) {
+      return 'Creative Optimization is disabled on the server. No candidates were generated; enable the explicitly configured role before retrying.';
+    }
+    return detail
+      ? `Creative Optimization failed. No candidates were generated. ${detail}`
+      : 'Creative Optimization could not complete. No candidates were generated and no prompt version was created.';
   }
   approveSelectedCreativeOptimizationCandidate(): void {
     const candidate = this.creativeOptimizationSelectedCandidate;

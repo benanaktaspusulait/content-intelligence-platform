@@ -245,6 +245,17 @@ public class WorkflowService {
     roleRequest.put("generationAuthorized", true);
     var role = creativeRole(roleRequest, true);
     UUID roleRecordId = UUID.fromString(String.valueOf(role.get("recordId")));
+    String roleAttemptState = String.valueOf(role.getOrDefault("attemptState", ""));
+    if (!"SAVED".equals(roleAttemptState) && !"REUSED_SAVED_RESULT".equals(roleAttemptState)) {
+      var diagnostics = map(role.get("attemptDiagnostics"));
+      var failure = new LinkedHashMap<String, Object>();
+      failure.put("optimizationFailed", true);
+      failure.put("attemptState", roleAttemptState);
+      failure.put("detail", diagnostics.getOrDefault("error", "The optimization role did not complete."));
+      failure.put("providerCallOccurred", diagnostics.getOrDefault("providerDispatched", false));
+      failure.put("roleRecordId", roleRecordId.toString());
+      return failure;
+    }
     var previousComparison =
         jdbc.sql(
                 "SELECT id,payload::text FROM post_family_workflow_events WHERE"
@@ -880,7 +891,11 @@ public class WorkflowService {
           .list();
       var saved = findCreativeRoleByFingerprint(requestFingerprint, role);
       if (saved.isPresent()) {
-        if (!(saved.get().get("result") instanceof Map<?, ?>)
+        if (isKnownPreDispatchRejection(saved.get())) {
+          // Configuration and budget validation are guaranteed to run before
+          // the provider adapter is created, so an operator may safely retry
+          // after correcting server configuration or authorization.
+        } else if (!(saved.get().get("result") instanceof Map<?, ?>)
             || "PROVIDER_RESULT_REJECTED".equals(saved.get().get("attemptState"))) {
           if ("PROMPT_OPTIMIZATION".equals(role))
             throw new IllegalStateException("A prior optimization provider outcome is unresolved; do not automatically retry");
@@ -905,19 +920,30 @@ public class WorkflowService {
       failed.put("sourceStoryRecordId", context.get("sourceStoryRecordId"));
       failed.put("sourceRequest", verifiedRequest);
       failed.put("requestFingerprint", requestFingerprint);
-      failed.put("attemptState", "FAILED");
+      boolean preDispatchRejection = isKnownPreDispatchRejection(detail);
+      String failedState =
+          preDispatchRejection
+              ? "PRE_DISPATCH_REJECTED"
+              : detail.contains("PROVIDER_OUTCOME_UNKNOWN")
+                  || detail.contains("HTTP 502")
+                  ? "PROVIDER_OUTCOME_UNKNOWN"
+                  : "PROVIDER_RESULT_REJECTED";
+      failed.put("attemptState", failedState);
       failed.put("validationStatus", "UNKNOWN");
       failed.put("attemptDiagnostics", Map.of(
           "provider", role.equals("STORY") ? "deepseek" : "openai",
           "error", detail,
+          "providerDispatched", !preDispatchRejection,
           "persisted", true,
-          "retryAutomatically", false));
+          "retryAutomatically", false,
+          "retryRequiresOperatorAction", preDispatchRejection));
       try {
         failed.put("recordId", save("CREATIVE_ROLE", null, failed));
       } catch (RuntimeException persistenceError) {
         // Preserve the provider error as the user-facing outcome even if the
         // diagnostic append itself cannot be written.
       }
+      if ("PROMPT_OPTIMIZATION".equals(role)) return failed;
       throw new IllegalStateException("Creative role request failed: " + detail, error);
     }
     var result = new LinkedHashMap<>(workflowResponse);
@@ -943,6 +969,20 @@ public class WorkflowService {
           "authorizedAt", Instant.now().toString()));
     result.put("recordId", save("CREATIVE_ROLE", null, result));
     return result;
+  }
+
+  private static boolean isKnownPreDispatchRejection(Map<String, Object> saved) {
+    return "PRE_DISPATCH_REJECTED".equals(saved.get("attemptState"))
+        || ("FAILED".equals(saved.get("attemptState"))
+            && isKnownPreDispatchRejection(
+                String.valueOf(map(saved.get("attemptDiagnostics")).getOrDefault("error", ""))));
+  }
+
+  private static boolean isKnownPreDispatchRejection(String detail) {
+    return detail.contains("Explicit server model configuration required; no fallback")
+        || detail.contains("Verified server price configuration and explicit positive budget required")
+        || detail.contains("Request exceeds approved cost ceiling")
+        || detail.contains("Paid creative roles are disabled; explicit scope and budget required");
   }
 
   private String creativeRoleFingerprint(String role, Map<String, Object> request) {

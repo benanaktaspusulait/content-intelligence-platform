@@ -204,6 +204,8 @@ class WorkflowNoRepairDecisionPostgresTest {
         Map.of("candidateId", "candidate-a", "title", "Opening", "hypothesis", "Clarify the opening frame.", "prompt", sourcePrompt + "\nA"),
         Map.of("candidateId", "candidate-b", "title", "Pacing", "hypothesis", "Spread out the escalation.", "prompt", sourcePrompt + "\nB"));
     when(ml.workflow(eq("creative-role"), anyMap()))
+        .thenThrow(new IllegalStateException(
+            "Workflow service returned HTTP 409: Explicit server model configuration required; no fallback"))
         .thenReturn(Map.of("role", "PROMPT_OPTIMIZATION", "provider", "openai", "model", "fixture",
             "result", Map.of("candidates", candidates), "attemptState", "SAVED"));
     when(ml.workflow(eq("source-plan"), anyMap()))
@@ -222,9 +224,25 @@ class WorkflowNoRepairDecisionPostgresTest {
             "family8", Map.of("renderAuthorization", Map.of("status", "BLOCKED_PENDING_EVIDENCE")),
             "actualRenderQuality", Map.of("status", "UNKNOWN"),
             "audienceOutcome", Map.of("status", "UNKNOWN")));
-    var comparison = service.generateCreativeOptimization(analysisId,
-        Map.of("contentId", 10, "promptVersionId", 10, "operatorAuthorized", true, "maxCostUsd", .25),
-        Map.of("approvedStoryText", "Approved Mimi story", "approvalRecordId", "approval-1", "storyRevisionId", "revision-1"));
+    var generationRequest =
+        Map.<String, Object>of(
+            "contentId", 10, "promptVersionId", 10, "operatorAuthorized", true, "maxCostUsd", .25);
+    var provenance =
+        Map.<String, Object>of(
+            "approvedStoryText", "Approved Mimi story",
+            "approvalRecordId", "approval-1",
+            "storyRevisionId", "revision-1");
+    var failedAttempt = service.generateCreativeOptimization(analysisId, generationRequest, provenance);
+    assertThat(failedAttempt)
+        .containsEntry("optimizationFailed", true)
+        .containsEntry("attemptState", "PRE_DISPATCH_REJECTED")
+        .containsEntry("providerCallOccurred", false);
+    assertThat(jdbc.sql(
+            "SELECT payload->>'attemptState' FROM post_family_workflow_events "
+                + "WHERE kind='CREATIVE_ROLE' AND payload->>'role'='PROMPT_OPTIMIZATION'")
+        .query(String.class).single()).isEqualTo("PRE_DISPATCH_REJECTED");
+
+    var comparison = service.generateCreativeOptimization(analysisId, generationRequest, provenance);
     assertThat(comparison.get("rulesetVersion")).isEqualTo("1.7");
     assertThat((List<?>) comparison.get("candidates")).hasSize(2);
     assertThat(String.valueOf(((Map<?, ?>) ((List<?>) comparison.get("candidates")).get(0)).get("diff"))).contains("candidate-a");
@@ -232,6 +250,7 @@ class WorkflowNoRepairDecisionPostgresTest {
     assertThat(jdbc.sql("SELECT count(*) FROM post_family_workflow_events WHERE kind='REVIEW'")
         .query(Long.class).single()).isEqualTo(1L);
     assertThat(jdbc.sql("SELECT count(*) FROM prompt_versions").query(Long.class).single()).isEqualTo(1L);
+    verify(ml, times(2)).workflow(eq("creative-role"), anyMap());
     var reviewCalls = org.mockito.ArgumentCaptor.forClass(Map.class);
     verify(ml, times(2)).workflow(eq("review"), reviewCalls.capture());
     assertThat(reviewCalls.getAllValues())

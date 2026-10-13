@@ -67,6 +67,164 @@ def test_prompt_optimization_requires_two_distinct_candidates_and_preserved_sour
     assert response['visualInspected'] is False
 
 
+def test_paid_prompt_optimization_uses_its_explicit_role_model_and_budget(monkeypatch):
+    source = 'Mimi wants to attach a note. Each pull doubles the notes. Mimi sneezes and the notes fly off.'
+    candidates = [
+        {'candidateId': 'candidate-a', 'title': 'Opening', 'hypothesis': 'Show the anomaly immediately.',
+         'prompt': source + '\nOpening: the note is already stuck to Mimi’s finger.'},
+        {'candidateId': 'candidate-b', 'title': 'Pacing', 'hypothesis': 'Distribute escalation across clear beats.',
+         'prompt': source + '\nShow three separate doubling stages.'},
+    ]
+    provider = FixtureProvider({'candidates': candidates})
+    provider.last_usage = {'prompt_tokens': 100, 'completion_tokens': 100}
+    selected_models = []
+    monkeypatch.setenv('WORKFLOW_CREATIVE_ROLES_ENABLED', 'true')
+    monkeypatch.setenv('WORKFLOW_PROMPT_OPTIMIZATION_MODEL', 'gpt-4o-mini-2024-07-18')
+    monkeypatch.setenv('WORKFLOW_PROMPT_OPTIMIZATION_INPUT_USD_PER_MILLION', '0.15')
+    monkeypatch.setenv('WORKFLOW_PROMPT_OPTIMIZATION_OUTPUT_USD_PER_MILLION', '0.6')
+    monkeypatch.setenv('WORKFLOW_BUILD_PROMPT_MODEL', 'build-only-model')
+    monkeypatch.setattr(
+        'app.workflow.creative_roles.OpenAIProvider',
+        lambda **kwargs: selected_models.append(kwargs['model']) or provider,
+    )
+
+    result = run_paid_role(
+        'PROMPT_OPTIMIZATION',
+        source,
+        {'essentialEvents': [
+            'Mimi wants to attach a note.',
+            'Each pull doubles the notes.',
+            'Mimi sneezes and the notes fly off.',
+        ]},
+        0.20,
+    )
+
+    assert selected_models == ['gpt-4o-mini-2024-07-18']
+    assert result['role'] == 'PROMPT_OPTIMIZATION'
+    assert result['model'] == 'gpt-4o-mini-2024-07-18'
+    assert [item['candidateId'] for item in result['result']['candidates']] == ['candidate-a', 'candidate-b']
+    assert len({item['hypothesis'] for item in result['result']['candidates']}) == 2
+    assert result['costUpperBoundUsd'] <= result['approvedCostCeilingUsd'] == 0.20
+    assert result['actualCostUsd'] == pytest.approx((100 * 0.15 + 100 * 0.6) / 1_000_000)
+    assert result['calls'] == len(provider.calls) == 1
+
+
+def test_prompt_optimization_http_endpoint_uses_mock_provider_and_returns_verified_cost(monkeypatch):
+    from fastapi.testclient import TestClient
+    from app.main import app
+    from app.workflow import creative_roles
+
+    source = 'Approved source prompt.'
+    provider = FixtureProvider({'candidates': [
+        {'candidateId': 'candidate-a', 'title': 'Opening', 'hypothesis': 'Clarify the opening.', 'prompt': source + '\nOpening revision.'},
+        {'candidateId': 'candidate-b', 'title': 'Pacing', 'hypothesis': 'Clarify the progression.', 'prompt': source + '\nPacing revision.'},
+    ]})
+    provider.last_usage = {'prompt_tokens': 100, 'completion_tokens': 100}
+    for key, value in {
+        'WORKFLOW_CREATIVE_ROLES_ENABLED': 'true',
+        'WORKFLOW_PROMPT_OPTIMIZATION_MODEL': 'fixture-optimization-model',
+        'WORKFLOW_PROMPT_OPTIMIZATION_INPUT_USD_PER_MILLION': '0.15',
+        'WORKFLOW_PROMPT_OPTIMIZATION_OUTPUT_USD_PER_MILLION': '0.6',
+    }.items():
+        monkeypatch.setenv(key, value)
+    monkeypatch.setattr(creative_roles, 'OpenAIProvider', lambda **kwargs: provider)
+
+    response = TestClient(app).post('/api/v1/workflow/creative-role', json={
+        'role': 'PROMPT_OPTIMIZATION',
+        'text': source,
+        'context': {'essentialEvents': [source]},
+        'maxCostUsd': 0.20,
+    })
+
+    assert response.status_code == 200
+    assert response.json()['model'] == 'fixture-optimization-model'
+    assert response.json()['actualCostUsd'] == pytest.approx((100 * 0.15 + 100 * 0.6) / 1_000_000)
+    assert response.json()['approvedCostCeilingUsd'] == 0.20
+    assert len(provider.calls) == 1
+
+
+def test_prompt_optimization_rejects_provider_response_over_actual_cost_ceiling(monkeypatch):
+    source = 'Approved source prompt.'
+    provider = FixtureProvider({'candidates': [
+        {'candidateId': 'candidate-a', 'title': 'Opening', 'hypothesis': 'Clarify the opening.', 'prompt': source + '\nOpening revision.'},
+        {'candidateId': 'candidate-b', 'title': 'Pacing', 'hypothesis': 'Clarify the progression.', 'prompt': source + '\nPacing revision.'},
+    ]})
+    provider.last_usage = {'prompt_tokens': 100, 'completion_tokens': 400_000}
+    provider.last_response_metadata = {'apiStatus': 'COMPLETED'}
+    monkeypatch.setenv('WORKFLOW_CREATIVE_ROLES_ENABLED', 'true')
+    monkeypatch.setenv('WORKFLOW_PROMPT_OPTIMIZATION_MODEL', 'fixture-model')
+    monkeypatch.setenv('WORKFLOW_PROMPT_OPTIMIZATION_INPUT_USD_PER_MILLION', '0.15')
+    monkeypatch.setenv('WORKFLOW_PROMPT_OPTIMIZATION_OUTPUT_USD_PER_MILLION', '0.6')
+    monkeypatch.setattr('app.workflow.creative_roles.OpenAIProvider', lambda **kwargs: provider)
+
+    with pytest.raises(ValueError, match='Actual provider cost exceeded the authorized cost ceiling'):
+        run_paid_role('PROMPT_OPTIMIZATION', source, {'essentialEvents': [source]}, 0.20)
+
+    assert len(provider.calls) == 1
+
+
+@pytest.mark.parametrize('usage', [None, {'prompt_tokens': 1}, {'prompt_tokens': -1, 'completion_tokens': 1}])
+def test_prompt_optimization_rejects_unverifiable_actual_provider_cost(monkeypatch, usage):
+    source = 'Approved source prompt.'
+    provider = FixtureProvider({'candidates': [
+        {'candidateId': 'candidate-a', 'title': 'Opening', 'hypothesis': 'Clarify the opening.', 'prompt': source + '\nOpening revision.'},
+        {'candidateId': 'candidate-b', 'title': 'Pacing', 'hypothesis': 'Clarify the progression.', 'prompt': source + '\nPacing revision.'},
+    ]})
+    provider.last_usage = usage
+    provider.last_response_metadata = {'apiStatus': 'COMPLETED'}
+    monkeypatch.setenv('WORKFLOW_CREATIVE_ROLES_ENABLED', 'true')
+    monkeypatch.setenv('WORKFLOW_PROMPT_OPTIMIZATION_MODEL', 'fixture-model')
+    monkeypatch.setenv('WORKFLOW_PROMPT_OPTIMIZATION_INPUT_USD_PER_MILLION', '0.15')
+    monkeypatch.setenv('WORKFLOW_PROMPT_OPTIMIZATION_OUTPUT_USD_PER_MILLION', '0.6')
+    monkeypatch.setattr('app.workflow.creative_roles.OpenAIProvider', lambda **kwargs: provider)
+
+    with pytest.raises(ValueError, match='actual cost cannot be checked'):
+        run_paid_role('PROMPT_OPTIMIZATION', source, {'essentialEvents': [source]}, 0.20)
+
+    assert len(provider.calls) == 1
+
+
+def test_prompt_optimization_checks_actual_cost_before_rejecting_an_invalid_response(monkeypatch):
+    source = 'Approved source prompt.'
+    provider = FixtureProvider({'candidates': [
+        {'candidateId': 'candidate-a', 'title': 'Opening', 'hypothesis': 'Clarify the opening.', 'prompt': 'Changed source.'},
+        {'candidateId': 'candidate-b', 'title': 'Pacing', 'hypothesis': 'Clarify the progression.', 'prompt': 'Changed source.'},
+    ]})
+    provider.last_usage = {'prompt_tokens': 100, 'completion_tokens': 400_000}
+    provider.last_response_metadata = {'apiStatus': 'COMPLETED'}
+    monkeypatch.setenv('WORKFLOW_CREATIVE_ROLES_ENABLED', 'true')
+    monkeypatch.setenv('WORKFLOW_PROMPT_OPTIMIZATION_MODEL', 'fixture-model')
+    monkeypatch.setenv('WORKFLOW_PROMPT_OPTIMIZATION_INPUT_USD_PER_MILLION', '0.15')
+    monkeypatch.setenv('WORKFLOW_PROMPT_OPTIMIZATION_OUTPUT_USD_PER_MILLION', '0.6')
+    monkeypatch.setattr('app.workflow.creative_roles.OpenAIProvider', lambda **kwargs: provider)
+
+    with pytest.raises(ValueError, match='Actual provider cost exceeded the authorized cost ceiling'):
+        run_paid_role('PROMPT_OPTIMIZATION', source, {'essentialEvents': [source]}, 0.20)
+
+    assert len(provider.calls) == 1
+
+
+def test_prompt_optimization_missing_role_model_fails_before_provider_creation(monkeypatch):
+    monkeypatch.setenv('WORKFLOW_CREATIVE_ROLES_ENABLED', 'true')
+    monkeypatch.delenv('WORKFLOW_PROMPT_OPTIMIZATION_MODEL', raising=False)
+    monkeypatch.setenv('WORKFLOW_BUILD_PROMPT_MODEL', 'build-only-model')
+    provider_factory_calls = []
+    monkeypatch.setattr(
+        'app.workflow.creative_roles.OpenAIProvider',
+        lambda **kwargs: provider_factory_calls.append(kwargs),
+    )
+
+    with pytest.raises(ValueError, match='Explicit server model configuration required; no fallback'):
+        run_paid_role(
+            'PROMPT_OPTIMIZATION',
+            'Approved source prompt.',
+            {'essentialEvents': ['Approved source prompt.']},
+            0.20,
+        )
+
+    assert provider_factory_calls == []
+
+
 @pytest.mark.parametrize('candidates,message', [
     ([{'candidateId': 'candidate-a', 'title': 'A', 'hypothesis': 'A', 'prompt': 'changed'}], 'Exactly two'),
     ([{'candidateId': 'candidate-a', 'title': 'A', 'hypothesis': 'A', 'prompt': 'Mimi wants to attach a note. Each pull doubles the notes. Mimi sneezes and the notes fly off. Keep opening legible.'},
