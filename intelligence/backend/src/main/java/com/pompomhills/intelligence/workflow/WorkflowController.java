@@ -211,9 +211,12 @@ public class WorkflowController {
 
   @GetMapping(value = "/records/{id}/pdf", produces = "application/pdf")
   public org.springframework.http.ResponseEntity<byte[]> report(@PathVariable UUID id) {
+    var snapshot = service.get(id);
+    boolean analysis = snapshot.containsKey("boundRequest") || snapshot.containsKey("canonicalRuleEvaluation");
     return org.springframework.http.ResponseEntity.ok()
-        .header("Content-Disposition", "inline; filename=pompom-impact-review.pdf")
-        .body(pdf.renderWorkflow(service.get(id)));
+        .header("Content-Disposition", "attachment; filename=pompom-analysis-" + id + ".pdf")
+        .header("Cache-Control", "no-store")
+        .body(analysis ? pdf.renderFullAnalysis(snapshot, snapshot) : pdf.renderWorkflow(snapshot));
   }
 
   @PostMapping("/records/{id}/repair")

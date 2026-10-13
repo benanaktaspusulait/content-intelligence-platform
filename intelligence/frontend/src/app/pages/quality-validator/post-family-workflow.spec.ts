@@ -1,3 +1,4 @@
+import savedAnalysis from '../../../../../backend/src/test/resources/step5-analysis-snapshot.json';
 import { TestBed } from '@angular/core/testing';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting, HttpTestingController } from '@angular/common/http/testing';
@@ -100,6 +101,30 @@ describe('post-family operator workflow', () => {
     http.expectOne('/api/v1/intelligence/workflow/records/legacy').flush({result:{productionPlan:{creativeObjective:'Historical humorous animation',storyPromptFidelity:{traceableSentenceCount:0,sourceSentenceCount:9}}}});
     expect(c.legacyProductionPlan.creativeObjective).toContain('Historical');expect(c.structuredPlanText).toBe('');expect(c.intentConfirmed).toBe(false);
     http.expectNone(r=>r.method==='POST');http.verify();f.destroy();TestBed.resetTestingModule();
+  });
+
+  it('renders the persisted live Step 5 contract without object coercion, false contradictions or lost reasons', async () => {
+    const f=await setup();const c=f.componentInstance;
+    c.review=structuredClone(savedAnalysis);c.activeStage=5;c['reviewedInputs']=c['inputSnapshot']();f.detectChanges();
+    const text=f.nativeElement.textContent;
+    expect(text).not.toContain('[object Object]');expect(text).toContain('STICKS TO SURFACES');expect(text).toContain('RETRIEVE OR CONTROL OBJECT');
+    expect(text).toContain('Production complexity');expect(text).toContain('RISKY');expect(text).toContain('Local execution check');
+    const items=c.resolutionItems();expect(items.some(i=>i.category==='SOURCE_EVIDENCE_CONTRADICTION')).toBe(false);
+    expect(items.filter(i=>i.relatedReasons?.some((r:any)=>r.source==='REFERENCE_ASSOCIATION'))).toHaveLength(1);
+    expect(items.filter(i=>i.category==='REFERENCE_REQUIRED')).toHaveLength(0);
+    const reasons=items.flatMap(i=>i.relatedReasons||[]);expect(reasons).toHaveLength(3);
+    expect(new Set(reasons.map((r:any)=>r.source)).size).toBe(3);
+    const technical=items.find(i=>i.category==='TECHNICAL_ASSESSMENT_REQUIRED');expect(technical).toMatchObject({blocking:true,target:5,promptRevisionRequired:false});
+    expect(technical.evidence).toContain('input-contract mismatch');expect(technical.evidence).toContain('UNKNOWN');
+    c.resolveFinding(technical);f.detectChanges();expect(c.activeAnalysisTab).toBe('evidence');expect(c.review.family8.renderAuthorization.status).toBe('BLOCKED_TECHNICAL_FAILURE');
+    expect(c.review.canonicalRuleEvaluation.score).toBe(85);TestBed.inject(HttpTestingController).expectNone(r=>r.method==='POST');f.destroy();TestBed.resetTestingModule();
+  });
+  it('keeps multiple reference authorization reasons in one actionable item', async () => {
+    const f=await setup();const c=f.componentInstance;c.review=structuredClone(savedAnalysis);
+    c.review.family8.renderAuthorization.reasons.push({code:'REFERENCE_IDENTITY_UNVERIFIED',source:'REFERENCE_ASSOCIATION',message:'Character reference requires verification',references:['ref-candidate']});
+    const items=c.resolutionItems().filter(i=>i.relatedReasons?.some((r:any)=>r.source==='REFERENCE_ASSOCIATION'));
+    expect(items).toHaveLength(1);expect(items[0].relatedReasons).toHaveLength(2);expect(items[0].blocking).toBe(true);
+    f.destroy();TestBed.resetTestingModule();
   });
 
   it('shows stale provider evidence and approved source without importing old beats or approving review', async () => {
@@ -267,7 +292,7 @@ describe('post-family operator workflow', () => {
     const c = f.componentInstance;
     c.review = { recordId: 'analysis-1', contentId: 1, promptVersionId: 2, bindingHash: 'hash', family8: { renderAuthorization: { status: 'BLOCKED_TECHNICAL_FAILURE', reasons: [{ code: 'CONTRADICTORY_SOURCE_EVIDENCE', source: 'TIMELINE_SOURCE', message: 'Two source spans conflict', references: ['prompt-v2:10-25', 'prompt-v2:90-110'] }] } }, boundRequest: { prompt: c.prompt } };
     c['reviewedInputs'] = c['inputSnapshot']();
-    const item = c.resolutionItems().find(value => value.id === 'AUTHORIZATION:CONTRADICTORY_SOURCE_EVIDENCE');
+    const item = c.resolutionItems().find(value => value.id === 'AUTHORIZATION:CONTRADICTORY_SOURCE_EVIDENCE:TIMELINE_SOURCE');
     expect(item).toMatchObject({ category: 'SOURCE_EVIDENCE_CONTRADICTION', blocking: true, target: 4, status: 'UNVERIFIED', revalidationRequired: true });
     expect(item.evidence).toContain('prompt-v2:10-25');
     c.resolveFinding(item);

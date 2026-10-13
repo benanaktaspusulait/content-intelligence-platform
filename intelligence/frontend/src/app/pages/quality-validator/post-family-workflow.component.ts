@@ -67,12 +67,12 @@ import { GeneralProducibilityComponent } from './general-producibility.component
             <p>{{ r.planQuality?.status || 'UNKNOWN' }} · {{ r.planQuality?.recommendation }}</p>
           </article>
           <article>
-            <strong>Generator execution risk</strong>
-            <p>{{ r.executionRisk?.status || 'UNKNOWN' }}</p><small>Basic generator capability (duration, aspect ratio) — not a guarantee that complex physics or object-count mechanics will render correctly.</small>
+            <strong>Local execution check</strong>
+            <p>{{ r.executionRisk?.status || 'UNKNOWN' }} · {{ r.executionRisk?.findings?.length || 0 }} local findings</p><small>Local text critic only. PASS means no local findings were recorded; actual generator success remains UNKNOWN.</small>
           </article>
-          <article *ngIf="r.generalProducibility">
+          <article><strong>Generator capability</strong><p>{{ r.generation?.capabilityStatus || 'UNKNOWN' }} · {{ r.generation?.desiredDuration ?? 'UNKNOWN' }}s · {{ r.generation?.settings?.aspectRatio || 'UNKNOWN' }}</p><small>Recorded schema support; required inputs and creative producibility are separate.</small></article><article *ngIf="r.generalProducibility">
             <strong>Production complexity</strong>
-            <p>{{ r.generalProducibility?.overallStatus || 'UNKNOWN' }}</p><small>Text-based producibility assessment from LocalExecutionCritic; actual render success remains UNKNOWN.</small>
+            <p>{{ r.generalProducibility?.status || r.generalProducibility?.overallStatus || 'UNKNOWN' }}</p><small>Text-based producibility assessment from LocalExecutionCritic; actual render success remains UNKNOWN.</small>
           </article>
           <article>
             <strong>Actual render quality</strong>
@@ -87,7 +87,7 @@ import { GeneralProducibilityComponent } from './general-producibility.component
           </article>
         </div>
         <section class="analysis-summary-decision" aria-label="Analysis decision summary"><div><span>Analysis status</span><strong>{{ r.reviewStatus || r.status || 'COMPLETED' }}</strong></div><div><span>Creative quality</span><strong>{{ r.family8?.creativeQuality?.creativeGrade || r.planQuality?.status || 'UNKNOWN' }}</strong></div><div><span>Render authorization</span><strong>{{ authorizationLabel(r.family8?.renderAuthorization?.status) }}</strong><small>{{ r.family8?.renderAuthorization?.status || 'UNKNOWN' }}</small></div><div><span>Recommendation</span><strong>{{ r.planQuality?.recommendation || r.recommendation || 'No supported recommendation recorded' }}</strong></div></section>
-        <section id="findings-resolution" class="findings-resolution" aria-label="Findings resolution" *ngIf="resolutionItems().length"><header><div><span class="card-kicker">FINDINGS RESOLUTION</span><h3>What needs to happen next</h3><p>Each item is derived from this saved analysis run and canonical authorization result. These actions do not call a provider.</p></div></header><div class="resolution-list"><article *ngFor="let item of resolutionItems()" class="resolution-item" [class.resolution-item--blocking]="item.blocking"><div class="resolution-item__title"><span class="resolution-category">{{ item.category.replaceAll('_', ' ') }}</span><strong>{{ item.finding }}</strong></div><p>{{ item.why }}</p><small><b>Finding ID:</b> {{ item.id || item.category }} · <b>Status:</b> {{ item.status || 'NEEDS_ACTION' }} · <b>Impact:</b> {{ item.severity || (item.blocking ? 'BLOCKING' : 'REVIEW') }}</small><small><b>Evidence:</b> {{ item.evidence || item.why }}</small><small><b>Required action:</b> {{ item.action }} · <b>Owner:</b> {{ item.owner }} · <b>Revalidate:</b> {{ item.revalidationRequired === false ? 'No' : 'Yes' }} · <b>Prompt revision:</b> {{ item.promptRevisionRequired ? 'Required' : 'Not currently required' }}</small><a *ngIf="item.target === 7" class="button button--secondary" [href]="renderPreparationLink(item)">{{ item.button }}</a><button *ngIf="item.target !== 7" type="button" class="button button--secondary" (click)="resolveFinding(item)">{{ item.button }}</button></article></div></section>
+        <section id="findings-resolution" class="findings-resolution" aria-label="Findings resolution" *ngIf="resolutionItems().length"><header><div><span class="card-kicker">FINDINGS RESOLUTION</span><h3>What needs to happen next</h3><p>Each item is derived from this saved analysis run and canonical authorization result. These actions do not call a provider.</p></div></header><div class="resolution-list"><article *ngFor="let item of resolutionItems()" class="resolution-item" [class.resolution-item--blocking]="item.blocking"><div class="resolution-item__title"><span class="resolution-category">{{ item.category.replaceAll('_', ' ') }}</span><strong>{{ item.finding }}</strong></div><p>{{ item.why }}</p><small><b>Finding ID:</b> {{ item.id || item.category }} · <b>Status:</b> {{ item.status || 'NEEDS_ACTION' }} · <b>Impact:</b> {{ item.severity || (item.blocking ? 'BLOCKING' : 'REVIEW') }}</small><small><b>Evidence:</b> {{ item.evidence || item.why }}</small><small><b>Required action:</b> {{ item.action }} · <b>Owner:</b> {{ item.owner }} · <b>Revalidate:</b> {{ item.revalidationRequired === false ? 'No' : 'Yes' }} · <b>Prompt revision:</b> {{ item.promptRevisionRequired ? 'Required' : 'Not currently required' }}</small><details *ngIf="item.relatedReasons?.length"><summary>Recorded authorization evidence ({{ item.relatedReasons.length }})</summary><p *ngFor="let reason of item.relatedReasons">{{ reason.code }} · {{ reason.source }} · {{ reason.message }} · references {{ reason.references?.join(', ') || 'UNKNOWN' }}</p></details><a *ngIf="item.target === 7" class="button button--secondary" [href]="renderPreparationLink(item)">{{ item.button }}</a><button *ngIf="item.target !== 7" type="button" class="button button--secondary" (click)="resolveFinding(item)">{{ item.button }}</button></article></div></section>
 
         <section class="canonical-rule-evaluation" aria-label="Canonical Rule Evaluation" *ngIf="r.canonicalRuleEvaluation as canonical">
           <header>
@@ -184,7 +184,7 @@ import { GeneralProducibilityComponent } from './general-producibility.component
               Render Authorization: <strong>{{ r.family8?.renderAuthorization?.status }}</strong>
             </p>
             <p *ngFor="let reason of r.family8?.renderAuthorization?.reasons">
-              {{ reason.message }}
+              {{ reason.code }} · {{ reason.source }}: {{ authorizationReasonText(reason) }}
             </p>
           </div>
           <app-general-producibility
@@ -213,7 +213,7 @@ import { GeneralProducibilityComponent } from './general-producibility.component
             can be configured on the server; paid calls are disabled by default.
           </p>
         </details>
-        <label *ngIf="activeAnalysisTab === 'evidence'"
+        <section *ngIf="activeAnalysisTab === 'evidence' && r.family8?.renderAuthorization?.status === 'BLOCKED_TECHNICAL_FAILURE'" class="missing-state"><h3>Saved technical validation diagnostic</h3><p>{{ technicalDiagnostic() }}</p><p>Status remains BLOCKED_TECHNICAL_FAILURE. This screen does not rerun the assessment or authorize render.</p></section><label *ngIf="activeAnalysisTab === 'evidence'"
           >Second-opinion provider<select [(ngModel)]="criticProvider">
             <option value="deepseek">DeepSeek · text provider</option>
             <option value="openai">OpenAI</option>
@@ -563,6 +563,7 @@ import { GeneralProducibilityComponent } from './general-producibility.component
         white-space: pre-wrap;
         overflow-wrap: anywhere;
       }
+      .analysis-summary-decision {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:16px 0;padding:16px;border:1px solid #d8e1ec;border-radius:10px;background:#fff}.analysis-summary-decision>div{display:grid;gap:5px;min-width:0}.analysis-summary-decision span{color:#68747c;font-size:.75rem}.analysis-summary-decision strong{overflow-wrap:anywhere}.analysis-summary-decision small{display:block}.inputs article{min-width:0}.inputs p{overflow-wrap:anywhere}@media(max-width:600px){.analysis-summary-decision{grid-template-columns:1fr}}
       .facts {
         background: white;
         padding: 12px;
@@ -701,38 +702,34 @@ export class PostFamilyWorkflowComponent implements OnChanges, OnDestroy {
     if (/actual|video|render|opening/.test(unresolvedText) && !this.qa) items.push({category:'POST_RENDER_EVIDENCE', finding:'Actual video evidence is unavailable', why:'Output quality can only be established after a completed clip is inspected.', action:'Run Video QA after an authorized render; this is not a preliminary render prerequisite.', owner:'Video QA', button:'Open Video QA', blocking:false, target:8});
     if (String(r.planQuality?.recommendation || r.recommendation || '').toUpperCase().includes('REPAIR') || String(r.planQuality?.status || '').toUpperCase().includes('FAIL')) items.push({category:'UNRESOLVED_OR_UNSUPPORTED', finding:'The saved prompt has a confirmed quality defect', why:'The canonical review recommends a bounded correction before render.', action:'Open the existing bounded Repair stage and review the selected finding.', owner:'Repair', button:'Open repair plan', blocking:true, target:6});
     const canonicalReasons = Array.isArray(r.family8?.renderAuthorization?.reasons) ? r.family8.renderAuthorization.reasons : [];
-    const seenReferenceCodes = new Set<string>();
+    const groups = new Map<string, any>();
     for (const reason of canonicalReasons) {
-      const code = String(reason?.code || 'UNKNOWN_AUTHORIZATION_REASON');
-      const id = `AUTHORIZATION:${code}`;
-      if (items.some(item => item.id === id)) continue;
-      const message = String(reason?.message || code);
-      const normalized = `${code} ${message} ${reason?.source || ''}`.toLowerCase();
-      const referenceIssue = /reference|character asset/.test(normalized);
-      const frameIssue = /first.?frame|start.?frame/.test(normalized);
-      const sourceIssue = /contradict/.test(normalized) && !/missing|unavailable|insufficient/.test(normalized);
-      const providerIssue = /provider|generator|capability|duration|aspect.?ratio|settings/.test(normalized);
-      // Deduplicate reference-related findings: if a REFERENCE_ASSOCIATION finding was already added,
-      // skip additional findings from the same underlying missing character reference
-      if (referenceIssue) {
-        if (seenReferenceCodes.has('reference')) continue;
-        seenReferenceCodes.add('reference');
-      }
-      const target = sourceIssue ? 4 : referenceIssue || frameIssue || providerIssue ? 7 : 4;
-      items.push({
-        id, category: sourceIssue ? 'SOURCE_EVIDENCE_CONTRADICTION' : referenceIssue || frameIssue ? 'RENDER_INPUT_REQUIRED' : providerIssue ? 'PROVIDER_SETTINGS' : 'CANONICAL_AUTHORIZATION_BLOCKER',
-        finding: message, why: 'This exact requirement contributes to the canonical Family 8 render decision.',
-        action: sourceIssue ? 'Inspect the referenced source spans; resolve only with grounded evidence.' : referenceIssue ? 'Select and bind a verified character asset.' : frameIssue ? 'Select or upload a first frame; image generation remains separately opt-in.' : providerIssue ? 'Review the selected generator and saved execution settings.' : 'Requires technical or source review. Inspect the exact evidence before retrying.',
-        owner: sourceIssue ? 'Source / Technical review' : referenceIssue || frameIssue || providerIssue ? 'Render Preparation' : 'Technical review',
-        button: sourceIssue ? 'Review source evidence' : referenceIssue || frameIssue || providerIssue ? 'Open render preparation' : 'Open diagnostics',
-        blocking: true, target, severity: 'BLOCKING', status: 'UNVERIFIED', evidence: `${reason?.source || 'UNKNOWN'} · ${(reason?.references || []).join(', ') || 'Source span unavailable'}`,
-        revalidationRequired: true, promptRevisionRequired: /creative|intent/.test(normalized),
-      });
+      const code=String(reason?.code || 'UNKNOWN_AUTHORIZATION_REASON');
+      const source=String(reason?.source || 'UNKNOWN');
+      const normalized=`${code} ${source} ${reason?.message || ''}`.toLowerCase();
+      const technical=/technical_failure|parser_timeout|required_service_failure/.test(code.toLowerCase());
+      const referenceIssue=!technical && /reference|character asset/.test(normalized);
+      const frameIssue=!technical && /first.?frame|start.?frame|execution_inputs/.test(normalized);
+      const sourceIssue=!technical && /contradict/.test(normalized) && (reason?.references || []).length >= 2;
+      const providerIssue=!technical && /provider|generator|capability|duration|aspect.?ratio|settings/.test(normalized);
+      const key=referenceIssue?'reference':frameIssue?'first-frame':`${code}:${source}`;
+      const existing=groups.get(key);
+      if(existing){existing.relatedReasons.push(reason);continue;}
+      // One action per missing input, retaining every distinct canonical reason.
+      if(referenceIssue || frameIssue){for(let i=items.length-1;i>=0;i--)if(items[i].category===(referenceIssue?'REFERENCE_REQUIRED':'PROVIDER_INPUT_REQUIRED'))items.splice(i,1);}
+      const item={id:`AUTHORIZATION:${code}:${source}`,category:technical?'TECHNICAL_ASSESSMENT_REQUIRED':sourceIssue?'SOURCE_EVIDENCE_CONTRADICTION':referenceIssue||frameIssue?'RENDER_INPUT_REQUIRED':providerIssue?'PROVIDER_SETTINGS':'CANONICAL_AUTHORIZATION_BLOCKER',
+        finding:this.authorizationReasonText(reason),why:technical?'This saved technical validation failed; render authorization remains blocked. This is not verified evidence of a story contradiction.':'This requirement contributes to the saved Family 8 render decision.',
+        action:technical?'Inspect the saved validation diagnostic and input contract. No prompt change is justified by this failure alone.':sourceIssue?'Inspect the conflicting source references and resolve with grounded evidence.':referenceIssue?'Select and bind a verified character asset.':frameIssue?'Select or upload a first frame; image generation remains separately opt-in.':providerIssue?'Review the selected generator and saved execution settings.':'Inspect the saved diagnostic; supporting evidence remains UNKNOWN.',
+        owner:technical?'Technical review':sourceIssue?'Source review':referenceIssue||frameIssue||providerIssue?'Render Preparation':'Technical review',
+        button:technical?'Open diagnostics':sourceIssue?'Review source evidence':referenceIssue||frameIssue||providerIssue?'Open render preparation':'Open diagnostics',
+        blocking:true,target:technical?5:sourceIssue?4:referenceIssue||frameIssue||providerIssue?7:5,severity:'BLOCKING',status:'UNVERIFIED',evidence:technical?this.technicalDiagnostic():`${source} · ${(reason?.references||[]).join(', ') || 'Supporting source references UNKNOWN'}`,relatedReasons:[reason],revalidationRequired:true,promptRevisionRequired:false};
+      groups.set(key,item);items.push(item);
     }
     return items;
   }
   resolveFinding(item: {target: number; category: string}): void {
     this.selectStage(item.target);
+    if(item.target===5)this.selectAnalysisTab('evidence');
     if (item.target === 4) this.selectProductionTab(['SOURCE_RECOVERABLE', 'SOURCE_EVIDENCE_CONTRADICTION'].includes(item.category) ? 'execution' : 'creative');
   }
   continueToRepair(): void {
@@ -833,31 +830,28 @@ export class PostFamilyWorkflowComponent implements OnChanges, OnDestroy {
     return rows;
   }
   cleanAnalysisText(value: unknown): string { const text=String(value ?? 'UNKNOWN'); return text.replace(/\s*(?:AUDIO|NEGATIVE CONSTRAINTS|FINAL CUT)\s*:?[\s\S]*$/i, '').replace(/Planlanan final\s*:/i, 'Planned ending:').replace(/:\s*:/g, ':').replace(/^\s*:\s*/, '').trim() || 'UNKNOWN'; }
-  readableCoreMechanic(mechanic: any): string {
-    if (!mechanic) return 'UNKNOWN';
-    if (typeof mechanic === 'string') return mechanic;
-    if (typeof mechanic === 'object') {
-      const parts: string[] = [];
-      if (mechanic.physicalRule) parts.push(mechanic.physicalRule);
-      if (mechanic.principalObject) parts.push('object: ' + mechanic.principalObject);
-      if (mechanic.triggeringAction) parts.push('trigger: ' + mechanic.triggeringAction);
-      if (mechanic.transformation) parts.push('result: ' + mechanic.transformation);
-      if (mechanic.recurrence) parts.push('recurring');
-      return parts.join('; ') || JSON.stringify(mechanic);
-    }
-    return String(mechanic);
+  private readableEvidenceValue(value:any):string {
+    if(value==null)return 'UNKNOWN';
+    if(Array.isArray(value))return value.map(v=>this.readableEvidenceValue(v)).join(', ');
+    if(typeof value==='object')return Object.entries(value).map(([key,v])=>`${key}: ${this.readableEvidenceValue(v)}`).join('; ');
+    return String(value).replaceAll('_',' ');
   }
-  readableGoalEvidence(goal: any): string {
-    if (!goal) return 'UNKNOWN';
-    if (typeof goal === 'string') return goal;
-    if (typeof goal === 'object') {
-      const parts: string[] = [];
-      if (goal.text) parts.push(goal.text);
-      if (goal.support) parts.push('supported by: ' + goal.support);
-      if (goal.confidence) parts.push('confidence: ' + goal.confidence);
-      return parts.join('; ') || JSON.stringify(goal);
-    }
-    return String(goal);
+  readableCoreMechanic(value:any):string {
+    if(!value || typeof value!=='object')return this.readableEvidenceValue(value);
+    return ['physicalRule','abnormalProperty','trigger','primaryObject','persistence','releaseCondition','causeEffect','recurrence'].filter(key=>value[key]!=null).map(key=>`${key}: ${this.readableEvidenceValue(value[key])}`).join('; ') || 'UNKNOWN — no mechanic fields recorded';
+  }
+  readableGoalEvidence(value:any):string {
+    if(!value || typeof value!=='object')return this.readableEvidenceValue(value);
+    return ['description','goalType','source','goalExplicitness','obstruction','targetObject','intendedEffect'].filter(key=>value[key]!=null).map(key=>`${key}: ${this.readableEvidenceValue(value[key])}`).join('; ') || 'UNKNOWN — no goal fields recorded';
+  }
+  technicalDiagnostic():string {
+    const claims=(this.review?.productionEvidence?.claims || []).filter((c:any)=>c.state==='CONTRADICTORY'||c.state==='INVALID');
+    const plan=this.review?.boundRequest?.structuredPlan;
+    const envelope=plan?.events && !plan?.beats ? 'Saved request supplied deterministic events, while the source-bound tracked-plan validator expected beats. This is an input-contract mismatch.' : '';
+    return [envelope,...claims.map((c:any)=>`${c.field}: ${c.reason || 'cause not recorded'}`),'No runtime exception or conflicting source spans were saved; independent contradiction evidence is UNKNOWN.'].filter(Boolean).join(' ');
+  }
+  authorizationReasonText(reason:any):string {
+    return /technical_failure|parser_timeout|required_service_failure/i.test(reason?.code || '') ? 'Saved assessment technical failure — '+this.technicalDiagnostic() : String(reason?.message || reason?.code || 'UNKNOWN');
   }
   get semanticClassificationStatus(): string { const evidence=this.review?.productionEvidence || {}; const metadata=evidence.videoPlanIR?.metadata || {}; return String(metadata.semanticClassificationStatus || evidence.semanticStatus || 'PENDING'); }
   get semanticEvidenceReady(): boolean { const status=this.semanticClassificationStatus.toUpperCase(); return ['COMPLETED','CONFIRMED','OBSERVED'].includes(status) && !this.timedRangeIssues.length; }
@@ -1663,7 +1657,7 @@ export class PostFamilyWorkflowComponent implements OnChanges, OnDestroy {
   authorizationLabel(status: unknown): string {
     const value = String(status || 'UNKNOWN').toUpperCase();
     if (value === 'AUTHORIZED') return 'Authorized for this exact saved request';
-    if (value === 'BLOCKED_TECHNICAL_FAILURE') return 'Rendering blocked: a technical check failed';
+    if (value === 'BLOCKED_TECHNICAL_FAILURE') return 'Rendering blocked: saved assessment technical failure; inspect diagnostics';
     if (value.startsWith('BLOCKED')) return 'Rendering blocked: required production inputs or checks are missing';
     return 'Authorization unknown · rendering remains blocked';
   }

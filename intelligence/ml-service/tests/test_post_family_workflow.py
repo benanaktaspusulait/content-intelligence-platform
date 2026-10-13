@@ -133,3 +133,29 @@ def test_lessons_match_resolved_target_capability_and_binding_excludes_mismatche
         assert result["bindingHash"] == plain["bindingHash"]
     assert good["bindingHash"] != plain["bindingHash"]
     assert review_prompt({**value,"retrievedLessons":[lesson]})["retrievedLessons"] == []
+
+
+def test_step4_candidate_envelope_is_not_misclassified_as_a_contradictory_tracked_plan():
+    value = request("0-2s: Mimi pulls a note.\n2-5s: The note splits into two.", structuredPlan={
+        "evidenceStatus": "DETERMINISTIC_SOURCE_EVENTS_ONLY", "sourceVersion": "1",
+        "events": [{"sourceQuote": "0-2s: Mimi pulls a note.", "action": "Mimi pulls a note."}],
+    })
+    result = review_prompt(value)
+    assert not any(c["state"] in {"CONTRADICTORY", "INVALID"} for c in result["productionEvidence"]["claims"])
+    assert not any(r["code"] == "ASSESSMENT_TECHNICAL_FAILURE" for r in result["family8"]["renderAuthorization"]["reasons"])
+    assert result["family8"]["renderAuthorization"]["status"] != "AUTHORIZED"
+    assert next(c for c in result["productionEvidence"]["claims"] if c["field"] == "sourceEventCandidates")["state"] == "INFERRED"
+
+
+def test_invalid_tracked_plan_keeps_technical_blocker_with_diagnostic_instead_of_story_contradiction():
+    value = request(structuredPlan={"beats": []})
+    result = review_prompt(value)
+    diagnostic = next(c for c in result["productionEvidence"]["claims"] if c["field"] == "trackedPlan")
+    assert diagnostic["state"] == "INVALID"
+    assert diagnostic["diagnosticCode"] == "EMPTY_TRACKED_BEATS"
+    authorization = result["family8"]["renderAuthorization"]
+    assert authorization["status"] == "BLOCKED_TECHNICAL_FAILURE"
+    reason = next(r for r in authorization["reasons"] if r["code"] == "ASSESSMENT_TECHNICAL_FAILURE")
+    assert "EMPTY_TRACKED_BEATS" in reason["message"]
+    assert "Contradictory source evidence" not in reason["message"]
+    assert reason["references"] == []

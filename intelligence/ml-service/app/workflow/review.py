@@ -259,7 +259,20 @@ def enrich_production_evidence(request: dict[str, Any]) -> dict[str, Any]:
                 }
             )
     supplied = request.get("structuredPlan")
-    if isinstance(supplied, dict):
+    if isinstance(supplied, dict) and supplied.get("evidenceStatus") == "DETERMINISTIC_SOURCE_EVENTS_ONLY" and "events" in supplied and "beats" not in supplied:
+        # Step 4 candidates are not an operator-verified tracked plan. Validate
+        # their textual correspondence without claiming semantic approval.
+        events = supplied.get("events") or []
+        valid = isinstance(events, list) and bool(events) and all(
+            isinstance(event.get("sourceQuote"), str) and bool(event["sourceQuote"].strip())
+            and event["sourceQuote"] in text
+            and isinstance(event.get("action"), str) and event["action"] in event["sourceQuote"]
+            for event in events if isinstance(event, dict)
+        ) and all(isinstance(event, dict) for event in events)
+        claims.append({"field": "sourceEventCandidates", "state": "INFERRED" if valid else "INVALID",
+            "reason": "Deterministic source-event candidates; not a reviewed tracked plan." if valid else "Candidate text does not match the saved prompt.",
+            "sourceHash": source["sha256"], "methodVersion": EXTRACTION_VERSION})
+    elif isinstance(supplied, dict):
         # Source-bound tracked plan: every beat must quote a real source span.
         tracked = supplied.get("beats") or []
         valid = bool(tracked) and all(
@@ -295,10 +308,11 @@ def enrich_production_evidence(request: dict[str, Any]) -> dict[str, Any]:
             claims.append(
                 {
                     "field": "trackedPlan",
-                    "state": "CONTRADICTORY",
+                    "state": "INVALID",
                     "sourceHash": source["sha256"],
                     "methodVersion": EXTRACTION_VERSION,
-                    "reason": "Plan spans do not match the source.",
+                    "reason": "Tracked plan requires non-empty beats with exact source spans, quotes and source-contained actions/participants.",
+                    "diagnosticCode": "EMPTY_TRACKED_BEATS" if not tracked else "INVALID_SOURCE_BOUND_BEATS",
                 }
             )
     projection = general_producibility_evidence(ir)
@@ -307,7 +321,7 @@ def enrich_production_evidence(request: dict[str, Any]) -> dict[str, Any]:
         "claims": claims,
         "videoPlanIR": ir,
         "generalProducibility": projection,
-        "remainingUncertainty": [c["field"] for c in claims if c["state"] in {"MISSING", "CONTRADICTORY"}],
+        "remainingUncertainty": [c["field"] for c in claims if c["state"] in {"MISSING", "CONTRADICTORY", "INVALID"}],
     }
 
 
@@ -1022,12 +1036,13 @@ def review_prompt(request: dict[str, Any], capabilities: dict[str, Any] | None =
         )
     if evidence["generalProducibility"]["status"] == "UNKNOWN":
         pending("Insufficient source evidence for general producibility.", "GENERAL_PRODUCIBILITY")
-    if any(c["state"] == "CONTRADICTORY" for c in evidence["claims"]):
+    invalid_claims = [c for c in evidence["claims"] if c["state"] in {"CONTRADICTORY", "INVALID"}]
+    if invalid_claims:
         reasons.append(
             {
                 "code": "ASSESSMENT_TECHNICAL_FAILURE",
                 "source": "SOURCE_INTEGRITY",
-                "message": "Contradictory source evidence.",
+                "message": "Source-bound plan validation failed: " + "; ".join(str(c.get("diagnosticCode", c["field"])) + ": " + str(c.get("reason", "diagnostic unavailable")) for c in invalid_claims),
                 "references": [],
             }
         )

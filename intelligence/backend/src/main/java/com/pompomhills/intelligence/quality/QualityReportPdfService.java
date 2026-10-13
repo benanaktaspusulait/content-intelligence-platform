@@ -151,6 +151,8 @@ public class QualityReportPdfService {
       // SECTION 4: Video Plan IR
       addVideoPlanIR(document, review, fonts);
 
+      // Keep section headings with their assessment tables.
+      document.newPage();
       // SECTION 5: Creative Quality
       addCreativeQuality(document, review, fonts);
 
@@ -160,6 +162,7 @@ public class QualityReportPdfService {
       // SECTION 7: Evidence & Source Traceability
       addEvidenceTraceability(document, workflow, review, fonts);
 
+      document.newPage();
       // SECTION 8: F8 Render Authorization
       addF8Authorization(document, review, fonts);
 
@@ -184,18 +187,16 @@ public class QualityReportPdfService {
     document.add(new Paragraph(
         "Evidence-backed analysis of the saved production prompt", fonts.muted));
 
-    String contentId = humanize(firstValue(workflow, "contentId", workflow.get("payload") instanceof Map<?, ?> p
-        ? ((Map<?, ?>) p).get("contentId") : null), "UNKNOWN");
-    String promptVersionId = humanize(firstValue(workflow, "promptVersionId",
-        workflow.get("payload") instanceof Map<?, ?> p ? ((Map<?, ?>) p).get("promptVersionId") : null),
+    String contentId = humanize(firstValue(review, "contentId"), "UNKNOWN");
+    String promptVersionId = humanize(firstValue(review, "promptVersionId"),
         "UNKNOWN");
-    String profile = humanize(firstValue(review, "contentProfile", "routing.contentProfile"),
+    String profile = humanize(firstValue(review, "boundRequest.contentProfile", "routing.contentProfile"),
         "UNKNOWN");
-    String generator = humanize(firstValue(workflow, "targetGenerator", "productionConstraints.generator"),
+    String generator = humanize(firstValue(review, "boundRequest.generator", "generation.selectedGenerator"),
         "UNKNOWN");
-    String duration = humanize(firstValue(workflow, "duration", "productionConstraints.duration"), "15s");
-    String aspectRatio = humanize(firstValue(workflow, "aspectRatio", "productionConstraints.aspectRatio"),
-        "9:16");
+    String duration = humanize(firstValue(review, "boundRequest.desiredDuration", "generation.desiredDuration"), "UNKNOWN");
+    String aspectRatio = humanize(firstValue(review, "boundRequest.settings.aspectRatio", "generation.settings.aspectRatio"),
+        "UNKNOWN");
     String ruleset = humanize(firstValue(review, "canonicalRuleEvaluation.rulesetVersion"), "UNKNOWN");
     String score = "UNKNOWN";
     String grade = "UNKNOWN";
@@ -211,12 +212,17 @@ public class QualityReportPdfService {
 
     PdfPCell left = plainCell(new Color(0xEAF4EE), 10);
     left.addElement(new Paragraph("ANALYSIS IDENTITY", fonts.eyebrow));
+    left.addElement(new Paragraph("Saved run: " + review.get("recordId"), fonts.small));
+    left.addElement(new Paragraph("Analysed: " + workflowEvidenceText(review.get("createdAt")), fonts.small));
+    left.addElement(new Paragraph("Settings: " + workflowEvidenceText(firstValue(review, "boundRequest.settings")), fonts.small));
     left.addElement(new Paragraph("Content: " + contentId, fonts.body));
     left.addElement(new Paragraph("Prompt version: " + promptVersionId, fonts.body));
     left.addElement(new Paragraph("Profile: " + profile, fonts.body));
     left.addElement(new Paragraph("Generator: " + generator, fonts.body));
     left.addElement(new Paragraph("Duration: " + duration + " · Aspect ratio: " + aspectRatio, fonts.body));
     left.addElement(new Paragraph("Ruleset: " + ruleset, fonts.body));
+    left.addElement(new Paragraph("Source: " + workflowEvidenceText(firstValue(review, "source.artifact")), fonts.small));
+    left.addElement(new Paragraph("Prompt SHA256: " + workflowEvidenceText(firstValue(review, "source.sha256")), fonts.small));
     table.addCell(left);
 
     PdfPCell right = plainCell(new Color(0xEAF1FB), 10);
@@ -251,7 +257,7 @@ public class QualityReportPdfService {
     cards.setWidthPercentage(100);
     cards.setSpacingBefore(8);
     cards.addCell(metricCell("ANALYSIS", decision, BLUE, fonts));
-    cards.addCell(metricCell("CREATIVE", humanize(review != null ? review.get("planQuality") : null, "HYPOTHESIS"), ORANGE, fonts));
+    cards.addCell(metricCell("CREATIVE", humanize(firstValue(review, "planQuality.status"), "UNKNOWN"), ORANGE, fonts));
     cards.addCell(metricCell("RENDER AUTH", authStatus, RED, fonts));
     cards.addCell(metricCell("RECOMMENDATION", recommendation, GREEN, fonts));
     document.add(cards);
@@ -309,14 +315,14 @@ public class QualityReportPdfService {
         canonical.get("notApplicableRules") instanceof List<?> l ? l : List.of())) {
       for (Object item : list) {
         if (!(item instanceof Map<?, ?> rule)) continue;
-        String ruleId = humanize(rule.get("ruleId"), "UNKNOWN");
+        String ruleId = workflowEvidenceText(rule.get("ruleId"));
         String family = humanize(rule.get("family"), "UNKNOWN");
         String outcome = humanize(rule.get("outcome"), humanize(rule.get("status"), "UNKNOWN"));
         String severity = humanize(rule.get("severity"), "UNKNOWN");
         String message = humanize(rule.get("message"), "");
         table.addCell(cell(ruleId, fonts.small, null));
         table.addCell(cell(family, fonts.small, null));
-        table.addCell(cell(outcome, fonts.colored(fonts.small, statusColor(outcome)), null));
+        table.addCell(cell(outcome, fonts.colored(fonts.small, outcome.contains("NOT APPLICABLE") ? MUTED : outcome.equals("UNKNOWN") ? ORANGE : statusColor(outcome)), null));
         table.addCell(cell(severity, fonts.small, null));
         table.addCell(cell(message, fonts.small, null));
       }
@@ -335,17 +341,18 @@ public class QualityReportPdfService {
 
     String character = humanize(ir.get("mainCharacter"), "UNKNOWN");
     String object = humanize(ir.get("principalObject"), "UNKNOWN");
-    String mechanic = humanize(ir.get("physicalRule"), "UNKNOWN");
+    String mechanic = workflowEvidenceText(ir.get("coreMechanic"));
     String recurrence = humanize(ir.get("recurrence"), "UNKNOWN");
 
     document.add(new Paragraph("Character: " + character, fonts.body));
     document.add(new Paragraph("Principal object: " + object, fonts.body));
     document.add(new Paragraph("Physical mechanic: " + mechanic, fonts.body));
+    document.add(new Paragraph("Goal evidence: " + workflowEvidenceText(ir.get("goalEvidence")), fonts.body));
     document.add(new Paragraph("Recurrence: " + recurrence, fonts.body));
 
     if (ir.get("beats") instanceof List<?> beats && !beats.isEmpty()) {
       document.add(new Paragraph("Timed Beats (" + beats.size() + ")", fonts.heading));
-      PdfPTable table = new PdfPTable(new float[] {12, 12, 20, 20, 36});
+      PdfPTable table = new PdfPTable(new float[] {12, 12, 32, 12, 32});
       table.setWidthPercentage(100);
       table.setHeaderRows(1);
       header(table, fonts, "Time", "Actor", "Action", "Object", "Consequence");
@@ -354,9 +361,9 @@ public class QualityReportPdfService {
         if (!(beatObj instanceof Map<?, ?> beat)) continue;
         String time = humanize(beat.get("startTime"), "") + "-" + humanize(beat.get("endTime"), "");
         String actor = humanize(beat.get("actor"), humanize(beat.get("character"), character));
-        String action = humanize(beat.get("action"), "");
+        String action = cleanSourceSectionText(workflowEvidenceText(beat.get("sourceQuote") == null ? beat.get("action") : beat.get("sourceQuote")));
         String obj = humanize(beat.get("object"), humanize(beat.get("primaryObject"), object));
-        String consequence = humanize(beat.get("consequence"), "");
+        String consequence = cleanSourceSectionText(workflowEvidenceText(beat.get("consequence")));
         table.addCell(cell(time, fonts.small, null));
         table.addCell(cell(actor, fonts.small, null));
         table.addCell(cell(action, fonts.small, null));
@@ -385,8 +392,8 @@ public class QualityReportPdfService {
     String openingNote = "No separate opening assessment; planned first beat extracted but no visual verification.";
     if (review.get("planQuality") instanceof Map<?, ?> pq) {
       if (pq.get("opening") instanceof Map<?, ?> o) {
-        opening = humanize(o.get("status"), "UNKNOWN");
-        openingNote = humanize(o.get("reason"), openingNote);
+        opening = humanize(o.get("assessment"), humanize(o.get("status"), "UNKNOWN"));
+        openingNote = cleanSourceSectionText(humanize(o.get("plannedFirstBeat"), humanize(o.get("reason"), openingNote)));
       }
     }
     table.addCell(cell("Opening / first-frame hook", fonts.bold, null));
@@ -398,7 +405,7 @@ public class QualityReportPdfService {
     String progressionNote = "Insufficient evidence from text alone; planned beats exist but meaningful progression quality is unverified.";
     if (review.get("planQuality") instanceof Map<?, ?> pq) {
       if (pq.get("progression") instanceof Map<?, ?> p) {
-        progression = humanize(p.get("status"), "UNKNOWN");
+        progression = humanize(p.get("assessment"), humanize(p.get("status"), "UNKNOWN"));
         progressionNote = humanize(p.get("reason"), progressionNote);
       }
     }
@@ -411,8 +418,8 @@ public class QualityReportPdfService {
     String endingNote = "Planned last beat extracted; payoff quality unassessable without visual evidence.";
     if (review.get("planQuality") instanceof Map<?, ?> pq) {
       if (pq.get("ending") instanceof Map<?, ?> e) {
-        ending = humanize(e.get("status"), "UNKNOWN");
-        endingNote = humanize(e.get("reason"), endingNote);
+        ending = humanize(e.get("assessment"), humanize(e.get("status"), "UNKNOWN"));
+        endingNote = cleanSourceSectionText(humanize(e.get("plannedLastBeat"), humanize(e.get("reason"), endingNote)));
       }
     }
     table.addCell(cell("Ending / payoff", fonts.bold, null));
@@ -422,12 +429,12 @@ public class QualityReportPdfService {
     // Physical rule consistency
     table.addCell(cell("Physical rule consistency", fonts.bold, null));
     table.addCell(cell("UNKNOWN", fonts.colored(fonts.small, statusColor("UNKNOWN")), null));
-    table.addCell(cell("Textual doubling rule detected; rendered physical consistency requires video evidence.", fonts.small));
+    table.addCell(cell("Independent semantic and rendered physical consistency are UNKNOWN; inspect the saved IR above.", fonts.small, null));
 
     // Action variety
     table.addCell(cell("Action variety", fonts.bold, null));
     table.addCell(cell("UNKNOWN", fonts.colored(fonts.small, statusColor("UNKNOWN")), null));
-    table.addCell(cell("Multiple character actions planned; distinct action variety requires visual verification.", fonts.small));
+    table.addCell(cell("Distinct action variety is not independently verified by this export.", fonts.small, null));
 
     document.add(table);
   }
@@ -450,7 +457,7 @@ public class QualityReportPdfService {
       execRisk = humanize(er.get("status"), "UNKNOWN");
     }
     if (review.get("generalProducibility") instanceof Map<?, ?> gp) {
-      producibility = humanize(gp.get("overallStatus"), "UNKNOWN");
+      producibility = humanize(gp.get("status"), humanize(gp.get("overallStatus"), "UNKNOWN"));
     }
 
     PdfPTable table = new PdfPTable(new float[] {30, 16, 54});
@@ -460,18 +467,37 @@ public class QualityReportPdfService {
 
     table.addCell(cell("Plan quality", fonts.bold, null));
     table.addCell(cell(planQuality, fonts.colored(fonts.small, statusColor(planQuality)), null));
-    table.addCell(cell("Text-based plan assessment; no image evidence.", fonts.small));
+    table.addCell(cell("Text-based plan assessment; no image evidence.", fonts.small, null));
 
-    table.addCell(cell("Generator execution risk", fonts.bold, null));
+    table.addCell(cell("Local execution check", fonts.bold, null));
     table.addCell(cell(execRisk, fonts.colored(fonts.small, statusColor(execRisk)), null));
-    table.addCell(cell("Basic generator capability (duration, aspect ratio) — not a guarantee that complex physics will render correctly.", fonts.small));
+    table.addCell(cell("PASS means no local text findings were recorded; actual generator success is UNKNOWN.", fonts.small, null));
 
     table.addCell(cell("Production complexity", fonts.bold, null));
     table.addCell(cell(producibility, fonts.colored(fonts.small, statusColor(producibility)), null));
-    table.addCell(cell("Text-based producibility assessment; actual render success remains UNKNOWN.", fonts.small));
+    table.addCell(cell("Text-based producibility assessment; actual render success remains UNKNOWN.", fonts.small, null));
 
     document.add(table);
 
+    document.add(new Paragraph("Generator capability: " + workflowEvidenceText(firstValue(review, "generation.capabilityStatus"))
+        + " - schema snapshot " + workflowEvidenceText(firstValue(review, "generation.profileVersion")), fonts.body));
+    document.add(new Paragraph("Capability provenance: " + workflowEvidenceText(firstValue(review, "generation.capabilityProvenance")), fonts.small));
+    document.add(new Paragraph("Execution findings: " + workflowEvidenceText(firstValue(review, "executionReview.findings")), fonts.small));
+    document.add(new Paragraph("Execution limitations: " + workflowEvidenceText(firstValue(review, "executionReview.limitations")), fonts.small));
+    document.add(new Paragraph("Material producibility risks: " + workflowEvidenceText(firstValue(review, "generalProducibility.materialRisks")), fonts.body));
+    PdfPTable risksTable = new PdfPTable(new float[] {24, 12, 64});
+    risksTable.setWidthPercentage(100); risksTable.setHeaderRows(1);
+    header(risksTable, fonts, "Material dimension", "Level", "Recorded reason / references");
+    Object dimensions=firstValue(review, "generalProducibility.dimensions");
+    for (Object key : listValue(firstValue(review, "generalProducibility.materialRisks"))) {
+      if (!(dimensions instanceof Map<?,?> dims) || !(dims.get(key) instanceof Map<?,?> dimension)) continue;
+      risksTable.addCell(cell(humanize(key, "UNKNOWN"), fonts.small, null));
+      risksTable.addCell(cell(workflowEvidenceText(dimension.get("level")), fonts.small, null));
+      risksTable.addCell(cell(workflowEvidenceText(dimension.get("reason")) + " - references: " + workflowEvidenceText(dimension.get("evidenceReferences")), fonts.small, null));
+    }
+    document.add(risksTable);
+    document.add(new Paragraph("Unknown dimensions: " + workflowEvidenceText(firstValue(review, "generalProducibility.unknownDimensions")), fonts.small));
+    document.add(new Paragraph("Duration load: " + workflowEvidenceText(firstValue(review, "generalProducibility.durationLoad")), fonts.small));
     // Risks
     if (review.get("generalProducibility") instanceof Map<?, ?> gp
         && gp.get("risks") instanceof List<?> risks && !risks.isEmpty()) {
@@ -492,41 +518,17 @@ public class QualityReportPdfService {
   private void addEvidenceTraceability(Document document, Map<String, Object> workflow,
       Map<String, Object> review, Fonts fonts) throws DocumentException {
     section(document, "Evidence & Source Traceability", fonts);
-
-    PdfPTable table = new PdfPTable(new float[] {30, 16, 54});
-    table.setWidthPercentage(100);
-    table.setHeaderRows(1);
-    header(table, fonts, "Finding", "Evidence", "Status");
-
-    // Source integrity
-    String storyFingerprint = "UNKNOWN";
-    if (workflow.get("sourceRequest") instanceof Map<?, ?> src
-        && src.get("context") instanceof Map<?, ?> ctx) {
-      storyFingerprint = humanize(ctx.get("storyRevisionId"), "UNKNOWN");
+    document.add(new Paragraph("Source identity: " + workflowEvidenceText(firstValue(review, "source")), fonts.body));
+    document.add(new Paragraph("Production evidence provenance: " + workflowEvidenceText(firstValue(review, "generalProducibility.provenance.sourceEvidence")), fonts.small));
+    document.add(new Paragraph("Independent semantic fidelity: UNKNOWN. Source ancestry and quote correspondence do not establish semantic approval. Rendered fidelity requires Video QA.", fonts.body));
+    document.add(new Paragraph("Legacy provider traceability is separate. No approved-story linkage or sentence mapping is inferred by this export when absent from the saved run.", fonts.muted));
+    document.add(new Paragraph("Remaining uncertainty: " + workflowEvidenceText(firstValue(review, "productionEvidence.remainingUncertainty")), fonts.body));
+    for (Object claim : listValue(firstValue(review, "productionEvidence.claims"))) {
+      if (claim instanceof Map<?,?> row && ("CONTRADICTORY".equals(row.get("state")) || "INVALID".equals(row.get("state"))))
+        document.add(new Paragraph("Recorded validation diagnostic: " + workflowEvidenceText(row), fonts.small));
     }
-    table.addCell(cell("Approved story revision", fonts.bold, null));
-    table.addCell(cell(storyFingerprint, fonts.small, null));
-    table.addCell(cell("VERIFIED", fonts.colored(fonts.small, statusColor("VERIFIED")), null));
-
-    // Source traceability
-    table.addCell(cell("Source sentence traceability", fonts.bold, null));
-    table.addCell(cell("0/9", fonts.small, null));
-    table.addCell(cell("UNKNOWN — OpenAI provided no sourceEvidence quotes", fonts.small));
-
-    // Production plan status
-    String planStatus = "STALE";
-    if (workflow.get("productionPlan") instanceof Map<?, ?> pp) {
-      if (Boolean.TRUE.equals(pp.get("promptTextEdited"))) {
-        planStatus = "STALE";
-      }
-    }
-    table.addCell(cell("Production Specification", fonts.bold, null));
-    table.addCell(cell(planStatus, fonts.small, null));
-    table.addCell(cell(planStatus.equals("STALE")
-        ? "Legacy OpenAI productionPlan does not match edited prompt text"
-        : "Matches current prompt", fonts.small));
-
-    document.add(table);
+    document.add(new Paragraph(technicalDiagnostic(review), fonts.body));
+    document.add(new Paragraph("Creative evidence limitations: " + workflowEvidenceText(firstValue(review, "planQuality.limitations")), fonts.small));
   }
 
   private void addF8Authorization(Document document, Map<String, Object> review, Fonts fonts)
@@ -547,21 +549,22 @@ public class QualityReportPdfService {
       PdfPTable table = new PdfPTable(new float[] {24, 20, 56});
       table.setWidthPercentage(100);
       table.setHeaderRows(1);
-      header(table, fonts, "Code", "Status", "Explanation");
+      header(table, fonts, "Code", "Source", "Recorded message / evidence");
 
       for (Object reason : reasons) {
         if (reason instanceof Map<?, ?> r) {
-          String code = humanize(r.get("code"), "UNKNOWN");
-          String rStatus = humanize(r.get("status"), "UNKNOWN");
-          String msg = humanize(r.get("message"), "");
+          String code = workflowEvidenceText(r.get("code"));
+          String rStatus = workflowEvidenceText(r.get("source"));
+          String msg = humanize(r.get("message"), "") + " - references: " + workflowEvidenceText(r.get("references"));
           table.addCell(cell(code, fonts.small, null));
-          table.addCell(cell(rStatus, fonts.colored(fonts.small, statusColor(rStatus)), null));
+          table.addCell(cell(rStatus, fonts.small, null));
           table.addCell(cell(msg, fonts.small, null));
         }
       }
       document.add(table);
     }
 
+    document.add(new Paragraph(technicalDiagnostic(review), fonts.body));
     document.add(new Paragraph(
         "Render authorization is not granted by this report. Explicit user approval remains mandatory.",
         fonts.muted));
@@ -570,106 +573,53 @@ public class QualityReportPdfService {
   private void addFindingsResolution(Document document, Map<String, Object> review, Fonts fonts)
       throws DocumentException {
     section(document, "Findings Resolution", fonts);
-    if (review == null) {
-      document.add(new Paragraph("No findings available.", fonts.muted));
-      return;
+    document.add(new Paragraph("Plan findings: " + workflowEvidenceText(firstValue(review, "planQuality.findings")), fonts.body));
+    document.add(new Paragraph("Local execution findings: " + workflowEvidenceText(firstValue(review, "executionReview.findings")), fonts.body));
+    for (Object value : listValue(firstValue(review, "family8.renderAuthorization.reasons"))) {
+      if (!(value instanceof Map<?,?> reason)) continue;
+      String source=workflowEvidenceText(reason.get("source"));
+      String action=source.equals("REFERENCE_ASSOCIATION") ? "Select and bind a verified canonical character reference in Step 7."
+          : source.equals("EXECUTION_INPUTS") ? "Prepare and accept a first frame in Step 7; generation is separately opt-in."
+          : String.valueOf(reason.get("code")).contains("TECHNICAL") ? "Inspect the saved validation diagnostic and input contract. No story change is justified by this failure alone."
+          : "Inspect the recorded evidence before revalidation.";
+      document.add(new Paragraph(workflowEvidenceText(reason.get("code")) + " / " + source + ": " + action, fonts.body));
     }
-
-    // Collect findings from F8 authorization reasons
-    List<Map<String, Object>> findings = new ArrayList<>();
-    if (review.get("family8") instanceof Map<?, ?> f8
-        && f8.get("renderAuthorization") instanceof Map<?, ?> auth
-        && auth.get("reasons") instanceof List<?> reasons) {
-      for (Object reason : reasons) {
-        if (reason instanceof Map<?, ?> r) {
-          findings.add(r);
-        }
-      }
-    }
-
-    if (findings.isEmpty()) {
-      document.add(new Paragraph("No actionable findings at this time.", fonts.muted));
-      return;
-    }
-
-    PdfPTable table = new PdfPTable(new float[] {18, 14, 14, 54});
-    table.setWidthPercentage(100);
-    table.setHeaderRows(1);
-    header(table, fonts, "Finding", "Category", "Severity", "Required Action");
-
-    for (Map<String, Object> finding : findings) {
-      String code = humanize(finding.get("code"), "UNKNOWN");
-      String msg = humanize(finding.get("message"), "");
-      String severity = humanize(finding.get("severity"), "REVIEW");
-      String action = "";
-      if (code.contains("REFERENCE")) {
-        action = "Upload and verify character reference image via Character Lab";
-      } else if (code.contains("EXECUTION") || code.contains("startFrame")) {
-        action = "Generate or upload start-frame image via Render Preparation";
-      } else if (code.contains("VIDEO")) {
-        action = "Requires post-render video QA evidence";
-      } else {
-        action = msg;
-      }
-      table.addCell(cell(code, fonts.small, null));
-      table.addCell(cell(humanize(finding.get("category"), "RENDER_INPUT"), fonts.small, null));
-      table.addCell(cell(severity, fonts.colored(fonts.small, statusColor(severity)), null));
-      table.addCell(cell(action, fonts.small, null));
-    }
-    document.add(table);
   }
 
   private void addFullAnalysisNextSteps(Document document, Map<String, Object> workflow,
       Map<String, Object> review, Fonts fonts) throws DocumentException {
     section(document, "Conclusions & Next Action", fonts);
-
-    document.add(new Paragraph("What is confirmed", fonts.heading));
-    document.add(new Paragraph(
-        "• The saved production prompt version is linked to the approved story revision.", fonts.body));
-    document.add(new Paragraph(
-        "• Canonical Rule Engine evaluated the prompt with no blockers or failures.", fonts.body));
-    document.add(new Paragraph(
-        "• All 9 approved story events are represented in the 5 timed beats.", fonts.body));
-
-    document.add(new Paragraph("What remains UNKNOWN", fonts.heading));
-    document.add(new Paragraph(
-        "• Actual first-frame visual legibility (no image evidence)", fonts.body));
-    document.add(new Paragraph(
-        "• Render quality and character continuity (no video evidence)", fonts.body));
-    document.add(new Paragraph(
-        "• Source sentence traceability (OpenAI provided no sourceEvidence)", fonts.body));
-
-    document.add(new Paragraph("What is blocking render", fonts.heading));
-    if (review != null && review.get("family8") instanceof Map<?, ?> f8
-        && f8.get("renderAuthorization") instanceof Map<?, ?> auth
-        && auth.get("reasons") instanceof List<?> reasons) {
-      for (Object reason : reasons) {
-        if (reason instanceof Map<?, ?> r) {
-          String code = humanize(r.get("code"), "UNKNOWN");
-          String msg = humanize(r.get("message"), "");
-          document.add(new Paragraph("• " + code + ": " + msg, fonts.body));
-        }
-      }
-    }
-
-    document.add(new Paragraph("Next action", fonts.heading));
-    document.add(new Paragraph(
-        "1. Upload and verify Mimi character reference image via Character Lab", fonts.body));
-    document.add(new Paragraph(
-        "2. Generate or upload start-frame image via Render Preparation", fonts.body));
-    document.add(new Paragraph(
-        "3. Proceed to Step 7 Render Preparation once visual evidence is complete", fonts.body));
-    document.add(new Paragraph(
-        "4. Explicit user authorization required before any render or provider call", fonts.body));
+    document.add(new Paragraph("This export preserves run " + review.get("recordId") + ". It does not rerun analysis, change the canonical score, or authorize render.", fonts.body));
+    document.add(new Paragraph("Canonical outcomes and source intervals above are the recorded evidence. Independent story fidelity and actual rendered quality remain UNKNOWN.", fonts.body));
+    document.add(new Paragraph("Resolve the recorded technical diagnostic, supply missing references and execution inputs, then independently revalidate the exact saved request. Explicit authorization is still required for rendering.", fonts.body));
   }
 
   // Helper: get a value from a map, trying multiple keys
   private Object firstValue(Map<String, Object> map, String... keys) {
     if (map == null) return null;
     for (String key : keys) {
-      if (map.containsKey(key)) return map.get(key);
+      if (key == null) continue;
+      Object value=map;
+      for (String part : key.split("\\.")) value=value instanceof Map<?,?> nested ? nested.get(part) : null;
+      if (value != null) return value;
     }
     return null;
+  }
+
+  private List<?> listValue(Object value) { return value instanceof List<?> rows ? rows : List.of(); }
+
+  private String workflowEvidenceText(Object value) {
+    if(value == null) return "UNKNOWN";
+    if(value instanceof Map<?,?> map) return map.entrySet().stream().map(e -> e.getKey() + ": " + workflowEvidenceText(e.getValue())).collect(java.util.stream.Collectors.joining("; "));
+    if(value instanceof List<?> rows) return rows.isEmpty() ? "None recorded" : rows.stream().map(this::workflowEvidenceText).collect(java.util.stream.Collectors.joining("; "));
+    return englishText(String.valueOf(value));
+  }
+
+  private String technicalDiagnostic(Map<String,Object> review) {
+    if (!"BLOCKED_TECHNICAL_FAILURE".equals(firstValue(review, "family8.renderAuthorization.status"))) return "No technical authorization failure recorded.";
+    String diagnostic=firstValue(review, "boundRequest.structuredPlan.events") != null && firstValue(review, "boundRequest.structuredPlan.beats") == null
+        ? "Saved input-contract mismatch: deterministic events were supplied to a validator expecting source-bound beats. " : "";
+    return diagnostic + "Recorded technical failure remains blocking. Runtime exception details and independently conflicting source spans were not saved; contradiction evidence is UNKNOWN.";
   }
 
   private int intOf(Object val) {
