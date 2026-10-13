@@ -51,9 +51,13 @@ def test_generic_entity_extraction_is_source_bound_and_read_only():
         for evidence in beat['fieldEvidence'].values():
             if evidence.get('sourceSpan'):
                 a,b=evidence['sourceSpan']; assert PROMPT[a:b]==evidence['sourceQuote']
-    unknown=source_plan_evidence('0-2s: Something moves.','fixture','10')['videoPlanIR']
+    from app.parser.prompt_parser import parse_prompt
+    unknown=parse_prompt('0-2s: Something moves.').video_plan_ir
     assert unknown['mainCharacter'] is None
     assert unknown['entityEvidence']['mainCharacter']['state']=='UNKNOWN'
+    assert unknown['coreMechanic']['surfaceAttachmentEvidence']['state']=='UNKNOWN'
+    assert unknown['goalEvidence']['primaryGoal']['state']=='UNKNOWN'
+    assert unknown['goalEvidence']['secondaryRecoveryAttempt']['state']=='UNKNOWN'
 
 def test_saved_live_fixture_reproduces_mismatch_and_corrected_five_beat_contract(monkeypatch):
     import json
@@ -62,21 +66,59 @@ def test_saved_live_fixture_reproduces_mismatch_and_corrected_five_beat_contract
     monkeypatch.setenv('POMPOM_DATA_ROOT',str(Path(__file__).resolve().parents[2]/'data'))
     value=deepcopy(saved['boundRequest']);before=deepcopy(saved)
     old=value['structuredPlan'];assert len(old['events'])==5 and not old.get('beats')
-    # The old tracked-plan consumer saw an empty collection although five events existed.
+    historical_claim=next(c for c in saved['productionEvidence']['claims'] if c['field']=='trackedPlan')
+    assert historical_claim['state']=='CONTRADICTORY'
+    assert any(r['code']=='ASSESSMENT_TECHNICAL_FAILURE' for r in saved['family8']['renderAuthorization']['reasons'])
     assert not (old.get('beats') or [])
+    capabilities=json.loads((Path(__file__).resolve().parents[2]/'data/workflow/provider-capabilities.json').read_text())['models']
+    before_validation=review_prompt(value,capabilities)
+    before_claim=next(c for c in before_validation['productionEvidence']['claims'] if c['field']=='sourceEventCandidates')
+    assert before_claim['state']=='INFERRED'
+    before_reasons=before_validation['family8']['renderAuthorization']['reasons']
+    assert not any(r['code']=='ASSESSMENT_TECHNICAL_FAILURE' for r in before_reasons)
+    assert before_validation['family8']['renderAuthorization']['status']=='BLOCKED_PENDING_EVIDENCE'
+
     projection=source_plan_evidence(value['prompt'],value['sourceId'],value['sourceVersion'])
     beats=projection['videoPlanIR']['beats'];assert len(beats)==5
     value['structuredPlan']={'schemaVersion':'source-bound-beats-v1','evidenceStatus':'DETERMINISTIC_SOURCE_EVENTS_ONLY','beats':[dict(id=b['id'],startTime=b['startTime'],endTime=b['endTime'],action=b['sourceAction'],sourceQuote=b['sourceQuote'],sourceSpan=b['sourceSpan']) for b in beats]}
     claim=next(c for c in enrich_production_evidence(value)['claims'] if c['field']=='trackedPlan')
     assert claim['state']=='OBSERVED' and claim['semanticVerification']=='NOT_PERFORMED'
-    capabilities=json.loads((Path(__file__).resolve().parents[2]/'data/workflow/provider-capabilities.json').read_text())['models']
     corrected=review_prompt(value,capabilities)
-    assert corrected['canonicalRuleEvaluation']['videoPlanIR']['coreMechanic']['physicalRule']=='each pull doubles the number of sticky notes'
+    canonical=corrected['canonicalRuleEvaluation']['videoPlanIR']
+    mechanic=canonical['coreMechanic']
+    assert mechanic['physicalRule']=='each pull doubles the number of sticky notes'
+    assert mechanic['physicalRuleEvidence']['state']=='OBSERVED'
+    physical_span=mechanic['physicalRuleEvidence']['sourceSpan']
+    assert value['prompt'][physical_span[0]:physical_span[1]]==mechanic['physicalRule']
+    surface=mechanic['surfaceAttachmentEvidence']
+    assert surface['state']=='OBSERVED'
+    assert surface['expectedSurface']['value']=='the cabinet'
+    assert surface['actualSurface']['value']=='her finger'
+    assert surface['relationship']=={'value':'WRONG_SURFACE_ATTACHMENT','state':'INFERRED'}
+    surface_span=surface['sourceSpan']
+    assert value['prompt'][surface_span[0]:surface_span[1]]==surface['sourceQuote']
+
+    goal=canonical['goalEvidence']
+    assert goal['description']=='Attach the note to the cabinet'
+    assert goal['targetObject']=='the cabinet'
+    assert goal['goalExplicitness']=='IMPLICIT_BUT_OBSERVABLE'
+    assert goal['primaryGoal']['state']=='INFERRED'
+    assert value['prompt'][goal['primaryGoal']['sourceSpan'][0]:goal['primaryGoal']['sourceSpan'][1]]==goal['primaryGoal']['sourceQuote']
+    recovery=goal['secondaryRecoveryAttempt']
+    assert recovery['description']=='Mimi tries to peel the stuck note away with her other hand'
+    assert recovery['state']=='OBSERVED'
+    assert value['prompt'][recovery['sourceSpan'][0]:recovery['sourceSpan'][1]]==recovery['sourceQuote']
+    assert recovery['beatId']=='beat_02'
+    recovery_beat=next(b for b in canonical['beats'] if b['id']==recovery['beatId'])
+    assert recovery_beat['goalEvidenceRole']=='SECONDARY_RECOVERY_ATTEMPT'
+    assert recovery_beat['targetObject']=='the stuck note'
+
     reasons=corrected['family8']['renderAuthorization']['reasons']
     assert any(r['source']=='REFERENCE_ASSOCIATION' for r in reasons)
     assert any(r['source']=='EXECUTION_INPUTS' for r in reasons)
     assert corrected['family8']['renderAuthorization']['status']!='AUTHORIZED'
     assert not any(r['source']=='SOURCE_INTEGRITY' and r['code']=='ASSESSMENT_TECHNICAL_FAILURE' for r in reasons)
+    assert next(c for c in corrected['productionEvidence']['claims'] if c['field']=='trackedPlan')['state']=='OBSERVED'
     assert saved==before and saved['canonicalRuleEvaluation']['score']==85
 
 def test_explicit_repeated_physical_rule_keeps_exact_source_evidence_and_unknown_consistency():
@@ -91,6 +133,9 @@ def test_explicit_repeated_physical_rule_keeps_exact_source_evidence_and_unknown
     assert evidence['state']=='OBSERVED' and evidence['semanticVerification']=='NOT_PERFORMED'
     assert core['consistency'] is None and core['mechanicCount'] is None
     generic='Duration: 5s\n0-5s: Nori works; every attempt triples the number of wooden coins [wide shot]'
-    assert parse_prompt(generic).video_plan_ir['coreMechanic']['physicalRule']=='every attempt triples the number of wooden coins'
+    generic_ir=parse_prompt(generic).video_plan_ir
+    assert generic_ir['coreMechanic']['physicalRule']=='every attempt triples the number of wooden coins'
+    assert generic_ir['coreMechanic']['surfaceAttachmentEvidence']['state']=='UNKNOWN'
     unknown=parse_prompt('Duration: 5s\n0-5s: Nori watches wooden coins.').video_plan_ir['coreMechanic']
     assert 'physicalRuleEvidence' not in unknown and unknown['consistency'] is None
+    assert unknown['surfaceAttachmentEvidence']['state']=='UNKNOWN'

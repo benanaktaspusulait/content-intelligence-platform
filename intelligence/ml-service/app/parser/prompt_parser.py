@@ -507,7 +507,44 @@ class PromptParser:
                 )
             )
         )
+        surface_attachment = self._extract_surface_attachment_evidence(text)
+        enriched["surfaceAttachmentEvidence"] = surface_attachment or {
+            "state": "UNKNOWN",
+            "sourceQuote": None,
+            "sourceSpan": None,
+            "method": "CONTRASTIVE_SURFACE_ATTACHMENT_PATTERN",
+            "reason": "No supported contrastive attachment evidence was extracted.",
+        }
         return enriched
+
+    def _extract_surface_attachment_evidence(
+        self, text: str
+    ) -> dict[str, Any] | None:
+        """Keep an explicit wrong-surface event distinct from a repeated-action rule."""
+        pattern = re.compile(
+            r"\binstead of\s+(?:sticking|attaching|adhering)\s+to\s+"
+            r"(?P<expected>[^,.;]+),\s*(?P<object>(?:the|a|an)\s+[\w'-]+)\s+"
+            r"(?:visibly\s+)?(?:sticks?|clings?|adheres?)\s+to\s+"
+            r"(?P<actual>[^,.;\[]+)",
+            re.IGNORECASE,
+        )
+        match = pattern.search(text)
+        if not match:
+            return None
+        quote = match.group(0).strip()
+        expected = match.group("expected").strip()
+        actual = match.group("actual").strip()
+        return {
+            "state": "OBSERVED",
+            "sourceQuote": quote,
+            "sourceSpan": [match.start(), match.start() + len(quote)],
+            "method": "CONTRASTIVE_SURFACE_ATTACHMENT_PATTERN",
+            "semanticVerification": "NOT_PERFORMED",
+            "object": {"value": match.group("object").strip(), "state": "OBSERVED"},
+            "expectedSurface": {"value": expected, "state": "OBSERVED"},
+            "actualSurface": {"value": actual, "state": "OBSERVED"},
+            "relationship": {"value": "WRONG_SURFACE_ATTACHMENT", "state": "INFERRED"},
+        }
 
     def _extract_goal_evidence(
         self, text: str, beats: list[dict[str, Any]], mechanic: dict[str, Any]
@@ -522,46 +559,196 @@ class PromptParser:
                 "obstruction": None,
                 "intendedEffect": None,
                 "source": "NONE",
+                "primaryGoal": {
+                    "description": None,
+                    "state": "UNKNOWN",
+                    "sourceQuote": None,
+                    "sourceSpan": None,
+                    "method": "NONE",
+                },
+                "secondaryRecoveryAttempt": {
+                    "description": None,
+                    "state": "UNKNOWN",
+                    "sourceQuote": None,
+                    "sourceSpan": None,
+                    "method": "NONE",
+                },
             }
         all_text = " ".join(
-            str(beat.get(key, "")) for beat in beats for key in ("action", "consequence")
+            str(beat.get(key, "")) for beat in beats for key in ("sourceAction", "action", "consequence")
         ).lower()
-        target = mechanic.get("primaryObject")
-        target_text = str(target or "the object")
-        explicit_match = re.search(r"(?:goal|objective)\s*:\s*([^\n.]+)|(?:wants? to|tries? to)\s+([^\n.]+)", text, re.IGNORECASE)
-        goal_words = ("retrieve", "remove", "pull", "catch", "control", "use", "free", "get", "restore", "normal", "unstick", "inspect", "fix")
-        obstruction_words = ("stuck", "will not", "won't", "cannot", "can't", "instead of", "remains", "resists", "impossible")
-        has_goal_action = any(word in all_text for word in goal_words)
-        has_obstruction = any(word in all_text for word in obstruction_words) or bool(mechanic.get("abnormalProperty"))
+        explicit_match = re.search(
+            r"(?:goal|objective)\s*:\s*([^\n.]+)|\bwants?\s+to\s+([^\n.;]+)",
+            text,
+            re.IGNORECASE,
+        )
+        surface_evidence = mechanic.get("surfaceAttachmentEvidence")
+        if not isinstance(surface_evidence, dict) or surface_evidence.get("state") != "OBSERVED":
+            surface_evidence = None
+        primary_goal_evidence: dict[str, Any] | None = None
+        secondary_recovery: dict[str, Any] | None = None
+
         if explicit_match:
             description = (explicit_match.group(1) or explicit_match.group(2) or "").strip()
             explicitness = "EXPLICIT"
             source = "EXPLICIT_TEXT"
-        elif has_goal_action and has_obstruction:
-            description = f"Control or retrieve {target_text} despite the established abnormal behavior."
+            goal_type = "RETRIEVE_OR_CONTROL_OBJECT"
+            target = mechanic.get("primaryObject")
+        elif surface_evidence:
+            expected_surface = surface_evidence["expectedSurface"]["value"]
+            object_name = surface_evidence["object"]["value"]
+            description = f"Attach {object_name} to {expected_surface}"
             explicitness = "IMPLICIT_BUT_OBSERVABLE"
-            source = "GOAL_DIRECTED_ACTION_INFERENCE"
+            source = "CONTRASTIVE_ATTACHMENT_TARGET_INFERENCE"
+            goal_type = "ATTACH_OBJECT_TO_TARGET"
+            target = expected_surface
+            primary_goal_evidence = {
+                "description": description,
+                "state": "INFERRED",
+                "sourceQuote": surface_evidence["sourceQuote"],
+                "sourceSpan": surface_evidence["sourceSpan"],
+                "method": "CONTRASTIVE_ATTACHMENT_TARGET_INFERENCE",
+                "semanticVerification": "NOT_PERFORMED",
+            }
         else:
-            description = None
-            explicitness = "UNSUPPORTED"
-            source = "NONE"
+            goal_words = (
+                "retrieve", "remove", "pull", "catch", "control", "use", "free",
+                "get", "restore", "normal", "unstick", "inspect", "fix",
+            )
+            obstruction_words = (
+                "stuck", "will not", "won't", "cannot", "can't", "instead of",
+                "remains", "resists", "impossible",
+            )
+            has_goal_action = any(word in all_text for word in goal_words)
+            has_obstruction = any(word in all_text for word in obstruction_words) or bool(
+                mechanic.get("abnormalProperty")
+            )
+            target = mechanic.get("primaryObject")
+            if has_goal_action and has_obstruction:
+                description = (
+                    f"Control or retrieve {target} despite the established abnormal behavior."
+                    if target
+                    else "Control or retrieve the object despite the established abnormal behavior."
+                )
+                explicitness = "IMPLICIT_BUT_OBSERVABLE"
+                source = "GOAL_DIRECTED_ACTION_INFERENCE"
+                goal_type = "RETRIEVE_OR_CONTROL_OBJECT"
+            else:
+                description = None
+                explicitness = "UNSUPPORTED"
+                source = "NONE"
+                goal_type = None
+
+        if surface_evidence and description:
+            target = surface_evidence["expectedSurface"]["value"]
+
+        recovery_verbs = r"(?:remove|peel|unstick|free|release|detach)"
+        recovery_match = re.search(
+            rf"\b(?P<actor>[A-Z][\w'-]*)\s+(?:tries?|attempts?)\s+to\s+"
+            rf"(?P<verb>{recovery_verbs})\b[^.;\n]*",
+            text,
+            re.IGNORECASE,
+        )
+        if recovery_match:
+            quote = recovery_match.group(0).strip()
+            start = recovery_match.start()
+            recovery_verb = recovery_match.group("verb").upper()
+            target_match = re.search(
+                rf"\b{recovery_verbs}\s+(?:the|a|an)\s+"
+                r"(?P<object>[\w'-]+(?:\s+[\w'-]+)?)\b",
+                quote,
+                re.IGNORECASE,
+            )
+            recovery_beat = next(
+                (
+                    beat
+                    for beat in beats[1:]
+                    if str(beat.get("primaryVerb") or "").upper() == recovery_verb
+                ),
+                None,
+            )
+            secondary_recovery = {
+                "description": quote,
+                "state": "OBSERVED",
+                "sourceQuote": quote,
+                "sourceSpan": [start, start + len(quote)],
+                "method": "EXPLICIT_RECOVERY_ATTEMPT_PATTERN",
+                "semanticVerification": "NOT_PERFORMED",
+                "beatId": recovery_beat.get("id") if recovery_beat else None,
+                "targetObject": (
+                    "the " + target_match.group("object")
+                    if target_match
+                    else None
+                ),
+            }
+        if secondary_recovery is None:
+            secondary_recovery = {
+                "description": None,
+                "state": "UNKNOWN",
+                "sourceQuote": None,
+                "sourceSpan": None,
+                "method": "EXPLICIT_RECOVERY_ATTEMPT_PATTERN",
+            }
+
+        if primary_goal_evidence is None:
+            primary_goal_evidence = {
+                "description": description,
+                "state": (
+                    "OBSERVED" if explicitness == "EXPLICIT"
+                    else "INFERRED" if description
+                    else "UNKNOWN"
+                ),
+                "sourceQuote": explicit_match.group(0) if explicit_match else None,
+                "sourceSpan": (
+                    [explicit_match.start(), explicit_match.end()] if explicit_match else None
+                ),
+                "method": source,
+                "semanticVerification": "NOT_PERFORMED",
+            }
         return {
             "goalExplicitness": explicitness,
-            "goalType": "RETRIEVE_OR_CONTROL_OBJECT" if description else None,
+            "goalType": goal_type,
             "description": description,
             "targetObject": target,
-            "obstruction": str(mechanic.get("physicalRule") or "the object does not behave normally") if has_obstruction else None,
-            "intendedEffect": "restore_or_control_normal_object_use" if description else None,
+            "obstruction": (
+                surface_evidence["sourceQuote"]
+                if surface_evidence
+                else str(mechanic.get("physicalRule") or "the object does not behave normally")
+                if explicitness != "UNSUPPORTED"
+                else None
+            ),
+            "intendedEffect": (
+                "attach_object_to_target_surface"
+                if description and goal_type == "ATTACH_OBJECT_TO_TARGET"
+                else "restore_or_control_normal_object_use" if description else None
+            ),
             "source": source,
+            "primaryGoal": primary_goal_evidence,
+            "secondaryRecoveryAttempt": secondary_recovery,
         }
 
     def _attach_goal_evidence(self, beats: list[dict[str, Any]], goal: dict[str, Any]) -> list[dict[str, Any]]:
+        recovery = goal.get("secondaryRecoveryAttempt")
         for beat in beats:
             beat["actor"] = beat.get("actor") or None
             if beat.get("isAttempt"):
-                beat["goal"] = goal.get("description")
-                beat["targetObject"] = goal.get("targetObject")
-                beat["intendedEffect"] = goal.get("intendedEffect")
+                is_recovery = bool(
+                    recovery
+                    and recovery.get("beatId")
+                    and beat.get("id") == recovery["beatId"]
+                )
+                beat["goal"] = (
+                    recovery["description"] if is_recovery else goal.get("description")
+                )
+                beat["goalEvidenceRole"] = (
+                    "SECONDARY_RECOVERY_ATTEMPT" if is_recovery else "PRIMARY_GOAL"
+                )
+                beat["targetObject"] = (
+                    recovery.get("targetObject") if is_recovery else goal.get("targetObject")
+                )
+                beat["intendedEffect"] = (
+                    "remove_or_release_object" if is_recovery else goal.get("intendedEffect")
+                )
                 beat["attemptReason"] = (
                     "The beat is explicitly labelled as an attempt toward the local object goal."
                     if beat.get("beatRole") == "ATTEMPT"
