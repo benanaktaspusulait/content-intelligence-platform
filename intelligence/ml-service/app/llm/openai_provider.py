@@ -12,18 +12,17 @@ from ..semantic_provider import SemanticAnalysisRequest, SemanticAnalysisResult
 
 
 def _resolve_dimensions(aspect_ratio: str) -> tuple[int, int]:
-    """Resolve aspect ratio string to (width, height) for image generation.
+    """Resolve aspect ratio string to (width, height) for GPT Image 2.
     
-    Supports common ratios: 9:16, 16:9, 1:1, 4:3, 3:4.
-    Returns dimensions suitable for DALL-E (max 1024x1024 for standard, 
-    but aspect ratio controls shape).
+    GPT Image 2 supports various aspect ratios via the 'prompt' parameter.
+    Returns dimensions suitable for the target model.
     """
     ratio_map = {
-        "9:16": (768, 1024),
-        "16:9": (1024, 768),
+        "9:16": (1024, 1792),
+        "16:9": (1792, 1024),
         "1:1": (1024, 1024),
-        "4:3": (1024, 768),
-        "3:4": (768, 1024),
+        "4:3": (1536, 1024),
+        "3:4": (1024, 1536),
     }
     return ratio_map.get(aspect_ratio, (1024, 1024))
 
@@ -147,62 +146,125 @@ class OpenAIProvider(LLMProvider):
         self,
         prompt: str,
         aspect_ratio: str = "9:16",
-        model: str = "dall-e-3",
-        quality: str = "standard",
-        style: str = "natural",
+        model: str | None = None,
+        quality: str = "medium",
+        reference_image_paths: list[str] | None = None,
         output_dir: str | None = None,
     ) -> dict[str, Any]:
-        """Generate an image using DALL-E 3.
-        
+        """Generate an image using GPT Image 2 with optional character reference images.
+
+        Uses client.images.edit() when reference images are provided (image-to-image),
+        or client.images.generate() for text-only generation.
+
+        Args:
+            prompt: Text description of the desired image
+            aspect_ratio: Target aspect ratio (e.g., "9:16")
+            model: Model name (defaults to GPT_IMAGE_MODEL env var or "gpt-image-2")
+            quality: Quality level - "low", "medium", or "high"
+            reference_image_paths: Paths to reference images for character consistency
+            output_dir: Directory to save the generated image
+
         Returns a dict with:
         - image_path: path to the saved image file
         - image_url: URL of the generated image (from OpenAI)
         - sha256: SHA-256 hash of the saved image bytes
-        - width, height: image dimensions
+        - width, height: actual image dimensions
         - requestId: OpenAI request ID
         - model: model used
         - prompt: the prompt sent to the provider
+        - referenceImages: count of reference images used
         """
         import hashlib
         import urllib.request
-        
+
+        model = model or os.getenv("GPT_IMAGE_MODEL", "gpt-image-2")
         dimensions = _resolve_dimensions(aspect_ratio)
-        
-        response = self.client.images.generate(
-            model=model,
-            prompt=prompt,
-            n=1,
-            size=f"{dimensions[0]}x{dimensions[1]}" if aspect_ratio != "1:1" else "1024x1024",
-            quality=quality,
-            style=style,
-            response_format="url",
-        )
-        
-        image_url = response.data[0].url
-        request_id = getattr(response, "id", None)
-        
+        size = f"{dimensions[0]}x{dimensions[1]}"
+
+        # Open the reference image file handles for images.edit()
+        image_files = None
+        if reference_image_paths:
+            image_files = [open(p, "rb") for p in reference_image_paths]
+
+        try:
+            if image_files:
+                # Image-to-image: use images.edit with reference image(s)
+                response = self.client.images.edit(
+                    model=model,
+                    image=image_files,
+                    prompt=prompt,
+                    size=size,
+                    quality=quality,
+                    n=1,
+                    response_format="url",
+                )
+            else:
+                # Text-only: use images.generate
+                response = self.client.images.generate(
+                    model=model,
+                    prompt=prompt,
+                    size=size,
+                    quality=quality,
+                    n=1,
+                    response_format="url",
+                )
+
+            image_url = response.data[0].url
+            request_id = getattr(response, "id", None)
+
+        finally:
+            if image_files:
+                for fh in image_files:
+                    fh.close()
+
         # Download and save the image
         if output_dir is None:
             output_dir = os.getenv("IMAGE_OUTPUT_DIR", "/tmp/pompom-images")
-        
+
         os.makedirs(output_dir, exist_ok=True)
         filename = f"start-frame-{uuid.uuid4().hex}.png"
         image_path = os.path.join(output_dir, filename)
-        
+
         # Download image
         urllib.request.urlretrieve(image_url, image_path)
-        
-        # Calculate SHA-256
+
+        # Calculate SHA-256 and get actual dimensions
         image_bytes = Path(image_path).read_bytes()
         sha256 = hashlib.sha256(image_bytes).hexdigest()
-        
+
+        # Try to get actual dimensions from the image file
+        actual_width, actual_height = dimensions  # fallback to requested
+        try:
+            import struct
+            if image_bytes[:4] == b'\x89PNG':
+                # PNG: width/height at offset 16-23
+                actual_width = struct.unpack('>I', image_bytes[16:20])[0]
+                actual_height = struct.unpack('>I', image_bytes[20:24])[0]
+            elif image_bytes[:2] == b'\xff\xd8':
+                # JPEG: parse SOF marker
+                i = 2
+                while i < len(image_bytes) - 1:
+                    if image_bytes[i] == 0xFF:
+                        marker = image_bytes[i + 1]
+                        if marker in (0xC0, 0xC1, 0xC2):
+                            actual_height = struct.unpack('>H', image_bytes[i+5:i+7])[0]
+                            actual_width = struct.unpack('>H', image_bytes[i+7:i+9])[0]
+                            break
+                        length = struct.unpack('>H', image_bytes[i+2:i+4])[0]
+                        i += 2 + length
+                    else:
+                        i += 1
+        except Exception:
+            pass  # keep fallback dimensions
+
         return {
             "image_path": image_path,
             "image_url": image_url,
             "sha256": sha256,
-            "width": dimensions[0],
-            "height": dimensions[1],
+            "width": actual_width,
+            "height": actual_height,
             "requestId": request_id,
             "model": model,
             "prompt": prompt,
+            "referenceImages": len(reference_image_paths) if reference_image_paths else 0,
         }

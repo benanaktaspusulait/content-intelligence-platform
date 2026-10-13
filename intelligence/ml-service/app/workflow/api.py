@@ -197,10 +197,16 @@ class StartFrameRequest(BaseModel):
     promptVersionId: int = Field(gt=0)
     characterName: str = ""
     characterDescription: str = ""
+    characterId: str = ""
+    referenceImagePath: str | None = None
+    referenceId: str = ""
+    referenceSha256: str = ""
     aspectRatio: str = "9:16"
     contentProfile: str = "AUTO"
     generator: str = "SEEDANCE_2_0_MINI"
     maxCostUsd: float = Field(gt=0, le=5.0)
+    promptFingerprint: str = ""
+    sourceRevisionId: str = ""
 
 
 @router.post('/start-frame/generate')
@@ -208,6 +214,7 @@ def generate_start_frame_endpoint(request: StartFrameRequest) -> dict[str, Any]:
     """Generate a start-frame candidate image from the saved production prompt.
     
     Requires explicit cost authorization (maxCostUsd > 0).
+    Requires a verified character reference image path.
     The generated image is a CANDIDATE that must be explicitly accepted by the user
     before satisfying F8 EXECUTION_INPUTS.
     """
@@ -217,8 +224,14 @@ def generate_start_frame_endpoint(request: StartFrameRequest) -> dict[str, Any]:
         prompt_version_id=request.promptVersionId,
         character_name=request.characterName,
         character_description=request.characterDescription,
+        character_id=request.characterId,
+        reference_image_path=request.referenceImagePath,
+        reference_id=request.referenceId,
+        reference_sha256=request.referenceSha256,
         aspect_ratio=request.aspectRatio,
         content_profile=request.contentProfile,
         generator=request.generator,
         max_cost_usd=request.maxCostUsd,
+        prompt_fingerprint=request.promptFingerprint,
+        source_revision_id=request.sourceRevisionId,
     )

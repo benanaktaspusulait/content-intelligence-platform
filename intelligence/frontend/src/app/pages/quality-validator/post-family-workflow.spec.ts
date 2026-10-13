@@ -5,6 +5,11 @@ import { PostFamilyWorkflowComponent } from './post-family-workflow.component';
 
 describe('post-family operator workflow', () => {
   afterEach(() => { window.history.replaceState(window.history.state, '', window.location.pathname); localStorage.clear(); });
+  function flushReviewReads() {
+    const http=TestBed.inject(HttpTestingController);
+    http.match(r=>r.method==='GET' && r.url==='/api/v1/intelligence/workflow/production-review/decisions').forEach(r=>r.flush({decisions:[]}));
+    http.match(r=>r.method==='GET' && r.url==='/api/v1/intelligence/workflow/provider-capabilities').forEach(r=>r.flush({models:{}}));
+  }
   async function setup() {
     localStorage.clear();
     await TestBed.configureTestingModule({
@@ -15,28 +20,103 @@ describe('post-family operator workflow', () => {
     fixture.componentRef.setInput('prompt', '0-6 SEC\nLuca opens a box.');
     fixture.componentRef.setInput('contentId', '1');
     fixture.componentRef.setInput('promptVersionId', '2');
-    fixture.detectChanges();
+    fixture.detectChanges(); flushReviewReads();
     const setupHttp = TestBed.inject(HttpTestingController);
     setupHttp.expectOne(r => r.url === '/api/v1/intelligence/workflow/records?kind=REVIEW').flush([]);
     setupHttp.expectOne('/api/v1/characters').flush([{ name: 'Luca' }]);
     setupHttp.expectOne('/api/v1/intelligence/workflow/production-settings?contentId=1&promptVersionId=2').flush({});
     return fixture;
   }
+  it('saves explicit intent, restores the reviewer decision and clears it on a version change', async () => {
+    const f=await setup();const c=f.componentInstance;const http=TestBed.inject(HttpTestingController);
+    c.confirmIntent();expect(c.intentConfirmed).toBe(false);
+    const post=http.expectOne('/api/v1/intelligence/workflow/production-review/decisions');
+    expect(post.request.body).toMatchObject({contentId:'1',promptVersionId:'2',decisionType:'CREATIVE_INTENT',sourceQuote:c.prompt});
+    const decision={...post.request.body,provenance:'OPERATOR_CONFIRMED',recordId:'explicit-action'};
+    post.flush(decision);expect(c.intentConfirmed).toBe(true);
+    c.ngOnChanges({promptVersionId:{currentValue:'2'} as any});
+    http.expectOne(r=>r.url==='/api/v1/intelligence/workflow/production-review/decisions').flush({decisions:[decision]});
+    http.expectOne('/api/v1/intelligence/workflow/provider-capabilities').flush({models:{}});
+    http.expectOne('/api/v1/characters').flush([{name:'Luca'}]);
+    http.expectOne(r=>r.url==='/api/v1/intelligence/workflow/records?kind=REVIEW').flush([]);
+    http.expectOne(r=>r.url==='/api/v1/intelligence/workflow/production-settings').flush({});
+    expect(c.intentConfirmed).toBe(true);
+    f.componentRef.setInput('promptVersionId','3');f.detectChanges();
+    expect(c.intentConfirmed).toBe(false);expect(c.reviewDecisions).toEqual([]);
+    http.expectOne(r=>r.url==='/api/v1/intelligence/workflow/production-review/decisions').flush({decisions:[]});
+    http.expectOne('/api/v1/intelligence/workflow/provider-capabilities').flush({models:{}});
+    http.expectOne('/api/v1/characters').flush([{name:'Luca'}]);
+    http.expectOne(r=>r.url==='/api/v1/intelligence/workflow/records?kind=REVIEW').flush([]);
+    http.expectOne(r=>r.url==='/api/v1/intelligence/workflow/production-settings').flush({});
+    http.expectNone(r=>r.method==='POST');http.verify();f.destroy();TestBed.resetTestingModule();
+  });
+  it('represents the Mimi doubling and ending with exact current text and preserves UNKNOWN fidelity', async () => {
+    const f=await setup();const c=f.componentInstance;
+    c.prompt="Duration: 15s\n0-2s: Mimi reaches to the cabinet; the note clings to her finger -> note on finger\n2-5s: Mimi pulls; the note splits into two -> one note on each hand\n5-10s: Each pull doubles the notes, progressively covering Mimi -> Mimi is overwhelmed\n10-12s: Mimi sees herself in the mirror and screams -> Mimi is startled\n12-15s: Mimi sneezes; notes stick to the cabinet -> Mimi is relieved but the cabinet remains messy\nAUDIO\nPlayful music";
+    expect(c.sourceEvents.map(e=>[e.start,e.end])).toEqual([[0,2],[2,5],[5,10],[10,12],[12,15]]);
+    expect(c.intentMechanism).toContain('Each pull doubles');expect(c.intentEnding).toContain('cabinet remains messy');
+    expect(c.sourceEvents[2].consequence).toBe('Mimi is overwhelmed');expect(c.sourceEvents[3].proposedRole).not.toBe('PAYOFF');
+    expect(c.sourceEvents[4].consequence).toBe('Mimi is relieved but the cabinet remains messy');
+    expect(c.sourceEvents.some(e=>e.consequence.includes('only her eyes'))).toBe(false);
+    c.selectProductionTab('execution');f.detectChanges();
+    c.setEventDraft('source-event-1','role','TRIGGER');f.detectChanges();
+    expect(f.nativeElement.textContent).toContain('UNSAVED DRAFT');
+    expect(f.nativeElement.textContent).toContain('Independent semantic fidelity is UNKNOWN');
+    TestBed.inject(HttpTestingController).expectNone(r=>r.method==='POST');f.destroy();TestBed.resetTestingModule();
+  });
+  it('only confirms settings after save and never relabels an AUTO evaluation', async () => {
+    const f=await setup();const c=f.componentInstance;const http=TestBed.inject(HttpTestingController);
+    c.review={recordId:'old',boundRequest:{contentProfile:'AUTO',prompt:c.prompt}};
+    c.contentProfile='ABSURD_PHYSICS';c.desiredDuration=15;c.aspectRatio='9:16';c.generator='SEEDANCE_2_0_MINI';
+    expect(c.settingsStatus).not.toBe('CONFIRMED');c.applySettings();
+    const save=http.expectOne('/api/v1/intelligence/workflow/production-settings');
+    save.flush({savedAt:'2026-10-13T09:00:00Z'});expect(c.settingsStatus).toBe('CONFIRMED');
+    expect(c.evaluationProfile).toBe('AUTO');expect(c.review.boundRequest.contentProfile).toBe('AUTO');
+    c.desiredDuration=12;expect(c.settingsStatus).not.toBe('CONFIRMED');
+    http.expectNone(r=>r.method==='POST');http.verify();f.destroy();TestBed.resetTestingModule();
+  });
+
+  it('loads saved Step 4 settings over historical analysis without inheriting approval or changing its score', async () => {
+    const f=await setup();const c=f.componentInstance;const http=TestBed.inject(HttpTestingController);
+    c.ngOnChanges({workflowProfile:{currentValue:'post-family-v1'} as any});flushReviewReads();
+    http.expectOne('/api/v1/characters').flush([{name:'Luca'}]);
+    const old={recordId:'historical',contentId:1,promptVersionId:2,decisionPolicyVersion:'impact-review-v1',score:85,
+      boundRequest:{prompt:c.prompt,contentProfile:'AUTO',generator:'SEEDANCE_2_0_MINI',desiredDuration:15,settings:{aspectRatio:'9:16'},intentRequirements:[{level:'ESSENTIAL'}]}};
+    http.expectOne(r=>r.url==='/api/v1/intelligence/workflow/records?kind=REVIEW').flush([old]);
+    http.expectOne(r=>r.url==='/api/v1/intelligence/workflow/records?kind=ACTUAL_RENDER_QA').flush([]);
+    http.expectOne(r=>r.url==='/api/v1/intelligence/workflow/production-settings').flush({contentProfile:'ABSURD_PHYSICS',generator:'SEEDANCE_2_0_MINI',desiredDuration:15,aspectRatio:'9:16',savedAt:'now'});
+    expect(c.contentProfile).toBe('ABSURD_PHYSICS');expect(c.settingsStatus).toBe('CONFIRMED');
+    expect(c.intentConfirmed).toBe(false);expect(c.isCurrent()).toBe(false);
+    expect(c.review.score).toBe(85);expect(c.review.boundRequest.contentProfile).toBe('AUTO');
+    http.expectNone(r=>r.method==='POST');http.verify();f.destroy();TestBed.resetTestingModule();
+  });
+  it('reads the existing provider schema and legacy plan without evaluating or approving', async () => {
+    const f=await setup();const c=f.componentInstance;const http=TestBed.inject(HttpTestingController);
+    c.generator='SEEDANCE_2_0_MINI';c.desiredDuration=15;c.aspectRatio='9:16';
+    c.providerCapabilities={models:{SEEDANCE_2_0_MINI:{version:'snapshot',provenance:{schemaSha256:'recorded'},modes:{image2video:{properties:{duration:{minimum:4,maximum:15},aspectRatio:{enum:['9:16']}}}}}}};
+    expect(c.capabilityStatus).toContain('Supported by local schema snapshot');expect(c.capabilityStatus).toContain('does not verify creative producibility');
+    c.desiredDuration=16;expect(c.capabilityStatus).toContain('UNKNOWN or unsupported');
+    c.creativeProvenance={creativeRoleRecordId:'legacy',productionSpecificationStatus:'STALE'};c.loadLegacySpecification();
+    http.expectOne('/api/v1/intelligence/workflow/records/legacy').flush({result:{productionPlan:{creativeObjective:'Historical humorous animation',storyPromptFidelity:{traceableSentenceCount:0,sourceSentenceCount:9}}}});
+    expect(c.legacyProductionPlan.creativeObjective).toContain('Historical');expect(c.structuredPlanText).toBe('');expect(c.intentConfirmed).toBe(false);
+    http.expectNone(r=>r.method==='POST');http.verify();f.destroy();TestBed.resetTestingModule();
+  });
+
   it('shows stale provider evidence and approved source without importing old beats or approving review', async () => {
     const fixture=await setup();const component=fixture.componentInstance;
     fixture.componentRef.setInput('creativeProvenance',{creativeRoleRecordId:'builder',productionSpecificationStatus:'STALE',promptTextEdited:true,
       approvedStoryText:'Approved Mimi story',storyRevisionId:'candidate-2-revision-exact',sourceStoryRecordId:'story',candidateId:'candidate-2',approvalRecordId:'approval',
       productionPlan:{visualExecution:{beats:[{action:'Old provider event'}]}}});
-    fixture.detectChanges();
+    fixture.detectChanges(); flushReviewReads();
     expect(fixture.nativeElement.textContent).toContain('Production Specification is STALE');
     expect(fixture.nativeElement.textContent).toContain('Approved Mimi story');
     expect(component.structuredPlanText).toBe('');expect(component.review).toBeNull();expect(component.intentConfirmed).toBe(false);
     component.review={recordId:'old-quality'}; (component as any).reviewedInputs=(component as any).inputSnapshot();
     expect(component.isCurrent()).toBe(true);
-    fixture.componentRef.setInput('promptVersionId','3');fixture.detectChanges();
+    fixture.componentRef.setInput('promptVersionId','3');fixture.detectChanges(); flushReviewReads();
     const http=TestBed.inject(HttpTestingController);
     http.expectOne(r=>r.url==='/api/v1/intelligence/workflow/records?kind=REVIEW').flush([]);
-    http.expectOne('/api/v1/intelligence/workflow/production-settings?contentId=1&promptVersionId=3').flush({});
+    http.expectOne('/api/v1/intelligence/workflow/production-settings?contentId=1&promptVersionId=3').flush({});http.expectOne('/api/v1/characters').flush([{name:'Luca'}]);
     expect(component.review).toBeNull();expect(component.qa).toBeNull();expect(component.isCurrent()).toBe(false);
     http.expectNone(r=>r.method==='POST');http.verify();fixture.destroy();TestBed.resetTestingModule();
   });
@@ -48,13 +128,14 @@ describe('post-family operator workflow', () => {
     fixture.componentRef.setInput('prompt', 'Luca opens a box.');
     fixture.componentRef.setInput('contentId', '7');
     fixture.componentRef.setInput('promptVersionId', '9');
-    fixture.detectChanges();
+    fixture.detectChanges(); flushReviewReads();
     const http = TestBed.inject(HttpTestingController);
     http.expectOne(r => r.url === '/api/v1/intelligence/workflow/records?kind=REVIEW').flush([
       { recordId: 'other', contentId: 7, promptVersionId: 8 },
       { recordId: 'saved', contentId: 7, promptVersionId: 9, bindingHash: 'binding', decisionPolicyVersion: 'impact-review-v1', boundRequest: { prompt: 'Luca opens a box.', generator: 'SEEDANCE_2_5', desiredDuration: 15, settings: { aspectRatio: '16:9' } } },
     ]);
     http.expectOne('/api/v1/characters').flush([{ name: 'Luca' }]);
+    http.expectOne(r=>r.url==='/api/v1/intelligence/workflow/production-settings').flush({});
     http.expectOne(r => r.url === '/api/v1/intelligence/workflow/records?kind=ACTUAL_RENDER_QA').flush([{ recordId: 'qa', bindingHash: 'binding', videoId: 'exact-video' }]);
     expect(component.restoredRecordId).toBe('saved');
     expect(component.generator).toBe('SEEDANCE_2_5');
@@ -74,7 +155,7 @@ describe('post-family operator workflow', () => {
     fixture.componentRef.setInput('prompt', 'Mimi stands beside a cabinet.');
     fixture.componentRef.setInput('contentId', '7');
     fixture.componentRef.setInput('promptVersionId', '9');
-    fixture.detectChanges();
+    fixture.detectChanges(); flushReviewReads();
     const http = TestBed.inject(HttpTestingController);
     http.expectOne(r => r.url === '/api/v1/intelligence/workflow/records?kind=REVIEW').flush([
       { recordId: 'review-7-9', contentId: 7, promptVersionId: 9, bindingHash: 'review-hash', decisionPolicyVersion: 'impact-review-v1', boundRequest: { prompt: 'Mimi stands beside a cabinet.' } },
@@ -84,6 +165,7 @@ describe('post-family operator workflow', () => {
     assetRequest.flush([{ id: 'ref-v3', status: 'APPROVED', sha256: 'stable-sha256', relativePath: 'character-references/mimi/ref-v3.png', version: 3 }]);
     http.expectOne(r => r.url === '/api/v1/intelligence/workflow/production-review/reference-binding' && r.params.get('contentId') === '7' && r.params.get('promptVersionId') === '9')
       .flush({ contentId: '7', promptVersionId: '9', characterId: 'mimi-id', referenceId: 'ref-v3', sha256: 'stable-sha256', version: 3, approvalStatus: 'APPROVED' });
+    http.expectOne(r=>r.url==='/api/v1/intelligence/workflow/production-settings').flush({});
     http.expectOne(r => r.url === '/api/v1/intelligence/workflow/records?kind=ACTUAL_RENDER_QA' && r.params.get('bindingHash') === 'review-hash').flush([]);
     expect(component.selectedReferenceId).toBe('ref-v3');
     expect(component.references[0]).toMatchObject({ id: 'ref-v3', sha256: 'stable-sha256', version: 3, status: 'APPROVED' });
@@ -100,13 +182,14 @@ describe('post-family operator workflow', () => {
     fixture.componentRef.setInput('prompt', 'Kiko discovers a box.');
     fixture.componentRef.setInput('contentId', '2');
     fixture.componentRef.setInput('promptVersionId', '2');
-    fixture.detectChanges();
+    fixture.detectChanges(); flushReviewReads();
     const http = TestBed.inject(HttpTestingController);
     http.expectOne(r => r.url === '/api/v1/intelligence/workflow/records?kind=REVIEW').flush([
       { recordId: 'mimi-review', contentId: 1, promptVersionId: 2, bindingHash: 'mimi-hash', boundRequest: { prompt: 'Mimi opens a cabinet.' } },
       { recordId: 'kiko-review', contentId: 2, promptVersionId: 2, bindingHash: 'kiko-hash', boundRequest: { prompt: 'Kiko discovers a box.' } },
     ]);
     http.expectOne('/api/v1/characters').flush([{ name: 'Kiko' }]);
+    http.expectOne(r=>r.url==='/api/v1/intelligence/workflow/production-settings').flush({});
     http.expectOne(r => r.url === '/api/v1/intelligence/workflow/records?kind=ACTUAL_RENDER_QA').flush([]);
     expect(component.restoredRecordId).toBe('kiko-review');
     expect(component.review?.recordId).toBe('kiko-review');
@@ -124,7 +207,7 @@ describe('post-family operator workflow', () => {
   it('keeps downstream analysis, repair and video QA out of the production review stage', async () => {
     const fixture = await setup();
     const component = fixture.componentInstance;
-    expect(component.activeStage).toBe(4);
+    expect(component.activeStage).toBe(4);expect(fixture.nativeElement.textContent).not.toContain('{{');
     expect(fixture.nativeElement.textContent).toContain('Continue to Quality Analysis');
     expect(fixture.nativeElement.querySelector('.analysis-tabs')).toBeNull();
     expect(fixture.nativeElement.textContent).not.toContain('Actual render QA');
@@ -248,7 +331,7 @@ describe('post-family operator workflow', () => {
     c.prompt = '0-3s: Kiko spots a box.\n3-6s: Kiko opens it.';
     expect(c.sourceEvents.every(event => event.evidence === 'SOURCE_EVENT_CANDIDATE')).toBe(true);
     expect(c.sourceEvents.every(event => event.semanticStatus === 'PENDING')).toBe(true);
-    expect(c.executionEvidenceStatus).toContain('classification pending');
+    expect(c.executionEvidenceStatus).toContain('independent semantic fidelity UNKNOWN');
   });
   it('shows a non-destructive profile mismatch advisory without overriding the operator', async () => {
     const f = await setup();
@@ -324,7 +407,7 @@ describe('post-family operator workflow', () => {
     expect(c.creativeConflicts[0].sourceEvidence).toContain('notes multiply');
     c.selectProductionTab('execution');
     const http=TestBed.inject(HttpTestingController);
-    http.expectOne(r=>r.url==='/api/v1/intelligence/workflow/production-review/decisions').flush({decisions:[]});
+    http.expectNone(r=>r.url==='/api/v1/intelligence/workflow/production-review/decisions');
     const original=c.prompt;
     c.setEventDraft(events[1].id,'role','TRIGGER');
     c.setEventDraft(events[1].id,'primaryObject','Sticky note');

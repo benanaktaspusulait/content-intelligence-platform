@@ -812,10 +812,15 @@ export class RenderPreparationPage implements OnInit, OnDestroy {
         promptVersionId: Number(this.queuePromptVersionId()),
         characterName: character,
         characterDescription: this.characterBinding?.description || '',
+        characterId: this.characterBinding?.characterId || '',
+        referenceId: this.characterBinding?.referenceId || '',
+        referenceSha256: this.characterBinding?.sha256 || '',
         aspectRatio: this.ratio,
         contentProfile: this.workflowReview?.boundRequest?.contentProfile || 'AUTO',
         generator: this.queueModel(),
         maxCostUsd: this.startFrameBudget(),
+        promptFingerprint: this.workflowReview?.boundRequest?.promptSha256 || '',
+        sourceRevisionId: this.workflowReview?.boundRequest?.sourceRevisionId || '',
       })
       .subscribe({
         next: (result) => {
@@ -848,40 +853,45 @@ export class RenderPreparationPage implements OnInit, OnDestroy {
 
   /** Reject the current start-frame candidate. */
   rejectStartFrameCandidate(): void {
-    this.startFrameResult.set(null);
+    const result = this.startFrameResult();
+    if (!result || !result.databaseId) {
+      this.startFrameResult.set(null);
+      return;
+    }
+    this.http.post<any>('/api/v1/intelligence/workflow/start-frame/reject', {
+      candidateId: result.databaseId,
+      contentId: Number(this.queueContentId()),
+      promptVersionId: Number(this.queuePromptVersionId()),
+      reason: 'User rejected candidate',
+    }).subscribe({
+      next: () => this.startFrameResult.set(null),
+      error: () => this.startFrameResult.set(null),
+    });
   }
 
-  /** Accept the generated start-frame candidate by uploading it. */
+  /** Accept the generated start-frame candidate. */
   acceptStartFrameCandidate(): void {
     const result = this.startFrameResult();
     if (!result || result.status !== 'GENERATED') return;
-    // The generated image URL is from OpenAI; we accept it by recording the candidate
-    // and setting the first frame path. The user can then proceed to render.
-    this.visualReferenceError.set('');
-    // Store the candidate as accepted in the visual reference plan
-    const plan = this.visualReferencePlan();
-    if (!plan?.planId) {
-      this.visualReferenceError.set('Visual reference plan not loaded.');
+    if (!result.databaseId) {
+      this.visualReferenceError.set('Candidate not persisted. Please regenerate.');
       return;
     }
-    // Accept via the existing accept flow — the generated image URL is treated as the asset
-    this.http
-      .post(`/api/v1/visual-reference-plans/${plan.planId}/first-frame/accept`, {
-        renderAssetId: result.candidateId,
-        imageUrl: result.imageUrl,
-        sha256: result.sha256,
-        ...this.acceptanceContext(),
-      })
-      .subscribe({
-        next: () => {
-          this.persistAcceptedFrame(result.candidateId);
-          this.loadPlan();
-        },
-        error: (err) => {
-          this.visualReferenceError.set(
-            err.error?.detail ||
-              err.error?.message ||
-              'The generated start frame could not be accepted.',
+    this.visualReferenceError.set('');
+    this.http.post<any>('/api/v1/intelligence/workflow/start-frame/accept', {
+      candidateId: result.databaseId,
+      contentId: Number(this.queueContentId()),
+      promptVersionId: Number(this.queuePromptVersionId()),
+    }).subscribe({
+      next: () => {
+        this.startFrameResult.set({ ...result, status: 'ACCEPTED' });
+        this.loadPlan();
+      },
+      error: (err) => {
+        this.visualReferenceError.set(
+          err.error?.detail ||
+          err.error?.message ||
+          'The generated start frame could not be accepted.',
           );
         },
       });

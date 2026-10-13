@@ -1,7 +1,8 @@
 """Start-frame image generation service.
 
 Generates a first-frame candidate image from the saved production prompt's
-opening beat. Uses DALL-E 3 via the OpenAI provider.
+opening beat. Uses GPT Image 2 via the OpenAI provider with character
+reference images for identity preservation.
 
 The generated image is stored as a start-frame candidate linked to:
 - contentId
@@ -83,23 +84,32 @@ def _build_image_prompt(
     character_description: str,
     aspect_ratio: str,
     content_profile: str,
+    has_reference_image: bool = False,
 ) -> str:
-    """Build a DALL-E image generation prompt from the first beat.
+    """Build a GPT Image 2 generation prompt from the first beat.
     
     The prompt emphasizes:
-    - Character identity consistency
+    - Character identity consistency (via reference image when available)
     - The impossible physical relationship
     - Clear readable composition
     - Aspect ratio appropriate framing
     """
     # Base prompt
     prompt_parts = [
-        f"First frame of a short animation video.",
-        f"Character: {character_name}.",
+        "First frame of a short 3D animated video.",
     ]
     
-    if character_description:
-        prompt_parts.append(f"Character design: {character_description}.")
+    if has_reference_image:
+        prompt_parts.append(
+            f"Use the provided reference image to preserve the exact character identity of {character_name}."
+        )
+        prompt_parts.append(
+            "Match the character's face, proportions, colors, and design from the reference image."
+        )
+    else:
+        prompt_parts.append(f"Character: {character_name}.")
+        if character_description:
+            prompt_parts.append(f"Character design: {character_description}.")
     
     prompt_parts.append(f"Scene: {first_beat}.")
     
@@ -131,10 +141,16 @@ def generate_start_frame(
     prompt_version_id: int,
     character_name: str = "",
     character_description: str = "",
+    character_id: str = "",
+    reference_image_path: str | None = None,
+    reference_id: str = "",
+    reference_sha256: str = "",
     aspect_ratio: str = "9:16",
     content_profile: str = "AUTO",
     generator: str = "SEEDANCE_2_0_MINI",
     max_cost_usd: float = 0.10,
+    prompt_fingerprint: str = "",
+    source_revision_id: str = "",
 ) -> dict[str, Any]:
     """Generate a start-frame candidate image.
     
@@ -143,23 +159,47 @@ def generate_start_frame(
         content_id: Content workspace ID
         prompt_version_id: Prompt version ID
         character_name: Main character name
-        character_description: Character appearance description
+        character_description: Character appearance description (fallback only)
+        character_id: Canonical character ID
+        reference_image_path: Path to verified character reference image (REQUIRED)
+        reference_id: Character reference record ID
+        reference_sha256: SHA-256 of the reference image
         aspect_ratio: Target aspect ratio (e.g., "9:16")
         content_profile: Content profile (e.g., "ABSURD_PHYSICS")
         generator: Target video generator
         max_cost_usd: Maximum allowed cost for this generation
+        prompt_fingerprint: SHA-256 of the prompt text
+        source_revision_id: Approved story revision ID
     
     Returns:
         Dict with generation result including image_path, sha256, metadata
     """
-    # Check cost ceiling
-    dall_e_cost = 0.04  # DALL-E 3 standard quality ~$0.04 per image
-    if max_cost_usd <= 0 or dall_e_cost > max_cost_usd:
+    # Verify character reference image is provided
+    if not reference_image_path:
+        return {
+            "status": "MISSING_REFERENCE",
+            "reason": "A verified character reference image is required. "
+                      "Upload and verify a character reference in Character Lab before generating.",
+            "characterName": character_name,
+            "characterId": character_id,
+        }
+    
+    if not Path(reference_image_path).is_file():
+        return {
+            "status": "MISSING_REFERENCE",
+            "reason": f"Character reference image file not found: {reference_image_path}",
+            "characterName": character_name,
+            "characterId": character_id,
+        }
+    
+    # Check cost ceiling - GPT Image 2 medium quality ~$0.053 per image
+    gpt_image_cost = float(os.getenv("GPT_IMAGE_COST_USD", "0.053"))
+    if max_cost_usd <= 0 or gpt_image_cost > max_cost_usd:
         return {
             "status": "REJECTED_COST_CEILING",
-            "reason": f"DALL-E 3 image generation cost (${dall_e_cost:.2f}) exceeds "
+            "reason": f"GPT Image 2 generation cost (${gpt_image_cost:.2f}) exceeds "
                       f"authorized ceiling (${max_cost_usd:.2f}).",
-            "estimatedCost": dall_e_cost,
+            "estimatedCost": gpt_image_cost,
             "maxCostUsd": max_cost_usd,
         }
     
@@ -169,7 +209,7 @@ def generate_start_frame(
     # Build image prompt
     image_prompt = _build_image_prompt(
         first_beat, character_name, character_description,
-        aspect_ratio, content_profile
+        aspect_ratio, content_profile, has_reference_image=True
     )
     
     # Generate image
@@ -182,18 +222,21 @@ def generate_start_frame(
             "provider": "openai",
         }
     
-    # Resolve output directory
-    output_dir = os.getenv("IMAGE_OUTPUT_DIR", "/tmp/pompom-images")
-    content_dir = os.path.join(output_dir, str(content_id), str(prompt_version_id))
-    os.makedirs(content_dir, exist_ok=True)
+    # Resolve output directory - use durable storage
+    data_root = os.getenv("POMPOM_DATA_ROOT", "/tmp/pompom-data")
+    output_dir = os.path.join(data_root, "start-frames", str(content_id), str(prompt_version_id))
+    os.makedirs(output_dir, exist_ok=True)
+    
+    model = os.getenv("GPT_IMAGE_MODEL", "gpt-image-2")
+    quality = os.getenv("GPT_IMAGE_QUALITY", "medium")
     
     result = provider.generate_image(
         prompt=image_prompt,
         aspect_ratio=aspect_ratio,
-        model="dall-e-3",
-        quality="standard",
-        style="natural",
-        output_dir=content_dir,
+        model=model,
+        quality=quality,
+        reference_image_paths=[reference_image_path],
+        output_dir=output_dir,
     )
     
     # Build candidate record
@@ -212,19 +255,28 @@ def generate_start_frame(
         "firstBeat": first_beat,
         "imagePrompt": image_prompt,
         "characterName": character_name,
+        "characterId": character_id,
+        "referenceId": reference_id,
+        "referenceSha256": reference_sha256,
+        "referenceImageUsed": True,
         "aspectRatio": aspect_ratio,
         "generator": generator,
         "model": result["model"],
+        "quality": quality,
         "requestId": result["requestId"],
-        "cost": dall_e_cost,
+        "cost": gpt_image_cost,
         "maxCostUsd": max_cost_usd,
         "status_label": "CANDIDATE",
         "createdAt": datetime.now(timezone.utc).isoformat(),
+        "promptFingerprint": prompt_fingerprint,
+        "sourceRevisionId": source_revision_id,
         "provenance": {
             "source": "GENERATED",
             "provider": "openai",
-            "model": "dall-e-3",
+            "model": model,
             "promptVersionId": prompt_version_id,
             "contentId": content_id,
+            "characterId": character_id,
+            "referenceId": reference_id,
         },
     }

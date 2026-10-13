@@ -340,6 +340,36 @@ class PlatformIntegrationTest {
   }
 
   @Test
+  @org.springframework.transaction.annotation.Transactional
+  void creativeIntentConfirmationRequiresFullVersionedEvidenceAndRestoresWithoutEvaluating() {
+    long contentId = jdbc.queryForObject(
+        "INSERT INTO contents(title,type,status) VALUES ('Intent persistence test','REEL','DRAFT') RETURNING id", Long.class);
+    String source = "0-2s: Mimi pulls a note.\n2-5s: Each pull doubles the notes.\n12-15s: Mimi sneezes; the cabinet remains messy.";
+    long version = jdbc.queryForObject(
+        "INSERT INTO prompt_versions(content_id,version_number,raw_text) VALUES (?,1,?) RETURNING id",
+        Long.class, contentId, source);
+    long nextVersion = jdbc.queryForObject(
+        "INSERT INTO prompt_versions(content_id,version_number,raw_text) VALUES (?,2,?) RETURNING id",
+        Long.class, contentId, source + " Edited.");
+    var request = new java.util.LinkedHashMap<String,Object>(java.util.Map.of(
+        "contentId", contentId, "promptVersionId", version,
+        "decisionType", "CREATIVE_INTENT", "decisionId", "creative-intent",
+        "decision", "CONFIRMED", "sourceQuote", source,
+        "protectedIntent", "Preserve repeated doubling and the sneeze ending."));
+    workflow.saveProductionReviewDecision(request);
+    assertThat((java.util.List<?>)workflow.getProductionReviewDecisions(contentId,version).get("decisions")).hasSize(1);
+    assertThat((java.util.List<?>)workflow.getProductionReviewDecisions(contentId,nextVersion).get("decisions")).isEmpty();
+    request.put("sourceQuote", "0-2s: Mimi pulls a note.");
+    assertThatThrownBy(() -> workflow.saveProductionReviewDecision(request))
+        .isInstanceOf(IllegalArgumentException.class).hasMessageContaining("complete saved prompt");
+    request.put("sourceQuote", "");
+    assertThatThrownBy(() -> workflow.saveProductionReviewDecision(request))
+        .isInstanceOf(IllegalArgumentException.class).hasMessageContaining("exact text");
+    assertThat(jdbc.queryForObject("SELECT count(*) FROM quality_validations WHERE content_id=?", Integer.class, contentId)).isZero();
+    assertThat(jdbc.queryForObject("SELECT count(*) FROM prompt_versions WHERE content_id=?", Integer.class, contentId)).isEqualTo(2);
+  }
+
+  @Test
   void uploadedCharacterReferenceRequiresExplicitApprovalAndStoresStableHash() throws Exception {
     var character = characters.create("Reference Test Mimi", com.pompomhills.intelligence.character.CharacterStatus.NEW, "test identity");
     var image = new java.awt.image.BufferedImage(1, 1, java.awt.image.BufferedImage.TYPE_INT_RGB);

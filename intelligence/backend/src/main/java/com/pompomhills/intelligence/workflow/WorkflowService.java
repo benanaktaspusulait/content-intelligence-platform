@@ -8,6 +8,8 @@ import com.pompomhills.intelligence.quality.ValidationEvidenceService;
 import com.pompomhills.intelligence.video.MediaContentService;
 import com.pompomhills.intelligence.video.VideoService;
 import com.pompomhills.intelligence.video.ml.MlVideoClient;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.security.MessageDigest;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -122,6 +124,10 @@ public class WorkflowService {
       input.put("sourceVersion", "DRAFT");
     }
     input.put("references", verifiedReferences(input.get("references")));
+    // Pass accepted start-frame candidate to ML service so F8 can recognize it.
+    if (request.contentId() != null && request.promptVersionId() != null) {
+      input.put("acceptedStartFrame", hasAcceptedStartFrame(request.contentId(), request.promptVersionId()));
+    }
     // Recommendation provenance belongs to the persisted workflow record, not to the
     // provider contract. Keep it in `boundRequest` while sending only schema-approved
     // fields to the ML service (its request model rejects unknown properties).
@@ -975,6 +981,16 @@ public class WorkflowService {
         .optional().orElseThrow(() -> new IllegalArgumentException("Production settings not found"));
   }
 
+  /** Read the existing schema snapshot without contacting a generation provider. */
+  public Map<String, Object> getProviderCapabilities() {
+    try {
+      return json.readValue(java.nio.file.Files.readString(java.nio.file.Path.of(
+          workflowDataRoot, "workflow", "provider-capabilities.json")), new TypeReference<>() {});
+    } catch (java.io.IOException unavailable) {
+      return Map.of("status", "UNKNOWN", "models", Map.of());
+    }
+  }
+
   /** Append operator-reviewed Step 4 interpretations without changing the immutable prompt. */
   public Map<String, Object> saveProductionReviewDecision(Map<String, Object> request) {
     Object content = request.get("contentId");
@@ -985,7 +1001,7 @@ public class WorkflowService {
     if (content == null || version == null || decisionType.isBlank() || decisionId.isBlank()
         || decision.isBlank())
       throw new IllegalArgumentException("contentId, promptVersionId, decisionType, decisionId and decision are required");
-    if (!List.of("EVENT_CLASSIFICATION", "CREATIVE_CONFLICT").contains(decisionType))
+    if (!List.of("EVENT_CLASSIFICATION", "CREATIVE_CONFLICT", "CREATIVE_INTENT").contains(decisionType))
       throw new IllegalArgumentException("Unsupported production review decision type");
     String savedPrompt = jdbc.sql("SELECT raw_text FROM prompt_versions WHERE content_id=:content AND id=:version")
         .param("content", Long.valueOf(String.valueOf(content)))
@@ -995,8 +1011,12 @@ public class WorkflowService {
     List<String> evidenceParts = decisionType.equals("CREATIVE_CONFLICT")
         ? sourceEvidence.lines().map(String::trim).filter(line -> !line.isBlank()).toList()
         : List.of(sourceEvidence.trim());
-    if (evidenceParts.isEmpty() || evidenceParts.stream().anyMatch(part -> !savedPrompt.contains(part)))
+    if (evidenceParts.isEmpty() || evidenceParts.stream().anyMatch(part -> part.isBlank() || !savedPrompt.contains(part)))
       throw new IllegalArgumentException("The operator decision must cite exact text from the selected immutable prompt version");
+    if (decisionType.equals("CREATIVE_INTENT")
+        && (!decisionId.equals("creative-intent") || !decision.equals("CONFIRMED")
+            || !sourceEvidence.equals(savedPrompt)))
+      throw new IllegalArgumentException("Creative intent confirmation requires review of the complete saved prompt");
     var payload = new LinkedHashMap<String, Object>(request);
     payload.put("contentId", String.valueOf(content));
     payload.put("promptVersionId", String.valueOf(version));
@@ -1009,13 +1029,17 @@ public class WorkflowService {
   }
 
   public Map<String, Object> getProductionReviewDecisions(Long contentId, Long promptVersionId) {
+    var snapshot = prompts.load(contentId, promptVersionId);
     var rows = jdbc.sql("SELECT id,payload::text payload FROM post_family_workflow_events "
             + "WHERE kind='PRODUCTION_REVIEW_DECISION' AND payload->>'contentId'=:content "
             + "AND payload->>'promptVersionId'=:prompt ORDER BY created_at,id")
         .param("content", String.valueOf(contentId)).param("prompt", String.valueOf(promptVersionId))
         .query((rs, ignored) -> { var value = read(rs.getString("payload")); value.put("recordId", rs.getString("id")); return value; }).list();
     var latest = new LinkedHashMap<String, Object>();
-    for (var row : rows) latest.put(String.valueOf(row.get("decisionType")) + ":" + row.get("decisionId"), row);
+    for (var row : rows) {
+      if (!sha256(snapshot.promptText()).equals(row.get("sourceFingerprint"))) continue;
+      latest.put(String.valueOf(row.get("decisionType")) + ":" + row.get("decisionId"), row);
+    }
     return Map.of("contentId", contentId, "promptVersionId", promptVersionId,
         "decisions", List.copyOf(latest.values()));
   }
@@ -1104,7 +1128,7 @@ public class WorkflowService {
         .optional().orElseThrow(() -> new IllegalArgumentException("Visual preparation not found"));
   }
 
-  /** Proxy to ML service start-frame generation endpoint. */
+  /** Proxy to ML service start-frame generation endpoint. Resolves character reference image path. */
   public Map<String, Object> generateStartFrame(Map<String, Object> request) {
     if (request.get("contentId") == null || request.get("promptVersionId") == null)
       throw new IllegalArgumentException("contentId and promptVersionId are required");
@@ -1113,7 +1137,160 @@ public class WorkflowService {
     Object maxCost = request.getOrDefault("maxCostUsd", 0);
     if (!(maxCost instanceof Number) || ((Number) maxCost).doubleValue() <= 0)
       throw new IllegalArgumentException("maxCostUsd must be positive");
-    return ml.workflow("start-frame/generate", request);
+    
+    // Resolve character reference image path from verified reference
+    String characterId = String.valueOf(request.getOrDefault("characterId", ""));
+    String referenceId = String.valueOf(request.getOrDefault("referenceId", ""));
+    if (characterId.isBlank() || referenceId.isBlank())
+      throw new IllegalArgumentException("characterId and referenceId are required for start-frame generation");
+    
+    UUID charUuid = UUID.fromString(characterId);
+    UUID refUuid = UUID.fromString(referenceId);
+    
+    // Verify the reference exists and is approved
+    var refRecord = jdbc.sql("SELECT relative_path,sha256,approval_status FROM character_references WHERE id=:ref AND character_id=:char")
+        .param("ref", refUuid).param("char", charUuid)
+        .query((rs, ignored) -> Map.of(
+            "path", rs.getString("relative_path"),
+            "sha", rs.getString("sha256"),
+            "status", rs.getString("approval_status")))
+        .optional().orElseThrow(() -> new IllegalArgumentException("Character reference not found"));
+    
+    if (!"VERIFIED".equals(refRecord.get("status")) && !"APPROVED".equals(refRecord.get("status")))
+      throw new IllegalArgumentException("Character reference must be verified before generating start frame");
+    
+    // Resolve absolute image path
+    String relativePath = (String) refRecord.get("path");
+    Path dataRootPath = Path.of(workflowDataRoot);
+    Path imagePath = dataRootPath.resolve(relativePath).normalize();
+    if (!imagePath.startsWith(dataRootPath) || !Files.isRegularFile(imagePath))
+      throw new IllegalArgumentException("Character reference image file not found");
+    
+    // Add resolved image path to request
+    request.put("referenceImagePath", imagePath.toString());
+    request.put("referenceSha256", refRecord.get("sha"));
+    
+    var result = ml.workflow("start-frame/generate", request);
+    
+    // Persist generated candidate in database
+    if ("GENERATED".equals(result.get("status"))) {
+      String candidateId = String.valueOf(result.get("candidateId"));
+      String charId = String.valueOf(result.getOrDefault("characterId", ""));
+      String refId = String.valueOf(result.getOrDefault("referenceId", ""));
+      String refSha = String.valueOf(result.getOrDefault("referenceSha256", ""));
+      String imgPath = String.valueOf(result.getOrDefault("imagePath", ""));
+      String imgSha = String.valueOf(result.getOrDefault("sha256", ""));
+      int width = ((Number) result.getOrDefault("width", 0)).intValue();
+      int height = ((Number) result.getOrDefault("height", 0)).intValue();
+      String model = String.valueOf(result.getOrDefault("model", ""));
+      String quality = String.valueOf(result.getOrDefault("quality", "medium"));
+      double cost = ((Number) result.getOrDefault("cost", 0.053)).doubleValue();
+      
+      UUID dbId = UUID.randomUUID();
+      jdbc.sql(
+          "INSERT INTO start_frame_candidates(id,content_id,prompt_version_id,candidate_id,character_id,reference_id,reference_sha256,image_path,image_sha256,width,height,model,quality,cost_usd,status) VALUES (:id,:content,:prompt,:candidate,:char,:ref,:refsha,:imgpath,:imgsha,:width,:height,:model,:quality,:cost,'CANDIDATE')")
+          .param("id", dbId)
+          .param("content", Long.valueOf(String.valueOf(request.get("contentId"))))
+          .param("prompt", Long.valueOf(String.valueOf(request.get("promptVersionId"))))
+          .param("candidate", candidateId)
+          .param("char", UUID.fromString(charId))
+          .param("ref", UUID.fromString(refId))
+          .param("refsha", refSha)
+          .param("imgpath", imgPath)
+          .param("imgsha", imgSha)
+          .param("width", width)
+          .param("height", height)
+          .param("model", model)
+          .param("quality", quality)
+          .param("cost", cost)
+          .update();
+      
+      result.put("databaseId", dbId.toString());
+    }
+    
+    return result;
+  }
+
+  /** List start-frame candidates for a content/prompt version. */
+  public Map<String, Object> listStartFrameCandidates(Long contentId, Long promptVersionId) {
+    var candidates = jdbc.sql(
+        "SELECT id::text,candidate_id,character_id::text,reference_id::text,reference_sha256,image_path,image_sha256,width,height,model,quality,cost_usd,status,rejected_at,rejected_by,rejected_reason,accepted_at,accepted_by,created_at FROM start_frame_candidates WHERE content_id=:content AND prompt_version_id=:prompt ORDER BY created_at DESC")
+        .param("content", contentId).param("prompt", promptVersionId)
+        .query((rs, ignored) -> Map.<String, Object>ofEntries(
+            java.util.Map.entry("id", rs.getString("id")),
+            java.util.Map.entry("candidateId", rs.getString("candidate_id")),
+            java.util.Map.entry("characterId", rs.getString("character_id")),
+            java.util.Map.entry("referenceId", rs.getString("reference_id")),
+            java.util.Map.entry("referenceSha256", rs.getString("reference_sha256")),
+            java.util.Map.entry("imagePath", rs.getString("image_path")),
+            java.util.Map.entry("imageSha256", rs.getString("image_sha256")),
+            java.util.Map.entry("width", rs.getInt("width")),
+            java.util.Map.entry("height", rs.getInt("height")),
+            java.util.Map.entry("model", rs.getString("model")),
+            java.util.Map.entry("quality", rs.getString("quality")),
+            java.util.Map.entry("costUsd", rs.getBigDecimal("cost_usd").doubleValue()),
+            java.util.Map.entry("status", rs.getString("status")),
+            java.util.Map.entry("createdAt", rs.getTimestamp("created_at").toInstant().toString())))
+        .list();
+    return Map.of("contentId", contentId, "promptVersionId", promptVersionId, "candidates", candidates);
+  }
+
+  /** Accept a start-frame candidate. */
+  public Map<String, Object> acceptStartFrame(Map<String, Object> request) {
+    String id = String.valueOf(request.get("candidateId"));
+    Long contentId = Long.valueOf(String.valueOf(request.get("contentId")));
+    Long promptVersionId = Long.valueOf(String.valueOf(request.get("promptVersionId")));
+    if (id == null || id.isBlank())
+      throw new IllegalArgumentException("candidateId is required");
+    
+    var existing = jdbc.sql(
+        "SELECT id::text,status FROM start_frame_candidates WHERE id::text=:id AND content_id=:content AND prompt_version_id=:prompt")
+        .param("id", id).param("content", contentId).param("prompt", promptVersionId)
+        .query((rs, ignored) -> Map.of("id", rs.getString("id"), "status", rs.getString("status")))
+        .optional().orElseThrow(() -> new IllegalArgumentException("Start-frame candidate not found"));
+    
+    if ("ACCEPTED".equals(existing.get("status")))
+      throw new IllegalArgumentException("Candidate already accepted");
+    if ("REJECTED".equals(existing.get("status")))
+      throw new IllegalArgumentException("Cannot accept a rejected candidate; generate a new one");
+    
+    jdbc.sql("UPDATE start_frame_candidates SET status='ACCEPTED',accepted_at=now(),accepted_by=:who WHERE id::text=:id")
+        .param("id", id).param("who", "operator").update();
+    
+    return Map.of("status", "ACCEPTED", "candidateId", id, "contentId", contentId, "promptVersionId", promptVersionId);
+  }
+
+  /** Reject a start-frame candidate. */
+  public Map<String, Object> rejectStartFrame(Map<String, Object> request) {
+    String id = String.valueOf(request.get("candidateId"));
+    Long contentId = Long.valueOf(String.valueOf(request.get("contentId")));
+    Long promptVersionId = Long.valueOf(String.valueOf(request.get("promptVersionId")));
+    if (id == null || id.isBlank())
+      throw new IllegalArgumentException("candidateId is required");
+    
+    var existing = jdbc.sql(
+        "SELECT id::text,status FROM start_frame_candidates WHERE id::text=:id AND content_id=:content AND prompt_version_id=:prompt")
+        .param("id", id).param("content", contentId).param("prompt", promptVersionId)
+        .query((rs, ignored) -> Map.of("id", rs.getString("id"), "status", rs.getString("status")))
+        .optional().orElseThrow(() -> new IllegalArgumentException("Start-frame candidate not found"));
+    
+    if ("REJECTED".equals(existing.get("status")))
+      throw new IllegalArgumentException("Candidate already rejected");
+    if ("ACCEPTED".equals(existing.get("status")))
+      throw new IllegalArgumentException("Cannot reject an accepted candidate");
+    
+    String reason = String.valueOf(request.getOrDefault("reason", ""));
+    jdbc.sql("UPDATE start_frame_candidates SET status='REJECTED',rejected_at=now(),rejected_by='operator',rejected_reason=:reason WHERE id::text=:id")
+        .param("id", id).param("reason", reason).update();
+    
+    return Map.of("status", "REJECTED", "candidateId", id, "contentId", contentId, "promptVersionId", promptVersionId);
+  }
+
+  /** Check if there's an accepted start frame for the given content/prompt version. */
+  public boolean hasAcceptedStartFrame(Long contentId, Long promptVersionId) {
+    return jdbc.sql("SELECT COUNT(*) FROM start_frame_candidates WHERE content_id=:content AND prompt_version_id=:prompt AND status='ACCEPTED'")
+        .param("content", contentId).param("prompt", promptVersionId)
+        .query(Integer.class).single() > 0;
   }
 
   public Map<String, Object> secondOpinion(UUID id, Map<String, Object> options) {

@@ -1004,10 +1004,16 @@ def review_prompt(request: dict[str, Any], capabilities: dict[str, Any] | None =
         pending("An authoritative character/object reference is missing or unverified.", "REFERENCE_ASSOCIATION")
     if generation["capabilityStatus"] != "SUPPORTED":
         pending("The requested model/duration/setting is not supported by a verified contract.", "GENERATOR_CAPABILITY")
-    if generation["missingExecutionInputs"]:
+    # Filter out startFrame if an accepted start-frame candidate exists.
+    # The start-frame candidate workflow (generate → accept) satisfies this requirement.
+    missing_inputs = list(generation["missingExecutionInputs"])
+    accepted_start_frame = request.get("acceptedStartFrame")
+    if accepted_start_frame and "startFrame" in missing_inputs:
+        missing_inputs = [m for m in missing_inputs if m != "startFrame"]
+    if missing_inputs:
         pending(
             "Required provider execution inputs are missing: "
-            + ", ".join(generation["missingExecutionInputs"]),
+            + ", ".join(missing_inputs),
             "EXECUTION_INPUTS",
         )
     if execution["status"] == "UNKNOWN":

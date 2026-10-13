@@ -112,6 +112,11 @@ public class WorkflowController {
     return service.getProductionSettings(contentId, promptVersionId);
   }
 
+  @GetMapping("/provider-capabilities")
+  public Map<String, Object> providerCapabilities() {
+    return service.getProviderCapabilities();
+  }
+
   @GetMapping("/production-review/decisions")
   public Map<String, Object> productionReviewDecisions(
       @RequestParam Long contentId, @RequestParam Long promptVersionId) {
@@ -154,6 +159,25 @@ public class WorkflowController {
   @PostMapping("/start-frame/generate")
   public Map<String, Object> generateStartFrame(@RequestBody Map<String, Object> request) {
     return service.generateStartFrame(request);
+  }
+
+  /** List start-frame candidates for a content/prompt version. */
+  @GetMapping("/start-frame/candidates")
+  public Map<String, Object> listStartFrameCandidates(
+      @RequestParam Long contentId, @RequestParam Long promptVersionId) {
+    return service.listStartFrameCandidates(contentId, promptVersionId);
+  }
+
+  /** Accept a start-frame candidate. */
+  @PostMapping("/start-frame/accept")
+  public Map<String, Object> acceptStartFrame(@RequestBody Map<String, Object> request) {
+    return service.acceptStartFrame(request);
+  }
+
+  /** Reject a start-frame candidate. */
+  @PostMapping("/start-frame/reject")
+  public Map<String, Object> rejectStartFrame(@RequestBody Map<String, Object> request) {
+    return service.rejectStartFrame(request);
   }
 
   @PostMapping("/review")

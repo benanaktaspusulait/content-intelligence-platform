@@ -142,7 +142,7 @@ describe('Render Preparation separation and immutable input safety', () => {
     save.flush({ savedAt: 'now' });
     fixture.detectChanges();
     expect(fixture.nativeElement.querySelector('.portrait')).not.toBeNull();
-    expect(fixture.nativeElement.textContent).toContain('Generate Image with AI');
+    expect(fixture.nativeElement.textContent).toContain('Generate Start Frame');
     http.verify();
     fixture.destroy();
   });
