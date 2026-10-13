@@ -992,6 +992,7 @@ public class WorkflowService {
   }
 
   /** Append operator-reviewed Step 4 interpretations without changing the immutable prompt. */
+  @Transactional
   public Map<String, Object> saveProductionReviewDecision(Map<String, Object> request) {
     Object content = request.get("contentId");
     Object version = request.get("promptVersionId");
@@ -1001,17 +1002,60 @@ public class WorkflowService {
     if (content == null || version == null || decisionType.isBlank() || decisionId.isBlank()
         || decision.isBlank())
       throw new IllegalArgumentException("contentId, promptVersionId, decisionType, decisionId and decision are required");
-    if (!List.of("EVENT_CLASSIFICATION", "CREATIVE_CONFLICT", "CREATIVE_INTENT").contains(decisionType))
+    if (!List.of("EVENT_CLASSIFICATION", "CREATIVE_CONFLICT", "CREATIVE_INTENT",
+        "NO_TEXT_REPAIR_JUSTIFIED").contains(decisionType))
       throw new IllegalArgumentException("Unsupported production review decision type");
     String savedPrompt = jdbc.sql("SELECT raw_text FROM prompt_versions WHERE content_id=:content AND id=:version")
         .param("content", Long.valueOf(String.valueOf(content)))
         .param("version", Long.valueOf(String.valueOf(version)))
         .query(String.class).optional().orElseThrow(() -> new IllegalArgumentException("The selected immutable prompt version does not belong to this content"));
     String sourceEvidence = String.valueOf(request.getOrDefault("sourceQuote", request.getOrDefault("sourceEvidence", "")));
+    Map<String, Object> analysis = null;
+    if (decisionType.equals("NO_TEXT_REPAIR_JUSTIFIED")) {
+      if (!decisionId.equals("step6-no-text-repair")
+          || !decision.equals("NO_TEXT_REPAIR_JUSTIFIED")
+          || !Boolean.TRUE.equals(request.get("operatorConfirmed")))
+        throw new IllegalArgumentException("Explicit Step 6 no-repair confirmation is required");
+      String analysisRunId = String.valueOf(request.getOrDefault("analysisRunId", "")).trim();
+      UUID analysisId;
+      try {
+        analysisId = UUID.fromString(analysisRunId);
+      } catch (IllegalArgumentException invalid) {
+        throw new IllegalArgumentException("A valid saved analysisRunId is required", invalid);
+      }
+      analysis = jdbc.sql("SELECT payload::text FROM post_family_workflow_events WHERE id=:id AND kind='REVIEW'")
+          .param("id", analysisId)
+          .query(String.class)
+          .optional()
+          .map(this::read)
+          .orElseThrow(() -> new IllegalArgumentException("The selected analysis run does not exist"));
+      if (!String.valueOf(content).equals(String.valueOf(analysis.get("contentId")))
+          || !String.valueOf(version).equals(String.valueOf(analysis.get("promptVersionId"))))
+        throw new IllegalArgumentException("The analysis run belongs to a different content or prompt version");
+      var latest = getLatestReview(content, version);
+      if (latest == null || !analysisRunId.equals(String.valueOf(latest.get("recordId"))))
+        throw new IllegalStateException("The selected analysis is stale; load the latest saved quality evaluation");
+      String bindingHash = String.valueOf(analysis.getOrDefault("bindingHash", ""));
+      if (bindingHash.isBlank() || !bindingHash.equals(String.valueOf(request.get("analysisBindingHash"))))
+        throw new IllegalArgumentException("The analysis binding does not match the saved quality evaluation");
+      var canonical = map(analysis.get("canonicalRuleEvaluation"));
+      String reviewStatus = String.valueOf(
+          analysis.getOrDefault("reviewStatus", analysis.getOrDefault("status", ""))).toUpperCase();
+      String authorizationStatus = String.valueOf(
+          map(map(analysis.get("family8")).get("renderAuthorization")).getOrDefault("status", ""));
+      if (!"EVALUATED".equals(canonical.get("status"))
+          || !maps(canonical.get("failedRules")).isEmpty()
+          || "FAIL".equalsIgnoreCase(String.valueOf(map(analysis.get("planQuality")).get("status")))
+          || reviewStatus.contains("TECHNICAL_FAILURE")
+          || authorizationStatus.contains("TECHNICAL_FAILURE")
+          || hasActionableTextRepair(analysis))
+        throw new IllegalStateException("A failed or unavailable evaluation cannot support a no-repair decision");
+    }
     List<String> evidenceParts = decisionType.equals("CREATIVE_CONFLICT")
         ? sourceEvidence.lines().map(String::trim).filter(line -> !line.isBlank()).toList()
         : List.of(sourceEvidence.trim());
-    if (evidenceParts.isEmpty() || evidenceParts.stream().anyMatch(part -> part.isBlank() || !savedPrompt.contains(part)))
+    if (!decisionType.equals("NO_TEXT_REPAIR_JUSTIFIED")
+        && (evidenceParts.isEmpty() || evidenceParts.stream().anyMatch(part -> part.isBlank() || !savedPrompt.contains(part))))
       throw new IllegalArgumentException("The operator decision must cite exact text from the selected immutable prompt version");
     if (decisionType.equals("CREATIVE_INTENT")
         && (!decisionId.equals("creative-intent") || !decision.equals("CONFIRMED")
@@ -1023,6 +1067,39 @@ public class WorkflowService {
     payload.put("provenance", "OPERATOR_CONFIRMED");
     payload.put("savedAt", Instant.now().toString());
     payload.put("sourceFingerprint", sha256(savedPrompt));
+    if (decisionType.equals("NO_TEXT_REPAIR_JUSTIFIED")) {
+      String analysisRunId = String.valueOf(request.get("analysisRunId"));
+      String binding = sha256(String.join("\n", String.valueOf(content), String.valueOf(version), decisionType,
+          decisionId, analysisRunId, String.valueOf(payload.get("sourceFingerprint"))));
+      jdbc.sql("SELECT pg_advisory_xact_lock(hashtextextended(:key, 0))")
+          .param("key", binding)
+          .query((rs, rowNum) -> Boolean.TRUE)
+          .single();
+      var existing = jdbc.sql("SELECT id,payload::text FROM post_family_workflow_events "
+              + "WHERE kind='PRODUCTION_REVIEW_DECISION' AND payload->>'contentId'=:content "
+              + "AND payload->>'promptVersionId'=:prompt AND payload->>'decisionType'=:type "
+              + "AND payload->>'decisionId'=:decisionId AND payload->>'analysisRunId'=:analysis "
+              + "AND payload->>'sourceFingerprint'=:fingerprint ORDER BY created_at,id LIMIT 1")
+          .param("content", String.valueOf(content))
+          .param("prompt", String.valueOf(version))
+          .param("type", decisionType)
+          .param("decisionId", decisionId)
+          .param("analysis", analysisRunId)
+          .param("fingerprint", String.valueOf(payload.get("sourceFingerprint")))
+          .query((rs, ignored) -> {
+            var saved = read(rs.getString(2));
+            saved.put("recordId", rs.getString(1));
+            return saved;
+          })
+          .optional();
+      if (existing.isPresent()) return existing.get();
+      payload.put("analysisBindingHash", analysis.get("bindingHash"));
+      payload.put("operatorDecision", "NO_TEXT_REPAIR_JUSTIFIED");
+      payload.put("justification", "No applicable canonical prompt-text failure was recorded; outstanding evidence remains unresolved.");
+      payload.put("stale", false);
+      payload.put("recordId", save("PRODUCTION_REVIEW_DECISION", binding, payload));
+      return payload;
+    }
     String binding = sha256(String.join("\n", String.valueOf(content), String.valueOf(version), decisionType, decisionId));
     payload.put("recordId", save("PRODUCTION_REVIEW_DECISION", binding, payload));
     return payload;
@@ -1036,12 +1113,35 @@ public class WorkflowService {
         .param("content", String.valueOf(contentId)).param("prompt", String.valueOf(promptVersionId))
         .query((rs, ignored) -> { var value = read(rs.getString("payload")); value.put("recordId", rs.getString("id")); return value; }).list();
     var latest = new LinkedHashMap<String, Object>();
+    var latestReview = getLatestReview(contentId, promptVersionId);
     for (var row : rows) {
       if (!sha256(snapshot.promptText()).equals(row.get("sourceFingerprint"))) continue;
+      if ("NO_TEXT_REPAIR_JUSTIFIED".equals(row.get("decisionType"))) {
+        boolean stale = latestReview == null
+            || !String.valueOf(row.get("analysisRunId")).equals(String.valueOf(latestReview.get("recordId")))
+            || !String.valueOf(row.get("analysisBindingHash")).equals(String.valueOf(latestReview.get("bindingHash")));
+        row.put("stale", stale);
+        if (stale) row.put("staleReason", "A newer or different saved quality evaluation is current.");
+      }
       latest.put(String.valueOf(row.get("decisionType")) + ":" + row.get("decisionId"), row);
     }
     return Map.of("contentId", contentId, "promptVersionId", promptVersionId,
         "decisions", List.copyOf(latest.values()));
+  }
+
+  private boolean hasActionableTextRepair(Map<String, Object> analysis) {
+    var findings = maps(map(analysis.get("planQuality")).get("findings"));
+    return findings.stream().anyMatch(finding -> {
+      String scope = String.valueOf(finding.getOrDefault("scope",
+          finding.getOrDefault("category", finding.getOrDefault("type", finding.getOrDefault("domain", "")))))
+          .toUpperCase();
+      String applicability = String.valueOf(finding.getOrDefault("applicability", "")).toUpperCase();
+      String repairability = String.valueOf(finding.getOrDefault("repairability", "")).toUpperCase();
+      return (scope.contains("PROMPT") || scope.contains("TEXT"))
+          && Boolean.TRUE.equals(finding.get("repairable"))
+          && !List.of("UNKNOWN", "NOT_APPLICABLE").contains(applicability)
+          && !List.of("OPTIONAL", "NOT_REPAIRABLE").contains(repairability);
+    });
   }
 
   public Map<String, Object> saveProductionReferenceBinding(Map<String, Object> request) {
@@ -1996,7 +2096,7 @@ public class WorkflowService {
     var text = jdbc.sql(
             "SELECT id, payload::text FROM post_family_workflow_events WHERE kind='REVIEW'"
                 + " AND payload->>'contentId'=:content AND payload->>'promptVersionId'=:prompt"
-                + " ORDER BY created_at DESC LIMIT 1")
+                + " ORDER BY created_at DESC, id DESC LIMIT 1")
         .param("content", content)
         .param("prompt", prompt)
         .query((rs, ignored) -> {

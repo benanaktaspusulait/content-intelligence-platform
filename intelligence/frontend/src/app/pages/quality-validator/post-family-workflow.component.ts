@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, EventEmitter, Input, Output, OnChanges, OnDestroy, SimpleChanges, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, Output, OnChanges, OnDestroy, SimpleChanges, ViewChild, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { Router, RouterModule } from '@angular/router';
@@ -279,59 +279,86 @@ import { GeneralProducibilityComponent } from './general-producibility.component
         <section *ngIf="activeAnalysisTab === 'feasibility'" class="analysis-tab-panel feasibility-summary"><h3>Production Feasibility</h3><p>Canonical render authorization: <strong>{{ r.family8?.renderAuthorization?.status || 'UNKNOWN' }}</strong></p><p>Generator execution risk: <strong>{{ r.executionRisk?.status || 'UNKNOWN' }}</strong></p><p>Evidence coverage: <strong>{{ evidenceCoverage(r.productionEvidence) }}</strong></p></section>
         <footer class="analysis-stage-footer" aria-label="Quality Analysis navigation"><button type="button" class="button button--secondary" (click)="selectStage(4)">← Back to Production Review</button><button type="button" class="button button--primary" (click)="continueFromAnalysis()">{{ nextAnalysisAction }} →</button></footer>
         </ng-container><ng-container *ngIf="activeStage === 6">
-        <section class="repair-triage" aria-label="Repair triage">
-          <header><span class="card-kicker">STEP 6 · REPAIR DECISION</span><h3>{{ repairTriageTitle }}</h3>
-            <p>{{ repairTriageSummary }}</p></header>
-          <p *ngIf="promptDeclaredProfile !== 'NOT DECLARED' && promptDeclaredProfile !== contentProfile" class="missing-state" role="note">
-            This immutable prompt literally declares {{ promptDeclaredProfile }}. The effective saved production profile is {{ contentProfile }}; do not rewrite the historical prompt text to make it appear to match.
+        <section class="repair-triage" aria-label="Repair decision">
+          <header><span class="card-kicker">STEP 6 · REPAIR DECISION</span><h3>{{ repairTriageTitle }}</h3><p>{{ repairTriageSummary }}</p></header>
+          <div class="repair-primary-grid">
+            <article><span>Quality</span><strong>{{ canonicalScoreLabel }} · Grade {{ canonicalGrade }}</strong></article>
+            <article><span>Canonical failures</span><strong>{{ canonicalFailCount }}</strong></article>
+            <article><span>Text repair</span><strong>{{ repairRecommendationLabel }}</strong></article>
+            <article><span>Evidence outstanding</span><strong>{{ outstandingEvidence.length }}</strong></article>
+          </div>
+          <p *ngIf="repairPolicyMessage" class="missing-state" role="status">{{ repairPolicyMessage }}</p>
+          <p *ngIf="staleNoRepairDecision" class="setting-note" role="status">
+            A prior no-repair decision exists for analysis {{ staleNoRepairDecision.analysisRunId }}, but it is stale for the current quality evaluation and cannot authorize continuation.
           </p>
-          <div class="repair-context-grid">
-            <div><span>Saved source</span><strong>Content {{ review?.contentId || contentId }} · prompt v{{ promptVersionNumber ?? 'UNKNOWN' }} · ID {{ review?.promptVersionId || promptVersionId }}</strong></div>
+          <div *ngIf="activeNoRepairDecision as decision" class="no-repair-saved" role="status">
+            <strong>No-text-repair decision recorded</strong>
+            <span>{{ decision.provenance }} · {{ decision.savedAt | date:'medium' }} · Analysis {{ decision.analysisRunId }}</span>
+            <span>Visual evidence remains unresolved and must be completed in Step 7.</span>
+            <button type="button" class="button button--primary" (click)="selectStage(7)">Continue to Render Preparation</button>
+          </div>
+          <div *ngIf="!activeNoRepairDecision" class="no-repair-confirm">
+            <label><input type="checkbox" [(ngModel)]="noRepairConfirmed" [disabled]="!noRepairDecisionEligible || busy">
+              I confirm that no text repair is justified for this saved analysis. This does not resolve missing visual evidence.
+            </label>
+            <small *ngIf="!noRepairDecisionEligible">{{ noRepairDecisionBlockReason }}</small>
+            <button type="button" class="button button--primary" (click)="approveNoTextRepairAndContinue()" [disabled]="busy || !noRepairDecisionEligible || !noRepairConfirmed">Approve No Repair &amp; Continue</button>
+          </div>
+          <p *ngIf="noRepairDecisionError" class="error" role="alert">{{ noRepairDecisionError }}</p>
+          <p *ngIf="decisionReadError" class="error" role="alert">{{ decisionReadError }}</p>
+          <p class="setting-note">Required character reference and accepted start frame remain outstanding; this decision does not mark F8 evidence resolved.</p>
+        </section>
+        <details class="repair-secondary-details">
+          <summary>Analysis details and provenance</summary>
+          <div class="repair-secondary-grid">
             <div><span>Analysis run</span><strong>{{ review?.recordId || 'Unavailable' }}</strong></div>
-            <div><span>Canonical result</span><strong>{{ canonicalScoreLabel }} · Grade {{ canonicalGrade }} · {{ canonicalFailCount }} FAIL</strong><small>{{ canonicalOutcomeSummary }}</small></div>
-            <div><span>Actionable text defects</span><strong>{{ actionableTextDefects.length ? actionableTextDefects.length + ' supported finding(s)' : 'None identified' }}</strong><small *ngFor="let defect of actionableTextDefects">{{ defect }}</small></div>
-            <div><span>Optional creative improvements</span><strong>{{ optionalCreativeImprovements.length ? optionalCreativeImprovements.length + ' optional suggestion(s)' : 'None recorded' }}</strong><small *ngFor="let suggestion of optionalCreativeImprovements">{{ suggestion }}</small></div>
-            <div><span>Outstanding evidence</span><strong>{{ outstandingEvidence.length ? outstandingEvidence.length + ' requirement(s)' : 'None recorded' }}</strong><small *ngFor="let requirement of outstandingEvidence">{{ requirement }}</small></div>
-            <div><span>Evidence still UNKNOWN</span><strong>{{ unknownCanonicalRules.length ? unknownCanonicalRules.join(', ') : 'No canonical UNKNOWN rule' }}</strong></div>
-            <div><span>Production risk</span><strong>{{ productionRiskSummary }}</strong><small>Risk evidence is not a prompt-text defect.</small></div>
-            <div><span>Technical evaluation</span><strong>{{ technicalEvaluationStatus }}</strong></div>
-            <div><span>Prompt-declared profile</span><strong>{{ promptDeclaredProfile }}</strong><small>Literal text in this immutable prompt; not production settings.</small></div>
-            <div><span>Profile used by analysis</span><strong>{{ evaluationProfile }}</strong></div>
-            <div><span>Effective saved profile</span><strong>{{ contentProfile }}</strong><small>{{ contentProfile !== evaluationProfile ? 'Different from the profile evaluated in this analysis.' : 'Matches the profile recorded by this analysis.' }}</small></div>
+            <div><span>Prompt version</span><strong>v{{ promptVersionNumber ?? 'UNKNOWN' }} · ID {{ review?.promptVersionId || promptVersionId }}</strong></div>
+            <div><span>Rule outcomes</span><strong>{{ canonicalOutcomeSummary }}</strong></div>
+            <div><span>Actionable text defects</span><strong>{{ actionableTextDefects.length ? actionableTextDefects.join('; ') : 'None identified' }}</strong></div>
+            <div><span>Optional improvements</span><strong>{{ optionalCreativeImprovements.length ? optionalCreativeImprovements.join('; ') : 'None recorded' }}</strong></div>
+            <div><span>Outstanding requirements</span><strong>{{ outstandingEvidence.length ? outstandingEvidence.join('; ') : 'None recorded' }}</strong></div>
           </div>
-          <p class="setting-note">Recommended next action: {{ recommendedRepairAction }}. Continuing does not resolve any UNKNOWN rule or missing evidence.</p>
-          <div class="repair-triage-actions">
-            <button type="button" class="button button--primary" (click)="continueWithoutTextRepair()" [disabled]="busy || !review || !isCurrent()">Continue to Render Preparation</button>
-            <button type="button" class="button button--secondary" (click)="selectRepairForReview()" [disabled]="!repairRecommended || !isCurrent()">Review recommended text repair</button>
+          <details><summary>Step 5 production and technical classifications</summary>
+            <div class="repair-secondary-grid">
+              <div><span>Local execution critic</span><strong>{{ localExecutionStatus }}</strong></div>
+              <div><span>Generator capability</span><strong>{{ generatorCapabilityStatus }}</strong></div>
+              <div><span>Production complexity</span><strong>{{ productionComplexityStatus }}</strong></div>
+              <div><span>Technical evaluation</span><strong>{{ technicalEvaluationStatus }}</strong></div>
+              <div><span>UNKNOWN canonical rules</span><strong>{{ unknownCanonicalRules.length ? unknownCanonicalRules.join(', ') : 'None' }}</strong></div>
+            </div>
+          </details>
+          <details *ngIf="promptDeclaredProfile !== 'NOT DECLARED' && promptDeclaredProfile !== contentProfile">
+            <summary>Historical profile mismatch</summary>
+            <p>Immutable prompt text declares {{ promptDeclaredProfile }}. The saved production profile and analysis use {{ contentProfile }}. The prompt remains unchanged; use the versioned editor only after an explicit operator edit.</p>
+          </details>
+          <details><summary>Operator provenance</summary>
+            <p>Content {{ contentId }} · prompt version {{ promptVersionId }} · current saved settings {{ contentProfile }} / {{ generator }} / {{ desiredDuration }}s / {{ aspectRatio }}.</p>
+            <p>Analysis binding {{ review?.bindingHash || 'UNKNOWN' }} · source hash {{ review?.source?.sha256 || 'UNKNOWN' }}.</p>
+          </details>
+        </details>
+        <details class="current-prompt-card">
+          <summary>Current prompt · Prompt v{{ promptVersionNumber ?? 'UNKNOWN' }} / ID {{ review?.promptVersionId || promptVersionId }}</summary>
+          <div class="prompt-preview-toolbar">
+            <span>Immutable saved prompt text · read-only</span>
+            <button type="button" class="button button--secondary button--compact" (click)="copySavedPrompt()" [disabled]="!isCurrent() || !prompt">Copy</button>
           </div>
-          <p class="setting-note">The next stage owns verified character references and an accepted start frame. Continuing changes only workflow navigation; no repair/skip outcome is written to the analysis.</p>
-        </section>
-        <section class="current-prompt-card" aria-label="Current prompt version">
-          <header><span class="card-kicker">CURRENT PROMPT · IMMUTABLE VERSION</span><h3>Prompt v{{ promptVersionNumber ?? 'UNKNOWN' }} · ID {{ review?.promptVersionId || promptVersionId }}</h3></header>
-          <p>The exact saved prompt is shown separately from any unsaved candidate below.</p>
-          <label>Exact saved prompt text<textarea readonly [value]="prompt" aria-label="Current prompt text"></textarea></label>
-          <div class="repair-tool-actions">
-            <button type="button" (click)="copySavedPrompt()" [disabled]="!isCurrent() || !prompt">Copy saved prompt</button>
-          </div>
+          <div #promptPreviewEditor class="prompt-monaco" aria-label="Immutable prompt preview"></div>
+          <label *ngIf="!promptPreviewEditorReady" class="prompt-fallback-label">Read-only prompt preview<textarea readonly [value]="prompt" aria-label="Current prompt text"></textarea></label>
+          <p *ngIf="promptPreviewLoadError" class="setting-note">{{ promptPreviewLoadError }}</p>
           <p *ngIf="copyStatus" role="status">{{ copyStatus }}</p>
-          <ng-container *ngIf="review?.finalPrompt && review?.finalPrompt !== prompt">
-            <label>Unsaved repair candidate<textarea readonly [value]="review.finalPrompt" aria-label="Unsaved repair candidate"></textarea></label>
-            <p class="missing-state" role="note">This candidate is distinct from the immutable saved prompt. Transferring it requires an explicit versioned save in the editor.</p>
-            <button type="button" (click)="saveFinal.emit(review.finalPrompt)" [disabled]="!isCurrent()">Transfer candidate to versioned editor</button>
-          </ng-container>
-          <p *ngIf="promptDeclaredProfile !== 'NOT DECLARED' && promptDeclaredProfile !== contentProfile" class="setting-note">The historical prompt text says {{ promptDeclaredProfile }}. Current saved production settings use {{ contentProfile }}; this preview does not silently substitute one for the other.</p>
-        </section>
-        <details class="repair-tools-details"><summary>Repair tools · manual patch, bounded session, preview and export</summary>
-          <details class="bounded-repair-details"><summary>Bounded repair session · maximum two attempts and $20 USD</summary>
+        </details>
+        <details class="repair-tools-details"><summary>Optional Repair Tools</summary>
+          <section class="bounded-repair-details">
+            <h3>Bounded repair session · maximum two attempts</h3>
             <p>A provider call happens only after you explicitly approve the budget and start this session.</p>
-            <label>Maximum total cost (USD)<input type="number" min="0.01" max="20" step="0.01" [(ngModel)]="repairBudget"></label>
+            <label>Maximum total cost (USD)<input class="repair-budget" type="number" min="0.01" max="20" step="0.01" [(ngModel)]="repairBudget"></label>
             <small>Choose a total ceiling between $0.01 and $20.00 USD. Zero is not authorization.</small>
             <label><input type="checkbox" [(ngModel)]="repairConsent">I approve the configured repair provider within this session budget.</label>
-            <button type="button" (click)="startRepairSession()" [disabled]="busy || !isCurrent() || !repairConsent || !validRepairBudget">Start bounded repair</button>
+            <button type="button" class="button button--primary button--compact" (click)="startRepairSession()" [disabled]="busy || !isCurrent() || !repairConsent || !validRepairBudget">Start bounded repair</button>
             <small *ngIf="!validRepairBudget">Enter a budget greater than zero and no more than $20.00.</small>
             <small *ngIf="!repairConsent">Provider authorization is required before a repair session can start.</small>
             <label>Saved session ID<input [(ngModel)]="repairSessionId" placeholder="Session UUID"></label>
-            <button type="button" (click)="reopenRepairSession(repairSessionId)" [disabled]="!validRepairSessionId">Reopen session</button>
+            <button type="button" class="button button--secondary button--compact" (click)="reopenRepairSession(repairSessionId)" [disabled]="!validRepairSessionId">Reopen session</button>
             <small *ngIf="!validRepairSessionId">Enter a valid saved session ID to reopen a session.</small>
             <div *ngIf="repairSession">
               <p>{{ repairSession.sessionId }} · {{ repairSession.state }} · {{ repairSession.stopReason }} · attempts {{ repairSession.attempts }}/{{ repairSession.maxAttempts }} · reserved ceiling {{ repairSession.reservedCostUsd }} (actual spend may be unknown)</p>
@@ -341,27 +368,39 @@ import { GeneralProducibilityComponent } from './general-producibility.component
                 <h4>Best independently reviewed candidate · prompt version {{ repairBestReview.promptVersionId }}</h4><pre>{{ repairBestReview.executionReview?.findings | json }}</pre><pre>{{ repairBestReview.planQuality | json }}</pre>
               </section>
               <pre>{{ repairSession.history | json }}</pre>
-              <button type="button" (click)="nextRepairAttempt()" [disabled]="busy || repairSession.state !== 'READY'">Next bounded attempt</button>
-              <button type="button" (click)="decideRepair('ACCEPTED')" [disabled]="busy || repairSession.state === 'RUNNING'">Accept best candidate</button>
-              <button type="button" (click)="decideRepair('REJECTED')" [disabled]="busy || repairSession.state === 'RUNNING'">Reject</button>
-              <button type="button" (click)="decideRepair('CANCELLED')" [disabled]="busy || repairSession.state === 'RUNNING'">Cancel</button>
+              <button type="button" class="button button--secondary button--compact" (click)="nextRepairAttempt()" [disabled]="busy || repairSession.state !== 'READY'">Next bounded attempt</button>
+              <button type="button" class="button button--primary button--compact" (click)="decideRepair('ACCEPTED')" [disabled]="busy || repairSession.state === 'RUNNING'">Accept best candidate</button>
+              <button type="button" class="button button--secondary button--compact" (click)="decideRepair('REJECTED')" [disabled]="busy || repairSession.state === 'RUNNING'">Reject</button>
+              <button type="button" class="button button--secondary button--compact" (click)="decideRepair('CANCELLED')" [disabled]="busy || repairSession.state === 'RUNNING'">Cancel</button>
             </div>
-          </details>
+          </section>
           <section class="manual-repair-tools">
             <h3>Minimal manual repair</h3>
+            <p *ngIf="intentConfirmed && !protectedIntent.trim()" class="setting-note">
+              Step 4 Creative Intent is already confirmed for this prompt. Its saved decision contains no protected-intent text; this is a separate patch-safety requirement, not a request to confirm intent again.
+            </p>
+            <p *ngIf="!intentConfirmed" class="missing-state">
+              No current Step 4 Creative Intent confirmation is available for this prompt. Confirm supported intent in Production Review before preparing a patch.
+            </p>
+            <label>Protected intent that must remain unchanged<input [(ngModel)]="protectedIntent" [disabled]="!intentConfirmed" /></label>
             <label>Exact source wording to replace<input [(ngModel)]="patchOriginal" /></label>
             <label>Replacement wording<input [(ngModel)]="patchReplacement" /></label>
             <p>Only the exact selected wording is changed in a candidate. Protected intent remains unchanged; saving a candidate requires an explicit transfer to the versioned editor.</p>
             <p *ngIf="manualPatchMessage" class="setting-note" role="status">{{ manualPatchMessage }}</p>
             <pre *ngIf="manualPatchPreview" aria-label="Manual patch preview">{{ manualPatchPreview }}</pre>
-            <button type="button" (click)="repair()" [disabled]="busy || !isCurrent() || !protectedIntent.trim() || !manualPatchValid || review?.repairPasses > 0">Preview and validate exact patch</button>
+            <button type="button" class="button button--secondary button--compact" (click)="repair()" [disabled]="busy || !isCurrent() || !intentConfirmed || !protectedIntent.trim() || !manualPatchValid || review?.repairPasses > 0">Preview and validate exact patch</button>
             <p *ngIf="error" class="error" role="alert">{{ error }}</p>
             <pre *ngIf="review?.diff">{{ review.diff }}</pre>
             <div class="repair-tool-actions">
-              <button type="button" (click)="exportHandoff()" [disabled]="!isCurrent()">Download manual render package</button>
+              <button type="button" class="button button--secondary button--compact" (click)="exportHandoff()" [disabled]="!isCurrent()">Download manual render package</button>
             </div>
             <p *ngIf="copyStatus" role="status">{{ copyStatus }}</p>
             <p>Preview, copy and export do not change prompt, story or analysis data. “Transfer to editor and save version” is an explicit action that creates a new immutable prompt version. The manual package is an evidence snapshot only; it does not authorize rendering or spend credits.</p>
+            <details *ngIf="review?.finalPrompt && review?.finalPrompt !== prompt" class="repair-candidate-details">
+              <summary>Unsaved repair candidate · not the immutable saved prompt</summary>
+              <textarea readonly [value]="review.finalPrompt" aria-label="Unsaved repair candidate"></textarea>
+              <button type="button" class="button button--secondary button--compact" (click)="saveFinal.emit(review.finalPrompt)" [disabled]="!isCurrent()">Transfer candidate to versioned editor</button>
+            </details>
           </section>
         </details>
         </ng-container>
@@ -636,8 +675,16 @@ import { GeneralProducibilityComponent } from './general-producibility.component
       .stage-action-bar > div,.analysis-stage-toolbar > span { display:grid; gap:4px; }
       .stage-action-bar small,.analysis-stage-toolbar small { color:#52616b; }
       .analysis-stage-toolbar { margin:0 0 16px; background:#fff; border-color:#d8e1ec; }
-      .repair-triage,.current-prompt-card{display:grid;gap:14px;margin:0 0 16px;padding:18px;border:1px solid #d8e1ec;border-radius:12px;background:#f8fbfd}.repair-triage header h3,.current-prompt-card header h3{margin:3px 0;color:#263f56}.repair-triage header p,.current-prompt-card>p{margin:4px 0;color:#52616b}.repair-context-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:9px}.repair-context-grid>div{display:grid;align-content:start;gap:4px;min-width:0;padding:10px;border:1px solid #dfe7ee;border-radius:8px;background:#fff}.repair-context-grid span{font-size:.68rem;color:#68747c;font-weight:800;text-transform:uppercase}.repair-context-grid strong{font-size:.84rem;color:#263f56;overflow-wrap:anywhere}.repair-context-grid small{font-size:.72rem;color:#68747c}.repair-triage-actions,.repair-tool-actions{display:flex;flex-wrap:wrap;gap:8px}.repair-triage-actions .button,.repair-tool-actions button{margin:0}.repair-tools-details,.bounded-repair-details{margin:12px 0;padding:12px;border:1px solid #dfe7ee;border-radius:9px;background:#fff}.repair-tools-details>summary,.bounded-repair-details>summary{cursor:pointer;font-weight:800;color:#263f56}.manual-repair-tools{display:grid;gap:10px;margin-top:12px}.manual-repair-tools label,.bounded-repair-details label,.current-prompt-card label{display:grid;gap:5px}.manual-repair-tools input,.bounded-repair-details input:not([type=checkbox]),.current-prompt-card textarea{width:100%;min-width:0}.current-prompt-card textarea{min-height:280px;resize:vertical;overflow:auto}.manual-repair-tools textarea{min-height:180px}.current-prompt-card button:focus-visible,.repair-triage button:focus-visible,.repair-tools-details button:focus-visible{outline:3px solid #345f9a;outline-offset:2px}
-      @media(max-width:600px){.repair-triage,.current-prompt-card{padding:13px}.repair-context-grid{grid-template-columns:1fr}.repair-triage-actions,.repair-tool-actions{align-items:stretch;flex-direction:column}.repair-triage-actions button,.repair-tool-actions button{width:100%}}
+      .repair-triage,.current-prompt-card,.repair-secondary-details,.repair-candidate-details,.repair-tools-details{margin:0 0 14px;padding:16px;border:1px solid #d8e1ec;border-radius:12px;background:#f8fbfd}
+      .repair-triage{display:grid;gap:13px}.repair-triage header h3{margin:3px 0;color:#263f56}.repair-triage header p{margin:4px 0;color:#52616b;line-height:1.5}
+      .repair-primary-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}.repair-primary-grid article{display:grid;align-content:start;gap:6px;min-width:0;min-height:88px;padding:12px;border:1px solid #dfe7ee;border-radius:9px;background:#fff}.repair-primary-grid span,.repair-secondary-grid span{font-size:.76rem;color:#68747c;font-weight:800;text-transform:uppercase;letter-spacing:.03em}.repair-primary-grid strong,.repair-secondary-grid strong{font-size:.98rem;color:#263f56;overflow-wrap:anywhere;line-height:1.4}
+      .no-repair-confirm,.no-repair-saved{display:grid;gap:10px;padding:13px;border:1px solid #d2dfc4;border-radius:9px;background:#fff}.no-repair-confirm label{display:flex;align-items:flex-start;gap:9px;line-height:1.5}.no-repair-confirm input[type=checkbox]{margin-top:3px;flex:0 0 auto}.no-repair-saved{border-color:#9dbd83;background:#f5faed}.no-repair-saved span{overflow-wrap:anywhere;color:#40515a}.no-repair-confirm small{color:#855b15}.no-repair-saved .button{justify-self:start}
+      .repair-secondary-details>summary,.repair-tools-details>summary,.current-prompt-card>summary,.repair-candidate-details>summary{cursor:pointer;font-weight:800;color:#263f56}.repair-secondary-details>summary,.repair-tools-details>summary,.current-prompt-card>summary{font-size:.96rem}.repair-secondary-details[open],.repair-tools-details[open],.current-prompt-card[open],.repair-candidate-details[open]{display:grid;gap:12px}.repair-secondary-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}.repair-secondary-grid>div{display:grid;align-content:start;gap:5px;min-width:0;padding:11px;border:1px solid #dfe7ee;border-radius:8px;background:#fff}.repair-secondary-details details{padding:10px;border:1px solid #dfe7ee;border-radius:8px;background:#fff}.repair-secondary-details details>summary{cursor:pointer;font-weight:750;color:#263f56}
+      .current-prompt-card{background:#fff}.prompt-preview-toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;color:#52616b;font-size:.88rem}.prompt-monaco{width:100%;height:340px;min-height:260px;border:1px solid #cbd6ce;border-radius:8px;overflow:hidden}.prompt-fallback-label{display:grid;gap:6px}.prompt-fallback-label textarea,.repair-candidate-details textarea{width:100%;height:340px;min-height:260px;white-space:pre;overflow:auto;resize:vertical;font:13px/1.45 ui-monospace,SFMono-Regular,Menlo,monospace}.repair-candidate-details{background:#fff}.repair-candidate-details textarea{height:220px}
+      .repair-tools-details,.bounded-repair-details{background:#fff}.repair-tools-details>summary{padding:2px}.bounded-repair-details{display:grid;gap:10px}.bounded-repair-details h3,.manual-repair-tools h3{margin:0;color:#263f56}.bounded-repair-details label,.manual-repair-tools label{display:grid;gap:6px;font-weight:650;color:#35464f}.bounded-repair-details input:not([type=checkbox]),.manual-repair-tools input{max-width:100%;min-width:0;height:40px}.bounded-repair-details input.repair-budget{max-width:180px}.manual-repair-tools{display:grid;gap:11px;padding:14px;border:1px solid #dfe7ee;border-radius:9px;background:#fff}.manual-repair-tools textarea{min-height:180px}.repair-tool-actions{display:flex;flex-wrap:wrap;gap:8px}.repair-tool-actions button{margin:0}.button.button--compact,.repair-triage .button{min-height:40px;padding:0 14px;border-radius:7px;font-size:13px}.repair-triage .button{justify-self:start}.repair-triage button:disabled,.repair-tools-details button:disabled{opacity:.48;cursor:not-allowed}.repair-triage button:focus-visible,.repair-tools-details button:focus-visible,.current-prompt-card button:focus-visible{outline:3px solid #345f9a;outline-offset:2px}
+      .repair-tools-details button:not(.button){min-height:40px;width:fit-content;padding:0 14px;border:1px solid #cbd6ce;border-radius:7px;background:#fff;color:#263f56;font:inherit;font-weight:700}.repair-tools-details button:not(.button):disabled{opacity:.48;cursor:not-allowed}.repair-tools-details .error{color:#983520}
+      @media(max-width:900px){.repair-primary-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.repair-secondary-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+      @media(max-width:600px){.repair-triage,.current-prompt-card,.repair-secondary-details,.repair-candidate-details,.repair-tools-details{padding:13px}.repair-primary-grid,.repair-secondary-grid{grid-template-columns:1fr}.repair-primary-grid article{min-height:0}.prompt-preview-toolbar{align-items:flex-start}.prompt-monaco,.prompt-fallback-label textarea{height:320px;min-height:280px}.repair-triage .button{width:auto;max-width:100%}.repair-tools-details button:not(.button){width:auto}.bounded-repair-details input.repair-budget{max-width:160px}}
       .findings-resolution{display:grid;gap:12px;margin:16px 0;padding:16px;border:1px solid #d8e1ec;border-radius:12px;background:#f8fbfd}.findings-resolution header h3{margin:3px 0;color:#263f56}.findings-resolution header p{margin:4px 0;color:#68747c;font-size:.82rem}.resolution-list{display:grid;gap:9px}.resolution-item{display:grid;gap:6px;padding:12px;border:1px solid #dfe7ee;border-radius:9px;background:#fff}.resolution-item--blocking{border-left:4px solid #b9503e}.resolution-item__title{display:flex;gap:9px;align-items:center;flex-wrap:wrap}.resolution-item__title strong{color:#263f56}.resolution-category{font-size:.64rem;font-weight:800;color:#5f8435;letter-spacing:.06em}.resolution-item p{margin:0;color:#40515a}.resolution-item small{color:#68747c}.resolution-item .button{justify-self:start;margin:3px 0 0}.render-context-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}.render-context-grid>div,.render-preflight>div{display:grid;gap:4px;padding:10px;border:1px solid #dfe7ee;border-radius:8px;background:#fff}.render-context-grid span,.render-preflight span{font-size:.68rem;color:#68747c;font-weight:800;text-transform:uppercase}.render-context-grid strong,.render-preflight strong{color:#263f56;font-size:.86rem;overflow-wrap:anywhere}.render-preflight{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:9px}.render-preflight small{color:#855b15;font-size:.7rem}.render-stage-card{display:grid;gap:14px}
       .disabled-link { pointer-events:none; opacity:.5; }
       .analysis-stage-footer { display:flex; justify-content:space-between; gap:12px; align-items:center; margin:24px 0 4px; padding-top:16px; border-top:1px solid #d4dce8; }
@@ -681,6 +728,58 @@ import { GeneralProducibilityComponent } from './general-producibility.component
   ],
 })
 export class PostFamilyWorkflowComponent implements OnChanges, OnDestroy {
+  private promptPreviewHost?: ElementRef<HTMLDivElement>;
+  private promptPreviewEditor: {
+    dispose(): void;
+    getValue(): string;
+    setValue(value: string): void;
+    setScrollTop(value: number): void;
+    layout(): void;
+  } | null = null;
+  private promptPreviewLoadSequence = 0;
+  promptPreviewEditorReady = false;
+  promptPreviewLoadError = '';
+  @ViewChild('promptPreviewEditor')
+  set promptPreviewElement(host: ElementRef<HTMLDivElement> | undefined) {
+    this.promptPreviewHost = host;
+    if (host) this.initializePromptPreview();
+    else this.disposePromptPreview();
+  }
+  private initializePromptPreview(): void {
+    const host = this.promptPreviewHost;
+    if (!host || this.promptPreviewEditor) return;
+    const sequence = ++this.promptPreviewLoadSequence;
+    import('monaco-editor/esm/vs/editor/editor.api').then(monaco => {
+      if (sequence !== this.promptPreviewLoadSequence || !this.promptPreviewHost) return;
+      this.promptPreviewEditor = monaco.editor.create(this.promptPreviewHost.nativeElement, {
+        value: this.prompt,
+        language: 'markdown',
+        automaticLayout: true,
+        minimap: { enabled: false },
+        wordWrap: 'on',
+        lineNumbers: 'on',
+        readOnly: true,
+        fontSize: 13,
+        scrollBeyondLastLine: false,
+        padding: { top: 12, bottom: 12 },
+      });
+      this.promptPreviewEditor.setScrollTop(0);
+      this.promptPreviewEditorReady = true;
+      this.promptPreviewLoadError = '';
+      window.setTimeout(() => this.promptPreviewEditor?.layout(), 0);
+      this.changeDetector.markForCheck();
+    }).catch(() => {
+      if (sequence !== this.promptPreviewLoadSequence) return;
+      this.promptPreviewLoadError = 'The editor preview could not be loaded; the read-only text fallback is available.';
+      this.changeDetector.markForCheck();
+    });
+  }
+  private disposePromptPreview(): void {
+    this.promptPreviewLoadSequence++;
+    this.promptPreviewEditor?.dispose();
+    this.promptPreviewEditor = null;
+    this.promptPreviewEditorReady = false;
+  }
   private http = inject(HttpClient);
   private changeDetector = inject(ChangeDetectorRef);
   @Input() prompt = '';
@@ -965,7 +1064,42 @@ export class PostFamilyWorkflowComponent implements OnChanges, OnDestroy {
   get sourceEvents(){return this.timedRanges.map((range,index)=>{const quote=range.quote.replace(/^\d{1,2}(?::\d{2})?\s*(?:-|–|—|to)\s*\d{1,2}(?::\d{2})?\s*(?:s|sec|secs|seconds)?\s*:?\s*/i,'').trim();const lower=quote.toLowerCase();const id=`source-event-${index+1}`;const hasNotes=/sticky notes?|notes?/.test(lower);const centralNotes=/\bsticky notes?\b/i.test(this.prompt);const actorMatch=quote.match(/\b(Mimi|Kiko|Luca)\b/i);const action=quote.replace(/^(?:[A-Z][^.!?]{0,30}:\s*)/,'').trim();let proposedRole='PENDING',roleEvidence='insufficient source evidence';if(index===0&&/stand|hold|already|opening/.test(lower)){proposedRole='SETUP';roleEvidence='opening context explicitly described';}if(/instead|unexpected|turns? in the air|flips? in the air/.test(lower)){proposedRole='TRIGGER';roleEvidence='unexpected event is stated in source';}if(/double|doubl|multiply|multipli|again|another/.test(lower)){proposedRole='ESCALATION';roleEvidence='repetition or increase is explicitly stated';}if(index===this.timedRanges.length-1 && /completely cover|covers? .*only .*eyes|leaving only .*eyes/.test(lower)){proposedRole='PAYOFF';roleEvidence='explicit final visual state; narrative value remains an interpretation';}const consequence=action.includes('->')?action.split('->').slice(1).join('->').trim():'UNKNOWN — no explicit arrow consequence in this source interval; inspect the action text.';const saved=this.eventDecision(id);return {id,start:range.start,end:range.end,actor:actorMatch?.[1]||`${this.characterLabel} (source-associated; action attribution uncertain)`,object:(lower.match(/\b(shiny box|box|ribbons?|rainbow arch|sticky notes?|notes?|cabinet)\b/)||[])[0]||'Unresolved',primaryObject:centralNotes?'Sticky notes':(hasNotes?'Notes':'Unresolved'),secondaryObjects:(lower.match(/\b(paw|paws|ear|ears|face|arms?|body|eyes?)\b/g)||[]).join(', ')||'None stated',environment:/toy cabinet/.test(lower)?'Toy cabinet (stated in source)':/cabinet|cupboard/.test(lower)?'Cabinet / cupboard (stated in source)':/mirror/.test(lower)?'Mirror (stated in source)':'Not stated in this range',obstacle:/doubl|multiply|multipli/.test(lower)?'Repeated increase in notes (source interpretation)':/instead/.test(lower)?'Attachment differs from the intended target (source interpretation)':/follow/.test(lower)?'Pursuit stated in this source interval':'Not explicit',action:action||'No action text extracted',consequence,sourceQuote:range.quote,evidence:'SOURCE_EVENT_CANDIDATE',semanticStatus:'PENDING',proposedRole:proposedRole,roleEvidence:roleEvidence,savedRole:saved?.decision||'',savedNote:saved?.note||'',operatorInterpretation:saved?{semanticRole:saved.decision,actor:saved.actor,primaryObject:saved.primaryObject,environment:saved.environment,action:saved.action,consequence:saved.consequence,note:saved.note,provenance:saved.provenance,sourceFingerprint:saved.sourceFingerprint}:null};});}
   get creativeConflicts(){if(!/multiply|multipli/i.test(this.prompt)||!/(follow|follows|chase|fly back)/i.test(this.prompt))return [];const sentences=(this.prompt||'').split(/(?<=[.!?])\s+/).filter(sentence=>/multiply|multipli|fly back|follow|follows|cover|covered/i.test(sentence));const id='notes-multiplication-and-pursuit';const saved=this.eventDecision(id,'CREATIVE_CONFLICT');return [{id,title:'Multiplication and pursuit relationship',status:'UNRESOLVED CAUSAL RELATIONSHIP — not a confirmed contradiction',explanation:'The source states both that notes multiply/return and that they follow Mimi. It does not say whether pursuit is caused by the multiplying notes or is a separate effect; both readings may be intentional.',sourceEvidence:sentences.join('\n'),suggestion:'Optional minimal clarification: state whether the notes that multiply are the same notes that follow and reattach to Mimi. This preserves the approved events without imposing a single-rule requirement.',savedDecision:saved?.decision||'',savedSuggestion:saved?.modifiedSuggestion||''}];}
   private eventDecision(id:string,type='EVENT_CLASSIFICATION'){return [...this.reviewDecisions].reverse().find((row:any)=>row.decisionType===type&&row.decisionId===id);}
-  private restoreProductionReviewDecisions(){const sequence=this.restoreSequence;const key=`${this.contentId}/${this.promptVersionId}`;if(!this.contentId||!this.promptVersionId||this.decisionsLoadedFor===key)return;this.decisionsLoadedFor=key;this.http.get<any>('/api/v1/intelligence/workflow/production-review/decisions',{params:{contentId:this.contentId,promptVersionId:this.promptVersionId}}).subscribe({next:r=>{if(sequence!==this.restoreSequence)return;this.reviewDecisions=r.decisions||[];const intent=this.eventDecision('creative-intent','CREATIVE_INTENT');this.intentConfirmed=!!intent && (!this.creativeProvenance || intent.storyRevisionId===(this.creativeProvenance?.storyRevisionId||null)); if(intent){this.protectedIntent=intent.protectedIntent||'';} for(const row of this.reviewDecisions){if(row.decisionType==='EVENT_CLASSIFICATION')this.eventDrafts[row.decisionId]={role:row.decision,note:row.note||'',actor:row.actor||'',primaryObject:row.primaryObject||'',environment:row.environment||'',action:row.action||'',consequence:row.consequence||''};if(row.decisionType==='CREATIVE_CONFLICT')this.conflictDrafts[row.decisionId]={decision:row.decision,modifiedSuggestion:row.modifiedSuggestion||''};}this.changeDetector.markForCheck();},error:()=>{this.decisionsLoadedFor='';}});}
+  private restoreProductionReviewDecisions() {
+    const sequence = this.restoreSequence;
+    const key = `${this.contentId}/${this.promptVersionId}`;
+    if (!this.contentId || !this.promptVersionId || this.decisionsLoadedFor === key) return;
+    this.decisionsLoadedFor = key;
+    this.decisionReadError = '';
+    this.http.get<any>('/api/v1/intelligence/workflow/production-review/decisions', {
+      params: { contentId: this.contentId, promptVersionId: this.promptVersionId },
+    }).subscribe({
+      next: response => {
+        if (sequence !== this.restoreSequence) return;
+        this.reviewDecisions = response.decisions || [];
+        const intent = this.eventDecision('creative-intent', 'CREATIVE_INTENT');
+        this.intentConfirmed = !!intent
+          && (!this.creativeProvenance || intent.storyRevisionId === (this.creativeProvenance?.storyRevisionId || null));
+        if (intent) this.protectedIntent = intent.protectedIntent || '';
+        for (const row of this.reviewDecisions) {
+          if (row.decisionType === 'EVENT_CLASSIFICATION') this.eventDrafts[row.decisionId] = {
+            role: row.decision, note: row.note || '', actor: row.actor || '',
+            primaryObject: row.primaryObject || '', environment: row.environment || '',
+            action: row.action || '', consequence: row.consequence || '',
+          };
+          if (row.decisionType === 'CREATIVE_CONFLICT') this.conflictDrafts[row.decisionId] = {
+            decision: row.decision, modifiedSuggestion: row.modifiedSuggestion || '',
+          };
+        }
+        this.changeDetector.markForCheck();
+      },
+      error: () => {
+        if (sequence !== this.restoreSequence) return;
+        this.decisionsLoadedFor = '';
+        this.decisionReadError = 'Saved Step 4/6 operator decisions could not be read. Refresh before relying on a saved confirmation.';
+        this.changeDetector.markForCheck();
+      },
+    });
+  }
   setEventDraft(id:string,field:'role'|'note'|'actor'|'primaryObject'|'environment'|'action'|'consequence',value:string){this.eventDrafts={...this.eventDrafts,[id]:{...this.eventDrafts[id],[field]:value}};this.changeDetector.markForCheck();}
   setConflictDraft(id:string,field:'decision'|'modifiedSuggestion',value:string){this.conflictDrafts={...this.conflictDrafts,[id]:{...this.conflictDrafts[id],[field]:value}};}
   private saveDecision(payload:any){const sequence=this.restoreSequence;this.busy=true;this.error='';this.http.post<any>('/api/v1/intelligence/workflow/production-review/decisions',{contentId:this.contentId,promptVersionId:this.promptVersionId,...payload}).subscribe({next:r=>{if(sequence!==this.restoreSequence)return;this.reviewDecisions=[...this.reviewDecisions.filter(row=>row.decisionType!==r.decisionType||row.decisionId!==r.decisionId),r];if(r.decisionType==='CREATIVE_INTENT')this.intentConfirmed=true;this.busy=false;this.changeDetector.markForCheck();},error:e=>this.fail(e)});}
@@ -1130,10 +1264,14 @@ export class PostFamilyWorkflowComponent implements OnChanges, OnDestroy {
   repairOriginalReview: any = null;
   repairBestReview: any = null;
   copyStatus = '';
+  noRepairConfirmed = false;
+  noRepairDecisionError = '';
+  decisionReadError = '';
   get validRepairBudget(): boolean { return Number.isFinite(Number(this.repairBudget)) && Number(this.repairBudget) > 0 && Number(this.repairBudget) <= 20; }
   get validRepairSessionId(): boolean { return /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(this.repairSessionId.trim()); }
   get manualPatchMessage(): string {
-    if (!this.protectedIntent.trim()) return 'Confirm protected intent in Production Review before preparing a patch.';
+    if (!this.intentConfirmed) return 'No current Step 4 Creative Intent confirmation is available; confirm supported intent in Production Review first.';
+    if (!this.protectedIntent.trim()) return 'Step 4 Creative Intent is already confirmed, but the saved decision has no protected-intent text. Enter the wording that must remain unchanged; do not repeat the intent confirmation.';
     if (!this.patchOriginal) return 'Select the exact source wording to replace.';
     const first = this.prompt.indexOf(this.patchOriginal);
     if (first < 0) return 'The selected wording does not occur in the saved prompt.';
@@ -1176,6 +1314,62 @@ export class PostFamilyWorkflowComponent implements OnChanges, OnDestroy {
       .map((finding: any) => `${finding.id || finding.ruleId || finding.code || 'Text finding'} · ${finding.severity || 'severity UNKNOWN'} · explicitly repairable`);
     return [...canonicalFailures, ...explicitTextFindings];
   }
+  get requiredTextRepair(): boolean {
+    return this.canonicalFailCount > 0
+      || String(this.review?.planQuality?.status || '').toUpperCase() === 'FAIL'
+      || (Array.isArray(this.review?.planQuality?.findings) && this.review.planQuality.findings.some((finding: any) =>
+        finding?.repairable === true
+        && !['OPTIONAL', 'NOT_REPAIRABLE'].includes(String(finding?.repairability || '').toUpperCase())
+        && !['UNKNOWN', 'NOT_APPLICABLE'].includes(String(finding?.applicability || '').toUpperCase())
+        && /PROMPT|TEXT/i.test(String(finding?.scope || finding?.category || finding?.type || finding?.domain || ''))));
+  }
+  get recommendedTextRepair(): boolean {
+    return !this.requiredTextRepair && (
+      this.optionalCreativeImprovements.length > 0
+      || String(this.review?.planQuality?.recommendation || this.review?.recommendation || '').toUpperCase().includes('REPAIR')
+    );
+  }
+  get repairRecommendationLabel(): string {
+    if (!this.review || !this.isCurrent()) return 'Evidence missing or stale';
+    if (this.technicalEvaluationStatus.startsWith('Technical failure')) return 'Revalidation required';
+    if (this.requiredTextRepair) return 'Required';
+    if (this.recommendedTextRepair) return 'Optional recommendation';
+    return 'No repair justified';
+  }
+  get repairPolicyMessage(): string {
+    if (!this.review || !this.isCurrent()) return 'The saved evaluation is missing or stale. Revalidate in Step 5 before recording a Step 6 decision.';
+    if (this.technicalEvaluationStatus.startsWith('Technical failure')) return 'Technical assessment is unavailable; resolve and revalidate it before making a no-repair decision.';
+    if (this.requiredTextRepair) return 'The saved evidence indicates a text repair requirement. Review the supported finding before continuing.';
+    if (this.recommendedTextRepair) return 'A text improvement is recommended but not required. You may approve a reasoned no-repair decision and continue without marking the suggestion resolved.';
+    return 'No applicable canonical prompt-text failure or required text repair was identified.';
+  }
+  get noRepairDecisionBlockReason(): string {
+    if (!this.review || !this.isCurrent()) return 'Current saved analysis evidence is required.';
+    if (this.technicalEvaluationStatus.startsWith('Technical failure')) return 'Revalidate the technical evaluation before deciding.';
+    if (this.requiredTextRepair) return 'A required text repair must be reviewed; no-repair approval is not available.';
+    if (this.decisionReadError) return 'Saved operator decisions could not be verified; retry the read before submitting.';
+    return 'No-repair approval is not available for this evidence state.';
+  }
+  get noRepairDecisionEligible(): boolean {
+    return !!this.review && this.isCurrent()
+      && this.canonicalEvaluation.status === 'EVALUATED'
+      && !this.technicalEvaluationStatus.startsWith('Technical failure')
+      && !this.requiredTextRepair
+      && !this.decisionReadError;
+  }
+  get activeNoRepairDecision(): any | null {
+    const decision = this.eventDecision('step6-no-text-repair', 'NO_TEXT_REPAIR_JUSTIFIED');
+    return decision
+      && !decision.stale
+      && String(decision.analysisRunId) === String(this.review?.recordId)
+      && String(decision.analysisBindingHash) === String(this.review?.bindingHash)
+      ? decision
+      : null;
+  }
+  get staleNoRepairDecision(): any | null {
+    const decision = this.eventDecision('step6-no-text-repair', 'NO_TEXT_REPAIR_JUSTIFIED');
+    return decision && !this.activeNoRepairDecision ? decision : null;
+  }
   get optionalCreativeImprovements(): string[] {
     const findings = this.review?.planQuality?.optionalImprovements || this.review?.optionalCreativeImprovements || [];
     return (Array.isArray(findings) ? findings : []).map((item: any) =>
@@ -1191,15 +1385,23 @@ export class PostFamilyWorkflowComponent implements OnChanges, OnDestroy {
     return (Array.isArray(this.canonicalEvaluation.unknownRules) ? this.canonicalEvaluation.unknownRules : [])
       .map((rule: any) => String(rule.ruleId || 'Unnamed rule'));
   }
-  get productionRiskSummary(): string {
-    const risk = this.review?.executionRisk;
-    const capability = this.review?.generation?.capabilityStatus;
-    return [risk?.status || 'UNKNOWN risk', capability ? `${capability} capability` : 'capability UNKNOWN'].join(' · ');
+  get localExecutionStatus(): string {
+    return String(this.review?.executionReview?.status || this.review?.executionRisk?.status || 'UNKNOWN');
+  }
+  get generatorCapabilityStatus(): string {
+    return String(this.review?.generation?.capabilityStatus || 'UNKNOWN');
+  }
+  get productionComplexityStatus(): string {
+    return String(this.review?.generalProducibility?.status || 'UNKNOWN');
   }
   get technicalEvaluationStatus(): string {
     const status = String(this.canonicalEvaluation.status || this.review?.reviewStatus || this.review?.status || '').toUpperCase();
+    const reviewStatus = String(this.review?.reviewStatus || this.review?.status || '').toUpperCase();
     const reasons = this.review?.family8?.renderAuthorization?.reasons || [];
+    const authorizationStatus = String(this.review?.family8?.renderAuthorization?.status || '').toUpperCase();
     const failed = status.includes('FAILED') || status.includes('TECHNICAL_FAILURE')
+      || reviewStatus.includes('TECHNICAL_FAILURE')
+      || authorizationStatus.includes('TECHNICAL_FAILURE')
       || reasons.some((reason: any) => /TECHNICAL_FAILURE/.test(String(reason.code || '').toUpperCase()));
     return failed ? 'Technical failure recorded; revalidation required' : 'No technical evaluation failure recorded';
   }
@@ -1221,30 +1423,76 @@ export class PostFamilyWorkflowComponent implements OnChanges, OnDestroy {
   get repairTriageTitle(): string {
     if (!this.review || !this.isCurrent()) return 'Confirm this exact saved analysis before deciding';
     if (this.technicalEvaluationStatus.startsWith('Technical failure')) return 'Evaluation unavailable for repair triage';
-    if (this.repairRecommended) return 'The saved analysis supports reviewing a text repair';
+    if (this.requiredTextRepair) return 'Text repair required';
+    if (this.recommendedTextRepair) return 'Optional text repair is recommended';
     return 'No actionable prompt-text repair identified';
   }
   get repairTriageSummary(): string {
     if (!this.review || !this.isCurrent()) return 'This analysis is missing or stale for the selected prompt/settings. Revalidate the exact saved version before continuing.';
     if (this.technicalEvaluationStatus.startsWith('Technical failure')) return 'This saved evaluation has a technical failure and cannot support repair triage. Revalidate through the official analysis workflow.';
     const summary = `Saved canonical result: ${this.canonicalScoreLabel}, grade ${this.canonicalGrade}; ${this.canonicalOutcomeSummary}.`;
-    if (this.repairRecommended) return `${summary} ${this.actionableTextDefects.join('; ') || this.review?.planQuality?.recommendation || 'The saved findings support a text-repair review.'}`;
+    if (this.requiredTextRepair) return `${summary} ${this.actionableTextDefects.join('; ') || this.review?.planQuality?.recommendation || 'The saved evidence requires text repair.'}`;
+    if (this.recommendedTextRepair) return `${summary} ${this.optionalCreativeImprovements.join('; ') || this.review?.planQuality?.recommendation || 'A non-blocking text improvement is recommended.'}`;
     const evidence = this.outstandingEvidence.length
       ? ` Outstanding evidence remains: ${this.outstandingEvidence.join('; ')}.`
       : '';
     const unknown = this.unknownCanonicalRules.length
       ? ` UNKNOWN rules remain unverified: ${this.unknownCanonicalRules.join(', ')}.`
       : '';
-    const risk = ` Production risk: ${this.productionRiskSummary}.`;
-    return `${summary} No actionable canonical prompt-text failure is recorded.${evidence}${unknown}${risk} Missing verified character reference and accepted start frame are Step 7 responsibilities, not text-repair tasks.`;
+    return `${summary} No actionable canonical prompt-text failure is recorded.${evidence}${unknown} Production critic, provider capability and complexity classifications are distinct and shown separately. Missing verified character reference and accepted start frame are Step 7 responsibilities, not text-repair tasks.`;
   }
   selectRepairForReview(): void {
     if (!this.review || !this.isCurrent() || !this.repairRecommended) return;
     this.persistUiLocation();
   }
-  continueWithoutTextRepair(): void {
-    if (!this.review || !this.isCurrent()) return;
-    this.selectStage(7);
+  approveNoTextRepairAndContinue(): void {
+    if (!this.noRepairDecisionEligible || !this.noRepairConfirmed || this.busy || !this.review) return;
+    const sequence = this.restoreSequence;
+    const analysisRunId = String(this.review.recordId);
+    this.busy = true;
+    this.noRepairDecisionError = '';
+    this.http.post<any>('/api/v1/intelligence/workflow/production-review/decisions', {
+      contentId: this.contentId,
+      promptVersionId: this.promptVersionId,
+      decisionType: 'NO_TEXT_REPAIR_JUSTIFIED',
+      decisionId: 'step6-no-text-repair',
+      decision: 'NO_TEXT_REPAIR_JUSTIFIED',
+      operatorConfirmed: true,
+      analysisRunId,
+      analysisBindingHash: this.review.bindingHash,
+    }).subscribe({
+      next: decision => {
+        if (sequence !== this.restoreSequence) return;
+        if (decision?.decisionType !== 'NO_TEXT_REPAIR_JUSTIFIED'
+            || decision?.decision !== 'NO_TEXT_REPAIR_JUSTIFIED'
+            || String(decision?.analysisRunId) !== analysisRunId
+            || String(decision?.analysisBindingHash) !== String(this.review?.bindingHash)
+            || decision?.stale === true
+            || !decision?.recordId
+            || !decision?.savedAt) {
+          this.busy = false;
+          this.noRepairDecisionError = 'The server did not confirm a current saved decision. Step 7 was not opened.';
+          this.changeDetector.markForCheck();
+          return;
+        }
+        this.reviewDecisions = [
+          ...this.reviewDecisions.filter((row: any) =>
+            !(row.decisionType === decision.decisionType && row.decisionId === decision.decisionId)),
+          decision,
+        ];
+        this.noRepairConfirmed = false;
+        this.busy = false;
+        this.changeDetector.markForCheck();
+        this.selectStage(7);
+      },
+      error: error => {
+        if (sequence !== this.restoreSequence) return;
+        this.busy = false;
+        this.noRepairDecisionError = error?.error?.detail || error?.error?.message
+          || 'The no-repair decision could not be saved. Step 7 was not opened.';
+        this.changeDetector.markForCheck();
+      },
+    });
   }
   private repairKey = '';
   private autoRepair = false;
@@ -1305,7 +1553,7 @@ export class PostFamilyWorkflowComponent implements OnChanges, OnDestroy {
       this.repairSession = session; this.repairSessionId = session.sessionId; this.loadRepairComparison(session); this.changeDetector.markForCheck();
     }, error: e => this.fail(e) });
   }
-  ngOnDestroy(): void { this.autoRepair = false; this.repairOperation++; this.restoreSequence++; }
+  ngOnDestroy(): void { this.autoRepair = false; this.repairOperation++; this.restoreSequence++; this.disposePromptPreview(); }
   private loadRepairComparison(session: any): void {
     if (!session.originalReviewId || !session.bestReviewId) return;
     const sequence = this.restoreSequence, operation = this.repairOperation;
@@ -1320,6 +1568,10 @@ export class PostFamilyWorkflowComponent implements OnChanges, OnDestroy {
   restoredRecordId = '';
   private restoreSequence = 0;
   ngOnChanges(changes: SimpleChanges): void {
+    if (changes['prompt'] && this.promptPreviewEditor && this.promptPreviewEditor.getValue() !== this.prompt) {
+      this.promptPreviewEditor.setValue(this.prompt);
+      this.promptPreviewEditor.setScrollTop(0);
+    }
     if(changes['prompt'] && this.eventDecision('creative-intent','CREATIVE_INTENT')?.sourceQuote !== this.prompt)this.intentConfirmed=false;
     if(changes['creativeProvenance']) { const decision=this.eventDecision('creative-intent','CREATIVE_INTENT'); if(decision && decision.storyRevisionId !== (this.creativeProvenance?.storyRevisionId||null))this.intentConfirmed=false; }
     if (changes['workflowProfile']) this.profile = changes['workflowProfile'].currentValue || 'FROZEN';
@@ -1336,6 +1588,9 @@ export class PostFamilyWorkflowComponent implements OnChanges, OnDestroy {
     this.busy = false;
     this.repairConsent = false;
     this.repairBudget = 0;
+    this.noRepairConfirmed = false;
+    this.noRepairDecisionError = '';
+    this.decisionReadError = '';
     this.copyStatus = '';
     this.reviewedInputs = '';
     this.restoredRecordId = '';
@@ -1608,6 +1863,10 @@ export class PostFamilyWorkflowComponent implements OnChanges, OnDestroy {
   repair() {
     if (!this.review?.recordId || !this.isCurrent()) {
       this.error = 'A current saved analysis is required before applying a prompt patch.';
+      return;
+    }
+    if (!this.intentConfirmed || !this.protectedIntent.trim()) {
+      this.error = this.manualPatchMessage;
       return;
     }
     const start = this.prompt.indexOf(this.patchOriginal);

@@ -7,12 +7,12 @@ import { vi } from 'vitest';
 
 describe('post-family operator workflow', () => {
   afterEach(() => { window.history.replaceState(window.history.state, '', window.location.pathname); localStorage.clear(); delete (navigator as any).clipboard; });
-  function flushReviewReads() {
+  function flushReviewReads(decisionResponse: any = {decisions:[]}) {
     const http=TestBed.inject(HttpTestingController);
-    http.match(r=>r.method==='GET' && r.url==='/api/v1/intelligence/workflow/production-review/decisions').forEach(r=>r.flush({decisions:[]}));
+    http.match(r=>r.method==='GET' && r.url==='/api/v1/intelligence/workflow/production-review/decisions').forEach(r=>r.flush(decisionResponse));
     http.match(r=>r.method==='GET' && r.url==='/api/v1/intelligence/workflow/provider-capabilities').forEach(r=>r.flush({models:{}}));
   }
-  async function setup() {
+  async function setup(decisionResponse: any = {decisions:[]}) {
     localStorage.clear();
     await TestBed.configureTestingModule({
       imports: [PostFamilyWorkflowComponent],
@@ -22,7 +22,7 @@ describe('post-family operator workflow', () => {
     fixture.componentRef.setInput('prompt', '0-6 SEC\nLuca opens a box.');
     fixture.componentRef.setInput('contentId', '1');
     fixture.componentRef.setInput('promptVersionId', '2');
-    fixture.detectChanges(); flushReviewReads();
+    fixture.detectChanges(); flushReviewReads(decisionResponse);
     const setupHttp = TestBed.inject(HttpTestingController);
     setupHttp.expectOne(r => r.url === '/api/v1/intelligence/workflow/records?kind=REVIEW').flush([]);
     setupHttp.expectOne('/api/v1/characters').flush([{ name: 'Luca' }]);
@@ -526,6 +526,7 @@ Hard cut.`;
     c.review = { recordId: 'r' };
     c.isCurrent = () => true;
     c.protectedIntent = 'Preserve the source intent.';
+    c.intentConfirmed = true;
     c.patchOriginal = 'CUT.';
     c.patchReplacement = 'Hold.';
     expect(c.manualPatchValid).toBe(true);
@@ -548,8 +549,9 @@ Hard cut.`;
     c.patchOriginal = 'CUT.';
     c.patchReplacement = 'Hold.';
     c.isCurrent = () => true;
+    c.intentConfirmed = true;
     c.repair();
-    expect(c.error).toContain('exactly once');
+    expect(c.error).toContain('saved decision has no protected-intent text');
     TestBed.inject(HttpTestingController).expectNone(r => r.url.endsWith('/repair'));
     c.prompt = 'CUT.';
     c.isCurrent = () => false;
@@ -559,13 +561,14 @@ Hard cut.`;
     f.destroy();
     TestBed.resetTestingModule();
   });
-  it('shows evidence-derived repair triage and navigates without persisting a false repair decision', async () => {
+  it('persists an explicit current-analysis no-repair decision before navigating', async () => {
     const f = await setup();
     const c = f.componentInstance;
     c.prompt = 'A saved prompt.\nContent profile: AUTO.';
     c.contentProfile = 'ABSURD_PHYSICS';
     c.review = {
       recordId: 'analysis-current',
+      bindingHash: 'binding-current',
       contentId: 1,
       promptVersionId: 2,
       boundRequest: { contentProfile: 'ABSURD_PHYSICS', prompt: c.prompt },
@@ -578,6 +581,7 @@ Hard cut.`;
       },
       executionRisk: { status: 'PASS' },
       generation: { capabilityStatus: 'SUPPORTED' },
+      generalProducibility: { status: 'RISKY' },
       family8: { renderAuthorization: { status: 'BLOCKED_PENDING_EVIDENCE', reasons: [
         { code: 'REQUIRED_EVIDENCE_MISSING', source: 'REFERENCE_ASSOCIATION', message: 'Verified character reference required' },
         { code: 'REQUIRED_EVIDENCE_MISSING', source: 'EXECUTION_INPUTS', message: 'Accepted startFrame required' },
@@ -588,21 +592,102 @@ Hard cut.`;
     const router = { navigateByUrl: vi.fn().mockResolvedValue(true) };
     (c as any).preparationRouter = router;
     f.detectChanges();
-    expect(f.nativeElement.textContent).toContain('Prompt-declared profile');
-    expect(f.nativeElement.textContent).toContain('Literal text in this immutable prompt; not production settings.');
-    expect(f.nativeElement.textContent).toContain('The effective saved production profile is ABSURD_PHYSICS');
+    expect(f.nativeElement.textContent).toContain('Historical profile mismatch');
+    expect(f.nativeElement.textContent).toContain('Immutable prompt text declares AUTO.');
+    expect(f.nativeElement.textContent).toContain('The saved production profile and analysis use ABSURD_PHYSICS.');
     expect(f.nativeElement.textContent).toContain('ABSURD_PHYSICS');
     expect(f.nativeElement.textContent).toContain('No actionable prompt-text repair identified');
-    expect(f.nativeElement.textContent).toContain('85 / 100 · Grade B · 0 FAIL');
+    expect(f.nativeElement.textContent).toContain('85 / 100 · Grade B');
+    expect(f.nativeElement.textContent).toContain('Canonical failures0');
     expect(f.nativeElement.textContent).toContain('STUBBORN_RETURN_LOOP');
     expect(f.nativeElement.textContent).toContain('REFERENCE_ASSOCIATION: Verified character reference required');
     expect(f.nativeElement.textContent).toContain('EXECUTION_INPUTS: Accepted startFrame required');
     expect(f.nativeElement.textContent).toContain('Missing verified character reference and accepted start frame are Step 7 responsibilities');
-    c.continueWithoutTextRepair();
+    expect(f.nativeElement.textContent).toContain('Local execution critic');
+    expect(f.nativeElement.textContent).toContain('Generator capability');
+    expect(f.nativeElement.textContent).toContain('Production complexity');
+    expect(f.nativeElement.textContent).toContain('RISKY');
+    expect(f.nativeElement.textContent).not.toContain('Production risk: PASS');
+    c.noRepairConfirmed = true;
+    c.approveNoTextRepairAndContinue();
+    const save = TestBed.inject(HttpTestingController).expectOne('/api/v1/intelligence/workflow/production-review/decisions');
+    expect(save.request.body).toMatchObject({
+      contentId: '1', promptVersionId: '2', decisionType: 'NO_TEXT_REPAIR_JUSTIFIED',
+      decisionId: 'step6-no-text-repair', decision: 'NO_TEXT_REPAIR_JUSTIFIED',
+      operatorConfirmed: true, analysisRunId: 'analysis-current',
+    });
+    expect(router.navigateByUrl).not.toHaveBeenCalled();
+    save.flush({
+      decisionType: 'NO_TEXT_REPAIR_JUSTIFIED', decision: 'NO_TEXT_REPAIR_JUSTIFIED',
+      decisionId: 'step6-no-text-repair', analysisRunId: 'analysis-current',
+      analysisBindingHash: 'binding-current', stale: false, recordId: 'decision-1',
+      savedAt: '2026-10-13T15:00:00Z', provenance: 'OPERATOR_CONFIRMED',
+    });
     expect(router.navigateByUrl).toHaveBeenCalledWith(expect.stringContaining('/render-preparation?'));
+    expect(c.activeNoRepairDecision).toMatchObject({ analysisRunId: 'analysis-current', recordId: 'decision-1' });
     expect(localStorage.getItem('pompom-repair-decision:1:2:analysis-current')).toBeNull();
-    expect(localStorage.getItem('pompom-studio-location:1:2')).toBeNull();
     TestBed.inject(HttpTestingController).expectNone(r => r.method === 'POST');
+    f.destroy();
+    TestBed.resetTestingModule();
+  });
+  it('restores an existing Step 6 decision only for the exact analysis and explains blank protected intent', async () => {
+    const savedDecision = {
+      decisionType: 'NO_TEXT_REPAIR_JUSTIFIED',
+      decisionId: 'step6-no-text-repair',
+      decision: 'NO_TEXT_REPAIR_JUSTIFIED',
+      analysisRunId: 'analysis-restored',
+      analysisBindingHash: 'binding-restored',
+      stale: false,
+      provenance: 'OPERATOR_CONFIRMED',
+      savedAt: '2026-10-13T15:00:00Z',
+      recordId: 'decision-restored',
+    };
+    const intentDecision = {
+      decisionType: 'CREATIVE_INTENT',
+      decisionId: 'creative-intent',
+      decision: 'CONFIRMED',
+      protectedIntent: '',
+    };
+    const f = await setup({decisions:[savedDecision, intentDecision]});
+    const c = f.componentInstance;
+    c.review = {
+      recordId: 'analysis-restored',
+      bindingHash: 'binding-restored',
+      canonicalRuleEvaluation: {status:'EVALUATED', failedRules:[], passedRules:[], unknownRules:[], notApplicableRules:[]},
+      planQuality: {status:'HYPOTHESIS', findings:[]},
+    };
+    c.isCurrent = () => true;
+    c.activeStage = 6;
+    f.detectChanges();
+    expect(c.activeNoRepairDecision).toEqual(savedDecision);
+    expect(c.intentConfirmed).toBe(true);
+    expect(c.protectedIntent).toBe('');
+    expect(c.manualPatchMessage).toContain('Creative Intent is already confirmed');
+    expect(c.manualPatchMessage).toContain('no protected-intent text');
+    expect(f.nativeElement.textContent).toContain('Continue to Render Preparation');
+    expect(f.nativeElement.textContent).not.toContain('Confirm supported intent in Production Review first');
+    TestBed.inject(HttpTestingController).expectNone(r => r.method === 'POST');
+    f.destroy();
+    TestBed.resetTestingModule();
+  });
+  it('does not navigate or claim approval when no-repair persistence fails', async () => {
+    const f = await setup();
+    const c = f.componentInstance;
+    c.review = {
+      recordId: 'run', bindingHash: 'binding',
+      canonicalRuleEvaluation: { status: 'EVALUATED', failedRules: [], passedRules: [], unknownRules: [], notApplicableRules: [] },
+      planQuality: { status: 'HYPOTHESIS', findings: [] },
+    };
+    c.isCurrent = () => true;
+    const router = { navigateByUrl: vi.fn().mockResolvedValue(true) };
+    (c as any).preparationRouter = router;
+    c.noRepairConfirmed = true;
+    c.approveNoTextRepairAndContinue();
+    TestBed.inject(HttpTestingController).expectOne('/api/v1/intelligence/workflow/production-review/decisions')
+      .flush({ detail: 'database unavailable' }, { status: 409, statusText: 'Conflict' });
+    expect(router.navigateByUrl).not.toHaveBeenCalled();
+    expect(c.noRepairDecisionError).toBe('database unavailable');
+    expect(c.activeNoRepairDecision).toBeNull();
     f.destroy();
     TestBed.resetTestingModule();
   });
@@ -625,7 +710,7 @@ Hard cut.`;
     c.isCurrent = () => true;
     expect(c.actionableTextDefects).toEqual(['required-text-fix · HIGH · explicitly repairable']);
     expect(c.repairRecommended).toBe(true);
-    c.review.canonicalRuleEvaluation.status = 'BLOCKED_TECHNICAL_FAILURE';
+    c.review.reviewStatus = 'ASSESSMENT_TECHNICAL_FAILURE';
     expect(c.technicalEvaluationStatus).toContain('Technical failure recorded');
     expect(c.repairTriageTitle).toBe('Evaluation unavailable for repair triage');
     TestBed.inject(HttpTestingController).expectNone(r => r.method === 'POST');
