@@ -1972,6 +1972,26 @@ public class WorkflowService {
     return result;
   }
 
+  /** Load the latest REVIEW record for a given content/prompt version. */
+  public Map<String, Object> getLatestReview(Object contentId, Object promptVersionId) {
+    String content = String.valueOf(contentId);
+    String prompt = String.valueOf(promptVersionId);
+    var text = jdbc.sql(
+            "SELECT id, payload::text FROM post_family_workflow_events WHERE kind='REVIEW'"
+                + " AND payload->>'contentId'=:content AND payload->>'promptVersionId'=:prompt"
+                + " ORDER BY created_at DESC LIMIT 1")
+        .param("content", content)
+        .param("prompt", prompt)
+        .query((rs, ignored) -> {
+          var result = read(rs.getString("payload"));
+          result.put("recordId", rs.getString("id"));
+          return result;
+        })
+        .optional()
+        .orElse(null);
+    return text;
+  }
+
   public List<Map<String, Object>> list(String kind) {
     return list(kind, null, null, null);
   }
