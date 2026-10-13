@@ -6,7 +6,6 @@ import { provideHttpClientTesting, HttpTestingController } from '@angular/common
 import { PostFamilyWorkflowComponent } from './post-family-workflow.component';
 import { vi } from 'vitest';
 
-TestBed.initTestEnvironment(BrowserDynamicTestingModule, platformBrowserDynamicTesting());
 
 describe('post-family operator workflow', () => {
   afterEach(() => { window.history.replaceState(window.history.state, '', window.location.pathname); localStorage.clear(); delete (navigator as any).clipboard; });
@@ -1184,6 +1183,22 @@ Hard cut.`;
       error: { detail: 'A prior optimization provider outcome is unresolved' },
     })).toContain('previous provider outcome is unresolved');
     f.destroy();
+  });
+
+  it('shows a restored failed attempt with its category and never dispatches a retry', async () => {
+    const f=await setup();const c=f.componentInstance;const http=TestBed.inject(HttpTestingController);
+    c.review={recordId:'failed-analysis'};c.loadLatestCreativeOptimization();
+    http.expectOne('/api/v1/intelligence/workflow/records/failed-analysis/creative-optimization/latest').flush({comparison:null,attempt:{optimizationFailed:true,category:'CANDIDATE_STRUCTURE_INVALID',detail:'Prompt optimization candidates must be distinct unsaved revisions',attemptId:'057b9209-036d-4096-a645-7bd49ffc0d94',providerDispatched:true,providerResponseReturned:true,candidatesSaved:false,retrySafe:false}});
+    expect(c.creativeOptimizationError).toContain('CANDIDATE_STRUCTURE_INVALID');expect(c.creativeOptimizationError).toContain('057b9209');expect(c.creativeOptimizationError).toContain('Retry blocked');expect(c.creativeOptimizationError).toContain('Candidates saved: no');
+    http.expectNone(r=>r.method==='POST');f.destroy();TestBed.resetTestingModule();
+  });
+  it('prevents duplicate button dispatch while an optimization request is pending', async () => {
+    const f=await setup();const c=f.componentInstance;const http=TestBed.inject(HttpTestingController);
+    c.review={recordId:'pending-analysis'};c.creativeOptimizationConsent=true;c.creativeOptimizationBudget=.2;
+    c.generateCreativeOptimizationCandidates();c.generateCreativeOptimizationCandidates();
+    http.expectOne('/api/v1/intelligence/workflow/records/pending-analysis/creative-optimization').flush({category:'UNRESOLVED_ATTEMPT',detail:'Outcome unknown',attemptId:'pending-id',providerDispatched:true,providerResponseReturned:false,retrySafe:false,candidatesSaved:false},{status:502,statusText:'Bad Gateway'});
+    expect(c.creativeOptimizationError).toContain('UNRESOLVED_ATTEMPT');expect(c.creativeOptimizationComparison).toBeNull();expect(c.creativeOptimizationBusy).toBe(false);
+    http.expectNone(r=>r.method==='POST');f.destroy();TestBed.resetTestingModule();
   });
 
 });

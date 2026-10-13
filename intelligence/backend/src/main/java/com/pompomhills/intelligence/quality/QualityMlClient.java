@@ -234,8 +234,7 @@ public class QualityMlClient {
             org.springframework.http.HttpStatus.FORBIDDEN,
             "Ücretli ikinci görüş kapalı; sunucuda onaylı kapsam/bütçe yapılandırması gerekir.");
       if (response.statusCode() != 200)
-        throw new MlServiceException(
-            "Workflow service returned HTTP " + response.statusCode() + ": " + errorDetail(response.body()));
+        throw new MlWorkflowException(response.statusCode(), workflowErrorDiagnostics(response.body()));
       return readBody(response.body(), new TypeReference<Map<String, Object>>() {});
     } catch (InterruptedException interrupted) {
       Thread.currentThread().interrupt();
@@ -257,8 +256,23 @@ public class QualityMlClient {
     } catch (JsonProcessingException ignored) {
       // Keep the plain response below when the provider did not return JSON.
     }
+
     return body.length() > 500 ? body.substring(0, 500) : body;
   }
+
+    private Map<String, Object> workflowErrorDiagnostics(String body) {
+      if (body == null || body.isBlank()) return Map.of("detail", "ML workflow returned no diagnostic detail");
+      try {
+        var root = mlObjectMapper.readTree(body);
+        var detail = root.get("detail");
+        if (detail != null && detail.isObject())
+          return mlObjectMapper.convertValue(detail, new TypeReference<Map<String, Object>>() {});
+        if (detail != null && detail.isTextual()) return Map.of("detail", detail.asText());
+      } catch (JsonProcessingException ignored) {
+        // Keep a bounded, plain diagnostic if the service returned malformed JSON.
+      }
+      return Map.of("detail", body.length() > 500 ? body.substring(0, 500) : body);
+    }
 
   private <T> T readBody(String body, Class<T> type) {
     if (body == null || body.isBlank()) {

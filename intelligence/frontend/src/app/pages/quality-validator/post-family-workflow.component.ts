@@ -312,6 +312,7 @@ import { GeneralProducibilityComponent } from './general-producibility.component
           <summary>Creative Optimization (optional)</summary>
           <div class="creative-optimization-body">
             <p class="setting-note">Generate two prompt candidates after explicit paid consent and a valid budget. Candidate scores are evidence only; they do not auto-select or authorize rendering.</p>
+            <button type="button" class="button button--secondary button--compact" (click)="loadLatestCreativeOptimization()" [disabled]="creativeOptimizationBusy || !review?.recordId">Load saved comparison / attempt</button>
             <div class="repair-fields">
               <label class="repair-field" for="creative-optimization-budget">
                 <span>Maximum total cost (USD)</span>
@@ -1050,6 +1051,7 @@ export class PostFamilyWorkflowComponent implements OnChanges, OnDestroy {
     this.http.get<any>(latestPath).subscribe({
       next: (payload) => {
         this.creativeOptimizationComparison = payload?.comparison ?? null;
+        if(payload?.attempt?.optimizationFailed) this.creativeOptimizationError=this.creativeOptimizationFailureMessage({error:payload.attempt});
         this.creativeOptimizationSelectedCandidateId = null;
         this.creativeOptimizationReviewedCandidateId = null;
         this.creativeOptimizationConsent = false;
@@ -1066,6 +1068,7 @@ export class PostFamilyWorkflowComponent implements OnChanges, OnDestroy {
     });
   }
   generateCreativeOptimizationCandidates(): void {
+    if (this.creativeOptimizationBusy) return;
     if (!this.review?.recordId || !this.contentId || !this.promptVersionId) {
       this.creativeOptimizationError = 'Current analysis and saved prompt version are required to generate creative candidates.';
       return;
@@ -1084,7 +1087,8 @@ export class PostFamilyWorkflowComponent implements OnChanges, OnDestroy {
       maxCostUsd: Number(this.creativeOptimizationBudget),
     }).subscribe({
       next: (payload) => {
-        this.creativeOptimizationComparison = payload?.comparison ?? payload ?? null;
+        if(payload?.optimizationFailed){this.creativeOptimizationComparison=null;this.creativeOptimizationError=this.creativeOptimizationFailureMessage({error:payload});}
+        else this.creativeOptimizationComparison = payload?.comparison ?? payload ?? null;
         this.creativeOptimizationSelectedCandidateId = null;
         this.creativeOptimizationReviewedCandidateId = null;
         this.creativeOptimizationConsent = false;
@@ -1102,6 +1106,13 @@ export class PostFamilyWorkflowComponent implements OnChanges, OnDestroy {
     });
   }
   creativeOptimizationFailureMessage(response: any): string {
+    const failure=response?.error;
+    if(failure?.category){
+      const dispatched=failure.providerDispatched===true?'Provider dispatch: yes.':'Provider dispatch: no.';
+      const returned=failure.providerResponseReturned===true?'Response received.':'Response not confirmed.';
+      const retry=failure.retrySafe===true?'Explicit operator action required before retry/recovery.':'Retry blocked; review the saved attempt. No automatic retry.';
+      return `${failure.category}: ${failure.detail || 'Optimization outcome requires review.'} ${dispatched} ${returned} Candidates saved: ${failure.candidatesSaved===true?'yes':'no'}. ${retry} Attempt: ${failure.attemptId || failure.roleRecordId || 'unavailable'}.`;
+    }
     const detail = String(response?.error?.detail ?? response?.error?.message ?? '').trim();
     const normalized = detail.toLowerCase();
     if (normalized.includes('explicit server model configuration required')) {

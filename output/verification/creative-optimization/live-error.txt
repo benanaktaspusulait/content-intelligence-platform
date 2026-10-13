@@ -1,0 +1,10 @@
+Creative Optimization (optional)
+
+Generate two prompt candidates after explicit paid consent and a valid budget. Candidate scores are evidence only; they do not auto-select or authorize rendering.
+
+Load saved comparison / attempt
+Maximum total cost (USD)
+I explicitly authorize one creative optimization call within the configured budget.
+Generate two candidates
+
+CANDIDATE_STRUCTURE_INVALID: Workflow service returned HTTP 409: Prompt optimization candidates must be distinct unsaved revisions Provider dispatch: yes. Response received. Candidates saved: no. Retry blocked; review the saved attempt. No automatic retry. Attempt: 057b9209-036d-4096-a645-7bd49ffc0d94.

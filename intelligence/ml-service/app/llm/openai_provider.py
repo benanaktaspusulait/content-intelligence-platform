@@ -55,6 +55,7 @@ class OpenAIProvider(LLMProvider):
         # above are structurally identical to what the SDK expects at
         # runtime. type: ignore[arg-type] pins this to the upstream
         # openai-python stub strictness, not a first-party typing gap.
+        self.last_request_started = True
         response = self.client.chat.completions.create(
             model=self.model,
             messages=messages,  # type: ignore[arg-type]
@@ -69,8 +70,10 @@ class OpenAIProvider(LLMProvider):
         # than leaking ``None`` to callers.
         usage = getattr(response, "usage", None)
         self.last_usage = usage.model_dump() if usage is not None and hasattr(usage, "model_dump") else None
-        content = response.choices[0].message.content
-        choice = response.choices[0]
+        choices = getattr(response, "choices", None)
+        choice = choices[0] if choices else None
+        message = getattr(choice, "message", None)
+        content = getattr(message, "content", None)
         self.last_response_metadata = {
             "requestId": getattr(response, "id", None),
             "finishReason": getattr(choice, "finish_reason", None),

@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import logging
 from typing import Any, Literal
 
 from fastapi import APIRouter, HTTPException
@@ -16,6 +17,7 @@ from .review import review_prompt
 from .start_frame_generation import generate_start_frame
 
 router = APIRouter(prefix="/api/v1/workflow", tags=["post-family-workflow"])
+logger = logging.getLogger(__name__)
 
 
 class ReviewRequest(BaseModel):
@@ -179,13 +181,54 @@ def creative_role_readiness() -> dict[str, Any]:
 
 @router.post('/creative-role')
 def creative_role(request: CreativeRoleRequest) -> dict[str, Any]:
-    from .creative_roles import run_paid_role
+    from .creative_roles import CreativeRoleFailure, run_paid_role
+    attempt_id = str(request.context.get('attemptId') or 'unassigned')
     try:
-        return run_paid_role(request.role, request.text, request.context, request.maxCostUsd)
+        result = run_paid_role(request.role, request.text, request.context, request.maxCostUsd)
+        logger.info(
+            "Creative role completed role=%s attempt_id=%s provider=%s model=%s provider_request_id=%s",
+            request.role, attempt_id, result.get('provider'), result.get('model'),
+            (result.get('providerResponseMetadata') or {}).get('requestId', 'unavailable'),
+        )
+        return result
+    except CreativeRoleFailure as error:
+        detail = {'detail': str(error), **error.diagnostics, 'attemptId': attempt_id}
+        status_code = 502 if error.diagnostics.get('category') in {
+            'PROVIDER_CONNECTION_ERROR', 'PROVIDER_TIMEOUT', 'PROVIDER_OUTCOME_UNKNOWN'
+        } else 409
+        raise HTTPException(status_code, detail) from error
     except (ValueError, json.JSONDecodeError) as error:
-        raise HTTPException(409, str(error)) from error
+        message = str(error)
+        category = (
+            'CONFIGURATION_ERROR' if 'configuration' in message.lower() or 'api key' in message.lower()
+            else 'COST_CEILING_EXCEEDED' if 'budget' in message.lower() or 'cost ceiling' in message.lower()
+            else 'CANDIDATE_STRUCTURE_INVALID' if request.role == 'PROMPT_OPTIMIZATION'
+            else 'REQUEST_VALIDATION_ERROR'
+        )
+        detail = {
+            'detail': message,
+            'category': category,
+            'attemptId': attempt_id,
+            'providerDispatched': False,
+            'providerResponseReturned': False,
+            'candidatesSaved': False,
+            'retrySafe': True,
+            'retryRequiresOperatorAuthorization': True,
+        }
+        logger.warning("Creative role pre-dispatch rejection role=%s attempt_id=%s category=%s", request.role, attempt_id, category)
+        raise HTTPException(409, detail) from error
     except Exception as error:
-        raise HTTPException(502, {'status': 'PROVIDER_OUTCOME_UNKNOWN', 'retryAutomatically': False}) from error
+        logger.error("Creative role outcome unknown role=%s attempt_id=%s exception_type=%s", request.role, attempt_id, type(error).__name__)
+        raise HTTPException(502, {
+            'detail': 'The provider request outcome is unknown; do not retry automatically.',
+            'category': 'PROVIDER_OUTCOME_UNKNOWN',
+            'attemptId': attempt_id,
+            'providerDispatched': True,
+            'providerResponseReturned': False,
+            'candidatesSaved': False,
+            'retrySafe': False,
+            'retryRequiresOperatorAuthorization': True,
+        }) from error
 
 
 @router.post('/creative-role/revalidate-production-spec')

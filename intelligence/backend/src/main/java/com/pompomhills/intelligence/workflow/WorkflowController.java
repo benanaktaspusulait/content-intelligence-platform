@@ -36,7 +36,7 @@ public class WorkflowController {
   }
 
   @PostMapping("/records/{id}/creative-optimization")
-  public Map<String, Object> creativeOptimization(
+  public org.springframework.http.ResponseEntity<Map<String,Object>> creativeOptimization(
       @PathVariable UUID id, @RequestBody Map<String, Object> request) {
     if (!(request.get("contentId") instanceof Number contentId)
         || !(request.get("promptVersionId") instanceof Number promptVersionId))
@@ -44,14 +44,10 @@ public class WorkflowController {
     var provenance = contents.creativeProvenance(contentId.longValue(), promptVersionId.longValue());
     var result = service.generateCreativeOptimization(id, request, provenance);
     if (Boolean.TRUE.equals(result.get("optimizationFailed"))) {
-      String detail = String.valueOf(result.getOrDefault("detail", "Creative Optimization did not complete."));
-      var status =
-          "PROVIDER_OUTCOME_UNKNOWN".equals(result.get("attemptState"))
-              ? org.springframework.http.HttpStatus.BAD_GATEWAY
-              : org.springframework.http.HttpStatus.CONFLICT;
-      throw new org.springframework.web.server.ResponseStatusException(status, detail);
+      var status="UNRESOLVED_ATTEMPT".equals(result.get("category")) || "PROVIDER_OUTCOME_UNKNOWN".equals(result.get("attemptState")) ? org.springframework.http.HttpStatus.BAD_GATEWAY : org.springframework.http.HttpStatus.CONFLICT;
+      return org.springframework.http.ResponseEntity.status(status).body(result);
     }
-    return result;
+    return org.springframework.http.ResponseEntity.ok(result);
   }
 
   @GetMapping("/learning/retrieve")

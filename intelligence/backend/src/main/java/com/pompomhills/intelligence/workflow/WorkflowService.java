@@ -27,6 +27,8 @@ import org.springframework.transaction.annotation.Transactional;
 /** Append-only operational adapters over existing prompt, media and ML services. */
 @Service
 public class WorkflowService {
+  @Autowired(required=false) private org.springframework.transaction.PlatformTransactionManager attemptTransactions;
+  private static final org.slf4j.Logger attemptLog = org.slf4j.LoggerFactory.getLogger(WorkflowService.class);
   private static final String BUILD_PROMPT_CONTRACT_VERSION = "openart-production-prompt-v2";
   @Value("${WORKFLOW_BUILD_PROMPT_MODEL:}") private String buildPromptModel;
   @Value("${pompom.data-root:/tmp/pompom-data}") private String workflowDataRoot;
@@ -247,14 +249,7 @@ public class WorkflowService {
     UUID roleRecordId = UUID.fromString(String.valueOf(role.get("recordId")));
     String roleAttemptState = String.valueOf(role.getOrDefault("attemptState", ""));
     if (!"SAVED".equals(roleAttemptState) && !"REUSED_SAVED_RESULT".equals(roleAttemptState)) {
-      var diagnostics = map(role.get("attemptDiagnostics"));
-      var failure = new LinkedHashMap<String, Object>();
-      failure.put("optimizationFailed", true);
-      failure.put("attemptState", roleAttemptState);
-      failure.put("detail", diagnostics.getOrDefault("error", "The optimization role did not complete."));
-      failure.put("providerCallOccurred", diagnostics.getOrDefault("providerDispatched", false));
-      failure.put("roleRecordId", roleRecordId.toString());
-      return failure;
+      return optimizationFailure(role);
     }
     var previousComparison =
         jdbc.sql(
@@ -280,11 +275,18 @@ public class WorkflowService {
     for (var candidate : generated) {
       String candidateId = String.valueOf(candidate.get("candidateId"));
       String text = String.valueOf(candidate.get("prompt"));
-      var candidateReview = reviewCreativeCandidate(analysisId, candidateId, text, bound);
+      Map<String,Object> candidateReview;
+      try {
+        candidateReview = reviewCreativeCandidate(analysisId, candidateId, text, bound);
+        if (!"EVALUATED".equals(map(candidateReview.get("canonicalRuleEvaluation")).get("status")))
+          return optimizationLocalFailure(role,"CANONICAL_EVALUATION_FAILED","Candidate canonical evaluation did not complete; saved provider output can be reused.");
+      } catch (RuntimeException error) {
+        return optimizationLocalFailure(role,"SOURCE_PLAN_VALIDATION_FAILED","Candidate local evaluation failed; saved provider output can be reused.");
+      }
       String candidateRuleset =
           String.valueOf(map(candidateReview.get("canonicalRuleEvaluation")).get("rulesetVersion"));
       if (!baselineRuleset.equals(candidateRuleset))
-        throw new IllegalStateException("Candidate review ruleset differs from baseline; comparison is unavailable");
+        return optimizationLocalFailure(role,"CANONICAL_EVALUATION_FAILED","Candidate ruleset differs from the baseline; saved output remains available.");
       var summary = new LinkedHashMap<String, Object>(candidate);
       summary.put("review", candidateReview);
       summary.put("rulesetVersion", candidateRuleset);
@@ -314,7 +316,8 @@ public class WorkflowService {
     comparison.put("candidates", candidates);
     comparison.put("selection", null);
     comparison.put("approval", null);
-    comparison.put("recordId", save("CREATIVE_OPTIMIZATION", null, comparison));
+    try { comparison.put("recordId", save("CREATIVE_OPTIMIZATION", null, comparison)); }
+    catch (RuntimeException error) { throw new IllegalStateException("CANDIDATE_PERSISTENCE_FAILED: comparison was not saved; provider attempt " + roleRecordId + " remains durable and can be reused without a paid call", error); }
     return comparison;
   }
 
@@ -335,6 +338,9 @@ public class WorkflowService {
         .orElseGet(() -> {
           var empty = new LinkedHashMap<String, Object>();
           empty.put("comparison", null);
+          var attempt = jdbc.sql("SELECT id,payload::text payload FROM post_family_workflow_events WHERE kind='CREATIVE_ROLE' AND payload->>'role'='PROMPT_OPTIMIZATION' AND payload->'sourceRequest'->'context'->>'analysisRunId'=:analysis ORDER BY created_at DESC,id DESC LIMIT 1")
+              .param("analysis",analysisId.toString()).query((rs,row)->{var value=read(rs.getString("payload"));value.put("recordId",rs.getString("id"));return value;}).optional();
+          attempt.ifPresent(value -> empty.put("attempt",optimizationFailure(value)));
           return empty;
         });
   }
@@ -358,7 +364,9 @@ public class WorkflowService {
       if (quote.isBlank()) continue;
       String action = String.valueOf(beat.getOrDefault("sourceAction", quote));
       if (!quote.contains(action)) action = quote;
-      events.add(Map.of("sourceQuote", quote, "action", action));
+      var grounded=new LinkedHashMap<String,Object>();
+      for(String key:List.of("id","startTime","endTime","sourceSpan","sourceQuote")) grounded.put(key,beat.get(key));
+      grounded.put("action",action); grounded.put("semanticStatus","PENDING");events.add(grounded);
     }
     var options = new LinkedHashMap<String, Object>();
     for (String key : List.of(
@@ -371,7 +379,7 @@ public class WorkflowService {
     options.put("structuredPlan", Map.of(
         "evidenceStatus", "DETERMINISTIC_SOURCE_EVENTS_ONLY",
         "sourceVersion", "UNSAVED_CANDIDATE",
-        "events", events));
+        "schemaVersion","source-bound-beats-v1", "beats", events));
     options.put("acceptedStartFrame", false);
     options.put("authorizationEvidence", Map.of());
     return runReview(
@@ -898,7 +906,7 @@ public class WorkflowService {
         } else if (!(saved.get().get("result") instanceof Map<?, ?>)
             || "PROVIDER_RESULT_REJECTED".equals(saved.get().get("attemptState"))) {
           if ("PROMPT_OPTIMIZATION".equals(role))
-            throw new IllegalStateException("A prior optimization provider outcome is unresolved; do not automatically retry");
+            return saved.get();
         } else {
           var replay = new LinkedHashMap<>(saved.get());
           replay.put("recordId", saved.get().get("recordId"));
@@ -909,6 +917,14 @@ public class WorkflowService {
           return replay;
         }
       }
+    }
+    if ("PROMPT_OPTIMIZATION".equals(role)) {
+      context.put("attemptId", UUID.randomUUID().toString());
+      var reserved = new LinkedHashMap<String,Object>();
+      reserved.put("role",role); reserved.put("sourceRequest",verifiedRequest); reserved.put("requestFingerprint",requestFingerprint);
+      reserved.put("attemptState","PROVIDER_OUTCOME_UNKNOWN");
+      reserved.put("attemptDiagnostics",Map.of("category","UNRESOLVED_ATTEMPT","attemptId",context.get("attemptId"),"providerDispatched",true,"retrySafe",false,"detail","Dispatch was reserved; completion is not recorded. Do not replay automatically."));
+      saveCreativeAttempt(reserved);
     }
     Map<String, Object> workflowResponse;
     try {
@@ -930,15 +946,20 @@ public class WorkflowService {
                   : "PROVIDER_RESULT_REJECTED";
       failed.put("attemptState", failedState);
       failed.put("validationStatus", "UNKNOWN");
-      failed.put("attemptDiagnostics", Map.of(
-          "provider", role.equals("STORY") ? "deepseek" : "openai",
-          "error", detail,
-          "providerDispatched", !preDispatchRejection,
-          "persisted", true,
-          "retryAutomatically", false,
-          "retryRequiresOperatorAction", preDispatchRejection));
+      var diagnostic = new LinkedHashMap<String,Object>();
+      if (error instanceof com.pompomhills.intelligence.quality.MlWorkflowException typed) diagnostic.putAll(typed.diagnostics());
+      diagnostic.putIfAbsent("category",preDispatchRejection ? "CONFIGURATION_ERROR" : "UNRESOLVED_ATTEMPT");
+      diagnostic.putIfAbsent("detail",detail); diagnostic.put("error",detail);
+      diagnostic.putIfAbsent("providerDispatched",!preDispatchRejection);
+      diagnostic.putIfAbsent("attemptId",context.get("attemptId"));
+      diagnostic.put("persisted",true); diagnostic.put("retryAutomatically",false);
+      diagnostic.putIfAbsent("retrySafe",preDispatchRejection);
+      diagnostic.put("retryRequiresOperatorAuthorization",true);
+      failed.put("attemptDiagnostics",diagnostic);
+      if (Boolean.TRUE.equals(diagnostic.get("providerResponseReturned"))) failed.put("attemptState","PROVIDER_RESULT_REJECTED");
+      attemptLog.warn("Optimization attempt={} category={} dispatched={} returned={}",context.get("attemptId"),diagnostic.get("category"),diagnostic.get("providerDispatched"),diagnostic.get("providerResponseReturned"));
       try {
-        failed.put("recordId", save("CREATIVE_ROLE", null, failed));
+        failed.put("recordId", "PROMPT_OPTIMIZATION".equals(role) ? saveCreativeAttempt(failed) : save("CREATIVE_ROLE", null, failed));
       } catch (RuntimeException persistenceError) {
         // Preserve the provider error as the user-facing outcome even if the
         // diagnostic append itself cannot be written.
@@ -967,7 +988,7 @@ public class WorkflowService {
           "operatorConfirmed", true,
           "maxCostUsd", request.get("maxCostUsd"),
           "authorizedAt", Instant.now().toString()));
-    result.put("recordId", save("CREATIVE_ROLE", null, result));
+    result.put("recordId", "PROMPT_OPTIMIZATION".equals(role) ? saveCreativeAttempt(result) : save("CREATIVE_ROLE", null, result));
     return result;
   }
 
@@ -2527,6 +2548,34 @@ public class WorkflowService {
     result.put("alternatives", map(source.get("result")).getOrDefault("alternatives", List.of())); result.put("title", copy.get("title"));
     copy.put("result", result); copy.put("recordId", save("CREATIVE_ROLE", null, copy));
     return copy;
+  }
+
+  private UUID saveCreativeAttempt(Map<String,Object> value) {
+    if (attemptTransactions == null) return save("CREATIVE_ROLE",null,value);
+    var transaction=new org.springframework.transaction.support.TransactionTemplate(attemptTransactions);
+    transaction.setPropagationBehavior(org.springframework.transaction.TransactionDefinition.PROPAGATION_REQUIRES_NEW);
+    return transaction.execute(status -> save("CREATIVE_ROLE",null,value));
+  }
+
+  private Map<String,Object> optimizationLocalFailure(Map<String,Object> role,String category,String detail) {
+    var result=optimizationFailure(role); result.put("category",category); result.put("detail",detail);
+    result.put("providerResponseReturned",true); result.put("retrySafe",true);result.put("recovery","REUSE_DURABLE_PROVIDER_RESULT");return result;
+  }
+
+  public static Map<String,Object> optimizationFailure(Map<String,Object> role) {
+    var diagnostics=map(role.get("attemptDiagnostics"));var result=new LinkedHashMap<String,Object>();
+    String detail=String.valueOf(diagnostics.getOrDefault("detail",diagnostics.getOrDefault("error","Saved optimization outcome requires review.")));
+    String category=String.valueOf(diagnostics.getOrDefault("category", detail.contains("distinct unsaved revisions") ? "CANDIDATE_STRUCTURE_INVALID" : "UNRESOLVED_ATTEMPT"));
+    result.put("optimizationFailed",true);result.put("category",category);result.put("detail",detail);
+    result.put("attemptState",role.getOrDefault("attemptState","UNKNOWN"));result.put("attemptId",diagnostics.getOrDefault("attemptId",String.valueOf(role.get("recordId"))));
+    result.put("roleRecordId",String.valueOf(role.get("recordId")));
+    result.put("providerDispatched",diagnostics.getOrDefault("providerDispatched",false));
+    result.put("providerCallOccurred",result.get("providerDispatched"));
+    result.put("providerResponseReturned",diagnostics.getOrDefault("providerResponseReturned",detail.contains("distinct unsaved revisions")));
+    result.put("candidatesSaved",false);result.put("retrySafe",diagnostics.getOrDefault("retrySafe",false));
+    result.put("retryRequiresOperatorAuthorization",true);
+    for(String key:List.of("tokenUsage","actualCostUsd","approvedCostCeilingUsd","finishReason")) if(diagnostics.get(key)!=null)result.put(key,diagnostics.get(key));
+    return result;
   }
 
   private UUID save(String kind, String binding, Map<String, Object> value) {

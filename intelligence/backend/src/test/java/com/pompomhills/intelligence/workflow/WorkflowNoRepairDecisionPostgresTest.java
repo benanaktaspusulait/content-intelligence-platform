@@ -34,6 +34,7 @@ class WorkflowNoRepairDecisionPostgresTest {
           .withUsername("pompom")
           .withPassword("pompom_test");
 
+  private org.springframework.transaction.PlatformTransactionManager attemptManager;
   private JdbcClient jdbc;
   private WorkflowService service;
   private QualityMlClient ml;
@@ -46,6 +47,7 @@ class WorkflowNoRepairDecisionPostgresTest {
     var dataSource =
         new DriverManagerDataSource(DATABASE.getJdbcUrl(), DATABASE.getUsername(), DATABASE.getPassword());
     jdbc = JdbcClient.create(dataSource);
+    attemptManager=new org.springframework.jdbc.datasource.DataSourceTransactionManager(dataSource);
     jdbc.sql("DROP TABLE IF EXISTS post_family_workflow_events").update();
     jdbc.sql("DROP TABLE IF EXISTS prompt_versions").update();
     jdbc.sql("CREATE TABLE prompt_versions (content_id bigint NOT NULL, id bigint NOT NULL, raw_text text NOT NULL, PRIMARY KEY(content_id,id))").update();
@@ -63,6 +65,7 @@ class WorkflowNoRepairDecisionPostgresTest {
     service = new WorkflowService(prompts, ml,
         mock(MediaContentService.class), mock(VideoService.class),
         new ObjectMapper().findAndRegisterModules(), jdbc, null);
+    org.springframework.test.util.ReflectionTestUtils.setField(service,"attemptTransactions",attemptManager);
     analysisId = UUID.randomUUID();
     analysisBinding = "analysis-binding";
     insertReview(analysisId, analysisBinding, "85", "EVALUATED", List.of(), "HYPOTHESIS", "now()");
@@ -216,7 +219,7 @@ class WorkflowNoRepairDecisionPostgresTest {
         });
     when(ml.workflow(eq("review"), anyMap()))
         .thenReturn(Map.of(
-            "canonicalRuleEvaluation", Map.of("rulesetVersion", "1.7", "score", 86, "grade", "B",
+            "canonicalRuleEvaluation", Map.of("status", "EVALUATED", "rulesetVersion", "1.7", "score", 86, "grade", "B",
                 "failedRules", List.of(), "unknownRules", List.of()),
             "executionReview", Map.of("status", "PASS", "findings", List.of()),
             "planQuality", Map.of("status", "RISKY", "findings", List.of()),
@@ -239,9 +242,15 @@ class WorkflowNoRepairDecisionPostgresTest {
         .containsEntry("providerCallOccurred", false);
     assertThat(jdbc.sql(
             "SELECT payload->>'attemptState' FROM post_family_workflow_events "
-                + "WHERE kind='CREATIVE_ROLE' AND payload->>'role'='PROMPT_OPTIMIZATION'")
+                + "WHERE kind='CREATIVE_ROLE' AND payload->>'role'='PROMPT_OPTIMIZATION' ORDER BY created_at DESC,id DESC LIMIT 1")
         .query(String.class).single()).isEqualTo("PRE_DISPATCH_REJECTED");
 
+    jdbc.sql("ALTER TABLE post_family_workflow_events ADD CONSTRAINT reject_comparison CHECK (kind <> 'CREATIVE_OPTIMIZATION')").update();
+    var transaction=new org.springframework.transaction.support.TransactionTemplate(attemptManager);
+    assertThatThrownBy(() -> transaction.execute(status -> service.generateCreativeOptimization(analysisId,generationRequest,provenance)))
+        .isInstanceOf(IllegalStateException.class).hasMessageContaining("CANDIDATE_PERSISTENCE_FAILED");
+    assertThat(jdbc.sql("SELECT count(*) FROM post_family_workflow_events WHERE kind='CREATIVE_ROLE' AND payload->>'attemptState'='SAVED'").query(Long.class).single()).isEqualTo(1L);
+    jdbc.sql("ALTER TABLE post_family_workflow_events DROP CONSTRAINT reject_comparison").update();
     var comparison = service.generateCreativeOptimization(analysisId, generationRequest, provenance);
     assertThat(comparison.get("rulesetVersion")).isEqualTo("1.7");
     assertThat((List<?>) comparison.get("candidates")).hasSize(2);
@@ -252,7 +261,7 @@ class WorkflowNoRepairDecisionPostgresTest {
     assertThat(jdbc.sql("SELECT count(*) FROM prompt_versions").query(Long.class).single()).isEqualTo(1L);
     verify(ml, times(2)).workflow(eq("creative-role"), anyMap());
     var reviewCalls = org.mockito.ArgumentCaptor.forClass(Map.class);
-    verify(ml, times(2)).workflow(eq("review"), reviewCalls.capture());
+    verify(ml, times(4)).workflow(eq("review"), reviewCalls.capture());
     assertThat(reviewCalls.getAllValues())
         .allSatisfy(call -> assertThat(call.get("acceptedStartFrame")).isEqualTo(false))
         .allSatisfy(call -> assertThat(call.get("authorizationEvidence")).isNull());

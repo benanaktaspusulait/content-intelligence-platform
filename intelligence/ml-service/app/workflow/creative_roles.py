@@ -1,6 +1,7 @@
 """Explicit text roles over existing adapters; generation never approves its own output."""
 from __future__ import annotations
 import json
+import logging
 import math
 import os
 import re
@@ -21,6 +22,13 @@ ROLES = {
     'MINIMAL_REPAIR': 'openai',
     'PROMPT_OPTIMIZATION': 'openai',
 }
+logger = logging.getLogger(__name__)
+
+
+class CreativeRoleFailure(ValueError):
+    def __init__(self, detail: str, diagnostics: dict[str, Any]):
+        super().__init__(detail)
+        self.diagnostics = diagnostics
 
 
 def role_readiness() -> dict[str, Any]:
@@ -614,15 +622,17 @@ def perform_role(role: str, text: str, context: dict[str, Any], provider: LLMPro
         raise ValueError('Creative roles are text-only; visual evidence was not supplied')
     system = {
         'STORY_REVIEW': '''Review every supplied story candidate together. Return ONLY one JSON object matching this exact STORY_REVIEW contract; never omit a key and never return markdown. Required top-level keys: reviewId, sourceRequestId, sourceFingerprint, reviewModel, reviewModelVersion, reviewPolicyVersion, reviewTimestamp, reviewStatus, diversityAssessment, comparativeFindings, candidateReviews, recommendedCandidateId, recommendationReason, overallConcerns, usageAndCost, evidenceLimitations, revisionComparison. Set sourceRequestId and sourceFingerprint exactly to the values supplied in context (they may be null); the saved record timestamp is authoritative, so do not use a fixture date. reviewStatus must be COMPLETED, PARTIAL, SERVICE_ERROR, or INSUFFICIENT_EVIDENCE. candidateReviews must contain exactly one object for each supplied candidate, each with its exact candidateId. Assess concept coherence, opening visual promise, causal consistency, event progression, originality against siblings, curiosity/rewatch, generator difficulty, source constraints, ending/payoff, and material differences. For every material finding include dimension, finding, supportingTextEvidence, severity, confidenceOrEvidenceStatus and suggestedMinimalImprovement. Use concise structured findings and do not invent candidates. recommendedCandidateId must be one supplied candidateId or null; if no evidence supports a preference, return null and explain that. Use arrays/objects for the remaining evidence fields even when empty. Compare actual mechanisms and event progressions rather than wording, preserve source fidelity, mark uncertainty honestly, and never grant render authorization.''',
-        'PROMPT_OPTIMIZATION': '''Return ONLY JSON with exactly {"candidates":[{"candidateId":"candidate-a","title":"...","hypothesis":"...","prompt":"complete prompt text"},{"candidateId":"candidate-b","title":"...","hypothesis":"...","prompt":"complete prompt text"}]}. Produce exactly two alternatives to the complete source prompt, each with a distinct, testable creative hypothesis. Candidate A must focus on first-frame/early curiosity; Candidate B must focus on beat progression and execution feasibility. Preserve the source character, physical rule, primary goal, every essential event and the exact ending. Every `essentialEvents` phrase supplied in context must remain verbatim and unchanged in both prompts. Do not add narrative outcomes, characters, objects, or mechanics. Keep the configured profile, generator, duration, aspect ratio and approved story unchanged. Do not assert image/video observation, audience retention, rewatch success, or renderability. Treat first-frame, pacing, and execution claims as hypotheses. Do not recommend, rank or auto-select either candidate; never grant render authorization.''',
+        'PROMPT_OPTIMIZATION': '''Return ONLY JSON with exactly {"candidates":[{"candidateId":"candidate-a","title":"...","hypothesis":"...","prompt":"complete prompt text"},{"candidateId":"candidate-b","title":"...","hypothesis":"...","prompt":"complete prompt text"}]}. Produce exactly two complete prompt revisions, both materially different from the original and from each other; never return the original prompt unchanged or duplicate one candidate. Candidate A must focus on first-frame clarity, immediate visual anomaly and early curiosity. Candidate B must focus on distinct beat progression, pacing and execution feasibility. Make meaningful, bounded wording changes that implement each objective while preserving source facts. Preserve the source character, physical rule, primary goal, every essential event and the exact ending. Every `essentialEvents` phrase supplied in context must remain verbatim and unchanged in both prompts. Do not add narrative outcomes, characters, objects, or mechanics. Keep the configured profile, generator, duration, aspect ratio and approved story unchanged. Do not assert image/video observation, audience retention, rewatch success, or renderability. Treat first-frame, pacing, and execution claims as hypotheses. Do not recommend, rank or auto-select either candidate; never grant render authorization.''',
         'STORY': '''Return ONLY one JSON object matching this schema: {"alternatives":[{"candidateId":"candidate-1","title":"short title","text":"complete story"}]}. Return exactly the number of alternatives requested in context.requestedAlternativeCount (between 1 and 3). Each candidate must include a non-empty candidateId, title and text string. When returning multiple alternatives, each must have a meaningfully different narrative body — do not reuse the same story text with only a different title. Vary at least one of: action/progression strategy, how the central physical rule causes consequences, escalation structure, visual discovery, or permitted payoff. The user supplied input in mode context.inputMode (IDEA = short concept, DETAILED_STORY = complete narrative). Respect context.storyGenerationMode: for EXPLORE_DIFFERENT_STORIES generate meaningfully different narrative directions from the supplied idea; for IMPROVE_EXISTING_STORY refine the supplied narrative while preserving only the explicitly locked requirements listed in context.lockedRequirements. The locked requirements are: PRESERVE_CORE_PREMISE (keep the central concept), PRESERVE_KEY_EVENTS (keep the major events in order), PRESERVE_ENDING (keep the final outcome). Only the requirements present in context.lockedRequirements are binding; do not silently lock requirements that are absent. Preserve supplied characters and intent. Do not return markdown, reasoning, commentary or production authorization.''',
-        'BUILD_PROMPT': '''Return ONLY JSON with exactly two top-level keys: `prompt` and `productionPlan`. Convert the approved story into a concrete, concise OpenArt video prompt: visible actions, object states, continuity, staging, selected aspect ratio/duration, and ending. Do not rewrite its premise. Preserve the exact character, central mechanism, essential progression, protected events, constraints and ending. Do not silently omit an essential event; mark uncertainty or material deviation in evidence instead. Use manageable actions, few cuts, uncluttered staging, and no invented reference claims. Use the selected content profile's objective; comedy is relevant only when the source/profile supports it. Separate source-confirmed facts from AI-derived execution suggestions. Prompt headings, each separated by a blank line: TITLE / FORMAT, VISUAL STYLE, CHARACTER / CONTINUITY, TIMED SHOT PLAN, AUDIO, NEGATIVE CONSTRAINTS, FINAL CUT. Make the timed plan cover the full selected duration with ordered, non-overlapping ranges; choose meaningful events from the source, not an arbitrary fixed beat count. Each plan beat must contain time, subject, action, object, stateChange, framing, staging, consequence, sourceEvidence (an exact verbatim quote from approved source or empty string), evidenceStatus, sourceRelationship (FAITHFUL_ADAPTATION, CLARIFICATION, OPTIONAL_EXECUTION_INTERPRETATION, MATERIAL_CREATIVE_DEVIATION, UNKNOWN), and importance (CORE, FLEXIBLE, POLISH, UNKNOWN). Never fabricate quotes. `visualExecution` must include openingState, beats, mechanism, continuity, endingState. `productionPlan` keys: sourceIdentity, creativeObjective, characterBindings, visualExecution, productionConstraints, intentClassification, evidenceLimitations, generatorRisks, referencePlan. If Mimi is selected, honor the supplied anthropomorphic-bunny identity requirement; do not invent unverified appearance details and state whether approved references are actually bound. Assess the first two seconds as planned text only using visible promise → immediate consequence/reveal → reason to continue; distinguish mystery from ordinary setup. Do not claim first-frame image evidence. Identify causal ambiguity without rewriting the premise. Risks need a cited source event, affected beat, confidence, smallest mitigation and next action; they are advisory unless evidence establishes a true blocker. Do not claim unverified generator behavior. Do not add provider commentary, approval language or render authorization.''',
+        'BUILD_PROMPT': '''Return ONLY JSON with exactly two top-level keys: `prompt` and `productionPlan`. Convert the approved story into a concrete, concise OpenArt video prompt: visible actions, object states, continuity, staging, selected aspect ratio/duration, and ending. Do not rewrite its premise. Preserve the exact character, central mechanism, essential progression, protected events, constraints and ending. Do not silently omit an essential event; mark uncertainty or material deviation in evidence instead. Use manageable actions, few cuts, uncluttered staging, and no invented reference claims. Use the selected content profile's objective; comedy is relevant only when the source/profile supports it. Separate source-confirmed facts from AI-derived execution suggestions. Prompt headings, each separated by a blank line: TITLE / FORMAT, VISUAL STYLE, CHARACTER / CONTINUITY, TIMED SHOT PLAN, AUDIO, NEGATIVE CONSTRAINTS, FINAL CUT. Make the timed plan cover the full selected duration with ordered, non-overlapping ranges; choose meaningful events from the source, not an arbitrary fixed beat count. Each plan beat must contain time, subject, action, object, stateChange, framing, staging, consequence; time, framing, action, staging and consequence are REQUIRED non-empty JSON strings; additionally supply sourceEvidence (an exact verbatim quote from approved source or empty string), evidenceStatus, sourceRelationship (FAITHFUL_ADAPTATION, CLARIFICATION, OPTIONAL_EXECUTION_INTERPRETATION, MATERIAL_CREATIVE_DEVIATION, UNKNOWN), and importance (CORE, FLEXIBLE, POLISH, UNKNOWN). Never fabricate quotes. `visualExecution` must include openingState, beats, mechanism, continuity, endingState. `productionPlan` keys: sourceIdentity, creativeObjective, characterBindings, visualExecution, productionConstraints, intentClassification, evidenceLimitations, generatorRisks, referencePlan. If Mimi is selected, honor the supplied anthropomorphic-bunny identity requirement; do not invent unverified appearance details and state whether approved references are actually bound. Assess the first two seconds as planned text only using visible promise → immediate consequence/reveal → reason to continue; distinguish mystery from ordinary setup. Do not claim first-frame image evidence. Identify causal ambiguity without rewriting the premise. Risks need a cited source event, affected beat, confidence, smallest mitigation and next action; they are advisory unless evidence establishes a true blocker. Do not claim unverified generator behavior. Do not add provider commentary, approval language or render authorization.''',
         'MINIMAL_REPAIR': 'Return JSON patches: at most three minimal edits with integer Unicode code point start/end, exact sourceQuote and replacement. Preserve protected intent and ESSENTIAL source quotes. Never return approval or rewrite the entire prompt.',
     }[role]
     safe_context = {key: context[key] for key in ('protectedIntent', 'intentRequirements', 'findings', 'retrievedLessons', 'constraints', 'inputMode', 'storyGenerationMode', 'lockedRequirements', 'permittedVariation', 'mainCharacter', 'character', 'characterRecord', 'characterReferences', 'referenceBindings', 'preferences', 'profile', 'candidates', 'candidateIds', 'requestedAlternativeCount', 'sourceRequestId', 'sourceFingerprint', 'previousReview', 'currentRevision', 'previousRevision', 'targetDuration', 'aspectRatio', 'reviewPolicyVersion', 'selectedGenerator', 'generatorCapabilities', 'targetConfiguration', 'storyTitle', 'promptBuilderContractVersion', 'essentialEvents', 'approvedStoryText', 'analysisRunId', 'promptVersionId', 'contentId') if key in context}
     if role == 'BUILD_PROMPT':
         safe_context['generatorCapabilities'] = _configured_generator_capabilities(context)
+    provider.last_request_started = True
     raw_response = provider.complete(json.dumps({'text': text, 'context': safe_context}, ensure_ascii=False), system=system, temperature=0)
+    provider.last_raw_response = raw_response
     if not isinstance(raw_response, str) or not raw_response.strip():
         raise ValueError(f'{ROLES[role].title()} returned an empty JSON response')
     candidate_response = raw_response.strip()
@@ -643,6 +653,8 @@ def perform_role(role: str, text: str, context: dict[str, Any], provider: LLMPro
             raise ValueError(f'{ROLES[role].title()} returned invalid JSON') from error
     if not isinstance(value, dict):
         raise ValueError('Role result must be an object')
+    if role == 'PROMPT_OPTIMIZATION':
+        provider.last_role_result = value
     if role == 'STORY_REVIEW':
         required = ('reviewId', 'sourceRequestId', 'sourceFingerprint', 'reviewModel', 'reviewModelVersion', 'reviewPolicyVersion', 'reviewTimestamp', 'reviewStatus', 'diversityAssessment', 'comparativeFindings', 'candidateReviews', 'recommendedCandidateId', 'recommendationReason', 'overallConcerns', 'usageAndCost', 'evidenceLimitations', 'revisionComparison')
         if any(key not in value for key in required):
@@ -731,10 +743,11 @@ def perform_role(role: str, text: str, context: dict[str, Any], provider: LLMPro
         if not isinstance(beats, list) or not beats:
             raise ValueError('Production prompt must contain at least one source-linked visual event')
         quality_findings: list[dict[str, str]] = []
-        for beat in beats:
+        for beat_index, beat in enumerate(beats, start=1):
             required_beat = ('time', 'framing', 'action', 'staging', 'consequence')
             if not isinstance(beat, dict) or any(not isinstance(beat.get(key), str) or not beat[key].strip() for key in required_beat):
-                raise ValueError('Every production beat must include timing, executable staging and source traceability')
+                invalid_fields=[key for key in required_beat if not isinstance(beat,dict) or not isinstance(beat.get(key),str) or not beat[key].strip()]
+                raise ValueError(f'Beat {beat_index} requires non-empty string fields: {", ".join(invalid_fields)}')
             beat.setdefault('sourceEvidence', '')
             beat.setdefault('sourceRelationship', 'UNKNOWN')
             beat.setdefault('importance', 'UNKNOWN')
@@ -819,8 +832,10 @@ def perform_role(role: str, text: str, context: dict[str, Any], provider: LLMPro
             ):
                 raise ValueError('Each prompt optimization candidate must be complete and bounded')
             candidate['prompt'] = candidate['prompt'].strip()
-            if candidate['prompt'] == text or candidate['prompt'] in prompts:
-                raise ValueError('Prompt optimization candidates must be distinct unsaved revisions')
+            if candidate['prompt'] == text:
+                raise ValueError(f"Candidate {candidate['candidateId']} prompt exactly matches the source; a revised prompt is required")
+            if candidate['prompt'] in prompts:
+                raise ValueError(f"Candidate {candidate['candidateId']} prompt duplicates candidate-a; two distinct revisions are required")
             if any(anchor not in candidate['prompt'] for anchor in essential):
                 raise ValueError('Candidate omits an essential source event; candidate rejected')
             prompts.append(candidate['prompt'])
@@ -844,7 +859,7 @@ def perform_role(role: str, text: str, context: dict[str, Any], provider: LLMPro
             'providerResponseMetadata': response_metadata}
 
 
-def _verified_optimization_cost(usage: Any, input_rate: float, output_rate: float, max_cost_usd: float) -> float:
+def _optimization_cost(usage: Any, input_rate: float, output_rate: float) -> float:
     if not isinstance(usage, dict):
         raise ValueError('Provider response omitted verifiable token usage; actual cost cannot be checked against the authorized ceiling')
     input_tokens = usage.get('prompt_tokens', usage.get('input_tokens'))
@@ -852,10 +867,60 @@ def _verified_optimization_cost(usage: Any, input_rate: float, output_rate: floa
     if any(isinstance(value, bool) or not isinstance(value, int) or value < 0
            for value in (input_tokens, output_tokens)):
         raise ValueError('Provider response contained invalid token usage; actual cost cannot be checked against the authorized ceiling')
-    actual_cost = (input_tokens * input_rate + output_tokens * output_rate) / 1_000_000
+    return (input_tokens * input_rate + output_tokens * output_rate) / 1_000_000
+
+
+def _verified_optimization_cost(usage: Any, input_rate: float, output_rate: float, max_cost_usd: float) -> float:
+    actual_cost = _optimization_cost(usage, input_rate, output_rate)
     if actual_cost > max_cost_usd:
         raise ValueError('Actual provider cost exceeded the authorized cost ceiling; candidate response rejected')
     return actual_cost
+
+
+def _safe_usage_summary(usage: Any) -> dict[str, int] | None:
+    if not isinstance(usage, dict):
+        return None
+    input_tokens = usage.get('prompt_tokens', usage.get('input_tokens'))
+    output_tokens = usage.get('completion_tokens', usage.get('output_tokens'))
+    if any(isinstance(value, bool) or not isinstance(value, int) or value < 0
+           for value in (input_tokens, output_tokens)):
+        return None
+    return {'inputTokens': input_tokens, 'outputTokens': output_tokens}
+
+
+def _provider_failure_category(error: Exception) -> str:
+    name = type(error).__name__.lower()
+    if 'authentication' in name or 'permission' in name:
+        return 'PROVIDER_AUTHENTICATION_ERROR'
+    if 'ratelimit' in name or 'rate_limit' in name:
+        return 'PROVIDER_RATE_LIMIT'
+    if 'timeout' in name:
+        return 'PROVIDER_TIMEOUT'
+    if 'connection' in name:
+        return 'PROVIDER_CONNECTION_ERROR'
+    return 'PROVIDER_OUTCOME_UNKNOWN'
+
+
+def _optimization_validation_category(error: Exception) -> str:
+    detail = str(error).lower()
+    if 'returned invalid json' in detail or 'empty json response' in detail:
+        return 'PROVIDER_RESPONSE_SCHEMA_ERROR'
+    if 'essential source event' in detail or 'source-supported essential event' in detail:
+        return 'STORY_FIDELITY_VALIDATION_FAILED'
+    if 'distinct' in detail or 'duplicates candidate' in detail or 'matches the source' in detail:
+        return 'CANDIDATE_STRUCTURE_INVALID'
+    return 'CANDIDATE_STRUCTURE_INVALID'
+
+
+def _provider_failure_detail(error: Exception) -> str:
+    category = _provider_failure_category(error)
+    return {
+        'PROVIDER_AUTHENTICATION_ERROR': 'OpenAI rejected provider authentication; verify server credentials before another authorized attempt.',
+        'PROVIDER_RATE_LIMIT': 'OpenAI rate-limited the request; review the saved attempt before explicitly authorizing another call.',
+        'PROVIDER_TIMEOUT': 'The OpenAI request timed out; its outcome is unresolved and must not be retried automatically.',
+        'PROVIDER_CONNECTION_ERROR': 'The OpenAI connection failed; provider dispatch outcome may be uncertain and must not be retried automatically.',
+        'PROVIDER_OUTCOME_UNKNOWN': 'The provider request outcome is unknown; do not retry automatically.',
+    }[category]
 
 
 def run_paid_role(role: str, text: str, context: dict[str, Any], max_cost_usd: float) -> dict[str, Any]:
@@ -880,14 +945,68 @@ def run_paid_role(role: str, text: str, context: dict[str, Any], max_cost_usd: f
     provider.json_output = True
     try:
         result = perform_role(role, text, context, provider, model)
-    except ValueError:
-        response_metadata = getattr(provider, 'last_response_metadata', None)
-        if role == 'PROMPT_OPTIMIZATION' and isinstance(response_metadata, dict) and response_metadata.get('apiStatus') == 'COMPLETED':
-            _verified_optimization_cost(getattr(provider, 'last_usage', None), input_rate, output_rate, max_cost_usd)
+        if role == 'PROMPT_OPTIMIZATION':
+            result['actualCostUsd'] = _verified_optimization_cost(result.get('usage'), input_rate, output_rate, max_cost_usd)
+    except Exception as error:
+        if role == 'PROMPT_OPTIMIZATION':
+            response_metadata = getattr(provider, 'last_response_metadata', None)
+            provider_response_returned = (
+                isinstance(response_metadata, dict) and response_metadata.get('apiStatus') == 'COMPLETED'
+            )
+            usage = getattr(provider, 'last_usage', None)
+            actual_cost = None
+            usage_error = None
+            if provider_response_returned:
+                try:
+                    actual_cost = _optimization_cost(usage, input_rate, output_rate)
+                    if actual_cost > max_cost_usd:
+                        usage_error = 'Actual provider cost exceeded the authorized cost ceiling'
+                except ValueError as cost_error:
+                    usage_error = str(cost_error)
+            category = (
+                'COST_CEILING_EXCEEDED' if usage_error and 'exceeded' in usage_error.lower()
+                else 'PROVIDER_USAGE_MISSING' if usage_error
+                else _optimization_validation_category(error) if provider_response_returned
+                else _provider_failure_category(error)
+            )
+            detail = usage_error if usage_error else (str(error) if isinstance(error,ValueError) else 'Provider response processing failed; inspect the correlated diagnostic.') if provider_response_returned else _provider_failure_detail(error)
+            diagnostics = {
+                'category': category,
+                'provider': 'openai',
+                'model': model,
+                'providerDispatched': provider_response_returned or bool(getattr(provider, 'last_request_started', False)),
+                'providerResponseReturned': provider_response_returned,
+                'providerRequestId': response_metadata.get('requestId') if isinstance(response_metadata, dict) else None,
+                'finishReason': response_metadata.get('finishReason') if isinstance(response_metadata, dict) else None,
+                'tokenUsage': _safe_usage_summary(usage),
+                'actualCostUsd': actual_cost,
+                'approvedCostCeilingUsd': max_cost_usd,
+                'candidatesSaved': False,
+                'retrySafe': False,
+                'retryRequiresOperatorAuthorization': True,
+                'validationError': detail,
+                'usageError': usage_error,
+                'attemptId': context.get('attemptId'),
+                'providerResultForRecovery': getattr(provider, 'last_role_result', None),
+            }
+            logger.warning(
+                "Creative role attempt rejected category=%s attempt_id=%s provider_dispatched=true response_returned=%s provider_request_id=%s",
+                category, context.get('attemptId', 'unassigned'), provider_response_returned,
+                diagnostics['providerRequestId'] or 'unavailable',
+            )
+            raise CreativeRoleFailure(detail, diagnostics) from error
+        if role == 'BUILD_PROMPT':
+            raw = getattr(provider,'last_raw_response',None)
+            received = isinstance(raw,str) and bool(raw.strip())
+            failure={'role':role,'provider':'openai','model':model,'attemptState':'PROVIDER_RESULT_REJECTED' if received else 'PROVIDER_OUTCOME_UNKNOWN',
+                     'validationStatus':'REJECTED' if received else 'UNKNOWN',
+                     'attemptDiagnostics':{'error':str(error) if isinstance(error,ValueError) else 'Provider response processing failed.' if received else 'Provider outcome is unknown.',
+                       'exceptionType':type(error).__name__,'providerOutcome':'RECEIVED' if received else 'UNKNOWN','retryAutomatically':False},
+                     'providerResponseMetadata':getattr(provider,'last_response_metadata',None)}
+            if received: failure.update(rejectedProviderResponse=raw,calls=1,usage=getattr(provider,'last_usage',None))
+            logger.warning("Creative build rejected exception_type=%s response_returned=%s",type(error).__name__,received)
+            return failure
         raise
     result['costUpperBoundUsd'] = upper_bound
     result['approvedCostCeilingUsd'] = max_cost_usd
-    if role == 'PROMPT_OPTIMIZATION':
-        result['actualCostUsd'] = _verified_optimization_cost(
-            result.get('usage'), input_rate, output_rate, max_cost_usd)
     return result
