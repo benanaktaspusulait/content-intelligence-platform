@@ -1,0 +1,70 @@
+{
+  "status": "OPTIMIZATION_SAVED_RESPONSE_LIVE_RECOVERED",
+  "attemptId": "61b8eec4-5699-400d-9bdb-e79c3629855c",
+  "originalPaidResponseRecordId": "a85d65fc-0576-458a-9851-508c369aade0",
+  "rootCause": "Validator equated camera-shot count with source-event count. Candidate B divided the exact two-to-four-to-eight source progression into two contiguous shots; the provider response preserved all five source events. Immediate repeated error came from durable rejected-attempt replay.",
+  "fix": "Group shots by exact source-event anchors. Accept split multiplication progression only with identical source action/staging/consequence, exact complete contiguous progression edges, event order and timeline. Preserve raw response and source-span mappings. Reuse existing current comparison before considering paid generation.",
+  "comparisonId": "48e230db-2382-41bd-9ff9-0889df6fd803",
+  "recoveredRoleId": "65f85cc1-a266-454e-8de2-bc37d80d4102",
+  "sourceAnalysisId": "9208e75a-b158-4ffb-94fe-03c15ca96395",
+  "candidateCount": 2,
+  "candidates": [
+    {
+      "id": "candidate-a",
+      "sourceEvents": 5,
+      "cameraShots": 5,
+      "score": 85.0,
+      "grade": "B",
+      "rulesEvaluated": 8,
+      "ruleset": "1.7",
+      "semanticFidelity": "UNKNOWN",
+      "renderAuthorization": "BLOCKED_PENDING_EVIDENCE"
+    },
+    {
+      "id": "candidate-b",
+      "sourceEvents": 5,
+      "cameraShots": 6,
+      "score": 85.0,
+      "grade": "B",
+      "rulesEvaluated": 8,
+      "ruleset": "1.7",
+      "semanticFidelity": "UNKNOWN",
+      "renderAuthorization": "BLOCKED_PENDING_EVIDENCE"
+    }
+  ],
+  "tests": {
+    "mlPassed": 127,
+    "backend": {
+      "WorkflowNoRepairDecisionPostgresTest": 6,
+      "OptimizationFailureContractTest": 2,
+      "WorkflowTransportTest": 4
+    },
+    "frontendPassed": 57,
+    "rejectCases": [
+      "missing progression stage",
+      "wrong number",
+      "changed consequence",
+      "changed physical mechanic",
+      "reordered progression",
+      "timeline gap",
+      "duplicate candidates"
+    ]
+  },
+  "realProviderCalls": 0,
+  "actualSavedResponseRecovered": true,
+  "realCanonicalEvaluationPerformedLocally": true,
+  "realApplicationComparisonPersisted": true,
+  "liveFrontendDisplaysBothCandidates": true,
+  "regularGenerateRequestReusesSameComparisonWithoutNewProviderReservation": true,
+  "originalAttemptPromptVersionsAndStep5Unchanged": true,
+  "autoApproval": false,
+  "newPromptVersionCreated": false,
+  "deployment": "ml-service/backend rebuilt; frontend restarted; health checks passed; deployed ML files match workspace",
+  "filesChanged": [
+    "intelligence/ml-service/app/workflow/optimization_distinctness.py",
+    "intelligence/ml-service/app/workflow/creative_roles.py",
+    "intelligence/backend/src/main/java/com/pompomhills/intelligence/workflow/WorkflowService.java",
+    "intelligence/ml-service/tests/test_optimization_split_coverage.py",
+    "intelligence/ml-service/tests/fixtures/optimization-61-split.json"
+  ]
+}

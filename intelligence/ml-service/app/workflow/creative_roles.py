@@ -664,6 +664,10 @@ def perform_role(role: str, text: str, context: dict[str, Any], provider: LLMPro
             items = provider.response_format['json_schema']['schema']['properties']['candidates']['items']
             items['properties']['targetContentProfile'] = {'type': 'string', 'enum': [ownership['targetContentProfile']]}
             items['required'].append('targetContentProfile')
+        system += (' Framing adjectives or renamed time boundaries alone are minor variations, not material approval evidence. '
+                   'Propose a concrete camera motion/static discipline or a coherent combination of framing and timing changes, '
+                   'with source-supported action and consequences unchanged. Explain the causal-readability or temporal-complexity '
+                   'hypothesis without claiming tested improvement. ')
         system += (' The server owns the effective targetContentProfile in the profileOwnership contract. '
                    'baselinePromptHistoricalProfile and labels inside baselinePromptText are historical only. '
                    'Preserve the approved narrative, not obsolete production metadata. Return targetContentProfile '

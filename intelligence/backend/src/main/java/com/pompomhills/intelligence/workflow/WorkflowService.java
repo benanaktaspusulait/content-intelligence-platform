@@ -418,6 +418,16 @@ public class WorkflowService {
         && candidates.size()==2 && stored.size()==2;
     for(var c:candidates) valid &= stored.stream().filter(x->java.util.Objects.equals(x.get("candidateId"),c.get("candidateId")) && java.util.Objects.equals(x.get("prompt"),c.get("prompt"))).count()==1
         && java.util.Objects.equals(value.get("rulesetVersion"),map(map(c.get("review")).get("canonicalRuleEvaluation")).get("rulesetVersion"));
+    var target=map(context.get("targetConfiguration"));
+    for(var candidate:candidates) {
+      var evaluation=map(candidate.get("review"));var evaluationInput=map(evaluation.get("boundRequest"));
+      valid &= "EVALUATED".equals(map(evaluation.get("canonicalRuleEvaluation")).get("status"))
+          && java.util.Objects.equals(candidate.get("prompt"),evaluationInput.get("prompt"))
+          && java.util.Objects.equals(target.get("contentProfile"),evaluationInput.get("contentProfile"))
+          && java.util.Objects.equals(target.get("generator"),evaluationInput.get("generator"))
+          && String.valueOf(target.get("duration")).equals(String.valueOf(evaluationInput.get("desiredDuration")))
+          && java.util.Objects.equals(target.get("settings"),evaluationInput.get("settings"));
+    }
     String latest=jdbc.sql("SELECT id::text FROM post_family_workflow_events WHERE kind='REVIEW' AND payload->>'contentId'=:content ORDER BY created_at DESC,id DESC LIMIT 1")
         .param("content",String.valueOf(content)).query(String.class).optional().orElse("");
     valid &= latest.equals(analysisId.toString());
@@ -430,11 +440,12 @@ public class WorkflowService {
     var assessment=new LinkedHashMap<String,Object>(ml.workflow("optimization-assessment",input));
     var diagnostics=map(role.get("attemptDiagnostics"));var original=map(diagnostics.get("originalAttemptDiagnostics"));
     String attempt=String.valueOf(diagnostics.getOrDefault("attemptId",original.getOrDefault("attemptId",context.getOrDefault("attemptId","UNKNOWN"))));
-    String providerResponse=String.valueOf(diagnostics.getOrDefault("providerRequestId",original.getOrDefault("providerRequestId",map(role.get("providerResponseMetadata")).getOrDefault("providerRequestId","UNKNOWN"))));
+    String providerResponse=String.valueOf(diagnostics.getOrDefault("providerRequestId",original.getOrDefault("providerRequestId",map(role.get("providerResponseMetadata")).getOrDefault("providerRequestId",map(role.get("providerResponseMetadata")).getOrDefault("requestId","UNKNOWN")))));
     var lineage=new LinkedHashMap<String,Object>();
     lineage.put("contentId",content);lineage.put("promptVersionId",version);lineage.put("analysisRunId",analysisId.toString());
     lineage.put("comparisonId",comparisonId.toString());lineage.put("roleRecordId",value.get("roleRecordId"));lineage.put("attemptId",attempt);
     lineage.put("providerResponseId",providerResponse);lineage.put("rulesetVersion",value.get("rulesetVersion"));lineage.put("evaluationBindingHash",baseline.getOrDefault("bindingHash","UNKNOWN"));
+    valid &= "PROMPT_OPTIMIZATION".equals(role.get("role")) && !List.of("UNKNOWN","null","").contains(attempt) && !List.of("UNKNOWN","null","").contains(providerResponse);
     assessment.put("lineage",lineage);assessment.put("lineageVerified",valid);
     if (!valid) {assessment.put("recommendation","KEEP_ORIGINAL");assessment.put("conclusion","Candidate lineage, current baseline or candidate set is invalid or stale.");}
     var enriched=new ArrayList<Map<String,Object>>();var classified=maps(assessment.get("candidates"));

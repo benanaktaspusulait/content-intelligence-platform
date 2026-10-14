@@ -252,6 +252,7 @@ class WorkflowNoRepairDecisionPostgresTest {
         .isInstanceOf(IllegalStateException.class).hasMessageContaining("CANDIDATE_PERSISTENCE_FAILED");
     assertThat(jdbc.sql("SELECT count(*) FROM post_family_workflow_events WHERE kind='CREATIVE_ROLE' AND payload->>'attemptState'='SAVED'").query(Long.class).single()).isEqualTo(1L);
     jdbc.sql("ALTER TABLE post_family_workflow_events DROP CONSTRAINT reject_comparison").update();
+    when(ml.workflow(eq("optimization-assessment"),anyMap())).thenReturn(Map.of("candidates",List.of(),"recommendation","KEEP_ORIGINAL","actualCandidateCount",2));
     var comparison = service.generateCreativeOptimization(analysisId, generationRequest, provenance);
     assertThat(comparison.get("rulesetVersion")).isEqualTo("1.7");
     assertThat((List<?>) comparison.get("candidates")).hasSize(2);
@@ -295,7 +296,7 @@ class WorkflowNoRepairDecisionPostgresTest {
       String endpoint=invocation.getArgument(0); Map<String,Object> body=invocation.getArgument(1);
       if (endpoint.equals("creative-role")) {
         assertThat((Map<String,Object>)body.get("context")).containsEntry("optimizationGenerationContractVersion","profile-ownership-v1");
-        body=Map.of("text",body.get("text"),"context",body.get("context"),"providerResult",Map.of("candidates",providerValues),"diagnostics",Map.of("model","mock-saved-response"));
+        body=Map.of("text",body.get("text"),"context",body.get("context"),"providerResult",Map.of("candidates",providerValues),"diagnostics",Map.of("model","mock-saved-response","providerRequestId","fixture-provider-response-1"));
         endpoint="optimization-recovery";
       }
       return transport.workflow(endpoint,body);
@@ -348,6 +349,27 @@ class WorkflowNoRepairDecisionPostgresTest {
         .param("id",recoveryId).param("payload",mapper.writeValueAsString(stored)).update();
     assertThatThrownBy(()->service.generateCreativeOptimization(analysisId,recoveryRequest,provenance)).hasMessageContaining("stale promptVersionId");
     verify(ml,times(1)).workflow(eq("optimization-recovery"),anyMap());
+    var integrityView=service.assessOptimizationComparison(UUID.fromString(String.valueOf(recovered.get("recordId"))));
+    assertThat((Map<String,Object>)integrityView.get("comparisonAssessment")).containsEntry("recommendation","KEEP_ORIGINAL").containsEntry("lineageVerified",true);
+    assertThatThrownBy(()->service.requireCurrentOptimizationApproval(UUID.fromString(String.valueOf(recovered.get("recordId"))),"candidate-a",String.valueOf(providerValues.get(0).get("prompt")).replace("Content profile: AUTO","Content profile: ABSURD_PHYSICS")))
+        .hasMessageContaining("No material intervention");
+    // Same-record length and WITH ORDINALITY enumeration, with no candidate filter.
+    var enumerated=jdbc.sql("SELECT jsonb_array_length(payload->'candidates') n,c.ordinal,c.item->>'candidateId' id FROM post_family_workflow_events e CROSS JOIN LATERAL jsonb_array_elements(e.payload->'candidates') WITH ORDINALITY c(item,ordinal) WHERE e.id=:id ORDER BY c.ordinal")
+        .param("id",UUID.fromString(String.valueOf(recovered.get("recordId")))).query((rs,n)->Map.of("count",rs.getInt("n"),"ordinal",rs.getInt("ordinal"),"id",rs.getString("id"))).list();
+    assertThat(enumerated).hasSize(2).allSatisfy(row->assertThat(row.get("count")).isEqualTo(2));
+    assertThat(enumerated.get(1)).containsEntry("ordinal",2).containsEntry("id","candidate-b");
+    var savedComparison=jdbc.sql("SELECT payload::text FROM post_family_workflow_events WHERE id=:id").param("id",UUID.fromString(String.valueOf(recovered.get("recordId")))).query(String.class).single();
+    var mixed=mapper.readValue(savedComparison,Map.class);
+    ((Map<String,Object>)((List<?>)mixed.get("candidates")).get(1)).put("prompt","candidate from a different attempt");
+    jdbc.sql("UPDATE post_family_workflow_events SET payload=CAST(:payload AS jsonb) WHERE id=:id").param("payload",mapper.writeValueAsString(mixed)).param("id",UUID.fromString(String.valueOf(recovered.get("recordId")))).update();
+    var mixedView=service.assessOptimizationComparison(UUID.fromString(String.valueOf(recovered.get("recordId"))));
+    assertThat((Map<String,Object>)mixedView.get("comparisonAssessment")).containsEntry("lineageVerified",false);
+    assertThatThrownBy(()->service.requireCurrentOptimizationApproval(UUID.fromString(String.valueOf(recovered.get("recordId"))),"candidate-b","candidate from a different attempt")).hasMessageContaining("conflicting candidate lineage");
+    var missing=mapper.readValue(savedComparison,Map.class);((List<?>)missing.get("candidates")).remove(1);
+    jdbc.sql("UPDATE post_family_workflow_events SET payload=CAST(:payload AS jsonb) WHERE id=:id").param("payload",mapper.writeValueAsString(missing)).param("id",UUID.fromString(String.valueOf(recovered.get("recordId")))).update();
+    var incomplete=service.assessOptimizationComparison(UUID.fromString(String.valueOf(recovered.get("recordId"))));
+    assertThat((Map<String,Object>)incomplete.get("comparisonAssessment")).containsEntry("lineageVerified",false).containsEntry("actualCandidateCount",1);
+    jdbc.sql("UPDATE post_family_workflow_events SET payload=CAST(:payload AS jsonb) WHERE id=:id").param("payload",savedComparison).param("id",UUID.fromString(String.valueOf(recovered.get("recordId")))).update();
     var envelope=service.latestCreativeOptimization(analysisId);
     java.nio.file.Files.writeString(java.nio.file.Path.of("/tmp/c7-e2e-comparison.json"),mapper.writeValueAsString(envelope));
     jdbc.sql("INSERT INTO prompt_versions(content_id,id,raw_text) VALUES(10,11,'new immutable version')").update();

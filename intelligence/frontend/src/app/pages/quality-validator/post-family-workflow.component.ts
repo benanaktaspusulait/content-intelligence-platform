@@ -344,6 +344,7 @@ import { GeneralProducibilityComponent } from './general-producibility.component
               <article *ngFor="let candidate of creativeOptimizationComparison.candidates; let idx = index" class="creative-optimization-card" [class.is-selected]="creativeOptimizationSelectedCandidateId === candidate.candidateId">
                 <header><div><span class="card-kicker">{{ candidate.candidateId }}</span><h4>{{ candidate.title || 'Untitled draft' }}</h4></div><span class="status-pill">{{ creativeOptimizationSelectedCandidateId === candidate.candidateId ? 'Selected' : 'Draft' }}</span></header>
                 <p><strong>Classification:</strong> {{ candidate.currentAssessment?.classification || 'NOT_REVALIDATED' }}</p>
+                <p><strong>Text similarity screen:</strong> {{ (candidate.currentAssessment?.textSimilarity * 100) | number:'1.1-1' }}% · heuristic, not semantic proof.</p>
                 <p><strong>Creative hypothesis:</strong> {{ candidate.hypothesis || 'No hypothesis recorded.' }}</p>
                 <p><strong>Quality:</strong> {{ candidate.review?.canonicalRuleEvaluation?.score ?? 'UNKNOWN' }}/100 · Grade {{ candidate.review?.canonicalRuleEvaluation?.grade ?? 'UNKNOWN' }} · Δ {{ optimizationScoreDelta(candidate) }}</p>
                 <p><strong>Observed textual changes:</strong></p>
@@ -1011,7 +1012,7 @@ export class PostFamilyWorkflowComponent implements OnChanges, OnDestroy {
   }
   canSelectOptimizationCandidate(candidate: any): boolean {
     const assessment = this.creativeOptimizationComparison?.comparisonAssessment;
-    return assessment?.lineageVerified === true && String(assessment.lineage?.analysisRunId) === String(this.review?.recordId)
+    return this.creativeOptimizationComparison?.candidates?.length === 2 && assessment?.actualCandidateCount === 2 && assessment?.integrityStatus === 'COMPLETE_TWO_CANDIDATES' && assessment?.lineageVerified === true && String(assessment.lineage?.analysisRunId) === String(this.review?.recordId)
       && String(assessment.lineage?.promptVersionId) === String(this.promptVersionId)
       && String(assessment.lineage?.contentId) === String(this.contentId)
       && ['VALID_MINOR_VARIATION', 'VALID_MATERIAL_VARIATION', 'VALID_WITH_UNPROVEN_BENEFIT'].includes(candidate.currentAssessment?.classification);

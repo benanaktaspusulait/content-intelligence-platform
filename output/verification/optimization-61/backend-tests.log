@@ -1,0 +1,35 @@
+08:32:48.892 [main] INFO com.pompomhills.intelligence.quality.QualityMlClient -- ML client initialized with base URL: http://127.0.0.1:60243
+08:32:49.000 [main] INFO com.pompomhills.intelligence.quality.QualityMlClient -- ML client initialized with base URL: http://127.0.0.1:60245
+08:32:49.008 [main] INFO com.pompomhills.intelligence.quality.QualityMlClient -- ML client initialized with base URL: http://127.0.0.1:60247
+08:32:49.095 [main] INFO org.testcontainers.DockerClientFactory -- Testcontainers version: 2.0.2
+08:32:49.273 [main] INFO org.testcontainers.dockerclient.DockerClientProviderStrategy -- Loaded org.testcontainers.dockerclient.UnixSocketClientProviderStrategy from ~/.testcontainers.properties, will try it first
+08:32:49.473 [main] INFO org.testcontainers.dockerclient.DockerClientProviderStrategy -- Found Docker environment with Docker accessed via Unix socket (/Users/benanaktas/.docker/run/docker.sock)
+08:32:49.474 [main] INFO org.testcontainers.DockerClientFactory -- Docker host IP address is localhost
+08:32:49.487 [main] INFO org.testcontainers.DockerClientFactory -- Connected to docker: 
+  Server Version: 29.2.1
+  API Version: 1.53
+  Operating System: Docker Desktop
+  Total Memory: 11948 MB
+  Labels: 
+    com.docker.desktop.address=unix:///Users/benanaktas/Library/Containers/com.docker.docker/Data/docker-cli.sock
+08:32:49.494 [main] INFO org.testcontainers.images.PullPolicy -- Image pull policy will be performed by: DefaultPullPolicy()
+08:32:49.495 [main] INFO org.testcontainers.utility.ImageNameSubstitutor -- Image name substitution will be performed by: DefaultImageNameSubstitutor (composite of 'ConfigurationFileImageNameSubstitutor' and 'PrefixingImageNameSubstitutor')
+08:32:49.578 [main] INFO tc.testcontainers/ryuk:0.13.0 -- Creating container for image: testcontainers/ryuk:0.13.0
+08:32:49.758 [main] INFO org.testcontainers.utility.RegistryAuthLocator -- Credential helper/store (docker-credential-desktop) does not have credentials for https://index.docker.io/v1/
+08:32:50.663 [main] INFO tc.testcontainers/ryuk:0.13.0 -- Container testcontainers/ryuk:0.13.0 is starting: 6927303db5165568ab7c7ff1031b17c1f19ff90a4f75fa377f0678f70413912f
+08:32:51.250 [main] INFO tc.testcontainers/ryuk:0.13.0 -- Container testcontainers/ryuk:0.13.0 started in PT1.672884S
+08:32:51.261 [main] INFO org.testcontainers.utility.RyukResourceReaper -- Ryuk started - will monitor and terminate Testcontainers containers on JVM exit
+08:32:51.261 [main] INFO org.testcontainers.DockerClientFactory -- Checking the system...
+08:32:51.261 [main] INFO org.testcontainers.DockerClientFactory -- ✔︎ Docker server version should be at least 1.6.0
+08:32:51.266 [main] INFO tc.postgres:17-alpine -- Creating container for image: postgres:17-alpine
+08:32:51.334 [main] INFO tc.postgres:17-alpine -- Container postgres:17-alpine is starting: cb560bd9b9fe9444b3e70163c7e8c0eb4a9ea3df2042fd2d3b574535b4d626e2
+08:32:53.462 [main] INFO tc.postgres:17-alpine -- Container postgres:17-alpine started in PT2.195882S
+08:32:53.463 [main] INFO tc.postgres:17-alpine -- Container is started (JDBC URL: jdbc:postgresql://localhost:60253/pompom?loggerLevel=OFF)
+Mockito is currently self-attaching to enable the inline-mock-maker. This will no longer work in future releases of the JDK. Please add Mockito as an agent to your build as described in Mockito's documentation: https://javadoc.io/doc/org.mockito/mockito-core/latest/org.mockito/org/mockito/Mockito.html#0.3
+OpenJDK 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended
+WARNING: A Java agent has been loaded dynamically (/Users/benanaktas/.m2/repository/net/bytebuddy/byte-buddy-agent/1.18.11/byte-buddy-agent-1.18.11.jar)
+WARNING: If a serviceability tool is in use, please run with -XX:+EnableDynamicAgentLoading to hide this warning
+WARNING: If a serviceability tool is not in use, please run with -Djdk.instrument.traceUsage for more information
+WARNING: Dynamic loading of agents will be disallowed by default in a future release
+08:32:55.263 [main] WARN com.pompomhills.intelligence.workflow.WorkflowService -- Optimization attempt=4f2be8b9-a900-4c2c-a155-387a6acc52fc category=SOURCE_PLAN_VALIDATION_FAILED dispatched=false returned=null
+08:32:55.812 [main] INFO com.pompomhills.intelligence.quality.QualityMlClient -- ML client initialized with base URL: http://localhost:8000

@@ -1078,8 +1078,10 @@ Hard cut.`;
     c.creativeOptimizationComparison = {
       recordId: 'comparison-1',
       roleRecordId: 'role-1',
+      comparisonAssessment: {lineageVerified:true,actualCandidateCount:2,integrityStatus:'COMPLETE_TWO_CANDIDATES',lineage:{analysisRunId:'creative-analysis',contentId:1,promptVersionId:2}},
       candidates: [{
         candidateId: 'candidate-a',
+        currentAssessment:{classification:'VALID_WITH_UNPROVEN_BENEFIT',approvalEligible:true},
         title: 'Candidate A',
         hypothesis: 'Play up the domino effect.',
         prompt: 'Candidate prompt text',
@@ -1089,7 +1091,7 @@ Hard cut.`;
         productionRisks: { complexity: 'UNKNOWN' },
         unknowns: { audienceOutcome: 'UNKNOWN' },
         diff: 'Candidate diff',
-      }],
+      }, {candidateId:'candidate-b',prompt:'second valid draft',currentAssessment:{classification:'VALID_MINOR_VARIATION',approvalEligible:false}}],
     };
     expect(c.creativeOptimizationApprovalEnabled).toBe(false);
     c.reviewCreativeOptimizationCandidate('candidate-a');
@@ -1199,6 +1201,26 @@ Hard cut.`;
     http.expectOne('/api/v1/intelligence/workflow/records/pending-analysis/creative-optimization').flush({category:'UNRESOLVED_ATTEMPT',detail:'Outcome unknown',attemptId:'pending-id',providerDispatched:true,providerResponseReturned:false,retrySafe:false,candidatesSaved:false},{status:502,statusText:'Bad Gateway'});
     expect(c.creativeOptimizationError).toContain('UNRESOLVED_ATTEMPT');expect(c.creativeOptimizationComparison).toBeNull();expect(c.creativeOptimizationBusy).toBe(false);expect(c.creativeOptimizationConsent).toBe(false);
     http.expectNone(r=>r.method==='POST');f.destroy();TestBed.resetTestingModule();
+  });
+
+  it('blocks historical/minor candidate approval and pairs diff alternatives without duplicating final events', async () => {
+    const f=await setup();const c=f.componentInstance;
+    c.review={recordId:'run',contentId:1,promptVersionId:2};
+    c.creativeOptimizationComparison={comparisonAssessment:{actualCandidateCount:2,integrityStatus:'COMPLETE_TWO_CANDIDATES',lineageVerified:true,lineage:{analysisRunId:'run',contentId:1,promptVersionId:2}},candidates:[{candidateId:'candidate-a',prompt:'draft',currentAssessment:{classification:'VALID_MINOR_VARIATION',approvalEligible:false,approvalBlockReason:'Minor only'}},{candidateId:'candidate-b',prompt:'material draft',fidelity:{essentialEventsPreserved:true,approvedStoryCoverage:'SOURCE_EVENTS_COVERED; SEMANTIC_FIDELITY_UNKNOWN'},currentAssessment:{classification:'VALID_WITH_UNPROVEN_BENEFIT',approvalEligible:true}}]};
+    c.reviewCreativeOptimizationCandidate('candidate-a');
+    expect(c.creativeOptimizationApprovalEnabled).toBe(false);
+    c.approveSelectedCreativeOptimizationCandidate();
+    TestBed.inject(HttpTestingController).expectNone(r=>r.method==='POST');
+    const rows=c.optimizationDiffRows({diff:'--- original\n+++ candidate\n-0-2s: old framing\n+0-2s: new framing\n unchanged ending'});
+    expect(rows[0]).toEqual({before:'0-2s: old framing',after:'0-2s: new framing',changed:true});
+    expect(rows).toHaveLength(2);
+    c.reviewCreativeOptimizationCandidate('candidate-b');
+    c.selectCreativeOptimizationCandidate('candidate-b');
+    expect(c.creativeOptimizationApprovalEnabled).toBe(true);
+    TestBed.inject(HttpTestingController).expectNone(r=>r.method==='POST');
+    c.creativeOptimizationComparison.comparisonAssessment.lineage.analysisRunId='old-run';
+    expect(c.canSelectOptimizationCandidate(c.creativeOptimizationComparison.candidates[0])).toBe(false);
+    f.destroy();TestBed.resetTestingModule();
   });
 
 });
