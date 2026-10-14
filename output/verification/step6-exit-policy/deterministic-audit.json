@@ -1,0 +1,287 @@
+{
+  "status": "REPRODUCED_NO_MUTATION",
+  "analysisId": "05726ece-caaf-483a-a0af-d93e91a76c88",
+  "score": 84.20833333333334,
+  "BEAT_004": {
+    "sourceQuote": "5-10s: Mimi continues to pull; each pull doubles the number of sticky notes [wide shot showing Mimi covered in notes] notes multiply from two to four to eight as she pulls, progressively covering her arms, legs and face -> Mimi is overwhelmed by notes",
+    "sourceSpan": [
+      678,
+      929
+    ],
+    "visualStateId": "character_mimi_continues_to_pull_each_pull_doubles",
+    "measuredPercent": 33.33333333333333,
+    "substateTimes": "UNKNOWN_NOT_INVENTED"
+  },
+  "MOMENTUM": {
+    "endingSourceQuote": "12-15s: Mimi sneezes and the sticky notes fly off [medium shot of notes flying] notes scatter and stick to the cabinet -> Mimi breathes a sigh of relief but the cabinet remains messy",
+    "endingSourceSpan": [
+      1097,
+      1279
+    ],
+    "activeEnding": {
+      "passiveSeconds": 0.0,
+      "passiveRatio": 0.0,
+      "standaloneReactionCount": 0,
+      "attemptTransitionGaps": [
+        0.0
+      ],
+      "maxAttemptTransitionGap": 0.0,
+      "finalAftermathSeconds": 3.0
+    },
+    "syntheticStillEnding": {
+      "passiveSeconds": 3.0,
+      "passiveRatio": 0.2,
+      "standaloneReactionCount": 1,
+      "attemptTransitionGaps": [
+        0.0
+      ],
+      "maxAttemptTransitionGap": 0.0,
+      "finalAftermathSeconds": 3.0
+    }
+  },
+  "sixFindings": [
+    {
+      "rule": "BEAT_004",
+      "canonical": {
+        "ruleId": "BEAT_004",
+        "ruleName": "Static State Dominance",
+        "family": "visual_novelty",
+        "severity": "CRITICAL",
+        "outcome": "FAIL",
+        "message": "Visual state 'character_mimi_continues_to_pull_each_pull_doubles' occupies 33.3% of video. Maximum: 30%.",
+        "details": {
+          "state_id": "character_mimi_continues_to_pull_each_pull_doubles",
+          "evaluation_stage": "PRE_RENDER",
+          "recommendation": "No single visual state may occupy more than approximately\n25\u201330% of the entire video unless meaningful new physical\nconsequences occur within that state.\n\nDifferent dialogue or tiny movements do NOT count\nas different visual beats."
+        }
+      },
+      "governedMetadata": {
+        "description": "No single visual state may occupy more than approximately\n25\u201330% of the entire video unless meaningful new physical\nconsequences occur within that state.\n\nDifferent dialogue or tiny movements do NOT count\nas different visual beats.\n",
+        "evaluation": [
+          {
+            "if": "any_state_percentage > 35",
+            "message": "Visual state '{state_id}' occupies {percentage}% of video. Maximum: 30%. Video feels static.",
+            "result": "FAIL",
+            "severity": "CRITICAL"
+          },
+          {
+            "if": "any_state_percentage > 30 and any_state_percentage <= 35",
+            "message": "Visual state '{state_id}' occupies {percentage}% of video. Maximum: 30%.",
+            "result": "FAIL",
+            "severity": "CRITICAL"
+          },
+          {
+            "if": "any_state_percentage > 25 and any_state_percentage <= 30",
+            "message": "Visual state '{state_id}' occupies {percentage}% of video. Consider adding variation.",
+            "result": "PASS",
+            "severity": "WARNING"
+          },
+          {
+            "if": "any_state_percentage <= 25",
+            "message": "Good visual state distribution. Max state: {percentage}%.",
+            "result": "PASS",
+            "severity": "PASS"
+          }
+        ],
+        "examples": {
+          "fail": {
+            "case": "FAIL_001_KIKO",
+            "reason": "Character stands on mat for 42% of video with minimal consequence variation",
+            "states": {
+              "on_rough_mat": "6.3s (42%)",
+              "on_slippery_floor": "5.4s (36%)"
+            }
+          },
+          "pass": {
+            "reason": "Well-distributed visual states, no single state dominates",
+            "states": {
+              "escalation": "3.5s (23%)",
+              "sliding": "3.2s (21%)",
+              "testing_surface": "2.8s (19%)",
+              "transition": "2.5s (17%)"
+            }
+          }
+        },
+        "family": "visual_novelty",
+        "id": "BEAT_004",
+        "implementation_notes": "1. Group consecutive beats by visualStateId\n2. Sum duration for each unique visualStateId\n3. Calculate percentage: (state_duration / total_duration) * 100\n4. Find maximum percentage\n5. Apply threshold evaluation\n",
+        "learned_from": [
+          "FAIL_001"
+        ],
+        "measurement": {
+          "aggregation": "group_and_sum_duration",
+          "field": "beats[].visualStateId",
+          "type": "duration_percentage"
+        },
+        "name": "Static State Dominance",
+        "severity": "CRITICAL",
+        "threshold": {
+          "critical_percentage": 35,
+          "maximum_percentage": 30,
+          "warning_percentage": 25
+        },
+        "version": "1.0"
+      },
+      "auditClassification": "EVALUATOR_DEFECT",
+      "classificationAuthority": "AUDIT_ONLY_NOT_AN_ACTIVE_POLICY",
+      "hasExplicitWorkflowResolutionMetadata": false
+    },
+    {
+      "rule": "ATTEMPT_001",
+      "canonical": {
+        "ruleId": "ATTEMPT_001",
+        "ruleName": "Attempt Count",
+        "family": "concept_strength",
+        "severity": "BLOCKER",
+        "outcome": "FAIL",
+        "message": "Only 2 active attempt(s) detected for a short-tier (15s) video. Minimum: 3.",
+        "details": {
+          "tier": "short",
+          "evaluation_stage": "PRE_RENDER",
+          "recommendation": "Count of beats with isAttempt == true must meet a duration-tier minimum: 3 for videos <= 20s (short tier), 7 for videos > 20s (long tier)."
+        }
+      },
+      "governedMetadata": {
+        "description": "Count of beats with isAttempt == true must meet a duration-tier minimum: 3 for videos <= 20s (short tier), 7 for videos > 20s (long tier).",
+        "family": "concept_strength",
+        "id": "ATTEMPT_001",
+        "name": "Attempt Count",
+        "severity": "BLOCKER",
+        "version": "1.1",
+        "overrides": true,
+        "excludedContentProfiles": [
+          "CURIOSITY_ADVENTURE",
+          "EDUCATIONAL"
+        ]
+      },
+      "auditClassification": "POLICY_EXCEPTION_REQUIRED",
+      "classificationAuthority": "AUDIT_ONLY_NOT_AN_ACTIVE_POLICY",
+      "hasExplicitWorkflowResolutionMetadata": false
+    },
+    {
+      "rule": "PRODUCIBILITY_003",
+      "canonical": {
+        "ruleId": "PRODUCIBILITY_003",
+        "ruleName": "Fragile Interaction Risk",
+        "family": "ai_producibility",
+        "severity": "CRITICAL",
+        "outcome": "FAIL",
+        "message": "Fragile interaction risk tags detected: ['FACE_CONTACT', 'THIN_OBJECT']. These are mid-tier AI-generation risks (precision alignment, cloth/rope simulation, liquids, thin objects, face/hair contact, multi-object stacking) worth a human look before committing render budget, even though they don't rise to very-high-complexity blocking.",
+        "details": {
+          "riskTags": [
+            "FACE_CONTACT",
+            "THIN_OBJECT"
+          ],
+          "evaluation_stage": "PRE_RENDER",
+          "recommendation": "Fills the gap between PRODUCIBILITY_001 (very-high-complexity hard block) and PRODUCIBILITY_002 (prop count budget): a middle tier of AI-generation risks (precision alignment, cloth/rope simulation, liquids, thin dangling objects, face/hair contact, multi-object stacking). Uses a tag-based diagnostic model (riskTags in evaluation details) rather than one rule per risk type. Deterministic substring match against setting.mainProps and beat action/consequence text, no LLM call. Always CRITICAL when any tag is found \u2014 a human-review trigger, not an outright render block."
+        }
+      },
+      "governedMetadata": {
+        "description": "Fills the gap between PRODUCIBILITY_001 (very-high-complexity hard block) and PRODUCIBILITY_002 (prop count budget): a middle tier of AI-generation risks (precision alignment, cloth/rope simulation, liquids, thin dangling objects, face/hair contact, multi-object stacking). Uses a tag-based diagnostic model (riskTags in evaluation details) rather than one rule per risk type. Deterministic substring match against setting.mainProps and beat action/consequence text, no LLM call. Always CRITICAL when any tag is found \u2014 a human-review trigger, not an outright render block.",
+        "family": "ai_producibility",
+        "id": "PRODUCIBILITY_003",
+        "name": "Fragile Interaction Risk",
+        "severity": "CRITICAL",
+        "version": "1.3"
+      },
+      "auditClassification": "PRODUCTION_RISK_REVIEW",
+      "classificationAuthority": "AUDIT_ONLY_NOT_AN_ACTIVE_POLICY",
+      "hasExplicitWorkflowResolutionMetadata": false
+    },
+    {
+      "rule": "CONTINUOUS_ACTION_MOMENTUM",
+      "canonical": {
+        "ruleId": "CONTINUOUS_ACTION_MOMENTUM",
+        "ruleName": "Continuous Action Momentum",
+        "family": "motion_quality",
+        "severity": "CRITICAL",
+        "outcome": "FAIL",
+        "message": "Action momentum is interrupted: passive time 0%, largest attempt gap 0.0s, final aftermath 3.0s.",
+        "details": {
+          "passiveSeconds": 0.0,
+          "passiveRatio": 0.0,
+          "standaloneReactionCount": 0,
+          "attemptTransitionGaps": [
+            0.0
+          ],
+          "maxAttemptTransitionGap": 0.0,
+          "finalAftermathSeconds": 3.0,
+          "evaluation_stage": "PRE_RENDER",
+          "recommendation": "A reaction must overlap the physical transition into the next attempt. Rejects standalone reaction beats, reset-to-neutral gaps, excessive passive time, slow attempt transitions, and long final aftermaths. This rule distinguishes meaningful progression from forward motion momentum."
+        }
+      },
+      "governedMetadata": {
+        "description": "A reaction must overlap the physical transition into the next attempt. Rejects standalone reaction beats, reset-to-neutral gaps, excessive passive time, slow attempt transitions, and long final aftermaths. This rule distinguishes meaningful progression from forward motion momentum.",
+        "family": "motion_quality",
+        "id": "CONTINUOUS_ACTION_MOMENTUM",
+        "name": "Continuous Action Momentum",
+        "severity": "CRITICAL",
+        "version": "1.4"
+      },
+      "auditClassification": "EVALUATOR_DEFECT",
+      "classificationAuthority": "AUDIT_ONLY_NOT_AN_ACTIVE_POLICY",
+      "hasExplicitWorkflowResolutionMetadata": false
+    },
+    {
+      "rule": "INSTANT_VISUAL_ABSURDITY_GATE",
+      "canonical": {
+        "ruleId": "INSTANT_VISUAL_ABSURDITY_GATE",
+        "ruleName": "Instant Visual Absurdity Gate",
+        "family": "hook_strength",
+        "severity": "BLOCKER",
+        "outcome": "FAIL",
+        "message": "First-frame absurdity evidence is incomplete; the concept is blocked before render.",
+        "details": {
+          "missingEvidence": [
+            "staticWrongness",
+            "noHistoryRequired",
+            "noMicroComparison",
+            "largeVisualSignal",
+            "characterAlreadyEngaged"
+          ],
+          "failureBasis": "EVIDENCE_INCOMPLETE",
+          "evaluation_stage": "PRE_RENDER",
+          "recommendation": "BLOCKER: the first frame must communicate a physically impossible or clearly wrong situation without history, counting, micro-comparison, audio, text, or prior knowledge. The main character must already be engaged with the event."
+        }
+      },
+      "governedMetadata": {
+        "description": "BLOCKER: the first frame must communicate a physically impossible or clearly wrong situation without history, counting, micro-comparison, audio, text, or prior knowledge. The main character must already be engaged with the event.",
+        "family": "hook_strength",
+        "id": "INSTANT_VISUAL_ABSURDITY_GATE",
+        "name": "Instant Visual Absurdity Gate",
+        "severity": "BLOCKER",
+        "version": "1.4"
+      },
+      "auditClassification": "EVIDENCE_REQUIRED",
+      "classificationAuthority": "AUDIT_ONLY_NOT_AN_ACTIVE_POLICY",
+      "hasExplicitWorkflowResolutionMetadata": false
+    },
+    {
+      "rule": "ENGINE_SILHOUETTE_DUPLICATE",
+      "canonical": {
+        "ruleId": "ENGINE_SILHOUETTE_DUPLICATE",
+        "ruleName": "Engine Silhouette Duplicate",
+        "family": "visual_novelty",
+        "severity": "BLOCKER",
+        "outcome": "FAIL",
+        "message": "No first-frame/final-silhouette comparison evidence was supplied; the concept is blocked before render.",
+        "details": {
+          "failureBasis": "EVIDENCE_INCOMPLETE",
+          "evaluation_stage": "PRE_RENDER",
+          "recommendation": "BLOCKER: reject concepts whose visible progression and final silhouette substantially duplicate a known winner visual engine, even when the underlying mathematical rule differs."
+        }
+      },
+      "governedMetadata": {
+        "description": "BLOCKER: reject concepts whose visible progression and final silhouette substantially duplicate a known winner visual engine, even when the underlying mathematical rule differs.",
+        "family": "visual_novelty",
+        "id": "ENGINE_SILHOUETTE_DUPLICATE",
+        "name": "Engine Silhouette Duplicate",
+        "severity": "BLOCKER",
+        "version": "1.4"
+      },
+      "auditClassification": "EVIDENCE_REQUIRED",
+      "classificationAuthority": "AUDIT_ONLY_NOT_AN_ACTIVE_POLICY",
+      "hasExplicitWorkflowResolutionMetadata": false
+    }
+  ]
+}

@@ -833,3 +833,15 @@ versions:
     reason: Notes and static camera instructions do not prove motionless subjects.
     new_value:
       motionEvidencePolicy: TOKEN_MOTION_V2
+- version: '1.11'
+  release_date: '2026-10-15'
+  ruleset_path: RULESET_1.11.yaml
+  description: Source-supported changing states and active-payoff measurement correction.
+  is_breaking: true
+  deprecated_rules: []
+  learned_from: [STEP6_MEASUREMENT_AUDIT]
+  changes:
+  - rule_id: SOURCE_STATE_AND_PAYOFF_1_11
+    change_type: modified
+    breaking_change: true
+    reason: Do not infer static substate durations or classify active payoff as aftermath.

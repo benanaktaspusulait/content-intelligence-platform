@@ -124,7 +124,7 @@ class RuleEngine:
             ruleset_path: Path to ruleset YAML file (defaults to RULESET_1.0.yaml)
         """
         from app.config import settings
-        resolved_path = ruleset_path or settings.rules_dir / "RULESET_1.10.yaml"
+        resolved_path = ruleset_path or settings.rules_dir / "RULESET_1.11.yaml"
 
         self.ruleset_path = Path(resolved_path)
         self.ruleset = self._load_ruleset()
@@ -541,6 +541,27 @@ class RuleEngine:
         metrics = analyze_static_states(video_plan_ir)
         percentage = metrics.dominant_state_percentage
         state_id = metrics.dominant_state_id
+        if self.ruleset.get("visualStateEvidencePolicy") == "SOURCE_PROGRESSION_V2":
+            evolving = []
+            for beat in video_plan_ir.get("beats", []):
+                quote = beat.get("sourceQuote") or ""
+                # An ordered sequence of at least three different source states
+                # proves planned change, but supplies no invented substate times.
+                sequence = re.search(
+                    r"\bfrom\s+(\w+)\s+to\s+(\w+)\s+to\s+(\w+)\b", quote, re.I
+                )
+                if (beat.get("visualStateId") == state_id and sequence
+                        and len(set(sequence.groups())) == 3
+                        and re.search(r"\b(?:multiply|multiplies|grow|grows|change|changes|transform|transforms)\b", quote, re.I)):
+                    evolving.append({"beatId": beat.get("id"), "sourceQuote": quote,
+                                     "sourceSpan": beat.get("sourceSpan")})
+            if percentage > 30 and evolving:
+                return RuleEvaluation(
+                    rule_id="BEAT_004", rule_name="Static State Dominance", family="visual_novelty",
+                    severity="CRITICAL", result="UNKNOWN",
+                    message="Source describes changing states within the dominant beat; static-state duration is unknown without substate timing.",
+                    details={"failureBasis": "SUBSTATE_TIMING_UNKNOWN", "sourceProgression": evolving,
+                             "coarseBeatPercentage": percentage, "substateTimes": None})
 
         if percentage > 35:
             return RuleEvaluation(
@@ -2865,6 +2886,21 @@ class RuleEngine:
             for beat in beats:
                 start = float(beat.get("startTime", 0.0) or 0.0)
                 if start >= float(final_start) and not beat.get("isAttempt", False):
+                    if self.ruleset.get("aftermathEvidencePolicy") == "ACTIVE_PAYOFF_V2":
+                        source = str(beat.get("sourceQuote") or "").lower()
+                        active_payoff = bool(re.search(
+                            r"\b(?:sneez(?:e|es|ing)|scatter(?:s|ed|ing)?|fl(?:y|ies|ying)|"
+                            r"land(?:s|ed|ing)?|burst(?:s|ing)?|splits?|roll(?:s|ing)?|"
+                            r"fall(?:s|ing)?|collaps(?:e|es|ing)|pull(?:s|ing)?|"
+                            r"push(?:es|ing)?|jump(?:s|ing)?|run(?:s|ning)?)\b", source))
+                        if active_payoff:
+                            continue
+                        if beat.get("motionAmount") != "none":
+                            return RuleEvaluation(
+                                rule_id="CONTINUOUS_ACTION_MOMENTUM", rule_name="Continuous Action Momentum",
+                                family="motion_quality", severity="CRITICAL", result="UNKNOWN",
+                                message="Final payoff activity versus aftermath cannot be established from source evidence.",
+                                details={"failureBasis": "PAYOFF_ACTIVITY_UNKNOWN", "beatId": beat.get("id")})
                     final_aftermath += float(beat.get("duration", 0.0) or 0.0)
 
         passive_ratio = passive_seconds / duration if duration > 0 else 1.0

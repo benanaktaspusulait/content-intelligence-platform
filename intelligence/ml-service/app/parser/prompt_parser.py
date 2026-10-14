@@ -1739,12 +1739,12 @@ def parse_prompt(prompt_text: str, config: ParserConfig | None = None) -> ParseR
     )
 
 
-def source_plan_evidence(prompt: str, source_id: str, source_version: str, ruleset_version: str = "1.10") -> dict[str, Any]:
+def source_plan_evidence(prompt: str, source_id: str, source_version: str, ruleset_version: str = "1.11") -> dict[str, Any]:
     """Read-only parser projection; never runs rules, providers, persistence or authorization."""
     import hashlib
-    version = "source-plan-display-v3" if ruleset_version == "1.10" else "source-plan-display-v2" if ruleset_version == "1.9" else "source-plan-display-v1"
+    version = "source-plan-display-v3" if ruleset_version in {"1.10", "1.11"} else "source-plan-display-v2" if ruleset_version == "1.9" else "source-plan-display-v1"
     source_hash = hashlib.sha256(prompt.encode()).hexdigest()
-    parsed = parse_prompt(prompt, ParserConfig(attempt_evidence_policy="ACTOR_SOURCE_BOUND_V2" if ruleset_version in {"1.9", "1.10"} else "HISTORICAL_V1", motion_evidence_policy="TOKEN_MOTION_V2" if ruleset_version == "1.10" else "HISTORICAL_V1")).video_plan_ir
+    parsed = parse_prompt(prompt, ParserConfig(attempt_evidence_policy="ACTOR_SOURCE_BOUND_V2" if ruleset_version in {"1.9", "1.10", "1.11"} else "HISTORICAL_V1", motion_evidence_policy="TOKEN_MOTION_V2" if ruleset_version in {"1.10", "1.11"} else "HISTORICAL_V1")).video_plan_ir
     identity = hashlib.sha256((version + "\n" + source_id + "\n" + source_version + "\n" + source_hash).encode()).hexdigest()
     return {"resultId": version + ":" + identity, "kind": "READ_ONLY_SOURCE_EXTRACTION", "parserVersion": version,
             "source": {"artifact": source_id, "version": source_version, "sha256": source_hash},

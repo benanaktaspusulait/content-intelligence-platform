@@ -3,12 +3,13 @@ import { afterNextRender, ChangeDetectorRef, Component, ElementRef, EventEmitter
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { Router, RouterModule } from '@angular/router';
+import { Step6GovernanceComponent } from './step6-governance.component';
 import { GeneralProducibilityComponent } from './general-producibility.component';
 
 @Component({
   selector: 'app-post-family-workflow',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule, GeneralProducibilityComponent],
+  imports: [CommonModule, FormsModule, RouterModule, GeneralProducibilityComponent, Step6GovernanceComponent],
   template: `
   <p *ngIf="settingsSavedAt && contentProfile !== evaluationProfile" class="missing-state">Existing analysis remains linked to its recorded profile ({{ evaluationProfile }}). Selected profile {{ contentProfile }} has not been evaluated by that historical score; a new evaluation is required before dependent evidence can be reused.</p>
   <section *ngIf="activeStage === 4" class="workflow production-review" aria-label="Production review">
@@ -280,33 +281,9 @@ import { GeneralProducibilityComponent } from './general-producibility.component
         <footer class="analysis-stage-footer" aria-label="Quality Analysis navigation"><button type="button" class="button button--secondary" (click)="selectStage(4)">← Back to Production Review</button><button type="button" class="button button--primary" (click)="continueFromAnalysis()">{{ nextAnalysisAction }} →</button></footer>
         </ng-container><ng-container *ngIf="activeStage === 6">
         <section class="repair-triage" aria-label="Repair decision">
-          <header><span class="card-kicker">STEP 6 · REPAIR DECISION</span><h3>{{ repairTriageTitle }}</h3><p>{{ repairTriageSummary }}</p></header>
-          <div class="repair-primary-grid">
-            <article><span>Quality</span><strong>{{ canonicalScoreLabel }} · Grade {{ canonicalGrade }}</strong></article>
-            <article><span>Canonical failures</span><strong>{{ canonicalFailCount }}</strong></article>
-            <article><span>Text repair</span><strong>{{ repairRecommendationLabel }}</strong></article>
-            <article><span>Evidence outstanding</span><strong>{{ outstandingEvidence.length }}</strong></article>
-          </div>
-          <p *ngIf="repairPolicyMessage" class="missing-state" role="status">{{ repairPolicyMessage }}</p>
-          <p *ngIf="staleNoRepairDecision" class="setting-note" role="status">
-            A prior no-repair decision exists for analysis {{ staleNoRepairDecision.analysisRunId }}, but it is stale for the current quality evaluation and cannot authorize continuation.
-          </p>
-          <div *ngIf="activeNoRepairDecision as decision" class="no-repair-saved" role="status">
-            <strong>No-text-repair decision recorded</strong>
-            <span>{{ decision.provenance }} · {{ decision.savedAt | date:'medium' }} · Analysis {{ decision.analysisRunId }}</span>
-            <span>Visual evidence remains unresolved and must be completed in Step 7.</span>
-            <button type="button" class="button button--primary" (click)="selectStage(7)">Continue to Render Preparation</button>
-          </div>
-          <div *ngIf="!activeNoRepairDecision" class="no-repair-confirm">
-            <label><input type="checkbox" [(ngModel)]="noRepairConfirmed" [disabled]="!noRepairDecisionEligible || busy">
-              I confirm that no text repair is justified for this saved analysis. This does not resolve missing visual evidence.
-            </label>
-            <small *ngIf="!noRepairDecisionEligible">{{ noRepairDecisionBlockReason }}</small>
-            <button type="button" class="button button--primary" (click)="approveNoTextRepairAndContinue()" [disabled]="busy || !noRepairDecisionEligible || !noRepairConfirmed">Approve No Repair &amp; Continue</button>
-          </div>
-          <p *ngIf="noRepairDecisionError" class="error" role="alert">{{ noRepairDecisionError }}</p>
-          <p *ngIf="decisionReadError" class="error" role="alert">{{ decisionReadError }}</p>
-          <p class="setting-note">Required character reference and accepted start frame remain outstanding; this decision does not mark F8 evidence resolved.</p>
+          <header><span class="card-kicker">STEP 6 · GOVERNED REVIEW</span><h3>Current canonical evidence</h3></header>
+          <p>{{ canonicalScoreLabel }} · Grade {{ canonicalGrade }} · {{ canonicalFailCount }} canonical failures retained.</p>
+          <app-step6-governance [analysisId]="review?.recordId || ''" [preparationLink]="renderPreparationLink()"></app-step6-governance>
         </section>
         <details class="creative-optimization-details">
           <summary>Creative Optimization (optional)</summary>

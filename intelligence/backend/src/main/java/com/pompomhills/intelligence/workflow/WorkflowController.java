@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v1/intelligence/workflow")
 public class WorkflowController {
   private final WorkflowService service;
+  @org.springframework.beans.factory.annotation.Autowired private Step6GovernanceService governance;
 
   @org.springframework.beans.factory.annotation.Autowired
   private com.pompomhills.intelligence.quality.QualityReportPdfService pdf;
@@ -153,8 +154,23 @@ public class WorkflowController {
     return service.getProductionReviewDecisions(contentId, promptVersionId);
   }
 
+  @GetMapping("/records/{id}/governance")
+  public Map<String,Object> governance(@PathVariable UUID id, jakarta.servlet.http.HttpServletRequest request) {
+    return governance.evaluate(id, Step6GovernanceService.Actor.from(request));
+  }
+
+  @PostMapping("/records/{id}/governance/{action}")
+  public Map<String,Object> governanceCommand(@PathVariable UUID id, @PathVariable String action,
+      @RequestBody Map<String,Object> body, jakarta.servlet.http.HttpServletRequest request) {
+    return governance.command(id, action, body, Step6GovernanceService.Actor.from(request));
+  }
+
   @PostMapping("/production-review/decisions")
-  public Map<String, Object> saveProductionReviewDecision(@RequestBody Map<String, Object> request) {
+  public Map<String, Object> saveProductionReviewDecision(@RequestBody Map<String, Object> request,
+      jakarta.servlet.http.HttpServletRequest httpRequest) {
+    if ("NO_TEXT_REPAIR_JUSTIFIED".equals(request.get("decisionType")))
+      return governance.command(UUID.fromString(String.valueOf(request.get("analysisRunId"))),
+          "text-acceptance", request, Step6GovernanceService.Actor.from(httpRequest));
     return service.saveProductionReviewDecision(request);
   }
 

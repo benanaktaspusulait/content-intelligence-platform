@@ -1,0 +1,13 @@
+{
+  "policyVersion":"STEP6_RESOLUTION_V2",
+  "exceptionPolicy":"ATTEMPT_COUNT_EXCEPTION_V1",
+  "rules":{
+    "ATTEMPT_001":{"resolutionType":"POLICY_EXCEPTION_REQUIRED","exceptionPolicy":"ATTEMPT_COUNT_EXCEPTION_V1","blocksText":false,"blocksRender":true},
+    "PRODUCIBILITY_003":{"resolutionType":"PRODUCTION_RISK_REVIEW","acknowledgeable":true,"blocksText":false,"blocksRender":true},
+    "INSTANT_VISUAL_ABSURDITY_GATE":{"resolutionType":"EVIDENCE_REQUIRED","blocksText":false,"blocksRender":true,"verifiedFailureType":"CONFIRMED_HARD_BLOCKER"},
+    "ENGINE_SILHOUETTE_DUPLICATE":{"resolutionType":"EVIDENCE_REQUIRED","blocksText":false,"blocksRender":true,"verifiedFailureType":"CONFIRMED_HARD_BLOCKER"},
+    "BEAT_004":{"resolutionType":"TEXT_REPAIR_REQUIRED","unknownType":"EVIDENCE_REQUIRED","blocksText":true,"blocksRender":true},
+    "CONTINUOUS_ACTION_MOMENTUM":{"resolutionType":"TEXT_REPAIR_REQUIRED","unknownType":"EVIDENCE_REQUIRED","blocksText":true,"blocksRender":true}
+  },
+  "defaultFailure":{"resolutionType":"CONFIRMED_HARD_BLOCKER","blocksText":true,"blocksRender":true}
+}

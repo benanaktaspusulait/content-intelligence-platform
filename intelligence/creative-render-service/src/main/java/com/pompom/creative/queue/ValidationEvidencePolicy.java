@@ -57,13 +57,14 @@ public class ValidationEvidencePolicy {
             "The configured first-frame estimate exceeds the authorized USD ceiling");
       }
     }
-    if (!firstFrame && evidence.blockerCount() > 0) {
+    boolean governed = !firstFrame && hasCompleteGovernedAdmission(evidence);
+    if (!firstFrame && evidence.blockerCount() > 0 && !governed) {
       throw new ValidationEvidenceRejectedException(
           "EVIDENCE_HAS_BLOCKERS",
           "Validation record %d has %d blocker(s)"
               .formatted(evidence.validationRecordId(), evidence.blockerCount()));
     }
-    if (!firstFrame && evidence.criticalCount() > 0) {
+    if (!firstFrame && evidence.criticalCount() > 0 && !governed) {
       throw new ValidationEvidenceRejectedException(
           "EVIDENCE_HAS_CRITICALS",
           "Validation record %d has %d critical(s)"
@@ -135,6 +136,36 @@ public class ValidationEvidencePolicy {
           "Validation record %d has no exact AUTHORIZED Family 8 render authorization"
               .formatted(evidence.validationRecordId()));
     }
+  }
+
+  /** The proof is fetched from the intelligence service, never from queue request parameters. */
+  private boolean hasCompleteGovernedAdmission(ValidationEvidenceDto evidence) {
+    if(!(evidence.visualEvidence().get("governedAdmission") instanceof java.util.Map<?,?> proof)
+        || !"STEP6_RESOLUTION_V2".equals(proof.get("policyVersion"))
+        || !Boolean.TRUE.equals(proof.get("eligible"))
+        || !Boolean.TRUE.equals(proof.get("evidenceComplete"))
+        || !Boolean.TRUE.equals(proof.get("scoreEligible"))
+        || !java.util.Objects.equals(evidence.promptSha256(),proof.get("promptSha256"))
+        || !java.util.Objects.equals(evidence.deterministicRulesetVersion(),proof.get("rulesetVersion"))
+        || !(proof.get("validationRecordId") instanceof Number id) || id.longValue()!=evidence.validationRecordId()
+        || !(proof.get("originalBlockerCount") instanceof Number blockers) || blockers.intValue()!=evidence.blockerCount()
+        || !(proof.get("originalCriticalCount") instanceof Number criticals) || criticals.intValue()!=evidence.criticalCount()
+        || !(proof.get("canonicalFailures") instanceof java.util.List<?> failures)) return false;
+    int countedBlockers=0,countedCriticals=0;
+    var seen=new java.util.HashSet<String>();
+    for(Object item:failures) {
+      if(!(item instanceof java.util.Map<?,?> row) || !(row.get("ruleId") instanceof String rule)
+          || !seen.add(rule) || !"FAIL".equals(row.get("outcome"))) return false;
+      String severity=String.valueOf(row.get("severity"));
+      if("BLOCKER".equals(severity)) countedBlockers++;
+      if("CRITICAL".equals(severity)) countedCriticals++;
+      if(!"BLOCKER".equals(severity) && !"CRITICAL".equals(severity)) continue;
+      if(!(row.get("governanceRecordId") instanceof String record) || record.isBlank()) return false;
+      boolean attempt="ATTEMPT_001".equals(rule) && "ATTEMPT_COUNT_EXCEPTION_V1".equals(row.get("disposition")) && "BLOCKER".equals(severity);
+      boolean risk="PRODUCIBILITY_003".equals(rule) && "PRODUCTION_RISK_ACKNOWLEDGED".equals(row.get("disposition")) && "CRITICAL".equals(severity);
+      if(!attempt && !risk) return false;
+    }
+    return countedBlockers==evidence.blockerCount() && countedCriticals==evidence.criticalCount();
   }
 
   private BigDecimal decimal(Object value) {

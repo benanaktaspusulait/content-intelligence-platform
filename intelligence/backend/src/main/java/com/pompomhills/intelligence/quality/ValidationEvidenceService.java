@@ -25,6 +25,9 @@ public class ValidationEvidenceService {
 
   private static final Pattern SHA256_PATTERN = Pattern.compile("^[0-9a-f]{64}$");
 
+  @org.springframework.beans.factory.annotation.Autowired(required=false)
+  private com.pompomhills.intelligence.workflow.Step6GovernanceService governance;
+
   private final QualityValidationRepository repository;
   private final ValidationVisualEvidenceRepository visualEvidence;
   private final Clock clock;
@@ -86,7 +89,7 @@ public class ValidationEvidenceService {
         entity.getExpiresAt(),
         isFirstFrameEligible(entity),
         ValidationVisualEvidenceProjection.finalVideoEligible(visualRows),
-        ValidationVisualEvidenceProjection.project(visualRows),
+        withGovernedAdmission(entity, ValidationVisualEvidenceProjection.project(visualRows)),
         profileRenderAuthorization(entity, status, visualRows));
   }
 
@@ -105,6 +108,9 @@ public class ValidationEvidenceService {
           ? "AUTHORIZED"
           : "BLOCKED_PENDING_EVIDENCE";
     }
+    if (status == ValidationDecisionStatus.RENDER_READY
+        && ValidationVisualEvidenceProjection.finalVideoEligible(rows)
+        && Boolean.TRUE.equals(governedAdmission(entity).get("eligible"))) return "AUTHORIZED";
     return QualityReportSnapshots.renderAuthorizationStatus(entity.getReportJson());
   }
 
@@ -189,11 +195,11 @@ public class ValidationEvidenceService {
     if (revalidation == null
         || revalidation.getId().equals(entity.getId())
         || !sameEvidenceIdentity(entity, revalidation)
-        || parseStatus(revalidation.getStatus()) != ValidationDecisionStatus.RENDER_READY
+        || (parseStatus(revalidation.getStatus()) != ValidationDecisionStatus.RENDER_READY && !Boolean.TRUE.equals(governedAdmission(revalidation).get("eligible")))
         || revalidation.getBlockerCount() == null
-        || revalidation.getBlockerCount() > 0
+        || (revalidation.getBlockerCount() > 0 && !Boolean.TRUE.equals(governedAdmission(revalidation).get("eligible")))
         || revalidation.getCriticalCount() == null
-        || revalidation.getCriticalCount() > 0
+        || (revalidation.getCriticalCount() > 0 && !Boolean.TRUE.equals(governedAdmission(revalidation).get("eligible")))
         || revalidation.getValidatedAt() == null
         || !revalidation.getValidatedAt().equals(entity.getIndependentlyRevalidatedAt())) {
       return ValidationDecisionStatus.NEEDS_REVISION;
@@ -203,6 +209,18 @@ public class ValidationEvidenceService {
       return ValidationDecisionStatus.NEEDS_REVISION;
     }
     return ValidationDecisionStatus.RENDER_READY;
+  }
+
+  private java.util.Map<String,Object> governedAdmission(QualityValidationEntity entity) {
+    if(governance==null) return java.util.Map.of();
+    return governance.validationAdmission(entity.getId(),entity.getContentId(),entity.getPromptVersionId(),
+        entity.getPromptSha256(),entity.getDeterministicRulesetVersion(),entity.getReportJson(),
+        entity.getBlockerCount(),entity.getCriticalCount());
+  }
+  private java.util.Map<String,Object> withGovernedAdmission(QualityValidationEntity entity, java.util.Map<String,Object> visual) {
+    var result=new java.util.LinkedHashMap<>(visual);var admission=governedAdmission(entity);
+    if(!admission.isEmpty()) result.put("governedAdmission",admission);
+    return result;
   }
 
   private boolean sameEvidenceIdentity(

@@ -1,0 +1,23 @@
+{
+  "status": "STEP_6_EXIT_POLICY_DECISION_REQUIRED",
+  "authoritativeAnalysisId": "05726ece-caaf-483a-a0af-d93e91a76c88",
+  "score": 84.20833333333334,
+  "rulesetVersion": "1.10",
+  "applicationChanges": false,
+  "deployed": false,
+  "step7EvidencePreparation": "ACCESSIBLE_VERIFIED_REAL_BROWSER",
+  "noRepairApproval": "BLOCKED_BY_EXISTING_POLICY",
+  "operatorApprovalSubmitted": false,
+  "policyDraft": "ADR-DRAFT.md",
+  "evaluatorDefects": {
+    "BEAT_004": "Source progression collapsed into single coarse timed state",
+    "CONTINUOUS_ACTION_MOMENTUM": "Active ending included in aftermath by non-attempt status"
+  },
+  "tests": {
+    "mlPassed": 17,
+    "backendPassed": 5,
+    "backendSkipped": 3,
+    "renderGatePassed": 24,
+    "frontendPassed": 93
+  }
+}

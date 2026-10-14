@@ -1,0 +1,9 @@
+version: '1.11'
+created: '2026-10-15'
+extends: RULESET_1.10.yaml
+inheritancePolicy: RECURSIVE_V1
+visualStateEvidencePolicy: SOURCE_PROGRESSION_V2
+aftermathEvidencePolicy: ACTIVE_PAYOFF_V2
+description: Source-changing states require actual substate timing for static dominance;
+  active payoff is separate from passive aftermath. No threshold or weight change.
+rules: []

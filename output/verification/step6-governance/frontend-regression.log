@@ -1,0 +1,61 @@
+
+> frontend@0.0.0 test
+> ng test --watch=false --include=src/app/pages/quality-validator/post-family-workflow.spec.ts
+
+❯ Building...
+✔ Building...
+Initial chunk files                                      | Names                                                 |  Raw size
+spec-app-pages-quality-validator-post-family-workflow.js | spec-app-pages-quality-validator-post-family-workflow | 830.54 kB | 
+styles.css                                               | styles                                                | 237.88 kB | 
+chunk-RSTWSNOR.js                                        | -                                                     |   4.75 kB | 
+init-testbed.js                                          | init-testbed                                          |   1.21 kB | 
+vitest-mock-patch.js                                     | vitest-mock-patch                                     | 974 bytes | 
+
+                                                         | Initial total                                         |   1.08 MB
+
+Application bundle generation complete. [22.642 seconds] - 2026-10-14T23:42:53.287Z
+
+▲ [WARNING] NG8113: TimelineChartComponent is not used within the template of QualityValidatorComponent [plugin angular-compiler]
+
+    src/app/pages/quality-validator/quality-validator.component.ts:202:39:
+      202 │ ...odule, FormsModule, TimelineChartComponent, RouterLink, Genera...
+          ╵                        ~~~~~~~~~~~~~~~~~~~~~~
+
+
+▲ [WARNING] NG8113: GeneralProducibilityComponent is not used within the template of QualityValidatorComponent [plugin angular-compiler]
+
+    src/app/pages/quality-validator/quality-validator.component.ts:202:75:
+      202 │ ...ent, RouterLink, GeneralProducibilityComponent, PostFamilyWork...
+          ╵                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+
+ RUN  v4.1.11 /Users/benanaktas/project/video/content-intelligence-platform/intelligence/frontend
+
+ ❯ |frontend| src/app/pages/quality-validator/post-family-workflow.spec.ts (69 tests | 1 failed) 2066ms
+     × persists an explicit current-analysis no-repair decision before navigating 47ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |frontend| src/app/pages/quality-validator/post-family-workflow.spec.ts > post-family operator workflow > persists an explicit current-analysis no-repair decision before navigating
+AssertionError: expected 'STEP 6 · GOVERNED REVIEWCurrent canon…' to contain 'No actionable prompt-text repair iden…'
+
+Expected: "No actionable prompt-text repair identified"
+Received: "STEP 6 · GOVERNED REVIEWCurrent canonical evidence85 / 100 · Grade B · 0 canonical failures retained.Text acceptance and production preparationAccepting text preserves every canonical result. It does not approve an exception, resolve visual evidence, or authorize rendering.Load current exit policyContinue to Render PreparationReference association, local image preparation and uploads retain their own validation. Generation requires separate explicit authorization.Creative Optimization (optional)Generate two prompt candidates after explicit paid consent and a valid budget. Candidate scores are evidence only; they do not auto-select or authorize rendering.Load saved comparison / attemptMaximum total cost (USD)I explicitly authorize one creative optimization call within the configured budget.New generation uses plan-first source-bound execution plans. Existing minor drafts keep their KEEP ORIGINAL decision.Explicitly request a new plan-first attempt (separate paid consent and budget required).Generate two candidatesAnalysis details and provenanceAnalysis runanalysis-currentPrompt versionvUNKNOWN · ID 2Rule outcomesPASS 4 · FAIL 0 · UNKNOWN 1 · NOT_APPLICABLE 1Actionable text defectsNone identifiedOptional improvementsNone recordedOutstanding requirementsREFERENCE_ASSOCIATION: Verified character reference required; EXECUTION_INPUTS: Accepted startFrame requiredStep 5 production and technical classificationsLocal execution criticPASSGenerator capabilitySUPPORTEDProduction complexityRISKYTechnical evaluationNo technical evaluation failure recordedUNKNOWN canonical rulesSTUBBORN_RETURN_LOOPHistorical profile mismatchImmutable prompt text declares AUTO. The saved production profile and analysis use ABSURD_PHYSICS. The prompt remains unchanged; use the versioned editor only after an explicit operator edit.Operator provenanceContent 1 · prompt version 2 · current saved settings ABSURD_PHYSICS / AUTO / s / .Analysis binding binding-current · source hash UNKNOWN.Current prompt · Prompt vUNKNOWN / ID 2Immutable saved prompt text · read-onlyCopy saved promptRead-only prompt previewOptional Repair ToolsBounded AI RepairA provider call happens only after you explicitly approve the budget and start this session.Maximum total cost (USD)Choose a total ceiling between $0.01 and $20.00 USD. Zero is not authorization.I approve the configured repair provider within this session budget.Start bounded repairEnter a budget greater than zero and no more than $20.00.Provider authorization is required before a repair session can start.Saved session IDReopen sessionEnter a valid saved session ID to reopen a session.Minimal Manual Repair No current Step 4 Creative Intent confirmation is available for this prompt. Confirm supported intent in Production Review before preparing a patch. Protected intent that must remain unchangedExact source wording to replaceReplacement wordingOnly the exact selected wording is changed in a candidate. Protected intent remains unchanged; saving a candidate requires an explicit transfer to the versioned editor.No current Step 4 Creative Intent confirmation is available; confirm supported intent in Production Review first.Preview and validate exact patchExport and Advanced ActionsDownload manual render packagePreview, copy and export do not change prompt, story or analysis data. “Transfer to editor and save version” is an explicit action that creates a new immutable prompt version. The manual package is an evidence snapshot only; it does not authorize rendering or spend credits."
+
+ ❯ src/app/pages/quality-validator/post-family-workflow.spec.ts:610:41
+    608|     expect(f.nativeElement.textContent).toContain('The saved productio…
+    609|     expect(f.nativeElement.textContent).toContain('ABSURD_PHYSICS');
+    610|     expect(f.nativeElement.textContent).toContain('No actionable promp…
+       |                                         ^
+    611|     expect(f.nativeElement.textContent).toContain('85 / 100 · Grade B'…
+    612|     expect(f.nativeElement.textContent).toContain('Canonical failures0…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 68 passed (69)
+   Start at  00:42:53
+   Duration  3.71s (transform 481ms, setup 240ms, import 506ms, tests 2.07s, environment 701ms)
+
