@@ -10,7 +10,7 @@ from unittest.mock import patch
 from ..api.quality import convert_quality_report
 from ..assessment.pre_render_assessment import build_pre_render_assessment
 from ..quality.aggregation import AggregationRow, EvaluationState, summarize_aggregation
-from ..parser.prompt_parser import parse_prompt
+from ..parser.prompt_parser import ParserConfig, parse_prompt
 from ..quality.canonical_evidence import (
     attempt_evidence,
     beat_audit,
@@ -259,8 +259,10 @@ def run_golden_asset(
         provider_mode="FROZEN_DETERMINISTIC",
         fingerprint=fingerprint,
     )
+    selected_engine = RuleEngine(str(ruleset_path))
+    parser_config = ParserConfig(attempt_evidence_policy=selected_engine.ruleset.get("attemptEvidencePolicy", "HISTORICAL_V1"))
     try:
-        parsed = _bounded_call(lambda: parse_prompt(prompt_text), parse_timeout_seconds)
+        parsed = _bounded_call(lambda: parse_prompt(prompt_text, parser_config), parse_timeout_seconds)
     except GoldenAnalysisTimeout as error:
         return GoldenRun(
             **base,

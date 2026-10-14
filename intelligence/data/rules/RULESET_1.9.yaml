@@ -1,0 +1,13 @@
+version: '1.9'
+created: '2026-10-14'
+extends: RULESET_1.8.yaml
+inheritancePolicy: RECURSIVE_V1
+attemptEvidencePolicy: ACTOR_SOURCE_BOUND_V2
+description: Source-bound actor attempts separate from camera/composition directives;
+  historical parser retained for 1.7/1.8. No scoring threshold or weight changes.
+policy_changes:
+- Require source-established actor, physical verb, intent/recovery/control relationship
+  and exact action/verb spans.
+- Preserve actor actions inside mixed camera descriptions and brackets; one attempt
+  per source beat, duplicate same-time event evidence cannot inflate counts.
+rules: []

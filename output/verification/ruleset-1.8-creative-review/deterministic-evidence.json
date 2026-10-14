@@ -1,0 +1,161 @@
+{
+  "Original": {
+    "score": 82.80208333333336,
+    "attemptTrace": [
+      {
+        "content": "Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger [close-up on Mimi's hand] Mimi is in front of a toy cabinet, looking determined -> the note sticks to Mimi, not the cabinet",
+        "match": null,
+        "verb": "",
+        "isAttempt": false,
+        "matchOffset": null
+      },
+      {
+        "content": "Mimi tries to peel the stuck note away with her other hand; the note splits into two [medium shot of Mimi struggling] Mimi pulls at the note -> one note sticks to each hand",
+        "match": "tries to peel",
+        "verb": "PEEL",
+        "isAttempt": true,
+        "matchOffset": 5
+      },
+      {
+        "content": "Mimi continues to pull; each pull doubles the number of sticky notes [wide shot showing Mimi covered in notes] notes multiply from two to four to eight as she pulls, progressively covering her arms, legs and face -> Mimi is overwhelmed by notes",
+        "match": "continues to pull",
+        "verb": "PULL",
+        "isAttempt": true,
+        "matchOffset": 5
+      },
+      {
+        "content": "Mimi sees herself in a mirror and screams [close-up on Mimi's shocked face] Mimi is startled by her reflection completely covered in notes -> Mimi is startled",
+        "match": null,
+        "verb": "",
+        "isAttempt": false,
+        "matchOffset": null
+      },
+      {
+        "content": "Mimi sneezes and the sticky notes fly off [medium shot of notes flying] notes scatter and stick to the cabinet -> Mimi breathes a sigh of relief but the cabinet remains messy",
+        "match": null,
+        "verb": "",
+        "isAttempt": false,
+        "matchOffset": null
+      }
+    ],
+    "motion": [
+      "none",
+      "none",
+      "none",
+      "none",
+      "none"
+    ]
+  },
+  "candidate-a": {
+    "score": 86.96875000000003,
+    "attemptTrace": [
+      {
+        "content": "Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger  Mimi is in front of a toy cabinet, looking determined -> the note sticks to Mimi, not the cabinet [static close-up; keep the cabinet and her finger visible together in the same frame]",
+        "match": "keep the",
+        "verb": "THE",
+        "isAttempt": true,
+        "matchOffset": 247
+      },
+      {
+        "content": "Mimi tries to peel the stuck note away with her other hand; the note splits into two [medium shot of Mimi struggling] Mimi pulls at the note -> one note sticks to each hand",
+        "match": "tries to peel",
+        "verb": "PEEL",
+        "isAttempt": true,
+        "matchOffset": 5
+      },
+      {
+        "content": "Mimi continues to pull; each pull doubles the number of sticky notes [wide shot showing Mimi covered in notes] notes multiply from two to four to eight as she pulls, progressively covering her arms, legs and face -> Mimi is overwhelmed by notes",
+        "match": "continues to pull",
+        "verb": "PULL",
+        "isAttempt": true,
+        "matchOffset": 5
+      },
+      {
+        "content": "Mimi sees herself in a mirror and screams [close-up on Mimi's shocked face] Mimi is startled by her reflection completely covered in notes -> Mimi is startled",
+        "match": null,
+        "verb": "",
+        "isAttempt": false,
+        "matchOffset": null
+      },
+      {
+        "content": "Mimi sneezes and the sticky notes fly off [medium shot of notes flying] notes scatter and stick to the cabinet -> Mimi breathes a sigh of relief but the cabinet remains messy",
+        "match": null,
+        "verb": "",
+        "isAttempt": false,
+        "matchOffset": null
+      }
+    ],
+    "motion": [
+      "none",
+      "none",
+      "none",
+      "none",
+      "none"
+    ]
+  },
+  "candidate-b": {
+    "score": 82.80208333333336,
+    "attemptTrace": [
+      {
+        "content": "Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger [close-up on Mimi's hand] Mimi is in front of a toy cabinet, looking determined -> the note sticks to Mimi, not the cabinet",
+        "match": null,
+        "verb": "",
+        "isAttempt": false,
+        "matchOffset": null
+      },
+      {
+        "content": "Mimi tries to peel the stuck note away with her other hand; the note splits into two  Mimi pulls at the note -> one note sticks to each hand [tracking medium shot; focus Mimi tries to peel the stuck note away with her other hand; the note splits into two then one note sticks to each hand in a single continuous shot]",
+        "match": "tries to peel",
+        "verb": "PEEL",
+        "isAttempt": true,
+        "matchOffset": 5
+      },
+      {
+        "content": "Mimi continues to pull; each pull doubles the number of sticky notes  notes multiply from two to four to eight as she pulls, progressively covering her arms, legs and face -> Mimi is overwhelmed by notes [static wide shot; hold two; hold four; hold eight; single continuous shot]",
+        "match": "continues to pull",
+        "verb": "PULL",
+        "isAttempt": true,
+        "matchOffset": 5
+      },
+      {
+        "content": "Mimi sees herself in a mirror and screams [close-up on Mimi's shocked face] Mimi is startled by her reflection completely covered in notes -> Mimi is startled",
+        "match": null,
+        "verb": "",
+        "isAttempt": false,
+        "matchOffset": null
+      },
+      {
+        "content": "Mimi sneezes and the sticky notes fly off [medium shot of notes flying] notes scatter and stick to the cabinet -> Mimi breathes a sigh of relief but the cabinet remains messy",
+        "match": null,
+        "verb": "",
+        "isAttempt": false,
+        "matchOffset": null
+      }
+    ],
+    "motion": [
+      "none",
+      "none",
+      "none",
+      "none",
+      "none"
+    ]
+  },
+  "diagnosticOnlyCameraInstructionExcluded": {
+    "score": 82.80208333333336,
+    "grade": "B",
+    "note": "Temporary test seam only. No application code, prompt text or saved evaluation changed."
+  },
+  "motionSubstringControls": {
+    "Sticky notes fly through the air.": "none",
+    "Cards fly through the air.": "moderate",
+    "Zed pulls notes; notes multiply.": "none",
+    "Zed pulls cards; cards multiply.": "moderate",
+    "Zed stands still.": "none"
+  },
+  "trueAttemptControl": [
+    true,
+    "PULLING",
+    "NATURAL_LANGUAGE_ATTEMPT",
+    null
+  ]
+}

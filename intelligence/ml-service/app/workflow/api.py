@@ -47,7 +47,7 @@ class ReviewRequest(BaseModel):
     lessonModelVersion: str = ""
     retrievedLessons: list[dict[str, Any]] = Field(default_factory=list)
     structuredPlan: dict[str, Any] | None = None
-    canonicalRulesetVersion: Literal["1.7", "1.8"] | None = None
+    canonicalRulesetVersion: Literal["1.7", "1.8", "1.9"] | None = None
     canonicalValidationId: int | None = None
     authorizationEvidence: dict[str, Any] = Field(default_factory=dict)
     acceptedStartFrame: bool = False
@@ -68,12 +68,13 @@ class SourcePlanRequest(BaseModel):
     prompt: str = Field(min_length=1, max_length=50000)
     sourceId: str
     sourceVersion: str
+    canonicalRulesetVersion: Literal["1.7", "1.8", "1.9"] = "1.9"
 
 
 @router.post("/source-plan")
 def source_plan(request: SourcePlanRequest) -> dict[str, Any]:
     from app.parser.prompt_parser import source_plan_evidence
-    return source_plan_evidence(request.prompt, request.sourceId, request.sourceVersion)
+    return source_plan_evidence(request.prompt, request.sourceId, request.sourceVersion, request.canonicalRulesetVersion)
 
 
 class RepairRequest(BaseModel):

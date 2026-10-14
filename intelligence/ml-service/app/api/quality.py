@@ -12,7 +12,7 @@ from ..assessment.pre_render_assessment import build_pre_render_assessment
 from ..autofix.iteration_loop import AutoFixIterationLoop
 from ..config import settings
 from ..llm.provider import get_provider_identity
-from ..parser.prompt_parser import parse_prompt
+from ..parser.prompt_parser import ParserConfig, parse_prompt
 from ..quality.contracts import EnhancedQualityReport
 from ..rules.rule_versioning import (
     RulesetConfigurationError,
@@ -364,6 +364,12 @@ async def validate_prompt(request: ValidateRequest) -> QualityReportResponse:
             detail=f"Ruleset not found: {request.ruleset_version}",
         ) from error
 
+    # The chosen immutable ruleset owns parser semantics; old versions stay reproducible.
+    if engine.ruleset.get("attemptEvidencePolicy") == "ACTOR_SOURCE_BOUND_V2":
+        parse_result = parse_prompt(request.prompt, ParserConfig(attempt_evidence_policy="ACTOR_SOURCE_BOUND_V2"))
+        ir = parse_result.video_plan_ir
+        if request.visual_evidence is not None:
+            ir["visualEvidence"] = request.visual_evidence
     # Evaluate
     report = engine.evaluate(ir, evaluation_stage=request.evaluation_stage)
 
@@ -413,6 +419,10 @@ async def compare_versions(request: CompareVersionsRequest) -> RegressionReportR
             detail="Active ruleset is not available",
         ) from error
 
+    if engine.ruleset.get("attemptEvidencePolicy") == "ACTOR_SOURCE_BOUND_V2":
+        config = ParserConfig(attempt_evidence_policy="ACTOR_SOURCE_BOUND_V2")
+        ir_before = parse_prompt(request.prompt_before, config).video_plan_ir
+        ir_after = parse_prompt(request.prompt_after, config).video_plan_ir
     report_before = engine.evaluate(ir_before)
     report_after = engine.evaluate(ir_after)
 

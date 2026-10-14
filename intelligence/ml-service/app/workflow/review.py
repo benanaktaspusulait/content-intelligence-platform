@@ -128,7 +128,7 @@ def binding_fingerprint(request: dict[str, Any]) -> str:
     )
     return sha256(
         json.dumps(
-            {**{key: request.get(key) for key in keys}, "decisionPolicyVersion": DECISION_POLICY_VERSION, **({"canonicalRulesetVersion": request.get("canonicalRulesetVersion") or "1.8"} if request.get("canonicalRulesetVersion") != "1.7" else {}), **({"retrievedLessons": request["retrievedLessons"]} if request.get("retrievedLessons") else {})},
+            {**{key: request.get(key) for key in keys}, "decisionPolicyVersion": DECISION_POLICY_VERSION, **({"canonicalRulesetVersion": request.get("canonicalRulesetVersion") or "1.9"} if request.get("canonicalRulesetVersion") != "1.7" else {}), **({"retrievedLessons": request["retrievedLessons"]} if request.get("retrievedLessons") else {})},
             sort_keys=True,
             ensure_ascii=False,
         )
@@ -881,7 +881,7 @@ def _run_canonical_evaluation(request: dict[str, Any]) -> dict[str, Any]:
     from LocalExecutionCritic output so the UI can distinguish them.
     """
     try:
-        from app.parser.prompt_parser import parse_prompt
+        from app.parser.prompt_parser import ParserConfig, parse_prompt
         from app.rules.rule_engine import RuleEngine
         from app.quality.canonical_evidence import story_density_evidence
 
@@ -898,16 +898,17 @@ def _run_canonical_evaluation(request: dict[str, Any]) -> dict[str, Any]:
             }
 
         # Parse prompt into Video Plan IR
-        parse_result = parse_prompt(prompt_text)
+        requested_version = request.get("canonicalRulesetVersion") or "1.9"
+        parse_result = parse_prompt(prompt_text, ParserConfig(attempt_evidence_policy="ACTOR_SOURCE_BOUND_V2" if requested_version == "1.9" else "HISTORICAL_V1"))
         video_plan_ir = parse_result.video_plan_ir
 
         # Run canonical Rule Engine
         from app.config import settings
-        requested_version = request.get("canonicalRulesetVersion") or "1.8"
-        if requested_version not in {"1.7", "1.8"}:
+        requested_version = request.get("canonicalRulesetVersion") or "1.9"
+        if requested_version not in {"1.7", "1.8", "1.9"}:
             raise ValueError("Unsupported canonical ruleset version")
         engine = RuleEngine(str(settings.rules_dir / f"RULESET_{requested_version}.yaml"))
-        if requested_version == "1.8":
+        if requested_version in {"1.8", "1.9"}:
             video_plan_ir["metadata"]["contentProfile"] = request.get("contentProfile", "UNKNOWN")
         report = engine.evaluate(video_plan_ir)
 

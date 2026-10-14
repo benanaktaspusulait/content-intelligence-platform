@@ -124,7 +124,7 @@ class RuleEngine:
             ruleset_path: Path to ruleset YAML file (defaults to RULESET_1.0.yaml)
         """
         from app.config import settings
-        resolved_path = ruleset_path or settings.rules_dir / "RULESET_1.8.yaml"
+        resolved_path = ruleset_path or settings.rules_dir / "RULESET_1.9.yaml"
 
         self.ruleset_path = Path(resolved_path)
         self.ruleset = self._load_ruleset()

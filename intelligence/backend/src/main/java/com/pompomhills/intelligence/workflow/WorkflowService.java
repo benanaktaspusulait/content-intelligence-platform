@@ -586,7 +586,9 @@ public class WorkflowService {
                 "sourceId",
                 "creative-optimization:" + analysisId + ":" + candidateId,
                 "sourceVersion",
-                "UNSAVED_CANDIDATE"));
+                "UNSAVED_CANDIDATE",
+                "canonicalRulesetVersion",
+                String.valueOf(map(getByKind(analysisId, "REVIEW").get("canonicalRuleEvaluation")).get("rulesetVersion"))));
     var planBeats = maps(map(sourcePlan.get("videoPlanIR")).get("beats"));
     var events = new ArrayList<Map<String, Object>>();
     for (var beat : planBeats) {

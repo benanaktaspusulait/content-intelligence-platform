@@ -1,0 +1,20 @@
+{
+  "status": "RULESET_1_8_CREATIVE_REVIEW_COMPLETE",
+  "recommendation": "RULE_ENGINE_DEFECT",
+  "step6CanBeFinalized": false,
+  "scoreAdvantage": 4.166666666666671,
+  "advantageCause": "Camera directive keep the accepted as character attempt with primaryVerb THE; ATTEMPT_001 FAIL0 to PASS100.",
+  "diagnosticAScoreWithoutFalseCameraAttempt": 82.80208333333336,
+  "additionalDefect": "no substring in note/notes incorrectly means no physical motion",
+  "candidateA": "Material staging hypothesis; superiority and visual success unproven",
+  "candidateB": "More explicit existing action/state exposure; same timing and outcomes, no proven complexity reduction",
+  "currentBindingsValid": true,
+  "historicalComparisonStillStale": true,
+  "renderAuthorization": "BLOCKED_PENDING_EVIDENCE",
+  "missingInputs": [
+    "verified Mimi character reference",
+    "accepted start frame"
+  ],
+  "recordsChanged": false,
+  "providerCalls": 0
+}

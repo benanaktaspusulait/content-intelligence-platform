@@ -443,7 +443,7 @@ class WorkflowNoRepairDecisionPostgresTest {
     jdbc.sql("DELETE FROM post_family_workflow_events").update();
     UUID oldId = UUID.randomUUID();
     insertReview(oldId,oldBaseline);
-    bound.put("canonicalRulesetVersion","1.8");
+    bound.put("canonicalRulesetVersion","1.9");
     var newBaseline = new LinkedHashMap<String,Object>(transport.workflow("review",bound));
     newBaseline.put("boundRequest",bound);newBaseline.put("contentId",10);newBaseline.put("promptVersionId",10);
     UUID newId = UUID.randomUUID();insertReview(newId,newBaseline);
@@ -463,12 +463,12 @@ class WorkflowNoRepairDecisionPostgresTest {
     jdbc.sql("INSERT INTO post_family_workflow_events(id,kind,payload) VALUES(:id,'CREATIVE_OPTIMIZATION',CAST(:payload AS jsonb))").param("id",comparisonId).param("payload",mapper.writeValueAsString(comparison)).update();
     String historical = jdbc.sql("SELECT payload::text FROM post_family_workflow_events WHERE id=:id").param("id",comparisonId).query(String.class).single();
     var result=service.revalidateCreativeOptimization(newId,comparisonId);
-    assertThat(result).containsEntry("rulesetVersion","1.8").containsEntry("sourceAnalysisId",newId.toString());
+    assertThat(result).containsEntry("rulesetVersion","1.9").containsEntry("sourceAnalysisId",newId.toString());
     assertThat((Map<String,Object>)result.get("comparisonAssessment")).containsEntry("lineageVerified",true);
     assertThat(result.get("selection")).isNull();assertThat(result.get("approval")).isNull();
     for(var c:(List<Map<String,Object>>)result.get("candidates")) {
       var review=(Map<String,Object>)c.get("review");
-      assertThat((Map<String,Object>)review.get("canonicalRuleEvaluation")).containsEntry("rulesetVersion","1.8").containsEntry("rulesEvaluated",46);
+      assertThat((Map<String,Object>)review.get("canonicalRuleEvaluation")).containsEntry("rulesetVersion","1.9").containsEntry("rulesEvaluated",46);
       assertThat(((Map<String,Object>)c.get("unknowns")).get("canonicalRules")).isEqualTo(((Map<String,Object>)review.get("canonicalRuleEvaluation")).get("unknownRules"));
       assertThat((Map<String,Object>)((Map<String,Object>)review.get("family8")).get("renderAuthorization")).doesNotContainEntry("status","AUTHORIZED");
     }

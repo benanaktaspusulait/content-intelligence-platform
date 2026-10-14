@@ -1,0 +1,28 @@
+{
+  "analysisUnchangedDuringReview": true,
+  "historyComparisonStillStale": true,
+  "currentPromptVersionId": 10,
+  "currentAnalysisId": "0a2a88a7-9efd-4ecd-bb48-b0d661fa46f5",
+  "currentComparisonId": "e0458d65-0f81-40ee-8fe3-68b093394bf8",
+  "currentLineageVerified": true,
+  "candidateSelection": null,
+  "candidateApproval": null,
+  "f8": {
+    "status": "BLOCKED_PENDING_EVIDENCE",
+    "reasons": [
+      {
+        "code": "REQUIRED_EVIDENCE_MISSING",
+        "source": "REFERENCE_ASSOCIATION",
+        "message": "An authoritative character/object reference is missing or unverified.",
+        "references": []
+      },
+      {
+        "code": "REQUIRED_EVIDENCE_MISSING",
+        "source": "EXECUTION_INPUTS",
+        "message": "Required provider execution inputs are missing: startFrame",
+        "references": []
+      }
+    ]
+  },
+  "providerCalls": 0
+}

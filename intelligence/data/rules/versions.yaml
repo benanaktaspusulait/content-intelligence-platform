@@ -803,3 +803,19 @@ versions:
       inheritancePolicy: RECURSIVE_V1
       returnLoopApplicabilityPolicy: SOURCE_DOMAIN_V1
       semanticPolicy: EXISTING_EVIDENCE_ONLY
+- version: '1.9'
+  release_date: '2026-10-14'
+  ruleset_path: RULESET_1.9.yaml
+  description: Correct actor/source attempt extraction; historical 1.7/1.8 remain
+    reproducible.
+  is_breaking: true
+  deprecated_rules: []
+  learned_from:
+  - CAMERA_DIRECTIVE_FALSE_ATTEMPT
+  changes:
+  - rule_id: ATTEMPT_EXTRACTION_POLICY_1_9
+    change_type: modified
+    breaking_change: true
+    reason: Camera keep the directive must not become actor action THE.
+    new_value:
+      attemptEvidencePolicy: ACTOR_SOURCE_BOUND_V2

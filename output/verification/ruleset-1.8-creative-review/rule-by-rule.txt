@@ -1,0 +1,47 @@
+Rule | Applicability | Original outcome / contribution | A outcome / contribution | B outcome / contribution | Difference
+CONCEPT_006 | APPLICABLE | PASS / 4.166667 | PASS / 4.166667 | PASS / 4.166667 | Same outcome and numeric contribution
+BEAT_004 | APPLICABLE | FAIL / 0.972222 | FAIL / 0.972222 | FAIL / 0.972222 | Same outcome and numeric contribution
+REPETITION_002 | APPLICABLE | PASS / 2.430556 | PASS / 2.430556 | PASS / 2.430556 | Same outcome and numeric contribution
+REPETITION_003 | APPLICABLE | PASS / 2.430556 | PASS / 2.430556 | PASS / 2.430556 | Same outcome and numeric contribution
+NOVELTY_001 | APPLICABLE | PASS / 2.065972 | PASS / 2.065972 | PASS / 2.065972 | Same outcome and numeric contribution
+PROGRESSION_005 | APPLICABLE | PASS / 2.291667 | PASS / 2.291667 | PASS / 2.291667 | Same outcome and numeric contribution
+ESCALATION_004 | APPLICABLE | PASS / 4.427083 | PASS / 4.427083 | PASS / 4.427083 | Same outcome and numeric contribution
+PAYOFF_001 | APPLICABLE | PASS / 3.125000 | PASS / 3.125000 | PASS / 3.125000 | Same outcome and numeric contribution
+PRODUCIBILITY_001 | APPLICABLE | PASS / 3.472222 | PASS / 3.472222 | PASS / 3.472222 | Same outcome and numeric contribution
+CONSISTENCY_001 | DISPATCHED; REQUIRED EVIDENCE UNKNOWN | UNKNOWN / 0.000000 | UNKNOWN / 0.000000 | UNKNOWN / 0.000000 | Same outcome and numeric contribution
+HOOK_002 | APPLICABLE | PASS / 6.250000 | PASS / 6.250000 | PASS / 6.250000 | Same outcome and numeric contribution
+HOOK_003 | DISPATCHED; REQUIRED EVIDENCE UNKNOWN | UNKNOWN / 0.000000 | UNKNOWN / 0.000000 | UNKNOWN / 0.000000 | Same outcome and numeric contribution
+MOTION_001 | APPLICABLE | FAIL / 3.281250 | FAIL / 3.281250 | FAIL / 3.281250 | Same outcome and numeric contribution
+ATTEMPT_001 | APPLICABLE | FAIL / 0.000000 | PASS / 4.166667 | FAIL / 0.000000 | A: camera instruction counted as attempt
+CHAR_002 | APPLICABLE | PASS / 2.291667 | PASS / 2.291667 | PASS / 2.291667 | Same outcome and numeric contribution
+PRODUCIBILITY_002 | APPLICABLE | PASS / 3.472222 | PASS / 3.472222 | PASS / 3.472222 | Same outcome and numeric contribution
+PAYOFF_002 | APPLICABLE | PASS / 1.947917 | PASS / 1.947917 | PASS / 1.947917 | Same outcome and numeric contribution
+ATTEMPT_002 | DISPATCHED; REQUIRED EVIDENCE UNKNOWN | UNKNOWN / 0.000000 | UNKNOWN / 0.000000 | UNKNOWN / 0.000000 | Same outcome and numeric contribution
+PAYOFF_003 | DISPATCHED; REQUIRED EVIDENCE UNKNOWN | UNKNOWN / 0.000000 | UNKNOWN / 0.000000 | UNKNOWN / 0.000000 | Same outcome and numeric contribution
+CONSISTENCY_002 | NOT_APPLICABLE | NOT_APPLICABLE / 0.000000 | NOT_APPLICABLE / 0.000000 | NOT_APPLICABLE / 0.000000 | Same outcome and numeric contribution
+CONCEPT_007 | DISPATCHED; REQUIRED EVIDENCE UNKNOWN | UNKNOWN / 0.000000 | UNKNOWN / 0.000000 | UNKNOWN / 0.000000 | Same outcome and numeric contribution
+BEAT_005 | APPLICABLE | PASS / 2.430556 | PASS / 2.430556 | PASS / 2.430556 | Same outcome and numeric contribution
+PAYOFF_004 | APPLICABLE | PASS / 2.656250 | PASS / 2.656250 | PASS / 2.656250 | Same outcome and numeric contribution
+PAYOFF_005 | NOT_APPLICABLE | NOT_APPLICABLE / 0.000000 | NOT_APPLICABLE / 0.000000 | NOT_APPLICABLE / 0.000000 | Same outcome and numeric contribution
+REPETITION_004 | APPLICABLE | PASS / 2.430556 | PASS / 2.430556 | PASS / 2.430556 | Same outcome and numeric contribution
+PAYOFF_006 | APPLICABLE | PASS / 3.125000 | PASS / 3.125000 | PASS / 3.125000 | Same outcome and numeric contribution
+GOAL_001 | DISPATCHED; REQUIRED EVIDENCE UNKNOWN | UNKNOWN / 0.000000 | UNKNOWN / 0.000000 | UNKNOWN / 0.000000 | Same outcome and numeric contribution
+CONCEPT_008 | DISPATCHED; REQUIRED EVIDENCE UNKNOWN | UNKNOWN / 0.000000 | UNKNOWN / 0.000000 | UNKNOWN / 0.000000 | Same outcome and numeric contribution
+PROGRESSION_006 | APPLICABLE | PASS / 2.291667 | PASS / 2.291667 | PASS / 2.291667 | Same outcome and numeric contribution
+ESCALATION_005 | APPLICABLE | PASS / 5.208333 | PASS / 5.208333 | PASS / 5.208333 | Same outcome and numeric contribution
+HOOK_004 | DISPATCHED; REQUIRED EVIDENCE UNKNOWN | UNKNOWN / 0.000000 | UNKNOWN / 0.000000 | UNKNOWN / 0.000000 | Same outcome and numeric contribution
+PERFORMANCE_001 | DISPATCHED; REQUIRED EVIDENCE UNKNOWN | UNKNOWN / 0.000000 | UNKNOWN / 0.000000 | UNKNOWN / 0.000000 | Same outcome and numeric contribution
+PRODUCIBILITY_003 | APPLICABLE | FAIL / 1.388889 | FAIL / 1.388889 | FAIL / 1.388889 | Same outcome and numeric contribution
+GENERATION_EXECUTABLE_ATTEMPTS | DISPATCHED; REQUIRED EVIDENCE UNKNOWN | UNKNOWN / 0.000000 | UNKNOWN / 0.000000 | UNKNOWN / 0.000000 | Same outcome and numeric contribution
+CONTINUOUS_ACTION_MOMENTUM | APPLICABLE | FAIL / 1.875000 | FAIL / 1.875000 | FAIL / 1.875000 | Same outcome and numeric contribution
+INSTANT_VISUAL_ABSURDITY_GATE | APPLICABLE; EVIDENCE GAP | FAIL / 0.000000 | FAIL / 0.000000 | FAIL / 0.000000 | Same outcome and numeric contribution
+ENGINE_SILHOUETTE_DUPLICATE | APPLICABLE; EVIDENCE GAP | FAIL / 0.000000 | FAIL / 0.000000 | FAIL / 0.000000 | Same outcome and numeric contribution
+CONCEPT_009 | NOT_APPLICABLE | NOT_APPLICABLE / 0.000000 | NOT_APPLICABLE / 0.000000 | NOT_APPLICABLE / 0.000000 | Same outcome and numeric contribution
+MINI_STORY_LOCK | APPLICABLE | PASS / 3.541667 | PASS / 3.541667 | PASS / 3.541667 | Same outcome and numeric contribution
+GOAL_VISIBLE_EARLY | APPLICABLE | PASS / 5.312500 | PASS / 5.312500 | PASS / 5.312500 | Same outcome and numeric contribution
+TEMPORAL_COMPLEXITY_SPLIT_GATE | APPLICABLE | PASS / 7.968750 | PASS / 7.968750 | PASS / 7.968750 | Same outcome and numeric contribution
+BEAT_DENSITY_RULE | APPLICABLE | PASS / 1.947917 | PASS / 1.947917 | PASS / 1.947917 | Same outcome and numeric contribution
+CONTINUATION_LOCK | NOT_APPLICABLE | NOT_APPLICABLE / 0.000000 | NOT_APPLICABLE / 0.000000 | NOT_APPLICABLE / 0.000000 | Same outcome and numeric contribution
+STUBBORN_RETURN_LOOP | NOT_APPLICABLE | NOT_APPLICABLE / 0.000000 | NOT_APPLICABLE / 0.000000 | NOT_APPLICABLE / 0.000000 | Same outcome and numeric contribution
+STUBBORN_RETURN_HOOK | NOT_APPLICABLE | NOT_APPLICABLE / 0.000000 | NOT_APPLICABLE / 0.000000 | NOT_APPLICABLE / 0.000000 | Same outcome and numeric contribution
+STUBBORN_RETURN_PAYOFF | NOT_APPLICABLE | NOT_APPLICABLE / 0.000000 | NOT_APPLICABLE / 0.000000 | NOT_APPLICABLE / 0.000000 | Same outcome and numeric contribution
