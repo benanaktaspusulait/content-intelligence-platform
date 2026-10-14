@@ -180,4 +180,24 @@ class Step6GovernancePostgresTest {
     id=insert("REVIEW",analysis);
     assertThatThrownBy(()->service.command(id,"text-acceptance",request(),operator)).hasMessageContaining("not eligible");
   }
+
+  @Test void expiredIndependentSupportCannotAuthorizeAnException() {
+    provideSupport();
+    jdbc.sql("UPDATE post_family_workflow_events SET payload=jsonb_set(payload,'{expiresAt}',to_jsonb('2000-01-01T00:00:00Z'::text)) WHERE kind='GOVERNANCE_SUPPORT'").update();
+    assertThatThrownBy(()->service.command(id,"exception",exception(),approver)).hasMessageContaining("INDEPENDENT_STORY");
+  }
+  @Test void textAcceptanceRecordsOnlyCurrentlyActiveRiskAcknowledgements() {
+    var risk=request();risk.put("ruleId","PRODUCIBILITY_003");var accepted=service.command(id,"risk-acknowledgement",risk,operator);
+    var revoke=request();revoke.put("targetRecordId",accepted.get("recordId"));service.command(id,"revoke",revoke,approver);
+    assertThat((List<?>)service.command(id,"text-acceptance",request(),operator).get("acceptedRisks")).isEmpty();
+  }
+  @Test void insufficientGenuineAttemptsAndLongFormCaseRemainIneligible() throws Exception {
+    var canonical=(Map<String,Object>)analysis.get("canonicalRuleEvaluation");
+    var beats=(List<Map<String,Object>>)((Map<String,Object>)canonical.get("videoPlanIR")).get("beats");
+    var attempt=beats.stream().filter(b->Boolean.TRUE.equals(b.get("isAttempt"))).findFirst().orElseThrow();
+    ((Map<String,Object>)attempt.get("attemptEvidence")).put("sourceBound",false);id=insert("REVIEW",analysis);
+    assertThatThrownBy(()->service.command(id,"exception",exception(),approver)).hasMessageContaining("TWO_GENUINE");
+    ((Map<String,Object>)analysis.get("boundRequest")).put("desiredDuration",25);id=insert("REVIEW",analysis);
+    assertThatThrownBy(()->service.command(id,"exception",exception(),approver)).hasMessageContaining("ELIGIBLE_SHORT_FORM");
+  }
 }

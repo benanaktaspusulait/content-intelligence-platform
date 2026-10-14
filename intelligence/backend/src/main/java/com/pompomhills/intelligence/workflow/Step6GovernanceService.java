@@ -146,6 +146,12 @@ public class Step6GovernanceService {
     else if(actor.name().equals(support.get().get("principal"))) reasons.add("INDEPENDENT_APPROVER_REQUIRED");
     return reasons;
   }
+  private List<Map<String,Object>> activeRisks(Map<String,Object> ctx) {
+    String scope=binding(ctx);var revoked=events("GOVERNANCE_REVOCATION").stream().map(x->x.get("targetRecordId")).toList();
+    return events("GOVERNANCE_RISK_ACCEPTANCE").stream().filter(x->scope.equals(x.get("scopeSha256"))
+        && POLICY.equals(x.get("policyVersion")) && "PRODUCTION_OPERATOR".equals(x.get("authenticatedRole"))
+        && !revoked.contains(x.get("recordId")) && Instant.parse(String.valueOf(x.get("expiresAt"))).isAfter(Instant.now())).toList();
+  }
   private Optional<Map<String,Object>> effectiveException(Map<String,Object> ctx) {
     var approved=validEvent("GOVERNANCE_EXCEPTION",ctx);
     var support=validEvent("GOVERNANCE_SUPPORT",ctx);
@@ -224,7 +230,7 @@ public class Step6GovernanceService {
       }
       case "text-acceptance" -> {
         if(!Boolean.TRUE.equals(map(map(decision.get("allowedActions")).get("TEXT_ACCEPTED_RENDER_BLOCKED")).get("allowed"))) throw new IllegalStateException("Text acceptance is not eligible");
-        record.put("state","TEXT_ACCEPTED_RENDER_BLOCKED");record.put("acceptedRisks",events("GOVERNANCE_RISK_ACCEPTANCE").stream().filter(x->binding(ctx).equals(x.get("scopeSha256"))).toList());record.put("pendingEvidence",findings(ctx).stream().filter(x->"EVIDENCE_REQUIRED".equals(x.get("resolutionType"))).toList());kind="GOVERNANCE_TEXT_ACCEPTANCE";
+        record.put("state","TEXT_ACCEPTED_RENDER_BLOCKED");record.put("acceptedRisks",activeRisks(ctx));record.put("pendingEvidence",findings(ctx).stream().filter(x->"EVIDENCE_REQUIRED".equals(x.get("resolutionType"))).toList());kind="GOVERNANCE_TEXT_ACCEPTANCE";
       }
       case "risk-acknowledgement" -> {
         String ruleId=String.valueOf(request.get("ruleId"));var match=findings(ctx).stream().filter(x->ruleId.equals(x.get("ruleId")) && "PRODUCTION_RISK_REVIEW".equals(x.get("resolutionType")) && Boolean.TRUE.equals(map(x.get("metadata")).get("acknowledgeable"))).findFirst();
@@ -249,7 +255,7 @@ public class Step6GovernanceService {
       var failures=rows(report.get("failedRules"));
       int actualBlockers=0,actualCriticals=0,remainingBlockers=0,remainingCriticals=0;
       var ledger=new ArrayList<Map<String,Object>>();var exception=effectiveException(ctx);
-      String scope=binding(ctx);var risks=events("GOVERNANCE_RISK_ACCEPTANCE");
+      String scope=binding(ctx);var risks=activeRisks(ctx);
       var revoked=events("GOVERNANCE_REVOCATION").stream().map(x->x.get("targetRecordId")).toList();
       var unique=new HashSet<String>();
       for(var failure:failures) {

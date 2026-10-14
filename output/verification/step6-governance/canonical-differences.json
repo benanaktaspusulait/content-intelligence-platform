@@ -1,0 +1,275 @@
+{
+  "Original": {
+    "beforeScore": 84.20833333333334,
+    "score": 88.40625000000001,
+    "changedRules": [
+      {
+        "ruleId": "BEAT_004",
+        "before": {
+          "ruleId": "BEAT_004",
+          "ruleName": "Static State Dominance",
+          "family": "visual_novelty",
+          "severity": "CRITICAL",
+          "outcome": "FAIL",
+          "message": "Visual state 'character_mimi_continues_to_pull_each_pull_doubles' occupies 33.3% of video. Maximum: 30%.",
+          "details": {
+            "state_id": "character_mimi_continues_to_pull_each_pull_doubles",
+            "evaluation_stage": "PRE_RENDER",
+            "recommendation": "No single visual state may occupy more than approximately\n25\u201330% of the entire video unless meaningful new physical\nconsequences occur within that state.\n\nDifferent dialogue or tiny movements do NOT count\nas different visual beats."
+          }
+        },
+        "after": {
+          "ruleId": "BEAT_004",
+          "ruleName": "Static State Dominance",
+          "family": "visual_novelty",
+          "severity": "CRITICAL",
+          "outcome": "UNKNOWN",
+          "message": "Source describes changing states within the dominant beat; static-state duration is unknown without substate timing.",
+          "details": {
+            "failureBasis": "SUBSTATE_TIMING_UNKNOWN",
+            "sourceProgression": [
+              {
+                "beatId": "beat_03",
+                "sourceQuote": "5-10s: Mimi continues to pull; each pull doubles the number of sticky notes [wide shot showing Mimi covered in notes] notes multiply from two to four to eight as she pulls, progressively covering her arms, legs and face -> Mimi is overwhelmed by notes",
+                "sourceSpan": [
+                  678,
+                  929
+                ]
+              }
+            ],
+            "coarseBeatPercentage": 33.33333333333333,
+            "substateTimes": null,
+            "evaluation_stage": "PRE_RENDER",
+            "recommendation": "No single visual state may occupy more than approximately\n25\u201330% of the entire video unless meaningful new physical\nconsequences occur within that state.\n\nDifferent dialogue or tiny movements do NOT count\nas different visual beats."
+          }
+        }
+      },
+      {
+        "ruleId": "CONTINUOUS_ACTION_MOMENTUM",
+        "before": {
+          "ruleId": "CONTINUOUS_ACTION_MOMENTUM",
+          "ruleName": "Continuous Action Momentum",
+          "family": "motion_quality",
+          "severity": "CRITICAL",
+          "outcome": "FAIL",
+          "message": "Action momentum is interrupted: passive time 0%, largest attempt gap 0.0s, final aftermath 3.0s.",
+          "details": {
+            "passiveSeconds": 0.0,
+            "passiveRatio": 0.0,
+            "standaloneReactionCount": 0,
+            "attemptTransitionGaps": [
+              0.0
+            ],
+            "maxAttemptTransitionGap": 0.0,
+            "finalAftermathSeconds": 3.0,
+            "evaluation_stage": "PRE_RENDER",
+            "recommendation": "A reaction must overlap the physical transition into the next attempt. Rejects standalone reaction beats, reset-to-neutral gaps, excessive passive time, slow attempt transitions, and long final aftermaths. This rule distinguishes meaningful progression from forward motion momentum."
+          }
+        },
+        "after": {
+          "ruleId": "CONTINUOUS_ACTION_MOMENTUM",
+          "ruleName": "Continuous Action Momentum",
+          "family": "motion_quality",
+          "severity": "PASS",
+          "outcome": "PASS",
+          "message": "Attempts chain with reaction/action overlap and a bounded passive-time budget.",
+          "details": {
+            "passiveSeconds": 0.0,
+            "passiveRatio": 0.0,
+            "standaloneReactionCount": 0,
+            "attemptTransitionGaps": [
+              0.0
+            ],
+            "maxAttemptTransitionGap": 0.0,
+            "finalAftermathSeconds": 0.0,
+            "evaluation_stage": "PRE_RENDER",
+            "recommendation": "A reaction must overlap the physical transition into the next attempt. Rejects standalone reaction beats, reset-to-neutral gaps, excessive passive time, slow attempt transitions, and long final aftermaths. This rule distinguishes meaningful progression from forward motion momentum."
+          }
+        }
+      }
+    ],
+    "sourceUnchanged": true
+  },
+  "candidate-a": {
+    "beforeScore": 84.20833333333334,
+    "score": 88.40625000000001,
+    "changedRules": [
+      {
+        "ruleId": "BEAT_004",
+        "before": {
+          "family": "visual_novelty",
+          "ruleId": "BEAT_004",
+          "details": {
+            "state_id": "character_mimi_continues_to_pull_each_pull_doubles",
+            "recommendation": "No single visual state may occupy more than approximately\n25\u201330% of the entire video unless meaningful new physical\nconsequences occur within that state.\n\nDifferent dialogue or tiny movements do NOT count\nas different visual beats.",
+            "evaluation_stage": "PRE_RENDER"
+          },
+          "message": "Visual state 'character_mimi_continues_to_pull_each_pull_doubles' occupies 33.3% of video. Maximum: 30%.",
+          "outcome": "FAIL",
+          "ruleName": "Static State Dominance",
+          "severity": "CRITICAL"
+        },
+        "after": {
+          "family": "visual_novelty",
+          "ruleId": "BEAT_004",
+          "details": {
+            "failureBasis": "SUBSTATE_TIMING_UNKNOWN",
+            "substateTimes": null,
+            "recommendation": "No single visual state may occupy more than approximately\n25\u201330% of the entire video unless meaningful new physical\nconsequences occur within that state.\n\nDifferent dialogue or tiny movements do NOT count\nas different visual beats.",
+            "evaluation_stage": "PRE_RENDER",
+            "sourceProgression": [
+              {
+                "beatId": "beat_03",
+                "sourceSpan": [
+                  739,
+                  990
+                ],
+                "sourceQuote": "5-10s: Mimi continues to pull; each pull doubles the number of sticky notes [wide shot showing Mimi covered in notes] notes multiply from two to four to eight as she pulls, progressively covering her arms, legs and face -> Mimi is overwhelmed by notes"
+              }
+            ],
+            "coarseBeatPercentage": 33.33333333333333
+          },
+          "message": "Source describes changing states within the dominant beat; static-state duration is unknown without substate timing.",
+          "outcome": "UNKNOWN",
+          "ruleName": "Static State Dominance",
+          "severity": "CRITICAL"
+        }
+      },
+      {
+        "ruleId": "CONTINUOUS_ACTION_MOMENTUM",
+        "before": {
+          "family": "motion_quality",
+          "ruleId": "CONTINUOUS_ACTION_MOMENTUM",
+          "details": {
+            "passiveRatio": 0.0,
+            "passiveSeconds": 0.0,
+            "recommendation": "A reaction must overlap the physical transition into the next attempt. Rejects standalone reaction beats, reset-to-neutral gaps, excessive passive time, slow attempt transitions, and long final aftermaths. This rule distinguishes meaningful progression from forward motion momentum.",
+            "evaluation_stage": "PRE_RENDER",
+            "attemptTransitionGaps": [
+              0.0
+            ],
+            "finalAftermathSeconds": 3.0,
+            "maxAttemptTransitionGap": 0.0,
+            "standaloneReactionCount": 0
+          },
+          "message": "Action momentum is interrupted: passive time 0%, largest attempt gap 0.0s, final aftermath 3.0s.",
+          "outcome": "FAIL",
+          "ruleName": "Continuous Action Momentum",
+          "severity": "CRITICAL"
+        },
+        "after": {
+          "family": "motion_quality",
+          "ruleId": "CONTINUOUS_ACTION_MOMENTUM",
+          "details": {
+            "passiveRatio": 0.0,
+            "passiveSeconds": 0.0,
+            "recommendation": "A reaction must overlap the physical transition into the next attempt. Rejects standalone reaction beats, reset-to-neutral gaps, excessive passive time, slow attempt transitions, and long final aftermaths. This rule distinguishes meaningful progression from forward motion momentum.",
+            "evaluation_stage": "PRE_RENDER",
+            "attemptTransitionGaps": [
+              0.0
+            ],
+            "finalAftermathSeconds": 0.0,
+            "maxAttemptTransitionGap": 0.0,
+            "standaloneReactionCount": 0
+          },
+          "message": "Attempts chain with reaction/action overlap and a bounded passive-time budget.",
+          "outcome": "PASS",
+          "ruleName": "Continuous Action Momentum",
+          "severity": "PASS"
+        }
+      }
+    ],
+    "sourceUnchanged": true
+  },
+  "candidate-b": {
+    "beforeScore": 84.20833333333334,
+    "score": 88.40625000000001,
+    "changedRules": [
+      {
+        "ruleId": "BEAT_004",
+        "before": {
+          "family": "visual_novelty",
+          "ruleId": "BEAT_004",
+          "details": {
+            "state_id": "character_mimi_continues_to_pull_each_pull_doubles",
+            "recommendation": "No single visual state may occupy more than approximately\n25\u201330% of the entire video unless meaningful new physical\nconsequences occur within that state.\n\nDifferent dialogue or tiny movements do NOT count\nas different visual beats.",
+            "evaluation_stage": "PRE_RENDER"
+          },
+          "message": "Visual state 'character_mimi_continues_to_pull_each_pull_doubles' occupies 33.3% of video. Maximum: 30%.",
+          "outcome": "FAIL",
+          "ruleName": "Static State Dominance",
+          "severity": "CRITICAL"
+        },
+        "after": {
+          "family": "visual_novelty",
+          "ruleId": "BEAT_004",
+          "details": {
+            "failureBasis": "SUBSTATE_TIMING_UNKNOWN",
+            "substateTimes": null,
+            "recommendation": "No single visual state may occupy more than approximately\n25\u201330% of the entire video unless meaningful new physical\nconsequences occur within that state.\n\nDifferent dialogue or tiny movements do NOT count\nas different visual beats.",
+            "evaluation_stage": "PRE_RENDER",
+            "sourceProgression": [
+              {
+                "beatId": "beat_03",
+                "sourceSpan": [
+                  823,
+                  1109
+                ],
+                "sourceQuote": "5-10s: Mimi continues to pull; each pull doubles the number of sticky notes  notes multiply from two to four to eight as she pulls, progressively covering her arms, legs and face -> Mimi is overwhelmed by notes [static wide shot; hold two; hold four; hold eight; single continuous shot]"
+              }
+            ],
+            "coarseBeatPercentage": 33.33333333333333
+          },
+          "message": "Source describes changing states within the dominant beat; static-state duration is unknown without substate timing.",
+          "outcome": "UNKNOWN",
+          "ruleName": "Static State Dominance",
+          "severity": "CRITICAL"
+        }
+      },
+      {
+        "ruleId": "CONTINUOUS_ACTION_MOMENTUM",
+        "before": {
+          "family": "motion_quality",
+          "ruleId": "CONTINUOUS_ACTION_MOMENTUM",
+          "details": {
+            "passiveRatio": 0.0,
+            "passiveSeconds": 0.0,
+            "recommendation": "A reaction must overlap the physical transition into the next attempt. Rejects standalone reaction beats, reset-to-neutral gaps, excessive passive time, slow attempt transitions, and long final aftermaths. This rule distinguishes meaningful progression from forward motion momentum.",
+            "evaluation_stage": "PRE_RENDER",
+            "attemptTransitionGaps": [
+              0.0
+            ],
+            "finalAftermathSeconds": 3.0,
+            "maxAttemptTransitionGap": 0.0,
+            "standaloneReactionCount": 0
+          },
+          "message": "Action momentum is interrupted: passive time 0%, largest attempt gap 0.0s, final aftermath 3.0s.",
+          "outcome": "FAIL",
+          "ruleName": "Continuous Action Momentum",
+          "severity": "CRITICAL"
+        },
+        "after": {
+          "family": "motion_quality",
+          "ruleId": "CONTINUOUS_ACTION_MOMENTUM",
+          "details": {
+            "passiveRatio": 0.0,
+            "passiveSeconds": 0.0,
+            "recommendation": "A reaction must overlap the physical transition into the next attempt. Rejects standalone reaction beats, reset-to-neutral gaps, excessive passive time, slow attempt transitions, and long final aftermaths. This rule distinguishes meaningful progression from forward motion momentum.",
+            "evaluation_stage": "PRE_RENDER",
+            "attemptTransitionGaps": [
+              0.0
+            ],
+            "finalAftermathSeconds": 0.0,
+            "maxAttemptTransitionGap": 0.0,
+            "standaloneReactionCount": 0
+          },
+          "message": "Attempts chain with reaction/action overlap and a bounded passive-time budget.",
+          "outcome": "PASS",
+          "ruleName": "Continuous Action Momentum",
+          "severity": "PASS"
+        }
+      }
+    ],
+    "sourceUnchanged": true
+  }
+}

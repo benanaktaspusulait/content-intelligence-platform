@@ -1,0 +1,296 @@
+Building current sources: backend creative-render-service frontend
+ Image intelligence-ml-service Building 
+ Image intelligence-backend Building 
+ Image intelligence-frontend Building 
+ Image intelligence-creative-render-service Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 2.32kB done
+#1 DONE 0.0s
+
+#2 [backend internal] load build definition from Dockerfile
+#2 transferring dockerfile: 559B done
+#2 DONE 0.0s
+
+#3 [creative-render-service internal] load build definition from Dockerfile
+#3 transferring dockerfile: 1.98kB done
+#3 DONE 0.0s
+
+#4 [frontend internal] load build definition from Dockerfile
+#4 transferring dockerfile: 304B done
+#4 DONE 0.0s
+
+#5 [creative-render-service internal] load metadata for docker.io/library/maven:3.9.9-amazoncorretto-21
+#5 DONE 0.0s
+
+#6 [creative-render-service internal] load metadata for docker.io/library/amazoncorretto:21-alpine
+#6 DONE 0.7s
+
+#7 [creative-render-service internal] load .dockerignore
+#7 transferring context: 2B done
+#7 DONE 0.0s
+
+#8 [backend internal] load .dockerignore
+#8 transferring context: 59B done
+#8 DONE 0.0s
+
+#9 [creative-render-service stage-1 1/6] FROM docker.io/library/amazoncorretto:21-alpine@sha256:b7451ecea0f2a02b9597493bb57c4014f43c41db4b470a8aee7228d7a0279025
+#9 DONE 0.0s
+
+#10 [creative-render-service build 1/8] FROM docker.io/library/maven:3.9.9-amazoncorretto-21
+#10 DONE 0.0s
+
+#11 [frontend internal] load metadata for docker.io/library/nginx:1.29-alpine
+#11 DONE 0.8s
+
+#12 [creative-render-service internal] load build context
+#12 transferring context: 94.77kB 0.1s done
+#12 DONE 0.1s
+
+#13 [backend internal] load build context
+#13 transferring context: 80.29kB 0.0s done
+#13 DONE 0.1s
+
+#14 [frontend internal] load metadata for docker.io/library/node:22.22-alpine
+#14 DONE 0.8s
+
+#15 [backend build 3/6] COPY pom.xml .
+#15 CACHED
+
+#16 [backend build 4/6] RUN mvn -q -DskipTests dependency:go-offline
+#16 CACHED
+
+#17 [creative-render-service build 3/8] COPY intelligence/publisher-contract/pom.xml publisher-contract/pom.xml
+#17 CACHED
+
+#18 [creative-render-service build 4/8] COPY intelligence/publisher-contract/src publisher-contract/src
+#18 CACHED
+
+#19 [creative-render-service build 5/8] RUN mvn -q -f publisher-contract/pom.xml -DskipTests install
+#19 CACHED
+
+#20 [creative-render-service build 2/8] WORKDIR /workspace
+#20 CACHED
+
+#21 [creative-render-service build 6/8] COPY intelligence/creative-render-service/pom.xml creative-render-service/pom.xml
+#21 CACHED
+
+#22 [frontend internal] load .dockerignore
+#22 transferring context: 91B done
+#22 DONE 0.0s
+
+#23 [frontend build 1/6] FROM docker.io/library/node:22.22-alpine@sha256:e58326d0d441090181ac150dc2078d3e2cf6a0d42e809aebba3ef5880935ffdd
+#23 DONE 0.0s
+
+#24 [frontend stage-1 1/3] FROM docker.io/library/nginx:1.29-alpine@sha256:5616878291a2eed594aee8db4dade5878cf7edcb475e59193904b198d9b830de
+#24 DONE 0.0s
+
+#25 [frontend internal] load build context
+#25 transferring context: 3.73MB 0.1s done
+#25 DONE 0.1s
+
+#26 [frontend build 2/6] WORKDIR /workspace
+#26 CACHED
+
+#27 [frontend build 3/6] COPY package*.json ./
+#27 CACHED
+
+#28 [frontend build 4/6] RUN npm ci
+#28 CACHED
+
+#29 [frontend build 5/6] COPY . .
+#29 DONE 0.1s
+
+#30 [creative-render-service build 7/8] COPY intelligence/creative-render-service/src creative-render-service/src
+#30 DONE 0.3s
+
+#31 [backend build 5/6] COPY src src
+#31 DONE 0.3s
+
+#32 [creative-render-service build 8/8] RUN mvn -q -f creative-render-service/pom.xml -Dmaven.test.skip=true package
+#32 ...
+
+#33 [frontend build 6/6] RUN npm run build
+#33 0.921 
+#33 0.921 > frontend@0.0.0 build
+#33 0.921 > ng build
+#33 0.921 
+#33 2.234 ❯ Building...
+#33 ...
+
+#34 [backend build 6/6] RUN mvn -q -Dmaven.test.skip=true package
+#34 DONE 12.8s
+
+#32 [creative-render-service build 8/8] RUN mvn -q -f creative-render-service/pom.xml -Dmaven.test.skip=true package
+#32 ...
+
+#35 [backend stage-1 2/4] RUN apk add --no-cache curl
+#35 CACHED
+
+#36 [backend stage-1 3/4] WORKDIR /app
+#36 CACHED
+
+#37 [backend stage-1 4/4] COPY --from=build /workspace/target/creative-intelligence-backend-*.jar app.jar
+#37 DONE 0.3s
+
+#32 [creative-render-service build 8/8] RUN mvn -q -f creative-render-service/pom.xml -Dmaven.test.skip=true package
+#32 ...
+
+#38 [backend] exporting to image
+#38 exporting layers
+#38 exporting layers 0.2s done
+#38 writing image sha256:0ea0b643f52d81034c76d51d1e70d0b2e1c516d0773beb36bf8a0ecf7e03e03a
+#38 writing image sha256:0ea0b643f52d81034c76d51d1e70d0b2e1c516d0773beb36bf8a0ecf7e03e03a done
+#38 naming to docker.io/library/intelligence-backend 0.0s done
+#38 DONE 0.3s
+
+#39 [backend] resolving provenance for metadata file
+#39 DONE 0.1s
+
+#32 [creative-render-service build 8/8] RUN mvn -q -f creative-render-service/pom.xml -Dmaven.test.skip=true package
+#32 DONE 28.7s
+
+#33 [frontend build 6/6] RUN npm run build
+#33 ...
+
+#40 [creative-render-service stage-1 2/6] RUN apk add --no-cache bash ca-certificates curl ffmpeg tar     && case "arm64" in          amd64) OPENART_ARCH=amd64 ;;          arm64) OPENART_ARCH=arm64 ;;          *) echo "Unsupported OpenArt target architecture: arm64" >&2; exit 1 ;;        esac     && OPENART_ARCHIVE="openart_0.1.1_linux_${OPENART_ARCH}.tar.gz"     && curl -fsSL -o "/tmp/${OPENART_ARCHIVE}"        "https://github.com/OpenArt-AI/cli/releases/download/v0.1.1/${OPENART_ARCHIVE}"     && curl -fsSL -o /tmp/openart-checksums.txt        "https://github.com/OpenArt-AI/cli/releases/download/v0.1.1/checksums.txt"     && cd /tmp     && grep "  ${OPENART_ARCHIVE}$" openart-checksums.txt | sha256sum -c -     && tar -xzf "/tmp/${OPENART_ARCHIVE}"     && install -m 0755 /tmp/openart /usr/local/bin/openart     && rm -f "/tmp/${OPENART_ARCHIVE}" /tmp/openart /tmp/openart-checksums.txt
+#40 CACHED
+
+#41 [creative-render-service stage-1 3/6] WORKDIR /app
+#41 CACHED
+
+#42 [creative-render-service stage-1 4/6] COPY --from=build /workspace/creative-render-service/target/creative-render-service-*.jar app.jar
+#42 DONE 0.2s
+
+#33 [frontend build 6/6] RUN npm run build
+#33 ...
+
+#43 [creative-render-service stage-1 5/6] COPY intelligence/creative-render-service/tools/upscale.sh /opt/pompom/tools/upscale.sh
+#43 DONE 0.0s
+
+#44 [creative-render-service stage-1 6/6] RUN chmod 0755 /opt/pompom/tools/upscale.sh
+#44 DONE 0.2s
+
+#33 [frontend build 6/6] RUN npm run build
+#33 ...
+
+#45 [creative-render-service] exporting to image
+#45 exporting layers 0.1s done
+#45 writing image sha256:c6fb3c5bc93011078b13b341a06fbd10f31d1527b8544b8b81729663bf7d30c9
+#45 writing image sha256:c6fb3c5bc93011078b13b341a06fbd10f31d1527b8544b8b81729663bf7d30c9 done
+#45 naming to docker.io/library/intelligence-creative-render-service done
+#45 DONE 0.1s
+
+#46 [creative-render-service] resolving provenance for metadata file
+#46 DONE 0.0s
+
+#33 [frontend build 6/6] RUN npm run build
+#33 47.74 ✔ Building...
+#33 47.75 Initial chunk files | Names                         |  Raw size | Estimated transfer size
+#33 47.75 styles-74PIG2MI.css | styles                        | 204.48 kB |                28.80 kB
+#33 47.75 chunk-EV556SJI.js   | -                             | 183.30 kB |                53.31 kB
+#33 47.75 chunk-E6NKLTEV.js   | -                             |  95.62 kB |                24.08 kB
+#33 47.75 chunk-IUG2ESWL.js   | -                             |  24.60 kB |                 7.34 kB
+#33 47.75 main-7WS2PXOZ.js    | main                          |   8.31 kB |                 2.32 kB
+#33 47.75 chunk-3RHWOS5U.js   | -                             | 705 bytes |               705 bytes
+#33 47.75 
+#33 47.75                     | Initial total                 | 517.02 kB |               116.56 kB
+#33 47.75 
+#33 47.75 Lazy chunk files    | Names                         |  Raw size | Estimated transfer size
+#33 47.75 chunk-6OJFWOB7.js   | editor-api                    |   2.28 MB |               470.00 kB
+#33 47.75 chunk-MV7LYZWM.js   | quality-validator-component   | 372.16 kB |                70.80 kB
+#33 47.75 chunk-DSE2LVPJ.js   | creative-studio-page          | 245.20 kB |                44.26 kB
+#33 47.75 chunk-RDRASM3W.js   | video-detail-page             | 102.30 kB |                23.29 kB
+#33 47.75 chunk-IKK4KAOD.js   | render-preparation-page       |  86.52 kB |                17.92 kB
+#33 47.75 chunk-J55MCTV6.css  | -                             |  68.26 kB |                 9.89 kB
+#33 47.75 main-QCIVHFPX.css   | -                             |  68.26 kB |                 9.89 kB
+#33 47.75 chunk-6X5UIBTH.js   | render-dashboard-page         |  49.69 kB |                10.08 kB
+#33 47.75 chunk-JWGJZOJ5.js   | -                             |  39.04 kB |                 8.16 kB
+#33 47.75 chunk-LC2GBJ4U.js   | -                             |  23.86 kB |                 6.63 kB
+#33 47.75 chunk-O5VFCAVK.js   | operations-page               |  22.36 kB |                 5.39 kB
+#33 47.75 chunk-DYRL43OY.js   | rule-governance-page          |  15.64 kB |                 3.74 kB
+#33 47.75 chunk-EURCV4SA.js   | import-data-page              |  15.59 kB |                 4.54 kB
+#33 47.75 chunk-2TXV7TKM.js   | video-analysis-workbench-page |  14.55 kB |                 4.08 kB
+#33 47.75 chunk-J732DL4B.js   | prompt-workspace-page         |  13.76 kB |                 3.67 kB
+#33 47.75 ...and 17 more lazy chunks files. Use "--verbose" to show all the files.
+#33 47.75 
+#33 47.75 Application bundle generation complete. [45.505 seconds] - 2026-10-14T23:56:17.299Z
+#33 47.75 
+#33 47.76 ▲ [WARNING] NG8113: TimelineChartComponent is not used within the template of QualityValidatorComponent [plugin angular-compiler]
+#33 47.76 
+#33 47.76     src/app/pages/quality-validator/quality-validator.component.ts:202:39:
+#33 47.76       202 │ ...odule, FormsModule, TimelineChartComponent, RouterLink, Genera...
+#33 47.76           ╵                        ~~~~~~~~~~~~~~~~~~~~~~
+#33 47.76 
+#33 47.76 
+#33 47.76 ▲ [WARNING] NG8113: GeneralProducibilityComponent is not used within the template of QualityValidatorComponent [plugin angular-compiler]
+#33 47.76 
+#33 47.76     src/app/pages/quality-validator/quality-validator.component.ts:202:75:
+#33 47.76       202 │ ...ent, RouterLink, GeneralProducibilityComponent, PostFamilyWork...
+#33 47.76           ╵                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#33 47.76 
+#33 47.76 
+#33 47.76 ▲ [WARNING] bundle initial exceeded maximum budget. Budget 500.00 kB was not met by 17.02 kB with a total of 517.02 kB.
+#33 47.76 
+#33 47.76 
+#33 47.76 ▲ [WARNING] angular:styles/component:scss;ed5fef83302356f9a1842db6e4023461bfc9691a3dca7de413621f965c5ea7f2;/workspace/src/app/pages/creative-studio.page.ts exceeded maximum budget. Budget 26.00 kB was not met by 8.56 kB with a total of 34.56 kB.
+#33 47.76 
+#33 47.76 
+#33 47.76 Output location: /workspace/dist/frontend
+#33 47.76 
+#33 DONE 48.2s
+
+#47 [frontend stage-1 2/3] COPY nginx.conf /etc/nginx/conf.d/default.conf
+#47 CACHED
+
+#48 [frontend stage-1 3/3] COPY --from=build /workspace/dist/frontend/browser /usr/share/nginx/html
+#48 DONE 0.1s
+
+#49 [frontend] exporting to image
+#49 exporting layers 0.1s done
+#49 writing image sha256:96ebbf41b4696d1fca858ac79d2e3d23138540e6df89d79a393c5eb786489019
+#49 writing image sha256:96ebbf41b4696d1fca858ac79d2e3d23138540e6df89d79a393c5eb786489019 done
+#49 naming to docker.io/library/intelligence-frontend done
+#49 DONE 0.1s
+
+#50 [frontend] resolving provenance for metadata file
+#50 DONE 0.0s
+ Image intelligence-backend Built 
+ Image intelligence-creative-render-service Built 
+ Image intelligence-frontend Built 
+Deploying: backend creative-render-service frontend
+ Container intelligence-backend-1 Recreate 
+ Container intelligence-backend-1 Recreated 
+ Container intelligence-creative-render-service-1 Recreate 
+ Container intelligence-creative-render-service-1 Recreated 
+ Container intelligence-frontend-1 Recreate 
+ Container intelligence-frontend-1 Recreated 
+ Container intelligence-backend-1 Starting 
+ Container intelligence-backend-1 Started 
+ Container intelligence-backend-1 Waiting 
+ Container intelligence-backend-1 Healthy 
+ Container intelligence-creative-render-service-1 Starting 
+ Container intelligence-creative-render-service-1 Started 
+ Container intelligence-creative-render-service-1 Waiting 
+ Container intelligence-backend-1 Waiting 
+ Container intelligence-backend-1 Healthy 
+ Container intelligence-creative-render-service-1 Healthy 
+ Container intelligence-frontend-1 Starting 
+ Container intelligence-frontend-1 Started 
+ Container intelligence-backend-1 Waiting 
+ Container intelligence-frontend-1 Waiting 
+ Container intelligence-creative-render-service-1 Waiting 
+ Container intelligence-frontend-1 Healthy 
+ Container intelligence-creative-render-service-1 Healthy 
+ Container intelligence-backend-1 Healthy 
+  backend: sha256:0ea0b643f52d81034c76d51d1e70d0b2e1c516d0773beb36bf8a0ecf7e03e03a
+  backend HTTP check passed (/actuator/health)
+  creative-render-service: sha256:c6fb3c5bc93011078b13b341a06fbd10f31d1527b8544b8b81729663bf7d30c9
+  creative-render-service HTTP check passed (/actuator/health)
+  frontend: sha256:96ebbf41b4696d1fca858ac79d2e3d23138540e6df89d79a393c5eb786489019
+  frontend HTTP check passed (/)
+  frontend HTTP check passed (/api/v1/intelligence/workflow/provider-capabilities)
+NAME                                     IMAGE                                  COMMAND                  SERVICE                   CREATED          STATUS                    PORTS
+intelligence-backend-1                   intelligence-backend                   "java -jar /app/app.…"   backend                   31 seconds ago   Up 28 seconds (healthy)   0.0.0.0:8080->8080/tcp, [::]:8080->8080/tcp
+intelligence-creative-render-service-1   intelligence-creative-render-service   "java -jar /app/app.…"   creative-render-service   30 seconds ago   Up 17 seconds (healthy)   8081/tcp
+intelligence-frontend-1                  intelligence-frontend                  "/docker-entrypoint.…"   frontend                  29 seconds ago   Up 2 seconds              0.0.0.0:4200->80/tcp, [::]:4200->80/tcp
+Verified. Application: http://localhost:4200
