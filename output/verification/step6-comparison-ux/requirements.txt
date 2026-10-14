@@ -1,0 +1,326 @@
+# POMPOM HILLS — STEP 6 CREATIVE OPTIMIZATION UI/UX REFINEMENT
+
+## OBJECTIVE
+
+Redesign the existing Step 6 Creative Optimization comparison UI to be compact, decision-focused, visually polished and easy to navigate.
+
+The current implementation is functionally much better, but the UI displays too much information simultaneously:
+
+- Three very long prompt columns.
+- Full candidate prompts expanded by default.
+- Large empty areas caused by unequal card heights.
+- Technical evaluation details mixed with decision-making information.
+- Extensive side-by-side diffs displayed below already-long prompts.
+- Excessive page scrolling.
+
+The objective is to make the operator understand the comparison within approximately 10 seconds, while keeping every existing piece of technical evidence accessible.
+
+This is a presentation-only improvement.
+
+Do not redesign or modify the optimization engine, scoring logic, candidate validation, persistence or approval workflow.
+
+## 1. COMPACT COMPARISON DASHBOARD
+
+Replace the current three oversized columns with compact candidate summary cards.
+
+Display:
+
+### Original
+- Prompt version
+- Quality score and grade
+- Canonical result
+- Current recommendation
+
+### Candidate A
+- Candidate name
+- Validation classification
+- Quality score and grade
+- Delta versus baseline
+- Text similarity
+- Actual improvement hypothesis
+- Observed material changes
+- Production risk
+- Approval eligibility
+
+### Candidate B
+Same structure as Candidate A.
+
+Cards should remain compact and comparable.
+
+Do not force all cards to match the tallest expanded prompt.
+
+Do not embed full prompt text inside the summary cards.
+
+## 2. CLEAR RECOMMENDATION PANEL
+
+Preserve the current KEEP_ORIGINAL recommendation.
+
+Show a concise decision summary immediately above the comparison.
+
+For the current saved results:
+
+Recommendation: KEEP_ORIGINAL
+
+Reason:
+Neither candidate demonstrates a defensible material improvement over the saved baseline.
+
+Candidate A:
+Camera framing variation without proven improvement.
+
+Candidate B:
+Timing segmentation without a demonstrated new action or consequence.
+
+Use actual stored evaluation evidence to populate the UI.
+
+Do not hardcode these conclusions for future attempts.
+
+Do not exaggerate improvement or invent predicted retention metrics.
+
+## 3. EXPANDABLE CANDIDATE DETAILS
+
+Each candidate should provide clearly separated expandable sections:
+
+A. Actual Changes
+B. Quality and Production Assessment
+C. Full Candidate Prompt
+D. Technical Evidence
+
+Default state:
+
+- Actual Changes: expanded, showing a short summary.
+- Quality and Production Assessment: expanded if sufficiently compact.
+- Full Candidate Prompt: collapsed.
+- Technical Evidence: collapsed.
+
+The original prompt should also be collapsed by default, with a visible View Original Prompt control.
+
+Use consistent accordion styling and readable spacing.
+
+Preserve the ability to copy a full prompt.
+
+Maintain accessible keyboard and screen-reader interaction.
+
+## 4. IMPROVE CHANGE PRESENTATION
+
+The current UI already identifies differences such as:
+
+Candidate A:
+CLOSE → EXTREME_CLOSE
+
+Candidate B:
+One source progression split into two camera shots.
+
+Present these changes as short, human-readable comparison rows.
+
+For example:
+
+Original:
+0–2s — Close-up of Mimi's hand.
+
+Candidate A:
+0–2s — Extreme close-up of Mimi's hand.
+
+Assessment:
+Framing changed; stronger first-frame clarity not established.
+
+For Candidate B, explain the difference between changed timing boundaries and changed actions/consequences.
+
+A timing split must not automatically be presented as a creative improvement.
+
+Use existing comparison evidence.
+
+Do not generate new AI conclusions during page rendering.
+
+## 5. SIDE-BY-SIDE DIFF VIEW
+
+Move the full text diff into a separate expandable section titled:
+
+"Compare Full Prompt Changes"
+
+When opened:
+
+- Allow selecting Candidate A or Candidate B.
+- Show original and selected candidate side by side.
+- Highlight removed text clearly.
+- Highlight added text clearly.
+- Keep unchanged text visually neutral.
+- Avoid displaying unchanged sections unnecessarily.
+- Provide a Show Unchanged Context option.
+- Preserve the distinction between alternative versions and sequential story events.
+
+Prefer a compact, readable diff over a long table showing the entire prompt repeatedly.
+
+Ensure diff presentation does not imply duplicate story beats.
+
+Reuse existing diff data and logic wherever possible.
+
+## 6. IMPROVE CARD ALIGNMENT AND SPACING
+
+Current screenshots show large empty vertical regions in the Original card.
+
+Fix:
+
+- Unequal-height card layout problems.
+- Excessive vertical whitespace.
+- Unnecessary nested borders.
+- Oversized prompt text containers.
+- Awkward spacing before action buttons.
+- Inconsistent accordion styling.
+
+Use the existing project design tokens.
+
+Do not introduce a new styling library.
+
+Avoid excessive CSS complexity.
+
+## 7. APPROVAL ACTIONS
+
+Keep the existing approval safeguards intact.
+
+The operator must still be able to:
+
+- Keep Original
+- Review Candidate A
+- Review Candidate B
+- Select an eligible candidate
+- Explicitly approve a selected revision
+
+Invalid, stale, baseline-equivalent or non-material candidates must remain blocked according to the current approval contract.
+
+Do not enable currently blocked candidates simply because the UI has been redesigned.
+
+Move the primary decision action into a clear, compact decision area.
+
+The Approve Selected Revision button must remain disabled until the existing approval requirements are satisfied.
+
+Do not automatically approve any candidate.
+
+## 8. SHOW ONLY USEFUL METADATA BY DEFAULT
+
+The main comparison should prioritize:
+
+- Score and grade
+- Actual changes
+- Materiality classification
+- Production implications
+- Story preservation
+- Remaining uncertainties
+- Approval status
+
+Move technical details such as:
+
+- Raw validation JSON
+- Canonical rule payloads
+- Complete source evidence
+- Analysis bindings
+- Internal identifiers
+- Detailed provenance
+
+into expandable technical sections.
+
+Do not delete or conceal this evidence.
+
+## 9. RESPONSIVE DESIGN
+
+Verify the page at:
+
+- 1440px desktop
+- 1024px laptop
+- 768px tablet
+- 390px mobile
+
+Desktop:
+Three compact cards where space permits.
+
+Tablet:
+Use responsive columns without squeezing text.
+
+Mobile:
+Stack the candidate cards vertically.
+
+The full prompt and diff views must not cause page-level horizontal overflow.
+
+Long prompt text must wrap or scroll within its own controlled container.
+
+All actions must remain usable.
+
+## 10. STATE MANAGEMENT
+
+Preserve:
+
+- Loaded optimization attempt
+- Current comparison
+- Candidate statuses
+- Current selected candidate, if any
+- Existing server-side approval requirements
+
+Expansion or collapse of UI panels must not alter persisted evaluation data.
+
+Reloading the comparison must not cause a new provider request.
+
+Do not lose the current comparison when switching between candidates in the diff view.
+
+Do not automatically approve or select candidates.
+
+## 11. REGRESSION TESTS
+
+Add or update frontend tests covering:
+
+1. Compact cards render correctly.
+2. Full prompts are collapsed by default.
+3. Technical evidence is collapsed by default.
+4. Actual changes remain immediately visible.
+5. Original prompt can be expanded.
+6. Candidate prompts can be expanded independently.
+7. Diff view switches between candidates.
+8. Unchanged context can be hidden or shown.
+9. No false duplicated beats appear.
+10. KEEP_ORIGINAL recommendation remains accurate.
+11. Non-material candidates remain blocked.
+12. Existing approval controls behave identically.
+13. Reload preserves saved comparison without provider calls.
+14. Responsive layout has no horizontal overflow.
+15. Keyboard navigation and accessibility remain intact.
+
+Run the production frontend build.
+
+Verify in the actual browser, not only through unit tests.
+
+## STRICT CONSTRAINTS
+
+- Frontend-focused changes only.
+- No new provider calls.
+- No optimization regeneration.
+- No scoring changes.
+- No changes to approved story.
+- No prompt v10 modification.
+- No database migrations.
+- No new candidate approval.
+- No rendering or publishing.
+- No commit/push.
+- No unnecessary backend refactoring.
+
+If existing API data is insufficient for a presentation requirement, report the limitation rather than inventing evidence.
+
+## REQUIRED FINAL REPORT
+
+1. Files modified.
+2. Layout changes.
+3. Default accordion behavior.
+4. Comparison and diff improvements.
+5. Approval safety verification.
+6. Desktop screenshot verification.
+7. Mobile screenshot verification.
+8. Frontend test results.
+9. Production build result.
+10. Confirmation that optimization and persistence contracts remain unchanged.
+
+Final status:
+
+STEP_6_COMPARISON_UX_ACCEPTED
+
+or
+
+STEP_6_COMPARISON_UX_INCOMPLETE
+
+Do not declare acceptance until the actual deployed browser shows the improved layout.

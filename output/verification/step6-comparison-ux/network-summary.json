@@ -1,0 +1,286 @@
+{
+  "requests": [
+    {
+      "method": "GET",
+      "url": "http://localhost:4200/quality/detail?contentId=10&promptVersionId=10&studio=1&stage=6",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://localhost:4200/chunk-E6NKLTEV.js",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://localhost:4200/chunk-IUG2ESWL.js",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://localhost:4200/chunk-EV556SJI.js",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://localhost:4200/chunk-3RHWOS5U.js",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://localhost:4200/main-VTXAVNQ2.js",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://localhost:4200/styles-74PIG2MI.css",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://localhost:4200/pompom-loop-emblem.png",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://localhost:4200/chunk-INCK7QEA.js",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://localhost:4200/chunk-JWGJZOJ5.js",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://localhost:4200/api/v1/videos/prompt-workspaces?relativeDirectory=library%2FPOMPOM_HILLS_PRODUCTION%2F09_SOCIAL_REELS%2Fnew14092026",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://localhost:4200/api/v1/intelligence/contents/quality-summary",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://localhost:4200/api/v1/intelligence/contents/10/prompt-versions",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://localhost:4200/api/v1/intelligence/contents/10/prompt-versions/10/creative-provenance",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://localhost:4200/api/v1/intelligence/contents/10/prompt-versions/10/videos",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://localhost:4200/api/v1/intelligence/contents/10",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://localhost:4200/api/v1/characters",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://localhost:4200/api/v1/intelligence/workflow/production-review/decisions?contentId=10&promptVersionId=10",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://localhost:4200/api/v1/intelligence/workflow/provider-capabilities",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://localhost:4200/api/v1/intelligence/workflow/records?kind=REVIEW&contentId=10&promptVersionId=10",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "url": "http://localhost:4200/api/v1/intelligence/quality/validations/latest",
+      "status": 204
+    },
+    {
+      "method": "GET",
+      "url": "http://localhost:4200/api/v1/characters/00000000-0000-0000-0000-000000000003/references",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://localhost:4200/api/v1/intelligence/workflow/records?kind=ACTUAL_RENDER_QA&bindingHash=2c3b118fc81dcf4e776e909f25fec248a2057e6f289cb13c05685e65c9ad189b",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://localhost:4200/api/v1/intelligence/workflow/production-settings?contentId=10&promptVersionId=10",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://localhost:4200/chunk-6OJFWOB7.js",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://localhost:4200/api/v1/intelligence/workflow/production-review/reference-binding?contentId=10&promptVersionId=10",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://localhost:4200/api/v1/intelligence/workflow/records/9208e75a-b158-4ffb-94fe-03c15ca96395/creative-optimization/latest",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://localhost:4200/api/v1/intelligence/workflow/records/9208e75a-b158-4ffb-94fe-03c15ca96395/creative-optimization/latest",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://localhost:4200/quality/detail?contentId=10&promptVersionId=10&studio=1&stage=6",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://localhost:4200/chunk-E6NKLTEV.js",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://localhost:4200/chunk-IUG2ESWL.js",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://localhost:4200/chunk-EV556SJI.js",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://localhost:4200/chunk-3RHWOS5U.js",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://localhost:4200/main-FHOAUY7C.js",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://localhost:4200/styles-74PIG2MI.css",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://localhost:4200/pompom-loop-emblem.png",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://localhost:4200/chunk-CBXTGCY5.js",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://localhost:4200/chunk-JWGJZOJ5.js",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://localhost:4200/api/v1/videos/prompt-workspaces?relativeDirectory=library%2FPOMPOM_HILLS_PRODUCTION%2F09_SOCIAL_REELS%2Fnew14092026",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://localhost:4200/api/v1/intelligence/contents/quality-summary",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://localhost:4200/api/v1/intelligence/contents/10/prompt-versions",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://localhost:4200/api/v1/intelligence/contents/10/prompt-versions/10/creative-provenance",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://localhost:4200/api/v1/intelligence/contents/10/prompt-versions/10/videos",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://localhost:4200/api/v1/intelligence/contents/10",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://localhost:4200/api/v1/characters",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://localhost:4200/api/v1/intelligence/workflow/production-review/decisions?contentId=10&promptVersionId=10",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://localhost:4200/api/v1/intelligence/workflow/provider-capabilities",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://localhost:4200/api/v1/intelligence/workflow/records?kind=REVIEW&contentId=10&promptVersionId=10",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "url": "http://localhost:4200/api/v1/intelligence/quality/validations/latest",
+      "status": 204
+    },
+    {
+      "method": "GET",
+      "url": "http://localhost:4200/api/v1/characters/00000000-0000-0000-0000-000000000003/references",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://localhost:4200/api/v1/intelligence/workflow/records?kind=ACTUAL_RENDER_QA&bindingHash=2c3b118fc81dcf4e776e909f25fec248a2057e6f289cb13c05685e65c9ad189b",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://localhost:4200/api/v1/intelligence/workflow/production-settings?contentId=10&promptVersionId=10",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://localhost:4200/chunk-6OJFWOB7.js",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://localhost:4200/api/v1/intelligence/workflow/production-review/reference-binding?contentId=10&promptVersionId=10",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://localhost:4200/api/v1/intelligence/workflow/records/9208e75a-b158-4ffb-94fe-03c15ca96395/creative-optimization/latest",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://localhost:4200/api/v1/intelligence/workflow/records/9208e75a-b158-4ffb-94fe-03c15ca96395/creative-optimization/latest",
+      "status": 200
+    }
+  ],
+  "paidOptimizationRequests": 0,
+  "note": "Only creative-optimization/latest GET; POST quality/validations/latest is saved-result lookup, not generation."
+}

@@ -1273,9 +1273,12 @@ Hard cut.`;
     expect(c.creativeOptimizationComparison.comparisonAssessment.recommendation).toBe('KEEP_ORIGINAL');TestBed.inject(HttpTestingController).expectNone(r=>r.method==='POST');f.destroy();TestBed.resetTestingModule();
   });
   it('preserves selection and review on an identical saved GET and clears review if candidate evidence changes', async () => {
-    const f=await setup();const c=f.componentInstance;const http=TestBed.inject(HttpTestingController);c.review={recordId:'run'};c.creativeOptimizationComparison=compactComparison();c.reviewCreativeOptimizationCandidate('candidate-a');c.optimizationDiffCandidateId='candidate-b';
+    const f=await setup();const c=f.componentInstance;const http=TestBed.inject(HttpTestingController);c.review={recordId:'run'};c.activeStage=6;c.creativeOptimizationComparison=compactComparison();c.reviewCreativeOptimizationCandidate('candidate-a');c.optimizationDiffCandidateId='candidate-b';f.detectChanges();await f.whenStable();f.detectChanges();
     c.loadLatestCreativeOptimization();http.expectOne('/api/v1/intelligence/workflow/records/run/creative-optimization/latest').flush({comparison:compactComparison()});
     expect(c.creativeOptimizationSelectedCandidateId).toBe('candidate-a');expect(c.creativeOptimizationReviewedCandidateId).toBe('candidate-a');expect(c.optimizationDiffCandidateId).toBe('candidate-b');
+    f.detectChanges();await f.whenStable();f.detectChanges();
+    expect((f.nativeElement.querySelector('.optimization-diff-controls select') as HTMLSelectElement).value).toBe('candidate-b');
+    expect(f.nativeElement.querySelector('.optimization-side-diff th:last-child').textContent).toContain('candidate-b');
     const changed=compactComparison();changed.candidates[0].prompt='changed evidence';c.loadLatestCreativeOptimization();http.expectOne('/api/v1/intelligence/workflow/records/run/creative-optimization/latest').flush({comparison:changed});
     expect(c.creativeOptimizationSelectedCandidateId).toBe('candidate-a');expect(c.creativeOptimizationReviewedCandidateId).toBeNull();expect(c.creativeOptimizationApprovalEnabled).toBe(false);
     http.expectNone(r=>r.method==='POST');f.destroy();TestBed.resetTestingModule();
@@ -1283,6 +1286,21 @@ Hard cut.`;
   it('copies complete candidate prompt text without provider requests or approval', async () => {
     const f=await setup();const c=f.componentInstance;const writeText=vi.fn().mockResolvedValue(undefined);Object.defineProperty(navigator,'clipboard',{configurable:true,value:{writeText}});
     await c.copyOptimizationPrompt('Complete unchanged draft');expect(writeText).toHaveBeenCalledWith('Complete unchanged draft');expect(c.optimizationCopyStatus).toContain('copied');expect(c.creativeOptimizationSelectedCandidateId).toBeNull();TestBed.inject(HttpTestingController).expectNone(r=>r.method==='POST');f.destroy();TestBed.resetTestingModule();
+  });
+
+  it('highlights changed inline tokens while keeping preserved narrative words neutral', async () => {
+    const f=await setup();const c=f.componentInstance;
+    const row={before:'0-2s: [CLOSE] Mimi pulls the note.',after:'0-2s: [EXTREME_CLOSE] Mimi pulls the note.'};
+    const diff=c.optimizationInlineDiff(row);
+    expect(diff.before.map(t=>t.text).join('')).toBe(row.before);expect(diff.after.map(t=>t.text).join('')).toBe(row.after);
+    expect(diff.before.filter(t=>t.changed).map(t=>t.text).join('')).toBe('CLOSE');expect(diff.after.filter(t=>t.changed).map(t=>t.text).join('')).toBe('EXTREME_CLOSE');
+    expect(diff.before.find(t=>t.text==='Mimi')?.changed).toBe(false);expect(diff.after.find(t=>t.text==='pulls')?.changed).toBe(false);
+    expect(c.optimizationInlineDiff({before:'same ending',after:'same ending'}).after.every(t=>!t.changed)).toBe(true);
+    c.review={recordId:'run'};c.activeStage=6;c.creativeOptimizationComparison=compactComparison();c.creativeOptimizationComparison.candidates[0].diff=`-${row.before}\n+${row.after}`;f.detectChanges();
+    const reviewSelect=[...f.nativeElement.querySelectorAll('button')].filter((b:any)=>b.textContent?.trim()==='Select for review') as HTMLButtonElement[];
+    expect(reviewSelect).toHaveLength(2);expect(reviewSelect.every(b=>b.classList.contains('button--secondary')&&!b.classList.contains('button--primary'))).toBe(true);
+    expect(f.nativeElement.querySelectorAll('.diff-removed').length).toBeGreaterThan(0);expect(f.nativeElement.querySelectorAll('.diff-added').length).toBeGreaterThan(0);
+    expect(c.creativeOptimizationApprovalEnabled).toBe(false);TestBed.inject(HttpTestingController).expectNone(r=>r.method==='POST');f.destroy();TestBed.resetTestingModule();
   });
 
 });

@@ -1,0 +1,324 @@
+
+> frontend@0.0.0 test
+> ng test --watch=false
+
+❯ Building...
+✔ Building...
+Initial chunk files                                           | Names                                                      |  Raw size
+chunk-VWMILPMP.js                                             | -                                                          | 611.23 kB | 
+chunk-PUYAVBLD.js                                             | -                                                          | 552.62 kB | 
+chunk-TROIPFXX.js                                             | -                                                          | 293.67 kB | 
+spec-app-pages-quality-validator-family10-representation.js   | spec-app-pages-quality-validator-family10-representation   | 269.41 kB | 
+chunk-KRSZFZFH.js                                             | -                                                          | 249.50 kB | 
+styles.css                                                    | styles                                                     | 237.88 kB | 
+chunk-GTCQLDJK.js                                             | -                                                          | 218.31 kB | 
+spec-app-pages-quality-validator-post-family-workflow.js      | spec-app-pages-quality-validator-post-family-workflow      | 173.46 kB | 
+chunk-MOLSMEJJ.js                                             | -                                                          | 143.98 kB | 
+chunk-YTGMPIJW.js                                             | -                                                          |  73.06 kB | 
+spec-app-pages-creative-studio.story-review.js                | spec-app-pages-creative-studio.story-review                |  69.39 kB | 
+chunk-PZEGF7JY.js                                             | -                                                          |  69.14 kB | 
+chunk-WE35SPO3.js                                             | -                                                          |  44.84 kB | 
+spec-app-pages-creative-studio.page.js                        | spec-app-pages-creative-studio.page                        |  43.48 kB | 
+chunk-32DFMEOH.js                                             | -                                                          |  35.01 kB | 
+spec-app-pages-creative-studio.idea.js                        | spec-app-pages-creative-studio.idea                        |  30.21 kB | 
+spec-app-pages-quality-validator-creative-role.component.js   | spec-app-pages-quality-validator-creative-role.component   |  27.80 kB | 
+spec-app-pages-render-preparation.page.js                     | spec-app-pages-render-preparation.page                     |  25.54 kB | 
+spec-app-pages-video-detail.page.js                           | spec-app-pages-video-detail.page                           |  17.29 kB | 
+chunk-A4TLQSWL.js                                             | -                                                          |  15.51 kB | 
+chunk-3VR2T4ZD.js                                             | -                                                          |  15.25 kB | 
+chunk-IEZOKNJO.js                                             | -                                                          |  14.05 kB | 
+chunk-2C2FFLUH.js                                             | -                                                          |  13.98 kB | 
+spec-app-app.js                                               | spec-app-app                                               |  12.28 kB | 
+chunk-2F4CLSBO.js                                             | -                                                          |  10.75 kB | 
+spec-app-pages-video-library.page.js                          | spec-app-pages-video-library.page                          |   7.67 kB | 
+spec-app-core-creative-intelligence.service.js                | spec-app-core-creative-intelligence.service                |   7.05 kB | 
+spec-app-pages-creative-studio.assessment.js                  | spec-app-pages-creative-studio.assessment                  |   6.51 kB | 
+spec-app-pages-creative-studio.build-outcome.js               | spec-app-pages-creative-studio.build-outcome               |   4.96 kB | 
+spec-app-pages-import-data.page.js                            | spec-app-pages-import-data.page                            |   4.85 kB | 
+chunk-RSTWSNOR.js                                             | -                                                          |   4.75 kB | 
+spec-app-pages-creative-studio.clean-state.js                 | spec-app-pages-creative-studio.clean-state                 |   4.54 kB | 
+spec-app-pages-quality-validator-actual-video-review.js       | spec-app-pages-quality-validator-actual-video-review       |   4.00 kB | 
+chunk-C5YUMCKH.js                                             | -                                                          |   2.93 kB | 
+spec-app-pages-quality-validator-family9-representation.js    | spec-app-pages-quality-validator-family9-representation    |   2.60 kB | 
+spec-app-pages-render-dashboard.page.js                       | spec-app-pages-render-dashboard.page                       |   2.59 kB | 
+spec-app-pages-quality-validator-specialized-applicability.js | spec-app-pages-quality-validator-specialized-applicability |   2.05 kB | 
+spec-app-pages-meta-connection.page.js                        | spec-app-pages-meta-connection.page                        |   1.97 kB | 
+spec-app-pages-quality-validator-state-share.js               | spec-app-pages-quality-validator-state-share               |   1.46 kB | 
+spec-app-pages-operations.page.js                             | spec-app-pages-operations.page                             |   1.33 kB | 
+init-testbed.js                                               | init-testbed                                               |   1.21 kB | 
+spec-app-pages-meta-comments.page.js                          | spec-app-pages-meta-comments.page                          |   1.16 kB | 
+spec-app-pages-quality-validator-repair-route.js              | spec-app-pages-quality-validator-repair-route              |   1.15 kB | 
+chunk-XLPNUVTH.js                                             | -                                                          |   1.11 kB | 
+spec-app-pages-overview.page.js                               | spec-app-pages-overview.page                               |   1.10 kB | 
+vitest-mock-patch.js                                          | vitest-mock-patch                                          | 974 bytes | 
+chunk-MGE7KF4B.js                                             | -                                                          | 805 bytes | 
+spec-app-core-meta-read.service.js                            | spec-app-core-meta-read.service                            | 686 bytes | 
+chunk-ASGXJCFG.js                                             | -                                                          | 634 bytes | 
+
+                                                              | Initial total                                              |   3.34 MB
+
+Lazy chunk files                                              | Names                                                      |  Raw size
+chunk-LMVB6LBN.js                                             | prompt-workspace-page                                      |  50.23 kB | 
+chunk-VTPW7IFN.js                                             | rule-governance-page                                       |  46.41 kB | 
+chunk-3W7BSANO.js                                             | video-analysis-workbench-page                              |  43.38 kB | 
+chunk-GB4L7DGW.js                                             | predictions-page                                           |  39.73 kB | 
+chunk-6QNEQJMJ.js                                             | character-lab-page                                         |  35.31 kB | 
+chunk-JYOCBGER.js                                             | reach-further-research-page                                |  33.65 kB | 
+chunk-6CTRUNKB.js                                             | performance-page                                           |  27.72 kB | 
+chunk-DVMCGWQG.js                                             | meta-reel-analytics-page                                   |  23.05 kB | 
+chunk-SM3LSXFD.js                                             | experiments-page                                           |  23.04 kB | 
+chunk-2FYSKVLY.js                                             | content-history-page                                       |  21.78 kB | 
+chunk-3PRGDKNB.js                                             | models-page                                                |  21.07 kB | 
+chunk-PC3YZKYY.js                                             | meta-reels-page                                            |  12.91 kB | 
+chunk-SM6GRRZD.js                                             | reliability-page                                           |  11.36 kB | 
+chunk-QAEN64T5.js                                             | test-planner-page                                          |  10.67 kB | 
+chunk-X5FVFF3K.js                                             | video-library-page                                         | 470 bytes | 
+...and 10 more lazy chunks files. Use "--verbose" to show all the files.
+
+Application bundle generation complete. [20.686 seconds] - 2026-10-14T11:52:24.698Z
+
+▲ [WARNING] NG8113: TimelineChartComponent is not used within the template of QualityValidatorComponent [plugin angular-compiler]
+
+    src/app/pages/quality-validator/quality-validator.component.ts:202:39:
+      202 │ ...odule, FormsModule, TimelineChartComponent, RouterLink, Genera...
+          ╵                        ~~~~~~~~~~~~~~~~~~~~~~
+
+
+▲ [WARNING] NG8113: GeneralProducibilityComponent is not used within the template of QualityValidatorComponent [plugin angular-compiler]
+
+    src/app/pages/quality-validator/quality-validator.component.ts:202:75:
+      202 │ ...ent, RouterLink, GeneralProducibilityComponent, PostFamilyWork...
+          ╵                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+
+ RUN  v4.1.11 /Users/benanaktas/project/video/content-intelligence-platform/intelligence/frontend
+
+ ❯ |frontend| src/app/pages/video-detail.page.spec.ts (9 tests | 7 failed) 585ms
+     × separates participation, narrative role, association provenance, and missing metrics 249ms
+     × renders only verified API discovery values and provenance 60ms
+     × shows explicit missing-data language instead of fallback metrics 51ms
+     × opens the exact requested edited file even when its filename has no HD suffix 20ms
+     × labels a variant-linked file with its real persisted variant type, not a filename guess 36ms
+     × renders completed analysis results instead of a trigger button 42ms
+     × keeps polling and preserves the last-known analysis status when a tick fails 29ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 7 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |frontend| src/app/pages/video-detail.page.spec.ts > VideoDetailPage audience discovery > separates participation, narrative role, association provenance, and missing metrics
+ FAIL  |frontend| src/app/pages/video-detail.page.spec.ts > VideoDetailPage audience discovery > opens the exact requested edited file even when its filename has no HD suffix
+TypeError: Cannot read properties of null (reading 'candidates')
+ ❯ VideoDetailPage_Conditional_17_Conditional_0_Conditional_36_Conditional_11_Conditional_16_Template src/app/pages/video-detail.page.ts:185:19
+ ❯ templateFn ../k8-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/render3/instructions/shared.ts:107:4
+ ❯ executeTemplate ../k8-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/render3/instructions/change_detection.ts:232:6
+ ❯ refreshView ../k8-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/render3/instructions/change_detection.ts:497:4
+ ❯ detectChangesInView ../k8-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/render3/instructions/change_detection.ts:445:2
+ ❯ detectChangesInViewIfAttached ../k8-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/render3/instructions/change_detection.ts:387:6
+ ❯ detectChangesInEmbeddedViews ../k8-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/render3/instructions/change_detection.ts:264:4
+ ❯ refreshView ../k8-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/render3/instructions/change_detection.ts:497:4
+ ❯ detectChangesInView ../k8-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/render3/instructions/change_detection.ts:445:2
+ ❯ detectChangesInViewIfAttached ../k8-fastbuild-ST-fdfa778d11ba/bin/packages/core/src/render3/instructions/change_detection.ts:387:6
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/7]⎯
+
+ FAIL  |frontend| src/app/pages/video-detail.page.spec.ts > VideoDetailPage audience discovery > renders only verified API discovery values and provenance
+TypeError: Cannot read properties of null (reading 'textContent')
+ ❯ src/app/pages/video-detail.page.spec.ts:101:18
+     99|     const panel = fixture.nativeElement.querySelector('.discovery-prof…
+    100|
+    101|     expect(panel.textContent).toContain('99.0%');
+       |                  ^
+    102|     expect(panel.textContent).toContain('19.8%');
+    103|     expect(panel.textContent).toContain('99.00');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/7]⎯
+
+ FAIL  |frontend| src/app/pages/video-detail.page.spec.ts > VideoDetailPage audience discovery > shows explicit missing-data language instead of fallback metrics
+TypeError: Cannot read properties of null (reading 'textContent')
+ ❯ src/app/pages/video-detail.page.spec.ts:119:18
+    117|     const panel = fixture.nativeElement.querySelector('.discovery-prof…
+    118|
+    119|     expect(panel.textContent).toContain('NO COMPLETE DATA');
+       |                  ^
+    120|     expect(panel.textContent?.match(/No imported value/g)?.length).toB…
+    121|     expect(panel.textContent).toContain('Missing values are not estima…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/7]⎯
+
+ FAIL  |frontend| src/app/pages/video-detail.page.spec.ts > VideoDetailPage variant rail > labels a variant-linked file with its real persisted variant type, not a filename guess
+AssertionError: expected '1HDgiant_sock_hd.mp41.2 KB · ANALYSED' to contain 'Hook / Cold Open'
+
+Expected: "Hook / Cold Open"
+Received: "1HDgiant_sock_hd.mp41.2 KB · ANALYSED"
+
+ ❯ src/app/pages/video-detail.page.spec.ts:208:30
+    206|
+    207|     const rail = fixture.nativeElement.querySelector('.variant-list');
+    208|     expect(rail.textContent).toContain('Hook / Cold Open');
+       |                              ^
+    209|     expect(rail.textContent).not.toContain('HD');
+    210|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/7]⎯
+
+ FAIL  |frontend| src/app/pages/video-detail.page.spec.ts > VideoDetailPage creative analysis panel > renders completed analysis results instead of a trigger button
+AssertionError: expected 'VISUAL MOTION ANALYSISSampled visual-…' to contain 'GOOD'
+
+Expected: "GOOD"
+Received: "VISUAL MOTION ANALYSISSampled visual-motion evidenceRun analysisExport analysis PDFInterpretationThis is a sampled visual-motion heuristic. It does not use views, reach, likes, comments, follows or retention data.No analysis yetTrigger visual-motion analysis to measure sampled frame-change evidence."
+
+ ❯ src/app/pages/video-detail.page.spec.ts:257:31
+    255|
+    256|     const panel = fixture.nativeElement.querySelector('.creative-analy…
+    257|     expect(panel.textContent).toContain('GOOD');
+       |                               ^
+    258|     expect(panel.textContent).toContain('Clear hook');
+    259|     expect(panel.querySelector('button')?.textContent).toContain('Rean…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/7]⎯
+
+ FAIL  |frontend| src/app/pages/video-detail.page.spec.ts > VideoDetailPage creative analysis panel > keeps polling and preserves the last-known analysis status when a tick fails
+AssertionError: expected "vi.fn()" to be called 1 times, but got 0 times
+ ❯ src/app/pages/video-detail.page.spec.ts:320:33
+    318|
+    319|       // Initial tick (startWith(0)) resolved synchronously via `of`.
+    320|       expect(getAnalysisStatus).toHaveBeenCalledTimes(1);
+       |                                 ^
+    321|       expect(fixture.componentInstance['analysisStatus']()).toEqual(ru…
+    322|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/7]⎯
+
+⎯⎯⎯⎯⎯⎯ Unhandled Errors ⎯⎯⎯⎯⎯⎯
+
+Vitest caught 8 unhandled errors during the test run.
+This might cause false positive tests. Resolve unhandled errors to make sure your tests are not affected.
+
+⎯⎯⎯⎯⎯ Uncaught Exception ⎯⎯⎯⎯⎯
+TypeError: this.service.getCaptionVersionsByVideo is not a function
+ ❯ _VideoDetailPage.loadCaptionVersions src/app/pages/video-detail.page.ts:1234:18
+ ❯ _VideoDetailPage.loadCreativeContext src/app/pages/video-detail.page.ts:1242:10
+ ❯ Object.next src/app/pages/video-detail.page.ts:1381:159
+ ❯ ConsumerObserver.next node_modules/rxjs/dist/cjs/internal/Subscriber.js:113:33
+ ❯ SafeSubscriber.Subscriber._next node_modules/rxjs/dist/cjs/internal/Subscriber.js:80:26
+ ❯ SafeSubscriber.Subscriber.next node_modules/rxjs/dist/cjs/internal/Subscriber.js:51:18
+ ❯ Observable._subscribe node_modules/rxjs/dist/cjs/internal/observable/innerFrom.js:109:24
+ ❯ Observable._trySubscribe node_modules/rxjs/dist/cjs/internal/Observable.js:41:25
+ ❯ node_modules/rxjs/dist/cjs/internal/Observable.js:35:31
+ ❯ Object.errorContext node_modules/rxjs/dist/cjs/internal/util/errorContext.js:22:9
+
+This error originated in "src/app/pages/video-detail.page.spec.ts" test file. It doesn't mean the error was thrown inside the file itself, but while it was running.
+
+⎯⎯⎯⎯⎯ Uncaught Exception ⎯⎯⎯⎯⎯
+TypeError: this.service.getCaptionVersionsByVideo is not a function
+ ❯ _VideoDetailPage.loadCaptionVersions src/app/pages/video-detail.page.ts:1234:18
+ ❯ _VideoDetailPage.loadCreativeContext src/app/pages/video-detail.page.ts:1242:10
+ ❯ Object.next src/app/pages/video-detail.page.ts:1381:159
+ ❯ ConsumerObserver.next node_modules/rxjs/dist/cjs/internal/Subscriber.js:113:33
+ ❯ SafeSubscriber.Subscriber._next node_modules/rxjs/dist/cjs/internal/Subscriber.js:80:26
+ ❯ SafeSubscriber.Subscriber.next node_modules/rxjs/dist/cjs/internal/Subscriber.js:51:18
+ ❯ Observable._subscribe node_modules/rxjs/dist/cjs/internal/observable/innerFrom.js:109:24
+ ❯ Observable._trySubscribe node_modules/rxjs/dist/cjs/internal/Observable.js:41:25
+ ❯ node_modules/rxjs/dist/cjs/internal/Observable.js:35:31
+ ❯ Object.errorContext node_modules/rxjs/dist/cjs/internal/util/errorContext.js:22:9
+
+This error originated in "src/app/pages/video-detail.page.spec.ts" test file. It doesn't mean the error was thrown inside the file itself, but while it was running.
+
+⎯⎯⎯⎯⎯ Uncaught Exception ⎯⎯⎯⎯⎯
+TypeError: this.service.getCaptionVersionsByVideo is not a function
+ ❯ _VideoDetailPage.loadCaptionVersions src/app/pages/video-detail.page.ts:1234:18
+ ❯ _VideoDetailPage.loadCreativeContext src/app/pages/video-detail.page.ts:1242:10
+ ❯ Object.next src/app/pages/video-detail.page.ts:1381:159
+ ❯ ConsumerObserver.next node_modules/rxjs/dist/cjs/internal/Subscriber.js:113:33
+ ❯ SafeSubscriber.Subscriber._next node_modules/rxjs/dist/cjs/internal/Subscriber.js:80:26
+ ❯ SafeSubscriber.Subscriber.next node_modules/rxjs/dist/cjs/internal/Subscriber.js:51:18
+ ❯ Observable._subscribe node_modules/rxjs/dist/cjs/internal/observable/innerFrom.js:109:24
+ ❯ Observable._trySubscribe node_modules/rxjs/dist/cjs/internal/Observable.js:41:25
+ ❯ node_modules/rxjs/dist/cjs/internal/Observable.js:35:31
+ ❯ Object.errorContext node_modules/rxjs/dist/cjs/internal/util/errorContext.js:22:9
+
+This error originated in "src/app/pages/video-detail.page.spec.ts" test file. It doesn't mean the error was thrown inside the file itself, but while it was running.
+
+⎯⎯⎯⎯⎯ Uncaught Exception ⎯⎯⎯⎯⎯
+TypeError: this.service.getCaptionVersionsByVideo is not a function
+ ❯ _VideoDetailPage.loadCaptionVersions src/app/pages/video-detail.page.ts:1234:18
+ ❯ _VideoDetailPage.loadCreativeContext src/app/pages/video-detail.page.ts:1242:10
+ ❯ Object.next src/app/pages/video-detail.page.ts:1381:159
+ ❯ ConsumerObserver.next node_modules/rxjs/dist/cjs/internal/Subscriber.js:113:33
+ ❯ SafeSubscriber.Subscriber._next node_modules/rxjs/dist/cjs/internal/Subscriber.js:80:26
+ ❯ SafeSubscriber.Subscriber.next node_modules/rxjs/dist/cjs/internal/Subscriber.js:51:18
+ ❯ Observable._subscribe node_modules/rxjs/dist/cjs/internal/observable/innerFrom.js:109:24
+ ❯ Observable._trySubscribe node_modules/rxjs/dist/cjs/internal/Observable.js:41:25
+ ❯ node_modules/rxjs/dist/cjs/internal/Observable.js:35:31
+ ❯ Object.errorContext node_modules/rxjs/dist/cjs/internal/util/errorContext.js:22:9
+
+This error originated in "src/app/pages/video-detail.page.spec.ts" test file. It doesn't mean the error was thrown inside the file itself, but while it was running.
+
+⎯⎯⎯⎯⎯ Uncaught Exception ⎯⎯⎯⎯⎯
+TypeError: this.service.getCaptionVersionsByVideo is not a function
+ ❯ _VideoDetailPage.loadCaptionVersions src/app/pages/video-detail.page.ts:1234:18
+ ❯ _VideoDetailPage.loadCreativeContext src/app/pages/video-detail.page.ts:1242:10
+ ❯ Object.next src/app/pages/video-detail.page.ts:1381:159
+ ❯ ConsumerObserver.next node_modules/rxjs/dist/cjs/internal/Subscriber.js:113:33
+ ❯ SafeSubscriber.Subscriber._next node_modules/rxjs/dist/cjs/internal/Subscriber.js:80:26
+ ❯ SafeSubscriber.Subscriber.next node_modules/rxjs/dist/cjs/internal/Subscriber.js:51:18
+ ❯ Observable._subscribe node_modules/rxjs/dist/cjs/internal/observable/innerFrom.js:109:24
+ ❯ Observable._trySubscribe node_modules/rxjs/dist/cjs/internal/Observable.js:41:25
+ ❯ node_modules/rxjs/dist/cjs/internal/Observable.js:35:31
+ ❯ Object.errorContext node_modules/rxjs/dist/cjs/internal/util/errorContext.js:22:9
+
+This error originated in "src/app/pages/video-detail.page.spec.ts" test file. It doesn't mean the error was thrown inside the file itself, but while it was running.
+
+⎯⎯⎯⎯⎯ Uncaught Exception ⎯⎯⎯⎯⎯
+TypeError: this.service.getCaptionVersionsByVideo is not a function
+ ❯ _VideoDetailPage.loadCaptionVersions src/app/pages/video-detail.page.ts:1234:18
+ ❯ _VideoDetailPage.loadCreativeContext src/app/pages/video-detail.page.ts:1242:10
+ ❯ Object.next src/app/pages/video-detail.page.ts:1381:159
+ ❯ ConsumerObserver.next node_modules/rxjs/dist/cjs/internal/Subscriber.js:113:33
+ ❯ SafeSubscriber.Subscriber._next node_modules/rxjs/dist/cjs/internal/Subscriber.js:80:26
+ ❯ SafeSubscriber.Subscriber.next node_modules/rxjs/dist/cjs/internal/Subscriber.js:51:18
+ ❯ Observable._subscribe node_modules/rxjs/dist/cjs/internal/observable/innerFrom.js:109:24
+ ❯ Observable._trySubscribe node_modules/rxjs/dist/cjs/internal/Observable.js:41:25
+ ❯ node_modules/rxjs/dist/cjs/internal/Observable.js:35:31
+ ❯ Object.errorContext node_modules/rxjs/dist/cjs/internal/util/errorContext.js:22:9
+
+This error originated in "src/app/pages/video-detail.page.spec.ts" test file. It doesn't mean the error was thrown inside the file itself, but while it was running.
+
+⎯⎯⎯⎯⎯ Uncaught Exception ⎯⎯⎯⎯⎯
+TypeError: this.service.getCaptionVersionsByVideo is not a function
+ ❯ _VideoDetailPage.loadCaptionVersions src/app/pages/video-detail.page.ts:1234:18
+ ❯ _VideoDetailPage.loadCreativeContext src/app/pages/video-detail.page.ts:1242:10
+ ❯ Object.next src/app/pages/video-detail.page.ts:1381:159
+ ❯ ConsumerObserver.next node_modules/rxjs/dist/cjs/internal/Subscriber.js:113:33
+ ❯ SafeSubscriber.Subscriber._next node_modules/rxjs/dist/cjs/internal/Subscriber.js:80:26
+ ❯ SafeSubscriber.Subscriber.next node_modules/rxjs/dist/cjs/internal/Subscriber.js:51:18
+ ❯ Observable._subscribe node_modules/rxjs/dist/cjs/internal/observable/innerFrom.js:109:24
+ ❯ Observable._trySubscribe node_modules/rxjs/dist/cjs/internal/Observable.js:41:25
+ ❯ node_modules/rxjs/dist/cjs/internal/Observable.js:35:31
+ ❯ Object.errorContext node_modules/rxjs/dist/cjs/internal/util/errorContext.js:22:9
+
+This error originated in "src/app/pages/video-detail.page.spec.ts" test file. It doesn't mean the error was thrown inside the file itself, but while it was running.
+
+⎯⎯⎯⎯⎯ Uncaught Exception ⎯⎯⎯⎯⎯
+TypeError: this.service.getCaptionVersionsByVideo is not a function
+ ❯ _VideoDetailPage.loadCaptionVersions src/app/pages/video-detail.page.ts:1234:18
+ ❯ _VideoDetailPage.loadCreativeContext src/app/pages/video-detail.page.ts:1242:10
+ ❯ Object.next src/app/pages/video-detail.page.ts:1381:159
+ ❯ ConsumerObserver.next node_modules/rxjs/dist/cjs/internal/Subscriber.js:113:33
+ ❯ SafeSubscriber.Subscriber._next node_modules/rxjs/dist/cjs/internal/Subscriber.js:80:26
+ ❯ SafeSubscriber.Subscriber.next node_modules/rxjs/dist/cjs/internal/Subscriber.js:51:18
+ ❯ Observable._subscribe node_modules/rxjs/dist/cjs/internal/observable/innerFrom.js:109:24
+ ❯ Observable._trySubscribe node_modules/rxjs/dist/cjs/internal/Observable.js:41:25
+ ❯ node_modules/rxjs/dist/cjs/internal/Observable.js:35:31
+ ❯ Object.errorContext node_modules/rxjs/dist/cjs/internal/util/errorContext.js:22:9
+
+This error originated in "src/app/pages/video-detail.page.spec.ts" test file. It doesn't mean the error was thrown inside the file itself, but while it was running.
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+
+
+ Test Files  1 failed | 25 passed (26)
+      Tests  7 failed | 320 passed (327)
+     Errors  8 errors
+   Start at  12:52:24
+   Duration  6.04s (transform 4.84s, setup 3.60s, import 8.02s, tests 16.03s, environment 29.02s)
+
