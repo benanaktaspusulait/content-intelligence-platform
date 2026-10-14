@@ -24,11 +24,11 @@ from ..quality.contracts import ParseResult, ParserMetadata
 class ParserConfig:
     """Configuration for parser behavior"""
 
-    attempt_evidence_policy: str = "HISTORICAL_V1"
     default_duration: float = 15.0
     minimum_beat_duration: float = 0.4
     intensity_keywords_high: list[str] | None = None
     intensity_keywords_low: list[str] | None = None
+    attempt_evidence_policy: str = "HISTORICAL_V1"
 
     def __post_init__(self) -> None:
         if self.intensity_keywords_high is None:
@@ -163,6 +163,7 @@ class PromptParser:
                     beat["fieldEvidence"]["action"] = {"state": "OBSERVED", "value": selected["action"], "sourceSpan": selected.get("sourceSpan"), "sourceQuote": selected["action"], "method": "ACTOR_SOURCE_BOUND_V2", "semanticVerification": "NOT_PERFORMED"}
                 if actions and any(a["actorQuote"].lower() in {"she", "he", "they"} for a in actions) and not beat.get("actor"):
                     beat["actor"] = actions[0]["actor"]
+                    beat["fieldEvidence"]["actor"] = {"state": "INFERRED", "value": actions[0]["actor"], "sourceQuote": actions[0]["actorQuote"], "sourceSpan": actions[0].get("actorSourceSpan"), "method": "SINGLE_ACTOR_PRONOUN_CONTEXT", "semanticVerification": "NOT_PERFORMED"}
 
 
         # Calculate confidence

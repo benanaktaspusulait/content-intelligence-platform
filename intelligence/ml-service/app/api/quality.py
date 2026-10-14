@@ -476,7 +476,7 @@ async def auto_fix_prompt(request: AutoFixRequest) -> AutoFixResultResponse:
 
     # Reparse the final prompt so report-facing canonical evidence (including
     # confidence) describes the exact prompt returned by auto-fix.
-    final_parse = parse_prompt(result.final_prompt)
+    final_parse = parse_prompt(result.final_prompt, ParserConfig(attempt_evidence_policy="ACTOR_SOURCE_BOUND_V2" if ruleset_version == "1.9" else "HISTORICAL_V1"))
     final_report_response = convert_quality_report(
         result.final_enhanced_report,
         ruleset_version,

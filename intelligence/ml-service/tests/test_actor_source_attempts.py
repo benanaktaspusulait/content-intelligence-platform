@@ -53,7 +53,8 @@ def test_actor_directive_and_verb_contract(clause, expected, verb):
 
 def test_distinct_attempts_and_duplicate_same_event():
     text, ir = parse(
-        "0-2s: Zed tries to peel the card. [close-up: Zed tries to peel the card.]\n2-4s: Zed pushes the stuck card away.\n4-6s: Zed tries to twist the card free."
+        "0-2s: Zed tries to peel the card. [close-up: Zed tries to peel the card.]\n"
+        "2-4s: Zed pushes the stuck card away.\n4-6s: Zed tries to twist the card free."
     )
     assert attempt_evidence(ir).count == 3
     assert [b["primaryVerb"] for b in ir["beats"]] == ["PEEL", "PUSH", "TWIST"]
@@ -68,7 +69,8 @@ def test_distinct_attempts_and_duplicate_same_event():
 
 def test_bracket_action_camera_and_consequence_spans():
     text, ir = parse(
-        "0-3s: [tracking shot: Zed tries to peel the card; keep Zed in frame] -> the card splits.\n3-6s: Zed tries to pull the card off."
+        "0-3s: [tracking shot: Zed tries to peel the card; keep Zed in frame] -> the card splits.\n"
+        "3-6s: Zed tries to pull the card off."
     )
     b = ir["beats"][0]
     assert b["isAttempt"] and b["productionInstructions"] and b["physicalConsequences"]
@@ -81,7 +83,7 @@ def test_saved_original_and_candidates_with_historical_reproduction():
     root = Path(__file__).resolve().parents[3] / "output/verification/ruleset-1.8-creative-review"
     original = json.loads((root / "analysis.json").read_text())
     comparison = json.loads((root / "comparison.json").read_text())
-    for name, saved in [("Original", original)] + [
+    for _name, saved in [("Original", original)] + [
         (c["candidateId"], c["review"]) for c in comparison["candidates"]
     ]:
         for version in ["1.7", "1.8", "1.9"]:
@@ -131,3 +133,20 @@ def test_unbracketed_camera_and_object_consequences_are_separate():
     for b in ir["beats"]:
         for obj in b["productionInstructions"] + b["physicalConsequences"]:
             assert text[slice(*obj["sourceSpan"])] == obj["quote"]
+
+
+@pytest.mark.parametrize(
+    "clause", ["[ATTEMPT: PULL] Zed pulls the card.", "Zed tries to peel the card. [ATTEMPT: PEEL]"]
+)
+def test_actor_action_with_explicit_attempt_marker_remains_supported(clause):
+    text, ir = parse("0-3s: " + clause + "\n3-6s: Zed smiles.")
+    assert ir["beats"][0]["isAttempt"] and ir["beats"][0]["attemptEvidence"]["sourceBound"]
+
+
+def test_unicode_offsets_and_pronoun_actor_context():
+    text, ir = parse("0-3s: 🎬 Zed tries to peel the stuck card.\n3-6s: She keeps pulling the card away.")
+    for b in ir["beats"]:
+        ev = b["attemptEvidence"]
+        assert b["isAttempt"] and ev["actor"] == "Zed"
+        assert text[slice(*ev["sourceSpan"])] == ev["sourceQuote"]
+    assert ir["beats"][1]["fieldEvidence"]["actor"]["state"] == "INFERRED"

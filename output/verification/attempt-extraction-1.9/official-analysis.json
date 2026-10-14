@@ -1,0 +1,3460 @@
+{
+  "decisionPolicyVersion": "impact-review-v1",
+  "planQuality": {
+    "status": "HYPOTHESIS",
+    "opening": {
+      "assessment": "UNKNOWN",
+      "visualFocus": "UNKNOWN",
+      "promise": "UNKNOWN",
+      "causeAtFrameZero": "UNKNOWN",
+      "plannedFirstBeat": "Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger"
+    },
+    "progression": {
+      "assessment": "UNKNOWN",
+      "mechanisms": []
+    },
+    "ending": {
+      "assessment": "UNKNOWN",
+      "functions": [],
+      "sameVideoReplay": "UNKNOWN",
+      "sequelCuriosity": "UNKNOWN",
+      "plannedLastBeat": "Mimi sneezes and the sticky notes fly off"
+    },
+    "findings": [],
+    "invalidEvidence": [],
+    "recommendation": "PROCEED_NEXT_EVIDENCE_STEP",
+    "audienceModel": "Adult discovery; child-appropriate shared viewing",
+    "objective": [
+      "SCROLL_STOP",
+      "ATTENTION",
+      "COMPLETION",
+      "REWATCH_OR_SHARE_HYPOTHESIS"
+    ],
+    "limitations": [
+      "Source interpretations are planned experience, never actual frame evidence or predicted views.",
+      "Motion, repetition, holds and different verbs alone do not establish progression."
+    ]
+  },
+  "executionRisk": {
+    "status": "PASS",
+    "findings": [],
+    "selectedGenerator": "SEEDANCE_2_0_MINI",
+    "rawStatus": "PASS",
+    "visualInspected": false
+  },
+  "intentRequirements": [],
+  "actualRenderQuality": {
+    "status": "UNKNOWN",
+    "reason": "Actual video evidence required"
+  },
+  "audienceOutcome": {
+    "status": "NOT_JOINED"
+  },
+  "reviewDimensions": {
+    "promptPlanQuality": {
+      "status": "HYPOTHESIS",
+      "opening": {
+        "assessment": "UNKNOWN",
+        "visualFocus": "UNKNOWN",
+        "promise": "UNKNOWN",
+        "causeAtFrameZero": "UNKNOWN",
+        "plannedFirstBeat": "Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger"
+      },
+      "progression": {
+        "assessment": "UNKNOWN",
+        "mechanisms": []
+      },
+      "ending": {
+        "assessment": "UNKNOWN",
+        "functions": [],
+        "sameVideoReplay": "UNKNOWN",
+        "sequelCuriosity": "UNKNOWN",
+        "plannedLastBeat": "Mimi sneezes and the sticky notes fly off"
+      },
+      "findings": [],
+      "invalidEvidence": [],
+      "recommendation": "PROCEED_NEXT_EVIDENCE_STEP",
+      "audienceModel": "Adult discovery; child-appropriate shared viewing",
+      "objective": [
+        "SCROLL_STOP",
+        "ATTENTION",
+        "COMPLETION",
+        "REWATCH_OR_SHARE_HYPOTHESIS"
+      ],
+      "limitations": [
+        "Source interpretations are planned experience, never actual frame evidence or predicted views.",
+        "Motion, repetition, holds and different verbs alone do not establish progression."
+      ]
+    },
+    "generatorExecutionRisk": {
+      "status": "PASS",
+      "findings": [],
+      "selectedGenerator": "SEEDANCE_2_0_MINI",
+      "rawStatus": "PASS",
+      "visualInspected": false
+    },
+    "actualRenderQuality": {
+      "status": "UNKNOWN"
+    },
+    "audienceDistributionOutcome": {
+      "status": "NOT_JOINED"
+    }
+  },
+  "canonicalRuleEvaluation": {
+    "status": "EVALUATED",
+    "score": 82.80208333333336,
+    "grade": "B",
+    "rulesetVersion": "1.9",
+    "rulesEvaluated": 46,
+    "passedRules": [
+      {
+        "ruleId": "CONCEPT_006",
+        "ruleName": "Consequence Capacity",
+        "family": "concept_strength",
+        "severity": "PASS",
+        "outcome": "PASS",
+        "message": "Sufficient consequence variety: 5 distinct consequences.",
+        "details": {
+          "evaluation_stage": "PRE_RENDER",
+          "recommendation": "Before writing a 15-second prompt, verify that the core mechanic\ncan naturally generate at least 4 visually distinct consequences.\n\nIf it cannot, reject the concept.\n\nDo NOT stretch a two-beat teaching contrast into 15 seconds."
+        }
+      },
+      {
+        "ruleId": "REPETITION_002",
+        "ruleName": "Visual Beat Repetition",
+        "family": "visual_novelty",
+        "severity": "PASS",
+        "outcome": "PASS",
+        "message": "Good action variety. Max repetition: 1.",
+        "details": {
+          "evaluation_stage": "PRE_RENDER",
+          "recommendation": "The same physical action should not repeat more than twice\nunless each iteration introduces a materially different consequence.\n\nEmotional variation (confused \u2192 understanding \u2192 frustrated)\nwithout physical consequence change is insufficient."
+        }
+      },
+      {
+        "ruleId": "REPETITION_003",
+        "ruleName": "Cycle Repetition Limit",
+        "family": "visual_novelty",
+        "severity": "PASS",
+        "outcome": "PASS",
+        "message": "No explicit cycles detected.",
+        "details": {
+          "evaluation_stage": "PRE_RENDER",
+          "recommendation": "A cause-effect cycle (action \u2192 consequence \u2192 reset) should not\nrepeat more than twice unless each iteration introduces a NEW\nphysical element, obstacle, or escalation.\n\nExample cycle: sharpen \u2192 draw \u2192 blunt \u2192 (reset to sharpen)\n\nCosmetic variations (stroke pattern, sharpen duration) do not\ncount as structural escalation."
+        }
+      },
+      {
+        "ruleId": "NOVELTY_001",
+        "ruleName": "Novelty Timeline Distribution",
+        "family": "visual_novelty",
+        "severity": "WARNING",
+        "outcome": "PASS",
+        "message": "Gap of 5.0s between new consequences (at 5.0s-10.0s). Consider adding intermediate beat.",
+        "details": {
+          "evaluation_stage": "PRE_RENDER",
+          "recommendation": "New consequences should be distributed across the timeline,\nnot clustered at the beginning or end.\n\nNo gap longer than 4.5 seconds should pass without a new\nvisually distinct consequence appearing."
+        }
+      },
+      {
+        "ruleId": "PROGRESSION_005",
+        "ruleName": "Consequence Novelty Timeline",
+        "family": "progression",
+        "severity": "PASS",
+        "outcome": "PASS",
+        "message": "Good novelty timeline. Static pattern: 0.0%.",
+        "details": {
+          "evaluation_stage": "PRE_RENDER",
+          "recommendation": "No more than 50% of the video should pass without new\nvisually distinct physical consequences appearing.\n\nIf > 65% of video shows only pattern variations of the same\ncore action, flag as CRITICAL."
+        }
+      },
+      {
+        "ruleId": "ESCALATION_004",
+        "ruleName": "Delayed Payoff",
+        "family": "escalation",
+        "severity": "WARNING",
+        "outcome": "PASS",
+        "message": "Final payoff at 12.0s. Consider moving earlier for stronger retention.",
+        "details": {
+          "evaluation_stage": "PRE_RENDER",
+          "recommendation": "The final major escalation should not appear after 80% of the video\n(12 seconds in a 15-second video) unless the middle contains\nstrong intermediate escalations.\n\nLate payoffs risk losing viewer attention before the peak."
+        }
+      },
+      {
+        "ruleId": "PAYOFF_001",
+        "ruleName": "Not Repeat of Opening",
+        "family": "final_payoff",
+        "severity": "PASS",
+        "outcome": "PASS",
+        "message": "Final payoff is distinct from opening.",
+        "details": {
+          "evaluation_stage": "PRE_RENDER",
+          "recommendation": "The final beat must not be identical or nearly identical\nto the opening beat.\n\nA callback is acceptable if it's BIGGER or has a TWIST.\nA simple repeat signals lazy structure."
+        }
+      },
+      {
+        "ruleId": "PRODUCIBILITY_001",
+        "ruleName": "Very High Complexity Block",
+        "family": "ai_producibility",
+        "severity": "PASS",
+        "outcome": "PASS",
+        "message": "Acceptable complexity: medium.",
+        "details": {
+          "evaluation_stage": "PRE_RENDER",
+          "recommendation": "Prompts marked as \"very_high\" complexity should not proceed\nto render without human review and risk acceptance.\n\nVery high complexity typically means 4+ simultaneous high-risk\noperations or untested novel requirements."
+        }
+      },
+      {
+        "ruleId": "HOOK_002",
+        "ruleName": "First Frame Anomaly",
+        "family": "hook_strength",
+        "severity": "PASS",
+        "outcome": "PASS",
+        "message": "Textual first-frame intent establishes an immediate anomaly; visual verification remains a separate gate.",
+        "details": {
+          "textualFirstFrameIntent": {
+            "status": "PASS",
+            "source": "PROMPT_TEXT"
+          },
+          "evaluation_stage": "PRE_RENDER",
+          "recommendation": "The problem must already be visually obvious within the opening second, with no setup, narration, or text explanation required. hook.startsMidAction must be true and hook.visualStrength must be at least 4/5. RULESET 1.3 adds a tolerance window -- hook.startsAt must be <= 0.8s (defaults to 0.0 when absent, a no-op for pre-1.3 IRs); the anomaly doesn't need to be literally frame-0 to read as immediate."
+        }
+      },
+      {
+        "ruleId": "CHAR_002",
+        "ruleName": "Active Character",
+        "family": "progression",
+        "severity": "PASS",
+        "outcome": "PASS",
+        "message": "Character is actively attempting a solution for 53% of the video.",
+        "details": {
+          "tier": "short",
+          "evaluation_stage": "PRE_RENDER",
+          "recommendation": "The character must spend most of the runtime actively trying a solution, not watching or reacting. Ratio of (duration of isAttempt beats) / (total duration) must be at least 0.5 for short-tier videos, 0.6 for long-tier."
+        }
+      },
+      {
+        "ruleId": "PRODUCIBILITY_002",
+        "ruleName": "Prop Economy",
+        "family": "ai_producibility",
+        "severity": "PASS",
+        "outcome": "PASS",
+        "message": "0 main props, within the short-tier budget of 2.",
+        "details": {
+          "tier": "short",
+          "evaluation_stage": "PRE_RENDER",
+          "recommendation": "Introduce the minimum number of props necessary. setting.mainProps count must not exceed 2 for short-tier videos, 4 for long-tier videos. RULESET 1.3 adds a timeline-aware check (heuristic, text-match based) alongside the static count -- a prop first mentioned mid-concept inside an attempt beat, rather than established from the opening, is flagged as a WARNING even when the total count is within budget."
+        }
+      },
+      {
+        "ruleId": "PAYOFF_002",
+        "ruleName": "Fake Resolution Present",
+        "family": "progression",
+        "severity": "WARNING",
+        "outcome": "PASS",
+        "message": "No fake-resolution beat found. This is a bonus, not a requirement \u2014 consider adding a moment where the problem appears solved before the twist.",
+        "details": {
+          "evaluation_stage": "PRE_RENDER",
+          "recommendation": "Bonus (non-blocking): at least one beat with consequenceType == 'fake_win' before finalPayoff.startsAt, giving the audience a moment to believe the problem is solved before the final twist."
+        }
+      },
+      {
+        "ruleId": "BEAT_005",
+        "ruleName": "Story Detached Gap",
+        "family": "visual_novelty",
+        "severity": "PASS",
+        "outcome": "PASS",
+        "message": "Longest detached stretch: 0.0s, within tolerance.",
+        "details": {
+          "evaluation_stage": "PRE_RENDER",
+          "recommendation": "While the core problem is actively unresolved (at least one attempt beat has occurred, final payoff not yet started), no consecutive stretch of beats.relatesToCoreProblem == false may exceed 0.5 seconds. Brief transitions/reaction beats under that threshold are not flagged; only a genuine abandonment of the active problem fails."
+        }
+      },
+      {
+        "ruleId": "PAYOFF_004",
+        "ruleName": "Final Payoff Salience",
+        "family": "final_payoff",
+        "severity": "WARNING",
+        "outcome": "PASS",
+        "message": "Final payoff salience (5) ties the earlier peak. Acceptable but not ideal \u2014 consider making the ending strictly the peak.",
+        "details": {
+          "evaluation_stage": "PRE_RENDER",
+          "recommendation": "The final payoff's beat.intensity should be at least as high as the highest intensity seen earlier in the video. Computed independently from beat.intensity values; finalPayoff.isPeakIntensity is never trusted as the verdict, only cross-checked for discrepancy reporting. Optimization-level (WARNING), never a blocker. Renamed from \"Final Peak Intensity\" in RULESET 1.3 -- \"intensity\" read as motion/chaos, but beats[].intensity is a 1-10 visual/emotional energy scale; a quiet, conclusive beat can score as high as a frantic one."
+        }
+      },
+      {
+        "ruleId": "REPETITION_004",
+        "ruleName": "Dominant Action Ratio",
+        "family": "visual_novelty",
+        "severity": "PASS",
+        "outcome": "PASS",
+        "message": "Good action variety. Dominant verb 'PEEL' at 50%.",
+        "details": {
+          "dominant_verb": "PEEL",
+          "evaluation_stage": "PRE_RENDER",
+          "recommendation": "Companion to ATTEMPT_002, not a replacement: catches one primaryVerb numerically dominating the attempt list even when every attempt is legitimately distinct in ATTEMPT_002's semantic judgment. WARNING above 55% dominance, CRITICAL above 70%. Never a BLOCKER, since a dominant verb can be valid if it produces genuinely different consequences each time."
+        }
+      },
+      {
+        "ruleId": "PAYOFF_006",
+        "ruleName": "Loopability",
+        "family": "final_payoff",
+        "severity": "PASS",
+        "outcome": "PASS",
+        "message": "No loop claimed, no hard-cut flag, but no weak-ending pattern detected either.",
+        "details": {
+          "evaluation_stage": "PRE_RENDER",
+          "recommendation": "A retention-optimization dimension, never a hard blocker. A strong natural loop back to the opening (finalPayoff.loopsToOpening + loopQuality == 'strong') is a bonus. An ordinary hard cut with no loop claim is fully valid (neutral PASS). Only specific weak-ending text patterns (fade-out, 'the end', walks away) with neither a loop nor a hard cut produce a WARNING-severity FAIL."
+        }
+      },
+      {
+        "ruleId": "PROGRESSION_006",
+        "ruleName": "Activity Is Not Progression",
+        "family": "progression",
+        "severity": "PASS",
+        "outcome": "PASS",
+        "message": "No single verb root dominates. Most common: 'PEEL' at 50%.",
+        "details": {
+          "dominant_root": "PEEL",
+          "evaluation_stage": "PRE_RENDER",
+          "recommendation": "Deterministic companion to ATTEMPT_002: flags a dominant primaryVerb ROOT across attempts (e.g. PUSH / PUSH_HARDER / PUSH_FROM_LEFT all share the root PUSH) even when full verb labels are distinct and ATTEMPT_002's LLM duplicate-strategy check already passed. Catches 'more activity, not a new strategy' in the gray area between CHAR_002 (time-active) and ATTEMPT_002 (label/semantic distinctness). No LLM call."
+        }
+      },
+      {
+        "ruleId": "ESCALATION_005",
+        "ruleName": "Meaningful Attempt Escalation",
+        "family": "escalation",
+        "severity": "PASS",
+        "outcome": "PASS",
+        "message": "Moderate escalation evidence is present: Escalation is evidenced by consequence magnitude, force, deformation, scope, difficulty, stakes or mechanic persistence.",
+        "details": {
+          "evidence": {
+            "status": "AVAILABLE",
+            "reason": "Escalation is evidenced by consequence magnitude, force, deformation, scope, difficulty, stakes or mechanic persistence.",
+            "candidateBeatIds": [
+              "beat_02",
+              "beat_03",
+              "beat_04",
+              "beat_05"
+            ],
+            "candidate_beat_ids": [
+              "beat_02",
+              "beat_03",
+              "beat_04",
+              "beat_05"
+            ],
+            "newTarget": true,
+            "new_target": true,
+            "intensityRise": false,
+            "intensity_rise": false,
+            "consequenceExpansion": false,
+            "consequence_expansion": false,
+            "resistance": true,
+            "wallFlex": false,
+            "wall_flex": false,
+            "forceRise": false,
+            "deformation": false,
+            "scopeExpansion": false,
+            "difficultyRise": false,
+            "stakesRise": false,
+            "persistence": true,
+            "quantityGrowth": false,
+            "applicability": "APPLICABLE",
+            "strength": "MODERATE",
+            "source": "LATER_ATTEMPT_COMPARISON",
+            "confidence": 0.8
+          },
+          "evaluation_stage": "PRE_RENDER",
+          "recommendation": "Companion to ESCALATION_004 (payoff timing): checks whether attempt-beat intensity rises across the timeline rather than staying flat or declining. Deterministic, keyed off beats[].intensity on isAttempt beats in timeline order. Capped at WARNING \u2014 deadpan-comedy concepts can deliberately keep escalation small."
+        }
+      },
+      {
+        "ruleId": "MINI_STORY_LOCK",
+        "ruleName": "Mini Story Lock",
+        "family": "concept_strength",
+        "severity": "BLOCKER",
+        "outcome": "PASS",
+        "message": "Readable mini-story arc: goal, obstruction, attempts, progression, realization and payoff are evidenced.",
+        "details": {
+          "missing": [],
+          "fake_resolution": "OPTIONAL",
+          "recurrence": "OPTIONAL",
+          "storyEvidence": {
+            "raw_beat_count": 5,
+            "load_beat_count": 5,
+            "major_beat_count": 5,
+            "micro_beat_count": 0,
+            "state_transition_count": 5,
+            "strategy_change_count": 1,
+            "critical_beat_durations": [
+              2.0,
+              3.0,
+              5.0,
+              2.0,
+              3.0
+            ],
+            "generation_mode": "SINGLE_15S",
+            "temporal_load": "MANAGEABLE",
+            "split_recommendation": null,
+            "goal_status": "IMPLICIT_BUT_OBSERVABLE",
+            "obstruction_status": "AVAILABLE",
+            "realization_status": "AVAILABLE",
+            "realization_mode": "EXPLICIT",
+            "payoff_status": "AVAILABLE",
+            "continuation_status": "NOT_APPLICABLE",
+            "continuation_mismatches": []
+          },
+          "evaluation_stage": "PRE_RENDER",
+          "recommendation": "Every video needs a visible goal, one impossible obstruction tied to that goal, active strategies, progression, realization or decision, and a readable payoff. Fake resolution, recurrence, and final twist are optional bonus evidence."
+        }
+      },
+      {
+        "ruleId": "GOAL_VISIBLE_EARLY",
+        "ruleName": "Goal Visible Early",
+        "family": "hook_strength",
+        "severity": "CRITICAL",
+        "outcome": "PASS",
+        "message": "The character goal is available in the opening window.",
+        "details": {
+          "goalEvidence": {
+            "goalExplicitness": "IMPLICIT_BUT_OBSERVABLE",
+            "goalType": "ATTACH_OBJECT_TO_TARGET",
+            "description": "Attach the note to the cabinet",
+            "targetObject": "the cabinet",
+            "obstruction": "instead of sticking to the cabinet, the note visibly clings to her finger",
+            "intendedEffect": "attach_object_to_target_surface",
+            "source": "CONTRASTIVE_ATTACHMENT_TARGET_INFERENCE",
+            "primaryGoal": {
+              "description": "Attach the note to the cabinet",
+              "state": "INFERRED",
+              "sourceQuote": "instead of sticking to the cabinet, the note visibly clings to her finger",
+              "sourceSpan": [
+                301,
+                374
+              ],
+              "method": "CONTRASTIVE_ATTACHMENT_TARGET_INFERENCE",
+              "semanticVerification": "NOT_PERFORMED"
+            },
+            "secondaryRecoveryAttempt": {
+              "description": "Mimi tries to peel the stuck note away with her other hand",
+              "state": "OBSERVED",
+              "sourceQuote": "Mimi tries to peel the stuck note away with her other hand",
+              "sourceSpan": [
+                505,
+                563
+              ],
+              "method": "EXPLICIT_RECOVERY_ATTEMPT_PATTERN",
+              "semanticVerification": "NOT_PERFORMED",
+              "beatId": "beat_02",
+              "targetObject": "the stuck note"
+            }
+          },
+          "evaluation_stage": "PRE_RENDER",
+          "recommendation": "The character goal must be explicit or implicit-but-observable in the first 1-2 seconds."
+        }
+      },
+      {
+        "ruleId": "TEMPORAL_COMPLEXITY_SPLIT_GATE",
+        "ruleName": "Temporal Complexity Split Gate",
+        "family": "generation_executability",
+        "severity": "BLOCKER",
+        "outcome": "PASS",
+        "message": "Temporal load is manageable for the selected generation plan.",
+        "details": {
+          "mode": "SINGLE_15S",
+          "storyEvidence": {
+            "raw_beat_count": 5,
+            "load_beat_count": 5,
+            "major_beat_count": 5,
+            "micro_beat_count": 0,
+            "state_transition_count": 5,
+            "strategy_change_count": 1,
+            "critical_beat_durations": [
+              2.0,
+              3.0,
+              5.0,
+              2.0,
+              3.0
+            ],
+            "generation_mode": "SINGLE_15S",
+            "temporal_load": "MANAGEABLE",
+            "split_recommendation": null,
+            "goal_status": "IMPLICIT_BUT_OBSERVABLE",
+            "obstruction_status": "AVAILABLE",
+            "realization_status": "AVAILABLE",
+            "realization_mode": "EXPLICIT",
+            "payoff_status": "AVAILABLE",
+            "continuation_status": "NOT_APPLICABLE",
+            "continuation_mismatches": []
+          },
+          "evaluation_stage": "PRE_RENDER",
+          "recommendation": "Block an overloaded SINGLE_15S generation plan and recommend SPLIT_2X15S. The creative concept is not rejected when the split plan is selected."
+        }
+      },
+      {
+        "ruleId": "BEAT_DENSITY_RULE",
+        "ruleName": "Beat Density Rule",
+        "family": "progression",
+        "severity": "CRITICAL",
+        "outcome": "PASS",
+        "message": "5 canonical major beats fit the 15-second plan.",
+        "details": {
+          "microBeatCount": 0,
+          "storyEvidence": {
+            "raw_beat_count": 5,
+            "load_beat_count": 5,
+            "major_beat_count": 5,
+            "micro_beat_count": 0,
+            "state_transition_count": 5,
+            "strategy_change_count": 1,
+            "critical_beat_durations": [
+              2.0,
+              3.0,
+              5.0,
+              2.0,
+              3.0
+            ],
+            "generation_mode": "SINGLE_15S",
+            "temporal_load": "MANAGEABLE",
+            "split_recommendation": null,
+            "goal_status": "IMPLICIT_BUT_OBSERVABLE",
+            "obstruction_status": "AVAILABLE",
+            "realization_status": "AVAILABLE",
+            "realization_mode": "EXPLICIT",
+            "payoff_status": "AVAILABLE",
+            "continuation_status": "NOT_APPLICABLE",
+            "continuation_mismatches": []
+          },
+          "evaluation_stage": "PRE_RENDER",
+          "recommendation": "A 15-second single-generation plan should contain 4-5 canonical major story beats, with approximately 6 as the upper safe limit. Micro-actions do not count."
+        }
+      }
+    ],
+    "failedRules": [
+      {
+        "ruleId": "BEAT_004",
+        "ruleName": "Static State Dominance",
+        "family": "visual_novelty",
+        "severity": "CRITICAL",
+        "outcome": "FAIL",
+        "message": "Visual state 'character_mimi_continues_to_pull_each_pull_doubles' occupies 33.3% of video. Maximum: 30%.",
+        "details": {
+          "state_id": "character_mimi_continues_to_pull_each_pull_doubles",
+          "evaluation_stage": "PRE_RENDER",
+          "recommendation": "No single visual state may occupy more than approximately\n25\u201330% of the entire video unless meaningful new physical\nconsequences occur within that state.\n\nDifferent dialogue or tiny movements do NOT count\nas different visual beats."
+        }
+      },
+      {
+        "ruleId": "MOTION_001",
+        "ruleName": "Continuous Meaningful Progression",
+        "family": "motion_quality",
+        "severity": "WARNING",
+        "outcome": "FAIL",
+        "message": "Longest motionless beat is 5.0s. Maximum: 1.5s. A brief still reaction (puzzled look, short charming pause) is fine \u2014 this flags a hold long enough to stall progression, not stillness itself.",
+        "details": {
+          "evaluation_stage": "PRE_RENDER",
+          "recommendation": "No beat may hold with motionAmount == 'none' for longer than 1.5 seconds. Renamed from \"No Dead Air\" in RULESET 1.3 -- brief stillness (a puzzled look, a short charming reaction) is a legitimate pause, not a defect; what matters is progression not stalling, not motion itself."
+        }
+      },
+      {
+        "ruleId": "ATTEMPT_001",
+        "ruleName": "Attempt Count",
+        "family": "concept_strength",
+        "severity": "BLOCKER",
+        "outcome": "FAIL",
+        "message": "Only 2 active attempt(s) detected for a short-tier (15s) video. Minimum: 3.",
+        "details": {
+          "tier": "short",
+          "evaluation_stage": "PRE_RENDER",
+          "recommendation": "Count of beats with isAttempt == true must meet a duration-tier minimum: 3 for videos <= 20s (short tier), 7 for videos > 20s (long tier)."
+        }
+      },
+      {
+        "ruleId": "PRODUCIBILITY_003",
+        "ruleName": "Fragile Interaction Risk",
+        "family": "ai_producibility",
+        "severity": "CRITICAL",
+        "outcome": "FAIL",
+        "message": "Fragile interaction risk tags detected: ['FACE_CONTACT', 'THIN_OBJECT']. These are mid-tier AI-generation risks (precision alignment, cloth/rope simulation, liquids, thin objects, face/hair contact, multi-object stacking) worth a human look before committing render budget, even though they don't rise to very-high-complexity blocking.",
+        "details": {
+          "riskTags": [
+            "FACE_CONTACT",
+            "THIN_OBJECT"
+          ],
+          "evaluation_stage": "PRE_RENDER",
+          "recommendation": "Fills the gap between PRODUCIBILITY_001 (very-high-complexity hard block) and PRODUCIBILITY_002 (prop count budget): a middle tier of AI-generation risks (precision alignment, cloth/rope simulation, liquids, thin dangling objects, face/hair contact, multi-object stacking). Uses a tag-based diagnostic model (riskTags in evaluation details) rather than one rule per risk type. Deterministic substring match against setting.mainProps and beat action/consequence text, no LLM call. Always CRITICAL when any tag is found \u2014 a human-review trigger, not an outright render block."
+        }
+      },
+      {
+        "ruleId": "CONTINUOUS_ACTION_MOMENTUM",
+        "ruleName": "Continuous Action Momentum",
+        "family": "motion_quality",
+        "severity": "CRITICAL",
+        "outcome": "FAIL",
+        "message": "Action momentum is interrupted: passive time 47%, largest attempt gap 0.0s, final aftermath 3.0s.",
+        "details": {
+          "passiveSeconds": 7.0,
+          "passiveRatio": 0.467,
+          "standaloneReactionCount": 0,
+          "attemptTransitionGaps": [
+            0.0
+          ],
+          "maxAttemptTransitionGap": 0.0,
+          "finalAftermathSeconds": 3.0,
+          "evaluation_stage": "PRE_RENDER",
+          "recommendation": "A reaction must overlap the physical transition into the next attempt. Rejects standalone reaction beats, reset-to-neutral gaps, excessive passive time, slow attempt transitions, and long final aftermaths. This rule distinguishes meaningful progression from forward motion momentum."
+        }
+      },
+      {
+        "ruleId": "INSTANT_VISUAL_ABSURDITY_GATE",
+        "ruleName": "Instant Visual Absurdity Gate",
+        "family": "hook_strength",
+        "severity": "BLOCKER",
+        "outcome": "FAIL",
+        "message": "First-frame absurdity evidence is incomplete; the concept is blocked before render.",
+        "details": {
+          "missingEvidence": [
+            "staticWrongness",
+            "noHistoryRequired",
+            "noMicroComparison",
+            "largeVisualSignal",
+            "characterAlreadyEngaged"
+          ],
+          "failureBasis": "EVIDENCE_INCOMPLETE",
+          "evaluation_stage": "PRE_RENDER",
+          "recommendation": "BLOCKER: the first frame must communicate a physically impossible or clearly wrong situation without history, counting, micro-comparison, audio, text, or prior knowledge. The main character must already be engaged with the event."
+        }
+      },
+      {
+        "ruleId": "ENGINE_SILHOUETTE_DUPLICATE",
+        "ruleName": "Engine Silhouette Duplicate",
+        "family": "visual_novelty",
+        "severity": "BLOCKER",
+        "outcome": "FAIL",
+        "message": "No first-frame/final-silhouette comparison evidence was supplied; the concept is blocked before render.",
+        "details": {
+          "failureBasis": "EVIDENCE_INCOMPLETE",
+          "evaluation_stage": "PRE_RENDER",
+          "recommendation": "BLOCKER: reject concepts whose visible progression and final silhouette substantially duplicate a known winner visual engine, even when the underlying mathematical rule differs."
+        }
+      }
+    ],
+    "unknownRules": [
+      {
+        "ruleId": "CONSISTENCY_001",
+        "ruleName": "Physics Rule Consistency",
+        "family": "consistency",
+        "severity": "WARNING",
+        "outcome": "UNKNOWN",
+        "message": "coreMechanic.consistency was not explicitly stated in the prompt and cannot be verified.",
+        "details": {
+          "evaluation_stage": "PRE_RENDER",
+          "recommendation": "The physical rule established in the hook should remain\nconsistent throughout the video unless the concept explicitly\ninvolves rule-breaking as the payoff."
+        }
+      },
+      {
+        "ruleId": "HOOK_003",
+        "ruleName": "Sound Independence",
+        "family": "hook_strength",
+        "severity": "CRITICAL",
+        "outcome": "UNKNOWN",
+        "message": "hook.soundOffClear was not explicitly stated in the prompt and cannot be verified.",
+        "details": {
+          "evaluation_stage": "PRE_RENDER",
+          "recommendation": "The core problem and physical comedy must work with audio muted. hook.soundOffClear must be true."
+        }
+      },
+      {
+        "ruleId": "ATTEMPT_002",
+        "ruleName": "Distinct Attempts",
+        "family": "visual_novelty",
+        "severity": "CRITICAL",
+        "outcome": "UNKNOWN",
+        "message": "Semantic judgment has no verified evidence; provider dispatch is disabled for this local ruleset.",
+        "details": {
+          "requiredEvidence": "VERIFIED_SEMANTIC_JUDGMENT",
+          "providerDispatch": false,
+          "evaluation_stage": "PRE_RENDER",
+          "recommendation": "Attempts must be mechanically distinct, not just differently worded. Identical primaryVerb across attempts is an automatic deterministic FAIL. Verb-distinct attempts are checked for semantic duplication via LLM (e.g. GRAB vs YANK may be the same underlying strategy; RULESET 1.3 explicitly also treats intensity/angle variants of the identical strategy as duplicates, e.g. PUSH/PUSH_HARDER/PUSH_FROM_LEFT). Effective distinct count must meet the same duration-tier minimum as ATTEMPT_001."
+        }
+      },
+      {
+        "ruleId": "PAYOFF_003",
+        "ruleName": "Rule-Consistent Twist",
+        "family": "final_payoff",
+        "severity": "CRITICAL",
+        "outcome": "UNKNOWN",
+        "message": "Semantic judgment has no verified evidence; provider dispatch is disabled for this local ruleset.",
+        "details": {
+          "requiredEvidence": "VERIFIED_SEMANTIC_JUDGMENT",
+          "providerDispatch": false,
+          "evaluation_stage": "PRE_RENDER",
+          "recommendation": "The final twist must derive from the same established physical rule (coreMechanic.physicalRule), applied in a new or bigger way \u2014 not an unrelated, disconnected joke. Checked via LLM semantic judgment."
+        }
+      },
+      {
+        "ruleId": "CONCEPT_007",
+        "ruleName": "Single Dominant Mechanic",
+        "family": "concept_strength",
+        "severity": "BLOCKER",
+        "outcome": "UNKNOWN",
+        "message": "Semantic judgment has no verified evidence; provider dispatch is disabled for this local ruleset.",
+        "details": {
+          "requiredEvidence": "VERIFIED_SEMANTIC_JUDGMENT",
+          "providerDispatch": false,
+          "evaluation_stage": "PRE_RENDER",
+          "recommendation": "The concept must exhibit exactly one independent physical/magical rule. Same mechanic applied with escalating/varied consequences is fine (PASS); a second, genuinely independent rule introduced partway through is not (CRITICAL at 2 mechanics, BLOCKER at 3+). coreMechanic.mechanicCount is an author claim, verified (not trusted) via LLM semantic judgment against the beat-by-beat consequences."
+        }
+      },
+      {
+        "ruleId": "GOAL_001",
+        "ruleName": "Goal-Obstruction Clarity",
+        "family": "concept_strength",
+        "severity": "BLOCKER",
+        "outcome": "UNKNOWN",
+        "message": "Semantic judgment has no verified evidence; provider dispatch is disabled for this local ruleset.",
+        "details": {
+          "requiredEvidence": "VERIFIED_SEMANTIC_JUDGMENT",
+          "providerDispatch": false,
+          "evaluation_stage": "PRE_RENDER",
+          "recommendation": "The character must have an immediately understandable, natural physical goal, and the established abnormal rule must genuinely obstruct that goal. Distinguishes a believable reason to keep trying from an arbitrary or magic-demo setup invented only to showcase the mechanic (the character could simply walk away with no believable reason to continue). Verified via LLM semantic judgment (check_goal_is_natural), fail-closed to SERVICE_ERROR."
+        }
+      },
+      {
+        "ruleId": "CONCEPT_008",
+        "ruleName": "Rule Readability / Predictability",
+        "family": "concept_strength",
+        "severity": "CRITICAL",
+        "outcome": "UNKNOWN",
+        "message": "Semantic judgment has no verified evidence; provider dispatch is disabled for this local ruleset.",
+        "details": {
+          "requiredEvidence": "VERIFIED_SEMANTIC_JUDGMENT",
+          "providerDispatch": false,
+          "evaluation_stage": "PRE_RENDER",
+          "recommendation": "Distinct from CONCEPT_007: a single, internally consistent mechanic is not automatically a legible one. A rule that depends on a combination of exact position, angle, and speed is technically one mechanic but unlearnable by a child audience watching once. Asks whether a viewer could learn the pattern from the first 1-2 occurrences and predict what happens next. Verified via LLM semantic judgment (check_rule_is_predictable), fail-closed to SERVICE_ERROR."
+        }
+      },
+      {
+        "ruleId": "HOOK_004",
+        "ruleName": "Opening Problem Legibility",
+        "family": "hook_strength",
+        "severity": "CRITICAL",
+        "outcome": "UNKNOWN",
+        "message": "Semantic judgment has no verified evidence; provider dispatch is disabled for this local ruleset.",
+        "details": {
+          "requiredEvidence": "VERIFIED_SEMANTIC_JUDGMENT",
+          "providerDispatch": false,
+          "evaluation_stage": "PRE_RENDER",
+          "recommendation": "Stricter than HOOK_002: HOOK_002 confirms something visually unusual happens immediately; this asks whether the opening ALSO makes clear what the character wants and why they can't get it yet, not just that something odd is occurring. Verified via LLM semantic judgment (check_opening_problem_legible), fail-closed to SERVICE_ERROR."
+        }
+      },
+      {
+        "ruleId": "PERFORMANCE_001",
+        "ruleName": "Cute Emotional Readability",
+        "family": "character_performance",
+        "severity": "WARNING",
+        "outcome": "UNKNOWN",
+        "message": "Semantic judgment has no verified evidence; provider dispatch is disabled for this local ruleset.",
+        "details": {
+          "requiredEvidence": "VERIFIED_SEMANTIC_JUDGMENT",
+          "providerDispatch": false,
+          "evaluation_stage": "PRE_RENDER",
+          "recommendation": "New character_performance family (RULESET 1.3). CHAR_002 confirms the character is active for enough of the runtime; this asks whether that activity reads as emotionally engaged and sympathetic rather than blank, robotic, aggressive, or stuck in prolonged panic. Verified via LLM semantic judgment (check_character_performance_readable), fail-closed to SERVICE_ERROR. Capped at WARNING \u2014 a performance-quality nudge, not a structural requirement."
+        }
+      },
+      {
+        "ruleId": "GENERATION_EXECUTABLE_ATTEMPTS",
+        "ruleName": "Generation Executable Attempts",
+        "family": "generation_executability",
+        "severity": "BLOCKER",
+        "outcome": "UNKNOWN",
+        "message": "Semantic judgment has no verified evidence; provider dispatch is disabled for this local ruleset.",
+        "details": {
+          "requiredEvidence": "VERIFIED_SEMANTIC_JUDGMENT",
+          "providerDispatch": false,
+          "evaluation_stage": "PRE_RENDER",
+          "recommendation": "Distinct from ATTEMPT_002 (semantic strategy diversity): ATTEMPT_002 asks whether the character is genuinely trying a different strategy; this asks whether that different strategy will actually LOOK different and be reliably executable by an image-to-video generation model (e.g. Seedance). A deterministic keyword pre-filter flags abstract-intent language ('blocks the escape route', 'tries to outsmart') and vague movement-magnitude phrasing ('slightly moves') on attempt beats, plus a beat-budget estimate (too many attempts for the available duration). An LLM semantic check (check_attempts_are_generation_executable) judges each attempt for a concrete action-result pair and flags attempts that would visually collapse into the same choreography despite different wording. BLOCKER only when NO attempt is judged executable at all or the LLM is unreachable (SERVICE_ERROR); CRITICAL when some attempts are unexecutable or abstract-intent language is matched; WARNING for vague magnitude phrasing or beat-budget pressure alone."
+        }
+      }
+    ],
+    "notApplicableRules": [
+      {
+        "ruleId": "CONSISTENCY_002",
+        "ruleName": "Character Continuity Lock",
+        "family": "consistency",
+        "severity": "CRITICAL",
+        "outcome": "NOT_APPLICABLE",
+        "message": "Rule is evaluated only after a rendered video exists.",
+        "details": {
+          "evaluation_stage": "POST_RENDER"
+        }
+      },
+      {
+        "ruleId": "PAYOFF_005",
+        "ruleName": "Fake Win Escalation",
+        "family": "progression",
+        "severity": "WARNING",
+        "outcome": "NOT_APPLICABLE",
+        "message": "No fake-win beat present; this check does not apply to this concept.",
+        "details": {
+          "evaluation_stage": "PRE_RENDER",
+          "recommendation": "If a beat with consequenceType == 'fake_win' is present, the intensity after it must exceed the intensity at the fake win (the problem must escalate, not repeat or weaken, after a fake resolution). Reports NOT_APPLICABLE (not FAIL, not UNKNOWN) when no fake-win beat exists \u2014 this check simply does not apply to a concept that doesn't use the fake-resolution structure."
+        }
+      },
+      {
+        "ruleId": "CONCEPT_009",
+        "ruleName": "Single-Agent Object Mechanic",
+        "family": "concept_strength",
+        "severity": "BLOCKER",
+        "outcome": "NOT_APPLICABLE",
+        "message": "Rule does not apply to this content family.",
+        "details": {
+          "scopeType": "CONTENT_FAMILY",
+          "scopeId": "social_reel"
+        }
+      },
+      {
+        "ruleId": "CONTINUATION_LOCK",
+        "ruleName": "Continuation Lock",
+        "family": "generation_executability",
+        "severity": "BLOCKER",
+        "outcome": "NOT_APPLICABLE",
+        "message": "Continuation lock applies only to SPLIT_2X15S plans.",
+        "details": {
+          "analysisStage": "PRE_RENDER_PLAN_CONTRACT",
+          "evaluation_stage": "PRE_RENDER",
+          "recommendation": "For SPLIT_2X15S, Part 1 end-state and Part 2 start-state contracts must match. This is pre-render plan evidence, not pixel continuity verification."
+        }
+      },
+      {
+        "ruleId": "STUBBORN_RETURN_LOOP",
+        "ruleName": "Stubborn Return Loop",
+        "family": "progression",
+        "severity": "BLOCKER",
+        "outcome": "NOT_APPLICABLE",
+        "message": "Return-loop candidate lacks one or more mandatory signals.",
+        "details": {
+          "engineProfile": {
+            "profile": "DEFAULT",
+            "source": "INFERRED",
+            "confidence": "LOW",
+            "active": false,
+            "candidate_only": false,
+            "signals": {
+              "SINGLE_DOMINANT_OBJECT": false,
+              "FIXED_VISIBLE_BOUNDARY": false,
+              "SAFE_STATE": false,
+              "AUTONOMOUS_RETURN": false,
+              "RECURRENCE": false,
+              "CHARACTER_INTERVENTION": true,
+              "ESCALATION": false,
+              "NO_DEAD_RESET": true
+            },
+            "recurrence_count": 0,
+            "intervention_count": 2,
+            "state_memory_cost": "LOW",
+            "reason": "Return-loop candidate lacks one or more mandatory signals."
+          },
+          "evaluation_stage": "PRE_RENDER",
+          "recommendation": "High-confidence Spoon-class engine profile: one object, one visible safe/danger boundary, autonomous return, recurrence, active intervention, escalation, and no dead reset."
+        }
+      },
+      {
+        "ruleId": "STUBBORN_RETURN_HOOK",
+        "ruleName": "Stubborn Return Hook",
+        "family": "hook_strength",
+        "severity": "CRITICAL",
+        "outcome": "NOT_APPLICABLE",
+        "message": "Stubborn-return hook exception applies only when the engine profile is explicitly or high-confidence active.",
+        "details": {
+          "engineProfile": {
+            "profile": "DEFAULT",
+            "source": "INFERRED",
+            "confidence": "LOW",
+            "active": false,
+            "candidate_only": false,
+            "signals": {
+              "SINGLE_DOMINANT_OBJECT": false,
+              "FIXED_VISIBLE_BOUNDARY": false,
+              "SAFE_STATE": false,
+              "AUTONOMOUS_RETURN": false,
+              "RECURRENCE": false,
+              "CHARACTER_INTERVENTION": true,
+              "ESCALATION": false,
+              "NO_DEAD_RESET": true
+            },
+            "recurrence_count": 0,
+            "intervention_count": 2,
+            "state_memory_cost": "LOW",
+            "reason": "Return-loop candidate lacks one or more mandatory signals."
+          },
+          "evaluation_stage": "PRE_RENDER",
+          "recommendation": "Accept an immediate visible physical threat with the character already engaged even when frame zero is not a static impossibility."
+        }
+      },
+      {
+        "ruleId": "STUBBORN_RETURN_PAYOFF",
+        "ruleName": "Stubborn Return Payoff",
+        "family": "final_payoff",
+        "severity": "CRITICAL",
+        "outcome": "NOT_APPLICABLE",
+        "message": "Stubborn-return payoff exception is not active.",
+        "details": {
+          "engineProfile": {
+            "profile": "DEFAULT",
+            "source": "INFERRED",
+            "confidence": "LOW",
+            "active": false,
+            "candidate_only": false,
+            "signals": {
+              "SINGLE_DOMINANT_OBJECT": false,
+              "FIXED_VISIBLE_BOUNDARY": false,
+              "SAFE_STATE": false,
+              "AUTONOMOUS_RETURN": false,
+              "RECURRENCE": false,
+              "CHARACTER_INTERVENTION": true,
+              "ESCALATION": false,
+              "NO_DEAD_RESET": true
+            },
+            "recurrence_count": 0,
+            "intervention_count": 2,
+            "state_memory_cost": "LOW",
+            "reason": "Return-loop candidate lacks one or more mandatory signals."
+          },
+          "evaluation_stage": "PRE_RENDER",
+          "recommendation": "Accept a stronger active same-rule stalemate as payoff when the character remains engaged at the cut."
+        }
+      }
+    ],
+    "videoPlanIR": {
+      "beats": [
+        {
+          "id": "beat_01",
+          "startTime": 0.0,
+          "endTime": 2.0,
+          "duration": 2.0,
+          "action": "Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to t...",
+          "actionType": "transition",
+          "visualState": "character mimi reaches toward the toy cabinet with a sticky note; instead of sticking to t...",
+          "visualStateId": "character_mimi_reaches_toward_the_toy_cabinet_with",
+          "consequence": "the note sticks to Mimi, not the cabinet",
+          "consequenceType": "new",
+          "intensity": 5,
+          "motionAmount": "none",
+          "dialogue": null,
+          "readabilityDuration": 2.0,
+          "isReadable": true,
+          "isNewConsequence": true,
+          "similarToBeats": [],
+          "cycleGroup": null,
+          "isAttempt": false,
+          "primaryVerb": "",
+          "attemptSource": "NONE",
+          "attemptCandidate": null,
+          "attemptConfidence": null,
+          "attemptReason": null,
+          "strategyFamily": "UNSPECIFIED",
+          "actionStrategyFamily": "UNSPECIFIED",
+          "intendedStrategyFamily": "UNSPECIFIED",
+          "strategyRole": "INTENDED",
+          "strategyIntent": "DIRECT",
+          "primaryAction": "Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to t...",
+          "actor": "Mimi",
+          "goal": null,
+          "targetObject": null,
+          "intendedEffect": null,
+          "result": "the note sticks to Mimi, not the cabinet",
+          "distinctFromPreviousAttempt": null,
+          "beatLabel": "",
+          "beatRole": "",
+          "relatesToCoreProblem": true,
+          "sourceSpan": [
+            239,
+            498
+          ],
+          "sourceQuote": "0-2s: Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger [close-up on Mimi's hand] Mimi is in front of a toy cabinet, looking determined -> the note sticks to Mimi, not the cabinet",
+          "evidenceStatus": "SOURCE_VERIFIED",
+          "characterActions": [
+            {
+              "classification": "CHARACTER_ACTION",
+              "actor": "Mimi",
+              "actorQuote": "Mimi",
+              "actorLocalSpan": [
+                6,
+                10
+              ],
+              "action": "Mimi reaches toward the toy cabinet with a sticky note",
+              "localSpan": [
+                6,
+                60
+              ],
+              "primaryVerb": "REACH",
+              "verbQuote": "reaches",
+              "verbLocalSpan": [
+                11,
+                18
+              ],
+              "relationship": null,
+              "confidence": null,
+              "semanticVerification": "NOT_PERFORMED",
+              "sourceSpan": [
+                245,
+                299
+              ],
+              "actorSourceSpan": [
+                245,
+                249
+              ],
+              "verbSourceSpan": [
+                250,
+                257
+              ]
+            }
+          ],
+          "productionInstructions": [
+            {
+              "classification": "CAMERA_INSTRUCTION",
+              "quote": "[close-up on Mimi's hand]",
+              "localSpan": [
+                136,
+                161
+              ],
+              "sourceSpan": [
+                375,
+                400
+              ]
+            }
+          ],
+          "physicalConsequences": [
+            {
+              "classification": "PHYSICAL_CONSEQUENCE",
+              "quote": "the note sticks to Mimi, not the cabinet",
+              "sourceSpan": [
+                458,
+                498
+              ]
+            },
+            {
+              "classification": "PHYSICAL_CONSEQUENCE",
+              "quote": "a toy cabinet, looking determined -> the note sticks to Mimi, not the cabinet",
+              "sourceSpan": [
+                421,
+                498
+              ],
+              "method": "EXPLICIT_OBJECT_EVENT",
+              "semanticVerification": "NOT_PERFORMED"
+            }
+          ],
+          "attemptEvidence": {
+            "sourceQuote": null,
+            "sourceSpan": null,
+            "action": null,
+            "primaryVerb": null,
+            "relationship": null,
+            "actorReference": {
+              "value": "Mimi",
+              "sourceQuote": "Mimi",
+              "sourceSpan": [
+                15,
+                19
+              ]
+            },
+            "contractVersion": "actor-source-bound-v2",
+            "classification": "NOT_AN_ATTEMPT",
+            "sourceBound": true,
+            "actor": null,
+            "actions": [
+              {
+                "classification": "CHARACTER_ACTION",
+                "actor": "Mimi",
+                "actorQuote": "Mimi",
+                "actorLocalSpan": [
+                  6,
+                  10
+                ],
+                "action": "Mimi reaches toward the toy cabinet with a sticky note",
+                "localSpan": [
+                  6,
+                  60
+                ],
+                "primaryVerb": "REACH",
+                "verbQuote": "reaches",
+                "verbLocalSpan": [
+                  11,
+                  18
+                ],
+                "relationship": null,
+                "confidence": null,
+                "semanticVerification": "NOT_PERFORMED",
+                "sourceSpan": [
+                  245,
+                  299
+                ],
+                "actorSourceSpan": [
+                  245,
+                  249
+                ],
+                "verbSourceSpan": [
+                  250,
+                  257
+                ]
+              }
+            ],
+            "confidence": null,
+            "duplicateSourceEvent": false,
+            "semanticVerification": "NOT_PERFORMED"
+          },
+          "primaryObject": "sticky note",
+          "fieldEvidence": {
+            "actor": {
+              "value": "Mimi",
+              "state": "OBSERVED",
+              "sourceSpan": [
+                245,
+                249
+              ],
+              "sourceQuote": "Mimi",
+              "method": "DETERMINISTIC_SOURCE_PATTERN",
+              "semanticVerification": "NOT_PERFORMED",
+              "reason": "Exact source mention."
+            },
+            "primaryObject": {
+              "value": "sticky note",
+              "state": "OBSERVED",
+              "sourceSpan": [
+                288,
+                299
+              ],
+              "sourceQuote": "sticky note",
+              "method": "DETERMINISTIC_SOURCE_PATTERN",
+              "semanticVerification": "NOT_PERFORMED",
+              "reason": "Exact object phrase."
+            },
+            "action": {
+              "value": "Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger",
+              "state": "OBSERVED",
+              "sourceSpan": [
+                245,
+                374
+              ],
+              "sourceQuote": "Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger",
+              "method": "DETERMINISTIC_SOURCE_PATTERN",
+              "semanticVerification": "NOT_PERFORMED",
+              "reason": "Exact source mention."
+            }
+          },
+          "sourceAction": "Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger",
+          "sourceSpanStatus": "TEXT_MATCHED"
+        },
+        {
+          "id": "beat_02",
+          "startTime": 2.0,
+          "endTime": 5.0,
+          "duration": 3.0,
+          "action": "Mimi tries to peel the stuck note away with her other hand; the note splits into...",
+          "actionType": "interaction",
+          "visualState": "character mimi tries to peel the stuck note away with her other hand; the note splits into...",
+          "visualStateId": "character_mimi_tries_to_peel_the_stuck_note_away_w",
+          "consequence": "one note sticks to each hand",
+          "consequenceType": "new",
+          "intensity": 5,
+          "motionAmount": "none",
+          "dialogue": null,
+          "readabilityDuration": 3.0,
+          "isReadable": true,
+          "isNewConsequence": true,
+          "similarToBeats": [],
+          "cycleGroup": null,
+          "isAttempt": true,
+          "primaryVerb": "PEEL",
+          "attemptSource": "ACTOR_SOURCE_BOUND",
+          "attemptCandidate": null,
+          "attemptConfidence": 0.9,
+          "attemptReason": "Source-established actor, physical action and directed relationship.",
+          "strategyFamily": "OTHER:PEEL",
+          "actionStrategyFamily": "OTHER:PEEL",
+          "intendedStrategyFamily": "OTHER:PEEL",
+          "strategyRole": "INTENDED",
+          "strategyIntent": "DIRECT",
+          "primaryAction": "Mimi tries to peel the stuck note away with her other hand; the note splits into...",
+          "actor": "Mimi",
+          "goal": "Mimi tries to peel the stuck note away with her other hand",
+          "targetObject": "the stuck note",
+          "intendedEffect": "remove_or_release_object",
+          "result": "one note sticks to each hand",
+          "distinctFromPreviousAttempt": null,
+          "beatLabel": "",
+          "beatRole": "",
+          "relatesToCoreProblem": true,
+          "sourceSpan": [
+            499,
+            677
+          ],
+          "sourceQuote": "2-5s: Mimi tries to peel the stuck note away with her other hand; the note splits into two [medium shot of Mimi struggling] Mimi pulls at the note -> one note sticks to each hand",
+          "evidenceStatus": "SOURCE_VERIFIED",
+          "characterActions": [
+            {
+              "classification": "CHARACTER_ATTEMPT",
+              "actor": "Mimi",
+              "actorQuote": "Mimi",
+              "actorLocalSpan": [
+                6,
+                10
+              ],
+              "action": "Mimi tries to peel the stuck note away with her other hand",
+              "localSpan": [
+                6,
+                64
+              ],
+              "primaryVerb": "PEEL",
+              "verbQuote": "peel",
+              "verbLocalSpan": [
+                20,
+                24
+              ],
+              "relationship": "EXPLICIT_INTENT_OR_CONTINUATION",
+              "confidence": 0.9,
+              "semanticVerification": "NOT_PERFORMED",
+              "sourceSpan": [
+                505,
+                563
+              ],
+              "actorSourceSpan": [
+                505,
+                509
+              ],
+              "verbSourceSpan": [
+                519,
+                523
+              ]
+            },
+            {
+              "classification": "CHARACTER_ACTION",
+              "actor": "Mimi",
+              "actorQuote": "Mimi",
+              "actorLocalSpan": [
+                124,
+                128
+              ],
+              "action": "Mimi pulls at the note",
+              "localSpan": [
+                124,
+                146
+              ],
+              "primaryVerb": "PULL",
+              "verbQuote": "pulls",
+              "verbLocalSpan": [
+                129,
+                134
+              ],
+              "relationship": null,
+              "confidence": null,
+              "semanticVerification": "NOT_PERFORMED",
+              "sourceSpan": [
+                623,
+                645
+              ],
+              "actorSourceSpan": [
+                623,
+                627
+              ],
+              "verbSourceSpan": [
+                628,
+                633
+              ]
+            }
+          ],
+          "productionInstructions": [
+            {
+              "classification": "CAMERA_INSTRUCTION",
+              "quote": "[medium shot of Mimi struggling]",
+              "localSpan": [
+                91,
+                123
+              ],
+              "sourceSpan": [
+                590,
+                622
+              ]
+            }
+          ],
+          "physicalConsequences": [
+            {
+              "classification": "PHYSICAL_CONSEQUENCE",
+              "quote": "one note sticks to each hand",
+              "sourceSpan": [
+                649,
+                677
+              ]
+            },
+            {
+              "classification": "PHYSICAL_CONSEQUENCE",
+              "quote": "the note splits into two",
+              "sourceSpan": [
+                565,
+                589
+              ],
+              "method": "EXPLICIT_OBJECT_EVENT",
+              "semanticVerification": "NOT_PERFORMED"
+            },
+            {
+              "classification": "PHYSICAL_CONSEQUENCE",
+              "quote": "the note -> one note sticks to each hand",
+              "sourceSpan": [
+                637,
+                677
+              ],
+              "method": "EXPLICIT_OBJECT_EVENT",
+              "semanticVerification": "NOT_PERFORMED"
+            }
+          ],
+          "attemptEvidence": {
+            "sourceQuote": "Mimi tries to peel the stuck note away with her other hand",
+            "sourceSpan": [
+              505,
+              563
+            ],
+            "action": "Mimi tries to peel the stuck note away with her other hand",
+            "primaryVerb": "PEEL",
+            "relationship": "EXPLICIT_INTENT_OR_CONTINUATION",
+            "actorReference": {
+              "value": "Mimi",
+              "sourceQuote": "Mimi",
+              "sourceSpan": [
+                15,
+                19
+              ]
+            },
+            "contractVersion": "actor-source-bound-v2",
+            "classification": "SOURCE_BOUND_ATTEMPT",
+            "sourceBound": true,
+            "actor": "Mimi",
+            "actions": [
+              {
+                "classification": "CHARACTER_ATTEMPT",
+                "actor": "Mimi",
+                "actorQuote": "Mimi",
+                "actorLocalSpan": [
+                  6,
+                  10
+                ],
+                "action": "Mimi tries to peel the stuck note away with her other hand",
+                "localSpan": [
+                  6,
+                  64
+                ],
+                "primaryVerb": "PEEL",
+                "verbQuote": "peel",
+                "verbLocalSpan": [
+                  20,
+                  24
+                ],
+                "relationship": "EXPLICIT_INTENT_OR_CONTINUATION",
+                "confidence": 0.9,
+                "semanticVerification": "NOT_PERFORMED",
+                "sourceSpan": [
+                  505,
+                  563
+                ],
+                "actorSourceSpan": [
+                  505,
+                  509
+                ],
+                "verbSourceSpan": [
+                  519,
+                  523
+                ]
+              },
+              {
+                "classification": "CHARACTER_ACTION",
+                "actor": "Mimi",
+                "actorQuote": "Mimi",
+                "actorLocalSpan": [
+                  124,
+                  128
+                ],
+                "action": "Mimi pulls at the note",
+                "localSpan": [
+                  124,
+                  146
+                ],
+                "primaryVerb": "PULL",
+                "verbQuote": "pulls",
+                "verbLocalSpan": [
+                  129,
+                  134
+                ],
+                "relationship": null,
+                "confidence": null,
+                "semanticVerification": "NOT_PERFORMED",
+                "sourceSpan": [
+                  623,
+                  645
+                ],
+                "actorSourceSpan": [
+                  623,
+                  627
+                ],
+                "verbSourceSpan": [
+                  628,
+                  633
+                ]
+              }
+            ],
+            "confidence": 0.9,
+            "duplicateSourceEvent": false,
+            "semanticVerification": "NOT_PERFORMED"
+          },
+          "goalEvidenceRole": "SECONDARY_RECOVERY_ATTEMPT",
+          "primaryObject": "note",
+          "fieldEvidence": {
+            "actor": {
+              "value": "Mimi",
+              "state": "OBSERVED",
+              "sourceSpan": [
+                505,
+                509
+              ],
+              "sourceQuote": "Mimi",
+              "method": "DETERMINISTIC_SOURCE_PATTERN",
+              "semanticVerification": "NOT_PERFORMED",
+              "reason": "Exact source mention."
+            },
+            "primaryObject": {
+              "value": "note",
+              "state": "INFERRED",
+              "sourceSpan": [
+                534,
+                538
+              ],
+              "sourceQuote": "note",
+              "method": "DETERMINISTIC_SOURCE_PATTERN",
+              "semanticVerification": "NOT_PERFORMED",
+              "reason": "Head noun corresponds to the source-introduced object; continuity is not independently verified."
+            },
+            "action": {
+              "value": "Mimi tries to peel the stuck note away with her other hand; the note splits into two",
+              "state": "OBSERVED",
+              "sourceSpan": [
+                505,
+                589
+              ],
+              "sourceQuote": "Mimi tries to peel the stuck note away with her other hand; the note splits into two",
+              "method": "DETERMINISTIC_SOURCE_PATTERN",
+              "semanticVerification": "NOT_PERFORMED",
+              "reason": "Exact source mention."
+            }
+          },
+          "sourceAction": "Mimi tries to peel the stuck note away with her other hand; the note splits into two",
+          "sourceSpanStatus": "TEXT_MATCHED"
+        },
+        {
+          "id": "beat_03",
+          "startTime": 5.0,
+          "endTime": 10.0,
+          "duration": 5.0,
+          "action": "Mimi continues to pull; each pull doubles the number of sticky notes [wide shot ...",
+          "actionType": "interaction",
+          "visualState": "character mimi continues to pull; each pull doubles the number of sticky notes [wide shot ...",
+          "visualStateId": "character_mimi_continues_to_pull_each_pull_doubles",
+          "consequence": "Mimi is overwhelmed by notes",
+          "consequenceType": "new",
+          "intensity": 5,
+          "motionAmount": "none",
+          "dialogue": null,
+          "readabilityDuration": 5.0,
+          "isReadable": true,
+          "isNewConsequence": true,
+          "similarToBeats": [],
+          "cycleGroup": null,
+          "isAttempt": true,
+          "primaryVerb": "PULL",
+          "attemptSource": "ACTOR_SOURCE_BOUND",
+          "attemptCandidate": null,
+          "attemptConfidence": 0.9,
+          "attemptReason": "Source-established actor, physical action and directed relationship.",
+          "strategyFamily": "PULL",
+          "actionStrategyFamily": "PULL",
+          "intendedStrategyFamily": "PULL",
+          "strategyRole": "INTENDED",
+          "strategyIntent": "DIRECT",
+          "primaryAction": "Mimi continues to pull; each pull doubles the number of sticky notes [wide shot ...",
+          "actor": "Mimi",
+          "goal": "Attach the note to the cabinet",
+          "targetObject": "the cabinet",
+          "intendedEffect": "attach_object_to_target_surface",
+          "result": "Mimi is overwhelmed by notes",
+          "distinctFromPreviousAttempt": null,
+          "beatLabel": "",
+          "beatRole": "",
+          "relatesToCoreProblem": true,
+          "sourceSpan": [
+            678,
+            929
+          ],
+          "sourceQuote": "5-10s: Mimi continues to pull; each pull doubles the number of sticky notes [wide shot showing Mimi covered in notes] notes multiply from two to four to eight as she pulls, progressively covering her arms, legs and face -> Mimi is overwhelmed by notes",
+          "evidenceStatus": "SOURCE_VERIFIED",
+          "characterActions": [
+            {
+              "classification": "CHARACTER_ATTEMPT",
+              "actor": "Mimi",
+              "actorQuote": "Mimi",
+              "actorLocalSpan": [
+                7,
+                11
+              ],
+              "action": "Mimi continues to pull",
+              "localSpan": [
+                7,
+                29
+              ],
+              "primaryVerb": "PULL",
+              "verbQuote": "pull",
+              "verbLocalSpan": [
+                25,
+                29
+              ],
+              "relationship": "EXPLICIT_INTENT_OR_CONTINUATION",
+              "confidence": 0.9,
+              "semanticVerification": "NOT_PERFORMED",
+              "sourceSpan": [
+                685,
+                707
+              ],
+              "actorSourceSpan": [
+                685,
+                689
+              ],
+              "verbSourceSpan": [
+                703,
+                707
+              ]
+            },
+            {
+              "classification": "CHARACTER_ACTION",
+              "actor": "Mimi",
+              "actorQuote": "Mimi",
+              "actorLocalSpan": [
+                95,
+                99
+              ],
+              "action": "Mimi covered in notes",
+              "localSpan": [
+                95,
+                116
+              ],
+              "primaryVerb": "COVER",
+              "verbQuote": "covered",
+              "verbLocalSpan": [
+                100,
+                107
+              ],
+              "relationship": null,
+              "confidence": null,
+              "semanticVerification": "NOT_PERFORMED",
+              "sourceSpan": [
+                773,
+                794
+              ],
+              "actorSourceSpan": [
+                773,
+                777
+              ],
+              "verbSourceSpan": [
+                778,
+                785
+              ]
+            },
+            {
+              "classification": "CHARACTER_ACTION",
+              "actor": "Mimi",
+              "actorQuote": "she",
+              "actorLocalSpan": [
+                162,
+                165
+              ],
+              "action": "she pulls, progressively covering her arms, legs and face",
+              "localSpan": [
+                162,
+                219
+              ],
+              "primaryVerb": "PULL",
+              "verbQuote": "pulls",
+              "verbLocalSpan": [
+                166,
+                171
+              ],
+              "relationship": null,
+              "confidence": null,
+              "semanticVerification": "NOT_PERFORMED",
+              "sourceSpan": [
+                840,
+                897
+              ],
+              "actorSourceSpan": [
+                840,
+                843
+              ],
+              "verbSourceSpan": [
+                844,
+                849
+              ]
+            }
+          ],
+          "productionInstructions": [
+            {
+              "classification": "CAMERA_INSTRUCTION",
+              "quote": "[wide shot showing Mimi covered in notes]",
+              "localSpan": [
+                76,
+                117
+              ],
+              "sourceSpan": [
+                754,
+                795
+              ]
+            }
+          ],
+          "physicalConsequences": [
+            {
+              "classification": "PHYSICAL_CONSEQUENCE",
+              "quote": "Mimi is overwhelmed by notes",
+              "sourceSpan": [
+                901,
+                929
+              ]
+            }
+          ],
+          "attemptEvidence": {
+            "sourceQuote": "Mimi continues to pull",
+            "sourceSpan": [
+              685,
+              707
+            ],
+            "action": "Mimi continues to pull",
+            "primaryVerb": "PULL",
+            "relationship": "EXPLICIT_INTENT_OR_CONTINUATION",
+            "actorReference": {
+              "value": "Mimi",
+              "sourceQuote": "Mimi",
+              "sourceSpan": [
+                15,
+                19
+              ]
+            },
+            "contractVersion": "actor-source-bound-v2",
+            "classification": "SOURCE_BOUND_ATTEMPT",
+            "sourceBound": true,
+            "actor": "Mimi",
+            "actions": [
+              {
+                "classification": "CHARACTER_ATTEMPT",
+                "actor": "Mimi",
+                "actorQuote": "Mimi",
+                "actorLocalSpan": [
+                  7,
+                  11
+                ],
+                "action": "Mimi continues to pull",
+                "localSpan": [
+                  7,
+                  29
+                ],
+                "primaryVerb": "PULL",
+                "verbQuote": "pull",
+                "verbLocalSpan": [
+                  25,
+                  29
+                ],
+                "relationship": "EXPLICIT_INTENT_OR_CONTINUATION",
+                "confidence": 0.9,
+                "semanticVerification": "NOT_PERFORMED",
+                "sourceSpan": [
+                  685,
+                  707
+                ],
+                "actorSourceSpan": [
+                  685,
+                  689
+                ],
+                "verbSourceSpan": [
+                  703,
+                  707
+                ]
+              },
+              {
+                "classification": "CHARACTER_ACTION",
+                "actor": "Mimi",
+                "actorQuote": "Mimi",
+                "actorLocalSpan": [
+                  95,
+                  99
+                ],
+                "action": "Mimi covered in notes",
+                "localSpan": [
+                  95,
+                  116
+                ],
+                "primaryVerb": "COVER",
+                "verbQuote": "covered",
+                "verbLocalSpan": [
+                  100,
+                  107
+                ],
+                "relationship": null,
+                "confidence": null,
+                "semanticVerification": "NOT_PERFORMED",
+                "sourceSpan": [
+                  773,
+                  794
+                ],
+                "actorSourceSpan": [
+                  773,
+                  777
+                ],
+                "verbSourceSpan": [
+                  778,
+                  785
+                ]
+              },
+              {
+                "classification": "CHARACTER_ACTION",
+                "actor": "Mimi",
+                "actorQuote": "she",
+                "actorLocalSpan": [
+                  162,
+                  165
+                ],
+                "action": "she pulls, progressively covering her arms, legs and face",
+                "localSpan": [
+                  162,
+                  219
+                ],
+                "primaryVerb": "PULL",
+                "verbQuote": "pulls",
+                "verbLocalSpan": [
+                  166,
+                  171
+                ],
+                "relationship": null,
+                "confidence": null,
+                "semanticVerification": "NOT_PERFORMED",
+                "sourceSpan": [
+                  840,
+                  897
+                ],
+                "actorSourceSpan": [
+                  840,
+                  843
+                ],
+                "verbSourceSpan": [
+                  844,
+                  849
+                ]
+              }
+            ],
+            "confidence": 0.9,
+            "duplicateSourceEvent": false,
+            "semanticVerification": "NOT_PERFORMED"
+          },
+          "goalEvidenceRole": "PRIMARY_GOAL",
+          "primaryObject": "sticky notes",
+          "fieldEvidence": {
+            "actor": {
+              "value": "Mimi",
+              "state": "OBSERVED",
+              "sourceSpan": [
+                685,
+                689
+              ],
+              "sourceQuote": "Mimi",
+              "method": "DETERMINISTIC_SOURCE_PATTERN",
+              "semanticVerification": "NOT_PERFORMED",
+              "reason": "Exact source mention."
+            },
+            "primaryObject": {
+              "value": "sticky notes",
+              "state": "OBSERVED",
+              "sourceSpan": [
+                741,
+                753
+              ],
+              "sourceQuote": "sticky notes",
+              "method": "DETERMINISTIC_SOURCE_PATTERN",
+              "semanticVerification": "NOT_PERFORMED",
+              "reason": "Exact object phrase."
+            },
+            "action": {
+              "value": "Mimi continues to pull; each pull doubles the number of sticky notes",
+              "state": "OBSERVED",
+              "sourceSpan": [
+                685,
+                753
+              ],
+              "sourceQuote": "Mimi continues to pull; each pull doubles the number of sticky notes",
+              "method": "DETERMINISTIC_SOURCE_PATTERN",
+              "semanticVerification": "NOT_PERFORMED",
+              "reason": "Exact source mention."
+            }
+          },
+          "sourceAction": "Mimi continues to pull; each pull doubles the number of sticky notes",
+          "sourceSpanStatus": "TEXT_MATCHED"
+        },
+        {
+          "id": "beat_04",
+          "startTime": 10.0,
+          "endTime": 12.0,
+          "duration": 2.0,
+          "action": "Mimi sees herself in a mirror and screams [close-up on Mimi's shocked face] Mimi...",
+          "actionType": "interaction",
+          "visualState": "character mimi sees herself in a mirror and screams [close-up on mimi's shocked face] mimi...",
+          "visualStateId": "character_mimi_sees_herself_in_a_mirror_and_scream",
+          "consequence": "Mimi is startled",
+          "consequenceType": "new",
+          "intensity": 5,
+          "motionAmount": "none",
+          "dialogue": null,
+          "readabilityDuration": 2.0,
+          "isReadable": true,
+          "isNewConsequence": true,
+          "similarToBeats": [],
+          "cycleGroup": null,
+          "isAttempt": false,
+          "primaryVerb": "",
+          "attemptSource": "NONE",
+          "attemptCandidate": null,
+          "attemptConfidence": null,
+          "attemptReason": null,
+          "strategyFamily": "UNSPECIFIED",
+          "actionStrategyFamily": "UNSPECIFIED",
+          "intendedStrategyFamily": "UNSPECIFIED",
+          "strategyRole": "INTENDED",
+          "strategyIntent": "DIRECT",
+          "primaryAction": "Mimi sees herself in a mirror and screams [close-up on Mimi's shocked face] Mimi...",
+          "actor": "Mimi",
+          "goal": null,
+          "targetObject": null,
+          "intendedEffect": null,
+          "result": "Mimi is startled",
+          "distinctFromPreviousAttempt": null,
+          "beatLabel": "",
+          "beatRole": "",
+          "relatesToCoreProblem": true,
+          "sourceSpan": [
+            930,
+            1096
+          ],
+          "sourceQuote": "10-12s: Mimi sees herself in a mirror and screams [close-up on Mimi's shocked face] Mimi is startled by her reflection completely covered in notes -> Mimi is startled",
+          "evidenceStatus": "SOURCE_VERIFIED",
+          "characterActions": [],
+          "productionInstructions": [
+            {
+              "classification": "CAMERA_INSTRUCTION",
+              "quote": "[close-up on Mimi's shocked face]",
+              "localSpan": [
+                50,
+                83
+              ],
+              "sourceSpan": [
+                980,
+                1013
+              ]
+            }
+          ],
+          "physicalConsequences": [
+            {
+              "classification": "PHYSICAL_CONSEQUENCE",
+              "quote": "Mimi is startled",
+              "sourceSpan": [
+                1080,
+                1096
+              ]
+            }
+          ],
+          "attemptEvidence": {
+            "sourceQuote": null,
+            "sourceSpan": null,
+            "action": null,
+            "primaryVerb": null,
+            "relationship": null,
+            "actorReference": {
+              "value": "Mimi",
+              "sourceQuote": "Mimi",
+              "sourceSpan": [
+                15,
+                19
+              ]
+            },
+            "contractVersion": "actor-source-bound-v2",
+            "classification": "NOT_AN_ATTEMPT",
+            "sourceBound": true,
+            "actor": null,
+            "actions": [],
+            "confidence": null,
+            "duplicateSourceEvent": false,
+            "semanticVerification": "NOT_PERFORMED"
+          },
+          "primaryObject": "notes",
+          "fieldEvidence": {
+            "actor": {
+              "value": "Mimi",
+              "state": "OBSERVED",
+              "sourceSpan": [
+                938,
+                942
+              ],
+              "sourceQuote": "Mimi",
+              "method": "DETERMINISTIC_SOURCE_PATTERN",
+              "semanticVerification": "NOT_PERFORMED",
+              "reason": "Exact source mention."
+            },
+            "primaryObject": {
+              "value": "notes",
+              "state": "INFERRED",
+              "sourceSpan": [
+                1071,
+                1076
+              ],
+              "sourceQuote": "notes",
+              "method": "DETERMINISTIC_SOURCE_PATTERN",
+              "semanticVerification": "NOT_PERFORMED",
+              "reason": "Head noun corresponds to the source-introduced object; continuity is not independently verified."
+            },
+            "action": {
+              "value": "Mimi sees herself in a mirror and screams",
+              "state": "OBSERVED",
+              "sourceSpan": [
+                938,
+                979
+              ],
+              "sourceQuote": "Mimi sees herself in a mirror and screams",
+              "method": "DETERMINISTIC_SOURCE_PATTERN",
+              "semanticVerification": "NOT_PERFORMED",
+              "reason": "Exact source mention."
+            }
+          },
+          "sourceAction": "Mimi sees herself in a mirror and screams",
+          "sourceSpanStatus": "TEXT_MATCHED"
+        },
+        {
+          "id": "beat_05",
+          "startTime": 12.0,
+          "endTime": 15.0,
+          "duration": 3.0,
+          "action": "Mimi sneezes and the sticky notes fly off [medium shot of notes flying] notes sc...",
+          "actionType": "interaction",
+          "visualState": "character mimi sneezes and the sticky notes fly off [medium shot of notes flying] notes sc...",
+          "visualStateId": "character_mimi_sneezes_and_the_sticky_notes_fly_of",
+          "consequence": "Mimi breathes a sigh of relief but the cabinet remains messy",
+          "consequenceType": "new",
+          "intensity": 5,
+          "motionAmount": "none",
+          "dialogue": null,
+          "readabilityDuration": 3.0,
+          "isReadable": true,
+          "isNewConsequence": true,
+          "similarToBeats": [],
+          "cycleGroup": null,
+          "isAttempt": false,
+          "primaryVerb": "",
+          "attemptSource": "NONE",
+          "attemptCandidate": null,
+          "attemptConfidence": null,
+          "attemptReason": null,
+          "strategyFamily": "UNSPECIFIED",
+          "actionStrategyFamily": "UNSPECIFIED",
+          "intendedStrategyFamily": "UNSPECIFIED",
+          "strategyRole": "INTENDED",
+          "strategyIntent": "DIRECT",
+          "primaryAction": "Mimi sneezes and the sticky notes fly off [medium shot of notes flying] notes sc...",
+          "actor": "Mimi",
+          "goal": null,
+          "targetObject": null,
+          "intendedEffect": null,
+          "result": "Mimi breathes a sigh of relief but the cabinet remains messy",
+          "distinctFromPreviousAttempt": null,
+          "beatLabel": "",
+          "beatRole": "",
+          "relatesToCoreProblem": true,
+          "sourceSpan": [
+            1097,
+            1279
+          ],
+          "sourceQuote": "12-15s: Mimi sneezes and the sticky notes fly off [medium shot of notes flying] notes scatter and stick to the cabinet -> Mimi breathes a sigh of relief but the cabinet remains messy",
+          "evidenceStatus": "SOURCE_VERIFIED",
+          "characterActions": [],
+          "productionInstructions": [
+            {
+              "classification": "CAMERA_INSTRUCTION",
+              "quote": "[medium shot of notes flying]",
+              "localSpan": [
+                50,
+                79
+              ],
+              "sourceSpan": [
+                1147,
+                1176
+              ]
+            }
+          ],
+          "physicalConsequences": [
+            {
+              "classification": "PHYSICAL_CONSEQUENCE",
+              "quote": "Mimi breathes a sigh of relief but the cabinet remains messy",
+              "sourceSpan": [
+                1219,
+                1279
+              ]
+            }
+          ],
+          "attemptEvidence": {
+            "sourceQuote": null,
+            "sourceSpan": null,
+            "action": null,
+            "primaryVerb": null,
+            "relationship": null,
+            "actorReference": {
+              "value": "Mimi",
+              "sourceQuote": "Mimi",
+              "sourceSpan": [
+                15,
+                19
+              ]
+            },
+            "contractVersion": "actor-source-bound-v2",
+            "classification": "NOT_AN_ATTEMPT",
+            "sourceBound": true,
+            "actor": null,
+            "actions": [],
+            "confidence": null,
+            "duplicateSourceEvent": false,
+            "semanticVerification": "NOT_PERFORMED"
+          },
+          "primaryObject": "sticky notes",
+          "fieldEvidence": {
+            "actor": {
+              "value": "Mimi",
+              "state": "OBSERVED",
+              "sourceSpan": [
+                1105,
+                1109
+              ],
+              "sourceQuote": "Mimi",
+              "method": "DETERMINISTIC_SOURCE_PATTERN",
+              "semanticVerification": "NOT_PERFORMED",
+              "reason": "Exact source mention."
+            },
+            "primaryObject": {
+              "value": "sticky notes",
+              "state": "OBSERVED",
+              "sourceSpan": [
+                1126,
+                1138
+              ],
+              "sourceQuote": "sticky notes",
+              "method": "DETERMINISTIC_SOURCE_PATTERN",
+              "semanticVerification": "NOT_PERFORMED",
+              "reason": "Exact object phrase."
+            },
+            "action": {
+              "value": "Mimi sneezes and the sticky notes fly off",
+              "state": "OBSERVED",
+              "sourceSpan": [
+                1105,
+                1146
+              ],
+              "sourceQuote": "Mimi sneezes and the sticky notes fly off",
+              "method": "DETERMINISTIC_SOURCE_PATTERN",
+              "semanticVerification": "NOT_PERFORMED",
+              "reason": "Exact source mention."
+            }
+          },
+          "sourceAction": "Mimi sneezes and the sticky notes fly off",
+          "sourceSpanStatus": "TEXT_MATCHED"
+        }
+      ],
+      "mainCharacter": "Mimi",
+      "principalObject": "sticky note",
+      "entityEvidence": {
+        "mainCharacter": {
+          "value": "Mimi",
+          "state": "OBSERVED",
+          "sourceSpan": [
+            15,
+            19
+          ],
+          "sourceQuote": "Mimi",
+          "method": "DETERMINISTIC_SOURCE_PATTERN",
+          "semanticVerification": "NOT_PERFORMED",
+          "reason": "Exact source mention."
+        },
+        "principalObject": {
+          "value": "sticky note",
+          "state": "OBSERVED",
+          "sourceSpan": [
+            288,
+            299
+          ],
+          "sourceQuote": "sticky note",
+          "method": "DETERMINISTIC_SOURCE_PATTERN",
+          "semanticVerification": "NOT_PERFORMED",
+          "reason": "Exact source mention."
+        }
+      },
+      "characters": {
+        "primary": "Mimi",
+        "secondary": null,
+        "characterRefs": []
+      },
+      "coreMechanic": {
+        "physicalRule": "each pull doubles the number of sticky notes",
+        "physicalRuleEvidence": {
+          "state": "OBSERVED",
+          "sourceQuote": "each pull doubles the number of sticky notes",
+          "sourceSpan": [
+            709,
+            753
+          ],
+          "method": "EXPLICIT_REPEATED_ACTION_CLAUSE",
+          "semanticVerification": "NOT_PERFORMED"
+        },
+        "causeEffect": "Explicit repeated-action statement from prompt",
+        "consistency": null,
+        "mechanicCount": null,
+        "primaryObject": null,
+        "mechanicCarrier": "UNKNOWN",
+        "causalParticipants": null,
+        "abnormalProperty": "STICKS_TO_SURFACES",
+        "trigger": "CONTACT_OR_THROW",
+        "persistence": "PERSISTS_AFTER_CONTACT",
+        "releaseCondition": "FORCE_OR_SELF_RELEASE",
+        "recurrence": true,
+        "surfaceAttachmentEvidence": {
+          "state": "OBSERVED",
+          "sourceQuote": "instead of sticking to the cabinet, the note visibly clings to her finger",
+          "sourceSpan": [
+            301,
+            374
+          ],
+          "method": "CONTRASTIVE_SURFACE_ATTACHMENT_PATTERN",
+          "semanticVerification": "NOT_PERFORMED",
+          "object": {
+            "value": "the note",
+            "state": "OBSERVED"
+          },
+          "expectedSurface": {
+            "value": "the cabinet",
+            "state": "OBSERVED"
+          },
+          "actualSurface": {
+            "value": "her finger",
+            "state": "OBSERVED"
+          },
+          "relationship": {
+            "value": "WRONG_SURFACE_ATTACHMENT",
+            "state": "INFERRED"
+          }
+        }
+      },
+      "goalEvidence": {
+        "goalExplicitness": "IMPLICIT_BUT_OBSERVABLE",
+        "goalType": "ATTACH_OBJECT_TO_TARGET",
+        "description": "Attach the note to the cabinet",
+        "targetObject": "the cabinet",
+        "obstruction": "instead of sticking to the cabinet, the note visibly clings to her finger",
+        "intendedEffect": "attach_object_to_target_surface",
+        "source": "CONTRASTIVE_ATTACHMENT_TARGET_INFERENCE",
+        "primaryGoal": {
+          "description": "Attach the note to the cabinet",
+          "state": "INFERRED",
+          "sourceQuote": "instead of sticking to the cabinet, the note visibly clings to her finger",
+          "sourceSpan": [
+            301,
+            374
+          ],
+          "method": "CONTRASTIVE_ATTACHMENT_TARGET_INFERENCE",
+          "semanticVerification": "NOT_PERFORMED"
+        },
+        "secondaryRecoveryAttempt": {
+          "description": "Mimi tries to peel the stuck note away with her other hand",
+          "state": "OBSERVED",
+          "sourceQuote": "Mimi tries to peel the stuck note away with her other hand",
+          "sourceSpan": [
+            505,
+            563
+          ],
+          "method": "EXPLICIT_RECOVERY_ATTEMPT_PATTERN",
+          "semanticVerification": "NOT_PERFORMED",
+          "beatId": "beat_02",
+          "targetObject": "the stuck note"
+        }
+      },
+      "recurrence": true
+    },
+    "storyDensityEvidence": {
+      "raw_beat_count": 5,
+      "load_beat_count": 5,
+      "major_beat_count": 5,
+      "micro_beat_count": 0,
+      "state_transition_count": 5,
+      "strategy_change_count": 1,
+      "critical_beat_durations": [
+        2.0,
+        3.0,
+        5.0,
+        2.0,
+        3.0
+      ],
+      "generation_mode": "SINGLE_15S",
+      "temporal_load": "MANAGEABLE",
+      "split_recommendation": null,
+      "goal_status": "IMPLICIT_BUT_OBSERVABLE",
+      "obstruction_status": "AVAILABLE",
+      "realization_status": "AVAILABLE",
+      "realization_mode": "EXPLICIT",
+      "payoff_status": "AVAILABLE",
+      "continuation_status": "NOT_APPLICABLE",
+      "continuation_mismatches": []
+    }
+  },
+  "operatorReport": [
+    {
+      "label": "DECISION",
+      "text": "Proceed to the next evidence step"
+    },
+    {
+      "label": "VIEWING MECHANISM",
+      "text": "Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger"
+    },
+    {
+      "label": "OPENING",
+      "text": "Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger"
+    },
+    {
+      "label": "PROGRESSION",
+      "text": "Insufficient evidence"
+    },
+    {
+      "label": "ENDING",
+      "text": "Planlanan final: Mimi sneezes and the sticky notes fly off"
+    },
+    {
+      "label": "CORE EVENT / IDENTITY / COMPREHENSIBILITY",
+      "text": "Actual video has not been reviewed"
+    },
+    {
+      "label": "TECHNICAL DEFECTS",
+      "text": "No confirmed defect evidence"
+    },
+    {
+      "label": "DEFECT IMPACT",
+      "text": "Technical cleanup alone is not evidence of creative value"
+    },
+    {
+      "label": "SMALLEST INTERVENTION",
+      "text": "PROCEED_NEXT_EVIDENCE_STEP"
+    },
+    {
+      "label": "PERFORMANCE",
+      "text": "Outcome data remains separate until blind review is complete; no viewing guarantee"
+    }
+  ],
+  "workflowVersion": "post-family-v1",
+  "bindingHash": "0035bdbecb114596dbbe2f8ddf4a0061b77e876085904f3e681caa9138158ae3",
+  "authorizationEvidence": {},
+  "source": {
+    "artifact": "content:10/prompt:10",
+    "version": "10",
+    "sha256": "0fe229774deb4b31a42145bad91cf10c91634ba00da39fa3e9d288b3a2e7bd98"
+  },
+  "productionEvidence": {
+    "source": {
+      "artifact": "content:10/prompt:10",
+      "version": "10",
+      "sha256": "0fe229774deb4b31a42145bad91cf10c91634ba00da39fa3e9d288b3a2e7bd98"
+    },
+    "claims": [
+      {
+        "field": "beats",
+        "state": "OBSERVED",
+        "quote": "0-2s",
+        "span": [
+          239,
+          243
+        ],
+        "sourceId": "content:10/prompt:10",
+        "sourceVersion": "10",
+        "sourceHash": "0fe229774deb4b31a42145bad91cf10c91634ba00da39fa3e9d288b3a2e7bd98",
+        "method": "LOCAL_SOURCE_PATTERN",
+        "methodVersion": "source-span-production-evidence-v1",
+        "provider": null,
+        "confidence": "HIGH"
+      },
+      {
+        "field": "beats",
+        "state": "OBSERVED",
+        "quote": "2-5s",
+        "span": [
+          499,
+          503
+        ],
+        "sourceId": "content:10/prompt:10",
+        "sourceVersion": "10",
+        "sourceHash": "0fe229774deb4b31a42145bad91cf10c91634ba00da39fa3e9d288b3a2e7bd98",
+        "method": "LOCAL_SOURCE_PATTERN",
+        "methodVersion": "source-span-production-evidence-v1",
+        "provider": null,
+        "confidence": "HIGH"
+      },
+      {
+        "field": "beats",
+        "state": "OBSERVED",
+        "quote": "5-10s",
+        "span": [
+          678,
+          683
+        ],
+        "sourceId": "content:10/prompt:10",
+        "sourceVersion": "10",
+        "sourceHash": "0fe229774deb4b31a42145bad91cf10c91634ba00da39fa3e9d288b3a2e7bd98",
+        "method": "LOCAL_SOURCE_PATTERN",
+        "methodVersion": "source-span-production-evidence-v1",
+        "provider": null,
+        "confidence": "HIGH"
+      },
+      {
+        "field": "beats",
+        "state": "OBSERVED",
+        "quote": "10-12s",
+        "span": [
+          930,
+          936
+        ],
+        "sourceId": "content:10/prompt:10",
+        "sourceVersion": "10",
+        "sourceHash": "0fe229774deb4b31a42145bad91cf10c91634ba00da39fa3e9d288b3a2e7bd98",
+        "method": "LOCAL_SOURCE_PATTERN",
+        "methodVersion": "source-span-production-evidence-v1",
+        "provider": null,
+        "confidence": "HIGH"
+      },
+      {
+        "field": "beats",
+        "state": "OBSERVED",
+        "quote": "12-15s",
+        "span": [
+          1097,
+          1103
+        ],
+        "sourceId": "content:10/prompt:10",
+        "sourceVersion": "10",
+        "sourceHash": "0fe229774deb4b31a42145bad91cf10c91634ba00da39fa3e9d288b3a2e7bd98",
+        "method": "LOCAL_SOURCE_PATTERN",
+        "methodVersion": "source-span-production-evidence-v1",
+        "provider": null,
+        "confidence": "HIGH"
+      },
+      {
+        "field": "fineMotorRequirement",
+        "state": "MISSING",
+        "quote": null,
+        "span": null,
+        "sourceId": "content:10/prompt:10",
+        "sourceVersion": "10",
+        "sourceHash": "0fe229774deb4b31a42145bad91cf10c91634ba00da39fa3e9d288b3a2e7bd98",
+        "methodVersion": "source-span-production-evidence-v1",
+        "confidence": null,
+        "reason": "Omission does not confirm absence."
+      },
+      {
+        "field": "contactPhysicsRequirement",
+        "state": "INFERRED",
+        "quote": "0-2s: Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger [close-up on Mimi's hand] Mimi is in front of a toy cabinet, looking determined -> the note sticks to Mimi, not the cabinet",
+        "span": [
+          239,
+          498
+        ],
+        "sourceId": "content:10/prompt:10",
+        "sourceVersion": "10",
+        "sourceHash": "0fe229774deb4b31a42145bad91cf10c91634ba00da39fa3e9d288b3a2e7bd98",
+        "method": "LOCAL_SOURCE_PATTERN",
+        "methodVersion": "source-span-production-evidence-v1",
+        "provider": null,
+        "confidence": "MEDIUM"
+      },
+      {
+        "field": "contactPhysicsRequirement",
+        "state": "INFERRED",
+        "quote": "2-5s: Mimi tries to peel the stuck note away with her other hand; the note splits into two [medium shot of Mimi struggling] Mimi pulls at the note -> one note sticks to each hand",
+        "span": [
+          499,
+          677
+        ],
+        "sourceId": "content:10/prompt:10",
+        "sourceVersion": "10",
+        "sourceHash": "0fe229774deb4b31a42145bad91cf10c91634ba00da39fa3e9d288b3a2e7bd98",
+        "method": "LOCAL_SOURCE_PATTERN",
+        "methodVersion": "source-span-production-evidence-v1",
+        "provider": null,
+        "confidence": "MEDIUM"
+      },
+      {
+        "field": "contactPhysicsRequirement",
+        "state": "INFERRED",
+        "quote": "12-15s: Mimi sneezes and the sticky notes fly off [medium shot of notes flying] notes scatter and stick to the cabinet -> Mimi breathes a sigh of relief but the cabinet remains messy",
+        "span": [
+          1097,
+          1279
+        ],
+        "sourceId": "content:10/prompt:10",
+        "sourceVersion": "10",
+        "sourceHash": "0fe229774deb4b31a42145bad91cf10c91634ba00da39fa3e9d288b3a2e7bd98",
+        "method": "LOCAL_SOURCE_PATTERN",
+        "methodVersion": "source-span-production-evidence-v1",
+        "provider": null,
+        "confidence": "MEDIUM"
+      },
+      {
+        "field": "objectContinuity",
+        "state": "MISSING",
+        "quote": null,
+        "span": null,
+        "sourceId": "content:10/prompt:10",
+        "sourceVersion": "10",
+        "sourceHash": "0fe229774deb4b31a42145bad91cf10c91634ba00da39fa3e9d288b3a2e7bd98",
+        "methodVersion": "source-span-production-evidence-v1",
+        "confidence": null,
+        "reason": "Omission does not confirm absence."
+      },
+      {
+        "field": "characterContinuity",
+        "state": "MISSING",
+        "quote": null,
+        "span": null,
+        "sourceId": "content:10/prompt:10",
+        "sourceVersion": "10",
+        "sourceHash": "0fe229774deb4b31a42145bad91cf10c91634ba00da39fa3e9d288b3a2e7bd98",
+        "methodVersion": "source-span-production-evidence-v1",
+        "confidence": null,
+        "reason": "Omission does not confirm absence."
+      },
+      {
+        "field": "occlusionRequirement",
+        "state": "MISSING",
+        "quote": null,
+        "span": null,
+        "sourceId": "content:10/prompt:10",
+        "sourceVersion": "10",
+        "sourceHash": "0fe229774deb4b31a42145bad91cf10c91634ba00da39fa3e9d288b3a2e7bd98",
+        "methodVersion": "source-span-production-evidence-v1",
+        "confidence": null,
+        "reason": "Omission does not confirm absence."
+      },
+      {
+        "field": "exactCountDependency",
+        "state": "MISSING",
+        "quote": null,
+        "span": null,
+        "sourceId": "content:10/prompt:10",
+        "sourceVersion": "10",
+        "sourceHash": "0fe229774deb4b31a42145bad91cf10c91634ba00da39fa3e9d288b3a2e7bd98",
+        "methodVersion": "source-span-production-evidence-v1",
+        "confidence": null,
+        "reason": "Omission does not confirm absence."
+      },
+      {
+        "field": "transformationRequirement",
+        "state": "INFERRED",
+        "quote": "Mimi, an anthropomorphic bunny, interacts with sticky notes in a humorous and chaotic manner",
+        "span": [
+          128,
+          220
+        ],
+        "sourceId": "content:10/prompt:10",
+        "sourceVersion": "10",
+        "sourceHash": "0fe229774deb4b31a42145bad91cf10c91634ba00da39fa3e9d288b3a2e7bd98",
+        "method": "LOCAL_SOURCE_PATTERN",
+        "methodVersion": "source-span-production-evidence-v1",
+        "provider": null,
+        "confidence": "MEDIUM"
+      },
+      {
+        "field": "transformationRequirement",
+        "state": "INFERRED",
+        "quote": "2-5s: Mimi tries to peel the stuck note away with her other hand; the note splits into two [medium shot of Mimi struggling] Mimi pulls at the note -> one note sticks to each hand",
+        "span": [
+          499,
+          677
+        ],
+        "sourceId": "content:10/prompt:10",
+        "sourceVersion": "10",
+        "sourceHash": "0fe229774deb4b31a42145bad91cf10c91634ba00da39fa3e9d288b3a2e7bd98",
+        "method": "LOCAL_SOURCE_PATTERN",
+        "methodVersion": "source-span-production-evidence-v1",
+        "provider": null,
+        "confidence": "MEDIUM"
+      },
+      {
+        "field": "transformationRequirement",
+        "state": "INFERRED",
+        "quote": "Mimi is the established anthropomorphic bunny character",
+        "span": [
+          1506,
+          1561
+        ],
+        "sourceId": "content:10/prompt:10",
+        "sourceVersion": "10",
+        "sourceHash": "0fe229774deb4b31a42145bad91cf10c91634ba00da39fa3e9d288b3a2e7bd98",
+        "method": "LOCAL_SOURCE_PATTERN",
+        "methodVersion": "source-span-production-evidence-v1",
+        "provider": null,
+        "confidence": "MEDIUM"
+      },
+      {
+        "field": "simulationRequirement",
+        "state": "MISSING",
+        "quote": null,
+        "span": null,
+        "sourceId": "content:10/prompt:10",
+        "sourceVersion": "10",
+        "sourceHash": "0fe229774deb4b31a42145bad91cf10c91634ba00da39fa3e9d288b3a2e7bd98",
+        "methodVersion": "source-span-production-evidence-v1",
+        "confidence": null,
+        "reason": "Omission does not confirm absence."
+      },
+      {
+        "field": "spatialRequirement",
+        "state": "INFERRED",
+        "quote": "10-12s: Mimi sees herself in a mirror and screams [close-up on Mimi's shocked face] Mimi is startled by her reflection completely covered in notes -> Mimi is startled",
+        "span": [
+          930,
+          1096
+        ],
+        "sourceId": "content:10/prompt:10",
+        "sourceVersion": "10",
+        "sourceHash": "0fe229774deb4b31a42145bad91cf10c91634ba00da39fa3e9d288b3a2e7bd98",
+        "method": "LOCAL_SOURCE_PATTERN",
+        "methodVersion": "source-span-production-evidence-v1",
+        "provider": null,
+        "confidence": "MEDIUM"
+      },
+      {
+        "field": "sceneContinuityRequirement",
+        "state": "MISSING",
+        "quote": null,
+        "span": null,
+        "sourceId": "content:10/prompt:10",
+        "sourceVersion": "10",
+        "sourceHash": "0fe229774deb4b31a42145bad91cf10c91634ba00da39fa3e9d288b3a2e7bd98",
+        "methodVersion": "source-span-production-evidence-v1",
+        "confidence": null,
+        "reason": "Omission does not confirm absence."
+      },
+      {
+        "field": "textRequirement",
+        "state": "MISSING",
+        "quote": null,
+        "span": null,
+        "sourceId": "content:10/prompt:10",
+        "sourceVersion": "10",
+        "sourceHash": "0fe229774deb4b31a42145bad91cf10c91634ba00da39fa3e9d288b3a2e7bd98",
+        "methodVersion": "source-span-production-evidence-v1",
+        "confidence": null,
+        "reason": "Omission does not confirm absence."
+      },
+      {
+        "field": "segmentContinuityRequirement",
+        "state": "MISSING",
+        "quote": null,
+        "span": null,
+        "sourceId": "content:10/prompt:10",
+        "sourceVersion": "10",
+        "sourceHash": "0fe229774deb4b31a42145bad91cf10c91634ba00da39fa3e9d288b3a2e7bd98",
+        "methodVersion": "source-span-production-evidence-v1",
+        "confidence": null,
+        "reason": "Omission does not confirm absence."
+      },
+      {
+        "field": "trackedPlan",
+        "state": "OBSERVED",
+        "sourceHash": "0fe229774deb4b31a42145bad91cf10c91634ba00da39fa3e9d288b3a2e7bd98",
+        "methodVersion": "DETERMINISTIC_SOURCE_BOUND_BEATS_V1",
+        "confidence": "HIGH_TEXT_CORRESPONDENCE",
+        "semanticVerification": "NOT_PERFORMED"
+      }
+    ],
+    "videoPlanIR": {
+      "metadata": {
+        "generalProducibilityEvidence": {
+          "source": "POST_FAMILY_SOURCE_ENRICHMENT",
+          "sourceHash": "0fe229774deb4b31a42145bad91cf10c91634ba00da39fa3e9d288b3a2e7bd98",
+          "sourceVersion": "10",
+          "extractionVersion": "source-span-production-evidence-v1"
+        },
+        "duration": 15.0
+      },
+      "beats": [
+        {
+          "id": "beat_01",
+          "action": "Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger",
+          "endTime": 2,
+          "startTime": 0,
+          "sourceSpan": [
+            239,
+            498
+          ],
+          "sourceQuote": "0-2s: Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger [close-up on Mimi's hand] Mimi is in front of a toy cabinet, looking determined -> the note sticks to Mimi, not the cabinet",
+          "semanticStatus": "PENDING"
+        },
+        {
+          "id": "beat_02",
+          "action": "Mimi tries to peel the stuck note away with her other hand; the note splits into two",
+          "endTime": 5,
+          "startTime": 2,
+          "sourceSpan": [
+            499,
+            677
+          ],
+          "sourceQuote": "2-5s: Mimi tries to peel the stuck note away with her other hand; the note splits into two [medium shot of Mimi struggling] Mimi pulls at the note -> one note sticks to each hand",
+          "semanticStatus": "PENDING"
+        },
+        {
+          "id": "beat_03",
+          "action": "Mimi continues to pull; each pull doubles the number of sticky notes",
+          "endTime": 10,
+          "startTime": 5,
+          "sourceSpan": [
+            678,
+            929
+          ],
+          "sourceQuote": "5-10s: Mimi continues to pull; each pull doubles the number of sticky notes [wide shot showing Mimi covered in notes] notes multiply from two to four to eight as she pulls, progressively covering her arms, legs and face -> Mimi is overwhelmed by notes",
+          "semanticStatus": "PENDING"
+        },
+        {
+          "id": "beat_04",
+          "action": "Mimi sees herself in a mirror and screams",
+          "endTime": 12,
+          "startTime": 10,
+          "sourceSpan": [
+            930,
+            1096
+          ],
+          "sourceQuote": "10-12s: Mimi sees herself in a mirror and screams [close-up on Mimi's shocked face] Mimi is startled by her reflection completely covered in notes -> Mimi is startled",
+          "semanticStatus": "PENDING"
+        },
+        {
+          "id": "beat_05",
+          "action": "Mimi sneezes and the sticky notes fly off",
+          "endTime": 15,
+          "startTime": 12,
+          "sourceSpan": [
+            1097,
+            1279
+          ],
+          "sourceQuote": "12-15s: Mimi sneezes and the sticky notes fly off [medium shot of notes flying] notes scatter and stick to the cabinet -> Mimi breathes a sigh of relief but the cabinet remains messy",
+          "semanticStatus": "PENDING"
+        }
+      ],
+      "contactPhysicsRequirement": {
+        "required": true,
+        "precision": "HIGH",
+        "evidenceReferences": [
+          "content:10/prompt:10#chars=239-498",
+          "content:10/prompt:10#chars=499-677",
+          "content:10/prompt:10#chars=1097-1279"
+        ],
+        "reason": "0-2s: Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger [close-up on Mimi's hand] Mimi is in front of a toy cabinet, looking determined -> the note sticks to Mimi, not the cabinet; 2-5s: Mimi tries to peel the stuck note away with her other hand; the note splits into two [medium shot of Mimi struggling] Mimi pulls at the note -> one note sticks to each hand"
+      },
+      "transformationRequirement": {
+        "required": true,
+        "precision": "MODERATE",
+        "evidenceReferences": [
+          "content:10/prompt:10#chars=128-220",
+          "content:10/prompt:10#chars=499-677",
+          "content:10/prompt:10#chars=1506-1561"
+        ],
+        "reason": "Mimi, an anthropomorphic bunny, interacts with sticky notes in a humorous and chaotic manner; 2-5s: Mimi tries to peel the stuck note away with her other hand; the note splits into two [medium shot of Mimi struggling] Mimi pulls at the note -> one note sticks to each hand"
+      },
+      "spatialRequirement": {
+        "required": true,
+        "precision": "HIGH",
+        "evidenceReferences": [
+          "content:10/prompt:10#chars=930-1096"
+        ],
+        "reason": "10-12s: Mimi sees herself in a mirror and screams [close-up on Mimi's shocked face] Mimi is startled by her reflection completely covered in notes -> Mimi is startled"
+      }
+    },
+    "generalProducibility": {
+      "status": "RISKY",
+      "dimensions": {
+        "ENTITY_LOAD": {
+          "level": "UNKNOWN",
+          "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+          "evidenceReferences": [],
+          "material": false,
+          "requiresRedesign": false
+        },
+        "OBJECT_IDENTITY_CONTINUITY": {
+          "level": "UNKNOWN",
+          "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+          "evidenceReferences": [],
+          "material": false,
+          "requiresRedesign": false
+        },
+        "CHARACTER_IDENTITY_CONTINUITY": {
+          "level": "UNKNOWN",
+          "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+          "evidenceReferences": [],
+          "material": false,
+          "requiresRedesign": false
+        },
+        "FINE_MOTOR_PRECISION": {
+          "level": "UNKNOWN",
+          "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+          "evidenceReferences": [],
+          "material": false,
+          "requiresRedesign": false
+        },
+        "CONTACT_PHYSICS_COMPLEXITY": {
+          "level": "HIGH",
+          "reason": "0-2s: Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger [close-up on Mimi's hand] Mimi is in front of a toy cabinet, looking determined -> the note sticks to Mimi, not the cabinet; 2-5s: Mimi tries to peel the stuck note away with her other hand; the note splits into two [medium shot of Mimi struggling] Mimi pulls at the note -> one note sticks to each hand",
+          "evidenceReferences": [
+            "contactPhysicsRequirement",
+            "content:10/prompt:10#chars=1097-1279",
+            "content:10/prompt:10#chars=239-498",
+            "content:10/prompt:10#chars=499-677"
+          ],
+          "material": true,
+          "requiresRedesign": false
+        },
+        "OCCLUSION_HIDDEN_STATE": {
+          "level": "UNKNOWN",
+          "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+          "evidenceReferences": [],
+          "material": false,
+          "requiresRedesign": false
+        },
+        "EXACT_COUNT_DEPENDENCY": {
+          "level": "UNKNOWN",
+          "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+          "evidenceReferences": [],
+          "material": false,
+          "requiresRedesign": false
+        },
+        "MULTI_ENTITY_CONCURRENCY": {
+          "level": "UNKNOWN",
+          "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+          "evidenceReferences": [],
+          "material": false,
+          "requiresRedesign": false
+        },
+        "TRANSFORMATION_COMPLEXITY": {
+          "level": "MODERATE",
+          "reason": "Mimi, an anthropomorphic bunny, interacts with sticky notes in a humorous and chaotic manner; 2-5s: Mimi tries to peel the stuck note away with her other hand; the note splits into two [medium shot of Mimi struggling] Mimi pulls at the note -> one note sticks to each hand",
+          "evidenceReferences": [
+            "transformationRequirement",
+            "content:10/prompt:10#chars=128-220",
+            "content:10/prompt:10#chars=1506-1561",
+            "content:10/prompt:10#chars=499-677"
+          ],
+          "material": true,
+          "requiresRedesign": false
+        },
+        "LIQUID_CLOTH_PARTICLE": {
+          "level": "UNKNOWN",
+          "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+          "evidenceReferences": [],
+          "material": false,
+          "requiresRedesign": false
+        },
+        "SPATIAL_RELATIONSHIP_COMPLEXITY": {
+          "level": "HIGH",
+          "reason": "10-12s: Mimi sees herself in a mirror and screams [close-up on Mimi's shocked face] Mimi is startled by her reflection completely covered in notes -> Mimi is startled",
+          "evidenceReferences": [
+            "spatialRequirement",
+            "content:10/prompt:10#chars=930-1096"
+          ],
+          "material": true,
+          "requiresRedesign": false
+        },
+        "CAMERA_ACTION_COUPLING": {
+          "level": "UNKNOWN",
+          "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+          "evidenceReferences": [],
+          "material": false,
+          "requiresRedesign": false
+        },
+        "MULTI_SCENE_CONTINUITY": {
+          "level": "UNKNOWN",
+          "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+          "evidenceReferences": [],
+          "material": false,
+          "requiresRedesign": false
+        },
+        "TEXT_LIP_SYNC_SYMBOL": {
+          "level": "UNKNOWN",
+          "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+          "evidenceReferences": [],
+          "material": false,
+          "requiresRedesign": false
+        },
+        "SEGMENT_CONTINUITY": {
+          "level": "UNKNOWN",
+          "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+          "evidenceReferences": [],
+          "material": false,
+          "requiresRedesign": false
+        }
+      },
+      "reasons": [
+        "0-2s: Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger [close-up on Mimi's hand] Mimi is in front of a toy cabinet, looking determined -> the note sticks to Mimi, not the cabinet; 2-5s: Mimi tries to peel the stuck note away with her other hand; the note splits into two [medium shot of Mimi struggling] Mimi pulls at the note -> one note sticks to each hand",
+        "Mimi, an anthropomorphic bunny, interacts with sticky notes in a humorous and chaotic manner; 2-5s: Mimi tries to peel the stuck note away with her other hand; the note splits into two [medium shot of Mimi struggling] Mimi pulls at the note -> one note sticks to each hand",
+        "10-12s: Mimi sees herself in a mirror and screams [close-up on Mimi's shocked face] Mimi is startled by her reflection completely covered in notes -> Mimi is startled",
+        "Some required structured production evidence is unavailable."
+      ],
+      "materialRisks": [
+        "CONTACT_PHYSICS_COMPLEXITY",
+        "TRANSFORMATION_COMPLEXITY",
+        "SPATIAL_RELATIONSHIP_COMPLEXITY"
+      ],
+      "unknownDimensions": [
+        "ENTITY_LOAD",
+        "OBJECT_IDENTITY_CONTINUITY",
+        "CHARACTER_IDENTITY_CONTINUITY",
+        "FINE_MOTOR_PRECISION",
+        "OCCLUSION_HIDDEN_STATE",
+        "EXACT_COUNT_DEPENDENCY",
+        "MULTI_ENTITY_CONCURRENCY",
+        "LIQUID_CLOTH_PARTICLE",
+        "CAMERA_ACTION_COUPLING",
+        "MULTI_SCENE_CONTINUITY",
+        "TEXT_LIP_SYNC_SYMBOL",
+        "SEGMENT_CONTINUITY"
+      ],
+      "durationSeconds": 15.0,
+      "durationSource": "metadata.duration",
+      "durationLoad": {
+        "level": "UNKNOWN",
+        "reason": "Timed, independently tracked action evidence is incomplete.",
+        "evidenceReferences": [],
+        "material": false,
+        "requiresRedesign": false,
+        "dependentStateChanges": 0,
+        "changesPerSecond": null
+      },
+      "provenance": {
+        "evaluatorVersion": "general-producibility-v1",
+        "source": "STRUCTURED_VIDEO_PLAN_IR",
+        "sourceEvidence": {
+          "source": "POST_FAMILY_SOURCE_ENRICHMENT",
+          "sourceHash": "0fe229774deb4b31a42145bad91cf10c91634ba00da39fa3e9d288b3a2e7bd98",
+          "sourceVersion": "10",
+          "extractionVersion": "source-span-production-evidence-v1"
+        },
+        "family6TemporalLoad": {
+          "status": "UNKNOWN",
+          "axes": [
+            {
+              "axis": "temporal_packing",
+              "level": "UNKNOWN",
+              "confidence": "LOW",
+              "evidenceReferences": [],
+              "reason": "Explicit duration and complete beat timing are unavailable."
+            },
+            {
+              "axis": "state_breadth",
+              "level": "UNKNOWN",
+              "confidence": "LOW",
+              "evidenceReferences": [
+                "beat_01",
+                "beat_02",
+                "beat_03",
+                "beat_04",
+                "beat_05"
+              ],
+              "reason": "Beat timing exists, but structured state-breadth fields are unavailable."
+            },
+            {
+              "axis": "continuity_memory",
+              "level": "UNKNOWN",
+              "confidence": "LOW",
+              "evidenceReferences": [
+                "beat_01",
+                "beat_02",
+                "beat_03",
+                "beat_04",
+                "beat_05"
+              ],
+              "reason": "Beat timing exists, but structured continuity state is unavailable."
+            },
+            {
+              "axis": "action_concurrency",
+              "level": "UNKNOWN",
+              "confidence": "LOW",
+              "evidenceReferences": [
+                "beat_01",
+                "beat_02",
+                "beat_03",
+                "beat_04",
+                "beat_05"
+              ],
+              "reason": "Beat timing exists, but structured actor/object concurrency evidence is unavailable."
+            }
+          ],
+          "severeAxisCount": 0,
+          "elevatedAxisCount": 0,
+          "highBasis": null,
+          "evidenceStatus": "UNKNOWN",
+          "version": "family6-temporal-generation-load-v1"
+        },
+        "authorizationPolicy": "EXISTING_POLICY_UNCHANGED"
+      }
+    },
+    "remainingUncertainty": [
+      "fineMotorRequirement",
+      "objectContinuity",
+      "characterContinuity",
+      "occlusionRequirement",
+      "exactCountDependency",
+      "simulationRequirement",
+      "sceneContinuityRequirement",
+      "textRequirement",
+      "segmentContinuityRequirement"
+    ]
+  },
+  "generalProducibility": {
+    "status": "RISKY",
+    "dimensions": {
+      "ENTITY_LOAD": {
+        "level": "UNKNOWN",
+        "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+        "evidenceReferences": [],
+        "material": false,
+        "requiresRedesign": false
+      },
+      "OBJECT_IDENTITY_CONTINUITY": {
+        "level": "UNKNOWN",
+        "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+        "evidenceReferences": [],
+        "material": false,
+        "requiresRedesign": false
+      },
+      "CHARACTER_IDENTITY_CONTINUITY": {
+        "level": "UNKNOWN",
+        "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+        "evidenceReferences": [],
+        "material": false,
+        "requiresRedesign": false
+      },
+      "FINE_MOTOR_PRECISION": {
+        "level": "UNKNOWN",
+        "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+        "evidenceReferences": [],
+        "material": false,
+        "requiresRedesign": false
+      },
+      "CONTACT_PHYSICS_COMPLEXITY": {
+        "level": "HIGH",
+        "reason": "0-2s: Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger [close-up on Mimi's hand] Mimi is in front of a toy cabinet, looking determined -> the note sticks to Mimi, not the cabinet; 2-5s: Mimi tries to peel the stuck note away with her other hand; the note splits into two [medium shot of Mimi struggling] Mimi pulls at the note -> one note sticks to each hand",
+        "evidenceReferences": [
+          "contactPhysicsRequirement",
+          "content:10/prompt:10#chars=1097-1279",
+          "content:10/prompt:10#chars=239-498",
+          "content:10/prompt:10#chars=499-677"
+        ],
+        "material": true,
+        "requiresRedesign": false
+      },
+      "OCCLUSION_HIDDEN_STATE": {
+        "level": "UNKNOWN",
+        "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+        "evidenceReferences": [],
+        "material": false,
+        "requiresRedesign": false
+      },
+      "EXACT_COUNT_DEPENDENCY": {
+        "level": "UNKNOWN",
+        "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+        "evidenceReferences": [],
+        "material": false,
+        "requiresRedesign": false
+      },
+      "MULTI_ENTITY_CONCURRENCY": {
+        "level": "UNKNOWN",
+        "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+        "evidenceReferences": [],
+        "material": false,
+        "requiresRedesign": false
+      },
+      "TRANSFORMATION_COMPLEXITY": {
+        "level": "MODERATE",
+        "reason": "Mimi, an anthropomorphic bunny, interacts with sticky notes in a humorous and chaotic manner; 2-5s: Mimi tries to peel the stuck note away with her other hand; the note splits into two [medium shot of Mimi struggling] Mimi pulls at the note -> one note sticks to each hand",
+        "evidenceReferences": [
+          "transformationRequirement",
+          "content:10/prompt:10#chars=128-220",
+          "content:10/prompt:10#chars=1506-1561",
+          "content:10/prompt:10#chars=499-677"
+        ],
+        "material": true,
+        "requiresRedesign": false
+      },
+      "LIQUID_CLOTH_PARTICLE": {
+        "level": "UNKNOWN",
+        "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+        "evidenceReferences": [],
+        "material": false,
+        "requiresRedesign": false
+      },
+      "SPATIAL_RELATIONSHIP_COMPLEXITY": {
+        "level": "HIGH",
+        "reason": "10-12s: Mimi sees herself in a mirror and screams [close-up on Mimi's shocked face] Mimi is startled by her reflection completely covered in notes -> Mimi is startled",
+        "evidenceReferences": [
+          "spatialRequirement",
+          "content:10/prompt:10#chars=930-1096"
+        ],
+        "material": true,
+        "requiresRedesign": false
+      },
+      "CAMERA_ACTION_COUPLING": {
+        "level": "UNKNOWN",
+        "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+        "evidenceReferences": [],
+        "material": false,
+        "requiresRedesign": false
+      },
+      "MULTI_SCENE_CONTINUITY": {
+        "level": "UNKNOWN",
+        "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+        "evidenceReferences": [],
+        "material": false,
+        "requiresRedesign": false
+      },
+      "TEXT_LIP_SYNC_SYMBOL": {
+        "level": "UNKNOWN",
+        "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+        "evidenceReferences": [],
+        "material": false,
+        "requiresRedesign": false
+      },
+      "SEGMENT_CONTINUITY": {
+        "level": "UNKNOWN",
+        "reason": "Independent entity/action evidence is missing; feasibility is not established.",
+        "evidenceReferences": [],
+        "material": false,
+        "requiresRedesign": false
+      }
+    },
+    "reasons": [
+      "0-2s: Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger [close-up on Mimi's hand] Mimi is in front of a toy cabinet, looking determined -> the note sticks to Mimi, not the cabinet; 2-5s: Mimi tries to peel the stuck note away with her other hand; the note splits into two [medium shot of Mimi struggling] Mimi pulls at the note -> one note sticks to each hand",
+      "Mimi, an anthropomorphic bunny, interacts with sticky notes in a humorous and chaotic manner; 2-5s: Mimi tries to peel the stuck note away with her other hand; the note splits into two [medium shot of Mimi struggling] Mimi pulls at the note -> one note sticks to each hand",
+      "10-12s: Mimi sees herself in a mirror and screams [close-up on Mimi's shocked face] Mimi is startled by her reflection completely covered in notes -> Mimi is startled",
+      "Some required structured production evidence is unavailable."
+    ],
+    "materialRisks": [
+      "CONTACT_PHYSICS_COMPLEXITY",
+      "TRANSFORMATION_COMPLEXITY",
+      "SPATIAL_RELATIONSHIP_COMPLEXITY"
+    ],
+    "unknownDimensions": [
+      "ENTITY_LOAD",
+      "OBJECT_IDENTITY_CONTINUITY",
+      "CHARACTER_IDENTITY_CONTINUITY",
+      "FINE_MOTOR_PRECISION",
+      "OCCLUSION_HIDDEN_STATE",
+      "EXACT_COUNT_DEPENDENCY",
+      "MULTI_ENTITY_CONCURRENCY",
+      "LIQUID_CLOTH_PARTICLE",
+      "CAMERA_ACTION_COUPLING",
+      "MULTI_SCENE_CONTINUITY",
+      "TEXT_LIP_SYNC_SYMBOL",
+      "SEGMENT_CONTINUITY"
+    ],
+    "durationSeconds": 15.0,
+    "durationSource": "metadata.duration",
+    "durationLoad": {
+      "level": "UNKNOWN",
+      "reason": "Timed, independently tracked action evidence is incomplete.",
+      "evidenceReferences": [],
+      "material": false,
+      "requiresRedesign": false,
+      "dependentStateChanges": 0,
+      "changesPerSecond": null
+    },
+    "provenance": {
+      "evaluatorVersion": "general-producibility-v1",
+      "source": "STRUCTURED_VIDEO_PLAN_IR",
+      "sourceEvidence": {
+        "source": "POST_FAMILY_SOURCE_ENRICHMENT",
+        "sourceHash": "0fe229774deb4b31a42145bad91cf10c91634ba00da39fa3e9d288b3a2e7bd98",
+        "sourceVersion": "10",
+        "extractionVersion": "source-span-production-evidence-v1"
+      },
+      "family6TemporalLoad": {
+        "status": "UNKNOWN",
+        "axes": [
+          {
+            "axis": "temporal_packing",
+            "level": "UNKNOWN",
+            "confidence": "LOW",
+            "evidenceReferences": [],
+            "reason": "Explicit duration and complete beat timing are unavailable."
+          },
+          {
+            "axis": "state_breadth",
+            "level": "UNKNOWN",
+            "confidence": "LOW",
+            "evidenceReferences": [
+              "beat_01",
+              "beat_02",
+              "beat_03",
+              "beat_04",
+              "beat_05"
+            ],
+            "reason": "Beat timing exists, but structured state-breadth fields are unavailable."
+          },
+          {
+            "axis": "continuity_memory",
+            "level": "UNKNOWN",
+            "confidence": "LOW",
+            "evidenceReferences": [
+              "beat_01",
+              "beat_02",
+              "beat_03",
+              "beat_04",
+              "beat_05"
+            ],
+            "reason": "Beat timing exists, but structured continuity state is unavailable."
+          },
+          {
+            "axis": "action_concurrency",
+            "level": "UNKNOWN",
+            "confidence": "LOW",
+            "evidenceReferences": [
+              "beat_01",
+              "beat_02",
+              "beat_03",
+              "beat_04",
+              "beat_05"
+            ],
+            "reason": "Beat timing exists, but structured actor/object concurrency evidence is unavailable."
+          }
+        ],
+        "severeAxisCount": 0,
+        "elevatedAxisCount": 0,
+        "highBasis": null,
+        "evidenceStatus": "UNKNOWN",
+        "version": "family6-temporal-generation-load-v1"
+      },
+      "authorizationPolicy": "EXISTING_POLICY_UNCHANGED"
+    }
+  },
+  "routing": {
+    "contentProfile": "ABSURD_PHYSICS",
+    "basis": "OPERATOR_SELECTED",
+    "confidence": "HUMAN_REVIEWED",
+    "viewerQuestion": null,
+    "alternatives": []
+  },
+  "applicability": {
+    "COMEDY": {
+      "status": "NOT_APPLICABLE",
+      "reason": "This is not a universal requirement of the new profile.",
+      "profileVersion": "post-family-v1"
+    },
+    "THREE_ATTEMPTS": {
+      "status": "NOT_APPLICABLE",
+      "reason": "This is not a universal requirement of the new profile.",
+      "profileVersion": "post-family-v1"
+    },
+    "FAKE_RESOLUTION": {
+      "status": "NOT_APPLICABLE",
+      "reason": "This is not a universal requirement of the new profile.",
+      "profileVersion": "post-family-v1"
+    },
+    "RESOLVED_ENDING": {
+      "status": "NOT_APPLICABLE",
+      "reason": "This is not a universal requirement of the new profile.",
+      "profileVersion": "post-family-v1"
+    },
+    "FRAME_ZERO_FULL_CAUSALITY": {
+      "status": "NOT_APPLICABLE",
+      "reason": "This is not a universal requirement of the new profile.",
+      "profileVersion": "post-family-v1"
+    },
+    "INCREASING_PHYSICAL_INTENSITY": {
+      "status": "NOT_APPLICABLE",
+      "reason": "This is not a universal requirement of the new profile.",
+      "profileVersion": "post-family-v1"
+    },
+    "BIGGEST_FINAL_EVENT": {
+      "status": "NOT_APPLICABLE",
+      "reason": "This is not a universal requirement of the new profile.",
+      "profileVersion": "post-family-v1"
+    },
+    "SEAMLESS_LOOP": {
+      "status": "NOT_APPLICABLE",
+      "reason": "This is not a universal requirement of the new profile.",
+      "profileVersion": "post-family-v1"
+    },
+    "FLAWLESS_ANIMATION": {
+      "status": "NOT_APPLICABLE",
+      "reason": "This is not a universal requirement of the new profile.",
+      "profileVersion": "post-family-v1"
+    },
+    "UNIVERSAL_15_SECONDS": {
+      "status": "NOT_APPLICABLE",
+      "reason": "This is not a universal requirement of the new profile.",
+      "profileVersion": "post-family-v1"
+    },
+    "ONE_CHARACTER_ONE_OBJECT": {
+      "status": "PREFERRED_TEMPLATE",
+      "reason": "This is not a universal requirement of the new profile.",
+      "profileVersion": "post-family-v1"
+    }
+  },
+  "engagement": {
+    "stage": "PROMPT_REVIEW",
+    "status": "HYPOTHESIS",
+    "attentionPromise": "Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger",
+    "progression": [
+      "Mimi tries to peel the stuck note away with her other hand; the note splits into two",
+      "Mimi continues to pull; each pull doubles the number of sticky notes",
+      "Mimi sees herself in a mirror and screams"
+    ],
+    "endingDelivery": "Mimi sneezes and the sticky notes fly off",
+    "rewatchMechanism": "UNKNOWN",
+    "endingKind": "PLANNED_ENDING",
+    "limitations": [
+      "The pre-assessment is a hypothesis; it is not a viewing or retention percentage forecast.",
+      "An unanswered question alone is not evidence of replay.",
+      "Stillness alone is not evidence of unnecessary dead time."
+    ]
+  },
+  "generation": {
+    "recommendedGenerator": "SEEDANCE_2_0_MINI",
+    "selectedGenerator": "SEEDANCE_2_0_MINI",
+    "apiModelId": "byte-plus-seedance-2-mini",
+    "desiredDuration": 15.0,
+    "supportedRenderDuration": 15.0,
+    "plannedEditedDuration": 15.0,
+    "capabilityStatus": "SUPPORTED",
+    "missingExecutionInputs": [
+      "startFrame"
+    ],
+    "capabilityProvenance": {
+      "source": "CONNECTED_OPENART_MODEL_FORM",
+      "command": "openart model form byte-plus-seedance-2-mini image2video --json --no-input",
+      "verifiedDate": "2026-10-08",
+      "schemaSha256": "e5458973228db9a1a6fd2185322e98e4f33595496e8c12cf9f22d69206ea1b94",
+      "liveGenerationVerified": false,
+      "cliVersion": "0.1.1 (commit 85fa0ad; built 2026-08-31)"
+    },
+    "profileVersion": "openart-cli-schema-2026-10-08",
+    "mode": "image2video",
+    "settings": {
+      "mode": "image2video",
+      "resolution": "480p",
+      "aspectRatio": "9:16"
+    },
+    "segments": [],
+    "reasons": [],
+    "selectionReason": "User production preference for the concept duration."
+  },
+  "opening": {
+    "strategy": "INSTANT_IMPOSSIBLE",
+    "designWindowSeconds": 2.0,
+    "plannedOpening": {
+      "status": "HYPOTHESIS",
+      "sourceSpan": [
+        239,
+        498
+      ],
+      "visualPromise": "Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger"
+    },
+    "actualFirstFrame": {
+      "status": "UNKNOWN"
+    },
+    "actualOpeningVideo": {
+      "status": "UNKNOWN"
+    },
+    "cover": {
+      "status": "NOT_EVIDENCE_OF_OPENING"
+    },
+    "alternatives": [],
+    "reason": "Focus and the visual promise should be readable early; frame zero does not need to explain complete causality. The design window is not an acceptance threshold."
+  },
+  "executionReview": {
+    "stage": "GENERATOR_EXECUTION_REVIEW",
+    "status": "PASS",
+    "findings": [],
+    "provider": "LOCAL",
+    "model": null,
+    "version": "local-execution-critic-v1",
+    "visualInspected": false,
+    "targetGenerator": "SEEDANCE_2_0_MINI",
+    "limitations": [
+      "General writing heuristics; not evidence of the selected model\u2019s actual performance."
+    ],
+    "calls": 0
+  },
+  "family8": {
+    "creativeQuality": {
+      "creativeScore": null,
+      "creativeGrade": null,
+      "familyScores": {}
+    },
+    "evidenceCompleteness": {
+      "status": "INCOMPLETE",
+      "evaluationCoverage": null,
+      "aggregation": {}
+    },
+    "renderAuthorization": {
+      "status": "BLOCKED_PENDING_EVIDENCE",
+      "reasons": [
+        {
+          "code": "REQUIRED_EVIDENCE_MISSING",
+          "source": "REFERENCE_ASSOCIATION",
+          "message": "An authoritative character/object reference is missing or unverified.",
+          "references": []
+        },
+        {
+          "code": "REQUIRED_EVIDENCE_MISSING",
+          "source": "EXECUTION_INPUTS",
+          "message": "Required provider execution inputs are missing: startFrame",
+          "references": []
+        }
+      ]
+    },
+    "legacy": {
+      "readiness": null
+    }
+  },
+  "originalPrompt": "TITLE / FORMAT\nMimi Sticky / 15s Video\n\nVISUAL STYLE\nBright and colorful animation with a playful tone.\n\nCHARACTER / CONTINUITY\nMimi, an anthropomorphic bunny, interacts with sticky notes in a humorous and chaotic manner.\n\nTIMED SHOT PLAN\n0-2s: Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger [close-up on Mimi's hand] Mimi is in front of a toy cabinet, looking determined -> the note sticks to Mimi, not the cabinet\n2-5s: Mimi tries to peel the stuck note away with her other hand; the note splits into two [medium shot of Mimi struggling] Mimi pulls at the note -> one note sticks to each hand\n5-10s: Mimi continues to pull; each pull doubles the number of sticky notes [wide shot showing Mimi covered in notes] notes multiply from two to four to eight as she pulls, progressively covering her arms, legs and face -> Mimi is overwhelmed by notes\n10-12s: Mimi sees herself in a mirror and screams [close-up on Mimi's shocked face] Mimi is startled by her reflection completely covered in notes -> Mimi is startled\n12-15s: Mimi sneezes and the sticky notes fly off [medium shot of notes flying] notes scatter and stick to the cabinet -> Mimi breathes a sigh of relief but the cabinet remains messy\n\nAUDIO\nPlayful background music with sound effects for sneezing and notes sticking.\n\nNEGATIVE CONSTRAINTS\nNo dark themes or violence.\n\nFINAL CUT\nMimi is relieved but the cabinet remains visibly messy.\n\nCHARACTER IDENTITY LOCK\nMimi is the established anthropomorphic bunny character. Preserve that identity; do not render a human or invent unverified visual details. No approved visual reference is currently bound, so appearance details remain unverified.\n\nPRODUCTION SETTINGS\nAspect ratio: 9:16. Target generator: SEEDANCE_2_0_MINI. Content profile: AUTO.",
+  "finalPrompt": "TITLE / FORMAT\nMimi Sticky / 15s Video\n\nVISUAL STYLE\nBright and colorful animation with a playful tone.\n\nCHARACTER / CONTINUITY\nMimi, an anthropomorphic bunny, interacts with sticky notes in a humorous and chaotic manner.\n\nTIMED SHOT PLAN\n0-2s: Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger [close-up on Mimi's hand] Mimi is in front of a toy cabinet, looking determined -> the note sticks to Mimi, not the cabinet\n2-5s: Mimi tries to peel the stuck note away with her other hand; the note splits into two [medium shot of Mimi struggling] Mimi pulls at the note -> one note sticks to each hand\n5-10s: Mimi continues to pull; each pull doubles the number of sticky notes [wide shot showing Mimi covered in notes] notes multiply from two to four to eight as she pulls, progressively covering her arms, legs and face -> Mimi is overwhelmed by notes\n10-12s: Mimi sees herself in a mirror and screams [close-up on Mimi's shocked face] Mimi is startled by her reflection completely covered in notes -> Mimi is startled\n12-15s: Mimi sneezes and the sticky notes fly off [medium shot of notes flying] notes scatter and stick to the cabinet -> Mimi breathes a sigh of relief but the cabinet remains messy\n\nAUDIO\nPlayful background music with sound effects for sneezing and notes sticking.\n\nNEGATIVE CONSTRAINTS\nNo dark themes or violence.\n\nFINAL CUT\nMimi is relieved but the cabinet remains visibly messy.\n\nCHARACTER IDENTITY LOCK\nMimi is the established anthropomorphic bunny character. Preserve that identity; do not render a human or invent unverified visual details. No approved visual reference is currently bound, so appearance details remain unverified.\n\nPRODUCTION SETTINGS\nAspect ratio: 9:16. Target generator: SEEDANCE_2_0_MINI. Content profile: AUTO.",
+  "patch": [],
+  "changedSettings": {},
+  "repairPasses": 0,
+  "verificationPasses": 0,
+  "protectedIntent": [],
+  "retrievedLessons": [],
+  "manualHandoff": {
+    "allowed": true,
+    "authorization": {
+      "status": "BLOCKED_PENDING_EVIDENCE",
+      "reasons": [
+        {
+          "code": "REQUIRED_EVIDENCE_MISSING",
+          "source": "REFERENCE_ASSOCIATION",
+          "message": "An authoritative character/object reference is missing or unverified.",
+          "references": []
+        },
+        {
+          "code": "REQUIRED_EVIDENCE_MISSING",
+          "source": "EXECUTION_INPUTS",
+          "message": "Required provider execution inputs are missing: startFrame",
+          "references": []
+        }
+      ]
+    },
+    "notice": "Exporting the review package does not authorize rendering or spending credits."
+  },
+  "boundRequest": {
+    "prompt": "TITLE / FORMAT\nMimi Sticky / 15s Video\n\nVISUAL STYLE\nBright and colorful animation with a playful tone.\n\nCHARACTER / CONTINUITY\nMimi, an anthropomorphic bunny, interacts with sticky notes in a humorous and chaotic manner.\n\nTIMED SHOT PLAN\n0-2s: Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger [close-up on Mimi's hand] Mimi is in front of a toy cabinet, looking determined -> the note sticks to Mimi, not the cabinet\n2-5s: Mimi tries to peel the stuck note away with her other hand; the note splits into two [medium shot of Mimi struggling] Mimi pulls at the note -> one note sticks to each hand\n5-10s: Mimi continues to pull; each pull doubles the number of sticky notes [wide shot showing Mimi covered in notes] notes multiply from two to four to eight as she pulls, progressively covering her arms, legs and face -> Mimi is overwhelmed by notes\n10-12s: Mimi sees herself in a mirror and screams [close-up on Mimi's shocked face] Mimi is startled by her reflection completely covered in notes -> Mimi is startled\n12-15s: Mimi sneezes and the sticky notes fly off [medium shot of notes flying] notes scatter and stick to the cabinet -> Mimi breathes a sigh of relief but the cabinet remains messy\n\nAUDIO\nPlayful background music with sound effects for sneezing and notes sticking.\n\nNEGATIVE CONSTRAINTS\nNo dark themes or violence.\n\nFINAL CUT\nMimi is relieved but the cabinet remains visibly messy.\n\nCHARACTER IDENTITY LOCK\nMimi is the established anthropomorphic bunny character. Preserve that identity; do not render a human or invent unverified visual details. No approved visual reference is currently bound, so appearance details remain unverified.\n\nPRODUCTION SETTINGS\nAspect ratio: 9:16. Target generator: SEEDANCE_2_0_MINI. Content profile: AUTO.",
+    "profile": "post-family-v1",
+    "segments": [],
+    "settings": {
+      "mode": "image2video",
+      "resolution": "480p",
+      "aspectRatio": "9:16"
+    },
+    "sourceId": "content:10/prompt:10",
+    "generator": "SEEDANCE_2_0_MINI",
+    "references": [],
+    "sourceVersion": "10",
+    "contentProfile": "ABSURD_PHYSICS",
+    "structuredPlan": {
+      "beats": [
+        {
+          "id": "beat_01",
+          "action": "Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger",
+          "endTime": 2,
+          "startTime": 0,
+          "sourceSpan": [
+            239,
+            498
+          ],
+          "sourceQuote": "0-2s: Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger [close-up on Mimi's hand] Mimi is in front of a toy cabinet, looking determined -> the note sticks to Mimi, not the cabinet",
+          "semanticStatus": "PENDING"
+        },
+        {
+          "id": "beat_02",
+          "action": "Mimi tries to peel the stuck note away with her other hand; the note splits into two",
+          "endTime": 5,
+          "startTime": 2,
+          "sourceSpan": [
+            499,
+            677
+          ],
+          "sourceQuote": "2-5s: Mimi tries to peel the stuck note away with her other hand; the note splits into two [medium shot of Mimi struggling] Mimi pulls at the note -> one note sticks to each hand",
+          "semanticStatus": "PENDING"
+        },
+        {
+          "id": "beat_03",
+          "action": "Mimi continues to pull; each pull doubles the number of sticky notes",
+          "endTime": 10,
+          "startTime": 5,
+          "sourceSpan": [
+            678,
+            929
+          ],
+          "sourceQuote": "5-10s: Mimi continues to pull; each pull doubles the number of sticky notes [wide shot showing Mimi covered in notes] notes multiply from two to four to eight as she pulls, progressively covering her arms, legs and face -> Mimi is overwhelmed by notes",
+          "semanticStatus": "PENDING"
+        },
+        {
+          "id": "beat_04",
+          "action": "Mimi sees herself in a mirror and screams",
+          "endTime": 12,
+          "startTime": 10,
+          "sourceSpan": [
+            930,
+            1096
+          ],
+          "sourceQuote": "10-12s: Mimi sees herself in a mirror and screams [close-up on Mimi's shocked face] Mimi is startled by her reflection completely covered in notes -> Mimi is startled",
+          "semanticStatus": "PENDING"
+        },
+        {
+          "id": "beat_05",
+          "action": "Mimi sneezes and the sticky notes fly off",
+          "endTime": 15,
+          "startTime": 12,
+          "sourceSpan": [
+            1097,
+            1279
+          ],
+          "sourceQuote": "12-15s: Mimi sneezes and the sticky notes fly off [medium shot of notes flying] notes scatter and stick to the cabinet -> Mimi breathes a sigh of relief but the cabinet remains messy",
+          "semanticStatus": "PENDING"
+        }
+      ],
+      "schemaVersion": "source-bound-beats-v1",
+      "sourceVersion": "10",
+      "evidenceStatus": "DETERMINISTIC_SOURCE_EVENTS_ONLY"
+    },
+    "viewerQuestion": "",
+    "desiredDuration": 15,
+    "openingStrategy": "AUTO",
+    "protectedIntent": [],
+    "creativeEvidence": [],
+    "acceptedStartFrame": false,
+    "intentChangeReason": "",
+    "intentRequirements": [],
+    "lessonModelVersion": "",
+    "qualityJustification": "",
+    "canonicalValidationId": null,
+    "plannedEditedDuration": null,
+    "canonicalRulesetVersion": "1.9",
+    "retrievedLessons": []
+  },
+  "contentId": 10,
+  "promptVersionId": 10,
+  "createdAt": "2026-10-14T22:14:18.928771803Z",
+  "recordId": "38a57f84-b61a-470c-8342-cd522bdbd38e"
+}

@@ -43,7 +43,8 @@ PRODUCTION = re.compile(
     re.I,
 )
 RELATION = re.compile(
-    r"\b(?:again|stuck|blocked|away|off|free|release|remove|recover)\b|\b(?:from|into)\b|\bto (?:open|stop|free|remove|release|keep|control|catch|block)\b",
+    r"\b(?:again|stuck|blocked|away|off|free|release|remove|recover)\b|\b(?:from|into)\b|"
+    r"\bto (?:open|stop|free|remove|release|keep|control|catch|block)\b",
     re.I,
 )
 
@@ -104,13 +105,15 @@ def classify_content(content: str, actor: str | None, role: str = "") -> dict[st
             end -= 1
         quote = content[match.start() : end]
         intent = (match.group("intent") or "").strip()
+        marker = re.search(r"\[ATTEMPT:\s*([A-Za-z]+)(?:[^\]]*)\]", content, re.I)
+        marker_role = bool(marker and ROOTS.get(marker.group(1).lower()) == root)
         relation = (
             "EXPLICIT_INTENT_OR_CONTINUATION"
             if intent
             else "EXPLICIT_RECOVERY_OR_CONTROL"
             if RELATION.search(quote)
             else "STRUCTURED_ATTEMPT_ROLE"
-            if role == "ATTEMPT"
+            if role == "ATTEMPT" or marker_role
             else None
         )
         actions.append(
@@ -253,7 +256,8 @@ def bind_beats(prompt: str, beats: list[dict[str, Any]], actor: str | None) -> N
 def establish_actor(text: str) -> str | None:
     """Identify source-declared actors without matching CHARACTER REFERENCE as a name."""
     declaration = re.search(
-        r"(?im)^[ \t]*(?:MAIN CHARACTER|CHARACTER(?:[ \t]*/[ \t]*CONTINUITY)?)[ \t]*(?::[ \t]*(?:\n[ \t]*)?|\n[ \t]*)([A-Z][a-zA-Z0-9_-]+)\b",
+        r"(?im)^[ \t]*(?:MAIN CHARACTER|CHARACTER(?:[ \t]*/[ \t]*CONTINUITY)?)[ \t]*"
+        r"(?::[ \t]*(?:\n[ \t]*)?|\n[ \t]*)([A-Z][a-zA-Z0-9_-]+)\b",
         text,
     )
     if declaration:
