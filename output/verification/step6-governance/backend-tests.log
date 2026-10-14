@@ -1,0 +1,72 @@
+Mockito is currently self-attaching to enable the inline-mock-maker. This will no longer work in future releases of the JDK. Please add Mockito as an agent to your build as described in Mockito's documentation: https://javadoc.io/doc/org.mockito/mockito-core/latest/org.mockito/org/mockito/Mockito.html#0.3
+OpenJDK 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended
+WARNING: A Java agent has been loaded dynamically (/Users/benanaktas/.m2/repository/net/bytebuddy/byte-buddy-agent/1.18.11/byte-buddy-agent-1.18.11.jar)
+WARNING: If a serviceability tool is in use, please run with -XX:+EnableDynamicAgentLoading to hide this warning
+WARNING: If a serviceability tool is not in use, please run with -Djdk.instrument.traceUsage for more information
+WARNING: Dynamic loading of agents will be disallowed by default in a future release
+00:47:58.184 [main] INFO com.pompomhills.intelligence.quality.QualityMlClient -- ML client initialized with base URL: http://127.0.0.1:60892
+00:47:58.288 [main] INFO com.pompomhills.intelligence.quality.QualityMlClient -- ML client initialized with base URL: http://127.0.0.1:60894
+00:47:58.296 [main] INFO com.pompomhills.intelligence.quality.QualityMlClient -- ML client initialized with base URL: http://127.0.0.1:60896
+00:47:58.383 [main] INFO org.testcontainers.DockerClientFactory -- Testcontainers version: 2.0.2
+00:47:58.557 [main] INFO org.testcontainers.dockerclient.DockerClientProviderStrategy -- Loaded org.testcontainers.dockerclient.UnixSocketClientProviderStrategy from ~/.testcontainers.properties, will try it first
+00:47:58.777 [main] INFO org.testcontainers.dockerclient.DockerClientProviderStrategy -- Found Docker environment with Docker accessed via Unix socket (/Users/benanaktas/.docker/run/docker.sock)
+00:47:58.778 [main] INFO org.testcontainers.DockerClientFactory -- Docker host IP address is localhost
+00:47:58.802 [main] INFO org.testcontainers.DockerClientFactory -- Connected to docker: 
+  Server Version: 29.2.1
+  API Version: 1.53
+  Operating System: Docker Desktop
+  Total Memory: 11948 MB
+  Labels: 
+    com.docker.desktop.address=unix:///Users/benanaktas/Library/Containers/com.docker.docker/Data/docker-cli.sock
+00:47:58.810 [main] INFO org.testcontainers.images.PullPolicy -- Image pull policy will be performed by: DefaultPullPolicy()
+00:47:58.811 [main] INFO org.testcontainers.utility.ImageNameSubstitutor -- Image name substitution will be performed by: DefaultImageNameSubstitutor (composite of 'ConfigurationFileImageNameSubstitutor' and 'PrefixingImageNameSubstitutor')
+00:47:58.969 [main] INFO tc.testcontainers/ryuk:0.13.0 -- Creating container for image: testcontainers/ryuk:0.13.0
+00:47:59.201 [main] INFO org.testcontainers.utility.RegistryAuthLocator -- Credential helper/store (docker-credential-desktop) does not have credentials for https://index.docker.io/v1/
+00:47:59.293 [main] INFO tc.testcontainers/ryuk:0.13.0 -- Container testcontainers/ryuk:0.13.0 is starting: dbdaf8b90a6745dcc5f2ce7c6d7d958626ca1086ca3dd1f7906a21a9895185c7
+00:47:59.573 [main] INFO tc.testcontainers/ryuk:0.13.0 -- Container testcontainers/ryuk:0.13.0 started in PT0.604549S
+00:47:59.577 [main] INFO org.testcontainers.utility.RyukResourceReaper -- Ryuk started - will monitor and terminate Testcontainers containers on JVM exit
+00:47:59.577 [main] INFO org.testcontainers.DockerClientFactory -- Checking the system...
+00:47:59.577 [main] INFO org.testcontainers.DockerClientFactory -- ✔︎ Docker server version should be at least 1.6.0
+00:47:59.581 [main] INFO tc.postgres:17-alpine -- Creating container for image: postgres:17-alpine
+00:47:59.621 [main] INFO tc.postgres:17-alpine -- Container postgres:17-alpine is starting: 741d67257827325a4db48fae4685709cc2cd0b3707033eb81b494a428838b29f
+00:48:01.176 [main] INFO tc.postgres:17-alpine -- Container postgres:17-alpine started in PT1.594737S
+00:48:01.181 [main] INFO tc.postgres:17-alpine -- Container is started (JDBC URL: jdbc:postgresql://localhost:60902/test?loggerLevel=OFF)
+[ERROR] Tests run: 9, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 8.072 s <<< FAILURE! -- in com.pompomhills.intelligence.workflow.Step6GovernancePostgresTest
+[ERROR] com.pompomhills.intelligence.workflow.Step6GovernancePostgresTest.completeIndependentAdmissionKeepsOriginalCountsAndOnlyResolvesTarget -- Time elapsed: 1.062 s <<< FAILURE!
+java.lang.AssertionError: 
+
+Expecting map:
+  {"analysisId"="409b753a-3f79-4c5b-b8d3-6008d3d194f7", "canonicalFailures"=[{"details"={"evaluation_stage"="PRE_RENDER", "recommendation"="Count of beats with isAttempt == true must meet a duration-tier minimum: 3 for videos <= 20s (short tier), 7 for videos > 20s (long tier).", "tier"="short"}, "disposition"="ATTEMPT_COUNT_EXCEPTION_V1", "family"="concept_strength", "governanceRecordId"="3bd40a9a-2d40-4ae0-8f6d-f122606ae9ca", "message"="Only 2 active attempt(s) detected for a short-tier (15s) video. Minimum: 3.", "outcome"="FAIL", "ruleId"="ATTEMPT_001", "ruleName"="Attempt Count", "severity"="BLOCKER"},
+    {"details"={"evaluation_stage"="PRE_RENDER", "recommendation"="Fills the gap between PRODUCIBILITY_001 (very-high-complexity hard block) and PRODUCIBILITY_002 (prop count budget): a middle tier of AI-generation risks (precision alignment, cloth/rope simulation, liquids, thin dangling objects, face/hair contact, multi-object stacking). Uses a tag-based diagnostic model (riskTags in evaluation details) rather than one rule per risk type. Deterministic substring match against setting.mainProps and beat action/consequence text, no LLM call. Always CRITICAL when any tag is found — a human-review trigger, not an outright render block.", "riskTags"=["FACE_CONTACT", "THIN_OBJECT"]}, "disposition"="PRODUCTION_RISK_ACKNOWLEDGED", "family"="ai_producibility", "governanceRecordId"="d9e22aeb-71f0-40ef-8908-86a956e3804a", "message"="Fragile interaction risk tags detected: ['FACE_CONTACT', 'THIN_OBJECT']. These are mid-tier AI-generation risks (precision alignment, cloth/rope simulation, liquids, thin objects, face/hair contact, multi-object stacking) worth a human look before committing render budget, even though they don't rise to very-high-complexity blocking.", "outcome"="FAIL", "ruleId"="PRODUCIBILITY_003", "ruleName"="Fragile Interaction Risk", "severity"="CRITICAL"}], "eligible"=false, "evidenceComplete"=true, "independentF8Ready"=false, "originalBlockerCount"=1, "originalCriticalCount"=1, "policyVersion"="STEP6_RESOLUTION_V2", "promptSha256"="0fe229774deb4b31a42145bad91cf10c91634ba00da39fa3e9d288b3a2e7bd98", "remainingBlockerCount"=0, "remainingCriticalCount"=0, "rulesetVersion"="1.11", "scoreEligible"=true, "textAccepted"=true, "validationRecordId"=77L}
+to contain entries:
+  ["eligible"=true]
+but the following map entries had different values:
+  ["eligible"=false (expected: true)]
+	at com.pompomhills.intelligence.workflow.Step6GovernancePostgresTest.completeIndependentAdmissionKeepsOriginalCountsAndOnlyResolvesTarget(Step6GovernancePostgresTest.java:113)
+
+00:48:07.654 [main] INFO tc.postgres:17-alpine -- Creating container for image: postgres:17-alpine
+00:48:07.715 [main] INFO tc.postgres:17-alpine -- Container postgres:17-alpine is starting: 1e2e28095282f03d6ff0d7e7e1ec19be8601e6a600f85134b5e4c7a4fc99add4
+00:48:09.037 [main] INFO tc.postgres:17-alpine -- Container postgres:17-alpine started in PT1.38357S
+00:48:09.038 [main] INFO tc.postgres:17-alpine -- Container is started (JDBC URL: jdbc:postgresql://localhost:61534/pompom?loggerLevel=OFF)
+00:48:09.793 [main] WARN com.pompomhills.intelligence.workflow.WorkflowService -- Optimization attempt=a031ddbd-b3c7-4992-8bfd-3b6d903f62a9 category=SOURCE_PLAN_VALIDATION_FAILED dispatched=false returned=null
+[ERROR] Failures: 
+[ERROR]   Step6GovernancePostgresTest.completeIndependentAdmissionKeepsOriginalCountsAndOnlyResolvesTarget:113 
+Expecting map:
+  {"analysisId"="409b753a-3f79-4c5b-b8d3-6008d3d194f7", "canonicalFailures"=[{"details"={"evaluation_stage"="PRE_RENDER", "recommendation"="Count of beats with isAttempt == true must meet a duration-tier minimum: 3 for videos <= 20s (short tier), 7 for videos > 20s (long tier).", "tier"="short"}, "disposition"="ATTEMPT_COUNT_EXCEPTION_V1", "family"="concept_strength", "governanceRecordId"="3bd40a9a-2d40-4ae0-8f6d-f122606ae9ca", "message"="Only 2 active attempt(s) detected for a short-tier (15s) video. Minimum: 3.", "outcome"="FAIL", "ruleId"="ATTEMPT_001", "ruleName"="Attempt Count", "severity"="BLOCKER"},
+    {"details"={"evaluation_stage"="PRE_RENDER", "recommendation"="Fills the gap between PRODUCIBILITY_001 (very-high-complexity hard block) and PRODUCIBILITY_002 (prop count budget): a middle tier of AI-generation risks (precision alignment, cloth/rope simulation, liquids, thin dangling objects, face/hair contact, multi-object stacking). Uses a tag-based diagnostic model (riskTags in evaluation details) rather than one rule per risk type. Deterministic substring match against setting.mainProps and beat action/consequence text, no LLM call. Always CRITICAL when any tag is found — a human-review trigger, not an outright render block.", "riskTags"=["FACE_CONTACT", "THIN_OBJECT"]}, "disposition"="PRODUCTION_RISK_ACKNOWLEDGED", "family"="ai_producibility", "governanceRecordId"="d9e22aeb-71f0-40ef-8908-86a956e3804a", "message"="Fragile interaction risk tags detected: ['FACE_CONTACT', 'THIN_OBJECT']. These are mid-tier AI-generation risks (precision alignment, cloth/rope simulation, liquids, thin objects, face/hair contact, multi-object stacking) worth a human look before committing render budget, even though they don't rise to very-high-complexity blocking.", "outcome"="FAIL", "ruleId"="PRODUCIBILITY_003", "ruleName"="Fragile Interaction Risk", "severity"="CRITICAL"}], "eligible"=false, "evidenceComplete"=true, "independentF8Ready"=false, "originalBlockerCount"=1, "originalCriticalCount"=1, "policyVersion"="STEP6_RESOLUTION_V2", "promptSha256"="0fe229774deb4b31a42145bad91cf10c91634ba00da39fa3e9d288b3a2e7bd98", "remainingBlockerCount"=0, "remainingCriticalCount"=0, "rulesetVersion"="1.11", "scoreEligible"=true, "textAccepted"=true, "validationRecordId"=77L}
+to contain entries:
+  ["eligible"=true]
+but the following map entries had different values:
+  ["eligible"=false (expected: true)]
+[ERROR] Tests run: 43, Failures: 1, Errors: 0, Skipped: 3
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-surefire-plugin:3.5.6:test (default-test) on project creative-intelligence-backend: There are test failures.
+[ERROR] 
+[ERROR] See /Users/benanaktas/project/video/content-intelligence-platform/intelligence/backend/target/surefire-reports for the individual test results.
+[ERROR] See dump files (if any exist) [date].dump, [date]-jvmRun[N].dump and [date].dumpstream.
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException

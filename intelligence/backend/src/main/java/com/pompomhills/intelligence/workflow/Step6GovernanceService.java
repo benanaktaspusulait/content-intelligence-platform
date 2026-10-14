@@ -230,8 +230,11 @@ public class Step6GovernanceService {
     try {
       var latest=events("REVIEW").stream().filter(x->String.valueOf(content).equals(String.valueOf(x.get("contentId"))) && String.valueOf(prompt).equals(String.valueOf(x.get("promptVersionId")))).findFirst().orElseThrow();
       var ctx=context(UUID.fromString(String.valueOf(latest.get("recordId"))));
-      if(!Objects.equals(ctx.get("promptSha256"),promptHash) || !Objects.equals(ctx.get("rulesetVersion"),ruleset)) return Map.of();
-      var report=read(reportJson);var failures=rows(report.get("failedRules"));
+      if(!Objects.equals(ctx.get("promptSha256"),promptHash) || !Objects.equals(ctx.get("rulesetVersion"),ruleset.split("\\+",2)[0])) return Map.of();
+      var report=read(reportJson);
+      var profileBinding=map(map(report.get("preRenderAssessment")).get("canonicalProfileAdmission"));
+      if(!"profile-admission-v1".equals(profileBinding.get("version")) || !Objects.equals(ctx.get("analysisBindingHash"),profileBinding.get("workflowBindingHash"))) return Map.of();
+      var failures=rows(report.get("failedRules"));
       int actualBlockers=0,actualCriticals=0,remainingBlockers=0,remainingCriticals=0;
       var ledger=new ArrayList<Map<String,Object>>();var exception=effectiveException(ctx);
       String scope=binding(ctx);var risks=events("GOVERNANCE_RISK_ACCEPTANCE");
@@ -258,12 +261,26 @@ public class Step6GovernanceService {
       if(actualBlockers!=blockerCount || actualCriticals!=criticalCount) return Map.of();
       boolean evidenceComplete=rows(report.get("unknownRules")).isEmpty() && rows(report.get("serviceErrors")).isEmpty();
       boolean scoreEligible=report.get("overallScore") instanceof Number score && score.doubleValue()>=92;
+      boolean textAccepted=validEvent("GOVERNANCE_TEXT_ACCEPTANCE",ctx).isPresent();
+      var f8=map(map(map(ctx.get("analysis")).get("family8")).get("renderAuthorization"));
+      var reasons=rows(f8.get("reasons"));
+      var workflow=map(ctx.get("analysis"));var bound=map(workflow.get("boundRequest"));
+      boolean referenceReady=rows(bound.get("references")).stream().anyMatch(r->"VERIFIED".equals(r.get("status")) && String.valueOf(r.getOrDefault("sha256","")).matches("[a-f0-9]{64}"));
+      boolean frameReady=Boolean.TRUE.equals(bound.get("acceptedStartFrame"));
+      boolean supported="SUPPORTED".equals(map(workflow.get("generation")).get("capabilityStatus"));
+      // FINAL_VIDEO_INTEGRITY is independently enforced by ValidationEvidenceService
+      // and the queue (visual gates, independent identity, expiry). Requiring that
+      // derived status here as well would create a circular admission dependency.
+      boolean noOtherReasons=reasons.stream().allMatch(r->"FINAL_VIDEO_INTEGRITY".equals(r.get("source")));
+      boolean independentF8Ready=referenceReady && frameReady && supported && noOtherReasons
+          && !"BLOCKED_TECHNICAL_FAILURE".equals(f8.get("status"));
       var proof=new LinkedHashMap<String,Object>();proof.put("policyVersion",POLICY);proof.put("validationRecordId",validationId);
       proof.put("promptSha256",promptHash);proof.put("rulesetVersion",ruleset);proof.put("analysisId",ctx.get("analysisId"));
       proof.put("originalBlockerCount",blockerCount);proof.put("originalCriticalCount",criticalCount);
       proof.put("remainingBlockerCount",remainingBlockers);proof.put("remainingCriticalCount",remainingCriticals);
       proof.put("canonicalFailures",ledger);proof.put("evidenceComplete",evidenceComplete);proof.put("scoreEligible",scoreEligible);
-      proof.put("eligible",evidenceComplete && scoreEligible && remainingBlockers==0 && remainingCriticals==0);
+      proof.put("textAccepted",textAccepted);proof.put("independentF8Ready",independentF8Ready);
+      proof.put("eligible",evidenceComplete && scoreEligible && textAccepted && independentF8Ready && remainingBlockers==0 && remainingCriticals==0);
       return proof;
     } catch(RuntimeException unavailable) {return Map.of();}
   }

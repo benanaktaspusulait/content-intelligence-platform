@@ -12,8 +12,8 @@ usage() {
   cat <<'EOF'
 Usage: ./intelligence/scripts/deploy.sh [--dry-run | --check] [SERVICE ...]
 
-No services specified: build and deploy ml-service, backend and frontend.
-Services: ml-service backend frontend
+No services specified: build and deploy ml-service, backend, creative-render-service and frontend.
+Services: ml-service backend creative-render-service frontend
   --dry-run  Print the build/deploy plan without changing anything.
   --check    Check running containers and read-only HTTP endpoints only.
   --help     Show this help.
@@ -37,11 +37,11 @@ for arg in "$@"; do
     --dry-run|--check)
       [[ "$mode" == deploy ]] || { echo 'Choose only one mode.' >&2; exit 2; }
       mode="${arg#--}" ;;
-    ml-service|backend|frontend) selected+=("$arg") ;;
+    ml-service|backend|creative-render-service|frontend) selected+=("$arg") ;;
     *) echo "Unknown argument: $arg" >&2; usage >&2; exit 2 ;;
   esac
 done
-if [[ ${#selected[@]} -eq 0 ]]; then selected=(ml-service backend frontend); fi
+if [[ ${#selected[@]} -eq 0 ]]; then selected=(ml-service backend creative-render-service frontend); fi
 
 contains() {
   local wanted="$1" item
@@ -50,7 +50,7 @@ contains() {
 }
 build_services=()
 run_services=()
-for service in ml-service backend frontend; do
+for service in ml-service backend creative-render-service frontend; do
   if contains "$service"; then build_services+=("$service"); run_services+=("$service"); fi
 done
 if contains backend && ! contains frontend; then run_services+=(frontend); fi
@@ -87,6 +87,11 @@ if [[ "$mode" == deploy ]]; then
     require_running postgres
     if ! contains ml-service; then require_running ml-service; fi
   fi
+  if contains creative-render-service; then
+    require_running postgres
+    if ! contains backend; then require_running backend; fi
+    if ! contains ml-service; then require_running ml-service; fi
+  fi
   for service in "${run_services[@]}"; do
     if [[ "$service" == frontend ]]; then
       require_running creative-render-service
@@ -120,6 +125,9 @@ for service in "${run_services[@]}"; do
   case "$service" in
     ml-service) check_http "$service" 8000 /health ;;
     backend) check_http "$service" 8080 /actuator/health ;;
+    creative-render-service)
+      "${compose[@]}" exec -T creative-render-service curl --fail --silent --show-error --max-time 15 http://localhost:8081/actuator/health >/dev/null
+      echo '  creative-render-service HTTP check passed (/actuator/health)' ;;
     frontend)
       check_http "$service" 80 /
       check_http "$service" 80 /api/v1/intelligence/workflow/provider-capabilities ;;

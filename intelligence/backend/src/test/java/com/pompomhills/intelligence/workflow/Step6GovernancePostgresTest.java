@@ -1,6 +1,7 @@
 package com.pompomhills.intelligence.workflow;
 
 import static org.assertj.core.api.Assertions.*;
+import static org.mockito.Mockito.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.*;
 import org.junit.jupiter.api.*;
@@ -87,23 +88,64 @@ class Step6GovernancePostgresTest {
   @Test void incompleteEvidenceOrUnacceptedRiskNeverGainsEffectiveAdmission() throws Exception {
     provideSupport();service.command(id,"exception",exception(),approver);
     var report=new LinkedHashMap<>((Map<String,Object>)analysis.get("canonicalRuleEvaluation"));
+    report.put("preRenderAssessment",Map.of("canonicalProfileAdmission",Map.of("version","profile-admission-v1","workflowBindingHash",analysis.get("bindingHash"))));
     report.put("overallScore",95); // synthetic admission fixture only; never persisted as analysis or a production score
     var proof=service.validationAdmission(1,10,10,Step6GovernanceService.sha(String.valueOf(analysis.get("originalPrompt"))),"1.11",json.writeValueAsString(report),3,1);
     assertThat(proof).containsEntry("eligible",false);
     assertThat((List<?>)proof.get("canonicalFailures")).hasSize(4);
   }
   @Test void completeIndependentAdmissionKeepsOriginalCountsAndOnlyResolvesTarget() throws Exception {
+    // A separate trusted all-other-requirements-satisfied fixture, not a production authorization.
+    analysis.put("family8",Map.of("renderAuthorization",Map.of("status","BLOCKED_PENDING_EVIDENCE","reasons",List.of(Map.of("source","FINAL_VIDEO_INTEGRITY")))));
+    ((Map<String,Object>)analysis.get("boundRequest")).put("references",List.of(Map.of("status","VERIFIED","sha256","a".repeat(64))));
+    ((Map<String,Object>)analysis.get("boundRequest")).put("acceptedStartFrame",true);
+    ((Map<String,Object>)analysis.get("generation")).put("capabilityStatus","SUPPORTED");
+    id=insert("REVIEW",analysis);
+    service.command(id,"text-acceptance",request(),operator);
     provideSupport();service.command(id,"exception",exception(),approver);
     var risk=request();risk.put("ruleId","PRODUCIBILITY_003");service.command(id,"risk-acknowledgement",risk,operator);
     var canonical=(Map<String,Object>)analysis.get("canonicalRuleEvaluation");
     var report=new LinkedHashMap<>(canonical);
+    report.put("preRenderAssessment",Map.of("canonicalProfileAdmission",Map.of("version","profile-admission-v1","workflowBindingHash",analysis.get("bindingHash"))));
     report.put("overallScore",95); // separate synthetic complete-evidence fixture, never a saved score
     report.put("unknownRules",List.of());report.put("serviceErrors",List.of());
     var failures=((List<Map<String,Object>>)report.get("failedRules")).stream().filter(x->List.of("ATTEMPT_001","PRODUCIBILITY_003").contains(x.get("ruleId"))).toList();report.put("failedRules",failures);
     var proof=service.validationAdmission(77,10,10,Step6GovernanceService.sha(String.valueOf(analysis.get("originalPrompt"))),"1.11",json.writeValueAsString(report),1,1);
     assertThat(proof).containsEntry("eligible",true).containsEntry("originalBlockerCount",1).containsEntry("originalCriticalCount",1).containsEntry("remainingBlockerCount",0);
     assertThat(((List<Map<String,Object>>)proof.get("canonicalFailures")).get(0)).containsEntry("outcome","FAIL");
+    assertCompleteValidationEvidencePath(json.writeValueAsString(report));
     var nonWaivable=new LinkedHashMap<String,Object>(failures.get(0));nonWaivable.put("ruleId","OTHER_HARD_BLOCKER");report.put("failedRules",List.of(nonWaivable));
     assertThat(service.validationAdmission(77,10,10,Step6GovernanceService.sha(String.valueOf(analysis.get("originalPrompt"))),"1.11",json.writeValueAsString(report),1,0)).containsEntry("eligible",false);
+  }
+
+  void assertCompleteValidationEvidencePath(String report) {
+    var repo=mock(com.pompomhills.intelligence.quality.QualityValidationRepository.class);
+    var visuals=mock(com.pompomhills.intelligence.quality.ValidationVisualEvidenceRepository.class);
+    var primary=new com.pompomhills.intelligence.quality.QualityValidationEntity();
+    var independent=new com.pompomhills.intelligence.quality.QualityValidationEntity();
+    var at=java.time.Instant.now().minusSeconds(20);var run=UUID.randomUUID();
+    int index=0;
+    for(var entity:List.of(primary,independent)) {
+      entity.setId((long)++index);entity.setContentId(10L);entity.setPromptVersionId(10L);
+      entity.setPromptSha256(Step6GovernanceService.sha(String.valueOf(analysis.get("originalPrompt"))));
+      entity.setDeterministicRulesetVersion("1.11");entity.setStatus("BLOCKED");entity.setBlockerCount(1);entity.setCriticalCount(1);entity.setWarningCount(0);
+      entity.setSemanticProvider("MOCK_INDEPENDENT_REVIEW");entity.setSemanticModelVersion("fixture-v1");
+      entity.setValidatedAt(at);entity.setExpiresAt(java.time.Instant.now().plusSeconds(3600));entity.setReportJson(report);
+    }
+    independent.setValidationRunId(run);primary.setIndependentRevalidationId(run);primary.setIndependentlyRevalidatedAt(at);
+    when(repo.findById(1L)).thenReturn(Optional.of(primary));when(repo.findByValidationRunId(run)).thenReturn(Optional.of(independent));
+    var gates=new ArrayList<com.pompomhills.intelligence.quality.ValidationVisualEvidenceEntity>();var set=UUID.randomUUID();var asset=UUID.randomUUID();
+    for(String gate:List.of("FIRST_FRAME","SILHOUETTE")) {
+      var row=new com.pompomhills.intelligence.quality.ValidationVisualEvidenceEntity();row.setId((long)gates.size()+1);row.setStatus("PASS");row.setVisualGate(gate);row.setEvidenceSetId(set);row.setRenderAssetId(asset);row.setAssetSha256("c".repeat(64));gates.add(row);
+    }
+    when(visuals.findByValidationRecordIdOrderBySubmittedAtAscIdAsc(1L)).thenReturn(gates);
+    var evidence=new com.pompomhills.intelligence.quality.ValidationEvidenceService(repo,visuals);
+    org.springframework.test.util.ReflectionTestUtils.setField(evidence,"governance",service);
+    var resolved=evidence.getEvidence(1L);
+    assertThat(resolved.status().name()).isEqualTo("RENDER_READY");assertThat(resolved.renderAuthorization()).isEqualTo("AUTHORIZED");
+    assertThat(resolved.blockerCount()).isEqualTo(1);assertThat(resolved.criticalCount()).isEqualTo(1);
+    assertThat((Map<String,Object>)resolved.visualEvidence().get("governedAdmission")).containsEntry("eligible",true);
+    when(visuals.findByValidationRecordIdOrderBySubmittedAtAscIdAsc(1L)).thenReturn(List.of());
+    assertThat(evidence.getEvidence(1L).renderAuthorization()).isNotEqualTo("AUTHORIZED");
   }
 }

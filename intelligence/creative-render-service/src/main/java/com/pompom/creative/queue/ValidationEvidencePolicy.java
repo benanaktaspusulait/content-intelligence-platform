@@ -145,6 +145,8 @@ public class ValidationEvidencePolicy {
         || !Boolean.TRUE.equals(proof.get("eligible"))
         || !Boolean.TRUE.equals(proof.get("evidenceComplete"))
         || !Boolean.TRUE.equals(proof.get("scoreEligible"))
+        || !Boolean.TRUE.equals(proof.get("textAccepted"))
+        || !Boolean.TRUE.equals(proof.get("independentF8Ready"))
         || !java.util.Objects.equals(evidence.promptSha256(),proof.get("promptSha256"))
         || !java.util.Objects.equals(evidence.deterministicRulesetVersion(),proof.get("rulesetVersion"))
         || !(proof.get("validationRecordId") instanceof Number id) || id.longValue()!=evidence.validationRecordId()

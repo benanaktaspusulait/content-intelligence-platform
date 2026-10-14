@@ -71,7 +71,7 @@ export class Step6GovernanceComponent implements OnChanges {
     this.submit('support', extra);
   }
   private epoch = 0;
-  ngOnChanges() { this.epoch++; this.policy = null; this.saved = null; this.confirmed = false; this.busy = false; }
+  ngOnChanges() { this.epoch++; this.policy = null; this.saved = null; this.confirmed = false; this.busy = false; this.justification = ''; this.error = ''; this.approvedEventsPreserved = false; for (const proof of this.proofs) { proof.sourceQuote = ''; proof.approvedStoryQuote = ''; proof.reason = ''; } }
   allowed(action: string): boolean { return this.policy?.analysisId === this.analysisId && this.policy?.allowedActions?.[action]?.allowed === true; }
   reasons(action: string): string[] { return this.policy?.allowedActions?.[action]?.reasons || (this.policy?.blockedReason ? [this.policy.blockedReason] : []); }
   load() {

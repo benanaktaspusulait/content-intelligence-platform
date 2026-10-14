@@ -1,43 +1,18 @@
-# DRAFT — Step 6 text acceptance, evidence preparation and rule exceptions
+# ADR STEP6-GOVERNANCE-001 — approved
 
-Status: **PROPOSED / NOT APPROVED / NOT ACTIVE**. This document creates no operator authority and grants no production permission.
+Status: **APPROVED** by the explicit human architecture decision in this conversation. Version1.0. Supersedes the inactive draft; activation is through STEP6_RESOLUTION_V2 and ATTEMPT_COUNT_EXCEPTION_V1. This decision is not a Mimi exception approval or render authorization.
 
-## Decisions requiring an architecture owner
+1. ATTEMPT_001 retains its default minimum3 for the applicable short-tier/profile. A qualified authenticated ARCHITECTURE_APPROVER may explicitly approve a rule-specific ATTEMPT_COUNT_EXCEPTION_V1 exception when at least2 genuine source-bound attempts exist, an independent authenticated EVIDENCE_REVIEWER supports the mini-story, active progression and payoff against the exact production source and approved story, all approved events remain intact, and a concrete justification explains why forcing an extra attempt damages the narrative.
+2. TEXT_ACCEPTED_RENDER_BLOCKED is legitimate. An authenticated PRODUCTION_OPERATOR may explicitly accept exact current text for further preparation while all unresolved findings and render gates remain enforceable. It is not a canonical PASS, waiver, or render permission.
+3. Production-risk acknowledgement is independent from rule passing. A PRODUCTION_OPERATOR may acknowledge only risks whose governed metadata permits it. Actual non-waivable hard failures and unaccepted risks remain enforced. The metadata for PRODUCIBILITY_003 reflects its documented human-review purpose; acknowledging it never changes its CRITICAL/FAIL result or score.
+4. Evidence preparation, text acceptance, risk review and render authorization are independent operations. Reference association and local frame preparation do not imply paid generation or video authorization. Paid start-frame work retains separate authorization, budget and eligibility requirements.
+5. Rule outcomes, scores, severity and thresholds remain immutable. Effective admission records a resolution separately. Missing verified reference, accepted frame, required visual evidence, genuine duplication, unrelated hard blockers and unaccepted risks cannot be resolved by the attempt exception.
+6. Every action requires trusted server identity/role, explicit confirmation, immutable provenance and current persisted scope. Exceptions bind content, exact prompt version/SHA-256, analysis/binding, ruleset, approved-story fingerprint and production-settings fingerprint. Reviewer and approver must differ. Records expire after24h and may be explicitly revoked; every subsequent policy read and admission recomputes current scope and checks support, expiry and revocation. A newer analysis, prompt, ruleset, story or settings invalidates reuse. No browser role or waiver claims are trusted.
 
-1. Define whether the short-tier ATTEMPT_001 minimum is an unwaivable render precondition or admits a documented exception. Present architecture says BLOCKER must be fixed before render consideration; rule minimum3 is explicit, and no rule-specific waiver policy exists. The master architecture sketches manual override with audit trail but does not define eligible rules, authority or precedence over later hard queue checks. Default remains blocked. This decision must not change the count or score.
-2. Define whether an operator may record TEXT_ACCEPTED_RENDER_BLOCKED when no supported text repair is established but a policy violation remains. This must mean acceptance of the exact text for further evidence work, not successful Step6 production clearance or a waiver of ATTEMPT_001. Alternatively keep text acceptance blocked and authorize only evidence preparation; the existing Step7 reference/upload route already supports this separation.
-3. Define the operator role and scope for production-risk acknowledgement. PRODUCIBILITY_003 explicitly calls for human review rather than an outright render block, but the general zero-CRITICAL render architecture and current admission checks are stricter. An acknowledgement must be auditable without silently satisfying either gate.
+Authority is derived exclusively from the servlet container's authenticated principal and isUserInRole. This application supplies no fallback user, client role header, token or localhost administrator privilege. If an authenticated role source is not configured, all governed write operations deny. External identity lifecycle enforcement belongs to the trusted identity provider/container; audit records remain short-lived and explicitly revocable.
 
-## Proposed typed metadata contract
+The authoritative backend evaluator provides classified findings, allowed actions and blocking reasons; POST commands recompute independently. Render admission consumes a complete current proof through the existing internal validation-evidence boundary, retaining original canonical counts and rejecting any unaccounted blocker/critical. Existing visual, independent-validation, expiry, identity, semantic and grade gates remain independently required.
 
-After approval, use governed metadata for every rule, independent of content identity:
+Canonical measurement corrections are released separately as immutable Ruleset1.11: changing source states without substates timing are UNKNOWN rather than invented static measurements; source-supported active payoff is separate from passive aftermath. Historical1.10 analyses are preserved.
 
-- resolutionType: TEXT_REPAIR_REQUIRED | EVIDENCE_REQUIRED | PRODUCTION_RISK_REVIEW | POLICY_EXCEPTION_REQUIRED | CONFIRMED_HARD_BLOCKER | EVALUATOR_DEFECT
-- failureBasis: measured source defect | missing evidence | verified visual failure | technical error | unresolved policy
-- requiredEvidence, earliestResolutionStage, blocksTextAcceptance, blocksEvidenceCollection, blocksRender
-- operatorAction: NONE | ACKNOWLEDGE_RISK | REQUEST_POLICY_EXCEPTION
-- exceptionPolicy: FORBIDDEN | EXPLICIT_POLICY_ID_REQUIRED; missing policy fails closed
-
-A resolution classification never overwrites canonical outcome, severity, score, evidence or historic analysis. Missing visual evidence and verified negative evidence must classify differently using existing failureBasis/missingEvidence/evidenceSource fields. An UNKNOWN classification cannot become an approval default. Evidence acquisition cannot satisfy a confirmed hard failure.
-
-Version this eligibility policy independently (`step6-resolution-v2`, proposed). Parser/evaluator corrections require a new immutable ruleset (proposed1.11); no frozen1.10 edit. Metadata additions should be reviewed with rule governance, not inferred from hardcoded Mimi-specific IDs or severity alone.
-
-## Proposed four operations
-
-A. TEXT_ACCEPTANCE: explicit NO_TEXT_REPAIR_JUSTIFIED attests only that no supported text change is justified. Reject when an actionable text defect or evaluator/technical uncertainty prevents that conclusion. Whether unresolved policy violations permit this record is Decision2 above; until decided, preserve current rejection.
-
-B. EVIDENCE_PREPARATION: inspect/associate verified references and prepare or upload start-frame evidence using existing scoped services, exact prompt/settings binding and their own validation. Merely entering Step7 requires no paid consent and grants no render authorization. Paid first-frame generation retains its separate consent/budget/eligibility checks.
-
-C. RISK_REVIEW: accept/reject a specific production risk only under the approved authority and policy. This cannot waive hard rules. Any exception must name a governing exception policy; there is no implicit override.
-
-D. RENDER_AUTHORIZATION: canonical F8 plus queue admission remain authoritative; exact prompt/settings/reference/start-frame bindings, semantic/independent/visual evidence and unexpired validation must pass. Neither A, B nor C can synthesize AUTHORIZED or clear counts.
-
-## Proposed authoritative decision response
-
-One server-side policy evaluator should supply the UI and command handlers with policyVersion, analysisId, rulesetVersion, promptVersionId, promptSha256, bindingHash, findings and allowedActions with reasons. GET responses are advisory; POST recomputes against latest saved evidence, current ruleset and authenticated operator identity. A newer analysis/ruleset/settings invalidates eligibility.
-
-If an approved action is recorded, persist exact unresolved findings, accepted risk IDs, pending evidence, applicable policy, operator acknowledgement, timestamp and authenticated provenance. Never trust an operator-supplied classification or role. Do not conflate risk acknowledgement with a passed rule.
-
-## Acceptance required before activation
-
-The twelve requested cases must be tested against this approved contract, including negative transitions, stale bindings, missing confirmation, genuine hard blockers, scoped evidence collection and eventual F8 admission. Existing tests prove today's gates; they do not prove this unimplemented proposal.
+The architectural approval authorizes implementation of this mechanism only. It does not create an exception record, accept Mimi text, acknowledge a risk or authorize any paid call or render.

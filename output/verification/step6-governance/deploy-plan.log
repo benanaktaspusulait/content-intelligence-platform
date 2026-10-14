@@ -1,0 +1,4 @@
+Compose directory: /Users/benanaktas/project/video/content-intelligence-platform/intelligence
+  docker compose --project-directory /Users/benanaktas/project/video/content-intelligence-platform/intelligence -f /Users/benanaktas/project/video/content-intelligence-platform/intelligence/docker-compose.yml build ml-service backend creative-render-service frontend 
+  docker compose --project-directory /Users/benanaktas/project/video/content-intelligence-platform/intelligence -f /Users/benanaktas/project/video/content-intelligence-platform/intelligence/docker-compose.yml up -d --no-deps --force-recreate --wait --wait-timeout 180 ml-service backend creative-render-service frontend 
+Then check container health, image IDs and read-only HTTP responses.

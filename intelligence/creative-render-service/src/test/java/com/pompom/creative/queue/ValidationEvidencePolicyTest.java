@@ -1,5 +1,6 @@
 package com.pompom.creative.queue;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -574,5 +575,27 @@ class ValidationEvidencePolicyTest {
         base.independentlyRevalidatedAt(),
         base.validatedAt(),
         base.expiresAt());
+  }
+
+  private ValidationEvidenceDto governedEvidence(String rule, String disposition, boolean complete) {
+    var base=renderReadyEvidence();var proof=new java.util.LinkedHashMap<String,Object>();
+    proof.put("policyVersion","STEP6_RESOLUTION_V2");proof.put("eligible",true);proof.put("evidenceComplete",complete);proof.put("scoreEligible",true);proof.put("textAccepted",true);proof.put("independentF8Ready",true);
+    proof.put("validationRecordId",base.validationRecordId());proof.put("promptSha256",base.promptSha256());proof.put("rulesetVersion",base.deterministicRulesetVersion());
+    proof.put("originalBlockerCount",1);proof.put("originalCriticalCount",0);
+    proof.put("canonicalFailures",java.util.List.of(java.util.Map.of("ruleId",rule,"severity","BLOCKER","outcome","FAIL","disposition",disposition,"governanceRecordId",java.util.UUID.randomUUID().toString())));
+    var visual=new java.util.LinkedHashMap<>(base.visualEvidence());visual.put("governedAdmission",proof);
+    return new ValidationEvidenceDto(base.validationRecordId(),base.contentId(),base.promptVersionId(),base.promptSha256(),base.status(),1,0,base.warningCount(),
+        base.deterministicRulesetVersion(),base.semanticProvider(),base.semanticModelVersion(),base.producibilityValidatorVersion(),base.independentRevalidationId(),base.independentlyRevalidatedAt(),base.validatedAt(),base.expiresAt(),base.firstFrameEligible(),base.finalVideoEligible(),visual,base.renderAuthorization());
+  }
+  @Test void acceptsOnlyTheCompleteEffectiveAttemptExceptionWithoutErasingCanonicalCount() {
+    var evidence=governedEvidence("ATTEMPT_001","ATTEMPT_COUNT_EXCEPTION_V1",true);
+    assertThat(evidence.blockerCount()).isEqualTo(1);
+    assertThatCode(()->policy.validate(request(),evidence,now)).doesNotThrowAnyException();
+  }
+  @Test void exceptionCannotWaiveVisualOrOtherHardBlockers() {
+    assertThatThrownBy(()->policy.validate(request(),governedEvidence("ENGINE_SILHOUETTE_DUPLICATE","ATTEMPT_COUNT_EXCEPTION_V1",true),now)).isInstanceOf(ValidationEvidenceRejectedException.class);
+  }
+  @Test void incompleteEffectiveAdmissionNeverBypassesBlockerGate() {
+    assertThatThrownBy(()->policy.validate(request(),governedEvidence("ATTEMPT_001","ATTEMPT_COUNT_EXCEPTION_V1",false),now)).isInstanceOf(ValidationEvidenceRejectedException.class);
   }
 }

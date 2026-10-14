@@ -551,7 +551,8 @@ class RuleEngine:
                     r"\bfrom\s+(\w+)\s+to\s+(\w+)\s+to\s+(\w+)\b", quote, re.I
                 )
                 if (beat.get("visualStateId") == state_id and sequence
-                        and len(set(sequence.groups())) == 3
+                        and len(set(token.lower() for token in sequence.groups())) == 3
+                        and all(token.lower() in {"one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "twelve", "sixteen", "thirtytwo"} or token.isdigit() for token in sequence.groups())
                         and re.search(r"\b(?:multiply|multiplies|grow|grows|change|changes|transform|transforms)\b", quote, re.I)):
                     evolving.append({"beatId": beat.get("id"), "sourceQuote": quote,
                                      "sourceSpan": beat.get("sourceSpan")})
@@ -2887,12 +2888,15 @@ class RuleEngine:
                 start = float(beat.get("startTime", 0.0) or 0.0)
                 if start >= float(final_start) and not beat.get("isAttempt", False):
                     if self.ruleset.get("aftermathEvidencePolicy") == "ACTIVE_PAYOFF_V2":
-                        source = str(beat.get("sourceQuote") or "").lower()
-                        active_payoff = bool(re.search(
+                        source = str(beat.get("sourceAction") or beat.get("sourceQuote") or "").lower()
+                        active_pattern = (
                             r"\b(?:sneez(?:e|es|ing)|scatter(?:s|ed|ing)?|fl(?:y|ies|ying)|"
                             r"land(?:s|ed|ing)?|burst(?:s|ing)?|splits?|roll(?:s|ing)?|"
                             r"fall(?:s|ing)?|collaps(?:e|es|ing)|pull(?:s|ing)?|"
-                            r"push(?:es|ing)?|jump(?:s|ing)?|run(?:s|ning)?)\b", source))
+                            r"push(?:es|ing)?|jump(?:s|ing)?|run(?:s|ning)?)\b")
+                        active_payoff = any(
+                            not re.search(r"\b(?:no|not|never|without)\b[^.;:]*$", source[:match.start()])
+                            for match in re.finditer(active_pattern, source))
                         if active_payoff:
                             continue
                         if beat.get("motionAmount") != "none":
