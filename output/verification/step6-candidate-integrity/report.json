@@ -1,0 +1,244 @@
+{
+  "status": "STEP_6_CANDIDATE_INTEGRITY_RESOLVED",
+  "recommendation": "KEEP_ORIGINAL",
+  "1_persistedCandidates": {
+    "activeComparisonId": "48e230db-2382-41bd-9ff9-0889df6fd803",
+    "activeRoleRecordId": "65f85cc1-a266-454e-8de2-bc37d80d4102",
+    "activeAttempt": "61b8eec4-5699-400d-9bdb-e79c3629855c",
+    "activeRoleResultCandidates": 2,
+    "activeComparisonCandidates": 2,
+    "sameRecordEnumeration": [
+      {
+        "recordId": "bf1e8484-c486-4669-a966-5182a5554178",
+        "attemptId": "2691b26a-1800-42bd-a0c4-6ac3c6743f30",
+        "kind": "CREATIVE_ROLE",
+        "jsonPath": "attemptDiagnostics.providerResultForRecovery.candidates",
+        "arrayLength": 2,
+        "enumeratedIds": [
+          "candidate-a",
+          "candidate-b"
+        ]
+      },
+      {
+        "recordId": "c4ca805f-fd3c-42f7-b3b3-03f2adb93bda",
+        "attemptId": "b2dcb0c2-36ee-43ac-948b-dd2e64d71349",
+        "kind": "CREATIVE_ROLE",
+        "jsonPath": "attemptDiagnostics.providerResultForRecovery.candidates",
+        "arrayLength": 2,
+        "enumeratedIds": [
+          "candidate-a",
+          "candidate-b"
+        ]
+      },
+      {
+        "recordId": "a17fdf94-8070-4072-bc56-b2835d2a313e",
+        "attemptId": "da1e86af-9569-455e-ac52-1988b6a73c09",
+        "kind": "CREATIVE_ROLE",
+        "jsonPath": "attemptDiagnostics.providerResultForRecovery.candidates",
+        "arrayLength": 1,
+        "enumeratedIds": [
+          "candidate-a"
+        ]
+      },
+      {
+        "recordId": "d07ef5ae-f368-4c4e-b1d0-28385769e284",
+        "attemptId": "c7f780ef-14f8-4d88-afe0-16127f2484fe",
+        "kind": "CREATIVE_ROLE",
+        "jsonPath": "attemptDiagnostics.providerResultForRecovery.candidates",
+        "arrayLength": 2,
+        "enumeratedIds": [
+          "candidate-a",
+          "candidate-b"
+        ]
+      },
+      {
+        "recordId": "a85d65fc-0576-458a-9851-508c369aade0",
+        "attemptId": "61b8eec4-5699-400d-9bdb-e79c3629855c",
+        "kind": "CREATIVE_ROLE",
+        "jsonPath": "attemptDiagnostics.providerResultForRecovery.candidates",
+        "arrayLength": 2,
+        "enumeratedIds": [
+          "candidate-a",
+          "candidate-b"
+        ]
+      },
+      {
+        "recordId": "48e230db-2382-41bd-9ff9-0889df6fd803",
+        "attemptId": null,
+        "kind": "CREATIVE_OPTIMIZATION",
+        "jsonPath": "candidates",
+        "arrayLength": 2,
+        "enumeratedIds": [
+          "candidate-a",
+          "candidate-b"
+        ]
+      },
+      {
+        "recordId": "65f85cc1-a266-454e-8de2-bc37d80d4102",
+        "attemptId": "61b8eec4-5699-400d-9bdb-e79c3629855c",
+        "kind": "CREATIVE_ROLE",
+        "jsonPath": "rawProviderResult.candidates",
+        "arrayLength": 2,
+        "enumeratedIds": [
+          "candidate-a",
+          "candidate-b"
+        ]
+      },
+      {
+        "recordId": "65f85cc1-a266-454e-8de2-bc37d80d4102",
+        "attemptId": "61b8eec4-5699-400d-9bdb-e79c3629855c",
+        "kind": "CREATIVE_ROLE",
+        "jsonPath": "result.candidates",
+        "arrayLength": 2,
+        "enumeratedIds": [
+          "candidate-a",
+          "candidate-b"
+        ]
+      }
+    ]
+  },
+  "2_queryDiscrepancy": "Same-record/same-array WITH ORDINALITY returns both candidates for every length-two array. The one-element response is the different da1e86af attempt: candidate-b was nested in candidate-a instead of a second array item. No evidence supports losing B from the active result or mixing its displayed candidates. Comparison has no stored contentId/attemptId; these are now explicitly resolved through its role and source analysis without rewriting history.",
+  "3_candidateBRejection": "Original 61b8eec4 response was rejected by validate_execution_candidates due to six shots versus five source events. Recovery subsequently accepted both source-faithful drafts. Current B passes source-text integrity; approval is blocked because only minor/unproven execution differences exist.",
+  "4_candidateA": {
+    "candidateId": "candidate-a",
+    "contractVersion": "optimization-value-and-approval-v1",
+    "textSimilarity": 0.99404,
+    "similarityScreen": "HIGH_SIMILARITY_REVIEW",
+    "classification": "VALID_MINOR_VARIATION",
+    "approvalEligible": false,
+    "actualChanges": [
+      "beat_01: framing CLOSE \u2192 EXTREME_CLOSE."
+    ],
+    "qualityScore": 85.0,
+    "scoreDelta": 0.0,
+    "evidenceLabels": [
+      "OBSERVED_TEXTUAL_CHANGE",
+      "DETERMINISTIC_VALIDATION_RESULT",
+      "CREATIVE_HYPOTHESIS",
+      "UNKNOWN_UNTIL_RENDER"
+    ],
+    "unknowns": [
+      "Semantic story fidelity remains UNKNOWN.",
+      "First-frame causal readability requires visual review.",
+      "Seedance success and viewer response are unmeasured."
+    ],
+    "generatorFeasibility": "UNKNOWN_UNTIL_RENDER",
+    "storyCoverage": "SOURCE_EVENTS_COVERED; SEMANTIC_FIDELITY_UNKNOWN",
+    "endingPreservation": "PROTECTED_ENDING_TEXT_PRESERVED",
+    "materiality": "MINOR_EXECUTION_VARIATION",
+    "validationStatus": "SOURCE_TEXT_CONTRACT_PASSED",
+    "sourceEventCount": 5,
+    "cameraShotCount": 5,
+    "baselineShotCount": 5,
+    "temporalComplexity": "SAME_SHOT_COUNT",
+    "productionRiskChange": "No validated production-risk reduction.",
+    "conclusion": "Framing label changes, but stronger opening clarity is unproven.",
+    "approvalBlockReason": "No material intervention beyond framing labels or timing boundaries; keep the original."
+  },
+  "5_candidateB": {
+    "candidateId": "candidate-b",
+    "contractVersion": "optimization-value-and-approval-v1",
+    "textSimilarity": 0.93541,
+    "similarityScreen": "HIGH_SIMILARITY_REVIEW",
+    "classification": "VALID_MINOR_VARIATION",
+    "approvalEligible": false,
+    "actualChanges": [
+      "beat_03: one source progression split into 2 camera shots; action and consequence unchanged."
+    ],
+    "qualityScore": 85.0,
+    "scoreDelta": 0.0,
+    "evidenceLabels": [
+      "OBSERVED_TEXTUAL_CHANGE",
+      "DETERMINISTIC_VALIDATION_RESULT",
+      "CREATIVE_HYPOTHESIS",
+      "UNKNOWN_UNTIL_RENDER"
+    ],
+    "unknowns": [
+      "Semantic story fidelity remains UNKNOWN.",
+      "First-frame causal readability requires visual review.",
+      "Seedance success and viewer response are unmeasured."
+    ],
+    "generatorFeasibility": "UNKNOWN_UNTIL_RENDER",
+    "storyCoverage": "SOURCE_EVENTS_COVERED; SEMANTIC_FIDELITY_UNKNOWN",
+    "endingPreservation": "PROTECTED_ENDING_TEXT_PRESERVED",
+    "materiality": "MINOR_EXECUTION_VARIATION",
+    "validationStatus": "SOURCE_TEXT_CONTRACT_PASSED",
+    "sourceEventCount": 5,
+    "cameraShotCount": 6,
+    "baselineShotCount": 5,
+    "temporalComplexity": "INCREASED_SHOT_COUNT",
+    "productionRiskChange": "Additional temporal transitions require review.",
+    "conclusion": "Timing boundaries change, but source actions and consequences remain unchanged; pacing improvement is unproven.",
+    "approvalBlockReason": "No material intervention beyond framing labels or timing boundaries; keep the original."
+  },
+  "6_sameScoreExplanation": "Both saved and freshly re-evaluated canonical results remain 85/B, ruleset 1.7, eight rules. Framing and shot-boundary differences do not demonstrate improved canonical compliance, hook performance or viewer response. No scoring engine change or score inflation occurred.",
+  "7_materiality": "A: framing label only. B: the same complete doubling action/consequence progression divided into two time ranges; shot count increases from five to six. Both VALID_MINOR_VARIATION. Similarity >=0.90 is a screening heuristic; existing 0.90 restatement rejection is BUILD_PROMPT, not PROMPT_OPTIMIZATION. Current approval blocks minor/cosmetic or baseline-equivalent changes independently of textual similarity.",
+  "8_UI": [
+    "Compact readable cards, non-stretched Original card",
+    "Objective/hypothesis, observed changes, validation, grade and delta, materiality, risks and unknowns",
+    "KEEP_ORIGINAL conclusion and attempt/source/ruleset lineage",
+    "Raw JSON collapsed into Technical Evidence",
+    "Side-by-side removals/additions, explicitly alternative versions rather than consecutive prompt events",
+    "Current assessment required for selection; minor, invalid, equivalent and stale candidates cannot be approved",
+    "Server approval writer invokes fresh lineage and approval assessment before creating a version"
+  ],
+  "9_verification": {
+    "mlPassed": 134,
+    "backendPassed": {
+      "WorkflowNoRepairDecisionPostgresTest": 6,
+      "OptimizationFailureContractTest": 2,
+      "WorkflowTransportTest": 4
+    },
+    "frontendPassed": 58,
+    "completeMockedWorkflow": "Actual saved source/settings fixture, deployed ML validation, real Java HTTP transport, disposable PostgreSQL comparison persistence and assessment passed. Same-record array enumeration, missing candidate, mixed-attempt prompt and invalid historical approval are covered.",
+    "liveFrontend": "Real saved comparison (no fixture proxy), both minor classifications, 99.4%/93.5% heuristic screens, zero score delta, blocked approval, collapsed raw evidence and side-by-side diff verified.",
+    "freshLocalCanonical": [
+      {
+        "candidateId": "candidate-a",
+        "score": 85.0,
+        "grade": "B",
+        "rulesEvaluated": 8,
+        "status": "EVALUATED",
+        "F8": "BLOCKED_PENDING_EVIDENCE"
+      },
+      {
+        "candidateId": "candidate-b",
+        "score": 85.0,
+        "grade": "B",
+        "rulesEvaluated": 8,
+        "status": "EVALUATED",
+        "F8": "BLOCKED_PENDING_EVIDENCE"
+      }
+    ],
+    "deployment": "All affected services rebuilt/deployed; final backend redeploy includes evaluation-context and approval validation.",
+    "productionHistory": "Original comparison payload, prompt versions and Step 5 equal pre-task snapshots.",
+    "providerCalls": 0,
+    "newPromptVersions": 0,
+    "automaticSelectionOrApproval": false
+  },
+  "10_selectionValue": "Neither existing candidate provides a defensible improvement. Keep Original. Candidates remain visible as historical/source-valid minor drafts, with approval blocked under the current contract.",
+  "lineage": {
+    "contentId": 10,
+    "promptVersionId": 10,
+    "analysisRunId": "9208e75a-b158-4ffb-94fe-03c15ca96395",
+    "comparisonId": "48e230db-2382-41bd-9ff9-0889df6fd803",
+    "roleRecordId": "65f85cc1-a266-454e-8de2-bc37d80d4102",
+    "attemptId": "61b8eec4-5699-400d-9bdb-e79c3629855c",
+    "providerResponseId": "chatcmpl-EYfSuzjJ8gI97T7afJFAcPePxpTRf",
+    "rulesetVersion": "1.7",
+    "evaluationBindingHash": "2c3b118fc81dcf4e776e909f25fec248a2057e6f289cb13c05685e65c9ad189b"
+  },
+  "filesChanged": [
+    "intelligence/ml-service/app/workflow/optimization_comparison.py",
+    "intelligence/ml-service/app/workflow/optimization_distinctness.py",
+    "intelligence/ml-service/app/workflow/creative_roles.py",
+    "intelligence/ml-service/app/workflow/api.py",
+    "intelligence/backend/src/main/java/com/pompomhills/intelligence/workflow/WorkflowService.java",
+    "intelligence/backend/src/main/java/com/pompomhills/intelligence/quality/QualityMlClient.java",
+    "intelligence/backend/src/main/java/com/pompomhills/intelligence/content/ContentWorkspaceController.java",
+    "intelligence/frontend/src/app/pages/quality-validator/post-family-workflow.component.ts",
+    "intelligence/ml-service/tests/test_optimization_comparison.py",
+    "intelligence/backend/src/test/java/com/pompomhills/intelligence/workflow/WorkflowNoRepairDecisionPostgresTest.java",
+    "intelligence/frontend/src/app/pages/quality-validator/post-family-workflow.spec.ts"
+  ]
+}

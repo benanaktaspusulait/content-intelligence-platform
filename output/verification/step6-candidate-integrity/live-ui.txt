@@ -1,0 +1,193 @@
+Pompom
+CREATIVE INTELLIGENCE
+«
+Collapse
+WORKSPACE
+OV
+Overview
+VL
+Video Library
+CH
+Characters
+PQ
+Prompt Quality
+NV
+New Video
+RG
+Rule Governance
+EX
+Experiments
+TP
+Test Planner
+PR
+Predictions
+PF
+Performance
+IM
+Import Data
+MR
+Model Reliability
+RF
+Reach Further
+MA
+Meta Analytics
+MV
+Model Versions
+RJ
+Render Jobs
+OP
+Operations
+Local workspace
+Persisted evidence only
+Prompt Quality
+
+Review saved prompts, analyse production readiness, and inspect previous results.
+
+1
+Idea
+Create or reuse
+2
+Story
+Select and approve
+3
+Prompt
+Review and edit
+4
+Production Review
+Validate workflow
+5
+Quality Analysis
+Quality evidence
+6
+Repair
+Priority fixes
+7
+Render Preparation
+Prepare visual inputs
+8
+Video QA
+Final evidence
+Source details
+STEP 6 · REPAIR
+Repair
+
+Apply a bounded, evidence-backed prompt repair when the review recommends one.
+
+STEP 6 · REPAIR DECISION
+No actionable prompt-text repair identified
+
+Saved canonical result: 85 / 100, grade B; PASS 4 · FAIL 0 · UNKNOWN 1 · NOT_APPLICABLE 3. No actionable canonical prompt-text failure is recorded. Outstanding evidence remains: REFERENCE_ASSOCIATION: An authoritative character/object reference is missing or unverified.; EXECUTION_INPUTS: Required provider execution inputs are missing: startFrame. UNKNOWN rules remain unverified: STUBBORN_RETURN_LOOP. Production critic, provider capability and complexity classifications are distinct and shown separately. Missing verified character reference and accepted start frame are Step 7 responsibilities, not text-repair tasks.
+
+QUALITY
+85 / 100 · Grade B
+CANONICAL FAILURES
+0
+TEXT REPAIR
+No repair justified
+EVIDENCE OUTSTANDING
+2
+
+No applicable canonical prompt-text failure or required text repair was identified.
+
+I confirm that no text repair is justified for this saved analysis. This does not resolve missing visual evidence.
+Approve No Repair & Continue
+
+Required character reference and accepted start frame remain outstanding; this decision does not mark F8 evidence resolved.
+
+Creative Optimization (optional)
+
+Generate two prompt candidates after explicit paid consent and a valid budget. Candidate scores are evidence only; they do not auto-select or authorize rendering.
+
+Load saved comparison / attempt
+Maximum total cost (USD)
+I explicitly authorize one creative optimization call within the configured budget.
+Generate two candidates
+KEEP_ORIGINAL
+
+Neither candidate demonstrates a defensible improvement over the saved baseline. Keep Original.
+
+Attempt 61b8eec4-5699-400d-9bdb-e79c3629855c · Prompt ID 10 · Ruleset 1.7
+Original
+Saved prompt
+Original
+
+Quality: 85/100 · Grade B
+
+Keep the saved story and production prompt when neither alternative has a defensible improvement.
+
+Baseline prompt text
+Keep Original
+candidate-a
+Mimi's Sticky Surprise
+Draft
+
+Classification: VALID_MINOR_VARIATION
+
+Text similarity screen: 99.4% · heuristic, not semantic proof.
+
+Creative hypothesis: The first beat is revised to an extreme close-up of Mimi's hand to enhance the visibility of the sticky note anomaly immediately, creating curiosity in the opening seconds.
+
+Quality: 85/100 · Grade B · Δ 0
+
+Observed textual changes:
+
+beat_01: framing CLOSE → EXTREME_CLOSE.
+
+Deterministic validation: SOURCE_TEXT_CONTRACT_PASSED
+
+Framing label changes, but stronger opening clarity is unproven.
+
+Production risk: No validated production-risk reduction.
+
+Story and ending: SOURCE_EVENTS_COVERED; SEMANTIC_FIDELITY_UNKNOWN · PROTECTED_ENDING_TEXT_PRESERVED
+
+Unknown until render: first-frame clarity, hook effectiveness and Seedance feasibility. Viewer response is unmeasured.
+
+Approval blocked: No material intervention beyond framing labels or timing boundaries; keep the original.
+
+Technical Evidence
+Full candidate prompt
+Review Candidate A
+Select candidate
+candidate-b
+Mimi's Sticky Escalation
+Draft
+
+Classification: VALID_MINOR_VARIATION
+
+Text similarity screen: 93.5% · heuristic, not semantic proof.
+
+Creative hypothesis: The mid-section beats are rebalanced to enhance the pacing of escalation, with a focus on the timing of the sticky note multiplication.
+
+Quality: 85/100 · Grade B · Δ 0
+
+Observed textual changes:
+
+beat_03: one source progression split into 2 camera shots; action and consequence unchanged.
+
+Deterministic validation: SOURCE_TEXT_CONTRACT_PASSED
+
+Timing boundaries change, but source actions and consequences remain unchanged; pacing improvement is unproven.
+
+Production risk: Additional temporal transitions require review.
+
+Story and ending: SOURCE_EVENTS_COVERED; SEMANTIC_FIDELITY_UNKNOWN · PROTECTED_ENDING_TEXT_PRESERVED
+
+Unknown until render: first-frame clarity, hook effectiveness and Seedance feasibility. Viewer response is unmeasured.
+
+Approval blocked: No material intervention beyond framing labels or timing boundaries; keep the original.
+
+Technical Evidence
+Full candidate prompt
+Review Candidate B
+Select candidate
+Side-by-side text changes · candidate-a
+Side-by-side text changes · candidate-b
+
+Candidate scores are evidence only. They do not auto-select and do not grant render authorization.
+
+Approve Selected Revision
+Select and review a candidate with preserved story coverage before approval.
+Analysis details and provenance
+Current prompt · Prompt v1 / ID 10
+Optional Repair Tools

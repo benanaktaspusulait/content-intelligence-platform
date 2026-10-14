@@ -1,0 +1,18 @@
+[
+  {
+    "candidateId": "candidate-a",
+    "score": 85.0,
+    "grade": "B",
+    "rulesEvaluated": 8,
+    "status": "EVALUATED",
+    "F8": "BLOCKED_PENDING_EVIDENCE"
+  },
+  {
+    "candidateId": "candidate-b",
+    "score": 85.0,
+    "grade": "B",
+    "rulesEvaluated": 8,
+    "status": "EVALUATED",
+    "F8": "BLOCKED_PENDING_EVIDENCE"
+  }
+]
