@@ -1,0 +1,114 @@
+version: '1.8'
+created: '2026-10-14'
+extends: RULESET_1.7.yaml
+inheritancePolicy: RECURSIVE_V1
+returnLoopApplicabilityPolicy: SOURCE_DOMAIN_V1
+semanticPolicy: EXISTING_EVIDENCE_ONLY
+default_evaluation_stage: PRE_RENDER
+description: 'Versioned dispatch correction: complete inherited registry, source-domain
+  return-loop applicability, provider-free UNKNOWN semantic evidence. Historical 1.7
+  unchanged.'
+policy_changes:
+- Resolve complete additive ancestry with explicit overrides and cycle validation.
+- Multiplication and persistence do not establish autonomous return. Incomplete domain
+  evidence remains UNKNOWN.
+- Preserve existing profile-admission exclusions for curiosity/adventure and educational
+  content.
+- Local canonical evaluation never dispatches semantic providers; missing verified
+  judgment stays UNKNOWN. No scoring weight/threshold change.
+rules:
+- id: ATTEMPT_001
+  overrides: true
+  excludedContentProfiles:
+  - CURIOSITY_ADVENTURE
+  - EDUCATIONAL
+- id: ATTEMPT_002
+  overrides: true
+  excludedContentProfiles:
+  - CURIOSITY_ADVENTURE
+  - EDUCATIONAL
+- id: CHAR_002
+  overrides: true
+  excludedContentProfiles:
+  - CURIOSITY_ADVENTURE
+  - EDUCATIONAL
+- id: CONCEPT_006
+  overrides: true
+  excludedContentProfiles:
+  - CURIOSITY_ADVENTURE
+  - EDUCATIONAL
+- id: CONCEPT_008
+  overrides: true
+  excludedContentProfiles:
+  - CURIOSITY_ADVENTURE
+  - EDUCATIONAL
+- id: ESCALATION_004
+  overrides: true
+  excludedContentProfiles:
+  - CURIOSITY_ADVENTURE
+  - EDUCATIONAL
+- id: ESCALATION_005
+  overrides: true
+  excludedContentProfiles:
+  - CURIOSITY_ADVENTURE
+  - EDUCATIONAL
+- id: GOAL_001
+  overrides: true
+  excludedContentProfiles:
+  - CURIOSITY_ADVENTURE
+  - EDUCATIONAL
+- id: HOOK_002
+  overrides: true
+  excludedContentProfiles:
+  - CURIOSITY_ADVENTURE
+  - EDUCATIONAL
+- id: HOOK_004
+  overrides: true
+  excludedContentProfiles:
+  - CURIOSITY_ADVENTURE
+  - EDUCATIONAL
+- id: PAYOFF_001
+  overrides: true
+  excludedContentProfiles:
+  - CURIOSITY_ADVENTURE
+  - EDUCATIONAL
+- id: PAYOFF_002
+  overrides: true
+  excludedContentProfiles:
+  - CURIOSITY_ADVENTURE
+  - EDUCATIONAL
+- id: PAYOFF_003
+  overrides: true
+  excludedContentProfiles:
+  - CURIOSITY_ADVENTURE
+  - EDUCATIONAL
+- id: PAYOFF_004
+  overrides: true
+  excludedContentProfiles:
+  - CURIOSITY_ADVENTURE
+  - EDUCATIONAL
+- id: PAYOFF_005
+  overrides: true
+  excludedContentProfiles:
+  - CURIOSITY_ADVENTURE
+  - EDUCATIONAL
+- id: PAYOFF_006
+  overrides: true
+  excludedContentProfiles:
+  - CURIOSITY_ADVENTURE
+  - EDUCATIONAL
+- id: PROGRESSION_005
+  overrides: true
+  excludedContentProfiles:
+  - CURIOSITY_ADVENTURE
+  - EDUCATIONAL
+- id: PROGRESSION_006
+  overrides: true
+  excludedContentProfiles:
+  - CURIOSITY_ADVENTURE
+  - EDUCATIONAL
+- id: REPETITION_004
+  overrides: true
+  excludedContentProfiles:
+  - CURIOSITY_ADVENTURE
+  - EDUCATIONAL

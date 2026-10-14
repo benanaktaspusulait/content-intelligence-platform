@@ -1333,3 +1333,23 @@ def temporal_generation_load_evidence(
         high_basis=high_basis,
         evidence_status=evidence_status,
     )
+
+
+def return_loop_applicability(ir: dict[str, Any]) -> str:
+    """1.8 domain gate: recurrence/persistence/multiplication are not autonomous return."""
+    profile = engine_profile_evidence(ir)
+    if profile.active:
+        return "APPLICABLE"
+    payload = _engine_profile_payload(ir)
+    if payload.get("engineProfile") == "STUBBORN_RETURN_LOOP" or profile.signals["AUTONOMOUS_RETURN"]:
+        return "UNKNOWN"
+    core = ir.get("coreMechanic") or {}
+    text = " ".join(str(core.get(k) or "") for k in ("physicalRule", "abnormalProperty", "causeEffect"))
+    text += " " + " ".join(str(b.get(k) or "") for b in ir.get("beats", []) for k in ("sourceAction", "action", "consequence"))
+    words = _words(text)
+    # Explicit incompatible mechanics establish exclusion, not mere absence of return words.
+    if words.intersection({"MULTIPLY", "MULTIPLIES", "MULTIPLYING", "DOUBLES", "DOUBLING", "STICKY", "STICKS", "STUCK", "PERSISTS"}):
+        return "NOT_APPLICABLE"
+    if payload.get("autonomousReturn") is False:
+        return "NOT_APPLICABLE"
+    return "UNKNOWN"

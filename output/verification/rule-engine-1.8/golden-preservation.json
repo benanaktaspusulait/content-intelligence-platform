@@ -1,0 +1,20 @@
+{
+  "assets": 9,
+  "assertions": 323,
+  "allHistoricalAssertionsIdenticalToPriorDeployedEngine": true,
+  "newSemanticRegressionsIntroduced": 0,
+  "newUnexpectedPolicyRegressionsIntroduced": 0,
+  "preexistingArchivedBaselineGate": {
+    "assets": 9,
+    "goldAssertions": 323,
+    "semanticPassed": 73,
+    "semanticFailed": 5,
+    "improvedFromBaseline": 29,
+    "unchangedKnownIssues": 50,
+    "newSemanticRegressions": 4,
+    "expectedPolicyChanges": 6,
+    "unexpectedPolicyRegressions": 2,
+    "representationMismatches": 0,
+    "goldReviewRequired": 60
+  }
+}

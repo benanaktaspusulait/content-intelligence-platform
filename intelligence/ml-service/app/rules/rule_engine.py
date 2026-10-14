@@ -6,6 +6,7 @@ Integrates parser, analyzers, and rule definitions.
 """
 
 import re
+from dataclasses import replace
 from pathlib import Path
 from typing import Any
 
@@ -32,6 +33,7 @@ from app.quality.canonical_evidence import (
     attempt_beats,
     attempt_evidence,
     engine_profile_evidence,
+    return_loop_applicability,
     escalation_evidence,
     is_evidence_gap,
     is_unspecified_verb,
@@ -99,6 +101,10 @@ def RuleEvaluation(
     )
 
 
+class SemanticEvidenceUnavailable(RuntimeError):
+    """Provider-free evaluation lacks a verified semantic judgment."""
+
+
 class RuleEngine:
     """
     Main rule engine that evaluates Video Plan IR.
@@ -117,19 +123,8 @@ class RuleEngine:
         Args:
             ruleset_path: Path to ruleset YAML file (defaults to RULESET_1.0.yaml)
         """
-        resolved_path: str | Path
-        if ruleset_path is None:
-            # Default to latest RULESET (1.7)
-            # Check POMPOM_DATA_ROOT env var first (Docker), then fallback to relative path
-            import os
-            data_root = os.getenv("POMPOM_DATA_ROOT")
-            if data_root:
-                resolved_path = Path(data_root) / "rules" / "RULESET_1.7.yaml"
-            else:
-                base_path = Path(__file__).parent.parent.parent
-                resolved_path = base_path / "data" / "rules" / "RULESET_1.7.yaml"
-        else:
-            resolved_path = ruleset_path
+        from app.config import settings
+        resolved_path = ruleset_path or settings.rules_dir / "RULESET_1.8.yaml"
 
         self.ruleset_path = Path(resolved_path)
         self.ruleset = self._load_ruleset()
@@ -193,21 +188,53 @@ class RuleEngine:
         return "short" if duration <= 20.0 else "long"
 
     def _load_ruleset(self) -> dict[str, Any]:
-        """Load a ruleset, resolving an additive immutable ``extends`` base."""
-        with open(self.ruleset_path, encoding="utf-8") as f:
-            loaded: dict[str, Any] = yaml.safe_load(f)
+        """1.8 resolves ancestry; historical versions retain their original loader."""
+        with self.ruleset_path.open(encoding="utf-8") as handle:
+            loaded = yaml.safe_load(handle)
+        if loaded.get("inheritancePolicy") == "RECURSIVE_V1":
+            return self._resolve_ruleset(self.ruleset_path, ())
         base_name = loaded.get("extends")
         if not base_name:
             return loaded
-        base_path = Path(self.ruleset_path).parent / str(base_name)
-        with open(base_path, encoding="utf-8") as f:
-            base: dict[str, Any] = yaml.safe_load(f)
-        merged = dict(base)
-        merged.update({key: value for key, value in loaded.items() if key not in {"rules", "extends"}})
+        with (self.ruleset_path.parent / base_name).open(encoding="utf-8") as handle:
+            base = yaml.safe_load(handle)
+        merged = {**base, **{k: v for k, v in loaded.items() if k != "rules"}}
         merged["rules"] = list(base.get("rules", [])) + list(loaded.get("rules", []))
-        merged["version"] = loaded.get("version", base.get("version"))
-        merged["extends"] = base_name
         return merged
+
+    def _resolve_ruleset(self, path: Path, ancestry: tuple[Path, ...]) -> dict[str, Any]:
+        path = path.resolve()
+        if path in ancestry:
+            raise ValueError(f"Ruleset inheritance cycle: {path.name}")
+        with path.open(encoding="utf-8") as handle:
+            child = yaml.safe_load(handle)
+        if not isinstance(child, dict) or not isinstance(child.get("rules", []), list):
+            raise ValueError(f"Invalid ruleset: {path.name}")
+        base = self._resolve_ruleset(path.parent / child["extends"], (*ancestry, path)) if child.get("extends") else {}
+        rules = {r["id"]: r for r in base.get("rules", [])}
+        child_ids: set[str] = set()
+        for rule in child.get("rules", []):
+            rule_id = rule["id"]
+            if rule_id in child_ids:
+                raise ValueError(f"Duplicate rule {rule_id} in {path.name}")
+            child_ids.add(rule_id)
+            if rule_id in rules and not rule.get("overrides"):
+                raise ValueError(f"Rule {rule_id} requires explicit overrides in {path.name}")
+            if rule.get("overrides") and rule_id not in rules:
+                raise ValueError(f"Unknown rule override {rule_id} in {path.name}")
+            rules[rule_id] = {**rules.get(rule_id, {}), **rule}
+        return {**base, **child, "rules": list(rules.values())}
+
+    def _semantic_check(self, check: Any, *args: Any, **kwargs: Any) -> Any:
+        if self.ruleset.get("semanticPolicy") == "EXISTING_EVIDENCE_ONLY":
+            raise SemanticEvidenceUnavailable("Semantic judgment has no verified evidence; provider dispatch is disabled for this local ruleset.")
+        return check(*args, **kwargs)
+
+    def _engine_profile(self, ir: dict[str, Any]) -> Any:
+        profile = engine_profile_evidence(ir)
+        if self.ruleset.get("returnLoopApplicabilityPolicy") == "SOURCE_DOMAIN_V1":
+            return replace(profile, candidate_only=return_loop_applicability(ir) == "UNKNOWN")
+        return profile
 
     def evaluate(self, video_plan_ir: dict[str, Any], evaluation_stage: str = "PRE_RENDER") -> QualityReport:
         """
@@ -259,7 +286,14 @@ class RuleEngine:
                 continue
 
             if rule_id in self.evaluators:
-                evaluation = self.evaluators[rule_id](video_plan_ir, rule)
+                try:
+                    evaluation = self.evaluators[rule_id](video_plan_ir, rule)
+                except SemanticEvidenceUnavailable as error:
+                    evaluation = RuleEvaluation(
+                        rule_id=rule_id, rule_name=rule.get("name", rule_id),
+                        family=rule["family"], severity=rule["severity"], result="UNKNOWN",
+                        message=str(error), details={"requiredEvidence": "VERIFIED_SEMANTIC_JUDGMENT", "providerDispatch": False},
+                    )
                 details = dict(evaluation.details)
                 details.setdefault("evaluation_stage", rule_stage)
                 details.setdefault("recommendation", str(rule.get("description", "")).strip())
@@ -300,6 +334,10 @@ class RuleEngine:
     @staticmethod
     def _rule_applies(rule: dict[str, Any], video_plan_ir: dict[str, Any]) -> bool:
         """Apply only the scope vocabulary already declared by the ruleset."""
+        if rule.get("retired") or rule.get("status") in {"RETIRED", "DEPRECATED"}:
+            return False
+        if video_plan_ir.get("metadata", {}).get("contentProfile") in rule.get("excludedContentProfiles", []):
+            return False
         scope_type = rule.get("scopeType", "GLOBAL")
         if scope_type == "GLOBAL":
             return True
@@ -1031,7 +1069,7 @@ class RuleEngine:
         still do when startsAt isn't provided.
         """
         hook = video_plan_ir.get("hook", {})
-        profile = engine_profile_evidence(video_plan_ir)
+        profile = self._engine_profile(video_plan_ir)
         if profile.active and (hook.get("visibleProblem") or hook.get("textualFirstFrameIntent", {}).get("status") == "PASS"):
             return RuleEvaluation(
                 rule_id="HOOK_002", rule_name="First Frame Anomaly", family="hook_strength", severity="CRITICAL", result="PASS",
@@ -1419,7 +1457,7 @@ class RuleEngine:
         minimum = 3 if tier == "short" else 7
         attempts = attempt_beats(video_plan_ir)
         evidence = attempt_evidence(video_plan_ir)
-        profile = engine_profile_evidence(video_plan_ir)
+        profile = self._engine_profile(video_plan_ir)
         if profile.active and profile.signals["ESCALATION"]:
             return RuleEvaluation(
                 rule_id="ATTEMPT_002",
@@ -1469,7 +1507,7 @@ class RuleEngine:
                 for a in candidates
             ]
             try:
-                duplicate_pairs = find_duplicate_strategy_pairs(llm_attempts)
+                duplicate_pairs = self._semantic_check(find_duplicate_strategy_pairs, llm_attempts)
             except SemanticCheckServiceError as e:
                 return RuleEvaluation(
                     rule_id="ATTEMPT_002",
@@ -1545,7 +1583,7 @@ class RuleEngine:
             )
 
         try:
-            matches, reasoning = check_twist_matches_rule(
+            matches, reasoning = self._semantic_check(check_twist_matches_rule, 
                 physical_rule,
                 twist_description,
                 mechanic_evidence=mechanic_evidence,
@@ -1628,6 +1666,8 @@ class RuleEngine:
                 message="No character reference image available to verify continuity against.",
             )
 
+        if self.ruleset.get("semanticPolicy") == "EXISTING_EVIDENCE_ONLY":
+            raise SemanticEvidenceUnavailable("Verified pixel-continuity judgment is unavailable; provider dispatch is disabled.")
         verifier = CharacterVerifier()
         result = verifier.verify_continuity(
             Path(str(rendered_video_path)), expected_character, Path(str(reference_image_path))
@@ -2072,7 +2112,7 @@ class RuleEngine:
         beat_descriptions = [b.get("consequence", "") for b in beats]
 
         try:
-            derived_count, reasoning = count_independent_mechanics(physical_rule, beat_descriptions)
+            derived_count, reasoning = self._semantic_check(count_independent_mechanics, physical_rule, beat_descriptions)
         except SemanticCheckServiceError as e:
             return RuleEvaluation(
                 rule_id="CONCEPT_007",
@@ -2176,7 +2216,7 @@ class RuleEngine:
             )
 
         try:
-            is_natural, reasoning = check_goal_is_natural(
+            is_natural, reasoning = self._semantic_check(check_goal_is_natural, 
                 character_name, physical_rule, beat_descriptions, goal_evidence
             )
         except SemanticCheckServiceError as e:
@@ -2232,7 +2272,7 @@ class RuleEngine:
         beat_descriptions = [b.get("consequence", "") for b in beats if b.get("consequence")]
 
         try:
-            is_predictable, reasoning = check_rule_is_predictable(physical_rule, beat_descriptions)
+            is_predictable, reasoning = self._semantic_check(check_rule_is_predictable, physical_rule, beat_descriptions)
         except SemanticCheckServiceError as e:
             return RuleEvaluation(
                 rule_id="CONCEPT_008",
@@ -2343,7 +2383,7 @@ class RuleEngine:
             for beat in video_plan_ir.get("beats", [])
         ]
         try:
-            evidence, decision = check_single_agent_object_mechanic(
+            evidence, decision = self._semantic_check(check_single_agent_object_mechanic, 
                 str(primary or ""),
                 [str(item) for item in (characters.get("secondary") or [])],
                 str(core_mechanic.get("physicalRule", "")),
@@ -2528,7 +2568,7 @@ class RuleEngine:
         ]
 
         try:
-            is_legible, reasoning = check_opening_problem_legible(anomaly, opening_descriptions)
+            is_legible, reasoning = self._semantic_check(check_opening_problem_legible, anomaly, opening_descriptions)
         except SemanticCheckServiceError as e:
             return RuleEvaluation(
                 rule_id="HOOK_004",
@@ -2581,7 +2621,7 @@ class RuleEngine:
         ]
 
         try:
-            is_readable, reasoning = check_character_performance_readable(character_name, beat_descriptions)
+            is_readable, reasoning = self._semantic_check(check_character_performance_readable, character_name, beat_descriptions)
         except SemanticCheckServiceError as e:
             return RuleEvaluation(
                 rule_id="PERFORMANCE_001",
@@ -3077,7 +3117,7 @@ class RuleEngine:
             for a in attempts
         ]
         try:
-            judgments = check_attempts_are_generation_executable(llm_attempts)
+            judgments = self._semantic_check(check_attempts_are_generation_executable, llm_attempts)
         except SemanticCheckServiceError as e:
             return RuleEvaluation(
                 rule_id="GENERATION_EXECUTABLE_ATTEMPTS",
@@ -3214,7 +3254,7 @@ class RuleEngine:
         )
     def _evaluate_mini_story_lock(self, video_plan_ir: dict[str, Any], rule: dict[str, Any]) -> RuleEvaluationType:
         evidence = story_density_evidence(video_plan_ir)
-        profile = engine_profile_evidence(video_plan_ir)
+        profile = self._engine_profile(video_plan_ir)
         required = {
             "goal": evidence.goal_status in {"EXPLICIT", "IMPLICIT_BUT_OBSERVABLE"},
             "obstruction": evidence.obstruction_status == "AVAILABLE",
@@ -3259,7 +3299,7 @@ class RuleEngine:
 
     def _evaluate_temporal_complexity_split_gate(self, video_plan_ir: dict[str, Any], rule: dict[str, Any]) -> RuleEvaluationType:
         evidence = story_density_evidence(video_plan_ir)
-        profile = engine_profile_evidence(video_plan_ir)
+        profile = self._engine_profile(video_plan_ir)
         if profile.active and profile.state_memory_cost == "LOW":
             return RuleEvaluation(
                 rule_id="TEMPORAL_COMPLEXITY_SPLIT_GATE", rule_name="Temporal Complexity Split Gate", family="generation_executability", severity="BLOCKER", result="PASS",
@@ -3332,7 +3372,7 @@ class RuleEngine:
         )
 
     def _evaluate_stubborn_return_loop(self, video_plan_ir: dict[str, Any], rule: dict[str, Any]) -> RuleEvaluationType:
-        profile = engine_profile_evidence(video_plan_ir)
+        profile = self._engine_profile(video_plan_ir)
         if profile.active:
             return RuleEvaluation(
                 rule_id="STUBBORN_RETURN_LOOP", rule_name="Stubborn Return Loop", family="progression", severity="BLOCKER", result="PASS",
@@ -3343,11 +3383,11 @@ class RuleEngine:
             message=profile.reason, details={"engineProfile": profile.__dict__})
 
     def _evaluate_stubborn_return_hook(self, video_plan_ir: dict[str, Any], rule: dict[str, Any]) -> RuleEvaluationType:
-        profile = engine_profile_evidence(video_plan_ir)
+        profile = self._engine_profile(video_plan_ir)
         hook = video_plan_ir.get("hook") or {}
         if not profile.active:
             return RuleEvaluation(
-                rule_id="STUBBORN_RETURN_HOOK", rule_name="Stubborn Return Hook", family="hook_strength", severity="CRITICAL", result="NOT_APPLICABLE",
+                rule_id="STUBBORN_RETURN_HOOK", rule_name="Stubborn Return Hook", family="hook_strength", severity="CRITICAL", result="UNKNOWN" if self.ruleset.get("returnLoopApplicabilityPolicy") and profile.candidate_only else "NOT_APPLICABLE",
                 message="Stubborn-return hook exception applies only when the engine profile is explicitly or high-confidence active.", details={"engineProfile": profile.__dict__})
         if hook.get("visibleProblem") or hook.get("textualFirstFrameIntent", {}).get("status") == "PASS" or profile.signals["FIXED_VISIBLE_BOUNDARY"]:
             return RuleEvaluation(
@@ -3358,12 +3398,12 @@ class RuleEngine:
             message="No high-confidence immediate visible threat hook was evidenced.", details={"engineProfile": profile.__dict__})
 
     def _evaluate_stubborn_return_payoff(self, video_plan_ir: dict[str, Any], rule: dict[str, Any]) -> RuleEvaluationType:
-        profile = engine_profile_evidence(video_plan_ir)
+        profile = self._engine_profile(video_plan_ir)
         beats = video_plan_ir.get("beats") or []
         payoff = video_plan_ir.get("finalPayoff") or {}
         if not profile.active:
             return RuleEvaluation(
-                rule_id="STUBBORN_RETURN_PAYOFF", rule_name="Stubborn Return Payoff", family="final_payoff", severity="CRITICAL", result="NOT_APPLICABLE",
+                rule_id="STUBBORN_RETURN_PAYOFF", rule_name="Stubborn Return Payoff", family="final_payoff", severity="CRITICAL", result="UNKNOWN" if self.ruleset.get("returnLoopApplicabilityPolicy") and profile.candidate_only else "NOT_APPLICABLE",
                 message="Stubborn-return payoff exception is not active.", details={"engineProfile": profile.__dict__})
         final = beats[-1] if beats else {}
         final_text = (str(final.get("action", "")) + " " + str(final.get("consequence", ""))).lower()

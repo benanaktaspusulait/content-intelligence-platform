@@ -1,0 +1,887 @@
+[
+  {
+    "id": "CONCEPT_006",
+    "registered": true,
+    "active": true,
+    "scope": "GLOBAL",
+    "scopeId": null,
+    "stage": "PRE_RENDER",
+    "excludedProfiles": [
+      "CURIOSITY_ADVENTURE",
+      "EDUCATIONAL"
+    ],
+    "evaluator": "_evaluate_concept_006",
+    "consumedEvidenceFields": [],
+    "inputContract": "Before writing a 15-second prompt, verify that the core mechanic\ncan naturally generate at least 4 visually distinct consequences.\n\nIf it cannot, reject the concept.\n\nDo NOT stretch a two-beat teaching contrast into 15 seconds.\n",
+    "applicabilityContract": "CONCEPT_006: Consequence Capacity",
+    "baselineOutcome": "PASS",
+    "baselineReason": "Sufficient consequence variety: 5 distinct consequences.",
+    "previouslySkippedBecause": "1.7 loader merged only immediate 1.6 ancestor; 1.5 rules never entered dispatcher"
+  },
+  {
+    "id": "BEAT_004",
+    "registered": true,
+    "active": true,
+    "scope": "GLOBAL",
+    "scopeId": null,
+    "stage": "PRE_RENDER",
+    "excludedProfiles": [],
+    "evaluator": "_evaluate_beat_004",
+    "consumedEvidenceFields": [],
+    "inputContract": "No single visual state may occupy more than approximately\n25\u201330% of the entire video unless meaningful new physical\nconsequences occur within that state.\n\nDifferent dialogue or tiny movements do NOT count\nas different visual beats.\n",
+    "applicabilityContract": "BEAT_004: Static State Dominance",
+    "baselineOutcome": "FAIL",
+    "baselineReason": "Visual state 'character_mimi_continues_to_pull_each_pull_doubles' occupies 33.3% of video. Maximum: 30%.",
+    "previouslySkippedBecause": "1.7 loader merged only immediate 1.6 ancestor; 1.5 rules never entered dispatcher"
+  },
+  {
+    "id": "REPETITION_002",
+    "registered": true,
+    "active": true,
+    "scope": "GLOBAL",
+    "scopeId": null,
+    "stage": "PRE_RENDER",
+    "excludedProfiles": [],
+    "evaluator": "_evaluate_repetition_002",
+    "consumedEvidenceFields": [
+      "action",
+      "beats",
+      "consequenceType"
+    ],
+    "inputContract": "The same physical action should not repeat more than twice\nunless each iteration introduces a materially different consequence.\n\nEmotional variation (confused \u2192 understanding \u2192 frustrated)\nwithout physical consequence change is insufficient.\n",
+    "applicabilityContract": "REPETITION_002: Visual Beat Repetition",
+    "baselineOutcome": "PASS",
+    "baselineReason": "Good action variety. Max repetition: 1.",
+    "previouslySkippedBecause": "1.7 loader merged only immediate 1.6 ancestor; 1.5 rules never entered dispatcher"
+  },
+  {
+    "id": "REPETITION_003",
+    "registered": true,
+    "active": true,
+    "scope": "GLOBAL",
+    "scopeId": null,
+    "stage": "PRE_RENDER",
+    "excludedProfiles": [],
+    "evaluator": "_evaluate_repetition_003",
+    "consumedEvidenceFields": [
+      "beats",
+      "cycleGroup"
+    ],
+    "inputContract": "A cause-effect cycle (action \u2192 consequence \u2192 reset) should not\nrepeat more than twice unless each iteration introduces a NEW\nphysical element, obstacle, or escalation.\n\nExample cycle: sharpen \u2192 draw \u2192 blunt \u2192 (reset to sharpen)\n\nCosmetic variations (stroke pattern, sharpen duration) do not\ncount as structural escalation.\n",
+    "applicabilityContract": "REPETITION_003: Cycle Repetition Limit",
+    "baselineOutcome": "PASS",
+    "baselineReason": "No explicit cycles detected.",
+    "previouslySkippedBecause": "1.7 loader merged only immediate 1.6 ancestor; 1.5 rules never entered dispatcher"
+  },
+  {
+    "id": "NOVELTY_001",
+    "registered": true,
+    "active": true,
+    "scope": "GLOBAL",
+    "scopeId": null,
+    "stage": "PRE_RENDER",
+    "excludedProfiles": [],
+    "evaluator": "_evaluate_novelty_001",
+    "consumedEvidenceFields": [],
+    "inputContract": "New consequences should be distributed across the timeline,\nnot clustered at the beginning or end.\n\nNo gap longer than 4.5 seconds should pass without a new\nvisually distinct consequence appearing.\n",
+    "applicabilityContract": "NOVELTY_001: Novelty Timeline Distribution",
+    "baselineOutcome": "PASS",
+    "baselineReason": "Gap of 5.0s between new consequences (at 5.0s-10.0s). Consider adding intermediate beat.",
+    "previouslySkippedBecause": "1.7 loader merged only immediate 1.6 ancestor; 1.5 rules never entered dispatcher"
+  },
+  {
+    "id": "PROGRESSION_005",
+    "registered": true,
+    "active": true,
+    "scope": "GLOBAL",
+    "scopeId": null,
+    "stage": "PRE_RENDER",
+    "excludedProfiles": [
+      "CURIOSITY_ADVENTURE",
+      "EDUCATIONAL"
+    ],
+    "evaluator": "_evaluate_progression_005",
+    "consumedEvidenceFields": [
+      "beats",
+      "consequenceType",
+      "duration",
+      "metadata"
+    ],
+    "inputContract": "No more than 50% of the video should pass without new\nvisually distinct physical consequences appearing.\n\nIf > 65% of video shows only pattern variations of the same\ncore action, flag as CRITICAL.\n",
+    "applicabilityContract": "PROGRESSION_005: Consequence Novelty Timeline",
+    "baselineOutcome": "PASS",
+    "baselineReason": "Good novelty timeline. Static pattern: 0.0%.",
+    "previouslySkippedBecause": "1.7 loader merged only immediate 1.6 ancestor; 1.5 rules never entered dispatcher"
+  },
+  {
+    "id": "ESCALATION_004",
+    "registered": true,
+    "active": true,
+    "scope": "GLOBAL",
+    "scopeId": null,
+    "stage": "PRE_RENDER",
+    "excludedProfiles": [
+      "CURIOSITY_ADVENTURE",
+      "EDUCATIONAL"
+    ],
+    "evaluator": "_evaluate_escalation_004",
+    "consumedEvidenceFields": [
+      "beats",
+      "duration",
+      "finalPayoff",
+      "isNewConsequence",
+      "metadata",
+      "startTime",
+      "startsAt"
+    ],
+    "inputContract": "The final major escalation should not appear after 80% of the video\n(12 seconds in a 15-second video) unless the middle contains\nstrong intermediate escalations.\n\nLate payoffs risk losing viewer attention before the peak.\n",
+    "applicabilityContract": "ESCALATION_004: Delayed Payoff",
+    "baselineOutcome": "PASS",
+    "baselineReason": "Final payoff at 12.0s. Consider moving earlier for stronger retention.",
+    "previouslySkippedBecause": "1.7 loader merged only immediate 1.6 ancestor; 1.5 rules never entered dispatcher"
+  },
+  {
+    "id": "PAYOFF_001",
+    "registered": true,
+    "active": true,
+    "scope": "GLOBAL",
+    "scopeId": null,
+    "stage": "PRE_RENDER",
+    "excludedProfiles": [
+      "CURIOSITY_ADVENTURE",
+      "EDUCATIONAL"
+    ],
+    "evaluator": "_evaluate_payoff_001",
+    "consumedEvidenceFields": [
+      "finalPayoff",
+      "isRepeatOfOpening"
+    ],
+    "inputContract": "The final beat must not be identical or nearly identical\nto the opening beat.\n\nA callback is acceptable if it's BIGGER or has a TWIST.\nA simple repeat signals lazy structure.\n",
+    "applicabilityContract": "PAYOFF_001: Not Repeat of Opening",
+    "baselineOutcome": "PASS",
+    "baselineReason": "Final payoff is distinct from opening.",
+    "previouslySkippedBecause": "1.7 loader merged only immediate 1.6 ancestor; 1.5 rules never entered dispatcher"
+  },
+  {
+    "id": "PRODUCIBILITY_001",
+    "registered": true,
+    "active": true,
+    "scope": "GLOBAL",
+    "scopeId": null,
+    "stage": "PRE_RENDER",
+    "excludedProfiles": [],
+    "evaluator": "_evaluate_producibility_001",
+    "consumedEvidenceFields": [
+      "overallComplexity",
+      "producibility"
+    ],
+    "inputContract": "Prompts marked as \"very_high\" complexity should not proceed\nto render without human review and risk acceptance.\n\nVery high complexity typically means 4+ simultaneous high-risk\noperations or untested novel requirements.\n",
+    "applicabilityContract": "PRODUCIBILITY_001: Very High Complexity Block",
+    "baselineOutcome": "PASS",
+    "baselineReason": "Acceptable complexity: medium.",
+    "previouslySkippedBecause": "1.7 loader merged only immediate 1.6 ancestor; 1.5 rules never entered dispatcher"
+  },
+  {
+    "id": "CONSISTENCY_001",
+    "registered": true,
+    "active": true,
+    "scope": "GLOBAL",
+    "scopeId": null,
+    "stage": "PRE_RENDER",
+    "excludedProfiles": [],
+    "evaluator": "_evaluate_consistency_001",
+    "consumedEvidenceFields": [
+      "consistency",
+      "coreMechanic"
+    ],
+    "inputContract": "The physical rule established in the hook should remain\nconsistent throughout the video unless the concept explicitly\ninvolves rule-breaking as the payoff.\n",
+    "applicabilityContract": "CONSISTENCY_001: Physics Rule Consistency",
+    "baselineOutcome": "UNKNOWN",
+    "baselineReason": "coreMechanic.consistency was not explicitly stated in the prompt and cannot be verified.",
+    "previouslySkippedBecause": "1.7 loader merged only immediate 1.6 ancestor; 1.5 rules never entered dispatcher"
+  },
+  {
+    "id": "HOOK_002",
+    "registered": true,
+    "active": true,
+    "scope": "GLOBAL",
+    "scopeId": null,
+    "stage": "PRE_RENDER",
+    "excludedProfiles": [
+      "CURIOSITY_ADVENTURE",
+      "EDUCATIONAL"
+    ],
+    "evaluator": "_evaluate_hook_002",
+    "consumedEvidenceFields": [
+      "hook",
+      "startsAt",
+      "startsMidAction",
+      "status",
+      "textualFirstFrameIntent",
+      "visibleProblem",
+      "visualStrength"
+    ],
+    "inputContract": "The problem must already be visually obvious within the opening second, with no setup, narration, or text explanation required. hook.startsMidAction must be true and hook.visualStrength must be at least 4/5. RULESET 1.3 adds a tolerance window -- hook.startsAt must be <= 0.8s (defaults to 0.0 when absent, a no-op for pre-1.3 IRs); the anomaly doesn't need to be literally frame-0 to read as immediate.",
+    "applicabilityContract": "HOOK_002: First Frame Anomaly.\n\n\"First frame\" doesn't literally mean timestamp 0 \u2014 a tolerance window\nof 0.8s is allowed before startsMidAction's absence is treated as a\nhard FAIL, since an anomaly established within the first beat still\nreads as immediate to a viewer. hook.startsAt defaults to 0.0 when\nabsent (pre-1.3 IRs), which keeps the window check a no-op for them \u2014\nonly startsMidAction/visualStrength drove the verdict before, and\nstill do when startsAt isn't provided.",
+    "baselineOutcome": "PASS",
+    "baselineReason": "Textual first-frame intent establishes an immediate anomaly; visual verification remains a separate gate.",
+    "previouslySkippedBecause": "1.7 loader merged only immediate 1.6 ancestor; 1.5 rules never entered dispatcher"
+  },
+  {
+    "id": "HOOK_003",
+    "registered": true,
+    "active": true,
+    "scope": "GLOBAL",
+    "scopeId": null,
+    "stage": "PRE_RENDER",
+    "excludedProfiles": [],
+    "evaluator": "_evaluate_hook_003",
+    "consumedEvidenceFields": [
+      "hook",
+      "soundOffClear"
+    ],
+    "inputContract": "The core problem and physical comedy must work with audio muted. hook.soundOffClear must be true.",
+    "applicabilityContract": "HOOK_003: Sound Independence",
+    "baselineOutcome": "UNKNOWN",
+    "baselineReason": "hook.soundOffClear was not explicitly stated in the prompt and cannot be verified.",
+    "previouslySkippedBecause": "1.7 loader merged only immediate 1.6 ancestor; 1.5 rules never entered dispatcher"
+  },
+  {
+    "id": "MOTION_001",
+    "registered": true,
+    "active": true,
+    "scope": "GLOBAL",
+    "scopeId": null,
+    "stage": "PRE_RENDER",
+    "excludedProfiles": [],
+    "evaluator": "_evaluate_motion_001",
+    "consumedEvidenceFields": [
+      "beats",
+      "duration",
+      "motionAmount"
+    ],
+    "inputContract": "No beat may hold with motionAmount == 'none' for longer than 1.5 seconds. Renamed from \"No Dead Air\" in RULESET 1.3 -- brief stillness (a puzzled look, a short charming reaction) is a legitimate pause, not a defect; what matters is progression not stalling, not motion itself.",
+    "applicabilityContract": "MOTION_001: Continuous Meaningful Progression.\n\nRenamed from \"No Dead Air\" in RULESET 1.3 \u2014 the old name implied any\nstillness was a defect. It isn't: a brief (<=1.5s) still beat (a\npuzzled look, a short charming reaction) is a legitimate pause, not\ndead air. What actually matters is motion is not required, forward\nnarrative progression is. The threshold/logic are unchanged from\n1.1/1.2 \u2014 a still beat only fails once it holds long enough that\nit's reasonable to call it a stall rather than a readable beat.",
+    "baselineOutcome": "FAIL",
+    "baselineReason": "Longest motionless beat is 5.0s. Maximum: 1.5s. A brief still reaction (puzzled look, short charming pause) is fine \u2014 this flags a hold long enough to stall progression, not stillness itself.",
+    "previouslySkippedBecause": "1.7 loader merged only immediate 1.6 ancestor; 1.5 rules never entered dispatcher"
+  },
+  {
+    "id": "ATTEMPT_001",
+    "registered": true,
+    "active": true,
+    "scope": "GLOBAL",
+    "scopeId": null,
+    "stage": "PRE_RENDER",
+    "excludedProfiles": [
+      "CURIOSITY_ADVENTURE",
+      "EDUCATIONAL"
+    ],
+    "evaluator": "_evaluate_attempt_001",
+    "consumedEvidenceFields": [
+      "duration",
+      "metadata"
+    ],
+    "inputContract": "Count of beats with isAttempt == true must meet a duration-tier minimum: 3 for videos <= 20s (short tier), 7 for videos > 20s (long tier).",
+    "applicabilityContract": "ATTEMPT_001: Attempt Count",
+    "baselineOutcome": "FAIL",
+    "baselineReason": "Only 2 active attempt(s) detected for a short-tier (15s) video. Minimum: 3.",
+    "previouslySkippedBecause": "1.7 loader merged only immediate 1.6 ancestor; 1.5 rules never entered dispatcher"
+  },
+  {
+    "id": "CHAR_002",
+    "registered": true,
+    "active": true,
+    "scope": "GLOBAL",
+    "scopeId": null,
+    "stage": "PRE_RENDER",
+    "excludedProfiles": [
+      "CURIOSITY_ADVENTURE",
+      "EDUCATIONAL"
+    ],
+    "evaluator": "_evaluate_char_002",
+    "consumedEvidenceFields": [
+      "duration",
+      "metadata"
+    ],
+    "inputContract": "The character must spend most of the runtime actively trying a solution, not watching or reacting. Ratio of (duration of isAttempt beats) / (total duration) must be at least 0.5 for short-tier videos, 0.6 for long-tier.",
+    "applicabilityContract": "CHAR_002: Active Character",
+    "baselineOutcome": "PASS",
+    "baselineReason": "Character is actively attempting a solution for 53% of the video.",
+    "previouslySkippedBecause": "1.7 loader merged only immediate 1.6 ancestor; 1.5 rules never entered dispatcher"
+  },
+  {
+    "id": "PRODUCIBILITY_002",
+    "registered": true,
+    "active": true,
+    "scope": "GLOBAL",
+    "scopeId": null,
+    "stage": "PRE_RENDER",
+    "excludedProfiles": [],
+    "evaluator": "_evaluate_producibility_002",
+    "consumedEvidenceFields": [
+      "action",
+      "beats",
+      "consequence",
+      "duration",
+      "isAttempt",
+      "mainProps",
+      "metadata",
+      "setting"
+    ],
+    "inputContract": "Introduce the minimum number of props necessary. setting.mainProps count must not exceed 2 for short-tier videos, 4 for long-tier videos. RULESET 1.3 adds a timeline-aware check (heuristic, text-match based) alongside the static count -- a prop first mentioned mid-concept inside an attempt beat, rather than established from the opening, is flagged as a WARNING even when the total count is within budget.",
+    "applicabilityContract": "PRODUCIBILITY_002: Prop Economy.\n\nRULESET 1.3 adds a timeline-aware check alongside the original static\ncount: a prop introduced mid-concept purely to manufacture another\nattempt (rather than being established from the opening) is flagged\neven when the total prop count is within budget. Detection is a\nbest-effort text match (a prop name appearing in a later attempt\nbeat's action/consequence but never in any earlier beat) \u2014 this is a\nheuristic, not a guarantee, since prop names are free text; it only\never adds a WARNING on top of the existing count check, never\nreplaces it.",
+    "baselineOutcome": "PASS",
+    "baselineReason": "0 main props, within the short-tier budget of 2.",
+    "previouslySkippedBecause": "1.7 loader merged only immediate 1.6 ancestor; 1.5 rules never entered dispatcher"
+  },
+  {
+    "id": "PAYOFF_002",
+    "registered": true,
+    "active": true,
+    "scope": "GLOBAL",
+    "scopeId": null,
+    "stage": "PRE_RENDER",
+    "excludedProfiles": [
+      "CURIOSITY_ADVENTURE",
+      "EDUCATIONAL"
+    ],
+    "evaluator": "_evaluate_payoff_002",
+    "consumedEvidenceFields": [
+      "beats",
+      "consequenceType"
+    ],
+    "inputContract": "Bonus (non-blocking): at least one beat with consequenceType == 'fake_win' before finalPayoff.startsAt, giving the audience a moment to believe the problem is solved before the final twist.",
+    "applicabilityContract": "PAYOFF_002: Fake Resolution Present (bonus, non-blocking)",
+    "baselineOutcome": "PASS",
+    "baselineReason": "No fake-resolution beat found. This is a bonus, not a requirement \u2014 consider adding a moment where the problem appears solved before the twist.",
+    "previouslySkippedBecause": "1.7 loader merged only immediate 1.6 ancestor; 1.5 rules never entered dispatcher"
+  },
+  {
+    "id": "ATTEMPT_002",
+    "registered": true,
+    "active": true,
+    "scope": "GLOBAL",
+    "scopeId": null,
+    "stage": "PRE_RENDER",
+    "excludedProfiles": [
+      "CURIOSITY_ADVENTURE",
+      "EDUCATIONAL"
+    ],
+    "evaluator": "_evaluate_attempt_002",
+    "consumedEvidenceFields": [
+      "action",
+      "actionStrategyFamily",
+      "consequence",
+      "duration",
+      "id",
+      "intendedEffect",
+      "intendedStrategyFamily",
+      "metadata",
+      "primaryVerb",
+      "reactiveActionFamily",
+      "result",
+      "targetObject"
+    ],
+    "inputContract": "Attempts must be mechanically distinct, not just differently worded. Identical primaryVerb across attempts is an automatic deterministic FAIL. Verb-distinct attempts are checked for semantic duplication via LLM (e.g. GRAB vs YANK may be the same underlying strategy; RULESET 1.3 explicitly also treats intensity/angle variants of the identical strategy as duplicates, e.g. PUSH/PUSH_HARDER/PUSH_FROM_LEFT). Effective distinct count must meet the same duration-tier minimum as ATTEMPT_001.",
+    "applicabilityContract": "ATTEMPT_002: distinct canonical strategy families, not verb-bearing beats.",
+    "baselineOutcome": "UNKNOWN",
+    "baselineReason": "Semantic judgment has no verified evidence; provider dispatch is disabled for this local ruleset.",
+    "previouslySkippedBecause": "1.7 loader merged only immediate 1.6 ancestor; 1.5 rules never entered dispatcher"
+  },
+  {
+    "id": "PAYOFF_003",
+    "registered": true,
+    "active": true,
+    "scope": "GLOBAL",
+    "scopeId": null,
+    "stage": "PRE_RENDER",
+    "excludedProfiles": [
+      "CURIOSITY_ADVENTURE",
+      "EDUCATIONAL"
+    ],
+    "evaluator": "_evaluate_payoff_003",
+    "consumedEvidenceFields": [
+      "action",
+      "beats",
+      "consequence",
+      "coreMechanic",
+      "finalPayoff",
+      "physicalRule",
+      "startTime",
+      "startsAt"
+    ],
+    "inputContract": "The final twist must derive from the same established physical rule (coreMechanic.physicalRule), applied in a new or bigger way \u2014 not an unrelated, disconnected joke. Checked via LLM semantic judgment.",
+    "applicabilityContract": "PAYOFF_003: Rule-Consistent Twist (LLM semantic check)",
+    "baselineOutcome": "UNKNOWN",
+    "baselineReason": "Semantic judgment has no verified evidence; provider dispatch is disabled for this local ruleset.",
+    "previouslySkippedBecause": "1.7 loader merged only immediate 1.6 ancestor; 1.5 rules never entered dispatcher"
+  },
+  {
+    "id": "CONSISTENCY_002",
+    "registered": true,
+    "active": true,
+    "scope": "GLOBAL",
+    "scopeId": null,
+    "stage": "POST_RENDER",
+    "excludedProfiles": [],
+    "evaluator": "_evaluate_consistency_002",
+    "consumedEvidenceFields": [
+      "_renderedVideoPath",
+      "characterRefs",
+      "characters",
+      "frame_metrics",
+      "frame_timestamps",
+      "primary",
+      "semanticPolicy",
+      "validator_version"
+    ],
+    "inputContract": "Character appearance (face, outfit, colors, proportions) must remain identical throughout the video, judged by sampling first/middle/last frames via vision LLM. This rule requires a rendered video (video_plan_ir['_renderedVideoPath']) and reports UNKNOWN at the pure-text concept stage, before any video exists.",
+    "applicabilityContract": "CONSISTENCY_002: Character Continuity Lock.\n\nThis rule necessarily runs post-render, not at the pure-text concept\nstage, since it needs actual rendered frames. video_plan_ir[\"_renderedVideoPath\"]\nis an internal-only key the render pipeline is expected to inject once a\nvideo exists; it is not part of the public Video Plan IR schema. When\nabsent, this evaluator honestly reports UNKNOWN rather than FAIL or a\nsilent pass, so a pre-render QualityReport does not claim to have\nchecked something it could not check yet.",
+    "baselineOutcome": "NOT_APPLICABLE",
+    "baselineReason": "Rule is evaluated only after a rendered video exists.",
+    "previouslySkippedBecause": "1.7 loader merged only immediate 1.6 ancestor; 1.5 rules never entered dispatcher"
+  },
+  {
+    "id": "CONCEPT_007",
+    "registered": true,
+    "active": true,
+    "scope": "GLOBAL",
+    "scopeId": null,
+    "stage": "PRE_RENDER",
+    "excludedProfiles": [],
+    "evaluator": "_evaluate_concept_007",
+    "consumedEvidenceFields": [
+      "beats",
+      "consequence",
+      "consistency",
+      "coreMechanic",
+      "mechanicCount",
+      "physicalRule"
+    ],
+    "inputContract": "The concept must exhibit exactly one independent physical/magical rule. Same mechanic applied with escalating/varied consequences is fine (PASS); a second, genuinely independent rule introduced partway through is not (CRITICAL at 2 mechanics, BLOCKER at 3+). coreMechanic.mechanicCount is an author claim, verified (not trusted) via LLM semantic judgment against the beat-by-beat consequences.",
+    "applicabilityContract": "CONCEPT_007: Single Dominant Mechanic.\n\ncoreMechanic.mechanicCount is an author claim, never trusted at face\nvalue \u2014 the verdict always comes from a semantic verification that\ndistinguishes \"same mechanic, escalating/varied consequences\" (PASS)\nfrom \"a second, independent mechanic introduced\" (FAIL). If the\nauthored claim disagrees with the derived verdict, the message\nsurfaces the discrepancy; the derived verdict always wins.",
+    "baselineOutcome": "UNKNOWN",
+    "baselineReason": "Semantic judgment has no verified evidence; provider dispatch is disabled for this local ruleset.",
+    "previouslySkippedBecause": "1.7 loader merged only immediate 1.6 ancestor; 1.5 rules never entered dispatcher"
+  },
+  {
+    "id": "BEAT_005",
+    "registered": true,
+    "active": true,
+    "scope": "GLOBAL",
+    "scopeId": null,
+    "stage": "PRE_RENDER",
+    "excludedProfiles": [],
+    "evaluator": "_evaluate_beat_005",
+    "consumedEvidenceFields": [
+      "beats",
+      "duration",
+      "endTime",
+      "finalPayoff",
+      "isAttempt",
+      "relatesToCoreProblem",
+      "startTime",
+      "startsAt"
+    ],
+    "inputContract": "While the core problem is actively unresolved (at least one attempt beat has occurred, final payoff not yet started), no consecutive stretch of beats.relatesToCoreProblem == false may exceed 0.5 seconds. Brief transitions/reaction beats under that threshold are not flagged; only a genuine abandonment of the active problem fails.",
+    "applicabilityContract": "BEAT_005: Story Detached Gap.\n\nOnly applies once at least one attempt beat has occurred and before\nthe final payoff starts (i.e. while the core problem is actively\nunresolved). Flags a consecutive detached stretch exceeding 0.5s \u2014\nshort transitions/reaction beats under that threshold are never\nflagged, only a genuine abandonment of the active problem.",
+    "baselineOutcome": "PASS",
+    "baselineReason": "Longest detached stretch: 0.0s, within tolerance.",
+    "previouslySkippedBecause": "1.7 loader merged only immediate 1.6 ancestor; 1.5 rules never entered dispatcher"
+  },
+  {
+    "id": "PAYOFF_004",
+    "registered": true,
+    "active": true,
+    "scope": "GLOBAL",
+    "scopeId": null,
+    "stage": "PRE_RENDER",
+    "excludedProfiles": [
+      "CURIOSITY_ADVENTURE",
+      "EDUCATIONAL"
+    ],
+    "evaluator": "_evaluate_payoff_004",
+    "consumedEvidenceFields": [
+      "beats",
+      "endTime",
+      "finalPayoff",
+      "intensity",
+      "isPeakIntensity",
+      "startsAt"
+    ],
+    "inputContract": "The final payoff's beat.intensity should be at least as high as the highest intensity seen earlier in the video. Computed independently from beat.intensity values; finalPayoff.isPeakIntensity is never trusted as the verdict, only cross-checked for discrepancy reporting. Optimization-level (WARNING), never a blocker. Renamed from \"Final Peak Intensity\" in RULESET 1.3 -- \"intensity\" read as motion/chaos, but beats[].intensity is a 1-10 visual/emotional energy scale; a quiet, conclusive beat can score as high as a frantic one.",
+    "applicabilityContract": "PAYOFF_004: Final Payoff Salience.\n\nRenamed from \"Final Peak Intensity\" in RULESET 1.3 \u2014 \"intensity\" read\nas \"faster/bigger/more chaotic motion,\" which isn't the actual claim.\nbeats[].intensity is documented as a 1-10 scale of visual/emotional\nenergy, not motion magnitude: a quiet, conclusive side-eye can score\nas high as a frantic chase. The logic is unchanged \u2014 the pass/fail\nverdict is entirely derived from computed beat.intensity values.\nfinalPayoff.isPeakIntensity is never read as part of the decision \u2014\nonly consulted afterward to surface a producer/evaluator disagreement\nin the message, never to override the computed result.",
+    "baselineOutcome": "PASS",
+    "baselineReason": "Final payoff salience (5) ties the earlier peak. Acceptable but not ideal \u2014 consider making the ending strictly the peak.",
+    "previouslySkippedBecause": "1.7 loader merged only immediate 1.6 ancestor; 1.5 rules never entered dispatcher"
+  },
+  {
+    "id": "PAYOFF_005",
+    "registered": true,
+    "active": true,
+    "scope": "GLOBAL",
+    "scopeId": null,
+    "stage": "PRE_RENDER",
+    "excludedProfiles": [
+      "CURIOSITY_ADVENTURE",
+      "EDUCATIONAL"
+    ],
+    "evaluator": "_evaluate_payoff_005",
+    "consumedEvidenceFields": [
+      "beats",
+      "consequenceType",
+      "endTime",
+      "intensity",
+      "startTime"
+    ],
+    "inputContract": "If a beat with consequenceType == 'fake_win' is present, the intensity after it must exceed the intensity at the fake win (the problem must escalate, not repeat or weaken, after a fake resolution). Reports NOT_APPLICABLE (not FAIL, not UNKNOWN) when no fake-win beat exists \u2014 this check simply does not apply to a concept that doesn't use the fake-resolution structure.",
+    "applicabilityContract": "PAYOFF_005: Fake Win Escalation.\n\nReturns NOT_APPLICABLE (not FAIL, not PASS, and never UNKNOWN) when\nno fake-win beat is present \u2014 this check simply does not apply to a\nconcept that doesn't use the fake-resolution structure. UNKNOWN is\nreserved for cases where evidence is missing but the rule still\napplies (e.g. CONSISTENCY_002 before a video is rendered); a\nfake-win-free concept has no missing evidence, the precondition for\nthe check existing is itself absent.",
+    "baselineOutcome": "NOT_APPLICABLE",
+    "baselineReason": "No fake-win beat present; this check does not apply to this concept.",
+    "previouslySkippedBecause": "1.7 loader merged only immediate 1.6 ancestor; 1.5 rules never entered dispatcher"
+  },
+  {
+    "id": "REPETITION_004",
+    "registered": true,
+    "active": true,
+    "scope": "GLOBAL",
+    "scopeId": null,
+    "stage": "PRE_RENDER",
+    "excludedProfiles": [
+      "CURIOSITY_ADVENTURE",
+      "EDUCATIONAL"
+    ],
+    "evaluator": "_evaluate_repetition_004",
+    "consumedEvidenceFields": [
+      "beats",
+      "isAttempt",
+      "primaryVerb"
+    ],
+    "inputContract": "Companion to ATTEMPT_002, not a replacement: catches one primaryVerb numerically dominating the attempt list even when every attempt is legitimately distinct in ATTEMPT_002's semantic judgment. WARNING above 55% dominance, CRITICAL above 70%. Never a BLOCKER, since a dominant verb can be valid if it produces genuinely different consequences each time.",
+    "applicabilityContract": "REPETITION_004: Dominant Action Ratio.\n\nCompanion to ATTEMPT_002, not a replacement: ATTEMPT_002 catches\nverb-distinct-but-same-strategy attempts via LLM; this rule catches\none verb numerically dominating even when every attempt is a\nlegitimately distinct strategy. Never a BLOCKER \u2014 a dominant verb can\nbe valid when it produces genuinely different consequences each time.",
+    "baselineOutcome": "PASS",
+    "baselineReason": "Good action variety. Dominant verb 'PEEL' at 50%.",
+    "previouslySkippedBecause": "1.7 loader merged only immediate 1.6 ancestor; 1.5 rules never entered dispatcher"
+  },
+  {
+    "id": "PAYOFF_006",
+    "registered": true,
+    "active": true,
+    "scope": "GLOBAL",
+    "scopeId": null,
+    "stage": "PRE_RENDER",
+    "excludedProfiles": [
+      "CURIOSITY_ADVENTURE",
+      "EDUCATIONAL"
+    ],
+    "evaluator": "_evaluate_payoff_006",
+    "consumedEvidenceFields": [
+      "action",
+      "beats",
+      "consequence",
+      "finalPayoff",
+      "isHardCut",
+      "loopQuality",
+      "loopsToOpening"
+    ],
+    "inputContract": "A retention-optimization dimension, never a hard blocker. A strong natural loop back to the opening (finalPayoff.loopsToOpening + loopQuality == 'strong') is a bonus. An ordinary hard cut with no loop claim is fully valid (neutral PASS). Only specific weak-ending text patterns (fade-out, 'the end', walks away) with neither a loop nor a hard cut produce a WARNING-severity FAIL.",
+    "applicabilityContract": "PAYOFF_006: Loopability.\n\nNever BLOCKER or CRITICAL \u2014 loopability is a retention optimization\ndimension, not a structural requirement. A strong natural loop is a\nbonus; an ordinary hard cut with no loop claim is a fully valid,\nneutral ending; only the specific weak-ending text patterns (fade,\n\"the end\", walks away) produce a (WARNING) FAIL.",
+    "baselineOutcome": "PASS",
+    "baselineReason": "No loop claimed, no hard-cut flag, but no weak-ending pattern detected either.",
+    "previouslySkippedBecause": "1.7 loader merged only immediate 1.6 ancestor; 1.5 rules never entered dispatcher"
+  },
+  {
+    "id": "GOAL_001",
+    "registered": true,
+    "active": true,
+    "scope": "GLOBAL",
+    "scopeId": null,
+    "stage": "PRE_RENDER",
+    "excludedProfiles": [
+      "CURIOSITY_ADVENTURE",
+      "EDUCATIONAL"
+    ],
+    "evaluator": "_evaluate_goal_001",
+    "consumedEvidenceFields": [
+      "action",
+      "beats",
+      "characters",
+      "coreMechanic",
+      "goalEvidence",
+      "goalExplicitness",
+      "physicalRule",
+      "primary"
+    ],
+    "inputContract": "The character must have an immediately understandable, natural physical goal, and the established abnormal rule must genuinely obstruct that goal. Distinguishes a believable reason to keep trying from an arbitrary or magic-demo setup invented only to showcase the mechanic (the character could simply walk away with no believable reason to continue). Verified via LLM semantic judgment (check_goal_is_natural), fail-closed to SERVICE_ERROR.",
+    "applicabilityContract": "GOAL_001: Goal-Obstruction Clarity (RULESET 1.3, new).\n\nA concept can pass CONCEPT_006/007/ATTEMPT_001/002 \u2014 enough consequence\ncapacity, a single verified mechanic, enough distinct attempts \u2014 and\nstill fail the most basic creative question: does the character have\na natural, believable reason to keep trying? \"Character deliberately\ndrops a pencil to see if it floats\" can pass every structural check\nwhile being a magic-demo setup, not a sympathetic problem. This is a\nsemantic judgment a deterministic rule cannot make \u2014 delegated to an\nLLM check (check_goal_is_natural), fail-closed to SERVICE_ERROR on any\nparsing/provider failure, never a silent PASS/FAIL guess.",
+    "baselineOutcome": "UNKNOWN",
+    "baselineReason": "Semantic judgment has no verified evidence; provider dispatch is disabled for this local ruleset.",
+    "previouslySkippedBecause": "1.7 loader merged only immediate 1.6 ancestor; 1.5 rules never entered dispatcher"
+  },
+  {
+    "id": "CONCEPT_008",
+    "registered": true,
+    "active": true,
+    "scope": "GLOBAL",
+    "scopeId": null,
+    "stage": "PRE_RENDER",
+    "excludedProfiles": [
+      "CURIOSITY_ADVENTURE",
+      "EDUCATIONAL"
+    ],
+    "evaluator": "_evaluate_concept_008",
+    "consumedEvidenceFields": [
+      "beats",
+      "consequence",
+      "coreMechanic",
+      "physicalRule"
+    ],
+    "inputContract": "Distinct from CONCEPT_007: a single, internally consistent mechanic is not automatically a legible one. A rule that depends on a combination of exact position, angle, and speed is technically one mechanic but unlearnable by a child audience watching once. Asks whether a viewer could learn the pattern from the first 1-2 occurrences and predict what happens next. Verified via LLM semantic judgment (check_rule_is_predictable), fail-closed to SERVICE_ERROR.",
+    "applicabilityContract": "CONCEPT_008: Rule Readability / Predictability (RULESET 1.3, new).\n\nDistinct from CONCEPT_007: a single, internally consistent mechanic\n(CONCEPT_007's concern) is not automatically a LEGIBLE one. A rule\nthat depends on a combination of exact position, angle, and speed is\ntechnically one mechanic but unlearnable by a child audience watching\nonce. This asks whether a viewer could say \"aha, I get it\" after 1-2\noccurrences and predict what happens next \u2014 delegated to an LLM check\n(check_rule_is_predictable), fail-closed to SERVICE_ERROR.",
+    "baselineOutcome": "UNKNOWN",
+    "baselineReason": "Semantic judgment has no verified evidence; provider dispatch is disabled for this local ruleset.",
+    "previouslySkippedBecause": "1.7 loader merged only immediate 1.6 ancestor; 1.5 rules never entered dispatcher"
+  },
+  {
+    "id": "PROGRESSION_006",
+    "registered": true,
+    "active": true,
+    "scope": "GLOBAL",
+    "scopeId": null,
+    "stage": "PRE_RENDER",
+    "excludedProfiles": [
+      "CURIOSITY_ADVENTURE",
+      "EDUCATIONAL"
+    ],
+    "evaluator": "_evaluate_progression_006",
+    "consumedEvidenceFields": [
+      "beats",
+      "isAttempt",
+      "primaryVerb"
+    ],
+    "inputContract": "Deterministic companion to ATTEMPT_002: flags a dominant primaryVerb ROOT across attempts (e.g. PUSH / PUSH_HARDER / PUSH_FROM_LEFT all share the root PUSH) even when full verb labels are distinct and ATTEMPT_002's LLM duplicate-strategy check already passed. Catches 'more activity, not a new strategy' in the gray area between CHAR_002 (time-active) and ATTEMPT_002 (label/semantic distinctness). No LLM call.",
+    "applicabilityContract": "PROGRESSION_006: Activity Is Not Progression (RULESET 1.3, new).\n\nCompanion to CHAR_002 (time-active) and ATTEMPT_002 (strategy\ndistinctness via LLM), covering the gray area in between: a character\ncan be active (CHAR_002 passes) with verb-distinct, LLM-confirmed\nnon-duplicate attempts (ATTEMPT_002 passes) while still just doing\nMORE of the same basic action rather than changing strategy \u2014 e.g.\n\"push\", \"push harder\", \"push while leaning\", \"push with both hands\"\nare four distinct primaryVerb labels but one repeated verb root.\n\nThis is a deterministic, free check (no LLM call) layered on top of\nthe two above: it looks for a shared leading word across attempts'\nprimaryVerb labels (the verb \"root\"), which is a strong, cheap signal\nof \"same base action, more effort\" even when ATTEMPT_002's full-label\ndedup and LLM check didn't catch it (those operate on the full label\nand on consequence-level semantics, not on verb-root overlap alone).\nNever BLOCKER \u2014 this is a secondary, supporting signal, not a\nstandalone hard requirement; a shared verb root is sometimes a false\npositive (e.g. \"LIFT\" and \"LIFT_AND_TURN\" could be genuinely distinct\nif the consequences differ), so it stays below ATTEMPT_002's severity.",
+    "baselineOutcome": "PASS",
+    "baselineReason": "No single verb root dominates. Most common: 'PEEL' at 50%.",
+    "previouslySkippedBecause": "1.7 loader merged only immediate 1.6 ancestor; 1.5 rules never entered dispatcher"
+  },
+  {
+    "id": "ESCALATION_005",
+    "registered": true,
+    "active": true,
+    "scope": "GLOBAL",
+    "scopeId": null,
+    "stage": "PRE_RENDER",
+    "excludedProfiles": [
+      "CURIOSITY_ADVENTURE",
+      "EDUCATIONAL"
+    ],
+    "evaluator": "_evaluate_escalation_005",
+    "consumedEvidenceFields": [],
+    "inputContract": "Companion to ESCALATION_004 (payoff timing): checks whether attempt-beat intensity rises across the timeline rather than staying flat or declining. Deterministic, keyed off beats[].intensity on isAttempt beats in timeline order. Capped at WARNING \u2014 deadpan-comedy concepts can deliberately keep escalation small.",
+    "applicabilityContract": "ESCALATION_005: Meaningful Attempt Escalation (RULESET 1.3, new).\n\nCompanion to ESCALATION_004 (payoff timing), covering a different\nquestion: do the middle attempts themselves escalate, or are they all\nroughly the same intensity? Deterministic, keyed off beats[].intensity\nacross isAttempt beats in timeline order \u2014 flags a flat or declining\ntrend. Capped at WARNING: deadpan-comedy concepts can deliberately\nkeep escalation small, so this is a nudge, never a blocker.",
+    "baselineOutcome": "PASS",
+    "baselineReason": "Moderate escalation evidence is present: Escalation is evidenced by consequence magnitude, force, deformation, scope, difficulty, stakes or mechanic persistence.",
+    "previouslySkippedBecause": "1.7 loader merged only immediate 1.6 ancestor; 1.5 rules never entered dispatcher"
+  },
+  {
+    "id": "HOOK_004",
+    "registered": true,
+    "active": true,
+    "scope": "GLOBAL",
+    "scopeId": null,
+    "stage": "PRE_RENDER",
+    "excludedProfiles": [
+      "CURIOSITY_ADVENTURE",
+      "EDUCATIONAL"
+    ],
+    "evaluator": "_evaluate_hook_004",
+    "consumedEvidenceFields": [
+      "action",
+      "anomaly",
+      "beats",
+      "consequence",
+      "hook"
+    ],
+    "inputContract": "Stricter than HOOK_002: HOOK_002 confirms something visually unusual happens immediately; this asks whether the opening ALSO makes clear what the character wants and why they can't get it yet, not just that something odd is occurring. Verified via LLM semantic judgment (check_opening_problem_legible), fail-closed to SERVICE_ERROR.",
+    "applicabilityContract": "HOOK_004: Opening Problem Legibility (RULESET 1.3, new).\n\nStricter than HOOK_002: HOOK_002 confirms something visually unusual\nhappens immediately. This asks whether the opening ALSO makes clear\nwhat the character wants and why they can't get it yet \u2014 not just\nthat something odd is occurring. Delegated to an LLM check\n(check_opening_problem_legible) since \"is the goal legible\" is a\nsemantic judgment, fail-closed to SERVICE_ERROR.",
+    "baselineOutcome": "UNKNOWN",
+    "baselineReason": "Semantic judgment has no verified evidence; provider dispatch is disabled for this local ruleset.",
+    "previouslySkippedBecause": "1.7 loader merged only immediate 1.6 ancestor; 1.5 rules never entered dispatcher"
+  },
+  {
+    "id": "PERFORMANCE_001",
+    "registered": true,
+    "active": true,
+    "scope": "GLOBAL",
+    "scopeId": null,
+    "stage": "PRE_RENDER",
+    "excludedProfiles": [],
+    "evaluator": "_evaluate_performance_001",
+    "consumedEvidenceFields": [
+      "action",
+      "beats",
+      "characters",
+      "consequence",
+      "primary"
+    ],
+    "inputContract": "New character_performance family (RULESET 1.3). CHAR_002 confirms the character is active for enough of the runtime; this asks whether that activity reads as emotionally engaged and sympathetic rather than blank, robotic, aggressive, or stuck in prolonged panic. Verified via LLM semantic judgment (check_character_performance_readable), fail-closed to SERVICE_ERROR. Capped at WARNING \u2014 a performance-quality nudge, not a structural requirement.",
+    "applicabilityContract": "PERFORMANCE_001: Cute Emotional Readability (RULESET 1.3, new,\ncharacter_performance family).\n\nCHAR_002 confirms the character is active for enough of the runtime;\nthis asks whether that activity reads as emotionally engaged and\nsympathetic \u2014 not blank, robotic, aggressive, or stuck in prolonged\npanic. Delegated to an LLM check (check_character_performance_readable)\nsince emotional readability is a semantic judgment, fail-closed to\nSERVICE_ERROR. Capped at WARNING: this is a performance-quality nudge,\nnot a structural requirement.",
+    "baselineOutcome": "UNKNOWN",
+    "baselineReason": "Semantic judgment has no verified evidence; provider dispatch is disabled for this local ruleset.",
+    "previouslySkippedBecause": "1.7 loader merged only immediate 1.6 ancestor; 1.5 rules never entered dispatcher"
+  },
+  {
+    "id": "PRODUCIBILITY_003",
+    "registered": true,
+    "active": true,
+    "scope": "GLOBAL",
+    "scopeId": null,
+    "stage": "PRE_RENDER",
+    "excludedProfiles": [],
+    "evaluator": "_evaluate_producibility_003",
+    "consumedEvidenceFields": [
+      "action",
+      "beats",
+      "consequence",
+      "mainProps",
+      "setting"
+    ],
+    "inputContract": "Fills the gap between PRODUCIBILITY_001 (very-high-complexity hard block) and PRODUCIBILITY_002 (prop count budget): a middle tier of AI-generation risks (precision alignment, cloth/rope simulation, liquids, thin dangling objects, face/hair contact, multi-object stacking). Uses a tag-based diagnostic model (riskTags in evaluation details) rather than one rule per risk type. Deterministic substring match against setting.mainProps and beat action/consequence text, no LLM call. Always CRITICAL when any tag is found \u2014 a human-review trigger, not an outright render block.",
+    "applicabilityContract": "PRODUCIBILITY_003: Fragile Interaction Risk (RULESET 1.3, new).\n\nFills the gap between PRODUCIBILITY_001 (very-high-complexity hard\nblock) and PRODUCIBILITY_002 (prop count budget): a middle tier of\nAI-generation risks (precision alignment, cloth/rope simulation,\nliquids, thin dangling objects, face/hair contact, multi-object\nstacking) that are each individually too narrow to deserve their own\nrule, but collectively matter a lot for render reliability. Uses a\ntag-based diagnostic model (riskTags in details) rather than one rule\nper risk, per the RULESET 1.3 design decision \u2014 a flat substring match\nagainst setting.mainProps and beat action/consequence text. Always\nCRITICAL when any tag is found: these risks don't block rendering\noutright (PRODUCIBILITY_001's job) but are serious enough to warrant\na human look before committing render budget, never a silent WARNING.",
+    "baselineOutcome": "FAIL",
+    "baselineReason": "Fragile interaction risk tags detected: ['FACE_CONTACT', 'THIN_OBJECT']. These are mid-tier AI-generation risks (precision alignment, cloth/rope simulation, liquids, thin objects, face/hair contact, multi-object stacking) worth a human look before committing render budget, even though they don't rise to very-high-complexity blocking.",
+    "previouslySkippedBecause": "1.7 loader merged only immediate 1.6 ancestor; 1.5 rules never entered dispatcher"
+  },
+  {
+    "id": "GENERATION_EXECUTABLE_ATTEMPTS",
+    "registered": true,
+    "active": true,
+    "scope": "GLOBAL",
+    "scopeId": null,
+    "stage": "PRE_RENDER",
+    "excludedProfiles": [],
+    "evaluator": "_evaluate_generation_executable_attempts",
+    "consumedEvidenceFields": [
+      "action",
+      "consequence",
+      "duration",
+      "metadata",
+      "primaryVerb"
+    ],
+    "inputContract": "Distinct from ATTEMPT_002 (semantic strategy diversity): ATTEMPT_002 asks whether the character is genuinely trying a different strategy; this asks whether that different strategy will actually LOOK different and be reliably executable by an image-to-video generation model (e.g. Seedance). A deterministic keyword pre-filter flags abstract-intent language ('blocks the escape route', 'tries to outsmart') and vague movement-magnitude phrasing ('slightly moves') on attempt beats, plus a beat-budget estimate (too many attempts for the available duration). An LLM semantic check (check_attempts_are_generation_executable) judges each attempt for a concrete action-result pair and flags attempts that would visually collapse into the same choreography despite different wording. BLOCKER only when NO attempt is judged executable at all or the LLM is unreachable (SERVICE_ERROR); CRITICAL when some attempts are unexecutable or abstract-intent language is matched; WARNING for vague magnitude phrasing or beat-budget pressure alone.",
+    "applicabilityContract": "GENERATION_EXECUTABLE_ATTEMPTS: Generation Executable Attempts\n(RULESET 1.3, new, generation_executability family).\n\nDistinct from ATTEMPT_002 (semantic strategy diversity): ATTEMPT_002\nasks \"is the character genuinely trying a different strategy?\" This\nrule asks \"will that different strategy actually LOOK different and\nbe reliably executable by the generation model?\" Both must pass --\na pair of attempts can be semantically distinct (different intent)\nwhile rendering as visually identical choreography, which ATTEMPT_002\nalone cannot catch since it only judges strategy, not generation\nexecutability.\n\nThree layers, cheapest first:\n1. Deterministic abstract-intent-verb keyword match (free) --\n   catches explicit mental-state/spatial-strategy language in\n   action/consequence text (e.g. \"blocks the escape route\").\n2. Deterministic vague-magnitude-phrase match (free) -- catches\n   under-specified movement size on attempt beats specifically,\n   where the movement itself is meant to be the visible gag.\n3. LLM semantic check (check_attempts_are_generation_executable) --\n   catches the harder cases a keyword list can't: attempts that\n   lack a concrete action/result pair without using any of the\n   listed abstract words, and attempts that would visually collapse\n   into the same choreography despite different wording. Only\n   called once, over all attempts together (not per-pair), mirroring\n   ATTEMPT_002's one-call-for-all-attempts structure. Fail-closed to\n   SERVICE_ERROR on any parsing/provider failure.\n\nAlso checks beat budget: too many semantically complex attempts for\nthe available duration reduces generation reliability even if each\nattempt individually is executable. This is an estimate, not a rigid\n\"exactly 3 attempts\" rule -- it only flags when attempts are so\nnumerous relative to duration that each gets under ~2.5s, too little\ntime for setup + action + readable result.\n\nSeverity: BLOCKER only when the LLM itself is unreachable\n(SERVICE_ERROR) or when NONE of the attempts are judged executable\n(the central mechanic cannot be expressed as a reliable action/result\nsequence at all). CRITICAL when some but not all attempts are\nunexecutable, or when an abstract-intent keyword is matched. WARNING\nfor vague magnitude phrasing and beat-budget pressure alone.",
+    "baselineOutcome": "UNKNOWN",
+    "baselineReason": "Semantic judgment has no verified evidence; provider dispatch is disabled for this local ruleset.",
+    "previouslySkippedBecause": "1.7 loader merged only immediate 1.6 ancestor; 1.5 rules never entered dispatcher"
+  },
+  {
+    "id": "CONTINUOUS_ACTION_MOMENTUM",
+    "registered": true,
+    "active": true,
+    "scope": "GLOBAL",
+    "scopeId": null,
+    "stage": "PRE_RENDER",
+    "excludedProfiles": [],
+    "evaluator": "_evaluate_continuous_action_momentum",
+    "consumedEvidenceFields": [
+      "action",
+      "beats",
+      "consequence",
+      "duration",
+      "endTime",
+      "finalPayoff",
+      "isAttempt",
+      "metadata",
+      "motionAmount",
+      "startTime",
+      "startsAt"
+    ],
+    "inputContract": "A reaction must overlap the physical transition into the next attempt. Rejects standalone reaction beats, reset-to-neutral gaps, excessive passive time, slow attempt transitions, and long final aftermaths. This rule distinguishes meaningful progression from forward motion momentum.",
+    "applicabilityContract": "CONTINUOUS_ACTION_MOMENTUM: reaction/action overlap and passive-time budget.",
+    "baselineOutcome": "FAIL",
+    "baselineReason": "Action momentum is interrupted: passive time 47%, largest attempt gap 0.0s, final aftermath 3.0s.",
+    "previouslySkippedBecause": "1.7 loader merged only immediate 1.6 ancestor; 1.5 rules never entered dispatcher"
+  },
+  {
+    "id": "INSTANT_VISUAL_ABSURDITY_GATE",
+    "registered": true,
+    "active": true,
+    "scope": "GLOBAL",
+    "scopeId": null,
+    "stage": "PRE_RENDER",
+    "excludedProfiles": [],
+    "evaluator": "_evaluate_instant_visual_absurdity_gate",
+    "consumedEvidenceFields": [
+      "characterAlreadyEngaged",
+      "firstFrame",
+      "hook",
+      "largeVisualSignal",
+      "noHistoryRequired",
+      "noMicroComparison",
+      "staticWrongness",
+      "status",
+      "visualEvidence"
+    ],
+    "inputContract": "BLOCKER: the first frame must communicate a physically impossible or clearly wrong situation without history, counting, micro-comparison, audio, text, or prior knowledge. The main character must already be engaged with the event.",
+    "applicabilityContract": "INSTANT_VISUAL_ABSURDITY_GATE: first-frame static readability blocker.",
+    "baselineOutcome": "FAIL",
+    "baselineReason": "First-frame absurdity evidence is incomplete; the concept is blocked before render.",
+    "previouslySkippedBecause": "1.7 loader merged only immediate 1.6 ancestor; 1.5 rules never entered dispatcher"
+  },
+  {
+    "id": "ENGINE_SILHOUETTE_DUPLICATE",
+    "registered": true,
+    "active": true,
+    "scope": "GLOBAL",
+    "scopeId": null,
+    "stage": "PRE_RENDER",
+    "excludedProfiles": [],
+    "evaluator": "_evaluate_engine_silhouette_duplicate",
+    "consumedEvidenceFields": [
+      "creativeFingerprint",
+      "knownWinnerEngineFamilies",
+      "silhouette",
+      "silhouetteSimilarity",
+      "status",
+      "visualEngineFamily",
+      "visualEvidence"
+    ],
+    "inputContract": "BLOCKER: reject concepts whose visible progression and final silhouette substantially duplicate a known winner visual engine, even when the underlying mathematical rule differs.",
+    "applicabilityContract": "ENGINE_SILHOUETTE_DUPLICATE: reject a known winner's visual engine reuse.",
+    "baselineOutcome": "FAIL",
+    "baselineReason": "No first-frame/final-silhouette comparison evidence was supplied; the concept is blocked before render.",
+    "previouslySkippedBecause": "1.7 loader merged only immediate 1.6 ancestor; 1.5 rules never entered dispatcher"
+  },
+  {
+    "id": "CONCEPT_009",
+    "registered": true,
+    "active": true,
+    "scope": "CONTENT_FAMILY",
+    "scopeId": "social_reel",
+    "stage": "PRE_RENDER",
+    "excludedProfiles": [],
+    "evaluator": "_evaluate_concept_009",
+    "consumedEvidenceFields": [
+      "action",
+      "beats",
+      "causalParticipants",
+      "causeEffect",
+      "characters",
+      "consequence",
+      "coreMechanic",
+      "mechanicCarrier",
+      "physicalRule",
+      "primary",
+      "primaryObject",
+      "reasoning",
+      "secondary"
+    ],
+    "inputContract": "For the Pompom growth-short family only, the central comedic mechanic must have exactly one primary agent interacting with one primary non-living object. A second living causal agent must not create, demonstrate, obstruct, trigger, resolve, or receive the payoff from the impossible mechanic.",
+    "applicabilityContract": "CONCEPT_009: one causal character, one impossible object.",
+    "baselineOutcome": "NOT_APPLICABLE",
+    "baselineReason": "Rule does not apply to this content family.",
+    "previouslySkippedBecause": "1.7 loader merged only immediate 1.6 ancestor; 1.5 rules never entered dispatcher"
+  }
+]

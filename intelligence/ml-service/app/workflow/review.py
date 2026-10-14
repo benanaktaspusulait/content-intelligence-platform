@@ -128,7 +128,7 @@ def binding_fingerprint(request: dict[str, Any]) -> str:
     )
     return sha256(
         json.dumps(
-            {**{key: request.get(key) for key in keys}, "decisionPolicyVersion": DECISION_POLICY_VERSION, **({"retrievedLessons": request["retrievedLessons"]} if request.get("retrievedLessons") else {})},
+            {**{key: request.get(key) for key in keys}, "decisionPolicyVersion": DECISION_POLICY_VERSION, **({"canonicalRulesetVersion": request.get("canonicalRulesetVersion") or "1.8"} if request.get("canonicalRulesetVersion") != "1.7" else {}), **({"retrievedLessons": request["retrievedLessons"]} if request.get("retrievedLessons") else {})},
             sort_keys=True,
             ensure_ascii=False,
         )
@@ -902,7 +902,13 @@ def _run_canonical_evaluation(request: dict[str, Any]) -> dict[str, Any]:
         video_plan_ir = parse_result.video_plan_ir
 
         # Run canonical Rule Engine
-        engine = RuleEngine()
+        from app.config import settings
+        requested_version = request.get("canonicalRulesetVersion") or "1.8"
+        if requested_version not in {"1.7", "1.8"}:
+            raise ValueError("Unsupported canonical ruleset version")
+        engine = RuleEngine(str(settings.rules_dir / f"RULESET_{requested_version}.yaml"))
+        if requested_version == "1.8":
+            video_plan_ir["metadata"]["contentProfile"] = request.get("contentProfile", "UNKNOWN")
         report = engine.evaluate(video_plan_ir)
 
         # Categorize results
@@ -995,7 +1001,8 @@ def review_prompt(request: dict[str, Any], capabilities: dict[str, Any] | None =
     intent = intent_requirements(request, evidence)
     quality = plan_quality(request, evidence)
     # Canonical Rule Engine evaluation (provider-free, deterministic)
-    canonical_evaluation = _run_canonical_evaluation(request)
+    canonical_input = request if request.get("canonicalRulesetVersion") == "1.7" else {**request, "contentProfile": routing["contentProfile"]}
+    canonical_evaluation = _run_canonical_evaluation(canonical_input)
     execution_risk = execution_decision(execution)
     references = request.get("references") or []
     named = set(re.findall(r"(?i)\b(Luca|Zipo|Kiko|Mimi|Pompom)\b", request["prompt"]))

@@ -424,6 +424,68 @@ class WorkflowNoRepairDecisionPostgresTest {
     java.nio.file.Files.writeString(java.nio.file.Path.of("/tmp/plan-first-e2e-comparison.json"),mapper.writeValueAsString(Map.of("comparison",current)));
   }
 
+  @Test
+  @org.junit.jupiter.api.condition.EnabledIfSystemProperty(named="ruleset.liveMock", matches="true")
+  void sourceIdenticalRevalidationUsesCorrectedMlWithoutProviderAndKeepsHistory() throws Exception {
+    var mapper = new ObjectMapper().findAndRegisterModules();
+    var inputs = mapper.readValue(java.nio.file.Path.of("../../output/verification/step6-score-forensics/inputs.json").toFile(), Map.class);
+    var oldBaseline = new LinkedHashMap<String,Object>((Map<String,Object>)inputs.get("baseline"));
+    var bound = new LinkedHashMap<String,Object>((Map<String,Object>)oldBaseline.get("boundRequest"));
+    String source = String.valueOf(bound.get("prompt"));
+    jdbc.sql("UPDATE prompt_versions SET raw_text=:text WHERE id=10").param("text", source).update();
+    when(prompts.load(10L,10L)).thenReturn(new ContentPromptSnapshot("v1",10,"Mimi","REEL","DRAFT",10,1,source,"{}","a".repeat(64)));
+    var transport = new QualityMlClient("http://localhost:8000",org.springframework.web.client.RestClient.builder());
+    when(ml.workflow(anyString(),anyMap())).thenAnswer(invocation -> {
+      String endpoint = invocation.getArgument(0);
+      assertThat(endpoint).isIn("review","source-plan","optimization-assessment");
+      return transport.workflow(endpoint,invocation.getArgument(1));
+    });
+    jdbc.sql("DELETE FROM post_family_workflow_events").update();
+    UUID oldId = UUID.randomUUID();
+    insertReview(oldId,oldBaseline);
+    bound.put("canonicalRulesetVersion","1.8");
+    var newBaseline = new LinkedHashMap<String,Object>(transport.workflow("review",bound));
+    newBaseline.put("boundRequest",bound);newBaseline.put("contentId",10);newBaseline.put("promptVersionId",10);
+    UUID newId = UUID.randomUUID();insertReview(newId,newBaseline);
+    var c7 = mapper.readValue(getClass().getResourceAsStream("/optimization-c7-profile.json"),Map.class);
+    service.saveProductionSettings((Map<String,Object>)c7.get("productionSettings"));
+    var originalComparison = mapper.readValue(getClass().getResourceAsStream("/rule18-saved-comparison.json"),Map.class);
+    var comparison = new LinkedHashMap<String,Object>((Map<String,Object>)originalComparison.get("comparison"));
+    var candidates = (List<Map<String,Object>>)comparison.get("candidates");
+    var fixtureAttempt = (Map<String,Object>)((Map<String,Object>)c7.get("attempt")).get("payload");
+    var context = new LinkedHashMap<String,Object>((Map<String,Object>)((Map<String,Object>)fixtureAttempt.get("sourceRequest")).get("context"));context.put("contentId",10);context.put("promptVersionId",10);context.put("analysisRunId",oldId.toString());
+    context.put("targetConfiguration",Map.of("contentProfile",bound.get("contentProfile"),"generator",bound.get("generator"),"duration",bound.get("desiredDuration"),"settings",bound.get("settings")));
+    var role = new LinkedHashMap<String,Object>();role.put("role","PROMPT_OPTIMIZATION");role.put("sourceRequest",Map.of("text",source,"context",context));
+    role.put("result",Map.of("candidates",candidates));role.put("attemptDiagnostics",Map.of("attemptId","saved-attempt","providerRequestId","saved-response"));
+    UUID roleId=UUID.randomUUID();UUID comparisonId=UUID.randomUUID();
+    jdbc.sql("INSERT INTO post_family_workflow_events(id,kind,payload) VALUES(:id,'CREATIVE_ROLE',CAST(:payload AS jsonb))").param("id",roleId).param("payload",mapper.writeValueAsString(role)).update();
+    comparison.remove("recordId");comparison.put("sourceAnalysisId",oldId.toString());comparison.put("roleRecordId",roleId.toString());
+    jdbc.sql("INSERT INTO post_family_workflow_events(id,kind,payload) VALUES(:id,'CREATIVE_OPTIMIZATION',CAST(:payload AS jsonb))").param("id",comparisonId).param("payload",mapper.writeValueAsString(comparison)).update();
+    String historical = jdbc.sql("SELECT payload::text FROM post_family_workflow_events WHERE id=:id").param("id",comparisonId).query(String.class).single();
+    var result=service.revalidateCreativeOptimization(newId,comparisonId);
+    assertThat(result).containsEntry("rulesetVersion","1.8").containsEntry("sourceAnalysisId",newId.toString());
+    assertThat((Map<String,Object>)result.get("comparisonAssessment")).containsEntry("lineageVerified",true);
+    assertThat(result.get("selection")).isNull();assertThat(result.get("approval")).isNull();
+    for(var c:(List<Map<String,Object>>)result.get("candidates")) {
+      var review=(Map<String,Object>)c.get("review");
+      assertThat((Map<String,Object>)review.get("canonicalRuleEvaluation")).containsEntry("rulesetVersion","1.8").containsEntry("rulesEvaluated",46);
+      assertThat(((Map<String,Object>)c.get("unknowns")).get("canonicalRules")).isEqualTo(((Map<String,Object>)review.get("canonicalRuleEvaluation")).get("unknownRules"));
+      assertThat((Map<String,Object>)((Map<String,Object>)review.get("family8")).get("renderAuthorization")).doesNotContainEntry("status","AUTHORIZED");
+    }
+    var replay=service.revalidateCreativeOptimization(newId,comparisonId);
+    assertThat(replay.get("recordId")).isEqualTo(result.get("recordId"));
+    assertThat((Map<String,Object>)service.assessOptimizationComparison(comparisonId).get("comparisonAssessment")).containsEntry("lineageVerified",false);
+    assertThat(jdbc.sql("SELECT payload::text FROM post_family_workflow_events WHERE id=:id").param("id",comparisonId).query(String.class).single()).isEqualTo(historical);
+    assertThat(jdbc.sql("SELECT count(*) FROM prompt_versions").query(Long.class).single()).isEqualTo(1L);
+    assertThat(jdbc.sql("SELECT raw_text FROM prompt_versions WHERE id=10").query(String.class).single()).isEqualTo(source);
+    verify(ml,never()).workflow(eq("creative-role"),anyMap());
+  }
+
+  private void insertReview(UUID id, Map<String,Object> payload) throws Exception {
+    jdbc.sql("INSERT INTO post_family_workflow_events(id,kind,payload) VALUES(:id,'REVIEW',CAST(:payload AS jsonb))")
+        .param("id",id).param("payload",new ObjectMapper().writeValueAsString(payload)).update();
+  }
+
   private Map<String, Object> request(UUID runId, String binding) {
     return new java.util.LinkedHashMap<>(Map.of(
         "contentId", 10,

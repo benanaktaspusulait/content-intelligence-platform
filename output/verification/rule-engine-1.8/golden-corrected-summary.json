@@ -1,0 +1,16 @@
+{
+  "actualRulesetVersion": "1.8",
+  "harnessWrapperLabel": "1.7",
+  "assets": {
+    "ball-crocodile-01": "OK",
+    "box-cat-01": "OK",
+    "island-journal-01": "OK",
+    "lamp-01": "OK",
+    "snack-box-01": "OK",
+    "sneaky-door-01": "OK",
+    "spot-cat-01": "OK",
+    "sticky-ball-01": "OK",
+    "upside-chair-01": "PARSER_TIMEOUT"
+  },
+  "note": "Legacy baseline harness wrapper label is hardcoded 1.7. Actual per-asset fingerprints are 1.8; source prompts and frozen expectations unchanged. No archived policy expectation was relabeled as passing."
+}

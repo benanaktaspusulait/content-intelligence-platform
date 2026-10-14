@@ -31,6 +31,15 @@ describe('post-family operator workflow', () => {
     setupHttp.expectOne('/api/v1/intelligence/workflow/production-settings?contentId=1&promptVersionId=2').flush({});
     return fixture;
   }
+  it('keeps exact canonical values while displaying readable fractional deltas', async () => {
+    const f = await setup(); const c = f.componentInstance;
+    const original = 82.80208333333336; const improved = 86.96875000000003;
+    c.review = {canonicalRuleEvaluation: {score: original, rulesetVersion: '1.8'}} as any;
+    const candidate = {review: {canonicalRuleEvaluation: {score: improved}}};
+    expect(c.optimizationScoreDelta(candidate)).toBe('+4.17');
+    expect(c.review.canonicalRuleEvaluation.score).toBe(original);
+    expect(candidate.review.canonicalRuleEvaluation.score).toBe(improved);
+  });
   it('produces source-bound beats with codepoint offsets and no semantic approval', async () => {
     const f=await setup();const c=f.componentInstance;
     c.prompt='🎬 Duration: 5s\n0-2s: Nori holds a wooden coin.\n2-5s: Nori flips the coin.\nAUDIO\nMusic';

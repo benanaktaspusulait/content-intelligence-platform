@@ -668,7 +668,9 @@ versions:
   - breaking_change: true
     change_type: added
     new_value:
-      description: 'Reaction must overlap movement and each failed attempt must immediately trigger the next physical strategy. Passive time, reset-to-neutral gaps, standalone reactions, and long final aftermaths are flagged.'
+      description: Reaction must overlap movement and each failed attempt must immediately
+        trigger the next physical strategy. Passive time, reset-to-neutral gaps, standalone
+        reactions, and long final aftermaths are flagged.
       family: motion_quality
       id: CONTINUOUS_ACTION_MOMENTUM
       name: Continuous Action Momentum
@@ -679,7 +681,8 @@ versions:
   - breaking_change: true
     change_type: added
     new_value:
-      description: 'First-frame blocker requiring static, history-free, large visual absurdity with the character already engaged.'
+      description: First-frame blocker requiring static, history-free, large visual
+        absurdity with the character already engaged.
       family: hook_strength
       id: INSTANT_VISUAL_ABSURDITY_GATE
       name: Instant Visual Absurdity Gate
@@ -690,7 +693,8 @@ versions:
   - breaking_change: true
     change_type: added
     new_value:
-      description: 'Rejects a concept whose visible progression/final silhouette substantially duplicates a known winner visual engine.'
+      description: Rejects a concept whose visible progression/final silhouette substantially
+        duplicates a known winner visual engine.
       family: visual_novelty
       id: ENGINE_SILHOUETTE_DUPLICATE
       name: Engine Silhouette Duplicate
@@ -698,7 +702,8 @@ versions:
     old_value: null
     reason: 'RULESET 1.4: Engine Silhouette Duplicate'
     rule_id: ENGINE_SILHOUETTE_DUPLICATE
-  description: 'Adds motion continuity, first-frame visual absurdity, and visual-engine duplication gates after Seedance pacing and hook failures.'
+  description: Adds motion continuity, first-frame visual absurdity, and visual-engine
+    duplication gates after Seedance pacing and hook failures.
   is_breaking: true
   learned_from:
   - SEEDANCE_MOTION_CONTINUITY_FAILURE
@@ -711,7 +716,9 @@ versions:
   - breaking_change: true
     change_type: added
     new_value:
-      description: 'For the social_reel growth/absurd short family, require one causal primary character interacting with one primary non-living object; a second causal living agent fails the concept.'
+      description: For the social_reel growth/absurd short family, require one causal
+        primary character interacting with one primary non-living object; a second
+        causal living agent fails the concept.
       family: concept_strength
       id: CONCEPT_009
       name: Single-Agent Object Mechanic
@@ -722,7 +729,8 @@ versions:
     old_value: null
     reason: 'RULESET 1.5: Single-Agent Object Mechanic'
     rule_id: CONCEPT_009
-  description: 'Adds a narrowly scoped causal-participation gate for the Pompom growth/absurd short family without changing RULESET 1.4 or other content families.'
+  description: Adds a narrowly scoped causal-participation gate for the Pompom growth/absurd
+    short family without changing RULESET 1.4 or other content families.
   is_breaking: true
   learned_from:
   - FLYING_BOY_TWO_AGENT_MECHANIC
@@ -743,7 +751,9 @@ versions:
     old_value: null
     reason: 'RULESET 1.6: mini-story readability and temporal generation-plan safety'
     rule_id: STORY_DENSITY_POLICY_1_6
-  description: 'Adds mini-story structure, early goal, major-beat density, single-generation temporal split, and pre-render continuation contract gates. RULESET 1.5 remains immutable.'
+  description: Adds mini-story structure, early goal, major-beat density, single-generation
+    temporal split, and pre-render continuation contract gates. RULESET 1.5 remains
+    immutable.
   is_breaking: true
   learned_from:
   - LUCA_STICKY_BALL_ATTEMPT_SEMANTICS
@@ -765,10 +775,31 @@ versions:
     old_value: null
     reason: 'RULESET 1.7: high-confidence stubborn-return loop exceptions'
     rule_id: STUBBORN_RETURN_LOOP_POLICY_1_7
-  description: 'Adds high-confidence Spoon-class stubborn-return loop evidence and scoped hook, diversity, payoff, and temporal exceptions. RULESET 1.6 remains immutable.'
+  description: Adds high-confidence Spoon-class stubborn-return loop evidence and
+    scoped hook, diversity, payoff, and temporal exceptions. RULESET 1.6 remains immutable.
   is_breaking: true
   learned_from:
   - SPOON_RETURN_TO_DANGER
   release_date: '2026-10-06'
   ruleset_path: RULESET_1.7.yaml
   version: '1.7'
+- version: '1.8'
+  release_date: '2026-10-14'
+  ruleset_path: RULESET_1.8.yaml
+  description: Complete legacy dispatch and generic autonomous-return applicability
+    with historical 1.7 reproducibility.
+  is_breaking: true
+  deprecated_rules: []
+  learned_from:
+  - STEP6_SCORE_FORENSICS
+  changes:
+  - rule_id: DISPATCH_AND_APPLICABILITY_POLICY_1_8
+    change_type: modified
+    reason: Recursive ancestry omitted 38 registered rules; LOW generic signals falsely
+      identified a specialized return-loop candidate. Provider-free semantic evidence
+      must remain UNKNOWN.
+    breaking_change: true
+    new_value:
+      inheritancePolicy: RECURSIVE_V1
+      returnLoopApplicabilityPolicy: SOURCE_DOMAIN_V1
+      semanticPolicy: EXISTING_EVIDENCE_ONLY

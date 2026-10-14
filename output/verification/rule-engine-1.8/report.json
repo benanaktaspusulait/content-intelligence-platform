@@ -1,0 +1,45 @@
+{
+  "status": "RULE_ENGINE_CORRECTIONS_DEPLOYED",
+  "rulesetVersion": "1.8",
+  "historicalRulesetVersion": "1.7",
+  "newAnalysisId": "0a2a88a7-9efd-4ecd-bb48-b0d661fa46f5",
+  "newComparisonId": "e0458d65-0f81-40ee-8fe3-68b093394bf8",
+  "scores": {
+    "baseline": 82.80208333333336,
+    "candidate-a": 86.96875000000003,
+    "candidate-b": 82.80208333333336
+  },
+  "grade": "B",
+  "rules": 46,
+  "testResults": {
+    "mlScopedPassed": 380,
+    "mlPreexistingFailures": 1,
+    "backendPassed": 22,
+    "backendSkipped": 0,
+    "frontendFocusedPassed": 69
+  },
+  "golden": {
+    "historicalAssertionsUnchanged": 323,
+    "introducedSemanticRegressions": 0,
+    "introducedPolicyRegressions": 0,
+    "preexistingArchivedBaselineSemanticRegressions": 4,
+    "preexistingArchivedBaselinePolicyRegressions": 2
+  },
+  "deploymentImages": {
+    "ml-service": "sha256:e33409febca85114aa976fafb0c126176a88ff4bfa2b7da60e5cd83c8918488c",
+    "backend": "sha256:389562adf9e22c448d7f4f14d9dcb270266240885710e0f49e7f77f5f77a7abc",
+    "frontend": "sha256:bb7ae64e3e20304caa6bd8b32fee489142f0f1651a4ef76d01ccefb43e28fad5"
+  },
+  "providerCalls": 0,
+  "historicalRecordsPreserved": true,
+  "promptVersionsCreated": 0,
+  "candidateApproval": null,
+  "renderAuthorization": "BLOCKED_PENDING_EVIDENCE",
+  "remainingIssues": [
+    "Legacy source/plan gate findings require review before further optimization.",
+    "Verified Mimi reference and accepted start frame missing.",
+    "Semantic judgments remain UNKNOWN.",
+    "Existing archived golden differences, Island Journal test failure, and golden harness wrapper label limitation."
+  ],
+  "recommendation": "Review current source/plan findings; no paid optimization retry. Step7 preparation may provide missing visual inputs without bypassing repair/authorization gates."
+}

@@ -417,6 +417,28 @@ public class WorkflowService {
         && sha256(String.valueOf(request.get("text"))).equals(value.get("sourcePromptSha256"))
         && java.util.Objects.equals(value.get("rulesetVersion"),map(baseline.get("canonicalRuleEvaluation")).get("rulesetVersion"))
         && candidates.size()==2 && stored.size()==2;
+    var currentAnalysis = getLatestReview(content, version);
+    valid &= currentAnalysis != null && analysisId.toString().equals(String.valueOf(currentAnalysis.get("recordId")));
+    if (value.get("revalidatedFromComparisonId") instanceof String originalId) {
+      var original = getByKind(UUID.fromString(originalId), "CREATIVE_OPTIMIZATION");
+      boolean rebaseValid = java.util.Objects.equals(original.get("roleRecordId"), value.get("roleRecordId"))
+          && java.util.Objects.equals(original.get("sourceAnalysisId"), context.get("analysisRunId"))
+          && java.util.Objects.equals(original.get("sourcePromptSha256"), value.get("sourcePromptSha256"))
+          && java.util.Objects.equals(original.get("sourcePromptVersionId"), value.get("sourcePromptVersionId"))
+          && maps(original.get("candidates")).size() == candidates.size();
+      for (var candidate : candidates) rebaseValid &= maps(original.get("candidates")).stream().anyMatch(old ->
+          java.util.Objects.equals(old.get("candidateId"), candidate.get("candidateId"))
+          && java.util.Objects.equals(old.get("prompt"), candidate.get("prompt")));
+      // The saved provider response keeps its original analysis association. Only a
+      // source-identical, locally revalidated comparison can bind a new evaluation.
+      valid = rebaseValid && currentAnalysis != null && analysisId.toString().equals(String.valueOf(currentAnalysis.get("recordId")))
+          && java.util.Objects.equals(request.get("text"), bound.get("prompt"))
+          && java.util.Objects.equals(value.get("rulesetVersion"), map(baseline.get("canonicalRuleEvaluation")).get("rulesetVersion"))
+          && candidates.size() == 2 && stored.size() == 2
+          && String.valueOf(content).equals(String.valueOf(context.get("contentId")))
+          && String.valueOf(version).equals(String.valueOf(context.get("promptVersionId")))
+          && String.valueOf(version).equals(String.valueOf(value.get("sourcePromptVersionId")));
+    }
     for(var c:candidates) valid &= stored.stream().filter(x->java.util.Objects.equals(x.get("candidateId"),c.get("candidateId")) && java.util.Objects.equals(x.get("prompt"),c.get("prompt"))).count()==1
         && java.util.Objects.equals(value.get("rulesetVersion"),map(map(c.get("review")).get("canonicalRuleEvaluation")).get("rulesetVersion"));
     var target=map(context.get("targetConfiguration"));
@@ -455,6 +477,16 @@ public class WorkflowService {
       var classification=classified.stream().filter(x->java.util.Objects.equals(x.get("candidateId"),copy.get("candidateId"))).findFirst().orElse(Map.of());
       var current=new LinkedHashMap<String,Object>(classification);
       if (!valid) {current.put("approvalEligible",false);current.put("approvalBlockReason","Stale, incomplete or conflicting candidate lineage.");}
+      var reviewed = map(copy.get("review"));
+      copy.put("unknowns", Map.of(
+          "canonicalRules", map(reviewed.get("canonicalRuleEvaluation")).getOrDefault("unknownRules", List.of()),
+          "actualRenderQuality", reviewed.getOrDefault("actualRenderQuality", Map.of()),
+          "audienceOutcome", reviewed.getOrDefault("audienceOutcome", Map.of())));
+      copy.put("productionRisks", Map.of(
+          "localExecutionCritic", reviewed.getOrDefault("executionReview", Map.of()),
+          "productionComplexity", reviewed.getOrDefault("planQuality", Map.of()),
+          "generatorCapability", map(reviewed.get("generation")).getOrDefault("capabilityStatus", "UNKNOWN"),
+          "family8", map(reviewed.get("family8")).getOrDefault("renderAuthorization", Map.of())));
       copy.put("currentAssessment",current);copy.put("lineage",lineage);enriched.add(copy);
     }
     value.put("candidates",enriched);value.put("comparisonAssessment",assessment);
@@ -468,6 +500,55 @@ public class WorkflowService {
     var assessment=map(candidate.get("currentAssessment"));
     if (!Boolean.TRUE.equals(assessment.get("approvalEligible")))
       throw new IllegalArgumentException(String.valueOf(assessment.getOrDefault("approvalBlockReason","Current candidate approval contract failed")));
+  }
+
+  /** Re-evaluates durable candidates locally; never dispatches a creative provider. */
+  @Transactional
+  public Map<String,Object> revalidateCreativeOptimization(UUID analysisId, UUID comparisonId) {
+    var baseline = getByKind(analysisId, "REVIEW");
+    var latest = getLatestReview(baseline.get("contentId"), baseline.get("promptVersionId"));
+    if (latest == null || !analysisId.toString().equals(String.valueOf(latest.get("recordId"))))
+      throw new IllegalArgumentException("Revalidation requires the latest saved analysis");
+    var original = getByKind(comparisonId, "CREATIVE_OPTIMIZATION");
+    var originalBaseline = getByKind(UUID.fromString(String.valueOf(original.get("sourceAnalysisId"))), "REVIEW");
+    var bound = map(baseline.get("boundRequest"));
+    var oldBound = map(originalBaseline.get("boundRequest"));
+    if (!java.util.Objects.equals(baseline.get("contentId"), originalBaseline.get("contentId"))
+        || !java.util.Objects.equals(baseline.get("promptVersionId"), originalBaseline.get("promptVersionId"))
+        || !java.util.Objects.equals(original.get("sourcePromptSha256"), sha256(String.valueOf(bound.get("prompt")))))
+      throw new IllegalArgumentException("Candidate source must match the immutable prompt");
+    for (String key : List.of("prompt", "contentProfile", "generator", "desiredDuration", "settings"))
+      if (!java.util.Objects.equals(bound.get(key), oldBound.get(key)))
+        throw new IllegalArgumentException("Production/source contract changed: " + key);
+    var source = prompts.load(((Number)baseline.get("contentId")).longValue(), ((Number)baseline.get("promptVersionId")).longValue());
+    if (!source.promptText().equals(bound.get("prompt"))) throw new IllegalArgumentException("Prompt bytes are stale");
+    var existing = jdbc.sql("SELECT id FROM post_family_workflow_events WHERE kind='CREATIVE_OPTIMIZATION' "
+        + "AND payload->>'sourceAnalysisId'=:analysis AND payload->>'revalidatedFromComparisonId'=:comparison ORDER BY created_at,id LIMIT 1")
+        .param("analysis", analysisId.toString()).param("comparison", comparisonId.toString()).query(UUID.class).optional();
+    if (existing.isPresent()) return assessOptimizationComparison(existing.get());
+    var candidates = maps(original.get("candidates"));
+    if (candidates.size() != 2) throw new IllegalArgumentException("Exactly two saved candidates required");
+    var evaluated = new ArrayList<Map<String,Object>>();
+    String ruleset = String.valueOf(map(baseline.get("canonicalRuleEvaluation")).get("rulesetVersion"));
+    for (var candidate : candidates) {
+      var reviewed = reviewCreativeCandidate(analysisId, String.valueOf(candidate.get("candidateId")), String.valueOf(candidate.get("prompt")), bound);
+      var canonical = map(reviewed.get("canonicalRuleEvaluation"));
+      if (!"EVALUATED".equals(canonical.get("status")) || !ruleset.equals(canonical.get("rulesetVersion")))
+        throw new IllegalArgumentException("Local candidate canonical evaluation did not match the baseline");
+      var copy = new LinkedHashMap<String,Object>(candidate);
+      copy.remove("currentAssessment"); copy.remove("lineage");
+      copy.put("review", reviewed); copy.put("rulesetVersion", ruleset);
+      evaluated.add(copy);
+    }
+    var comparison = new LinkedHashMap<String,Object>(original);
+    comparison.remove("recordId"); comparison.remove("createdAt"); comparison.remove("comparisonAssessment");
+    comparison.put("sourceAnalysisId", analysisId.toString());
+    comparison.put("rulesetVersion", ruleset); comparison.put("candidates", evaluated);
+    comparison.put("revalidatedFromComparisonId", comparisonId.toString());
+    comparison.put("providerAnalysisId", original.get("sourceAnalysisId"));
+    comparison.put("selection", null); comparison.put("approval", null);
+    UUID saved = save("CREATIVE_OPTIMIZATION", null, comparison);
+    return assessOptimizationComparison(saved);
   }
 
   public Map<String, Object> latestCreativeOptimization(UUID analysisId) {
@@ -522,9 +603,10 @@ public class WorkflowService {
         "profile", "contentProfile", "openingStrategy", "desiredDuration",
         "plannedEditedDuration", "generator", "qualityJustification", "viewerQuestion",
         "settings", "references", "segments", "protectedIntent", "creativeEvidence",
-        "intentChangeReason", "lessonModelVersion", "retrievedLessons", "canonicalValidationId")) {
+        "intentChangeReason", "lessonModelVersion", "retrievedLessons", "canonicalValidationId", "canonicalRulesetVersion")) {
       if (baselineRequest.containsKey(key)) options.put(key, baselineRequest.get(key));
     }
+    options.put("canonicalRulesetVersion", map(getByKind(analysisId, "REVIEW").get("canonicalRuleEvaluation")).get("rulesetVersion"));
     options.put("structuredPlan", Map.of(
         "evidenceStatus", "DETERMINISTIC_SOURCE_EVENTS_ONLY",
         "sourceVersion", "UNSAVED_CANDIDATE",

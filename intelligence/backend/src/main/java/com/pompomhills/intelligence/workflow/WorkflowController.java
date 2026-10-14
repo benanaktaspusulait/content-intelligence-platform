@@ -35,6 +35,13 @@ public class WorkflowController {
     return service.latestCreativeOptimization(id);
   }
 
+  @PostMapping("/records/{id}/creative-optimization/revalidate")
+  public Map<String,Object> revalidateCreativeOptimization(@PathVariable UUID id, @RequestBody Map<String,Object> request) {
+    if (!(request.get("sourceComparisonId") instanceof String comparisonId))
+      throw new IllegalArgumentException("sourceComparisonId is required");
+    return service.revalidateCreativeOptimization(id, UUID.fromString(comparisonId));
+  }
+
   @PostMapping("/records/{id}/creative-optimization")
   public org.springframework.http.ResponseEntity<Map<String,Object>> creativeOptimization(
       @PathVariable UUID id, @RequestBody Map<String, Object> request) {

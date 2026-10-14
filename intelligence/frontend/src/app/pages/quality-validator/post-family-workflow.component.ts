@@ -338,14 +338,14 @@ import { GeneralProducibilityComponent } from './general-producibility.component
             <div *ngIf="creativeOptimizationComparison?.candidates?.length" class="creative-optimization-grid">
               <article class="creative-optimization-card optimization-original">
                 <header><div><span class="card-kicker">Original · v{{ promptVersionNumber ?? 'UNKNOWN' }}</span><h4>Saved production prompt</h4></div><span class="status-pill">Baseline</span></header>
-                <p class="optimization-score">{{ review?.canonicalRuleEvaluation?.score ?? 'UNKNOWN' }}<small>/100 · {{ review?.canonicalRuleEvaluation?.grade ?? 'UNKNOWN' }}</small></p>
+                <p class="optimization-score">{{ review?.canonicalRuleEvaluation?.score != null ? (review?.canonicalRuleEvaluation?.score | number:'1.0-2') : 'UNKNOWN' }}<small>/100 · {{ review?.canonicalRuleEvaluation?.grade ?? 'UNKNOWN' }}</small></p>
                 <p><strong>Canonical result:</strong> {{ review?.canonicalRuleEvaluation?.rulesetVersion || creativeOptimizationComparison.rulesetVersion || 'UNKNOWN' }} · {{ canonicalOutcomeSummary }}</p>
                 <p><strong>Recommendation:</strong> {{ creativeOptimizationComparison.comparisonAssessment?.recommendation || 'CURRENT VALIDATION REQUIRED' }}</p>
                 <a class="optimization-detail-link" href="#optimization-original-prompt" (click)="openOptimizationPanel('optimization-original-prompt', $event)">View Original Prompt</a>
               </article>
               <article *ngFor="let candidate of creativeOptimizationComparison.candidates; let idx = index" class="creative-optimization-card" [class.is-selected]="creativeOptimizationSelectedCandidateId === candidate.candidateId">
                 <header><div><span class="card-kicker">Candidate {{ idx === 0 ? 'A' : 'B' }}</span><h4>{{ candidate.title || 'Untitled draft' }}</h4></div><span class="status-pill">{{ creativeOptimizationSelectedCandidateId === candidate.candidateId ? 'Selected' : 'Draft' }}</span></header>
-                <p class="optimization-score">{{ candidate.review?.canonicalRuleEvaluation?.score ?? 'UNKNOWN' }}<small>/100 · {{ candidate.review?.canonicalRuleEvaluation?.grade ?? 'UNKNOWN' }} · Δ {{ optimizationScoreDelta(candidate) }}</small></p>
+                <p class="optimization-score">{{ candidate.review?.canonicalRuleEvaluation?.score != null ? (candidate.review?.canonicalRuleEvaluation?.score | number:'1.0-2') : 'UNKNOWN' }}<small>/100 · {{ candidate.review?.canonicalRuleEvaluation?.grade ?? 'UNKNOWN' }} · Δ {{ optimizationScoreDelta(candidate) }}</small></p>
                 <p class="optimization-classification">{{ candidate.currentAssessment?.classification || 'NOT_REVALIDATED' }}</p>
                 <p><strong>Similarity:</strong> {{ optimizationSimilarity(candidate) }} · textual heuristic</p>
                 <p><strong>Hypothesis:</strong> {{ candidate.hypothesis || 'No hypothesis recorded.' }}</p>
@@ -1069,7 +1069,8 @@ export class PostFamilyWorkflowComponent implements OnChanges, OnDestroy {
   }
   optimizationScoreDelta(candidate: any): string {
     const value = Number(candidate.review?.canonicalRuleEvaluation?.score) - Number(this.review?.canonicalRuleEvaluation?.score);
-    return Number.isFinite(value) ? `${value > 0 ? '+' : ''}${value}` : 'UNKNOWN';
+    const displayed = Number(value.toFixed(2));
+    return Number.isFinite(value) ? `${displayed > 0 ? '+' : ''}${displayed}` : 'UNKNOWN';
   }
   optimizationDiffCandidateId: string | null = null;
   optimizationShowUnchanged = false;
