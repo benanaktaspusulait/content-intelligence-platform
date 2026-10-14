@@ -47,6 +47,19 @@ def assess_comparison(source,candidates,context,baseline_score=None):
                 if any(before[3]!=a[3] for a in after):
                     changed.append(f"{original['id']}: camera motion {before[3] or 'UNSPECIFIED'} → {after[0][3] or 'UNSPECIFIED'}.");motion=True
             material=motion or (framing and timing)
+            if c.get('executionPlan'):
+                from .optimization_plans import compile_plan
+                compiled=compile_plan(source,context,c['executionPlan'])
+                if compiled['prompt']!=c['prompt']:raise ValueError('Plan-first prompt does not match its validated deterministic compilation')
+                material=True
+                for change in c['executionPlan']['changes']:
+                    bindings=' → '.join(x['quote'] for x in change['focusBindings'])
+                    if change['stagingMode']=='CAUSE_EFFECT_SAME_FRAME': detail='simultaneous causal staging of '+bindings
+                    elif change['stagingMode']=='ACTION_CONSEQUENCE_PAIR': detail='continuous source action/consequence focus: '+bindings
+                    else: detail='explicit ordered state holds: '+' → '.join(x['quote'] for x in change['stateSequence'])
+                    changed.append(change['sourceBeatId']+': '+detail+'; source story action and consequence preserved.')
+                item['planValidation']=compiled['planValidation']
+
             minor_reason=('Framing label changes, but stronger opening clarity is unproven.' if framing and not timing else
                           'Timing boundaries change, but source actions and consequences remain unchanged; pacing improvement is unproven.')
             item.update(classification='VALID_WITH_UNPROVEN_BENEFIT' if material else 'VALID_MINOR_VARIATION',

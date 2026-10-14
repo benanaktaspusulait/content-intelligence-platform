@@ -1223,4 +1223,66 @@ Hard cut.`;
     f.destroy();TestBed.resetTestingModule();
   });
 
+  it('keeps new plan-first generation opt-in and requires separate paid consent', async () => {
+    const f=await setup();const c=f.componentInstance;const http=TestBed.inject(HttpTestingController);
+    c.review={recordId:'run',contentId:1,promptVersionId:2};
+    expect(c.creativeOptimizationPlanFirstNewAttempt).toBe(false);
+    c.creativeOptimizationPlanFirstNewAttempt=true;c.creativeOptimizationConsent=false;c.creativeOptimizationBudget=.2;
+    c.generateCreativeOptimizationCandidates();http.expectNone(r=>r.method==='POST');
+    c.creativeOptimizationConsent=true;c.generateCreativeOptimizationCandidates();
+    const req=http.expectOne('/api/v1/intelligence/workflow/records/run/creative-optimization');
+    expect(req.request.body).toMatchObject({startNewPlanFirstAttempt:true,operatorAuthorized:true,maxCostUsd:.2});
+    req.flush({candidates:[],recordId:'mock-plan-comparison'});
+    expect(c.creativeOptimizationSelectedCandidateId).toBeNull();
+    http.expectNone(r=>r.url.includes('/prompt-versions')&&r.method==='POST');
+    f.destroy();TestBed.resetTestingModule();
+  });
+
+  function compactComparison() {
+    return {recordId:'saved-comparison',sourcePromptVersionId:2,rulesetVersion:'1.7',comparisonAssessment:{recommendation:'KEEP_ORIGINAL',conclusion:'Neither candidate demonstrates material improvement.',actualCandidateCount:2,integrityStatus:'COMPLETE_TWO_CANDIDATES',lineageVerified:true,lineage:{analysisRunId:'run',contentId:1,promptVersionId:2}},candidates:['a','b'].map((id,idx)=>({candidateId:`candidate-${id}`,title:`Candidate ${id}`,prompt:`complete prompt ${id}`,diff:`--- original\n+++ candidate\n-0-2s: close hand\n+0-2s: ${idx ? 'split timing' : 'extreme close hand'}\n unchanged ending`,hypothesis:'Unproven hypothesis',currentAssessment:{classification:'VALID_MINOR_VARIATION',approvalEligible:false,textSimilarity:idx ? .935 : .994,actualChanges:[idx ? 'One source progression split into two camera shots.' : 'CLOSE → EXTREME_CLOSE'],conclusion:idx ? 'Timing split; no new action or consequence demonstrated.' : 'Framing changed; improvement not established.',approvalBlockReason:'Non-material candidate',storyCoverage:'UNKNOWN',endingPreservation:'SOURCE_PRESERVED'},review:{canonicalRuleEvaluation:{score:85,grade:'B'}}}))};
+  }
+  it('renders compact decision cards with independent collapsed prompts and evidence, and visible actual changes', async () => {
+    const f=await setup();const c=f.componentInstance;const http=TestBed.inject(HttpTestingController);
+    c.review={recordId:'run',canonicalRuleEvaluation:{score:85,grade:'B'}};c.isCurrent=()=>true;c.activeStage=6;c.creativeOptimizationComparison=compactComparison();f.detectChanges();
+    const root=f.nativeElement as HTMLElement;
+    expect(root.querySelectorAll('.creative-optimization-card')).toHaveLength(3);
+    expect(root.querySelector('.creative-optimization-grid pre')).toBeNull();
+    root.querySelectorAll<HTMLDetailsElement>('.optimization-prompt-panel,.optimization-technical-panel').forEach(d=>expect(d.open).toBe(false));
+    root.querySelectorAll<HTMLDetailsElement>('.optimization-actual-changes,.optimization-quality-panel').forEach(d=>expect(d.open).toBe(true));
+    expect(root.querySelector('.optimization-conclusion')?.textContent).toContain('KEEP_ORIGINAL');
+    expect(root.querySelector('.optimization-actual-changes')?.textContent).toContain('CLOSE → EXTREME_CLOSE');
+    expect(root.textContent).toContain('Timing split; no new action or consequence demonstrated.');
+    const original=root.querySelector<HTMLDetailsElement>('#optimization-original-prompt')!;
+    // Attach to document so the link's accessible target is resolved, as in the browser.
+    document.body.appendChild(root);(root.querySelector('.optimization-detail-link') as HTMLAnchorElement).click();expect(original.open).toBe(true);
+    const prompts=[...root.querySelectorAll<HTMLDetailsElement>('.optimization-candidate-details .optimization-prompt-panel')];prompts[0].open=true;expect(prompts[1].open).toBe(false);
+    const approve=[...root.querySelectorAll('button')].find(b=>b.textContent?.trim()==='Approve Selected Revision')!;expect(approve.disabled).toBe(true);
+    c.reviewCreativeOptimizationCandidate('candidate-a');expect(c.creativeOptimizationApprovalEnabled).toBe(false);c.approveSelectedCreativeOptimizationCandidate();http.expectNone(r=>r.method==='POST');
+    expect(c.optimizationSimilarity({})).toBe('UNKNOWN');
+    root.remove();f.destroy();TestBed.resetTestingModule();
+  });
+  it('switches one diff between alternative versions without selecting candidates and optionally includes neutral context', async () => {
+    const f=await setup();const c=f.componentInstance;c.review={recordId:'run'};c.activeStage=6;c.creativeOptimizationComparison=compactComparison();f.detectChanges();
+    expect(f.nativeElement.querySelectorAll('.optimization-side-diff')).toHaveLength(1);
+    expect(c.optimizationVisibleDiffRows).toHaveLength(1);expect(c.optimizationVisibleDiffRows[0].after).toContain('extreme close');
+    const select=f.nativeElement.querySelector('.optimization-diff-controls select') as HTMLSelectElement;select.value='candidate-b';select.dispatchEvent(new Event('change',{bubbles:true}));f.detectChanges();
+    expect(c.optimizationVisibleDiffRows[0].after).toContain('split timing');expect(c.creativeOptimizationSelectedCandidateId).toBeNull();
+    const context=f.nativeElement.querySelector('.optimization-diff-controls input') as HTMLInputElement;context.checked=true;context.dispatchEvent(new Event('change',{bubbles:true}));f.detectChanges();
+    expect(c.optimizationVisibleDiffRows).toHaveLength(2);expect(c.optimizationVisibleDiffRows[1]).toEqual({before:'unchanged ending',after:'unchanged ending',changed:false});
+    expect(f.nativeElement.querySelectorAll('.optimization-side-diff tbody tr')).toHaveLength(2);expect(f.nativeElement.querySelectorAll('.optimization-side-diff .diff-change')).toHaveLength(1);
+    expect(c.creativeOptimizationComparison.comparisonAssessment.recommendation).toBe('KEEP_ORIGINAL');TestBed.inject(HttpTestingController).expectNone(r=>r.method==='POST');f.destroy();TestBed.resetTestingModule();
+  });
+  it('preserves selection and review on an identical saved GET and clears review if candidate evidence changes', async () => {
+    const f=await setup();const c=f.componentInstance;const http=TestBed.inject(HttpTestingController);c.review={recordId:'run'};c.creativeOptimizationComparison=compactComparison();c.reviewCreativeOptimizationCandidate('candidate-a');c.optimizationDiffCandidateId='candidate-b';
+    c.loadLatestCreativeOptimization();http.expectOne('/api/v1/intelligence/workflow/records/run/creative-optimization/latest').flush({comparison:compactComparison()});
+    expect(c.creativeOptimizationSelectedCandidateId).toBe('candidate-a');expect(c.creativeOptimizationReviewedCandidateId).toBe('candidate-a');expect(c.optimizationDiffCandidateId).toBe('candidate-b');
+    const changed=compactComparison();changed.candidates[0].prompt='changed evidence';c.loadLatestCreativeOptimization();http.expectOne('/api/v1/intelligence/workflow/records/run/creative-optimization/latest').flush({comparison:changed});
+    expect(c.creativeOptimizationSelectedCandidateId).toBe('candidate-a');expect(c.creativeOptimizationReviewedCandidateId).toBeNull();expect(c.creativeOptimizationApprovalEnabled).toBe(false);
+    http.expectNone(r=>r.method==='POST');f.destroy();TestBed.resetTestingModule();
+  });
+  it('copies complete candidate prompt text without provider requests or approval', async () => {
+    const f=await setup();const c=f.componentInstance;const writeText=vi.fn().mockResolvedValue(undefined);Object.defineProperty(navigator,'clipboard',{configurable:true,value:{writeText}});
+    await c.copyOptimizationPrompt('Complete unchanged draft');expect(writeText).toHaveBeenCalledWith('Complete unchanged draft');expect(c.optimizationCopyStatus).toContain('copied');expect(c.creativeOptimizationSelectedCandidateId).toBeNull();TestBed.inject(HttpTestingController).expectNone(r=>r.method==='POST');f.destroy();TestBed.resetTestingModule();
+  });
+
 });

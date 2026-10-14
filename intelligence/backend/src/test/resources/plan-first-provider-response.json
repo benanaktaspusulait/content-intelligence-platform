@@ -1,0 +1,115 @@
+{
+  "plans": [
+    {
+      "candidateId": "candidate-a",
+      "title": "Causal contact staging",
+      "objective": "OPENING_CAUSAL_LEGIBILITY",
+      "baselineOpportunity": "Baseline labels do not specify simultaneous target and actual attachment visibility.",
+      "proposedVisualConsequence": "Keep intended and actual contact participants in one readable frame; clarity remains a hypothesis.",
+      "materialDifference": "Adds source-bound simultaneous causal staging, rather than a closer framing adjective.",
+      "preservedStoryAnchors": [
+        "Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger",
+        "Mimi tries to peel the stuck note away with her other hand; the note splits into two",
+        "Mimi continues to pull; each pull doubles the number of sticky notes",
+        "Mimi sees herself in a mirror and screams",
+        "Mimi sneezes and the sticky notes fly off"
+      ],
+      "risksIntroduced": [
+        "Compositional density needs visual review."
+      ],
+      "risksReducedHypotheses": [
+        "Explicit visibility may reduce causal ambiguity."
+      ],
+      "unknowns": [
+        "Clarity and generator feasibility require rendered visual evidence."
+      ],
+      "evidenceStatus": "HYPOTHESIS_ONLY",
+      "changes": [
+        {
+          "sourceBeatId": "beat_01",
+          "sourceQuote": "0-2s: Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger [close-up on Mimi's hand] Mimi is in front of a toy cabinet, looking determined -> the note sticks to Mimi, not the cabinet",
+          "framing": "MEDIUM",
+          "motion": "STATIC",
+          "stagingMode": "CAUSE_EFFECT_SAME_FRAME",
+          "focusBindings": [
+            {
+              "quote": "the cabinet"
+            },
+            {
+              "quote": "her finger"
+            }
+          ],
+          "stateSequence": [],
+          "startTime": 0.0,
+          "endTime": 2.0
+        }
+      ]
+    },
+    {
+      "candidateId": "candidate-b",
+      "title": "Explicit escalation exposure",
+      "objective": "ESCALATION_EXECUTION_FEASIBILITY",
+      "baselineOpportunity": "Baseline multiplication does not explicitly allocate readable holds to each existing state.",
+      "proposedVisualConsequence": "Expose separation and multiplication as distinct existing actions, with ordered state holds in continuous execution.",
+      "materialDifference": "Adds exact action/consequence pairing and explicit ordered state holds, rather than timestamp labels.",
+      "preservedStoryAnchors": [
+        "Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger",
+        "Mimi tries to peel the stuck note away with her other hand; the note splits into two",
+        "Mimi continues to pull; each pull doubles the number of sticky notes",
+        "Mimi sees herself in a mirror and screams",
+        "Mimi sneezes and the sticky notes fly off"
+      ],
+      "risksIntroduced": [
+        "Compositional density needs visual review."
+      ],
+      "risksReducedHypotheses": [
+        "Explicit visibility may reduce causal ambiguity."
+      ],
+      "unknowns": [
+        "Clarity and generator feasibility require rendered visual evidence."
+      ],
+      "evidenceStatus": "HYPOTHESIS_ONLY",
+      "changes": [
+        {
+          "sourceBeatId": "beat_02",
+          "sourceQuote": "2-5s: Mimi tries to peel the stuck note away with her other hand; the note splits into two [medium shot of Mimi struggling] Mimi pulls at the note -> one note sticks to each hand",
+          "framing": "MEDIUM",
+          "motion": "STATIC",
+          "stagingMode": "ACTION_CONSEQUENCE_PAIR",
+          "focusBindings": [
+            {
+              "quote": "the stuck note"
+            },
+            {
+              "quote": "one note sticks to each hand"
+            }
+          ],
+          "stateSequence": [],
+          "startTime": 2.0,
+          "endTime": 5.0
+        },
+        {
+          "sourceBeatId": "beat_03",
+          "sourceQuote": "5-10s: Mimi continues to pull; each pull doubles the number of sticky notes [wide shot showing Mimi covered in notes] notes multiply from two to four to eight as she pulls, progressively covering her arms, legs and face -> Mimi is overwhelmed by notes",
+          "framing": "WIDE",
+          "motion": "STATIC",
+          "stagingMode": "DISTINCT_STATE_HOLDS",
+          "focusBindings": [],
+          "stateSequence": [
+            {
+              "quote": "two"
+            },
+            {
+              "quote": "four"
+            },
+            {
+              "quote": "eight"
+            }
+          ],
+          "startTime": 5.0,
+          "endTime": 10.0
+        }
+      ]
+    }
+  ]
+}

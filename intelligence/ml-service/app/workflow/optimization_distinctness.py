@@ -4,7 +4,7 @@ from app.parser.prompt_parser import parse_prompt
 
 _SHOTS=[('EXTREME_CLOSE',r'extreme\s+close'),('CLOSE',r'close[- ]?up|tight\s+shot|insert\s+shot'),('MEDIUM',r'medium\s+shot|mid[- ]?shot'),('WIDE',r'wide\s+shot|long\s+shot|full[- ]body')]
 _MOTIONS=[('STATIC',r'static|locked[- ]off'),('TRACK',r'track(?:ing)?'),('PAN',r'\bpan\b'),('PUSH',r'push[- ]in')]
-_CAMERA_WORDS=set('extreme close up tight insert medium mid wide long full body shot static locked off tracking track pan slow push in camera frame framing focus foreground background hold single continuous on of the a an and with from to eye level view over shoulder shallow depth field cut cuts clear readable center centred centered left right soft lighting light contrast zoom at'.split())
+_CAMERA_WORDS=set('extreme close up tight insert medium mid wide long full body shot static locked off tracking track pan slow push in camera frame framing focus foreground background hold single continuous on of the a an and with from to eye level view over shoulder shallow depth field cut cuts clear readable center centred centered left right soft lighting light contrast zoom at keep visible together same then'.split())
 
 def _normalize(text):return ' '.join(re.findall(r'\w+',text.casefold()))
 def _tokens(text):return set(re.findall(r'\w+',text.casefold()))

@@ -197,7 +197,10 @@ def optimization_recovery(request: OptimizationRecoveryRequest) -> dict[str, Any
             return json.dumps(request.providerResult, ensure_ascii=False)
     provider = SavedResponse()
     try:
-        result = perform_role('PROMPT_OPTIMIZATION', request.text, request.context,
+        context = dict(request.context)
+        # Historical candidate responses retain their legacy source contract.
+        if 'plans' not in request.providerResult: context['optimizationGenerationContractVersion']='profile-ownership-v1'
+        result = perform_role('PROMPT_OPTIMIZATION', request.text, context,
                               provider, str(request.diagnostics.get('model', 'saved-response')))
     except ValueError as error:
         raise HTTPException(409, {'category': _optimization_validation_category(error),

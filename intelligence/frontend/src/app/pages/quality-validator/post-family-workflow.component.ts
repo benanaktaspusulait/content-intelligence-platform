@@ -323,6 +323,8 @@ import { GeneralProducibilityComponent } from './general-producibility.component
               <input #creativeOptimizationConsentInput id="creative-optimization-consent" type="checkbox" [disabled]="creativeOptimizationBusy" (change)="creativeOptimizationConsent = $any($event.target).checked">
               <span>I explicitly authorize one creative optimization call within the configured budget.</span>
             </label>
+            <p>New generation uses plan-first source-bound execution plans. Existing minor drafts keep their KEEP ORIGINAL decision.</p>
+            <label class="repair-consent-row"><input type="checkbox" (change)="creativeOptimizationPlanFirstNewAttempt = $any($event.target).checked" [disabled]="creativeOptimizationBusy">Explicitly request a new plan-first attempt (separate paid consent and budget required).</label>
             <div class="repair-button-row">
               <button #creativeOptimizationGenerateButton type="button" class="button button--primary button--compact" (click)="generateCreativeOptimizationCandidates()" [disabled]="creativeOptimizationBusy || !creativeOptimizationConsent || !validCreativeOptimizationBudget || !review?.recordId">Generate two candidates</button>
             </div>
@@ -330,53 +332,89 @@ import { GeneralProducibilityComponent } from './general-producibility.component
             <section *ngIf="creativeOptimizationComparison" class="optimization-conclusion" aria-label="Optimization comparison conclusion">
               <strong>{{ creativeOptimizationComparison.comparisonAssessment?.recommendation || 'CURRENT VALIDATION REQUIRED' }}</strong>
               <p>{{ creativeOptimizationComparison.comparisonAssessment?.conclusion || 'This historical comparison must be revalidated before approval.' }}</p>
-              <small>Attempt {{ creativeOptimizationComparison.comparisonAssessment?.lineage?.attemptId || 'UNKNOWN' }} · Prompt ID {{ creativeOptimizationComparison.sourcePromptVersionId }} · Ruleset {{ creativeOptimizationComparison.rulesetVersion }}</small>
+              <p *ngFor="let candidate of creativeOptimizationComparison.candidates; let idx = index"><strong>Candidate {{ idx === 0 ? 'A' : 'B' }}:</strong> {{ candidate.currentAssessment?.conclusion || 'Current assessment unavailable.' }}</p>
               <p *ngIf="creativeOptimizationComparison.candidates?.length !== 2" role="alert">Incomplete comparison: {{ creativeOptimizationComparison.candidates?.length || 0 }} actual candidate(s). No placeholder candidate is accepted.</p>
             </section>
             <div *ngIf="creativeOptimizationComparison?.candidates?.length" class="creative-optimization-grid">
-              <article class="creative-optimization-card">
-                <header><div><span class="card-kicker">Original</span><h4>Saved prompt</h4></div><span class="status-pill">Original</span></header>
-                <p><strong>Quality:</strong> {{ review?.canonicalRuleEvaluation?.score ?? 'UNKNOWN' }}/100 · Grade {{ review?.canonicalRuleEvaluation?.grade ?? 'UNKNOWN' }}</p>
-                <p>Keep the saved story and production prompt when neither alternative has a defensible improvement.</p>
-                <details><summary>Baseline prompt text</summary><pre class="creative-optimization-diff">{{ prompt }}</pre></details>
-                <button type="button" class="button button--secondary button--compact" (click)="selectCreativeOptimizationCandidate('ORIGINAL')" [disabled]="creativeOptimizationBusy">Keep Original</button>
+              <article class="creative-optimization-card optimization-original">
+                <header><div><span class="card-kicker">Original · v{{ promptVersionNumber ?? 'UNKNOWN' }}</span><h4>Saved production prompt</h4></div><span class="status-pill">Baseline</span></header>
+                <p class="optimization-score">{{ review?.canonicalRuleEvaluation?.score ?? 'UNKNOWN' }}<small>/100 · {{ review?.canonicalRuleEvaluation?.grade ?? 'UNKNOWN' }}</small></p>
+                <p><strong>Canonical result:</strong> {{ review?.canonicalRuleEvaluation?.rulesetVersion || creativeOptimizationComparison.rulesetVersion || 'UNKNOWN' }} · {{ canonicalOutcomeSummary }}</p>
+                <p><strong>Recommendation:</strong> {{ creativeOptimizationComparison.comparisonAssessment?.recommendation || 'CURRENT VALIDATION REQUIRED' }}</p>
+                <a class="optimization-detail-link" href="#optimization-original-prompt" (click)="openOptimizationPanel('optimization-original-prompt', $event)">View Original Prompt</a>
               </article>
               <article *ngFor="let candidate of creativeOptimizationComparison.candidates; let idx = index" class="creative-optimization-card" [class.is-selected]="creativeOptimizationSelectedCandidateId === candidate.candidateId">
-                <header><div><span class="card-kicker">{{ candidate.candidateId }}</span><h4>{{ candidate.title || 'Untitled draft' }}</h4></div><span class="status-pill">{{ creativeOptimizationSelectedCandidateId === candidate.candidateId ? 'Selected' : 'Draft' }}</span></header>
-                <p><strong>Classification:</strong> {{ candidate.currentAssessment?.classification || 'NOT_REVALIDATED' }}</p>
-                <p><strong>Text similarity screen:</strong> {{ (candidate.currentAssessment?.textSimilarity * 100) | number:'1.1-1' }}% · heuristic, not semantic proof.</p>
-                <p><strong>Creative hypothesis:</strong> {{ candidate.hypothesis || 'No hypothesis recorded.' }}</p>
-                <p><strong>Quality:</strong> {{ candidate.review?.canonicalRuleEvaluation?.score ?? 'UNKNOWN' }}/100 · Grade {{ candidate.review?.canonicalRuleEvaluation?.grade ?? 'UNKNOWN' }} · Δ {{ optimizationScoreDelta(candidate) }}</p>
-                <p><strong>Observed textual changes:</strong></p>
-                <ul><li *ngFor="let change of candidate.currentAssessment?.actualChanges">{{ change }}</li></ul>
-                <p><strong>Deterministic validation:</strong> {{ candidate.currentAssessment?.validationStatus || 'UNKNOWN' }}</p>
-                <p>{{ candidate.currentAssessment?.conclusion || 'No current value assessment is available.' }}</p>
+                <header><div><span class="card-kicker">Candidate {{ idx === 0 ? 'A' : 'B' }}</span><h4>{{ candidate.title || 'Untitled draft' }}</h4></div><span class="status-pill">{{ creativeOptimizationSelectedCandidateId === candidate.candidateId ? 'Selected' : 'Draft' }}</span></header>
+                <p class="optimization-score">{{ candidate.review?.canonicalRuleEvaluation?.score ?? 'UNKNOWN' }}<small>/100 · {{ candidate.review?.canonicalRuleEvaluation?.grade ?? 'UNKNOWN' }} · Δ {{ optimizationScoreDelta(candidate) }}</small></p>
+                <p class="optimization-classification">{{ candidate.currentAssessment?.classification || 'NOT_REVALIDATED' }}</p>
+                <p><strong>Similarity:</strong> {{ optimizationSimilarity(candidate) }} · textual heuristic</p>
+                <p><strong>Hypothesis:</strong> {{ candidate.hypothesis || 'No hypothesis recorded.' }}</p>
+                <p><strong>Observed changes:</strong> {{ candidate.currentAssessment?.actualChanges?.join('; ') || 'No current change evidence.' }}</p>
                 <p><strong>Production risk:</strong> {{ candidate.currentAssessment?.productionRiskChange || 'UNKNOWN' }}</p>
-                <p><strong>Story and ending:</strong> {{ candidate.currentAssessment?.storyCoverage || 'UNKNOWN' }} · {{ candidate.currentAssessment?.endingPreservation || 'UNKNOWN' }}</p>
-                <p><strong>Unknown until render:</strong> first-frame clarity, hook effectiveness and Seedance feasibility. Viewer response is unmeasured.</p>
-                <p *ngIf="candidate.currentAssessment?.approvalBlockReason" class="setting-note">Approval blocked: {{ candidate.currentAssessment.approvalBlockReason }}</p>
-                <details><summary>Technical Evidence</summary><pre class="creative-optimization-diff">{{ candidate | json }}</pre></details>
-                <details><summary>Full candidate prompt</summary><pre class="creative-optimization-diff">{{ candidate.prompt }}</pre></details>
+                <p class="optimization-eligibility"><strong>Approval:</strong> {{ candidate.currentAssessment?.approvalEligible === true ? 'Eligible for explicit review' : 'Blocked' }}</p>
                 <div class="creative-optimization-actions">
                   <button type="button" class="button button--secondary button--compact" (click)="reviewCreativeOptimizationCandidate(candidate.candidateId)" [disabled]="creativeOptimizationBusy || !canSelectOptimizationCandidate(candidate)">Review Candidate {{ idx === 0 ? 'A' : 'B' }}</button>
                   <button type="button" class="button button--primary button--compact" (click)="selectCreativeOptimizationCandidate(candidate.candidateId)" [disabled]="creativeOptimizationBusy || !canSelectOptimizationCandidate(candidate)">Select candidate</button>
                 </div>
               </article>
             </div>
-            <details *ngFor="let candidate of creativeOptimizationComparison?.candidates" class="optimization-side-diff">
-              <summary>Side-by-side text changes · {{ candidate.candidateId }}</summary>
-              <p>These columns are alternative versions. Removed and added lines are not consecutive events in the final prompt.</p>
-              <table><thead><tr><th>Original · removed text</th><th>{{ candidate.candidateId }} · added text</th></tr></thead>
-                <tbody><tr *ngFor="let row of optimizationDiffRows(candidate)" [class.diff-change]="row.changed"><td>{{ row.before }}</td><td>{{ row.after }}</td></tr></tbody>
-              </table>
-            </details>
             <div *ngIf="creativeOptimizationComparison?.candidates?.length" class="creative-optimization-approval">
-              <p class="setting-note">Candidate scores are evidence only. They do not auto-select and do not grant render authorization.</p>
               <div class="repair-button-row">
+                <button type="button" class="button button--secondary button--compact" (click)="selectCreativeOptimizationCandidate('ORIGINAL')" [disabled]="creativeOptimizationBusy">Keep Original</button>
                 <button type="button" class="button button--primary button--compact" (click)="approveSelectedCreativeOptimizationCandidate()" [disabled]="creativeOptimizationBusy || !creativeOptimizationApprovalEnabled">Approve Selected Revision</button>
               </div>
-              <small *ngIf="!creativeOptimizationApprovalEnabled">Select and review a candidate with preserved story coverage before approval.</small>
+              <p class="setting-note">{{ creativeOptimizationSelectedCandidateId === 'ORIGINAL' ? 'Original retained. No revision is selected.' : 'Review and select an eligible candidate before explicit approval.' }} Scores do not auto-select or grant render authorization.</p>
             </div>
+            <details *ngIf="creativeOptimizationComparison" id="optimization-original-prompt" class="optimization-panel optimization-prompt-panel">
+              <summary>View Original Prompt</summary>
+              <button type="button" class="button button--secondary button--compact" (click)="copySavedPrompt()" [disabled]="!isCurrent() || !prompt">Copy original prompt</button>
+              <pre class="creative-optimization-diff">{{ prompt }}</pre>
+            </details>
+            <section *ngFor="let candidate of creativeOptimizationComparison?.candidates; let idx = index" class="optimization-candidate-details" [attr.aria-label]="'Candidate ' + (idx === 0 ? 'A' : 'B') + ' details'">
+              <h4>Candidate {{ idx === 0 ? 'A' : 'B' }} · Review details</h4>
+              <details open class="optimization-panel optimization-actual-changes">
+                <summary>Actual Changes</summary>
+                <ul><li *ngFor="let change of candidate.currentAssessment?.actualChanges">{{ change }}</li></ul>
+                <p>{{ candidate.currentAssessment?.conclusion || 'No current value assessment is available.' }}</p>
+              </details>
+              <details open class="optimization-panel optimization-quality-panel">
+                <summary>Quality and Production Assessment</summary>
+                <p><strong>Validation:</strong> {{ candidate.currentAssessment?.validationStatus || 'UNKNOWN' }} · <strong>Risk:</strong> {{ candidate.currentAssessment?.productionRiskChange || 'UNKNOWN' }}</p>
+                <p><strong>Story and ending:</strong> {{ candidate.currentAssessment?.storyCoverage || 'UNKNOWN' }} · {{ candidate.currentAssessment?.endingPreservation || 'UNKNOWN' }}</p>
+                <p>First-frame clarity, hook effectiveness and Seedance feasibility require visual evidence. Viewer response is unmeasured.</p>
+                <p *ngIf="candidate.currentAssessment?.approvalBlockReason" class="setting-note">Approval blocked: {{ candidate.currentAssessment.approvalBlockReason }}</p>
+              </details>
+                <details *ngIf="candidate.executionPlan" class="optimization-panel"><summary>Validated improvement plan · hypothesis only</summary>
+                  <p><strong>Baseline opportunity:</strong> {{ candidate.executionPlan.baselineOpportunity }}</p>
+                  <p><strong>Proposed visual consequence:</strong> {{ candidate.executionPlan.proposedVisualConsequence }}</p>
+                  <p><strong>Material difference:</strong> {{ candidate.executionPlan.materialDifference }}</p>
+                  <p><strong>Plan validation:</strong> {{ candidate.planValidation?.status || 'UNKNOWN' }}</p>
+                  <strong>Risk reduction hypotheses</strong><ul><li *ngFor="let risk of candidate.executionPlan.risksReducedHypotheses">{{ risk }}</li></ul>
+                  <strong>Introduced risks</strong><ul><li *ngFor="let risk of candidate.executionPlan.risksIntroduced">{{ risk }}</li></ul>
+                  <strong>Visual evidence required</strong><ul><li *ngFor="let unknown of candidate.executionPlan.unknowns">{{ unknown }}</li></ul>
+                </details>
+
+              <details class="optimization-panel optimization-prompt-panel">
+                <summary>Full Candidate Prompt</summary>
+                <button type="button" class="button button--secondary button--compact" (click)="copyOptimizationPrompt(candidate.prompt)">Copy full candidate prompt</button>
+                <pre class="creative-optimization-diff">{{ candidate.prompt }}</pre>
+              </details>
+              <details class="optimization-panel optimization-technical-panel"><summary>Technical Evidence</summary><pre class="creative-optimization-diff">{{ candidate | json }}</pre></details>
+            </section>
+            <details *ngIf="creativeOptimizationComparison?.candidates?.length" class="optimization-panel optimization-side-diff">
+              <summary>Compare Full Prompt Changes</summary>
+              <div class="optimization-diff-controls">
+                <label>Compare candidate <select aria-label="Compare candidate" [value]="optimizationDiffCandidate.candidateId" (change)="optimizationDiffCandidateId = $any($event.target).value"><option *ngFor="let candidate of creativeOptimizationComparison.candidates; let idx = index" [value]="candidate.candidateId">Candidate {{ idx === 0 ? 'A' : 'B' }} · {{ candidate.title }}</option></select></label>
+                <label><input type="checkbox" [checked]="optimizationShowUnchanged" (change)="optimizationShowUnchanged = $any($event.target).checked"> Show Unchanged Context</label>
+              </div>
+              <p>Alternative versions of the same source events. Removed and added text are not sequential story beats.</p>
+              <table><thead><tr><th scope="col">Original · removed text (−)</th><th scope="col">{{ optimizationDiffCandidate.candidateId }} · added text (+)</th></tr></thead>
+                <tbody><tr *ngFor="let row of optimizationVisibleDiffRows" [class.diff-change]="row.changed"><td>{{ row.before }}</td><td>{{ row.after }}</td></tr></tbody>
+              </table>
+              <p *ngIf="!optimizationVisibleDiffRows.length">No changed text in the saved diff.</p>
+            </details>
+            <details *ngIf="creativeOptimizationComparison" class="optimization-panel optimization-technical-panel"><summary>Comparison provenance and technical evidence</summary><pre class="creative-optimization-diff">{{ creativeOptimizationComparison | json }}</pre></details>
+            <p *ngIf="optimizationCopyStatus" role="status">{{ optimizationCopyStatus }}</p>
           </div>
         </details>
         <details class="repair-secondary-details">
@@ -788,7 +826,11 @@ import { GeneralProducibilityComponent } from './general-producibility.component
       .repair-secondary-details>summary,.repair-tools-details>summary,.current-prompt-card>summary,.repair-candidate-details>summary{cursor:pointer;font-weight:800;color:#263f56}.repair-secondary-details>summary,.repair-tools-details>summary,.current-prompt-card>summary{font-size:.96rem}.repair-secondary-details[open],.repair-tools-details[open],.current-prompt-card[open],.repair-candidate-details[open]{display:grid;gap:12px}.repair-secondary-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}.repair-secondary-grid>div{display:grid;align-content:start;gap:5px;min-width:0;padding:11px;border:1px solid #dfe7ee;border-radius:8px;background:#fff}.repair-secondary-details details{padding:10px;border:1px solid #dfe7ee;border-radius:8px;background:#fff}.repair-secondary-details details>summary{cursor:pointer;font-weight:750;color:#263f56}
       .current-prompt-card{background:#fff}.prompt-preview-toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;color:#52616b;font-size:.88rem}.prompt-monaco{width:100%;height:340px;min-height:260px;border:1px solid #cbd6ce;border-radius:8px;overflow:hidden}.prompt-fallback-label{display:grid;gap:6px}.prompt-fallback-label textarea,.repair-candidate-details textarea{width:100%;height:340px;min-height:260px;white-space:pre;overflow:auto;resize:vertical;font:13px/1.45 ui-monospace,SFMono-Regular,Menlo,monospace}.repair-candidate-details{background:#fff}.repair-candidate-details textarea{height:220px}
       .creative-optimization-details{margin:0 0 14px;padding:16px;border:1px solid #d8e1ec;border-radius:12px;background:#f8fbfd}.creative-optimization-details summary{cursor:pointer;font-weight:800;color:#263f56}.creative-optimization-body{display:grid;gap:12px}.creative-optimization-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;align-items:start}.creative-optimization-card{min-width:0;overflow-wrap:anywhere}.optimization-conclusion{padding:14px;border-left:4px solid #617b36;background:#f1f5eb}.optimization-side-diff table{width:100%;table-layout:fixed;border-collapse:collapse}.optimization-side-diff td,.optimization-side-diff th{width:50%;vertical-align:top;padding:10px;border:1px solid #dfe7ee;white-space:pre-wrap;overflow-wrap:anywhere}.diff-change td:first-child{background:#fff1ef}.diff-change td:last-child{background:#eef7ed}.optimization-side-diff summary{cursor:pointer;font-weight:700}.creative-optimization-card{display:grid;gap:10px;padding:12px;border:1px solid #dfe7ee;border-radius:10px;background:#fff}.creative-optimization-card.is-selected{border-color:#8fbd36;background:#f5faed}.creative-optimization-card header{display:flex;justify-content:space-between;gap:8px;align-items:flex-start}.creative-optimization-card h4{margin:3px 0 0;color:#263f56}.creative-optimization-card p{margin:0;color:#40515a;line-height:1.45}.creative-optimization-actions{display:flex;flex-wrap:wrap;gap:8px}.creative-optimization-diff{margin:0;padding:10px;border:1px solid #dfe7ee;border-radius:8px;background:#fbfcfd;color:#263f56;white-space:pre-wrap;overflow-wrap:anywhere}.creative-optimization-approval{display:grid;gap:8px;padding-top:4px;border-top:1px solid #dfe7ee}.repair-tools-details,.repair-tools-group{background:#fff}.repair-tools-details>summary{padding:2px}.repair-tools-group{display:grid;gap:10px;padding:14px;border:1px solid #dfe7ee;border-radius:10px}.repair-tools-group + .repair-tools-group{margin-top:12px}.repair-tools-group h3{margin:0;color:#263f56}.repair-fields{display:grid;gap:8px}.repair-fields--patch{grid-template-columns:repeat(2,minmax(0,1fr));align-items:start}.repair-field{display:grid;gap:5px;min-width:0}.repair-field span{font-weight:650;color:#35464f;line-height:1.4}.repair-field input,.repair-field textarea{max-width:100%;min-width:0;width:100%;height:40px;border:1px solid #cbd6ce;border-radius:8px;padding:8px 10px;box-sizing:border-box;background:#fff;color:#1e2b36}.repair-field textarea{min-height:84px;resize:vertical}.repair-field__text{min-height:84px}.repair-field__input{height:40px}.repair-field--inline{max-width:100%}.repair-consent-row{display:flex;align-items:flex-start;gap:10px;cursor:pointer;font-weight:650;color:#35464f;line-height:1.5}.repair-consent-row input[type=checkbox]{margin-top:2px;flex:0 0 auto}.repair-help,.repair-field-help,.repair-tools-group small{margin:0;color:#52616b;line-height:1.45}.repair-button-row,.repair-tool-actions{display:flex;flex-wrap:wrap;align-items:center;gap:8px}.repair-button-row > .button,.repair-tool-actions > .button{width:auto;margin:0}.button.button--compact,.repair-triage .button{min-width:0;min-height:40px;height:40px;padding:0 14px;border-radius:8px;font-size:13px;line-height:1}.repair-triage .button{justify-self:start}.repair-triage button:disabled,.repair-tools-details button:disabled,.repair-button-row button:disabled,.repair-tool-actions button:disabled{opacity:.58;cursor:not-allowed}.repair-triage button:focus-visible,.repair-tools-details button:focus-visible,.current-prompt-card button:focus-visible,.repair-tools-details input:focus-visible,.repair-tools-details textarea:focus-visible{outline:3px solid #345f9a;outline-offset:2px}.repair-tools-details .error{color:#983520}
-      @media(max-width:900px){.repair-primary-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.repair-secondary-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.creative-optimization-grid{grid-template-columns:1fr}}
+
+      .optimization-score{font-size:28px;font-weight:800;color:#263f56!important}.optimization-score small{font-size:13px;font-weight:600;margin-left:6px}.optimization-classification{font-size:12px;font-weight:800;letter-spacing:.02em}.optimization-detail-link{color:#345f9a;font-weight:700}.optimization-panel{min-width:0;border-top:1px solid #dfe7ee;padding:10px 0}.optimization-panel>summary{padding:4px 0;cursor:pointer;color:#263f56;font-weight:750}.optimization-panel p{margin:8px 0;line-height:1.5;color:#40515a}.optimization-panel ul{margin:8px 0;padding-left:22px;line-height:1.5}.optimization-candidate-details{min-width:0}.optimization-candidate-details>h4{margin:8px 0;color:#263f56}.optimization-prompt-panel .button{margin:8px 0}.creative-optimization-diff{max-height:400px;overflow:auto;min-width:0;max-width:100%;box-sizing:border-box;word-break:break-word}.optimization-diff-controls{display:flex;gap:16px;flex-wrap:wrap;align-items:center;margin:12px 0}.optimization-diff-controls label{display:flex;gap:8px;align-items:center;flex-wrap:wrap;min-width:0}.optimization-diff-controls select{max-width:100%;min-width:0;padding:8px;border:1px solid #cbd6ce;border-radius:6px;background:#fff;color:#263f56}.optimization-panel summary:focus-visible,.creative-optimization-body button:focus-visible,.creative-optimization-body a:focus-visible,.optimization-diff-controls input:focus-visible,.optimization-diff-controls select:focus-visible{outline:3px solid #345f9a;outline-offset:3px}.optimization-side-diff{overflow:hidden}.optimization-side-diff table{font-size:13px}.creative-optimization-body{min-width:0}.optimization-conclusion p{margin:8px 0;line-height:1.5}.creative-optimization-approval{padding:12px 0}.creative-optimization-card .creative-optimization-actions{padding-top:4px}.optimization-eligibility{border-top:1px solid #dfe7ee;padding-top:8px}
+      @media(max-width:600px){.creative-optimization-grid{grid-template-columns:1fr}.creative-optimization-details{padding:12px}.optimization-side-diff td,.optimization-side-diff th{padding:6px}.optimization-diff-controls{display:grid;gap:10px}.optimization-score{font-size:25px}}
+      @media(max-width:900px){.repair-primary-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.repair-secondary-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.creative-optimization-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+      @media(max-width:600px){.creative-optimization-grid{grid-template-columns:1fr}}
       @media(max-width:600px){.repair-triage,.current-prompt-card,.repair-secondary-details,.repair-candidate-details,.repair-tools-details{padding:13px}.repair-primary-grid,.repair-secondary-grid,.repair-fields--patch{grid-template-columns:1fr}.repair-primary-grid article{min-height:0}.prompt-preview-toolbar{align-items:flex-start}.prompt-monaco,.prompt-fallback-label textarea{height:320px;min-height:280px}.repair-triage .button{width:auto;max-width:100%}.repair-button-row,.repair-tool-actions{display:grid;grid-template-columns:1fr}.repair-tool-actions .button,.repair-button-row .button{width:100%}.repair-field input,.repair-field textarea{font-size:16px}}
       .findings-resolution{display:grid;gap:12px;margin:16px 0;padding:16px;border:1px solid #d8e1ec;border-radius:12px;background:#f8fbfd}.findings-resolution header h3{margin:3px 0;color:#263f56}.findings-resolution header p{margin:4px 0;color:#68747c;font-size:.82rem}.resolution-list{display:grid;gap:9px}.resolution-item{display:grid;gap:6px;padding:12px;border:1px solid #dfe7ee;border-radius:9px;background:#fff}.resolution-item--blocking{border-left:4px solid #b9503e}.resolution-item__title{display:flex;gap:9px;align-items:center;flex-wrap:wrap}.resolution-item__title strong{color:#263f56}.resolution-category{font-size:.64rem;font-weight:800;color:#5f8435;letter-spacing:.06em}.resolution-item p{margin:0;color:#40515a}.resolution-item small{color:#68747c}.resolution-item .button{justify-self:start;margin:3px 0 0}.render-context-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}.render-context-grid>div,.render-preflight>div{display:grid;gap:4px;padding:10px;border:1px solid #dfe7ee;border-radius:8px;background:#fff}.render-context-grid span,.render-preflight span{font-size:.68rem;color:#68747c;font-weight:800;text-transform:uppercase}.render-context-grid strong,.render-preflight strong{color:#263f56;font-size:.86rem;overflow-wrap:anywhere}.render-preflight{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:9px}.render-preflight small{color:#855b15;font-size:.7rem}.render-stage-card{display:grid;gap:14px}
       .disabled-link { pointer-events:none; opacity:.5; }
@@ -1006,6 +1048,7 @@ export class PostFamilyWorkflowComponent implements OnChanges, OnDestroy {
     if (!this.review || !this.isCurrent()) return;
     this.selectStage(6);
   }
+  creativeOptimizationPlanFirstNewAttempt = false;
   get validCreativeOptimizationBudget(): boolean {
     const value = Number(this.creativeOptimizationBudget);
     return Number.isFinite(value) && value > 0 && value <= 20;
@@ -1020,6 +1063,30 @@ export class PostFamilyWorkflowComponent implements OnChanges, OnDestroy {
   optimizationScoreDelta(candidate: any): string {
     const value = Number(candidate.review?.canonicalRuleEvaluation?.score) - Number(this.review?.canonicalRuleEvaluation?.score);
     return Number.isFinite(value) ? `${value > 0 ? '+' : ''}${value}` : 'UNKNOWN';
+  }
+  optimizationDiffCandidateId: string | null = null;
+  optimizationShowUnchanged = false;
+  optimizationCopyStatus = '';
+  get optimizationDiffCandidate(): any {
+    const candidates = this.creativeOptimizationComparison?.candidates || [];
+    return candidates.find((candidate: any) => candidate.candidateId === this.optimizationDiffCandidateId) || candidates[0] || {};
+  }
+  get optimizationVisibleDiffRows(): {before: string; after: string; changed: boolean}[] {
+    return this.optimizationDiffRows(this.optimizationDiffCandidate).filter(row => this.optimizationShowUnchanged || row.changed);
+  }
+  optimizationSimilarity(candidate: any): string {
+    const value = candidate.currentAssessment?.textSimilarity;
+    return typeof value === 'number' && Number.isFinite(value) ? `${(value * 100).toFixed(1)}%` : 'UNKNOWN';
+  }
+  openOptimizationPanel(id: string, event: Event): void {
+    event.preventDefault();
+    const panel = document.getElementById(id) as HTMLDetailsElement | null;
+    if (panel) { panel.open = true; panel.querySelector('summary')?.focus(); panel.scrollIntoView?.({block: 'nearest'}); }
+  }
+  async copyOptimizationPrompt(value: string): Promise<void> {
+    try { await navigator.clipboard.writeText(value); this.optimizationCopyStatus = 'Candidate prompt copied.'; }
+    catch { this.optimizationCopyStatus = 'Copy unavailable. Select the full prompt text to copy it.'; }
+    this.changeDetector.markForCheck();
   }
   optimizationDiffRows(candidate: any): {before: string; after: string; changed: boolean}[] {
     const rows: {before: string; after: string; changed: boolean}[] = [];
@@ -1079,10 +1146,16 @@ export class PostFamilyWorkflowComponent implements OnChanges, OnDestroy {
     const latestPath = `/api/v1/intelligence/workflow/records/${encodeURIComponent(String(this.review.recordId))}/creative-optimization/latest`;
     this.http.get<any>(latestPath).subscribe({
       next: (payload) => {
+        const previous = this.creativeOptimizationComparison;
+        const selected = this.creativeOptimizationSelectedCandidateId;
+        const reviewed = this.creativeOptimizationReviewedCandidateId;
         this.creativeOptimizationComparison = payload?.comparison ?? null;
         if(payload?.attempt?.optimizationFailed) this.creativeOptimizationError=this.creativeOptimizationFailureMessage({error:payload.attempt});
-        this.creativeOptimizationSelectedCandidateId = null;
-        this.creativeOptimizationReviewedCandidateId = null;
+        const sameSavedRecord = !!previous?.recordId && previous.recordId === this.creativeOptimizationComparison?.recordId;
+        const candidate = this.creativeOptimizationComparison?.candidates?.find((item: any) => item.candidateId === selected);
+        const preserve = sameSavedRecord && (selected === 'ORIGINAL' || (candidate && this.canSelectOptimizationCandidate(candidate)));
+        this.creativeOptimizationSelectedCandidateId = preserve ? selected : null;
+        this.creativeOptimizationReviewedCandidateId = preserve && reviewed === selected && JSON.stringify(previous?.candidates?.find((item: any) => item.candidateId === selected)) === JSON.stringify(candidate) ? reviewed : null;
         this.creativeOptimizationConsent = false;
         this.creativeOptimizationBusy = false;
         this.changeDetector.markForCheck();
@@ -1112,6 +1185,7 @@ export class PostFamilyWorkflowComponent implements OnChanges, OnDestroy {
     this.http.post<any>(generationPath, {
       contentId: Number(this.contentId),
       promptVersionId: Number(this.promptVersionId),
+      startNewPlanFirstAttempt: this.creativeOptimizationPlanFirstNewAttempt,
       operatorAuthorized: true,
       maxCostUsd: Number(this.creativeOptimizationBudget),
     }).subscribe({

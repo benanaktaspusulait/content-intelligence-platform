@@ -263,7 +263,7 @@ class WorkflowNoRepairDecisionPostgresTest {
     assertThat(jdbc.sql("SELECT count(*) FROM prompt_versions").query(Long.class).single()).isEqualTo(1L);
     var roleCalls=org.mockito.ArgumentCaptor.forClass(Map.class);
     verify(ml, times(2)).workflow(eq("creative-role"), roleCalls.capture());
-    assertThat(roleCalls.getAllValues()).allSatisfy(call -> assertThat((Map<String,Object>)call.get("context")).containsEntry("optimizationGenerationContractVersion","profile-ownership-v1"));
+    assertThat(roleCalls.getAllValues()).allSatisfy(call -> assertThat((Map<String,Object>)call.get("context")).containsEntry("optimizationGenerationContractVersion","plan-first-v1"));
     var reviewCalls = org.mockito.ArgumentCaptor.forClass(Map.class);
     verify(ml, times(4)).workflow(eq("review"), reviewCalls.capture());
     assertThat(reviewCalls.getAllValues())
@@ -295,7 +295,7 @@ class WorkflowNoRepairDecisionPostgresTest {
     when(ml.workflow(anyString(),anyMap())).thenAnswer(invocation -> {
       String endpoint=invocation.getArgument(0); Map<String,Object> body=invocation.getArgument(1);
       if (endpoint.equals("creative-role")) {
-        assertThat((Map<String,Object>)body.get("context")).containsEntry("optimizationGenerationContractVersion","profile-ownership-v1");
+        assertThat((Map<String,Object>)body.get("context")).containsEntry("optimizationGenerationContractVersion","plan-first-v1");
         body=Map.of("text",body.get("text"),"context",body.get("context"),"providerResult",Map.of("candidates",providerValues),"diagnostics",Map.of("model","mock-saved-response","providerRequestId","fixture-provider-response-1"));
         endpoint="optimization-recovery";
       }
@@ -377,6 +377,49 @@ class WorkflowNoRepairDecisionPostgresTest {
     assertThat(stale).containsEntry("optimizationFailed",true);
     assertThat(String.valueOf(stale.get("detail"))).contains("stale candidate association rejected");
     verify(ml,times(1)).workflow(eq("creative-role"),anyMap());
+  }
+
+  @Test
+  @org.junit.jupiter.api.condition.EnabledIfSystemProperty(named="optimization.planFirstMock",matches="true")
+  void planFirstContentTenEndToEndUsesMockPlansAndNeverCreatesPromptVersion() throws Exception {
+    var mapper=new ObjectMapper().findAndRegisterModules();
+    var fixture=mapper.readValue(getClass().getResourceAsStream("/optimization-c7-profile.json"),Map.class);
+    var baseline=(Map<String,Object>)fixture.get("baseline");var bound=(Map<String,Object>)baseline.get("boundRequest");
+    String source=String.valueOf(bound.get("prompt"));UUID old=analysisId;analysisId=UUID.fromString(String.valueOf(baseline.get("recordId")));
+    jdbc.sql("UPDATE post_family_workflow_events SET id=:id,payload=CAST(:p AS jsonb) WHERE id=:old").param("id",analysisId).param("old",old).param("p",mapper.writeValueAsString(baseline)).update();
+    jdbc.sql("UPDATE prompt_versions SET raw_text=:p WHERE id=10").param("p",source).update();
+    when(prompts.load(10L,10L)).thenReturn(new ContentPromptSnapshot("v1",10,"Mimi","REEL","DRAFT",10,1,source,"{}","unused"));
+    service.saveProductionSettings((Map<String,Object>)fixture.get("productionSettings"));
+    var providerPlans=mapper.readValue(getClass().getResourceAsStream("/plan-first-provider-response.json"),Map.class);
+    var transport=new QualityMlClient("http://localhost:8000",org.springframework.web.client.RestClient.builder());
+    when(ml.workflow(anyString(),anyMap())).thenAnswer(invocation->{
+      String endpoint=invocation.getArgument(0);Map<String,Object> body=invocation.getArgument(1);
+      if(endpoint.equals("creative-role")) {
+        assertThat((Map<String,Object>)body.get("context")).containsEntry("optimizationGenerationContractVersion","plan-first-v1");
+        body=Map.of("text",body.get("text"),"context",body.get("context"),"providerResult",providerPlans,"diagnostics",Map.of("model","mock-plan-provider","providerRequestId","fixture-plan-response-1"));
+        endpoint="optimization-recovery";
+      }
+      return transport.workflow(endpoint,body);
+    });
+    var sourceContext=(Map<String,Object>)((Map<String,Object>)((Map<String,Object>)((Map<String,Object>)fixture.get("attempt")).get("payload")).get("sourceRequest")).get("context");
+    var provenance=Map.<String,Object>of("approvedStoryText",sourceContext.get("approvedStoryText"),"approvalRecordId",sourceContext.get("storyApprovalRecordId"),"storyRevisionId",sourceContext.get("storyRevisionId"));
+    var request=Map.<String,Object>of("contentId",10,"promptVersionId",10,"operatorAuthorized",true,"maxCostUsd",.2,"startNewPlanFirstAttempt",true);
+    var comparison=service.generateCreativeOptimization(analysisId,request,provenance);
+    assertThat(comparison).doesNotContainKey("optimizationFailed");
+    var current=service.assessOptimizationComparison(UUID.fromString(String.valueOf(comparison.get("recordId"))));
+    assertThat((Map<String,Object>)current.get("comparisonAssessment")).containsEntry("lineageVerified",true).containsEntry("recommendation","REVIEW_MATERIAL_CANDIDATE");
+    for(var candidate:(List<Map<String,Object>>)current.get("candidates")) {
+      assertThat((Map<String,Object>)candidate.get("planValidation")).containsEntry("status","SOURCE_BOUND_MATERIAL_PLAN").containsEntry("storyFidelity","UNKNOWN");
+      assertThat((Map<String,Object>)candidate.get("currentAssessment")).containsEntry("classification","VALID_WITH_UNPROVEN_BENEFIT");
+      assertThat((Map<String,Object>)((Map<String,Object>)candidate.get("review")).get("canonicalRuleEvaluation")).containsEntry("status","EVALUATED").containsEntry("rulesEvaluated",8);
+      assertThat(String.valueOf(((Map<String,Object>)candidate.get("review")).get("family8"))).contains("BLOCKED_PENDING_EVIDENCE");
+    }
+    var replay=service.generateCreativeOptimization(analysisId,request,provenance);
+    assertThat(String.valueOf(replay.get("recordId"))).isEqualTo(String.valueOf(comparison.get("recordId")));
+    verify(ml,times(1)).workflow(eq("creative-role"),anyMap());
+    assertThat(jdbc.sql("SELECT count(*) FROM prompt_versions").query(Long.class).single()).isEqualTo(1L);
+    assertThat(jdbc.sql("SELECT raw_text FROM prompt_versions WHERE id=10").query(String.class).single()).isEqualTo(source);
+    java.nio.file.Files.writeString(java.nio.file.Path.of("/tmp/plan-first-e2e-comparison.json"),mapper.writeValueAsString(Map.of("comparison",current)));
   }
 
   private Map<String, Object> request(UUID runId, String binding) {

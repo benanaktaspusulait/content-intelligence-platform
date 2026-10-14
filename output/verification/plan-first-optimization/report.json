@@ -1,0 +1,61 @@
+{
+  "status": "PLAN_FIRST_OPTIMIZATION_READY",
+  "implementation": "One provider plan response; protected source contract; two material plans validated before deterministic prompt compilation; existing canonical/source validators",
+  "tests": {
+    "ml": 149,
+    "backend": 13,
+    "frontend_before_ux": 59
+  },
+  "contentId": 10,
+  "promptVersionId": 10,
+  "mockWorkflow": "Disposable PostgreSQL fixture with actual Content10/v10 and deployed ML; creative provider boundary mocked; no production candidate writes",
+  "savedComparison": {
+    "recordId": "48e230db-2382-41bd-9ff9-0889df6fd803",
+    "recommendation": "KEEP_ORIGINAL",
+    "classification": [
+      "VALID_MINOR_VARIATION",
+      "VALID_MINOR_VARIATION"
+    ]
+  },
+  "paidCalls": 0,
+  "limitations": [
+    "No real provider output tested.",
+    "Audience benefit and rendered visual feasibility remain UNKNOWN.",
+    "Compiler supports source-bound causal staging, action/consequence pairs and complete explicit source progression states; unsupported evidence fails closed."
+  ],
+  "deployedSourceVerification": {
+    "intelligence/ml-service/app/workflow/optimization_plans.py": {
+      "sha256": "a3592699eacaee1b65aacd585c5af944ec3502a8d2b4f57d649bce7c49642280",
+      "deployedMatches": true
+    },
+    "intelligence/ml-service/app/workflow/creative_roles.py": {
+      "sha256": "5f821cacb05772ba283cb845d5b1a3e8286bc7ffe1894fbbb50b69c1c5e5e208",
+      "deployedMatches": true
+    },
+    "intelligence/ml-service/app/workflow/optimization_comparison.py": {
+      "sha256": "2fcd90f7ea500ce99466c4e021eeb19e103b4930b3ee5cec729fc389c5131278",
+      "deployedMatches": true
+    },
+    "intelligence/ml-service/app/workflow/optimization_distinctness.py": {
+      "sha256": "f0b1f8d59b7348701539a78ea0000fbf3be620a33b3ff9cf3d2246bf8bb089ee",
+      "deployedMatches": true
+    }
+  },
+  "historicalAnalysisUnchanged": true,
+  "promptVersionsUnchanged": true,
+  "mockBrowserVerification": "Both valid material plans displayed; explicit approval disabled without review/selection; comparison supplied by read-only proxy, not production persistence.",
+  "files": [
+    "intelligence/ml-service/app/workflow/optimization_plans.py",
+    "intelligence/ml-service/app/workflow/creative_roles.py",
+    "intelligence/ml-service/app/workflow/optimization_distinctness.py",
+    "intelligence/ml-service/app/workflow/optimization_comparison.py",
+    "intelligence/ml-service/app/api.py",
+    "intelligence/backend/src/main/java/com/pompomhills/intelligence/workflow/WorkflowService.java",
+    "intelligence/backend/src/test/java/com/pompomhills/intelligence/workflow/WorkflowNoRepairDecisionPostgresTest.java",
+    "intelligence/backend/src/test/resources/plan-first-provider-response.json",
+    "intelligence/ml-service/tests/plan_first_test_fixture.py",
+    "intelligence/ml-service/tests/test_plan_first_optimization.py",
+    "intelligence/frontend/src/app/pages/quality-validator/post-family-workflow.component.ts",
+    "intelligence/frontend/src/app/pages/quality-validator/post-family-workflow.spec.ts"
+  ]
+}

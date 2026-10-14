@@ -235,7 +235,7 @@ public class WorkflowService {
     if (essentialEvents.isEmpty())
       throw new IllegalStateException("Source-bound essential event anchors are unavailable");
     var context = new LinkedHashMap<String, Object>();
-    context.put("optimizationGenerationContractVersion", "profile-ownership-v1");
+    context.put("optimizationGenerationContractVersion", "plan-first-v1");
     context.put("productionSettingsRecordId", productionSettings.get("recordId"));
     context.put("protectedIntent", baseline.getOrDefault("protectedIntent", essentialEvents));
     context.put("analysisRunId", analysisId.toString());
@@ -257,7 +257,7 @@ public class WorkflowService {
     roleRequest.put("maxCostUsd", budget.doubleValue());
     roleRequest.put("generationAuthorized", true);
     var existingComparison = map(latestCreativeOptimization(analysisId).get("comparison"));
-    if (!request.containsKey("recoverAttemptRecordId") && !existingComparison.isEmpty()
+    if (!request.containsKey("recoverAttemptRecordId") && !Boolean.TRUE.equals(request.get("startNewPlanFirstAttempt")) && !existingComparison.isEmpty()
         && version.longValue() == jdbc.sql("SELECT max(id) FROM prompt_versions WHERE content_id=:content").param("content",content.longValue()).query(Long.class).single().longValue()
         && source.promptText().equals(bound.get("prompt"))
         && sha256(source.promptText()).equals(existingComparison.get("sourcePromptSha256"))
@@ -288,7 +288,7 @@ public class WorkflowService {
               return value;
             })
             .optional();
-    if (previousComparison.isPresent()) return previousComparison.get();
+    if (previousComparison.isPresent()) return assessOptimizationComparison(UUID.fromString(String.valueOf(previousComparison.get().get("recordId"))));
     var generated = maps(map(role.get("result")).get("candidates"));
     if (generated.size() != 2)
       throw new IllegalStateException("The optimization role did not return exactly two candidates");
@@ -343,7 +343,7 @@ public class WorkflowService {
     comparison.put("approval", null);
     try { comparison.put("recordId", save("CREATIVE_OPTIMIZATION", null, comparison)); }
     catch (RuntimeException error) { throw new IllegalStateException("CANDIDATE_PERSISTENCE_FAILED: comparison was not saved; provider attempt " + roleRecordId + " remains durable and can be reused without a paid call", error); }
-    return comparison;
+    return assessOptimizationComparison(UUID.fromString(String.valueOf(comparison.get("recordId"))));
   }
 
   private Map<String, Object> recoverOptimizationRole(UUID savedId, Map<String, Object> roleRequest) {
