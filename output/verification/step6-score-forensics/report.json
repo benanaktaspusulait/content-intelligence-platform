@@ -1,0 +1,24 @@
+{
+  "status": "SCORE_DIAGNOSIS_COMPLETE",
+  "decision": "SCORING_DEFECT_FOUND",
+  "baselineAndCandidates": {
+    "baseline": 85,
+    "candidate-a": 85,
+    "candidate-b": 85,
+    "grade": "B",
+    "ruleset": "1.7"
+  },
+  "formula": "37.4 / 0.44 = 85",
+  "ceilingUnderDeployedEightRules": 85,
+  "defects": [
+    "LOW generic signals incorrectly mark DEFAULT engine profile candidate-only",
+    "Non-recursive extends loading omits 38 ancestor rules"
+  ],
+  "engineChanged": false,
+  "deterministicTestsPassed": 12,
+  "regressionTestsPassed": 61,
+  "savedAnalysisUnchanged": true,
+  "savedComparisonUnchanged": true,
+  "providerCalls": 0,
+  "recommendation": "Review proposed applicability and recursive-loader corrections before applying; do not rewrite history or promise a higher score. Step 7 requires verified Mimi reference and accepted start frame."
+}

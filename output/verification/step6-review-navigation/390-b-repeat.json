@@ -1,0 +1,26 @@
+{
+  "after": {
+    "approvalDisabled": true,
+    "bottom": 92.703125,
+    "candidateId": "candidate-b",
+    "focusTag": "H4",
+    "heading": "Candidate B \u00b7 Review details",
+    "panels": [
+      true,
+      true
+    ],
+    "scrollY": 5283,
+    "selected": [],
+    "stickyBottom": 56,
+    "tabIndex": -1,
+    "top": 72.40625,
+    "viewportHeight": 844,
+    "visible": true,
+    "width": 390
+  },
+  "before": {
+    "approvalDisabled": true,
+    "scrollY": 2955,
+    "selected": []
+  }
+}

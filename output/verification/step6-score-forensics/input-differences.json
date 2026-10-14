@@ -1,0 +1,506 @@
+{
+  "candidate-a": [
+    {
+      "path": ".beats[0].actionStrategyFamily",
+      "baseline": "UNSPECIFIED",
+      "candidate": "OTHER:THE"
+    },
+    {
+      "path": ".beats[0].attemptReason",
+      "baseline": null,
+      "candidate": "Explicit attempt marker/role provides goal-directed evidence."
+    },
+    {
+      "path": ".beats[0].attemptSource",
+      "baseline": "NONE",
+      "candidate": "NATURAL_LANGUAGE_ATTEMPT"
+    },
+    {
+      "path": ".beats[0].fieldEvidence.action.sourceQuote",
+      "baseline": "Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger",
+      "candidate": "Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger  Mimi is in front of a toy cabinet, looking determined"
+    },
+    {
+      "path": ".beats[0].fieldEvidence.action.sourceSpan[1]",
+      "baseline": 374,
+      "candidate": 429
+    },
+    {
+      "path": ".beats[0].fieldEvidence.action.value",
+      "baseline": "Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger",
+      "candidate": "Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger  Mimi is in front of a toy cabinet, looking determined"
+    },
+    {
+      "path": ".beats[0].goal",
+      "baseline": null,
+      "candidate": "Attach the note to the cabinet"
+    },
+    {
+      "path": ".beats[0].goalEvidenceRole",
+      "baseline": null,
+      "candidate": "PRIMARY_GOAL"
+    },
+    {
+      "path": ".beats[0].intendedEffect",
+      "baseline": null,
+      "candidate": "attach_object_to_target_surface"
+    },
+    {
+      "path": ".beats[0].intendedStrategyFamily",
+      "baseline": "UNSPECIFIED",
+      "candidate": "OTHER:THE"
+    },
+    {
+      "path": ".beats[0].isAttempt",
+      "baseline": false,
+      "candidate": true
+    },
+    {
+      "path": ".beats[0].primaryVerb",
+      "baseline": "",
+      "candidate": "THE"
+    },
+    {
+      "path": ".beats[0].sourceAction",
+      "baseline": "Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger",
+      "candidate": "Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger  Mimi is in front of a toy cabinet, looking determined"
+    },
+    {
+      "path": ".beats[0].sourceQuote",
+      "baseline": "0-2s: Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger [close-up on Mimi's hand] Mimi is in front of a toy cabinet, looking determined -> the note sticks to Mimi, not the cabinet",
+      "candidate": "0-2s: Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger  Mimi is in front of a toy cabinet, looking determined -> the note sticks to Mimi, not the cabinet [static close-up; keep the cabinet and her finger visible together in the same frame]"
+    },
+    {
+      "path": ".beats[0].sourceSpan[1]",
+      "baseline": 498,
+      "candidate": 559
+    },
+    {
+      "path": ".beats[0].strategyFamily",
+      "baseline": "UNSPECIFIED",
+      "candidate": "OTHER:THE"
+    },
+    {
+      "path": ".beats[0].targetObject",
+      "baseline": null,
+      "candidate": "the cabinet"
+    },
+    {
+      "path": ".beats[1].fieldEvidence.action.sourceSpan[0]",
+      "baseline": 505,
+      "candidate": 566
+    },
+    {
+      "path": ".beats[1].fieldEvidence.action.sourceSpan[1]",
+      "baseline": 589,
+      "candidate": 650
+    },
+    {
+      "path": ".beats[1].fieldEvidence.actor.sourceSpan[0]",
+      "baseline": 505,
+      "candidate": 566
+    },
+    {
+      "path": ".beats[1].fieldEvidence.actor.sourceSpan[1]",
+      "baseline": 509,
+      "candidate": 570
+    },
+    {
+      "path": ".beats[1].fieldEvidence.primaryObject.sourceSpan[0]",
+      "baseline": 534,
+      "candidate": 595
+    },
+    {
+      "path": ".beats[1].fieldEvidence.primaryObject.sourceSpan[1]",
+      "baseline": 538,
+      "candidate": 599
+    },
+    {
+      "path": ".beats[1].sourceSpan[0]",
+      "baseline": 499,
+      "candidate": 560
+    },
+    {
+      "path": ".beats[1].sourceSpan[1]",
+      "baseline": 677,
+      "candidate": 738
+    },
+    {
+      "path": ".beats[2].fieldEvidence.action.sourceSpan[0]",
+      "baseline": 685,
+      "candidate": 746
+    },
+    {
+      "path": ".beats[2].fieldEvidence.action.sourceSpan[1]",
+      "baseline": 753,
+      "candidate": 814
+    },
+    {
+      "path": ".beats[2].fieldEvidence.actor.sourceSpan[0]",
+      "baseline": 685,
+      "candidate": 746
+    },
+    {
+      "path": ".beats[2].fieldEvidence.actor.sourceSpan[1]",
+      "baseline": 689,
+      "candidate": 750
+    },
+    {
+      "path": ".beats[2].fieldEvidence.primaryObject.sourceSpan[0]",
+      "baseline": 741,
+      "candidate": 802
+    },
+    {
+      "path": ".beats[2].fieldEvidence.primaryObject.sourceSpan[1]",
+      "baseline": 753,
+      "candidate": 814
+    },
+    {
+      "path": ".beats[2].sourceSpan[0]",
+      "baseline": 678,
+      "candidate": 739
+    },
+    {
+      "path": ".beats[2].sourceSpan[1]",
+      "baseline": 929,
+      "candidate": 990
+    },
+    {
+      "path": ".beats[3].fieldEvidence.action.sourceSpan[0]",
+      "baseline": 938,
+      "candidate": 999
+    },
+    {
+      "path": ".beats[3].fieldEvidence.action.sourceSpan[1]",
+      "baseline": 979,
+      "candidate": 1040
+    },
+    {
+      "path": ".beats[3].fieldEvidence.actor.sourceSpan[0]",
+      "baseline": 938,
+      "candidate": 999
+    },
+    {
+      "path": ".beats[3].fieldEvidence.actor.sourceSpan[1]",
+      "baseline": 942,
+      "candidate": 1003
+    },
+    {
+      "path": ".beats[3].fieldEvidence.primaryObject.sourceSpan[0]",
+      "baseline": 1071,
+      "candidate": 1132
+    },
+    {
+      "path": ".beats[3].fieldEvidence.primaryObject.sourceSpan[1]",
+      "baseline": 1076,
+      "candidate": 1137
+    },
+    {
+      "path": ".beats[3].sourceSpan[0]",
+      "baseline": 930,
+      "candidate": 991
+    },
+    {
+      "path": ".beats[3].sourceSpan[1]",
+      "baseline": 1096,
+      "candidate": 1157
+    },
+    {
+      "path": ".beats[4].fieldEvidence.action.sourceSpan[0]",
+      "baseline": 1105,
+      "candidate": 1166
+    },
+    {
+      "path": ".beats[4].fieldEvidence.action.sourceSpan[1]",
+      "baseline": 1146,
+      "candidate": 1207
+    },
+    {
+      "path": ".beats[4].fieldEvidence.actor.sourceSpan[0]",
+      "baseline": 1105,
+      "candidate": 1166
+    },
+    {
+      "path": ".beats[4].fieldEvidence.actor.sourceSpan[1]",
+      "baseline": 1109,
+      "candidate": 1170
+    },
+    {
+      "path": ".beats[4].fieldEvidence.primaryObject.sourceSpan[0]",
+      "baseline": 1126,
+      "candidate": 1187
+    },
+    {
+      "path": ".beats[4].fieldEvidence.primaryObject.sourceSpan[1]",
+      "baseline": 1138,
+      "candidate": 1199
+    },
+    {
+      "path": ".beats[4].sourceSpan[0]",
+      "baseline": 1097,
+      "candidate": 1158
+    },
+    {
+      "path": ".beats[4].sourceSpan[1]",
+      "baseline": 1279,
+      "candidate": 1340
+    },
+    {
+      "path": ".coreMechanic.physicalRuleEvidence.sourceSpan[0]",
+      "baseline": 709,
+      "candidate": 770
+    },
+    {
+      "path": ".coreMechanic.physicalRuleEvidence.sourceSpan[1]",
+      "baseline": 753,
+      "candidate": 814
+    },
+    {
+      "path": ".coreMechanic.surfaceAttachmentEvidence.actualSurface.value",
+      "baseline": "her finger",
+      "candidate": "her finger  Mimi is in front of a toy cabinet"
+    },
+    {
+      "path": ".coreMechanic.surfaceAttachmentEvidence.sourceQuote",
+      "baseline": "instead of sticking to the cabinet, the note visibly clings to her finger",
+      "candidate": "instead of sticking to the cabinet, the note visibly clings to her finger  Mimi is in front of a toy cabinet"
+    },
+    {
+      "path": ".coreMechanic.surfaceAttachmentEvidence.sourceSpan[1]",
+      "baseline": 374,
+      "candidate": 409
+    },
+    {
+      "path": ".goalEvidence.obstruction",
+      "baseline": "instead of sticking to the cabinet, the note visibly clings to her finger",
+      "candidate": "instead of sticking to the cabinet, the note visibly clings to her finger  Mimi is in front of a toy cabinet"
+    },
+    {
+      "path": ".goalEvidence.primaryGoal.sourceQuote",
+      "baseline": "instead of sticking to the cabinet, the note visibly clings to her finger",
+      "candidate": "instead of sticking to the cabinet, the note visibly clings to her finger  Mimi is in front of a toy cabinet"
+    },
+    {
+      "path": ".goalEvidence.primaryGoal.sourceSpan[1]",
+      "baseline": 374,
+      "candidate": 409
+    },
+    {
+      "path": ".goalEvidence.secondaryRecoveryAttempt.sourceSpan[0]",
+      "baseline": 505,
+      "candidate": 566
+    },
+    {
+      "path": ".goalEvidence.secondaryRecoveryAttempt.sourceSpan[1]",
+      "baseline": 563,
+      "candidate": 624
+    }
+  ],
+  "candidate-b": [
+    {
+      "path": ".beats[1].fieldEvidence.action.sourceQuote",
+      "baseline": "Mimi tries to peel the stuck note away with her other hand; the note splits into two",
+      "candidate": "Mimi tries to peel the stuck note away with her other hand; the note splits into two  Mimi pulls at the note"
+    },
+    {
+      "path": ".beats[1].fieldEvidence.action.sourceSpan[1]",
+      "baseline": 589,
+      "candidate": 613
+    },
+    {
+      "path": ".beats[1].fieldEvidence.action.value",
+      "baseline": "Mimi tries to peel the stuck note away with her other hand; the note splits into two",
+      "candidate": "Mimi tries to peel the stuck note away with her other hand; the note splits into two  Mimi pulls at the note"
+    },
+    {
+      "path": ".beats[1].sourceAction",
+      "baseline": "Mimi tries to peel the stuck note away with her other hand; the note splits into two",
+      "candidate": "Mimi tries to peel the stuck note away with her other hand; the note splits into two  Mimi pulls at the note"
+    },
+    {
+      "path": ".beats[1].sourceQuote",
+      "baseline": "2-5s: Mimi tries to peel the stuck note away with her other hand; the note splits into two [medium shot of Mimi struggling] Mimi pulls at the note -> one note sticks to each hand",
+      "candidate": "2-5s: Mimi tries to peel the stuck note away with her other hand; the note splits into two  Mimi pulls at the note -> one note sticks to each hand [tracking medium shot; focus Mimi tries to peel the stuck note away with her other hand; the note splits into two then one note sticks to each hand in a single continuous shot]"
+    },
+    {
+      "path": ".beats[1].sourceSpan[1]",
+      "baseline": 677,
+      "candidate": 822
+    },
+    {
+      "path": ".beats[2].action",
+      "baseline": "Mimi continues to pull; each pull doubles the number of sticky notes [wide shot ...",
+      "candidate": "Mimi continues to pull; each pull doubles the number of sticky notes  notes mult..."
+    },
+    {
+      "path": ".beats[2].fieldEvidence.action.sourceQuote",
+      "baseline": "Mimi continues to pull; each pull doubles the number of sticky notes",
+      "candidate": "Mimi continues to pull; each pull doubles the number of sticky notes  notes multiply from two to four to eight as she pulls, progressively covering her arms, legs and face"
+    },
+    {
+      "path": ".beats[2].fieldEvidence.action.sourceSpan[0]",
+      "baseline": 685,
+      "candidate": 830
+    },
+    {
+      "path": ".beats[2].fieldEvidence.action.sourceSpan[1]",
+      "baseline": 753,
+      "candidate": 1001
+    },
+    {
+      "path": ".beats[2].fieldEvidence.action.value",
+      "baseline": "Mimi continues to pull; each pull doubles the number of sticky notes",
+      "candidate": "Mimi continues to pull; each pull doubles the number of sticky notes  notes multiply from two to four to eight as she pulls, progressively covering her arms, legs and face"
+    },
+    {
+      "path": ".beats[2].fieldEvidence.actor.sourceSpan[0]",
+      "baseline": 685,
+      "candidate": 830
+    },
+    {
+      "path": ".beats[2].fieldEvidence.actor.sourceSpan[1]",
+      "baseline": 689,
+      "candidate": 834
+    },
+    {
+      "path": ".beats[2].fieldEvidence.primaryObject.sourceSpan[0]",
+      "baseline": 741,
+      "candidate": 886
+    },
+    {
+      "path": ".beats[2].fieldEvidence.primaryObject.sourceSpan[1]",
+      "baseline": 753,
+      "candidate": 898
+    },
+    {
+      "path": ".beats[2].primaryAction",
+      "baseline": "Mimi continues to pull; each pull doubles the number of sticky notes [wide shot ...",
+      "candidate": "Mimi continues to pull; each pull doubles the number of sticky notes  notes mult..."
+    },
+    {
+      "path": ".beats[2].sourceAction",
+      "baseline": "Mimi continues to pull; each pull doubles the number of sticky notes",
+      "candidate": "Mimi continues to pull; each pull doubles the number of sticky notes  notes multiply from two to four to eight as she pulls, progressively covering her arms, legs and face"
+    },
+    {
+      "path": ".beats[2].sourceQuote",
+      "baseline": "5-10s: Mimi continues to pull; each pull doubles the number of sticky notes [wide shot showing Mimi covered in notes] notes multiply from two to four to eight as she pulls, progressively covering her arms, legs and face -> Mimi is overwhelmed by notes",
+      "candidate": "5-10s: Mimi continues to pull; each pull doubles the number of sticky notes  notes multiply from two to four to eight as she pulls, progressively covering her arms, legs and face -> Mimi is overwhelmed by notes [static wide shot; hold two; hold four; hold eight; single continuous shot]"
+    },
+    {
+      "path": ".beats[2].sourceSpan[0]",
+      "baseline": 678,
+      "candidate": 823
+    },
+    {
+      "path": ".beats[2].sourceSpan[1]",
+      "baseline": 929,
+      "candidate": 1109
+    },
+    {
+      "path": ".beats[2].visualState",
+      "baseline": "character mimi continues to pull; each pull doubles the number of sticky notes [wide shot ...",
+      "candidate": "character mimi continues to pull; each pull doubles the number of sticky notes  notes mult..."
+    },
+    {
+      "path": ".beats[3].fieldEvidence.action.sourceSpan[0]",
+      "baseline": 938,
+      "candidate": 1118
+    },
+    {
+      "path": ".beats[3].fieldEvidence.action.sourceSpan[1]",
+      "baseline": 979,
+      "candidate": 1159
+    },
+    {
+      "path": ".beats[3].fieldEvidence.actor.sourceSpan[0]",
+      "baseline": 938,
+      "candidate": 1118
+    },
+    {
+      "path": ".beats[3].fieldEvidence.actor.sourceSpan[1]",
+      "baseline": 942,
+      "candidate": 1122
+    },
+    {
+      "path": ".beats[3].fieldEvidence.primaryObject.sourceSpan[0]",
+      "baseline": 1071,
+      "candidate": 1251
+    },
+    {
+      "path": ".beats[3].fieldEvidence.primaryObject.sourceSpan[1]",
+      "baseline": 1076,
+      "candidate": 1256
+    },
+    {
+      "path": ".beats[3].sourceSpan[0]",
+      "baseline": 930,
+      "candidate": 1110
+    },
+    {
+      "path": ".beats[3].sourceSpan[1]",
+      "baseline": 1096,
+      "candidate": 1276
+    },
+    {
+      "path": ".beats[4].fieldEvidence.action.sourceSpan[0]",
+      "baseline": 1105,
+      "candidate": 1285
+    },
+    {
+      "path": ".beats[4].fieldEvidence.action.sourceSpan[1]",
+      "baseline": 1146,
+      "candidate": 1326
+    },
+    {
+      "path": ".beats[4].fieldEvidence.actor.sourceSpan[0]",
+      "baseline": 1105,
+      "candidate": 1285
+    },
+    {
+      "path": ".beats[4].fieldEvidence.actor.sourceSpan[1]",
+      "baseline": 1109,
+      "candidate": 1289
+    },
+    {
+      "path": ".beats[4].fieldEvidence.primaryObject.sourceSpan[0]",
+      "baseline": 1126,
+      "candidate": 1306
+    },
+    {
+      "path": ".beats[4].fieldEvidence.primaryObject.sourceSpan[1]",
+      "baseline": 1138,
+      "candidate": 1318
+    },
+    {
+      "path": ".beats[4].sourceSpan[0]",
+      "baseline": 1097,
+      "candidate": 1277
+    },
+    {
+      "path": ".beats[4].sourceSpan[1]",
+      "baseline": 1279,
+      "candidate": 1459
+    },
+    {
+      "path": ".coreMechanic.physicalRule",
+      "baseline": "each pull doubles the number of sticky notes",
+      "candidate": "each pull doubles the number of sticky notes  notes multiply from two to four to eight as she pulls, progressively covering her arms, legs and face -> Mimi is overwhelmed by notes"
+    },
+    {
+      "path": ".coreMechanic.physicalRuleEvidence.sourceQuote",
+      "baseline": "each pull doubles the number of sticky notes",
+      "candidate": "each pull doubles the number of sticky notes  notes multiply from two to four to eight as she pulls, progressively covering her arms, legs and face -> Mimi is overwhelmed by notes"
+    },
+    {
+      "path": ".coreMechanic.physicalRuleEvidence.sourceSpan[0]",
+      "baseline": 709,
+      "candidate": 854
+    },
+    {
+      "path": ".coreMechanic.physicalRuleEvidence.sourceSpan[1]",
+      "baseline": 753,
+      "candidate": 1033
+    }
+  ]
+}

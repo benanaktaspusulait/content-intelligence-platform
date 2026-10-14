@@ -1,0 +1,39 @@
+{
+  "status": "STEP_6_REVIEW_NAVIGATION_FIXED",
+  "filesChanged": [
+    "intelligence/frontend/src/app/pages/quality-validator/post-family-workflow.component.ts",
+    "intelligence/frontend/src/app/pages/quality-validator/post-family-workflow.spec.ts"
+  ],
+  "rootCause": "State-only review handler did not navigate or focus and conflated review with candidate selection.",
+  "implementation": "Stable Angular ViewChildren refs, afterNextRender synchronization, token/reference cancellation, independent review snapshots, focused tabindex=-1 heading, dynamic sticky scroll margin, reduced-motion-aware scrolling, expansion of relevant review panels.",
+  "realBrowser": {
+    "widths": [
+      1440,
+      768,
+      390
+    ],
+    "nativeClicksPassed": 9,
+    "focusAndViewportVerified": true,
+    "repeatedClicksPassed": true,
+    "selectedBRemainedSelectedAndEligibleWhileReviewingA": true,
+    "reducedMotion": "Instant scrolling verified at all widths; earlier smooth desktop A/B checks also passed."
+  },
+  "tests": {
+    "focused": {
+      "passed": 68
+    },
+    "fullFrontend": {
+      "passed": 325,
+      "failed": 7,
+      "errors": 8,
+      "failureScope": "Unchanged VideoDetailPage preexisting discovery/caption/version mock failures"
+    }
+  },
+  "deployment": {
+    "command": "./intelligence/scripts/deploy.sh frontend",
+    "image": "sha256:545f9ab56dfe16b379fe1385839112f0e1b192d259e1d31fb5ee9f70707a98b3",
+    "healthy": true
+  },
+  "approvalExecuted": false,
+  "providerCalls": 0
+}

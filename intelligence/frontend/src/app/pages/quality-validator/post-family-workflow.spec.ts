@@ -1273,7 +1273,7 @@ Hard cut.`;
     expect(c.creativeOptimizationComparison.comparisonAssessment.recommendation).toBe('KEEP_ORIGINAL');TestBed.inject(HttpTestingController).expectNone(r=>r.method==='POST');f.destroy();TestBed.resetTestingModule();
   });
   it('preserves selection and review on an identical saved GET and clears review if candidate evidence changes', async () => {
-    const f=await setup();const c=f.componentInstance;const http=TestBed.inject(HttpTestingController);c.review={recordId:'run'};c.activeStage=6;c.creativeOptimizationComparison=compactComparison();c.reviewCreativeOptimizationCandidate('candidate-a');c.optimizationDiffCandidateId='candidate-b';f.detectChanges();await f.whenStable();f.detectChanges();
+    const f=await setup();const c=f.componentInstance;const http=TestBed.inject(HttpTestingController);c.review={recordId:'run'};c.activeStage=6;c.creativeOptimizationComparison=compactComparison();c.reviewCreativeOptimizationCandidate('candidate-a');c.selectCreativeOptimizationCandidate('candidate-a');c.optimizationDiffCandidateId='candidate-b';f.detectChanges();await f.whenStable();f.detectChanges();
     c.loadLatestCreativeOptimization();http.expectOne('/api/v1/intelligence/workflow/records/run/creative-optimization/latest').flush({comparison:compactComparison()});
     expect(c.creativeOptimizationSelectedCandidateId).toBe('candidate-a');expect(c.creativeOptimizationReviewedCandidateId).toBe('candidate-a');expect(c.optimizationDiffCandidateId).toBe('candidate-b');
     f.detectChanges();await f.whenStable();f.detectChanges();
@@ -1286,6 +1286,48 @@ Hard cut.`;
   it('copies complete candidate prompt text without provider requests or approval', async () => {
     const f=await setup();const c=f.componentInstance;const writeText=vi.fn().mockResolvedValue(undefined);Object.defineProperty(navigator,'clipboard',{configurable:true,value:{writeText}});
     await c.copyOptimizationPrompt('Complete unchanged draft');expect(writeText).toHaveBeenCalledWith('Complete unchanged draft');expect(c.optimizationCopyStatus).toContain('copied');expect(c.creativeOptimizationSelectedCandidateId).toBeNull();TestBed.inject(HttpTestingController).expectNone(r=>r.method==='POST');f.destroy();TestBed.resetTestingModule();
+  });
+
+  it('navigates and focuses each rendered review after expanding panels without selecting or approving', async () => {
+    const f=await setup();const c=f.componentInstance;c.review={recordId:'run'};c.activeStage=6;c.creativeOptimizationComparison=compactComparison();f.detectChanges();
+    const root=f.nativeElement as HTMLElement;document.body.appendChild(root);(root.querySelector('.creative-optimization-details') as HTMLDetailsElement).open=true;
+    const headings=[...root.querySelectorAll<HTMLElement>('.optimization-review-heading')];const scrolls=headings.map(h=>{const spy=vi.fn();h.scrollIntoView=spy;return spy;});
+    headings.forEach(h=>h.getBoundingClientRect=()=>({left:20,right:280,top:2000,bottom:2030,width:260,height:30,x:20,y:2000,toJSON:()=>({})}));
+    const nav=document.createElement('nav');nav.style.position='sticky';nav.style.top='7px';nav.getBoundingClientRect=()=>({left:0,right:300,top:7,bottom:97,width:300,height:90,x:0,y:7,toJSON:()=>({})});document.body.appendChild(nav);
+    const originalMedia=window.matchMedia;window.matchMedia=vi.fn().mockReturnValue({matches:true});
+    root.querySelectorAll<HTMLDetailsElement>('.optimization-actual-changes,.optimization-quality-panel').forEach(d=>d.open=false);
+    c.reviewCreativeOptimizationCandidate('candidate-a');expect(scrolls[0]).not.toHaveBeenCalled();f.detectChanges();await f.whenStable();
+    expect(scrolls[0]).toHaveBeenCalledWith({block:'start',behavior:'instant'});expect(document.activeElement).toBe(headings[0]);expect(headings[0].getAttribute('tabindex')).toBe('-1');expect(headings[0].style.getPropertyValue('--review-navigation-inset')).toBe('97px');
+    expect(c.creativeOptimizationSelectedCandidateId).toBeNull();expect(c.creativeOptimizationReviewedCandidateId).toBe('candidate-a');expect(c.creativeOptimizationApprovalEnabled).toBe(false);
+    const a=root.querySelectorAll('.optimization-candidate-details')[0];a.querySelectorAll<HTMLDetailsElement>('.optimization-actual-changes,.optimization-quality-panel').forEach(d=>expect(d.open).toBe(true));expect((a.querySelector('.optimization-prompt-panel') as HTMLDetailsElement).open).toBe(false);
+    c.selectCreativeOptimizationCandidate('ORIGINAL');c.reviewCreativeOptimizationCandidate('candidate-b');f.detectChanges();await f.whenStable();expect(document.activeElement).toBe(headings[1]);expect(scrolls[1]).toHaveBeenCalledOnce();expect(c.creativeOptimizationSelectedCandidateId).toBe('ORIGINAL');expect(c.creativeOptimizationApprovalEnabled).toBe(false);
+    c.reviewCreativeOptimizationCandidate('candidate-b');f.detectChanges();await f.whenStable();expect(scrolls[1]).toHaveBeenCalledTimes(2);
+    TestBed.inject(HttpTestingController).expectNone(r=>r.method==='POST');window.matchMedia=originalMedia;nav.remove();root.remove();f.destroy();TestBed.resetTestingModule();
+  });
+
+  it('reviews approval-blocked invalid drafts and cancels superseded or reloaded navigation targets', async () => {
+    const f=await setup();const c=f.componentInstance;c.review={recordId:'run'};c.activeStage=6;c.creativeOptimizationComparison=compactComparison();c.creativeOptimizationComparison.candidates[1].currentAssessment.classification='INVALID';f.detectChanges();
+    const root=f.nativeElement as HTMLElement;document.body.appendChild(root);(root.querySelector('.creative-optimization-details') as HTMLDetailsElement).open=true;
+    const headings=[...root.querySelectorAll<HTMLElement>('.optimization-review-heading')];const scrolls=headings.map(h=>{const spy=vi.fn();h.scrollIntoView=spy;return spy;});
+    const buttons=[...root.querySelectorAll<HTMLButtonElement>('button')].filter(b=>b.textContent?.trim().startsWith('Review Candidate'));expect(buttons[1].disabled).toBe(false);
+    c.reviewCreativeOptimizationCandidate('candidate-a');c.reviewCreativeOptimizationCandidate('candidate-b');f.detectChanges();await f.whenStable();expect(scrolls[0]).not.toHaveBeenCalled();expect(scrolls[1]).toHaveBeenCalledOnce();expect(document.activeElement).toBe(headings[1]);expect(c.creativeOptimizationSelectedCandidateId).toBeNull();expect(c.creativeOptimizationApprovalEnabled).toBe(false);
+    c.reviewCreativeOptimizationCandidate('candidate-a');c.creativeOptimizationComparison=compactComparison();f.detectChanges();await f.whenStable();expect(scrolls[0]).not.toHaveBeenCalled();
+    TestBed.inject(HttpTestingController).expectNone(r=>r.method==='POST');root.remove();f.destroy();TestBed.resetTestingModule();
+  });
+
+  it('preserves an independently reviewed draft across the same saved GET without selecting it', async () => {
+    const f=await setup();const c=f.componentInstance;const http=TestBed.inject(HttpTestingController);c.review={recordId:'run'};c.creativeOptimizationComparison=compactComparison();c.reviewCreativeOptimizationCandidate('candidate-a');
+    c.loadLatestCreativeOptimization();http.expectOne('/api/v1/intelligence/workflow/records/run/creative-optimization/latest').flush({comparison:compactComparison()});
+    expect(c.creativeOptimizationReviewedCandidateId).toBe('candidate-a');expect(c.creativeOptimizationSelectedCandidateId).toBeNull();expect(c.creativeOptimizationApprovalEnabled).toBe(false);http.expectNone(r=>r.method==='POST');f.destroy();TestBed.resetTestingModule();
+  });
+
+  it('keeps a reviewed selected draft eligible while navigating to another review and invalidates changed evidence', async () => {
+    const f=await setup();const c=f.componentInstance;c.review={recordId:'run'};c.creativeOptimizationComparison=compactComparison();
+    const b=c.creativeOptimizationComparison.candidates[1];b.currentAssessment.classification='VALID_WITH_UNPROVEN_BENEFIT';b.currentAssessment.approvalEligible=true;b.fidelity={essentialEventsPreserved:true,approvedStoryCoverage:'SOURCE_EVENTS_COVERED; SEMANTIC_FIDELITY_UNKNOWN'};
+    c.reviewCreativeOptimizationCandidate('candidate-b');c.selectCreativeOptimizationCandidate('candidate-b');expect(c.creativeOptimizationApprovalEnabled).toBe(true);
+    c.reviewCreativeOptimizationCandidate('candidate-a');expect(c.creativeOptimizationReviewedCandidateId).toBe('candidate-a');expect(c.creativeOptimizationSelectedCandidateId).toBe('candidate-b');expect(c.creativeOptimizationApprovalEnabled).toBe(true);
+    b.prompt='changed unreviewed content';expect(c.creativeOptimizationApprovalEnabled).toBe(false);c.reviewCreativeOptimizationCandidate('candidate-b');expect(c.creativeOptimizationApprovalEnabled).toBe(true);
+    TestBed.inject(HttpTestingController).expectNone(r=>r.method==='POST');f.destroy();TestBed.resetTestingModule();
   });
 
   it('highlights changed inline tokens while keeping preserved narrative words neutral', async () => {

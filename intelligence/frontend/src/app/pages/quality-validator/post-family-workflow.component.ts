@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, Output, OnChanges, OnDestroy, SimpleChanges, ViewChild, inject } from '@angular/core';
+import { afterNextRender, ChangeDetectorRef, Component, ElementRef, EventEmitter, Injector, Input, Output, OnChanges, OnDestroy, QueryList, SimpleChanges, ViewChild, ViewChildren, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { Router, RouterModule } from '@angular/router';
@@ -353,7 +353,7 @@ import { GeneralProducibilityComponent } from './general-producibility.component
                 <p><strong>Production risk:</strong> {{ candidate.currentAssessment?.productionRiskChange || 'UNKNOWN' }}</p>
                 <p class="optimization-eligibility"><strong>Approval:</strong> {{ candidate.currentAssessment?.approvalEligible === true ? 'Eligible for explicit review' : 'Blocked' }}</p>
                 <div class="creative-optimization-actions">
-                  <button type="button" class="button button--secondary button--compact" (click)="reviewCreativeOptimizationCandidate(candidate.candidateId)" [disabled]="creativeOptimizationBusy || !canSelectOptimizationCandidate(candidate)">Review Candidate {{ idx === 0 ? 'A' : 'B' }}</button>
+                  <button type="button" class="button button--secondary button--compact" (click)="reviewCreativeOptimizationCandidate(candidate.candidateId)" [disabled]="creativeOptimizationBusy">Review Candidate {{ idx === 0 ? 'A' : 'B' }}</button>
                   <button type="button" class="button button--compact" [class.button--primary]="candidate.currentAssessment?.approvalEligible === true" [class.button--secondary]="candidate.currentAssessment?.approvalEligible !== true" (click)="selectCreativeOptimizationCandidate(candidate.candidateId)" [disabled]="creativeOptimizationBusy || !canSelectOptimizationCandidate(candidate)">{{ candidate.currentAssessment?.approvalEligible === true ? 'Select candidate' : 'Select for review' }}</button>
                 </div>
               </article>
@@ -370,8 +370,8 @@ import { GeneralProducibilityComponent } from './general-producibility.component
               <button type="button" class="button button--secondary button--compact" (click)="copySavedPrompt()" [disabled]="!isCurrent() || !prompt">Copy original prompt</button>
               <pre class="creative-optimization-diff">{{ prompt }}</pre>
             </details>
-            <section *ngFor="let candidate of creativeOptimizationComparison?.candidates; let idx = index" class="optimization-candidate-details" [attr.aria-label]="'Candidate ' + (idx === 0 ? 'A' : 'B') + ' details'">
-              <h4>Candidate {{ idx === 0 ? 'A' : 'B' }} · Review details</h4>
+            <section #optimizationReviewSection *ngFor="let candidate of creativeOptimizationComparison?.candidates; let idx = index" class="optimization-candidate-details" [attr.data-candidate-id]="candidate.candidateId" [attr.aria-label]="'Candidate ' + (idx === 0 ? 'A' : 'B') + ' details'">
+              <h4 #optimizationReviewHeading tabindex="-1" [attr.data-candidate-id]="candidate.candidateId" class="optimization-review-heading">Candidate {{ idx === 0 ? 'A' : 'B' }} · Review details</h4>
               <details open class="optimization-panel optimization-actual-changes">
                 <summary>Actual Changes</summary>
                 <ul><li *ngFor="let change of candidate.currentAssessment?.actualChanges">{{ change }}</li></ul>
@@ -828,6 +828,7 @@ import { GeneralProducibilityComponent } from './general-producibility.component
       .creative-optimization-details{margin:0 0 14px;padding:16px;border:1px solid #d8e1ec;border-radius:12px;background:#f8fbfd}.creative-optimization-details summary{cursor:pointer;font-weight:800;color:#263f56}.creative-optimization-body{display:grid;gap:12px}.creative-optimization-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;align-items:start}.creative-optimization-card{min-width:0;overflow-wrap:anywhere}.optimization-conclusion{scroll-margin-top:130px;padding:14px;border-left:4px solid #617b36;background:#f1f5eb}.optimization-side-diff table{width:100%;table-layout:fixed;border-collapse:collapse}.optimization-side-diff td,.optimization-side-diff th{width:50%;vertical-align:top;padding:10px;border:1px solid #dfe7ee;white-space:pre-wrap;overflow-wrap:anywhere}.diff-removed{background:#ffe0da;color:#842a1d;text-decoration:line-through;text-decoration-thickness:1px}.diff-added{background:#dcefd5;color:#244c27;font-weight:700}.optimization-side-diff summary{cursor:pointer;font-weight:700}.creative-optimization-card{display:grid;gap:10px;padding:12px;border:1px solid #dfe7ee;border-radius:10px;background:#fff}.creative-optimization-card.is-selected{border-color:#8fbd36;background:#f5faed}.creative-optimization-card header{display:flex;justify-content:space-between;gap:8px;align-items:flex-start}.creative-optimization-card h4{margin:3px 0 0;color:#263f56}.creative-optimization-card p{margin:0;color:#40515a;line-height:1.45}.creative-optimization-actions{display:flex;flex-wrap:wrap;gap:8px}.creative-optimization-diff{margin:0;padding:10px;border:1px solid #dfe7ee;border-radius:8px;background:#fbfcfd;color:#263f56;white-space:pre-wrap;overflow-wrap:anywhere}.creative-optimization-approval{display:grid;gap:8px;padding-top:4px;border-top:1px solid #dfe7ee}.repair-tools-details,.repair-tools-group{background:#fff}.repair-tools-details>summary{padding:2px}.repair-tools-group{display:grid;gap:10px;padding:14px;border:1px solid #dfe7ee;border-radius:10px}.repair-tools-group + .repair-tools-group{margin-top:12px}.repair-tools-group h3{margin:0;color:#263f56}.repair-fields{display:grid;gap:8px}.repair-fields--patch{grid-template-columns:repeat(2,minmax(0,1fr));align-items:start}.repair-field{display:grid;gap:5px;min-width:0}.repair-field span{font-weight:650;color:#35464f;line-height:1.4}.repair-field input,.repair-field textarea{max-width:100%;min-width:0;width:100%;height:40px;border:1px solid #cbd6ce;border-radius:8px;padding:8px 10px;box-sizing:border-box;background:#fff;color:#1e2b36}.repair-field textarea{min-height:84px;resize:vertical}.repair-field__text{min-height:84px}.repair-field__input{height:40px}.repair-field--inline{max-width:100%}.repair-consent-row{display:flex;align-items:flex-start;gap:10px;cursor:pointer;font-weight:650;color:#35464f;line-height:1.5}.repair-consent-row input[type=checkbox]{margin-top:2px;flex:0 0 auto}.repair-help,.repair-field-help,.repair-tools-group small{margin:0;color:#52616b;line-height:1.45}.repair-button-row,.repair-tool-actions{display:flex;flex-wrap:wrap;align-items:center;gap:8px}.repair-button-row > .button,.repair-tool-actions > .button{width:auto;margin:0}.button.button--compact,.repair-triage .button{min-width:0;min-height:40px;height:40px;padding:0 14px;border-radius:8px;font-size:13px;line-height:1}.repair-triage .button{justify-self:start}.repair-triage button:disabled,.repair-tools-details button:disabled,.repair-button-row button:disabled,.repair-tool-actions button:disabled{opacity:.58;cursor:not-allowed}.repair-triage button:focus-visible,.repair-tools-details button:focus-visible,.current-prompt-card button:focus-visible,.repair-tools-details input:focus-visible,.repair-tools-details textarea:focus-visible{outline:3px solid #345f9a;outline-offset:2px}.repair-tools-details .error{color:#983520}
 
       .optimization-score{font-size:28px;font-weight:800;color:#263f56!important}.optimization-score small{font-size:13px;font-weight:600;margin-left:6px}.optimization-classification{font-size:12px;font-weight:800;letter-spacing:.02em}.optimization-detail-link{color:#345f9a;font-weight:700}.optimization-panel{min-width:0;border-top:1px solid #dfe7ee;padding:10px 0}.optimization-panel>summary{padding:4px 0;cursor:pointer;color:#263f56;font-weight:750}.optimization-panel p{margin:8px 0;line-height:1.5;color:#40515a}.optimization-panel ul{margin:8px 0;padding-left:22px;line-height:1.5}.optimization-candidate-details{min-width:0}.optimization-candidate-details>h4{margin:8px 0;color:#263f56}.optimization-prompt-panel .button{margin:8px 0}.creative-optimization-diff{max-height:400px;overflow:auto;min-width:0;max-width:100%;box-sizing:border-box;word-break:break-word}.optimization-diff-controls{display:flex;gap:16px;flex-wrap:wrap;align-items:center;margin:12px 0}.optimization-diff-controls label{display:flex;gap:8px;align-items:center;flex-wrap:wrap;min-width:0}.optimization-diff-controls select{max-width:100%;min-width:0;padding:8px;border:1px solid #cbd6ce;border-radius:6px;background:#fff;color:#263f56}.optimization-panel summary:focus-visible,.creative-optimization-body button:focus-visible,.creative-optimization-body a:focus-visible,.optimization-diff-controls input:focus-visible,.optimization-diff-controls select:focus-visible{outline:3px solid #345f9a;outline-offset:3px}.optimization-side-diff{overflow:hidden}.optimization-side-diff table{font-size:13px}.creative-optimization-body{min-width:0}.optimization-conclusion p{margin:8px 0;line-height:1.5}.creative-optimization-approval{padding:12px 0}.creative-optimization-card .creative-optimization-actions{padding-top:4px}.optimization-eligibility{border-top:1px solid #dfe7ee;padding-top:8px}
+      .optimization-review-heading{scroll-margin-top:calc(var(--review-navigation-inset,0px) + 1rem)}.optimization-review-heading:focus{outline:3px solid #345f9a;outline-offset:3px}
       @media(max-width:600px){.creative-optimization-grid{grid-template-columns:1fr}.creative-optimization-details{padding:12px}.optimization-side-diff td,.optimization-side-diff th{padding:6px}.optimization-diff-controls{display:grid;gap:10px}.optimization-score{font-size:25px}}
       @media(max-width:900px){.repair-primary-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.repair-secondary-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
       @media(max-width:1100px){.creative-optimization-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
@@ -930,6 +931,11 @@ export class PostFamilyWorkflowComponent implements OnChanges, OnDestroy {
   }
   private http = inject(HttpClient);
   private changeDetector = inject(ChangeDetectorRef);
+  private readonly reviewNavigationInjector = inject(Injector);
+  private reviewNavigationSequence = 0;
+  private readonly optimizationReviewedSnapshots = new Map<string, string>();
+  @ViewChildren('optimizationReviewSection', {read:ElementRef}) private optimizationReviewSections!: QueryList<ElementRef<HTMLElement>>;
+  @ViewChildren('optimizationReviewHeading', {read:ElementRef}) private optimizationReviewHeadings!: QueryList<ElementRef<HTMLElement>>;
   @Input() prompt = '';
   @Input() contentId = '';
   @Input() promptVersionId = '';
@@ -1135,7 +1141,7 @@ export class PostFamilyWorkflowComponent implements OnChanges, OnDestroy {
     if (!this.creativeOptimizationComparison || !this.creativeOptimizationSelectedCandidateId) return false;
     const candidate = this.creativeOptimizationSelectedCandidate;
     if (!candidate || !this.canSelectOptimizationCandidate(candidate) || candidate.currentAssessment?.approvalEligible !== true) return false;
-    const reviewed = this.creativeOptimizationReviewedCandidateId === this.creativeOptimizationSelectedCandidateId;
+    const reviewed = this.optimizationReviewedSnapshots.get(candidate.candidateId) === this.optimizationReviewSignature(candidate);
     if (!reviewed) return false;
     const fidelity = candidate.fidelity ?? {};
     const essential = candidate.essentialEventsPreserved ?? fidelity.essentialEventsPreserved ?? true;
@@ -1165,11 +1171,34 @@ export class PostFamilyWorkflowComponent implements OnChanges, OnDestroy {
   reviewCreativeOptimizationCandidate(candidateId: string): void {
     if (!this.creativeOptimizationComparison) return;
     const candidate = this.creativeOptimizationComparison.candidates.find((item: any) => item.candidateId === candidateId);
-    if (!candidate || !this.canSelectOptimizationCandidate(candidate)) return;
-    this.creativeOptimizationSelectedCandidateId = candidateId;
+    if (!candidate || this.creativeOptimizationBusy) return;
     this.creativeOptimizationReviewedCandidateId = candidateId;
+    this.optimizationReviewedSnapshots.set(candidateId, this.optimizationReviewSignature(candidate));
     this.creativeOptimizationError = '';
+    const comparison = this.creativeOptimizationComparison;
+    const navigation = ++this.reviewNavigationSequence;
     this.changeDetector.markForCheck();
+    afterNextRender(() => {
+      // Resolve the current view after rendering; superseded clicks/reloads must not jump.
+      if (navigation !== this.reviewNavigationSequence || comparison !== this.creativeOptimizationComparison) return;
+      const section = this.optimizationReviewSections?.find(ref => ref.nativeElement.dataset['candidateId'] === candidateId)?.nativeElement;
+      const heading = this.optimizationReviewHeadings?.find(ref => ref.nativeElement.dataset['candidateId'] === candidateId)?.nativeElement;
+      if (!section || !heading) return;
+      section.querySelectorAll<HTMLDetailsElement>('.optimization-actual-changes,.optimization-quality-panel').forEach(panel => panel.open = true);
+      const target = heading.getBoundingClientRect();
+      let inset = 0;
+      document.querySelectorAll<HTMLElement>('nav,header').forEach(element => {
+        const style = getComputedStyle(element), rect = element.getBoundingClientRect(), top = Number.parseFloat(style.top);
+        if (['sticky','fixed'].includes(style.position) && Number.isFinite(top) && rect.height > 0 && rect.left < target.right && rect.right > target.left)
+          inset = Math.max(inset, top + rect.height);
+      });
+      heading.style.setProperty('--review-navigation-inset', `${inset}px`);
+      heading.focus({preventScroll:true});
+      heading.scrollIntoView?.({block:'start', behavior:window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth'});
+    }, {injector:this.reviewNavigationInjector});
+  }
+  private optimizationReviewSignature(candidate: any): string {
+    return JSON.stringify([this.creativeOptimizationComparison?.recordId, this.creativeOptimizationComparison?.comparisonAssessment?.lineage, candidate]);
   }
   loadLatestCreativeOptimization(): void {
     if (!this.contentId || !this.promptVersionId || !this.review?.recordId) return;
@@ -1186,7 +1215,8 @@ export class PostFamilyWorkflowComponent implements OnChanges, OnDestroy {
         const candidate = this.creativeOptimizationComparison?.candidates?.find((item: any) => item.candidateId === selected);
         const preserve = sameSavedRecord && (selected === 'ORIGINAL' || (candidate && this.canSelectOptimizationCandidate(candidate)));
         this.creativeOptimizationSelectedCandidateId = preserve ? selected : null;
-        this.creativeOptimizationReviewedCandidateId = preserve && reviewed === selected && JSON.stringify(previous?.candidates?.find((item: any) => item.candidateId === selected)) === JSON.stringify(candidate) ? reviewed : null;
+        const reviewedCandidate = this.creativeOptimizationComparison?.candidates?.find((item: any) => item.candidateId === reviewed);
+        this.creativeOptimizationReviewedCandidateId = sameSavedRecord && !!reviewedCandidate && JSON.stringify(previous?.candidates?.find((item: any) => item.candidateId === reviewed)) === JSON.stringify(reviewedCandidate) ? reviewed : null;
         this.creativeOptimizationConsent = false;
         this.creativeOptimizationBusy = false;
         this.changeDetector.markForCheck();
@@ -1976,7 +2006,7 @@ export class PostFamilyWorkflowComponent implements OnChanges, OnDestroy {
       this.repairSession = session; this.repairSessionId = session.sessionId; this.loadRepairComparison(session); this.changeDetector.markForCheck();
     }, error: e => this.fail(e) });
   }
-  ngOnDestroy(): void { this.autoRepair = false; this.repairOperation++; this.restoreSequence++; this.disposePromptPreview(); }
+  ngOnDestroy(): void { this.reviewNavigationSequence++; this.autoRepair = false; this.repairOperation++; this.restoreSequence++; this.disposePromptPreview(); }
   private loadRepairComparison(session: any): void {
     if (!session.originalReviewId || !session.bestReviewId) return;
     const sequence = this.restoreSequence, operation = this.repairOperation;

@@ -1,0 +1,711 @@
+{
+  "rulesetVersion": "1.7",
+  "configuredRules": [
+    [
+      "MINI_STORY_LOCK",
+      "BLOCKER"
+    ],
+    [
+      "GOAL_VISIBLE_EARLY",
+      "CRITICAL"
+    ],
+    [
+      "TEMPORAL_COMPLEXITY_SPLIT_GATE",
+      "BLOCKER"
+    ],
+    [
+      "BEAT_DENSITY_RULE",
+      "CRITICAL"
+    ],
+    [
+      "CONTINUATION_LOCK",
+      "BLOCKER"
+    ],
+    [
+      "STUBBORN_RETURN_LOOP",
+      "BLOCKER"
+    ],
+    [
+      "STUBBORN_RETURN_HOOK",
+      "CRITICAL"
+    ],
+    [
+      "STUBBORN_RETURN_PAYOFF",
+      "CRITICAL"
+    ]
+  ],
+  "runs": {
+    "baseline": {
+      "score": 85.0,
+      "grade": "B",
+      "rules": [
+        {
+          "id": "MINI_STORY_LOCK",
+          "family": "concept_strength",
+          "severity": "BLOCKER",
+          "outcome": "PASS",
+          "weight": 0.12
+        },
+        {
+          "id": "GOAL_VISIBLE_EARLY",
+          "family": "hook_strength",
+          "severity": "CRITICAL",
+          "outcome": "PASS",
+          "weight": 0.12
+        },
+        {
+          "id": "TEMPORAL_COMPLEXITY_SPLIT_GATE",
+          "family": "generation_executability",
+          "severity": "BLOCKER",
+          "outcome": "PASS",
+          "weight": 0.09
+        },
+        {
+          "id": "BEAT_DENSITY_RULE",
+          "family": "progression",
+          "severity": "CRITICAL",
+          "outcome": "PASS",
+          "weight": 0.11
+        },
+        {
+          "id": "CONTINUATION_LOCK",
+          "family": "generation_executability",
+          "severity": "BLOCKER",
+          "outcome": "NOT_APPLICABLE",
+          "weight": 0.09
+        },
+        {
+          "id": "STUBBORN_RETURN_LOOP",
+          "family": "progression",
+          "severity": "BLOCKER",
+          "outcome": "UNKNOWN",
+          "weight": 0.11
+        },
+        {
+          "id": "STUBBORN_RETURN_HOOK",
+          "family": "hook_strength",
+          "severity": "CRITICAL",
+          "outcome": "NOT_APPLICABLE",
+          "weight": 0.12
+        },
+        {
+          "id": "STUBBORN_RETURN_PAYOFF",
+          "family": "final_payoff",
+          "severity": "CRITICAL",
+          "outcome": "NOT_APPLICABLE",
+          "weight": 0.09
+        }
+      ],
+      "familyScores": {
+        "concept_strength": 85.0,
+        "hook_strength": 85.0,
+        "generation_executability": 85.0,
+        "progression": 85.0,
+        "final_payoff": null
+      },
+      "weightedNumerator": 37.4,
+      "weightDenominator": 0.44,
+      "engineProfile": {
+        "profile": "DEFAULT",
+        "source": "INFERRED",
+        "confidence": "LOW",
+        "active": false,
+        "candidate_only": true,
+        "signals": {
+          "SINGLE_DOMINANT_OBJECT": false,
+          "FIXED_VISIBLE_BOUNDARY": false,
+          "SAFE_STATE": false,
+          "AUTONOMOUS_RETURN": false,
+          "RECURRENCE": false,
+          "CHARACTER_INTERVENTION": true,
+          "ESCALATION": false,
+          "NO_DEAD_RESET": true
+        },
+        "recurrence_count": 0,
+        "intervention_count": 2,
+        "state_memory_cost": "LOW",
+        "reason": "Return-loop candidate lacks one or more mandatory signals."
+      },
+      "genericApplicability": {
+        "STUBBORN_RETURN_LOOP": {
+          "status": "NOT_APPLICABLE",
+          "confidence": "HIGH",
+          "evidenceReferences": [
+            "beat_02",
+            "beat_03"
+          ],
+          "reason": "Mechanic family STICKY_DEFORMATION is outside the stubborn-return animal-claim applicability domain."
+        },
+        "STUBBORN_RETURN_HOOK": {
+          "status": "NOT_APPLICABLE",
+          "confidence": "HIGH",
+          "evidenceReferences": [
+            "beat_02",
+            "beat_03"
+          ],
+          "reason": "Mechanic family STICKY_DEFORMATION is outside the stubborn-return animal-claim applicability domain."
+        },
+        "STUBBORN_RETURN_PAYOFF": {
+          "status": "NOT_APPLICABLE",
+          "confidence": "HIGH",
+          "evidenceReferences": [
+            "beat_02",
+            "beat_03"
+          ],
+          "reason": "Mechanic family STICKY_DEFORMATION is outside the stubborn-return animal-claim applicability domain."
+        }
+      },
+      "storyDensity": {
+        "raw_beat_count": 5,
+        "load_beat_count": 5,
+        "major_beat_count": 5,
+        "micro_beat_count": 0,
+        "state_transition_count": 5,
+        "strategy_change_count": 1,
+        "critical_beat_durations": [
+          2.0,
+          3.0,
+          5.0,
+          2.0,
+          3.0
+        ],
+        "generation_mode": "SINGLE_15S",
+        "temporal_load": "MANAGEABLE",
+        "split_recommendation": null,
+        "goal_status": "IMPLICIT_BUT_OBSERVABLE",
+        "obstruction_status": "AVAILABLE",
+        "realization_status": "AVAILABLE",
+        "realization_mode": "EXPLICIT",
+        "payoff_status": "AVAILABLE",
+        "continuation_status": "NOT_APPLICABLE",
+        "continuation_mismatches": []
+      },
+      "coreMechanic": {
+        "physicalRule": "each pull doubles the number of sticky notes",
+        "physicalRuleEvidence": {
+          "state": "OBSERVED",
+          "sourceQuote": "each pull doubles the number of sticky notes",
+          "sourceSpan": [
+            709,
+            753
+          ],
+          "method": "EXPLICIT_REPEATED_ACTION_CLAUSE",
+          "semanticVerification": "NOT_PERFORMED"
+        },
+        "causeEffect": "Explicit repeated-action statement from prompt",
+        "consistency": null,
+        "mechanicCount": null,
+        "primaryObject": null,
+        "mechanicCarrier": "UNKNOWN",
+        "causalParticipants": null,
+        "abnormalProperty": "STICKS_TO_SURFACES",
+        "trigger": "CONTACT_OR_THROW",
+        "persistence": "PERSISTS_AFTER_CONTACT",
+        "releaseCondition": "FORCE_OR_SELF_RELEASE",
+        "recurrence": true,
+        "surfaceAttachmentEvidence": {
+          "state": "OBSERVED",
+          "sourceQuote": "instead of sticking to the cabinet, the note visibly clings to her finger",
+          "sourceSpan": [
+            301,
+            374
+          ],
+          "method": "CONTRASTIVE_SURFACE_ATTACHMENT_PATTERN",
+          "semanticVerification": "NOT_PERFORMED",
+          "object": {
+            "value": "the note",
+            "state": "OBSERVED"
+          },
+          "expectedSurface": {
+            "value": "the cabinet",
+            "state": "OBSERVED"
+          },
+          "actualSurface": {
+            "value": "her finger",
+            "state": "OBSERVED"
+          },
+          "relationship": {
+            "value": "WRONG_SURFACE_ATTACHMENT",
+            "state": "INFERRED"
+          }
+        }
+      },
+      "renderAuthorization": {
+        "status": "BLOCKED_PENDING_EVIDENCE",
+        "reasons": [
+          {
+            "code": "REQUIRED_EVIDENCE_MISSING",
+            "source": "REFERENCE_ASSOCIATION",
+            "message": "An authoritative character/object reference is missing or unverified.",
+            "references": []
+          },
+          {
+            "code": "REQUIRED_EVIDENCE_MISSING",
+            "source": "EXECUTION_INPUTS",
+            "message": "Required provider execution inputs are missing: startFrame",
+            "references": []
+          }
+        ]
+      },
+      "counterfactualGoalEvidenceRemoved": {
+        "score": 49.54545454545455,
+        "goalOutcome": "FAIL"
+      },
+      "counterfactualDelayedOpening": {
+        "score": 72.72727272727273,
+        "goalOutcome": "FAIL",
+        "message": "The character goal is not explicit or observable within the first 1-2 seconds."
+      },
+      "proposedCandidateOnly": false
+    },
+    "candidate-a": {
+      "score": 85.0,
+      "grade": "B",
+      "rules": [
+        {
+          "id": "MINI_STORY_LOCK",
+          "family": "concept_strength",
+          "severity": "BLOCKER",
+          "outcome": "PASS",
+          "weight": 0.12
+        },
+        {
+          "id": "GOAL_VISIBLE_EARLY",
+          "family": "hook_strength",
+          "severity": "CRITICAL",
+          "outcome": "PASS",
+          "weight": 0.12
+        },
+        {
+          "id": "TEMPORAL_COMPLEXITY_SPLIT_GATE",
+          "family": "generation_executability",
+          "severity": "BLOCKER",
+          "outcome": "PASS",
+          "weight": 0.09
+        },
+        {
+          "id": "BEAT_DENSITY_RULE",
+          "family": "progression",
+          "severity": "CRITICAL",
+          "outcome": "PASS",
+          "weight": 0.11
+        },
+        {
+          "id": "CONTINUATION_LOCK",
+          "family": "generation_executability",
+          "severity": "BLOCKER",
+          "outcome": "NOT_APPLICABLE",
+          "weight": 0.09
+        },
+        {
+          "id": "STUBBORN_RETURN_LOOP",
+          "family": "progression",
+          "severity": "BLOCKER",
+          "outcome": "UNKNOWN",
+          "weight": 0.11
+        },
+        {
+          "id": "STUBBORN_RETURN_HOOK",
+          "family": "hook_strength",
+          "severity": "CRITICAL",
+          "outcome": "NOT_APPLICABLE",
+          "weight": 0.12
+        },
+        {
+          "id": "STUBBORN_RETURN_PAYOFF",
+          "family": "final_payoff",
+          "severity": "CRITICAL",
+          "outcome": "NOT_APPLICABLE",
+          "weight": 0.09
+        }
+      ],
+      "familyScores": {
+        "concept_strength": 85.0,
+        "hook_strength": 85.0,
+        "generation_executability": 85.0,
+        "progression": 85.0,
+        "final_payoff": null
+      },
+      "weightedNumerator": 37.4,
+      "weightDenominator": 0.44,
+      "engineProfile": {
+        "profile": "DEFAULT",
+        "source": "INFERRED",
+        "confidence": "LOW",
+        "active": false,
+        "candidate_only": true,
+        "signals": {
+          "SINGLE_DOMINANT_OBJECT": false,
+          "FIXED_VISIBLE_BOUNDARY": false,
+          "SAFE_STATE": false,
+          "AUTONOMOUS_RETURN": false,
+          "RECURRENCE": false,
+          "CHARACTER_INTERVENTION": true,
+          "ESCALATION": false,
+          "NO_DEAD_RESET": true
+        },
+        "recurrence_count": 0,
+        "intervention_count": 3,
+        "state_memory_cost": "LOW",
+        "reason": "Return-loop candidate lacks one or more mandatory signals."
+      },
+      "genericApplicability": {
+        "STUBBORN_RETURN_LOOP": {
+          "status": "NOT_APPLICABLE",
+          "confidence": "HIGH",
+          "evidenceReferences": [
+            "beat_01",
+            "beat_02",
+            "beat_03"
+          ],
+          "reason": "Mechanic family STICKY_DEFORMATION is outside the stubborn-return animal-claim applicability domain."
+        },
+        "STUBBORN_RETURN_HOOK": {
+          "status": "NOT_APPLICABLE",
+          "confidence": "HIGH",
+          "evidenceReferences": [
+            "beat_01",
+            "beat_02",
+            "beat_03"
+          ],
+          "reason": "Mechanic family STICKY_DEFORMATION is outside the stubborn-return animal-claim applicability domain."
+        },
+        "STUBBORN_RETURN_PAYOFF": {
+          "status": "NOT_APPLICABLE",
+          "confidence": "HIGH",
+          "evidenceReferences": [
+            "beat_01",
+            "beat_02",
+            "beat_03"
+          ],
+          "reason": "Mechanic family STICKY_DEFORMATION is outside the stubborn-return animal-claim applicability domain."
+        }
+      },
+      "storyDensity": {
+        "raw_beat_count": 5,
+        "load_beat_count": 5,
+        "major_beat_count": 5,
+        "micro_beat_count": 0,
+        "state_transition_count": 5,
+        "strategy_change_count": 2,
+        "critical_beat_durations": [
+          2.0,
+          3.0,
+          5.0,
+          2.0,
+          3.0
+        ],
+        "generation_mode": "SINGLE_15S",
+        "temporal_load": "MANAGEABLE",
+        "split_recommendation": null,
+        "goal_status": "IMPLICIT_BUT_OBSERVABLE",
+        "obstruction_status": "AVAILABLE",
+        "realization_status": "AVAILABLE",
+        "realization_mode": "EXPLICIT",
+        "payoff_status": "AVAILABLE",
+        "continuation_status": "NOT_APPLICABLE",
+        "continuation_mismatches": []
+      },
+      "coreMechanic": {
+        "physicalRule": "each pull doubles the number of sticky notes",
+        "physicalRuleEvidence": {
+          "state": "OBSERVED",
+          "sourceQuote": "each pull doubles the number of sticky notes",
+          "sourceSpan": [
+            770,
+            814
+          ],
+          "method": "EXPLICIT_REPEATED_ACTION_CLAUSE",
+          "semanticVerification": "NOT_PERFORMED"
+        },
+        "causeEffect": "Explicit repeated-action statement from prompt",
+        "consistency": null,
+        "mechanicCount": null,
+        "primaryObject": null,
+        "mechanicCarrier": "UNKNOWN",
+        "causalParticipants": null,
+        "abnormalProperty": "STICKS_TO_SURFACES",
+        "trigger": "CONTACT_OR_THROW",
+        "persistence": "PERSISTS_AFTER_CONTACT",
+        "releaseCondition": "FORCE_OR_SELF_RELEASE",
+        "recurrence": true,
+        "surfaceAttachmentEvidence": {
+          "state": "OBSERVED",
+          "sourceQuote": "instead of sticking to the cabinet, the note visibly clings to her finger  Mimi is in front of a toy cabinet",
+          "sourceSpan": [
+            301,
+            409
+          ],
+          "method": "CONTRASTIVE_SURFACE_ATTACHMENT_PATTERN",
+          "semanticVerification": "NOT_PERFORMED",
+          "object": {
+            "value": "the note",
+            "state": "OBSERVED"
+          },
+          "expectedSurface": {
+            "value": "the cabinet",
+            "state": "OBSERVED"
+          },
+          "actualSurface": {
+            "value": "her finger  Mimi is in front of a toy cabinet",
+            "state": "OBSERVED"
+          },
+          "relationship": {
+            "value": "WRONG_SURFACE_ATTACHMENT",
+            "state": "INFERRED"
+          }
+        }
+      },
+      "renderAuthorization": {
+        "status": "BLOCKED_PENDING_EVIDENCE",
+        "reasons": [
+          {
+            "code": "REQUIRED_EVIDENCE_MISSING",
+            "source": "REFERENCE_ASSOCIATION",
+            "message": "An authoritative character/object reference is missing or unverified.",
+            "references": []
+          },
+          {
+            "code": "REQUIRED_EVIDENCE_MISSING",
+            "source": "EXECUTION_INPUTS",
+            "message": "Required provider execution inputs are missing: startFrame",
+            "references": []
+          }
+        ]
+      },
+      "counterfactualGoalEvidenceRemoved": {
+        "score": 49.54545454545455,
+        "goalOutcome": "FAIL"
+      },
+      "counterfactualDelayedOpening": {
+        "score": 72.72727272727273,
+        "goalOutcome": "FAIL",
+        "message": "The character goal is not explicit or observable within the first 1-2 seconds."
+      },
+      "proposedCandidateOnly": false
+    },
+    "candidate-b": {
+      "score": 85.0,
+      "grade": "B",
+      "rules": [
+        {
+          "id": "MINI_STORY_LOCK",
+          "family": "concept_strength",
+          "severity": "BLOCKER",
+          "outcome": "PASS",
+          "weight": 0.12
+        },
+        {
+          "id": "GOAL_VISIBLE_EARLY",
+          "family": "hook_strength",
+          "severity": "CRITICAL",
+          "outcome": "PASS",
+          "weight": 0.12
+        },
+        {
+          "id": "TEMPORAL_COMPLEXITY_SPLIT_GATE",
+          "family": "generation_executability",
+          "severity": "BLOCKER",
+          "outcome": "PASS",
+          "weight": 0.09
+        },
+        {
+          "id": "BEAT_DENSITY_RULE",
+          "family": "progression",
+          "severity": "CRITICAL",
+          "outcome": "PASS",
+          "weight": 0.11
+        },
+        {
+          "id": "CONTINUATION_LOCK",
+          "family": "generation_executability",
+          "severity": "BLOCKER",
+          "outcome": "NOT_APPLICABLE",
+          "weight": 0.09
+        },
+        {
+          "id": "STUBBORN_RETURN_LOOP",
+          "family": "progression",
+          "severity": "BLOCKER",
+          "outcome": "UNKNOWN",
+          "weight": 0.11
+        },
+        {
+          "id": "STUBBORN_RETURN_HOOK",
+          "family": "hook_strength",
+          "severity": "CRITICAL",
+          "outcome": "NOT_APPLICABLE",
+          "weight": 0.12
+        },
+        {
+          "id": "STUBBORN_RETURN_PAYOFF",
+          "family": "final_payoff",
+          "severity": "CRITICAL",
+          "outcome": "NOT_APPLICABLE",
+          "weight": 0.09
+        }
+      ],
+      "familyScores": {
+        "concept_strength": 85.0,
+        "hook_strength": 85.0,
+        "generation_executability": 85.0,
+        "progression": 85.0,
+        "final_payoff": null
+      },
+      "weightedNumerator": 37.4,
+      "weightDenominator": 0.44,
+      "engineProfile": {
+        "profile": "DEFAULT",
+        "source": "INFERRED",
+        "confidence": "LOW",
+        "active": false,
+        "candidate_only": true,
+        "signals": {
+          "SINGLE_DOMINANT_OBJECT": false,
+          "FIXED_VISIBLE_BOUNDARY": false,
+          "SAFE_STATE": false,
+          "AUTONOMOUS_RETURN": false,
+          "RECURRENCE": false,
+          "CHARACTER_INTERVENTION": true,
+          "ESCALATION": false,
+          "NO_DEAD_RESET": true
+        },
+        "recurrence_count": 0,
+        "intervention_count": 2,
+        "state_memory_cost": "LOW",
+        "reason": "Return-loop candidate lacks one or more mandatory signals."
+      },
+      "genericApplicability": {
+        "STUBBORN_RETURN_LOOP": {
+          "status": "NOT_APPLICABLE",
+          "confidence": "HIGH",
+          "evidenceReferences": [
+            "beat_02",
+            "beat_03"
+          ],
+          "reason": "Mechanic family STICKY_DEFORMATION is outside the stubborn-return animal-claim applicability domain."
+        },
+        "STUBBORN_RETURN_HOOK": {
+          "status": "NOT_APPLICABLE",
+          "confidence": "HIGH",
+          "evidenceReferences": [
+            "beat_02",
+            "beat_03"
+          ],
+          "reason": "Mechanic family STICKY_DEFORMATION is outside the stubborn-return animal-claim applicability domain."
+        },
+        "STUBBORN_RETURN_PAYOFF": {
+          "status": "NOT_APPLICABLE",
+          "confidence": "HIGH",
+          "evidenceReferences": [
+            "beat_02",
+            "beat_03"
+          ],
+          "reason": "Mechanic family STICKY_DEFORMATION is outside the stubborn-return animal-claim applicability domain."
+        }
+      },
+      "storyDensity": {
+        "raw_beat_count": 5,
+        "load_beat_count": 5,
+        "major_beat_count": 5,
+        "micro_beat_count": 0,
+        "state_transition_count": 5,
+        "strategy_change_count": 1,
+        "critical_beat_durations": [
+          2.0,
+          3.0,
+          5.0,
+          2.0,
+          3.0
+        ],
+        "generation_mode": "SINGLE_15S",
+        "temporal_load": "MANAGEABLE",
+        "split_recommendation": null,
+        "goal_status": "IMPLICIT_BUT_OBSERVABLE",
+        "obstruction_status": "AVAILABLE",
+        "realization_status": "AVAILABLE",
+        "realization_mode": "EXPLICIT",
+        "payoff_status": "AVAILABLE",
+        "continuation_status": "NOT_APPLICABLE",
+        "continuation_mismatches": []
+      },
+      "coreMechanic": {
+        "physicalRule": "each pull doubles the number of sticky notes  notes multiply from two to four to eight as she pulls, progressively covering her arms, legs and face -> Mimi is overwhelmed by notes",
+        "physicalRuleEvidence": {
+          "state": "OBSERVED",
+          "sourceQuote": "each pull doubles the number of sticky notes  notes multiply from two to four to eight as she pulls, progressively covering her arms, legs and face -> Mimi is overwhelmed by notes",
+          "sourceSpan": [
+            854,
+            1033
+          ],
+          "method": "EXPLICIT_REPEATED_ACTION_CLAUSE",
+          "semanticVerification": "NOT_PERFORMED"
+        },
+        "causeEffect": "Explicit repeated-action statement from prompt",
+        "consistency": null,
+        "mechanicCount": null,
+        "primaryObject": null,
+        "mechanicCarrier": "UNKNOWN",
+        "causalParticipants": null,
+        "abnormalProperty": "STICKS_TO_SURFACES",
+        "trigger": "CONTACT_OR_THROW",
+        "persistence": "PERSISTS_AFTER_CONTACT",
+        "releaseCondition": "FORCE_OR_SELF_RELEASE",
+        "recurrence": true,
+        "surfaceAttachmentEvidence": {
+          "state": "OBSERVED",
+          "sourceQuote": "instead of sticking to the cabinet, the note visibly clings to her finger",
+          "sourceSpan": [
+            301,
+            374
+          ],
+          "method": "CONTRASTIVE_SURFACE_ATTACHMENT_PATTERN",
+          "semanticVerification": "NOT_PERFORMED",
+          "object": {
+            "value": "the note",
+            "state": "OBSERVED"
+          },
+          "expectedSurface": {
+            "value": "the cabinet",
+            "state": "OBSERVED"
+          },
+          "actualSurface": {
+            "value": "her finger",
+            "state": "OBSERVED"
+          },
+          "relationship": {
+            "value": "WRONG_SURFACE_ATTACHMENT",
+            "state": "INFERRED"
+          }
+        }
+      },
+      "renderAuthorization": {
+        "status": "BLOCKED_PENDING_EVIDENCE",
+        "reasons": [
+          {
+            "code": "REQUIRED_EVIDENCE_MISSING",
+            "source": "REFERENCE_ASSOCIATION",
+            "message": "An authoritative character/object reference is missing or unverified.",
+            "references": []
+          },
+          {
+            "code": "REQUIRED_EVIDENCE_MISSING",
+            "source": "EXECUTION_INPUTS",
+            "message": "Required provider execution inputs are missing: startFrame",
+            "references": []
+          }
+        ]
+      },
+      "counterfactualGoalEvidenceRemoved": {
+        "score": 49.54545454545455,
+        "goalOutcome": "FAIL"
+      },
+      "counterfactualDelayedOpening": {
+        "score": 72.72727272727273,
+        "goalOutcome": "FAIL",
+        "message": "The character goal is not explicit or observable within the first 1-2 seconds."
+      },
+      "proposedCandidateOnly": false
+    }
+  }
+}
