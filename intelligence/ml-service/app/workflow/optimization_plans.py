@@ -11,6 +11,7 @@ from .optimization_distinctness import _beats, validate_execution_candidates
 from .optimization_profile_contract import generation_contract, normalize_candidate_profiles
 
 CONTRACT_VERSION='plan-first-v1'
+INSTRUCTIONS_VERSION='plan-first-owned-source-v3'
 class Strict(BaseModel):
     model_config=ConfigDict(extra='forbid',strict=True)
 class Binding(Strict):
@@ -41,6 +42,34 @@ class Plan(Strict):
 class Plans(Strict):
     plans: list[Plan] = Field(min_length=2,max_length=2)
 
+class PlanNarrative(Strict):
+    title: str = Field(min_length=3,max_length=100)
+    baselineOpportunity: str = Field(min_length=12,max_length=600)
+    proposedVisualConsequence: str = Field(min_length=12,max_length=600)
+    materialDifference: str = Field(min_length=12,max_length=600)
+    risksIntroduced: list[str] = Field(max_length=8)
+    risksReducedHypotheses: list[str] = Field(min_length=1,max_length=8)
+    unknowns: list[str] = Field(min_length=1,max_length=8)
+    evidenceStatus: Literal['HYPOTHESIS_ONLY']
+class ExecutionChoice(Strict):
+    executionOptionId: str
+    framing: Literal['EXTREME_CLOSE','CLOSE','MEDIUM','WIDE']
+    motion: Literal['STATIC','PAN','TRACK','PUSH']
+class OpeningChoice(ExecutionChoice):
+    pass
+class PairChoice(ExecutionChoice):
+    pass
+class ProgressionChoice(ExecutionChoice):
+    pass
+class OpeningPlan(PlanNarrative):
+    openingChange: OpeningChoice
+class EscalationPlan(PlanNarrative):
+    actionConsequenceChange: PairChoice
+    progressionChange: ProgressionChoice
+class SourceOwnedPlans(Strict):
+    openingPlan: OpeningPlan
+    escalationPlan: EscalationPlan
+
 def protected_contract(source,context):
     ownership=generation_contract(source,context)
     approved=context.get('approvedStoryText','')
@@ -57,15 +86,91 @@ def protected_contract(source,context):
             'events':[{'sourceBeatId':b['id'],'sourceQuote':b['sourceQuote'],'actionAnchor':a,'startTime':b['startTime'],'endTime':b['endTime']} for a,b in zip(anchors,beats)],
             'semanticStoryFidelity':'UNKNOWN','visualEvidence':'NOT_SUPPLIED'}
 
-def response_format():
-    schema=Plans.model_json_schema()
+def response_format(anchors=None,options=None):
+    schema=(SourceOwnedPlans if options is not None else Plans).model_json_schema()
     def wire(value):
         if isinstance(value,dict):
             result={k:wire(v) for k,v in value.items() if k != 'default' and not (k == 'title' and isinstance(v,str))}
             if 'const' in result:result['enum']=[result.pop('const')]
             return result
         return [wire(v) for v in value] if isinstance(value,list) else value
-    return {'type':'json_schema','json_schema':{'name':'protected_execution_plans','strict':True,'schema':wire(schema)}}
+    schema=wire(schema)
+    if options is not None:
+        for definition,kind in [('OpeningChoice','opening'),('PairChoice','action-consequence'),('ProgressionChoice','progression')]:
+            schema['$defs'][definition]['properties']['executionOptionId']['enum']=[key for key,value in options.items() if value['kind']==kind]
+    elif anchors:
+        protected=schema['$defs']['Plan']['properties']['preservedStoryAnchors']
+        protected.update(minItems=len(anchors),maxItems=len(anchors))
+        protected['items']={'type':'string','enum':list(anchors)}
+    return {'type':'json_schema','json_schema':{'name':'protected_execution_plans','strict':True,'schema':schema}}
+
+def plan_request_payload(source,context):
+    contract=protected_contract(source,context)
+    events=contract['events']
+    causal=contract['openingCausalParticipants']
+    opening=[{'quote':(causal.get(key) or {}).get('value','UNKNOWN')} for key in ('expectedSurface','actualSurface')]
+    pairs=[];progressions=[]
+    for event in events[1:-1]:
+        quote=event['sourceQuote'];boundary=quote.find('->');anchor=event['actionAnchor']
+        consequence=quote[boundary+2:].strip() if boundary>=0 else ''
+        if boundary>=0 and anchor in quote[:boundary] and consequence and len(anchor)<=300 and len(consequence)<=300 and '[' not in consequence:
+            pairs.append({'sourceBeatId':event['sourceBeatId'],'focusBindings':[{'quote':anchor},{'quote':consequence}],'stateSequence':[]})
+        match=re.search(r'\bmultiply from (.+?) as ',quote,re.I)
+        if match:
+            states=match[1].split(' to ')
+            if len(states)>=3:
+                progressions.append({'sourceBeatId':event['sourceBeatId'],'focusBindings':[],'stateSequence':[{'quote':s} for s in states]})
+    payload={'phase':'MATERIAL_IMPROVEMENT_PLANS','instructionsVersion':INSTRUCTIONS_VERSION,
+            'protectedStoryContract':contract,'bindingProtocol':{
+                'exactPreservedStoryAnchorsForBOTHPlans':[e['actionAnchor'] for e in events],
+                'openingRequiredBindings':{'sourceBeatId':events[0]['sourceBeatId'],'stagingMode':'CAUSE_EFFECT_SAME_FRAME','focusBindings':opening,'stateSequence':[]},
+                'actionConsequenceBindingOptions':pairs,'explicitProgressionBindingOptions':progressions,
+                'audienceEvidence':'NONE. Do not propose engagement, retention, views or watch-time gains, even under risksReducedHypotheses. Put unmeasured audience response in unknowns.',
+                'riskExamples':{'allowed':'Simultaneous source-bound contact visibility may reduce causal ambiguity; visual review is still required.','notAllowed':'Increased viewer engagement / better audience retention.'}}}
+    payload['executionOptions']=execution_options(payload)
+    return payload
+
+def execution_options(payload):
+    contract=payload['protectedStoryContract'];protocol=payload['bindingProtocol']
+    by_id={event['sourceBeatId']:event for event in contract['events']};options={}
+    def add(kind,binding,mode):
+        event=by_id[binding['sourceBeatId']]
+        _check_bindings([Binding.model_validate(b) for b in binding['focusBindings']],event['sourceQuote'])
+        _check_bindings([Binding.model_validate(b) for b in binding['stateSequence']],event['sourceQuote'])
+        key=f'{kind}:{event["sourceBeatId"]}'
+        options[key]={'kind':kind,'change':{**deepcopy(event),**deepcopy(binding),'stagingMode':mode}}
+        options[key]['change'].pop('actionAnchor',None)
+    opening=protocol['openingRequiredBindings']
+    if any(b['quote']=='UNKNOWN' for b in opening['focusBindings']):
+        raise ValueError('Source-plan opening evidence is UNKNOWN; no paid plan request can be grounded')
+    add('opening',opening,'CAUSE_EFFECT_SAME_FRAME')
+    progression_ids={p['sourceBeatId'] for p in protocol['explicitProgressionBindingOptions']}
+    for pair in protocol['actionConsequenceBindingOptions']:
+        if pair['sourceBeatId'] not in progression_ids:add('action-consequence',pair,'ACTION_CONSEQUENCE_PAIR')
+    for progression in protocol['explicitProgressionBindingOptions']:add('progression',progression,'DISTINCT_STATE_HOLDS')
+    if not all(any(o['kind']==kind for o in options.values()) for kind in ('opening','action-consequence','progression')):
+        raise ValueError('Source-plan lacks supported distinct action and progression options; evidence remains UNKNOWN')
+    return options
+
+def expand_source_owned_plans(value,payload):
+    parsed=SourceOwnedPlans.model_validate(value);options=payload['executionOptions']
+    def resolve(choice,kind):
+        option=options.get(choice.executionOptionId)
+        if not option or option['kind']!=kind:
+            raise ValueError(f'Source-plan execution option {choice.executionOptionId} is not an approved {kind} choice')
+        return {**deepcopy(option['change']),'framing':choice.framing,'motion':choice.motion}
+    output=[]
+    for identity,objective,plan,choices in [
+        ('candidate-a','OPENING_CAUSAL_LEGIBILITY',parsed.openingPlan,[(parsed.openingPlan.openingChange,'opening')]),
+        ('candidate-b','ESCALATION_EXECUTION_FEASIBILITY',parsed.escalationPlan,[(parsed.escalationPlan.actionConsequenceChange,'action-consequence'),(parsed.escalationPlan.progressionChange,'progression')])]:
+        narrative=plan.model_dump(exclude={'openingChange','actionConsequenceChange','progressionChange'})
+        changes=[resolve(choice,kind) for choice,kind in choices]
+        order={e['sourceBeatId']:i for i,e in enumerate(payload['protectedStoryContract']['events'])}
+        changes.sort(key=lambda c:order[c['sourceBeatId']])
+        output.append({**narrative,'candidateId':identity,'objective':objective,
+                       'preservedStoryAnchors':deepcopy(payload['bindingProtocol']['exactPreservedStoryAnchorsForBOTHPlans']),
+                       'changes':changes})
+    return {'plans':output}
 
 def _check_bindings(bindings,quote,region=None):
     groups=[]
@@ -96,12 +201,36 @@ def _source_refs(plan,by_id):
                              'method':'ALL_EXACT_SOURCE_TEXT_MATCHES','semanticVerification':'UNKNOWN'})
     return refs
 
+def _validate_outcome_claims(plan):
+    # Plans have no audience or rendered-output evidence. A hypothesis label
+    # cannot turn invented metrics or outcome assurances into supported facts.
+    fields=[plan.title,plan.baselineOpportunity,plan.proposedVisualConsequence,
+            plan.materialDifference,*plan.risksIntroduced,
+            *plan.risksReducedHypotheses,*plan.unknowns]
+    audience=r'\b(?:retention|watch[ -]?time|completion rates?|views?|engagement|audience response|viewer response)\b'
+    improvement=r'\b(?:increase[sd]?|improve[sd]?|boost[sd]?|raise[sd]?|lift[sd]?|double[sd]?|triple[sd]?|reduce[sd]?|better|higher|greater|longer)\b'
+    quantified=r'\b\d+(?:\.\d+)?\s*(?:%|percent\b|percentage points\b|times\b|x\b)'
+    for text in fields:
+        lower=text.lower()
+        forbidden=False
+        for sentence in re.split(r'(?<=[.!?])\s+|\n',lower):
+            unknown=bool(re.search(r'\b(?:unknown|unmeasured|unverified|not measured|not established|no (?:guaranteed|proven|measured|verified)|cannot (?:assess|establish)|requires? (?:actual )?audience evidence)\b',sentence))
+            assurance=bool(re.search(r'(?<!not )(?<!no )\b(?:will|guaranteed|proven|verified)\b',sentence))
+            evidence_claim=bool(re.search(r'\b(?:guaranteed|proven|measured) retention\b|\bguaranteed render\b',sentence))
+            if evidence_claim and (not unknown or assurance):
+                forbidden=True
+            if re.search(audience,sentence) and (re.search(quantified,sentence) or (re.search(improvement,sentence) and (not unknown or assurance))):
+                forbidden=True
+        if forbidden:
+            raise ValueError(f'Source-plan {plan.candidateId} plan claims unsupported audience or render evidence: {text}')
+
 
 def validate_plan(source,context,plan):
     p=Plan.model_validate(plan) if isinstance(plan,dict) else plan
+    _validate_outcome_claims(p)
     contract=protected_contract(source,context);beats=_beats(source);by_id={b['id']:b for b in beats}
     if p.preservedStoryAnchors!=context['essentialEvents']:
-        raise ValueError('Source-plan improvement plan must preserve all approved event anchors in order')
+        raise ValueError(f'Source-plan {p.candidateId} must preserve all {len(context["essentialEvents"])} approved event anchors in order, including untouched events; received {len(p.preservedStoryAnchors)}')
     expected='OPENING_CAUSAL_LEGIBILITY' if p.candidateId=='candidate-a' else 'ESCALATION_EXECUTION_FEASIBILITY'
     if p.objective!=expected:raise ValueError('Source-plan candidate objective is not the assigned strategy')
     ids=[c.sourceBeatId for c in p.changes]
@@ -127,8 +256,6 @@ def validate_plan(source,context,plan):
             # Evidence must point to those actual progression tokens, not an
             # unrelated occurrence of a number elsewhere in the event.
             _check_bindings(c.stateSequence,c.sourceQuote,(match.start(1),match.end(1)))
-        if any(x in text.lower() for text in [p.baselineOpportunity,p.proposedVisualConsequence,p.materialDifference,*p.risksReducedHypotheses] for x in ['guaranteed retention','proven retention','measured retention','guaranteed render']):
-            raise ValueError('Source-plan plan claims unsupported audience or render evidence')
     changed={c.sourceBeatId:c for c in p.changes}
     timeline=[(changed[b['id']].startTime,changed[b['id']].endTime) if b['id'] in changed else (b['startTime'],b['endTime']) for b in beats]
     if timeline[0][0]!=0 or timeline[-1][1]!=float(contract['generatorSettings']['duration']) or any(a[1]!=b[0] for a,b in zip(timeline,timeline[1:])):
@@ -170,17 +297,23 @@ def compile_plan(source,context,plan):
     normalize_candidate_profiles(source,[candidate],context)
     return candidate
 
-SYSTEM='''Return exactly two structured execution plans, not prompt rewrites. The server supplies the protected story contract and compiles validated plans into full prompts. Do not change story events, their order, character, physical rule or ending. Candidate A: opening causal legibility and first-frame curiosity through the exact expectedSurface.value and actualSurface.value from openingCausalParticipants sharing a readable frame. Missing supported participants cannot be invented. Candidate B: escalation/action diversity and execution feasibility through at least two distinct existing mid-section actions, one action/consequence focus pair and a complete ordered source-state sequence in continuous execution. Every binding supplies an exact quote within that change's sourceQuote. The server retains all exact matching Unicode spans (and binds state values to their explicit progression clause); do not supply guessed offsets. Preserve every actionAnchor verbatim in preservedStoryAnchors, in order. Framing adjectives, camera labels and arbitrary time splits alone are insufficient. State sequences must use actual explicit source progression; never invent a stage or object. Baseline opportunities and consequences are text-only hypotheses. Explain exact production changes, their visual consequences, materiality, risks and unknowns. No measured audience claims, automatic approval or render authorization. Current server profile is authoritative; historical AUTO is not. Keep full selected duration and ordered contiguous events. Only two plans are returned; the server validates materiality before compiling any candidate.'''
+SYSTEM='''Generate two materially distinct execution plans through openingPlan and escalationPlan. These are production hypotheses, not prompt rewrites. The server owns approved story events/order, character identity, physical rule, ending, source quotes, evidence bindings, target duration and production profile. You only select supplied executionOptionIds, framing/motion and explain the proposed material intervention, visual consequence, risks and unknowns.
+OpeningPlan improves simultaneous intended/actual contact visibility and first-frame causal legibility: select an opening option in openingChange. EscalationPlan improves readability of distinct approved actions and escalation states: select an action-consequence option in actionConsequenceChange AND a progression option in progressionChange. They must be separate source events; the catalog already provides disjoint options. The server exposes the complete source-state sequence through explicit continuous state holds. Preserve existing beat timing, story and ending. Do not substitute camera adjectives or arbitrary timing splits for these required interventions.
+Do not return sourceQuote, sourceBeatId, preservedStoryAnchors, objective, stagingMode, focusBindings or stateSequence: these fields are resolved from the immutable server catalog after your selections. Do not invent an executionOptionId or narrative action. Each option refers to an alternative production treatment of an existing source event, not an additional story beat. Return both plan slots, complete descriptive fields and no full prompts.
+Explain concrete causal staging/exposure benefits as unproven hypotheses. Risks may discuss compositional density, causal ambiguity, continuity or execution uncertainty. Do not claim increased engagement, better retention, higher views, improved watch time, measured audience benefit or guaranteed render success. Audience response and actual visual/generator feasibility remain unmeasured unknowns. No automatic approval or render authorization. The server validates both expanded plans before compiling either full prompt.'''
 
 def perform_plan_first(source,context,provider,model):
-    contract=protected_contract(source,context)
-    provider.response_format=response_format();provider.last_request_started=True
-    raw=provider.complete(json.dumps({'phase':'MATERIAL_IMPROVEMENT_PLANS','protectedStoryContract':contract},ensure_ascii=False),system=SYSTEM,temperature=0)
+    payload=plan_request_payload(source,context);contract=payload['protectedStoryContract']
+    provider.response_format=response_format(options=payload['executionOptions']);provider.last_request_started=True
+    raw=provider.complete(json.dumps(payload,ensure_ascii=False),system=SYSTEM,temperature=0)
     provider.last_raw_response=raw
     try:value=json.loads(raw)
     except (ValueError,TypeError) as error:raise ValueError('Optimization plan provider returned invalid JSON') from error
     provider.last_role_result=deepcopy(value)
-    parsed=Plans.model_validate(value)
+    if context.get('optimizationGenerationInstructionsVersion')==INSTRUCTIONS_VERSION and not getattr(provider,'saved_result_recovery',False) and not ('openingPlan' in value and 'escalationPlan' in value):
+        raise ValueError('Source-plan generation requires source-owned openingPlan and escalationPlan slots')
+    normalized=expand_source_owned_plans(value,payload) if 'openingPlan' in value or 'escalationPlan' in value else value
+    parsed=Plans.model_validate(normalized)
     if [p.candidateId for p in parsed.plans]!=['candidate-a','candidate-b']:raise ValueError('Source-plan strategies must be candidate-a then candidate-b')
     # All plans pass before a single complete candidate is compiled.
     proofs=[validate_plan(source,context,p) for p in parsed.plans]

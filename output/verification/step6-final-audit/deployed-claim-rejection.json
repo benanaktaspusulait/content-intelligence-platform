@@ -1,0 +1,13 @@
+{
+  "status": 409,
+  "response": {
+    "detail": {
+      "category": "SOURCE_PLAN_VALIDATION_FAILED",
+      "detail": "Source-plan plan claims unsupported audience or render evidence",
+      "providerDispatched": false,
+      "providerCallsThisOperation": 0,
+      "profileValidations": [],
+      "profileValidation": null
+    }
+  }
+}

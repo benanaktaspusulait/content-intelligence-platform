@@ -296,6 +296,7 @@ class WorkflowNoRepairDecisionPostgresTest {
       String endpoint=invocation.getArgument(0); Map<String,Object> body=invocation.getArgument(1);
       if (endpoint.equals("creative-role")) {
         assertThat((Map<String,Object>)body.get("context")).containsEntry("optimizationGenerationContractVersion","plan-first-v1");
+        assertThat((Map<String,Object>)body.get("context")).containsEntry("optimizationGenerationInstructionsVersion","plan-first-owned-source-v3");
         body=Map.of("text",body.get("text"),"context",body.get("context"),"providerResult",Map.of("candidates",providerValues),"diagnostics",Map.of("model","mock-saved-response","providerRequestId","fixture-provider-response-1"));
         endpoint="optimization-recovery";
       }
@@ -396,6 +397,7 @@ class WorkflowNoRepairDecisionPostgresTest {
       String endpoint=invocation.getArgument(0);Map<String,Object> body=invocation.getArgument(1);
       if(endpoint.equals("creative-role")) {
         assertThat((Map<String,Object>)body.get("context")).containsEntry("optimizationGenerationContractVersion","plan-first-v1");
+        assertThat((Map<String,Object>)body.get("context")).containsEntry("optimizationGenerationInstructionsVersion","plan-first-owned-source-v3");
         body=Map.of("text",body.get("text"),"context",body.get("context"),"providerResult",providerPlans,"diagnostics",Map.of("model","mock-plan-provider","providerRequestId","fixture-plan-response-1"));
         endpoint="optimization-recovery";
       }

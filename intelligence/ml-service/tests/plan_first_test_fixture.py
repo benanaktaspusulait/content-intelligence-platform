@@ -30,3 +30,15 @@ def valid_plan_fixture(source=None,context=None):
                 'risksReducedHypotheses':['Explicit visibility may reduce causal ambiguity.'],'unknowns':['Clarity and generator feasibility require rendered visual evidence.'],
                 'evidenceStatus':'HYPOTHESIS_ONLY','changes':changes}
     return source,context,{'plans':[plan('candidate-a','OPENING_CAUSAL_LEGIBILITY',[a]),plan('candidate-b','ESCALATION_EXECUTION_FEASIBILITY',[b1,b2])]}
+
+def source_owned_plan_fixture():
+    source,context,full=valid_plan_fixture()
+    context['optimizationGenerationInstructionsVersion']='plan-first-owned-source-v3'
+    def narrative(plan):
+        return {k:v for k,v in plan.items() if k not in ('candidateId','objective','preservedStoryAnchors','changes')}
+    def choice(change,kind):
+        return {'executionOptionId':f'{kind}:{change["sourceBeatId"]}','framing':change['framing'],'motion':change['motion']}
+    a,b=full['plans']
+    return source,context,{'openingPlan':{**narrative(a),'openingChange':choice(a['changes'][0],'opening')},
+                           'escalationPlan':{**narrative(b),'actionConsequenceChange':choice(b['changes'][0],'action-consequence'),
+                                             'progressionChange':choice(b['changes'][1],'progression')}}

@@ -1,0 +1,55 @@
+{
+  "status": "PLAN_FIRST_OPTIMIZATION_READY",
+  "attemptId": "41e41809-714a-441c-a681-a093453f4191",
+  "rootCause": "Provider returned source fragments instead of whole baseline beats. Its second plan also chose two action/consequence treatments and no required progression treatment. Model-owned copies and unconstrained generic change slots made both errors possible despite instructions.",
+  "fix": {
+    "instructionsVersion": "plan-first-owned-source-v3",
+    "protocol": "Provider selects executionOptionId, framing and motion in separate openingPlan / escalationPlan slots. Immutable sourceQuote/sourceBeatId/timing/anchors/stagingMode/focusBindings/stateSequence are resolved from the server source catalog.",
+    "structuralConstraints": "Opening/pair/progression IDs have separate schema enums. Candidate B requires one action/consequence AND one progression choice on disjoint existing events. Arbitrary IDs and copied quote fields are rejected.",
+    "preDispatch": "Unsupported source catalog fails before provider creation; complete payload/schema/system bytes remain in budget preflight.",
+    "validation": "All expanded plans pass unchanged source/materiality/canonical/F8 validators before prompt compilation; old invalid responses are not repaired or accepted.",
+    "idempotency": "Server instructions revision is part of request fingerprint; repeated same authorized request reuses persisted result; no automatic retry."
+  },
+  "tests": {
+    "mlPassed": 290,
+    "backendPassed": 13,
+    "backendSkipped": 0,
+    "actualAttempt41Fixture": "Source fragments rejected before compilation. Correcting quotes alone still rejects missing progression.",
+    "newMockPipeline": "Source-owned choices through deployed ML and disposable PostgreSQL; both candidates85/B,8canonical rules,UNKNOWNsemantic fidelity,F8blocked; no new prompt version; repeat1mockdispatch.",
+    "sourceBindingSpans": "All exact global spans verified against immutable Content10/Prompt10 baseline.",
+    "liveUI": "Actual saved comparison staysKEEP_ORIGINAL; generation and approval disabled without consent/selection."
+  },
+  "files": [
+    "intelligence/ml-service/app/workflow/optimization_plans.py",
+    "intelligence/ml-service/app/workflow/creative_roles.py",
+    "intelligence/ml-service/app/workflow/api.py",
+    "intelligence/backend/src/main/java/com/pompomhills/intelligence/workflow/WorkflowService.java",
+    "intelligence/backend/src/test/java/com/pompomhills/intelligence/workflow/WorkflowNoRepairDecisionPostgresTest.java",
+    "intelligence/backend/src/test/resources/plan-first-provider-response.json",
+    "intelligence/ml-service/tests/plan_first_test_fixture.py",
+    "intelligence/ml-service/tests/test_plan_first_optimization.py",
+    "intelligence/ml-service/tests/fixtures/optimization-41-source-quote.json"
+  ],
+  "historicalAttemptUnchanged": true,
+  "productionIntegrity": {
+    "comparison": true,
+    "prompts": true,
+    "analysis": true
+  },
+  "deployedSourceHashes": {
+    "intelligence/ml-service/app/workflow/optimization_plans.py": "53c6e1dca7adaf02ba12ea733bba02870efa354d0795eda08c105ca6e5cb1355",
+    "intelligence/ml-service/app/workflow/creative_roles.py": "7e305282901af0b9a7a6abfa2f3e9a9653d7734873090ae016bc29f5d86cbd80",
+    "intelligence/ml-service/app/workflow/api.py": "9aa9ba2e6996d1d1147e9c15a9f71318fb57850a80b9b98b0ae47d278ce67d7a"
+  },
+  "deployment": "./intelligence/scripts/deploy.sh followed by --check; ML/backend/frontend healthy",
+  "paidProviderCallsThisFix": 0,
+  "newProductionEvaluation": false,
+  "newProductionCandidates": false,
+  "commitPushCommands": 0,
+  "limitations": [
+    "No new real provider response or rendered/audience evidence tested.",
+    "Catalog currently supports source-bound causal staging, action/consequence and explicit progression; unknown/missing evidence fails before paid dispatch.",
+    "Existing beat timing is server-owned and preserved; no new narrative events or timing split is invented.",
+    "Previously reported unrelated VideoDetailPage full-suite failures remain outside this fix."
+  ]
+}

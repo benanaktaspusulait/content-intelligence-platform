@@ -193,13 +193,14 @@ def optimization_recovery(request: OptimizationRecoveryRequest) -> dict[str, Any
     from copy import deepcopy
     # No SDK, provider factory, paid configuration or network path is reachable.
     class SavedResponse:
+        saved_result_recovery = True
         def complete(self, *args, **kwargs):
             return json.dumps(request.providerResult, ensure_ascii=False)
     provider = SavedResponse()
     try:
         context = dict(request.context)
         # Historical candidate responses retain their legacy source contract.
-        if 'plans' not in request.providerResult: context['optimizationGenerationContractVersion']='profile-ownership-v1'
+        if not any(k in request.providerResult for k in ('plans','openingPlan','escalationPlan')): context['optimizationGenerationContractVersion']='profile-ownership-v1'
         result = perform_role('PROMPT_OPTIMIZATION', request.text, context,
                               provider, str(request.diagnostics.get('model', 'saved-response')))
     except ValueError as error:

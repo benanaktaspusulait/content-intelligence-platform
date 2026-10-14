@@ -236,6 +236,7 @@ public class WorkflowService {
       throw new IllegalStateException("Source-bound essential event anchors are unavailable");
     var context = new LinkedHashMap<String, Object>();
     context.put("optimizationGenerationContractVersion", "plan-first-v1");
+    context.put("optimizationGenerationInstructionsVersion", "plan-first-owned-source-v3");
     context.put("productionSettingsRecordId", productionSettings.get("recordId"));
     context.put("protectedIntent", baseline.getOrDefault("protectedIntent", essentialEvents));
     context.put("analysisRunId", analysisId.toString());

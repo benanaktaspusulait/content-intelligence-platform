@@ -1018,12 +1018,14 @@ def run_paid_role(role: str, text: str, context: dict[str, Any], max_cost_usd: f
         if ownership:
             payload_bytes += len(json.dumps({k:v for k,v in ownership.items() if k != 'baselinePromptText'}, ensure_ascii=False).encode('utf-8'))
     if plan_first:
-        from .optimization_plans import protected_contract, response_format
-        payload_bytes = len(json.dumps({'phase':'MATERIAL_IMPROVEMENT_PLANS','protectedStoryContract':protected_contract(text,context)},ensure_ascii=False).encode('utf-8'))
+        from .optimization_plans import plan_request_payload, response_format, SYSTEM as plan_system
+        plan_payload = plan_request_payload(text,context)
+        payload_bytes = len(json.dumps(plan_payload,ensure_ascii=False).encode('utf-8'))
     output_token_limit = 4000 if role == 'STORY' or plan_first else 2000
     schema_bytes = len(json.dumps(OPTIMIZATION_RESPONSE_FORMAT).encode('utf-8')) if role == 'PROMPT_OPTIMIZATION' else 0
-    if plan_first: schema_bytes = len(json.dumps(response_format()).encode('utf-8'))
-    upper_bound = ((payload_bytes + schema_bytes + 2000) * input_rate + output_token_limit * output_rate) / 1_000_000
+    if plan_first: schema_bytes = len(json.dumps(response_format(options=plan_payload['executionOptions'])).encode('utf-8'))
+    system_bytes = len(plan_system.encode('utf-8')) if plan_first else 2000
+    upper_bound = ((payload_bytes + schema_bytes + system_bytes) * input_rate + output_token_limit * output_rate) / 1_000_000
     if payload_bytes > 24000 or upper_bound > max_cost_usd:
         raise ValueError('Request exceeds approved cost ceiling')
     provider = DeepSeekTextProvider(model) if role == 'STORY' else OpenAIProvider(model=model)

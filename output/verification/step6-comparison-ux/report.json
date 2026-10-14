@@ -1,6 +1,5 @@
 {
-  "status": "STEP_6_COMPARISON_UX_INCOMPLETE",
-  "pending": "Final visual fixes and redeploy verification",
+  "status": "STEP_6_COMPARISON_UX_ACCEPTED",
   "files": [
     "intelligence/frontend/src/app/pages/quality-validator/post-family-workflow.component.ts",
     "intelligence/frontend/src/app/pages/quality-validator/post-family-workflow.spec.ts",
@@ -46,7 +45,8 @@
   "integrity": {
     "prompts": true,
     "analysis": true,
-    "comparison": true
+    "comparison": true,
+    "finalComparisonUnchanged": true
   },
   "liveVerification": {
     "widths": [
@@ -58,7 +58,7 @@
     "pageHorizontalOverflow": false,
     "keyboard": "Space expands focused native Original summary; candidate prompts remain independently collapsed",
     "blockedCandidate": "Review/selection allowed under existing contract; approval remains disabled",
-    "savedReload": "Same comparison selection preserved; diff selector synchronization final verification pending",
+    "savedReload": "PASS: visible selector and table header both Candidate B after saved GET; selection retained, approval blocked",
     "screenshots": [
       "desktop-1440.png",
       "laptop-1024.png",
@@ -66,7 +66,8 @@
       "mobile-390.png",
       "mobile-diff.png"
     ],
-    "designEvaluation": "Round2 PASS, same-model independent evaluator; different provider unavailable"
+    "designEvaluation": "Round2 PASS, same-model independent evaluator; different provider unavailable",
+    "finalDeployedImage": "sha256:4c37892ef8a3acff59c65257da7c2237ad163389e611a4083ea628709b1d2367"
   },
   "providerRequests": "No optimization generation or approval endpoint used; only saved comparison GET and saved validation lookup",
   "limitations": [

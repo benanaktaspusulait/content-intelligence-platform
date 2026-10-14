@@ -1,0 +1,55 @@
+{
+  "status": "PLAN_FIRST_OPTIMIZATION_READY",
+  "attemptId": "73c6f013-ea5f-499e-a152-0f407a39337b",
+  "historicalAttemptStatus": "PROVIDER_RESULT_REJECTED; unchanged",
+  "exactRootCause": [
+    "Provider supplied increased viewer engagement and better audience retention without evidence.",
+    "Candidate A preserved only1/5 events; Candidate B only2/5 and in reversed order.",
+    "Opening had1 focusBinding and a misplaced stateSequence. Action/consequence also split into wrong fields. Progression was a whole sentence instead of separate two/four/eight states.",
+    "Request gave high-level instructions without concrete binding protocol; anchor schema permitted arbitrary1-30 items."
+  ],
+  "fix": [
+    "Exact complete ordered anchor list supplied for both plans; provider schema min/max match source event count and enumerates supported anchors.",
+    "Source-derived opening/pair/progression binding examples supplied without invented spans.",
+    "Explicit field shapes and audience-risk examples added; uncertainty/negated-evidence language preserved.",
+    "All prompt payload, response schema and system instruction bytes included in pre-dispatch cost bound.",
+    "Server-owned instructions revision plan-first-source-bindings-v2 participates in fingerprint; same request remains idempotent. No automatic dispatch or retry.",
+    "Rejected diagnostics now identify candidate and offending statement."
+  ],
+  "files": [
+    "intelligence/ml-service/app/workflow/optimization_plans.py",
+    "intelligence/ml-service/app/workflow/creative_roles.py",
+    "intelligence/backend/src/main/java/com/pompomhills/intelligence/workflow/WorkflowService.java",
+    "intelligence/ml-service/tests/test_plan_first_optimization.py",
+    "intelligence/ml-service/tests/fixtures/optimization-73-plan-contract.json",
+    "intelligence/backend/src/test/java/com/pompomhills/intelligence/workflow/WorkflowNoRepairDecisionPostgresTest.java"
+  ],
+  "tests": {
+    "mlPassed": 282,
+    "backendPassed": 13,
+    "backendSkipped": 0,
+    "actualFailedResponseFixture": "Rejected before compilation, raw evidence preserved; removing audience assertions still rejects missing protected anchors.",
+    "validMockPlans": "Two valid material plans pass actual deployed source-plan/canonical/F8 pipelines on Content10/Prompt10; repeat uses saved result, no version created."
+  },
+  "paidProviderCallsThisFix": 0,
+  "productionCandidateWrites": 0,
+  "historicalAttemptUnchanged": true,
+  "productionPromptOrStoryChanged": false,
+  "deployScript": "./intelligence/scripts/deploy.sh",
+  "services": [
+    "ml-service",
+    "backend",
+    "frontend"
+  ],
+  "healthCheck": "./intelligence/scripts/deploy.sh --check passed",
+  "deployedSourceHashes": {
+    "intelligence/ml-service/app/workflow/optimization_plans.py": "e28e5a7e77f75c9b3a7ffc14bf93ba3e9355a0e149c85367957f2a98bda1afeb",
+    "intelligence/ml-service/app/workflow/creative_roles.py": "545eb79c00f3b4865f9d0e65e1da187359015e4b62c079c12727b5fd98cfc656"
+  },
+  "liveUI": "Saved KEEP_ORIGINAL comparison remains85/B; generation/approval were not clicked.",
+  "limitations": [
+    "Historical response73 is invalid and cannot be treated as recovered valid candidates.",
+    "No new real provider response tested; any new paid attempt requires operator action and budget consent.",
+    "Previously reported unrelated VideoDetailPage full-suite failures remain outside this fix."
+  ]
+}

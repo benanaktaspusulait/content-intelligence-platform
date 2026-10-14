@@ -1,0 +1,90 @@
+{
+  "status": "PLAN_FIRST_OPTIMIZATION_READY",
+  "uiStatus": "STEP_6_COMPARISON_UX_ACCEPTED",
+  "date": "2026-10-14",
+  "auditFix": {
+    "issue": "Quantitative unsupported retention claims escaped phrase-only plan validation.",
+    "change": "Validate outcome claims across all descriptive plan fields before any full prompt compilation. Retain raw rejected mock response for diagnosis. Unmeasured audience unknowns remain permitted.",
+    "files": [
+      "intelligence/ml-service/app/workflow/optimization_plans.py",
+      "intelligence/ml-service/tests/test_plan_first_optimization.py"
+    ],
+    "newDeterministicCases": 8
+  },
+  "requirements": {
+    "protectedStoryContract": "PASS: events/order, identity, textual physical rule, ending and authoritative profile/generator/duration protected.",
+    "materialPlans": "PASS: A source-bound opening causal staging; B existing action/consequence plus complete progression state holds.",
+    "planValidationBeforeRewrite": "PASS: both plans validate before deterministic compilation; cosmetic, unsupported quotes, reordered events, timing-only and audience claims fail.",
+    "fullCandidates": "PASS: complete prompts through existing source-plan/canonical pipelines; historical AUTO stays baseline-only.",
+    "comparison": "PASS: actual staging/state changes assessed without guaranteed audience benefit; historical KEEP_ORIGINAL unchanged.",
+    "existingSavedRecords": "PASS: production comparison, prompt versions and analysis identical before/after.",
+    "sourceSpans": "PASS: every source binding global span matches exact baseline Unicode text.",
+    "automaticPromptVersion": "NONE: disposable test DB retains exactly1 prompt version with immutable source unchanged.",
+    "storyFidelity": "UNKNOWN; no semantic evidence invented.",
+    "F8": "BLOCKED_PENDING_EVIDENCE: verified Mimi reference and accepted start frame missing."
+  },
+  "tests": {
+    "mlPassed": 279,
+    "frontendFocusedPassed": 64,
+    "backendPassed": 13,
+    "backendSkipped": 0,
+    "backendMockFlow": "Actual Content10/Prompt10 saved fixtures, disposable PostgreSQL, deployed ML, mocked creative-role boundary; idempotent1 dispatch.",
+    "mockCanonicalScores": [
+      85,
+      85
+    ],
+    "mockRulesEvaluated": [
+      8,
+      8
+    ],
+    "deployedUnsupportedClaim": "HTTP409 SOURCE_PLAN_VALIDATION_FAILED, providerCallsThisOperation0"
+  },
+  "deployment": {
+    "script": "./intelligence/scripts/deploy.sh",
+    "services": [
+      "ml-service",
+      "backend",
+      "frontend"
+    ],
+    "finalFixScript": "./intelligence/scripts/deploy.sh ml-service",
+    "checkScript": "./intelligence/scripts/deploy.sh --check",
+    "allHealthy": true
+  },
+  "deployedSourceVerification": {
+    "intelligence/ml-service/app/workflow/optimization_plans.py": {
+      "sha256": "3a604e356c10f50e92be3f75fc1848b6455b6b78c3c9af211060a34c26f137ee",
+      "deployedMatches": true
+    },
+    "intelligence/ml-service/app/workflow/creative_roles.py": {
+      "sha256": "5f821cacb05772ba283cb845d5b1a3e8286bc7ffe1894fbbb50b69c1c5e5e208",
+      "deployedMatches": true
+    },
+    "intelligence/ml-service/app/workflow/optimization_comparison.py": {
+      "sha256": "2fcd90f7ea500ce99466c4e021eeb19e103b4930b3ee5cec729fc389c5131278",
+      "deployedMatches": true
+    },
+    "intelligence/ml-service/app/workflow/optimization_distinctness.py": {
+      "sha256": "f0b1f8d59b7348701539a78ea0000fbf3be620a33b3ff9cf3d2246bf8bb089ee",
+      "deployedMatches": true
+    },
+    "intelligence/ml-service/app/workflow/api.py": {
+      "sha256": "f0dcae5a5b24adb157e486cc94d5c595c86d9b783b4bdb5e722aed7b5fa886e6",
+      "deployedMatches": true
+    }
+  },
+  "integrity": {
+    "comparison": true,
+    "prompts": true,
+    "analysis": true
+  },
+  "liveUI": "Saved comparison loaded by actual browser remains KEEP_ORIGINAL; two mocked material candidates displayed via read-only proxy without production generation/persistence.",
+  "paidProviderCalls": 0,
+  "newProductionEvaluation": false,
+  "approvalOperations": 0,
+  "commitPushCommands": 0,
+  "remainingLimitations": [
+    "No real provider generation or audience/render evidence collected, as required.",
+    "Source-bound compiler supports causal staging/action-consequence/explicit progression; unsupported evidence fails closed.",
+    "Previously reported full frontend suite has7 failures/8errors in unmodified VideoDetailPage tests; focused64 and production build pass."
+  ]
+}

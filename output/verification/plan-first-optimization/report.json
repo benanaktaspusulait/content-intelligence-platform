@@ -2,9 +2,10 @@
   "status": "PLAN_FIRST_OPTIMIZATION_READY",
   "implementation": "One provider plan response; protected source contract; two material plans validated before deterministic prompt compilation; existing canonical/source validators",
   "tests": {
-    "ml": 149,
+    "ml": 279,
     "backend": 13,
-    "frontend_before_ux": 59
+    "frontend_before_ux": 59,
+    "frontend": 64
   },
   "contentId": 10,
   "promptVersionId": 10,
@@ -25,7 +26,7 @@
   ],
   "deployedSourceVerification": {
     "intelligence/ml-service/app/workflow/optimization_plans.py": {
-      "sha256": "a3592699eacaee1b65aacd585c5af944ec3502a8d2b4f57d649bce7c49642280",
+      "sha256": "3a604e356c10f50e92be3f75fc1848b6455b6b78c3c9af211060a34c26f137ee",
       "deployedMatches": true
     },
     "intelligence/ml-service/app/workflow/creative_roles.py": {
@@ -39,6 +40,10 @@
     "intelligence/ml-service/app/workflow/optimization_distinctness.py": {
       "sha256": "f0b1f8d59b7348701539a78ea0000fbf3be620a33b3ff9cf3d2246bf8bb089ee",
       "deployedMatches": true
+    },
+    "intelligence/ml-service/app/workflow/api.py": {
+      "sha256": "f0dcae5a5b24adb157e486cc94d5c595c86d9b783b4bdb5e722aed7b5fa886e6",
+      "deployedMatches": true
     }
   },
   "historicalAnalysisUnchanged": true,
@@ -49,7 +54,7 @@
     "intelligence/ml-service/app/workflow/creative_roles.py",
     "intelligence/ml-service/app/workflow/optimization_distinctness.py",
     "intelligence/ml-service/app/workflow/optimization_comparison.py",
-    "intelligence/ml-service/app/api.py",
+    "intelligence/ml-service/app/workflow/api.py",
     "intelligence/backend/src/main/java/com/pompomhills/intelligence/workflow/WorkflowService.java",
     "intelligence/backend/src/test/java/com/pompomhills/intelligence/workflow/WorkflowNoRepairDecisionPostgresTest.java",
     "intelligence/backend/src/test/resources/plan-first-provider-response.json",
@@ -57,5 +62,6 @@
     "intelligence/ml-service/tests/test_plan_first_optimization.py",
     "intelligence/frontend/src/app/pages/quality-validator/post-family-workflow.component.ts",
     "intelligence/frontend/src/app/pages/quality-validator/post-family-workflow.spec.ts"
-  ]
+  ],
+  "finalAudit": "../step6-final-audit/report.json"
 }
