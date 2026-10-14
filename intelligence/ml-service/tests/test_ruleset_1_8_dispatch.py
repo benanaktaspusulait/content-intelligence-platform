@@ -40,7 +40,7 @@ def test_registry_preserves_declared_severities_and_stage():
         assert registered[r["id"]].get("evaluation_stage", "PRE_RENDER") == r.get(
             "evaluation_stage", "PRE_RENDER"
         )
-    assert RuleVersionManager(settings.rules_dir).get_latest_version() == "1.9"
+    assert RuleVersionManager(settings.rules_dir).get_latest_version() == "1.10"
 
 
 @pytest.mark.parametrize("name", list(INPUTS))

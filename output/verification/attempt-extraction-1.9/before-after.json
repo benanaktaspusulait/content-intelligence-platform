@@ -1,0 +1,734 @@
+{
+  "Original": {
+    "score18": 82.80208333333336,
+    "score19": 82.80208333333336,
+    "outcomeChanges": [],
+    "actorAttempts": [
+      {
+        "beat": "beat_02",
+        "evidence": {
+          "sourceQuote": "Mimi tries to peel the stuck note away with her other hand",
+          "sourceSpan": [
+            505,
+            563
+          ],
+          "action": "Mimi tries to peel the stuck note away with her other hand",
+          "primaryVerb": "PEEL",
+          "relationship": "EXPLICIT_INTENT_OR_CONTINUATION",
+          "actorReference": {
+            "value": "Mimi",
+            "sourceQuote": "Mimi",
+            "sourceSpan": [
+              15,
+              19
+            ]
+          },
+          "contractVersion": "actor-source-bound-v2",
+          "classification": "SOURCE_BOUND_ATTEMPT",
+          "sourceBound": true,
+          "actor": "Mimi",
+          "actions": [
+            {
+              "classification": "CHARACTER_ATTEMPT",
+              "actor": "Mimi",
+              "actorQuote": "Mimi",
+              "actorLocalSpan": [
+                6,
+                10
+              ],
+              "action": "Mimi tries to peel the stuck note away with her other hand",
+              "localSpan": [
+                6,
+                64
+              ],
+              "primaryVerb": "PEEL",
+              "verbQuote": "peel",
+              "verbLocalSpan": [
+                20,
+                24
+              ],
+              "relationship": "EXPLICIT_INTENT_OR_CONTINUATION",
+              "confidence": 0.9,
+              "semanticVerification": "NOT_PERFORMED",
+              "sourceSpan": [
+                505,
+                563
+              ],
+              "actorSourceSpan": [
+                505,
+                509
+              ],
+              "verbSourceSpan": [
+                519,
+                523
+              ]
+            },
+            {
+              "classification": "CHARACTER_ACTION",
+              "actor": "Mimi",
+              "actorQuote": "Mimi",
+              "actorLocalSpan": [
+                124,
+                128
+              ],
+              "action": "Mimi pulls at the note",
+              "localSpan": [
+                124,
+                146
+              ],
+              "primaryVerb": "PULL",
+              "verbQuote": "pulls",
+              "verbLocalSpan": [
+                129,
+                134
+              ],
+              "relationship": null,
+              "confidence": null,
+              "semanticVerification": "NOT_PERFORMED",
+              "sourceSpan": [
+                623,
+                645
+              ],
+              "actorSourceSpan": [
+                623,
+                627
+              ],
+              "verbSourceSpan": [
+                628,
+                633
+              ]
+            }
+          ],
+          "confidence": 0.9,
+          "duplicateSourceEvent": false,
+          "semanticVerification": "NOT_PERFORMED"
+        }
+      },
+      {
+        "beat": "beat_03",
+        "evidence": {
+          "sourceQuote": "Mimi continues to pull",
+          "sourceSpan": [
+            685,
+            707
+          ],
+          "action": "Mimi continues to pull",
+          "primaryVerb": "PULL",
+          "relationship": "EXPLICIT_INTENT_OR_CONTINUATION",
+          "actorReference": {
+            "value": "Mimi",
+            "sourceQuote": "Mimi",
+            "sourceSpan": [
+              15,
+              19
+            ]
+          },
+          "contractVersion": "actor-source-bound-v2",
+          "classification": "SOURCE_BOUND_ATTEMPT",
+          "sourceBound": true,
+          "actor": "Mimi",
+          "actions": [
+            {
+              "classification": "CHARACTER_ATTEMPT",
+              "actor": "Mimi",
+              "actorQuote": "Mimi",
+              "actorLocalSpan": [
+                7,
+                11
+              ],
+              "action": "Mimi continues to pull",
+              "localSpan": [
+                7,
+                29
+              ],
+              "primaryVerb": "PULL",
+              "verbQuote": "pull",
+              "verbLocalSpan": [
+                25,
+                29
+              ],
+              "relationship": "EXPLICIT_INTENT_OR_CONTINUATION",
+              "confidence": 0.9,
+              "semanticVerification": "NOT_PERFORMED",
+              "sourceSpan": [
+                685,
+                707
+              ],
+              "actorSourceSpan": [
+                685,
+                689
+              ],
+              "verbSourceSpan": [
+                703,
+                707
+              ]
+            },
+            {
+              "classification": "CHARACTER_ACTION",
+              "actor": "Mimi",
+              "actorQuote": "Mimi",
+              "actorLocalSpan": [
+                95,
+                99
+              ],
+              "action": "Mimi covered in notes",
+              "localSpan": [
+                95,
+                116
+              ],
+              "primaryVerb": "COVER",
+              "verbQuote": "covered",
+              "verbLocalSpan": [
+                100,
+                107
+              ],
+              "relationship": null,
+              "confidence": null,
+              "semanticVerification": "NOT_PERFORMED",
+              "sourceSpan": [
+                773,
+                794
+              ],
+              "actorSourceSpan": [
+                773,
+                777
+              ],
+              "verbSourceSpan": [
+                778,
+                785
+              ]
+            },
+            {
+              "classification": "CHARACTER_ACTION",
+              "actor": "Mimi",
+              "actorQuote": "she",
+              "actorLocalSpan": [
+                162,
+                165
+              ],
+              "action": "she pulls, progressively covering her arms, legs and face",
+              "localSpan": [
+                162,
+                219
+              ],
+              "primaryVerb": "PULL",
+              "verbQuote": "pulls",
+              "verbLocalSpan": [
+                166,
+                171
+              ],
+              "relationship": null,
+              "confidence": null,
+              "semanticVerification": "NOT_PERFORMED",
+              "sourceSpan": [
+                840,
+                897
+              ],
+              "actorSourceSpan": [
+                840,
+                843
+              ],
+              "verbSourceSpan": [
+                844,
+                849
+              ]
+            }
+          ],
+          "confidence": 0.9,
+          "duplicateSourceEvent": false,
+          "semanticVerification": "NOT_PERFORMED"
+        }
+      }
+    ]
+  },
+  "candidate-a": {
+    "score18": 86.96875000000003,
+    "score19": 82.80208333333336,
+    "outcomeChanges": [
+      {
+        "ruleId": "ATTEMPT_001",
+        "before": "PASS",
+        "after": "FAIL"
+      }
+    ],
+    "actorAttempts": [
+      {
+        "beat": "beat_02",
+        "evidence": {
+          "actor": "Mimi",
+          "action": "Mimi tries to peel the stuck note away with her other hand",
+          "actions": [
+            {
+              "actor": "Mimi",
+              "action": "Mimi tries to peel the stuck note away with her other hand",
+              "localSpan": [
+                6,
+                64
+              ],
+              "verbQuote": "peel",
+              "actorQuote": "Mimi",
+              "confidence": 0.9,
+              "sourceSpan": [
+                566,
+                624
+              ],
+              "primaryVerb": "PEEL",
+              "relationship": "EXPLICIT_INTENT_OR_CONTINUATION",
+              "verbLocalSpan": [
+                20,
+                24
+              ],
+              "actorLocalSpan": [
+                6,
+                10
+              ],
+              "classification": "CHARACTER_ATTEMPT",
+              "verbSourceSpan": [
+                580,
+                584
+              ],
+              "actorSourceSpan": [
+                566,
+                570
+              ],
+              "semanticVerification": "NOT_PERFORMED"
+            },
+            {
+              "actor": "Mimi",
+              "action": "Mimi pulls at the note",
+              "localSpan": [
+                124,
+                146
+              ],
+              "verbQuote": "pulls",
+              "actorQuote": "Mimi",
+              "confidence": null,
+              "sourceSpan": [
+                684,
+                706
+              ],
+              "primaryVerb": "PULL",
+              "relationship": null,
+              "verbLocalSpan": [
+                129,
+                134
+              ],
+              "actorLocalSpan": [
+                124,
+                128
+              ],
+              "classification": "CHARACTER_ACTION",
+              "verbSourceSpan": [
+                689,
+                694
+              ],
+              "actorSourceSpan": [
+                684,
+                688
+              ],
+              "semanticVerification": "NOT_PERFORMED"
+            }
+          ],
+          "confidence": 0.9,
+          "sourceSpan": [
+            566,
+            624
+          ],
+          "primaryVerb": "PEEL",
+          "sourceBound": true,
+          "sourceQuote": "Mimi tries to peel the stuck note away with her other hand",
+          "relationship": "EXPLICIT_INTENT_OR_CONTINUATION",
+          "actorReference": {
+            "value": "Mimi",
+            "sourceSpan": [
+              15,
+              19
+            ],
+            "sourceQuote": "Mimi"
+          },
+          "classification": "SOURCE_BOUND_ATTEMPT",
+          "contractVersion": "actor-source-bound-v2",
+          "duplicateSourceEvent": false,
+          "semanticVerification": "NOT_PERFORMED"
+        }
+      },
+      {
+        "beat": "beat_03",
+        "evidence": {
+          "actor": "Mimi",
+          "action": "Mimi continues to pull",
+          "actions": [
+            {
+              "actor": "Mimi",
+              "action": "Mimi continues to pull",
+              "localSpan": [
+                7,
+                29
+              ],
+              "verbQuote": "pull",
+              "actorQuote": "Mimi",
+              "confidence": 0.9,
+              "sourceSpan": [
+                746,
+                768
+              ],
+              "primaryVerb": "PULL",
+              "relationship": "EXPLICIT_INTENT_OR_CONTINUATION",
+              "verbLocalSpan": [
+                25,
+                29
+              ],
+              "actorLocalSpan": [
+                7,
+                11
+              ],
+              "classification": "CHARACTER_ATTEMPT",
+              "verbSourceSpan": [
+                764,
+                768
+              ],
+              "actorSourceSpan": [
+                746,
+                750
+              ],
+              "semanticVerification": "NOT_PERFORMED"
+            },
+            {
+              "actor": "Mimi",
+              "action": "Mimi covered in notes",
+              "localSpan": [
+                95,
+                116
+              ],
+              "verbQuote": "covered",
+              "actorQuote": "Mimi",
+              "confidence": null,
+              "sourceSpan": [
+                834,
+                855
+              ],
+              "primaryVerb": "COVER",
+              "relationship": null,
+              "verbLocalSpan": [
+                100,
+                107
+              ],
+              "actorLocalSpan": [
+                95,
+                99
+              ],
+              "classification": "CHARACTER_ACTION",
+              "verbSourceSpan": [
+                839,
+                846
+              ],
+              "actorSourceSpan": [
+                834,
+                838
+              ],
+              "semanticVerification": "NOT_PERFORMED"
+            },
+            {
+              "actor": "Mimi",
+              "action": "she pulls, progressively covering her arms, legs and face",
+              "localSpan": [
+                162,
+                219
+              ],
+              "verbQuote": "pulls",
+              "actorQuote": "she",
+              "confidence": null,
+              "sourceSpan": [
+                901,
+                958
+              ],
+              "primaryVerb": "PULL",
+              "relationship": null,
+              "verbLocalSpan": [
+                166,
+                171
+              ],
+              "actorLocalSpan": [
+                162,
+                165
+              ],
+              "classification": "CHARACTER_ACTION",
+              "verbSourceSpan": [
+                905,
+                910
+              ],
+              "actorSourceSpan": [
+                901,
+                904
+              ],
+              "semanticVerification": "NOT_PERFORMED"
+            }
+          ],
+          "confidence": 0.9,
+          "sourceSpan": [
+            746,
+            768
+          ],
+          "primaryVerb": "PULL",
+          "sourceBound": true,
+          "sourceQuote": "Mimi continues to pull",
+          "relationship": "EXPLICIT_INTENT_OR_CONTINUATION",
+          "actorReference": {
+            "value": "Mimi",
+            "sourceSpan": [
+              15,
+              19
+            ],
+            "sourceQuote": "Mimi"
+          },
+          "classification": "SOURCE_BOUND_ATTEMPT",
+          "contractVersion": "actor-source-bound-v2",
+          "duplicateSourceEvent": false,
+          "semanticVerification": "NOT_PERFORMED"
+        }
+      }
+    ]
+  },
+  "candidate-b": {
+    "score18": 82.80208333333336,
+    "score19": 82.80208333333336,
+    "outcomeChanges": [],
+    "actorAttempts": [
+      {
+        "beat": "beat_02",
+        "evidence": {
+          "actor": "Mimi",
+          "action": "Mimi tries to peel the stuck note away with her other hand",
+          "actions": [
+            {
+              "actor": "Mimi",
+              "action": "Mimi tries to peel the stuck note away with her other hand",
+              "localSpan": [
+                6,
+                64
+              ],
+              "verbQuote": "peel",
+              "actorQuote": "Mimi",
+              "confidence": 0.9,
+              "sourceSpan": [
+                505,
+                563
+              ],
+              "primaryVerb": "PEEL",
+              "relationship": "EXPLICIT_INTENT_OR_CONTINUATION",
+              "verbLocalSpan": [
+                20,
+                24
+              ],
+              "actorLocalSpan": [
+                6,
+                10
+              ],
+              "classification": "CHARACTER_ATTEMPT",
+              "verbSourceSpan": [
+                519,
+                523
+              ],
+              "actorSourceSpan": [
+                505,
+                509
+              ],
+              "semanticVerification": "NOT_PERFORMED"
+            },
+            {
+              "actor": "Mimi",
+              "action": "Mimi pulls at the note",
+              "localSpan": [
+                92,
+                114
+              ],
+              "verbQuote": "pulls",
+              "actorQuote": "Mimi",
+              "confidence": null,
+              "sourceSpan": [
+                591,
+                613
+              ],
+              "primaryVerb": "PULL",
+              "relationship": null,
+              "verbLocalSpan": [
+                97,
+                102
+              ],
+              "actorLocalSpan": [
+                92,
+                96
+              ],
+              "classification": "CHARACTER_ACTION",
+              "verbSourceSpan": [
+                596,
+                601
+              ],
+              "actorSourceSpan": [
+                591,
+                595
+              ],
+              "semanticVerification": "NOT_PERFORMED"
+            },
+            {
+              "actor": "Mimi",
+              "action": "Mimi tries to peel the stuck note away with her other hand",
+              "localSpan": [
+                176,
+                234
+              ],
+              "verbQuote": "peel",
+              "actorQuote": "Mimi",
+              "confidence": 0.9,
+              "sourceSpan": [
+                675,
+                733
+              ],
+              "primaryVerb": "PEEL",
+              "relationship": "EXPLICIT_INTENT_OR_CONTINUATION",
+              "verbLocalSpan": [
+                190,
+                194
+              ],
+              "actorLocalSpan": [
+                176,
+                180
+              ],
+              "classification": "CHARACTER_ATTEMPT",
+              "verbSourceSpan": [
+                689,
+                693
+              ],
+              "actorSourceSpan": [
+                675,
+                679
+              ],
+              "semanticVerification": "NOT_PERFORMED"
+            }
+          ],
+          "confidence": 0.9,
+          "sourceSpan": [
+            505,
+            563
+          ],
+          "primaryVerb": "PEEL",
+          "sourceBound": true,
+          "sourceQuote": "Mimi tries to peel the stuck note away with her other hand",
+          "relationship": "EXPLICIT_INTENT_OR_CONTINUATION",
+          "actorReference": {
+            "value": "Mimi",
+            "sourceSpan": [
+              15,
+              19
+            ],
+            "sourceQuote": "Mimi"
+          },
+          "classification": "SOURCE_BOUND_ATTEMPT",
+          "contractVersion": "actor-source-bound-v2",
+          "duplicateSourceEvent": false,
+          "semanticVerification": "NOT_PERFORMED"
+        }
+      },
+      {
+        "beat": "beat_03",
+        "evidence": {
+          "actor": "Mimi",
+          "action": "Mimi continues to pull",
+          "actions": [
+            {
+              "actor": "Mimi",
+              "action": "Mimi continues to pull",
+              "localSpan": [
+                7,
+                29
+              ],
+              "verbQuote": "pull",
+              "actorQuote": "Mimi",
+              "confidence": 0.9,
+              "sourceSpan": [
+                830,
+                852
+              ],
+              "primaryVerb": "PULL",
+              "relationship": "EXPLICIT_INTENT_OR_CONTINUATION",
+              "verbLocalSpan": [
+                25,
+                29
+              ],
+              "actorLocalSpan": [
+                7,
+                11
+              ],
+              "classification": "CHARACTER_ATTEMPT",
+              "verbSourceSpan": [
+                848,
+                852
+              ],
+              "actorSourceSpan": [
+                830,
+                834
+              ],
+              "semanticVerification": "NOT_PERFORMED"
+            },
+            {
+              "actor": "Mimi",
+              "action": "she pulls, progressively covering her arms, legs and face",
+              "localSpan": [
+                121,
+                178
+              ],
+              "verbQuote": "pulls",
+              "actorQuote": "she",
+              "confidence": null,
+              "sourceSpan": [
+                944,
+                1001
+              ],
+              "primaryVerb": "PULL",
+              "relationship": null,
+              "verbLocalSpan": [
+                125,
+                130
+              ],
+              "actorLocalSpan": [
+                121,
+                124
+              ],
+              "classification": "CHARACTER_ACTION",
+              "verbSourceSpan": [
+                948,
+                953
+              ],
+              "actorSourceSpan": [
+                944,
+                947
+              ],
+              "semanticVerification": "NOT_PERFORMED"
+            }
+          ],
+          "confidence": 0.9,
+          "sourceSpan": [
+            830,
+            852
+          ],
+          "primaryVerb": "PULL",
+          "sourceBound": true,
+          "sourceQuote": "Mimi continues to pull",
+          "relationship": "EXPLICIT_INTENT_OR_CONTINUATION",
+          "actorReference": {
+            "value": "Mimi",
+            "sourceSpan": [
+              15,
+              19
+            ],
+            "sourceQuote": "Mimi"
+          },
+          "classification": "SOURCE_BOUND_ATTEMPT",
+          "contractVersion": "actor-source-bound-v2",
+          "duplicateSourceEvent": false,
+          "semanticVerification": "NOT_PERFORMED"
+        }
+      }
+    ]
+  }
+}

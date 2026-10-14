@@ -1,0 +1,8 @@
+version: '1.10'
+created: '2026-10-15'
+extends: RULESET_1.9.yaml
+inheritancePolicy: RECURSIVE_V1
+motionEvidencePolicy: TOKEN_MOTION_V2
+description: Token-bound motion estimation; camera stillness and unrelated negation
+  do not establish subject immobility. Historical 1.7/1.8/1.9 preserved.
+rules: []

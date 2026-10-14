@@ -1,0 +1,99 @@
+{
+  "contentId": 10,
+  "promptVersionId": 10,
+  "options": {
+    "profile": "post-family-v1",
+    "segments": [],
+    "settings": {
+      "mode": "image2video",
+      "resolution": "480p",
+      "aspectRatio": "9:16"
+    },
+    "sourceId": "content:10/prompt:10",
+    "generator": "SEEDANCE_2_0_MINI",
+    "references": [],
+    "sourceVersion": "10",
+    "contentProfile": "ABSURD_PHYSICS",
+    "structuredPlan": {
+      "beats": [
+        {
+          "id": "beat_01",
+          "action": "Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger",
+          "endTime": 2,
+          "startTime": 0,
+          "sourceSpan": [
+            239,
+            498
+          ],
+          "sourceQuote": "0-2s: Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger [close-up on Mimi's hand] Mimi is in front of a toy cabinet, looking determined -> the note sticks to Mimi, not the cabinet",
+          "semanticStatus": "PENDING"
+        },
+        {
+          "id": "beat_02",
+          "action": "Mimi tries to peel the stuck note away with her other hand; the note splits into two",
+          "endTime": 5,
+          "startTime": 2,
+          "sourceSpan": [
+            499,
+            677
+          ],
+          "sourceQuote": "2-5s: Mimi tries to peel the stuck note away with her other hand; the note splits into two [medium shot of Mimi struggling] Mimi pulls at the note -> one note sticks to each hand",
+          "semanticStatus": "PENDING"
+        },
+        {
+          "id": "beat_03",
+          "action": "Mimi continues to pull; each pull doubles the number of sticky notes",
+          "endTime": 10,
+          "startTime": 5,
+          "sourceSpan": [
+            678,
+            929
+          ],
+          "sourceQuote": "5-10s: Mimi continues to pull; each pull doubles the number of sticky notes [wide shot showing Mimi covered in notes] notes multiply from two to four to eight as she pulls, progressively covering her arms, legs and face -> Mimi is overwhelmed by notes",
+          "semanticStatus": "PENDING"
+        },
+        {
+          "id": "beat_04",
+          "action": "Mimi sees herself in a mirror and screams",
+          "endTime": 12,
+          "startTime": 10,
+          "sourceSpan": [
+            930,
+            1096
+          ],
+          "sourceQuote": "10-12s: Mimi sees herself in a mirror and screams [close-up on Mimi's shocked face] Mimi is startled by her reflection completely covered in notes -> Mimi is startled",
+          "semanticStatus": "PENDING"
+        },
+        {
+          "id": "beat_05",
+          "action": "Mimi sneezes and the sticky notes fly off",
+          "endTime": 15,
+          "startTime": 12,
+          "sourceSpan": [
+            1097,
+            1279
+          ],
+          "sourceQuote": "12-15s: Mimi sneezes and the sticky notes fly off [medium shot of notes flying] notes scatter and stick to the cabinet -> Mimi breathes a sigh of relief but the cabinet remains messy",
+          "semanticStatus": "PENDING"
+        }
+      ],
+      "schemaVersion": "source-bound-beats-v1",
+      "sourceVersion": "10",
+      "evidenceStatus": "DETERMINISTIC_SOURCE_EVENTS_ONLY"
+    },
+    "viewerQuestion": "",
+    "desiredDuration": 15,
+    "openingStrategy": "AUTO",
+    "protectedIntent": [],
+    "creativeEvidence": [],
+    "retrievedLessons": [],
+    "acceptedStartFrame": false,
+    "intentChangeReason": "",
+    "intentRequirements": [],
+    "lessonModelVersion": "",
+    "qualityJustification": "",
+    "canonicalValidationId": null,
+    "plannedEditedDuration": null,
+    "canonicalRulesetVersion": "1.10"
+  }
+}

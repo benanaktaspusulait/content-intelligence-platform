@@ -128,7 +128,7 @@ def test_state_memory_cost_is_low_for_boundary_return_and_high_for_containment_c
 
 def test_ruleset_1_6_and_1_7_remain_immutable_with_1_9_latest() -> None:
     manager = RuleVersionManager(settings.rules_dir)
-    assert manager.get_latest_version() == "1.9"
+    assert manager.get_latest_version() == "1.10"
     stable = RuleEngine(str(settings.rules_dir / "RULESET_1.6.yaml"))
     latest = RuleEngine(RULESET)
     assert "STUBBORN_RETURN_LOOP" not in {rule["id"] for rule in stable.ruleset["rules"]}

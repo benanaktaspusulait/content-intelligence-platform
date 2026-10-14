@@ -29,6 +29,7 @@ class ParserConfig:
     intensity_keywords_high: list[str] | None = None
     intensity_keywords_low: list[str] | None = None
     attempt_evidence_policy: str = "HISTORICAL_V1"
+    motion_evidence_policy: str = "HISTORICAL_V1"
 
     def __post_init__(self) -> None:
         if self.intensity_keywords_high is None:
@@ -153,6 +154,17 @@ class PromptParser:
         }
 
         self._attach_source_entities(video_plan_ir, prompt_text)
+        if self.config.motion_evidence_policy == "TOKEN_MOTION_V2":
+            video_plan_ir["evidenceVersions"]["motionExtractor"] = "token-motion-v2"
+            for beat in beats:
+                beat["motionEvidence"] = {
+                    "method": "TOKEN_MOTION_V2", "state": "INFERRED",
+                    "value": beat["motionAmount"],
+                    "sourceQuote": beat.get("sourceQuote"),
+                    "sourceSpan": beat.get("sourceSpan"),
+                    "semanticVerification": "NOT_PERFORMED",
+                    "visualVerification": "NOT_PERFORMED",
+                }
         if self.config.attempt_evidence_policy == "ACTOR_SOURCE_BOUND_V2":
             video_plan_ir["evidenceVersions"]["attemptExtractor"] = "actor-source-bound-v2"
             for beat in beats:
@@ -1470,6 +1482,20 @@ class PromptParser:
     def _estimate_motion_amount(self, description: str) -> str:
         """Estimate motion amount"""
         desc_lower = description.lower()
+        if self.config.motion_evidence_policy == "TOKEN_MOTION_V2":
+            # Production camera stillness is not subject stillness. Remove only
+            # the directive, retaining actor actions in mixed bracket content.
+            desc_lower = re.sub(r"\bstatic\s+(?:close[ -]?up|wide\s+shot|shot|camera|framing)\b", "", desc_lower)
+            desc_lower = re.sub(r"\b(?:camera|shot|framing)\s+(?:is\s+|remains?\s+)?(?:static|still)\b", "", desc_lower)
+            if re.search(r"\b(?:sudden(?:ly)?|quick(?:ly)?|fast|immediately|rapidly)\b", desc_lower):
+                return "high"
+            if re.search(r"\b(?:gentle|gently|slow(?:ly)?|careful(?:ly)?|tiny|small)\b", desc_lower):
+                return "minimal"
+            # Negation must describe motion, not notes, noise, dialogue or a
+            # no-pause instruction. Temporal 'still pulling' is not stillness.
+            if re.search(r"\b(?:no\s+(?:motion|movement)|motionless|stationary|static|(?:stand|stands|standing|sit|sits|sitting|remain|remains|hold|holds)\s+still)\b", desc_lower):
+                return "none"
+            return "moderate"  # Existing heuristic fallback; not visual proof.
 
         if any(word in desc_lower for word in ["sudden", "quick", "fast", "immediately", "rapidly"]):
             return "high"
@@ -1713,12 +1739,12 @@ def parse_prompt(prompt_text: str, config: ParserConfig | None = None) -> ParseR
     )
 
 
-def source_plan_evidence(prompt: str, source_id: str, source_version: str, ruleset_version: str = "1.9") -> dict[str, Any]:
+def source_plan_evidence(prompt: str, source_id: str, source_version: str, ruleset_version: str = "1.10") -> dict[str, Any]:
     """Read-only parser projection; never runs rules, providers, persistence or authorization."""
     import hashlib
-    version = "source-plan-display-v2" if ruleset_version == "1.9" else "source-plan-display-v1"
+    version = "source-plan-display-v3" if ruleset_version == "1.10" else "source-plan-display-v2" if ruleset_version == "1.9" else "source-plan-display-v1"
     source_hash = hashlib.sha256(prompt.encode()).hexdigest()
-    parsed = parse_prompt(prompt, ParserConfig(attempt_evidence_policy="ACTOR_SOURCE_BOUND_V2" if ruleset_version == "1.9" else "HISTORICAL_V1")).video_plan_ir
+    parsed = parse_prompt(prompt, ParserConfig(attempt_evidence_policy="ACTOR_SOURCE_BOUND_V2" if ruleset_version in {"1.9", "1.10"} else "HISTORICAL_V1", motion_evidence_policy="TOKEN_MOTION_V2" if ruleset_version == "1.10" else "HISTORICAL_V1")).video_plan_ir
     identity = hashlib.sha256((version + "\n" + source_id + "\n" + source_version + "\n" + source_hash).encode()).hexdigest()
     return {"resultId": version + ":" + identity, "kind": "READ_ONLY_SOURCE_EXTRACTION", "parserVersion": version,
             "source": {"artifact": source_id, "version": source_version, "sha256": source_hash},

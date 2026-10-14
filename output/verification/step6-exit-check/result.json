@@ -1,0 +1,19 @@
+{
+  "status": "STEP_6_EXIT_CHECK_BLOCKED",
+  "motionFix": "DEPLOYED_OFFICIALLY_VERIFIED",
+  "rulesetVersion": "1.10",
+  "analysisId": "05726ece-caaf-483a-a0af-d93e91a76c88",
+  "comparisonId": "c16eb200-1381-478b-ad62-9578ea2f9be2",
+  "scores": {
+    "Original": 84.20833333333334,
+    "Candidate A": 84.20833333333334,
+    "Candidate B": 84.20833333333334
+  },
+  "recommendation": "KEEP_ORIGINAL",
+  "exitBlocker": "Existing NO_TEXT_REPAIR_JUSTIFIED path rejects all six canonical FAIL entries",
+  "renderBlockers": [
+    "Verified Mimi reference missing",
+    "Accepted start frame missing"
+  ],
+  "approvalSubmitted": false
+}

@@ -1,0 +1,41 @@
+........................................................................ [ 14%]
+........................................................................ [ 28%]
+........................................................................ [ 43%]
+........................................................................ [ 57%]
+........................................................................ [ 72%]
+........................................................................ [ 86%]
+....................................................................     [100%]
+=============================== warnings summary ===============================
+tests/test_actor_source_attempts.py: 27 warnings
+tests/test_parser_contract.py: 21 warnings
+tests/test_rule_engine_contract.py: 4 warnings
+tests/test_ruleset_1_6_story_density.py: 1 warning
+tests/test_ruleset_1_8_dispatch.py: 8 warnings
+tests/test_canonical_beat_evidence.py: 12 warnings
+tests/test_step5_source_contract.py: 11 warnings
+tests/test_f8_authorization.py: 19 warnings
+tests/test_optimization_comparison.py: 34 warnings
+tests/test_optimization_distinctness.py: 62 warnings
+tests/test_optimization_failure_contract.py: 25 warnings
+tests/test_optimization_profile_contract.py: 43 warnings
+tests/test_optimization_split_coverage.py: 29 warnings
+tests/test_plan_first_optimization.py: 299 warnings
+tests/test_post_family_workflow.py: 14 warnings
+tests/test_golden_provenance.py: 1 warning
+tests/test_golden_representation_contract.py: 1 warning
+tests/test_family10_freeze_gate.py: 9 warnings
+tests/test_family2_escalation.py: 5 warnings
+tests/test_family3_goal_realization.py: 1 warning
+tests/test_family4_mechanic_payoff.py: 4 warnings
+tests/test_family5_specialized_applicability.py: 9 warnings
+tests/test_family6_golden_contract.py: 2 warnings
+tests/test_family7_aggregation_representation.py: 2 warnings
+tests/test_family7_missing_evaluation.py: 1 warning
+tests/test_family8_integration.py: 2 warnings
+tests/test_family9_golden_representation.py: 8 warnings
+tests/test_family9_representation_consistency.py: 5 warnings
+  /Users/benanaktas/project/video/content-intelligence-platform/intelligence/ml-service/app/parser/prompt_parser.py:197: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+    "createdAt": datetime.utcnow().isoformat() + "Z",
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+500 passed, 1 deselected, 659 warnings in 22.89s

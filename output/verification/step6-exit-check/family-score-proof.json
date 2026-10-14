@@ -1,0 +1,688 @@
+{
+  "1.9": {
+    "score": 82.80208333333336,
+    "familyScores": {
+      "concept_strength": 61.666666666666664,
+      "visual_novelty": 87.5,
+      "progression": 94.0,
+      "escalation": 92.5,
+      "final_payoff": 95.0,
+      "ai_producibility": 80.0,
+      "consistency": null,
+      "hook_strength": 92.5,
+      "motion_quality": 55.0,
+      "character_performance": null,
+      "generation_executability": 85.0
+    },
+    "assessments": {
+      "concept_strength": {
+        "status": "PARTIAL",
+        "score": 61.666666666666664,
+        "evidenceCoverage": 43,
+        "evaluationCoverage": 1.0,
+        "aggregation": {
+          "score": 66.66666666666667,
+          "scoredCount": 3,
+          "denominator": 3,
+          "passCount": 2,
+          "failCount": 1,
+          "unknownCount": 3,
+          "notEvaluatedCount": 0,
+          "notApplicableCount": 1,
+          "serviceErrorCount": 0,
+          "evaluationCoverage": 1.0,
+          "aggregationState": "PARTIAL"
+        },
+        "counts": {
+          "PASS": 2,
+          "FAIL": 1,
+          "UNKNOWN": 3,
+          "NOT_APPLICABLE": 1,
+          "SERVICE_ERROR": 0,
+          "NOT_EVALUATED": 0
+        },
+        "reasons": [
+          "Semantic judgment has no verified evidence; provider dispatch is disabled for this local ruleset.",
+          "Semantic judgment has no verified evidence; provider dispatch is disabled for this local ruleset.",
+          "Semantic judgment has no verified evidence; provider dispatch is disabled for this local ruleset."
+        ]
+      },
+      "visual_novelty": {
+        "status": "PARTIAL",
+        "score": 87.5,
+        "evidenceCoverage": 75,
+        "evaluationCoverage": 1.0,
+        "aggregation": {
+          "score": 71.42857142857143,
+          "scoredCount": 7,
+          "denominator": 7,
+          "passCount": 5,
+          "failCount": 2,
+          "unknownCount": 1,
+          "notEvaluatedCount": 0,
+          "notApplicableCount": 0,
+          "serviceErrorCount": 0,
+          "evaluationCoverage": 1.0,
+          "aggregationState": "PARTIAL"
+        },
+        "counts": {
+          "PASS": 5,
+          "FAIL": 2,
+          "UNKNOWN": 1,
+          "NOT_APPLICABLE": 0,
+          "SERVICE_ERROR": 0,
+          "NOT_EVALUATED": 0
+        },
+        "reasons": [
+          "Semantic judgment has no verified evidence; provider dispatch is disabled for this local ruleset."
+        ]
+      },
+      "progression": {
+        "status": "PARTIAL",
+        "score": 94.0,
+        "evidenceCoverage": 71,
+        "evaluationCoverage": 1.0,
+        "aggregation": {
+          "score": 100.0,
+          "scoredCount": 5,
+          "denominator": 5,
+          "passCount": 5,
+          "failCount": 0,
+          "unknownCount": 0,
+          "notEvaluatedCount": 0,
+          "notApplicableCount": 2,
+          "serviceErrorCount": 0,
+          "evaluationCoverage": 1.0,
+          "aggregationState": "EVALUATED"
+        },
+        "counts": {
+          "PASS": 5,
+          "FAIL": 0,
+          "UNKNOWN": 0,
+          "NOT_APPLICABLE": 2,
+          "SERVICE_ERROR": 0,
+          "NOT_EVALUATED": 0
+        },
+        "reasons": []
+      },
+      "escalation": {
+        "status": "EVALUATED",
+        "score": 92.5,
+        "evidenceCoverage": 100,
+        "evaluationCoverage": 1.0,
+        "aggregation": {
+          "score": 100.0,
+          "scoredCount": 2,
+          "denominator": 2,
+          "passCount": 2,
+          "failCount": 0,
+          "unknownCount": 0,
+          "notEvaluatedCount": 0,
+          "notApplicableCount": 0,
+          "serviceErrorCount": 0,
+          "evaluationCoverage": 1.0,
+          "aggregationState": "EVALUATED"
+        },
+        "counts": {
+          "PASS": 2,
+          "FAIL": 0,
+          "UNKNOWN": 0,
+          "NOT_APPLICABLE": 0,
+          "SERVICE_ERROR": 0,
+          "NOT_EVALUATED": 0
+        },
+        "reasons": []
+      },
+      "final_payoff": {
+        "status": "PARTIAL",
+        "score": 95.0,
+        "evidenceCoverage": 60,
+        "evaluationCoverage": 1.0,
+        "aggregation": {
+          "score": 100.0,
+          "scoredCount": 3,
+          "denominator": 3,
+          "passCount": 3,
+          "failCount": 0,
+          "unknownCount": 1,
+          "notEvaluatedCount": 0,
+          "notApplicableCount": 1,
+          "serviceErrorCount": 0,
+          "evaluationCoverage": 1.0,
+          "aggregationState": "PARTIAL"
+        },
+        "counts": {
+          "PASS": 3,
+          "FAIL": 0,
+          "UNKNOWN": 1,
+          "NOT_APPLICABLE": 1,
+          "SERVICE_ERROR": 0,
+          "NOT_EVALUATED": 0
+        },
+        "reasons": [
+          "Semantic judgment has no verified evidence; provider dispatch is disabled for this local ruleset."
+        ]
+      },
+      "ai_producibility": {
+        "status": "EVALUATED",
+        "score": 80.0,
+        "evidenceCoverage": 100,
+        "evaluationCoverage": 1.0,
+        "aggregation": {
+          "score": 66.66666666666667,
+          "scoredCount": 3,
+          "denominator": 3,
+          "passCount": 2,
+          "failCount": 1,
+          "unknownCount": 0,
+          "notEvaluatedCount": 0,
+          "notApplicableCount": 0,
+          "serviceErrorCount": 0,
+          "evaluationCoverage": 1.0,
+          "aggregationState": "EVALUATED"
+        },
+        "counts": {
+          "PASS": 2,
+          "FAIL": 1,
+          "UNKNOWN": 0,
+          "NOT_APPLICABLE": 0,
+          "SERVICE_ERROR": 0,
+          "NOT_EVALUATED": 0
+        },
+        "reasons": []
+      },
+      "consistency": {
+        "status": "UNKNOWN",
+        "score": null,
+        "evidenceCoverage": 0,
+        "evaluationCoverage": 1.0,
+        "aggregation": {
+          "score": null,
+          "scoredCount": 0,
+          "denominator": 0,
+          "passCount": 0,
+          "failCount": 0,
+          "unknownCount": 1,
+          "notEvaluatedCount": 0,
+          "notApplicableCount": 1,
+          "serviceErrorCount": 0,
+          "evaluationCoverage": 1.0,
+          "aggregationState": "NO_SCORED_ITEMS"
+        },
+        "counts": {
+          "PASS": 0,
+          "FAIL": 0,
+          "UNKNOWN": 1,
+          "NOT_APPLICABLE": 1,
+          "SERVICE_ERROR": 0,
+          "NOT_EVALUATED": 0
+        },
+        "reasons": [
+          "coreMechanic.consistency was not explicitly stated in the prompt and cannot be verified."
+        ]
+      },
+      "hook_strength": {
+        "status": "PARTIAL",
+        "score": 92.5,
+        "evidenceCoverage": 33,
+        "evaluationCoverage": 1.0,
+        "aggregation": {
+          "score": 66.66666666666667,
+          "scoredCount": 3,
+          "denominator": 3,
+          "passCount": 2,
+          "failCount": 1,
+          "unknownCount": 2,
+          "notEvaluatedCount": 0,
+          "notApplicableCount": 1,
+          "serviceErrorCount": 0,
+          "evaluationCoverage": 1.0,
+          "aggregationState": "PARTIAL"
+        },
+        "counts": {
+          "PASS": 2,
+          "FAIL": 1,
+          "UNKNOWN": 2,
+          "NOT_APPLICABLE": 1,
+          "SERVICE_ERROR": 0,
+          "NOT_EVALUATED": 0
+        },
+        "reasons": [
+          "hook.soundOffClear was not explicitly stated in the prompt and cannot be verified.",
+          "Semantic judgment has no verified evidence; provider dispatch is disabled for this local ruleset."
+        ]
+      },
+      "motion_quality": {
+        "status": "EVALUATED",
+        "score": 55.0,
+        "evidenceCoverage": 100,
+        "evaluationCoverage": 1.0,
+        "aggregation": {
+          "score": 0.0,
+          "scoredCount": 2,
+          "denominator": 2,
+          "passCount": 0,
+          "failCount": 2,
+          "unknownCount": 0,
+          "notEvaluatedCount": 0,
+          "notApplicableCount": 0,
+          "serviceErrorCount": 0,
+          "evaluationCoverage": 1.0,
+          "aggregationState": "EVALUATED"
+        },
+        "counts": {
+          "PASS": 0,
+          "FAIL": 2,
+          "UNKNOWN": 0,
+          "NOT_APPLICABLE": 0,
+          "SERVICE_ERROR": 0,
+          "NOT_EVALUATED": 0
+        },
+        "reasons": []
+      },
+      "character_performance": {
+        "status": "UNKNOWN",
+        "score": null,
+        "evidenceCoverage": 0,
+        "evaluationCoverage": 1.0,
+        "aggregation": {
+          "score": null,
+          "scoredCount": 0,
+          "denominator": 0,
+          "passCount": 0,
+          "failCount": 0,
+          "unknownCount": 1,
+          "notEvaluatedCount": 0,
+          "notApplicableCount": 0,
+          "serviceErrorCount": 0,
+          "evaluationCoverage": 1.0,
+          "aggregationState": "NO_SCORED_ITEMS"
+        },
+        "counts": {
+          "PASS": 0,
+          "FAIL": 0,
+          "UNKNOWN": 1,
+          "NOT_APPLICABLE": 0,
+          "SERVICE_ERROR": 0,
+          "NOT_EVALUATED": 0
+        },
+        "reasons": [
+          "Semantic judgment has no verified evidence; provider dispatch is disabled for this local ruleset."
+        ]
+      },
+      "generation_executability": {
+        "status": "PARTIAL",
+        "score": 85.0,
+        "evidenceCoverage": 33,
+        "evaluationCoverage": 1.0,
+        "aggregation": {
+          "score": 100.0,
+          "scoredCount": 1,
+          "denominator": 1,
+          "passCount": 1,
+          "failCount": 0,
+          "unknownCount": 1,
+          "notEvaluatedCount": 0,
+          "notApplicableCount": 1,
+          "serviceErrorCount": 0,
+          "evaluationCoverage": 1.0,
+          "aggregationState": "PARTIAL"
+        },
+        "counts": {
+          "PASS": 1,
+          "FAIL": 0,
+          "UNKNOWN": 1,
+          "NOT_APPLICABLE": 1,
+          "SERVICE_ERROR": 0,
+          "NOT_EVALUATED": 0
+        },
+        "reasons": [
+          "Semantic judgment has no verified evidence; provider dispatch is disabled for this local ruleset."
+        ]
+      }
+    }
+  },
+  "1.10": {
+    "score": 84.20833333333334,
+    "familyScores": {
+      "concept_strength": 61.666666666666664,
+      "visual_novelty": 87.5,
+      "progression": 94.0,
+      "escalation": 92.5,
+      "final_payoff": 95.0,
+      "ai_producibility": 80.0,
+      "consistency": null,
+      "hook_strength": 92.5,
+      "motion_quality": 70.0,
+      "character_performance": null,
+      "generation_executability": 85.0
+    },
+    "assessments": {
+      "concept_strength": {
+        "status": "PARTIAL",
+        "score": 61.666666666666664,
+        "evidenceCoverage": 43,
+        "evaluationCoverage": 1.0,
+        "aggregation": {
+          "score": 66.66666666666667,
+          "scoredCount": 3,
+          "denominator": 3,
+          "passCount": 2,
+          "failCount": 1,
+          "unknownCount": 3,
+          "notEvaluatedCount": 0,
+          "notApplicableCount": 1,
+          "serviceErrorCount": 0,
+          "evaluationCoverage": 1.0,
+          "aggregationState": "PARTIAL"
+        },
+        "counts": {
+          "PASS": 2,
+          "FAIL": 1,
+          "UNKNOWN": 3,
+          "NOT_APPLICABLE": 1,
+          "SERVICE_ERROR": 0,
+          "NOT_EVALUATED": 0
+        },
+        "reasons": [
+          "Semantic judgment has no verified evidence; provider dispatch is disabled for this local ruleset.",
+          "Semantic judgment has no verified evidence; provider dispatch is disabled for this local ruleset.",
+          "Semantic judgment has no verified evidence; provider dispatch is disabled for this local ruleset."
+        ]
+      },
+      "visual_novelty": {
+        "status": "PARTIAL",
+        "score": 87.5,
+        "evidenceCoverage": 75,
+        "evaluationCoverage": 1.0,
+        "aggregation": {
+          "score": 71.42857142857143,
+          "scoredCount": 7,
+          "denominator": 7,
+          "passCount": 5,
+          "failCount": 2,
+          "unknownCount": 1,
+          "notEvaluatedCount": 0,
+          "notApplicableCount": 0,
+          "serviceErrorCount": 0,
+          "evaluationCoverage": 1.0,
+          "aggregationState": "PARTIAL"
+        },
+        "counts": {
+          "PASS": 5,
+          "FAIL": 2,
+          "UNKNOWN": 1,
+          "NOT_APPLICABLE": 0,
+          "SERVICE_ERROR": 0,
+          "NOT_EVALUATED": 0
+        },
+        "reasons": [
+          "Semantic judgment has no verified evidence; provider dispatch is disabled for this local ruleset."
+        ]
+      },
+      "progression": {
+        "status": "PARTIAL",
+        "score": 94.0,
+        "evidenceCoverage": 71,
+        "evaluationCoverage": 1.0,
+        "aggregation": {
+          "score": 100.0,
+          "scoredCount": 5,
+          "denominator": 5,
+          "passCount": 5,
+          "failCount": 0,
+          "unknownCount": 0,
+          "notEvaluatedCount": 0,
+          "notApplicableCount": 2,
+          "serviceErrorCount": 0,
+          "evaluationCoverage": 1.0,
+          "aggregationState": "EVALUATED"
+        },
+        "counts": {
+          "PASS": 5,
+          "FAIL": 0,
+          "UNKNOWN": 0,
+          "NOT_APPLICABLE": 2,
+          "SERVICE_ERROR": 0,
+          "NOT_EVALUATED": 0
+        },
+        "reasons": []
+      },
+      "escalation": {
+        "status": "EVALUATED",
+        "score": 92.5,
+        "evidenceCoverage": 100,
+        "evaluationCoverage": 1.0,
+        "aggregation": {
+          "score": 100.0,
+          "scoredCount": 2,
+          "denominator": 2,
+          "passCount": 2,
+          "failCount": 0,
+          "unknownCount": 0,
+          "notEvaluatedCount": 0,
+          "notApplicableCount": 0,
+          "serviceErrorCount": 0,
+          "evaluationCoverage": 1.0,
+          "aggregationState": "EVALUATED"
+        },
+        "counts": {
+          "PASS": 2,
+          "FAIL": 0,
+          "UNKNOWN": 0,
+          "NOT_APPLICABLE": 0,
+          "SERVICE_ERROR": 0,
+          "NOT_EVALUATED": 0
+        },
+        "reasons": []
+      },
+      "final_payoff": {
+        "status": "PARTIAL",
+        "score": 95.0,
+        "evidenceCoverage": 60,
+        "evaluationCoverage": 1.0,
+        "aggregation": {
+          "score": 100.0,
+          "scoredCount": 3,
+          "denominator": 3,
+          "passCount": 3,
+          "failCount": 0,
+          "unknownCount": 1,
+          "notEvaluatedCount": 0,
+          "notApplicableCount": 1,
+          "serviceErrorCount": 0,
+          "evaluationCoverage": 1.0,
+          "aggregationState": "PARTIAL"
+        },
+        "counts": {
+          "PASS": 3,
+          "FAIL": 0,
+          "UNKNOWN": 1,
+          "NOT_APPLICABLE": 1,
+          "SERVICE_ERROR": 0,
+          "NOT_EVALUATED": 0
+        },
+        "reasons": [
+          "Semantic judgment has no verified evidence; provider dispatch is disabled for this local ruleset."
+        ]
+      },
+      "ai_producibility": {
+        "status": "EVALUATED",
+        "score": 80.0,
+        "evidenceCoverage": 100,
+        "evaluationCoverage": 1.0,
+        "aggregation": {
+          "score": 66.66666666666667,
+          "scoredCount": 3,
+          "denominator": 3,
+          "passCount": 2,
+          "failCount": 1,
+          "unknownCount": 0,
+          "notEvaluatedCount": 0,
+          "notApplicableCount": 0,
+          "serviceErrorCount": 0,
+          "evaluationCoverage": 1.0,
+          "aggregationState": "EVALUATED"
+        },
+        "counts": {
+          "PASS": 2,
+          "FAIL": 1,
+          "UNKNOWN": 0,
+          "NOT_APPLICABLE": 0,
+          "SERVICE_ERROR": 0,
+          "NOT_EVALUATED": 0
+        },
+        "reasons": []
+      },
+      "consistency": {
+        "status": "UNKNOWN",
+        "score": null,
+        "evidenceCoverage": 0,
+        "evaluationCoverage": 1.0,
+        "aggregation": {
+          "score": null,
+          "scoredCount": 0,
+          "denominator": 0,
+          "passCount": 0,
+          "failCount": 0,
+          "unknownCount": 1,
+          "notEvaluatedCount": 0,
+          "notApplicableCount": 1,
+          "serviceErrorCount": 0,
+          "evaluationCoverage": 1.0,
+          "aggregationState": "NO_SCORED_ITEMS"
+        },
+        "counts": {
+          "PASS": 0,
+          "FAIL": 0,
+          "UNKNOWN": 1,
+          "NOT_APPLICABLE": 1,
+          "SERVICE_ERROR": 0,
+          "NOT_EVALUATED": 0
+        },
+        "reasons": [
+          "coreMechanic.consistency was not explicitly stated in the prompt and cannot be verified."
+        ]
+      },
+      "hook_strength": {
+        "status": "PARTIAL",
+        "score": 92.5,
+        "evidenceCoverage": 33,
+        "evaluationCoverage": 1.0,
+        "aggregation": {
+          "score": 66.66666666666667,
+          "scoredCount": 3,
+          "denominator": 3,
+          "passCount": 2,
+          "failCount": 1,
+          "unknownCount": 2,
+          "notEvaluatedCount": 0,
+          "notApplicableCount": 1,
+          "serviceErrorCount": 0,
+          "evaluationCoverage": 1.0,
+          "aggregationState": "PARTIAL"
+        },
+        "counts": {
+          "PASS": 2,
+          "FAIL": 1,
+          "UNKNOWN": 2,
+          "NOT_APPLICABLE": 1,
+          "SERVICE_ERROR": 0,
+          "NOT_EVALUATED": 0
+        },
+        "reasons": [
+          "hook.soundOffClear was not explicitly stated in the prompt and cannot be verified.",
+          "Semantic judgment has no verified evidence; provider dispatch is disabled for this local ruleset."
+        ]
+      },
+      "motion_quality": {
+        "status": "EVALUATED",
+        "score": 70.0,
+        "evidenceCoverage": 100,
+        "evaluationCoverage": 1.0,
+        "aggregation": {
+          "score": 50.0,
+          "scoredCount": 2,
+          "denominator": 2,
+          "passCount": 1,
+          "failCount": 1,
+          "unknownCount": 0,
+          "notEvaluatedCount": 0,
+          "notApplicableCount": 0,
+          "serviceErrorCount": 0,
+          "evaluationCoverage": 1.0,
+          "aggregationState": "EVALUATED"
+        },
+        "counts": {
+          "PASS": 1,
+          "FAIL": 1,
+          "UNKNOWN": 0,
+          "NOT_APPLICABLE": 0,
+          "SERVICE_ERROR": 0,
+          "NOT_EVALUATED": 0
+        },
+        "reasons": []
+      },
+      "character_performance": {
+        "status": "UNKNOWN",
+        "score": null,
+        "evidenceCoverage": 0,
+        "evaluationCoverage": 1.0,
+        "aggregation": {
+          "score": null,
+          "scoredCount": 0,
+          "denominator": 0,
+          "passCount": 0,
+          "failCount": 0,
+          "unknownCount": 1,
+          "notEvaluatedCount": 0,
+          "notApplicableCount": 0,
+          "serviceErrorCount": 0,
+          "evaluationCoverage": 1.0,
+          "aggregationState": "NO_SCORED_ITEMS"
+        },
+        "counts": {
+          "PASS": 0,
+          "FAIL": 0,
+          "UNKNOWN": 1,
+          "NOT_APPLICABLE": 0,
+          "SERVICE_ERROR": 0,
+          "NOT_EVALUATED": 0
+        },
+        "reasons": [
+          "Semantic judgment has no verified evidence; provider dispatch is disabled for this local ruleset."
+        ]
+      },
+      "generation_executability": {
+        "status": "PARTIAL",
+        "score": 85.0,
+        "evidenceCoverage": 33,
+        "evaluationCoverage": 1.0,
+        "aggregation": {
+          "score": 100.0,
+          "scoredCount": 1,
+          "denominator": 1,
+          "passCount": 1,
+          "failCount": 0,
+          "unknownCount": 1,
+          "notEvaluatedCount": 0,
+          "notApplicableCount": 1,
+          "serviceErrorCount": 0,
+          "evaluationCoverage": 1.0,
+          "aggregationState": "PARTIAL"
+        },
+        "counts": {
+          "PASS": 1,
+          "FAIL": 0,
+          "UNKNOWN": 1,
+          "NOT_APPLICABLE": 1,
+          "SERVICE_ERROR": 0,
+          "NOT_EVALUATED": 0
+        },
+        "reasons": [
+          "Semantic judgment has no verified evidence; provider dispatch is disabled for this local ruleset."
+        ]
+      }
+    }
+  }
+}

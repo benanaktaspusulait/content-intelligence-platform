@@ -1,0 +1,56 @@
+{
+  "status": "ATTEMPT_EXTRACTION_DEFECT_FIXED",
+  "ruleset": "1.9",
+  "analysisId": "38a57f84-b61a-470c-8342-cd522bdbd38e",
+  "comparisonId": "1f4ef83c-d665-4c85-8fd1-1657855215c5",
+  "scores": {
+    "Original": 82.80208333333336,
+    "candidate-a": 82.80208333333336,
+    "candidate-b": 82.80208333333336
+  },
+  "changedRuleOutcomes": {
+    "Original": [],
+    "candidate-a": [
+      {
+        "ruleId": "ATTEMPT_001",
+        "before": "PASS",
+        "after": "FAIL"
+      }
+    ],
+    "candidate-b": []
+  },
+  "testResults": {
+    "mlPassed": 500,
+    "autofixContractPassed": 13,
+    "backendPassed": 22,
+    "backendSkipped": 0,
+    "frontendPassed": 69,
+    "knownUnrelatedMlTestDeselected": 1
+  },
+  "historicalGoldenVersionsPreserved": [
+    "1.7",
+    "1.8"
+  ],
+  "historicalDatabaseChecksumsUnchanged": true,
+  "prompt10Unchanged": true,
+  "providerCalls": 0,
+  "candidateSelection": null,
+  "candidateApproval": null,
+  "f8": {
+    "status": "BLOCKED_PENDING_EVIDENCE",
+    "reasons": [
+      {
+        "code": "REQUIRED_EVIDENCE_MISSING",
+        "source": "REFERENCE_ASSOCIATION",
+        "message": "An authoritative character/object reference is missing or unverified.",
+        "references": []
+      },
+      {
+        "code": "REQUIRED_EVIDENCE_MISSING",
+        "source": "EXECUTION_INPUTS",
+        "message": "Required provider execution inputs are missing: startFrame",
+        "references": []
+      }
+    ]
+  }
+}

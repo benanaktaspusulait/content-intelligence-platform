@@ -1,0 +1,19 @@
+{
+  "Original": {
+    "officialMatchesDeterministic": true,
+    "sourcePromptUnchanged": true,
+    "score": 84.20833333333334
+  },
+  "candidate-a": {
+    "officialMatchesDeterministic": true,
+    "sourcePromptUnchanged": true,
+    "score": 84.20833333333334
+  },
+  "candidate-b": {
+    "officialMatchesDeterministic": true,
+    "sourcePromptUnchanged": true,
+    "score": 84.20833333333334
+  },
+  "selection": null,
+  "approval": null
+}

@@ -819,3 +819,17 @@ versions:
     reason: Camera keep the directive must not become actor action THE.
     new_value:
       attemptEvidencePolicy: ACTOR_SOURCE_BOUND_V2
+- version: '1.10'
+  release_date: '2026-10-15'
+  ruleset_path: RULESET_1.10.yaml
+  description: Token-bound motion evidence without note/notes substring collisions.
+  is_breaking: true
+  deprecated_rules: []
+  learned_from: [STEP6_MOTION_SUBSTRING]
+  changes:
+  - rule_id: MOTION_EXTRACTION_POLICY_1_10
+    change_type: modified
+    breaking_change: true
+    reason: Notes and static camera instructions do not prove motionless subjects.
+    new_value:
+      motionEvidencePolicy: TOKEN_MOTION_V2

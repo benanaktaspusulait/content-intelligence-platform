@@ -366,7 +366,7 @@ async def validate_prompt(request: ValidateRequest) -> QualityReportResponse:
 
     # The chosen immutable ruleset owns parser semantics; old versions stay reproducible.
     if engine.ruleset.get("attemptEvidencePolicy") == "ACTOR_SOURCE_BOUND_V2":
-        parse_result = parse_prompt(request.prompt, ParserConfig(attempt_evidence_policy="ACTOR_SOURCE_BOUND_V2"))
+        parse_result = parse_prompt(request.prompt, ParserConfig(attempt_evidence_policy="ACTOR_SOURCE_BOUND_V2", motion_evidence_policy=engine.ruleset.get("motionEvidencePolicy", "HISTORICAL_V1")))
         ir = parse_result.video_plan_ir
         if request.visual_evidence is not None:
             ir["visualEvidence"] = request.visual_evidence
@@ -420,7 +420,7 @@ async def compare_versions(request: CompareVersionsRequest) -> RegressionReportR
         ) from error
 
     if engine.ruleset.get("attemptEvidencePolicy") == "ACTOR_SOURCE_BOUND_V2":
-        config = ParserConfig(attempt_evidence_policy="ACTOR_SOURCE_BOUND_V2")
+        config = ParserConfig(attempt_evidence_policy="ACTOR_SOURCE_BOUND_V2", motion_evidence_policy=engine.ruleset.get("motionEvidencePolicy", "HISTORICAL_V1"))
         ir_before = parse_prompt(request.prompt_before, config).video_plan_ir
         ir_after = parse_prompt(request.prompt_after, config).video_plan_ir
     report_before = engine.evaluate(ir_before)
@@ -476,7 +476,7 @@ async def auto_fix_prompt(request: AutoFixRequest) -> AutoFixResultResponse:
 
     # Reparse the final prompt so report-facing canonical evidence (including
     # confidence) describes the exact prompt returned by auto-fix.
-    final_parse = parse_prompt(result.final_prompt, ParserConfig(attempt_evidence_policy="ACTOR_SOURCE_BOUND_V2" if ruleset_version == "1.9" else "HISTORICAL_V1"))
+    final_parse = parse_prompt(result.final_prompt, ParserConfig(attempt_evidence_policy="ACTOR_SOURCE_BOUND_V2" if ruleset_version in {"1.9", "1.10"} else "HISTORICAL_V1", motion_evidence_policy="TOKEN_MOTION_V2" if ruleset_version == "1.10" else "HISTORICAL_V1"))
     final_report_response = convert_quality_report(
         result.final_enhanced_report,
         ruleset_version,

@@ -110,7 +110,7 @@ class AutoFixIterationLoop:
             AutoFixResult with final prompt and improvement history
         """
         # Initial validation
-        parse_result = parse_prompt(initial_prompt, ParserConfig(attempt_evidence_policy=self.engine.ruleset.get("attemptEvidencePolicy", "HISTORICAL_V1")))
+        parse_result = parse_prompt(initial_prompt, ParserConfig(attempt_evidence_policy=self.engine.ruleset.get("attemptEvidencePolicy", "HISTORICAL_V1"), motion_evidence_policy=self.engine.ruleset.get("motionEvidencePolicy", "HISTORICAL_V1")))
         initial_ir = parse_result.video_plan_ir
         initial_metadata = parse_result.metadata
         initial_report = self.engine.evaluate(initial_ir)
@@ -179,7 +179,7 @@ class AutoFixIterationLoop:
 
             # Validate fixed prompt
             try:
-                parse_result_fixed = parse_prompt(fix_result.modified_prompt, ParserConfig(attempt_evidence_policy=self.engine.ruleset.get("attemptEvidencePolicy", "HISTORICAL_V1")))
+                parse_result_fixed = parse_prompt(fix_result.modified_prompt, ParserConfig(attempt_evidence_policy=self.engine.ruleset.get("attemptEvidencePolicy", "HISTORICAL_V1"), motion_evidence_policy=self.engine.ruleset.get("motionEvidencePolicy", "HISTORICAL_V1")))
                 fixed_ir = parse_result_fixed.video_plan_ir
                 fixed_metadata = parse_result_fixed.metadata
                 fixed_report = self.engine.evaluate(fixed_ir)

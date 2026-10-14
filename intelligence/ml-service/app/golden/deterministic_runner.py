@@ -260,7 +260,7 @@ def run_golden_asset(
         fingerprint=fingerprint,
     )
     selected_engine = RuleEngine(str(ruleset_path))
-    parser_config = ParserConfig(attempt_evidence_policy=selected_engine.ruleset.get("attemptEvidencePolicy", "HISTORICAL_V1"))
+    parser_config = ParserConfig(attempt_evidence_policy=selected_engine.ruleset.get("attemptEvidencePolicy", "HISTORICAL_V1"), motion_evidence_policy=selected_engine.ruleset.get("motionEvidencePolicy", "HISTORICAL_V1"))
     try:
         parsed = _bounded_call(lambda: parse_prompt(prompt_text, parser_config), parse_timeout_seconds)
     except GoldenAnalysisTimeout as error:

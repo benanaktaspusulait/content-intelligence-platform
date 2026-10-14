@@ -1,0 +1,309 @@
+{
+  "old": {
+    "id": "beat_01",
+    "goal": "Attach the note to the cabinet",
+    "actor": "Mimi",
+    "action": "Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to t...",
+    "result": "the note sticks to Mimi, not the cabinet",
+    "endTime": 2.0,
+    "beatRole": "",
+    "dialogue": null,
+    "duration": 2.0,
+    "beatLabel": "",
+    "intensity": 5,
+    "isAttempt": true,
+    "startTime": 0.0,
+    "actionType": "transition",
+    "cycleGroup": null,
+    "isReadable": true,
+    "sourceSpan": [
+      239,
+      559
+    ],
+    "consequence": "the note sticks to Mimi, not the cabinet",
+    "primaryVerb": "THE",
+    "sourceQuote": "0-2s: Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger  Mimi is in front of a toy cabinet, looking determined -> the note sticks to Mimi, not the cabinet [static close-up; keep the cabinet and her finger visible together in the same frame]",
+    "visualState": "character mimi reaches toward the toy cabinet with a sticky note; instead of sticking to t...",
+    "motionAmount": "none",
+    "sourceAction": "Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger  Mimi is in front of a toy cabinet, looking determined",
+    "strategyRole": "INTENDED",
+    "targetObject": "the cabinet",
+    "attemptReason": "Explicit attempt marker/role provides goal-directed evidence.",
+    "attemptSource": "NATURAL_LANGUAGE_ATTEMPT",
+    "fieldEvidence": {
+      "actor": {
+        "state": "OBSERVED",
+        "value": "Mimi",
+        "method": "DETERMINISTIC_SOURCE_PATTERN",
+        "reason": "Exact source mention.",
+        "sourceSpan": [
+          245,
+          249
+        ],
+        "sourceQuote": "Mimi",
+        "semanticVerification": "NOT_PERFORMED"
+      },
+      "action": {
+        "state": "OBSERVED",
+        "value": "Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger  Mimi is in front of a toy cabinet, looking determined",
+        "method": "DETERMINISTIC_SOURCE_PATTERN",
+        "reason": "Exact source mention.",
+        "sourceSpan": [
+          245,
+          429
+        ],
+        "sourceQuote": "Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger  Mimi is in front of a toy cabinet, looking determined",
+        "semanticVerification": "NOT_PERFORMED"
+      },
+      "primaryObject": {
+        "state": "OBSERVED",
+        "value": "sticky note",
+        "method": "DETERMINISTIC_SOURCE_PATTERN",
+        "reason": "Exact object phrase.",
+        "sourceSpan": [
+          288,
+          299
+        ],
+        "sourceQuote": "sticky note",
+        "semanticVerification": "NOT_PERFORMED"
+      }
+    },
+    "primaryAction": "Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to t...",
+    "primaryObject": "sticky note",
+    "visualStateId": "character_mimi_reaches_toward_the_toy_cabinet_with",
+    "evidenceStatus": "SOURCE_VERIFIED",
+    "intendedEffect": "attach_object_to_target_surface",
+    "similarToBeats": [],
+    "strategyFamily": "OTHER:THE",
+    "strategyIntent": "DIRECT",
+    "consequenceType": "new",
+    "attemptCandidate": null,
+    "goalEvidenceRole": "PRIMARY_GOAL",
+    "isNewConsequence": true,
+    "sourceSpanStatus": "TEXT_MATCHED",
+    "attemptConfidence": null,
+    "readabilityDuration": 2.0,
+    "actionStrategyFamily": "OTHER:THE",
+    "relatesToCoreProblem": true,
+    "intendedStrategyFamily": "OTHER:THE",
+    "distinctFromPreviousAttempt": null
+  },
+  "corrected": {
+    "id": "beat_01",
+    "goal": null,
+    "actor": "Mimi",
+    "action": "Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to t...",
+    "result": "the note sticks to Mimi, not the cabinet",
+    "endTime": 2.0,
+    "beatRole": "",
+    "dialogue": null,
+    "duration": 2.0,
+    "beatLabel": "",
+    "intensity": 5,
+    "isAttempt": false,
+    "startTime": 0.0,
+    "actionType": "transition",
+    "cycleGroup": null,
+    "isReadable": true,
+    "sourceSpan": [
+      239,
+      559
+    ],
+    "consequence": "the note sticks to Mimi, not the cabinet",
+    "primaryVerb": "",
+    "sourceQuote": "0-2s: Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger  Mimi is in front of a toy cabinet, looking determined -> the note sticks to Mimi, not the cabinet [static close-up; keep the cabinet and her finger visible together in the same frame]",
+    "visualState": "character mimi reaches toward the toy cabinet with a sticky note; instead of sticking to t...",
+    "motionAmount": "none",
+    "sourceAction": "Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger  Mimi is in front of a toy cabinet, looking determined",
+    "strategyRole": "INTENDED",
+    "targetObject": null,
+    "attemptReason": null,
+    "attemptSource": "NONE",
+    "fieldEvidence": {
+      "actor": {
+        "state": "OBSERVED",
+        "value": "Mimi",
+        "method": "DETERMINISTIC_SOURCE_PATTERN",
+        "reason": "Exact source mention.",
+        "sourceSpan": [
+          245,
+          249
+        ],
+        "sourceQuote": "Mimi",
+        "semanticVerification": "NOT_PERFORMED"
+      },
+      "action": {
+        "state": "OBSERVED",
+        "value": "Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger  Mimi is in front of a toy cabinet, looking determined",
+        "method": "DETERMINISTIC_SOURCE_PATTERN",
+        "reason": "Exact source mention.",
+        "sourceSpan": [
+          245,
+          429
+        ],
+        "sourceQuote": "Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger  Mimi is in front of a toy cabinet, looking determined",
+        "semanticVerification": "NOT_PERFORMED"
+      },
+      "primaryObject": {
+        "state": "OBSERVED",
+        "value": "sticky note",
+        "method": "DETERMINISTIC_SOURCE_PATTERN",
+        "reason": "Exact object phrase.",
+        "sourceSpan": [
+          288,
+          299
+        ],
+        "sourceQuote": "sticky note",
+        "semanticVerification": "NOT_PERFORMED"
+      }
+    },
+    "primaryAction": "Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to t...",
+    "primaryObject": "sticky note",
+    "visualStateId": "character_mimi_reaches_toward_the_toy_cabinet_with",
+    "evidenceStatus": "SOURCE_VERIFIED",
+    "intendedEffect": null,
+    "similarToBeats": [],
+    "strategyFamily": "UNSPECIFIED",
+    "strategyIntent": "DIRECT",
+    "attemptEvidence": {
+      "actor": null,
+      "action": null,
+      "actions": [
+        {
+          "actor": "Mimi",
+          "action": "Mimi reaches toward the toy cabinet with a sticky note",
+          "localSpan": [
+            6,
+            60
+          ],
+          "verbQuote": "reaches",
+          "actorQuote": "Mimi",
+          "confidence": null,
+          "sourceSpan": [
+            245,
+            299
+          ],
+          "primaryVerb": "REACH",
+          "relationship": null,
+          "verbLocalSpan": [
+            11,
+            18
+          ],
+          "actorLocalSpan": [
+            6,
+            10
+          ],
+          "classification": "CHARACTER_ACTION",
+          "verbSourceSpan": [
+            250,
+            257
+          ],
+          "actorSourceSpan": [
+            245,
+            249
+          ],
+          "semanticVerification": "NOT_PERFORMED"
+        }
+      ],
+      "confidence": null,
+      "sourceSpan": null,
+      "primaryVerb": null,
+      "sourceBound": true,
+      "sourceQuote": null,
+      "relationship": null,
+      "actorReference": {
+        "value": "Mimi",
+        "sourceSpan": [
+          15,
+          19
+        ],
+        "sourceQuote": "Mimi"
+      },
+      "classification": "NOT_AN_ATTEMPT",
+      "contractVersion": "actor-source-bound-v2",
+      "duplicateSourceEvent": false,
+      "semanticVerification": "NOT_PERFORMED"
+    },
+    "consequenceType": "new",
+    "attemptCandidate": null,
+    "characterActions": [
+      {
+        "actor": "Mimi",
+        "action": "Mimi reaches toward the toy cabinet with a sticky note",
+        "localSpan": [
+          6,
+          60
+        ],
+        "verbQuote": "reaches",
+        "actorQuote": "Mimi",
+        "confidence": null,
+        "sourceSpan": [
+          245,
+          299
+        ],
+        "primaryVerb": "REACH",
+        "relationship": null,
+        "verbLocalSpan": [
+          11,
+          18
+        ],
+        "actorLocalSpan": [
+          6,
+          10
+        ],
+        "classification": "CHARACTER_ACTION",
+        "verbSourceSpan": [
+          250,
+          257
+        ],
+        "actorSourceSpan": [
+          245,
+          249
+        ],
+        "semanticVerification": "NOT_PERFORMED"
+      }
+    ],
+    "isNewConsequence": true,
+    "sourceSpanStatus": "TEXT_MATCHED",
+    "attemptConfidence": null,
+    "readabilityDuration": 2.0,
+    "actionStrategyFamily": "UNSPECIFIED",
+    "physicalConsequences": [
+      {
+        "quote": "the note sticks to Mimi, not the cabinet",
+        "sourceSpan": [
+          433,
+          473
+        ],
+        "classification": "PHYSICAL_CONSEQUENCE"
+      },
+      {
+        "quote": "a toy cabinet, looking determined -> the note sticks to Mimi, not the cabinet",
+        "method": "EXPLICIT_OBJECT_EVENT",
+        "sourceSpan": [
+          396,
+          473
+        ],
+        "classification": "PHYSICAL_CONSEQUENCE",
+        "semanticVerification": "NOT_PERFORMED"
+      }
+    ],
+    "relatesToCoreProblem": true,
+    "intendedStrategyFamily": "UNSPECIFIED",
+    "productionInstructions": [
+      {
+        "quote": "[static close-up; keep the cabinet and her finger visible together in the same frame]",
+        "localSpan": [
+          235,
+          320
+        ],
+        "sourceSpan": [
+          474,
+          559
+        ],
+        "classification": "CAMERA_INSTRUCTION"
+      }
+    ],
+    "distinctFromPreviousAttempt": null
+  }
+}
