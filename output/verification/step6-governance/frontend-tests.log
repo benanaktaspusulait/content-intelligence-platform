@@ -56,3 +56,9 @@ Application bundle generation complete. [20.229 seconds] - 2026-10-14T23:55:12.2
 
  RUN  v4.1.11 /Users/benanaktas/project/video/content-intelligence-platform/intelligence/frontend
 
+
+ Test Files  3 passed (3)
+      Tests  98 passed (98)
+   Start at  00:55:12
+   Duration  4.44s (transform 1.17s, setup 857ms, import 1.34s, tests 3.19s, environment 3.10s)
+
