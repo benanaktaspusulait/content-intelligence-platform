@@ -109,7 +109,9 @@ class Step6GovernancePostgresTest {
     report.put("preRenderAssessment",Map.of("canonicalProfileAdmission",Map.of("version","profile-admission-v1","workflowBindingHash",analysis.get("bindingHash"))));
     report.put("overallScore",95); // separate synthetic complete-evidence fixture, never a saved score
     report.put("unknownRules",List.of());report.put("serviceErrors",List.of());
-    var failures=((List<Map<String,Object>>)report.get("failedRules")).stream().filter(x->List.of("ATTEMPT_001","PRODUCIBILITY_003").contains(x.get("ruleId"))).toList();report.put("failedRules",failures);
+    var failures=((List<Map<String,Object>>)report.get("failedRules")).stream().filter(x->List.of("ATTEMPT_001","PRODUCIBILITY_003").contains(x.get("ruleId"))).toList();var independentlyMeasured=new ArrayList<Map<String,Object>>();
+    for(var failure:failures) {var measured=new LinkedHashMap<String,Object>(failure);if("ATTEMPT_001".equals(measured.get("ruleId"))) measured.put("actualValue",2);independentlyMeasured.add(measured);}
+    report.put("failedRules",independentlyMeasured);
     var proof=service.validationAdmission(77,10,10,Step6GovernanceService.sha(String.valueOf(analysis.get("originalPrompt"))),"1.11",json.writeValueAsString(report),1,1);
     assertThat(proof).containsEntry("eligible",true).containsEntry("originalBlockerCount",1).containsEntry("originalCriticalCount",1).containsEntry("remainingBlockerCount",0);
     assertThat(((List<Map<String,Object>>)proof.get("canonicalFailures")).get(0)).containsEntry("outcome","FAIL");
@@ -147,5 +149,35 @@ class Step6GovernancePostgresTest {
     assertThat((Map<String,Object>)resolved.visualEvidence().get("governedAdmission")).containsEntry("eligible",true);
     when(visuals.findByValidationRecordIdOrderBySubmittedAtAscIdAsc(1L)).thenReturn(List.of());
     assertThat(evidence.getEvidence(1L).renderAuthorization()).isNotEqualTo("AUTHORIZED");
+  }
+
+  @Test void realControllerUsesAuthenticatedContainerRoleAndIgnoresJsonRoleClaims() throws Exception {
+    var controller=new WorkflowController(mock(WorkflowService.class));
+    org.springframework.test.util.ReflectionTestUtils.setField(controller,"governance",service);
+    var mvc=org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup(controller).build();
+    var fake=exception();fake.put("role","ARCHITECTURE_APPROVER");fake.put("approvedBy","architect");
+    mvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post("/api/v1/intelligence/workflow/records/"+id+"/governance/exception")
+        .contentType("application/json").content(json.writeValueAsString(fake)))
+      .andExpect(org.springframework.test.web.servlet.result.MockMvcResultMatchers.status().isForbidden());
+    provideSupport();
+    mvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post("/api/v1/intelligence/workflow/records/"+id+"/governance/exception")
+        .principal(()->"architect").with(request->{request.addUserRole("ARCHITECTURE_APPROVER");return request;})
+        .contentType("application/json").content(json.writeValueAsString(exception())))
+      .andExpect(org.springframework.test.web.servlet.result.MockMvcResultMatchers.status().isOk())
+      .andExpect(org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath("$.exceptionPolicy").value("ATTEMPT_COUNT_EXCEPTION_V1"))
+      .andExpect(org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath("$.principal").value("architect"));
+  }
+
+  @Test void genuineVisualFailureAndSupportedTextDefectCannotBeAcceptedAsNoRepair() throws Exception {
+    var canonical=(Map<String,Object>)analysis.get("canonicalRuleEvaluation");
+    canonical.put("failedRules",List.of(Map.of("ruleId","ENGINE_SILHOUETTE_DUPLICATE","severity","BLOCKER","outcome","FAIL","details",Map.of("visualEvidence",Map.of("status","FAIL")))));
+    id=insert("REVIEW",analysis);
+    var state=service.evaluate(id,operator);
+    assertThat((List<Map<String,Object>>)state.get("findings")).anyMatch(x->"CONFIRMED_HARD_BLOCKER".equals(x.get("resolutionType")));
+    assertThatThrownBy(()->service.command(id,"text-acceptance",request(),operator)).hasMessageContaining("not eligible");
+    canonical.put("failedRules",List.of());
+    analysis.put("planQuality",Map.of("status","FAIL","findings",List.of(Map.of("scope","PROMPT_TEXT","repairable",true,"applicability","APPLICABLE","repairability","REQUIRED","message","Source evidence supports repair"))));
+    id=insert("REVIEW",analysis);
+    assertThatThrownBy(()->service.command(id,"text-acceptance",request(),operator)).hasMessageContaining("not eligible");
   }
 }

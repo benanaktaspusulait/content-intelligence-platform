@@ -1,30 +1,34 @@
-00:48:35.013 [main] INFO org.testcontainers.DockerClientFactory -- Testcontainers version: 2.0.2
-00:48:35.267 [main] INFO org.testcontainers.dockerclient.DockerClientProviderStrategy -- Loaded org.testcontainers.dockerclient.UnixSocketClientProviderStrategy from ~/.testcontainers.properties, will try it first
-00:48:35.601 [main] INFO org.testcontainers.dockerclient.DockerClientProviderStrategy -- Found Docker environment with Docker accessed via Unix socket (/Users/benanaktas/.docker/run/docker.sock)
-00:48:35.602 [main] INFO org.testcontainers.DockerClientFactory -- Docker host IP address is localhost
-00:48:35.622 [main] INFO org.testcontainers.DockerClientFactory -- Connected to docker: 
+00:51:43.313 [main] INFO org.testcontainers.DockerClientFactory -- Testcontainers version: 2.0.2
+00:51:43.514 [main] INFO org.testcontainers.dockerclient.DockerClientProviderStrategy -- Loaded org.testcontainers.dockerclient.UnixSocketClientProviderStrategy from ~/.testcontainers.properties, will try it first
+00:51:43.841 [main] INFO org.testcontainers.dockerclient.DockerClientProviderStrategy -- Found Docker environment with Docker accessed via Unix socket (/Users/benanaktas/.docker/run/docker.sock)
+00:51:43.843 [main] INFO org.testcontainers.DockerClientFactory -- Docker host IP address is localhost
+00:51:43.864 [main] INFO org.testcontainers.DockerClientFactory -- Connected to docker: 
   Server Version: 29.2.1
   API Version: 1.53
   Operating System: Docker Desktop
   Total Memory: 11948 MB
   Labels: 
     com.docker.desktop.address=unix:///Users/benanaktas/Library/Containers/com.docker.docker/Data/docker-cli.sock
-00:48:35.636 [main] INFO org.testcontainers.images.PullPolicy -- Image pull policy will be performed by: DefaultPullPolicy()
-00:48:35.639 [main] INFO org.testcontainers.utility.ImageNameSubstitutor -- Image name substitution will be performed by: DefaultImageNameSubstitutor (composite of 'ConfigurationFileImageNameSubstitutor' and 'PrefixingImageNameSubstitutor')
-00:48:35.735 [main] INFO tc.testcontainers/ryuk:0.13.0 -- Creating container for image: testcontainers/ryuk:0.13.0
-00:48:35.904 [main] INFO org.testcontainers.utility.RegistryAuthLocator -- Credential helper/store (docker-credential-desktop) does not have credentials for https://index.docker.io/v1/
-00:48:36.000 [main] INFO tc.testcontainers/ryuk:0.13.0 -- Container testcontainers/ryuk:0.13.0 is starting: ba88c163b227b212f43d3c69b7331497ebdacff8955918612182a9e045db6a73
-00:48:36.282 [main] INFO tc.testcontainers/ryuk:0.13.0 -- Container testcontainers/ryuk:0.13.0 started in PT0.54708S
-00:48:36.287 [main] INFO org.testcontainers.utility.RyukResourceReaper -- Ryuk started - will monitor and terminate Testcontainers containers on JVM exit
-00:48:36.287 [main] INFO org.testcontainers.DockerClientFactory -- Checking the system...
-00:48:36.288 [main] INFO org.testcontainers.DockerClientFactory -- ✔︎ Docker server version should be at least 1.6.0
-00:48:36.299 [main] INFO tc.postgres:17-alpine -- Creating container for image: postgres:17-alpine
-00:48:36.348 [main] INFO tc.postgres:17-alpine -- Container postgres:17-alpine is starting: 5ba0ccfb9270f725a28d00f2c68cd2dfebb1eb00f1da71d65b3382fc092c96c9
-00:48:37.789 [main] INFO tc.postgres:17-alpine -- Container postgres:17-alpine started in PT1.489403S
-00:48:37.790 [main] INFO tc.postgres:17-alpine -- Container is started (JDBC URL: jdbc:postgresql://localhost:61679/test?loggerLevel=OFF)
+00:51:43.875 [main] INFO org.testcontainers.images.PullPolicy -- Image pull policy will be performed by: DefaultPullPolicy()
+00:51:43.880 [main] INFO org.testcontainers.utility.ImageNameSubstitutor -- Image name substitution will be performed by: DefaultImageNameSubstitutor (composite of 'ConfigurationFileImageNameSubstitutor' and 'PrefixingImageNameSubstitutor')
+00:51:43.971 [main] INFO tc.testcontainers/ryuk:0.13.0 -- Creating container for image: testcontainers/ryuk:0.13.0
+00:51:44.220 [main] INFO org.testcontainers.utility.RegistryAuthLocator -- Credential helper/store (docker-credential-desktop) does not have credentials for https://index.docker.io/v1/
+00:51:44.383 [main] INFO tc.testcontainers/ryuk:0.13.0 -- Container testcontainers/ryuk:0.13.0 is starting: 67ad525e22ead8ac41468984daa242667c68000fcb3dfe6f2a5fe315b53da2c0
+00:51:44.727 [main] INFO tc.testcontainers/ryuk:0.13.0 -- Container testcontainers/ryuk:0.13.0 started in PT0.755544S
+00:51:44.734 [main] INFO org.testcontainers.utility.RyukResourceReaper -- Ryuk started - will monitor and terminate Testcontainers containers on JVM exit
+00:51:44.734 [main] INFO org.testcontainers.DockerClientFactory -- Checking the system...
+00:51:44.735 [main] INFO org.testcontainers.DockerClientFactory -- ✔︎ Docker server version should be at least 1.6.0
+00:51:44.744 [main] INFO tc.postgres:17-alpine -- Creating container for image: postgres:17-alpine
+00:51:44.797 [main] INFO tc.postgres:17-alpine -- Container postgres:17-alpine is starting: a8aa4306cd91d676936834a4afed000260e2509308c6373392239be2493773c9
+00:51:46.309 [main] INFO tc.postgres:17-alpine -- Container postgres:17-alpine started in PT1.565303S
+00:51:46.310 [main] INFO tc.postgres:17-alpine -- Container is started (JDBC URL: jdbc:postgresql://localhost:64171/test?loggerLevel=OFF)
 Mockito is currently self-attaching to enable the inline-mock-maker. This will no longer work in future releases of the JDK. Please add Mockito as an agent to your build as described in Mockito's documentation: https://javadoc.io/doc/org.mockito/mockito-core/latest/org.mockito/org/mockito/Mockito.html#0.3
 OpenJDK 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended
 WARNING: A Java agent has been loaded dynamically (/Users/benanaktas/.m2/repository/net/bytebuddy/byte-buddy-agent/1.18.11/byte-buddy-agent-1.18.11.jar)
 WARNING: If a serviceability tool is in use, please run with -XX:+EnableDynamicAgentLoading to hide this warning
 WARNING: If a serviceability tool is not in use, please run with -Djdk.instrument.traceUsage for more information
 WARNING: Dynamic loading of agents will be disallowed by default in a future release
+00:51:50.753 [main] INFO org.hibernate.validator.internal.util.Version -- HV000001: Hibernate Validator 9.1.3.Final
+00:51:50.960 [main] INFO org.springframework.mock.web.MockServletContext -- Initializing Spring TestDispatcherServlet ''
+00:51:50.960 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Initializing Servlet ''
+00:51:50.963 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Completed initialization in 2 ms

@@ -5,12 +5,12 @@
 ❯ Building...
 ✔ Building...
 Initial chunk files                                            | Names                                                       |  Raw size
-chunk-PAA7RKFX.js                                              | -                                                           | 627.77 kB | 
+chunk-WQOMTXFH.js                                              | -                                                           | 627.77 kB | 
 styles.css                                                     | styles                                                      | 237.88 kB | 
 chunk-GTCQLDJK.js                                              | -                                                           | 218.31 kB | 
 spec-app-pages-quality-validator-post-family-workflow.js       | spec-app-pages-quality-validator-post-family-workflow       | 183.45 kB | 
 chunk-MOLSMEJJ.js                                              | -                                                           | 143.98 kB | 
-chunk-Z75YHM3C.js                                              | -                                                           |  26.17 kB | 
+chunk-2C3JZGA4.js                                              | -                                                           |  26.49 kB | 
 spec-app-pages-render-preparation.page.js                      | spec-app-pages-render-preparation.page                      |  25.54 kB | 
 spec-app-pages-quality-validator-step6-governance.component.js | spec-app-pages-quality-validator-step6-governance.component |   5.15 kB | 
 chunk-RSTWSNOR.js                                              | -                                                           |   4.75 kB | 
@@ -22,7 +22,7 @@ vitest-mock-patch.js                                           | vitest-mock-pat
 Lazy chunk files                                               | Names                                                       |  Raw size
 chunk-BQY2OS6D.js                                              | creative-studio-page                                        | 552.62 kB | 
 chunk-7TRVYPBY.js                                              | video-detail-page                                           | 310.38 kB | 
-chunk-MGOPT6CD.js                                              | quality-validator-component                                 | 252.09 kB | 
+chunk-EZJHL5QE.js                                              | quality-validator-component                                 | 252.09 kB | 
 chunk-7NI45XU5.js                                              | operations-page                                             |  73.06 kB | 
 chunk-PZEGF7JY.js                                              | -                                                           |  69.14 kB | 
 chunk-LMVB6LBN.js                                              | prompt-workspace-page                                       |  50.23 kB | 
@@ -37,7 +37,7 @@ chunk-6CTRUNKB.js                                              | performance-pag
 chunk-DVMCGWQG.js                                              | meta-reel-analytics-page                                    |  23.05 kB | 
 ...and 13 more lazy chunks files. Use "--verbose" to show all the files.
 
-Application bundle generation complete. [21.144 seconds] - 2026-10-14T23:45:33.555Z
+Application bundle generation complete. [20.229 seconds] - 2026-10-14T23:55:12.270Z
 
 ▲ [WARNING] NG8113: TimelineChartComponent is not used within the template of QualityValidatorComponent [plugin angular-compiler]
 
@@ -55,10 +55,4 @@ Application bundle generation complete. [21.144 seconds] - 2026-10-14T23:45:33.5
 
 
  RUN  v4.1.11 /Users/benanaktas/project/video/content-intelligence-platform/intelligence/frontend
-
-
- Test Files  3 passed (3)
-      Tests  98 passed (98)
-   Start at  00:45:33
-   Duration  4.09s (transform 807ms, setup 762ms, import 1.31s, tests 2.98s, environment 2.45s)
 

@@ -163,7 +163,7 @@ public class ValidationEvidencePolicy {
       if("CRITICAL".equals(severity)) countedCriticals++;
       if(!"BLOCKER".equals(severity) && !"CRITICAL".equals(severity)) continue;
       if(!(row.get("governanceRecordId") instanceof String record) || record.isBlank()) return false;
-      boolean attempt="ATTEMPT_001".equals(rule) && "ATTEMPT_COUNT_EXCEPTION_V1".equals(row.get("disposition")) && "BLOCKER".equals(severity);
+      boolean attempt="ATTEMPT_001".equals(rule) && "ATTEMPT_COUNT_EXCEPTION_V1".equals(row.get("disposition")) && "BLOCKER".equals(severity) && row.get("actualValue") instanceof Number attempts && attempts.intValue()>=2;
       boolean risk="PRODUCIBILITY_003".equals(rule) && "PRODUCTION_RISK_ACKNOWLEDGED".equals(row.get("disposition")) && "CRITICAL".equals(severity);
       if(!attempt && !risk) return false;
     }

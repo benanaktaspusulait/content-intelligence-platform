@@ -582,7 +582,7 @@ class ValidationEvidencePolicyTest {
     proof.put("policyVersion","STEP6_RESOLUTION_V2");proof.put("eligible",true);proof.put("evidenceComplete",complete);proof.put("scoreEligible",true);proof.put("textAccepted",true);proof.put("independentF8Ready",true);
     proof.put("validationRecordId",base.validationRecordId());proof.put("promptSha256",base.promptSha256());proof.put("rulesetVersion",base.deterministicRulesetVersion());
     proof.put("originalBlockerCount",1);proof.put("originalCriticalCount",0);
-    proof.put("canonicalFailures",java.util.List.of(java.util.Map.of("ruleId",rule,"severity","BLOCKER","outcome","FAIL","disposition",disposition,"governanceRecordId",java.util.UUID.randomUUID().toString())));
+    proof.put("canonicalFailures",java.util.List.of(java.util.Map.of("ruleId",rule,"severity","BLOCKER","outcome","FAIL","actualValue",2,"disposition",disposition,"governanceRecordId",java.util.UUID.randomUUID().toString())));
     var visual=new java.util.LinkedHashMap<>(base.visualEvidence());visual.put("governedAdmission",proof);
     return new ValidationEvidenceDto(base.validationRecordId(),base.contentId(),base.promptVersionId(),base.promptSha256(),base.status(),1,0,base.warningCount(),
         base.deterministicRulesetVersion(),base.semanticProvider(),base.semanticModelVersion(),base.producibilityValidatorVersion(),base.independentRevalidationId(),base.independentlyRevalidatedAt(),base.validatedAt(),base.expiresAt(),base.firstFrameEligible(),base.finalVideoEligible(),visual,base.renderAuthorization());

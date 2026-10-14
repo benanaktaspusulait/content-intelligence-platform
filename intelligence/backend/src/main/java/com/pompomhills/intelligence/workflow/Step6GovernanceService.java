@@ -109,13 +109,25 @@ public class Step6GovernanceService {
       String type=String.valueOf(meta.get("resolutionType"));
       if(group.equals("unknownRules")) type=String.valueOf(meta.getOrDefault("unknownType","EVIDENCE_REQUIRED"));
       var details=map(rule.get("details"));
-      if(meta.containsKey("verifiedFailureType") && !details.containsKey("missingEvidence")
-          && !"EVIDENCE_INCOMPLETE_FAILURE".equals(details.get("failureBasis")) && details.containsKey("visualEvidence"))
+      if(group.equals("failedRules") && meta.containsKey("verifiedFailureType") && !details.containsKey("missingEvidence")
+          && !"EVIDENCE_INCOMPLETE".equals(details.get("failureBasis")))
         type=String.valueOf(meta.get("verifiedFailureType"));
       var item=new LinkedHashMap<String,Object>(rule);item.put("resolutionType",type);
       item.put("blocksText",group.equals("failedRules") && (Boolean.TRUE.equals(meta.get("blocksText")) || "CONFIRMED_HARD_BLOCKER".equals(type)));
       item.put("blocksRender",true);item.put("metadata",meta);result.add(item);
     }
+    var quality=map(map(ctx.get("analysis")).get("planQuality"));
+    for(var finding:rows(quality.get("findings"))) {
+      String scope=String.valueOf(finding.getOrDefault("scope",finding.getOrDefault("category",""))).toUpperCase();
+      if(Boolean.TRUE.equals(finding.get("repairable")) && (scope.contains("TEXT") || scope.contains("PROMPT"))
+          && !List.of("UNKNOWN","NOT_APPLICABLE").contains(String.valueOf(finding.get("applicability")))
+          && !List.of("OPTIONAL","NOT_REPAIRABLE").contains(String.valueOf(finding.get("repairability")))) {
+        var item=new LinkedHashMap<String,Object>(finding);item.put("ruleId",finding.getOrDefault("ruleId","SOURCE_PLAN_FINDING"));
+        item.put("resolutionType","TEXT_REPAIR_REQUIRED");item.put("blocksText",true);item.put("blocksRender",true);result.add(item);
+      }
+    }
+    if("FAIL".equals(quality.get("status")) && result.stream().noneMatch(x->Boolean.TRUE.equals(x.get("blocksText"))))
+      result.add(Map.of("ruleId","SOURCE_PLAN_ASSESSMENT","resolutionType","EVALUATOR_DEFECT","blocksText",true,"blocksRender",true,"message","Failed source-plan assessment requires review before text acceptance."));
     return result;
   }
   private Optional<Map<String,Object>> validEvent(String kind, Map<String,Object> ctx) {
@@ -246,7 +258,7 @@ public class Step6GovernanceService {
         if("BLOCKER".equals(severity)) actualBlockers++;
         if("CRITICAL".equals(severity)) actualCriticals++;
         var entry=new LinkedHashMap<String,Object>(failure);String disposition="UNRESOLVED";
-        if("ATTEMPT_001".equals(rule) && exception.isPresent()) {
+        if("ATTEMPT_001".equals(rule) && exception.isPresent() && failure.get("actualValue") instanceof Number attemptCount && attemptCount.intValue()>=2) {
           disposition="ATTEMPT_COUNT_EXCEPTION_V1";entry.put("governanceRecordId",exception.get().get("recordId"));
         } else if(Boolean.TRUE.equals(map(map(metadata.get("rules")).get(rule)).get("acknowledgeable"))) {
           var accepted=risks.stream().filter(x->scope.equals(x.get("scopeSha256")) && rule.equals(x.get("ruleId")) && "PRODUCTION_OPERATOR".equals(x.get("authenticatedRole")) && !revoked.contains(x.get("recordId")) && Instant.parse(String.valueOf(x.get("expiresAt"))).isAfter(Instant.now())).findFirst();

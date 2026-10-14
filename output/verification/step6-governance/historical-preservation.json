@@ -1,0 +1,18 @@
+{
+  "1.7": {
+    "assets": 9,
+    "changedHistoricalFields": {}
+  },
+  "1.8": {
+    "assets": 9,
+    "changedHistoricalFields": {}
+  },
+  "1.9": {
+    "assets": 9,
+    "changedHistoricalFields": {}
+  },
+  "1.10": {
+    "savedCanonicalInputs": 3,
+    "verification": "Full canonical equality asserted in test_ruleset_1_11_measurements.py"
+  }
+}

@@ -72,7 +72,7 @@ export class Step6GovernanceComponent implements OnChanges {
   }
   private epoch = 0;
   ngOnChanges() { this.epoch++; this.policy = null; this.saved = null; this.confirmed = false; this.busy = false; this.justification = ''; this.error = ''; this.approvedEventsPreserved = false; for (const proof of this.proofs) { proof.sourceQuote = ''; proof.approvedStoryQuote = ''; proof.reason = ''; } }
-  allowed(action: string): boolean { return this.policy?.analysisId === this.analysisId && this.policy?.allowedActions?.[action]?.allowed === true; }
+  allowed(action: string): boolean { return this.policy?.policyVersion === 'STEP6_RESOLUTION_V2' && this.policy?.analysisId === this.analysisId && this.policy?.allowedActions?.[action]?.allowed === true; }
   reasons(action: string): string[] { return this.policy?.allowedActions?.[action]?.reasons || (this.policy?.blockedReason ? [this.policy.blockedReason] : []); }
   load() {
     if (!this.analysisId || this.busy) return;
@@ -92,12 +92,12 @@ export class Step6GovernanceComponent implements OnChanges {
       next: saved => {
         if (epoch !== this.epoch) return;
         this.busy = false; this.confirmed = false;
-        if (saved?.analysisId !== id || !saved.recordId || saved.policyVersion !== 'STEP6_RESOLUTION_V2') {
+        if (saved?.analysisId !== id || !saved.recordId || saved.policyVersion !== 'STEP6_RESOLUTION_V2' || (action === 'text-acceptance' && saved.state !== 'TEXT_ACCEPTED_RENDER_BLOCKED') || (action === 'exception' && (saved.exceptionPolicy !== 'ATTEMPT_COUNT_EXCEPTION_V1' || saved.ruleId !== 'ATTEMPT_001'))) {
           this.error = 'The server did not confirm an exact saved governance action.'; this.cd.markForCheck(); return;
         }
         this.saved = saved; this.load(); this.cd.markForCheck();
       },
-      error: error => { if (epoch !== this.epoch) return; this.busy = false; this.error = error?.error?.detail || error?.error?.message || 'Governance action rejected; no approval is recorded.'; this.cd.markForCheck(); }
+      error: error => { if (epoch !== this.epoch) return; this.busy = false; this.policy = null; this.confirmed = false; this.error = error?.error?.detail || error?.error?.message || 'Governance action rejected; no approval is recorded.'; this.cd.markForCheck(); }
     });
   }
 }
