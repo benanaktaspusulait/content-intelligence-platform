@@ -1,4 +1,5 @@
 {
   "disabled": true,
+  "source": "http://127.0.0.1:53683/quality/detail?contentId=10&promptVersionId=10&studio=1&stage=6",
   "state": "TARGET_BLOCKED_BY_STORY_CONSTRAINT\n\nCurrent score: 88.41 · Conditional ceiling with current evidence: 89.31 · A minimum: 92\n\nNo defensible prompt-only path to A with current evidence and protected story.\n\nScore limitations and missing evidence"
 }

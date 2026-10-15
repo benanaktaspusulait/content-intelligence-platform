@@ -1,6 +1,6 @@
 # Adaptive Creative Optimization V3 — İş Listesi
 
-Durum: DEVAM EDİYOR. Sistem doğruluğu ile gerçek modelin yaratıcı etkinliği ayrı raporlanacak. Bu görev hiçbir gerçek DeepSeek/OpenAI üretim çağrısına izin vermez.
+Durum: ADAPTIVE_CREATIVE_OPTIMIZATION_V3_INCOMPLETE. Uygulama ve güvenli durdurma dağıtıldı; tam ürün akışında bağımsız kanıtla nitelendirilmiş B→A golden kabulü açık. Sistem doğruluğu ile gerçek modelin yaratıcı etkinliği ayrı raporlanacak. Bu görev hiçbir gerçek DeepSeek/OpenAI üretim çağrısına izin vermez.
 
 Hedef: Mevcut V2 akışını kullanarak A/A+ hedefine yönelmek; B sonucunu tamamlanmış optimizasyon saymamak. Kanıtlanamayan veya korunan hikâyeyle ulaşılamayan hedef için çağrı yapmadan açık engel döndürmek. Kanonik değerlendirme, skorlar, eşikler ve geçmiş kayıtlar değişmeyecek.
 
@@ -42,20 +42,20 @@ Hedef: Mevcut V2 akışını kullanarak A/A+ hedefine yönelmek; B sonucunu tama
 
 - [x] Mevcut altı yaratıcı kalite boyutunda kaynak destekli fark / doğrulanmamış hipotez / değişim yok / regresyon / eksik kanıt ayrımını uygula.
 - [x] Aynı ruleset/hikâye/ayar bağında Original–DeepSeek–OpenAI karşılaştır; en yüksek skor/uzunluk/yenilik otomatik tercih olmasın.
-- [x] A/A+ uygunluğunu gerçek not sözleşmesi, yeterli uygulanabilir kanıt ve regresyon yokluğu ile sınırla; A+ yoksa kullanma.
+- [ ] A/A+ uygunluğunu gerçek not sözleşmesi, yeterli uygulanabilir kanıt ve regresyon yokluğu ile sınırla; A+ yoksa kullanma. Politika uygulandı; üreticinin UNKNOWN çıktısından bağımsız PASS kanıtına gerçek ürün bağı henüz tamamlanmadığı için tam kabul açık.
 - [x] BEST AVAILABLE DRAFT ile TARGET-QUALIFIED FINAL CANDIDATE ayrımını ve istenen açık workflow durumlarını mevcut arayüze ekle.
 - [x] B iyileşmesini ilerleme olarak kaydet; hedefe erişildi/success diye sunma. Seçim/onay/yeni prompt sürümü yalnız açık operatör kararıyla olsun.
-- [x] Gerçek ve mock kanıtları ayıran kısa olay/metrik sözleşmesini ekle; yeni büyük dashboard kurma.
+- [ ] Gerçek ve mock kanıtları ayıran kısa olay/metrik sözleşmesini ekle; yeni büyük dashboard kurma. Sözleşme ve çalışma raporu eklendi; bağımsız değerlendirme/operatör kabul kanıtının tam raporlama projeksiyonu açık.
 
 ## Faz 6 — Kabul testleri, dağıtım ve kapanış
 
 - [ ] Gerçek Mimi ve mevcut onaylı golden girdilerle, no-egress mock ortamında 20 kabul durumunu test et: B→A yolu, DeepSeek A'da durma, B/eşdeğer/regresyon yükseltmesi, ortak sözleşme hatasında durma, OpenAI A, her iki B, kanıt/hikâye engeli, eksik izin, bütçe, tekrar, kısmi hata, kimlik/zamanlama, tarihî replay, eşit skorlu maddi fark, bütünlük.
-- [ ] Negatif güvenlik/onay kapsamı ve ücret idempotency testlerini ekle; mock A fixture'larını gerçek yaratıcı yetenek kanıtı diye sunma.
-- [ ] ML/backend/frontend ile bütçe, governance, F8 ve render kuyruğu ilgili regresyonlarını çalıştır.
-- [ ] Etkilenen servisleri deploy.sh ile dağıt; imaj/kaynak sürümünü ve gerçek uygulama arayüzünü doğrula.
-- [ ] Sağlayıcı taklitleri ve disposable veritabanıyla dış ağa çıkışsız uçtan uca uygulama kabulünü çalıştır; üretim kayıtlarına yazma.
-- [ ] Üretim geçmişi, Prompt 10/v1, hikâye, Ruleset 1.7–1.11, önceki sağlayıcı yanıtları, governance ve F8 bütünlüğünü doğrula.
-- [ ] ADAPTIVE_CREATIVE_OPTIMIZATION_V3_REPORT.md dosyasını 20 rapor maddesiyle tamamla; READY veya INCOMPLETE sonucunu kanıta göre ver.
+- [x] Negatif güvenlik/onay kapsamı ve ücret idempotency testlerini ekle; mock A fixture'larını gerçek yaratıcı yetenek kanıtı diye sunma.
+- [x] ML/backend/frontend ile bütçe, governance, F8 ve render kuyruğu ilgili regresyonlarını çalıştır.
+- [x] Etkilenen servisleri deploy.sh ile dağıt; imaj/kaynak sürümünü ve gerçek uygulama arayüzünü doğrula.
+- [x] Sağlayıcı taklitleri ve disposable veritabanıyla dış ağa çıkışsız uçtan uca uygulama kabulünü çalıştır; üretim kayıtlarına yazma.
+- [x] Üretim geçmişi, Prompt 10/v1, hikâye, Ruleset 1.7–1.11, önceki sağlayıcı yanıtları, governance ve F8 bütünlüğünü doğrula.
+- [x] ADAPTIVE_CREATIVE_OPTIMIZATION_V3_REPORT.md dosyasını 20 rapor maddesiyle tamamla; READY veya INCOMPLETE sonucunu kanıta göre ver.
 
 ## Çalışma günlüğü
 
@@ -65,3 +65,7 @@ Hedef: Mevcut V2 akışını kullanarak A/A+ hedefine yönelmek; B sonucunu tama
 
 - Faz 2: önceki 48 sözleşme testi geçti; gerçek A/B yanıtlarında 2/4 hatalı kimlik ayrı teşhis edildi, doğru kaynak zaman pencereleri korunuyor.
 - Faz 3–5: mevcut V2 üzerinde yapılandırılan sağlayıcı adaptörü, bağlı bütçe/yetki, kalıcı V3 koşullu yönlendirme, altı boyut, A uygunluğu ve taslak/nihai ayrımı uygulandı. Kabul testleri ve dağıtım sürüyor.
+
+- Sonuç: 269 ML, 56 backend, 72 frontend ve 44 render admission testi geçti; backend 3 koşullu eski test atlandı (geçti sayılmadı).
+- Dağıtılmış ve izole gerçek Mimi akışı: TARGET_BLOCKED_BY_STORY_CONSTRAINT, 88.40625/B, koşullu tavan 89.3125; gerçek sağlayıcı çağrısı 0, üretim yazması 0, 75 tarihî kayıt değişmedi.
+- Açık kabul: kontrollü A/B karar oracle testleri gerçek, onaylı golden girdiyle tam ürün B→A kabulünün yerine sayılmadı. Kaynak sadakati UNKNOWN → bağımsız PASS bağı ve bu kanıtı tüketen tam A senaryosu gerekiyor. İnaktif ADR önerisi eklendi; not veya tarihî kayıt değiştirilmedi.

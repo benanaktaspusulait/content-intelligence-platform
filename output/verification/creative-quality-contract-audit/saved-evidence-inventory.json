@@ -1,0 +1,1024 @@
+{
+  "counts": {
+    "promptVersions": 1,
+    "workflowEvents": 75,
+    "storyProvenance": 1,
+    "referencePrompts": 4,
+    "qualityValidations": 0,
+    "governedRuleReviews": 0
+  },
+  "promptVersions": [
+    {
+      "id": 10,
+      "content_id": 10,
+      "prompt_md5": "5dace455cbc675142d2ff4e532998702",
+      "source_path": null,
+      "source_sha256": null,
+      "version_number": 1
+    }
+  ],
+  "provenance": [
+    {
+      "created_at": "2026-10-12T19:29:37.764026+00:00",
+      "operator_edited": true,
+      "prompt_version_id": 10,
+      "creative_role_record_id": "1bbde0d2-efc2-46b8-920c-9f55e910ef59"
+    }
+  ],
+  "storyApprovals": [
+    {
+      "id": "bc91e588-8246-4eaf-9905-59ecd1e61e5e",
+      "payload": {
+        "role": "STORY_APPROVAL",
+        "createdAt": "2026-10-12T15:08:59.298258298Z",
+        "approvedAt": "2026-10-12T15:08:59.297040006Z",
+        "revisionId": "candidate-2-revision-39910cc7",
+        "sourceType": "GENERATED_CANDIDATE",
+        "candidateId": "candidate-2",
+        "approvedText": "Mimi, oyuncak dolab\u0131na 'Topla!' yazan bir yap\u0131\u015fkan not yap\u0131\u015ft\u0131rmak ister. Notu dolaba do\u011fru uzat\u0131r, ama not havada as\u0131l\u0131 kal\u0131r ve Mimi'nin etraf\u0131nda d\u00f6nmeye ba\u015flar. Mimi notu yakalamaya \u00e7al\u0131\u015f\u0131rken, not s\u00fcrekli yer de\u011fi\u015ftirir ve sonunda Mimi'nin s\u0131rt\u0131na yap\u0131\u015f\u0131r. Mimi ne yaparsa yaps\u0131n notu \u00e7\u0131karamaz. Not, Mimi'nin her hareketini taklit eden bir g\u00f6lge gibi olur. Mimi durur, not da durur. Mimi e\u011filir, not da e\u011filir. Sonunda Mimi pes eder ve oyuncaklar\u0131n\u0131 toplamaya ba\u015flar; not yava\u015f\u00e7a kaybolur.",
+        "originalStory": {
+          "alternatives": [
+            {
+              "text": "Mimi, oyuncak dolab\u0131na 'Topla!' yazan bir yap\u0131\u015fkan not yap\u0131\u015ft\u0131rmak ister. Ancak not, elinden kay\u0131p Mimi'nin aln\u0131na yap\u0131\u015f\u0131r. Mimi notu \u00e7\u0131karmaya \u00e7al\u0131\u015f\u0131rken, her dokunu\u015funda notlar \u00e7o\u011fal\u0131r ve v\u00fccuduna yay\u0131l\u0131r. K\u0131sa s\u00fcrede Mimi ba\u015ftan a\u015fa\u011f\u0131 yap\u0131\u015fkan notlarla kaplan\u0131r. \u00c7aresizce sallan\u0131r, z\u0131plar, ama notlar daha da s\u0131k\u0131 yap\u0131\u015f\u0131r. Sonunda, t\u00fcm notlar ayn\u0131 anda dile gelip 'Topla!' diye ba\u011f\u0131r\u0131r. Mimi, oyuncaklar\u0131n\u0131 toplamaya ba\u015flar; notlar tek tek kaybolur.",
+              "title": "Sticky Note Avalanche",
+              "candidateId": "candidate-1"
+            },
+            {
+              "text": "Mimi, oyuncak dolab\u0131na 'Topla!' yazan bir yap\u0131\u015fkan not yap\u0131\u015ft\u0131rmak ister. Notu dolaba do\u011fru uzat\u0131r, ama not havada as\u0131l\u0131 kal\u0131r ve Mimi'nin etraf\u0131nda d\u00f6nmeye ba\u015flar. Mimi notu yakalamaya \u00e7al\u0131\u015f\u0131rken, not s\u00fcrekli yer de\u011fi\u015ftirir ve sonunda Mimi'nin s\u0131rt\u0131na yap\u0131\u015f\u0131r. Mimi ne yaparsa yaps\u0131n notu \u00e7\u0131karamaz. Not, Mimi'nin her hareketini taklit eden bir g\u00f6lge gibi olur. Mimi durur, not da durur. Mimi e\u011filir, not da e\u011filir. Sonunda Mimi pes eder ve oyuncaklar\u0131n\u0131 toplamaya ba\u015flar; not yava\u015f\u00e7a kaybolur.",
+              "title": "The Note That Wouldn't Stick",
+              "candidateId": "candidate-2"
+            },
+            {
+              "text": "Mimi, oyuncak dolab\u0131na 'Topla!' yazan bir yap\u0131\u015fkan not yap\u0131\u015ft\u0131rmak ister. Notu dolaba koyar, ama not hemen Mimi'nin eline yap\u0131\u015f\u0131r. Mimi notu silkelemeye \u00e7al\u0131\u015f\u0131r, fakat not daha da g\u00fc\u00e7l\u00fc yap\u0131\u015f\u0131r. Derken, odadaki di\u011fer yap\u0131\u015fkan notlar da canlan\u0131r ve Mimi'ye do\u011fru u\u00e7maya ba\u015flar. Mimi ka\u00e7maya \u00e7al\u0131\u015f\u0131r ama notlar onu kovalar. Sonunda Mimi'yi yakalarlar ve her yeri notlarla kaplan\u0131r. Notlar hep birlikte 'Topla!' diye ba\u011f\u0131r\u0131r. Mimi oyuncaklar\u0131n\u0131 toplamaya ba\u015flar; notlar tek tek d\u00fc\u015fer.",
+              "title": "Note Rebellion",
+              "candidateId": "candidate-3"
+            }
+          ],
+          "storyQuality": {
+            "pairs": [
+              {
+                "left": 1,
+                "right": 2,
+                "sharedDimensions": [],
+                "lexicalSimilarity": 0.167,
+                "eventSequenceMatch": false,
+                "differentDimensions": [
+                  "endingEvent",
+                  "repetitionRisk"
+                ]
+              },
+              {
+                "left": 1,
+                "right": 3,
+                "sharedDimensions": [],
+                "lexicalSimilarity": 0.182,
+                "eventSequenceMatch": true,
+                "differentDimensions": []
+              },
+              {
+                "left": 2,
+                "right": 3,
+                "sharedDimensions": [],
+                "lexicalSimilarity": 0.184,
+                "eventSequenceMatch": false,
+                "differentDimensions": [
+                  "endingEvent",
+                  "repetitionRisk"
+                ]
+              }
+            ],
+            "method": "story-structure-v1",
+            "summary": "Candidates share core structure but differ in some material dimensions.",
+            "candidates": [
+              {
+                "preflight": {
+                  "ending": "INSUFFICIENT_EVIDENCE",
+                  "opening": "SUPPORTED",
+                  "concerns": [
+                    "Meaningful progression is not evidenced; motion alone is not counted."
+                  ],
+                  "mechanism": "INSUFFICIENT_EVIDENCE",
+                  "strengths": [
+                    "The opening provides an observable focus or situation."
+                  ],
+                  "progression": "INSUFFICIENT_EVIDENCE",
+                  "characterAgency": "INSUFFICIENT_EVIDENCE",
+                  "productionRisks": []
+                },
+                "assessment": {
+                  "risks": [
+                    {
+                      "family": "concept_strength",
+                      "message": "The character appears to take only one type of action.",
+                      "outcome": "WARNING",
+                      "evidence": "ba\u015flar",
+                      "severity": "WARNING",
+                      "dimension": "characterInitiative"
+                    },
+                    {
+                      "family": "visual_novelty",
+                      "message": "The story repeats the same action without clearly new consequences. This may reduce visual novelty.",
+                      "outcome": "WARNING",
+                      "severity": "WARNING",
+                      "dimension": "repetitionRisk"
+                    }
+                  ],
+                  "unknown": [
+                    {
+                      "family": "final_payoff",
+                      "message": "A final event is described, but its creative effectiveness or audience payoff cannot be determined from text alone.",
+                      "outcome": "UNKNOWN",
+                      "dimension": "endingPayoff"
+                    },
+                    {
+                      "family": "consistency",
+                      "message": "No obvious rule contradictions detected, but full consistency check requires production plan analysis.",
+                      "outcome": "UNKNOWN",
+                      "dimension": "ruleConsistency"
+                    },
+                    {
+                      "family": "visual_novelty",
+                      "message": "Frame-zero visual legibility and hook strength cannot be assessed from story text alone.",
+                      "outcome": "NOT_EVALUATED",
+                      "dimension": "visualLegibility"
+                    },
+                    {
+                      "family": "ai_producibility",
+                      "message": "AI producibility requires a production prompt and cannot be assessed from story text alone.",
+                      "outcome": "NOT_EVALUATED",
+                      "dimension": "aiProducibility"
+                    },
+                    {
+                      "family": "progression",
+                      "message": "Pacing and beat timing cannot be assessed without a production plan.",
+                      "outcome": "NOT_EVALUATED",
+                      "dimension": "pacing"
+                    }
+                  ],
+                  "strengths": [
+                    {
+                      "family": "concept_strength",
+                      "message": "The story describes a character situation or goal.",
+                      "outcome": "PASS",
+                      "evidence": "Mimi, oyuncak dolab\u0131na 'Topla!' yazan bir yap\u0131\u015fkan not yap\u0131\u015ft\u0131rmak ister.",
+                      "severity": "INFO",
+                      "dimension": "characterGoal"
+                    },
+                    {
+                      "family": "concept_strength",
+                      "message": "The story describes an obstacle or challenge.",
+                      "outcome": "PASS",
+                      "evidence": "Ancak not, elinden kay\u0131p Mimi'nin aln\u0131na yap\u0131\u015f\u0131r.",
+                      "severity": "INFO",
+                      "dimension": "obstacle"
+                    },
+                    {
+                      "family": "progression",
+                      "message": "The story contains cause-and-effect progression signals.",
+                      "outcome": "PASS",
+                      "severity": "INFO",
+                      "dimension": "progression"
+                    },
+                    {
+                      "family": "escalation",
+                      "message": "The story contains escalation signals (increasing intensity or complexity).",
+                      "outcome": "PASS",
+                      "severity": "INFO",
+                      "dimension": "escalation"
+                    },
+                    {
+                      "family": "final_payoff",
+                      "message": "The story describes a final event.",
+                      "outcome": "PASS",
+                      "evidence": "Sonunda, t\u00fcm notlar ayn\u0131 anda dile gelip 'Topla!' diye ba\u011f\u0131r\u0131r. Mimi, oyuncaklar\u0131n\u0131 toplamaya ba\u015flar; notlar tek tek kaybolur.",
+                      "severity": "INFO",
+                      "dimension": "endingEvent"
+                    }
+                  ],
+                  "candidateId": "candidate-1",
+                  "fingerprint": "022f87abbcecff65f5d0a2af352998d0196502cfbed8251295ae7be34bd5276e"
+                },
+                "structuralEvidence": {
+                  "escalation": null,
+                  "characterGoal": null,
+                  "eventSequence": [],
+                  "mainCharacter": "Mimi",
+                  "centralPremise": null,
+                  "endingFunction": null,
+                  "centralObstacle": null,
+                  "majorStoryChanges": null,
+                  "openingVisualPromise": "Mimi, oyuncak dolab\u0131na 'Topla!' yazan bir yap\u0131\u015fkan not yap\u0131\u015ft\u0131rmak ister.",
+                  "mainObjectOrSituation": null,
+                  "primaryRuleOrQuestion": null,
+                  "reasonToContinueWatching": "Mimi, oyuncak dolab\u0131na 'Topla!' yazan bir yap\u0131\u015fkan not yap\u0131\u015ft\u0131rmak ister.",
+                  "productionSensitiveElements": []
+                }
+              },
+              {
+                "preflight": {
+                  "ending": "INSUFFICIENT_EVIDENCE",
+                  "opening": "SUPPORTED",
+                  "concerns": [
+                    "Meaningful progression is not evidenced; motion alone is not counted."
+                  ],
+                  "mechanism": "INSUFFICIENT_EVIDENCE",
+                  "strengths": [
+                    "The opening provides an observable focus or situation."
+                  ],
+                  "progression": "INSUFFICIENT_EVIDENCE",
+                  "characterAgency": "INSUFFICIENT_EVIDENCE",
+                  "productionRisks": []
+                },
+                "assessment": {
+                  "risks": [],
+                  "unknown": [
+                    {
+                      "family": "progression",
+                      "message": "The story contains 2 action types; whether these represent distinct attempts is uncertain without production plan.",
+                      "outcome": "UNKNOWN",
+                      "dimension": "distinctAttempts"
+                    },
+                    {
+                      "family": "final_payoff",
+                      "message": "A final event is described, but its creative effectiveness or audience payoff cannot be determined from text alone.",
+                      "outcome": "UNKNOWN",
+                      "dimension": "endingPayoff"
+                    },
+                    {
+                      "family": "consistency",
+                      "message": "No obvious rule contradictions detected, but full consistency check requires production plan analysis.",
+                      "outcome": "UNKNOWN",
+                      "dimension": "ruleConsistency"
+                    },
+                    {
+                      "family": "visual_novelty",
+                      "message": "Frame-zero visual legibility and hook strength cannot be assessed from story text alone.",
+                      "outcome": "NOT_EVALUATED",
+                      "dimension": "visualLegibility"
+                    },
+                    {
+                      "family": "ai_producibility",
+                      "message": "AI producibility requires a production prompt and cannot be assessed from story text alone.",
+                      "outcome": "NOT_EVALUATED",
+                      "dimension": "aiProducibility"
+                    },
+                    {
+                      "family": "progression",
+                      "message": "Pacing and beat timing cannot be assessed without a production plan.",
+                      "outcome": "NOT_EVALUATED",
+                      "dimension": "pacing"
+                    }
+                  ],
+                  "strengths": [
+                    {
+                      "family": "concept_strength",
+                      "message": "The story describes a character situation or goal.",
+                      "outcome": "PASS",
+                      "evidence": "Mimi, oyuncak dolab\u0131na 'Topla!' yazan bir yap\u0131\u015fkan not yap\u0131\u015ft\u0131rmak ister.",
+                      "severity": "INFO",
+                      "dimension": "characterGoal"
+                    },
+                    {
+                      "family": "concept_strength",
+                      "message": "The story describes an obstacle or challenge.",
+                      "outcome": "PASS",
+                      "evidence": "Notu dolaba do\u011fru uzat\u0131r, ama not havada as\u0131l\u0131 kal\u0131r ve Mimi'nin etraf\u0131nda d\u00f6nmeye ba\u015flar.",
+                      "severity": "INFO",
+                      "dimension": "obstacle"
+                    },
+                    {
+                      "family": "concept_strength",
+                      "message": "The character takes 2 distinct actions.",
+                      "outcome": "PASS",
+                      "evidence": "ba\u015flar, kal\u0131r",
+                      "severity": "INFO",
+                      "dimension": "characterInitiative"
+                    },
+                    {
+                      "family": "progression",
+                      "message": "The story contains cause-and-effect progression signals.",
+                      "outcome": "PASS",
+                      "severity": "INFO",
+                      "dimension": "progression"
+                    },
+                    {
+                      "family": "escalation",
+                      "message": "The story contains escalation signals (increasing intensity or complexity).",
+                      "outcome": "PASS",
+                      "severity": "INFO",
+                      "dimension": "escalation"
+                    },
+                    {
+                      "family": "final_payoff",
+                      "message": "The story describes a final event.",
+                      "outcome": "PASS",
+                      "evidence": "Mimi e\u011filir, not da e\u011filir. Sonunda Mimi pes eder ve oyuncaklar\u0131n\u0131 toplamaya ba\u015flar; not yava\u015f\u00e7a kaybolur.",
+                      "severity": "INFO",
+                      "dimension": "endingEvent"
+                    }
+                  ],
+                  "candidateId": "candidate-2",
+                  "fingerprint": "542a8a8f35bb41126f0ff3e7ea273bc99eea9a0052e16b4b2bf6a9f5d9d52dd4"
+                },
+                "structuralEvidence": {
+                  "escalation": null,
+                  "characterGoal": null,
+                  "eventSequence": [],
+                  "mainCharacter": "Mimi",
+                  "centralPremise": null,
+                  "endingFunction": null,
+                  "centralObstacle": null,
+                  "majorStoryChanges": null,
+                  "openingVisualPromise": "Mimi, oyuncak dolab\u0131na 'Topla!' yazan bir yap\u0131\u015fkan not yap\u0131\u015ft\u0131rmak ister.",
+                  "mainObjectOrSituation": null,
+                  "primaryRuleOrQuestion": null,
+                  "reasonToContinueWatching": "Mimi, oyuncak dolab\u0131na 'Topla!' yazan bir yap\u0131\u015fkan not yap\u0131\u015ft\u0131rmak ister.",
+                  "productionSensitiveElements": []
+                }
+              },
+              {
+                "preflight": {
+                  "ending": "INSUFFICIENT_EVIDENCE",
+                  "opening": "SUPPORTED",
+                  "concerns": [
+                    "Meaningful progression is not evidenced; motion alone is not counted."
+                  ],
+                  "mechanism": "INSUFFICIENT_EVIDENCE",
+                  "strengths": [
+                    "The opening provides an observable focus or situation."
+                  ],
+                  "progression": "INSUFFICIENT_EVIDENCE",
+                  "characterAgency": "INSUFFICIENT_EVIDENCE",
+                  "productionRisks": []
+                },
+                "assessment": {
+                  "risks": [
+                    {
+                      "family": "concept_strength",
+                      "message": "The character appears to take only one type of action.",
+                      "outcome": "WARNING",
+                      "evidence": "ba\u015flar",
+                      "severity": "WARNING",
+                      "dimension": "characterInitiative"
+                    },
+                    {
+                      "family": "visual_novelty",
+                      "message": "The story repeats the same action without clearly new consequences. This may reduce visual novelty.",
+                      "outcome": "WARNING",
+                      "severity": "WARNING",
+                      "dimension": "repetitionRisk"
+                    }
+                  ],
+                  "unknown": [
+                    {
+                      "family": "final_payoff",
+                      "message": "A final event is described, but its creative effectiveness or audience payoff cannot be determined from text alone.",
+                      "outcome": "UNKNOWN",
+                      "dimension": "endingPayoff"
+                    },
+                    {
+                      "family": "consistency",
+                      "message": "No obvious rule contradictions detected, but full consistency check requires production plan analysis.",
+                      "outcome": "UNKNOWN",
+                      "dimension": "ruleConsistency"
+                    },
+                    {
+                      "family": "visual_novelty",
+                      "message": "Frame-zero visual legibility and hook strength cannot be assessed from story text alone.",
+                      "outcome": "NOT_EVALUATED",
+                      "dimension": "visualLegibility"
+                    },
+                    {
+                      "family": "ai_producibility",
+                      "message": "AI producibility requires a production prompt and cannot be assessed from story text alone.",
+                      "outcome": "NOT_EVALUATED",
+                      "dimension": "aiProducibility"
+                    },
+                    {
+                      "family": "progression",
+                      "message": "Pacing and beat timing cannot be assessed without a production plan.",
+                      "outcome": "NOT_EVALUATED",
+                      "dimension": "pacing"
+                    }
+                  ],
+                  "strengths": [
+                    {
+                      "family": "concept_strength",
+                      "message": "The story describes a character situation or goal.",
+                      "outcome": "PASS",
+                      "evidence": "Mimi, oyuncak dolab\u0131na 'Topla!' yazan bir yap\u0131\u015fkan not yap\u0131\u015ft\u0131rmak ister.",
+                      "severity": "INFO",
+                      "dimension": "characterGoal"
+                    },
+                    {
+                      "family": "concept_strength",
+                      "message": "The story describes an obstacle or challenge.",
+                      "outcome": "PASS",
+                      "evidence": "Notu dolaba koyar, ama not hemen Mimi'nin eline yap\u0131\u015f\u0131r.",
+                      "severity": "INFO",
+                      "dimension": "obstacle"
+                    },
+                    {
+                      "family": "progression",
+                      "message": "The story contains cause-and-effect progression signals.",
+                      "outcome": "PASS",
+                      "severity": "INFO",
+                      "dimension": "progression"
+                    },
+                    {
+                      "family": "escalation",
+                      "message": "The story contains escalation signals (increasing intensity or complexity).",
+                      "outcome": "PASS",
+                      "severity": "INFO",
+                      "dimension": "escalation"
+                    },
+                    {
+                      "family": "final_payoff",
+                      "message": "The story describes a final event.",
+                      "outcome": "PASS",
+                      "evidence": "Notlar hep birlikte 'Topla!' diye ba\u011f\u0131r\u0131r. Mimi oyuncaklar\u0131n\u0131 toplamaya ba\u015flar; notlar tek tek d\u00fc\u015fer.",
+                      "severity": "INFO",
+                      "dimension": "endingEvent"
+                    }
+                  ],
+                  "candidateId": "candidate-3",
+                  "fingerprint": "6d8681be28f969c5471d09e8b5da0ce63568706c50000b380940b0b17c82a070"
+                },
+                "structuralEvidence": {
+                  "escalation": null,
+                  "characterGoal": null,
+                  "eventSequence": [],
+                  "mainCharacter": "Mimi",
+                  "centralPremise": null,
+                  "endingFunction": null,
+                  "centralObstacle": null,
+                  "majorStoryChanges": null,
+                  "openingVisualPromise": "Mimi, oyuncak dolab\u0131na 'Topla!' yazan bir yap\u0131\u015fkan not yap\u0131\u015ft\u0131rmak ister.",
+                  "mainObjectOrSituation": null,
+                  "primaryRuleOrQuestion": null,
+                  "reasonToContinueWatching": "Mimi, oyuncak dolab\u0131na 'Topla!' yazan bir yap\u0131\u015fkan not yap\u0131\u015ft\u0131rmak ister.",
+                  "productionSensitiveElements": []
+                }
+              }
+            ],
+            "differences": [
+              "Alternative 1 vs 2: different endingEvent, repetitionRisk; shared no extracted dimensions.",
+              "Alternative 1 vs 3: different no supported dimensions; shared no extracted dimensions.",
+              "Alternative 2 vs 3: different endingEvent, repetitionRisk; shared no extracted dimensions."
+            ],
+            "classification": "PARTIALLY_DISTINCT",
+            "variationClass": "LIMITED_VARIATION",
+            "classificationReason": "Candidates share core structure but differ in some material dimensions."
+          }
+        },
+        "storyRecordId": "dc736d78-46cf-4963-972f-6fd30e8f15eb",
+        "reviewRecordId": null,
+        "sourceRevisionId": null,
+        "contentFingerprint": "39910cc7"
+      }
+    },
+    {
+      "id": "20b77d13-848d-46d0-ab4b-bb9b6efb0836",
+      "payload": {
+        "role": "STORY_APPROVAL",
+        "createdAt": "2026-10-12T16:00:57.000276963Z",
+        "approvedAt": "2026-10-12T16:00:57.000196921Z",
+        "revisionId": "candidate-2-revision-7c63cc86",
+        "sourceType": "GENERATED_CANDIDATE",
+        "candidateId": "candidate-2",
+        "approvedText": "Mimi, oyuncak dolab\u0131na 'Topla!' yazan bir yap\u0131\u015fkan not yap\u0131\u015ft\u0131rmak ister. Not, Mimi'nin parma\u011f\u0131na yap\u0131\u015f\u0131r. Mimi di\u011fer eliyle \u00e7\u0131karmaya \u00e7al\u0131\u015f\u0131rken not ikiye ayr\u0131l\u0131r ve iki eline de yap\u0131\u015f\u0131r. Her \u00e7eki\u015fte notlar ikiye katlanarak \u00e7o\u011fal\u0131r. K\u0131sa s\u00fcrede Mimi'nin kollar\u0131, bacaklar\u0131 ve y\u00fcz\u00fc notlarla kaplan\u0131r. Mimi aynada kendini g\u00f6r\u00fcnce \u00e7\u0131\u011fl\u0131k atar. Notlar o kadar \u00e7o\u011fal\u0131r ki Mimi bo\u011fulacak gibi olur. Sonunda hap\u015f\u0131r\u0131r ve t\u00fcm notlar u\u00e7u\u015farak dolab\u0131n \u00fczerine yap\u0131\u015f\u0131r. Mimi rahat bir nefes al\u0131r ama dolap h\u00e2l\u00e2 da\u011f\u0131n\u0131kt\u0131r.",
+        "originalStory": {
+          "alternatives": [
+            {
+              "text": "Mimi, oyuncak dolab\u0131na 'Topla!' yazan bir yap\u0131\u015fkan not yap\u0131\u015ft\u0131rmak ister. Ancak not, elinden kay\u0131p Mimi'nin s\u0131rt\u0131na yap\u0131\u015f\u0131r. Mimi \u00e7\u0131karmaya \u00e7al\u0131\u015f\u0131rken her dokunu\u015fta notlar \u00e7o\u011fal\u0131r ve t\u00fcm v\u00fccudunu kaplar. Odadaki di\u011fer e\u015fyalar da notlarla kaplan\u0131nca Mimi panikler. Sonunda notlar\u0131 silkeleyerek kurtulur ama dolap h\u00e2l\u00e2 da\u011f\u0131n\u0131kt\u0131r ve notlar yerde dans eder.",
+              "title": "Sticky Note Avalanche",
+              "candidateId": "candidate-1"
+            },
+            {
+              "text": "Mimi, oyuncak dolab\u0131na 'Topla!' yazan bir yap\u0131\u015fkan not yap\u0131\u015ft\u0131rmak ister. Not, Mimi'nin parma\u011f\u0131na yap\u0131\u015f\u0131r. Mimi di\u011fer eliyle \u00e7\u0131karmaya \u00e7al\u0131\u015f\u0131rken not ikiye ayr\u0131l\u0131r ve iki eline de yap\u0131\u015f\u0131r. Her \u00e7eki\u015fte notlar ikiye katlanarak \u00e7o\u011fal\u0131r. K\u0131sa s\u00fcrede Mimi'nin kollar\u0131, bacaklar\u0131 ve y\u00fcz\u00fc notlarla kaplan\u0131r. Mimi aynada kendini g\u00f6r\u00fcnce \u00e7\u0131\u011fl\u0131k atar. Notlar o kadar \u00e7o\u011fal\u0131r ki Mimi bo\u011fulacak gibi olur. Sonunda hap\u015f\u0131r\u0131r ve t\u00fcm notlar u\u00e7u\u015farak dolab\u0131n \u00fczerine yap\u0131\u015f\u0131r. Mimi rahat bir nefes al\u0131r ama dolap h\u00e2l\u00e2 da\u011f\u0131n\u0131kt\u0131r.",
+              "title": "The Note That Multiplies",
+              "candidateId": "candidate-2"
+            },
+            {
+              "text": "Mimi, oyuncak dolab\u0131na 'Topla!' yazan bir yap\u0131\u015fkan not yap\u0131\u015ft\u0131rmak ister. Not, Mimi'nin elinden ka\u00e7ar ve odada u\u00e7maya ba\u015flar. Mimi notu yakalamaya \u00e7al\u0131\u015f\u0131rken not s\u00fcrekli yer de\u011fi\u015ftirir ve Mimi'nin v\u00fccudunun farkl\u0131 yerlerine yap\u0131\u015f\u0131r. Mimi notu \u00e7\u0131kard\u0131k\u00e7a not ba\u015fka bir yere konar. Sonunda not, Mimi'nin aln\u0131na yap\u0131\u015f\u0131r ve Mimi onu g\u00f6remez. Mimi aynada notu g\u00f6r\u00fcp \u00e7\u0131karmaya \u00e7al\u0131\u015f\u0131rken not yere d\u00fc\u015fer ve Mimi'nin aya\u011f\u0131na yap\u0131\u015f\u0131r. Mimi tek ayak \u00fcst\u00fcnde z\u0131plarken notlar odan\u0131n her yerine yay\u0131l\u0131r. Sonunda Mimi yorulup yere oturur ve notlar etraf\u0131nda d\u00f6nmeye ba\u015flar. Mimi g\u00fclerek pes eder.",
+              "title": "Note Chase",
+              "candidateId": "candidate-3"
+            }
+          ],
+          "storyQuality": {
+            "pairs": [
+              {
+                "left": 1,
+                "right": 2,
+                "sharedDimensions": [],
+                "lexicalSimilarity": 0.261,
+                "eventSequenceMatch": true,
+                "differentDimensions": [
+                  "endingEvent"
+                ]
+              },
+              {
+                "left": 1,
+                "right": 3,
+                "sharedDimensions": [],
+                "lexicalSimilarity": 0.22,
+                "eventSequenceMatch": false,
+                "differentDimensions": [
+                  "endingEvent"
+                ]
+              },
+              {
+                "left": 2,
+                "right": 3,
+                "sharedDimensions": [],
+                "lexicalSimilarity": 0.218,
+                "eventSequenceMatch": false,
+                "differentDimensions": [
+                  "endingEvent"
+                ]
+              }
+            ],
+            "method": "story-structure-v1",
+            "summary": "Candidates share core structure but differ in some material dimensions.",
+            "candidates": [
+              {
+                "preflight": {
+                  "ending": "INSUFFICIENT_EVIDENCE",
+                  "opening": "SUPPORTED",
+                  "concerns": [
+                    "Meaningful progression is not evidenced; motion alone is not counted."
+                  ],
+                  "mechanism": "INSUFFICIENT_EVIDENCE",
+                  "strengths": [
+                    "The opening provides an observable focus or situation."
+                  ],
+                  "progression": "INSUFFICIENT_EVIDENCE",
+                  "characterAgency": "INSUFFICIENT_EVIDENCE",
+                  "productionRisks": []
+                },
+                "assessment": {
+                  "risks": [
+                    {
+                      "family": "visual_novelty",
+                      "message": "The story repeats the same action without clearly new consequences. This may reduce visual novelty.",
+                      "outcome": "WARNING",
+                      "severity": "WARNING",
+                      "dimension": "repetitionRisk"
+                    }
+                  ],
+                  "unknown": [
+                    {
+                      "family": "concept_strength",
+                      "message": "Character actions cannot be confidently extracted from the text.",
+                      "outcome": "UNKNOWN",
+                      "dimension": "characterInitiative"
+                    },
+                    {
+                      "family": "final_payoff",
+                      "message": "A final event is described, but its creative effectiveness or audience payoff cannot be determined from text alone.",
+                      "outcome": "UNKNOWN",
+                      "dimension": "endingPayoff"
+                    },
+                    {
+                      "family": "consistency",
+                      "message": "No obvious rule contradictions detected, but full consistency check requires production plan analysis.",
+                      "outcome": "UNKNOWN",
+                      "dimension": "ruleConsistency"
+                    },
+                    {
+                      "family": "visual_novelty",
+                      "message": "Frame-zero visual legibility and hook strength cannot be assessed from story text alone.",
+                      "outcome": "NOT_EVALUATED",
+                      "dimension": "visualLegibility"
+                    },
+                    {
+                      "family": "ai_producibility",
+                      "message": "AI producibility requires a production prompt and cannot be assessed from story text alone.",
+                      "outcome": "NOT_EVALUATED",
+                      "dimension": "aiProducibility"
+                    },
+                    {
+                      "family": "progression",
+                      "message": "Pacing and beat timing cannot be assessed without a production plan.",
+                      "outcome": "NOT_EVALUATED",
+                      "dimension": "pacing"
+                    }
+                  ],
+                  "strengths": [
+                    {
+                      "family": "concept_strength",
+                      "message": "The story describes a character situation or goal.",
+                      "outcome": "PASS",
+                      "evidence": "Mimi, oyuncak dolab\u0131na 'Topla!' yazan bir yap\u0131\u015fkan not yap\u0131\u015ft\u0131rmak ister.",
+                      "severity": "INFO",
+                      "dimension": "characterGoal"
+                    },
+                    {
+                      "family": "concept_strength",
+                      "message": "The story describes an obstacle or challenge.",
+                      "outcome": "PASS",
+                      "evidence": "Ancak not, elinden kay\u0131p Mimi'nin s\u0131rt\u0131na yap\u0131\u015f\u0131r.",
+                      "severity": "INFO",
+                      "dimension": "obstacle"
+                    },
+                    {
+                      "family": "progression",
+                      "message": "The story contains cause-and-effect progression signals.",
+                      "outcome": "PASS",
+                      "severity": "INFO",
+                      "dimension": "progression"
+                    },
+                    {
+                      "family": "escalation",
+                      "message": "The story contains escalation signals (increasing intensity or complexity).",
+                      "outcome": "PASS",
+                      "severity": "INFO",
+                      "dimension": "escalation"
+                    },
+                    {
+                      "family": "final_payoff",
+                      "message": "The story describes a final event.",
+                      "outcome": "PASS",
+                      "evidence": "Odadaki di\u011fer e\u015fyalar da notlarla kaplan\u0131nca Mimi panikler. Sonunda notlar\u0131 silkeleyerek kurtulur ama dolap h\u00e2l\u00e2 da\u011f\u0131n\u0131kt\u0131r ve notlar yerde dans eder.",
+                      "severity": "INFO",
+                      "dimension": "endingEvent"
+                    }
+                  ],
+                  "candidateId": "candidate-1",
+                  "fingerprint": "66a65e409d1f8a5b34217d298e407638cb02b9dbbcffae4431d573ec2134d753"
+                },
+                "structuralEvidence": {
+                  "escalation": null,
+                  "characterGoal": null,
+                  "eventSequence": [],
+                  "mainCharacter": "Mimi",
+                  "centralPremise": null,
+                  "endingFunction": null,
+                  "centralObstacle": null,
+                  "majorStoryChanges": null,
+                  "openingVisualPromise": "Mimi, oyuncak dolab\u0131na 'Topla!' yazan bir yap\u0131\u015fkan not yap\u0131\u015ft\u0131rmak ister.",
+                  "mainObjectOrSituation": null,
+                  "primaryRuleOrQuestion": null,
+                  "reasonToContinueWatching": "Mimi, oyuncak dolab\u0131na 'Topla!' yazan bir yap\u0131\u015fkan not yap\u0131\u015ft\u0131rmak ister.",
+                  "productionSensitiveElements": []
+                }
+              },
+              {
+                "preflight": {
+                  "ending": "INSUFFICIENT_EVIDENCE",
+                  "opening": "SUPPORTED",
+                  "concerns": [
+                    "Meaningful progression is not evidenced; motion alone is not counted."
+                  ],
+                  "mechanism": "INSUFFICIENT_EVIDENCE",
+                  "strengths": [
+                    "The opening provides an observable focus or situation."
+                  ],
+                  "progression": "INSUFFICIENT_EVIDENCE",
+                  "characterAgency": "INSUFFICIENT_EVIDENCE",
+                  "productionRisks": []
+                },
+                "assessment": {
+                  "risks": [
+                    {
+                      "family": "visual_novelty",
+                      "message": "The story repeats the same action without clearly new consequences. This may reduce visual novelty.",
+                      "outcome": "WARNING",
+                      "severity": "WARNING",
+                      "dimension": "repetitionRisk"
+                    }
+                  ],
+                  "unknown": [
+                    {
+                      "family": "concept_strength",
+                      "message": "Character actions cannot be confidently extracted from the text.",
+                      "outcome": "UNKNOWN",
+                      "dimension": "characterInitiative"
+                    },
+                    {
+                      "family": "final_payoff",
+                      "message": "A final event is described, but its creative effectiveness or audience payoff cannot be determined from text alone.",
+                      "outcome": "UNKNOWN",
+                      "dimension": "endingPayoff"
+                    },
+                    {
+                      "family": "consistency",
+                      "message": "No obvious rule contradictions detected, but full consistency check requires production plan analysis.",
+                      "outcome": "UNKNOWN",
+                      "dimension": "ruleConsistency"
+                    },
+                    {
+                      "family": "visual_novelty",
+                      "message": "Frame-zero visual legibility and hook strength cannot be assessed from story text alone.",
+                      "outcome": "NOT_EVALUATED",
+                      "dimension": "visualLegibility"
+                    },
+                    {
+                      "family": "ai_producibility",
+                      "message": "AI producibility requires a production prompt and cannot be assessed from story text alone.",
+                      "outcome": "NOT_EVALUATED",
+                      "dimension": "aiProducibility"
+                    },
+                    {
+                      "family": "progression",
+                      "message": "Pacing and beat timing cannot be assessed without a production plan.",
+                      "outcome": "NOT_EVALUATED",
+                      "dimension": "pacing"
+                    }
+                  ],
+                  "strengths": [
+                    {
+                      "family": "concept_strength",
+                      "message": "The story describes a character situation or goal.",
+                      "outcome": "PASS",
+                      "evidence": "Mimi, oyuncak dolab\u0131na 'Topla!' yazan bir yap\u0131\u015fkan not yap\u0131\u015ft\u0131rmak ister.",
+                      "severity": "INFO",
+                      "dimension": "characterGoal"
+                    },
+                    {
+                      "family": "concept_strength",
+                      "message": "The story describes an obstacle or challenge.",
+                      "outcome": "PASS",
+                      "evidence": "Mimi rahat bir nefes al\u0131r ama dolap h\u00e2l\u00e2 da\u011f\u0131n\u0131kt\u0131r.",
+                      "severity": "INFO",
+                      "dimension": "obstacle"
+                    },
+                    {
+                      "family": "progression",
+                      "message": "The story contains cause-and-effect progression signals.",
+                      "outcome": "PASS",
+                      "severity": "INFO",
+                      "dimension": "progression"
+                    },
+                    {
+                      "family": "escalation",
+                      "message": "The story contains escalation signals (increasing intensity or complexity).",
+                      "outcome": "PASS",
+                      "severity": "INFO",
+                      "dimension": "escalation"
+                    },
+                    {
+                      "family": "final_payoff",
+                      "message": "The story describes a final event.",
+                      "outcome": "PASS",
+                      "evidence": "Sonunda hap\u015f\u0131r\u0131r ve t\u00fcm notlar u\u00e7u\u015farak dolab\u0131n \u00fczerine yap\u0131\u015f\u0131r. Mimi rahat bir nefes al\u0131r ama dolap h\u00e2l\u00e2 da\u011f\u0131n\u0131kt\u0131r.",
+                      "severity": "INFO",
+                      "dimension": "endingEvent"
+                    }
+                  ],
+                  "candidateId": "candidate-2",
+                  "fingerprint": "df653dbcaf16bfdbceb87baa23688d70d739c34941d0075e30e96b181e1bf32b"
+                },
+                "structuralEvidence": {
+                  "escalation": null,
+                  "characterGoal": null,
+                  "eventSequence": [],
+                  "mainCharacter": "Mimi",
+                  "centralPremise": null,
+                  "endingFunction": null,
+                  "centralObstacle": null,
+                  "majorStoryChanges": null,
+                  "openingVisualPromise": "Mimi, oyuncak dolab\u0131na 'Topla!' yazan bir yap\u0131\u015fkan not yap\u0131\u015ft\u0131rmak ister.",
+                  "mainObjectOrSituation": null,
+                  "primaryRuleOrQuestion": null,
+                  "reasonToContinueWatching": "Mimi, oyuncak dolab\u0131na 'Topla!' yazan bir yap\u0131\u015fkan not yap\u0131\u015ft\u0131rmak ister.",
+                  "productionSensitiveElements": []
+                }
+              },
+              {
+                "preflight": {
+                  "ending": "INSUFFICIENT_EVIDENCE",
+                  "opening": "SUPPORTED",
+                  "concerns": [
+                    "Meaningful progression is not evidenced; motion alone is not counted."
+                  ],
+                  "mechanism": "INSUFFICIENT_EVIDENCE",
+                  "strengths": [
+                    "The opening provides an observable focus or situation."
+                  ],
+                  "progression": "INSUFFICIENT_EVIDENCE",
+                  "characterAgency": "INSUFFICIENT_EVIDENCE",
+                  "productionRisks": []
+                },
+                "assessment": {
+                  "risks": [
+                    {
+                      "family": "concept_strength",
+                      "message": "The character appears to take only one type of action.",
+                      "outcome": "WARNING",
+                      "evidence": "ba\u015flar",
+                      "severity": "WARNING",
+                      "dimension": "characterInitiative"
+                    },
+                    {
+                      "family": "visual_novelty",
+                      "message": "The story repeats the same action without clearly new consequences. This may reduce visual novelty.",
+                      "outcome": "WARNING",
+                      "severity": "WARNING",
+                      "dimension": "repetitionRisk"
+                    }
+                  ],
+                  "unknown": [
+                    {
+                      "family": "final_payoff",
+                      "message": "A final event is described, but its creative effectiveness or audience payoff cannot be determined from text alone.",
+                      "outcome": "UNKNOWN",
+                      "dimension": "endingPayoff"
+                    },
+                    {
+                      "family": "consistency",
+                      "message": "No obvious rule contradictions detected, but full consistency check requires production plan analysis.",
+                      "outcome": "UNKNOWN",
+                      "dimension": "ruleConsistency"
+                    },
+                    {
+                      "family": "visual_novelty",
+                      "message": "Frame-zero visual legibility and hook strength cannot be assessed from story text alone.",
+                      "outcome": "NOT_EVALUATED",
+                      "dimension": "visualLegibility"
+                    },
+                    {
+                      "family": "ai_producibility",
+                      "message": "AI producibility requires a production prompt and cannot be assessed from story text alone.",
+                      "outcome": "NOT_EVALUATED",
+                      "dimension": "aiProducibility"
+                    },
+                    {
+                      "family": "progression",
+                      "message": "Pacing and beat timing cannot be assessed without a production plan.",
+                      "outcome": "NOT_EVALUATED",
+                      "dimension": "pacing"
+                    }
+                  ],
+                  "strengths": [
+                    {
+                      "family": "concept_strength",
+                      "message": "The story describes a character situation or goal.",
+                      "outcome": "PASS",
+                      "evidence": "Mimi, oyuncak dolab\u0131na 'Topla!' yazan bir yap\u0131\u015fkan not yap\u0131\u015ft\u0131rmak ister.",
+                      "severity": "INFO",
+                      "dimension": "characterGoal"
+                    },
+                    {
+                      "family": "concept_strength",
+                      "message": "The story describes an obstacle or challenge.",
+                      "outcome": "PASS",
+                      "evidence": "Mimi notu yakalamaya \u00e7al\u0131\u015f\u0131rken not s\u00fcrekli yer de\u011fi\u015ftirir ve Mimi'nin v\u00fccudunun farkl\u0131 yerlerine yap\u0131\u015f\u0131r.",
+                      "severity": "INFO",
+                      "dimension": "obstacle"
+                    },
+                    {
+                      "family": "progression",
+                      "message": "The story contains cause-and-effect progression signals.",
+                      "outcome": "PASS",
+                      "severity": "INFO",
+                      "dimension": "progression"
+                    },
+                    {
+                      "family": "escalation",
+                      "message": "The story contains escalation signals (increasing intensity or complexity).",
+                      "outcome": "PASS",
+                      "severity": "INFO",
+                      "dimension": "escalation"
+                    },
+                    {
+                      "family": "final_payoff",
+                      "message": "The story describes a final event.",
+                      "outcome": "PASS",
+                      "evidence": "Sonunda Mimi yorulup yere oturur ve notlar etraf\u0131nda d\u00f6nmeye ba\u015flar. Mimi g\u00fclerek pes eder.",
+                      "severity": "INFO",
+                      "dimension": "endingEvent"
+                    }
+                  ],
+                  "candidateId": "candidate-3",
+                  "fingerprint": "25d9306991afae8dddea7f16817d669b4cb2696895802519162b59de705bb61e"
+                },
+                "structuralEvidence": {
+                  "escalation": null,
+                  "characterGoal": null,
+                  "eventSequence": [],
+                  "mainCharacter": "Mimi",
+                  "centralPremise": null,
+                  "endingFunction": null,
+                  "centralObstacle": null,
+                  "majorStoryChanges": null,
+                  "openingVisualPromise": "Mimi, oyuncak dolab\u0131na 'Topla!' yazan bir yap\u0131\u015fkan not yap\u0131\u015ft\u0131rmak ister.",
+                  "mainObjectOrSituation": null,
+                  "primaryRuleOrQuestion": null,
+                  "reasonToContinueWatching": "Mimi, oyuncak dolab\u0131na 'Topla!' yazan bir yap\u0131\u015fkan not yap\u0131\u015ft\u0131rmak ister.",
+                  "productionSensitiveElements": []
+                }
+              }
+            ],
+            "differences": [
+              "Alternative 1 vs 2: different endingEvent; shared no extracted dimensions.",
+              "Alternative 1 vs 3: different endingEvent; shared no extracted dimensions.",
+              "Alternative 2 vs 3: different endingEvent; shared no extracted dimensions."
+            ],
+            "classification": "PARTIALLY_DISTINCT",
+            "recommendation": {
+              "isTied": true,
+              "reason": "Candidates share similar risk profiles; no single candidate is clearly preferred by the available evidence.",
+              "whyNot": [],
+              "stillUnknown": [
+                "aiProducibility",
+                "endingPayoff",
+                "pacing",
+                "ruleConsistency",
+                "visualLegibility"
+              ],
+              "bestCandidateId": null
+            },
+            "variationClass": "LIMITED_VARIATION",
+            "classificationReason": "Candidates share core structure but differ in some material dimensions."
+          }
+        },
+        "storyRecordId": "bc1cf798-d20b-4b98-8b73-56e1581c3afc",
+        "reviewRecordId": null,
+        "sourceRevisionId": null,
+        "contentFingerprint": "7c63cc86"
+      }
+    }
+  ],
+  "independentStoryReviews": [],
+  "referencePrompts": [
+    {
+      "id": 1,
+      "notes": "BLOCKED - Static state cycle: slippery/rough alternates without progression. Should score <50.",
+      "scenario_type": "static_state_failure",
+      "character_name": "Kiko",
+      "expected_score": 42.0
+    },
+    {
+      "id": 2,
+      "notes": "BLOCKED - Old/new repetition without emotional progression. Should score <50.",
+      "scenario_type": "repetition_failure",
+      "character_name": "Opa",
+      "expected_score": 38.0
+    },
+    {
+      "id": 3,
+      "notes": "BLOCKED - Sharp/blunt cycle without meaningful discovery. Should score <50.",
+      "scenario_type": "cycle_failure",
+      "character_name": "Arda",
+      "expected_score": 45.0
+    },
+    {
+      "id": 4,
+      "notes": "RENDER_READY - Clear progression: awareness \u2192 avoidance \u2192 empathy \u2192 helping \u2192 sharing \u2192 connection. Should score >92.",
+      "scenario_type": "progression_success",
+      "character_name": "Mimi",
+      "expected_score": 94.0
+    }
+  ],
+  "reviewBindings": [
+    {
+      "id": "afb1cdb0-7a28-4540-b2b1-3e441c08df47",
+      "grade": "B",
+      "score": "85.0",
+      "ruleset": "1.7",
+      "content_id": "10",
+      "prompt_version_id": "10"
+    },
+    {
+      "id": "9208e75a-b158-4ffb-94fe-03c15ca96395",
+      "grade": "B",
+      "score": "85.0",
+      "ruleset": "1.7",
+      "content_id": "10",
+      "prompt_version_id": "10"
+    },
+    {
+      "id": "0a2a88a7-9efd-4ecd-bb48-b0d661fa46f5",
+      "grade": "B",
+      "score": "82.80208333333336",
+      "ruleset": "1.8",
+      "content_id": "10",
+      "prompt_version_id": "10"
+    },
+    {
+      "id": "38a57f84-b61a-470c-8342-cd522bdbd38e",
+      "grade": "B",
+      "score": "82.80208333333336",
+      "ruleset": "1.9",
+      "content_id": "10",
+      "prompt_version_id": "10"
+    },
+    {
+      "id": "05726ece-caaf-483a-a0af-d93e91a76c88",
+      "grade": "B",
+      "score": "84.20833333333334",
+      "ruleset": "1.10",
+      "content_id": "10",
+      "prompt_version_id": "10"
+    },
+    {
+      "id": "f0d36feb-ee0f-4da8-ae21-2071a3ddea18",
+      "grade": "B",
+      "score": "88.40625000000001",
+      "ruleset": "1.11",
+      "content_id": "10",
+      "prompt_version_id": "10"
+    }
+  ]
+}

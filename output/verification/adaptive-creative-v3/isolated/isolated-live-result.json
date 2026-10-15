@@ -1,4 +1,9 @@
 {
+  "adaptiveVersion": "adaptive-creative-optimization-v3",
+  "state": "TARGET_BLOCKED_BY_STORY_CONSTRAINT",
+  "approval": {},
+  "renderAuthorized": false,
+  "selection": {},
   "preflight": {
     "version": "adaptive-creative-optimization-v3",
     "state": "TARGET_BLOCKED_BY_STORY_CONSTRAINT",
@@ -526,10 +531,5 @@
     "productionSettingsRecordId": "2d90c69b-bcec-4871-9c4e-7e029906c974",
     "contentId": 10
   },
-  "selection": {},
-  "renderAuthorized": false,
-  "approval": {},
-  "state": "TARGET_BLOCKED_BY_STORY_CONSTRAINT",
-  "adaptiveVersion": "adaptive-creative-optimization-v3",
   "providerCalls": 0
 }

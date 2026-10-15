@@ -1,0 +1,6 @@
+{
+  "bodyScrollWidth": 416,
+  "bodyWidth": 416,
+  "generationDisabled": true,
+  "width": 768
+}

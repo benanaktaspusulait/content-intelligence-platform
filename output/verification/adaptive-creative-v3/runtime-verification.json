@@ -39,7 +39,14 @@
   "images": {
     "ml-service": "sha256:0e276019be7c8d4751ff420d66b23e5b054916dfaf2f2a41c54bfbd34cb9377c",
     "backend": "sha256:715aa46716c39b464dba8568e85e7c2f9859fb5c26acc72c807c4aece3081ff2",
-    "frontend": "sha256:e65ed92b637b89bd27c77b7e8d12f2f186b25ff800215abaa7d8169f9ddc2465"
+    "frontend": "sha256:19919fcc221ab4f21e2a45c8b262eaa619900872865fdf2eddedee9079426919"
   },
-  "providerInferenceCalls": 0
+  "providerInferenceCalls": 0,
+  "providerProfilesSha256": "3835f28c3b960d5e4bfe2b6cf0b7184013672a0c7da24c377244304d522fb1ed",
+  "browserWidthsVerified": [
+    1440,
+    768,
+    390
+  ],
+  "finalSourceAndRuntimeMatch": true
 }
