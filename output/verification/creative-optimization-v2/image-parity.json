@@ -1,0 +1,17 @@
+{
+  "backend": {
+    "deployed": "sha256:1ae2cdbda5a82c02c4f338d3d065f957a870b37eba9b9a85c5b94e91b13a22fb",
+    "isolatedTest": "sha256:1ae2cdbda5a82c02c4f338d3d065f957a870b37eba9b9a85c5b94e91b13a22fb",
+    "match": true
+  },
+  "ml-service": {
+    "deployed": "sha256:25e1c5bee447949499147a13c4cac0932400bb7238ac5e734de6877f08a844ea",
+    "isolatedTest": "sha256:25e1c5bee447949499147a13c4cac0932400bb7238ac5e734de6877f08a844ea",
+    "match": true
+  },
+  "frontend": {
+    "deployed": "sha256:c1a56f16abb23159139328228aa530c187bb8d5cc8a709a422d317fc5b0e419f",
+    "isolatedTest": "sha256:c1a56f16abb23159139328228aa530c187bb8d5cc8a709a422d317fc5b0e419f",
+    "match": true
+  }
+}

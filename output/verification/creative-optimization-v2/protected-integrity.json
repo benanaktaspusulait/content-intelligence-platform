@@ -1,0 +1,10 @@
+{
+  "productionAnalysisId": "f0d36feb-ee0f-4da8-ae21-2071a3ddea18",
+  "productionComparisonId": "9275c94b-fc35-4207-8648-dfd8d166e502",
+  "originalPromptSha256": "0fe229774deb4b31a42145bad91cf10c91634ba00da39fa3e9d288b3a2e7bd98",
+  "historicalWorkflowRecordsUnchanged": true,
+  "existingCandidateScoresUnchanged": true,
+  "governanceApprovalsCreated": 0,
+  "productionPromptVersionsCreated": 0,
+  "canonicalRuleset": "1.11"
+}

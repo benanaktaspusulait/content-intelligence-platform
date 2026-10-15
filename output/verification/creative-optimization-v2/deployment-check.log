@@ -4,12 +4,12 @@
   backend HTTP check passed (/actuator/health)
   creative-render-service: sha256:c6fb3c5bc93011078b13b341a06fbd10f31d1527b8544b8b81729663bf7d30c9
   creative-render-service HTTP check passed (/actuator/health)
-  frontend: sha256:f556e18ac586c36f3b003b5880b57319a51ba4b214c4477b14f6a266a6a6dabc
+  frontend: sha256:c1a56f16abb23159139328228aa530c187bb8d5cc8a709a422d317fc5b0e419f
   frontend HTTP check passed (/)
   frontend HTTP check passed (/api/v1/intelligence/workflow/provider-capabilities)
-NAME                                     IMAGE                                  COMMAND                  SERVICE                   CREATED              STATUS                        PORTS
-intelligence-backend-1                   intelligence-backend                   "java -jar /app/app.…"   backend                   31 seconds ago       Up 29 seconds (healthy)       0.0.0.0:8080->8080/tcp, [::]:8080->8080/tcp
-intelligence-creative-render-service-1   intelligence-creative-render-service   "java -jar /app/app.…"   creative-render-service   8 hours ago          Up 8 hours (healthy)          8081/tcp
-intelligence-frontend-1                  intelligence-frontend                  "/docker-entrypoint.…"   frontend                  30 seconds ago       Up 18 seconds                 0.0.0.0:4200->80/tcp, [::]:4200->80/tcp
-intelligence-ml-service-1                intelligence-ml-service                "uvicorn app.main:ap…"   ml-service                About a minute ago   Up About a minute (healthy)   0.0.0.0:8000->8000/tcp, [::]:8000->8000/tcp
+NAME                                     IMAGE                                  COMMAND                  SERVICE                   CREATED          STATUS                   PORTS
+intelligence-backend-1                   intelligence-backend                   "java -jar /app/app.…"   backend                   4 minutes ago    Up 4 minutes (healthy)   0.0.0.0:8080->8080/tcp, [::]:8080->8080/tcp
+intelligence-creative-render-service-1   intelligence-creative-render-service   "java -jar /app/app.…"   creative-render-service   8 hours ago      Up 8 hours (healthy)     8081/tcp
+intelligence-frontend-1                  intelligence-frontend                  "/docker-entrypoint.…"   frontend                  51 seconds ago   Up 50 seconds            0.0.0.0:4200->80/tcp, [::]:4200->80/tcp
+intelligence-ml-service-1                intelligence-ml-service                "uvicorn app.main:ap…"   ml-service                5 minutes ago    Up 5 minutes (healthy)   0.0.0.0:8000->8000/tcp, [::]:8000->8000/tcp
 Verified. Application: http://localhost:4200
