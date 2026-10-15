@@ -1,5 +1,5 @@
- Image intelligence-backend Building 
- Image intelligence-ml-service Building 
+ Image intelligence-backend Building
+ Image intelligence-ml-service Building
 #1 [internal] load local bake definitions
 #1 reading from stdin 1.17kB done
 #1 DONE 0.0s
@@ -61,4 +61,4 @@
 
 #18 resolving provenance for metadata file
 #18 DONE 0.0s
- Image intelligence-backend Built 
+ Image intelligence-backend Built

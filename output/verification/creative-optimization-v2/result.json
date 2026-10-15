@@ -1,0 +1,34 @@
+{
+  "status": "CREATIVE_OPTIMIZATION_V2_READY",
+  "productionAnalysisId": "f0d36feb-ee0f-4da8-ae21-2071a3ddea18",
+  "productionComparisonId": "9275c94b-fc35-4207-8648-dfd8d166e502",
+  "productionScoresUnchanged": true,
+  "ruleset": "1.11",
+  "isolatedMockComparisonId": "8b5705ff-22cd-406a-a5bf-29483cba5abb",
+  "mockA": {
+    "score": 88.40625000000001,
+    "classification": "PLAUSIBLE_IMPROVEMENT_UNVERIFIED"
+  },
+  "mockB": {
+    "score": 86.94791666666669,
+    "classification": "REGRESSION",
+    "approvalEligible": false
+  },
+  "tests": {
+    "mlPassed": 176,
+    "frontendPassed": 99,
+    "backendPassed": 47,
+    "backendSkipped": 3,
+    "queuePassed": 27
+  },
+  "realProviderCalls": 0,
+  "mockProviderRequests": 1,
+  "automaticApprovals": 0,
+  "productionPromptVersionsCreated": 0,
+  "renderAuthorized": false,
+  "liveProviderVerified": false,
+  "visualOrAudienceBenefitVerified": false,
+  "productionMachineRecommendation": "REVIEW_MATERIAL_CANDIDATE",
+  "engineeringRecommendation": "KEEP_ORIGINAL",
+  "legacyRecommendationContextDiscrepancy": "Existing UI requests review of unproven legacy interventions; no selection or approval. Left unchanged."
+}

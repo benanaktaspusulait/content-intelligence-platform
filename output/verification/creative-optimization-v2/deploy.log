@@ -1,8 +1,8 @@
 Building current sources: ml-service backend frontend
- Image intelligence-creative-render-service Building 
- Image intelligence-frontend Building 
- Image intelligence-backend Building 
- Image intelligence-ml-service Building 
+ Image intelligence-creative-render-service Building
+ Image intelligence-frontend Building
+ Image intelligence-backend Building
+ Image intelligence-ml-service Building
 #1 [internal] load local bake definitions
 #1 reading from stdin 2.31kB done
 #1 DONE 0.0s
@@ -428,7 +428,7 @@ Building current sources: ml-service backend frontend
 #38 20.70   Stored in directory: /tmp/pip-ephem-wheel-cache-ana1hrsb/wheels/19/62/e5/caf0138816cbbc0c92b8fb19626cf9ac282f22194a65231821
 #38 20.70 Successfully built pompom-creative-ml
 #38 20.84 Installing collected packages: websockets, uvloop, urllib3, uritemplate, typing-extensions, truststore, tqdm, threadpoolctl, sniffio, pyyaml, python-dotenv, pyparsing, pycparser, pyasn1, protobuf, numpy, narwhals, jiter, idna, httptools, h11, docstring-parser, cloudpickle, click, charset_normalizer, certifi, annotated-types, annotated-doc, uvicorn, typing-inspection, scipy, requests, pydantic-core, pyasn1-modules, proto-plus, opentelemetry-api, opencv-python-headless, joblib, httplib2, httpcore2, grpcio, googleapis-common-protos, cffi, anyio, watchfiles, starlette, scikit-learn, pydantic, httpx2, grpcio-status, cryptography, pydantic-settings, openai, google-auth, fastapi, anthropic, google-auth-httplib2, google-api-core, google-api-python-client, google-ai-generativelanguage, google-generativeai, pompom-creative-ml
-#38 39.20 
+#38 39.20
 #38 39.20 Successfully installed annotated-doc-0.0.5 annotated-types-0.8.0 anthropic-1.14.0 anyio-4.15.1 certifi-2026.7.22 cffi-2.1.1 charset_normalizer-3.5.2 click-8.5.0 cloudpickle-3.1.2 cryptography-50.0.2 docstring-parser-0.18.0 fastapi-0.143.1 google-ai-generativelanguage-0.6.15 google-api-core-2.33.0 google-api-python-client-2.201.0 google-auth-2.62.0 google-auth-httplib2-0.4.4 google-generativeai-0.8.6 googleapis-common-protos-1.75.0 grpcio-1.84.0 grpcio-status-1.71.2 h11-0.16.0 httpcore2-2.13.1 httplib2-0.32.0 httptools-0.9.0 httpx2-2.13.1 idna-3.20 jiter-0.17.0 joblib-1.6.0 narwhals-2.27.1 numpy-2.5.4 openai-3.31.0 opencv-python-headless-4.14.0.94 opentelemetry-api-1.45.1 pompom-creative-ml-0.1.0 proto-plus-1.28.2 protobuf-5.29.6 pyasn1-0.6.4 pyasn1-modules-0.4.2 pycparser-3.11 pydantic-2.14.1 pydantic-core-2.50.1 pydantic-settings-2.16.0 pyparsing-3.3.3 python-dotenv-1.2.4 pyyaml-6.0.3 requests-2.34.2 scikit-learn-1.9.1 scipy-1.18.1 sniffio-1.3.1 starlette-1.8.0 threadpoolctl-3.7.0 tqdm-4.70.1 truststore-0.10.5 typing-extensions-4.16.0 typing-inspection-0.4.4 uritemplate-4.2.0 urllib3-2.8.0 uvicorn-0.54.0 uvloop-0.23.0 watchfiles-1.3.0 websockets-17.2
 #38 39.20 WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
 #38 DONE 40.1s
@@ -443,32 +443,32 @@ Building current sources: ml-service backend frontend
 
 #46 [ml-service] resolving provenance for metadata file
 #46 DONE 0.0s
- Image intelligence-ml-service Built 
- Image intelligence-backend Built 
- Image intelligence-frontend Built 
+ Image intelligence-ml-service Built
+ Image intelligence-backend Built
+ Image intelligence-frontend Built
 Deploying: ml-service backend frontend
- Container intelligence-ml-service-1 Recreate 
- Container intelligence-ml-service-1 Recreated 
- Container intelligence-backend-1 Recreate 
- Container intelligence-backend-1 Recreated 
- Container intelligence-frontend-1 Recreate 
- Container intelligence-frontend-1 Recreated 
- Container intelligence-ml-service-1 Starting 
- Container intelligence-ml-service-1 Started 
- Container intelligence-ml-service-1 Waiting 
- Container intelligence-ml-service-1 Healthy 
- Container intelligence-backend-1 Starting 
- Container intelligence-backend-1 Started 
- Container intelligence-backend-1 Waiting 
- Container intelligence-backend-1 Healthy 
- Container intelligence-frontend-1 Starting 
- Container intelligence-frontend-1 Started 
- Container intelligence-backend-1 Waiting 
- Container intelligence-ml-service-1 Waiting 
- Container intelligence-frontend-1 Waiting 
- Container intelligence-frontend-1 Healthy 
- Container intelligence-backend-1 Healthy 
- Container intelligence-ml-service-1 Healthy 
+ Container intelligence-ml-service-1 Recreate
+ Container intelligence-ml-service-1 Recreated
+ Container intelligence-backend-1 Recreate
+ Container intelligence-backend-1 Recreated
+ Container intelligence-frontend-1 Recreate
+ Container intelligence-frontend-1 Recreated
+ Container intelligence-ml-service-1 Starting
+ Container intelligence-ml-service-1 Started
+ Container intelligence-ml-service-1 Waiting
+ Container intelligence-ml-service-1 Healthy
+ Container intelligence-backend-1 Starting
+ Container intelligence-backend-1 Started
+ Container intelligence-backend-1 Waiting
+ Container intelligence-backend-1 Healthy
+ Container intelligence-frontend-1 Starting
+ Container intelligence-frontend-1 Started
+ Container intelligence-backend-1 Waiting
+ Container intelligence-ml-service-1 Waiting
+ Container intelligence-frontend-1 Waiting
+ Container intelligence-frontend-1 Healthy
+ Container intelligence-backend-1 Healthy
+ Container intelligence-ml-service-1 Healthy
   ml-service: sha256:25e1c5bee447949499147a13c4cac0932400bb7238ac5e734de6877f08a844ea
   ml-service HTTP check passed (/health)
   backend: sha256:7789872b79406a913f4523bc8f80e01e3a659b5de5c028c5772eb5c374d9f0b9

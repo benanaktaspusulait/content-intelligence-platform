@@ -11,12 +11,12 @@ OpenJDK 64-Bit Server VM warning: Sharing is only supported for boot loader clas
 09:00:14.889 [main] INFO org.testcontainers.dockerclient.DockerClientProviderStrategy -- Loaded org.testcontainers.dockerclient.UnixSocketClientProviderStrategy from ~/.testcontainers.properties, will try it first
 09:00:15.109 [main] INFO org.testcontainers.dockerclient.DockerClientProviderStrategy -- Found Docker environment with Docker accessed via Unix socket (/Users/benanaktas/.docker/run/docker.sock)
 09:00:15.110 [main] INFO org.testcontainers.DockerClientFactory -- Docker host IP address is localhost
-09:00:15.125 [main] INFO org.testcontainers.DockerClientFactory -- Connected to docker: 
+09:00:15.125 [main] INFO org.testcontainers.DockerClientFactory -- Connected to docker:
   Server Version: 29.2.1
   API Version: 1.53
   Operating System: Docker Desktop
   Total Memory: 11948 MB
-  Labels: 
+  Labels:
     com.docker.desktop.address=unix:///Users/benanaktas/Library/Containers/com.docker.docker/Data/docker-cli.sock
 09:00:15.134 [main] INFO org.testcontainers.images.PullPolicy -- Image pull policy will be performed by: DefaultPullPolicy()
 09:00:15.135 [main] INFO org.testcontainers.utility.ImageNameSubstitutor -- Image name substitution will be performed by: DefaultImageNameSubstitutor (composite of 'ConfigurationFileImageNameSubstitutor' and 'PrefixingImageNameSubstitutor')
