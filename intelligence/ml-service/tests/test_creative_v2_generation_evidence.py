@@ -3,6 +3,7 @@
 The reactive double is a deterministic planning policy, NOT evidence of a real
 model's creativity. It never receives a prepared plan or candidate prompt.
 """
+from creative_http_test_auth import post_role
 import json
 from copy import deepcopy
 from unittest.mock import patch
@@ -154,8 +155,8 @@ def test_reactive_planner_through_real_role_http_adapter_uses_one_mock_sdk_call(
     with patch('app.llm.openai_provider.OpenAI') as sdk:
         sdk.return_value.chat.completions.create.side_effect = respond_to_sdk
         client = TestClient(app)
-        result = client.post('/api/v1/workflow/creative-role', json={
-            'role':'PROMPT_OPTIMIZATION', 'text':f['text'], 'context':f['context'], 'maxCostUsd':.1})
+        result = post_role(client, {
+            'role':'PROMPT_OPTIMIZATION', 'text':f['text'], 'context':f['context'], 'maxCostUsd':.1}, monkeypatch)
         assert result.status_code == 200, result.text
         sdk.return_value.chat.completions.create.assert_called_once()
         assert sdk.call_args.kwargs['max_retries'] == 0

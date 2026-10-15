@@ -1008,7 +1008,8 @@ def run_paid_role(role: str, text: str, context: dict[str, Any], max_cost_usd: f
     if adaptive:
         from .creative_provider_profiles import profile
         capability = profile(context.get('providerProfileId'))
-        if capability != context.get('providerCapabilityBinding'):
+        binding = {k:v for k,v in (context.get('providerCapabilityBinding') or {}).items() if k not in {'configured','liveAvailability'}}
+        if capability != binding:
             raise ValueError('Provider capability configuration changed after authorization')
     model = capability['model'] if adaptive else os.getenv(f'WORKFLOW_{role}_MODEL', '')
     if not model:

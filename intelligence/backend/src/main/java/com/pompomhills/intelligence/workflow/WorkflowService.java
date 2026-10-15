@@ -195,6 +195,10 @@ public class WorkflowService {
         || !sha256(source.promptText()).equals(String.valueOf(map(map(baseline.get("productionEvidence")).get("source")).get("sha256")))
         || !source.promptSha256().equals(String.valueOf(settings.get("promptHash")))
         || !String.valueOf(settings.get("contentProfile")).equals(String.valueOf(bound.get("contentProfile")))
+        || !String.valueOf(settings.get("generator")).equals(String.valueOf(bound.get("generator")))
+        || !String.valueOf(settings.get("openingStrategy")).equals(String.valueOf(bound.get("openingStrategy")))
+        || Double.compare(((Number)settings.get("desiredDuration")).doubleValue(),((Number)bound.get("desiredDuration")).doubleValue())!=0
+        || !String.valueOf(settings.get("aspectRatio")).equals(String.valueOf(map(bound.get("settings")).get("aspectRatio")))
         || version!=jdbc.sql("SELECT max(id) FROM prompt_versions WHERE content_id=:content").param("content",content).query(Long.class).single())
       throw new IllegalStateException("Adaptive optimization source, analysis or settings are stale");
     var result=new LinkedHashMap<>(ml.workflow("adaptive-optimization-policy",Map.of(
@@ -285,7 +289,7 @@ public class WorkflowService {
       if (comparison.get("roleRecordId") instanceof String roleId) role=getByKind(UUID.fromString(roleId),"CREATIVE_ROLE");
       Object cost=role.getOrDefault("actualCostUsd",comparison.get("actualCostUsd"));
       if (!(cost instanceof Number amount) || !Double.isFinite(amount.doubleValue()) || amount.doubleValue()<0) {
-        stages.add(Map.of("providerProfileId",profileId,"comparison",comparison));run.put("state","PROVIDER_FAILURE");run.put("stopReason","Missing settled usage/cost; no further dispatch");break;
+        stages.add(Map.of("providerProfileId",profileId,"provider",profile.get("provider"),"model",profile.get("model"),"comparison",comparison,"decision",Map.of("state","PROVIDER_FAILURE")));run.put("state","PROVIDER_FAILURE");run.put("costSettlement","UNKNOWN");run.put("stopReason","Missing settled usage/cost; no further dispatch");break;
       }
       spent+=amount.doubleValue();
       var decision=ml.workflow("adaptive-optimization-policy",Map.of("action","STAGE_DECISION","canonical",canonical,"comparison",comparison));
@@ -302,11 +306,12 @@ public class WorkflowService {
       }
       run.put("state","TARGET_NOT_REACHED");
     }
-    history.add(String.valueOf(run.get("state")));run.put("providerCalls",stages.size());run.put("calculatedCostUpperBoundUsd",spent);
+    history.add(String.valueOf(run.get("state")));run.put("providerCalls",stages.size());run.put("calculatedCostUpperBoundUsd","UNKNOWN".equals(run.get("costSettlement"))?null:spent);
     run.put("providerCallsThisOperation",stages.size());run.put("targetQualified","A_QUALIFIED".equals(run.get("state")));
     run.put("draftLabel",Boolean.TRUE.equals(run.get("targetQualified"))?"TARGET-QUALIFIED FINAL CANDIDATE":"BEST AVAILABLE DRAFT");
     run.put("recommendation",chosen!=null && hasMaterialDraft(chosen,canonical)?"REVIEW_CANDIDATE":"KEEP_ORIGINAL");
     run.put("comparison",chosen);run.put("metrics",Map.of("evidenceOrigin",run.get("evidenceOrigin"),"providerCalls",stages.size(),"qualified",run.get("targetQualified"),"escalated",stages.size()>1,"operatorAccepted",false,"audienceMeasured",false));
+    run.put("performanceMetrics",ml.workflow("adaptive-optimization-policy",Map.of("action","METRICS","canonical",canonical,"context",Map.of("runs",List.of(new LinkedHashMap<>(run))))));
     saveAdaptiveRun(run);return run;
   }
 
@@ -750,7 +755,7 @@ public class WorkflowService {
 
   public Map<String, Object> latestCreativeOptimization(UUID analysisId) {
     getByKind(analysisId, "REVIEW");
-    return jdbc.sql(
+    var response = new LinkedHashMap<>(jdbc.sql(
             "SELECT id,payload::text FROM post_family_workflow_events WHERE"
                 + " kind='CREATIVE_OPTIMIZATION' AND payload->>'sourceAnalysisId'=:analysis"
                 + " ORDER BY created_at DESC,id DESC LIMIT 1")
@@ -769,7 +774,10 @@ public class WorkflowService {
               .param("analysis",analysisId.toString()).query((rs,row)->{var value=read(rs.getString("payload"));value.put("recordId",rs.getString("id"));return value;}).optional();
           attempt.ifPresent(value -> empty.put("attempt",optimizationFailure(value)));
           return empty;
-        });
+        }));
+    jdbc.sql("SELECT payload::text FROM post_family_workflow_events WHERE kind='CREATIVE_OPTIMIZATION_RUN' AND payload->'binding'->>'analysisId'=:analysis ORDER BY created_at DESC,id DESC LIMIT 1")
+        .param("analysis",analysisId.toString()).query((rs,n)->read(rs.getString(1))).optional().ifPresent(run->response.put("adaptiveRun",run));
+    return response;
   }
 
   private Map<String, Object> reviewCreativeCandidate(

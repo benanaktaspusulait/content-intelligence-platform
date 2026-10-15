@@ -393,7 +393,10 @@ def constrain_reference_schema(schema, refs, diagnosis):
         for field,kind in fields.items():
             if kinds[kind]:defs[name]['properties'][field]['enum']=kinds[kind]
     if not kinds['STATE']:defs['AuthoredProductionV2']['properties']['stateProgression']['maxItems']=0
-    defs['AuthoredInterventionV2']['properties']['opportunityId']['enum']=[o['opportunityId'] for o in diagnosis['opportunities']]
+    for definition in defs.values():
+        properties=definition.get('properties',{})
+        if 'opportunityId' in properties and 'production' in properties:
+            properties['opportunityId']['enum']=[o['opportunityId'] for o in diagnosis['opportunities']]
     # With no supported opportunities, no intervention can be proposed.
     if not diagnosis['opportunities']:
         del defs['AuthoredInterventionV2']['properties']['opportunityId']['enum']

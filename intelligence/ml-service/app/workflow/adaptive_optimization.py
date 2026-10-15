@@ -56,7 +56,7 @@ def feasibility(canonical, source='', context=None):
             elif rid=='ATTEMPT_001' and protected_attempt:
                 maximum=value;kind='PROTECTED_STORY_CONFLICT';reason=f'{len(attempts)} genuine saved source-bound attempts; adding an event violates the protected story. An admission exception cannot change score.'
             elif rid=='PRODUCIBILITY_003' and value<100:
-                maximum=value;kind='EVALUATOR_DEFECT';reason='Fragile-interaction substring tags need independent audit; no score change or source-word removal is authorized.'
+                maximum=value;kind='EVIDENCE_REQUIRED';reason='Source still contains fragile note/face interaction; substring detection has limited specificity. No independent risk-reduction evidence or authorized evaluator correction supports removing this penalty.'
             elif rid in {'ESCALATION_004','PAYOFF_002'} and value<100:
                 maximum=value;kind='PROTECTED_STORY_CONFLICT';reason='Protected event windows and ending/fake-win events cannot be rewritten to obtain points.'
             elif rid in {'NOVELTY_001','PAYOFF_004'} and value<100:
@@ -104,7 +104,7 @@ def qualify(candidate, baseline):
     # create independent semantic evidence or canonical PASS.
     eligible=all((same_ruleset,canonical.get('status')=='EVALUATED',material,assessment.get('approvalEligible') is True,faithful,not regression,not blockers,not gaps,critic_status not in ('REWRITE','BLOCKED','FAIL','UNKNOWN',None)))
     qualified=eligible and isinstance(score,(int,float)) and isfinite(score) and score>=A_MINIMUM and canonical.get('grade')=='A'
-    return {'candidateId':candidate.get('candidateId'),'qualified':qualified,'material':material,'regression':regression,'canonicalScore':score,'canonicalGrade':canonical.get('grade'),'sameRuleset':same_ruleset,'sourceFidelity':candidate.get('sourceEventCoverage',{}).get('semanticFidelity','UNKNOWN'),'blockingRules':blockers,'missingApplicableEvidence':gaps,'draftLabel':'TARGET-QUALIFIED FINAL CANDIDATE' if qualified else 'BEST AVAILABLE DRAFT','dimensions':quality_dimensions(candidate),'renderAuthorized':False}
+    return {'candidateId':candidate.get('candidateId'),'canonicalRegression':isinstance(score,(int,float)) and isinstance(base_score,(int,float)) and score<base_score,'creativeRegression':assessment.get('creativeAssessment',{}).get('creativeRegression'),'productionRiskRegression':assessment.get('creativeAssessment',{}).get('productionRiskIndicatorRegression',False),'sourceFidelityFailed':assessment.get('classification') in ('STORY_FIDELITY_FAILED','STORY_CHANGE_REQUIRES_APPROVAL'),'qualified':qualified,'material':material,'regression':regression,'canonicalScore':score,'canonicalGrade':canonical.get('grade'),'sameRuleset':same_ruleset,'sourceFidelity':candidate.get('sourceEventCoverage',{}).get('semanticFidelity','UNKNOWN'),'blockingRules':blockers,'missingApplicableEvidence':gaps,'draftLabel':'TARGET-QUALIFIED FINAL CANDIDATE' if qualified else 'BEST AVAILABLE DRAFT','dimensions':quality_dimensions(candidate),'renderAuthorized':False}
 
 
 def stage_decision(comparison, baseline):
@@ -122,3 +122,53 @@ def stage_decision(comparison, baseline):
 def escalation_brief(source, context, comparison, decision):
     keep=[c for c in comparison.get('candidates',[]) if any(q['candidateId']==c.get('candidateId') and q['material'] and not q['regression'] for q in decision['qualifications'])]
     return {'originalPrompt':source,'approvedStory':context.get('approvedStoryText'),'baselineCanonicalEvaluation':context.get('baselineCanonicalEvaluation'),'validatedDrafts':[{'prompt':c['prompt'],'changeContract':c.get('creativeAssessment',{}).get('changeContract',[]),'canonical':c.get('review',{}).get('canonicalRuleEvaluation'),'executionRisk':c.get('review',{}).get('executionReview')} for c in keep],'rejectedEvidence':comparison.get('creativeEvidence',{}).get('rejectedProposals',[]),'remainingGaps':decision['qualifications'],'instruction':'Independently reason from the original and diagnosis. Preserve only source-validated material changes; rejected proposals are failure evidence, never preferred instructions. Do not polish wording or invent evidence.'}
+
+
+def optimization_metrics(runs):
+    """Concise cohort contract: mock/real, model and mode never share a bucket.
+
+    Acceptance must come from persisted explicit prompt-version provenance,
+    supplied by the backend reporting projection, not inferred from drafting.
+    """
+    groups=defaultdict(list)
+    for run in runs:
+        origin=run.get('evidenceOrigin','UNKNOWN')
+        for stage in run.get('stages',[]):
+            groups[(origin,run.get('mode'),stage.get('provider'),stage.get('model'))].append((run,stage))
+    reports=[]
+    for (origin,mode,provider,model),entries in groups.items():
+        n=len(entries);qualified=sum(s.get('decision',{}).get('state')=='A_QUALIFIED' for _,s in entries)
+        qualifications=[q for _,s in entries for q in s.get('decision',{}).get('qualifications',[])]
+        rejected=[r for _,s in entries for r in s.get('comparison',{}).get('creativeEvidence',{}).get('rejectedProposals',[])]
+        attempted=len(qualifications)+len(rejected)
+        costs=[s.get('costUsd') for _,s in entries]
+        def rate(count, denominator=attempted):return count/denominator if denominator else None
+        reports.append({'evidenceOrigin':origin,'mode':mode,'provider':provider,'model':model,'attempts':n,
+            'aQualificationRate':qualified/n,'materialImprovementRate':rate(sum(bool(q.get('material')) for q in qualifications)),
+            'canonicalRegressionRate':rate(sum(q.get('canonicalRegression',False) for q in qualifications)),
+            'creativeRegressionRate':rate(sum(q.get('creativeRegression') is True for q in qualifications),sum(isinstance(q.get('creativeRegression'),bool) for q in qualifications)),
+            'sourceFidelityFailureRate':rate(sum(r.get('classification') in ('STORY_FIDELITY_FAILED','STORY_CHANGE_REQUIRES_APPROVAL') for r in rejected)),
+            'contractFailureRate':sum(s.get('decision',{}).get('state')=='CONTRACT_FAILURE' for _,s in entries)/n,
+            'productionRiskRegressionRate':rate(sum(q.get('productionRiskRegression',False) for q in qualifications)+sum(r.get('classification')=='REGRESSION' for r in rejected)),
+            'averageCallsToA':sum(r.get('providerCalls',0) for r,s in entries if s.get('decision',{}).get('state')=='A_QUALIFIED')/qualified if qualified else None,
+            'calculatedCostUpperBoundPerA':sum(costs)/qualified if qualified and all(isinstance(c,(int,float)) for c in costs) else None,
+            'primaryStopRate':sum(r.get('providerCalls')==1 and r.get('targetQualified') is True for r,_ in entries)/n,
+            'escalationRate':sum(r.get('providerCalls',0)>1 for r,_ in entries)/n,
+            'belowTargetAfterEscalationRate':sum(r.get('providerCalls',0)>1 and not r.get('targetQualified') for r,_ in entries)/n,
+            'operatorAcceptanceRate':None,'audienceOutcome':None,'realCreativeEffectiveness':'UNVERIFIED'})
+    routes=defaultdict(list)
+    for run in runs:routes[(run.get('evidenceOrigin','UNKNOWN'),run.get('mode'))].append(run)
+    routing=[]
+    for (origin,mode),items in routes.items():
+        qualified=[r for r in items if r.get('targetQualified') is True]
+        costs=[r.get('calculatedCostUpperBoundUsd') for r in items]
+        reviewed=[r for r in items if isinstance(r.get('operatorAcceptanceEvidence'),dict) and r['operatorAcceptanceEvidence'].get('persistedDecisionId')]
+        routing.append({'evidenceOrigin':origin,'mode':mode,'runs':len(items),'aQualificationRate':len(qualified)/len(items),
+            'averageCallsToA':sum(r.get('providerCalls',0) for r in qualified)/len(qualified) if qualified else None,
+            'calculatedTotalCostUpperBoundPerA':sum(costs)/len(qualified) if qualified and all(isinstance(c,(int,float)) for c in costs) else None,
+            'deepseekStopRate':sum(r.get('providerCalls')==1 and (r.get('stages') or [{}])[0].get('provider')=='deepseek' and r.get('targetQualified') is True for r in items)/len(items),
+            'escalationRate':sum(r.get('providerCalls',0)>1 for r in items)/len(items),
+            'belowAAfterEscalationRate':sum(r.get('providerCalls',0)>1 and not r.get('targetQualified') for r in items)/len(items),
+            'operatorAcceptanceRate':sum(r['operatorAcceptanceEvidence'].get('accepted') is True for r in reviewed)/len(reviewed) if reviewed else None,
+            'audienceOutcome':None})
+    return {'version':'adaptive-optimization-metrics-v3','cohorts':reports,'routingCohorts':routing,'acceptanceSource':'EXPLICIT_IMMUTABLE_PROMPT_VERSION_PROVENANCE_ONLY'}

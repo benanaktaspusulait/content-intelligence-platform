@@ -499,6 +499,7 @@ class WorkflowNoRepairDecisionPostgresTest {
     var controlled=spy(service);doReturn(v3Preflight()).when(controlled).adaptiveOptimizationPreflight(analysisId);
     when(ml.workflow(eq("adaptive-optimization-policy"),anyMap())).thenAnswer(call->{
       Map<String,Object> input=call.getArgument(1);
+      if("METRICS".equals(input.get("action"))) return Map.of("cohorts",List.of());
       if("ESCALATION_BRIEF".equals(input.get("action"))) return Map.of("instruction","Original and validated changes only");
       var comparison=(Map<String,Object>)input.get("comparison");String state=String.valueOf(comparison.get("mockState"));
       return Map.of("state",state,"escalationJustified",!List.of("A_QUALIFIED","CONTRACT_FAILURE","PROVIDER_FAILURE").contains(state),

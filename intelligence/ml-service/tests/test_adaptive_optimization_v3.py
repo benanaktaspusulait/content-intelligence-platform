@@ -134,3 +134,52 @@ def test_historical_outputs_replay_exactly_while_controlled_authored_plan_compil
     assert c['sourceEventCoverage']['semanticFidelity']=='UNKNOWN'
     assert c['productionProvenance']['segments']
     assert c['creativeAssessment']['provenBetter'] is False
+
+
+def test_paid_adapter_contract_uses_exact_v3_profile_budget_and_one_mock_call(monkeypatch):
+    from app.workflow.creative_roles import run_paid_role
+    from app.workflow.creative_provider_profiles import readiness
+    from test_creative_reconstruction_v2 import response
+    f=inputs();monkeypatch.setenv('WORKFLOW_CREATIVE_ROLES_ENABLED','true');monkeypatch.setenv('DEEPSEEK_API_KEY','offline-only')
+    context={**f['context'],'adaptiveVersion':'adaptive-creative-optimization-v3','providerProfileId':'deepseek-primary',
+        'providerCapabilityBinding':readiness()['profiles']['deepseek-primary'],'authorizedOutputTokens':4000,'authorizedTimeoutSeconds':5}
+    with patch('app.workflow.creative_provider_profiles.OpenAI') as sdk:
+        sdk.return_value.chat.completions.create.return_value=sdk_response(json.dumps(response([contact()])))
+        result=run_paid_role('PROMPT_OPTIMIZATION',f['text'],context,.2)
+        assert result['provider']=='deepseek' and result['model']==profile('deepseek-primary')['model']
+        assert result['calls']==1 and result['result']['candidates']
+        assert result['actualCostUsd']<=result['approvedCostCeilingUsd']
+        assert 'UPPER_BOUND' in result['costBasis']
+        sdk.return_value.chat.completions.create.assert_called_once()
+    with patch('app.workflow.creative_provider_profiles.OpenAI',side_effect=AssertionError('No dispatch')):
+        with pytest.raises(ValueError,match='cost ceiling'):run_paid_role('PROMPT_OPTIMIZATION',f['text'],context,.000001)
+        bad={**context,'providerCapabilityBinding':{**context['providerCapabilityBinding'],'model':'unapproved'}}
+        with pytest.raises(ValueError,match='changed after authorization'):run_paid_role('PROMPT_OPTIMIZATION',f['text'],bad,.2)
+
+
+def test_metrics_keep_mock_and_real_separate_and_absent_acceptance_audience_unknown():
+    from app.workflow.adaptive_optimization import optimization_metrics
+    c=candidate(90);decision=stage_decision({'candidates':[c]},baseline())
+    run={'mode':'ADAPTIVE','evidenceOrigin':'MOCK_PROVIDER','providerCalls':1,'targetQualified':False,
+         'stages':[{'provider':'deepseek','model':'mock','decision':decision,'comparison':{'candidates':[c]},'costUsd':.001}]}
+    result=optimization_metrics([run,{**run,'evidenceOrigin':'REAL_PROVIDER'}])
+    assert len(result['cohorts'])==2
+    for cohort in result['cohorts']:
+        assert cohort['aQualificationRate']==0 and cohort['materialImprovementRate']==1
+        assert cohort['operatorAcceptanceRate'] is None and cohort['audienceOutcome'] is None
+        assert cohort['calculatedCostUpperBoundPerA'] is None
+
+
+def test_cross_beat_changes_must_identify_real_justified_dependencies():
+    from app.workflow.creative_reconstruction import perform_reconstruction
+    from test_creative_reconstruction_v2 import response, MockProvider
+    from test_model_authored_execution import progression
+    f=inputs();context={**f['context'],'adaptiveVersion':'adaptive-creative-optimization-v3'}
+    p=contact();p['interventions']+=progression()['interventions']
+    p['interventions'][0].update(dependsOnBeatIds=['beat_03'],dependencyJustification='Maintain the same contact-side composition through the existing count progression without changing events.')
+    value=perform_reconstruction(f['text'],context,MockProvider(response([p])),'mock-only')
+    assert value['result']['candidates']
+    p['interventions'][0]['dependsOnBeatIds']=['invented-beat']
+    invalid=perform_reconstruction(f['text'],context,MockProvider(response([p])),'mock-only')
+    assert not invalid['result']['candidates']
+    assert 'UNJUSTIFIED_CROSS_BEAT_DEPENDENCY' in str(invalid['result']['rejectedProposals'])

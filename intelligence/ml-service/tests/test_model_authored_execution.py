@@ -1,4 +1,5 @@
 """Structured mock decisions verify authoring contracts, never real-model creativity."""
+from creative_http_test_auth import post_role
 import json
 from copy import deepcopy
 from pathlib import Path
@@ -204,7 +205,7 @@ def test_real_http_adapter_mocked_sdk_budget_recovery_and_source_comparison(monk
         'usage':{'prompt_tokens':5000,'completion_tokens':1800,'total_tokens':6800}})
     with patch('app.llm.openai_provider.OpenAI') as sdk:
         sdk.return_value.chat.completions.create.return_value=answer
-        result=client.post('/api/v1/workflow/creative-role',json={'role':'PROMPT_OPTIMIZATION','text':f['text'],'context':f['context'],'maxCostUsd':.1})
+        result=post_role(client, {'role':'PROMPT_OPTIMIZATION','text':f['text'],'context':f['context'],'maxCostUsd':.1}, monkeypatch)
         assert result.status_code==200,result.text
         sdk.return_value.chat.completions.create.assert_called_once()
         assert sdk.call_args.kwargs['max_retries']==0
@@ -223,7 +224,7 @@ def test_real_http_adapter_mocked_sdk_budget_recovery_and_source_comparison(monk
     assert compared.status_code==200,compared.text
     assert compared.json()['recommendation']=='KEEP_ORIGINAL' # Existing critic's unresolved risks remain enforceable.
     with patch('app.llm.openai_provider.OpenAI') as sdk:
-        rejected=client.post('/api/v1/workflow/creative-role',json={'role':'PROMPT_OPTIMIZATION','text':f['text'],'context':f['context'],'maxCostUsd':.000001})
+        rejected=post_role(client, {'role':'PROMPT_OPTIMIZATION','text':f['text'],'context':f['context'],'maxCostUsd':.000001}, monkeypatch)
         assert rejected.status_code!=200
         sdk.assert_not_called()
 

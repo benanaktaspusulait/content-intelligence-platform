@@ -1,0 +1,12 @@
+{
+  "backend": "http://127.0.0.1:53422",
+  "frontend": "http://127.0.0.1:53422",
+  "step6": "http://127.0.0.1:53422/quality/detail?contentId=10&promptVersionId=10&studio=1&stage=6",
+  "internalNetwork": "pompom-adaptive-v3-acceptance-network",
+  "database": "pompom-adaptive-v3-acceptance-db",
+  "providerDispatches": 0,
+  "realProviderCalls": 0,
+  "status": "TARGET_BLOCKED_BY_STORY_CONSTRAINT",
+  "productionWrites": 0,
+  "promptVersionCount": 1
+}

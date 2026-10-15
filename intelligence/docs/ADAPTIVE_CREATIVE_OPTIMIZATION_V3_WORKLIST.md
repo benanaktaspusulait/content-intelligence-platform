@@ -15,37 +15,37 @@ Hedef: Mevcut V2 akışını kullanarak A/A+ hedefine yönelmek; B sonucunu tama
 
 ## Faz 2 — Mevcut sözleşme onarımlarını koru ve doğrula
 
-- [ ] Önceki görevin model-authored-production-v2 zaman/kaynak kimliği düzeltmelerini incele; tekrar uygulama veya geriye dönük anlam değişikliği yapma.
-- [ ] İkinci gerçek OpenAI yanıtının değişmez fixture'ını yeniden oynat; teknik geçerlilik, kaynak sadakati, yaratıcı maddilik, risk ve kanonik uygunluğu ayrı göster.
-- [ ] Yeni alt zamanlama, olay sırası, süre değişikliği, geçersiz kimlik ve kozmetik paragraf negatif testlerini koru.
-- [ ] Tam özgün bağlam + yalnız teşhisle gerekçelenen prodüksiyon müdahaleleri sözleşmesini ve bağımlı beat değişikliği gerekçelerini doğrula.
+- [x] Önceki görevin model-authored-production-v2 zaman/kaynak kimliği düzeltmelerini incele; tekrar uygulama veya geriye dönük anlam değişikliği yapma.
+- [x] İkinci gerçek OpenAI yanıtının değişmez fixture'ını yeniden oynat; teknik geçerlilik, kaynak sadakati, yaratıcı maddilik, risk ve kanonik uygunluğu ayrı göster.
+- [x] Yeni alt zamanlama, olay sırası, süre değişikliği, geçersiz kimlik ve kozmetik paragraf negatif testlerini koru.
+- [x] Tam özgün bağlam + yalnız teşhisle gerekçelenen prodüksiyon müdahaleleri sözleşmesini ve bağımlı beat değişikliği gerekçelerini doğrula.
 
 ## Faz 3 — Sağlayıcı bağımsız üretim ve yetenek profilleri
 
-- [ ] Mevcut OpenAI/DeepSeek adaptörlerini, rol yapılandırmasını ve maliyet ön kontrolünü incele; aynı akışı genişlet.
-- [ ] Güncel resmî OpenAI/DeepSeek belgelerinden model kimlikleri, uç noktalar, JSON/JSON Schema, bağlam/çıktı limitleri, fiyat, reasoning davranışı ve kullanım ömrünü doğrula.
-- [ ] DeepSeek birincil / OpenAI yükseltme için ayrı, açık model/yetenek profilleri ve sağlayıcıya özgü serileştirme uygula; model adı varsayma veya sessiz fallback yapma.
-- [ ] JSON Schema desteklenmeyen profilde sağlayıcı uyumlu JSON sözleşmesini aynı deterministik kaynak doğrulamasına bağla.
-- [ ] Ham yanıt, kullanım, model/sağlayıcı ve kaynak/model/derleyici kökenini normal kalıcı kanıt akışında koru.
+- [x] Mevcut OpenAI/DeepSeek adaptörlerini, rol yapılandırmasını ve maliyet ön kontrolünü incele; aynı akışı genişlet.
+- [x] Güncel resmî OpenAI/DeepSeek belgelerinden model kimlikleri, uç noktalar, JSON/JSON Schema, bağlam/çıktı limitleri, fiyat, reasoning davranışı ve kullanım ömrünü doğrula.
+- [x] DeepSeek birincil / OpenAI yükseltme için ayrı, açık model/yetenek profilleri ve sağlayıcıya özgü serileştirme uygula; model adı varsayma veya sessiz fallback yapma.
+- [x] JSON Schema desteklenmeyen profilde sağlayıcı uyumlu JSON sözleşmesini aynı deterministik kaynak doğrulamasına bağla.
+- [x] Ham yanıt, kullanım, model/sağlayıcı ve kaynak/model/derleyici kökenini normal kalıcı kanıt akışında koru.
 
 ## Faz 4 — Sınırlı adaptif yönlendirme ve yetkilendirme
 
-- [ ] DEEPSEEK_ONLY, OPENAI_ONLY, ADAPTIVE modlarını mevcut Step 6 komutuna ekle.
-- [ ] Üretim öncesi hedef ulaşılabilirlik kontrolünü zorunlu kıl; kanıt/hikâye engelinde gereksiz çağrıları durdur.
-- [ ] ADAPTIVE için DeepSeek → doğrulama → kalite/kanonik karar → gerekçeli koşullu OpenAI yükseltmesi uygula.
-- [ ] A yeterliyse dur; B iyileşme / eşdeğer / regresyon / teknik sözleşme hatası / ulaşılamaz hedef durumlarını ayır.
-- [ ] Sağlayıcı/model, istek sayısı, toplam bütçe, token, tur ve gecikme limitlerini açık operatör onayına bağla; ikinci sağlayıcı onayı yoksa gönderme.
-- [ ] Normal kalıcı rezervasyon, idempotency, append-only audit ve belirsiz gönderimde tekrar yasağını iki aşamada uygula.
-- [ ] Yükseltme brief'ine özgün kaynak, korunacak doğrulanmış değişiklikler, gerçek açıklar ve başarısızlık kanıtını koy; reddedilmiş metni tercih edilen cevap yapma.
+- [x] DEEPSEEK_ONLY, OPENAI_ONLY, ADAPTIVE modlarını mevcut Step 6 komutuna ekle.
+- [x] Üretim öncesi hedef ulaşılabilirlik kontrolünü zorunlu kıl; kanıt/hikâye engelinde gereksiz çağrıları durdur.
+- [x] ADAPTIVE için DeepSeek → doğrulama → kalite/kanonik karar → gerekçeli koşullu OpenAI yükseltmesi uygula.
+- [x] A yeterliyse dur; B iyileşme / eşdeğer / regresyon / teknik sözleşme hatası / ulaşılamaz hedef durumlarını ayır.
+- [x] Sağlayıcı/model, istek sayısı, toplam bütçe, token, tur ve gecikme limitlerini açık operatör onayına bağla; ikinci sağlayıcı onayı yoksa gönderme.
+- [x] Normal kalıcı rezervasyon, idempotency, append-only audit ve belirsiz gönderimde tekrar yasağını iki aşamada uygula.
+- [x] Yükseltme brief'ine özgün kaynak, korunacak doğrulanmış değişiklikler, gerçek açıklar ve başarısızlık kanıtını koy; reddedilmiş metni tercih edilen cevap yapma.
 
 ## Faz 5 — Kalite, hedef uygunluğu ve ürün akışı
 
-- [ ] Mevcut altı yaratıcı kalite boyutunda kaynak destekli fark / doğrulanmamış hipotez / değişim yok / regresyon / eksik kanıt ayrımını uygula.
-- [ ] Aynı ruleset/hikâye/ayar bağında Original–DeepSeek–OpenAI karşılaştır; en yüksek skor/uzunluk/yenilik otomatik tercih olmasın.
-- [ ] A/A+ uygunluğunu gerçek not sözleşmesi, yeterli uygulanabilir kanıt ve regresyon yokluğu ile sınırla; A+ yoksa kullanma.
-- [ ] BEST AVAILABLE DRAFT ile TARGET-QUALIFIED FINAL CANDIDATE ayrımını ve istenen açık workflow durumlarını mevcut arayüze ekle.
-- [ ] B iyileşmesini ilerleme olarak kaydet; hedefe erişildi/success diye sunma. Seçim/onay/yeni prompt sürümü yalnız açık operatör kararıyla olsun.
-- [ ] Gerçek ve mock kanıtları ayıran kısa olay/metrik sözleşmesini ekle; yeni büyük dashboard kurma.
+- [x] Mevcut altı yaratıcı kalite boyutunda kaynak destekli fark / doğrulanmamış hipotez / değişim yok / regresyon / eksik kanıt ayrımını uygula.
+- [x] Aynı ruleset/hikâye/ayar bağında Original–DeepSeek–OpenAI karşılaştır; en yüksek skor/uzunluk/yenilik otomatik tercih olmasın.
+- [x] A/A+ uygunluğunu gerçek not sözleşmesi, yeterli uygulanabilir kanıt ve regresyon yokluğu ile sınırla; A+ yoksa kullanma.
+- [x] BEST AVAILABLE DRAFT ile TARGET-QUALIFIED FINAL CANDIDATE ayrımını ve istenen açık workflow durumlarını mevcut arayüze ekle.
+- [x] B iyileşmesini ilerleme olarak kaydet; hedefe erişildi/success diye sunma. Seçim/onay/yeni prompt sürümü yalnız açık operatör kararıyla olsun.
+- [x] Gerçek ve mock kanıtları ayıran kısa olay/metrik sözleşmesini ekle; yeni büyük dashboard kurma.
 
 ## Faz 6 — Kabul testleri, dağıtım ve kapanış
 
@@ -62,3 +62,6 @@ Hedef: Mevcut V2 akışını kullanarak A/A+ hedefine yönelmek; B sonucunu tama
 - İş listesi oluşturuldu. İlk adım: not sözleşmesi ve Mimi için savunulabilir üst sınır denetimi. Routing koduna henüz dokunulmadı.
 
 - Faz 1 tamamlandı: A >=92, A+ yok; mevcut kanıt/korunan kaynak altında iyimser koşullu tavan 89.3125/B. Ayrıntı: ADAPTIVE_CREATIVE_OPTIMIZATION_V3_GRADE_AUDIT.md. Routing henüz değiştirilmedi.
+
+- Faz 2: önceki 48 sözleşme testi geçti; gerçek A/B yanıtlarında 2/4 hatalı kimlik ayrı teşhis edildi, doğru kaynak zaman pencereleri korunuyor.
+- Faz 3–5: mevcut V2 üzerinde yapılandırılan sağlayıcı adaptörü, bağlı bütçe/yetki, kalıcı V3 koşullu yönlendirme, altı boyut, A uygunluğu ve taslak/nihai ayrımı uygulandı. Kabul testleri ve dağıtım sürüyor.

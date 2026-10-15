@@ -1,0 +1,45 @@
+{
+  "sourceHashes": {
+    "creative_reconstruction.py": {
+      "local": "05202e7dd580cef7ddf60f11c86c861c354867ac04e4bb6e7372190fbd80b9d7",
+      "deployed": "05202e7dd580cef7ddf60f11c86c861c354867ac04e4bb6e7372190fbd80b9d7",
+      "matches": true
+    },
+    "model_authored_execution.py": {
+      "local": "7446127409cd8652bf97a08cb96e872b4fd0bdc63a6304104a786cef38cdd275",
+      "deployed": "7446127409cd8652bf97a08cb96e872b4fd0bdc63a6304104a786cef38cdd275",
+      "matches": true
+    },
+    "creative_roles.py": {
+      "local": "f02e5cb2448b820dc0da38d2447b6e4ecc032090a5c836f59523c24cced81da9",
+      "deployed": "f02e5cb2448b820dc0da38d2447b6e4ecc032090a5c836f59523c24cced81da9",
+      "matches": true
+    },
+    "adaptive_optimization.py": {
+      "local": "49f98882dfa490d59b6e0683e52e6fc8730794cbd14a9fee9b1e9c9ccbe9de2a",
+      "deployed": "49f98882dfa490d59b6e0683e52e6fc8730794cbd14a9fee9b1e9c9ccbe9de2a",
+      "matches": true
+    },
+    "creative_provider_profiles.py": {
+      "local": "07802fb6a7c37e85be0e3d700ed7ceeecbfa47deb95cf3221ffeff8c2370d1b3",
+      "deployed": "07802fb6a7c37e85be0e3d700ed7ceeecbfa47deb95cf3221ffeff8c2370d1b3",
+      "matches": true
+    },
+    "api.py": {
+      "local": "29f0307e94ca88273dfe5cb2ca4961d04573f425adac621a24bf388c7171c143",
+      "deployed": "29f0307e94ca88273dfe5cb2ca4961d04573f425adac621a24bf388c7171c143",
+      "matches": true
+    }
+  },
+  "backendCompiledMarkers": {
+    "serviceV3": true,
+    "controllerPreflight": true,
+    "signedDispatch": true
+  },
+  "images": {
+    "ml-service": "sha256:0e276019be7c8d4751ff420d66b23e5b054916dfaf2f2a41c54bfbd34cb9377c",
+    "backend": "sha256:715aa46716c39b464dba8568e85e7c2f9859fb5c26acc72c807c4aece3081ff2",
+    "frontend": "sha256:e65ed92b637b89bd27c77b7e8d12f2f186b25ff800215abaa7d8169f9ddc2465"
+  },
+  "providerInferenceCalls": 0
+}

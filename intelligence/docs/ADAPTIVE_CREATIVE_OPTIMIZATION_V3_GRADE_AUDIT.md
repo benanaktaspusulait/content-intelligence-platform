@@ -21,7 +21,7 @@ Loss is relative to 100, with the *current* eligible rows and denominator. It is
 | BEAT_DENSITY_RULE | .11 / 5 | 85 | .34375 | NOT_CURRENTLY_ATTAINABLE: successful evaluator returns CRITICAL/PASS for the valid five-beat plan. |
 | ESCALATION_004 | .10 / 2 | 85 | .78125 | PROTECTED_STORY_CONFLICT: payoff at 12s; earlier timing would change protected source windows. |
 | PAYOFF_004 | .09 / 3 | 85 | .46875 | EVIDENCE_REQUIRED / CREATIVE_RECONSTRUCTION_REPAIRABLE: final salience ties earlier peak; stronger source-bound staging may support a different judgment, text alone cannot establish rendered salience. |
-| PRODUCIBILITY_003 | .10 / 3 | 40 | 2.083333333 | EVALUATOR_DEFECT risk: substring `stick` matches sticky notes and `face` can match surface; inspect exact matches before any correction. Sticky-note interaction itself remains a real execution risk. Removing source words to game the parser is prohibited. No scoring changes authorized in V3. |
+| PRODUCIBILITY_003 | .10 / 3 | 40 | 2.083333333 | EVIDENCE_REQUIRED: saved source explicitly includes face coverage and sticky notes. The `stick` substring also matches sticky; this detector has limited specificity, but the actual physical interactions remain. No demonstrated source-faithful textual change removes them. Removing source words to game the parser is prohibited. No evaluator correction or scoring change is authorized in V3. |
 | GOAL_VISIBLE_EARLY | .12 / 2 | 85 | .9375 | NOT_CURRENTLY_ATTAINABLE: successful evaluator always returns CRITICAL/PASS. |
 | TEMPORAL_COMPLEXITY_SPLIT_GATE | .09 / 1 | 85 | 1.40625 | NOT_CURRENTLY_ATTAINABLE: successful evaluator always returns BLOCKER/PASS, including split/return-loop branches. |
 

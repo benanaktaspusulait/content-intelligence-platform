@@ -1,104 +1,14 @@
-..................................................................F..... [ 27%]
-.................F.....F................................................ [ 54%]
-........................................................................ [ 81%]
-..................................................                       [100%]
-=================================== FAILURES ===================================
-___ test_real_http_adapter_mocked_sdk_budget_recovery_and_source_comparison ____
-
-monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x1149ed370>
-
-    def test_real_http_adapter_mocked_sdk_budget_recovery_and_source_comparison(monkeypatch):
-        from fastapi.testclient import TestClient
-        from app.main import app
-        from openai.types.chat import ChatCompletion
-        for key,value in {'WORKFLOW_CREATIVE_ROLES_ENABLED':'true','WORKFLOW_PROMPT_OPTIMIZATION_MODEL':'mock-authored',
-            'WORKFLOW_PROMPT_OPTIMIZATION_INPUT_USD_PER_MILLION':'.15','WORKFLOW_PROMPT_OPTIMIZATION_OUTPUT_USD_PER_MILLION':'.6',
-            'OPENAI_API_KEY':'mock-only'}.items():monkeypatch.setenv(key,value)
-        f=inputs();p=contact();p['interventions']+=progression()['interventions'];raw=response([p]);client=TestClient(app)
-        answer=ChatCompletion.model_validate({'id':'mock-authored','object':'chat.completion','created':1,'model':'mock-authored',
-            'choices':[{'index':0,'message':{'role':'assistant','content':json.dumps(raw)},'finish_reason':'stop'}],
-            'usage':{'prompt_tokens':5000,'completion_tokens':1800,'total_tokens':6800}})
-        with patch('app.llm.openai_provider.OpenAI') as sdk:
-            sdk.return_value.chat.completions.create.return_value=answer
-            result=client.post('/api/v1/workflow/creative-role',json={'role':'PROMPT_OPTIMIZATION','text':f['text'],'context':f['context'],'maxCostUsd':.1})
->           assert result.status_code==200,result.text
-E           AssertionError: {"detail":"Adaptive dispatch requires the durable backend authorization boundary"}
-E           assert 403 == 200
-E            +  where 403 = <Response [403 Forbidden]>.status_code
-
-intelligence/ml-service/tests/test_model_authored_execution.py:208: AssertionError
-_ test_reactive_planner_through_real_role_http_adapter_uses_one_mock_sdk_call __
-
-monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x114f04050>
-
-    def test_reactive_planner_through_real_role_http_adapter_uses_one_mock_sdk_call(monkeypatch):
-        for key, value in {'WORKFLOW_CREATIVE_ROLES_ENABLED':'true',
-                           'WORKFLOW_PROMPT_OPTIMIZATION_MODEL':'mock-reactive-policy',
-                           'WORKFLOW_PROMPT_OPTIMIZATION_INPUT_USD_PER_MILLION':'.15',
-                           'WORKFLOW_PROMPT_OPTIMIZATION_OUTPUT_USD_PER_MILLION':'.6',
-                           'OPENAI_API_KEY':'mock-only'}.items():
-            monkeypatch.setenv(key, value)
-        f = fixture()
-        planner = DiagnosisDrivenPlanner('VISUAL_STORYTELLING')
-        def respond_to_sdk(**kwargs):
-            payload = json.loads(kwargs['messages'][-1]['content'])
-            generated = planner.respond(payload)
-            return ChatCompletion.model_validate({
-                'id':'mock-reactive-policy-result', 'object':'chat.completion', 'created':1,
-                'model':'mock-reactive-policy',
-                'choices':[{'index':0, 'message':{'role':'assistant','content':json.dumps(generated)}, 'finish_reason':'stop'}],
-                'usage':{'prompt_tokens':3000,'completion_tokens':1500,'total_tokens':4500}})
-        with patch('app.llm.openai_provider.OpenAI') as sdk:
-            sdk.return_value.chat.completions.create.side_effect = respond_to_sdk
-            client = TestClient(app)
-            result = client.post('/api/v1/workflow/creative-role', json={
-                'role':'PROMPT_OPTIMIZATION', 'text':f['text'], 'context':f['context'], 'maxCostUsd':.1})
->           assert result.status_code == 200, result.text
-E           AssertionError: {"detail":"Adaptive dispatch requires the durable backend authorization boundary"}
-E           assert 403 == 200
-E            +  where 403 = <Response [403 Forbidden]>.status_code
-
-intelligence/ml-service/tests/test_creative_v2_generation_evidence.py:159: AssertionError
-_ test_prompt_optimization_http_endpoint_uses_mock_provider_and_returns_verified_cost _
-
-monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x1149cac60>
-
-    def test_prompt_optimization_http_endpoint_uses_mock_provider_and_returns_verified_cost(monkeypatch):
-        from fastapi.testclient import TestClient
-        from app.main import app
-        from app.workflow import creative_roles
-    
-        source, context, candidates = valid_optimization_fixture()
-        provider = FixtureProvider({"candidates": candidates})
-        provider.last_usage = {'prompt_tokens': 100, 'completion_tokens': 100}
-        for key, value in {
-            'WORKFLOW_CREATIVE_ROLES_ENABLED': 'true',
-            'WORKFLOW_PROMPT_OPTIMIZATION_MODEL': 'fixture-optimization-model',
-            'WORKFLOW_PROMPT_OPTIMIZATION_INPUT_USD_PER_MILLION': '0.15',
-            'WORKFLOW_PROMPT_OPTIMIZATION_OUTPUT_USD_PER_MILLION': '0.6',
-        }.items():
-            monkeypatch.setenv(key, value)
-        monkeypatch.setattr(creative_roles, 'OpenAIProvider', lambda **kwargs: provider)
-    
-        response = TestClient(app).post('/api/v1/workflow/creative-role', json={
-            'role': 'PROMPT_OPTIMIZATION',
-            'text': source,
-            'context': context,
-            'maxCostUsd': 0.20,
-        })
-    
->       assert response.status_code == 200
-E       assert 403 == 200
-E        +  where 403 = <Response [403 Forbidden]>.status_code
-
-intelligence/ml-service/tests/test_creative_roles.py:121: AssertionError
+........................................................................ [ 26%]
+........................................................................ [ 53%]
+........................................................................ [ 80%]
+.....................................................                    [100%]
 =============================== warnings summary ===============================
-tests/test_adaptive_optimization_v3.py: 73 warnings
+tests/test_adaptive_optimization_v3.py: 244 warnings
 tests/test_authoring_contract_repair_v2.py: 393 warnings
-tests/test_model_authored_execution.py: 658 warnings
+tests/test_model_authored_execution.py: 890 warnings
 tests/test_creative_reconstruction_v2.py: 121 warnings
-tests/test_creative_v2_generation_evidence.py: 88 warnings
-tests/test_creative_roles.py: 43 warnings
+tests/test_creative_v2_generation_evidence.py: 109 warnings
+tests/test_creative_roles.py: 48 warnings
 tests/test_plan_first_optimization.py: 299 warnings
 tests/test_optimization_comparison.py: 34 warnings
 tests/test_optimization_distinctness.py: 62 warnings
@@ -112,8 +22,4 @@ tests/test_post_family_workflow.py: 14 warnings
     "createdAt": datetime.utcnow().isoformat() + "Z",
 
 -- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
-=========================== short test summary info ============================
-FAILED intelligence/ml-service/tests/test_model_authored_execution.py::test_real_http_adapter_mocked_sdk_budget_recovery_and_source_comparison
-FAILED intelligence/ml-service/tests/test_creative_v2_generation_evidence.py::test_reactive_planner_through_real_role_http_adapter_uses_one_mock_sdk_call
-FAILED intelligence/ml-service/tests/test_creative_roles.py::test_prompt_optimization_http_endpoint_uses_mock_provider_and_returns_verified_cost
-3 failed, 263 passed, 1912 warnings in 9.54s
+269 passed, 2341 warnings in 10.50s

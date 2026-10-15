@@ -361,7 +361,7 @@ def generate_start_frame_endpoint(request: StartFrameRequest) -> dict[str, Any]:
 
 class AdaptivePolicyRequest(BaseModel):
     model_config = ConfigDict(extra='forbid')
-    action: Literal['PREFLIGHT','STAGE_DECISION','ESCALATION_BRIEF']
+    action: Literal['PREFLIGHT','STAGE_DECISION','ESCALATION_BRIEF','METRICS']
     canonical: dict[str, Any]
     source: str = ''
     context: dict[str, Any] = Field(default_factory=dict)
@@ -370,10 +370,12 @@ class AdaptivePolicyRequest(BaseModel):
 
 @router.post('/adaptive-optimization-policy')
 def adaptive_optimization_policy(request: AdaptivePolicyRequest) -> dict[str, Any]:
-    from .adaptive_optimization import feasibility, stage_decision, escalation_brief
+    from .adaptive_optimization import feasibility, stage_decision, escalation_brief, optimization_metrics
     from .creative_provider_profiles import readiness
     if request.action == 'PREFLIGHT':
         return {**feasibility(request.canonical, request.source, request.context), 'providerConfiguration': readiness()}
+    if request.action == 'METRICS':
+        return optimization_metrics(request.context.get('runs',[]))
     decision = stage_decision(request.comparison, request.canonical)
     if request.action == 'ESCALATION_BRIEF':
         return escalation_brief(request.source, request.context, request.comparison, decision)

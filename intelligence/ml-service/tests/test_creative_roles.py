@@ -1,3 +1,4 @@
+from creative_http_test_auth import post_role
 import json
 import os
 import pytest
@@ -111,12 +112,12 @@ def test_prompt_optimization_http_endpoint_uses_mock_provider_and_returns_verifi
         monkeypatch.setenv(key, value)
     monkeypatch.setattr(creative_roles, 'OpenAIProvider', lambda **kwargs: provider)
 
-    response = TestClient(app).post('/api/v1/workflow/creative-role', json={
+    response = post_role(TestClient(app), {
         'role': 'PROMPT_OPTIMIZATION',
         'text': source,
         'context': context,
         'maxCostUsd': 0.20,
-    })
+    }, monkeypatch)
 
     assert response.status_code == 200
     assert response.json()['model'] == 'fixture-optimization-model'
@@ -476,8 +477,8 @@ def test_paid_build_retains_invalid_beat_response_without_accepting_or_retrying(
     monkeypatch.setenv('WORKFLOW_BUILD_PROMPT_INPUT_USD_PER_MILLION', '0.15')
     monkeypatch.setenv('WORKFLOW_BUILD_PROMPT_OUTPUT_USD_PER_MILLION', '0.6')
     monkeypatch.setattr(creative_roles, 'OpenAIProvider', lambda **kwargs: provider)
-    response = TestClient(app).post('/api/v1/workflow/creative-role', json={
-        'role': 'BUILD_PROMPT', 'text': 'Mimi stands by the toy cabinet.', 'context': {}, 'maxCostUsd': .15})
+    response = post_role(TestClient(app), {
+        'role': 'BUILD_PROMPT', 'text': 'Mimi stands by the toy cabinet.', 'context': {}, 'maxCostUsd': .15}, monkeypatch)
     assert response.status_code == 200
     body = response.json()
     assert body['attemptState'] == 'PROVIDER_RESULT_REJECTED'
@@ -522,8 +523,8 @@ def test_paid_build_records_timeout_as_unknown_without_retry_or_false_zero_calls
                        'WORKFLOW_BUILD_PROMPT_INPUT_USD_PER_MILLION':'.15','WORKFLOW_BUILD_PROMPT_OUTPUT_USD_PER_MILLION':'.6'}.items():
         monkeypatch.setenv(key,value)
     monkeypatch.setattr(creative_roles,'OpenAIProvider',lambda **kwargs:provider)
-    response=TestClient(app).post('/api/v1/workflow/creative-role',json={
-        'role':'BUILD_PROMPT','text':'Approved story','context':{},'maxCostUsd':.15})
+    response=post_role(TestClient(app), {
+        'role':'BUILD_PROMPT','text':'Approved story','context':{},'maxCostUsd':.15}, monkeypatch)
     assert response.status_code == 200
     body=response.json()
     assert body['attemptState'] == 'PROVIDER_OUTCOME_UNKNOWN'
