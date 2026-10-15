@@ -288,7 +288,22 @@ import { GeneralProducibilityComponent } from './general-producibility.component
         <details class="creative-optimization-details">
           <summary>Creative Optimization (optional)</summary>
           <div class="creative-optimization-body">
-            <p class="setting-note">Diagnose and reconstruct up to two defensible production candidates after explicit paid consent and a valid budget. One candidate or Keep Original may be the correct result. Canonical compliance and creative improvement are assessed separately; neither authorizes rendering.</p>
+            <p class="setting-note">Adaptive V3 targets canonical Grade A (92+). Grade B remains an unapproved draft. Visual quality, audience response and render authorization require separate evidence.</p>
+            <button type="button" class="button button--secondary button--compact" (click)="checkAdaptiveFeasibility()" [disabled]="creativeOptimizationBusy || !review?.recordId">Check A feasibility (no provider call)</button>
+            <section *ngIf="adaptivePreflight" aria-label="Grade A feasibility" role="status">
+              <strong>{{ adaptivePreflight.state }}</strong>
+              <p>Current score: {{ adaptivePreflight.currentScore | number:'1.2-2' }} · Conditional ceiling with current evidence: {{ adaptivePreflight.fixedEvidenceOptimisticCeiling | number:'1.2-2' }} · A minimum: {{ adaptivePreflight.canonicalGradeContract?.minimumA }}</p>
+              <p *ngFor="let reason of adaptivePreflight.reasons">{{ reason }}</p>
+              <details><summary>Score limitations and missing evidence</summary><p *ngFor="let loss of adaptivePreflight.losses">{{ loss.ruleId }} · {{ loss.classification }} · {{ loss.reason }}</p><p *ngFor="let gap of adaptivePreflight.missingEvidence">{{ gap.ruleId }} · {{ gap.reason }}</p></details>
+            </section>
+            <label class="repair-field">Optimization mode
+              <select [value]="adaptiveMode" (change)="setAdaptiveMode($any($event.target).value)" [disabled]="creativeOptimizationBusy"><option value="ADAPTIVE">Adaptive · DeepSeek then conditional OpenAI</option><option value="DEEPSEEK_ONLY">DeepSeek only</option><option value="OPENAI_ONLY">OpenAI only</option></select>
+            </label>
+            <div *ngIf="adaptivePreflight?.generationAllowed">
+              <p>At most one request per authorized provider, 4,000 output tokens per request, one round, 120 seconds total. The total USD ceiling covers both stages. No automatic retry or approval.</p>
+              <label class="repair-consent-row" *ngFor="let profileId of adaptiveProfileIds"><input type="checkbox" [checked]="adaptiveProviderConsent[profileId]" (change)="adaptiveProviderConsent[profileId] = $any($event.target).checked" [disabled]="creativeOptimizationBusy || !adaptiveProfile(profileId)?.configured">Authorize {{ adaptiveProfile(profileId)?.provider }} / {{ adaptiveProfile(profileId)?.model }}: at most ONE request{{ profileId === 'openai-escalation' && adaptiveMode === 'ADAPTIVE' ? ', only if escalation is justified' : '' }}.</label>
+            </div>
+            <section *ngIf="adaptiveResult" role="status" aria-label="Adaptive optimization result"><strong>{{ adaptiveResult.state }}</strong><p>{{ adaptiveResult.draftLabel }} · {{ adaptiveResult.recommendation }}</p><p>Provider calls: {{ adaptiveResult.providerCalls || 0 }}. Render authorization remains separate.</p></section>
             <button type="button" class="button button--secondary button--compact" (click)="loadLatestCreativeOptimization()" [disabled]="creativeOptimizationBusy || !review?.recordId">Load saved comparison / attempt</button>
             <div class="repair-fields">
               <label class="repair-field" for="creative-optimization-budget">
@@ -298,12 +313,12 @@ import { GeneralProducibilityComponent } from './general-producibility.component
             </div>
             <label class="repair-consent-row" for="creative-optimization-consent">
               <input #creativeOptimizationConsentInput id="creative-optimization-consent" type="checkbox" [disabled]="creativeOptimizationBusy" (change)="creativeOptimizationConsent = $any($event.target).checked">
-              <span>I explicitly authorize one creative optimization call within the configured budget.</span>
+              <span>I explicitly confirm the checked exact providers/models, one request each and this combined USD ceiling. No other calls are authorized.</span>
             </label>
-            <p>V2 uses source-bound creative diagnosis, production reconstruction and critique. Existing saved drafts retain their current comparison decision.</p>
-            <label class="repair-consent-row"><input type="checkbox" (change)="creativeOptimizationPlanFirstNewAttempt = $any($event.target).checked" [disabled]="creativeOptimizationBusy">Explicitly request a new reconstruction attempt (separate paid consent and budget required).</label>
+            <p>V3 retains source-bound V2 reconstruction, canonical evaluation and critique. Existing saved drafts retain their comparison decision.</p>
+            <label class="repair-consent-row"><input type="checkbox" (change)="startNewAdaptiveAuthorization($any($event.target).checked)" [disabled]="creativeOptimizationBusy">Explicitly request a new reconstruction attempt (separate paid consent and budget required).</label>
             <div class="repair-button-row">
-              <button #creativeOptimizationGenerateButton type="button" class="button button--primary button--compact" (click)="generateCreativeOptimizationCandidates()" [disabled]="creativeOptimizationBusy || !creativeOptimizationConsent || !validCreativeOptimizationBudget || !review?.recordId">Diagnose and reconstruct</button>
+              <button #creativeOptimizationGenerateButton type="button" class="button button--primary button--compact" (click)="generateCreativeOptimizationCandidates()" [disabled]="creativeOptimizationBusy || !creativeOptimizationConsent || !validCreativeOptimizationBudget || !review?.recordId || !adaptivePreflight?.generationAllowed || !adaptivePrimaryAuthorized">Diagnose and reconstruct</button>
             </div>
             <p *ngIf="creativeOptimizationError" class="error" role="alert">{{ creativeOptimizationError }}</p>
             <section *ngIf="creativeOptimizationComparison" class="optimization-conclusion" aria-label="Optimization comparison conclusion">
@@ -1233,10 +1248,40 @@ export class PostFamilyWorkflowComponent implements OnChanges, OnDestroy {
       },
     });
   }
+  adaptiveMode = 'ADAPTIVE';
+  adaptivePreflight: any = null;
+  adaptiveResult: any = null;
+  adaptiveProviderConsent: Record<string, boolean> = {};
+  adaptiveAuthorizationId = crypto.randomUUID();
+  get adaptiveProfileIds(): string[] { return this.adaptiveMode === 'ADAPTIVE' ? ['deepseek-primary', 'openai-escalation'] : [this.adaptiveMode === 'OPENAI_ONLY' ? 'openai-escalation' : 'deepseek-primary']; }
+  adaptiveProfile(id: string): any { return this.adaptivePreflight?.providerConfiguration?.profiles?.[id]; }
+  get adaptivePrimaryAuthorized(): boolean { return !!this.adaptiveProviderConsent[this.adaptiveProfileIds[0]]; }
+  setAdaptiveMode(mode: string): void {
+    this.adaptiveMode = mode; this.adaptiveProviderConsent = {}; this.creativeOptimizationConsent = false; this.adaptiveAuthorizationId = crypto.randomUUID();
+  }
+  startNewAdaptiveAuthorization(checked: boolean): void {
+    this.creativeOptimizationPlanFirstNewAttempt = checked;
+    this.creativeOptimizationConsent = false;
+    if (checked) this.adaptiveAuthorizationId = crypto.randomUUID();
+  }
+  checkAdaptiveFeasibility(): void {
+    if (!this.review?.recordId || this.creativeOptimizationBusy) return;
+    this.creativeOptimizationBusy = true; this.creativeOptimizationError = ''; this.creativeOptimizationConsent = false;
+    this.adaptiveProviderConsent = {};
+    this.http.get<any>(`/api/v1/intelligence/workflow/records/${encodeURIComponent(String(this.review.recordId))}/creative-optimization/preflight`).subscribe({
+      next: value => { this.adaptivePreflight = value; this.creativeOptimizationBusy = false; this.changeDetector.markForCheck(); },
+      error: error => { this.adaptivePreflight = null; this.creativeOptimizationBusy = false; this.creativeOptimizationError = error?.error?.detail || 'Current source-bound feasibility is unavailable. No provider call was made.'; this.changeDetector.markForCheck(); }
+    });
+  }
+
   generateCreativeOptimizationCandidates(): void {
     if (this.creativeOptimizationBusy) return;
     if (!this.review?.recordId || !this.contentId || !this.promptVersionId) {
       this.creativeOptimizationError = 'Current analysis and saved prompt version are required to generate creative candidates.';
+      return;
+    }
+    if (!this.adaptivePreflight?.generationAllowed || !this.adaptivePrimaryAuthorized) {
+      this.creativeOptimizationError = 'Check current A feasibility and explicitly authorize the primary provider/model first.';
       return;
     }
     if (!this.creativeOptimizationConsent || !this.validCreativeOptimizationBudget) {
@@ -1252,10 +1297,18 @@ export class PostFamilyWorkflowComponent implements OnChanges, OnDestroy {
       startNewPlanFirstAttempt: this.creativeOptimizationPlanFirstNewAttempt,
       operatorAuthorized: true,
       maxCostUsd: Number(this.creativeOptimizationBudget),
+      mode: this.adaptiveMode,
+      authorizationId: this.adaptiveAuthorizationId,
+      limits: { maxProviders: this.adaptiveMode === 'ADAPTIVE' ? 2 : 1, maxRequestsPerProvider: 1, maxRounds: 1, maxOutputTokens: 4000, maxLatencySeconds: 120 },
+      providerAuthorizations: this.adaptiveProfileIds.filter(id => this.adaptiveProviderConsent[id]).map(id => ({ profileId: id, provider: this.adaptiveProfile(id).provider, model: this.adaptiveProfile(id).model, maxRequests: 1, operatorConfirmed: true })),
     }).subscribe({
       next: (payload) => {
         if(payload?.optimizationFailed){this.creativeOptimizationComparison=null;this.creativeOptimizationError=this.creativeOptimizationFailureMessage({error:payload});}
-        else this.creativeOptimizationComparison = payload?.comparison ?? payload ?? null;
+        else {
+          this.adaptiveResult = payload?.adaptiveVersion ? payload : null;
+          this.creativeOptimizationComparison = payload?.adaptiveVersion ? (payload.comparison || null) : (payload?.comparison ?? payload ?? null);
+          if (payload?.preflight) this.adaptivePreflight = payload.preflight;
+        }
         this.creativeOptimizationSelectedCandidateId = null;
         this.creativeOptimizationReviewedCandidateId = null;
         this.creativeOptimizationConsent = false;
@@ -2044,6 +2097,7 @@ export class PostFamilyWorkflowComponent implements OnChanges, OnDestroy {
     this.sourcePlanEvidence=null;this.sourcePlanStatus='NOT_LOADED';this.sourcePlanRun='';
     this.qa = null;
     this.creativeOptimizationOpen = false;
+    this.adaptivePreflight = null; this.adaptiveResult = null; this.adaptiveProviderConsent = {}; this.adaptiveAuthorizationId = crypto.randomUUID();
     this.creativeOptimizationComparison = null;
     this.creativeOptimizationError = '';
     this.creativeOptimizationBusy = false;

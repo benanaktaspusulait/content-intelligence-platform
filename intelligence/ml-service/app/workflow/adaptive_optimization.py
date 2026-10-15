@@ -66,8 +66,10 @@ def feasibility(canonical, source='', context=None):
     missing=[{'ruleId':r['ruleId'],'classification':'EVIDENCE_REQUIRED','reason':r.get('message'),'details':r.get('details',{})} for r in rows(canonical) if r.get('outcome')=='UNKNOWN' or r.get('details',{}).get('failureBasis')=='EVIDENCE_INCOMPLETE']
     matches=isinstance(canonical.get('score'),(int,float)) and abs(current-canonical['score'])<1e-7
     state='DIAGNOSING' if ceiling>=A_MINIMUM else 'TARGET_BLOCKED_BY_STORY_CONSTRAINT' if protected_attempt else 'TARGET_BLOCKED_BY_EVIDENCE'
+    visual_missing=any(r['ruleId'] in {'INSTANT_VISUAL_ABSURDITY_GATE','ENGINE_SILHOUETTE_DUPLICATE'} for r in missing)
+    if ceiling>=A_MINIMUM and visual_missing:state='TARGET_BLOCKED_BY_EVIDENCE'
     if not matches:state='CONTRACT_FAILURE'
-    return {'version':VERSION,'state':state,'generationAllowed':matches and ceiling>=A_MINIMUM,'canonicalGradeContract':{'minimumA':A_MINIMUM,'minimumB':80,'aPlusExists':False},'currentScore':current,'fixedEvidenceOptimisticCeiling':ceiling,'ceilingScope':'CURRENT_ELIGIBLE_ROWS_AND_PROTECTED_EVENTS; new independent evidence requires recomputation','familyWeightDenominator':denominator,'losses':losses,'missingEvidence':missing,'genuineSourceAttemptCount':len(attempts),'reasons':(['Persisted score does not match authoritative aggregation.'] if not matches else [] if ceiling>=A_MINIMUM else ['No defensible prompt-only path to A with current evidence and protected story.']), 'renderAuthorized':False}
+    return {'version':VERSION,'state':state,'generationAllowed':matches and ceiling>=A_MINIMUM and not visual_missing,'canonicalGradeContract':{'minimumA':A_MINIMUM,'minimumB':80,'aPlusExists':False},'currentScore':current,'fixedEvidenceOptimisticCeiling':ceiling,'ceilingScope':'CURRENT_ELIGIBLE_ROWS_AND_PROTECTED_EVENTS; new independent evidence requires recomputation','familyWeightDenominator':denominator,'losses':losses,'missingEvidence':missing,'genuineSourceAttemptCount':len(attempts),'reasons':(['Persisted score does not match authoritative aggregation.'] if not matches else ['Required independent visual evidence is missing.'] if ceiling>=A_MINIMUM and visual_missing else [] if ceiling>=A_MINIMUM else ['No defensible prompt-only path to A with current evidence and protected story.']), 'renderAuthorized':False}
 
 
 def quality_dimensions(candidate):
@@ -76,7 +78,7 @@ def quality_dimensions(candidate):
     regression=candidate.get('currentAssessment',{}).get('classification')=='REGRESSION'
     result=[]
     for dim in DIMENSIONS:
-        relevant=[c for c in changes if c.get('dimension')==dim]
+        relevant=[c for c in changes if c.get('dimension')==dim or (dim=='SCROLL_STOP_VISUAL_PROMISE' and c.get('opportunityId','').startswith('CONTACT_PLANE:')) or (dim=='CAUSAL_PROGRESSION' and c.get('opportunityId','').startswith('COUNTABLE_STATE_PATH:')) or dim in {'VISUAL_STORYTELLING','PRODUCTION_EXECUTABILITY','DISTINCTIVE_CREATIVE_VALUE'}]
         # A concrete instruction difference supports textual change, never an
         # audience/visual benefit. Unaffected dimensions make no improvement claim.
         state='REGRESSION' if regression else 'PLAUSIBLE_UNVERIFIED_IMPROVEMENT' if relevant else 'NO_MATERIAL_CHANGE'

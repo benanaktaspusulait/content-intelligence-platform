@@ -219,14 +219,19 @@ public class QualityMlClient {
       throw new IllegalArgumentException("Unsupported workflow operation");
     }
     try {
-      var call =
-          HttpRequest.newBuilder(URI.create(mlServiceUrl + "/api/v1/workflow/" + operation))
-              .timeout(Duration.ofSeconds(25))
-              .header("Content-Type", "application/json")
-              .POST(
-                  HttpRequest.BodyPublishers.ofString(
-                      mlObjectMapper.writeValueAsString(request), StandardCharsets.UTF_8))
-              .build();
+      String body=mlObjectMapper.writeValueAsString(request);
+      var builder=HttpRequest.newBuilder(URI.create(mlServiceUrl + "/api/v1/workflow/" + operation))
+          .timeout(Duration.ofSeconds(25)).header("Content-Type", "application/json");
+      if ("creative-role".equals(operation) && "PROMPT_OPTIMIZATION".equals(request.get("role"))) {
+        String token=System.getenv("WORKFLOW_ADAPTIVE_DISPATCH_TOKEN");
+        if(token==null || token.length()<32) throw new IllegalStateException("Adaptive dispatch authentication configuration required");
+        try {
+          var mac=javax.crypto.Mac.getInstance("HmacSHA256");
+          mac.init(new javax.crypto.spec.SecretKeySpec(token.getBytes(StandardCharsets.UTF_8),"HmacSHA256"));
+          builder.header("X-Adaptive-Dispatch",java.util.HexFormat.of().formatHex(mac.doFinal(body.getBytes(StandardCharsets.UTF_8))));
+        } catch(java.security.GeneralSecurityException error) {throw new IllegalStateException("Adaptive dispatch signing unavailable",error);}
+      }
+      var call=builder.POST(HttpRequest.BodyPublishers.ofString(body,StandardCharsets.UTF_8)).build();
       var response =
           httpClient.send(call, HttpResponse.BodyHandlers.ofString(StandardCharsets.UTF_8));
       if (response.statusCode() == 403)

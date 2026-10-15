@@ -244,7 +244,7 @@ public class WorkflowService {
     var binding=new LinkedHashMap<String,Object>();binding.put("analysisId",analysisId.toString());binding.put("promptSha256",preflight.get("sourcePromptSha256"));
     binding.put("settingsRecordId",preflight.get("productionSettingsRecordId"));binding.put("approvedStorySha256",sha256(String.valueOf(provenance.get("approvedStoryText"))));
     binding.put("profiles",profiles);binding.put("mode",mode);binding.put("grants",grants);binding.put("limits",limits);binding.put("maxCostUsd",budget);
-    String bindingHash=sha256(write(binding));
+    String bindingHash=adaptiveBindingHash(binding);
     jdbc.sql("SELECT pg_advisory_xact_lock(hashtext(:id))").param("id","adaptive:"+authorizationId).query((rs,n)->rs.getObject(1)).list();
     var prior=jdbc.sql("SELECT payload::text FROM post_family_workflow_events WHERE kind='CREATIVE_OPTIMIZATION_RUN' AND payload->>'authorizationId'=:id ORDER BY created_at DESC,id DESC")
         .param("id",authorizationId.toString()).query((rs,n)->read(rs.getString(1))).list();
@@ -314,6 +314,10 @@ public class WorkflowService {
   private boolean hasMaterialDraft(Map<String,Object> comparison,Map<String,Object> baseline) {
     var decision=ml.workflow("adaptive-optimization-policy",Map.of("action","STAGE_DECISION","canonical",baseline,"comparison",comparison));
     return maps(decision.get("qualifications")).stream().anyMatch(q->Boolean.TRUE.equals(q.get("material"))&&!Boolean.TRUE.equals(q.get("regression")));
+  }
+  private String adaptiveBindingHash(Map<String,Object> binding) {
+    try {return sha256(json.copy().enable(com.fasterxml.jackson.databind.SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS).writeValueAsString(binding));}
+    catch (com.fasterxml.jackson.core.JsonProcessingException error) {throw new IllegalStateException("Cannot bind adaptive authorization",error);}
   }
   private int boundedInteger(Map<String,Object> values,String key,int min,int max) {
     Object v=values.get(key);if (!(v instanceof Number n) || !Double.isFinite(n.doubleValue()) || n.doubleValue()!=n.intValue() || n.intValue()<min || n.intValue()>max)

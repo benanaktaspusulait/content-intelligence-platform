@@ -6,7 +6,7 @@ import json
 import logging
 from typing import Any, Literal
 
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Request
 from pydantic import BaseModel, ConfigDict, Field
 
 from app.config import settings
@@ -239,8 +239,14 @@ def creative_role_readiness() -> dict[str, Any]:
 
 
 @router.post('/creative-role')
-def creative_role(request: CreativeRoleRequest) -> dict[str, Any]:
+async def creative_role(request: CreativeRoleRequest, http_request: Request) -> dict[str, Any]:
     from .creative_roles import CreativeRoleFailure, run_paid_role
+    if request.role == 'PROMPT_OPTIMIZATION':
+        import hashlib, hmac, os
+        token=os.getenv('WORKFLOW_ADAPTIVE_DISPATCH_TOKEN','')
+        expected=hmac.new(token.encode(),await http_request.body(),hashlib.sha256).hexdigest()
+        if len(token)<32 or not hmac.compare_digest(expected,http_request.headers.get('X-Adaptive-Dispatch','')):
+            raise HTTPException(403,'Adaptive dispatch requires the durable backend authorization boundary')
     attempt_id = str(request.context.get('attemptId') or 'unassigned')
     try:
         result = run_paid_role(request.role, request.text, request.context, request.maxCostUsd)

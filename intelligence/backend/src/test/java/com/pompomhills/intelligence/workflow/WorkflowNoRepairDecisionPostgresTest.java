@@ -482,6 +482,115 @@ class WorkflowNoRepairDecisionPostgresTest {
     verify(ml,never()).workflow(eq("creative-role"),anyMap());
   }
 
+  private Map<String,Object> v3Preflight() {
+    return new LinkedHashMap<>(Map.of("generationAllowed",true,"state","DIAGNOSING","contentId",10,"sourcePromptVersionId",10,
+        "sourcePromptSha256","a".repeat(64),"productionSettingsRecordId","settings-fixed","providerConfiguration",Map.of("profiles",Map.of(
+        "deepseek-primary",Map.of("provider","deepseek","model","mock-deepseek","baseUrl","http://no-egress-mock"),
+        "openai-escalation",Map.of("provider","openai","model","mock-openai","baseUrl","http://no-egress-mock")))));
+  }
+  private Map<String,Object> v3Request(boolean authorizeEscalation) {
+    var grants=new java.util.ArrayList<Map<String,Object>>();grants.add(Map.of("profileId","deepseek-primary","provider","deepseek","model","mock-deepseek","maxRequests",1,"operatorConfirmed",true));
+    if(authorizeEscalation) grants.add(Map.of("profileId","openai-escalation","provider","openai","model","mock-openai","maxRequests",1,"operatorConfirmed",true));
+    return new LinkedHashMap<>(Map.of("contentId",10,"promptVersionId",10,"mode","ADAPTIVE","operatorAuthorized",true,
+        "authorizationId",UUID.randomUUID().toString(),"maxCostUsd",.2,"providerAuthorizations",grants,
+        "limits",Map.of("maxProviders",2,"maxRequestsPerProvider",1,"maxRounds",1,"maxOutputTokens",4000,"maxLatencySeconds",120)));
+  }
+  private WorkflowService v3Service(String primaryState,String escalationState,double cost) throws Exception {
+    var controlled=spy(service);doReturn(v3Preflight()).when(controlled).adaptiveOptimizationPreflight(analysisId);
+    when(ml.workflow(eq("adaptive-optimization-policy"),anyMap())).thenAnswer(call->{
+      Map<String,Object> input=call.getArgument(1);
+      if("ESCALATION_BRIEF".equals(input.get("action"))) return Map.of("instruction","Original and validated changes only");
+      var comparison=(Map<String,Object>)input.get("comparison");String state=String.valueOf(comparison.get("mockState"));
+      return Map.of("state",state,"escalationJustified",!List.of("A_QUALIFIED","CONTRACT_FAILURE","PROVIDER_FAILURE").contains(state),
+          "qualifications",List.of(Map.of("candidateId","candidate-a","material",state.equals("A_QUALIFIED")||state.equals("IMPROVED_BELOW_TARGET"),"regression",false)));
+    });
+    doAnswer(call->{
+      Map<String,Object> input=call.getArgument(1);var context=(Map<String,Object>)input.get("serverAdaptiveContext");
+      String profile=String.valueOf(context.get("providerProfileId"));UUID id=UUID.randomUUID();
+      var role=Map.of("actualCostUsd",cost,"usage",Map.of("prompt_tokens",100,"completion_tokens",100));
+      jdbc.sql("INSERT INTO post_family_workflow_events(id,kind,payload) VALUES(:id,'CREATIVE_ROLE',CAST(:payload AS jsonb))")
+          .param("id",id).param("payload",new ObjectMapper().writeValueAsString(role)).update();
+      return new LinkedHashMap<>(Map.of("roleRecordId",id.toString(),"mockState",profile.equals("deepseek-primary")?primaryState:escalationState,
+          "recordId",UUID.randomUUID().toString(),"candidates",List.of(),"selection",Map.of(),"approval",Map.of()));
+    }).when(controlled).generateCreativeOptimizationStage(eq(analysisId),anyMap(),anyMap());return controlled;
+  }
+
+  @Test void v3PrimaryAStopsAndDuplicateAuthorizationNeverDispatchesAgain() throws Exception {
+    var controlled=v3Service("A_QUALIFIED","A_QUALIFIED",.001);var request=v3Request(true);
+    var result=controlled.generateCreativeOptimization(analysisId,request,Map.of("approvedStoryText","immutable story"));
+    assertThat(result).containsEntry("state","A_QUALIFIED").containsEntry("providerCalls",1).containsEntry("targetQualified",true).containsEntry("renderAuthorized",false);
+    assertThat(result.get("selection")).isNull();assertThat(result.get("approval")).isNull();
+    var repeated=controlled.generateCreativeOptimization(analysisId,request,Map.of("approvedStoryText","immutable story"));
+    assertThat(repeated).containsEntry("reused",true).containsEntry("providerCallsThisOperation",0);
+    verify(controlled,times(1)).generateCreativeOptimizationStage(any(),anyMap(),anyMap());
+    assertThat(jdbc.sql("SELECT count(*) FROM prompt_versions").query(Long.class).single()).isEqualTo(1);
+  }
+
+  @Test void v3MaterialBConditionallyEscalatesAndBothBIsNotSuccessful() throws Exception {
+    var controlled=v3Service("IMPROVED_BELOW_TARGET","IMPROVED_BELOW_TARGET",.001);
+    var result=controlled.generateCreativeOptimization(analysisId,v3Request(true),Map.of("approvedStoryText","immutable story"));
+    assertThat(result).containsEntry("state","TARGET_NOT_REACHED").containsEntry("providerCalls",2).containsEntry("targetQualified",false)
+        .containsEntry("draftLabel","BEST AVAILABLE DRAFT");
+    verify(controlled,times(2)).generateCreativeOptimizationStage(any(),anyMap(),anyMap());
+  }
+
+  @Test void v3EquivalentPrimaryEscalatesToAuthorizedA() throws Exception {
+    var controlled=v3Service("TARGET_NOT_REACHED","A_QUALIFIED",.001);
+    var result=controlled.generateCreativeOptimization(analysisId,v3Request(true),Map.of("approvedStoryText","immutable story"));
+    assertThat(result).containsEntry("state","A_QUALIFIED").containsEntry("providerCalls",2).containsEntry("targetQualified",true);
+    assertThat(result.get("stateHistory")).asList().contains("ESCALATION_RECOMMENDED","AWAITING_OPERATOR_REVIEW");
+  }
+
+  @Test void v3NoSecondProviderConsentMeansNoSecondDispatch() throws Exception {
+    var controlled=v3Service("IMPROVED_BELOW_TARGET","A_QUALIFIED",.001);
+    var result=controlled.generateCreativeOptimization(analysisId,v3Request(false),Map.of("approvedStoryText","immutable story"));
+    assertThat(result).containsEntry("state","AWAITING_ESCALATION_AUTHORIZATION").containsEntry("providerCalls",1);
+    verify(controlled,times(1)).generateCreativeOptimizationStage(any(),anyMap(),anyMap());
+  }
+
+  @Test void v3SharedContractFailureStopsRatherThanBuyingAnotherAnswer() throws Exception {
+    var controlled=v3Service("CONTRACT_FAILURE","A_QUALIFIED",.001);
+    var result=controlled.generateCreativeOptimization(analysisId,v3Request(true),Map.of("approvedStoryText","immutable story"));
+    assertThat(result).containsEntry("state","CONTRACT_FAILURE").containsEntry("providerCalls",1);
+    verify(controlled,times(1)).generateCreativeOptimizationStage(any(),anyMap(),anyMap());
+  }
+
+  @Test void v3SettledBudgetExhaustionDoesNotAuthorizeEscalation() throws Exception {
+    var controlled=v3Service("IMPROVED_BELOW_TARGET","A_QUALIFIED",.2);
+    var result=controlled.generateCreativeOptimization(analysisId,v3Request(true),Map.of("approvedStoryText","immutable story"));
+    assertThat(result).containsEntry("state","BUDGET_EXHAUSTED").containsEntry("providerCalls",1);
+  }
+
+  @Test void v3AmbiguousCrashKeepsDurableReservationAndBlocksDuplicateDispatch() throws Exception {
+    var controlled=v3Service("IMPROVED_BELOW_TARGET","A_QUALIFIED",.001);var request=v3Request(true);
+    doThrow(new IllegalStateException("ambiguous network outcome")).when(controlled).generateCreativeOptimizationStage(any(),anyMap(),anyMap());
+    assertThatThrownBy(()->controlled.generateCreativeOptimization(analysisId,request,Map.of("approvedStoryText","immutable story"))).hasMessageContaining("ambiguous");
+    var replay=controlled.generateCreativeOptimization(analysisId,request,Map.of("approvedStoryText","immutable story"));
+    assertThat(replay).containsEntry("state","GENERATING_PRIMARY").containsEntry("providerCallsThisOperation",0).containsEntry("retryAutomatically",false);
+    verify(controlled,times(1)).generateCreativeOptimizationStage(any(),anyMap(),anyMap());
+  }
+
+  @Test void v3RejectsClientContextModelFallbackLimitsAndReboundAuthorization() throws Exception {
+    var controlled=v3Service("A_QUALIFIED","A_QUALIFIED",.001);var request=v3Request(true);
+    var injected=new LinkedHashMap<>(request);injected.put("serverAdaptiveContext",Map.of("providerProfileId","anything"));
+    assertThatThrownBy(()->controlled.generateCreativeOptimization(analysisId,injected,Map.of())).hasMessageContaining("Server-owned");
+    var badModel=new LinkedHashMap<>(request);badModel.put("providerAuthorizations",List.of(Map.of("profileId","deepseek-primary","provider","deepseek","model","unapproved","maxRequests",1,"operatorConfirmed",true)));
+    assertThatThrownBy(()->controlled.generateCreativeOptimization(analysisId,badModel,Map.of())).hasMessageContaining("Exact configured");
+    var badLimit=new LinkedHashMap<>(request);badLimit.put("limits",Map.of("maxOutputTokens",4001));
+    assertThatThrownBy(()->controlled.generateCreativeOptimization(analysisId,badLimit,Map.of())).hasMessageContaining("bounded");
+    controlled.generateCreativeOptimization(analysisId,request,Map.of("approvedStoryText","immutable story"));request.put("maxCostUsd",.3);
+    assertThatThrownBy(()->controlled.generateCreativeOptimization(analysisId,request,Map.of("approvedStoryText","immutable story"))).hasMessageContaining("already bound");
+    verify(controlled,times(1)).generateCreativeOptimizationStage(any(),anyMap(),anyMap());
+  }
+
+  @Test void v3BlockedMimiTargetNeverReachesPaidStageEvenWithConsent() throws Exception {
+    var controlled=v3Service("A_QUALIFIED","A_QUALIFIED",.001);var preflight=v3Preflight();preflight.put("generationAllowed",false);preflight.put("state","TARGET_BLOCKED_BY_STORY_CONSTRAINT");
+    doReturn(preflight).when(controlled).adaptiveOptimizationPreflight(analysisId);
+    var result=controlled.generateCreativeOptimization(analysisId,v3Request(true),Map.of());
+    assertThat(result).containsEntry("providerCalls",0).containsEntry("state","TARGET_BLOCKED_BY_STORY_CONSTRAINT");
+    verify(controlled,never()).generateCreativeOptimizationStage(any(),anyMap(),anyMap());
+  }
+
   private void insertReview(UUID id, Map<String,Object> payload) throws Exception {
     jdbc.sql("INSERT INTO post_family_workflow_events(id,kind,payload) VALUES(:id,'REVIEW',CAST(:payload AS jsonb))")
         .param("id",id).param("payload",new ObjectMapper().writeValueAsString(payload)).update();

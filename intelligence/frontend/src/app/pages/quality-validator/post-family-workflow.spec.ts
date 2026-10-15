@@ -1000,6 +1000,27 @@ Hard cut.`;
   });
 
 
+  it('checks A feasibility without dispatch and blocks a protected-story target', async () => {
+    const f=await setup(); const c=f.componentInstance; const http=TestBed.inject(HttpTestingController);
+    c.review={recordId:'v3-blocked'}; c.creativeOptimizationBudget=.2;
+    c.checkAdaptiveFeasibility();
+    http.expectOne('/api/v1/intelligence/workflow/records/v3-blocked/creative-optimization/preflight').flush({generationAllowed:false,state:'TARGET_BLOCKED_BY_STORY_CONSTRAINT',currentScore:88.40625,fixedEvidenceOptimisticCeiling:89.3125,reasons:['Protected source has two attempts.']});
+    c.creativeOptimizationConsent=true; c.generateCreativeOptimizationCandidates();
+    expect(c.adaptivePreflight.state).toBe('TARGET_BLOCKED_BY_STORY_CONSTRAINT');
+    expect(c.creativeOptimizationError).toContain('feasibility');
+    expect(c.creativeOptimizationSelectedCandidateId).toBeNull();
+    http.expectNone(r=>r.method==='POST'); f.destroy(); TestBed.resetTestingModule();
+  });
+
+  it('invalidates exact model consent when changing routing modes', async () => {
+    const f=await setup();const c=f.componentInstance;
+    c.adaptiveProviderConsent={'deepseek-primary':true,'openai-escalation':true};c.creativeOptimizationConsent=true;
+    const before=c.adaptiveAuthorizationId;c.setAdaptiveMode('OPENAI_ONLY');
+    expect(c.adaptiveProfileIds).toEqual(['openai-escalation']);expect(c.adaptivePrimaryAuthorized).toBe(false);
+    expect(c.creativeOptimizationConsent).toBe(false);expect(c.adaptiveAuthorizationId).not.toBe(before);
+    f.destroy();TestBed.resetTestingModule();
+  });
+
   it('defaults creative optimization to a collapsed, opt-in flow with a guarded budget and no implicit approval', async () => {
     const f = await setup();
     const c = f.componentInstance;
@@ -1013,6 +1034,9 @@ Hard cut.`;
       .find((item: HTMLButtonElement) => item.textContent?.trim() === 'Diagnose and reconstruct') as HTMLButtonElement;
     expect(button).toBeTruthy();
     expect(button.disabled).toBe(true);
+    c.checkAdaptiveFeasibility();
+    TestBed.inject(HttpTestingController).expectOne('/api/v1/intelligence/workflow/records/creative-analysis/creative-optimization/preflight').flush({generationAllowed:true, state:'DIAGNOSING', providerConfiguration:{profiles:{'deepseek-primary':{provider:'deepseek',model:'mock-primary',configured:true}}}});
+    c.adaptiveProviderConsent['deepseek-primary']=true;
     const budget = f.nativeElement.querySelector('#creative-optimization-budget') as HTMLInputElement;
     const consent = f.nativeElement.querySelector('#creative-optimization-consent') as HTMLInputElement;
     budget.value = '0';
@@ -1205,7 +1229,7 @@ Hard cut.`;
   });
   it('prevents duplicate button dispatch while an optimization request is pending', async () => {
     const f=await setup();const c=f.componentInstance;const http=TestBed.inject(HttpTestingController);
-    c.review={recordId:'pending-analysis'};c.creativeOptimizationConsent=true;c.creativeOptimizationBudget=.2;
+    c.review={recordId:'pending-analysis'};c.adaptivePreflight={generationAllowed:true,providerConfiguration:{profiles:{'deepseek-primary':{provider:'deepseek',model:'mock-primary'}}}};c.adaptiveProviderConsent={'deepseek-primary':true};c.creativeOptimizationConsent=true;c.creativeOptimizationBudget=.2;
     c.generateCreativeOptimizationCandidates();c.generateCreativeOptimizationCandidates();
     http.expectOne('/api/v1/intelligence/workflow/records/pending-analysis/creative-optimization').flush({category:'UNRESOLVED_ATTEMPT',detail:'Outcome unknown',attemptId:'pending-id',providerDispatched:true,providerResponseReturned:false,retrySafe:false,candidatesSaved:false},{status:502,statusText:'Bad Gateway'});
     expect(c.creativeOptimizationError).toContain('UNRESOLVED_ATTEMPT');expect(c.creativeOptimizationComparison).toBeNull();expect(c.creativeOptimizationBusy).toBe(false);expect(c.creativeOptimizationConsent).toBe(false);
@@ -1235,6 +1259,7 @@ Hard cut.`;
   it('keeps new plan-first generation opt-in and requires separate paid consent', async () => {
     const f=await setup();const c=f.componentInstance;const http=TestBed.inject(HttpTestingController);
     c.review={recordId:'run',contentId:1,promptVersionId:2};
+    c.adaptivePreflight={generationAllowed:true,providerConfiguration:{profiles:{'deepseek-primary':{provider:'deepseek',model:'mock-primary'}}}};c.adaptiveProviderConsent={'deepseek-primary':true};
     expect(c.creativeOptimizationPlanFirstNewAttempt).toBe(false);
     c.creativeOptimizationPlanFirstNewAttempt=true;c.creativeOptimizationConsent=false;c.creativeOptimizationBudget=.2;
     c.generateCreativeOptimizationCandidates();http.expectNone(r=>r.method==='POST');

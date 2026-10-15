@@ -1008,6 +1008,8 @@ def run_paid_role(role: str, text: str, context: dict[str, Any], max_cost_usd: f
     if adaptive:
         from .creative_provider_profiles import profile
         capability = profile(context.get('providerProfileId'))
+        if capability != context.get('providerCapabilityBinding'):
+            raise ValueError('Provider capability configuration changed after authorization')
     model = capability['model'] if adaptive else os.getenv(f'WORKFLOW_{role}_MODEL', '')
     if not model:
         raise ValueError('Explicit server model configuration required; no fallback')
@@ -1045,7 +1047,7 @@ def run_paid_role(role: str, text: str, context: dict[str, Any], max_cost_usd: f
     if reconstruction: schema_bytes = len(json.dumps(response_format(context,text)).encode('utf-8'))
     system_bytes = len(plan_system.encode('utf-8')) if plan_first or reconstruction else 2000
     upper_bound = ((payload_bytes + schema_bytes + system_bytes) * input_rate + output_token_limit * output_rate) / 1_000_000
-    if payload_bytes > 24000 or upper_bound > max_cost_usd:
+    if payload_bytes > (64000 if adaptive else 24000) or upper_bound > max_cost_usd:
         raise ValueError('Request exceeds approved cost ceiling')
     if adaptive:
         from .creative_provider_profiles import CreativeCapabilityProvider
