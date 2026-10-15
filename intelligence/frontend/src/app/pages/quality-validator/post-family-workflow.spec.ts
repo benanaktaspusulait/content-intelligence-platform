@@ -1010,7 +1010,7 @@ Hard cut.`;
     const details = f.nativeElement.querySelector('details.creative-optimization-details') as HTMLDetailsElement;
     expect(details.open).toBe(false);
     const button = [...f.nativeElement.querySelectorAll('button')]
-      .find((item: HTMLButtonElement) => item.textContent?.trim() === 'Generate two candidates') as HTMLButtonElement;
+      .find((item: HTMLButtonElement) => item.textContent?.trim() === 'Diagnose and reconstruct') as HTMLButtonElement;
     expect(button).toBeTruthy();
     expect(button.disabled).toBe(true);
     const budget = f.nativeElement.querySelector('#creative-optimization-budget') as HTMLInputElement;
@@ -1250,6 +1250,21 @@ Hard cut.`;
   function compactComparison() {
     return {recordId:'saved-comparison',sourcePromptVersionId:2,rulesetVersion:'1.7',comparisonAssessment:{recommendation:'KEEP_ORIGINAL',conclusion:'Neither candidate demonstrates material improvement.',actualCandidateCount:2,integrityStatus:'COMPLETE_TWO_CANDIDATES',lineageVerified:true,lineage:{analysisRunId:'run',contentId:1,promptVersionId:2}},candidates:['a','b'].map((id,idx)=>({candidateId:`candidate-${id}`,title:`Candidate ${id}`,prompt:`complete prompt ${id}`,diff:`--- original\n+++ candidate\n-0-2s: close hand\n+0-2s: ${idx ? 'split timing' : 'extreme close hand'}\n unchanged ending`,hypothesis:'Unproven hypothesis',currentAssessment:{classification:'VALID_MINOR_VARIATION',approvalEligible:false,textSimilarity:idx ? .935 : .994,actualChanges:[idx ? 'One source progression split into two camera shots.' : 'CLOSE → EXTREME_CLOSE'],conclusion:idx ? 'Timing split; no new action or consequence demonstrated.' : 'Framing changed; improvement not established.',approvalBlockReason:'Non-material candidate',storyCoverage:'UNKNOWN',endingPreservation:'SOURCE_PRESERVED'},review:{canonicalRuleEvaluation:{score:85,grade:'B'}}}))};
   }
+  it('reviews a single V2 candidate with explicit before/after evidence and separate canonical score', async () => {
+    const f=await setup();const c=f.componentInstance;
+    c.review={recordId:'run',canonicalRuleEvaluation:{score:88.40625,grade:'B'}};c.isCurrent=()=>true;c.activeStage=6;
+    const value:any=compactComparison();value.candidates=value.candidates.slice(1);
+    value.comparisonAssessment={...value.comparisonAssessment,contractVersion:'creative-reconstruction-v2',actualCandidateCount:1,integrityStatus:'COMPLETE_CANDIDATE_SET'};
+    const candidate=value.candidates[0];candidate.creativeContractVersion='creative-reconstruction-v2';candidate.currentAssessment.classification='PLAUSIBLE_IMPROVEMENT_UNVERIFIED';
+    candidate.currentAssessment.creativeAssessment={classification:'PLAUSIBLE_IMPROVEMENT_UNVERIFIED',changeContract:[{beatId:'beat_03',opportunityId:'COUNTABLE_STATE_PATH:beat_03',originalExecution:'notes multiply two to four to eight',newExecution:'stable countable groups, continuous contact',observableDifference:'Each existing state has separate visible placement',creativeRationale:'Spatial distinction is a hypothesis',sourceFidelity:{semanticFidelity:'UNKNOWN'},productionRisk:{change:'UNKNOWN',evidence:'Count fidelity awaits visual review'},evidenceLimitation:'No audience evidence'}]};
+    c.creativeOptimizationComparison=value;f.detectChanges();
+    expect(c.canSelectOptimizationCandidate(candidate)).toBe(true);
+    const root=f.nativeElement as HTMLElement;expect(root.textContent).toContain('Canonical compliance score');
+    expect(root.querySelector('.optimization-creative-proof')?.textContent).toContain('stable countable groups');
+    expect(root.textContent).toContain('Candidate B · Review details');
+    expect(c.creativeOptimizationSelectedCandidateId).toBeNull();
+    TestBed.inject(HttpTestingController).expectNone(r=>r.method==='POST');f.destroy();TestBed.resetTestingModule();
+  });
   it('renders compact decision cards with independent collapsed prompts and evidence, and visible actual changes', async () => {
     const f=await setup();const c=f.componentInstance;const http=TestBed.inject(HttpTestingController);
     c.review={recordId:'run',canonicalRuleEvaluation:{score:85,grade:'B'}};c.isCurrent=()=>true;c.activeStage=6;c.creativeOptimizationComparison=compactComparison();f.detectChanges();

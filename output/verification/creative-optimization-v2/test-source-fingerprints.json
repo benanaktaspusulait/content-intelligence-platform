@@ -1,0 +1,18 @@
+{
+  "contents": {
+    "rows": 1,
+    "sha256": "40eceed80b065df80b4cabf313abef38214433e94cabcbe1a0279c9ebcd77025"
+  },
+  "prompt_versions": {
+    "rows": 1,
+    "sha256": "bea43695ba50f744a017e0781016c2bb6adf86b715764b3fb41579a31752baf4"
+  },
+  "prompt_creative_provenance": {
+    "rows": 1,
+    "sha256": "6c1b4fc318112e3f94f869dfa0941c84fac0e6f43b71fa1f9a5dbfa7ead64916"
+  },
+  "post_family_workflow_events": {
+    "rows": 69,
+    "sha256": "58f4088fd72015e8077e3669c89f9207f69e7c4ec7b9f2e45ef5f380fd6e2518"
+  }
+}

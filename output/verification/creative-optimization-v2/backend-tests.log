@@ -1,0 +1,44 @@
+Mockito is currently self-attaching to enable the inline-mock-maker. This will no longer work in future releases of the JDK. Please add Mockito as an agent to your build as described in Mockito's documentation: https://javadoc.io/doc/org.mockito/mockito-core/latest/org.mockito/org/mockito/Mockito.html#0.3
+WARNING: A Java agent has been loaded dynamically (/Users/benanaktas/.m2/repository/net/bytebuddy/byte-buddy-agent/1.18.11/byte-buddy-agent-1.18.11.jar)
+WARNING: If a serviceability tool is in use, please run with -XX:+EnableDynamicAgentLoading to hide this warning
+WARNING: If a serviceability tool is not in use, please run with -Djdk.instrument.traceUsage for more information
+WARNING: Dynamic loading of agents will be disallowed by default in a future release
+OpenJDK 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended
+09:00:14.500 [main] INFO com.pompomhills.intelligence.quality.QualityMlClient -- ML client initialized with base URL: http://127.0.0.1:57053
+09:00:14.599 [main] INFO com.pompomhills.intelligence.quality.QualityMlClient -- ML client initialized with base URL: http://127.0.0.1:57055
+09:00:14.607 [main] INFO com.pompomhills.intelligence.quality.QualityMlClient -- ML client initialized with base URL: http://127.0.0.1:57057
+09:00:14.698 [main] INFO org.testcontainers.DockerClientFactory -- Testcontainers version: 2.0.2
+09:00:14.889 [main] INFO org.testcontainers.dockerclient.DockerClientProviderStrategy -- Loaded org.testcontainers.dockerclient.UnixSocketClientProviderStrategy from ~/.testcontainers.properties, will try it first
+09:00:15.109 [main] INFO org.testcontainers.dockerclient.DockerClientProviderStrategy -- Found Docker environment with Docker accessed via Unix socket (/Users/benanaktas/.docker/run/docker.sock)
+09:00:15.110 [main] INFO org.testcontainers.DockerClientFactory -- Docker host IP address is localhost
+09:00:15.125 [main] INFO org.testcontainers.DockerClientFactory -- Connected to docker: 
+  Server Version: 29.2.1
+  API Version: 1.53
+  Operating System: Docker Desktop
+  Total Memory: 11948 MB
+  Labels: 
+    com.docker.desktop.address=unix:///Users/benanaktas/Library/Containers/com.docker.docker/Data/docker-cli.sock
+09:00:15.134 [main] INFO org.testcontainers.images.PullPolicy -- Image pull policy will be performed by: DefaultPullPolicy()
+09:00:15.135 [main] INFO org.testcontainers.utility.ImageNameSubstitutor -- Image name substitution will be performed by: DefaultImageNameSubstitutor (composite of 'ConfigurationFileImageNameSubstitutor' and 'PrefixingImageNameSubstitutor')
+09:00:15.226 [main] INFO tc.testcontainers/ryuk:0.13.0 -- Creating container for image: testcontainers/ryuk:0.13.0
+09:00:15.402 [main] INFO org.testcontainers.utility.RegistryAuthLocator -- Credential helper/store (docker-credential-desktop) does not have credentials for https://index.docker.io/v1/
+09:00:15.599 [main] INFO tc.testcontainers/ryuk:0.13.0 -- Container testcontainers/ryuk:0.13.0 is starting: de9ddb6c0ec99908de1fca631564cfe9d05b9e254850b89eeb5733d77c7e2bd2
+09:00:15.997 [main] INFO tc.testcontainers/ryuk:0.13.0 -- Container testcontainers/ryuk:0.13.0 started in PT0.770893S
+09:00:16.001 [main] INFO org.testcontainers.utility.RyukResourceReaper -- Ryuk started - will monitor and terminate Testcontainers containers on JVM exit
+09:00:16.001 [main] INFO org.testcontainers.DockerClientFactory -- Checking the system...
+09:00:16.002 [main] INFO org.testcontainers.DockerClientFactory -- ✔︎ Docker server version should be at least 1.6.0
+09:00:16.006 [main] INFO tc.postgres:17-alpine -- Creating container for image: postgres:17-alpine
+09:00:16.056 [main] INFO tc.postgres:17-alpine -- Container postgres:17-alpine is starting: 023a6cb0e0a4be2c59cac87ef42b48dd5f40f3cba3ae2f8b140520055a356631
+09:00:19.895 [main] INFO tc.postgres:17-alpine -- Container postgres:17-alpine started in PT3.888536S
+09:00:19.899 [main] INFO tc.postgres:17-alpine -- Container is started (JDBC URL: jdbc:postgresql://localhost:57063/test?loggerLevel=OFF)
+09:00:24.805 [main] INFO org.hibernate.validator.internal.util.Version -- HV000001: Hibernate Validator 9.1.3.Final
+09:00:25.009 [main] INFO org.springframework.mock.web.MockServletContext -- Initializing Spring TestDispatcherServlet ''
+09:00:25.009 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Initializing Servlet ''
+09:00:25.010 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Completed initialization in 1 ms
+09:00:32.037 [main] INFO tc.postgres:17-alpine -- Creating container for image: postgres:17-alpine
+09:00:32.151 [main] INFO tc.postgres:17-alpine -- Container postgres:17-alpine is starting: 15512635d9c9fb47a4a7ef2ab0ee73cde593f142237d1f15375f2de619af5282
+09:00:34.603 [main] INFO tc.postgres:17-alpine -- Container postgres:17-alpine started in PT2.56611S
+09:00:34.604 [main] INFO tc.postgres:17-alpine -- Container is started (JDBC URL: jdbc:postgresql://localhost:58151/pompom?loggerLevel=OFF)
+09:00:35.268 [main] WARN com.pompomhills.intelligence.workflow.WorkflowService -- Optimization attempt=5d034fdc-2ca5-4612-b1c5-77a8080d3a4e category=SOURCE_PLAN_VALIDATION_FAILED dispatched=false returned=null
+09:00:35.960 [main] WARN com.pompomhills.intelligence.workflow.WorkflowService -- Optimization attempt=4b32dc45-be57-4a99-bc03-e1cc5d1bc09a category=SOURCE_PLAN_VALIDATION_FAILED dispatched=false returned=null
+09:00:36.939 [main] WARN com.pompomhills.intelligence.workflow.WorkflowService -- Optimization attempt=688e2fae-d9bc-485d-b101-2bbce7e50157 category=SOURCE_PLAN_VALIDATION_FAILED dispatched=false returned=null

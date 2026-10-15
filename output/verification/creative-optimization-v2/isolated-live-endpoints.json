@@ -1,0 +1,14 @@
+{
+  "backend": "http://127.0.0.1:58768",
+  "frontend": "http://127.0.0.1:58768",
+  "ml": "INTERNAL_ONLY:http://ml-service:8000",
+  "step6": "http://127.0.0.1:58768/quality/detail?contentId=10&promptVersionId=10&studio=1&stage=6",
+  "comparisonId": "8b5705ff-22cd-406a-a5bf-29483cba5abb",
+  "internalNetwork": "pompom-creative-v2-acceptance-network",
+  "providerDispatches": 1,
+  "realProviderCalls": 0,
+  "database": "pompom-creative-v2-acceptance-db",
+  "promptVersionCount": 1,
+  "selection": null,
+  "approval": null
+}

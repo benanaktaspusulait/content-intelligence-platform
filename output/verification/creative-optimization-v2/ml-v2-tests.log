@@ -1,0 +1,10 @@
+......................................................                   [100%]
+=============================== warnings summary ===============================
+tests/test_creative_reconstruction_v2.py: 101 warnings
+tests/test_plan_first_optimization.py: 299 warnings
+tests/test_optimization_comparison.py: 34 warnings
+  /Users/benanaktas/project/video/content-intelligence-platform/intelligence/ml-service/app/parser/prompt_parser.py:209: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+    "createdAt": datetime.utcnow().isoformat() + "Z",
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+54 passed, 434 warnings in 2.67s

@@ -1,0 +1,48 @@
+{
+  "proposals": [
+    {
+      "initial": {
+        "candidateId": "candidate-a",
+        "title": "Spatially legible contact choreography",
+        "objective": "Show the intended destination and wrong-surface attachment in a continuous, unobstructed contact view.",
+        "interventions": [
+          {
+            "opportunityId": "CONTACT_PLANE:beat_01",
+            "operation": "CONTACT_PLANE",
+            "layout": "DEPTH",
+            "camera": "LOCKED",
+            "rationale": "A separated contact plane may make the existing intention and wrong attachment distinguishable; actual clarity is unverified."
+          }
+        ],
+        "storyChangeRequested": false
+      },
+      "revision": null
+    },
+    {
+      "initial": {
+        "candidateId": "candidate-b",
+        "title": "Countable doubling and contact continuity",
+        "objective": "Expose the existing two-four-eight states in countable stable groups while keeping the separation result continuously visible.",
+        "interventions": [
+          {
+            "opportunityId": "COUNTABLE_STATE_PATH:beat_03",
+            "operation": "COUNTABLE_STATE_PATH",
+            "layout": "LATERAL",
+            "camera": "LOCKED",
+            "rationale": "A separated contact plane may make the existing intention and wrong attachment distinguishable; actual clarity is unverified."
+          },
+          {
+            "opportunityId": "SEPARATE_ACTION_RESULT:beat_02",
+            "operation": "SEPARATE_ACTION_RESULT",
+            "layout": "LATERAL",
+            "camera": "LOCKED",
+            "rationale": "A separated contact plane may make the existing intention and wrong attachment distinguishable; actual clarity is unverified."
+          }
+        ],
+        "storyChangeRequested": false
+      },
+      "revision": null
+    }
+  ],
+  "noImprovementReason": null
+}

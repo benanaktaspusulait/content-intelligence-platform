@@ -1,0 +1,6 @@
+material_spatial_reconstruction REVIEW_MATERIAL_CANDIDATE ['PLAUSIBLE_IMPROVEMENT_UNVERIFIED'] []
+camera_wording_only KEEP_ORIGINAL [] ['VALID_BUT_EQUIVALENT']
+unchanged_action_timestamp_split KEEP_ORIGINAL [] ['VALID_BUT_EQUIVALENT']
+execution_risk_regression KEEP_ORIGINAL [] ['REGRESSION']
+protected_story_change KEEP_ORIGINAL [] ['STORY_CHANGE_REQUIRES_APPROVAL']
+keep_original KEEP_ORIGINAL [] []

@@ -1,0 +1,5 @@
+
+> frontend@0.0.0 test
+> ng test --watch=false --include=src/app/pages/quality-validator/post-family-workflow.spec.ts --include=src/app/pages/quality-validator/step6-governance.component.spec.ts --include=src/app/pages/render-preparation.page.spec.ts
+
+❯ Building...

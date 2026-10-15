@@ -235,8 +235,11 @@ public class WorkflowService {
     if (essentialEvents.isEmpty())
       throw new IllegalStateException("Source-bound essential event anchors are unavailable");
     var context = new LinkedHashMap<String, Object>();
-    context.put("optimizationGenerationContractVersion", "plan-first-v1");
-    context.put("optimizationGenerationInstructionsVersion", "plan-first-owned-source-v3");
+    context.put("optimizationGenerationContractVersion", "creative-reconstruction-v2");
+    context.put("optimizationGenerationInstructionsVersion", "creative-reconstruction-v2");
+    context.put("openingStrategy", bound.getOrDefault("openingStrategy", "AUTO"));
+    context.put("baselineCanonicalFailures", map(baseline.get("canonicalRuleEvaluation")).getOrDefault("failedRules", List.of()));
+    context.put("baselineCanonicalEvaluation", map(baseline.get("canonicalRuleEvaluation")));
     context.put("productionSettingsRecordId", productionSettings.get("recordId"));
     context.put("protectedIntent", baseline.getOrDefault("protectedIntent", essentialEvents));
     context.put("analysisRunId", analysisId.toString());
@@ -261,6 +264,7 @@ public class WorkflowService {
     if (!request.containsKey("recoverAttemptRecordId") && !Boolean.TRUE.equals(request.get("startNewPlanFirstAttempt")) && !existingComparison.isEmpty()
         && version.longValue() == jdbc.sql("SELECT max(id) FROM prompt_versions WHERE content_id=:content").param("content",content.longValue()).query(Long.class).single().longValue()
         && source.promptText().equals(bound.get("prompt"))
+        && "creative-reconstruction-v2".equals(map(existingComparison.get("creativeEvidence")).get("creativeContractVersion"))
         && sha256(source.promptText()).equals(existingComparison.get("sourcePromptSha256"))
         && maps(existingComparison.get("candidates")).stream().allMatch(c -> effectiveProfile.equals(map(c.get("sourcePlan")).get("contentProfile"))))
       return assessOptimizationComparison(UUID.fromString(String.valueOf(existingComparison.get("recordId"))));
@@ -291,8 +295,10 @@ public class WorkflowService {
             .optional();
     if (previousComparison.isPresent()) return assessOptimizationComparison(UUID.fromString(String.valueOf(previousComparison.get().get("recordId"))));
     var generated = maps(map(role.get("result")).get("candidates"));
-    if (generated.size() != 2)
-      throw new IllegalStateException("The optimization role did not return exactly two candidates");
+    if (!validOptimizationCandidateCount(generated.size(), context))
+      throw new IllegalStateException("The optimization role returned an invalid candidate set");
+    if (generated.isEmpty() && !"NO_JUSTIFIED_IMPROVEMENT".equals(map(role.get("result")).get("outcome")))
+      throw new IllegalStateException("Empty candidate set requires an explicit no-improvement result");
 
     var candidates = new ArrayList<Map<String, Object>>();
     String baselineRuleset = String.valueOf(map(baseline.get("canonicalRuleEvaluation")).get("rulesetVersion"));
@@ -340,6 +346,7 @@ public class WorkflowService {
     comparison.put("roleRecordId", roleRecordId.toString());
     comparison.put("rulesetVersion", baselineRuleset);
     comparison.put("candidates", candidates);
+    comparison.put("creativeEvidence", map(role.get("result")));
     comparison.put("selection", null);
     comparison.put("approval", null);
     try { comparison.put("recordId", save("CREATIVE_OPTIMIZATION", null, comparison)); }
@@ -376,6 +383,11 @@ public class WorkflowService {
       throw new IllegalStateException("Saved response lacks valid authorized budget and usage evidence; fail closed");
     var providerResult = map(diagnostic.getOrDefault("providerResultForRecovery", saved.get("rawProviderResult")));
     if (providerResult.isEmpty()) throw new IllegalStateException("Saved response is not recoverable; no provider retry is performed");
+    // Recovery retains the generator's original versioned interpretation. It is not a new V2 generation.
+    context.put("optimizationGenerationContractVersion", originalContext.getOrDefault("optimizationGenerationContractVersion", "profile-ownership-v1"));
+    if (originalContext.containsKey("optimizationGenerationInstructionsVersion"))
+      context.put("optimizationGenerationInstructionsVersion", originalContext.get("optimizationGenerationInstructionsVersion"));
+    roleRequest.put("context", context);
     String fingerprint = "recovery:" + savedId + ":" + creativeRoleFingerprint("PROMPT_OPTIMIZATION", roleRequest);
     jdbc.sql("SELECT pg_advisory_xact_lock(hashtext(:fingerprint))").param("fingerprint", fingerprint).query((rs,n)->rs.getObject(1)).list();
     var reused = findCreativeRoleByFingerprint(fingerprint, "PROMPT_OPTIMIZATION");
@@ -400,6 +412,11 @@ public class WorkflowService {
     return result;
   }
 
+  private static boolean validOptimizationCandidateCount(int count, Map<String,Object> context) {
+    return "creative-reconstruction-v2".equals(context.get("optimizationGenerationContractVersion"))
+        ? count >= 0 && count <= 2 : count == 2;
+  }
+
   public Map<String,Object> assessOptimizationComparison(UUID comparisonId) {
     var value=new LinkedHashMap<String,Object>(getByKind(comparisonId,"CREATIVE_OPTIMIZATION"));
     UUID analysisId=UUID.fromString(String.valueOf(value.get("sourceAnalysisId")));
@@ -416,7 +433,7 @@ public class WorkflowService {
         && java.util.Objects.equals(request.get("text"),bound.get("prompt"))
         && sha256(String.valueOf(request.get("text"))).equals(value.get("sourcePromptSha256"))
         && java.util.Objects.equals(value.get("rulesetVersion"),map(baseline.get("canonicalRuleEvaluation")).get("rulesetVersion"))
-        && candidates.size()==2 && stored.size()==2;
+        && validOptimizationCandidateCount(candidates.size(), context) && stored.size()==candidates.size();
     var currentAnalysis = getLatestReview(content, version);
     valid &= currentAnalysis != null && analysisId.toString().equals(String.valueOf(currentAnalysis.get("recordId")));
     if (value.get("revalidatedFromComparisonId") instanceof String originalId) {
@@ -434,7 +451,7 @@ public class WorkflowService {
       valid = rebaseValid && currentAnalysis != null && analysisId.toString().equals(String.valueOf(currentAnalysis.get("recordId")))
           && java.util.Objects.equals(request.get("text"), bound.get("prompt"))
           && java.util.Objects.equals(value.get("rulesetVersion"), map(baseline.get("canonicalRuleEvaluation")).get("rulesetVersion"))
-          && candidates.size() == 2 && stored.size() == 2
+          && validOptimizationCandidateCount(candidates.size(), context) && stored.size() == candidates.size()
           && String.valueOf(content).equals(String.valueOf(context.get("contentId")))
           && String.valueOf(version).equals(String.valueOf(context.get("promptVersionId")))
           && String.valueOf(version).equals(String.valueOf(value.get("sourcePromptVersionId")));
@@ -470,6 +487,29 @@ public class WorkflowService {
     lineage.put("providerResponseId",providerResponse);lineage.put("rulesetVersion",value.get("rulesetVersion"));lineage.put("evaluationBindingHash",baseline.getOrDefault("bindingHash","UNKNOWN"));
     valid &= "PROMPT_OPTIMIZATION".equals(role.get("role")) && !List.of("UNKNOWN","null","").contains(attempt) && !List.of("UNKNOWN","null","").contains(providerResponse);
     assessment.put("lineage",lineage);assessment.put("lineageVerified",valid);
+    if ("creative-reconstruction-v2".equals(context.get("optimizationGenerationContractVersion"))) {
+      var productMetrics = new LinkedHashMap<String,Object>(map(map(role.get("result")).get("improvementMetrics")));
+      var classifiedCandidates = maps(assessment.get("candidates"));
+      productMetrics.put("canonicalRegressions", classifiedCandidates.stream().filter(c -> Boolean.TRUE.equals(map(c.get("creativeAssessment")).get("canonicalRegression"))).count());
+      productMetrics.put("productionRiskRegressions", classifiedCandidates.stream().filter(c -> Boolean.TRUE.equals(map(c.get("creativeAssessment")).get("productionRiskIndicatorRegression"))).count()
+          + maps(map(role.get("result")).get("rejectedProposals")).stream().filter(c -> "REGRESSION".equals(c.get("classification"))).count());
+      productMetrics.put("providerCostUsd", role.get("actualCostUsd"));
+      productMetrics.put("canonicalRegressionRate", classifiedCandidates.isEmpty() ? null : ((Number)productMetrics.get("canonicalRegressions")).doubleValue()/classifiedCandidates.size());
+      long preferences = classifiedCandidates.stream().filter(c -> Boolean.TRUE.equals(c.get("approvalEligible"))).count();
+      productMetrics.put("materialExecutionPlans", candidates.size());
+      productMetrics.put("materialCandidates", preferences);
+      int proposedCount = candidates.size() + maps(map(role.get("result")).get("rejectedProposals")).size();
+      productMetrics.put("materialCandidateSuccessRate", proposedCount == 0 ? null : (double)preferences/proposedCount);
+      productMetrics.put("productionRiskRegressionRate", proposedCount == 0 ? null : ((Number)productMetrics.get("productionRiskRegressions")).doubleValue()/proposedCount);
+      long approvedPreferences = jdbc.sql("SELECT count(*) FROM prompt_versions WHERE parsed_ir->'creativeOptimizationProvenance'->>'comparisonId'=:comparison")
+          .param("comparison", comparisonId.toString()).query(Long.class).single();
+      productMetrics.put("operatorPreferredCandidates", approvedPreferences == 0 ? null : approvedPreferences);
+      productMetrics.put("defensibleOperatorPreferenceRate", approvedPreferences == 0 || candidates.isEmpty() ? null : (double)approvedPreferences/candidates.size());
+      productMetrics.put("costPerOperatorAcceptedMaterialImprovement", approvedPreferences > 0 && role.get("actualCostUsd") instanceof Number cost ? cost.doubleValue()/approvedPreferences : null);
+      productMetrics.put("reviewEligibleCandidates", preferences);
+      productMetrics.put("callsWithoutAcceptableCandidate", preferences == 0 ? role.getOrDefault("calls",0) : 0);
+      assessment.put("improvementMetrics", productMetrics);
+    }
     if (!valid) {assessment.put("recommendation","KEEP_ORIGINAL");assessment.put("conclusion","Candidate lineage, current baseline or candidate set is invalid or stale.");}
     var enriched=new ArrayList<Map<String,Object>>();var classified=maps(assessment.get("candidates"));
     for(var candidate:candidates) {
@@ -527,7 +567,8 @@ public class WorkflowService {
         .param("analysis", analysisId.toString()).param("comparison", comparisonId.toString()).query(UUID.class).optional();
     if (existing.isPresent()) return assessOptimizationComparison(existing.get());
     var candidates = maps(original.get("candidates"));
-    if (candidates.size() != 2) throw new IllegalArgumentException("Exactly two saved candidates required");
+    var roleContext = map(map(getByKind(UUID.fromString(String.valueOf(original.get("roleRecordId"))), "CREATIVE_ROLE").get("sourceRequest")).get("context"));
+    if (!validOptimizationCandidateCount(candidates.size(), roleContext)) throw new IllegalArgumentException("Invalid saved candidate count");
     var evaluated = new ArrayList<Map<String,Object>>();
     String ruleset = String.valueOf(map(baseline.get("canonicalRuleEvaluation")).get("rulesetVersion"));
     for (var candidate : candidates) {

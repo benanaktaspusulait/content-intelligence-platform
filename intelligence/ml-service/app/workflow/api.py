@@ -202,7 +202,12 @@ def optimization_recovery(request: OptimizationRecoveryRequest) -> dict[str, Any
     try:
         context = dict(request.context)
         # Historical candidate responses retain their legacy source contract.
-        if not any(k in request.providerResult for k in ('plans','openingPlan','escalationPlan')): context['optimizationGenerationContractVersion']='profile-ownership-v1'
+        if 'proposals' in request.providerResult:
+            context['optimizationGenerationContractVersion']='creative-reconstruction-v2'
+        elif any(k in request.providerResult for k in ('plans','openingPlan','escalationPlan')):
+            context['optimizationGenerationContractVersion']='plan-first-v1'
+        else:
+            context['optimizationGenerationContractVersion']='profile-ownership-v1'
         result = perform_role('PROMPT_OPTIMIZATION', request.text, context,
                               provider, str(request.diagnostics.get('model', 'saved-response')))
     except ValueError as error:
@@ -211,6 +216,8 @@ def optimization_recovery(request: OptimizationRecoveryRequest) -> dict[str, Any
                                  'providerCallsThisOperation': 0,
                                  'profileValidations': [c.get('profileValidation') for c in (getattr(provider, 'last_normalized_role_result', {}) or {}).get('candidates', [])],
                                  'profileValidation': getattr(error, 'profile_validation', None)}) from error
+    if result.get('result',{}).get('creativeContractVersion') == 'creative-reconstruction-v2':
+        result['result']['improvementMetrics'].update(providerCalls=0, callsWithoutAcceptableCandidate=0, providerCostUsd=None, reusedProviderResult=True)
     result.update(calls=0, provider='saved-response',
                   rawProviderResult=deepcopy(request.providerResult),
                   providerResponseMetadata=deepcopy(request.diagnostics))

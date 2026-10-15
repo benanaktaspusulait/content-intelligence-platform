@@ -288,7 +288,7 @@ import { GeneralProducibilityComponent } from './general-producibility.component
         <details class="creative-optimization-details">
           <summary>Creative Optimization (optional)</summary>
           <div class="creative-optimization-body">
-            <p class="setting-note">Generate two prompt candidates after explicit paid consent and a valid budget. Candidate scores are evidence only; they do not auto-select or authorize rendering.</p>
+            <p class="setting-note">Diagnose and reconstruct up to two defensible production candidates after explicit paid consent and a valid budget. One candidate or Keep Original may be the correct result. Canonical compliance and creative improvement are assessed separately; neither authorizes rendering.</p>
             <button type="button" class="button button--secondary button--compact" (click)="loadLatestCreativeOptimization()" [disabled]="creativeOptimizationBusy || !review?.recordId">Load saved comparison / attempt</button>
             <div class="repair-fields">
               <label class="repair-field" for="creative-optimization-budget">
@@ -300,18 +300,23 @@ import { GeneralProducibilityComponent } from './general-producibility.component
               <input #creativeOptimizationConsentInput id="creative-optimization-consent" type="checkbox" [disabled]="creativeOptimizationBusy" (change)="creativeOptimizationConsent = $any($event.target).checked">
               <span>I explicitly authorize one creative optimization call within the configured budget.</span>
             </label>
-            <p>New generation uses plan-first source-bound execution plans. Existing minor drafts keep their KEEP ORIGINAL decision.</p>
-            <label class="repair-consent-row"><input type="checkbox" (change)="creativeOptimizationPlanFirstNewAttempt = $any($event.target).checked" [disabled]="creativeOptimizationBusy">Explicitly request a new plan-first attempt (separate paid consent and budget required).</label>
+            <p>V2 uses source-bound creative diagnosis, production reconstruction and critique. Existing saved drafts retain their current comparison decision.</p>
+            <label class="repair-consent-row"><input type="checkbox" (change)="creativeOptimizationPlanFirstNewAttempt = $any($event.target).checked" [disabled]="creativeOptimizationBusy">Explicitly request a new reconstruction attempt (separate paid consent and budget required).</label>
             <div class="repair-button-row">
-              <button #creativeOptimizationGenerateButton type="button" class="button button--primary button--compact" (click)="generateCreativeOptimizationCandidates()" [disabled]="creativeOptimizationBusy || !creativeOptimizationConsent || !validCreativeOptimizationBudget || !review?.recordId">Generate two candidates</button>
+              <button #creativeOptimizationGenerateButton type="button" class="button button--primary button--compact" (click)="generateCreativeOptimizationCandidates()" [disabled]="creativeOptimizationBusy || !creativeOptimizationConsent || !validCreativeOptimizationBudget || !review?.recordId">Diagnose and reconstruct</button>
             </div>
             <p *ngIf="creativeOptimizationError" class="error" role="alert">{{ creativeOptimizationError }}</p>
             <section *ngIf="creativeOptimizationComparison" class="optimization-conclusion" aria-label="Optimization comparison conclusion">
               <strong>{{ creativeOptimizationComparison.comparisonAssessment?.recommendation || 'CURRENT VALIDATION REQUIRED' }}</strong>
               <p>{{ creativeOptimizationComparison.comparisonAssessment?.conclusion || 'This historical comparison must be revalidated before approval.' }}</p>
-              <p *ngFor="let candidate of creativeOptimizationComparison.candidates; let idx = index"><strong>Candidate {{ idx === 0 ? 'A' : 'B' }}:</strong> {{ candidate.currentAssessment?.conclusion || 'Current assessment unavailable.' }}</p>
+              <p *ngFor="let candidate of creativeOptimizationComparison.candidates; let idx = index"><strong>Candidate {{ candidate.candidateId === 'candidate-b' ? 'B' : 'A' }}:</strong> {{ candidate.currentAssessment?.conclusion || 'Current assessment unavailable.' }}</p>
               <p *ngIf="creativeOptimizationComparison.candidates?.length !== 2" role="alert">Incomplete comparison: {{ creativeOptimizationComparison.candidates?.length || 0 }} actual candidate(s). No placeholder candidate is accepted.</p>
             </section>
+            <p *ngIf="creativeOptimizationComparison?.creativeEvidence?.outcome === 'NO_JUSTIFIED_IMPROVEMENT'">No justified improvement. Keep Original. {{ creativeOptimizationComparison?.creativeEvidence?.noImprovementReason }}</p>
+            <details *ngIf="creativeOptimizationComparison?.creativeEvidence?.creativeDiagnosis as diagnosis" class="optimization-panel">
+              <summary>Creative diagnosis · {{ diagnosis.qualityModelVersion }}</summary>
+              <article *ngFor="let opportunity of diagnosis.opportunities"><strong>{{ opportunity.beatId }} · {{ opportunity.classification }}</strong><p>{{ opportunity.weaknessOrUncertainty }}</p><p>{{ opportunity.proposedImprovement }}</p></article>
+            </details>
             <div *ngIf="creativeOptimizationComparison?.candidates?.length" class="creative-optimization-grid">
               <article class="creative-optimization-card optimization-original">
                 <header><div><span class="card-kicker">Original · v{{ promptVersionNumber ?? 'UNKNOWN' }}</span><h4>Saved production prompt</h4></div><span class="status-pill">Baseline</span></header>
@@ -321,7 +326,8 @@ import { GeneralProducibilityComponent } from './general-producibility.component
                 <a class="optimization-detail-link" href="#optimization-original-prompt" (click)="openOptimizationPanel('optimization-original-prompt', $event)">View Original Prompt</a>
               </article>
               <article *ngFor="let candidate of creativeOptimizationComparison.candidates; let idx = index" class="creative-optimization-card" [class.is-selected]="creativeOptimizationSelectedCandidateId === candidate.candidateId">
-                <header><div><span class="card-kicker">Candidate {{ idx === 0 ? 'A' : 'B' }}</span><h4>{{ candidate.title || 'Untitled draft' }}</h4></div><span class="status-pill">{{ creativeOptimizationSelectedCandidateId === candidate.candidateId ? 'Selected' : 'Draft' }}</span></header>
+                <header><div><span class="card-kicker">Candidate {{ candidate.candidateId === 'candidate-b' ? 'B' : 'A' }}</span><h4>{{ candidate.title || 'Untitled draft' }}</h4></div><span class="status-pill">{{ creativeOptimizationSelectedCandidateId === candidate.candidateId ? 'Selected' : 'Draft' }}</span></header>
+                <p *ngIf="candidate.creativeContractVersion" class="setting-note">Canonical compliance score · creative evidence is assessed separately below.</p>
                 <p class="optimization-score">{{ candidate.review?.canonicalRuleEvaluation?.score != null ? (candidate.review?.canonicalRuleEvaluation?.score | number:'1.0-2') : 'UNKNOWN' }}<small>/100 · {{ candidate.review?.canonicalRuleEvaluation?.grade ?? 'UNKNOWN' }} · Δ {{ optimizationScoreDelta(candidate) }}</small></p>
                 <p class="optimization-classification">{{ candidate.currentAssessment?.classification || 'NOT_REVALIDATED' }}</p>
                 <p><strong>Similarity:</strong> {{ optimizationSimilarity(candidate) }} · textual heuristic</p>
@@ -330,7 +336,7 @@ import { GeneralProducibilityComponent } from './general-producibility.component
                 <p><strong>Production risk:</strong> {{ candidate.currentAssessment?.productionRiskChange || 'UNKNOWN' }}</p>
                 <p class="optimization-eligibility"><strong>Approval:</strong> {{ candidate.currentAssessment?.approvalEligible === true ? 'Eligible for explicit review' : 'Blocked' }}</p>
                 <div class="creative-optimization-actions">
-                  <button type="button" class="button button--secondary button--compact" (click)="reviewCreativeOptimizationCandidate(candidate.candidateId)" [disabled]="creativeOptimizationBusy">Review Candidate {{ idx === 0 ? 'A' : 'B' }}</button>
+                  <button type="button" class="button button--secondary button--compact" (click)="reviewCreativeOptimizationCandidate(candidate.candidateId)" [disabled]="creativeOptimizationBusy">Review Candidate {{ candidate.candidateId === 'candidate-b' ? 'B' : 'A' }}</button>
                   <button type="button" class="button button--compact" [class.button--primary]="candidate.currentAssessment?.approvalEligible === true" [class.button--secondary]="candidate.currentAssessment?.approvalEligible !== true" (click)="selectCreativeOptimizationCandidate(candidate.candidateId)" [disabled]="creativeOptimizationBusy || !canSelectOptimizationCandidate(candidate)">{{ candidate.currentAssessment?.approvalEligible === true ? 'Select candidate' : 'Select for review' }}</button>
                 </div>
               </article>
@@ -347,12 +353,26 @@ import { GeneralProducibilityComponent } from './general-producibility.component
               <button type="button" class="button button--secondary button--compact" (click)="copySavedPrompt()" [disabled]="!isCurrent() || !prompt">Copy original prompt</button>
               <pre class="creative-optimization-diff">{{ prompt }}</pre>
             </details>
-            <section #optimizationReviewSection *ngFor="let candidate of creativeOptimizationComparison?.candidates; let idx = index" class="optimization-candidate-details" [attr.data-candidate-id]="candidate.candidateId" [attr.aria-label]="'Candidate ' + (idx === 0 ? 'A' : 'B') + ' details'">
-              <h4 #optimizationReviewHeading tabindex="-1" [attr.data-candidate-id]="candidate.candidateId" class="optimization-review-heading">Candidate {{ idx === 0 ? 'A' : 'B' }} · Review details</h4>
+            <section #optimizationReviewSection *ngFor="let candidate of creativeOptimizationComparison?.candidates; let idx = index" class="optimization-candidate-details" [attr.data-candidate-id]="candidate.candidateId" [attr.aria-label]="'Candidate ' + (candidate.candidateId === 'candidate-b' ? 'B' : 'A') + ' details'">
+              <h4 #optimizationReviewHeading tabindex="-1" [attr.data-candidate-id]="candidate.candidateId" class="optimization-review-heading">Candidate {{ candidate.candidateId === 'candidate-b' ? 'B' : 'A' }} · Review details</h4>
               <details open class="optimization-panel optimization-actual-changes">
                 <summary>Actual Changes</summary>
                 <ul><li *ngFor="let change of candidate.currentAssessment?.actualChanges">{{ change }}</li></ul>
                 <p>{{ candidate.currentAssessment?.conclusion || 'No current value assessment is available.' }}</p>
+              </details>
+              <details *ngIf="candidate.currentAssessment?.creativeAssessment as creative" open class="optimization-panel optimization-creative-proof">
+                <summary>Creative improvement evidence · {{ creative.classification }}</summary>
+                <p>Text-grounded execution change. Visual benefit, generator adherence and audience response remain unverified.</p>
+                <article *ngFor="let change of creative.changeContract">
+                  <h5>{{ change.beatId }} · {{ change.opportunityId }}</h5>
+                  <strong>Original execution</strong><pre class="creative-optimization-diff">{{ change.originalExecution }}</pre>
+                  <strong>New execution</strong><pre class="creative-optimization-diff">{{ change.newExecution }}</pre>
+                  <p><strong>Observable difference:</strong> {{ change.observableDifference }}</p>
+                  <p><strong>Creative rationale:</strong> {{ change.creativeRationale }}</p>
+                  <p><strong>Source fidelity:</strong> Protected source event retained · semantic fidelity {{ change.sourceFidelity?.semanticFidelity }}</p>
+                  <p><strong>Production risk:</strong> {{ change.productionRisk?.change }} · {{ change.productionRisk?.evidence }}</p>
+                  <p>{{ change.evidenceLimitation }}</p>
+                </article>
               </details>
               <details open class="optimization-panel optimization-quality-panel">
                 <summary>Quality and Production Assessment</summary>
@@ -381,7 +401,7 @@ import { GeneralProducibilityComponent } from './general-producibility.component
             <details *ngIf="creativeOptimizationComparison?.candidates?.length" class="optimization-panel optimization-side-diff">
               <summary>Compare Full Prompt Changes</summary>
               <div class="optimization-diff-controls">
-                <label>Compare candidate <select aria-label="Compare candidate" [ngModel]="optimizationDiffCandidate.candidateId" (ngModelChange)="optimizationDiffCandidateId = $event"><option *ngFor="let candidate of creativeOptimizationComparison.candidates; let idx = index" [value]="candidate.candidateId">Candidate {{ idx === 0 ? 'A' : 'B' }} · {{ candidate.title }}</option></select></label>
+                <label>Compare candidate <select aria-label="Compare candidate" [ngModel]="optimizationDiffCandidate.candidateId" (ngModelChange)="optimizationDiffCandidateId = $event"><option *ngFor="let candidate of creativeOptimizationComparison.candidates; let idx = index" [value]="candidate.candidateId">Candidate {{ candidate.candidateId === 'candidate-b' ? 'B' : 'A' }} · {{ candidate.title }}</option></select></label>
                 <label><input type="checkbox" [checked]="optimizationShowUnchanged" (change)="optimizationShowUnchanged = $any($event.target).checked"> Show Unchanged Context</label>
               </div>
               <p>Alternative versions of the same source events. Removed and added text are not sequential story beats.</p>
@@ -1039,10 +1059,14 @@ export class PostFamilyWorkflowComponent implements OnChanges, OnDestroy {
   }
   canSelectOptimizationCandidate(candidate: any): boolean {
     const assessment = this.creativeOptimizationComparison?.comparisonAssessment;
-    return this.creativeOptimizationComparison?.candidates?.length === 2 && assessment?.actualCandidateCount === 2 && assessment?.integrityStatus === 'COMPLETE_TWO_CANDIDATES' && assessment?.lineageVerified === true && String(assessment.lineage?.analysisRunId) === String(this.review?.recordId)
+    const count = this.creativeOptimizationComparison?.candidates?.length;
+    const complete = assessment?.contractVersion === 'creative-reconstruction-v2'
+      ? count >= 1 && count <= 2 && assessment?.actualCandidateCount === count && assessment?.integrityStatus === 'COMPLETE_CANDIDATE_SET'
+      : count === 2 && assessment?.actualCandidateCount === 2 && assessment?.integrityStatus === 'COMPLETE_TWO_CANDIDATES';
+    return complete && assessment?.lineageVerified === true && String(assessment.lineage?.analysisRunId) === String(this.review?.recordId)
       && String(assessment.lineage?.promptVersionId) === String(this.promptVersionId)
       && String(assessment.lineage?.contentId) === String(this.contentId)
-      && ['VALID_MINOR_VARIATION', 'VALID_MATERIAL_VARIATION', 'VALID_WITH_UNPROVEN_BENEFIT'].includes(candidate.currentAssessment?.classification);
+      && ['VALID_MINOR_VARIATION', 'VALID_MATERIAL_VARIATION', 'VALID_WITH_UNPROVEN_BENEFIT', 'PLAUSIBLE_IMPROVEMENT_UNVERIFIED', 'MATERIAL_IMPROVEMENT_SUPPORTED'].includes(candidate.currentAssessment?.classification);
   }
   optimizationScoreDelta(candidate: any): string {
     const value = Number(candidate.review?.canonicalRuleEvaluation?.score) - Number(this.review?.canonicalRuleEvaluation?.score);

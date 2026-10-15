@@ -7,6 +7,19 @@ from .optimization_profile_contract import normalize_candidate_profiles
 COMPARISON_CONTRACT='optimization-value-and-approval-v1'
 
 def assess_comparison(source,candidates,context,baseline_score=None):
+    if context.get('optimizationGenerationContractVersion') == 'creative-reconstruction-v2':
+        from .creative_reconstruction import assess_candidate, VERSION
+        identities = [c.get('candidateId') for c in candidates]
+        complete = len(candidates) <= 2 and len(set(identities)) == len(identities) and all(i in ('candidate-a','candidate-b') for i in identities)
+        duplicate = len(candidates) == 2 and candidates[0].get('prompt') == candidates[1].get('prompt')
+        assessments = [assess_candidate(source,c,context,baseline_score) for c in candidates]
+        if not complete or duplicate:
+            for item in assessments: item.update(approvalEligible=False,approvalBlockReason='Invalid or duplicate candidate set')
+        eligible = any(x['approvalEligible'] for x in assessments)
+        return {'contractVersion':VERSION,'integrityStatus':'COMPLETE_CANDIDATE_SET' if complete else 'INCOMPLETE_CANDIDATE_SET',
+                'actualCandidateCount':len(candidates),'recommendation':'REVIEW_MATERIAL_CANDIDATE' if eligible else 'KEEP_ORIGINAL',
+                'conclusion':'Review source-bound execution changes; creative benefit remains unverified.' if eligible else 'No defensible material improvement available. Keep Original.',
+                'baselineScore':baseline_score,'candidates':assessments,'providerCalls':0,'rawCandidatesPreserved':True}
     originals=deepcopy(candidates);values=deepcopy(candidates);baseline=_beats(source)
     complete=len(values)==2 and [c.get('candidateId') for c in values]==['candidate-a','candidate-b']
     duplicate=len(values)==2 and values[0].get('prompt')==values[1].get('prompt')

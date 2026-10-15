@@ -50,7 +50,7 @@ class WorkflowNoRepairDecisionPostgresTest {
     attemptManager=new org.springframework.jdbc.datasource.DataSourceTransactionManager(dataSource);
     jdbc.sql("DROP TABLE IF EXISTS post_family_workflow_events").update();
     jdbc.sql("DROP TABLE IF EXISTS prompt_versions").update();
-    jdbc.sql("CREATE TABLE prompt_versions (content_id bigint NOT NULL, id bigint NOT NULL, raw_text text NOT NULL, PRIMARY KEY(content_id,id))").update();
+    jdbc.sql("CREATE TABLE prompt_versions (content_id bigint NOT NULL, id bigint NOT NULL, raw_text text NOT NULL, parsed_ir jsonb, PRIMARY KEY(content_id,id))").update();
     jdbc.sql("INSERT INTO prompt_versions(content_id,id,raw_text) VALUES(10,10,:prompt)")
         .param("prompt", PROMPT).update();
     jdbc.sql(
@@ -167,8 +167,9 @@ class WorkflowNoRepairDecisionPostgresTest {
     verifyNoInteractions(ml);
   }
 
-  @Test
-  void previewsTwoCandidatesLocallyAgainstSameRulesetWithoutPersistingReviewsOrVersions() throws Exception {
+  @org.junit.jupiter.params.ParameterizedTest
+  @org.junit.jupiter.params.provider.ValueSource(ints={0,1,2})
+  void previewsBoundedCandidatesLocallyWithoutPersistingReviewsOrVersions(int candidateCount) throws Exception {
     String firstEvent = "Mimi attaches a note to the cabinet.";
     String secondEvent = "Every pull doubles the notes.";
     String finalEvent = "Mimi sneezes and notes land on the cabinet.";
@@ -206,12 +207,12 @@ class WorkflowNoRepairDecisionPostgresTest {
         .update();
     var candidates = List.of(
         Map.of("candidateId", "candidate-a", "title", "Opening", "hypothesis", "Clarify the opening frame.", "prompt", sourcePrompt + "\nA"),
-        Map.of("candidateId", "candidate-b", "title", "Pacing", "hypothesis", "Spread out the escalation.", "prompt", sourcePrompt + "\nB"));
+        Map.of("candidateId", "candidate-b", "title", "Pacing", "hypothesis", "Spread out the escalation.", "prompt", sourcePrompt + "\nB")).subList(0,candidateCount);
     when(ml.workflow(eq("creative-role"), anyMap()))
         .thenThrow(new com.pompomhills.intelligence.quality.MlWorkflowException(409,Map.of(
             "detail","Source-plan validation failed before dispatch","category","SOURCE_PLAN_VALIDATION_FAILED","providerDispatched",false,"retrySafe",true)))
         .thenReturn(Map.of("role", "PROMPT_OPTIMIZATION", "provider", "openai", "model", "fixture",
-            "result", Map.of("candidates", candidates), "attemptState", "SAVED"));
+            "result", Map.of("candidates", candidates, "creativeContractVersion", "creative-reconstruction-v2", "outcome", candidateCount == 0 ? "NO_JUSTIFIED_IMPROVEMENT" : "MATERIAL_CANDIDATES_FOR_REVIEW"), "attemptState", "SAVED"));
     when(ml.workflow(eq("source-plan"), anyMap()))
         .thenAnswer(invocation -> {
           var request = invocation.getArgument(1, Map.class);
@@ -252,20 +253,20 @@ class WorkflowNoRepairDecisionPostgresTest {
         .isInstanceOf(IllegalStateException.class).hasMessageContaining("CANDIDATE_PERSISTENCE_FAILED");
     assertThat(jdbc.sql("SELECT count(*) FROM post_family_workflow_events WHERE kind='CREATIVE_ROLE' AND payload->>'attemptState'='SAVED'").query(Long.class).single()).isEqualTo(1L);
     jdbc.sql("ALTER TABLE post_family_workflow_events DROP CONSTRAINT reject_comparison").update();
-    when(ml.workflow(eq("optimization-assessment"),anyMap())).thenReturn(Map.of("candidates",List.of(),"recommendation","KEEP_ORIGINAL","actualCandidateCount",2));
+    when(ml.workflow(eq("optimization-assessment"),anyMap())).thenReturn(Map.of("candidates",List.of(),"recommendation","KEEP_ORIGINAL","actualCandidateCount",candidateCount));
     var comparison = service.generateCreativeOptimization(analysisId, generationRequest, provenance);
     assertThat(comparison.get("rulesetVersion")).isEqualTo("1.7");
-    assertThat((List<?>) comparison.get("candidates")).hasSize(2);
-    assertThat(String.valueOf(((Map<?, ?>) ((List<?>) comparison.get("candidates")).get(0)).get("diff"))).contains("candidate-a");
-    assertThat(String.valueOf(service.latestCreativeOptimization(analysisId).get("comparison"))).contains("candidate-a");
+    assertThat((List<?>) comparison.get("candidates")).hasSize(candidateCount);
+    if (candidateCount > 0) assertThat(String.valueOf(((Map<?, ?>) ((List<?>) comparison.get("candidates")).get(0)).get("diff"))).contains("candidate-a");
+    assertThat((List<?>)((Map<?,?>)service.latestCreativeOptimization(analysisId).get("comparison")).get("candidates")).hasSize(candidateCount);
     assertThat(jdbc.sql("SELECT count(*) FROM post_family_workflow_events WHERE kind='REVIEW'")
         .query(Long.class).single()).isEqualTo(1L);
     assertThat(jdbc.sql("SELECT count(*) FROM prompt_versions").query(Long.class).single()).isEqualTo(1L);
     var roleCalls=org.mockito.ArgumentCaptor.forClass(Map.class);
     verify(ml, times(2)).workflow(eq("creative-role"), roleCalls.capture());
-    assertThat(roleCalls.getAllValues()).allSatisfy(call -> assertThat((Map<String,Object>)call.get("context")).containsEntry("optimizationGenerationContractVersion","plan-first-v1"));
+    assertThat(roleCalls.getAllValues()).allSatisfy(call -> assertThat((Map<String,Object>)call.get("context")).containsEntry("optimizationGenerationContractVersion","creative-reconstruction-v2"));
     var reviewCalls = org.mockito.ArgumentCaptor.forClass(Map.class);
-    verify(ml, times(4)).workflow(eq("review"), reviewCalls.capture());
+    verify(ml, times(candidateCount*2)).workflow(eq("review"), reviewCalls.capture());
     assertThat(reviewCalls.getAllValues())
         .allSatisfy(call -> assertThat(call.get("acceptedStartFrame")).isEqualTo(false))
         .allSatisfy(call -> assertThat(call.get("authorizationEvidence")).isNull());
@@ -295,7 +296,7 @@ class WorkflowNoRepairDecisionPostgresTest {
     when(ml.workflow(anyString(),anyMap())).thenAnswer(invocation -> {
       String endpoint=invocation.getArgument(0); Map<String,Object> body=invocation.getArgument(1);
       if (endpoint.equals("creative-role")) {
-        assertThat((Map<String,Object>)body.get("context")).containsEntry("optimizationGenerationContractVersion","plan-first-v1");
+        assertThat((Map<String,Object>)body.get("context")).containsEntry("optimizationGenerationContractVersion","creative-reconstruction-v2");
         assertThat((Map<String,Object>)body.get("context")).containsEntry("optimizationGenerationInstructionsVersion","plan-first-owned-source-v3");
         body=Map.of("text",body.get("text"),"context",body.get("context"),"providerResult",Map.of("candidates",providerValues),"diagnostics",Map.of("model","mock-saved-response","providerRequestId","fixture-provider-response-1"));
         endpoint="optimization-recovery";
@@ -396,7 +397,7 @@ class WorkflowNoRepairDecisionPostgresTest {
     when(ml.workflow(anyString(),anyMap())).thenAnswer(invocation->{
       String endpoint=invocation.getArgument(0);Map<String,Object> body=invocation.getArgument(1);
       if(endpoint.equals("creative-role")) {
-        assertThat((Map<String,Object>)body.get("context")).containsEntry("optimizationGenerationContractVersion","plan-first-v1");
+        assertThat((Map<String,Object>)body.get("context")).containsEntry("optimizationGenerationContractVersion","creative-reconstruction-v2");
         assertThat((Map<String,Object>)body.get("context")).containsEntry("optimizationGenerationInstructionsVersion","plan-first-owned-source-v3");
         body=Map.of("text",body.get("text"),"context",body.get("context"),"providerResult",providerPlans,"diagnostics",Map.of("model","mock-plan-provider","providerRequestId","fixture-plan-response-1"));
         endpoint="optimization-recovery";

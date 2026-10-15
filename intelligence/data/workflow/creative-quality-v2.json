@@ -1,0 +1,22 @@
+{
+  "version": "creative-quality-evidence-v2",
+  "generationContract": "creative-reconstruction-v2",
+  "authority": "QUALITATIVE_TEXT_EVIDENCE_ONLY",
+  "canonicalRuleset": "1.11",
+  "dimensions": ["SCROLL_STOP_VISUAL_PROMISE", "CAUSAL_PROGRESSION", "VISUAL_STORYTELLING", "PRODUCTION_EXECUTABILITY", "ENDING_REPLAY", "DISTINCTIVE_CREATIVE_VALUE"],
+  "openingStrategies": ["AUTO", "INSTANT_IMPOSSIBLE", "IMMEDIATE_PROBLEM", "CURIOSITY_DISCOVERY"],
+  "opportunityClasses": ["CONFIRMED_TEXTUAL_WEAKNESS", "EVIDENCE_SUPPORTED_EXECUTION_RISK", "CREATIVE_IMPROVEMENT_HYPOTHESIS", "VISUAL_EVIDENCE_REQUIRED", "NO_JUSTIFIED_CHANGE"],
+  "outcomes": ["MATERIAL_IMPROVEMENT_SUPPORTED", "PLAUSIBLE_IMPROVEMENT_UNVERIFIED", "VALID_BUT_EQUIVALENT", "REGRESSION", "STORY_FIDELITY_FAILED", "NO_JUSTIFIED_IMPROVEMENT", "STORY_CHANGE_REQUIRES_APPROVAL"],
+  "reservedOutcome": {"MATERIAL_IMPROVEMENT_SUPPORTED": "Requires independently verified improvement evidence. This text-only implementation never emits it."},
+  "maximumCandidates": 2,
+  "minimumCandidates": 0,
+  "maximumRevisionsPerCandidate": 1,
+  "revisionBudget": "IN_ORIGINAL_SINGLE_PROVIDER_RESPONSE_ONLY",
+  "newProviderCallsRequireFreshOperatorAuthorization": true,
+  "provenBetterFromModelOpinion": false,
+  "semanticStoryFidelityWithoutIndependentEvidence": "UNKNOWN",
+  "visualBenefitWithoutVisualEvidence": "UNVERIFIED",
+  "audienceBenefitWithoutAudienceEvidence": "UNMEASURED",
+  "automaticApproval": false,
+  "renderPermission": false
+}

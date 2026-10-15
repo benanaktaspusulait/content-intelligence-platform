@@ -1,0 +1,33 @@
+09:01:28.188 [main] INFO org.testcontainers.DockerClientFactory -- Testcontainers version: 2.0.2
+09:01:28.393 [main] INFO org.testcontainers.dockerclient.DockerClientProviderStrategy -- Loaded org.testcontainers.dockerclient.UnixSocketClientProviderStrategy from ~/.testcontainers.properties, will try it first
+09:01:28.696 [main] INFO org.testcontainers.dockerclient.DockerClientProviderStrategy -- Found Docker environment with Docker accessed via Unix socket (/Users/benanaktas/.docker/run/docker.sock)
+09:01:28.697 [main] INFO org.testcontainers.DockerClientFactory -- Docker host IP address is localhost
+09:01:28.716 [main] INFO org.testcontainers.DockerClientFactory -- Connected to docker: 
+  Server Version: 29.2.1
+  API Version: 1.53
+  Operating System: Docker Desktop
+  Total Memory: 11948 MB
+  Labels: 
+    com.docker.desktop.address=unix:///Users/benanaktas/Library/Containers/com.docker.docker/Data/docker-cli.sock
+09:01:28.725 [main] INFO org.testcontainers.images.PullPolicy -- Image pull policy will be performed by: DefaultPullPolicy()
+09:01:28.726 [main] INFO org.testcontainers.utility.ImageNameSubstitutor -- Image name substitution will be performed by: DefaultImageNameSubstitutor (composite of 'ConfigurationFileImageNameSubstitutor' and 'PrefixingImageNameSubstitutor')
+09:01:28.827 [main] INFO tc.testcontainers/ryuk:0.13.0 -- Creating container for image: testcontainers/ryuk:0.13.0
+09:01:28.990 [main] INFO org.testcontainers.utility.RegistryAuthLocator -- Credential helper/store (docker-credential-desktop) does not have credentials for https://index.docker.io/v1/
+09:01:29.086 [main] INFO tc.testcontainers/ryuk:0.13.0 -- Container testcontainers/ryuk:0.13.0 is starting: 3f8ee3294352cfea738115dfd48f36f8ef89d937ddce077c25d0c43312a36906
+09:01:29.491 [main] INFO tc.testcontainers/ryuk:0.13.0 -- Container testcontainers/ryuk:0.13.0 started in PT0.663536S
+09:01:29.496 [main] INFO org.testcontainers.utility.RyukResourceReaper -- Ryuk started - will monitor and terminate Testcontainers containers on JVM exit
+09:01:29.497 [main] INFO org.testcontainers.DockerClientFactory -- Checking the system...
+09:01:29.497 [main] INFO org.testcontainers.DockerClientFactory -- ✔︎ Docker server version should be at least 1.6.0
+09:01:29.507 [main] INFO tc.postgres:17-alpine -- Creating container for image: postgres:17-alpine
+09:01:29.550 [main] INFO tc.postgres:17-alpine -- Container postgres:17-alpine is starting: 3f73f180e245dc7f431ef7cc455e4ed5dc54d63a27ccb82fd7307ba9dccfaff0
+09:01:30.994 [main] INFO tc.postgres:17-alpine -- Container postgres:17-alpine started in PT1.487059S
+09:01:30.995 [main] INFO tc.postgres:17-alpine -- Container is started (JDBC URL: jdbc:postgresql://localhost:58448/pompom?loggerLevel=OFF)
+Mockito is currently self-attaching to enable the inline-mock-maker. This will no longer work in future releases of the JDK. Please add Mockito as an agent to your build as described in Mockito's documentation: https://javadoc.io/doc/org.mockito/mockito-core/latest/org.mockito/org/mockito/Mockito.html#0.3
+OpenJDK 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended
+WARNING: A Java agent has been loaded dynamically (/Users/benanaktas/.m2/repository/net/bytebuddy/byte-buddy-agent/1.18.11/byte-buddy-agent-1.18.11.jar)
+WARNING: If a serviceability tool is in use, please run with -XX:+EnableDynamicAgentLoading to hide this warning
+WARNING: If a serviceability tool is not in use, please run with -Djdk.instrument.traceUsage for more information
+WARNING: Dynamic loading of agents will be disallowed by default in a future release
+09:01:32.742 [main] WARN com.pompomhills.intelligence.workflow.WorkflowService -- Optimization attempt=8523e381-0ecb-4139-b669-ebd2029a8d2c category=SOURCE_PLAN_VALIDATION_FAILED dispatched=false returned=null
+09:01:33.336 [main] WARN com.pompomhills.intelligence.workflow.WorkflowService -- Optimization attempt=c0f3e241-383d-4b68-9e45-cedb917b473f category=SOURCE_PLAN_VALIDATION_FAILED dispatched=false returned=null
+09:01:33.911 [main] WARN com.pompomhills.intelligence.workflow.WorkflowService -- Optimization attempt=9f35455a-60df-46b7-b3c6-cf71102e4e32 category=SOURCE_PLAN_VALIDATION_FAILED dispatched=false returned=null
