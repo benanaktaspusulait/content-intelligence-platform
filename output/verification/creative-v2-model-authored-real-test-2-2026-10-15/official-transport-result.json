@@ -1,0 +1,10 @@
+{
+  "httpStatus": 200,
+  "durationSeconds": 11.384771874996659,
+  "officialHttpPostsSent": 1,
+  "automaticRetries": 0,
+  "responseRecordId": "2e2adcea-31de-4817-8fc8-8e301396fa50",
+  "optimizationFailed": null,
+  "category": null,
+  "doNotRetry": true
+}

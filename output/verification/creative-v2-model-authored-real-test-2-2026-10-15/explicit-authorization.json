@@ -1,0 +1,20 @@
+{
+  "authorizationId": "567d41d3-fda4-422c-98b3-206ddb0bd3a3",
+  "sourceAttachmentSha256": "0e74193dfdc3c3a116533ab0d482135f45085763e482161597265aafed03abcb",
+  "scope": "SECOND_REAL_MODEL_AUTHORED_PRODUCTION_V1_TEST",
+  "model": "gpt-4o-mini-2024-07-18",
+  "provider": "openai-direct",
+  "contentId": 10,
+  "promptVersionId": 10,
+  "version": 1,
+  "ruleset": "1.11",
+  "analysisRunId": "f0d36feb-ee0f-4da8-ae21-2071a3ddea18",
+  "instructionsVersion": "model-authored-production-v1",
+  "maxCostUsd": 0.2,
+  "maxInferenceRequests": 1,
+  "maxOutputTokens": 4000,
+  "automaticRetries": false,
+  "modelFallback": false,
+  "operatorExplicitlyAuthorized": true,
+  "recordedAt": "2026-10-15T12:17:57.504734+00:00"
+}

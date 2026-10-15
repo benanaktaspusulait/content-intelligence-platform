@@ -1,0 +1,328 @@
+{
+  "model": "gpt-4o-mini-2024-07-18",
+  "messages": [
+    {
+      "role": "system",
+      "content": "Diagnose and reconstruct production execution, not story. Read the server's creativeDiagnosis and protected story layer before proposing zero, one or two candidates. Prefer one defensible improvement to two superficial variants. For each plan identify the diagnosed opportunity and choose a matching production operation. CONTACT_PLANE changes spatial staging through existing contact; SEPARATE_ACTION_RESULT changes action/result screen choreography; COUNTABLE_STATE_PATH changes spatial arrangement and continuous presentation of existing state transitions. Specify LATERAL or DEPTH layout and a feasible camera discipline. Rationale and objective must identify an observable difference; camera labels or unchanged actions under new timestamps are insufficient. These operations are execution treatments of existing events, never additional attempts or new story events. Do not copy the baseline wording as the creative objective. Preserve identity, premise, physical rule, all approved events/order and ending. If a protected event must change, set storyChangeRequested true; it will be classified STORY_CHANGE_REQUIRES_APPROVAL, not used as a standard candidate.\nUse creativeDiagnosis.openingStrategy. CURIOSITY_DISCOVERY need not reveal complete causality at frame zero. No universal joke, resolved ending or loop requirement. Every benefit is an unverified hypothesis until images/video/audience evidence exists. Do not claim proven superiority, retention uplift or guaranteed generation. Consider contact, occlusion, count continuity, character continuity, mirror and scatter execution risks. Critique the initial plan before answering: does it change staging, preserve story, address the opportunity and avoid new complexity? You may supply one revised plan in the same response if your initial proposal needs correction. No additional paid call or retry is authorized. Return proposals [] with a concrete noImprovementReason if no justified improvement exists. Never approve or create a prompt version. The server will critique each plan, compile valid interventions into complete production prompts and run existing source/canonical validation. Framing/camera-only and timestamp-only plans are rejected.\nFor model-authored-production-v1 you author the actual production instructions, not merely operation labels. Use sourceReferenceCatalog for exact beat-bound action, consequence, entity and count-state references. Put MODEL_AUTHORED in authorship and supply production; fallbackReason must be null. Write original spatial relationships, physical choreography, visible consequence presentation, state progression, relative temporal presentation, camera/composition and generator constraints. The compiler only substitutes {referenceId} with its exact source quote and joins your fields; it will not invent choreography for you. Do not submit a full rewritten prompt. Source narrative and beat windows are protected and assembled separately. Describe how existing actions are performed and shown, never add actions, attempts, props, count states or events. Use only references from the relevant beat. Spatial instructions must name both bound participants and express the typed relation. For count progression include every bound state in source order, with concrete differentiated spatial arrangements and continuous transitions; do not invent sub-beat timestamps. Camera/composition prose must agree with LOCKED camera discipline. State contact and occlusion constraints explicitly. Materiality requires a new observable spatial or state presentation; long paraphrases, camera labels and timing splits are insufficient. You may address several relevant diagnosed beats; do not force changes to every beat. All benefits remain hypotheses and semantic fidelity remains unknown. If a bounded server template is deliberately sufficient, explicitly choose BOUNDED_TEMPLATE_FALLBACK, production null and a concrete fallbackReason; this is attributed to the server, not model-authored choreography. Invalid authored instructions are rejected, never silently replaced by a template.\n"
+    },
+    {
+      "role": "user",
+      "content": "{\"phase\": \"CREATIVE_DIAGNOSIS_RECONSTRUCTION_CRITIQUE\", \"contractVersion\": \"creative-reconstruction-v2\", \"creativeDiagnosis\": {\"contractVersion\": \"creative-reconstruction-v2\", \"qualityModelVersion\": \"creative-quality-evidence-v2\", \"openingStrategy\": \"AUTO\", \"protectedStoryContract\": {\"contractVersion\": \"optimization-profile-ownership-v1\", \"baselinePromptText\": \"TITLE / FORMAT\\nMimi Sticky / 15s Video\\n\\nVISUAL STYLE\\nBright and colorful animation with a playful tone.\\n\\nCHARACTER / CONTINUITY\\nMimi, an anthropomorphic bunny, interacts with sticky notes in a humorous and chaotic manner.\\n\\nTIMED SHOT PLAN\\n0-2s: Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger [close-up on Mimi's hand] Mimi is in front of a toy cabinet, looking determined -> the note sticks to Mimi, not the cabinet\\n2-5s: Mimi tries to peel the stuck note away with her other hand; the note splits into two [medium shot of Mimi struggling] Mimi pulls at the note -> one note sticks to each hand\\n5-10s: Mimi continues to pull; each pull doubles the number of sticky notes [wide shot showing Mimi covered in notes] notes multiply from two to four to eight as she pulls, progressively covering her arms, legs and face -> Mimi is overwhelmed by notes\\n10-12s: Mimi sees herself in a mirror and screams [close-up on Mimi's shocked face] Mimi is startled by her reflection completely covered in notes -> Mimi is startled\\n12-15s: Mimi sneezes and the sticky notes fly off [medium shot of notes flying] notes scatter and stick to the cabinet -> Mimi breathes a sigh of relief but the cabinet remains messy\\n\\nAUDIO\\nPlayful background music with sound effects for sneezing and notes sticking.\\n\\nNEGATIVE CONSTRAINTS\\nNo dark themes or violence.\\n\\nFINAL CUT\\nMimi is relieved but the cabinet remains visibly messy.\\n\\nCHARACTER IDENTITY LOCK\\nMimi is the established anthropomorphic bunny character. Preserve that identity; do not render a human or invent unverified visual details. No approved visual reference is currently bound, so appearance details remain unverified.\\n\\nPRODUCTION SETTINGS\\nAspect ratio: 9:16. Target generator: SEEDANCE_2_0_MINI. Content profile: AUTO.\", \"baselinePromptHistoricalProfile\": \"AUTO\", \"targetContentProfile\": \"ABSURD_PHYSICS\", \"targetOwner\": \"SERVER_VERSION_BOUND_PRODUCTION_SETTINGS\", \"productionSettingsRecordId\": \"2d90c69b-bcec-4871-9c4e-7e029906c974\", \"approvedStory\": \"Mimi, oyuncak dolabına 'Topla!' yazan bir yapışkan not yapıştırmak ister. Not, Mimi'nin parmağına yapışır. Mimi diğer eliyle çıkarmaya çalışırken not ikiye ayrılır ve iki eline de yapışır. Her çekişte notlar ikiye katlanarak çoğalır. Kısa sürede Mimi'nin kolları, bacakları ve yüzü notlarla kaplanır. Mimi aynada kendini görünce çığlık atar. Notlar o kadar çoğalır ki Mimi boğulacak gibi olur. Sonunda hapşırır ve tüm notlar uçuşarak dolabın üzerine yapışır. Mimi rahat bir nefes alır ama dolap hâlâ dağınıktır.\", \"protectedIntent\": [], \"generatorSettings\": {\"duration\": 15, \"settings\": {\"mode\": \"image2video\", \"resolution\": \"480p\", \"aspectRatio\": \"9:16\"}, \"generator\": \"SEEDANCE_2_0_MINI\"}, \"optimizationObjectives\": {\"candidate-a\": \"FIRST_FRAME_ANOMALY_CLARITY_CURIOSITY\", \"candidate-b\": \"BEAT_PROGRESSION_TIMING_ESCALATION_SEEDANCE_FEASIBILITY\"}, \"sourcePromptSha256\": \"0fe229774deb4b31a42145bad91cf10c91634ba00da39fa3e9d288b3a2e7bd98\", \"approvedStorySha256\": \"df653dbcaf16bfdbceb87baa23688d70d739c34941d0075e30e96b181e1bf32b\", \"characterIdentity\": {\"primary\": \"Mimi\", \"secondary\": null, \"characterRefs\": []}, \"openingCausalParticipants\": {\"state\": \"OBSERVED\", \"sourceQuote\": \"instead of sticking to the cabinet, the note visibly clings to her finger\", \"sourceSpan\": [301, 374], \"method\": \"CONTRASTIVE_SURFACE_ATTACHMENT_PATTERN\", \"semanticVerification\": \"NOT_PERFORMED\", \"object\": {\"value\": \"the note\", \"state\": \"OBSERVED\"}, \"expectedSurface\": {\"value\": \"the cabinet\", \"state\": \"OBSERVED\"}, \"actualSurface\": {\"value\": \"her finger\", \"state\": \"OBSERVED\"}, \"relationship\": {\"value\": \"WRONG_SURFACE_ATTACHMENT\", \"state\": \"INFERRED\"}}, \"corePhysicalRule\": {\"state\": \"OBSERVED\", \"sourceQuote\": \"each pull doubles the number of sticky notes\", \"sourceSpan\": [709, 753], \"method\": \"EXPLICIT_REPEATED_ACTION_CLAUSE\", \"semanticVerification\": \"NOT_PERFORMED\"}, \"requiredEnding\": {\"sourceBeatId\": \"beat_05\", \"sourceQuote\": \"12-15s: Mimi sneezes and the sticky notes fly off [medium shot of notes flying] notes scatter and stick to the cabinet -> Mimi breathes a sigh of relief but the cabinet remains messy\"}, \"events\": [{\"sourceBeatId\": \"beat_01\", \"sourceQuote\": \"0-2s: Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger [close-up on Mimi's hand] Mimi is in front of a toy cabinet, looking determined -> the note sticks to Mimi, not the cabinet\", \"actionAnchor\": \"Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger\", \"startTime\": 0.0, \"endTime\": 2.0}, {\"sourceBeatId\": \"beat_02\", \"sourceQuote\": \"2-5s: Mimi tries to peel the stuck note away with her other hand; the note splits into two [medium shot of Mimi struggling] Mimi pulls at the note -> one note sticks to each hand\", \"actionAnchor\": \"Mimi tries to peel the stuck note away with her other hand; the note splits into two\", \"startTime\": 2.0, \"endTime\": 5.0}, {\"sourceBeatId\": \"beat_03\", \"sourceQuote\": \"5-10s: Mimi continues to pull; each pull doubles the number of sticky notes [wide shot showing Mimi covered in notes] notes multiply from two to four to eight as she pulls, progressively covering her arms, legs and face -> Mimi is overwhelmed by notes\", \"actionAnchor\": \"Mimi continues to pull; each pull doubles the number of sticky notes\", \"startTime\": 5.0, \"endTime\": 10.0}, {\"sourceBeatId\": \"beat_04\", \"sourceQuote\": \"10-12s: Mimi sees herself in a mirror and screams [close-up on Mimi's shocked face] Mimi is startled by her reflection completely covered in notes -> Mimi is startled\", \"actionAnchor\": \"Mimi sees herself in a mirror and screams\", \"startTime\": 10.0, \"endTime\": 12.0}, {\"sourceBeatId\": \"beat_05\", \"sourceQuote\": \"12-15s: Mimi sneezes and the sticky notes fly off [medium shot of notes flying] notes scatter and stick to the cabinet -> Mimi breathes a sigh of relief but the cabinet remains messy\", \"actionAnchor\": \"Mimi sneezes and the sticky notes fly off\", \"startTime\": 12.0, \"endTime\": 15.0}], \"semanticStoryFidelity\": \"UNKNOWN\", \"visualEvidence\": \"NOT_SUPPLIED\"}, \"protectedLayer\": [\"identity\", \"premise\", \"approved events and order\", \"physical rule\", \"outcomes\", \"ending\", \"safety\"], \"editableLayer\": [\"staging\", \"spatial visibility\", \"choreography\", \"composition\", \"continuity\", \"relative timing\", \"visual emphasis\"], \"opportunities\": [{\"opportunityId\": \"CONTACT_PLANE:beat_01\", \"beatId\": \"beat_01\", \"timeWindow\": [0.0, 2.0], \"dimension\": \"VISUAL_STORYTELLING\", \"currentExecution\": \"0-2s: Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger [close-up on Mimi's hand] Mimi is in front of a toy cabinet, looking determined -> the note sticks to Mimi, not the cabinet\", \"sourceEvidence\": {\"quote\": \"0-2s: Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger [close-up on Mimi's hand] Mimi is in front of a toy cabinet, looking determined -> the note sticks to Mimi, not the cabinet\", \"span\": [239, 498], \"status\": \"EXACT_SOURCE_TEXT\"}, \"weaknessOrUncertainty\": \"The source names intended and actual attachment surfaces but does not specify their spatial alignment, contact plane or occlusion control.\", \"proposedImprovement\": \"Stage the intended surface behind or beside the actual attachment point; follow the existing reach continuously, retaining the failed destination and wrong attachment in view.\", \"expectedVisualChange\": \"The reach destination and wrong-surface attachment have distinct visible positions through contact.\", \"viewingRationale\": \"A viewer may be able to distinguish the cited physical states; this is a hypothesis, not audience evidence.\", \"productionRisk\": \"Keeping both surfaces visible may increase composition density; actual contact geometry needs image review.\", \"confidence\": \"TEXT_SUPPORTED_HYPOTHESIS\", \"classification\": \"CREATIVE_IMPROVEMENT_HYPOTHESIS\", \"operation\": \"CONTACT_PLANE\", \"bindings\": [\"the cabinet\", \"her finger\"], \"benefitEvidence\": \"UNVERIFIED_UNTIL_VISUAL_REVIEW\"}, {\"opportunityId\": \"SEPARATE_ACTION_RESULT:beat_02\", \"beatId\": \"beat_02\", \"timeWindow\": [2.0, 5.0], \"dimension\": \"PRODUCTION_EXECUTABILITY\", \"currentExecution\": \"2-5s: Mimi tries to peel the stuck note away with her other hand; the note splits into two [medium shot of Mimi struggling] Mimi pulls at the note -> one note sticks to each hand\", \"sourceEvidence\": {\"quote\": \"2-5s: Mimi tries to peel the stuck note away with her other hand; the note splits into two [medium shot of Mimi struggling] Mimi pulls at the note -> one note sticks to each hand\", \"span\": [499, 677], \"status\": \"EXACT_SOURCE_TEXT\"}, \"weaknessOrUncertainty\": \"The source states an action and result without separating their screen positions or protecting their visibility during the transition.\", \"proposedImprovement\": \"Separate the two source-bound action/result regions and retain their transition in one locked shot.\", \"expectedVisualChange\": \"The action and resulting state occupy distinguishable regions with continuous visible contact.\", \"viewingRationale\": \"A viewer may be able to distinguish the cited physical states; this is a hypothesis, not audience evidence.\", \"productionRisk\": \"A wider contact tableau may reduce facial detail; visual continuity remains unverified.\", \"confidence\": \"TEXT_SUPPORTED_HYPOTHESIS\", \"classification\": \"CREATIVE_IMPROVEMENT_HYPOTHESIS\", \"operation\": \"SEPARATE_ACTION_RESULT\", \"bindings\": [\"2-5s: Mimi tries to peel the stuck note away with her other hand; the note splits into two  Mimi pulls at the note\", \"one note sticks to each hand\"], \"benefitEvidence\": \"UNVERIFIED_UNTIL_VISUAL_REVIEW\"}, {\"opportunityId\": \"COUNTABLE_STATE_PATH:beat_03\", \"beatId\": \"beat_03\", \"timeWindow\": [5.0, 10.0], \"dimension\": \"CAUSAL_PROGRESSION\", \"currentExecution\": \"5-10s: Mimi continues to pull; each pull doubles the number of sticky notes [wide shot showing Mimi covered in notes] notes multiply from two to four to eight as she pulls, progressively covering her arms, legs and face -> Mimi is overwhelmed by notes\", \"sourceEvidence\": {\"quote\": \"5-10s: Mimi continues to pull; each pull doubles the number of sticky notes [wide shot showing Mimi covered in notes] notes multiply from two to four to eight as she pulls, progressively covering her arms, legs and face -> Mimi is overwhelmed by notes\", \"span\": [678, 929], \"status\": \"EXACT_SOURCE_TEXT\"}, \"weaknessOrUncertainty\": \"The source lists a count progression but gives no continuity, spatial grouping or unobstructed count-transition choreography.\", \"proposedImprovement\": \"Expose the complete existing count path in stable spatial groups; couple each count transition to the existing pull without an edit hiding contact.\", \"expectedVisualChange\": \"Each existing count state has a distinguishable arrangement before progressive body coverage.\", \"viewingRationale\": \"A viewer may be able to distinguish the cited physical states; this is a hypothesis, not audience evidence.\", \"productionRisk\": \"Count fidelity and fine contact remain difficult; arrangement is a proposed mitigation, not verified generator capability.\", \"confidence\": \"TEXT_SUPPORTED_HYPOTHESIS\", \"classification\": \"EVIDENCE_SUPPORTED_EXECUTION_RISK\", \"operation\": \"COUNTABLE_STATE_PATH\", \"bindings\": [\"two\", \"four\", \"eight\"], \"benefitEvidence\": \"UNVERIFIED_UNTIL_VISUAL_REVIEW\"}], \"dimensions\": [{\"dimension\": \"SCROLL_STOP_VISUAL_PROMISE\", \"status\": \"VISUAL_EVIDENCE_REQUIRED\", \"numericScore\": null}, {\"dimension\": \"CAUSAL_PROGRESSION\", \"status\": \"TEXTUAL_HYPOTHESES_AVAILABLE\", \"numericScore\": null}, {\"dimension\": \"VISUAL_STORYTELLING\", \"status\": \"TEXTUAL_HYPOTHESES_AVAILABLE\", \"numericScore\": null}, {\"dimension\": \"PRODUCTION_EXECUTABILITY\", \"status\": \"TEXTUAL_HYPOTHESES_AVAILABLE\", \"numericScore\": null}, {\"dimension\": \"ENDING_REPLAY\", \"status\": \"VISUAL_EVIDENCE_REQUIRED\", \"numericScore\": null}, {\"dimension\": \"DISTINCTIVE_CREATIVE_VALUE\", \"status\": \"VISUAL_EVIDENCE_REQUIRED\", \"numericScore\": null}], \"endingReview\": {\"sourceQuote\": \"12-15s: Mimi sneezes and the sticky notes fly off [medium shot of notes flying] notes scatter and stick to the cabinet -> Mimi breathes a sigh of relief but the cabinet remains messy\", \"sourceSpan\": [1097, 1279], \"classification\": \"VISUAL_EVIDENCE_REQUIRED\", \"loopRequired\": false}, \"semanticStoryFidelity\": \"UNKNOWN\", \"renderAuthorization\": \"NOT_GRANTED\"}, \"maxCandidates\": 2, \"maxRevisionsPerCandidate\": 1, \"revisionBudget\": \"WITHIN_THIS_SINGLE_RESPONSE_ONLY\", \"visualEvidence\": \"NOT_SUPPLIED\", \"audienceEvidence\": \"NOT_SUPPLIED\", \"instructionsVersion\": \"model-authored-production-v1\", \"sourceReferenceCatalog\": {\"beat_01.action\": {\"kind\": \"ACTION\", \"beatId\": \"beat_01\", \"quote\": \"Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger\", \"sourceSpan\": [245, 374], \"evidence\": \"EXACT_SOURCE_TEXT\", \"semanticVerification\": \"UNKNOWN\"}, \"beat_01.consequence\": {\"kind\": \"CONSEQUENCE\", \"beatId\": \"beat_01\", \"quote\": \"the note sticks to Mimi, not the cabinet\", \"sourceSpan\": [458, 498], \"evidence\": \"EXACT_SOURCE_TEXT\", \"semanticVerification\": \"UNKNOWN\"}, \"beat_01.actor\": {\"kind\": \"ENTITY\", \"beatId\": \"beat_01\", \"quote\": \"Mimi\", \"sourceSpan\": [245, 249], \"evidence\": \"EXACT_SOURCE_TEXT\", \"semanticVerification\": \"UNKNOWN\"}, \"beat_01.object\": {\"kind\": \"ENTITY\", \"beatId\": \"beat_01\", \"quote\": \"sticky note\", \"sourceSpan\": [288, 299], \"evidence\": \"EXACT_SOURCE_TEXT\", \"semanticVerification\": \"UNKNOWN\"}, \"beat_01.finger\": {\"kind\": \"ENTITY\", \"beatId\": \"beat_01\", \"quote\": \"finger\", \"sourceSpan\": [368, 374], \"evidence\": \"EXACT_SOURCE_TEXT\", \"semanticVerification\": \"UNKNOWN\"}, \"beat_02.action\": {\"kind\": \"ACTION\", \"beatId\": \"beat_02\", \"quote\": \"Mimi tries to peel the stuck note away with her other hand; the note splits into two\", \"sourceSpan\": [505, 589], \"evidence\": \"EXACT_SOURCE_TEXT\", \"semanticVerification\": \"UNKNOWN\"}, \"beat_02.consequence\": {\"kind\": \"CONSEQUENCE\", \"beatId\": \"beat_02\", \"quote\": \"one note sticks to each hand\", \"sourceSpan\": [649, 677], \"evidence\": \"EXACT_SOURCE_TEXT\", \"semanticVerification\": \"UNKNOWN\"}, \"beat_02.actor\": {\"kind\": \"ENTITY\", \"beatId\": \"beat_02\", \"quote\": \"Mimi\", \"sourceSpan\": [505, 509], \"evidence\": \"EXACT_SOURCE_TEXT\", \"semanticVerification\": \"UNKNOWN\"}, \"beat_02.object\": {\"kind\": \"ENTITY\", \"beatId\": \"beat_02\", \"quote\": \"note\", \"sourceSpan\": [534, 538], \"evidence\": \"EXACT_SOURCE_TEXT\", \"semanticVerification\": \"UNKNOWN\"}, \"beat_02.hand\": {\"kind\": \"ENTITY\", \"beatId\": \"beat_02\", \"quote\": \"hand\", \"sourceSpan\": [559, 563], \"evidence\": \"EXACT_SOURCE_TEXT\", \"semanticVerification\": \"UNKNOWN\"}, \"beat_03.action\": {\"kind\": \"ACTION\", \"beatId\": \"beat_03\", \"quote\": \"Mimi continues to pull; each pull doubles the number of sticky notes\", \"sourceSpan\": [685, 753], \"evidence\": \"EXACT_SOURCE_TEXT\", \"semanticVerification\": \"UNKNOWN\"}, \"beat_03.consequence\": {\"kind\": \"CONSEQUENCE\", \"beatId\": \"beat_03\", \"quote\": \"Mimi is overwhelmed by notes\", \"sourceSpan\": [901, 929], \"evidence\": \"EXACT_SOURCE_TEXT\", \"semanticVerification\": \"UNKNOWN\"}, \"beat_03.actor\": {\"kind\": \"ENTITY\", \"beatId\": \"beat_03\", \"quote\": \"Mimi\", \"sourceSpan\": [685, 689], \"evidence\": \"EXACT_SOURCE_TEXT\", \"semanticVerification\": \"UNKNOWN\"}, \"beat_03.object\": {\"kind\": \"ENTITY\", \"beatId\": \"beat_03\", \"quote\": \"sticky notes\", \"sourceSpan\": [741, 753], \"evidence\": \"EXACT_SOURCE_TEXT\", \"semanticVerification\": \"UNKNOWN\"}, \"beat_03.arms\": {\"kind\": \"ENTITY\", \"beatId\": \"beat_03\", \"quote\": \"arms\", \"sourceSpan\": [878, 882], \"evidence\": \"EXACT_SOURCE_TEXT\", \"semanticVerification\": \"UNKNOWN\"}, \"beat_03.legs\": {\"kind\": \"ENTITY\", \"beatId\": \"beat_03\", \"quote\": \"legs\", \"sourceSpan\": [884, 888], \"evidence\": \"EXACT_SOURCE_TEXT\", \"semanticVerification\": \"UNKNOWN\"}, \"beat_03.face\": {\"kind\": \"ENTITY\", \"beatId\": \"beat_03\", \"quote\": \"face\", \"sourceSpan\": [893, 897], \"evidence\": \"EXACT_SOURCE_TEXT\", \"semanticVerification\": \"UNKNOWN\"}, \"beat_04.action\": {\"kind\": \"ACTION\", \"beatId\": \"beat_04\", \"quote\": \"Mimi sees herself in a mirror and screams\", \"sourceSpan\": [938, 979], \"evidence\": \"EXACT_SOURCE_TEXT\", \"semanticVerification\": \"UNKNOWN\"}, \"beat_04.consequence\": {\"kind\": \"CONSEQUENCE\", \"beatId\": \"beat_04\", \"quote\": \"Mimi is startled\", \"sourceSpan\": [1014, 1030], \"evidence\": \"EXACT_SOURCE_TEXT\", \"semanticVerification\": \"UNKNOWN\"}, \"beat_04.actor\": {\"kind\": \"ENTITY\", \"beatId\": \"beat_04\", \"quote\": \"Mimi\", \"sourceSpan\": [938, 942], \"evidence\": \"EXACT_SOURCE_TEXT\", \"semanticVerification\": \"UNKNOWN\"}, \"beat_04.object\": {\"kind\": \"ENTITY\", \"beatId\": \"beat_04\", \"quote\": \"notes\", \"sourceSpan\": [1071, 1076], \"evidence\": \"EXACT_SOURCE_TEXT\", \"semanticVerification\": \"UNKNOWN\"}, \"beat_05.action\": {\"kind\": \"ACTION\", \"beatId\": \"beat_05\", \"quote\": \"Mimi sneezes and the sticky notes fly off\", \"sourceSpan\": [1105, 1146], \"evidence\": \"EXACT_SOURCE_TEXT\", \"semanticVerification\": \"UNKNOWN\"}, \"beat_05.consequence\": {\"kind\": \"CONSEQUENCE\", \"beatId\": \"beat_05\", \"quote\": \"Mimi breathes a sigh of relief but the cabinet remains messy\", \"sourceSpan\": [1219, 1279], \"evidence\": \"EXACT_SOURCE_TEXT\", \"semanticVerification\": \"UNKNOWN\"}, \"beat_05.actor\": {\"kind\": \"ENTITY\", \"beatId\": \"beat_05\", \"quote\": \"Mimi\", \"sourceSpan\": [1105, 1109], \"evidence\": \"EXACT_SOURCE_TEXT\", \"semanticVerification\": \"UNKNOWN\"}, \"beat_05.object\": {\"kind\": \"ENTITY\", \"beatId\": \"beat_05\", \"quote\": \"sticky notes\", \"sourceSpan\": [1126, 1138], \"evidence\": \"EXACT_SOURCE_TEXT\", \"semanticVerification\": \"UNKNOWN\"}, \"beat_01.expectedSurface\": {\"kind\": \"ENTITY\", \"beatId\": \"beat_01\", \"quote\": \"the cabinet\", \"sourceSpan\": [324, 335], \"evidence\": \"EXACT_SOURCE_TEXT\", \"semanticVerification\": \"UNKNOWN\"}, \"beat_01.actualSurface\": {\"kind\": \"ENTITY\", \"beatId\": \"beat_01\", \"quote\": \"her finger\", \"sourceSpan\": [364, 374], \"evidence\": \"EXACT_SOURCE_TEXT\", \"semanticVerification\": \"UNKNOWN\"}, \"beat_03.state.0\": {\"kind\": \"STATE\", \"beatId\": \"beat_03\", \"quote\": \"two\", \"sourceSpan\": [816, 819], \"evidence\": \"EXACT_SOURCE_TEXT\", \"semanticVerification\": \"UNKNOWN\"}, \"beat_03.state.1\": {\"kind\": \"STATE\", \"beatId\": \"beat_03\", \"quote\": \"four\", \"sourceSpan\": [823, 827], \"evidence\": \"EXACT_SOURCE_TEXT\", \"semanticVerification\": \"UNKNOWN\"}, \"beat_03.state.2\": {\"kind\": \"STATE\", \"beatId\": \"beat_03\", \"quote\": \"eight\", \"sourceSpan\": [831, 836], \"evidence\": \"EXACT_SOURCE_TEXT\", \"semanticVerification\": \"UNKNOWN\"}}}"
+    }
+  ],
+  "temperature": 0,
+  "max_tokens": 4000,
+  "response_format": {
+    "type": "json_schema",
+    "json_schema": {
+      "name": "creative_reconstruction_v2",
+      "strict": true,
+      "schema": {
+        "$defs": {
+          "AuthoredIntervention": {
+            "additionalProperties": false,
+            "properties": {
+              "opportunityId": {
+                "type": "string"
+              },
+              "operation": {
+                "enum": [
+                  "CONTACT_PLANE",
+                  "SEPARATE_ACTION_RESULT",
+                  "COUNTABLE_STATE_PATH",
+                  "CAMERA_LABEL",
+                  "TIMING_SPLIT"
+                ],
+                "type": "string"
+              },
+              "layout": {
+                "enum": [
+                  "LATERAL",
+                  "DEPTH",
+                  "UNCHANGED"
+                ],
+                "type": "string"
+              },
+              "camera": {
+                "enum": [
+                  "LOCKED",
+                  "PAN",
+                  "TRACK"
+                ],
+                "type": "string"
+              },
+              "rationale": {
+                "maxLength": 700,
+                "minLength": 20,
+                "type": "string"
+              },
+              "authorship": {
+                "enum": [
+                  "MODEL_AUTHORED",
+                  "BOUNDED_TEMPLATE_FALLBACK"
+                ],
+                "type": "string"
+              },
+              "production": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/AuthoredProduction"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "fallbackReason": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "required": [
+              "opportunityId",
+              "operation",
+              "layout",
+              "camera",
+              "rationale",
+              "authorship",
+              "production",
+              "fallbackReason"
+            ],
+            "type": "object"
+          },
+          "AuthoredProduction": {
+            "additionalProperties": false,
+            "properties": {
+              "spatialRelationships": {
+                "items": {
+                  "$ref": "#/$defs/SpatialRelationship"
+                },
+                "maxItems": 6,
+                "type": "array"
+              },
+              "choreography": {
+                "$ref": "#/$defs/Choreography"
+              },
+              "stateProgression": {
+                "items": {
+                  "$ref": "#/$defs/StatePresentation"
+                },
+                "maxItems": 8,
+                "type": "array"
+              },
+              "temporalPresentation": {
+                "maxLength": 500,
+                "minLength": 25,
+                "type": "string"
+              },
+              "cameraComposition": {
+                "maxLength": 400,
+                "minLength": 20,
+                "type": "string"
+              },
+              "generatorConstraints": {
+                "items": {
+                  "type": "string"
+                },
+                "maxItems": 5,
+                "minItems": 1,
+                "type": "array"
+              }
+            },
+            "required": [
+              "spatialRelationships",
+              "choreography",
+              "stateProgression",
+              "temporalPresentation",
+              "cameraComposition",
+              "generatorConstraints"
+            ],
+            "type": "object"
+          },
+          "AuthoredProposal": {
+            "additionalProperties": false,
+            "properties": {
+              "initial": {
+                "$ref": "#/$defs/AuthoredReconstruction"
+              },
+              "revision": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/AuthoredReconstruction"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "required": [
+              "initial",
+              "revision"
+            ],
+            "type": "object"
+          },
+          "AuthoredReconstruction": {
+            "additionalProperties": false,
+            "properties": {
+              "candidateId": {
+                "enum": [
+                  "candidate-a",
+                  "candidate-b"
+                ],
+                "type": "string"
+              },
+              "title": {
+                "maxLength": 100,
+                "minLength": 3,
+                "type": "string"
+              },
+              "objective": {
+                "maxLength": 700,
+                "minLength": 20,
+                "type": "string"
+              },
+              "interventions": {
+                "items": {
+                  "$ref": "#/$defs/AuthoredIntervention"
+                },
+                "maxItems": 4,
+                "minItems": 1,
+                "type": "array"
+              },
+              "storyChangeRequested": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "candidateId",
+              "title",
+              "objective",
+              "interventions",
+              "storyChangeRequested"
+            ],
+            "type": "object"
+          },
+          "Choreography": {
+            "additionalProperties": false,
+            "properties": {
+              "sourceActionRef": {
+                "type": "string"
+              },
+              "instruction": {
+                "maxLength": 600,
+                "minLength": 25,
+                "type": "string"
+              },
+              "sourceConsequenceRef": {
+                "type": "string"
+              },
+              "consequencePresentation": {
+                "maxLength": 500,
+                "minLength": 25,
+                "type": "string"
+              }
+            },
+            "required": [
+              "sourceActionRef",
+              "instruction",
+              "sourceConsequenceRef",
+              "consequencePresentation"
+            ],
+            "type": "object"
+          },
+          "SpatialRelationship": {
+            "additionalProperties": false,
+            "properties": {
+              "subjectRef": {
+                "type": "string"
+              },
+              "relation": {
+                "enum": [
+                  "LEFT_OF",
+                  "RIGHT_OF",
+                  "IN_FRONT_OF",
+                  "BEHIND",
+                  "ABOVE",
+                  "BELOW",
+                  "SEPARATED_FROM"
+                ],
+                "type": "string"
+              },
+              "objectRef": {
+                "type": "string"
+              },
+              "instruction": {
+                "maxLength": 400,
+                "minLength": 20,
+                "type": "string"
+              }
+            },
+            "required": [
+              "subjectRef",
+              "relation",
+              "objectRef",
+              "instruction"
+            ],
+            "type": "object"
+          },
+          "StatePresentation": {
+            "additionalProperties": false,
+            "properties": {
+              "sourceStateRef": {
+                "type": "string"
+              },
+              "placementInstruction": {
+                "maxLength": 400,
+                "minLength": 20,
+                "type": "string"
+              },
+              "transitionPresentation": {
+                "maxLength": 400,
+                "minLength": 20,
+                "type": "string"
+              }
+            },
+            "required": [
+              "sourceStateRef",
+              "placementInstruction",
+              "transitionPresentation"
+            ],
+            "type": "object"
+          }
+        },
+        "additionalProperties": false,
+        "properties": {
+          "proposals": {
+            "items": {
+              "$ref": "#/$defs/AuthoredProposal"
+            },
+            "maxItems": 2,
+            "type": "array"
+          },
+          "noImprovementReason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "proposals",
+          "noImprovementReason"
+        ],
+        "type": "object"
+      }
+    }
+  }
+}

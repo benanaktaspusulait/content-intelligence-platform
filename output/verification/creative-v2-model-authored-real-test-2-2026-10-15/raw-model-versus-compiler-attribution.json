@@ -1,0 +1,115 @@
+{
+  "status": "RAW_PROVIDER_FIELDS_ONLY_NO_COMPILED_PROMPT",
+  "acceptedOutputSegments": [],
+  "rawModelFields": [
+    {
+      "candidateId": "candidate-a",
+      "field": "spatialRelationships.0.instruction",
+      "rawText": "Mimi reaches toward the cabinet with a sticky note, her finger visibly sticking to the note.",
+      "authorshipClaim": "MODEL_AUTHORED",
+      "compilerAccepted": false
+    },
+    {
+      "candidateId": "candidate-a",
+      "field": "choreography.instruction",
+      "rawText": "Mimi reaches toward the toy cabinet with a sticky note; the note visibly clings to her finger instead of sticking to the cabinet.",
+      "authorshipClaim": "MODEL_AUTHORED",
+      "compilerAccepted": false
+    },
+    {
+      "candidateId": "candidate-a",
+      "field": "choreography.consequencePresentation",
+      "rawText": "The note sticks to Mimi's finger, not the cabinet.",
+      "authorshipClaim": "MODEL_AUTHORED",
+      "compilerAccepted": false
+    },
+    {
+      "candidateId": "candidate-a",
+      "field": "temporalPresentation",
+      "rawText": "0-2s: Mimi reaches toward the toy cabinet with a sticky note; the note visibly clings to her finger instead of sticking to the cabinet.",
+      "authorshipClaim": "MODEL_AUTHORED",
+      "compilerAccepted": false
+    },
+    {
+      "candidateId": "candidate-a",
+      "field": "cameraComposition",
+      "rawText": "Close-up on Mimi's hand showing the sticky note clinging to her finger, with the cabinet clearly visible in the background.",
+      "authorshipClaim": "MODEL_AUTHORED",
+      "compilerAccepted": false
+    },
+    {
+      "candidateId": "candidate-a",
+      "field": "generatorConstraints.0",
+      "rawText": "Aspect ratio: 9:16",
+      "authorshipClaim": "MODEL_AUTHORED",
+      "compilerAccepted": false
+    },
+    {
+      "candidateId": "candidate-a",
+      "field": "generatorConstraints.1",
+      "rawText": "Target generator: SEEDANCE_2_0_MINI",
+      "authorshipClaim": "MODEL_AUTHORED",
+      "compilerAccepted": false
+    },
+    {
+      "candidateId": "candidate-b",
+      "field": "spatialRelationships.0.instruction",
+      "rawText": "Mimi tries to peel the sticky note away with her other hand.",
+      "authorshipClaim": "MODEL_AUTHORED",
+      "compilerAccepted": false
+    },
+    {
+      "candidateId": "candidate-b",
+      "field": "spatialRelationships.1.instruction",
+      "rawText": "The note splits into two, with one note sticking to each hand.",
+      "authorshipClaim": "MODEL_AUTHORED",
+      "compilerAccepted": false
+    },
+    {
+      "candidateId": "candidate-b",
+      "field": "choreography.instruction",
+      "rawText": "Mimi tries to peel the stuck note away with her other hand; the note splits into two.",
+      "authorshipClaim": "MODEL_AUTHORED",
+      "compilerAccepted": false
+    },
+    {
+      "candidateId": "candidate-b",
+      "field": "choreography.consequencePresentation",
+      "rawText": "One note sticks to each hand.",
+      "authorshipClaim": "MODEL_AUTHORED",
+      "compilerAccepted": false
+    },
+    {
+      "candidateId": "candidate-b",
+      "field": "temporalPresentation",
+      "rawText": "2-5s: Mimi tries to peel the stuck note away with her other hand; the note splits into two, with one note sticking to each hand.",
+      "authorshipClaim": "MODEL_AUTHORED",
+      "compilerAccepted": false
+    },
+    {
+      "candidateId": "candidate-b",
+      "field": "cameraComposition",
+      "rawText": "Medium shot showing Mimi struggling to peel the note, with the two resulting notes clearly visible in each hand.",
+      "authorshipClaim": "MODEL_AUTHORED",
+      "compilerAccepted": false
+    },
+    {
+      "candidateId": "candidate-b",
+      "field": "generatorConstraints.0",
+      "rawText": "Aspect ratio: 9:16",
+      "authorshipClaim": "MODEL_AUTHORED",
+      "compilerAccepted": false
+    },
+    {
+      "candidateId": "candidate-b",
+      "field": "generatorConstraints.1",
+      "rawText": "Target generator: SEEDANCE_2_0_MINI",
+      "authorshipClaim": "MODEL_AUTHORED",
+      "compilerAccepted": false
+    }
+  ],
+  "compilerGeneratedChoreography": [],
+  "sourceSubstitutions": [],
+  "serverTemplateUsed": false,
+  "fullCandidateExists": false
+}

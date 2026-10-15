@@ -1,0 +1,7 @@
+{
+  "semanticPayloadEqual": true,
+  "systemEqual": true,
+  "schemaEqual": true,
+  "serializedReconstructionEqual": false,
+  "captureMethod": "Reconstructed from persisted context using deployed code; transport bytes were not logged"
+}

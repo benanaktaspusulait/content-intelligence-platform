@@ -1,0 +1,596 @@
+{
+  "strictJsonSchemaAccepted": true,
+  "details": [
+    {
+      "candidateId": "candidate-a",
+      "beatId": "beat_01",
+      "originalBeat": "0-2s: Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger [close-up on Mimi's hand] Mimi is in front of a toy cabinet, looking determined -> the note sticks to Mimi, not the cabinet",
+      "timeWindow": [
+        0.0,
+        2.0
+      ],
+      "fieldGuardResults": [
+        {
+          "field": "spatialRelationships.0.instruction",
+          "text": "Mimi reaches toward the cabinet with a sticky note, her finger visibly sticking to the note.",
+          "guardError": null
+        },
+        {
+          "field": "choreography.instruction",
+          "text": "Mimi reaches toward the toy cabinet with a sticky note; the note visibly clings to her finger instead of sticking to the cabinet.",
+          "guardError": null
+        },
+        {
+          "field": "choreography.consequencePresentation",
+          "text": "The note sticks to Mimi's finger, not the cabinet.",
+          "guardError": null
+        },
+        {
+          "field": "temporalPresentation",
+          "text": "0-2s: Mimi reaches toward the toy cabinet with a sticky note; the note visibly clings to her finger instead of sticking to the cabinet.",
+          "guardError": "STORY_FIDELITY_FAILED: preserve source beat windows; no unbound sub-beat timestamps"
+        },
+        {
+          "field": "cameraComposition",
+          "text": "Close-up on Mimi's hand showing the sticky note clinging to her finger, with the cabinet clearly visible in the background.",
+          "guardError": null
+        },
+        {
+          "field": "generatorConstraints.0",
+          "text": "Aspect ratio: 9:16",
+          "guardError": null
+        },
+        {
+          "field": "generatorConstraints.1",
+          "text": "Target generator: SEEDANCE_2_0_MINI",
+          "guardError": null
+        }
+      ],
+      "referenceResults": [
+        {
+          "field": "choreography.sourceActionRef",
+          "supplied": "beat_01.action",
+          "catalogIdExists": true,
+          "boundQuote": "Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger"
+        },
+        {
+          "field": "choreography.sourceConsequenceRef",
+          "supplied": "beat_01.consequence",
+          "catalogIdExists": true,
+          "boundQuote": "the note sticks to Mimi, not the cabinet"
+        },
+        {
+          "field": "spatialRelationships.0.subjectRef",
+          "supplied": "Mimi",
+          "catalogIdExists": false,
+          "boundQuote": null
+        },
+        {
+          "field": "spatialRelationships.0.objectRef",
+          "supplied": "the cabinet",
+          "catalogIdExists": false,
+          "boundQuote": null
+        }
+      ],
+      "modelAuthoredFields": [
+        {
+          "field": "spatialRelationships.0.instruction",
+          "rawText": "Mimi reaches toward the cabinet with a sticky note, her finger visibly sticking to the note.",
+          "authorshipClaim": "MODEL_AUTHORED",
+          "compilerAccepted": false
+        },
+        {
+          "field": "choreography.instruction",
+          "rawText": "Mimi reaches toward the toy cabinet with a sticky note; the note visibly clings to her finger instead of sticking to the cabinet.",
+          "authorshipClaim": "MODEL_AUTHORED",
+          "compilerAccepted": false
+        },
+        {
+          "field": "choreography.consequencePresentation",
+          "rawText": "The note sticks to Mimi's finger, not the cabinet.",
+          "authorshipClaim": "MODEL_AUTHORED",
+          "compilerAccepted": false
+        },
+        {
+          "field": "temporalPresentation",
+          "rawText": "0-2s: Mimi reaches toward the toy cabinet with a sticky note; the note visibly clings to her finger instead of sticking to the cabinet.",
+          "authorshipClaim": "MODEL_AUTHORED",
+          "compilerAccepted": false
+        },
+        {
+          "field": "cameraComposition",
+          "rawText": "Close-up on Mimi's hand showing the sticky note clinging to her finger, with the cabinet clearly visible in the background.",
+          "authorshipClaim": "MODEL_AUTHORED",
+          "compilerAccepted": false
+        },
+        {
+          "field": "generatorConstraints.0",
+          "rawText": "Aspect ratio: 9:16",
+          "authorshipClaim": "MODEL_AUTHORED",
+          "compilerAccepted": false
+        },
+        {
+          "field": "generatorConstraints.1",
+          "rawText": "Target generator: SEEDANCE_2_0_MINI",
+          "authorshipClaim": "MODEL_AUTHORED",
+          "compilerAccepted": false
+        }
+      ],
+      "timestampMatchesExistingBeatWindow": true
+    },
+    {
+      "candidateId": "candidate-b",
+      "beatId": "beat_02",
+      "originalBeat": "2-5s: Mimi tries to peel the stuck note away with her other hand; the note splits into two [medium shot of Mimi struggling] Mimi pulls at the note -> one note sticks to each hand",
+      "timeWindow": [
+        2.0,
+        5.0
+      ],
+      "fieldGuardResults": [
+        {
+          "field": "spatialRelationships.0.instruction",
+          "text": "Mimi tries to peel the sticky note away with her other hand.",
+          "guardError": null
+        },
+        {
+          "field": "spatialRelationships.1.instruction",
+          "text": "The note splits into two, with one note sticking to each hand.",
+          "guardError": null
+        },
+        {
+          "field": "choreography.instruction",
+          "text": "Mimi tries to peel the stuck note away with her other hand; the note splits into two.",
+          "guardError": null
+        },
+        {
+          "field": "choreography.consequencePresentation",
+          "text": "One note sticks to each hand.",
+          "guardError": null
+        },
+        {
+          "field": "temporalPresentation",
+          "text": "2-5s: Mimi tries to peel the stuck note away with her other hand; the note splits into two, with one note sticking to each hand.",
+          "guardError": "STORY_FIDELITY_FAILED: preserve source beat windows; no unbound sub-beat timestamps"
+        },
+        {
+          "field": "cameraComposition",
+          "text": "Medium shot showing Mimi struggling to peel the note, with the two resulting notes clearly visible in each hand.",
+          "guardError": null
+        },
+        {
+          "field": "generatorConstraints.0",
+          "text": "Aspect ratio: 9:16",
+          "guardError": null
+        },
+        {
+          "field": "generatorConstraints.1",
+          "text": "Target generator: SEEDANCE_2_0_MINI",
+          "guardError": null
+        }
+      ],
+      "referenceResults": [
+        {
+          "field": "choreography.sourceActionRef",
+          "supplied": "beat_02.action",
+          "catalogIdExists": true,
+          "boundQuote": "Mimi tries to peel the stuck note away with her other hand; the note splits into two"
+        },
+        {
+          "field": "choreography.sourceConsequenceRef",
+          "supplied": "beat_02.consequence",
+          "catalogIdExists": true,
+          "boundQuote": "one note sticks to each hand"
+        },
+        {
+          "field": "spatialRelationships.0.subjectRef",
+          "supplied": "Mimi",
+          "catalogIdExists": false,
+          "boundQuote": null
+        },
+        {
+          "field": "spatialRelationships.0.objectRef",
+          "supplied": "the sticky note",
+          "catalogIdExists": false,
+          "boundQuote": null
+        },
+        {
+          "field": "spatialRelationships.1.subjectRef",
+          "supplied": "the sticky note",
+          "catalogIdExists": false,
+          "boundQuote": null
+        },
+        {
+          "field": "spatialRelationships.1.objectRef",
+          "supplied": "Mimi's hands",
+          "catalogIdExists": false,
+          "boundQuote": null
+        }
+      ],
+      "modelAuthoredFields": [
+        {
+          "field": "spatialRelationships.0.instruction",
+          "rawText": "Mimi tries to peel the sticky note away with her other hand.",
+          "authorshipClaim": "MODEL_AUTHORED",
+          "compilerAccepted": false
+        },
+        {
+          "field": "spatialRelationships.1.instruction",
+          "rawText": "The note splits into two, with one note sticking to each hand.",
+          "authorshipClaim": "MODEL_AUTHORED",
+          "compilerAccepted": false
+        },
+        {
+          "field": "choreography.instruction",
+          "rawText": "Mimi tries to peel the stuck note away with her other hand; the note splits into two.",
+          "authorshipClaim": "MODEL_AUTHORED",
+          "compilerAccepted": false
+        },
+        {
+          "field": "choreography.consequencePresentation",
+          "rawText": "One note sticks to each hand.",
+          "authorshipClaim": "MODEL_AUTHORED",
+          "compilerAccepted": false
+        },
+        {
+          "field": "temporalPresentation",
+          "rawText": "2-5s: Mimi tries to peel the stuck note away with her other hand; the note splits into two, with one note sticking to each hand.",
+          "authorshipClaim": "MODEL_AUTHORED",
+          "compilerAccepted": false
+        },
+        {
+          "field": "cameraComposition",
+          "rawText": "Medium shot showing Mimi struggling to peel the note, with the two resulting notes clearly visible in each hand.",
+          "authorshipClaim": "MODEL_AUTHORED",
+          "compilerAccepted": false
+        },
+        {
+          "field": "generatorConstraints.0",
+          "rawText": "Aspect ratio: 9:16",
+          "authorshipClaim": "MODEL_AUTHORED",
+          "compilerAccepted": false
+        },
+        {
+          "field": "generatorConstraints.1",
+          "rawText": "Target generator: SEEDANCE_2_0_MINI",
+          "authorshipClaim": "MODEL_AUTHORED",
+          "compilerAccepted": false
+        }
+      ],
+      "timestampMatchesExistingBeatWindow": true
+    }
+  ],
+  "sourceReferenceCatalog": {
+    "beat_01.action": {
+      "kind": "ACTION",
+      "beatId": "beat_01",
+      "quote": "Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger",
+      "sourceSpan": [
+        245,
+        374
+      ],
+      "evidence": "EXACT_SOURCE_TEXT",
+      "semanticVerification": "UNKNOWN"
+    },
+    "beat_01.consequence": {
+      "kind": "CONSEQUENCE",
+      "beatId": "beat_01",
+      "quote": "the note sticks to Mimi, not the cabinet",
+      "sourceSpan": [
+        458,
+        498
+      ],
+      "evidence": "EXACT_SOURCE_TEXT",
+      "semanticVerification": "UNKNOWN"
+    },
+    "beat_01.actor": {
+      "kind": "ENTITY",
+      "beatId": "beat_01",
+      "quote": "Mimi",
+      "sourceSpan": [
+        245,
+        249
+      ],
+      "evidence": "EXACT_SOURCE_TEXT",
+      "semanticVerification": "UNKNOWN"
+    },
+    "beat_01.object": {
+      "kind": "ENTITY",
+      "beatId": "beat_01",
+      "quote": "sticky note",
+      "sourceSpan": [
+        288,
+        299
+      ],
+      "evidence": "EXACT_SOURCE_TEXT",
+      "semanticVerification": "UNKNOWN"
+    },
+    "beat_01.finger": {
+      "kind": "ENTITY",
+      "beatId": "beat_01",
+      "quote": "finger",
+      "sourceSpan": [
+        368,
+        374
+      ],
+      "evidence": "EXACT_SOURCE_TEXT",
+      "semanticVerification": "UNKNOWN"
+    },
+    "beat_02.action": {
+      "kind": "ACTION",
+      "beatId": "beat_02",
+      "quote": "Mimi tries to peel the stuck note away with her other hand; the note splits into two",
+      "sourceSpan": [
+        505,
+        589
+      ],
+      "evidence": "EXACT_SOURCE_TEXT",
+      "semanticVerification": "UNKNOWN"
+    },
+    "beat_02.consequence": {
+      "kind": "CONSEQUENCE",
+      "beatId": "beat_02",
+      "quote": "one note sticks to each hand",
+      "sourceSpan": [
+        649,
+        677
+      ],
+      "evidence": "EXACT_SOURCE_TEXT",
+      "semanticVerification": "UNKNOWN"
+    },
+    "beat_02.actor": {
+      "kind": "ENTITY",
+      "beatId": "beat_02",
+      "quote": "Mimi",
+      "sourceSpan": [
+        505,
+        509
+      ],
+      "evidence": "EXACT_SOURCE_TEXT",
+      "semanticVerification": "UNKNOWN"
+    },
+    "beat_02.object": {
+      "kind": "ENTITY",
+      "beatId": "beat_02",
+      "quote": "note",
+      "sourceSpan": [
+        534,
+        538
+      ],
+      "evidence": "EXACT_SOURCE_TEXT",
+      "semanticVerification": "UNKNOWN"
+    },
+    "beat_02.hand": {
+      "kind": "ENTITY",
+      "beatId": "beat_02",
+      "quote": "hand",
+      "sourceSpan": [
+        559,
+        563
+      ],
+      "evidence": "EXACT_SOURCE_TEXT",
+      "semanticVerification": "UNKNOWN"
+    },
+    "beat_03.action": {
+      "kind": "ACTION",
+      "beatId": "beat_03",
+      "quote": "Mimi continues to pull; each pull doubles the number of sticky notes",
+      "sourceSpan": [
+        685,
+        753
+      ],
+      "evidence": "EXACT_SOURCE_TEXT",
+      "semanticVerification": "UNKNOWN"
+    },
+    "beat_03.consequence": {
+      "kind": "CONSEQUENCE",
+      "beatId": "beat_03",
+      "quote": "Mimi is overwhelmed by notes",
+      "sourceSpan": [
+        901,
+        929
+      ],
+      "evidence": "EXACT_SOURCE_TEXT",
+      "semanticVerification": "UNKNOWN"
+    },
+    "beat_03.actor": {
+      "kind": "ENTITY",
+      "beatId": "beat_03",
+      "quote": "Mimi",
+      "sourceSpan": [
+        685,
+        689
+      ],
+      "evidence": "EXACT_SOURCE_TEXT",
+      "semanticVerification": "UNKNOWN"
+    },
+    "beat_03.object": {
+      "kind": "ENTITY",
+      "beatId": "beat_03",
+      "quote": "sticky notes",
+      "sourceSpan": [
+        741,
+        753
+      ],
+      "evidence": "EXACT_SOURCE_TEXT",
+      "semanticVerification": "UNKNOWN"
+    },
+    "beat_03.arms": {
+      "kind": "ENTITY",
+      "beatId": "beat_03",
+      "quote": "arms",
+      "sourceSpan": [
+        878,
+        882
+      ],
+      "evidence": "EXACT_SOURCE_TEXT",
+      "semanticVerification": "UNKNOWN"
+    },
+    "beat_03.legs": {
+      "kind": "ENTITY",
+      "beatId": "beat_03",
+      "quote": "legs",
+      "sourceSpan": [
+        884,
+        888
+      ],
+      "evidence": "EXACT_SOURCE_TEXT",
+      "semanticVerification": "UNKNOWN"
+    },
+    "beat_03.face": {
+      "kind": "ENTITY",
+      "beatId": "beat_03",
+      "quote": "face",
+      "sourceSpan": [
+        893,
+        897
+      ],
+      "evidence": "EXACT_SOURCE_TEXT",
+      "semanticVerification": "UNKNOWN"
+    },
+    "beat_04.action": {
+      "kind": "ACTION",
+      "beatId": "beat_04",
+      "quote": "Mimi sees herself in a mirror and screams",
+      "sourceSpan": [
+        938,
+        979
+      ],
+      "evidence": "EXACT_SOURCE_TEXT",
+      "semanticVerification": "UNKNOWN"
+    },
+    "beat_04.consequence": {
+      "kind": "CONSEQUENCE",
+      "beatId": "beat_04",
+      "quote": "Mimi is startled",
+      "sourceSpan": [
+        1014,
+        1030
+      ],
+      "evidence": "EXACT_SOURCE_TEXT",
+      "semanticVerification": "UNKNOWN"
+    },
+    "beat_04.actor": {
+      "kind": "ENTITY",
+      "beatId": "beat_04",
+      "quote": "Mimi",
+      "sourceSpan": [
+        938,
+        942
+      ],
+      "evidence": "EXACT_SOURCE_TEXT",
+      "semanticVerification": "UNKNOWN"
+    },
+    "beat_04.object": {
+      "kind": "ENTITY",
+      "beatId": "beat_04",
+      "quote": "notes",
+      "sourceSpan": [
+        1071,
+        1076
+      ],
+      "evidence": "EXACT_SOURCE_TEXT",
+      "semanticVerification": "UNKNOWN"
+    },
+    "beat_05.action": {
+      "kind": "ACTION",
+      "beatId": "beat_05",
+      "quote": "Mimi sneezes and the sticky notes fly off",
+      "sourceSpan": [
+        1105,
+        1146
+      ],
+      "evidence": "EXACT_SOURCE_TEXT",
+      "semanticVerification": "UNKNOWN"
+    },
+    "beat_05.consequence": {
+      "kind": "CONSEQUENCE",
+      "beatId": "beat_05",
+      "quote": "Mimi breathes a sigh of relief but the cabinet remains messy",
+      "sourceSpan": [
+        1219,
+        1279
+      ],
+      "evidence": "EXACT_SOURCE_TEXT",
+      "semanticVerification": "UNKNOWN"
+    },
+    "beat_05.actor": {
+      "kind": "ENTITY",
+      "beatId": "beat_05",
+      "quote": "Mimi",
+      "sourceSpan": [
+        1105,
+        1109
+      ],
+      "evidence": "EXACT_SOURCE_TEXT",
+      "semanticVerification": "UNKNOWN"
+    },
+    "beat_05.object": {
+      "kind": "ENTITY",
+      "beatId": "beat_05",
+      "quote": "sticky notes",
+      "sourceSpan": [
+        1126,
+        1138
+      ],
+      "evidence": "EXACT_SOURCE_TEXT",
+      "semanticVerification": "UNKNOWN"
+    },
+    "beat_01.expectedSurface": {
+      "kind": "ENTITY",
+      "beatId": "beat_01",
+      "quote": "the cabinet",
+      "sourceSpan": [
+        324,
+        335
+      ],
+      "evidence": "EXACT_SOURCE_TEXT",
+      "semanticVerification": "UNKNOWN"
+    },
+    "beat_01.actualSurface": {
+      "kind": "ENTITY",
+      "beatId": "beat_01",
+      "quote": "her finger",
+      "sourceSpan": [
+        364,
+        374
+      ],
+      "evidence": "EXACT_SOURCE_TEXT",
+      "semanticVerification": "UNKNOWN"
+    },
+    "beat_03.state.0": {
+      "kind": "STATE",
+      "beatId": "beat_03",
+      "quote": "two",
+      "sourceSpan": [
+        816,
+        819
+      ],
+      "evidence": "EXACT_SOURCE_TEXT",
+      "semanticVerification": "UNKNOWN"
+    },
+    "beat_03.state.1": {
+      "kind": "STATE",
+      "beatId": "beat_03",
+      "quote": "four",
+      "sourceSpan": [
+        823,
+        827
+      ],
+      "evidence": "EXACT_SOURCE_TEXT",
+      "semanticVerification": "UNKNOWN"
+    },
+    "beat_03.state.2": {
+      "kind": "STATE",
+      "beatId": "beat_03",
+      "quote": "eight",
+      "sourceSpan": [
+        831,
+        836
+      ],
+      "evidence": "EXACT_SOURCE_TEXT",
+      "semanticVerification": "UNKNOWN"
+    }
+  },
+  "semanticFidelity": "UNKNOWN",
+  "candidateCompilationPerformed": false
+}

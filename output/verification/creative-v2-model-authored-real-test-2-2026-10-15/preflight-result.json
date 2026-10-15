@@ -1,0 +1,15 @@
+{
+  "passed": true,
+  "priorAuthoredAttempts": 0,
+  "realInferenceRequestsSoFarUnderThisAuthorization": 0,
+  "authorizationId": "567d41d3-fda4-422c-98b3-206ddb0bd3a3",
+  "bindingHashesMatch": true,
+  "freshAuthorization": true,
+  "protectedHistoryRows": 72,
+  "providerRetries": 0,
+  "sdkInferenceLimit": 1,
+  "modelFallback": false,
+  "serverBudgetReservation": "REQUIRES_NEW durable attempt reservation + fingerprint advisory lock",
+  "clientDispatchGuard": "Exclusive local send marker; one official HTTP POST, no retry even on timeout",
+  "contractReadinessEvidence": "previous task deployed artifact/source hashes and 25 mock contract tests; no mock output supplied to provider"
+}

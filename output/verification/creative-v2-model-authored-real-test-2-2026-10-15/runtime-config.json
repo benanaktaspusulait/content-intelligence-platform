@@ -1,0 +1,18 @@
+{
+  "model": "gpt-4o-mini-2024-07-18",
+  "providerEnabled": "true",
+  "credentialsPresent": true,
+  "customApiBase": false,
+  "semanticEnabled": "false",
+  "semanticVideoEnabled": "false",
+  "inputRate": 0.15,
+  "outputRate": 0.6,
+  "maxOutputTokens": 4000,
+  "sdkRetries": 0,
+  "payloadBytes": 18908,
+  "schemaBytes": 4019,
+  "systemBytes": 4088,
+  "costUpperBoundUsd": 0.00645225,
+  "payloadLimitBytes": 24000,
+  "adapterHash": "0d68e8ae461112659dab142d1043c0b2b2798a9bcffeffb67ca20f08767ccb39"
+}

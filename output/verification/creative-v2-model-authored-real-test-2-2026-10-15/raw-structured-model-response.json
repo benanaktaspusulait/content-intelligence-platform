@@ -1,0 +1,97 @@
+{
+  "proposals": [
+    {
+      "initial": {
+        "title": "Enhanced Visual Clarity of Attachment",
+        "objective": "Improve the visibility of the intended attachment surface and the actual attachment point to enhance viewer understanding.",
+        "candidateId": "candidate-a",
+        "interventions": [
+          {
+            "camera": "LOCKED",
+            "layout": "LATERAL",
+            "operation": "CONTACT_PLANE",
+            "rationale": "By staging the cabinet behind or beside Mimi's finger, viewers can clearly see the intended attachment surface and the actual attachment point, enhancing the comedic effect of the failed attempt.",
+            "authorship": "MODEL_AUTHORED",
+            "production": {
+              "choreography": {
+                "instruction": "Mimi reaches toward the toy cabinet with a sticky note; the note visibly clings to her finger instead of sticking to the cabinet.",
+                "sourceActionRef": "beat_01.action",
+                "sourceConsequenceRef": "beat_01.consequence",
+                "consequencePresentation": "The note sticks to Mimi's finger, not the cabinet."
+              },
+              "stateProgression": [],
+              "cameraComposition": "Close-up on Mimi's hand showing the sticky note clinging to her finger, with the cabinet clearly visible in the background.",
+              "generatorConstraints": [
+                "Aspect ratio: 9:16",
+                "Target generator: SEEDANCE_2_0_MINI"
+              ],
+              "spatialRelationships": [
+                {
+                  "relation": "IN_FRONT_OF",
+                  "objectRef": "the cabinet",
+                  "subjectRef": "Mimi",
+                  "instruction": "Mimi reaches toward the cabinet with a sticky note, her finger visibly sticking to the note."
+                }
+              ],
+              "temporalPresentation": "0-2s: Mimi reaches toward the toy cabinet with a sticky note; the note visibly clings to her finger instead of sticking to the cabinet."
+            },
+            "opportunityId": "CONTACT_PLANE:beat_01",
+            "fallbackReason": null
+          }
+        ],
+        "storyChangeRequested": false
+      },
+      "revision": null
+    },
+    {
+      "initial": {
+        "title": "Separated Action and Result Visibility",
+        "objective": "Enhance the clarity of Mimi's action and the resulting state of the sticky notes.",
+        "candidateId": "candidate-b",
+        "interventions": [
+          {
+            "camera": "LOCKED",
+            "layout": "LATERAL",
+            "operation": "SEPARATE_ACTION_RESULT",
+            "rationale": "By separating the action of peeling the note and the result of it splitting into two, viewers can better understand the transition and the resulting chaos of the sticky notes.",
+            "authorship": "MODEL_AUTHORED",
+            "production": {
+              "choreography": {
+                "instruction": "Mimi tries to peel the stuck note away with her other hand; the note splits into two.",
+                "sourceActionRef": "beat_02.action",
+                "sourceConsequenceRef": "beat_02.consequence",
+                "consequencePresentation": "One note sticks to each hand."
+              },
+              "stateProgression": [],
+              "cameraComposition": "Medium shot showing Mimi struggling to peel the note, with the two resulting notes clearly visible in each hand.",
+              "generatorConstraints": [
+                "Aspect ratio: 9:16",
+                "Target generator: SEEDANCE_2_0_MINI"
+              ],
+              "spatialRelationships": [
+                {
+                  "relation": "IN_FRONT_OF",
+                  "objectRef": "the sticky note",
+                  "subjectRef": "Mimi",
+                  "instruction": "Mimi tries to peel the sticky note away with her other hand."
+                },
+                {
+                  "relation": "SEPARATED_FROM",
+                  "objectRef": "Mimi's hands",
+                  "subjectRef": "the sticky note",
+                  "instruction": "The note splits into two, with one note sticking to each hand."
+                }
+              ],
+              "temporalPresentation": "2-5s: Mimi tries to peel the stuck note away with her other hand; the note splits into two, with one note sticking to each hand."
+            },
+            "opportunityId": "SEPARATE_ACTION_RESULT:beat_02",
+            "fallbackReason": null
+          }
+        ],
+        "storyChangeRequested": false
+      },
+      "revision": null
+    }
+  ],
+  "noImprovementReason": null
+}

@@ -1,0 +1,1 @@
+No complete revised prompt was compiled. Both untouched real model proposals were rejected before compilation. No manually repaired or fabricated prompt is substituted. Original Prompt 10 remains authoritative.
