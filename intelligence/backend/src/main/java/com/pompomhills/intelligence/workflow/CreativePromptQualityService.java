@@ -52,6 +52,13 @@ public class CreativePromptQualityService {
       .param("analysis",analysisId.toString()).query((rs,n)->{var x=read(rs.getString(2));x.put("recordId",rs.getString(1));return x;}).optional()
       .orElseThrow(()->new ResponseStatusException(NOT_FOUND,"No persisted optimization comparison is available"));
   }
+  private Map<String,Object> comparison(UUID analysisId, UUID comparisonId) {
+    var value=jdbc.sql("SELECT id,payload::text FROM post_family_workflow_events WHERE id=:id AND kind='CREATIVE_OPTIMIZATION' AND payload->>'sourceAnalysisId'=:analysis")
+      .param("id",comparisonId).param("analysis",analysisId.toString())
+      .query((rs,n)->{var x=read(rs.getString(2));x.put("recordId",rs.getString(1));return x;}).optional()
+      .orElseThrow(()->new ResponseStatusException(NOT_FOUND,"Comparison is not bound to this analysis"));
+    return value;
+  }
   private Map<String,Object> candidate(Map<String,Object> comparison,String candidateId) {
     return maps(comparison.get("candidates")).stream().filter(c->candidateId.equals(c.get("candidateId"))).findFirst()
       .orElseThrow(()->new ResponseStatusException(NOT_FOUND,"Candidate is not part of the immutable saved comparison"));
@@ -83,9 +90,9 @@ public class CreativePromptQualityService {
       .param("content",contentId).param("prompt",promptVersionId).query(String.class).optional()
       .orElseThrow(()->new ResponseStatusException(CONFLICT,"Immutable source prompt is unavailable"));
   }
-  private Map<String,Object> currentFidelity(UUID analysisId,String candidateId,String storyHash,String sourceHash,String candidateHash,String interventionHash,String settingsHash,String ruleset) {
-    var matches=jdbc.sql("SELECT evidence_id,decision,reviewer_principal,review_method_version,citations,rationale,valid_until,created_at FROM cpq_fidelity_reviews WHERE analysis_id=:analysis AND candidate_prompt_fingerprint=:candidate AND approved_story_fingerprint=:story AND original_prompt_fingerprint=:source AND intervention_fingerprint=:intervention AND production_settings_fingerprint=:settings AND ruleset_version=:ruleset AND (valid_until IS NULL OR valid_until>now()) ORDER BY created_at DESC")
-      .param("analysis",analysisId).param("candidate",candidateHash).param("story",storyHash).param("source",sourceHash).param("intervention",interventionHash).param("settings",settingsHash).param("ruleset",ruleset)
+  private Map<String,Object> currentFidelity(UUID analysisId,UUID comparisonId,String candidateId,String storyHash,String sourceHash,String candidateHash,String interventionHash,String settingsHash,String ruleset) {
+    var matches=jdbc.sql("SELECT evidence_id,decision,reviewer_principal,review_method_version,citations,rationale,valid_until,created_at FROM cpq_fidelity_reviews WHERE analysis_id=:analysis AND comparison_id=:comparison AND candidate_prompt_fingerprint=:candidate AND approved_story_fingerprint=:story AND original_prompt_fingerprint=:source AND intervention_fingerprint=:intervention AND production_settings_fingerprint=:settings AND ruleset_version=:ruleset AND (valid_until IS NULL OR valid_until>now()) ORDER BY created_at DESC")
+      .param("analysis",analysisId).param("comparison",comparisonId).param("candidate",candidateHash).param("story",storyHash).param("source",sourceHash).param("intervention",interventionHash).param("settings",settingsHash).param("ruleset",ruleset)
       .query((rs,n)->{var x=new LinkedHashMap<String,Object>();x.put("evidenceId",rs.getString("evidence_id"));x.put("decision",rs.getString("decision"));x.put("reviewerPrincipal",rs.getString("reviewer_principal"));x.put("reviewMethodVersion",rs.getString("review_method_version"));x.put("citations",readJsonList(rs.getString("citations")));x.put("rationale",rs.getString("rationale"));x.put("validUntil",rs.getTimestamp("valid_until")==null?"":rs.getTimestamp("valid_until").toInstant().toString());x.put("createdAt",rs.getTimestamp("created_at").toInstant().toString());return x;}).list();
     if(matches.isEmpty()){var x=new LinkedHashMap<String,Object>();x.put("evidenceId",null);x.put("decision","UNKNOWN");x.put("reason","No current immutable independent review matches every binding.");return x;}
     var decisions=matches.stream().map(review->String.valueOf(review.get("decision"))).collect(java.util.stream.Collectors.toSet());
@@ -94,57 +101,144 @@ public class CreativePromptQualityService {
   }
   private Object readJsonList(String value) {try{return json.readValue(value,Object.class);}catch(Exception e){return List.of();}}
 
-  public Map<String,Object> assess(UUID analysisId,String candidateId) {
-    var baseline=baseline(analysisId);var comparison=comparison(analysisId);var candidate=candidate(comparison,candidateId);
+  private Map<String,Object> candidateBinding(UUID analysisId,Map<String,Object> baseline,Map<String,Object> comparison,Map<String,Object> candidate) {
+    var reasons=new ArrayList<String>();
+    long content=((Number)baseline.get("contentId")).longValue(), promptId=((Number)baseline.get("promptVersionId")).longValue();
+    String original=savedPrompt(content,promptId), candidatePrompt=String.valueOf(candidate.getOrDefault("prompt",""));
+    String sourceHash=hash(original), candidateHash=hash(candidatePrompt);
+    var bound=map(baseline.get("boundRequest"));var canonical=map(baseline.get("canonicalRuleEvaluation"));
+    String ruleset=String.valueOf(canonical.getOrDefault("rulesetVersion","UNKNOWN"));
+    if(!original.equals(bound.get("prompt")) || !sourceHash.equals(comparison.get("sourcePromptSha256"))) reasons.add("SOURCE_PROMPT_FINGERPRINT_MISMATCH");
+    if(!String.valueOf(promptId).equals(String.valueOf(comparison.get("sourcePromptVersionId")))) reasons.add("SOURCE_PROMPT_VERSION_MISMATCH");
+    if(!ruleset.equals(String.valueOf(comparison.get("rulesetVersion")))) reasons.add("RULESET_MISMATCH");
+    String roleId=String.valueOf(comparison.getOrDefault("roleRecordId",""));
+    Map<String,Object> role=Map.of();
+    try { if(!roleId.isBlank() && !"null".equals(roleId)) role=event(UUID.fromString(roleId),"CREATIVE_ROLE"); }
+    catch(Exception ignored) { reasons.add("PROVIDER_ROLE_EVIDENCE_MISSING"); }
+    var context=map(map(role.get("sourceRequest")).get("context"));
+    if(!String.valueOf(content).equals(String.valueOf(context.get("contentId")))) reasons.add("CONTENT_BINDING_MISMATCH");
+    if(!String.valueOf(promptId).equals(String.valueOf(context.get("promptVersionId")))) reasons.add("ROLE_PROMPT_BINDING_MISMATCH");
+    if(!sourceHash.equals(hash(String.valueOf(map(role.get("sourceRequest")).getOrDefault("text",""))))) reasons.add("ROLE_SOURCE_FINGERPRINT_MISMATCH");
+    var candidateReview=map(candidate.get("review"));
+    var candidateCanonical=map(candidateReview.get("canonicalRuleEvaluation"));
+    if(!"EVALUATED".equals(candidateCanonical.get("status"))) reasons.add("CANDIDATE_CANONICAL_EVALUATION_NOT_VERIFIED");
+    if(!String.valueOf(ruleset).equals(String.valueOf(candidateCanonical.get("rulesetVersion")))) reasons.add("CANDIDATE_CANONICAL_RULESET_MISMATCH");
+    var evaluation=map(candidateReview.get("boundRequest"));
+    for(String key:List.of("contentProfile","generator","desiredDuration","settings"))
+      if(!Objects.equals(bound.get(key),evaluation.get(key))) reasons.add("CANDIDATE_PRODUCTION_BINDING_MISMATCH:"+key);
+    if(candidatePrompt.isBlank() || maps(map(role.get("result")).get("candidates")).stream().filter(c->Objects.equals(c.get("candidateId"),candidate.get("candidateId")) && Objects.equals(c.get("prompt"),candidatePrompt)).count()!=1)
+      reasons.add("CANDIDATE_IDENTITY_OR_FINGERPRINT_UNVERIFIED");
+    try {
+      var story=sourceStory(baseline,candidate,comparison);
+      String storyHash=hash(String.valueOf(story.get("text")));
+      var approval=map(story.get("approval"));
+      if(!storyHash.equals(hash(String.valueOf(approval.getOrDefault("approvedText",""))))) reasons.add("APPROVED_STORY_FINGERPRINT_MISMATCH");
+      var approvedId=String.valueOf(story.get("approvalRecordId"));
+      if(context.get("storyApprovalRecordId")!=null && !approvedId.equals(String.valueOf(context.get("storyApprovalRecordId")))) reasons.add("APPROVED_STORY_REVISION_MISMATCH");
+    } catch(RuntimeException missing) { reasons.add("APPROVED_STORY_BINDING_UNAVAILABLE"); }
+    UUID latest=jdbc.sql("SELECT id FROM post_family_workflow_events WHERE kind='REVIEW' AND payload->>'contentId'=:content AND payload->>'promptVersionId'=:prompt ORDER BY created_at DESC,id DESC LIMIT 1")
+      .param("content",String.valueOf(content)).param("prompt",String.valueOf(promptId)).query(UUID.class).optional().orElse(null);
+    if(!analysisId.equals(latest)) reasons.add("ANALYSIS_IS_NOT_CURRENT_FOR_SOURCE_PROMPT");
+    Long latestPrompt=jdbc.sql("SELECT max(id) FROM prompt_versions WHERE content_id=:content").param("content",content).query(Long.class).single();
+    if(!Objects.equals(promptId,latestPrompt)) reasons.add("PROMPT_VERSION_IS_NOT_CURRENT");
+    var currentSettings=jdbc.sql("SELECT payload::text FROM post_family_workflow_events WHERE kind='PRODUCTION_SETTINGS' AND payload->>'contentId'=:content AND payload->>'promptVersionId'=:prompt ORDER BY created_at DESC LIMIT 1")
+      .param("content",String.valueOf(content)).param("prompt",String.valueOf(promptId)).query(String.class).optional().map(this::read).orElse(Map.of());
+    var target=map(context.get("targetConfiguration"));var boundSettings=map(bound.get("settings"));
+    String targetDuration=String.valueOf(target.get("duration")), boundDuration=String.valueOf(bound.get("desiredDuration"));
+    if(!Objects.equals(currentSettings.get("contentProfile"),target.get("contentProfile"))
+        || !Objects.equals(bound.get("contentProfile"),target.get("contentProfile"))
+        || !Objects.equals(currentSettings.get("generator"),target.get("generator"))
+        || !Objects.equals(bound.get("generator"),target.get("generator"))
+        || !Objects.equals(String.valueOf(currentSettings.get("desiredDuration")),boundDuration)
+        || !Objects.equals(boundDuration,targetDuration)
+        || !Objects.equals(boundSettings,target.get("settings"))
+        || currentSettings.get("aspectRatio")!=null && !Objects.equals(currentSettings.get("aspectRatio"),boundSettings.get("aspectRatio"))
+        || currentSettings.get("openingStrategy")!=null && !Objects.equals(currentSettings.get("openingStrategy"),bound.get("openingStrategy"))) reasons.add("PRODUCTION_SETTINGS_BINDING_MISMATCH");
+    boolean providerRunMatches=Objects.equals(String.valueOf(context.get("analysisRunId")),analysisId.toString());
+    if(!providerRunMatches) {
+      var originalId=comparison.get("revalidatedFromComparisonId");
+      if(originalId==null) reasons.add("PROVIDER_RESULT_BELONGS_TO_DIFFERENT_ANALYSIS");
+      else try {
+        var originalComparison=event(UUID.fromString(String.valueOf(originalId)),"CREATIVE_OPTIMIZATION");
+        var originalRoleId=String.valueOf(originalComparison.get("roleRecordId"));
+        boolean preserved=Objects.equals(originalRoleId,roleId)
+          && Objects.equals(String.valueOf(originalComparison.get("sourceAnalysisId")),String.valueOf(context.get("analysisRunId")))
+          && Objects.equals(originalComparison.get("sourcePromptVersionId"),comparison.get("sourcePromptVersionId"))
+          && Objects.equals(originalComparison.get("sourcePromptSha256"),comparison.get("sourcePromptSha256"))
+          && maps(originalComparison.get("candidates")).stream().anyMatch(old->Objects.equals(old.get("candidateId"),candidate.get("candidateId")) && Objects.equals(old.get("prompt"),candidatePrompt));
+        if(!preserved) reasons.add("REVALIDATION_CHAIN_BINDING_MISMATCH");
+      } catch(RuntimeException invalid) { reasons.add("REVALIDATION_SOURCE_UNAVAILABLE"); }
+    }
+    var result=new LinkedHashMap<String,Object>();result.put("status",reasons.isEmpty()?"COMPATIBLE":"READ_ONLY");result.put("assessmentAllowed",reasons.isEmpty());result.put("reasons",reasons);
+    result.put("analysisId",analysisId.toString());result.put("comparisonId",comparison.get("recordId"));result.put("candidateId",candidate.get("candidateId"));
+    result.put("contentId",content);result.put("promptVersionId",promptId);result.put("sourcePromptSha256",sourceHash);result.put("candidatePromptSha256",candidateHash);
+    result.put("approvedStoryRevisionId",context.getOrDefault("storyApprovalRecordId","UNKNOWN"));result.put("approvedStorySha256",hash(String.valueOf(context.getOrDefault("approvedStoryText",""))));
+    result.put("rulesetVersion",ruleset);var settingsOut=new LinkedHashMap<String,Object>();for(String key:List.of("contentProfile","generator","desiredDuration","settings"))settingsOut.put(key,bound.getOrDefault(key,"UNKNOWN"));result.put("productionSettings",settingsOut);
+    return result;
+  }
+
+  public Map<String,Object> comparisonBindings(UUID analysisId, UUID comparisonId) {
+    var baseline=baseline(analysisId);var comparison=comparison(analysisId,comparisonId);
+    var rows=new ArrayList<Map<String,Object>>();for(var item:maps(comparison.get("candidates"))) {
+      try { rows.add(candidateBinding(analysisId,baseline,comparison,item)); }
+      catch(RuntimeException unavailable) {
+        var denied=new LinkedHashMap<String,Object>();denied.put("status","READ_ONLY");denied.put("assessmentAllowed",false);denied.put("analysisId",analysisId.toString());denied.put("comparisonId",comparisonId.toString());denied.put("candidateId",item.get("candidateId"));denied.put("reasons",List.of("BINDING_EVIDENCE_UNAVAILABLE"));rows.add(denied);
+      }
+    }
+    return Map.of("analysisId",analysisId.toString(),"comparisonId",comparisonId.toString(),"candidateBindings",rows);
+  }
+
+  public Map<String,Object> assess(UUID analysisId, UUID comparisonId, String candidateId, HttpServletRequest servlet) {
+    String assessor=principal(servlet,"PRODUCTION_OPERATOR");
+    var baseline=baseline(analysisId);var comparison=comparison(analysisId,comparisonId);var candidate=candidate(comparison,candidateId);
+    var binding=candidateBinding(analysisId,baseline,comparison,candidate);
+    if(!Boolean.TRUE.equals(binding.get("assessmentAllowed"))) throw new ResponseStatusException(CONFLICT,"Historical candidate is read-only: "+String.join(",",(List<String>)binding.get("reasons")));
     long content=((Number)baseline.get("contentId")).longValue(), promptId=((Number)baseline.get("promptVersionId")).longValue();
     UUID latest=jdbc.sql("SELECT id FROM post_family_workflow_events WHERE kind='REVIEW' AND payload->>'contentId'=:content AND payload->>'promptVersionId'=:prompt ORDER BY created_at DESC,id DESC LIMIT 1").param("content",String.valueOf(content)).param("prompt",String.valueOf(promptId)).query(UUID.class).optional().orElse(null);
     if(!analysisId.equals(latest))throw new ResponseStatusException(CONFLICT,"CPQ assessment requires the current saved analysis for this prompt version");
     String original=savedPrompt(content,promptId),candidatePrompt=String.valueOf(candidate.get("prompt"));
     var bound=map(baseline.get("boundRequest"));var creative=map(map(candidate.get("currentAssessment")).get("creativeAssessment"));
+    if(creative.isEmpty()) creative=map(candidate.get("creativeAssessment"));
     var review=map(candidate.get("review"));var canonical=map(review.get("canonicalRuleEvaluation"));var critic=map(review.get("executionReview"));
     var intervention=creative.getOrDefault("changeContract",List.of());String interventionHash=hash(encode(intervention));
     var run=jdbc.sql("SELECT payload::text FROM post_family_workflow_events WHERE kind='CREATIVE_OPTIMIZATION_RUN' AND payload->'binding'->>'analysisId'=:analysis ORDER BY created_at DESC,id DESC LIMIT 1")
       .param("analysis",analysisId.toString()).query(String.class).optional().map(this::read).orElse(Map.of());
-    var binding=map(run.get("binding"));var productionSettings=new LinkedHashMap<String,Object>();
+    var runBinding=map(run.get("binding"));var productionSettings=new LinkedHashMap<String,Object>();
     for(String key:List.of("contentProfile","generator","desiredDuration","settings","openingStrategy"))productionSettings.put(key,bound.get(key));
     var settingsHash=hash(encode(productionSettings));
     var story=sourceStory(baseline,candidate,comparison);String storyText=String.valueOf(story.get("text"));String storyHash=hash(storyText);
     String originalHash=hash(original),candidateHash=hash(candidatePrompt),ruleset=String.valueOf(canonical.getOrDefault("rulesetVersion",map(baseline.get("canonicalRuleEvaluation")).get("rulesetVersion")));
-    var fidelity=currentFidelity(analysisId,candidateId,storyHash,originalHash,candidateHash,interventionHash,settingsHash,ruleset);
+    var fidelity=currentFidelity(analysisId,comparisonId,candidateId,storyHash,originalHash,candidateHash,interventionHash,settingsHash,ruleset);
     var diagnosis=new LinkedHashMap<String,Object>();diagnosis.put("opportunities",maps(map(creative.get("diagnosis")).get("opportunities")));diagnosis.put("validatedMaterialChanges",intervention);diagnosis.put("canonicalFindings",canonical.getOrDefault("failedRules",List.of()));
     var assessRequest=new LinkedHashMap<String,Object>();assessRequest.put("originalPrompt",original);assessRequest.put("candidatePrompt",candidatePrompt);assessRequest.put("contentProfile",bound.getOrDefault("contentProfile","UNKNOWN"));assessRequest.put("generator",bound.getOrDefault("generator","UNKNOWN"));assessRequest.put("durationSeconds",bound.getOrDefault("desiredDuration",null));assessRequest.put("diagnosis",diagnosis);assessRequest.put("canonicalFindings",Map.of("rulesetVersion",ruleset,"score",canonical.getOrDefault("score",0),"grade",canonical.getOrDefault("grade","UNKNOWN"),"status",canonical.getOrDefault("status","UNKNOWN")));assessRequest.put("executionCritic",critic);
     var result=ml.workflow("creative-prompt-quality/assess",assessRequest);
     var fidelityOut=new LinkedHashMap<String,Object>();fidelityOut.put("decision",fidelity.getOrDefault("decision","UNKNOWN"));fidelityOut.put("evidenceId",fidelity.get("evidenceId"));fidelityOut.put("requiredForQualifiedGrade",true);
     result.put("sourceFidelity",fidelityOut);result.put("canonicalValidation",Map.of("rulesetVersion",ruleset,"score",canonical.get("score"),"grade",canonical.get("grade"),"status",canonical.get("status")));
     result.put("renderReadiness",Map.of("state","SEPARATE_F8_POLICY","authorized",false));result.put("analysisId",analysisId.toString());result.put("candidateId",candidateId);
-    String bindingHash=hash(encode(List.of(analysisId.toString(),candidateId,originalHash,candidateHash,ruleset,RUBRIC,fidelity.getOrDefault("evidenceId","UNKNOWN"))));
+    String bindingHash=hash(encode(List.of(analysisId.toString(),candidateId,originalHash,candidateHash,ruleset,RUBRIC,Objects.toString(fidelity.get("evidenceId"),"UNKNOWN"))));
     result.put("bindingSha256",bindingHash);result.put("calibrationActivation",jdbc.sql("SELECT activated FROM cpq_policy_state WHERE singleton=TRUE").query(Boolean.class).single());
-    jdbc.sql("INSERT INTO cpq_assessments(analysis_id,content_id,prompt_version_id,candidate_id,original_prompt_fingerprint,candidate_prompt_fingerprint,ruleset_version,rubric_version,calibration_corpus_version,fidelity_evidence_id,result) VALUES(:analysis,:content,:prompt,:candidate,:original,:candidateHash,:ruleset,:rubric,NULL,:fidelity,CAST(:result AS jsonb))")
-      .param("analysis",analysisId).param("content",content).param("prompt",promptId).param("candidate",candidateId).param("original",originalHash).param("candidateHash",candidateHash).param("ruleset",ruleset).param("rubric",RUBRIC).param("fidelity",fidelity.get("evidenceId"),java.sql.Types.OTHER).param("result",encode(result)).update();
+    result.put("comparisonId",comparisonId.toString());result.put("assessedBy",assessor);result.put("sourceBinding",binding);
+    jdbc.sql("INSERT INTO cpq_assessments(analysis_id,comparison_id,content_id,prompt_version_id,candidate_id,original_prompt_fingerprint,candidate_prompt_fingerprint,ruleset_version,rubric_version,calibration_corpus_version,fidelity_evidence_id,result) VALUES(:analysis,:comparison,:content,:prompt,:candidate,:original,:candidateHash,:ruleset,:rubric,NULL,:fidelity,CAST(:result AS jsonb))")
+      .param("analysis",analysisId).param("comparison",comparisonId).param("content",content).param("prompt",promptId).param("candidate",candidateId).param("original",originalHash).param("candidateHash",candidateHash).param("ruleset",ruleset).param("rubric",RUBRIC).param("fidelity",fidelity.get("evidenceId"),java.sql.Types.OTHER).param("result",encode(result)).update();
     return result;
   }
 
-  public Map<String,Object> assessAll(UUID analysisId) {
-    var baseline=baseline(analysisId);var comp=comparison(analysisId);var results=new ArrayList<Map<String,Object>>();
-    for(var candidate:maps(comp.get("candidates")))results.add(assess(analysisId,String.valueOf(candidate.get("candidateId"))));
-    var canonical=map(baseline.get("canonicalRuleEvaluation"));
-    return Map.of("rubricVersion",RUBRIC,"gradingStatus","CALIBRATION_INCOMPLETE","absoluteQualityTarget","A_OR_A_PLUS","originalCanonical",Map.of("rulesetVersion",canonical.getOrDefault("rulesetVersion","UNKNOWN"),"score",canonical.getOrDefault("score",0),"grade",canonical.getOrDefault("grade","UNKNOWN")),"candidateAssessments",results,"renderReadiness",Map.of("state","SEPARATE_F8_POLICY","authorized",false),"activationState","INACTIVE");
-  }
-
   public Map<String,Object> savedAssessments(UUID analysisId) {
-    var rows=jdbc.sql("SELECT assessment_id,candidate_id,result::text,created_at FROM cpq_assessments WHERE analysis_id=:analysis ORDER BY created_at DESC")
-      .param("analysis",analysisId).query((rs,n)->{var x=read(rs.getString(3));x.put("assessmentId",rs.getString(1));x.put("candidateId",rs.getString(2));x.put("createdAt",rs.getTimestamp(4).toInstant().toString());return x;}).list();
+    var rows=jdbc.sql("SELECT assessment_id,comparison_id,candidate_id,result::text,created_at FROM cpq_assessments WHERE analysis_id=:analysis ORDER BY created_at DESC")
+      .param("analysis",analysisId).query((rs,n)->{var x=read(rs.getString(4));x.put("assessmentId",rs.getString(1));x.put("comparisonId",rs.getString(2));x.put("candidateId",rs.getString(3));x.put("createdAt",rs.getTimestamp(5).toInstant().toString());return x;}).list();
     return Map.of("rubricVersion",RUBRIC,"gradingStatus","CALIBRATION_INCOMPLETE","candidateAssessments",rows,"activationState","INACTIVE","renderAuthorized",false);
   }
 
   @Transactional
-  public Map<String,Object> reviewFidelity(UUID analysisId,String candidateId,Map<String,Object> request,HttpServletRequest servlet) {
+  public Map<String,Object> reviewFidelity(UUID analysisId,UUID comparisonId,String candidateId,Map<String,Object> request,HttpServletRequest servlet) {
     String reviewer=principal(servlet,"EVIDENCE_REVIEWER");
     String decision=String.valueOf(request.get("decision"));if(!Set.of("PASS","FAIL","UNKNOWN").contains(decision)) throw new ResponseStatusException(BAD_REQUEST,"Decision must be PASS, FAIL or UNKNOWN");
     String rationale=String.valueOf(request.getOrDefault("rationale",""));if(rationale.trim().length()<20) throw new ResponseStatusException(BAD_REQUEST,"A concrete review rationale of at least 20 characters is required");
     String method=String.valueOf(request.getOrDefault("reviewMethodVersion","human-source-fidelity-v1"));if(!"human-source-fidelity-v1".equals(method))throw new ResponseStatusException(BAD_REQUEST,"Unsupported independent review method");
     var baseline=baseline(analysisId);long boundContent=((Number)baseline.get("contentId")).longValue(),boundPrompt=((Number)baseline.get("promptVersionId")).longValue();UUID latest=jdbc.sql("SELECT id FROM post_family_workflow_events WHERE kind='REVIEW' AND payload->>'contentId'=:content AND payload->>'promptVersionId'=:prompt ORDER BY created_at DESC,id DESC LIMIT 1").param("content",String.valueOf(boundContent)).param("prompt",String.valueOf(boundPrompt)).query(UUID.class).optional().orElse(null);if(!analysisId.equals(latest))throw new ResponseStatusException(CONFLICT,"Fidelity review requires the current saved analysis for this prompt version");
-    var comparison=comparison(analysisId);var candidate=candidate(comparison,candidateId);var story=sourceStory(baseline,candidate,comparison);
+    var comparison=comparison(analysisId,comparisonId);var candidate=candidate(comparison,candidateId);
+    if(!Boolean.TRUE.equals(candidateBinding(analysisId,baseline,comparison,candidate).get("assessmentAllowed"))) throw new ResponseStatusException(CONFLICT,"Historical candidate is read-only until every source binding is verified");
+    var story=sourceStory(baseline,candidate,comparison);
     String source=savedPrompt(((Number)baseline.get("contentId")).longValue(),((Number)baseline.get("promptVersionId")).longValue());String prompt=String.valueOf(candidate.get("prompt"));String approved=String.valueOf(story.get("text"));
     var citations=maps(request.get("citations"));if(citations.isEmpty())throw new ResponseStatusException(BAD_REQUEST,"At least one exact source or candidate quote is required");
     for(var citation:citations){String quote=String.valueOf(citation.getOrDefault("quote",""));String side=String.valueOf(citation.getOrDefault("side",""));if(quote.isBlank()||!("APPROVED_STORY".equals(side)?approved.contains(quote):"CANDIDATE_PROMPT".equals(side)&&prompt.contains(quote)))throw new ResponseStatusException(BAD_REQUEST,"Evidence citation must exactly match the bound approved story or candidate prompt");}
@@ -155,7 +249,7 @@ public class CreativePromptQualityService {
     if(!expiry.isAfter(Instant.now())||expiry.isAfter(Instant.now().plusSeconds(180L*24*60*60)))throw new ResponseStatusException(BAD_REQUEST,"Review expiry must be within 180 days");
     long content=((Number)baseline.get("contentId")).longValue(),promptId=((Number)baseline.get("promptVersionId")).longValue();var canonical=map(baseline.get("canonicalRuleEvaluation"));
     var roleContext=map(story.get("roleContext"));var settings=map(map(baseline.get("boundRequest")).get("settings"));
-    var creative=map(map(candidate.get("currentAssessment")).get("creativeAssessment"));Object intervention=creative.getOrDefault("changeContract",List.of());
+    var creative=map(map(candidate.get("currentAssessment")).get("creativeAssessment"));if(creative.isEmpty())creative=map(candidate.get("creativeAssessment"));Object intervention=creative.getOrDefault("changeContract",List.of());
     var changedBeatIds=maps(intervention).stream().map(x->String.valueOf(x.getOrDefault("beatId","UNKNOWN"))).distinct().toList();
     if("PASS".equals(decision)) {
       var mappedBeatIds=mappings.stream().map(x->String.valueOf(x.getOrDefault("beatId",""))).collect(java.util.stream.Collectors.toSet());
@@ -167,8 +261,8 @@ public class CreativePromptQualityService {
     if("UNKNOWN".equals(storyId)||"UNKNOWN".equals(revision))throw new ResponseStatusException(CONFLICT,"Approved story ID and revision binding are required for fidelity evidence");
     UUID evidenceId=UUID.randomUUID();
     var reviewSettings=new LinkedHashMap<String,Object>();for(String key:List.of("contentProfile","generator","desiredDuration","settings","openingStrategy"))reviewSettings.put(key,map(baseline.get("boundRequest")).get(key));
-    jdbc.sql("INSERT INTO cpq_fidelity_reviews(evidence_id,content_id,prompt_version_id,approved_story_id,approved_revision,approved_story_fingerprint,original_prompt_fingerprint,candidate_prompt_fingerprint,intervention_fingerprint,changed_beat_ids,source_event_mapping,analysis_id,ruleset_version,cpq_rubric_version,production_settings_fingerprint,reviewer_principal,reviewer_authority,review_method_version,citations,rationale,decision,valid_until) VALUES(:id,:content,:promptId,:storyId,:revision,:story,:source,:candidate,:intervention,CAST(:beats AS jsonb),CAST(:mapping AS jsonb),:analysis,:ruleset,:rubric,:settings,:reviewer,'EVIDENCE_REVIEWER',:method,CAST(:citations AS jsonb),:rationale,:decision,:expiry)")
-      .param("id",evidenceId).param("content",content).param("promptId",promptId).param("storyId",storyId).param("revision",revision).param("story",storyHash).param("source",sourceHash).param("candidate",candidateHash).param("intervention",interventionHash).param("beats",encode(changedBeatIds)).param("mapping",encode(mappings)).param("analysis",analysisId).param("ruleset",String.valueOf(canonical.get("rulesetVersion"))).param("rubric",RUBRIC).param("settings",hash(encode(reviewSettings))).param("reviewer",reviewer).param("method",method).param("citations",encode(citations)).param("rationale",rationale.trim()).param("decision",decision).param("expiry",java.sql.Timestamp.from(expiry)).update();
+    jdbc.sql("INSERT INTO cpq_fidelity_reviews(evidence_id,content_id,prompt_version_id,approved_story_id,approved_revision,approved_story_fingerprint,original_prompt_fingerprint,candidate_prompt_fingerprint,intervention_fingerprint,changed_beat_ids,source_event_mapping,analysis_id,comparison_id,ruleset_version,cpq_rubric_version,production_settings_fingerprint,reviewer_principal,reviewer_authority,review_method_version,citations,rationale,decision,valid_until) VALUES(:id,:content,:promptId,:storyId,:revision,:story,:source,:candidate,:intervention,CAST(:beats AS jsonb),CAST(:mapping AS jsonb),:analysis,:comparison,:ruleset,:rubric,:settings,:reviewer,'EVIDENCE_REVIEWER',:method,CAST(:citations AS jsonb),:rationale,:decision,:expiry)")
+      .param("id",evidenceId).param("content",content).param("promptId",promptId).param("storyId",storyId).param("revision",revision).param("story",storyHash).param("source",sourceHash).param("candidate",candidateHash).param("intervention",interventionHash).param("beats",encode(changedBeatIds)).param("mapping",encode(mappings)).param("analysis",analysisId).param("comparison",comparisonId).param("ruleset",String.valueOf(canonical.get("rulesetVersion"))).param("rubric",RUBRIC).param("settings",hash(encode(reviewSettings))).param("reviewer",reviewer).param("method",method).param("citations",encode(citations)).param("rationale",rationale.trim()).param("decision",decision).param("expiry",java.sql.Timestamp.from(expiry)).update();
     return Map.of("evidenceId",evidenceId.toString(),"decision",decision,"reviewerPrincipal",reviewer,"reviewerAuthority","EVIDENCE_REVIEWER","candidateFingerprint",candidateHash,"validUntil",expiry.toString(),"immutable",true,"renderAuthorized",false);
   }
 
@@ -183,6 +277,7 @@ public class CreativePromptQualityService {
   public Map<String,Object> reviewerCapabilities(HttpServletRequest request) {
     return Map.of("authenticated",request.getUserPrincipal()!=null,
       "principal",request.getUserPrincipal()==null?"":request.getUserPrincipal().getName(),
+      "canAssessTextQuality",request.isUserInRole("PRODUCTION_OPERATOR"),
       "canReviewSourceFidelity",request.isUserInRole("EVIDENCE_REVIEWER"),
       "canReviewCalibration",request.isUserInRole("CREATIVE_QUALITY_REVIEWER"),
       "canManageCalibration",request.isUserInRole("CREATIVE_QUALITY_ARCHITECTURE_APPROVER"));

@@ -782,6 +782,26 @@ public class WorkflowService {
     return response;
   }
 
+  /** Read-only saved comparison history scoped to one analysis; payloads are never re-evaluated here. */
+  public List<Map<String,Object>> creativeOptimizationHistory(UUID analysisId) {
+    getByKind(analysisId, "REVIEW");
+    var rows=jdbc.sql("SELECT id,payload::text,created_at FROM post_family_workflow_events WHERE kind='CREATIVE_OPTIMIZATION' AND payload->>'sourceAnalysisId'=:analysis ORDER BY created_at DESC,id DESC")
+        .param("analysis", analysisId.toString())
+        .query((rs,n)->{
+          var value=new LinkedHashMap<String,Object>(read(rs.getString("payload")));
+          value.put("recordId",rs.getString("id"));
+          value.put("createdAt",rs.getTimestamp("created_at").toInstant().toString());
+          value.put("candidateCount",maps(value.get("candidates")).size());
+          try {
+            var role=getByKind(UUID.fromString(String.valueOf(value.get("roleRecordId"))),"CREATIVE_ROLE");
+            value.put("providerModel",role.get("model"));
+            value.put("providerRoleRecordId",value.get("roleRecordId"));
+          } catch(RuntimeException missingRole) { value.put("providerModel","UNKNOWN"); }
+          return value;
+        }).list();
+    return new ArrayList<Map<String,Object>>(rows);
+  }
+
   private Map<String, Object> reviewCreativeCandidate(
       UUID analysisId, String candidateId, String prompt, Map<String, Object> baselineRequest) {
     var sourcePlan =

@@ -37,6 +37,9 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.times;
+import static org.mockito.ArgumentMatchers.anyMap;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.when;
 
 @SpringBootTest
 @Testcontainers(disabledWithoutDocker = true)
@@ -77,6 +80,7 @@ class PlatformIntegrationTest {
   @Autowired com.pompomhills.intelligence.character.CharacterReferenceService characterReferences;
   @Autowired WorkflowService workflow;
   @Autowired QualityMlClient workflowMl;
+  @Autowired com.pompomhills.intelligence.workflow.CreativePromptQualityController cpqController;
 
   private UUID videoId;
 
@@ -153,6 +157,155 @@ class PlatformIntegrationTest {
             "storyRevisionId", "candidate-1-revision-" + fingerprint, "approvalRecordId", "missing-approval"));
     assertThatThrownBy(() -> workflow.creativeRole(request))
         .hasMessageContaining("exact approved story candidate and revision");
+  }
+
+  @Test
+  void explicitCpqAssessmentPersistsSixDimensionsInDisposableDatabase() {
+    UUID analysisId = UUID.randomUUID();
+    UUID approvalId = UUID.randomUUID();
+    UUID sessionId = UUID.randomUUID();
+    UUID comparisonId = UUID.randomUUID();
+    String story = "Mimi places a sticky note on the cabinet; it sticks to her finger, doubles on each pull, then scatters back onto the cabinet.";
+    long contentId = 71010L;
+    long promptId = 71010L;
+    jdbc.update("INSERT INTO contents(id,title,type) VALUES (?,?,'SHORT')", contentId, "CPQ isolated assessment");
+    jdbc.update("INSERT INTO prompt_versions(id,content_id,version_number,raw_text) VALUES (?,?,1,?)", promptId, contentId, "Mimi places a note on the cabinet. The note sticks to her finger.");
+    String sourcePrompt = "Mimi places a note on the cabinet. The note sticks to her finger.";
+    String candidatePrompt = "Mimi reaches for the note. It sticks to her finger as pulls create more notes that scatter onto the cabinet.";
+    String settings = "{\"mode\":\"image2video\",\"resolution\":\"480p\",\"aspectRatio\":\"9:16\"}";
+    String settingsEvent = "{\"contentId\":" + contentId + ",\"promptVersionId\":" + promptId + ",\"contentProfile\":\"ABSURD_PHYSICS\",\"generator\":\"SEEDANCE_2_0_MINI\",\"desiredDuration\":15,\"settings\":" + settings + "}";
+    jdbc.update("INSERT INTO post_family_workflow_events(id,kind,binding_sha256,payload) VALUES (?,'PRODUCTION_SETTINGS',NULL,CAST(? AS jsonb))", UUID.randomUUID(), settingsEvent);
+    jdbc.update("INSERT INTO post_family_workflow_events(id,kind,binding_sha256,payload) VALUES (?,'STORY_APPROVAL',NULL,CAST(? AS jsonb))", approvalId, "{\"approvedText\":\"" + story + "\",\"revisionId\":\"story-r1\"}");
+    jdbc.update("INSERT INTO post_family_workflow_events(id,kind,binding_sha256,payload) VALUES (?,'CREATIVE_STUDIO_SESSION',NULL,CAST(? AS jsonb))", sessionId, "{\"contentId\":" + contentId + ",\"promptVersionId\":" + promptId + ",\"sourceStoryRecordId\":\"isolated-approved-story\",\"approvalRecordId\":\"" + approvalId + "\"}");
+    var bound = "{\"prompt\":\"" + sourcePrompt + "\",\"contentProfile\":\"ABSURD_PHYSICS\",\"generator\":\"SEEDANCE_2_0_MINI\",\"desiredDuration\":15,\"settings\":" + settings + "}";
+    jdbc.update("INSERT INTO post_family_workflow_events(id,kind,binding_sha256,payload) VALUES (?,'REVIEW',NULL,CAST(? AS jsonb))", analysisId,
+        "{\"contentId\":" + contentId + ",\"promptVersionId\":" + promptId + ",\"boundRequest\":" + bound + ",\"canonicalRuleEvaluation\":{\"rulesetVersion\":\"1.11\",\"score\":88.4,\"grade\":\"B\",\"status\":\"FAIL\"}}");
+    UUID roleId = UUID.randomUUID();
+    String role = "{\"role\":\"PROMPT_OPTIMIZATION\",\"model\":\"mock-model\",\"sourceRequest\":{\"text\":\"" + sourcePrompt + "\",\"context\":{\"contentId\":" + contentId + ",\"promptVersionId\":" + promptId + ",\"analysisRunId\":\"" + analysisId + "\",\"storyApprovalRecordId\":\"" + approvalId + "\",\"approvedStoryText\":\"" + story + "\",\"targetConfiguration\":{\"contentProfile\":\"ABSURD_PHYSICS\",\"generator\":\"SEEDANCE_2_0_MINI\",\"duration\":15,\"settings\":" + settings + "}}},\"result\":{\"candidates\":[{\"candidateId\":\"candidate-a\",\"prompt\":\"" + candidatePrompt + "\"}]}}";
+    jdbc.update("INSERT INTO post_family_workflow_events(id,kind,binding_sha256,payload) VALUES (?,'CREATIVE_ROLE',NULL,CAST(? AS jsonb))", roleId, role);
+    String comparison = "{\"sourceAnalysisId\":\"" + analysisId + "\",\"sourcePromptVersionId\":\"" + promptId + "\",\"sourcePromptSha256\":\"" + shaForTest(sourcePrompt) + "\",\"rulesetVersion\":\"1.11\",\"roleRecordId\":\"" + roleId + "\",\"candidates\":[{\"candidateId\":\"candidate-a\",\"prompt\":\"" + candidatePrompt + "\",\"currentAssessment\":{\"creativeAssessment\":{\"changeContract\":[{\"operation\":\"CONTACT_PLANE\"}],\"diagnosis\":{\"opportunities\":[]}}},\"review\":{\"boundRequest\":{\"prompt\":\"" + candidatePrompt + "\",\"contentProfile\":\"ABSURD_PHYSICS\",\"generator\":\"SEEDANCE_2_0_MINI\",\"desiredDuration\":15,\"settings\":" + settings + "},\"canonicalRuleEvaluation\":{\"rulesetVersion\":\"1.11\",\"score\":88.4,\"grade\":\"B\",\"status\":\"EVALUATED\",\"failedRules\":[]},\"executionReview\":{}}}]}";
+    jdbc.update("INSERT INTO post_family_workflow_events(id,kind,binding_sha256,payload) VALUES (?,'CREATIVE_OPTIMIZATION',NULL,CAST(? AS jsonb))", comparisonId, comparison);
+    jdbc.update("INSERT INTO post_family_workflow_events(id,kind,binding_sha256,payload) VALUES (?,'CREATIVE_OPTIMIZATION_RUN',NULL,CAST(? AS jsonb))", UUID.randomUUID(), "{\"binding\":{\"analysisId\":\"" + analysisId + "\"}}");
+
+    var dimensions = java.util.Arrays.stream(new String[] {"SCROLL_STOP_VISUAL_PROMISE", "CAUSAL_PROGRESSION", "VISUAL_STORYTELLING", "PRODUCTION_EXECUTABILITY", "ENDING_REPLAY", "DISTINCTIVE_CREATIVE_VALUE"})
+        .map(dimension -> java.util.Map.<String,Object>of("dimension", dimension, "status", "UNKNOWN", "confidence", "LOW", "strengths", java.util.List.of(), "weaknesses", java.util.List.of(), "recommendations", java.util.List.of(), "explicitUnknowns", java.util.List.of("isolated mocked assessment")))
+        .toList();
+    var mockResult = new java.util.LinkedHashMap<String,Object>();
+    mockResult.put("rubricVersion", "creative-prompt-quality-v1");
+    mockResult.put("gradingStatus", "CALIBRATION_INCOMPLETE");
+    mockResult.put("dimensions", dimensions);
+    when(workflowMl.workflow(eq("creative-prompt-quality/assess"), anyMap())).thenReturn(mockResult);
+
+    var operator = new org.springframework.mock.web.MockHttpServletRequest();
+    operator.setUserPrincipal(() -> "test-operator"); operator.addUserRole("PRODUCTION_OPERATOR");
+    var binding = cpqController.comparisonBinding(analysisId, comparisonId);
+    var bindingRows = (java.util.List<java.util.Map<String,Object>>) binding.get("candidateBindings");
+    assertThat(bindingRows).singleElement().satisfies(row -> {
+      assertThat(row.get("status")).isEqualTo("COMPATIBLE");
+      assertThat(row.get("assessmentAllowed")).isEqualTo(true);
+      assertThat(row.get("candidatePromptSha256")).isNotNull();
+      assertThat(row.get("approvedStorySha256")).isNotNull();
+    });
+    assertThatThrownBy(() -> cpqController.comparisonBinding(UUID.randomUUID(), comparisonId))
+        .hasMessageContaining("Bound workflow evidence not found");
+    var unauthorized = new org.springframework.mock.web.MockHttpServletRequest();
+    unauthorized.setUserPrincipal(() -> "ordinary-operator");
+    assertThat(cpqController.reviewerCapabilities(unauthorized)).containsEntry("authenticated", true).containsEntry("canAssessTextQuality", false);
+    assertThatThrownBy(() -> cpqController.assess(analysisId, comparisonId, "candidate-a", unauthorized))
+        .hasMessageContaining("Authenticated PRODUCTION_OPERATOR authority is required");
+    assertThat(cpqController.reviewerCapabilities(operator)).containsEntry("authenticated", true).containsEntry("canAssessTextQuality", true);
+    var result = cpqController.assess(analysisId, comparisonId, "candidate-a", operator);
+    var candidates = (java.util.List<java.util.Map<String,Object>>) result.get("candidateAssessments");
+    assertThat(candidates).hasSize(1);
+    assertThat((java.util.List<?>) candidates.getFirst().get("dimensions")).hasSize(6);
+    assertThat(((java.util.Map<?,?>) candidates.getFirst().get("sourceFidelity")).get("decision")).isEqualTo("UNKNOWN");
+    assertThat(jdbc.queryForObject("SELECT count(*) FROM cpq_assessments WHERE analysis_id=? AND comparison_id=?", Integer.class, analysisId, comparisonId)).isEqualTo(1);
+    assertThat(jdbc.queryForObject("SELECT activated FROM cpq_policy_state WHERE singleton=TRUE", Boolean.class)).isFalse();
+
+    // Test-only identities and evidence stay in the disposable PostgreSQL container.
+    String corpus = "isolated-intake-" + UUID.randomUUID();
+    assertThatThrownBy(() -> cpqController.createCorpus(corpus, java.util.Map.of(), operator))
+        .hasMessageContaining("CREATIVE_QUALITY_ARCHITECTURE_APPROVER");
+    var manager = new org.springframework.mock.web.MockHttpServletRequest();
+    manager.setUserPrincipal(() -> "isolated-corpus-manager");
+    manager.addUserRole("CREATIVE_QUALITY_ARCHITECTURE_APPROVER");
+    cpqController.createCorpus(corpus, java.util.Map.of(), manager);
+    assertThatThrownBy(() -> cpqController.addExample(corpus, java.util.Map.of("promptText", candidatePrompt), manager))
+        .hasMessageContaining("independent source-fidelity evidence ID is required");
+    var evidenceReviewer = new org.springframework.mock.web.MockHttpServletRequest();
+    evidenceReviewer.setUserPrincipal(() -> "isolated-evidence-reviewer");
+    evidenceReviewer.addUserRole("EVIDENCE_REVIEWER");
+    var fidelity = cpqController.fidelityReview(analysisId, comparisonId, "candidate-a", java.util.Map.of(
+        "decision", "UNKNOWN", "rationale", "Isolated contract test retains unsupported story fidelity as unknown.",
+        "validUntil", Instant.now().plusSeconds(3600).toString(),
+        "citations", java.util.List.of(java.util.Map.of("side", "APPROVED_STORY", "quote", story))), evidenceReviewer);
+    var example = new java.util.LinkedHashMap<String,Object>();
+    example.put("promptText", candidatePrompt); example.put("approvedStoryText", story);
+    example.put("sourceFidelityEvidenceId", fidelity.get("evidenceId"));
+    example.put("sourceStoryId", "isolated-approved-story"); example.put("sourceRevision", "story-r1");
+    example.put("promptVersionLabel", "isolated candidate"); example.put("contentProfile", "ABSURD_PHYSICS");
+    example.put("generator", "SEEDANCE_2_0_MINI"); example.put("durationSeconds", 15);
+    example.put("split", "CALIBRATION"); example.put("caseType", "GENERAL_PROMPT");
+    example.put("provenance", java.util.Map.of("testOnly", true));
+    var wrongPrompt = new java.util.LinkedHashMap<>(example); wrongPrompt.put("promptText", candidatePrompt + " changed");
+    assertThatThrownBy(() -> cpqController.addExample(corpus, wrongPrompt, manager)).hasMessageContaining("candidate fingerprint");
+    var wrongStory = new java.util.LinkedHashMap<>(example); wrongStory.put("approvedStoryText", story + " changed");
+    assertThatThrownBy(() -> cpqController.addExample(corpus, wrongStory, manager)).hasMessageContaining("approved story text must match");
+    var imported = cpqController.addExample(corpus, example, manager);
+    UUID exampleId = UUID.fromString(String.valueOf(imported.get("exampleId")));
+    assertThat(imported).containsEntry("humanQualityGrade", "NOT_YET_REVIEWED").containsEntry("activated", false);
+    assertThatThrownBy(() -> cpqController.reviewPacket(exampleId, operator)).hasMessageContaining("CREATIVE_QUALITY_REVIEWER");
+    var dimensionJudgments = new java.util.LinkedHashMap<String,Object>();
+    for (var dimension : dimensions) dimensionJudgments.put(String.valueOf(dimension.get("dimension")), java.util.Map.of(
+        "level", "UNKNOWN", "rationale", "Isolated contract fixture has no real independent creative judgment.",
+        "evidenceCitations", java.util.List.of(java.util.Map.of("quote", candidatePrompt))));
+    var judgment = java.util.Map.<String,Object>of("dimensions", dimensionJudgments,
+        "sourceFidelityDecision", "UNKNOWN", "overallQualityAnchor", "UNKNOWN");
+    var sameReviewer = new org.springframework.mock.web.MockHttpServletRequest();
+    sameReviewer.setUserPrincipal(() -> "isolated-evidence-reviewer"); sameReviewer.addUserRole("CREATIVE_QUALITY_REVIEWER");
+    assertThatThrownBy(() -> cpqController.judgment(exampleId, judgment, sameReviewer)).hasMessageContaining("sole independent calibration reviewer");
+    for (int i = 1; i <= 2; i++) {
+      String identity = "isolated-blind-reviewer-" + i;
+      var reviewer = new org.springframework.mock.web.MockHttpServletRequest();
+      reviewer.setUserPrincipal(() -> identity); reviewer.addUserRole("CREATIVE_QUALITY_REVIEWER");
+      var packet = cpqController.reviewPacket(exampleId, reviewer);
+      assertThat(packet).containsEntry("blind", true).containsEntry("existingJudgmentsVisible", false).containsEntry("promptText", candidatePrompt);
+      assertThat(packet).doesNotContainKeys("provider", "canonicalGrade", "audienceEvidence", "caseType", "overallQualityAnchor", "reviewerJudgments");
+      cpqController.judgment(exampleId, judgment, reviewer);
+    }
+    var readiness = cpqController.readiness(corpus);
+    assertThat(readiness).containsEntry("exampleCount", 1).containsEntry("judgmentCount", 2)
+        .containsEntry("examplesWithAtLeastTwoReviewers", 1).containsEntry("heldOutCount", 0L)
+        .containsEntry("activationEligible", false).containsEntry("aggregateGradeThresholdsJustified", false)
+        .containsEntry("gradingStatus", "CALIBRATION_INCOMPLETE");
+    assertThat(jdbc.queryForObject("SELECT activated FROM cpq_policy_state WHERE singleton=TRUE", Boolean.class)).isFalse();
+  }
+
+  @Test
+  void cpqFidelityReviewRequiresAuthenticatedReviewerAuthority() {
+    UUID analysisId = UUID.randomUUID();
+    var unauthenticated = new org.springframework.mock.web.MockHttpServletRequest();
+    UUID comparisonId = UUID.randomUUID();
+    assertThatThrownBy(() -> cpqController.fidelityReview(analysisId, comparisonId, "candidate-a", java.util.Map.of("decision", "PASS"), unauthenticated))
+        .hasMessageContaining("Authenticated EVIDENCE_REVIEWER authority is required");
+
+    var operator = new org.springframework.mock.web.MockHttpServletRequest();
+    operator.setUserPrincipal(() -> "ordinary-operator");
+    assertThatThrownBy(() -> cpqController.fidelityReview(analysisId, comparisonId, "candidate-a", java.util.Map.of("decision", "PASS"), operator))
+        .hasMessageContaining("Authenticated EVIDENCE_REVIEWER authority is required");
+  }
+
+  @Test
+  void cpqAssessmentRejectsUnauthorizedOperatorAndComparisonFromAnotherAnalysis() {
+    UUID analysisId=UUID.randomUUID(), comparisonId=UUID.randomUUID();
+    var request=new org.springframework.mock.web.MockHttpServletRequest();
+    request.setUserPrincipal(() -> "ordinary-user");
+    assertThatThrownBy(() -> cpqController.assess(analysisId,comparisonId,"candidate-a",request))
+        .hasMessageContaining("Authenticated PRODUCTION_OPERATOR authority is required");
+    var authorized=new org.springframework.mock.web.MockHttpServletRequest();
+    authorized.setUserPrincipal(() -> "operator"); authorized.addUserRole("PRODUCTION_OPERATOR");
+    assertThatThrownBy(() -> cpqController.assess(analysisId,comparisonId,"candidate-a",authorized))
+        .hasMessageContaining("Bound workflow evidence not found");
   }
 
   @Test
@@ -421,6 +574,13 @@ class PlatformIntegrationTest {
     int hash = 0x811c9dc5;
     for (int i = 0; i < value.length(); i++) hash = (hash ^ value.charAt(i)) * 0x01000193;
     return String.format("%08x", hash);
+  }
+
+  private String shaForTest(String value) {
+    try {
+      return java.util.HexFormat.of().formatHex(java.security.MessageDigest.getInstance("SHA-256")
+          .digest(value.getBytes(java.nio.charset.StandardCharsets.UTF_8)));
+    } catch (java.security.NoSuchAlgorithmException impossible) { throw new AssertionError(impossible); }
   }
 
   @Test

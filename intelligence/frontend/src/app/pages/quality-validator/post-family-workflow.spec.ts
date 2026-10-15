@@ -14,6 +14,11 @@ describe('post-family operator workflow', () => {
     http.match(r=>r.method==='GET' && r.url==='/api/v1/intelligence/workflow/production-review/decisions').forEach(r=>r.flush(decisionResponse));
     http.match(r=>r.method==='GET' && r.url==='/api/v1/intelligence/workflow/provider-capabilities').forEach(r=>r.flush({models:{}}));
   }
+  function flushSavedOptimizationHistory(http: HttpTestingController, analysisId: string, comparisons: any[], canAssessTextQuality = false) {
+    http.expectOne(`/api/v1/intelligence/workflow/records/${analysisId}/creative-optimization/history`).flush(comparisons);
+    http.expectOne('/api/v1/intelligence/workflow/cpq/reviewer-capabilities').flush({canAssessTextQuality,canReviewSourceFidelity:false});
+    http.expectOne(`/api/v1/intelligence/workflow/records/${analysisId}/creative-prompt-quality`).flush({candidateAssessments:[],activationState:'INACTIVE'});
+  }
   async function setup(decisionResponse: any = {decisions:[]}) {
     localStorage.clear();
     await TestBed.configureTestingModule({
@@ -1144,6 +1149,28 @@ Hard cut.`;
     expect(c.creativeOptimizationComparison).toBeNull();
     TestBed.inject(HttpTestingController).expectNone(r => r.method === 'POST');
   });
+  it('defaults to the empty latest comparison and exposes an explicitly selected compatible historical candidate read-only', async () => {
+    const f=await setup();const c=f.componentInstance;const http=TestBed.inject(HttpTestingController);
+    c.review={recordId:'analysis-10',contentId:10,promptVersionId:10,canonicalRuleEvaluation:{rulesetVersion:'1.11',score:88.40625,grade:'B'}};c.activeStage=6;
+    c.loadLatestCreativeOptimization();
+    http.expectOne('/api/v1/intelligence/workflow/records/analysis-10/creative-optimization/latest').flush({comparison:{recordId:'latest-empty',candidates:[]}});
+    const history=[
+      {recordId:'latest-empty',createdAt:'2026-10-15T12:00:00Z',candidateCount:0,candidates:[],candidateBindings:[]},
+      {recordId:'historical-one',createdAt:'2026-10-15T09:00:00Z',candidateCount:1,candidates:[{candidateId:'candidate-a',title:'Saved A',prompt:'saved candidate',review:{canonicalRuleEvaluation:{rulesetVersion:'1.11',score:88.40625,grade:'B'}}}],candidateBindings:[{candidateId:'candidate-a',status:'COMPATIBLE',assessmentAllowed:true,sourcePromptSha256:'a'.repeat(64),approvedStorySha256:'b'.repeat(64),rulesetVersion:'1.11',reasons:[]}]},
+      {recordId:'historical-two',createdAt:'2026-10-14T23:00:00Z',candidateCount:2,candidates:[{candidateId:'candidate-a',prompt:'saved A'},{candidateId:'candidate-b',prompt:'saved B'}],candidateBindings:[{candidateId:'candidate-a',status:'READ_ONLY',assessmentAllowed:false,reasons:['PROVIDER_RESULT_BELONGS_TO_DIFFERENT_ANALYSIS']},{candidateId:'candidate-b',status:'READ_ONLY',assessmentAllowed:false,reasons:['PROVIDER_RESULT_BELONGS_TO_DIFFERENT_ANALYSIS']}]},
+    ];
+    flushSavedOptimizationHistory(http,'analysis-10',history);
+    expect(c.creativeOptimizationSelectedComparisonId).toBe('latest-empty');expect(c.creativeOptimizationComparison.candidates).toHaveLength(0);
+    c.selectSavedCreativeOptimization('historical-one');expect(c.creativeOptimizationComparison.candidates).toHaveLength(1);expect(c.creativeOptimizationSelectedCandidateId).toBeNull();
+    c.creativeOptimizationCpqCandidateId='candidate-a';c.onCpqCandidateChanged();f.detectChanges();
+    expect(c.canAssessSelectedCpqCandidate).toBe(false);
+    expect(f.nativeElement.querySelector('[aria-label="Creative Prompt Quality assessment"]')?.textContent).toContain('SCROLL_STOP_VISUAL_PROMISE');
+    for(const dimension of c.cpqDimensionIds)expect(f.nativeElement.querySelector('[aria-label="Six CPQ quality dimensions"]')?.textContent).toContain(dimension);
+    expect(f.nativeElement.textContent).toContain('Historical comparison · read-only');
+    c.selectSavedCreativeOptimization('historical-two');expect(c.creativeOptimizationCpqCandidateId).toBeNull();expect(c.creativeOptimizationSelectedCandidateId).toBeNull();
+    expect(c.creativeOptimizationComparison.candidateBindings[0].assessmentAllowed).toBe(false);
+    http.expectNone(r=>r.method==='POST');f.destroy();TestBed.resetTestingModule();
+  });
   it('reloads the latest creative optimization without auto-selecting or auto-approving', async () => {
     const f = await setup();
     const c = f.componentInstance;
@@ -1183,6 +1210,7 @@ Hard cut.`;
         }],
       },
     });
+    flushSavedOptimizationHistory(http,'creative-analysis',[]);
     expect(c.creativeOptimizationComparison.candidates).toHaveLength(2);
     expect(c.creativeOptimizationSelectedCandidateId).toBeNull();
     expect(c.creativeOptimizationReviewedCandidateId).toBeNull();
@@ -1224,6 +1252,7 @@ Hard cut.`;
     const f=await setup();const c=f.componentInstance;const http=TestBed.inject(HttpTestingController);
     c.review={recordId:'failed-analysis'};c.loadLatestCreativeOptimization();
     http.expectOne('/api/v1/intelligence/workflow/records/failed-analysis/creative-optimization/latest').flush({comparison:null,attempt:{optimizationFailed:true,category:'CANDIDATE_STRUCTURE_INVALID',detail:'Prompt optimization candidates must be distinct unsaved revisions',attemptId:'057b9209-036d-4096-a645-7bd49ffc0d94',providerDispatched:true,providerResponseReturned:true,candidatesSaved:false,retrySafe:false}});
+    flushSavedOptimizationHistory(http,'failed-analysis',[]);
     expect(c.creativeOptimizationError).toContain('CANDIDATE_STRUCTURE_INVALID');expect(c.creativeOptimizationError).toContain('057b9209');expect(c.creativeOptimizationError).toContain('Retry blocked');expect(c.creativeOptimizationError).toContain('Candidates saved: no');
     http.expectNone(r=>r.method==='POST');f.destroy();TestBed.resetTestingModule();
   });
@@ -1325,11 +1354,13 @@ Hard cut.`;
   it('preserves selection and review on an identical saved GET and clears review if candidate evidence changes', async () => {
     const f=await setup();const c=f.componentInstance;const http=TestBed.inject(HttpTestingController);c.review={recordId:'run'};c.activeStage=6;c.creativeOptimizationComparison=compactComparison();c.reviewCreativeOptimizationCandidate('candidate-a');c.selectCreativeOptimizationCandidate('candidate-a');c.optimizationDiffCandidateId='candidate-b';f.detectChanges();await f.whenStable();f.detectChanges();
     c.loadLatestCreativeOptimization();http.expectOne('/api/v1/intelligence/workflow/records/run/creative-optimization/latest').flush({comparison:compactComparison()});
+    flushSavedOptimizationHistory(http,'run',[]);
     expect(c.creativeOptimizationSelectedCandidateId).toBe('candidate-a');expect(c.creativeOptimizationReviewedCandidateId).toBe('candidate-a');expect(c.optimizationDiffCandidateId).toBe('candidate-b');
     f.detectChanges();await f.whenStable();f.detectChanges();
     expect((f.nativeElement.querySelector('.optimization-diff-controls select') as HTMLSelectElement).value).toBe('candidate-b');
     expect(f.nativeElement.querySelector('.optimization-side-diff th:last-child').textContent).toContain('candidate-b');
     const changed=compactComparison();changed.candidates[0].prompt='changed evidence';c.loadLatestCreativeOptimization();http.expectOne('/api/v1/intelligence/workflow/records/run/creative-optimization/latest').flush({comparison:changed});
+    flushSavedOptimizationHistory(http,'run',[]);
     expect(c.creativeOptimizationSelectedCandidateId).toBe('candidate-a');expect(c.creativeOptimizationReviewedCandidateId).toBeNull();expect(c.creativeOptimizationApprovalEnabled).toBe(false);
     http.expectNone(r=>r.method==='POST');f.destroy();TestBed.resetTestingModule();
   });
@@ -1368,6 +1399,7 @@ Hard cut.`;
   it('preserves an independently reviewed draft across the same saved GET without selecting it', async () => {
     const f=await setup();const c=f.componentInstance;const http=TestBed.inject(HttpTestingController);c.review={recordId:'run'};c.creativeOptimizationComparison=compactComparison();c.reviewCreativeOptimizationCandidate('candidate-a');
     c.loadLatestCreativeOptimization();http.expectOne('/api/v1/intelligence/workflow/records/run/creative-optimization/latest').flush({comparison:compactComparison()});
+    flushSavedOptimizationHistory(http,'run',[]);
     expect(c.creativeOptimizationReviewedCandidateId).toBe('candidate-a');expect(c.creativeOptimizationSelectedCandidateId).toBeNull();expect(c.creativeOptimizationApprovalEnabled).toBe(false);http.expectNone(r=>r.method==='POST');f.destroy();TestBed.resetTestingModule();
   });
 

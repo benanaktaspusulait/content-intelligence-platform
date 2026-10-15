@@ -25,6 +25,9 @@ public class WorkflowController {
   @org.springframework.beans.factory.annotation.Autowired
   private com.pompomhills.intelligence.content.ContentWorkspaceController contents;
 
+  @org.springframework.beans.factory.annotation.Autowired
+  private CreativePromptQualityService cpq;
+
   @PostMapping("/records/{id}/canonical-validation")
   public com.pompomhills.intelligence.quality.IntelligenceValidateResponse canonicalValidation(
       @PathVariable UUID id) {
@@ -34,6 +37,17 @@ public class WorkflowController {
   @GetMapping("/records/{id}/creative-optimization/latest")
   public Map<String, Object> latestCreativeOptimization(@PathVariable UUID id) {
     return service.latestCreativeOptimization(id);
+  }
+
+  @GetMapping("/records/{id}/creative-optimization/history")
+  public List<Map<String,Object>> creativeOptimizationHistory(@PathVariable UUID id) {
+    var comparisons=service.creativeOptimizationHistory(id);
+    for(var comparison:comparisons) {
+      UUID comparisonId=UUID.fromString(String.valueOf(comparison.get("recordId")));
+      comparison.put("candidateBindings",cpq.comparisonBindings(id,comparisonId).get("candidateBindings"));
+      comparison.put("historical",!comparison.equals(comparisons.getFirst()));
+    }
+    return comparisons;
   }
 
   @PostMapping("/records/{id}/creative-optimization/revalidate")

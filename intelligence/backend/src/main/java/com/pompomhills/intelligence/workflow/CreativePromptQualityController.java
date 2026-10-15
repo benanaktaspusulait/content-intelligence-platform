@@ -1,6 +1,7 @@
 package com.pompomhills.intelligence.workflow;
 
 import jakarta.servlet.http.HttpServletRequest;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import org.springframework.web.bind.annotation.*;
@@ -14,13 +15,25 @@ public class CreativePromptQualityController {
   @GetMapping("/records/{analysisId}/creative-prompt-quality")
   public Map<String,Object> savedAssessments(@PathVariable UUID analysisId) { return service.savedAssessments(analysisId); }
 
-  @PostMapping("/records/{analysisId}/creative-prompt-quality/assess")
-  public Map<String,Object> assessAll(@PathVariable UUID analysisId) { return service.assessAll(analysisId); }
+  @GetMapping("/records/{analysisId}/comparisons/{comparisonId}/creative-prompt-quality/binding")
+  public Map<String,Object> comparisonBinding(@PathVariable UUID analysisId,@PathVariable UUID comparisonId) {
+    return service.comparisonBindings(analysisId,comparisonId);
+  }
 
-  @PostMapping("/records/{analysisId}/candidates/{candidateId}/fidelity-review")
-  public Map<String,Object> fidelityReview(@PathVariable UUID analysisId,@PathVariable String candidateId,
+  @PostMapping("/records/{analysisId}/comparisons/{comparisonId}/candidates/{candidateId}/creative-prompt-quality/assess")
+  public Map<String,Object> assess(@PathVariable UUID analysisId,@PathVariable UUID comparisonId,@PathVariable String candidateId,
+      jakarta.servlet.http.HttpServletRequest principal) {
+    var assessment=service.assess(analysisId,comparisonId,candidateId,principal);
+    return Map.of("rubricVersion",CreativePromptQualityService.RUBRIC,"gradingStatus","CALIBRATION_INCOMPLETE",
+        "absoluteQualityTarget","A_OR_A_PLUS","candidateAssessments",List.of(assessment),
+        "originalCanonical",assessment.get("canonicalValidation"),"renderReadiness",assessment.get("renderReadiness"),
+        "activationState","INACTIVE","comparisonId",comparisonId.toString());
+  }
+
+  @PostMapping("/records/{analysisId}/comparisons/{comparisonId}/candidates/{candidateId}/fidelity-review")
+  public Map<String,Object> fidelityReview(@PathVariable UUID analysisId,@PathVariable UUID comparisonId,@PathVariable String candidateId,
       @RequestBody Map<String,Object> request,HttpServletRequest principal) {
-    return service.reviewFidelity(analysisId,candidateId,request,principal);
+    return service.reviewFidelity(analysisId,comparisonId,candidateId,request,principal);
   }
 
   @GetMapping("/cpq/calibration")
