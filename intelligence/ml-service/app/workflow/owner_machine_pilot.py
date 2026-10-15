@@ -91,5 +91,7 @@ def execute(body, provider_factory=CreativeCapabilityProvider):
         envelope['results']=validate(json.loads(raw),data);envelope['executionStatus']='COMPLETED'
     except Exception:
         envelope['rawResponse']=getattr(provider,'last_raw_response',envelope.get('rawResponse',''))
+        envelope['usage']=getattr(provider,'last_usage',envelope.get('usage'))
+        envelope['providerMetadata']=getattr(provider,'last_response_metadata',envelope.get('providerMetadata',{}))
         envelope['failure']='Provider or response contract failed; saved result requires review; no automatic retry'
     return envelope

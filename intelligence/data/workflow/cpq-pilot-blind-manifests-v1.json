@@ -1,0 +1,28 @@
+{
+  "version": "cpq-pilot-blind-manifests-v1",
+  "sources": {
+    "0fe229774deb4b31a42145bad91cf10c91634ba00da39fa3e9d288b3a2e7bd98": {
+      "neutralIds": {
+        "90bdda1e9cea8e2e46662821b52a01dc94359df87b7753f2c77a645c77905495": "Q01",
+        "218a9b367d6484d2a12bc8f6e02150f8812cdf8874c73b0171c254035a6be749": "Q02",
+        "2151ed0e2d4b8afa42ea80bad8238a9a639a1be40eea6576390e04704774c746": "Q03",
+        "0fe229774deb4b31a42145bad91cf10c91634ba00da39fa3e9d288b3a2e7bd98": "Q04"
+      },
+      "orders": {
+        "CRITIC_A": [
+          "Q04",
+          "Q01",
+          "Q02",
+          "Q03"
+        ],
+        "CRITIC_B": [
+          "Q02",
+          "Q03",
+          "Q01",
+          "Q04"
+        ]
+      },
+      "seed": "cpq-mimi-pilot-v1:2026-10-15:source-0fe229774deb4b31"
+    }
+  }
+}

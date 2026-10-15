@@ -1,0 +1,42 @@
+
+> frontend@0.0.0 test
+> ng test --watch=false --include src/app/pages/quality-validator/cpq-owner-pilot.component.spec.ts --include src/app/pages/quality-validator/post-family-workflow.spec.ts
+
+❯ Building...
+✔ Building...
+Initial chunk files                                           | Names                                                      |  Raw size
+spec-app-pages-quality-validator-post-family-workflow.js      | spec-app-pages-quality-validator-post-family-workflow      | 937.10 kB | 
+styles.css                                                    | styles                                                     | 237.88 kB | 
+chunk-J72I6KDO.js                                             | -                                                          |  41.42 kB | 
+chunk-RSTWSNOR.js                                             | -                                                          |   4.75 kB | 
+spec-app-pages-quality-validator-cpq-owner-pilot.component.js | spec-app-pages-quality-validator-cpq-owner-pilot.component |   2.81 kB | 
+init-testbed.js                                               | init-testbed                                               |   1.21 kB | 
+vitest-mock-patch.js                                          | vitest-mock-patch                                          | 974 bytes | 
+
+                                                              | Initial total                                              |   1.23 MB
+
+Application bundle generation complete. [26.061 seconds] - 2026-10-15T20:53:13.678Z
+
+▲ [WARNING] NG8113: TimelineChartComponent is not used within the template of QualityValidatorComponent [plugin angular-compiler]
+
+    src/app/pages/quality-validator/quality-validator.component.ts:202:39:
+      202 │ ...odule, FormsModule, TimelineChartComponent, RouterLink, Genera...
+          ╵                        ~~~~~~~~~~~~~~~~~~~~~~
+
+
+▲ [WARNING] NG8113: GeneralProducibilityComponent is not used within the template of QualityValidatorComponent [plugin angular-compiler]
+
+    src/app/pages/quality-validator/quality-validator.component.ts:202:75:
+      202 │ ...ent, RouterLink, GeneralProducibilityComponent, PostFamilyWork...
+          ╵                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+
+ RUN  v4.1.11 /Users/benanaktas/project/video/content-intelligence-platform/intelligence/frontend
+
+
+ Test Files  2 passed (2)
+      Tests  76 passed (76)
+   Start at  21:53:13
+   Duration  4.20s (transform 558ms, setup 524ms, import 708ms, tests 2.51s, environment 1.60s)
+

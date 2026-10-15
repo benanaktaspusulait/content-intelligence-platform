@@ -175,8 +175,10 @@ class PlatformIntegrationTest {
     String settings = "{\"mode\":\"image2video\",\"resolution\":\"480p\",\"aspectRatio\":\"9:16\"}";
     String settingsEvent = "{\"contentId\":" + contentId + ",\"promptVersionId\":" + promptId + ",\"contentProfile\":\"ABSURD_PHYSICS\",\"generator\":\"SEEDANCE_2_0_MINI\",\"desiredDuration\":15,\"settings\":" + settings + "}";
     jdbc.update("INSERT INTO post_family_workflow_events(id,kind,binding_sha256,payload) VALUES (?,'PRODUCTION_SETTINGS',NULL,CAST(? AS jsonb))", UUID.randomUUID(), settingsEvent);
-    jdbc.update("INSERT INTO post_family_workflow_events(id,kind,binding_sha256,payload) VALUES (?,'STORY_APPROVAL',NULL,CAST(? AS jsonb))", approvalId, "{\"approvedText\":\"" + story + "\",\"revisionId\":\"story-r1\"}");
-    jdbc.update("INSERT INTO post_family_workflow_events(id,kind,binding_sha256,payload) VALUES (?,'CREATIVE_STUDIO_SESSION',NULL,CAST(? AS jsonb))", sessionId, "{\"contentId\":" + contentId + ",\"promptVersionId\":" + promptId + ",\"sourceStoryRecordId\":\"isolated-approved-story\",\"approvalRecordId\":\"" + approvalId + "\"}");
+    UUID fixtureStoryId=UUID.randomUUID();String fixtureRevision="candidate-1-revision-"+OriginalCpqFidelityIntegrationTest.storyRevisionHash(story);
+    jdbc.update("INSERT INTO post_family_workflow_events(id,kind,payload) VALUES (?,'CREATIVE_ROLE',CAST(? AS jsonb))",fixtureStoryId,"{\"role\":\"STORY\",\"result\":{\"alternatives\":[{\"candidateId\":\"candidate-1\",\"text\":\""+story+"\"}]}}");
+    jdbc.update("INSERT INTO post_family_workflow_events(id,kind,payload) VALUES (?,'STORY_APPROVAL',CAST(? AS jsonb))",approvalId,"{\"approvedText\":\""+story+"\",\"storyRecordId\":\""+fixtureStoryId+"\",\"candidateId\":\"candidate-1\",\"revisionId\":\""+fixtureRevision+"\",\"contentFingerprint\":\""+OriginalCpqFidelityIntegrationTest.storyRevisionHash(story)+"\"}");
+    jdbc.update("INSERT INTO post_family_workflow_events(id,kind,payload) VALUES (?,'CREATIVE_STUDIO_SESSION',CAST(? AS jsonb))",sessionId,"{\"contentId\":"+contentId+",\"promptVersionId\":"+promptId+",\"storyRecordId\":\""+fixtureStoryId+"\",\"approvalRecordId\":\""+approvalId+"\"}");
     var bound = "{\"prompt\":\"" + sourcePrompt + "\",\"contentProfile\":\"ABSURD_PHYSICS\",\"generator\":\"SEEDANCE_2_0_MINI\",\"desiredDuration\":15,\"settings\":" + settings + "}";
     jdbc.update("INSERT INTO post_family_workflow_events(id,kind,binding_sha256,payload) VALUES (?,'REVIEW',NULL,CAST(? AS jsonb))", analysisId,
         "{\"contentId\":" + contentId + ",\"promptVersionId\":" + promptId + ",\"boundRequest\":" + bound + ",\"canonicalRuleEvaluation\":{\"rulesetVersion\":\"1.11\",\"score\":88.4,\"grade\":\"B\",\"status\":\"FAIL\"}}");
@@ -243,7 +245,7 @@ class PlatformIntegrationTest {
     var example = new java.util.LinkedHashMap<String,Object>();
     example.put("promptText", candidatePrompt); example.put("approvedStoryText", story);
     example.put("sourceFidelityEvidenceId", fidelity.get("evidenceId"));
-    example.put("sourceStoryId", "isolated-approved-story"); example.put("sourceRevision", "story-r1");
+    example.put("sourceStoryId", fixtureStoryId.toString()); example.put("sourceRevision", fixtureRevision);
     example.put("promptVersionLabel", "isolated candidate"); example.put("contentProfile", "ABSURD_PHYSICS");
     example.put("generator", "SEEDANCE_2_0_MINI"); example.put("durationSeconds", 15);
     example.put("settings", java.util.Map.of("mode", "image2video", "resolution", "480p", "aspectRatio", "9:16"));

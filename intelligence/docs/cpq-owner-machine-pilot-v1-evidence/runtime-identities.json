@@ -1,0 +1,38 @@
+{
+  "backend": {
+    "image": "sha256:32888e142e59a3e67d1c798e4f6d21aad5289939ea91a3500d887c7fafdfbb87",
+    "health": "healthy",
+    "ports": {
+      "8080/tcp": [
+        {
+          "HostIp": "127.0.0.1",
+          "HostPort": "8080"
+        }
+      ]
+    }
+  },
+  "ml-service": {
+    "image": "sha256:734e76e603c5542e1c4d7d2018b4ad89bceb4c260d65e7b1e8795beb2f0da243",
+    "health": "healthy",
+    "ports": {
+      "8000/tcp": [
+        {
+          "HostIp": "127.0.0.1",
+          "HostPort": "8000"
+        }
+      ]
+    }
+  },
+  "frontend": {
+    "image": "sha256:d5191a437f0a7917324a10f8459279a72b79d9655fd196b904cb958b8b8c00c5",
+    "health": "no docker healthcheck",
+    "ports": {
+      "80/tcp": [
+        {
+          "HostIp": "127.0.0.1",
+          "HostPort": "4200"
+        }
+      ]
+    }
+  }
+}

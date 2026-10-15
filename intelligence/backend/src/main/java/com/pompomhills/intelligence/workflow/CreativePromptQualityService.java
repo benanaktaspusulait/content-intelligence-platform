@@ -423,7 +423,7 @@ public class CreativePromptQualityService {
     String original=savedPrompt(content,promptId);
     var context=originalContext(Map.of("contentId",content,"promptVersionId",promptId,"expectedPromptSha256",hash(original)));
     if(!((List<?>)context.get("blockers")).isEmpty())throw new ResponseStatusException(CONFLICT,String.join(",",(List<String>)context.get("blockers")));
-    var out=new LinkedHashMap<String,Object>(context);out.put("analysisId",analysis.toString());out.put("canonical",baseline.get("canonicalRuleEvaluation"));out.put("originalPrompt",original);out.put("changedBeats",List.of());
+    var out=new LinkedHashMap<String,Object>(context);out.put("approvedStorySha256",hash(text(map(context.get("approvedStory")).get("text"))));out.put("analysisId",analysis.toString());out.put("canonical",baseline.get("canonicalRuleEvaluation"));out.put("originalPrompt",original);out.put("changedBeats",List.of());
     if(comparisonId!=null) {
       var comparison=comparison(analysis,comparisonId);var candidate=candidate(comparison,candidateId);
       if(!Boolean.TRUE.equals(candidateBinding(analysis,baseline,comparison,candidate).get("assessmentAllowed")))throw new ResponseStatusException(CONFLICT,"Candidate binding is not current");

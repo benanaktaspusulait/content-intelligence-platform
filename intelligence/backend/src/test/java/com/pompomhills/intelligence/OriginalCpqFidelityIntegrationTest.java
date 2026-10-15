@@ -293,6 +293,8 @@ class OriginalCpqFidelityIntegrationTest {
   }
   @Test void ownerMachinePilotUsesRealMimiInputsWithThreeDistinctMockedExecutions() throws Exception {
     realSavedMimiPilotResolvesFourSubjectsWithUnknownSemanticEvidence();
+    var catalog=Path.of("../data");if(!Files.exists(catalog.resolve("workflow/cpq-pilot-blind-manifests-v1.json")))catalog=Path.of("intelligence/data");
+    org.springframework.test.util.ReflectionTestUtils.setField(ownerPilot,"dataRoot",catalog.toAbsolutePath().toString());
     var owner=actor("fixture-owner","OWNER");
     var selectors=List.of(Map.of("comparisonId","e651eb75-b894-477d-ae77-0fe6e05236da","candidateId","candidate-a"),Map.of("comparisonId","9275c94b-fc35-4207-8648-dfd8d166e502","candidateId","candidate-a"),Map.of("comparisonId","9275c94b-fc35-4207-8648-dfd8d166e502","candidateId","candidate-b"));
     var create=Map.<String,Object>of("analysisId","f0d36feb-ee0f-4da8-ae21-2071a3ddea18","candidates",selectors,"maxTotalUsd",0.5,"confirmSourceAuthority",true);
@@ -300,6 +302,7 @@ class OriginalCpqFidelityIntegrationTest {
     UUID pilot=UUID.fromString((String)ownerPilot.create(create,owner).get("pilotId"));
     var profile=Map.of("provider","openai","model","fixture-separate-source-model","configured",true,"inputUsdPerMillion",0.01,"outputUsdPerMillion",0.01);
     when(ml.workflow(eq("cpq-pilot/capabilities"),anyMap())).thenReturn(Map.of("profiles",Map.of("fixture-review",profile)));
+    assertThatThrownBy(()->ownerPilot.decision(pilot,Map.of("decision","ACCEPT_TEXT_FOR_PREPARATION","rationale","Fixture-only acceptance without the required independent stage evidence.","confirmUngradedNoRender",true),owner)).hasMessageContaining("All three independent stage results");
     var dispatched=new ArrayList<Map<String,Object>>();
     when(ml.workflow(eq("cpq-pilot/execute"),anyMap())).thenAnswer(invocation->{
       Map<String,Object> request=invocation.getArgument(1);dispatched.add(request);var input=(Map<String,Object>)request.get("input");var results=new ArrayList<Map<String,Object>>();
@@ -313,11 +316,18 @@ class OriginalCpqFidelityIntegrationTest {
     });
     for(String slot:List.of("SOURCE_FIDELITY","CRITIC_A","CRITIC_B")) {
       var authorization=Map.<String,Object>of("slot",slot,"profileId","fixture-review","provider","openai","model","fixture-separate-source-model","maxOutputTokens",4000,"maxCostUsd",0.1,"authorizePaidInference",true,"automaticRetries",false,"idempotencyKey","fixture-key-"+slot+"-unique");
-      var authorized=ownerPilot.authorize(pilot,authorization,owner);var requests=(List<Map<String,Object>>)authorized.get("requests");UUID request=UUID.fromString((String)requests.stream().filter(r->slot.equals(r.get("slot"))).findFirst().orElseThrow().get("requestId"));
+      var denied=new LinkedHashMap<String,Object>(authorization);denied.put("authorizePaidInference",false);
+      assertThatThrownBy(()->ownerPilot.authorize(pilot,denied,owner)).hasMessageContaining("Explicit single paid dispatch");
+      var authorized=ownerPilot.authorize(pilot,authorization,owner);
+      ownerPilot.authorize(pilot,authorization,owner); // Same durable key returns the existing reservation.
+      var wrongKey=new LinkedHashMap<String,Object>(authorization);wrongKey.put("idempotencyKey","different-fixture-key-"+slot);
+      assertThatThrownBy(()->ownerPilot.authorize(pilot,wrongKey,owner)).hasMessageContaining("already has an immutable authorization");var requests=(List<Map<String,Object>>)authorized.get("requests");UUID request=UUID.fromString((String)requests.stream().filter(r->slot.equals(r.get("slot"))).findFirst().orElseThrow().get("requestId"));
       assertThatThrownBy(()->ownerPilot.execute(pilot,request,owner)).hasMessageContaining("Real dispatch disabled");
       org.springframework.test.util.ReflectionTestUtils.setField(ownerPilot,"realEnabled",true);
       try {ownerPilot.execute(pilot,request,owner);ownerPilot.execute(pilot,request,owner);} finally {org.springframework.test.util.ReflectionTestUtils.setField(ownerPilot,"realEnabled",false);}
     }
+    assertThat(((List<Map<String,Object>>)((Map<String,Object>)dispatched.get(1).get("input")).get("packets")).stream().map(packet->packet.get("neutralId"))).containsExactly("Q04","Q01","Q02","Q03");
+    assertThat(((List<Map<String,Object>>)((Map<String,Object>)dispatched.get(2).get("input")).get("packets")).stream().map(packet->packet.get("neutralId"))).containsExactly("Q02","Q03","Q01","Q04");
     assertThat(dispatched).hasSize(3);assertThat(dispatched.stream().map(r->r.get("requestId")).distinct()).hasSize(3);
     var view=ownerPilot.view(pilot,owner);assertThat((List<?>)((Map<?,?>)view.get("comparison")).get("disagreements")).hasSize(24);
     assertThat(view).containsEntry("humanReviewCount",0).containsEntry("officialGrading","INACTIVE").containsEntry("renderAuthorized",false);
@@ -326,6 +336,13 @@ class OriginalCpqFidelityIntegrationTest {
     assertThat(jdbc.queryForObject("SELECT count(*) FROM cpq_calibration_judgments",Integer.class)).isZero();
     assertThat(jdbc.queryForObject("SELECT count(*) FROM cpq_calibration_examples",Integer.class)).isZero();
     assertThat(jdbc.queryForObject("SELECT activated FROM cpq_policy_state",Boolean.class)).isFalse();
+  }
+
+  @Test void realSavedMimiContradictorySettingsAreRejectedWithExplicitDiagnostics() throws Exception {
+    realSavedMimiPilotResolvesFourSubjectsWithUnknownSemanticEvidence();
+    var conflicting=new LinkedHashMap<String,Object>(settings());conflicting.put("contentId",10);conflicting.put("promptVersionId",10);conflicting.put("aspectRatio","16:9");event("PRODUCTION_SETTINGS",conflicting);
+    var preflight=api.originalPreflight(Map.of("contentId",10,"promptVersionId",10,"expectedPromptSha256","0fe229774deb4b31a42145bad91cf10c91634ba00da39fa3e9d288b3a2e7bd98"),manager);
+    assertThat((List<String>)preflight.get("blockers")).anyMatch(message->message.contains("PRODUCTION_SETTINGS_CONFLICT"));
   }
 
 }

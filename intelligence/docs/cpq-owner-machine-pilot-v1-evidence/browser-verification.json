@@ -1,0 +1,15 @@
+{
+  "browser": "Real Google Chrome, Pompom profile, native accessibility and screenshot",
+  "url": "http://localhost:4200/quality/detail?contentId=10&promptVersionId=10&studio=1",
+  "step6OpenedWithoutInference": true,
+  "latestEmptyComparisonPilotVisible": true,
+  "originalSourceSettingsVisible": true,
+  "historicalTwoCandidateComparisonSelectedForInspectionOnly": true,
+  "candidateBHashVisible": "2151ed0e2d4b8afa42ea80bad8238a9a639a1be40eea6576390e04704774c746",
+  "storyRecordApprovalAndTextRevisionVisiblyDistinct": true,
+  "ownerUnconfiguredNoticeVisible": true,
+  "machineNotExecutedHumanUnknownOfficialGradingInactiveRenderBlockedVisible": true,
+  "visualScreenshotInspectedInline": true,
+  "authenticatedLiveVerification": "PENDING_PRIVATE_OWNER_CONFIGURATION; no temporary owner credential created",
+  "earlierBrowserInterruption": "Initial Chrome browser reported offline and browser surfaces later closed; recovered by reopening project Chrome profile without restoring unrelated tabs"
+}

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnChanges, ChangeDetectorRef, inject } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges, ChangeDetectorRef, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 
@@ -44,7 +44,7 @@ export class CpqOwnerPilotComponent implements OnChanges {
  private http=inject(HttpClient); private cd=inject(ChangeDetectorRef); private seq=0;
  sourceAuthority=false;opened=false;auth:any=null;context:any=null;caps:any=null;pilot:any=null;pilotId='';credential='';message='';busy=false;budget=.5;callCap=.15;tokens=4000;slot='SOURCE_FIDELITY';profileId='';paidConsent=false;decision='KEEP_ORIGINAL';rationale='';decisionConsent=false;
  get profileOptions(){return Object.entries(this.caps?.profiles||{}).map(([id,p]:any)=>({id,...p}));}
- ngOnChanges(){this.seq++;this.context=null;this.paidConsent=false;this.decisionConsent=false;if(this.opened)this.readContext();}
+ ngOnChanges(changes:SimpleChanges){if(!changes['analysisId']&&!changes['comparisonId']&&!changes['candidateId'])return;this.seq++;this.context=null;this.paidConsent=false;this.decisionConsent=false;if(this.opened)this.readContext();}
  open(){if(this.opened)return;this.opened=true;this.http.get<any>('/api/v1/intelligence/workflow/owner-auth').subscribe({next:v=>{this.auth=v;this.cd.markForCheck();},error:()=>this.fail('Owner session unavailable')});this.http.get<any>('/api/v1/intelligence/workflow/cpq/owner-pilot/capabilities').subscribe({next:v=>{this.caps=v;this.cd.markForCheck();},error:()=>this.fail('Provider capabilities unavailable')});this.readContext();}
  private readContext(){if(!this.analysisId)return;const seq=++this.seq;const params:any={analysisId:this.analysisId};if(this.comparisonId&&this.candidateId){params.comparisonId=this.comparisonId;params.candidateId=this.candidateId;}this.http.get<any>('/api/v1/intelligence/workflow/cpq/owner-pilot/context',{params}).subscribe({next:v=>{if(seq===this.seq){this.context=v;this.cd.markForCheck();}},error:()=>{if(seq===this.seq)this.fail('Source/settings binding unavailable; inspect the saved context before proceeding');}});}
  private headers(){return {'X-CPQ-CSRF':this.auth?.csrfToken||''};}

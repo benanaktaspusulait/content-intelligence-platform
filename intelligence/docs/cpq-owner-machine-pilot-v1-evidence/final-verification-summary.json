@@ -1,0 +1,17 @@
+{
+  "distinctFocusedBackendTests": 52,
+  "breakdown": {
+    "OriginalCpqFidelityIntegrationTest": 20,
+    "CpqOwnerAccessTest": 5,
+    "PlatformIntegrationTest": 26,
+    "CpqV62MigrationTest": 1
+  },
+  "backendFailures": 0,
+  "backendErrors": 0,
+  "frontendTests": 77,
+  "mlTests": 47,
+  "additionalReruns": "Exact neutral mapping and final fingerprint evidence contract each passed as focused real-input mocked-transport tests",
+  "realProviderCalls": 0,
+  "productionPilotEvidence": 0,
+  "testFixtureOpinionsAreNotCreativeFindings": true
+}

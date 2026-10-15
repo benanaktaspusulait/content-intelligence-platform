@@ -1,0 +1,13 @@
+import { TestBed } from '@angular/core/testing';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting,HttpTestingController } from '@angular/common/http/testing';
+import { CpqOwnerPilotComponent } from './cpq-owner-pilot.component';
+describe('owner CPQ pilot boundaries',()=>{
+ async function setup(){await TestBed.configureTestingModule({imports:[CpqOwnerPilotComponent],providers:[provideHttpClient(),provideHttpClientTesting()]}).compileComponents();const f=TestBed.createComponent(CpqOwnerPilotComponent);f.componentRef.setInput('analysisId','saved-analysis');f.detectChanges();return {f,c:f.componentInstance,http:TestBed.inject(HttpTestingController)};}
+ afterEach(()=>TestBed.resetTestingModule());
+ it('does not dispatch or write on opening Step 6',async()=>{const {f,http}=await setup();http.expectNone(()=>true);expect(f.nativeElement.textContent).toContain('NOT_EXECUTED');expect(f.nativeElement.textContent).toContain('INACTIVE');f.destroy();});
+ it('fails closed without private owner configuration',async()=>{const {f,c,http}=await setup();c.open();http.expectOne('/api/v1/intelligence/workflow/owner-auth').flush({configured:false,authenticated:false,csrfToken:'fixture-csrf'});http.expectOne('/api/v1/intelligence/workflow/cpq/owner-pilot/capabilities').flush({profiles:{},realDispatchEnabled:false});http.expectOne(r=>r.url.endsWith('/owner-pilot/context')).flush({subjectType:'ORIGINAL_PROMPT',promptSha256:'exact'});f.detectChanges();expect(f.nativeElement.textContent).toContain('awaits private configuration');expect(f.nativeElement.querySelector('input[type=password]')).toBeNull();http.expectNone(r=>r.method==='POST');http.verify();f.destroy();});
+ it('sends CSRF from memory and immediately clears the credential',async()=>{const {f,c,http}=await setup();c.auth={configured:true,authenticated:false,csrfToken:'fixture-csrf'};c.credential='TEST_FIXTURE_SECRET';c.login();expect(c.credential).toBe('');const req=http.expectOne('/api/v1/intelligence/workflow/owner-auth/login');expect(req.request.headers.get('X-CPQ-CSRF')).toBe('fixture-csrf');req.flush({configured:true,authenticated:true,csrfToken:'rotated',ownerId:'fixture-owner'});expect(c.auth.csrfToken).toBe('rotated');expect(JSON.stringify(localStorage)).not.toContain('TEST_FIXTURE_SECRET');http.verify();f.destroy();});
+ it('does not reload or clear resolved context when only candidate array identity changes',async()=>{const {f,c,http}=await setup();c.opened=true;c.context={promptSha256:'saved'};f.componentRef.setInput('candidates',[{comparisonId:'saved',candidateId:'a'}]);f.detectChanges();expect(c.context.promptSha256).toBe('saved');http.expectNone(()=>true);f.destroy();});
+
+});

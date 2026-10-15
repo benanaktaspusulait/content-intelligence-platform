@@ -1,6 +1,9 @@
 # Mimi real CPQ pilot — operational evidence and owner-managed continuation
 
-Date: 2026-10-15. Latest operator direction supersedes the initial assumption that four separate people will be appointed. Roles are logical permissions. No external IdP or reviewer appointments exist, as explicitly confirmed by the owner. No new governance policy has been activated.
+Date: 2026-10-15.
+
+**Implementation continuation:** The approved owner-machine workflow is now implemented and deployed under V65. The historical findings/proposal below describe the previous snapshot; both verified binding defects are fixed. See [owner-machine implementation report](CPQ_V1_OWNER_MACHINE_PILOT_IMPLEMENTATION_REPORT.md) for current contracts, tests, private setup and independent flags. Real reviews remain uncollected and grading inactive.
+ Latest operator direction supersedes the initial assumption that four separate people will be appointed. Roles are logical permissions. No external IdP or reviewer appointments exist, as explicitly confirmed by the owner. No new governance policy has been activated.
 
 ## Actual preparation
 
@@ -115,3 +118,8 @@ Current runtime unchanged: V64, backend image `sha256:dd73b57f02097fe7382cd9293b
 | GOLDEN_CALIBRATION_EXPANSION | PARTIALLY_READY | Existing six packages intact; exact prioritized owner actions prepared |
 | CPQ_GRADING | INACTIVE | Existing policy preserved |
 | REAL_B_TO_A_ACCEPTANCE | NOT_VERIFIED | No independent accepted improvement pair |
+
+
+## Approved owner-machine implementation completed
+
+The two real-data mapping defects now pass positive saved-input tests and live context resolution. Narrow owner sessions, typed machine/owner evidence, two independent critic slots, separate machine source checking, durable bounded authorization/idempotency, ungraded policy and existing Step6 controls are implemented and deployed. Owner authentication awaits private configuration. Mocked contracts are verified; no human review, actual machine opinion or creative superiority was created. Existing human calibration and canonical/F8 semantics remain separate. See the linked implementation report for full final results and the maximum three-call, USD0.60 proposed experiment, which remains unauthorized/unexecuted.

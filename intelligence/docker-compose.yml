@@ -41,7 +41,6 @@ services:
       WORKFLOW_STORY_REVIEW_OUTPUT_USD_PER_MILLION: ${WORKFLOW_STORY_REVIEW_OUTPUT_USD_PER_MILLION:-0.6}
     ports: ["127.0.0.1:8000:8000"]
     volumes:
-      - "${CPQ_OWNER_CONFIG_DIR:-${HOME}/.config/pompom-owner}:/run/pompom-owner:ro"
       - "./data:/data"
       - "${POMPOM_LIBRARY_ROOT:-../../yuvarlak-dunya}:/data/library:ro"
     healthcheck:
@@ -110,7 +109,6 @@ services:
       POMPOM_INTELLIGENCE_BASE_URL: http://backend:8080
       OBSERVATION_BRIDGE_TOKEN: ${OBSERVATION_BRIDGE_TOKEN:-}
       QA_REVIEW_TOKEN: ${QA_REVIEW_TOKEN:-}
-      CPQ_PILOT_REAL_ENABLED: ${CPQ_PILOT_REAL_ENABLED:-false}
       POMPOM_DATA_ROOT: /data
       POMPOM_LIBRARY_ROOT: /data/library
       POMPOM_QA_SERVICE_URL: http://ml-service:8000
@@ -141,7 +139,6 @@ services:
       YOUTUBE_PUBLISHER_CLIENT_ENABLED: ${YOUTUBE_PUBLISHER_CLIENT_ENABLED:-false}
     expose: ["8081"]
     volumes:
-      - "${CPQ_OWNER_CONFIG_DIR:-${HOME}/.config/pompom-owner}:/run/pompom-owner:ro"
       - "./data:/data"
       - "${POMPOM_LIBRARY_ROOT:-../../yuvarlak-dunya}:/data/library:ro"
       # Run `openart login` on the host first. The CLI stores OAuth credentials here.

@@ -10,7 +10,7 @@ import org.testcontainers.containers.PostgreSQLContainer;
 
 class CpqV62MigrationTest {
   @Test
-  void upgradesV61ThroughV64AndPreservesAppendOnlyComparisonBoundEvidence() {
+  void upgradesV61ThroughV65AndPreservesAppendOnlyComparisonBoundEvidence() {
     try (var database = new PostgreSQLContainer<>("postgres:17-alpine")
         .withDatabaseName("pompom")
         .withUsername("pompom")
@@ -31,7 +31,7 @@ class CpqV62MigrationTest {
       }
       var upgraded = flyway(database).load();
       upgraded.migrate();
-      assertThat(upgraded.info().current().getVersion().toString()).isEqualTo("64");
+      assertThat(upgraded.info().current().getVersion().toString()).isEqualTo("65");
 
       try (var connection = database.createConnection("")) {
         var statement = connection.createStatement();
