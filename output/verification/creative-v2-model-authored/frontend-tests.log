@@ -1,0 +1,40 @@
+
+> frontend@0.0.0 test
+> ng test --watch=false --include=src/app/pages/quality-validator/post-family-workflow.spec.ts
+
+❯ Building...
+✔ Building...
+Initial chunk files                                      | Names                                                 |  Raw size
+spec-app-pages-quality-validator-post-family-workflow.js | spec-app-pages-quality-validator-post-family-workflow | 852.11 kB | 
+styles.css                                               | styles                                                | 237.88 kB | 
+chunk-RSTWSNOR.js                                        | -                                                     |   4.75 kB | 
+init-testbed.js                                          | init-testbed                                          |   1.21 kB | 
+vitest-mock-patch.js                                     | vitest-mock-patch                                     | 974 bytes | 
+
+                                                         | Initial total                                         |   1.10 MB
+
+Application bundle generation complete. [19.896 seconds] - 2026-10-15T09:46:20.708Z
+
+▲ [WARNING] NG8113: TimelineChartComponent is not used within the template of QualityValidatorComponent [plugin angular-compiler]
+
+    src/app/pages/quality-validator/quality-validator.component.ts:202:39:
+      202 │ ...odule, FormsModule, TimelineChartComponent, RouterLink, Genera...
+          ╵                        ~~~~~~~~~~~~~~~~~~~~~~
+
+
+▲ [WARNING] NG8113: GeneralProducibilityComponent is not used within the template of QualityValidatorComponent [plugin angular-compiler]
+
+    src/app/pages/quality-validator/quality-validator.component.ts:202:75:
+      202 │ ...ent, RouterLink, GeneralProducibilityComponent, PostFamilyWork...
+          ╵                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+
+ RUN  v4.1.11 /Users/benanaktas/project/video/content-intelligence-platform/intelligence/frontend
+
+
+ Test Files  1 passed (1)
+      Tests  70 passed (70)
+   Start at  10:46:20
+   Duration  3.50s (transform 419ms, setup 226ms, import 439ms, tests 2.03s, environment 636ms)
+

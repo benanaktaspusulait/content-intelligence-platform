@@ -141,3 +141,13 @@ A fresh, separately explicit authorization must bind the exact saved prompt/hash
 - `intelligence/docs/CREATIVE_OPTIMIZATION_V2_WORKLIST.md`: tracked task completion.
 
 Regression/deployment results and production history integrity are recorded alongside this report. Implementation contract readiness only; real-model creative effectiveness UNVERIFIED.
+
+## Regression and live artifact verification
+
+- ML: **221 passed**, including **25 authored-contract tests** plus the existing optimization/source/canonical/F8 regressions. Parser datetime deprecation warnings remain.
+- Backend: **47 passed, 3 explicitly conditional tests skipped**, zero failures/errors. PostgreSQL cases use disposable Testcontainers databases.
+- Frontend: **70 passed**, including attribution display and existing navigation/selection behavior. This is Angular DOM verification, not a new browser viewport test.
+- Deployment: `./intelligence/scripts/deploy.sh ml-service backend frontend`; final ML-only rebuild carries the completed validation guard. Backend/ML health and frontend served assets checked. Runtime compilation in the built ML image uses a local fake provider only. Source file hashes match the running image. The compiled backend artifact contains the new instructions version; the served lazy frontend chunk contains the attribution label.
+- The final read-only deployed check and history fingerprint results are in `deployed-read-only-verification.json`. All 72 historical workflow rows are unchanged, Prompt 10 text is exact, authoritative analysis remains `f0d36feb-ee0f-4da8-ae21-2071a3ddea18` at 88.40625/B. No production workflow record, prompt version, approval or evaluation was created.
+
+**Result: authoring contract implementation ready; real-model creative effectiveness UNVERIFIED.** The multi-beat mock remains KEEP_ORIGINAL until its execution-risk concerns are resolved. No real-model creative success is claimed.

@@ -74,10 +74,12 @@ Content 10 / immutable Prompt ID 10 (v1), onaylı hikâye, Ruleset 1.11 ve tüm 
 ## Model katkısını artırma — model-authored-production-v1
 
 - [x] Gerçek sağlayıcı yanıtındaki dar seçim alanını ve şablon derleyicisini incele.
-- [ ] Mevcut V2'ye kaynak referanslı model-yazarlı prodüksiyon şeması ekle; eski kayıtların yorumunu koru.
-- [ ] Uzamsal ilişki, koreografi, sonuç, durum geçişi, zaman sunumu, kompozisyon ve üretici kısıtlarını doğrula ve metni koruyarak derle.
-- [ ] Maddi değişiklik, kaynak dışı değişiklik, kozmetik genişleme ve üretim riski kontrollerini uygula.
-- [ ] Açık şablon fallback'i ile model/sunucu/kaynak kökenini ayır; sessiz fallback yapma.
-- [ ] Kaydedilmiş Mimi girdileri ve mock yanıtlarla temas + 2→4→8 çoklu-beat örneği ve olumsuz durumları test et.
-- [ ] Canonical/source/critic/risk ve tarihî gerçek yanıt uyumluluğunu doğrula; tam önce/sonra raporunu yaz.
-- [ ] Etkilenen servisleri dağıtıp salt okunur sözleşme/tarihî kayıt kontrolünü tamamla; gerçek çağrı yapma.
+- [x] Mevcut V2'ye kaynak referanslı model-yazarlı prodüksiyon şeması ekle; eski kayıtların yorumunu koru.
+- [x] Uzamsal ilişki, koreografi, sonuç, durum geçişi, zaman sunumu, kompozisyon ve üretici kısıtlarını doğrula ve metni koruyarak derle.
+- [x] Maddi değişiklik, kaynak dışı değişiklik, kozmetik genişleme ve üretim riski kontrollerini uygula.
+- [x] Açık şablon fallback'i ile model/sunucu/kaynak kökenini ayır; sessiz fallback yapma.
+- [x] Kaydedilmiş Mimi girdileri ve mock yanıtlarla temas + 2→4→8 çoklu-beat örneği ve olumsuz durumları test et.
+- [x] Canonical/source/critic/risk ve tarihî gerçek yanıt uyumluluğunu doğrula; tam önce/sonra raporunu yaz.
+- [x] Etkilenen servisleri dağıtıp salt okunur sözleşme/tarihî kayıt kontrolünü tamamla; gerçek çağrı yapma.
+
+- Kapanış: 25 model-yazarlı sözleşme testi dahil 221 ML, 47 backend ve 70 frontend testi geçti; 3 backend testi koşullu olarak atlandı. Sözleşme ve kaynak/derleyici/model kökeni doğrulandı. Gerçek yaratıcı etkinlik UNVERIFIED. Tam örnek ve kanıt: `output/verification/creative-v2-model-authored/MODEL_AUTHORED_ACCEPTANCE_REPORT.md`. Çoklu-beat mock örneğinde canonical 88.40625/B değişmedi; execution critic uyarıları nedeniyle KEEP_ORIGINAL/onay kapalı. Gerçek sağlayıcı çağrısı yok.

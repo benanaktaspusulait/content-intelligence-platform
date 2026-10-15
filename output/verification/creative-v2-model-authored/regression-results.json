@@ -1,0 +1,57 @@
+{
+  "ml": {
+    "passed": 221,
+    "focusedAuthoredContractTests": 25,
+    "failures": 0
+  },
+  "frontend": {
+    "passed": 70,
+    "failures": 0,
+    "verification": "Angular DOM regression; not browser viewport verification"
+  },
+  "backend": {
+    "tests": 50,
+    "passed": 47,
+    "skipped": 3,
+    "failures": 0,
+    "disposablePostgres": true,
+    "classes": [
+      {
+        "class": "WorkflowNoRepairDecisionPostgresTest",
+        "tests": 10,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 3
+      },
+      {
+        "class": "WorkflowServiceTest",
+        "tests": 8,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "class": "WorkflowTransportTest",
+        "tests": 4,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "class": "Step6GovernancePostgresTest",
+        "tests": 14,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "class": "ValidationEvidenceServiceTest",
+        "tests": 14,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    ]
+  },
+  "realProviderCalls": 0
+}
