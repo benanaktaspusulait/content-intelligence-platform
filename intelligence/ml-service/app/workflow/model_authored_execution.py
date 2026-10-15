@@ -190,7 +190,7 @@ def validate_authored(intervention, opportunity, refs, source):
                     raise ValueError('STORY_FIDELITY_FAILED: authored note count contradicts its source state')
             if not re.search(r'\b'+re.escape(expected)+r'\b',text,re.I):
                 raise ValueError('Non-material authored progression does not present its bound state')
-            geometry=frozenset(x.lower() for x in GEOMETRY.findall(text))
+            geometry=frozenset({'pairs':'pair','rows':'row','separated':'apart'}.get(x.lower(),x.lower()) for x in GEOMETRY.findall(text))
             if not geometry:raise ValueError('Non-material authored progression only repeats source counts')
             geometries.append(geometry)
         if len(set(geometries))<2:raise ValueError('Non-material authored progression has no differentiated state presentation')

@@ -119,7 +119,7 @@ def test_verbose_cosmetic_variations_are_not_material(kind):
     if kind=='camera':i['operation']='CAMERA_LABEL'
     if kind=='repeated-state':
         for s in i['production']['stateProgression']:
-            s['placementInstruction']='Keep the notes in the same horizontal row with an attractive, clear, vivid, visually legible arrangement.'
+            s['placementInstruction']='Present {'+s['sourceStateRef']+'} notes in the same horizontal row with an attractive, clear, vivid, visually legible arrangement.'
     if kind=='baseline-relation':
         r=i['production']['spatialRelationships'][0];r['relation']='IN_FRONT_OF'
         r['instruction']='Keep {beat_01.actualSurface} in front of {beat_01.expectedSurface} with very clear and beautifully visible staging.'
@@ -231,3 +231,12 @@ def test_protected_identity_and_negation_scope_cannot_smuggle_story_changes(text
     p=contact();p['interventions'][0]['production']['choreography']['instruction']=text
     _,_,r=execute([p]);assert not r['result']['candidates']
     assert r['result']['rejectedProposals'][0]['classification']=='STORY_FIDELITY_FAILED'
+
+
+def test_pluralization_and_verbose_paraphrases_do_not_make_state_progression_material():
+    p=progression()
+    for idx,s in enumerate(p['interventions'][0]['production']['stateProgression']):
+        arrangement='horizontal rows of pairs' if idx==1 else 'horizontal row of pair groups'
+        s['placementInstruction']='Present {'+s['sourceStateRef']+'} notes in '+arrangement+' with exceptionally clear and vivid visual presentation.'
+    _,_,r=execute([p]);assert not r['result']['candidates']
+    assert r['result']['rejectedProposals'][0]['classification']=='VALID_BUT_EQUIVALENT'
