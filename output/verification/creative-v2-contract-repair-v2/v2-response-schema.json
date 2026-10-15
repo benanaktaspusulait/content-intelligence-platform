@@ -1,0 +1,418 @@
+{
+  "type": "json_schema",
+  "json_schema": {
+    "name": "creative_reconstruction_v2",
+    "strict": true,
+    "schema": {
+      "$defs": {
+        "AuthoredInterventionV2": {
+          "additionalProperties": false,
+          "properties": {
+            "opportunityId": {
+              "type": "string",
+              "enum": [
+                "CONTACT_PLANE:beat_01",
+                "SEPARATE_ACTION_RESULT:beat_02",
+                "COUNTABLE_STATE_PATH:beat_03"
+              ]
+            },
+            "operation": {
+              "enum": [
+                "CONTACT_PLANE",
+                "SEPARATE_ACTION_RESULT",
+                "COUNTABLE_STATE_PATH",
+                "CAMERA_LABEL",
+                "TIMING_SPLIT"
+              ],
+              "type": "string"
+            },
+            "layout": {
+              "enum": [
+                "LATERAL",
+                "DEPTH",
+                "UNCHANGED"
+              ],
+              "type": "string"
+            },
+            "camera": {
+              "enum": [
+                "LOCKED",
+                "PAN",
+                "TRACK"
+              ],
+              "type": "string"
+            },
+            "rationale": {
+              "maxLength": 700,
+              "minLength": 20,
+              "type": "string"
+            },
+            "authorship": {
+              "enum": [
+                "MODEL_AUTHORED",
+                "BOUNDED_TEMPLATE_FALLBACK"
+              ],
+              "type": "string"
+            },
+            "production": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/AuthoredProductionV2"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "fallbackReason": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "required": [
+            "opportunityId",
+            "operation",
+            "layout",
+            "camera",
+            "rationale",
+            "authorship",
+            "production",
+            "fallbackReason"
+          ],
+          "type": "object"
+        },
+        "AuthoredProductionV2": {
+          "additionalProperties": false,
+          "properties": {
+            "spatialRelationships": {
+              "items": {
+                "$ref": "#/$defs/SpatialRelationship"
+              },
+              "maxItems": 6,
+              "type": "array"
+            },
+            "choreography": {
+              "$ref": "#/$defs/ChoreographyV2"
+            },
+            "stateProgression": {
+              "items": {
+                "$ref": "#/$defs/StatePresentationV2"
+              },
+              "maxItems": 8,
+              "type": "array"
+            },
+            "temporalPresentation": {
+              "anyOf": [
+                {
+                  "maxLength": 500,
+                  "minLength": 15,
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "cameraComposition": {
+              "anyOf": [
+                {
+                  "maxLength": 400,
+                  "minLength": 15,
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "generatorConstraints": {
+              "items": {
+                "type": "string"
+              },
+              "maxItems": 5,
+              "type": "array"
+            }
+          },
+          "required": [
+            "spatialRelationships",
+            "choreography",
+            "stateProgression",
+            "temporalPresentation",
+            "cameraComposition",
+            "generatorConstraints"
+          ],
+          "type": "object"
+        },
+        "AuthoredProposalV2": {
+          "additionalProperties": false,
+          "properties": {
+            "initial": {
+              "$ref": "#/$defs/AuthoredReconstructionV2"
+            },
+            "revision": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/AuthoredReconstructionV2"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "required": [
+            "initial",
+            "revision"
+          ],
+          "type": "object"
+        },
+        "AuthoredReconstructionV2": {
+          "additionalProperties": false,
+          "properties": {
+            "candidateId": {
+              "enum": [
+                "candidate-a",
+                "candidate-b"
+              ],
+              "type": "string"
+            },
+            "title": {
+              "maxLength": 100,
+              "minLength": 3,
+              "type": "string"
+            },
+            "objective": {
+              "maxLength": 700,
+              "minLength": 20,
+              "type": "string"
+            },
+            "interventions": {
+              "items": {
+                "$ref": "#/$defs/AuthoredInterventionV2"
+              },
+              "maxItems": 4,
+              "minItems": 1,
+              "type": "array"
+            },
+            "storyChangeRequested": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "candidateId",
+            "title",
+            "objective",
+            "interventions",
+            "storyChangeRequested"
+          ],
+          "type": "object"
+        },
+        "ChoreographyV2": {
+          "additionalProperties": false,
+          "properties": {
+            "sourceActionRef": {
+              "type": "string",
+              "enum": [
+                "beat_01.action",
+                "beat_02.action",
+                "beat_03.action",
+                "beat_04.action",
+                "beat_05.action"
+              ]
+            },
+            "instruction": {
+              "maxLength": 600,
+              "minLength": 15,
+              "type": "string"
+            },
+            "sourceConsequenceRef": {
+              "type": "string",
+              "enum": [
+                "beat_01.consequence",
+                "beat_02.consequence",
+                "beat_03.consequence",
+                "beat_04.consequence",
+                "beat_05.consequence"
+              ]
+            },
+            "consequencePresentation": {
+              "anyOf": [
+                {
+                  "maxLength": 500,
+                  "minLength": 15,
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "required": [
+            "sourceActionRef",
+            "instruction",
+            "sourceConsequenceRef",
+            "consequencePresentation"
+          ],
+          "type": "object"
+        },
+        "SpatialRelationship": {
+          "additionalProperties": false,
+          "properties": {
+            "subjectRef": {
+              "type": "string",
+              "enum": [
+                "beat_01.actor",
+                "beat_01.object",
+                "beat_01.finger",
+                "beat_02.actor",
+                "beat_02.object",
+                "beat_02.hand",
+                "beat_03.actor",
+                "beat_03.object",
+                "beat_03.arms",
+                "beat_03.legs",
+                "beat_03.face",
+                "beat_04.actor",
+                "beat_04.object",
+                "beat_05.actor",
+                "beat_05.object",
+                "beat_01.entity.0",
+                "beat_01.entity.1",
+                "beat_02.entity.0",
+                "beat_02.entity.1",
+                "beat_02.entity.2",
+                "beat_02.entity.3",
+                "beat_03.entity.0",
+                "beat_05.entity.0",
+                "beat_01.expectedSurface",
+                "beat_01.actualSurface"
+              ]
+            },
+            "relation": {
+              "enum": [
+                "LEFT_OF",
+                "RIGHT_OF",
+                "IN_FRONT_OF",
+                "BEHIND",
+                "ABOVE",
+                "BELOW",
+                "SEPARATED_FROM"
+              ],
+              "type": "string"
+            },
+            "objectRef": {
+              "type": "string",
+              "enum": [
+                "beat_01.actor",
+                "beat_01.object",
+                "beat_01.finger",
+                "beat_02.actor",
+                "beat_02.object",
+                "beat_02.hand",
+                "beat_03.actor",
+                "beat_03.object",
+                "beat_03.arms",
+                "beat_03.legs",
+                "beat_03.face",
+                "beat_04.actor",
+                "beat_04.object",
+                "beat_05.actor",
+                "beat_05.object",
+                "beat_01.entity.0",
+                "beat_01.entity.1",
+                "beat_02.entity.0",
+                "beat_02.entity.1",
+                "beat_02.entity.2",
+                "beat_02.entity.3",
+                "beat_03.entity.0",
+                "beat_05.entity.0",
+                "beat_01.expectedSurface",
+                "beat_01.actualSurface"
+              ]
+            },
+            "instruction": {
+              "maxLength": 400,
+              "minLength": 20,
+              "type": "string"
+            }
+          },
+          "required": [
+            "subjectRef",
+            "relation",
+            "objectRef",
+            "instruction"
+          ],
+          "type": "object"
+        },
+        "StatePresentationV2": {
+          "additionalProperties": false,
+          "properties": {
+            "sourceStateRef": {
+              "type": "string",
+              "enum": [
+                "beat_03.state.0",
+                "beat_03.state.1",
+                "beat_03.state.2"
+              ]
+            },
+            "placementInstruction": {
+              "maxLength": 400,
+              "minLength": 20,
+              "type": "string"
+            },
+            "transitionPresentation": {
+              "anyOf": [
+                {
+                  "maxLength": 400,
+                  "minLength": 15,
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "required": [
+            "sourceStateRef",
+            "placementInstruction",
+            "transitionPresentation"
+          ],
+          "type": "object"
+        }
+      },
+      "additionalProperties": false,
+      "properties": {
+        "proposals": {
+          "items": {
+            "$ref": "#/$defs/AuthoredProposalV2"
+          },
+          "maxItems": 2,
+          "type": "array"
+        },
+        "noImprovementReason": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "proposals",
+        "noImprovementReason"
+      ],
+      "type": "object"
+    }
+  }
+}

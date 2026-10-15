@@ -57,8 +57,8 @@ def execute(plans):
 
 
 def test_new_wire_contract_includes_authoring_but_no_precompiled_winner():
-    f=inputs();payload=request_payload(f['text'],f['context']);schema=response_format(f['context'])['json_schema']['schema']
-    assert 'AuthoredProduction' in schema['$defs']
+    f=inputs();payload=request_payload(f['text'],f['context']);schema=response_format(f['context'],f['text'])['json_schema']['schema']
+    assert 'AuthoredProductionV2' in schema['$defs']
     assert payload['sourceReferenceCatalog']['beat_01.actualSurface']['quote']=='her finger'
     for ref in payload['sourceReferenceCatalog'].values():
         a,z=ref['sourceSpan'];assert f['text'][a:z]==ref['quote']
@@ -110,7 +110,7 @@ def test_known_story_deviations_rejected_without_silent_template_fallback(defect
     if defect=='physical-rule':prod['choreography']['instruction']='Let the sticky notes triple during the existing reach toward the cabinet.'
     _,provider,result=execute([p]);assert provider.calls==1
     assert not result['result']['candidates']
-    assert result['result']['rejectedProposals'][0]['classification']=='STORY_FIDELITY_FAILED'
+    assert result['result']['rejectedProposals'][0]['classification']==('AUTHORING_CONTRACT_INVALID' if defect in {'wrong-beat','unknown-ref'} else 'STORY_FIDELITY_FAILED')
 
 
 @pytest.mark.parametrize('kind',['camera','repeated-state','baseline-relation'])
@@ -123,6 +123,11 @@ def test_verbose_cosmetic_variations_are_not_material(kind):
     if kind=='baseline-relation':
         r=i['production']['spatialRelationships'][0];r['relation']='IN_FRONT_OF'
         r['instruction']='Keep {beat_01.actualSurface} in front of {beat_01.expectedSurface} with very clear and beautifully visible staging.'
+        i['production']['choreography']['instruction']="Mimi reaches toward the cabinet and the note clings to her finger instead."
+        i['production']['choreography']['consequencePresentation']="The note sticks to Mimi, not the cabinet."
+        i['production']['temporalPresentation']=None
+        i['production']['cameraComposition']=None
+        i['production']['generatorConstraints']=[]
     _,_,result=execute([p]);assert not result['result']['candidates']
     assert result['result']['rejectedProposals'][0]['classification']=='VALID_BUT_EQUIVALENT'
 
@@ -183,7 +188,7 @@ def test_historical_real_response_recompiles_byte_for_byte_without_new_authorshi
 def test_authored_fields_cannot_claim_audience_evidence():
     p=contact();p['interventions'][0]['production']['generatorConstraints']=['This production treatment will boost retention by 20 percent.']
     _,_,r=execute([p]);assert not r['result']['candidates']
-    assert 'UNSUPPORTED_AUDIENCE_OR_RENDER_CLAIM' in r['result']['rejectedProposals'][0]['reasons']
+    assert any('UNSUPPORTED_AUDIENCE_OR_RENDER_CLAIM' in reason for reason in r['result']['rejectedProposals'][0]['reasons'])
 
 
 def test_real_http_adapter_mocked_sdk_budget_recovery_and_source_comparison(monkeypatch):
@@ -205,7 +210,7 @@ def test_real_http_adapter_mocked_sdk_budget_recovery_and_source_comparison(monk
         assert sdk.call_args.kwargs['max_retries']==0
         request=sdk.return_value.chat.completions.create.call_args.kwargs
         assert request['max_tokens']==4000
-        assert 'AuthoredProduction' in request['response_format']['json_schema']['schema']['$defs']
+        assert 'AuthoredProductionV2' in request['response_format']['json_schema']['schema']['$defs']
         assert result.json()['actualCostUsd']==pytest.approx(.00183) # Simulated usage only.
     candidate=result.json()['result']['candidates'][0]
     with patch('app.workflow.creative_roles.OpenAIProvider',side_effect=AssertionError('Recovery must not dispatch')):

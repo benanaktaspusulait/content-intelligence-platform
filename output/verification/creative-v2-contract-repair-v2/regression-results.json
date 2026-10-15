@@ -1,0 +1,51 @@
+{
+  "ml": {
+    "passed": 244,
+    "newContractRepairTests": 23
+  },
+  "backend": {
+    "passed": 47,
+    "skipped": 3,
+    "tests": [
+      {
+        "name": "WorkflowNoRepairDecisionPostgresTest",
+        "tests": 10,
+        "errors": 0,
+        "failures": 0,
+        "skipped": 3
+      },
+      {
+        "name": "WorkflowServiceTest",
+        "tests": 8,
+        "errors": 0,
+        "failures": 0,
+        "skipped": 0
+      },
+      {
+        "name": "WorkflowTransportTest",
+        "tests": 4,
+        "errors": 0,
+        "failures": 0,
+        "skipped": 0
+      },
+      {
+        "name": "Step6GovernancePostgresTest",
+        "tests": 14,
+        "errors": 0,
+        "failures": 0,
+        "skipped": 0
+      },
+      {
+        "name": "ValidationEvidenceServiceTest",
+        "tests": 14,
+        "errors": 0,
+        "failures": 0,
+        "skipped": 0
+      }
+    ]
+  },
+  "frontend": {
+    "passed": 70
+  },
+  "realProviderCalls": 0
+}

@@ -1,0 +1,220 @@
+{
+  "mode": "OFFLINE_VALIDATION_OF_UNTOUCHED_RESPONSE",
+  "sourceResponseSha256": "0783b28b78e18bcdfa3c2ac14aec5266e91a15e89b65aaedea489c09c7ab95e0",
+  "realProviderCalls": 0,
+  "candidates": [
+    {
+      "candidateId": "candidate-a",
+      "technicalValidity": "INVALID",
+      "sourceFidelity": "UNKNOWN",
+      "sourceGrounding": "UNVERIFIABLE",
+      "creativeClassification": "VALID_BUT_EQUIVALENT",
+      "operatorRecommendation": "KEEP_ORIGINAL",
+      "actualImprovementEvidence": "NONE_ESTABLISHED",
+      "originalResponseUnmodified": true,
+      "review": {
+        "instructionsVersion": "model-authored-production-v2",
+        "technicalValidity": "INVALID",
+        "technicalDiagnostics": [
+          {
+            "code": "INVALID_CATALOG_REFERENCE",
+            "field": "spatialRelationships.0.subjectRef",
+            "referenceId": "Mimi",
+            "expectedKind": "ENTITY",
+            "expectedBeat": "beat_01",
+            "allowedIds": [
+              "beat_01.actor",
+              "beat_01.object",
+              "beat_01.finger",
+              "beat_01.entity.0",
+              "beat_01.entity.1",
+              "beat_01.expectedSurface",
+              "beat_01.actualSurface"
+            ],
+            "message": "Use an exact allowed catalog ID; entity-name aliases are never resolved silently."
+          },
+          {
+            "code": "INVALID_CATALOG_REFERENCE",
+            "field": "spatialRelationships.0.objectRef",
+            "referenceId": "the cabinet",
+            "expectedKind": "ENTITY",
+            "expectedBeat": "beat_01",
+            "allowedIds": [
+              "beat_01.actor",
+              "beat_01.object",
+              "beat_01.finger",
+              "beat_01.entity.0",
+              "beat_01.entity.1",
+              "beat_01.expectedSurface",
+              "beat_01.actualSurface"
+            ],
+            "message": "Use an exact allowed catalog ID; entity-name aliases are never resolved silently."
+          }
+        ],
+        "temporalAdvisories": [
+          {
+            "field": "temporalPresentation",
+            "code": "SOURCE_BEAT_WINDOW_REPEATED",
+            "range": [
+              0.0,
+              2.0
+            ],
+            "materialEvidence": false
+          }
+        ],
+        "sourceFidelity": "UNKNOWN",
+        "sourceDiagnostics": [],
+        "sourceGrounding": "UNVERIFIABLE",
+        "materiality": {
+          "classification": "VALID_BUT_EQUIVALENT",
+          "material": false,
+          "reasons": [
+            "NO_EXPLICIT_PHYSICAL_RELATION_INSTRUCTIONS",
+            "NO_OBSERVABLE_PHYSICAL_EXECUTION_DELTA",
+            "NO_INTENDED_VERSUS_ACTUAL_CONTACT_STAGING"
+          ],
+          "newPhysicalFeatures": [],
+          "excludedEvidence": [
+            "reference validity alone",
+            "field count or text length",
+            "camera-label expansion",
+            "source consequence restatement",
+            "unchanged settings",
+            "repeated timecodes"
+          ],
+          "method": "SOURCE_BOUND_PHYSICAL_RELATION_OR_STATE_ARRANGEMENT_DIFFERENCE",
+          "visualBenefit": "UNKNOWN",
+          "audienceBenefit": "UNMEASURED",
+          "creativeQualityProven": false
+        },
+        "productionRisk": "UNVERIFIED_NO_DETERMINISTIC_REGRESSION",
+        "riskDiagnostics": [],
+        "accepted": false,
+        "actualImprovementEvidence": "PLANNED_TEXT_ONLY; visual/creative benefit unverified"
+      }
+    },
+    {
+      "candidateId": "candidate-b",
+      "technicalValidity": "INVALID",
+      "sourceFidelity": "UNKNOWN",
+      "sourceGrounding": "UNVERIFIABLE",
+      "creativeClassification": "VALID_BUT_EQUIVALENT",
+      "operatorRecommendation": "KEEP_ORIGINAL",
+      "actualImprovementEvidence": "NONE_ESTABLISHED",
+      "originalResponseUnmodified": true,
+      "review": {
+        "instructionsVersion": "model-authored-production-v2",
+        "technicalValidity": "INVALID",
+        "technicalDiagnostics": [
+          {
+            "code": "INVALID_CATALOG_REFERENCE",
+            "field": "spatialRelationships.0.subjectRef",
+            "referenceId": "Mimi",
+            "expectedKind": "ENTITY",
+            "expectedBeat": "beat_02",
+            "allowedIds": [
+              "beat_02.actor",
+              "beat_02.object",
+              "beat_02.hand",
+              "beat_02.entity.0",
+              "beat_02.entity.1",
+              "beat_02.entity.2",
+              "beat_02.entity.3"
+            ],
+            "message": "Use an exact allowed catalog ID; entity-name aliases are never resolved silently."
+          },
+          {
+            "code": "INVALID_CATALOG_REFERENCE",
+            "field": "spatialRelationships.0.objectRef",
+            "referenceId": "the sticky note",
+            "expectedKind": "ENTITY",
+            "expectedBeat": "beat_02",
+            "allowedIds": [
+              "beat_02.actor",
+              "beat_02.object",
+              "beat_02.hand",
+              "beat_02.entity.0",
+              "beat_02.entity.1",
+              "beat_02.entity.2",
+              "beat_02.entity.3"
+            ],
+            "message": "Use an exact allowed catalog ID; entity-name aliases are never resolved silently."
+          },
+          {
+            "code": "INVALID_CATALOG_REFERENCE",
+            "field": "spatialRelationships.1.subjectRef",
+            "referenceId": "the sticky note",
+            "expectedKind": "ENTITY",
+            "expectedBeat": "beat_02",
+            "allowedIds": [
+              "beat_02.actor",
+              "beat_02.object",
+              "beat_02.hand",
+              "beat_02.entity.0",
+              "beat_02.entity.1",
+              "beat_02.entity.2",
+              "beat_02.entity.3"
+            ],
+            "message": "Use an exact allowed catalog ID; entity-name aliases are never resolved silently."
+          },
+          {
+            "code": "INVALID_CATALOG_REFERENCE",
+            "field": "spatialRelationships.1.objectRef",
+            "referenceId": "Mimi's hands",
+            "expectedKind": "ENTITY",
+            "expectedBeat": "beat_02",
+            "allowedIds": [
+              "beat_02.actor",
+              "beat_02.object",
+              "beat_02.hand",
+              "beat_02.entity.0",
+              "beat_02.entity.1",
+              "beat_02.entity.2",
+              "beat_02.entity.3"
+            ],
+            "message": "Use an exact allowed catalog ID; entity-name aliases are never resolved silently."
+          }
+        ],
+        "temporalAdvisories": [
+          {
+            "field": "temporalPresentation",
+            "code": "SOURCE_BEAT_WINDOW_REPEATED",
+            "range": [
+              2.0,
+              5.0
+            ],
+            "materialEvidence": false
+          }
+        ],
+        "sourceFidelity": "UNKNOWN",
+        "sourceDiagnostics": [],
+        "sourceGrounding": "UNVERIFIABLE",
+        "materiality": {
+          "classification": "VALID_BUT_EQUIVALENT",
+          "material": false,
+          "reasons": [
+            "NO_EXPLICIT_PHYSICAL_RELATION_INSTRUCTIONS",
+            "NO_OBSERVABLE_PHYSICAL_EXECUTION_DELTA"
+          ],
+          "newPhysicalFeatures": [],
+          "excludedEvidence": [
+            "reference validity alone",
+            "field count or text length",
+            "camera-label expansion",
+            "source consequence restatement",
+            "unchanged settings",
+            "repeated timecodes"
+          ],
+          "method": "SOURCE_BOUND_PHYSICAL_RELATION_OR_STATE_ARRANGEMENT_DIFFERENCE",
+          "visualBenefit": "UNKNOWN",
+          "audienceBenefit": "UNMEASURED",
+          "creativeQualityProven": false
+        },
+        "productionRisk": "UNVERIFIED_NO_DETERMINISTIC_REGRESSION",
+        "riskDiagnostics": [],
+        "accepted": false,
+        "actualImprovementEvidence": "PLANNED_TEXT_ONLY; visual/creative benefit unverified"
+      }
+    }
+  ]
+}

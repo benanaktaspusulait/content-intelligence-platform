@@ -1,0 +1,34 @@
+{
+  "instructionsVersion": "model-authored-production-v2",
+  "payloadBytes": 23116,
+  "candidates": [
+    {
+      "candidateId": "candidate-a",
+      "technicalValidity": "INVALID",
+      "materiality": "VALID_BUT_EQUIVALENT",
+      "sourceFidelity": "UNKNOWN",
+      "referenceErrors": 2
+    },
+    {
+      "candidateId": "candidate-b",
+      "technicalValidity": "INVALID",
+      "materiality": "VALID_BUT_EQUIVALENT",
+      "sourceFidelity": "UNKNOWN",
+      "referenceErrors": 4
+    }
+  ],
+  "realProviderCalls": 0,
+  "persistedRecordsCreated": 0,
+  "sourceHashes": {
+    "creative_reconstruction.py": "126ffc85801ec2cf166d785c0735b470fa87ab9ddc88944c6b2313dbc027c8a2",
+    "model_authored_execution.py": "42f50d8e389499303823ea964a616f4670ab5311f8357a0a9445b9b03570b505",
+    "creative_roles.py": "4842fb7aeef3262a66b6013ec8b53f37deb101af7aea03f1004936a6bf193a04"
+  },
+  "deployedBackendRequestsNewVersion": true,
+  "deployedServicesHealthy": true,
+  "authoritativeAnalysisId": "f0d36feb-ee0f-4da8-ae21-2071a3ddea18",
+  "originalScore": 88.40625000000001,
+  "unchangedHistoricalWorkflowRows": 75,
+  "productionWorkflowWrites": 0,
+  "immutablePrompt10Unchanged": true
+}

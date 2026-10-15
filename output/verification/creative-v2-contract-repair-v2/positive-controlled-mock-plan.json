@@ -1,0 +1,75 @@
+{
+  "candidateId": "candidate-a",
+  "title": "Spatially legible contact choreography",
+  "objective": "Show the intended destination and wrong-surface attachment in a continuous, unobstructed contact view.",
+  "interventions": [
+    {
+      "opportunityId": "CONTACT_PLANE:beat_01",
+      "operation": "CONTACT_PLANE",
+      "layout": "DEPTH",
+      "camera": "LOCKED",
+      "rationale": "A separated contact plane may make the existing intention and wrong attachment distinguishable; actual clarity is unverified.",
+      "authorship": "MODEL_AUTHORED",
+      "fallbackReason": null,
+      "production": {
+        "spatialRelationships": [
+          {
+            "subjectRef": "beat_01.expectedSurface",
+            "relation": "BEHIND",
+            "objectRef": "beat_01.actualSurface",
+            "instruction": "Position {beat_01.expectedSurface} behind {beat_01.actualSurface}, offset to the right so the destination remains visible beside the fingertip."
+          }
+        ],
+        "choreography": {
+          "sourceActionRef": "beat_01.action",
+          "instruction": "Carry the existing reach diagonally across the lower foreground toward the visible cabinet surface, with the sticky edge facing the viewer.",
+          "sourceConsequenceRef": "beat_01.consequence",
+          "consequencePresentation": "Keep the cabinet destination visibly clear as the note clings to the finger; leave a narrow visible gap between that finger and the cabinet."
+        },
+        "stateProgression": [],
+        "temporalPresentation": null,
+        "cameraComposition": null,
+        "generatorConstraints": []
+      }
+    },
+    {
+      "opportunityId": "COUNTABLE_STATE_PATH:beat_03",
+      "operation": "COUNTABLE_STATE_PATH",
+      "layout": "LATERAL",
+      "camera": "LOCKED",
+      "rationale": "A separated contact plane may make the existing intention and wrong attachment distinguishable; actual clarity is unverified.",
+      "authorship": "MODEL_AUTHORED",
+      "fallbackReason": null,
+      "production": {
+        "spatialRelationships": [],
+        "choreography": {
+          "sourceActionRef": "beat_03.action",
+          "instruction": "Keep the established pulling motion continuous while the growing notes occupy a widening area across the body silhouette.",
+          "sourceConsequenceRef": "beat_03.consequence",
+          "consequencePresentation": "Show the existing progressive coverage of arms, legs and face after each count transition without losing the edges of the growing note groups."
+        },
+        "stateProgression": [
+          {
+            "sourceStateRef": "beat_03.state.0",
+            "placementInstruction": "Present {beat_03.state.0} notes as a separated horizontal pair beside the arms.",
+            "transitionPresentation": "Keep both outer note edges visible during the established pull that leads into the next source count."
+          },
+          {
+            "sourceStateRef": "beat_03.state.1",
+            "placementInstruction": "Present {beat_03.state.1} notes as two vertical pairs, offset left and right across the body silhouette.",
+            "transitionPresentation": "Carry the existing pull continuously across the change, retaining the separated pairs before their next multiplication."
+          },
+          {
+            "sourceStateRef": "beat_03.state.2",
+            "placementInstruction": "Present {beat_03.state.2} notes in two horizontal rows of four with gaps, following the existing coverage of arms, legs and face.",
+            "transitionPresentation": "Let the established body coverage follow the final source count while retaining the group boundaries in the same view."
+          }
+        ],
+        "temporalPresentation": null,
+        "cameraComposition": null,
+        "generatorConstraints": []
+      }
+    }
+  ],
+  "storyChangeRequested": false
+}

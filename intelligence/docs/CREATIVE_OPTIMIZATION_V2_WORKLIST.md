@@ -83,3 +83,13 @@ Content 10 / immutable Prompt ID 10 (v1), onaylı hikâye, Ruleset 1.11 ve tüm 
 - [x] Etkilenen servisleri dağıtıp salt okunur sözleşme/tarihî kayıt kontrolünü tamamla; gerçek çağrı yapma.
 
 - Kapanış: 25 model-yazarlı sözleşme testi dahil 221 ML, 47 backend ve 70 frontend testi geçti; 3 backend testi koşullu olarak atlandı. Sözleşme ve kaynak/derleyici/model kökeni doğrulandı. Gerçek yaratıcı etkinlik UNVERIFIED. Tam örnek ve kanıt: `output/verification/creative-v2-model-authored/MODEL_AUTHORED_ACCEPTANCE_REPORT.md`. Çoklu-beat mock örneğinde canonical 88.40625/B değişmedi; execution critic uyarıları nedeniyle KEEP_ORIGINAL/onay kapalı. Gerçek sağlayıcı çağrısı yok.
+
+## Gerçek yanıt sonrası sözleşme ve yaratıcı nitelik düzeltmesi — v2
+
+- [ ] Gerçek ikinci çağrının özgün yanıtını değişmez regresyon fixture'ı olarak kullan; teknik ve yaratıcı sonuçları ayır.
+- [ ] Kaynak beat aralığı tekrarını, yeni alt zamanlamayı, süre değişikliğini ve desteksiz zaman iddiasını ayır.
+- [ ] Yeni isteklerde kaynak kimliklerini enum ve beat bazlı makine sözleşmesiyle sınırla; gerçek kaynak anılışlarını generik olarak çıkar.
+- [ ] Değişmeyen anlatı/ayarları doldurtmayan, tek güçlü fiziksel müdahaleyi isteyen talimatları sürümle.
+- [ ] Maddi fark değerlendirmesini teknik geçerlilikten ayır; gerçek A/B'yi kozmetik başarıya yükseltme.
+- [ ] Ücretsiz deterministik/mock testler, kaynak/canonical/critic/F8 regresyonları ve eski sürüm uyumluluğunu doğrula.
+- [ ] Tam rapor ve sonraki tek deney önerisini hazırla; ücretli deney yapma.

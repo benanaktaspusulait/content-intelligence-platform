@@ -236,7 +236,7 @@ public class WorkflowService {
       throw new IllegalStateException("Source-bound essential event anchors are unavailable");
     var context = new LinkedHashMap<String, Object>();
     context.put("optimizationGenerationContractVersion", "creative-reconstruction-v2");
-    context.put("optimizationGenerationInstructionsVersion", "model-authored-production-v1");
+    context.put("optimizationGenerationInstructionsVersion", "model-authored-production-v2");
     context.put("openingStrategy", bound.getOrDefault("openingStrategy", "AUTO"));
     context.put("baselineCanonicalFailures", map(baseline.get("canonicalRuleEvaluation")).getOrDefault("failedRules", List.of()));
     context.put("baselineCanonicalEvaluation", map(baseline.get("canonicalRuleEvaluation")));
@@ -265,7 +265,7 @@ public class WorkflowService {
         && version.longValue() == jdbc.sql("SELECT max(id) FROM prompt_versions WHERE content_id=:content").param("content",content.longValue()).query(Long.class).single().longValue()
         && source.promptText().equals(bound.get("prompt"))
         && "creative-reconstruction-v2".equals(map(existingComparison.get("creativeEvidence")).get("creativeContractVersion"))
-        && "model-authored-production-v1".equals(map(existingComparison.get("creativeEvidence")).get("instructionsVersion"))
+        && "model-authored-production-v2".equals(map(existingComparison.get("creativeEvidence")).get("instructionsVersion"))
         && sha256(source.promptText()).equals(existingComparison.get("sourcePromptSha256"))
         && maps(existingComparison.get("candidates")).stream().allMatch(c -> effectiveProfile.equals(map(c.get("sourcePlan")).get("contentProfile"))))
       return assessOptimizationComparison(UUID.fromString(String.valueOf(existingComparison.get("recordId"))));
