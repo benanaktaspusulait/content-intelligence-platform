@@ -1,0 +1,313 @@
+{
+  "type": "json_schema",
+  "json_schema": {
+    "name": "creative_reconstruction_v2",
+    "strict": true,
+    "schema": {
+      "$defs": {
+        "AuthoredIntervention": {
+          "additionalProperties": false,
+          "properties": {
+            "opportunityId": {
+              "type": "string"
+            },
+            "operation": {
+              "enum": [
+                "CONTACT_PLANE",
+                "SEPARATE_ACTION_RESULT",
+                "COUNTABLE_STATE_PATH",
+                "CAMERA_LABEL",
+                "TIMING_SPLIT"
+              ],
+              "type": "string"
+            },
+            "layout": {
+              "enum": [
+                "LATERAL",
+                "DEPTH",
+                "UNCHANGED"
+              ],
+              "type": "string"
+            },
+            "camera": {
+              "enum": [
+                "LOCKED",
+                "PAN",
+                "TRACK"
+              ],
+              "type": "string"
+            },
+            "rationale": {
+              "maxLength": 700,
+              "minLength": 20,
+              "type": "string"
+            },
+            "authorship": {
+              "enum": [
+                "MODEL_AUTHORED",
+                "BOUNDED_TEMPLATE_FALLBACK"
+              ],
+              "type": "string"
+            },
+            "production": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/AuthoredProduction"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "fallbackReason": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "required": [
+            "opportunityId",
+            "operation",
+            "layout",
+            "camera",
+            "rationale",
+            "authorship",
+            "production",
+            "fallbackReason"
+          ],
+          "type": "object"
+        },
+        "AuthoredProduction": {
+          "additionalProperties": false,
+          "properties": {
+            "spatialRelationships": {
+              "items": {
+                "$ref": "#/$defs/SpatialRelationship"
+              },
+              "maxItems": 6,
+              "type": "array"
+            },
+            "choreography": {
+              "$ref": "#/$defs/Choreography"
+            },
+            "stateProgression": {
+              "items": {
+                "$ref": "#/$defs/StatePresentation"
+              },
+              "maxItems": 8,
+              "type": "array"
+            },
+            "temporalPresentation": {
+              "maxLength": 500,
+              "minLength": 25,
+              "type": "string"
+            },
+            "cameraComposition": {
+              "maxLength": 400,
+              "minLength": 20,
+              "type": "string"
+            },
+            "generatorConstraints": {
+              "items": {
+                "type": "string"
+              },
+              "maxItems": 5,
+              "minItems": 1,
+              "type": "array"
+            }
+          },
+          "required": [
+            "spatialRelationships",
+            "choreography",
+            "stateProgression",
+            "temporalPresentation",
+            "cameraComposition",
+            "generatorConstraints"
+          ],
+          "type": "object"
+        },
+        "AuthoredProposal": {
+          "additionalProperties": false,
+          "properties": {
+            "initial": {
+              "$ref": "#/$defs/AuthoredReconstruction"
+            },
+            "revision": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/AuthoredReconstruction"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "required": [
+            "initial",
+            "revision"
+          ],
+          "type": "object"
+        },
+        "AuthoredReconstruction": {
+          "additionalProperties": false,
+          "properties": {
+            "candidateId": {
+              "enum": [
+                "candidate-a",
+                "candidate-b"
+              ],
+              "type": "string"
+            },
+            "title": {
+              "maxLength": 100,
+              "minLength": 3,
+              "type": "string"
+            },
+            "objective": {
+              "maxLength": 700,
+              "minLength": 20,
+              "type": "string"
+            },
+            "interventions": {
+              "items": {
+                "$ref": "#/$defs/AuthoredIntervention"
+              },
+              "maxItems": 4,
+              "minItems": 1,
+              "type": "array"
+            },
+            "storyChangeRequested": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "candidateId",
+            "title",
+            "objective",
+            "interventions",
+            "storyChangeRequested"
+          ],
+          "type": "object"
+        },
+        "Choreography": {
+          "additionalProperties": false,
+          "properties": {
+            "sourceActionRef": {
+              "type": "string"
+            },
+            "instruction": {
+              "maxLength": 600,
+              "minLength": 25,
+              "type": "string"
+            },
+            "sourceConsequenceRef": {
+              "type": "string"
+            },
+            "consequencePresentation": {
+              "maxLength": 500,
+              "minLength": 25,
+              "type": "string"
+            }
+          },
+          "required": [
+            "sourceActionRef",
+            "instruction",
+            "sourceConsequenceRef",
+            "consequencePresentation"
+          ],
+          "type": "object"
+        },
+        "SpatialRelationship": {
+          "additionalProperties": false,
+          "properties": {
+            "subjectRef": {
+              "type": "string"
+            },
+            "relation": {
+              "enum": [
+                "LEFT_OF",
+                "RIGHT_OF",
+                "IN_FRONT_OF",
+                "BEHIND",
+                "ABOVE",
+                "BELOW",
+                "SEPARATED_FROM"
+              ],
+              "type": "string"
+            },
+            "objectRef": {
+              "type": "string"
+            },
+            "instruction": {
+              "maxLength": 400,
+              "minLength": 20,
+              "type": "string"
+            }
+          },
+          "required": [
+            "subjectRef",
+            "relation",
+            "objectRef",
+            "instruction"
+          ],
+          "type": "object"
+        },
+        "StatePresentation": {
+          "additionalProperties": false,
+          "properties": {
+            "sourceStateRef": {
+              "type": "string"
+            },
+            "placementInstruction": {
+              "maxLength": 400,
+              "minLength": 20,
+              "type": "string"
+            },
+            "transitionPresentation": {
+              "maxLength": 400,
+              "minLength": 20,
+              "type": "string"
+            }
+          },
+          "required": [
+            "sourceStateRef",
+            "placementInstruction",
+            "transitionPresentation"
+          ],
+          "type": "object"
+        }
+      },
+      "additionalProperties": false,
+      "properties": {
+        "proposals": {
+          "items": {
+            "$ref": "#/$defs/AuthoredProposal"
+          },
+          "maxItems": 2,
+          "type": "array"
+        },
+        "noImprovementReason": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "proposals",
+        "noImprovementReason"
+      ],
+      "type": "object"
+    }
+  }
+}

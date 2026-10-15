@@ -1,0 +1,102 @@
+{
+  "evidenceClass": "MOCK_CONTRACT_READINESS_ONLY",
+  "realProviderCalls": 0,
+  "actualCostUsd": 0,
+  "modelCreativeEffectiveness": "UNVERIFIED",
+  "sourcePromptId": 10,
+  "sourceAnalysisId": "f0d36feb-ee0f-4da8-ae21-2071a3ddea18",
+  "ruleset": "1.11",
+  "originalScore": 88.40625000000001,
+  "candidateScore": 88.40625000000001,
+  "canonicalOutcomeSeverityChanges": 0,
+  "canonicalRuleCount": 46,
+  "changedBeats": [
+    "beat_01",
+    "beat_03"
+  ],
+  "sourceTextCoverage": "SOURCE_TEXT_COVERED",
+  "semanticStoryFidelity": "UNKNOWN",
+  "originalCritic": {
+    "stage": "GENERATOR_EXECUTION_REVIEW",
+    "status": "UNKNOWN",
+    "findings": [],
+    "provider": "LOCAL",
+    "model": null,
+    "version": "local-execution-critic-v1",
+    "visualInspected": false,
+    "targetGenerator": "SEEDANCE_2_0_MINI",
+    "limitations": [
+      "General writing heuristics; not evidence of the selected model’s actual performance."
+    ],
+    "calls": 0
+  },
+  "candidateCritic": {
+    "stage": "GENERATOR_EXECUTION_REVIEW",
+    "status": "REWRITE",
+    "findings": [
+      {
+        "sourceSpan": [
+          1497,
+          1829
+        ],
+        "sourceQuote": "5-10s: Mimi continues to pull; each pull doubles the number of sticky notes  notes multiply from two to four to eight as she pulls, progressively covering her arms, legs and face -> Mimi is overwhelmed by notes [Keep the established pulling motion continuous while the growing notes occupy a widening area across the body silhouette",
+        "riskCategory": "SIMULTANEOUS_ACTION_COMPETITION",
+        "category": "SIMULTANEOUS_ACTION_COMPETITION",
+        "plausibleFailure": "Actions may compete at the same time.",
+        "evidenceBasis": "GENERAL_HEURISTIC",
+        "confidence": "LOW",
+        "smallestChange": "Identify the priority action; start the other one later when appropriate.",
+        "altersCreativeIntent": false
+      },
+      {
+        "sourceSpan": [
+          2471,
+          2589
+        ],
+        "sourceQuote": " Let the established body coverage follow the final source count while retaining the group boundaries in the same view",
+        "riskCategory": "SIMULTANEOUS_ACTION_COMPETITION",
+        "category": "SIMULTANEOUS_ACTION_COMPETITION",
+        "plausibleFailure": "Actions may compete at the same time.",
+        "evidenceBasis": "GENERAL_HEURISTIC",
+        "confidence": "LOW",
+        "smallestChange": "Identify the priority action; start the other one later when appropriate.",
+        "altersCreativeIntent": false
+      }
+    ],
+    "provider": "LOCAL",
+    "model": null,
+    "version": "local-execution-critic-v1",
+    "visualInspected": false,
+    "targetGenerator": "SEEDANCE_2_0_MINI",
+    "limitations": [
+      "General writing heuristics; not evidence of the selected model’s actual performance."
+    ],
+    "calls": 0
+  },
+  "provenanceCodePointCounts": {
+    "PROTECTED_SOURCE": 1749,
+    "SERVER_ASSEMBLY": 21,
+    "MODEL_AUTHORED": 2085,
+    "SOURCE_BOUND_SUBSTITUTION": 33,
+    "AUTHORITATIVE_SETTINGS": 31
+  },
+  "recommendation": "KEEP_ORIGINAL",
+  "approvalEligible": false,
+  "renderAuthorization": {
+    "status": "BLOCKED_PENDING_EVIDENCE",
+    "reasons": [
+      {
+        "code": "REQUIRED_EVIDENCE_MISSING",
+        "source": "REFERENCE_ASSOCIATION",
+        "message": "An authoritative character/object reference is missing or unverified.",
+        "references": []
+      },
+      {
+        "code": "REQUIRED_EVIDENCE_MISSING",
+        "source": "GENERATOR_CAPABILITY",
+        "message": "The requested model/duration/setting is not supported by a verified contract.",
+        "references": []
+      }
+    ]
+  }
+}

@@ -1,0 +1,942 @@
+{
+  "version": "model-authored-production-v1",
+  "spanUnit": "UNICODE_CODE_POINTS",
+  "beats": [
+    {
+      "beatId": "beat_01",
+      "instructions": [
+        {
+          "text": "Position the cabinet behind her finger, offset to the right so the destination remains visible beside the fingertip. Carry the existing reach diagonally across the lower foreground toward the visible cabinet surface, with the sticky edge facing the viewer. Keep the cabinet destination visibly clear as the note clings to the finger; leave a narrow visible gap between that finger and the cabinet. Follow the reach through wrong-surface contact in the existing opening window, allowing the destination and the resulting attachment to be read in the same view. Use a locked wide composition with the fingertip in the lower foreground and the cabinet destination in the upper right; retain the note edge in view. Maintain the existing bunny identity and continuous finger-to-note contact; avoid overlapping the free hand with the contact edge.",
+          "author": "MODEL_AUTHORED",
+          "fields": [
+            {
+              "field": "production.spatialRelationships.0.instruction",
+              "author": "MODEL_AUTHORED",
+              "rawText": "Position {beat_01.expectedSurface} behind {beat_01.actualSurface}, offset to the right so the destination remains visible beside the fingertip.",
+              "compiledText": "Position the cabinet behind her finger, offset to the right so the destination remains visible beside the fingertip.",
+              "localSpan": [
+                0,
+                116
+              ],
+              "referenceSubstitutions": [
+                {
+                  "referenceId": "beat_01.expectedSurface",
+                  "source": {
+                    "kind": "ENTITY",
+                    "beatId": "beat_01",
+                    "quote": "the cabinet",
+                    "sourceSpan": [
+                      324,
+                      335
+                    ],
+                    "evidence": "EXACT_SOURCE_TEXT",
+                    "semanticVerification": "UNKNOWN"
+                  }
+                },
+                {
+                  "referenceId": "beat_01.actualSurface",
+                  "source": {
+                    "kind": "ENTITY",
+                    "beatId": "beat_01",
+                    "quote": "her finger",
+                    "sourceSpan": [
+                      364,
+                      374
+                    ],
+                    "evidence": "EXACT_SOURCE_TEXT",
+                    "semanticVerification": "UNKNOWN"
+                  }
+                }
+              ],
+              "candidateSpan": [
+                475,
+                591
+              ]
+            },
+            {
+              "field": "production.choreography.instruction",
+              "author": "MODEL_AUTHORED",
+              "rawText": "Carry the existing reach diagonally across the lower foreground toward the visible cabinet surface, with the sticky edge facing the viewer.",
+              "compiledText": "Carry the existing reach diagonally across the lower foreground toward the visible cabinet surface, with the sticky edge facing the viewer.",
+              "localSpan": [
+                117,
+                256
+              ],
+              "referenceSubstitutions": [],
+              "candidateSpan": [
+                592,
+                731
+              ]
+            },
+            {
+              "field": "production.choreography.consequencePresentation",
+              "author": "MODEL_AUTHORED",
+              "rawText": "Keep the cabinet destination visibly clear as the note clings to the finger; leave a narrow visible gap between that finger and the cabinet.",
+              "compiledText": "Keep the cabinet destination visibly clear as the note clings to the finger; leave a narrow visible gap between that finger and the cabinet.",
+              "localSpan": [
+                257,
+                397
+              ],
+              "referenceSubstitutions": [],
+              "candidateSpan": [
+                732,
+                872
+              ]
+            },
+            {
+              "field": "production.temporalPresentation",
+              "author": "MODEL_AUTHORED",
+              "rawText": "Follow the reach through wrong-surface contact in the existing opening window, allowing the destination and the resulting attachment to be read in the same view.",
+              "compiledText": "Follow the reach through wrong-surface contact in the existing opening window, allowing the destination and the resulting attachment to be read in the same view.",
+              "localSpan": [
+                398,
+                559
+              ],
+              "referenceSubstitutions": [],
+              "candidateSpan": [
+                873,
+                1034
+              ]
+            },
+            {
+              "field": "production.cameraComposition",
+              "author": "MODEL_AUTHORED",
+              "rawText": "Use a locked wide composition with the fingertip in the lower foreground and the cabinet destination in the upper right; retain the note edge in view.",
+              "compiledText": "Use a locked wide composition with the fingertip in the lower foreground and the cabinet destination in the upper right; retain the note edge in view.",
+              "localSpan": [
+                560,
+                710
+              ],
+              "referenceSubstitutions": [],
+              "candidateSpan": [
+                1035,
+                1185
+              ]
+            },
+            {
+              "field": "production.generatorConstraints.0",
+              "author": "MODEL_AUTHORED",
+              "rawText": "Maintain the existing bunny identity and continuous finger-to-note contact; avoid overlapping the free hand with the contact edge.",
+              "compiledText": "Maintain the existing bunny identity and continuous finger-to-note contact; avoid overlapping the free hand with the contact edge.",
+              "localSpan": [
+                711,
+                841
+              ],
+              "referenceSubstitutions": [],
+              "candidateSpan": [
+                1186,
+                1316
+              ]
+            }
+          ],
+          "candidateSpan": [
+            475,
+            1316
+          ]
+        }
+      ]
+    },
+    {
+      "beatId": "beat_03",
+      "instructions": [
+        {
+          "text": "Keep the established pulling motion continuous while the growing notes occupy a widening area across the body silhouette. Show the existing progressive coverage of arms, legs and face after each count transition without losing the edges of the growing note groups. Present two notes as a separated horizontal pair beside the arms. Keep both outer note edges visible during the established pull that leads into the next source count. Present four notes as two vertical pairs, offset left and right across the body silhouette. Carry the existing pull continuously across the change, retaining the separated pairs before their next multiplication. Present eight notes in two horizontal rows of four with gaps, following the existing coverage of arms, legs and face. Let the established body coverage follow the final source count while retaining the group boundaries in the same view. Use the original five-to-ten-second beat window for the existing pull sequence, with continuous transitions and no extra attempt or invented hold. Keep a locked wide view containing the arms, legs and face throughout the existing escalation; preserve group positions through the pull. Preserve the source doubling rule and existing count order; do not add a new pull or conceal a multiplication behind an edit.",
+          "author": "MODEL_AUTHORED",
+          "fields": [
+            {
+              "field": "production.choreography.instruction",
+              "author": "MODEL_AUTHORED",
+              "rawText": "Keep the established pulling motion continuous while the growing notes occupy a widening area across the body silhouette.",
+              "compiledText": "Keep the established pulling motion continuous while the growing notes occupy a widening area across the body silhouette.",
+              "localSpan": [
+                0,
+                121
+              ],
+              "referenceSubstitutions": [],
+              "candidateSpan": [
+                1709,
+                1830
+              ]
+            },
+            {
+              "field": "production.choreography.consequencePresentation",
+              "author": "MODEL_AUTHORED",
+              "rawText": "Show the existing progressive coverage of arms, legs and face after each count transition without losing the edges of the growing note groups.",
+              "compiledText": "Show the existing progressive coverage of arms, legs and face after each count transition without losing the edges of the growing note groups.",
+              "localSpan": [
+                122,
+                264
+              ],
+              "referenceSubstitutions": [],
+              "candidateSpan": [
+                1831,
+                1973
+              ]
+            },
+            {
+              "field": "production.stateProgression.0.placementInstruction",
+              "author": "MODEL_AUTHORED",
+              "rawText": "Present {beat_03.state.0} notes as a separated horizontal pair beside the arms.",
+              "compiledText": "Present two notes as a separated horizontal pair beside the arms.",
+              "localSpan": [
+                265,
+                330
+              ],
+              "referenceSubstitutions": [
+                {
+                  "referenceId": "beat_03.state.0",
+                  "source": {
+                    "kind": "STATE",
+                    "beatId": "beat_03",
+                    "quote": "two",
+                    "sourceSpan": [
+                      816,
+                      819
+                    ],
+                    "evidence": "EXACT_SOURCE_TEXT",
+                    "semanticVerification": "UNKNOWN"
+                  }
+                }
+              ],
+              "candidateSpan": [
+                1974,
+                2039
+              ]
+            },
+            {
+              "field": "production.stateProgression.0.transitionPresentation",
+              "author": "MODEL_AUTHORED",
+              "rawText": "Keep both outer note edges visible during the established pull that leads into the next source count.",
+              "compiledText": "Keep both outer note edges visible during the established pull that leads into the next source count.",
+              "localSpan": [
+                331,
+                432
+              ],
+              "referenceSubstitutions": [],
+              "candidateSpan": [
+                2040,
+                2141
+              ]
+            },
+            {
+              "field": "production.stateProgression.1.placementInstruction",
+              "author": "MODEL_AUTHORED",
+              "rawText": "Present {beat_03.state.1} notes as two vertical pairs, offset left and right across the body silhouette.",
+              "compiledText": "Present four notes as two vertical pairs, offset left and right across the body silhouette.",
+              "localSpan": [
+                433,
+                524
+              ],
+              "referenceSubstitutions": [
+                {
+                  "referenceId": "beat_03.state.1",
+                  "source": {
+                    "kind": "STATE",
+                    "beatId": "beat_03",
+                    "quote": "four",
+                    "sourceSpan": [
+                      823,
+                      827
+                    ],
+                    "evidence": "EXACT_SOURCE_TEXT",
+                    "semanticVerification": "UNKNOWN"
+                  }
+                }
+              ],
+              "candidateSpan": [
+                2142,
+                2233
+              ]
+            },
+            {
+              "field": "production.stateProgression.1.transitionPresentation",
+              "author": "MODEL_AUTHORED",
+              "rawText": "Carry the existing pull continuously across the change, retaining the separated pairs before their next multiplication.",
+              "compiledText": "Carry the existing pull continuously across the change, retaining the separated pairs before their next multiplication.",
+              "localSpan": [
+                525,
+                644
+              ],
+              "referenceSubstitutions": [],
+              "candidateSpan": [
+                2234,
+                2353
+              ]
+            },
+            {
+              "field": "production.stateProgression.2.placementInstruction",
+              "author": "MODEL_AUTHORED",
+              "rawText": "Present {beat_03.state.2} notes in two horizontal rows of four with gaps, following the existing coverage of arms, legs and face.",
+              "compiledText": "Present eight notes in two horizontal rows of four with gaps, following the existing coverage of arms, legs and face.",
+              "localSpan": [
+                645,
+                762
+              ],
+              "referenceSubstitutions": [
+                {
+                  "referenceId": "beat_03.state.2",
+                  "source": {
+                    "kind": "STATE",
+                    "beatId": "beat_03",
+                    "quote": "eight",
+                    "sourceSpan": [
+                      831,
+                      836
+                    ],
+                    "evidence": "EXACT_SOURCE_TEXT",
+                    "semanticVerification": "UNKNOWN"
+                  }
+                }
+              ],
+              "candidateSpan": [
+                2354,
+                2471
+              ]
+            },
+            {
+              "field": "production.stateProgression.2.transitionPresentation",
+              "author": "MODEL_AUTHORED",
+              "rawText": "Let the established body coverage follow the final source count while retaining the group boundaries in the same view.",
+              "compiledText": "Let the established body coverage follow the final source count while retaining the group boundaries in the same view.",
+              "localSpan": [
+                763,
+                881
+              ],
+              "referenceSubstitutions": [],
+              "candidateSpan": [
+                2472,
+                2590
+              ]
+            },
+            {
+              "field": "production.temporalPresentation",
+              "author": "MODEL_AUTHORED",
+              "rawText": "Use the original five-to-ten-second beat window for the existing pull sequence, with continuous transitions and no extra attempt or invented hold.",
+              "compiledText": "Use the original five-to-ten-second beat window for the existing pull sequence, with continuous transitions and no extra attempt or invented hold.",
+              "localSpan": [
+                882,
+                1028
+              ],
+              "referenceSubstitutions": [],
+              "candidateSpan": [
+                2591,
+                2737
+              ]
+            },
+            {
+              "field": "production.cameraComposition",
+              "author": "MODEL_AUTHORED",
+              "rawText": "Keep a locked wide view containing the arms, legs and face throughout the existing escalation; preserve group positions through the pull.",
+              "compiledText": "Keep a locked wide view containing the arms, legs and face throughout the existing escalation; preserve group positions through the pull.",
+              "localSpan": [
+                1029,
+                1166
+              ],
+              "referenceSubstitutions": [],
+              "candidateSpan": [
+                2738,
+                2875
+              ]
+            },
+            {
+              "field": "production.generatorConstraints.0",
+              "author": "MODEL_AUTHORED",
+              "rawText": "Preserve the source doubling rule and existing count order; do not add a new pull or conceal a multiplication behind an edit.",
+              "compiledText": "Preserve the source doubling rule and existing count order; do not add a new pull or conceal a multiplication behind an edit.",
+              "localSpan": [
+                1167,
+                1292
+              ],
+              "referenceSubstitutions": [],
+              "candidateSpan": [
+                2876,
+                3001
+              ]
+            }
+          ],
+          "candidateSpan": [
+            1709,
+            3001
+          ]
+        }
+      ]
+    }
+  ],
+  "sourceEventMapping": [
+    {
+      "baselineBeatId": "beat_01",
+      "baselineQuote": "0-2s: Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger [close-up on Mimi's hand] Mimi is in front of a toy cabinet, looking determined -> the note sticks to Mimi, not the cabinet",
+      "baselineSourceSpan": [
+        239,
+        498
+      ],
+      "candidateQuote": "0-2s: Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger  Mimi is in front of a toy cabinet, looking determined -> the note sticks to Mimi, not the cabinet [Position the cabinet behind her finger, offset to the right so the destination remains visible beside the fingertip. Carry the existing reach diagonally across the lower foreground toward the visible cabinet surface, with the sticky edge facing the viewer. Keep the cabinet destination visibly clear as the note clings to the finger; leave a narrow visible gap between that finger and the cabinet. Follow the reach through wrong-surface contact in the existing opening window, allowing the destination and the resulting attachment to be read in the same view. Use a locked wide composition with the fingertip in the lower foreground and the cabinet destination in the upper right; retain the note edge in view. Maintain the existing bunny identity and continuous finger-to-note contact; avoid overlapping the free hand with the contact edge.]",
+      "candidateSourceSpan": [
+        239,
+        1317
+      ],
+      "method": "EXACT_NARRATIVE_AND_SERVER_COMPILED_EXECUTION"
+    },
+    {
+      "baselineBeatId": "beat_02",
+      "baselineQuote": "2-5s: Mimi tries to peel the stuck note away with her other hand; the note splits into two [medium shot of Mimi struggling] Mimi pulls at the note -> one note sticks to each hand",
+      "baselineSourceSpan": [
+        499,
+        677
+      ],
+      "candidateQuote": "2-5s: Mimi tries to peel the stuck note away with her other hand; the note splits into two [medium shot of Mimi struggling] Mimi pulls at the note -> one note sticks to each hand",
+      "candidateSourceSpan": [
+        1318,
+        1496
+      ],
+      "method": "EXACT_NARRATIVE_AND_SERVER_COMPILED_EXECUTION"
+    },
+    {
+      "baselineBeatId": "beat_03",
+      "baselineQuote": "5-10s: Mimi continues to pull; each pull doubles the number of sticky notes [wide shot showing Mimi covered in notes] notes multiply from two to four to eight as she pulls, progressively covering her arms, legs and face -> Mimi is overwhelmed by notes",
+      "baselineSourceSpan": [
+        678,
+        929
+      ],
+      "candidateQuote": "5-10s: Mimi continues to pull; each pull doubles the number of sticky notes  notes multiply from two to four to eight as she pulls, progressively covering her arms, legs and face -> Mimi is overwhelmed by notes [Keep the established pulling motion continuous while the growing notes occupy a widening area across the body silhouette. Show the existing progressive coverage of arms, legs and face after each count transition without losing the edges of the growing note groups. Present two notes as a separated horizontal pair beside the arms. Keep both outer note edges visible during the established pull that leads into the next source count. Present four notes as two vertical pairs, offset left and right across the body silhouette. Carry the existing pull continuously across the change, retaining the separated pairs before their next multiplication. Present eight notes in two horizontal rows of four with gaps, following the existing coverage of arms, legs and face. Let the established body coverage follow the final source count while retaining the group boundaries in the same view. Use the original five-to-ten-second beat window for the existing pull sequence, with continuous transitions and no extra attempt or invented hold. Keep a locked wide view containing the arms, legs and face throughout the existing escalation; preserve group positions through the pull. Preserve the source doubling rule and existing count order; do not add a new pull or conceal a multiplication behind an edit.]",
+      "candidateSourceSpan": [
+        1497,
+        3002
+      ],
+      "method": "EXACT_NARRATIVE_AND_SERVER_COMPILED_EXECUTION"
+    },
+    {
+      "baselineBeatId": "beat_04",
+      "baselineQuote": "10-12s: Mimi sees herself in a mirror and screams [close-up on Mimi's shocked face] Mimi is startled by her reflection completely covered in notes -> Mimi is startled",
+      "baselineSourceSpan": [
+        930,
+        1096
+      ],
+      "candidateQuote": "10-12s: Mimi sees herself in a mirror and screams [close-up on Mimi's shocked face] Mimi is startled by her reflection completely covered in notes -> Mimi is startled",
+      "candidateSourceSpan": [
+        3003,
+        3169
+      ],
+      "method": "EXACT_NARRATIVE_AND_SERVER_COMPILED_EXECUTION"
+    },
+    {
+      "baselineBeatId": "beat_05",
+      "baselineQuote": "12-15s: Mimi sneezes and the sticky notes fly off [medium shot of notes flying] notes scatter and stick to the cabinet -> Mimi breathes a sigh of relief but the cabinet remains messy",
+      "baselineSourceSpan": [
+        1097,
+        1279
+      ],
+      "candidateQuote": "12-15s: Mimi sneezes and the sticky notes fly off [medium shot of notes flying] notes scatter and stick to the cabinet -> Mimi breathes a sigh of relief but the cabinet remains messy",
+      "candidateSourceSpan": [
+        3170,
+        3352
+      ],
+      "method": "EXACT_NARRATIVE_AND_SERVER_COMPILED_EXECUTION"
+    }
+  ],
+  "segments": [
+    {
+      "author": "PROTECTED_SOURCE",
+      "candidateSpan": [
+        0,
+        375
+      ],
+      "sourceSpan": [
+        0,
+        375
+      ],
+      "text": "TITLE / FORMAT\nMimi Sticky / 15s Video\n\nVISUAL STYLE\nBright and colorful animation with a playful tone.\n\nCHARACTER / CONTINUITY\nMimi, an anthropomorphic bunny, interacts with sticky notes in a humorous and chaotic manner.\n\nTIMED SHOT PLAN\n0-2s: Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger "
+    },
+    {
+      "author": "PROTECTED_SOURCE",
+      "candidateSpan": [
+        375,
+        473
+      ],
+      "sourceSpan": [
+        400,
+        498
+      ],
+      "text": " Mimi is in front of a toy cabinet, looking determined -> the note sticks to Mimi, not the cabinet"
+    },
+    {
+      "author": "SERVER_ASSEMBLY",
+      "candidateSpan": [
+        473,
+        475
+      ],
+      "text": " ["
+    },
+    {
+      "author": "MODEL_AUTHORED",
+      "candidateSpan": [
+        475,
+        484
+      ],
+      "field": "beat_01.production.spatialRelationships.0.instruction",
+      "text": "Position "
+    },
+    {
+      "author": "SOURCE_BOUND_SUBSTITUTION",
+      "candidateSpan": [
+        484,
+        495
+      ],
+      "field": "beat_01.production.spatialRelationships.0.instruction",
+      "sourceSpan": [
+        324,
+        335
+      ],
+      "text": "the cabinet"
+    },
+    {
+      "author": "MODEL_AUTHORED",
+      "candidateSpan": [
+        495,
+        503
+      ],
+      "field": "beat_01.production.spatialRelationships.0.instruction",
+      "text": " behind "
+    },
+    {
+      "author": "SOURCE_BOUND_SUBSTITUTION",
+      "candidateSpan": [
+        503,
+        513
+      ],
+      "field": "beat_01.production.spatialRelationships.0.instruction",
+      "sourceSpan": [
+        364,
+        374
+      ],
+      "text": "her finger"
+    },
+    {
+      "author": "MODEL_AUTHORED",
+      "candidateSpan": [
+        513,
+        591
+      ],
+      "field": "beat_01.production.spatialRelationships.0.instruction",
+      "text": ", offset to the right so the destination remains visible beside the fingertip."
+    },
+    {
+      "author": "SERVER_ASSEMBLY",
+      "candidateSpan": [
+        591,
+        592
+      ],
+      "text": " "
+    },
+    {
+      "author": "MODEL_AUTHORED",
+      "candidateSpan": [
+        592,
+        731
+      ],
+      "field": "beat_01.production.choreography.instruction",
+      "text": "Carry the existing reach diagonally across the lower foreground toward the visible cabinet surface, with the sticky edge facing the viewer."
+    },
+    {
+      "author": "SERVER_ASSEMBLY",
+      "candidateSpan": [
+        731,
+        732
+      ],
+      "text": " "
+    },
+    {
+      "author": "MODEL_AUTHORED",
+      "candidateSpan": [
+        732,
+        872
+      ],
+      "field": "beat_01.production.choreography.consequencePresentation",
+      "text": "Keep the cabinet destination visibly clear as the note clings to the finger; leave a narrow visible gap between that finger and the cabinet."
+    },
+    {
+      "author": "SERVER_ASSEMBLY",
+      "candidateSpan": [
+        872,
+        873
+      ],
+      "text": " "
+    },
+    {
+      "author": "MODEL_AUTHORED",
+      "candidateSpan": [
+        873,
+        1034
+      ],
+      "field": "beat_01.production.temporalPresentation",
+      "text": "Follow the reach through wrong-surface contact in the existing opening window, allowing the destination and the resulting attachment to be read in the same view."
+    },
+    {
+      "author": "SERVER_ASSEMBLY",
+      "candidateSpan": [
+        1034,
+        1035
+      ],
+      "text": " "
+    },
+    {
+      "author": "MODEL_AUTHORED",
+      "candidateSpan": [
+        1035,
+        1185
+      ],
+      "field": "beat_01.production.cameraComposition",
+      "text": "Use a locked wide composition with the fingertip in the lower foreground and the cabinet destination in the upper right; retain the note edge in view."
+    },
+    {
+      "author": "SERVER_ASSEMBLY",
+      "candidateSpan": [
+        1185,
+        1186
+      ],
+      "text": " "
+    },
+    {
+      "author": "MODEL_AUTHORED",
+      "candidateSpan": [
+        1186,
+        1316
+      ],
+      "field": "beat_01.production.generatorConstraints.0",
+      "text": "Maintain the existing bunny identity and continuous finger-to-note contact; avoid overlapping the free hand with the contact edge."
+    },
+    {
+      "author": "SERVER_ASSEMBLY",
+      "candidateSpan": [
+        1316,
+        1317
+      ],
+      "text": "]"
+    },
+    {
+      "author": "PROTECTED_SOURCE",
+      "candidateSpan": [
+        1317,
+        1573
+      ],
+      "sourceSpan": [
+        498,
+        754
+      ],
+      "text": "\n2-5s: Mimi tries to peel the stuck note away with her other hand; the note splits into two [medium shot of Mimi struggling] Mimi pulls at the note -> one note sticks to each hand\n5-10s: Mimi continues to pull; each pull doubles the number of sticky notes "
+    },
+    {
+      "author": "PROTECTED_SOURCE",
+      "candidateSpan": [
+        1573,
+        1707
+      ],
+      "sourceSpan": [
+        795,
+        929
+      ],
+      "text": " notes multiply from two to four to eight as she pulls, progressively covering her arms, legs and face -> Mimi is overwhelmed by notes"
+    },
+    {
+      "author": "SERVER_ASSEMBLY",
+      "candidateSpan": [
+        1707,
+        1709
+      ],
+      "text": " ["
+    },
+    {
+      "author": "MODEL_AUTHORED",
+      "candidateSpan": [
+        1709,
+        1830
+      ],
+      "field": "beat_03.production.choreography.instruction",
+      "text": "Keep the established pulling motion continuous while the growing notes occupy a widening area across the body silhouette."
+    },
+    {
+      "author": "SERVER_ASSEMBLY",
+      "candidateSpan": [
+        1830,
+        1831
+      ],
+      "text": " "
+    },
+    {
+      "author": "MODEL_AUTHORED",
+      "candidateSpan": [
+        1831,
+        1973
+      ],
+      "field": "beat_03.production.choreography.consequencePresentation",
+      "text": "Show the existing progressive coverage of arms, legs and face after each count transition without losing the edges of the growing note groups."
+    },
+    {
+      "author": "SERVER_ASSEMBLY",
+      "candidateSpan": [
+        1973,
+        1974
+      ],
+      "text": " "
+    },
+    {
+      "author": "MODEL_AUTHORED",
+      "candidateSpan": [
+        1974,
+        1982
+      ],
+      "field": "beat_03.production.stateProgression.0.placementInstruction",
+      "text": "Present "
+    },
+    {
+      "author": "SOURCE_BOUND_SUBSTITUTION",
+      "candidateSpan": [
+        1982,
+        1985
+      ],
+      "field": "beat_03.production.stateProgression.0.placementInstruction",
+      "sourceSpan": [
+        816,
+        819
+      ],
+      "text": "two"
+    },
+    {
+      "author": "MODEL_AUTHORED",
+      "candidateSpan": [
+        1985,
+        2039
+      ],
+      "field": "beat_03.production.stateProgression.0.placementInstruction",
+      "text": " notes as a separated horizontal pair beside the arms."
+    },
+    {
+      "author": "SERVER_ASSEMBLY",
+      "candidateSpan": [
+        2039,
+        2040
+      ],
+      "text": " "
+    },
+    {
+      "author": "MODEL_AUTHORED",
+      "candidateSpan": [
+        2040,
+        2141
+      ],
+      "field": "beat_03.production.stateProgression.0.transitionPresentation",
+      "text": "Keep both outer note edges visible during the established pull that leads into the next source count."
+    },
+    {
+      "author": "SERVER_ASSEMBLY",
+      "candidateSpan": [
+        2141,
+        2142
+      ],
+      "text": " "
+    },
+    {
+      "author": "MODEL_AUTHORED",
+      "candidateSpan": [
+        2142,
+        2150
+      ],
+      "field": "beat_03.production.stateProgression.1.placementInstruction",
+      "text": "Present "
+    },
+    {
+      "author": "SOURCE_BOUND_SUBSTITUTION",
+      "candidateSpan": [
+        2150,
+        2154
+      ],
+      "field": "beat_03.production.stateProgression.1.placementInstruction",
+      "sourceSpan": [
+        823,
+        827
+      ],
+      "text": "four"
+    },
+    {
+      "author": "MODEL_AUTHORED",
+      "candidateSpan": [
+        2154,
+        2233
+      ],
+      "field": "beat_03.production.stateProgression.1.placementInstruction",
+      "text": " notes as two vertical pairs, offset left and right across the body silhouette."
+    },
+    {
+      "author": "SERVER_ASSEMBLY",
+      "candidateSpan": [
+        2233,
+        2234
+      ],
+      "text": " "
+    },
+    {
+      "author": "MODEL_AUTHORED",
+      "candidateSpan": [
+        2234,
+        2353
+      ],
+      "field": "beat_03.production.stateProgression.1.transitionPresentation",
+      "text": "Carry the existing pull continuously across the change, retaining the separated pairs before their next multiplication."
+    },
+    {
+      "author": "SERVER_ASSEMBLY",
+      "candidateSpan": [
+        2353,
+        2354
+      ],
+      "text": " "
+    },
+    {
+      "author": "MODEL_AUTHORED",
+      "candidateSpan": [
+        2354,
+        2362
+      ],
+      "field": "beat_03.production.stateProgression.2.placementInstruction",
+      "text": "Present "
+    },
+    {
+      "author": "SOURCE_BOUND_SUBSTITUTION",
+      "candidateSpan": [
+        2362,
+        2367
+      ],
+      "field": "beat_03.production.stateProgression.2.placementInstruction",
+      "sourceSpan": [
+        831,
+        836
+      ],
+      "text": "eight"
+    },
+    {
+      "author": "MODEL_AUTHORED",
+      "candidateSpan": [
+        2367,
+        2471
+      ],
+      "field": "beat_03.production.stateProgression.2.placementInstruction",
+      "text": " notes in two horizontal rows of four with gaps, following the existing coverage of arms, legs and face."
+    },
+    {
+      "author": "SERVER_ASSEMBLY",
+      "candidateSpan": [
+        2471,
+        2472
+      ],
+      "text": " "
+    },
+    {
+      "author": "MODEL_AUTHORED",
+      "candidateSpan": [
+        2472,
+        2590
+      ],
+      "field": "beat_03.production.stateProgression.2.transitionPresentation",
+      "text": "Let the established body coverage follow the final source count while retaining the group boundaries in the same view."
+    },
+    {
+      "author": "SERVER_ASSEMBLY",
+      "candidateSpan": [
+        2590,
+        2591
+      ],
+      "text": " "
+    },
+    {
+      "author": "MODEL_AUTHORED",
+      "candidateSpan": [
+        2591,
+        2737
+      ],
+      "field": "beat_03.production.temporalPresentation",
+      "text": "Use the original five-to-ten-second beat window for the existing pull sequence, with continuous transitions and no extra attempt or invented hold."
+    },
+    {
+      "author": "SERVER_ASSEMBLY",
+      "candidateSpan": [
+        2737,
+        2738
+      ],
+      "text": " "
+    },
+    {
+      "author": "MODEL_AUTHORED",
+      "candidateSpan": [
+        2738,
+        2875
+      ],
+      "field": "beat_03.production.cameraComposition",
+      "text": "Keep a locked wide view containing the arms, legs and face throughout the existing escalation; preserve group positions through the pull."
+    },
+    {
+      "author": "SERVER_ASSEMBLY",
+      "candidateSpan": [
+        2875,
+        2876
+      ],
+      "text": " "
+    },
+    {
+      "author": "MODEL_AUTHORED",
+      "candidateSpan": [
+        2876,
+        3001
+      ],
+      "field": "beat_03.production.generatorConstraints.0",
+      "text": "Preserve the source doubling rule and existing count order; do not add a new pull or conceal a multiplication behind an edit."
+    },
+    {
+      "author": "SERVER_ASSEMBLY",
+      "candidateSpan": [
+        3001,
+        3002
+      ],
+      "text": "]"
+    },
+    {
+      "author": "PROTECTED_SOURCE",
+      "candidateSpan": [
+        3002,
+        3887
+      ],
+      "sourceSpan": [
+        929,
+        1814
+      ],
+      "text": "\n10-12s: Mimi sees herself in a mirror and screams [close-up on Mimi's shocked face] Mimi is startled by her reflection completely covered in notes -> Mimi is startled\n12-15s: Mimi sneezes and the sticky notes fly off [medium shot of notes flying] notes scatter and stick to the cabinet -> Mimi breathes a sigh of relief but the cabinet remains messy\n\nAUDIO\nPlayful background music with sound effects for sneezing and notes sticking.\n\nNEGATIVE CONSTRAINTS\nNo dark themes or violence.\n\nFINAL CUT\nMimi is relieved but the cabinet remains visibly messy.\n\nCHARACTER IDENTITY LOCK\nMimi is the established anthropomorphic bunny character. Preserve that identity; do not render a human or invent unverified visual details. No approved visual reference is currently bound, so appearance details remain unverified.\n\nPRODUCTION SETTINGS\nAspect ratio: 9:16. Target generator: SEEDANCE_2_0_MINI. "
+    },
+    {
+      "author": "AUTHORITATIVE_SETTINGS",
+      "candidateSpan": [
+        3887,
+        3918
+      ],
+      "text": "Content profile: ABSURD_PHYSICS"
+    },
+    {
+      "author": "PROTECTED_SOURCE",
+      "candidateSpan": [
+        3918,
+        3919
+      ],
+      "sourceSpan": [
+        1835,
+        1836
+      ],
+      "text": "."
+    }
+  ],
+  "compilerContribution": [
+    "Source narrative preservation",
+    "Reference substitution using exact source spans",
+    "Annotation delimiters and field separators",
+    "Authoritative production-profile normalization"
+  ],
+  "semanticFidelity": "UNKNOWN",
+  "creativeEffectiveness": "UNVERIFIED"
+}

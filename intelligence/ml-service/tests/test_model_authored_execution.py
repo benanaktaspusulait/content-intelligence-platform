@@ -184,3 +184,50 @@ def test_authored_fields_cannot_claim_audience_evidence():
     p=contact();p['interventions'][0]['production']['generatorConstraints']=['This production treatment will boost retention by 20 percent.']
     _,_,r=execute([p]);assert not r['result']['candidates']
     assert 'UNSUPPORTED_AUDIENCE_OR_RENDER_CLAIM' in r['result']['rejectedProposals'][0]['reasons']
+
+
+def test_real_http_adapter_mocked_sdk_budget_recovery_and_source_comparison(monkeypatch):
+    from fastapi.testclient import TestClient
+    from app.main import app
+    from openai.types.chat import ChatCompletion
+    for key,value in {'WORKFLOW_CREATIVE_ROLES_ENABLED':'true','WORKFLOW_PROMPT_OPTIMIZATION_MODEL':'mock-authored',
+        'WORKFLOW_PROMPT_OPTIMIZATION_INPUT_USD_PER_MILLION':'.15','WORKFLOW_PROMPT_OPTIMIZATION_OUTPUT_USD_PER_MILLION':'.6',
+        'OPENAI_API_KEY':'mock-only'}.items():monkeypatch.setenv(key,value)
+    f=inputs();p=contact();p['interventions']+=progression()['interventions'];raw=response([p]);client=TestClient(app)
+    answer=ChatCompletion.model_validate({'id':'mock-authored','object':'chat.completion','created':1,'model':'mock-authored',
+        'choices':[{'index':0,'message':{'role':'assistant','content':json.dumps(raw)},'finish_reason':'stop'}],
+        'usage':{'prompt_tokens':5000,'completion_tokens':1800,'total_tokens':6800}})
+    with patch('app.llm.openai_provider.OpenAI') as sdk:
+        sdk.return_value.chat.completions.create.return_value=answer
+        result=client.post('/api/v1/workflow/creative-role',json={'role':'PROMPT_OPTIMIZATION','text':f['text'],'context':f['context'],'maxCostUsd':.1})
+        assert result.status_code==200,result.text
+        sdk.return_value.chat.completions.create.assert_called_once()
+        assert sdk.call_args.kwargs['max_retries']==0
+        request=sdk.return_value.chat.completions.create.call_args.kwargs
+        assert request['max_tokens']==4000
+        assert 'AuthoredProduction' in request['response_format']['json_schema']['schema']['$defs']
+        assert result.json()['actualCostUsd']==pytest.approx(.00183) # Simulated usage only.
+    candidate=result.json()['result']['candidates'][0]
+    with patch('app.workflow.creative_roles.OpenAIProvider',side_effect=AssertionError('Recovery must not dispatch')):
+        recovered=client.post('/api/v1/workflow/optimization-recovery',json={'text':f['text'],'context':f['context'],'providerResult':raw,'diagnostics':{}})
+    assert recovered.status_code==200,recovered.text
+    assert recovered.json()['calls']==0 and recovered.json()['result']['candidates'][0]['prompt']==candidate['prompt']
+    with patch('app.llm.semantic_checks.get_provider',side_effect=AssertionError('No real providers')):
+        candidate['review']=canonical_review(f,candidate)
+    compared=client.post('/api/v1/workflow/optimization-assessment',json={'text':f['text'],'context':f['context'],'candidates':[candidate],'baselineScore':f['baselineScore']})
+    assert compared.status_code==200,compared.text
+    assert compared.json()['recommendation']=='KEEP_ORIGINAL' # Existing critic's unresolved risks remain enforceable.
+    with patch('app.llm.openai_provider.OpenAI') as sdk:
+        rejected=client.post('/api/v1/workflow/creative-role',json={'role':'PROMPT_OPTIMIZATION','text':f['text'],'context':f['context'],'maxCostUsd':.000001})
+        assert rejected.status_code!=200
+        sdk.assert_not_called()
+
+
+@pytest.mark.parametrize('text',[
+    'Render Mimi as a human while retaining the existing cabinet contact choreography.',
+    'Do not triple the notes; triple the notes during contact to simplify the frame.'
+])
+def test_protected_identity_and_negation_scope_cannot_smuggle_story_changes(text):
+    p=contact();p['interventions'][0]['production']['choreography']['instruction']=text
+    _,_,r=execute([p]);assert not r['result']['candidates']
+    assert r['result']['rejectedProposals'][0]['classification']=='STORY_FIDELITY_FAILED'

@@ -1,0 +1,1654 @@
+{
+  "ruleset": "1.11",
+  "before": {
+    "CONCEPT_006": {
+      "ruleId": "CONCEPT_006",
+      "ruleName": "Consequence Capacity",
+      "family": "concept_strength",
+      "severity": "PASS",
+      "outcome": "PASS",
+      "message": "Sufficient consequence variety: 5 distinct consequences.",
+      "details": {
+        "evaluation_stage": "PRE_RENDER",
+        "recommendation": "Before writing a 15-second prompt, verify that the core mechanic\ncan naturally generate at least 4 visually distinct consequences.\n\nIf it cannot, reject the concept.\n\nDo NOT stretch a two-beat teaching contrast into 15 seconds."
+      }
+    },
+    "REPETITION_002": {
+      "ruleId": "REPETITION_002",
+      "ruleName": "Visual Beat Repetition",
+      "family": "visual_novelty",
+      "severity": "PASS",
+      "outcome": "PASS",
+      "message": "Good action variety. Max repetition: 1.",
+      "details": {
+        "evaluation_stage": "PRE_RENDER",
+        "recommendation": "The same physical action should not repeat more than twice\nunless each iteration introduces a materially different consequence.\n\nEmotional variation (confused → understanding → frustrated)\nwithout physical consequence change is insufficient."
+      }
+    },
+    "REPETITION_003": {
+      "ruleId": "REPETITION_003",
+      "ruleName": "Cycle Repetition Limit",
+      "family": "visual_novelty",
+      "severity": "PASS",
+      "outcome": "PASS",
+      "message": "No explicit cycles detected.",
+      "details": {
+        "evaluation_stage": "PRE_RENDER",
+        "recommendation": "A cause-effect cycle (action → consequence → reset) should not\nrepeat more than twice unless each iteration introduces a NEW\nphysical element, obstacle, or escalation.\n\nExample cycle: sharpen → draw → blunt → (reset to sharpen)\n\nCosmetic variations (stroke pattern, sharpen duration) do not\ncount as structural escalation."
+      }
+    },
+    "NOVELTY_001": {
+      "ruleId": "NOVELTY_001",
+      "ruleName": "Novelty Timeline Distribution",
+      "family": "visual_novelty",
+      "severity": "WARNING",
+      "outcome": "PASS",
+      "message": "Gap of 5.0s between new consequences (at 5.0s-10.0s). Consider adding intermediate beat.",
+      "details": {
+        "evaluation_stage": "PRE_RENDER",
+        "recommendation": "New consequences should be distributed across the timeline,\nnot clustered at the beginning or end.\n\nNo gap longer than 4.5 seconds should pass without a new\nvisually distinct consequence appearing."
+      }
+    },
+    "PROGRESSION_005": {
+      "ruleId": "PROGRESSION_005",
+      "ruleName": "Consequence Novelty Timeline",
+      "family": "progression",
+      "severity": "PASS",
+      "outcome": "PASS",
+      "message": "Good novelty timeline. Static pattern: 0.0%.",
+      "details": {
+        "evaluation_stage": "PRE_RENDER",
+        "recommendation": "No more than 50% of the video should pass without new\nvisually distinct physical consequences appearing.\n\nIf > 65% of video shows only pattern variations of the same\ncore action, flag as CRITICAL."
+      }
+    },
+    "ESCALATION_004": {
+      "ruleId": "ESCALATION_004",
+      "ruleName": "Delayed Payoff",
+      "family": "escalation",
+      "severity": "WARNING",
+      "outcome": "PASS",
+      "message": "Final payoff at 12.0s. Consider moving earlier for stronger retention.",
+      "details": {
+        "evaluation_stage": "PRE_RENDER",
+        "recommendation": "The final major escalation should not appear after 80% of the video\n(12 seconds in a 15-second video) unless the middle contains\nstrong intermediate escalations.\n\nLate payoffs risk losing viewer attention before the peak."
+      }
+    },
+    "PAYOFF_001": {
+      "ruleId": "PAYOFF_001",
+      "ruleName": "Not Repeat of Opening",
+      "family": "final_payoff",
+      "severity": "PASS",
+      "outcome": "PASS",
+      "message": "Final payoff is distinct from opening.",
+      "details": {
+        "evaluation_stage": "PRE_RENDER",
+        "recommendation": "The final beat must not be identical or nearly identical\nto the opening beat.\n\nA callback is acceptable if it's BIGGER or has a TWIST.\nA simple repeat signals lazy structure."
+      }
+    },
+    "PRODUCIBILITY_001": {
+      "ruleId": "PRODUCIBILITY_001",
+      "ruleName": "Very High Complexity Block",
+      "family": "ai_producibility",
+      "severity": "PASS",
+      "outcome": "PASS",
+      "message": "Acceptable complexity: medium.",
+      "details": {
+        "evaluation_stage": "PRE_RENDER",
+        "recommendation": "Prompts marked as \"very_high\" complexity should not proceed\nto render without human review and risk acceptance.\n\nVery high complexity typically means 4+ simultaneous high-risk\noperations or untested novel requirements."
+      }
+    },
+    "HOOK_002": {
+      "ruleId": "HOOK_002",
+      "ruleName": "First Frame Anomaly",
+      "family": "hook_strength",
+      "severity": "PASS",
+      "outcome": "PASS",
+      "message": "Textual first-frame intent establishes an immediate anomaly; visual verification remains a separate gate.",
+      "details": {
+        "textualFirstFrameIntent": {
+          "status": "PASS",
+          "source": "PROMPT_TEXT"
+        },
+        "evaluation_stage": "PRE_RENDER",
+        "recommendation": "The problem must already be visually obvious within the opening second, with no setup, narration, or text explanation required. hook.startsMidAction must be true and hook.visualStrength must be at least 4/5. RULESET 1.3 adds a tolerance window -- hook.startsAt must be <= 0.8s (defaults to 0.0 when absent, a no-op for pre-1.3 IRs); the anomaly doesn't need to be literally frame-0 to read as immediate."
+      }
+    },
+    "MOTION_001": {
+      "ruleId": "MOTION_001",
+      "ruleName": "Continuous Meaningful Progression",
+      "family": "motion_quality",
+      "severity": "PASS",
+      "outcome": "PASS",
+      "message": "No stalled progression. Longest motionless beat: 0.0s.",
+      "details": {
+        "evaluation_stage": "PRE_RENDER",
+        "recommendation": "No beat may hold with motionAmount == 'none' for longer than 1.5 seconds. Renamed from \"No Dead Air\" in RULESET 1.3 -- brief stillness (a puzzled look, a short charming reaction) is a legitimate pause, not a defect; what matters is progression not stalling, not motion itself."
+      }
+    },
+    "CHAR_002": {
+      "ruleId": "CHAR_002",
+      "ruleName": "Active Character",
+      "family": "progression",
+      "severity": "PASS",
+      "outcome": "PASS",
+      "message": "Character is actively attempting a solution for 53% of the video.",
+      "details": {
+        "tier": "short",
+        "evaluation_stage": "PRE_RENDER",
+        "recommendation": "The character must spend most of the runtime actively trying a solution, not watching or reacting. Ratio of (duration of isAttempt beats) / (total duration) must be at least 0.5 for short-tier videos, 0.6 for long-tier."
+      }
+    },
+    "PRODUCIBILITY_002": {
+      "ruleId": "PRODUCIBILITY_002",
+      "ruleName": "Prop Economy",
+      "family": "ai_producibility",
+      "severity": "PASS",
+      "outcome": "PASS",
+      "message": "0 main props, within the short-tier budget of 2.",
+      "details": {
+        "tier": "short",
+        "evaluation_stage": "PRE_RENDER",
+        "recommendation": "Introduce the minimum number of props necessary. setting.mainProps count must not exceed 2 for short-tier videos, 4 for long-tier videos. RULESET 1.3 adds a timeline-aware check (heuristic, text-match based) alongside the static count -- a prop first mentioned mid-concept inside an attempt beat, rather than established from the opening, is flagged as a WARNING even when the total count is within budget."
+      }
+    },
+    "PAYOFF_002": {
+      "ruleId": "PAYOFF_002",
+      "ruleName": "Fake Resolution Present",
+      "family": "progression",
+      "severity": "WARNING",
+      "outcome": "PASS",
+      "message": "No fake-resolution beat found. This is a bonus, not a requirement — consider adding a moment where the problem appears solved before the twist.",
+      "details": {
+        "evaluation_stage": "PRE_RENDER",
+        "recommendation": "Bonus (non-blocking): at least one beat with consequenceType == 'fake_win' before finalPayoff.startsAt, giving the audience a moment to believe the problem is solved before the final twist."
+      }
+    },
+    "BEAT_005": {
+      "ruleId": "BEAT_005",
+      "ruleName": "Story Detached Gap",
+      "family": "visual_novelty",
+      "severity": "PASS",
+      "outcome": "PASS",
+      "message": "Longest detached stretch: 0.0s, within tolerance.",
+      "details": {
+        "evaluation_stage": "PRE_RENDER",
+        "recommendation": "While the core problem is actively unresolved (at least one attempt beat has occurred, final payoff not yet started), no consecutive stretch of beats.relatesToCoreProblem == false may exceed 0.5 seconds. Brief transitions/reaction beats under that threshold are not flagged; only a genuine abandonment of the active problem fails."
+      }
+    },
+    "PAYOFF_004": {
+      "ruleId": "PAYOFF_004",
+      "ruleName": "Final Payoff Salience",
+      "family": "final_payoff",
+      "severity": "WARNING",
+      "outcome": "PASS",
+      "message": "Final payoff salience (5) ties the earlier peak. Acceptable but not ideal — consider making the ending strictly the peak.",
+      "details": {
+        "evaluation_stage": "PRE_RENDER",
+        "recommendation": "The final payoff's beat.intensity should be at least as high as the highest intensity seen earlier in the video. Computed independently from beat.intensity values; finalPayoff.isPeakIntensity is never trusted as the verdict, only cross-checked for discrepancy reporting. Optimization-level (WARNING), never a blocker. Renamed from \"Final Peak Intensity\" in RULESET 1.3 -- \"intensity\" read as motion/chaos, but beats[].intensity is a 1-10 visual/emotional energy scale; a quiet, conclusive beat can score as high as a frantic one."
+      }
+    },
+    "REPETITION_004": {
+      "ruleId": "REPETITION_004",
+      "ruleName": "Dominant Action Ratio",
+      "family": "visual_novelty",
+      "severity": "PASS",
+      "outcome": "PASS",
+      "message": "Good action variety. Dominant verb 'PEEL' at 50%.",
+      "details": {
+        "dominant_verb": "PEEL",
+        "evaluation_stage": "PRE_RENDER",
+        "recommendation": "Companion to ATTEMPT_002, not a replacement: catches one primaryVerb numerically dominating the attempt list even when every attempt is legitimately distinct in ATTEMPT_002's semantic judgment. WARNING above 55% dominance, CRITICAL above 70%. Never a BLOCKER, since a dominant verb can be valid if it produces genuinely different consequences each time."
+      }
+    },
+    "PAYOFF_006": {
+      "ruleId": "PAYOFF_006",
+      "ruleName": "Loopability",
+      "family": "final_payoff",
+      "severity": "PASS",
+      "outcome": "PASS",
+      "message": "No loop claimed, no hard-cut flag, but no weak-ending pattern detected either.",
+      "details": {
+        "evaluation_stage": "PRE_RENDER",
+        "recommendation": "A retention-optimization dimension, never a hard blocker. A strong natural loop back to the opening (finalPayoff.loopsToOpening + loopQuality == 'strong') is a bonus. An ordinary hard cut with no loop claim is fully valid (neutral PASS). Only specific weak-ending text patterns (fade-out, 'the end', walks away) with neither a loop nor a hard cut produce a WARNING-severity FAIL."
+      }
+    },
+    "PROGRESSION_006": {
+      "ruleId": "PROGRESSION_006",
+      "ruleName": "Activity Is Not Progression",
+      "family": "progression",
+      "severity": "PASS",
+      "outcome": "PASS",
+      "message": "No single verb root dominates. Most common: 'PEEL' at 50%.",
+      "details": {
+        "dominant_root": "PEEL",
+        "evaluation_stage": "PRE_RENDER",
+        "recommendation": "Deterministic companion to ATTEMPT_002: flags a dominant primaryVerb ROOT across attempts (e.g. PUSH / PUSH_HARDER / PUSH_FROM_LEFT all share the root PUSH) even when full verb labels are distinct and ATTEMPT_002's LLM duplicate-strategy check already passed. Catches 'more activity, not a new strategy' in the gray area between CHAR_002 (time-active) and ATTEMPT_002 (label/semantic distinctness). No LLM call."
+      }
+    },
+    "ESCALATION_005": {
+      "ruleId": "ESCALATION_005",
+      "ruleName": "Meaningful Attempt Escalation",
+      "family": "escalation",
+      "severity": "PASS",
+      "outcome": "PASS",
+      "message": "Moderate escalation evidence is present: Escalation is evidenced by consequence magnitude, force, deformation, scope, difficulty, stakes or mechanic persistence.",
+      "details": {
+        "evidence": {
+          "status": "AVAILABLE",
+          "reason": "Escalation is evidenced by consequence magnitude, force, deformation, scope, difficulty, stakes or mechanic persistence.",
+          "candidateBeatIds": [
+            "beat_02",
+            "beat_03",
+            "beat_04",
+            "beat_05"
+          ],
+          "candidate_beat_ids": [
+            "beat_02",
+            "beat_03",
+            "beat_04",
+            "beat_05"
+          ],
+          "newTarget": true,
+          "new_target": true,
+          "intensityRise": false,
+          "intensity_rise": false,
+          "consequenceExpansion": false,
+          "consequence_expansion": false,
+          "resistance": true,
+          "wallFlex": false,
+          "wall_flex": false,
+          "forceRise": false,
+          "deformation": false,
+          "scopeExpansion": false,
+          "difficultyRise": false,
+          "stakesRise": false,
+          "persistence": true,
+          "quantityGrowth": false,
+          "applicability": "APPLICABLE",
+          "strength": "MODERATE",
+          "source": "LATER_ATTEMPT_COMPARISON",
+          "confidence": 0.8
+        },
+        "evaluation_stage": "PRE_RENDER",
+        "recommendation": "Companion to ESCALATION_004 (payoff timing): checks whether attempt-beat intensity rises across the timeline rather than staying flat or declining. Deterministic, keyed off beats[].intensity on isAttempt beats in timeline order. Capped at WARNING — deadpan-comedy concepts can deliberately keep escalation small."
+      }
+    },
+    "CONTINUOUS_ACTION_MOMENTUM": {
+      "ruleId": "CONTINUOUS_ACTION_MOMENTUM",
+      "ruleName": "Continuous Action Momentum",
+      "family": "motion_quality",
+      "severity": "PASS",
+      "outcome": "PASS",
+      "message": "Attempts chain with reaction/action overlap and a bounded passive-time budget.",
+      "details": {
+        "passiveSeconds": 0.0,
+        "passiveRatio": 0.0,
+        "standaloneReactionCount": 0,
+        "attemptTransitionGaps": [
+          0.0
+        ],
+        "maxAttemptTransitionGap": 0.0,
+        "finalAftermathSeconds": 0.0,
+        "evaluation_stage": "PRE_RENDER",
+        "recommendation": "A reaction must overlap the physical transition into the next attempt. Rejects standalone reaction beats, reset-to-neutral gaps, excessive passive time, slow attempt transitions, and long final aftermaths. This rule distinguishes meaningful progression from forward motion momentum."
+      }
+    },
+    "MINI_STORY_LOCK": {
+      "ruleId": "MINI_STORY_LOCK",
+      "ruleName": "Mini Story Lock",
+      "family": "concept_strength",
+      "severity": "BLOCKER",
+      "outcome": "PASS",
+      "message": "Readable mini-story arc: goal, obstruction, attempts, progression, realization and payoff are evidenced.",
+      "details": {
+        "missing": [],
+        "fake_resolution": "OPTIONAL",
+        "recurrence": "OPTIONAL",
+        "storyEvidence": {
+          "raw_beat_count": 5,
+          "load_beat_count": 5,
+          "major_beat_count": 5,
+          "micro_beat_count": 0,
+          "state_transition_count": 5,
+          "strategy_change_count": 1,
+          "critical_beat_durations": [
+            2.0,
+            3.0,
+            5.0,
+            2.0,
+            3.0
+          ],
+          "generation_mode": "SINGLE_15S",
+          "temporal_load": "MANAGEABLE",
+          "split_recommendation": null,
+          "goal_status": "IMPLICIT_BUT_OBSERVABLE",
+          "obstruction_status": "AVAILABLE",
+          "realization_status": "AVAILABLE",
+          "realization_mode": "EXPLICIT",
+          "payoff_status": "AVAILABLE",
+          "continuation_status": "NOT_APPLICABLE",
+          "continuation_mismatches": []
+        },
+        "evaluation_stage": "PRE_RENDER",
+        "recommendation": "Every video needs a visible goal, one impossible obstruction tied to that goal, active strategies, progression, realization or decision, and a readable payoff. Fake resolution, recurrence, and final twist are optional bonus evidence."
+      }
+    },
+    "GOAL_VISIBLE_EARLY": {
+      "ruleId": "GOAL_VISIBLE_EARLY",
+      "ruleName": "Goal Visible Early",
+      "family": "hook_strength",
+      "severity": "CRITICAL",
+      "outcome": "PASS",
+      "message": "The character goal is available in the opening window.",
+      "details": {
+        "goalEvidence": {
+          "goalExplicitness": "IMPLICIT_BUT_OBSERVABLE",
+          "goalType": "ATTACH_OBJECT_TO_TARGET",
+          "description": "Attach the note to the cabinet",
+          "targetObject": "the cabinet",
+          "obstruction": "instead of sticking to the cabinet, the note visibly clings to her finger",
+          "intendedEffect": "attach_object_to_target_surface",
+          "source": "CONTRASTIVE_ATTACHMENT_TARGET_INFERENCE",
+          "primaryGoal": {
+            "description": "Attach the note to the cabinet",
+            "state": "INFERRED",
+            "sourceQuote": "instead of sticking to the cabinet, the note visibly clings to her finger",
+            "sourceSpan": [
+              301,
+              374
+            ],
+            "method": "CONTRASTIVE_ATTACHMENT_TARGET_INFERENCE",
+            "semanticVerification": "NOT_PERFORMED"
+          },
+          "secondaryRecoveryAttempt": {
+            "description": "Mimi tries to peel the stuck note away with her other hand",
+            "state": "OBSERVED",
+            "sourceQuote": "Mimi tries to peel the stuck note away with her other hand",
+            "sourceSpan": [
+              505,
+              563
+            ],
+            "method": "EXPLICIT_RECOVERY_ATTEMPT_PATTERN",
+            "semanticVerification": "NOT_PERFORMED",
+            "beatId": "beat_02",
+            "targetObject": "the stuck note"
+          }
+        },
+        "evaluation_stage": "PRE_RENDER",
+        "recommendation": "The character goal must be explicit or implicit-but-observable in the first 1-2 seconds."
+      }
+    },
+    "TEMPORAL_COMPLEXITY_SPLIT_GATE": {
+      "ruleId": "TEMPORAL_COMPLEXITY_SPLIT_GATE",
+      "ruleName": "Temporal Complexity Split Gate",
+      "family": "generation_executability",
+      "severity": "BLOCKER",
+      "outcome": "PASS",
+      "message": "Temporal load is manageable for the selected generation plan.",
+      "details": {
+        "mode": "SINGLE_15S",
+        "storyEvidence": {
+          "raw_beat_count": 5,
+          "load_beat_count": 5,
+          "major_beat_count": 5,
+          "micro_beat_count": 0,
+          "state_transition_count": 5,
+          "strategy_change_count": 1,
+          "critical_beat_durations": [
+            2.0,
+            3.0,
+            5.0,
+            2.0,
+            3.0
+          ],
+          "generation_mode": "SINGLE_15S",
+          "temporal_load": "MANAGEABLE",
+          "split_recommendation": null,
+          "goal_status": "IMPLICIT_BUT_OBSERVABLE",
+          "obstruction_status": "AVAILABLE",
+          "realization_status": "AVAILABLE",
+          "realization_mode": "EXPLICIT",
+          "payoff_status": "AVAILABLE",
+          "continuation_status": "NOT_APPLICABLE",
+          "continuation_mismatches": []
+        },
+        "evaluation_stage": "PRE_RENDER",
+        "recommendation": "Block an overloaded SINGLE_15S generation plan and recommend SPLIT_2X15S. The creative concept is not rejected when the split plan is selected."
+      }
+    },
+    "BEAT_DENSITY_RULE": {
+      "ruleId": "BEAT_DENSITY_RULE",
+      "ruleName": "Beat Density Rule",
+      "family": "progression",
+      "severity": "CRITICAL",
+      "outcome": "PASS",
+      "message": "5 canonical major beats fit the 15-second plan.",
+      "details": {
+        "microBeatCount": 0,
+        "storyEvidence": {
+          "raw_beat_count": 5,
+          "load_beat_count": 5,
+          "major_beat_count": 5,
+          "micro_beat_count": 0,
+          "state_transition_count": 5,
+          "strategy_change_count": 1,
+          "critical_beat_durations": [
+            2.0,
+            3.0,
+            5.0,
+            2.0,
+            3.0
+          ],
+          "generation_mode": "SINGLE_15S",
+          "temporal_load": "MANAGEABLE",
+          "split_recommendation": null,
+          "goal_status": "IMPLICIT_BUT_OBSERVABLE",
+          "obstruction_status": "AVAILABLE",
+          "realization_status": "AVAILABLE",
+          "realization_mode": "EXPLICIT",
+          "payoff_status": "AVAILABLE",
+          "continuation_status": "NOT_APPLICABLE",
+          "continuation_mismatches": []
+        },
+        "evaluation_stage": "PRE_RENDER",
+        "recommendation": "A 15-second single-generation plan should contain 4-5 canonical major story beats, with approximately 6 as the upper safe limit. Micro-actions do not count."
+      }
+    },
+    "ATTEMPT_001": {
+      "ruleId": "ATTEMPT_001",
+      "ruleName": "Attempt Count",
+      "family": "concept_strength",
+      "severity": "BLOCKER",
+      "outcome": "FAIL",
+      "message": "Only 2 active attempt(s) detected for a short-tier (15s) video. Minimum: 3.",
+      "details": {
+        "tier": "short",
+        "evaluation_stage": "PRE_RENDER",
+        "recommendation": "Count of beats with isAttempt == true must meet a duration-tier minimum: 3 for videos <= 20s (short tier), 7 for videos > 20s (long tier)."
+      }
+    },
+    "PRODUCIBILITY_003": {
+      "ruleId": "PRODUCIBILITY_003",
+      "ruleName": "Fragile Interaction Risk",
+      "family": "ai_producibility",
+      "severity": "CRITICAL",
+      "outcome": "FAIL",
+      "message": "Fragile interaction risk tags detected: ['FACE_CONTACT', 'THIN_OBJECT']. These are mid-tier AI-generation risks (precision alignment, cloth/rope simulation, liquids, thin objects, face/hair contact, multi-object stacking) worth a human look before committing render budget, even though they don't rise to very-high-complexity blocking.",
+      "details": {
+        "riskTags": [
+          "FACE_CONTACT",
+          "THIN_OBJECT"
+        ],
+        "evaluation_stage": "PRE_RENDER",
+        "recommendation": "Fills the gap between PRODUCIBILITY_001 (very-high-complexity hard block) and PRODUCIBILITY_002 (prop count budget): a middle tier of AI-generation risks (precision alignment, cloth/rope simulation, liquids, thin dangling objects, face/hair contact, multi-object stacking). Uses a tag-based diagnostic model (riskTags in evaluation details) rather than one rule per risk type. Deterministic substring match against setting.mainProps and beat action/consequence text, no LLM call. Always CRITICAL when any tag is found — a human-review trigger, not an outright render block."
+      }
+    },
+    "INSTANT_VISUAL_ABSURDITY_GATE": {
+      "ruleId": "INSTANT_VISUAL_ABSURDITY_GATE",
+      "ruleName": "Instant Visual Absurdity Gate",
+      "family": "hook_strength",
+      "severity": "BLOCKER",
+      "outcome": "FAIL",
+      "message": "First-frame absurdity evidence is incomplete; the concept is blocked before render.",
+      "details": {
+        "missingEvidence": [
+          "staticWrongness",
+          "noHistoryRequired",
+          "noMicroComparison",
+          "largeVisualSignal",
+          "characterAlreadyEngaged"
+        ],
+        "failureBasis": "EVIDENCE_INCOMPLETE",
+        "evaluation_stage": "PRE_RENDER",
+        "recommendation": "BLOCKER: the first frame must communicate a physically impossible or clearly wrong situation without history, counting, micro-comparison, audio, text, or prior knowledge. The main character must already be engaged with the event."
+      }
+    },
+    "ENGINE_SILHOUETTE_DUPLICATE": {
+      "ruleId": "ENGINE_SILHOUETTE_DUPLICATE",
+      "ruleName": "Engine Silhouette Duplicate",
+      "family": "visual_novelty",
+      "severity": "BLOCKER",
+      "outcome": "FAIL",
+      "message": "No first-frame/final-silhouette comparison evidence was supplied; the concept is blocked before render.",
+      "details": {
+        "failureBasis": "EVIDENCE_INCOMPLETE",
+        "evaluation_stage": "PRE_RENDER",
+        "recommendation": "BLOCKER: reject concepts whose visible progression and final silhouette substantially duplicate a known winner visual engine, even when the underlying mathematical rule differs."
+      }
+    },
+    "BEAT_004": {
+      "ruleId": "BEAT_004",
+      "ruleName": "Static State Dominance",
+      "family": "visual_novelty",
+      "severity": "CRITICAL",
+      "outcome": "UNKNOWN",
+      "message": "Source describes changing states within the dominant beat; static-state duration is unknown without substate timing.",
+      "details": {
+        "failureBasis": "SUBSTATE_TIMING_UNKNOWN",
+        "sourceProgression": [
+          {
+            "beatId": "beat_03",
+            "sourceQuote": "5-10s: Mimi continues to pull; each pull doubles the number of sticky notes [wide shot showing Mimi covered in notes] notes multiply from two to four to eight as she pulls, progressively covering her arms, legs and face -> Mimi is overwhelmed by notes",
+            "sourceSpan": [
+              678,
+              929
+            ]
+          }
+        ],
+        "coarseBeatPercentage": 33.33333333333333,
+        "substateTimes": null,
+        "evaluation_stage": "PRE_RENDER",
+        "recommendation": "No single visual state may occupy more than approximately\n25–30% of the entire video unless meaningful new physical\nconsequences occur within that state.\n\nDifferent dialogue or tiny movements do NOT count\nas different visual beats."
+      }
+    },
+    "CONSISTENCY_001": {
+      "ruleId": "CONSISTENCY_001",
+      "ruleName": "Physics Rule Consistency",
+      "family": "consistency",
+      "severity": "WARNING",
+      "outcome": "UNKNOWN",
+      "message": "coreMechanic.consistency was not explicitly stated in the prompt and cannot be verified.",
+      "details": {
+        "evaluation_stage": "PRE_RENDER",
+        "recommendation": "The physical rule established in the hook should remain\nconsistent throughout the video unless the concept explicitly\ninvolves rule-breaking as the payoff."
+      }
+    },
+    "HOOK_003": {
+      "ruleId": "HOOK_003",
+      "ruleName": "Sound Independence",
+      "family": "hook_strength",
+      "severity": "CRITICAL",
+      "outcome": "UNKNOWN",
+      "message": "hook.soundOffClear was not explicitly stated in the prompt and cannot be verified.",
+      "details": {
+        "evaluation_stage": "PRE_RENDER",
+        "recommendation": "The core problem and physical comedy must work with audio muted. hook.soundOffClear must be true."
+      }
+    },
+    "ATTEMPT_002": {
+      "ruleId": "ATTEMPT_002",
+      "ruleName": "Distinct Attempts",
+      "family": "visual_novelty",
+      "severity": "CRITICAL",
+      "outcome": "UNKNOWN",
+      "message": "Semantic judgment has no verified evidence; provider dispatch is disabled for this local ruleset.",
+      "details": {
+        "requiredEvidence": "VERIFIED_SEMANTIC_JUDGMENT",
+        "providerDispatch": false,
+        "evaluation_stage": "PRE_RENDER",
+        "recommendation": "Attempts must be mechanically distinct, not just differently worded. Identical primaryVerb across attempts is an automatic deterministic FAIL. Verb-distinct attempts are checked for semantic duplication via LLM (e.g. GRAB vs YANK may be the same underlying strategy; RULESET 1.3 explicitly also treats intensity/angle variants of the identical strategy as duplicates, e.g. PUSH/PUSH_HARDER/PUSH_FROM_LEFT). Effective distinct count must meet the same duration-tier minimum as ATTEMPT_001."
+      }
+    },
+    "PAYOFF_003": {
+      "ruleId": "PAYOFF_003",
+      "ruleName": "Rule-Consistent Twist",
+      "family": "final_payoff",
+      "severity": "CRITICAL",
+      "outcome": "UNKNOWN",
+      "message": "Semantic judgment has no verified evidence; provider dispatch is disabled for this local ruleset.",
+      "details": {
+        "requiredEvidence": "VERIFIED_SEMANTIC_JUDGMENT",
+        "providerDispatch": false,
+        "evaluation_stage": "PRE_RENDER",
+        "recommendation": "The final twist must derive from the same established physical rule (coreMechanic.physicalRule), applied in a new or bigger way — not an unrelated, disconnected joke. Checked via LLM semantic judgment."
+      }
+    },
+    "CONCEPT_007": {
+      "ruleId": "CONCEPT_007",
+      "ruleName": "Single Dominant Mechanic",
+      "family": "concept_strength",
+      "severity": "BLOCKER",
+      "outcome": "UNKNOWN",
+      "message": "Semantic judgment has no verified evidence; provider dispatch is disabled for this local ruleset.",
+      "details": {
+        "requiredEvidence": "VERIFIED_SEMANTIC_JUDGMENT",
+        "providerDispatch": false,
+        "evaluation_stage": "PRE_RENDER",
+        "recommendation": "The concept must exhibit exactly one independent physical/magical rule. Same mechanic applied with escalating/varied consequences is fine (PASS); a second, genuinely independent rule introduced partway through is not (CRITICAL at 2 mechanics, BLOCKER at 3+). coreMechanic.mechanicCount is an author claim, verified (not trusted) via LLM semantic judgment against the beat-by-beat consequences."
+      }
+    },
+    "GOAL_001": {
+      "ruleId": "GOAL_001",
+      "ruleName": "Goal-Obstruction Clarity",
+      "family": "concept_strength",
+      "severity": "BLOCKER",
+      "outcome": "UNKNOWN",
+      "message": "Semantic judgment has no verified evidence; provider dispatch is disabled for this local ruleset.",
+      "details": {
+        "requiredEvidence": "VERIFIED_SEMANTIC_JUDGMENT",
+        "providerDispatch": false,
+        "evaluation_stage": "PRE_RENDER",
+        "recommendation": "The character must have an immediately understandable, natural physical goal, and the established abnormal rule must genuinely obstruct that goal. Distinguishes a believable reason to keep trying from an arbitrary or magic-demo setup invented only to showcase the mechanic (the character could simply walk away with no believable reason to continue). Verified via LLM semantic judgment (check_goal_is_natural), fail-closed to SERVICE_ERROR."
+      }
+    },
+    "CONCEPT_008": {
+      "ruleId": "CONCEPT_008",
+      "ruleName": "Rule Readability / Predictability",
+      "family": "concept_strength",
+      "severity": "CRITICAL",
+      "outcome": "UNKNOWN",
+      "message": "Semantic judgment has no verified evidence; provider dispatch is disabled for this local ruleset.",
+      "details": {
+        "requiredEvidence": "VERIFIED_SEMANTIC_JUDGMENT",
+        "providerDispatch": false,
+        "evaluation_stage": "PRE_RENDER",
+        "recommendation": "Distinct from CONCEPT_007: a single, internally consistent mechanic is not automatically a legible one. A rule that depends on a combination of exact position, angle, and speed is technically one mechanic but unlearnable by a child audience watching once. Asks whether a viewer could learn the pattern from the first 1-2 occurrences and predict what happens next. Verified via LLM semantic judgment (check_rule_is_predictable), fail-closed to SERVICE_ERROR."
+      }
+    },
+    "HOOK_004": {
+      "ruleId": "HOOK_004",
+      "ruleName": "Opening Problem Legibility",
+      "family": "hook_strength",
+      "severity": "CRITICAL",
+      "outcome": "UNKNOWN",
+      "message": "Semantic judgment has no verified evidence; provider dispatch is disabled for this local ruleset.",
+      "details": {
+        "requiredEvidence": "VERIFIED_SEMANTIC_JUDGMENT",
+        "providerDispatch": false,
+        "evaluation_stage": "PRE_RENDER",
+        "recommendation": "Stricter than HOOK_002: HOOK_002 confirms something visually unusual happens immediately; this asks whether the opening ALSO makes clear what the character wants and why they can't get it yet, not just that something odd is occurring. Verified via LLM semantic judgment (check_opening_problem_legible), fail-closed to SERVICE_ERROR."
+      }
+    },
+    "PERFORMANCE_001": {
+      "ruleId": "PERFORMANCE_001",
+      "ruleName": "Cute Emotional Readability",
+      "family": "character_performance",
+      "severity": "WARNING",
+      "outcome": "UNKNOWN",
+      "message": "Semantic judgment has no verified evidence; provider dispatch is disabled for this local ruleset.",
+      "details": {
+        "requiredEvidence": "VERIFIED_SEMANTIC_JUDGMENT",
+        "providerDispatch": false,
+        "evaluation_stage": "PRE_RENDER",
+        "recommendation": "New character_performance family (RULESET 1.3). CHAR_002 confirms the character is active for enough of the runtime; this asks whether that activity reads as emotionally engaged and sympathetic rather than blank, robotic, aggressive, or stuck in prolonged panic. Verified via LLM semantic judgment (check_character_performance_readable), fail-closed to SERVICE_ERROR. Capped at WARNING — a performance-quality nudge, not a structural requirement."
+      }
+    },
+    "GENERATION_EXECUTABLE_ATTEMPTS": {
+      "ruleId": "GENERATION_EXECUTABLE_ATTEMPTS",
+      "ruleName": "Generation Executable Attempts",
+      "family": "generation_executability",
+      "severity": "BLOCKER",
+      "outcome": "UNKNOWN",
+      "message": "Semantic judgment has no verified evidence; provider dispatch is disabled for this local ruleset.",
+      "details": {
+        "requiredEvidence": "VERIFIED_SEMANTIC_JUDGMENT",
+        "providerDispatch": false,
+        "evaluation_stage": "PRE_RENDER",
+        "recommendation": "Distinct from ATTEMPT_002 (semantic strategy diversity): ATTEMPT_002 asks whether the character is genuinely trying a different strategy; this asks whether that different strategy will actually LOOK different and be reliably executable by an image-to-video generation model (e.g. Seedance). A deterministic keyword pre-filter flags abstract-intent language ('blocks the escape route', 'tries to outsmart') and vague movement-magnitude phrasing ('slightly moves') on attempt beats, plus a beat-budget estimate (too many attempts for the available duration). An LLM semantic check (check_attempts_are_generation_executable) judges each attempt for a concrete action-result pair and flags attempts that would visually collapse into the same choreography despite different wording. BLOCKER only when NO attempt is judged executable at all or the LLM is unreachable (SERVICE_ERROR); CRITICAL when some attempts are unexecutable or abstract-intent language is matched; WARNING for vague magnitude phrasing or beat-budget pressure alone."
+      }
+    },
+    "CONSISTENCY_002": {
+      "ruleId": "CONSISTENCY_002",
+      "ruleName": "Character Continuity Lock",
+      "family": "consistency",
+      "severity": "CRITICAL",
+      "outcome": "NOT_APPLICABLE",
+      "message": "Rule is evaluated only after a rendered video exists.",
+      "details": {
+        "evaluation_stage": "POST_RENDER"
+      }
+    },
+    "PAYOFF_005": {
+      "ruleId": "PAYOFF_005",
+      "ruleName": "Fake Win Escalation",
+      "family": "progression",
+      "severity": "WARNING",
+      "outcome": "NOT_APPLICABLE",
+      "message": "No fake-win beat present; this check does not apply to this concept.",
+      "details": {
+        "evaluation_stage": "PRE_RENDER",
+        "recommendation": "If a beat with consequenceType == 'fake_win' is present, the intensity after it must exceed the intensity at the fake win (the problem must escalate, not repeat or weaken, after a fake resolution). Reports NOT_APPLICABLE (not FAIL, not UNKNOWN) when no fake-win beat exists — this check simply does not apply to a concept that doesn't use the fake-resolution structure."
+      }
+    },
+    "CONCEPT_009": {
+      "ruleId": "CONCEPT_009",
+      "ruleName": "Single-Agent Object Mechanic",
+      "family": "concept_strength",
+      "severity": "BLOCKER",
+      "outcome": "NOT_APPLICABLE",
+      "message": "Rule does not apply to this content family.",
+      "details": {
+        "scopeType": "CONTENT_FAMILY",
+        "scopeId": "social_reel"
+      }
+    },
+    "CONTINUATION_LOCK": {
+      "ruleId": "CONTINUATION_LOCK",
+      "ruleName": "Continuation Lock",
+      "family": "generation_executability",
+      "severity": "BLOCKER",
+      "outcome": "NOT_APPLICABLE",
+      "message": "Continuation lock applies only to SPLIT_2X15S plans.",
+      "details": {
+        "analysisStage": "PRE_RENDER_PLAN_CONTRACT",
+        "evaluation_stage": "PRE_RENDER",
+        "recommendation": "For SPLIT_2X15S, Part 1 end-state and Part 2 start-state contracts must match. This is pre-render plan evidence, not pixel continuity verification."
+      }
+    },
+    "STUBBORN_RETURN_LOOP": {
+      "ruleId": "STUBBORN_RETURN_LOOP",
+      "ruleName": "Stubborn Return Loop",
+      "family": "progression",
+      "severity": "BLOCKER",
+      "outcome": "NOT_APPLICABLE",
+      "message": "Return-loop candidate lacks one or more mandatory signals.",
+      "details": {
+        "engineProfile": {
+          "profile": "DEFAULT",
+          "source": "INFERRED",
+          "confidence": "LOW",
+          "active": false,
+          "candidate_only": false,
+          "signals": {
+            "SINGLE_DOMINANT_OBJECT": false,
+            "FIXED_VISIBLE_BOUNDARY": false,
+            "SAFE_STATE": false,
+            "AUTONOMOUS_RETURN": false,
+            "RECURRENCE": false,
+            "CHARACTER_INTERVENTION": true,
+            "ESCALATION": false,
+            "NO_DEAD_RESET": true
+          },
+          "recurrence_count": 0,
+          "intervention_count": 2,
+          "state_memory_cost": "LOW",
+          "reason": "Return-loop candidate lacks one or more mandatory signals."
+        },
+        "evaluation_stage": "PRE_RENDER",
+        "recommendation": "High-confidence Spoon-class engine profile: one object, one visible safe/danger boundary, autonomous return, recurrence, active intervention, escalation, and no dead reset."
+      }
+    },
+    "STUBBORN_RETURN_HOOK": {
+      "ruleId": "STUBBORN_RETURN_HOOK",
+      "ruleName": "Stubborn Return Hook",
+      "family": "hook_strength",
+      "severity": "CRITICAL",
+      "outcome": "NOT_APPLICABLE",
+      "message": "Stubborn-return hook exception applies only when the engine profile is explicitly or high-confidence active.",
+      "details": {
+        "engineProfile": {
+          "profile": "DEFAULT",
+          "source": "INFERRED",
+          "confidence": "LOW",
+          "active": false,
+          "candidate_only": false,
+          "signals": {
+            "SINGLE_DOMINANT_OBJECT": false,
+            "FIXED_VISIBLE_BOUNDARY": false,
+            "SAFE_STATE": false,
+            "AUTONOMOUS_RETURN": false,
+            "RECURRENCE": false,
+            "CHARACTER_INTERVENTION": true,
+            "ESCALATION": false,
+            "NO_DEAD_RESET": true
+          },
+          "recurrence_count": 0,
+          "intervention_count": 2,
+          "state_memory_cost": "LOW",
+          "reason": "Return-loop candidate lacks one or more mandatory signals."
+        },
+        "evaluation_stage": "PRE_RENDER",
+        "recommendation": "Accept an immediate visible physical threat with the character already engaged even when frame zero is not a static impossibility."
+      }
+    },
+    "STUBBORN_RETURN_PAYOFF": {
+      "ruleId": "STUBBORN_RETURN_PAYOFF",
+      "ruleName": "Stubborn Return Payoff",
+      "family": "final_payoff",
+      "severity": "CRITICAL",
+      "outcome": "NOT_APPLICABLE",
+      "message": "Stubborn-return payoff exception is not active.",
+      "details": {
+        "engineProfile": {
+          "profile": "DEFAULT",
+          "source": "INFERRED",
+          "confidence": "LOW",
+          "active": false,
+          "candidate_only": false,
+          "signals": {
+            "SINGLE_DOMINANT_OBJECT": false,
+            "FIXED_VISIBLE_BOUNDARY": false,
+            "SAFE_STATE": false,
+            "AUTONOMOUS_RETURN": false,
+            "RECURRENCE": false,
+            "CHARACTER_INTERVENTION": true,
+            "ESCALATION": false,
+            "NO_DEAD_RESET": true
+          },
+          "recurrence_count": 0,
+          "intervention_count": 2,
+          "state_memory_cost": "LOW",
+          "reason": "Return-loop candidate lacks one or more mandatory signals."
+        },
+        "evaluation_stage": "PRE_RENDER",
+        "recommendation": "Accept a stronger active same-rule stalemate as payoff when the character remains engaged at the cut."
+      }
+    }
+  },
+  "after": {
+    "CONCEPT_006": {
+      "ruleId": "CONCEPT_006",
+      "ruleName": "Consequence Capacity",
+      "family": "concept_strength",
+      "severity": "PASS",
+      "outcome": "PASS",
+      "message": "Sufficient consequence variety: 5 distinct consequences.",
+      "details": {
+        "evaluation_stage": "PRE_RENDER",
+        "recommendation": "Before writing a 15-second prompt, verify that the core mechanic\ncan naturally generate at least 4 visually distinct consequences.\n\nIf it cannot, reject the concept.\n\nDo NOT stretch a two-beat teaching contrast into 15 seconds."
+      }
+    },
+    "REPETITION_002": {
+      "ruleId": "REPETITION_002",
+      "ruleName": "Visual Beat Repetition",
+      "family": "visual_novelty",
+      "severity": "PASS",
+      "outcome": "PASS",
+      "message": "Good action variety. Max repetition: 1.",
+      "details": {
+        "evaluation_stage": "PRE_RENDER",
+        "recommendation": "The same physical action should not repeat more than twice\nunless each iteration introduces a materially different consequence.\n\nEmotional variation (confused → understanding → frustrated)\nwithout physical consequence change is insufficient."
+      }
+    },
+    "REPETITION_003": {
+      "ruleId": "REPETITION_003",
+      "ruleName": "Cycle Repetition Limit",
+      "family": "visual_novelty",
+      "severity": "PASS",
+      "outcome": "PASS",
+      "message": "No explicit cycles detected.",
+      "details": {
+        "evaluation_stage": "PRE_RENDER",
+        "recommendation": "A cause-effect cycle (action → consequence → reset) should not\nrepeat more than twice unless each iteration introduces a NEW\nphysical element, obstacle, or escalation.\n\nExample cycle: sharpen → draw → blunt → (reset to sharpen)\n\nCosmetic variations (stroke pattern, sharpen duration) do not\ncount as structural escalation."
+      }
+    },
+    "NOVELTY_001": {
+      "ruleId": "NOVELTY_001",
+      "ruleName": "Novelty Timeline Distribution",
+      "family": "visual_novelty",
+      "severity": "WARNING",
+      "outcome": "PASS",
+      "message": "Gap of 5.0s between new consequences (at 5.0s-10.0s). Consider adding intermediate beat.",
+      "details": {
+        "evaluation_stage": "PRE_RENDER",
+        "recommendation": "New consequences should be distributed across the timeline,\nnot clustered at the beginning or end.\n\nNo gap longer than 4.5 seconds should pass without a new\nvisually distinct consequence appearing."
+      }
+    },
+    "PROGRESSION_005": {
+      "ruleId": "PROGRESSION_005",
+      "ruleName": "Consequence Novelty Timeline",
+      "family": "progression",
+      "severity": "PASS",
+      "outcome": "PASS",
+      "message": "Good novelty timeline. Static pattern: 0.0%.",
+      "details": {
+        "evaluation_stage": "PRE_RENDER",
+        "recommendation": "No more than 50% of the video should pass without new\nvisually distinct physical consequences appearing.\n\nIf > 65% of video shows only pattern variations of the same\ncore action, flag as CRITICAL."
+      }
+    },
+    "ESCALATION_004": {
+      "ruleId": "ESCALATION_004",
+      "ruleName": "Delayed Payoff",
+      "family": "escalation",
+      "severity": "WARNING",
+      "outcome": "PASS",
+      "message": "Final payoff at 12.0s. Consider moving earlier for stronger retention.",
+      "details": {
+        "evaluation_stage": "PRE_RENDER",
+        "recommendation": "The final major escalation should not appear after 80% of the video\n(12 seconds in a 15-second video) unless the middle contains\nstrong intermediate escalations.\n\nLate payoffs risk losing viewer attention before the peak."
+      }
+    },
+    "PAYOFF_001": {
+      "ruleId": "PAYOFF_001",
+      "ruleName": "Not Repeat of Opening",
+      "family": "final_payoff",
+      "severity": "PASS",
+      "outcome": "PASS",
+      "message": "Final payoff is distinct from opening.",
+      "details": {
+        "evaluation_stage": "PRE_RENDER",
+        "recommendation": "The final beat must not be identical or nearly identical\nto the opening beat.\n\nA callback is acceptable if it's BIGGER or has a TWIST.\nA simple repeat signals lazy structure."
+      }
+    },
+    "PRODUCIBILITY_001": {
+      "ruleId": "PRODUCIBILITY_001",
+      "ruleName": "Very High Complexity Block",
+      "family": "ai_producibility",
+      "severity": "PASS",
+      "outcome": "PASS",
+      "message": "Acceptable complexity: medium.",
+      "details": {
+        "evaluation_stage": "PRE_RENDER",
+        "recommendation": "Prompts marked as \"very_high\" complexity should not proceed\nto render without human review and risk acceptance.\n\nVery high complexity typically means 4+ simultaneous high-risk\noperations or untested novel requirements."
+      }
+    },
+    "HOOK_002": {
+      "ruleId": "HOOK_002",
+      "ruleName": "First Frame Anomaly",
+      "family": "hook_strength",
+      "severity": "PASS",
+      "outcome": "PASS",
+      "message": "Textual first-frame intent establishes an immediate anomaly; visual verification remains a separate gate.",
+      "details": {
+        "textualFirstFrameIntent": {
+          "status": "PASS",
+          "source": "PROMPT_TEXT"
+        },
+        "evaluation_stage": "PRE_RENDER",
+        "recommendation": "The problem must already be visually obvious within the opening second, with no setup, narration, or text explanation required. hook.startsMidAction must be true and hook.visualStrength must be at least 4/5. RULESET 1.3 adds a tolerance window -- hook.startsAt must be <= 0.8s (defaults to 0.0 when absent, a no-op for pre-1.3 IRs); the anomaly doesn't need to be literally frame-0 to read as immediate."
+      }
+    },
+    "MOTION_001": {
+      "ruleId": "MOTION_001",
+      "ruleName": "Continuous Meaningful Progression",
+      "family": "motion_quality",
+      "severity": "PASS",
+      "outcome": "PASS",
+      "message": "No stalled progression. Longest motionless beat: 0.0s.",
+      "details": {
+        "evaluation_stage": "PRE_RENDER",
+        "recommendation": "No beat may hold with motionAmount == 'none' for longer than 1.5 seconds. Renamed from \"No Dead Air\" in RULESET 1.3 -- brief stillness (a puzzled look, a short charming reaction) is a legitimate pause, not a defect; what matters is progression not stalling, not motion itself."
+      }
+    },
+    "CHAR_002": {
+      "ruleId": "CHAR_002",
+      "ruleName": "Active Character",
+      "family": "progression",
+      "severity": "PASS",
+      "outcome": "PASS",
+      "message": "Character is actively attempting a solution for 53% of the video.",
+      "details": {
+        "tier": "short",
+        "evaluation_stage": "PRE_RENDER",
+        "recommendation": "The character must spend most of the runtime actively trying a solution, not watching or reacting. Ratio of (duration of isAttempt beats) / (total duration) must be at least 0.5 for short-tier videos, 0.6 for long-tier."
+      }
+    },
+    "PRODUCIBILITY_002": {
+      "ruleId": "PRODUCIBILITY_002",
+      "ruleName": "Prop Economy",
+      "family": "ai_producibility",
+      "severity": "PASS",
+      "outcome": "PASS",
+      "message": "0 main props, within the short-tier budget of 2.",
+      "details": {
+        "tier": "short",
+        "evaluation_stage": "PRE_RENDER",
+        "recommendation": "Introduce the minimum number of props necessary. setting.mainProps count must not exceed 2 for short-tier videos, 4 for long-tier videos. RULESET 1.3 adds a timeline-aware check (heuristic, text-match based) alongside the static count -- a prop first mentioned mid-concept inside an attempt beat, rather than established from the opening, is flagged as a WARNING even when the total count is within budget."
+      }
+    },
+    "PAYOFF_002": {
+      "ruleId": "PAYOFF_002",
+      "ruleName": "Fake Resolution Present",
+      "family": "progression",
+      "severity": "WARNING",
+      "outcome": "PASS",
+      "message": "No fake-resolution beat found. This is a bonus, not a requirement — consider adding a moment where the problem appears solved before the twist.",
+      "details": {
+        "evaluation_stage": "PRE_RENDER",
+        "recommendation": "Bonus (non-blocking): at least one beat with consequenceType == 'fake_win' before finalPayoff.startsAt, giving the audience a moment to believe the problem is solved before the final twist."
+      }
+    },
+    "BEAT_005": {
+      "ruleId": "BEAT_005",
+      "ruleName": "Story Detached Gap",
+      "family": "visual_novelty",
+      "severity": "PASS",
+      "outcome": "PASS",
+      "message": "Longest detached stretch: 0.0s, within tolerance.",
+      "details": {
+        "evaluation_stage": "PRE_RENDER",
+        "recommendation": "While the core problem is actively unresolved (at least one attempt beat has occurred, final payoff not yet started), no consecutive stretch of beats.relatesToCoreProblem == false may exceed 0.5 seconds. Brief transitions/reaction beats under that threshold are not flagged; only a genuine abandonment of the active problem fails."
+      }
+    },
+    "PAYOFF_004": {
+      "ruleId": "PAYOFF_004",
+      "ruleName": "Final Payoff Salience",
+      "family": "final_payoff",
+      "severity": "WARNING",
+      "outcome": "PASS",
+      "message": "Final payoff salience (5) ties the earlier peak. Acceptable but not ideal — consider making the ending strictly the peak.",
+      "details": {
+        "evaluation_stage": "PRE_RENDER",
+        "recommendation": "The final payoff's beat.intensity should be at least as high as the highest intensity seen earlier in the video. Computed independently from beat.intensity values; finalPayoff.isPeakIntensity is never trusted as the verdict, only cross-checked for discrepancy reporting. Optimization-level (WARNING), never a blocker. Renamed from \"Final Peak Intensity\" in RULESET 1.3 -- \"intensity\" read as motion/chaos, but beats[].intensity is a 1-10 visual/emotional energy scale; a quiet, conclusive beat can score as high as a frantic one."
+      }
+    },
+    "REPETITION_004": {
+      "ruleId": "REPETITION_004",
+      "ruleName": "Dominant Action Ratio",
+      "family": "visual_novelty",
+      "severity": "PASS",
+      "outcome": "PASS",
+      "message": "Good action variety. Dominant verb 'PEEL' at 50%.",
+      "details": {
+        "dominant_verb": "PEEL",
+        "evaluation_stage": "PRE_RENDER",
+        "recommendation": "Companion to ATTEMPT_002, not a replacement: catches one primaryVerb numerically dominating the attempt list even when every attempt is legitimately distinct in ATTEMPT_002's semantic judgment. WARNING above 55% dominance, CRITICAL above 70%. Never a BLOCKER, since a dominant verb can be valid if it produces genuinely different consequences each time."
+      }
+    },
+    "PAYOFF_006": {
+      "ruleId": "PAYOFF_006",
+      "ruleName": "Loopability",
+      "family": "final_payoff",
+      "severity": "PASS",
+      "outcome": "PASS",
+      "message": "No loop claimed, no hard-cut flag, but no weak-ending pattern detected either.",
+      "details": {
+        "evaluation_stage": "PRE_RENDER",
+        "recommendation": "A retention-optimization dimension, never a hard blocker. A strong natural loop back to the opening (finalPayoff.loopsToOpening + loopQuality == 'strong') is a bonus. An ordinary hard cut with no loop claim is fully valid (neutral PASS). Only specific weak-ending text patterns (fade-out, 'the end', walks away) with neither a loop nor a hard cut produce a WARNING-severity FAIL."
+      }
+    },
+    "PROGRESSION_006": {
+      "ruleId": "PROGRESSION_006",
+      "ruleName": "Activity Is Not Progression",
+      "family": "progression",
+      "severity": "PASS",
+      "outcome": "PASS",
+      "message": "No single verb root dominates. Most common: 'PEEL' at 50%.",
+      "details": {
+        "dominant_root": "PEEL",
+        "evaluation_stage": "PRE_RENDER",
+        "recommendation": "Deterministic companion to ATTEMPT_002: flags a dominant primaryVerb ROOT across attempts (e.g. PUSH / PUSH_HARDER / PUSH_FROM_LEFT all share the root PUSH) even when full verb labels are distinct and ATTEMPT_002's LLM duplicate-strategy check already passed. Catches 'more activity, not a new strategy' in the gray area between CHAR_002 (time-active) and ATTEMPT_002 (label/semantic distinctness). No LLM call."
+      }
+    },
+    "ESCALATION_005": {
+      "ruleId": "ESCALATION_005",
+      "ruleName": "Meaningful Attempt Escalation",
+      "family": "escalation",
+      "severity": "PASS",
+      "outcome": "PASS",
+      "message": "Moderate escalation evidence is present: Escalation is evidenced by consequence magnitude, force, deformation, scope, difficulty, stakes or mechanic persistence.",
+      "details": {
+        "evidence": {
+          "status": "AVAILABLE",
+          "reason": "Escalation is evidenced by consequence magnitude, force, deformation, scope, difficulty, stakes or mechanic persistence.",
+          "candidateBeatIds": [
+            "beat_02",
+            "beat_03",
+            "beat_04",
+            "beat_05"
+          ],
+          "candidate_beat_ids": [
+            "beat_02",
+            "beat_03",
+            "beat_04",
+            "beat_05"
+          ],
+          "newTarget": true,
+          "new_target": true,
+          "intensityRise": false,
+          "intensity_rise": false,
+          "consequenceExpansion": false,
+          "consequence_expansion": false,
+          "resistance": true,
+          "wallFlex": false,
+          "wall_flex": false,
+          "forceRise": false,
+          "deformation": false,
+          "scopeExpansion": false,
+          "difficultyRise": false,
+          "stakesRise": false,
+          "persistence": true,
+          "quantityGrowth": false,
+          "applicability": "APPLICABLE",
+          "strength": "MODERATE",
+          "source": "LATER_ATTEMPT_COMPARISON",
+          "confidence": 0.8
+        },
+        "evaluation_stage": "PRE_RENDER",
+        "recommendation": "Companion to ESCALATION_004 (payoff timing): checks whether attempt-beat intensity rises across the timeline rather than staying flat or declining. Deterministic, keyed off beats[].intensity on isAttempt beats in timeline order. Capped at WARNING — deadpan-comedy concepts can deliberately keep escalation small."
+      }
+    },
+    "CONTINUOUS_ACTION_MOMENTUM": {
+      "ruleId": "CONTINUOUS_ACTION_MOMENTUM",
+      "ruleName": "Continuous Action Momentum",
+      "family": "motion_quality",
+      "severity": "PASS",
+      "outcome": "PASS",
+      "message": "Attempts chain with reaction/action overlap and a bounded passive-time budget.",
+      "details": {
+        "passiveSeconds": 0.0,
+        "passiveRatio": 0.0,
+        "standaloneReactionCount": 0,
+        "attemptTransitionGaps": [
+          0.0
+        ],
+        "maxAttemptTransitionGap": 0.0,
+        "finalAftermathSeconds": 0.0,
+        "evaluation_stage": "PRE_RENDER",
+        "recommendation": "A reaction must overlap the physical transition into the next attempt. Rejects standalone reaction beats, reset-to-neutral gaps, excessive passive time, slow attempt transitions, and long final aftermaths. This rule distinguishes meaningful progression from forward motion momentum."
+      }
+    },
+    "MINI_STORY_LOCK": {
+      "ruleId": "MINI_STORY_LOCK",
+      "ruleName": "Mini Story Lock",
+      "family": "concept_strength",
+      "severity": "BLOCKER",
+      "outcome": "PASS",
+      "message": "Readable mini-story arc: goal, obstruction, attempts, progression, realization and payoff are evidenced.",
+      "details": {
+        "missing": [],
+        "fake_resolution": "OPTIONAL",
+        "recurrence": "OPTIONAL",
+        "storyEvidence": {
+          "raw_beat_count": 5,
+          "load_beat_count": 5,
+          "major_beat_count": 5,
+          "micro_beat_count": 0,
+          "state_transition_count": 5,
+          "strategy_change_count": 1,
+          "critical_beat_durations": [
+            2.0,
+            3.0,
+            5.0,
+            2.0,
+            3.0
+          ],
+          "generation_mode": "SINGLE_15S",
+          "temporal_load": "MANAGEABLE",
+          "split_recommendation": null,
+          "goal_status": "IMPLICIT_BUT_OBSERVABLE",
+          "obstruction_status": "AVAILABLE",
+          "realization_status": "AVAILABLE",
+          "realization_mode": "EXPLICIT",
+          "payoff_status": "AVAILABLE",
+          "continuation_status": "NOT_APPLICABLE",
+          "continuation_mismatches": []
+        },
+        "evaluation_stage": "PRE_RENDER",
+        "recommendation": "Every video needs a visible goal, one impossible obstruction tied to that goal, active strategies, progression, realization or decision, and a readable payoff. Fake resolution, recurrence, and final twist are optional bonus evidence."
+      }
+    },
+    "GOAL_VISIBLE_EARLY": {
+      "ruleId": "GOAL_VISIBLE_EARLY",
+      "ruleName": "Goal Visible Early",
+      "family": "hook_strength",
+      "severity": "CRITICAL",
+      "outcome": "PASS",
+      "message": "The character goal is available in the opening window.",
+      "details": {
+        "goalEvidence": {
+          "goalExplicitness": "IMPLICIT_BUT_OBSERVABLE",
+          "goalType": "ATTACH_OBJECT_TO_TARGET",
+          "description": "Attach the note to the cabinet",
+          "targetObject": "the cabinet",
+          "obstruction": "instead of sticking to the cabinet, the note visibly clings to her finger  Mimi is in front of a toy cabinet",
+          "intendedEffect": "attach_object_to_target_surface",
+          "source": "CONTRASTIVE_ATTACHMENT_TARGET_INFERENCE",
+          "primaryGoal": {
+            "description": "Attach the note to the cabinet",
+            "state": "INFERRED",
+            "sourceQuote": "instead of sticking to the cabinet, the note visibly clings to her finger  Mimi is in front of a toy cabinet",
+            "sourceSpan": [
+              301,
+              409
+            ],
+            "method": "CONTRASTIVE_ATTACHMENT_TARGET_INFERENCE",
+            "semanticVerification": "NOT_PERFORMED"
+          },
+          "secondaryRecoveryAttempt": {
+            "description": "Mimi tries to peel the stuck note away with her other hand",
+            "state": "OBSERVED",
+            "sourceQuote": "Mimi tries to peel the stuck note away with her other hand",
+            "sourceSpan": [
+              1324,
+              1382
+            ],
+            "method": "EXPLICIT_RECOVERY_ATTEMPT_PATTERN",
+            "semanticVerification": "NOT_PERFORMED",
+            "beatId": "beat_02",
+            "targetObject": "the stuck note"
+          }
+        },
+        "evaluation_stage": "PRE_RENDER",
+        "recommendation": "The character goal must be explicit or implicit-but-observable in the first 1-2 seconds."
+      }
+    },
+    "TEMPORAL_COMPLEXITY_SPLIT_GATE": {
+      "ruleId": "TEMPORAL_COMPLEXITY_SPLIT_GATE",
+      "ruleName": "Temporal Complexity Split Gate",
+      "family": "generation_executability",
+      "severity": "BLOCKER",
+      "outcome": "PASS",
+      "message": "Temporal load is manageable for the selected generation plan.",
+      "details": {
+        "mode": "SINGLE_15S",
+        "storyEvidence": {
+          "raw_beat_count": 5,
+          "load_beat_count": 5,
+          "major_beat_count": 5,
+          "micro_beat_count": 0,
+          "state_transition_count": 5,
+          "strategy_change_count": 1,
+          "critical_beat_durations": [
+            2.0,
+            3.0,
+            5.0,
+            2.0,
+            3.0
+          ],
+          "generation_mode": "SINGLE_15S",
+          "temporal_load": "MANAGEABLE",
+          "split_recommendation": null,
+          "goal_status": "IMPLICIT_BUT_OBSERVABLE",
+          "obstruction_status": "AVAILABLE",
+          "realization_status": "AVAILABLE",
+          "realization_mode": "EXPLICIT",
+          "payoff_status": "AVAILABLE",
+          "continuation_status": "NOT_APPLICABLE",
+          "continuation_mismatches": []
+        },
+        "evaluation_stage": "PRE_RENDER",
+        "recommendation": "Block an overloaded SINGLE_15S generation plan and recommend SPLIT_2X15S. The creative concept is not rejected when the split plan is selected."
+      }
+    },
+    "BEAT_DENSITY_RULE": {
+      "ruleId": "BEAT_DENSITY_RULE",
+      "ruleName": "Beat Density Rule",
+      "family": "progression",
+      "severity": "CRITICAL",
+      "outcome": "PASS",
+      "message": "5 canonical major beats fit the 15-second plan.",
+      "details": {
+        "microBeatCount": 0,
+        "storyEvidence": {
+          "raw_beat_count": 5,
+          "load_beat_count": 5,
+          "major_beat_count": 5,
+          "micro_beat_count": 0,
+          "state_transition_count": 5,
+          "strategy_change_count": 1,
+          "critical_beat_durations": [
+            2.0,
+            3.0,
+            5.0,
+            2.0,
+            3.0
+          ],
+          "generation_mode": "SINGLE_15S",
+          "temporal_load": "MANAGEABLE",
+          "split_recommendation": null,
+          "goal_status": "IMPLICIT_BUT_OBSERVABLE",
+          "obstruction_status": "AVAILABLE",
+          "realization_status": "AVAILABLE",
+          "realization_mode": "EXPLICIT",
+          "payoff_status": "AVAILABLE",
+          "continuation_status": "NOT_APPLICABLE",
+          "continuation_mismatches": []
+        },
+        "evaluation_stage": "PRE_RENDER",
+        "recommendation": "A 15-second single-generation plan should contain 4-5 canonical major story beats, with approximately 6 as the upper safe limit. Micro-actions do not count."
+      }
+    },
+    "ATTEMPT_001": {
+      "ruleId": "ATTEMPT_001",
+      "ruleName": "Attempt Count",
+      "family": "concept_strength",
+      "severity": "BLOCKER",
+      "outcome": "FAIL",
+      "message": "Only 2 active attempt(s) detected for a short-tier (15s) video. Minimum: 3.",
+      "details": {
+        "tier": "short",
+        "evaluation_stage": "PRE_RENDER",
+        "recommendation": "Count of beats with isAttempt == true must meet a duration-tier minimum: 3 for videos <= 20s (short tier), 7 for videos > 20s (long tier)."
+      }
+    },
+    "PRODUCIBILITY_003": {
+      "ruleId": "PRODUCIBILITY_003",
+      "ruleName": "Fragile Interaction Risk",
+      "family": "ai_producibility",
+      "severity": "CRITICAL",
+      "outcome": "FAIL",
+      "message": "Fragile interaction risk tags detected: ['FACE_CONTACT', 'THIN_OBJECT']. These are mid-tier AI-generation risks (precision alignment, cloth/rope simulation, liquids, thin objects, face/hair contact, multi-object stacking) worth a human look before committing render budget, even though they don't rise to very-high-complexity blocking.",
+      "details": {
+        "riskTags": [
+          "FACE_CONTACT",
+          "THIN_OBJECT"
+        ],
+        "evaluation_stage": "PRE_RENDER",
+        "recommendation": "Fills the gap between PRODUCIBILITY_001 (very-high-complexity hard block) and PRODUCIBILITY_002 (prop count budget): a middle tier of AI-generation risks (precision alignment, cloth/rope simulation, liquids, thin dangling objects, face/hair contact, multi-object stacking). Uses a tag-based diagnostic model (riskTags in evaluation details) rather than one rule per risk type. Deterministic substring match against setting.mainProps and beat action/consequence text, no LLM call. Always CRITICAL when any tag is found — a human-review trigger, not an outright render block."
+      }
+    },
+    "INSTANT_VISUAL_ABSURDITY_GATE": {
+      "ruleId": "INSTANT_VISUAL_ABSURDITY_GATE",
+      "ruleName": "Instant Visual Absurdity Gate",
+      "family": "hook_strength",
+      "severity": "BLOCKER",
+      "outcome": "FAIL",
+      "message": "First-frame absurdity evidence is incomplete; the concept is blocked before render.",
+      "details": {
+        "missingEvidence": [
+          "staticWrongness",
+          "noHistoryRequired",
+          "noMicroComparison",
+          "largeVisualSignal",
+          "characterAlreadyEngaged"
+        ],
+        "failureBasis": "EVIDENCE_INCOMPLETE",
+        "evaluation_stage": "PRE_RENDER",
+        "recommendation": "BLOCKER: the first frame must communicate a physically impossible or clearly wrong situation without history, counting, micro-comparison, audio, text, or prior knowledge. The main character must already be engaged with the event."
+      }
+    },
+    "ENGINE_SILHOUETTE_DUPLICATE": {
+      "ruleId": "ENGINE_SILHOUETTE_DUPLICATE",
+      "ruleName": "Engine Silhouette Duplicate",
+      "family": "visual_novelty",
+      "severity": "BLOCKER",
+      "outcome": "FAIL",
+      "message": "No first-frame/final-silhouette comparison evidence was supplied; the concept is blocked before render.",
+      "details": {
+        "failureBasis": "EVIDENCE_INCOMPLETE",
+        "evaluation_stage": "PRE_RENDER",
+        "recommendation": "BLOCKER: reject concepts whose visible progression and final silhouette substantially duplicate a known winner visual engine, even when the underlying mathematical rule differs."
+      }
+    },
+    "BEAT_004": {
+      "ruleId": "BEAT_004",
+      "ruleName": "Static State Dominance",
+      "family": "visual_novelty",
+      "severity": "CRITICAL",
+      "outcome": "UNKNOWN",
+      "message": "Source describes changing states within the dominant beat; static-state duration is unknown without substate timing.",
+      "details": {
+        "failureBasis": "SUBSTATE_TIMING_UNKNOWN",
+        "sourceProgression": [
+          {
+            "beatId": "beat_03",
+            "sourceQuote": "5-10s: Mimi continues to pull; each pull doubles the number of sticky notes  notes multiply from two to four to eight as she pulls, progressively covering her arms, legs and face -> Mimi is overwhelmed by notes [Keep the established pulling motion continuous while the growing notes occupy a widening area across the body silhouette. Show the existing progressive coverage of arms, legs and face after each count transition without losing the edges of the growing note groups. Present two notes as a separated horizontal pair beside the arms. Keep both outer note edges visible during the established pull that leads into the next source count. Present four notes as two vertical pairs, offset left and right across the body silhouette. Carry the existing pull continuously across the change, retaining the separated pairs before their next multiplication. Present eight notes in two horizontal rows of four with gaps, following the existing coverage of arms, legs and face. Let the established body coverage follow the final source count while retaining the group boundaries in the same view. Use the original five-to-ten-second beat window for the existing pull sequence, with continuous transitions and no extra attempt or invented hold. Keep a locked wide view containing the arms, legs and face throughout the existing escalation; preserve group positions through the pull. Preserve the source doubling rule and existing count order; do not add a new pull or conceal a multiplication behind an edit.]",
+            "sourceSpan": [
+              1497,
+              3002
+            ]
+          }
+        ],
+        "coarseBeatPercentage": 33.33333333333333,
+        "substateTimes": null,
+        "evaluation_stage": "PRE_RENDER",
+        "recommendation": "No single visual state may occupy more than approximately\n25–30% of the entire video unless meaningful new physical\nconsequences occur within that state.\n\nDifferent dialogue or tiny movements do NOT count\nas different visual beats."
+      }
+    },
+    "CONSISTENCY_001": {
+      "ruleId": "CONSISTENCY_001",
+      "ruleName": "Physics Rule Consistency",
+      "family": "consistency",
+      "severity": "WARNING",
+      "outcome": "UNKNOWN",
+      "message": "coreMechanic.consistency was not explicitly stated in the prompt and cannot be verified.",
+      "details": {
+        "evaluation_stage": "PRE_RENDER",
+        "recommendation": "The physical rule established in the hook should remain\nconsistent throughout the video unless the concept explicitly\ninvolves rule-breaking as the payoff."
+      }
+    },
+    "HOOK_003": {
+      "ruleId": "HOOK_003",
+      "ruleName": "Sound Independence",
+      "family": "hook_strength",
+      "severity": "CRITICAL",
+      "outcome": "UNKNOWN",
+      "message": "hook.soundOffClear was not explicitly stated in the prompt and cannot be verified.",
+      "details": {
+        "evaluation_stage": "PRE_RENDER",
+        "recommendation": "The core problem and physical comedy must work with audio muted. hook.soundOffClear must be true."
+      }
+    },
+    "ATTEMPT_002": {
+      "ruleId": "ATTEMPT_002",
+      "ruleName": "Distinct Attempts",
+      "family": "visual_novelty",
+      "severity": "CRITICAL",
+      "outcome": "UNKNOWN",
+      "message": "Semantic judgment has no verified evidence; provider dispatch is disabled for this local ruleset.",
+      "details": {
+        "requiredEvidence": "VERIFIED_SEMANTIC_JUDGMENT",
+        "providerDispatch": false,
+        "evaluation_stage": "PRE_RENDER",
+        "recommendation": "Attempts must be mechanically distinct, not just differently worded. Identical primaryVerb across attempts is an automatic deterministic FAIL. Verb-distinct attempts are checked for semantic duplication via LLM (e.g. GRAB vs YANK may be the same underlying strategy; RULESET 1.3 explicitly also treats intensity/angle variants of the identical strategy as duplicates, e.g. PUSH/PUSH_HARDER/PUSH_FROM_LEFT). Effective distinct count must meet the same duration-tier minimum as ATTEMPT_001."
+      }
+    },
+    "PAYOFF_003": {
+      "ruleId": "PAYOFF_003",
+      "ruleName": "Rule-Consistent Twist",
+      "family": "final_payoff",
+      "severity": "CRITICAL",
+      "outcome": "UNKNOWN",
+      "message": "Semantic judgment has no verified evidence; provider dispatch is disabled for this local ruleset.",
+      "details": {
+        "requiredEvidence": "VERIFIED_SEMANTIC_JUDGMENT",
+        "providerDispatch": false,
+        "evaluation_stage": "PRE_RENDER",
+        "recommendation": "The final twist must derive from the same established physical rule (coreMechanic.physicalRule), applied in a new or bigger way — not an unrelated, disconnected joke. Checked via LLM semantic judgment."
+      }
+    },
+    "CONCEPT_007": {
+      "ruleId": "CONCEPT_007",
+      "ruleName": "Single Dominant Mechanic",
+      "family": "concept_strength",
+      "severity": "BLOCKER",
+      "outcome": "UNKNOWN",
+      "message": "Semantic judgment has no verified evidence; provider dispatch is disabled for this local ruleset.",
+      "details": {
+        "requiredEvidence": "VERIFIED_SEMANTIC_JUDGMENT",
+        "providerDispatch": false,
+        "evaluation_stage": "PRE_RENDER",
+        "recommendation": "The concept must exhibit exactly one independent physical/magical rule. Same mechanic applied with escalating/varied consequences is fine (PASS); a second, genuinely independent rule introduced partway through is not (CRITICAL at 2 mechanics, BLOCKER at 3+). coreMechanic.mechanicCount is an author claim, verified (not trusted) via LLM semantic judgment against the beat-by-beat consequences."
+      }
+    },
+    "GOAL_001": {
+      "ruleId": "GOAL_001",
+      "ruleName": "Goal-Obstruction Clarity",
+      "family": "concept_strength",
+      "severity": "BLOCKER",
+      "outcome": "UNKNOWN",
+      "message": "Semantic judgment has no verified evidence; provider dispatch is disabled for this local ruleset.",
+      "details": {
+        "requiredEvidence": "VERIFIED_SEMANTIC_JUDGMENT",
+        "providerDispatch": false,
+        "evaluation_stage": "PRE_RENDER",
+        "recommendation": "The character must have an immediately understandable, natural physical goal, and the established abnormal rule must genuinely obstruct that goal. Distinguishes a believable reason to keep trying from an arbitrary or magic-demo setup invented only to showcase the mechanic (the character could simply walk away with no believable reason to continue). Verified via LLM semantic judgment (check_goal_is_natural), fail-closed to SERVICE_ERROR."
+      }
+    },
+    "CONCEPT_008": {
+      "ruleId": "CONCEPT_008",
+      "ruleName": "Rule Readability / Predictability",
+      "family": "concept_strength",
+      "severity": "CRITICAL",
+      "outcome": "UNKNOWN",
+      "message": "Semantic judgment has no verified evidence; provider dispatch is disabled for this local ruleset.",
+      "details": {
+        "requiredEvidence": "VERIFIED_SEMANTIC_JUDGMENT",
+        "providerDispatch": false,
+        "evaluation_stage": "PRE_RENDER",
+        "recommendation": "Distinct from CONCEPT_007: a single, internally consistent mechanic is not automatically a legible one. A rule that depends on a combination of exact position, angle, and speed is technically one mechanic but unlearnable by a child audience watching once. Asks whether a viewer could learn the pattern from the first 1-2 occurrences and predict what happens next. Verified via LLM semantic judgment (check_rule_is_predictable), fail-closed to SERVICE_ERROR."
+      }
+    },
+    "HOOK_004": {
+      "ruleId": "HOOK_004",
+      "ruleName": "Opening Problem Legibility",
+      "family": "hook_strength",
+      "severity": "CRITICAL",
+      "outcome": "UNKNOWN",
+      "message": "Semantic judgment has no verified evidence; provider dispatch is disabled for this local ruleset.",
+      "details": {
+        "requiredEvidence": "VERIFIED_SEMANTIC_JUDGMENT",
+        "providerDispatch": false,
+        "evaluation_stage": "PRE_RENDER",
+        "recommendation": "Stricter than HOOK_002: HOOK_002 confirms something visually unusual happens immediately; this asks whether the opening ALSO makes clear what the character wants and why they can't get it yet, not just that something odd is occurring. Verified via LLM semantic judgment (check_opening_problem_legible), fail-closed to SERVICE_ERROR."
+      }
+    },
+    "PERFORMANCE_001": {
+      "ruleId": "PERFORMANCE_001",
+      "ruleName": "Cute Emotional Readability",
+      "family": "character_performance",
+      "severity": "WARNING",
+      "outcome": "UNKNOWN",
+      "message": "Semantic judgment has no verified evidence; provider dispatch is disabled for this local ruleset.",
+      "details": {
+        "requiredEvidence": "VERIFIED_SEMANTIC_JUDGMENT",
+        "providerDispatch": false,
+        "evaluation_stage": "PRE_RENDER",
+        "recommendation": "New character_performance family (RULESET 1.3). CHAR_002 confirms the character is active for enough of the runtime; this asks whether that activity reads as emotionally engaged and sympathetic rather than blank, robotic, aggressive, or stuck in prolonged panic. Verified via LLM semantic judgment (check_character_performance_readable), fail-closed to SERVICE_ERROR. Capped at WARNING — a performance-quality nudge, not a structural requirement."
+      }
+    },
+    "GENERATION_EXECUTABLE_ATTEMPTS": {
+      "ruleId": "GENERATION_EXECUTABLE_ATTEMPTS",
+      "ruleName": "Generation Executable Attempts",
+      "family": "generation_executability",
+      "severity": "BLOCKER",
+      "outcome": "UNKNOWN",
+      "message": "Semantic judgment has no verified evidence; provider dispatch is disabled for this local ruleset.",
+      "details": {
+        "requiredEvidence": "VERIFIED_SEMANTIC_JUDGMENT",
+        "providerDispatch": false,
+        "evaluation_stage": "PRE_RENDER",
+        "recommendation": "Distinct from ATTEMPT_002 (semantic strategy diversity): ATTEMPT_002 asks whether the character is genuinely trying a different strategy; this asks whether that different strategy will actually LOOK different and be reliably executable by an image-to-video generation model (e.g. Seedance). A deterministic keyword pre-filter flags abstract-intent language ('blocks the escape route', 'tries to outsmart') and vague movement-magnitude phrasing ('slightly moves') on attempt beats, plus a beat-budget estimate (too many attempts for the available duration). An LLM semantic check (check_attempts_are_generation_executable) judges each attempt for a concrete action-result pair and flags attempts that would visually collapse into the same choreography despite different wording. BLOCKER only when NO attempt is judged executable at all or the LLM is unreachable (SERVICE_ERROR); CRITICAL when some attempts are unexecutable or abstract-intent language is matched; WARNING for vague magnitude phrasing or beat-budget pressure alone."
+      }
+    },
+    "CONSISTENCY_002": {
+      "ruleId": "CONSISTENCY_002",
+      "ruleName": "Character Continuity Lock",
+      "family": "consistency",
+      "severity": "CRITICAL",
+      "outcome": "NOT_APPLICABLE",
+      "message": "Rule is evaluated only after a rendered video exists.",
+      "details": {
+        "evaluation_stage": "POST_RENDER"
+      }
+    },
+    "PAYOFF_005": {
+      "ruleId": "PAYOFF_005",
+      "ruleName": "Fake Win Escalation",
+      "family": "progression",
+      "severity": "WARNING",
+      "outcome": "NOT_APPLICABLE",
+      "message": "No fake-win beat present; this check does not apply to this concept.",
+      "details": {
+        "evaluation_stage": "PRE_RENDER",
+        "recommendation": "If a beat with consequenceType == 'fake_win' is present, the intensity after it must exceed the intensity at the fake win (the problem must escalate, not repeat or weaken, after a fake resolution). Reports NOT_APPLICABLE (not FAIL, not UNKNOWN) when no fake-win beat exists — this check simply does not apply to a concept that doesn't use the fake-resolution structure."
+      }
+    },
+    "CONCEPT_009": {
+      "ruleId": "CONCEPT_009",
+      "ruleName": "Single-Agent Object Mechanic",
+      "family": "concept_strength",
+      "severity": "BLOCKER",
+      "outcome": "NOT_APPLICABLE",
+      "message": "Rule does not apply to this content family.",
+      "details": {
+        "scopeType": "CONTENT_FAMILY",
+        "scopeId": "social_reel"
+      }
+    },
+    "CONTINUATION_LOCK": {
+      "ruleId": "CONTINUATION_LOCK",
+      "ruleName": "Continuation Lock",
+      "family": "generation_executability",
+      "severity": "BLOCKER",
+      "outcome": "NOT_APPLICABLE",
+      "message": "Continuation lock applies only to SPLIT_2X15S plans.",
+      "details": {
+        "analysisStage": "PRE_RENDER_PLAN_CONTRACT",
+        "evaluation_stage": "PRE_RENDER",
+        "recommendation": "For SPLIT_2X15S, Part 1 end-state and Part 2 start-state contracts must match. This is pre-render plan evidence, not pixel continuity verification."
+      }
+    },
+    "STUBBORN_RETURN_LOOP": {
+      "ruleId": "STUBBORN_RETURN_LOOP",
+      "ruleName": "Stubborn Return Loop",
+      "family": "progression",
+      "severity": "BLOCKER",
+      "outcome": "NOT_APPLICABLE",
+      "message": "Return-loop candidate lacks one or more mandatory signals.",
+      "details": {
+        "engineProfile": {
+          "profile": "DEFAULT",
+          "source": "INFERRED",
+          "confidence": "LOW",
+          "active": false,
+          "candidate_only": false,
+          "signals": {
+            "SINGLE_DOMINANT_OBJECT": false,
+            "FIXED_VISIBLE_BOUNDARY": false,
+            "SAFE_STATE": false,
+            "AUTONOMOUS_RETURN": false,
+            "RECURRENCE": false,
+            "CHARACTER_INTERVENTION": true,
+            "ESCALATION": false,
+            "NO_DEAD_RESET": true
+          },
+          "recurrence_count": 0,
+          "intervention_count": 2,
+          "state_memory_cost": "LOW",
+          "reason": "Return-loop candidate lacks one or more mandatory signals."
+        },
+        "evaluation_stage": "PRE_RENDER",
+        "recommendation": "High-confidence Spoon-class engine profile: one object, one visible safe/danger boundary, autonomous return, recurrence, active intervention, escalation, and no dead reset."
+      }
+    },
+    "STUBBORN_RETURN_HOOK": {
+      "ruleId": "STUBBORN_RETURN_HOOK",
+      "ruleName": "Stubborn Return Hook",
+      "family": "hook_strength",
+      "severity": "CRITICAL",
+      "outcome": "NOT_APPLICABLE",
+      "message": "Stubborn-return hook exception applies only when the engine profile is explicitly or high-confidence active.",
+      "details": {
+        "engineProfile": {
+          "profile": "DEFAULT",
+          "source": "INFERRED",
+          "confidence": "LOW",
+          "active": false,
+          "candidate_only": false,
+          "signals": {
+            "SINGLE_DOMINANT_OBJECT": false,
+            "FIXED_VISIBLE_BOUNDARY": false,
+            "SAFE_STATE": false,
+            "AUTONOMOUS_RETURN": false,
+            "RECURRENCE": false,
+            "CHARACTER_INTERVENTION": true,
+            "ESCALATION": false,
+            "NO_DEAD_RESET": true
+          },
+          "recurrence_count": 0,
+          "intervention_count": 2,
+          "state_memory_cost": "LOW",
+          "reason": "Return-loop candidate lacks one or more mandatory signals."
+        },
+        "evaluation_stage": "PRE_RENDER",
+        "recommendation": "Accept an immediate visible physical threat with the character already engaged even when frame zero is not a static impossibility."
+      }
+    },
+    "STUBBORN_RETURN_PAYOFF": {
+      "ruleId": "STUBBORN_RETURN_PAYOFF",
+      "ruleName": "Stubborn Return Payoff",
+      "family": "final_payoff",
+      "severity": "CRITICAL",
+      "outcome": "NOT_APPLICABLE",
+      "message": "Stubborn-return payoff exception is not active.",
+      "details": {
+        "engineProfile": {
+          "profile": "DEFAULT",
+          "source": "INFERRED",
+          "confidence": "LOW",
+          "active": false,
+          "candidate_only": false,
+          "signals": {
+            "SINGLE_DOMINANT_OBJECT": false,
+            "FIXED_VISIBLE_BOUNDARY": false,
+            "SAFE_STATE": false,
+            "AUTONOMOUS_RETURN": false,
+            "RECURRENCE": false,
+            "CHARACTER_INTERVENTION": true,
+            "ESCALATION": false,
+            "NO_DEAD_RESET": true
+          },
+          "recurrence_count": 0,
+          "intervention_count": 2,
+          "state_memory_cost": "LOW",
+          "reason": "Return-loop candidate lacks one or more mandatory signals."
+        },
+        "evaluation_stage": "PRE_RENDER",
+        "recommendation": "Accept a stronger active same-rule stalemate as payoff when the character remains engaged at the cut."
+      }
+    }
+  },
+  "outcomeSeverityChanges": []
+}

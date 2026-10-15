@@ -114,7 +114,7 @@ def _text_guards(text, source):
         raise ValueError('STORY_FIDELITY_FAILED: preserve source beat windows; no unbound sub-beat timestamps')
     if re.search(r'\b(?:PRODUCTION SETTINGS|CHARACTER IDENTITY|FINAL CUT|SYSTEM PROMPT)\b',text,re.I):
         raise ValueError('STORY_FIDELITY_FAILED: protected section override')
-    for sentence in re.split(r'(?<=[.!?])\s+',text):
+    for sentence in re.split(r'(?<=[.!?])\s+|;',text):
         lower=sentence.lower()
         # Safety constraints may prohibit a deviation, but may not introduce it.
         prohibited=bool(re.search(r'\b(?:do not|never|no |without |avoid )',lower))
@@ -125,10 +125,15 @@ def _text_guards(text, source):
         for word in re.findall(r'\b(?:teleport\w*|tripl\w*|vanish\w*|explod\w*|burn\w*|transform\w*)\b',lower):
             if word not in source.lower() and not prohibited:
                 raise ValueError('STORY_FIDELITY_FAILED: unsupported physical transformation')
-        # New named characters/props cannot be smuggled into source-bound fields.
-        for name in re.findall(r'(?<![.!?] )\b[A-Z][a-z]+\b',sentence):
-            if name.lower() not in source.lower() and name not in {'Place','Keep','Show','Hold','Frame','Present','Maintain','Arrange','Expose','Use','Align','Let','During','After','Before','As','At','The','No','Do','Avoid','Ensure','Leave','Then','Carry','Make','Separate','Offset','Position','Continue','Reveal','Move','Track','Pan','Without','For','With','Each','Only','Follow','Hide'}:
-                raise ValueError('STORY_FIDELITY_FAILED: unsupported named entity '+name)
+        # Recognize unbound named actors in action claims without mistaking
+        # every sentence-initial production verb (e.g. Contact/Follow) for a name.
+        names=re.findall(r'\b([A-Z][a-z]+)\s+(?:reaches|pulls|grabs|appears|enters|takes|sneezes|screams|becomes)\b',sentence)
+        for name in names:
+            if name.lower() not in source.lower():
+                raise ValueError('STORY_FIDELITY_FAILED: unsupported named actor '+name)
+        for forbidden_identity in re.findall(r'do not render (?:a|an) (\w+)',source,re.I):
+            if not prohibited and re.search(r'\b(?:render|become|becomes|as)\b.{0,35}\b'+re.escape(forbidden_identity)+r'\b',sentence,re.I):
+                raise ValueError('STORY_FIDELITY_FAILED: protected character identity override')
         # Object introduction is checked conservatively; the validator still does
         # not claim complete natural-language semantic fidelity.
         match=re.search(r'\b(?:introduce|add|bring|spawn)\s+(?:a|an|another|new)\s+(\w+)',lower)
@@ -183,6 +188,8 @@ def validate_authored(intervention, opportunity, refs, source):
             for count in re.findall(r'\b(\d+|one|two|three|four|five|six|seven|eight|nine|ten|twelve)\s+(?:sticky\s+)?notes?\b',text,re.I):
                 if numbers.get(count.lower(),count)!=numbers.get(expected,expected):
                     raise ValueError('STORY_FIDELITY_FAILED: authored note count contradicts its source state')
+            if not re.search(r'\b'+re.escape(expected)+r'\b',text,re.I):
+                raise ValueError('Non-material authored progression does not present its bound state')
             geometry=frozenset(x.lower() for x in GEOMETRY.findall(text))
             if not geometry:raise ValueError('Non-material authored progression only repeats source counts')
             geometries.append(geometry)
@@ -203,7 +210,7 @@ def validate_authored(intervention, opportunity, refs, source):
     camera_text = production.cameraComposition
     if re.search(r'\b(?:tracking|panning|orbiting|zooming|moving)\s+(?:camera|shot|view)|\b(?:track|pan|orbit|zoom)\b', camera_text, re.I) and not re.search(r'\b(?:no|never|avoid|without)\s+(?:tracking|panning|orbiting|zooming|moving|track|pan|orbit|zoom)\b', camera_text, re.I):
         raise ValueError('EXECUTION_RISK_REGRESSION_CONTRADICTORY_CAMERA_INSTRUCTION')
-    for sentence in re.split(r'(?<=[.!?])\s+',rendered):
+    for sentence in re.split(r'(?<=[.!?])\s+|;',rendered):
         if re.search(r'\b(?:hide|obscure|occlude)\b.{0,30}\b(?:contact|count|transition)\b',sentence,re.I) and not re.search(r'\b(?:do not|never|without|avoid)\s+(?:hide|obscure|occlude)',sentence,re.I):
             raise ValueError('EXECUTION_RISK_REGRESSION_CRITICAL_TRANSITION_OCCLUDED')
     return {'status':'SOURCE_BOUND_AUTHORED_EXECUTION_VALIDATED','semanticFidelity':'UNKNOWN',
