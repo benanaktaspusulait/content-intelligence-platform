@@ -44,6 +44,12 @@ spring:
             enable: true
 
 server:
+  servlet:
+    session:
+      timeout: 30m
+      cookie:
+        http-only: true
+        same-site: strict
   port: ${SERVER_PORT:8080}
   compression:
     enabled: true
@@ -68,6 +74,11 @@ management:
         enabled: true
 
 pompom:
+  cpq-owner:
+    id: ${CPQ_OWNER_ID:}
+    secret-file: ${CPQ_OWNER_SECRET_FILE:}
+  cpq-pilot:
+    real-enabled: ${CPQ_PILOT_REAL_ENABLED:false}
   rule-governance:
     token: ${RULE_GOVERNANCE_TOKEN:}
     health-poll-ms: ${RULE_GOVERNANCE_HEALTH_POLL_MS:3600000}
@@ -180,3 +191,5 @@ metrics:
 springdoc:
   swagger-ui:
     path: /swagger-ui.html
+
+# Owner credential is read privately; unset/missing files keep authentication disabled.

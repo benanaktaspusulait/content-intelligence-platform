@@ -1,0 +1,61 @@
+import { CommonModule } from '@angular/common';
+import { Component, Input, OnChanges, ChangeDetectorRef, inject } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
+
+@Component({
+ selector: 'app-cpq-owner-pilot', standalone:true, imports:[CommonModule,FormsModule],
+ template:`<section class="owner-pilot" aria-label="Owner-managed CPQ pilot">
+ <strong>Owner-managed quality pilot · ungraded</strong>
+ <p>MACHINE_REVIEW: NOT_EXECUTED until explicitly authorized. Official CPQ grading: INACTIVE. Render authorization: separate F8 gate.</p>
+ <button type="button" (click)="open()">Inspect owner pilot</button>
+ <div *ngIf="opened">
+ <p role="status">{{message}}</p>
+ <p *ngIf="auth && !auth.configured">Owner authentication awaits private configuration. No temporary identity is created.</p>
+ <form *ngIf="auth?.configured && !auth?.authenticated" (ngSubmit)="login()"><label>Private owner credential <input type="password" name="credential" autocomplete="current-password" [(ngModel)]="credential"></label><button type="submit">Owner login</button></form>
+ <p *ngIf="auth?.authenticated">Owner: {{auth.ownerId}} · OWNER_DECISION authority · not an independent human reviewer <button type="button" (click)="logout()">Logout</button></p>
+ <details *ngIf="context"><summary>Current source and production bindings</summary><p>{{context.subjectType}} · {{context.promptSha256}}</p><p>Story {{context.approvedStory?.storyId}} · approval {{context.approvedStory?.approvalRecordId}} · text revision {{context.approvedStory?.revision}}</p><pre>{{context.productionSettings | json}}</pre><details><summary>Exact original production prompt</summary><pre>{{context.originalPrompt}}</pre></details><details *ngIf="context.subjectType==='OPTIMIZATION_CANDIDATE'"><summary>Selected saved candidate prompt</summary><pre>{{context.promptText}}</pre></details></details>
+ <p>Machine fidelity: {{pilot?.comparison?.sourceStatus || 'NOT_EXECUTED'}} · Independent human evidence: UNKNOWN</p>
+ <div *ngIf="auth?.authenticated">
+ <label>Total pilot budget reservation (USD; preparation makes no provider call) <input type="number" min="0.01" max="20" [(ngModel)]="budget"></label>
+ <label><input type="checkbox" [(ngModel)]="sourceAuthority">I confirm this is the approved source binding; this owner confirmation is not independent fidelity evidence.</label><button type="button" (click)="prepare()" [disabled]="busy || !context || !candidates.length || !sourceAuthority">Prepare exact saved pilot</button>
+ <label>Existing pilot ID <input [(ngModel)]="pilotId"></label><button type="button" (click)="load()" [disabled]="!pilotId || busy">Load saved pilot</button>
+ </div>
+ <div *ngIf="pilot">
+ <p>Pilot {{pilot.pilotId}} · {{pilot.policyVersion}} · no A/A+ qualification</p>
+ <p>Critic A: {{slotState('CRITIC_A')}} · Critic B: {{slotState('CRITIC_B')}} · source: {{slotState('SOURCE_FIDELITY')}}</p>
+ <details><summary>Machine evidence, strengths, weaknesses, uncertainty and execution risks</summary><article *ngFor="let evidence of pilot.evidence"><b>{{evidence.evidenceType}} · {{evidence.payload.slot || evidence.payload.decision}}</b><pre>{{evidence.payload | json}}</pre></article><span *ngIf="!pilot.evidence.length">UNKNOWN · no machine or human review collected</span></details>
+ <details><summary>Agreement, disagreement and possible material improvement</summary><pre>{{pilot.comparison | json}}</pre><p>Shared or contradictory claims require owner inspection; no averaging or numerical grade.</p></details>
+ <fieldset *ngIf="auth?.authenticated"><legend>Separate paid review authorization · no automatic execution</legend>
+ <p *ngIf="!caps?.realDispatchEnabled">Real dispatch disabled on server. API keys do not authorize spending.</p>
+ <label>Stage <select [(ngModel)]="slot"><option>SOURCE_FIDELITY</option><option>CRITIC_A</option><option>CRITIC_B</option></select></label>
+ <label>Configured model profile <select [(ngModel)]="profileId"><option value="">Select explicitly</option><option *ngFor="let p of profileOptions" [value]="p.id">{{p.provider}} / {{p.model}} · {{p.configured ? 'key configured' : 'key missing'}}</option></select></label>
+ <label>Maximum call cost USD <input type="number" [(ngModel)]="callCap"></label><label>Maximum output tokens <input type="number" min="256" max="4000" [(ngModel)]="tokens"></label>
+ <label><input type="checkbox" [(ngModel)]="paidConsent">I explicitly authorize one inference for this stage and exact model, bounded by these limits, with no retries.</label>
+ <button type="button" (click)="authorize()" [disabled]="busy || !paidConsent || !profileId || !caps?.realDispatchEnabled">Reserve one authorized request</button>
+ <article *ngFor="let req of pilot.requests"><span>{{req.slot}} · {{req.state}} · {{req.failure}}</span><button type="button" *ngIf="req.state==='AUTHORIZED'" (click)="execute(req.requestId)" [disabled]="busy || !caps?.realDispatchEnabled">Execute this one authorized request</button></article>
+ </fieldset>
+ <fieldset *ngIf="auth?.authenticated"><legend>Explicit OWNER_DECISION</legend><label>Decision <select [(ngModel)]="decision"><option>KEEP_ORIGINAL</option><option>REQUEST_REVISION</option><option>ACCEPT_TEXT_FOR_PREPARATION</option></select></label><label>Rationale <textarea [(ngModel)]="rationale"></textarea></label><label><input type="checkbox" [(ngModel)]="decisionConsent">I confirm this is ungraded, acknowledge machine uncertainty and authorize no render, prompt version or candidate approval.</label><button type="button" (click)="saveDecision()" [disabled]="busy || !decisionConsent || rationale.trim().length<20">Record owner decision</button></fieldset>
+ </div></div></section>`,
+ styles:[`.owner-pilot{display:grid;gap:8px;margin:12px 0;padding:14px;border:1px solid #b9c9d8;border-radius:10px;background:#f7fafc;min-width:0}.owner-pilot p{margin:6px 0}.owner-pilot label{display:grid;gap:4px;margin:7px 0}.owner-pilot input,.owner-pilot select,.owner-pilot textarea{max-width:100%;box-sizing:border-box;padding:7px}.owner-pilot pre{white-space:pre-wrap;overflow-wrap:anywhere;font-size:12px}.owner-pilot fieldset{min-width:0;margin-top:10px}.owner-pilot button{padding:7px;margin:4px 0}`]
+})
+export class CpqOwnerPilotComponent implements OnChanges {
+ @Input() analysisId=''; @Input() comparisonId:string|null=null; @Input() candidateId:string|null=null; @Input() candidates:any[]=[];
+ private http=inject(HttpClient); private cd=inject(ChangeDetectorRef); private seq=0;
+ sourceAuthority=false;opened=false;auth:any=null;context:any=null;caps:any=null;pilot:any=null;pilotId='';credential='';message='';busy=false;budget=.5;callCap=.15;tokens=4000;slot='SOURCE_FIDELITY';profileId='';paidConsent=false;decision='KEEP_ORIGINAL';rationale='';decisionConsent=false;
+ get profileOptions(){return Object.entries(this.caps?.profiles||{}).map(([id,p]:any)=>({id,...p}));}
+ ngOnChanges(){this.seq++;this.context=null;this.paidConsent=false;this.decisionConsent=false;if(this.opened)this.readContext();}
+ open(){if(this.opened)return;this.opened=true;this.http.get<any>('/api/v1/intelligence/workflow/owner-auth').subscribe({next:v=>{this.auth=v;this.cd.markForCheck();},error:()=>this.fail('Owner session unavailable')});this.http.get<any>('/api/v1/intelligence/workflow/cpq/owner-pilot/capabilities').subscribe({next:v=>{this.caps=v;this.cd.markForCheck();},error:()=>this.fail('Provider capabilities unavailable')});this.readContext();}
+ private readContext(){if(!this.analysisId)return;const seq=++this.seq;const params:any={analysisId:this.analysisId};if(this.comparisonId&&this.candidateId){params.comparisonId=this.comparisonId;params.candidateId=this.candidateId;}this.http.get<any>('/api/v1/intelligence/workflow/cpq/owner-pilot/context',{params}).subscribe({next:v=>{if(seq===this.seq){this.context=v;this.cd.markForCheck();}},error:()=>{if(seq===this.seq)this.fail('Source/settings binding unavailable; inspect the saved context before proceeding');}});}
+ private headers(){return {'X-CPQ-CSRF':this.auth?.csrfToken||''};}
+ login(){const secret=this.credential;this.credential='';this.http.post<any>('/api/v1/intelligence/workflow/owner-auth/login',{credential:secret},{headers:this.headers()}).subscribe({next:v=>{this.auth=v;this.message='Owner session established';this.cd.markForCheck();},error:()=>this.fail('Owner login unavailable, invalid or rate limited')});}
+ logout(){this.http.post('/api/v1/intelligence/workflow/owner-auth/logout',{}, {headers:this.headers()}).subscribe({next:()=>{this.auth=null;this.pilot=null;this.credential='';this.opened=false;this.cd.markForCheck();},error:()=>this.fail('Logout failed')});}
+ prepare(){this.post('',{analysisId:this.analysisId,candidates:this.candidates.slice(0,3),maxTotalUsd:this.budget,confirmSourceAuthority:this.sourceAuthority});}
+ load(){if(!this.pilotId)return;this.http.get<any>('/api/v1/intelligence/workflow/cpq/owner-pilot/'+encodeURIComponent(this.pilotId)).subscribe({next:v=>{this.pilot=v;this.cd.markForCheck();},error:()=>this.fail('Pilot unavailable for this owner')});}
+ authorize(){const p=this.profileOptions.find(p=>p.id===this.profileId);if(!p||!this.paidConsent)return;this.post('/'+this.pilot.pilotId+'/authorizations',{slot:this.slot,profileId:p.id,provider:p.provider,model:p.model,maxOutputTokens:this.tokens,maxCostUsd:this.callCap,authorizePaidInference:true,automaticRetries:false,idempotencyKey:crypto.randomUUID()});this.paidConsent=false;}
+ execute(id:string){this.post('/'+this.pilot.pilotId+'/requests/'+id+'/execute',{});}
+ saveDecision(){if(!this.decisionConsent)return;this.post('/'+this.pilot.pilotId+'/decisions',{decision:this.decision,rationale:this.rationale,subjectPromptSha256:this.context?.promptSha256,confirmUngradedNoRender:true,acknowledgeMachineLimitations:true});this.decisionConsent=false;}
+ slotState(slot:string){return this.pilot?.requests?.find((r:any)=>r.slot===slot)?.state||'NOT_EXECUTED';}
+ private post(path:string,body:any){this.busy=true;this.http.post<any>('/api/v1/intelligence/workflow/cpq/owner-pilot'+path,body,{headers:this.headers()}).subscribe({next:v=>{this.pilot=v;this.pilotId=v.pilotId;this.busy=false;this.message='Saved explicit owner action; official grading remains inactive';this.cd.markForCheck();},error:()=>{this.busy=false;this.fail('Action blocked or failed. Review saved request status; do not retry an ambiguous dispatch.');}});}
+ private fail(message:string){this.message=message;this.cd.markForCheck();}
+}

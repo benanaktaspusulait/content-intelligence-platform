@@ -419,3 +419,24 @@ def adaptive_optimization_policy(request: AdaptivePolicyRequest) -> dict[str, An
     if request.action == 'ESCALATION_BRIEF':
         return escalation_brief(request.source, request.context, request.comparison, decision)
     return decision
+
+
+@router.post('/cpq-pilot/capabilities')
+def cpq_pilot_capabilities(request: dict[str, Any]) -> dict[str, Any]:
+    from .owner_machine_pilot import capabilities
+    return capabilities()
+
+
+@router.post('/cpq-pilot/execute')
+async def cpq_pilot_execute(request: Request) -> dict[str, Any]:
+    import os, hmac, hashlib
+    from .owner_machine_pilot import execute
+    raw = await request.body()
+    token = os.getenv('WORKFLOW_ADAPTIVE_DISPATCH_TOKEN', '')
+    signature = request.headers.get('X-CPQ-Pilot-Dispatch', '')
+    if os.getenv('CPQ_PILOT_REAL_ENABLED', 'false').lower() != 'true' or len(token)<32 or not hmac.compare_digest(signature, hmac.new(token.encode(), raw, hashlib.sha256).hexdigest()):
+        raise HTTPException(403, 'Owner pilot real dispatch is disabled or unauthenticated')
+    try:
+        return execute(json.loads(raw))
+    except (ValueError, KeyError, TypeError) as error:
+        raise HTTPException(422, 'Invalid bound pilot authorization/input; no retry') from error

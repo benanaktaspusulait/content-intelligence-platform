@@ -84,13 +84,46 @@ public class CreativePromptQualityService {
     Object approvalId=sessionPayload.get("approvalRecordId");
     if(approvalId==null) throw new ResponseStatusException(CONFLICT,"Approved story revision is unavailable");
     var approval=event(UUID.fromString(String.valueOf(approvalId)),"STORY_APPROVAL");
-    String story=String.valueOf(approval.getOrDefault("approvedText",""));
-    String contextStory=String.valueOf(context.getOrDefault("approvedStoryText",story));
-    if(story.isBlank() || !hash(story).equals(hash(contextStory))) throw new ResponseStatusException(CONFLICT,"Candidate context does not match the current approved story");
-    if(context.get("storyApprovalRecordId")!=null && !String.valueOf(context.get("storyApprovalRecordId")).equals(String.valueOf(approvalId)))
-      throw new ResponseStatusException(CONFLICT,"Candidate is bound to a different story approval revision");
+    var verified=verifiedStory(sessionPayload,context);
+    String story=text(verified.get("text"));
     var out=new LinkedHashMap<String,Object>();out.put("text",story);out.put("approval",approval);out.put("session",sessionPayload);out.put("roleContext",context);out.put("approvalRecordId",String.valueOf(approvalId));
+    out.put("verified",verified);
     return out;
+  }
+  private Map<String,Object> verifiedStory(Map<String,Object> session,Map<String,Object> context) {
+    String id=text(session.getOrDefault("sourceStoryRecordId",session.get("storyRecordId")));
+    if(session.get("sourceStoryRecordId")!=null && session.get("storyRecordId")!=null && !text(session.get("sourceStoryRecordId")).equals(text(session.get("storyRecordId"))))
+      throw new ResponseStatusException(CONFLICT,"SOURCE_APPROVAL_CONFLICT: story identifiers disagree");
+    String approval=text(session.get("approvalRecordId"));
+    var verified=workflow.approvedStoryForCpq(uuid(id,"SOURCE_APPROVAL_REQUIRED"),uuid(approval,"SOURCE_APPROVAL_REQUIRED"));
+    for(var pair:Map.of("storyId","storyId","sourceStoryRecordId","storyId","storyApprovalRecordId","approvalRecordId","approvalRecordId","approvalRecordId","storyRevisionId","revision","approvedStoryText","text").entrySet())
+      if(context.get(pair.getKey())!=null && !text(context.get(pair.getKey())).equals(text(verified.get(pair.getValue()))))
+        throw new ResponseStatusException(CONFLICT,"SOURCE_APPROVAL_CONFLICT: "+pair.getKey());
+    if(session.get("storyRevisionId")!=null && !text(session.get("storyRevisionId")).equals(verified.get("revision")))throw new ResponseStatusException(CONFLICT,"SOURCE_APPROVAL_CONFLICT: stale revision");
+    return verified;
+  }
+  private Map<String,Object> savedProduction(long content,long promptId,String prompt,Map<String,Object> event,Map<String,Object> authority) {
+    var merged=new LinkedHashMap<String,Object>(event);
+    var execution=new LinkedHashMap<String,Object>(map(event.get("settings")));
+    if(event.get("aspectRatio")!=null) {
+      if(execution.get("aspectRatio")!=null && !execution.get("aspectRatio").equals(event.get("aspectRatio")))throw new ResponseStatusException(CONFLICT,"PRODUCTION_SETTINGS_CONFLICT: aspectRatio");
+      execution.put("aspectRatio",event.get("aspectRatio"));
+    }
+    var rows=jdbc.sql("SELECT id::text,payload::text FROM post_family_workflow_events WHERE kind='REVIEW' AND payload->>'contentId'=:c AND payload->>'promptVersionId'=:p ORDER BY created_at DESC,id DESC LIMIT 1")
+      .param("c",String.valueOf(content)).param("p",String.valueOf(promptId)).query((rs,n)->Map.entry(rs.getString(1),read(rs.getString(2)))).list();
+    if(!rows.isEmpty()) {
+      var row=rows.getFirst();var bound=map(row.getValue().get("boundRequest"));
+      if(!prompt.equals(bound.get("prompt")))throw new ResponseStatusException(CONFLICT,"PRODUCTION_SETTINGS_CONFLICT: analysis source prompt");
+      for(String key:List.of("contentProfile","generator","desiredDuration","openingStrategy"))
+        if(event.get(key)!=null && bound.get(key)!=null && !text(event.get(key)).equals(text(bound.get(key))))throw new ResponseStatusException(CONFLICT,"PRODUCTION_SETTINGS_CONFLICT: "+key);
+      for(var entry:map(bound.get("settings")).entrySet()) {
+        if(execution.containsKey(entry.getKey()) && !execution.get(entry.getKey()).equals(entry.getValue()))throw new ResponseStatusException(CONFLICT,"PRODUCTION_SETTINGS_CONFLICT: "+entry.getKey());
+        execution.put(entry.getKey(),entry.getValue());
+      }
+      authority.put("executionAnalysisId",row.getKey());
+    }
+    merged.put("settings",execution);
+    return normalizedSettings(merged);
   }
   private String savedPrompt(long contentId,long promptVersionId) {
     return jdbc.sql("SELECT raw_text FROM prompt_versions WHERE content_id=:content AND id=:prompt")
@@ -263,8 +296,8 @@ public class CreativePromptQualityService {
       if(changedBeatIds.stream().anyMatch(id->!mappedBeatIds.contains(id)))throw new ResponseStatusException(BAD_REQUEST,"A PASS must map every changed beat to exact source and candidate quotes");
     }
     var settingsHash=hash(encode(settings));var sourceHash=hash(source);var candidateHash=hash(prompt);var storyHash=hash(approved);var interventionHash=hash(encode(intervention));
-    String storyId=String.valueOf(map(story.get("session")).getOrDefault("sourceStoryRecordId",roleContext.getOrDefault("storyId","UNKNOWN")));
-    String revision=String.valueOf(roleContext.getOrDefault("storyRevisionId",map(story.get("session")).getOrDefault("storyRevisionId",map(story.get("approval")).getOrDefault("revisionId","UNKNOWN"))));
+    String storyId=text(map(story.get("verified")).get("storyId"));
+    String revision=text(map(story.get("verified")).get("revision"));
     if("UNKNOWN".equals(storyId)||"UNKNOWN".equals(revision))throw new ResponseStatusException(CONFLICT,"Approved story ID and revision binding are required for fidelity evidence");
     UUID evidenceId=UUID.randomUUID();
     var reviewSettings=new LinkedHashMap<String,Object>();for(String key:List.of("contentProfile","generator","desiredDuration","settings","openingStrategy"))reviewSettings.put(key,map(baseline.get("boundRequest")).get(key));
@@ -339,6 +372,7 @@ public class CreativePromptQualityService {
           blockers.add("SOURCE_APPROVAL_REQUIRED");
         else source.put(pair.getKey(), authoritative);
       }
+      try { verifiedStory(session,Map.of()); } catch(RuntimeException bad) { blockers.add("SOURCE_APPROVAL_REQUIRED"); }
       if (source.get("repositoryRelativePath") != null && !prompt.equals(repositoryText(text(source.get("repositoryRelativePath")), hash(prompt))))
         throw new ResponseStatusException(CONFLICT, "SOURCE_PROMPT_FINGERPRINT_MISMATCH");
     } else {
@@ -360,7 +394,7 @@ public class CreativePromptQualityService {
             .query((rs,n)->Map.entry(rs.getString(1), read(rs.getString(2)))).optional().orElseThrow();
         if (source.get("productionSettingsRecordId") != null && !row.getKey().equals(text(source.get("productionSettingsRecordId")))) throw new IllegalArgumentException();
         if (row.getValue().get("promptHash")!=null && !hash(prompt).equals(row.getValue().get("promptHash"))) throw new IllegalArgumentException();
-        source.put("productionSettingsRecordId", row.getKey()); settings = normalizedSettings(row.getValue());
+        source.put("productionSettingsRecordId", row.getKey()); settings = savedProduction(content,promptId,prompt,row.getValue(),settingsAuthority);
         settingsAuthority.put("recordId", row.getKey());
       } else if (source.get("productionSettingsRecordId") != null) {
         var row = event(uuid(source.get("productionSettingsRecordId"), "PRODUCTION_SETTINGS_BINDING_REQUIRED"), "PRODUCTION_SETTINGS");
@@ -373,7 +407,7 @@ public class CreativePromptQualityService {
         settings = normalizedSettings(map(document.get("productionSettings")));
         settingsAuthority.put("repositoryRelativePath", relative); settingsAuthority.put("sha256", source.get("expectedSettingsSha256"));
       }
-    } catch (RuntimeException error) { blockers.add("PRODUCTION_SETTINGS_BINDING_REQUIRED"); }
+    } catch (RuntimeException error) { blockers.add("PRODUCTION_SETTINGS_BINDING_REQUIRED"); if(error.getMessage()!=null && error.getMessage().contains("PRODUCTION_SETTINGS_CONFLICT")) blockers.add(error.getMessage()); }
     out.put("subjectType", "ORIGINAL_PROMPT"); out.put("reviewContractVersion", ORIGINAL_CONTRACT);
     out.put("sourceIdentity", identity); out.put("sourceSelectors", source); out.put("promptText", prompt); out.put("promptSha256", hash(prompt));
     out.put("contentId", content); out.put("promptVersionId", promptId); out.put("approvedStory", story);
@@ -382,6 +416,30 @@ public class CreativePromptQualityService {
     if (source.get("repositoryRelativePath") != null) out.put("repositoryProvenance", Map.of("repository", "pompom-production-library",
         "relativePath", source.get("repositoryRelativePath"), "sha256", hash(prompt), "identityOnlyNotStoryApproval", true));
     out.put("blockers", blockers.stream().distinct().toList());
+    return out;
+  }
+  public Map<String,Object> pilotSubject(UUID analysis,UUID comparisonId,String candidateId) {
+    var baseline=baseline(analysis); long content=((Number)baseline.get("contentId")).longValue(),promptId=((Number)baseline.get("promptVersionId")).longValue();
+    String original=savedPrompt(content,promptId);
+    var context=originalContext(Map.of("contentId",content,"promptVersionId",promptId,"expectedPromptSha256",hash(original)));
+    if(!((List<?>)context.get("blockers")).isEmpty())throw new ResponseStatusException(CONFLICT,String.join(",",(List<String>)context.get("blockers")));
+    var out=new LinkedHashMap<String,Object>(context);out.put("analysisId",analysis.toString());out.put("canonical",baseline.get("canonicalRuleEvaluation"));out.put("originalPrompt",original);out.put("changedBeats",List.of());
+    if(comparisonId!=null) {
+      var comparison=comparison(analysis,comparisonId);var candidate=candidate(comparison,candidateId);
+      if(!Boolean.TRUE.equals(candidateBinding(analysis,baseline,comparison,candidate).get("assessmentAllowed")))throw new ResponseStatusException(CONFLICT,"Candidate binding is not current");
+      var story=sourceStory(baseline,candidate,comparison);
+      if(!map(story.get("verified")).get("storyId").equals(map(context.get("approvedStory")).get("storyId")))throw new ResponseStatusException(CONFLICT,"Source story differs");
+      var generatorRole=event(UUID.fromString(text(comparison.get("roleRecordId"))),"CREATIVE_ROLE");
+      out.put("generationIdentity",Map.of("provider",text(generatorRole.get("provider")),"model",text(generatorRole.get("model"))));
+      out.put("subjectType","OPTIMIZATION_CANDIDATE");out.put("comparisonId",comparisonId.toString());out.put("candidateId",candidateId);out.put("promptText",candidate.get("prompt"));out.put("promptSha256",hash(text(candidate.get("prompt"))));
+      var creative=map(map(candidate.get("currentAssessment")).get("creativeAssessment"));if(creative.isEmpty())creative=map(candidate.get("creativeAssessment"));var changes=new ArrayList<Map<String,Object>>(maps(creative.get("changeContract")));
+      if(changes.isEmpty()) {
+        var originals=original.lines().filter(line->line.matches("^\\d+(?:\\.\\d+)?-\\d+(?:\\.\\d+)?s:.*")).toList();
+        var revised=text(candidate.get("prompt")).lines().filter(line->line.matches("^\\d+(?:\\.\\d+)?-\\d+(?:\\.\\d+)?s:.*")).toList();
+        if(originals.size()==revised.size())for(int i=0;i<originals.size();i++)if(!originals.get(i).equals(revised.get(i)))changes.add(Map.of("beatId",String.format("beat_%02d",i+1),"originalInstruction",originals.get(i),"revisedInstruction",revised.get(i),"evidence","EXACT_TEXT_DIFF_NOT_SEMANTIC_VERIFICATION"));
+      }
+      out.put("changedBeats",changes);
+    }
     return out;
   }
   public Map<String,Object> originalPreflight(Map<String,Object> request, HttpServletRequest principal) {
@@ -528,8 +586,8 @@ public class CreativePromptQualityService {
       if (!Boolean.TRUE.equals(candidateBinding(analysis,baseline,comparison,candidate).get("assessmentAllowed"))) throw new ResponseStatusException(CONFLICT,"Candidate source binding is stale");
       var story=sourceStory(baseline,candidate,comparison); String storyText=text(story.get("text"));
       var context=map(story.get("roleContext")); var session=map(story.get("session"));
-      String storyId=text(session.getOrDefault("sourceStoryRecordId",context.getOrDefault("storyId","UNKNOWN")));
-      String revision=text(context.getOrDefault("storyRevisionId",session.getOrDefault("storyRevisionId",map(story.get("approval")).getOrDefault("revisionId","UNKNOWN"))));
+      String storyId=text(map(story.get("verified")).get("storyId"));
+      String revision=text(map(story.get("verified")).get("revision"));
       var bound=map(baseline.get("boundRequest")); var production=new LinkedHashMap<String,Object>();
       for (String key:List.of("contentProfile","generator","desiredDuration","settings","openingStrategy")) production.put(key,bound.get(key));
       var creative=map(map(candidate.get("currentAssessment")).get("creativeAssessment")); if(creative.isEmpty()) creative=map(candidate.get("creativeAssessment"));

@@ -54,7 +54,9 @@
               "candidateId": "candidate-3"
             }
           ]
-        }
+        },
+        "provider": "deepseek",
+        "model": "deepseek-chat"
       },
       "createdAt": "2026-10-12T15:26:58.995419+00:00"
     },
@@ -9476,7 +9478,9 @@
               "title": "Dynamic Action-Consequences and Progression"
             }
           ]
-        }
+        },
+        "provider": "openai",
+        "model": "gpt-4o-mini-2024-07-18"
       },
       "createdAt": "2026-10-14T13:55:21.886639+00:00"
     },
@@ -11780,7 +11784,9 @@
               "title": "Enhanced Contact Clarity"
             }
           ]
-        }
+        },
+        "provider": "openai",
+        "model": "gpt-4o-mini-2024-07-18"
       },
       "createdAt": "2026-10-15T09:20:00.438295+00:00"
     },

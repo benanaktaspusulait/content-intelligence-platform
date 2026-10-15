@@ -4,12 +4,13 @@ import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { Router, RouterModule } from '@angular/router';
 import { Step6GovernanceComponent } from './step6-governance.component';
+import { CpqOwnerPilotComponent } from './cpq-owner-pilot.component';
 import { GeneralProducibilityComponent } from './general-producibility.component';
 
 @Component({
   selector: 'app-post-family-workflow',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule, GeneralProducibilityComponent, Step6GovernanceComponent],
+  imports: [CommonModule, FormsModule, RouterModule, GeneralProducibilityComponent, Step6GovernanceComponent, CpqOwnerPilotComponent],
   template: `
   <p *ngIf="settingsSavedAt && contentProfile !== evaluationProfile" class="missing-state">Existing analysis remains linked to its recorded profile ({{ evaluationProfile }}). Selected profile {{ contentProfile }} has not been evaluated by that historical score; a new evaluation is required before dependent evidence can be reused.</p>
   <section *ngIf="activeStage === 4" class="workflow production-review" aria-label="Production review">
@@ -340,6 +341,7 @@ import { GeneralProducibilityComponent } from './general-producibility.component
               <p *ngFor="let candidate of creativeOptimizationComparison.candidates; let idx = index"><strong>Candidate {{ candidate.candidateId === 'candidate-b' ? 'B' : 'A' }}:</strong> {{ candidate.currentAssessment?.conclusion || 'Current assessment unavailable.' }}</p>
               <p *ngIf="creativeOptimizationComparison.candidates?.length !== 2" role="alert">Incomplete comparison: {{ creativeOptimizationComparison.candidates?.length || 0 }} actual candidate(s). No placeholder candidate is accepted.</p>
             </section>
+            <app-cpq-owner-pilot *ngIf="review?.recordId" [analysisId]="review.recordId" [comparisonId]="creativeOptimizationComparison?.recordId || null" [candidateId]="creativeOptimizationCpqCandidateId" [candidates]="ownerPilotCandidates"></app-cpq-owner-pilot>
             <section *ngIf="creativeOptimizationComparison?.candidates?.length" class="optimization-panel cpq-quality-panel" aria-label="Creative Prompt Quality assessment">
               <header><span class="card-kicker">CREATIVE PROMPT QUALITY · PREVIEW ONLY</span><strong>Calibration incomplete · grading inactive</strong></header>
               <p>This opt-in assessment is bound to the selected immutable comparison and candidate. It creates an append-only record only after an authorized operator explicitly requests it.</p>
@@ -1137,6 +1139,9 @@ export class PostFamilyWorkflowComponent implements OnChanges, OnDestroy {
       && String(assessment.lineage?.promptVersionId) === String(this.promptVersionId)
       && String(assessment.lineage?.contentId) === String(this.contentId)
       && ['VALID_MINOR_VARIATION', 'VALID_MATERIAL_VARIATION', 'VALID_WITH_UNPROVEN_BENEFIT', 'PLAUSIBLE_IMPROVEMENT_UNVERIFIED', 'MATERIAL_IMPROVEMENT_SUPPORTED'].includes(candidate.currentAssessment?.classification);
+  }
+  get ownerPilotCandidates(): any[] {
+    return this.creativeOptimizationHistory.flatMap((comparison:any)=>(comparison.candidates||[]).map((candidate:any)=>({comparisonId:comparison.recordId,candidateId:candidate.candidateId}))).slice(0,3);
   }
   readonly cpqDimensionIds = ['SCROLL_STOP_VISUAL_PROMISE','CAUSAL_PROGRESSION','VISUAL_STORYTELLING','PRODUCTION_EXECUTABILITY','ENDING_REPLAY','DISTINCTIVE_CREATIVE_VALUE'];
   cpqBinding(candidateId: string): any {
