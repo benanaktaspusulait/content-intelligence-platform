@@ -1003,11 +1003,16 @@ def run_paid_role(role: str, text: str, context: dict[str, Any], max_cost_usd: f
         raise ValueError('Unknown creative role')
     if os.getenv('WORKFLOW_CREATIVE_ROLES_ENABLED', 'false').lower() != 'true':
         raise ValueError('Paid creative roles are disabled; explicit scope and budget required')
-    model = os.getenv(f'WORKFLOW_{role}_MODEL', '')
+    adaptive = role == 'PROMPT_OPTIMIZATION' and context.get('adaptiveVersion') == 'adaptive-creative-optimization-v3'
+    capability = None
+    if adaptive:
+        from .creative_provider_profiles import profile
+        capability = profile(context.get('providerProfileId'))
+    model = capability['model'] if adaptive else os.getenv(f'WORKFLOW_{role}_MODEL', '')
     if not model:
         raise ValueError('Explicit server model configuration required; no fallback')
-    input_rate = float(os.getenv(f'WORKFLOW_{role}_INPUT_USD_PER_MILLION', 'nan'))
-    output_rate = float(os.getenv(f'WORKFLOW_{role}_OUTPUT_USD_PER_MILLION', 'nan'))
+    input_rate = capability['inputUsdPerMillion'] if adaptive else float(os.getenv(f'WORKFLOW_{role}_INPUT_USD_PER_MILLION', 'nan'))
+    output_rate = capability['outputUsdPerMillion'] if adaptive else float(os.getenv(f'WORKFLOW_{role}_OUTPUT_USD_PER_MILLION', 'nan'))
     if not all(math.isfinite(v) and v > 0 for v in (input_rate, output_rate, max_cost_usd)):
         raise ValueError('Verified server price configuration and explicit positive budget required')
     if role == 'PROMPT_OPTIMIZATION':
@@ -1031,6 +1036,10 @@ def run_paid_role(role: str, text: str, context: dict[str, Any], max_cost_usd: f
         plan_payload = request_payload(text, context)
         payload_bytes = len(json.dumps(plan_payload, ensure_ascii=False).encode('utf-8'))
     output_token_limit = 4000 if role == 'STORY' or plan_first or reconstruction else 2000
+    if adaptive:
+        output_token_limit = context['authorizedOutputTokens']
+        if type(output_token_limit) is not int or not 1 <= output_token_limit <= min(4000, capability['maxOutputTokens']):
+            raise ValueError('Authorized output token limit configuration is invalid')
     schema_bytes = len(json.dumps(OPTIMIZATION_RESPONSE_FORMAT).encode('utf-8')) if role == 'PROMPT_OPTIMIZATION' else 0
     if plan_first: schema_bytes = len(json.dumps(response_format(options=plan_payload['executionOptions'])).encode('utf-8'))
     if reconstruction: schema_bytes = len(json.dumps(response_format(context,text)).encode('utf-8'))
@@ -1038,7 +1047,13 @@ def run_paid_role(role: str, text: str, context: dict[str, Any], max_cost_usd: f
     upper_bound = ((payload_bytes + schema_bytes + system_bytes) * input_rate + output_token_limit * output_rate) / 1_000_000
     if payload_bytes > 24000 or upper_bound > max_cost_usd:
         raise ValueError('Request exceeds approved cost ceiling')
-    provider = DeepSeekTextProvider(model) if role == 'STORY' else OpenAIProvider(model=model)
+    if adaptive:
+        from .creative_provider_profiles import CreativeCapabilityProvider
+        if payload_bytes + schema_bytes + system_bytes + output_token_limit > min(capability['contextTokens'], 100000):
+            raise ValueError('Creative request exceeds configured context limit')
+        provider = CreativeCapabilityProvider(capability,output_token_limit,min(20,context.get('authorizedTimeoutSeconds',20)))
+    else:
+        provider = DeepSeekTextProvider(model) if role == 'STORY' else OpenAIProvider(model=model)
     provider.max_output_tokens = output_token_limit
     provider.json_output = True
     try:
@@ -1072,7 +1087,7 @@ def run_paid_role(role: str, text: str, context: dict[str, Any], max_cost_usd: f
             detail = usage_error if usage_error else (str(error) if isinstance(error,ValueError) else 'Provider response processing failed; inspect the correlated diagnostic.') if provider_response_returned else _provider_failure_detail(error)
             diagnostics = {
                 'category': category,
-                'provider': 'openai',
+                'provider': capability['provider'] if adaptive else 'openai',
                 'model': model,
                 'providerDispatched': provider_response_returned or bool(getattr(provider, 'last_request_started', False)),
                 'providerResponseReturned': provider_response_returned,
@@ -1110,6 +1125,10 @@ def run_paid_role(role: str, text: str, context: dict[str, Any], max_cost_usd: f
             logger.warning("Creative build rejected exception_type=%s response_returned=%s",type(error).__name__,received)
             return failure
         raise
+    if adaptive:
+        result['provider']=capability['provider']
+        result['providerCapabilityProfile']=capability
+        result['costBasis']='CONFIGURED_CONSERVATIVE_PRICE_UPPER_BOUND; provider billing may discount cache/off-peak'
     result['costUpperBoundUsd'] = upper_bound
     result['approvedCostCeilingUsd'] = max_cost_usd
     return result

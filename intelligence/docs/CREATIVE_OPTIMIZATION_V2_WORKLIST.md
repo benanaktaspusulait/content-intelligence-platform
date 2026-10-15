@@ -86,10 +86,12 @@ Content 10 / immutable Prompt ID 10 (v1), onaylı hikâye, Ruleset 1.11 ve tüm 
 
 ## Gerçek yanıt sonrası sözleşme ve yaratıcı nitelik düzeltmesi — v2
 
-- [ ] Gerçek ikinci çağrının özgün yanıtını değişmez regresyon fixture'ı olarak kullan; teknik ve yaratıcı sonuçları ayır.
-- [ ] Kaynak beat aralığı tekrarını, yeni alt zamanlamayı, süre değişikliğini ve desteksiz zaman iddiasını ayır.
-- [ ] Yeni isteklerde kaynak kimliklerini enum ve beat bazlı makine sözleşmesiyle sınırla; gerçek kaynak anılışlarını generik olarak çıkar.
-- [ ] Değişmeyen anlatı/ayarları doldurtmayan, tek güçlü fiziksel müdahaleyi isteyen talimatları sürümle.
-- [ ] Maddi fark değerlendirmesini teknik geçerlilikten ayır; gerçek A/B'yi kozmetik başarıya yükseltme.
-- [ ] Ücretsiz deterministik/mock testler, kaynak/canonical/critic/F8 regresyonları ve eski sürüm uyumluluğunu doğrula.
-- [ ] Tam rapor ve sonraki tek deney önerisini hazırla; ücretli deney yapma.
+- [x] Gerçek ikinci çağrının özgün yanıtını değişmez regresyon fixture'ı olarak kullan; teknik ve yaratıcı sonuçları ayır.
+- [x] Kaynak beat aralığı tekrarını, yeni alt zamanlamayı, süre değişikliğini ve desteksiz zaman iddiasını ayır.
+- [x] Yeni isteklerde kaynak kimliklerini enum ve beat bazlı makine sözleşmesiyle sınırla; gerçek kaynak anılışlarını generik olarak çıkar.
+- [x] Değişmeyen anlatı/ayarları doldurtmayan, tek güçlü fiziksel müdahaleyi isteyen talimatları sürümle.
+- [x] Maddi fark değerlendirmesini teknik geçerlilikten ayır; gerçek A/B'yi kozmetik başarıya yükseltme.
+- [x] Ücretsiz deterministik/mock testler, kaynak/canonical/critic/F8 regresyonları ve eski sürüm uyumluluğunu doğrula.
+- [x] Tam rapor ve sonraki tek deney önerisini hazırla; ücretli deney yapma.
+
+- Sonuç: model-authored-production-v2 dağıtıldı. 244 ML / 47 backend / 70 frontend testi geçti; 3 koşullu backend testi atlandı. Özgün A/B zamanları kabul ediliyor; kaynak kimlikleri hâlâ geçersiz ve yaratıcı farkları VALID_BUT_EQUIVALENT, öneri KEEP_ORIGINAL. 75 tarihî kayıt değişmedi, yeni ücretli çağrı yok. Sonraki öneri A; yeni yetki gerektirir. Rapor: `output/verification/creative-v2-contract-repair-v2/REAL_MODEL_FAILURE_REPAIR_REPORT.md`.

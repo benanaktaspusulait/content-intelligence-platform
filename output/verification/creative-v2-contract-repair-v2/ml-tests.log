@@ -1,9 +1,9 @@
 ........................................................................ [ 29%]
 ........................................................................ [ 59%]
 ........................................................................ [ 88%]
-...........................                                              [100%]
+............................                                             [100%]
 =============================== warnings summary ===============================
-tests/test_authoring_contract_repair_v2.py: 376 warnings
+tests/test_authoring_contract_repair_v2.py: 393 warnings
 tests/test_model_authored_execution.py: 890 warnings
 tests/test_creative_reconstruction_v2.py: 121 warnings
 tests/test_creative_v2_generation_evidence.py: 109 warnings
@@ -21,4 +21,4 @@ tests/test_post_family_workflow.py: 14 warnings
     "createdAt": datetime.utcnow().isoformat() + "Z",
 
 -- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
-243 passed, 2080 warnings in 10.41s
+244 passed, 2097 warnings in 10.48s

@@ -1,0 +1,64 @@
+# Adaptive Creative Optimization V3 — İş Listesi
+
+Durum: DEVAM EDİYOR. Sistem doğruluğu ile gerçek modelin yaratıcı etkinliği ayrı raporlanacak. Bu görev hiçbir gerçek DeepSeek/OpenAI üretim çağrısına izin vermez.
+
+Hedef: Mevcut V2 akışını kullanarak A/A+ hedefine yönelmek; B sonucunu tamamlanmış optimizasyon saymamak. Kanıtlanamayan veya korunan hikâyeyle ulaşılamayan hedef için çağrı yapmadan açık engel döndürmek. Kanonik değerlendirme, skorlar, eşikler ve geçmiş kayıtlar değişmeyecek.
+
+## Faz 1 — Not tanımı ve ulaşılabilirlik denetimi (routing değişmeden önce)
+
+- [x] Ruleset 1.11 gerçek not eşiklerini, A+ varlığını ve skor toplama formülünü koddan çıkar; render kuyruğunun 92 eşiğinden ayır.
+- [x] Güncel Mimi analizi, Prompt 10/v1, onaylı hikâye ve üretim ayarlarını salt okunur yükle; bütünlük kanıtlarını kaydet.
+- [x] Her puan kaybını kural, ağırlık/katkı, dayanak ve onarım türüyle eşleştir: TEXT_REPAIRABLE / CREATIVE_RECONSTRUCTION_REPAIRABLE / EVIDENCE_REQUIRED / GOVERNED_POLICY_DECISION_REQUIRED / PROTECTED_STORY_CONFLICT / EVALUATOR_DEFECT / NOT_CURRENTLY_ATTAINABLE.
+- [x] İki gerçek deneme içeren korunan hikâyeye üçüncü olay eklemeden, mevcut kanıtla desteklenen üst sınırı hesapla; ATTEMPT_001 istisnasının kanonik FAIL/skoru değiştirmediğini doğrula.
+- [x] A'nın render öncesi ulaşılabilirliğini ve hangi ek kanıtların gerektiğini kısa raporla. Gerekirse ayrı kalite rubriği için yalnız yönetilen ADR öner; yeni not icat etme.
+- [x] Faz 1 raporunu tamamladıktan sonra routing uygulamasına geç.
+
+## Faz 2 — Mevcut sözleşme onarımlarını koru ve doğrula
+
+- [ ] Önceki görevin model-authored-production-v2 zaman/kaynak kimliği düzeltmelerini incele; tekrar uygulama veya geriye dönük anlam değişikliği yapma.
+- [ ] İkinci gerçek OpenAI yanıtının değişmez fixture'ını yeniden oynat; teknik geçerlilik, kaynak sadakati, yaratıcı maddilik, risk ve kanonik uygunluğu ayrı göster.
+- [ ] Yeni alt zamanlama, olay sırası, süre değişikliği, geçersiz kimlik ve kozmetik paragraf negatif testlerini koru.
+- [ ] Tam özgün bağlam + yalnız teşhisle gerekçelenen prodüksiyon müdahaleleri sözleşmesini ve bağımlı beat değişikliği gerekçelerini doğrula.
+
+## Faz 3 — Sağlayıcı bağımsız üretim ve yetenek profilleri
+
+- [ ] Mevcut OpenAI/DeepSeek adaptörlerini, rol yapılandırmasını ve maliyet ön kontrolünü incele; aynı akışı genişlet.
+- [ ] Güncel resmî OpenAI/DeepSeek belgelerinden model kimlikleri, uç noktalar, JSON/JSON Schema, bağlam/çıktı limitleri, fiyat, reasoning davranışı ve kullanım ömrünü doğrula.
+- [ ] DeepSeek birincil / OpenAI yükseltme için ayrı, açık model/yetenek profilleri ve sağlayıcıya özgü serileştirme uygula; model adı varsayma veya sessiz fallback yapma.
+- [ ] JSON Schema desteklenmeyen profilde sağlayıcı uyumlu JSON sözleşmesini aynı deterministik kaynak doğrulamasına bağla.
+- [ ] Ham yanıt, kullanım, model/sağlayıcı ve kaynak/model/derleyici kökenini normal kalıcı kanıt akışında koru.
+
+## Faz 4 — Sınırlı adaptif yönlendirme ve yetkilendirme
+
+- [ ] DEEPSEEK_ONLY, OPENAI_ONLY, ADAPTIVE modlarını mevcut Step 6 komutuna ekle.
+- [ ] Üretim öncesi hedef ulaşılabilirlik kontrolünü zorunlu kıl; kanıt/hikâye engelinde gereksiz çağrıları durdur.
+- [ ] ADAPTIVE için DeepSeek → doğrulama → kalite/kanonik karar → gerekçeli koşullu OpenAI yükseltmesi uygula.
+- [ ] A yeterliyse dur; B iyileşme / eşdeğer / regresyon / teknik sözleşme hatası / ulaşılamaz hedef durumlarını ayır.
+- [ ] Sağlayıcı/model, istek sayısı, toplam bütçe, token, tur ve gecikme limitlerini açık operatör onayına bağla; ikinci sağlayıcı onayı yoksa gönderme.
+- [ ] Normal kalıcı rezervasyon, idempotency, append-only audit ve belirsiz gönderimde tekrar yasağını iki aşamada uygula.
+- [ ] Yükseltme brief'ine özgün kaynak, korunacak doğrulanmış değişiklikler, gerçek açıklar ve başarısızlık kanıtını koy; reddedilmiş metni tercih edilen cevap yapma.
+
+## Faz 5 — Kalite, hedef uygunluğu ve ürün akışı
+
+- [ ] Mevcut altı yaratıcı kalite boyutunda kaynak destekli fark / doğrulanmamış hipotez / değişim yok / regresyon / eksik kanıt ayrımını uygula.
+- [ ] Aynı ruleset/hikâye/ayar bağında Original–DeepSeek–OpenAI karşılaştır; en yüksek skor/uzunluk/yenilik otomatik tercih olmasın.
+- [ ] A/A+ uygunluğunu gerçek not sözleşmesi, yeterli uygulanabilir kanıt ve regresyon yokluğu ile sınırla; A+ yoksa kullanma.
+- [ ] BEST AVAILABLE DRAFT ile TARGET-QUALIFIED FINAL CANDIDATE ayrımını ve istenen açık workflow durumlarını mevcut arayüze ekle.
+- [ ] B iyileşmesini ilerleme olarak kaydet; hedefe erişildi/success diye sunma. Seçim/onay/yeni prompt sürümü yalnız açık operatör kararıyla olsun.
+- [ ] Gerçek ve mock kanıtları ayıran kısa olay/metrik sözleşmesini ekle; yeni büyük dashboard kurma.
+
+## Faz 6 — Kabul testleri, dağıtım ve kapanış
+
+- [ ] Gerçek Mimi ve mevcut onaylı golden girdilerle, no-egress mock ortamında 20 kabul durumunu test et: B→A yolu, DeepSeek A'da durma, B/eşdeğer/regresyon yükseltmesi, ortak sözleşme hatasında durma, OpenAI A, her iki B, kanıt/hikâye engeli, eksik izin, bütçe, tekrar, kısmi hata, kimlik/zamanlama, tarihî replay, eşit skorlu maddi fark, bütünlük.
+- [ ] Negatif güvenlik/onay kapsamı ve ücret idempotency testlerini ekle; mock A fixture'larını gerçek yaratıcı yetenek kanıtı diye sunma.
+- [ ] ML/backend/frontend ile bütçe, governance, F8 ve render kuyruğu ilgili regresyonlarını çalıştır.
+- [ ] Etkilenen servisleri deploy.sh ile dağıt; imaj/kaynak sürümünü ve gerçek uygulama arayüzünü doğrula.
+- [ ] Sağlayıcı taklitleri ve disposable veritabanıyla dış ağa çıkışsız uçtan uca uygulama kabulünü çalıştır; üretim kayıtlarına yazma.
+- [ ] Üretim geçmişi, Prompt 10/v1, hikâye, Ruleset 1.7–1.11, önceki sağlayıcı yanıtları, governance ve F8 bütünlüğünü doğrula.
+- [ ] ADAPTIVE_CREATIVE_OPTIMIZATION_V3_REPORT.md dosyasını 20 rapor maddesiyle tamamla; READY veya INCOMPLETE sonucunu kanıta göre ver.
+
+## Çalışma günlüğü
+
+- İş listesi oluşturuldu. İlk adım: not sözleşmesi ve Mimi için savunulabilir üst sınır denetimi. Routing koduna henüz dokunulmadı.
+
+- Faz 1 tamamlandı: A >=92, A+ yok; mevcut kanıt/korunan kaynak altında iyimser koşullu tavan 89.3125/B. Ayrıntı: ADAPTIVE_CREATIVE_OPTIMIZATION_V3_GRADE_AUDIT.md. Routing henüz değiştirilmedi.

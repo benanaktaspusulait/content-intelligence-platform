@@ -152,7 +152,7 @@ class WorkflowNoRepairDecisionPostgresTest {
 
   @Test
   void creativeOptimizationRequiresExplicitAuthorizationAndCannotUseGenericRoleEndpoint() {
-    assertThatThrownBy(() -> service.generateCreativeOptimization(
+    assertThatThrownBy(() -> service.generateCreativeOptimizationStage(
         analysisId, Map.of("contentId", 10, "promptVersionId", 10, "maxCostUsd", .25), Map.of()))
         .isInstanceOf(IllegalArgumentException.class)
         .hasMessageContaining("Explicit creative optimization authorization");
@@ -237,7 +237,7 @@ class WorkflowNoRepairDecisionPostgresTest {
             "approvedStoryText", "Approved Mimi story",
             "approvalRecordId", "approval-1",
             "storyRevisionId", "revision-1");
-    var failedAttempt = service.generateCreativeOptimization(analysisId, generationRequest, provenance);
+    var failedAttempt = service.generateCreativeOptimizationStage(analysisId, generationRequest, provenance);
     assertThat(failedAttempt)
         .containsEntry("optimizationFailed", true)
         .containsEntry("attemptState", "PRE_DISPATCH_REJECTED")
@@ -249,12 +249,12 @@ class WorkflowNoRepairDecisionPostgresTest {
 
     jdbc.sql("ALTER TABLE post_family_workflow_events ADD CONSTRAINT reject_comparison CHECK (kind <> 'CREATIVE_OPTIMIZATION')").update();
     var transaction=new org.springframework.transaction.support.TransactionTemplate(attemptManager);
-    assertThatThrownBy(() -> transaction.execute(status -> service.generateCreativeOptimization(analysisId,generationRequest,provenance)))
+    assertThatThrownBy(() -> transaction.execute(status -> service.generateCreativeOptimizationStage(analysisId,generationRequest,provenance)))
         .isInstanceOf(IllegalStateException.class).hasMessageContaining("CANDIDATE_PERSISTENCE_FAILED");
     assertThat(jdbc.sql("SELECT count(*) FROM post_family_workflow_events WHERE kind='CREATIVE_ROLE' AND payload->>'attemptState'='SAVED'").query(Long.class).single()).isEqualTo(1L);
     jdbc.sql("ALTER TABLE post_family_workflow_events DROP CONSTRAINT reject_comparison").update();
     when(ml.workflow(eq("optimization-assessment"),anyMap())).thenReturn(Map.of("candidates",List.of(),"recommendation","KEEP_ORIGINAL","actualCandidateCount",candidateCount));
-    var comparison = service.generateCreativeOptimization(analysisId, generationRequest, provenance);
+    var comparison = service.generateCreativeOptimizationStage(analysisId, generationRequest, provenance);
     assertThat(comparison.get("rulesetVersion")).isEqualTo("1.7");
     assertThat((List<?>) comparison.get("candidates")).hasSize(candidateCount);
     if (candidateCount > 0) assertThat(String.valueOf(((Map<?, ?>) ((List<?>) comparison.get("candidates")).get(0)).get("diff"))).contains("candidate-a");
@@ -307,7 +307,7 @@ class WorkflowNoRepairDecisionPostgresTest {
     var attempt=(Map<String,Object>)((Map<String,Object>)fixture.get("attempt")).get("payload");
     var ctx=(Map<String,Object>)((Map<String,Object>)attempt.get("sourceRequest")).get("context");
     var provenance=Map.<String,Object>of("approvedStoryText",ctx.get("approvedStoryText"),"approvalRecordId",ctx.get("storyApprovalRecordId"),"storyRevisionId",ctx.get("storyRevisionId"));
-    var comparison=service.generateCreativeOptimization(analysisId,request,provenance);
+    var comparison=service.generateCreativeOptimizationStage(analysisId,request,provenance);
     assertThat(comparison).doesNotContainKey("optimizationFailed");
     var candidates=(List<Map<String,Object>>)comparison.get("candidates");
     assertThat(candidates).hasSize(2);
@@ -319,7 +319,7 @@ class WorkflowNoRepairDecisionPostgresTest {
       assertThat(String.valueOf(review.get("family8"))).contains("BLOCKED");
       assertThat(String.valueOf(candidate.get("fidelity"))).contains("SEMANTIC_FIDELITY_UNKNOWN");
     }
-    var replay=service.generateCreativeOptimization(analysisId,request,provenance);
+    var replay=service.generateCreativeOptimizationStage(analysisId,request,provenance);
     assertThat(String.valueOf(replay.get("recordId"))).isEqualTo(String.valueOf(comparison.get("recordId")));
     verify(ml,times(1)).workflow(eq("creative-role"),anyMap());
     assertThat(jdbc.sql("SELECT count(*) FROM prompt_versions").query(Long.class).single()).isEqualTo(1L);
@@ -335,9 +335,9 @@ class WorkflowNoRepairDecisionPostgresTest {
     jdbc.sql("INSERT INTO post_family_workflow_events(id,kind,payload) VALUES(:id,'CREATIVE_ROLE',CAST(:payload AS jsonb))")
         .param("id",recoveryId).param("payload",mapper.writeValueAsString(stored)).update();
     var recoveryRequest=new LinkedHashMap<String,Object>(request);recoveryRequest.put("recoverAttemptRecordId",recoveryId.toString());
-    var recovered=service.generateCreativeOptimization(analysisId,recoveryRequest,provenance);
+    var recovered=service.generateCreativeOptimizationStage(analysisId,recoveryRequest,provenance);
     assertThat(recovered).doesNotContainKey("optimizationFailed");
-    var recoveredReplay=service.generateCreativeOptimization(analysisId,recoveryRequest,provenance);
+    var recoveredReplay=service.generateCreativeOptimizationStage(analysisId,recoveryRequest,provenance);
     assertThat(String.valueOf(recoveredReplay.get("recordId"))).isEqualTo(String.valueOf(recovered.get("recordId")));
     verify(ml,times(1)).workflow(eq("optimization-recovery"),anyMap());
     verify(ml,times(1)).workflow(eq("creative-role"),anyMap());
@@ -345,11 +345,11 @@ class WorkflowNoRepairDecisionPostgresTest {
     diagnostic.remove("actualCostUsd");
     jdbc.sql("UPDATE post_family_workflow_events SET payload=CAST(:payload AS jsonb) WHERE id=:id")
         .param("id",recoveryId).param("payload",mapper.writeValueAsString(stored)).update();
-    assertThatThrownBy(()->service.generateCreativeOptimization(analysisId,recoveryRequest,provenance)).hasMessageContaining("budget and usage evidence");
+    assertThatThrownBy(()->service.generateCreativeOptimizationStage(analysisId,recoveryRequest,provenance)).hasMessageContaining("budget and usage evidence");
     ((Map<String,Object>)savedRequest.get("context")).put("promptVersionId",11);
     jdbc.sql("UPDATE post_family_workflow_events SET payload=CAST(:payload AS jsonb) WHERE id=:id")
         .param("id",recoveryId).param("payload",mapper.writeValueAsString(stored)).update();
-    assertThatThrownBy(()->service.generateCreativeOptimization(analysisId,recoveryRequest,provenance)).hasMessageContaining("stale promptVersionId");
+    assertThatThrownBy(()->service.generateCreativeOptimizationStage(analysisId,recoveryRequest,provenance)).hasMessageContaining("stale promptVersionId");
     verify(ml,times(1)).workflow(eq("optimization-recovery"),anyMap());
     var integrityView=service.assessOptimizationComparison(UUID.fromString(String.valueOf(recovered.get("recordId"))));
     assertThat((Map<String,Object>)integrityView.get("comparisonAssessment")).containsEntry("recommendation","KEEP_ORIGINAL").containsEntry("lineageVerified",true);
@@ -375,7 +375,7 @@ class WorkflowNoRepairDecisionPostgresTest {
     var envelope=service.latestCreativeOptimization(analysisId);
     java.nio.file.Files.writeString(java.nio.file.Path.of("/tmp/c7-e2e-comparison.json"),mapper.writeValueAsString(envelope));
     jdbc.sql("INSERT INTO prompt_versions(content_id,id,raw_text) VALUES(10,11,'new immutable version')").update();
-    var stale=service.generateCreativeOptimization(analysisId,request,provenance);
+    var stale=service.generateCreativeOptimizationStage(analysisId,request,provenance);
     assertThat(stale).containsEntry("optimizationFailed",true);
     assertThat(String.valueOf(stale.get("detail"))).contains("stale candidate association rejected");
     verify(ml,times(1)).workflow(eq("creative-role"),anyMap());
@@ -407,7 +407,7 @@ class WorkflowNoRepairDecisionPostgresTest {
     var sourceContext=(Map<String,Object>)((Map<String,Object>)((Map<String,Object>)((Map<String,Object>)fixture.get("attempt")).get("payload")).get("sourceRequest")).get("context");
     var provenance=Map.<String,Object>of("approvedStoryText",sourceContext.get("approvedStoryText"),"approvalRecordId",sourceContext.get("storyApprovalRecordId"),"storyRevisionId",sourceContext.get("storyRevisionId"));
     var request=Map.<String,Object>of("contentId",10,"promptVersionId",10,"operatorAuthorized",true,"maxCostUsd",.2,"startNewPlanFirstAttempt",true);
-    var comparison=service.generateCreativeOptimization(analysisId,request,provenance);
+    var comparison=service.generateCreativeOptimizationStage(analysisId,request,provenance);
     assertThat(comparison).doesNotContainKey("optimizationFailed");
     var current=service.assessOptimizationComparison(UUID.fromString(String.valueOf(comparison.get("recordId"))));
     assertThat((Map<String,Object>)current.get("comparisonAssessment")).containsEntry("lineageVerified",true).containsEntry("recommendation","REVIEW_MATERIAL_CANDIDATE");
@@ -417,7 +417,7 @@ class WorkflowNoRepairDecisionPostgresTest {
       assertThat((Map<String,Object>)((Map<String,Object>)candidate.get("review")).get("canonicalRuleEvaluation")).containsEntry("status","EVALUATED").containsEntry("rulesEvaluated",8);
       assertThat(String.valueOf(((Map<String,Object>)candidate.get("review")).get("family8"))).contains("BLOCKED_PENDING_EVIDENCE");
     }
-    var replay=service.generateCreativeOptimization(analysisId,request,provenance);
+    var replay=service.generateCreativeOptimizationStage(analysisId,request,provenance);
     assertThat(String.valueOf(replay.get("recordId"))).isEqualTo(String.valueOf(comparison.get("recordId")));
     verify(ml,times(1)).workflow(eq("creative-role"),anyMap());
     assertThat(jdbc.sql("SELECT count(*) FROM prompt_versions").query(Long.class).single()).isEqualTo(1L);

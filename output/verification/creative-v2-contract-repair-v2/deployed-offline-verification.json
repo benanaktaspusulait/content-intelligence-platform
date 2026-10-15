@@ -30,5 +30,6 @@
   "originalScore": 88.40625000000001,
   "unchangedHistoricalWorkflowRows": 75,
   "productionWorkflowWrites": 0,
-  "immutablePrompt10Unchanged": true
+  "immutablePrompt10Unchanged": true,
+  "approvedStorySha256Unchanged": true
 }

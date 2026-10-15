@@ -43,6 +43,11 @@ public class WorkflowController {
     return service.revalidateCreativeOptimization(id, UUID.fromString(comparisonId));
   }
 
+  @GetMapping("/records/{id}/creative-optimization/preflight")
+  public Map<String,Object> adaptiveOptimizationPreflight(@PathVariable UUID id) {
+    return service.adaptiveOptimizationPreflight(id);
+  }
+
   @PostMapping("/records/{id}/creative-optimization")
   public org.springframework.http.ResponseEntity<Map<String,Object>> creativeOptimization(
       @PathVariable UUID id, @RequestBody Map<String, Object> request) {

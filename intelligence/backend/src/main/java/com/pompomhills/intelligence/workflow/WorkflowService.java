@@ -181,8 +181,157 @@ public class WorkflowService {
     return result;
   }
 
+  /** Read-only, source-bound policy. Never reserves budget or invokes an SDK. */
+  public Map<String,Object> adaptiveOptimizationPreflight(UUID analysisId) {
+    var baseline = getByKind(analysisId,"REVIEW");
+    long content=((Number)baseline.get("contentId")).longValue();
+    long version=((Number)baseline.get("promptVersionId")).longValue();
+    var source=prompts.load(content,version);
+    var bound=map(baseline.get("boundRequest"));
+    var settings=getProductionSettings(content,version);
+    var latest=jdbc.sql("SELECT id FROM post_family_workflow_events WHERE kind='REVIEW' AND payload->>'contentId'=:content ORDER BY created_at DESC,id DESC LIMIT 1")
+        .param("content",String.valueOf(content)).query(UUID.class).single();
+    if (!analysisId.equals(latest) || !source.promptText().equals(bound.get("prompt"))
+        || !sha256(source.promptText()).equals(String.valueOf(map(map(baseline.get("productionEvidence")).get("source")).get("sha256")))
+        || !source.promptSha256().equals(String.valueOf(settings.get("promptHash")))
+        || !String.valueOf(settings.get("contentProfile")).equals(String.valueOf(bound.get("contentProfile")))
+        || version!=jdbc.sql("SELECT max(id) FROM prompt_versions WHERE content_id=:content").param("content",content).query(Long.class).single())
+      throw new IllegalStateException("Adaptive optimization source, analysis or settings are stale");
+    var result=new LinkedHashMap<>(ml.workflow("adaptive-optimization-policy",Map.of(
+        "action","PREFLIGHT","canonical",map(baseline.get("canonicalRuleEvaluation")),"source",source.promptText())));
+    result.put("sourceAnalysisId",analysisId.toString());result.put("sourcePromptVersionId",version);
+    result.put("sourcePromptSha256",sha256(source.promptText()));result.put("productionSettingsRecordId",settings.get("recordId"));
+    result.put("contentId",content);return result;
+  }
+
+  /** V3 extends the existing durable generation/review/comparison path. */
   @Transactional
-  public Map<String, Object> generateCreativeOptimization(
+  public Map<String,Object> generateCreativeOptimization(UUID analysisId, Map<String,Object> request, Map<String,Object> provenance) {
+    if (request.containsKey("serverAdaptiveContext")) throw new IllegalArgumentException("Server-owned adaptive context cannot be supplied by a client");
+    // Historical recovery is provider-free and keeps its original contract.
+    if (request.containsKey("recoverAttemptRecordId")) return generateCreativeOptimizationStage(analysisId,request,provenance);
+    var preflight=adaptiveOptimizationPreflight(analysisId);
+    for (String key:List.of("contentId","promptVersionId")) {
+      Object expected=preflight.get(key.equals("promptVersionId")?"sourcePromptVersionId":key);
+      if (!String.valueOf(expected).equals(String.valueOf(request.get(key)))) throw new IllegalArgumentException("Adaptive request has stale "+key);
+    }
+    if (!Boolean.TRUE.equals(preflight.get("generationAllowed"))) return Map.of(
+        "adaptiveVersion","adaptive-creative-optimization-v3","state",preflight.get("state"),"preflight",preflight,
+        "providerCalls",0,"selection",Map.of(),"approval",Map.of(),"renderAuthorized",false);
+    String mode=String.valueOf(request.getOrDefault("mode","ADAPTIVE"));
+    if (!List.of("DEEPSEEK_ONLY","OPENAI_ONLY","ADAPTIVE").contains(mode)) throw new IllegalArgumentException("Invalid adaptive mode");
+    if (!Boolean.TRUE.equals(request.get("operatorAuthorized"))) throw new IllegalArgumentException("Explicit bounded provider authorization required");
+    UUID authorizationId=UUID.fromString(String.valueOf(request.get("authorizationId")));
+    var limits=map(request.get("limits"));
+    int output=boundedInteger(limits,"maxOutputTokens",1,4000);
+    int maxProviders=boundedInteger(limits,"maxProviders",1,2);
+    boundedInteger(limits,"maxRequestsPerProvider",1,1);boundedInteger(limits,"maxRounds",1,1);
+    int latency=boundedInteger(limits,"maxLatencySeconds",1,120);
+    double budget=positiveBudget(request.get("maxCostUsd"));
+    var profiles=map(map(preflight.get("providerConfiguration")).get("profiles"));
+    var grants=maps(request.get("providerAuthorizations"));
+    String primary="OPENAI_ONLY".equals(mode)?"openai-escalation":"deepseek-primary";
+    if (grants.size()>maxProviders) throw new IllegalArgumentException("Authorization exceeds provider count limit");
+    for (var grant:grants) {
+      String key=String.valueOf(grant.get("profileId"));var profile=map(profiles.get(key));
+      if (profile.isEmpty() || !profile.get("model").equals(grant.get("model")) || !profile.get("provider").equals(grant.get("provider"))
+          || !Boolean.TRUE.equals(grant.get("operatorConfirmed")) || boundedInteger(grant,"maxRequests",1,1)!=1
+          || grants.stream().filter(g->key.equals(g.get("profileId"))).count()!=1
+          || (!"ADAPTIVE".equals(mode) && !primary.equals(key)))
+        throw new IllegalArgumentException("Exact configured provider/model/count consent required; no fallback");
+    }
+    if (grants.stream().noneMatch(g->primary.equals(g.get("profileId")))) throw new IllegalArgumentException("Primary provider consent is missing");
+    var binding=new LinkedHashMap<String,Object>();binding.put("analysisId",analysisId.toString());binding.put("promptSha256",preflight.get("sourcePromptSha256"));
+    binding.put("settingsRecordId",preflight.get("productionSettingsRecordId"));binding.put("approvedStorySha256",sha256(String.valueOf(provenance.get("approvedStoryText"))));
+    binding.put("profiles",profiles);binding.put("mode",mode);binding.put("grants",grants);binding.put("limits",limits);binding.put("maxCostUsd",budget);
+    String bindingHash=sha256(write(binding));
+    jdbc.sql("SELECT pg_advisory_xact_lock(hashtext(:id))").param("id","adaptive:"+authorizationId).query((rs,n)->rs.getObject(1)).list();
+    var prior=jdbc.sql("SELECT payload::text FROM post_family_workflow_events WHERE kind='CREATIVE_OPTIMIZATION_RUN' AND payload->>'authorizationId'=:id ORDER BY created_at DESC,id DESC")
+        .param("id",authorizationId.toString()).query((rs,n)->read(rs.getString(1))).list();
+    if (!prior.isEmpty()) {
+      if (!bindingHash.equals(prior.getFirst().get("bindingHash"))) throw new IllegalStateException("Authorization is already bound to another immutable request");
+      var replay=new LinkedHashMap<>(prior.getFirst());replay.put("reused",true);replay.put("providerCallsThisOperation",0);return replay;
+    }
+    var run=new LinkedHashMap<String,Object>();run.put("adaptiveVersion","adaptive-creative-optimization-v3");run.put("authorizationId",authorizationId.toString());
+    run.put("bindingHash",bindingHash);run.put("binding",binding);run.put("mode",mode);run.put("preflight",preflight);run.put("state","DIAGNOSING");
+    run.put("evidenceOrigin",String.valueOf(map(profiles.get(primary)).get("baseUrl")).startsWith("https://")?"REAL_PROVIDER":"MOCK_PROVIDER");
+    run.put("selection",null);run.put("approval",null);run.put("renderAuthorized",false);run.put("realCreativeEffectiveness","UNVERIFIED");
+    var history=new ArrayList<String>();history.add("DIAGNOSING");run.put("stateHistory",history);
+    var stages=new ArrayList<Map<String,Object>>();run.put("stages",stages);
+    double spent=0;long started=System.nanoTime();
+    var baseline=getByKind(analysisId,"REVIEW");var canonical=map(baseline.get("canonicalRuleEvaluation"));
+    Map<String,Object> chosen=null;Map<String,Object> brief=Map.of();
+    for (int stage=0;stage<("ADAPTIVE".equals(mode)?2:1);stage++) {
+      String profileId=stage==0?primary:"openai-escalation";var profile=map(profiles.get(profileId));
+      if (grants.stream().noneMatch(g->profileId.equals(g.get("profileId")))) {run.put("state","AWAITING_ESCALATION_AUTHORIZATION");break;}
+      if (stage>=maxProviders || (System.nanoTime()-started)/1_000_000_000d>=latency) {run.put("state","TARGET_NOT_REACHED");run.put("stopReason","Provider or total latency limit reached");break;}
+      if (spent>=budget) {run.put("state","BUDGET_EXHAUSTED");break;}
+      // Refresh all persisted bindings before each dispatch; no frontend
+      // evidence or old feasibility assertion authorizes the next provider.
+      var current=adaptiveOptimizationPreflight(analysisId);
+      if (!Boolean.TRUE.equals(current.get("generationAllowed")) || !preflight.get("productionSettingsRecordId").equals(current.get("productionSettingsRecordId"))) {run.put("state",current.get("state"));break;}
+      var context=new LinkedHashMap<String,Object>();context.put("adaptiveVersion","adaptive-creative-optimization-v3");context.put("providerProfileId",profileId);
+      context.put("providerCapabilityBinding",profile);context.put("authorizationId",authorizationId.toString());context.put("authorizedOutputTokens",output);
+      int remainingSeconds=(int)Math.floor(latency-(System.nanoTime()-started)/1_000_000_000d);
+      if (remainingSeconds<1) {run.put("state","TARGET_NOT_REACHED");break;}
+      context.put("authorizedTimeoutSeconds",Math.min(20,remainingSeconds));
+      if (!brief.isEmpty()) context.put("escalationBrief",brief);
+      var stageRequest=new LinkedHashMap<>(request);stageRequest.put("serverAdaptiveContext",context);stageRequest.put("maxCostUsd",budget-spent);stageRequest.put("startNewPlanFirstAttempt",true);
+      run.put("state",stage==0?"GENERATING_PRIMARY":"GENERATING_ESCALATION");history.add(String.valueOf(run.get("state")));
+      run.put("retryAutomatically",false);saveAdaptiveRun(run); // durable before SDK dispatch, fail closed on a crash
+      var comparison=generateCreativeOptimizationStage(analysisId,stageRequest,provenance);
+      run.put("state",stage==0?"VALIDATING_PRIMARY":"VALIDATING_ESCALATION");history.add(String.valueOf(run.get("state")));
+      Map<String,Object> role=Map.of();
+      if (comparison.get("roleRecordId") instanceof String roleId) role=getByKind(UUID.fromString(roleId),"CREATIVE_ROLE");
+      Object cost=role.getOrDefault("actualCostUsd",comparison.get("actualCostUsd"));
+      if (!(cost instanceof Number amount) || !Double.isFinite(amount.doubleValue()) || amount.doubleValue()<0) {
+        stages.add(Map.of("providerProfileId",profileId,"comparison",comparison));run.put("state","PROVIDER_FAILURE");run.put("stopReason","Missing settled usage/cost; no further dispatch");break;
+      }
+      spent+=amount.doubleValue();
+      var decision=ml.workflow("adaptive-optimization-policy",Map.of("action","STAGE_DECISION","canonical",canonical,"comparison",comparison));
+      stages.add(Map.of("providerProfileId",profileId,"provider",profile.get("provider"),"model",profile.get("model"),"comparison",comparison,"decision",decision,"costUsd",amount));
+      if (chosen==null || hasQualifiedCandidate(decision)) chosen=comparison;
+      else if (!hasMaterialDraft(chosen,canonical) && hasMaterialDraft(comparison,canonical)) chosen=comparison;
+      if (hasQualifiedCandidate(decision)) {run.put("state","A_QUALIFIED");if(stage==0) history.add("PRIMARY_A_QUALIFIED");history.add("A_QUALIFIED");history.add("AWAITING_OPERATOR_REVIEW");break;}
+      if (!Boolean.TRUE.equals(decision.get("escalationJustified"))) {run.put("state",decision.get("state"));break;}
+      if (spent>budget) {run.put("state","BUDGET_EXHAUSTED");break;}
+      if (stage==0 && "ADAPTIVE".equals(mode)) {
+        history.add(String.valueOf(decision.get("state")));history.add("ESCALATION_RECOMMENDED");
+        brief=ml.workflow("adaptive-optimization-policy",Map.of("action","ESCALATION_BRIEF","canonical",canonical,"source",String.valueOf(map(baseline.get("boundRequest")).get("prompt")),
+            "context",Map.of("approvedStoryText",provenance.get("approvedStoryText"),"baselineCanonicalEvaluation",canonical),"comparison",comparison));
+      }
+      run.put("state","TARGET_NOT_REACHED");
+    }
+    history.add(String.valueOf(run.get("state")));run.put("providerCalls",stages.size());run.put("calculatedCostUpperBoundUsd",spent);
+    run.put("providerCallsThisOperation",stages.size());run.put("targetQualified","A_QUALIFIED".equals(run.get("state")));
+    run.put("draftLabel",Boolean.TRUE.equals(run.get("targetQualified"))?"TARGET-QUALIFIED FINAL CANDIDATE":"BEST AVAILABLE DRAFT");
+    run.put("recommendation",chosen!=null && hasMaterialDraft(chosen,canonical)?"REVIEW_CANDIDATE":"KEEP_ORIGINAL");
+    run.put("comparison",chosen);run.put("metrics",Map.of("evidenceOrigin",run.get("evidenceOrigin"),"providerCalls",stages.size(),"qualified",run.get("targetQualified"),"escalated",stages.size()>1,"operatorAccepted",false,"audienceMeasured",false));
+    saveAdaptiveRun(run);return run;
+  }
+
+  private boolean hasQualifiedCandidate(Map<String,Object> decision) {return "A_QUALIFIED".equals(decision.get("state"));}
+  private boolean hasMaterialDraft(Map<String,Object> comparison,Map<String,Object> baseline) {
+    var decision=ml.workflow("adaptive-optimization-policy",Map.of("action","STAGE_DECISION","canonical",baseline,"comparison",comparison));
+    return maps(decision.get("qualifications")).stream().anyMatch(q->Boolean.TRUE.equals(q.get("material"))&&!Boolean.TRUE.equals(q.get("regression")));
+  }
+  private int boundedInteger(Map<String,Object> values,String key,int min,int max) {
+    Object v=values.get(key);if (!(v instanceof Number n) || !Double.isFinite(n.doubleValue()) || n.doubleValue()!=n.intValue() || n.intValue()<min || n.intValue()>max)
+      throw new IllegalArgumentException("Invalid bounded authorization: "+key);return n.intValue();
+  }
+  private double positiveBudget(Object value) {
+    if (!(value instanceof Number n)||!Double.isFinite(n.doubleValue())||n.doubleValue()<=0||n.doubleValue()>20) throw new IllegalArgumentException("Explicit total USD budget no greater than 20 required");return n.doubleValue();
+  }
+  private void saveAdaptiveRun(Map<String,Object> run) {
+    if(attemptTransactions==null) {save("CREATIVE_OPTIMIZATION_RUN",null,run);return;}
+    var transaction=new org.springframework.transaction.support.TransactionTemplate(attemptTransactions);
+    transaction.setPropagationBehavior(org.springframework.transaction.TransactionDefinition.PROPAGATION_REQUIRES_NEW);
+    transaction.execute(status->save("CREATIVE_OPTIMIZATION_RUN",null,run));
+  }
+
+
+  @Transactional
+  Map<String, Object> generateCreativeOptimizationStage(
       UUID analysisId, Map<String, Object> request, Map<String, Object> provenance) {
     if (!Boolean.TRUE.equals(request.get("operatorAuthorized")))
       throw new IllegalArgumentException("Explicit creative optimization authorization is required");
@@ -235,6 +384,7 @@ public class WorkflowService {
     if (essentialEvents.isEmpty())
       throw new IllegalStateException("Source-bound essential event anchors are unavailable");
     var context = new LinkedHashMap<String, Object>();
+    context.putAll(map(request.get("serverAdaptiveContext")));
     context.put("optimizationGenerationContractVersion", "creative-reconstruction-v2");
     context.put("optimizationGenerationInstructionsVersion", "model-authored-production-v2");
     context.put("openingStrategy", bound.getOrDefault("openingStrategy", "AUTO"));
@@ -261,7 +411,7 @@ public class WorkflowService {
     roleRequest.put("maxCostUsd", budget.doubleValue());
     roleRequest.put("generationAuthorized", true);
     var existingComparison = map(latestCreativeOptimization(analysisId).get("comparison"));
-    if (!request.containsKey("recoverAttemptRecordId") && !Boolean.TRUE.equals(request.get("startNewPlanFirstAttempt")) && !existingComparison.isEmpty()
+    if (!context.containsKey("adaptiveVersion") && !request.containsKey("recoverAttemptRecordId") && !Boolean.TRUE.equals(request.get("startNewPlanFirstAttempt")) && !existingComparison.isEmpty()
         && version.longValue() == jdbc.sql("SELECT max(id) FROM prompt_versions WHERE content_id=:content").param("content",content.longValue()).query(Long.class).single().longValue()
         && source.promptText().equals(bound.get("prompt"))
         && "creative-reconstruction-v2".equals(map(existingComparison.get("creativeEvidence")).get("creativeContractVersion"))
