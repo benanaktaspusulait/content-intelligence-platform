@@ -64,7 +64,9 @@ Content 10 / immutable Prompt ID 10 (v1), onaylı hikâye, Ruleset 1.11 ve tüm 
 
 ## Ek kabul — tanıma ve üretim kanıtlarını ayır
 
-- [ ] Hazır plan fixture'larının yalnız değerlendirme/integrasyon kanıtı olduğunu açıkça işaretle.
-- [ ] Hazır cevap almayan, çalışma anındaki teşhis ve hedeflerden plan kuran reaktif test double ile üretim hattını doğrula.
-- [ ] Hedef değişimi, kaynak değişimi ve desteklenmeyen hedef için karşı-olgusal testleri çalıştır; cevap tekrarını dışla.
-- [ ] İki yetenek için ayrı kanıt ve gerçek model etkinliği için UNVERIFIED durumunu raporla. Ücret/onay sınırlarını koru.
+- [x] Hazır plan fixture'larının yalnız değerlendirme/integrasyon kanıtı olduğunu açıkça işaretle.
+- [x] Hazır cevap almayan, çalışma anındaki teşhis ve hedeflerden plan kuran reaktif test double ile üretim hattını doğrula.
+- [x] Hedef değişimi, kaynak değişimi ve desteklenmeyen hedef için karşı-olgusal testleri çalıştır; cevap tekrarını dışla.
+- [x] İki yetenek için ayrı kanıt ve gerçek model etkinliği için UNVERIFIED durumunu raporla. Ücret/onay sınırlarını koru.
+
+- Ek kabul sonucu: hazır cevapla değerlendirme ve girdiye tepki veren sınırlı yeniden yapılandırma ayrı belgelendi. 5 yeni + 15 mevcut = 20 odaklı test geçti. Gerçek modelin yaratıcı etkinliği UNVERIFIED; READY yalnız uygulama hazırlığıdır. `output/verification/creative-optimization-v2/generation-vs-recognition.md`.

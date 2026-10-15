@@ -30,5 +30,20 @@
   "visualOrAudienceBenefitVerified": false,
   "productionMachineRecommendation": "REVIEW_MATERIAL_CANDIDATE",
   "engineeringRecommendation": "KEEP_ORIGINAL",
-  "legacyRecommendationContextDiscrepancy": "Existing UI requests review of unproven legacy interventions; no selection or approval. Left unchanged."
+  "legacyRecommendationContextDiscrepancy": "Existing UI requests review of unproven legacy interventions; no selection or approval. Left unchanged.",
+  "readinessScope": "IMPLEMENTATION_ONLY",
+  "creativeQualityProven": false,
+  "realModelCreativeEffectiveness": "UNVERIFIED",
+  "realModelPlanGenerationVerified": false,
+  "preauthoredFixtureIsGenerationEvidence": false,
+  "recognitionEvidence": "AUTHORED_CONTROLLED_PLAN_SOURCE_CANONICAL_COMPARISON_TESTS",
+  "reconstructionEvidence": "RUNTIME_DIAGNOSIS_OBJECTIVE_SOURCE_COUNTERFACTUALS_WITH_TEST_ONLY_DETERMINISTIC_PLANNER",
+  "boundedRuntimeReconstructionVerified": true,
+  "productionReconstructionUsesServerAuthoredOperationTemplates": true,
+  "additionalAcceptance": {
+    "newTests": 5,
+    "focusedTestsPassed": 20,
+    "repeatedExistingTests": 15,
+    "realProviderCalls": 0
+  }
 }

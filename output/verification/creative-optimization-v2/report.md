@@ -4,6 +4,12 @@
 
 This status means meaningful source-bound production reconstruction has been demonstrated through the real built frontend/backend/ML pipeline using a mocked provider and disposable PostgreSQL. It does not mean rendered or audience superiority, live-provider capability verification, or operator approval.
 
+## Additional acceptance — two separate evidence claims
+
+The authored response fixtures and prior full-stack mock run establish recognition, compilation and integration; they are **not evidence that a real optimizer generated an improvement**. Separate input-responsive reconstruction tests now build fresh structured plans from runtime diagnosis and objectives without a prepared answer, and test objective/source counterfactuals and no-candidate behavior. That verifies the bounded reconstruction mechanism with a deterministic test policy, not real-model creativity. Current production choreography is compiled from server-authored operation templates.
+
+See `generation-vs-recognition.md` and `generation-vs-recognition-evidence.json` for the separate claims, exact runtime cases and limitations. Twenty focused tests passed (five new, fifteen repeated). **Creative quality remains unproven; real-model creative effectiveness remains UNVERIFIED.** Readiness throughout this report means implementation readiness only. No real provider test has been authorized or run.
+
 ## 1. Root causes of weak generation
 
 The old plan-first schema allowed catalog selection plus camera framing/motion and explanation. Its compiler principally added “visible together”, “focus then”, or count holds to otherwise unchanged execution. The legacy distinctness evaluator compared timing/framing/motion signatures; comparison could regard motion or framing+timing as material. There was no precise diagnosis-to-spatial-choreography change contract. Backend, comparison and frontend also required exactly two candidates. Model capability itself was not established by these code findings.

@@ -1,0 +1,125 @@
+{
+  "recompilationMatchesSavedCandidate": true,
+  "fixtureOrProviderUsed": false,
+  "sourceNarrativeAndTimeWindowsPreserved": true,
+  "semanticStoryFidelity": "UNKNOWN",
+  "originalPromptSha256": "0fe229774deb4b31a42145bad91cf10c91634ba00da39fa3e9d288b3a2e7bd98",
+  "candidatePromptSha256": "90bdda1e9cea8e2e46662821b52a01dc94359df87b7753f2c77a645c77905495",
+  "beats": [
+    {
+      "beatId": "beat_01",
+      "timeWindow": [
+        0.0,
+        2.0
+      ],
+      "originalInstruction": "0-2s: Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger [close-up on Mimi's hand] Mimi is in front of a toy cabinet, looking determined -> the note sticks to Mimi, not the cabinet",
+      "candidateInstruction": "0-2s: Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger  Mimi is in front of a toy cabinet, looking determined -> the note sticks to Mimi, not the cabinet [locked-off medium shot; Stage the cabinet and her finger on left and right screen regions. Align the existing reach toward the cabinet; keep the intended contact area unobstructed behind the reaching motion. Show the existing attachment to her finger through the same continuous view; maintain a visible gap to the intended destination after wrong-surface contact. Keep the note contact edge outside the silhouette of the other hand; do not hide the attachment with a cut.]",
+      "originalSourceSpan": [
+        239,
+        498
+      ],
+      "candidateSourceSpan": [
+        239,
+        948
+      ],
+      "sourceNarrativePreserved": true,
+      "executionInstructionChanged": true
+    },
+    {
+      "beatId": "beat_02",
+      "timeWindow": [
+        2.0,
+        5.0
+      ],
+      "originalInstruction": "2-5s: Mimi tries to peel the stuck note away with her other hand; the note splits into two [medium shot of Mimi struggling] Mimi pulls at the note -> one note sticks to each hand",
+      "candidateInstruction": "2-5s: Mimi tries to peel the stuck note away with her other hand; the note splits into two [medium shot of Mimi struggling] Mimi pulls at the note -> one note sticks to each hand",
+      "originalSourceSpan": [
+        499,
+        677
+      ],
+      "candidateSourceSpan": [
+        949,
+        1127
+      ],
+      "sourceNarrativePreserved": true,
+      "executionInstructionChanged": false
+    },
+    {
+      "beatId": "beat_03",
+      "timeWindow": [
+        5.0,
+        10.0
+      ],
+      "originalInstruction": "5-10s: Mimi continues to pull; each pull doubles the number of sticky notes [wide shot showing Mimi covered in notes] notes multiply from two to four to eight as she pulls, progressively covering her arms, legs and face -> Mimi is overwhelmed by notes",
+      "candidateInstruction": "5-10s: Mimi continues to pull; each pull doubles the number of sticky notes [wide shot showing Mimi covered in notes] notes multiply from two to four to eight as she pulls, progressively covering her arms, legs and face -> Mimi is overwhelmed by notes",
+      "originalSourceSpan": [
+        678,
+        929
+      ],
+      "candidateSourceSpan": [
+        1128,
+        1379
+      ],
+      "sourceNarrativePreserved": true,
+      "executionInstructionChanged": false
+    },
+    {
+      "beatId": "beat_04",
+      "timeWindow": [
+        10.0,
+        12.0
+      ],
+      "originalInstruction": "10-12s: Mimi sees herself in a mirror and screams [close-up on Mimi's shocked face] Mimi is startled by her reflection completely covered in notes -> Mimi is startled",
+      "candidateInstruction": "10-12s: Mimi sees herself in a mirror and screams [close-up on Mimi's shocked face] Mimi is startled by her reflection completely covered in notes -> Mimi is startled",
+      "originalSourceSpan": [
+        930,
+        1096
+      ],
+      "candidateSourceSpan": [
+        1380,
+        1546
+      ],
+      "sourceNarrativePreserved": true,
+      "executionInstructionChanged": false
+    },
+    {
+      "beatId": "beat_05",
+      "timeWindow": [
+        12.0,
+        15.0
+      ],
+      "originalInstruction": "12-15s: Mimi sneezes and the sticky notes fly off [medium shot of notes flying] notes scatter and stick to the cabinet -> Mimi breathes a sigh of relief but the cabinet remains messy",
+      "candidateInstruction": "12-15s: Mimi sneezes and the sticky notes fly off [medium shot of notes flying] notes scatter and stick to the cabinet -> Mimi breathes a sigh of relief but the cabinet remains messy",
+      "originalSourceSpan": [
+        1097,
+        1279
+      ],
+      "candidateSourceSpan": [
+        1547,
+        1729
+      ],
+      "sourceNarrativePreserved": true,
+      "executionInstructionChanged": false
+    }
+  ],
+  "compilerInstructionFunctionSource": "def _instructions(op, intervention):\n    bindings = op['bindings']\n    axis = 'left and right screen regions' if intervention.layout == 'LATERAL' else 'separate foreground and background planes'\n    if op['operation'] == 'CONTACT_PLANE':\n        expected, actual = bindings\n        return (f'Stage {expected} and {actual} on {axis}. Align the existing reach toward {expected}; '\n                f'keep the intended contact area unobstructed behind the reaching motion. Show the existing attachment to {actual} '\n                'through the same continuous view; maintain a visible gap to the intended destination after wrong-surface contact. '\n                'Keep the note contact edge outside the silhouette of the other hand; do not hide the attachment with a cut.')\n    if op['operation'] == 'SEPARATE_ACTION_RESULT':\n        return (f'Use {axis} for the existing action and its result. Separate the participating hands/objects in screen space '\n                'during the existing separation; keep the contact edge visible until the stated result settles. '\n                f'Preserve the continuous transition into this source result: {bindings[1]}. '\n                'Do not add a repeated attempt, cut away during contact, or substitute a new outcome.')\n    states = ' → '.join(bindings)\n    return (f'Arrange the existing multiplying objects across {axis} as countable separated groups. '\n            f'Expose the complete existing count sequence {states}; after each existing pull, show its resulting group '\n            'without overlap obscuring the count before the next pull. Keep the pull/contact path continuous and the group positions stable '\n            'between transformations; let the established progressive body coverage follow the growing groups. '\n            'Use the original beat window, with no invented sub-beat timestamps, additional pull, freeze or new outcome.')\n",
+  "modelPlan": {
+    "title": "Enhanced Contact Clarity",
+    "objective": "Improve the visibility of the intended attachment surface and the actual attachment point to enhance viewer understanding of the comedic mishap.",
+    "candidateId": "candidate-a",
+    "interventions": [
+      {
+        "camera": "LOCKED",
+        "layout": "LATERAL",
+        "operation": "CONTACT_PLANE",
+        "rationale": "By staging the toy cabinet behind or beside Mimi's finger, viewers can clearly see the intended attachment point and the actual attachment, enhancing the comedic effect of the note sticking to her finger instead of the cabinet.",
+        "opportunityId": "CONTACT_PLANE:beat_01"
+      }
+    ],
+    "storyChangeRequested": false
+  },
+  "modelSuppliedFullPrompt": false,
+  "modelSuppliedDetailedContactChoreography": false,
+  "serverSuppliedMediumShot": true,
+  "serverSuppliedReachAlignmentGapAndOcclusionInstructions": true
+}

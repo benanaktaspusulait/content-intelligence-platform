@@ -1,0 +1,23 @@
+{
+  "proposals": [
+    {
+      "initial": {
+        "title": "Enhanced Contact Clarity",
+        "objective": "Improve the visibility of the intended attachment surface and the actual attachment point to enhance viewer understanding of the comedic mishap.",
+        "candidateId": "candidate-a",
+        "interventions": [
+          {
+            "camera": "LOCKED",
+            "layout": "LATERAL",
+            "operation": "CONTACT_PLANE",
+            "rationale": "By staging the toy cabinet behind or beside Mimi's finger, viewers can clearly see the intended attachment point and the actual attachment, enhancing the comedic effect of the note sticking to her finger instead of the cabinet.",
+            "opportunityId": "CONTACT_PLANE:beat_01"
+          }
+        ],
+        "storyChangeRequested": false
+      },
+      "revision": null
+    }
+  ],
+  "noImprovementReason": null
+}

@@ -1,0 +1,1962 @@
+{
+  "recognitionEvidence": "Previously authored response fixtures test recognition and integration only.",
+  "generationEvidence": "Runtime policy constructs fresh operation plans from incoming diagnosis and objective; application compiles source-specific execution.",
+  "boundedGrammar": true,
+  "realModelCreativeEffectiveness": "UNVERIFIED",
+  "cases": [
+    {
+      "case": "actual_mimi_opening_objective",
+      "inputType": "ACTUAL_SAVED_SOURCE_COPY",
+      "objectiveDimension": "VISUAL_STORYTELLING",
+      "planner": "TEST_ONLY_DETERMINISTIC_DIAGNOSIS_DRIVEN_POLICY",
+      "plannerReceivedPreparedAnswer": false,
+      "runtimeRequest": {
+        "phase": "CREATIVE_DIAGNOSIS_RECONSTRUCTION_CRITIQUE",
+        "contractVersion": "creative-reconstruction-v2",
+        "creativeDiagnosis": {
+          "contractVersion": "creative-reconstruction-v2",
+          "qualityModelVersion": "creative-quality-evidence-v2",
+          "openingStrategy": "AUTO",
+          "protectedStoryContract": {
+            "contractVersion": "optimization-profile-ownership-v1",
+            "baselinePromptText": "TITLE / FORMAT\nMimi Sticky / 15s Video\n\nVISUAL STYLE\nBright and colorful animation with a playful tone.\n\nCHARACTER / CONTINUITY\nMimi, an anthropomorphic bunny, interacts with sticky notes in a humorous and chaotic manner.\n\nTIMED SHOT PLAN\n0-2s: Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger [close-up on Mimi's hand] Mimi is in front of a toy cabinet, looking determined -> the note sticks to Mimi, not the cabinet\n2-5s: Mimi tries to peel the stuck note away with her other hand; the note splits into two [medium shot of Mimi struggling] Mimi pulls at the note -> one note sticks to each hand\n5-10s: Mimi continues to pull; each pull doubles the number of sticky notes [wide shot showing Mimi covered in notes] notes multiply from two to four to eight as she pulls, progressively covering her arms, legs and face -> Mimi is overwhelmed by notes\n10-12s: Mimi sees herself in a mirror and screams [close-up on Mimi's shocked face] Mimi is startled by her reflection completely covered in notes -> Mimi is startled\n12-15s: Mimi sneezes and the sticky notes fly off [medium shot of notes flying] notes scatter and stick to the cabinet -> Mimi breathes a sigh of relief but the cabinet remains messy\n\nAUDIO\nPlayful background music with sound effects for sneezing and notes sticking.\n\nNEGATIVE CONSTRAINTS\nNo dark themes or violence.\n\nFINAL CUT\nMimi is relieved but the cabinet remains visibly messy.\n\nCHARACTER IDENTITY LOCK\nMimi is the established anthropomorphic bunny character. Preserve that identity; do not render a human or invent unverified visual details. No approved visual reference is currently bound, so appearance details remain unverified.\n\nPRODUCTION SETTINGS\nAspect ratio: 9:16. Target generator: SEEDANCE_2_0_MINI. Content profile: AUTO.",
+            "baselinePromptHistoricalProfile": "AUTO",
+            "targetContentProfile": "ABSURD_PHYSICS",
+            "targetOwner": "SERVER_VERSION_BOUND_PRODUCTION_SETTINGS",
+            "productionSettingsRecordId": "2d90c69b-bcec-4871-9c4e-7e029906c974",
+            "approvedStory": "Mimi, oyuncak dolabına 'Topla!' yazan bir yapışkan not yapıştırmak ister. Not, Mimi'nin parmağına yapışır. Mimi diğer eliyle çıkarmaya çalışırken not ikiye ayrılır ve iki eline de yapışır. Her çekişte notlar ikiye katlanarak çoğalır. Kısa sürede Mimi'nin kolları, bacakları ve yüzü notlarla kaplanır. Mimi aynada kendini görünce çığlık atar. Notlar o kadar çoğalır ki Mimi boğulacak gibi olur. Sonunda hapşırır ve tüm notlar uçuşarak dolabın üzerine yapışır. Mimi rahat bir nefes alır ama dolap hâlâ dağınıktır.",
+            "protectedIntent": [
+              "Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger",
+              "Mimi tries to peel the stuck note away with her other hand; the note splits into two",
+              "Mimi continues to pull; each pull doubles the number of sticky notes",
+              "Mimi sees herself in a mirror and screams",
+              "Mimi sneezes and the sticky notes fly off"
+            ],
+            "generatorSettings": {
+              "generator": "SEEDANCE_2_0_MINI",
+              "duration": 15,
+              "settings": {
+                "mode": "image2video",
+                "resolution": "480p",
+                "aspectRatio": "9:16"
+              }
+            },
+            "optimizationObjectives": {
+              "candidate-a": "FIRST_FRAME_ANOMALY_CLARITY_CURIOSITY",
+              "candidate-b": "BEAT_PROGRESSION_TIMING_ESCALATION_SEEDANCE_FEASIBILITY"
+            },
+            "sourcePromptSha256": "0fe229774deb4b31a42145bad91cf10c91634ba00da39fa3e9d288b3a2e7bd98",
+            "approvedStorySha256": "df653dbcaf16bfdbceb87baa23688d70d739c34941d0075e30e96b181e1bf32b",
+            "characterIdentity": {
+              "primary": "Mimi",
+              "secondary": null,
+              "characterRefs": []
+            },
+            "openingCausalParticipants": {
+              "state": "OBSERVED",
+              "sourceQuote": "instead of sticking to the cabinet, the note visibly clings to her finger",
+              "sourceSpan": [
+                301,
+                374
+              ],
+              "method": "CONTRASTIVE_SURFACE_ATTACHMENT_PATTERN",
+              "semanticVerification": "NOT_PERFORMED",
+              "object": {
+                "value": "the note",
+                "state": "OBSERVED"
+              },
+              "expectedSurface": {
+                "value": "the cabinet",
+                "state": "OBSERVED"
+              },
+              "actualSurface": {
+                "value": "her finger",
+                "state": "OBSERVED"
+              },
+              "relationship": {
+                "value": "WRONG_SURFACE_ATTACHMENT",
+                "state": "INFERRED"
+              }
+            },
+            "corePhysicalRule": {
+              "state": "OBSERVED",
+              "sourceQuote": "each pull doubles the number of sticky notes",
+              "sourceSpan": [
+                709,
+                753
+              ],
+              "method": "EXPLICIT_REPEATED_ACTION_CLAUSE",
+              "semanticVerification": "NOT_PERFORMED"
+            },
+            "requiredEnding": {
+              "sourceBeatId": "beat_05",
+              "sourceQuote": "12-15s: Mimi sneezes and the sticky notes fly off [medium shot of notes flying] notes scatter and stick to the cabinet -> Mimi breathes a sigh of relief but the cabinet remains messy"
+            },
+            "events": [
+              {
+                "sourceBeatId": "beat_01",
+                "sourceQuote": "0-2s: Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger [close-up on Mimi's hand] Mimi is in front of a toy cabinet, looking determined -> the note sticks to Mimi, not the cabinet",
+                "actionAnchor": "Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger",
+                "startTime": 0.0,
+                "endTime": 2.0
+              },
+              {
+                "sourceBeatId": "beat_02",
+                "sourceQuote": "2-5s: Mimi tries to peel the stuck note away with her other hand; the note splits into two [medium shot of Mimi struggling] Mimi pulls at the note -> one note sticks to each hand",
+                "actionAnchor": "Mimi tries to peel the stuck note away with her other hand; the note splits into two",
+                "startTime": 2.0,
+                "endTime": 5.0
+              },
+              {
+                "sourceBeatId": "beat_03",
+                "sourceQuote": "5-10s: Mimi continues to pull; each pull doubles the number of sticky notes [wide shot showing Mimi covered in notes] notes multiply from two to four to eight as she pulls, progressively covering her arms, legs and face -> Mimi is overwhelmed by notes",
+                "actionAnchor": "Mimi continues to pull; each pull doubles the number of sticky notes",
+                "startTime": 5.0,
+                "endTime": 10.0
+              },
+              {
+                "sourceBeatId": "beat_04",
+                "sourceQuote": "10-12s: Mimi sees herself in a mirror and screams [close-up on Mimi's shocked face] Mimi is startled by her reflection completely covered in notes -> Mimi is startled",
+                "actionAnchor": "Mimi sees herself in a mirror and screams",
+                "startTime": 10.0,
+                "endTime": 12.0
+              },
+              {
+                "sourceBeatId": "beat_05",
+                "sourceQuote": "12-15s: Mimi sneezes and the sticky notes fly off [medium shot of notes flying] notes scatter and stick to the cabinet -> Mimi breathes a sigh of relief but the cabinet remains messy",
+                "actionAnchor": "Mimi sneezes and the sticky notes fly off",
+                "startTime": 12.0,
+                "endTime": 15.0
+              }
+            ],
+            "semanticStoryFidelity": "UNKNOWN",
+            "visualEvidence": "NOT_SUPPLIED"
+          },
+          "protectedLayer": [
+            "identity",
+            "premise",
+            "approved events and order",
+            "physical rule",
+            "outcomes",
+            "ending",
+            "safety"
+          ],
+          "editableLayer": [
+            "staging",
+            "spatial visibility",
+            "choreography",
+            "composition",
+            "continuity",
+            "relative timing",
+            "visual emphasis"
+          ],
+          "opportunities": [
+            {
+              "opportunityId": "CONTACT_PLANE:beat_01",
+              "beatId": "beat_01",
+              "timeWindow": [
+                0.0,
+                2.0
+              ],
+              "dimension": "VISUAL_STORYTELLING",
+              "currentExecution": "0-2s: Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger [close-up on Mimi's hand] Mimi is in front of a toy cabinet, looking determined -> the note sticks to Mimi, not the cabinet",
+              "sourceEvidence": {
+                "quote": "0-2s: Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger [close-up on Mimi's hand] Mimi is in front of a toy cabinet, looking determined -> the note sticks to Mimi, not the cabinet",
+                "span": [
+                  239,
+                  498
+                ],
+                "status": "EXACT_SOURCE_TEXT"
+              },
+              "weaknessOrUncertainty": "The source names intended and actual attachment surfaces but does not specify their spatial alignment, contact plane or occlusion control.",
+              "proposedImprovement": "Stage the intended surface behind or beside the actual attachment point; follow the existing reach continuously, retaining the failed destination and wrong attachment in view.",
+              "expectedVisualChange": "The reach destination and wrong-surface attachment have distinct visible positions through contact.",
+              "viewingRationale": "A viewer may be able to distinguish the cited physical states; this is a hypothesis, not audience evidence.",
+              "productionRisk": "Keeping both surfaces visible may increase composition density; actual contact geometry needs image review.",
+              "confidence": "TEXT_SUPPORTED_HYPOTHESIS",
+              "classification": "CREATIVE_IMPROVEMENT_HYPOTHESIS",
+              "operation": "CONTACT_PLANE",
+              "bindings": [
+                "the cabinet",
+                "her finger"
+              ],
+              "benefitEvidence": "UNVERIFIED_UNTIL_VISUAL_REVIEW"
+            },
+            {
+              "opportunityId": "SEPARATE_ACTION_RESULT:beat_02",
+              "beatId": "beat_02",
+              "timeWindow": [
+                2.0,
+                5.0
+              ],
+              "dimension": "PRODUCTION_EXECUTABILITY",
+              "currentExecution": "2-5s: Mimi tries to peel the stuck note away with her other hand; the note splits into two [medium shot of Mimi struggling] Mimi pulls at the note -> one note sticks to each hand",
+              "sourceEvidence": {
+                "quote": "2-5s: Mimi tries to peel the stuck note away with her other hand; the note splits into two [medium shot of Mimi struggling] Mimi pulls at the note -> one note sticks to each hand",
+                "span": [
+                  499,
+                  677
+                ],
+                "status": "EXACT_SOURCE_TEXT"
+              },
+              "weaknessOrUncertainty": "The source states an action and result without separating their screen positions or protecting their visibility during the transition.",
+              "proposedImprovement": "Separate the two source-bound action/result regions and retain their transition in one locked shot.",
+              "expectedVisualChange": "The action and resulting state occupy distinguishable regions with continuous visible contact.",
+              "viewingRationale": "A viewer may be able to distinguish the cited physical states; this is a hypothesis, not audience evidence.",
+              "productionRisk": "A wider contact tableau may reduce facial detail; visual continuity remains unverified.",
+              "confidence": "TEXT_SUPPORTED_HYPOTHESIS",
+              "classification": "CREATIVE_IMPROVEMENT_HYPOTHESIS",
+              "operation": "SEPARATE_ACTION_RESULT",
+              "bindings": [
+                "2-5s: Mimi tries to peel the stuck note away with her other hand; the note splits into two  Mimi pulls at the note",
+                "one note sticks to each hand"
+              ],
+              "benefitEvidence": "UNVERIFIED_UNTIL_VISUAL_REVIEW"
+            },
+            {
+              "opportunityId": "COUNTABLE_STATE_PATH:beat_03",
+              "beatId": "beat_03",
+              "timeWindow": [
+                5.0,
+                10.0
+              ],
+              "dimension": "CAUSAL_PROGRESSION",
+              "currentExecution": "5-10s: Mimi continues to pull; each pull doubles the number of sticky notes [wide shot showing Mimi covered in notes] notes multiply from two to four to eight as she pulls, progressively covering her arms, legs and face -> Mimi is overwhelmed by notes",
+              "sourceEvidence": {
+                "quote": "5-10s: Mimi continues to pull; each pull doubles the number of sticky notes [wide shot showing Mimi covered in notes] notes multiply from two to four to eight as she pulls, progressively covering her arms, legs and face -> Mimi is overwhelmed by notes",
+                "span": [
+                  678,
+                  929
+                ],
+                "status": "EXACT_SOURCE_TEXT"
+              },
+              "weaknessOrUncertainty": "The source lists a count progression but gives no continuity, spatial grouping or unobstructed count-transition choreography.",
+              "proposedImprovement": "Expose the complete existing count path in stable spatial groups; couple each count transition to the existing pull without an edit hiding contact.",
+              "expectedVisualChange": "Each existing count state has a distinguishable arrangement before progressive body coverage.",
+              "viewingRationale": "A viewer may be able to distinguish the cited physical states; this is a hypothesis, not audience evidence.",
+              "productionRisk": "Count fidelity and fine contact remain difficult; arrangement is a proposed mitigation, not verified generator capability.",
+              "confidence": "TEXT_SUPPORTED_HYPOTHESIS",
+              "classification": "EVIDENCE_SUPPORTED_EXECUTION_RISK",
+              "operation": "COUNTABLE_STATE_PATH",
+              "bindings": [
+                "two",
+                "four",
+                "eight"
+              ],
+              "benefitEvidence": "UNVERIFIED_UNTIL_VISUAL_REVIEW"
+            }
+          ],
+          "dimensions": [
+            {
+              "dimension": "SCROLL_STOP_VISUAL_PROMISE",
+              "status": "VISUAL_EVIDENCE_REQUIRED",
+              "numericScore": null
+            },
+            {
+              "dimension": "CAUSAL_PROGRESSION",
+              "status": "TEXTUAL_HYPOTHESES_AVAILABLE",
+              "numericScore": null
+            },
+            {
+              "dimension": "VISUAL_STORYTELLING",
+              "status": "TEXTUAL_HYPOTHESES_AVAILABLE",
+              "numericScore": null
+            },
+            {
+              "dimension": "PRODUCTION_EXECUTABILITY",
+              "status": "TEXTUAL_HYPOTHESES_AVAILABLE",
+              "numericScore": null
+            },
+            {
+              "dimension": "ENDING_REPLAY",
+              "status": "VISUAL_EVIDENCE_REQUIRED",
+              "numericScore": null
+            },
+            {
+              "dimension": "DISTINCTIVE_CREATIVE_VALUE",
+              "status": "VISUAL_EVIDENCE_REQUIRED",
+              "numericScore": null
+            }
+          ],
+          "endingReview": {
+            "sourceQuote": "12-15s: Mimi sneezes and the sticky notes fly off [medium shot of notes flying] notes scatter and stick to the cabinet -> Mimi breathes a sigh of relief but the cabinet remains messy",
+            "sourceSpan": [
+              1097,
+              1279
+            ],
+            "classification": "VISUAL_EVIDENCE_REQUIRED",
+            "loopRequired": false
+          },
+          "semanticStoryFidelity": "UNKNOWN",
+          "renderAuthorization": "NOT_GRANTED"
+        },
+        "maxCandidates": 2,
+        "maxRevisionsPerCandidate": 1,
+        "revisionBudget": "WITHIN_THIS_SINGLE_RESPONSE_ONLY",
+        "visualEvidence": "NOT_SUPPLIED",
+        "audienceEvidence": "NOT_SUPPLIED"
+      },
+      "runtimeConstructedPlanResponse": {
+        "proposals": [
+          {
+            "initial": {
+              "candidateId": "candidate-a",
+              "title": "Reconstruct visual storytelling",
+              "objective": "Stage the intended surface behind or beside the actual attachment point; follow the existing reach continuously, retaining the failed destination and wrong attachment in view.",
+              "interventions": [
+                {
+                  "opportunityId": "CONTACT_PLANE:beat_01",
+                  "operation": "CONTACT_PLANE",
+                  "layout": "DEPTH",
+                  "camera": "LOCKED",
+                  "rationale": "The reach destination and wrong-surface attachment have distinct visible positions through contact. Actual visual benefit remains unverified."
+                }
+              ],
+              "storyChangeRequested": false
+            },
+            "revision": null
+          }
+        ],
+        "noImprovementReason": null
+      },
+      "compiledCandidates": [
+        {
+          "prompt": "TITLE / FORMAT\nMimi Sticky / 15s Video\n\nVISUAL STYLE\nBright and colorful animation with a playful tone.\n\nCHARACTER / CONTINUITY\nMimi, an anthropomorphic bunny, interacts with sticky notes in a humorous and chaotic manner.\n\nTIMED SHOT PLAN\n0-2s: Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger  Mimi is in front of a toy cabinet, looking determined -> the note sticks to Mimi, not the cabinet [locked-off medium shot; Stage the cabinet and her finger on separate foreground and background planes. Align the existing reach toward the cabinet; keep the intended contact area unobstructed behind the reaching motion. Show the existing attachment to her finger through the same continuous view; maintain a visible gap to the intended destination after wrong-surface contact. Keep the note contact edge outside the silhouette of the other hand; do not hide the attachment with a cut.]\n2-5s: Mimi tries to peel the stuck note away with her other hand; the note splits into two [medium shot of Mimi struggling] Mimi pulls at the note -> one note sticks to each hand\n5-10s: Mimi continues to pull; each pull doubles the number of sticky notes [wide shot showing Mimi covered in notes] notes multiply from two to four to eight as she pulls, progressively covering her arms, legs and face -> Mimi is overwhelmed by notes\n10-12s: Mimi sees herself in a mirror and screams [close-up on Mimi's shocked face] Mimi is startled by her reflection completely covered in notes -> Mimi is startled\n12-15s: Mimi sneezes and the sticky notes fly off [medium shot of notes flying] notes scatter and stick to the cabinet -> Mimi breathes a sigh of relief but the cabinet remains messy\n\nAUDIO\nPlayful background music with sound effects for sneezing and notes sticking.\n\nNEGATIVE CONSTRAINTS\nNo dark themes or violence.\n\nFINAL CUT\nMimi is relieved but the cabinet remains visibly messy.\n\nCHARACTER IDENTITY LOCK\nMimi is the established anthropomorphic bunny character. Preserve that identity; do not render a human or invent unverified visual details. No approved visual reference is currently bound, so appearance details remain unverified.\n\nPRODUCTION SETTINGS\nAspect ratio: 9:16. Target generator: SEEDANCE_2_0_MINI. Content profile: ABSURD_PHYSICS.",
+          "reconstructionPlan": {
+            "candidateId": "candidate-a",
+            "title": "Reconstruct visual storytelling",
+            "objective": "Stage the intended surface behind or beside the actual attachment point; follow the existing reach continuously, retaining the failed destination and wrong attachment in view.",
+            "interventions": [
+              {
+                "opportunityId": "CONTACT_PLANE:beat_01",
+                "operation": "CONTACT_PLANE",
+                "layout": "DEPTH",
+                "camera": "LOCKED",
+                "rationale": "The reach destination and wrong-surface attachment have distinct visible positions through contact. Actual visual benefit remains unverified."
+              }
+            ],
+            "storyChangeRequested": false
+          },
+          "planValidation": {
+            "contractVersion": "creative-reconstruction-v2",
+            "status": "SOURCE_BOUND_MATERIAL_PLAN",
+            "storyFidelity": "UNKNOWN",
+            "sourcePromptSha256": "0fe229774deb4b31a42145bad91cf10c91634ba00da39fa3e9d288b3a2e7bd98",
+            "preservedStorySha256": "df653dbcaf16bfdbceb87baa23688d70d739c34941d0075e30e96b181e1bf32b",
+            "renderAuthorization": "NOT_GRANTED"
+          },
+          "sourceEventCoverage": {
+            "status": "SOURCE_TEXT_COVERED",
+            "semanticFidelity": "UNKNOWN",
+            "sourceEventCount": 5,
+            "candidateShotCount": 5,
+            "mappings": [
+              {
+                "baselineBeatId": "beat_01",
+                "baselineQuote": "0-2s: Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger [close-up on Mimi's hand] Mimi is in front of a toy cabinet, looking determined -> the note sticks to Mimi, not the cabinet",
+                "baselineSourceSpan": [
+                  239,
+                  498
+                ],
+                "candidateQuote": "0-2s: Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger  Mimi is in front of a toy cabinet, looking determined -> the note sticks to Mimi, not the cabinet [locked-off medium shot; Stage the cabinet and her finger on separate foreground and background planes. Align the existing reach toward the cabinet; keep the intended contact area unobstructed behind the reaching motion. Show the existing attachment to her finger through the same continuous view; maintain a visible gap to the intended destination after wrong-surface contact. Keep the note contact edge outside the silhouette of the other hand; do not hide the attachment with a cut.]",
+                "candidateSourceSpan": [
+                  239,
+                  960
+                ],
+                "method": "EXACT_NARRATIVE_AND_SERVER_COMPILED_EXECUTION"
+              },
+              {
+                "baselineBeatId": "beat_02",
+                "baselineQuote": "2-5s: Mimi tries to peel the stuck note away with her other hand; the note splits into two [medium shot of Mimi struggling] Mimi pulls at the note -> one note sticks to each hand",
+                "baselineSourceSpan": [
+                  499,
+                  677
+                ],
+                "candidateQuote": "2-5s: Mimi tries to peel the stuck note away with her other hand; the note splits into two [medium shot of Mimi struggling] Mimi pulls at the note -> one note sticks to each hand",
+                "candidateSourceSpan": [
+                  961,
+                  1139
+                ],
+                "method": "EXACT_NARRATIVE_AND_SERVER_COMPILED_EXECUTION"
+              },
+              {
+                "baselineBeatId": "beat_03",
+                "baselineQuote": "5-10s: Mimi continues to pull; each pull doubles the number of sticky notes [wide shot showing Mimi covered in notes] notes multiply from two to four to eight as she pulls, progressively covering her arms, legs and face -> Mimi is overwhelmed by notes",
+                "baselineSourceSpan": [
+                  678,
+                  929
+                ],
+                "candidateQuote": "5-10s: Mimi continues to pull; each pull doubles the number of sticky notes [wide shot showing Mimi covered in notes] notes multiply from two to four to eight as she pulls, progressively covering her arms, legs and face -> Mimi is overwhelmed by notes",
+                "candidateSourceSpan": [
+                  1140,
+                  1391
+                ],
+                "method": "EXACT_NARRATIVE_AND_SERVER_COMPILED_EXECUTION"
+              },
+              {
+                "baselineBeatId": "beat_04",
+                "baselineQuote": "10-12s: Mimi sees herself in a mirror and screams [close-up on Mimi's shocked face] Mimi is startled by her reflection completely covered in notes -> Mimi is startled",
+                "baselineSourceSpan": [
+                  930,
+                  1096
+                ],
+                "candidateQuote": "10-12s: Mimi sees herself in a mirror and screams [close-up on Mimi's shocked face] Mimi is startled by her reflection completely covered in notes -> Mimi is startled",
+                "candidateSourceSpan": [
+                  1392,
+                  1558
+                ],
+                "method": "EXACT_NARRATIVE_AND_SERVER_COMPILED_EXECUTION"
+              },
+              {
+                "baselineBeatId": "beat_05",
+                "baselineQuote": "12-15s: Mimi sneezes and the sticky notes fly off [medium shot of notes flying] notes scatter and stick to the cabinet -> Mimi breathes a sigh of relief but the cabinet remains messy",
+                "baselineSourceSpan": [
+                  1097,
+                  1279
+                ],
+                "candidateQuote": "12-15s: Mimi sneezes and the sticky notes fly off [medium shot of notes flying] notes scatter and stick to the cabinet -> Mimi breathes a sigh of relief but the cabinet remains messy",
+                "candidateSourceSpan": [
+                  1559,
+                  1741
+                ],
+                "method": "EXACT_NARRATIVE_AND_SERVER_COMPILED_EXECUTION"
+              }
+            ]
+          },
+          "canonicalScore": 88.40625000000001
+        }
+      ],
+      "assessment": {
+        "contractVersion": "creative-reconstruction-v2",
+        "integrityStatus": "COMPLETE_CANDIDATE_SET",
+        "actualCandidateCount": 1,
+        "recommendation": "REVIEW_MATERIAL_CANDIDATE",
+        "conclusion": "Review source-bound execution changes; creative benefit remains unverified.",
+        "baselineScore": 88.40625000000001,
+        "candidates": [
+          {
+            "candidateId": "candidate-a",
+            "contractVersion": "creative-reconstruction-v2",
+            "classification": "PLAUSIBLE_IMPROVEMENT_UNVERIFIED",
+            "approvalEligible": true,
+            "approvalBlockReason": null,
+            "actualChanges": [
+              "Stage the cabinet and her finger on separate foreground and background planes. Align the existing reach toward the cabinet; keep the intended contact area unobstructed behind the reaching motion. Show the existing attachment to her finger through the same continuous view; maintain a visible gap to the intended destination after wrong-surface contact. Keep the note contact edge outside the silhouette of the other hand; do not hide the attachment with a cut."
+            ],
+            "creativeAssessment": {
+              "contractVersion": "creative-quality-evidence-v2",
+              "classification": "PLAUSIBLE_IMPROVEMENT_UNVERIFIED",
+              "dimensions": [
+                {
+                  "dimension": "SCROLL_STOP_VISUAL_PROMISE",
+                  "assessment": "Spatial contact intervention proposed",
+                  "evidence": "PLANNED_TEXT_ONLY"
+                },
+                {
+                  "dimension": "CAUSAL_PROGRESSION",
+                  "assessment": "Approved causal events retained",
+                  "evidence": "PLANNED_TEXT_ONLY"
+                },
+                {
+                  "dimension": "VISUAL_STORYTELLING",
+                  "assessment": "Source-bound spatial separation and contact visibility changed",
+                  "evidence": "OBSERVED_TEXTUAL_CHANGE"
+                },
+                {
+                  "dimension": "PRODUCTION_EXECUTABILITY",
+                  "assessment": "Locked continuity and occlusion mitigation proposed; actual risk change UNKNOWN",
+                  "evidence": "UNVERIFIED_GENERATOR_HYPOTHESIS"
+                },
+                {
+                  "dimension": "ENDING_REPLAY",
+                  "assessment": "Approved ending retained; no loop or audience benefit assumed",
+                  "evidence": "EXACT_SOURCE_TEXT"
+                },
+                {
+                  "dimension": "DISTINCTIVE_CREATIVE_VALUE",
+                  "assessment": "Concrete choreography differs from source; novelty and viewer value unverified",
+                  "evidence": "OBSERVED_TEXTUAL_CHANGE"
+                }
+              ],
+              "materiality": "SOURCE_BOUND_SPATIAL_CHOREOGRAPHIC_CHANGE",
+              "changeContract": [
+                {
+                  "opportunityId": "CONTACT_PLANE:beat_01",
+                  "beatId": "beat_01",
+                  "originalExecution": "0-2s: Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger [close-up on Mimi's hand] Mimi is in front of a toy cabinet, looking determined -> the note sticks to Mimi, not the cabinet",
+                  "newExecution": "0-2s: Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger  Mimi is in front of a toy cabinet, looking determined -> the note sticks to Mimi, not the cabinet [locked-off medium shot; Stage the cabinet and her finger on separate foreground and background planes. Align the existing reach toward the cabinet; keep the intended contact area unobstructed behind the reaching motion. Show the existing attachment to her finger through the same continuous view; maintain a visible gap to the intended destination after wrong-surface contact. Keep the note contact edge outside the silhouette of the other hand; do not hide the attachment with a cut.]",
+                  "observableDifference": "Stage the cabinet and her finger on separate foreground and background planes. Align the existing reach toward the cabinet; keep the intended contact area unobstructed behind the reaching motion. Show the existing attachment to her finger through the same continuous view; maintain a visible gap to the intended destination after wrong-surface contact. Keep the note contact edge outside the silhouette of the other hand; do not hide the attachment with a cut.",
+                  "creativeRationale": "The reach destination and wrong-surface attachment have distinct visible positions through contact. Actual visual benefit remains unverified.",
+                  "sourceFidelity": {
+                    "quote": "0-2s: Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger [close-up on Mimi's hand] Mimi is in front of a toy cabinet, looking determined -> the note sticks to Mimi, not the cabinet",
+                    "span": [
+                      239,
+                      498
+                    ],
+                    "protectedEventUnchanged": true,
+                    "semanticFidelity": "UNKNOWN"
+                  },
+                  "productionRisk": {
+                    "change": "UNKNOWN",
+                    "evidence": "Keeping both surfaces visible may increase composition density; actual contact geometry needs image review.",
+                    "newMitigation": "Locked contact view with explicit spatial separation."
+                  },
+                  "evidenceLimitation": "Text specifies a different execution. Render adherence, visual clarity and audience benefit are unverified."
+                }
+              ],
+              "critique": {
+                "status": "ACCEPTED_TEXTUAL_PLAN",
+                "reasons": [],
+                "checks": {
+                  "observableChange": true,
+                  "addressesDiagnosis": true,
+                  "sourceBoundOperations": true,
+                  "semanticStoryFidelity": "UNKNOWN",
+                  "generatorSuccess": "UNKNOWN",
+                  "audienceBenefit": "UNMEASURED"
+                },
+                "revisionFeedback": []
+              },
+              "semanticStoryFidelity": "UNKNOWN",
+              "audiencePerformance": "UNMEASURED",
+              "canonicalCompliance": "SEPARATELY_EVALUATED",
+              "provenBetter": false,
+              "canonicalChanges": [],
+              "productionRiskIndicatorRegression": false,
+              "canonicalScore": 88.40625000000001,
+              "canonicalRegression": false,
+              "newCanonicalFailures": []
+            },
+            "conclusion": "Source-bound staging/choreography changes address a diagnosed opportunity; visual and audience benefits remain unverified.",
+            "validationStatus": "SOURCE_TEXT_CONTRACT_PASSED",
+            "storyCoverage": "SOURCE_EVENTS_COVERED; SEMANTIC_FIDELITY_UNKNOWN",
+            "endingPreservation": "PROTECTED_ENDING_TEXT_PRESERVED",
+            "productionRiskChange": "UNKNOWN; proposed mitigations require visual review.",
+            "qualityScore": 88.40625000000001,
+            "scoreDelta": 0.0
+          }
+        ],
+        "providerCalls": 0,
+        "rawCandidatesPreserved": true
+      },
+      "realProviderCalls": 0,
+      "promptVersionsCreated": 0,
+      "modelCreativeEffectiveness": "NOT_TESTED"
+    },
+    {
+      "case": "actual_mimi_progression_objective",
+      "inputType": "ACTUAL_SAVED_SOURCE_COPY",
+      "objectiveDimension": "CAUSAL_PROGRESSION",
+      "planner": "TEST_ONLY_DETERMINISTIC_DIAGNOSIS_DRIVEN_POLICY",
+      "plannerReceivedPreparedAnswer": false,
+      "runtimeRequest": {
+        "phase": "CREATIVE_DIAGNOSIS_RECONSTRUCTION_CRITIQUE",
+        "contractVersion": "creative-reconstruction-v2",
+        "creativeDiagnosis": {
+          "contractVersion": "creative-reconstruction-v2",
+          "qualityModelVersion": "creative-quality-evidence-v2",
+          "openingStrategy": "AUTO",
+          "protectedStoryContract": {
+            "contractVersion": "optimization-profile-ownership-v1",
+            "baselinePromptText": "TITLE / FORMAT\nMimi Sticky / 15s Video\n\nVISUAL STYLE\nBright and colorful animation with a playful tone.\n\nCHARACTER / CONTINUITY\nMimi, an anthropomorphic bunny, interacts with sticky notes in a humorous and chaotic manner.\n\nTIMED SHOT PLAN\n0-2s: Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger [close-up on Mimi's hand] Mimi is in front of a toy cabinet, looking determined -> the note sticks to Mimi, not the cabinet\n2-5s: Mimi tries to peel the stuck note away with her other hand; the note splits into two [medium shot of Mimi struggling] Mimi pulls at the note -> one note sticks to each hand\n5-10s: Mimi continues to pull; each pull doubles the number of sticky notes [wide shot showing Mimi covered in notes] notes multiply from two to four to eight as she pulls, progressively covering her arms, legs and face -> Mimi is overwhelmed by notes\n10-12s: Mimi sees herself in a mirror and screams [close-up on Mimi's shocked face] Mimi is startled by her reflection completely covered in notes -> Mimi is startled\n12-15s: Mimi sneezes and the sticky notes fly off [medium shot of notes flying] notes scatter and stick to the cabinet -> Mimi breathes a sigh of relief but the cabinet remains messy\n\nAUDIO\nPlayful background music with sound effects for sneezing and notes sticking.\n\nNEGATIVE CONSTRAINTS\nNo dark themes or violence.\n\nFINAL CUT\nMimi is relieved but the cabinet remains visibly messy.\n\nCHARACTER IDENTITY LOCK\nMimi is the established anthropomorphic bunny character. Preserve that identity; do not render a human or invent unverified visual details. No approved visual reference is currently bound, so appearance details remain unverified.\n\nPRODUCTION SETTINGS\nAspect ratio: 9:16. Target generator: SEEDANCE_2_0_MINI. Content profile: AUTO.",
+            "baselinePromptHistoricalProfile": "AUTO",
+            "targetContentProfile": "ABSURD_PHYSICS",
+            "targetOwner": "SERVER_VERSION_BOUND_PRODUCTION_SETTINGS",
+            "productionSettingsRecordId": "2d90c69b-bcec-4871-9c4e-7e029906c974",
+            "approvedStory": "Mimi, oyuncak dolabına 'Topla!' yazan bir yapışkan not yapıştırmak ister. Not, Mimi'nin parmağına yapışır. Mimi diğer eliyle çıkarmaya çalışırken not ikiye ayrılır ve iki eline de yapışır. Her çekişte notlar ikiye katlanarak çoğalır. Kısa sürede Mimi'nin kolları, bacakları ve yüzü notlarla kaplanır. Mimi aynada kendini görünce çığlık atar. Notlar o kadar çoğalır ki Mimi boğulacak gibi olur. Sonunda hapşırır ve tüm notlar uçuşarak dolabın üzerine yapışır. Mimi rahat bir nefes alır ama dolap hâlâ dağınıktır.",
+            "protectedIntent": [
+              "Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger",
+              "Mimi tries to peel the stuck note away with her other hand; the note splits into two",
+              "Mimi continues to pull; each pull doubles the number of sticky notes",
+              "Mimi sees herself in a mirror and screams",
+              "Mimi sneezes and the sticky notes fly off"
+            ],
+            "generatorSettings": {
+              "generator": "SEEDANCE_2_0_MINI",
+              "duration": 15,
+              "settings": {
+                "mode": "image2video",
+                "resolution": "480p",
+                "aspectRatio": "9:16"
+              }
+            },
+            "optimizationObjectives": {
+              "candidate-a": "FIRST_FRAME_ANOMALY_CLARITY_CURIOSITY",
+              "candidate-b": "BEAT_PROGRESSION_TIMING_ESCALATION_SEEDANCE_FEASIBILITY"
+            },
+            "sourcePromptSha256": "0fe229774deb4b31a42145bad91cf10c91634ba00da39fa3e9d288b3a2e7bd98",
+            "approvedStorySha256": "df653dbcaf16bfdbceb87baa23688d70d739c34941d0075e30e96b181e1bf32b",
+            "characterIdentity": {
+              "primary": "Mimi",
+              "secondary": null,
+              "characterRefs": []
+            },
+            "openingCausalParticipants": {
+              "state": "OBSERVED",
+              "sourceQuote": "instead of sticking to the cabinet, the note visibly clings to her finger",
+              "sourceSpan": [
+                301,
+                374
+              ],
+              "method": "CONTRASTIVE_SURFACE_ATTACHMENT_PATTERN",
+              "semanticVerification": "NOT_PERFORMED",
+              "object": {
+                "value": "the note",
+                "state": "OBSERVED"
+              },
+              "expectedSurface": {
+                "value": "the cabinet",
+                "state": "OBSERVED"
+              },
+              "actualSurface": {
+                "value": "her finger",
+                "state": "OBSERVED"
+              },
+              "relationship": {
+                "value": "WRONG_SURFACE_ATTACHMENT",
+                "state": "INFERRED"
+              }
+            },
+            "corePhysicalRule": {
+              "state": "OBSERVED",
+              "sourceQuote": "each pull doubles the number of sticky notes",
+              "sourceSpan": [
+                709,
+                753
+              ],
+              "method": "EXPLICIT_REPEATED_ACTION_CLAUSE",
+              "semanticVerification": "NOT_PERFORMED"
+            },
+            "requiredEnding": {
+              "sourceBeatId": "beat_05",
+              "sourceQuote": "12-15s: Mimi sneezes and the sticky notes fly off [medium shot of notes flying] notes scatter and stick to the cabinet -> Mimi breathes a sigh of relief but the cabinet remains messy"
+            },
+            "events": [
+              {
+                "sourceBeatId": "beat_01",
+                "sourceQuote": "0-2s: Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger [close-up on Mimi's hand] Mimi is in front of a toy cabinet, looking determined -> the note sticks to Mimi, not the cabinet",
+                "actionAnchor": "Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger",
+                "startTime": 0.0,
+                "endTime": 2.0
+              },
+              {
+                "sourceBeatId": "beat_02",
+                "sourceQuote": "2-5s: Mimi tries to peel the stuck note away with her other hand; the note splits into two [medium shot of Mimi struggling] Mimi pulls at the note -> one note sticks to each hand",
+                "actionAnchor": "Mimi tries to peel the stuck note away with her other hand; the note splits into two",
+                "startTime": 2.0,
+                "endTime": 5.0
+              },
+              {
+                "sourceBeatId": "beat_03",
+                "sourceQuote": "5-10s: Mimi continues to pull; each pull doubles the number of sticky notes [wide shot showing Mimi covered in notes] notes multiply from two to four to eight as she pulls, progressively covering her arms, legs and face -> Mimi is overwhelmed by notes",
+                "actionAnchor": "Mimi continues to pull; each pull doubles the number of sticky notes",
+                "startTime": 5.0,
+                "endTime": 10.0
+              },
+              {
+                "sourceBeatId": "beat_04",
+                "sourceQuote": "10-12s: Mimi sees herself in a mirror and screams [close-up on Mimi's shocked face] Mimi is startled by her reflection completely covered in notes -> Mimi is startled",
+                "actionAnchor": "Mimi sees herself in a mirror and screams",
+                "startTime": 10.0,
+                "endTime": 12.0
+              },
+              {
+                "sourceBeatId": "beat_05",
+                "sourceQuote": "12-15s: Mimi sneezes and the sticky notes fly off [medium shot of notes flying] notes scatter and stick to the cabinet -> Mimi breathes a sigh of relief but the cabinet remains messy",
+                "actionAnchor": "Mimi sneezes and the sticky notes fly off",
+                "startTime": 12.0,
+                "endTime": 15.0
+              }
+            ],
+            "semanticStoryFidelity": "UNKNOWN",
+            "visualEvidence": "NOT_SUPPLIED"
+          },
+          "protectedLayer": [
+            "identity",
+            "premise",
+            "approved events and order",
+            "physical rule",
+            "outcomes",
+            "ending",
+            "safety"
+          ],
+          "editableLayer": [
+            "staging",
+            "spatial visibility",
+            "choreography",
+            "composition",
+            "continuity",
+            "relative timing",
+            "visual emphasis"
+          ],
+          "opportunities": [
+            {
+              "opportunityId": "CONTACT_PLANE:beat_01",
+              "beatId": "beat_01",
+              "timeWindow": [
+                0.0,
+                2.0
+              ],
+              "dimension": "VISUAL_STORYTELLING",
+              "currentExecution": "0-2s: Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger [close-up on Mimi's hand] Mimi is in front of a toy cabinet, looking determined -> the note sticks to Mimi, not the cabinet",
+              "sourceEvidence": {
+                "quote": "0-2s: Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger [close-up on Mimi's hand] Mimi is in front of a toy cabinet, looking determined -> the note sticks to Mimi, not the cabinet",
+                "span": [
+                  239,
+                  498
+                ],
+                "status": "EXACT_SOURCE_TEXT"
+              },
+              "weaknessOrUncertainty": "The source names intended and actual attachment surfaces but does not specify their spatial alignment, contact plane or occlusion control.",
+              "proposedImprovement": "Stage the intended surface behind or beside the actual attachment point; follow the existing reach continuously, retaining the failed destination and wrong attachment in view.",
+              "expectedVisualChange": "The reach destination and wrong-surface attachment have distinct visible positions through contact.",
+              "viewingRationale": "A viewer may be able to distinguish the cited physical states; this is a hypothesis, not audience evidence.",
+              "productionRisk": "Keeping both surfaces visible may increase composition density; actual contact geometry needs image review.",
+              "confidence": "TEXT_SUPPORTED_HYPOTHESIS",
+              "classification": "CREATIVE_IMPROVEMENT_HYPOTHESIS",
+              "operation": "CONTACT_PLANE",
+              "bindings": [
+                "the cabinet",
+                "her finger"
+              ],
+              "benefitEvidence": "UNVERIFIED_UNTIL_VISUAL_REVIEW"
+            },
+            {
+              "opportunityId": "SEPARATE_ACTION_RESULT:beat_02",
+              "beatId": "beat_02",
+              "timeWindow": [
+                2.0,
+                5.0
+              ],
+              "dimension": "PRODUCTION_EXECUTABILITY",
+              "currentExecution": "2-5s: Mimi tries to peel the stuck note away with her other hand; the note splits into two [medium shot of Mimi struggling] Mimi pulls at the note -> one note sticks to each hand",
+              "sourceEvidence": {
+                "quote": "2-5s: Mimi tries to peel the stuck note away with her other hand; the note splits into two [medium shot of Mimi struggling] Mimi pulls at the note -> one note sticks to each hand",
+                "span": [
+                  499,
+                  677
+                ],
+                "status": "EXACT_SOURCE_TEXT"
+              },
+              "weaknessOrUncertainty": "The source states an action and result without separating their screen positions or protecting their visibility during the transition.",
+              "proposedImprovement": "Separate the two source-bound action/result regions and retain their transition in one locked shot.",
+              "expectedVisualChange": "The action and resulting state occupy distinguishable regions with continuous visible contact.",
+              "viewingRationale": "A viewer may be able to distinguish the cited physical states; this is a hypothesis, not audience evidence.",
+              "productionRisk": "A wider contact tableau may reduce facial detail; visual continuity remains unverified.",
+              "confidence": "TEXT_SUPPORTED_HYPOTHESIS",
+              "classification": "CREATIVE_IMPROVEMENT_HYPOTHESIS",
+              "operation": "SEPARATE_ACTION_RESULT",
+              "bindings": [
+                "2-5s: Mimi tries to peel the stuck note away with her other hand; the note splits into two  Mimi pulls at the note",
+                "one note sticks to each hand"
+              ],
+              "benefitEvidence": "UNVERIFIED_UNTIL_VISUAL_REVIEW"
+            },
+            {
+              "opportunityId": "COUNTABLE_STATE_PATH:beat_03",
+              "beatId": "beat_03",
+              "timeWindow": [
+                5.0,
+                10.0
+              ],
+              "dimension": "CAUSAL_PROGRESSION",
+              "currentExecution": "5-10s: Mimi continues to pull; each pull doubles the number of sticky notes [wide shot showing Mimi covered in notes] notes multiply from two to four to eight as she pulls, progressively covering her arms, legs and face -> Mimi is overwhelmed by notes",
+              "sourceEvidence": {
+                "quote": "5-10s: Mimi continues to pull; each pull doubles the number of sticky notes [wide shot showing Mimi covered in notes] notes multiply from two to four to eight as she pulls, progressively covering her arms, legs and face -> Mimi is overwhelmed by notes",
+                "span": [
+                  678,
+                  929
+                ],
+                "status": "EXACT_SOURCE_TEXT"
+              },
+              "weaknessOrUncertainty": "The source lists a count progression but gives no continuity, spatial grouping or unobstructed count-transition choreography.",
+              "proposedImprovement": "Expose the complete existing count path in stable spatial groups; couple each count transition to the existing pull without an edit hiding contact.",
+              "expectedVisualChange": "Each existing count state has a distinguishable arrangement before progressive body coverage.",
+              "viewingRationale": "A viewer may be able to distinguish the cited physical states; this is a hypothesis, not audience evidence.",
+              "productionRisk": "Count fidelity and fine contact remain difficult; arrangement is a proposed mitigation, not verified generator capability.",
+              "confidence": "TEXT_SUPPORTED_HYPOTHESIS",
+              "classification": "EVIDENCE_SUPPORTED_EXECUTION_RISK",
+              "operation": "COUNTABLE_STATE_PATH",
+              "bindings": [
+                "two",
+                "four",
+                "eight"
+              ],
+              "benefitEvidence": "UNVERIFIED_UNTIL_VISUAL_REVIEW"
+            }
+          ],
+          "dimensions": [
+            {
+              "dimension": "SCROLL_STOP_VISUAL_PROMISE",
+              "status": "VISUAL_EVIDENCE_REQUIRED",
+              "numericScore": null
+            },
+            {
+              "dimension": "CAUSAL_PROGRESSION",
+              "status": "TEXTUAL_HYPOTHESES_AVAILABLE",
+              "numericScore": null
+            },
+            {
+              "dimension": "VISUAL_STORYTELLING",
+              "status": "TEXTUAL_HYPOTHESES_AVAILABLE",
+              "numericScore": null
+            },
+            {
+              "dimension": "PRODUCTION_EXECUTABILITY",
+              "status": "TEXTUAL_HYPOTHESES_AVAILABLE",
+              "numericScore": null
+            },
+            {
+              "dimension": "ENDING_REPLAY",
+              "status": "VISUAL_EVIDENCE_REQUIRED",
+              "numericScore": null
+            },
+            {
+              "dimension": "DISTINCTIVE_CREATIVE_VALUE",
+              "status": "VISUAL_EVIDENCE_REQUIRED",
+              "numericScore": null
+            }
+          ],
+          "endingReview": {
+            "sourceQuote": "12-15s: Mimi sneezes and the sticky notes fly off [medium shot of notes flying] notes scatter and stick to the cabinet -> Mimi breathes a sigh of relief but the cabinet remains messy",
+            "sourceSpan": [
+              1097,
+              1279
+            ],
+            "classification": "VISUAL_EVIDENCE_REQUIRED",
+            "loopRequired": false
+          },
+          "semanticStoryFidelity": "UNKNOWN",
+          "renderAuthorization": "NOT_GRANTED"
+        },
+        "maxCandidates": 2,
+        "maxRevisionsPerCandidate": 1,
+        "revisionBudget": "WITHIN_THIS_SINGLE_RESPONSE_ONLY",
+        "visualEvidence": "NOT_SUPPLIED",
+        "audienceEvidence": "NOT_SUPPLIED"
+      },
+      "runtimeConstructedPlanResponse": {
+        "proposals": [
+          {
+            "initial": {
+              "candidateId": "candidate-a",
+              "title": "Reconstruct causal progression",
+              "objective": "Expose the complete existing count path in stable spatial groups; couple each count transition to the existing pull without an edit hiding contact.",
+              "interventions": [
+                {
+                  "opportunityId": "COUNTABLE_STATE_PATH:beat_03",
+                  "operation": "COUNTABLE_STATE_PATH",
+                  "layout": "LATERAL",
+                  "camera": "LOCKED",
+                  "rationale": "Each existing count state has a distinguishable arrangement before progressive body coverage. Actual visual benefit remains unverified."
+                }
+              ],
+              "storyChangeRequested": false
+            },
+            "revision": null
+          }
+        ],
+        "noImprovementReason": null
+      },
+      "compiledCandidates": [
+        {
+          "prompt": "TITLE / FORMAT\nMimi Sticky / 15s Video\n\nVISUAL STYLE\nBright and colorful animation with a playful tone.\n\nCHARACTER / CONTINUITY\nMimi, an anthropomorphic bunny, interacts with sticky notes in a humorous and chaotic manner.\n\nTIMED SHOT PLAN\n0-2s: Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger [close-up on Mimi's hand] Mimi is in front of a toy cabinet, looking determined -> the note sticks to Mimi, not the cabinet\n2-5s: Mimi tries to peel the stuck note away with her other hand; the note splits into two [medium shot of Mimi struggling] Mimi pulls at the note -> one note sticks to each hand\n5-10s: Mimi continues to pull; each pull doubles the number of sticky notes  notes multiply from two to four to eight as she pulls, progressively covering her arms, legs and face -> Mimi is overwhelmed by notes [locked-off medium shot; Arrange the existing multiplying objects across left and right screen regions as countable separated groups. Expose the complete existing count sequence two → four → eight; after each existing pull, show its resulting group without overlap obscuring the count before the next pull. Keep the pull/contact path continuous and the group positions stable between transformations; let the established progressive body coverage follow the growing groups. Use the original beat window, with no invented sub-beat timestamps, additional pull, freeze or new outcome.]\n10-12s: Mimi sees herself in a mirror and screams [close-up on Mimi's shocked face] Mimi is startled by her reflection completely covered in notes -> Mimi is startled\n12-15s: Mimi sneezes and the sticky notes fly off [medium shot of notes flying] notes scatter and stick to the cabinet -> Mimi breathes a sigh of relief but the cabinet remains messy\n\nAUDIO\nPlayful background music with sound effects for sneezing and notes sticking.\n\nNEGATIVE CONSTRAINTS\nNo dark themes or violence.\n\nFINAL CUT\nMimi is relieved but the cabinet remains visibly messy.\n\nCHARACTER IDENTITY LOCK\nMimi is the established anthropomorphic bunny character. Preserve that identity; do not render a human or invent unverified visual details. No approved visual reference is currently bound, so appearance details remain unverified.\n\nPRODUCTION SETTINGS\nAspect ratio: 9:16. Target generator: SEEDANCE_2_0_MINI. Content profile: ABSURD_PHYSICS.",
+          "reconstructionPlan": {
+            "candidateId": "candidate-a",
+            "title": "Reconstruct causal progression",
+            "objective": "Expose the complete existing count path in stable spatial groups; couple each count transition to the existing pull without an edit hiding contact.",
+            "interventions": [
+              {
+                "opportunityId": "COUNTABLE_STATE_PATH:beat_03",
+                "operation": "COUNTABLE_STATE_PATH",
+                "layout": "LATERAL",
+                "camera": "LOCKED",
+                "rationale": "Each existing count state has a distinguishable arrangement before progressive body coverage. Actual visual benefit remains unverified."
+              }
+            ],
+            "storyChangeRequested": false
+          },
+          "planValidation": {
+            "contractVersion": "creative-reconstruction-v2",
+            "status": "SOURCE_BOUND_MATERIAL_PLAN",
+            "storyFidelity": "UNKNOWN",
+            "sourcePromptSha256": "0fe229774deb4b31a42145bad91cf10c91634ba00da39fa3e9d288b3a2e7bd98",
+            "preservedStorySha256": "df653dbcaf16bfdbceb87baa23688d70d739c34941d0075e30e96b181e1bf32b",
+            "renderAuthorization": "NOT_GRANTED"
+          },
+          "sourceEventCoverage": {
+            "status": "SOURCE_TEXT_COVERED",
+            "semanticFidelity": "UNKNOWN",
+            "sourceEventCount": 5,
+            "candidateShotCount": 5,
+            "mappings": [
+              {
+                "baselineBeatId": "beat_01",
+                "baselineQuote": "0-2s: Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger [close-up on Mimi's hand] Mimi is in front of a toy cabinet, looking determined -> the note sticks to Mimi, not the cabinet",
+                "baselineSourceSpan": [
+                  239,
+                  498
+                ],
+                "candidateQuote": "0-2s: Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger [close-up on Mimi's hand] Mimi is in front of a toy cabinet, looking determined -> the note sticks to Mimi, not the cabinet",
+                "candidateSourceSpan": [
+                  239,
+                  498
+                ],
+                "method": "EXACT_NARRATIVE_AND_SERVER_COMPILED_EXECUTION"
+              },
+              {
+                "baselineBeatId": "beat_02",
+                "baselineQuote": "2-5s: Mimi tries to peel the stuck note away with her other hand; the note splits into two [medium shot of Mimi struggling] Mimi pulls at the note -> one note sticks to each hand",
+                "baselineSourceSpan": [
+                  499,
+                  677
+                ],
+                "candidateQuote": "2-5s: Mimi tries to peel the stuck note away with her other hand; the note splits into two [medium shot of Mimi struggling] Mimi pulls at the note -> one note sticks to each hand",
+                "candidateSourceSpan": [
+                  499,
+                  677
+                ],
+                "method": "EXACT_NARRATIVE_AND_SERVER_COMPILED_EXECUTION"
+              },
+              {
+                "baselineBeatId": "beat_03",
+                "baselineQuote": "5-10s: Mimi continues to pull; each pull doubles the number of sticky notes [wide shot showing Mimi covered in notes] notes multiply from two to four to eight as she pulls, progressively covering her arms, legs and face -> Mimi is overwhelmed by notes",
+                "baselineSourceSpan": [
+                  678,
+                  929
+                ],
+                "candidateQuote": "5-10s: Mimi continues to pull; each pull doubles the number of sticky notes  notes multiply from two to four to eight as she pulls, progressively covering her arms, legs and face -> Mimi is overwhelmed by notes [locked-off medium shot; Arrange the existing multiplying objects across left and right screen regions as countable separated groups. Expose the complete existing count sequence two → four → eight; after each existing pull, show its resulting group without overlap obscuring the count before the next pull. Keep the pull/contact path continuous and the group positions stable between transformations; let the established progressive body coverage follow the growing groups. Use the original beat window, with no invented sub-beat timestamps, additional pull, freeze or new outcome.]",
+                "candidateSourceSpan": [
+                  678,
+                  1471
+                ],
+                "method": "EXACT_NARRATIVE_AND_SERVER_COMPILED_EXECUTION"
+              },
+              {
+                "baselineBeatId": "beat_04",
+                "baselineQuote": "10-12s: Mimi sees herself in a mirror and screams [close-up on Mimi's shocked face] Mimi is startled by her reflection completely covered in notes -> Mimi is startled",
+                "baselineSourceSpan": [
+                  930,
+                  1096
+                ],
+                "candidateQuote": "10-12s: Mimi sees herself in a mirror and screams [close-up on Mimi's shocked face] Mimi is startled by her reflection completely covered in notes -> Mimi is startled",
+                "candidateSourceSpan": [
+                  1472,
+                  1638
+                ],
+                "method": "EXACT_NARRATIVE_AND_SERVER_COMPILED_EXECUTION"
+              },
+              {
+                "baselineBeatId": "beat_05",
+                "baselineQuote": "12-15s: Mimi sneezes and the sticky notes fly off [medium shot of notes flying] notes scatter and stick to the cabinet -> Mimi breathes a sigh of relief but the cabinet remains messy",
+                "baselineSourceSpan": [
+                  1097,
+                  1279
+                ],
+                "candidateQuote": "12-15s: Mimi sneezes and the sticky notes fly off [medium shot of notes flying] notes scatter and stick to the cabinet -> Mimi breathes a sigh of relief but the cabinet remains messy",
+                "candidateSourceSpan": [
+                  1639,
+                  1821
+                ],
+                "method": "EXACT_NARRATIVE_AND_SERVER_COMPILED_EXECUTION"
+              }
+            ]
+          },
+          "canonicalScore": 87.88541666666669
+        }
+      ],
+      "assessment": {
+        "contractVersion": "creative-reconstruction-v2",
+        "integrityStatus": "COMPLETE_CANDIDATE_SET",
+        "actualCandidateCount": 1,
+        "recommendation": "KEEP_ORIGINAL",
+        "conclusion": "No defensible material improvement available. Keep Original.",
+        "baselineScore": 88.40625000000001,
+        "candidates": [
+          {
+            "candidateId": "candidate-a",
+            "contractVersion": "creative-reconstruction-v2",
+            "classification": "REGRESSION",
+            "approvalEligible": false,
+            "approvalBlockReason": "Canonical evaluation missing or regressed; explicit review is unavailable.",
+            "actualChanges": [
+              "Arrange the existing multiplying objects across left and right screen regions as countable separated groups. Expose the complete existing count sequence two → four → eight; after each existing pull, show its resulting group without overlap obscuring the count before the next pull. Keep the pull/contact path continuous and the group positions stable between transformations; let the established progressive body coverage follow the growing groups. Use the original beat window, with no invented sub-beat timestamps, additional pull, freeze or new outcome."
+            ],
+            "creativeAssessment": {
+              "contractVersion": "creative-quality-evidence-v2",
+              "classification": "REGRESSION",
+              "dimensions": [
+                {
+                  "dimension": "SCROLL_STOP_VISUAL_PROMISE",
+                  "assessment": "Opening source retained",
+                  "evidence": "PLANNED_TEXT_ONLY"
+                },
+                {
+                  "dimension": "CAUSAL_PROGRESSION",
+                  "assessment": "Explicit count-state arrangement proposed",
+                  "evidence": "PLANNED_TEXT_ONLY"
+                },
+                {
+                  "dimension": "VISUAL_STORYTELLING",
+                  "assessment": "Source-bound spatial separation and contact visibility changed",
+                  "evidence": "OBSERVED_TEXTUAL_CHANGE"
+                },
+                {
+                  "dimension": "PRODUCTION_EXECUTABILITY",
+                  "assessment": "Locked continuity and occlusion mitigation proposed; actual risk change UNKNOWN",
+                  "evidence": "UNVERIFIED_GENERATOR_HYPOTHESIS"
+                },
+                {
+                  "dimension": "ENDING_REPLAY",
+                  "assessment": "Approved ending retained; no loop or audience benefit assumed",
+                  "evidence": "EXACT_SOURCE_TEXT"
+                },
+                {
+                  "dimension": "DISTINCTIVE_CREATIVE_VALUE",
+                  "assessment": "Concrete choreography differs from source; novelty and viewer value unverified",
+                  "evidence": "OBSERVED_TEXTUAL_CHANGE"
+                }
+              ],
+              "materiality": "SOURCE_BOUND_SPATIAL_CHOREOGRAPHIC_CHANGE",
+              "changeContract": [
+                {
+                  "opportunityId": "COUNTABLE_STATE_PATH:beat_03",
+                  "beatId": "beat_03",
+                  "originalExecution": "5-10s: Mimi continues to pull; each pull doubles the number of sticky notes [wide shot showing Mimi covered in notes] notes multiply from two to four to eight as she pulls, progressively covering her arms, legs and face -> Mimi is overwhelmed by notes",
+                  "newExecution": "5-10s: Mimi continues to pull; each pull doubles the number of sticky notes  notes multiply from two to four to eight as she pulls, progressively covering her arms, legs and face -> Mimi is overwhelmed by notes [locked-off medium shot; Arrange the existing multiplying objects across left and right screen regions as countable separated groups. Expose the complete existing count sequence two → four → eight; after each existing pull, show its resulting group without overlap obscuring the count before the next pull. Keep the pull/contact path continuous and the group positions stable between transformations; let the established progressive body coverage follow the growing groups. Use the original beat window, with no invented sub-beat timestamps, additional pull, freeze or new outcome.]",
+                  "observableDifference": "Arrange the existing multiplying objects across left and right screen regions as countable separated groups. Expose the complete existing count sequence two → four → eight; after each existing pull, show its resulting group without overlap obscuring the count before the next pull. Keep the pull/contact path continuous and the group positions stable between transformations; let the established progressive body coverage follow the growing groups. Use the original beat window, with no invented sub-beat timestamps, additional pull, freeze or new outcome.",
+                  "creativeRationale": "Each existing count state has a distinguishable arrangement before progressive body coverage. Actual visual benefit remains unverified.",
+                  "sourceFidelity": {
+                    "quote": "5-10s: Mimi continues to pull; each pull doubles the number of sticky notes [wide shot showing Mimi covered in notes] notes multiply from two to four to eight as she pulls, progressively covering her arms, legs and face -> Mimi is overwhelmed by notes",
+                    "span": [
+                      678,
+                      929
+                    ],
+                    "protectedEventUnchanged": true,
+                    "semanticFidelity": "UNKNOWN"
+                  },
+                  "productionRisk": {
+                    "change": "UNKNOWN",
+                    "evidence": "Count fidelity and fine contact remain difficult; arrangement is a proposed mitigation, not verified generator capability.",
+                    "newMitigation": "Locked contact view with explicit spatial separation."
+                  },
+                  "evidenceLimitation": "Text specifies a different execution. Render adherence, visual clarity and audience benefit are unverified."
+                }
+              ],
+              "critique": {
+                "status": "ACCEPTED_TEXTUAL_PLAN",
+                "reasons": [],
+                "checks": {
+                  "observableChange": true,
+                  "addressesDiagnosis": true,
+                  "sourceBoundOperations": true,
+                  "semanticStoryFidelity": "UNKNOWN",
+                  "generatorSuccess": "UNKNOWN",
+                  "audienceBenefit": "UNMEASURED"
+                },
+                "revisionFeedback": []
+              },
+              "semanticStoryFidelity": "UNKNOWN",
+              "audiencePerformance": "UNMEASURED",
+              "canonicalCompliance": "SEPARATELY_EVALUATED",
+              "provenBetter": false,
+              "canonicalChanges": [
+                {
+                  "ruleId": "PRODUCIBILITY_001",
+                  "before": {
+                    "family": "ai_producibility",
+                    "ruleId": "PRODUCIBILITY_001",
+                    "details": {
+                      "recommendation": "Prompts marked as \"very_high\" complexity should not proceed\nto render without human review and risk acceptance.\n\nVery high complexity typically means 4+ simultaneous high-risk\noperations or untested novel requirements.",
+                      "evaluation_stage": "PRE_RENDER"
+                    },
+                    "message": "Acceptable complexity: medium.",
+                    "outcome": "PASS",
+                    "ruleName": "Very High Complexity Block",
+                    "severity": "PASS"
+                  },
+                  "after": {
+                    "ruleId": "PRODUCIBILITY_001",
+                    "ruleName": "Very High Complexity Block",
+                    "family": "ai_producibility",
+                    "severity": "WARNING",
+                    "outcome": "PASS",
+                    "message": "Overall complexity: high. Render uncertain. Consider simplifications.",
+                    "details": {
+                      "evaluation_stage": "PRE_RENDER",
+                      "recommendation": "Prompts marked as \"very_high\" complexity should not proceed\nto render without human review and risk acceptance.\n\nVery high complexity typically means 4+ simultaneous high-risk\noperations or untested novel requirements."
+                    }
+                  }
+                }
+              ],
+              "productionRiskIndicatorRegression": true,
+              "canonicalScore": 87.88541666666669,
+              "canonicalRegression": true,
+              "newCanonicalFailures": []
+            },
+            "conclusion": "Source-bound execution changes introduced a canonical or production-risk regression; do not approve.",
+            "validationStatus": "SOURCE_TEXT_CONTRACT_PASSED",
+            "storyCoverage": "SOURCE_EVENTS_COVERED; SEMANTIC_FIDELITY_UNKNOWN",
+            "endingPreservation": "PROTECTED_ENDING_TEXT_PRESERVED",
+            "productionRiskChange": "UNKNOWN; proposed mitigations require visual review.",
+            "qualityScore": 87.88541666666669,
+            "scoreDelta": -0.5208333333333286
+          }
+        ],
+        "providerCalls": 0,
+        "rawCandidatesPreserved": true
+      },
+      "realProviderCalls": 0,
+      "promptVersionsCreated": 0,
+      "modelCreativeEffectiveness": "NOT_TESTED"
+    },
+    {
+      "case": "ephemeral_source_state_counterfactual",
+      "inputType": "EPHEMERAL_TEST_INPUT_NOT_PERSISTED",
+      "objectiveDimension": "CAUSAL_PROGRESSION",
+      "planner": "TEST_ONLY_DETERMINISTIC_DIAGNOSIS_DRIVEN_POLICY",
+      "plannerReceivedPreparedAnswer": false,
+      "runtimeRequest": {
+        "phase": "CREATIVE_DIAGNOSIS_RECONSTRUCTION_CRITIQUE",
+        "contractVersion": "creative-reconstruction-v2",
+        "creativeDiagnosis": {
+          "contractVersion": "creative-reconstruction-v2",
+          "qualityModelVersion": "creative-quality-evidence-v2",
+          "openingStrategy": "AUTO",
+          "protectedStoryContract": {
+            "contractVersion": "optimization-profile-ownership-v1",
+            "baselinePromptText": "TITLE / FORMAT\nMimi Sticky / 15s Video\n\nVISUAL STYLE\nBright and colorful animation with a playful tone.\n\nCHARACTER / CONTINUITY\nMimi, an anthropomorphic bunny, interacts with sticky notes in a humorous and chaotic manner.\n\nTIMED SHOT PLAN\n0-2s: Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger [close-up on Mimi's hand] Mimi is in front of a toy cabinet, looking determined -> the note sticks to Mimi, not the cabinet\n2-5s: Mimi tries to peel the stuck note away with her other hand; the note splits into two [medium shot of Mimi struggling] Mimi pulls at the note -> one note sticks to each hand\n5-10s: Mimi continues to pull; each pull doubles the number of sticky notes [wide shot showing Mimi covered in notes] notes multiply from three to six to twelve as she pulls, progressively covering her arms, legs and face -> Mimi is overwhelmed by notes\n10-12s: Mimi sees herself in a mirror and screams [close-up on Mimi's shocked face] Mimi is startled by her reflection completely covered in notes -> Mimi is startled\n12-15s: Mimi sneezes and the sticky notes fly off [medium shot of notes flying] notes scatter and stick to the cabinet -> Mimi breathes a sigh of relief but the cabinet remains messy\n\nAUDIO\nPlayful background music with sound effects for sneezing and notes sticking.\n\nNEGATIVE CONSTRAINTS\nNo dark themes or violence.\n\nFINAL CUT\nMimi is relieved but the cabinet remains visibly messy.\n\nCHARACTER IDENTITY LOCK\nMimi is the established anthropomorphic bunny character. Preserve that identity; do not render a human or invent unverified visual details. No approved visual reference is currently bound, so appearance details remain unverified.\n\nPRODUCTION SETTINGS\nAspect ratio: 9:16. Target generator: SEEDANCE_2_0_MINI. Content profile: AUTO.",
+            "baselinePromptHistoricalProfile": "AUTO",
+            "targetContentProfile": "ABSURD_PHYSICS",
+            "targetOwner": "SERVER_VERSION_BOUND_PRODUCTION_SETTINGS",
+            "productionSettingsRecordId": "2d90c69b-bcec-4871-9c4e-7e029906c974",
+            "approvedStory": "Mimi, oyuncak dolabına 'Topla!' yazan bir yapışkan not yapıştırmak ister. Not, Mimi'nin parmağına yapışır. Mimi diğer eliyle çıkarmaya çalışırken not ikiye ayrılır ve iki eline de yapışır. Her çekişte notlar ikiye katlanarak çoğalır. Kısa sürede Mimi'nin kolları, bacakları ve yüzü notlarla kaplanır. Mimi aynada kendini görünce çığlık atar. Notlar o kadar çoğalır ki Mimi boğulacak gibi olur. Sonunda hapşırır ve tüm notlar uçuşarak dolabın üzerine yapışır. Mimi rahat bir nefes alır ama dolap hâlâ dağınıktır.",
+            "protectedIntent": [
+              "Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger",
+              "Mimi tries to peel the stuck note away with her other hand; the note splits into two",
+              "Mimi continues to pull; each pull doubles the number of sticky notes",
+              "Mimi sees herself in a mirror and screams",
+              "Mimi sneezes and the sticky notes fly off"
+            ],
+            "generatorSettings": {
+              "generator": "SEEDANCE_2_0_MINI",
+              "duration": 15,
+              "settings": {
+                "mode": "image2video",
+                "resolution": "480p",
+                "aspectRatio": "9:16"
+              }
+            },
+            "optimizationObjectives": {
+              "candidate-a": "FIRST_FRAME_ANOMALY_CLARITY_CURIOSITY",
+              "candidate-b": "BEAT_PROGRESSION_TIMING_ESCALATION_SEEDANCE_FEASIBILITY"
+            },
+            "sourcePromptSha256": "570f92c57ac4f3c193eeed36f713df569d847925666ef6fca67f46b2557285c5",
+            "approvedStorySha256": "df653dbcaf16bfdbceb87baa23688d70d739c34941d0075e30e96b181e1bf32b",
+            "characterIdentity": {
+              "primary": "Mimi",
+              "secondary": null,
+              "characterRefs": []
+            },
+            "openingCausalParticipants": {
+              "state": "OBSERVED",
+              "sourceQuote": "instead of sticking to the cabinet, the note visibly clings to her finger",
+              "sourceSpan": [
+                301,
+                374
+              ],
+              "method": "CONTRASTIVE_SURFACE_ATTACHMENT_PATTERN",
+              "semanticVerification": "NOT_PERFORMED",
+              "object": {
+                "value": "the note",
+                "state": "OBSERVED"
+              },
+              "expectedSurface": {
+                "value": "the cabinet",
+                "state": "OBSERVED"
+              },
+              "actualSurface": {
+                "value": "her finger",
+                "state": "OBSERVED"
+              },
+              "relationship": {
+                "value": "WRONG_SURFACE_ATTACHMENT",
+                "state": "INFERRED"
+              }
+            },
+            "corePhysicalRule": {
+              "state": "OBSERVED",
+              "sourceQuote": "each pull doubles the number of sticky notes",
+              "sourceSpan": [
+                709,
+                753
+              ],
+              "method": "EXPLICIT_REPEATED_ACTION_CLAUSE",
+              "semanticVerification": "NOT_PERFORMED"
+            },
+            "requiredEnding": {
+              "sourceBeatId": "beat_05",
+              "sourceQuote": "12-15s: Mimi sneezes and the sticky notes fly off [medium shot of notes flying] notes scatter and stick to the cabinet -> Mimi breathes a sigh of relief but the cabinet remains messy"
+            },
+            "events": [
+              {
+                "sourceBeatId": "beat_01",
+                "sourceQuote": "0-2s: Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger [close-up on Mimi's hand] Mimi is in front of a toy cabinet, looking determined -> the note sticks to Mimi, not the cabinet",
+                "actionAnchor": "Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger",
+                "startTime": 0.0,
+                "endTime": 2.0
+              },
+              {
+                "sourceBeatId": "beat_02",
+                "sourceQuote": "2-5s: Mimi tries to peel the stuck note away with her other hand; the note splits into two [medium shot of Mimi struggling] Mimi pulls at the note -> one note sticks to each hand",
+                "actionAnchor": "Mimi tries to peel the stuck note away with her other hand; the note splits into two",
+                "startTime": 2.0,
+                "endTime": 5.0
+              },
+              {
+                "sourceBeatId": "beat_03",
+                "sourceQuote": "5-10s: Mimi continues to pull; each pull doubles the number of sticky notes [wide shot showing Mimi covered in notes] notes multiply from three to six to twelve as she pulls, progressively covering her arms, legs and face -> Mimi is overwhelmed by notes",
+                "actionAnchor": "Mimi continues to pull; each pull doubles the number of sticky notes",
+                "startTime": 5.0,
+                "endTime": 10.0
+              },
+              {
+                "sourceBeatId": "beat_04",
+                "sourceQuote": "10-12s: Mimi sees herself in a mirror and screams [close-up on Mimi's shocked face] Mimi is startled by her reflection completely covered in notes -> Mimi is startled",
+                "actionAnchor": "Mimi sees herself in a mirror and screams",
+                "startTime": 10.0,
+                "endTime": 12.0
+              },
+              {
+                "sourceBeatId": "beat_05",
+                "sourceQuote": "12-15s: Mimi sneezes and the sticky notes fly off [medium shot of notes flying] notes scatter and stick to the cabinet -> Mimi breathes a sigh of relief but the cabinet remains messy",
+                "actionAnchor": "Mimi sneezes and the sticky notes fly off",
+                "startTime": 12.0,
+                "endTime": 15.0
+              }
+            ],
+            "semanticStoryFidelity": "UNKNOWN",
+            "visualEvidence": "NOT_SUPPLIED"
+          },
+          "protectedLayer": [
+            "identity",
+            "premise",
+            "approved events and order",
+            "physical rule",
+            "outcomes",
+            "ending",
+            "safety"
+          ],
+          "editableLayer": [
+            "staging",
+            "spatial visibility",
+            "choreography",
+            "composition",
+            "continuity",
+            "relative timing",
+            "visual emphasis"
+          ],
+          "opportunities": [
+            {
+              "opportunityId": "CONTACT_PLANE:beat_01",
+              "beatId": "beat_01",
+              "timeWindow": [
+                0.0,
+                2.0
+              ],
+              "dimension": "VISUAL_STORYTELLING",
+              "currentExecution": "0-2s: Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger [close-up on Mimi's hand] Mimi is in front of a toy cabinet, looking determined -> the note sticks to Mimi, not the cabinet",
+              "sourceEvidence": {
+                "quote": "0-2s: Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger [close-up on Mimi's hand] Mimi is in front of a toy cabinet, looking determined -> the note sticks to Mimi, not the cabinet",
+                "span": [
+                  239,
+                  498
+                ],
+                "status": "EXACT_SOURCE_TEXT"
+              },
+              "weaknessOrUncertainty": "The source names intended and actual attachment surfaces but does not specify their spatial alignment, contact plane or occlusion control.",
+              "proposedImprovement": "Stage the intended surface behind or beside the actual attachment point; follow the existing reach continuously, retaining the failed destination and wrong attachment in view.",
+              "expectedVisualChange": "The reach destination and wrong-surface attachment have distinct visible positions through contact.",
+              "viewingRationale": "A viewer may be able to distinguish the cited physical states; this is a hypothesis, not audience evidence.",
+              "productionRisk": "Keeping both surfaces visible may increase composition density; actual contact geometry needs image review.",
+              "confidence": "TEXT_SUPPORTED_HYPOTHESIS",
+              "classification": "CREATIVE_IMPROVEMENT_HYPOTHESIS",
+              "operation": "CONTACT_PLANE",
+              "bindings": [
+                "the cabinet",
+                "her finger"
+              ],
+              "benefitEvidence": "UNVERIFIED_UNTIL_VISUAL_REVIEW"
+            },
+            {
+              "opportunityId": "SEPARATE_ACTION_RESULT:beat_02",
+              "beatId": "beat_02",
+              "timeWindow": [
+                2.0,
+                5.0
+              ],
+              "dimension": "PRODUCTION_EXECUTABILITY",
+              "currentExecution": "2-5s: Mimi tries to peel the stuck note away with her other hand; the note splits into two [medium shot of Mimi struggling] Mimi pulls at the note -> one note sticks to each hand",
+              "sourceEvidence": {
+                "quote": "2-5s: Mimi tries to peel the stuck note away with her other hand; the note splits into two [medium shot of Mimi struggling] Mimi pulls at the note -> one note sticks to each hand",
+                "span": [
+                  499,
+                  677
+                ],
+                "status": "EXACT_SOURCE_TEXT"
+              },
+              "weaknessOrUncertainty": "The source states an action and result without separating their screen positions or protecting their visibility during the transition.",
+              "proposedImprovement": "Separate the two source-bound action/result regions and retain their transition in one locked shot.",
+              "expectedVisualChange": "The action and resulting state occupy distinguishable regions with continuous visible contact.",
+              "viewingRationale": "A viewer may be able to distinguish the cited physical states; this is a hypothesis, not audience evidence.",
+              "productionRisk": "A wider contact tableau may reduce facial detail; visual continuity remains unverified.",
+              "confidence": "TEXT_SUPPORTED_HYPOTHESIS",
+              "classification": "CREATIVE_IMPROVEMENT_HYPOTHESIS",
+              "operation": "SEPARATE_ACTION_RESULT",
+              "bindings": [
+                "2-5s: Mimi tries to peel the stuck note away with her other hand; the note splits into two  Mimi pulls at the note",
+                "one note sticks to each hand"
+              ],
+              "benefitEvidence": "UNVERIFIED_UNTIL_VISUAL_REVIEW"
+            },
+            {
+              "opportunityId": "COUNTABLE_STATE_PATH:beat_03",
+              "beatId": "beat_03",
+              "timeWindow": [
+                5.0,
+                10.0
+              ],
+              "dimension": "CAUSAL_PROGRESSION",
+              "currentExecution": "5-10s: Mimi continues to pull; each pull doubles the number of sticky notes [wide shot showing Mimi covered in notes] notes multiply from three to six to twelve as she pulls, progressively covering her arms, legs and face -> Mimi is overwhelmed by notes",
+              "sourceEvidence": {
+                "quote": "5-10s: Mimi continues to pull; each pull doubles the number of sticky notes [wide shot showing Mimi covered in notes] notes multiply from three to six to twelve as she pulls, progressively covering her arms, legs and face -> Mimi is overwhelmed by notes",
+                "span": [
+                  678,
+                  931
+                ],
+                "status": "EXACT_SOURCE_TEXT"
+              },
+              "weaknessOrUncertainty": "The source lists a count progression but gives no continuity, spatial grouping or unobstructed count-transition choreography.",
+              "proposedImprovement": "Expose the complete existing count path in stable spatial groups; couple each count transition to the existing pull without an edit hiding contact.",
+              "expectedVisualChange": "Each existing count state has a distinguishable arrangement before progressive body coverage.",
+              "viewingRationale": "A viewer may be able to distinguish the cited physical states; this is a hypothesis, not audience evidence.",
+              "productionRisk": "Count fidelity and fine contact remain difficult; arrangement is a proposed mitigation, not verified generator capability.",
+              "confidence": "TEXT_SUPPORTED_HYPOTHESIS",
+              "classification": "EVIDENCE_SUPPORTED_EXECUTION_RISK",
+              "operation": "COUNTABLE_STATE_PATH",
+              "bindings": [
+                "three",
+                "six",
+                "twelve"
+              ],
+              "benefitEvidence": "UNVERIFIED_UNTIL_VISUAL_REVIEW"
+            }
+          ],
+          "dimensions": [
+            {
+              "dimension": "SCROLL_STOP_VISUAL_PROMISE",
+              "status": "VISUAL_EVIDENCE_REQUIRED",
+              "numericScore": null
+            },
+            {
+              "dimension": "CAUSAL_PROGRESSION",
+              "status": "TEXTUAL_HYPOTHESES_AVAILABLE",
+              "numericScore": null
+            },
+            {
+              "dimension": "VISUAL_STORYTELLING",
+              "status": "TEXTUAL_HYPOTHESES_AVAILABLE",
+              "numericScore": null
+            },
+            {
+              "dimension": "PRODUCTION_EXECUTABILITY",
+              "status": "TEXTUAL_HYPOTHESES_AVAILABLE",
+              "numericScore": null
+            },
+            {
+              "dimension": "ENDING_REPLAY",
+              "status": "VISUAL_EVIDENCE_REQUIRED",
+              "numericScore": null
+            },
+            {
+              "dimension": "DISTINCTIVE_CREATIVE_VALUE",
+              "status": "VISUAL_EVIDENCE_REQUIRED",
+              "numericScore": null
+            }
+          ],
+          "endingReview": {
+            "sourceQuote": "12-15s: Mimi sneezes and the sticky notes fly off [medium shot of notes flying] notes scatter and stick to the cabinet -> Mimi breathes a sigh of relief but the cabinet remains messy",
+            "sourceSpan": [
+              1099,
+              1281
+            ],
+            "classification": "VISUAL_EVIDENCE_REQUIRED",
+            "loopRequired": false
+          },
+          "semanticStoryFidelity": "UNKNOWN",
+          "renderAuthorization": "NOT_GRANTED"
+        },
+        "maxCandidates": 2,
+        "maxRevisionsPerCandidate": 1,
+        "revisionBudget": "WITHIN_THIS_SINGLE_RESPONSE_ONLY",
+        "visualEvidence": "NOT_SUPPLIED",
+        "audienceEvidence": "NOT_SUPPLIED"
+      },
+      "runtimeConstructedPlanResponse": {
+        "proposals": [
+          {
+            "initial": {
+              "candidateId": "candidate-a",
+              "title": "Reconstruct causal progression",
+              "objective": "Expose the complete existing count path in stable spatial groups; couple each count transition to the existing pull without an edit hiding contact.",
+              "interventions": [
+                {
+                  "opportunityId": "COUNTABLE_STATE_PATH:beat_03",
+                  "operation": "COUNTABLE_STATE_PATH",
+                  "layout": "LATERAL",
+                  "camera": "LOCKED",
+                  "rationale": "Each existing count state has a distinguishable arrangement before progressive body coverage. Actual visual benefit remains unverified."
+                }
+              ],
+              "storyChangeRequested": false
+            },
+            "revision": null
+          }
+        ],
+        "noImprovementReason": null
+      },
+      "compiledCandidates": [
+        {
+          "prompt": "TITLE / FORMAT\nMimi Sticky / 15s Video\n\nVISUAL STYLE\nBright and colorful animation with a playful tone.\n\nCHARACTER / CONTINUITY\nMimi, an anthropomorphic bunny, interacts with sticky notes in a humorous and chaotic manner.\n\nTIMED SHOT PLAN\n0-2s: Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger [close-up on Mimi's hand] Mimi is in front of a toy cabinet, looking determined -> the note sticks to Mimi, not the cabinet\n2-5s: Mimi tries to peel the stuck note away with her other hand; the note splits into two [medium shot of Mimi struggling] Mimi pulls at the note -> one note sticks to each hand\n5-10s: Mimi continues to pull; each pull doubles the number of sticky notes  notes multiply from three to six to twelve as she pulls, progressively covering her arms, legs and face -> Mimi is overwhelmed by notes [locked-off medium shot; Arrange the existing multiplying objects across left and right screen regions as countable separated groups. Expose the complete existing count sequence three → six → twelve; after each existing pull, show its resulting group without overlap obscuring the count before the next pull. Keep the pull/contact path continuous and the group positions stable between transformations; let the established progressive body coverage follow the growing groups. Use the original beat window, with no invented sub-beat timestamps, additional pull, freeze or new outcome.]\n10-12s: Mimi sees herself in a mirror and screams [close-up on Mimi's shocked face] Mimi is startled by her reflection completely covered in notes -> Mimi is startled\n12-15s: Mimi sneezes and the sticky notes fly off [medium shot of notes flying] notes scatter and stick to the cabinet -> Mimi breathes a sigh of relief but the cabinet remains messy\n\nAUDIO\nPlayful background music with sound effects for sneezing and notes sticking.\n\nNEGATIVE CONSTRAINTS\nNo dark themes or violence.\n\nFINAL CUT\nMimi is relieved but the cabinet remains visibly messy.\n\nCHARACTER IDENTITY LOCK\nMimi is the established anthropomorphic bunny character. Preserve that identity; do not render a human or invent unverified visual details. No approved visual reference is currently bound, so appearance details remain unverified.\n\nPRODUCTION SETTINGS\nAspect ratio: 9:16. Target generator: SEEDANCE_2_0_MINI. Content profile: ABSURD_PHYSICS.",
+          "reconstructionPlan": {
+            "candidateId": "candidate-a",
+            "title": "Reconstruct causal progression",
+            "objective": "Expose the complete existing count path in stable spatial groups; couple each count transition to the existing pull without an edit hiding contact.",
+            "interventions": [
+              {
+                "opportunityId": "COUNTABLE_STATE_PATH:beat_03",
+                "operation": "COUNTABLE_STATE_PATH",
+                "layout": "LATERAL",
+                "camera": "LOCKED",
+                "rationale": "Each existing count state has a distinguishable arrangement before progressive body coverage. Actual visual benefit remains unverified."
+              }
+            ],
+            "storyChangeRequested": false
+          },
+          "planValidation": {
+            "contractVersion": "creative-reconstruction-v2",
+            "status": "SOURCE_BOUND_MATERIAL_PLAN",
+            "storyFidelity": "UNKNOWN",
+            "sourcePromptSha256": "570f92c57ac4f3c193eeed36f713df569d847925666ef6fca67f46b2557285c5",
+            "preservedStorySha256": "df653dbcaf16bfdbceb87baa23688d70d739c34941d0075e30e96b181e1bf32b",
+            "renderAuthorization": "NOT_GRANTED"
+          },
+          "sourceEventCoverage": {
+            "status": "SOURCE_TEXT_COVERED",
+            "semanticFidelity": "UNKNOWN",
+            "sourceEventCount": 5,
+            "candidateShotCount": 5,
+            "mappings": [
+              {
+                "baselineBeatId": "beat_01",
+                "baselineQuote": "0-2s: Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger [close-up on Mimi's hand] Mimi is in front of a toy cabinet, looking determined -> the note sticks to Mimi, not the cabinet",
+                "baselineSourceSpan": [
+                  239,
+                  498
+                ],
+                "candidateQuote": "0-2s: Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger [close-up on Mimi's hand] Mimi is in front of a toy cabinet, looking determined -> the note sticks to Mimi, not the cabinet",
+                "candidateSourceSpan": [
+                  239,
+                  498
+                ],
+                "method": "EXACT_NARRATIVE_AND_SERVER_COMPILED_EXECUTION"
+              },
+              {
+                "baselineBeatId": "beat_02",
+                "baselineQuote": "2-5s: Mimi tries to peel the stuck note away with her other hand; the note splits into two [medium shot of Mimi struggling] Mimi pulls at the note -> one note sticks to each hand",
+                "baselineSourceSpan": [
+                  499,
+                  677
+                ],
+                "candidateQuote": "2-5s: Mimi tries to peel the stuck note away with her other hand; the note splits into two [medium shot of Mimi struggling] Mimi pulls at the note -> one note sticks to each hand",
+                "candidateSourceSpan": [
+                  499,
+                  677
+                ],
+                "method": "EXACT_NARRATIVE_AND_SERVER_COMPILED_EXECUTION"
+              },
+              {
+                "baselineBeatId": "beat_03",
+                "baselineQuote": "5-10s: Mimi continues to pull; each pull doubles the number of sticky notes [wide shot showing Mimi covered in notes] notes multiply from three to six to twelve as she pulls, progressively covering her arms, legs and face -> Mimi is overwhelmed by notes",
+                "baselineSourceSpan": [
+                  678,
+                  931
+                ],
+                "candidateQuote": "5-10s: Mimi continues to pull; each pull doubles the number of sticky notes  notes multiply from three to six to twelve as she pulls, progressively covering her arms, legs and face -> Mimi is overwhelmed by notes [locked-off medium shot; Arrange the existing multiplying objects across left and right screen regions as countable separated groups. Expose the complete existing count sequence three → six → twelve; after each existing pull, show its resulting group without overlap obscuring the count before the next pull. Keep the pull/contact path continuous and the group positions stable between transformations; let the established progressive body coverage follow the growing groups. Use the original beat window, with no invented sub-beat timestamps, additional pull, freeze or new outcome.]",
+                "candidateSourceSpan": [
+                  678,
+                  1475
+                ],
+                "method": "EXACT_NARRATIVE_AND_SERVER_COMPILED_EXECUTION"
+              },
+              {
+                "baselineBeatId": "beat_04",
+                "baselineQuote": "10-12s: Mimi sees herself in a mirror and screams [close-up on Mimi's shocked face] Mimi is startled by her reflection completely covered in notes -> Mimi is startled",
+                "baselineSourceSpan": [
+                  932,
+                  1098
+                ],
+                "candidateQuote": "10-12s: Mimi sees herself in a mirror and screams [close-up on Mimi's shocked face] Mimi is startled by her reflection completely covered in notes -> Mimi is startled",
+                "candidateSourceSpan": [
+                  1476,
+                  1642
+                ],
+                "method": "EXACT_NARRATIVE_AND_SERVER_COMPILED_EXECUTION"
+              },
+              {
+                "baselineBeatId": "beat_05",
+                "baselineQuote": "12-15s: Mimi sneezes and the sticky notes fly off [medium shot of notes flying] notes scatter and stick to the cabinet -> Mimi breathes a sigh of relief but the cabinet remains messy",
+                "baselineSourceSpan": [
+                  1099,
+                  1281
+                ],
+                "candidateQuote": "12-15s: Mimi sneezes and the sticky notes fly off [medium shot of notes flying] notes scatter and stick to the cabinet -> Mimi breathes a sigh of relief but the cabinet remains messy",
+                "candidateSourceSpan": [
+                  1643,
+                  1825
+                ],
+                "method": "EXACT_NARRATIVE_AND_SERVER_COMPILED_EXECUTION"
+              }
+            ]
+          },
+          "canonicalScore": 87.88541666666669
+        }
+      ],
+      "assessment": {
+        "contractVersion": "creative-reconstruction-v2",
+        "integrityStatus": "COMPLETE_CANDIDATE_SET",
+        "actualCandidateCount": 1,
+        "recommendation": "KEEP_ORIGINAL",
+        "conclusion": "No defensible material improvement available. Keep Original.",
+        "baselineScore": 88.40625000000001,
+        "candidates": [
+          {
+            "candidateId": "candidate-a",
+            "contractVersion": "creative-reconstruction-v2",
+            "classification": "REGRESSION",
+            "approvalEligible": false,
+            "approvalBlockReason": "Canonical evaluation missing or regressed; explicit review is unavailable.",
+            "actualChanges": [
+              "Arrange the existing multiplying objects across left and right screen regions as countable separated groups. Expose the complete existing count sequence three → six → twelve; after each existing pull, show its resulting group without overlap obscuring the count before the next pull. Keep the pull/contact path continuous and the group positions stable between transformations; let the established progressive body coverage follow the growing groups. Use the original beat window, with no invented sub-beat timestamps, additional pull, freeze or new outcome."
+            ],
+            "creativeAssessment": {
+              "contractVersion": "creative-quality-evidence-v2",
+              "classification": "REGRESSION",
+              "dimensions": [
+                {
+                  "dimension": "SCROLL_STOP_VISUAL_PROMISE",
+                  "assessment": "Opening source retained",
+                  "evidence": "PLANNED_TEXT_ONLY"
+                },
+                {
+                  "dimension": "CAUSAL_PROGRESSION",
+                  "assessment": "Explicit count-state arrangement proposed",
+                  "evidence": "PLANNED_TEXT_ONLY"
+                },
+                {
+                  "dimension": "VISUAL_STORYTELLING",
+                  "assessment": "Source-bound spatial separation and contact visibility changed",
+                  "evidence": "OBSERVED_TEXTUAL_CHANGE"
+                },
+                {
+                  "dimension": "PRODUCTION_EXECUTABILITY",
+                  "assessment": "Locked continuity and occlusion mitigation proposed; actual risk change UNKNOWN",
+                  "evidence": "UNVERIFIED_GENERATOR_HYPOTHESIS"
+                },
+                {
+                  "dimension": "ENDING_REPLAY",
+                  "assessment": "Approved ending retained; no loop or audience benefit assumed",
+                  "evidence": "EXACT_SOURCE_TEXT"
+                },
+                {
+                  "dimension": "DISTINCTIVE_CREATIVE_VALUE",
+                  "assessment": "Concrete choreography differs from source; novelty and viewer value unverified",
+                  "evidence": "OBSERVED_TEXTUAL_CHANGE"
+                }
+              ],
+              "materiality": "SOURCE_BOUND_SPATIAL_CHOREOGRAPHIC_CHANGE",
+              "changeContract": [
+                {
+                  "opportunityId": "COUNTABLE_STATE_PATH:beat_03",
+                  "beatId": "beat_03",
+                  "originalExecution": "5-10s: Mimi continues to pull; each pull doubles the number of sticky notes [wide shot showing Mimi covered in notes] notes multiply from three to six to twelve as she pulls, progressively covering her arms, legs and face -> Mimi is overwhelmed by notes",
+                  "newExecution": "5-10s: Mimi continues to pull; each pull doubles the number of sticky notes  notes multiply from three to six to twelve as she pulls, progressively covering her arms, legs and face -> Mimi is overwhelmed by notes [locked-off medium shot; Arrange the existing multiplying objects across left and right screen regions as countable separated groups. Expose the complete existing count sequence three → six → twelve; after each existing pull, show its resulting group without overlap obscuring the count before the next pull. Keep the pull/contact path continuous and the group positions stable between transformations; let the established progressive body coverage follow the growing groups. Use the original beat window, with no invented sub-beat timestamps, additional pull, freeze or new outcome.]",
+                  "observableDifference": "Arrange the existing multiplying objects across left and right screen regions as countable separated groups. Expose the complete existing count sequence three → six → twelve; after each existing pull, show its resulting group without overlap obscuring the count before the next pull. Keep the pull/contact path continuous and the group positions stable between transformations; let the established progressive body coverage follow the growing groups. Use the original beat window, with no invented sub-beat timestamps, additional pull, freeze or new outcome.",
+                  "creativeRationale": "Each existing count state has a distinguishable arrangement before progressive body coverage. Actual visual benefit remains unverified.",
+                  "sourceFidelity": {
+                    "quote": "5-10s: Mimi continues to pull; each pull doubles the number of sticky notes [wide shot showing Mimi covered in notes] notes multiply from three to six to twelve as she pulls, progressively covering her arms, legs and face -> Mimi is overwhelmed by notes",
+                    "span": [
+                      678,
+                      931
+                    ],
+                    "protectedEventUnchanged": true,
+                    "semanticFidelity": "UNKNOWN"
+                  },
+                  "productionRisk": {
+                    "change": "UNKNOWN",
+                    "evidence": "Count fidelity and fine contact remain difficult; arrangement is a proposed mitigation, not verified generator capability.",
+                    "newMitigation": "Locked contact view with explicit spatial separation."
+                  },
+                  "evidenceLimitation": "Text specifies a different execution. Render adherence, visual clarity and audience benefit are unverified."
+                }
+              ],
+              "critique": {
+                "status": "ACCEPTED_TEXTUAL_PLAN",
+                "reasons": [],
+                "checks": {
+                  "observableChange": true,
+                  "addressesDiagnosis": true,
+                  "sourceBoundOperations": true,
+                  "semanticStoryFidelity": "UNKNOWN",
+                  "generatorSuccess": "UNKNOWN",
+                  "audienceBenefit": "UNMEASURED"
+                },
+                "revisionFeedback": []
+              },
+              "semanticStoryFidelity": "UNKNOWN",
+              "audiencePerformance": "UNMEASURED",
+              "canonicalCompliance": "SEPARATELY_EVALUATED",
+              "provenBetter": false,
+              "canonicalChanges": [
+                {
+                  "ruleId": "PRODUCIBILITY_001",
+                  "before": {
+                    "family": "ai_producibility",
+                    "ruleId": "PRODUCIBILITY_001",
+                    "details": {
+                      "recommendation": "Prompts marked as \"very_high\" complexity should not proceed\nto render without human review and risk acceptance.\n\nVery high complexity typically means 4+ simultaneous high-risk\noperations or untested novel requirements.",
+                      "evaluation_stage": "PRE_RENDER"
+                    },
+                    "message": "Acceptable complexity: medium.",
+                    "outcome": "PASS",
+                    "ruleName": "Very High Complexity Block",
+                    "severity": "PASS"
+                  },
+                  "after": {
+                    "ruleId": "PRODUCIBILITY_001",
+                    "ruleName": "Very High Complexity Block",
+                    "family": "ai_producibility",
+                    "severity": "WARNING",
+                    "outcome": "PASS",
+                    "message": "Overall complexity: high. Render uncertain. Consider simplifications.",
+                    "details": {
+                      "evaluation_stage": "PRE_RENDER",
+                      "recommendation": "Prompts marked as \"very_high\" complexity should not proceed\nto render without human review and risk acceptance.\n\nVery high complexity typically means 4+ simultaneous high-risk\noperations or untested novel requirements."
+                    }
+                  }
+                }
+              ],
+              "productionRiskIndicatorRegression": true,
+              "canonicalScore": 87.88541666666669,
+              "canonicalRegression": true,
+              "newCanonicalFailures": []
+            },
+            "conclusion": "Source-bound execution changes introduced a canonical or production-risk regression; do not approve.",
+            "validationStatus": "SOURCE_TEXT_CONTRACT_PASSED",
+            "storyCoverage": "SOURCE_EVENTS_COVERED; SEMANTIC_FIDELITY_UNKNOWN",
+            "endingPreservation": "PROTECTED_ENDING_TEXT_PRESERVED",
+            "productionRiskChange": "UNKNOWN; proposed mitigations require visual review.",
+            "qualityScore": 87.88541666666669,
+            "scoreDelta": -0.5208333333333286
+          }
+        ],
+        "providerCalls": 0,
+        "rawCandidatesPreserved": true
+      },
+      "realProviderCalls": 0,
+      "promptVersionsCreated": 0,
+      "modelCreativeEffectiveness": "NOT_TESTED"
+    },
+    {
+      "case": "unsupported_objective_counterfactual",
+      "inputType": "EPHEMERAL_TEST_INPUT_NOT_PERSISTED",
+      "objectiveDimension": "VISUAL_STORYTELLING",
+      "planner": "TEST_ONLY_DETERMINISTIC_DIAGNOSIS_DRIVEN_POLICY",
+      "plannerReceivedPreparedAnswer": false,
+      "runtimeRequest": {
+        "phase": "CREATIVE_DIAGNOSIS_RECONSTRUCTION_CRITIQUE",
+        "contractVersion": "creative-reconstruction-v2",
+        "creativeDiagnosis": {
+          "contractVersion": "creative-reconstruction-v2",
+          "qualityModelVersion": "creative-quality-evidence-v2",
+          "openingStrategy": "CURIOSITY_DISCOVERY",
+          "protectedStoryContract": {
+            "contractVersion": "optimization-profile-ownership-v1",
+            "baselinePromptText": "TITLE / FORMAT\nMimi Sticky / 15s Video\n\nVISUAL STYLE\nBright and colorful animation with a playful tone.\n\nCHARACTER / CONTINUITY\nMimi, an anthropomorphic bunny, interacts with sticky notes in a humorous and chaotic manner.\n\nTIMED SHOT PLAN\n0-2s: Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger [close-up on Mimi's hand] Mimi is in front of a toy cabinet, looking determined -> the note sticks to Mimi, not the cabinet\n2-5s: Mimi tries to peel the stuck note away with her other hand; the note splits into two [medium shot of Mimi struggling] Mimi pulls at the note -> one note sticks to each hand\n5-10s: Mimi continues to pull; each pull doubles the number of sticky notes [wide shot showing Mimi covered in notes] notes multiply from two to four to eight as she pulls, progressively covering her arms, legs and face -> Mimi is overwhelmed by notes\n10-12s: Mimi sees herself in a mirror and screams [close-up on Mimi's shocked face] Mimi is startled by her reflection completely covered in notes -> Mimi is startled\n12-15s: Mimi sneezes and the sticky notes fly off [medium shot of notes flying] notes scatter and stick to the cabinet -> Mimi breathes a sigh of relief but the cabinet remains messy\n\nAUDIO\nPlayful background music with sound effects for sneezing and notes sticking.\n\nNEGATIVE CONSTRAINTS\nNo dark themes or violence.\n\nFINAL CUT\nMimi is relieved but the cabinet remains visibly messy.\n\nCHARACTER IDENTITY LOCK\nMimi is the established anthropomorphic bunny character. Preserve that identity; do not render a human or invent unverified visual details. No approved visual reference is currently bound, so appearance details remain unverified.\n\nPRODUCTION SETTINGS\nAspect ratio: 9:16. Target generator: SEEDANCE_2_0_MINI. Content profile: AUTO.",
+            "baselinePromptHistoricalProfile": "AUTO",
+            "targetContentProfile": "ABSURD_PHYSICS",
+            "targetOwner": "SERVER_VERSION_BOUND_PRODUCTION_SETTINGS",
+            "productionSettingsRecordId": "2d90c69b-bcec-4871-9c4e-7e029906c974",
+            "approvedStory": "Mimi, oyuncak dolabına 'Topla!' yazan bir yapışkan not yapıştırmak ister. Not, Mimi'nin parmağına yapışır. Mimi diğer eliyle çıkarmaya çalışırken not ikiye ayrılır ve iki eline de yapışır. Her çekişte notlar ikiye katlanarak çoğalır. Kısa sürede Mimi'nin kolları, bacakları ve yüzü notlarla kaplanır. Mimi aynada kendini görünce çığlık atar. Notlar o kadar çoğalır ki Mimi boğulacak gibi olur. Sonunda hapşırır ve tüm notlar uçuşarak dolabın üzerine yapışır. Mimi rahat bir nefes alır ama dolap hâlâ dağınıktır.",
+            "protectedIntent": [
+              "Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger",
+              "Mimi tries to peel the stuck note away with her other hand; the note splits into two",
+              "Mimi continues to pull; each pull doubles the number of sticky notes",
+              "Mimi sees herself in a mirror and screams",
+              "Mimi sneezes and the sticky notes fly off"
+            ],
+            "generatorSettings": {
+              "generator": "SEEDANCE_2_0_MINI",
+              "duration": 15,
+              "settings": {
+                "mode": "image2video",
+                "resolution": "480p",
+                "aspectRatio": "9:16"
+              }
+            },
+            "optimizationObjectives": {
+              "candidate-a": "FIRST_FRAME_ANOMALY_CLARITY_CURIOSITY",
+              "candidate-b": "BEAT_PROGRESSION_TIMING_ESCALATION_SEEDANCE_FEASIBILITY"
+            },
+            "sourcePromptSha256": "0fe229774deb4b31a42145bad91cf10c91634ba00da39fa3e9d288b3a2e7bd98",
+            "approvedStorySha256": "df653dbcaf16bfdbceb87baa23688d70d739c34941d0075e30e96b181e1bf32b",
+            "characterIdentity": {
+              "primary": "Mimi",
+              "secondary": null,
+              "characterRefs": []
+            },
+            "openingCausalParticipants": {
+              "state": "OBSERVED",
+              "sourceQuote": "instead of sticking to the cabinet, the note visibly clings to her finger",
+              "sourceSpan": [
+                301,
+                374
+              ],
+              "method": "CONTRASTIVE_SURFACE_ATTACHMENT_PATTERN",
+              "semanticVerification": "NOT_PERFORMED",
+              "object": {
+                "value": "the note",
+                "state": "OBSERVED"
+              },
+              "expectedSurface": {
+                "value": "the cabinet",
+                "state": "OBSERVED"
+              },
+              "actualSurface": {
+                "value": "her finger",
+                "state": "OBSERVED"
+              },
+              "relationship": {
+                "value": "WRONG_SURFACE_ATTACHMENT",
+                "state": "INFERRED"
+              }
+            },
+            "corePhysicalRule": {
+              "state": "OBSERVED",
+              "sourceQuote": "each pull doubles the number of sticky notes",
+              "sourceSpan": [
+                709,
+                753
+              ],
+              "method": "EXPLICIT_REPEATED_ACTION_CLAUSE",
+              "semanticVerification": "NOT_PERFORMED"
+            },
+            "requiredEnding": {
+              "sourceBeatId": "beat_05",
+              "sourceQuote": "12-15s: Mimi sneezes and the sticky notes fly off [medium shot of notes flying] notes scatter and stick to the cabinet -> Mimi breathes a sigh of relief but the cabinet remains messy"
+            },
+            "events": [
+              {
+                "sourceBeatId": "beat_01",
+                "sourceQuote": "0-2s: Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger [close-up on Mimi's hand] Mimi is in front of a toy cabinet, looking determined -> the note sticks to Mimi, not the cabinet",
+                "actionAnchor": "Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger",
+                "startTime": 0.0,
+                "endTime": 2.0
+              },
+              {
+                "sourceBeatId": "beat_02",
+                "sourceQuote": "2-5s: Mimi tries to peel the stuck note away with her other hand; the note splits into two [medium shot of Mimi struggling] Mimi pulls at the note -> one note sticks to each hand",
+                "actionAnchor": "Mimi tries to peel the stuck note away with her other hand; the note splits into two",
+                "startTime": 2.0,
+                "endTime": 5.0
+              },
+              {
+                "sourceBeatId": "beat_03",
+                "sourceQuote": "5-10s: Mimi continues to pull; each pull doubles the number of sticky notes [wide shot showing Mimi covered in notes] notes multiply from two to four to eight as she pulls, progressively covering her arms, legs and face -> Mimi is overwhelmed by notes",
+                "actionAnchor": "Mimi continues to pull; each pull doubles the number of sticky notes",
+                "startTime": 5.0,
+                "endTime": 10.0
+              },
+              {
+                "sourceBeatId": "beat_04",
+                "sourceQuote": "10-12s: Mimi sees herself in a mirror and screams [close-up on Mimi's shocked face] Mimi is startled by her reflection completely covered in notes -> Mimi is startled",
+                "actionAnchor": "Mimi sees herself in a mirror and screams",
+                "startTime": 10.0,
+                "endTime": 12.0
+              },
+              {
+                "sourceBeatId": "beat_05",
+                "sourceQuote": "12-15s: Mimi sneezes and the sticky notes fly off [medium shot of notes flying] notes scatter and stick to the cabinet -> Mimi breathes a sigh of relief but the cabinet remains messy",
+                "actionAnchor": "Mimi sneezes and the sticky notes fly off",
+                "startTime": 12.0,
+                "endTime": 15.0
+              }
+            ],
+            "semanticStoryFidelity": "UNKNOWN",
+            "visualEvidence": "NOT_SUPPLIED"
+          },
+          "protectedLayer": [
+            "identity",
+            "premise",
+            "approved events and order",
+            "physical rule",
+            "outcomes",
+            "ending",
+            "safety"
+          ],
+          "editableLayer": [
+            "staging",
+            "spatial visibility",
+            "choreography",
+            "composition",
+            "continuity",
+            "relative timing",
+            "visual emphasis"
+          ],
+          "opportunities": [
+            {
+              "opportunityId": "SEPARATE_ACTION_RESULT:beat_02",
+              "beatId": "beat_02",
+              "timeWindow": [
+                2.0,
+                5.0
+              ],
+              "dimension": "PRODUCTION_EXECUTABILITY",
+              "currentExecution": "2-5s: Mimi tries to peel the stuck note away with her other hand; the note splits into two [medium shot of Mimi struggling] Mimi pulls at the note -> one note sticks to each hand",
+              "sourceEvidence": {
+                "quote": "2-5s: Mimi tries to peel the stuck note away with her other hand; the note splits into two [medium shot of Mimi struggling] Mimi pulls at the note -> one note sticks to each hand",
+                "span": [
+                  499,
+                  677
+                ],
+                "status": "EXACT_SOURCE_TEXT"
+              },
+              "weaknessOrUncertainty": "The source states an action and result without separating their screen positions or protecting their visibility during the transition.",
+              "proposedImprovement": "Separate the two source-bound action/result regions and retain their transition in one locked shot.",
+              "expectedVisualChange": "The action and resulting state occupy distinguishable regions with continuous visible contact.",
+              "viewingRationale": "A viewer may be able to distinguish the cited physical states; this is a hypothesis, not audience evidence.",
+              "productionRisk": "A wider contact tableau may reduce facial detail; visual continuity remains unverified.",
+              "confidence": "TEXT_SUPPORTED_HYPOTHESIS",
+              "classification": "CREATIVE_IMPROVEMENT_HYPOTHESIS",
+              "operation": "SEPARATE_ACTION_RESULT",
+              "bindings": [
+                "2-5s: Mimi tries to peel the stuck note away with her other hand; the note splits into two  Mimi pulls at the note",
+                "one note sticks to each hand"
+              ],
+              "benefitEvidence": "UNVERIFIED_UNTIL_VISUAL_REVIEW"
+            },
+            {
+              "opportunityId": "COUNTABLE_STATE_PATH:beat_03",
+              "beatId": "beat_03",
+              "timeWindow": [
+                5.0,
+                10.0
+              ],
+              "dimension": "CAUSAL_PROGRESSION",
+              "currentExecution": "5-10s: Mimi continues to pull; each pull doubles the number of sticky notes [wide shot showing Mimi covered in notes] notes multiply from two to four to eight as she pulls, progressively covering her arms, legs and face -> Mimi is overwhelmed by notes",
+              "sourceEvidence": {
+                "quote": "5-10s: Mimi continues to pull; each pull doubles the number of sticky notes [wide shot showing Mimi covered in notes] notes multiply from two to four to eight as she pulls, progressively covering her arms, legs and face -> Mimi is overwhelmed by notes",
+                "span": [
+                  678,
+                  929
+                ],
+                "status": "EXACT_SOURCE_TEXT"
+              },
+              "weaknessOrUncertainty": "The source lists a count progression but gives no continuity, spatial grouping or unobstructed count-transition choreography.",
+              "proposedImprovement": "Expose the complete existing count path in stable spatial groups; couple each count transition to the existing pull without an edit hiding contact.",
+              "expectedVisualChange": "Each existing count state has a distinguishable arrangement before progressive body coverage.",
+              "viewingRationale": "A viewer may be able to distinguish the cited physical states; this is a hypothesis, not audience evidence.",
+              "productionRisk": "Count fidelity and fine contact remain difficult; arrangement is a proposed mitigation, not verified generator capability.",
+              "confidence": "TEXT_SUPPORTED_HYPOTHESIS",
+              "classification": "EVIDENCE_SUPPORTED_EXECUTION_RISK",
+              "operation": "COUNTABLE_STATE_PATH",
+              "bindings": [
+                "two",
+                "four",
+                "eight"
+              ],
+              "benefitEvidence": "UNVERIFIED_UNTIL_VISUAL_REVIEW"
+            }
+          ],
+          "dimensions": [
+            {
+              "dimension": "SCROLL_STOP_VISUAL_PROMISE",
+              "status": "VISUAL_EVIDENCE_REQUIRED",
+              "numericScore": null
+            },
+            {
+              "dimension": "CAUSAL_PROGRESSION",
+              "status": "TEXTUAL_HYPOTHESES_AVAILABLE",
+              "numericScore": null
+            },
+            {
+              "dimension": "VISUAL_STORYTELLING",
+              "status": "VISUAL_EVIDENCE_REQUIRED",
+              "numericScore": null
+            },
+            {
+              "dimension": "PRODUCTION_EXECUTABILITY",
+              "status": "TEXTUAL_HYPOTHESES_AVAILABLE",
+              "numericScore": null
+            },
+            {
+              "dimension": "ENDING_REPLAY",
+              "status": "VISUAL_EVIDENCE_REQUIRED",
+              "numericScore": null
+            },
+            {
+              "dimension": "DISTINCTIVE_CREATIVE_VALUE",
+              "status": "VISUAL_EVIDENCE_REQUIRED",
+              "numericScore": null
+            }
+          ],
+          "endingReview": {
+            "sourceQuote": "12-15s: Mimi sneezes and the sticky notes fly off [medium shot of notes flying] notes scatter and stick to the cabinet -> Mimi breathes a sigh of relief but the cabinet remains messy",
+            "sourceSpan": [
+              1097,
+              1279
+            ],
+            "classification": "VISUAL_EVIDENCE_REQUIRED",
+            "loopRequired": false
+          },
+          "semanticStoryFidelity": "UNKNOWN",
+          "renderAuthorization": "NOT_GRANTED"
+        },
+        "maxCandidates": 2,
+        "maxRevisionsPerCandidate": 1,
+        "revisionBudget": "WITHIN_THIS_SINGLE_RESPONSE_ONLY",
+        "visualEvidence": "NOT_SUPPLIED",
+        "audienceEvidence": "NOT_SUPPLIED"
+      },
+      "runtimeConstructedPlanResponse": {
+        "proposals": [],
+        "noImprovementReason": "No source-grounded diagnosed opportunity supports the requested production objective."
+      },
+      "compiledCandidates": [],
+      "assessment": {
+        "contractVersion": "creative-reconstruction-v2",
+        "integrityStatus": "COMPLETE_CANDIDATE_SET",
+        "actualCandidateCount": 0,
+        "recommendation": "KEEP_ORIGINAL",
+        "conclusion": "No defensible material improvement available. Keep Original.",
+        "baselineScore": 88.40625000000001,
+        "candidates": [],
+        "providerCalls": 0,
+        "rawCandidatesPreserved": true
+      },
+      "realProviderCalls": 0,
+      "promptVersionsCreated": 0,
+      "modelCreativeEffectiveness": "NOT_TESTED"
+    }
+  ]
+}

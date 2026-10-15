@@ -1,0 +1,13 @@
+{
+  "provider": "openai",
+  "model": "gpt-4o-mini-2024-07-18",
+  "inputRate": 0.15,
+  "outputRate": 0.6,
+  "credentialsPresent": true,
+  "customApiBase": false,
+  "sdkRetries": 0,
+  "maxOutputTokens": 4000,
+  "semanticEnabled": "false",
+  "semanticVideoEnabled": "false",
+  "sdkAdapterSourceSha256": "d71f64b0f8a7ae25549c6585e43bd5c5e75b116e30a3c5a4d61c50365a1f2ea1"
+}

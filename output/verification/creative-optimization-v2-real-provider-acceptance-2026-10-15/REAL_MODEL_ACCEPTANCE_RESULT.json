@@ -1,0 +1,88 @@
+{
+  "primaryResult": "REAL_MODEL_MATERIAL_CANDIDATE",
+  "creativeV2Classification": "PLAUSIBLE_IMPROVEMENT_UNVERIFIED",
+  "operatorRecommendation": "REVIEW_CANDIDATE",
+  "interpretation": "Model independently selected a supported diagnosed intervention; detailed choreography was server-template generated. No proven visual or audience superiority.",
+  "provider": "openai",
+  "requestedExactModel": "gpt-4o-mini-2024-07-18",
+  "providerResponseId": "chatcmpl-EZBuw9f0h4qIKWIE9IlYm6k7eqA7e",
+  "dispatchOutcome": "COMPLETED",
+  "paidInferenceRequests": 1,
+  "automaticRetries": 0,
+  "additionalInferenceAuthorized": false,
+  "usage": {
+    "total_tokens": 4133,
+    "prompt_tokens": 3991,
+    "completion_tokens": 142,
+    "prompt_tokens_details": {
+      "text_tokens": null,
+      "audio_tokens": 0,
+      "image_tokens": null,
+      "cached_tokens": 0,
+      "cache_write_tokens": null
+    },
+    "completion_tokens_details": {
+      "text_tokens": null,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "accepted_prediction_tokens": 0,
+      "rejected_prediction_tokens": 0
+    }
+  },
+  "inputRateUsdPerMillion": 0.15,
+  "outputRateUsdPerMillion": 0.6,
+  "calculatedCostUsd": "0.00068385",
+  "authorizedCeilingUsd": 0.2,
+  "comparisonId": "e651eb75-b894-477d-ae77-0fe6e05236da",
+  "roleRecordId": "ba8e3aa8-2af7-4288-9d54-b27c94ae50c2",
+  "reservationRecordId": "ab885e8b-60b2-49d8-932a-26d66b7e2b5e",
+  "authorizationId": "34c20c65-9203-472d-b0b8-88680af8c221",
+  "sourceAnalysisId": "f0d36feb-ee0f-4da8-ae21-2071a3ddea18",
+  "canonicalRuleset": "1.11",
+  "originalScore": 88.40625000000001,
+  "candidateScore": 88.40625000000001,
+  "grade": "B",
+  "canonicalOutcomeSeverityChanges": 0,
+  "sourceTextCoverage": "SOURCE_TEXT_COVERED",
+  "independentSemanticStoryFidelity": "UNKNOWN",
+  "changedBeats": [
+    "beat_01"
+  ],
+  "modelContribution": {
+    "opportunityId": "CONTACT_PLANE:beat_01",
+    "operation": "CONTACT_PLANE",
+    "layout": "LATERAL",
+    "camera": "LOCKED",
+    "objective": "Improve the visibility of the intended attachment surface and the actual attachment point to enhance viewer understanding of the comedic mishap.",
+    "reasoningSummary": "By staging the toy cabinet behind or beside Mimi's finger, viewers can clearly see the intended attachment point and the actual attachment, enhancing the comedic effect of the note sticking to her finger instead of the cabinet.",
+    "fullPromptOrDetailedNovelChoreographySupplied": false
+  },
+  "serverContribution": {
+    "mediumShot": true,
+    "reachAlignment": true,
+    "visiblePostContactGap": true,
+    "contactEdgeOcclusionControl": true,
+    "noHiddenCut": true,
+    "protectedSourceCompilation": true,
+    "profileMetadataNormalization": "AUTO -> ABSURD_PHYSICS"
+  },
+  "productionRisk": {
+    "baseline": "PASS",
+    "candidate": "ADVISORY_RISK",
+    "newAdvisory": "PREMATURE_ENDING",
+    "confidence": "LOW",
+    "basis": "Negation-unaware generic cut keyword match, not confirmed premature ending",
+    "canonicalRiskRegression": false,
+    "actualGeneratorFeasibility": "UNKNOWN"
+  },
+  "historicalEventsUnchanged": 69,
+  "newImmutablePromptVersions": 0,
+  "automaticApprovals": 0,
+  "renderJobsCreated": 0,
+  "governanceApprovalsCreated": 0,
+  "renderAuthorized": false,
+  "secondTestJustifiedNow": false,
+  "creativeQualityProven": false,
+  "renderedBenefitVerified": false,
+  "audienceBenefitVerified": false
+}

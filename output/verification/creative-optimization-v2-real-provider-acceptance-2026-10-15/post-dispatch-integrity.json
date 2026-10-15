@@ -1,0 +1,17 @@
+{
+  "historicalEventsChecked": 69,
+  "changedHistoricalEvents": [],
+  "newEvents": [
+    "ab885e8b-60b2-49d8-932a-26d66b7e2b5e|CREATIVE_ROLE|1638095fc3ae1d3bf9c48d6362dabfca",
+    "ba8e3aa8-2af7-4288-9d54-b27c94ae50c2|CREATIVE_ROLE|05dd5c1e75caa71bfeeb95bed6398fa9",
+    "e651eb75-b894-477d-ae77-0fe6e05236da|CREATIVE_OPTIMIZATION|3696b0d5a49b7a43e0ff26b83fef123c"
+  ],
+  "protectedCountsAfter": {
+    "promptVersions": 1,
+    "renderJobs": 0,
+    "governanceApprovals": 0
+  },
+  "singlePostAttempts": 1,
+  "selectedCandidate": null,
+  "approval": null
+}

@@ -1,0 +1,13 @@
+{
+  "authorizationId": "34c20c65-9203-472d-b0b8-88680af8c221",
+  "postInitiated": true,
+  "postAttempts": 1,
+  "neverAutomaticallyReplay": true,
+  "startedAtUtc": "2026-10-15T09:19:55.446198+00:00",
+  "authorizationConsumed": true,
+  "providerInferenceCompleted": true,
+  "providerResponseId": "chatcmpl-EZBuw9f0h4qIKWIE9IlYm6k7eqA7e",
+  "roleRecordId": "ba8e3aa8-2af7-4288-9d54-b27c94ae50c2",
+  "comparisonId": "e651eb75-b894-477d-ae77-0fe6e05236da",
+  "additionalInferenceAllowed": false
+}

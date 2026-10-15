@@ -1,0 +1,8 @@
+{
+  "httpStatus": 200,
+  "elapsedSeconds": 5.358,
+  "contentType": "application/json",
+  "postAttempts": 1,
+  "automaticRetries": 0,
+  "responseBodySaved": true
+}

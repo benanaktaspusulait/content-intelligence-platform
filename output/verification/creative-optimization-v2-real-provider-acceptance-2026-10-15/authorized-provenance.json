@@ -1,0 +1,15 @@
+{
+  "origin": "BUILD_PROMPT",
+  "creativeRoleRecordId": "1bbde0d2-efc2-46b8-920c-9f55e910ef59",
+  "provider": "openai",
+  "model": "gpt-4o-mini-2024-07-18",
+  "operatorEdited": true,
+  "sourceStoryRecordId": "bc1cf798-d20b-4b98-8b73-56e1581c3afc",
+  "approvedStoryText": "Mimi, oyuncak dolabına 'Topla!' yazan bir yapışkan not yapıştırmak ister. Not, Mimi'nin parmağına yapışır. Mimi diğer eliyle çıkarmaya çalışırken not ikiye ayrılır ve iki eline de yapışır. Her çekişte notlar ikiye katlanarak çoğalır. Kısa sürede Mimi'nin kolları, bacakları ve yüzü notlarla kaplanır. Mimi aynada kendini görünce çığlık atar. Notlar o kadar çoğalır ki Mimi boğulacak gibi olur. Sonunda hapşırır ve tüm notlar uçuşarak dolabın üzerine yapışır. Mimi rahat bir nefes alır ama dolap hâlâ dağınıktır.",
+  "storyRevisionId": "candidate-2-revision-7c63cc86",
+  "candidateId": "candidate-2",
+  "approvalRecordId": "20b77d13-848d-46d0-ab4b-bb9b6efb0836",
+  "promptTextEdited": true,
+  "productionSpecificationStatus": "STALE",
+  "validationStatus": "NOT_VALIDATED"
+}

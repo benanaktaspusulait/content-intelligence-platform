@@ -1,0 +1,12 @@
+{
+  "url": "http://localhost:8080/api/v1/intelligence/workflow/records/f0d36feb-ee0f-4da8-ae21-2071a3ddea18/creative-optimization",
+  "method": "POST",
+  "status": "NOT_SENT_AWAITING_EXPLICIT_OPERATOR_APPROVAL",
+  "body": {
+    "contentId": 10,
+    "promptVersionId": 10,
+    "operatorAuthorized": false,
+    "maxCostUsd": 0.2,
+    "startNewPlanFirstAttempt": true
+  }
+}

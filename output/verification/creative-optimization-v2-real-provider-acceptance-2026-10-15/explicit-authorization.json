@@ -1,0 +1,20 @@
+{
+  "authorizationId": "34c20c65-9203-472d-b0b8-88680af8c221",
+  "source": "EXPLICIT_HUMAN_USER_MESSAGE_IN_THIS_CONVERSATION",
+  "provider": "openai",
+  "model": "gpt-4o-mini-2024-07-18",
+  "contentId": 10,
+  "promptVersionId": 10,
+  "promptVersionNumber": 1,
+  "ruleset": "1.11",
+  "analysisId": "f0d36feb-ee0f-4da8-ae21-2071a3ddea18",
+  "maxTotalCostUsd": 0.2,
+  "maxInferenceRequests": 1,
+  "maxOutputTokens": 4000,
+  "automaticRetries": false,
+  "fallbackAllowed": false,
+  "candidateApprovalAuthorized": false,
+  "promptVersionCreationAuthorized": false,
+  "imageVideoGenerationAuthorized": false,
+  "capturedAtUtc": "2026-10-15T09:19:55.445534+00:00"
+}

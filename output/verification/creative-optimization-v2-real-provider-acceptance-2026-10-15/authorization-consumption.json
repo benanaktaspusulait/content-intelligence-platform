@@ -1,0 +1,9 @@
+{
+  "authorizationId": "34c20c65-9203-472d-b0b8-88680af8c221",
+  "authorizedRequests": 1,
+  "actualInferenceRequests": 1,
+  "remainingAuthorizedRequests": 0,
+  "authorizedCeilingUsd": 0.2,
+  "calculatedCostUsd": "0.00068385",
+  "secondCallAllowed": false
+}

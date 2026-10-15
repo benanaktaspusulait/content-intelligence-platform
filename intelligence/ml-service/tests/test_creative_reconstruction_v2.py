@@ -61,7 +61,7 @@ def test_actual_saved_mimi_full_role_source_canonical_comparison_pipeline():
     assert assessment['recommendation']=='REVIEW_MATERIAL_CANDIDATE'
     assert assessment['candidates'][0]['creativeAssessment']['provenBetter'] is False
     assert c['sourceEventCoverage']['semanticFidelity']=='UNKNOWN'
-    # A complete revised prompt, not a fake higher-score fixture, is the acceptance evidence.
+    # This authored response verifies integration/recognition, not model creativity.
     assert c['review']['canonicalRuleEvaluation']['score']==pytest.approx(f['baselineScore'])
 
 @pytest.mark.parametrize('kind',['CAMERA_LABEL','TIMING_SPLIT'])

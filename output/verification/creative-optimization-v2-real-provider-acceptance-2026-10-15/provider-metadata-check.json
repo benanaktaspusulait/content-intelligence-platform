@@ -1,0 +1,1 @@
+{"operation": "GET_MODEL_METADATA_ONLY", "httpStatus": 200, "modelId": "gpt-4o-mini-2024-07-18", "ownedBy": "system", "authenticationAndModelReadAccessVerified": true, "inferenceRequests": 0, "automaticRetries": 0}
