@@ -183,10 +183,49 @@ class OptimizationAssessmentRequest(BaseModel):
     baselineScore: float | None = None
 
 
+class CreativePromptQualityRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    originalPrompt: str = Field(min_length=1, max_length=50000)
+    candidatePrompt: str = Field(min_length=1, max_length=50000)
+    contentProfile: str = Field(default="UNKNOWN", max_length=80)
+    generator: str = Field(default="UNKNOWN", max_length=80)
+    durationSeconds: float | None = Field(default=None, gt=0, le=600)
+    diagnosis: dict[str, Any] = Field(default_factory=dict)
+    canonicalFindings: dict[str, Any] = Field(default_factory=dict)
+    executionCritic: dict[str, Any] = Field(default_factory=dict)
+
+
 @router.post('/optimization-assessment')
 def optimization_assessment(request: OptimizationAssessmentRequest) -> dict[str, Any]:
     from .optimization_comparison import assess_comparison
     return assess_comparison(request.text, request.candidates, request.context, request.baselineScore)
+
+
+@router.post("/creative-prompt-quality/assess")
+def creative_prompt_quality_assess(request: CreativePromptQualityRequest) -> dict[str, Any]:
+    from .creative_prompt_quality import assess
+    try:
+        return assess(request.model_dump())
+    except ValueError as error:
+        raise HTTPException(422, str(error)) from error
+
+
+@router.post("/creative-prompt-quality/calibration-readiness")
+def creative_prompt_quality_calibration_readiness(request: dict[str, Any]) -> dict[str, Any]:
+    from .creative_prompt_quality import validate_calibration
+    records = request.get("records", [])
+    if not isinstance(records, list) or len(records) > 5000:
+        raise HTTPException(422, "records must be a list with at most 5000 examples")
+    return validate_calibration(records)
+
+
+@router.post("/creative-prompt-quality/calibration-preview")
+def creative_prompt_quality_calibration_preview(request: dict[str, Any]) -> dict[str, Any]:
+    from .creative_prompt_quality import calibration_preview
+    records = request.get("records", [])
+    if not isinstance(records, list) or len(records) > 5000:
+        raise HTTPException(422, "records must be a list with at most 5000 examples")
+    return calibration_preview(records)
 
 
 @router.post('/optimization-recovery')

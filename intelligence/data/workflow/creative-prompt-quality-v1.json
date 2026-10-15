@@ -1,0 +1,19 @@
+{
+  "contractVersion": "creative-prompt-quality-v1",
+  "status": "PREVIEW_ONLY_CALIBRATION_INCOMPLETE",
+  "calibrationCorpusVersion": null,
+  "activation": false,
+  "aggregation": null,
+  "grades": ["A+", "A", "B", "C", "F"],
+  "dimensions": [
+    {"id":"SCROLL_STOP_VISUAL_PROMISE","title":"Opening visual promise","textSignals":["opening subject","anomaly or question","character-object-event relationship","framing intent","opening load","unnecessary text/audio"],"requiresVideo":false,"audienceState":"UNMEASURED"},
+    {"id":"CAUSAL_PROGRESSION","title":"Causal progression","textSignals":["ordered actions","state continuity","action-consequence links","meaningful attempts when appropriate","visible transitions","temporal coherence"],"requiresVideo":false,"audienceState":"UNMEASURED"},
+    {"id":"VISUAL_STORYTELLING","title":"Visual storytelling","textSignals":["spatial relations","object state","motivated movement","composition","continuity","transformation legibility","exposition load"],"requiresVideo":false,"audienceState":"UNMEASURED"},
+    {"id":"PRODUCTION_EXECUTABILITY","title":"Production executability","textSignals":["generator fit","duration","physical action load","simultaneity","contact and occlusion","object counts","camera movement","identity continuity","instruction conflicts"],"requiresVideo":false,"audienceState":"UNMEASURED"},
+    {"id":"ENDING_REPLAY","title":"Ending and replay invitation","textSignals":["ending clarity","final consequence","opening relation","payoff","curiosity","intentional loop potential"],"requiresVideo":false,"audienceState":"UNMEASURED"},
+    {"id":"DISTINCTIVE_CREATIVE_VALUE","title":"Distinctive creative value","textSignals":["specific visual mechanism","non-generic choreography","comprehensible novelty","recognizable production identity","approved exemplar comparison"],"requiresVideo":false,"audienceState":"UNMEASURED"}
+  ],
+  "evidencePolicy": {"textualPromptQuality":"ASSESSABLE_PRE_RENDER","visualAdherence":"UNVERIFIED","audienceEffect":"UNMEASURED","sourceFidelity":"INDEPENDENT_REVIEW_REQUIRED","canonicalRuleset":"1.11_SEPARATE","renderReadiness":"SEPARATE_F8_POLICY"},
+  "activationRequirements": ["APPROVED_CORPUS","CALIBRATED_THRESHOLDS","REVIEWER_AGREEMENT_VALIDATED","HELD_OUT_ERROR_ANALYSIS","INDEPENDENT_FIDELITY_WORKFLOW","FULL_PIPELINE_B_TO_A_GOLDEN","AUTHORIZED_ACTIVATION_RECORD"],
+  "prohibitions": ["NO_VERBOSITY_SCORING","NO_CANONICAL_GRADE_DERIVATION","NO_VISUAL_SUCCESS_INFERENCE","NO_AUDIENCE_OUTCOME_INFERENCE","NO_SELF_FIDELITY_CERTIFICATION","NO_AUTOMATIC_APPROVAL","NO_RENDER_PERMISSION"]
+}
