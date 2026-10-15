@@ -1,0 +1,8 @@
+{
+  "canAssessTextQuality": false,
+  "principal": "",
+  "canManageCalibration": false,
+  "authenticated": false,
+  "canReviewCalibration": false,
+  "canReviewSourceFidelity": false
+}

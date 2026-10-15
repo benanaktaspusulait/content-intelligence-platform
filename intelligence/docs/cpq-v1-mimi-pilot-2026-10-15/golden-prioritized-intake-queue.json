@@ -1,0 +1,122 @@
+[
+  {
+    "priority": 1,
+    "preparationId": "P03",
+    "existingPackage": "../cpq-v1-calibration-intake-2026-10-15/original-source-review-packages/P03.json",
+    "sourceSha256": "e2a4c2b2e3ab5ed7927831c2c264e779c9d9b251b6e979e997c1c271bd7ff0bc",
+    "blockers": [
+      "SOURCE_APPROVAL_REQUIRED",
+      "PRODUCTION_SETTINGS_BINDING_REQUIRED",
+      "REVIEW_AUTHORIZATION_REQUIRED"
+    ],
+    "specificSettingsAction": "Explicit 15-second declaration; reconcile generator/profile with owner intent first.",
+    "sourceAction": "Owner identifies a separate authoritative source story and explicitly approves its actual revision through existing story governance; do not use the prompt as its own fidelity proof.",
+    "responsibleLogicalPermissions": [
+      "CREATIVE_QUALITY_ARCHITECTURE_APPROVER",
+      "EVIDENCE_REVIEWER",
+      "CREATIVE_QUALITY_REVIEWER"
+    ],
+    "currentDecisionOwner": "No identity appointed; owner-managed permission model proposed, not applied.",
+    "nextAfterSourceAndSettings": "Bind original, complete independent fidelity review, authorize ungraded import, then quality review under explicitly approved evidence policy."
+  },
+  {
+    "priority": 2,
+    "preparationId": "P01",
+    "existingPackage": "../cpq-v1-calibration-intake-2026-10-15/original-source-review-packages/P01.json",
+    "sourceSha256": "378a39e7d625d5e4e36cd23436b53b0d410b326f02a3c77406853cc51e965e01",
+    "blockers": [
+      "SOURCE_APPROVAL_REQUIRED",
+      "PRODUCTION_SETTINGS_BINDING_REQUIRED",
+      "REVIEW_AUTHORIZATION_REQUIRED"
+    ],
+    "specificSettingsAction": "15-second timeline; preserve sticky deformation mechanism and ending.",
+    "sourceAction": "Owner identifies a separate authoritative source story and explicitly approves its actual revision through existing story governance; do not use the prompt as its own fidelity proof.",
+    "responsibleLogicalPermissions": [
+      "CREATIVE_QUALITY_ARCHITECTURE_APPROVER",
+      "EVIDENCE_REVIEWER",
+      "CREATIVE_QUALITY_REVIEWER"
+    ],
+    "currentDecisionOwner": "No identity appointed; owner-managed permission model proposed, not applied.",
+    "nextAfterSourceAndSettings": "Bind original, complete independent fidelity review, authorize ungraded import, then quality review under explicitly approved evidence policy."
+  },
+  {
+    "priority": 3,
+    "preparationId": "P05",
+    "existingPackage": "../cpq-v1-calibration-intake-2026-10-15/original-source-review-packages/P05.json",
+    "sourceSha256": "0bb1d77c7939949543be6f12e8ca3ecb086e15dffceda973c6f3382360f523d8",
+    "blockers": [
+      "SOURCE_APPROVAL_REQUIRED",
+      "PRODUCTION_SETTINGS_BINDING_REQUIRED",
+      "REVIEW_AUTHORIZATION_REQUIRED"
+    ],
+    "specificSettingsAction": "17-second ending timeline; owner must confirm target duration without silently truncating events.",
+    "sourceAction": "Owner identifies a separate authoritative source story and explicitly approves its actual revision through existing story governance; do not use the prompt as its own fidelity proof.",
+    "responsibleLogicalPermissions": [
+      "CREATIVE_QUALITY_ARCHITECTURE_APPROVER",
+      "EVIDENCE_REVIEWER",
+      "CREATIVE_QUALITY_REVIEWER"
+    ],
+    "currentDecisionOwner": "No identity appointed; owner-managed permission model proposed, not applied.",
+    "nextAfterSourceAndSettings": "Bind original, complete independent fidelity review, authorize ungraded import, then quality review under explicitly approved evidence policy."
+  },
+  {
+    "priority": 4,
+    "preparationId": "P02",
+    "existingPackage": "../cpq-v1-calibration-intake-2026-10-15/original-source-review-packages/P02.json",
+    "sourceSha256": "6db5f744f51dca45b4be2133e8d88648b839e5d1fb5b742be5f1aaa3d016502a",
+    "blockers": [
+      "SOURCE_APPROVAL_REQUIRED",
+      "PRODUCTION_SETTINGS_BINDING_REQUIRED",
+      "REVIEW_AUTHORIZATION_REQUIRED"
+    ],
+    "specificSettingsAction": "15–18-second duration range needs an exact owner-approved target.",
+    "sourceAction": "Owner identifies a separate authoritative source story and explicitly approves its actual revision through existing story governance; do not use the prompt as its own fidelity proof.",
+    "responsibleLogicalPermissions": [
+      "CREATIVE_QUALITY_ARCHITECTURE_APPROVER",
+      "EVIDENCE_REVIEWER",
+      "CREATIVE_QUALITY_REVIEWER"
+    ],
+    "currentDecisionOwner": "No identity appointed; owner-managed permission model proposed, not applied.",
+    "nextAfterSourceAndSettings": "Bind original, complete independent fidelity review, authorize ungraded import, then quality review under explicitly approved evidence policy."
+  },
+  {
+    "priority": 5,
+    "preparationId": "P04",
+    "existingPackage": "../cpq-v1-calibration-intake-2026-10-15/original-source-review-packages/P04.json",
+    "sourceSha256": "016c6728e5d8b18c564748d439c88f56a635a64cf69a1f77c4162bd74fbeac75",
+    "blockers": [
+      "SOURCE_APPROVAL_REQUIRED",
+      "PRODUCTION_SETTINGS_BINDING_REQUIRED",
+      "REVIEW_AUTHORIZATION_REQUIRED"
+    ],
+    "specificSettingsAction": "15–18-second duration range needs exact target; preserve missing-shoe reveal.",
+    "sourceAction": "Owner identifies a separate authoritative source story and explicitly approves its actual revision through existing story governance; do not use the prompt as its own fidelity proof.",
+    "responsibleLogicalPermissions": [
+      "CREATIVE_QUALITY_ARCHITECTURE_APPROVER",
+      "EVIDENCE_REVIEWER",
+      "CREATIVE_QUALITY_REVIEWER"
+    ],
+    "currentDecisionOwner": "No identity appointed; owner-managed permission model proposed, not applied.",
+    "nextAfterSourceAndSettings": "Bind original, complete independent fidelity review, authorize ungraded import, then quality review under explicitly approved evidence policy."
+  },
+  {
+    "priority": 6,
+    "preparationId": "P06",
+    "existingPackage": "../cpq-v1-calibration-intake-2026-10-15/original-source-review-packages/P06.json",
+    "sourceSha256": "2ef992226b13e968e43f065a6cad606039c3d7af27e92577ec754d9d342830de",
+    "blockers": [
+      "SOURCE_APPROVAL_REQUIRED",
+      "PRODUCTION_SETTINGS_BINDING_REQUIRED",
+      "REVIEW_AUTHORIZATION_REQUIRED"
+    ],
+    "specificSettingsAction": "25.5-second long-form source; keep long-form context, reconcile generator support and story/mechanic scope.",
+    "sourceAction": "Owner identifies a separate authoritative source story and explicitly approves its actual revision through existing story governance; do not use the prompt as its own fidelity proof.",
+    "responsibleLogicalPermissions": [
+      "CREATIVE_QUALITY_ARCHITECTURE_APPROVER",
+      "EVIDENCE_REVIEWER",
+      "CREATIVE_QUALITY_REVIEWER"
+    ],
+    "currentDecisionOwner": "No identity appointed; owner-managed permission model proposed, not applied.",
+    "nextAfterSourceAndSettings": "Bind original, complete independent fidelity review, authorize ungraded import, then quality review under explicitly approved evidence policy."
+  }
+]

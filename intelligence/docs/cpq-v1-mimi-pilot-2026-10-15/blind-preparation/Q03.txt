@@ -1,0 +1,30 @@
+TITLE / FORMAT
+Mimi Sticky / 15s Video
+
+VISUAL STYLE
+Bright and colorful animation with a playful tone.
+
+CHARACTER / CONTINUITY
+Mimi, an anthropomorphic bunny, interacts with sticky notes in a humorous and chaotic manner.
+
+TIMED SHOT PLAN
+0-2s: Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger [close-up on Mimi's hand] Mimi is in front of a toy cabinet, looking determined -> the note sticks to Mimi, not the cabinet
+2-5s: Mimi tries to peel the stuck note away with her other hand; the note splits into two  Mimi pulls at the note -> one note sticks to each hand [tracking medium shot; focus Mimi tries to peel the stuck note away with her other hand; the note splits into two then one note sticks to each hand in a single continuous shot]
+5-10s: Mimi continues to pull; each pull doubles the number of sticky notes  notes multiply from two to four to eight as she pulls, progressively covering her arms, legs and face -> Mimi is overwhelmed by notes [static wide shot; hold two; hold four; hold eight; single continuous shot]
+10-12s: Mimi sees herself in a mirror and screams [close-up on Mimi's shocked face] Mimi is startled by her reflection completely covered in notes -> Mimi is startled
+12-15s: Mimi sneezes and the sticky notes fly off [medium shot of notes flying] notes scatter and stick to the cabinet -> Mimi breathes a sigh of relief but the cabinet remains messy
+
+AUDIO
+Playful background music with sound effects for sneezing and notes sticking.
+
+NEGATIVE CONSTRAINTS
+No dark themes or violence.
+
+FINAL CUT
+Mimi is relieved but the cabinet remains visibly messy.
+
+CHARACTER IDENTITY LOCK
+Mimi is the established anthropomorphic bunny character. Preserve that identity; do not render a human or invent unverified visual details. No approved visual reference is currently bound, so appearance details remain unverified.
+
+PRODUCTION SETTINGS
+Aspect ratio: 9:16. Target generator: SEEDANCE_2_0_MINI. Content profile: ABSURD_PHYSICS.

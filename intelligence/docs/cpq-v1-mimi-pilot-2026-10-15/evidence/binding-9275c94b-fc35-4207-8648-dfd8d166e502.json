@@ -1,0 +1,56 @@
+{
+  "candidateBindings": [
+    {
+      "status": "COMPATIBLE",
+      "assessmentAllowed": true,
+      "reasons": [],
+      "analysisId": "f0d36feb-ee0f-4da8-ae21-2071a3ddea18",
+      "comparisonId": "9275c94b-fc35-4207-8648-dfd8d166e502",
+      "candidateId": "candidate-a",
+      "contentId": 10,
+      "promptVersionId": 10,
+      "sourcePromptSha256": "0fe229774deb4b31a42145bad91cf10c91634ba00da39fa3e9d288b3a2e7bd98",
+      "candidatePromptSha256": "218a9b367d6484d2a12bc8f6e02150f8812cdf8874c73b0171c254035a6be749",
+      "approvedStoryRevisionId": "20b77d13-848d-46d0-ab4b-bb9b6efb0836",
+      "approvedStorySha256": "df653dbcaf16bfdbceb87baa23688d70d739c34941d0075e30e96b181e1bf32b",
+      "rulesetVersion": "1.11",
+      "productionSettings": {
+        "contentProfile": "ABSURD_PHYSICS",
+        "generator": "SEEDANCE_2_0_MINI",
+        "desiredDuration": 15,
+        "settings": {
+          "mode": "image2video",
+          "resolution": "480p",
+          "aspectRatio": "9:16"
+        }
+      }
+    },
+    {
+      "status": "COMPATIBLE",
+      "assessmentAllowed": true,
+      "reasons": [],
+      "analysisId": "f0d36feb-ee0f-4da8-ae21-2071a3ddea18",
+      "comparisonId": "9275c94b-fc35-4207-8648-dfd8d166e502",
+      "candidateId": "candidate-b",
+      "contentId": 10,
+      "promptVersionId": 10,
+      "sourcePromptSha256": "0fe229774deb4b31a42145bad91cf10c91634ba00da39fa3e9d288b3a2e7bd98",
+      "candidatePromptSha256": "2151ed0e2d4b8afa42ea80bad8238a9a639a1be40eea6576390e04704774c746",
+      "approvedStoryRevisionId": "20b77d13-848d-46d0-ab4b-bb9b6efb0836",
+      "approvedStorySha256": "df653dbcaf16bfdbceb87baa23688d70d739c34941d0075e30e96b181e1bf32b",
+      "rulesetVersion": "1.11",
+      "productionSettings": {
+        "contentProfile": "ABSURD_PHYSICS",
+        "generator": "SEEDANCE_2_0_MINI",
+        "desiredDuration": 15,
+        "settings": {
+          "mode": "image2video",
+          "resolution": "480p",
+          "aspectRatio": "9:16"
+        }
+      }
+    }
+  ],
+  "analysisId": "f0d36feb-ee0f-4da8-ae21-2071a3ddea18",
+  "comparisonId": "9275c94b-fc35-4207-8648-dfd8d166e502"
+}

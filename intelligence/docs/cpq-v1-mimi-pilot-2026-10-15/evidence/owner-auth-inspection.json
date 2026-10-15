@@ -1,0 +1,9 @@
+{
+  "runtimeImage": "sha256:dd73b57f02097fe7382cd9293b257afe53d487c5ce2507c96657e4f9d358b74c",
+  "ruleGovernanceTokenConfigured": false,
+  "cpqLoginOrPrincipalAdapterFoundInInspectedBackendNginx": false,
+  "existingTokenMechanism": "X-Rule-Governance-Token / server-side constant-time secret comparison; rule-governance routes only; no authenticated servlet principal; not used to impersonate an owner",
+  "externalIdentityProviderOrAppointedReviewers": "User explicitly confirms none configured/appointed",
+  "secretValuesRecorded": false,
+  "identityRelatedTableNames": []
+}

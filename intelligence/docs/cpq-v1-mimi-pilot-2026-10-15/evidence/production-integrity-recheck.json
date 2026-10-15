@@ -1,0 +1,18 @@
+{
+  "baseline": "V64 deployed before pilot",
+  "unchanged": true,
+  "snapshot": {
+    "promptSha256": "0fe229774deb4b31a42145bad91cf10c91634ba00da39fa3e9d288b3a2e7bd98",
+    "workflowEvents": 75,
+    "comparisons": 8,
+    "eventsSha256": "e7e55725c68f7c27d61183b854b4b1b7799b410814acde27ca2db69fa3190275",
+    "assessments": 0,
+    "fidelityReviews": 0,
+    "corpora": 0,
+    "examples": 0,
+    "judgments": 0,
+    "gradingActive": false,
+    "flyway": 64,
+    "originalSubjects": 0
+  }
+}

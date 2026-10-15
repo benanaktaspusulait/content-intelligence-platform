@@ -1,0 +1,1 @@
+Supervisor-only: exact true identities, old canonical/provider metadata and persisted contract projections. Do not distribute to blind reviewers. Test projections are exact selected fields for disposable wiring, not new production records or human evidence.

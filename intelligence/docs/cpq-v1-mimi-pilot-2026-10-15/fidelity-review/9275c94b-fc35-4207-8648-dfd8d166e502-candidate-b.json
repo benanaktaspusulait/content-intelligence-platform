@@ -1,0 +1,144 @@
+{
+  "preparationOnly": true,
+  "reviewCompleted": false,
+  "subjectType": "OPTIMIZATION_CANDIDATE",
+  "promptSha256": "2151ed0e2d4b8afa42ea80bad8238a9a639a1be40eea6576390e04704774c746",
+  "sourcePromptSha256": "0fe229774deb4b31a42145bad91cf10c91634ba00da39fa3e9d288b3a2e7bd98",
+  "approvedStorySha256": "df653dbcaf16bfdbceb87baa23688d70d739c34941d0075e30e96b181e1bf32b",
+  "approvedStoryId": "bc1cf798-d20b-4b98-8b73-56e1581c3afc",
+  "approvalRecordId": "20b77d13-848d-46d0-ab4b-bb9b6efb0836",
+  "approvedRevision": "candidate-2-revision-7c63cc86",
+  "analysisId": "f0d36feb-ee0f-4da8-ae21-2071a3ddea18",
+  "comparisonId": "9275c94b-fc35-4207-8648-dfd8d166e502",
+  "candidateId": "candidate-b",
+  "productionSettings": {
+    "contentProfile": "ABSURD_PHYSICS",
+    "generator": "SEEDANCE_2_0_MINI",
+    "durationSeconds": 15,
+    "settings": {
+      "mode": "image2video",
+      "resolution": "480p",
+      "aspectRatio": "9:16"
+    }
+  },
+  "approvedStoryText": "Mimi, oyuncak dolabına 'Topla!' yazan bir yapışkan not yapıştırmak ister. Not, Mimi'nin parmağına yapışır. Mimi diğer eliyle çıkarmaya çalışırken not ikiye ayrılır ve iki eline de yapışır. Her çekişte notlar ikiye katlanarak çoğalır. Kısa sürede Mimi'nin kolları, bacakları ve yüzü notlarla kaplanır. Mimi aynada kendini görünce çığlık atar. Notlar o kadar çoğalır ki Mimi boğulacak gibi olur. Sonunda hapşırır ve tüm notlar uçuşarak dolabın üzerine yapışır. Mimi rahat bir nefes alır ama dolap hâlâ dağınıktır.",
+  "exactPromptText": "TITLE / FORMAT\nMimi Sticky / 15s Video\n\nVISUAL STYLE\nBright and colorful animation with a playful tone.\n\nCHARACTER / CONTINUITY\nMimi, an anthropomorphic bunny, interacts with sticky notes in a humorous and chaotic manner.\n\nTIMED SHOT PLAN\n0-2s: Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger [close-up on Mimi's hand] Mimi is in front of a toy cabinet, looking determined -> the note sticks to Mimi, not the cabinet\n2-5s: Mimi tries to peel the stuck note away with her other hand; the note splits into two  Mimi pulls at the note -> one note sticks to each hand [tracking medium shot; focus Mimi tries to peel the stuck note away with her other hand; the note splits into two then one note sticks to each hand in a single continuous shot]\n5-10s: Mimi continues to pull; each pull doubles the number of sticky notes  notes multiply from two to four to eight as she pulls, progressively covering her arms, legs and face -> Mimi is overwhelmed by notes [static wide shot; hold two; hold four; hold eight; single continuous shot]\n10-12s: Mimi sees herself in a mirror and screams [close-up on Mimi's shocked face] Mimi is startled by her reflection completely covered in notes -> Mimi is startled\n12-15s: Mimi sneezes and the sticky notes fly off [medium shot of notes flying] notes scatter and stick to the cabinet -> Mimi breathes a sigh of relief but the cabinet remains messy\n\nAUDIO\nPlayful background music with sound effects for sneezing and notes sticking.\n\nNEGATIVE CONSTRAINTS\nNo dark themes or violence.\n\nFINAL CUT\nMimi is relieved but the cabinet remains visibly messy.\n\nCHARACTER IDENTITY LOCK\nMimi is the established anthropomorphic bunny character. Preserve that identity; do not render a human or invent unverified visual details. No approved visual reference is currently bound, so appearance details remain unverified.\n\nPRODUCTION SETTINGS\nAspect ratio: 9:16. Target generator: SEEDANCE_2_0_MINI. Content profile: ABSURD_PHYSICS.",
+  "reviewEndpointPrefix": "/api/v1/intelligence/workflow",
+  "reviewEndpoint": "/records/f0d36feb-ee0f-4da8-ae21-2071a3ddea18/comparisons/9275c94b-fc35-4207-8648-dfd8d166e502/candidates/candidate-b/fidelity-review",
+  "reviewMethodVersion": "human-source-fidelity-v1",
+  "suggestedSourceEventMappingsNotReviewed": [
+    {
+      "beatId": "beat_01",
+      "sourceQuote": "Mimi, oyuncak dolabına 'Topla!' yazan bir yapışkan not yapıştırmak ister. Not, Mimi'nin parmağına yapışır.",
+      "candidateQuote": "0-2s: Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger [close-up on Mimi's hand] Mimi is in front of a toy cabinet, looking determined -> the note sticks to Mimi, not the cabinet",
+      "verification": "EXACT_QUOTES_VERIFIED_SEMANTIC_MAPPING_UNREVIEWED"
+    },
+    {
+      "beatId": "beat_02",
+      "sourceQuote": "Mimi diğer eliyle çıkarmaya çalışırken not ikiye ayrılır ve iki eline de yapışır.",
+      "candidateQuote": "2-5s: Mimi tries to peel the stuck note away with her other hand; the note splits into two  Mimi pulls at the note -> one note sticks to each hand [tracking medium shot; focus Mimi tries to peel the stuck note away with her other hand; the note splits into two then one note sticks to each hand in a single continuous shot]",
+      "verification": "EXACT_QUOTES_VERIFIED_SEMANTIC_MAPPING_UNREVIEWED"
+    },
+    {
+      "beatId": "beat_03",
+      "sourceQuote": "Her çekişte notlar ikiye katlanarak çoğalır. Kısa sürede Mimi'nin kolları, bacakları ve yüzü notlarla kaplanır.",
+      "candidateQuote": "5-10s: Mimi continues to pull; each pull doubles the number of sticky notes  notes multiply from two to four to eight as she pulls, progressively covering her arms, legs and face -> Mimi is overwhelmed by notes [static wide shot; hold two; hold four; hold eight; single continuous shot]",
+      "verification": "EXACT_QUOTES_VERIFIED_SEMANTIC_MAPPING_UNREVIEWED"
+    },
+    {
+      "beatId": "beat_04",
+      "sourceQuote": "Mimi aynada kendini görünce çığlık atar.",
+      "candidateQuote": "10-12s: Mimi sees herself in a mirror and screams [close-up on Mimi's shocked face] Mimi is startled by her reflection completely covered in notes -> Mimi is startled",
+      "verification": "EXACT_QUOTES_VERIFIED_SEMANTIC_MAPPING_UNREVIEWED"
+    },
+    {
+      "beatId": "beat_05",
+      "sourceQuote": "Sonunda hapşırır ve tüm notlar uçuşarak dolabın üzerine yapışır. Mimi rahat bir nefes alır ama dolap hâlâ dağınıktır.",
+      "candidateQuote": "12-15s: Mimi sneezes and the sticky notes fly off [medium shot of notes flying] notes scatter and stick to the cabinet -> Mimi breathes a sigh of relief but the cabinet remains messy",
+      "verification": "EXACT_QUOTES_VERIFIED_SEMANTIC_MAPPING_UNREVIEWED"
+    }
+  ],
+  "changedBeatMap": [
+    {
+      "beatId": "beat_01",
+      "originalInstruction": "0-2s: Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger [close-up on Mimi's hand] Mimi is in front of a toy cabinet, looking determined -> the note sticks to Mimi, not the cabinet",
+      "revisedInstruction": "0-2s: Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger [close-up on Mimi's hand] Mimi is in front of a toy cabinet, looking determined -> the note sticks to Mimi, not the cabinet",
+      "sourceQuote": "Mimi, oyuncak dolabına 'Topla!' yazan bir yapışkan not yapıştırmak ister. Not, Mimi'nin parmağına yapışır.",
+      "changed": false,
+      "claimedBenefit": "No changed instruction; no independent benefit established.",
+      "potentialSourceConflict": "Review whether staging preserves approved contact target, actions/order and ending; no independent semantic decision has been made.",
+      "productionImplications": "Retained baseline execution demands; rendered adherence unknown.",
+      "reviewerDecision": null
+    },
+    {
+      "beatId": "beat_02",
+      "originalInstruction": "2-5s: Mimi tries to peel the stuck note away with her other hand; the note splits into two [medium shot of Mimi struggling] Mimi pulls at the note -> one note sticks to each hand",
+      "revisedInstruction": "2-5s: Mimi tries to peel the stuck note away with her other hand; the note splits into two  Mimi pulls at the note -> one note sticks to each hand [tracking medium shot; focus Mimi tries to peel the stuck note away with her other hand; the note splits into two then one note sticks to each hand in a single continuous shot]",
+      "sourceQuote": "Mimi diğer eliyle çıkarmaya çalışırken not ikiye ayrılır ve iki eline de yapışır.",
+      "changed": true,
+      "claimedBenefit": "Hypothesis only: one continuous action/consequence view may reduce discontinuity across the split.",
+      "potentialSourceConflict": "Review whether staging preserves approved contact target, actions/order and ending; no independent semantic decision has been made.",
+      "productionImplications": "Tracking while showing fine two-hand contact may increase complexity.",
+      "reviewerDecision": null
+    },
+    {
+      "beatId": "beat_03",
+      "originalInstruction": "5-10s: Mimi continues to pull; each pull doubles the number of sticky notes [wide shot showing Mimi covered in notes] notes multiply from two to four to eight as she pulls, progressively covering her arms, legs and face -> Mimi is overwhelmed by notes",
+      "revisedInstruction": "5-10s: Mimi continues to pull; each pull doubles the number of sticky notes  notes multiply from two to four to eight as she pulls, progressively covering her arms, legs and face -> Mimi is overwhelmed by notes [static wide shot; hold two; hold four; hold eight; single continuous shot]",
+      "sourceQuote": "Her çekişte notlar ikiye katlanarak çoğalır. Kısa sürede Mimi'nin kolları, bacakları ve yüzü notlarla kaplanır.",
+      "changed": true,
+      "claimedBenefit": "Hypothesis only: explicit two/four/eight holds may make multiplication states easier to distinguish.",
+      "potentialSourceConflict": "Review whether staging preserves approved contact target, actions/order and ending; no independent semantic decision has been made.",
+      "productionImplications": "Three holds must fit within 5 seconds and preserve continuous pull-triggered doubling; hold labels alone do not prove material progression.",
+      "reviewerDecision": null
+    },
+    {
+      "beatId": "beat_04",
+      "originalInstruction": "10-12s: Mimi sees herself in a mirror and screams [close-up on Mimi's shocked face] Mimi is startled by her reflection completely covered in notes -> Mimi is startled",
+      "revisedInstruction": "10-12s: Mimi sees herself in a mirror and screams [close-up on Mimi's shocked face] Mimi is startled by her reflection completely covered in notes -> Mimi is startled",
+      "sourceQuote": "Mimi aynada kendini görünce çığlık atar.",
+      "changed": false,
+      "claimedBenefit": "No changed instruction; no independent benefit established.",
+      "potentialSourceConflict": "Review whether staging preserves approved contact target, actions/order and ending; no independent semantic decision has been made.",
+      "productionImplications": "Retained baseline execution demands; rendered adherence unknown.",
+      "reviewerDecision": null
+    },
+    {
+      "beatId": "beat_05",
+      "originalInstruction": "12-15s: Mimi sneezes and the sticky notes fly off [medium shot of notes flying] notes scatter and stick to the cabinet -> Mimi breathes a sigh of relief but the cabinet remains messy",
+      "revisedInstruction": "12-15s: Mimi sneezes and the sticky notes fly off [medium shot of notes flying] notes scatter and stick to the cabinet -> Mimi breathes a sigh of relief but the cabinet remains messy",
+      "sourceQuote": "Sonunda hapşırır ve tüm notlar uçuşarak dolabın üzerine yapışır. Mimi rahat bir nefes alır ama dolap hâlâ dağınıktır.",
+      "changed": false,
+      "claimedBenefit": "No changed instruction; no independent benefit established.",
+      "potentialSourceConflict": "Review whether staging preserves approved contact target, actions/order and ending; no independent semantic decision has been made.",
+      "productionImplications": "Retained baseline execution demands; rendered adherence unknown.",
+      "reviewerDecision": null
+    }
+  ],
+  "reviewDecision": null,
+  "sourceFidelity": "UNKNOWN",
+  "openReviewQuestions": [
+    "Does omission of the literal Topla! text preserve the approved story intent?",
+    "Does overwhelmed preserve the story implication of notes nearly suffocating Mimi without inventing an event?",
+    "Is established Mimi identity sufficiently supported independently of the generator? Visual reference remains unavailable.",
+    "Confirm mirror → scream → sneeze → cabinet scatter → relief/messy ending order.",
+    "15-second target is production context, not an invented timing quotation in the Turkish story."
+  ],
+  "requiredHumanOriginalAnchors": [
+    "CHARACTER_IDENTITY",
+    "APPROVED_EVENTS",
+    "EVENT_ORDER",
+    "PHYSICAL_RULE",
+    "TEMPORAL_CONSTRAINTS",
+    "REQUIRED_ENDING"
+  ],
+  "submissionTemplate": {
+    "decision": null,
+    "rationale": null,
+    "reviewMethodVersion": "human-source-fidelity-v1",
+    "validUntil": null,
+    "citations": [],
+    "sourceEventMapping": []
+  },
+  "submissionWarning": "Incomplete template; human reviewer must independently decide, cite and submit. No provider explanation is independent evidence."
+}

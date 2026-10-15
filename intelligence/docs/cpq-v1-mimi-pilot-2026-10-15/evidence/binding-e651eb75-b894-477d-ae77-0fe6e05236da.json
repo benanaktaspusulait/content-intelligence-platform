@@ -1,0 +1,31 @@
+{
+  "candidateBindings": [
+    {
+      "status": "COMPATIBLE",
+      "assessmentAllowed": true,
+      "reasons": [],
+      "analysisId": "f0d36feb-ee0f-4da8-ae21-2071a3ddea18",
+      "comparisonId": "e651eb75-b894-477d-ae77-0fe6e05236da",
+      "candidateId": "candidate-a",
+      "contentId": 10,
+      "promptVersionId": 10,
+      "sourcePromptSha256": "0fe229774deb4b31a42145bad91cf10c91634ba00da39fa3e9d288b3a2e7bd98",
+      "candidatePromptSha256": "90bdda1e9cea8e2e46662821b52a01dc94359df87b7753f2c77a645c77905495",
+      "approvedStoryRevisionId": "20b77d13-848d-46d0-ab4b-bb9b6efb0836",
+      "approvedStorySha256": "df653dbcaf16bfdbceb87baa23688d70d739c34941d0075e30e96b181e1bf32b",
+      "rulesetVersion": "1.11",
+      "productionSettings": {
+        "contentProfile": "ABSURD_PHYSICS",
+        "generator": "SEEDANCE_2_0_MINI",
+        "desiredDuration": 15,
+        "settings": {
+          "mode": "image2video",
+          "resolution": "480p",
+          "aspectRatio": "9:16"
+        }
+      }
+    }
+  ],
+  "analysisId": "f0d36feb-ee0f-4da8-ae21-2071a3ddea18",
+  "comparisonId": "e651eb75-b894-477d-ae77-0fe6e05236da"
+}

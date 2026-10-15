@@ -1,0 +1,10 @@
+{
+  "name": "com.pompomhills.intelligence.OriginalCpqFidelityIntegrationTest",
+  "tests": "18",
+  "failures": "0",
+  "errors": "0",
+  "skipped": "0",
+  "time": "9.573",
+  "realReviews": 0,
+  "newRealSavedInputDiagnostic": "Asserts real blockers; does not claim successful real pilot import or quality judgments."
+}

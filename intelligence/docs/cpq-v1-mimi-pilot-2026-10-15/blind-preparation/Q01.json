@@ -1,0 +1,20 @@
+{
+  "preparationOnly": true,
+  "officialApiPacketIssued": false,
+  "neutralId": "Q01",
+  "promptText": "TITLE / FORMAT\nMimi Sticky / 15s Video\n\nVISUAL STYLE\nBright and colorful animation with a playful tone.\n\nCHARACTER / CONTINUITY\nMimi, an anthropomorphic bunny, interacts with sticky notes in a humorous and chaotic manner.\n\nTIMED SHOT PLAN\n0-2s: Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger  Mimi is in front of a toy cabinet, looking determined -> the note sticks to Mimi, not the cabinet [locked-off medium shot; Stage the cabinet and her finger on left and right screen regions. Align the existing reach toward the cabinet; keep the intended contact area unobstructed behind the reaching motion. Show the existing attachment to her finger through the same continuous view; maintain a visible gap to the intended destination after wrong-surface contact. Keep the note contact edge outside the silhouette of the other hand; do not hide the attachment with a cut.]\n2-5s: Mimi tries to peel the stuck note away with her other hand; the note splits into two [medium shot of Mimi struggling] Mimi pulls at the note -> one note sticks to each hand\n5-10s: Mimi continues to pull; each pull doubles the number of sticky notes [wide shot showing Mimi covered in notes] notes multiply from two to four to eight as she pulls, progressively covering her arms, legs and face -> Mimi is overwhelmed by notes\n10-12s: Mimi sees herself in a mirror and screams [close-up on Mimi's shocked face] Mimi is startled by her reflection completely covered in notes -> Mimi is startled\n12-15s: Mimi sneezes and the sticky notes fly off [medium shot of notes flying] notes scatter and stick to the cabinet -> Mimi breathes a sigh of relief but the cabinet remains messy\n\nAUDIO\nPlayful background music with sound effects for sneezing and notes sticking.\n\nNEGATIVE CONSTRAINTS\nNo dark themes or violence.\n\nFINAL CUT\nMimi is relieved but the cabinet remains visibly messy.\n\nCHARACTER IDENTITY LOCK\nMimi is the established anthropomorphic bunny character. Preserve that identity; do not render a human or invent unverified visual details. No approved visual reference is currently bound, so appearance details remain unverified.\n\nPRODUCTION SETTINGS\nAspect ratio: 9:16. Target generator: SEEDANCE_2_0_MINI. Content profile: ABSURD_PHYSICS.",
+  "productionSettings": {
+    "contentProfile": "ABSURD_PHYSICS",
+    "generator": "SEEDANCE_2_0_MINI",
+    "durationSeconds": 15,
+    "settings": {
+      "mode": "image2video",
+      "resolution": "480p",
+      "aspectRatio": "9:16"
+    }
+  },
+  "rubricVersion": "creative-prompt-quality-v1",
+  "reviewMethodVersion": "cpq-human-blind-review-v2",
+  "judgment": null,
+  "instruction": "Review each prompt independently. No quality grade or superiority is established. Official submission requires authenticated API scope."
+}

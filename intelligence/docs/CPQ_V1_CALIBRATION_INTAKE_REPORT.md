@@ -184,3 +184,14 @@ CALIBRATION_SOURCE_PREPARATION: PARTIALLY_READY
 INDEPENDENT_REVIEW: AWAITING_AUTHORIZED_REVIEWERS
 CPQ_GRADING: INACTIVE
 REAL_B_TO_A_ACCEPTANCE: NOT_VERIFIED
+
+
+## First Mimi pilot and owner-managed direction — 2026-10-15
+
+[Current pilot report](CPQ_V1_MIMI_REAL_CALIBRATION_PILOT.md) and `cpq-v1-mimi-pilot-2026-10-15/` contain four real fidelity packages, exact neutral blind drafts with reproducible randomized presentation orders, supervisor-only identity mappings and prioritized actions for the existing six golden packages. No prior source package was rebuilt or rewritten. Nine golden originals and all four saved Mimi prompt fingerprints reverified.
+
+The owner confirms there is no external IdP or appointed reviewer group. Roles are logical permissions, not a requirement to hire four employees. Proposed continuation is one authenticated owner plus two separately executed machine critics and independent source checking; MACHINE_REVIEW must remain distinct from HUMAN_REVIEW. No machine review is currently authorized to satisfy the human-calibrated A/A+ policy. No paid call or policy/role change was performed.
+
+Actual saved-input testing qualifies the preceding engineering-readiness claim: real original preflight is blocked because the production-settings event lacks nested execution settings; candidate reviews are blocked because the existing candidate resolver ignores the actual session storyRecordId field. The three read-only COMPATIBLE results do not establish positive write-path readiness. Minimal binding repairs and a narrow owner-auth adapter are proposed; runtime remains unchanged V64, with no unnecessary deployment. Existing rule-governance token verification is reusable as a pattern but its token is unset and it does not authenticate CPQ principals.
+
+Focused disposable backend run: 18 passed, including a test of these real-data blockers without modifying production or presenting mock identities as humans. Production full event digest, Prompt10, 75 events/eight comparisons and all zero CPQ write counts remain unchanged. Source-fidelity semantic decisions, actual quality reviews, material improvement and A/A+ acceptance remain unverified. CPQ grading stays INACTIVE.

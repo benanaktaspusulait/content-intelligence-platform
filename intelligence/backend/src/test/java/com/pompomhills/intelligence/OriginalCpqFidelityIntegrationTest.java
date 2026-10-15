@@ -246,4 +246,46 @@ class OriginalCpqFidelityIntegrationTest {
     jdbc.update("INSERT INTO cpq_fidelity_reviews SELECT (jsonb_populate_record(NULL::cpq_fidelity_reviews,to_jsonb(f)||jsonb_build_object('evidence_id',?::text,'valid_until',now()-interval '1 second','supersedes_evidence_id',NULL))).* FROM cpq_fidelity_reviews f WHERE evidence_id=?",expired.toString(),current);
     assertThatThrownBy(()->api.addExample(corpus,example(expired),manager)).hasMessageContaining("Current unexpired");
   }
+  @Test void realSavedMimiPilotIdentifiesActualSettingsAndCandidateStoryBindingBlockers() throws Exception {
+    // Only this disposable Testcontainers DB receives fixture identities/reviews. Never real human evidence.
+    Path projection=Path.of("../docs/cpq-v1-mimi-pilot-2026-10-15/supervisor-only/persisted-cpq-test-projection.json");
+    if(!Files.exists(projection)) projection=Path.of("intelligence/docs/cpq-v1-mimi-pilot-2026-10-15/supervisor-only/persisted-cpq-test-projection.json");
+    var data=json.readValue(Files.readString(projection),Map.class);
+    jdbc.execute("TRUNCATE cpq_original_subjects,cpq_calibration_corpora,contents,post_family_workflow_events CASCADE");
+    String original=(String)data.get("originalPrompt");
+    assertThat(sha(original)).isEqualTo("0fe229774deb4b31a42145bad91cf10c91634ba00da39fa3e9d288b3a2e7bd98");
+    jdbc.update("INSERT INTO contents(id,title,type) VALUES(10,'Isolated saved Mimi pilot','SHORT')");
+    jdbc.update("INSERT INTO prompt_versions(id,content_id,version_number,raw_text) VALUES(10,10,1,?)",original);
+    for(var raw:(List<Map<String,Object>>)data.get("events"))
+      jdbc.update("INSERT INTO post_family_workflow_events(id,kind,payload,created_at) VALUES(?,?,CAST(? AS jsonb),CAST(? AS timestamptz))",UUID.fromString((String)raw.get("id")),raw.get("kind"),json.writeValueAsString(raw.get("payload")),raw.get("createdAt"));
+    UUID analysis=UUID.fromString("f0d36feb-ee0f-4da8-ae21-2071a3ddea18");
+    UUID source=UUID.fromString("bc1cf798-d20b-4b98-8b73-56e1581c3afc"), approval=UUID.fromString("20b77d13-848d-46d0-ab4b-bb9b6efb0836");
+    String approved=(String)workflow.approvedStoryForCpq(source,approval).get("text");
+    assertThat(sha(approved)).isEqualTo("df653dbcaf16bfdbceb87baa23688d70d739c34941d0075e30e96b181e1bf32b");
+    String historyDigest=jdbc.queryForObject("SELECT encode(digest(string_agg(id::text||kind||payload::text,'' ORDER BY id),'sha256'),'hex') FROM post_family_workflow_events",String.class);
+    var selectors=Map.<String,Object>of("contentId",10,"promptVersionId",10,"expectedPromptSha256",sha(original),"rationale","Disposable saved-input pilot binding; never a production or human approval.");
+    var preflight=api.originalPreflight(selectors,manager);
+    assertThat(preflight).containsEntry("status","BLOCKED");
+    assertThat((List<String>)preflight.get("blockers")).containsExactly("PRODUCTION_SETTINGS_BINDING_REQUIRED");
+    assertThatThrownBy(()->bind(selectors)).hasMessageContaining("PRODUCTION_SETTINGS_BINDING_REQUIRED");
+    var comparisonIds=List.of("e651eb75-b894-477d-ae77-0fe6e05236da","9275c94b-fc35-4207-8648-dfd8d166e502","9275c94b-fc35-4207-8648-dfd8d166e502");
+    var candidateIds=List.of("candidate-a","candidate-a","candidate-b");
+    var expectedHashes=List.of("90bdda1e9cea8e2e46662821b52a01dc94359df87b7753f2c77a645c77905495","218a9b367d6484d2a12bc8f6e02150f8812cdf8874c73b0171c254035a6be749","2151ed0e2d4b8afa42ea80bad8238a9a639a1be40eea6576390e04704774c746");
+    for(int n=0;n<3;n++) {
+      UUID comparison=UUID.fromString(comparisonIds.get(n));String candidateId=candidateIds.get(n);
+      assertThat((List<Map<String,Object>>)api.comparisonBinding(analysis,comparison).get("candidateBindings")).allSatisfy(b->assertThat(b).containsEntry("status","COMPATIBLE"));
+      var event=(Map<String,Object>)((List<Map<String,Object>>)data.get("events")).stream().filter(e->comparison.toString().equals(e.get("id"))).findFirst().orElseThrow().get("payload");
+      var candidate=((List<Map<String,Object>>)event.get("candidates")).stream().filter(c->candidateId.equals(c.get("candidateId"))).findFirst().orElseThrow();
+      String prompt=(String)candidate.get("prompt");assertThat(sha(prompt)).isEqualTo(expectedHashes.get(n));
+      var review=Map.<String,Object>of("decision","UNKNOWN","rationale","Disposable real-input diagnostic only, never a human source-fidelity decision.","validUntil",Instant.now().plusSeconds(3600).toString(),"citations",List.of(Map.of("side","APPROVED_STORY","quote",approved),Map.of("side","CANDIDATE_PROMPT","quote",prompt)),"sourceEventMapping",List.of());
+      assertThatThrownBy(()->api.fidelityReview(analysis,comparison,candidateId,review,evidenceReviewer)).hasMessageContaining("Approved story ID and revision binding are required");
+      assertThat(((Number)((Map<String,Object>)((Map<String,Object>)candidate.get("review")).get("canonicalRuleEvaluation")).get("score")).doubleValue()).isCloseTo(88.40625,within(0.000001));
+    }
+    assertThat(jdbc.queryForObject("SELECT count(*) FROM cpq_fidelity_reviews",Integer.class)).isZero();
+    assertThat(jdbc.queryForObject("SELECT count(*) FROM cpq_original_subjects",Integer.class)).isZero();
+    assertThat(jdbc.queryForObject("SELECT activated FROM cpq_policy_state",Boolean.class)).isFalse();
+    assertThat(jdbc.queryForObject("SELECT encode(digest(string_agg(id::text||kind||payload::text,'' ORDER BY id),'sha256'),'hex') FROM post_family_workflow_events",String.class)).isEqualTo(historyDigest);
+    assertThat(jdbc.queryForObject("SELECT raw_text FROM prompt_versions WHERE id=10",String.class)).isEqualTo(original);
+    verifyNoInteractions(ml);
+  }
 }

@@ -1,0 +1,21 @@
+{
+  "gradingStatus": "CALIBRATION_INCOMPLETE",
+  "counts": {
+    "activated": false,
+    "examples": 0,
+    "judgments": 0,
+    "currentFidelityPasses": 0,
+    "originalSubjects": 0,
+    "fidelityReviews": 0
+  },
+  "missingRequirements": [
+    "Independent reviewed calibration examples",
+    "Held-out validation and false-positive/false-negative analysis",
+    "Reviewer agreement validation",
+    "Full-pipeline B-to-A golden acceptance",
+    "Authorized activation record"
+  ],
+  "rubricVersion": "creative-prompt-quality-v1",
+  "activated": false,
+  "corpora": []
+}

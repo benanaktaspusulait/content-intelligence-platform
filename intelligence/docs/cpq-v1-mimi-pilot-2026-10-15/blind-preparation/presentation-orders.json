@@ -1,0 +1,18 @@
+{
+  "seedIdentifier": "pilot-v1-2026-10-15",
+  "orders": {
+    "review-slot-1": [
+      "Q04",
+      "Q01",
+      "Q02",
+      "Q03"
+    ],
+    "review-slot-2": [
+      "Q02",
+      "Q03",
+      "Q01",
+      "Q04"
+    ]
+  },
+  "reviewersAssigned": false
+}
