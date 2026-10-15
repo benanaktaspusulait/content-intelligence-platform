@@ -1,0 +1,18 @@
+[
+  {
+    "path": "cpq/owner-pilot",
+    "anonymousStatus": 403
+  },
+  {
+    "path": "cpq/owner-pilot/00000000-0000-0000-0000-000000000000/authorizations",
+    "anonymousStatus": 403
+  },
+  {
+    "path": "cpq/owner-pilot/00000000-0000-0000-0000-000000000000/decisions",
+    "anonymousStatus": 403
+  },
+  {
+    "path": "owner-auth/logout",
+    "anonymousStatus": 403
+  }
+]

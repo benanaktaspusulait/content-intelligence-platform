@@ -1,0 +1,117 @@
+{
+  "proposalOnly": true,
+  "requests": [
+    {
+      "slot": "SOURCE_FIDELITY",
+      "profileId": "openai-escalation",
+      "provider": "openai",
+      "model": "gpt-6.1-sol",
+      "modelVersion": "gpt-6.1-sol",
+      "responseMode": "json_schema",
+      "neutralOrder": [
+        "Q01",
+        "Q02",
+        "Q03",
+        "Q04"
+      ],
+      "promptUtf8Bytes": 24167,
+      "schemaUtf8Bytes": 1258,
+      "systemUtf8Bytes": 1128,
+      "mlConservativeInputTokenBound": 27553,
+      "backendConservativeInputTokenBound": 36167,
+      "conservativeInputBoundUsedForCost": 36167,
+      "maxOutputTokens": 4000,
+      "configuredContextTokens": 1050000,
+      "conservativeCostUpperBoundUsd": 0.1304175,
+      "proposedMaxCostUsd": 0.3,
+      "fitsConfiguredLimits": true,
+      "actualTokens": null,
+      "actualCostUsd": null,
+      "authorizationState": "NOT_AUTHORIZED",
+      "dispatchExecuted": false,
+      "sourceCheckerDiffersFromEveryGenerator": true,
+      "savedGeneratingIdentities": [
+        {
+          "provider": "openai",
+          "model": "gpt-4o-mini-2024-07-18"
+        },
+        {
+          "provider": "openai",
+          "model": "gpt-4o-mini-2024-07-18"
+        },
+        {
+          "provider": "openai",
+          "model": "gpt-4o-mini-2024-07-18"
+        }
+      ],
+      "sharedProviderFamilyLimitation": "Checker and historical generators both OpenAI; exact model differs. No human independence claim.",
+      "neutralOrderBasis": "Illustrative packet order for offline byte-budget calculation only; actual SOURCE_FIDELITY order is derived by the backend from the final immutable pilot snapshot. Critic orders are the saved manifest orders."
+    },
+    {
+      "slot": "CRITIC_A",
+      "profileId": "deepseek-primary",
+      "provider": "deepseek",
+      "model": "deepseek-v4-pro",
+      "modelVersion": "DeepSeek-V4-Pro-0813",
+      "responseMode": "json_object",
+      "neutralOrder": [
+        "Q04",
+        "Q01",
+        "Q02",
+        "Q03"
+      ],
+      "promptUtf8Bytes": 9672,
+      "schemaUtf8Bytes": 5042,
+      "systemUtf8Bytes": 1128,
+      "mlConservativeInputTokenBound": 16842,
+      "backendConservativeInputTokenBound": 21672,
+      "conservativeInputBoundUsedForCost": 21672,
+      "maxOutputTokens": 4000,
+      "configuredContextTokens": 1000000,
+      "conservativeCostUpperBoundUsd": 0.04444704,
+      "proposedMaxCostUsd": 0.1,
+      "fitsConfiguredLimits": true,
+      "actualTokens": null,
+      "actualCostUsd": null,
+      "authorizationState": "NOT_AUTHORIZED",
+      "dispatchExecuted": false
+    },
+    {
+      "slot": "CRITIC_B",
+      "profileId": "openai-escalation",
+      "provider": "openai",
+      "model": "gpt-6.1-sol",
+      "modelVersion": "gpt-6.1-sol",
+      "responseMode": "json_schema",
+      "neutralOrder": [
+        "Q02",
+        "Q03",
+        "Q01",
+        "Q04"
+      ],
+      "promptUtf8Bytes": 9672,
+      "schemaUtf8Bytes": 5042,
+      "systemUtf8Bytes": 1128,
+      "mlConservativeInputTokenBound": 16842,
+      "backendConservativeInputTokenBound": 21672,
+      "conservativeInputBoundUsedForCost": 21672,
+      "maxOutputTokens": 4000,
+      "configuredContextTokens": 1050000,
+      "conservativeCostUpperBoundUsd": 0.09418,
+      "proposedMaxCostUsd": 0.2,
+      "fitsConfiguredLimits": true,
+      "actualTokens": null,
+      "actualCostUsd": null,
+      "authorizationState": "NOT_AUTHORIZED",
+      "dispatchExecuted": false
+    }
+  ],
+  "maxRequests": 3,
+  "automaticRetries": 0,
+  "fallback": false,
+  "escalation": false,
+  "totalProposedCeilingUsd": 0.6,
+  "totalConservativeCostUpperBoundUsd": 0.26904454,
+  "realRequestsDispatched": 0,
+  "providerLiveAvailability": "UNVERIFIED_NO_PAID_PROBE"
+}

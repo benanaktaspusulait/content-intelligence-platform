@@ -9,6 +9,7 @@ from pathlib import Path
 import re
 import secrets
 import shlex
+import signal
 import stat
 import subprocess
 import sys
@@ -42,13 +43,26 @@ if private_dir.is_symlink() or credential.is_symlink() or profile.is_symlink():
 if private_dir.is_relative_to(project):
     sys.exit('Owner credentials must live outside the repository.')
 
-saved = json.loads(profile.read_text()) if profile.exists() else {}
+signal.signal(signal.SIGINT, lambda *_: sys.exit('Setup interrupted. Existing private files were preserved; rerun safely.'))
+if credential.exists() and not profile.exists():
+    sys.exit('Partial setup: credential exists without an owner profile. Resolve locally; no identity was assigned or credential overwritten.')
+try:
+    saved = json.loads(profile.read_text()) if profile.exists() else {}
+except (OSError, ValueError):
+    sys.exit('Existing owner profile is unreadable or incomplete. Resolve locally; it was not overwritten.')
+if not isinstance(saved, dict) or (profile.exists() and not saved.get('ownerId')):
+    sys.exit('Existing owner profile has no valid identity. Resolve locally; it was not overwritten.')
 owner_id = saved.get('ownerId', '')
 if not owner_id:
-    with open('/dev/tty', 'r+') as terminal:
-        terminal.write('Choose your own local owner identifier (3–80 letters, digits, . _ @ -): ')
-        terminal.flush()
-        owner_id = terminal.readline().strip()
+    try:
+        # Separate streams avoid BufferedRandom, which requires a seekable device
+        # for r+ and fails on macOS /dev/tty. Python stdin holds this heredoc.
+        with open('/dev/tty', 'w') as terminal_output, open('/dev/tty', 'r') as terminal_input:
+            terminal_output.write('Choose your own local owner identifier (3–80 letters, digits, . _ @ -): ')
+            terminal_output.flush()
+            owner_id = terminal_input.readline().strip()
+    except OSError:
+        sys.exit('A controlling interactive terminal is required. No identity or credential was created.')
 if not isinstance(owner_id, str) or not re.fullmatch(r'[A-Za-z0-9._@-]{3,80}', owner_id):
     sys.exit('Invalid owner identifier; no credential was created.')
 private_dir.mkdir(mode=0o700, parents=True, exist_ok=True)
@@ -56,15 +70,17 @@ os.chmod(private_dir, 0o700)
 if credential.exists():
     if not credential.is_file() or stat.S_IMODE(credential.stat().st_mode) & 0o077 or not 32 <= credential.stat().st_size <= 1025:
         sys.exit('Existing credential is not a valid private file. Resolve it locally; it was not overwritten.')
-else:
-    fd = os.open(credential, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600)
-    with os.fdopen(fd, 'w') as handle:
-        handle.write(secrets.token_urlsafe(48) + '\n')
+# Save the chosen identity first. An interruption can then resume for that exact
+# owner; an orphan credential must never be silently rebound to a new identity.
 if not profile.exists():
     fd = os.open(profile, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600)
     with os.fdopen(fd, 'w') as handle:
         json.dump({'ownerId': owner_id}, handle)
         handle.write('\n')
+if not credential.exists():
+    fd = os.open(credential, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600)
+    with os.fdopen(fd, 'w') as handle:
+        handle.write(secrets.token_urlsafe(48) + '\n')
 
 env = dict(os.environ, CPQ_OWNER_ID=owner_id, CPQ_OWNER_CONFIG_DIR=str(private_dir), CPQ_PILOT_REAL_ENABLED='false')
 print('Private owner configuration prepared. Credential contents are not displayed.')

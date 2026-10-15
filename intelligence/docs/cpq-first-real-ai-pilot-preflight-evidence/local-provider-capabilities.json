@@ -1,0 +1,71 @@
+{
+  "version": "creative-provider-capabilities-v3-2026-10-15",
+  "verifiedAt": "2026-10-15",
+  "profiles": {
+    "deepseek-primary": {
+      "provider": "deepseek",
+      "model": "deepseek-v4-pro",
+      "documentedVersion": "DeepSeek-V4-Pro-0813",
+      "baseUrl": "https://api.deepseek.com",
+      "protocol": "chat_completions",
+      "responseMode": "json_object",
+      "contextTokens": 1000000,
+      "maxOutputTokens": 393216,
+      "inputUsdPerMillion": 1.32,
+      "cachedInputUsdPerMillion": 0.044,
+      "outputUsdPerMillion": 3.96,
+      "priceBasis": "PEAK_CACHE_MISS_UPPER_BOUND; off-peak and cache discounts not assumed",
+      "tokenParameter": "max_tokens",
+      "reasoningEffort": "high",
+      "temperatureSupported": false,
+      "reasoningBilledWithinOutput": true,
+      "deprecated": false,
+      "documentation": [
+        "https://api-docs.deepseek.com/quick_start/pricing/",
+        "https://api-docs.deepseek.com/api/create-chat-completion/"
+      ],
+      "configured": true,
+      "liveAvailability": "UNVERIFIED_NO_PROVIDER_CALL"
+    },
+    "openai-escalation": {
+      "provider": "openai",
+      "model": "gpt-6.1-sol",
+      "documentedVersion": "gpt-6.1-sol",
+      "baseUrl": "https://api.openai.com/v1",
+      "protocol": "chat_completions",
+      "responseMode": "json_schema",
+      "contextTokens": 1050000,
+      "maxOutputTokens": 128000,
+      "inputUsdPerMillion": 2.5,
+      "cachedInputUsdPerMillion": 0.1,
+      "outputUsdPerMillion": 10.0,
+      "priceBasis": "STANDARD_SHORT_CONTEXT_CONSERVATIVE_CACHE_WRITE_INPUT_UPPER_BOUND; no fast/ultrafast or long-context dispatch",
+      "tokenParameter": "max_completion_tokens",
+      "reasoningEffort": "high",
+      "temperatureSupported": false,
+      "reasoningBilledWithinOutput": true,
+      "deprecated": false,
+      "documentation": [
+        "https://developers.openai.com/api/docs/models/gpt-6.1-sol",
+        "https://developers.openai.com/api/docs/guides/latest-model"
+      ],
+      "configured": true,
+      "liveAvailability": "UNVERIFIED_NO_PROVIDER_CALL"
+    }
+  },
+  "limits": {
+    "maxProviders": 2,
+    "maxRequestsPerProvider": 1,
+    "maxRounds": 1,
+    "maxOutputTokens": 4000,
+    "maxLatencySeconds": 120,
+    "maxCostUsd": 20
+  },
+  "realCreativeEffectiveness": "UNVERIFIED",
+  "automaticFallback": false,
+  "policyVersion": "OWNER_MACHINE_PILOT_V1",
+  "evidenceType": "MACHINE_REVIEW",
+  "officialGrading": "INACTIVE",
+  "realEnabled": false,
+  "realDispatchEnabled": false
+}
