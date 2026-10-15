@@ -236,7 +236,7 @@ public class WorkflowService {
       throw new IllegalStateException("Source-bound essential event anchors are unavailable");
     var context = new LinkedHashMap<String, Object>();
     context.put("optimizationGenerationContractVersion", "creative-reconstruction-v2");
-    context.put("optimizationGenerationInstructionsVersion", "creative-reconstruction-v2");
+    context.put("optimizationGenerationInstructionsVersion", "model-authored-production-v1");
     context.put("openingStrategy", bound.getOrDefault("openingStrategy", "AUTO"));
     context.put("baselineCanonicalFailures", map(baseline.get("canonicalRuleEvaluation")).getOrDefault("failedRules", List.of()));
     context.put("baselineCanonicalEvaluation", map(baseline.get("canonicalRuleEvaluation")));
@@ -265,6 +265,7 @@ public class WorkflowService {
         && version.longValue() == jdbc.sql("SELECT max(id) FROM prompt_versions WHERE content_id=:content").param("content",content.longValue()).query(Long.class).single().longValue()
         && source.promptText().equals(bound.get("prompt"))
         && "creative-reconstruction-v2".equals(map(existingComparison.get("creativeEvidence")).get("creativeContractVersion"))
+        && "model-authored-production-v1".equals(map(existingComparison.get("creativeEvidence")).get("instructionsVersion"))
         && sha256(source.promptText()).equals(existingComparison.get("sourcePromptSha256"))
         && maps(existingComparison.get("candidates")).stream().allMatch(c -> effectiveProfile.equals(map(c.get("sourcePlan")).get("contentProfile"))))
       return assessOptimizationComparison(UUID.fromString(String.valueOf(existingComparison.get("recordId"))));
@@ -387,6 +388,7 @@ public class WorkflowService {
     context.put("optimizationGenerationContractVersion", originalContext.getOrDefault("optimizationGenerationContractVersion", "profile-ownership-v1"));
     if (originalContext.containsKey("optimizationGenerationInstructionsVersion"))
       context.put("optimizationGenerationInstructionsVersion", originalContext.get("optimizationGenerationInstructionsVersion"));
+    else context.remove("optimizationGenerationInstructionsVersion");
     roleRequest.put("context", context);
     String fingerprint = "recovery:" + savedId + ":" + creativeRoleFingerprint("PROMPT_OPTIMIZATION", roleRequest);
     jdbc.sql("SELECT pg_advisory_xact_lock(hashtext(:fingerprint))").param("fingerprint", fingerprint).query((rs,n)->rs.getObject(1)).list();

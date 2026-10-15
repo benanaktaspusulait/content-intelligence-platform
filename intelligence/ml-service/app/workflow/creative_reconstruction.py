@@ -13,6 +13,7 @@ from pydantic import Field
 from .optimization_plans import Strict, protected_contract
 from .optimization_distinctness import _beats, _narrative, _outside
 from .optimization_profile_contract import normalize_candidate_profiles
+from .model_authored_execution import AUTHORING_VERSION, AuthoredProduction, reference_catalog, assemble_authored, validate_authored, provenance_spans
 
 VERSION = 'creative-reconstruction-v2'
 QUALITY_MODEL = 'creative-quality-evidence-v2'
@@ -40,6 +41,29 @@ class Proposal(Strict):
 class ReconstructionResponse(Strict):
     proposals: list[Proposal] = Field(max_length=2)
     noImprovementReason: str | None
+
+
+class AuthoredIntervention(Intervention):
+    authorship: Literal['MODEL_AUTHORED', 'BOUNDED_TEMPLATE_FALLBACK']
+    production: AuthoredProduction | None
+    fallbackReason: str | None
+
+class AuthoredReconstruction(Reconstruction):
+    interventions: list[AuthoredIntervention] = Field(min_length=1, max_length=4)
+
+class AuthoredProposal(Strict):
+    initial: AuthoredReconstruction
+    revision: AuthoredReconstruction | None
+
+class AuthoredResponse(Strict):
+    proposals: list[AuthoredProposal] = Field(max_length=2)
+    noImprovementReason: str | None
+
+def authored_context(context):
+    return context.get('optimizationGenerationInstructionsVersion') == AUTHORING_VERSION
+
+def generation_system(context):
+    return SYSTEM + AUTHORED_SYSTEM if authored_context(context) else SYSTEM
 
 
 def diagnose(source, context):
@@ -101,8 +125,8 @@ def diagnose(source, context):
         'semanticStoryFidelity': 'UNKNOWN', 'renderAuthorization': 'NOT_GRANTED'}
 
 
-def response_format():
-    schema = ReconstructionResponse.model_json_schema()
+def response_format(context=None):
+    schema = (AuthoredResponse if authored_context(context or {}) else ReconstructionResponse).model_json_schema()
     def wire(x):
         if isinstance(x, dict):
             result = {k: wire(v) for k, v in x.items() if k != 'default' and not (k == 'title' and isinstance(v, str))}
@@ -115,12 +139,20 @@ SYSTEM = '''Diagnose and reconstruct production execution, not story. Read the s
 Use creativeDiagnosis.openingStrategy. CURIOSITY_DISCOVERY need not reveal complete causality at frame zero. No universal joke, resolved ending or loop requirement. Every benefit is an unverified hypothesis until images/video/audience evidence exists. Do not claim proven superiority, retention uplift or guaranteed generation. Consider contact, occlusion, count continuity, character continuity, mirror and scatter execution risks. Critique the initial plan before answering: does it change staging, preserve story, address the opportunity and avoid new complexity? You may supply one revised plan in the same response if your initial proposal needs correction. No additional paid call or retry is authorized. Return proposals [] with a concrete noImprovementReason if no justified improvement exists. Never approve or create a prompt version. The server will critique each plan, compile valid interventions into complete production prompts and run existing source/canonical validation. Framing/camera-only and timestamp-only plans are rejected.'''
 
 
+AUTHORED_SYSTEM = """
+For model-authored-production-v1 you author the actual production instructions, not merely operation labels. Use sourceReferenceCatalog for exact beat-bound action, consequence, entity and count-state references. Put MODEL_AUTHORED in authorship and supply production; fallbackReason must be null. Write original spatial relationships, physical choreography, visible consequence presentation, state progression, relative temporal presentation, camera/composition and generator constraints. The compiler only substitutes {referenceId} with its exact source quote and joins your fields; it will not invent choreography for you. Do not submit a full rewritten prompt. Source narrative and beat windows are protected and assembled separately. Describe how existing actions are performed and shown, never add actions, attempts, props, count states or events. Use only references from the relevant beat. Spatial instructions must name both bound participants and express the typed relation. For count progression include every bound state in source order, with concrete differentiated spatial arrangements and continuous transitions; do not invent sub-beat timestamps. Camera/composition prose must agree with LOCKED camera discipline. State contact and occlusion constraints explicitly. Materiality requires a new observable spatial or state presentation; long paraphrases, camera labels and timing splits are insufficient. You may address several relevant diagnosed beats; do not force changes to every beat. All benefits remain hypotheses and semantic fidelity remains unknown. If a bounded server template is deliberately sufficient, explicitly choose BOUNDED_TEMPLATE_FALLBACK, production null and a concrete fallbackReason; this is attributed to the server, not model-authored choreography. Invalid authored instructions are rejected, never silently replaced by a template.
+"""
+
+
 def request_payload(source, context):
     diagnosis = diagnose(source, context)
-    return {'phase': 'CREATIVE_DIAGNOSIS_RECONSTRUCTION_CRITIQUE', 'contractVersion': VERSION,
+    payload = {'phase': 'CREATIVE_DIAGNOSIS_RECONSTRUCTION_CRITIQUE', 'contractVersion': VERSION,
             'creativeDiagnosis': diagnosis, 'maxCandidates': 2, 'maxRevisionsPerCandidate': 1,
             'revisionBudget': 'WITHIN_THIS_SINGLE_RESPONSE_ONLY', 'visualEvidence': 'NOT_SUPPLIED',
             'audienceEvidence': 'NOT_SUPPLIED'}
+    if authored_context(context):
+        payload.update(instructionsVersion=AUTHORING_VERSION, sourceReferenceCatalog=reference_catalog(source, context, diagnosis))
+    return payload
 
 
 def _instructions(op, intervention):
@@ -145,7 +177,7 @@ def _instructions(op, intervention):
             'Use the original beat window, with no invented sub-beat timestamps, additional pull, freeze or new outcome.')
 
 
-def critique(plan, diagnosis):
+def critique(plan, diagnosis, source=None, refs=None):
     opportunities = {o['opportunityId']: o for o in diagnosis['opportunities']}
     reasons = []
     if plan.storyChangeRequested: reasons.append('STORY_CHANGE_REQUIRES_APPROVAL')
@@ -167,7 +199,16 @@ def critique(plan, diagnosis):
         seen.add(i.opportunityId)
         if i.layout == 'UNCHANGED': reasons.append('NO_SPATIAL_OR_CHOREOGRAPHIC_CHANGE')
         if i.camera != 'LOCKED': reasons.append('EXECUTION_RISK_REGRESSION_MOVING_CONTACT_VIEW')
-        if _instructions(op, i) in op['currentExecution']: reasons.append('BASELINE_EQUIVALENT')
+        if isinstance(i, AuthoredIntervention):
+            if i.authorship == 'MODEL_AUTHORED':
+                if i.production is None or i.fallbackReason is not None:
+                    reasons.append('INVALID_AUTHORSHIP_CONTRACT')
+                else:
+                    try: validate_authored(i, op, refs or {}, source or '')
+                    except ValueError as error: reasons.append(str(error))
+            elif i.production is not None or not i.fallbackReason or len(i.fallbackReason.strip()) < 20:
+                reasons.append('INVALID_EXPLICIT_FALLBACK')
+        elif _instructions(op, i) in op['currentExecution']: reasons.append('BASELINE_EQUIVALENT')
     return {'status': 'ACCEPTED_TEXTUAL_PLAN' if not reasons else 'REVISION_REQUIRED',
             'reasons': sorted(set(reasons)), 'checks': {
                 'observableChange': not reasons, 'addressesDiagnosis': not reasons,
@@ -177,9 +218,10 @@ def critique(plan, diagnosis):
 
 
 def compile_reconstruction(source, context, raw_plan):
-    plan = Reconstruction.model_validate(raw_plan)
+    plan = (AuthoredReconstruction if authored_context(context) else Reconstruction).model_validate(raw_plan)
     diagnosis = diagnose(source, context)
-    criticism = critique(plan, diagnosis)
+    refs = reference_catalog(source, context, diagnosis) if authored_context(context) else {}
+    criticism = critique(plan, diagnosis, source, refs)
     if criticism['reasons']: raise ValueError('Creative reconstruction rejected: ' + ', '.join(criticism['reasons']))
     opportunities = {o['opportunityId']: o for o in diagnosis['opportunities']}
     by_beat = {}
@@ -188,17 +230,26 @@ def compile_reconstruction(source, context, raw_plan):
         by_beat.setdefault(op['beatId'], []).append((op, intervention))
     prompt = source
     changes = []
+    provenance = []
     for b in reversed(_beats(source)):
         if b['id'] not in by_beat: continue
-        instructions = [_instructions(op, i) for op, i in by_beat[b['id']]]
-        # Preserve the narrative exactly; edit the production layer only. No model prose is injected here.
-        narrative = re.sub(r'\[[^\]]*\]', '', b['sourceQuote']).rstrip()
-        replacement = narrative + ' [locked-off medium shot; ' + ' '.join(instructions) + ']'
-        a, z = b['sourceSpan']; prompt = prompt[:a] + replacement + prompt[z:]
+        compiled = []
         for op, i in by_beat[b['id']]:
+            if isinstance(i, AuthoredIntervention) and i.authorship == 'MODEL_AUTHORED':
+                text, validation, fields = assemble_authored(i, op, refs, source)
+                compiled.append((text, fields, 'MODEL_AUTHORED'))
+            else:
+                compiled.append(('locked-off medium shot; ' + _instructions(op, i), [], 'SERVER_TEMPLATE'))
+        instructions = [item[0] for item in compiled]
+        # Preserve source narrative exactly; validated authored production is assembled verbatim.
+        narrative = re.sub(r'\[[^\]]*\]', '', b['sourceQuote']).rstrip()
+        replacement = narrative + ' [' + ' '.join(instructions) + ']'
+        provenance.append({'beatId':b['id'], 'instructions':[{'text':text,'author':author,'fields':fields} for text,fields,author in compiled]})
+        a, z = b['sourceSpan']; prompt = prompt[:a] + replacement + prompt[z:]
+        for (op, i), (text, fields, author) in zip(by_beat[b['id']], compiled):
             changes.append({'opportunityId': op['opportunityId'], 'beatId': b['id'],
                 'originalExecution': b['sourceQuote'], 'newExecution': replacement,
-                'observableDifference': _instructions(op, i), 'creativeRationale': i.rationale,
+                'observableDifference': text, 'authorship': author, 'creativeRationale': i.rationale,
                 'sourceFidelity': {'quote': b['sourceQuote'], 'span': b['sourceSpan'], 'protectedEventUnchanged': True, 'semanticFidelity': 'UNKNOWN'},
                 'productionRisk': {'change': 'UNKNOWN', 'evidence': op['productionRisk'], 'newMitigation': 'Locked contact view with explicit spatial separation.'},
                 'evidenceLimitation': 'Text specifies a different execution. Render adherence, visual clarity and audience benefit are unverified.'})
@@ -221,6 +272,24 @@ def compile_reconstruction(source, context, raw_plan):
             'preservedStorySha256': diagnosis['protectedStoryContract']['approvedStorySha256'], 'renderAuthorization': 'NOT_GRANTED'}}
     normalize_candidate_profiles(source, [candidate], context)
     validate_compiled_source(source, candidate, context)
+    if authored_context(context):
+        candidate['instructionsVersion'] = AUTHORING_VERSION
+        for beat in provenance:
+            row = next(b for b in _beats(candidate['prompt']) if b['id'] == beat['beatId'])
+            cursor = row['sourceSpan'][0]
+            for instruction in beat['instructions']:
+                start = candidate['prompt'].index(instruction['text'], cursor)
+                instruction['candidateSpan'] = [start, start + len(instruction['text'])]
+                for field in instruction['fields']:
+                    field['candidateSpan'] = [start + x for x in field['localSpan']]
+                cursor = instruction['candidateSpan'][1]
+        candidate['productionProvenance'] = {
+            'version': AUTHORING_VERSION, 'spanUnit':'UNICODE_CODE_POINTS', 'beats': list(reversed(provenance)),
+            'sourceEventMapping':candidate['sourceEventCoverage']['mappings'],
+            'segments':provenance_spans(source,candidate['prompt'],provenance),
+            'compilerContribution':['Source narrative preservation', 'Reference substitution using exact source spans',
+                'Annotation delimiters and field separators', 'Authoritative production-profile normalization'],
+            'semanticFidelity':'UNKNOWN', 'creativeEffectiveness':'UNVERIFIED'}
     return candidate
 
 
@@ -252,6 +321,7 @@ def assess_candidate(source, candidate, context, baseline_score):
         compiled = compile_reconstruction(source, context, candidate['reconstructionPlan'])
         if compiled['prompt'] != candidate['prompt']: raise ValueError('Candidate differs from its source-bound compiled production plan')
         evidence = deepcopy(compiled['creativeAssessment'])
+        if 'productionProvenance' in compiled: evidence['productionProvenance'] = compiled['productionProvenance']
         canonical = candidate.get('review',{}).get('canonicalRuleEvaluation',{})
         score = canonical.get('score')
         regression = isinstance(score,(float,int)) and isinstance(baseline_score,(float,int)) and score < baseline_score
@@ -266,11 +336,16 @@ def assess_candidate(source, candidate, context, baseline_score):
         evidence['canonicalChanges'] = changes
         evidence['productionRiskIndicatorRegression'] = risk_regression
         if regression or new_failures or risk_regression: evidence['classification'] = 'REGRESSION'
-        eligible = canonical.get('status') == 'EVALUATED' and not regression and not new_failures and not risk_regression
+        critic = candidate.get('review',{}).get('executionReview',{})
+        critic_review_required = authored_context(context) and critic.get('status') in {'REWRITE','BLOCKED','FAIL'}
+        if authored_context(context):
+            evidence['executionCritic'] = deepcopy(critic)
+            evidence['executionRiskReviewRequired'] = critic_review_required
+        eligible = canonical.get('status') == 'EVALUATED' and not regression and not new_failures and not risk_regression and not critic_review_required
         evidence.update(canonicalScore=score, canonicalRegression=regression, newCanonicalFailures=new_failures)
         return {'candidateId':candidate['candidateId'],'contractVersion':VERSION,
             'classification': evidence['classification'], 'approvalEligible': eligible,
-            'approvalBlockReason': None if eligible else 'Canonical evaluation missing or regressed; explicit review is unavailable.',
+            'approvalBlockReason': None if eligible else 'Execution critic requires risk review; canonical score does not establish safe execution.' if critic_review_required else 'Canonical evaluation missing or regressed; explicit review is unavailable.',
             'actualChanges':[c['observableDifference'] for c in evidence['changeContract']], 'creativeAssessment': evidence,
             'conclusion':('Source-bound execution changes introduced a canonical or production-risk regression; do not approve.' if regression or new_failures or risk_regression else 'Source-bound staging/choreography changes address a diagnosed opportunity; visual and audience benefits remain unverified.'),
             'validationStatus':'SOURCE_TEXT_CONTRACT_PASSED', 'storyCoverage':'SOURCE_EVENTS_COVERED; SEMANTIC_FIDELITY_UNKNOWN',
@@ -302,26 +377,26 @@ def metrics(candidates, rejected, calls, cost=None):
 
 def perform_reconstruction(source, context, provider, model):
     payload = request_payload(source,context)
-    provider.response_format = response_format(); provider.last_request_started = True
-    raw = provider.complete(json.dumps(payload,ensure_ascii=False),system=SYSTEM,temperature=0)
+    provider.response_format = response_format(context); provider.last_request_started = True
+    raw = provider.complete(json.dumps(payload,ensure_ascii=False),system=generation_system(context),temperature=0)
     provider.last_raw_response=raw
     value=json.loads(raw);provider.last_role_result=deepcopy(value)
-    parsed=ReconstructionResponse.model_validate(value)
+    parsed=(AuthoredResponse if authored_context(context) else ReconstructionResponse).model_validate(value)
     if not parsed.proposals and not (parsed.noImprovementReason and len(parsed.noImprovementReason.strip()) >= 20):
         raise ValueError('NO_JUSTIFIED_IMPROVEMENT requires a concrete explanation')
     identities=[p.initial.candidateId for p in parsed.proposals]
     if len(set(identities)) != len(identities): raise ValueError('Duplicate candidate identities')
     candidates=[];rejected=[];cycles=[]
     for proposal in parsed.proposals:
-        plan=proposal.initial;review=critique(plan,payload['creativeDiagnosis'])
+        plan=proposal.initial;review=critique(plan,payload['creativeDiagnosis'],source,payload.get('sourceReferenceCatalog'))
         cycle={'candidateId':plan.candidateId,'initialCritique':review,'revisionsUsed':0}
         if review['reasons'] and proposal.revision is not None and 'STORY_CHANGE_REQUIRES_APPROVAL' not in review['reasons']:
             if proposal.revision.candidateId != plan.candidateId or {x.opportunityId for x in proposal.revision.interventions} != {x.opportunityId for x in plan.interventions}:
                 raise ValueError('Revision must target the same candidate and diagnosed opportunities')
-            plan=proposal.revision; review=critique(plan,payload['creativeDiagnosis']);cycle['revisionsUsed']=1
+            plan=proposal.revision; review=critique(plan,payload['creativeDiagnosis'],source,payload.get('sourceReferenceCatalog'));cycle['revisionsUsed']=1
         cycle['finalCritique']=review;cycles.append(cycle)
         if review['reasons']:
-            category='STORY_CHANGE_REQUIRES_APPROVAL' if 'STORY_CHANGE_REQUIRES_APPROVAL' in review['reasons'] else 'REGRESSION' if any('REGRESSION' in r for r in review['reasons']) else 'VALID_BUT_EQUIVALENT'
+            category='STORY_CHANGE_REQUIRES_APPROVAL' if 'STORY_CHANGE_REQUIRES_APPROVAL' in review['reasons'] else 'REGRESSION' if any('REGRESSION' in r for r in review['reasons']) else 'STORY_FIDELITY_FAILED' if any('STORY_FIDELITY_FAILED' in r for r in review['reasons']) else 'VALID_BUT_EQUIVALENT'
             rejected.append({'candidateId':plan.candidateId,'classification':category,**review});continue
         candidate=compile_reconstruction(source,context,plan.model_dump())
         if any(c['prompt']==candidate['prompt'] for c in candidates):
@@ -329,6 +404,7 @@ def perform_reconstruction(source, context, provider, model):
         candidates.append(candidate)
     return {'role':'PROMPT_OPTIMIZATION','provider':'openai','model':model,'calls':1,
         'result':{'candidates':candidates,'creativeContractVersion':VERSION,
+            'instructionsVersion':context.get('optimizationGenerationInstructionsVersion', VERSION),
             'creativeDiagnosis':payload['creativeDiagnosis'],'critiqueCycles':cycles,'rejectedProposals':rejected,
             'outcome':'MATERIAL_CANDIDATES_FOR_REVIEW' if candidates else 'NO_JUSTIFIED_IMPROVEMENT',
             'noImprovementReason':parsed.noImprovementReason,'improvementMetrics':metrics(candidates,rejected,1)},

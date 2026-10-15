@@ -1026,13 +1026,14 @@ def run_paid_role(role: str, text: str, context: dict[str, Any], max_cost_usd: f
         plan_payload = plan_request_payload(text,context)
         payload_bytes = len(json.dumps(plan_payload,ensure_ascii=False).encode('utf-8'))
     if reconstruction:
-        from .creative_reconstruction import request_payload, response_format, SYSTEM as plan_system
+        from .creative_reconstruction import request_payload, response_format, generation_system
+        plan_system = generation_system(context)
         plan_payload = request_payload(text, context)
         payload_bytes = len(json.dumps(plan_payload, ensure_ascii=False).encode('utf-8'))
     output_token_limit = 4000 if role == 'STORY' or plan_first or reconstruction else 2000
     schema_bytes = len(json.dumps(OPTIMIZATION_RESPONSE_FORMAT).encode('utf-8')) if role == 'PROMPT_OPTIMIZATION' else 0
     if plan_first: schema_bytes = len(json.dumps(response_format(options=plan_payload['executionOptions'])).encode('utf-8'))
-    if reconstruction: schema_bytes = len(json.dumps(response_format()).encode('utf-8'))
+    if reconstruction: schema_bytes = len(json.dumps(response_format(context)).encode('utf-8'))
     system_bytes = len(plan_system.encode('utf-8')) if plan_first or reconstruction else 2000
     upper_bound = ((payload_bytes + schema_bytes + system_bytes) * input_rate + output_token_limit * output_rate) / 1_000_000
     if payload_bytes > 24000 or upper_bound > max_cost_usd:

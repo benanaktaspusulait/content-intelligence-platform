@@ -368,6 +368,7 @@ import { GeneralProducibilityComponent } from './general-producibility.component
                   <strong>Original execution</strong><pre class="creative-optimization-diff">{{ change.originalExecution }}</pre>
                   <strong>New execution</strong><pre class="creative-optimization-diff">{{ change.newExecution }}</pre>
                   <p><strong>Observable difference:</strong> {{ change.observableDifference }}</p>
+                  <p *ngIf="change.authorship"><strong>Instruction author:</strong> {{ change.authorship }} · Source references are substituted exactly; visual benefit remains unverified.</p>
                   <p><strong>Creative rationale:</strong> {{ change.creativeRationale }}</p>
                   <p><strong>Source fidelity:</strong> Protected source event retained · semantic fidelity {{ change.sourceFidelity?.semanticFidelity }}</p>
                   <p><strong>Production risk:</strong> {{ change.productionRisk?.change }} · {{ change.productionRisk?.evidence }}</p>
