@@ -1,5 +1,21 @@
 # Adaptive Creative Optimization V3 — İş Listesi
 
+> CPQ V1 implementation addition (2026-10-15): the separate approved-for-implementation contract and calibration/fidelity tooling are tracked in [CPQ V1 implementation report](CREATIVE_PROMPT_QUALITY_V1_IMPLEMENTATION_REPORT.md). CPQ grading remains inactive; this does not change V3 canonical feasibility or authorize any provider dispatch.
+
+## CPQ V1 integration follow-up
+
+- [x] Finalize architecture direction as approved for implementation while preserving activation gates.
+- [x] Implement versioned six-dimension pre-render text evidence preview without uncalibrated grades.
+- [x] Implement authenticated exact-binding fidelity review and UNKNOWN consumer fallback.
+- [x] Implement corpus import, blinded reviewer judgments, structural readiness and held-out diagnostic calibration preview.
+- [x] Keep source fidelity, canonical evaluation, CPQ preview and F8/render readiness separate in Step 6.
+- [x] Make Step 6 assessment creation explicit; loading saved optimization state does not create CPQ records.
+- [x] Report CPQ opportunity, canonical A attainability and inactive quality target separately in V3 preflight.
+- [ ] Complete relevant full regression suites without host resource exhaustion.
+- [ ] Deploy via `intelligence/scripts/deploy.sh` and verify runtime artifacts.
+- [ ] Verify deployed Step 6 CPQ panel and authenticated reviewer capability in a real browser.
+- [ ] Populate authorized independent calibration corpus, held-out validation, legitimate B-to-A golden acceptance and formal activation record before enabling grades.
+
 Durum: ADAPTIVE_CREATIVE_OPTIMIZATION_V3_INCOMPLETE. Uygulama ve güvenli durdurma dağıtıldı; tam ürün akışında bağımsız kanıtla nitelendirilmiş B→A golden kabulü açık. Sistem doğruluğu ile gerçek modelin yaratıcı etkinliği ayrı raporlanacak. Bu görev hiçbir gerçek DeepSeek/OpenAI üretim çağrısına izin vermez.
 
 Hedef: Mevcut V2 akışını kullanarak A/A+ hedefine yönelmek; B sonucunu tamamlanmış optimizasyon saymamak. Kanıtlanamayan veya korunan hikâyeyle ulaşılamayan hedef için çağrı yapmadan açık engel döndürmek. Kanonik değerlendirme, skorlar, eşikler ve geçmiş kayıtlar değişmeyecek.

@@ -36,6 +36,9 @@ def test_mimi_actual_saved_canonical_matches_audit_not_a_new_evaluation():
     assert not audit['generationAllowed'] and audit['state']=='TARGET_BLOCKED_BY_STORY_CONSTRAINT'
     assert audit['genuineSourceAttemptCount']==2 and c==before
     assert audit['canonicalGradeContract']=={'minimumA':92,'minimumB':80,'aPlusExists':False}
+    assert audit['creativeOpportunity']['state']=='UNKNOWN_REQUIRES_PROMPT_DIAGNOSIS'
+    assert audit['canonicalATargetStatus']=='CANONICAL_A_UNATTAINABLE_WITH_CURRENT_EVIDENCE'
+    assert audit['creativeQualityTarget']=={'active':False,'state':'CALIBRATION_REQUIRED','gradeThresholdsAvailable':False}
     assert sum(l['overallLoss'] for l in audit['losses'])==pytest.approx(11.59375)
     assert len(audit['missingEvidence'])==13
 
@@ -44,6 +47,7 @@ def test_legitimate_numeric_b_to_a_path_is_distinguished_from_mimi():
     audit=feasibility(baseline())
     assert audit['generationAllowed'] and audit['fixedEvidenceOptimisticCeiling']==100
     assert audit['losses'][0]['classification']=='CREATIVE_RECONSTRUCTION_REPAIRABLE'
+    assert feasibility(baseline(),context={'creativeQualityTargetActive':True})['creativeQualityTarget']['active'] is True
     # This is a controlled policy input; real canonical integration is tested
     # separately and never manufactures these values for saved Mimi.
 

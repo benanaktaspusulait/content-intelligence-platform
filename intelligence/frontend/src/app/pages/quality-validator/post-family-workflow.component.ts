@@ -332,6 +332,31 @@ import { GeneralProducibilityComponent } from './general-producibility.component
               <p *ngFor="let candidate of creativeOptimizationComparison.candidates; let idx = index"><strong>Candidate {{ candidate.candidateId === 'candidate-b' ? 'B' : 'A' }}:</strong> {{ candidate.currentAssessment?.conclusion || 'Current assessment unavailable.' }}</p>
               <p *ngIf="creativeOptimizationComparison.candidates?.length !== 2" role="alert">Incomplete comparison: {{ creativeOptimizationComparison.candidates?.length || 0 }} actual candidate(s). No placeholder candidate is accepted.</p>
             </section>
+            <section *ngIf="creativeOptimizationComparison?.candidates?.length" class="optimization-panel cpq-quality-panel" aria-label="Creative Prompt Quality assessment">
+              <button type="button" class="button button--secondary button--compact" (click)="loadCreativePromptQualityAssessment()" [disabled]="creativePromptQualityBusy">{{ creativePromptQualityBusy ? 'Assessing…' : creativePromptQualityReport ? 'Refresh text-only quality preview' : 'Assess text-only prompt quality' }}</button>
+              <p *ngIf="creativePromptQualityError" role="status">{{ creativePromptQualityError }}</p>
+              <ng-container *ngIf="creativePromptQualityReport">
+              <header><span class="card-kicker">CREATIVE PROMPT QUALITY · {{ creativePromptQualityReport.rubricVersion }}</span><strong>{{ creativePromptQualityReport.gradingStatus }} · no production grade activated</strong></header>
+              <p>Textual prompt quality is assessed separately from canonical compliance. A/A+ stays unavailable until independent calibration and formal activation. No video or audience outcome is inferred.</p>
+              <article class="cpq-contract-grid"><div><b>Creative Prompt Quality</b><span>{{ creativePromptQualityReport.gradingStatus }} · target A/A+</span></div><div><b>Canonical Validation</b><span>{{ creativePromptQualityReport.originalCanonical?.rulesetVersion }} · {{ creativePromptQualityReport.originalCanonical?.score | number:'1.0-2' }}/100 · {{ creativePromptQualityReport.originalCanonical?.grade }}</span></div><div><b>Independent Source Fidelity</b><span>Per candidate below: PASS / FAIL / UNKNOWN</span></div><div><b>Render Readiness</b><span>F8 remains separate · this assessment grants no render permission</span></div></article>
+              <article *ngFor="let assessment of creativePromptQualityReport.candidateAssessments" class="cpq-candidate-summary">
+                <h4>Candidate {{ assessment.candidateId === 'candidate-b' ? 'B' : 'A' }} · {{ assessment.absoluteQuality?.grade || assessment.gradingStatus }}</h4>
+                <p><b>Source fidelity:</b> {{ assessment.sourceFidelity?.decision || 'UNKNOWN' }} · {{ assessment.sourceFidelity?.evidenceId || 'No matching independent review' }}</p>
+                <p><b>Canonical:</b> {{ assessment.canonicalValidation?.rulesetVersion }} · {{ assessment.canonicalValidation?.score | number:'1.0-2' }}/100 · {{ assessment.canonicalValidation?.grade }}</p>
+                <p><b>Render:</b> {{ assessment.renderReadiness?.state || 'SEPARATE_F8_POLICY' }} · authorization {{ assessment.renderReadiness?.authorized ? 'granted by separate gate' : 'not granted' }}</p>
+                <details><summary>Six dimension evidence · preview only</summary><article *ngFor="let dimension of assessment.dimensions"><b>{{ dimension.dimension }}</b><p>{{ dimension.status }} · calibrated score {{ dimension.calibratedScore ?? 'not available' }} · confidence {{ dimension.confidence }}</p><p *ngFor="let strength of dimension.strengths">Strength: {{ strength }}</p><p *ngFor="let weakness of dimension.weaknesses">Weakness: {{ weakness }}</p><p *ngFor="let recommendation of dimension.recommendations">Recommendation: {{ recommendation }}</p><small>Unknown: {{ dimension.explicitUnknowns?.join('; ') }}</small></article></details>
+                <details *ngIf="cpqReviewerCapabilities?.canReviewSourceFidelity" class="cpq-review-form"><summary>Independent source-fidelity review · authenticated reviewer</summary>
+                  <label>Decision<select [(ngModel)]="cpqFidelityDrafts[assessment.candidateId].decision"><option value="UNKNOWN">UNKNOWN</option><option value="PASS">PASS</option><option value="FAIL">FAIL</option></select></label>
+                  <label>Evidence rationale<textarea [(ngModel)]="cpqFidelityDrafts[assessment.candidateId].rationale" rows="3" placeholder="Explain how the protected events, identity, physical rule, order, timing and ending compare."></textarea></label>
+                  <label>Exact source-event mappings (JSON)<textarea [(ngModel)]="cpqFidelityDrafts[assessment.candidateId].mappingsJson" rows="4" placeholder='[{"beatId":"beat_01","sourceQuote":"exact approved story text","candidateQuote":"exact candidate prompt text"}]'></textarea></label>
+                  <label>Exact evidence citations (JSON)<textarea [(ngModel)]="cpqFidelityDrafts[assessment.candidateId].citationsJson" rows="3" placeholder='[{"side":"APPROVED_STORY","quote":"exact source quote"},{"side":"CANDIDATE_PROMPT","quote":"exact candidate quote"}]'></textarea></label>
+                  <button type="button" class="button button--secondary button--compact" (click)="submitCreativeFidelityReview(assessment.candidateId)" [disabled]="creativePromptQualityBusy">Save immutable fidelity review</button>
+                  <p class="setting-note">The backend derives identity and source bindings and rejects stale or mismatched quotes. This review does not grant approval or render access.</p>
+                </details>
+              </article>
+              <p *ngIf="creativePromptQualityError" class="error" role="alert">{{ creativePromptQualityError }}</p>
+              </ng-container>
+            </section>
             <p *ngIf="creativeOptimizationComparison?.creativeEvidence?.outcome === 'NO_JUSTIFIED_IMPROVEMENT'">No justified improvement. Keep Original. {{ creativeOptimizationComparison?.creativeEvidence?.noImprovementReason }}</p>
             <details *ngIf="creativeOptimizationComparison?.creativeEvidence?.creativeDiagnosis as diagnosis" class="optimization-panel">
               <summary>Creative diagnosis · {{ diagnosis.qualityModelVersion }}</summary>
@@ -847,6 +872,8 @@ import { GeneralProducibilityComponent } from './general-producibility.component
 
       .optimization-score{font-size:28px;font-weight:800;color:#263f56!important}.optimization-score small{font-size:13px;font-weight:600;margin-left:6px}.optimization-classification{font-size:12px;font-weight:800;letter-spacing:.02em}.optimization-detail-link{color:#345f9a;font-weight:700}.optimization-panel{min-width:0;border-top:1px solid #dfe7ee;padding:10px 0}.optimization-panel>summary{padding:4px 0;cursor:pointer;color:#263f56;font-weight:750}.optimization-panel p{margin:8px 0;line-height:1.5;color:#40515a}.optimization-panel ul{margin:8px 0;padding-left:22px;line-height:1.5}.optimization-candidate-details{min-width:0}.optimization-candidate-details>h4{margin:8px 0;color:#263f56}.optimization-prompt-panel .button{margin:8px 0}.creative-optimization-diff{max-height:400px;overflow:auto;min-width:0;max-width:100%;box-sizing:border-box;word-break:break-word}.optimization-diff-controls{display:flex;gap:16px;flex-wrap:wrap;align-items:center;margin:12px 0}.optimization-diff-controls label{display:flex;gap:8px;align-items:center;flex-wrap:wrap;min-width:0}.optimization-diff-controls select{max-width:100%;min-width:0;padding:8px;border:1px solid #cbd6ce;border-radius:6px;background:#fff;color:#263f56}.optimization-panel summary:focus-visible,.creative-optimization-body button:focus-visible,.creative-optimization-body a:focus-visible,.optimization-diff-controls input:focus-visible,.optimization-diff-controls select:focus-visible{outline:3px solid #345f9a;outline-offset:3px}.optimization-side-diff{overflow:hidden}.optimization-side-diff table{font-size:13px}.creative-optimization-body{min-width:0}.optimization-conclusion p{margin:8px 0;line-height:1.5}.creative-optimization-approval{padding:12px 0}.creative-optimization-card .creative-optimization-actions{padding-top:4px}.optimization-eligibility{border-top:1px solid #dfe7ee;padding-top:8px}
       .optimization-review-heading{scroll-margin-top:calc(var(--review-navigation-inset,0px) + 1rem)}.optimization-review-heading:focus{outline:3px solid #345f9a;outline-offset:3px}
+      .cpq-quality-panel{display:grid;gap:12px;padding:14px;border:1px solid #b9c9d8;border-radius:10px;background:#f7fafc}.cpq-contract-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}.cpq-contract-grid>div{display:grid;gap:5px;padding:10px;border:1px solid #dfe7ee;border-radius:8px;background:white}.cpq-contract-grid span,.cpq-quality-panel small{color:#52616b}.cpq-candidate-summary{display:grid;gap:7px;padding:12px;border:1px solid #dfe7ee;border-radius:8px;background:white}.cpq-candidate-summary h4,.cpq-candidate-summary p{margin:0}.cpq-candidate-summary details{padding:9px;border-top:1px solid #e5ebf0}.cpq-review-form{display:grid;gap:8px}.cpq-review-form label{display:grid;gap:4px;font-weight:650}.cpq-review-form textarea,.cpq-review-form select{max-width:100%;width:100%;box-sizing:border-box;border:1px solid #cbd6ce;border-radius:7px;padding:8px;font:13px/1.4 ui-monospace,SFMono-Regular,Menlo,monospace}.cpq-candidate-summary article{padding:8px 0;border-bottom:1px solid #edf1f4}.cpq-candidate-summary article:last-child{border-bottom:0}
+      @media(max-width:800px){.cpq-contract-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:600px){.cpq-contract-grid{grid-template-columns:1fr}}
       @media(max-width:600px){.creative-optimization-grid{grid-template-columns:1fr}.creative-optimization-details{padding:12px}.optimization-side-diff td,.optimization-side-diff th{padding:6px}.optimization-diff-controls{display:grid;gap:10px}.optimization-score{font-size:25px}}
       @media(max-width:900px){.repair-primary-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.repair-secondary-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
       @media(max-width:1100px){.creative-optimization-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
@@ -1234,6 +1261,7 @@ export class PostFamilyWorkflowComponent implements OnChanges, OnDestroy {
         const reviewed = this.creativeOptimizationReviewedCandidateId;
         this.adaptiveResult = payload?.adaptiveRun ?? null;
         this.creativeOptimizationComparison = payload?.comparison ?? null;
+        this.creativePromptQualityReport = null;
         if(payload?.attempt?.optimizationFailed) this.creativeOptimizationError=this.creativeOptimizationFailureMessage({error:payload.attempt});
         const sameSavedRecord = !!previous?.recordId && previous.recordId === this.creativeOptimizationComparison?.recordId;
         const candidate = this.creativeOptimizationComparison?.candidates?.find((item: any) => item.candidateId === selected);
@@ -1247,11 +1275,52 @@ export class PostFamilyWorkflowComponent implements OnChanges, OnDestroy {
       },
       error: () => {
         this.creativeOptimizationComparison = null;
+        this.creativePromptQualityReport = null;
         this.creativeOptimizationSelectedCandidateId = null;
         this.creativeOptimizationReviewedCandidateId = null;
         this.creativeOptimizationError = 'Creative optimization status is unavailable. No automatic candidate was approved.';
         this.changeDetector.markForCheck();
       },
+    });
+  }
+  loadCreativePromptQualityAssessment(): void {
+    if (!this.review?.recordId || !this.creativeOptimizationComparison?.candidates?.length) return;
+    this.creativePromptQualityBusy = true;
+    this.creativePromptQualityError = '';
+    this.http.post<any>(`/api/v1/intelligence/workflow/records/${encodeURIComponent(String(this.review.recordId))}/creative-prompt-quality/assess`, {}).subscribe({
+      next: report => {
+        this.creativePromptQualityReport = report;
+        for (const item of report?.candidateAssessments || []) {
+          if (!this.cpqFidelityDrafts[item.candidateId]) this.cpqFidelityDrafts[item.candidateId] = { decision: 'UNKNOWN', rationale: '', mappingsJson: '[]', citationsJson: '[]' };
+        }
+        this.http.get<any>('/api/v1/intelligence/workflow/cpq/reviewer-capabilities').subscribe({
+          next: capabilities => { this.cpqReviewerCapabilities = capabilities; this.changeDetector.markForCheck(); },
+          error: () => { this.cpqReviewerCapabilities = null; this.changeDetector.markForCheck(); },
+        });
+        this.creativePromptQualityBusy = false;
+        this.changeDetector.markForCheck();
+      },
+      error: error => {
+        this.creativePromptQualityBusy = false;
+        this.creativePromptQualityError = error?.error?.detail || 'CPQ preview is unavailable; grading remains inactive.';
+        this.changeDetector.markForCheck();
+      },
+    });
+  }
+  submitCreativeFidelityReview(candidateId: string): void {
+    const draft = this.cpqFidelityDrafts[candidateId];
+    if (!this.review?.recordId || !draft || !this.cpqReviewerCapabilities?.canReviewSourceFidelity) return;
+    let sourceEventMapping: any[], citations: any[];
+    try { sourceEventMapping = JSON.parse(draft.mappingsJson); citations = JSON.parse(draft.citationsJson); }
+    catch { this.creativePromptQualityError = 'Mappings and citations must be valid JSON arrays.'; return; }
+    if (!Array.isArray(sourceEventMapping) || !Array.isArray(citations)) { this.creativePromptQualityError = 'Mappings and citations must be JSON arrays.'; return; }
+    this.creativePromptQualityBusy = true;
+    this.http.post<any>(`/api/v1/intelligence/workflow/records/${encodeURIComponent(String(this.review.recordId))}/candidates/${encodeURIComponent(candidateId)}/fidelity-review`, {
+      decision: draft.decision, rationale: draft.rationale, sourceEventMapping, citations,
+      reviewMethodVersion: 'human-source-fidelity-v1', validUntil: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
+    }).subscribe({
+      next: () => this.loadCreativePromptQualityAssessment(),
+      error: error => { this.creativePromptQualityBusy = false; this.creativePromptQualityError = error?.error?.detail || 'Independent fidelity review was rejected; evidence remains unchanged.'; this.changeDetector.markForCheck(); },
     });
   }
   adaptiveMode = 'ADAPTIVE';
@@ -2090,6 +2159,11 @@ export class PostFamilyWorkflowComponent implements OnChanges, OnDestroy {
   restoredRecordId = '';
   creativeOptimizationOpen = false;
   creativeOptimizationComparison: any = null;
+  creativePromptQualityReport: any = null;
+  creativePromptQualityError = '';
+  creativePromptQualityBusy = false;
+  cpqReviewerCapabilities: any = null;
+  cpqFidelityDrafts: Record<string,{decision:string;rationale:string;mappingsJson:string;citationsJson:string}> = {};
   creativeOptimizationError = '';
   creativeOptimizationBusy = false;
   creativeOptimizationConsent = false;
@@ -2112,6 +2186,9 @@ export class PostFamilyWorkflowComponent implements OnChanges, OnDestroy {
     this.creativeOptimizationOpen = false;
     this.adaptivePreflight = null; this.adaptiveResult = null; this.adaptiveProviderConsent = {}; this.adaptiveAuthorizationId = crypto.randomUUID();
     this.creativeOptimizationComparison = null;
+    this.creativePromptQualityReport = null;
+    this.creativePromptQualityError = '';
+    this.cpqFidelityDrafts = {};
     this.creativeOptimizationError = '';
     this.creativeOptimizationBusy = false;
     this.creativeOptimizationConsent = false;

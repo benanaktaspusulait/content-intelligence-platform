@@ -51,4 +51,7 @@ public class CreativePromptQualityController {
 
   @GetMapping("/cpq/calibration/corpora/{version}/readiness")
   public Map<String,Object> readiness(@PathVariable String version) { return service.calibrationReadiness(version); }
+
+  @PostMapping("/cpq/calibration/corpora/{version}/preview")
+  public Map<String,Object> calibrationPreview(@PathVariable String version,HttpServletRequest principal) { return service.calibrationPreview(version,principal); }
 }

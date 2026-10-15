@@ -201,8 +201,10 @@ public class WorkflowService {
         || !String.valueOf(settings.get("aspectRatio")).equals(String.valueOf(map(bound.get("settings")).get("aspectRatio")))
         || version!=jdbc.sql("SELECT max(id) FROM prompt_versions WHERE content_id=:content").param("content",content).query(Long.class).single())
       throw new IllegalStateException("Adaptive optimization source, analysis or settings are stale");
-    var result=new LinkedHashMap<>(ml.workflow("adaptive-optimization-policy",Map.of(
-        "action","PREFLIGHT","canonical",map(baseline.get("canonicalRuleEvaluation")),"source",source.promptText())));
+    boolean qualityTargetActive=jdbc.sql("SELECT activated FROM cpq_policy_state WHERE singleton=TRUE").query(Boolean.class).optional().orElse(false);
+    var policyContext=new LinkedHashMap<String,Object>();policyContext.put("creativeQualityTargetActive",qualityTargetActive);
+    var policyRequest=new LinkedHashMap<String,Object>();policyRequest.put("action","PREFLIGHT");policyRequest.put("canonical",map(baseline.get("canonicalRuleEvaluation")));policyRequest.put("source",source.promptText());policyRequest.put("context",policyContext);
+    var result=new LinkedHashMap<>(ml.workflow("adaptive-optimization-policy",policyRequest));
     result.put("sourceAnalysisId",analysisId.toString());result.put("sourcePromptVersionId",version);
     result.put("sourcePromptSha256",sha256(source.promptText()));result.put("productionSettingsRecordId",settings.get("recordId"));
     result.put("contentId",content);return result;

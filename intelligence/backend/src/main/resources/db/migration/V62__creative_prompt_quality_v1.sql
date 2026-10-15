@@ -17,9 +17,11 @@ CREATE TABLE cpq_calibration_examples (
   source_story_id TEXT NOT NULL,
   source_revision TEXT NOT NULL,
   source_fingerprint CHAR(64) NOT NULL,
-  prompt_version_id BIGINT,
+  prompt_version_id BIGINT REFERENCES prompt_versions(id),
+  prompt_version_label TEXT NOT NULL,
   prompt_fingerprint CHAR(64) NOT NULL,
   prompt_text TEXT NOT NULL,
+  source_story_text TEXT NOT NULL,
   content_profile TEXT NOT NULL,
   generator TEXT NOT NULL,
   target_duration_seconds NUMERIC NOT NULL CHECK (target_duration_seconds > 0),
@@ -62,7 +64,7 @@ CREATE TABLE cpq_fidelity_reviews (
   intervention_fingerprint CHAR(64) NOT NULL,
   changed_beat_ids JSONB NOT NULL,
   source_event_mapping JSONB NOT NULL,
-  analysis_id UUID NOT NULL,
+  analysis_id UUID NOT NULL REFERENCES post_family_workflow_events(id),
   ruleset_version TEXT NOT NULL,
   cpq_rubric_version TEXT NOT NULL,
   production_settings_fingerprint CHAR(64) NOT NULL,
@@ -81,9 +83,9 @@ ALTER TABLE cpq_calibration_examples
 
 CREATE TABLE cpq_assessments (
   assessment_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  analysis_id UUID NOT NULL,
+  analysis_id UUID NOT NULL REFERENCES post_family_workflow_events(id),
   content_id BIGINT NOT NULL,
-  prompt_version_id BIGINT NOT NULL,
+  prompt_version_id BIGINT NOT NULL REFERENCES prompt_versions(id),
   candidate_id TEXT NOT NULL,
   original_prompt_fingerprint CHAR(64) NOT NULL,
   candidate_prompt_fingerprint CHAR(64) NOT NULL,
@@ -92,9 +94,38 @@ CREATE TABLE cpq_assessments (
   calibration_corpus_version TEXT,
   fidelity_evidence_id UUID REFERENCES cpq_fidelity_reviews(evidence_id),
   result JSONB NOT NULL,
-  created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
-  UNIQUE (analysis_id, candidate_id, candidate_prompt_fingerprint, rubric_version)
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
+
+CREATE OR REPLACE FUNCTION prevent_cpq_evidence_mutation() RETURNS trigger AS $$
+BEGIN
+  RAISE EXCEPTION 'CPQ calibration and review evidence is immutable';
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION protect_frozen_cpq_corpus() RETURNS trigger AS $$
+BEGIN
+  IF OLD.state IN ('HELD_OUT_VALIDATED','APPROVED') THEN
+    RAISE EXCEPTION 'A frozen CPQ calibration corpus cannot be changed';
+  END IF;
+  IF TG_OP = 'DELETE' THEN RETURN OLD; END IF;
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TABLE cpq_calibration_reports (
+  report_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  corpus_version TEXT NOT NULL REFERENCES cpq_calibration_corpora(corpus_version),
+  rubric_version TEXT NOT NULL,
+  corpus_fingerprint CHAR(64) NOT NULL,
+  report JSONB NOT NULL,
+  created_by TEXT NOT NULL,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+CREATE TRIGGER cpq_calibration_reports_append_only BEFORE UPDATE OR DELETE ON cpq_calibration_reports
+FOR EACH ROW EXECUTE FUNCTION prevent_cpq_evidence_mutation();
+CREATE TRIGGER cpq_corpus_freeze_guard BEFORE UPDATE OR DELETE ON cpq_calibration_corpora
+FOR EACH ROW EXECUTE FUNCTION protect_frozen_cpq_corpus();
 
 CREATE TABLE cpq_policy_state (
   singleton BOOLEAN PRIMARY KEY DEFAULT TRUE CHECK (singleton),
@@ -107,12 +138,6 @@ CREATE TABLE cpq_policy_state (
   CHECK (activated = FALSE OR (corpus_version IS NOT NULL AND changed_by IS NOT NULL AND changed_at IS NOT NULL))
 );
 INSERT INTO cpq_policy_state(singleton, rubric_version, activated) VALUES (TRUE, 'creative-prompt-quality-v1', FALSE);
-
-CREATE OR REPLACE FUNCTION prevent_cpq_evidence_mutation() RETURNS trigger AS $$
-BEGIN
-  RAISE EXCEPTION 'CPQ calibration and review evidence is immutable';
-END;
-$$ LANGUAGE plpgsql;
 
 CREATE TRIGGER cpq_calibration_examples_append_only BEFORE UPDATE OR DELETE ON cpq_calibration_examples
 FOR EACH ROW EXECUTE FUNCTION prevent_cpq_evidence_mutation();

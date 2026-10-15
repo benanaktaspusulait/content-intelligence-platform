@@ -141,7 +141,7 @@ def validate_calibration(records: list[dict[str, Any]]) -> dict[str, Any]:
         problems.append("Duplicate example IDs are present.")
     missing = []
     for index, record in enumerate(records):
-        required = ("promptSha256", "sourceStoryId", "sourceRevision", "contentProfile", "generator", "durationSeconds", "promptText", "reviewerJudgments", "sourceFidelityEvidence", "reviewerProvenance", "reviewMethodVersion", "reviewedAt", "split")
+        required = ("promptSha256", "promptVersion", "sourceStoryId", "sourceRevision", "contentProfile", "generator", "durationSeconds", "promptText", "reviewerJudgments", "sourceFidelityEvidence", "reviewerProvenance", "split")
         absent = [field for field in required if record.get(field) is None]
         if absent:
             missing.append({"index": index, "exampleId": record.get("exampleId"), "fields": absent})
@@ -149,11 +149,19 @@ def validate_calibration(records: list[dict[str, Any]]) -> dict[str, Any]:
             problems.append(f"Prompt fingerprint mismatch for example {record.get('exampleId')}.")
         if record.get("split") not in {"CALIBRATION", "HELD_OUT"}:
             problems.append(f"Invalid corpus split for example {record.get('exampleId')}.")
-        if record.get("sourceFidelityEvidence", {}).get("decision") != "PASS":
-            problems.append(f"Independent source-fidelity PASS unavailable for example {record.get('exampleId')}.")
+        if record.get("sourceFidelityEvidence", {}).get("decision") not in {"PASS", "FAIL"}:
+            problems.append(f"Independent source-fidelity decision unavailable for example {record.get('exampleId')}.")
         judgments = record.get("reviewerJudgments") or []
         if len({j.get("reviewerId") for j in judgments if j.get("reviewerId")}) < 2:
             problems.append(f"Fewer than two distinct reviewers for example {record.get('exampleId')}.")
+        if any(j.get("reviewerId") == record.get("sourceFidelityEvidence", {}).get("reviewerId") for j in judgments):
+            problems.append(f"Fidelity verifier overlaps a quality reviewer for example {record.get('exampleId')}.")
+        for judgment in judgments:
+            dimensions = judgment.get("dimensions") or {}
+            if set(dimensions) != set(DIMENSIONS) or judgment.get("overallQualityAnchor") not in {"A+", "A", "B", "C", "F", "UNKNOWN"}:
+                problems.append(f"Incomplete dimension judgment or invalid quality anchor for example {record.get('exampleId')}.")
+            if not judgment.get("reviewMethodVersion") or not judgment.get("reviewedAt") or not judgment.get("evidenceCitations"):
+                problems.append(f"Reviewer provenance or citations incomplete for example {record.get('exampleId')}.")
     return {"corpusVersion": None, "state": "CALIBRATION_INCOMPLETE" if problems or missing else "READY_FOR_CALIBRATION_ANALYSIS",
             "exampleCount": len(records), "heldOutCount": sum(r.get("split") == "HELD_OUT" for r in records),
             "missingFields": missing, "problems": problems,

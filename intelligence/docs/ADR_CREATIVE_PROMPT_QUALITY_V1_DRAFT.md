@@ -1,6 +1,6 @@
-# ADR Draft — CREATIVE_PROMPT_QUALITY_V1
+# ADR — CREATIVE_PROMPT_QUALITY_V1
 
-Status: **PROPOSED / INACTIVE — architecture approval required**  
+Status: **APPROVED FOR IMPLEMENTATION — GRADING INACTIVE PENDING CALIBRATION AND ACTIVATION EVIDENCE**  
 Decision owners: Product Architecture and Creative Quality Architecture  
 Date: 2026-10-15
 
@@ -10,11 +10,11 @@ Ruleset 1.11 is the canonical rule-compliance evaluator. Its A threshold is 92; 
 
 The six dimensions in `intelligence/data/workflow/creative-quality-v2.json` currently have `QUALITATIVE_TEXT_EVIDENCE_ONLY` authority. The contract reserves `MATERIAL_IMPROVEMENT_SUPPORTED`; it never emits that outcome. Semantic source fidelity stays UNKNOWN without independent evidence, visual benefit remains unverified absent visual evidence, and audience benefit remains unmeasured absent audience evidence.
 
-This ADR proposes a separate quality contract. It does not authorize code activation, provider calls, candidate generation, story or prompt changes, canonical scoring changes, approvals, or rendering.
+The architecture direction is approved for implementation. That approval does not authorize fabricated governance signatures, production grade activation without calibration, paid provider calls, candidate approval, story or prompt changes, canonical scoring changes, or rendering.
 
-## Proposed decision
+## Decision
 
-Create a versioned assessment contract named `CREATIVE_PROMPT_QUALITY_V1`, separate from Ruleset 1.11 and F8/render authorization. It must produce a transparent evidence-based quality profile for a complete production prompt. It must not rewrite canonical score, canonical grade, rule severity/outcomes, or render admission.
+Implement a versioned assessment contract named `CREATIVE_PROMPT_QUALITY_V1`, separate from Ruleset 1.11 and F8/render authorization. It produces a transparent text-evidence profile for a complete production prompt and keeps canonical score, canonical grade, rule severity/outcomes, and render admission independent.
 
 The contract may assign A or A+ only after the calibration and evidence conditions below are approved. It must not promote existing B prompts automatically. Until a versioned calibration set and thresholds are approved, report dimensions and evidence status without an aggregate letter.
 
@@ -76,6 +76,15 @@ When reviewers disagree beyond the calibrated tolerance, report `REVIEW_DISAGREE
 
 This proposal addresses the category error between canonical compliance and creative prompt quality while preserving current canonical and render safety. It introduces no active grade today. Until evidence, independent verification, calibration and approval exist, product status remains incomplete for source-fidelity readiness, B→A golden acceptance and real-model creative effectiveness.
 
+## Implemented API and persistence boundary
+
+- `POST /records/{analysisId}/creative-prompt-quality/assess` creates a text-only assessment preview for the current saved analysis and candidate comparison. It never returns an uncalibrated letter grade.
+- `POST /records/{analysisId}/candidates/{candidateId}/fidelity-review` stores an authenticated, exact-binding source-fidelity judgment (`PASS`, `FAIL`, `UNKNOWN`) as append-only evidence.
+- `GET /cpq/reviewer-capabilities` exposes capabilities derived from the authenticated principal, never from client role claims.
+- `/cpq/calibration/corpora`, `/examples`, blinded review packets/judgments, readiness and preview APIs implement the governed calibration workflow. Provisional thresholds and held-out error reports remain diagnostic only.
+- `cpq_*` tables store versioned corpora, immutable examples/reviews/judgments/assessments/reports and an inactive singleton policy state. A frozen corpus cannot be changed.
+- Adaptive V3 reports creative opportunity uncertainty, canonical-A attainability and CPQ target activation separately; CPQ target integration remains gated off until the activation requirements below are evidenced.
+
 ## Approval record
 
-No approval recorded. **Do not activate `CREATIVE_PROMPT_QUALITY_V1` without explicit architecture approval.**
+Architecture implementation direction: **approved by the user in the implementation authorization dated 2026-10-15**. This is not a substitute for the formal governed activation record. **Do not activate grading until every activation requirement is met and authorized.**

@@ -45,7 +45,7 @@ def test_calibration_readiness_rejects_missing_independent_reviews_and_bad_finge
     assert report["activated"] is False
     assert report["gradeThresholdsJustified"] is False
     assert any("fingerprint mismatch" in p for p in report["problems"])
-    assert any("source-fidelity PASS unavailable" in p for p in report["problems"])
+    assert any("Independent source-fidelity decision unavailable" in p for p in report["problems"])
     assert any("Fewer than two distinct reviewers" in p for p in report["problems"])
 
 
