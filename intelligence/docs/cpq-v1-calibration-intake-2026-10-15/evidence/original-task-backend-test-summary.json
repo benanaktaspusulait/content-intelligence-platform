@@ -1,0 +1,26 @@
+[
+  {
+    "name": "com.pompomhills.intelligence.OriginalCpqFidelityIntegrationTest",
+    "tests": "17",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "32.944"
+  },
+  {
+    "name": "com.pompomhills.intelligence.PlatformIntegrationTest",
+    "tests": "26",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "10.151"
+  },
+  {
+    "name": "com.pompomhills.intelligence.workflow.CpqV62MigrationTest",
+    "tests": "1",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "2.508"
+  }
+]

@@ -236,7 +236,8 @@ class PlatformIntegrationTest {
     evidenceReviewer.setUserPrincipal(() -> "isolated-evidence-reviewer");
     evidenceReviewer.addUserRole("EVIDENCE_REVIEWER");
     var fidelity = cpqController.fidelityReview(analysisId, comparisonId, "candidate-a", java.util.Map.of(
-        "decision", "UNKNOWN", "rationale", "Isolated contract test retains unsupported story fidelity as unknown.",
+        "decision", "PASS", "rationale", "Disposable contract fixture, not a real source-fidelity judgment.",
+        "sourceEventMapping", java.util.List.of(java.util.Map.of("beatId", "UNKNOWN", "sourceQuote", story, "candidateQuote", candidatePrompt)),
         "validUntil", Instant.now().plusSeconds(3600).toString(),
         "citations", java.util.List.of(java.util.Map.of("side", "APPROVED_STORY", "quote", story))), evidenceReviewer);
     var example = new java.util.LinkedHashMap<String,Object>();
@@ -245,6 +246,8 @@ class PlatformIntegrationTest {
     example.put("sourceStoryId", "isolated-approved-story"); example.put("sourceRevision", "story-r1");
     example.put("promptVersionLabel", "isolated candidate"); example.put("contentProfile", "ABSURD_PHYSICS");
     example.put("generator", "SEEDANCE_2_0_MINI"); example.put("durationSeconds", 15);
+    example.put("settings", java.util.Map.of("mode", "image2video", "resolution", "480p", "aspectRatio", "9:16"));
+    example.put("leakageGroup", "isolated-sticky-mechanic");
     example.put("split", "CALIBRATION"); example.put("caseType", "GENERAL_PROMPT");
     example.put("provenance", java.util.Map.of("testOnly", true));
     var wrongPrompt = new java.util.LinkedHashMap<>(example); wrongPrompt.put("promptText", candidatePrompt + " changed");
@@ -258,6 +261,9 @@ class PlatformIntegrationTest {
     var dimensionJudgments = new java.util.LinkedHashMap<String,Object>();
     for (var dimension : dimensions) dimensionJudgments.put(String.valueOf(dimension.get("dimension")), java.util.Map.of(
         "level", "UNKNOWN", "rationale", "Isolated contract fixture has no real independent creative judgment.",
+        "strengthOrWeakness", "Test fixture only; no genuine creative quality is asserted.",
+        "productionConstraint", "A fifteen second single scene limits concurrent action complexity.",
+        "uncertainty", "Real creative quality remains unsupported by this contract fixture.",
         "evidenceCitations", java.util.List.of(java.util.Map.of("quote", candidatePrompt))));
     var judgment = java.util.Map.<String,Object>of("dimensions", dimensionJudgments,
         "sourceFidelityDecision", "UNKNOWN", "overallQualityAnchor", "UNKNOWN");

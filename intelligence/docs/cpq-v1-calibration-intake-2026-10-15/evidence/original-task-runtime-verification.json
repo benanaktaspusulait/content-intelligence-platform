@@ -1,0 +1,102 @@
+{
+  "backendHealth": {
+    "status": 200,
+    "body": {
+      "components": {
+        "db": {
+          "details": {
+            "database": "PostgreSQL",
+            "validationQuery": "isValid()"
+          },
+          "status": "UP"
+        },
+        "diskSpace": {
+          "details": {
+            "total": 134681202688,
+            "free": 53774516224,
+            "threshold": 10485760,
+            "path": "/app/.",
+            "exists": true
+          },
+          "status": "UP"
+        },
+        "livenessState": {
+          "status": "UP"
+        },
+        "ping": {
+          "status": "UP"
+        },
+        "readinessState": {
+          "status": "UP"
+        },
+        "ssl": {
+          "details": {
+            "expiringChains": [],
+            "invalidChains": [],
+            "validChains": []
+          },
+          "status": "UP"
+        }
+      },
+      "groups": [
+        "liveness",
+        "readiness"
+      ],
+      "status": "UP"
+    }
+  },
+  "mlHealth": {
+    "status": 200,
+    "body": {
+      "status": "UP",
+      "service": "pompom-ml"
+    }
+  },
+  "calibration": {
+    "status": 200,
+    "body": {
+      "gradingStatus": "CALIBRATION_INCOMPLETE",
+      "counts": {
+        "activated": false,
+        "examples": 0,
+        "judgments": 0,
+        "currentFidelityPasses": 0,
+        "originalSubjects": 0,
+        "fidelityReviews": 0
+      },
+      "missingRequirements": [
+        "Independent reviewed calibration examples",
+        "Held-out validation and false-positive/false-negative analysis",
+        "Reviewer agreement validation",
+        "Full-pipeline B-to-A golden acceptance",
+        "Authorized activation record"
+      ],
+      "rubricVersion": "creative-prompt-quality-v1",
+      "activated": false,
+      "corpora": []
+    }
+  },
+  "capabilities": {
+    "status": 200,
+    "body": {
+      "canAssessTextQuality": false,
+      "principal": "",
+      "canManageCalibration": false,
+      "authenticated": false,
+      "canReviewCalibration": false,
+      "canReviewSourceFidelity": false
+    }
+  },
+  "preflight": {
+    "status": 403,
+    "body": "{\"timestamp\":\"2026-10-15T20:28:10.217Z\",\"status\":403,\"error\":\"Forbidden\",\"path\":\"/api/v1/intelligence/workflow/cpq/original-prompts/preflight\"}"
+  },
+  "binding": {
+    "status": 403,
+    "body": "{\"timestamp\":\"2026-10-15T20:28:10.224Z\",\"status\":403,\"error\":\"Forbidden\",\"path\":\"/api/v1/intelligence/workflow/cpq/original-prompts/bindings\"}"
+  },
+  "review": {
+    "status": 403,
+    "body": "{\"timestamp\":\"2026-10-15T20:28:10.230Z\",\"status\":403,\"error\":\"Forbidden\",\"path\":\"/api/v1/intelligence/workflow/cpq/original-prompts/00000000-0000-0000-0000-000000000001/fidelity-review\"}"
+  }
+}

@@ -10,7 +10,7 @@ import org.testcontainers.containers.PostgreSQLContainer;
 
 class CpqV62MigrationTest {
   @Test
-  void upgradesV61ThroughV63AndPreservesAppendOnlyComparisonBoundEvidence() {
+  void upgradesV61ThroughV64AndPreservesAppendOnlyComparisonBoundEvidence() {
     try (var database = new PostgreSQLContainer<>("postgres:17-alpine")
         .withDatabaseName("pompom")
         .withUsername("pompom")
@@ -21,12 +21,25 @@ class CpqV62MigrationTest {
       version61.migrate();
       assertThat(version61.info().current().getVersion().toString()).isEqualTo("61");
 
+      flyway(database).target(MigrationVersion.fromVersion("63")).load().migrate();
+      try (var connection = database.createConnection("")) {
+        var statement = connection.createStatement();
+        statement.execute("INSERT INTO contents(id,title,type) VALUES (11,'Legacy fidelity fixture','SHORT')");
+        statement.execute("INSERT INTO prompt_versions(id,content_id,version_number,raw_text) VALUES (11,11,1,'Legacy source')");
+        statement.execute("INSERT INTO post_family_workflow_events(id,kind,payload) VALUES ('00000000-0000-0000-0000-000000000062','REVIEW','{}')");
+        statement.execute("INSERT INTO cpq_fidelity_reviews(content_id,prompt_version_id,approved_story_id,approved_revision,approved_story_fingerprint,original_prompt_fingerprint,candidate_prompt_fingerprint,intervention_fingerprint,changed_beat_ids,source_event_mapping,analysis_id,ruleset_version,cpq_rubric_version,production_settings_fingerprint,reviewer_principal,reviewer_authority,review_method_version,citations,rationale,decision,valid_until) VALUES(11,11,'legacy-story','legacy-revision',repeat('c',64),repeat('a',64),repeat('b',64),repeat('d',64),'[]','[]','00000000-0000-0000-0000-000000000062','1.11','creative-prompt-quality-v1',repeat('e',64),'legacy-fixture','EVIDENCE_REVIEWER','human-source-fidelity-v1','[]','Frozen legacy rationale must remain unchanged.','UNKNOWN',now()+interval '1 day')");
+      }
       var upgraded = flyway(database).load();
       upgraded.migrate();
-      assertThat(upgraded.info().current().getVersion().toString()).isEqualTo("63");
+      assertThat(upgraded.info().current().getVersion().toString()).isEqualTo("64");
 
       try (var connection = database.createConnection("")) {
         var statement = connection.createStatement();
+        try (var rows = statement.executeQuery("SELECT subject_type,original_subject_id,decision,rationale,approved_revision,candidate_prompt_fingerprint FROM cpq_fidelity_reviews WHERE prompt_version_id=11")) {
+          rows.next(); assertThat(rows.getString(1)).isEqualTo("OPTIMIZATION_CANDIDATE"); assertThat(rows.getObject(2)).isNull();
+          assertThat(rows.getString(3)).isEqualTo("UNKNOWN"); assertThat(rows.getString(4)).isEqualTo("Frozen legacy rationale must remain unchanged.");
+          assertThat(rows.getString(5)).isEqualTo("legacy-revision"); assertThat(rows.getString(6)).isEqualTo("b".repeat(64));
+        }
         statement.execute("INSERT INTO post_family_workflow_events(id,kind,binding_sha256,payload) VALUES ('00000000-0000-0000-0000-000000000061','REVIEW',NULL,'{}')");
         statement.execute("INSERT INTO post_family_workflow_events(id,kind,binding_sha256,payload) VALUES ('00000000-0000-0000-0000-000000000063','CREATIVE_OPTIMIZATION',NULL,'{}')");
         statement.execute("INSERT INTO contents(id,title,type) VALUES (10,'CPQ migration test','SHORT')");

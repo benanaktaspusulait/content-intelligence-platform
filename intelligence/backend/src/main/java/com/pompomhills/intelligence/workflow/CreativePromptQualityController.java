@@ -39,6 +39,26 @@ public class CreativePromptQualityController {
   @GetMapping("/cpq/calibration")
   public Map<String,Object> calibrationState() { return service.calibrationState(); }
 
+  @PostMapping("/cpq/original-prompts/preflight")
+  public Map<String,Object> originalPreflight(@RequestBody Map<String,Object> request,HttpServletRequest principal) {
+    return service.originalPreflight(request,principal);
+  }
+
+  @PostMapping("/cpq/original-prompts/bindings")
+  public Map<String,Object> bindOriginal(@RequestBody Map<String,Object> request,HttpServletRequest principal) {
+    return service.bindOriginal(request,principal);
+  }
+
+  @GetMapping("/cpq/original-prompts/{subjectId}/fidelity-review")
+  public Map<String,Object> originalReviewPacket(@PathVariable UUID subjectId,HttpServletRequest principal) {
+    return service.originalReviewPacket(subjectId,principal);
+  }
+
+  @PostMapping("/cpq/original-prompts/{subjectId}/fidelity-review")
+  public Map<String,Object> originalFidelityReview(@PathVariable UUID subjectId,@RequestBody Map<String,Object> request,HttpServletRequest principal) {
+    return service.reviewOriginal(subjectId,request,principal);
+  }
+
   @GetMapping("/cpq/reviewer-capabilities")
   public Map<String,Object> reviewerCapabilities(HttpServletRequest principal) { return service.reviewerCapabilities(principal); }
 

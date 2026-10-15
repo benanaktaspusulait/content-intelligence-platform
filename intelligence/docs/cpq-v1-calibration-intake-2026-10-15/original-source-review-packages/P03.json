@@ -1,0 +1,51 @@
+{
+  "preparationOnly": true,
+  "subjectType": "ORIGINAL_PROMPT",
+  "localPreparationId": "P03",
+  "sourceIdentity": "repository:POMPOM_HILLS_PRODUCTION/09_SOCIAL_REELS/new14092026/easy uploaded/4- Kiko and the Lamp That Hates Being Watched /prompt.md",
+  "sourcePath": "/Users/benanaktas/project/video/yuvarlak-dunya/POMPOM_HILLS_PRODUCTION/09_SOCIAL_REELS/new14092026/easy uploaded/4- Kiko and the Lamp That Hates Being Watched /prompt.md",
+  "promptFile": "intelligence/docs/cpq-v1-calibration-intake-2026-10-15/blind-prompt-drafts/P03.txt",
+  "promptSha256": "e2a4c2b2e3ab5ed7927831c2c264e779c9d9b251b6e979e997c1c271bd7ff0bc",
+  "byteForByteVerified": true,
+  "availableSourceStory": "Narrative and events embedded in the production prompt; no separate approved-source revision binding established.",
+  "approvedStoryId": null,
+  "approvalRecordId": null,
+  "approvedStorySha256": null,
+  "productionSettingsRecordId": null,
+  "declaredProductionEvidence": {
+    "durationQuotes": [
+      "DURATION: 15 seconds"
+    ],
+    "timelineBoundaryQuotes": [],
+    "generatorQuotes": [],
+    "aspectRatioQuotes": [
+      "FORMAT: 9:16 vertical, 1080x1920, 24 fps"
+    ],
+    "authority": "SOURCE_TEXT_ONLY_NOT_AN_AUTHENTICATED_SETTINGS_BINDING"
+  },
+  "existingIndependentFidelityRecords": 0,
+  "blockers": [
+    "SOURCE_APPROVAL_REQUIRED",
+    "PRODUCTION_SETTINGS_BINDING_REQUIRED",
+    "REVIEW_AUTHORIZATION_REQUIRED"
+  ],
+  "newOriginalWorkflowApplicable": true,
+  "readyForCalibrationImport": false,
+  "preflightRequest": {
+    "repositoryRelativePath": "POMPOM_HILLS_PRODUCTION/09_SOCIAL_REELS/new14092026/easy uploaded/4- Kiko and the Lamp That Hates Being Watched /prompt.md",
+    "expectedPromptSha256": "e2a4c2b2e3ab5ed7927831c2c264e779c9d9b251b6e979e997c1c271bd7ff0bc",
+    "storyId": null,
+    "approvalRecordId": null,
+    "productionSettingsRecordId": null
+  },
+  "protectedAnchorsRequiringHumanMapping": [
+    "CHARACTER_IDENTITY",
+    "APPROVED_EVENTS",
+    "EVENT_ORDER",
+    "PHYSICAL_RULE",
+    "TEMPORAL_CONSTRAINTS",
+    "REQUIRED_ENDING"
+  ],
+  "proposedSplit": "CALIBRATION",
+  "leakageGroup": "observation-dependent-recurrence"
+}

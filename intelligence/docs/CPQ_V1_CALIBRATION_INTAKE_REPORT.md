@@ -2,6 +2,8 @@
 
 Date: 2026-10-15
 
+**Latest continuation:** Original fidelity engineering and V64 deployment are now verified. Earlier sections below record the prior intake snapshot; the dated continuation at the end supersedes its candidate-only API/deployment limitation. See [current original-fidelity report](CPQ_V1_ORIGINAL_FIDELITY_AND_CALIBRATION_REPORT.md).
+
 | Independent status | Result |
 |---|---|
 | MOBILE_STEP6_ACCEPTANCE | VERIFIED |
@@ -167,3 +169,18 @@ Text-level A/A+ calibration does not require rendering. Independent source fidel
 - `REAL_B_TO_A_ACCEPTANCE: NOT_VERIFIED`
 
 CPQ-focused ML rerun: `tests/test_creative_prompt_quality_v1.py` — **5 passed** in 1.76 seconds; no real inference.
+
+
+## 2026-10-15 continuation — original fidelity workflow deployed
+
+The existing CPQ service now supports typed ORIGINAL_PROMPT and OPTIMIZATION_CANDIDATE subjects, actual approved-source/settings binding, independent original reviews, exact qualified import and blind human review. V64 deployed via `./intelligence/scripts/deploy.sh backend`; V62/V63 and historical records unchanged. Full contract, operator instructions, verification and limitations are in [CPQ_V1_ORIGINAL_FIDELITY_AND_CALIBRATION_REPORT.md](CPQ_V1_ORIGINAL_FIDELITY_AND_CALIBRATION_REPORT.md).
+
+All nine frozen originals were rehashed successfully. P01–P06 exact source packages are in `original-source-review-packages/`. Every one still has all three blockers: SOURCE_APPROVAL_REQUIRED, PRODUCTION_SETTINGS_BINDING_REQUIRED, REVIEW_AUTHORIZATION_REQUIRED. The new API is applicable; source existence alone is not import eligibility. The earlier API engineering blocker has been removed, but those evidence blockers remain. No production corpus, example, original subject, fidelity review or human judgment was created. Mimi exact original/three historical candidate drafts are prepared under neutral Q01–Q04 with supervisor provenance isolated; no candidate superiority is established.
+
+Focused verification: backend 44 passed; frontend 73 passed; ML configured CPQ/Adaptive 30 passed. New anonymous deployed endpoints return 403. Backend image dd73b57f02097fe7382cd9293b257afe53d487c5ce2507c96657e4f9d358b74c; schema64; services healthy. Prompt10 hash, 75 workflow events, eight comparisons and full event-payload hash unchanged. Original subjects/fidelity reviews/corpora/examples/judgments remain zero, grading inactive. Existing broader suite failures and focused setup/teardown diagnostics remain detailed in the current report.
+
+ORIGINAL_FIDELITY_WORKFLOW: IMPLEMENTED_AND_VERIFIED
+CALIBRATION_SOURCE_PREPARATION: PARTIALLY_READY
+INDEPENDENT_REVIEW: AWAITING_AUTHORIZED_REVIEWERS
+CPQ_GRADING: INACTIVE
+REAL_B_TO_A_ACCEPTANCE: NOT_VERIFIED

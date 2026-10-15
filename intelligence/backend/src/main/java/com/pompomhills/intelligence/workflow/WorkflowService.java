@@ -1567,6 +1567,29 @@ public class WorkflowService {
         }).optional();
   }
 
+  /** Read-only reuse of the existing exact story revision/approval contract for CPQ originals. */
+  public Map<String, Object> approvedStoryForCpq(UUID storyId, UUID approvalId) {
+    var source = getByKind(storyId, "CREATIVE_ROLE");
+    if (!"STORY".equals(source.get("role"))) throw new IllegalArgumentException("SOURCE_APPROVAL_REQUIRED: not a saved STORY");
+    var approval = getByKind(approvalId, "STORY_APPROVAL");
+    String latest = jdbc.sql("SELECT id::text FROM post_family_workflow_events WHERE kind='STORY_APPROVAL' AND payload->>'storyRecordId'=:story ORDER BY created_at DESC,id DESC LIMIT 1")
+        .param("story", storyId.toString()).query(String.class).optional().orElse("");
+    String candidate = String.valueOf(approval.getOrDefault("candidateId", ""));
+    String text = String.valueOf(approval.getOrDefault("approvedText", ""));
+    String revision = String.valueOf(approval.getOrDefault("revisionId", ""));
+    String exact = storyCandidateText(source, storyId, candidate);
+    if (!approvalId.toString().equals(latest) || !storyId.toString().equals(String.valueOf(approval.get("storyRecordId")))
+        || exact == null || text.isBlank() || !exact.trim().equals(text.trim())
+        || !storyFingerprint(text).equals(approval.get("contentFingerprint"))
+        || !(candidate + "-revision-" + storyFingerprint(text)).equals(revision))
+      throw new IllegalArgumentException("SOURCE_APPROVAL_REQUIRED: stale or mismatched approved story revision");
+    var result = new LinkedHashMap<String,Object>();
+    result.put("storyId", storyId.toString()); result.put("approvalRecordId", approvalId.toString());
+    result.put("revision", revision); result.put("text", text);
+    result.put("approvedBy", approval.getOrDefault("approvedBy", ""));
+    return result;
+  }
+
   public Map<String, Object> approveStory(UUID storyRecordId, Map<String, Object> request) {
     var story = getByKind(storyRecordId, "CREATIVE_ROLE");
     if (!"STORY".equals(story.get("role")))

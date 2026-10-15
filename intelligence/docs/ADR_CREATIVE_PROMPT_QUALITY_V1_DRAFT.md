@@ -78,8 +78,8 @@ This proposal addresses the category error between canonical compliance and crea
 
 ## Implemented API and persistence boundary
 
-- `POST /records/{analysisId}/creative-prompt-quality/assess` creates a text-only assessment preview for the current saved analysis and candidate comparison. It never returns an uncalibrated letter grade.
-- `POST /records/{analysisId}/candidates/{candidateId}/fidelity-review` stores an authenticated, exact-binding source-fidelity judgment (`PASS`, `FAIL`, `UNKNOWN`) as append-only evidence.
+- `POST /records/{analysisId}/comparisons/{comparisonId}/candidates/{candidateId}/creative-prompt-quality/assess` creates a text-only assessment preview for the current saved analysis and candidate comparison. It never returns an uncalibrated letter grade.
+- `POST /records/{analysisId}/comparisons/{comparisonId}/candidates/{candidateId}/fidelity-review` stores an authenticated, exact-binding source-fidelity judgment (`PASS`, `FAIL`, `UNKNOWN`) as append-only evidence.
 - `GET /cpq/reviewer-capabilities` exposes capabilities derived from the authenticated principal, never from client role claims.
 - `/cpq/calibration/corpora`, `/examples`, blinded review packets/judgments, readiness and preview APIs implement the governed calibration workflow. Provisional thresholds and held-out error reports remain diagnostic only.
 - `cpq_*` tables store versioned corpora, immutable examples/reviews/judgments/assessments/reports and an inactive singleton policy state. A frozen corpus cannot be changed.
@@ -88,3 +88,10 @@ This proposal addresses the category error between canonical compliance and crea
 ## Approval record
 
 Architecture implementation direction: **approved by the user in the implementation authorization dated 2026-10-15**. This is not a substitute for the formal governed activation record. **Do not activate grading until every activation requirement is met and authorized.**
+
+
+## Original-subject implementation extension — 2026-10-15
+
+Implemented and deployed V64 in the existing CPQ service. ORIGINAL_PROMPT subjects bind exact repository/saved prompt bytes to real approved story/revision and production-setting authority. They do not require fabricated optimization comparisons. `/cpq/original-prompts/preflight`, `/bindings` and `/{subjectId}/fidelity-review` provide read-only resolution, authenticated architecture binding and independent append-only review. Candidate scope remains separate and backward compatible. Explicit immutable same-subject supersession does not overwrite history. Import and readiness revalidate current exact evidence; blind packets omit identity/quality labels and preserve production context. New human submissions use cpq-human-blind-review-v2 with exact citations, specific strength/weakness, production constraint and UNKNOWN uncertainty across six dimensions. Historical method records remain intact.
+
+Engineering verification is not source approval, independent human review or grade activation. Missing actual source approval/settings retains blockers. Production grading remains INACTIVE; no thresholds, aggregation policy or canonical Ruleset1.11 changes were made. See the original fidelity and calibration report for deployed verification and remaining evidence requirements.
