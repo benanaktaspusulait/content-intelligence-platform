@@ -1,0 +1,6 @@
+{
+  "status": 403,
+  "syntheticTarget": true,
+  "operatorConfirmed": false,
+  "response": "{\"timestamp\":\"2026-10-15T07:13:16.143Z\",\"status\":403,\"error\":\"Forbidden\",\"path\":\"/api/v1/intelligence/workflow/records/00000000-0000-0000-0000-000000000001/governance/exception\"}"
+}

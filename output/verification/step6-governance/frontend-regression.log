@@ -5,11 +5,11 @@
 ❯ Building...
 ✔ Building...
 Initial chunk files                                      | Names                                                 |  Raw size
-spec-app-pages-quality-validator-post-family-workflow.js | spec-app-pages-quality-validator-post-family-workflow | 830.54 kB | 
-styles.css                                               | styles                                                | 237.88 kB | 
-chunk-RSTWSNOR.js                                        | -                                                     |   4.75 kB | 
-init-testbed.js                                          | init-testbed                                          |   1.21 kB | 
-vitest-mock-patch.js                                     | vitest-mock-patch                                     | 974 bytes | 
+spec-app-pages-quality-validator-post-family-workflow.js | spec-app-pages-quality-validator-post-family-workflow | 830.54 kB |
+styles.css                                               | styles                                                | 237.88 kB |
+chunk-RSTWSNOR.js                                        | -                                                     |   4.75 kB |
+init-testbed.js                                          | init-testbed                                          |   1.21 kB |
+vitest-mock-patch.js                                     | vitest-mock-patch                                     | 974 bytes |
 
                                                          | Initial total                                         |   1.08 MB
 

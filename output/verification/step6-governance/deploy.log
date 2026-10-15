@@ -1,8 +1,8 @@
 Building current sources: ml-service backend creative-render-service frontend
- Image intelligence-creative-render-service Building 
- Image intelligence-frontend Building 
- Image intelligence-ml-service Building 
- Image intelligence-backend Building 
+ Image intelligence-creative-render-service Building
+ Image intelligence-frontend Building
+ Image intelligence-ml-service Building
+ Image intelligence-backend Building
 #1 [internal] load local bake definitions
 #1 reading from stdin 2.34kB done
 #1 DONE 0.0s
@@ -143,10 +143,10 @@ Building current sources: ml-service backend creative-render-service frontend
 #40 DONE 0.4s
 
 #41 [frontend build 6/6] RUN npm run build
-#41 2.147 
+#41 2.147
 #41 2.147 > frontend@0.0.0 build
 #41 2.147 > ng build
-#41 2.147 
+#41 2.147
 #41 4.055 ❯ Building...
 #41 ...
 
@@ -494,7 +494,7 @@ Building current sources: ml-service backend creative-render-service frontend
 #41 ...
 
 #42 [ml-service 6/6] RUN pip install --no-cache-dir .
-#42 71.91 
+#42 71.91
 #42 71.95 Successfully installed annotated-doc-0.0.5 annotated-types-0.8.0 anthropic-1.14.0 anyio-4.15.1 certifi-2026.7.22 cffi-2.1.1 charset_normalizer-3.5.2 click-8.5.0 cloudpickle-3.1.2 cryptography-50.0.2 docstring-parser-0.18.0 fastapi-0.143.1 google-ai-generativelanguage-0.6.15 google-api-core-2.33.0 google-api-python-client-2.201.0 google-auth-2.62.0 google-auth-httplib2-0.4.4 google-generativeai-0.8.6 googleapis-common-protos-1.75.0 grpcio-1.84.0 grpcio-status-1.71.2 h11-0.16.0 httpcore2-2.13.1 httplib2-0.32.0 httptools-0.9.0 httpx2-2.13.1 idna-3.20 jiter-0.17.0 joblib-1.6.0 narwhals-2.27.1 numpy-2.5.4 openai-3.31.0 opencv-python-headless-4.14.0.94 opentelemetry-api-1.45.1 pompom-creative-ml-0.1.0 proto-plus-1.28.2 protobuf-5.29.6 pyasn1-0.6.4 pyasn1-modules-0.4.2 pycparser-3.11 pydantic-2.14.1 pydantic-core-2.50.1 pydantic-settings-2.16.0 pyparsing-3.3.3 python-dotenv-1.2.4 pyyaml-6.0.3 requests-2.34.2 scikit-learn-1.9.1 scipy-1.18.1 sniffio-1.3.1 starlette-1.8.0 threadpoolctl-3.7.0 tqdm-4.70.1 truststore-0.10.5 typing-extensions-4.16.0 typing-inspection-0.4.4 uritemplate-4.2.0 urllib3-2.8.0 uvicorn-0.54.0 uvloop-0.23.0 watchfiles-1.3.0 websockets-17.2
 #42 71.96 WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
 #42 DONE 74.1s
@@ -508,9 +508,9 @@ Building current sources: ml-service backend creative-render-service frontend
 #41 73.73 chunk-IUG2ESWL.js   | -                             |  24.60 kB |                 7.34 kB
 #41 73.73 main-7S3FVRBC.js    | main                          |   8.31 kB |                 2.32 kB
 #41 73.73 chunk-3RHWOS5U.js   | -                             | 705 bytes |               705 bytes
-#41 73.73 
+#41 73.73
 #41 73.73                     | Initial total                 | 517.02 kB |               116.56 kB
-#41 73.73 
+#41 73.73
 #41 73.73 Lazy chunk files    | Names                         |  Raw size | Estimated transfer size
 #41 73.73 chunk-6OJFWOB7.js   | editor-api                    |   2.28 MB |               470.00 kB
 #41 73.73 chunk-CI3HW2D6.js   | quality-validator-component   | 371.91 kB |                70.70 kB
@@ -528,31 +528,31 @@ Building current sources: ml-service backend creative-render-service frontend
 #41 73.73 chunk-2TXV7TKM.js   | video-analysis-workbench-page |  14.55 kB |                 4.08 kB
 #41 73.73 chunk-J732DL4B.js   | prompt-workspace-page         |  13.76 kB |                 3.67 kB
 #41 73.73 ...and 17 more lazy chunks files. Use "--verbose" to show all the files.
-#41 73.73 
+#41 73.73
 #41 73.73 Application bundle generation complete. [69.650 seconds] - 2026-10-14T23:50:20.533Z
-#41 73.73 
+#41 73.73
 #41 73.74 ▲ [WARNING] NG8113: TimelineChartComponent is not used within the template of QualityValidatorComponent [plugin angular-compiler]
-#41 73.74 
+#41 73.74
 #41 73.74     src/app/pages/quality-validator/quality-validator.component.ts:202:39:
 #41 73.74       202 │ ...odule, FormsModule, TimelineChartComponent, RouterLink, Genera...
 #41 73.74           ╵                        ~~~~~~~~~~~~~~~~~~~~~~
-#41 73.74 
-#41 73.74 
+#41 73.74
+#41 73.74
 #41 73.74 ▲ [WARNING] NG8113: GeneralProducibilityComponent is not used within the template of QualityValidatorComponent [plugin angular-compiler]
-#41 73.74 
+#41 73.74
 #41 73.74     src/app/pages/quality-validator/quality-validator.component.ts:202:75:
 #41 73.74       202 │ ...ent, RouterLink, GeneralProducibilityComponent, PostFamilyWork...
 #41 73.74           ╵                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#41 73.74 
-#41 73.74 
+#41 73.74
+#41 73.74
 #41 73.74 ▲ [WARNING] bundle initial exceeded maximum budget. Budget 500.00 kB was not met by 17.02 kB with a total of 517.02 kB.
-#41 73.74 
-#41 73.74 
+#41 73.74
+#41 73.74
 #41 73.74 ▲ [WARNING] angular:styles/component:scss;ed5fef83302356f9a1842db6e4023461bfc9691a3dca7de413621f965c5ea7f2;/workspace/src/app/pages/creative-studio.page.ts exceeded maximum budget. Budget 26.00 kB was not met by 8.56 kB with a total of 34.56 kB.
-#41 73.74 
-#41 73.74 
+#41 73.74
+#41 73.74
 #41 73.74 Output location: /workspace/dist/frontend
-#41 73.74 
+#41 73.74
 #41 DONE 75.9s
 
 #57 [ml-service] exporting to image
@@ -582,45 +582,45 @@ Building current sources: ml-service backend creative-render-service frontend
 
 #62 [ml-service] resolving provenance for metadata file
 #62 DONE 0.0s
- Image intelligence-frontend Built 
- Image intelligence-ml-service Built 
- Image intelligence-backend Built 
- Image intelligence-creative-render-service Built 
+ Image intelligence-frontend Built
+ Image intelligence-ml-service Built
+ Image intelligence-backend Built
+ Image intelligence-creative-render-service Built
 Deploying: ml-service backend creative-render-service frontend
- Container intelligence-ml-service-1 Recreate 
- Container intelligence-ml-service-1 Recreated 
- Container intelligence-backend-1 Recreate 
- Container intelligence-backend-1 Recreated 
- Container intelligence-creative-render-service-1 Recreate 
- Container intelligence-creative-render-service-1 Recreated 
- Container intelligence-frontend-1 Recreate 
- Container intelligence-frontend-1 Recreated 
- Container intelligence-ml-service-1 Starting 
- Container intelligence-ml-service-1 Started 
- Container intelligence-ml-service-1 Waiting 
- Container intelligence-ml-service-1 Healthy 
- Container intelligence-backend-1 Starting 
- Container intelligence-backend-1 Started 
- Container intelligence-backend-1 Waiting 
- Container intelligence-ml-service-1 Waiting 
- Container intelligence-ml-service-1 Healthy 
- Container intelligence-backend-1 Healthy 
- Container intelligence-creative-render-service-1 Starting 
- Container intelligence-creative-render-service-1 Started 
- Container intelligence-creative-render-service-1 Waiting 
- Container intelligence-backend-1 Waiting 
- Container intelligence-backend-1 Healthy 
- Container intelligence-creative-render-service-1 Healthy 
- Container intelligence-frontend-1 Starting 
- Container intelligence-frontend-1 Started 
- Container intelligence-ml-service-1 Waiting 
- Container intelligence-frontend-1 Waiting 
- Container intelligence-backend-1 Waiting 
- Container intelligence-creative-render-service-1 Waiting 
- Container intelligence-frontend-1 Healthy 
- Container intelligence-creative-render-service-1 Healthy 
- Container intelligence-backend-1 Healthy 
- Container intelligence-ml-service-1 Healthy 
+ Container intelligence-ml-service-1 Recreate
+ Container intelligence-ml-service-1 Recreated
+ Container intelligence-backend-1 Recreate
+ Container intelligence-backend-1 Recreated
+ Container intelligence-creative-render-service-1 Recreate
+ Container intelligence-creative-render-service-1 Recreated
+ Container intelligence-frontend-1 Recreate
+ Container intelligence-frontend-1 Recreated
+ Container intelligence-ml-service-1 Starting
+ Container intelligence-ml-service-1 Started
+ Container intelligence-ml-service-1 Waiting
+ Container intelligence-ml-service-1 Healthy
+ Container intelligence-backend-1 Starting
+ Container intelligence-backend-1 Started
+ Container intelligence-backend-1 Waiting
+ Container intelligence-ml-service-1 Waiting
+ Container intelligence-ml-service-1 Healthy
+ Container intelligence-backend-1 Healthy
+ Container intelligence-creative-render-service-1 Starting
+ Container intelligence-creative-render-service-1 Started
+ Container intelligence-creative-render-service-1 Waiting
+ Container intelligence-backend-1 Waiting
+ Container intelligence-backend-1 Healthy
+ Container intelligence-creative-render-service-1 Healthy
+ Container intelligence-frontend-1 Starting
+ Container intelligence-frontend-1 Started
+ Container intelligence-ml-service-1 Waiting
+ Container intelligence-frontend-1 Waiting
+ Container intelligence-backend-1 Waiting
+ Container intelligence-creative-render-service-1 Waiting
+ Container intelligence-frontend-1 Healthy
+ Container intelligence-creative-render-service-1 Healthy
+ Container intelligence-backend-1 Healthy
+ Container intelligence-ml-service-1 Healthy
   ml-service: sha256:f57a2f0fe84b85af057d419632f1985f9fc99939aa401cc72a784f2dcfe05c9c
   ml-service HTTP check passed (/health)
   backend: sha256:28e9302d526a7c8e431b63ddf4647a1067aa48d3e282105193ebcb8b6dc98b2b

@@ -400,7 +400,7 @@ import { GeneralProducibilityComponent } from './general-producibility.component
             <div><span>Analysis run</span><strong>{{ review?.recordId || 'Unavailable' }}</strong></div>
             <div><span>Prompt version</span><strong>v{{ promptVersionNumber ?? 'UNKNOWN' }} · ID {{ review?.promptVersionId || promptVersionId }}</strong></div>
             <div><span>Rule outcomes</span><strong>{{ canonicalOutcomeSummary }}</strong></div>
-            <div><span>Actionable text defects</span><strong>{{ actionableTextDefects.length ? actionableTextDefects.join('; ') : 'None identified' }}</strong></div>
+            <div><span>Saved findings · resolution requires the exit policy above</span><strong>{{ actionableTextDefects.length ? actionableTextDefects.join('; ') : 'None identified' }}</strong></div>
             <div><span>Optional improvements</span><strong>{{ optionalCreativeImprovements.length ? optionalCreativeImprovements.join('; ') : 'None recorded' }}</strong></div>
             <div><span>Outstanding requirements</span><strong>{{ outstandingEvidence.length ? outstandingEvidence.join('; ') : 'None recorded' }}</strong></div>
           </div>

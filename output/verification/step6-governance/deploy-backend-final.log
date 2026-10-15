@@ -1,6 +1,6 @@
 Building current sources: backend
- Image intelligence-ml-service Building 
- Image intelligence-backend Building 
+ Image intelligence-ml-service Building
+ Image intelligence-backend Building
 #1 [internal] load local bake definitions
 #1 reading from stdin 1.17kB done
 #1 DONE 0.0s
@@ -63,22 +63,22 @@ Building current sources: backend
 
 #18 resolving provenance for metadata file
 #18 DONE 0.1s
- Image intelligence-backend Built 
+ Image intelligence-backend Built
 Deploying: backend frontend
- Container intelligence-backend-1 Recreate 
- Container intelligence-backend-1 Recreated 
- Container intelligence-frontend-1 Recreate 
- Container intelligence-frontend-1 Recreated 
- Container intelligence-backend-1 Starting 
- Container intelligence-backend-1 Started 
- Container intelligence-backend-1 Waiting 
- Container intelligence-backend-1 Healthy 
- Container intelligence-frontend-1 Starting 
- Container intelligence-frontend-1 Started 
- Container intelligence-backend-1 Waiting 
- Container intelligence-frontend-1 Waiting 
- Container intelligence-frontend-1 Healthy 
- Container intelligence-backend-1 Healthy 
+ Container intelligence-backend-1 Recreate
+ Container intelligence-backend-1 Recreated
+ Container intelligence-frontend-1 Recreate
+ Container intelligence-frontend-1 Recreated
+ Container intelligence-backend-1 Starting
+ Container intelligence-backend-1 Started
+ Container intelligence-backend-1 Waiting
+ Container intelligence-backend-1 Healthy
+ Container intelligence-frontend-1 Starting
+ Container intelligence-frontend-1 Started
+ Container intelligence-backend-1 Waiting
+ Container intelligence-frontend-1 Waiting
+ Container intelligence-frontend-1 Healthy
+ Container intelligence-backend-1 Healthy
   backend: sha256:820f1d0420e766d050637f14d59f716681aadb4abeed970a83be2bfb66759bc2
   backend HTTP check passed (/actuator/health)
   frontend: sha256:2be5a982c9e9790ea07a810c6e0d01e420c0fb355629c7fba09fcfe3d38768d0

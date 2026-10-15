@@ -11,12 +11,12 @@ OpenJDK 64-Bit Server VM warning: Sharing is only supported for boot loader clas
 00:58:51.818 [main] INFO org.testcontainers.dockerclient.DockerClientProviderStrategy -- Loaded org.testcontainers.dockerclient.UnixSocketClientProviderStrategy from ~/.testcontainers.properties, will try it first
 00:58:52.025 [main] INFO org.testcontainers.dockerclient.DockerClientProviderStrategy -- Found Docker environment with Docker accessed via Unix socket (/Users/benanaktas/.docker/run/docker.sock)
 00:58:52.027 [main] INFO org.testcontainers.DockerClientFactory -- Docker host IP address is localhost
-00:58:52.043 [main] INFO org.testcontainers.DockerClientFactory -- Connected to docker: 
+00:58:52.043 [main] INFO org.testcontainers.DockerClientFactory -- Connected to docker:
   Server Version: 29.2.1
   API Version: 1.53
   Operating System: Docker Desktop
   Total Memory: 11948 MB
-  Labels: 
+  Labels:
     com.docker.desktop.address=unix:///Users/benanaktas/Library/Containers/com.docker.docker/Data/docker-cli.sock
 00:58:52.053 [main] INFO org.testcontainers.images.PullPolicy -- Image pull policy will be performed by: DefaultPullPolicy()
 00:58:52.054 [main] INFO org.testcontainers.utility.ImageNameSubstitutor -- Image name substitution will be performed by: DefaultImageNameSubstitutor (composite of 'ConfigurationFileImageNameSubstitutor' and 'PrefixingImageNameSubstitutor')
@@ -31,3 +31,12 @@ OpenJDK 64-Bit Server VM warning: Sharing is only supported for boot loader clas
 00:58:52.978 [main] INFO tc.postgres:17-alpine -- Container postgres:17-alpine is starting: ccfabe30e91489baf825fd58675f6bac92ac33c9932e9d10f46dbc25d0f419bf
 00:58:54.778 [main] INFO tc.postgres:17-alpine -- Container postgres:17-alpine started in PT1.856753S
 00:58:54.780 [main] INFO tc.postgres:17-alpine -- Container is started (JDBC URL: jdbc:postgresql://localhost:50802/test?loggerLevel=OFF)
+00:58:59.595 [main] INFO org.hibernate.validator.internal.util.Version -- HV000001: Hibernate Validator 9.1.3.Final
+00:58:59.804 [main] INFO org.springframework.mock.web.MockServletContext -- Initializing Spring TestDispatcherServlet ''
+00:58:59.804 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Initializing Servlet ''
+00:58:59.805 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Completed initialization in 1 ms
+00:59:07.412 [main] INFO tc.postgres:17-alpine -- Creating container for image: postgres:17-alpine
+00:59:07.465 [main] INFO tc.postgres:17-alpine -- Container postgres:17-alpine is starting: b8330f38b07266e228f2c37f7856db598871a6a2d3809c04a78de051c13fc95c
+00:59:08.914 [main] INFO tc.postgres:17-alpine -- Container postgres:17-alpine started in PT1.502154S
+00:59:08.915 [main] INFO tc.postgres:17-alpine -- Container is started (JDBC URL: jdbc:postgresql://localhost:51888/pompom?loggerLevel=OFF)
+00:59:09.606 [main] WARN com.pompomhills.intelligence.workflow.WorkflowService -- Optimization attempt=876c5833-acbb-46d9-9476-ae048ad03c09 category=SOURCE_PLAN_VALIDATION_FAILED dispatched=false returned=null
