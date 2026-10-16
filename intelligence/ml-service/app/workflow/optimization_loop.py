@@ -58,6 +58,7 @@ def integrity(prompt, result):
 
 def evaluate(data):
     scope = data['scope']; prompt = data['prompt']; result = canonical(prompt, scope)
+    from .creative_validity import assess as assess_creative_validity
     findings = []
     for r in rows(result).values():
         if r['outcome'] not in ('FAIL', 'UNKNOWN') and r['severity'] == 'PASS':
@@ -67,11 +68,14 @@ def evaluate(data):
         if r['outcome'] == 'PASS' and r['severity'] != 'PASS': category = 'FIXED_POLICY_CONSTRAINT'
         findings.append(dict(ruleId=r['ruleId'], classification=category, message=r['message']))
     context = generation_context(scope, prompt, result, data.get('feedback', {}))
-    return dict(canonical=result, integrity=integrity(prompt, result), diagnosis=diagnose(prompt, context), findings=findings, promptSha256=fingerprint(prompt), renderAuthorized=False)
+    validity=assess_creative_validity(prompt,result,data.get('provenance'))
+    return dict(canonical=result, integrity=integrity(prompt, result), diagnosis=diagnose(prompt, {**context,'creativeValidityDiagnosis':validity}),
+                creativeValidity=validity, findings=findings, promptSha256=fingerprint(prompt), renderAuthorized=False)
 
 
 def generation_context(scope, prompt, result, feedback):
     from .review import enrich_production_evidence
+    from .creative_validity import assess as assess_creative_validity
     # Extract editable actions anew from the current full text, with original
     # approved story as a separate immutable contract in every round.
     request={k:v for k,v in scope['request'].items() if k not in ('structuredPlan','authorizationEvidence')}
@@ -79,9 +83,11 @@ def generation_context(scope, prompt, result, feedback):
     from .optimization_distinctness import _beats
     feedback=dict(rejectionReason=feedback.get('rejectionReason'), sourceFidelity=feedback.get('sourceFidelity','UNKNOWN'), rejectedFailureModes=[dict(classification=r.get('classification'),reasons=r.get('reasons',[])) for r in feedback.get('rejectedProposals',[])], remainingFindings=[dict(ruleId=r['ruleId'],outcome=r['outcome'],severity=r['severity'],message=r['message']) for r in rows(result).values() if r['outcome'] in ('FAIL','UNKNOWN')][:20])
     anchors=[re.sub(r'^\d+(?:\.\d+)?-\d+(?:\.\d+)?s:\s*','',b['sourceQuote']).split('[',1)[0].split('->',1)[0].strip() for b in _beats(prompt)]
+    creative_validity=assess_creative_validity(prompt,result,{'origin':'UNKNOWN_ORIGIN','reviewerIndependent':False})
     return dict(optimizationGenerationContractVersion='creative-reconstruction-v2', optimizationGenerationInstructionsVersion='model-authored-production-v2',
                 adaptiveVersion='adaptive-creative-optimization-v3', openingStrategy=scope['request'].get('openingStrategy', 'AUTO'),
                 baselineCanonicalEvaluation=result, baselineCanonicalFailures=result.get('failedRules', []), approvedStoryText=scope['approvedStory']['text'],
+                creativeValidityDiagnosis=creative_validity,
                 storyRevisionId=scope['approvedStory']['revision'], storyApprovalRecordId=scope['approvedStory']['approvalRecordId'],
                 essentialEvents=anchors, protectedIntent=scope['request'].get('protectedIntent', []),
                 targetConfiguration=dict(contentProfile=scope['request']['contentProfile'], generator=scope['request']['generator'], duration=scope['request']['desiredDuration'], settings=scope['request']['settings']),
@@ -151,6 +157,12 @@ def preview(data):
         'responseSchemaSha256':fingerprint(fmt),
         'instructionContextSha256':fingerprint({'system':system,'context':context,'responseSchema':fmt}),
         'sourceScopeSha256':fingerprint(data['scope']),
+        # This is a routing assertion, not evidence that a provider ran.  The
+        # bounded optimization endpoint has no fixture-provider fallback: its
+        # only executable factory is the checked-in real capability adapter.
+        'transportOrigin':'REAL_PROVIDER_ADAPTER',
+        'providerAdapter':'CreativeCapabilityProvider',
+        'fixtureFallbackAllowed':False,
         'providerDispatched':False,
     }
 
@@ -161,7 +173,8 @@ def execute_request(data, provider_factory=None):
     timeout=min(120,max(1,int(data['timeoutSeconds'])))
     provider=factory(cfg,auth['maxOutputTokens'],timeout);provider.response_format=fmt
     start=time.monotonic()
-    envelope=dict(executionStatus='FAILED_OR_AMBIGUOUS',role=data['role'],requestId=data['requestId'],provider=cfg['provider'],model=cfg['model'],effectiveRequestConfiguration=cfg,providerDispatched=False)
+    envelope=dict(executionStatus='FAILED_OR_AMBIGUOUS',role=data['role'],requestId=data['requestId'],provider=cfg['provider'],model=cfg['model'],effectiveRequestConfiguration=cfg,providerDispatched=False,
+                  providerOutcome='NOT_DISPATCHED',billingStatus='NO_USAGE_REPORTED',processingOutcome='NOT_STARTED')
     try:
         envelope['providerDispatched']=True
         if data['role']=='GENERATION':
@@ -179,11 +192,24 @@ def execute_request(data, provider_factory=None):
         capture_accounting(envelope,cfg)
         if envelope['usageAccountingStatus']!='COMPLETE' or envelope['costUsd']>auth['maxCostUsd'] or envelope['usage']['completion_tokens']>auth['maxOutputTokens']:raise ValueError('Incomplete/out-of-bound accounting')
         if envelope['providerMetadata'].get('finishReason')!='stop' or envelope['providerMetadata'].get('model')!=cfg['model']:raise ValueError('Incomplete or changed provider response')
-        envelope['executionStatus']='COMPLETED'
+        envelope['executionStatus']='COMPLETED';envelope['providerOutcome']='RESPONSE_RECEIVED'
+        envelope['billingStatus']='KNOWN_INCURRED';envelope['processingOutcome']='ACCEPTED_RESEARCH_RESULT'
+        if data['role']=='GENERATION' and not envelope['result'].get('candidates'):
+            rejected=envelope['result'].get('rejectedProposals',[])
+            envelope['processingOutcome']='PLAN_REJECTED_'+(rejected[0].get('classification','VALIDATION') if rejected else 'NO_JUSTIFIED_IMPROVEMENT')
     except Exception as error:
         envelope.update(rawResponse=getattr(provider,'last_raw_response',''),usage=getattr(provider,'last_usage',None),providerMetadata=getattr(provider,'last_response_metadata',{}))
         capture_accounting(envelope,cfg)
-        envelope['failure']=dict(layer='RECONSTRUCTION_OR_REVIEW' if envelope['rawResponse'] else 'PROVIDER_TRANSPORT',exceptionCategory=type(error).__name__,httpStatus=getattr(error,'status_code',None),providerRequestId=getattr(error,'request_id',None),responseReceived=bool(envelope['rawResponse'] or envelope['providerMetadata']),timeoutSeconds=timeout,retrySafe=False)
+        received=bool(envelope['rawResponse'] or envelope['providerMetadata'])
+        message=str(error)
+        if received:
+            outcome=('SOURCE_FIDELITY_FAILED' if 'STORY_FIDELITY' in message else
+                     'STRUCTURED_RESPONSE_INVALID' if type(error).__name__ in {'ValidationError','JSONDecodeError'} else
+                     'LOCAL_COMPILER_VALIDATION_FAILED')
+            envelope.update(providerOutcome='RESPONSE_RECEIVED',billingStatus='KNOWN_INCURRED' if envelope.get('usageAccountingStatus')=='COMPLETE' else 'USAGE_ACCOUNTING_INCOMPLETE',processingOutcome=outcome)
+        else:
+            envelope.update(providerOutcome='DISPATCH_AMBIGUOUS' if envelope['providerDispatched'] else 'NOT_DISPATCHED',billingStatus='UNKNOWN' if envelope['providerDispatched'] else 'NO_USAGE_REPORTED',processingOutcome='PROVIDER_TRANSPORT_FAILED')
+        envelope['failure']=dict(layer='RECONSTRUCTION_OR_REVIEW' if received else 'PROVIDER_TRANSPORT',exceptionCategory=type(error).__name__,failureCategory=envelope['processingOutcome'],httpStatus=getattr(error,'status_code',None),providerRequestId=getattr(error,'request_id',None),responseReceived=received,usageAccountingStatus=envelope.get('usageAccountingStatus'),billingStatus=envelope['billingStatus'],timeoutSeconds=timeout,retrySafe=False)
     envelope['elapsedSeconds']=time.monotonic()-start
     return envelope
 

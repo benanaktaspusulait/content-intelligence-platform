@@ -206,6 +206,50 @@ def diagnose(source, context):
                 'The action and resulting state occupy distinguishable regions with continuous visible contact.',
                 'A wider contact tableau may reduce facial detail; visual continuity remains unverified.',
                 [re.sub(r'\[[^\]]*\]', '', before).strip(), after.strip()])
+    # Rank only source-permitted operations, while exposing higher-impact risks
+    # that cannot honestly be repaired by prompt reconstruction.  This prevents
+    # list order from silently making the easiest local edit look most valuable.
+    validity=context.get('creativeValidityDiagnosis') if isinstance(context.get('creativeValidityDiagnosis'),dict) else {}
+    risks={r.get('code'):r for r in validity.get('risks',[]) if isinstance(r,dict)}
+    inventory=[]
+    def concern(problem, visible, actionable, disposition, evidence, covered=None):
+        inventory.append({'problemClass':problem,'visibleToGenerator':visible,
+            'sourcePermittedActionable':actionable,'disposition':disposition,'evidence':evidence,
+            'coveredOpportunityIds':covered or []})
+    opening_ids=[o['opportunityId'] for o in opportunities if o['beatId']=='beat_01']
+    progression_ids=[o['opportunityId'] for o in opportunities if o['beatId'] in {'beat_02','beat_03','beat_04'}]
+    ending_ids=[o['opportunityId'] for o in opportunities if o['beatId']==beats[-1]['id']]
+    concern('FRAME_ZERO_PRESENTATION',bool({'TEXTUAL_HOOK_NOT_VISUAL_PROOF','FRAME_ZERO_STATE_UNVERIFIED'} & risks.keys()),bool(opening_ids),
+        'SOURCE_BOUND_PROMPT_REPAIR_AVAILABLE' if opening_ids else 'VISUAL_EVIDENCE_REQUIRED_AND_NO_GROUNDED_OPENING_OPERATION',
+        [risks[k]['finding'] for k in ('TEXTUAL_HOOK_NOT_VISUAL_PROOF','FRAME_ZERO_STATE_UNVERIFIED') if k in risks],opening_ids)
+    concern('VIEWER_VISIBLE_CAUSAL_VARIETY','REPETITIVE_VIEWER_VISIBLE_CONSEQUENCE' in risks,bool(progression_ids),
+        'PARTIAL_STAGING_MITIGATION_ONLY; OWNER_APPROVED_STORY_REVISION_REQUIRED_FOR_NEW_CONSEQUENCES',
+        risks.get('REPETITIVE_VIEWER_VISIBLE_CONSEQUENCE',{}).get('finding'),progression_ids)
+    concern('TEMPORAL_LOAD_REDUCTION','ENDING_TIMING_OVERLOAD' in risks,bool(ending_ids),
+        'SOURCE_BOUND_PRESENTATION_REPAIR_AVAILABLE' if ending_ids else 'OWNER_APPROVED_STORY_REVISION_REQUIRED',
+        risks.get('ENDING_TIMING_OVERLOAD',{}).get('finding'),ending_ids)
+    concern('PAYOFF_PRESENTATION',True,bool(ending_ids),
+        'VISUAL_EVIDENCE_REQUIRED' if not ending_ids else 'SOURCE_BOUND_PROMPT_REPAIR_AVAILABLE',
+        'Ending impact and replay value remain unverified.',ending_ids)
+    concern('GENERATOR_EXECUTABILITY','CRITICAL_PRODUCIBILITY_RISK' in risks,bool(opportunities),
+        'SOURCE_BOUND_RISK_MITIGATION_ONLY; RENDER_SUCCESS_UNVERIFIED',
+        risks.get('CRITICAL_PRODUCIBILITY_RISK',{}).get('finding'),[o['opportunityId'] for o in opportunities])
+    generic=bool(beats) and all(re.search(r'keep .{0,80}causally readable',b['sourceQuote'],re.I) for b in beats)
+    concern('GENERIC_PRODUCTION_DIRECTIONS',generic,bool(opportunities),
+        'SOURCE_BOUND_PROMPT_REPAIR_AVAILABLE' if opportunities else 'NO_GROUNDED_OPERATION',
+        'All beat annotations reuse generic causal-readability direction.' if generic else None,[o['opportunityId'] for o in opportunities])
+    for op in opportunities:
+        covered=[];score=20
+        if op['beatId']=='beat_01':covered.append('FRAME_ZERO_PRESENTATION');score+=30
+        if op['beatId'] in {'beat_02','beat_03','beat_04'} and 'REPETITIVE_VIEWER_VISIBLE_CONSEQUENCE' in risks:
+            covered.append('VIEWER_VISIBLE_CAUSAL_VARIETY');score+=20
+        if 'CRITICAL_PRODUCIBILITY_RISK' in risks:covered.append('GENERATOR_EXECUTABILITY');score+=15
+        if generic:covered.append('GENERIC_PRODUCTION_DIRECTIONS');score+=10
+        if op['beatId']=='beat_04':score+=5 # peak escalation has greater marginal coverage than the first split
+        op.update(problemClasses=covered,priorityScore=score,
+                  priorityBasis='Severity, source-fidelity feasibility, generator risk and marginal viewer-visible coverage; no audience or score-gain claim.',
+                  sourceFidelityFeasibility='SOURCE_BOUND_PARTIAL_MITIGATION')
+    opportunities.sort(key=lambda row:(-row['priorityScore'],row['timeWindow'][0],row['opportunityId']))
     # Do not assume a formulaic ending/loop or invent a text defect where only images could resolve it.
     ending = beats[-1]
     return {'contractVersion': VERSION, 'qualityModelVersion': QUALITY_MODEL, 'openingStrategy': strategy,
@@ -217,6 +261,9 @@ def diagnose(source, context):
                         'numericScore': None} for dim in DIMENSIONS],
         'endingReview': {'sourceQuote': ending['sourceQuote'], 'sourceSpan': ending['sourceSpan'],
                         'classification': 'VISUAL_EVIDENCE_REQUIRED', 'loopRequired': False},
+        'creativePriorityAudit':{'version':'creative-opportunity-priority-v1','inventory':inventory,
+            'rankingPolicy':['material viewer-visible benefit','problem severity','source-fidelity feasibility','generator executability','story-artificiality risk','expected marginal benefit'],
+            'scoreMeaning':'Ordinal deterministic dispatch priority only; not canonical or audience evidence.'},
         'semanticStoryFidelity': 'UNKNOWN', 'renderAuthorization': 'NOT_GRANTED'}
 
 
@@ -254,7 +301,7 @@ For model-authored-production-v1 you author the actual production instructions, 
 AUTHORED_SYSTEM_V2 = """
 AUTHORING TASK model-authored-production-v2: propose zero or preferably ONE strong physical execution intervention; a second candidate is permitted only if independently material. More fields, words or camera labels do not make an improvement. You are not rewriting the approved story. The compiler preserves every unchanged source event, identity, physical rule, timing window, ending and authoritative setting. Do not spend output tokens retelling them.
 Choose one specific execution weakness from the cited source/diagnosis. Put that weakness in objective. In rationale contrast the existing instruction with your exact proposed spatial choreography and say what observable cause/consequence presentation changes, why it differs, and which execution risk remains. Benefits are unverified hypotheses, never retention or render guarantees. The physical intervention must be implemented in production instructions, not merely promised by the rationale or operation label.
-REFERENCE PROTOCOL: every property ending Ref contains an exact sourceReferenceCatalog KEY from authoringContract.allowedReferenceIdsByKind and the relevant opportunity's beat-local allowed IDs. Never put an entity name or quote into a Ref property. A name may appear in instruction prose; {catalogId} also inserts its exact source quote. Never invent an ID, entity, hand identity or source span. When required grounding is unavailable return proposals [] and a concrete noImprovementReason. An unknown is not a PASS. For CONTACT_PLANE use the exact requiredSurfacePair and explicitly stage their actual spatial relationship, existing contact choreography and visible consequence. SEPARATE_ACTION_RESULT needs actual separate screen positions/contact paths, not the word 'separate' in its rationale. COUNTABLE_STATE_PATH needs differentiated physical arrangements and visible continuous transitions for the existing states, not relabeled timestamps.
+REFERENCE PROTOCOL: every property ending Ref contains an exact sourceReferenceCatalog KEY from authoringContract.allowedReferenceIdsByKind and the relevant opportunity's beat-local allowed IDs. Never put an entity name or quote into a Ref property. Read the keyed sourceReferenceCatalog entry for the exact participant text, kind and identity certainty before using an ID. Every spatial relationship instruction must explicitly address the exact subjectRef AND objectRef; prefer {subjectRef} and {objectRef} placeholders so the compiler inserts their exact source mentions. A plural consequence such as “the two notes” does not address a bound hand/note pair, and a composite mention such as “each hand” does not prove separate left/right identities. Multi-object staging needs distinct grounded catalog references for every independently positioned participant. A name may appear in instruction prose, but it cannot replace a bound participant. Never invent an ID, entity, hand identity or source span. When required grounding is unavailable return proposals [] and a concrete noImprovementReason. An unknown is not a PASS. For CONTACT_PLANE use the exact requiredSurfacePair and explicitly stage their actual spatial relationship, existing contact choreography and visible consequence. SEPARATE_ACTION_RESULT needs actual separate screen positions/contact paths, not the word 'separate' in its rationale. COUNTABLE_STATE_PATH needs differentiated physical arrangements and visible continuous transitions for the existing states, not relabeled timestamps.
 Only write production DELTAS: choreography.instruction explains how the existing action is executed differently. consequencePresentation, temporalPresentation and cameraComposition are null when unchanged or unnecessary. generatorConstraints is [] unless a specific intervention introduces an execution constraint; do not restate aspect ratio, generator, profile or unchanged story. stateProgression is [] unless the chosen source opportunity supports it. For supported count progression use every source state in source order with concrete arrangements; never invent pulls or count states. An exact source beat-window repetition is technically redundant, not creative evidence; new sub-beat timecodes, unbound holds or altered duration are rejected. Use supported relative continuity where useful.
 Do not copy source action/result sentences into production fields and call that choreography. 'Clearly visible', a longer close-up description, the same actions at new times, and source result restatement are insufficient. A camera-only or purely verbal change must be declined. LOCKED camera remains the bounded contact/count policy. Retain safe contact, object and character continuity without overloading a beat. You may improve one or several relevant beats; do not force every beat to change. If you cannot defend a source-faithful physical difference, return proposals [] with a specific reason. Do not manufacture two weak options.
 MODEL_AUTHORED requires production and fallbackReason null. The compiler preserves validated author instructions rather than supplying a winning template. BOUNDED_TEMPLATE_FALLBACK is allowed only explicitly, with production null and a concrete fallbackReason; it is server-authored, not model creativity. Invalid authored proposals never fall back silently. Any revision is within the same single response and budget, not another provider call. No approval, prompt version or rendering is authorized. Return only the structured response.
@@ -263,20 +310,36 @@ MODEL_AUTHORED requires production and fallbackReason null. The compiler preserv
 
 def request_payload(source, context):
     diagnosis = diagnose(source, context)
+    wire_diagnosis = deepcopy(diagnosis)
+    # The provider needs the protected facts and fingerprints, while the full
+    # baseline text and repeated event quotations already exist in the exact
+    # source catalog. Keep the wire request bounded without weakening the local
+    # immutable contract used by compilation and validation.
+    wire_contract = wire_diagnosis.get('protectedStoryContract') or {}
+    wire_contract.pop('baselinePromptText', None)
+    for event in wire_contract.get('events', []):
+        event.pop('sourceQuote', None)
+        event.pop('actionAnchor', None)
     payload = {'phase': 'CREATIVE_DIAGNOSIS_RECONSTRUCTION_CRITIQUE', 'contractVersion': VERSION,
-            'creativeDiagnosis': diagnosis, 'maxCandidates': 2, 'maxRevisionsPerCandidate': 1,
+            'creativeDiagnosis': wire_diagnosis, 'maxCandidates': 2, 'maxRevisionsPerCandidate': 1,
             'revisionBudget': 'WITHIN_THIS_SINGLE_RESPONSE_ONLY', 'visualEvidence': 'NOT_SUPPLIED',
             'audienceEvidence': 'NOT_SUPPLIED'}
     if authored_context(context):
         refs=reference_catalog(source,context,diagnosis,enrich=corrected_context(context))
-        payload.update(instructionsVersion=context['optimizationGenerationInstructionsVersion'],sourceReferenceCatalog=refs)
+        # `evidence` and `semanticVerification` are constant catalog provenance
+        # labels. Keep exact quote/span/kind/identity on the wire and avoid
+        # repeating constants for every reference.
+        wire_refs={key:{k:v for k,v in value.items() if k not in {'evidence','semanticVerification'}}
+                   for key,value in refs.items()}
+        payload.update(instructionsVersion=context['optimizationGenerationInstructionsVersion'],sourceReferenceCatalog=wire_refs)
         if corrected_context(context):
             # Diagnose the opportunity, not a prepared choreography to copy.
-            for opportunity in diagnosis['opportunities']:
-                for key in ('proposedImprovement','expectedVisualChange','viewingRationale'):opportunity.pop(key,None)
-                opportunity['sourceEvidence'].pop('quote',None)
-                opportunity['sourceEvidence']['quoteField']='currentExecution'
-            payload.update(authoringContract=authoring_reference_contract(refs,diagnosis),preferredCandidateCount=1)
+            for opportunity_set in (diagnosis['opportunities'], wire_diagnosis['opportunities']):
+                for opportunity in opportunity_set:
+                    for key in ('proposedImprovement','expectedVisualChange','viewingRationale'):opportunity.pop(key,None)
+                    opportunity['sourceEvidence'].pop('quote',None)
+                    opportunity['sourceEvidence']['quoteField']='currentExecution'
+            payload.update(authoringContract=authoring_reference_contract(wire_refs,diagnosis),preferredCandidateCount=1)
     if context.get("adaptiveVersion") == "adaptive-creative-optimization-v3" and context.get("escalationBrief"):
         payload["escalationEvidence"] = context["escalationBrief"]
     if context.get('adaptiveVersion') == 'adaptive-creative-optimization-v3' and context.get('baselineCanonicalEvaluation'):
@@ -455,9 +518,15 @@ def validate_compiled_source(source, candidate, context):
         raise ValueError('Source-plan target duration changed')
     if any(a['endTime'] != b['startTime'] for a,b in zip(after,after[1:])):
         raise ValueError('Source-plan timeline is discontinuous')
-    for key,label in [('generator','Target generator'),('contentProfile','Content profile')]:
-        if not re.search(re.escape(label)+r':\s*'+re.escape(str(target[key]))+r'\b',candidate['prompt'],re.I):
-            raise ValueError('Source-plan target setting changed: '+key)
+    if not re.search(r'Target generator:\s*'+re.escape(str(target['generator']))+r'\b',candidate['prompt'],re.I):
+        # Legacy compact settings represent the generator without a label.
+        if not re.search(r'(?<![A-Za-z0-9_])'+re.escape(str(target['generator']))+r'(?![A-Za-z0-9_])',candidate['prompt'],re.I):
+            raise ValueError('Source-plan target setting changed: generator')
+    from .optimization_profile_contract import canonical_profile
+    try:effective_profile=canonical_profile(candidate.get('targetContentProfile'))
+    except ValueError:effective_profile='UNKNOWN'
+    if effective_profile!=canonical_profile(target['contentProfile']):
+        raise ValueError('Source-plan target setting changed: contentProfile')
     ratio = target.get('settings',{}).get('aspectRatio')
     if ratio and set(re.findall(r'\b(?:9:16|16:9|1:1)\b',candidate['prompt'])) != {ratio}:
         raise ValueError('Source-plan target aspect ratio changed')

@@ -178,11 +178,15 @@ def test_different_provider_authored_decisions_are_preserved_not_replaced_by_tem
     assert a['creativeAssessment']['provenBetter']==b['creativeAssessment']['provenBetter']==False
 
 
-def test_historical_real_response_recompiles_byte_for_byte_without_new_authorship_claims():
+def test_historical_real_response_recompiles_without_the_old_profile_injection():
     path=Path(__file__).parents[3]/'output/verification/creative-optimization-v2-real-provider-acceptance-2026-10-15/saved-real-provider-role.json'
     saved=json.loads(path.read_text());request=saved['sourceRequest']
     compiled=compile_reconstruction(request['text'],request['context'],saved['rawProviderResult']['proposals'][0]['initial'])
-    assert compiled['prompt']==saved['result']['candidates'][0]['prompt']
+    assert compiled['prompt']!=saved['result']['candidates'][0]['prompt']
+    assert compiled['prompt'].endswith('Content profile: AUTO.')
+    assert not compiled['prompt'].endswith('Content profile: ABSURD_PHYSICS.')
+    assert compiled['targetContentProfile']=='ABSURD_PHYSICS'
+    assert compiled['profileValidation']['status']=='HISTORICAL_PROFILE_REPRESENTATION_PRESERVED'
     assert 'productionProvenance' not in compiled
 
 

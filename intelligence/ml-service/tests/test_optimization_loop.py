@@ -87,6 +87,9 @@ def test_generation_preview_is_same_context_for_both_models_and_never_dispatches
     assert previews[0]['userPayloadSha256']==previews[1]['userPayloadSha256']
     assert previews[0]['responseSchemaSha256']==previews[1]['responseSchemaSha256']
     assert all(not p['providerDispatched'] for p in previews)
+    assert all(p['transportOrigin']=='REAL_PROVIDER_ADAPTER' for p in previews)
+    assert all(p['providerAdapter']=='CreativeCapabilityProvider' for p in previews)
+    assert all(p['fixtureFallbackAllowed'] is False for p in previews)
     assert Transport.calls==0
 
 
@@ -129,6 +132,8 @@ def test_timeout_retains_safe_details_unknown_cost_and_no_retry():
     assert Transport.calls==1 and r['executionStatus']=='FAILED_OR_AMBIGUOUS'
     assert r['costUsd'] is None and r['failure']['exceptionCategory']=='TimeoutError'
     assert not r['failure']['retrySafe'] and not r['failure']['responseReceived']
+    assert r['providerOutcome']=='DISPATCH_AMBIGUOUS' and r['billingStatus']=='UNKNOWN'
+    assert r['processingOutcome']=='PROVIDER_TRANSPORT_FAILED'
     assert 'private payload' not in json.dumps(r)
 
 
@@ -138,6 +143,8 @@ def test_source_bound_story_violation_never_compiles():
     r=loop.execute_request(data(),Changed)
     assert not r['result']['candidates']
     assert r['result']['rejectedProposals'][0]['classification']=='STORY_CHANGE_REQUIRES_APPROVAL'
+    assert r['providerOutcome']=='RESPONSE_RECEIVED' and r['billingStatus']=='KNOWN_INCURRED'
+    assert r['processingOutcome']=='PLAN_REJECTED_STORY_CHANGE_REQUIRES_APPROVAL'
 
 
 def test_unknown_source_cannot_become_best_and_diagnostic_not_render():

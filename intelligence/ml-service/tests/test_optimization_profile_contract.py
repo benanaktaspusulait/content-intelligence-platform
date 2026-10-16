@@ -33,8 +33,8 @@ def test_authoritative_target_does_not_mutate_baseline(historical):
     assert all(c['sourcePlan']['contentProfile']=='ABSURD_PHYSICS' for c in result['result']['candidates'])
     assert all(c['executionDistinctness']['approvedStorySemanticFidelity']=='UNKNOWN' for c in result['result']['candidates'])
 
-@pytest.mark.parametrize('echo',['AUTO','absurd physics','ABSURD-PHYSICS'])
-def test_metadata_mapping_retains_raw_echo_without_false_semantic_approval(echo):
+@pytest.mark.parametrize('echo',['absurd physics','ABSURD-PHYSICS'])
+def test_matching_metadata_retains_raw_echo_without_false_semantic_approval(echo):
     source,ctx,values=valid_optimization_fixture()
     for c in values:
         c['prompt']=c['prompt'].replace('Content profile: ABSURD_PHYSICS','Content profile: '+echo)
@@ -45,7 +45,14 @@ def test_metadata_mapping_retains_raw_echo_without_false_semantic_approval(echo)
         assert c['sourcePlan']['contentProfile']=='ABSURD_PHYSICS'
         assert c['profileValidation']['rawProviderPrompt']==raw[0 if c['candidateId']=='candidate-a' else 1]['prompt']
         assert c['profileValidation']['semanticFidelity']=='UNKNOWN'
-        assert c['profileValidation']['status']==('PROFILE_METADATA_MISMATCH' if echo=='AUTO' else 'PROFILE_ALIGNED')
+        assert c['profileValidation']['status']=='PROFILE_ALIGNED'
+
+
+def test_conflicting_profile_metadata_is_rejected_instead_of_rewritten():
+    source,ctx,values=valid_optimization_fixture()
+    source=source.replace('Content profile: AUTO','Content profile: ABSURD_PHYSICS')
+    for c in values:c['prompt']=c['prompt'].replace('Content profile: ABSURD_PHYSICS','Content profile: AUTO')
+    with pytest.raises(ProfileContractError,match='MATERIAL_CREATIVE_PROFILE_CONFLICT'):evaluate(values,source,ctx)
 
 @pytest.mark.parametrize('location',['prompt','plan-directive','plan-instructions'])
 @pytest.mark.parametrize('wrong_profile',['AUTO','EDUCATIONAL'])
@@ -68,23 +75,45 @@ def test_metadata_mapping_does_not_make_duplicates_valid(bad):
 def test_real_c7_response_profile_is_mapped_but_invalid_source_coverage_remains_rejected():
     p=FIXTURE['attempt']['payload'];request=p['sourceRequest'];raw=p['attemptDiagnostics']['providerResultForRecovery']
     provider=SavedProvider(raw['candidates'])
-    with pytest.raises(ValueError,match='beat 1 narrative/staging/consequence'):
+    with pytest.raises(ValueError,match='source-plan .* coverage differs'):
         perform_role('PROMPT_OPTIMIZATION',request['text'],request['context'],provider,'saved-response')
     assert provider.last_role_result==raw
-    mapped=deepcopy(raw['candidates']);normalize_candidate_profiles(request['text'],mapped,request['context'])
-    assert all(c['profileValidation']['status']=='PROFILE_METADATA_MISMATCH' for c in mapped)
-    assert all(c['sourcePlan']['contentProfile']=='ABSURD_PHYSICS' for c in mapped)
+    mapped=deepcopy(raw['candidates'])
+    normalize_candidate_profiles(request['text'],mapped,request['context'])
+    assert all(c['profileValidation']['status']=='HISTORICAL_PROFILE_REPRESENTATION_PRESERVED' for c in mapped)
     isolated=deepcopy(raw['candidates'])
-    isolated[0]['prompt']=request['text'].replace('[close-up on','[extreme close-up on',1)
+    for candidate in isolated:
+        candidate['prompt']=candidate['prompt'].replace('Content profile: AUTO','Content profile: ABSURD_PHYSICS')
+        if candidate.get('sourcePlan') is not None:candidate['sourcePlan']['contentProfile']='ABSURD_PHYSICS'
+    isolated[0]['prompt']=request['text'].replace('Content profile: AUTO','Content profile: ABSURD_PHYSICS').replace('[close-up on','[extreme close-up on',1)
     with pytest.raises(ValueError,match='candidate-b: source-plan event coverage differs'):
         perform_role('PROMPT_OPTIMIZATION',request['text'],request['context'],SavedProvider(isolated),'mock-isolation')
 
 
 def test_actual_local_recovery_api_cannot_create_provider_or_dispatch():
     source,ctx,values=valid_optimization_fixture()
-    for c in values:c['prompt']=c['prompt'].replace('Content profile: ABSURD_PHYSICS','Content profile: AUTO')
     with patch('app.workflow.creative_roles.OpenAIProvider',side_effect=AssertionError('Paid provider forbidden')):
         response=TestClient(app).post('/api/v1/workflow/optimization-recovery',json={'text':source,'context':ctx,'providerResult':{'candidates':values},'diagnostics':{'model':'saved-model'}})
     assert response.status_code==200,response.text
     assert response.json()['calls']==0
     assert len(response.json()['result']['candidates'])==2
+
+
+def test_legacy_unlabelled_profile_is_idempotent_and_preserves_every_prompt_byte():
+    source,ctx,_=valid_optimization_fixture()
+    source=source.replace('Content profile: AUTO.','ABSURD_PHYSICS.')
+    candidate={'candidateId':'candidate-a','prompt':source}
+    normalize_candidate_profiles(source,[candidate],ctx);once=deepcopy(candidate)
+    normalize_candidate_profiles(source,[candidate],ctx)
+    assert candidate['prompt']==source and candidate['prompt']==once['prompt']
+    assert candidate['profileValidation']['status']=='PROFILE_ALIGNED'
+
+
+def test_missing_profile_is_derived_out_of_band_without_protected_text_injection():
+    source,ctx,_=valid_optimization_fixture()
+    source=source.replace('Content profile: AUTO.','')
+    candidate={'candidateId':'candidate-a','prompt':source}
+    normalize_candidate_profiles(source,[candidate],ctx)
+    assert candidate['prompt']==source
+    assert candidate['targetContentProfile']=='ABSURD_PHYSICS'
+    assert candidate['profileValidation']['status']=='PROFILE_DERIVED_WITHOUT_PROMPT_MUTATION'

@@ -110,6 +110,11 @@ def test_machine_readable_ids_are_in_wire_schema_and_per_beat_relationship_contr
     assert payload['preferredCandidateCount']==1 and payload['maxCandidates']==2
     assert len(json.dumps(payload,ensure_ascii=False).encode())<=24000
     assert all('proposedImprovement' not in op for op in payload['creativeDiagnosis']['opportunities'])
+    inventory={row['problemClass']:row for row in payload['creativeDiagnosis']['creativePriorityAudit']['inventory']}
+    assert inventory['FRAME_ZERO_PRESENTATION']['sourcePermittedActionable'] in {True,False}
+    assert inventory['VIEWER_VISIBLE_CAUSAL_VARIETY']['sourcePermittedActionable']
+    assert inventory['TEMPORAL_LOAD_REDUCTION']['disposition']=='OWNER_APPROVED_STORY_REVISION_REQUIRED'
+    assert payload['creativeDiagnosis']['opportunities'][0]['priorityScore'] >= payload['creativeDiagnosis']['opportunities'][1]['priorityScore']
 
 
 @pytest.mark.parametrize('kind',['wrong-kind','wrong-beat','name-alias','same-mention'])

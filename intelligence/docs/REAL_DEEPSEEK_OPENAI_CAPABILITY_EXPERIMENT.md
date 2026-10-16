@@ -1,134 +1,347 @@
 EXPERIMENT: REAL_MODEL_A_CAPABILITY_RESEARCH_V1
 OWNER_AUTHORIZATION: YES
-MAX_AUTHORIZED_USD: 0.674925
-MAX_AUTHORIZED_REQUESTS: 6
+AUTHORIZED_MANIFEST_REUSED: YES
+SCOPE_FINGERPRINTS_MATCHED: YES
 
-REAL_DEEPSEEK_GENERATION: NO
-REAL_OPENAI_GENERATION: NO
+REAL_DEEPSEEK_GENERATION: YES
+REAL_OPENAI_GENERATION: YES
+REAL_OPENAI_REVIEWS: NO — no accepted DeepSeek candidate existed
+REAL_DEEPSEEK_REVIEWS: NO — no accepted OpenAI candidate existed
 
-REAL_PROVIDER_REQUESTS_ATTEMPTED: 0
-REAL_PROVIDER_REQUESTS_COMPLETED: 0
-
-ACTUAL_PROVIDER_SPEND_USD: 0.000000
+REAL_PROVIDER_REQUESTS_ATTEMPTED: 2
+REAL_PROVIDER_RESPONSES_RECEIVED: 2
+ACCEPTED_CANDIDATES: 0
+ACTUAL_PROVIDER_SPEND_USD: 0.05801854
+MAX_AUTHORIZED_USD: 0.675625
 UNRESOLVED_BILLING: NO
+AUTOMATIC_RETRIES: 0
+FALLBACKS_OR_MODEL_SUBSTITUTIONS: 0
 
-SCOPE_FINGERPRINTS_MATCHED: NO
-REVIEWER_INDEPENDENCE: FAILED
+DEEPSEEK_CANONICAL_SCORE: NOT_EVALUATED
+DEEPSEEK_CANONICAL_GRADE: NOT_EVALUATED
+DEEPSEEK_CREATIVE_VALIDITY: STORY_FIDELITY_FAILED
 
-DEEPSEEK_CANONICAL_SCORE: NOT_AVAILABLE
-DEEPSEEK_CANONICAL_GRADE: NOT_AVAILABLE
-DEEPSEEK_CREATIVE_VALIDITY: NOT_AVAILABLE
+OPENAI_CANONICAL_SCORE: NOT_EVALUATED
+OPENAI_CANONICAL_GRADE: NOT_EVALUATED
+OPENAI_CREATIVE_VALIDITY: COMPILER_CONTRACT_FAILURE
 
-OPENAI_CANONICAL_SCORE: NOT_AVAILABLE
-OPENAI_CANONICAL_GRADE: NOT_AVAILABLE
-OPENAI_CREATIVE_VALIDITY: NOT_AVAILABLE
-
-REAL_PROVIDER_A_VERIFIED: NO
-FULL_CANONICAL_A_ADMITTED: NO
-
+BASELINE_CANONICAL_SCORE: 93.42708333333334
+BASELINE_CANONICAL_GRADE: A
+BASELINE_CREATIVE_VALIDITY: CREATIVE_RISK_DETECTED / PROVISIONAL
+FINAL_CANONICAL_A_ADMITTED: NO
 OFFICIAL_CREATIVE_A_PLUS: INACTIVE
 
-PROMPT_APPROVALS: 0
-IMAGE_GENERATIONS: 0
-VIDEO_RENDERS: 0
-PUBLICATIONS: 0
-PRODUCTION_DATABASE_WRITES: 0
+EXPERIMENT_STATUS: EXECUTED_STOPPED_NO_ACCEPTED_CANDIDATE
+CAPABILITY_COMPARISON: INCONCLUSIVE
 
-EXPERIMENT_STATUS: BLOCKED
+# Real DeepSeek vs OpenAI capability experiment
 
-# Dispatch decision
+## Scope and safety result
 
-The explicit owner authorization was accepted as the only authorization for the exact two-run plan. The mandatory non-billable preflight stopped the experiment before reservation or dispatch because the authorized immutable scope cannot be rebound in the current live environment.
+The exact prepared disposable snapshot and its existing manifest were reused. Before dispatch, the worker matched all five authorized fingerprints:
 
-The authorization requires this exact prompt fingerprint:
+| Binding | Authorized and executed SHA-256 |
+|---|---|
+| Source scope | `962dd2d754dfed207f8f5d5fdee7fdf48fded3b34d08fe7f848a1649614ac613` |
+| Instruction context | `a16599a2f0a0be747185490dd15d7eced8e1d08c6cf0c091f512a0fca06a1a67` |
+| Approved story | `ba352d486c4252c5c6fefe585ad976c0b6f73c299f7554863848bdd842a99b3d` |
+| Baseline prompt | `1a9a8cfc7e4c6e0a037ba3642a10c11c81d41ce8b574aa3c79cbaee7ce1215f5` |
+| Production settings | `e6aedfab391d7ee0a7e753b3dc8f4e8d57c31d8b2ada4b9f8b130b95b2689937` |
 
-```text
-1a9a8cfc7e4c6e0a037ba3642a10c11c81d41ce8b574aa3c79cbaee7ce1215f5
+The network policy allowed only `api.deepseek.com` and `api.openai.com`; it recorded no blocked attempt and exposed no fixture fallback. All database writes were confined to the restored disposable PostgreSQL snapshot. No production database write, global configuration change, deployment, prompt approval, story evolution, image generation, video render, publication, commit or push occurred.
+
+The baseline remained Ruleset 1.11 `93.42708333333334/A`, but its creative result remains provisional: frame-zero evidence, visual silhouette evidence and real render behavior are unresolved. That baseline score is not attributed to either provider.
+
+## Execution accounting
+
+| Run | Durable request | Provider/model | Ledger state | Prompt | Completion | Total | Verified cost | Result |
+|---|---|---|---|---:|---:|---:|---:|---|
+| A | `6fc1bcbd-1425-4440-9569-7a2ee34ba39e` | DeepSeek / `deepseek-v4-pro` | `COMPLETED` | 13548 | 608 | 14156 | USD 0.02029104 | Response accepted by transport; plan rejected by source-fidelity validator |
+| B | `21dddc65-7a77-48b0-9bff-33bbd55d8766` | OpenAI / `gpt-6.1-sol` | `FAILED_OR_AMBIGUOUS` | 12399 | 673 | 13072 | USD 0.0377275 | Response received and billed; deterministic compilation failed locally |
+
+Run A reserved USD `0.088727` and stopped after one request with `ROUND_LIMIT`. Run B reserved USD `0.178043` and stopped after one request with `UNCERTAIN_PROVIDER_DISPATCH_OR_CONTRACT`. Total reservation was USD `0.2667700000`; verified incurred cost was USD `0.05801854`, 8.59% of the USD `0.675625` experiment ceiling. Both provider responses reported `finishReason=stop`, the configured model identities, complete usage accounting, and fewer than 4,000 completion tokens.
+
+The OpenAI request's `FAILED_OR_AMBIGUOUS` ledger state concerns end-to-end request completion, not billing. The provider returned a response and complete token usage, so the recorded USD `0.0377275` is treated as incurred. The no-retry policy was honored.
+
+## Run A — actual DeepSeek result
+
+DeepSeek independently chose the diagnosed `SEPARATE_ACTION_RESULT:beat_02` opportunity and proposed a locked lateral hand-separation treatment. The deterministic materiality check found new physical features (`apart`, `gap`, `left`, `right`) and classified the textual change as material but visually unverified.
+
+The proposal was rejected before prompt compilation:
+
+- Classification: `STORY_FIDELITY_FAILED`
+- Exact reason: `STORY_FIDELITY_FAILED: BOUND_PARTICIPANTS_NOT_ADDRESSED`
+- Exact field: `spatialRelationships.1`
+- Source grounding: `SOURCE_REFERENCES_BOUND`
+- Semantic story fidelity: `UNKNOWN`
+- Visual benefit: `UNKNOWN`
+- Audience benefit: `UNMEASURED`
+
+The second spatial relationship bound `beat_02.entity.0` and `beat_02.hand`, but its instruction described “the two notes” and left/right hands instead of addressing the exact bound subject/object pair. The validator correctly refused to turn this into a source-faithful prompt. No OpenAI source-fidelity or creative-critic request was therefore eligible.
+
+### Complete DeepSeek structured model response
+
+```json
+{
+  "proposals": [
+    {
+      "initial": {
+        "candidateId": "candidate-a",
+        "title": "Staged hand separation for beat 2",
+        "objective": "The baseline beat 2 presents the action and result in the same center-frame cluster, making it hard to distinguish the single-note peel from the two-note split.",
+        "interventions": [
+          {
+            "opportunityId": "SEPARATE_ACTION_RESULT:beat_02",
+            "operation": "SEPARATE_ACTION_RESULT",
+            "layout": "LATERAL",
+            "camera": "LOCKED",
+            "rationale": "The source beat already has two distinct hand positions. I propose staging the free hand slightly to the left as it reaches for the note on the right fingertip. When the note splits, the two resulting notes occupy clearly separated left and right hand zones, making the one-to-two transition visually distinct instead of a cluttered center motion.",
+            "authorship": "MODEL_AUTHORED",
+            "production": {
+              "spatialRelationships": [
+                {
+                  "subjectRef": "beat_02.hand",
+                  "relation": "LEFT_OF",
+                  "objectRef": "beat_02.entity.0",
+                  "instruction": "Position the free hand slightly left of the note-bearing hand at the start of the peel so the two hands are laterally separated before the split."
+                },
+                {
+                  "subjectRef": "beat_02.entity.0",
+                  "relation": "RIGHT_OF",
+                  "objectRef": "beat_02.hand",
+                  "instruction": "Once the split completes, the two notes settle on laterally separated hands, one left and one right, so the doubling is clearly readable."
+                }
+              ],
+              "choreography": {
+                "sourceActionRef": "beat_02.action",
+                "instruction": "Pip reaches the free hand from the left toward the note stuck on the right fingertip. The peel motion happens across a visible lateral gap between the hands; when the note splits, one note remains on the right hand and the other transfers to the left, with both hands spread apart at the end of the beat.",
+                "sourceConsequenceRef": "beat_02.consequence",
+                "consequencePresentation": "Show one note on the right hand and one note on the left hand with a clear gap between them, emphasizing that one note has become two."
+              },
+              "stateProgression": [],
+              "temporalPresentation": null,
+              "cameraComposition": null,
+              "generatorConstraints": []
+            },
+            "fallbackReason": null,
+            "dependsOnBeatIds": [],
+            "dependencyJustification": null
+          }
+        ],
+        "storyChangeRequested": false
+      },
+      "revision": null
+    }
+  ],
+  "noImprovementReason": null
+}
 ```
 
-The live production `prompt_versions` table contains only Content 10 / Prompt 10 version 1 with:
+### DeepSeek candidate text
+
+No complete DeepSeek candidate prompt exists. The server rejected the model-authored plan before compilation, so presenting a reconstructed prompt here would fabricate an experimental output.
+
+## Run B — actual OpenAI result
+
+OpenAI independently selected the same beat-2 separation opportunity. Its plan specified a below-face contact location, lateral non-occluding hand paths, a continuous gap-opening split, consequence spacing, locked medium composition, oblique contact plane and a hand-identity continuity constraint.
+
+The provider response was valid structured JSON and passed the plan-level schema/critique path. The server then assembled an offline prompt candidate and normalized its profile. Final source validation raised:
 
 ```text
-0fe229774deb4b31a42145bad91cf10c91634ba00da39fa3e9d288b3a2e7bd98
+ValueError: Story fidelity/protected identity, physical rule, ending or production settings changed
 ```
 
-No live immutable prompt version matches the authorized P2 prompt SHA. No live workflow event matches the authorized P2 story or prompt SHA. The UUIDs recorded in the P3 readiness report belong to the prior disposable acceptance database and were deliberately not reused.
+An offline replay of the exact saved raw response, with no provider call, reproduced the exception. The exact conflict was:
 
-This is a material scope mismatch. The authorization explicitly says to stop if any material fingerprint changes and forbids silently selecting a replacement prompt. The original Mimi Prompt 10 therefore cannot substitute for the authorized P2 baseline.
+1. The baseline already ended with `ABSURD_PHYSICS. SEEDANCE_2_0_MINI. 15 seconds. image2video. 480p. 9:16.`
+2. `normalize_candidate_profiles` appended `Content profile: ABSURD_PHYSICS.`
+3. `validate_compiled_source` requires text outside timed beats to be byte-semantically unchanged.
+4. The appended profile line therefore caused the protected-outside-text comparison to fail.
 
-# Other pre-dispatch blockers
+This is a deterministic compiler/validator contract conflict, not a provider transport, JSON, token-limit or billing failure. The generated plan cannot be counted as an accepted candidate, and the authorization did not include a code fix or a second call. DeepSeek source-fidelity and creative-critic requests were therefore not executed.
 
-The current running containers report:
+### Complete OpenAI structured model response
 
-- backend `CPQ_PILOT_REAL_ENABLED=false`;
-- ML service `CPQ_PILOT_REAL_ENABLED=false`;
-- ML role dispatch is enabled internally, and both provider credentials are configured without exposing their values;
-- backend provider dispatch remains governed off, so the official owner-scoped optimization endpoint must reject a run before creating a ledger record.
+```json
+{
+  "proposals": [
+    {
+      "initial": {
+        "candidateId": "candidate-a",
+        "title": "Lateral peel with diverging hand paths",
+        "objective": "Address beat_02's unspecified screen positions: overlapping hands could conceal whether the single note splits or merely changes hands.",
+        "interventions": [
+          {
+            "opportunityId": "SEPARATE_ACTION_RESULT:beat_02",
+            "operation": "SEPARATE_ACTION_RESULT",
+            "layout": "LATERAL",
+            "camera": "LOCKED",
+            "rationale": "The source specifies peeling and one note on each hand but leaves their paths unspecified. Place the existing contact below Pip's face, then execute the peel across the image rather than toward the lens: the originally occupied hand stays on one side while the free hand draws away to the other. The observable difference is a central contact becoming two laterally separated attachment sites through one continuous movement, rather than a result hidden behind overlapping hands. Self-critique: this changes physical choreography without adding an attempt, count state or cross-beat requirement; it leaves the AUTO opening unchanged. Improved legibility is an unverified hypothesis. Thin-note contact",
+            "authorship": "MODEL_AUTHORED",
+            "production": {
+              "spatialRelationships": [
+                {
+                  "subjectRef": "beat_02.hand",
+                  "relation": "BELOW",
+                  "objectRef": "beat_02.actor",
+                  "instruction": "Keep the free hand's peeling contact below Pip's head, in the open space in front of the upper torso rather than across the face."
+                }
+              ],
+              "choreography": {
+                "sourceActionRef": "beat_02.action",
+                "instruction": "Bring the free hand to the exposed outer edge of the attached note with the fingertips approaching from the side, not over its visible surface. Execute the existing peel as a lateral draw across the image: keep the originally occupied hand on its starting side while the peeling hand travels toward the opposite side, with neither wrist crossing the other hand's silhouette. Let this same peel movement open a gap between the hands as the split occurs; do not add another tug or regrip.",
+                "sourceConsequenceRef": "beat_02.consequence",
+                "consequencePresentation": "Carry the two resulting attachments apart along those diverging hand positions, leaving open background between their silhouettes rather than stacking one note behind the other."
+              },
+              "stateProgression": [],
+              "temporalPresentation": null,
+              "cameraComposition": "Use a locked medium composition containing both lateral hand endpoints and Pip's face; view the peel plane obliquely enough that the note surface is not edge-on.",
+              "generatorConstraints": [
+                "Maintain the original hand-to-note attachment throughout the peel; reveal the second attachment through the same continuous separation, without hand identity swaps or an occluding cut."
+              ]
+            },
+            "fallbackReason": null,
+            "dependsOnBeatIds": [],
+            "dependencyJustification": null
+          }
+        ],
+        "storyChangeRequested": false
+      },
+      "revision": null
+    }
+  ],
+  "noImprovementReason": null
+}
+```
 
-Enabling the backend flag would require a configuration/deployment change. This authorization explicitly forbids deployment and does not permit a global unrelated inference enablement.
+### Complete offline compiler preview — rejected, never accepted as a candidate
 
-Creating the missing story, prompt version, REVIEW analysis and owner-scoped durable optimization grant in the live database would require production database writes. Those writes are explicitly not authorized. The existing disposable HTTP fixture harness cannot be used as a substitute for this experiment: it supplies deterministic fixture provider responses and denies external egress, while the authorization requires genuine provider adapters for all generation and review calls.
+This text is included for diagnosis because the server assembled it from the actual response before final validation. It is not a persisted candidate, did not receive independent review, and has no canonical score.
 
-# Preflight evidence
+```text
+TITLE / FORMAT
+Pip sticky-note strategy escalation / 15 seconds
 
-| Check | Result | Evidence |
-|---|---|---|
-| Owner authorization | PASS | Exact experiment name, request count, cost, output and timeout caps supplied |
-| Expected story SHA | NOT REBOUND | Prior P2 story exists only in disposable evidence; no matching live workflow event |
-| Expected prompt SHA | FAIL | Expected `1a9a…`; live Content 10 / Prompt 10 is `0fe229…` |
-| Production settings SHA | NOT EVALUATED | Prompt mismatch already requires STOP |
-| Source scope SHA | NOT EVALUATED | Exact live story/prompt records do not exist |
-| Generation instruction SHA | PREVIOUSLY VERIFIED | `91561d…` in P3 readiness; no new request was compiled against a valid live scope |
-| Provider profiles | CONFIGURED IN ML | DeepSeek and OpenAI credential presence verified without revealing secrets |
-| Backend real dispatch | FAIL | `CPQ_PILOT_REAL_ENABLED=false` |
-| Durable run ledger | EMPTY | `optimization_runs=0` |
-| Durable request ledger | EMPTY | `optimization_run_requests=0` |
-| Reviewer independence | NOT EXECUTED | No candidate or reviewer request was dispatched |
-| Billing/accounting | COMPLETE AT ZERO | No reservation, attempt, response or ambiguous liability |
+VISUAL STYLE
+Bright playful animation with readable silhouettes.
 
-# Provider responses and candidate prompts
+CHARACTER / CONTINUITY
+Pip is the same anthropomorphic rabbit throughout; no verified appearance reference is claimed.
 
-No provider request was attempted. There is no DeepSeek or OpenAI response, candidate prompt, source-fidelity review, creative review or model usage to reproduce. Pre-authored fixture responses were not substituted.
+TIMED SHOT PLAN
+0-2s: Already mid-action, Pip the rabbit tries to place one sticky note on the toy cabinet's empty front panel, but it clings to Pip's fingertip while the cabinet stays untouched. [locked medium shot; keep Pip, hands, notes and cabinet causally readable] -> The note attaches to Pip rather than the cabinet.
+2-5s: Pip tries to peel the note away with the free hand, but it splits into two notes, one on each hand.  -> One note becomes two. [Keep the free hand's peeling contact below Pip's head, in the open space in front of the upper torso rather than across the face. Bring the free hand to the exposed outer edge of the attached note with the fingertips approaching from the side, not over its visible surface. Execute the existing peel as a lateral draw across the image: keep the originally occupied hand on its starting side while the peeling hand travels toward the opposite side, with neither wrist crossing the other hand's silhouette. Let this same peel movement open a gap between the hands as the split occurs; do not add another tug or regrip. Carry the two resulting attachments apart along those diverging hand positions, leaving open background between their silhouettes rather than stacking one note behind the other. Use a locked medium composition containing both lateral hand endpoints and Pip's face; view the peel plane obliquely enough that the note surface is not edge-on. Maintain the original hand-to-note attachment throughout the peel; reveal the second attachment through the same continuous separation, without hand identity swaps or an occluding cut.]
+5-8s: Pip tries to press both notes onto the cabinet, but they spring back and double into four notes. [wide shot; keep Pip, hands, notes and cabinet causally readable] -> Two notes become four.
+8-11s: Pip tries to push the four notes off against the cabinet door edge, but they split into eight and cover Pip's arms and face. [wide shot; keep Pip, hands, notes and cabinet causally readable] -> Four notes become eight and cover Pip.
+11-15s: Pip sees the four-to-eight change finish, realizes that every removal or transfer attempt multiplies the notes, deliberately stops struggling, and turns the still note-covered face toward the mirror. Pip remains covered until a sneeze scatters the notes onto the cabinet. Pip is relieved, but the cabinet remains messy. [medium close-up; keep Pip, hands, notes and cabinet causally readable] -> Pip stops struggling, then the sneeze moves the notes to the cabinet.
 
-# Canonical and creative evaluation
+AUDIO
+Playful music, peel, spring, gasp and sneeze effects; no dialogue.
 
-No candidate was generated, so Ruleset 1.11 and `creative-validity-v1` were not run on a real-provider candidate. The P2 fixture baseline remains `93.42708333333334/A` with `CREATIVE_RISK_DETECTED`; it remains fixture evidence and is not reported as a real-model result.
+NEGATIVE CONSTRAINTS
+No extra characters, unrelated props, invented attempts, identity changes or visual-evidence claims.
 
-No UNKNOWN was converted to PASS. Missing first-frame and audience evidence remain unresolved. Official A+ remains inactive.
+FINAL CUT
+End with Pip relieved beside the messy cabinet.
 
-# Cost and safety accounting
+PRODUCTION SETTINGS
+ABSURD_PHYSICS. SEEDANCE_2_0_MINI. 15 seconds. image2video. 480p. 9:16.
+Content profile: ABSURD_PHYSICS.
+```
 
-| Metric | Actual |
-|---|---:|
-| Authorized maximum | USD 0.674925 |
-| Reserved | USD 0.000000 |
-| Verified incurred cost | USD 0.000000 |
-| Attempted requests | 0 |
-| Completed requests | 0 |
-| Ambiguous requests | 0 |
-| Remaining authorized requests consumed | 0 |
+## Exact immutable baseline prompt
 
-The unused authorization was not extended or applied to another scope. No connectivity probe, fallback, retry, model substitution, image generation, rendering or publication occurred.
+```text
+TITLE / FORMAT
+Pip sticky-note strategy escalation / 15 seconds
 
-# Root-cause finding
+VISUAL STYLE
+Bright playful animation with readable silhouettes.
 
-Observed fact: the P3 comparison was prepared and verified against a disposable P2 acceptance record. Its portable hashes were recorded correctly, but the exact evolved story, generated prompt version and Ruleset analysis were never persisted in the current live production database.
+CHARACTER / CONTINUITY
+Pip is the same anthropomorphic rabbit throughout; no verified appearance reference is claimed.
 
-Observed fact: the current live Content 10 record is the immutable original Prompt 10, whose prompt hash differs from the authorization.
+TIMED SHOT PLAN
+0-2s: Already mid-action, Pip the rabbit tries to place one sticky note on the toy cabinet's empty front panel, but it clings to Pip's fingertip while the cabinet stays untouched. [locked medium shot; keep Pip, hands, notes and cabinet causally readable] -> The note attaches to Pip rather than the cabinet.
+2-5s: Pip tries to peel the note away with the free hand, but it splits into two notes, one on each hand. [medium shot; keep Pip, hands, notes and cabinet causally readable] -> One note becomes two.
+5-8s: Pip tries to press both notes onto the cabinet, but they spring back and double into four notes. [wide shot; keep Pip, hands, notes and cabinet causally readable] -> Two notes become four.
+8-11s: Pip tries to push the four notes off against the cabinet door edge, but they split into eight and cover Pip's arms and face. [wide shot; keep Pip, hands, notes and cabinet causally readable] -> Four notes become eight and cover Pip.
+11-15s: Pip sees the four-to-eight change finish, realizes that every removal or transfer attempt multiplies the notes, deliberately stops struggling, and turns the still note-covered face toward the mirror. Pip remains covered until a sneeze scatters the notes onto the cabinet. Pip is relieved, but the cabinet remains messy. [medium close-up; keep Pip, hands, notes and cabinet causally readable] -> Pip stops struggling, then the sneeze moves the notes to the cabinet.
 
-Observed fact: the production backend real-dispatch gate is off.
+AUDIO
+Playful music, peel, spring, gasp and sneeze effects; no dialogue.
 
-Hypothesis not tested: either model's ability to repair the weak hook, repetitive consequences or overloaded ending. No provider inference occurred, so no capability conclusion is possible.
+NEGATIVE CONSTRAINTS
+No extra characters, unrelated props, invented attempts, identity changes or visual-evidence claims.
 
-# Recommendation
+FINAL CUT
+End with Pip relieved beside the messy cabinet.
+
+PRODUCTION SETTINGS
+ABSURD_PHYSICS. SEEDANCE_2_0_MINI. 15 seconds. image2video. 480p. 9:16.
+```
+
+## Independent evaluations
+
+No independent source-fidelity or creative-critic provider review was executed for either run. The workflow requires an accepted compiled candidate before spending on reviews:
+
+| Candidate source | Source-fidelity review | Creative-critic review | Reason |
+|---|---|---|---|
+| DeepSeek | NOT_EXECUTED | NOT_EXECUTED | Model plan failed bound-participant source validation |
+| OpenAI | NOT_EXECUTED | NOT_EXECUTED | Compiler/validator contract failed before a candidate existed |
+
+No fixture review was substituted. Reviewer independence was therefore not established, and the experiment cannot support a model preference.
+
+## Canonical and creative evaluation
+
+Neither run produced a valid complete candidate. Ruleset 1.11 was consequently not run on either provider output. There are no changed rule outcomes, score deltas or defensible candidate grades to report.
+
+| Text | Ruleset 1.11 score | Grade | Creative assessment |
+|---|---:|---|---|
+| Immutable baseline | 93.42708333333334 | A | `CREATIVE_RISK_DETECTED / PROVISIONAL`; final A admission remains false |
+| DeepSeek candidate | NOT_EVALUATED | NOT_EVALUATED | Plan materially different in text, but source-fidelity violation |
+| OpenAI candidate | NOT_EVALUATED | NOT_EVALUATED | No accepted candidate due compiler/validator conflict |
+
+`UNKNOWN` evidence was never converted to `PASS`. Missing first-frame and silhouette evidence, thin-object producibility risk, generator adherence and audience impact remain unresolved.
+
+## Evidence-based comparison
+
+Both models converged on the same available diagnosis rather than proposing broad story changes: make the single-note peel and two-note result visibly separable in beat 2. Both preserved the declared event order and requested no story change at the structured-plan level.
+
+DeepSeek supplied a concise left/right staging concept. Its second spatial instruction did not faithfully address the source-reference participants, so the source validator rejected it. This is direct evidence that the model did not fully satisfy the reference contract in this call.
+
+OpenAI supplied more detailed contact choreography, occlusion control and continuity constraints. The saved response was structurally usable, but the server's own profile-normalization step made the compiled text fail its immutable-outside-text check. The added detail is not proof of superior creative capability because the candidate never cleared compilation, independent source review, canonical evaluation or critic review.
+
+Both plans changed only beat 2. Neither tested whether the model could repair the weak frame-zero specification, repetitive viewer-visible consequences, or overloaded ending. Neither supplied visual or audience evidence. The experiment therefore establishes that both real adapters can produce source-specific structured production plans within budget, while establishing no valid A-grade candidate and no defensible winner.
+
+## Creative weaknesses observed
+
+- **DeepSeek:** exact source-reference participant discipline failed in `spatialRelationships.1`; hand identity and two-note outcome prose exceeded what the bound pair established.
+- **OpenAI:** the plan was detailed but still limited to one beat; its rationale ended abruptly at “Thin-note contact,” even though the provider reported `stop`.
+- **Shared:** both selected the same single opportunity and left the other known creative risks untouched.
+- **Pipeline:** profile normalization and immutable outside-text validation disagree when the baseline contains the profile value but lacks the labeled `Content profile:` line.
+- **Evidence:** no render, independent review, canonical candidate evaluation or audience observation exists.
+
+## Durable evidence
+
+The following files preserve the actual evidence without secrets:
+
+- `real-execution-runtime/experiment-summary.json`
+- `real-execution-runtime/deepseek-raw-structured-decision.json`
+- `real-execution-runtime/openai-raw-structured-decision.json`
+- `real-execution-runtime/openai-offline-failure-reproduction.json`
+- `real-execution-runtime/openai-offline-unaccepted-compiler-preview.txt`
+- `real-execution-runtime/run-a-final.json`
+- `real-execution-runtime/run-b-final.json`
+- `real-execution-runtime/post-experiment.dump`
+- `real-execution-runtime/ml-network-audit.json`
+
+The final database dump is a snapshot of the disposable experiment only. It preserves the two durable request ledger rows and their complete accounting.
+
+## Conclusion
 
 `EXPERIMENT_INCONCLUSIVE`
 
-The experiment did not reach a provider. No model should be preferred, and no instruction, reconstruction or evaluator limitation can be inferred from this blocked attempt.
+The exact bounded experiment was executed and stopped correctly. Two genuine generation calls cost USD `0.05801854`. DeepSeek failed source-reference fidelity; OpenAI returned a plausible model-authored plan but the local compiler/validator contract prevented a valid candidate. No independent reviews or candidate scores exist, so neither provider can be declared capable of producing a defensible canonical-A improvement from this experiment, and neither should be preferred.
 
-To make a future execution legitimate, the owner must separately authorize one coherent environment choice:
-
-1. create/import the exact P2 story, prompt version and Ruleset 1.11 analysis as immutable live records, authorize the required production writes and authorize deployment/configuration that enables only the bounded owner-scoped worker; or
-2. authorize a dedicated disposable real-provider execution environment that recreates the exact bindings, uses the durable ledger, allows provider egress, and still preserves all request/budget/idempotency controls.
-
-Either choice requires a fresh preflight and fresh authorization after the new record IDs and recomputed fingerprints are available. The present authorization cannot be reused automatically.
+No further experiment, retry or provider request was started.

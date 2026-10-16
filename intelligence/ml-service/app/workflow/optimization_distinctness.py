@@ -27,7 +27,7 @@ def _outside(text,beats):
     for b in reversed(beats):
         a,z=b['sourceSpan'];text=text[:a]+text[z:]
     # The saved production target overrides a stale profile label, not story content.
-    return _normalize(re.sub(r'Content profile:\s*[A-Z_]+','Content profile: TARGET',text,flags=re.I))
+    return _normalize(re.sub(r'Content profile:\s*[A-Za-z_ -]+(?=[.\n]|$)','Content profile: TARGET',text,flags=re.I))
 
 def baseline_execution(text):
     return [{'beatId':b['id'],'sourceSpan':b['sourceSpan'],'startTime':b['startTime'],'endTime':b['endTime'],
@@ -93,9 +93,14 @@ def validate_execution_candidates(source,candidates,context,candidate_indices=No
         if index==0 and before[0][0][2:]==signature[0][0][2:]:raise ValueError(f'{identity}: opening framing or camera decision must materially change')
         if index==1 and not any(i in changes for i in range(1,max(2,len(baseline)-1))):raise ValueError(f'{identity}: mid-section pacing or camera decision must materially change')
         if ratio and set(re.findall(r'\b(?:9:16|16:9|1:1)\b',prompt))!={ratio}:raise ValueError(f'{identity}: source-plan aspect ratio conflicts with target')
-        for key,label in [('generator','Target generator'),('contentProfile','Content profile')]:
-            expected=target.get(key)
-            if expected and expected!='UNKNOWN' and not re.search(re.escape(label)+r':\s*'+re.escape(str(expected))+r'\b',prompt,re.I):raise ValueError(f'{identity}: source-plan {key} conflicts with target')
+        expected=target.get('generator')
+        if expected and expected!='UNKNOWN' and not re.search(r'Target generator:\s*'+re.escape(str(expected))+r'\b',prompt,re.I):raise ValueError(f'{identity}: source-plan generator conflicts with target')
+        expected=target.get('contentProfile')
+        if expected and expected!='UNKNOWN':
+            from .optimization_profile_contract import canonical_profile
+            try:effective=canonical_profile(candidate.get('targetContentProfile'))
+            except ValueError:effective='UNKNOWN'
+            if effective!=canonical_profile(expected):raise ValueError(f'{identity}: source-plan contentProfile conflicts with target')
         if _outside(prompt,beats)!=protected:
             raise ValueError(f'{identity}: source-plan protected text outside timed beats differs from baseline; identity, rule and ending coverage requires review')
         for source_beat,group in zip(baseline,groups):

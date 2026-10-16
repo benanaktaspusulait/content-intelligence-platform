@@ -93,8 +93,9 @@ class DisposableOwnerHttpAcceptanceTest {
   static Path credentialFile;
   static String credential;
   static URI ml;
-  static boolean storyMode(){return Set.of("--story-evolution","--story-feasibility").contains(System.getProperty("pompom.acceptance.mode"));}
-  static boolean storyFeasibilityMode(){return "--story-feasibility".equals(System.getProperty("pompom.acceptance.mode"));}
+  static boolean realProviderPreflightMode(){return "--real-provider-preflight".equals(System.getProperty("pompom.acceptance.mode"));}
+  static boolean storyMode(){return Set.of("--story-evolution","--story-feasibility","--real-provider-preflight").contains(System.getProperty("pompom.acceptance.mode"));}
+  static boolean storyFeasibilityMode(){return Set.of("--story-feasibility","--real-provider-preflight").contains(System.getProperty("pompom.acceptance.mode"));}
   static LoopbackOnly networkGuard;
   static SecurityManager previousSecurityManager;
 
@@ -354,6 +355,18 @@ class DisposableOwnerHttpAcceptanceTest {
     evidence.put("httpTrace", trace);
     Path output = Path.of(System.getProperty("pompom.acceptance.output"));
     Files.createDirectories(output.toAbsolutePath().getParent());
+    if(realProviderPreflightMode()){
+      Path ownerSecret=output.toAbsolutePath().getParent().resolve("owner.credential");
+      Files.copy(credentialFile,ownerSecret);Files.setPosixFilePermissions(ownerSecret,PosixFilePermissions.fromString("rw-------"));
+      var dumped=POSTGRES.execInContainer("pg_dump","-U",POSTGRES.getUsername(),"-d","disposable_owner_http","-Fc","-f","/tmp/disposable-real-provider.dump");
+      assertThat(dumped.getExitCode()).as("pg_dump stderr: %s",dumped.getStderr()).isZero();
+      Path snapshot=output.toAbsolutePath().getParent().resolve("disposable-real-provider.dump");
+      POSTGRES.copyFileFromContainer("/tmp/disposable-real-provider.dump",snapshot.toString());
+      Path dataSnapshot=output.toAbsolutePath().getParent().resolve("data-root");
+      try(var paths=Files.walk(temporaryRoot)){for(Path source:paths.toList()){if(source.equals(credentialFile))continue;Path target=dataSnapshot.resolve(temporaryRoot.relativize(source).toString());if(Files.isDirectory(source))Files.createDirectories(target);else{Files.createDirectories(target.getParent());Files.copy(source,target);}}}
+      evidence.put("restorableDatabaseSnapshot",snapshot.toString());evidence.put("restorableDataRoot",dataSnapshot.toString());evidence.put("privateOwnerCredential",ownerSecret.toString());
+      evidence.put("fixtureDispatchClosedForExperiment",true);evidence.put("realProviderExecutionEnabled",false);
+    }
     Files.writeString(output, JSON.writerWithDefaultPrettyPrinter().writeValueAsString(evidence));
   }
 

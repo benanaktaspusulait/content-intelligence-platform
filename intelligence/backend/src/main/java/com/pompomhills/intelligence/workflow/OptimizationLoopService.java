@@ -59,10 +59,11 @@ public class OptimizationLoopService {
       if(result.containsKey(key)) snapshot.put(key,result.get(key));
     return snapshot;
   }
+  Map<String,Object> boundScope(UUID analysis,String draft,Map<String,Object> feasibility){var s=new LinkedHashMap<>(scope(analysis,draft));s.put("targetAwarePreflight",feasibility);return s;}
   public Map<String,Object> preflight(Map<String,Object> body,HttpServletRequest request){
     util.owner(request); UUID analysis=uuid(body.get("analysisId"));
-    var s=scope(analysis,String.valueOf(body.getOrDefault("draftPrompt","")));
     var feasibility=targetAwareSnapshot(analysis);
+    var s=boundScope(analysis,String.valueOf(body.getOrDefault("draftPrompt","")),feasibility);
     var out=new LinkedHashMap<String,Object>();out.put("scope",s);out.put("scopeSha256",hash(util.encode(s)));out.put("capabilities",capabilities());out.put("targetAwarePreflight",feasibility);out.put("persisted",false);
     out.put("generationAllowed",feasibility.getOrDefault("generationAllowed",false));out.put("state",feasibility.getOrDefault("state","CONTRACT_FAILURE"));
     out.put("researchGenerationEligibility",feasibility.getOrDefault("researchGenerationEligibility",Map.of()));
@@ -85,7 +86,7 @@ public class OptimizationLoopService {
         var input=new LinkedHashMap<String,Object>();input.put("scope",scope);input.put("role",role);input.put("prompt",prompt);input.put("round",1);input.put("candidateId","PREVIEW:1");input.put("feedback",Map.of());input.put("authorization",auth);input.put("timeoutSeconds",120);
         var preview=local("PREVIEW_REQUEST",input);double estimate=((Number)preview.get("maxCalculatedCostUsd")).doubleValue();double cap=Math.ceil(estimate*1_000_000d)/1_000_000d;
         var operation=new LinkedHashMap<String,Object>();operation.putAll(auth);operation.put("maxCostUsd",cap);operation.put("inputBoundAssumption",assumption);
-        for(String key:List.of("inputTokenUpperBound","maxCalculatedCostUsd","systemSha256","userPayloadSha256","responseSchemaSha256","instructionContextSha256","sourceScopeSha256","providerDispatched"))operation.put(key,preview.get(key));
+        for(String key:List.of("inputTokenUpperBound","maxCalculatedCostUsd","systemSha256","userPayloadSha256","responseSchemaSha256","instructionContextSha256","sourceScopeSha256","transportOrigin","providerAdapter","fixtureFallbackAllowed","providerDispatched"))operation.put(key,preview.get(key));
         operations.add(operation);runCost+=cap;totalInputBound+=((Number)preview.get("inputTokenUpperBound")).intValue();
       }
       var run=new LinkedHashMap<String,Object>();run.put("label",runs.isEmpty()?"RUN_A":"RUN_B");run.put("mode",generator.equals("deepseek-primary")?"DEEPSEEK_ONLY":"OPENAI_ONLY");run.put("generatorProfileId",generator);run.put("independentReviewerProfileId",reviewer);run.put("maxRounds",1);run.put("maxRequests",3);run.put("maxRunSeconds",600);run.put("maxTotalUsd",Math.ceil(runCost*1_000_000d)/1_000_000d);run.put("operations",operations);runs.add(run);total+=runCost;
@@ -119,6 +120,30 @@ public class OptimizationLoopService {
     return Boolean.TRUE.equals(body.get("researchOnly"))
         && Boolean.TRUE.equals(map(feasibility.get("researchGenerationEligibility")).get("allowed"));
   }
+  void validateResearchBindings(Map<String,Object> scope,Map<String,Object> grant){
+    if(!Boolean.TRUE.equals(grant.get("researchOnly")))return;
+    var plan=researchComparisonPlan(scope);
+    String mode=String.valueOf(grant.get("mode"));
+    var expectedRun=rows(plan.get("runs")).stream().filter(r->mode.equals(r.get("mode"))).findFirst()
+        .orElseThrow(()->new ResponseStatusException(BAD_REQUEST,"Research routing mode is not in the current server plan"));
+    if(((Number)grant.get("maxRounds")).intValue()!=((Number)expectedRun.get("maxRounds")).intValue()
+        || ((Number)grant.get("maxRequests")).intValue()!=((Number)expectedRun.get("maxRequests")).intValue()
+        || ((Number)grant.get("maxRunSeconds")).intValue()!=((Number)expectedRun.get("maxRunSeconds")).intValue()
+        || Double.compare(((Number)grant.get("maxTotalUsd")).doubleValue(),((Number)expectedRun.get("maxTotalUsd")).doubleValue())!=0)
+      throw new ResponseStatusException(CONFLICT,"Research limits/cost must match the fresh server preflight");
+    var expected=rows(expectedRun.get("operations"));var actual=rows(grant.get("operations"));
+    if(actual.size()!=expected.size())throw new ResponseStatusException(CONFLICT,"Research operations changed after preflight");
+    var immutable=List.of("profileId","role","provider","model","reasoningEffort","maxOutputTokens","maxCostUsd",
+        "inputTokenUpperBound","maxCalculatedCostUsd","systemSha256","userPayloadSha256","responseSchemaSha256",
+        "instructionContextSha256","sourceScopeSha256","transportOrigin","providerAdapter","fixtureFallbackAllowed","providerDispatched");
+    for(var wanted:expected){
+      var supplied=actual.stream().filter(r->Objects.equals(r.get("profileId"),wanted.get("profileId"))&&Objects.equals(r.get("role"),wanted.get("role"))).findFirst()
+          .orElseThrow(()->new ResponseStatusException(CONFLICT,"Research role/profile binding changed after preflight"));
+      for(String key:immutable){Object a=supplied.get(key),b=wanted.get(key);boolean same=a instanceof Number an&&b instanceof Number bn?Double.compare(an.doubleValue(),bn.doubleValue())==0:Objects.equals(a,b);if(!same)throw new ResponseStatusException(CONFLICT,"Research "+key+" changed after preflight");}
+      if(!"REAL_PROVIDER_ADAPTER".equals(supplied.get("transportOrigin"))||!"CreativeCapabilityProvider".equals(supplied.get("providerAdapter"))||!Boolean.FALSE.equals(supplied.get("fixtureFallbackAllowed"))||!Boolean.FALSE.equals(supplied.get("providerDispatched")))
+        throw new ResponseStatusException(CONFLICT,"Research transport must be the non-fixture real-provider adapter");
+    }
+  }
   @Transactional public Map<String,Object> start(Map<String,Object> body,HttpServletRequest request){
     String owner=util.owner(request);
     UUID analysis=uuid(body.get("analysisId"));
@@ -129,12 +154,14 @@ public class OptimizationLoopService {
     if(!Boolean.TRUE.equals(feasibility.get("generationAllowed"))&&!researchAllowed(feasibility,body))
       throw new ResponseStatusException(CONFLICT,util.encode(Map.of("state",feasibility.getOrDefault("state","TARGET_BLOCKED"),"generationAllowed",false,"researchGenerationEligibility",feasibility.getOrDefault("researchGenerationEligibility",Map.of()),"feasibility",feasibility,"providerCalls",0,"nextAction","STORY_EVOLUTION_OR_UPDATED_SOURCE_EVIDENCE")));
     var grant=validateGrant(body);
+    var s=boundScope(analysis,String.valueOf(body.getOrDefault("draftPrompt","")),feasibility);
+    if(!hash(util.encode(s)).equals(body.get("scopeSha256")))throw new ResponseStatusException(CONFLICT,"Source/settings/baseline changed after inspection");
+    validateResearchBindings(s,grant);
     if(!realEnabled)throw new ResponseStatusException(FORBIDDEN,"Real dispatch remains disabled; no run authorized");
     String key=String.valueOf(body.getOrDefault("idempotencyKey",""));if(key.length()<8||key.length()>100)throw new ResponseStatusException(BAD_REQUEST,"Stable idempotency key required");
     db.sql("SELECT pg_advisory_xact_lock(hashtext(:k))").param("k","optimization:"+owner+":"+key).query((rs,n)->rs.getObject(1)).list();
     var old=db.sql("SELECT id,grant_payload::text FROM optimization_runs WHERE owner_principal=:owner AND idempotency_key=:key").param("owner",owner).param("key",key).query((rs,n)->Map.of("id",rs.getObject(1,UUID.class),"grant",util.read(rs.getString(2)))).optional();
     if(old.isPresent()){if(!util.encode(old.get().get("grant")).equals(util.encode(grant)))throw new ResponseStatusException(CONFLICT,"Duplicate Start cannot rebind authorization");return view((UUID)old.get().get("id"),request);}
-    var s=scope(uuid(body.get("analysisId")),String.valueOf(body.getOrDefault("draftPrompt","")));if(!hash(util.encode(s)).equals(body.get("scopeSha256")))throw new ResponseStatusException(CONFLICT,"Source/settings/baseline changed after inspection");
     UUID id=UUID.randomUUID();var progress=new LinkedHashMap<String,Object>();progress.put("phase","EVALUATE_BASELINE");progress.put("round",0);progress.put("bestPrompt",s.get("baselinePrompt"));progress.put("bestDraftId","");progress.put("equivalentRounds",0);progress.put("noProgressRounds",0);
     db.sql("INSERT INTO optimization_runs(id,owner_principal,idempotency_key,scope,scope_sha256,grant_payload,state,progress,deadline) VALUES(:id,:owner,:key,CAST(:scope AS jsonb),:hash,CAST(:grant AS jsonb),'READY',CAST(:progress AS jsonb),now()+make_interval(secs=>:seconds))").param("id",id).param("owner",owner).param("key",key).param("scope",util.encode(s)).param("hash",hash(util.encode(s))).param("grant",util.encode(grant)).param("progress",util.encode(progress)).param("seconds",((Number)grant.get("maxRunSeconds")).intValue()).update();event(id,Map.of("state","AUTHORIZED","authorizationOwner",owner,"noPromptApproval",true));return view(id,request);
   }
@@ -180,8 +207,7 @@ public class OptimizationLoopService {
     if(Boolean.TRUE.equals(row.get("cancel"))){transition(id,"STOPPED",progress,"OWNER_CANCELLED");return;}
     if(now().isAfter((Instant)row.get("deadline"))){transition(id,"STOPPED",progress,"TIME_LIMIT");return;}
     if(!realEnabled){transition(id,"STOPPED",progress,"DISPATCH_DISABLED");return;}
-    var scope=map(row.get("scope"));var fresh=scope(uuid(scope.get("analysisId")),String.valueOf(scope.get("baselinePrompt")));
-    if(!hash(util.encode(fresh)).equals(row.get("scopeSha256"))){transition(id,"STOPPED",progress,"SCOPE_CHANGED_FRESH_AUTHORIZATION_REQUIRED");return;}
+    var scope=map(row.get("scope"));
     // Durable worker boundary: eligibility is never carried forward from the
     // browser inspection or the original authorization.
     var currentFeasibility=targetAwareSnapshot(uuid(scope.get("analysisId")));
@@ -191,6 +217,8 @@ public class OptimizationLoopService {
       transition(id,"STOPPED",progress,String.valueOf(currentFeasibility.getOrDefault("state","TARGET_BLOCKED")));
       return;
     }
+    var fresh=boundScope(uuid(scope.get("analysisId")),String.valueOf(scope.get("baselinePrompt")),currentFeasibility);
+    if(!hash(util.encode(fresh)).equals(row.get("scopeSha256"))){transition(id,"STOPPED",progress,"SCOPE_CHANGED_FRESH_AUTHORIZATION_REQUIRED");return;}
     String phase=String.valueOf(progress.get("phase"));
     if(phase.equals("EVALUATE_BASELINE")){
       var evaluated=local("EVALUATE",Map.of("scope",scope,"prompt",progress.get("bestPrompt")));progress.put("baselineEvaluation",evaluated);progress.put("bestEvaluation",evaluated);
@@ -209,7 +237,7 @@ public class OptimizationLoopService {
     double cap=((Number)op.get("maxCostUsd")).doubleValue();double committed=((Number)cost.get("spentUsd")).doubleValue()+((Number)cost.get("reservedUsd")).doubleValue()+((Number)cost.get("unknownReservedUsd")).doubleValue();
     if(cap+committed>((Number)grant.get("maxTotalUsd")).doubleValue()+1e-9){transition(id,"STOPPED",progress,"BUDGET_LIMIT");return;}
     String prompt=String.valueOf(phase.equals("GENERATION")?progress.get("bestPrompt"):map(progress.get("pendingCandidate")).get("prompt"));
-    var dispatchScope=new LinkedHashMap<>(scope);dispatchScope.put("targetAwarePreflight",currentFeasibility);
+    var dispatchScope=new LinkedHashMap<>(scope);
     var input=new LinkedHashMap<String,Object>();input.put("scope",dispatchScope);input.put("role",phase);input.put("prompt",prompt);input.put("round",round);input.put("candidateId",id+":"+round);input.put("feedback",progress.getOrDefault("lastAssessment",Map.of()));input.put("authorization",op);input.put("timeoutSeconds",Math.max(1,Math.min(120,Duration.between(now(),(Instant)row.get("deadline")).toSeconds())));
     local("PREFLIGHT_REQUEST",input); // Capability, schema, token/cost bound checked before reservation.
     if(Boolean.TRUE.equals(load(id).get("cancel"))){transition(id,"STOPPED",progress,"OWNER_CANCELLED");return;}
@@ -222,7 +250,13 @@ public class OptimizationLoopService {
     String state="COMPLETED".equals(response.get("executionStatus"))?"COMPLETED":"FAILED_OR_AMBIGUOUS";
     if(state.equals("COMPLETED")&&(!(response.get("costUsd") instanceof Number n)||!Double.isFinite(n.doubleValue())||n.doubleValue()<0||n.doubleValue()>cap||!"COMPLETE".equals(response.get("usageAccountingStatus"))||!Objects.equals(op.get("model"),response.get("model"))||!Objects.equals(op.get("provider"),response.get("provider"))))state="FAILED_OR_AMBIGUOUS";
     db.sql("UPDATE optimization_run_requests SET response=CAST(:response AS jsonb),state=:state,completed_at=now() WHERE id=:req AND state='DISPATCHING'").param("response",util.encode(response)).param("state",state).param("req",requestId).update();
-    if(!state.equals("COMPLETED")){progress.put("failure",response.getOrDefault("failure",Map.of("layer","RESPONSE_CONTRACT","retrySafe",false)));transition(id,"STOPPED",progress,"UNCERTAIN_PROVIDER_DISPATCH_OR_CONTRACT");return;}
+    if(!state.equals("COMPLETED")){
+      var failure=map(response.getOrDefault("failure",Map.of("layer","RESPONSE_CONTRACT","retrySafe",false)));
+      progress.put("failure",failure);progress.put("providerOutcome",response.getOrDefault("providerOutcome","UNKNOWN"));
+      progress.put("billingStatus",response.getOrDefault("billingStatus","UNKNOWN"));progress.put("processingOutcome",response.getOrDefault("processingOutcome","UNKNOWN"));
+      boolean received="RESPONSE_RECEIVED".equals(response.get("providerOutcome"))&&"COMPLETE".equals(response.get("usageAccountingStatus"));
+      transition(id,"STOPPED",progress,received?"LOCAL_POST_RESPONSE_VALIDATION_FAILED":"UNCERTAIN_PROVIDER_DISPATCH_OR_CONTRACT");return;
+    }
     if(Boolean.TRUE.equals(load(id).get("cancel"))){transition(id,"STOPPED",progress,"OWNER_CANCELLED_AFTER_COLLECTING_INFLIGHT");return;}
     var result=map(response.get("result"));
     if(phase.equals("GENERATION")){

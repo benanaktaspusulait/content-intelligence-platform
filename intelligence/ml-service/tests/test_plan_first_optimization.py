@@ -28,7 +28,9 @@ def test_material_plans_pass_before_compilation_and_protect_story():
     assert contract['targetContentProfile']=='ABSURD_PHYSICS' and contract['baselinePromptHistoricalProfile']=='AUTO'
     for candidate in result['result']['candidates']:
         assert all(anchor in candidate['prompt'] for anchor in ctx['essentialEvents'])
-        assert 'Content profile: ABSURD_PHYSICS' in candidate['prompt']
+        assert 'Content profile: AUTO' in candidate['prompt']
+        assert candidate['targetContentProfile']=='ABSURD_PHYSICS'
+        assert candidate['profileValidation']['status']=='HISTORICAL_PROFILE_REPRESENTATION_PRESERVED'
         assert 'Mimi is relieved but the cabinet remains visibly messy.' in candidate['prompt']
         assert candidate['planValidation']['storyFidelity']=='UNKNOWN'
     assessment=assess_comparison(source,result['result']['candidates'],ctx,85)

@@ -34,7 +34,7 @@ def fake_response(data,payload):
 def dispatch(operation,data):
  if operation=='scope':return fixture_scope()
  if operation=='optimization-loop/local':
-  return {'CAPABILITIES':L.capabilities,'EVALUATE':lambda:L.evaluate(data),'COMPARE':lambda:L.compare(data),'PREFLIGHT_REQUEST':lambda:L.preflight(data)}[data['action']]()
+  return {'CAPABILITIES':L.capabilities,'EVALUATE':lambda:L.evaluate(data),'COMPARE':lambda:L.compare(data),'PREFLIGHT_REQUEST':lambda:L.preflight(data),'PREVIEW_REQUEST':lambda:L.preview(data)}[data['action']]()
  class FakeTransport:
   def __init__(self,cfg,tokens,timeout):self.cfg=cfg;self.last_usage=None;self.last_response_metadata={}
   def complete(self,prompt,**kw):

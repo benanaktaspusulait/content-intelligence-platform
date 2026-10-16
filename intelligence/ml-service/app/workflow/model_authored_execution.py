@@ -374,6 +374,11 @@ def authoring_reference_contract(refs, diagnosis):
     return {'version':AUTHORING_VERSION,'referenceEncoding':'EXACT_CATALOG_KEY_NOT_ENTITY_NAME_OR_QUOTE',
         'allowedReferenceIdsByKind':by_kind,'opportunityContracts':opportunities,
         'missingEvidencePolicy':'No grounded ID means UNKNOWN; omit an unsupported relation or return no justified improvement. Never invent IDs or entities.',
+        'spatialRelationshipProtocol':{
+            'subjectAndObject':'Each instruction must describe both its exact subjectRef and objectRef, not merely a plural group or the final consequence.',
+            'recommendedEncoding':'Use {subjectRef} and {objectRef} placeholders in instruction text so exact source participants remain auditable.',
+            'compositeMentions':'A composite mention such as “each hand” does not establish separate left/right hand identities. Use multiple exact catalog references only when the source catalog supplies them.',
+            'multiObjectStaging':'A proposal involving multiple independently positioned objects needs one grounded relationship per supported participant pair; otherwise omit it or return no justified improvement.'},
         'relationshipMeaning':{key:'subjectRef is '+key.lower().replace('_',' ')+' objectRef in the proposed view' for key in RELATION_WORDS},
         'fieldUse':{'objective':'One source-cited execution weakness, not a rewritten event.',
             'rationale':'Contrast baseline execution with the physical intervention and explain its observable difference; benefit is a hypothesis.',
