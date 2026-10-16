@@ -178,6 +178,11 @@ def test_metrics_keep_mock_and_real_separate_and_absent_acceptance_audience_unkn
         assert cohort['aQualificationRate']==0 and cohort['materialImprovementRate']==1
         assert cohort['operatorAcceptanceRate'] is None and cohort['audienceOutcome'] is None
         assert cohort['calculatedCostUpperBoundPerA'] is None
+    fixture=next(c for c in result['cohorts'] if c['evidenceOrigin']=='DETERMINISTIC_FIXTURE')
+    real=next(c for c in result['cohorts'] if c['evidenceOrigin']=='REAL_AI_PROVIDER')
+    assert fixture['realCreativeEffectiveness']=='EXCLUDED_NON_REAL_PROVIDER_EVIDENCE'
+    assert not fixture['realProviderCapabilityStatisticsEligible'] and not fixture['officialAPlusCalibrationEligible']
+    assert real['realProviderCapabilityStatisticsEligible']
 
 
 def test_cross_beat_changes_must_identify_real_justified_dependencies():

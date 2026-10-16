@@ -7,6 +7,7 @@ from collections import defaultdict
 from math import isfinite
 from app.quality.family_weights import CANONICAL_FAMILY_WEIGHTS
 from .creative_reconstruction import DIMENSIONS
+from .creative_validity import normalize_origin
 
 VERSION = 'adaptive-creative-optimization-v3'
 RESEARCH_ELIGIBILITY_VERSION = 'canonical-a-text-research-eligibility-v1'
@@ -181,7 +182,10 @@ def optimization_metrics(runs):
         attempted=len(qualifications)+len(rejected)
         costs=[s.get('costUsd') for _,s in entries]
         def rate(count, denominator=attempted):return count/denominator if denominator else None
-        reports.append({'evidenceOrigin':origin,'mode':mode,'provider':provider,'model':model,'attempts':n,
+        normalized_origin=normalize_origin(origin)
+        real_eligible=normalized_origin=='REAL_AI_PROVIDER'
+        reports.append({'evidenceOrigin':normalized_origin,'mode':mode,'provider':provider,'model':model,'attempts':n,
+            'realProviderCapabilityStatisticsEligible':real_eligible,'officialAPlusCalibrationEligible':False,
             'aQualificationRate':qualified/n,'materialImprovementRate':rate(sum(bool(q.get('material')) for q in qualifications)),
             'canonicalRegressionRate':rate(sum(q.get('canonicalRegression',False) for q in qualifications)),
             'creativeRegressionRate':rate(sum(q.get('creativeRegression') is True for q in qualifications),sum(isinstance(q.get('creativeRegression'),bool) for q in qualifications)),
@@ -193,15 +197,16 @@ def optimization_metrics(runs):
             'primaryStopRate':sum(r.get('providerCalls')==1 and r.get('targetQualified') is True for r,_ in entries)/n,
             'escalationRate':sum(r.get('providerCalls',0)>1 for r,_ in entries)/n,
             'belowTargetAfterEscalationRate':sum(r.get('providerCalls',0)>1 and not r.get('targetQualified') for r,_ in entries)/n,
-            'operatorAcceptanceRate':None,'audienceOutcome':None,'realCreativeEffectiveness':'UNVERIFIED'})
+            'operatorAcceptanceRate':None,'audienceOutcome':None,'realCreativeEffectiveness':'UNVERIFIED' if real_eligible else 'EXCLUDED_NON_REAL_PROVIDER_EVIDENCE'})
     routes=defaultdict(list)
-    for run in runs:routes[(run.get('evidenceOrigin','UNKNOWN'),run.get('mode'))].append(run)
+    for run in runs:routes[(normalize_origin(run.get('evidenceOrigin','UNKNOWN')),run.get('mode'))].append(run)
     routing=[]
     for (origin,mode),items in routes.items():
         qualified=[r for r in items if r.get('targetQualified') is True]
         costs=[r.get('calculatedCostUpperBoundUsd') for r in items]
         reviewed=[r for r in items if isinstance(r.get('operatorAcceptanceEvidence'),dict) and r['operatorAcceptanceEvidence'].get('persistedDecisionId')]
         routing.append({'evidenceOrigin':origin,'mode':mode,'runs':len(items),'aQualificationRate':len(qualified)/len(items),
+            'realProviderCapabilityStatisticsEligible':origin=='REAL_AI_PROVIDER','officialAPlusCalibrationEligible':False,
             'averageCallsToA':sum(r.get('providerCalls',0) for r in qualified)/len(qualified) if qualified else None,
             'calculatedTotalCostUpperBoundPerA':sum(costs)/len(qualified) if qualified and all(isinstance(c,(int,float)) for c in costs) else None,
             'deepseekStopRate':sum(r.get('providerCalls')==1 and (r.get('stages') or [{}])[0].get('provider')=='deepseek' and r.get('targetQualified') is True for r in items)/len(items),

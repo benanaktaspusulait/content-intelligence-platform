@@ -507,6 +507,15 @@ class DisposableOwnerHttpAcceptanceTest {
     assertThat(canonical.path("status").asText()).isEqualTo("EVALUATED");assertThat(canonical.path("rulesetVersion").asText()).isEqualTo("1.11");
     assertThat(canonical.path("score").isNumber()).isTrue();assertThat(canonical.path("grade").asText()).isNotBlank();
     assertThat(saved.path("boundRequest").path("prompt").asText()).contains("tries to place","Pip tries to peel","Pip tries to press","Pip tries to push");
+    JsonNode validity=handoff.path("creativeValidityAssessment");
+    assertThat(validity.path("canonicalScore").asDouble()).isEqualTo(canonical.path("score").asDouble());
+    assertThat(validity.path("canonicalGrade").asText()).isEqualTo("A");
+    assertThat(validity.path("creativeQualityStatus").asText()).isEqualTo("CREATIVE_RISK_DETECTED");
+    assertThat(validity.path("finalQualification").asText()).isEqualTo("PROVISIONAL_CREATIVE_VALIDITY_REQUIRED");
+    assertThat(validity.path("provenance").path("origin").asText()).isEqualTo("DETERMINISTIC_FIXTURE");
+    assertThat(validity.path("provenance").path("realCapabilityStatisticsEligible").asBoolean()).isFalse();
+    assertThat(validity.path("dimensions")).hasSize(6);
+    assertThat(validity.path("risks").toString()).contains("TEXTUAL_HOOK_NOT_VISUAL_PROOF","REPETITIVE_VIEWER_VISIBLE_CONSEQUENCE","ENDING_TIMING_OVERLOAD","CRITICAL_PRODUCIBILITY_RISK","SELF_CONFIRMING_REVIEW");
     JsonNode preflight=call("GET","/api/v1/intelligence/workflow/records/"+analysisId+"/creative-optimization/preflight",null,null,null,200);
     assertThat(preflight.path("sourceAnalysisId").asText()).isEqualTo(analysisId);
     assertThat(preflight.path("generationAllowed").asBoolean()).isFalse();

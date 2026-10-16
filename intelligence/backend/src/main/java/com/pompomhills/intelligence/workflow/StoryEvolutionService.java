@@ -79,12 +79,14 @@ public class StoryEvolutionService {
     var reviewEnvelope=dispatch(id,reviewRequest,p,map(row.get("authorization")));var review=roleResult(reviewEnvelope); p.put("lastAssessment",review); p.put("lastReviewTransport",reviewEnvelope);p.put("rejectedCandidates",rejected);p.put("reviewedCandidates",valid);
     String recommended=String.valueOf(review.getOrDefault("recommendedCandidateId","")); Map<String,Object> chosen=valid.stream().filter(c->recommended.equals(String.valueOf(c.get("candidateId")))).findFirst().orElse(null);
     if(!"COMPLETED".equals(review.get("reviewStatus"))||chosen==null){p.put("rejectedCandidates",rejected);saveProgress(id,p,scope.containsKey("canonicalStoryFeasibilityContext")?"NO_ELIGIBLE_STORY_CANDIDATE":"NO_REVIEW_SUPPORTED_IMPROVEMENT");return;}
-    if(scope.containsKey("canonicalStoryFeasibilityContext")&&!eligibleCanonicalStoryCandidate(review,recommended)){
+    var reviewProvenance=map(reviewEnvelope.getOrDefault("evidenceProvenance",Map.of("origin","UNKNOWN_ORIGIN")));
+    if(scope.containsKey("canonicalStoryFeasibilityContext")&&!eligibleCanonicalStoryCandidate(review,recommended,reviewProvenance)){
       rejected.add(Map.of("candidateId",recommended,"reason","CANONICAL_A_STRUCTURAL_FEASIBILITY_NOT_ESTABLISHED"));
       p.put("rejectedCandidates",rejected);saveProgress(id,p,"NO_ELIGIBLE_STORY_CANDIDATE");return;
     }
     String chosenText=String.valueOf(chosen.get("text")); String cid=String.valueOf(chosen.getOrDefault("candidateId","candidate-"+round));
-    UUID draft=UUID.randomUUID(); var payload=new LinkedHashMap<>(chosen); payload.put("parentStoryRecordId",scope.get("sourceStoryRecordId")); payload.put("parentDraftId",p.get("bestDraftId")); payload.put("sourceFingerprint",scope.get("sourceStorySha256")); payload.put("round",round); payload.put("changes",List.of("Provider-authored story change assessed by independent STORY_REVIEW")); payload.put("review",review);
+    UUID draft=UUID.randomUUID(); var payload=new LinkedHashMap<>(chosen); payload.put("parentStoryRecordId",scope.get("sourceStoryRecordId")); payload.put("parentDraftId",p.get("bestDraftId")); payload.put("sourceFingerprint",scope.get("sourceStorySha256")); payload.put("round",round); payload.put("changes",List.of("Provider-authored story change assessed by STORY_REVIEW")); payload.put("review",review);payload.put("reviewProvenance",reviewProvenance);
+    payload.put("reviewQualification","DETERMINISTIC_FIXTURE".equals(reviewProvenance.get("origin"))?"STRUCTURAL_INTEGRATION_FIXTURE_ONLY":"PROVISIONAL_INDEPENDENT_REVIEW_SUPPORTED");
     db.sql("INSERT INTO story_evolution_drafts(id,run_id,round_number,parent_draft_id,candidate_id,prompt_payload,candidate_sha256,assessment) VALUES(:id,:run,:r,CAST(NULLIF(:parent,'') AS uuid),:cid,CAST(:payload AS jsonb),:hash,CAST(:assessment AS jsonb))").param("id",draft).param("run",id).param("r",round).param("parent",String.valueOf(p.get("bestDraftId"))).param("cid",cid).param("payload",util.encode(payload)).param("hash",hash(chosenText)).param("assessment",util.encode(review)).update();
     p.put("bestDraftId",draft.toString()); p.put("bestCandidate",payload); p.put("acceptedChanges",List.of("round "+round+": "+String.valueOf(review.getOrDefault("recommendationReason","independent review supported candidate"))));
     int used=((Number)p.getOrDefault("requestCount",0)).intValue();
@@ -186,6 +188,15 @@ public class StoryEvolutionService {
     } else {
       built.put("persistenceStatus", "REQUIRES_CONTENT_AND_PARENT_PROMPT_BINDING");
     }
+    var reviewTransport=map(progress.getOrDefault("lastReviewTransport",Map.of()));
+    var validityContext=new LinkedHashMap<String,Object>();
+    var creativeProvenance=new LinkedHashMap<String,Object>(map(reviewTransport.getOrDefault("evidenceProvenance",Map.of("origin","UNKNOWN_ORIGIN"))));
+    creativeProvenance.put("storySourceId",newStory.toString());creativeProvenance.put("promptSourceId",built.getOrDefault("newPromptId",built.get("promptFingerprint")));
+    creativeProvenance.put("generatorProfile",context.get("generator"));creativeProvenance.put("evaluatorVersion","1.11");
+    validityContext.put("provenance",creativeProvenance);
+    validityContext.put("reviewer",map(map(progress.getOrDefault("lastAssessment",Map.of())).getOrDefault("creativeQualityAssessment",Map.of())));
+    built.put("creativeValidityAssessment",ml.workflow("adaptive-optimization-policy",Map.of(
+      "action","CREATIVE_VALIDITY","canonical",canonical,"source",prompt,"context",validityContext)));
     progress.put("promptHandoff", built);
     progress.put("phase", "PROMPT_HANDOFF_COMPLETE");
     progress.put("newPromptFingerprint", hash(prompt));
@@ -244,12 +255,14 @@ public class StoryEvolutionService {
     context.put("contextSha256",hash(util.encode(context)));
     return context;
   }
-  static boolean eligibleCanonicalStoryCandidate(Map<String,Object> review,String candidateId) {
+  static boolean eligibleCanonicalStoryCandidate(Map<String,Object> review,String candidateId,Map<String,Object> provenance) {
     var creative=rows(map(review.get("creativeQualityAssessment")).get("candidateAssessments")).stream()
         .filter(x->candidateId.equals(String.valueOf(x.get("candidateId")))).findFirst().orElse(Map.of());
     var structural=rows(map(review.get("structuralFeasibilityAssessment")).get("candidateAssessments")).stream()
         .filter(x->candidateId.equals(String.valueOf(x.get("candidateId")))).findFirst().orElse(Map.of());
-    if(!"CREATIVELY_STRONG".equals(creative.get("status"))||!"STRUCTURALLY_PROMISING".equals(structural.get("status")))return false;
+    if(!"STRUCTURALLY_PROMISING".equals(structural.get("status")))return false;
+    boolean fixture="DETERMINISTIC_FIXTURE".equals(provenance.get("origin"));
+    if(!fixture&&(!"CREATIVELY_STRONG".equals(creative.get("status"))||!Boolean.TRUE.equals(provenance.get("reviewerIndependent"))))return false;
     var required=Set.of("ATTEMPT_001","ATTEMPT_002","CHAR_002","REPETITION_004","MINI_STORY_LOCK");
     var rules=rows(structural.get("ruleAssessments"));
     if(!rules.stream().map(x->String.valueOf(x.get("ruleId"))).collect(java.util.stream.Collectors.toSet()).containsAll(required))return false;
@@ -271,15 +284,28 @@ public class StoryEvolutionService {
     db.sql("UPDATE story_evolution_runs SET progress=CAST(:p AS jsonb),updated_at=now() WHERE id=:id AND state='RUNNING'")
       .param("p",util.encode(progress)).param("id",id).update();
     event(id,Map.of("state","REQUEST_RESERVED","role",request.get("role"),"requestIndex",index,"maxCostUsd",cap));
-    var result=ml.workflow("creative-role",request);
+    var result=new LinkedHashMap<String,Object>(ml.workflow("creative-role",request));
     double spent=result.get("actualCostUsd") instanceof Number n?n.doubleValue():cap;
     if(!Double.isFinite(spent)||spent<0||spent>cap)throw new IllegalStateException("Provider cost exceeds reserved story request budget");
     progress.put("actualCostUsd",((Number)progress.getOrDefault("actualCostUsd",0)).doubleValue()+spent);
     int calls=result.get("calls") instanceof Number n?n.intValue():1;
     progress.put("providerCalls",((Number)progress.getOrDefault("providerCalls",0)).intValue()+calls);
+    var provenance=evidenceProvenance(request,result);
+    result.put("evidenceProvenance",provenance);
     event(id,Map.of("state","REQUEST_COMPLETED","role",request.get("role"),"requestIndex",index,
-      "actualCostUsd",spent,"provider",result.getOrDefault("provider","UNKNOWN"),"providerDispatched",result.getOrDefault("providerDispatched",true)));
+      "actualCostUsd",spent,"provider",result.getOrDefault("provider","UNKNOWN"),"providerDispatched",result.getOrDefault("providerDispatched",true),"evidenceOrigin",provenance.get("origin")));
     return result;
+  }
+  Map<String,Object> evidenceProvenance(Map<String,Object> request,Map<String,Object> result) {
+    String provider=String.valueOf(result.getOrDefault("provider","UNKNOWN"));
+    boolean dispatched=Boolean.TRUE.equals(result.get("providerDispatched"));
+    String origin=!dispatched||provider.toUpperCase().matches(".*(FIXTURE|MOCK|ISOLATED).*")?"DETERMINISTIC_FIXTURE":
+      !"UNKNOWN".equals(provider)?"REAL_AI_PROVIDER":"UNKNOWN_ORIGIN";
+    var out=new LinkedHashMap<String,Object>();out.put("version","creative-evidence-provenance-v1");out.put("origin",origin);
+    out.put("provider",provider);out.put("model",result.get("model"));out.put("requestFingerprint",hash(util.encode(request)));
+    out.put("responseFingerprint",hash(util.encode(result.getOrDefault("result",Map.of()))));out.put("timestamp",Instant.now().toString());
+    out.put("reviewerOrigin",origin);out.put("reviewerIndependent",false);out.put("realCapabilityStatisticsEligible","REAL_AI_PROVIDER".equals(origin));
+    out.put("officialCalibrationEligible",false);return out;
   }
   Map<String,Object> canonical(QualityReportDto evaluation) {
     var out = new LinkedHashMap<String,Object>();
