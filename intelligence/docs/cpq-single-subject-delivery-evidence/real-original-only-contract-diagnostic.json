@@ -1,0 +1,29 @@
+{
+  "jsonParse": "PASS",
+  "strictJsonSchema": "PASS",
+  "modelDecisionUnvalidated": "FAIL",
+  "mappings": 14,
+  "anchors": [
+    "APPROVED_EVENTS",
+    "CHARACTER_IDENTITY",
+    "EVENT_ORDER",
+    "PHYSICAL_RULE",
+    "REQUIRED_ENDING",
+    "TEMPORAL_CONSTRAINTS"
+  ],
+  "invalidSpanMappings": [
+    {
+      "mappingIndex": 11,
+      "anchor": "EVENT_ORDER",
+      "eventId": "event_07",
+      "submittedSourceQuote": "Mimi aynada kendini görünce çığlık atar. Notlar o kadar çoğalır ki Mimi boğulacak gibi olur. Sonunda hapşırır ve tüm notlar uçuşarak dolabın üzerine yapışır.",
+      "boundSourceSpan": "Notlar o kadar çoğalır ki Mimi boğulacak gibi olur.",
+      "quoteExistsInCompleteStory": true
+    }
+  ],
+  "validation": "REJECTED",
+  "exceptionType": "ValueError",
+  "exactReason": "Exact required source-event citation required",
+  "offlineValidationOnly": true,
+  "providerCalls": 0
+}

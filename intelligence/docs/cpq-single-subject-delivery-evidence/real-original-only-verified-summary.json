@@ -1,0 +1,67 @@
+{
+  "overallResult": "SOURCE_SINGLE_SUBJECT_EXECUTION_FAILED",
+  "pilotId": "770e8477-f352-499e-aabd-b7418435e70b",
+  "requestId": "6f078994-3385-4910-8423-47a46ad9999a",
+  "providerMetadata": {
+    "model": "gpt-6.1-sol",
+    "provider": "openai",
+    "apiStatus": "COMPLETED",
+    "requestId": "chatcmpl-EZYRV5i8EXPUfeq0yBX2PRYE6EM5R",
+    "finishReason": "stop"
+  },
+  "requestState": "FAILED_OR_AMBIGUOUS",
+  "failureCategory": "PROVIDER_OR_RESPONSE_CONTRACT_FAILED",
+  "usage": {
+    "total_tokens": 3556,
+    "prompt_tokens": 1883,
+    "completion_tokens": 1673,
+    "prompt_tokens_details": {
+      "text_tokens": null,
+      "audio_tokens": 0,
+      "image_tokens": null,
+      "cached_tokens": 0,
+      "cache_write_tokens": 1880
+    },
+    "completion_tokens_details": {
+      "text_tokens": null,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "accepted_prediction_tokens": 0,
+      "rejected_prediction_tokens": 0
+    }
+  },
+  "visibleCharacters": 6581,
+  "visibleUtf8Bytes": 6690,
+  "costUsd": 0.0214375,
+  "costBasis": "CALCULATED_FROM_REPORTED_USAGE_AND_CONFIGURED_RATES",
+  "usageAccountingStatus": "COMPLETE",
+  "authorizedMaxCostUsd": 0.1,
+  "semanticVerdict": "NOT_EVALUATED",
+  "validatedSubjects": 0,
+  "requiredSubjects": 4,
+  "candidateRequests": 0,
+  "criticRequests": 0,
+  "realProviderRequestsSubmitted": 1,
+  "retries": 0,
+  "realDispatch": "DISABLED",
+  "cpqGrading": "INACTIVE",
+  "renderAuthorized": false,
+  "oldRequests": [
+    {
+      "requestId": "3a55b29a-48c6-44c0-a003-da11af0f7069",
+      "unchanged": true
+    },
+    {
+      "requestId": "7beb2327-6f75-4646-90df-c56c295fde20",
+      "unchanged": true
+    }
+  ],
+  "prompt10": "1|0fe229774deb4b31a42145bad91cf10c91634ba00da39fa3e9d288b3a2e7bd98",
+  "workflowDigest": "75|6b270d6f3ed3646ef1dcbab8692de0c44d9f52d1302c813be4d8215fd14ee3d8",
+  "result": [],
+  "effectiveRequestConfiguration": {
+    "maxOutputTokens": 4000,
+    "reasoningEffort": "low",
+    "automaticRetries": false
+  }
+}

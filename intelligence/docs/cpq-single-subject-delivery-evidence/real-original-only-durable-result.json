@@ -1,0 +1,158 @@
+{
+  "request_id": "6f078994-3385-4910-8423-47a46ad9999a",
+  "pilot_id": "770e8477-f352-499e-aabd-b7418435e70b",
+  "slot": "SOURCE_FIDELITY",
+  "idempotency_key": "81ebe72f-2b48-4d12-9a5c-fbef7b400b95",
+  "authorized_by": "benan",
+  "authorization_payload": {
+    "slot": "SOURCE_FIDELITY",
+    "model": "gpt-6.1-sol",
+    "provider": "openai",
+    "profileId": "openai-escalation",
+    "maxCostUsd": 0.1,
+    "idempotencyKey": "81ebe72f-2b48-4d12-9a5c-fbef7b400b95",
+    "maxOutputTokens": 4000,
+    "reasoningEffort": "low",
+    "automaticRetries": false,
+    "subjectPromptSha256": "0fe229774deb4b31a42145bad91cf10c91634ba00da39fa3e9d288b3a2e7bd98",
+    "authorizePaidInference": true
+  },
+  "input_sha256": "0c825a75cca39d42491efa29368dc32be833cf7d1c3a4bb2339c238e686eef47",
+  "state": "FAILED_OR_AMBIGUOUS",
+  "reserved_usd": 0.1,
+  "input": {
+    "packets": [
+      {
+        "prompt": "TITLE / FORMAT\nMimi Sticky / 15s Video\n\nVISUAL STYLE\nBright and colorful animation with a playful tone.\n\nCHARACTER / CONTINUITY\nMimi, an anthropomorphic bunny, interacts with sticky notes in a humorous and chaotic manner.\n\nTIMED SHOT PLAN\n0-2s: Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger [close-up on Mimi's hand] Mimi is in front of a toy cabinet, looking determined -> the note sticks to Mimi, not the cabinet\n2-5s: Mimi tries to peel the stuck note away with her other hand; the note splits into two [medium shot of Mimi struggling] Mimi pulls at the note -> one note sticks to each hand\n5-10s: Mimi continues to pull; each pull doubles the number of sticky notes [wide shot showing Mimi covered in notes] notes multiply from two to four to eight as she pulls, progressively covering her arms, legs and face -> Mimi is overwhelmed by notes\n10-12s: Mimi sees herself in a mirror and screams [close-up on Mimi's shocked face] Mimi is startled by her reflection completely covered in notes -> Mimi is startled\n12-15s: Mimi sneezes and the sticky notes fly off [medium shot of notes flying] notes scatter and stick to the cabinet -> Mimi breathes a sigh of relief but the cabinet remains messy\n\nAUDIO\nPlayful background music with sound effects for sneezing and notes sticking.\n\nNEGATIVE CONSTRAINTS\nNo dark themes or violence.\n\nFINAL CUT\nMimi is relieved but the cabinet remains visibly messy.\n\nCHARACTER IDENTITY LOCK\nMimi is the established anthropomorphic bunny character. Preserve that identity; do not render a human or invent unverified visual details. No approved visual reference is currently bound, so appearance details remain unverified.\n\nPRODUCTION SETTINGS\nAspect ratio: 9:16. Target generator: SEEDANCE_2_0_MINI. Content profile: AUTO.",
+        "neutralId": "Q04",
+        "changedBeats": [],
+        "promptSha256": "0fe229774deb4b31a42145bad91cf10c91634ba00da39fa3e9d288b3a2e7bd98",
+        "approvedStory": "Mimi, oyuncak dolabına 'Topla!' yazan bir yapışkan not yapıştırmak ister. Not, Mimi'nin parmağına yapışır. Mimi diğer eliyle çıkarmaya çalışırken not ikiye ayrılır ve iki eline de yapışır. Her çekişte notlar ikiye katlanarak çoğalır. Kısa sürede Mimi'nin kolları, bacakları ve yüzü notlarla kaplanır. Mimi aynada kendini görünce çığlık atar. Notlar o kadar çoğalır ki Mimi boğulacak gibi olur. Sonunda hapşırır ve tüm notlar uçuşarak dolabın üzerine yapışır. Mimi rahat bir nefes alır ama dolap hâlâ dağınıktır.",
+        "sourceBinding": {
+          "storyId": "bc1cf798-d20b-4b98-8b73-56e1581c3afc",
+          "revision": "candidate-2-revision-7c63cc86",
+          "promptSha256": "0fe229774deb4b31a42145bad91cf10c91634ba00da39fa3e9d288b3a2e7bd98",
+          "sourceIdentity": "saved-prompt:10:10",
+          "approvalRecordId": "20b77d13-848d-46d0-ab4b-bb9b6efb0836",
+          "approvedStorySha256": "df653dbcaf16bfdbceb87baa23688d70d739c34941d0075e30e96b181e1bf32b",
+          "productionSettingsSha256": "e6aedfab391d7ee0a7e753b3dc8f4e8d57c31d8b2ada4b9f8b130b95b2689937"
+        },
+        "requiredEvents": [
+          {
+            "eventId": "event_01",
+            "sourceEnd": 73,
+            "sourceStart": 0
+          },
+          {
+            "eventId": "event_02",
+            "sourceEnd": 106,
+            "sourceStart": 74
+          },
+          {
+            "eventId": "event_03",
+            "sourceEnd": 188,
+            "sourceStart": 107
+          },
+          {
+            "eventId": "event_04",
+            "sourceEnd": 233,
+            "sourceStart": 189
+          },
+          {
+            "eventId": "event_05",
+            "sourceEnd": 300,
+            "sourceStart": 234
+          },
+          {
+            "eventId": "event_06",
+            "sourceEnd": 341,
+            "sourceStart": 301
+          },
+          {
+            "eventId": "event_07",
+            "sourceEnd": 393,
+            "sourceStart": 342
+          },
+          {
+            "eventId": "event_08",
+            "sourceEnd": 458,
+            "sourceStart": 394
+          },
+          {
+            "eventId": "event_09",
+            "sourceEnd": 511,
+            "sourceStart": 459
+          }
+        ],
+        "productionSettings": {
+          "settings": {
+            "mode": "image2video",
+            "resolution": "480p",
+            "aspectRatio": "9:16"
+          },
+          "generator": "SEEDANCE_2_0_MINI",
+          "contentProfile": "ABSURD_PHYSICS",
+          "desiredDuration": 15.0,
+          "openingStrategy": "AUTO"
+        }
+      }
+    ],
+    "purpose": "SOURCE_FIDELITY",
+    "evidenceType": "MACHINE_REVIEW",
+    "evidenceScope": "TEXT_ONLY",
+    "policyVersion": "OWNER_MACHINE_PILOT_V1",
+    "rubricVersion": "creative-prompt-quality-v1",
+    "evaluationUnit": "SINGLE_SUBJECT_V1"
+  },
+  "response": {
+    "model": "gpt-6.1-sol",
+    "usage": {
+      "total_tokens": 3556,
+      "prompt_tokens": 1883,
+      "completion_tokens": 1673,
+      "prompt_tokens_details": {
+        "text_tokens": null,
+        "audio_tokens": 0,
+        "image_tokens": null,
+        "cached_tokens": 0,
+        "cache_write_tokens": 1880
+      },
+      "completion_tokens_details": {
+        "text_tokens": null,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "accepted_prediction_tokens": 0,
+        "rejected_prediction_tokens": 0
+      }
+    },
+    "costUsd": 0.0214375,
+    "failure": "Provider or response contract failed; saved result requires review; no automatic retry",
+    "results": [],
+    "provider": "openai",
+    "costBasis": "CALCULATED_FROM_REPORTED_USAGE_AND_CONFIGURED_RATES",
+    "requestId": "6f078994-3385-4910-8423-47a46ad9999a",
+    "rawResponse": "{\"results\":[{\"neutralId\":\"Q04\",\"decision\":\"FAIL\",\"rationale\":\"Most causal actions and the ending are preserved, but the note's required text is omitted and the post-mirror escalation to near-suffocation is absent. The timed plan instead proceeds from the mirror scream directly to sneezing. Authoritative settings specify 15s, 9:16, image2video, 480p and ABSURD_PHYSICS; embedded AUTO is obsolete. Sentence coverage alone does not establish semantic fidelity.\",\"uncertainty\":\"Text-only review cannot establish rendered execution or visual identity fidelity. No approved visual reference or image2video input is supplied here. The source gives no numeric duration; the 15-second allocation is a production constraint, not source timing.\",\"conflict\":true,\"omissions\":[\"The intended cabinet note must read 'Topla!'; no note text is specified.\",\"After the mirror scream, notes must become so numerous that Mimi seems about to suffocate; this escalation is missing.\"],\"additions\":[\"Bright, colorful animation, playful music, sticking sound effects and a no-dark-themes/no-violence constraint are production additions.\",\"Explicit two-to-four-to-eight counts operationalize the source doubling rule without contradicting it.\"],\"mappings\":[{\"anchor\":\"APPROVED_EVENTS\",\"beatId\":\"\",\"sourceQuote\":\"Mimi, oyuncak dolabına 'Topla!' yazan bir yapışkan not yapıştırmak ister.\",\"promptQuote\":\"0-2s: Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger\",\"eventId\":\"event_01\",\"consistency\":\"FAIL\"},{\"anchor\":\"APPROVED_EVENTS\",\"beatId\":\"\",\"sourceQuote\":\"Not, Mimi'nin parmağına yapışır.\",\"promptQuote\":\"the note visibly clings to her finger\",\"eventId\":\"event_02\",\"consistency\":\"PASS\"},{\"anchor\":\"APPROVED_EVENTS\",\"beatId\":\"\",\"sourceQuote\":\"Mimi diğer eliyle çıkarmaya çalışırken not ikiye ayrılır ve iki eline de yapışır.\",\"promptQuote\":\"2-5s: Mimi tries to peel the stuck note away with her other hand; the note splits into two [medium shot of Mimi struggling] Mimi pulls at the note -> one note sticks to each hand\",\"eventId\":\"event_03\",\"consistency\":\"PASS\"},{\"anchor\":\"APPROVED_EVENTS\",\"beatId\":\"\",\"sourceQuote\":\"Her çekişte notlar ikiye katlanarak çoğalır.\",\"promptQuote\":\"5-10s: Mimi continues to pull; each pull doubles the number of sticky notes\",\"eventId\":\"event_04\",\"consistency\":\"PASS\"},{\"anchor\":\"APPROVED_EVENTS\",\"beatId\":\"\",\"sourceQuote\":\"Kısa sürede Mimi'nin kolları, bacakları ve yüzü notlarla kaplanır.\",\"promptQuote\":\"notes multiply from two to four to eight as she pulls, progressively covering her arms, legs and face -> Mimi is overwhelmed by notes\",\"eventId\":\"event_05\",\"consistency\":\"PASS\"},{\"anchor\":\"APPROVED_EVENTS\",\"beatId\":\"\",\"sourceQuote\":\"Mimi aynada kendini görünce çığlık atar.\",\"promptQuote\":\"10-12s: Mimi sees herself in a mirror and screams\",\"eventId\":\"event_06\",\"consistency\":\"PASS\"},{\"anchor\":\"APPROVED_EVENTS\",\"beatId\":\"\",\"sourceQuote\":\"Notlar o kadar çoğalır ki Mimi boğulacak gibi olur.\",\"promptQuote\":\"\",\"eventId\":\"event_07\",\"consistency\":\"FAIL\"},{\"anchor\":\"APPROVED_EVENTS\",\"beatId\":\"\",\"sourceQuote\":\"Sonunda hapşırır ve tüm notlar uçuşarak dolabın üzerine yapışır.\",\"promptQuote\":\"12-15s: Mimi sneezes and the sticky notes fly off [medium shot of notes flying] notes scatter and stick to the cabinet\",\"eventId\":\"event_08\",\"consistency\":\"PASS\"},{\"anchor\":\"APPROVED_EVENTS\",\"beatId\":\"\",\"sourceQuote\":\"Mimi rahat bir nefes alır ama dolap hâlâ dağınıktır.\",\"promptQuote\":\"Mimi breathes a sigh of relief but the cabinet remains messy\",\"eventId\":\"event_09\",\"consistency\":\"PASS\"},{\"anchor\":\"CHARACTER_IDENTITY\",\"beatId\":\"\",\"sourceQuote\":\"Mimi, oyuncak dolabına 'Topla!' yazan bir yapışkan not yapıştırmak ister.\",\"promptQuote\":\"Mimi is the established anthropomorphic bunny character. Preserve that identity; do not render a human or invent unverified visual details.\",\"eventId\":\"event_01\",\"consistency\":\"PASS\"},{\"anchor\":\"PHYSICAL_RULE\",\"beatId\":\"\",\"sourceQuote\":\"Her çekişte notlar ikiye katlanarak çoğalır.\",\"promptQuote\":\"each pull doubles the number of sticky notes\",\"eventId\":\"event_04\",\"consistency\":\"PASS\"},{\"anchor\":\"EVENT_ORDER\",\"beatId\":\"\",\"sourceQuote\":\"Mimi aynada kendini görünce çığlık atar. Notlar o kadar çoğalır ki Mimi boğulacak gibi olur. Sonunda hapşırır ve tüm notlar uçuşarak dolabın üzerine yapışır.\",\"promptQuote\":\"10-12s: Mimi sees herself in a mirror and screams [close-up on Mimi's shocked face] Mimi is startled by her reflection completely covered in notes -> Mimi is startled\\n12-15s: Mimi sneezes and the sticky notes fly off\",\"eventId\":\"event_07\",\"consistency\":\"FAIL\"},{\"anchor\":\"TEMPORAL_CONSTRAINTS\",\"beatId\":\"\",\"sourceQuote\":\"Kısa sürede Mimi'nin kolları, bacakları ve yüzü notlarla kaplanır.\",\"promptQuote\":\"5-10s: Mimi continues to pull; each pull doubles the number of sticky notes [wide shot showing Mimi covered in notes] notes multiply from two to four to eight as she pulls, progressively covering her arms, legs and face\",\"eventId\":\"event_05\",\"consistency\":\"PASS\"},{\"anchor\":\"REQUIRED_ENDING\",\"beatId\":\"\",\"sourceQuote\":\"Mimi rahat bir nefes alır ama dolap hâlâ dağınıktır.\",\"promptQuote\":\"Mimi is relieved but the cabinet remains visibly messy.\",\"eventId\":\"event_09\",\"consistency\":\"PASS\"}],\"productionRisks\":[\"Restore the exact 'Topla!' note text; its legibility at 480p is unverified.\",\"Stage the missing post-mirror multiplication and apparent breathing distress before the sneeze, preserving the playful tone without depicting injury.\",\"Eight notes covering arms, legs and face may require explicit note size or coverage staging; current text does not establish that physical layout.\",\"The mirror must retain enough facial readability for the scream despite face coverage; reflection continuity and total note transfer are unverified.\",\"The final three seconds require sneeze, full note release, cabinet adhesion and a relief breath. Executability within that window is uncertain, not demonstrated by shot labels.\",\"Image2video requires a suitable input image; none is evidenced here. Do not assume identity-reference availability or successful generator execution.\"],\"sourceBinding\":{\"promptSha256\":\"0fe229774deb4b31a42145bad91cf10c91634ba00da39fa3e9d288b3a2e7bd98\",\"approvedStorySha256\":\"df653dbcaf16bfdbceb87baa23688d70d739c34941d0075e30e96b181e1bf32b\",\"productionSettingsSha256\":\"e6aedfab391d7ee0a7e753b3dc8f4e8d57c31d8b2ada4b9f8b130b95b2689937\",\"sourceIdentity\":\"saved-prompt:10:10\",\"storyId\":\"bc1cf798-d20b-4b98-8b73-56e1581c3afc\",\"revision\":\"candidate-2-revision-7c63cc86\",\"approvalRecordId\":\"20b77d13-848d-46d0-ab4b-bb9b6efb0836\"}}]}",
+    "evidenceType": "MACHINE_REVIEW",
+    "modelVersion": "gpt-6.1-sol",
+    "policyVersion": "OWNER_MACHINE_PILOT_V1",
+    "executionStatus": "FAILED_OR_AMBIGUOUS",
+    "failureCategory": "PROVIDER_OR_RESPONSE_CONTRACT_FAILED",
+    "providerMetadata": {
+      "model": "gpt-6.1-sol",
+      "provider": "openai",
+      "apiStatus": "COMPLETED",
+      "requestId": "chatcmpl-EZYRV5i8EXPUfeq0yBX2PRYE6EM5R",
+      "finishReason": "stop"
+    },
+    "usageAccountingStatus": "COMPLETE",
+    "effectiveRequestConfiguration": {
+      "maxOutputTokens": 4000,
+      "reasoningEffort": "low",
+      "automaticRetries": false
+    }
+  },
+  "failure": "Dispatch or response contract failed; saved request must be reviewed; no automatic retry",
+  "created_at": "2026-10-16T09:22:27.975766+00:00",
+  "completed_at": "2026-10-16T09:23:34.722221+00:00",
+  "subject_prompt_sha256": "0fe229774deb4b31a42145bad91cf10c91634ba00da39fa3e9d288b3a2e7bd98"
+}

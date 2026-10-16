@@ -1,0 +1,4 @@
+cpq_legacy_and_critic_slot|CREATE UNIQUE INDEX cpq_legacy_and_critic_slot ON public.cpq_machine_requests USING btree (pilot_id, slot) WHERE (subject_prompt_sha256 IS NULL)
+cpq_machine_requests_pilot_id_idempotency_key_key|CREATE UNIQUE INDEX cpq_machine_requests_pilot_id_idempotency_key_key ON public.cpq_machine_requests USING btree (pilot_id, idempotency_key)
+cpq_machine_requests_pkey|CREATE UNIQUE INDEX cpq_machine_requests_pkey ON public.cpq_machine_requests USING btree (request_id)
+cpq_source_subject_slot|CREATE UNIQUE INDEX cpq_source_subject_slot ON public.cpq_machine_requests USING btree (pilot_id, slot, subject_prompt_sha256) WHERE (subject_prompt_sha256 IS NOT NULL)

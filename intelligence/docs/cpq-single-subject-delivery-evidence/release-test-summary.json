@@ -1,0 +1,36 @@
+{
+  "backend": [
+    {
+      "name": "com.pompomhills.intelligence.OriginalCpqFidelityIntegrationTest",
+      "tests": "24",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.pompomhills.intelligence.CpqOwnerAccessTest",
+      "tests": "5",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.pompomhills.intelligence.workflow.CpqV62MigrationTest",
+      "tests": "2",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    }
+  ],
+  "mlPassed": 106,
+  "frontendFocusedPassed": 118,
+  "broaderFrontendNotClean": true,
+  "broaderFrontendPriorRun": {
+    "passed": 343,
+    "failed": 7,
+    "uncaughtErrors": 8,
+    "baselinePreexistenceProven": false
+  },
+  "runtimeMockedSubjects": 4,
+  "newRealProviderCalls": 0
+}

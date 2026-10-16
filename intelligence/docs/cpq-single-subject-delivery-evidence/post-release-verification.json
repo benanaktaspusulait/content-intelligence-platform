@@ -1,0 +1,58 @@
+{
+  "status": "DEPLOYMENT_VERIFIED_AWAITING_SOURCE_ONLY_AUTHORIZATION",
+  "images": [
+    {
+      "service": "ml-service",
+      "image": "sha256:e183985d3d18fd3f1601d258829491160ef21e437df091106c91151a8eebab28",
+      "health": "healthy",
+      "realDispatchFlag": "false"
+    },
+    {
+      "service": "backend",
+      "image": "sha256:2affe1ee131b4e3462cfedb20f5e6d291116e799416ec55951c79ec32002a22f",
+      "health": "healthy",
+      "realDispatchFlag": "false"
+    },
+    {
+      "service": "frontend",
+      "image": "sha256:a795fb833441e29fca32450e6406832ae85213388d0592ce27b85952d1dd5b36",
+      "health": "none",
+      "realDispatchFlag": null
+    }
+  ],
+  "sourceUnit": "SINGLE_SUBJECT_V1 (running image verified in disposable storage)",
+  "allAppliedMigrationChecksumsVerified": 64,
+  "v66Checksum": -1797319927,
+  "ownerConfigured": true,
+  "sourceReasoningEffort": "low",
+  "strictJsonAnd4000AndRetriesZero": "Verified using runtime mocked SDK interception",
+  "historicalRequests": [
+    {
+      "requestId": "3a55b29a-48c6-44c0-a003-da11af0f7069",
+      "unchangedApartFromNewNullColumn": true
+    },
+    {
+      "requestId": "7beb2327-6f75-4646-90df-c56c295fde20",
+      "unchangedApartFromNewNullColumn": true
+    }
+  ],
+  "productionInventory": "2|2|0",
+  "prompt10": "1|0fe229774deb4b31a42145bad91cf10c91634ba00da39fa3e9d288b3a2e7bd98",
+  "workflowDigest": "75|6b270d6f3ed3646ef1dcbab8692de0c44d9f52d1302c813be4d8215fd14ee3d8",
+  "realDispatchEnabled": false,
+  "realEnabled": false,
+  "cpqGradingActivated": "f",
+  "paidAuthorizationReceived": false,
+  "realProviderCalls": 0,
+  "semanticVerdict": "NOT_EVALUATED",
+  "validatedSubjects": 0,
+  "candidateRequests": 0,
+  "criticRequests": 0,
+  "renderAuthorized": false,
+  "hostFreeBytes": 1233596416,
+  "storyIdentity": {
+    "storyId": "bc1cf798-d20b-4b98-8b73-56e1581c3afc",
+    "approvalRecordId": "20b77d13-848d-46d0-ab4b-bb9b6efb0836",
+    "revision": "candidate-2-revision-7c63cc86"
+  }
+}

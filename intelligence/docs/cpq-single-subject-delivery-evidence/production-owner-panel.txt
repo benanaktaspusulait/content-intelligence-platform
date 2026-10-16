@@ -1,0 +1,211 @@
+- region "Owner-managed CPQ pilot" [ref=e43]
+  - strong
+    - StaticText "Owner-managed quality pilot · ungraded"
+  - paragraph
+    - StaticText "MACHINE_REVIEW: SEE_SAVED_EVIDENCE. Official CPQ grading: INACTIVE. Render authorization: separate F8 gate."
+  - button "Inspect owner pilot" [ref=e48]
+  - status
+    - StaticText "Owner session established"
+  - paragraph
+    - StaticText "Owner: benan · OWNER_DECISION authority · not an independent human reviewer "
+    - button "Logout" [ref=e55]
+  - group
+    - DisclosureTriangle "Current source and production bindings" [expanded=false]
+      - StaticText "Current source and production bindings"
+  - paragraph
+    - StaticText "Machine fidelity: INCOMPLETE · Independent human evidence: UNKNOWN"
+  - LabelText
+    - StaticText "Total pilot budget reservation (USD; preparation makes no provider call)"
+    - spinbutton "Total pilot budget reservation (USD; preparation makes no provider call)" [ref=e56]: 0.5
+      - StaticText "0.5"
+  - checkbox "I confirm this is the approved source binding; this owner confirmation is not independent fidelity evidence." [checked=false, ref=e49]
+  - button "Prepare exact saved pilot" [disabled, ref=e50]
+  - LabelText
+    - StaticText "Existing pilot ID"
+    - textbox "Existing pilot ID" [ref=e57]: 53e43e2c-8bfa-4798-8fad-30a068d97dac
+      - StaticText "53e43e2c-8bfa-4798-8fad-30a068d97dac"
+  - button "Load saved pilot" [ref=e51]
+  - paragraph
+    - StaticText "Pilot 53e43e2c-8bfa-4798-8fad-30a068d97dac · OWNER_MACHINE_PILOT_V1 · no A/A+ qualification"
+  - paragraph
+    - StaticText "Source evidence: 0 / 4 · critic gate: BLOCKED · conflicts: 0 · review required: 0"
+  - paragraph
+    - StaticText "Missing reviews: Q01, Q03, Q02, Q04"
+  - list
+    - listitem [level=1]
+      - ListMarker "• "
+      - StaticText "Q01 · 90bdda1e9cea8e2e46662821b52a01dc94359df87b7753f2c77a645c77905495 · FAILED_OR_AMBIGUOUS · semantic: NOT_ASSESSED"
+    - listitem [level=1]
+      - ListMarker "• "
+      - StaticText "Q03 · 2151ed0e2d4b8afa42ea80bad8238a9a639a1be40eea6576390e04704774c746 · FAILED_OR_AMBIGUOUS · semantic: NOT_ASSESSED"
+    - listitem [level=1]
+      - ListMarker "• "
+      - StaticText "Q02 · 218a9b367d6484d2a12bc8f6e02150f8812cdf8874c73b0171c254035a6be749 · FAILED_OR_AMBIGUOUS · semantic: NOT_ASSESSED"
+    - listitem [level=1]
+      - ListMarker "• "
+      - StaticText "Q04 · 0fe229774deb4b31a42145bad91cf10c91634ba00da39fa3e9d288b3a2e7bd98 · FAILED_OR_AMBIGUOUS · semantic: NOT_ASSESSED"
+  - paragraph
+    - StaticText "Critic A: NOT_EXECUTED · Critic B: NOT_EXECUTED · source: FAILED_OR_AMBIGUOUS"
+  - group
+    - DisclosureTriangle "Machine evidence, strengths, weaknesses, uncertainty and execution risks" [expanded=false]
+      - StaticText "Machine evidence, strengths, weaknesses, uncertainty and execution risks"
+  - group
+    - DisclosureTriangle "Agreement, disagreement and possible material improvement" [expanded=false]
+      - StaticText "Agreement, disagreement and possible material improvement"
+  - group "Separate paid review authorization · no automatic execution"
+    - Legend
+      - StaticText "Separate paid review authorization · no automatic execution"
+    - paragraph
+      - StaticText "Real dispatch disabled on server. API keys do not authorize spending."
+    - LabelText
+      - StaticText "Stage"
+      - combobox "Stage" [expanded=false, ref=e65]: SOURCE_FIDELITY
+        - MenuListPopup
+          - option "SOURCE_FIDELITY" [selected, ref=e71]
+          - option "CRITIC_A" [ref=e72]
+          - option "CRITIC_B" [ref=e73]
+    - LabelText
+      - StaticText "Configured model profile"
+      - combobox "Configured model profile" [expanded=false, ref=e66]: Select explicitly
+        - MenuListPopup
+          - option "Select explicitly" [selected, ref=e74]
+          - option "deepseek / deepseek-v4-pro · key configured" [ref=e75]
+          - option "openai / gpt-6.1-sol · key configured" [ref=e76]
+    - LabelText
+      - StaticText "Maximum call cost USD"
+      - spinbutton "Maximum call cost USD" [ref=e67]: 0.15000000596046448
+        - StaticText "0.15"
+    - LabelText
+      - StaticText "Maximum output tokens"
+      - spinbutton "Maximum output tokens" [ref=e68]: 4000
+        - StaticText "4000"
+    - checkbox "I explicitly authorize one inference for this stage and exact model, bounded by these limits, with no retries." [checked=false, ref=e58]
+    - button "Reserve one authorized request" [disabled, ref=e59]
+    - article
+      - StaticText "SOURCE_FIDELITY · whole pilot / historical batch · FAILED_OR_AMBIGUOUS · Dispatch or response contract failed; saved request must be reviewed; no automatic retry"
+  - group "Explicit OWNER_DECISION"
+    - Legend
+      - StaticText "Explicit OWNER_DECISION"
+    - LabelText
+      - StaticText "Decision"
+      - combobox "Decision" [expanded=false, ref=e69]: KEEP_ORIGINAL
+        - MenuListPopup
+          - option "KEEP_ORIGINAL" [selected, ref=e77]
+          - option "REQUEST_REVISION" [ref=e78]
+          - option "ACCEPT_TEXT_FOR_PREPARATION" [ref=e79]
+    - LabelText
+      - StaticText "Rationale"
+      - textbox "Rationale" [ref=e70]
+    - checkbox "I confirm this is ungraded, acknowledge machine uncertainty and authorize no render, prompt version or candidate approval." [checked=false, ref=e60]
+    - button "Record owner decision" [disabled, ref=e61]
+- status
+  - StaticText "Owner session established"
+- paragraph
+  - StaticText "Owner: benan · OWNER_DECISION authority · not an independent human reviewer "
+  - button "Logout" [ref=e55]
+- group
+  - DisclosureTriangle "Current source and production bindings" [expanded=false]
+    - StaticText "Current source and production bindings"
+- paragraph
+  - StaticText "Machine fidelity: INCOMPLETE · Independent human evidence: UNKNOWN"
+- LabelText
+  - StaticText "Total pilot budget reservation (USD; preparation makes no provider call)"
+  - spinbutton "Total pilot budget reservation (USD; preparation makes no provider call)" [ref=e56]: 0.5
+    - StaticText "0.5"
+- checkbox "I confirm this is the approved source binding; this owner confirmation is not independent fidelity evidence." [checked=false, ref=e49]
+- button "Prepare exact saved pilot" [disabled, ref=e50]
+- LabelText
+  - StaticText "Existing pilot ID"
+  - textbox "Existing pilot ID" [ref=e57]: 53e43e2c-8bfa-4798-8fad-30a068d97dac
+    - StaticText "53e43e2c-8bfa-4798-8fad-30a068d97dac"
+- button "Load saved pilot" [ref=e51]
+- paragraph
+  - StaticText "Pilot 53e43e2c-8bfa-4798-8fad-30a068d97dac · OWNER_MACHINE_PILOT_V1 · no A/A+ qualification"
+- paragraph
+  - StaticText "Source evidence: 0 / 4 · critic gate: BLOCKED · conflicts: 0 · review required: 0"
+- paragraph
+  - StaticText "Missing reviews: Q01, Q03, Q02, Q04"
+- list
+  - listitem [level=1]
+    - ListMarker "• "
+    - StaticText "Q01 · 90bdda1e9cea8e2e46662821b52a01dc94359df87b7753f2c77a645c77905495 · FAILED_OR_AMBIGUOUS · semantic: NOT_ASSESSED"
+  - listitem [level=1]
+    - ListMarker "• "
+    - StaticText "Q03 · 2151ed0e2d4b8afa42ea80bad8238a9a639a1be40eea6576390e04704774c746 · FAILED_OR_AMBIGUOUS · semantic: NOT_ASSESSED"
+  - listitem [level=1]
+    - ListMarker "• "
+    - StaticText "Q02 · 218a9b367d6484d2a12bc8f6e02150f8812cdf8874c73b0171c254035a6be749 · FAILED_OR_AMBIGUOUS · semantic: NOT_ASSESSED"
+  - listitem [level=1]
+    - ListMarker "• "
+    - StaticText "Q04 · 0fe229774deb4b31a42145bad91cf10c91634ba00da39fa3e9d288b3a2e7bd98 · FAILED_OR_AMBIGUOUS · semantic: NOT_ASSESSED"
+- paragraph
+  - StaticText "Critic A: NOT_EXECUTED · Critic B: NOT_EXECUTED · source: FAILED_OR_AMBIGUOUS"
+- group
+  - DisclosureTriangle "Machine evidence, strengths, weaknesses, uncertainty and execution risks" [expanded=false]
+    - StaticText "Machine evidence, strengths, weaknesses, uncertainty and execution risks"
+- group
+  - DisclosureTriangle "Agreement, disagreement and possible material improvement" [expanded=false]
+    - StaticText "Agreement, disagreement and possible material improvement"
+- group "Separate paid review authorization · no automatic execution"
+  - Legend
+    - StaticText "Separate paid review authorization · no automatic execution"
+  - paragraph
+    - StaticText "Real dispatch disabled on server. API keys do not authorize spending."
+  - LabelText
+    - StaticText "Stage"
+    - combobox "Stage" [expanded=false, ref=e65]: SOURCE_FIDELITY
+      - MenuListPopup
+        - option "SOURCE_FIDELITY" [selected, ref=e71]
+        - option "CRITIC_A" [ref=e72]
+        - option "CRITIC_B" [ref=e73]
+  - LabelText
+    - StaticText "Configured model profile"
+    - combobox "Configured model profile" [expanded=false, ref=e66]: Select explicitly
+      - MenuListPopup
+        - option "Select explicitly" [selected, ref=e74]
+        - option "deepseek / deepseek-v4-pro · key configured" [ref=e75]
+        - option "openai / gpt-6.1-sol · key configured" [ref=e76]
+  - LabelText
+    - StaticText "Maximum call cost USD"
+    - spinbutton "Maximum call cost USD" [ref=e67]: 0.15000000596046448
+      - StaticText "0.15"
+  - LabelText
+    - StaticText "Maximum output tokens"
+    - spinbutton "Maximum output tokens" [ref=e68]: 4000
+      - StaticText "4000"
+  - checkbox "I explicitly authorize one inference for this stage and exact model, bounded by these limits, with no retries." [checked=false, ref=e58]
+  - button "Reserve one authorized request" [disabled, ref=e59]
+  - article
+    - StaticText "SOURCE_FIDELITY · whole pilot / historical batch · FAILED_OR_AMBIGUOUS · Dispatch or response contract failed; saved request must be reviewed; no automatic retry"
+- group "Explicit OWNER_DECISION"
+  - Legend
+    - StaticText "Explicit OWNER_DECISION"
+  - LabelText
+    - StaticText "Decision"
+    - combobox "Decision" [expanded=false, ref=e69]: KEEP_ORIGINAL
+      - MenuListPopup
+        - option "KEEP_ORIGINAL" [selected, ref=e77]
+        - option "REQUEST_REVISION" [ref=e78]
+        - option "ACCEPT_TEXT_FOR_PREPARATION" [ref=e79]
+  - LabelText
+    - StaticText "Rationale"
+    - textbox "Rationale" [ref=e70]
+  - checkbox "I confirm this is ungraded, acknowledge machine uncertainty and authorize no render, prompt version or candidate approval." [checked=false, ref=e60]
+  - button "Record owner decision" [disabled, ref=e61]
+- DisclosureTriangle "Current source and production bindings" [expanded=false]
+  - StaticText "Current source and production bindings"
+- DisclosureTriangle "Machine evidence, strengths, weaknesses, uncertainty and execution risks" [expanded=false]
+  - StaticText "Machine evidence, strengths, weaknesses, uncertainty and execution risks"
+- DisclosureTriangle "Agreement, disagreement and possible material improvement" [expanded=false]
+  - StaticText "Agreement, disagreement and possible material improvement"
+- checkbox "I explicitly authorize one inference for this stage and exact model, bounded by these limits, with no retries." [checked=false, ref=e58]
+- checkbox "I confirm this is ungraded, acknowledge machine uncertainty and authorize no render, prompt version or candidate approval." [checked=false, ref=e60]
+- option "SOURCE_FIDELITY" [selected, ref=e71]
+- option "CRITIC_A" [ref=e72]
+- option "CRITIC_B" [ref=e73]
+- option "Select explicitly" [selected, ref=e74]
+- option "deepseek / deepseek-v4-pro · key configured" [ref=e75]
+- option "openai / gpt-6.1-sol · key configured" [ref=e76]
+- option "KEEP_ORIGINAL" [selected, ref=e77]
+- option "REQUEST_REVISION" [ref=e78]
+- option "ACCEPT_TEXT_FOR_PREPARATION" [ref=e79]

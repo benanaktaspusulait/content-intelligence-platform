@@ -86,7 +86,7 @@ Read-only production verification: both previous failed durable rows equal their
 - **ML: 106 passed** across single-subject, prior output-budget, owner-machine pilot, Adaptive V3 and CPQ V1 suites; mocked SDK transports only, 244 existing datetime.utcnow warnings.
 - **Backend: 31 passed**, zero skipped/errors/failures: 24 original/pilot integration tests, five owner-auth tests, two migration tests. Disposable PostgreSQL containers, no production writes; ML mocked. V65→V66 preserves both archived real failed batches. V61→V66 preserves append-only calibration history.
 - **Step 6 frontend: 118 passed** across quality-validator specs, including eight owner-pilot tests. Opening remains read-only; exact subject authorization, no implicit execute, missing candidate gate and duplicate-subject controls verified. No live UI claim: deployment is prohibited in this task.
-- **Broader frontend: 343 passed, seven failed, eight uncaught errors**, all failures in untouched `video-detail.page.spec.ts`, including a missing mocked `getCaptionVersionsByVideo` service method and existing page expectation mismatches. This is not a clean full-frontend regression result. These failures were not repaired as part of source review scope.
+- **Broader frontend: 343 passed, seven failed, eight uncaught errors**, all failures in untouched `video-detail.page.spec.ts`, including a missing mocked `getCaptionVersionsByVideo` service method and page expectation mismatches; baseline pre-existence was not established. This is not a clean full-frontend regression result. These failures were not repaired as part of source review scope.
 - `git diff --check` passed. No Docker rebuild, deployment, prune, volume deletion, backup removal, provider calls, story edits, approval, generation, grading activation, commit or push was performed by this task.
 
 Acceptance covers original/candidate-only construction, six anchors, full source/event/changed-execution evidence, exact bindings, complete UNKNOWN evidence, unsupported PASS/missing coverage/invented quotes/events/wrong IDs/hashes rejected, malformed/empty/length/reasoning exhaustion retained, per-subject idempotency/replay denial, failed-candidate isolation, incomplete and complete aggregates, unresolved review gate, historical migration compatibility, owner/security boundaries and unchanged canonical/grading/render state.
@@ -134,3 +134,212 @@ npm test -- --watch=false --include='src/app/pages/quality-validator/*.spec.ts'
 ```
 
 The optional diagnostic tokenizer remains outside the application; no production tokenizer dependency was added. Current focused source tests must run before backend tests when regenerating fixture artifacts. Broader frontend command `npm test -- --watch=false` produces the disclosed unrelated failures.
+
+
+# Deployment / original-only authorization addendum — 2026-10-16
+
+**Overall result: DEPLOYMENT_VERIFIED_AWAITING_SOURCE_ONLY_AUTHORIZATION.** The earlier “not deployed” sections above describe the offline boundary; this addendum supersedes deployment status. Engineering deployment was explicitly authorized by the delivery instruction. Its paid-approval boundary remains in force. The later “devam” continued engineering verification; it was not treated as the required fresh $0.10 inference approval.
+
+## Release and backup evidence
+
+ML, backend and frontend were deployed sequentially using the official `deploy.sh`, one service per invocation, with `COMPOSE_PARALLEL_LIMIT=1`. Existing owner identity/private mount and internal service authentication were preserved. Both dispatch flags stayed false throughout. No applied migration was edited or repaired, and no rollback was attempted.
+
+- Initial host free space: 5,498,875,904 bytes (approximately 5.1 GiB).
+- Docker filesystem initially had 49.8 GiB free; build contexts were small (backend source 4.7 MiB, frontend source 1.9 MiB, ML app 3.4 MiB), existing dependency/base layers available. Source/test/build output and ML dependency installation were the expected incremental work. Each build started only after the preceding service completed; the script checked a minimum 1,500 MiB before each build.
+- Observed free space after ML: 4,716,621,824 bytes; backend: 4,523,945,984; frontend: 4,473,352,192. Later test/browser memory pressure reduced final observed host free space to approximately 1.15 GiB. No further build or cleanup is authorized/needed for this release; recheck headroom before the later execution window.
+- All 63 previously applied migration checksums matched local files before release. Flyway applied **V66 successfully** through normal backend startup. All 64 applied checksums matched afterward; V66 checksum: **-1797319927**. V65 remains unchanged.
+
+Pre-migration custom-format PostgreSQL backup:
+
+- Location: `/Users/benanaktas/Library/Application Support/Pompom Hills/Recovery Backups/cpq-single-v66-20261016T085445Z/pompom-before-v66.dump`.
+- Size: 1484447 bytes; permission 0600.
+- SHA-256: `a8aa436ee316a14bd80dea2db7c8abefbcde61699312b6e119812f31c96bccd1`.
+- Verification: full `pg_restore --file=/dev/null` decoding and TOC listing (1,086 entries).
+- Subsequent **actual restore** into a task-owned disposable tmpfs PostgreSQL succeeded using `pg_restore --exit-on-error`. The released backend then migrated that restored V65 database to V66 and passed the positive API/UI smoke checks. This is a disposable operational restore verification, not a claim about production recovery time or every table's independent restored-row fingerprint.
+- Backup is retained outside the repository. No backups, Docker volumes, images or unrelated files were deleted. Only the three task-owned disposable smoke containers/network were removed after verification; no production container/data was removed.
+
+Running release images match the official deployment outputs:
+
+| Service | Running image |
+| --- | --- |
+| ml-service | `sha256:e183985d3d18fd3f1601d258829491160ef21e437df091106c91151a8eebab28` |
+| backend | `sha256:2affe1ee131b4e3462cfedb20f5e6d291116e799416ec55951c79ec32002a22f` |
+| frontend | `sha256:a795fb833441e29fca32450e6406832ae85213388d0592ce27b85952d1dd5b36` |
+
+Backend/ML are healthy; frontend root and proxied API HTTP checks pass. Release file SHA-256 values remained identical across tests/build/deployment. The running ML source file also matches its tested host source hash. New ML image contains OpenAI SDK 3.31.0, jsonschema 4.26.0 and pydantic 2.14.1; mocked transport tests were run inside that actual image to check its request contract. SDK presence is not a real inference success claim.
+
+## Final release tests and runtime path
+
+Repeated in ML-before-backend order against final release files:
+
+- **106 ML tests passed**.
+- **31 backend/auth/migration tests passed**, zero skipped/failures/errors, using disposable PostgreSQL.
+- **118 focused frontend tests passed**.
+- The broader frontend result remains **343 passed / seven failed / eight uncaught errors**, all in `video-detail.page.spec.ts`. These are unresolved and outside this delivery's changes; no baseline comparison was performed, so this report does **not** claim they are proven pre-existing. The full frontend suite is not described as green.
+
+Running backend/frontend images were then exercised using the restored disposable database. The actual application API created two single-subject-mode pilots only there; four distinct source authorizations (one per exact SHA) each persisted exactly one packet, `evaluationUnit=SINGLE_SUBJECT_V1`, all nine source sentence spans and no full duplicate original prompt. Missing subject SHA returned 409, identical authorization replay reused its durable row, and execute returned 403 with real dispatch disabled. No provider transport ran. Zero validated source evidence; critic gate stayed false. These are **TEST_FIXTURE_DISPOSABLE_STORAGE** records, not production paid authorizations.
+
+The actual running ML image accepted all four representative TEST_FIXTURE UNKNOWN responses via intercepted/mock SDK transport, preserving exact bindings, six anchors, full source-event and changed-execution coverage. Captured request arguments verify OpenAI/gpt-6.1-sol, low effort, strict json_schema, 4,000 max_completion_tokens and SDK max_retries=0. No real inference occurred.
+
+Live PostgreSQL indexes preserve unique pilot/idempotency, one CRITIC_A/CRITIC_B slot each, legacy NULL-subject batch identity and scoped per-subject source uniqueness. Historical batch rows retain their old input and interpretation; they were not silently converted into single-subject reviews.
+
+## Actual browser verification
+
+Used the agent-browser skill with `npx --no-install agent-browser`, normal owner login and the existing private credential read only into transient process memory. No credentials/cookies were placed in artifacts or chat; no owner identity/credential was changed.
+
+1. **Actual production Step 6** (`127.0.0.1:4200`): expanded Creative Optimization (optional), opened the existing owner panel and loaded the saved historical pilot. All four neutral IDs and full prompt SHA values are visible separately. Source evidence is **0/4**, missing IDs are explicit, semantic findings remain NOT_ASSESSED, and critics are BLOCKED. Old requests remain historical FAILED_OR_AMBIGUOUS; no false semantic UNKNOWN/PASS was created. Dispatch-disabled and CPQ INACTIVE messages are visible. Production inventory before/after opening and inspection stayed **2 pilots / 2 requests / 0 evidence**.
+2. **Same released frontend/backend image with disposable storage**: loaded a fresh-mode pilot, selected Q04 and verified the exact original SHA in the dropdown. Four subjects remained NOT_EXECUTED. Changing selection made no write or inference. Checked only the disposable UI's local consent, then loaded another disposable pilot: both consent and subject selection cleared. Critic gate remained BLOCKED; request inventory did not change from the prepared smoke records. No authorization/execute button was submitted in the browser.
+3. Viewed both saved screenshots: individual full SHA/status list and Q04 selection are readable. The disposable check is explicitly distinguished from production: no fresh production pilot was created just to prove the selector exists.
+
+## Persisted source bindings and integrity
+
+Live read-only context APIs resolve the exact original and three specified historical candidates; all four prompt SHA values and the full approved-story hash recompute correctly from actual saved text. Canonical Ruleset 1.11 remains **88.40625/B** for all four. Source identity fields are distinct:
+
+- Story ID: `bc1cf798-d20b-4b98-8b73-56e1581c3afc`.
+- Approval record ID: `20b77d13-848d-46d0-ab4b-bb9b6efb0836`.
+- Approved text revision: `candidate-2-revision-7c63cc86`.
+
+Effective production context remains ABSURD_PHYSICS / SEEDANCE_2_0_MINI / 15s / image2video / 480p / 9:16. Neither prompt nor source text was reconstructed or shortened.
+
+Both historical durable requests compare equal to their archived full rows after excluding only the newly added NULL subject column. Prompt 10 remains version 1 with SHA `0fe229774deb4b31a42145bad91cf10c91634ba00da39fa3e9d288b3a2e7bd98`. Historical workflow count/digest remains 75 / `6b270d6f3ed3646ef1dcbab8692de0c44d9f52d1302c813be4d8215fd14ee3d8`. CPQ activation remains false.
+
+## Required owner-facing result at this boundary
+
+| Question | Actual result |
+| --- | --- |
+| V66 deployed and live single-subject path verified? | YES; production deployment plus same-running-image disposable positive path and browser checks |
+| New paid original-only call explicitly authorized/executed? | NO / NO; fresh consolidated approval is required next |
+| Visible valid real JSON arrived? | NOT_EXECUTED; no new provider response exists |
+| Original actual semantic verdict? | **NOT_EVALUATED** |
+| Concrete source discrepancies? | None established by this delivery; fixture opinions are not real source findings |
+| Input/completion/reasoning/visible usage? | NOT_AVAILABLE — no new real inference; offline proxy measurements remain in the main report |
+| Calculated usage cost vs ceiling? | No new inference cost; proposed maximum **$0.10**, not yet authorized |
+| Both dispatch flags disabled? | YES; container env and live capability checks agree |
+| Historical records/Prompt 10 preserved? | YES, exact comparisons above |
+| ONE next product action? | Obtain fresh approval and execute exactly one original-only source review, then examine its actual result before anything else |
+
+## Accounting reservation — separate from spending permission
+
+For a later fresh four-subject pilot, propose a **$0.70 total accounting ceiling**, without reserving or authorizing other requests. Only Q04 would receive a **$0.10 request reservation** if the owner approves the single call. A larger immutable pilot accounting ceiling prevents the one original result from being stranded by a pilot budget that cannot later support separately approved reviews. It does **not** authorize candidate/critic calls, which remain unreserved and unexecuted. No pilot or paid authorization has been created in production at this boundary.
+
+The exact proposed inference is one fresh SOURCE_FIDELITY request for original Q04 only, OpenAI/gpt-6.1-sol, low effort, strict JSON, 4,000 completion tokens, cap $0.10, retries zero, no fallback. The released admission path accepted this cap in disposable storage; recheck it immediately before any paid execution. Candidate and critic requests remain zero. If the call is approved, continue this same task; do not require another development prompt.
+
+## Overall and separate statuses
+
+- **DEPLOYMENT_VERIFIED_AWAITING_SOURCE_ONLY_AUTHORIZATION**
+- semanticVerdict: **NOT_EVALUATED**
+- validatedSubjects: **0/4**
+- newPaidRequests: **0**
+- candidateRequests: **0** (production, this delivery)
+- criticRequests: **0**
+- cpqGrading: **INACTIVE**
+- renderAuthorized: **false**
+- realDispatch: **DISABLED** in backend and ML
+
+All new detailed artifacts are in `cpq-single-subject-delivery-evidence/`: preflight, backup/restore smoke record, release file hashes, final test logs/summary, sequential official deploy logs/image identities, running-image mock validation, real browser snapshots/screenshots/checks, request identity indexes, live four-source contexts, final service and historical integrity checks. No provider calls, candidate generation, grading/approval/render actions, publishing, commit or push occurred.
+
+
+# Real original-only execution addendum — 2026-10-16
+
+**Overall result: SOURCE_SINGLE_SUBJECT_EXECUTION_FAILED.** This supersedes the preceding awaiting-authorization status. Exactly one fresh original-only real inference was authorized by the owner's **“evet”** and executed. The provider returned nonempty, parseable, strict-schema-valid JSON within the token budget. The existing evidence validator rejected a source-event citation binding, so no validated source review was persisted. No second inference or implementation change followed.
+
+## 1. Exact authorization and durable execution
+
+The fresh approval covered only original Mimi Q04: OpenAI/gpt-6.1-sol, Chat Completions, strict json_schema, reasoning_effort=low, max_completion_tokens=4000, maximum $0.10, max_retries=0, no fallback, candidates or critics. Prior approvals were not reused.
+
+- Fresh pilot: `770e8477-f352-499e-aabd-b7418435e70b`.
+- Fresh durable request: `6f078994-3385-4910-8423-47a46ad9999a`.
+- Fresh idempotency key: `81ebe72f-2b48-4d12-9a5c-fbef7b400b95`.
+- Provider response ID: `chatcmpl-EZYRV5i8EXPUfeq0yBX2PRYE6EM5R`.
+- Created: `2026-10-16T09:22:27.975766+00:00`; finalized: `2026-10-16T09:23:34.722221+00:00`.
+- Owner authentication: normal local owner API, authenticated benan; credential/cookie/CSRF kept out of artifacts.
+- Pilot accounting ceiling $0.70; **only one $0.10 Q04 reservation** exists. Other three subjects and both critics have no request/authorization.
+- Official application command: `POST /api/v1/intelligence/workflow/cpq/owner-pilot/{pilotId}/requests/{requestId}/execute`.
+
+Before dispatch, health/V66/inactive grading/disabled flags/current inventory and exact four saved prompt/story/settings bindings were rechecked. Full original and story text matched persisted data; story ID, approval ID and revision remained distinct. The authorized stored request contained exactly one packet, neutral ID Q04, exact prompt SHA, approved source SHA/settings binding, all nine approved-source spans and no candidate prompt or duplicated original. All six anchors remain required by the deployed schema/validator.
+
+Authorization/pilot creation did not trigger inference. The local journal recorded executeSubmissionStarted before POST; backend durable CAS protected the official request. Exactly one application submission was made, with no direct SDK invocation, duplicate/replay, fallback or retry. The running images were preserved; no build occurred in this execution window.
+
+## 2. Provider response, actual usage and cost
+
+| Measurement | Actual observed value |
+| --- | --- |
+| Provider / returned model | OpenAI / gpt-6.1-sol |
+| Effective effort / completion ceiling | low / 4,000 |
+| Provider API status / finish_reason | COMPLETED / **stop** |
+| Input tokens | **1,883** |
+| Completion tokens | **1,673** |
+| Provider-reported reasoning tokens | **0** |
+| Total tokens | 3,556 |
+| Visible output | **6,581 characters / 6,690 UTF-8 bytes** |
+| JSON parsing | PASS |
+| Existing strict single-subject JSON Schema | PASS |
+| Semantic/evidence contract | REJECTED |
+| Usage accounting | COMPLETE |
+| Calculated cost | **USD $0.02143750** |
+| Authorized ceiling | USD $0.10 |
+
+Calculation from reported usage and configured rates: `1883 × $2.50 / 1,000,000 + 1673 × $10.00 / 1,000,000`. This is calculated usage cost, **not a verified provider invoice**. It consumed approximately 21.4% of the authorized ceiling. The shared 4,000-token budget was not exhausted; the provider reported zero reasoning tokens, which is a usage field, not proof about unreported internal model processes.
+
+This real attempt demonstrates that the single-subject request can return visible structured output under the fixed envelope. It does not prove reliable completion or semantic assessment quality, and does not establish request size as the sole cause of the previous failures.
+
+## 3. Exact contract rejection — no source quotation was fabricated
+
+Durable state: **FAILED_OR_AMBIGUOUS**. ML envelope failure category: **PROVIDER_OR_RESPONSE_CONTRACT_FAILED**. No machine-evidence row was appended.
+
+An offline, read-only invocation of the **running deployed validator** against the saved input/raw output reproduced:
+
+`ValueError: Exact required source-event citation required`
+
+The invalid binding is mapping index 11 (zero-based), anchor **EVENT_ORDER**, eventId **event_07**. The submitted source quote spans three consecutive source sentences (events 06–08):
+
+> Mimi aynada kendini görünce çığlık atar. Notlar o kadar çoğalır ki Mimi boğulacak gibi olur. Sonunda hapşırır ve tüm notlar uçuşarak dolabın üzerine yapışır.
+
+But event_07 is bound only to:
+
+> Notlar o kadar çoğalır ki Mimi boğulacak gibi olur.
+
+The complete submitted quotation **does exist verbatim in the approved story**. It is rejected because it extends outside the single event_07 span; this is a multi-sentence EVENT_ORDER quotation attached to one sentence ID. The model did not obey that per-span mapping restriction. The same preserved raw response also uses empty beatId strings; these are permitted by the current string schema for this original-only request and are not the reproduced rejection reason.
+
+The response contains all six anchor kinds and all nine source-event IDs across 14 mappings, but that does not override the citation restriction. No mappings were rewritten/split, no validator was relaxed, and the raw FAIL was not promoted into accepted evidence. Offline diagnosis made **zero additional provider calls**.
+
+## 4. Model findings — preserved, but not accepted semantic evidence
+
+The raw model decision is **FAIL**. The application-accepted semantic verdict remains **NOT_EVALUATED** because the full evidence contract failed. This is not a completed semantic FAIL, not a model-authored UNKNOWN, and not canonical scoring evidence.
+
+Two raw model omission findings are preserved:
+
+| Model finding | Exact saved source | Relevant original prompt evidence | Interpretation limit |
+| --- | --- | --- | --- |
+| Note lettering omitted | `Mimi, oyuncak dolabına 'Topla!' yazan bir yapışkan not yapıştırmak ister.` | `0-2s: Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger` | Literal `Topla!` is present in source and absent from the full original prompt. This textual absence can be checked directly; the failed response is still not formal machine fidelity evidence. |
+| Post-mirror near-suffocation escalation absent | `Mimi aynada kendini görünce çığlık atar. Notlar o kadar çoğalır ki Mimi boğulacak gibi olur.` | `10-12s: Mimi sees herself in a mirror and screams`; next beat begins `12-15s: Mimi sneezes and the sticky notes fly off` | The original earlier says `Mimi is overwhelmed by notes` in 5–10s; whether that adequately preserves the later source event/order needs adjudication. Do not treat the model's stronger claim as independently validated. |
+
+The model listed bright/colorful style, music, sound effects and negative constraints as production additions, and explicitly described 2→4→8 counts as a noncontradictory operationalization of doubling. Their presence in an additions array does **not by itself establish an unauthorized narrative deviation**. Raw production risks include note-text legibility at 480p, mirror/face readability, coverage staging, final-three-second action density and missing visual/image2video input evidence. These are unvalidated text-only observations, not rendered defects or successful visual evidence.
+
+If these omission claims are later accepted, only the affected note lettering and post-mirror escalation/order would warrant targeted clarification/repair. No story, Prompt 10, candidate, setting, score or rule was edited here.
+
+## 5. Final closure, integrity and next action
+
+The execution driver disabled backend and ML dispatch in its finally path. Enable/execute/disable exit codes were all zero; the execute exit means the official workflow returned its saved failed result, **not** that the review passed. Both container env flags and live capabilities were verified false afterward.
+
+Production now has **3 pilots / 3 source requests / 0 validated machine-evidence rows**. This fresh pilot has only the Q04 source request; candidates Q01/Q02/Q03 remain NOT_EXECUTED, both critics remain NOT_EXECUTED. Aggregate validated coverage remains **0/4**, all four subjects are missing accepted evidence and the critic gate is false.
+
+Both older failed durable rows remain byte-equivalent at the JSON-field level, excluding V66's added NULL column. Prompt 10 remains version 1 with its exact SHA. Full story/settings bindings, canonical Ruleset 1.11 and **88.40625/B** are unchanged. Historical workflow count/digest remains 75 / `6b270d6f3ed3646ef1dcbab8692de0c44d9f52d1302c813be4d8215fd14ee3d8`. CPQ grading remains inactive; renderAuthorized=false.
+
+**ONE next product action:** review the narrowly identified EVENT_ORDER multi-sentence citation versus single-event binding mismatch for a targeted contract correction, using this saved response rather than another paid inference. This task stops here: no automatic implementation cycle, response salvage/promotion, prompt repair, candidate/critic call or new paid attempt. The two raw omission findings remain available for later source-specific adjudication.
+
+Final fields:
+
+- overallResult: **SOURCE_SINGLE_SUBJECT_EXECUTION_FAILED**
+- semanticVerdict: **NOT_EVALUATED**
+- rawModelDecision: **FAIL — unvalidated**
+- validatedSubjects: **0/4**
+- realProviderRequestsSubmitted: **1**
+- candidateRequests: **0**
+- criticRequests: **0**
+- automaticRetries: **0**
+- cpqGrading: **INACTIVE**
+- renderAuthorized: **false**
+- realDispatch: **DISABLED** in both services
+
+Detailed real-run artifacts remain in the same `cpq-single-subject-delivery-evidence/` directory: `real-original-only-journal.json`, prepared pilot and authorized request, complete durable result, exact visible response, explicitly unvalidated model judgment, reproduced contract diagnostic, verified summary, guarded-window outcome and enable/disable logs. No secrets are included. No further code change, rebuild, paid call, approval, rendering, publication, commit or push occurred after this attempt.

@@ -1,0 +1,10 @@
+{
+  "taskOwnedDisposableContainersRemoved": [
+    "cpq-v66-smoke-frontend",
+    "cpq-v66-smoke-backend",
+    "cpq-v66-smoke-db"
+  ],
+  "taskOwnedNetworkRemoved": "cpq-v66-smoke",
+  "productionContainersChanged": false,
+  "volumesImagesBackupsDeleted": false
+}

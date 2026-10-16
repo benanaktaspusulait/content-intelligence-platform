@@ -1,0 +1,22 @@
+{
+  "pilotSubmissionStarted": true,
+  "ownerAuthorization": "Fresh user evet: one Q04 source request, OpenAI/gpt-6.1-sol low, 4000 max completion tokens, USD 0.10 maximum; zero retry/fallback/candidates/critics. Pilot total accounting ceiling USD 0.70 does not authorize other requests.",
+  "pilotId": "770e8477-f352-499e-aabd-b7418435e70b",
+  "authorization": {
+    "slot": "SOURCE_FIDELITY",
+    "subjectPromptSha256": "0fe229774deb4b31a42145bad91cf10c91634ba00da39fa3e9d288b3a2e7bd98",
+    "profileId": "openai-escalation",
+    "provider": "openai",
+    "model": "gpt-6.1-sol",
+    "reasoningEffort": "low",
+    "maxOutputTokens": 4000,
+    "maxCostUsd": 0.1,
+    "authorizePaidInference": true,
+    "automaticRetries": false,
+    "idempotencyKey": "81ebe72f-2b48-4d12-9a5c-fbef7b400b95"
+  },
+  "authorizationSubmissionStarted": true,
+  "requestId": "6f078994-3385-4910-8423-47a46ad9999a",
+  "state": "FAILED_OR_AMBIGUOUS",
+  "executeSubmissionStarted": true
+}
