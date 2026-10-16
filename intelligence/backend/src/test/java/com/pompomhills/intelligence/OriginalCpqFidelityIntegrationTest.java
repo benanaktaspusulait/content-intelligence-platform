@@ -291,6 +291,14 @@ class OriginalCpqFidelityIntegrationTest {
     assertThat(jdbc.queryForObject("SELECT raw_text FROM prompt_versions WHERE id=10",String.class)).isEqualTo(original);
     verifyNoInteractions(ml);
   }
+  Map<String,Object> legacyOwnerPilot(Map<String,Object> create,MockHttpServletRequest owner) throws Exception {
+    // TEST_FIXTURE simulates an immutable pre-V66 pilot; production create always uses SINGLE_SUBJECT_V1.
+    var legacy=new LinkedHashMap<String,Object>(create);legacy.put("subjects",List.of());
+    Map<String,Object> snapshot=org.springframework.test.util.ReflectionTestUtils.invokeMethod(ownerPilot,"snapshot",legacy);
+    String encoded=org.springframework.test.util.ReflectionTestUtils.invokeMethod(ownerPilot,"encode",snapshot);
+    UUID id=UUID.randomUUID();jdbc.update("INSERT INTO cpq_owner_pilots(pilot_id,owner_principal,policy_version,scope_sha256,snapshot,total_budget_usd) VALUES(?,?, 'OWNER_MACHINE_PILOT_V1',?,CAST(? AS jsonb),?)",id,owner.getUserPrincipal().getName(),sha(encoded),encoded,create.get("maxTotalUsd"));
+    return ownerPilot.view(id,owner);
+  }
   @Test void ownerMachinePilotUsesRealMimiInputsWithThreeDistinctMockedExecutions() throws Exception {
     realSavedMimiPilotResolvesFourSubjectsWithUnknownSemanticEvidence();
     var catalog=Path.of("../data");if(!Files.exists(catalog.resolve("workflow/cpq-pilot-blind-manifests-v1.json")))catalog=Path.of("intelligence/data");
@@ -299,7 +307,7 @@ class OriginalCpqFidelityIntegrationTest {
     var selectors=List.of(Map.of("comparisonId","e651eb75-b894-477d-ae77-0fe6e05236da","candidateId","candidate-a"),Map.of("comparisonId","9275c94b-fc35-4207-8648-dfd8d166e502","candidateId","candidate-a"),Map.of("comparisonId","9275c94b-fc35-4207-8648-dfd8d166e502","candidateId","candidate-b"));
     var create=Map.<String,Object>of("analysisId","f0d36feb-ee0f-4da8-ae21-2071a3ddea18","candidates",selectors,"maxTotalUsd",0.5,"confirmSourceAuthority",true);
     assertThatThrownBy(()->ownerPilot.create(create,manager)).hasMessageContaining("Authenticated owner");
-    UUID pilot=UUID.fromString((String)ownerPilot.create(create,owner).get("pilotId"));
+    UUID pilot=UUID.fromString((String)legacyOwnerPilot(create,owner).get("pilotId"));
     var profile=Map.of("provider","openai","model","fixture-separate-source-model","configured",true,"inputUsdPerMillion",0.01,"outputUsdPerMillion",0.01);
     when(ml.workflow(eq("cpq-pilot/capabilities"),anyMap())).thenReturn(Map.of("profiles",Map.of("fixture-review",profile),"sourceFidelityConfiguration",Map.of("fixture-review",Map.of("reasoningEffort","low","supportedReasoningEfforts",List.of("low","medium","high","xhigh","max")))));
     assertThatThrownBy(()->ownerPilot.decision(pilot,Map.of("decision","ACCEPT_TEXT_FOR_PREPARATION","rationale","Fixture-only acceptance without the required independent stage evidence.","confirmUngradedNoRender",true),owner)).hasMessageContaining("All three independent stage results");
@@ -353,7 +361,7 @@ class OriginalCpqFidelityIntegrationTest {
     var owner=actor("fixture-owner","OWNER");
     var selectors=List.of(Map.of("comparisonId","e651eb75-b894-477d-ae77-0fe6e05236da","candidateId","candidate-a"),Map.of("comparisonId","9275c94b-fc35-4207-8648-dfd8d166e502","candidateId","candidate-a"),Map.of("comparisonId","9275c94b-fc35-4207-8648-dfd8d166e502","candidateId","candidate-b"));
     var create=Map.<String,Object>of("analysisId","f0d36feb-ee0f-4da8-ae21-2071a3ddea18","candidates",selectors,"maxTotalUsd",0.3,"confirmSourceAuthority",true);
-    UUID pilot=UUID.fromString((String)ownerPilot.create(create,owner).get("pilotId"));
+    UUID pilot=UUID.fromString((String)legacyOwnerPilot(create,owner).get("pilotId"));
     var profile=Map.of("provider","openai","model","gpt-6.1-sol","configured",true,"inputUsdPerMillion",2.5,"outputUsdPerMillion",10.0);
     var caps=Map.<String,Object>of("profiles",Map.of("openai-escalation",profile),"sourceFidelityConfiguration",Map.of("openai-escalation",Map.of("reasoningEffort","low","supportedReasoningEfforts",List.of("low","medium","high","xhigh","max"))));
     when(ml.workflow(eq("cpq-pilot/capabilities"),anyMap())).thenReturn(caps);
@@ -380,7 +388,7 @@ class OriginalCpqFidelityIntegrationTest {
     var newKey=new LinkedHashMap<String,Object>(auth);newKey.put("idempotencyKey","another-source-fixture-authorization");
     assertThatThrownBy(()->ownerPilot.authorize(pilot,newKey,owner)).hasMessageContaining("already has an immutable authorization");
     // A fresh pilot is allowed only with its own explicit, bounded authorization.
-    UUID freshPilot=UUID.fromString((String)ownerPilot.create(create,owner).get("pilotId"));
+    UUID freshPilot=UUID.fromString((String)legacyOwnerPilot(create,owner).get("pilotId"));
     var fresh=ownerPilot.authorize(freshPilot,newKey,owner);
     var freshRequests=(List<Map<String,Object>>)fresh.get("requests");
     assertThat(freshRequests.getFirst().get("requestId")).isNotEqualTo(requestId.toString());
@@ -388,6 +396,78 @@ class OriginalCpqFidelityIntegrationTest {
     assertThat(jdbc.queryForObject("SELECT count(*) FROM cpq_pilot_evidence",Integer.class)).isZero();
     assertThat(jdbc.queryForObject("SELECT activated FROM cpq_policy_state",Boolean.class)).isFalse();
     assertThat(fresh).containsEntry("renderAuthorized",false).containsEntry("officialGrading","INACTIVE");
+  }
+
+  Map<String,Object> singleCreate() {return Map.of("analysisId","f0d36feb-ee0f-4da8-ae21-2071a3ddea18","candidates",List.of(Map.of("comparisonId","e651eb75-b894-477d-ae77-0fe6e05236da","candidateId","candidate-a"),Map.of("comparisonId","9275c94b-fc35-4207-8648-dfd8d166e502","candidateId","candidate-a"),Map.of("comparisonId","9275c94b-fc35-4207-8648-dfd8d166e502","candidateId","candidate-b")),"maxTotalUsd",2.0,"confirmSourceAuthority",true);}
+  void singleCapabilities() {
+    var profile=Map.of("provider","openai","model","gpt-6.1-sol","configured",true,"inputUsdPerMillion",2.5,"outputUsdPerMillion",10.0);
+    when(ml.workflow(eq("cpq-pilot/capabilities"),anyMap())).thenReturn(Map.of("profiles",Map.of("openai-escalation",profile),"sourceFidelityConfiguration",Map.of("openai-escalation",Map.of("reasoningEffort","low","supportedReasoningEfforts",List.of("low")))));
+  }
+  Map<String,Object> singleAuth(String sha) {var a=new LinkedHashMap<String,Object>();a.put("slot","SOURCE_FIDELITY");a.put("subjectPromptSha256",sha);a.put("profileId","openai-escalation");a.put("provider","openai");a.put("model","gpt-6.1-sol");a.put("maxOutputTokens",4000);a.put("maxCostUsd",0.30);a.put("authorizePaidInference",true);a.put("automaticRetries",false);a.put("idempotencyKey","TEST_FIXTURE_"+sha);return a;}
+  Path singleEvidence(String file){var p=Path.of("../docs/cpq-single-subject-source-fidelity-evidence",file);return Files.exists(p)?p:Path.of("intelligence/docs/cpq-single-subject-source-fidelity-evidence",file);}
+  Map<String,Object> mockedSingle(Map<String,Object> request, boolean pass) throws Exception {
+    var input=(Map<String,Object>)request.get("input");var packet=((List<Map<String,Object>>)input.get("packets")).getFirst();String neutral=String.valueOf(packet.get("neutralId"));
+    assertThat(input).isEqualTo(json.readValue(Files.readString(singleEvidence(neutral+"-prototype-input.json")),Map.class));
+    Map<String,Object> f=json.readValue(Files.readString(singleEvidence(neutral+"-single-subject-response.TEST_FIXTURE.json")),Map.class);
+    var result=((List<Map<String,Object>>)f.get("results")).getFirst();result.put("sourceBinding",packet.get("sourceBinding"));
+    if(pass){result.put("decision","PASS");result.put("omissions",List.of());for(var m:(List<Map<String,Object>>)result.get("mappings"))m.put("consistency","PASS");}
+    var response=new LinkedHashMap<String,Object>(f);response.put("requestId",request.get("requestId"));response.put("provider","openai");response.put("model","gpt-6.1-sol");response.put("costUsd",.001);response.put("evidenceType","MACHINE_REVIEW");response.put("executionStatus","COMPLETED");response.put("fixtureLabel","TEST_FIXTURE");response.put("rawResponse",json.writeValueAsString(f));response.put("usageAccountingStatus","COMPLETE");response.put("providerMetadata",Map.of("finishReason","stop"));response.put("usage",Map.of("prompt_tokens",100,"completion_tokens",100));return response;
+  }
+  @Test void singleSubjectRequestsKeepUnknownEvidenceAndIsolateFailedCandidate() throws Exception {
+    realSavedMimiPilotResolvesFourSubjectsWithUnknownSemanticEvidence();singleCapabilities();var owner=actor("fixture-owner","OWNER");
+    var data=Path.of("../data");if(!Files.exists(data))data=Path.of("intelligence/data");
+    org.springframework.test.util.ReflectionTestUtils.setField(ownerPilot,"dataRoot",data.toAbsolutePath().toString());
+    var created=ownerPilot.create(singleCreate(),owner);UUID pilot=UUID.fromString((String)created.get("pilotId"));
+    assertThat(((Map<?,?>)created.get("snapshot")).get("sourceReviewUnit")).isEqualTo("SINGLE_SUBJECT_V1");
+    assertThat((Map<String,Object>)created.get("sourceReview")).containsEntry("validatedSubjects",0).containsEntry("criticGateSatisfied",false);
+    var subjects=(List<Map<String,Object>>)((Map<String,Object>)created.get("snapshot")).get("subjects");
+    var ids=new ArrayList<UUID>();for(var subject:subjects){var authorization=singleAuth((String)subject.get("promptSha256"));var view=ownerPilot.authorize(pilot,authorization,owner);ownerPilot.authorize(pilot,authorization,owner);
+      var requests=(List<Map<String,Object>>)view.get("requests");var req=requests.getLast();ids.add(UUID.fromString((String)req.get("requestId")));
+      var changed=new LinkedHashMap<String,Object>(authorization);changed.put("maxCostUsd",.31);var changedCost=changed;assertThatThrownBy(()->ownerPilot.authorize(pilot,changedCost,owner)).hasMessageContaining("Idempotency key reused");
+      changed=new LinkedHashMap<String,Object>(authorization);changed.put("idempotencyKey",UUID.randomUUID().toString());var duplicate=changed;assertThatThrownBy(()->ownerPilot.authorize(pilot,duplicate,owner)).hasMessageContaining("immutable authorization");
+    }
+    assertThat(ids.stream().distinct()).hasSize(4);
+    assertThat(jdbc.queryForObject("SELECT count(*) FROM cpq_machine_requests WHERE pilot_id=? AND subject_prompt_sha256 IS NOT NULL",Integer.class,pilot)).isEqualTo(4);
+    when(ml.workflow(eq("cpq-pilot/execute"),anyMap())).thenAnswer(inv->{Map<String,Object> request=inv.getArgument(1);if(request.get("requestId").equals(ids.get(1).toString()))return Map.of("executionStatus","FAILED_OR_AMBIGUOUS","failureCategory","REASONING_BUDGET_EXHAUSTED","rawResponse","");return mockedSingle(request,false);});
+    org.springframework.test.util.ReflectionTestUtils.setField(ownerPilot,"realEnabled",true);
+    try {for(var id:ids){ownerPilot.execute(pilot,id,owner);ownerPilot.execute(pilot,id,owner);}}finally{org.springframework.test.util.ReflectionTestUtils.setField(ownerPilot,"realEnabled",false);}
+    verify(ml,times(4)).workflow(eq("cpq-pilot/execute"),anyMap());var view=ownerPilot.view(pilot,owner);var aggregate=(Map<String,Object>)view.get("sourceReview");
+    assertThat(aggregate).containsEntry("validatedSubjects",3).containsEntry("complete",false).containsEntry("criticGateSatisfied",false).containsEntry("manualAdjudicationSubjects",3);
+    assertThat((List<?>)aggregate.get("missingSubjectIds")).hasSize(1);
+    assertThat(jdbc.queryForObject("SELECT count(*) FROM cpq_pilot_evidence WHERE pilot_id=?",Integer.class,pilot)).isEqualTo(3);
+    var snapshots=json.writeValueAsString(view.get("snapshot"));assertThat(snapshots).contains("88.40625");assertThat(view).containsEntry("renderAuthorized",false).containsEntry("officialGrading","INACTIVE").containsEntry("humanReviewCount",0);
+    var critic=new LinkedHashMap<String,Object>(singleAuth("ignored"));critic.remove("subjectPromptSha256");critic.put("slot","CRITIC_A");critic.put("idempotencyKey",UUID.randomUUID().toString());
+    var authorized=ownerPilot.authorize(pilot,critic,owner);var reqs=(List<Map<String,Object>>)authorized.get("requests");UUID criticId=UUID.fromString((String)reqs.getLast().get("requestId"));
+    org.springframework.test.util.ReflectionTestUtils.setField(ownerPilot,"realEnabled",true);try{assertThatThrownBy(()->ownerPilot.execute(pilot,criticId,owner)).hasMessageContaining("source stage must complete");}finally{org.springframework.test.util.ReflectionTestUtils.setField(ownerPilot,"realEnabled",false);}
+    assertThat(jdbc.queryForObject("SELECT activated FROM cpq_policy_state",Boolean.class)).isFalse();
+  }
+  @Test void allFourExactSourceReviewsRequiredForCriticGate() throws Exception {
+    realSavedMimiPilotResolvesFourSubjectsWithUnknownSemanticEvidence();singleCapabilities();var owner=actor("fixture-owner","OWNER");
+    var data=Path.of("../data");if(!Files.exists(data))data=Path.of("intelligence/data");org.springframework.test.util.ReflectionTestUtils.setField(ownerPilot,"dataRoot",data.toAbsolutePath().toString());
+    var created=ownerPilot.create(singleCreate(),owner);UUID pilot=UUID.fromString((String)created.get("pilotId"));
+    var subjects=(List<Map<String,Object>>)((Map<String,Object>)created.get("snapshot")).get("subjects");
+    when(ml.workflow(eq("cpq-pilot/execute"),anyMap())).thenAnswer(inv->mockedSingle(inv.getArgument(1),true));
+    org.springframework.test.util.ReflectionTestUtils.setField(ownerPilot,"realEnabled",true);
+    try{int count=0;for(var subject:subjects){var view=ownerPilot.authorize(pilot,singleAuth((String)subject.get("promptSha256")),owner);var reqs=(List<Map<String,Object>>)view.get("requests");UUID id=UUID.fromString((String)reqs.getLast().get("requestId"));var executed=ownerPilot.execute(pilot,id,owner);count++;assertThat((Map<String,Object>)executed.get("sourceReview")).containsEntry("validatedSubjects",count).containsEntry("criticGateSatisfied",count==4);}}
+    finally{org.springframework.test.util.ReflectionTestUtils.setField(ownerPilot,"realEnabled",false);}
+    // TEST_FIXTURE PASS is a mechanics test only, never a real Mimi semantic finding.
+    assertThat(jdbc.queryForObject("SELECT count(*) FROM cpq_machine_requests WHERE pilot_id=?",Integer.class,pilot)).isEqualTo(4);
+    assertThat(jdbc.queryForObject("SELECT activated FROM cpq_policy_state",Boolean.class)).isFalse();
+  }
+
+  @Test void completeUnknownSourceEvidenceRequiresReviewAndWrongSubjectCannotAuthorize() throws Exception {
+    realSavedMimiPilotResolvesFourSubjectsWithUnknownSemanticEvidence();singleCapabilities();var owner=actor("fixture-owner","OWNER");
+    var data=Path.of("../data");if(!Files.exists(data))data=Path.of("intelligence/data");org.springframework.test.util.ReflectionTestUtils.setField(ownerPilot,"dataRoot",data.toAbsolutePath().toString());
+    var created=ownerPilot.create(singleCreate(),owner);UUID pilot=UUID.fromString((String)created.get("pilotId"));
+    assertThatThrownBy(()->ownerPilot.authorize(pilot,singleAuth("f".repeat(64)),owner)).hasMessageContaining("Exact pilot subjectPromptSha256");
+    var missing=new LinkedHashMap<String,Object>(singleAuth("f".repeat(64)));missing.remove("subjectPromptSha256");assertThatThrownBy(()->ownerPilot.authorize(pilot,missing,owner)).hasMessageContaining("Exact pilot subjectPromptSha256");
+    var subjects=(List<Map<String,Object>>)((Map<String,Object>)created.get("snapshot")).get("subjects");
+    when(ml.workflow(eq("cpq-pilot/execute"),anyMap())).thenAnswer(inv->mockedSingle(inv.getArgument(1),false));
+    org.springframework.test.util.ReflectionTestUtils.setField(ownerPilot,"realEnabled",true);
+    try{for(var subject:subjects){var view=ownerPilot.authorize(pilot,singleAuth((String)subject.get("promptSha256")),owner);var reqs=(List<Map<String,Object>>)view.get("requests");ownerPilot.execute(pilot,UUID.fromString((String)reqs.getLast().get("requestId")),owner);}}
+    finally{org.springframework.test.util.ReflectionTestUtils.setField(ownerPilot,"realEnabled",false);}
+    assertThat((Map<String,Object>)ownerPilot.view(pilot,owner).get("sourceReview")).containsEntry("validatedSubjects",4).containsEntry("complete",true).containsEntry("manualAdjudicationSubjects",4).containsEntry("criticGateSatisfied",false);
+    assertThat(jdbc.queryForObject("SELECT count(*) FROM cpq_pilot_evidence WHERE evidence_type='MACHINE_REVIEW'",Integer.class)).isEqualTo(4);
   }
 
 }

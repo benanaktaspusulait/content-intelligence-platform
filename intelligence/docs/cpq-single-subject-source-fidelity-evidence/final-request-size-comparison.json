@@ -1,36 +1,42 @@
 {
   "tokenizer": "o200k_base proxy, not actual model tokenizer",
+  "batch": {
+    "serializedRequestBytes": 27696,
+    "estimatedRequestTokens": 6637,
+    "representativeJsonBytes": 12021,
+    "representativeVisibleTokens": 3047
+  },
   "subjects": [
     {
       "neutralId": "Q04",
-      "serializedRequestBytes": 8522,
-      "estimatedRequestTokens": 2063,
-      "representativeJsonBytes": 5424,
-      "representativeVisibleTokens": 1504,
+      "serializedRequestBytes": 8674,
+      "estimatedRequestTokens": 2095,
+      "representativeJsonBytes": 3640,
+      "representativeVisibleTokens": 1037,
       "fixtureLabel": "TEST_FIXTURE"
     },
     {
       "neutralId": "Q01",
-      "serializedRequestBytes": 10023,
-      "estimatedRequestTokens": 2369,
-      "representativeJsonBytes": 6060,
-      "representativeVisibleTokens": 1636,
+      "serializedRequestBytes": 10175,
+      "estimatedRequestTokens": 2401,
+      "representativeJsonBytes": 4555,
+      "representativeVisibleTokens": 1236,
       "fixtureLabel": "TEST_FIXTURE"
     },
     {
       "neutralId": "Q02",
-      "serializedRequestBytes": 9245,
-      "estimatedRequestTokens": 2228,
-      "representativeJsonBytes": 5671,
-      "representativeVisibleTokens": 1566,
+      "serializedRequestBytes": 9397,
+      "estimatedRequestTokens": 2260,
+      "representativeJsonBytes": 4166,
+      "representativeVisibleTokens": 1166,
       "fixtureLabel": "TEST_FIXTURE"
     },
     {
       "neutralId": "Q03",
-      "serializedRequestBytes": 9897,
-      "estimatedRequestTokens": 2372,
-      "representativeJsonBytes": 6065,
-      "representativeVisibleTokens": 1660,
+      "serializedRequestBytes": 10049,
+      "estimatedRequestTokens": 2404,
+      "representativeJsonBytes": 4643,
+      "representativeVisibleTokens": 1278,
       "fixtureLabel": "TEST_FIXTURE"
     }
   ]

@@ -12,91 +12,19 @@
       "additions": [],
       "mappings": [
         {
-          "anchor": "CHARACTER_IDENTITY",
+          "anchor": "APPROVED_EVENTS",
           "beatId": "beat_01",
           "sourceQuote": "Mimi, oyuncak dolabına 'Topla!' yazan bir yapışkan not yapıştırmak ister.",
-          "promptQuote": "Mimi, an anthropomorphic bunny",
-          "eventId": "event_01",
-          "consistency": "UNKNOWN"
-        },
-        {
-          "anchor": "CHARACTER_IDENTITY",
-          "beatId": "beat_01",
-          "sourceQuote": "Not, Mimi'nin parmağına yapışır.",
-          "promptQuote": "Mimi, an anthropomorphic bunny",
-          "eventId": "event_02",
-          "consistency": "UNKNOWN"
-        },
-        {
-          "anchor": "CHARACTER_IDENTITY",
-          "beatId": "beat_01",
-          "sourceQuote": "Mimi diğer eliyle çıkarmaya çalışırken not ikiye ayrılır ve iki eline de yapışır.",
-          "promptQuote": "Mimi, an anthropomorphic bunny",
-          "eventId": "event_03",
-          "consistency": "UNKNOWN"
-        },
-        {
-          "anchor": "PHYSICAL_RULE",
-          "beatId": "beat_03",
-          "sourceQuote": "Her çekişte notlar ikiye katlanarak çoğalır.",
-          "promptQuote": "each pull doubles the number of sticky notes",
-          "eventId": "event_04",
-          "consistency": "UNKNOWN"
-        },
-        {
-          "anchor": "CHARACTER_IDENTITY",
-          "beatId": "beat_01",
-          "sourceQuote": "Kısa sürede Mimi'nin kolları, bacakları ve yüzü notlarla kaplanır.",
-          "promptQuote": "Mimi, an anthropomorphic bunny",
-          "eventId": "event_05",
-          "consistency": "UNKNOWN"
-        },
-        {
-          "anchor": "CHARACTER_IDENTITY",
-          "beatId": "beat_01",
-          "sourceQuote": "Mimi aynada kendini görünce çığlık atar.",
-          "promptQuote": "Mimi, an anthropomorphic bunny",
-          "eventId": "event_06",
-          "consistency": "UNKNOWN"
-        },
-        {
-          "anchor": "CHARACTER_IDENTITY",
-          "beatId": "beat_01",
-          "sourceQuote": "Notlar o kadar çoğalır ki Mimi boğulacak gibi olur.",
-          "promptQuote": "Mimi, an anthropomorphic bunny",
-          "eventId": "event_07",
-          "consistency": "UNKNOWN"
-        },
-        {
-          "anchor": "REQUIRED_ENDING",
-          "beatId": "beat_05",
-          "sourceQuote": "Sonunda hapşırır ve tüm notlar uçuşarak dolabın üzerine yapışır.",
-          "promptQuote": "Mimi sneezes and the sticky notes fly off",
-          "eventId": "event_08",
-          "consistency": "UNKNOWN"
-        },
-        {
-          "anchor": "CHARACTER_IDENTITY",
-          "beatId": "beat_01",
-          "sourceQuote": "Mimi rahat bir nefes alır ama dolap hâlâ dağınıktır.",
-          "promptQuote": "Mimi, an anthropomorphic bunny",
-          "eventId": "event_09",
-          "consistency": "UNKNOWN"
-        },
-        {
-          "anchor": "CHARACTER_IDENTITY",
-          "beatId": "beat_01",
-          "sourceQuote": "Mimi",
-          "promptQuote": "Mimi, an anthropomorphic bunny",
+          "promptQuote": "Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger",
           "eventId": "event_01",
           "consistency": "UNKNOWN"
         },
         {
           "anchor": "APPROVED_EVENTS",
           "beatId": "beat_01",
-          "sourceQuote": "Mimi, oyuncak dolabına 'Topla!' yazan bir yapışkan not yapıştırmak ister.",
+          "sourceQuote": "Not, Mimi'nin parmağına yapışır.",
           "promptQuote": "Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger",
-          "eventId": "event_01",
+          "eventId": "event_02",
           "consistency": "UNKNOWN"
         },
         {
@@ -150,9 +78,17 @@
         {
           "anchor": "REQUIRED_ENDING",
           "beatId": "beat_05",
-          "sourceQuote": "tüm notlar uçuşarak dolabın üzerine yapışır.",
-          "promptQuote": "notes scatter and stick to the cabinet -> Mimi breathes a sigh of relief but the cabinet remains messy",
-          "eventId": "event_08",
+          "sourceQuote": "Mimi rahat bir nefes alır ama dolap hâlâ dağınıktır.",
+          "promptQuote": "Mimi sneezes and the sticky notes fly off",
+          "eventId": "event_09",
+          "consistency": "UNKNOWN"
+        },
+        {
+          "anchor": "CHARACTER_IDENTITY",
+          "beatId": "beat_01",
+          "sourceQuote": "Mimi",
+          "promptQuote": "Mimi, an anthropomorphic bunny",
+          "eventId": "event_01",
           "consistency": "UNKNOWN"
         },
         {
@@ -174,9 +110,9 @@
         {
           "anchor": "APPROVED_EVENTS",
           "beatId": "beat_01",
-          "sourceQuote": "Not, Mimi'nin parmağına yapışır.",
-          "promptQuote": "static close-up; keep the cabinet and her finger visible together in the same frame",
-          "eventId": "event_02",
+          "sourceQuote": "Mimi, oyuncak dolabına 'Topla!' yazan bir yapışkan not yapıştırmak ister.",
+          "promptQuote": "0-2s: Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger  Mimi is in front of a toy cabinet, looking determined -> the note sticks to Mimi, not the cabinet [static close-up; keep the cabinet and her finger visible together in the same frame]",
+          "eventId": "event_01",
           "consistency": "UNKNOWN"
         }
       ],

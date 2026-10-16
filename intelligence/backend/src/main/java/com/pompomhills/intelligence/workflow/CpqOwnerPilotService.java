@@ -49,7 +49,7 @@ public class CpqOwnerPilotService {
     return result;
   }
   @Transactional public Map<String,Object> create(Map<String,Object> request,HttpServletRequest r){
-    String actor=owner(r);if(!Boolean.TRUE.equals(request.get("confirmSourceAuthority")))throw new ResponseStatusException(BAD_REQUEST,"Explicit owner source-authority confirmation required; not independent fidelity");double budget=money(request.get("maxTotalUsd"));var snapshot=snapshot(request);UUID id=UUID.randomUUID();
+    String actor=owner(r);if(!Boolean.TRUE.equals(request.get("confirmSourceAuthority")))throw new ResponseStatusException(BAD_REQUEST,"Explicit owner source-authority confirmation required; not independent fidelity");double budget=money(request.get("maxTotalUsd"));var prepared=new LinkedHashMap<String,Object>(request);prepared.put("sourceReviewUnit",SINGLE);var snapshot=snapshot(prepared);UUID id=UUID.randomUUID();
     db.sql("INSERT INTO cpq_owner_pilots(pilot_id,owner_principal,policy_version,scope_sha256,snapshot,total_budget_usd) VALUES(:id,:actor,:policy,:hash,CAST(:snapshot AS jsonb),:budget)").param("id",id).param("actor",actor).param("policy",POLICY).param("hash",hash(encode(snapshot))).param("snapshot",encode(snapshot)).param("budget",budget).update();
     return view(id,r);
   }
@@ -61,7 +61,7 @@ public class CpqOwnerPilotService {
   public Map<String,Object> view(UUID id,HttpServletRequest r){
     var p=pilot(id,r,false);var evidence=db.sql("SELECT evidence_type,payload::text,created_at FROM cpq_pilot_evidence WHERE pilot_id=:id ORDER BY created_at,evidence_id").param("id",id).query((rs,n)->Map.of("evidenceType",rs.getString(1),"payload",read(rs.getString(2)),"createdAt",rs.getTimestamp(3).toInstant().toString())).list();
     var requests=db.sql("SELECT request_id,slot,state,authorization_payload::text,failure FROM cpq_machine_requests WHERE pilot_id=:id ORDER BY created_at").param("id",id).query((rs,n)->{var x=new LinkedHashMap<String,Object>();x.put("requestId",rs.getString(1));x.put("slot",rs.getString(2));x.put("state",rs.getString(3));x.put("authorization",read(rs.getString(4)));x.put("failure",Objects.toString(rs.getString(5),""));return x;}).list();
-    var out=new LinkedHashMap<String,Object>();out.put("pilotId",id.toString());out.put("policyVersion",POLICY);out.put("snapshot",p.get("snapshot"));out.put("evidence",evidence);out.put("requests",requests);out.put("comparison",compare(evidence));out.put("sourceReview",sourceReview(id,map(p.get("snapshot")),requests,evidence));out.put("officialGrading","INACTIVE");out.put("humanReviewCount",0);out.put("renderAuthorized",false);return out;
+    var out=new LinkedHashMap<String,Object>();out.put("pilotId",id.toString());out.put("policyVersion",POLICY);out.put("snapshot",p.get("snapshot"));out.put("evidence",evidence);out.put("requests",requests);out.put("comparison",compare(evidence));var source=sourceReview(id,map(p.get("snapshot")),requests,evidence);out.put("sourceReview",source);map(out.get("comparison")).put("sourceStatus",Boolean.TRUE.equals(source.get("complete"))?(Boolean.TRUE.equals(source.get("criticGateSatisfied"))?"COMPLETE_MACHINE_EVIDENCE_NOT_HUMAN_PASS":"REVIEW_REQUIRED"):"INCOMPLETE");out.put("officialGrading","INACTIVE");out.put("humanReviewCount",0);out.put("renderAuthorized",false);return out;
   }
   private Map<String,Object> compare(List<Map<String,Object>> evidence){
     var bySlot=new HashMap<String,Map<String,Object>>();for(var e:evidence){var payload=map(e.get("payload"));if("MACHINE_REVIEW".equals(e.get("evidenceType")))bySlot.put(String.valueOf(payload.get("slot")),map(payload.get("response")));}
@@ -72,7 +72,7 @@ public class CpqOwnerPilotService {
       if(Objects.equals(left.get("level"),right.get("level")))agreements.add(row);else disagreements.add(row);
     }
     var shared=new ArrayList<Object>();var risks=new ArrayList<Object>();var unsupported=new ArrayList<Object>();var hypotheses=new ArrayList<Object>();
-    for(var response:bySlot.values())for(var result:rows(response.get("results"))) {
+    for(var item:evidence)for(var result:rows(map(map(item.get("payload")).get("response")).get("results"))) {
       risks.addAll((List<?>)result.getOrDefault("productionRisks",List.of()));unsupported.addAll((List<?>)result.getOrDefault("unsupportedClaims",List.of()));hypotheses.addAll((List<?>)result.getOrDefault("improvementHypotheses",List.of()));
     }
     for(var left:a)for(var right:b)if(Objects.equals(left.get("neutralId"),right.get("neutralId")))for(String dimension:map(left.get("dimensions")).keySet()) {
@@ -108,7 +108,7 @@ public class CpqOwnerPilotService {
     packet.put("changedBeats",rows(packet.get("changedBeats")).stream().map(b->Map.of("beatId",b.get("beatId"),"originalExecution",b.getOrDefault("originalExecution",b.getOrDefault("originalInstruction","")),"newExecution",b.getOrDefault("newExecution",b.getOrDefault("revisedInstruction","")))).toList());
     var result=new LinkedHashMap<String,Object>(legacy);result.put("evaluationUnit",SINGLE);result.put("packets",List.of(packet));return result;
   }
-  Map<String,Object> sourceReview(UUID id,Map<String,Object> saved,List<Map<String,Object>> requests,List<Map<String,Object>> evidence) {
+  Map<String,Object> sourceReview(UUID id,Map<String,Object> saved,List<? extends Map<String,Object>> requests,List<Map<String,Object>> evidence) {
     var bindings=rows(input(saved,"SOURCE_FIDELITY").get("packets"));var statuses=new ArrayList<Map<String,Object>>();var missing=new ArrayList<Object>();int valid=0,conflicts=0,review=0;
     for(var packet:bindings){String sha=String.valueOf(packet.get("promptSha256"));Object neutral=packet.get("neutralId");Map<String,Object> result=Map.of();
       for(var e:evidence){var payload=map(e.get("payload"));if(!"MACHINE_REVIEW".equals(e.get("evidenceType"))||!"SOURCE_FIDELITY".equals(payload.get("slot")))continue;
@@ -132,17 +132,20 @@ public class CpqOwnerPilotService {
   }
   void validateSingleSource(Map<String,Object> input,Map<String,Object> response) {
     if(!SINGLE.equals(input.get("evaluationUnit")))return;
+    if(!(response.get("rawResponse") instanceof String raw) || raw.isBlank() || !"COMPLETE".equals(response.get("usageAccountingStatus")) || !"stop".equals(map(response.get("providerMetadata")).get("finishReason")))throw new IllegalArgumentException("Complete visible source response and accounting required");
     if(rows(input.get("packets")).size()!=1 || rows(response.get("results")).size()!=1)throw new IllegalArgumentException("Exactly one source result required");
     var packet=rows(input.get("packets")).getFirst();var result=rows(response.get("results")).getFirst();
     if(!Objects.equals(packet.get("sourceBinding"),result.get("sourceBinding")))throw new IllegalArgumentException("Exact response source binding required");
     var mappings=rows(result.get("mappings"));var anchors=new HashSet<Object>();var events=new HashSet<Object>();var beats=new HashSet<Object>();
     String source=String.valueOf(packet.get("approvedStory")),prompt=String.valueOf(packet.get("prompt"));boolean uncertain=false;
-    for(var m:mappings){anchors.add(m.get("anchor"));events.add(m.get("eventId"));beats.add(m.get("beatId"));String sq=String.valueOf(m.getOrDefault("sourceQuote","")),pq=String.valueOf(m.getOrDefault("promptQuote",""));
+    for(var m:mappings){anchors.add(m.get("anchor"));beats.add(m.get("beatId"));String sq=String.valueOf(m.getOrDefault("sourceQuote","")),pq=String.valueOf(m.getOrDefault("promptQuote",""));
       var event=rows(packet.get("requiredEvents")).stream().filter(e->Objects.equals(e.get("eventId"),m.get("eventId"))).findFirst().orElseThrow(()->new IllegalArgumentException("Unknown source event"));
       int start=source.offsetByCodePoints(0,((Number)event.get("sourceStart")).intValue()),end=source.offsetByCodePoints(0,((Number)event.get("sourceEnd")).intValue());
       if(!Set.of("PASS","FAIL","UNKNOWN").contains(m.get("consistency")) || sq.isEmpty() || !source.substring(start,end).contains(sq) || !prompt.contains(pq) || (pq.isEmpty()&&"PASS".equals(m.get("consistency"))))throw new IllegalArgumentException("Exact evidence-backed mapping required");
+      if(source.substring(start,end).equals(sq))events.add(m.get("eventId"));
       uncertain |= !"PASS".equals(m.get("consistency"));
     }
+    if(rows(packet.get("changedBeats")).stream().anyMatch(b->mappings.stream().noneMatch(m->Objects.equals(m.get("beatId"),b.get("beatId"))&&Objects.equals(m.get("promptQuote"),b.get("newExecution")))))throw new IllegalArgumentException("Exact changed-beat execution evidence required");
     if(!anchors.equals(Set.of("CHARACTER_IDENTITY","APPROVED_EVENTS","EVENT_ORDER","PHYSICAL_RULE","TEMPORAL_CONSTRAINTS","REQUIRED_ENDING")) || !events.equals(rows(packet.get("requiredEvents")).stream().map(e->e.get("eventId")).collect(java.util.stream.Collectors.toSet())) || !beats.containsAll(rows(packet.get("changedBeats")).stream().map(b->b.get("beatId")).toList()))throw new IllegalArgumentException("Complete source evidence required");
     if(!Set.of("PASS","FAIL","UNKNOWN").contains(result.get("decision")) || String.valueOf(result.getOrDefault("rationale","")).trim().length()<20 || String.valueOf(result.getOrDefault("uncertainty","")).isBlank() || !(result.get("omissions") instanceof List) || !(result.get("additions") instanceof List) || !(result.get("conflict") instanceof Boolean) || !(result.get("productionRisks") instanceof List))throw new IllegalArgumentException("Complete semantic evidence required");
     if("PASS".equals(result.get("decision")) && (uncertain || Boolean.TRUE.equals(result.get("conflict")) || !((List<?>)result.get("omissions")).isEmpty() || !((List<?>)result.get("additions")).isEmpty() || !((List<?>)result.getOrDefault("unsupportedClaims",List.of())).isEmpty()))throw new IllegalArgumentException("Unsupported semantic PASS");

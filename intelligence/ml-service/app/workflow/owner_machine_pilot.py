@@ -86,7 +86,10 @@ def schema(source, single=False):
     else:
         dimension=obj({'level':{'type':'string','enum':['EXCELLENT','STRONG','ADEQUATE','WEAK','UNKNOWN']},'strengths':array(string),'weaknesses':array(string),'improvements':array(string),'productionConstraints':array(string),'uncertainty':string,'rationale':string,'citations':array(string)})
         result=obj({'neutralId':string,'dimensions':obj({key:dimension for key in DIMENSIONS}),'productionRisks':array(string),'improvementHypotheses':array(string)})
-    return obj({'results':array(result)})
+    response = obj({'results':array(result)})
+    if single:
+        response['properties']['results'].update(minItems=1,maxItems=1)
+    return response
 
 def validate(response, data):
     packets={p['neutralId']:p for p in data['packets']}
@@ -112,7 +115,9 @@ def validate(response, data):
             required={b.get('beatId') for b in packet.get('changedBeats',[]) if b.get('beatId')}
             mapped={m['beatId'] for m in result['mappings']}
             if single:
-                if set(m['anchor'] for m in result['mappings']) != set(ANCHORS) or not required.issubset(mapped) or {m['eventId'] for m in result['mappings']} != {e['eventId'] for e in packet['requiredEvents']}:
+                if any(not any(m['beatId'] == b['beatId'] and m['promptQuote'] == b['newExecution'] for m in result['mappings']) for b in packet['changedBeats']):raise ValueError('Exact changed-beat execution evidence required')
+                covered = {m['eventId'] for m in result['mappings'] for e in packet['requiredEvents'] if e['eventId'] == m['eventId'] and m['sourceQuote'] == packet['approvedStory'][e['sourceStart']:e['sourceEnd']]}
+                if set(m['anchor'] for m in result['mappings']) != set(ANCHORS) or not required.issubset(mapped) or covered != {e['eventId'] for e in packet['requiredEvents']}:
                     raise ValueError('Complete anchors, source events and changed beats required')
                 if result['decision'] == 'PASS' and (result['conflict'] or result['omissions'] or result['additions'] or any(m['consistency'] != 'PASS' for m in result['mappings']) or not result['mappings']):
                     raise ValueError('Unsupported semantic PASS')
@@ -126,6 +131,7 @@ def validate(response, data):
                 if not dim['strengths'] or not dim['weaknesses'] or not dim['improvements'] or not dim['productionConstraints'] or len(dim['rationale'].strip())<20 or not dim['uncertainty'].strip():raise ValueError('Complete evidence, constraints and uncertainty required')
         prose=json.dumps(result,ensure_ascii=False)
         result['unsupportedClaims']=re.findall(r'(?i)(?:proven retention|guaranteed engagement|rendered successfully|verified audience improvement)',prose)
+        if source and data.get('evaluationUnit') == SINGLE and result['decision'] == 'PASS' and result['unsupportedClaims']:raise ValueError('Unsupported semantic PASS')
         result['evidenceScope']='TEXT_ONLY'
     return results
 
@@ -161,7 +167,7 @@ def execute(body, provider_factory=CreativeCapabilityProvider):
     # UTF-8 bytes bound tokens conservatively; transmit JSON schema even on JSON-only models.
     system = SOURCE_SYSTEM if source else SYSTEM
     if single:
-        system += ' Review exactly one complete subject. Echo sourceBinding exactly. requiredEvents are exhaustive source sentence spans in Unicode code points, not invented events. Map each eventId with a quote inside that span, all six anchors, and every changed beat. Each mapping needs consistency PASS/FAIL/UNKNOWN. If evidence is absent, use an empty promptQuote only with non-PASS consistency, explain omissions/uncertainty and never PASS overall. Check event order, timing, continuity and unsupported production assumptions explicitly in concise findings/rationale. Changed-beat originalExecution is limited baseline context; productionSettings override obsolete metadata. Source sentence coverage and fingerprints do not prove semantic fidelity.'
+        system += ' Review exactly one complete subject. Echo sourceBinding exactly. requiredEvents are exhaustive source sentence spans in Unicode code points, not invented events. Map each eventId with at least one quotation of the entire exact span; additional anchor mappings may quote within that span, all six anchors, and every changed beat (quote its complete newExecution at least once). Each mapping needs consistency PASS/FAIL/UNKNOWN. If evidence is absent, use an empty promptQuote only with non-PASS consistency, explain omissions/uncertainty and never PASS overall. Check event order, timing, continuity and unsupported production assumptions explicitly in concise findings/rationale. Changed-beat originalExecution is limited baseline context; productionSettings override obsolete metadata. Source sentence coverage and fingerprints do not prove semantic fidelity.'
     input_bound=len((system+prompt+json.dumps(fmt)).encode())+1000
     if input_bound+tokens>cfg['contextTokens']:raise ValueError('Context limit exceeded')
     estimate=input_bound*cfg['inputUsdPerMillion']/1e6+tokens*cfg['outputUsdPerMillion']/1e6

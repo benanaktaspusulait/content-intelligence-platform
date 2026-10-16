@@ -31,13 +31,19 @@ def fixture(d):
     # Exhaustive literal source spans; judgments intentionally UNKNOWN, never fabricated PASS.
     for event in p['requiredEvents']:
         quote=p['approvedStory'][event['sourceStart']:event['sourceEnd']]
-        related=next((x for x in old['mappings'] if quote in x['sourceQuote'] or x['sourceQuote'] in quote),old['mappings'][0])
+        related=max((x for x in old['mappings'] if quote in x['sourceQuote'] or x['sourceQuote'] in quote),key=lambda x:min(len(quote),len(x['sourceQuote'])),default=old['mappings'][0])
         mappings.append({**related,'sourceQuote':quote,'eventId':event['eventId'],'consistency':'UNKNOWN'})
+    represented={x['anchor'] for x in mappings}
     for mapping in old['mappings']:
+        if mapping['anchor'] in represented:continue
+        represented.add(mapping['anchor'])
         start=p['approvedStory'].find(mapping['sourceQuote'])
         event=next(e for e in p['requiredEvents'] if e['sourceStart']<=start<e['sourceEnd'])
         end=min(start+len(mapping['sourceQuote']),event['sourceEnd'])
         mappings.append({**mapping,'sourceQuote':p['approvedStory'][start:end],'eventId':event['eventId'],'consistency':'UNKNOWN'})
+    for beat in p['changedBeats']:
+        mapping=next(x for x in mappings if x['beatId']==beat['beatId'])
+        mappings.append({**mapping,'promptQuote':beat['newExecution']})
     result['mappings']=mappings
     return {'results':[result]}
 
@@ -110,13 +116,19 @@ def test_missing_evidence_is_unknown_not_invented_quote():
 
 def test_proxy_budget_and_save_final_request_measurements():
     tok=pytest.importorskip('tiktoken').get_encoding('o200k_base')
+    from test_source_fidelity_output_budget import execute_mock, response_fixture
+    _,batch_args=execute_mock(sdk_response(json.dumps(response_fixture(),ensure_ascii=False,separators=(',',':'))))
+    batch_serialized=json.dumps(batch_args,ensure_ascii=False,separators=(',',':'))
+    batch_json=json.dumps(response_fixture(),ensure_ascii=False,separators=(',',':'))
+    batch={'serializedRequestBytes':len(batch_serialized.encode()),'estimatedRequestTokens':len(tok.encode(batch_serialized)),'representativeJsonBytes':len(batch_json.encode()),'representativeVisibleTokens':len(tok.encode(batch_json))}
     metrics=[]
     for q in ['Q04','Q01','Q02','Q03']:
         d=data(q);f=fixture(d);raw=json.dumps(f,ensure_ascii=False,separators=(',',':'));out,args=run(d,raw)
+        assert out['executionStatus']=='COMPLETED'
         serialized=json.dumps(args,ensure_ascii=False,separators=(',',':'))
         record={'neutralId':q,'serializedRequestBytes':len(serialized.encode()),'estimatedRequestTokens':len(tok.encode(serialized)),'representativeJsonBytes':len(raw.encode()),'representativeVisibleTokens':len(tok.encode(raw)),'fixtureLabel':'TEST_FIXTURE'}
         assert record['representativeVisibleTokens']<2500 and record['serializedRequestBytes']<14000
         (EV/f'{q}-single-subject-response.TEST_FIXTURE.json').write_text(json.dumps(f,ensure_ascii=False,indent=2)+'\n')
         (EV/f'{q}-single-subject-provider-request.TEST_FIXTURE.json').write_text(json.dumps(args,ensure_ascii=False,indent=2)+'\n')
         metrics.append(record)
-    (EV/'final-request-size-comparison.json').write_text(json.dumps({'tokenizer':'o200k_base proxy, not actual model tokenizer','subjects':metrics},indent=2)+'\n')
+    (EV/'final-request-size-comparison.json').write_text(json.dumps({'tokenizer':'o200k_base proxy, not actual model tokenizer','batch':batch,'subjects':metrics},indent=2)+'\n')
