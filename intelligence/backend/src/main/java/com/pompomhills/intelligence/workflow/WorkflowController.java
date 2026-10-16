@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 public class WorkflowController {
   private final WorkflowService service;
   @org.springframework.beans.factory.annotation.Autowired private Step6GovernanceService governance;
+  @org.springframework.beans.factory.annotation.Autowired private StoryEvolutionService storyEvolution;
 
   @org.springframework.beans.factory.annotation.Autowired
   private com.pompomhills.intelligence.quality.QualityReportPdfService pdf;
@@ -177,6 +178,30 @@ public class WorkflowController {
   public Map<String,Object> governance(@PathVariable UUID id, jakarta.servlet.http.HttpServletRequest request) {
     return governance.evaluate(id, Step6GovernanceService.Actor.from(request));
   }
+
+  @PostMapping("/cpq/story-evolution-runs")
+  public Map<String,Object> startStoryEvolution(@RequestBody Map<String,Object> request, jakarta.servlet.http.HttpServletRequest http) { return storyEvolution.start(request,http); }
+
+  @GetMapping("/cpq/story-evolution-source")
+  public Map<String,Object> storyEvolutionSource(@RequestParam UUID analysisId) {
+    var subject=cpq.pilotSubject(analysisId,null,null); var story=CpqOwnerPilotService.map(subject.get("approvedStory"));
+    var out=new java.util.LinkedHashMap<String,Object>(); out.put("analysisId",analysisId.toString()); out.put("storyRecordId",story.get("storyId")); out.put("story",story.get("text")); out.put("storySha256",CpqOwnerPilotService.hash(String.valueOf(story.get("text")))); out.put("approvalRecordId",story.get("approvalRecordId")); out.put("canonical",subject.get("canonical")); out.put("productionSettings",subject.get("productionSettings")); return out;
+  }
+
+  @GetMapping("/cpq/story-evolution-runs/{id}")
+  public Map<String,Object> storyEvolution(@PathVariable UUID id, jakarta.servlet.http.HttpServletRequest http) { return storyEvolution.view(id,http); }
+
+  @GetMapping("/cpq/story-evolution-runs/latest")
+  public Map<String,Object> latestStoryEvolution(@RequestParam UUID sourceStoryRecordId, jakarta.servlet.http.HttpServletRequest http) { return storyEvolution.latest(sourceStoryRecordId,http); }
+
+  @PostMapping("/cpq/story-evolution-runs/{id}/approve")
+  public Map<String,Object> approveStoryEvolution(@PathVariable UUID id, @RequestBody Map<String,Object> request, jakarta.servlet.http.HttpServletRequest http) { return storyEvolution.approve(id,request,http); }
+
+  @PostMapping("/cpq/story-evolution-runs/{id}/prompt-handoff")
+  public Map<String,Object> storyEvolutionPromptHandoff(@PathVariable UUID id, @RequestBody Map<String,Object> request, jakarta.servlet.http.HttpServletRequest http) { return storyEvolution.handoff(id,request,http); }
+
+  @PostMapping("/cpq/story-evolution-runs/{id}/stop")
+  public Map<String,Object> stopStoryEvolution(@PathVariable UUID id, jakarta.servlet.http.HttpServletRequest http) { storyEvolution.owner(id,http); return storyEvolution.stop(id,"CANCELLED",""); }
 
   @PostMapping("/records/{id}/governance/{action}")
   public Map<String,Object> governanceCommand(@PathVariable UUID id, @PathVariable String action,

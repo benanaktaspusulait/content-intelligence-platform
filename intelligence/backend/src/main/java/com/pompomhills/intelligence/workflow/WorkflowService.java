@@ -1673,6 +1673,21 @@ public class WorkflowService {
     return revision;
   }
 
+  /** Persist an already validated autonomous evolution candidate as a normal STORY record. */
+  @Transactional
+  public Map<String, Object> persistStoryEvolutionDraft(UUID parentStoryRecordId, String text, Map<String,Object> provenance) {
+    var parent = getByKind(parentStoryRecordId, "CREATIVE_ROLE");
+    if (!"STORY".equals(parent.get("role")) || text == null || text.trim().isBlank())
+      throw new IllegalArgumentException("A saved STORY parent and non-empty evolved text are required");
+    String candidateId = "candidate-1"; String fingerprint = storyFingerprint(text.trim());
+    var alternative = new LinkedHashMap<String,Object>(); alternative.put("candidateId",candidateId); alternative.put("title", "Autonomous story evolution"); alternative.put("text", text.trim());
+    var result = new LinkedHashMap<String,Object>(); result.put("role","STORY"); result.put("alternatives",List.of(alternative)); result.put("revisionId",candidateId+"-revision-"+fingerprint); result.put("parentStoryRecordId",parentStoryRecordId.toString());
+    Object parentRequest = parent.get("sourceRequest"); String parentText = parentRequest instanceof Map<?,?> m && m.containsKey("text") ? String.valueOf(m.get("text")) : "";
+    var sourceRequest = new LinkedHashMap<String,Object>(); sourceRequest.put("role","STORY_EVOLUTION"); sourceRequest.put("text", parentText); sourceRequest.put("context", new LinkedHashMap<>(provenance));
+    var revision = new LinkedHashMap<String,Object>(); revision.put("role","STORY"); revision.put("sourceRequest",sourceRequest); revision.put("sourceRecordId",parentStoryRecordId.toString()); revision.put("title","Autonomous story evolution"); revision.put("revisionType","AUTONOMOUS_STORY_EVOLUTION"); revision.put("result",result);
+    revision.put("recordId",save("CREATIVE_ROLE",null,revision)); return revision;
+  }
+
   private String storyCandidateText(Map<String, Object> story, UUID storyRecordId, String candidateId) {
     if (candidateId == null || candidateId.isBlank()) return null;
     if ("ORIGINAL_SOURCE".equals(candidateId)) {
