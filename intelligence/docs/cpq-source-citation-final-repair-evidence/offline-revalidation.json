@@ -1,0 +1,370 @@
+{
+  "label": "OFFLINE_REVALIDATION_ONLY",
+  "requestId": "6f078994-3385-4910-8423-47a46ad9999a",
+  "originalValidation": "REJECTED: Exact required source-event citation required",
+  "revisedValidatorDiagnostic": "PASS",
+  "sourceCitationContract": "CONTIGUOUS_EVENT_ORDER_V1",
+  "revisedValidatorSha256": "7c9c1c7c8f36a8ccf83900647f58e4d3561db641f9bb4d70b8e12708f0ad585b",
+  "immutableRawResponseSha256": "1a25709c8bd53d2f093fcb93d630081f12542591e3f74f460410154c12c75d23",
+  "originalRawJsonUnmodified": true,
+  "strictJsonSchema": "PASS",
+  "remainingRejectedMappings": [],
+  "anchors": [
+    "APPROVED_EVENTS",
+    "CHARACTER_IDENTITY",
+    "EVENT_ORDER",
+    "PHYSICAL_RULE",
+    "REQUIRED_ENDING",
+    "TEMPORAL_CONSTRAINTS"
+  ],
+  "requiredSourceSpans": [
+    "event_01",
+    "event_02",
+    "event_03",
+    "event_04",
+    "event_05",
+    "event_06",
+    "event_07",
+    "event_08",
+    "event_09"
+  ],
+  "individuallyCoveredSourceSpans": [
+    "event_01",
+    "event_02",
+    "event_03",
+    "event_04",
+    "event_05",
+    "event_06",
+    "event_07",
+    "event_08",
+    "event_09"
+  ],
+  "mappings": [
+    {
+      "mappingIndex": 0,
+      "anchor": "APPROVED_EVENTS",
+      "anchorEventId": "event_01",
+      "resolvedContiguousEventIds": [
+        "event_01"
+      ],
+      "sourceQuoteVerbatim": true,
+      "promptQuoteVerbatimOrDeclaredAbsent": true,
+      "emptyPromptQuote": false,
+      "beatId": ""
+    },
+    {
+      "mappingIndex": 1,
+      "anchor": "APPROVED_EVENTS",
+      "anchorEventId": "event_02",
+      "resolvedContiguousEventIds": [
+        "event_02"
+      ],
+      "sourceQuoteVerbatim": true,
+      "promptQuoteVerbatimOrDeclaredAbsent": true,
+      "emptyPromptQuote": false,
+      "beatId": ""
+    },
+    {
+      "mappingIndex": 2,
+      "anchor": "APPROVED_EVENTS",
+      "anchorEventId": "event_03",
+      "resolvedContiguousEventIds": [
+        "event_03"
+      ],
+      "sourceQuoteVerbatim": true,
+      "promptQuoteVerbatimOrDeclaredAbsent": true,
+      "emptyPromptQuote": false,
+      "beatId": ""
+    },
+    {
+      "mappingIndex": 3,
+      "anchor": "APPROVED_EVENTS",
+      "anchorEventId": "event_04",
+      "resolvedContiguousEventIds": [
+        "event_04"
+      ],
+      "sourceQuoteVerbatim": true,
+      "promptQuoteVerbatimOrDeclaredAbsent": true,
+      "emptyPromptQuote": false,
+      "beatId": ""
+    },
+    {
+      "mappingIndex": 4,
+      "anchor": "APPROVED_EVENTS",
+      "anchorEventId": "event_05",
+      "resolvedContiguousEventIds": [
+        "event_05"
+      ],
+      "sourceQuoteVerbatim": true,
+      "promptQuoteVerbatimOrDeclaredAbsent": true,
+      "emptyPromptQuote": false,
+      "beatId": ""
+    },
+    {
+      "mappingIndex": 5,
+      "anchor": "APPROVED_EVENTS",
+      "anchorEventId": "event_06",
+      "resolvedContiguousEventIds": [
+        "event_06"
+      ],
+      "sourceQuoteVerbatim": true,
+      "promptQuoteVerbatimOrDeclaredAbsent": true,
+      "emptyPromptQuote": false,
+      "beatId": ""
+    },
+    {
+      "mappingIndex": 6,
+      "anchor": "APPROVED_EVENTS",
+      "anchorEventId": "event_07",
+      "resolvedContiguousEventIds": [
+        "event_07"
+      ],
+      "sourceQuoteVerbatim": true,
+      "promptQuoteVerbatimOrDeclaredAbsent": true,
+      "emptyPromptQuote": true,
+      "beatId": ""
+    },
+    {
+      "mappingIndex": 7,
+      "anchor": "APPROVED_EVENTS",
+      "anchorEventId": "event_08",
+      "resolvedContiguousEventIds": [
+        "event_08"
+      ],
+      "sourceQuoteVerbatim": true,
+      "promptQuoteVerbatimOrDeclaredAbsent": true,
+      "emptyPromptQuote": false,
+      "beatId": ""
+    },
+    {
+      "mappingIndex": 8,
+      "anchor": "APPROVED_EVENTS",
+      "anchorEventId": "event_09",
+      "resolvedContiguousEventIds": [
+        "event_09"
+      ],
+      "sourceQuoteVerbatim": true,
+      "promptQuoteVerbatimOrDeclaredAbsent": true,
+      "emptyPromptQuote": false,
+      "beatId": ""
+    },
+    {
+      "mappingIndex": 9,
+      "anchor": "CHARACTER_IDENTITY",
+      "anchorEventId": "event_01",
+      "resolvedContiguousEventIds": [
+        "event_01"
+      ],
+      "sourceQuoteVerbatim": true,
+      "promptQuoteVerbatimOrDeclaredAbsent": true,
+      "emptyPromptQuote": false,
+      "beatId": ""
+    },
+    {
+      "mappingIndex": 10,
+      "anchor": "PHYSICAL_RULE",
+      "anchorEventId": "event_04",
+      "resolvedContiguousEventIds": [
+        "event_04"
+      ],
+      "sourceQuoteVerbatim": true,
+      "promptQuoteVerbatimOrDeclaredAbsent": true,
+      "emptyPromptQuote": false,
+      "beatId": ""
+    },
+    {
+      "mappingIndex": 11,
+      "anchor": "EVENT_ORDER",
+      "anchorEventId": "event_07",
+      "resolvedContiguousEventIds": [
+        "event_06",
+        "event_07",
+        "event_08"
+      ],
+      "sourceQuoteVerbatim": true,
+      "promptQuoteVerbatimOrDeclaredAbsent": true,
+      "emptyPromptQuote": false,
+      "beatId": ""
+    },
+    {
+      "mappingIndex": 12,
+      "anchor": "TEMPORAL_CONSTRAINTS",
+      "anchorEventId": "event_05",
+      "resolvedContiguousEventIds": [
+        "event_05"
+      ],
+      "sourceQuoteVerbatim": true,
+      "promptQuoteVerbatimOrDeclaredAbsent": true,
+      "emptyPromptQuote": false,
+      "beatId": ""
+    },
+    {
+      "mappingIndex": 13,
+      "anchor": "REQUIRED_ENDING",
+      "anchorEventId": "event_09",
+      "resolvedContiguousEventIds": [
+        "event_09"
+      ],
+      "sourceQuoteVerbatim": true,
+      "promptQuoteVerbatimOrDeclaredAbsent": true,
+      "emptyPromptQuote": false,
+      "beatId": ""
+    }
+  ],
+  "structurallyAdmissibleRawDecision": "FAIL",
+  "normalizedDiagnostic": [
+    {
+      "neutralId": "Q04",
+      "decision": "FAIL",
+      "rationale": "Most causal actions and the ending are preserved, but the note's required text is omitted and the post-mirror escalation to near-suffocation is absent. The timed plan instead proceeds from the mirror scream directly to sneezing. Authoritative settings specify 15s, 9:16, image2video, 480p and ABSURD_PHYSICS; embedded AUTO is obsolete. Sentence coverage alone does not establish semantic fidelity.",
+      "uncertainty": "Text-only review cannot establish rendered execution or visual identity fidelity. No approved visual reference or image2video input is supplied here. The source gives no numeric duration; the 15-second allocation is a production constraint, not source timing.",
+      "conflict": true,
+      "omissions": [
+        "The intended cabinet note must read 'Topla!'; no note text is specified.",
+        "After the mirror scream, notes must become so numerous that Mimi seems about to suffocate; this escalation is missing."
+      ],
+      "additions": [
+        "Bright, colorful animation, playful music, sticking sound effects and a no-dark-themes/no-violence constraint are production additions.",
+        "Explicit two-to-four-to-eight counts operationalize the source doubling rule without contradicting it."
+      ],
+      "mappings": [
+        {
+          "anchor": "APPROVED_EVENTS",
+          "beatId": "",
+          "sourceQuote": "Mimi, oyuncak dolabına 'Topla!' yazan bir yapışkan not yapıştırmak ister.",
+          "promptQuote": "0-2s: Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger",
+          "eventId": "event_01",
+          "consistency": "FAIL"
+        },
+        {
+          "anchor": "APPROVED_EVENTS",
+          "beatId": "",
+          "sourceQuote": "Not, Mimi'nin parmağına yapışır.",
+          "promptQuote": "the note visibly clings to her finger",
+          "eventId": "event_02",
+          "consistency": "PASS"
+        },
+        {
+          "anchor": "APPROVED_EVENTS",
+          "beatId": "",
+          "sourceQuote": "Mimi diğer eliyle çıkarmaya çalışırken not ikiye ayrılır ve iki eline de yapışır.",
+          "promptQuote": "2-5s: Mimi tries to peel the stuck note away with her other hand; the note splits into two [medium shot of Mimi struggling] Mimi pulls at the note -> one note sticks to each hand",
+          "eventId": "event_03",
+          "consistency": "PASS"
+        },
+        {
+          "anchor": "APPROVED_EVENTS",
+          "beatId": "",
+          "sourceQuote": "Her çekişte notlar ikiye katlanarak çoğalır.",
+          "promptQuote": "5-10s: Mimi continues to pull; each pull doubles the number of sticky notes",
+          "eventId": "event_04",
+          "consistency": "PASS"
+        },
+        {
+          "anchor": "APPROVED_EVENTS",
+          "beatId": "",
+          "sourceQuote": "Kısa sürede Mimi'nin kolları, bacakları ve yüzü notlarla kaplanır.",
+          "promptQuote": "notes multiply from two to four to eight as she pulls, progressively covering her arms, legs and face -> Mimi is overwhelmed by notes",
+          "eventId": "event_05",
+          "consistency": "PASS"
+        },
+        {
+          "anchor": "APPROVED_EVENTS",
+          "beatId": "",
+          "sourceQuote": "Mimi aynada kendini görünce çığlık atar.",
+          "promptQuote": "10-12s: Mimi sees herself in a mirror and screams",
+          "eventId": "event_06",
+          "consistency": "PASS"
+        },
+        {
+          "anchor": "APPROVED_EVENTS",
+          "beatId": "",
+          "sourceQuote": "Notlar o kadar çoğalır ki Mimi boğulacak gibi olur.",
+          "promptQuote": "",
+          "eventId": "event_07",
+          "consistency": "FAIL"
+        },
+        {
+          "anchor": "APPROVED_EVENTS",
+          "beatId": "",
+          "sourceQuote": "Sonunda hapşırır ve tüm notlar uçuşarak dolabın üzerine yapışır.",
+          "promptQuote": "12-15s: Mimi sneezes and the sticky notes fly off [medium shot of notes flying] notes scatter and stick to the cabinet",
+          "eventId": "event_08",
+          "consistency": "PASS"
+        },
+        {
+          "anchor": "APPROVED_EVENTS",
+          "beatId": "",
+          "sourceQuote": "Mimi rahat bir nefes alır ama dolap hâlâ dağınıktır.",
+          "promptQuote": "Mimi breathes a sigh of relief but the cabinet remains messy",
+          "eventId": "event_09",
+          "consistency": "PASS"
+        },
+        {
+          "anchor": "CHARACTER_IDENTITY",
+          "beatId": "",
+          "sourceQuote": "Mimi, oyuncak dolabına 'Topla!' yazan bir yapışkan not yapıştırmak ister.",
+          "promptQuote": "Mimi is the established anthropomorphic bunny character. Preserve that identity; do not render a human or invent unverified visual details.",
+          "eventId": "event_01",
+          "consistency": "PASS"
+        },
+        {
+          "anchor": "PHYSICAL_RULE",
+          "beatId": "",
+          "sourceQuote": "Her çekişte notlar ikiye katlanarak çoğalır.",
+          "promptQuote": "each pull doubles the number of sticky notes",
+          "eventId": "event_04",
+          "consistency": "PASS"
+        },
+        {
+          "anchor": "EVENT_ORDER",
+          "beatId": "",
+          "sourceQuote": "Mimi aynada kendini görünce çığlık atar. Notlar o kadar çoğalır ki Mimi boğulacak gibi olur. Sonunda hapşırır ve tüm notlar uçuşarak dolabın üzerine yapışır.",
+          "promptQuote": "10-12s: Mimi sees herself in a mirror and screams [close-up on Mimi's shocked face] Mimi is startled by her reflection completely covered in notes -> Mimi is startled\n12-15s: Mimi sneezes and the sticky notes fly off",
+          "eventId": "event_07",
+          "consistency": "FAIL"
+        },
+        {
+          "anchor": "TEMPORAL_CONSTRAINTS",
+          "beatId": "",
+          "sourceQuote": "Kısa sürede Mimi'nin kolları, bacakları ve yüzü notlarla kaplanır.",
+          "promptQuote": "5-10s: Mimi continues to pull; each pull doubles the number of sticky notes [wide shot showing Mimi covered in notes] notes multiply from two to four to eight as she pulls, progressively covering her arms, legs and face",
+          "eventId": "event_05",
+          "consistency": "PASS"
+        },
+        {
+          "anchor": "REQUIRED_ENDING",
+          "beatId": "",
+          "sourceQuote": "Mimi rahat bir nefes alır ama dolap hâlâ dağınıktır.",
+          "promptQuote": "Mimi is relieved but the cabinet remains visibly messy.",
+          "eventId": "event_09",
+          "consistency": "PASS"
+        }
+      ],
+      "productionRisks": [
+        "Restore the exact 'Topla!' note text; its legibility at 480p is unverified.",
+        "Stage the missing post-mirror multiplication and apparent breathing distress before the sneeze, preserving the playful tone without depicting injury.",
+        "Eight notes covering arms, legs and face may require explicit note size or coverage staging; current text does not establish that physical layout.",
+        "The mirror must retain enough facial readability for the scream despite face coverage; reflection continuity and total note transfer are unverified.",
+        "The final three seconds require sneeze, full note release, cabinet adhesion and a relief breath. Executability within that window is uncertain, not demonstrated by shot labels.",
+        "Image2video requires a suitable input image; none is evidenced here. Do not assume identity-reference availability or successful generator execution."
+      ],
+      "sourceBinding": {
+        "promptSha256": "0fe229774deb4b31a42145bad91cf10c91634ba00da39fa3e9d288b3a2e7bd98",
+        "approvedStorySha256": "df653dbcaf16bfdbceb87baa23688d70d739c34941d0075e30e96b181e1bf32b",
+        "productionSettingsSha256": "e6aedfab391d7ee0a7e753b3dc8f4e8d57c31d8b2ada4b9f8b130b95b2689937",
+        "sourceIdentity": "saved-prompt:10:10",
+        "storyId": "bc1cf798-d20b-4b98-8b73-56e1581c3afc",
+        "revision": "candidate-2-revision-7c63cc86",
+        "approvalRecordId": "20b77d13-848d-46d0-ab4b-bb9b6efb0836"
+      },
+      "validationNotice": "REVIEW_REQUIRED: conflicts/omissions/additions/anchor or changed-beat coverage incomplete",
+      "unsupportedClaims": [],
+      "evidenceScope": "TEXT_ONLY"
+    }
+  ],
+  "productionReviewStatus": "NOT_EVALUATED",
+  "productionRequestState": "FAILED_OR_AMBIGUOUS",
+  "providerCalls": 0,
+  "ownerDecisionMade": false
+}

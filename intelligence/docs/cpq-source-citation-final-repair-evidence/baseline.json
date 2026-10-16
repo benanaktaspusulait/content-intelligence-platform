@@ -1,0 +1,14 @@
+{
+  "deployedReproduction": {
+    "validatorSha256": "2c08aaa5fab447d8f85ad630a690f98cded09559fe7d02ccfa632cf545807162",
+    "providerCalls": 0,
+    "result": "REJECTED",
+    "exception": "ValueError",
+    "reason": "Exact required source-event citation required"
+  },
+  "immutableSavedFileSha256": "b48c5c7135caadede8ce69ca88666a92d2321eac98527932b534e5f253f5aad2",
+  "rawResponseSha256": "1a25709c8bd53d2f093fcb93d630081f12542591e3f74f460410154c12c75d23",
+  "allRequestRowsDigest": "9fc8542ec7114168e49ba427908982ac5bedb1d6f592b71ee3b0b029cd2ce281",
+  "workflowDigest": "75|6b270d6f3ed3646ef1dcbab8692de0c44d9f52d1302c813be4d8215fd14ee3d8",
+  "inventory": "3|0|f"
+}

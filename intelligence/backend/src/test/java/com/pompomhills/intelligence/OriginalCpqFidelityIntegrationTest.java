@@ -470,4 +470,23 @@ class OriginalCpqFidelityIntegrationTest {
     assertThat(jdbc.queryForObject("SELECT count(*) FROM cpq_pilot_evidence WHERE evidence_type='MACHINE_REVIEW'",Integer.class)).isEqualTo(4);
   }
 
+  @Test void offlineCitationRevalidationCannotPromoteSavedFailedExecutionOrOpenCriticGate() throws Exception {
+    realSavedMimiPilotResolvesFourSubjectsWithUnknownSemanticEvidence();
+    var docs=Path.of("../docs/cpq-single-subject-delivery-evidence");if(!Files.exists(docs))docs=Path.of("intelligence/docs/cpq-single-subject-delivery-evidence");
+    Map<String,Object> row=json.readValue(Files.readString(docs.resolve("real-original-only-durable-result.json")),Map.class);
+    Map<String,Object> saved=json.readValue(Files.readString(docs.resolve("real-original-only-prepared-pilot.json")),Map.class);
+    UUID pilot=UUID.fromString((String)row.get("pilot_id")),requestId=UUID.fromString((String)row.get("request_id"));
+    jdbc.update("INSERT INTO cpq_owner_pilots(pilot_id,owner_principal,policy_version,scope_sha256,snapshot,total_budget_usd) VALUES(?,'fixture-owner','OWNER_MACHINE_PILOT_V1',?,CAST(? AS jsonb),.70)",pilot,"a".repeat(64),json.writeValueAsString(saved.get("snapshot")));
+    jdbc.update("INSERT INTO cpq_machine_requests(request_id,pilot_id,slot,idempotency_key,authorized_by,authorization_payload,input_sha256,state,reserved_usd,input,response,failure,subject_prompt_sha256) VALUES(?,?,'SOURCE_FIDELITY',?,'fixture-owner',CAST(? AS jsonb),?,'FAILED_OR_AMBIGUOUS',.10,CAST(? AS jsonb),CAST(? AS jsonb),?,?)",requestId,pilot,row.get("idempotency_key"),json.writeValueAsString(row.get("authorization_payload")),row.get("input_sha256"),json.writeValueAsString(row.get("input")),json.writeValueAsString(row.get("response")),row.get("failure"),row.get("subject_prompt_sha256"));
+    String before=jdbc.queryForObject("SELECT row_to_json(r)::text FROM cpq_machine_requests r WHERE request_id=?",String.class,requestId);
+    var response=new LinkedHashMap<String,Object>((Map<String,Object>)row.get("response"));var raw=json.readValue((String)response.get("rawResponse"),Map.class);response.put("results",raw.get("results"));
+    org.springframework.test.util.ReflectionTestUtils.invokeMethod(ownerPilot,"validateSingleSource",(Map<String,Object>)row.get("input"),response);
+    assertThat(response.get("executionStatus")).isEqualTo("FAILED_OR_AMBIGUOUS");
+    assertThat(jdbc.queryForObject("SELECT row_to_json(r)::text FROM cpq_machine_requests r WHERE request_id=?",String.class,requestId)).isEqualTo(before);
+    assertThat(jdbc.queryForObject("SELECT count(*) FROM cpq_pilot_evidence WHERE pilot_id=?",Integer.class,pilot)).isZero();
+    var view=ownerPilot.view(pilot,actor("fixture-owner","OWNER"));assertThat((Map<String,Object>)view.get("sourceReview")).containsEntry("validatedSubjects",0).containsEntry("criticGateSatisfied",false);
+    assertThat(view).containsEntry("officialGrading","INACTIVE").containsEntry("renderAuthorized",false).containsEntry("humanReviewCount",0);
+    assertThat(jdbc.queryForObject("SELECT activated FROM cpq_policy_state",Boolean.class)).isFalse();verifyNoInteractions(ml);
+  }
+
 }

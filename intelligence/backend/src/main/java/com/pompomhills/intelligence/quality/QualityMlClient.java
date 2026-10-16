@@ -214,7 +214,7 @@ public class QualityMlClient {
 
   public Map<String, Object> workflow(String operation, Map<String, Object> request) {
     if (!List.of(
-            "cpq-pilot/capabilities", "cpq-pilot/execute", "adaptive-optimization-policy", "review", "source-plan", "optimization-recovery", "optimization-assessment", "creative-prompt-quality/assess", "creative-prompt-quality/calibration-readiness", "creative-prompt-quality/calibration-preview", "repair", "feedback", "critic", "creative-role", "creative-role/readiness", "creative-role/revalidate-production-spec")
+            "cpq-pilot/capabilities", "cpq-pilot/execute", "cpq-pilot/revalidate-source", "adaptive-optimization-policy", "review", "source-plan", "optimization-recovery", "optimization-assessment", "creative-prompt-quality/assess", "creative-prompt-quality/calibration-readiness", "creative-prompt-quality/calibration-preview", "repair", "feedback", "critic", "creative-role", "creative-role/readiness", "creative-role/revalidate-production-spec")
         .contains(operation)) {
       throw new IllegalArgumentException("Unsupported workflow operation");
     }
@@ -222,13 +222,13 @@ public class QualityMlClient {
       String body=mlObjectMapper.writeValueAsString(request);
       var builder=HttpRequest.newBuilder(URI.create(mlServiceUrl + "/api/v1/workflow/" + operation))
           .timeout(Duration.ofSeconds("cpq-pilot/execute".equals(operation)?130:25)).header("Content-Type", "application/json");
-      if (("creative-role".equals(operation) && "PROMPT_OPTIMIZATION".equals(request.get("role"))) || "cpq-pilot/execute".equals(operation)) {
+      if (("creative-role".equals(operation) && "PROMPT_OPTIMIZATION".equals(request.get("role"))) || "cpq-pilot/execute".equals(operation) || "cpq-pilot/revalidate-source".equals(operation)) {
         String token=System.getenv("WORKFLOW_ADAPTIVE_DISPATCH_TOKEN");
         if(token==null || token.length()<32) throw new IllegalStateException("Adaptive dispatch authentication configuration required");
         try {
           var mac=javax.crypto.Mac.getInstance("HmacSHA256");
           mac.init(new javax.crypto.spec.SecretKeySpec(token.getBytes(StandardCharsets.UTF_8),"HmacSHA256"));
-          builder.header("cpq-pilot/execute".equals(operation)?"X-CPQ-Pilot-Dispatch":"X-Adaptive-Dispatch",java.util.HexFormat.of().formatHex(mac.doFinal(body.getBytes(StandardCharsets.UTF_8))));
+          builder.header(operation.startsWith("cpq-pilot/")?"X-CPQ-Pilot-Dispatch":"X-Adaptive-Dispatch",java.util.HexFormat.of().formatHex(mac.doFinal(body.getBytes(StandardCharsets.UTF_8))));
         } catch(java.security.GeneralSecurityException error) {throw new IllegalStateException("Adaptive dispatch signing unavailable",error);}
       }
       var call=builder.POST(HttpRequest.BodyPublishers.ofString(body,StandardCharsets.UTF_8)).build();

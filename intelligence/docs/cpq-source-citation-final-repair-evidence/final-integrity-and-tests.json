@@ -1,0 +1,47 @@
+{
+  "allHistoricalRequestRowsUnchanged": true,
+  "allRequestRowsDigest": "9fc8542ec7114168e49ba427908982ac5bedb1d6f592b71ee3b0b029cd2ce281",
+  "productionRequestCount": 3,
+  "productionMachineEvidenceCount": 0,
+  "workflowHistoryUnchanged": true,
+  "prompt10Unchanged": true,
+  "cpqGrading": "INACTIVE",
+  "realDispatch": "DISABLED",
+  "imagesUnchangedNoDeploy": [
+    {
+      "service": "backend",
+      "image": "sha256:2affe1ee131b4e3462cfedb20f5e6d291116e799416ec55951c79ec32002a22f",
+      "dispatchFlag": "false"
+    },
+    {
+      "service": "ml-service",
+      "image": "sha256:e183985d3d18fd3f1601d258829491160ef21e437df091106c91151a8eebab28",
+      "dispatchFlag": "false"
+    }
+  ],
+  "criticRequests": "0",
+  "realProviderCallsThisTask": 0,
+  "backendTestSuites": [
+    {
+      "name": "com.pompomhills.intelligence.workflow.CpqSourceCitationTest",
+      "tests": "6",
+      "errors": "0",
+      "failures": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.pompomhills.intelligence.OriginalCpqFidelityIntegrationTest",
+      "tests": "25",
+      "errors": "0",
+      "failures": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "com.pompomhills.intelligence.CpqOwnerAccessTest",
+      "tests": "5",
+      "errors": "0",
+      "failures": "0",
+      "skipped": "0"
+    }
+  ]
+}
