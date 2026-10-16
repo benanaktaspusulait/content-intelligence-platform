@@ -1,0 +1,31 @@
+{
+  "date": "2026-10-16",
+  "hostFreeBytes": 3573706752,
+  "buildExecuted": false,
+  "deploymentExecuted": false,
+  "providerRequestsExecuted": 0,
+  "newPilotCreated": false,
+  "newRequestAuthorizationCreated": false,
+  "historicalRequestUnchanged": true,
+  "images": {
+    "backend": {
+      "image": "sha256:32888e142e59a3e67d1c798e4f6d21aad5289939ea91a3500d887c7fafdfbb87",
+      "state": "running",
+      "health": "healthy"
+    },
+    "ml-service": {
+      "image": "sha256:734e76e603c5542e1c4d7d2018b4ad89bceb4c260d65e7b1e8795beb2f0da243",
+      "state": "running",
+      "health": "healthy"
+    },
+    "frontend": {
+      "image": "sha256:d5191a437f0a7917324a10f8459279a72b79d9655fd196b904cb958b8b8c00c5",
+      "state": "running",
+      "health": "NO_CONTAINER_HEALTHCHECK"
+    }
+  },
+  "dispatchEnabled": false,
+  "proposedCacheCount": 20,
+  "proposedCacheReportedBytes": 1894270000,
+  "hostReclamationGuaranteed": false
+}

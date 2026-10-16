@@ -1,0 +1,172 @@
+{
+  "approval": "User explicitly approved deletion of only the 20 listed cache IDs",
+  "hostFreeBytesBefore": 3551514624,
+  "approvedIds": [
+    "uf8u36380uhepwi7dtewzbmpp",
+    "b7z7jiws9z9qwjk9ma2593he0",
+    "p8jc44bshx6whvme1utmuzbzt",
+    "v8fx49ghlowfu437dh7zh7v8z",
+    "pii1xors1srpqwm7yrr5lelz8",
+    "xzt7pdsum6ffeektgn6ivxhdi",
+    "b9hum25r6tzkt81u6o4bzd5yw",
+    "wjlr6vn0z541fmed50d4i51kp",
+    "yx7gxy8ruz9cndigst329f4tg",
+    "absyy3jcgqs14jw2qpulokzah",
+    "kbp5fouxck0mtmhztbz66ogo5",
+    "lzpsn8os04bex8tvhhpkmq8y7",
+    "zh797bpdff0obqkto1z594tcx",
+    "uonenj360ox3ra45ay9t8sfv1",
+    "u0nl2yut8dqro8mqxnyyufg0q",
+    "jciy3btkww7g6bgpcm5zb3wsg",
+    "tqsrumub7jqxroaygfrv3bfwe",
+    "bt6ml4sjggzl29deti58tde97",
+    "sin7rhimin4lrnon6h83h95a6",
+    "g49olm0uq4l1gudijdf73cu3n"
+  ],
+  "actions": [
+    {
+      "id": "uf8u36380uhepwi7dtewzbmpp",
+      "exitCode": 0,
+      "output": "ID\t\t\t\t\t\tRECLAIMABLE\tSIZE\t\tLAST ACCESSED\nuf8u36380uhepwi7dtewzbmpp*              \ttrue \t\t94.54MB   \t2 days ago\nTotal:\t94.54MB",
+      "stderr": ""
+    },
+    {
+      "id": "b7z7jiws9z9qwjk9ma2593he0",
+      "exitCode": 0,
+      "output": "ID\t\t\t\t\t\tRECLAIMABLE\tSIZE\t\tLAST ACCESSED\nb7z7jiws9z9qwjk9ma2593he0*              \ttrue \t\t94.54MB   \t2 days ago\nTotal:\t94.54MB",
+      "stderr": ""
+    },
+    {
+      "id": "p8jc44bshx6whvme1utmuzbzt",
+      "exitCode": 0,
+      "output": "ID\t\t\t\t\t\tRECLAIMABLE\tSIZE\t\tLAST ACCESSED\np8jc44bshx6whvme1utmuzbzt*              \ttrue \t\t94.54MB   \t2 days ago\nTotal:\t94.54MB",
+      "stderr": ""
+    },
+    {
+      "id": "v8fx49ghlowfu437dh7zh7v8z",
+      "exitCode": 0,
+      "output": "ID\t\t\t\t\t\tRECLAIMABLE\tSIZE\t\tLAST ACCESSED\nv8fx49ghlowfu437dh7zh7v8z*              \ttrue \t\t94.58MB   \t2 days ago\nTotal:\t94.58MB",
+      "stderr": ""
+    },
+    {
+      "id": "pii1xors1srpqwm7yrr5lelz8",
+      "exitCode": 0,
+      "output": "ID\t\t\t\t\t\tRECLAIMABLE\tSIZE\t\tLAST ACCESSED\npii1xors1srpqwm7yrr5lelz8*              \ttrue \t\t94.58MB   \t2 days ago\nTotal:\t94.58MB",
+      "stderr": ""
+    },
+    {
+      "id": "xzt7pdsum6ffeektgn6ivxhdi",
+      "exitCode": 0,
+      "output": "ID\t\t\t\t\t\tRECLAIMABLE\tSIZE\t\tLAST ACCESSED\nxzt7pdsum6ffeektgn6ivxhdi*              \ttrue \t\t94.6MB    \t2 days ago\nTotal:\t94.6MB",
+      "stderr": ""
+    },
+    {
+      "id": "b9hum25r6tzkt81u6o4bzd5yw",
+      "exitCode": 0,
+      "output": "ID\t\t\t\t\t\tRECLAIMABLE\tSIZE\t\tLAST ACCESSED\nb9hum25r6tzkt81u6o4bzd5yw*              \ttrue \t\t94.6MB    \t2 days ago\nTotal:\t94.6MB",
+      "stderr": ""
+    },
+    {
+      "id": "wjlr6vn0z541fmed50d4i51kp",
+      "exitCode": 0,
+      "output": "ID\t\t\t\t\t\tRECLAIMABLE\tSIZE\t\tLAST ACCESSED\nwjlr6vn0z541fmed50d4i51kp*              \ttrue \t\t94.6MB    \t2 days ago\nTotal:\t94.6MB",
+      "stderr": ""
+    },
+    {
+      "id": "yx7gxy8ruz9cndigst329f4tg",
+      "exitCode": 0,
+      "output": "ID\t\t\t\t\t\tRECLAIMABLE\tSIZE\t\tLAST ACCESSED\nyx7gxy8ruz9cndigst329f4tg*              \ttrue \t\t94.6MB    \t2 days ago\nTotal:\t94.6MB",
+      "stderr": ""
+    },
+    {
+      "id": "absyy3jcgqs14jw2qpulokzah",
+      "exitCode": 0,
+      "output": "ID\t\t\t\t\t\tRECLAIMABLE\tSIZE\t\tLAST ACCESSED\nabsyy3jcgqs14jw2qpulokzah*              \ttrue \t\t94.61MB   \t2 days ago\nTotal:\t94.61MB",
+      "stderr": ""
+    },
+    {
+      "id": "kbp5fouxck0mtmhztbz66ogo5",
+      "exitCode": 0,
+      "output": "ID\t\t\t\t\t\tRECLAIMABLE\tSIZE\t\tLAST ACCESSED\nkbp5fouxck0mtmhztbz66ogo5*              \ttrue \t\t94.61MB   \t2 days ago\nTotal:\t94.61MB",
+      "stderr": ""
+    },
+    {
+      "id": "lzpsn8os04bex8tvhhpkmq8y7",
+      "exitCode": 0,
+      "output": "ID\t\t\t\t\t\tRECLAIMABLE\tSIZE\t\tLAST ACCESSED\nlzpsn8os04bex8tvhhpkmq8y7*              \ttrue \t\t94.61MB   \t2 days ago\nTotal:\t94.61MB",
+      "stderr": ""
+    },
+    {
+      "id": "zh797bpdff0obqkto1z594tcx",
+      "exitCode": 0,
+      "output": "ID\t\t\t\t\t\tRECLAIMABLE\tSIZE\t\tLAST ACCESSED\nzh797bpdff0obqkto1z594tcx*              \ttrue \t\t94.88MB   \t4 days ago\nTotal:\t94.88MB",
+      "stderr": ""
+    },
+    {
+      "id": "uonenj360ox3ra45ay9t8sfv1",
+      "exitCode": 0,
+      "output": "ID\t\t\t\t\t\tRECLAIMABLE\tSIZE\t\tLAST ACCESSED\nuonenj360ox3ra45ay9t8sfv1*              \ttrue \t\t94.88MB   \t4 days ago\nTotal:\t94.88MB",
+      "stderr": ""
+    },
+    {
+      "id": "u0nl2yut8dqro8mqxnyyufg0q",
+      "exitCode": 0,
+      "output": "ID\t\t\t\t\t\tRECLAIMABLE\tSIZE\t\tLAST ACCESSED\nu0nl2yut8dqro8mqxnyyufg0q*              \ttrue \t\t94.88MB   \t4 days ago\nTotal:\t94.88MB",
+      "stderr": ""
+    },
+    {
+      "id": "jciy3btkww7g6bgpcm5zb3wsg",
+      "exitCode": 0,
+      "output": "ID\t\t\t\t\t\tRECLAIMABLE\tSIZE\t\tLAST ACCESSED\njciy3btkww7g6bgpcm5zb3wsg*              \ttrue \t\t94.88MB   \t4 days ago\nTotal:\t94.88MB",
+      "stderr": ""
+    },
+    {
+      "id": "tqsrumub7jqxroaygfrv3bfwe",
+      "exitCode": 0,
+      "output": "ID\t\t\t\t\t\tRECLAIMABLE\tSIZE\t\tLAST ACCESSED\ntqsrumub7jqxroaygfrv3bfwe*              \ttrue \t\t94.88MB   \t4 days ago\nTotal:\t94.88MB",
+      "stderr": ""
+    },
+    {
+      "id": "bt6ml4sjggzl29deti58tde97",
+      "exitCode": 0,
+      "output": "ID\t\t\t\t\t\tRECLAIMABLE\tSIZE\t\tLAST ACCESSED\nbt6ml4sjggzl29deti58tde97*              \ttrue \t\t94.95MB   \t4 days ago\nTotal:\t94.95MB",
+      "stderr": ""
+    },
+    {
+      "id": "sin7rhimin4lrnon6h83h95a6",
+      "exitCode": 0,
+      "output": "ID\t\t\t\t\t\tRECLAIMABLE\tSIZE\t\tLAST ACCESSED\nsin7rhimin4lrnon6h83h95a6*              \ttrue \t\t94.95MB   \t4 days ago\nTotal:\t94.95MB",
+      "stderr": ""
+    },
+    {
+      "id": "g49olm0uq4l1gudijdf73cu3n",
+      "exitCode": 0,
+      "output": "ID\t\t\t\t\t\tRECLAIMABLE\tSIZE\t\tLAST ACCESSED\ng49olm0uq4l1gudijdf73cu3n*              \ttrue \t\t94.96MB   \t4 days ago\nTotal:\t94.96MB",
+      "stderr": ""
+    }
+  ],
+  "removedIds": [
+    "absyy3jcgqs14jw2qpulokzah",
+    "b7z7jiws9z9qwjk9ma2593he0",
+    "b9hum25r6tzkt81u6o4bzd5yw",
+    "bt6ml4sjggzl29deti58tde97",
+    "g49olm0uq4l1gudijdf73cu3n",
+    "jciy3btkww7g6bgpcm5zb3wsg",
+    "kbp5fouxck0mtmhztbz66ogo5",
+    "lzpsn8os04bex8tvhhpkmq8y7",
+    "p8jc44bshx6whvme1utmuzbzt",
+    "pii1xors1srpqwm7yrr5lelz8",
+    "sin7rhimin4lrnon6h83h95a6",
+    "tqsrumub7jqxroaygfrv3bfwe",
+    "u0nl2yut8dqro8mqxnyyufg0q",
+    "uf8u36380uhepwi7dtewzbmpp",
+    "uonenj360ox3ra45ay9t8sfv1",
+    "v8fx49ghlowfu437dh7zh7v8z",
+    "wjlr6vn0z541fmed50d4i51kp",
+    "xzt7pdsum6ffeektgn6ivxhdi",
+    "yx7gxy8ruz9cndigst329f4tg",
+    "zh797bpdff0obqkto1z594tcx"
+  ],
+  "hostFreeBytesAfter": 4801298432,
+  "applicationImagesUnchanged": true
+}

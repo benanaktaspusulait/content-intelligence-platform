@@ -301,7 +301,7 @@ class OriginalCpqFidelityIntegrationTest {
     assertThatThrownBy(()->ownerPilot.create(create,manager)).hasMessageContaining("Authenticated owner");
     UUID pilot=UUID.fromString((String)ownerPilot.create(create,owner).get("pilotId"));
     var profile=Map.of("provider","openai","model","fixture-separate-source-model","configured",true,"inputUsdPerMillion",0.01,"outputUsdPerMillion",0.01);
-    when(ml.workflow(eq("cpq-pilot/capabilities"),anyMap())).thenReturn(Map.of("profiles",Map.of("fixture-review",profile)));
+    when(ml.workflow(eq("cpq-pilot/capabilities"),anyMap())).thenReturn(Map.of("profiles",Map.of("fixture-review",profile),"sourceFidelityConfiguration",Map.of("fixture-review",Map.of("reasoningEffort","low","supportedReasoningEfforts",List.of("low","medium","high","xhigh","max")))));
     assertThatThrownBy(()->ownerPilot.decision(pilot,Map.of("decision","ACCEPT_TEXT_FOR_PREPARATION","rationale","Fixture-only acceptance without the required independent stage evidence.","confirmUngradedNoRender",true),owner)).hasMessageContaining("All three independent stage results");
     var dispatched=new ArrayList<Map<String,Object>>();
     when(ml.workflow(eq("cpq-pilot/execute"),anyMap())).thenAnswer(invocation->{
@@ -329,6 +329,9 @@ class OriginalCpqFidelityIntegrationTest {
     assertThat(((List<Map<String,Object>>)((Map<String,Object>)dispatched.get(1).get("input")).get("packets")).stream().map(packet->packet.get("neutralId"))).containsExactly("Q04","Q01","Q02","Q03");
     assertThat(((List<Map<String,Object>>)((Map<String,Object>)dispatched.get(2).get("input")).get("packets")).stream().map(packet->packet.get("neutralId"))).containsExactly("Q02","Q03","Q01","Q04");
     assertThat(dispatched).hasSize(3);assertThat(dispatched.stream().map(r->r.get("requestId")).distinct()).hasSize(3);
+    assertThat((Map<String,Object>)dispatched.getFirst().get("authorization")).containsEntry("reasoningEffort","low");
+    assertThat((Map<String,Object>)dispatched.get(1).get("authorization")).doesNotContainKey("reasoningEffort");
+    assertThat((Map<String,Object>)dispatched.get(2).get("authorization")).doesNotContainKey("reasoningEffort");
     var view=ownerPilot.view(pilot,owner);assertThat((List<?>)((Map<?,?>)view.get("comparison")).get("disagreements")).hasSize(24);
     assertThat(view).containsEntry("humanReviewCount",0).containsEntry("officialGrading","INACTIVE").containsEntry("renderAuthorized",false);
     assertThat(ownerPilot.decision(pilot,Map.of("decision","KEEP_ORIGINAL","rationale","Fixture owner decision; no real approval or creative inference.","confirmUngradedNoRender",true),owner).get("evidence")).isInstanceOf(List.class);
@@ -343,6 +346,48 @@ class OriginalCpqFidelityIntegrationTest {
     var conflicting=new LinkedHashMap<String,Object>(settings());conflicting.put("contentId",10);conflicting.put("promptVersionId",10);conflicting.put("aspectRatio","16:9");event("PRODUCTION_SETTINGS",conflicting);
     var preflight=api.originalPreflight(Map.of("contentId",10,"promptVersionId",10,"expectedPromptSha256","0fe229774deb4b31a42145bad91cf10c91634ba00da39fa3e9d288b3a2e7bd98"),manager);
     assertThat((List<String>)preflight.get("blockers")).anyMatch(message->message.contains("PRODUCTION_SETTINGS_CONFLICT"));
+  }
+
+  @Test void sourceReasoningAuthorizationAndFailedRequestCannotBeReplayed() throws Exception {
+    realSavedMimiPilotResolvesFourSubjectsWithUnknownSemanticEvidence();
+    var owner=actor("fixture-owner","OWNER");
+    var selectors=List.of(Map.of("comparisonId","e651eb75-b894-477d-ae77-0fe6e05236da","candidateId","candidate-a"),Map.of("comparisonId","9275c94b-fc35-4207-8648-dfd8d166e502","candidateId","candidate-a"),Map.of("comparisonId","9275c94b-fc35-4207-8648-dfd8d166e502","candidateId","candidate-b"));
+    var create=Map.<String,Object>of("analysisId","f0d36feb-ee0f-4da8-ae21-2071a3ddea18","candidates",selectors,"maxTotalUsd",0.3,"confirmSourceAuthority",true);
+    UUID pilot=UUID.fromString((String)ownerPilot.create(create,owner).get("pilotId"));
+    var profile=Map.of("provider","openai","model","gpt-6.1-sol","configured",true,"inputUsdPerMillion",2.5,"outputUsdPerMillion",10.0);
+    var caps=Map.<String,Object>of("profiles",Map.of("openai-escalation",profile),"sourceFidelityConfiguration",Map.of("openai-escalation",Map.of("reasoningEffort","low","supportedReasoningEfforts",List.of("low","medium","high","xhigh","max"))));
+    when(ml.workflow(eq("cpq-pilot/capabilities"),anyMap())).thenReturn(caps);
+    var auth=Map.<String,Object>of("slot","SOURCE_FIDELITY","profileId","openai-escalation","provider","openai","model","gpt-6.1-sol","maxOutputTokens",4000,"maxCostUsd",0.3,"authorizePaidInference",true,"automaticRetries",false,"idempotencyKey","fresh-source-fixture-authorization");
+    var wrongEffort=new LinkedHashMap<String,Object>(auth);wrongEffort.put("reasoningEffort","none");
+    assertThatThrownBy(()->ownerPilot.authorize(pilot,wrongEffort,owner)).hasMessageContaining("reasoning effort differs");
+    var noConsent=new LinkedHashMap<String,Object>(auth);noConsent.put("authorizePaidInference",false);
+    assertThatThrownBy(()->ownerPilot.authorize(pilot,noConsent,owner)).hasMessageContaining("Explicit single paid dispatch");
+    var authorized=ownerPilot.authorize(pilot,auth,owner);
+    ownerPilot.authorize(pilot,auth,owner); // Canonicalized effort remains idempotent.
+    var requests=(List<Map<String,Object>>)authorized.get("requests");
+    UUID requestId=UUID.fromString((String)requests.getFirst().get("requestId"));
+    assertThat((Map<String,Object>)requests.getFirst().get("authorization")).containsEntry("reasoningEffort","low");
+    long historicalCount=jdbc.queryForObject("SELECT count(*) FROM post_family_workflow_events",Long.class);
+    when(ml.workflow(eq("cpq-pilot/execute"),anyMap())).thenReturn(Map.of("executionStatus","FAILED_OR_AMBIGUOUS","failureCategory","REASONING_BUDGET_EXHAUSTED","rawResponse","","usage",Map.of("prompt_tokens",6161,"completion_tokens",4000),"costUsd",0.0554025));
+    org.springframework.test.util.ReflectionTestUtils.setField(ownerPilot,"realEnabled",true);
+    try {
+      ownerPilot.execute(pilot,requestId,owner);
+      ownerPilot.execute(pilot,requestId,owner); // Inspection only, never a second ML dispatch.
+    } finally {org.springframework.test.util.ReflectionTestUtils.setField(ownerPilot,"realEnabled",false);}
+    verify(ml,times(1)).workflow(eq("cpq-pilot/execute"),anyMap());
+    assertThat(jdbc.queryForObject("SELECT state FROM cpq_machine_requests WHERE request_id=?",String.class,requestId)).isEqualTo("FAILED_OR_AMBIGUOUS");
+    assertThat(jdbc.queryForObject("SELECT response->>'failureCategory' FROM cpq_machine_requests WHERE request_id=?",String.class,requestId)).isEqualTo("REASONING_BUDGET_EXHAUSTED");
+    var newKey=new LinkedHashMap<String,Object>(auth);newKey.put("idempotencyKey","another-source-fixture-authorization");
+    assertThatThrownBy(()->ownerPilot.authorize(pilot,newKey,owner)).hasMessageContaining("already has an immutable authorization");
+    // A fresh pilot is allowed only with its own explicit, bounded authorization.
+    UUID freshPilot=UUID.fromString((String)ownerPilot.create(create,owner).get("pilotId"));
+    var fresh=ownerPilot.authorize(freshPilot,newKey,owner);
+    var freshRequests=(List<Map<String,Object>>)fresh.get("requests");
+    assertThat(freshRequests.getFirst().get("requestId")).isNotEqualTo(requestId.toString());
+    assertThat(jdbc.queryForObject("SELECT count(*) FROM post_family_workflow_events",Long.class)).isEqualTo(historicalCount);
+    assertThat(jdbc.queryForObject("SELECT count(*) FROM cpq_pilot_evidence",Integer.class)).isZero();
+    assertThat(jdbc.queryForObject("SELECT activated FROM cpq_policy_state",Boolean.class)).isFalse();
+    assertThat(fresh).containsEntry("renderAuthorized",false).containsEntry("officialGrading","INACTIVE");
   }
 
 }

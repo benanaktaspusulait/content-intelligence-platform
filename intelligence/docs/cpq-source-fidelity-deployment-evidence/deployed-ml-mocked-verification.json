@@ -1,0 +1,19 @@
+{
+  "testType": "MOCKED_TRANSPORT_IN_DEPLOYED_ML_IMAGE",
+  "sourceReasoning": "low",
+  "criticAndOptimizerReasoning": "high",
+  "exactSubjects": 4,
+  "strictSchema": true,
+  "completionLimit": 4000,
+  "sdkAutomaticRetries": 0,
+  "unsupportedEffortsRejectedBeforeSdk": [
+    "none",
+    "minimal"
+  ],
+  "completeMockAccepted": true,
+  "semanticUnknownPreserved": true,
+  "reasoningExhaustionRejected": true,
+  "failureCostPreserved": true,
+  "realProviderCalls": 0,
+  "grading": "INACTIVE"
+}

@@ -1,0 +1,13 @@
+{
+  "hostFreeBytes": 5441380352,
+  "servicesBuiltSequentially": [
+    "ml-service",
+    "backend"
+  ],
+  "mlBuildStagingAllowanceGiB": 3,
+  "operatingReserveGiB": 1,
+  "combinedParallelBuildNotUsed": true,
+  "backendRequiresFreshDiskCheck": true,
+  "realDispatchEnabled": false,
+  "noFrontendBuild": true
+}

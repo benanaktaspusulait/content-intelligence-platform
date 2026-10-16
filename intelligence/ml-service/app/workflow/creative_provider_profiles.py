@@ -11,6 +11,16 @@ from pathlib import Path
 from openai import OpenAI
 from app.llm.provider import LLMProvider, UnsupportedProviderError
 
+# Exact model contract, verified against the official model page on 2026-10-16.
+# In particular, GPT-6.1 Sol does not support none or minimal.
+MODEL_REASONING_EFFORTS = {('openai', 'gpt-6.1-sol'): ('low', 'medium', 'high', 'xhigh', 'max')}
+
+
+def validate_reasoning_effort(configuration):
+    supported = MODEL_REASONING_EFFORTS.get((configuration.get('provider'), configuration.get('model')))
+    if supported and configuration.get('reasoningEffort') not in supported:
+        raise ValueError('Unsupported reasoning effort for the exact provider/model')
+
 
 def profiles():
     path=Path(os.getenv('POMPOM_DATA_ROOT','data'))/'workflow/creative-provider-profiles-v3.json'
@@ -35,6 +45,7 @@ def readiness():
 
 class CreativeCapabilityProvider(LLMProvider):
     def __init__(self, configuration, max_output_tokens, timeout_seconds):
+        validate_reasoning_effort(configuration)
         self.configuration=configuration
         self.model=configuration['model']
         self.max_output_tokens=max_output_tokens

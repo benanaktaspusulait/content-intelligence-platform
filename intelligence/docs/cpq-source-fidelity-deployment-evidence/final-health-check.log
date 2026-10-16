@@ -1,0 +1,12 @@
+  ml-service: sha256:7efef284319092c680ac1b982a3f88235956dd26354470148f1a82696936363b
+  ml-service HTTP check passed (/health)
+  backend: sha256:f6822a402e291a5a98407fe0e0850b90ec21b4b284037431b5edc4656cde8d95
+  backend HTTP check passed (/actuator/health)
+  frontend: sha256:d5191a437f0a7917324a10f8459279a72b79d9655fd196b904cb958b8b8c00c5
+  frontend HTTP check passed (/)
+  frontend HTTP check passed (/api/v1/intelligence/workflow/provider-capabilities)
+NAME                        IMAGE                     COMMAND                  SERVICE      CREATED         STATUS                   PORTS
+intelligence-backend-1      intelligence-backend      "java -jar /app/app.…"   backend      3 minutes ago   Up 3 minutes (healthy)   127.0.0.1:8080->8080/tcp
+intelligence-frontend-1     intelligence-frontend     "/docker-entrypoint.…"   frontend     3 minutes ago   Up 3 minutes             127.0.0.1:4200->80/tcp
+intelligence-ml-service-1   intelligence-ml-service   "uvicorn app.main:ap…"   ml-service   4 minutes ago   Up 4 minutes (healthy)   127.0.0.1:8000->8000/tcp
+Verified. Application: http://localhost:4200

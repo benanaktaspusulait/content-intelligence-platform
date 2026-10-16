@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: com.pompomhills.intelligence.OriginalCpqFidelityIntegrationTest
+-------------------------------------------------------------------------------
+Tests run: 21, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 14.15 s -- in com.pompomhills.intelligence.OriginalCpqFidelityIntegrationTest

@@ -1,0 +1,33 @@
+{
+  "deployment": "VERIFIED",
+  "images": {
+    "backend": "sha256:f6822a402e291a5a98407fe0e0850b90ec21b4b284037431b5edc4656cde8d95",
+    "ml-service": "sha256:7efef284319092c680ac1b982a3f88235956dd26354470148f1a82696936363b",
+    "frontend": "sha256:d5191a437f0a7917324a10f8459279a72b79d9655fd196b904cb958b8b8c00c5"
+  },
+  "hostFreeBytes": 6519980032,
+  "liveSourceEffort": "low",
+  "exactSourceModel": "openai/gpt-6.1-sol",
+  "criticsUnchanged": true,
+  "mimiBindingsVerified": 4,
+  "canonicalScore": 88.40625,
+  "canonicalGrade": "B",
+  "ruleset": "1.11",
+  "ownerLoginVerified": true,
+  "independentHumanReviewer": false,
+  "authenticatedWrongCsrfStatus": 403,
+  "logoutStatus": 200,
+  "anonymousWrites": {
+    "cpq/owner-pilot": 403,
+    "cpq/owner-pilot/00000000-0000-0000-0000-000000000000/authorizations": 403,
+    "cpq/owner-pilot/00000000-0000-0000-0000-000000000000/decisions": 403
+  },
+  "internalDispatchAuthenticationMatches": true,
+  "runningBackendSourceAuthorizationMarkersPresent": true,
+  "compiledBackendClassSha256": "12b87498b882b929255b10967825ae4f150b237eeb2fa7cb74a52f13435b820f",
+  "historicalPilotStillFailed": true,
+  "newPaidAuthorization": "PENDING",
+  "newProviderRequests": 0,
+  "realDispatchEnabled": false,
+  "officialGrading": "INACTIVE"
+}

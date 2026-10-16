@@ -95,10 +95,17 @@ public class CpqOwnerPilotService {
     String slot=String.valueOf(body.get("slot"));if(!Set.of("SOURCE_FIDELITY","CRITIC_A","CRITIC_B").contains(slot))throw new ResponseStatusException(BAD_REQUEST,"Exact review slot required");
     if(!Boolean.TRUE.equals(body.get("authorizePaidInference"))||!Boolean.FALSE.equals(body.get("automaticRetries")))throw new ResponseStatusException(BAD_REQUEST,"Explicit single paid dispatch authorization with retries disabled required");
     String key=String.valueOf(body.getOrDefault("idempotencyKey",""));if(key.length()<16||key.length()>100)throw new ResponseStatusException(BAD_REQUEST,"Durable idempotency key required");
+    var caps=capabilities();var profiles=map(caps.get("profiles"));String identity=String.valueOf(body.get("profileId"));var profile=map(profiles.get(identity));
+    if(slot.equals("SOURCE_FIDELITY")) {
+      var source=map(map(caps.get("sourceFidelityConfiguration")).get(identity));
+      String effort=String.valueOf(source.getOrDefault("reasoningEffort",""));
+      if(effort.isBlank() || !((List<?>)source.getOrDefault("supportedReasoningEfforts",List.of())).contains(effort))throw new ResponseStatusException(CONFLICT,"Verified source-fidelity reasoning configuration required");
+      if(body.containsKey("reasoningEffort")&&!Objects.equals(body.get("reasoningEffort"),effort))throw new ResponseStatusException(CONFLICT,"Source reasoning effort differs from the current configuration; fresh exact authorization required");
+      body=new LinkedHashMap<>(body);body.put("reasoningEffort",effort);
+    }
     var existing=db.sql("SELECT authorization_payload::text FROM cpq_machine_requests WHERE pilot_id=:id AND idempotency_key=:key").param("id",id).param("key",key).query(String.class).optional();
     if(existing.isPresent()){if(!encode(read(existing.get())).equals(encode(body)))throw new ResponseStatusException(CONFLICT,"Idempotency key reused with different authorization");return view(id,r);}
     if(db.sql("SELECT count(*) FROM cpq_machine_requests WHERE pilot_id=:id AND slot=:slot").param("id",id).param("slot",slot).query(Integer.class).single()>0)throw new ResponseStatusException(CONFLICT,"Review slot already has an immutable authorization; inspect saved request instead of retrying");
-    var caps=capabilities();var profiles=map(caps.get("profiles"));String identity=String.valueOf(body.get("profileId"));var profile=map(profiles.get(identity));
     if(!Boolean.TRUE.equals(profile.get("configured"))||!Objects.equals(body.get("provider"),profile.get("provider"))||!Objects.equals(body.get("model"),profile.get("model")))throw new ResponseStatusException(CONFLICT,"Exact configured provider/model required; no fallback");
     int tokens=body.get("maxOutputTokens") instanceof Number n?n.intValue():0;if(tokens<256||tokens>4000)throw new ResponseStatusException(BAD_REQUEST,"Output limit must be 256–4000");
     double cap=money(body.get("maxCostUsd"));var input=input(map(p.get("snapshot")),slot);int bytes=encode(input).getBytes(StandardCharsets.UTF_8).length+12000;

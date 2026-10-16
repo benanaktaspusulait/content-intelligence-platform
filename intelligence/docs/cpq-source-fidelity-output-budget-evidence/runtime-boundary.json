@@ -1,0 +1,7 @@
+{
+  "backendRealDispatchEnabled": false,
+  "mlRealEnabled": false,
+  "officialGrading": "INACTIVE",
+  "deployedSourceSpecificConfigurationPresent": false,
+  "deployedOpenAiGeneralReasoningEffort": "high"
+}

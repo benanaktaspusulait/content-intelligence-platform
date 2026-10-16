@@ -7,7 +7,7 @@ from app.workflow import owner_machine_pilot as pilot
 
 @pytest.fixture
 def config(monkeypatch):
-    cfg={'provider':'openai','model':'fixture-model','documentedVersion':'fixture-v1','maxOutputTokens':4000,'contextTokens':100000,'inputUsdPerMillion':1,'outputUsdPerMillion':1}
+    cfg={'provider':'openai','model':'gpt-6.1-sol','documentedVersion':'fixture-v1','reasoningEffort':'high','maxOutputTokens':4000,'contextTokens':100000,'inputUsdPerMillion':1,'outputUsdPerMillion':1}
     monkeypatch.setattr(pilot,'profile',lambda identity:cfg)
     return cfg
 
@@ -27,7 +27,7 @@ def result(source=False):
     return {'results':results}
 
 def request(source=False):
-    return {'requestId':'fixture-request','input':data(source),'authorization':{'profileId':'fixture','provider':'openai','model':'fixture-model','authorizePaidInference':True,'automaticRetries':False,'maxOutputTokens':4000,'maxCostUsd':.1}}
+    return {'requestId':'fixture-request','input':data(source),'authorization':{'profileId':'fixture','provider':'openai','model':'gpt-6.1-sol','authorizePaidInference':True,'automaticRetries':False,'maxOutputTokens':4000,'maxCostUsd':.1,**({'reasoningEffort':'low'} if source else {})}}
 
 class Fake:
     calls=[]
@@ -35,7 +35,7 @@ class Fake:
     def complete(self,prompt,**kwargs):
         self.calls.append(json.loads(prompt))
         self.last_usage={'prompt_tokens':100,'completion_tokens':100}
-        self.last_response_metadata={'model':'fixture-model'}
+        self.last_response_metadata={'model':'gpt-6.1-sol'}
         self.last_raw_response=json.dumps(result(json.loads(prompt)['purpose']=='SOURCE_FIDELITY'))
         return self.last_raw_response
 

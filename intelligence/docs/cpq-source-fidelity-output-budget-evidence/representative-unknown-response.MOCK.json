@@ -1,0 +1,356 @@
+{
+  "results": [
+    {
+      "neutralId": "Q01",
+      "decision": "UNKNOWN",
+      "rationale": "OFFLINE MOCK: Events are quoted, but Topla! is omitted and translation adequacy needs semantic review.",
+      "uncertainty": "MOCK ONLY: identity appearance and visual execution remain unverified; source has no numeric duration.",
+      "conflict": false,
+      "omissions": [
+        "Topla! note text is absent."
+      ],
+      "additions": [],
+      "mappings": [
+        {
+          "anchor": "CHARACTER_IDENTITY",
+          "beatId": "beat_01",
+          "sourceQuote": "Mimi",
+          "promptQuote": "Mimi, an anthropomorphic bunny"
+        },
+        {
+          "anchor": "APPROVED_EVENTS",
+          "beatId": "beat_01",
+          "sourceQuote": "Mimi, oyuncak dolabına 'Topla!' yazan bir yapışkan not yapıştırmak ister. Not, Mimi'nin parmağına yapışır.",
+          "promptQuote": "Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger"
+        },
+        {
+          "anchor": "APPROVED_EVENTS",
+          "beatId": "beat_02",
+          "sourceQuote": "Mimi diğer eliyle çıkarmaya çalışırken not ikiye ayrılır ve iki eline de yapışır.",
+          "promptQuote": "Mimi tries to peel the stuck note away with her other hand; the note splits into two"
+        },
+        {
+          "anchor": "PHYSICAL_RULE",
+          "beatId": "beat_03",
+          "sourceQuote": "Her çekişte notlar ikiye katlanarak çoğalır.",
+          "promptQuote": "each pull doubles the number of sticky notes"
+        },
+        {
+          "anchor": "APPROVED_EVENTS",
+          "beatId": "beat_03",
+          "sourceQuote": "Kısa sürede Mimi'nin kolları, bacakları ve yüzü notlarla kaplanır.",
+          "promptQuote": "progressively covering her arms, legs and face"
+        },
+        {
+          "anchor": "APPROVED_EVENTS",
+          "beatId": "beat_04",
+          "sourceQuote": "Mimi aynada kendini görünce çığlık atar.",
+          "promptQuote": "Mimi sees herself in a mirror and screams"
+        },
+        {
+          "anchor": "APPROVED_EVENTS",
+          "beatId": "beat_03",
+          "sourceQuote": "Notlar o kadar çoğalır ki Mimi boğulacak gibi olur.",
+          "promptQuote": "Mimi is overwhelmed by notes"
+        },
+        {
+          "anchor": "REQUIRED_ENDING",
+          "beatId": "beat_05",
+          "sourceQuote": "Sonunda hapşırır ve tüm notlar uçuşarak dolabın üzerine yapışır. Mimi rahat bir nefes alır ama dolap hâlâ dağınıktır.",
+          "promptQuote": "Mimi sneezes and the sticky notes fly off"
+        },
+        {
+          "anchor": "REQUIRED_ENDING",
+          "beatId": "beat_05",
+          "sourceQuote": "tüm notlar uçuşarak dolabın üzerine yapışır. Mimi rahat bir nefes alır ama dolap hâlâ dağınıktır.",
+          "promptQuote": "notes scatter and stick to the cabinet -> Mimi breathes a sigh of relief but the cabinet remains messy"
+        },
+        {
+          "anchor": "EVENT_ORDER",
+          "beatId": "beat_05",
+          "sourceQuote": "Sonunda hapşırır",
+          "promptQuote": "12-15s: Mimi sneezes"
+        },
+        {
+          "anchor": "TEMPORAL_CONSTRAINTS",
+          "beatId": "beat_03",
+          "sourceQuote": "Kısa sürede",
+          "promptQuote": "5-10s: Mimi continues to pull"
+        },
+        {
+          "anchor": "APPROVED_EVENTS",
+          "beatId": "beat_01",
+          "sourceQuote": "Not, Mimi'nin parmağına yapışır.",
+          "promptQuote": "locked-off medium shot; Stage the cabinet and her finger on left and right screen regions. Align the existing reach toward the cabinet; keep the intended contact area unobstructed behind the reaching motion. Show the existing attachment to her finger through the same continuous view; maintain a visible gap to the intended destination after wrong-surface contact. Keep the note contact edge outside the silhouette of the other hand; do not hide the attachment with a cut."
+        }
+      ],
+      "productionRisks": [
+        "Mock concern: mirror and multiplying-note execution unverified."
+      ]
+    },
+    {
+      "neutralId": "Q03",
+      "decision": "UNKNOWN",
+      "rationale": "OFFLINE MOCK: Events are quoted, but Topla! is omitted and translation adequacy needs semantic review.",
+      "uncertainty": "MOCK ONLY: identity appearance and visual execution remain unverified; source has no numeric duration.",
+      "conflict": false,
+      "omissions": [
+        "Topla! note text is absent."
+      ],
+      "additions": [],
+      "mappings": [
+        {
+          "anchor": "CHARACTER_IDENTITY",
+          "beatId": "beat_01",
+          "sourceQuote": "Mimi",
+          "promptQuote": "Mimi, an anthropomorphic bunny"
+        },
+        {
+          "anchor": "APPROVED_EVENTS",
+          "beatId": "beat_01",
+          "sourceQuote": "Mimi, oyuncak dolabına 'Topla!' yazan bir yapışkan not yapıştırmak ister. Not, Mimi'nin parmağına yapışır.",
+          "promptQuote": "Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger"
+        },
+        {
+          "anchor": "APPROVED_EVENTS",
+          "beatId": "beat_02",
+          "sourceQuote": "Mimi diğer eliyle çıkarmaya çalışırken not ikiye ayrılır ve iki eline de yapışır.",
+          "promptQuote": "Mimi tries to peel the stuck note away with her other hand; the note splits into two"
+        },
+        {
+          "anchor": "PHYSICAL_RULE",
+          "beatId": "beat_03",
+          "sourceQuote": "Her çekişte notlar ikiye katlanarak çoğalır.",
+          "promptQuote": "each pull doubles the number of sticky notes"
+        },
+        {
+          "anchor": "APPROVED_EVENTS",
+          "beatId": "beat_03",
+          "sourceQuote": "Kısa sürede Mimi'nin kolları, bacakları ve yüzü notlarla kaplanır.",
+          "promptQuote": "progressively covering her arms, legs and face"
+        },
+        {
+          "anchor": "APPROVED_EVENTS",
+          "beatId": "beat_04",
+          "sourceQuote": "Mimi aynada kendini görünce çığlık atar.",
+          "promptQuote": "Mimi sees herself in a mirror and screams"
+        },
+        {
+          "anchor": "APPROVED_EVENTS",
+          "beatId": "beat_03",
+          "sourceQuote": "Notlar o kadar çoğalır ki Mimi boğulacak gibi olur.",
+          "promptQuote": "Mimi is overwhelmed by notes"
+        },
+        {
+          "anchor": "REQUIRED_ENDING",
+          "beatId": "beat_05",
+          "sourceQuote": "Sonunda hapşırır ve tüm notlar uçuşarak dolabın üzerine yapışır. Mimi rahat bir nefes alır ama dolap hâlâ dağınıktır.",
+          "promptQuote": "Mimi sneezes and the sticky notes fly off"
+        },
+        {
+          "anchor": "REQUIRED_ENDING",
+          "beatId": "beat_05",
+          "sourceQuote": "tüm notlar uçuşarak dolabın üzerine yapışır. Mimi rahat bir nefes alır ama dolap hâlâ dağınıktır.",
+          "promptQuote": "notes scatter and stick to the cabinet -> Mimi breathes a sigh of relief but the cabinet remains messy"
+        },
+        {
+          "anchor": "EVENT_ORDER",
+          "beatId": "beat_05",
+          "sourceQuote": "Sonunda hapşırır",
+          "promptQuote": "12-15s: Mimi sneezes"
+        },
+        {
+          "anchor": "TEMPORAL_CONSTRAINTS",
+          "beatId": "beat_03",
+          "sourceQuote": "Kısa sürede",
+          "promptQuote": "5-10s: Mimi continues to pull"
+        },
+        {
+          "anchor": "APPROVED_EVENTS",
+          "beatId": "beat_02",
+          "sourceQuote": "Mimi diğer eliyle çıkarmaya çalışırken not ikiye ayrılır ve iki eline de yapışır.",
+          "promptQuote": "tracking medium shot; focus Mimi tries to peel the stuck note away with her other hand; the note splits into two then one note sticks to each hand in a single continuous shot"
+        },
+        {
+          "anchor": "PHYSICAL_RULE",
+          "beatId": "beat_03",
+          "sourceQuote": "Her çekişte notlar ikiye katlanarak çoğalır.",
+          "promptQuote": "static wide shot; hold two; hold four; hold eight; single continuous shot"
+        }
+      ],
+      "productionRisks": [
+        "Mock concern: mirror and multiplying-note execution unverified."
+      ]
+    },
+    {
+      "neutralId": "Q02",
+      "decision": "UNKNOWN",
+      "rationale": "OFFLINE MOCK: Events are quoted, but Topla! is omitted and translation adequacy needs semantic review.",
+      "uncertainty": "MOCK ONLY: identity appearance and visual execution remain unverified; source has no numeric duration.",
+      "conflict": false,
+      "omissions": [
+        "Topla! note text is absent."
+      ],
+      "additions": [],
+      "mappings": [
+        {
+          "anchor": "CHARACTER_IDENTITY",
+          "beatId": "beat_01",
+          "sourceQuote": "Mimi",
+          "promptQuote": "Mimi, an anthropomorphic bunny"
+        },
+        {
+          "anchor": "APPROVED_EVENTS",
+          "beatId": "beat_01",
+          "sourceQuote": "Mimi, oyuncak dolabına 'Topla!' yazan bir yapışkan not yapıştırmak ister. Not, Mimi'nin parmağına yapışır.",
+          "promptQuote": "Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger"
+        },
+        {
+          "anchor": "APPROVED_EVENTS",
+          "beatId": "beat_02",
+          "sourceQuote": "Mimi diğer eliyle çıkarmaya çalışırken not ikiye ayrılır ve iki eline de yapışır.",
+          "promptQuote": "Mimi tries to peel the stuck note away with her other hand; the note splits into two"
+        },
+        {
+          "anchor": "PHYSICAL_RULE",
+          "beatId": "beat_03",
+          "sourceQuote": "Her çekişte notlar ikiye katlanarak çoğalır.",
+          "promptQuote": "each pull doubles the number of sticky notes"
+        },
+        {
+          "anchor": "APPROVED_EVENTS",
+          "beatId": "beat_03",
+          "sourceQuote": "Kısa sürede Mimi'nin kolları, bacakları ve yüzü notlarla kaplanır.",
+          "promptQuote": "progressively covering her arms, legs and face"
+        },
+        {
+          "anchor": "APPROVED_EVENTS",
+          "beatId": "beat_04",
+          "sourceQuote": "Mimi aynada kendini görünce çığlık atar.",
+          "promptQuote": "Mimi sees herself in a mirror and screams"
+        },
+        {
+          "anchor": "APPROVED_EVENTS",
+          "beatId": "beat_03",
+          "sourceQuote": "Notlar o kadar çoğalır ki Mimi boğulacak gibi olur.",
+          "promptQuote": "Mimi is overwhelmed by notes"
+        },
+        {
+          "anchor": "REQUIRED_ENDING",
+          "beatId": "beat_05",
+          "sourceQuote": "Sonunda hapşırır ve tüm notlar uçuşarak dolabın üzerine yapışır. Mimi rahat bir nefes alır ama dolap hâlâ dağınıktır.",
+          "promptQuote": "Mimi sneezes and the sticky notes fly off"
+        },
+        {
+          "anchor": "REQUIRED_ENDING",
+          "beatId": "beat_05",
+          "sourceQuote": "tüm notlar uçuşarak dolabın üzerine yapışır. Mimi rahat bir nefes alır ama dolap hâlâ dağınıktır.",
+          "promptQuote": "notes scatter and stick to the cabinet -> Mimi breathes a sigh of relief but the cabinet remains messy"
+        },
+        {
+          "anchor": "EVENT_ORDER",
+          "beatId": "beat_05",
+          "sourceQuote": "Sonunda hapşırır",
+          "promptQuote": "12-15s: Mimi sneezes"
+        },
+        {
+          "anchor": "TEMPORAL_CONSTRAINTS",
+          "beatId": "beat_03",
+          "sourceQuote": "Kısa sürede",
+          "promptQuote": "5-10s: Mimi continues to pull"
+        },
+        {
+          "anchor": "APPROVED_EVENTS",
+          "beatId": "beat_01",
+          "sourceQuote": "Not, Mimi'nin parmağına yapışır.",
+          "promptQuote": "static close-up; keep the cabinet and her finger visible together in the same frame"
+        }
+      ],
+      "productionRisks": [
+        "Mock concern: mirror and multiplying-note execution unverified."
+      ]
+    },
+    {
+      "neutralId": "Q04",
+      "decision": "UNKNOWN",
+      "rationale": "OFFLINE MOCK: Events are quoted, but Topla! is omitted and translation adequacy needs semantic review.",
+      "uncertainty": "MOCK ONLY: identity appearance and visual execution remain unverified; source has no numeric duration.",
+      "conflict": false,
+      "omissions": [
+        "Topla! note text is absent."
+      ],
+      "additions": [],
+      "mappings": [
+        {
+          "anchor": "CHARACTER_IDENTITY",
+          "beatId": "beat_01",
+          "sourceQuote": "Mimi",
+          "promptQuote": "Mimi, an anthropomorphic bunny"
+        },
+        {
+          "anchor": "APPROVED_EVENTS",
+          "beatId": "beat_01",
+          "sourceQuote": "Mimi, oyuncak dolabına 'Topla!' yazan bir yapışkan not yapıştırmak ister. Not, Mimi'nin parmağına yapışır.",
+          "promptQuote": "Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger"
+        },
+        {
+          "anchor": "APPROVED_EVENTS",
+          "beatId": "beat_02",
+          "sourceQuote": "Mimi diğer eliyle çıkarmaya çalışırken not ikiye ayrılır ve iki eline de yapışır.",
+          "promptQuote": "Mimi tries to peel the stuck note away with her other hand; the note splits into two"
+        },
+        {
+          "anchor": "PHYSICAL_RULE",
+          "beatId": "beat_03",
+          "sourceQuote": "Her çekişte notlar ikiye katlanarak çoğalır.",
+          "promptQuote": "each pull doubles the number of sticky notes"
+        },
+        {
+          "anchor": "APPROVED_EVENTS",
+          "beatId": "beat_03",
+          "sourceQuote": "Kısa sürede Mimi'nin kolları, bacakları ve yüzü notlarla kaplanır.",
+          "promptQuote": "progressively covering her arms, legs and face"
+        },
+        {
+          "anchor": "APPROVED_EVENTS",
+          "beatId": "beat_04",
+          "sourceQuote": "Mimi aynada kendini görünce çığlık atar.",
+          "promptQuote": "Mimi sees herself in a mirror and screams"
+        },
+        {
+          "anchor": "APPROVED_EVENTS",
+          "beatId": "beat_03",
+          "sourceQuote": "Notlar o kadar çoğalır ki Mimi boğulacak gibi olur.",
+          "promptQuote": "Mimi is overwhelmed by notes"
+        },
+        {
+          "anchor": "REQUIRED_ENDING",
+          "beatId": "beat_05",
+          "sourceQuote": "Sonunda hapşırır ve tüm notlar uçuşarak dolabın üzerine yapışır. Mimi rahat bir nefes alır ama dolap hâlâ dağınıktır.",
+          "promptQuote": "Mimi sneezes and the sticky notes fly off"
+        },
+        {
+          "anchor": "REQUIRED_ENDING",
+          "beatId": "beat_05",
+          "sourceQuote": "tüm notlar uçuşarak dolabın üzerine yapışır. Mimi rahat bir nefes alır ama dolap hâlâ dağınıktır.",
+          "promptQuote": "notes scatter and stick to the cabinet -> Mimi breathes a sigh of relief but the cabinet remains messy"
+        },
+        {
+          "anchor": "EVENT_ORDER",
+          "beatId": "beat_05",
+          "sourceQuote": "Sonunda hapşırır",
+          "promptQuote": "12-15s: Mimi sneezes"
+        },
+        {
+          "anchor": "TEMPORAL_CONSTRAINTS",
+          "beatId": "beat_03",
+          "sourceQuote": "Kısa sürede",
+          "promptQuote": "5-10s: Mimi continues to pull"
+        }
+      ],
+      "productionRisks": [
+        "Mock concern: mirror and multiplying-note execution unverified."
+      ]
+    }
+  ]
+}
