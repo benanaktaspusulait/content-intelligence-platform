@@ -1,0 +1,10 @@
+{
+  "loginHttpStatus": 200,
+  "authenticated": true,
+  "ownerId": "benan",
+  "independentHumanReviewer": false,
+  "authenticatedWriteWithWrongCsrfStatus": 403,
+  "logoutHttpStatus": 200,
+  "authenticatedAfterLogout": false,
+  "writeAfterLogoutStatus": 403
+}

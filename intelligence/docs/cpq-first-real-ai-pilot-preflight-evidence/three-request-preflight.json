@@ -45,7 +45,7 @@
         }
       ],
       "sharedProviderFamilyLimitation": "Checker and historical generators both OpenAI; exact model differs. No human independence claim.",
-      "neutralOrderBasis": "Illustrative packet order for offline byte-budget calculation only; actual SOURCE_FIDELITY order is derived by the backend from the final immutable pilot snapshot. Critic orders are the saved manifest orders."
+      "neutralOrderBasis": "Illustrative packet order for offline byte-budget calculation only; actual SOURCE_FIDELITY order is backend-derived from the final immutable pilot snapshot. Critic orders are saved manifest orders."
     },
     {
       "slot": "CRITIC_A",

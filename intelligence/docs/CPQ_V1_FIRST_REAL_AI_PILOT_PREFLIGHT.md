@@ -1,23 +1,25 @@
-# First real AI pilot preflight — 15 October 2026
+# First real AI pilot preflight — 16 October 2026
 
 ## Decision
 
-NO-GO pending restoration of the current browser owner session. A real owner login succeeded (Owner: benan); logout removed all owner write controls and reopening the panel required login. Subsequent automated re-login attempts did not restore the session. The UI reports “Owner login unavailable, invalid or rate limited”; this generic message does not establish the cause. Do not retry repeatedly or claim authentication acceptance is complete.
+GO for requesting the separately bounded paid-test authorization, not for dispatch. Real Chrome login and logout succeeded previously. A fresh local application HTTP session now independently verified valid credential login (200), authenticated CSRF rejection (403), logout (200), subsequent authenticated=False and write rejection (403). This establishes the configured credential and server authentication are working. The earlier browser re-login failures were 401, rather than CSRF failures; the exact unsuccessful input/clipboard cause is not established and is not reported as an application defect. The browser is currently anonymous; no authenticated browser session is claimed to remain open.
+
+Result: **MIMI_REAL_AI_PILOT_READY_FOR_OWNER_AUTHORIZATION**, limited to the exact envelope below. Live model availability and creative quality remain unverified.
 
 | Status | Value |
 | --- | --- |
 | DISK_HEADROOM | SAFE for current running stack and bounded read-only preflight; avoid broad builds |
-| OWNER_AUTH | BLOCKED — configured, initial login/logout verified; current re-login unresolved |
+| OWNER_AUTH | CONFIGURED_VERIFIED — live browser login/logout plus fresh local HTTP security verification |
 | MIMI_BINDINGS | VERIFIED |
 | PROVIDER_PREFLIGHT | READY_UNVERIFIED_LIVE |
 | REAL_DISPATCH | DISABLED |
 | CPQ_GRADING | INACTIVE |
 | REAL_CREATIVE_EVIDENCE | NOT_COLLECTED |
-| FIRST_REAL_PILOT | BLOCKED |
+| FIRST_REAL_PILOT | READY_FOR_AUTHORIZATION |
 
 ## 1. Disk and deployment health
 
-Host free space: 4.9 GiB on the latest check (previously 4.7–5.0 GiB). Backend health UP, frontend HTTP 200, ML/PostgreSQL/render container health healthy. Frontend has no Docker healthcheck in the current compose output. Backend reports roughly 48.8 GiB free inside Docker. Flyway V65 is successful. No deployment, image build, database mutation, prune or cleanup was performed during this preflight continuation. The owner independently ran the official setup/deployment successfully.
+Host free space: 3.4 GiB on 16 October (previously 4.7–5.0 GiB). This is sufficient for this bounded no-build preflight and small review payloads, but below the desired 10–15 GiB operating headroom. No further build/deployment is authorized by this readiness finding; recheck before dispatch and avoid concurrent disk-heavy work. Backend health UP, frontend HTTP 200, ML/PostgreSQL/render container health healthy. Frontend has no Docker healthcheck in the current compose output. Backend reports roughly 48.8 GiB free inside Docker. Flyway V65 is successful. No deployment, image build, database mutation, prune or cleanup was performed during this preflight continuation. The owner independently ran the official setup/deployment successfully.
 
 Earlier bounded Docker inspection: Docker.raw logical size 128 GiB, allocated approximately 67 GiB; build cache 61.24 GB with 11.43 GB reported reclaimable. These are diagnostics, not deletion permission.
 
@@ -51,7 +53,7 @@ The real owner created the production credential and chose benan. The assistant 
 - A 30-minute live idle-expiry write attempt was not performed. Servlet timeout configuration and logout are verified; do not label live expiry behavior tested.
 - Source inspection shows no credential localStorage/sessionStorage writes; the form value is cleared before the request. No broad browser-storage or log secret dump was made.
 - The panel retains its old “Owner session established” message after logout; the visible login form and absent owner controls correctly show anonymous state. This stale status text is a UI limitation, not evidence of an active session.
-- Current automated re-login did not succeed. No credential rotation, identity change or security weakening was attempted.
+- Follow-up live local HTTP acceptance: login 200, independentHumanReviewer=False, authenticated write with incorrect CSRF 403, logout 200, authenticatedAfterLogout=False, writeAfterLogout 403. Tokens/cookies existed only in the transient client protocol state and were not reported or persisted. See owner-runtime-security.json. No credential rotation, identity change or security weakening was attempted.
 
 ## 5. Exact Mimi bindings
 
@@ -88,7 +90,7 @@ Critic A saved order Q04,Q01,Q02,Q03; Critic B Q02,Q03,Q01,Q04. SOURCE_FIDELITY 
 
 ## 8. Real UI and record integrity
 
-Step 6 Repair and Creative Optimization were opened in the existing deployed Chrome tab. The owner panel showed exact context, inactive grading, unexecuted machine fidelity and independent human evidence UNKNOWN. The current selected comparison contains zero candidates; historical comparisons remain separately selectable. API verification includes all three actual historical candidates. No source-attestation checkbox, pilot preparation, paid consent, candidate approval or owner decision was submitted.
+Step 6 Repair and Creative Optimization were opened in the existing deployed Chrome tab. The owner panel showed exact context, inactive grading, unexecuted machine fidelity and independent human evidence UNKNOWN. The current selected comparison contains zero candidates; historical comparisons remain separately selectable. Actual browser selection of comparison 9275c94b-fc35-4207-8648-dfd8d166e502 displayed Candidate A and B, 88.41/B each, CURRENT VALIDATION REQUIRED, independent fidelity UNKNOWN, CPQ grading inactive and render BLOCKED_PENDING_EVIDENCE. Historical evidence remains stale. API verification includes all three actual historical candidates. No source-attestation checkbox, pilot preparation, paid consent, candidate approval or owner decision was submitted.
 
 The UI pilot-preparation input uses the currently supplied candidate selection, not automatically all historical comparisons. A four-subject pilot must bind the exact three selectors listed above; do not mistakenly prepare only the current empty comparison. No four-subject persisted pilot has yet been created.
 
@@ -98,9 +100,9 @@ Backend and ML CPQ_PILOT_REAL_ENABLED are both false. No real-request authorizat
 
 ## 9. Remaining gates and next action
 
-1. Resolve current owner browser re-login; investigate the exact failure status without exposing credential, cookies or CSRF. Do not keep submitting ambiguous failed login attempts.
-2. Before dispatch, prepare the exact four-subject pilot through the official application contract with explicit source confirmation and a $0.60 total reservation. No paid authorization may be inferred from this preflight.
-3. Obtain separate explicit owner authorization for the exact three-request envelope above before enabling real dispatch. Keep both feature flags false meanwhile.
+1. Obtain the owner's separate explicit authorization for the exact four-subject source binding and three-request envelope: SOURCE_FIDELITY OpenAI/gpt-6.1-sol up to $0.30, CRITIC_A DeepSeek/deepseek-v4-pro up to $0.10, CRITIC_B OpenAI/gpt-6.1-sol up to $0.20; total $0.60; 4,000 output tokens per request; no retries/fallback/escalation.
+2. After that authorization, prepare the exact four-subject pilot through the official application contract with the three historical selectors above, explicit source confirmation and $0.60 total reservation. Do not prepare only the currently selected comparison or treat saved historical comparison evidence as current.
+3. Recheck free space/health, exact bindings, model configuration, idempotency and existing request state before enabling dispatch. Keep both feature flags false and create no paid-request authorizations until separately authorized. The configured but live-unverified models must not be substituted automatically.
 4. Verified Mimi character reference and accepted start frame remain independent Step 7/F8 requirements. Text evaluation does not authorize rendering.
 
-No creative A/A+ success is claimed. This report establishes input and budget readiness while preserving the unresolved browser authentication limitation.
+No creative A/A+ success is claimed. This report establishes bounded operational, source-binding, authentication and budget readiness; live idle-expiry timing was not exercised. No full-suite pass or real-model effectiveness is claimed.

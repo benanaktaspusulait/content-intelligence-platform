@@ -1,0 +1,17 @@
+{
+  "date": "2026-10-16",
+  "ownerAuthentication": "CONFIGURED_VERIFIED",
+  "browserCurrentlyAuthenticated": false,
+  "hostFreeGiB": 3.4,
+  "diskScope": "bounded no-build preflight; recheck before dispatch",
+  "flywayVersion": "65",
+  "workflowEvents": 75,
+  "workflowPayloadDigest": "6b270d6f3ed3646ef1dcbab8692de0c44d9f52d1302c813be4d8215fd14ee3d8",
+  "ownerPilots": 0,
+  "machineRequests": 0,
+  "pilotEvidence": 0,
+  "gradingActivated": false,
+  "paidRequestsAuthorized": false,
+  "realDispatchEnabled": false,
+  "result": "MIMI_REAL_AI_PILOT_READY_FOR_OWNER_AUTHORIZATION"
+}
