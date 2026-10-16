@@ -1,0 +1,205 @@
+{
+  "results": [
+    {
+      "neutralId": "Q03",
+      "decision": "UNKNOWN",
+      "rationale": "TEST_FIXTURE: complete source coverage, not a real semantic assessment.",
+      "uncertainty": "TEST_FIXTURE: no real model or visual evidence.",
+      "conflict": false,
+      "omissions": [
+        "Topla! note text is absent."
+      ],
+      "additions": [],
+      "mappings": [
+        {
+          "anchor": "CHARACTER_IDENTITY",
+          "beatId": "beat_01",
+          "sourceQuote": "Mimi, oyuncak dolabına 'Topla!' yazan bir yapışkan not yapıştırmak ister.",
+          "promptQuote": "Mimi, an anthropomorphic bunny",
+          "eventId": "event_01",
+          "consistency": "UNKNOWN"
+        },
+        {
+          "anchor": "CHARACTER_IDENTITY",
+          "beatId": "beat_01",
+          "sourceQuote": "Not, Mimi'nin parmağına yapışır.",
+          "promptQuote": "Mimi, an anthropomorphic bunny",
+          "eventId": "event_02",
+          "consistency": "UNKNOWN"
+        },
+        {
+          "anchor": "CHARACTER_IDENTITY",
+          "beatId": "beat_01",
+          "sourceQuote": "Mimi diğer eliyle çıkarmaya çalışırken not ikiye ayrılır ve iki eline de yapışır.",
+          "promptQuote": "Mimi, an anthropomorphic bunny",
+          "eventId": "event_03",
+          "consistency": "UNKNOWN"
+        },
+        {
+          "anchor": "PHYSICAL_RULE",
+          "beatId": "beat_03",
+          "sourceQuote": "Her çekişte notlar ikiye katlanarak çoğalır.",
+          "promptQuote": "each pull doubles the number of sticky notes",
+          "eventId": "event_04",
+          "consistency": "UNKNOWN"
+        },
+        {
+          "anchor": "CHARACTER_IDENTITY",
+          "beatId": "beat_01",
+          "sourceQuote": "Kısa sürede Mimi'nin kolları, bacakları ve yüzü notlarla kaplanır.",
+          "promptQuote": "Mimi, an anthropomorphic bunny",
+          "eventId": "event_05",
+          "consistency": "UNKNOWN"
+        },
+        {
+          "anchor": "CHARACTER_IDENTITY",
+          "beatId": "beat_01",
+          "sourceQuote": "Mimi aynada kendini görünce çığlık atar.",
+          "promptQuote": "Mimi, an anthropomorphic bunny",
+          "eventId": "event_06",
+          "consistency": "UNKNOWN"
+        },
+        {
+          "anchor": "CHARACTER_IDENTITY",
+          "beatId": "beat_01",
+          "sourceQuote": "Notlar o kadar çoğalır ki Mimi boğulacak gibi olur.",
+          "promptQuote": "Mimi, an anthropomorphic bunny",
+          "eventId": "event_07",
+          "consistency": "UNKNOWN"
+        },
+        {
+          "anchor": "REQUIRED_ENDING",
+          "beatId": "beat_05",
+          "sourceQuote": "Sonunda hapşırır ve tüm notlar uçuşarak dolabın üzerine yapışır.",
+          "promptQuote": "Mimi sneezes and the sticky notes fly off",
+          "eventId": "event_08",
+          "consistency": "UNKNOWN"
+        },
+        {
+          "anchor": "CHARACTER_IDENTITY",
+          "beatId": "beat_01",
+          "sourceQuote": "Mimi rahat bir nefes alır ama dolap hâlâ dağınıktır.",
+          "promptQuote": "Mimi, an anthropomorphic bunny",
+          "eventId": "event_09",
+          "consistency": "UNKNOWN"
+        },
+        {
+          "anchor": "CHARACTER_IDENTITY",
+          "beatId": "beat_01",
+          "sourceQuote": "Mimi",
+          "promptQuote": "Mimi, an anthropomorphic bunny",
+          "eventId": "event_01",
+          "consistency": "UNKNOWN"
+        },
+        {
+          "anchor": "APPROVED_EVENTS",
+          "beatId": "beat_01",
+          "sourceQuote": "Mimi, oyuncak dolabına 'Topla!' yazan bir yapışkan not yapıştırmak ister.",
+          "promptQuote": "Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger",
+          "eventId": "event_01",
+          "consistency": "UNKNOWN"
+        },
+        {
+          "anchor": "APPROVED_EVENTS",
+          "beatId": "beat_02",
+          "sourceQuote": "Mimi diğer eliyle çıkarmaya çalışırken not ikiye ayrılır ve iki eline de yapışır.",
+          "promptQuote": "Mimi tries to peel the stuck note away with her other hand; the note splits into two",
+          "eventId": "event_03",
+          "consistency": "UNKNOWN"
+        },
+        {
+          "anchor": "PHYSICAL_RULE",
+          "beatId": "beat_03",
+          "sourceQuote": "Her çekişte notlar ikiye katlanarak çoğalır.",
+          "promptQuote": "each pull doubles the number of sticky notes",
+          "eventId": "event_04",
+          "consistency": "UNKNOWN"
+        },
+        {
+          "anchor": "APPROVED_EVENTS",
+          "beatId": "beat_03",
+          "sourceQuote": "Kısa sürede Mimi'nin kolları, bacakları ve yüzü notlarla kaplanır.",
+          "promptQuote": "progressively covering her arms, legs and face",
+          "eventId": "event_05",
+          "consistency": "UNKNOWN"
+        },
+        {
+          "anchor": "APPROVED_EVENTS",
+          "beatId": "beat_04",
+          "sourceQuote": "Mimi aynada kendini görünce çığlık atar.",
+          "promptQuote": "Mimi sees herself in a mirror and screams",
+          "eventId": "event_06",
+          "consistency": "UNKNOWN"
+        },
+        {
+          "anchor": "APPROVED_EVENTS",
+          "beatId": "beat_03",
+          "sourceQuote": "Notlar o kadar çoğalır ki Mimi boğulacak gibi olur.",
+          "promptQuote": "Mimi is overwhelmed by notes",
+          "eventId": "event_07",
+          "consistency": "UNKNOWN"
+        },
+        {
+          "anchor": "REQUIRED_ENDING",
+          "beatId": "beat_05",
+          "sourceQuote": "Sonunda hapşırır ve tüm notlar uçuşarak dolabın üzerine yapışır.",
+          "promptQuote": "Mimi sneezes and the sticky notes fly off",
+          "eventId": "event_08",
+          "consistency": "UNKNOWN"
+        },
+        {
+          "anchor": "REQUIRED_ENDING",
+          "beatId": "beat_05",
+          "sourceQuote": "tüm notlar uçuşarak dolabın üzerine yapışır.",
+          "promptQuote": "notes scatter and stick to the cabinet -> Mimi breathes a sigh of relief but the cabinet remains messy",
+          "eventId": "event_08",
+          "consistency": "UNKNOWN"
+        },
+        {
+          "anchor": "EVENT_ORDER",
+          "beatId": "beat_05",
+          "sourceQuote": "Sonunda hapşırır",
+          "promptQuote": "12-15s: Mimi sneezes",
+          "eventId": "event_08",
+          "consistency": "UNKNOWN"
+        },
+        {
+          "anchor": "TEMPORAL_CONSTRAINTS",
+          "beatId": "beat_03",
+          "sourceQuote": "Kısa sürede",
+          "promptQuote": "5-10s: Mimi continues to pull",
+          "eventId": "event_05",
+          "consistency": "UNKNOWN"
+        },
+        {
+          "anchor": "APPROVED_EVENTS",
+          "beatId": "beat_02",
+          "sourceQuote": "Mimi diğer eliyle çıkarmaya çalışırken not ikiye ayrılır ve iki eline de yapışır.",
+          "promptQuote": "tracking medium shot; focus Mimi tries to peel the stuck note away with her other hand; the note splits into two then one note sticks to each hand in a single continuous shot",
+          "eventId": "event_03",
+          "consistency": "UNKNOWN"
+        },
+        {
+          "anchor": "PHYSICAL_RULE",
+          "beatId": "beat_03",
+          "sourceQuote": "Her çekişte notlar ikiye katlanarak çoğalır.",
+          "promptQuote": "static wide shot; hold two; hold four; hold eight; single continuous shot",
+          "eventId": "event_04",
+          "consistency": "UNKNOWN"
+        }
+      ],
+      "productionRisks": [
+        "Mock concern: mirror and multiplying-note execution unverified."
+      ],
+      "sourceBinding": {
+        "promptSha256": "2151ed0e2d4b8afa42ea80bad8238a9a639a1be40eea6576390e04704774c746",
+        "approvedStorySha256": "df653dbcaf16bfdbceb87baa23688d70d739c34941d0075e30e96b181e1bf32b",
+        "productionSettingsSha256": "e6aedfab391d7ee0a7e753b3dc8f4e8d57c31d8b2ada4b9f8b130b95b2689937",
+        "sourceIdentity": "saved-prompt:10:10",
+        "storyId": "bc1cf798-d20b-4b98-8b73-56e1581c3afc",
+        "revision": "candidate-2-revision-7c63cc86",
+        "approvalRecordId": "20b77d13-848d-46d0-ab4b-bb9b6efb0836"
+      }
+    }
+  ]
+}

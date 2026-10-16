@@ -1,0 +1,37 @@
+{
+  "tokenizer": "o200k_base proxy, not actual model tokenizer",
+  "subjects": [
+    {
+      "neutralId": "Q04",
+      "serializedRequestBytes": 8522,
+      "estimatedRequestTokens": 2063,
+      "representativeJsonBytes": 5424,
+      "representativeVisibleTokens": 1504,
+      "fixtureLabel": "TEST_FIXTURE"
+    },
+    {
+      "neutralId": "Q01",
+      "serializedRequestBytes": 10023,
+      "estimatedRequestTokens": 2369,
+      "representativeJsonBytes": 6060,
+      "representativeVisibleTokens": 1636,
+      "fixtureLabel": "TEST_FIXTURE"
+    },
+    {
+      "neutralId": "Q02",
+      "serializedRequestBytes": 9245,
+      "estimatedRequestTokens": 2228,
+      "representativeJsonBytes": 5671,
+      "representativeVisibleTokens": 1566,
+      "fixtureLabel": "TEST_FIXTURE"
+    },
+    {
+      "neutralId": "Q03",
+      "serializedRequestBytes": 9897,
+      "estimatedRequestTokens": 2372,
+      "representativeJsonBytes": 6065,
+      "representativeVisibleTokens": 1660,
+      "fixtureLabel": "TEST_FIXTURE"
+    }
+  ]
+}

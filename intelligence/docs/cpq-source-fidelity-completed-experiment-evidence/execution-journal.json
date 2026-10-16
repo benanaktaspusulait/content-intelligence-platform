@@ -1,0 +1,24 @@
+{
+  "ownerAuthorization": "Fresh user yes: ONE source-only OpenAI/gpt-6.1-sol low request; maximum 4000 completion tokens and USD 0.30; no retries/fallback/critics; pilot total ceiling USD 0.60 is accounting only",
+  "pilotId": "53e43e2c-8bfa-4798-8fad-30a068d97dac",
+  "slots": {
+    "SOURCE_FIDELITY": {
+      "authorization": {
+        "slot": "SOURCE_FIDELITY",
+        "profileId": "openai-escalation",
+        "provider": "openai",
+        "model": "gpt-6.1-sol",
+        "maxOutputTokens": 4000,
+        "maxCostUsd": 0.3,
+        "authorizePaidInference": true,
+        "automaticRetries": false,
+        "reasoningEffort": "low",
+        "idempotencyKey": "73d7c456-7f19-4951-b221-19e8d415aea0"
+      },
+      "authorizationSubmissionStarted": true,
+      "requestId": "7beb2327-6f75-4646-90df-c56c295fde20",
+      "state": "FAILED_OR_AMBIGUOUS",
+      "executeSubmissionStarted": true
+    }
+  }
+}

@@ -17,6 +17,7 @@ import static org.springframework.http.HttpStatus.*;
 /** Policy-scoped, ungraded machine evidence. Does not write human CPQ tables. */
 @Service
 public class CpqOwnerPilotService {
+  static final String SINGLE="SINGLE_SUBJECT_V1";
   public static final String POLICY="OWNER_MACHINE_PILOT_V1";
   private final JdbcClient db; private final ObjectMapper json; private final CreativePromptQualityService cpq; private final QualityMlClient ml;
   @Value("${pompom.cpq-pilot.real-enabled:false}") boolean realEnabled;
@@ -42,7 +43,10 @@ public class CpqOwnerPilotService {
     Map<String,Object> presentation=Map.of();var file=java.nio.file.Path.of(dataRoot,"workflow","cpq-pilot-blind-manifests-v1.json");
     if(java.nio.file.Files.exists(file))try {presentation=map(map(read(java.nio.file.Files.readString(file)).get("sources")).get(subjects.getFirst().get("promptSha256")));}catch(java.io.IOException failure){throw new ResponseStatusException(CONFLICT,"Saved blind presentation unavailable");}
     if(!presentation.isEmpty()) {var ids=map(presentation.get("neutralIds"));if(subjects.stream().anyMatch(subject->!ids.containsKey(subject.get("promptSha256"))))throw new ResponseStatusException(CONFLICT,"Saved blind manifest scope differs");}
-    return Map.of("analysisId",analysis.toString(),"candidates",selectors,"subjects",subjects,"policyVersion",POLICY,"blindPresentation",presentation);
+    var result=new LinkedHashMap<String,Object>();result.put("analysisId",analysis.toString());result.put("candidates",selectors);result.put("subjects",subjects);result.put("policyVersion",POLICY);result.put("blindPresentation",presentation);
+    // Historical snapshots remain byte-equivalent when freshness is checked. New pilots use single-subject source reviews.
+    if(!request.containsKey("subjects") || request.containsKey("sourceReviewUnit"))result.put("sourceReviewUnit",SINGLE);
+    return result;
   }
   @Transactional public Map<String,Object> create(Map<String,Object> request,HttpServletRequest r){
     String actor=owner(r);if(!Boolean.TRUE.equals(request.get("confirmSourceAuthority")))throw new ResponseStatusException(BAD_REQUEST,"Explicit owner source-authority confirmation required; not independent fidelity");double budget=money(request.get("maxTotalUsd"));var snapshot=snapshot(request);UUID id=UUID.randomUUID();
@@ -57,7 +61,7 @@ public class CpqOwnerPilotService {
   public Map<String,Object> view(UUID id,HttpServletRequest r){
     var p=pilot(id,r,false);var evidence=db.sql("SELECT evidence_type,payload::text,created_at FROM cpq_pilot_evidence WHERE pilot_id=:id ORDER BY created_at,evidence_id").param("id",id).query((rs,n)->Map.of("evidenceType",rs.getString(1),"payload",read(rs.getString(2)),"createdAt",rs.getTimestamp(3).toInstant().toString())).list();
     var requests=db.sql("SELECT request_id,slot,state,authorization_payload::text,failure FROM cpq_machine_requests WHERE pilot_id=:id ORDER BY created_at").param("id",id).query((rs,n)->{var x=new LinkedHashMap<String,Object>();x.put("requestId",rs.getString(1));x.put("slot",rs.getString(2));x.put("state",rs.getString(3));x.put("authorization",read(rs.getString(4)));x.put("failure",Objects.toString(rs.getString(5),""));return x;}).list();
-    var out=new LinkedHashMap<String,Object>();out.put("pilotId",id.toString());out.put("policyVersion",POLICY);out.put("snapshot",p.get("snapshot"));out.put("evidence",evidence);out.put("requests",requests);out.put("comparison",compare(evidence));out.put("officialGrading","INACTIVE");out.put("humanReviewCount",0);out.put("renderAuthorized",false);return out;
+    var out=new LinkedHashMap<String,Object>();out.put("pilotId",id.toString());out.put("policyVersion",POLICY);out.put("snapshot",p.get("snapshot"));out.put("evidence",evidence);out.put("requests",requests);out.put("comparison",compare(evidence));out.put("sourceReview",sourceReview(id,map(p.get("snapshot")),requests,evidence));out.put("officialGrading","INACTIVE");out.put("humanReviewCount",0);out.put("renderAuthorized",false);return out;
   }
   private Map<String,Object> compare(List<Map<String,Object>> evidence){
     var bySlot=new HashMap<String,Map<String,Object>>();for(var e:evidence){var payload=map(e.get("payload"));if("MACHINE_REVIEW".equals(e.get("evidenceType")))bySlot.put(String.valueOf(payload.get("slot")),map(payload.get("response")));}
@@ -90,11 +94,68 @@ public class CpqOwnerPilotService {
     else packets.sort(Comparator.comparing(s->hash(seed+"|"+slot+"|"+s.get("neutralId"))));
     return Map.of("policyVersion",POLICY,"rubricVersion",CreativePromptQualityService.RUBRIC,"purpose",slot.equals("SOURCE_FIDELITY")?"SOURCE_FIDELITY":"CREATIVE_CRITIC","packets",packets,"evidenceType","MACHINE_REVIEW","evidenceScope","TEXT_ONLY");
   }
+  Map<String,Object> sourceInput(Map<String,Object> saved,String sha) {
+    var subject=rows(saved.get("subjects")).stream().filter(x->Objects.equals(sha,x.get("promptSha256"))).findFirst().orElseThrow(()->new ResponseStatusException(CONFLICT,"Exact pilot source subject required"));
+    var legacy=input(saved,"SOURCE_FIDELITY");var packet=new LinkedHashMap<String,Object>(rows(legacy.get("packets")).stream().filter(x->Objects.equals(sha,x.get("promptSha256"))).findFirst().orElseThrow());
+    packet.remove("originalPrompt");var binding=new LinkedHashMap<String,Object>();
+    for(String key:List.of("promptSha256","approvedStorySha256","productionSettingsSha256","sourceIdentity"))binding.put(key,subject.get(key));
+    for(String key:List.of("storyId","revision","approvalRecordId"))binding.put(key,map(subject.get("approvedStory")).get(key));
+    packet.put("sourceBinding",binding);
+    String story=String.valueOf(packet.get("approvedStory"));var events=new ArrayList<Map<String,Object>>();
+    var matcher=java.util.regex.Pattern.compile("\\S[\\s\\S]*?(?:[.!?](?=\\s|$)|$)").matcher(story);
+    while(matcher.find())events.add(Map.of("eventId",String.format("event_%02d",events.size()+1),"sourceStart",story.codePointCount(0,matcher.start()),"sourceEnd",story.codePointCount(0,matcher.end())));
+    packet.put("requiredEvents",events);
+    packet.put("changedBeats",rows(packet.get("changedBeats")).stream().map(b->Map.of("beatId",b.get("beatId"),"originalExecution",b.getOrDefault("originalExecution",b.getOrDefault("originalInstruction","")),"newExecution",b.getOrDefault("newExecution",b.getOrDefault("revisedInstruction","")))).toList());
+    var result=new LinkedHashMap<String,Object>(legacy);result.put("evaluationUnit",SINGLE);result.put("packets",List.of(packet));return result;
+  }
+  Map<String,Object> sourceReview(UUID id,Map<String,Object> saved,List<Map<String,Object>> requests,List<Map<String,Object>> evidence) {
+    var bindings=rows(input(saved,"SOURCE_FIDELITY").get("packets"));var statuses=new ArrayList<Map<String,Object>>();var missing=new ArrayList<Object>();int valid=0,conflicts=0,review=0;
+    for(var packet:bindings){String sha=String.valueOf(packet.get("promptSha256"));Object neutral=packet.get("neutralId");Map<String,Object> result=Map.of();
+      for(var e:evidence){var payload=map(e.get("payload"));if(!"MACHINE_REVIEW".equals(e.get("evidenceType"))||!"SOURCE_FIDELITY".equals(payload.get("slot")))continue;
+        var req=requests.stream().filter(q->Objects.equals(q.get("requestId"),payload.get("requestId"))&&"COMPLETED".equals(q.get("state"))).findFirst();
+        if(req.isEmpty() || !Objects.equals(payload.get("sourceStorySha256"),rows(saved.get("subjects")).getFirst().get("approvedStorySha256")) || !Objects.equals(payload.get("productionSettingsSha256"),rows(saved.get("subjects")).getFirst().get("productionSettingsSha256")))continue;
+        if(rows(payload.get("promptBindings")).stream().noneMatch(b->Objects.equals(b.get("neutralId"),neutral)&&Objects.equals(b.get("promptSha256"),sha)))continue;
+        var persistedInput=db.sql("SELECT input::text,input_sha256 FROM cpq_machine_requests WHERE request_id=:request AND pilot_id=:pilot").param("request",uuid(payload.get("requestId"))).param("pilot",id).query((rs,n)->Map.of("input",read(rs.getString(1)),"hash",rs.getString(2))).single();
+        if(!Objects.equals(persistedInput.get("hash"),payload.get("inputSha256")) || !Objects.equals(hash(encode(map(persistedInput.get("input")))),persistedInput.get("hash")))continue;
+        try{validateSingleSource(map(persistedInput.get("input")),map(payload.get("response")));}catch(RuntimeException invalid){continue;}
+        for(var found:rows(map(payload.get("response")).get("results")))if(Objects.equals(found.get("neutralId"),neutral))result=found;
+      }
+      var out=new LinkedHashMap<String,Object>();out.put("neutralId",neutral);out.put("promptSha256",sha);String state="NOT_EXECUTED";
+      for(var req:requests)if("SOURCE_FIDELITY".equals(req.get("slot")) && (!map(req.get("authorization")).containsKey("subjectPromptSha256") || Objects.equals(map(req.get("authorization")).get("subjectPromptSha256"),sha)))state="DISPATCHING".equals(req.get("state"))?"RUNNING":String.valueOf(req.get("state"));
+      if(!result.isEmpty()){valid++;boolean conflict=Boolean.TRUE.equals(result.get("conflict"))||!((List<?>)result.getOrDefault("omissions",List.of())).isEmpty()||!((List<?>)result.getOrDefault("additions",List.of())).isEmpty();
+        boolean needsReview=conflict||!"PASS".equals(result.get("decision"))||result.containsKey("validationNotice")||!((List<?>)result.getOrDefault("unsupportedClaims",List.of())).isEmpty();
+        if(conflict)conflicts++;if(needsReview)review++;state=needsReview?"REVIEW_REQUIRED":"COMPLETED_WITH_EVIDENCE";out.put("semanticVerdict",result.get("decision"));
+      }else {missing.add(neutral);if("COMPLETED".equals(state))state="REVIEW_REQUIRED";}
+      out.put("status",state);out.put("hasValidatedEvidence",!result.isEmpty());statuses.add(out);
+    }
+    boolean complete=valid==bindings.size();return Map.of("subjects",statuses,"requiredSubjects",bindings.size(),"validatedSubjects",valid,"conflictSubjects",conflicts,"manualAdjudicationSubjects",review,"missingSubjectIds",missing,"complete",complete,"criticGateSatisfied",complete && (SINGLE.equals(saved.get("sourceReviewUnit"))?review==0:true),"evidenceType","MACHINE_REVIEW");
+  }
+  void validateSingleSource(Map<String,Object> input,Map<String,Object> response) {
+    if(!SINGLE.equals(input.get("evaluationUnit")))return;
+    if(rows(input.get("packets")).size()!=1 || rows(response.get("results")).size()!=1)throw new IllegalArgumentException("Exactly one source result required");
+    var packet=rows(input.get("packets")).getFirst();var result=rows(response.get("results")).getFirst();
+    if(!Objects.equals(packet.get("sourceBinding"),result.get("sourceBinding")))throw new IllegalArgumentException("Exact response source binding required");
+    var mappings=rows(result.get("mappings"));var anchors=new HashSet<Object>();var events=new HashSet<Object>();var beats=new HashSet<Object>();
+    String source=String.valueOf(packet.get("approvedStory")),prompt=String.valueOf(packet.get("prompt"));boolean uncertain=false;
+    for(var m:mappings){anchors.add(m.get("anchor"));events.add(m.get("eventId"));beats.add(m.get("beatId"));String sq=String.valueOf(m.getOrDefault("sourceQuote","")),pq=String.valueOf(m.getOrDefault("promptQuote",""));
+      var event=rows(packet.get("requiredEvents")).stream().filter(e->Objects.equals(e.get("eventId"),m.get("eventId"))).findFirst().orElseThrow(()->new IllegalArgumentException("Unknown source event"));
+      int start=source.offsetByCodePoints(0,((Number)event.get("sourceStart")).intValue()),end=source.offsetByCodePoints(0,((Number)event.get("sourceEnd")).intValue());
+      if(!Set.of("PASS","FAIL","UNKNOWN").contains(m.get("consistency")) || sq.isEmpty() || !source.substring(start,end).contains(sq) || !prompt.contains(pq) || (pq.isEmpty()&&"PASS".equals(m.get("consistency"))))throw new IllegalArgumentException("Exact evidence-backed mapping required");
+      uncertain |= !"PASS".equals(m.get("consistency"));
+    }
+    if(!anchors.equals(Set.of("CHARACTER_IDENTITY","APPROVED_EVENTS","EVENT_ORDER","PHYSICAL_RULE","TEMPORAL_CONSTRAINTS","REQUIRED_ENDING")) || !events.equals(rows(packet.get("requiredEvents")).stream().map(e->e.get("eventId")).collect(java.util.stream.Collectors.toSet())) || !beats.containsAll(rows(packet.get("changedBeats")).stream().map(b->b.get("beatId")).toList()))throw new IllegalArgumentException("Complete source evidence required");
+    if(!Set.of("PASS","FAIL","UNKNOWN").contains(result.get("decision")) || String.valueOf(result.getOrDefault("rationale","")).trim().length()<20 || String.valueOf(result.getOrDefault("uncertainty","")).isBlank() || !(result.get("omissions") instanceof List) || !(result.get("additions") instanceof List) || !(result.get("conflict") instanceof Boolean) || !(result.get("productionRisks") instanceof List))throw new IllegalArgumentException("Complete semantic evidence required");
+    if("PASS".equals(result.get("decision")) && (uncertain || Boolean.TRUE.equals(result.get("conflict")) || !((List<?>)result.get("omissions")).isEmpty() || !((List<?>)result.get("additions")).isEmpty() || !((List<?>)result.getOrDefault("unsupportedClaims",List.of())).isEmpty()))throw new IllegalArgumentException("Unsupported semantic PASS");
+  }
+  boolean sourceGate(UUID id,HttpServletRequest r){return Boolean.TRUE.equals(map(view(id,r).get("sourceReview")).get("criticGateSatisfied"));}
   @Transactional public Map<String,Object> authorize(UUID id,Map<String,Object> body,HttpServletRequest r){
     var p=pilot(id,r,true);db.sql("SELECT pilot_id FROM cpq_owner_pilots WHERE pilot_id=:id FOR UPDATE").param("id",id).query(UUID.class).single();
     String slot=String.valueOf(body.get("slot"));if(!Set.of("SOURCE_FIDELITY","CRITIC_A","CRITIC_B").contains(slot))throw new ResponseStatusException(BAD_REQUEST,"Exact review slot required");
     if(!Boolean.TRUE.equals(body.get("authorizePaidInference"))||!Boolean.FALSE.equals(body.get("automaticRetries")))throw new ResponseStatusException(BAD_REQUEST,"Explicit single paid dispatch authorization with retries disabled required");
     String key=String.valueOf(body.getOrDefault("idempotencyKey",""));if(key.length()<16||key.length()>100)throw new ResponseStatusException(BAD_REQUEST,"Durable idempotency key required");
+    var saved=map(p.get("snapshot"));boolean scoped=slot.equals("SOURCE_FIDELITY") && SINGLE.equals(saved.get("sourceReviewUnit"));String subject=scoped?String.valueOf(body.getOrDefault("subjectPromptSha256","")):"";
+    if(scoped && rows(saved.get("subjects")).stream().noneMatch(x->Objects.equals(subject,x.get("promptSha256"))))throw new ResponseStatusException(CONFLICT,"Exact pilot subjectPromptSha256 required");
+    if(!slot.equals("SOURCE_FIDELITY") && body.containsKey("subjectPromptSha256"))throw new ResponseStatusException(BAD_REQUEST,"Critics evaluate the complete pilot; no subject scope allowed");
     var caps=capabilities();var profiles=map(caps.get("profiles"));String identity=String.valueOf(body.get("profileId"));var profile=map(profiles.get(identity));
     if(slot.equals("SOURCE_FIDELITY")) {
       var source=map(map(caps.get("sourceFidelityConfiguration")).get(identity));
@@ -105,29 +166,30 @@ public class CpqOwnerPilotService {
     }
     var existing=db.sql("SELECT authorization_payload::text FROM cpq_machine_requests WHERE pilot_id=:id AND idempotency_key=:key").param("id",id).param("key",key).query(String.class).optional();
     if(existing.isPresent()){if(!encode(read(existing.get())).equals(encode(body)))throw new ResponseStatusException(CONFLICT,"Idempotency key reused with different authorization");return view(id,r);}
-    if(db.sql("SELECT count(*) FROM cpq_machine_requests WHERE pilot_id=:id AND slot=:slot").param("id",id).param("slot",slot).query(Integer.class).single()>0)throw new ResponseStatusException(CONFLICT,"Review slot already has an immutable authorization; inspect saved request instead of retrying");
+    if(db.sql("SELECT count(*) FROM cpq_machine_requests WHERE pilot_id=:id AND slot=:slot AND (subject_prompt_sha256=:subject OR subject_prompt_sha256 IS NULL OR :subject='')").param("id",id).param("slot",slot).param("subject",subject).query(Integer.class).single()>0)throw new ResponseStatusException(CONFLICT,"Review slot already has an immutable authorization; inspect saved request instead of retrying");
     if(!Boolean.TRUE.equals(profile.get("configured"))||!Objects.equals(body.get("provider"),profile.get("provider"))||!Objects.equals(body.get("model"),profile.get("model")))throw new ResponseStatusException(CONFLICT,"Exact configured provider/model required; no fallback");
     int tokens=body.get("maxOutputTokens") instanceof Number n?n.intValue():0;if(tokens<256||tokens>4000)throw new ResponseStatusException(BAD_REQUEST,"Output limit must be 256–4000");
-    double cap=money(body.get("maxCostUsd"));var input=input(map(p.get("snapshot")),slot);int bytes=encode(input).getBytes(StandardCharsets.UTF_8).length+12000;
+    double cap=money(body.get("maxCostUsd"));var input=scoped?sourceInput(saved,subject):input(saved,slot);int bytes=encode(input).getBytes(StandardCharsets.UTF_8).length+12000;
     double bound=bytes*((Number)profile.get("inputUsdPerMillion")).doubleValue()/1e6+tokens*((Number)profile.get("outputUsdPerMillion")).doubleValue()/1e6;
     if(bound>cap)throw new ResponseStatusException(CONFLICT,"Per-call budget below conservative input/schema/output bound");
     Double reserved=db.sql("SELECT coalesce(sum(reserved_usd),0) FROM cpq_machine_requests WHERE pilot_id=:id").param("id",id).query(Double.class).single();if(reserved+cap>((Number)p.get("budget")).doubleValue()+1e-9)throw new ResponseStatusException(CONFLICT,"Total pilot budget exceeded");
-    if(slot.equals("SOURCE_FIDELITY"))for(var s:rows(map(p.get("snapshot")).get("subjects")))if("OPTIMIZATION_CANDIDATE".equals(s.get("subjectType"))){var generation=map(s.get("generationIdentity"));if(String.valueOf(generation.getOrDefault("provider","")).isBlank()||String.valueOf(generation.getOrDefault("model","")).isBlank())throw new ResponseStatusException(CONFLICT,"Generator identity unavailable for independent source check");if(Objects.equals(generation.get("provider"),profile.get("provider"))&&Objects.equals(generation.get("model"),profile.get("model")))throw new ResponseStatusException(CONFLICT,"Source checker cannot be candidate generator");}
-    UUID request=UUID.randomUUID();db.sql("INSERT INTO cpq_machine_requests(request_id,pilot_id,slot,idempotency_key,authorized_by,authorization_payload,input_sha256,state,reserved_usd,input) VALUES(:request,:id,:slot,:key,:owner,CAST(:authorization AS jsonb),:hash,'AUTHORIZED',:cap,CAST(:input AS jsonb))").param("request",request).param("id",id).param("slot",slot).param("key",key).param("owner",owner(r)).param("authorization",encode(body)).param("hash",hash(encode(input))).param("cap",cap).param("input",encode(input)).update();return view(id,r);
+    if(slot.equals("SOURCE_FIDELITY"))for(var s:rows(saved.get("subjects")))if((!scoped || subject.equals(s.get("promptSha256"))) && "OPTIMIZATION_CANDIDATE".equals(s.get("subjectType"))){var generation=map(s.get("generationIdentity"));if(String.valueOf(generation.getOrDefault("provider","")).isBlank()||String.valueOf(generation.getOrDefault("model","")).isBlank())throw new ResponseStatusException(CONFLICT,"Generator identity unavailable for independent source check");if(Objects.equals(generation.get("provider"),profile.get("provider"))&&Objects.equals(generation.get("model"),profile.get("model")))throw new ResponseStatusException(CONFLICT,"Source checker cannot be candidate generator");}
+    UUID request=UUID.randomUUID();db.sql("INSERT INTO cpq_machine_requests(request_id,pilot_id,slot,idempotency_key,authorized_by,authorization_payload,input_sha256,state,reserved_usd,input,subject_prompt_sha256) VALUES(:request,:id,:slot,:key,:owner,CAST(:authorization AS jsonb),:hash,'AUTHORIZED',:cap,CAST(:input AS jsonb),NULLIF(:subject,''))").param("request",request).param("id",id).param("slot",slot).param("key",key).param("owner",owner(r)).param("authorization",encode(body)).param("hash",hash(encode(input))).param("cap",cap).param("subject",subject).param("input",encode(input)).update();return view(id,r);
   }
   // Intentionally not @Transactional: durable CAS commits BEFORE transport. Ambiguity never retries.
   public Map<String,Object> execute(UUID pilotId,UUID requestId,HttpServletRequest r){
     pilot(pilotId,r,true);if(!realEnabled)throw new ResponseStatusException(FORBIDDEN,"Real dispatch disabled; separate owner/provider authorization and server configuration required");
     var row=db.sql("SELECT slot,state,input::text,authorization_payload::text FROM cpq_machine_requests WHERE request_id=:request AND pilot_id=:pilot").param("request",requestId).param("pilot",pilotId).query((rs,n)->Map.of("slot",rs.getString(1),"state",rs.getString(2),"input",read(rs.getString(3)),"authorization",read(rs.getString(4)))).optional().orElseThrow(()->new ResponseStatusException(NOT_FOUND,"Authorized request not found"));
     if(!"AUTHORIZED".equals(row.get("state")))return view(pilotId,r);
-    if(!"SOURCE_FIDELITY".equals(row.get("slot")) && db.sql("SELECT count(*) FROM cpq_machine_requests WHERE pilot_id=:pilot AND slot='SOURCE_FIDELITY' AND state='COMPLETED'").param("pilot",pilotId).query(Integer.class).single()!=1)throw new ResponseStatusException(CONFLICT,"Separate source stage must complete first");
-    if(db.sql("SELECT count(*) FROM cpq_machine_requests WHERE pilot_id=:id AND state IN ('DISPATCHING','FAILED_OR_AMBIGUOUS')").param("id",pilotId).query(Integer.class).single()>0)throw new ResponseStatusException(CONFLICT,"Unresolved dispatch/failure blocks subsequent calls");
-    if(db.sql("UPDATE cpq_machine_requests SET state='DISPATCHING' WHERE request_id=:id AND state='AUTHORIZED' AND pg_try_advisory_xact_lock(hashtext(:pilot)) AND NOT EXISTS(SELECT 1 FROM cpq_machine_requests other WHERE other.pilot_id=:pilotId AND other.state IN ('DISPATCHING','FAILED_OR_AMBIGUOUS'))").param("id",requestId).param("pilot",pilotId.toString()).param("pilotId",pilotId).update()!=1)return view(pilotId,r);
+    if(!"SOURCE_FIDELITY".equals(row.get("slot")) && !sourceGate(pilotId,r))throw new ResponseStatusException(CONFLICT,"Separate source stage must complete first");
+    if(db.sql("SELECT count(*) FROM cpq_machine_requests WHERE pilot_id=:id AND (state='DISPATCHING' OR (state='FAILED_OR_AMBIGUOUS' AND (slot<>'SOURCE_FIDELITY' OR :source=false)))").param("id",pilotId).param("source","SOURCE_FIDELITY".equals(row.get("slot"))).query(Integer.class).single()>0)throw new ResponseStatusException(CONFLICT,"Unresolved dispatch/failure blocks subsequent calls");
+    if(db.sql("UPDATE cpq_machine_requests SET state='DISPATCHING' WHERE request_id=:id AND state='AUTHORIZED' AND pg_try_advisory_xact_lock(hashtext(:pilot)) AND NOT EXISTS(SELECT 1 FROM cpq_machine_requests other WHERE other.pilot_id=:pilotId AND (other.state='DISPATCHING' OR (other.state='FAILED_OR_AMBIGUOUS' AND (other.slot<>'SOURCE_FIDELITY' OR :source=false))))").param("id",requestId).param("pilot",pilotId.toString()).param("pilotId",pilotId).param("source","SOURCE_FIDELITY".equals(row.get("slot"))).update()!=1)return view(pilotId,r);
     try {
       var payload=new LinkedHashMap<String,Object>();payload.put("requestId",requestId.toString());payload.put("input",row.get("input"));payload.put("authorization",row.get("authorization"));
       var response=ml.workflow("cpq-pilot/execute",payload);
       db.sql("UPDATE cpq_machine_requests SET response=CAST(:response AS jsonb) WHERE request_id=:id AND state='DISPATCHING'").param("response",encode(response)).param("id",requestId).update();
       if(!"COMPLETED".equals(response.get("executionStatus")))throw new IllegalArgumentException("Machine contract rejected; raw response retained");
+      validateSingleSource(map(row.get("input")),response);
       var auth=map(row.get("authorization"));
       if(!Objects.equals(response.get("provider"),auth.get("provider"))||!Objects.equals(response.get("model"),auth.get("model"))||!(response.get("costUsd") instanceof Number cost)||!Double.isFinite(cost.doubleValue())||cost.doubleValue()<0||cost.doubleValue()>((Number)auth.get("maxCostUsd")).doubleValue())throw new IllegalArgumentException("Provider provenance/cost contract invalid");
       if(!requestId.toString().equals(response.get("requestId")))throw new IllegalArgumentException("Response request identity mismatch");
@@ -148,7 +210,7 @@ public class CpqOwnerPilotService {
   @Transactional public Map<String,Object> decision(UUID id,Map<String,Object> body,HttpServletRequest r){
     pilot(id,r,true);String decision=String.valueOf(body.get("decision"));if(!Set.of("KEEP_ORIGINAL","REQUEST_REVISION","ACCEPT_TEXT_FOR_PREPARATION").contains(decision)||String.valueOf(body.getOrDefault("rationale","")).trim().length()<20||!Boolean.TRUE.equals(body.get("confirmUngradedNoRender")))throw new ResponseStatusException(BAD_REQUEST,"Explicit ungraded decision, concrete rationale and no-render confirmation required");
     if(decision.equals("ACCEPT_TEXT_FOR_PREPARATION")) {
-      if(db.sql("SELECT count(*) FROM cpq_machine_requests WHERE pilot_id=:id AND state='COMPLETED'").param("id",id).query(Integer.class).single()!=3)throw new ResponseStatusException(CONFLICT,"All three independent stage results required for acceptance");
+      if(!sourceGate(id,r) || db.sql("SELECT count(*) FROM cpq_machine_requests WHERE pilot_id=:id AND slot IN ('CRITIC_A','CRITIC_B') AND state='COMPLETED'").param("id",id).query(Integer.class).single()!=2)throw new ResponseStatusException(CONFLICT,"All three independent stage results required for acceptance");
       // Owner must acknowledge conflicts/UNKNOWN explicitly; never a human PASS or render admission.
       if(rows(map(pilot(id,r,true).get("snapshot")).get("subjects")).stream().noneMatch(s->Objects.equals(s.get("promptSha256"),body.get("subjectPromptSha256"))))throw new ResponseStatusException(CONFLICT,"Exact accepted pilot subject required");
       if(!Boolean.TRUE.equals(body.get("acknowledgeMachineLimitations")))throw new ResponseStatusException(CONFLICT,"Explicit acknowledgement of machine limitations/unknowns required");

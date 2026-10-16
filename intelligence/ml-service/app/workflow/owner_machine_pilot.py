@@ -63,12 +63,26 @@ def failure_category(envelope):
         return 'USAGE_ACCOUNTING_INCOMPLETE'
     return 'PROVIDER_OR_RESPONSE_CONTRACT_FAILED'
 
-def schema(source):
+SINGLE = 'SINGLE_SUBJECT_V1'
+BINDING_FIELDS = ['promptSha256', 'approvedStorySha256', 'productionSettingsSha256', 'sourceIdentity', 'storyId', 'revision', 'approvalRecordId']
+
+def source_events(story):
+    # Exact source sentence spans (Unicode code points), not invented semantic events.
+    return [{'eventId': f'event_{i+1:02}', 'sourceStart': m.start(), 'sourceEnd': m.end()}
+            for i, m in enumerate(re.finditer(r'\S[\s\S]*?(?:[.!?](?=\s|$)|$)', story))]
+
+def schema(source, single=False):
     string={'type':'string'}
     def array(item): return {'type':'array','items':item}
     def obj(properties):return {'type':'object','properties':properties,'required':list(properties),'additionalProperties':False}
     if source:
         result=obj({'neutralId':string,'decision':{'type':'string','enum':['PASS','FAIL','UNKNOWN']},'rationale':string,'uncertainty':string,'conflict':{'type':'boolean'},'omissions':array(string),'additions':array(string),'mappings':array(obj({'anchor':{'type':'string','enum':ANCHORS},'beatId':string,'sourceQuote':string,'promptQuote':string})),'productionRisks':array(string)})
+        if single:
+            result['properties']['sourceBinding'] = obj({k:string for k in BINDING_FIELDS})
+            result['required'].append('sourceBinding')
+            mapping = result['properties']['mappings']['items']
+            mapping['properties'].update({'eventId':string, 'consistency':{'type':'string','enum':['PASS','FAIL','UNKNOWN']}})
+            mapping['required'] += ['eventId','consistency']
     else:
         dimension=obj({'level':{'type':'string','enum':['EXCELLENT','STRONG','ADEQUATE','WEAK','UNKNOWN']},'strengths':array(string),'weaknesses':array(string),'improvements':array(string),'productionConstraints':array(string),'uncertainty':string,'rationale':string,'citations':array(string)})
         result=obj({'neutralId':string,'dimensions':obj({key:dimension for key in DIMENSIONS}),'productionRisks':array(string),'improvementHypotheses':array(string)})
@@ -82,14 +96,26 @@ def validate(response, data):
     source=data['purpose']=='SOURCE_FIDELITY'
     # Enforce the same complete schema for JSON-only adapters and schema-capable adapters.
     from jsonschema import validate as validate_schema
-    validate_schema(response,schema(source))
+    validate_schema(response,schema(source, data.get('evaluationUnit') == SINGLE))
     for result in results:
         packet=packets[result['neutralId']];prompt=packet['prompt']
         if source:
+            single = data.get('evaluationUnit') == SINGLE
+            if single and result['sourceBinding'] != packet['sourceBinding']:
+                raise ValueError('Response source/prompt binding differs')
             for m in result['mappings']:
-                if not m['sourceQuote'] or m['sourceQuote'] not in packet['approvedStory'] or not m['promptQuote'] or m['promptQuote'] not in prompt:raise ValueError('Fidelity citations differ from exact bound source/prompt')
+                if not m['sourceQuote'] or m['sourceQuote'] not in packet['approvedStory'] or (not m['promptQuote'] and not (single and m['consistency'] != 'PASS')) or m['promptQuote'] not in prompt:raise ValueError('Fidelity citations differ from exact bound source/prompt')
+                if single:
+                    event = next((e for e in packet['requiredEvents'] if e['eventId'] == m['eventId']), None)
+                    if event is None or m['sourceQuote'] not in packet['approvedStory'][event['sourceStart']:event['sourceEnd']]:
+                        raise ValueError('Exact required source-event citation required')
             required={b.get('beatId') for b in packet.get('changedBeats',[]) if b.get('beatId')}
             mapped={m['beatId'] for m in result['mappings']}
+            if single:
+                if set(m['anchor'] for m in result['mappings']) != set(ANCHORS) or not required.issubset(mapped) or {m['eventId'] for m in result['mappings']} != {e['eventId'] for e in packet['requiredEvents']}:
+                    raise ValueError('Complete anchors, source events and changed beats required')
+                if result['decision'] == 'PASS' and (result['conflict'] or result['omissions'] or result['additions'] or any(m['consistency'] != 'PASS' for m in result['mappings']) or not result['mappings']):
+                    raise ValueError('Unsupported semantic PASS')
             if result['conflict'] or result['omissions'] or result['additions'] or set(m['anchor'] for m in result['mappings'])!=set(ANCHORS) or not required.issubset(mapped):
                 if result['decision']=='PASS':result['decision']='UNKNOWN'
                 result['validationNotice']='REVIEW_REQUIRED: conflicts/omissions/additions/anchor or changed-beat coverage incomplete'
@@ -115,14 +141,27 @@ def execute(body, provider_factory=CreativeCapabilityProvider):
     tokens=auth.get('maxOutputTokens');cap=auth.get('maxCostUsd')
     if isinstance(tokens,bool) or not isinstance(tokens,int) or not 256<=tokens<=min(4000,cfg['maxOutputTokens']):raise ValueError('Bounded output tokens required')
     if not isinstance(cap,(float,int)) or not math.isfinite(cap) or cap<=0:raise ValueError('Explicit cost cap required')
-    if not isinstance(data.get('packets'),list) or not 2<=len(data['packets'])<=4 or len({p['neutralId'] for p in data['packets']})!=len(data['packets']):raise ValueError('Bounded unique pilot subjects required')
+    single = data.get('evaluationUnit') == SINGLE
+    if 'evaluationUnit' in data and (not single or not source):raise ValueError('Unsupported evaluation unit')
+    if not isinstance(data.get('packets'),list) or not (len(data['packets']) == 1 if single else 2<=len(data['packets'])<=4) or len({p['neutralId'] for p in data['packets']})!=len(data['packets']):raise ValueError('Bounded unique pilot subjects required')
     for p in data['packets']:
         if not p.get('prompt') or len(p['prompt'])>50000 or hashlib.sha256(p['prompt'].encode()).hexdigest()!=p.get('promptSha256'):raise ValueError('Exact prompt fingerprint required')
         allowed={'neutralId','prompt','promptSha256','productionSettings'}|({'approvedStory','originalPrompt','changedBeats'} if data['purpose']=='SOURCE_FIDELITY' else set())
+        if single:
+            allowed = (allowed - {'originalPrompt'}) | {'sourceBinding','requiredEvents'}
+            binding = p.get('sourceBinding', {})
+            if set(binding) != set(BINDING_FIELDS) or any(not isinstance(v,str) or not v for v in binding.values()):raise ValueError('Complete source identity required')
+            settings_hash = hashlib.sha256(json.dumps(p['productionSettings'],ensure_ascii=False,sort_keys=True,separators=(',',':')).encode()).hexdigest()
+            if binding['promptSha256'] != p['promptSha256'] or binding['approvedStorySha256'] != hashlib.sha256(p['approvedStory'].encode()).hexdigest() or binding['productionSettingsSha256'] != settings_hash:raise ValueError('Source/settings fingerprint differs')
+            if auth.get('subjectPromptSha256') != p['promptSha256'] or p.get('requiredEvents') != source_events(p['approvedStory']):raise ValueError('Exact authorized subject and complete source events required')
+            for beat in p['changedBeats']:
+                if set(beat) != {'beatId','originalExecution','newExecution'} or not beat['originalExecution'] or not beat['newExecution'] or beat['newExecution'] not in p['prompt']:raise ValueError('Exact changed-beat context required')
         if set(p)!=allowed:raise ValueError('Blind packet contains unsupported metadata')
-    prompt=json.dumps(data,ensure_ascii=False,separators=(',',':'));fmt={'type':'json_schema','json_schema':{'name':'cpq_owner_machine_review_v1','strict':True,'schema':schema(data['purpose']=='SOURCE_FIDELITY')}}
+    prompt=json.dumps(data,ensure_ascii=False,separators=(',',':'));fmt={'type':'json_schema','json_schema':{'name':'cpq_owner_machine_review_v1','strict':True,'schema':schema(source,single)}}
     # UTF-8 bytes bound tokens conservatively; transmit JSON schema even on JSON-only models.
     system = SOURCE_SYSTEM if source else SYSTEM
+    if single:
+        system += ' Review exactly one complete subject. Echo sourceBinding exactly. requiredEvents are exhaustive source sentence spans in Unicode code points, not invented events. Map each eventId with a quote inside that span, all six anchors, and every changed beat. Each mapping needs consistency PASS/FAIL/UNKNOWN. If evidence is absent, use an empty promptQuote only with non-PASS consistency, explain omissions/uncertainty and never PASS overall. Check event order, timing, continuity and unsupported production assumptions explicitly in concise findings/rationale. Changed-beat originalExecution is limited baseline context; productionSettings override obsolete metadata. Source sentence coverage and fingerprints do not prove semantic fidelity.'
     input_bound=len((system+prompt+json.dumps(fmt)).encode())+1000
     if input_bound+tokens>cfg['contextTokens']:raise ValueError('Context limit exceeded')
     estimate=input_bound*cfg['inputUsdPerMillion']/1e6+tokens*cfg['outputUsdPerMillion']/1e6

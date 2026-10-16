@@ -1,0 +1,42 @@
+{
+  "historicalRequestUnchanged": true,
+  "workflowEvents": "75|6b270d6f3ed3646ef1dcbab8692de0c44d9f52d1302c813be4d8215fd14ee3d8",
+  "gradingActivated": "f",
+  "flyway65": "t",
+  "requestSlots": "SOURCE_FIDELITY|FAILED_OR_AMBIGUOUS|2",
+  "validatedEvidenceCount": 0,
+  "backend": {
+    "health": "healthy",
+    "image": "sha256:f6822a402e291a5a98407fe0e0850b90ec21b4b284037431b5edc4656cde8d95",
+    "CPQ_PILOT_REAL_ENABLED": "false"
+  },
+  "ml-service": {
+    "health": "healthy",
+    "image": "sha256:7efef284319092c680ac1b982a3f88235956dd26354470148f1a82696936363b",
+    "CPQ_PILOT_REAL_ENABLED": "false"
+  },
+  "frontend": {
+    "health": null,
+    "image": "sha256:d5191a437f0a7917324a10f8459279a72b79d9655fd196b904cb958b8b8c00c5"
+  },
+  "postgres": {
+    "health": "healthy",
+    "image": "sha256:25a89970a83255ae96484d709005bb35aa71f7455f941bc1634514f31c5d5c62"
+  },
+  "capabilities": {
+    "realDispatchEnabled": false,
+    "realEnabled": false,
+    "sourceFidelityConfiguration": {
+      "openai-escalation": {
+        "reasoningEffort": "low",
+        "supportedReasoningEfforts": [
+          "low",
+          "medium",
+          "high",
+          "xhigh",
+          "max"
+        ]
+      }
+    }
+  }
+}
