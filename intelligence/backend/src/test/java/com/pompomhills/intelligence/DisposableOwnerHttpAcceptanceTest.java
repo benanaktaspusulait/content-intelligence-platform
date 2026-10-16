@@ -93,7 +93,8 @@ class DisposableOwnerHttpAcceptanceTest {
   static Path credentialFile;
   static String credential;
   static URI ml;
-  static boolean storyMode(){return "--story-evolution".equals(System.getProperty("pompom.acceptance.mode"));}
+  static boolean storyMode(){return Set.of("--story-evolution","--story-feasibility").contains(System.getProperty("pompom.acceptance.mode"));}
+  static boolean storyFeasibilityMode(){return "--story-feasibility".equals(System.getProperty("pompom.acceptance.mode"));}
   static LoopbackOnly networkGuard;
   static SecurityManager previousSecurityManager;
 
@@ -303,7 +304,8 @@ class DisposableOwnerHttpAcceptanceTest {
     assertThat(boundSource.path("story").asText()).isEqualTo(STORY);
     assertThat(boundSource.path("storySha256").asText()).isEqualTo(sha256(STORY));
 
-    JsonNode evolution = storyMode() ? evolveStory(contentId,promptId,storyId,approvalId,analysis,canonical) : null;
+    JsonNode evolution = "--story-evolution".equals(System.getProperty("pompom.acceptance.mode")) ? evolveStory(contentId,promptId,storyId,approvalId,analysis,canonical) : null;
+    JsonNode feasibility = storyFeasibilityMode() ? evolveStoryFeasibility(contentId,promptId,storyId,approvalId,analysis,canonical) : null;
     if(storyMode())scheduledTasks.getScheduledTasks().forEach(task -> task.cancel(false));
     call("POST", ownerPath + "/logout", Map.of(), null, base, 403);
     call("POST", ownerPath + "/logout", Map.of(), csrf, base, 200);
@@ -323,6 +325,7 @@ class DisposableOwnerHttpAcceptanceTest {
     Map<String,Object> evidence = new LinkedHashMap<>();
     evidence.put("p0HttpAcceptance", true);
     if(evolution!=null)evidence.put("storyEvolution",evolution);
+    if(feasibility!=null)evidence.put("storyFeasibility",feasibility);
     evidence.put("backendPort", port); evidence.put("backendBaseUrl", base);
     evidence.put("postgresContainerId", POSTGRES.getContainerId());
     evidence.put("postgresJdbcUrl", POSTGRES.getJdbcUrl());
@@ -441,6 +444,93 @@ class DisposableOwnerHttpAcceptanceTest {
     out.put("roundsExecuted",2);out.put("requestCount",4);out.put("providerCalls",0);out.put("actualCostUsd",0);out.put("hmacVerified",true);
     out.put("newPromptId",prompt);out.put("analysisId",analysisId);out.put("qualityValidationId",validationId);out.put("qualityValidationRulesetVersion",persistedVersion);out.set("persistedQualityReport",validationReport);
     out.put("optimizationRounds",0);out.put("optimizationStopReason",preflight.path("state").asText());
+    return out;
+  }
+
+  JsonNode evolveStoryFeasibility(long content,long parentPrompt,String source,String sourceApproval,JsonNode baseline,JsonNode baselineCanonical) throws Exception {
+    String path="/api/v1/intelligence/workflow/cpq/story-evolution-runs";
+    String baselineAnalysisId=baseline.path("recordId").asText();
+    assertThat(baselineAnalysisId).isNotBlank();
+
+    var negativeGrant=new LinkedHashMap<String,Object>();
+    negativeGrant.put("sourceStoryRecordId",source);negativeGrant.put("approvalRecordId",sourceApproval);
+    negativeGrant.put("baselineAnalysisId",baselineAnalysisId);negativeGrant.put("idempotencyKey",UUID.randomUUID().toString());
+    negativeGrant.put("objective","P2_NEGATIVE_STRUCTURAL_CASE");negativeGrant.put("maxRounds",1);negativeGrant.put("maxRequests",2);
+    negativeGrant.put("maxTotalUsd",0.02);negativeGrant.put("maxRunSeconds",60);negativeGrant.put("authorizePaidInference",true);
+    negativeGrant.put("confirmSourceAuthority",true);negativeGrant.put("automaticRetries",false);
+    JsonNode negativeStarted=post(path,negativeGrant,200);String negativeId=negativeStarted.path("runId").asText();
+    final var negativeDone=new java.util.concurrent.atomic.AtomicReference<JsonNode>();
+    org.awaitility.Awaitility.await().atMost(Duration.ofSeconds(30)).pollInterval(Duration.ofMillis(150)).until(()->{
+      JsonNode current=call("GET",path+"/"+negativeId,null,null,null,200);negativeDone.set(current);
+      return !Set.of("READY","RUNNING").contains(current.path("state").asText());
+    });
+    JsonNode negative=negativeDone.get();
+    assertThat(negative.path("state").asText()).isEqualTo("STOPPED");
+    assertThat(negative.path("progress").path("reason").asText()).isEqualTo("NO_ELIGIBLE_STORY_CANDIDATE");
+    assertThat(negative.path("drafts")).isEmpty();
+    assertThat(negative.path("progress").path("reviewedCandidates")).hasSize(2);
+    assertThat(negative.path("progress").path("lastAssessment").path("structuralFeasibilityAssessment").toString()).contains("STRUCTURALLY_BLOCKED","NOT_SUPPORTED");
+
+    var grant=new LinkedHashMap<String,Object>();
+    grant.put("sourceStoryRecordId",source);grant.put("approvalRecordId",sourceApproval);grant.put("baselineAnalysisId",baselineAnalysisId);
+    grant.put("idempotencyKey",UUID.randomUUID().toString());grant.put("objective","P2_POSITIVE_STRUCTURAL_CASE");
+    grant.put("maxRounds",2);grant.put("maxRequests",4);grant.put("maxTotalUsd",0.08);grant.put("maxRunSeconds",60);
+    grant.put("authorizePaidInference",true);grant.put("confirmSourceAuthority",true);grant.put("automaticRetries",false);
+    JsonNode started=post(path,grant,200);String runId=started.path("runId").asText();
+    final var positiveDone=new java.util.concurrent.atomic.AtomicReference<JsonNode>();
+    org.awaitility.Awaitility.await().atMost(Duration.ofSeconds(40)).pollInterval(Duration.ofMillis(150)).until(()->{
+      JsonNode current=call("GET",path+"/"+runId,null,null,null,200);positiveDone.set(current);
+      return !Set.of("READY","RUNNING").contains(current.path("state").asText());
+    });
+    JsonNode run=positiveDone.get();
+    assertThat(run.path("state").asText()).as("P2 positive run: %s",run).isEqualTo("AWAITING_OWNER_STORY_APPROVAL");
+    assertThat(run.path("drafts")).hasSize(2);assertThat(run.path("progress").path("round").asInt()).isEqualTo(2);
+    assertThat(run.path("progress").path("requestCount").asInt()).isEqualTo(4);
+    assertThat(run.path("progress").path("providerCalls").asInt()).isZero();
+    JsonNode second=run.path("drafts").get(1);String best=run.path("progress").path("bestDraftId").asText();
+    assertThat(best).isEqualTo(second.path("draftId").asText());
+    assertThat(second.path("payload").path("review").path("creativeQualityAssessment").toString()).contains("CREATIVELY_STRONG");
+    assertThat(second.path("payload").path("review").path("structuralFeasibilityAssessment").toString()).contains("STRUCTURALLY_PROMISING","ATTEMPT_001","MINI_STORY_LOCK");
+    post(path+"/"+runId+"/approve",Map.of("draftId",best,"candidateSha256","stale"),409);
+    JsonNode approved=post(path+"/"+runId+"/approve",Map.of("draftId",best,"candidateSha256",second.path("candidateSha256").asText()),200);
+    assertThat(approved.path("state").asText()).isEqualTo("APPROVED_NEW_SOURCE");
+    String newStory=approved.path("progress").path("approval").path("storyRecordId").asText();
+    JsonNode handed=post(path+"/"+runId+"/prompt-handoff",Map.of(
+      "contentId",content,"parentPromptVersionId",parentPrompt,"authorizePromptGeneration",true,"automaticRetries",false,
+      "maxCostUsd",0.04,"desiredDuration",15,"mainCharacter","Pip","contentProfile","ABSURD_PHYSICS",
+      "generator","SEEDANCE_2_0_MINI","settings",Map.of("aspectRatio","9:16","mode","image2video","resolution","480p")),200);
+    assertThat(handed.path("state").asText()).isEqualTo("PROMPT_HANDOFF_COMPLETE");
+    JsonNode handoff=handed.path("progress").path("promptHandoff");long prompt=handoff.path("newPromptId").asLong();
+    String analysisId=handoff.path("analysisId").asText();
+    JsonNode saved=call("GET","/api/v1/intelligence/workflow/records/"+analysisId,null,null,null,200);
+    JsonNode canonical=saved.path("canonicalRuleEvaluation");
+    assertThat(canonical.path("status").asText()).isEqualTo("EVALUATED");assertThat(canonical.path("rulesetVersion").asText()).isEqualTo("1.11");
+    assertThat(canonical.path("score").isNumber()).isTrue();assertThat(canonical.path("grade").asText()).isNotBlank();
+    assertThat(saved.path("boundRequest").path("prompt").asText()).contains("Pip tries to place","Pip tries to peel","Pip tries to press","Pip tries to push");
+    JsonNode preflight=call("GET","/api/v1/intelligence/workflow/records/"+analysisId+"/creative-optimization/preflight",null,null,null,200);
+    assertThat(preflight.path("sourceAnalysisId").asText()).isEqualTo(analysisId);
+    JsonNode old=call("GET","/api/v1/intelligence/workflow/records/"+sourceApproval,null,null,null,200);
+    assertThat(old.path("approvedText").asText()).isEqualTo(STORY);
+
+    var providerRequests=new ArrayList<JsonNode>();
+    for(String line:Files.readAllLines(Path.of(System.getProperty("pompom.acceptance.provider-trace"))))providerRequests.add(JSON.readTree(line));
+    var p2Requests=providerRequests.stream().filter(x->x.path("request").path("context").path("objective").asText().startsWith("P2_")).toList();
+    assertThat(p2Requests).hasSize(6);
+    var contexts=p2Requests.stream().filter(x->Set.of("STORY","STORY_REVIEW").contains(x.path("role").asText()))
+      .map(x->x.path("request").path("context").path("canonicalStoryFeasibilityContext")).toList();
+    assertThat(contexts).hasSize(6).allMatch(x->x.path("version").asText().equals("canonical-story-feasibility-context-v1")
+      && x.path("rulesetVersion").asText().equals("1.11") && x.path("baselineAnalysisId").asText().equals(baselineAnalysisId)
+      && x.path("contextSha256").asText().length()==64);
+    assertThat(contexts.stream().map(x->x.path("contextSha256").asText()).distinct().count()).isEqualTo(1);
+
+    var positive=JSON.createObjectNode();positive.put("runId",runId);positive.set("completedRun",run);positive.set("approvedRun",approved);
+    positive.set("handoffRun",handed);positive.set("canonical",canonical);positive.set("preflight",preflight);
+    positive.put("roundsExecuted",2);positive.put("requestCount",4);positive.put("providerCalls",0);positive.put("actualCostUsd",0);
+    positive.put("newPromptId",prompt);positive.put("analysisId",analysisId);positive.put("newStoryRecordId",newStory);
+    positive.put("structuralPrediction","STRUCTURALLY_PROMISING");positive.put("actualCanonicalScore",canonical.path("score").asDouble());
+    positive.put("actualCanonicalGrade",canonical.path("grade").asText());positive.put("generationAllowed",preflight.path("generationAllowed").asBoolean());
+    var out=JSON.createObjectNode();out.put("p2Acceptance",true);out.set("negativeCase",negative);out.set("positiveCase",positive);
+    out.set("baselineCanonical",baselineCanonical);out.put("predictionIsCanonicalPass",false);out.put("renderAuthorized",false);
     return out;
   }
 

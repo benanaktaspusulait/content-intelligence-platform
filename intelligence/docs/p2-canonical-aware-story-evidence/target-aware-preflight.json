@@ -1,0 +1,476 @@
+{
+  "version": "adaptive-creative-optimization-v3",
+  "state": "TARGET_BLOCKED_BY_EVIDENCE",
+  "generationAllowed": false,
+  "canonicalGradeContract": {
+    "minimumA": 92,
+    "minimumB": 80,
+    "aPlusExists": false
+  },
+  "currentScore": 91.76041666666667,
+  "fixedEvidenceOptimisticCeiling": 96.34375000000001,
+  "ceilingScope": "CURRENT_ELIGIBLE_ROWS_AND_PROTECTED_EVENTS; new independent evidence requires recomputation",
+  "familyWeightDenominator": 0.96,
+  "losses": [
+    {
+      "ruleId": "MINI_STORY_LOCK",
+      "family": "concept_strength",
+      "rowPoints": 85,
+      "familyWeight": 0.12,
+      "scoredFamilyRows": 3,
+      "overallLoss": 0.625,
+      "maximumRowPoints": 85,
+      "classification": "NOT_CURRENTLY_ATTAINABLE",
+      "reason": "Successful Ruleset 1.11 branch retains non-PASS configured severity and earns 85.",
+      "sourceEvidence": "Readable mini-story arc: goal, obstruction, attempts, progression, realization and payoff are evidenced.",
+      "details": {
+        "missing": [],
+        "recurrence": "OPTIONAL",
+        "storyEvidence": {
+          "goal_status": "IMPLICIT_BUT_OBSERVABLE",
+          "payoff_status": "AVAILABLE",
+          "temporal_load": "MANAGEABLE",
+          "raw_beat_count": 5,
+          "generation_mode": "SINGLE_15S",
+          "load_beat_count": 5,
+          "major_beat_count": 5,
+          "micro_beat_count": 0,
+          "realization_mode": "EXPLICIT",
+          "obstruction_status": "AVAILABLE",
+          "realization_status": "AVAILABLE",
+          "continuation_status": "NOT_APPLICABLE",
+          "split_recommendation": null,
+          "strategy_change_count": 3,
+          "state_transition_count": 5,
+          "continuation_mismatches": [],
+          "critical_beat_durations": [
+            2.0,
+            3.0,
+            3.0,
+            3.0,
+            4.0
+          ]
+        },
+        "recommendation": "Every video needs a visible goal, one impossible obstruction tied to that goal, active strategies, progression, realization or decision, and a readable payoff. Fake resolution, recurrence, and final twist are optional bonus evidence.",
+        "fake_resolution": "OPTIONAL",
+        "evaluation_stage": "PRE_RENDER"
+      }
+    },
+    {
+      "ruleId": "BEAT_004",
+      "family": "visual_novelty",
+      "rowPoints": 85,
+      "familyWeight": 0.14,
+      "scoredFamilyRows": 6,
+      "overallLoss": 0.3645833333333333,
+      "maximumRowPoints": 100,
+      "classification": "TEXT_REPAIRABLE",
+      "reason": "Requires a supported source-bound production change and fresh canonical evaluation.",
+      "sourceEvidence": "Visual state 'character_pip_sees_the_fourtoeight_change_finish_r' occupies 26.7% of video. Consider adding variation.",
+      "details": {
+        "state_id": "character_pip_sees_the_fourtoeight_change_finish_r",
+        "recommendation": "No single visual state may occupy more than approximately\n25\u201330% of the entire video unless meaningful new physical\nconsequences occur within that state.\n\nDifferent dialogue or tiny movements do NOT count\nas different visual beats.",
+        "evaluation_stage": "PRE_RENDER"
+      }
+    },
+    {
+      "ruleId": "PAYOFF_002",
+      "family": "progression",
+      "rowPoints": 85,
+      "familyWeight": 0.11,
+      "scoredFamilyRows": 5,
+      "overallLoss": 0.34375,
+      "maximumRowPoints": 85,
+      "classification": "PROTECTED_STORY_CONFLICT",
+      "reason": "Protected event windows and ending/fake-win events cannot be rewritten to obtain points.",
+      "sourceEvidence": "No fake-resolution beat found. This is a bonus, not a requirement \u2014 consider adding a moment where the problem appears solved before the twist.",
+      "details": {
+        "recommendation": "Bonus (non-blocking): at least one beat with consequenceType == 'fake_win' before finalPayoff.startsAt, giving the audience a moment to believe the problem is solved before the final twist.",
+        "evaluation_stage": "PRE_RENDER"
+      }
+    },
+    {
+      "ruleId": "BEAT_DENSITY_RULE",
+      "family": "progression",
+      "rowPoints": 85,
+      "familyWeight": 0.11,
+      "scoredFamilyRows": 5,
+      "overallLoss": 0.34375,
+      "maximumRowPoints": 85,
+      "classification": "NOT_CURRENTLY_ATTAINABLE",
+      "reason": "Successful Ruleset 1.11 branch retains non-PASS configured severity and earns 85.",
+      "sourceEvidence": "5 canonical major beats fit the 15-second plan.",
+      "details": {
+        "storyEvidence": {
+          "goal_status": "IMPLICIT_BUT_OBSERVABLE",
+          "payoff_status": "AVAILABLE",
+          "temporal_load": "MANAGEABLE",
+          "raw_beat_count": 5,
+          "generation_mode": "SINGLE_15S",
+          "load_beat_count": 5,
+          "major_beat_count": 5,
+          "micro_beat_count": 0,
+          "realization_mode": "EXPLICIT",
+          "obstruction_status": "AVAILABLE",
+          "realization_status": "AVAILABLE",
+          "continuation_status": "NOT_APPLICABLE",
+          "split_recommendation": null,
+          "strategy_change_count": 3,
+          "state_transition_count": 5,
+          "continuation_mismatches": [],
+          "critical_beat_durations": [
+            2.0,
+            3.0,
+            3.0,
+            3.0,
+            4.0
+          ]
+        },
+        "microBeatCount": 0,
+        "recommendation": "A 15-second single-generation plan should contain 4-5 canonical major story beats, with approximately 6 as the upper safe limit. Micro-actions do not count.",
+        "evaluation_stage": "PRE_RENDER"
+      }
+    },
+    {
+      "ruleId": "PAYOFF_004",
+      "family": "final_payoff",
+      "rowPoints": 85,
+      "familyWeight": 0.09,
+      "scoredFamilyRows": 3,
+      "overallLoss": 0.46875,
+      "maximumRowPoints": 100,
+      "classification": "CREATIVE_RECONSTRUCTION_REPAIRABLE",
+      "reason": "Optimistic conditional improvement only; no invented sub-beat timing or unsupported salience evidence.",
+      "sourceEvidence": "Final payoff salience (5) ties the earlier peak. Acceptable but not ideal \u2014 consider making the ending strictly the peak.",
+      "details": {
+        "recommendation": "The final payoff's beat.intensity should be at least as high as the highest intensity seen earlier in the video. Computed independently from beat.intensity values; finalPayoff.isPeakIntensity is never trusted as the verdict, only cross-checked for discrepancy reporting. Optimization-level (WARNING), never a blocker. Renamed from \"Final Peak Intensity\" in RULESET 1.3 -- \"intensity\" read as motion/chaos, but beats[].intensity is a 1-10 visual/emotional energy scale; a quiet, conclusive beat can score as high as a frantic one.",
+        "evaluation_stage": "PRE_RENDER"
+      }
+    },
+    {
+      "ruleId": "GOAL_VISIBLE_EARLY",
+      "family": "hook_strength",
+      "rowPoints": 85,
+      "familyWeight": 0.12,
+      "scoredFamilyRows": 2,
+      "overallLoss": 0.9375,
+      "maximumRowPoints": 85,
+      "classification": "NOT_CURRENTLY_ATTAINABLE",
+      "reason": "Successful Ruleset 1.11 branch retains non-PASS configured severity and earns 85.",
+      "sourceEvidence": "The character goal is available in the opening window.",
+      "details": {
+        "goalEvidence": {
+          "source": "GOAL_DIRECTED_ACTION_INFERENCE",
+          "goalType": "RETRIEVE_OR_CONTROL_OBJECT",
+          "description": "Control or retrieve the object despite the established abnormal behavior.",
+          "obstruction": "Inferred from beat actions",
+          "primaryGoal": {
+            "state": "INFERRED",
+            "method": "GOAL_DIRECTED_ACTION_INFERENCE",
+            "sourceSpan": null,
+            "description": "Control or retrieve the object despite the established abnormal behavior.",
+            "sourceQuote": null,
+            "semanticVerification": "NOT_PERFORMED"
+          },
+          "targetObject": null,
+          "intendedEffect": "restore_or_control_normal_object_use",
+          "goalExplicitness": "IMPLICIT_BUT_OBSERVABLE",
+          "secondaryRecoveryAttempt": {
+            "state": "OBSERVED",
+            "beatId": "beat_02",
+            "method": "EXPLICIT_RECOVERY_ATTEMPT_PATTERN",
+            "sourceSpan": [
+              504,
+              602
+            ],
+            "description": "Pip tries to peel the note away with the free hand, but it splits into two notes, one on each hand",
+            "sourceQuote": "Pip tries to peel the note away with the free hand, but it splits into two notes, one on each hand",
+            "targetObject": "the note away",
+            "semanticVerification": "NOT_PERFORMED"
+          }
+        },
+        "recommendation": "The character goal must be explicit or implicit-but-observable in the first 1-2 seconds.",
+        "evaluation_stage": "PRE_RENDER"
+      }
+    },
+    {
+      "ruleId": "HOOK_002",
+      "family": "hook_strength",
+      "rowPoints": 40,
+      "familyWeight": 0.12,
+      "scoredFamilyRows": 2,
+      "overallLoss": 3.75,
+      "maximumRowPoints": 100,
+      "classification": "TEXT_REPAIRABLE",
+      "reason": "Requires a supported source-bound production change and fresh canonical evaluation.",
+      "sourceEvidence": "Hook does not start mid-action. The problem must already be visually obvious within the opening second, with no setup or explanation.",
+      "details": {
+        "recommendation": "The problem must already be visually obvious within the opening second, with no setup, narration, or text explanation required. hook.startsMidAction must be true and hook.visualStrength must be at least 4/5. RULESET 1.3 adds a tolerance window -- hook.startsAt must be <= 0.8s (defaults to 0.0 when absent, a no-op for pre-1.3 IRs); the anomaly doesn't need to be literally frame-0 to read as immediate.",
+        "evaluation_stage": "PRE_RENDER"
+      }
+    },
+    {
+      "ruleId": "TEMPORAL_COMPLEXITY_SPLIT_GATE",
+      "family": "generation_executability",
+      "rowPoints": 85,
+      "familyWeight": 0.09,
+      "scoredFamilyRows": 1,
+      "overallLoss": 1.40625,
+      "maximumRowPoints": 85,
+      "classification": "NOT_CURRENTLY_ATTAINABLE",
+      "reason": "Successful Ruleset 1.11 branch retains non-PASS configured severity and earns 85.",
+      "sourceEvidence": "Temporal load is manageable for the selected generation plan.",
+      "details": {
+        "mode": "SINGLE_15S",
+        "storyEvidence": {
+          "goal_status": "IMPLICIT_BUT_OBSERVABLE",
+          "payoff_status": "AVAILABLE",
+          "temporal_load": "MANAGEABLE",
+          "raw_beat_count": 5,
+          "generation_mode": "SINGLE_15S",
+          "load_beat_count": 5,
+          "major_beat_count": 5,
+          "micro_beat_count": 0,
+          "realization_mode": "EXPLICIT",
+          "obstruction_status": "AVAILABLE",
+          "realization_status": "AVAILABLE",
+          "continuation_status": "NOT_APPLICABLE",
+          "split_recommendation": null,
+          "strategy_change_count": 3,
+          "state_transition_count": 5,
+          "continuation_mismatches": [],
+          "critical_beat_durations": [
+            2.0,
+            3.0,
+            3.0,
+            3.0,
+            4.0
+          ]
+        },
+        "recommendation": "Block an overloaded SINGLE_15S generation plan and recommend SPLIT_2X15S. The creative concept is not rejected when the split plan is selected.",
+        "evaluation_stage": "PRE_RENDER"
+      }
+    }
+  ],
+  "missingEvidence": [
+    {
+      "ruleId": "INSTANT_VISUAL_ABSURDITY_GATE",
+      "classification": "EVIDENCE_REQUIRED",
+      "reason": "First-frame absurdity evidence is incomplete; the concept is blocked before render.",
+      "details": {
+        "failureBasis": "EVIDENCE_INCOMPLETE",
+        "recommendation": "BLOCKER: the first frame must communicate a physically impossible or clearly wrong situation without history, counting, micro-comparison, audio, text, or prior knowledge. The main character must already be engaged with the event.",
+        "missingEvidence": [
+          "staticWrongness",
+          "noHistoryRequired",
+          "noMicroComparison",
+          "largeVisualSignal",
+          "characterAlreadyEngaged"
+        ],
+        "evaluation_stage": "PRE_RENDER"
+      }
+    },
+    {
+      "ruleId": "ENGINE_SILHOUETTE_DUPLICATE",
+      "classification": "EVIDENCE_REQUIRED",
+      "reason": "No first-frame/final-silhouette comparison evidence was supplied; the concept is blocked before render.",
+      "details": {
+        "failureBasis": "EVIDENCE_INCOMPLETE",
+        "recommendation": "BLOCKER: reject concepts whose visible progression and final silhouette substantially duplicate a known winner visual engine, even when the underlying mathematical rule differs.",
+        "evaluation_stage": "PRE_RENDER"
+      }
+    },
+    {
+      "ruleId": "CONSISTENCY_001",
+      "classification": "EVIDENCE_REQUIRED",
+      "reason": "coreMechanic.consistency was not explicitly stated in the prompt and cannot be verified.",
+      "details": {
+        "recommendation": "The physical rule established in the hook should remain\nconsistent throughout the video unless the concept explicitly\ninvolves rule-breaking as the payoff.",
+        "evaluation_stage": "PRE_RENDER"
+      }
+    },
+    {
+      "ruleId": "HOOK_003",
+      "classification": "EVIDENCE_REQUIRED",
+      "reason": "hook.soundOffClear was not explicitly stated in the prompt and cannot be verified.",
+      "details": {
+        "recommendation": "The core problem and physical comedy must work with audio muted. hook.soundOffClear must be true.",
+        "evaluation_stage": "PRE_RENDER"
+      }
+    },
+    {
+      "ruleId": "ATTEMPT_002",
+      "classification": "EVIDENCE_REQUIRED",
+      "reason": "Semantic judgment has no verified evidence; provider dispatch is disabled for this local ruleset.",
+      "details": {
+        "recommendation": "Attempts must be mechanically distinct, not just differently worded. Identical primaryVerb across attempts is an automatic deterministic FAIL. Verb-distinct attempts are checked for semantic duplication via LLM (e.g. GRAB vs YANK may be the same underlying strategy; RULESET 1.3 explicitly also treats intensity/angle variants of the identical strategy as duplicates, e.g. PUSH/PUSH_HARDER/PUSH_FROM_LEFT). Effective distinct count must meet the same duration-tier minimum as ATTEMPT_001.",
+        "evaluation_stage": "PRE_RENDER",
+        "providerDispatch": false,
+        "requiredEvidence": "VERIFIED_SEMANTIC_JUDGMENT"
+      }
+    },
+    {
+      "ruleId": "PAYOFF_003",
+      "classification": "EVIDENCE_REQUIRED",
+      "reason": "Semantic judgment has no verified evidence; provider dispatch is disabled for this local ruleset.",
+      "details": {
+        "recommendation": "The final twist must derive from the same established physical rule (coreMechanic.physicalRule), applied in a new or bigger way \u2014 not an unrelated, disconnected joke. Checked via LLM semantic judgment.",
+        "evaluation_stage": "PRE_RENDER",
+        "providerDispatch": false,
+        "requiredEvidence": "VERIFIED_SEMANTIC_JUDGMENT"
+      }
+    },
+    {
+      "ruleId": "CONCEPT_007",
+      "classification": "EVIDENCE_REQUIRED",
+      "reason": "Semantic judgment has no verified evidence; provider dispatch is disabled for this local ruleset.",
+      "details": {
+        "recommendation": "The concept must exhibit exactly one independent physical/magical rule. Same mechanic applied with escalating/varied consequences is fine (PASS); a second, genuinely independent rule introduced partway through is not (CRITICAL at 2 mechanics, BLOCKER at 3+). coreMechanic.mechanicCount is an author claim, verified (not trusted) via LLM semantic judgment against the beat-by-beat consequences.",
+        "evaluation_stage": "PRE_RENDER",
+        "providerDispatch": false,
+        "requiredEvidence": "VERIFIED_SEMANTIC_JUDGMENT"
+      }
+    },
+    {
+      "ruleId": "GOAL_001",
+      "classification": "EVIDENCE_REQUIRED",
+      "reason": "Semantic judgment has no verified evidence; provider dispatch is disabled for this local ruleset.",
+      "details": {
+        "recommendation": "The character must have an immediately understandable, natural physical goal, and the established abnormal rule must genuinely obstruct that goal. Distinguishes a believable reason to keep trying from an arbitrary or magic-demo setup invented only to showcase the mechanic (the character could simply walk away with no believable reason to continue). Verified via LLM semantic judgment (check_goal_is_natural), fail-closed to SERVICE_ERROR.",
+        "evaluation_stage": "PRE_RENDER",
+        "providerDispatch": false,
+        "requiredEvidence": "VERIFIED_SEMANTIC_JUDGMENT"
+      }
+    },
+    {
+      "ruleId": "CONCEPT_008",
+      "classification": "EVIDENCE_REQUIRED",
+      "reason": "Semantic judgment has no verified evidence; provider dispatch is disabled for this local ruleset.",
+      "details": {
+        "recommendation": "Distinct from CONCEPT_007: a single, internally consistent mechanic is not automatically a legible one. A rule that depends on a combination of exact position, angle, and speed is technically one mechanic but unlearnable by a child audience watching once. Asks whether a viewer could learn the pattern from the first 1-2 occurrences and predict what happens next. Verified via LLM semantic judgment (check_rule_is_predictable), fail-closed to SERVICE_ERROR.",
+        "evaluation_stage": "PRE_RENDER",
+        "providerDispatch": false,
+        "requiredEvidence": "VERIFIED_SEMANTIC_JUDGMENT"
+      }
+    },
+    {
+      "ruleId": "HOOK_004",
+      "classification": "EVIDENCE_REQUIRED",
+      "reason": "Semantic judgment has no verified evidence; provider dispatch is disabled for this local ruleset.",
+      "details": {
+        "recommendation": "Stricter than HOOK_002: HOOK_002 confirms something visually unusual happens immediately; this asks whether the opening ALSO makes clear what the character wants and why they can't get it yet, not just that something odd is occurring. Verified via LLM semantic judgment (check_opening_problem_legible), fail-closed to SERVICE_ERROR.",
+        "evaluation_stage": "PRE_RENDER",
+        "providerDispatch": false,
+        "requiredEvidence": "VERIFIED_SEMANTIC_JUDGMENT"
+      }
+    },
+    {
+      "ruleId": "PERFORMANCE_001",
+      "classification": "EVIDENCE_REQUIRED",
+      "reason": "Semantic judgment has no verified evidence; provider dispatch is disabled for this local ruleset.",
+      "details": {
+        "recommendation": "New character_performance family (RULESET 1.3). CHAR_002 confirms the character is active for enough of the runtime; this asks whether that activity reads as emotionally engaged and sympathetic rather than blank, robotic, aggressive, or stuck in prolonged panic. Verified via LLM semantic judgment (check_character_performance_readable), fail-closed to SERVICE_ERROR. Capped at WARNING \u2014 a performance-quality nudge, not a structural requirement.",
+        "evaluation_stage": "PRE_RENDER",
+        "providerDispatch": false,
+        "requiredEvidence": "VERIFIED_SEMANTIC_JUDGMENT"
+      }
+    },
+    {
+      "ruleId": "GENERATION_EXECUTABLE_ATTEMPTS",
+      "classification": "EVIDENCE_REQUIRED",
+      "reason": "Semantic judgment has no verified evidence; provider dispatch is disabled for this local ruleset.",
+      "details": {
+        "recommendation": "Distinct from ATTEMPT_002 (semantic strategy diversity): ATTEMPT_002 asks whether the character is genuinely trying a different strategy; this asks whether that different strategy will actually LOOK different and be reliably executable by an image-to-video generation model (e.g. Seedance). A deterministic keyword pre-filter flags abstract-intent language ('blocks the escape route', 'tries to outsmart') and vague movement-magnitude phrasing ('slightly moves') on attempt beats, plus a beat-budget estimate (too many attempts for the available duration). An LLM semantic check (check_attempts_are_generation_executable) judges each attempt for a concrete action-result pair and flags attempts that would visually collapse into the same choreography despite different wording. BLOCKER only when NO attempt is judged executable at all or the LLM is unreachable (SERVICE_ERROR); CRITICAL when some attempts are unexecutable or abstract-intent language is matched; WARNING for vague magnitude phrasing or beat-budget pressure alone.",
+        "evaluation_stage": "PRE_RENDER",
+        "providerDispatch": false,
+        "requiredEvidence": "VERIFIED_SEMANTIC_JUDGMENT"
+      }
+    }
+  ],
+  "genuineSourceAttemptCount": 4,
+  "creativeOpportunity": {
+    "state": "UNKNOWN_REQUIRES_PROMPT_DIAGNOSIS",
+    "basis": "No independent CPQ assessment supplied to preflight."
+  },
+  "canonicalATargetStatus": "CANONICAL_A_POTENTIALLY_ATTAINABLE",
+  "creativeQualityTarget": {
+    "active": false,
+    "state": "CALIBRATION_REQUIRED",
+    "gradeThresholdsAvailable": false
+  },
+  "reasons": [
+    "Required independent visual evidence is missing."
+  ],
+  "renderAuthorized": false,
+  "providerConfiguration": {
+    "version": "creative-provider-capabilities-v3-2026-10-15",
+    "verifiedAt": "2026-10-15",
+    "profiles": {
+      "deepseek-primary": {
+        "provider": "deepseek",
+        "model": "deepseek-v4-pro",
+        "documentedVersion": "DeepSeek-V4-Pro-0813",
+        "baseUrl": "https://api.deepseek.com",
+        "protocol": "chat_completions",
+        "responseMode": "json_object",
+        "contextTokens": 1000000,
+        "maxOutputTokens": 393216,
+        "inputUsdPerMillion": 1.32,
+        "cachedInputUsdPerMillion": 0.044,
+        "outputUsdPerMillion": 3.96,
+        "priceBasis": "PEAK_CACHE_MISS_UPPER_BOUND; off-peak and cache discounts not assumed",
+        "tokenParameter": "max_tokens",
+        "reasoningEffort": "high",
+        "temperatureSupported": false,
+        "reasoningBilledWithinOutput": true,
+        "deprecated": false,
+        "documentation": [
+          "https://api-docs.deepseek.com/quick_start/pricing/",
+          "https://api-docs.deepseek.com/api/create-chat-completion/"
+        ],
+        "configured": false,
+        "liveAvailability": "UNVERIFIED_NO_PROVIDER_CALL"
+      },
+      "openai-escalation": {
+        "provider": "openai",
+        "model": "gpt-6.1-sol",
+        "documentedVersion": "gpt-6.1-sol",
+        "baseUrl": "https://api.openai.com/v1",
+        "protocol": "chat_completions",
+        "responseMode": "json_schema",
+        "contextTokens": 1050000,
+        "maxOutputTokens": 128000,
+        "inputUsdPerMillion": 2.5,
+        "cachedInputUsdPerMillion": 0.1,
+        "outputUsdPerMillion": 10.0,
+        "priceBasis": "STANDARD_SHORT_CONTEXT_CONSERVATIVE_CACHE_WRITE_INPUT_UPPER_BOUND; no fast/ultrafast or long-context dispatch",
+        "tokenParameter": "max_completion_tokens",
+        "reasoningEffort": "high",
+        "temperatureSupported": false,
+        "reasoningBilledWithinOutput": true,
+        "deprecated": false,
+        "documentation": [
+          "https://developers.openai.com/api/docs/models/gpt-6.1-sol",
+          "https://developers.openai.com/api/docs/guides/latest-model"
+        ],
+        "configured": false,
+        "liveAvailability": "UNVERIFIED_NO_PROVIDER_CALL"
+      }
+    },
+    "limits": {
+      "maxProviders": 2,
+      "maxRequestsPerProvider": 1,
+      "maxRounds": 1,
+      "maxOutputTokens": 4000,
+      "maxLatencySeconds": 120,
+      "maxCostUsd": 20
+    },
+    "realCreativeEffectiveness": "UNVERIFIED",
+    "automaticFallback": false
+  },
+  "sourceAnalysisId": "01dc1ad2-983d-4048-bc59-3ddc682bd93b",
+  "sourcePromptVersionId": 2,
+  "sourcePromptSha256": "5ea8d3f43f4a96d0c8940bc4751c24bbd204a634ae47c55f21e6e0678faa58b5",
+  "productionSettingsRecordId": "48675f5c-bc6d-4b30-a9a5-946f0a638b63",
+  "contentId": 1
+}

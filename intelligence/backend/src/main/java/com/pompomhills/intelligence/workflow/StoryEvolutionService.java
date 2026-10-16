@@ -42,6 +42,12 @@ public class StoryEvolutionService {
     String key=String.valueOf(body.getOrDefault("idempotencyKey",""));if(key.length()<8)throw new ResponseStatusException(BAD_REQUEST,"Stable idempotency key required");
     var prior=db.sql("SELECT id FROM story_evolution_runs WHERE owner_principal=:o AND idempotency_key=:k").param("o",owner).param("k",key).query(UUID.class).optional();if(prior.isPresent())return view(prior.get(),req);
     var scope=new LinkedHashMap<String,Object>();scope.put("sourceStoryRecordId",source.toString());scope.put("sourceStory",text);scope.put("sourceApprovalRecordId",sourceApproval.toString());scope.put("sourceRevisionId",approvedSource.get("revision"));scope.put("sourceStorySha256",hash(text));scope.put("objective",body.getOrDefault("objective","Improve visual hook, causal progression, escalation and payoff"));scope.put("profile",body.getOrDefault("profile",Map.of()));scope.put("contractVersion","STORY_EVOLUTION_V1");
+    if(body.get("baselineAnalysisId")!=null){
+      UUID analysis=uuid(body.get("baselineAnalysisId"));
+      scope.put("baselineAnalysisId",analysis.toString());
+      scope.put("canonicalStoryFeasibilityContext",canonicalStoryFeasibilityContext(source,sourceApproval,approvedSource,text,analysis));
+      scope.put("contractVersion","CANONICAL_A_AWARE_STORY_EVOLUTION_V1");
+    }
     UUID id=UUID.randomUUID();var progress=new LinkedHashMap<String,Object>();progress.put("phase","DIAGNOSIS");progress.put("round",0);progress.put("bestDraftId","");progress.put("acceptedChanges",List.of());progress.put("rejectedCandidates",List.of());
     db.sql("INSERT INTO story_evolution_runs(id,owner_principal,idempotency_key,source_story_record_id,source_story_sha256,authorization_payload,scope,state,progress,deadline) VALUES(:id,:o,:k,:s,:h,CAST(:a AS jsonb),CAST(:scope AS jsonb),'READY',CAST(:p AS jsonb),now()+make_interval(secs=>:sec))").param("id",id).param("o",owner).param("k",key).param("s",source).param("h",hash(text)).param("a",util.encode(body)).param("scope",util.encode(scope)).param("p",util.encode(progress)).param("sec",Math.max(60,Math.min(1800,((Number)body.getOrDefault("maxRunSeconds",600)).intValue()))).update();event(id,Map.of("state","AUTHORIZED","providerCalls",0));return view(id,req);
   }
@@ -55,9 +61,10 @@ public class StoryEvolutionService {
     var context=new LinkedHashMap<String,Object>();
     context.put("inputMode","DETAILED_STORY"); context.put("storyGenerationMode","IMPROVE_EXISTING_STORY");
     context.put("approvedStoryText",scope.get("sourceStory")); context.put("sourceStoryRecordId",scope.get("sourceStoryRecordId")); context.put("sourceFingerprint",scope.get("sourceStorySha256"));
-    context.put("lockedRequirements",List.of("PRESERVE_CORE_PREMISE","PRESERVE_KEY_EVENTS","PRESERVE_ENDING")); context.put("objective",scope.get("objective"));
+    context.put("lockedRequirements",scope.containsKey("canonicalStoryFeasibilityContext")?List.of("PRESERVE_CORE_PREMISE","PRESERVE_CHARACTER_IDENTITY","PRESERVE_PHYSICAL_RULE","PRESERVE_ENDING"):List.of("PRESERVE_CORE_PREMISE","PRESERVE_KEY_EVENTS","PRESERVE_ENDING")); context.put("objective",scope.get("objective"));
     context.put("roundNumber",round); context.put("previousRevision",p.get("bestDraftId")); context.put("bestCandidate",p.getOrDefault("bestCandidate",Map.of())); context.put("rejectedCandidates",p.getOrDefault("rejectedCandidates",List.of()));
     context.put("acceptedChanges",p.getOrDefault("acceptedChanges",List.of())); context.put("previousAssessment",p.getOrDefault("lastAssessment",Map.of())); context.put("requestedAlternativeCount",2);
+    if(scope.containsKey("canonicalStoryFeasibilityContext"))context.put("canonicalStoryFeasibilityContext",scope.get("canonicalStoryFeasibilityContext"));
     var request=new LinkedHashMap<String,Object>(); request.put("role","STORY"); request.put("text",scope.get("sourceStory")); request.put("maxCostUsd",((Number)map(row.get("authorization")).get("maxTotalUsd")).doubleValue()); request.put("context",context);
     var generated=dispatch(id,request,p,map(row.get("authorization"))); var alternatives=rows(roleResult(generated).get("alternatives"));
     if(alternatives.isEmpty()){stop(id,"STORY_VALIDATION_FAILED","No complete story candidate returned");return;}
@@ -66,11 +73,16 @@ public class StoryEvolutionService {
     for(var candidate:alternatives){String text=String.valueOf(candidate.getOrDefault("text",""));String cid=String.valueOf(candidate.getOrDefault("candidateId","candidate-"+(valid.size()+1)));
       if(text.isBlank()||text.equals(baseline)||text.equals(parent)){rejected.add(Map.of("candidateId",cid,"reason","EQUIVALENT_OR_MEANINGLESS"));continue;} valid.add(candidate);}
     if(valid.isEmpty()){p.put("rejectedCandidates",rejected);saveProgress(id,p,"NO_JUSTIFIED_IMPROVEMENT");return;}
-    var reviewContext=new LinkedHashMap<String,Object>();reviewContext.put("sourceRequestId",id.toString());reviewContext.put("sourceFingerprint",scope.get("sourceStorySha256"));reviewContext.put("approvedStoryText",baseline);reviewContext.put("candidates",valid);reviewContext.put("reviewPolicyVersion","story-evolution-v1");reviewContext.put("roundNumber",round);reviewContext.put("previousAssessment",p.getOrDefault("lastAssessment",Map.of()));reviewContext.put("bestCandidate",p.getOrDefault("bestCandidate",Map.of()));
+    var reviewContext=new LinkedHashMap<String,Object>();reviewContext.put("sourceRequestId",id.toString());reviewContext.put("sourceFingerprint",scope.get("sourceStorySha256"));reviewContext.put("approvedStoryText",baseline);reviewContext.put("candidates",valid);reviewContext.put("reviewPolicyVersion",scope.containsKey("canonicalStoryFeasibilityContext")?"canonical-a-aware-story-review-v1":"story-evolution-v1");reviewContext.put("roundNumber",round);reviewContext.put("objective",scope.get("objective"));reviewContext.put("previousAssessment",p.getOrDefault("lastAssessment",Map.of()));reviewContext.put("bestCandidate",p.getOrDefault("bestCandidate",Map.of()));
+    if(scope.containsKey("canonicalStoryFeasibilityContext"))reviewContext.put("canonicalStoryFeasibilityContext",scope.get("canonicalStoryFeasibilityContext"));
     var reviewRequest=new LinkedHashMap<String,Object>();reviewRequest.put("role","STORY_REVIEW");reviewRequest.put("text",baseline);reviewRequest.put("maxCostUsd",((Number)map(row.get("authorization")).get("maxTotalUsd")).doubleValue());reviewRequest.put("context",reviewContext);
-    var reviewEnvelope=dispatch(id,reviewRequest,p,map(row.get("authorization")));var review=roleResult(reviewEnvelope); p.put("lastAssessment",review); p.put("lastReviewTransport",reviewEnvelope);p.put("rejectedCandidates",rejected);
+    var reviewEnvelope=dispatch(id,reviewRequest,p,map(row.get("authorization")));var review=roleResult(reviewEnvelope); p.put("lastAssessment",review); p.put("lastReviewTransport",reviewEnvelope);p.put("rejectedCandidates",rejected);p.put("reviewedCandidates",valid);
     String recommended=String.valueOf(review.getOrDefault("recommendedCandidateId","")); Map<String,Object> chosen=valid.stream().filter(c->recommended.equals(String.valueOf(c.get("candidateId")))).findFirst().orElse(null);
-    if(!"COMPLETED".equals(review.get("reviewStatus"))||chosen==null){p.put("rejectedCandidates",rejected);saveProgress(id,p,"NO_REVIEW_SUPPORTED_IMPROVEMENT");return;}
+    if(!"COMPLETED".equals(review.get("reviewStatus"))||chosen==null){p.put("rejectedCandidates",rejected);saveProgress(id,p,scope.containsKey("canonicalStoryFeasibilityContext")?"NO_ELIGIBLE_STORY_CANDIDATE":"NO_REVIEW_SUPPORTED_IMPROVEMENT");return;}
+    if(scope.containsKey("canonicalStoryFeasibilityContext")&&!eligibleCanonicalStoryCandidate(review,recommended)){
+      rejected.add(Map.of("candidateId",recommended,"reason","CANONICAL_A_STRUCTURAL_FEASIBILITY_NOT_ESTABLISHED"));
+      p.put("rejectedCandidates",rejected);saveProgress(id,p,"NO_ELIGIBLE_STORY_CANDIDATE");return;
+    }
     String chosenText=String.valueOf(chosen.get("text")); String cid=String.valueOf(chosen.getOrDefault("candidateId","candidate-"+round));
     UUID draft=UUID.randomUUID(); var payload=new LinkedHashMap<>(chosen); payload.put("parentStoryRecordId",scope.get("sourceStoryRecordId")); payload.put("parentDraftId",p.get("bestDraftId")); payload.put("sourceFingerprint",scope.get("sourceStorySha256")); payload.put("round",round); payload.put("changes",List.of("Provider-authored story change assessed by independent STORY_REVIEW")); payload.put("review",review);
     db.sql("INSERT INTO story_evolution_drafts(id,run_id,round_number,parent_draft_id,candidate_id,prompt_payload,candidate_sha256,assessment) VALUES(:id,:run,:r,CAST(NULLIF(:parent,'') AS uuid),:cid,CAST(:payload AS jsonb),:hash,CAST(:assessment AS jsonb))").param("id",draft).param("run",id).param("r",round).param("parent",String.valueOf(p.get("bestDraftId"))).param("cid",cid).param("payload",util.encode(payload)).param("hash",hash(chosenText)).param("assessment",util.encode(review)).update();
@@ -183,6 +195,66 @@ public class StoryEvolutionService {
     event(id, Map.of("state", "PROMPT_HANDOFF_COMPLETE", "newStoryRecordId", newStory.toString(),
         "promptFingerprint", hash(prompt), "rulesetVersion", evaluation.rulesetVersion()));
     return view(id, req);
+  }
+  Map<String,Object> canonicalStoryFeasibilityContext(UUID source,UUID sourceApproval,Map<String,Object> approvedSource,String text,UUID analysis) {
+    var subject=util.context(analysis,null,null);
+    var approved=map(subject.get("approvedStory"));
+    if(!Objects.equals(String.valueOf(approved.get("storyId")),source.toString())
+        || !Objects.equals(String.valueOf(approved.get("approvalRecordId")),sourceApproval.toString())
+        || !Objects.equals(String.valueOf(approved.get("text")),text))
+      throw new ResponseStatusException(CONFLICT,"Baseline analysis is not bound to the exact approved source story");
+    var canonical=map(subject.get("canonical"));
+    if(!"1.11".equals(String.valueOf(canonical.get("rulesetVersion")))||!"EVALUATED".equals(String.valueOf(canonical.get("status"))))
+      throw new ResponseStatusException(CONFLICT,"Canonical-A-aware story evolution requires an evaluated Ruleset 1.11 baseline");
+    // Reuse the authoritative adaptive policy projection without requiring the
+    // baseline prompt to remain the latest mutable prompt version. The exact
+    // analysis/story/settings subject binding above already fails closed.
+    var policyContext=new LinkedHashMap<String,Object>();policyContext.put("creativeQualityTargetActive",false);
+    var policyRequest=new LinkedHashMap<String,Object>();policyRequest.put("action","PREFLIGHT");policyRequest.put("canonical",canonical);policyRequest.put("source",subject.get("originalPrompt"));policyRequest.put("context",policyContext);
+    var preflight=new LinkedHashMap<String,Object>(ml.workflow("adaptive-optimization-policy",policyRequest));
+    preflight.put("sourceAnalysisId",analysis.toString());
+    var findings=new ArrayList<Map<String,Object>>();
+    var preflightLosses=new HashMap<String,Map<String,Object>>();
+    for(var loss:rows(preflight.get("losses")))preflightLosses.put(String.valueOf(loss.get("ruleId")),loss);
+    for(String bucket:List.of("failedRules","unknownRules"))for(var rule:rows(canonical.get(bucket))){
+      var row=new LinkedHashMap<String,Object>();
+      for(String key:List.of("ruleId","outcome","severity","family","message","details"))if(rule.containsKey(key))row.put(key,rule.get(key));
+      var loss=preflightLosses.get(String.valueOf(rule.get("ruleId")));
+      String classification=loss==null?("unknownRules".equals(bucket)?"EVIDENCE_ONLY":"PROMPT_OR_EXECUTION_LEVEL"):switch(String.valueOf(loss.get("classification"))){
+        case "PROTECTED_STORY_CONFLICT" -> "STORY_LEVEL_CHANGE_REQUIRES_OWNER_APPROVAL";
+        case "EVIDENCE_REQUIRED" -> "EVIDENCE_ONLY";
+        default -> "PROMPT_OR_EXECUTION_LEVEL";
+      };
+      row.put("repairClassification",classification);
+      if(loss!=null){row.put("reason",loss.get("reason"));row.put("overallLoss",loss.get("overallLoss"));}
+      findings.add(row);
+    }
+    var target=new LinkedHashMap<String,Object>();target.put("name","CANONICAL_A");target.put("minimumScore",92);target.put("rulesetVersion","1.11");target.put("scoreIsPrediction",false);
+    var context=new LinkedHashMap<String,Object>();
+    context.put("version","canonical-story-feasibility-context-v1");
+    context.put("sourceStoryId",source.toString());context.put("sourceApprovalRecordId",sourceApproval.toString());context.put("sourceRevisionId",approvedSource.get("revision"));context.put("sourceStorySha256",hash(text));
+    context.put("baselineAnalysisId",analysis.toString());context.put("rulesetVersion","1.11");context.put("target",target);
+    context.put("baseline",Map.of("score",canonical.get("score"),"grade",canonical.get("grade"),"status",canonical.get("status")));
+    var snapshot=new LinkedHashMap<String,Object>();for(String key:List.of("version","state","generationAllowed","currentScore","fixedEvidenceOptimisticCeiling","canonicalATargetStatus","reasons","losses","missingEvidence","genuineSourceAttemptCount","renderAuthorized"))if(preflight.containsKey(key))snapshot.put(key,preflight.get(key));context.put("targetAwarePreflight",snapshot);
+    context.put("canonicalFindings",findings);
+    context.put("mandatoryEvidenceContracts",List.of("SOURCE_BOUND_BEATS","EXACT_STORY_QUOTES_WHEN_CLAIMED","UNKNOWN_WHEN_UNSUPPORTED","INDEPENDENT_VISUAL_EVIDENCE_FOR_VISUAL_GATES"));
+    context.put("creativeRequirements",List.of("IMMEDIATE_VISUALLY_UNDERSTANDABLE_OPENING","CLEAR_PHYSICAL_CAUSALITY","MEANINGFUL_VISUAL_PROGRESSION","ACTIVE_MAIN_CHARACTER","GENUINELY_DISTINCT_PROBLEM_SOLVING_WHEN_NARRATIVELY_JUSTIFIED","ESCALATING_CONSEQUENCES","MEANINGFUL_REALIZATION_OR_REVERSAL_OR_PAYOFF","GENERATOR_FEASIBLE_MOVEMENT","ORIGINALITY_WITHOUT_COPYING_PRIOR_SILHOUETTES"));
+    context.put("prohibitedShortcuts",List.of("INVENT_PASS_EVIDENCE","TREAT_UNKNOWN_AS_PASS","ADD_MEANINGLESS_SCORE_ACTIONS","RENAME_REPEATED_ACTIONS_AS_STRATEGIES","COUNT_CAMERA_CHANGES_AS_STORY_STRATEGIES","CLAIM_UNSEEN_EFFECTS_VISIBLE","ADD_UNRELATED_PROTAGONISTS_OR_ANIMALS","COPY_PRIOR_WINNING_SILHOUETTES","CHANGE_PROTECTED_SOURCE_WITHOUT_OWNER_APPROVAL"));
+    context.put("assessmentScope","TEXTUAL_STORY_FEASIBILITY_PREDICTION_ONLY; CANONICAL OUTCOMES REQUIRE BUILD_PROMPT_AND_RULESET_1_11");
+    context.put("contextSha256",hash(util.encode(context)));
+    return context;
+  }
+  static boolean eligibleCanonicalStoryCandidate(Map<String,Object> review,String candidateId) {
+    var creative=rows(map(review.get("creativeQualityAssessment")).get("candidateAssessments")).stream()
+        .filter(x->candidateId.equals(String.valueOf(x.get("candidateId")))).findFirst().orElse(Map.of());
+    var structural=rows(map(review.get("structuralFeasibilityAssessment")).get("candidateAssessments")).stream()
+        .filter(x->candidateId.equals(String.valueOf(x.get("candidateId")))).findFirst().orElse(Map.of());
+    if(!"CREATIVELY_STRONG".equals(creative.get("status"))||!"STRUCTURALLY_PROMISING".equals(structural.get("status")))return false;
+    var required=Set.of("ATTEMPT_001","ATTEMPT_002","CHAR_002","REPETITION_004","MINI_STORY_LOCK");
+    var rules=rows(structural.get("ruleAssessments"));
+    if(!rules.stream().map(x->String.valueOf(x.get("ruleId"))).collect(java.util.stream.Collectors.toSet()).containsAll(required))return false;
+    return rules.stream().filter(x->required.contains(String.valueOf(x.get("ruleId"))))
+        .noneMatch(x->Set.of("NOT_SUPPORTED","UNKNOWN").contains(String.valueOf(x.get("status"))));
   }
   static Map<String,Object> roleResult(Map<String,Object> envelope) {
     return envelope.get("result") instanceof Map<?,?> ? map(envelope.get("result")) : envelope;

@@ -1,5 +1,6 @@
 """Provider-free contract fixtures for the optional STORY_REVIEW role."""
 from app.workflow.creative_roles import perform_role
+import json
 
 
 class FakeReviewProvider:
@@ -58,3 +59,72 @@ def test_story_review_canonicalizes_ordinal_candidate_aliases() -> None:
         'uuid-candidate-1', 'uuid-candidate-2', 'uuid-candidate-3'
     ]
     assert review['recommendedCandidateId'] == 'uuid-candidate-2'
+
+
+def _canonical_context():
+    return {'version': 'canonical-story-feasibility-context-v1', 'rulesetVersion': '1.11',
+            'contextSha256': 'a' * 64, 'target': {'name': 'CANONICAL_A', 'minimumScore': 92}}
+
+
+def _aware_review(status='STRUCTURALLY_PROMISING', rule_status='SUPPORTED', recommendation='candidate-1'):
+    base = json.loads(FakeReviewProvider().complete('', '', 0))
+    base['candidateReviews'] = [base['candidateReviews'][0]]
+    base['recommendedCandidateId'] = recommendation
+    base['creativeQualityAssessment'] = {'candidateAssessments': [{
+        'candidateId': 'candidate-1', 'status': 'CREATIVELY_STRONG', 'reason': 'Causal progression',
+        'strengths': ['Distinct attempts'], 'risks': ['Text-only assessment']}]}
+    base['structuralFeasibilityAssessment'] = {'candidateAssessments': [{
+        'candidateId': 'candidate-1', 'status': status, 'remainingBlockers': [],
+        'visualEvidenceUnknowns': ['Rendered readability remains unknown'],
+        'ruleAssessments': [{
+            'ruleId': rule, 'storyEvidenceExcerpt': 'Pip tries to peel the note.',
+            'status': rule_status, 'reason': 'Exact source-bound actor action',
+            'necessaryImprovement': '', 'changesProtectedSource': True,
+        } for rule in ('ATTEMPT_001', 'ATTEMPT_002', 'CHAR_002', 'REPETITION_004', 'MINI_STORY_LOCK')]}]}
+    return base
+
+
+def test_canonical_aware_story_review_accepts_separate_creative_and_structural_evidence() -> None:
+    class Provider(FakeReviewProvider):
+        def complete(self, prompt, system, temperature=0):
+            assert 'canonical' in prompt and 'STRUCTURALLY_PROMISING' in system
+            return json.dumps(_aware_review())
+    result = perform_role('STORY_REVIEW', 'source', {
+        'sourceRequestId': 'story-1', 'sourceFingerprint': 'src-1',
+        'canonicalStoryFeasibilityContext': _canonical_context(),
+        'candidates': [{'candidateId': 'candidate-1', 'text': 'Pip tries to peel the note.'}],
+    }, Provider(), 'fixture')
+    assert result['result']['structuralFeasibilityAssessment']['candidateAssessments'][0]['status'] == 'STRUCTURALLY_PROMISING'
+
+
+def test_canonical_aware_story_review_rejects_false_feasibility_recommendation() -> None:
+    class Provider(FakeReviewProvider):
+        def complete(self, prompt, system, temperature=0):
+            return json.dumps(_aware_review('STRUCTURALLY_BLOCKED', 'NOT_SUPPORTED'))
+    try:
+        perform_role('STORY_REVIEW', 'source', {
+            'sourceRequestId': 'story-1', 'sourceFingerprint': 'src-1',
+            'canonicalStoryFeasibilityContext': _canonical_context(),
+            'candidates': [{'candidateId': 'candidate-1', 'text': 'Pip tries to peel the note.'}],
+        }, Provider(), 'fixture')
+    except ValueError as error:
+        assert 'structurally ineligible' in str(error)
+    else:
+        raise AssertionError('least-bad structurally blocked recommendation must fail closed')
+
+
+def test_canonical_aware_story_review_rejects_invented_quote() -> None:
+    invalid = _aware_review()
+    invalid['structuralFeasibilityAssessment']['candidateAssessments'][0]['ruleAssessments'][0]['storyEvidenceExcerpt'] = 'Invented third attempt'
+    class Provider(FakeReviewProvider):
+        def complete(self, prompt, system, temperature=0): return json.dumps(invalid)
+    try:
+        perform_role('STORY_REVIEW', 'source', {
+            'sourceRequestId': 'story-1', 'sourceFingerprint': 'src-1',
+            'canonicalStoryFeasibilityContext': _canonical_context(),
+            'candidates': [{'candidateId': 'candidate-1', 'text': 'Pip tries to peel the note.'}],
+        }, Provider(), 'fixture')
+    except ValueError as error:
+        assert 'exact candidate story' in str(error)
+    else:
+        raise AssertionError('invented story evidence must fail closed')

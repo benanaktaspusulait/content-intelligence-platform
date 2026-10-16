@@ -657,7 +657,29 @@ def perform_role(role: str, text: str, context: dict[str, Any], provider: LLMPro
         'BUILD_PROMPT': '''Return ONLY JSON with exactly two top-level keys: `prompt` and `productionPlan`. Convert the approved story into a concrete, concise OpenArt video prompt: visible actions, object states, continuity, staging, selected aspect ratio/duration, and ending. Do not rewrite its premise. Preserve the exact character, central mechanism, essential progression, protected events, constraints and ending. Do not silently omit an essential event; mark uncertainty or material deviation in evidence instead. Use manageable actions, few cuts, uncluttered staging, and no invented reference claims. Use the selected content profile's objective; comedy is relevant only when the source/profile supports it. Separate source-confirmed facts from AI-derived execution suggestions. Prompt headings, each separated by a blank line: TITLE / FORMAT, VISUAL STYLE, CHARACTER / CONTINUITY, TIMED SHOT PLAN, AUDIO, NEGATIVE CONSTRAINTS, FINAL CUT. Make the timed plan cover the full selected duration with ordered, non-overlapping ranges; choose meaningful events from the source, not an arbitrary fixed beat count. Each plan beat must contain time, subject, action, object, stateChange, framing, staging, consequence; time, framing, action, staging and consequence are REQUIRED non-empty JSON strings; additionally supply sourceEvidence (an exact verbatim quote from approved source or empty string), evidenceStatus, sourceRelationship (FAITHFUL_ADAPTATION, CLARIFICATION, OPTIONAL_EXECUTION_INTERPRETATION, MATERIAL_CREATIVE_DEVIATION, UNKNOWN), and importance (CORE, FLEXIBLE, POLISH, UNKNOWN). Never fabricate quotes. `visualExecution` must include openingState, beats, mechanism, continuity, endingState. `productionPlan` keys: sourceIdentity, creativeObjective, characterBindings, visualExecution, productionConstraints, intentClassification, evidenceLimitations, generatorRisks, referencePlan. If Mimi is selected, honor the supplied anthropomorphic-bunny identity requirement; do not invent unverified appearance details and state whether approved references are actually bound. Assess the first two seconds as planned text only using visible promise → immediate consequence/reveal → reason to continue; distinguish mystery from ordinary setup. Do not claim first-frame image evidence. Identify causal ambiguity without rewriting the premise. Risks need a cited source event, affected beat, confidence, smallest mitigation and next action; they are advisory unless evidence establishes a true blocker. Do not claim unverified generator behavior. Do not add provider commentary, approval language or render authorization.''',
         'MINIMAL_REPAIR': 'Return JSON patches: at most three minimal edits with integer Unicode code point start/end, exact sourceQuote and replacement. Preserve protected intent and ESSENTIAL source quotes. Never return approval or rewrite the entire prompt.',
     }[role]
-    safe_context = {key: context[key] for key in ('protectedIntent', 'intentRequirements', 'findings', 'retrievedLessons', 'constraints', 'inputMode', 'storyGenerationMode', 'lockedRequirements', 'permittedVariation', 'roundNumber', 'objective', 'bestCandidate', 'previousAssessment', 'acceptedChanges', 'rejectedCandidates', 'sourceStoryRecordId', 'mainCharacter', 'character', 'characterRecord', 'characterReferences', 'referenceBindings', 'preferences', 'profile', 'candidates', 'candidateIds', 'requestedAlternativeCount', 'sourceRequestId', 'sourceFingerprint', 'previousReview', 'currentRevision', 'previousRevision', 'targetDuration', 'aspectRatio', 'reviewPolicyVersion', 'selectedGenerator', 'generatorCapabilities', 'targetConfiguration', 'storyTitle', 'promptBuilderContractVersion', 'essentialEvents', 'approvedStoryText', 'optimizationGenerationContractVersion', 'baselineExecution', 'analysisRunId', 'promptVersionId', 'contentId') if key in context}
+    safe_context = {key: context[key] for key in ('protectedIntent', 'intentRequirements', 'findings', 'retrievedLessons', 'constraints', 'inputMode', 'storyGenerationMode', 'lockedRequirements', 'permittedVariation', 'roundNumber', 'objective', 'bestCandidate', 'previousAssessment', 'acceptedChanges', 'rejectedCandidates', 'sourceStoryRecordId', 'mainCharacter', 'character', 'characterRecord', 'characterReferences', 'referenceBindings', 'preferences', 'profile', 'candidates', 'candidateIds', 'requestedAlternativeCount', 'sourceRequestId', 'sourceFingerprint', 'previousReview', 'currentRevision', 'previousRevision', 'targetDuration', 'aspectRatio', 'reviewPolicyVersion', 'selectedGenerator', 'generatorCapabilities', 'targetConfiguration', 'storyTitle', 'promptBuilderContractVersion', 'essentialEvents', 'approvedStoryText', 'optimizationGenerationContractVersion', 'baselineExecution', 'analysisRunId', 'promptVersionId', 'contentId', 'canonicalStoryFeasibilityContext') if key in context}
+    story_feasibility = context.get('canonicalStoryFeasibilityContext')
+    if isinstance(story_feasibility, dict):
+        if story_feasibility.get('version') != 'canonical-story-feasibility-context-v1' or story_feasibility.get('rulesetVersion') != '1.11':
+            raise ValueError('Unsupported canonical story feasibility context')
+        if role == 'STORY':
+            system += (' Design observable narrative events that can later be expressed as source-bound production beats under Ruleset 1.11. '
+                       'The objective is a genuinely coherent story, not a manufactured numeric score. For short ABSURD_PHYSICS work, '
+                       'use distinct character problem-solving strategies only when they naturally advance the same central mechanic; '
+                       'pulling harder, repeating a pull, relabeling an action, or changing the camera are not distinct story strategies. '
+                       'Make active involvement, causal consequences, progression, and a realization/reversal/payoff explicit in the story text. '
+                       'Opening clarity, curiosity, suspense, discovery, and non-comedic payoffs are all valid. Never claim visual or audience evidence. '
+                       'Protected source changes remain proposals requiring owner approval; preserve the supplied character, core premise, physical rule, and ending.')
+        elif role == 'STORY_REVIEW':
+            system += (' Also return two separate required top-level objects: creativeQualityAssessment and structuralFeasibilityAssessment. '
+                       'Each contains candidateAssessments with exactly one entry per candidate. Creative entries require candidateId, status '
+                       '(CREATIVELY_STRONG, CREATIVELY_WEAK, or UNKNOWN), reason, strengths, and risks. Structural entries require candidateId, '
+                       'status (STRUCTURALLY_PROMISING, STRUCTURALLY_BLOCKED, or UNKNOWN), ruleAssessments, remainingBlockers, and visualEvidenceUnknowns. '
+                       'ruleAssessments must cover ATTEMPT_001, ATTEMPT_002, CHAR_002, REPETITION_004, and MINI_STORY_LOCK; every row requires ruleId, '
+                       'storyEvidenceExcerpt, status (SUPPORTED, RISK, NOT_SUPPORTED, or UNKNOWN), reason, necessaryImprovement, and changesProtectedSource. '
+                       'Any non-empty storyEvidenceExcerpt must be an exact quote from that candidate. This is a text-only prediction, never canonical '
+                       'PASS, a score, or proof of rendering. Recommend only a CREATIVELY_STRONG and STRUCTURALLY_PROMISING candidate whose required '
+                       'rows contain no NOT_SUPPORTED or UNKNOWN status; otherwise recommendedCandidateId must be null.')
     if role == 'PROMPT_OPTIMIZATION':
         from .optimization_distinctness import baseline_execution
         from .optimization_profile_contract import generation_contract
@@ -750,6 +772,49 @@ def perform_role(role: str, text: str, context: dict[str, Any], provider: LLMPro
                 raise ValueError('STORY_REVIEW recommendation must reference a supplied candidate or null')
         if value.get('reviewStatus') not in {'COMPLETED', 'PARTIAL', 'SERVICE_ERROR', 'INSUFFICIENT_EVIDENCE'}:
             raise ValueError('Unsupported STORY_REVIEW status')
+        if isinstance(story_feasibility, dict):
+            required_rules = {'ATTEMPT_001', 'ATTEMPT_002', 'CHAR_002', 'REPETITION_004', 'MINI_STORY_LOCK'}
+            creative = value.get('creativeQualityAssessment')
+            structural = value.get('structuralFeasibilityAssessment')
+            if not isinstance(creative, dict) or not isinstance(structural, dict):
+                raise ValueError('Canonical-aware STORY_REVIEW requires separate creative and structural assessments')
+            creative_rows = creative.get('candidateAssessments')
+            structural_rows = structural.get('candidateAssessments')
+            for label, assessment_rows in (('creative', creative_rows), ('structural', structural_rows)):
+                if not isinstance(assessment_rows, list) or len(assessment_rows) != len(candidate_ids):
+                    raise ValueError(f'Canonical-aware STORY_REVIEW {label} assessment must cover every candidate')
+                if {str(item.get('candidateId')) for item in assessment_rows if isinstance(item, dict)} != set(candidate_ids):
+                    raise ValueError(f'Canonical-aware STORY_REVIEW {label} candidate IDs do not match')
+            creative_by_id = {str(item['candidateId']): item for item in creative_rows}
+            structural_by_id = {str(item['candidateId']): item for item in structural_rows}
+            candidate_by_id = {str(item['candidateId']): item for item in candidates}
+            for cid in candidate_ids:
+                if creative_by_id[cid].get('status') not in {'CREATIVELY_STRONG', 'CREATIVELY_WEAK', 'UNKNOWN'}:
+                    raise ValueError('Unsupported creative story assessment status')
+                row = structural_by_id[cid]
+                if row.get('status') not in {'STRUCTURALLY_PROMISING', 'STRUCTURALLY_BLOCKED', 'UNKNOWN'}:
+                    raise ValueError('Unsupported structural story assessment status')
+                rule_rows = row.get('ruleAssessments')
+                if not isinstance(rule_rows, list) or not {str(item.get('ruleId')) for item in rule_rows if isinstance(item, dict)}.issuperset(required_rules):
+                    raise ValueError('Structural feasibility assessment must cover every required rule')
+                candidate_text = str(candidate_by_id[cid].get('text', ''))
+                for rule in rule_rows:
+                    if rule.get('status') not in {'SUPPORTED', 'RISK', 'NOT_SUPPORTED', 'UNKNOWN'} or not isinstance(rule.get('changesProtectedSource'), bool):
+                        raise ValueError('Invalid structural rule feasibility row')
+                    if any(key not in rule for key in ('storyEvidenceExcerpt', 'reason', 'necessaryImprovement')):
+                        raise ValueError('Incomplete structural rule feasibility row')
+                    excerpt = str(rule.get('storyEvidenceExcerpt', ''))
+                    if excerpt and excerpt not in candidate_text:
+                        raise ValueError('Structural feasibility evidence must quote the exact candidate story')
+            recommendation = value.get('recommendedCandidateId')
+            if recommendation is not None:
+                selected_creative = creative_by_id[str(recommendation)]
+                selected_structural = structural_by_id[str(recommendation)]
+                blocked = any(item.get('status') in {'NOT_SUPPORTED', 'UNKNOWN'}
+                              for item in selected_structural['ruleAssessments']
+                              if item.get('ruleId') in required_rules)
+                if selected_creative.get('status') != 'CREATIVELY_STRONG' or selected_structural.get('status') != 'STRUCTURALLY_PROMISING' or blocked:
+                    raise ValueError('STORY_REVIEW cannot recommend a structurally ineligible candidate')
     elif role == 'STORY':
         alternatives = value.get('alternatives')
         if isinstance(alternatives, list) and len(alternatives) > 3:
@@ -1020,6 +1085,11 @@ def _isolated_fixture_role(role: str, text: str, context: dict[str, Any], max_co
         raise ValueError(f'Missing or invalid isolated fixture for {role}') from error
     if not isinstance(value, dict):
         raise ValueError(f'Isolated fixture for {role} must be a JSON object')
+    if isinstance(value.get('scenarios'), dict):
+        scenario = str(context.get('objective', 'default'))
+        value = value['scenarios'].get(scenario, value['scenarios'].get('default'))
+        if not isinstance(value, dict):
+            raise ValueError(f'Missing isolated fixture scenario for {role}')
     if isinstance(value.get('rounds'), dict):
         value = value['rounds'].get(str(context.get('roundNumber', 0)))
         if not isinstance(value, dict):

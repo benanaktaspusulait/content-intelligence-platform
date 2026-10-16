@@ -1,0 +1,193 @@
+{
+  "reviewId": "p2-fixture-review-1-False",
+  "reviewModel": "ISOLATED_STORY_REVIEW",
+  "reviewStatus": "COMPLETED",
+  "usageAndCost": {
+    "provider": "ISOLATED_FIXTURE",
+    "costUpperBoundUsd": 0
+  },
+  "overallConcerns": [
+    "No rendered or audience evidence exists."
+  ],
+  "reviewTimestamp": "TEST_FIXTURE_NOT_REAL_MODEL_TIME",
+  "sourceRequestId": "157d7dba-2d5b-456c-a38e-ecc93320fd28",
+  "candidateReviews": [
+    {
+      "concerns": [
+        "Strategy repetition"
+      ],
+      "strengths": [],
+      "candidateId": "negative-repeat-pull",
+      "overallStatus": "NEEDS_REVISION",
+      "materialFindings": [],
+      "editorialRecommendation": "NEEDS_REVISION",
+      "confidenceOrEvidenceStatus": "MOCK_TEXT_ONLY",
+      "suggestedMinimalImprovements": []
+    },
+    {
+      "concerns": [
+        "Strategy repetition"
+      ],
+      "strengths": [],
+      "candidateId": "negative-consequence-only",
+      "overallStatus": "NEEDS_REVISION",
+      "materialFindings": [],
+      "editorialRecommendation": "NEEDS_REVISION",
+      "confidenceOrEvidenceStatus": "MOCK_TEXT_ONLY",
+      "suggestedMinimalImprovements": []
+    }
+  ],
+  "sourceFingerprint": "b9a62583fde3b21ed26b89e32bfe9029d53773b340fdb1d21cbcec206f19068a",
+  "reviewModelVersion": "fixture-p2-v1",
+  "revisionComparison": {
+    "resolved": [],
+    "remaining": [
+      "Visual evidence remains unknown"
+    ],
+    "newFindings": []
+  },
+  "comparativeFindings": [],
+  "diversityAssessment": {
+    "classification": "REPETITIVE"
+  },
+  "evidenceLimitations": [
+    "Deterministic mock validates contracts, not model creativity."
+  ],
+  "reviewPolicyVersion": "canonical-a-aware-story-review-v1",
+  "recommendationReason": "No candidate is structurally promising.",
+  "recommendedCandidateId": null,
+  "creativeQualityAssessment": {
+    "candidateAssessments": [
+      {
+        "risks": [
+          "Text-only review; no visual evidence"
+        ],
+        "reason": "The same pulling strategy is repeated.",
+        "status": "CREATIVELY_WEAK",
+        "strengths": [
+          "Central mechanic and ending remain coherent"
+        ],
+        "candidateId": "negative-repeat-pull"
+      },
+      {
+        "risks": [
+          "Text-only review; no visual evidence"
+        ],
+        "reason": "The same pulling strategy is repeated.",
+        "status": "CREATIVELY_WEAK",
+        "strengths": [
+          "Central mechanic and ending remain coherent"
+        ],
+        "candidateId": "negative-consequence-only"
+      }
+    ]
+  },
+  "structuralFeasibilityAssessment": {
+    "candidateAssessments": [
+      {
+        "status": "STRUCTURALLY_BLOCKED",
+        "candidateId": "negative-repeat-pull",
+        "ruleAssessments": [
+          {
+            "reason": "Repeated pulls do not establish distinct strategies.",
+            "ruleId": "ATTEMPT_001",
+            "status": "NOT_SUPPORTED",
+            "necessaryImprovement": "Introduce a coherent, source-authorized different interaction rather than another pull.",
+            "storyEvidenceExcerpt": "Pip tries to pull a sticky note from one finger",
+            "changesProtectedSource": true
+          },
+          {
+            "reason": "Repeated pulls do not establish distinct strategies.",
+            "ruleId": "ATTEMPT_002",
+            "status": "NOT_SUPPORTED",
+            "necessaryImprovement": "Introduce a coherent, source-authorized different interaction rather than another pull.",
+            "storyEvidenceExcerpt": "Pip tries to pull a sticky note from one finger",
+            "changesProtectedSource": true
+          },
+          {
+            "reason": "Repeated pulls do not establish distinct strategies.",
+            "ruleId": "CHAR_002",
+            "status": "NOT_SUPPORTED",
+            "necessaryImprovement": "Introduce a coherent, source-authorized different interaction rather than another pull.",
+            "storyEvidenceExcerpt": "Pip tries to pull a sticky note from one finger",
+            "changesProtectedSource": true
+          },
+          {
+            "reason": "Repeated pulls do not establish distinct strategies.",
+            "ruleId": "REPETITION_004",
+            "status": "NOT_SUPPORTED",
+            "necessaryImprovement": "Introduce a coherent, source-authorized different interaction rather than another pull.",
+            "storyEvidenceExcerpt": "Pip tries to pull a sticky note from one finger",
+            "changesProtectedSource": true
+          },
+          {
+            "reason": "Repeated pulls do not establish distinct strategies.",
+            "ruleId": "MINI_STORY_LOCK",
+            "status": "RISK",
+            "necessaryImprovement": "Introduce a coherent, source-authorized different interaction rather than another pull.",
+            "storyEvidenceExcerpt": "Pip tries to pull a sticky note from one finger",
+            "changesProtectedSource": true
+          }
+        ],
+        "remainingBlockers": [
+          "Distinct problem-solving strategies are absent"
+        ],
+        "visualEvidenceUnknowns": [
+          "Opening readability and rendered feasibility remain unknown"
+        ]
+      },
+      {
+        "status": "STRUCTURALLY_BLOCKED",
+        "candidateId": "negative-consequence-only",
+        "ruleAssessments": [
+          {
+            "reason": "Repeated pulls do not establish distinct strategies.",
+            "ruleId": "ATTEMPT_001",
+            "status": "NOT_SUPPORTED",
+            "necessaryImprovement": "Introduce a coherent, source-authorized different interaction rather than another pull.",
+            "storyEvidenceExcerpt": "Repeated pulling doubles the notes",
+            "changesProtectedSource": true
+          },
+          {
+            "reason": "Repeated pulls do not establish distinct strategies.",
+            "ruleId": "ATTEMPT_002",
+            "status": "NOT_SUPPORTED",
+            "necessaryImprovement": "Introduce a coherent, source-authorized different interaction rather than another pull.",
+            "storyEvidenceExcerpt": "Repeated pulling doubles the notes",
+            "changesProtectedSource": true
+          },
+          {
+            "reason": "Repeated pulls do not establish distinct strategies.",
+            "ruleId": "CHAR_002",
+            "status": "NOT_SUPPORTED",
+            "necessaryImprovement": "Introduce a coherent, source-authorized different interaction rather than another pull.",
+            "storyEvidenceExcerpt": "Repeated pulling doubles the notes",
+            "changesProtectedSource": true
+          },
+          {
+            "reason": "Repeated pulls do not establish distinct strategies.",
+            "ruleId": "REPETITION_004",
+            "status": "NOT_SUPPORTED",
+            "necessaryImprovement": "Introduce a coherent, source-authorized different interaction rather than another pull.",
+            "storyEvidenceExcerpt": "Repeated pulling doubles the notes",
+            "changesProtectedSource": true
+          },
+          {
+            "reason": "Repeated pulls do not establish distinct strategies.",
+            "ruleId": "MINI_STORY_LOCK",
+            "status": "RISK",
+            "necessaryImprovement": "Introduce a coherent, source-authorized different interaction rather than another pull.",
+            "storyEvidenceExcerpt": "Repeated pulling doubles the notes",
+            "changesProtectedSource": true
+          }
+        ],
+        "remainingBlockers": [
+          "Distinct problem-solving strategies are absent"
+        ],
+        "visualEvidenceUnknowns": [
+          "Opening readability and rendered feasibility remain unknown"
+        ]
+      }
+    ]
+  }
+}

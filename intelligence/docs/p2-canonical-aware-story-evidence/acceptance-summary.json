@@ -1,0 +1,104 @@
+{
+  "harnessExitCode": 0,
+  "p2Acceptance": true,
+  "evidenceOrigin": "DETERMINISTIC_MOCK_PROVIDER_PLUS_ACTUAL_APPLICATION_EVALUATOR",
+  "baseline": {
+    "analysisId": "55c76e56-2ae7-4251-8b2d-72e5829346cc",
+    "score": 82.54166666666669,
+    "grade": "B",
+    "rulesetVersion": "1.11"
+  },
+  "context": {
+    "version": "canonical-story-feasibility-context-v1",
+    "sha256": "f81068221541b571e85abf70e786ccdba408dd842e5c6b6f46ec3efccb52bf4c"
+  },
+  "negative": {
+    "state": "STOPPED",
+    "reason": "NO_ELIGIBLE_STORY_CANDIDATE",
+    "draftCount": 0,
+    "providerCalls": 0
+  },
+  "positive": {
+    "runId": "7968c3ff-6a91-444d-b793-196c774b0cee",
+    "rounds": 2,
+    "storyRecordId": "1a6af3fe-2c2b-4d58-bfa1-27833127e0d1",
+    "storyApprovalRecordId": "689de6db-a75a-42a5-abe4-ea3209bf7ff5",
+    "storySha256": "e1b7cdab5486c910d1685715353769c42586922eabecb6a8d1f1fc1138407a1e",
+    "promptVersionId": 2,
+    "promptSha256": "5ea8d3f43f4a96d0c8940bc4751c24bbd204a634ae47c55f21e6e0678faa58b5",
+    "analysisId": "01dc1ad2-983d-4048-bc59-3ddc682bd93b",
+    "qualityValidationId": 1,
+    "score": 91.76041666666669,
+    "grade": "B",
+    "rulesetVersion": "1.11",
+    "preflightState": "TARGET_BLOCKED_BY_EVIDENCE",
+    "generationAllowed": false,
+    "fixedEvidenceOptimisticCeiling": 96.34375000000001,
+    "genuineSourceAttemptCount": 4,
+    "providerCalls": 0,
+    "actualCostUsd": 0
+  },
+  "changedRuleOutcomes": [
+    {
+      "ruleId": "ATTEMPT_001",
+      "beforeOutcome": "FAIL",
+      "beforeSeverity": "BLOCKER",
+      "afterOutcome": "PASS",
+      "afterSeverity": "PASS",
+      "afterMessage": "4 active attempts detected (short tier, minimum 3)."
+    },
+    {
+      "ruleId": "BEAT_004",
+      "beforeOutcome": "FAIL",
+      "beforeSeverity": "CRITICAL",
+      "afterOutcome": "PASS",
+      "afterSeverity": "WARNING",
+      "afterMessage": "Visual state 'character_pip_sees_the_fourtoeight_change_finish_r' occupies 26.7% of video. Consider adding variation."
+    },
+    {
+      "ruleId": "ESCALATION_004",
+      "beforeOutcome": "PASS",
+      "beforeSeverity": "WARNING",
+      "afterOutcome": "PASS",
+      "afterSeverity": "PASS",
+      "afterMessage": "Good payoff timing at 11.0s."
+    },
+    {
+      "ruleId": "HOOK_002",
+      "beforeOutcome": "UNKNOWN",
+      "beforeSeverity": "CRITICAL",
+      "afterOutcome": "FAIL",
+      "afterSeverity": "CRITICAL",
+      "afterMessage": "Hook does not start mid-action. The problem must already be visually obvious within the opening second, with no setup or explanation."
+    },
+    {
+      "ruleId": "MINI_STORY_LOCK",
+      "beforeOutcome": "FAIL",
+      "beforeSeverity": "BLOCKER",
+      "afterOutcome": "PASS",
+      "afterSeverity": "BLOCKER",
+      "afterMessage": "Readable mini-story arc: goal, obstruction, attempts, progression, realization and payoff are evidenced."
+    },
+    {
+      "ruleId": "NOVELTY_001",
+      "beforeOutcome": "PASS",
+      "beforeSeverity": "WARNING",
+      "afterOutcome": "PASS",
+      "afterSeverity": "PASS",
+      "afterMessage": "Good novelty distribution. Max gap: 3.0s."
+    },
+    {
+      "ruleId": "PRODUCIBILITY_003",
+      "beforeOutcome": "FAIL",
+      "beforeSeverity": "CRITICAL",
+      "afterOutcome": "PASS",
+      "afterSeverity": "PASS",
+      "afterMessage": "No fragile interaction risk tags detected."
+    }
+  ],
+  "realProviderCalls": 0,
+  "realImageCalls": 0,
+  "realRenderCalls": 0,
+  "productionDatabaseWrites": 0,
+  "unexpectedNetworkAttempts": []
+}

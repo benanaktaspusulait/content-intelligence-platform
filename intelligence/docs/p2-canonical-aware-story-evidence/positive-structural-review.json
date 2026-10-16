@@ -1,0 +1,116 @@
+{
+  "reviewId": "p2-fixture-review-2-True",
+  "reviewModel": "ISOLATED_STORY_REVIEW",
+  "reviewStatus": "COMPLETED",
+  "usageAndCost": {
+    "provider": "ISOLATED_FIXTURE",
+    "costUpperBoundUsd": 0
+  },
+  "overallConcerns": [
+    "No rendered or audience evidence exists."
+  ],
+  "reviewTimestamp": "TEST_FIXTURE_NOT_REAL_MODEL_TIME",
+  "sourceRequestId": "7968c3ff-6a91-444d-b793-196c774b0cee",
+  "candidateReviews": [
+    {
+      "concerns": [],
+      "strengths": [
+        "Causal sequence"
+      ],
+      "candidateId": "positive-round-2",
+      "overallStatus": "STRONG_CANDIDATE",
+      "materialFindings": [],
+      "editorialRecommendation": "RECOMMENDED",
+      "confidenceOrEvidenceStatus": "MOCK_TEXT_ONLY",
+      "suggestedMinimalImprovements": []
+    }
+  ],
+  "sourceFingerprint": "b9a62583fde3b21ed26b89e32bfe9029d53773b340fdb1d21cbcec206f19068a",
+  "reviewModelVersion": "fixture-p2-v1",
+  "revisionComparison": {
+    "resolved": [],
+    "remaining": [
+      "Visual evidence remains unknown"
+    ],
+    "newFindings": []
+  },
+  "comparativeFindings": [],
+  "diversityAssessment": {
+    "classification": "MATERIAL"
+  },
+  "evidenceLimitations": [
+    "Deterministic mock validates contracts, not model creativity."
+  ],
+  "reviewPolicyVersion": "canonical-a-aware-story-review-v1",
+  "recommendationReason": "Candidate has distinct actor-bound strategies and realization.",
+  "recommendedCandidateId": "positive-round-2",
+  "creativeQualityAssessment": {
+    "candidateAssessments": [
+      {
+        "risks": [
+          "Text-only review; no visual evidence"
+        ],
+        "reason": "Meaningful causal actions.",
+        "status": "CREATIVELY_STRONG",
+        "strengths": [
+          "Central mechanic and ending remain coherent"
+        ],
+        "candidateId": "positive-round-2"
+      }
+    ]
+  },
+  "structuralFeasibilityAssessment": {
+    "candidateAssessments": [
+      {
+        "status": "STRUCTURALLY_PROMISING",
+        "candidateId": "positive-round-2",
+        "ruleAssessments": [
+          {
+            "reason": "The story contains actor-bound, causally distinct attempts and an explicit realization.",
+            "ruleId": "ATTEMPT_001",
+            "status": "SUPPORTED",
+            "necessaryImprovement": "",
+            "storyEvidenceExcerpt": "Pip tries to peel the note away with the free hand",
+            "changesProtectedSource": true
+          },
+          {
+            "reason": "The story contains actor-bound, causally distinct attempts and an explicit realization.",
+            "ruleId": "ATTEMPT_002",
+            "status": "SUPPORTED",
+            "necessaryImprovement": "",
+            "storyEvidenceExcerpt": "Pip tries to peel the note away with the free hand",
+            "changesProtectedSource": true
+          },
+          {
+            "reason": "The story contains actor-bound, causally distinct attempts and an explicit realization.",
+            "ruleId": "CHAR_002",
+            "status": "SUPPORTED",
+            "necessaryImprovement": "",
+            "storyEvidenceExcerpt": "Pip tries to peel the note away with the free hand",
+            "changesProtectedSource": true
+          },
+          {
+            "reason": "The story contains actor-bound, causally distinct attempts and an explicit realization.",
+            "ruleId": "REPETITION_004",
+            "status": "SUPPORTED",
+            "necessaryImprovement": "",
+            "storyEvidenceExcerpt": "Pip tries to peel the note away with the free hand",
+            "changesProtectedSource": true
+          },
+          {
+            "reason": "The story contains actor-bound, causally distinct attempts and an explicit realization.",
+            "ruleId": "MINI_STORY_LOCK",
+            "status": "SUPPORTED",
+            "necessaryImprovement": "",
+            "storyEvidenceExcerpt": "Pip tries to peel the note away with the free hand",
+            "changesProtectedSource": true
+          }
+        ],
+        "remainingBlockers": [],
+        "visualEvidenceUnknowns": [
+          "Opening readability and rendered feasibility remain unknown"
+        ]
+      }
+    ]
+  }
+}

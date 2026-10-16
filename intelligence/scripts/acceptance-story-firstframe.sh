@@ -14,8 +14,8 @@ if [[ "${POMPOM_ACCEPTANCE_CLEAN_ENV:-}" != 1 ]]; then
     POMPOM_ACCEPTANCE_CLEAN_ENV=1 /bin/bash "$0" "$@"
 fi
 mode="${1:---p0}"
-if [[ "$mode" != --p0 && "$mode" != --components && "$mode" != --story-evolution ]]; then
-  echo 'Usage: acceptance-story-firstframe.sh [--p0 | --story-evolution | --components]' >&2
+if [[ "$mode" != --p0 && "$mode" != --components && "$mode" != --story-evolution && "$mode" != --story-feasibility ]]; then
+  echo 'Usage: acceptance-story-firstframe.sh [--p0 | --story-evolution | --story-feasibility | --components]' >&2
   exit 2
 fi
 mkdir -p "$backend/target/disposable-owner-http"
@@ -37,10 +37,11 @@ cleanup() {
 import json, os
 from pathlib import Path
 folder=Path(os.environ['POMPOM_RESULT_DIR'])
-result={'scope':{'--p0':'P0_DISPOSABLE_OWNER_HTTP','--story-evolution':'P1_STORY_EVOLUTION_HTTP','--components':'COMPONENTS_ONLY'}[os.environ['POMPOM_MODE']],
+result={'scope':{'--p0':'P0_DISPOSABLE_OWNER_HTTP','--story-evolution':'P1_STORY_EVOLUTION_HTTP','--story-feasibility':'P2_CANONICAL_A_AWARE_STORY_FEASIBILITY','--components':'COMPONENTS_ONLY'}[os.environ['POMPOM_MODE']],
         'harnessExitCode':int(os.environ['POMPOM_EXIT_CODE']),
         'p0HttpAcceptance':os.environ['POMPOM_COMPLETED']=='true',
         'p1Acceptance':os.environ['POMPOM_MODE']=='--story-evolution' and os.environ['POMPOM_COMPLETED']=='true',
+        'p2Acceptance':os.environ['POMPOM_MODE']=='--story-feasibility' and os.environ['POMPOM_COMPLETED']=='true',
         'fullStoryPromptFirstFrameVerified':False,
         'realProviderCalls':0,'realImageCalls':0,'realRenderCalls':0,'productionDatabaseWrites':0}
 for file,key in [('backend-http.json','backend'),('ml-egress.json','mlEgress'),('ml-http-response.json','mlFixtureResponse')]:
@@ -49,6 +50,7 @@ for file,key in [('backend-http.json','backend'),('ml-egress.json','mlEgress'),(
 if result['p0HttpAcceptance'] and not result.get('mlEgress',{}).get('noExternalEgress',False):
     result['p0HttpAcceptance']=False
     result['p1Acceptance']=False
+    result['p2Acceptance']=False
     result['harnessExitCode']=1
 (folder/'result.json').write_text(json.dumps(result,indent=2)+'\n')
 print(json.dumps({'resultFile':str(folder/'result.json'), 'exitCode':result['harnessExitCode'],
@@ -77,6 +79,7 @@ cat > "$fixture_dir/story.json" <<'JSON'
 {"alternatives":[{"candidateId":"candidate-1","title":"Pip contact and consequence","text":"Pip the rabbit reaches for a toy cabinet with a sticky note. The note clings to Pip's finger instead. Peeling splits it into one note per hand. Each pull doubles the notes from two to four to eight. Pip sees the note-covered reflection in a mirror, gasps, then sneezes the notes onto the cabinet. Pip is relieved but the cabinet stays messy."},{"candidateId":"candidate-2","title":"Pip mirror reveal","text":"Pip the rabbit wants to mark a toy cabinet, but a sticky note catches on Pip's finger. Pip tries to remove it; both hands now carry a note. Pulling doubles the notes repeatedly and covers Pip. The mirror reveals the mess, and a startled gasp turns into a sneeze. The cabinet catches the flying notes, leaving Pip relieved beside a messy cabinet."}]}
 JSON
 if [[ "$mode" == --story-evolution ]]; then python3 "$root/scripts/acceptance-story-fixtures.py" "$fixture_dir"; fi
+if [[ "$mode" == --story-feasibility ]]; then python3 "$root/scripts/acceptance-story-feasibility-fixtures.py" "$fixture_dir"; fi
 fixture_token="$(python3 -c 'import secrets; print(secrets.token_hex(32))')"
 export WORKFLOW_ADAPTIVE_DISPATCH_TOKEN="$fixture_token"
 (
@@ -162,6 +165,13 @@ if os.environ['POMPOM_MODE']=='--story-evolution':
     assert isinstance(p['canonical']['score'],(int,float)) and p['canonical']['rulesetVersion']=='1.11'
     assert p['hmacVerified'] and p['requestCount']==4
     assert p['actualCostUsd']==p['providerCalls']==0
+if os.environ['POMPOM_MODE']=='--story-feasibility':
+    p=v['storyFeasibility']
+    assert p['p2Acceptance'] and p['negativeCase']['state']=='STOPPED'
+    assert p['negativeCase']['progress']['reason']=='NO_ELIGIBLE_STORY_CANDIDATE'
+    assert p['positiveCase']['roundsExecuted']==2 and p['positiveCase']['newPromptId'] and p['positiveCase']['analysisId']
+    assert p['positiveCase']['canonical']['rulesetVersion']=='1.11'
+    assert p['positiveCase']['providerCalls']==p['positiveCase']['actualCostUsd']==0
 assert v['postgresDatabase']=='disposable_owner_http' and v['flywayVersion']=='70'
 assert v['backendPort']>0 and v['ownerLoginHttp'] and v['ownerSession']
 assert v['csrfAndOriginVerified'] and v['logoutRevocationVerified'] and v['rateLimitingVerified']
@@ -178,6 +188,8 @@ PY
 completed=true
 if [[ "$mode" == --story-evolution ]]; then
   echo 'P1_ACCEPTANCE=YES. Actual new canonical score recorded; no A/A+ inference claim.'
+elif [[ "$mode" == --story-feasibility ]]; then
+  echo 'P2_ACCEPTANCE=YES. Story feasibility prediction and actual post-BUILD_PROMPT Ruleset 1.11 result recorded separately.'
 else
   echo 'P0_HTTP_ACCEPTANCE=YES. Next operation: STORY_EVOLUTION_HTTP_START (fixture scope only).'
 fi
