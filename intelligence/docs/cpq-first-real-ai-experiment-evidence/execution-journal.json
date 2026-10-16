@@ -1,0 +1,23 @@
+{
+  "ownerAuthorization": "Explicit user yes to exact $0.60 three-slot envelope; 4000 output tokens each; no retries/fallback; four bound Mimi prompts",
+  "pilotId": "2485b1a4-a011-4456-aae6-a37badd98245",
+  "slots": {
+    "SOURCE_FIDELITY": {
+      "authorization": {
+        "slot": "SOURCE_FIDELITY",
+        "profileId": "openai-escalation",
+        "provider": "openai",
+        "model": "gpt-6.1-sol",
+        "maxOutputTokens": 4000,
+        "maxCostUsd": 0.3,
+        "authorizePaidInference": true,
+        "automaticRetries": false,
+        "idempotencyKey": "c5bdd10d-2440-4861-a1fc-2b734cb5eb56"
+      },
+      "authorizationSubmissionStarted": true,
+      "requestId": "3a55b29a-48c6-44c0-a003-da11af0f7069",
+      "state": "FAILED_OR_AMBIGUOUS",
+      "executeSubmissionStarted": true
+    }
+  }
+}

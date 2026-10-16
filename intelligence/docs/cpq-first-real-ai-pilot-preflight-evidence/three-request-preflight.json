@@ -44,8 +44,7 @@
           "model": "gpt-4o-mini-2024-07-18"
         }
       ],
-      "sharedProviderFamilyLimitation": "Checker and historical generators both OpenAI; exact model differs. No human independence claim.",
-      "neutralOrderBasis": "Illustrative packet order for offline byte-budget calculation only; actual SOURCE_FIDELITY order is backend-derived from the final immutable pilot snapshot. Critic orders are saved manifest orders."
+      "sharedProviderFamilyLimitation": "Checker and historical generators both OpenAI; exact model differs. No human independence claim."
     },
     {
       "slot": "CRITIC_A",

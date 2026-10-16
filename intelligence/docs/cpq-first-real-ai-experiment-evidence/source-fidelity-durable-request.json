@@ -1,0 +1,191 @@
+{
+  "request_id": "3a55b29a-48c6-44c0-a003-da11af0f7069",
+  "pilot_id": "2485b1a4-a011-4456-aae6-a37badd98245",
+  "slot": "SOURCE_FIDELITY",
+  "idempotency_key": "c5bdd10d-2440-4861-a1fc-2b734cb5eb56",
+  "authorized_by": "benan",
+  "authorization_payload": {
+    "slot": "SOURCE_FIDELITY",
+    "model": "gpt-6.1-sol",
+    "provider": "openai",
+    "profileId": "openai-escalation",
+    "maxCostUsd": 0.3,
+    "idempotencyKey": "c5bdd10d-2440-4861-a1fc-2b734cb5eb56",
+    "maxOutputTokens": 4000,
+    "automaticRetries": false,
+    "authorizePaidInference": true
+  },
+  "input_sha256": "bba39f18c7837d8aaf5bd6e1a9743e8e95500ceb67f8a8e5e6dc52c9d13b90c0",
+  "state": "FAILED_OR_AMBIGUOUS",
+  "reserved_usd": 0.3,
+  "input": {
+    "packets": [
+      {
+        "prompt": "TITLE / FORMAT\nMimi Sticky / 15s Video\n\nVISUAL STYLE\nBright and colorful animation with a playful tone.\n\nCHARACTER / CONTINUITY\nMimi, an anthropomorphic bunny, interacts with sticky notes in a humorous and chaotic manner.\n\nTIMED SHOT PLAN\n0-2s: Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger  Mimi is in front of a toy cabinet, looking determined -> the note sticks to Mimi, not the cabinet [locked-off medium shot; Stage the cabinet and her finger on left and right screen regions. Align the existing reach toward the cabinet; keep the intended contact area unobstructed behind the reaching motion. Show the existing attachment to her finger through the same continuous view; maintain a visible gap to the intended destination after wrong-surface contact. Keep the note contact edge outside the silhouette of the other hand; do not hide the attachment with a cut.]\n2-5s: Mimi tries to peel the stuck note away with her other hand; the note splits into two [medium shot of Mimi struggling] Mimi pulls at the note -> one note sticks to each hand\n5-10s: Mimi continues to pull; each pull doubles the number of sticky notes [wide shot showing Mimi covered in notes] notes multiply from two to four to eight as she pulls, progressively covering her arms, legs and face -> Mimi is overwhelmed by notes\n10-12s: Mimi sees herself in a mirror and screams [close-up on Mimi's shocked face] Mimi is startled by her reflection completely covered in notes -> Mimi is startled\n12-15s: Mimi sneezes and the sticky notes fly off [medium shot of notes flying] notes scatter and stick to the cabinet -> Mimi breathes a sigh of relief but the cabinet remains messy\n\nAUDIO\nPlayful background music with sound effects for sneezing and notes sticking.\n\nNEGATIVE CONSTRAINTS\nNo dark themes or violence.\n\nFINAL CUT\nMimi is relieved but the cabinet remains visibly messy.\n\nCHARACTER IDENTITY LOCK\nMimi is the established anthropomorphic bunny character. Preserve that identity; do not render a human or invent unverified visual details. No approved visual reference is currently bound, so appearance details remain unverified.\n\nPRODUCTION SETTINGS\nAspect ratio: 9:16. Target generator: SEEDANCE_2_0_MINI. Content profile: ABSURD_PHYSICS.",
+        "neutralId": "Q01",
+        "changedBeats": [
+          {
+            "beatId": "beat_01",
+            "newExecution": "0-2s: Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger  Mimi is in front of a toy cabinet, looking determined -> the note sticks to Mimi, not the cabinet [locked-off medium shot; Stage the cabinet and her finger on left and right screen regions. Align the existing reach toward the cabinet; keep the intended contact area unobstructed behind the reaching motion. Show the existing attachment to her finger through the same continuous view; maintain a visible gap to the intended destination after wrong-surface contact. Keep the note contact edge outside the silhouette of the other hand; do not hide the attachment with a cut.]",
+            "opportunityId": "CONTACT_PLANE:beat_01",
+            "productionRisk": {
+              "change": "UNKNOWN",
+              "evidence": "Keeping both surfaces visible may increase composition density; actual contact geometry needs image review.",
+              "newMitigation": "Locked contact view with explicit spatial separation."
+            },
+            "sourceFidelity": {
+              "span": [
+                239,
+                498
+              ],
+              "quote": "0-2s: Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger [close-up on Mimi's hand] Mimi is in front of a toy cabinet, looking determined -> the note sticks to Mimi, not the cabinet",
+              "semanticFidelity": "UNKNOWN",
+              "protectedEventUnchanged": true
+            },
+            "creativeRationale": "By staging the toy cabinet behind or beside Mimi's finger, viewers can clearly see the intended attachment point and the actual attachment, enhancing the comedic effect of the note sticking to her finger instead of the cabinet.",
+            "originalExecution": "0-2s: Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger [close-up on Mimi's hand] Mimi is in front of a toy cabinet, looking determined -> the note sticks to Mimi, not the cabinet",
+            "evidenceLimitation": "Text specifies a different execution. Render adherence, visual clarity and audience benefit are unverified.",
+            "observableDifference": "Stage the cabinet and her finger on left and right screen regions. Align the existing reach toward the cabinet; keep the intended contact area unobstructed behind the reaching motion. Show the existing attachment to her finger through the same continuous view; maintain a visible gap to the intended destination after wrong-surface contact. Keep the note contact edge outside the silhouette of the other hand; do not hide the attachment with a cut."
+          }
+        ],
+        "promptSha256": "90bdda1e9cea8e2e46662821b52a01dc94359df87b7753f2c77a645c77905495",
+        "approvedStory": "Mimi, oyuncak dolabına 'Topla!' yazan bir yapışkan not yapıştırmak ister. Not, Mimi'nin parmağına yapışır. Mimi diğer eliyle çıkarmaya çalışırken not ikiye ayrılır ve iki eline de yapışır. Her çekişte notlar ikiye katlanarak çoğalır. Kısa sürede Mimi'nin kolları, bacakları ve yüzü notlarla kaplanır. Mimi aynada kendini görünce çığlık atar. Notlar o kadar çoğalır ki Mimi boğulacak gibi olur. Sonunda hapşırır ve tüm notlar uçuşarak dolabın üzerine yapışır. Mimi rahat bir nefes alır ama dolap hâlâ dağınıktır.",
+        "originalPrompt": "TITLE / FORMAT\nMimi Sticky / 15s Video\n\nVISUAL STYLE\nBright and colorful animation with a playful tone.\n\nCHARACTER / CONTINUITY\nMimi, an anthropomorphic bunny, interacts with sticky notes in a humorous and chaotic manner.\n\nTIMED SHOT PLAN\n0-2s: Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger [close-up on Mimi's hand] Mimi is in front of a toy cabinet, looking determined -> the note sticks to Mimi, not the cabinet\n2-5s: Mimi tries to peel the stuck note away with her other hand; the note splits into two [medium shot of Mimi struggling] Mimi pulls at the note -> one note sticks to each hand\n5-10s: Mimi continues to pull; each pull doubles the number of sticky notes [wide shot showing Mimi covered in notes] notes multiply from two to four to eight as she pulls, progressively covering her arms, legs and face -> Mimi is overwhelmed by notes\n10-12s: Mimi sees herself in a mirror and screams [close-up on Mimi's shocked face] Mimi is startled by her reflection completely covered in notes -> Mimi is startled\n12-15s: Mimi sneezes and the sticky notes fly off [medium shot of notes flying] notes scatter and stick to the cabinet -> Mimi breathes a sigh of relief but the cabinet remains messy\n\nAUDIO\nPlayful background music with sound effects for sneezing and notes sticking.\n\nNEGATIVE CONSTRAINTS\nNo dark themes or violence.\n\nFINAL CUT\nMimi is relieved but the cabinet remains visibly messy.\n\nCHARACTER IDENTITY LOCK\nMimi is the established anthropomorphic bunny character. Preserve that identity; do not render a human or invent unverified visual details. No approved visual reference is currently bound, so appearance details remain unverified.\n\nPRODUCTION SETTINGS\nAspect ratio: 9:16. Target generator: SEEDANCE_2_0_MINI. Content profile: AUTO.",
+        "productionSettings": {
+          "settings": {
+            "mode": "image2video",
+            "resolution": "480p",
+            "aspectRatio": "9:16"
+          },
+          "generator": "SEEDANCE_2_0_MINI",
+          "contentProfile": "ABSURD_PHYSICS",
+          "desiredDuration": 15.0,
+          "openingStrategy": "AUTO"
+        }
+      },
+      {
+        "prompt": "TITLE / FORMAT\nMimi Sticky / 15s Video\n\nVISUAL STYLE\nBright and colorful animation with a playful tone.\n\nCHARACTER / CONTINUITY\nMimi, an anthropomorphic bunny, interacts with sticky notes in a humorous and chaotic manner.\n\nTIMED SHOT PLAN\n0-2s: Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger [close-up on Mimi's hand] Mimi is in front of a toy cabinet, looking determined -> the note sticks to Mimi, not the cabinet\n2-5s: Mimi tries to peel the stuck note away with her other hand; the note splits into two  Mimi pulls at the note -> one note sticks to each hand [tracking medium shot; focus Mimi tries to peel the stuck note away with her other hand; the note splits into two then one note sticks to each hand in a single continuous shot]\n5-10s: Mimi continues to pull; each pull doubles the number of sticky notes  notes multiply from two to four to eight as she pulls, progressively covering her arms, legs and face -> Mimi is overwhelmed by notes [static wide shot; hold two; hold four; hold eight; single continuous shot]\n10-12s: Mimi sees herself in a mirror and screams [close-up on Mimi's shocked face] Mimi is startled by her reflection completely covered in notes -> Mimi is startled\n12-15s: Mimi sneezes and the sticky notes fly off [medium shot of notes flying] notes scatter and stick to the cabinet -> Mimi breathes a sigh of relief but the cabinet remains messy\n\nAUDIO\nPlayful background music with sound effects for sneezing and notes sticking.\n\nNEGATIVE CONSTRAINTS\nNo dark themes or violence.\n\nFINAL CUT\nMimi is relieved but the cabinet remains visibly messy.\n\nCHARACTER IDENTITY LOCK\nMimi is the established anthropomorphic bunny character. Preserve that identity; do not render a human or invent unverified visual details. No approved visual reference is currently bound, so appearance details remain unverified.\n\nPRODUCTION SETTINGS\nAspect ratio: 9:16. Target generator: SEEDANCE_2_0_MINI. Content profile: ABSURD_PHYSICS.",
+        "neutralId": "Q03",
+        "changedBeats": [
+          {
+            "beatId": "beat_02",
+            "evidence": "EXACT_TEXT_DIFF_NOT_SEMANTIC_VERIFICATION",
+            "revisedInstruction": "2-5s: Mimi tries to peel the stuck note away with her other hand; the note splits into two  Mimi pulls at the note -> one note sticks to each hand [tracking medium shot; focus Mimi tries to peel the stuck note away with her other hand; the note splits into two then one note sticks to each hand in a single continuous shot]",
+            "originalInstruction": "2-5s: Mimi tries to peel the stuck note away with her other hand; the note splits into two [medium shot of Mimi struggling] Mimi pulls at the note -> one note sticks to each hand"
+          },
+          {
+            "beatId": "beat_03",
+            "evidence": "EXACT_TEXT_DIFF_NOT_SEMANTIC_VERIFICATION",
+            "revisedInstruction": "5-10s: Mimi continues to pull; each pull doubles the number of sticky notes  notes multiply from two to four to eight as she pulls, progressively covering her arms, legs and face -> Mimi is overwhelmed by notes [static wide shot; hold two; hold four; hold eight; single continuous shot]",
+            "originalInstruction": "5-10s: Mimi continues to pull; each pull doubles the number of sticky notes [wide shot showing Mimi covered in notes] notes multiply from two to four to eight as she pulls, progressively covering her arms, legs and face -> Mimi is overwhelmed by notes"
+          }
+        ],
+        "promptSha256": "2151ed0e2d4b8afa42ea80bad8238a9a639a1be40eea6576390e04704774c746",
+        "approvedStory": "Mimi, oyuncak dolabına 'Topla!' yazan bir yapışkan not yapıştırmak ister. Not, Mimi'nin parmağına yapışır. Mimi diğer eliyle çıkarmaya çalışırken not ikiye ayrılır ve iki eline de yapışır. Her çekişte notlar ikiye katlanarak çoğalır. Kısa sürede Mimi'nin kolları, bacakları ve yüzü notlarla kaplanır. Mimi aynada kendini görünce çığlık atar. Notlar o kadar çoğalır ki Mimi boğulacak gibi olur. Sonunda hapşırır ve tüm notlar uçuşarak dolabın üzerine yapışır. Mimi rahat bir nefes alır ama dolap hâlâ dağınıktır.",
+        "originalPrompt": "TITLE / FORMAT\nMimi Sticky / 15s Video\n\nVISUAL STYLE\nBright and colorful animation with a playful tone.\n\nCHARACTER / CONTINUITY\nMimi, an anthropomorphic bunny, interacts with sticky notes in a humorous and chaotic manner.\n\nTIMED SHOT PLAN\n0-2s: Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger [close-up on Mimi's hand] Mimi is in front of a toy cabinet, looking determined -> the note sticks to Mimi, not the cabinet\n2-5s: Mimi tries to peel the stuck note away with her other hand; the note splits into two [medium shot of Mimi struggling] Mimi pulls at the note -> one note sticks to each hand\n5-10s: Mimi continues to pull; each pull doubles the number of sticky notes [wide shot showing Mimi covered in notes] notes multiply from two to four to eight as she pulls, progressively covering her arms, legs and face -> Mimi is overwhelmed by notes\n10-12s: Mimi sees herself in a mirror and screams [close-up on Mimi's shocked face] Mimi is startled by her reflection completely covered in notes -> Mimi is startled\n12-15s: Mimi sneezes and the sticky notes fly off [medium shot of notes flying] notes scatter and stick to the cabinet -> Mimi breathes a sigh of relief but the cabinet remains messy\n\nAUDIO\nPlayful background music with sound effects for sneezing and notes sticking.\n\nNEGATIVE CONSTRAINTS\nNo dark themes or violence.\n\nFINAL CUT\nMimi is relieved but the cabinet remains visibly messy.\n\nCHARACTER IDENTITY LOCK\nMimi is the established anthropomorphic bunny character. Preserve that identity; do not render a human or invent unverified visual details. No approved visual reference is currently bound, so appearance details remain unverified.\n\nPRODUCTION SETTINGS\nAspect ratio: 9:16. Target generator: SEEDANCE_2_0_MINI. Content profile: AUTO.",
+        "productionSettings": {
+          "settings": {
+            "mode": "image2video",
+            "resolution": "480p",
+            "aspectRatio": "9:16"
+          },
+          "generator": "SEEDANCE_2_0_MINI",
+          "contentProfile": "ABSURD_PHYSICS",
+          "desiredDuration": 15.0,
+          "openingStrategy": "AUTO"
+        }
+      },
+      {
+        "prompt": "TITLE / FORMAT\nMimi Sticky / 15s Video\n\nVISUAL STYLE\nBright and colorful animation with a playful tone.\n\nCHARACTER / CONTINUITY\nMimi, an anthropomorphic bunny, interacts with sticky notes in a humorous and chaotic manner.\n\nTIMED SHOT PLAN\n0-2s: Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger  Mimi is in front of a toy cabinet, looking determined -> the note sticks to Mimi, not the cabinet [static close-up; keep the cabinet and her finger visible together in the same frame]\n2-5s: Mimi tries to peel the stuck note away with her other hand; the note splits into two [medium shot of Mimi struggling] Mimi pulls at the note -> one note sticks to each hand\n5-10s: Mimi continues to pull; each pull doubles the number of sticky notes [wide shot showing Mimi covered in notes] notes multiply from two to four to eight as she pulls, progressively covering her arms, legs and face -> Mimi is overwhelmed by notes\n10-12s: Mimi sees herself in a mirror and screams [close-up on Mimi's shocked face] Mimi is startled by her reflection completely covered in notes -> Mimi is startled\n12-15s: Mimi sneezes and the sticky notes fly off [medium shot of notes flying] notes scatter and stick to the cabinet -> Mimi breathes a sigh of relief but the cabinet remains messy\n\nAUDIO\nPlayful background music with sound effects for sneezing and notes sticking.\n\nNEGATIVE CONSTRAINTS\nNo dark themes or violence.\n\nFINAL CUT\nMimi is relieved but the cabinet remains visibly messy.\n\nCHARACTER IDENTITY LOCK\nMimi is the established anthropomorphic bunny character. Preserve that identity; do not render a human or invent unverified visual details. No approved visual reference is currently bound, so appearance details remain unverified.\n\nPRODUCTION SETTINGS\nAspect ratio: 9:16. Target generator: SEEDANCE_2_0_MINI. Content profile: ABSURD_PHYSICS.",
+        "neutralId": "Q02",
+        "changedBeats": [
+          {
+            "beatId": "beat_01",
+            "evidence": "EXACT_TEXT_DIFF_NOT_SEMANTIC_VERIFICATION",
+            "revisedInstruction": "0-2s: Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger  Mimi is in front of a toy cabinet, looking determined -> the note sticks to Mimi, not the cabinet [static close-up; keep the cabinet and her finger visible together in the same frame]",
+            "originalInstruction": "0-2s: Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger [close-up on Mimi's hand] Mimi is in front of a toy cabinet, looking determined -> the note sticks to Mimi, not the cabinet"
+          }
+        ],
+        "promptSha256": "218a9b367d6484d2a12bc8f6e02150f8812cdf8874c73b0171c254035a6be749",
+        "approvedStory": "Mimi, oyuncak dolabına 'Topla!' yazan bir yapışkan not yapıştırmak ister. Not, Mimi'nin parmağına yapışır. Mimi diğer eliyle çıkarmaya çalışırken not ikiye ayrılır ve iki eline de yapışır. Her çekişte notlar ikiye katlanarak çoğalır. Kısa sürede Mimi'nin kolları, bacakları ve yüzü notlarla kaplanır. Mimi aynada kendini görünce çığlık atar. Notlar o kadar çoğalır ki Mimi boğulacak gibi olur. Sonunda hapşırır ve tüm notlar uçuşarak dolabın üzerine yapışır. Mimi rahat bir nefes alır ama dolap hâlâ dağınıktır.",
+        "originalPrompt": "TITLE / FORMAT\nMimi Sticky / 15s Video\n\nVISUAL STYLE\nBright and colorful animation with a playful tone.\n\nCHARACTER / CONTINUITY\nMimi, an anthropomorphic bunny, interacts with sticky notes in a humorous and chaotic manner.\n\nTIMED SHOT PLAN\n0-2s: Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger [close-up on Mimi's hand] Mimi is in front of a toy cabinet, looking determined -> the note sticks to Mimi, not the cabinet\n2-5s: Mimi tries to peel the stuck note away with her other hand; the note splits into two [medium shot of Mimi struggling] Mimi pulls at the note -> one note sticks to each hand\n5-10s: Mimi continues to pull; each pull doubles the number of sticky notes [wide shot showing Mimi covered in notes] notes multiply from two to four to eight as she pulls, progressively covering her arms, legs and face -> Mimi is overwhelmed by notes\n10-12s: Mimi sees herself in a mirror and screams [close-up on Mimi's shocked face] Mimi is startled by her reflection completely covered in notes -> Mimi is startled\n12-15s: Mimi sneezes and the sticky notes fly off [medium shot of notes flying] notes scatter and stick to the cabinet -> Mimi breathes a sigh of relief but the cabinet remains messy\n\nAUDIO\nPlayful background music with sound effects for sneezing and notes sticking.\n\nNEGATIVE CONSTRAINTS\nNo dark themes or violence.\n\nFINAL CUT\nMimi is relieved but the cabinet remains visibly messy.\n\nCHARACTER IDENTITY LOCK\nMimi is the established anthropomorphic bunny character. Preserve that identity; do not render a human or invent unverified visual details. No approved visual reference is currently bound, so appearance details remain unverified.\n\nPRODUCTION SETTINGS\nAspect ratio: 9:16. Target generator: SEEDANCE_2_0_MINI. Content profile: AUTO.",
+        "productionSettings": {
+          "settings": {
+            "mode": "image2video",
+            "resolution": "480p",
+            "aspectRatio": "9:16"
+          },
+          "generator": "SEEDANCE_2_0_MINI",
+          "contentProfile": "ABSURD_PHYSICS",
+          "desiredDuration": 15.0,
+          "openingStrategy": "AUTO"
+        }
+      },
+      {
+        "prompt": "TITLE / FORMAT\nMimi Sticky / 15s Video\n\nVISUAL STYLE\nBright and colorful animation with a playful tone.\n\nCHARACTER / CONTINUITY\nMimi, an anthropomorphic bunny, interacts with sticky notes in a humorous and chaotic manner.\n\nTIMED SHOT PLAN\n0-2s: Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger [close-up on Mimi's hand] Mimi is in front of a toy cabinet, looking determined -> the note sticks to Mimi, not the cabinet\n2-5s: Mimi tries to peel the stuck note away with her other hand; the note splits into two [medium shot of Mimi struggling] Mimi pulls at the note -> one note sticks to each hand\n5-10s: Mimi continues to pull; each pull doubles the number of sticky notes [wide shot showing Mimi covered in notes] notes multiply from two to four to eight as she pulls, progressively covering her arms, legs and face -> Mimi is overwhelmed by notes\n10-12s: Mimi sees herself in a mirror and screams [close-up on Mimi's shocked face] Mimi is startled by her reflection completely covered in notes -> Mimi is startled\n12-15s: Mimi sneezes and the sticky notes fly off [medium shot of notes flying] notes scatter and stick to the cabinet -> Mimi breathes a sigh of relief but the cabinet remains messy\n\nAUDIO\nPlayful background music with sound effects for sneezing and notes sticking.\n\nNEGATIVE CONSTRAINTS\nNo dark themes or violence.\n\nFINAL CUT\nMimi is relieved but the cabinet remains visibly messy.\n\nCHARACTER IDENTITY LOCK\nMimi is the established anthropomorphic bunny character. Preserve that identity; do not render a human or invent unverified visual details. No approved visual reference is currently bound, so appearance details remain unverified.\n\nPRODUCTION SETTINGS\nAspect ratio: 9:16. Target generator: SEEDANCE_2_0_MINI. Content profile: AUTO.",
+        "neutralId": "Q04",
+        "changedBeats": [],
+        "promptSha256": "0fe229774deb4b31a42145bad91cf10c91634ba00da39fa3e9d288b3a2e7bd98",
+        "approvedStory": "Mimi, oyuncak dolabına 'Topla!' yazan bir yapışkan not yapıştırmak ister. Not, Mimi'nin parmağına yapışır. Mimi diğer eliyle çıkarmaya çalışırken not ikiye ayrılır ve iki eline de yapışır. Her çekişte notlar ikiye katlanarak çoğalır. Kısa sürede Mimi'nin kolları, bacakları ve yüzü notlarla kaplanır. Mimi aynada kendini görünce çığlık atar. Notlar o kadar çoğalır ki Mimi boğulacak gibi olur. Sonunda hapşırır ve tüm notlar uçuşarak dolabın üzerine yapışır. Mimi rahat bir nefes alır ama dolap hâlâ dağınıktır.",
+        "originalPrompt": "TITLE / FORMAT\nMimi Sticky / 15s Video\n\nVISUAL STYLE\nBright and colorful animation with a playful tone.\n\nCHARACTER / CONTINUITY\nMimi, an anthropomorphic bunny, interacts with sticky notes in a humorous and chaotic manner.\n\nTIMED SHOT PLAN\n0-2s: Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger [close-up on Mimi's hand] Mimi is in front of a toy cabinet, looking determined -> the note sticks to Mimi, not the cabinet\n2-5s: Mimi tries to peel the stuck note away with her other hand; the note splits into two [medium shot of Mimi struggling] Mimi pulls at the note -> one note sticks to each hand\n5-10s: Mimi continues to pull; each pull doubles the number of sticky notes [wide shot showing Mimi covered in notes] notes multiply from two to four to eight as she pulls, progressively covering her arms, legs and face -> Mimi is overwhelmed by notes\n10-12s: Mimi sees herself in a mirror and screams [close-up on Mimi's shocked face] Mimi is startled by her reflection completely covered in notes -> Mimi is startled\n12-15s: Mimi sneezes and the sticky notes fly off [medium shot of notes flying] notes scatter and stick to the cabinet -> Mimi breathes a sigh of relief but the cabinet remains messy\n\nAUDIO\nPlayful background music with sound effects for sneezing and notes sticking.\n\nNEGATIVE CONSTRAINTS\nNo dark themes or violence.\n\nFINAL CUT\nMimi is relieved but the cabinet remains visibly messy.\n\nCHARACTER IDENTITY LOCK\nMimi is the established anthropomorphic bunny character. Preserve that identity; do not render a human or invent unverified visual details. No approved visual reference is currently bound, so appearance details remain unverified.\n\nPRODUCTION SETTINGS\nAspect ratio: 9:16. Target generator: SEEDANCE_2_0_MINI. Content profile: AUTO.",
+        "productionSettings": {
+          "settings": {
+            "mode": "image2video",
+            "resolution": "480p",
+            "aspectRatio": "9:16"
+          },
+          "generator": "SEEDANCE_2_0_MINI",
+          "contentProfile": "ABSURD_PHYSICS",
+          "desiredDuration": 15.0,
+          "openingStrategy": "AUTO"
+        }
+      }
+    ],
+    "purpose": "SOURCE_FIDELITY",
+    "evidenceType": "MACHINE_REVIEW",
+    "evidenceScope": "TEXT_ONLY",
+    "policyVersion": "OWNER_MACHINE_PILOT_V1",
+    "rubricVersion": "creative-prompt-quality-v1"
+  },
+  "response": {
+    "model": "gpt-6.1-sol",
+    "usage": {
+      "total_tokens": 10161,
+      "prompt_tokens": 6161,
+      "completion_tokens": 4000,
+      "prompt_tokens_details": {
+        "text_tokens": null,
+        "audio_tokens": 0,
+        "image_tokens": null,
+        "cached_tokens": 0,
+        "cache_write_tokens": 6158
+      },
+      "completion_tokens_details": {
+        "text_tokens": null,
+        "audio_tokens": 0,
+        "reasoning_tokens": 4000,
+        "accepted_prediction_tokens": 0,
+        "rejected_prediction_tokens": 0
+      }
+    },
+    "failure": "Provider or response contract failed; saved result requires review; no automatic retry",
+    "results": [],
+    "provider": "openai",
+    "requestId": "3a55b29a-48c6-44c0-a003-da11af0f7069",
+    "rawResponse": "",
+    "evidenceType": "MACHINE_REVIEW",
+    "modelVersion": "gpt-6.1-sol",
+    "policyVersion": "OWNER_MACHINE_PILOT_V1",
+    "executionStatus": "FAILED_OR_AMBIGUOUS",
+    "providerMetadata": {
+      "model": "gpt-6.1-sol",
+      "provider": "openai",
+      "apiStatus": "COMPLETED",
+      "requestId": "chatcmpl-EZWMfRgFNWEjOnLPLaVesViDKGOFp",
+      "finishReason": "length"
+    }
+  },
+  "failure": "Dispatch or response contract failed; saved request must be reviewed; no automatic retry",
+  "created_at": "2026-10-16T07:09:15.855835+00:00",
+  "completed_at": "2026-10-16T07:11:10.429678+00:00"
+}

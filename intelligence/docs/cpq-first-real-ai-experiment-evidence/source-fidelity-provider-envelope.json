@@ -1,0 +1,38 @@
+{
+  "model": "gpt-6.1-sol",
+  "usage": {
+    "total_tokens": 10161,
+    "prompt_tokens": 6161,
+    "completion_tokens": 4000,
+    "prompt_tokens_details": {
+      "text_tokens": null,
+      "audio_tokens": 0,
+      "image_tokens": null,
+      "cached_tokens": 0,
+      "cache_write_tokens": 6158
+    },
+    "completion_tokens_details": {
+      "text_tokens": null,
+      "audio_tokens": 0,
+      "reasoning_tokens": 4000,
+      "accepted_prediction_tokens": 0,
+      "rejected_prediction_tokens": 0
+    }
+  },
+  "failure": "Provider or response contract failed; saved result requires review; no automatic retry",
+  "results": [],
+  "provider": "openai",
+  "requestId": "3a55b29a-48c6-44c0-a003-da11af0f7069",
+  "rawResponse": "",
+  "evidenceType": "MACHINE_REVIEW",
+  "modelVersion": "gpt-6.1-sol",
+  "policyVersion": "OWNER_MACHINE_PILOT_V1",
+  "executionStatus": "FAILED_OR_AMBIGUOUS",
+  "providerMetadata": {
+    "model": "gpt-6.1-sol",
+    "provider": "openai",
+    "apiStatus": "COMPLETED",
+    "requestId": "chatcmpl-EZWMfRgFNWEjOnLPLaVesViDKGOFp",
+    "finishReason": "length"
+  }
+}
