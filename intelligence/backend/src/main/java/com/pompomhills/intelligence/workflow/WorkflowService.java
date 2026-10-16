@@ -1718,7 +1718,7 @@ public class WorkflowService {
     return null;
   }
 
-  private String storyFingerprint(String value) {
+  String storyFingerprint(String value) {
     int hash = 0x811c9dc5;
     for (int i = 0; i < value.length(); i++) {
       hash ^= value.charAt(i);

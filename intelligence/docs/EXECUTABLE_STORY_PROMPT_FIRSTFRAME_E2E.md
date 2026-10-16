@@ -73,3 +73,7 @@ The production control remains unchanged and was re-read before this task: analy
 Add a test-only, deployment-profile-gated ML transport adapter that is reachable only when all of the following are true: an explicit disposable profile, a fixture directory outside production storage, a no-egress network, and a signed per-run fixture token. The adapter must return complete STORY, STORY_REVIEW and BUILD_PROMPT contracts and a mock GPT-Image-2 byte response; the backend must keep the existing owner authentication, persistence authorities, Ruleset 1.11 evaluator and render gates unchanged. Then run this command against that isolated profile and add Playwright browser evidence. Do not enable the adapter in the production compose profile.
 
 Until that adapter and a disposable owner HTTP session exist, the correct status is `END_TO_END_ISOLATED_ACCEPTANCE: PARTIAL`, not success.
+
+## Subsequent P0 HTTP checkpoint — 2026-10-16
+
+The disposable Spring HTTP + authenticated owner + approved source milestone subsequently passed. See [DISPOSABLE_OWNER_HTTP_ACCEPTANCE.md](DISPOSABLE_OWNER_HTTP_ACCEPTANCE.md) and its actual HTTP evidence. The statuses above describe the earlier run; they are preserved rather than rewritten. This P0 success does not establish autonomous A/A+ generation or the full first-frame workflow.

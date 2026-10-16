@@ -222,7 +222,8 @@ public class QualityMlClient {
       String body=mlObjectMapper.writeValueAsString(request);
       var builder=HttpRequest.newBuilder(URI.create(mlServiceUrl + "/api/v1/workflow/" + operation))
           .timeout(Duration.ofSeconds(operation.startsWith("cpq-pilot/")?130:25)).header("Content-Type", "application/json");
-      if (("creative-role".equals(operation) && "PROMPT_OPTIMIZATION".equals(request.get("role"))) || "cpq-pilot/optimization-loop-execute".equals(operation) || "cpq-pilot/execute".equals(operation) || "cpq-pilot/revalidate-source".equals(operation)) {
+      String configuredToken=System.getenv("WORKFLOW_ADAPTIVE_DISPATCH_TOKEN");
+      if (("creative-role".equals(operation) && configuredToken!=null && !configuredToken.isBlank()) || ("creative-role".equals(operation) && "PROMPT_OPTIMIZATION".equals(request.get("role"))) || "cpq-pilot/optimization-loop-execute".equals(operation) || "cpq-pilot/execute".equals(operation) || "cpq-pilot/revalidate-source".equals(operation)) {
         String token=System.getenv("WORKFLOW_ADAPTIVE_DISPATCH_TOKEN");
         if(token==null || token.length()<32) throw new IllegalStateException("Adaptive dispatch authentication configuration required");
         try {

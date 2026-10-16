@@ -1,0 +1,360 @@
+{
+  "scope": "P0_DISPOSABLE_OWNER_HTTP",
+  "harnessExitCode": 1,
+  "p0HttpAcceptance": false,
+  "fullStoryPromptFirstFrameVerified": false,
+  "realProviderCalls": 0,
+  "realImageCalls": 0,
+  "realRenderCalls": 0,
+  "productionDatabaseWrites": 0,
+  "mlEgress": {
+    "negativeProbe": "DENIED_BEFORE_DISPATCH",
+    "unexpectedEgressAttempts": [],
+    "noExternalEgress": true
+  },
+  "mlFixtureResponse": {
+    "role": "STORY",
+    "provider": "ISOLATED_FIXTURE",
+    "model": "fixture-transport-v1",
+    "result": {
+      "alternatives": [
+        {
+          "candidateId": "candidate-1",
+          "title": "Pip contact and consequence",
+          "text": "Pip the rabbit reaches for a toy cabinet with a sticky note. The note clings to Pip's finger instead. Peeling splits it into one note per hand. Each pull doubles the notes from two to four to eight. Pip sees the note-covered reflection in a mirror, gasps, then sneezes the notes onto the cabinet. Pip is relieved but the cabinet stays messy."
+        },
+        {
+          "candidateId": "candidate-2",
+          "title": "Pip mirror reveal",
+          "text": "Pip the rabbit wants to mark a toy cabinet, but a sticky note catches on Pip's finger. Pip tries to remove it; both hands now carry a note. Pulling doubles the notes repeatedly and covers Pip. The mirror reveals the mess, and a startled gasp turns into a sneeze. The cabinet catches the flying notes, leaving Pip relieved beside a messy cabinet."
+        }
+      ],
+      "storyQuality": {
+        "method": "story-structure-v1",
+        "classification": "DISTINCT",
+        "variationClass": "MATERIAL_VARIATION",
+        "classificationReason": "Candidates differ across multiple material narrative dimensions.",
+        "summary": "Candidates differ across multiple material narrative dimensions.",
+        "pairs": [
+          {
+            "left": 1,
+            "right": 2,
+            "lexicalSimilarity": 0.067,
+            "sharedDimensions": [
+              "mainObjectOrSituation"
+            ],
+            "differentDimensions": [
+              "characterActions",
+              "endingEvent",
+              "openingVisualPromise",
+              "characterGoal",
+              "majorStoryChanges",
+              "escalation",
+              "endingFunction"
+            ],
+            "eventSequenceMatch": false,
+            "dimensionDescriptions": {
+              "endingEvent": {
+                "1": "Pip sees the note-covered reflection in a mirror, gasps, then sneezes the notes onto the cabinet. Pip is relieved but the cabinet stays messy.",
+                "2": "The mirror reveals the mess, and a startled gasp turns into a sneeze. The cabinet catches the flying notes, leaving Pip relieved beside a messy cabinet."
+              }
+            }
+          }
+        ],
+        "differences": [
+          "Alternative 1 vs 2: different characterActions, endingEvent, openingVisualPromise, characterGoal, majorStoryChanges, escalation, endingFunction; shared mainObjectOrSituation."
+        ],
+        "recommendation": {
+          "bestCandidateId": null,
+          "reason": "Candidates share similar risk profiles; no single candidate is clearly preferred by the available evidence.",
+          "whyNot": [],
+          "stillUnknown": [
+            "aiProducibility",
+            "endingPayoff",
+            "pacing",
+            "ruleConsistency",
+            "visualLegibility"
+          ],
+          "isTied": true
+        },
+        "candidates": [
+          {
+            "structuralEvidence": {
+              "centralPremise": null,
+              "mainCharacter": null,
+              "mainObjectOrSituation": "toy cabinet",
+              "openingVisualPromise": "Pip the rabbit reaches for a toy cabinet with a sticky note.",
+              "primaryRuleOrQuestion": "cabinet interaction",
+              "characterGoal": null,
+              "majorStoryChanges": "Pip sees the note-covered reflection in a mirror, gasps, then sneezes the notes onto the cabinet.",
+              "centralObstacle": null,
+              "escalation": "Pip sees the note-covered reflection in a mirror, gasps, then sneezes the notes onto the cabinet.",
+              "endingFunction": "resolution",
+              "reasonToContinueWatching": "Pip the rabbit reaches for a toy cabinet with a sticky note.",
+              "productionSensitiveElements": [
+                "contact continuity"
+              ],
+              "eventSequence": [
+                "remove",
+                "cover"
+              ]
+            },
+            "preflight": {
+              "opening": "SUPPORTED",
+              "progression": "SUPPORTED",
+              "mechanism": "SUPPORTED",
+              "characterAgency": "INSUFFICIENT_EVIDENCE",
+              "ending": "resolution",
+              "strengths": [
+                "The opening provides an observable focus or situation.",
+                "The story contains a meaningful progression signal.",
+                "Primary unusual rule(s): cabinet interaction."
+              ],
+              "concerns": [],
+              "productionRisks": [
+                "Repeated attachment/contact needs clear continuity evidence."
+              ]
+            },
+            "assessment": {
+              "candidateId": "candidate-1",
+              "fingerprint": "764ab5ca518be4508b5bb80ae3f8e520fb691ff05b9a093378e8852431a6c03b",
+              "strengths": [
+                {
+                  "dimension": "characterGoal",
+                  "family": "concept_strength",
+                  "outcome": "PASS",
+                  "severity": "INFO",
+                  "message": "The story describes a character situation or goal.",
+                  "evidence": "Pip the rabbit reaches for a toy cabinet with a sticky note."
+                },
+                {
+                  "dimension": "obstacle",
+                  "family": "concept_strength",
+                  "outcome": "PASS",
+                  "severity": "INFO",
+                  "message": "The story describes an obstacle or challenge.",
+                  "evidence": "Pip is relieved but the cabinet stays messy."
+                },
+                {
+                  "dimension": "characterInitiative",
+                  "family": "concept_strength",
+                  "outcome": "PASS",
+                  "severity": "INFO",
+                  "message": "The character takes 2 distinct actions.",
+                  "evidence": "pull, sees"
+                },
+                {
+                  "dimension": "progression",
+                  "family": "progression",
+                  "outcome": "PASS",
+                  "severity": "INFO",
+                  "message": "The story contains cause-and-effect progression signals."
+                },
+                {
+                  "dimension": "escalation",
+                  "family": "escalation",
+                  "outcome": "PASS",
+                  "severity": "INFO",
+                  "message": "The story contains escalation signals (increasing intensity or complexity)."
+                },
+                {
+                  "dimension": "endingEvent",
+                  "family": "final_payoff",
+                  "outcome": "PASS",
+                  "severity": "INFO",
+                  "message": "The story describes a final event.",
+                  "evidence": "Pip sees the note-covered reflection in a mirror, gasps, then sneezes the notes onto the cabinet. Pip is relieved but the cabinet stays messy."
+                }
+              ],
+              "risks": [],
+              "unknown": [
+                {
+                  "dimension": "distinctAttempts",
+                  "family": "progression",
+                  "outcome": "UNKNOWN",
+                  "message": "The story contains 2 action types; whether these represent distinct attempts is uncertain without production plan."
+                },
+                {
+                  "dimension": "endingPayoff",
+                  "family": "final_payoff",
+                  "outcome": "UNKNOWN",
+                  "message": "A final event is described, but its creative effectiveness or audience payoff cannot be determined from text alone."
+                },
+                {
+                  "dimension": "ruleConsistency",
+                  "family": "consistency",
+                  "outcome": "UNKNOWN",
+                  "message": "No obvious rule contradictions detected, but full consistency check requires production plan analysis."
+                },
+                {
+                  "dimension": "visualLegibility",
+                  "family": "visual_novelty",
+                  "outcome": "NOT_EVALUATED",
+                  "message": "Frame-zero visual legibility and hook strength cannot be assessed from story text alone."
+                },
+                {
+                  "dimension": "aiProducibility",
+                  "family": "ai_producibility",
+                  "outcome": "NOT_EVALUATED",
+                  "message": "AI producibility requires a production prompt and cannot be assessed from story text alone."
+                },
+                {
+                  "dimension": "pacing",
+                  "family": "progression",
+                  "outcome": "NOT_EVALUATED",
+                  "message": "Pacing and beat timing cannot be assessed without a production plan."
+                }
+              ]
+            }
+          },
+          {
+            "structuralEvidence": {
+              "centralPremise": null,
+              "mainCharacter": null,
+              "mainObjectOrSituation": "toy cabinet",
+              "openingVisualPromise": "Pip the rabbit wants to mark a toy cabinet, but a sticky note catches on Pip's finger.",
+              "primaryRuleOrQuestion": "cabinet interaction, flight",
+              "characterGoal": "Pip the rabbit wants to mark a toy cabinet, but a sticky note catches on Pip's finger.",
+              "majorStoryChanges": "Pip the rabbit wants to mark a toy cabinet, but a sticky note catches on Pip's finger.",
+              "centralObstacle": null,
+              "escalation": null,
+              "endingFunction": "reveal",
+              "reasonToContinueWatching": "Pip the rabbit wants to mark a toy cabinet, but a sticky note catches on Pip's finger.",
+              "productionSensitiveElements": [
+                "contact continuity"
+              ],
+              "eventSequence": [
+                "remove",
+                "attempt",
+                "cover",
+                "reveal"
+              ]
+            },
+            "preflight": {
+              "opening": "SUPPORTED",
+              "progression": "SUPPORTED",
+              "mechanism": "SUPPORTED",
+              "characterAgency": "SUPPORTED",
+              "ending": "reveal",
+              "strengths": [
+                "The opening provides an observable focus or situation.",
+                "The story contains a meaningful progression signal.",
+                "Primary unusual rule(s): cabinet interaction, flight."
+              ],
+              "concerns": [],
+              "productionRisks": [
+                "Repeated attachment/contact needs clear continuity evidence."
+              ]
+            },
+            "assessment": {
+              "candidateId": "candidate-2",
+              "fingerprint": "0c072f2048520a797f36c2898118c3cbb82f1a187aa748b216e5fa385a5d6ec4",
+              "strengths": [
+                {
+                  "dimension": "characterGoal",
+                  "family": "concept_strength",
+                  "outcome": "PASS",
+                  "severity": "INFO",
+                  "message": "The story describes a character situation or goal.",
+                  "evidence": "Pip the rabbit wants to mark a toy cabinet, but a sticky note catches on Pip's finger."
+                },
+                {
+                  "dimension": "characterInitiative",
+                  "family": "concept_strength",
+                  "outcome": "PASS",
+                  "severity": "INFO",
+                  "message": "The character takes 5 distinct actions.",
+                  "evidence": "tries, turns, catches, carry, covers"
+                },
+                {
+                  "dimension": "progression",
+                  "family": "progression",
+                  "outcome": "PASS",
+                  "severity": "INFO",
+                  "message": "The story contains cause-and-effect progression signals."
+                },
+                {
+                  "dimension": "escalation",
+                  "family": "escalation",
+                  "outcome": "PASS",
+                  "severity": "INFO",
+                  "message": "The story contains escalation signals (increasing intensity or complexity)."
+                },
+                {
+                  "dimension": "distinctAttempts",
+                  "family": "progression",
+                  "outcome": "PASS",
+                  "severity": "INFO",
+                  "message": "The story contains 5 distinct action types, suggesting multiple attempts or strategies."
+                },
+                {
+                  "dimension": "endingEvent",
+                  "family": "final_payoff",
+                  "outcome": "PASS",
+                  "severity": "INFO",
+                  "message": "The story describes a final event.",
+                  "evidence": "The mirror reveals the mess, and a startled gasp turns into a sneeze. The cabinet catches the flying notes, leaving Pip relieved beside a messy cabine"
+                }
+              ],
+              "risks": [],
+              "unknown": [
+                {
+                  "dimension": "obstacle",
+                  "family": "concept_strength",
+                  "outcome": "UNKNOWN",
+                  "message": "Obstacle or challenge cannot be confidently identified from the text."
+                },
+                {
+                  "dimension": "endingPayoff",
+                  "family": "final_payoff",
+                  "outcome": "UNKNOWN",
+                  "message": "A final event is described, but its creative effectiveness or audience payoff cannot be determined from text alone."
+                },
+                {
+                  "dimension": "ruleConsistency",
+                  "family": "consistency",
+                  "outcome": "UNKNOWN",
+                  "message": "No obvious rule contradictions detected, but full consistency check requires production plan analysis."
+                },
+                {
+                  "dimension": "visualLegibility",
+                  "family": "visual_novelty",
+                  "outcome": "NOT_EVALUATED",
+                  "message": "Frame-zero visual legibility and hook strength cannot be assessed from story text alone."
+                },
+                {
+                  "dimension": "aiProducibility",
+                  "family": "ai_producibility",
+                  "outcome": "NOT_EVALUATED",
+                  "message": "AI producibility requires a production prompt and cannot be assessed from story text alone."
+                },
+                {
+                  "dimension": "pacing",
+                  "family": "progression",
+                  "outcome": "NOT_EVALUATED",
+                  "message": "Pacing and beat timing cannot be assessed without a production plan."
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "calls": 0,
+    "visualInspected": false,
+    "validationStatus": "NOT_VALIDATED",
+    "usage": {
+      "inputTokens": 0,
+      "outputTokens": 0,
+      "totalTokens": 0
+    },
+    "providerResponseMetadata": {
+      "fixture": true,
+      "finishReason": "stop",
+      "apiStatus": "COMPLETED",
+      "requestId": "fixture-0eac0d06cf7d381c"
+    },
+    "providerDispatched": false,
+    "actualCostUsd": 0.0
+  }
+}

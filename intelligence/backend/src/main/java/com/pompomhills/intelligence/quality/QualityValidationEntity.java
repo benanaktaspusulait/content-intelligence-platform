@@ -19,7 +19,7 @@ public class QualityValidationEntity {
   @Column(name = "prompt_text", columnDefinition = "TEXT", nullable = false)
   private String promptText;
 
-  @Column(name = "ruleset_version", length = 10, nullable = false)
+  @Column(name = "ruleset_version", length = 200, nullable = false)
   private String rulesetVersion;
 
   @Column(name = "overall_score")

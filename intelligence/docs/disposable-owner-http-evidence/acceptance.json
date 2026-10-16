@@ -1,0 +1,2624 @@
+{
+  "scope": "P0_DISPOSABLE_OWNER_HTTP",
+  "harnessExitCode": 0,
+  "p0HttpAcceptance": true,
+  "fullStoryPromptFirstFrameVerified": false,
+  "realProviderCalls": 0,
+  "realImageCalls": 0,
+  "realRenderCalls": 0,
+  "productionDatabaseWrites": 0,
+  "backend": {
+    "p0HttpAcceptance": true,
+    "backendPort": 52521,
+    "backendBaseUrl": "http://127.0.0.1:52521",
+    "postgresContainerId": "fbcd256878cc7d5b678be1687a950c807256d31cbe924e4bd24378b1f95d65ff",
+    "postgresJdbcUrl": "jdbc:postgresql://localhost:52508/disposable_owner_http?loggerLevel=OFF",
+    "postgresDatabase": "disposable_owner_http",
+    "flywayVersion": "69",
+    "flywayMigrationCount": 67,
+    "mlBaseUrl": "http://127.0.0.1:52497",
+    "mlFixtureConnected": true,
+    "ownerLoginHttp": true,
+    "ownerSession": true,
+    "csrfAndOriginVerified": true,
+    "logoutRevocationVerified": true,
+    "rateLimitingVerified": true,
+    "sessionCookieReturned": true,
+    "contentId": 1,
+    "generatedStoryId": "38150813-0f87-4b74-b6b8-f47a3f110a72",
+    "approvedStoryId": "315611aa-c796-446d-808c-2b32cdaf6d4a",
+    "storyRevisionId": "candidate-1-revision-7d6e06a4",
+    "storyApprovalId": "fae32caa-fb3e-47eb-bb95-cbc879cd9bbf",
+    "approvedStorySha256": "b9a62583fde3b21ed26b89e32bfe9029d53773b340fdb1d21cbcec206f19068a",
+    "storyRevisionFingerprint": "7d6e06a4",
+    "promptVersionId": 1,
+    "promptSha256": "7d1a88d2db57a2061ad2e890fffa7f1917f1a171d769d4fa21f675da3bdd56bf",
+    "analysisId": "f89fb891-2f7b-402f-b607-a9a56ecfadb8",
+    "canonical": {
+      "status": "EVALUATED",
+      "score": 82.54166666666669,
+      "grade": "B",
+      "rulesetVersion": "1.11",
+      "rulesEvaluated": 46,
+      "passedRules": [
+        {
+          "ruleId": "CONCEPT_006",
+          "ruleName": "Consequence Capacity",
+          "family": "concept_strength",
+          "severity": "PASS",
+          "outcome": "PASS",
+          "message": "Sufficient consequence variety: 5 distinct consequences.",
+          "details": {
+            "evaluation_stage": "PRE_RENDER",
+            "recommendation": "Before writing a 15-second prompt, verify that the core mechanic\ncan naturally generate at least 4 visually distinct consequences.\n\nIf it cannot, reject the concept.\n\nDo NOT stretch a two-beat teaching contrast into 15 seconds."
+          }
+        },
+        {
+          "ruleId": "REPETITION_002",
+          "ruleName": "Visual Beat Repetition",
+          "family": "visual_novelty",
+          "severity": "PASS",
+          "outcome": "PASS",
+          "message": "Good action variety. Max repetition: 1.",
+          "details": {
+            "evaluation_stage": "PRE_RENDER",
+            "recommendation": "The same physical action should not repeat more than twice\nunless each iteration introduces a materially different consequence.\n\nEmotional variation (confused \u2192 understanding \u2192 frustrated)\nwithout physical consequence change is insufficient."
+          }
+        },
+        {
+          "ruleId": "REPETITION_003",
+          "ruleName": "Cycle Repetition Limit",
+          "family": "visual_novelty",
+          "severity": "PASS",
+          "outcome": "PASS",
+          "message": "No explicit cycles detected.",
+          "details": {
+            "evaluation_stage": "PRE_RENDER",
+            "recommendation": "A cause-effect cycle (action \u2192 consequence \u2192 reset) should not\nrepeat more than twice unless each iteration introduces a NEW\nphysical element, obstacle, or escalation.\n\nExample cycle: sharpen \u2192 draw \u2192 blunt \u2192 (reset to sharpen)\n\nCosmetic variations (stroke pattern, sharpen duration) do not\ncount as structural escalation."
+          }
+        },
+        {
+          "ruleId": "NOVELTY_001",
+          "ruleName": "Novelty Timeline Distribution",
+          "family": "visual_novelty",
+          "severity": "WARNING",
+          "outcome": "PASS",
+          "message": "Gap of 5.0s between new consequences (at 5.0s-10.0s). Consider adding intermediate beat.",
+          "details": {
+            "evaluation_stage": "PRE_RENDER",
+            "recommendation": "New consequences should be distributed across the timeline,\nnot clustered at the beginning or end.\n\nNo gap longer than 4.5 seconds should pass without a new\nvisually distinct consequence appearing."
+          }
+        },
+        {
+          "ruleId": "PROGRESSION_005",
+          "ruleName": "Consequence Novelty Timeline",
+          "family": "progression",
+          "severity": "PASS",
+          "outcome": "PASS",
+          "message": "Good novelty timeline. Static pattern: 0.0%.",
+          "details": {
+            "evaluation_stage": "PRE_RENDER",
+            "recommendation": "No more than 50% of the video should pass without new\nvisually distinct physical consequences appearing.\n\nIf > 65% of video shows only pattern variations of the same\ncore action, flag as CRITICAL."
+          }
+        },
+        {
+          "ruleId": "ESCALATION_004",
+          "ruleName": "Delayed Payoff",
+          "family": "escalation",
+          "severity": "WARNING",
+          "outcome": "PASS",
+          "message": "Final payoff at 12.0s. Consider moving earlier for stronger retention.",
+          "details": {
+            "evaluation_stage": "PRE_RENDER",
+            "recommendation": "The final major escalation should not appear after 80% of the video\n(12 seconds in a 15-second video) unless the middle contains\nstrong intermediate escalations.\n\nLate payoffs risk losing viewer attention before the peak."
+          }
+        },
+        {
+          "ruleId": "PAYOFF_001",
+          "ruleName": "Not Repeat of Opening",
+          "family": "final_payoff",
+          "severity": "PASS",
+          "outcome": "PASS",
+          "message": "Final payoff is distinct from opening.",
+          "details": {
+            "evaluation_stage": "PRE_RENDER",
+            "recommendation": "The final beat must not be identical or nearly identical\nto the opening beat.\n\nA callback is acceptable if it's BIGGER or has a TWIST.\nA simple repeat signals lazy structure."
+          }
+        },
+        {
+          "ruleId": "PRODUCIBILITY_001",
+          "ruleName": "Very High Complexity Block",
+          "family": "ai_producibility",
+          "severity": "PASS",
+          "outcome": "PASS",
+          "message": "Acceptable complexity: medium.",
+          "details": {
+            "evaluation_stage": "PRE_RENDER",
+            "recommendation": "Prompts marked as \"very_high\" complexity should not proceed\nto render without human review and risk acceptance.\n\nVery high complexity typically means 4+ simultaneous high-risk\noperations or untested novel requirements."
+          }
+        },
+        {
+          "ruleId": "MOTION_001",
+          "ruleName": "Continuous Meaningful Progression",
+          "family": "motion_quality",
+          "severity": "PASS",
+          "outcome": "PASS",
+          "message": "No stalled progression. Longest motionless beat: 0.0s.",
+          "details": {
+            "evaluation_stage": "PRE_RENDER",
+            "recommendation": "No beat may hold with motionAmount == 'none' for longer than 1.5 seconds. Renamed from \"No Dead Air\" in RULESET 1.3 -- brief stillness (a puzzled look, a short charming reaction) is a legitimate pause, not a defect; what matters is progression not stalling, not motion itself."
+          }
+        },
+        {
+          "ruleId": "CHAR_002",
+          "ruleName": "Active Character",
+          "family": "progression",
+          "severity": "PASS",
+          "outcome": "PASS",
+          "message": "Character is actively attempting a solution for 53% of the video.",
+          "details": {
+            "tier": "short",
+            "evaluation_stage": "PRE_RENDER",
+            "recommendation": "The character must spend most of the runtime actively trying a solution, not watching or reacting. Ratio of (duration of isAttempt beats) / (total duration) must be at least 0.5 for short-tier videos, 0.6 for long-tier."
+          }
+        },
+        {
+          "ruleId": "PRODUCIBILITY_002",
+          "ruleName": "Prop Economy",
+          "family": "ai_producibility",
+          "severity": "PASS",
+          "outcome": "PASS",
+          "message": "0 main props, within the short-tier budget of 2.",
+          "details": {
+            "tier": "short",
+            "evaluation_stage": "PRE_RENDER",
+            "recommendation": "Introduce the minimum number of props necessary. setting.mainProps count must not exceed 2 for short-tier videos, 4 for long-tier videos. RULESET 1.3 adds a timeline-aware check (heuristic, text-match based) alongside the static count -- a prop first mentioned mid-concept inside an attempt beat, rather than established from the opening, is flagged as a WARNING even when the total count is within budget."
+          }
+        },
+        {
+          "ruleId": "PAYOFF_002",
+          "ruleName": "Fake Resolution Present",
+          "family": "progression",
+          "severity": "WARNING",
+          "outcome": "PASS",
+          "message": "No fake-resolution beat found. This is a bonus, not a requirement \u2014 consider adding a moment where the problem appears solved before the twist.",
+          "details": {
+            "evaluation_stage": "PRE_RENDER",
+            "recommendation": "Bonus (non-blocking): at least one beat with consequenceType == 'fake_win' before finalPayoff.startsAt, giving the audience a moment to believe the problem is solved before the final twist."
+          }
+        },
+        {
+          "ruleId": "BEAT_005",
+          "ruleName": "Story Detached Gap",
+          "family": "visual_novelty",
+          "severity": "PASS",
+          "outcome": "PASS",
+          "message": "Longest detached stretch: 0.0s, within tolerance.",
+          "details": {
+            "evaluation_stage": "PRE_RENDER",
+            "recommendation": "While the core problem is actively unresolved (at least one attempt beat has occurred, final payoff not yet started), no consecutive stretch of beats.relatesToCoreProblem == false may exceed 0.5 seconds. Brief transitions/reaction beats under that threshold are not flagged; only a genuine abandonment of the active problem fails."
+          }
+        },
+        {
+          "ruleId": "PAYOFF_004",
+          "ruleName": "Final Payoff Salience",
+          "family": "final_payoff",
+          "severity": "WARNING",
+          "outcome": "PASS",
+          "message": "Final payoff salience (5) ties the earlier peak. Acceptable but not ideal \u2014 consider making the ending strictly the peak.",
+          "details": {
+            "evaluation_stage": "PRE_RENDER",
+            "recommendation": "The final payoff's beat.intensity should be at least as high as the highest intensity seen earlier in the video. Computed independently from beat.intensity values; finalPayoff.isPeakIntensity is never trusted as the verdict, only cross-checked for discrepancy reporting. Optimization-level (WARNING), never a blocker. Renamed from \"Final Peak Intensity\" in RULESET 1.3 -- \"intensity\" read as motion/chaos, but beats[].intensity is a 1-10 visual/emotional energy scale; a quiet, conclusive beat can score as high as a frantic one."
+          }
+        },
+        {
+          "ruleId": "REPETITION_004",
+          "ruleName": "Dominant Action Ratio",
+          "family": "visual_novelty",
+          "severity": "PASS",
+          "outcome": "PASS",
+          "message": "Good action variety. Dominant verb 'PEEL' at 50%.",
+          "details": {
+            "dominant_verb": "PEEL",
+            "evaluation_stage": "PRE_RENDER",
+            "recommendation": "Companion to ATTEMPT_002, not a replacement: catches one primaryVerb numerically dominating the attempt list even when every attempt is legitimately distinct in ATTEMPT_002's semantic judgment. WARNING above 55% dominance, CRITICAL above 70%. Never a BLOCKER, since a dominant verb can be valid if it produces genuinely different consequences each time."
+          }
+        },
+        {
+          "ruleId": "PAYOFF_006",
+          "ruleName": "Loopability",
+          "family": "final_payoff",
+          "severity": "PASS",
+          "outcome": "PASS",
+          "message": "No loop claimed, no hard-cut flag, but no weak-ending pattern detected either.",
+          "details": {
+            "evaluation_stage": "PRE_RENDER",
+            "recommendation": "A retention-optimization dimension, never a hard blocker. A strong natural loop back to the opening (finalPayoff.loopsToOpening + loopQuality == 'strong') is a bonus. An ordinary hard cut with no loop claim is fully valid (neutral PASS). Only specific weak-ending text patterns (fade-out, 'the end', walks away) with neither a loop nor a hard cut produce a WARNING-severity FAIL."
+          }
+        },
+        {
+          "ruleId": "PROGRESSION_006",
+          "ruleName": "Activity Is Not Progression",
+          "family": "progression",
+          "severity": "PASS",
+          "outcome": "PASS",
+          "message": "No single verb root dominates. Most common: 'PEEL' at 50%.",
+          "details": {
+            "dominant_root": "PEEL",
+            "evaluation_stage": "PRE_RENDER",
+            "recommendation": "Deterministic companion to ATTEMPT_002: flags a dominant primaryVerb ROOT across attempts (e.g. PUSH / PUSH_HARDER / PUSH_FROM_LEFT all share the root PUSH) even when full verb labels are distinct and ATTEMPT_002's LLM duplicate-strategy check already passed. Catches 'more activity, not a new strategy' in the gray area between CHAR_002 (time-active) and ATTEMPT_002 (label/semantic distinctness). No LLM call."
+          }
+        },
+        {
+          "ruleId": "ESCALATION_005",
+          "ruleName": "Meaningful Attempt Escalation",
+          "family": "escalation",
+          "severity": "PASS",
+          "outcome": "PASS",
+          "message": "Strong escalation evidence is present: Escalation is evidenced by consequence magnitude, force, deformation, scope, difficulty, stakes or mechanic persistence.",
+          "details": {
+            "evidence": {
+              "status": "AVAILABLE",
+              "reason": "Escalation is evidenced by consequence magnitude, force, deformation, scope, difficulty, stakes or mechanic persistence.",
+              "candidateBeatIds": [
+                "beat_02",
+                "beat_03",
+                "beat_04",
+                "beat_05"
+              ],
+              "candidate_beat_ids": [
+                "beat_02",
+                "beat_03",
+                "beat_04",
+                "beat_05"
+              ],
+              "newTarget": true,
+              "new_target": true,
+              "intensityRise": false,
+              "intensity_rise": false,
+              "consequenceExpansion": true,
+              "consequence_expansion": true,
+              "resistance": true,
+              "wallFlex": false,
+              "wall_flex": false,
+              "forceRise": false,
+              "deformation": false,
+              "scopeExpansion": false,
+              "difficultyRise": false,
+              "stakesRise": false,
+              "persistence": true,
+              "quantityGrowth": true,
+              "applicability": "APPLICABLE",
+              "strength": "STRONG",
+              "source": "LATER_ATTEMPT_COMPARISON",
+              "confidence": 0.8
+            },
+            "evaluation_stage": "PRE_RENDER",
+            "recommendation": "Companion to ESCALATION_004 (payoff timing): checks whether attempt-beat intensity rises across the timeline rather than staying flat or declining. Deterministic, keyed off beats[].intensity on isAttempt beats in timeline order. Capped at WARNING \u2014 deadpan-comedy concepts can deliberately keep escalation small."
+          }
+        },
+        {
+          "ruleId": "CONTINUOUS_ACTION_MOMENTUM",
+          "ruleName": "Continuous Action Momentum",
+          "family": "motion_quality",
+          "severity": "PASS",
+          "outcome": "PASS",
+          "message": "Attempts chain with reaction/action overlap and a bounded passive-time budget.",
+          "details": {
+            "passiveSeconds": 0.0,
+            "passiveRatio": 0.0,
+            "standaloneReactionCount": 0,
+            "attemptTransitionGaps": [
+              0.0
+            ],
+            "maxAttemptTransitionGap": 0.0,
+            "finalAftermathSeconds": 0.0,
+            "evaluation_stage": "PRE_RENDER",
+            "recommendation": "A reaction must overlap the physical transition into the next attempt. Rejects standalone reaction beats, reset-to-neutral gaps, excessive passive time, slow attempt transitions, and long final aftermaths. This rule distinguishes meaningful progression from forward motion momentum."
+          }
+        },
+        {
+          "ruleId": "GOAL_VISIBLE_EARLY",
+          "ruleName": "Goal Visible Early",
+          "family": "hook_strength",
+          "severity": "CRITICAL",
+          "outcome": "PASS",
+          "message": "The character goal is available in the opening window.",
+          "details": {
+            "goalEvidence": {
+              "goalExplicitness": "IMPLICIT_BUT_OBSERVABLE",
+              "goalType": "ATTACH_OBJECT_TO_TARGET",
+              "description": "Attach the note to the cabinet",
+              "targetObject": "the cabinet",
+              "obstruction": "instead of sticking to the cabinet, the note visibly clings to Pip's finger",
+              "intendedEffect": "attach_object_to_target_surface",
+              "source": "CONTRASTIVE_ATTACHMENT_TARGET_INFERENCE",
+              "primaryGoal": {
+                "description": "Attach the note to the cabinet",
+                "state": "INFERRED",
+                "sourceQuote": "instead of sticking to the cabinet, the note visibly clings to Pip's finger",
+                "sourceSpan": [
+                  252,
+                  327
+                ],
+                "method": "CONTRASTIVE_ATTACHMENT_TARGET_INFERENCE",
+                "semanticVerification": "NOT_PERFORMED"
+              },
+              "secondaryRecoveryAttempt": {
+                "description": "Pip tries to peel the stuck note away with the other hand",
+                "state": "OBSERVED",
+                "sourceQuote": "Pip tries to peel the stuck note away with the other hand",
+                "sourceSpan": [
+                  391,
+                  448
+                ],
+                "method": "EXPLICIT_RECOVERY_ATTEMPT_PATTERN",
+                "semanticVerification": "NOT_PERFORMED",
+                "beatId": "beat_02",
+                "targetObject": "the stuck note"
+              }
+            },
+            "evaluation_stage": "PRE_RENDER",
+            "recommendation": "The character goal must be explicit or implicit-but-observable in the first 1-2 seconds."
+          }
+        },
+        {
+          "ruleId": "TEMPORAL_COMPLEXITY_SPLIT_GATE",
+          "ruleName": "Temporal Complexity Split Gate",
+          "family": "generation_executability",
+          "severity": "BLOCKER",
+          "outcome": "PASS",
+          "message": "Temporal load is manageable for the selected generation plan.",
+          "details": {
+            "mode": "SINGLE_15S",
+            "storyEvidence": {
+              "raw_beat_count": 5,
+              "load_beat_count": 5,
+              "major_beat_count": 5,
+              "micro_beat_count": 0,
+              "state_transition_count": 5,
+              "strategy_change_count": 1,
+              "critical_beat_durations": [
+                2.0,
+                3.0,
+                5.0,
+                2.0,
+                3.0
+              ],
+              "generation_mode": "SINGLE_15S",
+              "temporal_load": "MANAGEABLE",
+              "split_recommendation": null,
+              "goal_status": "IMPLICIT_BUT_OBSERVABLE",
+              "obstruction_status": "AVAILABLE",
+              "realization_status": "UNKNOWN",
+              "realization_mode": null,
+              "payoff_status": "AVAILABLE",
+              "continuation_status": "NOT_APPLICABLE",
+              "continuation_mismatches": []
+            },
+            "evaluation_stage": "PRE_RENDER",
+            "recommendation": "Block an overloaded SINGLE_15S generation plan and recommend SPLIT_2X15S. The creative concept is not rejected when the split plan is selected."
+          }
+        },
+        {
+          "ruleId": "BEAT_DENSITY_RULE",
+          "ruleName": "Beat Density Rule",
+          "family": "progression",
+          "severity": "CRITICAL",
+          "outcome": "PASS",
+          "message": "5 canonical major beats fit the 15-second plan.",
+          "details": {
+            "microBeatCount": 0,
+            "storyEvidence": {
+              "raw_beat_count": 5,
+              "load_beat_count": 5,
+              "major_beat_count": 5,
+              "micro_beat_count": 0,
+              "state_transition_count": 5,
+              "strategy_change_count": 1,
+              "critical_beat_durations": [
+                2.0,
+                3.0,
+                5.0,
+                2.0,
+                3.0
+              ],
+              "generation_mode": "SINGLE_15S",
+              "temporal_load": "MANAGEABLE",
+              "split_recommendation": null,
+              "goal_status": "IMPLICIT_BUT_OBSERVABLE",
+              "obstruction_status": "AVAILABLE",
+              "realization_status": "UNKNOWN",
+              "realization_mode": null,
+              "payoff_status": "AVAILABLE",
+              "continuation_status": "NOT_APPLICABLE",
+              "continuation_mismatches": []
+            },
+            "evaluation_stage": "PRE_RENDER",
+            "recommendation": "A 15-second single-generation plan should contain 4-5 canonical major story beats, with approximately 6 as the upper safe limit. Micro-actions do not count."
+          }
+        }
+      ],
+      "failedRules": [
+        {
+          "ruleId": "BEAT_004",
+          "ruleName": "Static State Dominance",
+          "family": "visual_novelty",
+          "severity": "CRITICAL",
+          "outcome": "FAIL",
+          "message": "Visual state 'character_pip_continues_to_pull_each_pull_doubles_' occupies 33.3% of video. Maximum: 30%.",
+          "details": {
+            "state_id": "character_pip_continues_to_pull_each_pull_doubles_",
+            "evaluation_stage": "PRE_RENDER",
+            "recommendation": "No single visual state may occupy more than approximately\n25\u201330% of the entire video unless meaningful new physical\nconsequences occur within that state.\n\nDifferent dialogue or tiny movements do NOT count\nas different visual beats."
+          }
+        },
+        {
+          "ruleId": "ATTEMPT_001",
+          "ruleName": "Attempt Count",
+          "family": "concept_strength",
+          "severity": "BLOCKER",
+          "outcome": "FAIL",
+          "message": "Only 2 active attempt(s) detected for a short-tier (15s) video. Minimum: 3.",
+          "details": {
+            "tier": "short",
+            "evaluation_stage": "PRE_RENDER",
+            "recommendation": "Count of beats with isAttempt == true must meet a duration-tier minimum: 3 for videos <= 20s (short tier), 7 for videos > 20s (long tier)."
+          }
+        },
+        {
+          "ruleId": "PRODUCIBILITY_003",
+          "ruleName": "Fragile Interaction Risk",
+          "family": "ai_producibility",
+          "severity": "CRITICAL",
+          "outcome": "FAIL",
+          "message": "Fragile interaction risk tags detected: ['THIN_OBJECT']. These are mid-tier AI-generation risks (precision alignment, cloth/rope simulation, liquids, thin objects, face/hair contact, multi-object stacking) worth a human look before committing render budget, even though they don't rise to very-high-complexity blocking.",
+          "details": {
+            "riskTags": [
+              "THIN_OBJECT"
+            ],
+            "evaluation_stage": "PRE_RENDER",
+            "recommendation": "Fills the gap between PRODUCIBILITY_001 (very-high-complexity hard block) and PRODUCIBILITY_002 (prop count budget): a middle tier of AI-generation risks (precision alignment, cloth/rope simulation, liquids, thin dangling objects, face/hair contact, multi-object stacking). Uses a tag-based diagnostic model (riskTags in evaluation details) rather than one rule per risk type. Deterministic substring match against setting.mainProps and beat action/consequence text, no LLM call. Always CRITICAL when any tag is found \u2014 a human-review trigger, not an outright render block."
+          }
+        },
+        {
+          "ruleId": "INSTANT_VISUAL_ABSURDITY_GATE",
+          "ruleName": "Instant Visual Absurdity Gate",
+          "family": "hook_strength",
+          "severity": "BLOCKER",
+          "outcome": "FAIL",
+          "message": "First-frame absurdity evidence is incomplete; the concept is blocked before render.",
+          "details": {
+            "missingEvidence": [
+              "staticWrongness",
+              "noHistoryRequired",
+              "noMicroComparison",
+              "largeVisualSignal",
+              "characterAlreadyEngaged"
+            ],
+            "failureBasis": "EVIDENCE_INCOMPLETE",
+            "evaluation_stage": "PRE_RENDER",
+            "recommendation": "BLOCKER: the first frame must communicate a physically impossible or clearly wrong situation without history, counting, micro-comparison, audio, text, or prior knowledge. The main character must already be engaged with the event."
+          }
+        },
+        {
+          "ruleId": "ENGINE_SILHOUETTE_DUPLICATE",
+          "ruleName": "Engine Silhouette Duplicate",
+          "family": "visual_novelty",
+          "severity": "BLOCKER",
+          "outcome": "FAIL",
+          "message": "No first-frame/final-silhouette comparison evidence was supplied; the concept is blocked before render.",
+          "details": {
+            "failureBasis": "EVIDENCE_INCOMPLETE",
+            "evaluation_stage": "PRE_RENDER",
+            "recommendation": "BLOCKER: reject concepts whose visible progression and final silhouette substantially duplicate a known winner visual engine, even when the underlying mathematical rule differs."
+          }
+        },
+        {
+          "ruleId": "MINI_STORY_LOCK",
+          "ruleName": "Mini Story Lock",
+          "family": "concept_strength",
+          "severity": "BLOCKER",
+          "outcome": "FAIL",
+          "message": "Mini-story structure is incomplete; missing: realization.",
+          "details": {
+            "missing": [
+              "realization"
+            ],
+            "fake_resolution": "OPTIONAL",
+            "recurrence": "OPTIONAL",
+            "storyEvidence": {
+              "raw_beat_count": 5,
+              "load_beat_count": 5,
+              "major_beat_count": 5,
+              "micro_beat_count": 0,
+              "state_transition_count": 5,
+              "strategy_change_count": 1,
+              "critical_beat_durations": [
+                2.0,
+                3.0,
+                5.0,
+                2.0,
+                3.0
+              ],
+              "generation_mode": "SINGLE_15S",
+              "temporal_load": "MANAGEABLE",
+              "split_recommendation": null,
+              "goal_status": "IMPLICIT_BUT_OBSERVABLE",
+              "obstruction_status": "AVAILABLE",
+              "realization_status": "UNKNOWN",
+              "realization_mode": null,
+              "payoff_status": "AVAILABLE",
+              "continuation_status": "NOT_APPLICABLE",
+              "continuation_mismatches": []
+            },
+            "evaluation_stage": "PRE_RENDER",
+            "recommendation": "Every video needs a visible goal, one impossible obstruction tied to that goal, active strategies, progression, realization or decision, and a readable payoff. Fake resolution, recurrence, and final twist are optional bonus evidence."
+          }
+        }
+      ],
+      "unknownRules": [
+        {
+          "ruleId": "CONSISTENCY_001",
+          "ruleName": "Physics Rule Consistency",
+          "family": "consistency",
+          "severity": "WARNING",
+          "outcome": "UNKNOWN",
+          "message": "coreMechanic.consistency was not explicitly stated in the prompt and cannot be verified.",
+          "details": {
+            "evaluation_stage": "PRE_RENDER",
+            "recommendation": "The physical rule established in the hook should remain\nconsistent throughout the video unless the concept explicitly\ninvolves rule-breaking as the payoff."
+          }
+        },
+        {
+          "ruleId": "HOOK_002",
+          "ruleName": "First Frame Anomaly",
+          "family": "hook_strength",
+          "severity": "CRITICAL",
+          "outcome": "UNKNOWN",
+          "message": "Hook starts mid-action, but visual strength was not explicitly stated in the prompt and cannot be verified.",
+          "details": {
+            "evaluation_stage": "PRE_RENDER",
+            "recommendation": "The problem must already be visually obvious within the opening second, with no setup, narration, or text explanation required. hook.startsMidAction must be true and hook.visualStrength must be at least 4/5. RULESET 1.3 adds a tolerance window -- hook.startsAt must be <= 0.8s (defaults to 0.0 when absent, a no-op for pre-1.3 IRs); the anomaly doesn't need to be literally frame-0 to read as immediate."
+          }
+        },
+        {
+          "ruleId": "HOOK_003",
+          "ruleName": "Sound Independence",
+          "family": "hook_strength",
+          "severity": "CRITICAL",
+          "outcome": "UNKNOWN",
+          "message": "hook.soundOffClear was not explicitly stated in the prompt and cannot be verified.",
+          "details": {
+            "evaluation_stage": "PRE_RENDER",
+            "recommendation": "The core problem and physical comedy must work with audio muted. hook.soundOffClear must be true."
+          }
+        },
+        {
+          "ruleId": "ATTEMPT_002",
+          "ruleName": "Distinct Attempts",
+          "family": "visual_novelty",
+          "severity": "CRITICAL",
+          "outcome": "UNKNOWN",
+          "message": "Semantic judgment has no verified evidence; provider dispatch is disabled for this local ruleset.",
+          "details": {
+            "requiredEvidence": "VERIFIED_SEMANTIC_JUDGMENT",
+            "providerDispatch": false,
+            "evaluation_stage": "PRE_RENDER",
+            "recommendation": "Attempts must be mechanically distinct, not just differently worded. Identical primaryVerb across attempts is an automatic deterministic FAIL. Verb-distinct attempts are checked for semantic duplication via LLM (e.g. GRAB vs YANK may be the same underlying strategy; RULESET 1.3 explicitly also treats intensity/angle variants of the identical strategy as duplicates, e.g. PUSH/PUSH_HARDER/PUSH_FROM_LEFT). Effective distinct count must meet the same duration-tier minimum as ATTEMPT_001."
+          }
+        },
+        {
+          "ruleId": "PAYOFF_003",
+          "ruleName": "Rule-Consistent Twist",
+          "family": "final_payoff",
+          "severity": "CRITICAL",
+          "outcome": "UNKNOWN",
+          "message": "Semantic judgment has no verified evidence; provider dispatch is disabled for this local ruleset.",
+          "details": {
+            "requiredEvidence": "VERIFIED_SEMANTIC_JUDGMENT",
+            "providerDispatch": false,
+            "evaluation_stage": "PRE_RENDER",
+            "recommendation": "The final twist must derive from the same established physical rule (coreMechanic.physicalRule), applied in a new or bigger way \u2014 not an unrelated, disconnected joke. Checked via LLM semantic judgment."
+          }
+        },
+        {
+          "ruleId": "CONCEPT_007",
+          "ruleName": "Single Dominant Mechanic",
+          "family": "concept_strength",
+          "severity": "BLOCKER",
+          "outcome": "UNKNOWN",
+          "message": "Semantic judgment has no verified evidence; provider dispatch is disabled for this local ruleset.",
+          "details": {
+            "requiredEvidence": "VERIFIED_SEMANTIC_JUDGMENT",
+            "providerDispatch": false,
+            "evaluation_stage": "PRE_RENDER",
+            "recommendation": "The concept must exhibit exactly one independent physical/magical rule. Same mechanic applied with escalating/varied consequences is fine (PASS); a second, genuinely independent rule introduced partway through is not (CRITICAL at 2 mechanics, BLOCKER at 3+). coreMechanic.mechanicCount is an author claim, verified (not trusted) via LLM semantic judgment against the beat-by-beat consequences."
+          }
+        },
+        {
+          "ruleId": "GOAL_001",
+          "ruleName": "Goal-Obstruction Clarity",
+          "family": "concept_strength",
+          "severity": "BLOCKER",
+          "outcome": "UNKNOWN",
+          "message": "Semantic judgment has no verified evidence; provider dispatch is disabled for this local ruleset.",
+          "details": {
+            "requiredEvidence": "VERIFIED_SEMANTIC_JUDGMENT",
+            "providerDispatch": false,
+            "evaluation_stage": "PRE_RENDER",
+            "recommendation": "The character must have an immediately understandable, natural physical goal, and the established abnormal rule must genuinely obstruct that goal. Distinguishes a believable reason to keep trying from an arbitrary or magic-demo setup invented only to showcase the mechanic (the character could simply walk away with no believable reason to continue). Verified via LLM semantic judgment (check_goal_is_natural), fail-closed to SERVICE_ERROR."
+          }
+        },
+        {
+          "ruleId": "CONCEPT_008",
+          "ruleName": "Rule Readability / Predictability",
+          "family": "concept_strength",
+          "severity": "CRITICAL",
+          "outcome": "UNKNOWN",
+          "message": "Semantic judgment has no verified evidence; provider dispatch is disabled for this local ruleset.",
+          "details": {
+            "requiredEvidence": "VERIFIED_SEMANTIC_JUDGMENT",
+            "providerDispatch": false,
+            "evaluation_stage": "PRE_RENDER",
+            "recommendation": "Distinct from CONCEPT_007: a single, internally consistent mechanic is not automatically a legible one. A rule that depends on a combination of exact position, angle, and speed is technically one mechanic but unlearnable by a child audience watching once. Asks whether a viewer could learn the pattern from the first 1-2 occurrences and predict what happens next. Verified via LLM semantic judgment (check_rule_is_predictable), fail-closed to SERVICE_ERROR."
+          }
+        },
+        {
+          "ruleId": "HOOK_004",
+          "ruleName": "Opening Problem Legibility",
+          "family": "hook_strength",
+          "severity": "CRITICAL",
+          "outcome": "UNKNOWN",
+          "message": "Semantic judgment has no verified evidence; provider dispatch is disabled for this local ruleset.",
+          "details": {
+            "requiredEvidence": "VERIFIED_SEMANTIC_JUDGMENT",
+            "providerDispatch": false,
+            "evaluation_stage": "PRE_RENDER",
+            "recommendation": "Stricter than HOOK_002: HOOK_002 confirms something visually unusual happens immediately; this asks whether the opening ALSO makes clear what the character wants and why they can't get it yet, not just that something odd is occurring. Verified via LLM semantic judgment (check_opening_problem_legible), fail-closed to SERVICE_ERROR."
+          }
+        },
+        {
+          "ruleId": "PERFORMANCE_001",
+          "ruleName": "Cute Emotional Readability",
+          "family": "character_performance",
+          "severity": "WARNING",
+          "outcome": "UNKNOWN",
+          "message": "Semantic judgment has no verified evidence; provider dispatch is disabled for this local ruleset.",
+          "details": {
+            "requiredEvidence": "VERIFIED_SEMANTIC_JUDGMENT",
+            "providerDispatch": false,
+            "evaluation_stage": "PRE_RENDER",
+            "recommendation": "New character_performance family (RULESET 1.3). CHAR_002 confirms the character is active for enough of the runtime; this asks whether that activity reads as emotionally engaged and sympathetic rather than blank, robotic, aggressive, or stuck in prolonged panic. Verified via LLM semantic judgment (check_character_performance_readable), fail-closed to SERVICE_ERROR. Capped at WARNING \u2014 a performance-quality nudge, not a structural requirement."
+          }
+        },
+        {
+          "ruleId": "GENERATION_EXECUTABLE_ATTEMPTS",
+          "ruleName": "Generation Executable Attempts",
+          "family": "generation_executability",
+          "severity": "BLOCKER",
+          "outcome": "UNKNOWN",
+          "message": "Semantic judgment has no verified evidence; provider dispatch is disabled for this local ruleset.",
+          "details": {
+            "requiredEvidence": "VERIFIED_SEMANTIC_JUDGMENT",
+            "providerDispatch": false,
+            "evaluation_stage": "PRE_RENDER",
+            "recommendation": "Distinct from ATTEMPT_002 (semantic strategy diversity): ATTEMPT_002 asks whether the character is genuinely trying a different strategy; this asks whether that different strategy will actually LOOK different and be reliably executable by an image-to-video generation model (e.g. Seedance). A deterministic keyword pre-filter flags abstract-intent language ('blocks the escape route', 'tries to outsmart') and vague movement-magnitude phrasing ('slightly moves') on attempt beats, plus a beat-budget estimate (too many attempts for the available duration). An LLM semantic check (check_attempts_are_generation_executable) judges each attempt for a concrete action-result pair and flags attempts that would visually collapse into the same choreography despite different wording. BLOCKER only when NO attempt is judged executable at all or the LLM is unreachable (SERVICE_ERROR); CRITICAL when some attempts are unexecutable or abstract-intent language is matched; WARNING for vague magnitude phrasing or beat-budget pressure alone."
+          }
+        }
+      ],
+      "notApplicableRules": [
+        {
+          "ruleId": "CONSISTENCY_002",
+          "ruleName": "Character Continuity Lock",
+          "family": "consistency",
+          "severity": "CRITICAL",
+          "outcome": "NOT_APPLICABLE",
+          "message": "Rule is evaluated only after a rendered video exists.",
+          "details": {
+            "evaluation_stage": "POST_RENDER"
+          }
+        },
+        {
+          "ruleId": "PAYOFF_005",
+          "ruleName": "Fake Win Escalation",
+          "family": "progression",
+          "severity": "WARNING",
+          "outcome": "NOT_APPLICABLE",
+          "message": "No fake-win beat present; this check does not apply to this concept.",
+          "details": {
+            "evaluation_stage": "PRE_RENDER",
+            "recommendation": "If a beat with consequenceType == 'fake_win' is present, the intensity after it must exceed the intensity at the fake win (the problem must escalate, not repeat or weaken, after a fake resolution). Reports NOT_APPLICABLE (not FAIL, not UNKNOWN) when no fake-win beat exists \u2014 this check simply does not apply to a concept that doesn't use the fake-resolution structure."
+          }
+        },
+        {
+          "ruleId": "CONCEPT_009",
+          "ruleName": "Single-Agent Object Mechanic",
+          "family": "concept_strength",
+          "severity": "BLOCKER",
+          "outcome": "NOT_APPLICABLE",
+          "message": "Rule does not apply to this content family.",
+          "details": {
+            "scopeType": "CONTENT_FAMILY",
+            "scopeId": "social_reel"
+          }
+        },
+        {
+          "ruleId": "CONTINUATION_LOCK",
+          "ruleName": "Continuation Lock",
+          "family": "generation_executability",
+          "severity": "BLOCKER",
+          "outcome": "NOT_APPLICABLE",
+          "message": "Continuation lock applies only to SPLIT_2X15S plans.",
+          "details": {
+            "analysisStage": "PRE_RENDER_PLAN_CONTRACT",
+            "evaluation_stage": "PRE_RENDER",
+            "recommendation": "For SPLIT_2X15S, Part 1 end-state and Part 2 start-state contracts must match. This is pre-render plan evidence, not pixel continuity verification."
+          }
+        },
+        {
+          "ruleId": "STUBBORN_RETURN_LOOP",
+          "ruleName": "Stubborn Return Loop",
+          "family": "progression",
+          "severity": "BLOCKER",
+          "outcome": "NOT_APPLICABLE",
+          "message": "Return-loop candidate lacks one or more mandatory signals.",
+          "details": {
+            "engineProfile": {
+              "profile": "DEFAULT",
+              "source": "INFERRED",
+              "confidence": "LOW",
+              "active": false,
+              "candidate_only": false,
+              "signals": {
+                "SINGLE_DOMINANT_OBJECT": false,
+                "FIXED_VISIBLE_BOUNDARY": false,
+                "SAFE_STATE": false,
+                "AUTONOMOUS_RETURN": false,
+                "RECURRENCE": false,
+                "CHARACTER_INTERVENTION": true,
+                "ESCALATION": false,
+                "NO_DEAD_RESET": true
+              },
+              "recurrence_count": 0,
+              "intervention_count": 2,
+              "state_memory_cost": "LOW",
+              "reason": "Return-loop candidate lacks one or more mandatory signals."
+            },
+            "evaluation_stage": "PRE_RENDER",
+            "recommendation": "High-confidence Spoon-class engine profile: one object, one visible safe/danger boundary, autonomous return, recurrence, active intervention, escalation, and no dead reset."
+          }
+        },
+        {
+          "ruleId": "STUBBORN_RETURN_HOOK",
+          "ruleName": "Stubborn Return Hook",
+          "family": "hook_strength",
+          "severity": "CRITICAL",
+          "outcome": "NOT_APPLICABLE",
+          "message": "Stubborn-return hook exception applies only when the engine profile is explicitly or high-confidence active.",
+          "details": {
+            "engineProfile": {
+              "profile": "DEFAULT",
+              "source": "INFERRED",
+              "confidence": "LOW",
+              "active": false,
+              "candidate_only": false,
+              "signals": {
+                "SINGLE_DOMINANT_OBJECT": false,
+                "FIXED_VISIBLE_BOUNDARY": false,
+                "SAFE_STATE": false,
+                "AUTONOMOUS_RETURN": false,
+                "RECURRENCE": false,
+                "CHARACTER_INTERVENTION": true,
+                "ESCALATION": false,
+                "NO_DEAD_RESET": true
+              },
+              "recurrence_count": 0,
+              "intervention_count": 2,
+              "state_memory_cost": "LOW",
+              "reason": "Return-loop candidate lacks one or more mandatory signals."
+            },
+            "evaluation_stage": "PRE_RENDER",
+            "recommendation": "Accept an immediate visible physical threat with the character already engaged even when frame zero is not a static impossibility."
+          }
+        },
+        {
+          "ruleId": "STUBBORN_RETURN_PAYOFF",
+          "ruleName": "Stubborn Return Payoff",
+          "family": "final_payoff",
+          "severity": "CRITICAL",
+          "outcome": "NOT_APPLICABLE",
+          "message": "Stubborn-return payoff exception is not active.",
+          "details": {
+            "engineProfile": {
+              "profile": "DEFAULT",
+              "source": "INFERRED",
+              "confidence": "LOW",
+              "active": false,
+              "candidate_only": false,
+              "signals": {
+                "SINGLE_DOMINANT_OBJECT": false,
+                "FIXED_VISIBLE_BOUNDARY": false,
+                "SAFE_STATE": false,
+                "AUTONOMOUS_RETURN": false,
+                "RECURRENCE": false,
+                "CHARACTER_INTERVENTION": true,
+                "ESCALATION": false,
+                "NO_DEAD_RESET": true
+              },
+              "recurrence_count": 0,
+              "intervention_count": 2,
+              "state_memory_cost": "LOW",
+              "reason": "Return-loop candidate lacks one or more mandatory signals."
+            },
+            "evaluation_stage": "PRE_RENDER",
+            "recommendation": "Accept a stronger active same-rule stalemate as payoff when the character remains engaged at the cut."
+          }
+        }
+      ],
+      "videoPlanIR": {
+        "beats": [
+          {
+            "id": "beat_01",
+            "startTime": 0.0,
+            "endTime": 2.0,
+            "duration": 2.0,
+            "action": "Pip reaches toward the toy cabinet with a sticky note; instead of sticking to th...",
+            "actionType": "transition",
+            "visualState": "character pip reaches toward the toy cabinet with a sticky note; instead of sticking to th...",
+            "visualStateId": "character_pip_reaches_toward_the_toy_cabinet_with_",
+            "consequence": "the note sticks to Pip, not the cabinet",
+            "consequenceType": "new",
+            "intensity": 5,
+            "motionAmount": "moderate",
+            "dialogue": null,
+            "readabilityDuration": 2.0,
+            "isReadable": true,
+            "isNewConsequence": true,
+            "similarToBeats": [],
+            "cycleGroup": null,
+            "isAttempt": false,
+            "primaryVerb": "",
+            "attemptSource": "NONE",
+            "attemptCandidate": null,
+            "attemptConfidence": null,
+            "attemptReason": null,
+            "strategyFamily": "UNSPECIFIED",
+            "actionStrategyFamily": "UNSPECIFIED",
+            "intendedStrategyFamily": "UNSPECIFIED",
+            "strategyRole": "INTENDED",
+            "strategyIntent": "DIRECT",
+            "primaryAction": "Pip reaches toward the toy cabinet with a sticky note; instead of sticking to th...",
+            "actor": "Pip",
+            "goal": null,
+            "targetObject": null,
+            "intendedEffect": null,
+            "result": "the note sticks to Pip, not the cabinet",
+            "distinctFromPreviousAttempt": null,
+            "beatLabel": "",
+            "beatRole": "",
+            "relatesToCoreProblem": true,
+            "sourceSpan": [
+              191,
+              384
+            ],
+            "sourceQuote": "0-2s: Pip reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to Pip's finger [medium shot] -> the note sticks to Pip, not the cabinet",
+            "evidenceStatus": "SOURCE_VERIFIED",
+            "characterActions": [
+              {
+                "classification": "CHARACTER_ACTION",
+                "actor": "Pip",
+                "actorQuote": "Pip",
+                "actorLocalSpan": [
+                  6,
+                  9
+                ],
+                "action": "Pip reaches toward the toy cabinet with a sticky note",
+                "localSpan": [
+                  6,
+                  59
+                ],
+                "primaryVerb": "REACH",
+                "verbQuote": "reaches",
+                "verbLocalSpan": [
+                  10,
+                  17
+                ],
+                "relationship": null,
+                "confidence": null,
+                "semanticVerification": "NOT_PERFORMED",
+                "sourceSpan": [
+                  197,
+                  250
+                ],
+                "actorSourceSpan": [
+                  197,
+                  200
+                ],
+                "verbSourceSpan": [
+                  201,
+                  208
+                ]
+              }
+            ],
+            "productionInstructions": [
+              {
+                "classification": "CAMERA_INSTRUCTION",
+                "quote": "[medium shot]",
+                "localSpan": [
+                  137,
+                  150
+                ],
+                "sourceSpan": [
+                  328,
+                  341
+                ]
+              }
+            ],
+            "physicalConsequences": [
+              {
+                "classification": "PHYSICAL_CONSEQUENCE",
+                "quote": "the note sticks to Pip, not the cabinet",
+                "sourceSpan": [
+                  345,
+                  384
+                ]
+              },
+              {
+                "classification": "PHYSICAL_CONSEQUENCE",
+                "quote": "the note sticks to Pip, not the cabinet",
+                "sourceSpan": [
+                  345,
+                  384
+                ],
+                "method": "EXPLICIT_OBJECT_EVENT",
+                "semanticVerification": "NOT_PERFORMED"
+              }
+            ],
+            "attemptEvidence": {
+              "sourceQuote": null,
+              "sourceSpan": null,
+              "action": null,
+              "primaryVerb": null,
+              "relationship": null,
+              "actorReference": {
+                "value": "Pip",
+                "sourceQuote": "Pip",
+                "sourceSpan": [
+                  15,
+                  18
+                ]
+              },
+              "contractVersion": "actor-source-bound-v2",
+              "classification": "NOT_AN_ATTEMPT",
+              "sourceBound": true,
+              "actor": null,
+              "actions": [
+                {
+                  "classification": "CHARACTER_ACTION",
+                  "actor": "Pip",
+                  "actorQuote": "Pip",
+                  "actorLocalSpan": [
+                    6,
+                    9
+                  ],
+                  "action": "Pip reaches toward the toy cabinet with a sticky note",
+                  "localSpan": [
+                    6,
+                    59
+                  ],
+                  "primaryVerb": "REACH",
+                  "verbQuote": "reaches",
+                  "verbLocalSpan": [
+                    10,
+                    17
+                  ],
+                  "relationship": null,
+                  "confidence": null,
+                  "semanticVerification": "NOT_PERFORMED",
+                  "sourceSpan": [
+                    197,
+                    250
+                  ],
+                  "actorSourceSpan": [
+                    197,
+                    200
+                  ],
+                  "verbSourceSpan": [
+                    201,
+                    208
+                  ]
+                }
+              ],
+              "confidence": null,
+              "duplicateSourceEvent": false,
+              "semanticVerification": "NOT_PERFORMED"
+            },
+            "primaryObject": "sticky note",
+            "fieldEvidence": {
+              "actor": {
+                "value": "Pip",
+                "state": "OBSERVED",
+                "sourceSpan": [
+                  197,
+                  200
+                ],
+                "sourceQuote": "Pip",
+                "method": "DETERMINISTIC_SOURCE_PATTERN",
+                "semanticVerification": "NOT_PERFORMED",
+                "reason": "Exact source mention."
+              },
+              "primaryObject": {
+                "value": "sticky note",
+                "state": "OBSERVED",
+                "sourceSpan": [
+                  239,
+                  250
+                ],
+                "sourceQuote": "sticky note",
+                "method": "DETERMINISTIC_SOURCE_PATTERN",
+                "semanticVerification": "NOT_PERFORMED",
+                "reason": "Exact object phrase."
+              },
+              "action": {
+                "value": "Pip reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to Pip's finger",
+                "state": "OBSERVED",
+                "sourceSpan": [
+                  197,
+                  327
+                ],
+                "sourceQuote": "Pip reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to Pip's finger",
+                "method": "DETERMINISTIC_SOURCE_PATTERN",
+                "semanticVerification": "NOT_PERFORMED",
+                "reason": "Exact source mention."
+              }
+            },
+            "sourceAction": "Pip reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to Pip's finger",
+            "sourceSpanStatus": "TEXT_MATCHED",
+            "motionEvidence": {
+              "method": "TOKEN_MOTION_V2",
+              "state": "INFERRED",
+              "value": "moderate",
+              "sourceQuote": "0-2s: Pip reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to Pip's finger [medium shot] -> the note sticks to Pip, not the cabinet",
+              "sourceSpan": [
+                191,
+                384
+              ],
+              "semanticVerification": "NOT_PERFORMED",
+              "visualVerification": "NOT_PERFORMED"
+            }
+          },
+          {
+            "id": "beat_02",
+            "startTime": 2.0,
+            "endTime": 5.0,
+            "duration": 3.0,
+            "action": "Pip tries to peel the stuck note away with the other hand; the note splits into ...",
+            "actionType": "interaction",
+            "visualState": "character pip tries to peel the stuck note away with the other hand; the note splits into ...",
+            "visualStateId": "character_pip_tries_to_peel_the_stuck_note_away_wi",
+            "consequence": "one note sticks to each hand",
+            "consequenceType": "new",
+            "intensity": 5,
+            "motionAmount": "moderate",
+            "dialogue": null,
+            "readabilityDuration": 3.0,
+            "isReadable": true,
+            "isNewConsequence": true,
+            "similarToBeats": [],
+            "cycleGroup": null,
+            "isAttempt": true,
+            "primaryVerb": "PEEL",
+            "attemptSource": "ACTOR_SOURCE_BOUND",
+            "attemptCandidate": null,
+            "attemptConfidence": 0.9,
+            "attemptReason": "Source-established actor, physical action and directed relationship.",
+            "strategyFamily": "OTHER:PEEL",
+            "actionStrategyFamily": "OTHER:PEEL",
+            "intendedStrategyFamily": "OTHER:PEEL",
+            "strategyRole": "INTENDED",
+            "strategyIntent": "DIRECT",
+            "primaryAction": "Pip tries to peel the stuck note away with the other hand; the note splits into ...",
+            "actor": "Pip",
+            "goal": "Pip tries to peel the stuck note away with the other hand",
+            "targetObject": "the stuck note",
+            "intendedEffect": "remove_or_release_object",
+            "result": "one note sticks to each hand",
+            "distinctFromPreviousAttempt": null,
+            "beatLabel": "",
+            "beatRole": "",
+            "relatesToCoreProblem": true,
+            "sourceSpan": [
+              385,
+              520
+            ],
+            "sourceQuote": "2-5s: Pip tries to peel the stuck note away with the other hand; the note splits into two [medium shot] -> one note sticks to each hand",
+            "evidenceStatus": "SOURCE_VERIFIED",
+            "characterActions": [
+              {
+                "classification": "CHARACTER_ATTEMPT",
+                "actor": "Pip",
+                "actorQuote": "Pip",
+                "actorLocalSpan": [
+                  6,
+                  9
+                ],
+                "action": "Pip tries to peel the stuck note away with the other hand",
+                "localSpan": [
+                  6,
+                  63
+                ],
+                "primaryVerb": "PEEL",
+                "verbQuote": "peel",
+                "verbLocalSpan": [
+                  19,
+                  23
+                ],
+                "relationship": "EXPLICIT_INTENT_OR_CONTINUATION",
+                "confidence": 0.9,
+                "semanticVerification": "NOT_PERFORMED",
+                "sourceSpan": [
+                  391,
+                  448
+                ],
+                "actorSourceSpan": [
+                  391,
+                  394
+                ],
+                "verbSourceSpan": [
+                  404,
+                  408
+                ]
+              }
+            ],
+            "productionInstructions": [
+              {
+                "classification": "CAMERA_INSTRUCTION",
+                "quote": "[medium shot]",
+                "localSpan": [
+                  90,
+                  103
+                ],
+                "sourceSpan": [
+                  475,
+                  488
+                ]
+              }
+            ],
+            "physicalConsequences": [
+              {
+                "classification": "PHYSICAL_CONSEQUENCE",
+                "quote": "one note sticks to each hand",
+                "sourceSpan": [
+                  492,
+                  520
+                ]
+              },
+              {
+                "classification": "PHYSICAL_CONSEQUENCE",
+                "quote": "the note splits into two",
+                "sourceSpan": [
+                  450,
+                  474
+                ],
+                "method": "EXPLICIT_OBJECT_EVENT",
+                "semanticVerification": "NOT_PERFORMED"
+              }
+            ],
+            "attemptEvidence": {
+              "sourceQuote": "Pip tries to peel the stuck note away with the other hand",
+              "sourceSpan": [
+                391,
+                448
+              ],
+              "action": "Pip tries to peel the stuck note away with the other hand",
+              "primaryVerb": "PEEL",
+              "relationship": "EXPLICIT_INTENT_OR_CONTINUATION",
+              "actorReference": {
+                "value": "Pip",
+                "sourceQuote": "Pip",
+                "sourceSpan": [
+                  15,
+                  18
+                ]
+              },
+              "contractVersion": "actor-source-bound-v2",
+              "classification": "SOURCE_BOUND_ATTEMPT",
+              "sourceBound": true,
+              "actor": "Pip",
+              "actions": [
+                {
+                  "classification": "CHARACTER_ATTEMPT",
+                  "actor": "Pip",
+                  "actorQuote": "Pip",
+                  "actorLocalSpan": [
+                    6,
+                    9
+                  ],
+                  "action": "Pip tries to peel the stuck note away with the other hand",
+                  "localSpan": [
+                    6,
+                    63
+                  ],
+                  "primaryVerb": "PEEL",
+                  "verbQuote": "peel",
+                  "verbLocalSpan": [
+                    19,
+                    23
+                  ],
+                  "relationship": "EXPLICIT_INTENT_OR_CONTINUATION",
+                  "confidence": 0.9,
+                  "semanticVerification": "NOT_PERFORMED",
+                  "sourceSpan": [
+                    391,
+                    448
+                  ],
+                  "actorSourceSpan": [
+                    391,
+                    394
+                  ],
+                  "verbSourceSpan": [
+                    404,
+                    408
+                  ]
+                }
+              ],
+              "confidence": 0.9,
+              "duplicateSourceEvent": false,
+              "semanticVerification": "NOT_PERFORMED"
+            },
+            "goalEvidenceRole": "SECONDARY_RECOVERY_ATTEMPT",
+            "primaryObject": "note",
+            "fieldEvidence": {
+              "actor": {
+                "value": "Pip",
+                "state": "OBSERVED",
+                "sourceSpan": [
+                  391,
+                  394
+                ],
+                "sourceQuote": "Pip",
+                "method": "DETERMINISTIC_SOURCE_PATTERN",
+                "semanticVerification": "NOT_PERFORMED",
+                "reason": "Exact source mention."
+              },
+              "primaryObject": {
+                "value": "note",
+                "state": "INFERRED",
+                "sourceSpan": [
+                  419,
+                  423
+                ],
+                "sourceQuote": "note",
+                "method": "DETERMINISTIC_SOURCE_PATTERN",
+                "semanticVerification": "NOT_PERFORMED",
+                "reason": "Head noun corresponds to the source-introduced object; continuity is not independently verified."
+              },
+              "action": {
+                "value": "Pip tries to peel the stuck note away with the other hand; the note splits into two",
+                "state": "OBSERVED",
+                "sourceSpan": [
+                  391,
+                  474
+                ],
+                "sourceQuote": "Pip tries to peel the stuck note away with the other hand; the note splits into two",
+                "method": "DETERMINISTIC_SOURCE_PATTERN",
+                "semanticVerification": "NOT_PERFORMED",
+                "reason": "Exact source mention."
+              }
+            },
+            "sourceAction": "Pip tries to peel the stuck note away with the other hand; the note splits into two",
+            "sourceSpanStatus": "TEXT_MATCHED",
+            "motionEvidence": {
+              "method": "TOKEN_MOTION_V2",
+              "state": "INFERRED",
+              "value": "moderate",
+              "sourceQuote": "2-5s: Pip tries to peel the stuck note away with the other hand; the note splits into two [medium shot] -> one note sticks to each hand",
+              "sourceSpan": [
+                385,
+                520
+              ],
+              "semanticVerification": "NOT_PERFORMED",
+              "visualVerification": "NOT_PERFORMED"
+            }
+          },
+          {
+            "id": "beat_03",
+            "startTime": 5.0,
+            "endTime": 10.0,
+            "duration": 5.0,
+            "action": "Pip continues to pull; each pull doubles the sticky notes from two to four to ei...",
+            "actionType": "interaction",
+            "visualState": "character pip continues to pull; each pull doubles the sticky notes from two to four to ei...",
+            "visualStateId": "character_pip_continues_to_pull_each_pull_doubles_",
+            "consequence": "Pip is overwhelmed by notes",
+            "consequenceType": "new",
+            "intensity": 5,
+            "motionAmount": "moderate",
+            "dialogue": null,
+            "readabilityDuration": 5.0,
+            "isReadable": true,
+            "isNewConsequence": true,
+            "similarToBeats": [],
+            "cycleGroup": null,
+            "isAttempt": true,
+            "primaryVerb": "PULL",
+            "attemptSource": "ACTOR_SOURCE_BOUND",
+            "attemptCandidate": null,
+            "attemptConfidence": 0.9,
+            "attemptReason": "Source-established actor, physical action and directed relationship.",
+            "strategyFamily": "PULL",
+            "actionStrategyFamily": "PULL",
+            "intendedStrategyFamily": "PULL",
+            "strategyRole": "INTENDED",
+            "strategyIntent": "DIRECT",
+            "primaryAction": "Pip continues to pull; each pull doubles the sticky notes from two to four to ei...",
+            "actor": "Pip",
+            "goal": "Attach the note to the cabinet",
+            "targetObject": "the cabinet",
+            "intendedEffect": "attach_object_to_target_surface",
+            "result": "Pip is overwhelmed by notes",
+            "distinctFromPreviousAttempt": null,
+            "beatLabel": "",
+            "beatRole": "",
+            "relatesToCoreProblem": true,
+            "sourceSpan": [
+              521,
+              684
+            ],
+            "sourceQuote": "5-10s: Pip continues to pull; each pull doubles the sticky notes from two to four to eight, covering Pip's arms and face [wide shot] -> Pip is overwhelmed by notes",
+            "evidenceStatus": "SOURCE_VERIFIED",
+            "characterActions": [
+              {
+                "classification": "CHARACTER_ATTEMPT",
+                "actor": "Pip",
+                "actorQuote": "Pip",
+                "actorLocalSpan": [
+                  7,
+                  10
+                ],
+                "action": "Pip continues to pull",
+                "localSpan": [
+                  7,
+                  28
+                ],
+                "primaryVerb": "PULL",
+                "verbQuote": "pull",
+                "verbLocalSpan": [
+                  24,
+                  28
+                ],
+                "relationship": "EXPLICIT_INTENT_OR_CONTINUATION",
+                "confidence": 0.9,
+                "semanticVerification": "NOT_PERFORMED",
+                "sourceSpan": [
+                  528,
+                  549
+                ],
+                "actorSourceSpan": [
+                  528,
+                  531
+                ],
+                "verbSourceSpan": [
+                  545,
+                  549
+                ]
+              }
+            ],
+            "productionInstructions": [
+              {
+                "classification": "CAMERA_INSTRUCTION",
+                "quote": "[wide shot]",
+                "localSpan": [
+                  121,
+                  132
+                ],
+                "sourceSpan": [
+                  642,
+                  653
+                ]
+              }
+            ],
+            "physicalConsequences": [
+              {
+                "classification": "PHYSICAL_CONSEQUENCE",
+                "quote": "Pip is overwhelmed by notes",
+                "sourceSpan": [
+                  657,
+                  684
+                ]
+              }
+            ],
+            "attemptEvidence": {
+              "sourceQuote": "Pip continues to pull",
+              "sourceSpan": [
+                528,
+                549
+              ],
+              "action": "Pip continues to pull",
+              "primaryVerb": "PULL",
+              "relationship": "EXPLICIT_INTENT_OR_CONTINUATION",
+              "actorReference": {
+                "value": "Pip",
+                "sourceQuote": "Pip",
+                "sourceSpan": [
+                  15,
+                  18
+                ]
+              },
+              "contractVersion": "actor-source-bound-v2",
+              "classification": "SOURCE_BOUND_ATTEMPT",
+              "sourceBound": true,
+              "actor": "Pip",
+              "actions": [
+                {
+                  "classification": "CHARACTER_ATTEMPT",
+                  "actor": "Pip",
+                  "actorQuote": "Pip",
+                  "actorLocalSpan": [
+                    7,
+                    10
+                  ],
+                  "action": "Pip continues to pull",
+                  "localSpan": [
+                    7,
+                    28
+                  ],
+                  "primaryVerb": "PULL",
+                  "verbQuote": "pull",
+                  "verbLocalSpan": [
+                    24,
+                    28
+                  ],
+                  "relationship": "EXPLICIT_INTENT_OR_CONTINUATION",
+                  "confidence": 0.9,
+                  "semanticVerification": "NOT_PERFORMED",
+                  "sourceSpan": [
+                    528,
+                    549
+                  ],
+                  "actorSourceSpan": [
+                    528,
+                    531
+                  ],
+                  "verbSourceSpan": [
+                    545,
+                    549
+                  ]
+                }
+              ],
+              "confidence": 0.9,
+              "duplicateSourceEvent": false,
+              "semanticVerification": "NOT_PERFORMED"
+            },
+            "goalEvidenceRole": "PRIMARY_GOAL",
+            "primaryObject": "sticky notes",
+            "fieldEvidence": {
+              "actor": {
+                "value": "Pip",
+                "state": "OBSERVED",
+                "sourceSpan": [
+                  528,
+                  531
+                ],
+                "sourceQuote": "Pip",
+                "method": "DETERMINISTIC_SOURCE_PATTERN",
+                "semanticVerification": "NOT_PERFORMED",
+                "reason": "Exact source mention."
+              },
+              "primaryObject": {
+                "value": "sticky notes",
+                "state": "OBSERVED",
+                "sourceSpan": [
+                  573,
+                  585
+                ],
+                "sourceQuote": "sticky notes",
+                "method": "DETERMINISTIC_SOURCE_PATTERN",
+                "semanticVerification": "NOT_PERFORMED",
+                "reason": "Exact object phrase."
+              },
+              "action": {
+                "value": "Pip continues to pull; each pull doubles the sticky notes from two to four to eight, covering Pip's arms and face",
+                "state": "OBSERVED",
+                "sourceSpan": [
+                  528,
+                  641
+                ],
+                "sourceQuote": "Pip continues to pull; each pull doubles the sticky notes from two to four to eight, covering Pip's arms and face",
+                "method": "DETERMINISTIC_SOURCE_PATTERN",
+                "semanticVerification": "NOT_PERFORMED",
+                "reason": "Exact source mention."
+              }
+            },
+            "sourceAction": "Pip continues to pull; each pull doubles the sticky notes from two to four to eight, covering Pip's arms and face",
+            "sourceSpanStatus": "TEXT_MATCHED",
+            "motionEvidence": {
+              "method": "TOKEN_MOTION_V2",
+              "state": "INFERRED",
+              "value": "moderate",
+              "sourceQuote": "5-10s: Pip continues to pull; each pull doubles the sticky notes from two to four to eight, covering Pip's arms and face [wide shot] -> Pip is overwhelmed by notes",
+              "sourceSpan": [
+                521,
+                684
+              ],
+              "semanticVerification": "NOT_PERFORMED",
+              "visualVerification": "NOT_PERFORMED"
+            }
+          },
+          {
+            "id": "beat_04",
+            "startTime": 10.0,
+            "endTime": 12.0,
+            "duration": 2.0,
+            "action": "Pip sees the note-covered reflection in a mirror and gasps; the notes remain att...",
+            "actionType": "reaction",
+            "visualState": "character pip sees the note-covered reflection in a mirror and gasps; the notes remain att...",
+            "visualStateId": "character_pip_sees_the_notecovered_reflection_in_a",
+            "consequence": "Pip is startled",
+            "consequenceType": "new",
+            "intensity": 5,
+            "motionAmount": "moderate",
+            "dialogue": null,
+            "readabilityDuration": 2.0,
+            "isReadable": true,
+            "isNewConsequence": true,
+            "similarToBeats": [],
+            "cycleGroup": null,
+            "isAttempt": false,
+            "primaryVerb": "",
+            "attemptSource": "NONE",
+            "attemptCandidate": null,
+            "attemptConfidence": null,
+            "attemptReason": null,
+            "strategyFamily": "UNSPECIFIED",
+            "actionStrategyFamily": "UNSPECIFIED",
+            "intendedStrategyFamily": "UNSPECIFIED",
+            "strategyRole": "INTENDED",
+            "strategyIntent": "DIRECT",
+            "primaryAction": "Pip sees the note-covered reflection in a mirror and gasps; the notes remain att...",
+            "actor": "Pip",
+            "goal": null,
+            "targetObject": null,
+            "intendedEffect": null,
+            "result": "Pip is startled",
+            "distinctFromPreviousAttempt": null,
+            "beatLabel": "",
+            "beatRole": "",
+            "relatesToCoreProblem": true,
+            "sourceSpan": [
+              685,
+              830
+            ],
+            "sourceQuote": "10-12s: Pip sees the note-covered reflection in a mirror and gasps; the notes remain attached through this reaction [close-up] -> Pip is startled",
+            "evidenceStatus": "SOURCE_VERIFIED",
+            "characterActions": [],
+            "productionInstructions": [
+              {
+                "classification": "CAMERA_INSTRUCTION",
+                "quote": "[close-up]",
+                "localSpan": [
+                  116,
+                  126
+                ],
+                "sourceSpan": [
+                  801,
+                  811
+                ]
+              }
+            ],
+            "physicalConsequences": [
+              {
+                "classification": "PHYSICAL_CONSEQUENCE",
+                "quote": "Pip is startled",
+                "sourceSpan": [
+                  815,
+                  830
+                ]
+              }
+            ],
+            "attemptEvidence": {
+              "sourceQuote": null,
+              "sourceSpan": null,
+              "action": null,
+              "primaryVerb": null,
+              "relationship": null,
+              "actorReference": {
+                "value": "Pip",
+                "sourceQuote": "Pip",
+                "sourceSpan": [
+                  15,
+                  18
+                ]
+              },
+              "contractVersion": "actor-source-bound-v2",
+              "classification": "NOT_AN_ATTEMPT",
+              "sourceBound": true,
+              "actor": null,
+              "actions": [],
+              "confidence": null,
+              "duplicateSourceEvent": false,
+              "semanticVerification": "NOT_PERFORMED"
+            },
+            "primaryObject": "note",
+            "fieldEvidence": {
+              "actor": {
+                "value": "Pip",
+                "state": "OBSERVED",
+                "sourceSpan": [
+                  693,
+                  696
+                ],
+                "sourceQuote": "Pip",
+                "method": "DETERMINISTIC_SOURCE_PATTERN",
+                "semanticVerification": "NOT_PERFORMED",
+                "reason": "Exact source mention."
+              },
+              "primaryObject": {
+                "value": "note",
+                "state": "INFERRED",
+                "sourceSpan": [
+                  706,
+                  710
+                ],
+                "sourceQuote": "note",
+                "method": "DETERMINISTIC_SOURCE_PATTERN",
+                "semanticVerification": "NOT_PERFORMED",
+                "reason": "Head noun corresponds to the source-introduced object; continuity is not independently verified."
+              },
+              "action": {
+                "value": "Pip sees the note-covered reflection in a mirror and gasps; the notes remain attached through this reaction",
+                "state": "OBSERVED",
+                "sourceSpan": [
+                  693,
+                  800
+                ],
+                "sourceQuote": "Pip sees the note-covered reflection in a mirror and gasps; the notes remain attached through this reaction",
+                "method": "DETERMINISTIC_SOURCE_PATTERN",
+                "semanticVerification": "NOT_PERFORMED",
+                "reason": "Exact source mention."
+              }
+            },
+            "sourceAction": "Pip sees the note-covered reflection in a mirror and gasps; the notes remain attached through this reaction",
+            "sourceSpanStatus": "TEXT_MATCHED",
+            "motionEvidence": {
+              "method": "TOKEN_MOTION_V2",
+              "state": "INFERRED",
+              "value": "moderate",
+              "sourceQuote": "10-12s: Pip sees the note-covered reflection in a mirror and gasps; the notes remain attached through this reaction [close-up] -> Pip is startled",
+              "sourceSpan": [
+                685,
+                830
+              ],
+              "semanticVerification": "NOT_PERFORMED",
+              "visualVerification": "NOT_PERFORMED"
+            }
+          },
+          {
+            "id": "beat_05",
+            "startTime": 12.0,
+            "endTime": 15.0,
+            "duration": 3.0,
+            "action": "Pip sneezes and the sticky notes fly off onto the cabinet [medium shot] -> Pip i...",
+            "actionType": "interaction",
+            "visualState": "character pip sneezes and the sticky notes fly off onto the cabinet [medium shot] -> pip i...",
+            "visualStateId": "character_pip_sneezes_and_the_sticky_notes_fly_off",
+            "consequence": "Pip is relieved, but the cabinet remains messy",
+            "consequenceType": "new",
+            "intensity": 5,
+            "motionAmount": "moderate",
+            "dialogue": null,
+            "readabilityDuration": 3.0,
+            "isReadable": true,
+            "isNewConsequence": true,
+            "similarToBeats": [],
+            "cycleGroup": null,
+            "isAttempt": false,
+            "primaryVerb": "",
+            "attemptSource": "NONE",
+            "attemptCandidate": null,
+            "attemptConfidence": null,
+            "attemptReason": null,
+            "strategyFamily": "UNSPECIFIED",
+            "actionStrategyFamily": "UNSPECIFIED",
+            "intendedStrategyFamily": "UNSPECIFIED",
+            "strategyRole": "INTENDED",
+            "strategyIntent": "DIRECT",
+            "primaryAction": "Pip sneezes and the sticky notes fly off onto the cabinet [medium shot] -> Pip i...",
+            "actor": "Pip",
+            "goal": null,
+            "targetObject": null,
+            "intendedEffect": null,
+            "result": "Pip is relieved, but the cabinet remains messy",
+            "distinctFromPreviousAttempt": null,
+            "beatLabel": "",
+            "beatRole": "",
+            "relatesToCoreProblem": true,
+            "sourceSpan": [
+              831,
+              960
+            ],
+            "sourceQuote": "12-15s: Pip sneezes and the sticky notes fly off onto the cabinet [medium shot] -> Pip is relieved, but the cabinet remains messy",
+            "evidenceStatus": "SOURCE_VERIFIED",
+            "characterActions": [],
+            "productionInstructions": [
+              {
+                "classification": "CAMERA_INSTRUCTION",
+                "quote": "[medium shot]",
+                "localSpan": [
+                  66,
+                  79
+                ],
+                "sourceSpan": [
+                  897,
+                  910
+                ]
+              }
+            ],
+            "physicalConsequences": [
+              {
+                "classification": "PHYSICAL_CONSEQUENCE",
+                "quote": "Pip is relieved, but the cabinet remains messy",
+                "sourceSpan": [
+                  914,
+                  960
+                ]
+              }
+            ],
+            "attemptEvidence": {
+              "sourceQuote": null,
+              "sourceSpan": null,
+              "action": null,
+              "primaryVerb": null,
+              "relationship": null,
+              "actorReference": {
+                "value": "Pip",
+                "sourceQuote": "Pip",
+                "sourceSpan": [
+                  15,
+                  18
+                ]
+              },
+              "contractVersion": "actor-source-bound-v2",
+              "classification": "NOT_AN_ATTEMPT",
+              "sourceBound": true,
+              "actor": null,
+              "actions": [],
+              "confidence": null,
+              "duplicateSourceEvent": false,
+              "semanticVerification": "NOT_PERFORMED"
+            },
+            "primaryObject": "sticky notes",
+            "fieldEvidence": {
+              "actor": {
+                "value": "Pip",
+                "state": "OBSERVED",
+                "sourceSpan": [
+                  839,
+                  842
+                ],
+                "sourceQuote": "Pip",
+                "method": "DETERMINISTIC_SOURCE_PATTERN",
+                "semanticVerification": "NOT_PERFORMED",
+                "reason": "Exact source mention."
+              },
+              "primaryObject": {
+                "value": "sticky notes",
+                "state": "OBSERVED",
+                "sourceSpan": [
+                  859,
+                  871
+                ],
+                "sourceQuote": "sticky notes",
+                "method": "DETERMINISTIC_SOURCE_PATTERN",
+                "semanticVerification": "NOT_PERFORMED",
+                "reason": "Exact object phrase."
+              },
+              "action": {
+                "value": "Pip sneezes and the sticky notes fly off onto the cabinet",
+                "state": "OBSERVED",
+                "sourceSpan": [
+                  839,
+                  896
+                ],
+                "sourceQuote": "Pip sneezes and the sticky notes fly off onto the cabinet",
+                "method": "DETERMINISTIC_SOURCE_PATTERN",
+                "semanticVerification": "NOT_PERFORMED",
+                "reason": "Exact source mention."
+              }
+            },
+            "sourceAction": "Pip sneezes and the sticky notes fly off onto the cabinet",
+            "sourceSpanStatus": "TEXT_MATCHED",
+            "motionEvidence": {
+              "method": "TOKEN_MOTION_V2",
+              "state": "INFERRED",
+              "value": "moderate",
+              "sourceQuote": "12-15s: Pip sneezes and the sticky notes fly off onto the cabinet [medium shot] -> Pip is relieved, but the cabinet remains messy",
+              "sourceSpan": [
+                831,
+                960
+              ],
+              "semanticVerification": "NOT_PERFORMED",
+              "visualVerification": "NOT_PERFORMED"
+            }
+          }
+        ],
+        "mainCharacter": "Pip",
+        "principalObject": "sticky note",
+        "entityEvidence": {
+          "mainCharacter": {
+            "value": "Pip",
+            "state": "OBSERVED",
+            "sourceSpan": [
+              15,
+              18
+            ],
+            "sourceQuote": "Pip",
+            "method": "DETERMINISTIC_SOURCE_PATTERN",
+            "semanticVerification": "NOT_PERFORMED",
+            "reason": "Exact source mention."
+          },
+          "principalObject": {
+            "value": "sticky note",
+            "state": "OBSERVED",
+            "sourceSpan": [
+              239,
+              250
+            ],
+            "sourceQuote": "sticky note",
+            "method": "DETERMINISTIC_SOURCE_PATTERN",
+            "semanticVerification": "NOT_PERFORMED",
+            "reason": "Exact source mention."
+          }
+        },
+        "characters": {
+          "primary": "Pip",
+          "secondary": null,
+          "characterRefs": []
+        },
+        "coreMechanic": {
+          "physicalRule": "each pull doubles the sticky notes from two to four to eight, covering Pip's arms and face",
+          "physicalRuleEvidence": {
+            "state": "OBSERVED",
+            "sourceQuote": "each pull doubles the sticky notes from two to four to eight, covering Pip's arms and face",
+            "sourceSpan": [
+              551,
+              641
+            ],
+            "method": "EXPLICIT_REPEATED_ACTION_CLAUSE",
+            "semanticVerification": "NOT_PERFORMED"
+          },
+          "causeEffect": "Explicit repeated-action statement from prompt",
+          "consistency": null,
+          "mechanicCount": null,
+          "primaryObject": null,
+          "mechanicCarrier": "UNKNOWN",
+          "causalParticipants": null,
+          "abnormalProperty": "STICKS_TO_SURFACES",
+          "trigger": "CONTACT_OR_THROW",
+          "persistence": "PERSISTS_AFTER_CONTACT",
+          "releaseCondition": "FORCE_OR_SELF_RELEASE",
+          "recurrence": true,
+          "surfaceAttachmentEvidence": {
+            "state": "OBSERVED",
+            "sourceQuote": "instead of sticking to the cabinet, the note visibly clings to Pip's finger",
+            "sourceSpan": [
+              252,
+              327
+            ],
+            "method": "CONTRASTIVE_SURFACE_ATTACHMENT_PATTERN",
+            "semanticVerification": "NOT_PERFORMED",
+            "object": {
+              "value": "the note",
+              "state": "OBSERVED"
+            },
+            "expectedSurface": {
+              "value": "the cabinet",
+              "state": "OBSERVED"
+            },
+            "actualSurface": {
+              "value": "Pip's finger",
+              "state": "OBSERVED"
+            },
+            "relationship": {
+              "value": "WRONG_SURFACE_ATTACHMENT",
+              "state": "INFERRED"
+            }
+          }
+        },
+        "goalEvidence": {
+          "goalExplicitness": "IMPLICIT_BUT_OBSERVABLE",
+          "goalType": "ATTACH_OBJECT_TO_TARGET",
+          "description": "Attach the note to the cabinet",
+          "targetObject": "the cabinet",
+          "obstruction": "instead of sticking to the cabinet, the note visibly clings to Pip's finger",
+          "intendedEffect": "attach_object_to_target_surface",
+          "source": "CONTRASTIVE_ATTACHMENT_TARGET_INFERENCE",
+          "primaryGoal": {
+            "description": "Attach the note to the cabinet",
+            "state": "INFERRED",
+            "sourceQuote": "instead of sticking to the cabinet, the note visibly clings to Pip's finger",
+            "sourceSpan": [
+              252,
+              327
+            ],
+            "method": "CONTRASTIVE_ATTACHMENT_TARGET_INFERENCE",
+            "semanticVerification": "NOT_PERFORMED"
+          },
+          "secondaryRecoveryAttempt": {
+            "description": "Pip tries to peel the stuck note away with the other hand",
+            "state": "OBSERVED",
+            "sourceQuote": "Pip tries to peel the stuck note away with the other hand",
+            "sourceSpan": [
+              391,
+              448
+            ],
+            "method": "EXPLICIT_RECOVERY_ATTEMPT_PATTERN",
+            "semanticVerification": "NOT_PERFORMED",
+            "beatId": "beat_02",
+            "targetObject": "the stuck note"
+          }
+        },
+        "recurrence": true
+      },
+      "storyDensityEvidence": {
+        "raw_beat_count": 5,
+        "load_beat_count": 5,
+        "major_beat_count": 5,
+        "micro_beat_count": 0,
+        "state_transition_count": 5,
+        "strategy_change_count": 1,
+        "critical_beat_durations": [
+          2.0,
+          3.0,
+          5.0,
+          2.0,
+          3.0
+        ],
+        "generation_mode": "SINGLE_15S",
+        "temporal_load": "MANAGEABLE",
+        "split_recommendation": null,
+        "goal_status": "IMPLICIT_BUT_OBSERVABLE",
+        "obstruction_status": "AVAILABLE",
+        "realization_status": "UNKNOWN",
+        "realization_mode": null,
+        "payoff_status": "AVAILABLE",
+        "continuation_status": "NOT_APPLICABLE",
+        "continuation_mismatches": []
+      }
+    },
+    "studioSessionRecordId": "28aa2e21-dbec-43fe-ac09-c5f2678f9fdc",
+    "productionSettingsRecordId": "dad5956a-f201-4a70-8667-910be4d137d6",
+    "sourceReadbackHttp": true,
+    "nextOperation": "STORY_EVOLUTION_HTTP_START",
+    "promptProvenanceScope": "OPERATOR_SAVED_TEST_PROMPT; NOT_BUILD_PROMPT_OR_OPTIMIZER_OUTPUT",
+    "networkPolicy": "JVM_EXACT_LOOPBACK_PORT_ALLOWLIST_AND_ML_SOCKET_DENY_EGRESS",
+    "networkNegativeProbes": [
+      "external:443 denied",
+      "production-loopback:5432 denied"
+    ],
+    "unexpectedNetworkAttempts": [],
+    "productionDatabaseWrites": 0,
+    "realProviderCalls": 0,
+    "realImageCalls": 0,
+    "realRenderCalls": 0,
+    "httpTrace": [
+      {
+        "path": "/actuator/health",
+        "status": 200,
+        "expectedStatus": 200,
+        "csrfSupplied": false,
+        "method": "GET"
+      },
+      {
+        "path": "/api/v1/intelligence/workflow/cpq/optimization-runs/latest?analysisId=6bfa6034-acac-4add-9986-5b572f80d71e",
+        "status": 403,
+        "expectedStatus": 403,
+        "csrfSupplied": false,
+        "method": "GET"
+      },
+      {
+        "path": "/api/v1/intelligence/workflow/owner-auth",
+        "status": 200,
+        "expectedStatus": 200,
+        "csrfSupplied": false,
+        "method": "GET"
+      },
+      {
+        "path": "/api/v1/intelligence/workflow/owner-auth/login",
+        "status": 401,
+        "expectedStatus": 401,
+        "csrfSupplied": true,
+        "method": "POST"
+      },
+      {
+        "path": "/api/v1/intelligence/workflow/owner-auth/login",
+        "status": 403,
+        "expectedStatus": 403,
+        "csrfSupplied": false,
+        "method": "POST"
+      },
+      {
+        "path": "/api/v1/intelligence/workflow/owner-auth/login",
+        "status": 403,
+        "expectedStatus": 403,
+        "csrfSupplied": true,
+        "method": "POST"
+      },
+      {
+        "path": "/api/v1/intelligence/workflow/owner-auth/login",
+        "status": 200,
+        "expectedStatus": 200,
+        "csrfSupplied": true,
+        "method": "POST"
+      },
+      {
+        "path": "/api/v1/intelligence/workflow/cpq/optimization-runs/latest?analysisId=6bfa6034-acac-4add-9986-5b572f80d71e",
+        "status": 200,
+        "expectedStatus": 200,
+        "csrfSupplied": false,
+        "method": "GET"
+      },
+      {
+        "path": "/api/v1/intelligence/workflow/cpq/original-prompts/e71759ca-ed22-4f08-a33b-640a5b900498/fidelity-review",
+        "status": 403,
+        "expectedStatus": 403,
+        "csrfSupplied": false,
+        "method": "GET"
+      },
+      {
+        "path": "/api/v1/intelligence/workflow/cpq/original-prompts/preflight",
+        "status": 403,
+        "expectedStatus": 403,
+        "csrfSupplied": false,
+        "method": "POST"
+      },
+      {
+        "path": "/api/v1/intelligence/workflow/cpq/original-prompts/preflight",
+        "status": 403,
+        "expectedStatus": 403,
+        "csrfSupplied": true,
+        "method": "POST"
+      },
+      {
+        "path": "/api/v1/videos/prompt-workspaces/folders",
+        "status": 200,
+        "expectedStatus": 200,
+        "csrfSupplied": true,
+        "method": "POST"
+      },
+      {
+        "path": "/api/v1/intelligence/contents",
+        "status": 200,
+        "expectedStatus": 200,
+        "csrfSupplied": true,
+        "method": "POST"
+      },
+      {
+        "path": "/api/v1/intelligence/workflow/creative-role",
+        "status": 200,
+        "expectedStatus": 200,
+        "csrfSupplied": true,
+        "method": "POST"
+      },
+      {
+        "path": "/api/v1/intelligence/workflow/records/38150813-0f87-4b74-b6b8-f47a3f110a72/story-revisions",
+        "status": 200,
+        "expectedStatus": 200,
+        "csrfSupplied": true,
+        "method": "POST"
+      },
+      {
+        "path": "/api/v1/intelligence/workflow/creative-role/315611aa-c796-446d-808c-2b32cdaf6d4a/approve-story",
+        "status": 409,
+        "expectedStatus": 409,
+        "csrfSupplied": true,
+        "method": "POST"
+      },
+      {
+        "path": "/api/v1/intelligence/workflow/creative-role/315611aa-c796-446d-808c-2b32cdaf6d4a/approve-story",
+        "status": 200,
+        "expectedStatus": 200,
+        "csrfSupplied": true,
+        "method": "POST"
+      },
+      {
+        "path": "/api/v1/intelligence/contents/1/prompt-versions",
+        "status": 201,
+        "expectedStatus": 201,
+        "csrfSupplied": true,
+        "method": "POST"
+      },
+      {
+        "path": "/api/v1/intelligence/workflow/studio-sessions",
+        "status": 200,
+        "expectedStatus": 200,
+        "csrfSupplied": true,
+        "method": "POST"
+      },
+      {
+        "path": "/api/v1/intelligence/workflow/production-settings",
+        "status": 200,
+        "expectedStatus": 200,
+        "csrfSupplied": true,
+        "method": "POST"
+      },
+      {
+        "path": "/api/v1/intelligence/workflow/cpq/original-prompts/preflight",
+        "status": 200,
+        "expectedStatus": 200,
+        "csrfSupplied": true,
+        "method": "POST"
+      },
+      {
+        "path": "/api/v1/intelligence/workflow/review",
+        "status": 200,
+        "expectedStatus": 200,
+        "csrfSupplied": true,
+        "method": "POST"
+      },
+      {
+        "path": "/api/v1/intelligence/workflow/records/fae32caa-fb3e-47eb-bb95-cbc879cd9bbf",
+        "status": 200,
+        "expectedStatus": 200,
+        "csrfSupplied": false,
+        "method": "GET"
+      },
+      {
+        "path": "/api/v1/intelligence/workflow/records/315611aa-c796-446d-808c-2b32cdaf6d4a",
+        "status": 200,
+        "expectedStatus": 200,
+        "csrfSupplied": false,
+        "method": "GET"
+      },
+      {
+        "path": "/api/v1/intelligence/contents/1/prompt-versions",
+        "status": 200,
+        "expectedStatus": 200,
+        "csrfSupplied": false,
+        "method": "GET"
+      },
+      {
+        "path": "/api/v1/intelligence/workflow/records/f89fb891-2f7b-402f-b607-a9a56ecfadb8",
+        "status": 200,
+        "expectedStatus": 200,
+        "csrfSupplied": false,
+        "method": "GET"
+      },
+      {
+        "path": "/api/v1/intelligence/workflow/cpq/story-evolution-source?analysisId=f89fb891-2f7b-402f-b607-a9a56ecfadb8",
+        "status": 200,
+        "expectedStatus": 200,
+        "csrfSupplied": false,
+        "method": "GET"
+      },
+      {
+        "path": "/api/v1/intelligence/workflow/owner-auth/logout",
+        "status": 403,
+        "expectedStatus": 403,
+        "csrfSupplied": false,
+        "method": "POST"
+      },
+      {
+        "path": "/api/v1/intelligence/workflow/owner-auth/logout",
+        "status": 200,
+        "expectedStatus": 200,
+        "csrfSupplied": true,
+        "method": "POST"
+      },
+      {
+        "path": "/api/v1/intelligence/workflow/cpq/optimization-runs/latest?analysisId=6bfa6034-acac-4add-9986-5b572f80d71e",
+        "status": 403,
+        "expectedStatus": 403,
+        "csrfSupplied": false,
+        "method": "GET"
+      },
+      {
+        "path": "/api/v1/intelligence/workflow/owner-auth",
+        "status": 200,
+        "expectedStatus": 200,
+        "csrfSupplied": false,
+        "method": "GET"
+      },
+      {
+        "path": "/api/v1/intelligence/workflow/owner-auth",
+        "status": 200,
+        "expectedStatus": 200,
+        "csrfSupplied": false,
+        "method": "GET"
+      },
+      {
+        "path": "/api/v1/intelligence/workflow/owner-auth/login",
+        "status": 401,
+        "expectedStatus": 401,
+        "csrfSupplied": true,
+        "method": "POST"
+      },
+      {
+        "path": "/api/v1/intelligence/workflow/owner-auth/login",
+        "status": 401,
+        "expectedStatus": 401,
+        "csrfSupplied": true,
+        "method": "POST"
+      },
+      {
+        "path": "/api/v1/intelligence/workflow/owner-auth/login",
+        "status": 401,
+        "expectedStatus": 401,
+        "csrfSupplied": true,
+        "method": "POST"
+      },
+      {
+        "path": "/api/v1/intelligence/workflow/owner-auth/login",
+        "status": 401,
+        "expectedStatus": 401,
+        "csrfSupplied": true,
+        "method": "POST"
+      },
+      {
+        "path": "/api/v1/intelligence/workflow/owner-auth/login",
+        "status": 401,
+        "expectedStatus": 401,
+        "csrfSupplied": true,
+        "method": "POST"
+      },
+      {
+        "path": "/api/v1/intelligence/workflow/owner-auth/login",
+        "status": 401,
+        "expectedStatus": 401,
+        "csrfSupplied": true,
+        "method": "POST"
+      }
+    ]
+  },
+  "mlEgress": {
+    "negativeProbe": "DENIED_BEFORE_DISPATCH",
+    "unexpectedEgressAttempts": [],
+    "noExternalEgress": true
+  },
+  "mlFixtureResponse": {
+    "role": "STORY",
+    "provider": "ISOLATED_FIXTURE",
+    "model": "fixture-transport-v1",
+    "result": {
+      "alternatives": [
+        {
+          "candidateId": "candidate-1",
+          "title": "Pip contact and consequence",
+          "text": "Pip the rabbit reaches for a toy cabinet with a sticky note. The note clings to Pip's finger instead. Peeling splits it into one note per hand. Each pull doubles the notes from two to four to eight. Pip sees the note-covered reflection in a mirror, gasps, then sneezes the notes onto the cabinet. Pip is relieved but the cabinet stays messy."
+        },
+        {
+          "candidateId": "candidate-2",
+          "title": "Pip mirror reveal",
+          "text": "Pip the rabbit wants to mark a toy cabinet, but a sticky note catches on Pip's finger. Pip tries to remove it; both hands now carry a note. Pulling doubles the notes repeatedly and covers Pip. The mirror reveals the mess, and a startled gasp turns into a sneeze. The cabinet catches the flying notes, leaving Pip relieved beside a messy cabinet."
+        }
+      ],
+      "storyQuality": {
+        "method": "story-structure-v1",
+        "classification": "DISTINCT",
+        "variationClass": "MATERIAL_VARIATION",
+        "classificationReason": "Candidates differ across multiple material narrative dimensions.",
+        "summary": "Candidates differ across multiple material narrative dimensions.",
+        "pairs": [
+          {
+            "left": 1,
+            "right": 2,
+            "lexicalSimilarity": 0.067,
+            "sharedDimensions": [
+              "mainObjectOrSituation"
+            ],
+            "differentDimensions": [
+              "characterActions",
+              "endingEvent",
+              "openingVisualPromise",
+              "characterGoal",
+              "majorStoryChanges",
+              "escalation",
+              "endingFunction"
+            ],
+            "eventSequenceMatch": false,
+            "dimensionDescriptions": {
+              "endingEvent": {
+                "1": "Pip sees the note-covered reflection in a mirror, gasps, then sneezes the notes onto the cabinet. Pip is relieved but the cabinet stays messy.",
+                "2": "The mirror reveals the mess, and a startled gasp turns into a sneeze. The cabinet catches the flying notes, leaving Pip relieved beside a messy cabinet."
+              }
+            }
+          }
+        ],
+        "differences": [
+          "Alternative 1 vs 2: different characterActions, endingEvent, openingVisualPromise, characterGoal, majorStoryChanges, escalation, endingFunction; shared mainObjectOrSituation."
+        ],
+        "recommendation": {
+          "bestCandidateId": null,
+          "reason": "Candidates share similar risk profiles; no single candidate is clearly preferred by the available evidence.",
+          "whyNot": [],
+          "stillUnknown": [
+            "aiProducibility",
+            "endingPayoff",
+            "pacing",
+            "ruleConsistency",
+            "visualLegibility"
+          ],
+          "isTied": true
+        },
+        "candidates": [
+          {
+            "structuralEvidence": {
+              "centralPremise": null,
+              "mainCharacter": null,
+              "mainObjectOrSituation": "toy cabinet",
+              "openingVisualPromise": "Pip the rabbit reaches for a toy cabinet with a sticky note.",
+              "primaryRuleOrQuestion": "cabinet interaction",
+              "characterGoal": null,
+              "majorStoryChanges": "Pip sees the note-covered reflection in a mirror, gasps, then sneezes the notes onto the cabinet.",
+              "centralObstacle": null,
+              "escalation": "Pip sees the note-covered reflection in a mirror, gasps, then sneezes the notes onto the cabinet.",
+              "endingFunction": "resolution",
+              "reasonToContinueWatching": "Pip the rabbit reaches for a toy cabinet with a sticky note.",
+              "productionSensitiveElements": [
+                "contact continuity"
+              ],
+              "eventSequence": [
+                "remove",
+                "cover"
+              ]
+            },
+            "preflight": {
+              "opening": "SUPPORTED",
+              "progression": "SUPPORTED",
+              "mechanism": "SUPPORTED",
+              "characterAgency": "INSUFFICIENT_EVIDENCE",
+              "ending": "resolution",
+              "strengths": [
+                "The opening provides an observable focus or situation.",
+                "The story contains a meaningful progression signal.",
+                "Primary unusual rule(s): cabinet interaction."
+              ],
+              "concerns": [],
+              "productionRisks": [
+                "Repeated attachment/contact needs clear continuity evidence."
+              ]
+            },
+            "assessment": {
+              "candidateId": "candidate-1",
+              "fingerprint": "764ab5ca518be4508b5bb80ae3f8e520fb691ff05b9a093378e8852431a6c03b",
+              "strengths": [
+                {
+                  "dimension": "characterGoal",
+                  "family": "concept_strength",
+                  "outcome": "PASS",
+                  "severity": "INFO",
+                  "message": "The story describes a character situation or goal.",
+                  "evidence": "Pip the rabbit reaches for a toy cabinet with a sticky note."
+                },
+                {
+                  "dimension": "obstacle",
+                  "family": "concept_strength",
+                  "outcome": "PASS",
+                  "severity": "INFO",
+                  "message": "The story describes an obstacle or challenge.",
+                  "evidence": "Pip is relieved but the cabinet stays messy."
+                },
+                {
+                  "dimension": "characterInitiative",
+                  "family": "concept_strength",
+                  "outcome": "PASS",
+                  "severity": "INFO",
+                  "message": "The character takes 2 distinct actions.",
+                  "evidence": "pull, sees"
+                },
+                {
+                  "dimension": "progression",
+                  "family": "progression",
+                  "outcome": "PASS",
+                  "severity": "INFO",
+                  "message": "The story contains cause-and-effect progression signals."
+                },
+                {
+                  "dimension": "escalation",
+                  "family": "escalation",
+                  "outcome": "PASS",
+                  "severity": "INFO",
+                  "message": "The story contains escalation signals (increasing intensity or complexity)."
+                },
+                {
+                  "dimension": "endingEvent",
+                  "family": "final_payoff",
+                  "outcome": "PASS",
+                  "severity": "INFO",
+                  "message": "The story describes a final event.",
+                  "evidence": "Pip sees the note-covered reflection in a mirror, gasps, then sneezes the notes onto the cabinet. Pip is relieved but the cabinet stays messy."
+                }
+              ],
+              "risks": [],
+              "unknown": [
+                {
+                  "dimension": "distinctAttempts",
+                  "family": "progression",
+                  "outcome": "UNKNOWN",
+                  "message": "The story contains 2 action types; whether these represent distinct attempts is uncertain without production plan."
+                },
+                {
+                  "dimension": "endingPayoff",
+                  "family": "final_payoff",
+                  "outcome": "UNKNOWN",
+                  "message": "A final event is described, but its creative effectiveness or audience payoff cannot be determined from text alone."
+                },
+                {
+                  "dimension": "ruleConsistency",
+                  "family": "consistency",
+                  "outcome": "UNKNOWN",
+                  "message": "No obvious rule contradictions detected, but full consistency check requires production plan analysis."
+                },
+                {
+                  "dimension": "visualLegibility",
+                  "family": "visual_novelty",
+                  "outcome": "NOT_EVALUATED",
+                  "message": "Frame-zero visual legibility and hook strength cannot be assessed from story text alone."
+                },
+                {
+                  "dimension": "aiProducibility",
+                  "family": "ai_producibility",
+                  "outcome": "NOT_EVALUATED",
+                  "message": "AI producibility requires a production prompt and cannot be assessed from story text alone."
+                },
+                {
+                  "dimension": "pacing",
+                  "family": "progression",
+                  "outcome": "NOT_EVALUATED",
+                  "message": "Pacing and beat timing cannot be assessed without a production plan."
+                }
+              ]
+            }
+          },
+          {
+            "structuralEvidence": {
+              "centralPremise": null,
+              "mainCharacter": null,
+              "mainObjectOrSituation": "toy cabinet",
+              "openingVisualPromise": "Pip the rabbit wants to mark a toy cabinet, but a sticky note catches on Pip's finger.",
+              "primaryRuleOrQuestion": "cabinet interaction, flight",
+              "characterGoal": "Pip the rabbit wants to mark a toy cabinet, but a sticky note catches on Pip's finger.",
+              "majorStoryChanges": "Pip the rabbit wants to mark a toy cabinet, but a sticky note catches on Pip's finger.",
+              "centralObstacle": null,
+              "escalation": null,
+              "endingFunction": "reveal",
+              "reasonToContinueWatching": "Pip the rabbit wants to mark a toy cabinet, but a sticky note catches on Pip's finger.",
+              "productionSensitiveElements": [
+                "contact continuity"
+              ],
+              "eventSequence": [
+                "remove",
+                "attempt",
+                "cover",
+                "reveal"
+              ]
+            },
+            "preflight": {
+              "opening": "SUPPORTED",
+              "progression": "SUPPORTED",
+              "mechanism": "SUPPORTED",
+              "characterAgency": "SUPPORTED",
+              "ending": "reveal",
+              "strengths": [
+                "The opening provides an observable focus or situation.",
+                "The story contains a meaningful progression signal.",
+                "Primary unusual rule(s): cabinet interaction, flight."
+              ],
+              "concerns": [],
+              "productionRisks": [
+                "Repeated attachment/contact needs clear continuity evidence."
+              ]
+            },
+            "assessment": {
+              "candidateId": "candidate-2",
+              "fingerprint": "0c072f2048520a797f36c2898118c3cbb82f1a187aa748b216e5fa385a5d6ec4",
+              "strengths": [
+                {
+                  "dimension": "characterGoal",
+                  "family": "concept_strength",
+                  "outcome": "PASS",
+                  "severity": "INFO",
+                  "message": "The story describes a character situation or goal.",
+                  "evidence": "Pip the rabbit wants to mark a toy cabinet, but a sticky note catches on Pip's finger."
+                },
+                {
+                  "dimension": "characterInitiative",
+                  "family": "concept_strength",
+                  "outcome": "PASS",
+                  "severity": "INFO",
+                  "message": "The character takes 5 distinct actions.",
+                  "evidence": "turns, catches, tries, covers, carry"
+                },
+                {
+                  "dimension": "progression",
+                  "family": "progression",
+                  "outcome": "PASS",
+                  "severity": "INFO",
+                  "message": "The story contains cause-and-effect progression signals."
+                },
+                {
+                  "dimension": "escalation",
+                  "family": "escalation",
+                  "outcome": "PASS",
+                  "severity": "INFO",
+                  "message": "The story contains escalation signals (increasing intensity or complexity)."
+                },
+                {
+                  "dimension": "distinctAttempts",
+                  "family": "progression",
+                  "outcome": "PASS",
+                  "severity": "INFO",
+                  "message": "The story contains 5 distinct action types, suggesting multiple attempts or strategies."
+                },
+                {
+                  "dimension": "endingEvent",
+                  "family": "final_payoff",
+                  "outcome": "PASS",
+                  "severity": "INFO",
+                  "message": "The story describes a final event.",
+                  "evidence": "The mirror reveals the mess, and a startled gasp turns into a sneeze. The cabinet catches the flying notes, leaving Pip relieved beside a messy cabine"
+                }
+              ],
+              "risks": [],
+              "unknown": [
+                {
+                  "dimension": "obstacle",
+                  "family": "concept_strength",
+                  "outcome": "UNKNOWN",
+                  "message": "Obstacle or challenge cannot be confidently identified from the text."
+                },
+                {
+                  "dimension": "endingPayoff",
+                  "family": "final_payoff",
+                  "outcome": "UNKNOWN",
+                  "message": "A final event is described, but its creative effectiveness or audience payoff cannot be determined from text alone."
+                },
+                {
+                  "dimension": "ruleConsistency",
+                  "family": "consistency",
+                  "outcome": "UNKNOWN",
+                  "message": "No obvious rule contradictions detected, but full consistency check requires production plan analysis."
+                },
+                {
+                  "dimension": "visualLegibility",
+                  "family": "visual_novelty",
+                  "outcome": "NOT_EVALUATED",
+                  "message": "Frame-zero visual legibility and hook strength cannot be assessed from story text alone."
+                },
+                {
+                  "dimension": "aiProducibility",
+                  "family": "ai_producibility",
+                  "outcome": "NOT_EVALUATED",
+                  "message": "AI producibility requires a production prompt and cannot be assessed from story text alone."
+                },
+                {
+                  "dimension": "pacing",
+                  "family": "progression",
+                  "outcome": "NOT_EVALUATED",
+                  "message": "Pacing and beat timing cannot be assessed without a production plan."
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "calls": 0,
+    "visualInspected": false,
+    "validationStatus": "NOT_VALIDATED",
+    "usage": {
+      "inputTokens": 0,
+      "outputTokens": 0,
+      "totalTokens": 0
+    },
+    "providerResponseMetadata": {
+      "fixture": true,
+      "finishReason": "stop",
+      "apiStatus": "COMPLETED",
+      "requestId": "fixture-0eac0d06cf7d381c"
+    },
+    "providerDispatched": false,
+    "actualCostUsd": 0.0
+  }
+}

@@ -657,7 +657,7 @@ def perform_role(role: str, text: str, context: dict[str, Any], provider: LLMPro
         'BUILD_PROMPT': '''Return ONLY JSON with exactly two top-level keys: `prompt` and `productionPlan`. Convert the approved story into a concrete, concise OpenArt video prompt: visible actions, object states, continuity, staging, selected aspect ratio/duration, and ending. Do not rewrite its premise. Preserve the exact character, central mechanism, essential progression, protected events, constraints and ending. Do not silently omit an essential event; mark uncertainty or material deviation in evidence instead. Use manageable actions, few cuts, uncluttered staging, and no invented reference claims. Use the selected content profile's objective; comedy is relevant only when the source/profile supports it. Separate source-confirmed facts from AI-derived execution suggestions. Prompt headings, each separated by a blank line: TITLE / FORMAT, VISUAL STYLE, CHARACTER / CONTINUITY, TIMED SHOT PLAN, AUDIO, NEGATIVE CONSTRAINTS, FINAL CUT. Make the timed plan cover the full selected duration with ordered, non-overlapping ranges; choose meaningful events from the source, not an arbitrary fixed beat count. Each plan beat must contain time, subject, action, object, stateChange, framing, staging, consequence; time, framing, action, staging and consequence are REQUIRED non-empty JSON strings; additionally supply sourceEvidence (an exact verbatim quote from approved source or empty string), evidenceStatus, sourceRelationship (FAITHFUL_ADAPTATION, CLARIFICATION, OPTIONAL_EXECUTION_INTERPRETATION, MATERIAL_CREATIVE_DEVIATION, UNKNOWN), and importance (CORE, FLEXIBLE, POLISH, UNKNOWN). Never fabricate quotes. `visualExecution` must include openingState, beats, mechanism, continuity, endingState. `productionPlan` keys: sourceIdentity, creativeObjective, characterBindings, visualExecution, productionConstraints, intentClassification, evidenceLimitations, generatorRisks, referencePlan. If Mimi is selected, honor the supplied anthropomorphic-bunny identity requirement; do not invent unverified appearance details and state whether approved references are actually bound. Assess the first two seconds as planned text only using visible promise → immediate consequence/reveal → reason to continue; distinguish mystery from ordinary setup. Do not claim first-frame image evidence. Identify causal ambiguity without rewriting the premise. Risks need a cited source event, affected beat, confidence, smallest mitigation and next action; they are advisory unless evidence establishes a true blocker. Do not claim unverified generator behavior. Do not add provider commentary, approval language or render authorization.''',
         'MINIMAL_REPAIR': 'Return JSON patches: at most three minimal edits with integer Unicode code point start/end, exact sourceQuote and replacement. Preserve protected intent and ESSENTIAL source quotes. Never return approval or rewrite the entire prompt.',
     }[role]
-    safe_context = {key: context[key] for key in ('protectedIntent', 'intentRequirements', 'findings', 'retrievedLessons', 'constraints', 'inputMode', 'storyGenerationMode', 'lockedRequirements', 'permittedVariation', 'mainCharacter', 'character', 'characterRecord', 'characterReferences', 'referenceBindings', 'preferences', 'profile', 'candidates', 'candidateIds', 'requestedAlternativeCount', 'sourceRequestId', 'sourceFingerprint', 'previousReview', 'currentRevision', 'previousRevision', 'targetDuration', 'aspectRatio', 'reviewPolicyVersion', 'selectedGenerator', 'generatorCapabilities', 'targetConfiguration', 'storyTitle', 'promptBuilderContractVersion', 'essentialEvents', 'approvedStoryText', 'optimizationGenerationContractVersion', 'baselineExecution', 'analysisRunId', 'promptVersionId', 'contentId') if key in context}
+    safe_context = {key: context[key] for key in ('protectedIntent', 'intentRequirements', 'findings', 'retrievedLessons', 'constraints', 'inputMode', 'storyGenerationMode', 'lockedRequirements', 'permittedVariation', 'roundNumber', 'objective', 'bestCandidate', 'previousAssessment', 'acceptedChanges', 'rejectedCandidates', 'sourceStoryRecordId', 'mainCharacter', 'character', 'characterRecord', 'characterReferences', 'referenceBindings', 'preferences', 'profile', 'candidates', 'candidateIds', 'requestedAlternativeCount', 'sourceRequestId', 'sourceFingerprint', 'previousReview', 'currentRevision', 'previousRevision', 'targetDuration', 'aspectRatio', 'reviewPolicyVersion', 'selectedGenerator', 'generatorCapabilities', 'targetConfiguration', 'storyTitle', 'promptBuilderContractVersion', 'essentialEvents', 'approvedStoryText', 'optimizationGenerationContractVersion', 'baselineExecution', 'analysisRunId', 'promptVersionId', 'contentId') if key in context}
     if role == 'PROMPT_OPTIMIZATION':
         from .optimization_distinctness import baseline_execution
         from .optimization_profile_contract import generation_contract
@@ -1020,12 +1020,15 @@ def _isolated_fixture_role(role: str, text: str, context: dict[str, Any], max_co
         raise ValueError(f'Missing or invalid isolated fixture for {role}') from error
     if not isinstance(value, dict):
         raise ValueError(f'Isolated fixture for {role} must be a JSON object')
+    if isinstance(value.get('rounds'), dict):
+        value = value['rounds'].get(str(context.get('roundNumber', 0)))
+        if not isinstance(value, dict):
+            raise ValueError(f'Missing isolated fixture round for {role}')
     if role == 'STORY_REVIEW':
         candidates = context.get('candidates') if isinstance(context.get('candidates'), list) else []
         ids = [str(item.get('candidateId')) for item in candidates if isinstance(item, dict)]
-        value = {**value, 'sourceRequestId': context.get('sourceRequestId'), 'sourceFingerprint': context.get('sourceFingerprint'),
-                 'recommendedCandidateId': ids[0] if ids else None,
-                 'candidateReviews': [{'candidateId': cid, 'status': 'SUPPORTED', 'findings': []} for cid in ids]}
+        value = {**value, 'sourceRequestId': context.get('sourceRequestId'), 'sourceFingerprint': context.get('sourceFingerprint')}
+        # Preserve the authored review verdict, candidates and rationale. Never force a recommendation.
     if role == 'STORY':
         alternatives = value.get('alternatives')
         if not isinstance(alternatives, list) or not alternatives:
@@ -1041,6 +1044,8 @@ def _isolated_fixture_role(role: str, text: str, context: dict[str, Any], max_co
         last_usage = {'inputTokens': 0, 'outputTokens': 0, 'totalTokens': 0}
         def complete(self, *args, **kwargs):
             self.last_request_started = True
+            with open(os.path.join(fixture_dir, 'provider-trace.jsonl'), 'a', encoding='utf-8') as trace:
+                trace.write(json.dumps({'role': role, 'request': json.loads(args[0]), 'response': value, 'provider': 'ISOLATED_FIXTURE', 'providerDispatched': False, 'maxCostUsd': max_cost_usd}, ensure_ascii=False) + '\n')
             self.last_raw_response = json.dumps(value, ensure_ascii=False)
             return self.last_raw_response
     provider = FixtureProvider()
