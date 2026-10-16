@@ -7,8 +7,8 @@
     "minimumB": 80,
     "aPlusExists": false
   },
-  "currentScore": 91.76041666666667,
-  "fixedEvidenceOptimisticCeiling": 96.34375000000001,
+  "currentScore": 93.42708333333334,
+  "fixedEvidenceOptimisticCeiling": 94.26041666666667,
   "ceilingScope": "CURRENT_ELIGIBLE_ROWS_AND_PROTECTED_EVENTS; new independent evidence requires recomputation",
   "familyWeightDenominator": 0.96,
   "losses": [
@@ -40,7 +40,7 @@
           "realization_status": "AVAILABLE",
           "continuation_status": "NOT_APPLICABLE",
           "split_recommendation": null,
-          "strategy_change_count": 3,
+          "strategy_change_count": 2,
           "state_transition_count": 5,
           "continuation_mismatches": [],
           "critical_beat_durations": [
@@ -115,7 +115,7 @@
           "realization_status": "AVAILABLE",
           "continuation_status": "NOT_APPLICABLE",
           "split_recommendation": null,
-          "strategy_change_count": 3,
+          "strategy_change_count": 2,
           "state_transition_count": 5,
           "continuation_mismatches": [],
           "critical_beat_durations": [
@@ -144,6 +144,25 @@
       "sourceEvidence": "Final payoff salience (5) ties the earlier peak. Acceptable but not ideal \u2014 consider making the ending strictly the peak.",
       "details": {
         "recommendation": "The final payoff's beat.intensity should be at least as high as the highest intensity seen earlier in the video. Computed independently from beat.intensity values; finalPayoff.isPeakIntensity is never trusted as the verdict, only cross-checked for discrepancy reporting. Optimization-level (WARNING), never a blocker. Renamed from \"Final Peak Intensity\" in RULESET 1.3 -- \"intensity\" read as motion/chaos, but beats[].intensity is a 1-10 visual/emotional energy scale; a quiet, conclusive beat can score as high as a frantic one.",
+        "evaluation_stage": "PRE_RENDER"
+      }
+    },
+    {
+      "ruleId": "PRODUCIBILITY_003",
+      "family": "ai_producibility",
+      "rowPoints": 40,
+      "familyWeight": 0.1,
+      "scoredFamilyRows": 3,
+      "overallLoss": 2.0833333333333335,
+      "maximumRowPoints": 40,
+      "classification": "EVIDENCE_REQUIRED",
+      "reason": "Source still contains fragile note/face interaction; substring detection has limited specificity. No independent risk-reduction evidence or authorized evaluator correction supports removing this penalty.",
+      "sourceEvidence": "Fragile interaction risk tags detected: ['THIN_OBJECT']. These are mid-tier AI-generation risks (precision alignment, cloth/rope simulation, liquids, thin objects, face/hair contact, multi-object stacking) worth a human look before committing render budget, even though they don't rise to very-high-complexity blocking.",
+      "details": {
+        "riskTags": [
+          "THIN_OBJECT"
+        ],
+        "recommendation": "Fills the gap between PRODUCIBILITY_001 (very-high-complexity hard block) and PRODUCIBILITY_002 (prop count budget): a middle tier of AI-generation risks (precision alignment, cloth/rope simulation, liquids, thin dangling objects, face/hair contact, multi-object stacking). Uses a tag-based diagnostic model (riskTags in evaluation details) rather than one rule per risk type. Deterministic substring match against setting.mainProps and beat action/consequence text, no LLM call. Always CRITICAL when any tag is found \u2014 a human-review trigger, not an outright render block.",
         "evaluation_stage": "PRE_RENDER"
       }
     },
@@ -180,8 +199,8 @@
             "beatId": "beat_02",
             "method": "EXPLICIT_RECOVERY_ATTEMPT_PATTERN",
             "sourceSpan": [
-              504,
-              602
+              581,
+              679
             ],
             "description": "Pip tries to peel the note away with the free hand, but it splits into two notes, one on each hand",
             "sourceQuote": "Pip tries to peel the note away with the free hand, but it splits into two notes, one on each hand",
@@ -190,22 +209,6 @@
           }
         },
         "recommendation": "The character goal must be explicit or implicit-but-observable in the first 1-2 seconds.",
-        "evaluation_stage": "PRE_RENDER"
-      }
-    },
-    {
-      "ruleId": "HOOK_002",
-      "family": "hook_strength",
-      "rowPoints": 40,
-      "familyWeight": 0.12,
-      "scoredFamilyRows": 2,
-      "overallLoss": 3.75,
-      "maximumRowPoints": 100,
-      "classification": "TEXT_REPAIRABLE",
-      "reason": "Requires a supported source-bound production change and fresh canonical evaluation.",
-      "sourceEvidence": "Hook does not start mid-action. The problem must already be visually obvious within the opening second, with no setup or explanation.",
-      "details": {
-        "recommendation": "The problem must already be visually obvious within the opening second, with no setup, narration, or text explanation required. hook.startsMidAction must be true and hook.visualStrength must be at least 4/5. RULESET 1.3 adds a tolerance window -- hook.startsAt must be <= 0.8s (defaults to 0.0 when absent, a no-op for pre-1.3 IRs); the anomaly doesn't need to be literally frame-0 to read as immediate.",
         "evaluation_stage": "PRE_RENDER"
       }
     },
@@ -236,7 +239,7 @@
           "realization_status": "AVAILABLE",
           "continuation_status": "NOT_APPLICABLE",
           "split_recommendation": null,
-          "strategy_change_count": 3,
+          "strategy_change_count": 2,
           "state_transition_count": 5,
           "continuation_mismatches": [],
           "critical_beat_durations": [
@@ -387,7 +390,7 @@
       }
     }
   ],
-  "genuineSourceAttemptCount": 4,
+  "genuineSourceAttemptCount": 3,
   "creativeOpportunity": {
     "state": "UNKNOWN_REQUIRES_PROMPT_DIAGNOSIS",
     "basis": "No independent CPQ assessment supplied to preflight."
@@ -468,9 +471,9 @@
     "realCreativeEffectiveness": "UNVERIFIED",
     "automaticFallback": false
   },
-  "sourceAnalysisId": "01dc1ad2-983d-4048-bc59-3ddc682bd93b",
+  "sourceAnalysisId": "3a4ee875-9ead-41a1-bb1a-201f0ddbc8e9",
   "sourcePromptVersionId": 2,
-  "sourcePromptSha256": "5ea8d3f43f4a96d0c8940bc4751c24bbd204a634ae47c55f21e6e0678faa58b5",
-  "productionSettingsRecordId": "48675f5c-bc6d-4b30-a9a5-946f0a638b63",
+  "sourcePromptSha256": "1a9a8cfc7e4c6e0a037ba3642a10c11c81d41ce8b574aa3c79cbaee7ce1215f5",
+  "productionSettingsRecordId": "705c2010-c6a7-47d2-b0ee-ef4c6c8bfa5e",
   "contentId": 1
 }

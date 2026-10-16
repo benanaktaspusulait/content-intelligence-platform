@@ -1,18 +1,21 @@
 {
-  "grade": "B",
-  "score": 91.76041666666669,
+  "grade": "A",
+  "score": 93.42708333333334,
   "status": "EVALUATED",
   "failedRules": [
     {
-      "family": "hook_strength",
-      "ruleId": "HOOK_002",
+      "family": "ai_producibility",
+      "ruleId": "PRODUCIBILITY_003",
       "details": {
-        "recommendation": "The problem must already be visually obvious within the opening second, with no setup, narration, or text explanation required. hook.startsMidAction must be true and hook.visualStrength must be at least 4/5. RULESET 1.3 adds a tolerance window -- hook.startsAt must be <= 0.8s (defaults to 0.0 when absent, a no-op for pre-1.3 IRs); the anomaly doesn't need to be literally frame-0 to read as immediate.",
+        "riskTags": [
+          "THIN_OBJECT"
+        ],
+        "recommendation": "Fills the gap between PRODUCIBILITY_001 (very-high-complexity hard block) and PRODUCIBILITY_002 (prop count budget): a middle tier of AI-generation risks (precision alignment, cloth/rope simulation, liquids, thin dangling objects, face/hair contact, multi-object stacking). Uses a tag-based diagnostic model (riskTags in evaluation details) rather than one rule per risk type. Deterministic substring match against setting.mainProps and beat action/consequence text, no LLM call. Always CRITICAL when any tag is found \u2014 a human-review trigger, not an outright render block.",
         "evaluation_stage": "PRE_RENDER"
       },
-      "message": "Hook does not start mid-action. The problem must already be visually obvious within the opening second, with no setup or explanation.",
+      "message": "Fragile interaction risk tags detected: ['THIN_OBJECT']. These are mid-tier AI-generation risks (precision alignment, cloth/rope simulation, liquids, thin objects, face/hair contact, multi-object stacking) worth a human look before committing render budget, even though they don't rise to very-high-complexity blocking.",
       "outcome": "FAIL",
-      "ruleName": "First Frame Anomaly",
+      "ruleName": "Fragile Interaction Risk",
       "severity": "CRITICAL"
     },
     {
@@ -160,6 +163,22 @@
       "severity": "PASS"
     },
     {
+      "family": "hook_strength",
+      "ruleId": "HOOK_002",
+      "details": {
+        "recommendation": "The problem must already be visually obvious within the opening second, with no setup, narration, or text explanation required. hook.startsMidAction must be true and hook.visualStrength must be at least 4/5. RULESET 1.3 adds a tolerance window -- hook.startsAt must be <= 0.8s (defaults to 0.0 when absent, a no-op for pre-1.3 IRs); the anomaly doesn't need to be literally frame-0 to read as immediate.",
+        "evaluation_stage": "PRE_RENDER",
+        "textualFirstFrameIntent": {
+          "source": "PROMPT_TEXT",
+          "status": "PASS"
+        }
+      },
+      "message": "Textual first-frame intent establishes an immediate anomaly; visual verification remains a separate gate.",
+      "outcome": "PASS",
+      "ruleName": "First Frame Anomaly",
+      "severity": "PASS"
+    },
+    {
       "family": "motion_quality",
       "ruleId": "MOTION_001",
       "details": {
@@ -179,7 +198,7 @@
         "recommendation": "Count of beats with isAttempt == true must meet a duration-tier minimum: 3 for videos <= 20s (short tier), 7 for videos > 20s (long tier).",
         "evaluation_stage": "PRE_RENDER"
       },
-      "message": "4 active attempts detected (short tier, minimum 3).",
+      "message": "3 active attempts detected (short tier, minimum 3).",
       "outcome": "PASS",
       "ruleName": "Attempt Count",
       "severity": "PASS"
@@ -192,7 +211,7 @@
         "recommendation": "The character must spend most of the runtime actively trying a solution, not watching or reacting. Ratio of (duration of isAttempt beats) / (total duration) must be at least 0.5 for short-tier videos, 0.6 for long-tier.",
         "evaluation_stage": "PRE_RENDER"
       },
-      "message": "Character is actively attempting a solution for 73% of the video.",
+      "message": "Character is actively attempting a solution for 60% of the video.",
       "outcome": "PASS",
       "ruleName": "Active Character",
       "severity": "PASS"
@@ -250,11 +269,11 @@
       "family": "visual_novelty",
       "ruleId": "REPETITION_004",
       "details": {
-        "dominant_verb": "PLACE",
+        "dominant_verb": "PEEL",
         "recommendation": "Companion to ATTEMPT_002, not a replacement: catches one primaryVerb numerically dominating the attempt list even when every attempt is legitimately distinct in ATTEMPT_002's semantic judgment. WARNING above 55% dominance, CRITICAL above 70%. Never a BLOCKER, since a dominant verb can be valid if it produces genuinely different consequences each time.",
         "evaluation_stage": "PRE_RENDER"
       },
-      "message": "Good action variety. Dominant verb 'PLACE' at 25%.",
+      "message": "Good action variety. Dominant verb 'PEEL' at 33%.",
       "outcome": "PASS",
       "ruleName": "Dominant Action Ratio",
       "severity": "PASS"
@@ -266,7 +285,7 @@
         "recommendation": "A retention-optimization dimension, never a hard blocker. A strong natural loop back to the opening (finalPayoff.loopsToOpening + loopQuality == 'strong') is a bonus. An ordinary hard cut with no loop claim is fully valid (neutral PASS). Only specific weak-ending text patterns (fade-out, 'the end', walks away) with neither a loop nor a hard cut produce a WARNING-severity FAIL.",
         "evaluation_stage": "PRE_RENDER"
       },
-      "message": "No loop claimed, no hard-cut flag, but no weak-ending pattern detected either.",
+      "message": "Ordinary hard-cut ending, no loop claimed. Fully valid.",
       "outcome": "PASS",
       "ruleName": "Loopability",
       "severity": "PASS"
@@ -275,11 +294,11 @@
       "family": "progression",
       "ruleId": "PROGRESSION_006",
       "details": {
-        "dominant_root": "PLACE",
+        "dominant_root": "PEEL",
         "recommendation": "Deterministic companion to ATTEMPT_002: flags a dominant primaryVerb ROOT across attempts (e.g. PUSH / PUSH_HARDER / PUSH_FROM_LEFT all share the root PUSH) even when full verb labels are distinct and ATTEMPT_002's LLM duplicate-strategy check already passed. Catches 'more activity, not a new strategy' in the gray area between CHAR_002 (time-active) and ATTEMPT_002 (label/semantic distinctness). No LLM call.",
         "evaluation_stage": "PRE_RENDER"
       },
-      "message": "No single verb root dominates. Most common: 'PLACE' at 25%.",
+      "message": "No single verb root dominates. Most common: 'PEEL' at 33%.",
       "outcome": "PASS",
       "ruleName": "Activity Is Not Progression",
       "severity": "PASS"
@@ -295,10 +314,10 @@
           "strength": "STRONG",
           "wallFlex": false,
           "forceRise": false,
-          "newTarget": false,
+          "newTarget": true,
           "wall_flex": false,
           "confidence": 0.8,
-          "new_target": false,
+          "new_target": true,
           "resistance": false,
           "stakesRise": false,
           "deformation": false,
@@ -310,14 +329,12 @@
           "quantityGrowth": true,
           "scopeExpansion": false,
           "candidateBeatIds": [
-            "beat_01",
             "beat_02",
             "beat_03",
             "beat_04",
             "beat_05"
           ],
           "candidate_beat_ids": [
-            "beat_01",
             "beat_02",
             "beat_03",
             "beat_04",
@@ -335,19 +352,6 @@
       "severity": "PASS"
     },
     {
-      "family": "ai_producibility",
-      "ruleId": "PRODUCIBILITY_003",
-      "details": {
-        "riskTags": [],
-        "recommendation": "Fills the gap between PRODUCIBILITY_001 (very-high-complexity hard block) and PRODUCIBILITY_002 (prop count budget): a middle tier of AI-generation risks (precision alignment, cloth/rope simulation, liquids, thin dangling objects, face/hair contact, multi-object stacking). Uses a tag-based diagnostic model (riskTags in evaluation details) rather than one rule per risk type. Deterministic substring match against setting.mainProps and beat action/consequence text, no LLM call. Always CRITICAL when any tag is found \u2014 a human-review trigger, not an outright render block.",
-        "evaluation_stage": "PRE_RENDER"
-      },
-      "message": "No fragile interaction risk tags detected.",
-      "outcome": "PASS",
-      "ruleName": "Fragile Interaction Risk",
-      "severity": "PASS"
-    },
-    {
       "family": "motion_quality",
       "ruleId": "CONTINUOUS_ACTION_MOMENTUM",
       "details": {
@@ -356,7 +360,6 @@
         "recommendation": "A reaction must overlap the physical transition into the next attempt. Rejects standalone reaction beats, reset-to-neutral gaps, excessive passive time, slow attempt transitions, and long final aftermaths. This rule distinguishes meaningful progression from forward motion momentum.",
         "evaluation_stage": "PRE_RENDER",
         "attemptTransitionGaps": [
-          0.0,
           0.0,
           0.0
         ],
@@ -389,7 +392,7 @@
           "realization_status": "AVAILABLE",
           "continuation_status": "NOT_APPLICABLE",
           "split_recommendation": null,
-          "strategy_change_count": 3,
+          "strategy_change_count": 2,
           "state_transition_count": 5,
           "continuation_mismatches": [],
           "critical_beat_durations": [
@@ -434,8 +437,8 @@
             "beatId": "beat_02",
             "method": "EXPLICIT_RECOVERY_ATTEMPT_PATTERN",
             "sourceSpan": [
-              504,
-              602
+              581,
+              679
             ],
             "description": "Pip tries to peel the note away with the free hand, but it splits into two notes, one on each hand",
             "sourceQuote": "Pip tries to peel the note away with the free hand, but it splits into two notes, one on each hand",
@@ -470,7 +473,7 @@
           "realization_status": "AVAILABLE",
           "continuation_status": "NOT_APPLICABLE",
           "split_recommendation": null,
-          "strategy_change_count": 3,
+          "strategy_change_count": 2,
           "state_transition_count": 5,
           "continuation_mismatches": [],
           "critical_beat_durations": [
@@ -507,7 +510,7 @@
           "realization_status": "AVAILABLE",
           "continuation_status": "NOT_APPLICABLE",
           "split_recommendation": null,
-          "strategy_change_count": 3,
+          "strategy_change_count": 2,
           "state_transition_count": 5,
           "continuation_mismatches": [],
           "critical_beat_durations": [
@@ -532,35 +535,39 @@
     "beats": [
       {
         "id": "beat_01",
-        "goal": "Control or retrieve the object despite the established abnormal behavior.",
+        "goal": null,
         "actor": "Pip",
-        "action": "Pip tries to place the note, but it clings to Pip's fingertip while the cabinet ...",
+        "action": "Already mid-action, Pip the rabbit tries to place one sticky note on the toy cab...",
         "result": "The note attaches to Pip rather than the cabinet.",
         "endTime": 2.0,
         "beatRole": "",
-        "dialogue": null,
+        "dialogue": {
+          "text": "s empty front panel, but it clings to Pip",
+          "speaker": "Character",
+          "isLearningWord": false
+        },
         "duration": 2.0,
         "beatLabel": "",
         "intensity": 5,
-        "isAttempt": true,
+        "isAttempt": false,
         "startTime": 0.0,
         "actionType": "interaction",
         "cycleGroup": null,
         "isReadable": true,
         "sourceSpan": [
           267,
-          497
+          574
         ],
         "consequence": "The note attaches to Pip rather than the cabinet.",
-        "primaryVerb": "PLACE",
-        "sourceQuote": "0-2s: Pip tries to place the note, but it clings to Pip's fingertip while the cabinet stays untouched. [locked medium shot; keep Pip, hands, notes and cabinet causally readable] -> The note attaches to Pip rather than the cabinet.",
-        "visualState": "character pip tries to place the note, but it clings to pip's fingertip while the cabinet ...",
+        "primaryVerb": "",
+        "sourceQuote": "0-2s: Already mid-action, Pip the rabbit tries to place one sticky note on the toy cabinet's empty front panel, but it clings to Pip's fingertip while the cabinet stays untouched. [locked medium shot; keep Pip, hands, notes and cabinet causally readable] -> The note attaches to Pip rather than the cabinet.",
+        "visualState": "character already mid-action, pip the rabbit tries to place one sticky note on the toy cab...",
         "motionAmount": "moderate",
-        "sourceAction": "Pip tries to place the note, but it clings to Pip's fingertip while the cabinet stays untouched.",
+        "sourceAction": "Already mid-action, Pip the rabbit tries to place one sticky note on the toy cabinet's empty front panel, but it clings to Pip's fingertip while the cabinet stays untouched.",
         "strategyRole": "INTENDED",
         "targetObject": null,
-        "attemptReason": "Source-established actor, physical action and directed relationship.",
-        "attemptSource": "ACTOR_SOURCE_BOUND",
+        "attemptReason": null,
+        "attemptSource": "NONE",
         "fieldEvidence": {
           "actor": {
             "state": "OBSERVED",
@@ -568,22 +575,22 @@
             "method": "DETERMINISTIC_SOURCE_PATTERN",
             "reason": "Exact source mention.",
             "sourceSpan": [
-              273,
-              276
+              293,
+              296
             ],
             "sourceQuote": "Pip",
             "semanticVerification": "NOT_PERFORMED"
           },
           "action": {
             "state": "OBSERVED",
-            "value": "Pip tries to place the note, but it clings to Pip's fingertip while the cabinet stays untouched.",
+            "value": "Already mid-action, Pip the rabbit tries to place one sticky note on the toy cabinet's empty front panel, but it clings to Pip's fingertip while the cabinet stays untouched.",
             "method": "DETERMINISTIC_SOURCE_PATTERN",
             "reason": "Exact source mention.",
             "sourceSpan": [
               273,
-              369
+              446
             ],
-            "sourceQuote": "Pip tries to place the note, but it clings to Pip's fingertip while the cabinet stays untouched.",
+            "sourceQuote": "Already mid-action, Pip the rabbit tries to place one sticky note on the toy cabinet's empty front panel, but it clings to Pip's fingertip while the cabinet stays untouched.",
             "semanticVerification": "NOT_PERFORMED"
           },
           "primaryObject": {
@@ -596,20 +603,20 @@
             "semanticVerification": "NOT_PERFORMED"
           }
         },
-        "primaryAction": "Pip tries to place the note, but it clings to Pip's fingertip while the cabinet ...",
+        "primaryAction": "Already mid-action, Pip the rabbit tries to place one sticky note on the toy cab...",
         "primaryObject": null,
-        "visualStateId": "character_pip_tries_to_place_the_note_but_it_cling",
+        "visualStateId": "character_already_midaction_pip_the_rabbit_tries_t",
         "evidenceStatus": "SOURCE_VERIFIED",
-        "intendedEffect": "restore_or_control_normal_object_use",
+        "intendedEffect": null,
         "motionEvidence": {
           "state": "INFERRED",
           "value": "moderate",
           "method": "TOKEN_MOTION_V2",
           "sourceSpan": [
             267,
-            497
+            574
           ],
-          "sourceQuote": "0-2s: Pip tries to place the note, but it clings to Pip's fingertip while the cabinet stays untouched. [locked medium shot; keep Pip, hands, notes and cabinet causally readable] -> The note attaches to Pip rather than the cabinet.",
+          "sourceQuote": "0-2s: Already mid-action, Pip the rabbit tries to place one sticky note on the toy cabinet's empty front panel, but it clings to Pip's fingertip while the cabinet stays untouched. [locked medium shot; keep Pip, hands, notes and cabinet causally readable] -> The note attaches to Pip rather than the cabinet.",
           "visualVerification": "NOT_PERFORMED",
           "semanticVerification": "NOT_PERFORMED"
         },
@@ -617,54 +624,15 @@
         "strategyFamily": "ADD",
         "strategyIntent": "DIRECT",
         "attemptEvidence": {
-          "actor": "Pip",
-          "action": "Pip tries to place the note, but it clings to Pip's fingertip while the cabinet stays untouched",
-          "actions": [
-            {
-              "actor": "Pip",
-              "action": "Pip tries to place the note, but it clings to Pip's fingertip while the cabinet stays untouched",
-              "localSpan": [
-                6,
-                101
-              ],
-              "verbQuote": "place",
-              "actorQuote": "Pip",
-              "confidence": 0.9,
-              "sourceSpan": [
-                273,
-                368
-              ],
-              "primaryVerb": "PLACE",
-              "relationship": "EXPLICIT_INTENT_OR_CONTINUATION",
-              "verbLocalSpan": [
-                19,
-                24
-              ],
-              "actorLocalSpan": [
-                6,
-                9
-              ],
-              "classification": "CHARACTER_ATTEMPT",
-              "verbSourceSpan": [
-                286,
-                291
-              ],
-              "actorSourceSpan": [
-                273,
-                276
-              ],
-              "semanticVerification": "NOT_PERFORMED"
-            }
-          ],
-          "confidence": 0.9,
-          "sourceSpan": [
-            273,
-            368
-          ],
-          "primaryVerb": "PLACE",
+          "actor": null,
+          "action": null,
+          "actions": [],
+          "confidence": null,
+          "sourceSpan": null,
+          "primaryVerb": null,
           "sourceBound": true,
-          "sourceQuote": "Pip tries to place the note, but it clings to Pip's fingertip while the cabinet stays untouched",
-          "relationship": "EXPLICIT_INTENT_OR_CONTINUATION",
+          "sourceQuote": null,
+          "relationship": null,
           "actorReference": {
             "value": "Pip",
             "sourceSpan": [
@@ -673,62 +641,25 @@
             ],
             "sourceQuote": "Pip"
           },
-          "classification": "SOURCE_BOUND_ATTEMPT",
+          "classification": "NOT_AN_ATTEMPT",
           "contractVersion": "actor-source-bound-v2",
           "duplicateSourceEvent": false,
           "semanticVerification": "NOT_PERFORMED"
         },
         "consequenceType": "new",
         "attemptCandidate": null,
-        "characterActions": [
-          {
-            "actor": "Pip",
-            "action": "Pip tries to place the note, but it clings to Pip's fingertip while the cabinet stays untouched",
-            "localSpan": [
-              6,
-              101
-            ],
-            "verbQuote": "place",
-            "actorQuote": "Pip",
-            "confidence": 0.9,
-            "sourceSpan": [
-              273,
-              368
-            ],
-            "primaryVerb": "PLACE",
-            "relationship": "EXPLICIT_INTENT_OR_CONTINUATION",
-            "verbLocalSpan": [
-              19,
-              24
-            ],
-            "actorLocalSpan": [
-              6,
-              9
-            ],
-            "classification": "CHARACTER_ATTEMPT",
-            "verbSourceSpan": [
-              286,
-              291
-            ],
-            "actorSourceSpan": [
-              273,
-              276
-            ],
-            "semanticVerification": "NOT_PERFORMED"
-          }
-        ],
-        "goalEvidenceRole": "PRIMARY_GOAL",
+        "characterActions": [],
         "isNewConsequence": true,
         "sourceSpanStatus": "TEXT_MATCHED",
-        "attemptConfidence": 0.9,
+        "attemptConfidence": null,
         "readabilityDuration": 2.0,
         "actionStrategyFamily": "ADD",
         "physicalConsequences": [
           {
             "quote": "The note attaches to Pip rather than the cabinet.",
             "sourceSpan": [
-              448,
-              497
+              525,
+              574
             ],
             "classification": "PHYSICAL_CONSEQUENCE"
           }
@@ -739,12 +670,12 @@
           {
             "quote": "[locked medium shot; keep Pip, hands, notes and cabinet causally readable]",
             "localSpan": [
-              103,
-              177
+              180,
+              254
             ],
             "sourceSpan": [
-              370,
-              444
+              447,
+              521
             ],
             "classification": "CAMERA_INSTRUCTION"
           }
@@ -769,8 +700,8 @@
         "cycleGroup": null,
         "isReadable": true,
         "sourceSpan": [
-          498,
-          696
+          575,
+          773
         ],
         "consequence": "One note becomes two.",
         "primaryVerb": "PEEL",
@@ -789,8 +720,8 @@
             "method": "DETERMINISTIC_SOURCE_PATTERN",
             "reason": "Exact source mention.",
             "sourceSpan": [
-              504,
-              507
+              581,
+              584
             ],
             "sourceQuote": "Pip",
             "semanticVerification": "NOT_PERFORMED"
@@ -801,8 +732,8 @@
             "method": "DETERMINISTIC_SOURCE_PATTERN",
             "reason": "Exact source mention.",
             "sourceSpan": [
-              504,
-              603
+              581,
+              680
             ],
             "sourceQuote": "Pip tries to peel the note away with the free hand, but it splits into two notes, one on each hand.",
             "semanticVerification": "NOT_PERFORMED"
@@ -827,8 +758,8 @@
           "value": "moderate",
           "method": "TOKEN_MOTION_V2",
           "sourceSpan": [
-            498,
-            696
+            575,
+            773
           ],
           "sourceQuote": "2-5s: Pip tries to peel the note away with the free hand, but it splits into two notes, one on each hand. [medium shot; keep Pip, hands, notes and cabinet causally readable] -> One note becomes two.",
           "visualVerification": "NOT_PERFORMED",
@@ -852,8 +783,8 @@
               "actorQuote": "Pip",
               "confidence": 0.9,
               "sourceSpan": [
-                504,
-                602
+                581,
+                679
               ],
               "primaryVerb": "PEEL",
               "relationship": "EXPLICIT_INTENT_OR_CONTINUATION",
@@ -867,20 +798,20 @@
               ],
               "classification": "CHARACTER_ATTEMPT",
               "verbSourceSpan": [
-                517,
-                521
+                594,
+                598
               ],
               "actorSourceSpan": [
-                504,
-                507
+                581,
+                584
               ],
               "semanticVerification": "NOT_PERFORMED"
             }
           ],
           "confidence": 0.9,
           "sourceSpan": [
-            504,
-            602
+            581,
+            679
           ],
           "primaryVerb": "PEEL",
           "sourceBound": true,
@@ -913,8 +844,8 @@
             "actorQuote": "Pip",
             "confidence": 0.9,
             "sourceSpan": [
-              504,
-              602
+              581,
+              679
             ],
             "primaryVerb": "PEEL",
             "relationship": "EXPLICIT_INTENT_OR_CONTINUATION",
@@ -928,12 +859,12 @@
             ],
             "classification": "CHARACTER_ATTEMPT",
             "verbSourceSpan": [
-              517,
-              521
+              594,
+              598
             ],
             "actorSourceSpan": [
-              504,
-              507
+              581,
+              584
             ],
             "semanticVerification": "NOT_PERFORMED"
           }
@@ -948,8 +879,8 @@
           {
             "quote": "One note becomes two.",
             "sourceSpan": [
-              675,
-              696
+              752,
+              773
             ],
             "classification": "PHYSICAL_CONSEQUENCE"
           },
@@ -957,8 +888,8 @@
             "quote": "the note away with the free hand, but it splits into two notes, one on each hand",
             "method": "EXPLICIT_OBJECT_EVENT",
             "sourceSpan": [
-              522,
-              602
+              599,
+              679
             ],
             "classification": "PHYSICAL_CONSEQUENCE",
             "semanticVerification": "NOT_PERFORMED"
@@ -974,8 +905,8 @@
               173
             ],
             "sourceSpan": [
-              604,
-              671
+              681,
+              748
             ],
             "classification": "CAMERA_INSTRUCTION"
           }
@@ -1000,8 +931,8 @@
         "cycleGroup": null,
         "isReadable": true,
         "sourceSpan": [
-          697,
-          891
+          774,
+          968
         ],
         "consequence": "Two notes become four.",
         "primaryVerb": "PRESS",
@@ -1020,8 +951,8 @@
             "method": "DETERMINISTIC_SOURCE_PATTERN",
             "reason": "Exact source mention.",
             "sourceSpan": [
-              703,
-              706
+              780,
+              783
             ],
             "sourceQuote": "Pip",
             "semanticVerification": "NOT_PERFORMED"
@@ -1032,8 +963,8 @@
             "method": "DETERMINISTIC_SOURCE_PATTERN",
             "reason": "Exact source mention.",
             "sourceSpan": [
-              703,
-              799
+              780,
+              876
             ],
             "sourceQuote": "Pip tries to press both notes onto the cabinet, but they spring back and double into four notes.",
             "semanticVerification": "NOT_PERFORMED"
@@ -1058,8 +989,8 @@
           "value": "moderate",
           "method": "TOKEN_MOTION_V2",
           "sourceSpan": [
-            697,
-            891
+            774,
+            968
           ],
           "sourceQuote": "5-8s: Pip tries to press both notes onto the cabinet, but they spring back and double into four notes. [wide shot; keep Pip, hands, notes and cabinet causally readable] -> Two notes become four.",
           "visualVerification": "NOT_PERFORMED",
@@ -1083,8 +1014,8 @@
               "actorQuote": "Pip",
               "confidence": 0.9,
               "sourceSpan": [
-                703,
-                798
+                780,
+                875
               ],
               "primaryVerb": "PRESS",
               "relationship": "EXPLICIT_INTENT_OR_CONTINUATION",
@@ -1098,20 +1029,20 @@
               ],
               "classification": "CHARACTER_ATTEMPT",
               "verbSourceSpan": [
-                716,
-                721
+                793,
+                798
               ],
               "actorSourceSpan": [
-                703,
-                706
+                780,
+                783
               ],
               "semanticVerification": "NOT_PERFORMED"
             }
           ],
           "confidence": 0.9,
           "sourceSpan": [
-            703,
-            798
+            780,
+            875
           ],
           "primaryVerb": "PRESS",
           "sourceBound": true,
@@ -1144,8 +1075,8 @@
             "actorQuote": "Pip",
             "confidence": 0.9,
             "sourceSpan": [
-              703,
-              798
+              780,
+              875
             ],
             "primaryVerb": "PRESS",
             "relationship": "EXPLICIT_INTENT_OR_CONTINUATION",
@@ -1159,12 +1090,12 @@
             ],
             "classification": "CHARACTER_ATTEMPT",
             "verbSourceSpan": [
-              716,
-              721
+              793,
+              798
             ],
             "actorSourceSpan": [
-              703,
-              706
+              780,
+              783
             ],
             "semanticVerification": "NOT_PERFORMED"
           }
@@ -1179,8 +1110,8 @@
           {
             "quote": "Two notes become four.",
             "sourceSpan": [
-              869,
-              891
+              946,
+              968
             ],
             "classification": "PHYSICAL_CONSEQUENCE"
           },
@@ -1188,8 +1119,8 @@
             "quote": "the cabinet, but they spring back and double into four notes",
             "method": "EXPLICIT_OBJECT_EVENT",
             "sourceSpan": [
-              738,
-              798
+              815,
+              875
             ],
             "classification": "PHYSICAL_CONSEQUENCE",
             "semanticVerification": "NOT_PERFORMED"
@@ -1205,8 +1136,8 @@
               168
             ],
             "sourceSpan": [
-              800,
-              865
+              877,
+              942
             ],
             "classification": "CAMERA_INSTRUCTION"
           }
@@ -1231,8 +1162,8 @@
         "cycleGroup": null,
         "isReadable": true,
         "sourceSpan": [
-          892,
-          1131
+          969,
+          1208
         ],
         "consequence": "Four notes become eight and cover Pip.",
         "primaryVerb": "PUSH",
@@ -1251,8 +1182,8 @@
             "method": "DETERMINISTIC_SOURCE_PATTERN",
             "reason": "Exact source mention.",
             "sourceSpan": [
-              899,
-              902
+              976,
+              979
             ],
             "sourceQuote": "Pip",
             "semanticVerification": "NOT_PERFORMED"
@@ -1263,8 +1194,8 @@
             "method": "DETERMINISTIC_SOURCE_PATTERN",
             "reason": "Exact source mention.",
             "sourceSpan": [
-              899,
-              1023
+              976,
+              1100
             ],
             "sourceQuote": "Pip tries to push the four notes off against the cabinet door edge, but they split into eight and cover Pip's arms and face.",
             "semanticVerification": "NOT_PERFORMED"
@@ -1289,8 +1220,8 @@
           "value": "moderate",
           "method": "TOKEN_MOTION_V2",
           "sourceSpan": [
-            892,
-            1131
+            969,
+            1208
           ],
           "sourceQuote": "8-11s: Pip tries to push the four notes off against the cabinet door edge, but they split into eight and cover Pip's arms and face. [wide shot; keep Pip, hands, notes and cabinet causally readable] -> Four notes become eight and cover Pip.",
           "visualVerification": "NOT_PERFORMED",
@@ -1314,8 +1245,8 @@
               "actorQuote": "Pip",
               "confidence": 0.9,
               "sourceSpan": [
-                899,
-                1022
+                976,
+                1099
               ],
               "primaryVerb": "PUSH",
               "relationship": "EXPLICIT_INTENT_OR_CONTINUATION",
@@ -1329,20 +1260,20 @@
               ],
               "classification": "CHARACTER_ATTEMPT",
               "verbSourceSpan": [
-                912,
-                916
+                989,
+                993
               ],
               "actorSourceSpan": [
-                899,
-                902
+                976,
+                979
               ],
               "semanticVerification": "NOT_PERFORMED"
             }
           ],
           "confidence": 0.9,
           "sourceSpan": [
-            899,
-            1022
+            976,
+            1099
           ],
           "primaryVerb": "PUSH",
           "sourceBound": true,
@@ -1375,8 +1306,8 @@
             "actorQuote": "Pip",
             "confidence": 0.9,
             "sourceSpan": [
-              899,
-              1022
+              976,
+              1099
             ],
             "primaryVerb": "PUSH",
             "relationship": "EXPLICIT_INTENT_OR_CONTINUATION",
@@ -1390,12 +1321,12 @@
             ],
             "classification": "CHARACTER_ATTEMPT",
             "verbSourceSpan": [
-              912,
-              916
+              989,
+              993
             ],
             "actorSourceSpan": [
-              899,
-              902
+              976,
+              979
             ],
             "semanticVerification": "NOT_PERFORMED"
           }
@@ -1410,8 +1341,8 @@
           {
             "quote": "Four notes become eight and cover Pip.",
             "sourceSpan": [
-              1093,
-              1131
+              1170,
+              1208
             ],
             "classification": "PHYSICAL_CONSEQUENCE"
           },
@@ -1419,8 +1350,8 @@
             "quote": "the cabinet door edge, but they split into eight and cover Pip's arms and face",
             "method": "EXPLICIT_OBJECT_EVENT",
             "sourceSpan": [
-              944,
-              1022
+              1021,
+              1099
             ],
             "classification": "PHYSICAL_CONSEQUENCE",
             "semanticVerification": "NOT_PERFORMED"
@@ -1436,8 +1367,8 @@
               197
             ],
             "sourceSpan": [
-              1024,
-              1089
+              1101,
+              1166
             ],
             "classification": "CAMERA_INSTRUCTION"
           }
@@ -1462,8 +1393,8 @@
         "cycleGroup": null,
         "isReadable": true,
         "sourceSpan": [
-          1132,
-          1604
+          1209,
+          1681
         ],
         "consequence": "Pip stops struggling, then the sneeze moves the notes to the cabinet.",
         "primaryVerb": "",
@@ -1482,8 +1413,8 @@
             "method": "DETERMINISTIC_SOURCE_PATTERN",
             "reason": "Exact source mention.",
             "sourceSpan": [
-              1140,
-              1143
+              1217,
+              1220
             ],
             "sourceQuote": "Pip",
             "semanticVerification": "NOT_PERFORMED"
@@ -1494,8 +1425,8 @@
             "method": "DETERMINISTIC_SOURCE_PATTERN",
             "reason": "Exact source mention.",
             "sourceSpan": [
-              1140,
-              1459
+              1217,
+              1536
             ],
             "sourceQuote": "Pip sees the four-to-eight change finish, realizes that every removal or transfer attempt multiplies the notes, deliberately stops struggling, and turns the still note-covered face toward the mirror. Pip remains covered until a sneeze scatters the notes onto the cabinet. Pip is relieved, but the cabinet remains messy.",
             "semanticVerification": "NOT_PERFORMED"
@@ -1520,8 +1451,8 @@
           "value": "moderate",
           "method": "TOKEN_MOTION_V2",
           "sourceSpan": [
-            1132,
-            1604
+            1209,
+            1681
           ],
           "sourceQuote": "11-15s: Pip sees the four-to-eight change finish, realizes that every removal or transfer attempt multiplies the notes, deliberately stops struggling, and turns the still note-covered face toward the mirror. Pip remains covered until a sneeze scatters the notes onto the cabinet. Pip is relieved, but the cabinet remains messy. [medium close-up; keep Pip, hands, notes and cabinet causally readable] -> Pip stops struggling, then the sneeze moves the notes to the cabinet.",
           "visualVerification": "NOT_PERFORMED",
@@ -1565,8 +1496,8 @@
           {
             "quote": "Pip stops struggling, then the sneeze moves the notes to the cabinet.",
             "sourceSpan": [
-              1535,
-              1604
+              1612,
+              1681
             ],
             "classification": "PHYSICAL_CONSEQUENCE"
           }
@@ -1581,8 +1512,8 @@
               399
             ],
             "sourceSpan": [
-              1460,
-              1531
+              1537,
+              1608
             ],
             "classification": "CAMERA_INSTRUCTION"
           }
@@ -1638,8 +1569,8 @@
         "beatId": "beat_02",
         "method": "EXPLICIT_RECOVERY_ATTEMPT_PATTERN",
         "sourceSpan": [
-          504,
-          602
+          581,
+          679
         ],
         "description": "Pip tries to peel the note away with the free hand, but it splits into two notes, one on each hand",
         "sourceQuote": "Pip tries to peel the note away with the free hand, but it splits into two notes, one on each hand",
@@ -1885,7 +1816,7 @@
           "candidate_only": false,
           "recurrence_count": 0,
           "state_memory_cost": "LOW",
-          "intervention_count": 4
+          "intervention_count": 3
         },
         "recommendation": "High-confidence Spoon-class engine profile: one object, one visible safe/danger boundary, autonomous return, recurrence, active intervention, escalation, and no dead reset.",
         "evaluation_stage": "PRE_RENDER"
@@ -1918,7 +1849,7 @@
           "candidate_only": false,
           "recurrence_count": 0,
           "state_memory_cost": "LOW",
-          "intervention_count": 4
+          "intervention_count": 3
         },
         "recommendation": "Accept an immediate visible physical threat with the character already engaged even when frame zero is not a static impossibility.",
         "evaluation_stage": "PRE_RENDER"
@@ -1951,7 +1882,7 @@
           "candidate_only": false,
           "recurrence_count": 0,
           "state_memory_cost": "LOW",
-          "intervention_count": 4
+          "intervention_count": 3
         },
         "recommendation": "Accept a stronger active same-rule stalemate as payoff when the character remains engaged at the cut.",
         "evaluation_stage": "PRE_RENDER"
@@ -1976,7 +1907,7 @@
     "realization_status": "AVAILABLE",
     "continuation_status": "NOT_APPLICABLE",
     "split_recommendation": null,
-    "strategy_change_count": 3,
+    "strategy_change_count": 2,
     "state_transition_count": 5,
     "continuation_mismatches": [],
     "critical_beat_durations": [

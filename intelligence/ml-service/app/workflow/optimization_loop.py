@@ -12,7 +12,7 @@ import re
 import time
 from .review import _run_canonical_evaluation
 from .creative_reconstruction import diagnose, perform_reconstruction, request_payload, response_format, generation_system
-from .creative_provider_profiles import CreativeCapabilityProvider
+from .creative_provider_profiles import CreativeCapabilityProvider, readiness
 from .draft_comparative_review import config, schema as critic_schema, validate as validate_critic, SYSTEM as CRITIC_SYSTEM, INSTRUCTIONS, SCHEMA
 from .owner_machine_pilot import schema as source_schema, validate as validate_source, source_events, SOURCE_SYSTEM, SINGLE, capture_accounting
 
@@ -26,8 +26,9 @@ def fingerprint(value):
 
 
 def capabilities():
+    observed=readiness()['profiles']
     return dict(version=VERSION, targets=[dict(id=TARGET, label='Canonical Ruleset 1.11: Grade A', supported=True, minimumScore=92), dict(id='CPQ_A_PLUS', supported=False, reason='No approved active calibrated A/A+ target contract is available')],
-                profiles={k: {**config(k), 'allowedRoles': list(ROLES)} for k in ('deepseek-primary', 'openai-escalation')}, maxRounds=5, maxRequests=15, maxTotalUsd=20, maxRunSeconds=1800, officialCpqGrading='INACTIVE', renderAuthorized=False)
+                profiles={k: {**config(k), 'configured':observed[k]['configured'], 'liveAvailability':observed[k]['liveAvailability'], 'allowedRoles': list(ROLES)} for k in ('deepseek-primary', 'openai-escalation')}, maxRounds=5, maxRequests=15, maxTotalUsd=20, maxRunSeconds=1800, officialCpqGrading='INACTIVE', renderAuthorized=False)
 
 
 def canonical(prompt, scope):
@@ -137,6 +138,21 @@ def preflight(data):
     estimate=(bound*cfg['inputUsdPerMillion']+tokens*cfg['outputUsdPerMillion'])/1e6
     if not isinstance(cap,(int,float)) or not math.isfinite(cap) or cap<estimate or bound+tokens>cfg['contextTokens']:raise ValueError('Insufficient bounded request reservation/context')
     return dict(inputTokenUpperBound=bound,maxCalculatedCostUsd=estimate,effectiveConfiguration={**cfg,'maxOutputTokens':tokens,'maxCostUsd':cap})
+
+
+def preview(data):
+    """Compile the outbound role request without constructing a provider."""
+    checked=preflight(data)
+    system,prompt,fmt,context=parts(data)
+    return {
+        **checked,
+        'systemSha256':fingerprint(system),
+        'userPayloadSha256':fingerprint(prompt),
+        'responseSchemaSha256':fingerprint(fmt),
+        'instructionContextSha256':fingerprint({'system':system,'context':context,'responseSchema':fmt}),
+        'sourceScopeSha256':fingerprint(data['scope']),
+        'providerDispatched':False,
+    }
 
 
 def execute_request(data, provider_factory=None):

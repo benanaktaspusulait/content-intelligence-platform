@@ -468,13 +468,14 @@ def cpq_draft_preflight(request: dict[str, Any]) -> dict[str, Any]:
 
 @router.post('/optimization-loop/local')
 def optimization_loop_local(body: dict[str, Any]) -> dict[str, Any]:
-    from .optimization_loop import capabilities, evaluate, compare, preflight
+    from .optimization_loop import capabilities, evaluate, compare, preflight, preview
     try:
         action=body.get('action')
         if action=='CAPABILITIES': return capabilities()
         if action=='EVALUATE': return evaluate(body)
         if action=='COMPARE': return compare(body)
         if action=='PREFLIGHT_REQUEST': return preflight(body)
+        if action=='PREVIEW_REQUEST': return preview(body)
         raise ValueError('Unsupported loop operation')
     except (ValueError, KeyError, TypeError) as error:
         raise HTTPException(422, 'Invalid loop scope or local contract') from error

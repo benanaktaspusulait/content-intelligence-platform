@@ -41,6 +41,8 @@ def test_mimi_actual_saved_canonical_matches_audit_not_a_new_evaluation():
     assert audit['creativeQualityTarget']=={'active':False,'state':'CALIBRATION_REQUIRED','gradeThresholdsAvailable':False}
     assert sum(l['overallLoss'] for l in audit['losses'])==pytest.approx(11.59375)
     assert len(audit['missingEvidence'])==13
+    assert not audit['researchGenerationEligibility']['allowed']
+    assert audit['researchGenerationEligibility']['state']=='BLOCKED_BY_PROTECTED_STORY_CONSTRAINT'
 
 
 def test_legitimate_numeric_b_to_a_path_is_distinguished_from_mimi():
@@ -83,6 +85,10 @@ def test_missing_visual_evidence_stops_even_when_numeric_ceiling_is_high():
     c=baseline();c['failedRules']=[{'ruleId':'ENGINE_SILHOUETTE_DUPLICATE','family':'visual_novelty','severity':'BLOCKER','outcome':'FAIL','details':{'failureBasis':'EVIDENCE_INCOMPLETE'}}]
     audit=feasibility(c)
     assert audit['state']=='TARGET_BLOCKED_BY_EVIDENCE' and not audit['generationAllowed']
+    research=audit['researchGenerationEligibility']
+    assert research['allowed'] and research['state']=='ELIGIBLE_FOR_EXPLICIT_OWNER_AUTHORIZATION'
+    assert not research['finalCanonicalAAdmitted'] and not research['promptApprovalAllowed']
+    assert not research['imageGenerationAllowed'] and not research['renderAuthorized']
 
 
 def test_schema_contract_failure_is_not_a_creative_failure_to_escalate():

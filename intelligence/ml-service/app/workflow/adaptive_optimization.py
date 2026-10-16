@@ -9,6 +9,7 @@ from app.quality.family_weights import CANONICAL_FAMILY_WEIGHTS
 from .creative_reconstruction import DIMENSIONS
 
 VERSION = 'adaptive-creative-optimization-v3'
+RESEARCH_ELIGIBILITY_VERSION = 'canonical-a-text-research-eligibility-v1'
 A_MINIMUM = 92
 MODES = ('DEEPSEEK_ONLY', 'OPENAI_ONLY', 'ADAPTIVE')
 FIXED_PASS = {'MINI_STORY_LOCK','GOAL_VISIBLE_EARLY','TEMPORAL_COMPLEXITY_SPLIT_GATE','BEAT_DENSITY_RULE'}
@@ -25,6 +26,38 @@ def points(row):
     return (100 if severity == 'PASS' else 85) if row['outcome']=='PASS' else {'BLOCKER':0,'CRITICAL':40}.get(severity,70)
 
 
+def research_eligibility(*, contract_valid, aggregate_matches, ceiling, protected_attempt, visual_missing):
+    """A narrow text-only capability-test gate, separate from final admission.
+
+    Missing downstream image evidence may remain an experiment input. A source
+    story conflict, stale/invalid canonical contract, or unattainable fixed-
+    evidence ceiling may not. This decision never authorizes prompt acceptance,
+    image generation, render preparation, or rendering.
+    """
+    allowed=bool(contract_valid and aggregate_matches and ceiling >= A_MINIMUM and not protected_attempt)
+    state=('ELIGIBLE_FOR_EXPLICIT_OWNER_AUTHORIZATION' if allowed else
+           'CONTRACT_FAILURE' if not contract_valid or not aggregate_matches else
+           'BLOCKED_BY_PROTECTED_STORY_CONSTRAINT' if protected_attempt else
+           'BLOCKED_BY_FIXED_EVIDENCE_CEILING')
+    reasons=[]
+    if not contract_valid: reasons.append('A complete current Ruleset 1.11 evaluation is required.')
+    elif not aggregate_matches: reasons.append('Persisted score does not match authoritative aggregation.')
+    elif protected_attempt: reasons.append('The source story fails ATTEMPT_001; text research cannot invent another source event.')
+    elif ceiling < A_MINIMUM: reasons.append('The fixed-evidence optimistic ceiling is below the Canonical A threshold.')
+    elif visual_missing: reasons.append('Downstream visual evidence is pending; it remains mandatory for final admission and render readiness.')
+    return {
+        'version':RESEARCH_ELIGIBILITY_VERSION,
+        'scope':'TEXT_ONLY_SOURCE_BOUND_MODEL_CAPABILITY_RESEARCH',
+        'state':state,'allowed':allowed,'reasons':reasons,
+        'requiresExplicitOwnerAuthorization':True,
+        'requiresIndependentSourceFidelity':True,
+        'requiresIndependentCreativeCritic':True,
+        'finalCanonicalAAdmitted':False,'promptApprovalAllowed':False,
+        'imageGenerationAllowed':False,'renderPreparationAllowed':False,
+        'renderAuthorized':False,
+    }
+
+
 def feasibility(canonical, source='', context=None):
     """Conditional fixed-evidence ceiling, never impute unknown observations.
 
@@ -33,13 +66,15 @@ def feasibility(canonical, source='', context=None):
     """
     context=context or {}
     if canonical.get('status')!='EVALUATED' or canonical.get('rulesetVersion')!='1.11':
-        return {'version':VERSION,'state':'CONTRACT_FAILURE','generationAllowed':False,'reasons':['A feasibility requires a complete current Ruleset 1.11 evaluation.']}
+        return {'version':VERSION,'state':'CONTRACT_FAILURE','generationAllowed':False,'reasons':['A feasibility requires a complete current Ruleset 1.11 evaluation.'],
+                'researchGenerationEligibility':research_eligibility(contract_valid=False,aggregate_matches=False,ceiling=0,protected_attempt=False,visual_missing=False)}
     families=defaultdict(list)
     for row in rows(canonical):
         if points(row) is not None: families[row['family']].append(row)
     denominator=sum(CANONICAL_FAMILY_WEIGHTS.get(f,.05) for f in families)
     if not denominator:
-        return {'version':VERSION,'state':'TARGET_BLOCKED_BY_EVIDENCE','generationAllowed':False,'reasons':['No numeric canonical evidence.']}
+        return {'version':VERSION,'state':'TARGET_BLOCKED_BY_EVIDENCE','generationAllowed':False,'reasons':['No numeric canonical evidence.'],
+                'researchGenerationEligibility':research_eligibility(contract_valid=False,aggregate_matches=False,ceiling=0,protected_attempt=False,visual_missing=False)}
     # Genuine source attempts are inspected from the saved canonical IR; no
     # camera count, client-supplied waiver or new model assertion can add one.
     beats=canonical.get('videoPlanIR',{}).get('beats',[])
@@ -70,7 +105,9 @@ def feasibility(canonical, source='', context=None):
     if ceiling>=A_MINIMUM and visual_missing:state='TARGET_BLOCKED_BY_EVIDENCE'
     if not matches:state='CONTRACT_FAILURE'
     quality_active=context.get('creativeQualityTargetActive') is True
-    return {'version':VERSION,'state':state,'generationAllowed':matches and ceiling>=A_MINIMUM and not visual_missing,'canonicalGradeContract':{'minimumA':A_MINIMUM,'minimumB':80,'aPlusExists':False},'currentScore':current,'fixedEvidenceOptimisticCeiling':ceiling,'ceilingScope':'CURRENT_ELIGIBLE_ROWS_AND_PROTECTED_EVENTS; new independent evidence requires recomputation','familyWeightDenominator':denominator,'losses':losses,'missingEvidence':missing,'genuineSourceAttemptCount':len(attempts),'creativeOpportunity':{'state':'UNKNOWN_REQUIRES_PROMPT_DIAGNOSIS','basis':'No independent CPQ assessment supplied to preflight.'},'canonicalATargetStatus':'CANONICAL_A_UNATTAINABLE_WITH_CURRENT_EVIDENCE' if ceiling<A_MINIMUM else 'CANONICAL_A_POTENTIALLY_ATTAINABLE','creativeQualityTarget':{'active':quality_active,'state':'ACTIVE_CALIBRATED_TARGET' if quality_active else 'CALIBRATION_REQUIRED','gradeThresholdsAvailable':quality_active},'reasons':(['Persisted score does not match authoritative aggregation.'] if not matches else ['Required independent visual evidence is missing.'] if ceiling>=A_MINIMUM and visual_missing else [] if ceiling>=A_MINIMUM else ['No defensible prompt-only path to A with current evidence and protected story.']), 'renderAuthorized':False}
+    return {'version':VERSION,'state':state,'generationAllowed':matches and ceiling>=A_MINIMUM and not visual_missing,'canonicalGradeContract':{'minimumA':A_MINIMUM,'minimumB':80,'aPlusExists':False},'currentScore':current,'fixedEvidenceOptimisticCeiling':ceiling,'ceilingScope':'CURRENT_ELIGIBLE_ROWS_AND_PROTECTED_EVENTS; new independent evidence requires recomputation','familyWeightDenominator':denominator,'losses':losses,'missingEvidence':missing,'genuineSourceAttemptCount':len(attempts),'creativeOpportunity':{'state':'UNKNOWN_REQUIRES_PROMPT_DIAGNOSIS','basis':'No independent CPQ assessment supplied to preflight.'},'canonicalATargetStatus':'CANONICAL_A_UNATTAINABLE_WITH_CURRENT_EVIDENCE' if ceiling<A_MINIMUM else 'CANONICAL_A_POTENTIALLY_ATTAINABLE','creativeQualityTarget':{'active':quality_active,'state':'ACTIVE_CALIBRATED_TARGET' if quality_active else 'CALIBRATION_REQUIRED','gradeThresholdsAvailable':quality_active},'reasons':(['Persisted score does not match authoritative aggregation.'] if not matches else ['Required independent visual evidence is missing.'] if ceiling>=A_MINIMUM and visual_missing else [] if ceiling>=A_MINIMUM else ['No defensible prompt-only path to A with current evidence and protected story.']),
+            'researchGenerationEligibility':research_eligibility(contract_valid=True,aggregate_matches=matches,ceiling=ceiling,protected_attempt=protected_attempt,visual_missing=visual_missing),
+            'renderAuthorized':False}
 
 
 def quality_dimensions(candidate):

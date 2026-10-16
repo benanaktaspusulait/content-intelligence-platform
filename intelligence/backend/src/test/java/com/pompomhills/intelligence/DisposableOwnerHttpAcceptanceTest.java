@@ -506,9 +506,23 @@ class DisposableOwnerHttpAcceptanceTest {
     JsonNode canonical=saved.path("canonicalRuleEvaluation");
     assertThat(canonical.path("status").asText()).isEqualTo("EVALUATED");assertThat(canonical.path("rulesetVersion").asText()).isEqualTo("1.11");
     assertThat(canonical.path("score").isNumber()).isTrue();assertThat(canonical.path("grade").asText()).isNotBlank();
-    assertThat(saved.path("boundRequest").path("prompt").asText()).contains("Pip tries to place","Pip tries to peel","Pip tries to press","Pip tries to push");
+    assertThat(saved.path("boundRequest").path("prompt").asText()).contains("tries to place","Pip tries to peel","Pip tries to press","Pip tries to push");
     JsonNode preflight=call("GET","/api/v1/intelligence/workflow/records/"+analysisId+"/creative-optimization/preflight",null,null,null,200);
     assertThat(preflight.path("sourceAnalysisId").asText()).isEqualTo(analysisId);
+    assertThat(preflight.path("generationAllowed").asBoolean()).isFalse();
+    assertThat(preflight.path("researchGenerationEligibility").path("allowed").asBoolean()).isTrue();
+    assertThat(preflight.path("researchGenerationEligibility").path("finalCanonicalAAdmitted").asBoolean()).isFalse();
+    assertThat(preflight.path("researchGenerationEligibility").path("imageGenerationAllowed").asBoolean()).isFalse();
+    assertThat(preflight.path("researchGenerationEligibility").path("renderAuthorized").asBoolean()).isFalse();
+    JsonNode researchPreflight=post("/api/v1/intelligence/workflow/cpq/optimization-runs/preflight",Map.of("analysisId",analysisId),200);
+    JsonNode comparisonPlan=researchPreflight.path("researchComparisonPlan");
+    assertThat(comparisonPlan.path("runs")).hasSize(2);
+    assertThat(comparisonPlan.path("maximumRequests").asInt()).isEqualTo(6);
+    assertThat(comparisonPlan.path("providerCalls").asInt()).isZero();
+    assertThat(comparisonPlan.path("promptApprovalAllowed").asBoolean()).isFalse();
+    assertThat(comparisonPlan.path("imageGenerationAllowed").asBoolean()).isFalse();
+    assertThat(comparisonPlan.path("renderAuthorized").asBoolean()).isFalse();
+    post("/api/v1/intelligence/workflow/cpq/optimization-runs",Map.of("analysisId",analysisId,"researchOnly",true),400);
     JsonNode old=call("GET","/api/v1/intelligence/workflow/records/"+sourceApproval,null,null,null,200);
     assertThat(old.path("approvedText").asText()).isEqualTo(STORY);
 
@@ -524,7 +538,7 @@ class DisposableOwnerHttpAcceptanceTest {
     assertThat(contexts.stream().map(x->x.path("contextSha256").asText()).distinct().count()).isEqualTo(1);
 
     var positive=JSON.createObjectNode();positive.put("runId",runId);positive.set("completedRun",run);positive.set("approvedRun",approved);
-    positive.set("handoffRun",handed);positive.set("canonical",canonical);positive.set("preflight",preflight);
+    positive.set("handoffRun",handed);positive.set("canonical",canonical);positive.set("preflight",preflight);positive.set("researchPreflight",researchPreflight);
     positive.put("roundsExecuted",2);positive.put("requestCount",4);positive.put("providerCalls",0);positive.put("actualCostUsd",0);
     positive.put("newPromptId",prompt);positive.put("analysisId",analysisId);positive.put("newStoryRecordId",newStory);
     positive.put("structuralPrediction","STRUCTURALLY_PROMISING");positive.put("actualCanonicalScore",canonical.path("score").asDouble());

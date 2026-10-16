@@ -77,6 +77,19 @@ def test_one_candidate_wire_contract_and_no_whole_prompt_answer():
     assert 'prompt' not in fmt['json_schema']['schema']['properties']
 
 
+def test_generation_preview_is_same_context_for_both_models_and_never_dispatches():
+    Transport.calls=0
+    previews=[]
+    for identity in ('deepseek-primary','openai-escalation'):
+        d=data();d['authorization']=auth('GENERATION',identity)
+        previews.append(loop.preview(d))
+    assert previews[0]['instructionContextSha256']==previews[1]['instructionContextSha256']
+    assert previews[0]['userPayloadSha256']==previews[1]['userPayloadSha256']
+    assert previews[0]['responseSchemaSha256']==previews[1]['responseSchemaSha256']
+    assert all(not p['providerDispatched'] for p in previews)
+    assert Transport.calls==0
+
+
 def test_generation_wire_payload_contains_versioned_actual_rule_feedback():
     d=data();evaluation=loop.evaluate(dict(scope=d['scope'],prompt=d['prompt']))['canonical']
     _,raw,_,context=loop.parts(d);payload=json.loads(raw);rules=payload['canonicalImprovementContext']

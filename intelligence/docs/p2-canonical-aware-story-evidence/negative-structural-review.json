@@ -10,7 +10,7 @@
     "No rendered or audience evidence exists."
   ],
   "reviewTimestamp": "TEST_FIXTURE_NOT_REAL_MODEL_TIME",
-  "sourceRequestId": "157d7dba-2d5b-456c-a38e-ecc93320fd28",
+  "sourceRequestId": "279be026-7595-4296-ba5f-f5021d5ca41f",
   "candidateReviews": [
     {
       "concerns": [
@@ -127,6 +127,54 @@
             "necessaryImprovement": "Introduce a coherent, source-authorized different interaction rather than another pull.",
             "storyEvidenceExcerpt": "Pip tries to pull a sticky note from one finger",
             "changesProtectedSource": true
+          },
+          {
+            "reason": "Repeated pulls do not establish distinct strategies.",
+            "ruleId": "HOOK_002",
+            "status": "NOT_SUPPORTED",
+            "necessaryImprovement": "Introduce a coherent, source-authorized different interaction rather than another pull.",
+            "storyEvidenceExcerpt": "Pip tries to pull a sticky note from one finger",
+            "changesProtectedSource": true
+          },
+          {
+            "reason": "Repeated pulls do not establish distinct strategies.",
+            "ruleId": "HOOK_004",
+            "status": "NOT_SUPPORTED",
+            "necessaryImprovement": "Introduce a coherent, source-authorized different interaction rather than another pull.",
+            "storyEvidenceExcerpt": "Pip tries to pull a sticky note from one finger",
+            "changesProtectedSource": true
+          },
+          {
+            "reason": "Repeated pulls do not establish distinct strategies.",
+            "ruleId": "CONSISTENCY_001",
+            "status": "NOT_SUPPORTED",
+            "necessaryImprovement": "Introduce a coherent, source-authorized different interaction rather than another pull.",
+            "storyEvidenceExcerpt": "Pip tries to pull a sticky note from one finger",
+            "changesProtectedSource": true
+          },
+          {
+            "reason": "Repeated pulls do not establish distinct strategies.",
+            "ruleId": "GENERATION_EXECUTABLE_ATTEMPTS",
+            "status": "NOT_SUPPORTED",
+            "necessaryImprovement": "Introduce a coherent, source-authorized different interaction rather than another pull.",
+            "storyEvidenceExcerpt": "Pip tries to pull a sticky note from one finger",
+            "changesProtectedSource": true
+          },
+          {
+            "reason": "Repeated pulls do not establish distinct strategies.",
+            "ruleId": "INSTANT_VISUAL_ABSURDITY_GATE",
+            "status": "NOT_SUPPORTED",
+            "necessaryImprovement": "Introduce a coherent, source-authorized different interaction rather than another pull.",
+            "storyEvidenceExcerpt": "Pip tries to pull a sticky note from one finger",
+            "changesProtectedSource": true
+          },
+          {
+            "reason": "Repeated pulls do not establish distinct strategies.",
+            "ruleId": "ENGINE_SILHOUETTE_DUPLICATE",
+            "status": "NOT_SUPPORTED",
+            "necessaryImprovement": "Introduce a coherent, source-authorized different interaction rather than another pull.",
+            "storyEvidenceExcerpt": "Pip tries to pull a sticky note from one finger",
+            "changesProtectedSource": true
           }
         ],
         "remainingBlockers": [
@@ -176,6 +224,54 @@
             "reason": "Repeated pulls do not establish distinct strategies.",
             "ruleId": "MINI_STORY_LOCK",
             "status": "RISK",
+            "necessaryImprovement": "Introduce a coherent, source-authorized different interaction rather than another pull.",
+            "storyEvidenceExcerpt": "Repeated pulling doubles the notes",
+            "changesProtectedSource": true
+          },
+          {
+            "reason": "Repeated pulls do not establish distinct strategies.",
+            "ruleId": "HOOK_002",
+            "status": "NOT_SUPPORTED",
+            "necessaryImprovement": "Introduce a coherent, source-authorized different interaction rather than another pull.",
+            "storyEvidenceExcerpt": "Repeated pulling doubles the notes",
+            "changesProtectedSource": true
+          },
+          {
+            "reason": "Repeated pulls do not establish distinct strategies.",
+            "ruleId": "HOOK_004",
+            "status": "NOT_SUPPORTED",
+            "necessaryImprovement": "Introduce a coherent, source-authorized different interaction rather than another pull.",
+            "storyEvidenceExcerpt": "Repeated pulling doubles the notes",
+            "changesProtectedSource": true
+          },
+          {
+            "reason": "Repeated pulls do not establish distinct strategies.",
+            "ruleId": "CONSISTENCY_001",
+            "status": "NOT_SUPPORTED",
+            "necessaryImprovement": "Introduce a coherent, source-authorized different interaction rather than another pull.",
+            "storyEvidenceExcerpt": "Repeated pulling doubles the notes",
+            "changesProtectedSource": true
+          },
+          {
+            "reason": "Repeated pulls do not establish distinct strategies.",
+            "ruleId": "GENERATION_EXECUTABLE_ATTEMPTS",
+            "status": "NOT_SUPPORTED",
+            "necessaryImprovement": "Introduce a coherent, source-authorized different interaction rather than another pull.",
+            "storyEvidenceExcerpt": "Repeated pulling doubles the notes",
+            "changesProtectedSource": true
+          },
+          {
+            "reason": "Repeated pulls do not establish distinct strategies.",
+            "ruleId": "INSTANT_VISUAL_ABSURDITY_GATE",
+            "status": "NOT_SUPPORTED",
+            "necessaryImprovement": "Introduce a coherent, source-authorized different interaction rather than another pull.",
+            "storyEvidenceExcerpt": "Repeated pulling doubles the notes",
+            "changesProtectedSource": true
+          },
+          {
+            "reason": "Repeated pulls do not establish distinct strategies.",
+            "ruleId": "ENGINE_SILHOUETTE_DUPLICATE",
+            "status": "NOT_SUPPORTED",
             "necessaryImprovement": "Introduce a coherent, source-authorized different interaction rather than another pull.",
             "storyEvidenceExcerpt": "Repeated pulling doubles the notes",
             "changesProtectedSource": true

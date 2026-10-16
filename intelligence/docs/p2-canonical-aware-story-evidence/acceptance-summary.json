@@ -2,15 +2,16 @@
   "harnessExitCode": 0,
   "p2Acceptance": true,
   "evidenceOrigin": "DETERMINISTIC_MOCK_PROVIDER_PLUS_ACTUAL_APPLICATION_EVALUATOR",
+  "evidenceDirectory": "intelligence/backend/target/disposable-owner-http/run-iD9pzQ",
   "baseline": {
-    "analysisId": "55c76e56-2ae7-4251-8b2d-72e5829346cc",
+    "analysisId": "46626ef5-af05-46a0-9df7-6d1ed8a7508c",
     "score": 82.54166666666669,
     "grade": "B",
     "rulesetVersion": "1.11"
   },
   "context": {
     "version": "canonical-story-feasibility-context-v1",
-    "sha256": "f81068221541b571e85abf70e786ccdba408dd842e5c6b6f46ec3efccb52bf4c"
+    "sha256": "64d53e7c00350afd9eb61aeca491f18e615be7af2d5691356615f9d817cf3db7"
   },
   "negative": {
     "state": "STOPPED",
@@ -19,22 +20,23 @@
     "providerCalls": 0
   },
   "positive": {
-    "runId": "7968c3ff-6a91-444d-b793-196c774b0cee",
+    "runId": "64906cbd-d6dc-43c4-8240-3cd4a2cace4c",
     "rounds": 2,
-    "storyRecordId": "1a6af3fe-2c2b-4d58-bfa1-27833127e0d1",
-    "storyApprovalRecordId": "689de6db-a75a-42a5-abe4-ea3209bf7ff5",
-    "storySha256": "e1b7cdab5486c910d1685715353769c42586922eabecb6a8d1f1fc1138407a1e",
+    "storyRecordId": "a8d54cff-8b27-45e3-b91e-5d01813c90fb",
+    "storyApprovalRecordId": "7e002e6e-b9e3-45a1-b2e7-ed10349441cc",
+    "storyRevisionId": "candidate-1-revision-04c8c36b",
+    "storySha256": "ba352d486c4252c5c6fefe585ad976c0b6f73c299f7554863848bdd842a99b3d",
     "promptVersionId": 2,
-    "promptSha256": "5ea8d3f43f4a96d0c8940bc4751c24bbd204a634ae47c55f21e6e0678faa58b5",
-    "analysisId": "01dc1ad2-983d-4048-bc59-3ddc682bd93b",
+    "promptSha256": "1a9a8cfc7e4c6e0a037ba3642a10c11c81d41ce8b574aa3c79cbaee7ce1215f5",
+    "analysisId": "3a4ee875-9ead-41a1-bb1a-201f0ddbc8e9",
     "qualityValidationId": 1,
-    "score": 91.76041666666669,
-    "grade": "B",
+    "score": 93.42708333333334,
+    "grade": "A",
     "rulesetVersion": "1.11",
     "preflightState": "TARGET_BLOCKED_BY_EVIDENCE",
     "generationAllowed": false,
-    "fixedEvidenceOptimisticCeiling": 96.34375000000001,
-    "genuineSourceAttemptCount": 4,
+    "fixedEvidenceOptimisticCeiling": 94.26041666666667,
+    "genuineSourceAttemptCount": 3,
     "providerCalls": 0,
     "actualCostUsd": 0
   },
@@ -45,7 +47,7 @@
       "beforeSeverity": "BLOCKER",
       "afterOutcome": "PASS",
       "afterSeverity": "PASS",
-      "afterMessage": "4 active attempts detected (short tier, minimum 3)."
+      "afterMessage": "3 active attempts detected (short tier, minimum 3)."
     },
     {
       "ruleId": "BEAT_004",
@@ -67,9 +69,9 @@
       "ruleId": "HOOK_002",
       "beforeOutcome": "UNKNOWN",
       "beforeSeverity": "CRITICAL",
-      "afterOutcome": "FAIL",
-      "afterSeverity": "CRITICAL",
-      "afterMessage": "Hook does not start mid-action. The problem must already be visually obvious within the opening second, with no setup or explanation."
+      "afterOutcome": "PASS",
+      "afterSeverity": "PASS",
+      "afterMessage": "Textual first-frame intent establishes an immediate anomaly; visual verification remains a separate gate."
     },
     {
       "ruleId": "MINI_STORY_LOCK",
@@ -86,14 +88,6 @@
       "afterOutcome": "PASS",
       "afterSeverity": "PASS",
       "afterMessage": "Good novelty distribution. Max gap: 3.0s."
-    },
-    {
-      "ruleId": "PRODUCIBILITY_003",
-      "beforeOutcome": "FAIL",
-      "beforeSeverity": "CRITICAL",
-      "afterOutcome": "PASS",
-      "afterSeverity": "PASS",
-      "afterMessage": "No fragile interaction risk tags detected."
     }
   ],
   "realProviderCalls": 0,

@@ -16,8 +16,8 @@
         "score": 82.54166666666669,
         "status": "EVALUATED"
       },
-      "contextSha256": "f81068221541b571e85abf70e786ccdba408dd842e5c6b6f46ec3efccb52bf4c",
-      "sourceStoryId": "4e7156cd-4e71-4052-ae5c-961a56bf2304",
+      "contextSha256": "64d53e7c00350afd9eb61aeca491f18e615be7af2d5691356615f9d817cf3db7",
+      "sourceStoryId": "fc714135-bf9c-49fd-b2b4-7d47af0489df",
       "rulesetVersion": "1.11",
       "assessmentScope": "TEXTUAL_STORY_FEASIBILITY_PREDICTION_ONLY; CANONICAL OUTCOMES REQUIRE BUILD_PROMPT_AND_RULESET_1_11",
       "sourceRevisionId": "candidate-1-revision-7d6e06a4",
@@ -296,7 +296,7 @@
         }
       ],
       "sourceStorySha256": "b9a62583fde3b21ed26b89e32bfe9029d53773b340fdb1d21cbcec206f19068a",
-      "baselineAnalysisId": "55c76e56-2ae7-4251-8b2d-72e5829346cc",
+      "baselineAnalysisId": "46626ef5-af05-46a0-9df7-6d1ed8a7508c",
       "prohibitedShortcuts": [
         "INVENT_PASS_EVIDENCE",
         "TREAT_UNKNOWN_AS_PASS",
@@ -774,7 +774,7 @@
         "genuineSourceAttemptCount": 2,
         "fixedEvidenceOptimisticCeiling": 88.375
       },
-      "sourceApprovalRecordId": "f3791107-ae74-4712-8397-e5fd79433d50",
+      "sourceApprovalRecordId": "22a3de92-8a7c-4e58-af21-651665e5ca64",
       "mandatoryEvidenceContracts": [
         "SOURCE_BOUND_BEATS",
         "EXACT_STORY_QUOTES_WHEN_CLAIMED",
@@ -805,8 +805,8 @@
         "score": 82.54166666666669,
         "status": "EVALUATED"
       },
-      "contextSha256": "f81068221541b571e85abf70e786ccdba408dd842e5c6b6f46ec3efccb52bf4c",
-      "sourceStoryId": "4e7156cd-4e71-4052-ae5c-961a56bf2304",
+      "contextSha256": "64d53e7c00350afd9eb61aeca491f18e615be7af2d5691356615f9d817cf3db7",
+      "sourceStoryId": "fc714135-bf9c-49fd-b2b4-7d47af0489df",
       "rulesetVersion": "1.11",
       "assessmentScope": "TEXTUAL_STORY_FEASIBILITY_PREDICTION_ONLY; CANONICAL OUTCOMES REQUIRE BUILD_PROMPT_AND_RULESET_1_11",
       "sourceRevisionId": "candidate-1-revision-7d6e06a4",
@@ -1085,7 +1085,7 @@
         }
       ],
       "sourceStorySha256": "b9a62583fde3b21ed26b89e32bfe9029d53773b340fdb1d21cbcec206f19068a",
-      "baselineAnalysisId": "55c76e56-2ae7-4251-8b2d-72e5829346cc",
+      "baselineAnalysisId": "46626ef5-af05-46a0-9df7-6d1ed8a7508c",
       "prohibitedShortcuts": [
         "INVENT_PASS_EVIDENCE",
         "TREAT_UNKNOWN_AS_PASS",
@@ -1563,7 +1563,7 @@
         "genuineSourceAttemptCount": 2,
         "fixedEvidenceOptimisticCeiling": 88.375
       },
-      "sourceApprovalRecordId": "f3791107-ae74-4712-8397-e5fd79433d50",
+      "sourceApprovalRecordId": "22a3de92-8a7c-4e58-af21-651665e5ca64",
       "mandatoryEvidenceContracts": [
         "SOURCE_BOUND_BEATS",
         "EXACT_STORY_QUOTES_WHEN_CLAIMED",
@@ -1594,8 +1594,8 @@
         "score": 82.54166666666669,
         "status": "EVALUATED"
       },
-      "contextSha256": "f81068221541b571e85abf70e786ccdba408dd842e5c6b6f46ec3efccb52bf4c",
-      "sourceStoryId": "4e7156cd-4e71-4052-ae5c-961a56bf2304",
+      "contextSha256": "64d53e7c00350afd9eb61aeca491f18e615be7af2d5691356615f9d817cf3db7",
+      "sourceStoryId": "fc714135-bf9c-49fd-b2b4-7d47af0489df",
       "rulesetVersion": "1.11",
       "assessmentScope": "TEXTUAL_STORY_FEASIBILITY_PREDICTION_ONLY; CANONICAL OUTCOMES REQUIRE BUILD_PROMPT_AND_RULESET_1_11",
       "sourceRevisionId": "candidate-1-revision-7d6e06a4",
@@ -1874,7 +1874,7 @@
         }
       ],
       "sourceStorySha256": "b9a62583fde3b21ed26b89e32bfe9029d53773b340fdb1d21cbcec206f19068a",
-      "baselineAnalysisId": "55c76e56-2ae7-4251-8b2d-72e5829346cc",
+      "baselineAnalysisId": "46626ef5-af05-46a0-9df7-6d1ed8a7508c",
       "prohibitedShortcuts": [
         "INVENT_PASS_EVIDENCE",
         "TREAT_UNKNOWN_AS_PASS",
@@ -2352,7 +2352,7 @@
         "genuineSourceAttemptCount": 2,
         "fixedEvidenceOptimisticCeiling": 88.375
       },
-      "sourceApprovalRecordId": "f3791107-ae74-4712-8397-e5fd79433d50",
+      "sourceApprovalRecordId": "22a3de92-8a7c-4e58-af21-651665e5ca64",
       "mandatoryEvidenceContracts": [
         "SOURCE_BOUND_BEATS",
         "EXACT_STORY_QUOTES_WHEN_CLAIMED",
@@ -2383,8 +2383,8 @@
         "score": 82.54166666666669,
         "status": "EVALUATED"
       },
-      "contextSha256": "f81068221541b571e85abf70e786ccdba408dd842e5c6b6f46ec3efccb52bf4c",
-      "sourceStoryId": "4e7156cd-4e71-4052-ae5c-961a56bf2304",
+      "contextSha256": "64d53e7c00350afd9eb61aeca491f18e615be7af2d5691356615f9d817cf3db7",
+      "sourceStoryId": "fc714135-bf9c-49fd-b2b4-7d47af0489df",
       "rulesetVersion": "1.11",
       "assessmentScope": "TEXTUAL_STORY_FEASIBILITY_PREDICTION_ONLY; CANONICAL OUTCOMES REQUIRE BUILD_PROMPT_AND_RULESET_1_11",
       "sourceRevisionId": "candidate-1-revision-7d6e06a4",
@@ -2663,7 +2663,7 @@
         }
       ],
       "sourceStorySha256": "b9a62583fde3b21ed26b89e32bfe9029d53773b340fdb1d21cbcec206f19068a",
-      "baselineAnalysisId": "55c76e56-2ae7-4251-8b2d-72e5829346cc",
+      "baselineAnalysisId": "46626ef5-af05-46a0-9df7-6d1ed8a7508c",
       "prohibitedShortcuts": [
         "INVENT_PASS_EVIDENCE",
         "TREAT_UNKNOWN_AS_PASS",
@@ -3141,7 +3141,7 @@
         "genuineSourceAttemptCount": 2,
         "fixedEvidenceOptimisticCeiling": 88.375
       },
-      "sourceApprovalRecordId": "f3791107-ae74-4712-8397-e5fd79433d50",
+      "sourceApprovalRecordId": "22a3de92-8a7c-4e58-af21-651665e5ca64",
       "mandatoryEvidenceContracts": [
         "SOURCE_BOUND_BEATS",
         "EXACT_STORY_QUOTES_WHEN_CLAIMED",
@@ -3172,8 +3172,8 @@
         "score": 82.54166666666669,
         "status": "EVALUATED"
       },
-      "contextSha256": "f81068221541b571e85abf70e786ccdba408dd842e5c6b6f46ec3efccb52bf4c",
-      "sourceStoryId": "4e7156cd-4e71-4052-ae5c-961a56bf2304",
+      "contextSha256": "64d53e7c00350afd9eb61aeca491f18e615be7af2d5691356615f9d817cf3db7",
+      "sourceStoryId": "fc714135-bf9c-49fd-b2b4-7d47af0489df",
       "rulesetVersion": "1.11",
       "assessmentScope": "TEXTUAL_STORY_FEASIBILITY_PREDICTION_ONLY; CANONICAL OUTCOMES REQUIRE BUILD_PROMPT_AND_RULESET_1_11",
       "sourceRevisionId": "candidate-1-revision-7d6e06a4",
@@ -3452,7 +3452,7 @@
         }
       ],
       "sourceStorySha256": "b9a62583fde3b21ed26b89e32bfe9029d53773b340fdb1d21cbcec206f19068a",
-      "baselineAnalysisId": "55c76e56-2ae7-4251-8b2d-72e5829346cc",
+      "baselineAnalysisId": "46626ef5-af05-46a0-9df7-6d1ed8a7508c",
       "prohibitedShortcuts": [
         "INVENT_PASS_EVIDENCE",
         "TREAT_UNKNOWN_AS_PASS",
@@ -3930,7 +3930,7 @@
         "genuineSourceAttemptCount": 2,
         "fixedEvidenceOptimisticCeiling": 88.375
       },
-      "sourceApprovalRecordId": "f3791107-ae74-4712-8397-e5fd79433d50",
+      "sourceApprovalRecordId": "22a3de92-8a7c-4e58-af21-651665e5ca64",
       "mandatoryEvidenceContracts": [
         "SOURCE_BOUND_BEATS",
         "EXACT_STORY_QUOTES_WHEN_CLAIMED",
@@ -3939,7 +3939,7 @@
       ]
     },
     "bestCandidate": {
-      "text": "Pip the rabbit wants to place one sticky note on the toy cabinet's empty front panel. Pip tries to place the note, but it clings to Pip's fingertip while the cabinet stays untouched. Pip tries to peel the note away with the free hand, but it splits into two notes, one on each hand. Pip tries to press both notes onto the cabinet, but they spring back and double into four notes. Pip tries to push the four notes off against the cabinet door edge, but they split into eight and cover Pip's arms and face. Pip realizes that every removal or transfer attempt multiplies the notes, freezes, and sees the note-covered reflection in the mirror. Pip remains covered until a sneeze scatters the notes onto the cabinet. Pip is relieved, but the cabinet remains messy.",
+      "text": "Already mid-action, Pip the rabbit tries to place one sticky note on the toy cabinet's empty front panel, but it clings to Pip's fingertip while the cabinet stays untouched. Pip tries to peel the note away with the free hand, but it splits into two notes, one on each hand. Pip tries to press both notes onto the cabinet, but they spring back and double into four notes. Pip tries to push the four notes off against the cabinet door edge, but they split into eight and cover Pip's arms and face. Pip realizes that every removal or transfer attempt multiplies the notes, freezes, and sees the note-covered reflection in the mirror. Pip remains covered until a sneeze scatters the notes onto the cabinet. Pip is relieved, but the cabinet remains messy.",
       "round": 1,
       "title": "Distinct physical strategies",
       "review": {
@@ -3954,7 +3954,7 @@
           "No rendered or audience evidence exists."
         ],
         "reviewTimestamp": "TEST_FIXTURE_NOT_REAL_MODEL_TIME",
-        "sourceRequestId": "7968c3ff-6a91-444d-b793-196c774b0cee",
+        "sourceRequestId": "64906cbd-d6dc-43c4-8240-3cd4a2cace4c",
         "candidateReviews": [
           {
             "concerns": [],
@@ -4041,10 +4041,10 @@
                   "changesProtectedSource": true
                 },
                 {
-                  "reason": "The story contains actor-bound, causally distinct attempts and an explicit realization.",
+                  "reason": "The text is structurally plausible but independent semantic/generator evidence is absent.",
                   "ruleId": "ATTEMPT_002",
-                  "status": "SUPPORTED",
-                  "necessaryImprovement": "",
+                  "status": "RISK",
+                  "necessaryImprovement": "Obtain independent evidence; do not infer PASS from story text.",
                   "storyEvidenceExcerpt": "Pip tries to peel the note away with the free hand",
                   "changesProtectedSource": true
                 },
@@ -4069,6 +4069,54 @@
                   "ruleId": "MINI_STORY_LOCK",
                   "status": "SUPPORTED",
                   "necessaryImprovement": "",
+                  "storyEvidenceExcerpt": "Pip tries to peel the note away with the free hand",
+                  "changesProtectedSource": true
+                },
+                {
+                  "reason": "The story contains actor-bound, causally distinct attempts and an explicit realization.",
+                  "ruleId": "HOOK_002",
+                  "status": "SUPPORTED",
+                  "necessaryImprovement": "",
+                  "storyEvidenceExcerpt": "Pip tries to peel the note away with the free hand",
+                  "changesProtectedSource": true
+                },
+                {
+                  "reason": "The text is structurally plausible but independent semantic/generator evidence is absent.",
+                  "ruleId": "HOOK_004",
+                  "status": "RISK",
+                  "necessaryImprovement": "Obtain independent evidence; do not infer PASS from story text.",
+                  "storyEvidenceExcerpt": "Pip tries to peel the note away with the free hand",
+                  "changesProtectedSource": true
+                },
+                {
+                  "reason": "The text is structurally plausible but independent semantic/generator evidence is absent.",
+                  "ruleId": "CONSISTENCY_001",
+                  "status": "RISK",
+                  "necessaryImprovement": "Obtain independent evidence; do not infer PASS from story text.",
+                  "storyEvidenceExcerpt": "Pip tries to peel the note away with the free hand",
+                  "changesProtectedSource": true
+                },
+                {
+                  "reason": "The text is structurally plausible but independent semantic/generator evidence is absent.",
+                  "ruleId": "GENERATION_EXECUTABLE_ATTEMPTS",
+                  "status": "RISK",
+                  "necessaryImprovement": "Obtain independent evidence; do not infer PASS from story text.",
+                  "storyEvidenceExcerpt": "Pip tries to peel the note away with the free hand",
+                  "changesProtectedSource": true
+                },
+                {
+                  "reason": "Independent visual comparison is not present.",
+                  "ruleId": "INSTANT_VISUAL_ABSURDITY_GATE",
+                  "status": "UNKNOWN",
+                  "necessaryImprovement": "Obtain independent evidence; do not infer PASS from story text.",
+                  "storyEvidenceExcerpt": "Pip tries to peel the note away with the free hand",
+                  "changesProtectedSource": true
+                },
+                {
+                  "reason": "Independent visual comparison is not present.",
+                  "ruleId": "ENGINE_SILHOUETTE_DUPLICATE",
+                  "status": "UNKNOWN",
+                  "necessaryImprovement": "Obtain independent evidence; do not infer PASS from story text.",
                   "storyEvidenceExcerpt": "Pip tries to peel the note away with the free hand",
                   "changesProtectedSource": true
                 }
@@ -4091,10 +4139,10 @@
                   "changesProtectedSource": true
                 },
                 {
-                  "reason": "The story contains actor-bound, causally distinct attempts and an explicit realization.",
+                  "reason": "The text is structurally plausible but independent semantic/generator evidence is absent.",
                   "ruleId": "ATTEMPT_002",
-                  "status": "SUPPORTED",
-                  "necessaryImprovement": "",
+                  "status": "RISK",
+                  "necessaryImprovement": "Obtain independent evidence; do not infer PASS from story text.",
                   "storyEvidenceExcerpt": "Pip tries to peel the note away with the free hand",
                   "changesProtectedSource": true
                 },
@@ -4121,6 +4169,54 @@
                   "necessaryImprovement": "",
                   "storyEvidenceExcerpt": "Pip tries to peel the note away with the free hand",
                   "changesProtectedSource": true
+                },
+                {
+                  "reason": "The story contains actor-bound, causally distinct attempts and an explicit realization.",
+                  "ruleId": "HOOK_002",
+                  "status": "SUPPORTED",
+                  "necessaryImprovement": "",
+                  "storyEvidenceExcerpt": "Pip tries to peel the note away with the free hand",
+                  "changesProtectedSource": true
+                },
+                {
+                  "reason": "The text is structurally plausible but independent semantic/generator evidence is absent.",
+                  "ruleId": "HOOK_004",
+                  "status": "RISK",
+                  "necessaryImprovement": "Obtain independent evidence; do not infer PASS from story text.",
+                  "storyEvidenceExcerpt": "Pip tries to peel the note away with the free hand",
+                  "changesProtectedSource": true
+                },
+                {
+                  "reason": "The text is structurally plausible but independent semantic/generator evidence is absent.",
+                  "ruleId": "CONSISTENCY_001",
+                  "status": "RISK",
+                  "necessaryImprovement": "Obtain independent evidence; do not infer PASS from story text.",
+                  "storyEvidenceExcerpt": "Pip tries to peel the note away with the free hand",
+                  "changesProtectedSource": true
+                },
+                {
+                  "reason": "The text is structurally plausible but independent semantic/generator evidence is absent.",
+                  "ruleId": "GENERATION_EXECUTABLE_ATTEMPTS",
+                  "status": "RISK",
+                  "necessaryImprovement": "Obtain independent evidence; do not infer PASS from story text.",
+                  "storyEvidenceExcerpt": "Pip tries to peel the note away with the free hand",
+                  "changesProtectedSource": true
+                },
+                {
+                  "reason": "Independent visual comparison is not present.",
+                  "ruleId": "INSTANT_VISUAL_ABSURDITY_GATE",
+                  "status": "UNKNOWN",
+                  "necessaryImprovement": "Obtain independent evidence; do not infer PASS from story text.",
+                  "storyEvidenceExcerpt": "Pip tries to peel the note away with the free hand",
+                  "changesProtectedSource": true
+                },
+                {
+                  "reason": "Independent visual comparison is not present.",
+                  "ruleId": "ENGINE_SILHOUETTE_DUPLICATE",
+                  "status": "UNKNOWN",
+                  "necessaryImprovement": "Obtain independent evidence; do not infer PASS from story text.",
+                  "storyEvidenceExcerpt": "Pip tries to peel the note away with the free hand",
+                  "changesProtectedSource": true
                 }
               ],
               "remainingBlockers": [],
@@ -4137,7 +4233,7 @@
       "candidateId": "positive-round-1",
       "parentDraftId": "",
       "sourceFingerprint": "b9a62583fde3b21ed26b89e32bfe9029d53773b340fdb1d21cbcec206f19068a",
-      "parentStoryRecordId": "4e7156cd-4e71-4052-ae5c-961a56bf2304"
+      "parentStoryRecordId": "fc714135-bf9c-49fd-b2b4-7d47af0489df"
     },
     "previousAssessment": {
       "reviewId": "p2-fixture-review-1-True",
@@ -4151,7 +4247,7 @@
         "No rendered or audience evidence exists."
       ],
       "reviewTimestamp": "TEST_FIXTURE_NOT_REAL_MODEL_TIME",
-      "sourceRequestId": "7968c3ff-6a91-444d-b793-196c774b0cee",
+      "sourceRequestId": "64906cbd-d6dc-43c4-8240-3cd4a2cace4c",
       "candidateReviews": [
         {
           "concerns": [],
@@ -4238,10 +4334,10 @@
                 "changesProtectedSource": true
               },
               {
-                "reason": "The story contains actor-bound, causally distinct attempts and an explicit realization.",
+                "reason": "The text is structurally plausible but independent semantic/generator evidence is absent.",
                 "ruleId": "ATTEMPT_002",
-                "status": "SUPPORTED",
-                "necessaryImprovement": "",
+                "status": "RISK",
+                "necessaryImprovement": "Obtain independent evidence; do not infer PASS from story text.",
                 "storyEvidenceExcerpt": "Pip tries to peel the note away with the free hand",
                 "changesProtectedSource": true
               },
@@ -4266,6 +4362,54 @@
                 "ruleId": "MINI_STORY_LOCK",
                 "status": "SUPPORTED",
                 "necessaryImprovement": "",
+                "storyEvidenceExcerpt": "Pip tries to peel the note away with the free hand",
+                "changesProtectedSource": true
+              },
+              {
+                "reason": "The story contains actor-bound, causally distinct attempts and an explicit realization.",
+                "ruleId": "HOOK_002",
+                "status": "SUPPORTED",
+                "necessaryImprovement": "",
+                "storyEvidenceExcerpt": "Pip tries to peel the note away with the free hand",
+                "changesProtectedSource": true
+              },
+              {
+                "reason": "The text is structurally plausible but independent semantic/generator evidence is absent.",
+                "ruleId": "HOOK_004",
+                "status": "RISK",
+                "necessaryImprovement": "Obtain independent evidence; do not infer PASS from story text.",
+                "storyEvidenceExcerpt": "Pip tries to peel the note away with the free hand",
+                "changesProtectedSource": true
+              },
+              {
+                "reason": "The text is structurally plausible but independent semantic/generator evidence is absent.",
+                "ruleId": "CONSISTENCY_001",
+                "status": "RISK",
+                "necessaryImprovement": "Obtain independent evidence; do not infer PASS from story text.",
+                "storyEvidenceExcerpt": "Pip tries to peel the note away with the free hand",
+                "changesProtectedSource": true
+              },
+              {
+                "reason": "The text is structurally plausible but independent semantic/generator evidence is absent.",
+                "ruleId": "GENERATION_EXECUTABLE_ATTEMPTS",
+                "status": "RISK",
+                "necessaryImprovement": "Obtain independent evidence; do not infer PASS from story text.",
+                "storyEvidenceExcerpt": "Pip tries to peel the note away with the free hand",
+                "changesProtectedSource": true
+              },
+              {
+                "reason": "Independent visual comparison is not present.",
+                "ruleId": "INSTANT_VISUAL_ABSURDITY_GATE",
+                "status": "UNKNOWN",
+                "necessaryImprovement": "Obtain independent evidence; do not infer PASS from story text.",
+                "storyEvidenceExcerpt": "Pip tries to peel the note away with the free hand",
+                "changesProtectedSource": true
+              },
+              {
+                "reason": "Independent visual comparison is not present.",
+                "ruleId": "ENGINE_SILHOUETTE_DUPLICATE",
+                "status": "UNKNOWN",
+                "necessaryImprovement": "Obtain independent evidence; do not infer PASS from story text.",
                 "storyEvidenceExcerpt": "Pip tries to peel the note away with the free hand",
                 "changesProtectedSource": true
               }
@@ -4288,10 +4432,10 @@
                 "changesProtectedSource": true
               },
               {
-                "reason": "The story contains actor-bound, causally distinct attempts and an explicit realization.",
+                "reason": "The text is structurally plausible but independent semantic/generator evidence is absent.",
                 "ruleId": "ATTEMPT_002",
-                "status": "SUPPORTED",
-                "necessaryImprovement": "",
+                "status": "RISK",
+                "necessaryImprovement": "Obtain independent evidence; do not infer PASS from story text.",
                 "storyEvidenceExcerpt": "Pip tries to peel the note away with the free hand",
                 "changesProtectedSource": true
               },
@@ -4316,6 +4460,54 @@
                 "ruleId": "MINI_STORY_LOCK",
                 "status": "SUPPORTED",
                 "necessaryImprovement": "",
+                "storyEvidenceExcerpt": "Pip tries to peel the note away with the free hand",
+                "changesProtectedSource": true
+              },
+              {
+                "reason": "The story contains actor-bound, causally distinct attempts and an explicit realization.",
+                "ruleId": "HOOK_002",
+                "status": "SUPPORTED",
+                "necessaryImprovement": "",
+                "storyEvidenceExcerpt": "Pip tries to peel the note away with the free hand",
+                "changesProtectedSource": true
+              },
+              {
+                "reason": "The text is structurally plausible but independent semantic/generator evidence is absent.",
+                "ruleId": "HOOK_004",
+                "status": "RISK",
+                "necessaryImprovement": "Obtain independent evidence; do not infer PASS from story text.",
+                "storyEvidenceExcerpt": "Pip tries to peel the note away with the free hand",
+                "changesProtectedSource": true
+              },
+              {
+                "reason": "The text is structurally plausible but independent semantic/generator evidence is absent.",
+                "ruleId": "CONSISTENCY_001",
+                "status": "RISK",
+                "necessaryImprovement": "Obtain independent evidence; do not infer PASS from story text.",
+                "storyEvidenceExcerpt": "Pip tries to peel the note away with the free hand",
+                "changesProtectedSource": true
+              },
+              {
+                "reason": "The text is structurally plausible but independent semantic/generator evidence is absent.",
+                "ruleId": "GENERATION_EXECUTABLE_ATTEMPTS",
+                "status": "RISK",
+                "necessaryImprovement": "Obtain independent evidence; do not infer PASS from story text.",
+                "storyEvidenceExcerpt": "Pip tries to peel the note away with the free hand",
+                "changesProtectedSource": true
+              },
+              {
+                "reason": "Independent visual comparison is not present.",
+                "ruleId": "INSTANT_VISUAL_ABSURDITY_GATE",
+                "status": "UNKNOWN",
+                "necessaryImprovement": "Obtain independent evidence; do not infer PASS from story text.",
+                "storyEvidenceExcerpt": "Pip tries to peel the note away with the free hand",
+                "changesProtectedSource": true
+              },
+              {
+                "reason": "Independent visual comparison is not present.",
+                "ruleId": "ENGINE_SILHOUETTE_DUPLICATE",
+                "status": "UNKNOWN",
+                "necessaryImprovement": "Obtain independent evidence; do not infer PASS from story text.",
                 "storyEvidenceExcerpt": "Pip tries to peel the note away with the free hand",
                 "changesProtectedSource": true
               }
@@ -4349,8 +4541,8 @@
         "score": 82.54166666666669,
         "status": "EVALUATED"
       },
-      "contextSha256": "f81068221541b571e85abf70e786ccdba408dd842e5c6b6f46ec3efccb52bf4c",
-      "sourceStoryId": "4e7156cd-4e71-4052-ae5c-961a56bf2304",
+      "contextSha256": "64d53e7c00350afd9eb61aeca491f18e615be7af2d5691356615f9d817cf3db7",
+      "sourceStoryId": "fc714135-bf9c-49fd-b2b4-7d47af0489df",
       "rulesetVersion": "1.11",
       "assessmentScope": "TEXTUAL_STORY_FEASIBILITY_PREDICTION_ONLY; CANONICAL OUTCOMES REQUIRE BUILD_PROMPT_AND_RULESET_1_11",
       "sourceRevisionId": "candidate-1-revision-7d6e06a4",
@@ -4629,7 +4821,7 @@
         }
       ],
       "sourceStorySha256": "b9a62583fde3b21ed26b89e32bfe9029d53773b340fdb1d21cbcec206f19068a",
-      "baselineAnalysisId": "55c76e56-2ae7-4251-8b2d-72e5829346cc",
+      "baselineAnalysisId": "46626ef5-af05-46a0-9df7-6d1ed8a7508c",
       "prohibitedShortcuts": [
         "INVENT_PASS_EVIDENCE",
         "TREAT_UNKNOWN_AS_PASS",
@@ -5107,7 +5299,7 @@
         "genuineSourceAttemptCount": 2,
         "fixedEvidenceOptimisticCeiling": 88.375
       },
-      "sourceApprovalRecordId": "f3791107-ae74-4712-8397-e5fd79433d50",
+      "sourceApprovalRecordId": "22a3de92-8a7c-4e58-af21-651665e5ca64",
       "mandatoryEvidenceContracts": [
         "SOURCE_BOUND_BEATS",
         "EXACT_STORY_QUOTES_WHEN_CLAIMED",
@@ -5116,7 +5308,7 @@
       ]
     },
     "bestCandidate": {
-      "text": "Pip the rabbit wants to place one sticky note on the toy cabinet's empty front panel. Pip tries to place the note, but it clings to Pip's fingertip while the cabinet stays untouched. Pip tries to peel the note away with the free hand, but it splits into two notes, one on each hand. Pip tries to press both notes onto the cabinet, but they spring back and double into four notes. Pip tries to push the four notes off against the cabinet door edge, but they split into eight and cover Pip's arms and face. Pip realizes that every removal or transfer attempt multiplies the notes, freezes, and sees the note-covered reflection in the mirror. Pip remains covered until a sneeze scatters the notes onto the cabinet. Pip is relieved, but the cabinet remains messy.",
+      "text": "Already mid-action, Pip the rabbit tries to place one sticky note on the toy cabinet's empty front panel, but it clings to Pip's fingertip while the cabinet stays untouched. Pip tries to peel the note away with the free hand, but it splits into two notes, one on each hand. Pip tries to press both notes onto the cabinet, but they spring back and double into four notes. Pip tries to push the four notes off against the cabinet door edge, but they split into eight and cover Pip's arms and face. Pip realizes that every removal or transfer attempt multiplies the notes, freezes, and sees the note-covered reflection in the mirror. Pip remains covered until a sneeze scatters the notes onto the cabinet. Pip is relieved, but the cabinet remains messy.",
       "round": 1,
       "title": "Distinct physical strategies",
       "review": {
@@ -5131,7 +5323,7 @@
           "No rendered or audience evidence exists."
         ],
         "reviewTimestamp": "TEST_FIXTURE_NOT_REAL_MODEL_TIME",
-        "sourceRequestId": "7968c3ff-6a91-444d-b793-196c774b0cee",
+        "sourceRequestId": "64906cbd-d6dc-43c4-8240-3cd4a2cace4c",
         "candidateReviews": [
           {
             "concerns": [],
@@ -5218,10 +5410,10 @@
                   "changesProtectedSource": true
                 },
                 {
-                  "reason": "The story contains actor-bound, causally distinct attempts and an explicit realization.",
+                  "reason": "The text is structurally plausible but independent semantic/generator evidence is absent.",
                   "ruleId": "ATTEMPT_002",
-                  "status": "SUPPORTED",
-                  "necessaryImprovement": "",
+                  "status": "RISK",
+                  "necessaryImprovement": "Obtain independent evidence; do not infer PASS from story text.",
                   "storyEvidenceExcerpt": "Pip tries to peel the note away with the free hand",
                   "changesProtectedSource": true
                 },
@@ -5246,6 +5438,54 @@
                   "ruleId": "MINI_STORY_LOCK",
                   "status": "SUPPORTED",
                   "necessaryImprovement": "",
+                  "storyEvidenceExcerpt": "Pip tries to peel the note away with the free hand",
+                  "changesProtectedSource": true
+                },
+                {
+                  "reason": "The story contains actor-bound, causally distinct attempts and an explicit realization.",
+                  "ruleId": "HOOK_002",
+                  "status": "SUPPORTED",
+                  "necessaryImprovement": "",
+                  "storyEvidenceExcerpt": "Pip tries to peel the note away with the free hand",
+                  "changesProtectedSource": true
+                },
+                {
+                  "reason": "The text is structurally plausible but independent semantic/generator evidence is absent.",
+                  "ruleId": "HOOK_004",
+                  "status": "RISK",
+                  "necessaryImprovement": "Obtain independent evidence; do not infer PASS from story text.",
+                  "storyEvidenceExcerpt": "Pip tries to peel the note away with the free hand",
+                  "changesProtectedSource": true
+                },
+                {
+                  "reason": "The text is structurally plausible but independent semantic/generator evidence is absent.",
+                  "ruleId": "CONSISTENCY_001",
+                  "status": "RISK",
+                  "necessaryImprovement": "Obtain independent evidence; do not infer PASS from story text.",
+                  "storyEvidenceExcerpt": "Pip tries to peel the note away with the free hand",
+                  "changesProtectedSource": true
+                },
+                {
+                  "reason": "The text is structurally plausible but independent semantic/generator evidence is absent.",
+                  "ruleId": "GENERATION_EXECUTABLE_ATTEMPTS",
+                  "status": "RISK",
+                  "necessaryImprovement": "Obtain independent evidence; do not infer PASS from story text.",
+                  "storyEvidenceExcerpt": "Pip tries to peel the note away with the free hand",
+                  "changesProtectedSource": true
+                },
+                {
+                  "reason": "Independent visual comparison is not present.",
+                  "ruleId": "INSTANT_VISUAL_ABSURDITY_GATE",
+                  "status": "UNKNOWN",
+                  "necessaryImprovement": "Obtain independent evidence; do not infer PASS from story text.",
+                  "storyEvidenceExcerpt": "Pip tries to peel the note away with the free hand",
+                  "changesProtectedSource": true
+                },
+                {
+                  "reason": "Independent visual comparison is not present.",
+                  "ruleId": "ENGINE_SILHOUETTE_DUPLICATE",
+                  "status": "UNKNOWN",
+                  "necessaryImprovement": "Obtain independent evidence; do not infer PASS from story text.",
                   "storyEvidenceExcerpt": "Pip tries to peel the note away with the free hand",
                   "changesProtectedSource": true
                 }
@@ -5268,10 +5508,10 @@
                   "changesProtectedSource": true
                 },
                 {
-                  "reason": "The story contains actor-bound, causally distinct attempts and an explicit realization.",
+                  "reason": "The text is structurally plausible but independent semantic/generator evidence is absent.",
                   "ruleId": "ATTEMPT_002",
-                  "status": "SUPPORTED",
-                  "necessaryImprovement": "",
+                  "status": "RISK",
+                  "necessaryImprovement": "Obtain independent evidence; do not infer PASS from story text.",
                   "storyEvidenceExcerpt": "Pip tries to peel the note away with the free hand",
                   "changesProtectedSource": true
                 },
@@ -5298,6 +5538,54 @@
                   "necessaryImprovement": "",
                   "storyEvidenceExcerpt": "Pip tries to peel the note away with the free hand",
                   "changesProtectedSource": true
+                },
+                {
+                  "reason": "The story contains actor-bound, causally distinct attempts and an explicit realization.",
+                  "ruleId": "HOOK_002",
+                  "status": "SUPPORTED",
+                  "necessaryImprovement": "",
+                  "storyEvidenceExcerpt": "Pip tries to peel the note away with the free hand",
+                  "changesProtectedSource": true
+                },
+                {
+                  "reason": "The text is structurally plausible but independent semantic/generator evidence is absent.",
+                  "ruleId": "HOOK_004",
+                  "status": "RISK",
+                  "necessaryImprovement": "Obtain independent evidence; do not infer PASS from story text.",
+                  "storyEvidenceExcerpt": "Pip tries to peel the note away with the free hand",
+                  "changesProtectedSource": true
+                },
+                {
+                  "reason": "The text is structurally plausible but independent semantic/generator evidence is absent.",
+                  "ruleId": "CONSISTENCY_001",
+                  "status": "RISK",
+                  "necessaryImprovement": "Obtain independent evidence; do not infer PASS from story text.",
+                  "storyEvidenceExcerpt": "Pip tries to peel the note away with the free hand",
+                  "changesProtectedSource": true
+                },
+                {
+                  "reason": "The text is structurally plausible but independent semantic/generator evidence is absent.",
+                  "ruleId": "GENERATION_EXECUTABLE_ATTEMPTS",
+                  "status": "RISK",
+                  "necessaryImprovement": "Obtain independent evidence; do not infer PASS from story text.",
+                  "storyEvidenceExcerpt": "Pip tries to peel the note away with the free hand",
+                  "changesProtectedSource": true
+                },
+                {
+                  "reason": "Independent visual comparison is not present.",
+                  "ruleId": "INSTANT_VISUAL_ABSURDITY_GATE",
+                  "status": "UNKNOWN",
+                  "necessaryImprovement": "Obtain independent evidence; do not infer PASS from story text.",
+                  "storyEvidenceExcerpt": "Pip tries to peel the note away with the free hand",
+                  "changesProtectedSource": true
+                },
+                {
+                  "reason": "Independent visual comparison is not present.",
+                  "ruleId": "ENGINE_SILHOUETTE_DUPLICATE",
+                  "status": "UNKNOWN",
+                  "necessaryImprovement": "Obtain independent evidence; do not infer PASS from story text.",
+                  "storyEvidenceExcerpt": "Pip tries to peel the note away with the free hand",
+                  "changesProtectedSource": true
                 }
               ],
               "remainingBlockers": [],
@@ -5314,7 +5602,7 @@
       "candidateId": "positive-round-1",
       "parentDraftId": "",
       "sourceFingerprint": "b9a62583fde3b21ed26b89e32bfe9029d53773b340fdb1d21cbcec206f19068a",
-      "parentStoryRecordId": "4e7156cd-4e71-4052-ae5c-961a56bf2304"
+      "parentStoryRecordId": "fc714135-bf9c-49fd-b2b4-7d47af0489df"
     },
     "previousAssessment": {
       "reviewId": "p2-fixture-review-1-True",
@@ -5328,7 +5616,7 @@
         "No rendered or audience evidence exists."
       ],
       "reviewTimestamp": "TEST_FIXTURE_NOT_REAL_MODEL_TIME",
-      "sourceRequestId": "7968c3ff-6a91-444d-b793-196c774b0cee",
+      "sourceRequestId": "64906cbd-d6dc-43c4-8240-3cd4a2cace4c",
       "candidateReviews": [
         {
           "concerns": [],
@@ -5415,10 +5703,10 @@
                 "changesProtectedSource": true
               },
               {
-                "reason": "The story contains actor-bound, causally distinct attempts and an explicit realization.",
+                "reason": "The text is structurally plausible but independent semantic/generator evidence is absent.",
                 "ruleId": "ATTEMPT_002",
-                "status": "SUPPORTED",
-                "necessaryImprovement": "",
+                "status": "RISK",
+                "necessaryImprovement": "Obtain independent evidence; do not infer PASS from story text.",
                 "storyEvidenceExcerpt": "Pip tries to peel the note away with the free hand",
                 "changesProtectedSource": true
               },
@@ -5443,6 +5731,54 @@
                 "ruleId": "MINI_STORY_LOCK",
                 "status": "SUPPORTED",
                 "necessaryImprovement": "",
+                "storyEvidenceExcerpt": "Pip tries to peel the note away with the free hand",
+                "changesProtectedSource": true
+              },
+              {
+                "reason": "The story contains actor-bound, causally distinct attempts and an explicit realization.",
+                "ruleId": "HOOK_002",
+                "status": "SUPPORTED",
+                "necessaryImprovement": "",
+                "storyEvidenceExcerpt": "Pip tries to peel the note away with the free hand",
+                "changesProtectedSource": true
+              },
+              {
+                "reason": "The text is structurally plausible but independent semantic/generator evidence is absent.",
+                "ruleId": "HOOK_004",
+                "status": "RISK",
+                "necessaryImprovement": "Obtain independent evidence; do not infer PASS from story text.",
+                "storyEvidenceExcerpt": "Pip tries to peel the note away with the free hand",
+                "changesProtectedSource": true
+              },
+              {
+                "reason": "The text is structurally plausible but independent semantic/generator evidence is absent.",
+                "ruleId": "CONSISTENCY_001",
+                "status": "RISK",
+                "necessaryImprovement": "Obtain independent evidence; do not infer PASS from story text.",
+                "storyEvidenceExcerpt": "Pip tries to peel the note away with the free hand",
+                "changesProtectedSource": true
+              },
+              {
+                "reason": "The text is structurally plausible but independent semantic/generator evidence is absent.",
+                "ruleId": "GENERATION_EXECUTABLE_ATTEMPTS",
+                "status": "RISK",
+                "necessaryImprovement": "Obtain independent evidence; do not infer PASS from story text.",
+                "storyEvidenceExcerpt": "Pip tries to peel the note away with the free hand",
+                "changesProtectedSource": true
+              },
+              {
+                "reason": "Independent visual comparison is not present.",
+                "ruleId": "INSTANT_VISUAL_ABSURDITY_GATE",
+                "status": "UNKNOWN",
+                "necessaryImprovement": "Obtain independent evidence; do not infer PASS from story text.",
+                "storyEvidenceExcerpt": "Pip tries to peel the note away with the free hand",
+                "changesProtectedSource": true
+              },
+              {
+                "reason": "Independent visual comparison is not present.",
+                "ruleId": "ENGINE_SILHOUETTE_DUPLICATE",
+                "status": "UNKNOWN",
+                "necessaryImprovement": "Obtain independent evidence; do not infer PASS from story text.",
                 "storyEvidenceExcerpt": "Pip tries to peel the note away with the free hand",
                 "changesProtectedSource": true
               }
@@ -5465,10 +5801,10 @@
                 "changesProtectedSource": true
               },
               {
-                "reason": "The story contains actor-bound, causally distinct attempts and an explicit realization.",
+                "reason": "The text is structurally plausible but independent semantic/generator evidence is absent.",
                 "ruleId": "ATTEMPT_002",
-                "status": "SUPPORTED",
-                "necessaryImprovement": "",
+                "status": "RISK",
+                "necessaryImprovement": "Obtain independent evidence; do not infer PASS from story text.",
                 "storyEvidenceExcerpt": "Pip tries to peel the note away with the free hand",
                 "changesProtectedSource": true
               },
@@ -5493,6 +5829,54 @@
                 "ruleId": "MINI_STORY_LOCK",
                 "status": "SUPPORTED",
                 "necessaryImprovement": "",
+                "storyEvidenceExcerpt": "Pip tries to peel the note away with the free hand",
+                "changesProtectedSource": true
+              },
+              {
+                "reason": "The story contains actor-bound, causally distinct attempts and an explicit realization.",
+                "ruleId": "HOOK_002",
+                "status": "SUPPORTED",
+                "necessaryImprovement": "",
+                "storyEvidenceExcerpt": "Pip tries to peel the note away with the free hand",
+                "changesProtectedSource": true
+              },
+              {
+                "reason": "The text is structurally plausible but independent semantic/generator evidence is absent.",
+                "ruleId": "HOOK_004",
+                "status": "RISK",
+                "necessaryImprovement": "Obtain independent evidence; do not infer PASS from story text.",
+                "storyEvidenceExcerpt": "Pip tries to peel the note away with the free hand",
+                "changesProtectedSource": true
+              },
+              {
+                "reason": "The text is structurally plausible but independent semantic/generator evidence is absent.",
+                "ruleId": "CONSISTENCY_001",
+                "status": "RISK",
+                "necessaryImprovement": "Obtain independent evidence; do not infer PASS from story text.",
+                "storyEvidenceExcerpt": "Pip tries to peel the note away with the free hand",
+                "changesProtectedSource": true
+              },
+              {
+                "reason": "The text is structurally plausible but independent semantic/generator evidence is absent.",
+                "ruleId": "GENERATION_EXECUTABLE_ATTEMPTS",
+                "status": "RISK",
+                "necessaryImprovement": "Obtain independent evidence; do not infer PASS from story text.",
+                "storyEvidenceExcerpt": "Pip tries to peel the note away with the free hand",
+                "changesProtectedSource": true
+              },
+              {
+                "reason": "Independent visual comparison is not present.",
+                "ruleId": "INSTANT_VISUAL_ABSURDITY_GATE",
+                "status": "UNKNOWN",
+                "necessaryImprovement": "Obtain independent evidence; do not infer PASS from story text.",
+                "storyEvidenceExcerpt": "Pip tries to peel the note away with the free hand",
+                "changesProtectedSource": true
+              },
+              {
+                "reason": "Independent visual comparison is not present.",
+                "ruleId": "ENGINE_SILHOUETTE_DUPLICATE",
+                "status": "UNKNOWN",
+                "necessaryImprovement": "Obtain independent evidence; do not infer PASS from story text.",
                 "storyEvidenceExcerpt": "Pip tries to peel the note away with the free hand",
                 "changesProtectedSource": true
               }

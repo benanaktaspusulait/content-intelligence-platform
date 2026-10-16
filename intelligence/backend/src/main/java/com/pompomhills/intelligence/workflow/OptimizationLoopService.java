@@ -55,7 +55,7 @@ public class OptimizationLoopService {
   Map<String,Object> targetAwareSnapshot(UUID analysis){
     var result=targetAwarePreflight(analysis);
     var snapshot=new LinkedHashMap<String,Object>();
-    for(String key:List.of("state","generationAllowed","currentScore","fixedEvidenceOptimisticCeiling","canonicalATargetStatus","reasons","losses","missingEvidence","genuineSourceAttemptCount","creativeQualityTarget","renderAuthorized","sourceAnalysisId","sourcePromptVersionId","sourcePromptSha256","productionSettingsRecordId"))
+    for(String key:List.of("state","generationAllowed","researchGenerationEligibility","currentScore","fixedEvidenceOptimisticCeiling","canonicalATargetStatus","reasons","losses","missingEvidence","genuineSourceAttemptCount","creativeQualityTarget","renderAuthorized","sourceAnalysisId","sourcePromptVersionId","sourcePromptSha256","productionSettingsRecordId"))
       if(result.containsKey(key)) snapshot.put(key,result.get(key));
     return snapshot;
   }
@@ -65,7 +65,32 @@ public class OptimizationLoopService {
     var feasibility=targetAwareSnapshot(analysis);
     var out=new LinkedHashMap<String,Object>();out.put("scope",s);out.put("scopeSha256",hash(util.encode(s)));out.put("capabilities",capabilities());out.put("targetAwarePreflight",feasibility);out.put("persisted",false);
     out.put("generationAllowed",feasibility.getOrDefault("generationAllowed",false));out.put("state",feasibility.getOrDefault("state","CONTRACT_FAILURE"));
+    out.put("researchGenerationEligibility",feasibility.getOrDefault("researchGenerationEligibility",Map.of()));
+    if(Boolean.TRUE.equals(map(feasibility.get("researchGenerationEligibility")).get("allowed")))
+      out.put("researchComparisonPlan",researchComparisonPlan(s));
     return out;
+  }
+  Map<String,Object> researchComparisonPlan(Map<String,Object> scope){
+    var profiles=map(capabilities().get("profiles"));
+    var runs=new ArrayList<Map<String,Object>>();double total=0;int totalInputBound=0;
+    for(var pairing:List.of(List.of("deepseek-primary","openai-escalation"),List.of("openai-escalation","deepseek-primary"))){
+      String generator=pairing.get(0),reviewer=pairing.get(1);var operations=new ArrayList<Map<String,Object>>();double runCost=0;
+      for(String role:List.of("GENERATION","SOURCE_FIDELITY","CRITIC")){
+        String profileId="GENERATION".equals(role)?generator:reviewer;var profile=map(profiles.get(profileId));
+        var auth=new LinkedHashMap<String,Object>();auth.put("profileId",profileId);auth.put("role",role);
+        for(String key:List.of("provider","model","reasoningEffort"))auth.put(key,profile.get(key));
+        auth.put("maxOutputTokens",4000);auth.put("maxCostUsd",20.0);
+        String prompt=String.valueOf(scope.get("baselinePrompt"));String assumption="EXACT_CURRENT_BASELINE";
+        if(!"GENERATION".equals(role)){prompt=(prompt+"\n"+"X".repeat(30000)).substring(0,30000);assumption="MAXIMUM_ALLOWED_CANDIDATE_30000_CHARS";}
+        var input=new LinkedHashMap<String,Object>();input.put("scope",scope);input.put("role",role);input.put("prompt",prompt);input.put("round",1);input.put("candidateId","PREVIEW:1");input.put("feedback",Map.of());input.put("authorization",auth);input.put("timeoutSeconds",120);
+        var preview=local("PREVIEW_REQUEST",input);double estimate=((Number)preview.get("maxCalculatedCostUsd")).doubleValue();double cap=Math.ceil(estimate*1_000_000d)/1_000_000d;
+        var operation=new LinkedHashMap<String,Object>();operation.putAll(auth);operation.put("maxCostUsd",cap);operation.put("inputBoundAssumption",assumption);
+        for(String key:List.of("inputTokenUpperBound","maxCalculatedCostUsd","systemSha256","userPayloadSha256","responseSchemaSha256","instructionContextSha256","sourceScopeSha256","providerDispatched"))operation.put(key,preview.get(key));
+        operations.add(operation);runCost+=cap;totalInputBound+=((Number)preview.get("inputTokenUpperBound")).intValue();
+      }
+      var run=new LinkedHashMap<String,Object>();run.put("label",runs.isEmpty()?"RUN_A":"RUN_B");run.put("mode",generator.equals("deepseek-primary")?"DEEPSEEK_ONLY":"OPENAI_ONLY");run.put("generatorProfileId",generator);run.put("independentReviewerProfileId",reviewer);run.put("maxRounds",1);run.put("maxRequests",3);run.put("maxRunSeconds",600);run.put("maxTotalUsd",Math.ceil(runCost*1_000_000d)/1_000_000d);run.put("operations",operations);runs.add(run);total+=runCost;
+    }
+    var plan=new LinkedHashMap<String,Object>();plan.put("version","real-model-a-comparison-plan-v1");plan.put("purpose","REAL_MODEL_A_CAPABILITY_RESEARCH_V1");plan.put("runs",runs);plan.put("maximumRequests",6);plan.put("maximumOutputTokens",24000);plan.put("summedConservativeInputUnitBound",totalInputBound);plan.put("maximumTotalUsd",Math.ceil(total*1_000_000d)/1_000_000d);plan.put("timeoutSecondsPerRequest",120);plan.put("automaticRetries",false);plan.put("fallback",false);plan.put("promptApprovalAllowed",false);plan.put("imageGenerationAllowed",false);plan.put("renderAuthorized",false);plan.put("providerCalls",0);return plan;
   }
   static int integer(Map<String,Object> data,String key,int min,int max){var v=data.get(key);if(!(v instanceof Number n)||!Double.isFinite(n.doubleValue())||n.doubleValue()!=n.intValue()||n.intValue()<min||n.intValue()>max)throw new ResponseStatusException(BAD_REQUEST,"Invalid limit: "+key);return n.intValue();}
   static double amount(Object v){if(!(v instanceof Number n)||!Double.isFinite(n.doubleValue())||n.doubleValue()<=0||n.doubleValue()>20)throw new ResponseStatusException(BAD_REQUEST,"Explicit positive USD ceiling <=20 required");return n.doubleValue();}
@@ -75,12 +100,24 @@ public class OptimizationLoopService {
     integer(body,"maxRounds",1,5);integer(body,"maxRequests",1,15);integer(body,"maxRunSeconds",30,1800);amount(body.get("maxTotalUsd"));
     String mode=String.valueOf(body.get("mode"));if(!Set.of("DEEPSEEK_ONLY","OPENAI_ONLY","ADAPTIVE").contains(mode))throw new ResponseStatusException(BAD_REQUEST,"Unsupported routing mode");
     var profiles=map(capabilities().get("profiles"));var rules=rows(body.get("operations"));if(rules.isEmpty()||rules.size()>6)throw new ResponseStatusException(BAD_REQUEST,"Explicit role/profile allowances required");
-    var ids=new HashSet<String>();for(var r:rules){String role=String.valueOf(r.get("role")),id=String.valueOf(r.get("profileId"));if(!Set.of("GENERATION","SOURCE_FIDELITY","CRITIC").contains(role)||!ids.add(role+":"+id))throw new ResponseStatusException(BAD_REQUEST,"Invalid/duplicate role");var p=map(profiles.get(id));if(p.isEmpty())throw new ResponseStatusException(BAD_REQUEST,"Unlisted model");for(String k:List.of("provider","model","reasoningEffort"))if(!Objects.equals(r.get(k),p.get(k)))throw new ResponseStatusException(CONFLICT,"Exact model/effort binding required");integer(r,"maxOutputTokens",1024,((Number)p.get("reviewMaxOutputTokens")).intValue());amount(r.get("maxCostUsd"));}
+    var ids=new HashSet<String>();for(var r:rules){String role=String.valueOf(r.get("role")),id=String.valueOf(r.get("profileId"));if(!Set.of("GENERATION","SOURCE_FIDELITY","CRITIC").contains(role)||!ids.add(role+":"+id))throw new ResponseStatusException(BAD_REQUEST,"Invalid/duplicate role");var p=map(profiles.get(id));if(p.isEmpty())throw new ResponseStatusException(BAD_REQUEST,"Unlisted model");if(!Boolean.TRUE.equals(p.get("configured")))throw new ResponseStatusException(CONFLICT,"Provider profile is not configured on the server");for(String k:List.of("provider","model","reasoningEffort"))if(!Objects.equals(r.get(k),p.get(k)))throw new ResponseStatusException(CONFLICT,"Exact model/effort binding required");integer(r,"maxOutputTokens",1024,((Number)p.get("reviewMaxOutputTokens")).intValue());amount(r.get("maxCostUsd"));}
     var generators=rules.stream().filter(r->"GENERATION".equals(r.get("role"))).map(r->String.valueOf(r.get("profileId"))).toList();
     var expected=mode.equals("ADAPTIVE")?Set.of("deepseek-primary","openai-escalation"):Set.of(mode.equals("DEEPSEEK_ONLY")?"deepseek-primary":"openai-escalation");
     if(!new HashSet<>(generators).equals(expected))throw new ResponseStatusException(BAD_REQUEST,"Generation allowance must match chosen routing mode");
     for(String generator:generators)for(String role:List.of("SOURCE_FIDELITY","CRITIC"))if(rules.stream().noneMatch(r->role.equals(r.get("role"))&&!generator.equals(r.get("profileId"))))throw new ResponseStatusException(BAD_REQUEST,"Independent source/critic model allowance required for every generator");
+    if(Boolean.TRUE.equals(body.get("researchOnly"))){
+      if(!"REAL_MODEL_A_CAPABILITY_RESEARCH_V1".equals(body.get("purpose"))
+          || !Boolean.TRUE.equals(body.get("confirmNoPromptApproval"))
+          || !Boolean.TRUE.equals(body.get("confirmNoImageOrRender")))
+        throw new ResponseStatusException(BAD_REQUEST,"Exact text-only research purpose and downstream prohibitions required");
+      if(((Number)body.get("maxRounds")).intValue()!=1 || ((Number)body.get("maxRequests")).intValue()!=3)
+        throw new ResponseStatusException(BAD_REQUEST,"Research comparison run is exactly one generation plus two independent reviews");
+    }
     return new LinkedHashMap<>(body);
+  }
+  static boolean researchAllowed(Map<String,Object> feasibility,Map<String,Object> body){
+    return Boolean.TRUE.equals(body.get("researchOnly"))
+        && Boolean.TRUE.equals(map(feasibility.get("researchGenerationEligibility")).get("allowed"));
   }
   @Transactional public Map<String,Object> start(Map<String,Object> body,HttpServletRequest request){
     String owner=util.owner(request);
@@ -89,9 +126,10 @@ public class OptimizationLoopService {
     // paid grant.  A stale client preflight can therefore never reserve a
     // budget or create a job for a protected target such as Mimi.
     var feasibility=targetAwareSnapshot(analysis);
-    if(!Boolean.TRUE.equals(feasibility.get("generationAllowed")))
-      throw new ResponseStatusException(CONFLICT,util.encode(Map.of("state",feasibility.getOrDefault("state","TARGET_BLOCKED"),"generationAllowed",false,"feasibility",feasibility,"providerCalls",0,"nextAction","STORY_EVOLUTION_OR_UPDATED_SOURCE_EVIDENCE")));
-    if(!realEnabled)throw new ResponseStatusException(FORBIDDEN,"Real dispatch remains disabled; no run authorized");var grant=validateGrant(body);
+    if(!Boolean.TRUE.equals(feasibility.get("generationAllowed"))&&!researchAllowed(feasibility,body))
+      throw new ResponseStatusException(CONFLICT,util.encode(Map.of("state",feasibility.getOrDefault("state","TARGET_BLOCKED"),"generationAllowed",false,"researchGenerationEligibility",feasibility.getOrDefault("researchGenerationEligibility",Map.of()),"feasibility",feasibility,"providerCalls",0,"nextAction","STORY_EVOLUTION_OR_UPDATED_SOURCE_EVIDENCE")));
+    var grant=validateGrant(body);
+    if(!realEnabled)throw new ResponseStatusException(FORBIDDEN,"Real dispatch remains disabled; no run authorized");
     String key=String.valueOf(body.getOrDefault("idempotencyKey",""));if(key.length()<8||key.length()>100)throw new ResponseStatusException(BAD_REQUEST,"Stable idempotency key required");
     db.sql("SELECT pg_advisory_xact_lock(hashtext(:k))").param("k","optimization:"+owner+":"+key).query((rs,n)->rs.getObject(1)).list();
     var old=db.sql("SELECT id,grant_payload::text FROM optimization_runs WHERE owner_principal=:owner AND idempotency_key=:key").param("owner",owner).param("key",key).query((rs,n)->Map.of("id",rs.getObject(1,UUID.class),"grant",util.read(rs.getString(2)))).optional();
@@ -102,6 +140,8 @@ public class OptimizationLoopService {
   }
   @Transactional public Map<String,Object> accept(UUID id,Map<String,Object> body,HttpServletRequest request,com.pompomhills.intelligence.content.ContentWorkspaceController versions){
     owner(id,request);var run=load(id);var progress=map(run.get("progress"));var savedScope=map(run.get("scope"));
+    if(Boolean.TRUE.equals(map(run.get("grant")).get("researchOnly")))
+      throw new ResponseStatusException(FORBIDDEN,"Research-only runs cannot approve or create prompt versions");
     if(!Boolean.TRUE.equals(body.get("approveExactPromptVersion"))||!Boolean.TRUE.equals(body.get("confirmNoRenderOrGrade")))throw new ResponseStatusException(BAD_REQUEST,"Explicit final prompt approval and no-render confirmation required");
     db.sql("SELECT id FROM optimization_runs WHERE id=:id FOR UPDATE").param("id",id).query(UUID.class).single();
     var prior=db.sql("SELECT payload::text FROM optimization_run_events WHERE run_id=:id AND payload->>'state'='OWNER_ACCEPTED'").param("id",id).query((rs,n)->util.read(rs.getString(1))).optional();
@@ -119,7 +159,7 @@ public class OptimizationLoopService {
   Map<String,Object> load(UUID id){return db.sql("SELECT owner_principal,scope::text,scope_sha256,grant_payload::text,state,progress::text,cancel_requested,deadline FROM optimization_runs WHERE id=:id").param("id",id).query((rs,n)->Map.<String,Object>of("owner",rs.getString(1),"scope",util.read(rs.getString(2)),"scopeSha256",rs.getString(3),"grant",util.read(rs.getString(4)),"state",rs.getString(5),"progress",util.read(rs.getString(6)),"cancel",rs.getBoolean(7),"deadline",rs.getTimestamp(8).toInstant())).optional().orElseThrow(()->new ResponseStatusException(NOT_FOUND,"Run not found"));}
   void owner(UUID id,HttpServletRequest request){if(!util.owner(request).equals(load(id).get("owner")))throw new ResponseStatusException(FORBIDDEN,"Run belongs to another owner");}
   public Map<String,Object> latest(UUID analysis,HttpServletRequest request){String who=util.owner(request);return db.sql("SELECT id FROM optimization_runs WHERE owner_principal=:owner AND scope->>'analysisId'=:analysis ORDER BY created_at DESC LIMIT 1").param("owner",who).param("analysis",analysis.toString()).query(UUID.class).optional().map(id->view(id,request)).orElse(Map.of());}
-  public Map<String,Object> view(UUID id,HttpServletRequest request){owner(id,request);var row=load(id);var out=new LinkedHashMap<>(row);out.remove("owner");out.put("runId",id.toString());out.put("deadline",row.get("deadline").toString());out.put("requests",requests(id));out.put("cost",cost(id));out.put("drafts",db.sql("SELECT id,payload::text FROM optimization_run_drafts WHERE run_id=:id ORDER BY round_number").param("id",id).query((rs,n)->Map.of("draftId",rs.getString(1),"payload",util.read(rs.getString(2)))).list());out.put("events",db.sql("SELECT payload::text FROM optimization_run_events WHERE run_id=:id ORDER BY created_at,id").param("id",id).query((rs,n)->util.read(rs.getString(1))).list());out.put("renderAuthorized",false);out.put("officialCpqGrading","INACTIVE");return out;}
+  public Map<String,Object> view(UUID id,HttpServletRequest request){owner(id,request);var row=load(id);var out=new LinkedHashMap<>(row);out.remove("owner");out.put("runId",id.toString());out.put("deadline",row.get("deadline").toString());out.put("requests",requests(id));out.put("cost",cost(id));out.put("drafts",db.sql("SELECT id,payload::text FROM optimization_run_drafts WHERE run_id=:id ORDER BY round_number").param("id",id).query((rs,n)->Map.of("draftId",rs.getString(1),"payload",util.read(rs.getString(2)))).list());out.put("events",db.sql("SELECT payload::text FROM optimization_run_events WHERE run_id=:id ORDER BY created_at,id").param("id",id).query((rs,n)->util.read(rs.getString(1))).list());out.put("researchOnly",Boolean.TRUE.equals(map(row.get("grant")).get("researchOnly")));out.put("promptApprovalAllowed",!Boolean.TRUE.equals(map(row.get("grant")).get("researchOnly")));out.put("imageGenerationAllowed",false);out.put("renderAuthorized",false);out.put("officialCpqGrading","INACTIVE");return out;}
   public Map<String,Object> stop(UUID id,HttpServletRequest request){owner(id,request);db.sql("UPDATE optimization_runs SET cancel_requested=true WHERE id=:id AND state IN ('READY','RUNNING','PAUSED')").param("id",id).update();event(id,Map.of("state","CANCEL_REQUESTED","notice","In-flight inference remains potentially chargeable; outcome will be collected"));return view(id,request);}
   public Map<String,Object> resume(UUID id,HttpServletRequest request){owner(id,request);throw new ResponseStatusException(CONFLICT,"Terminal/ambiguous runs cannot resume or replay requests. Start a freshly authorized scope for new work.");}
   List<Map<String,Object>> requests(UUID id){return db.sql("SELECT id,round_number,role,state,reserved_usd,response::text FROM optimization_run_requests WHERE run_id=:id ORDER BY created_at,id").param("id",id).query((rs,n)->Map.<String,Object>of("requestId",rs.getString(1),"round",rs.getInt(2),"role",rs.getString(3),"state",rs.getString(4),"reservedUsd",rs.getDouble(5),"response",util.read(Objects.toString(rs.getString(6),"{}")))).list();}
@@ -145,16 +185,17 @@ public class OptimizationLoopService {
     // Durable worker boundary: eligibility is never carried forward from the
     // browser inspection or the original authorization.
     var currentFeasibility=targetAwareSnapshot(uuid(scope.get("analysisId")));
-    if(!Boolean.TRUE.equals(currentFeasibility.get("generationAllowed"))){
+    var grant=map(row.get("grant"));
+    if(!Boolean.TRUE.equals(currentFeasibility.get("generationAllowed"))&&!researchAllowed(currentFeasibility,grant)){
       progress.put("targetAwarePreflight",currentFeasibility);
       transition(id,"STOPPED",progress,String.valueOf(currentFeasibility.getOrDefault("state","TARGET_BLOCKED")));
       return;
     }
-    String phase=String.valueOf(progress.get("phase"));var grant=map(row.get("grant"));
+    String phase=String.valueOf(progress.get("phase"));
     if(phase.equals("EVALUATE_BASELINE")){
       var evaluated=local("EVALUATE",Map.of("scope",scope,"prompt",progress.get("bestPrompt")));progress.put("baselineEvaluation",evaluated);progress.put("bestEvaluation",evaluated);
       if(!"NO_DETECTED_CONTRADICTION".equals(map(evaluated.get("integrity")).get("status"))){progress.put("evaluationIntegrity",evaluated.get("integrity"));transition(id,"STOPPED",progress,"EVALUATION_INTEGRITY_PROBLEM");return;}
-      if(((Number)map(evaluated.get("canonical")).get("score")).doubleValue()>=92){transition(id,"COMPLETED",progress,"TARGET_REACHED_REVIEW_REQUIRED");return;}
+      if(((Number)map(evaluated.get("canonical")).get("score")).doubleValue()>=92&&!Boolean.TRUE.equals(grant.get("researchOnly"))){transition(id,"COMPLETED",progress,"TARGET_REACHED_REVIEW_REQUIRED");return;}
       progress.put("phase","GENERATION");transition(id,"READY",progress,"");return;
     }
     int round=((Number)progress.get("round")).intValue();
