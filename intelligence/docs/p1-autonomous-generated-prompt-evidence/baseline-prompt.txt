@@ -1,0 +1,20 @@
+TITLE / FORMAT
+Pip Sticky Notes / 15s Video
+VISUAL STYLE
+Bright playful animation.
+CHARACTER / CONTINUITY
+Pip is an anthropomorphic rabbit. Keep the same identity throughout.
+TIMED SHOT PLAN
+0-2s: Pip reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to Pip's finger [medium shot] -> the note sticks to Pip, not the cabinet
+2-5s: Pip tries to peel the stuck note away with the other hand; the note splits into two [medium shot] -> one note sticks to each hand
+5-10s: Pip continues to pull; each pull doubles the sticky notes from two to four to eight, covering Pip's arms and face [wide shot] -> Pip is overwhelmed by notes
+10-12s: Pip sees the note-covered reflection in a mirror and gasps; the notes remain attached through this reaction [close-up] -> Pip is startled
+12-15s: Pip sneezes and the sticky notes fly off onto the cabinet [medium shot] -> Pip is relieved, but the cabinet remains messy
+AUDIO
+Playful music; peel, gasp and sneeze effects.
+NEGATIVE CONSTRAINTS
+No violence, dialogue, identity changes or extra actions.
+FINAL CUT
+Pip relieved beside the messy cabinet.
+PRODUCTION SETTINGS
+9:16. ABSURD_PHYSICS. SEEDANCE_2_0_MINI. 15s. image2video. 480p.

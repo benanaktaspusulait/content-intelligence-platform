@@ -84,6 +84,7 @@ def generation_context(scope, prompt, result, feedback):
                 storyRevisionId=scope['approvedStory']['revision'], storyApprovalRecordId=scope['approvedStory']['approvalRecordId'],
                 essentialEvents=anchors, protectedIntent=scope['request'].get('protectedIntent', []),
                 targetConfiguration=dict(contentProfile=scope['request']['contentProfile'], generator=scope['request']['generator'], duration=scope['request']['desiredDuration'], settings=scope['request']['settings']),
+                targetAwarePreflight=scope.get('targetAwarePreflight', {}),
                 escalationBrief=dict(originalProtectedStory=scope['approvedStory']['text'], originalBaseline=scope['baselinePrompt'], currentBestPrompt=prompt, remainingWeaknesses=feedback, ownerInterpretations=scope.get('ownerDecisions', [])),
                 autonomousSingleCandidate=True)
 

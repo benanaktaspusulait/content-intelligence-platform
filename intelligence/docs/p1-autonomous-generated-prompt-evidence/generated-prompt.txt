@@ -1,0 +1,27 @@
+TITLE / FORMAT
+Pip sticky notes / 15 seconds
+
+VISUAL STYLE
+Bright playful animation, clear silhouettes.
+
+CHARACTER / CONTINUITY
+Pip is the same anthropomorphic rabbit throughout. No verified appearance reference is supplied.
+
+TIMED SHOT PLAN
+0-2s: Pip the rabbit wants to place one sticky note on the toy cabinet's empty front panel. Pip reaches toward that panel, but the note clings to the fingertip while a visible gap remains between hand and cabinet. [locked medium shot; Show the cabinet panel and reaching fingertip in the same view; preserve the visible gap.] -> The note attaches to the wrong surface.
+2-5s: Pip peels with the other hand and the note splits into two, one on each hand. [medium shot; Both hands remain visible with one note on each hand.] -> One note remains on each hand.
+5-10s: Each pull doubles the sticky notes from two to four to eight; the paired hands stay apart so each changed note count is visible before the next doubling, progressively covering Pip's arms and face. [wide shot; Keep separated hands and both changed note groups visible without cutting across a doubling.] -> The doubling covers Pip's arms and face.
+10-12s: Pip turns the note-covered face toward the mirror, sees the reflection and gasps while both the face and reflected notes remain visible. [medium close-up; Keep the covered face and its mirror reflection readable in the same shot.] -> Pip gasps and stays covered.
+12-15s: Pip remains covered until a sneeze scatters the notes onto the cabinet's formerly empty front panel. Pip is relieved, but the cabinet remains messy. [medium shot; Keep the previously empty panel visible as the sneezed notes land; end on the messy panel and relief.] -> Pip is relieved beside the messy cabinet.
+
+AUDIO
+Playful background music, peeling sounds, a gasp and a sneeze. No dialogue.
+
+NEGATIVE CONSTRAINTS
+No identity changes, extra pulls, new mechanics, readable lettering claims or additional story events.
+
+FINAL CUT
+End with the relieved Pip beside the visibly messy cabinet.
+
+PRODUCTION SETTINGS
+ABSURD_PHYSICS. SEEDANCE_2_0_MINI. 15 seconds. image2video. 480p. 9:16.

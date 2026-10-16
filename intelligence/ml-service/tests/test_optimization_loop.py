@@ -5,12 +5,13 @@ from pathlib import Path
 import pytest
 from app.workflow import optimization_loop as loop
 from app.workflow.creative_reconstruction import compile_reconstruction
+from app.parser.actor_attempts import classify_content
 from test_model_authored_execution import contact, inputs
 
 
 def scope():
     f=inputs();c=f['context']
-    return dict(baselinePrompt=f['text'],originalPrompt=f['text'],request=f['boundRequest'],settings=c['targetConfiguration'],approvedStory=dict(text=c['approvedStoryText'],storyId='test-story',approvalRecordId='test-approval',revision='test-revision'),ownerDecisions=[])
+    return dict(baselinePrompt=f['text'],originalPrompt=f['text'],request=f['boundRequest'],settings=c['targetConfiguration'],approvedStory=dict(text=c['approvedStoryText'],storyId='test-story',approvalRecordId='test-approval',revision='test-revision'),ownerDecisions=[],targetAwarePreflight=dict(state='TARGET_BLOCKED_BY_STORY_CONSTRAINT',generationAllowed=False,fixedEvidenceOptimisticCeiling=89.3125,reasons=['No defensible prompt-only path to A.'],losses=[dict(ruleId='ATTEMPT_001',classification='PROTECTED_STORY_CONFLICT')]))
 
 
 def auth(role='GENERATION',identity='deepseek-primary'):
@@ -69,10 +70,36 @@ def test_generation_reuses_actual_compiler_and_only_fake_transport():
 
 def test_one_candidate_wire_contract_and_no_whole_prompt_answer():
     d=data();_,raw,fmt,_=loop.parts(d)
-    assert json.loads(raw)['maxCandidates']==1
+    payload=json.loads(raw)
+    assert payload['maxCandidates']==1
     assert fmt['json_schema']['schema']['properties']['proposals']['maxItems']==1
-    assert 'sourceReferenceCatalog' in json.loads(raw)
+    assert 'sourceReferenceCatalog' in payload
     assert 'prompt' not in fmt['json_schema']['schema']['properties']
+
+
+def test_generation_wire_payload_contains_versioned_actual_rule_feedback():
+    d=data();evaluation=loop.evaluate(dict(scope=d['scope'],prompt=d['prompt']))['canonical']
+    _,raw,_,context=loop.parts(d);payload=json.loads(raw);rules=payload['canonicalImprovementContext']
+    assert rules['version']=='canonical-rule-improvement-context-v1'
+    assert rules['rulesetVersion']=='1.11'
+    assert rules['baselineScore']==pytest.approx(evaluation['score'])
+    assert rules['target']=={'grade':'A','minimumScore':92,'requiresNoDisqualifyingMandatoryBlocker':True}
+    expected={(r['ruleId'],r['outcome'],r['severity'],r['message']) for key in ('failedRules','unknownRules') for r in evaluation[key]}
+    actual={(r['ruleId'],r['outcome'],r['severity'],r['reason']) for r in rules['failedAndUnknownFindings']}
+    assert actual==expected
+    assert len(rules['sha256'])==64
+    assert rules['previousRoundFeedback']['remainingFindings']
+    assert 'canonicalImprovementContext' not in context  # outbound contract is compiled, not trusted input
+
+
+def test_unknown_and_protected_story_findings_cannot_be_advertised_as_prompt_passes():
+    _,raw,_,_=loop.parts(data());rules=json.loads(raw)['canonicalImprovementContext']
+    by_id={row['ruleId']:row for row in rules['failedAndUnknownFindings']}
+    assert by_id['ATTEMPT_001']['classification']=='PROTECTED_STORY_CHANGE_REQUIRED'
+    assert not by_id['ATTEMPT_001']['promptRewriteCanEstablishPass']
+    unknown=next(row for row in rules['failedAndUnknownFindings'] if row['outcome']=='UNKNOWN')
+    assert unknown['classification']=='EVIDENCE_REQUIRED_NOT_PROMPT_PROOF'
+    assert not unknown['promptRewriteCanEstablishPass']
 
 
 @pytest.mark.parametrize('field,value',[('model','unlisted'),('reasoningEffort','high'),('maxOutputTokens',400),('maxCostUsd',.00001)])
@@ -130,3 +157,12 @@ def test_unrelated_story_uses_same_real_evaluator_and_frozen_story():
     e=loop.evaluate(dict(scope=s,prompt=text))
     assert e['canonical']['status']=='EVALUATED' and e['canonical']['rulesetVersion']=='1.11'
     assert 'Mimi' not in json.dumps(e)
+
+
+def test_attempt_parser_requires_source_bound_actor_for_pull_consequence():
+    baseline=classify_content('Pip continues to pull; each pull doubles the sticky notes from two to four to eight.', 'Pip')
+    generated=classify_content('Each pull doubles the sticky notes from two to four to eight.', 'Pip')
+    assert baseline['actions'][0]['classification']=='CHARACTER_ATTEMPT'
+    assert baseline['actions'][0]['primaryVerb']=='PULL'
+    assert generated['actions']==[]
+    assert generated['classification']=='NOT_AN_ATTEMPT'

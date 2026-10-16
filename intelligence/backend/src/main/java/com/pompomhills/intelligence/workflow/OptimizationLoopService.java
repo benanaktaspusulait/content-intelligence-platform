@@ -55,7 +55,7 @@ public class OptimizationLoopService {
   Map<String,Object> targetAwareSnapshot(UUID analysis){
     var result=targetAwarePreflight(analysis);
     var snapshot=new LinkedHashMap<String,Object>();
-    for(String key:List.of("state","generationAllowed","currentScore","fixedEvidenceOptimisticCeiling","canonicalATargetStatus","reasons","missingEvidence","genuineSourceAttemptCount","creativeQualityTarget","renderAuthorized","sourceAnalysisId","sourcePromptVersionId","sourcePromptSha256","productionSettingsRecordId"))
+    for(String key:List.of("state","generationAllowed","currentScore","fixedEvidenceOptimisticCeiling","canonicalATargetStatus","reasons","losses","missingEvidence","genuineSourceAttemptCount","creativeQualityTarget","renderAuthorized","sourceAnalysisId","sourcePromptVersionId","sourcePromptSha256","productionSettingsRecordId"))
       if(result.containsKey(key)) snapshot.put(key,result.get(key));
     return snapshot;
   }
@@ -168,7 +168,8 @@ public class OptimizationLoopService {
     double cap=((Number)op.get("maxCostUsd")).doubleValue();double committed=((Number)cost.get("spentUsd")).doubleValue()+((Number)cost.get("reservedUsd")).doubleValue()+((Number)cost.get("unknownReservedUsd")).doubleValue();
     if(cap+committed>((Number)grant.get("maxTotalUsd")).doubleValue()+1e-9){transition(id,"STOPPED",progress,"BUDGET_LIMIT");return;}
     String prompt=String.valueOf(phase.equals("GENERATION")?progress.get("bestPrompt"):map(progress.get("pendingCandidate")).get("prompt"));
-    var input=new LinkedHashMap<String,Object>();input.put("scope",scope);input.put("role",phase);input.put("prompt",prompt);input.put("round",round);input.put("candidateId",id+":"+round);input.put("feedback",progress.getOrDefault("lastAssessment",Map.of()));input.put("authorization",op);input.put("timeoutSeconds",Math.max(1,Math.min(120,Duration.between(now(),(Instant)row.get("deadline")).toSeconds())));
+    var dispatchScope=new LinkedHashMap<>(scope);dispatchScope.put("targetAwarePreflight",currentFeasibility);
+    var input=new LinkedHashMap<String,Object>();input.put("scope",dispatchScope);input.put("role",phase);input.put("prompt",prompt);input.put("round",round);input.put("candidateId",id+":"+round);input.put("feedback",progress.getOrDefault("lastAssessment",Map.of()));input.put("authorization",op);input.put("timeoutSeconds",Math.max(1,Math.min(120,Duration.between(now(),(Instant)row.get("deadline")).toSeconds())));
     local("PREFLIGHT_REQUEST",input); // Capability, schema, token/cost bound checked before reservation.
     if(Boolean.TRUE.equals(load(id).get("cancel"))){transition(id,"STOPPED",progress,"OWNER_CANCELLED");return;}
     UUID requestId=UUID.randomUUID();input.put("requestId",requestId.toString());
