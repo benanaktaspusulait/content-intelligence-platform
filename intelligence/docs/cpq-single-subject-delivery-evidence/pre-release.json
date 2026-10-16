@@ -1,0 +1,440 @@
+{
+  "timestamp": "2026-10-16T08:54:33.087440+00:00",
+  "hostFreeBytes": 5498875904,
+  "containers": {
+    "backend": {
+      "image": "sha256:f6822a402e291a5a98407fe0e0850b90ec21b4b284037431b5edc4656cde8d95",
+      "sizeBytes": 421344378,
+      "health": "healthy"
+    },
+    "ml-service": {
+      "image": "sha256:7efef284319092c680ac1b982a3f88235956dd26354470148f1a82696936363b",
+      "sizeBytes": 1197306024,
+      "health": "healthy"
+    },
+    "frontend": {
+      "image": "sha256:d5191a437f0a7917324a10f8459279a72b79d9655fd196b904cb958b8b8c00c5",
+      "sizeBytes": 67373824,
+      "health": "none"
+    },
+    "postgres": {
+      "image": "sha256:25a89970a83255ae96484d709005bb35aa71f7455f941bc1634514f31c5d5c62",
+      "sizeBytes": 291065228,
+      "health": "healthy"
+    },
+    "creative-render-service": {
+      "image": "sha256:c6fb3c5bc93011078b13b341a06fbd10f31d1527b8544b8b81729663bf7d30c9",
+      "sizeBytes": 517203300,
+      "health": "healthy"
+    }
+  },
+  "ownerConfigured": true,
+  "dispatchDisabled": true,
+  "sourceConfiguration": {
+    "openai-escalation": {
+      "reasoningEffort": "low",
+      "supportedReasoningEfforts": [
+        "low",
+        "medium",
+        "high",
+        "xhigh",
+        "max"
+      ]
+    }
+  },
+  "migrations": [
+    {
+      "version": "1",
+      "script": "V1__initial_schema.sql",
+      "checksum": -25508029,
+      "localMatches": true
+    },
+    {
+      "version": "2",
+      "script": "V2__platform_state_observations.sql",
+      "checksum": -1331336873,
+      "localMatches": true
+    },
+    {
+      "version": "3",
+      "script": "V3__intervention_events_append_only.sql",
+      "checksum": 935380542,
+      "localMatches": true
+    },
+    {
+      "version": "4",
+      "script": "V4__seed_canonical_characters.sql",
+      "checksum": 1166961807,
+      "localMatches": true
+    },
+    {
+      "version": "5",
+      "script": "V5__observation_quality_and_discovery_metrics.sql",
+      "checksum": -1620932911,
+      "localMatches": true
+    },
+    {
+      "version": "6",
+      "script": "V6__quality_validations.sql",
+      "checksum": 691354332,
+      "localMatches": true
+    },
+    {
+      "version": "7",
+      "script": "V7__create_contents_and_prompt_versions.sql",
+      "checksum": -580435709,
+      "localMatches": true
+    },
+    {
+      "version": "8",
+      "script": "V8__create_validation_runs_and_failed_rules.sql",
+      "checksum": 1702153555,
+      "localMatches": true
+    },
+    {
+      "version": "9",
+      "script": "V9__create_reference_prompts_and_golden_tests.sql",
+      "checksum": -1618012499,
+      "localMatches": true
+    },
+    {
+      "version": "10",
+      "script": "V10__create_render_jobs_and_assets.sql",
+      "checksum": 1860967807,
+      "localMatches": true
+    },
+    {
+      "version": "11",
+      "script": "V11__create_render_qa_and_credit_log.sql",
+      "checksum": -1179586019,
+      "localMatches": true
+    },
+    {
+      "version": "12",
+      "script": "V12__create_platform_credentials.sql",
+      "checksum": -1043058020,
+      "localMatches": true
+    },
+    {
+      "version": "13",
+      "script": "V13__create_publication_jobs.sql",
+      "checksum": -1845914412,
+      "localMatches": true
+    },
+    {
+      "version": "14",
+      "script": "V14__create_scheduled_publications.sql",
+      "checksum": 1725745504,
+      "localMatches": true
+    },
+    {
+      "version": "15",
+      "script": "V15__create_publication_analytics.sql",
+      "checksum": 171116677,
+      "localMatches": true
+    },
+    {
+      "version": "16",
+      "script": "V16__create_webhook_events.sql",
+      "checksum": 360844505,
+      "localMatches": true
+    },
+    {
+      "version": "17",
+      "script": "V17__create_video_metrics.sql",
+      "checksum": 577245998,
+      "localMatches": true
+    },
+    {
+      "version": "18",
+      "script": "V18__create_performance_classifications.sql",
+      "checksum": -153374865,
+      "localMatches": true
+    },
+    {
+      "version": "19",
+      "script": "V19__create_trajectory_analyses.sql",
+      "checksum": -584338853,
+      "localMatches": true
+    },
+    {
+      "version": "20",
+      "script": "V20__create_correlation_analyses.sql",
+      "checksum": 1888610967,
+      "localMatches": true
+    },
+    {
+      "version": "21",
+      "script": "V21__create_rule_candidates.sql",
+      "checksum": -1737528977,
+      "localMatches": true
+    },
+    {
+      "version": "22",
+      "script": "V22__create_winner_entries.sql",
+      "checksum": -396176729,
+      "localMatches": true
+    },
+    {
+      "version": "23",
+      "script": "V23__create_notifications.sql",
+      "checksum": 643257151,
+      "localMatches": true
+    },
+    {
+      "version": "24",
+      "script": "V24__create_analytics_tables.sql",
+      "checksum": -9815145,
+      "localMatches": true
+    },
+    {
+      "version": "25",
+      "script": "V25__add_strategic_tracking.sql",
+      "checksum": -853850114,
+      "localMatches": true
+    },
+    {
+      "version": "26",
+      "script": "V26__create_reach_further_tracking.sql",
+      "checksum": 1047098092,
+      "localMatches": true
+    },
+    {
+      "version": "27",
+      "script": "V27__create_follower_metrics.sql",
+      "checksum": 443299996,
+      "localMatches": true
+    },
+    {
+      "version": "28",
+      "script": "V28__add_external_publication_identity.sql",
+      "checksum": -1497087386,
+      "localMatches": true
+    },
+    {
+      "version": "29",
+      "script": "V29__add_meta_readonly_snapshot_fields.sql",
+      "checksum": 1600129608,
+      "localMatches": true
+    },
+    {
+      "version": "30",
+      "script": "V30__add_immutable_validation_evidence.sql",
+      "checksum": 2007381331,
+      "localMatches": true
+    },
+    {
+      "version": "31",
+      "script": "V31__complete_quality_validation_evidence.sql",
+      "checksum": 933397888,
+      "localMatches": true
+    },
+    {
+      "version": "32",
+      "script": "V32__add_video_path_aliases_and_intervention_variant.sql",
+      "checksum": 383630854,
+      "localMatches": true
+    },
+    {
+      "version": "33",
+      "script": "V33__add_matched_variant_id_to_import_rows.sql",
+      "checksum": -1016854659,
+      "localMatches": true
+    },
+    {
+      "version": "34",
+      "script": "V34__prevent_duplicate_active_analysis_jobs.sql",
+      "checksum": -1320052042,
+      "localMatches": true
+    },
+    {
+      "version": "35",
+      "script": "V35__create_governed_rule_evolution.sql",
+      "checksum": -1477992256,
+      "localMatches": true
+    },
+    {
+      "version": "36",
+      "script": "V36__operational_guard_decisions.sql",
+      "checksum": 1359045635,
+      "localMatches": true
+    },
+    {
+      "version": "37",
+      "script": "V37__version_sampled_visual_motion_analysis.sql",
+      "checksum": -2127066374,
+      "localMatches": true
+    },
+    {
+      "version": "38",
+      "script": "V38__allow_versioned_video_analysis_classifications.sql",
+      "checksum": 137468069,
+      "localMatches": true
+    },
+    {
+      "version": "39",
+      "script": "V39__add_prompt_source_tracking.sql",
+      "checksum": -1249178518,
+      "localMatches": true
+    },
+    {
+      "version": "40",
+      "script": "V40__video_character_associations.sql",
+      "checksum": -1027037620,
+      "localMatches": true
+    },
+    {
+      "version": "41",
+      "script": "V41__prediction_feature_snapshots.sql",
+      "checksum": -282838276,
+      "localMatches": true
+    },
+    {
+      "version": "42",
+      "script": "V42__store_quality_report_snapshot.sql",
+      "checksum": -1203969313,
+      "localMatches": true
+    },
+    {
+      "version": "43",
+      "script": "V43__create_quality_validation_visual_evidence.sql",
+      "checksum": -1776088595,
+      "localMatches": true
+    },
+    {
+      "version": "44",
+      "script": "V44__create_meta_connection_state.sql",
+      "checksum": -2046807881,
+      "localMatches": true
+    },
+    {
+      "version": "45",
+      "script": "V45__allow_nullable_quality_validation_overall_score.sql",
+      "checksum": 1848941581,
+      "localMatches": true
+    },
+    {
+      "version": "46",
+      "script": "V46__post_family_workflow_events.sql",
+      "checksum": -1940413346,
+      "localMatches": true
+    },
+    {
+      "version": "47",
+      "script": "V47__bounded_workflow_repair.sql",
+      "checksum": -1166421833,
+      "localMatches": true
+    },
+    {
+      "version": "48",
+      "script": "V48__explicit_video_prompt_lineage.sql",
+      "checksum": 617928754,
+      "localMatches": true
+    },
+    {
+      "version": "49",
+      "script": "V49__analysis_job_version_identity.sql",
+      "checksum": -1755913866,
+      "localMatches": true
+    },
+    {
+      "version": "50",
+      "script": "V50__prompt_parent_version_links.sql",
+      "checksum": 1423547903,
+      "localMatches": true
+    },
+    {
+      "version": "51",
+      "script": "V51__bounded_repair_sessions.sql",
+      "checksum": 1061941892,
+      "localMatches": true
+    },
+    {
+      "version": "52",
+      "script": "V52__idempotent_regeneration_handoffs.sql",
+      "checksum": -392355117,
+      "localMatches": true
+    },
+    {
+      "version": "53",
+      "script": "V53__performance_correction_lineage.sql",
+      "checksum": 1559186844,
+      "localMatches": true
+    },
+    {
+      "version": "54",
+      "script": "V54__content_source_path_aliases.sql",
+      "checksum": 73388447,
+      "localMatches": true
+    },
+    {
+      "version": "55",
+      "script": "V55__prompt_creative_provenance.sql",
+      "checksum": -101611342,
+      "localMatches": true
+    },
+    {
+      "version": "58",
+      "script": "V58__meta_page_insight_snapshots.sql",
+      "checksum": 1132356659,
+      "localMatches": true
+    },
+    {
+      "version": "59",
+      "script": "V59__character_reference_review.sql",
+      "checksum": -712479642,
+      "localMatches": true
+    },
+    {
+      "version": "60",
+      "script": "V60__publication_review_acknowledgements.sql",
+      "checksum": -1137696370,
+      "localMatches": true
+    },
+    {
+      "version": "61",
+      "script": "V61__start_frame_candidates.sql",
+      "checksum": -1492529990,
+      "localMatches": true
+    },
+    {
+      "version": "62",
+      "script": "V62__creative_prompt_quality_v1.sql",
+      "checksum": 1349307952,
+      "localMatches": true
+    },
+    {
+      "version": "63",
+      "script": "V63__cpq_assessment_comparison_binding.sql",
+      "checksum": -1364565152,
+      "localMatches": true
+    },
+    {
+      "version": "64",
+      "script": "V64__cpq_original_fidelity_subjects.sql",
+      "checksum": 613480829,
+      "localMatches": true
+    },
+    {
+      "version": "65",
+      "script": "V65__cpq_owner_machine_pilot.sql",
+      "checksum": 1633660260,
+      "localMatches": true
+    }
+  ],
+  "historicalRequests": [
+    {
+      "requestId": "3a55b29a-48c6-44c0-a003-da11af0f7069",
+      "unchanged": true
+    },
+    {
+      "requestId": "7beb2327-6f75-4646-90df-c56c295fde20",
+      "unchanged": true
+    }
+  ],
+  "productionInventory": "2|2|0",
+  "workflowDigest": "75|6b270d6f3ed3646ef1dcbab8692de0c44d9f52d1302c813be4d8215fd14ee3d8",
+  "prompt10": "1|0fe229774deb4b31a42145bad91cf10c91634ba00da39fa3e9d288b3a2e7bd98",
+  "gradingActivated": "f",
+  "databaseBytes": "19871411"
+}

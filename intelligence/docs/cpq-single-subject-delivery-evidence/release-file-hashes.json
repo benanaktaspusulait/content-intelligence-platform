@@ -1,0 +1,6 @@
+{
+  "intelligence/ml-service/app/workflow/owner_machine_pilot.py": "2c08aaa5fab447d8f85ad630a690f98cded09559fe7d02ccfa632cf545807162",
+  "intelligence/backend/src/main/java/com/pompomhills/intelligence/workflow/CpqOwnerPilotService.java": "08b864e7d2db6ee1133df7d125f35188d4c834ce278728bf823a50ca414f7757",
+  "intelligence/backend/src/main/resources/db/migration/V66__cpq_single_subject_source_requests.sql": "0448ffc9769cd160360d27d89e9050744869d2f2051f24559e2c979791b6fefa",
+  "intelligence/frontend/src/app/pages/quality-validator/cpq-owner-pilot.component.ts": "da9cf85aac9c29680ab6c89de203510309b4d9edd269b9c49e0f87e73ef2eeaf"
+}

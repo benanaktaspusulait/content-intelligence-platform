@@ -1,0 +1,19 @@
+{
+  "fixtureLabel": "TEST_FIXTURE_DISPOSABLE_STORAGE",
+  "backendImage": "sha256:2affe1ee131b4e3462cfedb20f5e6d291116e799416ec55951c79ec32002a22f",
+  "frontendImage": "sha256:a795fb833441e29fca32450e6406832ae85213388d0592ce27b85952d1dd5b36",
+  "backendUrl": "http://127.0.0.1:59334",
+  "frontendUrl": "http://127.0.0.1:59378",
+  "pilotId": "d2ea9ae2-b50d-4e01-8da5-c0f325c81b7d",
+  "secondPilotId": "cb559912-ec48-4a9a-a240-60a0b36034df",
+  "fourScopedAuthorizations": true,
+  "missingSubjectDenied": true,
+  "idempotencyVerified": true,
+  "dispatchDenied": true,
+  "validatedSubjects": 0,
+  "criticGateSatisfied": false,
+  "paidProviderCalls": 0,
+  "storage": "Restored backup in disposable tmpfs PostgreSQL; production untouched",
+  "migration": "66",
+  "disposableInventory": "4|6|0"
+}

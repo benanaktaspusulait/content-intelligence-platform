@@ -1,0 +1,24 @@
+{
+  "singleSubjectSchemaBytes": 1674,
+  "requiredJudgmentFields": [
+    "neutralId",
+    "decision",
+    "rationale",
+    "uncertainty",
+    "conflict",
+    "omissions",
+    "additions",
+    "mappings",
+    "productionRisks",
+    "sourceBinding"
+  ],
+  "requiredMappingFields": [
+    "anchor",
+    "beatId",
+    "sourceQuote",
+    "promptQuote",
+    "eventId",
+    "consistency"
+  ],
+  "requiredSourceEventCount": 9
+}

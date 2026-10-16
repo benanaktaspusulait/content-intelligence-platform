@@ -1,0 +1,17 @@
+[
+  {
+    "service": "ml-service",
+    "image": "sha256:e183985d3d18fd3f1601d258829491160ef21e437df091106c91151a8eebab28",
+    "hostFreeBytesAfter": 4716621824
+  },
+  {
+    "service": "backend",
+    "image": "sha256:2affe1ee131b4e3462cfedb20f5e6d291116e799416ec55951c79ec32002a22f",
+    "hostFreeBytesAfter": 4523945984
+  },
+  {
+    "service": "frontend",
+    "image": "sha256:a795fb833441e29fca32450e6406832ae85213388d0592ce27b85952d1dd5b36",
+    "hostFreeBytesAfter": 4473352192
+  }
+]

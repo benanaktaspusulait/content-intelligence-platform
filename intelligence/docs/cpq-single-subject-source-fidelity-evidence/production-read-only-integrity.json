@@ -1,0 +1,46 @@
+{
+  "historicalRequests": [
+    {
+      "requestId": "3a55b29a-48c6-44c0-a003-da11af0f7069",
+      "unchanged": true
+    },
+    {
+      "requestId": "7beb2327-6f75-4646-90df-c56c295fde20",
+      "unchanged": true
+    }
+  ],
+  "productionRequestCount": 2,
+  "productionEvidenceCount": 0,
+  "workflowEvents": "75|6b270d6f3ed3646ef1dcbab8692de0c44d9f52d1302c813be4d8215fd14ee3d8",
+  "gradingActivated": "f",
+  "deployedMigration": "65",
+  "realDispatchEnabled": false,
+  "realEnabled": false,
+  "newPaidProviderCalls": 0,
+  "bindings": [
+    {
+      "promptSha256": "0fe229774deb4b31a42145bad91cf10c91634ba00da39fa3e9d288b3a2e7bd98",
+      "storySha256": "df653dbcaf16bfdbceb87baa23688d70d739c34941d0075e30e96b181e1bf32b",
+      "canonicalScore": 88.40625,
+      "grade": "B"
+    },
+    {
+      "promptSha256": "90bdda1e9cea8e2e46662821b52a01dc94359df87b7753f2c77a645c77905495",
+      "storySha256": "df653dbcaf16bfdbceb87baa23688d70d739c34941d0075e30e96b181e1bf32b",
+      "canonicalScore": 88.40625,
+      "grade": "B"
+    },
+    {
+      "promptSha256": "218a9b367d6484d2a12bc8f6e02150f8812cdf8874c73b0171c254035a6be749",
+      "storySha256": "df653dbcaf16bfdbceb87baa23688d70d739c34941d0075e30e96b181e1bf32b",
+      "canonicalScore": 88.40625,
+      "grade": "B"
+    },
+    {
+      "promptSha256": "2151ed0e2d4b8afa42ea80bad8238a9a639a1be40eea6576390e04704774c746",
+      "storySha256": "df653dbcaf16bfdbceb87baa23688d70d739c34941d0075e30e96b181e1bf32b",
+      "canonicalScore": 88.40625,
+      "grade": "B"
+    }
+  ]
+}

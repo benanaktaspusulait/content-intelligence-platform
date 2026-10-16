@@ -1,0 +1,306 @@
+09:55:02.658 [main] INFO org.testcontainers.images.PullPolicy -- Image pull policy will be performed by: DefaultPullPolicy()
+09:55:02.660 [main] INFO org.testcontainers.utility.ImageNameSubstitutor -- Image name substitution will be performed by: DefaultImageNameSubstitutor (composite of 'ConfigurationFileImageNameSubstitutor' and 'PrefixingImageNameSubstitutor')
+09:55:02.683 [main] INFO org.testcontainers.DockerClientFactory -- Testcontainers version: 2.0.2
+09:55:02.842 [main] INFO org.testcontainers.dockerclient.DockerClientProviderStrategy -- Loaded org.testcontainers.dockerclient.UnixSocketClientProviderStrategy from ~/.testcontainers.properties, will try it first
+09:55:03.123 [main] INFO org.testcontainers.dockerclient.DockerClientProviderStrategy -- Found Docker environment with Docker accessed via Unix socket (/Users/benanaktas/.docker/run/docker.sock)
+09:55:03.124 [main] INFO org.testcontainers.DockerClientFactory -- Docker host IP address is localhost
+09:55:03.135 [main] INFO org.testcontainers.DockerClientFactory -- Connected to docker: 
+  Server Version: 29.2.1
+  API Version: 1.53
+  Operating System: Docker Desktop
+  Total Memory: 11948 MB
+  Labels: 
+    com.docker.desktop.address=unix:///Users/benanaktas/Library/Containers/com.docker.docker/Data/docker-cli.sock
+09:55:03.231 [main] INFO tc.testcontainers/ryuk:0.13.0 -- Creating container for image: testcontainers/ryuk:0.13.0
+09:55:03.398 [main] INFO org.testcontainers.utility.RegistryAuthLocator -- Credential helper/store (docker-credential-desktop) does not have credentials for https://index.docker.io/v1/
+09:55:03.473 [main] INFO tc.testcontainers/ryuk:0.13.0 -- Container testcontainers/ryuk:0.13.0 is starting: 2814a0963a2d733776e0f2364a7d49d3a560e2b326ffa6118bdda94a45d6ed8f
+09:55:03.652 [main] INFO tc.testcontainers/ryuk:0.13.0 -- Container testcontainers/ryuk:0.13.0 started in PT0.420945S
+09:55:03.657 [main] INFO org.testcontainers.utility.RyukResourceReaper -- Ryuk started - will monitor and terminate Testcontainers containers on JVM exit
+09:55:03.657 [main] INFO org.testcontainers.DockerClientFactory -- Checking the system...
+09:55:03.657 [main] INFO org.testcontainers.DockerClientFactory -- ✔︎ Docker server version should be at least 1.6.0
+09:55:03.658 [main] INFO tc.postgres:17-alpine -- Creating container for image: postgres:17-alpine
+09:55:03.690 [main] INFO tc.postgres:17-alpine -- Container postgres:17-alpine is starting: c72d1dc414b29f95cc3162048661e53974dc0d8eedf4c7b1fbcf2f0b9de3f778
+09:55:04.690 [main] INFO tc.postgres:17-alpine -- Container postgres:17-alpine started in PT1.032231S
+09:55:04.691 [main] INFO tc.postgres:17-alpine -- Container is started (JDBC URL: jdbc:postgresql://localhost:59206/pompom?loggerLevel=OFF)
+09:55:04.971 [main] INFO org.flywaydb.core.FlywayExecutor -- Database: jdbc:postgresql://localhost:59206/pompom?loggerLevel=OFF (PostgreSQL 17.11)
+09:55:05.040 [main] INFO org.flywaydb.core.internal.schemahistory.JdbcTableSchemaHistory -- Schema history table "public"."flyway_schema_history" does not exist yet
+09:55:05.044 [main] INFO org.flywaydb.core.internal.command.DbValidate -- Successfully validated 64 migrations (execution time 00:00.032s)
+09:55:05.054 [main] INFO org.flywaydb.core.internal.schemahistory.JdbcTableSchemaHistory -- Creating Schema History table "public"."flyway_schema_history" ...
+09:55:05.101 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Current version of schema "public": << Empty Schema >>
+09:55:05.133 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "1 - initial schema"
+09:55:05.232 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "2 - platform state observations"
+09:55:05.256 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "3 - intervention events append only"
+09:55:05.268 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "4 - seed canonical characters"
+09:55:05.278 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "5 - observation quality and discovery metrics"
+09:55:05.300 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "6 - quality validations"
+09:55:05.323 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "7 - create contents and prompt versions"
+09:55:05.340 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "8 - create validation runs and failed rules"
+09:55:05.358 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "9 - create reference prompts and golden tests"
+09:55:05.372 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "10 - create render jobs and assets"
+09:55:05.392 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "11 - create render qa and credit log"
+09:55:05.410 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "12 - create platform credentials"
+09:55:05.423 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "13 - create publication jobs"
+09:55:05.437 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "14 - create scheduled publications"
+09:55:05.451 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "15 - create publication analytics"
+09:55:05.464 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "16 - create webhook events"
+09:55:05.478 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "17 - create video metrics"
+09:55:05.497 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "18 - create performance classifications"
+09:55:05.512 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "19 - create trajectory analyses"
+09:55:05.529 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "20 - create correlation analyses"
+09:55:05.540 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "21 - create rule candidates"
+09:55:05.556 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "22 - create winner entries"
+09:55:05.572 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "23 - create notifications"
+09:55:05.584 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "24 - create analytics tables"
+09:55:05.599 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "25 - add strategic tracking"
+09:55:05.616 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "26 - create reach further tracking"
+09:55:05.627 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "27 - create follower metrics"
+09:55:05.638 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "28 - add external publication identity"
+09:55:05.655 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "29 - add meta readonly snapshot fields"
+09:55:05.668 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "30 - add immutable validation evidence"
+09:55:05.680 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "31 - complete quality validation evidence"
+09:55:05.690 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "32 - add video path aliases and intervention variant"
+09:55:05.701 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "33 - add matched variant id to import rows"
+09:55:05.708 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "34 - prevent duplicate active analysis jobs"
+09:55:05.715 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "35 - create governed rule evolution"
+09:55:05.741 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "36 - operational guard decisions"
+09:55:05.750 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "37 - version sampled visual motion analysis"
+09:55:05.758 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "38 - allow versioned video analysis classifications"
+09:55:05.766 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "39 - add prompt source tracking"
+09:55:05.775 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "40 - video character associations"
+09:55:05.790 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "41 - prediction feature snapshots"
+09:55:05.800 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "42 - store quality report snapshot"
+09:55:05.807 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "43 - create quality validation visual evidence"
+09:55:05.818 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "44 - create meta connection state"
+09:55:05.829 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "45 - allow nullable quality validation overall score"
+09:55:05.844 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "46 - post family workflow events"
+09:55:05.851 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "47 - bounded workflow repair"
+09:55:05.857 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "48 - explicit video prompt lineage"
+09:55:05.867 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "49 - analysis job version identity"
+09:55:05.874 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "50 - prompt parent version links"
+09:55:05.881 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "51 - bounded repair sessions"
+09:55:05.890 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "52 - idempotent regeneration handoffs"
+09:55:05.897 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "53 - performance correction lineage"
+09:55:05.907 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "54 - content source path aliases"
+09:55:05.915 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "55 - prompt creative provenance"
+09:55:05.923 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "58 - meta page insight snapshots"
+09:55:05.931 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "59 - character reference review"
+09:55:05.939 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "60 - publication review acknowledgements"
+09:55:05.948 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "61 - start frame candidates"
+09:55:05.959 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Successfully applied 59 migrations to schema "public", now at version v61 (execution time 00:00.485s)
+09:55:05.984 [main] INFO org.flywaydb.core.FlywayExecutor -- Database: jdbc:postgresql://localhost:59206/pompom?loggerLevel=OFF (PostgreSQL 17.11)
+09:55:06.076 [main] INFO org.flywaydb.core.FlywayExecutor -- Database: jdbc:postgresql://localhost:59206/pompom?loggerLevel=OFF (PostgreSQL 17.11)
+09:55:06.100 [main] INFO org.flywaydb.core.internal.command.DbValidate -- Successfully validated 64 migrations (execution time 00:00.014s)
+09:55:06.116 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Current version of schema "public": 61
+09:55:06.119 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "62 - creative prompt quality v1"
+09:55:06.152 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "63 - cpq assessment comparison binding"
+09:55:06.161 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Successfully applied 2 migrations to schema "public", now at version v63 (execution time 00:00.031s)
+09:55:06.191 [main] INFO org.flywaydb.core.FlywayExecutor -- Database: jdbc:postgresql://localhost:59206/pompom?loggerLevel=OFF (PostgreSQL 17.11)
+09:55:06.213 [main] INFO org.flywaydb.core.internal.command.DbValidate -- Successfully validated 64 migrations (execution time 00:00.012s)
+09:55:06.225 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Current version of schema "public": 63
+09:55:06.228 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "64 - cpq original fidelity subjects"
+09:55:06.247 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "65 - cpq owner machine pilot"
+09:55:06.262 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "66 - cpq single subject source requests"
+09:55:06.271 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Successfully applied 3 migrations to schema "public", now at version v66 (execution time 00:00.026s)
+09:55:06.279 [main] INFO org.flywaydb.core.FlywayExecutor -- Database: jdbc:postgresql://localhost:59206/pompom?loggerLevel=OFF (PostgreSQL 17.11)
+09:55:06.558 [main] INFO tc.postgres:17-alpine -- Creating container for image: postgres:17-alpine
+09:55:06.587 [main] INFO tc.postgres:17-alpine -- Container postgres:17-alpine is starting: 286b6d70e54b4972a197e2b19912585a72832464a5bdfd8dae2c3fd0813fc3b3
+09:55:07.504 [main] INFO tc.postgres:17-alpine -- Container postgres:17-alpine started in PT0.94575S
+09:55:07.504 [main] INFO tc.postgres:17-alpine -- Container is started (JDBC URL: jdbc:postgresql://localhost:59220/test?loggerLevel=OFF)
+09:55:07.523 [main] INFO org.flywaydb.core.FlywayExecutor -- Database: jdbc:postgresql://localhost:59220/test?loggerLevel=OFF (PostgreSQL 17.11)
+09:55:07.542 [main] INFO org.flywaydb.core.internal.schemahistory.JdbcTableSchemaHistory -- Schema history table "public"."flyway_schema_history" does not exist yet
+09:55:07.543 [main] INFO org.flywaydb.core.internal.command.DbValidate -- Successfully validated 64 migrations (execution time 00:00.009s)
+09:55:07.554 [main] INFO org.flywaydb.core.internal.schemahistory.JdbcTableSchemaHistory -- Creating Schema History table "public"."flyway_schema_history" ...
+09:55:07.571 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Current version of schema "public": << Empty Schema >>
+09:55:07.576 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "1 - initial schema"
+09:55:07.657 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "2 - platform state observations"
+09:55:07.674 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "3 - intervention events append only"
+09:55:07.682 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "4 - seed canonical characters"
+09:55:07.689 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "5 - observation quality and discovery metrics"
+09:55:07.708 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "6 - quality validations"
+09:55:07.727 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "7 - create contents and prompt versions"
+09:55:07.741 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "8 - create validation runs and failed rules"
+09:55:07.757 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "9 - create reference prompts and golden tests"
+09:55:07.772 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "10 - create render jobs and assets"
+09:55:07.789 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "11 - create render qa and credit log"
+09:55:07.805 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "12 - create platform credentials"
+09:55:07.816 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "13 - create publication jobs"
+09:55:07.828 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "14 - create scheduled publications"
+09:55:07.839 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "15 - create publication analytics"
+09:55:07.851 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "16 - create webhook events"
+09:55:07.863 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "17 - create video metrics"
+09:55:07.879 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "18 - create performance classifications"
+09:55:07.891 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "19 - create trajectory analyses"
+09:55:07.903 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "20 - create correlation analyses"
+09:55:07.914 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "21 - create rule candidates"
+09:55:07.927 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "22 - create winner entries"
+09:55:07.941 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "23 - create notifications"
+09:55:07.953 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "24 - create analytics tables"
+09:55:07.967 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "25 - add strategic tracking"
+09:55:07.983 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "26 - create reach further tracking"
+09:55:07.994 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "27 - create follower metrics"
+09:55:08.005 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "28 - add external publication identity"
+09:55:08.012 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "29 - add meta readonly snapshot fields"
+09:55:08.024 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "30 - add immutable validation evidence"
+09:55:08.036 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "31 - complete quality validation evidence"
+09:55:08.044 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "32 - add video path aliases and intervention variant"
+09:55:08.053 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "33 - add matched variant id to import rows"
+09:55:08.059 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "34 - prevent duplicate active analysis jobs"
+09:55:08.066 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "35 - create governed rule evolution"
+09:55:08.091 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "36 - operational guard decisions"
+09:55:08.100 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "37 - version sampled visual motion analysis"
+09:55:08.107 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "38 - allow versioned video analysis classifications"
+09:55:08.114 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "39 - add prompt source tracking"
+09:55:08.125 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "40 - video character associations"
+09:55:08.142 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "41 - prediction feature snapshots"
+09:55:08.153 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "42 - store quality report snapshot"
+09:55:08.161 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "43 - create quality validation visual evidence"
+09:55:08.172 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "44 - create meta connection state"
+09:55:08.187 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "45 - allow nullable quality validation overall score"
+09:55:08.206 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "46 - post family workflow events"
+09:55:08.215 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "47 - bounded workflow repair"
+09:55:08.223 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "48 - explicit video prompt lineage"
+09:55:08.236 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "49 - analysis job version identity"
+09:55:08.248 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "50 - prompt parent version links"
+09:55:08.256 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "51 - bounded repair sessions"
+09:55:08.266 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "52 - idempotent regeneration handoffs"
+09:55:08.274 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "53 - performance correction lineage"
+09:55:08.286 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "54 - content source path aliases"
+09:55:08.295 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "55 - prompt creative provenance"
+09:55:08.304 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "58 - meta page insight snapshots"
+09:55:08.314 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "59 - character reference review"
+09:55:08.325 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "60 - publication review acknowledgements"
+09:55:08.337 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "61 - start frame candidates"
+09:55:08.351 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "62 - creative prompt quality v1"
+09:55:08.386 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "63 - cpq assessment comparison binding"
+09:55:08.398 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "64 - cpq original fidelity subjects"
+09:55:08.417 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "65 - cpq owner machine pilot"
+09:55:08.433 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Successfully applied 63 migrations to schema "public", now at version v65 (execution time 00:00.512s)
+09:55:08.636 [main] INFO org.flywaydb.core.FlywayExecutor -- Database: jdbc:postgresql://localhost:59220/test?loggerLevel=OFF (PostgreSQL 17.11)
+09:55:08.658 [main] INFO org.flywaydb.core.internal.command.DbValidate -- Successfully validated 64 migrations (execution time 00:00.011s)
+09:55:08.671 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Current version of schema "public": 65
+09:55:08.674 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "public" to version "66 - cpq single subject source requests"
+09:55:08.688 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Successfully applied 1 migration to schema "public", now at version v66 (execution time 00:00.007s)
+09:55:09.038 [main] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.pompomhills.intelligence.OriginalCpqFidelityIntegrationTest]: OriginalCpqFidelityIntegrationTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+09:55:09.118 [main] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.pompomhills.intelligence.PompomCreativeIntelligenceApplication for test class com.pompomhills.intelligence.OriginalCpqFidelityIntegrationTest
+09:55:09.164 [main] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.pompomhills.intelligence.OriginalCpqFidelityIntegrationTest]: OriginalCpqFidelityIntegrationTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+09:55:09.165 [main] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.pompomhills.intelligence.PompomCreativeIntelligenceApplication for test class com.pompomhills.intelligence.OriginalCpqFidelityIntegrationTest
+09:55:09.182 [main] INFO tc.postgres:17-alpine -- Creating container for image: postgres:17-alpine
+09:55:09.224 [main] INFO tc.postgres:17-alpine -- Container postgres:17-alpine is starting: 5c84a1abec846fe9c4899c9c3de55f8d69297ef69765eff0fadf9d101696950d
+09:55:10.142 [main] INFO tc.postgres:17-alpine -- Container postgres:17-alpine started in PT0.960529S
+09:55:10.143 [main] INFO tc.postgres:17-alpine -- Container is started (JDBC URL: jdbc:postgresql://localhost:59227/test?loggerLevel=OFF)
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v4.1.1)
+
+2026-10-16T09:55:10.326+01:00  INFO 37516 --- [pompom-creative-intelligence] [           main] c.p.i.OriginalCpqFidelityIntegrationTest : Starting OriginalCpqFidelityIntegrationTest using Java 21.0.7 with PID 37516 (started by benanaktas in /Users/benanaktas/project/video/content-intelligence-platform/intelligence/backend)
+2026-10-16T09:55:10.327+01:00  INFO 37516 --- [pompom-creative-intelligence] [           main] c.p.i.OriginalCpqFidelityIntegrationTest : No active profile set, falling back to 1 default profile: "default"
+2026-10-16T09:55:10.984+01:00  INFO 37516 --- [pompom-creative-intelligence] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-10-16T09:55:11.039+01:00  INFO 37516 --- [pompom-creative-intelligence] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 50 ms. Found 19 JPA repository interfaces.
+2026-10-16T09:55:11.409+01:00  INFO 37516 --- [pompom-creative-intelligence] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-10-16T09:55:11.430+01:00  INFO 37516 --- [pompom-creative-intelligence] [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@ea3491d
+2026-10-16T09:55:11.431+01:00  INFO 37516 --- [pompom-creative-intelligence] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-10-16T09:55:11.439+01:00  INFO 37516 --- [pompom-creative-intelligence] [           main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:postgresql://localhost:59227/test?loggerLevel=OFF (PostgreSQL 17.11)
+2026-10-16T09:55:11.460+01:00  INFO 37516 --- [pompom-creative-intelligence] [           main] o.f.c.i.s.JdbcTableSchemaHistory         : Schema history table "public"."flyway_schema_history" does not exist yet
+2026-10-16T09:55:11.461+01:00  INFO 37516 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbValidate     : Successfully validated 64 migrations (execution time 00:00.009s)
+2026-10-16T09:55:11.467+01:00  INFO 37516 --- [pompom-creative-intelligence] [           main] o.f.c.i.s.JdbcTableSchemaHistory         : Creating Schema History table "public"."flyway_schema_history" ...
+2026-10-16T09:55:11.485+01:00  INFO 37516 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Current version of schema "public": << Empty Schema >>
+2026-10-16T09:55:11.490+01:00  INFO 37516 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "1 - initial schema"
+2026-10-16T09:55:11.569+01:00  INFO 37516 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "2 - platform state observations"
+2026-10-16T09:55:11.588+01:00  INFO 37516 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "3 - intervention events append only"
+2026-10-16T09:55:11.596+01:00  INFO 37516 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "4 - seed canonical characters"
+2026-10-16T09:55:11.603+01:00  INFO 37516 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "5 - observation quality and discovery metrics"
+2026-10-16T09:55:11.621+01:00  INFO 37516 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "6 - quality validations"
+2026-10-16T09:55:11.641+01:00  INFO 37516 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "7 - create contents and prompt versions"
+2026-10-16T09:55:11.657+01:00  INFO 37516 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "8 - create validation runs and failed rules"
+2026-10-16T09:55:11.672+01:00  INFO 37516 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "9 - create reference prompts and golden tests"
+2026-10-16T09:55:11.683+01:00  INFO 37516 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "10 - create render jobs and assets"
+2026-10-16T09:55:11.702+01:00  INFO 37516 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "11 - create render qa and credit log"
+2026-10-16T09:55:11.717+01:00  INFO 37516 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "12 - create platform credentials"
+2026-10-16T09:55:11.731+01:00  INFO 37516 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "13 - create publication jobs"
+2026-10-16T09:55:11.744+01:00  INFO 37516 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "14 - create scheduled publications"
+2026-10-16T09:55:11.759+01:00  INFO 37516 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "15 - create publication analytics"
+2026-10-16T09:55:11.772+01:00  INFO 37516 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "16 - create webhook events"
+2026-10-16T09:55:11.783+01:00  INFO 37516 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "17 - create video metrics"
+2026-10-16T09:55:11.809+01:00  INFO 37516 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "18 - create performance classifications"
+2026-10-16T09:55:11.822+01:00  INFO 37516 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "19 - create trajectory analyses"
+2026-10-16T09:55:11.835+01:00  INFO 37516 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "20 - create correlation analyses"
+2026-10-16T09:55:11.844+01:00  INFO 37516 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "21 - create rule candidates"
+2026-10-16T09:55:11.857+01:00  INFO 37516 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "22 - create winner entries"
+2026-10-16T09:55:11.868+01:00  INFO 37516 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "23 - create notifications"
+2026-10-16T09:55:11.879+01:00  INFO 37516 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "24 - create analytics tables"
+2026-10-16T09:55:11.892+01:00  INFO 37516 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "25 - add strategic tracking"
+2026-10-16T09:55:11.907+01:00  INFO 37516 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "26 - create reach further tracking"
+2026-10-16T09:55:11.918+01:00  INFO 37516 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "27 - create follower metrics"
+2026-10-16T09:55:11.929+01:00  INFO 37516 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "28 - add external publication identity"
+2026-10-16T09:55:11.942+01:00  INFO 37516 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "29 - add meta readonly snapshot fields"
+2026-10-16T09:55:11.958+01:00  INFO 37516 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "30 - add immutable validation evidence"
+2026-10-16T09:55:12.009+01:00  INFO 37516 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "31 - complete quality validation evidence"
+2026-10-16T09:55:12.022+01:00  INFO 37516 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "32 - add video path aliases and intervention variant"
+2026-10-16T09:55:12.035+01:00  INFO 37516 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "33 - add matched variant id to import rows"
+2026-10-16T09:55:12.044+01:00  INFO 37516 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "34 - prevent duplicate active analysis jobs"
+2026-10-16T09:55:12.054+01:00  INFO 37516 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "35 - create governed rule evolution"
+2026-10-16T09:55:12.082+01:00  INFO 37516 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "36 - operational guard decisions"
+2026-10-16T09:55:12.095+01:00  INFO 37516 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "37 - version sampled visual motion analysis"
+2026-10-16T09:55:12.105+01:00  INFO 37516 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "38 - allow versioned video analysis classifications"
+2026-10-16T09:55:12.114+01:00  INFO 37516 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "39 - add prompt source tracking"
+2026-10-16T09:55:12.127+01:00  INFO 37516 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "40 - video character associations"
+2026-10-16T09:55:12.146+01:00  INFO 37516 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "41 - prediction feature snapshots"
+2026-10-16T09:55:12.159+01:00  INFO 37516 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "42 - store quality report snapshot"
+2026-10-16T09:55:12.168+01:00  INFO 37516 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "43 - create quality validation visual evidence"
+2026-10-16T09:55:12.183+01:00  INFO 37516 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "44 - create meta connection state"
+2026-10-16T09:55:12.200+01:00  INFO 37516 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "45 - allow nullable quality validation overall score"
+2026-10-16T09:55:12.220+01:00  INFO 37516 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "46 - post family workflow events"
+2026-10-16T09:55:12.229+01:00  INFO 37516 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "47 - bounded workflow repair"
+2026-10-16T09:55:12.237+01:00  INFO 37516 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "48 - explicit video prompt lineage"
+2026-10-16T09:55:12.248+01:00  INFO 37516 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "49 - analysis job version identity"
+2026-10-16T09:55:12.260+01:00  INFO 37516 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "50 - prompt parent version links"
+2026-10-16T09:55:12.270+01:00  INFO 37516 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "51 - bounded repair sessions"
+2026-10-16T09:55:12.281+01:00  INFO 37516 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "52 - idempotent regeneration handoffs"
+2026-10-16T09:55:12.288+01:00  INFO 37516 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "53 - performance correction lineage"
+2026-10-16T09:55:12.300+01:00  INFO 37516 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "54 - content source path aliases"
+2026-10-16T09:55:12.308+01:00  INFO 37516 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "55 - prompt creative provenance"
+2026-10-16T09:55:12.316+01:00  INFO 37516 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "58 - meta page insight snapshots"
+2026-10-16T09:55:12.324+01:00  INFO 37516 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "59 - character reference review"
+2026-10-16T09:55:12.331+01:00  INFO 37516 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "60 - publication review acknowledgements"
+2026-10-16T09:55:12.340+01:00  INFO 37516 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "61 - start frame candidates"
+2026-10-16T09:55:12.351+01:00  INFO 37516 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "62 - creative prompt quality v1"
+2026-10-16T09:55:12.382+01:00  INFO 37516 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "63 - cpq assessment comparison binding"
+2026-10-16T09:55:12.392+01:00  INFO 37516 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "64 - cpq original fidelity subjects"
+2026-10-16T09:55:12.408+01:00  INFO 37516 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "65 - cpq owner machine pilot"
+2026-10-16T09:55:12.422+01:00  INFO 37516 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "66 - cpq single subject source requests"
+2026-10-16T09:55:12.430+01:00  INFO 37516 --- [pompom-creative-intelligence] [           main] o.f.core.internal.command.DbMigrate      : Successfully applied 64 migrations to schema "public", now at version v66 (execution time 00:00.568s)
+2026-10-16T09:55:12.504+01:00  INFO 37516 --- [pompom-creative-intelligence] [           main] org.hibernate.orm.jpa                    : HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-10-16T09:55:12.548+01:00  INFO 37516 --- [pompom-creative-intelligence] [           main] org.hibernate.orm.core                   : HHH000001: Hibernate ORM core version 7.4.5.Final
+2026-10-16T09:55:12.792+01:00  INFO 37516 --- [pompom-creative-intelligence] [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-10-16T09:55:12.849+01:00  INFO 37516 --- [pompom-creative-intelligence] [           main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [jdbc:postgresql://localhost:59227/test?loggerLevel=OFF]
+	Database driver: PostgreSQL JDBC Driver
+	Database dialect: PostgreSQLDialect
+	Database version: 17.11
+	Default catalog/schema: test/public
+	Autocommit mode: undefined/unknown
+	Isolation level: READ_COMMITTED [default READ_COMMITTED]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-10-16T09:55:13.636+01:00  INFO 37516 --- [pompom-creative-intelligence] [           main] org.hibernate.orm.core                   : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-10-16T09:55:13.640+01:00  INFO 37516 --- [pompom-creative-intelligence] [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-10-16T09:55:13.708+01:00  INFO 37516 --- [pompom-creative-intelligence] [           main] o.s.d.j.r.query.QueryEnhancerFactories   : Hibernate is in classpath; If applicable, HQL parser will be used.
+Mockito is currently self-attaching to enable the inline-mock-maker. This will no longer work in future releases of the JDK. Please add Mockito as an agent to your build as described in Mockito's documentation: https://javadoc.io/doc/org.mockito/mockito-core/latest/org.mockito/org/mockito/Mockito.html#0.3
+OpenJDK 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended
+WARNING: A Java agent has been loaded dynamically (/Users/benanaktas/.m2/repository/net/bytebuddy/byte-buddy-agent/1.18.11/byte-buddy-agent-1.18.11.jar)
+WARNING: If a serviceability tool is in use, please run with -XX:+EnableDynamicAgentLoading to hide this warning
+WARNING: If a serviceability tool is not in use, please run with -Djdk.instrument.traceUsage for more information
+WARNING: Dynamic loading of agents will be disallowed by default in a future release
+2026-10-16T09:55:15.497+01:00  INFO 37516 --- [pompom-creative-intelligence] [           main] c.p.i.quality.QualityMlClient            : ML client initialized with base URL: http://localhost:8001
+2026-10-16T09:55:16.353+01:00  INFO 37516 --- [pompom-creative-intelligence] [           main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 4 endpoints beneath base path '/actuator'
+2026-10-16T09:55:16.410+01:00  INFO 37516 --- [pompom-creative-intelligence] [           main] c.p.i.OriginalCpqFidelityIntegrationTest : Started OriginalCpqFidelityIntegrationTest in 6.243 seconds (process running for 14.214)
+2026-10-16T09:55:16.460+01:00  WARN 37516 --- [pompom-creative-intelligence] [           main] o.s.core.events.SpringDocAppInitializer  : SpringDoc /v3/api-docs endpoint is enabled by default. To disable it in production, set the property 'springdoc.api-docs.enabled=false'
+2026-10-16T09:55:16.461+01:00  WARN 37516 --- [pompom-creative-intelligence] [           main] o.s.core.events.SpringDocAppInitializer  : SpringDoc /swagger-ui.html endpoint is enabled by default. To disable it in production, set the property 'springdoc.swagger-ui.enabled=false'

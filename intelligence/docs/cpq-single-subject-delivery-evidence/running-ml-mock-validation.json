@@ -1,0 +1,52 @@
+{
+  "fixtureLabel": "TEST_FIXTURE",
+  "realProviderCalls": 0,
+  "sourceFileSha256": "2c08aaa5fab447d8f85ad630a690f98cded09559fe7d02ccfa632cf545807162",
+  "versions": {
+    "openai": "3.31.0",
+    "jsonschema": "4.26.0",
+    "pydantic": "2.14.1"
+  },
+  "results": [
+    {
+      "neutralId": "Q04",
+      "mockOnly": true,
+      "executionStatus": "COMPLETED",
+      "semanticVerdict": "UNKNOWN",
+      "strictSchema": true,
+      "reasoningEffort": "low",
+      "maxCompletionTokens": 4000,
+      "sdkRetries": 0
+    },
+    {
+      "neutralId": "Q01",
+      "mockOnly": true,
+      "executionStatus": "COMPLETED",
+      "semanticVerdict": "UNKNOWN",
+      "strictSchema": true,
+      "reasoningEffort": "low",
+      "maxCompletionTokens": 4000,
+      "sdkRetries": 0
+    },
+    {
+      "neutralId": "Q02",
+      "mockOnly": true,
+      "executionStatus": "COMPLETED",
+      "semanticVerdict": "UNKNOWN",
+      "strictSchema": true,
+      "reasoningEffort": "low",
+      "maxCompletionTokens": 4000,
+      "sdkRetries": 0
+    },
+    {
+      "neutralId": "Q03",
+      "mockOnly": true,
+      "executionStatus": "COMPLETED",
+      "semanticVerdict": "UNKNOWN",
+      "strictSchema": true,
+      "reasoningEffort": "low",
+      "maxCompletionTokens": 4000,
+      "sdkRetries": 0
+    }
+  ]
+}

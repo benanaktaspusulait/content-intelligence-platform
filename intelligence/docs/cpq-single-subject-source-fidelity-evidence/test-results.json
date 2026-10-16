@@ -1,0 +1,37 @@
+{
+  "backend": {
+    "com.pompomhills.intelligence.OriginalCpqFidelityIntegrationTest": {
+      "tests": 24,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "com.pompomhills.intelligence.CpqOwnerAccessTest": {
+      "tests": 5,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "com.pompomhills.intelligence.workflow.CpqV62MigrationTest": {
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "ml": {
+    "passed": 106,
+    "failed": 0
+  },
+  "frontendQualityValidator": {
+    "passed": 118,
+    "failed": 0
+  },
+  "frontendFull": {
+    "passed": 343,
+    "failed": 7,
+    "uncaughtErrors": 8,
+    "failedFile": "src/app/pages/video-detail.page.spec.ts"
+  },
+  "newPaidProviderCalls": 0
+}
