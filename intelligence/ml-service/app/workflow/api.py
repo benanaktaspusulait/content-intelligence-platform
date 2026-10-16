@@ -464,3 +464,30 @@ def cpq_draft_preflight(request: dict[str, Any]) -> dict[str, Any]:
     from .draft_comparative_review import preflight
     try:return preflight(request)
     except (ValueError, KeyError, TypeError) as error:raise HTTPException(422,'Invalid diagnostic pair preflight') from error
+
+
+@router.post('/optimization-loop/local')
+def optimization_loop_local(body: dict[str, Any]) -> dict[str, Any]:
+    from .optimization_loop import capabilities, evaluate, compare, preflight
+    try:
+        action=body.get('action')
+        if action=='CAPABILITIES': return capabilities()
+        if action=='EVALUATE': return evaluate(body)
+        if action=='COMPARE': return compare(body)
+        if action=='PREFLIGHT_REQUEST': return preflight(body)
+        raise ValueError('Unsupported loop operation')
+    except (ValueError, KeyError, TypeError) as error:
+        raise HTTPException(422, 'Invalid loop scope or local contract') from error
+
+
+@router.post('/cpq-pilot/optimization-loop-execute')
+async def optimization_loop_execute(request: Request) -> dict[str, Any]:
+    import os, hmac, hashlib
+    from .optimization_loop import execute_request
+    raw=await request.body();token=os.getenv('WORKFLOW_ADAPTIVE_DISPATCH_TOKEN','')
+    signature=request.headers.get('X-CPQ-Pilot-Dispatch','')
+    if os.getenv('CPQ_PILOT_REAL_ENABLED','false').lower()!='true' or len(token)<32 or not hmac.compare_digest(signature,hmac.new(token.encode(),raw,hashlib.sha256).hexdigest()):
+        raise HTTPException(403,'Optimization real dispatch disabled or unsigned')
+    try: return execute_request(json.loads(raw))
+    except (ValueError,KeyError,TypeError):
+        raise HTTPException(422,'Invalid bounded request before dispatch; no retry')

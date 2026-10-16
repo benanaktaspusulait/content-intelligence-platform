@@ -179,6 +179,8 @@ def response_format(context=None, source=None):
         constrain_reference_schema(schema,refs,diagnosis)
         if context.get('adaptiveVersion') == 'adaptive-creative-optimization-v3':
             schema['$defs']['AdaptiveAuthoredIntervention']['properties']['dependsOnBeatIds']['items']['enum']=sorted({o['beatId'] for o in diagnosis['opportunities']})
+    if context.get('autonomousSingleCandidate'):
+        schema['properties']['proposals']['maxItems']=1
     def wire(x):
         if isinstance(x, dict):
             result = {k: wire(v) for k, v in x.items() if k != 'default' and not (k == 'title' and isinstance(v, str))}
@@ -226,6 +228,8 @@ def request_payload(source, context):
             payload.update(authoringContract=authoring_reference_contract(refs,diagnosis),preferredCandidateCount=1)
     if context.get("adaptiveVersion") == "adaptive-creative-optimization-v3" and context.get("escalationBrief"):
         payload["escalationEvidence"] = context["escalationBrief"]
+    if context.get('autonomousSingleCandidate'):
+        payload['maxCandidates']=1
     return payload
 
 

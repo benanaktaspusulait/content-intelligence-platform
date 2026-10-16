@@ -1,0 +1,11 @@
+{
+  "tables": {
+    "prompt_versions": "a20a38cb629593739b18676bad026da00bed126cf4c3d5693c54d3396f34c858",
+    "post_family_workflow_events": "3bab92f82b7e7f0356525b61221fb6bf473e5b0be4a40a625ffee3210ad7f45b",
+    "cpq_owner_pilots": "6ec08c3c6df403de7e42f912083f2e400105c978cfa7973166167ae205c356d1",
+    "cpq_machine_requests": "1c23c48161a7c6b4b2566f2e6fe6f2e377502e1129dd0f955f7ec5555bc9b458",
+    "cpq_pilot_evidence": "dc65bb314e0fee84dbc4c57574ec571757d5b86fd6b9ae26f5d92d2aead3f045",
+    "cpq_policy_state": "f15fb938c5824888ec8d653f48c6e844557daf535bf37c8dbcef79669a6c6506"
+  },
+  "hostFreeBytes": 3805601792
+}

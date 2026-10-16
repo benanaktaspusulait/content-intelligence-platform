@@ -1,10 +1,11 @@
+import { OptimizationLoopComponent } from './optimization-loop.component';
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnChanges, SimpleChanges, ChangeDetectorRef, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 
 @Component({
- selector: 'app-cpq-owner-pilot', standalone:true, imports:[CommonModule,FormsModule],
+ selector: 'app-cpq-owner-pilot', standalone:true, imports:[CommonModule,FormsModule,OptimizationLoopComponent],
  template:`<section class="owner-pilot" aria-label="Owner-managed CPQ pilot">
  <strong>Owner-managed quality pilot · ungraded</strong>
  <p>MACHINE_REVIEW: {{pilot ? 'SEE_SAVED_EVIDENCE' : 'NOT_EXECUTED'}}. Official CPQ grading: INACTIVE. Render authorization: separate F8 gate.</p>
@@ -33,6 +34,7 @@ import { HttpClient } from '@angular/common/http';
  <div *ngFor="let stage of diagnosticStages"><b>{{stage}}</b><label>Per-call ceiling USD <input type="number" [(ngModel)]="diagnosticCaps[stage]"></label><button type="button" (click)="authorizeDiagnostic(stage)" [disabled]="busy || !diagnosticPaidConsent || !diagnosticPreflight || !caps?.realDispatchEnabled || diagnosticRequest(stage)">Reserve chosen diagnostic reviewer</button></div>
  <article *ngFor="let req of diagnostic.requests"><span>{{req.slot}} · {{req.state}} · {{req.failure}}</span><button type="button" *ngIf="req.state==='AUTHORIZED'" (click)="executeDiagnostic(req)" [disabled]="busy || !caps?.realDispatchEnabled || !canExecuteDiagnostic(req)">Execute this diagnostic request only</button><details><summary>Retained diagnostic response and usage</summary><pre>{{req.response | json}}</pre></details></article>
  <details><summary>Separate diagnostic evidence</summary><pre>{{diagnostic.evidence | json}}</pre></details></div></details>
+ <app-optimization-loop [analysisId]="analysisId" [auth]="auth"></app-optimization-loop>
  <div *ngIf="pilot">
  <p>Pilot {{pilot.pilotId}} · {{pilot.policyVersion}} · no A/A+ qualification</p>
  <div *ngIf="pilot.sourceReview as source"><p>Source evidence: {{source.validatedSubjects}} / {{source.requiredSubjects}} · critic gate: {{source.criticGateSatisfied ? 'READY' : 'BLOCKED'}} · conflicts: {{source.conflictSubjects}} · review required: {{source.manualAdjudicationSubjects}}</p><p>Missing reviews: {{source.missingSubjectIds.join(', ') || 'none'}}</p><ul><li *ngFor="let subject of source.subjects">{{subject.neutralId}} · {{subject.promptSha256}} · {{subject.status}} · semantic: {{subject.semanticVerdict || 'NOT_ASSESSED'}}</li></ul></div>

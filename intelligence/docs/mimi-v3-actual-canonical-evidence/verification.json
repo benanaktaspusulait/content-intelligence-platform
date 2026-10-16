@@ -1,0 +1,25 @@
+{
+  "twoExactEditsOnly": true,
+  "settingsAndTimingUnchanged": true,
+  "originalAndV1AndV2Unchanged": true,
+  "originalControlFullProjectionReproduced": true,
+  "v2ControlFullProjectionReproduced": true,
+  "deployedSourcesUnchangedSinceV2Run": true,
+  "runtimeMatchesRepositorySources": {
+    "intelligence/ml-service/app/workflow/review.py": "2fbbeed21bec4cb42f1a3b745bbb95d294d300bf78d4b5c01812c186abc88360",
+    "intelligence/ml-service/app/rules/rule_engine.py": "cabec29ab46ae76f0fb5e4c4c663dcd012667b958cf16a79ea5916c8753bd36b",
+    "intelligence/ml-service/app/parser/prompt_parser.py": "170f1a5de96134a52c652552153469ec32b3810d9fecb479c66e13afcf09f33a",
+    "intelligence/ml-service/app/parser/actor_attempts.py": "be7da958e9c42baed3cf1f875f93fcbf323219ef83c8583b7bf7059b8339383b",
+    "intelligence/ml-service/app/quality/canonical_evidence.py": "cc25896d21eb609fcdfd9f57c026225e203685220b2dca06d33a72998985e4b5",
+    "intelligence/data/rules/RULESET_1.11.yaml": "8222f3208b4ee70d318429d4d72d7eb1cdae56c023f18131fd8651c7954b0a97",
+    "intelligence/ml-service/app/quality/family_weights.py": "2c5376724ca99107f99cf174f59ca47c0434891628ad0e92333a40c659b0149a"
+  },
+  "approvedStoryUnchanged": true,
+  "productionRowsUnchanged": true,
+  "realDispatchDisabled": true,
+  "networkAttempts": [],
+  "newPromptVersion": false,
+  "renderExecuted": false,
+  "v3FileSha256": "4d0af04ed796989096828076ba3cf13d322abc38ce7bac43f6c01ca9ed12c667",
+  "v3BodySha256": "f362df56f7a54ee37002ee9e6f756edd59eb50fe5d0c484ee80416b4d954498a"
+}
