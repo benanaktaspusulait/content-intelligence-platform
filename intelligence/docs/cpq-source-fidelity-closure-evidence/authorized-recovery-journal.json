@@ -1,0 +1,12 @@
+{
+  "pilotId": "770e8477-f352-499e-aabd-b7418435e70b",
+  "requestId": "6f078994-3385-4910-8423-47a46ad9999a",
+  "ownerAuthorizationText": "I approve the separate, append-only recovery of the existing real Q04 machine evidence. Preserve the original FAILED_OR_AMBIGUOUS request and the model's FAIL verdict. Do not make any new AI calls.",
+  "newInference": false,
+  "recoverySubmissionStarted": true,
+  "recoveryEvidenceId": "91dd2c4d-fea0-4a0d-99f0-a0f2685ff67a",
+  "recoveryRecorded": true,
+  "ownerDecisionSubmissionStarted": true,
+  "ownerDecisionEvidenceId": "d1f2a276-8e70-411f-9083-eb5d44b69c22",
+  "ownerDecisionRecorded": true
+}

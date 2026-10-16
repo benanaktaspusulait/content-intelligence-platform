@@ -1,0 +1,101 @@
+{
+  "pilotId": "770e8477-f352-499e-aabd-b7418435e70b",
+  "historicalRequestId": "6f078994-3385-4910-8423-47a46ad9999a",
+  "historicalState": "FAILED_OR_AMBIGUOUS",
+  "recoveredEvidenceId": "91dd2c4d-fea0-4a0d-99f0-a0f2685ff67a",
+  "ownerDecisionEvidenceId": "d1f2a276-8e70-411f-9083-eb5d44b69c22",
+  "recoveryAuthorized": true,
+  "evidenceProvenance": "RECOVERED_MACHINE_EVIDENCE",
+  "executionStatus": "OFFLINE_REVALIDATED",
+  "originalSemanticVerdict": "FAIL",
+  "ownerDecisions": [
+    {
+      "findingId": "A",
+      "ownerInterpretation": "EQUIVALENT_VISUAL_CLEANUP_INTENT_ACCEPTED",
+      "exactReadableLetteringRequired": false,
+      "approvedSourceTextUnchanged": true
+    },
+    {
+      "findingId": "B",
+      "ownerInterpretation": "CONTINUOUS_COVERAGE_CLARIFICATION_REQUIRED",
+      "scope": "Same overwhelmed note-covered state through mirror until sneeze",
+      "newPullingAction": false,
+      "newEscalationEvent": false,
+      "newTiming": false
+    }
+  ],
+  "sourceCoverage": "1/4",
+  "sourceSubjects": [
+    {
+      "neutralId": "Q02",
+      "promptSha256": "218a9b367d6484d2a12bc8f6e02150f8812cdf8874c73b0171c254035a6be749",
+      "status": "NOT_EXECUTED",
+      "hasValidatedEvidence": false
+    },
+    {
+      "neutralId": "Q03",
+      "promptSha256": "2151ed0e2d4b8afa42ea80bad8238a9a639a1be40eea6576390e04704774c746",
+      "status": "NOT_EXECUTED",
+      "hasValidatedEvidence": false
+    },
+    {
+      "neutralId": "Q01",
+      "promptSha256": "90bdda1e9cea8e2e46662821b52a01dc94359df87b7753f2c77a645c77905495",
+      "status": "NOT_EXECUTED",
+      "hasValidatedEvidence": false
+    },
+    {
+      "neutralId": "Q04",
+      "promptSha256": "0fe229774deb4b31a42145bad91cf10c91634ba00da39fa3e9d288b3a2e7bd98",
+      "semanticVerdict": "FAIL",
+      "status": "REVIEW_REQUIRED",
+      "hasValidatedEvidence": true
+    }
+  ],
+  "criticGate": "BLOCKED",
+  "humanReviewCount": 0,
+  "cpqGrading": "INACTIVE",
+  "renderAuthorized": false,
+  "prompt10Unchanged": true,
+  "canonicalScoreUnchanged": true,
+  "historicalRequestsByteEquivalent": true,
+  "workflowEventsUnchanged": true,
+  "rawResponseSha256": "1a25709c8bd53d2f093fcb93d630081f12542591e3f74f460410154c12c75d23",
+  "realProviderCallsThisTask": 0,
+  "realDispatch": "DISABLED",
+  "hostFreeBytes": 1397534720,
+  "finalServices": [
+    {
+      "service": "backend",
+      "status": "running",
+      "health": "healthy",
+      "image": "sha256:328c7cabb56c58b4040aa1b8703cb3899c4918e6bcf985e68dfe080cb059cd31"
+    },
+    {
+      "service": "ml-service",
+      "status": "running",
+      "health": "healthy",
+      "image": "sha256:c65614c1f2841f90520d4c1077d587c0759173e96f177d775444182918d002aa"
+    },
+    {
+      "service": "frontend",
+      "status": "running",
+      "health": "none",
+      "image": "sha256:a795fb833441e29fca32450e6406832ae85213388d0592ce27b85952d1dd5b36"
+    },
+    {
+      "service": "postgres",
+      "status": "running",
+      "health": "healthy",
+      "image": "sha256:25a89970a83255ae96484d709005bb35aa71f7455f941bc1634514f31c5d5c62"
+    },
+    {
+      "service": "creative-render-service",
+      "status": "running",
+      "health": "healthy",
+      "image": "sha256:c6fb3c5bc93011078b13b341a06fbd10f31d1527b8544b8b81729663bf7d30c9"
+    }
+  ],
+  "finalHostFreeBytes": 1394634752,
+  "allReleaseSourceHashesStillMatch": true
+}

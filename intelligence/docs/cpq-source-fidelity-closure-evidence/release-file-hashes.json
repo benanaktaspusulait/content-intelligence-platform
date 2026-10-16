@@ -1,0 +1,7 @@
+{
+  "intelligence/ml-service/app/workflow/owner_machine_pilot.py": "328b1ad4fafef1cf2146f7fa9d9dd5b22ef668b1b87b1b310edd891811665aea",
+  "intelligence/ml-service/app/workflow/api.py": "97dda4f4da49f9d30bcd8a57240b8188efec46ac43dde4af07a805370eac6c87",
+  "intelligence/backend/src/main/java/com/pompomhills/intelligence/workflow/CpqOwnerPilotService.java": "9a3fcc05107bd1affdc925c543e9cc5854c00d7a3546f3119a68a4650e3ee476",
+  "intelligence/backend/src/main/java/com/pompomhills/intelligence/workflow/CpqOwnerPilotController.java": "617db6376bbafd01c2eae36f2c39a296622288ac022de9818fddcf8c6bb437a6",
+  "intelligence/backend/src/main/java/com/pompomhills/intelligence/quality/QualityMlClient.java": "b0eb7ef11357f20fb78b377f7014e0e1ae2625ef85b41c038f649a54cd700696"
+}

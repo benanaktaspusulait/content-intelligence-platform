@@ -1,0 +1,14 @@
+[
+  {
+    "service": "ml-service",
+    "image": "sha256:c65614c1f2841f90520d4c1077d587c0759173e96f177d775444182918d002aa",
+    "health": "healthy",
+    "hostFreeBytes": 1589784576
+  },
+  {
+    "service": "backend",
+    "image": "sha256:328c7cabb56c58b4040aa1b8703cb3899c4918e6bcf985e68dfe080cb059cd31",
+    "health": "healthy",
+    "hostFreeBytes": 1398792192
+  }
+]

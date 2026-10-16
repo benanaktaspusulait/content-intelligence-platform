@@ -447,8 +447,9 @@ async def cpq_pilot_revalidate_source(request: Request) -> dict[str, Any]:
     # Internal signed offline operation, deliberately independent of the paid-dispatch switch.
     import os, hmac, hashlib
     from .owner_machine_pilot import revalidate_saved_source
+    from jsonschema.exceptions import ValidationError
     raw=await request.body();token=os.getenv('WORKFLOW_ADAPTIVE_DISPATCH_TOKEN','')
     if len(token)<32 or not hmac.compare_digest(request.headers.get('X-CPQ-Pilot-Dispatch',''),hmac.new(token.encode(),raw,hashlib.sha256).hexdigest()):
         raise HTTPException(403,'Authenticated offline source revalidation required')
     try:return revalidate_saved_source(json.loads(raw))
-    except (ValueError,KeyError,TypeError) as error:raise HTTPException(422,'Saved source evidence is not eligible for citation recovery') from error
+    except (ValueError,KeyError,TypeError,ValidationError) as error:raise HTTPException(422,'Saved source evidence is not eligible for citation recovery') from error

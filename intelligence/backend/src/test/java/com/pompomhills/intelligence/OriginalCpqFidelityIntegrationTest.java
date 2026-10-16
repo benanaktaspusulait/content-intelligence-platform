@@ -489,4 +489,36 @@ class OriginalCpqFidelityIntegrationTest {
     assertThat(jdbc.queryForObject("SELECT activated FROM cpq_policy_state",Boolean.class)).isFalse();verifyNoInteractions(ml);
   }
 
+  @Test void ownerAuthorizedOfflineRecoveryIsAppendOnlyIdempotentAndKeepsFail() throws Exception {
+    offlineCitationRevalidationCannotPromoteSavedFailedExecutionOrOpenCriticGate();
+    var data=Path.of("../data");if(!Files.exists(data))data=Path.of("intelligence/data");org.springframework.test.util.ReflectionTestUtils.setField(ownerPilot,"dataRoot",data.toAbsolutePath().toString());
+    UUID pilot=UUID.fromString("770e8477-f352-499e-aabd-b7418435e70b"),requestId=UUID.fromString("6f078994-3385-4910-8423-47a46ad9999a");var owner=actor("fixture-owner","OWNER");
+    String before=jdbc.queryForObject("SELECT row_to_json(r)::text FROM cpq_machine_requests r WHERE request_id=?",String.class,requestId);
+    var file=Path.of("../docs/cpq-source-fidelity-closure-evidence/offline-revalidated-response.json");if(!Files.exists(file))file=Path.of("intelligence/docs/cpq-source-fidelity-closure-evidence/offline-revalidated-response.json");
+    Map<String,Object> validated=json.readValue(Files.readString(file),Map.class);
+    when(ml.workflow(eq("cpq-pilot/revalidate-source"),anyMap())).thenReturn(validated);
+    assertThatThrownBy(()->ownerPilot.recoveryPreview(pilot,requestId,actor("other","OWNER"))).hasMessageContaining("owner differs");
+    assertThatThrownBy(()->ownerPilot.recoverSource(pilot,requestId,Map.of(),owner)).hasMessageContaining("Explicit offline");
+    var preview=ownerPilot.recoveryPreview(pilot,requestId,owner);assertThat(preview).containsEntry("eligible",true).containsEntry("persisted",false).containsEntry("newInference",false);
+    assertThat(jdbc.queryForObject("SELECT count(*) FROM cpq_pilot_evidence",Integer.class)).isZero();
+    var authorization=new LinkedHashMap<String,Object>((Map<String,Object>)preview.get("expectedAuthorization"));authorization.put("authorizeOfflineRevalidation",true);authorization.put("confirmNoInferenceNoApproval",true);
+    for(String field:List.of("rawResponseSha256","inputSha256","originalResponseSha256","providerResponseId","citationContractVersion","sourceBinding")){
+      var wrong=new LinkedHashMap<String,Object>(authorization);wrong.put(field,"incorrect");assertThatThrownBy(()->ownerPilot.recoverSource(pilot,requestId,wrong,owner)).hasMessageContaining("authorization binding differs");
+    }
+    var altered=json.readValue(json.writeValueAsString(validated),Map.class);((Map<String,Object>)((List<?>)altered.get("results")).getFirst()).put("uncertainty","Changed model finding is forbidden.");
+    when(ml.workflow(eq("cpq-pilot/revalidate-source"),anyMap())).thenReturn(altered);
+    assertThatThrownBy(()->ownerPilot.recoverSource(pilot,requestId,authorization,owner)).hasMessageContaining("findings must remain unchanged");
+    when(ml.workflow(eq("cpq-pilot/revalidate-source"),anyMap())).thenReturn(validated);
+    var view=ownerPilot.recoverSource(pilot,requestId,authorization,owner);ownerPilot.recoverSource(pilot,requestId,authorization,owner);
+    assertThat(jdbc.queryForObject("SELECT count(*) FROM cpq_pilot_evidence WHERE pilot_id=?",Integer.class,pilot)).isEqualTo(1);
+    assertThat(jdbc.queryForObject("SELECT row_to_json(r)::text FROM cpq_machine_requests r WHERE request_id=?",String.class,requestId)).isEqualTo(before);
+    var aggregate=(Map<String,Object>)view.get("sourceReview");assertThat(aggregate).containsEntry("validatedSubjects",1).containsEntry("requiredSubjects",4).containsEntry("manualAdjudicationSubjects",1).containsEntry("criticGateSatisfied",false).containsEntry("complete",false);
+    var subjects=(List<Map<String,Object>>)aggregate.get("subjects");assertThat(subjects.stream().filter(x->Boolean.TRUE.equals(x.get("hasValidatedEvidence"))).findFirst().orElseThrow()).containsEntry("neutralId","Q04").containsEntry("semanticVerdict","FAIL").containsEntry("status","REVIEW_REQUIRED");
+    assertThat(subjects.stream().filter(x->"NOT_EXECUTED".equals(x.get("status")))).hasSize(3);
+    var evidence=((List<Map<String,Object>>)view.get("evidence")).getFirst();assertThat(evidence).containsKey("evidenceId");assertThat((Map<String,Object>)evidence.get("payload")).containsEntry("evidenceProvenance","RECOVERED_MACHINE_EVIDENCE");
+    assertThat(view).containsEntry("officialGrading","INACTIVE").containsEntry("humanReviewCount",0).containsEntry("renderAuthorized",false);
+    assertThat(json.writeValueAsString(view.get("snapshot"))).contains("88.40625");assertThat(jdbc.queryForObject("SELECT activated FROM cpq_policy_state",Boolean.class)).isFalse();
+    verify(ml,never()).workflow(eq("cpq-pilot/execute"),anyMap());
+  }
+
 }
