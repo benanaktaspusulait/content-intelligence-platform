@@ -1,0 +1,164 @@
+{
+  "reviewId": "3e07fc77-7d51-4e18-8dfe-19bc292add23",
+  "method": "Offline exact-text assertions and separately labelled supervisor claim audit; no provider call or evidence promotion",
+  "twoExactHashesVerified": true,
+  "oppositePresentationOrderVerified": true,
+  "sharedSettingsVerified": true,
+  "literalQuotesChecked": 12,
+  "literalQuotes": [
+    {
+      "dimension": "ENDING_REPLAY",
+      "label": "A",
+      "quote": "End with Mimi relieved and the cabinet still visibly messy.",
+      "literalMatch": true
+    },
+    {
+      "dimension": "ENDING_REPLAY",
+      "label": "B",
+      "quote": "Mimi breathes a sigh of relief but the cabinet remains messy",
+      "literalMatch": true
+    },
+    {
+      "dimension": "CAUSAL_PROGRESSION",
+      "label": "A",
+      "quote": "Mimi tries once to peel the stuck note away with her other hand. The note splits into two, with one note sticking to each hand.",
+      "literalMatch": true
+    },
+    {
+      "dimension": "CAUSAL_PROGRESSION",
+      "label": "B",
+      "quote": "Mimi tries to peel the stuck note away with her other hand; the note splits into two [medium shot of Mimi struggling] Mimi pulls at the note -> one note sticks to each hand",
+      "literalMatch": true
+    },
+    {
+      "dimension": "VISUAL_STORYTELLING",
+      "label": "A",
+      "quote": "The notes progressively cover Mimi's arms, legs, and parts of her face, while keeping her eyes and mouth readable. Mimi becomes visibly overwhelmed",
+      "literalMatch": true
+    },
+    {
+      "dimension": "VISUAL_STORYTELLING",
+      "label": "B",
+      "quote": "notes multiply from two to four to eight as she pulls, progressively covering her arms, legs and face -> Mimi is overwhelmed by notes",
+      "literalMatch": true
+    },
+    {
+      "dimension": "PRODUCTION_EXECUTABILITY",
+      "label": "A",
+      "quote": "Keep staging simple and spatially consistent; reframe only when needed to keep the action clear.",
+      "literalMatch": true
+    },
+    {
+      "dimension": "PRODUCTION_EXECUTABILITY",
+      "label": "B",
+      "quote": "Aspect ratio: 9:16. Target generator: SEEDANCE_2_0_MINI. Content profile: AUTO.",
+      "literalMatch": true
+    },
+    {
+      "dimension": "DISTINCTIVE_CREATIVE_VALUE",
+      "label": "A",
+      "quote": "No dark themes, violence, injury, or choking imagery.",
+      "literalMatch": true
+    },
+    {
+      "dimension": "DISTINCTIVE_CREATIVE_VALUE",
+      "label": "B",
+      "quote": "No dark themes or violence.",
+      "literalMatch": true
+    },
+    {
+      "dimension": "SCROLL_STOP_VISUAL_PROMISE",
+      "label": "A",
+      "quote": "Bright and colorful animation with a playful tone. Make Mimi, the sticky note, and the toy cabinet easy to read together at the opening.",
+      "literalMatch": true
+    },
+    {
+      "dimension": "SCROLL_STOP_VISUAL_PROMISE",
+      "label": "B",
+      "quote": "Bright and colorful animation with a playful tone.",
+      "literalMatch": true
+    }
+  ],
+  "sharedContentChecks": {
+    "A": {
+      "timeWindows": [
+        "0-2",
+        "2-5",
+        "5-10",
+        "10-12",
+        "12-15"
+      ],
+      "explicitTwoFourEight": true,
+      "sneezeCabinetReliefMessyEnding": true
+    },
+    "B": {
+      "timeWindows": [
+        "0-2",
+        "2-5",
+        "5-10",
+        "10-12",
+        "12-15"
+      ],
+      "explicitTwoFourEight": true,
+      "sneezeCabinetReliefMessyEnding": true
+    }
+  },
+  "warnings": [
+    {
+      "dimension": "SCROLL_STOP_VISUAL_PROMISE",
+      "claim": "B lacks a concrete opening image",
+      "assessment": "FALSE_ABSENCE_CLAIM",
+      "counterEvidence": "0-2s: Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger [close-up on Mimi's hand]",
+      "limit": "A adds explicit simultaneous composition; B already specifies an opening image."
+    },
+    {
+      "dimension": "PRODUCTION_EXECUTABILITY",
+      "claim": "B_BETTER because production parameters are embedded",
+      "assessment": "INAPPLICABLE_COMPARISON_CONTEXT",
+      "counterEvidence": {
+        "mode": "image2video",
+        "generator": "SEEDANCE_2_0_MINI",
+        "resolution": "480p",
+        "aspectRatio": "9:16",
+        "contentProfile": "ABSURD_PHYSICS",
+        "durationSeconds": 15
+      },
+      "limit": "Both received identical authoritative external settings; standalone scenario is hypothetical. AUTO is historical, not current profile."
+    },
+    {
+      "dimension": "overall.blockingRegressions",
+      "claim": "Neither prompt explicitly prevents extra doublings beyond eight",
+      "assessment": "FALSE_AND_INTERNALLY_CONTRADICTORY",
+      "counterEvidence": "do not add another attempt or another doubling beyond eight",
+      "limit": "A explicitly prohibits this; the same reviewer parenthesis acknowledges it."
+    },
+    {
+      "dimension": "CAUSAL_PROGRESSION",
+      "claim": "One attempt plus later frozen states gives clearer progression",
+      "assessment": "OVERSTATED_AND_AMBIGUITY_MISSED",
+      "counterEvidence": "Continuing the same note-pulling action, show the notes doubling clearly from two to four to eight.",
+      "limit": "Both contain doubling; no-additional-attempt can suppress required continued pulls. This unresolved risk is not an established clarity gain."
+    },
+    {
+      "dimension": "ENDING_REPLAY",
+      "claim": "More imperative wording creates loop-friendly ending",
+      "assessment": "UNSUPPORTED_MATERIAL_ADVANTAGE",
+      "counterEvidence": "FINAL CUT\nMimi is relieved but the cabinet remains visibly messy.",
+      "limit": "Both explicitly specify same ending; no rendered loop or replay evidence."
+    }
+  ],
+  "rawProviderOutputUnmodified": true,
+  "acceptedReviewCount": 1,
+  "pairedConclusion": "INSUFFICIENT_EVIDENCE",
+  "factualReliability": "ISSUES_FOUND",
+  "openAiFailure": {
+    "state": "FAILED_OR_AMBIGUOUS",
+    "failure": "Diagnostic dispatch or response failed; inspect retained response, no retry",
+    "responseEmpty": true,
+    "databaseResponse": null,
+    "apiResponseProjection": {},
+    "providerDispatchConfirmation": "UNKNOWN",
+    "actualUsageAndCost": "UNKNOWN"
+  },
+  "nextRevisionProposal": "Replace only \"do not add another attempt or another doubling beyond eight\" with \"stop pulling once the existing two-to-four-to-eight escalation is complete; add no further doubling beyond eight\". Proposal only; evaluated draft unchanged."
+}

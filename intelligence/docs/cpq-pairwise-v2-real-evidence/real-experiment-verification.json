@@ -1,0 +1,236 @@
+{
+  "reviewId": "3e07fc77-7d51-4e18-8dfe-19bc292add23",
+  "purpose": "DRAFT_COMPARATIVE_REVIEW_V1",
+  "ownerAuthorizationReceived": true,
+  "providerExecutionsSubmitted": 2,
+  "acceptedMachineReviews": 1,
+  "comparativeMachineEvidence": "PARTIAL",
+  "knownCalculatedCostUsd": 0.01202388,
+  "costAccountingComplete": false,
+  "authorizedCombinedCeilingUsd": 0.2,
+  "findings": [
+    {
+      "slot": "CRITIC_A",
+      "requestId": "69f8fded-db8f-489d-8f21-8af1609161c4",
+      "state": "COMPLETED",
+      "provider": "deepseek",
+      "model": "deepseek-v4-pro",
+      "applicationValidation": "ACCEPTED_DIAGNOSTIC_ONLY",
+      "providerMetadata": {
+        "model": "deepseek-v4-pro",
+        "provider": "deepseek",
+        "apiStatus": "COMPLETED",
+        "requestId": "fa785961-4da2-4fc3-b8fd-661848631383",
+        "finishReason": "stop"
+      },
+      "usage": {
+        "total_tokens": 5071,
+        "prompt_tokens": 3052,
+        "completion_tokens": 2019,
+        "prompt_tokens_details": {
+          "text_tokens": null,
+          "audio_tokens": null,
+          "image_tokens": null,
+          "cached_tokens": 0,
+          "cache_write_tokens": null
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 3052,
+        "completion_tokens_details": null
+      },
+      "costUsd": 0.01202388,
+      "costBasis": "CALCULATED_FROM_REPORTED_USAGE_AND_CONFIGURED_RATES",
+      "failureCategory": null,
+      "rawResponseSha256": "ab582957d2670e9eb167ef5234dd261538440d8aef5c5382c234d9fa68b9e06f",
+      "comparison": {
+        "overall": {
+          "judgment": "A_BETTER",
+          "rationale": "Prompt A is stronger overall due to more precise and directive language for visual storytelling, causal constraints, and ending replay. It explicitly handles facial readability, limits escalation, and commands the final frame. Prompt B is slightly more executable as a standalone due to embedded production settings, but under shared external production settings that advantage is neutralized. Both prompts share the same creative premise, so distinctiveness is equivalent. A's guardrails reduce generation risk, making it a safer recommendation.",
+          "uncertainty": "Medium: Text analysis strongly favors A, but without rendered outputs, differences in final visual quality remain uncertain. The comparative edge is based on risk mitigation rather than proven superiority.",
+          "unresolvedIssue": "The actual rendered performance of the doubling effect (two to four to eight notes) remains unverified from text alone, and both prompts may still produce non-sequential or glitchy multiplication in SEEDANCE_2_0_MINI.",
+          "blockingRegressions": [
+            "Neither prompt explicitly prevents the generator from adding extra note doublings beyond eight in the 5-10s window (although A tries with 'do not add another doubling', only A has this, B lacks it).",
+            "B's 'Content profile: AUTO' could conflict with shared external ABSURD_PHYSICS if embedded settings are erroneously used.",
+            "Both prompts rely on the sneeze to resolve the chaos; the timing and visual clarity of notes flying to the cabinet may be hard to achieve at 480p."
+          ],
+          "strongestDifference": "Prompt A's explicit preservation of Mimi's eyes and mouth readability during note coverage is the most defensible difference, as it directly protects the emotional storytelling in key moments (scream, overwhelmed reaction) that B does not mention."
+        },
+        "dimensions": {
+          "ENDING_REPLAY": {
+            "reason": "A explicitly instructs the ending visual ('End with...') and emphasizes the cabinet remains messy, creating a clear loop-friendly final frame that invites replay (the problem persists). B includes the same details in the timed shot plan and final cut, but A's final line is more directive for the generator.",
+            "evidence": [
+              {
+                "label": "A",
+                "quote": "End with Mimi relieved and the cabinet still visibly messy."
+              },
+              {
+                "label": "B",
+                "quote": "Mimi breathes a sigh of relief but the cabinet remains messy"
+              }
+            ],
+            "judgment": "A_BETTER",
+            "uncertainty": "Low to medium; both likely produce similar endings, but A's phrasing is more imperative.",
+            "weaknessesOrRisks": [
+              "B's final cut is clear, but since the same information is repeated in 12-15s and FINAL CUT, it may not be as strongly enforced as A's explicit 'End with' clause."
+            ],
+            "targetedSuggestion": "B could strengthen the ending by adding 'End frame: Mimi relieved, cabinet messy' as an imperative.",
+            "absentEvidenceExplanation": ""
+          },
+          "CAUSAL_PROGRESSION": {
+            "reason": "A's progression locks the number of attempts and doublings (one attempt, progression to eight), with later phases frozen. B's wording describes the same sequence but includes an arrow notation that might imply a single action '->' without clarity on repetition limits. A's explicit constraints reduce generator drift.",
+            "evidence": [
+              {
+                "label": "A",
+                "quote": "Mimi tries once to peel the stuck note away with her other hand. The note splits into two, with one note sticking to each hand."
+              },
+              {
+                "label": "B",
+                "quote": "Mimi tries to peel the stuck note away with her other hand; the note splits into two [medium shot of Mimi struggling] Mimi pulls at the note -> one note sticks to each hand"
+              }
+            ],
+            "judgment": "A_BETTER",
+            "uncertainty": "Low; A's specificity provides a clearer causal chain for the generator.",
+            "weaknessesOrRisks": [
+              "B could allow the model to add extra pulls or notes beyond eight because the limit is not as strongly enforced as in A."
+            ],
+            "targetedSuggestion": "B could add 'do not add another attempt or doubling beyond eight' to prevent escalation during generation.",
+            "absentEvidenceExplanation": ""
+          },
+          "VISUAL_STORYTELLING": {
+            "reason": "A emphasizes keeping eyes and mouth readable for expressive storytelling and specifies Mimi's emotional state visually. B states 'face' covering but does not protect facial readability, which could result in an illegible character reaction.",
+            "evidence": [
+              {
+                "label": "A",
+                "quote": "The notes progressively cover Mimi's arms, legs, and parts of her face, while keeping her eyes and mouth readable. Mimi becomes visibly overwhelmed"
+              },
+              {
+                "label": "B",
+                "quote": "notes multiply from two to four to eight as she pulls, progressively covering her arms, legs and face -> Mimi is overwhelmed by notes"
+              }
+            ],
+            "judgment": "A_BETTER",
+            "uncertainty": "Low; A's guardrails likely help preserve narrative clarity.",
+            "weaknessesOrRisks": [
+              "B may generate a fully covered face, hiding the scream and the overwhelmed expression in the mirror scene."
+            ],
+            "targetedSuggestion": "B could add 'ensure eyes and mouth remain visible' to maintain character expressiveness.",
+            "absentEvidenceExplanation": ""
+          },
+          "PRODUCTION_EXECUTABILITY": {
+            "reason": "B explicitly includes technical production settings (aspect ratio, generator, content profile) as part of the prompt, while A omits them. In a production pipeline where settings may not be externally injected, B reduces ambiguity and ensures correct generation parameters.",
+            "evidence": [
+              {
+                "label": "A",
+                "quote": "Keep staging simple and spatially consistent; reframe only when needed to keep the action clear."
+              },
+              {
+                "label": "B",
+                "quote": "Aspect ratio: 9:16. Target generator: SEEDANCE_2_0_MINI. Content profile: AUTO."
+              }
+            ],
+            "judgment": "B_BETTER",
+            "uncertainty": "Low; B is more executable as a standalone prompt, but under shared external settings both may be equivalent.",
+            "weaknessesOrRisks": [
+              "A does not specify aspect ratio, generator, or profile, relying on external settings. If those settings are not applied, output may be incorrect.",
+              "B's 'Content profile: AUTO' conflicts with the shared production context's ABSURD_PHYSICS, so embedded metadata should be ignored, but B still acknowledges the parameter explicitly."
+            ],
+            "targetedSuggestion": "A could append 'Aspect ratio: 9:16, generator: SEEDANCE_2_0_MINI' if the prompt is used standalone.",
+            "absentEvidenceExplanation": ""
+          },
+          "DISTINCTIVE_CREATIVE_VALUE": {
+            "reason": "Both prompts share the core creative concept: a bunny getting overwhelmed by multiplying sticky notes and sneezing them onto a cabinet. The only creative difference is A's additional safety guardrails (no injury/choking), which do not add distinctive creative value.",
+            "evidence": [
+              {
+                "label": "A",
+                "quote": "No dark themes, violence, injury, or choking imagery."
+              },
+              {
+                "label": "B",
+                "quote": "No dark themes or violence."
+              }
+            ],
+            "judgment": "EQUIVALENT",
+            "uncertainty": "Low; the creative core is identical.",
+            "weaknessesOrRisks": [
+              "Neither prompt introduces a novel twist beyond the established gag; distinctiveness is limited by the common concept."
+            ],
+            "targetedSuggestion": "To increase distinctiveness, either prompt could add a unique visual motif (e.g., a specific color pattern for the notes) or a character quirk.",
+            "absentEvidenceExplanation": ""
+          },
+          "SCROLL_STOP_VISUAL_PROMISE": {
+            "reason": "A explicitly requires a clear, readable opening composition showing Mimi, the note, and the cabinet together, which is a strong scroll-stopping visual promise. B only states a general style and tone without specifying the opening visual.",
+            "evidence": [
+              {
+                "label": "A",
+                "quote": "Bright and colorful animation with a playful tone. Make Mimi, the sticky note, and the toy cabinet easy to read together at the opening."
+              },
+              {
+                "label": "B",
+                "quote": "Bright and colorful animation with a playful tone."
+              }
+            ],
+            "judgment": "A_BETTER",
+            "uncertainty": "Low to medium; actual visual appeal depends on rendering, but A's explicit composition requirement likely improves the initial hook.",
+            "weaknessesOrRisks": [
+              "B lacks a concrete opening image; the first shot description is plain and may not grab attention in a social feed."
+            ],
+            "targetedSuggestion": "B could add a specific opening composition instruction, such as 'Show Mimi, the note, and the cabinet in a single clear frame to establish the problem instantly.'",
+            "absentEvidenceExplanation": ""
+          }
+        }
+      }
+    },
+    {
+      "slot": "CRITIC_B",
+      "requestId": "775766fa-71d1-4691-8c7f-0c265bc531f7",
+      "state": "FAILED_OR_AMBIGUOUS",
+      "provider": "openai",
+      "model": "gpt-6.1-sol",
+      "applicationValidation": "REJECTED_OR_AMBIGUOUS",
+      "providerMetadata": null,
+      "usage": null,
+      "costUsd": null,
+      "costBasis": null,
+      "failureCategory": null,
+      "rawResponseSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "comparison": null
+    }
+  ],
+  "historicalRecordsUnchanged": true,
+  "comparedPromptsUnchanged": true,
+  "originalCanonical": "88.40625/B_UNCHANGED",
+  "originalSourceVerdict": "FAIL",
+  "draftSourceFidelity": "UNKNOWN",
+  "productionCriticGate": "BLOCKED",
+  "officialCpqGrading": "INACTIVE",
+  "renderAuthorized": false,
+  "realDispatch": "DISABLED",
+  "services": [
+    {
+      "service": "backend",
+      "image": "sha256:c11f6a91a468b9ab1b32a093756b83950d52bb2eb1e5fdc52baac4e8c8d52652",
+      "health": "healthy"
+    },
+    {
+      "service": "ml-service",
+      "image": "sha256:38e82259ab3a862aadbad820003e192cee40ab7654c8dccf80f60ad263be373f",
+      "health": "healthy"
+    },
+    {
+      "service": "frontend",
+      "image": "sha256:dd20d686fddb9e05222e10332dc993b252a71db5220134c00e6a4ab3d913e091",
+      "health": "none"
+    },
+    {
+      "service": "postgres",
+      "image": "sha256:25a89970a83255ae96484d709005bb35aa71f7455f941bc1634514f31c5d5c62",
+      "health": "healthy"
+    },
+    {
+      "service": "creative-render-service",
+      "image": "sha256:c6fb3c5bc93011078b13b341a06fbd10f31d1527b8544b8b81729663bf7d30c9",
+      "health": "healthy"
+    }
+  ],
+  "hostFreeBytes": 4362686464
+}

@@ -1,5 +1,119 @@
 # Mimi original versus development draft — diagnostic creative comparison
 
+## PAIRWISE_CREATIVE_V2_REAL_EXECUTION
+
+**Actual result: PARTIAL_EVIDENCE; overall conclusion INSUFFICIENT_EVIDENCE.** One genuine DeepSeek V2 review completed and was admitted as diagnostic MACHINE_REVIEW. The one OpenAI execution submission ended FAILED_OR_AMBIGUOUS with an empty retained response; no OpenAI comparative evidence, usage or cost was received. No retry, fallback, old-request execution or third inference was performed. DeepSeek alone prefers the draft, but its admitted response contains factual/contextual errors and does not establish a reliable paired winner. No prompt is approved.
+
+Executed 2026-10-16 after a fresh explicit owner YES for this V2 experiment, two requests maximum, DeepSeek $0.06 / OpenAI $0.14, combined $0.20. The earlier V1 authorization was not reused. This section is the latest result; all later V1 sections are preserved historical evidence.
+
+### Immutable scope and real execution
+
+| Binding | Exact value |
+|---|---|
+| New diagnostic review | `3e07fc77-7d51-4e18-8dfe-19bc292add23` |
+| New DeepSeek request | `69f8fded-db8f-489d-8f21-8af1609161c4` |
+| New OpenAI request | `775766fa-71d1-4691-8c7f-0c265bc531f7` |
+| Instruction / schema | `PAIRWISE_CREATIVE_INSTRUCTIONS_V2` / `PAIRWISE_CREATIVE_RESPONSE_V1` |
+| Purpose | `DRAFT_COMPARATIVE_REVIEW_V1`, DIAGNOSTIC_ONLY |
+| Scope SHA-256 | `269222e51b2de5ff3335863b6be24d8e5f77580c32ba5ef30329098f4e8d10b1` |
+| Original SHA-256 | `0fe229774deb4b31a42145bad91cf10c91634ba00da39fa3e9d288b3a2e7bd98` |
+| Development draft body SHA-256 | `82a2d896798076cb3fd3cf88482c5709167d88034a8b6702149f000bc690abef` |
+| Approved story SHA-256 | `df653dbcaf16bfdbceb87baa23688d70d739c34941d0075e30e96b181e1bf32b` |
+| Original binding | Content 10 / immutable Prompt 10 version 1 / analysis `f0d36feb-ee0f-4da8-ae21-2071a3ddea18` |
+
+Read-only preflight passed: healthy services, V67, owner authentication, approximately 5.07 GiB host headroom, dispatch initially false, deployed V2 instructions, exact saved original/draft and blind packet, no previous V2 record or in-flight dispatch, historical V1 unchanged. Both models received the same complete texts and authoritative ABSURD_PHYSICS / SEEDANCE_2_0_MINI / 15s / image2video / 480p / 9:16 settings. A = draft and B = original in supervisor mapping; packet order was A,B for DeepSeek and B,A for OpenAI. No earlier response, intended winner, owner meaning decisions, canonical score or original source FAIL was disclosed. Labels stayed stable while presentation order reversed. Wording can still reveal provenance; perfect blindness is not claimed.
+
+Conservative request estimates: 13,944 input-token upper bound each; maximum calculated DeepSeek $0.04216608 and OpenAI $0.11486, combined $0.15702608, below their authorized caps. The official authenticated create/authorize/execute APIs and durable idempotency/CAS were used. Both submissions used fresh IDs; the previous failed DeepSeek and old authorized OpenAI IDs were not executed or changed.
+
+| Critic | Configuration / observed outcome | Reported usage | Calculated cost / cap |
+|---|---|---|---|
+| A | DeepSeek `deepseek-v4-pro`, reasoning none, max_tokens 6,000, JSON object; actual provider model confirmed; finish `stop`; COMPLETED | Input 3,052; output 2,019; total 5,071; cache hits 0 | **$0.01202388 / $0.06** |
+| B | OpenAI `gpt-6.1-sol` requested, reasoning low, max_completion_tokens 8,000, strict JSON Schema; FAILED_OR_AMBIGUOUS; actual provider receipt/model unconfirmed | **UNKNOWN**, not zero | **UNKNOWN / $0.14** |
+
+DeepSeek provider request ID: `fa785961-4da2-4fc3-b8fd-661848631383`; accepted evidence ID: `cdf19f6f-2044-4143-90c4-8aed0aceaa35`. Its configured-rate calculation is `(3052 × 1.32 + 2019 × 3.96) / 1,000,000 = $0.01202388`; this is reported-usage accounting, not an observed invoice. Known combined calculated cost is $0.01202388, **not a complete total**. OpenAI's charge cannot be determined from an empty response. Its $0.14 reservation is not actual usage; it remains potentially chargeable and is not reused. The authorization and application caps remain $0.20 total; final billed total is unverified.
+
+### Exact failure and stopping boundary
+
+The second official application execution was submitted at `2026-10-16T14:44:08.282528+00:00`; its durable failure completed at `14:50:26.232179+00:00`. Exact saved failure:
+
+`Diagnostic dispatch or response failed; inspect retained response, no retry`
+
+The durable database response is `null`; the API projects it as `{}`: no raw model output, provider request ID, finish reason, token usage, cost or comparative judgment. This is **not demonstrated JSON/citation rejection** and is not proof that OpenAI received no call. In the existing backend, the dispatch/response catch stores this generic failure without the underlying exception detail; response persistence occurs only after the ML call returns. Current service logs checked after the required configuration restart do not retain the original failing request detail. A timeout, model unavailability, upstream status or transport failure cannot be distinguished from the retained evidence. No specific hidden cause is invented.
+
+The approved single submission has been consumed; ambiguous dispatch is never retried. Dispatch was closed in the execution script's finally path. Both backend and ML running environments were independently checked with `CPQ_PILOT_REAL_ENABLED=false`, and authenticated capabilities reported both `realEnabled=false` and `realDispatchEnabled=false`. The same deployed image IDs were retained; no build, cleanup, code patch or further engineering cycle was started.
+
+### Six-dimensional findings: accepted DeepSeek evidence, no OpenAI judgment
+
+Every DeepSeek dimension supplies exact excerpts attributed to both prompts: all **12 literal quotes match** their saved bodies. Contract admission does not certify factual reasoning. OpenAI is FAILED with no judgment in every row; reviewer agreement/disagreement is therefore NOT_ASSESSED.
+
+| Dimension | DeepSeek raw judgment | Exact A / B evidence | Separate factual and production assessment |
+|---|---|---|---|
+| SCROLL_STOP_VISUAL_PROMISE | A_BETTER | A: “Make Mimi, the sticky note, and the toy cabinet easy to read together at the opening.” B: “Bright and colorful animation with a playful tone.” | Simultaneous spatial composition is a real added instruction and plausible clarity improvement. However, the critique's claim that B lacks a concrete opening is false: B explicitly describes cabinet/finger contact and a hand close-up in 0–2s. No observed hook/retention advantage. At 480p a wider composition may make the fingertip smaller. |
+| CAUSAL_PROGRESSION | A_BETTER | A: “Mimi tries once to peel the stuck note away with her other hand.” B: “Mimi tries to peel the stuck note away with her other hand” | Same event, not a new causal improvement. Both explicitly progress two→four→eight. A adds limits and freezes later coverage; these can reduce drift, but “do not add another attempt” may also suppress required repeated pulls. DeepSeek endorses that restriction without resolving its ambiguity. Exact hand contact and discrete counts remain execution risks. |
+| VISUAL_STORYTELLING | A_BETTER | A: “while keeping her eyes and mouth readable.” B: “progressively covering her arms, legs and face” | Strongest defensible instruction difference: preserve expression while accumulating notes. Source support for note coverage is retained, but actual facial readability and mirror consistency are unverified. This is production clarity, not a new story event or source PASS. |
+| PRODUCTION_EXECUTABILITY | B_BETTER | A: “Keep staging simple and spatially consistent; reframe only when needed to keep the action clear.” B: “Aspect ratio: 9:16. Target generator: SEEDANCE_2_0_MINI. Content profile: AUTO.” | Preference uses an inapplicable standalone-prompt scenario. Both have identical authoritative external settings; obsolete AUTO cannot improve this comparison. DeepSeek acknowledges this context in its overall rationale but still gives B the dimension. No supported production advantage from metadata. |
+| ENDING_REPLAY | A_BETTER | A: “End with Mimi relieved and the cabinet still visibly messy.” B: “Mimi breathes a sigh of relief but the cabinet remains messy” | Both specify the same payoff; B also has an explicit FINAL CUT. Imperative wording is a wording/clarity hypothesis, not a material ending change. “Loop-friendly” and replay gains are unsupported. Three seconds for sneeze, note transfer, relief and final cabinet remains a shared risk. |
+| DISTINCTIVE_CREATIVE_VALUE | EQUIVALENT | A: “No dark themes, violence, injury, or choking imagery.” B: “No dark themes or violence.” | Same protected bunny/sticky-note mechanism and payoff. Safety guardrails add no independent gag. Its suggested color motif/character quirk is not adopted; inventing novelty is not required by this source-preserving task. |
+
+DeepSeek raw overall: **A_BETTER**, strongest difference = eyes/mouth readability, unresolved issue = unverified doubling performance. This is one machine opinion. No machine consensus, averaged preference or official quality grade is inferred.
+
+### Factual audit, substantive differences and unresolved risks
+
+Deterministic exact-input checks passed: both fingerprints; opposite packet order; identical shared settings; 12/12 literal quotations; identical windows **0–2, 2–5, 5–10, 10–12, 12–15**; explicit **two to four to eight** in each; shared sneeze→cabinet→relief→messy ending. This is a narrow content check, **not full independent source-fidelity certification**.
+
+Warnings preserved alongside the unchanged raw review:
+
+- **False absence:** “B lacks a concrete opening image” ignores B's actual opening shot. A adds simultaneous relational staging, not the opening event itself.
+- **False/internally contradictory blocker:** “Neither prompt explicitly prevents … extra note doublings beyond eight” is contradicted by A's “do not add another … doubling beyond eight”; the review itself acknowledges A's restriction in the same parenthesis.
+- **Context error:** embedded parameters do not make B better under the shared authoritative external settings. Historical AUTO remains verbatim, never authoritative.
+- **Overstated causal claim:** one peeling attempt in 2–5s and the later 2→4→8 pulls are not interchangeable. The draft's restriction has unresolved scope; no higher confidence in execution follows merely from more prohibitions.
+- **Unsupported ending advantage:** neither imperative phrasing nor cabinet mess establishes improved replay. Both already specify the same final state.
+
+Supported differences are: explicit opening relationship composition (creative staging hypothesis); protected facial readability and spatial consistency (production-instruction clarity); cleanup intention without required lettering and persistent overwhelmed note coverage through mirror-to-sneeze (source interpretation/continuity clarification). None demonstrates a new physical rule, new escalation, improved timing or new payoff. Both carry counting/contact/mirror/rapid-ending risks and lack verified Seedance output and a bound approved character reference. All source gates and prior owner meaning evidence remain separate.
+
+**Conclusion: INSUFFICIENT_EVIDENCE / PARTIAL_EVIDENCE.** A has defensible production-instruction additions worth retaining for future revision, especially facial readability. This experiment does not establish that the unchanged draft is preferable overall: only one review completed, its reasoning has identified issues, and the pulling restriction remains ambiguous. Original stays authoritative; draft remains DRAFT_ONLY. No selection, approval or prompt-version creation was performed.
+
+### One proposed next creative change — not applied
+
+In the existing 5–10s beat only, replace:
+
+> do not add another attempt or another doubling beyond eight.
+
+with:
+
+> stop pulling once the existing two-to-four-to-eight escalation is complete; add no further doubling beyond eight.
+
+This preserves the existing continuing pulls, physical rule, five time windows, event order and eight-note limit, while removing a prohibition that may prevent the required progression. The 10–12s no-pulling instruction remains in place. It addresses the actual critique's emphasis on escalation control without accepting its ambiguous recommendation verbatim. No new attempt, character, prop or duration is proposed. This is an unverified next-revision proposal, not an edit to either evaluated text and not claimed source PASS or successful execution.
+
+### Integrity, verification and evidence
+
+The owner-authenticated final view contains exactly one accepted diagnostic MACHINE_REVIEW and zero human reviews. Full historical pilot/request/evidence row digests excluding this new review match the pre-experiment baseline, including the failed V1 DeepSeek row, unexecuted old OpenAI authorization and all recovered source/OWNER_DECISION history. Workflow-event count/digest and protected compared artifacts also match. Original canonical result remains **88.40625/B**; no candidate canonical score was calculated here. The original source review is still FAIL, coverage 1/4, production critic gate blocked; draft fidelity UNKNOWN. CPQ policy activation is false and render authorization is false.
+
+Backend, ML, frontend, PostgreSQL and creative-render-service were running after dispatch closure; services with health probes were healthy. Final host space was approximately 4.06 GiB. No regression suite/build was run for this execution-only task; focused verification was real API execution/state collection plus deterministic comparison and history/flag assertions. No application code, prompt, story, rule, frontend or policy was changed. New files are experiment evidence; this report is the only existing artifact updated.
+
+Evidence in `cpq-pairwise-v2-real-evidence/`: `live-preflight.json`, `preflight-summary.json`, `pre-experiment-integrity.json`, `real-authorized-record.json`, `real-experiment-journal.json`, `real-durable-requests.json`, `real-final-diagnostic-view.json`, `real-experiment-verification.json`, `CRITIC_A-raw-visible-response.txt`, `factual-comparison-audit.json`, `final-dispatch-verification.json` and dispatch configuration logs. `CRITIC_B-raw-visible-response.txt` is empty because no raw response was retained; it is not a successful response artifact. Raw DeepSeek content and original failed request are unchanged. No historical recovery/promotion was attempted.
+
+```text
+PAIRWISE_V2: PARTIAL
+CRITIC_A: COMPLETED
+CRITIC_B: FAILED
+COMPARATIVE_EVIDENCE: PARTIAL
+PREFERENCE: INSUFFICIENT
+FACTUAL_RELIABILITY: ISSUES_FOUND
+CANONICAL_ORIGINAL: 88.40625/B_UNCHANGED
+CPQ_GRADING: INACTIVE
+SOURCE_GATE: UNCHANGED
+RENDER_AUTHORIZED: false
+REAL_DISPATCH: DISABLED
+```
+
+The authorized experiment is concluded and stopped. No second submission, additional paid inference, approval, new immutable prompt version, source override, grading activation, image/video generation, publishing, commit or push follows this report.
+
+## Historical V1 execution and implementation record
+
+The following sections describe V1 and its subsequent deployed instruction correction. Their earlier statuses are preserved as history and superseded by the V2 result above.
+
+
 **Is the draft preferable to the original on the available text evidence? NOT_EVALUATED as an admitted paired machine comparison.** The owner authorized the bounded experiment. DeepSeek returned a complete structured response favoring the draft, but application evidence admission rejected it for two missing opposing-side citations/explanations. OpenAI was **NOT_EXECUTED**, as required by stop-on-first-failure authorization. No comparative machine evidence was admitted, and no verified improvement or grade is claimed. The raw DeepSeek conclusions remain retained separately and are disclosed below, with their limitations.
 
 Date: 2026-10-16. This report supersedes the earlier preparation-only blocker description. The two compared texts, existing blind packet and supervisor mapping are unchanged.
