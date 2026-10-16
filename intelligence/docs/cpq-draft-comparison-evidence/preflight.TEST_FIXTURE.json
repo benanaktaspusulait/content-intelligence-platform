@@ -1,0 +1,32 @@
+{
+  "CRITIC_A": {
+    "provider": "deepseek",
+    "model": "deepseek-v4-pro",
+    "reasoningEffort": "none",
+    "maxOutputTokens": 6000,
+    "inputTokenUpperBound": 13944,
+    "maxCalculatedCostUsd": 0.04216608,
+    "inputUsdPerMillion": 1.32,
+    "outputUsdPerMillion": 3.96,
+    "responseMode": "json_object",
+    "automaticRetries": false,
+    "liveAvailability": "UNVERIFIED_NO_PROVIDER_CALL",
+    "instructionVersion": "PAIRWISE_CREATIVE_INSTRUCTIONS_V2",
+    "responseSchemaVersion": "PAIRWISE_CREATIVE_RESPONSE_V1"
+  },
+  "CRITIC_B": {
+    "provider": "openai",
+    "model": "gpt-6.1-sol",
+    "reasoningEffort": "low",
+    "maxOutputTokens": 8000,
+    "inputTokenUpperBound": 13944,
+    "maxCalculatedCostUsd": 0.11486,
+    "inputUsdPerMillion": 2.5,
+    "outputUsdPerMillion": 10.0,
+    "responseMode": "json_schema",
+    "automaticRetries": false,
+    "liveAvailability": "UNVERIFIED_NO_PROVIDER_CALL",
+    "instructionVersion": "PAIRWISE_CREATIVE_INSTRUCTIONS_V2",
+    "responseSchemaVersion": "PAIRWISE_CREATIVE_RESPONSE_V1"
+  }
+}

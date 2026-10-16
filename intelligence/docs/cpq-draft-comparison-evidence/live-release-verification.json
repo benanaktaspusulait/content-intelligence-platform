@@ -1,0 +1,78 @@
+{
+  "deployedApiPreflight": "VERIFIED",
+  "unauthenticatedPreflight": "403",
+  "exactLiveOriginal": true,
+  "exactDraft": true,
+  "blindInputsVerified": true,
+  "reverseOrdersVerified": true,
+  "originalPilotUnchanged": true,
+  "originalSourceCoverage": "1/4",
+  "originalSourceVerdict": "FAIL",
+  "productionCriticGate": "BLOCKED",
+  "productionDiagnosticReviewsCreated": 0,
+  "paidAuthorizationsCreated": 0,
+  "providerCalls": 0,
+  "grading": "INACTIVE",
+  "renderAuthorized": false,
+  "realDispatch": "DISABLED",
+  "reviewers": {
+    "CRITIC_A": {
+      "provider": "deepseek",
+      "model": "deepseek-v4-pro",
+      "reasoningEffort": "none",
+      "maxOutputTokens": 6000,
+      "inputTokenUpperBound": 13436,
+      "maxCalculatedCostUsd": 0.04149552,
+      "inputUsdPerMillion": 1.32,
+      "outputUsdPerMillion": 3.96,
+      "responseMode": "json_object",
+      "automaticRetries": false,
+      "liveAvailability": "UNVERIFIED_NO_PROVIDER_CALL",
+      "instructionVersion": "PAIRWISE_CREATIVE_INSTRUCTIONS_V1",
+      "responseSchemaVersion": "PAIRWISE_CREATIVE_RESPONSE_V1"
+    },
+    "CRITIC_B": {
+      "provider": "openai",
+      "model": "gpt-6.1-sol",
+      "reasoningEffort": "low",
+      "maxOutputTokens": 8000,
+      "inputTokenUpperBound": 13436,
+      "maxCalculatedCostUsd": 0.11359,
+      "inputUsdPerMillion": 2.5,
+      "outputUsdPerMillion": 10.0,
+      "responseMode": "json_schema",
+      "automaticRetries": false,
+      "liveAvailability": "UNVERIFIED_NO_PROVIDER_CALL",
+      "instructionVersion": "PAIRWISE_CREATIVE_INSTRUCTIONS_V1",
+      "responseSchemaVersion": "PAIRWISE_CREATIVE_RESPONSE_V1"
+    }
+  },
+  "services": [
+    {
+      "service": "backend",
+      "image": "sha256:1eb065180f1a413c02b47b32a0644d655e6090dfdda377126ec2767432d5ac9b",
+      "health": "healthy"
+    },
+    {
+      "service": "ml-service",
+      "image": "sha256:eb441c0f480bd4a239cd11a6d9ed4aeed99be8f04b3e01b3d851a7678a0f9309",
+      "health": "healthy"
+    },
+    {
+      "service": "frontend",
+      "image": "sha256:dd20d686fddb9e05222e10332dc993b252a71db5220134c00e6a4ab3d913e091",
+      "health": "none"
+    },
+    {
+      "service": "postgres",
+      "image": "sha256:25a89970a83255ae96484d709005bb35aa71f7455f941bc1634514f31c5d5c62",
+      "health": "healthy"
+    },
+    {
+      "service": "creative-render-service",
+      "image": "sha256:c6fb3c5bc93011078b13b341a06fbd10f31d1527b8544b8b81729663bf7d30c9",
+      "health": "healthy"
+    }
+  ],
+  "hostFreeBytes": 6155976704
+}

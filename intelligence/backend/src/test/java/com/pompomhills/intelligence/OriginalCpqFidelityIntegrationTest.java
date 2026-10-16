@@ -36,6 +36,7 @@ class OriginalCpqFidelityIntegrationTest {
   }
   @Autowired CreativePromptQualityController api;
   @Autowired com.pompomhills.intelligence.workflow.CpqOwnerPilotService ownerPilot;
+  @Autowired com.pompomhills.intelligence.workflow.CpqDraftReviewService draftReview;
   @Autowired WorkflowService workflow;
   @Autowired JdbcTemplate jdbc;
   @Autowired ObjectMapper json;
@@ -519,6 +520,59 @@ class OriginalCpqFidelityIntegrationTest {
     assertThat(view).containsEntry("officialGrading","INACTIVE").containsEntry("humanReviewCount",0).containsEntry("renderAuthorized",false);
     assertThat(json.writeValueAsString(view.get("snapshot"))).contains("88.40625");assertThat(jdbc.queryForObject("SELECT activated FROM cpq_policy_state",Boolean.class)).isFalse();
     verify(ml,never()).workflow(eq("cpq-pilot/execute"),anyMap());
+  }
+
+  Map<String,Object> diagnosticSetup() throws Exception {
+    offlineCitationRevalidationCannotPromoteSavedFailedExecutionOrOpenCriticGate();
+    var fixture=Path.of("../docs/cpq-draft-comparison-evidence");if(!Files.exists(fixture))fixture=Path.of("intelligence/docs/cpq-draft-comparison-evidence");
+    Map<String,Object> estimates=json.readValue(Files.readString(fixture.resolve("preflight.TEST_FIXTURE.json")),Map.class);
+    when(ml.workflow(eq("cpq-pilot/draft-preflight"),anyMap())).thenAnswer(inv->{var body=(Map<String,Object>)inv.getArgument(1);return estimates.get("deepseek-primary".equals(body.get("profileId"))?"CRITIC_A":"CRITIC_B");});
+    when(ml.workflow(eq("cpq-pilot/capabilities"),anyMap())).thenReturn(Map.of("profiles",Map.of("deepseek-primary",Map.of("configured",true),"openai-escalation",Map.of("configured",true))));
+    return draftReview.preflight(actor("fixture-owner","OWNER"));
+  }
+  Map<String,Object> diagnosticAuth(Map<String,Object> pre,String stage) {
+    var cfg=(Map<String,Object>)((Map<String,Object>)pre.get("reviewers")).get(stage);var auth=new LinkedHashMap<String,Object>();for(String key:List.of("provider","model","reasoningEffort","maxOutputTokens"))auth.put(key,cfg.get(key));
+    auth.put("slot",stage);auth.put("profileId",stage.equals("CRITIC_A")?"deepseek-primary":"openai-escalation");auth.put("scopeSha256",pre.get("scopeSha256"));auth.put("authorizePaidInference",true);auth.put("automaticRetries",false);auth.put("confirmDiagnosticOnly",true);auth.put("maxCostUsd",stage.equals("CRITIC_A")?.06:.14);auth.put("idempotencyKey","TEST_FIXTURE_DIAGNOSTIC_"+stage);return auth;
+  }
+  Map<String,Object> diagnosticResponse(Map<String,Object> body) throws Exception {
+    var file=Path.of("../docs/cpq-draft-comparison-evidence/pairwise-response.TEST_FIXTURE.json");if(!Files.exists(file))file=Path.of("intelligence/docs/cpq-draft-comparison-evidence/pairwise-response.TEST_FIXTURE.json");Map<String,Object> comparison=json.readValue(Files.readString(file),Map.class);var auth=(Map<String,Object>)body.get("authorization");
+    var out=new LinkedHashMap<String,Object>();out.put("reviewPurpose","DRAFT_COMPARATIVE_REVIEW_V1");out.put("policyVersion","DRAFT_COMPARATIVE_REVIEW_V1");out.put("evidenceType","MACHINE_REVIEW");out.put("diagnosticOnly",true);out.put("requestId",body.get("requestId"));out.put("provider",auth.get("provider"));out.put("model",auth.get("model"));out.put("executionStatus","COMPLETED");out.put("effectiveRequestConfiguration",Map.of("provider",auth.get("provider"),"model",auth.get("model"),"reasoningEffort",auth.get("reasoningEffort"),"maxOutputTokens",auth.get("maxOutputTokens")));out.put("rawResponse",json.writeValueAsString(comparison));out.put("comparison",comparison);out.put("fixtureLabel","TEST_FIXTURE");out.put("costUsd",.001);out.put("usageAccountingStatus","COMPLETE");out.put("usage",Map.of("prompt_tokens",1000,"completion_tokens",1000));out.put("providerMetadata",Map.of("finishReason","stop","model",auth.get("model"),"requestId","TEST_FIXTURE_RESPONSE","apiStatus","COMPLETED"));return out;
+  }
+  Map<String,Object> diagnosticCreate(Map<String,Object> pre,MockHttpServletRequest owner){return draftReview.create(Map.of("scopeSha256",pre.get("scopeSha256"),"authorizeDiagnosticRecordCreation",true,"confirmDiagnosticOnly",true,"maxTotalUsd",.20),owner);}
+  @Test void diagnosticPairIsExactBlindUngradedAndCannotBypassProductionPilot() throws Exception {
+    var pre=diagnosticSetup();var owner=actor("fixture-owner","OWNER");assertThat(pre).containsEntry("persisted",false);
+    assertThatThrownBy(()->draftReview.preflight(new MockHttpServletRequest())).hasMessageContaining("Authenticated owner required");
+    assertThatThrownBy(()->draftReview.create(Map.of(),owner)).hasMessageContaining("Explicit creation consent");
+    assertThatThrownBy(()->draftReview.create(Map.of("authorizeDiagnosticRecordCreation",true,"confirmDiagnosticOnly",true,"scopeSha256","wrong"),owner)).hasMessageContaining("exact scope");
+    assertThat(jdbc.queryForObject("SELECT count(*) FROM cpq_owner_pilots",Integer.class)).isEqualTo(1);
+    var scope=(Map<String,Object>)pre.get("snapshot");var inputs=(Map<String,Object>)scope.get("inputs");var first=(Map<String,Object>)inputs.get("CRITIC_A");var second=(Map<String,Object>)inputs.get("CRITIC_B");
+    var a=(List<Map<String,Object>>)first.get("packets");var b=(List<Map<String,Object>>)second.get("packets");assertThat(a.getFirst().get("label")).isEqualTo("A");assertThat(b.getFirst().get("label")).isEqualTo("B");assertThat(a.getFirst()).isEqualTo(b.getLast());assertThat(a.getLast()).isEqualTo(b.getFirst());
+    assertThat(sha((String)a.getFirst().get("prompt"))).isEqualTo("82a2d896798076cb3fd3cf88482c5709167d88034a8b6702149f000bc690abef");assertThat(sha((String)a.getLast().get("prompt"))).isEqualTo("0fe229774deb4b31a42145bad91cf10c91634ba00da39fa3e9d288b3a2e7bd98");
+    assertThat(json.writeValueAsString(inputs)).doesNotContain("supervisorMapping","88.40625","OWNER_DECISION","DRAFT_ONLY","promptSha256");
+    int prompts=jdbc.queryForObject("SELECT count(*) FROM prompt_versions",Integer.class);var created=diagnosticCreate(pre,owner);UUID id=UUID.fromString((String)created.get("reviewId"));assertThat(created).containsEntry("diagnosticOnly",true).containsEntry("renderAuthorized",false).containsEntry("officialGrading","INACTIVE");
+    assertThatThrownBy(()->ownerPilot.view(id,owner)).hasMessageContaining("Pilot not found");assertThatThrownBy(()->draftReview.view(UUID.fromString("770e8477-f352-499e-aabd-b7418435e70b"),owner)).hasMessageContaining("Diagnostic review not found");assertThatThrownBy(()->draftReview.view(id,actor("different-owner","OWNER"))).hasMessageContaining("owner differs");
+    for(String stage:List.of("CRITIC_A","CRITIC_B")){var auth=diagnosticAuth(pre,stage);draftReview.authorize(id,auth,owner);draftReview.authorize(id,auth,owner);}
+    var view=draftReview.view(id,owner);var requests=(List<Map<String,Object>>)view.get("requests");assertThat(requests).hasSize(2);
+    assertThatThrownBy(()->draftReview.execute(id,UUID.fromString((String)requests.getFirst().get("requestId")),owner)).hasMessageContaining("disabled");
+    when(ml.workflow(eq("cpq-pilot/execute"),anyMap())).thenAnswer(inv->diagnosticResponse(inv.getArgument(1)));org.springframework.test.util.ReflectionTestUtils.setField(draftReview,"realEnabled",true);
+    try{for(var req:requests){UUID request=UUID.fromString((String)req.get("requestId"));draftReview.execute(id,request,owner);draftReview.execute(id,request,owner);}}finally{org.springframework.test.util.ReflectionTestUtils.setField(draftReview,"realEnabled",false);}
+    verify(ml,times(2)).workflow(eq("cpq-pilot/execute"),anyMap());view=draftReview.view(id,owner);assertThat((List<?>)view.get("evidence")).hasSize(2);assertThat(view).containsEntry("sourceFidelity","UNRESOLVED_NOT_EVALUATED_BY_THIS_REVIEW").containsEntry("officialGrading","INACTIVE").containsEntry("renderAuthorized",false).containsEntry("humanReviewCount",0);
+    var old=ownerPilot.view(UUID.fromString("770e8477-f352-499e-aabd-b7418435e70b"),owner);assertThat((Map<String,Object>)old.get("sourceReview")).containsEntry("validatedSubjects",0).containsEntry("criticGateSatisfied",false);
+    assertThat(jdbc.queryForObject("SELECT count(*) FROM prompt_versions",Integer.class)).isEqualTo(prompts);assertThat(jdbc.queryForObject("SELECT activated FROM cpq_policy_state",Boolean.class)).isFalse();
+  }
+  @Test void diagnosticFailureRetainsFirstCriticAndDoesNotPermitRetry() throws Exception {
+    var pre=diagnosticSetup();var owner=actor("fixture-owner","OWNER");UUID id=UUID.fromString((String)diagnosticCreate(pre,owner).get("reviewId"));
+    for(String stage:List.of("CRITIC_A","CRITIC_B"))draftReview.authorize(id,diagnosticAuth(pre,stage),owner);
+    var reqs=(List<Map<String,Object>>)draftReview.view(id,owner).get("requests");
+    when(ml.workflow(eq("cpq-pilot/execute"),anyMap())).thenAnswer(inv->{var body=(Map<String,Object>)inv.getArgument(1);var response=diagnosticResponse(body);if("openai".equals(response.get("provider"))){response.remove("comparison");response.put("executionStatus","FAILED_OR_AMBIGUOUS");response.put("rawResponse","{truncated");response.put("failureCategory","VISIBLE_OUTPUT_TRUNCATED");}return response;});
+    org.springframework.test.util.ReflectionTestUtils.setField(draftReview,"realEnabled",true);
+    try{assertThatThrownBy(()->draftReview.execute(id,UUID.fromString((String)reqs.getLast().get("requestId")),owner)).hasMessageContaining("First critic must complete");for(var req:reqs)draftReview.execute(id,UUID.fromString((String)req.get("requestId")),owner);draftReview.execute(id,UUID.fromString((String)reqs.getLast().get("requestId")),owner);}finally{org.springframework.test.util.ReflectionTestUtils.setField(draftReview,"realEnabled",false);}
+    verify(ml,times(2)).workflow(eq("cpq-pilot/execute"),anyMap());var view=draftReview.view(id,owner);assertThat((List<?>)view.get("evidence")).hasSize(1);var requests=(List<Map<String,Object>>)view.get("requests");assertThat(requests.getLast()).containsEntry("state","FAILED_OR_AMBIGUOUS");assertThat((Map<String,Object>)requests.getLast().get("response")).containsEntry("rawResponse","{truncated");
+  }
+  @Test void firstDiagnosticFailureBlocksRemainingReviewer() throws Exception {
+    var pre=diagnosticSetup();var owner=actor("fixture-owner","OWNER");UUID id=UUID.fromString((String)diagnosticCreate(pre,owner).get("reviewId"));for(String stage:List.of("CRITIC_A","CRITIC_B"))draftReview.authorize(id,diagnosticAuth(pre,stage),owner);
+    var requests=(List<Map<String,Object>>)draftReview.view(id,owner).get("requests");when(ml.workflow(eq("cpq-pilot/execute"),anyMap())).thenReturn(Map.of("executionStatus","FAILED_OR_AMBIGUOUS","rawResponse","","fixtureLabel","TEST_FIXTURE"));org.springframework.test.util.ReflectionTestUtils.setField(draftReview,"realEnabled",true);
+    try{draftReview.execute(id,UUID.fromString((String)requests.getFirst().get("requestId")),owner);assertThatThrownBy(()->draftReview.execute(id,UUID.fromString((String)requests.getLast().get("requestId")),owner)).hasMessageContaining("First critic must complete");}finally{org.springframework.test.util.ReflectionTestUtils.setField(draftReview,"realEnabled",false);}verify(ml,times(1)).workflow(eq("cpq-pilot/execute"),anyMap());assertThat((List<?>)draftReview.view(id,owner).get("evidence")).isEmpty();
   }
 
 }

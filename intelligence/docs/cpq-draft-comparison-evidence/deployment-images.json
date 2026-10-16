@@ -1,0 +1,20 @@
+[
+  {
+    "service": "frontend",
+    "image": "sha256:dd20d686fddb9e05222e10332dc993b252a71db5220134c00e6a4ab3d913e091",
+    "health": "none",
+    "hostFreeBytes": 1930731520
+  },
+  {
+    "service": "backend",
+    "image": "sha256:1eb065180f1a413c02b47b32a0644d655e6090dfdda377126ec2767432d5ac9b",
+    "health": "healthy",
+    "hostFreeBytes": 1769082880
+  },
+  {
+    "service": "ml-service",
+    "image": "sha256:eb441c0f480bd4a239cd11a6d9ed4aeed99be8f04b3e01b3d851a7678a0f9309",
+    "health": "healthy",
+    "hostFreeBytes": 6156488704
+  }
+]

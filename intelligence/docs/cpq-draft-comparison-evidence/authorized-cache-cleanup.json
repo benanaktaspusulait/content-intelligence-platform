@@ -1,0 +1,107 @@
+{
+  "authorization": "Explicit user approval for these five IDs only",
+  "hostFreeBefore": 1182494720,
+  "hostFreeAfter": 1182765056,
+  "records": [
+    {
+      "id": "puqua8cyh7oevayhio8130wxs",
+      "verifiedBefore": {
+        "CreatedAt": "2026-10-11 15:49:32.576290006 +0000 UTC",
+        "Description": "mount / from exec /bin/sh -c npm ci",
+        "ID": "puqua8cyh7oevayhio8130wxs",
+        "LastUsedAt": "4 days ago",
+        "Mutable": false,
+        "Parents": [
+          "ke30xw4h451ab7kj3usfx1f3m"
+        ],
+        "Reclaimable": true,
+        "Shared": false,
+        "Size": "459.4MB",
+        "Type": "regular",
+        "UsageCount": 23
+      },
+      "pruneOutput": "Total:\t0B\n",
+      "hostFreeBytes": 1182969856
+    },
+    {
+      "id": "v5o2emtr27jbta0n4907pq2hk",
+      "verifiedBefore": {
+        "CreatedAt": "2026-10-12 09:28:37.956705427 +0000 UTC",
+        "Description": "mount / from exec /bin/sh -c npm ci",
+        "ID": "v5o2emtr27jbta0n4907pq2hk",
+        "LastUsedAt": "2 days ago",
+        "Mutable": false,
+        "Parents": [
+          "366q5znr4ljz47rbst16cncor"
+        ],
+        "Reclaimable": true,
+        "Shared": false,
+        "Size": "459.4MB",
+        "Type": "regular",
+        "UsageCount": 31
+      },
+      "pruneOutput": "Total:\t0B\n",
+      "hostFreeBytes": 1182969856
+    },
+    {
+      "id": "st5tuuho4751xbvta5c3eypsu",
+      "verifiedBefore": {
+        "CreatedAt": "2026-10-12 09:36:22.692734211 +0000 UTC",
+        "Description": "mount / from exec /bin/sh -c mvn -q -f intelligence/publisher-contract/pom.xml -DskipTests install     && mvn -q -f intelligence/publisher-service-support/pom.xml -DskipTests install     && mvn -q -f intelligence/tiktok-publisher-service/pom.xml -Dmaven.test.skip=true package",
+        "ID": "st5tuuho4751xbvta5c3eypsu",
+        "LastUsedAt": "4 days ago",
+        "Mutable": true,
+        "Parents": [
+          "mvnvyhrlgyc0ycy68lyd590jo"
+        ],
+        "Reclaimable": true,
+        "Shared": false,
+        "Size": "184.5MB",
+        "Type": "regular",
+        "UsageCount": 1
+      },
+      "pruneOutput": "ID\t\t\t\t\t\tRECLAIMABLE\tSIZE\t\tLAST ACCESSED\nst5tuuho4751xbvta5c3eypsu*              \ttrue \t\t184.5MB   \t4 days ago\nTotal:\t184.5MB\n",
+      "hostFreeBytes": 1182814208
+    },
+    {
+      "id": "1jg6shk957k7xp9aaaao7a8yk",
+      "verifiedBefore": {
+        "CreatedAt": "2026-10-12 09:28:21.848670627 +0000 UTC",
+        "Description": "mount / from exec /bin/sh -c mvn -q -f intelligence/publisher-contract/pom.xml -DskipTests install     && mvn -q -f intelligence/publisher-service-support/pom.xml -DskipTests install     && mvn -q -f intelligence/youtube-publisher-service/pom.xml -Dmaven.test.skip=true package",
+        "ID": "1jg6shk957k7xp9aaaao7a8yk",
+        "LastUsedAt": "4 days ago",
+        "Mutable": true,
+        "Parents": [
+          "typr4jfyrvur96ueznwyy6sbg"
+        ],
+        "Reclaimable": true,
+        "Shared": false,
+        "Size": "184.5MB",
+        "Type": "regular",
+        "UsageCount": 2
+      },
+      "pruneOutput": "ID\t\t\t\t\t\tRECLAIMABLE\tSIZE\t\tLAST ACCESSED\n1jg6shk957k7xp9aaaao7a8yk*              \ttrue \t\t184.5MB   \t4 days ago\nTotal:\t184.5MB\n",
+      "hostFreeBytes": 1182781440
+    },
+    {
+      "id": "sw8mjjdsi4vlazbnb97rn57ix",
+      "verifiedBefore": {
+        "CreatedAt": "2026-10-12 09:36:22.690038336 +0000 UTC",
+        "Description": "mount / from exec /bin/sh -c mvn -q -f intelligence/publisher-contract/pom.xml -DskipTests install     && mvn -q -f intelligence/publisher-service-support/pom.xml -DskipTests install     && mvn -q -f intelligence/meta-publisher-service/pom.xml -Dmaven.test.skip=true package",
+        "ID": "sw8mjjdsi4vlazbnb97rn57ix",
+        "LastUsedAt": "4 days ago",
+        "Mutable": true,
+        "Parents": [
+          "6k5e4pd1ha0tc76sjsiwpsfue"
+        ],
+        "Reclaimable": true,
+        "Shared": false,
+        "Size": "184.5MB",
+        "Type": "regular",
+        "UsageCount": 1
+      },
+      "pruneOutput": "ID\t\t\t\t\t\tRECLAIMABLE\tSIZE\t\tLAST ACCESSED\nsw8mjjdsi4vlazbnb97rn57ix*              \ttrue \t\t184.5MB   \t4 days ago\nTotal:\t184.5MB\n",
+      "hostFreeBytes": 1182765056
+    }
+  ]
+}

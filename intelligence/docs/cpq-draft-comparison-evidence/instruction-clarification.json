@@ -1,0 +1,10 @@
+{
+  "previousVersion": "PAIRWISE_CREATIVE_INSTRUCTIONS_V1",
+  "newVersion": "PAIRWISE_CREATIVE_INSTRUCTIONS_V2",
+  "change": "Evidence admission requirement: For EVERY A_BETTER or B_BETTER dimension, include at least one short literal excerpt from A AND at least one from B. A reason mentioning B does not replace a B excerpt. If a relevant instruction is absent on one side, state precisely what is absent in absentEvidenceExplanation (at least 20 characters); never invent a quotation. Do not claim an instruction is absent without checking the full supplied text. An empty evidence array always needs that concrete explanation.",
+  "responseSchemaUnchanged": true,
+  "validatorUnchanged": true,
+  "reviewedPromptBodiesUnchanged": true,
+  "failedRequestRevalidatedOrPromoted": false,
+  "realProviderCallsForCorrection": 0
+}

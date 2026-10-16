@@ -1,0 +1,100 @@
+{
+  "reviewId": "a1b2ce1e-e004-40c5-89e9-230f061554a3",
+  "purpose": "DRAFT_COMPARATIVE_REVIEW_V1",
+  "ownerAuthorizationReceived": true,
+  "providerExecutionsSubmitted": 1,
+  "acceptedMachineReviews": 0,
+  "comparativeMachineEvidence": "NONE",
+  "knownCalculatedCostUsd": 0.01251096,
+  "costAccountingComplete": true,
+  "authorizedCombinedCeilingUsd": 0.2,
+  "findings": [
+    {
+      "slot": "CRITIC_A",
+      "requestId": "c8391e08-501f-4740-a32c-91f9481d13db",
+      "state": "FAILED_OR_AMBIGUOUS",
+      "provider": "deepseek",
+      "model": "deepseek-v4-pro",
+      "applicationValidation": "REJECTED_OR_AMBIGUOUS",
+      "providerMetadata": {
+        "model": "deepseek-v4-pro",
+        "provider": "deepseek",
+        "apiStatus": "COMPLETED",
+        "requestId": "8d8f1e2a-c1d2-4995-8b36-a039f4e39a36",
+        "finishReason": "stop"
+      },
+      "usage": {
+        "total_tokens": 5128,
+        "prompt_tokens": 2953,
+        "completion_tokens": 2175,
+        "prompt_tokens_details": {
+          "text_tokens": null,
+          "audio_tokens": null,
+          "image_tokens": null,
+          "cached_tokens": 0,
+          "cache_write_tokens": null
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 2953,
+        "completion_tokens_details": null
+      },
+      "costUsd": 0.01251096,
+      "costBasis": "CALCULATED_FROM_REPORTED_USAGE_AND_CONFIGURED_RATES",
+      "failureCategory": "PROVIDER_OR_RESPONSE_CONTRACT_FAILED",
+      "rawResponseSha256": "0b4f7485114f8f0c2c62c232ef39387fcd0b0cc001ed3b12427365fa36d816ab",
+      "comparison": null
+    },
+    {
+      "slot": "CRITIC_B",
+      "requestId": "a781934f-72cc-4ca3-bec0-da5023d541be",
+      "state": "AUTHORIZED",
+      "provider": "openai",
+      "model": "gpt-6.1-sol",
+      "applicationValidation": "NOT_EXECUTED",
+      "providerMetadata": null,
+      "usage": null,
+      "costUsd": null,
+      "costBasis": null,
+      "failureCategory": null,
+      "rawResponseSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "comparison": null
+    }
+  ],
+  "historicalRecordsUnchanged": true,
+  "comparedPromptsUnchanged": true,
+  "originalCanonical": "88.40625/B_UNCHANGED",
+  "originalSourceVerdict": "FAIL",
+  "draftSourceFidelity": "UNKNOWN",
+  "productionCriticGate": "BLOCKED",
+  "officialCpqGrading": "INACTIVE",
+  "renderAuthorized": false,
+  "realDispatch": "DISABLED",
+  "services": [
+    {
+      "service": "backend",
+      "image": "sha256:1eb065180f1a413c02b47b32a0644d655e6090dfdda377126ec2767432d5ac9b",
+      "health": "healthy"
+    },
+    {
+      "service": "ml-service",
+      "image": "sha256:eb441c0f480bd4a239cd11a6d9ed4aeed99be8f04b3e01b3d851a7678a0f9309",
+      "health": "healthy"
+    },
+    {
+      "service": "frontend",
+      "image": "sha256:dd20d686fddb9e05222e10332dc993b252a71db5220134c00e6a4ab3d913e091",
+      "health": "none"
+    },
+    {
+      "service": "postgres",
+      "image": "sha256:25a89970a83255ae96484d709005bb35aa71f7455f941bc1634514f31c5d5c62",
+      "health": "healthy"
+    },
+    {
+      "service": "creative-render-service",
+      "image": "sha256:c6fb3c5bc93011078b13b341a06fbd10f31d1527b8544b8b81729663bf7d30c9",
+      "health": "healthy"
+    }
+  ],
+  "hostFreeBytes": 6359687168
+}

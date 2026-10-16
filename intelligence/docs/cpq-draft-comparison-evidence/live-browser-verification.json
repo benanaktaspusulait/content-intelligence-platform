@@ -1,0 +1,12 @@
+{
+  "step6Browser": "VERIFIED",
+  "readOnlyInspectVisible": true,
+  "scopeSha256": "66b2a90a76d274422a442dfea8ed5cf0b96c0830a28a036e7f324a2e48d550ca",
+  "creationConsentChecked": false,
+  "createDiagnosticRecordEnabled": false,
+  "productionRecordsUnchanged": true,
+  "productionDiagnosticRecords": 0,
+  "paidRequests": 0,
+  "screenshot": "live-step6-diagnostic.png",
+  "hostFreeBytes": 6366388224
+}

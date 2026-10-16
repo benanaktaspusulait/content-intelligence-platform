@@ -1,0 +1,52 @@
+{
+  "ownerAuthorization": "Explicit owner reply on 2026-10-16: only these two diagnostic calls and records, maximum USD 0.20 total; DeepSeek deepseek-v4-pro none/6000/USD0.06 and OpenAI gpt-6.1-sol low/8000/USD0.14; zero retry/fallback/synthesis; stop remaining dispatch on failure; no prompt approval, source PASS, grading or rendering.",
+  "recordCreationSubmissionStarted": true,
+  "createdAtUtc": "2026-10-16T14:27:17.203057+00:00",
+  "reviewId": "a1b2ce1e-e004-40c5-89e9-230f061554a3",
+  "scopeSha256": "66b2a90a76d274422a442dfea8ed5cf0b96c0830a28a036e7f324a2e48d550ca",
+  "requests": {
+    "CRITIC_A": {
+      "requestId": "c8391e08-501f-4740-a32c-91f9481d13db",
+      "authorization": {
+        "provider": "deepseek",
+        "model": "deepseek-v4-pro",
+        "reasoningEffort": "none",
+        "maxOutputTokens": 6000,
+        "slot": "CRITIC_A",
+        "profileId": "deepseek-primary",
+        "maxCostUsd": 0.06,
+        "authorizePaidInference": true,
+        "automaticRetries": false,
+        "confirmDiagnosticOnly": true,
+        "scopeSha256": "66b2a90a76d274422a442dfea8ed5cf0b96c0830a28a036e7f324a2e48d550ca",
+        "idempotencyKey": "owner-approved-pair-a1b2ce1e-e004-40c5-89e9-230f061554a3-CRITIC_A",
+        "ownerAuthorizationText": "Explicit owner reply on 2026-10-16: only these two diagnostic calls and records, maximum USD 0.20 total; DeepSeek deepseek-v4-pro none/6000/USD0.06 and OpenAI gpt-6.1-sol low/8000/USD0.14; zero retry/fallback/synthesis; stop remaining dispatch on failure; no prompt approval, source PASS, grading or rendering."
+      },
+      "executeSubmissionStarted": true,
+      "submittedAtUtc": "2026-10-16T14:27:40.633827+00:00",
+      "state": "FAILED_OR_AMBIGUOUS",
+      "returnedAtUtc": "2026-10-16T14:28:06.425570+00:00"
+    },
+    "CRITIC_B": {
+      "requestId": "a781934f-72cc-4ca3-bec0-da5023d541be",
+      "authorization": {
+        "provider": "openai",
+        "model": "gpt-6.1-sol",
+        "reasoningEffort": "low",
+        "maxOutputTokens": 8000,
+        "slot": "CRITIC_B",
+        "profileId": "openai-escalation",
+        "maxCostUsd": 0.14,
+        "authorizePaidInference": true,
+        "automaticRetries": false,
+        "confirmDiagnosticOnly": true,
+        "scopeSha256": "66b2a90a76d274422a442dfea8ed5cf0b96c0830a28a036e7f324a2e48d550ca",
+        "idempotencyKey": "owner-approved-pair-a1b2ce1e-e004-40c5-89e9-230f061554a3-CRITIC_B",
+        "ownerAuthorizationText": "Explicit owner reply on 2026-10-16: only these two diagnostic calls and records, maximum USD 0.20 total; DeepSeek deepseek-v4-pro none/6000/USD0.06 and OpenAI gpt-6.1-sol low/8000/USD0.14; zero retry/fallback/synthesis; stop remaining dispatch on failure; no prompt approval, source PASS, grading or rendering."
+      },
+      "executeSubmissionStarted": false
+    }
+  },
+  "stoppedRemainingDispatch": true,
+  "dispatchDisableCompleted": true
+}

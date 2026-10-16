@@ -1,0 +1,41 @@
+{
+  "label": "OFFLINE_REJECTION_DIAGNOSIS_NOT_ADMITTED_MACHINE_EVIDENCE",
+  "requestId": "c8391e08-501f-4740-a32c-91f9481d13db",
+  "providerResponseId": "8d8f1e2a-c1d2-4995-8b36-a039f4e39a36",
+  "finishReason": "stop",
+  "strictJsonSchema": "PASS",
+  "literalQuoteAttribution": "PASS",
+  "reproducedAdmissionFailure": "ValueError: Comparative preference requires both sides or explicit missing-evidence explanation",
+  "comparativeEvidenceGaps": [
+    {
+      "dimension": "SCROLL_STOP_VISUAL_PROMISE",
+      "judgment": "A_BETTER",
+      "citedLabels": [
+        "A"
+      ],
+      "absentEvidenceExplanation": ""
+    },
+    {
+      "dimension": "CAUSAL_PROGRESSION",
+      "judgment": "A_BETTER",
+      "citedLabels": [
+        "A"
+      ],
+      "absentEvidenceExplanation": ""
+    }
+  ],
+  "badQuotes": [],
+  "rawOverallJudgment": "A_BETTER",
+  "rawJudgments": {
+    "SCROLL_STOP_VISUAL_PROMISE": "A_BETTER",
+    "CAUSAL_PROGRESSION": "A_BETTER",
+    "VISUAL_STORYTELLING": "EQUIVALENT",
+    "PRODUCTION_EXECUTABILITY": "A_BETTER",
+    "ENDING_REPLAY": "EQUIVALENT",
+    "DISTINCTIVE_CREATIVE_VALUE": "EQUIVALENT"
+  },
+  "providerOutputUnchanged": true,
+  "newProviderCalls": 0,
+  "evidencePromotion": false,
+  "instructionGap": "Server requires both sides for a preference unless missing evidence is explicitly explained; generation instructions ask A/B attribution but do not spell out this exact per-preference requirement. No validator relaxation or historical-response repair was performed."
+}

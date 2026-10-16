@@ -55,7 +55,7 @@ public class CpqOwnerPilotService {
     return view(id,r);
   }
   private Map<String,Object> pilot(UUID id,HttpServletRequest r,boolean current){
-    String actor=owner(r);var p=db.sql("SELECT owner_principal,snapshot::text,total_budget_usd FROM cpq_owner_pilots WHERE pilot_id=:id").param("id",id).query((rs,n)->Map.<String,Object>of("owner",rs.getString(1),"snapshot",read(rs.getString(2)),"budget",rs.getDouble(3))).optional().orElseThrow(()->new ResponseStatusException(NOT_FOUND,"Pilot not found"));
+    String actor=owner(r);var p=db.sql("SELECT owner_principal,snapshot::text,total_budget_usd FROM cpq_owner_pilots WHERE pilot_id=:id AND policy_version='OWNER_MACHINE_PILOT_V1'").param("id",id).query((rs,n)->Map.<String,Object>of("owner",rs.getString(1),"snapshot",read(rs.getString(2)),"budget",rs.getDouble(3))).optional().orElseThrow(()->new ResponseStatusException(NOT_FOUND,"Pilot not found"));
     if(!actor.equals(p.get("owner")))throw new ResponseStatusException(FORBIDDEN,"Pilot owner differs");
     if(current && !encode(snapshot(map(p.get("snapshot")))).equals(encode(p.get("snapshot"))))throw new ResponseStatusException(CONFLICT,"Pilot source/settings/analysis is stale");return p;
   }

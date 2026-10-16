@@ -437,7 +437,11 @@ async def cpq_pilot_execute(request: Request) -> dict[str, Any]:
     if os.getenv('CPQ_PILOT_REAL_ENABLED', 'false').lower() != 'true' or len(token)<32 or not hmac.compare_digest(signature, hmac.new(token.encode(), raw, hashlib.sha256).hexdigest()):
         raise HTTPException(403, 'Owner pilot real dispatch is disabled or unauthenticated')
     try:
-        return execute(json.loads(raw))
+        body=json.loads(raw)
+        if body.get("input",{}).get("purpose")=="DRAFT_COMPARATIVE_REVIEW_V1":
+            from .draft_comparative_review import execute as execute_draft
+            return execute_draft(body)
+        return execute(body)
     except (ValueError, KeyError, TypeError) as error:
         raise HTTPException(422, 'Invalid bound pilot authorization/input; no retry') from error
 
@@ -453,3 +457,10 @@ async def cpq_pilot_revalidate_source(request: Request) -> dict[str, Any]:
         raise HTTPException(403,'Authenticated offline source revalidation required')
     try:return revalidate_saved_source(json.loads(raw))
     except (ValueError,KeyError,TypeError,ValidationError) as error:raise HTTPException(422,'Saved source evidence is not eligible for citation recovery') from error
+
+
+@router.post('/cpq-pilot/draft-preflight')
+def cpq_draft_preflight(request: dict[str, Any]) -> dict[str, Any]:
+    from .draft_comparative_review import preflight
+    try:return preflight(request)
+    except (ValueError, KeyError, TypeError) as error:raise HTTPException(422,'Invalid diagnostic pair preflight') from error

@@ -1,0 +1,338 @@
+Building current sources: ml-service
+ Image intelligence-ml-service Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 648B done
+#1 DONE 0.0s
+
+#2 [internal] load build definition from Dockerfile
+#2 transferring dockerfile: 336B done
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/python:3.13-slim
+#3 DONE 0.9s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 102B done
+#4 DONE 0.0s
+
+#5 [1/6] FROM docker.io/library/python:3.13-slim@sha256:70729b46c69b4f1e97c4822c1af3df53a1476cf5ddc6c087c0c10bc3a5678c2f
+#5 DONE 0.0s
+
+#6 [internal] load build context
+#6 transferring context: 91.13kB 0.0s done
+#6 DONE 0.0s
+
+#7 [2/6] RUN apt-get update && apt-get install -y --no-install-recommends ffmpeg libgl1 curl && rm -rf /var/lib/apt/lists/*
+#7 CACHED
+
+#8 [3/6] WORKDIR /app
+#8 CACHED
+
+#9 [4/6] COPY pyproject.toml .
+#9 CACHED
+
+#10 [5/6] COPY app app
+#10 DONE 0.1s
+
+#11 [6/6] RUN pip install --no-cache-dir .
+#11 1.336 Processing ./.
+#11 1.338   Installing build dependencies: started
+#11 1.979   Installing build dependencies: finished with status 'done'
+#11 1.979   Getting requirements to build wheel: started
+#11 2.323   Getting requirements to build wheel: finished with status 'done'
+#11 2.324   Preparing metadata (pyproject.toml): started
+#11 2.457   Preparing metadata (pyproject.toml): finished with status 'done'
+#11 2.564 Collecting fastapi<1,>=0.116 (from pompom-creative-ml==0.1.0)
+#11 2.647   Downloading fastapi-0.143.3-py3-none-any.whl.metadata (26 kB)
+#11 2.695 Collecting uvicorn<1,>=0.35 (from uvicorn[standard]<1,>=0.35->pompom-creative-ml==0.1.0)
+#11 2.709   Downloading uvicorn-0.54.0-py3-none-any.whl.metadata (6.6 kB)
+#11 2.759 Collecting pydantic-settings<3,>=2.10 (from pompom-creative-ml==0.1.0)
+#11 2.785   Downloading pydantic_settings-2.16.0-py3-none-any.whl.metadata (4.0 kB)
+#11 2.939 Collecting numpy<3,>=2.1 (from pompom-creative-ml==0.1.0)
+#11 3.017   Downloading numpy-2.5.4-cp313-cp313-manylinux_2_27_aarch64.manylinux_2_28_aarch64.whl.metadata (6.6 kB)
+#11 3.060 Collecting opencv-python-headless<5,>=4.11 (from pompom-creative-ml==0.1.0)
+#11 3.071   Downloading opencv_python_headless-4.14.0.94-cp37-abi3-manylinux_2_28_aarch64.whl.metadata (19 kB)
+#11 3.135 Collecting scikit-learn<2,>=1.7 (from pompom-creative-ml==0.1.0)
+#11 3.148   Downloading scikit_learn-1.9.1-cp313-cp313-manylinux_2_27_aarch64.manylinux_2_28_aarch64.whl.metadata (9.3 kB)
+#11 3.194 Collecting openai>=1.0.0 (from pompom-creative-ml==0.1.0)
+#11 3.208   Downloading openai-3.31.0-py3-none-any.whl.metadata (44 kB)
+#11 3.244 Collecting anthropic>=0.25.0 (from pompom-creative-ml==0.1.0)
+#11 3.262   Downloading anthropic-1.15.0-py3-none-any.whl.metadata (5.8 kB)
+#11 3.277 Collecting google-generativeai>=0.3.0 (from pompom-creative-ml==0.1.0)
+#11 3.286   Downloading google_generativeai-0.8.6-py3-none-any.whl.metadata (3.9 kB)
+#11 3.305 Collecting requests<3,>=2.32 (from pompom-creative-ml==0.1.0)
+#11 3.316   Downloading requests-2.34.2-py3-none-any.whl.metadata (4.8 kB)
+#11 3.336 Collecting jsonschema<5,>=4.23 (from pompom-creative-ml==0.1.0)
+#11 3.344   Downloading jsonschema-4.26.0-py3-none-any.whl.metadata (7.6 kB)
+#11 3.367 Collecting starlette>=0.46.0 (from fastapi<1,>=0.116->pompom-creative-ml==0.1.0)
+#11 3.378   Downloading starlette-1.8.0-py3-none-any.whl.metadata (6.6 kB)
+#11 3.449 Collecting pydantic>=2.9.0 (from fastapi<1,>=0.116->pompom-creative-ml==0.1.0)
+#11 3.543   Downloading pydantic-2.14.1-py3-none-any.whl.metadata (133 kB)
+#11 3.571 Collecting typing-extensions>=4.8.0 (from fastapi<1,>=0.116->pompom-creative-ml==0.1.0)
+#11 3.582   Downloading typing_extensions-4.16.0-py3-none-any.whl.metadata (3.3 kB)
+#11 3.598 Collecting typing-inspection>=0.4.2 (from fastapi<1,>=0.116->pompom-creative-ml==0.1.0)
+#11 3.608   Downloading typing_inspection-0.4.4-py3-none-any.whl.metadata (2.6 kB)
+#11 3.622 Collecting annotated-doc>=0.0.2 (from fastapi<1,>=0.116->pompom-creative-ml==0.1.0)
+#11 3.634   Downloading annotated_doc-0.0.5-py3-none-any.whl.metadata (6.5 kB)
+#11 3.652 Collecting opentelemetry-api>=1.44.0 (from fastapi<1,>=0.116->pompom-creative-ml==0.1.0)
+#11 3.662   Downloading opentelemetry_api-1.45.1-py3-none-any.whl.metadata (1.4 kB)
+#11 3.678 Collecting attrs>=22.2.0 (from jsonschema<5,>=4.23->pompom-creative-ml==0.1.0)
+#11 3.689   Downloading attrs-26.1.0-py3-none-any.whl.metadata (8.8 kB)
+#11 3.705 Collecting jsonschema-specifications>=2023.03.6 (from jsonschema<5,>=4.23->pompom-creative-ml==0.1.0)
+#11 3.717   Downloading jsonschema_specifications-2025.9.1-py3-none-any.whl.metadata (2.9 kB)
+#11 3.738 Collecting referencing>=0.28.4 (from jsonschema<5,>=4.23->pompom-creative-ml==0.1.0)
+#11 3.748   Downloading referencing-0.37.0-py3-none-any.whl.metadata (2.8 kB)
+#11 4.089 Collecting rpds-py>=0.25.0 (from jsonschema<5,>=4.23->pompom-creative-ml==0.1.0)
+#11 4.101   Downloading rpds_py-2026.9.1-cp313-cp313-manylinux_2_17_aarch64.manylinux2014_aarch64.whl.metadata (4.1 kB)
+#11 4.120 Collecting python-dotenv>=1.2.2 (from pydantic-settings<3,>=2.10->pompom-creative-ml==0.1.0)
+#11 4.129   Downloading python_dotenv-1.2.4-py3-none-any.whl.metadata (29 kB)
+#11 4.228 Collecting charset_normalizer<4,>=2 (from requests<3,>=2.32->pompom-creative-ml==0.1.0)
+#11 4.242   Downloading charset_normalizer-3.5.2-cp313-cp313-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl.metadata (46 kB)
+#11 4.262 Collecting idna<4,>=2.5 (from requests<3,>=2.32->pompom-creative-ml==0.1.0)
+#11 4.271   Downloading idna-3.20-py3-none-any.whl.metadata (7.2 kB)
+#11 4.291 Collecting urllib3<3,>=1.26 (from requests<3,>=2.32->pompom-creative-ml==0.1.0)
+#11 4.302   Downloading urllib3-2.8.0-py3-none-any.whl.metadata (7.4 kB)
+#11 4.317 Collecting certifi>=2023.5.7 (from requests<3,>=2.32->pompom-creative-ml==0.1.0)
+#11 4.327   Downloading certifi-2026.7.22-py3-none-any.whl.metadata (2.5 kB)
+#11 4.418 Collecting scipy>=1.10.0 (from scikit-learn<2,>=1.7->pompom-creative-ml==0.1.0)
+#11 4.430   Downloading scipy-1.18.1-cp313-cp313-manylinux_2_27_aarch64.manylinux_2_28_aarch64.whl.metadata (62 kB)
+#11 4.460 Collecting joblib>=1.4.0 (from scikit-learn<2,>=1.7->pompom-creative-ml==0.1.0)
+#11 4.469   Downloading joblib-1.6.0-py3-none-any.whl.metadata (6.5 kB)
+#11 4.504 Collecting narwhals>=2.0.1 (from scikit-learn<2,>=1.7->pompom-creative-ml==0.1.0)
+#11 4.622   Downloading narwhals-2.27.1-py3-none-any.whl.metadata (15 kB)
+#11 4.664 Collecting threadpoolctl>=3.5.0 (from scikit-learn<2,>=1.7->pompom-creative-ml==0.1.0)
+#11 4.697   Downloading threadpoolctl-3.7.0-py3-none-any.whl.metadata (24 kB)
+#11 4.731 Collecting click>=7.0 (from uvicorn<1,>=0.35->uvicorn[standard]<1,>=0.35->pompom-creative-ml==0.1.0)
+#11 4.743   Downloading click-8.5.0-py3-none-any.whl.metadata (2.6 kB)
+#11 4.761 Collecting h11>=0.8 (from uvicorn<1,>=0.35->uvicorn[standard]<1,>=0.35->pompom-creative-ml==0.1.0)
+#11 4.773   Downloading h11-0.16.0-py3-none-any.whl.metadata (8.3 kB)
+#11 4.813 Collecting httptools>=0.8.0 (from uvicorn[standard]<1,>=0.35->pompom-creative-ml==0.1.0)
+#11 4.824   Downloading httptools-0.9.0-cp313-cp313-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl.metadata (3.5 kB)
+#11 4.864 Collecting pyyaml>=5.1 (from uvicorn[standard]<1,>=0.35->pompom-creative-ml==0.1.0)
+#11 4.874   Downloading pyyaml-6.0.3-cp313-cp313-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl.metadata (2.4 kB)
+#11 4.918 Collecting uvloop>=0.15.1 (from uvicorn[standard]<1,>=0.35->pompom-creative-ml==0.1.0)
+#11 4.937   Downloading uvloop-0.23.0-cp313-cp313-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl.metadata (5.1 kB)
+#11 5.032 Collecting watchfiles>=0.20 (from uvicorn[standard]<1,>=0.35->pompom-creative-ml==0.1.0)
+#11 5.111   Downloading watchfiles-1.3.0-cp310-abi3-manylinux_2_17_aarch64.manylinux2014_aarch64.whl.metadata (4.9 kB)
+#11 5.193 Collecting websockets>=13.0 (from uvicorn[standard]<1,>=0.35->pompom-creative-ml==0.1.0)
+#11 5.205   Downloading websockets-17.2-cp313-cp313-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl.metadata (6.3 kB)
+#11 5.224 Collecting anyio<5,>=4.1.0 (from anthropic>=0.25.0->pompom-creative-ml==0.1.0)
+#11 5.234   Downloading anyio-4.15.1-py3-none-any.whl.metadata (4.7 kB)
+#11 5.248 Collecting docstring-parser<1,>=0.15 (from anthropic>=0.25.0->pompom-creative-ml==0.1.0)
+#11 5.259   Downloading docstring_parser-0.18.0-py3-none-any.whl.metadata (3.5 kB)
+#11 5.279 Collecting httpx2<3,>=2.0.0 (from anthropic>=0.25.0->pompom-creative-ml==0.1.0)
+#11 5.288   Downloading httpx2-2.13.1-py3-none-any.whl.metadata (9.8 kB)
+#11 5.357 Collecting jiter<1,>=0.4.0 (from anthropic>=0.25.0->pompom-creative-ml==0.1.0)
+#11 5.370   Downloading jiter-0.17.0-cp313-cp313-manylinux_2_17_aarch64.manylinux2014_aarch64.whl.metadata (5.2 kB)
+#11 5.390 Collecting sniffio<2,>=1 (from anthropic>=0.25.0->pompom-creative-ml==0.1.0)
+#11 5.399   Downloading sniffio-1.3.1-py3-none-any.whl.metadata (3.9 kB)
+#11 5.416 Collecting httpcore2==2.13.1 (from httpx2<3,>=2.0.0->anthropic>=0.25.0->pompom-creative-ml==0.1.0)
+#11 5.428   Downloading httpcore2-2.13.1-py3-none-any.whl.metadata (26 kB)
+#11 5.450 Collecting truststore>=0.10 (from httpx2<3,>=2.0.0->anthropic>=0.25.0->pompom-creative-ml==0.1.0)
+#11 5.458   Downloading truststore-0.10.5-py3-none-any.whl.metadata (4.5 kB)
+#11 5.474 Collecting annotated-types>=0.6.0 (from pydantic>=2.9.0->fastapi<1,>=0.116->pompom-creative-ml==0.1.0)
+#11 5.485   Downloading annotated_types-0.8.0-py3-none-any.whl.metadata (15 kB)
+#11 6.032 Collecting pydantic-core==2.50.1 (from pydantic>=2.9.0->fastapi<1,>=0.116->pompom-creative-ml==0.1.0)
+#11 6.046   Downloading pydantic_core-2.50.1-cp313-cp313-manylinux_2_17_aarch64.manylinux2014_aarch64.whl.metadata (6.5 kB)
+#11 6.064 Collecting google-ai-generativelanguage==0.6.15 (from google-generativeai>=0.3.0->pompom-creative-ml==0.1.0)
+#11 6.166   Downloading google_ai_generativelanguage-0.6.15-py3-none-any.whl.metadata (5.7 kB)
+#11 6.191 Collecting google-api-core (from google-generativeai>=0.3.0->pompom-creative-ml==0.1.0)
+#11 6.202   Downloading google_api_core-2.42.0-py3-none-any.whl.metadata (3.2 kB)
+#11 6.238 Collecting google-api-python-client (from google-generativeai>=0.3.0->pompom-creative-ml==0.1.0)
+#11 6.249   Downloading google_api_python_client-2.201.0-py3-none-any.whl.metadata (6.8 kB)
+#11 6.274 Collecting google-auth>=2.15.0 (from google-generativeai>=0.3.0->pompom-creative-ml==0.1.0)
+#11 6.286   Downloading google_auth-2.62.0-py3-none-any.whl.metadata (6.0 kB)
+#11 6.395 Collecting protobuf (from google-generativeai>=0.3.0->pompom-creative-ml==0.1.0)
+#11 6.405   Downloading protobuf-7.36.2-cp310-abi3-manylinux2014_aarch64.whl.metadata (595 bytes)
+#11 6.433 Collecting tqdm (from google-generativeai>=0.3.0->pompom-creative-ml==0.1.0)
+#11 6.451   Downloading tqdm-4.70.1-py3-none-any.whl.metadata (57 kB)
+#11 6.482 Collecting proto-plus<2.0.0dev,>=1.22.3 (from google-ai-generativelanguage==0.6.15->google-generativeai>=0.3.0->pompom-creative-ml==0.1.0)
+#11 6.492   Downloading proto_plus-1.29.0-py3-none-any.whl.metadata (2.2 kB)
+#11 6.498 Collecting protobuf (from google-generativeai>=0.3.0->pompom-creative-ml==0.1.0)
+#11 6.516   Downloading protobuf-5.29.6-cp38-abi3-manylinux2014_aarch64.whl.metadata (592 bytes)
+#11 6.535 Collecting googleapis-common-protos<2.0.0,>=1.69.2 (from google-api-core->google-generativeai>=0.3.0->pompom-creative-ml==0.1.0)
+#11 6.544   Downloading googleapis_common_protos-1.75.5-py3-none-any.whl.metadata (8.5 kB)
+#11 6.548 INFO: pip is looking at multiple versions of google-api-core to determine which version is compatible with other requirements. This could take a while.
+#11 6.548 Collecting google-api-core (from google-generativeai>=0.3.0->pompom-creative-ml==0.1.0)
+#11 6.557   Downloading google_api_core-2.41.0-py3-none-any.whl.metadata (3.2 kB)
+#11 6.577   Downloading google_api_core-2.40.0-py3-none-any.whl.metadata (3.2 kB)
+#11 6.680   Downloading google_api_core-2.39.0-py3-none-any.whl.metadata (3.2 kB)
+#11 6.702   Downloading google_api_core-2.38.0-py3-none-any.whl.metadata (3.2 kB)
+#11 6.718   Downloading google_api_core-2.37.0-py3-none-any.whl.metadata (3.2 kB)
+#11 6.731   Downloading google_api_core-2.36.0-py3-none-any.whl.metadata (3.2 kB)
+#11 6.742   Downloading google_api_core-2.34.0-py3-none-any.whl.metadata (2.9 kB)
+#11 6.744 INFO: pip is still looking at multiple versions of google-api-core to determine which version is compatible with other requirements. This could take a while.
+#11 6.758   Downloading google_api_core-2.33.0-py3-none-any.whl.metadata (3.2 kB)
+#11 6.772 INFO: pip is looking at multiple versions of google-api-core[grpc] to determine which version is compatible with other requirements. This could take a while.
+#11 6.774 INFO: pip is still looking at multiple versions of google-api-core[grpc] to determine which version is compatible with other requirements. This could take a while.
+#11 7.094 Collecting grpcio<2.0.0,>=1.41.0 (from google-api-core[grpc]!=2.0.*,!=2.1.*,!=2.10.*,!=2.2.*,!=2.3.*,!=2.4.*,!=2.5.*,!=2.6.*,!=2.7.*,!=2.8.*,!=2.9.*,<3.0.0dev,>=1.34.1->google-ai-generativelanguage==0.6.15->google-generativeai>=0.3.0->pompom-creative-ml==0.1.0)
+#11 7.113   Downloading grpcio-1.84.0-cp313-cp313-manylinux2014_aarch64.manylinux_2_17_aarch64.whl.metadata (3.8 kB)
+#11 7.229 Collecting grpcio-status<2.0.0,>=1.41.0 (from google-api-core[grpc]!=2.0.*,!=2.1.*,!=2.10.*,!=2.2.*,!=2.3.*,!=2.4.*,!=2.5.*,!=2.6.*,!=2.7.*,!=2.8.*,!=2.9.*,<3.0.0dev,>=1.34.1->google-ai-generativelanguage==0.6.15->google-generativeai>=0.3.0->pompom-creative-ml==0.1.0)
+#11 7.239   Downloading grpcio_status-1.84.0-py3-none-any.whl.metadata (1.3 kB)
+#11 7.263 Collecting pyasn1-modules>=0.2.1 (from google-auth>=2.15.0->google-generativeai>=0.3.0->pompom-creative-ml==0.1.0)
+#11 7.275   Downloading pyasn1_modules-0.4.2-py3-none-any.whl.metadata (3.5 kB)
+#11 7.410 Collecting cryptography>=38.0.3 (from google-auth>=2.15.0->google-generativeai>=0.3.0->pompom-creative-ml==0.1.0)
+#11 7.423   Downloading cryptography-50.0.2-cp311-abi3-manylinux_2_34_aarch64.whl.metadata (4.4 kB)
+#11 7.426 INFO: pip is looking at multiple versions of googleapis-common-protos to determine which version is compatible with other requirements. This could take a while.
+#11 7.427 Collecting googleapis-common-protos<2.0.0,>=1.63.2 (from google-api-core->google-generativeai>=0.3.0->pompom-creative-ml==0.1.0)
+#11 7.436   Downloading googleapis_common_protos-1.75.4-py3-none-any.whl.metadata (8.5 kB)
+#11 7.451   Downloading googleapis_common_protos-1.75.3-py3-none-any.whl.metadata (8.5 kB)
+#11 7.469   Downloading googleapis_common_protos-1.75.2-py3-none-any.whl.metadata (8.5 kB)
+#11 7.481   Downloading googleapis_common_protos-1.75.1-py3-none-any.whl.metadata (8.5 kB)
+#11 7.495   Downloading googleapis_common_protos-1.75.0-py3-none-any.whl.metadata (8.6 kB)
+#11 7.501 INFO: pip is looking at multiple versions of grpcio-status to determine which version is compatible with other requirements. This could take a while.
+#11 7.501 Collecting grpcio-status<2.0.0,>=1.41.0 (from google-api-core[grpc]!=2.0.*,!=2.1.*,!=2.10.*,!=2.2.*,!=2.3.*,!=2.4.*,!=2.5.*,!=2.6.*,!=2.7.*,!=2.8.*,!=2.9.*,<3.0.0dev,>=1.34.1->google-ai-generativelanguage==0.6.15->google-generativeai>=0.3.0->pompom-creative-ml==0.1.0)
+#11 7.512   Downloading grpcio_status-1.83.1-py3-none-any.whl.metadata (1.2 kB)
+#11 7.525   Downloading grpcio_status-1.83.0-py3-none-any.whl.metadata (1.2 kB)
+#11 7.538   Downloading grpcio_status-1.82.2-py3-none-any.whl.metadata (1.2 kB)
+#11 7.552   Downloading grpcio_status-1.82.1-py3-none-any.whl.metadata (1.2 kB)
+#11 7.565   Downloading grpcio_status-1.81.1-py3-none-any.whl.metadata (1.2 kB)
+#11 7.579   Downloading grpcio_status-1.81.0-py3-none-any.whl.metadata (1.2 kB)
+#11 7.596   Downloading grpcio_status-1.80.0-py3-none-any.whl.metadata (1.3 kB)
+#11 7.597 INFO: pip is still looking at multiple versions of grpcio-status to determine which version is compatible with other requirements. This could take a while.
+#11 7.609   Downloading grpcio_status-1.78.0-py3-none-any.whl.metadata (1.3 kB)
+#11 7.621   Downloading grpcio_status-1.76.0-py3-none-any.whl.metadata (1.1 kB)
+#11 7.635   Downloading grpcio_status-1.75.1-py3-none-any.whl.metadata (1.1 kB)
+#11 7.736   Downloading grpcio_status-1.75.0-py3-none-any.whl.metadata (1.1 kB)
+#11 7.755   Downloading grpcio_status-1.74.0-py3-none-any.whl.metadata (1.1 kB)
+#11 7.757 INFO: This is taking longer than usual. You might need to provide the dependency resolver with stricter constraints to reduce runtime. See https://pip.pypa.io/warnings/backtracking for guidance. If you want to abort this run, press Ctrl + C.
+#11 7.768   Downloading grpcio_status-1.73.1-py3-none-any.whl.metadata (1.1 kB)
+#11 7.783   Downloading grpcio_status-1.73.0-py3-none-any.whl.metadata (1.1 kB)
+#11 7.800   Downloading grpcio_status-1.72.2-py3-none-any.whl.metadata (1.1 kB)
+#11 7.813   Downloading grpcio_status-1.72.1-py3-none-any.whl.metadata (1.1 kB)
+#11 7.825   Downloading grpcio_status-1.71.2-py3-none-any.whl.metadata (1.1 kB)
+#11 7.835 INFO: pip is looking at multiple versions of proto-plus to determine which version is compatible with other requirements. This could take a while.
+#11 7.835 Collecting proto-plus<2.0.0dev,>=1.22.3 (from google-ai-generativelanguage==0.6.15->google-generativeai>=0.3.0->pompom-creative-ml==0.1.0)
+#11 7.847   Downloading proto_plus-1.28.4-py3-none-any.whl.metadata (2.2 kB)
+#11 7.861   Downloading proto_plus-1.28.3-py3-none-any.whl.metadata (2.2 kB)
+#11 7.873   Downloading proto_plus-1.28.2-py3-none-any.whl.metadata (2.2 kB)
+#11 7.987 Collecting cffi>=2.0.0 (from cryptography>=38.0.3->google-auth>=2.15.0->google-generativeai>=0.3.0->pompom-creative-ml==0.1.0)
+#11 7.997   Downloading cffi-2.1.1-cp313-cp313-manylinux2014_aarch64.manylinux_2_17_aarch64.whl.metadata (2.5 kB)
+#11 8.011 Collecting pycparser (from cffi>=2.0.0->cryptography>=38.0.3->google-auth>=2.15.0->google-generativeai>=0.3.0->pompom-creative-ml==0.1.0)
+#11 8.026   Downloading pycparser-3.11-py3-none-any.whl.metadata (8.2 kB)
+#11 8.042 Collecting cloudpickle>=3.0 (from joblib>=1.4.0->scikit-learn<2,>=1.7->pompom-creative-ml==0.1.0)
+#11 8.050   Downloading cloudpickle-3.1.2-py3-none-any.whl.metadata (7.1 kB)
+#11 8.075 Collecting pyasn1<0.7.0,>=0.6.1 (from pyasn1-modules>=0.2.1->google-auth>=2.15.0->google-generativeai>=0.3.0->pompom-creative-ml==0.1.0)
+#11 8.083   Downloading pyasn1-0.6.4-py3-none-any.whl.metadata (8.4 kB)
+#11 8.107 Collecting httplib2<1.0.0,>=0.19.0 (from google-api-python-client->google-generativeai>=0.3.0->pompom-creative-ml==0.1.0)
+#11 8.116   Downloading httplib2-0.32.0-py3-none-any.whl.metadata (2.2 kB)
+#11 8.135 Collecting google-auth-httplib2<1.0.0,>=0.2.0 (from google-api-python-client->google-generativeai>=0.3.0->pompom-creative-ml==0.1.0)
+#11 8.144   Downloading google_auth_httplib2-0.4.4-py3-none-any.whl.metadata (3.0 kB)
+#11 8.159 Collecting uritemplate<5,>=3.0.1 (from google-api-python-client->google-generativeai>=0.3.0->pompom-creative-ml==0.1.0)
+#11 8.258   Downloading uritemplate-4.2.0-py3-none-any.whl.metadata (2.6 kB)
+#11 8.283 Collecting pyparsing<4,>=3.1 (from httplib2<1.0.0,>=0.19.0->google-api-python-client->google-generativeai>=0.3.0->pompom-creative-ml==0.1.0)
+#11 8.298   Downloading pyparsing-3.3.3-py3-none-any.whl.metadata (5.9 kB)
+#11 8.312 Downloading fastapi-0.143.3-py3-none-any.whl (144 kB)
+#11 8.331 Downloading jsonschema-4.26.0-py3-none-any.whl (90 kB)
+#11 8.344 Downloading numpy-2.5.4-cp313-cp313-manylinux_2_27_aarch64.manylinux_2_28_aarch64.whl (15.7 MB)
+#11 9.448    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 15.7/15.7 MB 14.2 MB/s  0:00:01
+#11 9.465 Downloading opencv_python_headless-4.14.0.94-cp37-abi3-manylinux_2_28_aarch64.whl (38.1 MB)
+#11 12.22    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 38.1/38.1 MB 13.8 MB/s  0:00:02
+#11 12.23 Downloading pydantic_settings-2.16.0-py3-none-any.whl (80 kB)
+#11 12.25 Downloading requests-2.34.2-py3-none-any.whl (73 kB)
+#11 12.27 Downloading charset_normalizer-3.5.2-cp313-cp313-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl (244 kB)
+#11 12.29 Downloading idna-3.20-py3-none-any.whl (69 kB)
+#11 12.30 Downloading scikit_learn-1.9.1-cp313-cp313-manylinux_2_27_aarch64.manylinux_2_28_aarch64.whl (8.8 MB)
+#11 13.03    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 8.8/8.8 MB 12.0 MB/s  0:00:00
+#11 13.05 Downloading urllib3-2.8.0-py3-none-any.whl (135 kB)
+#11 13.09 Downloading uvicorn-0.54.0-py3-none-any.whl (87 kB)
+#11 13.11 Downloading annotated_doc-0.0.5-py3-none-any.whl (5.3 kB)
+#11 13.12 Downloading anthropic-1.15.0-py3-none-any.whl (2.0 MB)
+#11 13.24    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 2.0/2.0 MB 20.4 MB/s  0:00:00
+#11 13.27 Downloading anyio-4.15.1-py3-none-any.whl (132 kB)
+#11 13.28 Downloading docstring_parser-0.18.0-py3-none-any.whl (22 kB)
+#11 13.29 Downloading httpx2-2.13.1-py3-none-any.whl (95 kB)
+#11 13.30 Downloading httpcore2-2.13.1-py3-none-any.whl (83 kB)
+#11 13.32 Downloading jiter-0.17.0-cp313-cp313-manylinux_2_17_aarch64.manylinux2014_aarch64.whl (343 kB)
+#11 13.35 Downloading opentelemetry_api-1.45.1-py3-none-any.whl (60 kB)
+#11 13.37 Downloading pydantic-2.14.1-py3-none-any.whl (488 kB)
+#11 13.41 Downloading pydantic_core-2.50.1-cp313-cp313-manylinux_2_17_aarch64.manylinux2014_aarch64.whl (2.0 MB)
+#11 13.61    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 2.0/2.0 MB 16.7 MB/s  0:00:00
+#11 13.62 Downloading sniffio-1.3.1-py3-none-any.whl (10 kB)
+#11 13.63 Downloading typing_extensions-4.16.0-py3-none-any.whl (45 kB)
+#11 13.65 Downloading annotated_types-0.8.0-py3-none-any.whl (13 kB)
+#11 13.66 Downloading attrs-26.1.0-py3-none-any.whl (67 kB)
+#11 13.68 Downloading certifi-2026.7.22-py3-none-any.whl (136 kB)
+#11 13.73 Downloading click-8.5.0-py3-none-any.whl (125 kB)
+#11 13.76 Downloading google_generativeai-0.8.6-py3-none-any.whl (155 kB)
+#11 13.78 Downloading google_ai_generativelanguage-0.6.15-py3-none-any.whl (1.3 MB)
+#11 13.86    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.3/1.3 MB 18.8 MB/s  0:00:00
+#11 13.87 Downloading google_api_core-2.33.0-py3-none-any.whl (176 kB)
+#11 13.89 Downloading google_auth-2.62.0-py3-none-any.whl (267 kB)
+#11 13.91 Downloading googleapis_common_protos-1.75.0-py3-none-any.whl (300 kB)
+#11 14.03 Downloading grpcio-1.84.0-cp313-cp313-manylinux2014_aarch64.manylinux_2_17_aarch64.whl (7.0 MB)
+#11 14.40    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 7.0/7.0 MB 18.6 MB/s  0:00:00
+#11 14.42 Downloading grpcio_status-1.71.2-py3-none-any.whl (14 kB)
+#11 14.43 Downloading proto_plus-1.28.2-py3-none-any.whl (50 kB)
+#11 14.45 Downloading protobuf-5.29.6-cp38-abi3-manylinux2014_aarch64.whl (320 kB)
+#11 14.57 Downloading cryptography-50.0.2-cp311-abi3-manylinux_2_34_aarch64.whl (4.7 MB)
+#11 14.83    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 4.7/4.7 MB 18.8 MB/s  0:00:00
+#11 14.85 Downloading cffi-2.1.1-cp313-cp313-manylinux2014_aarch64.manylinux_2_17_aarch64.whl (222 kB)
+#11 14.86 Downloading h11-0.16.0-py3-none-any.whl (37 kB)
+#11 14.88 Downloading httptools-0.9.0-cp313-cp313-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl (516 kB)
+#11 14.92 Downloading joblib-1.6.0-py3-none-any.whl (306 kB)
+#11 14.96 Downloading cloudpickle-3.1.2-py3-none-any.whl (22 kB)
+#11 14.97 Downloading jsonschema_specifications-2025.9.1-py3-none-any.whl (18 kB)
+#11 15.07 Downloading narwhals-2.27.1-py3-none-any.whl (483 kB)
+#11 15.09 Downloading openai-3.31.0-py3-none-any.whl (2.2 MB)
+#11 15.23    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 2.2/2.2 MB 17.9 MB/s  0:00:00
+#11 15.24 Downloading pyasn1_modules-0.4.2-py3-none-any.whl (181 kB)
+#11 15.26 Downloading pyasn1-0.6.4-py3-none-any.whl (84 kB)
+#11 15.28 Downloading python_dotenv-1.2.4-py3-none-any.whl (23 kB)
+#11 15.30 Downloading pyyaml-6.0.3-cp313-cp313-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl (767 kB)
+#11 15.34    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 767.1/767.1 kB 17.5 MB/s  0:00:00
+#11 15.35 Downloading referencing-0.37.0-py3-none-any.whl (26 kB)
+#11 15.37 Downloading rpds_py-2026.9.1-cp313-cp313-manylinux_2_17_aarch64.manylinux2014_aarch64.whl (372 kB)
+#11 15.40 Downloading scipy-1.18.1-cp313-cp313-manylinux_2_27_aarch64.manylinux_2_28_aarch64.whl (34.0 MB)
+#11 18.31    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 34.0/34.0 MB 11.7 MB/s  0:00:02
+#11 18.32 Downloading starlette-1.8.0-py3-none-any.whl (79 kB)
+#11 18.34 Downloading threadpoolctl-3.7.0-py3-none-any.whl (26 kB)
+#11 18.36 Downloading truststore-0.10.5-py3-none-any.whl (19 kB)
+#11 18.37 Downloading typing_inspection-0.4.4-py3-none-any.whl (14 kB)
+#11 18.39 Downloading uvloop-0.23.0-cp313-cp313-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl (4.4 MB)
+#11 18.78    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 4.4/4.4 MB 10.8 MB/s  0:00:00
+#11 18.79 Downloading watchfiles-1.3.0-cp310-abi3-manylinux_2_17_aarch64.manylinux2014_aarch64.whl (454 kB)
+#11 18.83 Downloading websockets-17.2-cp313-cp313-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl (226 kB)
+#11 18.85 Downloading google_api_python_client-2.201.0-py3-none-any.whl (16.8 MB)
+#11 20.08    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 16.8/16.8 MB 13.7 MB/s  0:00:01
+#11 20.10 Downloading google_auth_httplib2-0.4.4-py3-none-any.whl (9.5 kB)
+#11 20.11 Downloading httplib2-0.32.0-py3-none-any.whl (93 kB)
+#11 20.13 Downloading pyparsing-3.3.3-py3-none-any.whl (126 kB)
+#11 20.14 Downloading uritemplate-4.2.0-py3-none-any.whl (11 kB)
+#11 20.16 Downloading pycparser-3.11-py3-none-any.whl (51 kB)
+#11 20.18 Downloading tqdm-4.70.1-py3-none-any.whl (80 kB)
+#11 20.43 Building wheels for collected packages: pompom-creative-ml
+#11 20.43   Building wheel for pompom-creative-ml (pyproject.toml): started
+#11 20.63   Building wheel for pompom-creative-ml (pyproject.toml): finished with status 'done'
+#11 20.63   Created wheel for pompom-creative-ml: filename=pompom_creative_ml-0.1.0-py3-none-any.whl size=373318 sha256=3751e63a6293bd16424e25135f0608d19a26cdf7234498949314c1d5f334a354
+#11 20.63   Stored in directory: /tmp/pip-ephem-wheel-cache-5nex8_bz/wheels/19/62/e5/caf0138816cbbc0c92b8fb19626cf9ac282f22194a65231821
+#11 20.63 Successfully built pompom-creative-ml
+#11 20.74 Installing collected packages: websockets, uvloop, urllib3, uritemplate, typing-extensions, truststore, tqdm, threadpoolctl, sniffio, rpds-py, pyyaml, python-dotenv, pyparsing, pycparser, pyasn1, protobuf, numpy, narwhals, jiter, idna, httptools, h11, docstring-parser, cloudpickle, click, charset_normalizer, certifi, attrs, annotated-types, annotated-doc, uvicorn, typing-inspection, scipy, requests, referencing, pydantic-core, pyasn1-modules, proto-plus, opentelemetry-api, opencv-python-headless, joblib, httplib2, httpcore2, grpcio, googleapis-common-protos, cffi, anyio, watchfiles, starlette, scikit-learn, pydantic, jsonschema-specifications, httpx2, grpcio-status, cryptography, pydantic-settings, openai, jsonschema, google-auth, fastapi, anthropic, google-auth-httplib2, google-api-core, google-api-python-client, google-ai-generativelanguage, google-generativeai, pompom-creative-ml
+#11 33.38 
+#11 33.39 Successfully installed annotated-doc-0.0.5 annotated-types-0.8.0 anthropic-1.15.0 anyio-4.15.1 attrs-26.1.0 certifi-2026.7.22 cffi-2.1.1 charset_normalizer-3.5.2 click-8.5.0 cloudpickle-3.1.2 cryptography-50.0.2 docstring-parser-0.18.0 fastapi-0.143.3 google-ai-generativelanguage-0.6.15 google-api-core-2.33.0 google-api-python-client-2.201.0 google-auth-2.62.0 google-auth-httplib2-0.4.4 google-generativeai-0.8.6 googleapis-common-protos-1.75.0 grpcio-1.84.0 grpcio-status-1.71.2 h11-0.16.0 httpcore2-2.13.1 httplib2-0.32.0 httptools-0.9.0 httpx2-2.13.1 idna-3.20 jiter-0.17.0 joblib-1.6.0 jsonschema-4.26.0 jsonschema-specifications-2025.9.1 narwhals-2.27.1 numpy-2.5.4 openai-3.31.0 opencv-python-headless-4.14.0.94 opentelemetry-api-1.45.1 pompom-creative-ml-0.1.0 proto-plus-1.28.2 protobuf-5.29.6 pyasn1-0.6.4 pyasn1-modules-0.4.2 pycparser-3.11 pydantic-2.14.1 pydantic-core-2.50.1 pydantic-settings-2.16.0 pyparsing-3.3.3 python-dotenv-1.2.4 pyyaml-6.0.3 referencing-0.37.0 requests-2.34.2 rpds-py-2026.9.1 scikit-learn-1.9.1 scipy-1.18.1 sniffio-1.3.1 starlette-1.8.0 threadpoolctl-3.7.0 tqdm-4.70.1 truststore-0.10.5 typing-extensions-4.16.0 typing-inspection-0.4.4 uritemplate-4.2.0 urllib3-2.8.0 uvicorn-0.54.0 uvloop-0.23.0 watchfiles-1.3.0 websockets-17.2
+#11 33.39 WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+#11 DONE 34.5s
+
+#12 exporting to image
+#12 exporting layers
+#12 exporting layers 1.9s done
+#12 writing image sha256:eb441c0f480bd4a239cd11a6d9ed4aeed99be8f04b3e01b3d851a7678a0f9309
+#12 writing image sha256:eb441c0f480bd4a239cd11a6d9ed4aeed99be8f04b3e01b3d851a7678a0f9309 done
+#12 naming to docker.io/library/intelligence-ml-service done
+#12 DONE 1.9s
+
+#13 resolving provenance for metadata file
+#13 DONE 0.0s
+ Image intelligence-ml-service Built 
+Deploying: ml-service
+ Container intelligence-ml-service-1 Recreate 
+ Container intelligence-ml-service-1 Recreated 
+ Container intelligence-ml-service-1 Starting 
+ Container intelligence-ml-service-1 Started 
+ Container intelligence-ml-service-1 Waiting 
+ Container intelligence-ml-service-1 Healthy 
+  ml-service: sha256:eb441c0f480bd4a239cd11a6d9ed4aeed99be8f04b3e01b3d851a7678a0f9309
+  ml-service HTTP check passed (/health)
+NAME                        IMAGE                     COMMAND                  SERVICE      CREATED         STATUS                   PORTS
+intelligence-ml-service-1   intelligence-ml-service   "uvicorn app.main:ap…"   ml-service   7 seconds ago   Up 6 seconds (healthy)   127.0.0.1:8000->8000/tcp
+Verified. Application: http://localhost:4200

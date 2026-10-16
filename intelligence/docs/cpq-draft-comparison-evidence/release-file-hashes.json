@@ -1,0 +1,11 @@
+{
+  "intelligence/backend/src/main/java/com/pompomhills/intelligence/workflow/CpqDraftReviewService.java": "0e3dc3262032d2ec749c362c5ec72ea73c69a73cd27c54dc2b1fc19afb704e96",
+  "intelligence/backend/src/main/java/com/pompomhills/intelligence/workflow/CpqDraftReviewController.java": "2b5870ae94c267d87f2d3f99f46c7bee6d7326d52a53650f7d3679f9f24ccede",
+  "intelligence/backend/src/main/java/com/pompomhills/intelligence/workflow/CpqOwnerPilotService.java": "d0b05925ad75e8ff6da0693c0c736f4a382b71541e1408fc150f533641198e05",
+  "intelligence/backend/src/main/java/com/pompomhills/intelligence/quality/QualityMlClient.java": "4251693a114399be2a31ebddf42d9654a0195829f923aeba798d0e844f221bf6",
+  "intelligence/backend/src/main/resources/cpq/mimi-draft-comparison-v1.json": "261c778510625f5df86f2b6e046dc0c351d3e12b70af7aba2ab7d53377e884d5",
+  "intelligence/backend/src/main/resources/db/migration/V67__cpq_diagnostic_pair_review.sql": "a7b06314cb2dc013d24b67f82b5e86aaafa770c4cd38e121110cf52861c85834",
+  "intelligence/ml-service/app/workflow/draft_comparative_review.py": "50704c71aa137f9c0fc3f06174e8d683a82de7b110134fca5f1dcf8d3e7edca3",
+  "intelligence/ml-service/app/workflow/api.py": "a21435cc5dd45947fa934bff1da3f0f1072f52effe7e375a6887b485485d7346",
+  "intelligence/frontend/src/app/pages/quality-validator/cpq-owner-pilot.component.ts": "0c9f6f6bb09e0304195e44d799210c0f0983f97d1385cc8291652c571342f858"
+}

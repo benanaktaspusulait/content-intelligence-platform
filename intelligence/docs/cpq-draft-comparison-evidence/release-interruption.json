@@ -1,0 +1,8 @@
+{
+  "event": "Docker engine unavailable after frontend/backend deployment, before ML build",
+  "frontendDeployed": true,
+  "backendDeployed": true,
+  "mlDeployLog": "Only Building current sources: ml-service; no build completion",
+  "providerCalls": 0,
+  "engineRecovery": "Normal Docker Desktop restart requested; no reset or data deletion"
+}

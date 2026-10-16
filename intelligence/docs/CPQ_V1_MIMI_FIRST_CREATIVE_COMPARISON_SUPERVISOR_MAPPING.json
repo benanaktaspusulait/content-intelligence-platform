@@ -1,0 +1,30 @@
+{
+  "artifact": "SUPERVISOR_ONLY_BLIND_IDENTITY_MAPPING",
+  "reviewerPacket": "CPQ_V1_MIMI_FIRST_CREATIVE_COMPARISON_BLIND_PACKET.md",
+  "randomization": "Python random.Random(seed).shuffle([ORIGINAL, DRAFT_ONLY])",
+  "seed": "POMPOM-HILLS-CPQ-V1-MIMI-PAIRED-REVIEW-2026-10-16",
+  "labels": {
+    "A": {
+      "subject": "DRAFT_ONLY",
+      "sha256": "82a2d896798076cb3fd3cf88482c5709167d88034a8b6702149f000bc690abef",
+      "status": "DRAFT_ONLY"
+    },
+    "B": {
+      "subject": "ORIGINAL",
+      "sha256": "0fe229774deb4b31a42145bad91cf10c91634ba00da39fa3e9d288b3a2e7bd98",
+      "status": "IMMUTABLE_ORIGINAL"
+    }
+  },
+  "approvedStorySha256": "df653dbcaf16bfdbceb87baa23688d70d739c34941d0075e30e96b181e1bf32b",
+  "effectiveProductionContext": {
+    "contentProfile": "ABSURD_PHYSICS",
+    "generator": "SEEDANCE_2_0_MINI",
+    "durationSeconds": 15,
+    "mode": "image2video",
+    "resolution": "480p",
+    "aspectRatio": "9:16"
+  },
+  "reviewPacketContainsExactlyTwoPromptBodies": true,
+  "providerCalls": 0,
+  "reviewerResults": "NONE"
+}

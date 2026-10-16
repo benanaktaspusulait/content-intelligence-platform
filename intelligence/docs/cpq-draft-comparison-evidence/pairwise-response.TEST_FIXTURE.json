@@ -1,0 +1,132 @@
+{
+  "dimensions": {
+    "SCROLL_STOP_VISUAL_PROMISE": {
+      "judgment": "EQUIVALENT",
+      "evidence": [
+        {
+          "label": "A",
+          "quote": "as a cleanup reminder"
+        },
+        {
+          "label": "B",
+          "quote": "looking determined"
+        }
+      ],
+      "absentEvidenceExplanation": "",
+      "reason": "TEST_FIXTURE compares two literal instructions; not real creative evidence.",
+      "weaknessesOrRisks": [
+        "TEST_FIXTURE unverified visual legibility."
+      ],
+      "targetedSuggestion": "TEST_FIXTURE inspect the visible cleanup cue.",
+      "uncertainty": "TEST_FIXTURE rendered readability is unverified."
+    },
+    "CAUSAL_PROGRESSION": {
+      "judgment": "EQUIVALENT",
+      "evidence": [
+        {
+          "label": "A",
+          "quote": "as a cleanup reminder"
+        },
+        {
+          "label": "B",
+          "quote": "looking determined"
+        }
+      ],
+      "absentEvidenceExplanation": "",
+      "reason": "TEST_FIXTURE compares two literal instructions; not real creative evidence.",
+      "weaknessesOrRisks": [
+        "TEST_FIXTURE unverified visual legibility."
+      ],
+      "targetedSuggestion": "TEST_FIXTURE inspect the visible cleanup cue.",
+      "uncertainty": "TEST_FIXTURE rendered readability is unverified."
+    },
+    "VISUAL_STORYTELLING": {
+      "judgment": "EQUIVALENT",
+      "evidence": [
+        {
+          "label": "A",
+          "quote": "as a cleanup reminder"
+        },
+        {
+          "label": "B",
+          "quote": "looking determined"
+        }
+      ],
+      "absentEvidenceExplanation": "",
+      "reason": "TEST_FIXTURE compares two literal instructions; not real creative evidence.",
+      "weaknessesOrRisks": [
+        "TEST_FIXTURE unverified visual legibility."
+      ],
+      "targetedSuggestion": "TEST_FIXTURE inspect the visible cleanup cue.",
+      "uncertainty": "TEST_FIXTURE rendered readability is unverified."
+    },
+    "PRODUCTION_EXECUTABILITY": {
+      "judgment": "EQUIVALENT",
+      "evidence": [
+        {
+          "label": "A",
+          "quote": "as a cleanup reminder"
+        },
+        {
+          "label": "B",
+          "quote": "looking determined"
+        }
+      ],
+      "absentEvidenceExplanation": "",
+      "reason": "TEST_FIXTURE compares two literal instructions; not real creative evidence.",
+      "weaknessesOrRisks": [
+        "TEST_FIXTURE unverified visual legibility."
+      ],
+      "targetedSuggestion": "TEST_FIXTURE inspect the visible cleanup cue.",
+      "uncertainty": "TEST_FIXTURE rendered readability is unverified."
+    },
+    "ENDING_REPLAY": {
+      "judgment": "EQUIVALENT",
+      "evidence": [
+        {
+          "label": "A",
+          "quote": "as a cleanup reminder"
+        },
+        {
+          "label": "B",
+          "quote": "looking determined"
+        }
+      ],
+      "absentEvidenceExplanation": "",
+      "reason": "TEST_FIXTURE compares two literal instructions; not real creative evidence.",
+      "weaknessesOrRisks": [
+        "TEST_FIXTURE unverified visual legibility."
+      ],
+      "targetedSuggestion": "TEST_FIXTURE inspect the visible cleanup cue.",
+      "uncertainty": "TEST_FIXTURE rendered readability is unverified."
+    },
+    "DISTINCTIVE_CREATIVE_VALUE": {
+      "judgment": "EQUIVALENT",
+      "evidence": [
+        {
+          "label": "A",
+          "quote": "as a cleanup reminder"
+        },
+        {
+          "label": "B",
+          "quote": "looking determined"
+        }
+      ],
+      "absentEvidenceExplanation": "",
+      "reason": "TEST_FIXTURE compares two literal instructions; not real creative evidence.",
+      "weaknessesOrRisks": [
+        "TEST_FIXTURE unverified visual legibility."
+      ],
+      "targetedSuggestion": "TEST_FIXTURE inspect the visible cleanup cue.",
+      "uncertainty": "TEST_FIXTURE rendered readability is unverified."
+    }
+  },
+  "overall": {
+    "judgment": "EQUIVALENT",
+    "rationale": "TEST_FIXTURE comparison mechanics only.",
+    "strongestDifference": "TEST_FIXTURE specific cleanup-intention wording.",
+    "unresolvedIssue": "TEST_FIXTURE no rendered evidence.",
+    "blockingRegressions": [],
+    "uncertainty": "TEST_FIXTURE not calibrated independent review."
+  }
+}

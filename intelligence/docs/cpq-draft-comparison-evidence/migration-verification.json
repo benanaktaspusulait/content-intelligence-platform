@@ -1,0 +1,265 @@
+{
+  "allAppliedChecksumsVerified": true,
+  "migrations": [
+    {
+      "version": "1",
+      "checksum": -25508029
+    },
+    {
+      "version": "2",
+      "checksum": -1331336873
+    },
+    {
+      "version": "3",
+      "checksum": 935380542
+    },
+    {
+      "version": "4",
+      "checksum": 1166961807
+    },
+    {
+      "version": "5",
+      "checksum": -1620932911
+    },
+    {
+      "version": "6",
+      "checksum": 691354332
+    },
+    {
+      "version": "7",
+      "checksum": -580435709
+    },
+    {
+      "version": "8",
+      "checksum": 1702153555
+    },
+    {
+      "version": "9",
+      "checksum": -1618012499
+    },
+    {
+      "version": "10",
+      "checksum": 1860967807
+    },
+    {
+      "version": "11",
+      "checksum": -1179586019
+    },
+    {
+      "version": "12",
+      "checksum": -1043058020
+    },
+    {
+      "version": "13",
+      "checksum": -1845914412
+    },
+    {
+      "version": "14",
+      "checksum": 1725745504
+    },
+    {
+      "version": "15",
+      "checksum": 171116677
+    },
+    {
+      "version": "16",
+      "checksum": 360844505
+    },
+    {
+      "version": "17",
+      "checksum": 577245998
+    },
+    {
+      "version": "18",
+      "checksum": -153374865
+    },
+    {
+      "version": "19",
+      "checksum": -584338853
+    },
+    {
+      "version": "20",
+      "checksum": 1888610967
+    },
+    {
+      "version": "21",
+      "checksum": -1737528977
+    },
+    {
+      "version": "22",
+      "checksum": -396176729
+    },
+    {
+      "version": "23",
+      "checksum": 643257151
+    },
+    {
+      "version": "24",
+      "checksum": -9815145
+    },
+    {
+      "version": "25",
+      "checksum": -853850114
+    },
+    {
+      "version": "26",
+      "checksum": 1047098092
+    },
+    {
+      "version": "27",
+      "checksum": 443299996
+    },
+    {
+      "version": "28",
+      "checksum": -1497087386
+    },
+    {
+      "version": "29",
+      "checksum": 1600129608
+    },
+    {
+      "version": "30",
+      "checksum": 2007381331
+    },
+    {
+      "version": "31",
+      "checksum": 933397888
+    },
+    {
+      "version": "32",
+      "checksum": 383630854
+    },
+    {
+      "version": "33",
+      "checksum": -1016854659
+    },
+    {
+      "version": "34",
+      "checksum": -1320052042
+    },
+    {
+      "version": "35",
+      "checksum": -1477992256
+    },
+    {
+      "version": "36",
+      "checksum": 1359045635
+    },
+    {
+      "version": "37",
+      "checksum": -2127066374
+    },
+    {
+      "version": "38",
+      "checksum": 137468069
+    },
+    {
+      "version": "39",
+      "checksum": -1249178518
+    },
+    {
+      "version": "40",
+      "checksum": -1027037620
+    },
+    {
+      "version": "41",
+      "checksum": -282838276
+    },
+    {
+      "version": "42",
+      "checksum": -1203969313
+    },
+    {
+      "version": "43",
+      "checksum": -1776088595
+    },
+    {
+      "version": "44",
+      "checksum": -2046807881
+    },
+    {
+      "version": "45",
+      "checksum": 1848941581
+    },
+    {
+      "version": "46",
+      "checksum": -1940413346
+    },
+    {
+      "version": "47",
+      "checksum": -1166421833
+    },
+    {
+      "version": "48",
+      "checksum": 617928754
+    },
+    {
+      "version": "49",
+      "checksum": -1755913866
+    },
+    {
+      "version": "50",
+      "checksum": 1423547903
+    },
+    {
+      "version": "51",
+      "checksum": 1061941892
+    },
+    {
+      "version": "52",
+      "checksum": -392355117
+    },
+    {
+      "version": "53",
+      "checksum": 1559186844
+    },
+    {
+      "version": "54",
+      "checksum": 73388447
+    },
+    {
+      "version": "55",
+      "checksum": -101611342
+    },
+    {
+      "version": "58",
+      "checksum": 1132356659
+    },
+    {
+      "version": "59",
+      "checksum": -712479642
+    },
+    {
+      "version": "60",
+      "checksum": -1137696370
+    },
+    {
+      "version": "61",
+      "checksum": -1492529990
+    },
+    {
+      "version": "62",
+      "checksum": 1349307952
+    },
+    {
+      "version": "63",
+      "checksum": -1364565152
+    },
+    {
+      "version": "64",
+      "checksum": 613480829
+    },
+    {
+      "version": "65",
+      "checksum": 1633660260
+    },
+    {
+      "version": "66",
+      "checksum": -1797319927
+    },
+    {
+      "version": "67",
+      "checksum": 4455487
+    }
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "label": "OFFLINE_SIZING_ESTIMATE_NOT_CREATIVE_EVIDENCE",
+  "representativeResponseLabel": "TEST_FIXTURE",
+  "responseUtf8Bytes": 3294,
+  "responseO200kEstimate": 826,
+  "tokenizerLimitation": "o200k_base estimate, not verified model-specific tokenizer; DeepSeek uses conservative UTF-8 byte bound",
+  "reviewers": {
+    "CRITIC_A": {
+      "provider": "deepseek",
+      "model": "deepseek-v4-pro",
+      "reasoningEffort": "none",
+      "maxOutputTokens": 6000,
+      "inputTokenUpperBound": 13436,
+      "maxCalculatedCostUsd": 0.04149552,
+      "inputUsdPerMillion": 1.32,
+      "outputUsdPerMillion": 3.96,
+      "responseMode": "json_object",
+      "automaticRetries": false,
+      "liveAvailability": "UNVERIFIED_NO_PROVIDER_CALL",
+      "instructionVersion": "PAIRWISE_CREATIVE_INSTRUCTIONS_V1",
+      "responseSchemaVersion": "PAIRWISE_CREATIVE_RESPONSE_V1",
+      "messagesAndSchemaUtf8Bytes": 11969,
+      "o200kInputEstimateExcludingChatOverhead": 2796,
+      "outputAllowanceSharedWithReasoning": false
+    },
+    "CRITIC_B": {
+      "provider": "openai",
+      "model": "gpt-6.1-sol",
+      "reasoningEffort": "low",
+      "maxOutputTokens": 8000,
+      "inputTokenUpperBound": 13436,
+      "maxCalculatedCostUsd": 0.11359,
+      "inputUsdPerMillion": 2.5,
+      "outputUsdPerMillion": 10.0,
+      "responseMode": "json_schema",
+      "automaticRetries": false,
+      "liveAvailability": "UNVERIFIED_NO_PROVIDER_CALL",
+      "instructionVersion": "PAIRWISE_CREATIVE_INSTRUCTIONS_V1",
+      "responseSchemaVersion": "PAIRWISE_CREATIVE_RESPONSE_V1",
+      "messagesAndSchemaUtf8Bytes": 12436,
+      "o200kInputEstimateExcludingChatOverhead": 3183,
+      "outputAllowanceSharedWithReasoning": true
+    }
+  }
+}
