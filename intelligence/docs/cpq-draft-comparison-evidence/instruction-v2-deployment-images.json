@@ -1,0 +1,12 @@
+[
+  {
+    "service": "ml-service",
+    "image": "sha256:38e82259ab3a862aadbad820003e192cee40ab7654c8dccf80f60ad263be373f",
+    "health": "healthy"
+  },
+  {
+    "service": "backend",
+    "image": "sha256:c11f6a91a468b9ab1b32a093756b83950d52bb2eb1e5fdc52baac4e8c8d52652",
+    "health": "healthy"
+  }
+]

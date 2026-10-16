@@ -1,0 +1,66 @@
+{
+  "preflight": "PASS",
+  "instructionVersion": "PAIRWISE_CREATIVE_INSTRUCTIONS_V2",
+  "scopeSha256": "269222e51b2de5ff3335863b6be24d8e5f77580c32ba5ef30329098f4e8d10b1",
+  "ownerAuthentication": true,
+  "originalAndDraftExact": true,
+  "blindPacketsAndOppositeOrders": true,
+  "V1FailedAndUnexecutedRequestsUnchanged": true,
+  "equivalentV2ExperimentExists": false,
+  "models": {
+    "CRITIC_A": {
+      "provider": "deepseek",
+      "model": "deepseek-v4-pro",
+      "reasoningEffort": "none",
+      "maxOutputTokens": 6000,
+      "inputTokenUpperBound": 13944,
+      "maxCalculatedCostUsd": 0.04216608,
+      "inputUsdPerMillion": 1.32,
+      "outputUsdPerMillion": 3.96,
+      "responseMode": "json_object",
+      "automaticRetries": false,
+      "liveAvailability": "UNVERIFIED_NO_PROVIDER_CALL",
+      "instructionVersion": "PAIRWISE_CREATIVE_INSTRUCTIONS_V2",
+      "responseSchemaVersion": "PAIRWISE_CREATIVE_RESPONSE_V1"
+    },
+    "CRITIC_B": {
+      "provider": "openai",
+      "model": "gpt-6.1-sol",
+      "reasoningEffort": "low",
+      "maxOutputTokens": 8000,
+      "inputTokenUpperBound": 13944,
+      "maxCalculatedCostUsd": 0.11486,
+      "inputUsdPerMillion": 2.5,
+      "outputUsdPerMillion": 10.0,
+      "responseMode": "json_schema",
+      "automaticRetries": false,
+      "liveAvailability": "UNVERIFIED_NO_PROVIDER_CALL",
+      "instructionVersion": "PAIRWISE_CREATIVE_INSTRUCTIONS_V2",
+      "responseSchemaVersion": "PAIRWISE_CREATIVE_RESPONSE_V1"
+    }
+  },
+  "services": [
+    {
+      "service": "backend",
+      "image": "sha256:c11f6a91a468b9ab1b32a093756b83950d52bb2eb1e5fdc52baac4e8c8d52652",
+      "health": "healthy"
+    },
+    {
+      "service": "ml-service",
+      "image": "sha256:38e82259ab3a862aadbad820003e192cee40ab7654c8dccf80f60ad263be373f",
+      "health": "healthy"
+    },
+    {
+      "service": "postgres",
+      "image": "sha256:25a89970a83255ae96484d709005bb35aa71f7455f941bc1634514f31c5d5c62",
+      "health": "healthy"
+    }
+  ],
+  "hostFreeBytes": 5441142784,
+  "dispatch": "DISABLED",
+  "sourceGate": "UNCHANGED_BLOCKED",
+  "cpqGrading": "INACTIVE",
+  "renderAuthorized": false,
+  "providerCallsThisTask": 0,
+  "paidAuthorizationReceived": false
+}

@@ -1,0 +1,5 @@
+{
+  "intelligence/backend/src/main/java/com/pompomhills/intelligence/workflow/CpqDraftReviewService.java": "b540944a3d28b4e3afce9b0de71373bfd63f12ba191525ba0f77b48e35c1d610",
+  "intelligence/backend/src/main/resources/cpq/mimi-draft-comparison-v1.json": "a47fd81239ca252b37df0b55b3478a99e20f156db96bdf3ec4f73ee8930f92f5",
+  "intelligence/ml-service/app/workflow/draft_comparative_review.py": "51392bcce44e545be5f634838fdb02fabcdab96a5fd91d81038dcf2641fd0cb9"
+}

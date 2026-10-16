@@ -72,12 +72,12 @@
   "services": [
     {
       "service": "backend",
-      "image": "sha256:1eb065180f1a413c02b47b32a0644d655e6090dfdda377126ec2767432d5ac9b",
+      "image": "sha256:c11f6a91a468b9ab1b32a093756b83950d52bb2eb1e5fdc52baac4e8c8d52652",
       "health": "healthy"
     },
     {
       "service": "ml-service",
-      "image": "sha256:eb441c0f480bd4a239cd11a6d9ed4aeed99be8f04b3e01b3d851a7678a0f9309",
+      "image": "sha256:38e82259ab3a862aadbad820003e192cee40ab7654c8dccf80f60ad263be373f",
       "health": "healthy"
     },
     {
@@ -96,5 +96,5 @@
       "health": "healthy"
     }
   ],
-  "hostFreeBytes": 6359687168
+  "hostFreeBytes": 5465501696
 }

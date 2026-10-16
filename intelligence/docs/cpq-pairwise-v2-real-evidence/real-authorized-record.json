@@ -1,0 +1,153 @@
+{
+  "sourceFidelity": "UNRESOLVED_NOT_EVALUATED_BY_THIS_REVIEW",
+  "renderAuthorized": false,
+  "diagnosticOnly": true,
+  "officialGrading": "INACTIVE",
+  "purpose": "DRAFT_COMPARATIVE_REVIEW_V1",
+  "reviewId": "3e07fc77-7d51-4e18-8dfe-19bc292add23",
+  "snapshot": {
+    "inputs": {
+      "CRITIC_A": {
+        "packets": [
+          {
+            "label": "A",
+            "prompt": "TITLE / FORMAT\nMimi Sticky / 15s Video\n\nVISUAL STYLE\nBright and colorful animation with a playful tone. Make Mimi, the sticky note, and the toy cabinet easy to read together at the opening. Keep staging simple and spatially consistent; reframe only when needed to keep the action clear.\n\nCHARACTER / CONTINUITY\nMimi is the established anthropomorphic bunny. Preserve that identity and do not invent unverified appearance details. Keep the toy cabinet and mirror in the same scene.\n\nTIMED SHOT PLAN\n0-2s: Mimi reaches to place one sticky note on the toy cabinet as a cleanup reminder. In a clear view that includes Mimi, the note, and the cabinet, the note visibly sticks to one fingertip instead of the cabinet. The cleanup intention should read from the action; readable lettering is not required.\n2-5s: Mimi tries once to peel the stuck note away with her other hand. The note splits into two, with one note sticking to each hand.\n5-10s: Continuing the same note-pulling action, show the notes doubling clearly from two to four to eight. The notes progressively cover Mimi's arms, legs, and parts of her face, while keeping her eyes and mouth readable. Mimi becomes visibly overwhelmed; do not add another attempt or another doubling beyond eight.\n10-12s: Mimi sees herself in the mirror and screams. Show the same already note-covered, overwhelmed Mimi in the reflection. Keep the existing note coverage unchanged through the mirror reaction and directly into the sneeze; add no pulling action, notes, or escalation here.\n12-15s: Mimi sneezes; all the notes fly off her and stick to the toy cabinet. Mimi visibly breathes a sigh of relief. End with Mimi relieved and the cabinet still visibly messy.\n\nAUDIO\nPlayful background music with simple sneeze and sticky-note sounds. No speech or captions.\n\nNEGATIVE CONSTRAINTS\nNo dark themes, violence, injury, or choking imagery.\n\nCHARACTER IDENTITY LOCK\nMimi is the established anthropomorphic bunny character. Preserve that identity; do not render a human or invent unverified visual details. No approved visual reference is currently bound, so appearance details remain unverified."
+          },
+          {
+            "label": "B",
+            "prompt": "TITLE / FORMAT\nMimi Sticky / 15s Video\n\nVISUAL STYLE\nBright and colorful animation with a playful tone.\n\nCHARACTER / CONTINUITY\nMimi, an anthropomorphic bunny, interacts with sticky notes in a humorous and chaotic manner.\n\nTIMED SHOT PLAN\n0-2s: Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger [close-up on Mimi's hand] Mimi is in front of a toy cabinet, looking determined -> the note sticks to Mimi, not the cabinet\n2-5s: Mimi tries to peel the stuck note away with her other hand; the note splits into two [medium shot of Mimi struggling] Mimi pulls at the note -> one note sticks to each hand\n5-10s: Mimi continues to pull; each pull doubles the number of sticky notes [wide shot showing Mimi covered in notes] notes multiply from two to four to eight as she pulls, progressively covering her arms, legs and face -> Mimi is overwhelmed by notes\n10-12s: Mimi sees herself in a mirror and screams [close-up on Mimi's shocked face] Mimi is startled by her reflection completely covered in notes -> Mimi is startled\n12-15s: Mimi sneezes and the sticky notes fly off [medium shot of notes flying] notes scatter and stick to the cabinet -> Mimi breathes a sigh of relief but the cabinet remains messy\n\nAUDIO\nPlayful background music with sound effects for sneezing and notes sticking.\n\nNEGATIVE CONSTRAINTS\nNo dark themes or violence.\n\nFINAL CUT\nMimi is relieved but the cabinet remains visibly messy.\n\nCHARACTER IDENTITY LOCK\nMimi is the established anthropomorphic bunny character. Preserve that identity; do not render a human or invent unverified visual details. No approved visual reference is currently bound, so appearance details remain unverified.\n\nPRODUCTION SETTINGS\nAspect ratio: 9:16. Target generator: SEEDANCE_2_0_MINI. Content profile: AUTO."
+          }
+        ],
+        "purpose": "DRAFT_COMPARATIVE_REVIEW_V1",
+        "instructionVersion": "PAIRWISE_CREATIVE_INSTRUCTIONS_V2",
+        "productionSettings": {
+          "mode": "image2video",
+          "generator": "SEEDANCE_2_0_MINI",
+          "resolution": "480p",
+          "aspectRatio": "9:16",
+          "contentProfile": "ABSURD_PHYSICS",
+          "durationSeconds": 15
+        },
+        "reviewerInstructions": "# Blind Paired Creative Review Packet\n\n**Reviewer instructions:** Assess the two prompt texts independently against the same shared production context below. Do not infer a winner from label order or prompt length. For each dimension below, give exact quotations from the applicable prompt, specific strengths and weaknesses, Seedance production risks, actionable improvements, uncertainty, and a comparative judgment (A better / B better / equivalent / insufficient evidence). If text alone does not support a comparison, select insufficient evidence. Finish with an overall comparative judgment. Text-only review cannot establish rendered performance, retention, source fidelity, or official CPQ grade. Do not discuss or infer prompt provenance; submit this packet only. Do not share your assessment with another reviewer.\n\n**Dimensions:**\n\n1. `SCROLL_STOP_VISUAL_PROMISE`\n2. `CAUSAL_PROGRESSION`\n3. `VISUAL_STORYTELLING`\n4. `PRODUCTION_EXECUTABILITY`\n5. `ENDING_REPLAY`\n6. `DISTINCTIVE_CREATIVE_VALUE`\n\n**Shared production context (same for A and B):**\n\nContent profile: ABSURD_PHYSICS\nGenerator: SEEDANCE_2_0_MINI\nDuration: 15 seconds\nMode: image2video\nResolution: 480p\nAspect ratio: 9:16\n\n\nEvidence admission requirement: For EVERY A_BETTER or B_BETTER dimension, include at least one short literal excerpt from A AND at least one from B. A reason mentioning B does not replace a B excerpt. If a relevant instruction is absent on one side, state precisely what is absent in absentEvidenceExplanation (at least 20 characters); never invent a quotation. Do not claim an instruction is absent without checking the full supplied text. An empty evidence array always needs that concrete explanation.\n",
+        "responseSchemaVersion": "PAIRWISE_CREATIVE_RESPONSE_V1"
+      },
+      "CRITIC_B": {
+        "packets": [
+          {
+            "label": "B",
+            "prompt": "TITLE / FORMAT\nMimi Sticky / 15s Video\n\nVISUAL STYLE\nBright and colorful animation with a playful tone.\n\nCHARACTER / CONTINUITY\nMimi, an anthropomorphic bunny, interacts with sticky notes in a humorous and chaotic manner.\n\nTIMED SHOT PLAN\n0-2s: Mimi reaches toward the toy cabinet with a sticky note; instead of sticking to the cabinet, the note visibly clings to her finger [close-up on Mimi's hand] Mimi is in front of a toy cabinet, looking determined -> the note sticks to Mimi, not the cabinet\n2-5s: Mimi tries to peel the stuck note away with her other hand; the note splits into two [medium shot of Mimi struggling] Mimi pulls at the note -> one note sticks to each hand\n5-10s: Mimi continues to pull; each pull doubles the number of sticky notes [wide shot showing Mimi covered in notes] notes multiply from two to four to eight as she pulls, progressively covering her arms, legs and face -> Mimi is overwhelmed by notes\n10-12s: Mimi sees herself in a mirror and screams [close-up on Mimi's shocked face] Mimi is startled by her reflection completely covered in notes -> Mimi is startled\n12-15s: Mimi sneezes and the sticky notes fly off [medium shot of notes flying] notes scatter and stick to the cabinet -> Mimi breathes a sigh of relief but the cabinet remains messy\n\nAUDIO\nPlayful background music with sound effects for sneezing and notes sticking.\n\nNEGATIVE CONSTRAINTS\nNo dark themes or violence.\n\nFINAL CUT\nMimi is relieved but the cabinet remains visibly messy.\n\nCHARACTER IDENTITY LOCK\nMimi is the established anthropomorphic bunny character. Preserve that identity; do not render a human or invent unverified visual details. No approved visual reference is currently bound, so appearance details remain unverified.\n\nPRODUCTION SETTINGS\nAspect ratio: 9:16. Target generator: SEEDANCE_2_0_MINI. Content profile: AUTO."
+          },
+          {
+            "label": "A",
+            "prompt": "TITLE / FORMAT\nMimi Sticky / 15s Video\n\nVISUAL STYLE\nBright and colorful animation with a playful tone. Make Mimi, the sticky note, and the toy cabinet easy to read together at the opening. Keep staging simple and spatially consistent; reframe only when needed to keep the action clear.\n\nCHARACTER / CONTINUITY\nMimi is the established anthropomorphic bunny. Preserve that identity and do not invent unverified appearance details. Keep the toy cabinet and mirror in the same scene.\n\nTIMED SHOT PLAN\n0-2s: Mimi reaches to place one sticky note on the toy cabinet as a cleanup reminder. In a clear view that includes Mimi, the note, and the cabinet, the note visibly sticks to one fingertip instead of the cabinet. The cleanup intention should read from the action; readable lettering is not required.\n2-5s: Mimi tries once to peel the stuck note away with her other hand. The note splits into two, with one note sticking to each hand.\n5-10s: Continuing the same note-pulling action, show the notes doubling clearly from two to four to eight. The notes progressively cover Mimi's arms, legs, and parts of her face, while keeping her eyes and mouth readable. Mimi becomes visibly overwhelmed; do not add another attempt or another doubling beyond eight.\n10-12s: Mimi sees herself in the mirror and screams. Show the same already note-covered, overwhelmed Mimi in the reflection. Keep the existing note coverage unchanged through the mirror reaction and directly into the sneeze; add no pulling action, notes, or escalation here.\n12-15s: Mimi sneezes; all the notes fly off her and stick to the toy cabinet. Mimi visibly breathes a sigh of relief. End with Mimi relieved and the cabinet still visibly messy.\n\nAUDIO\nPlayful background music with simple sneeze and sticky-note sounds. No speech or captions.\n\nNEGATIVE CONSTRAINTS\nNo dark themes, violence, injury, or choking imagery.\n\nCHARACTER IDENTITY LOCK\nMimi is the established anthropomorphic bunny character. Preserve that identity; do not render a human or invent unverified visual details. No approved visual reference is currently bound, so appearance details remain unverified."
+          }
+        ],
+        "purpose": "DRAFT_COMPARATIVE_REVIEW_V1",
+        "instructionVersion": "PAIRWISE_CREATIVE_INSTRUCTIONS_V2",
+        "productionSettings": {
+          "mode": "image2video",
+          "generator": "SEEDANCE_2_0_MINI",
+          "resolution": "480p",
+          "aspectRatio": "9:16",
+          "contentProfile": "ABSURD_PHYSICS",
+          "durationSeconds": 15
+        },
+        "reviewerInstructions": "# Blind Paired Creative Review Packet\n\n**Reviewer instructions:** Assess the two prompt texts independently against the same shared production context below. Do not infer a winner from label order or prompt length. For each dimension below, give exact quotations from the applicable prompt, specific strengths and weaknesses, Seedance production risks, actionable improvements, uncertainty, and a comparative judgment (A better / B better / equivalent / insufficient evidence). If text alone does not support a comparison, select insufficient evidence. Finish with an overall comparative judgment. Text-only review cannot establish rendered performance, retention, source fidelity, or official CPQ grade. Do not discuss or infer prompt provenance; submit this packet only. Do not share your assessment with another reviewer.\n\n**Dimensions:**\n\n1. `SCROLL_STOP_VISUAL_PROMISE`\n2. `CAUSAL_PROGRESSION`\n3. `VISUAL_STORYTELLING`\n4. `PRODUCTION_EXECUTABILITY`\n5. `ENDING_REPLAY`\n6. `DISTINCTIVE_CREATIVE_VALUE`\n\n**Shared production context (same for A and B):**\n\nContent profile: ABSURD_PHYSICS\nGenerator: SEEDANCE_2_0_MINI\nDuration: 15 seconds\nMode: image2video\nResolution: 480p\nAspect ratio: 9:16\n\n\nEvidence admission requirement: For EVERY A_BETTER or B_BETTER dimension, include at least one short literal excerpt from A AND at least one from B. A reason mentioning B does not replace a B excerpt. If a relevant instruction is absent on one side, state precisely what is absent in absentEvidenceExplanation (at least 20 characters); never invent a quotation. Do not claim an instruction is absent without checking the full supplied text. An empty evidence array always needs that concrete explanation.\n",
+        "responseSchemaVersion": "PAIRWISE_CREATIVE_RESPONSE_V1"
+      }
+    },
+    "purpose": "DRAFT_COMPARATIVE_REVIEW_V1",
+    "analysisId": "f0d36feb-ee0f-4da8-ae21-2071a3ddea18",
+    "limitations": [
+      "DIAGNOSTIC_ONLY",
+      "Original source verdict FAIL; draft fidelity UNKNOWN; neither sent to critics",
+      "Prompt wording may reveal provenance; no perfect blindness",
+      "Not source PASS, prompt approval, official grade or render permission"
+    ],
+    "approvedStory": {
+      "text": "Mimi, oyuncak dolabına 'Topla!' yazan bir yapışkan not yapıştırmak ister. Not, Mimi'nin parmağına yapışır. Mimi diğer eliyle çıkarmaya çalışırken not ikiye ayrılır ve iki eline de yapışır. Her çekişte notlar ikiye katlanarak çoğalır. Kısa sürede Mimi'nin kolları, bacakları ve yüzü notlarla kaplanır. Mimi aynada kendini görünce çığlık atar. Notlar o kadar çoğalır ki Mimi boğulacak gibi olur. Sonunda hapşırır ve tüm notlar uçuşarak dolabın üzerine yapışır. Mimi rahat bir nefes alır ama dolap hâlâ dağınıktır.",
+      "storyId": "bc1cf798-d20b-4b98-8b73-56e1581c3afc",
+      "revision": "candidate-2-revision-7c63cc86",
+      "approvedBy": "",
+      "approvalRecordId": "20b77d13-848d-46d0-ab4b-bb9b6efb0836"
+    },
+    "supervisorMapping": {
+      "A": {
+        "sha256": "82a2d896798076cb3fd3cf88482c5709167d88034a8b6702149f000bc690abef",
+        "status": "DRAFT_ONLY",
+        "provenance": "DEVELOPMENT_DRAFT authored in the Codex development workflow; exact authoring model unrecorded; no production optimizer/provider request provenance",
+        "subjectType": "DEVELOPMENT_DRAFT"
+      },
+      "B": {
+        "sha256": "0fe229774deb4b31a42145bad91cf10c91634ba00da39fa3e9d288b3a2e7bd98",
+        "status": "IMMUTABLE_PROMPT_10_VERSION_1",
+        "subjectType": "ORIGINAL",
+        "sourceIdentity": "saved-prompt:10:10"
+      }
+    },
+    "instructionVersion": "PAIRWISE_CREATIVE_INSTRUCTIONS_V2",
+    "productionSettings": {
+      "settings": {
+        "mode": "image2video",
+        "resolution": "480p",
+        "aspectRatio": "9:16"
+      },
+      "generator": "SEEDANCE_2_0_MINI",
+      "contentProfile": "ABSURD_PHYSICS",
+      "desiredDuration": 15.0,
+      "openingStrategy": "AUTO"
+    },
+    "approvedStorySha256": "df653dbcaf16bfdbceb87baa23688d70d739c34941d0075e30e96b181e1bf32b",
+    "draftArtifactSha256": "716ce953d65a98fd7386d6533f7f320f064876423819b4e2a9655f1fc726ea46",
+    "preparedPacketSha256": "265f77891189165b9e9cfe189fafe58dbe73f644edc5361a6435438fdf6c62ce",
+    "responseSchemaVersion": "PAIRWISE_CREATIVE_RESPONSE_V1"
+  },
+  "requests": [
+    {
+      "requestId": "69f8fded-db8f-489d-8f21-8af1609161c4",
+      "slot": "CRITIC_A",
+      "state": "AUTHORIZED",
+      "authorization": {
+        "slot": "CRITIC_A",
+        "model": "deepseek-v4-pro",
+        "provider": "deepseek",
+        "profileId": "deepseek-primary",
+        "maxCostUsd": 0.06,
+        "scopeSha256": "269222e51b2de5ff3335863b6be24d8e5f77580c32ba5ef30329098f4e8d10b1",
+        "idempotencyKey": "owner-approved-pair-v2-3e07fc77-7d51-4e18-8dfe-19bc292add23-CRITIC_A",
+        "maxOutputTokens": 6000,
+        "reasoningEffort": "none",
+        "automaticRetries": false,
+        "confirmDiagnosticOnly": true,
+        "authorizePaidInference": true,
+        "ownerAuthorizationText": "Fresh explicit owner YES on 2026-10-16 for PAIRWISE_CREATIVE_INSTRUCTIONS_V2 only: only these two diagnostic calls and records, maximum USD 0.20 total; DeepSeek deepseek-v4-pro none/6000/USD0.06 and OpenAI gpt-6.1-sol low/8000/USD0.14; zero retry/fallback/synthesis; stop remaining dispatch on failure; no prompt approval, source PASS, grading or rendering."
+      },
+      "response": {},
+      "failure": ""
+    },
+    {
+      "requestId": "775766fa-71d1-4691-8c7f-0c265bc531f7",
+      "slot": "CRITIC_B",
+      "state": "AUTHORIZED",
+      "authorization": {
+        "slot": "CRITIC_B",
+        "model": "gpt-6.1-sol",
+        "provider": "openai",
+        "profileId": "openai-escalation",
+        "maxCostUsd": 0.14,
+        "scopeSha256": "269222e51b2de5ff3335863b6be24d8e5f77580c32ba5ef30329098f4e8d10b1",
+        "idempotencyKey": "owner-approved-pair-v2-3e07fc77-7d51-4e18-8dfe-19bc292add23-CRITIC_B",
+        "maxOutputTokens": 8000,
+        "reasoningEffort": "low",
+        "automaticRetries": false,
+        "confirmDiagnosticOnly": true,
+        "authorizePaidInference": true,
+        "ownerAuthorizationText": "Fresh explicit owner YES on 2026-10-16 for PAIRWISE_CREATIVE_INSTRUCTIONS_V2 only: only these two diagnostic calls and records, maximum USD 0.20 total; DeepSeek deepseek-v4-pro none/6000/USD0.06 and OpenAI gpt-6.1-sol low/8000/USD0.14; zero retry/fallback/synthesis; stop remaining dispatch on failure; no prompt approval, source PASS, grading or rendering."
+      },
+      "response": {},
+      "failure": ""
+    }
+  ],
+  "humanReviewCount": 0,
+  "evidence": []
+}
