@@ -2,16 +2,19 @@ package com.pompomhills.intelligence.workflow;
 
 import com.pompomhills.intelligence.quality.QualityMlClient;
 import jakarta.servlet.http.HttpServletRequest;
-import java.time.*;
-import java.util.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
-import static org.springframework.http.HttpStatus.*;
+
+import java.time.Duration;
+import java.time.Instant;
+import java.util.*;
+
 import static com.pompomhills.intelligence.workflow.CpqOwnerPilotService.*;
+import static org.springframework.http.HttpStatus.*;
 
 /** Existing database/scheduled-worker pattern, with no browser-owned execution. */
 @Service
@@ -31,10 +34,39 @@ public class OptimizationLoopService {
     var decisions=db.sql("SELECT evidence_id,payload::text FROM cpq_pilot_evidence WHERE evidence_type='OWNER_DECISION' AND payload::text LIKE :binding ORDER BY created_at,evidence_id")
         .param("binding","%"+subject.get("approvedStorySha256")+"%").query((rs,n)->Map.of("evidenceId",rs.getString(1),"payload",util.read(rs.getString(2)))).list();
     var r=new LinkedHashMap<String,Object>();r.put("analysisId",analysis.toString());r.put("contentId",subject.get("contentId"));r.put("promptVersionId",subject.get("promptVersionId"));r.put("originalPrompt",original);r.put("baselinePrompt",baseline);r.put("baselineSha256",hash(baseline));r.put("baselineKind",baseline.equals(original)?"IMMUTABLE_SAVED_PROMPT":"UNAPPROVED_RUN_BASELINE");
-    r.put("approvedStory",subject.get("approvedStory"));r.put("approvedStorySha256",subject.get("approvedStorySha256"));r.put("settings",subject.get("productionSettings"));r.put("settingsSha256",subject.get("productionSettingsSha256"));r.put("ownerDecisions",decisions);r.put("request",saved.get("boundRequest"));r.put("contractVersion","BOUNDED_OPTIMIZATION_LOOP_V1");r.put("target",TARGET);
+    r.put("approvedStory", subject.get("approvedStory"));
+    r.put("approvedStorySha256", subject.get("approvedStorySha256"));
+    r.put("settings", subject.get("productionSettings"));
+    r.put("settingsSha256", subject.get("productionSettingsSha256"));
+    r.put("ownerDecisions", decisions);
+    r.put("request", saved.get("boundRequest"));
+    r.put("contractVersion", "BOUNDED_OPTIMIZATION_LOOP_V1");
+    r.put("evaluationPolicy", Map.of("ruleset", "1.11", "attemptEvidence", "ACTOR_SOURCE_BOUND_V2", "motionEvidence", "TOKEN_MOTION_V2", "stage", "PRE_RENDER"));
+    r.put("providerConfiguration", capabilities().get("profiles"));
+    r.put("target", TARGET);
     return r;
   }
-  public Map<String,Object> preflight(Map<String,Object> body,HttpServletRequest request){util.owner(request);var s=scope(uuid(body.get("analysisId")),String.valueOf(body.getOrDefault("draftPrompt","")));return Map.of("scope",s,"scopeSha256",hash(util.encode(s)),"capabilities",capabilities(),"persisted",false);}
+  /**
+   * The target-aware feasibility calculation is owned by the existing workflow
+   * policy path.  Keeping this as a seam also makes the bounded-loop contract
+   * testable with an eligible disposable fixture without duplicating policy.
+   */
+  Map<String,Object> targetAwarePreflight(UUID analysis){return workflow.adaptiveOptimizationPreflight(analysis);}
+  Map<String,Object> targetAwareSnapshot(UUID analysis){
+    var result=targetAwarePreflight(analysis);
+    var snapshot=new LinkedHashMap<String,Object>();
+    for(String key:List.of("state","generationAllowed","currentScore","fixedEvidenceOptimisticCeiling","canonicalATargetStatus","reasons","missingEvidence","genuineSourceAttemptCount","creativeQualityTarget","renderAuthorized","sourceAnalysisId","sourcePromptVersionId","sourcePromptSha256","productionSettingsRecordId"))
+      if(result.containsKey(key)) snapshot.put(key,result.get(key));
+    return snapshot;
+  }
+  public Map<String,Object> preflight(Map<String,Object> body,HttpServletRequest request){
+    util.owner(request); UUID analysis=uuid(body.get("analysisId"));
+    var s=scope(analysis,String.valueOf(body.getOrDefault("draftPrompt","")));
+    var feasibility=targetAwareSnapshot(analysis);
+    var out=new LinkedHashMap<String,Object>();out.put("scope",s);out.put("scopeSha256",hash(util.encode(s)));out.put("capabilities",capabilities());out.put("targetAwarePreflight",feasibility);out.put("persisted",false);
+    out.put("generationAllowed",feasibility.getOrDefault("generationAllowed",false));out.put("state",feasibility.getOrDefault("state","CONTRACT_FAILURE"));
+    return out;
+  }
   static int integer(Map<String,Object> data,String key,int min,int max){var v=data.get(key);if(!(v instanceof Number n)||!Double.isFinite(n.doubleValue())||n.doubleValue()!=n.intValue()||n.intValue()<min||n.intValue()>max)throw new ResponseStatusException(BAD_REQUEST,"Invalid limit: "+key);return n.intValue();}
   static double amount(Object v){if(!(v instanceof Number n)||!Double.isFinite(n.doubleValue())||n.doubleValue()<=0||n.doubleValue()>20)throw new ResponseStatusException(BAD_REQUEST,"Explicit positive USD ceiling <=20 required");return n.doubleValue();}
   Map<String,Object> validateGrant(Map<String,Object> body){
@@ -51,7 +83,15 @@ public class OptimizationLoopService {
     return new LinkedHashMap<>(body);
   }
   @Transactional public Map<String,Object> start(Map<String,Object> body,HttpServletRequest request){
-    String owner=util.owner(request);if(!realEnabled)throw new ResponseStatusException(FORBIDDEN,"Real dispatch remains disabled; no run authorized");var grant=validateGrant(body);
+    String owner=util.owner(request);
+    UUID analysis=uuid(body.get("analysisId"));
+    // Recompute the authoritative target gate before validating/recording a
+    // paid grant.  A stale client preflight can therefore never reserve a
+    // budget or create a job for a protected target such as Mimi.
+    var feasibility=targetAwareSnapshot(analysis);
+    if(!Boolean.TRUE.equals(feasibility.get("generationAllowed")))
+      throw new ResponseStatusException(CONFLICT,util.encode(Map.of("state",feasibility.getOrDefault("state","TARGET_BLOCKED"),"generationAllowed",false,"feasibility",feasibility,"providerCalls",0,"nextAction","STORY_EVOLUTION_OR_UPDATED_SOURCE_EVIDENCE")));
+    if(!realEnabled)throw new ResponseStatusException(FORBIDDEN,"Real dispatch remains disabled; no run authorized");var grant=validateGrant(body);
     String key=String.valueOf(body.getOrDefault("idempotencyKey",""));if(key.length()<8||key.length()>100)throw new ResponseStatusException(BAD_REQUEST,"Stable idempotency key required");
     db.sql("SELECT pg_advisory_xact_lock(hashtext(:k))").param("k","optimization:"+owner+":"+key).query((rs,n)->rs.getObject(1)).list();
     var old=db.sql("SELECT id,grant_payload::text FROM optimization_runs WHERE owner_principal=:owner AND idempotency_key=:key").param("owner",owner).param("key",key).query((rs,n)->Map.of("id",rs.getObject(1,UUID.class),"grant",util.read(rs.getString(2)))).optional();
@@ -102,6 +142,14 @@ public class OptimizationLoopService {
     if(!realEnabled){transition(id,"STOPPED",progress,"DISPATCH_DISABLED");return;}
     var scope=map(row.get("scope"));var fresh=scope(uuid(scope.get("analysisId")),String.valueOf(scope.get("baselinePrompt")));
     if(!hash(util.encode(fresh)).equals(row.get("scopeSha256"))){transition(id,"STOPPED",progress,"SCOPE_CHANGED_FRESH_AUTHORIZATION_REQUIRED");return;}
+    // Durable worker boundary: eligibility is never carried forward from the
+    // browser inspection or the original authorization.
+    var currentFeasibility=targetAwareSnapshot(uuid(scope.get("analysisId")));
+    if(!Boolean.TRUE.equals(currentFeasibility.get("generationAllowed"))){
+      progress.put("targetAwarePreflight",currentFeasibility);
+      transition(id,"STOPPED",progress,String.valueOf(currentFeasibility.getOrDefault("state","TARGET_BLOCKED")));
+      return;
+    }
     String phase=String.valueOf(progress.get("phase"));var grant=map(row.get("grant"));
     if(phase.equals("EVALUATE_BASELINE")){
       var evaluated=local("EVALUATE",Map.of("scope",scope,"prompt",progress.get("bestPrompt")));progress.put("baselineEvaluation",evaluated);progress.put("bestEvaluation",evaluated);

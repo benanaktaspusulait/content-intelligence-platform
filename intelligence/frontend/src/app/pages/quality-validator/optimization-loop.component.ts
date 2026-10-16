@@ -1,14 +1,16 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component, Input, OnChanges, OnDestroy, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { Subscription, timer } from 'rxjs';
 
 @Component({
- selector: 'app-optimization-loop', standalone: true, imports: [CommonModule, FormsModule],
+ selector: 'app-optimization-loop', standalone: true, imports: [CommonModule, FormsModule, RouterLink],
  template: `<section class="bounded-loop" aria-label="Bounded prompt optimization">
  <h3>Automatic prompt optimization</h3>
  <p>One bounded authorization covers generation and independent reviews across rounds. Final text acceptance remains separate.</p>
+ <section class="optimization-paths" aria-label="Optimization path"><strong>Choose a protected workflow</strong><div class="path-grid"><article><b>Optimize Existing Prompt</b><span>Preserves the approved story and cannot repair protected story constraints.</span></article><article><b>Evolve Story &amp; Optimize</b><span>Creates an explicit story draft in the existing Creative Studio; owner approval is required before any new prompt is bound.</span><a routerLink="/quality/new" [queryParams]="{mode:'STORY_EVOLUTION', sourceAnalysisId:analysisId}">Open Story Evolution</a></article></div></section>
  <p *ngIf="!auth?.authenticated">Use Owner login above to inspect and authorize a run.</p>
  <ng-container *ngIf="auth?.authenticated">
  <p *ngIf="caps && !caps.realDispatchEnabled" role="status">Real dispatch disabled. Inspection is read only; no paid run can start.</p>
@@ -28,6 +30,7 @@ import { Subscription, timer } from 'rxjs';
  <button type="button" (click)="inspect()">Inspect exact protected source and baseline</button>
  </fieldset>
  <details *ngIf="inspection"><summary>Exact baseline, approved story, owner interpretations and production settings</summary>
+ <p *ngIf="inspection.targetAwarePreflight" class="target-gate"><b>Authoritative target gate:</b> {{inspection.targetAwarePreflight.state}} · generation {{inspection.targetAwarePreflight.generationAllowed ? 'allowed' : 'blocked'}}<span *ngIf="inspection.targetAwarePreflight.fixedEvidenceOptimisticCeiling !== undefined"> · conditional ceiling {{inspection.targetAwarePreflight.fixedEvidenceOptimisticCeiling}}</span></p>
  <p>Baseline SHA-256: {{inspection.scope.baselineSha256}}</p><pre>{{inspection.scope.baselinePrompt}}</pre>
  <pre>{{inspection.scope.approvedStory | json}}</pre><pre>{{inspection.scope.ownerDecisions | json}}</pre><pre>{{inspection.scope.settings | json}}</pre></details>
  <label *ngIf="!run?.runId"><input type="checkbox" [(ngModel)]="consent">I confirm the protected source/settings and explicitly authorize all listed operations within these run limits. No automatic retries, prompt approval, grading activation or rendering.</label>
@@ -49,7 +52,7 @@ import { Subscription, timer } from 'rxjs';
  <fieldset><legend>Separate final prompt acceptance</legend><label><input type="checkbox" [(ngModel)]="acceptConsent">I explicitly approve this exact final draft as a new immutable prompt version; no render or grade activation.</label><button type="button" (click)="accept()" [disabled]="busy || !acceptConsent || run.progress.reason!=='TARGET_REACHED_REVIEW_REQUIRED' || !run.progress.lastAssessment?.retained || !run.progress.lastAssessment?.independentSupport">Accept final reviewed prompt</button><p *ngIf="run.progress.reason!=='TARGET_REACHED_REVIEW_REQUIRED'">Target unmet: best available draft remains unapproved.</p></fieldset>
  <p>Official CPQ grading: INACTIVE. Render authorized: false. Accepting a final revision requires the existing explicit prompt-version approval workflow; this panel never creates an approved version.</p>
  </section></ng-container><p role="status">{{message}}</p></section>`,
- styles: [`.bounded-loop{display:grid;gap:10px;min-width:0;margin:14px 0;padding:14px;border:1px solid #bac9d8;border-radius:8px}.bounded-loop fieldset{min-width:0}.bounded-loop label{display:grid;gap:4px;margin:8px 0}.bounded-loop pre{white-space:pre-wrap;overflow-wrap:anywhere;max-height:32rem;overflow:auto}.bounded-loop textarea,.bounded-loop input,.bounded-loop select{max-width:100%;box-sizing:border-box;padding:7px}.limits{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,190px),1fr));gap:10px}`]
+ styles: [`.bounded-loop{display:grid;gap:10px;min-width:0;margin:14px 0;padding:14px;border:1px solid #bac9d8;border-radius:8px}.bounded-loop fieldset{min-width:0}.bounded-loop label{display:grid;gap:4px;margin:8px 0}.bounded-loop pre{white-space:pre-wrap;overflow-wrap:anywhere;max-height:32rem;overflow:auto}.bounded-loop textarea,.bounded-loop input,.bounded-loop select{max-width:100%;box-sizing:border-box;padding:7px}.limits{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,190px),1fr));gap:10px}.path-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:8px}.path-grid article{display:grid;gap:5px;padding:10px;border:1px solid #d5dee8;border-radius:6px}.path-grid span{font-size:.9em}.path-grid a{width:max-content}.target-gate{padding:8px;border-left:3px solid #c48b26}`]
 })
 export class OptimizationLoopComponent implements OnChanges, OnDestroy {
  @Input() analysisId=''; @Input() auth:any=null;

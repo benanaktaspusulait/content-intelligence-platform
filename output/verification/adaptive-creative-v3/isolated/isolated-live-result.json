@@ -1,6 +1,4 @@
 {
-  "adaptiveVersion": "adaptive-creative-optimization-v3",
-  "state": "TARGET_BLOCKED_BY_STORY_CONSTRAINT",
   "approval": {},
   "renderAuthorized": false,
   "selection": {},
@@ -455,6 +453,16 @@
       }
     ],
     "genuineSourceAttemptCount": 2,
+    "creativeOpportunity": {
+      "state": "UNKNOWN_REQUIRES_PROMPT_DIAGNOSIS",
+      "basis": "No independent CPQ assessment supplied to preflight."
+    },
+    "canonicalATargetStatus": "CANONICAL_A_UNATTAINABLE_WITH_CURRENT_EVIDENCE",
+    "creativeQualityTarget": {
+      "active": false,
+      "state": "CALIBRATION_REQUIRED",
+      "gradeThresholdsAvailable": false
+    },
     "reasons": [
       "No defensible prompt-only path to A with current evidence and protected story."
     ],
@@ -531,5 +539,7 @@
     "productionSettingsRecordId": "2d90c69b-bcec-4871-9c4e-7e029906c974",
     "contentId": 10
   },
-  "providerCalls": 0
+  "providerCalls": 0,
+  "adaptiveVersion": "adaptive-creative-optimization-v3",
+  "state": "TARGET_BLOCKED_BY_STORY_CONSTRAINT"
 }

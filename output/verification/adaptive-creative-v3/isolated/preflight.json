@@ -449,6 +449,16 @@
     }
   ],
   "genuineSourceAttemptCount": 2,
+  "creativeOpportunity": {
+    "state": "UNKNOWN_REQUIRES_PROMPT_DIAGNOSIS",
+    "basis": "No independent CPQ assessment supplied to preflight."
+  },
+  "canonicalATargetStatus": "CANONICAL_A_UNATTAINABLE_WITH_CURRENT_EVIDENCE",
+  "creativeQualityTarget": {
+    "active": false,
+    "state": "CALIBRATION_REQUIRED",
+    "gradeThresholdsAvailable": false
+  },
   "reasons": [
     "No defensible prompt-only path to A with current evidence and protected story."
   ],

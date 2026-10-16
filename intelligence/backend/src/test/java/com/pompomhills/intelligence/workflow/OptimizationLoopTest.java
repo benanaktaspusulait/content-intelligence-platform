@@ -22,7 +22,7 @@ class OptimizationLoopTest {
  @Container static PostgreSQLContainer<?> pg=new PostgreSQLContainer<>("postgres:17-alpine");
  static final Path ROOT=Path.of(System.getProperty("user.dir")).getParent().getParent();
  static final ObjectMapper json=new ObjectMapper();
- JdbcTemplate jdbc;JdbcClient db;QualityMlClient ml;OptimizationLoopService service;
+ JdbcTemplate jdbc;JdbcClient db;QualityMlClient ml;OptimizationLoopService service;boolean targetBlocked;
  Map<String,Object> fixture;String mode="material";int submitted;Runnable inFlight=()->{};UUID runId;
  MockHttpServletRequest owner=new MockHttpServletRequest();long clockOffset=0;
  Map<String,Object> bridge(String operation,Map<String,Object> input) throws Exception {
@@ -39,6 +39,7 @@ class OptimizationLoopTest {
   var util=new CpqOwnerPilotService(db,json,mock(CreativePromptQualityService.class),ml);
   service=new OptimizationLoopService(db,util,mock(CreativePromptQualityService.class),mock(WorkflowService.class),ml){
    @Override Map<String,Object> scope(UUID id,String draft){var copy=new LinkedHashMap<>(fixture);if(draft!=null&&!draft.isBlank()){copy.put("baselinePrompt",draft);copy.put("baselineSha256",CpqOwnerPilotService.hash(draft));}return copy;}
+   @Override Map<String,Object> targetAwarePreflight(UUID id){return targetBlocked?Map.of("state","TARGET_BLOCKED_BY_STORY_CONSTRAINT","generationAllowed",false,"currentScore",88.40625,"fixedEvidenceOptimisticCeiling",89.3125,"canonicalATargetStatus","CANONICAL_A_UNATTAINABLE_WITH_CURRENT_EVIDENCE","reasons",List.of("Protected ATTEMPT_001 story constraint"),"renderAuthorized",false):Map.of("state","DIAGNOSING","generationAllowed",true,"currentScore",88.40625,"fixedEvidenceOptimisticCeiling",100,"canonicalATargetStatus","CANONICAL_A_POTENTIALLY_ATTAINABLE","renderAuthorized",false);}
    @Override Instant now(){return Instant.now().plusSeconds(clockOffset);}
   };service.realEnabled=true;owner.setUserPrincipal(()->"isolated-owner");owner.addUserRole("OWNER");
  }
@@ -58,6 +59,7 @@ class OptimizationLoopTest {
  }
  @Test void duplicateStartAndReconnectDoNotDispatchAgain(){var g=grant();var v=start(g);assertThat(service.start(g,owner).get("runId")).isEqualTo(v.get("runId"));assertThat(jdbc.queryForObject("SELECT count(*) FROM optimization_runs",Integer.class)).isEqualTo(1);assertThat(service.latest(UUID.fromString(String.valueOf(fixture.get("analysisId"))),owner).get("runId")).isEqualTo(v.get("runId"));assertThat(submitted).isZero();}
  @Test void unauthorizedAndInactiveTargetsRefused(){assertThatThrownBy(()->service.start(grant(),new MockHttpServletRequest())).hasMessageContaining("Authenticated owner");var g=grant();g.put("target","CPQ_A_PLUS");assertThatThrownBy(()->service.start(g,owner)).hasMessageContaining("Unsupported/inactive");assertThat(submitted).isZero();}
+ @Test void targetAwareStoryBlockStopsBeforeGrantOrProvider(){targetBlocked=true;var g=grant();assertThatThrownBy(()->service.start(g,owner)).hasMessageContaining("TARGET_BLOCKED_BY_STORY_CONSTRAINT");assertThat(jdbc.queryForObject("SELECT count(*) FROM optimization_runs",Integer.class)).isZero();assertThat(submitted).isZero();}
  @Test void unlistedModelAndMissingIndependentRoleRefused(){var g=grant();CpqOwnerPilotService.rows(g.get("operations")).getFirst().put("model","unlisted");assertThatThrownBy(()->service.start(g,owner)).hasMessageContaining("model/effort");var h=grant();h.put("operations",CpqOwnerPilotService.rows(h.get("operations")).stream().filter(r->!"SOURCE_FIDELITY".equals(r.get("role"))).toList());assertThatThrownBy(()->service.start(h,owner)).hasMessageContaining("Independent");}
  @Test void cancellationCollectsInflightButNeverStartsReview(){start(grant());advance(1);inFlight=()->service.stop(runId,owner);var v=advance(2);assertThat(submitted).isEqualTo(1);assertThat(progress(v).get("reason")).isEqualTo("OWNER_CANCELLED_AFTER_COLLECTING_INFLIGHT");assertThat(CpqOwnerPilotService.rows(v.get("requests"))).hasSize(1);}
  @Test void unknownAccountingStopsWithoutReplay(){mode="ambiguous";start(grant());var v=advance(6);assertThat(submitted).isEqualTo(1);assertThat(progress(v).get("reason")).isEqualTo("UNCERTAIN_PROVIDER_DISPATCH_OR_CONTRACT");assertThat(CpqOwnerPilotService.map(v.get("cost")).get("unknownReservedUsd")).isEqualTo(1.);assertThatThrownBy(()->service.resume(runId,owner)).hasMessageContaining("cannot resume");}

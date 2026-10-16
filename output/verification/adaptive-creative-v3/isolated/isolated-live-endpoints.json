@@ -1,7 +1,7 @@
 {
-  "backend": "http://127.0.0.1:53683",
-  "frontend": "http://127.0.0.1:53683",
-  "step6": "http://127.0.0.1:53683/quality/detail?contentId=10&promptVersionId=10&studio=1&stage=6",
+  "backend": "http://127.0.0.1:49556",
+  "frontend": "http://127.0.0.1:49556",
+  "step6": "http://127.0.0.1:49556/quality/detail?contentId=10&promptVersionId=10&studio=1&stage=6",
   "internalNetwork": "pompom-adaptive-v3-acceptance-network",
   "database": "pompom-adaptive-v3-acceptance-db",
   "providerDispatches": 0,
