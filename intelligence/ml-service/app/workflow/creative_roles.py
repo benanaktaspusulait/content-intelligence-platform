@@ -998,11 +998,69 @@ def _provider_failure_detail(error: Exception) -> str:
     }[category]
 
 
+def _isolated_fixture_role(role: str, text: str, context: dict[str, Any], max_cost_usd: float) -> dict[str, Any]:
+    """Return a complete role response from an isolated, no-egress fixture.
+
+    This boundary intentionally preserves the normal role parser below it: the
+    fixture is only transport, while schema, source and evaluator validation
+    remain application code. A missing/invalid fixture fails closed.
+    """
+    import hashlib
+    if not isinstance(max_cost_usd, (int, float)) or not math.isfinite(max_cost_usd) or max_cost_usd <= 0 or max_cost_usd > 20:
+        raise ValueError('Verified isolated fixture budget must be positive and <=20 USD')
+    fixture_dir = os.getenv('POMPOM_ISOLATED_FIXTURE_DIR', '')
+    token = os.getenv('POMPOM_ISOLATED_FIXTURE_TOKEN', '')
+    if len(token) < 32 or not fixture_dir or not os.path.isdir(fixture_dir):
+        raise ValueError('Isolated fixture transport requires a disposable fixture directory and token')
+    path = os.path.join(fixture_dir, f'{role.lower()}.json')
+    try:
+        with open(path, encoding='utf-8') as handle:
+            value = json.load(handle)
+    except (OSError, json.JSONDecodeError) as error:
+        raise ValueError(f'Missing or invalid isolated fixture for {role}') from error
+    if not isinstance(value, dict):
+        raise ValueError(f'Isolated fixture for {role} must be a JSON object')
+    if role == 'STORY_REVIEW':
+        candidates = context.get('candidates') if isinstance(context.get('candidates'), list) else []
+        ids = [str(item.get('candidateId')) for item in candidates if isinstance(item, dict)]
+        value = {**value, 'sourceRequestId': context.get('sourceRequestId'), 'sourceFingerprint': context.get('sourceFingerprint'),
+                 'recommendedCandidateId': ids[0] if ids else None,
+                 'candidateReviews': [{'candidateId': cid, 'status': 'SUPPORTED', 'findings': []} for cid in ids]}
+    if role == 'STORY':
+        alternatives = value.get('alternatives')
+        if not isinstance(alternatives, list) or not alternatives:
+            raise ValueError('STORY fixture must contain alternatives')
+    if role == 'BUILD_PROMPT' and not isinstance(value.get('prompt'), str):
+        raise ValueError('BUILD_PROMPT fixture must contain a complete prompt')
+    digest = hashlib.sha256(json.dumps(value, ensure_ascii=False, sort_keys=True).encode()).hexdigest()
+    class FixtureProvider:
+        saved_result_recovery = True
+        last_request_started = False
+        last_raw_response = ''
+        last_response_metadata = {'fixture': True, 'finishReason': 'stop', 'apiStatus': 'COMPLETED'}
+        last_usage = {'inputTokens': 0, 'outputTokens': 0, 'totalTokens': 0}
+        def complete(self, *args, **kwargs):
+            self.last_request_started = True
+            self.last_raw_response = json.dumps(value, ensure_ascii=False)
+            return self.last_raw_response
+    provider = FixtureProvider()
+    parsed = perform_role(role, text, context, provider, 'fixture-transport-v1')
+    parsed.update(provider='ISOLATED_FIXTURE', calls=0, providerDispatched=False,
+                  providerResponseMetadata={**provider.last_response_metadata, 'requestId': f'fixture-{digest[:16]}'},
+                  usage=provider.last_usage, actualCostUsd=0.0)
+    return parsed
+
+
 def run_paid_role(role: str, text: str, context: dict[str, Any], max_cost_usd: float) -> dict[str, Any]:
     if role not in ROLES:
         raise ValueError('Unknown creative role')
     if os.getenv('WORKFLOW_CREATIVE_ROLES_ENABLED', 'false').lower() != 'true':
         raise ValueError('Paid creative roles are disabled; explicit scope and budget required')
+    # Test-only transport. It is deliberately opt-in, requires a disposable
+    # fixture directory and a per-environment token, and never constructs an
+    # SDK/provider client. Production compose does not set these variables.
+    if os.getenv('POMPOM_ISOLATED_ACCEPTANCE') == 'true':
+        return _isolated_fixture_role(role, text, context, max_cost_usd)
     adaptive = role == 'PROMPT_OPTIMIZATION' and context.get('adaptiveVersion') == 'adaptive-creative-optimization-v3'
     capability = None
     if adaptive:

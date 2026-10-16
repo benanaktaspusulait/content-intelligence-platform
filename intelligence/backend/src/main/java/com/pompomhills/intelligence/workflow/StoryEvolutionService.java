@@ -150,6 +150,9 @@ public class StoryEvolutionService {
       built.put("qualityValidationId", persisted.validationRecordId());
       built.put("optimizationPreflightState", preflight);
       built.put("review", review);
+      built.put("step7PreparationPath", "/render-preparation?contentId=" + contentId
+          + "&promptVersionId=" + promptId + "&workflowReviewId=" + analysisId);
+      built.put("step7State", "RENDER_PREPARATION_BLOCKED_UNTIL_CHARACTER_AND_FIRST_FRAME");
     } else {
       built.put("persistenceStatus", "REQUIRES_CONTENT_AND_PARENT_PROMPT_BINDING");
     }
