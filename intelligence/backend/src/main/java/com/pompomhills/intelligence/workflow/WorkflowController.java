@@ -185,7 +185,8 @@ public class WorkflowController {
   @GetMapping("/cpq/story-evolution-source")
   public Map<String,Object> storyEvolutionSource(@RequestParam UUID analysisId) {
     var subject=cpq.pilotSubject(analysisId,null,null); var story=CpqOwnerPilotService.map(subject.get("approvedStory"));
-    var out=new java.util.LinkedHashMap<String,Object>(); out.put("analysisId",analysisId.toString()); out.put("storyRecordId",story.get("storyId")); out.put("story",story.get("text")); out.put("storySha256",CpqOwnerPilotService.hash(String.valueOf(story.get("text")))); out.put("approvalRecordId",story.get("approvalRecordId")); out.put("canonical",subject.get("canonical")); out.put("productionSettings",subject.get("productionSettings")); return out;
+    var review=service.getByKind(analysisId,"REVIEW");
+    var out=new java.util.LinkedHashMap<String,Object>(); out.put("analysisId",analysisId.toString()); out.put("contentId",review.get("contentId")); out.put("promptVersionId",review.get("promptVersionId")); out.put("storyRecordId",story.get("storyId")); out.put("story",story.get("text")); out.put("storySha256",CpqOwnerPilotService.hash(String.valueOf(story.get("text")))); out.put("approvalRecordId",story.get("approvalRecordId")); out.put("canonical",subject.get("canonical")); out.put("productionSettings",subject.get("productionSettings")); return out;
   }
 
   @GetMapping("/cpq/story-evolution-runs/{id}")
