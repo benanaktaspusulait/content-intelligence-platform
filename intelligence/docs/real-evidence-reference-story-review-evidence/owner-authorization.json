@@ -1,0 +1,14 @@
+{
+  "evidenceType": "OWNER_DECISION",
+  "ownerPolicyApproval": true,
+  "ownerPaidReviewAuthorization": true,
+  "authorizationSource": "/Users/benanaktas/.codex/attachments/663da784-5db9-4e89-93ac-c6c9d57296a5/Pasted text.txt",
+  "authorizationTextSha256": "143acb7af3dda4b53242a454546d3db0ece5d96fc28406267698c8035f266730",
+  "policy": "ASSESSMENT_ONLY_UNKNOWN_SOURCE_V1",
+  "scopeSha256": "5be45f1966d1a2ab8c8fa03e4570f67c090024fa038a34c6ba012055e0e3fcac",
+  "maxRequests": 1,
+  "maxTotalUsd": 0.006104,
+  "model": "gpt-4o-mini-2024-07-18",
+  "automaticRetries": false,
+  "fallback": false
+}

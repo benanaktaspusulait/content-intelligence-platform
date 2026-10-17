@@ -1,0 +1,8 @@
+{
+  "postFamilyWorkflowEvents": 12,
+  "priorRunsForIdempotencyKey": 0,
+  "priorAssessmentCheckpoints": 0,
+  "gitHead": "0480c49ac781e71959131d714748f17efe099b4c",
+  "mockGrantReused": false,
+  "providerCalls": 0
+}

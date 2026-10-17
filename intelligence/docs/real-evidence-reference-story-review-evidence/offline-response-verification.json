@@ -1,0 +1,12 @@
+{
+  "schemaValidation": "NOT_EXECUTED",
+  "evidenceReferenceValidation": "NOT_EXECUTED",
+  "candidateIsolation": "NOT_EXECUTED",
+  "reason": "No provider response or usage received; no output exists to parse or validate. Prepared schema/catalog verification passed independently before dispatch.",
+  "accepted": false,
+  "semanticResults": "NOT_EVALUATED",
+  "creativeResults": "NOT_EVALUATED",
+  "researchPreference": "NOT_ESTABLISHED",
+  "rawResponseModified": false,
+  "noRepairOrReplacement": true
+}
