@@ -7,7 +7,7 @@ from fastapi.testclient import TestClient
 from app.main import app
 from app.workflow.story_assessment import preview,wire,sources,validate_review,execute
 from app.workflow.story_experiment import validate
-from story_experiment_fixture import assessment_inputs,assessment_review
+from story_experiment_fixture import assessment_inputs,assessment_review,assessment_failed_check
 
 @pytest.fixture(autouse=True)
 def configuration(monkeypatch,tmp_path):
@@ -65,13 +65,13 @@ def test_exact_owner_spending_binding_before_provider_construction(monkeypatch,f
 
 @pytest.mark.parametrize('failure',['semantic-pass-from-unknown','semantic-fail-proposal','missing-semantics','missing-dimension','fake-quote'])
 def test_semantic_before_creative_and_exact_evidence(failure):
-    text,c=assessment_inputs();value=assessment_review(wire(text,c)['payload']);row=value['candidateAssessments'][0]
-    if failure=='semantic-pass-from-unknown':row['semanticSource']['outcome']='SEMANTIC_SOURCE_PASS'
+    text,c=assessment_inputs();value=assessment_review(wire(text,c)['payload']);row=value['candidateAssessments']['A']
+    if failure=='semantic-pass-from-unknown':row['semanticOutcome']='SEMANTIC_SOURCE_PASS'
     if failure=='semantic-fail-proposal':
-        row['semanticSource']['findings'][0]['outcome']='FAIL';row['semanticSource']['outcome']='SEMANTIC_SOURCE_FAIL';row['eligibleForOwnerProposal']=True
-    if failure=='missing-semantics':row['semanticSource']['findings']=[]
-    if failure=='missing-dimension':row['creativeQuality']['dimensions'].pop()
-    if failure=='fake-quote':row['semanticSource']['findings'][0]['candidateQuote']='An absent made-up phrase'
+        assessment_failed_check(value,wire(text,c)['payload']);row['eligibleForOwnerProposal']=True
+    if failure=='missing-semantics':row['semanticChecks']={}
+    if failure=='missing-dimension':row['creativeDimensions'].pop(next(iter(row['creativeDimensions'])))
+    if failure=='fake-quote':row['semanticChecks']['identity']['candidateQuote']='An absent made-up phrase'
     with pytest.raises(ValueError):validate_review(value,text,c)
 
 
@@ -83,7 +83,7 @@ def test_review_receipt_survives_failures_and_has_no_production_authority(mode):
             if mode=='timeout':raise TimeoutError('Offline simulated timeout')
             value=assessment_review(json.loads(prompt))
             if mode=='fail-source':
-                row=value['candidateAssessments'][0];row['semanticSource']['outcome']='SEMANTIC_SOURCE_FAIL';row['semanticSource']['findings'][0]['outcome']='FAIL'
+                assessment_failed_check(value,json.loads(prompt))
             self.last_raw_response='{bad' if mode=='malformed' else json.dumps(value)
             self.last_usage={'prompt_tokens':100,'completion_tokens':200};self.last_response_metadata={'model':'gpt-4o-mini-2024-07-18','finishReason':'stop'}
             return self.last_raw_response

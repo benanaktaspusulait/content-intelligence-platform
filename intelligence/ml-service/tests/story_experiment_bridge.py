@@ -7,7 +7,7 @@ import hashlib
 import hmac
 from fastapi.testclient import TestClient
 from app.main import app
-from story_experiment_fixture import alternatives, review, inputs, assessment_review
+from story_experiment_fixture import alternatives, review, inputs, assessment_review, assessment_failed_check
 
 # This bridge is executed repeatedly inside one warm process. Per-review
 # checkpoint directories must not leak into later non-assessment operations.
@@ -40,7 +40,7 @@ class MockAdapter:
             if mode=='assessment-timeout':raise TimeoutError('Offline reviewer timeout')
             value=assessment_review(payload)
             if mode in ('assessment-semantic-fail','assessment-invalid-approval'):
-                row=value['candidateAssessments'][0];row['semanticSource']['findings'][0]['outcome']='FAIL';row['semanticSource']['outcome']='SEMANTIC_SOURCE_FAIL'
+                assessment_failed_check(value,payload);row=value['candidateAssessments']['A']
                 if mode=='assessment-invalid-approval':row['eligibleForOwnerProposal']=True
             self.last_usage={'prompt_tokens':100,'completion_tokens':200}
             self.last_response_metadata={'model':self.model,'finishReason':'stop','requestId':'offline-assessment-receipt'}

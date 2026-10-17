@@ -89,8 +89,24 @@ def assessment_inputs():
 
 
 def assessment_review(payload):
-    from app.workflow.story_assessment import SCHEMA
-    return {'schemaVersion':SCHEMA,'candidateAssessments':[{'candidateRef':c['ref'],
-        'semanticSource':{'outcome':'SEMANTIC_SOURCE_UNKNOWN','findings':[{'check':check,'outcome':'UNKNOWN','sourceQuote':payload['originalStory'][:16],'candidateQuote':c['narrative'][:14],'reason':'Mock contract only; meaning unverified.'} for check in payload['semanticChecks']]},
-        'creativeQuality':{'dimensions':[{'dimension':d,'quote':c['narrative'][:14],'strength':'UNKNOWN','weakness':'Unverified timing.','risk':'No visual evidence.'} for d in payload['dimensions']],'overall':'UNKNOWN','reason':'No real independent judgment in this mocked test.'},'eligibleForOwnerProposal':False} for c in payload['candidates']],
-        'researchPreference':'NO_CREATIVE_WINNER','reason':'Mocked review proves contract only.','evidenceLimitations':['No real reviewer or rendered evidence.']}
+    """Synthetic technical fixture; not independent semantic or creative evidence."""
+    from app.workflow.story_assessment import SCHEMA, CHECKS
+    return {'schemaVersion':SCHEMA,'candidateAssessments':{c['ref']:{
+        'semanticChecks':{check:{'outcome':'UNKNOWN','basis':'INSUFFICIENT',
+            'sourceQuote':'','candidateQuote':'','reason':'Mock contract only; independent meaning unverified.'} for check in CHECKS},
+        'semanticOutcome':'SEMANTIC_SOURCE_UNKNOWN','sourceUnknowns':'Mocked review cannot resolve trigger or continuity semantics.',
+        'creativeDimensions':{d:{'quote':c['narrative'][:14],'strength':'Character is introduced.',
+            'weakness':'Timing is unverified.','risk':'No visual evidence.'} for d in payload['dimensions']},
+        'creativeConclusion':{'outcome':'UNKNOWN',**{k:'' for k in ('baselineQuote','candidateQuote','change','visibleConsequence','addressedWeakness','newRisk','materialityReason')}},
+        'eligibleForOwnerProposal':False} for c in payload['candidates']},
+        'researchPreference':'NO_CREATIVE_WINNER','reason':'Mocked review proves contract only.',
+        'evidenceLimitations':'No real reviewer, rendered or audience evidence.'}
+
+
+def assessment_failed_check(value,payload):
+    """Mocked negative opinion; exercises failure admission, not a real judgment."""
+    row=value['candidateAssessments']['A'];row['semanticOutcome']='SEMANTIC_SOURCE_FAIL'
+    row['semanticChecks']['trigger_conditions']={'outcome':'FAIL','basis':'CONTRADICTION',
+        'sourceQuote':'every removal or transfer attempt multiplies the notes',
+        'candidateQuote':'Pip shakes the hand; the note splits into two',
+        'reason':'Offline mock reviewer alleges a non-removal trigger; actual meaning remains unverified.'}

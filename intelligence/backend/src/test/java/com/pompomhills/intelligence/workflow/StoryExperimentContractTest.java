@@ -168,7 +168,7 @@ class StoryExperimentContractTest {
     var scope=map(view().get("scope"));assertThat(rows(scope.get("candidates"))).hasSize(2);
     if(failure.equals("assessment-semantic-fail")){
       assertThat(view().get("state")).isEqualTo("ASSESSMENT_COMPLETE_OWNER_DECISION_PENDING");
-      var result=map(map(view().get("progress")).get("researchAssessment"));assertThat(rows(result.get("candidateAssessments")).getFirst().get("eligibleForOwnerProposal")).isEqualTo(false);
+      var result=map(map(view().get("progress")).get("researchAssessment"));assertThat(map(map(result.get("candidateAssessments")).get("A")).get("eligibleForOwnerProposal")).isEqualTo(false);
     }else assertThat(view().get("state")).isEqualTo("STOPPED");
     if(!failure.equals("assessment-timeout")){assertThat(receipts().getFirst().get("rawProviderResponse")).isNotNull();assertThat(receipts().getFirst().get("actualCostUsd")).isEqualTo(.000135);}
     service.processNext();assertThat(transports).isEqualTo(1);

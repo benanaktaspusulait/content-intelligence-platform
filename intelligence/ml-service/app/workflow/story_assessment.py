@@ -193,6 +193,11 @@ def validate_review(value,text,context):
             # Conservative cosmetic guard, reusing the existing synonym vocabulary.
             # This is a lower bound on evidence, never a semantic merit certificate.
             def tokens(t):return [_EVENT_ALIASES.get(w,w) for w in re.findall(r"[\w']+",t.lower())]
+            def content(t):
+                stop={'the','and','with','from','that','this','into','then','they','their','them','both','tries','pip','rabbit','note','notes','sticky','cabinet','story','candidate','original'}
+                return {w for w in tokens(t) if len(w)>3 and w not in stop}
+            if not (content(creative['change']) & content(creative['candidateQuote'])) or not (content(creative['visibleConsequence']) & content(creative['candidateQuote'])) or not (content(creative['addressedWeakness']) & content(creative['baselineQuote'])):
+                raise ValueError('Generic material claim lacks source-specific comparative grounding')
             if tokens(creative['baselineQuote'])==tokens(creative['candidateQuote']):
                 raise ValueError('Identical or synonym-only evidence is not material improvement')
             if re.search(r'\b(?:shorter|polish|wording|vocabulary|synonym|different verb|camera label)\b',creative['change'],re.I):
