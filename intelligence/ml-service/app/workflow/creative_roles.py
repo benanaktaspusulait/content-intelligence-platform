@@ -765,7 +765,9 @@ def perform_role(role: str, text: str, context: dict[str, Any], provider: LLMPro
         payload = {'baselinePromptText': text, 'context': safe_context}
         if ownership:
             payload['profileOwnership'] = {key: value for key, value in ownership.items() if key != 'baselinePromptText'}
-    raw_response = provider.complete(json.dumps(payload, ensure_ascii=False), system=system, temperature=0)
+    wire_payload = (json.dumps(payload, ensure_ascii=False, sort_keys=True, separators=(',', ':'))
+                    if context.get('storyExperiment') else json.dumps(payload, ensure_ascii=False))
+    raw_response = provider.complete(wire_payload, system=system, temperature=0)
     provider.last_raw_response = raw_response
     if not isinstance(raw_response, str) or not raw_response.strip():
         raise ValueError(f'{ROLES[role].title()} returned an empty JSON response')

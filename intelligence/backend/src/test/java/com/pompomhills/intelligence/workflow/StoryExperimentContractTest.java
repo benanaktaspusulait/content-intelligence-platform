@@ -25,18 +25,25 @@ import static com.pompomhills.intelligence.workflow.CpqOwnerPilotService.*;
 class StoryExperimentContractTest {
   @Container static PostgreSQLContainer<?> pg=new PostgreSQLContainer<>("postgres:17-alpine");
   static final Path ROOT=Path.of(System.getProperty("user.dir")).getParent().getParent();
-  static final ObjectMapper json=new ObjectMapper();
+  static final ObjectMapper json=new ObjectMapper().findAndRegisterModules();
+  static Process bridgeProcess;static java.io.BufferedWriter bridgeInput;static java.io.BufferedReader bridgeOutput;
+  @BeforeAll static void warmBridge() throws Exception {
+    var builder=new ProcessBuilder(ROOT.resolve("intelligence/ml-service/.venv/bin/python").toString(),"-u",ROOT.resolve("intelligence/ml-service/tests/story_experiment_bridge_server.py").toString());
+    builder.environment().put("POMPOM_DATA_ROOT",ROOT.resolve("intelligence/data").toString());builder.environment().put("PYTHONPATH",ROOT.resolve("intelligence/ml-service").toString());
+    builder.redirectError(ProcessBuilder.Redirect.INHERIT);bridgeProcess=builder.start();
+    bridgeInput=new java.io.BufferedWriter(new java.io.OutputStreamWriter(bridgeProcess.getOutputStream()));
+    bridgeOutput=new java.io.BufferedReader(new java.io.InputStreamReader(bridgeProcess.getInputStream()));
+  }
+  @AfterAll static void closeBridge() {if(bridgeProcess!=null)bridgeProcess.destroy();}
   JdbcTemplate sql;JdbcClient db;QualityMlClient ml;StoryEvolutionService service;CpqOwnerPilotService util;
   Map<String,Object> fixture,manifest,body;MockHttpServletRequest owner;String mode="valid",drift="";int transports;
   boolean crashAfterStory,cancelAfterStory,tamperAfterStory;UUID run;
 
   Map<String,Object> bridge(String operation,Map<String,Object> input) throws Exception {
-    var builder=new ProcessBuilder(ROOT.resolve("intelligence/ml-service/.venv/bin/python").toString(),ROOT.resolve("intelligence/ml-service/tests/story_experiment_bridge.py").toString());
-    builder.environment().put("POMPOM_DATA_ROOT",ROOT.resolve("intelligence/data").toString());builder.environment().put("PYTHONPATH",ROOT.resolve("intelligence/ml-service").toString());
-    builder.redirectError(ProcessBuilder.Redirect.INHERIT);var p=builder.start();
-    p.getOutputStream().write(json.writeValueAsBytes(Map.of("operation",operation,"input",input,"mode",mode)));p.getOutputStream().close();
-    String output=new String(p.getInputStream().readAllBytes());assertThat(p.waitFor()).as(output).isZero();
-    return json.readValue(output,new TypeReference<>(){});
+    bridgeInput.write(json.writeValueAsString(Map.of("operation",operation,"input",input,"mode",mode)));bridgeInput.newLine();bridgeInput.flush();
+    String line=bridgeOutput.readLine();assertThat(line).as("ML bridge process must be alive").isNotNull();
+    var reply=json.readValue(line,new TypeReference<Map<String,Object>>(){});assertThat(reply.get("error")).as("ML bridge error: %s",reply).isNull();
+    return json.readValue(String.valueOf(reply.get("output")),new TypeReference<>(){});
   }
   @BeforeEach void setup() throws Exception {
     var datasource=new DriverManagerDataSource(pg.getJdbcUrl(),pg.getUsername(),pg.getPassword());sql=new JdbcTemplate(datasource);db=JdbcClient.create(datasource);
@@ -47,7 +54,7 @@ class StoryExperimentContractTest {
     var source=map(manifest.get("sourceSnapshot"));var workflow=mock(WorkflowService.class);ml=mock(QualityMlClient.class);
     when(workflow.approvedStoryForCpq(uuid(source.get("storyId")),uuid(source.get("approvalRecordId")))).thenReturn(Map.of("text",fixture.get("text"),"revision",source.get("revision")));
     var canonical=json.readValue(Files.readString(ROOT.resolve("intelligence/docs/p2-canonical-aware-story-evidence/canonical-evaluation.json")),new TypeReference<Map<String,Object>>(){});
-    util=new CpqOwnerPilotService(db,json,null,ml){@Override public Map<String,Object> context(UUID a,UUID b,String c){return Map.of("approvedStory",source,"canonical",canonical,"originalPrompt",readPrompt(),"productionSettings",Map.of("profile","ABSURD_PHYSICS","generator","SEEDANCE_2_0_MINI","duration",15));}};
+    util=new CpqOwnerPilotService(db,json,null,ml){@Override public Map<String,Object> context(UUID a,UUID b,String c){return Map.of("approvedStory",source,"canonical",canonical,"originalPrompt",readPrompt(),"productionSettings",Map.of("contentProfile","ABSURD_PHYSICS","generator","SEEDANCE_2_0_MINI","desiredDuration",15.0,"openingStrategy","AUTO","settings",Map.of("mode","image2video","resolution","480p","aspectRatio","9:16")));}};
     service=new StoryEvolutionService(db,util,workflow,ml){@Override void afterPilotReceipt(UUID id,String role){
       if("STORY".equals(role)&&cancelAfterStory)sql.update("UPDATE story_evolution_runs SET cancel_requested=true WHERE id=?",id);
       if("STORY".equals(role)&&crashAfterStory)throw new IllegalStateException("Offline crash after durable receipt");
@@ -74,7 +81,7 @@ class StoryExperimentContractTest {
 
   @Test void completeTwoCallContractUsesDurableCandidatesAndNoAutomaticApproval() throws Exception {
     start();service.processNext();var result=view();
-    assertThat(transports).isEqualTo(2);assertThat(result.get("state")).isEqualTo("RESEARCH_COMPLETE_OWNER_REVIEW_REQUIRED");
+    assertThat(transports).as("Run state: %s",result).isEqualTo(2);assertThat(result.get("state")).isEqualTo("RESEARCH_COMPLETE_OWNER_REVIEW_REQUIRED");
     assertThat(receipts()).hasSize(2).allSatisfy(r->{assertThat(r.get("rawProviderResponse")).isNotNull();assertThat(r.get("usage")).isNotNull();assertThat(r.get("billingStatus")).isEqualTo("KNOWN_INCURRED");});
     assertThat(map(result.get("progress"))).containsEntry("ownerStoryApproval","PENDING").containsEntry("reviewerIndependent",true);
     assertThat(map(map(result.get("progress")).get("lastAssessment")).get("recommendationReason")).isEqualTo("NO_CREATIVE_WINNER");
@@ -87,18 +94,20 @@ class StoryExperimentContractTest {
     assertThat(rows(view().get("events")).stream().filter(e->"REQUEST_RESERVED".equals(e.get("state"))).count()).isEqualTo(1);
     service.processNext();assertThat(transports).isEqualTo(1);
   }
-  @ParameterizedTest @ValueSource(strings={"review-timeout","review-malformed"})
+  @ParameterizedTest @ValueSource(strings={"review-timeout","review-transport","review-malformed"})
   void failedSecondCallPreservesFirstResponseAndKnownBilling(String failure){mode=failure;start();service.processNext();assertThat(transports).isEqualTo(2);assertThat(receipts()).hasSize(2);assertThat(receipts().getFirst().get("billingStatus")).isEqualTo("KNOWN_INCURRED");assertThat(receipts().getFirst().get("rawProviderResponse")).isNotNull();
     assertThat(map(view().get("progress")).get("knownActualCostUsd")).isNotNull();service.processNext();assertThat(transports).isEqualTo(2);
   }
   @Test void crashAndRestartRetainReceiptWithoutPaidReplay(){crashAfterStory=true;start();service.processNext();assertThat(receipts()).hasSize(1);assertThat(map(view().get("progress")).get("knownActualCostUsd")).isEqualTo(.00027);crashAfterStory=false;service.processNext();assertThat(transports).isEqualTo(1);}
+  @Test void actualWorkerExitLeavesRunningReceiptAndRestartCannotReplay(){crashAfterStory=true;start();assertThatThrownBy(()->service.step(run)).hasMessageContaining("Offline crash");assertThat(view().get("state")).isEqualTo("RUNNING");assertThat(receipts()).hasSize(1);crashAfterStory=false;service.processNext();assertThat(transports).isEqualTo(1);}
+  @Test void uncertainFirstDispatchCannotRetryOrReserveReview(){mode="story-timeout";start();service.processNext();assertThat(transports).isEqualTo(1);assertThat(receipts().getFirst().get("billingStatus")).isEqualTo("USAGE_UNKNOWN");assertThat(receipts().getFirst().get("actualCostUsd")).isNull();service.processNext();assertThat(transports).isEqualTo(1);}
   @Test void cancellationAfterReceiptStopsBeforeSecondReservation(){cancelAfterStory=true;start();service.processNext();assertThat(receipts()).hasSize(1);assertThat(transports).isEqualTo(1);}
   @Test void persistedCandidatesCannotBeChangedBetweenCalls(){tamperAfterStory=true;start();service.processNext();assertThat(transports).isEqualTo(1);assertThat(receipts()).hasSize(1);assertThat(view().toString()).contains("persisted receipt changed");}
   @Test void receiptsAndGrantAreImmutableAndThirdCallIsImpossible(){start();service.processNext();
     assertThatThrownBy(()->sql.update("UPDATE story_evolution_events SET payload='{}'::jsonb WHERE run_id=? AND payload->>'state'='PROVIDER_RECEIPT'",run)).hasMessageContaining("Immutable story pilot evidence");
     assertThatThrownBy(()->sql.update("UPDATE story_evolution_runs SET authorization_payload='{}'::jsonb WHERE id=?",run)).hasMessageContaining("Immutable story pilot authorization");
     var row=service.load(run);var progress=new LinkedHashMap<>(map(row.get("progress")));var scope=map(row.get("scope"));
-    assertThatThrownBy(()->service.pilotDispatch(run,"STORY",scope,progress,service.pilotContext(scope,false,null,null))).hasMessageContaining("request limit");
+    assertThatThrownBy(()->service.pilotDispatch(run,"STORY",scope,progress,service.pilotContext(scope,false,null,null))).hasMessageContaining("before dispatch");
     assertThat(transports).isEqualTo(2);
   }
   @ParameterizedTest @ValueSource(strings={"systemSha256","model"})

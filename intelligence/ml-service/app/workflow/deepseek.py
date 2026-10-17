@@ -37,6 +37,7 @@ class DeepSeekTextProvider(LLMProvider):
             response_format={"type": "json_object"},
             max_tokens=self.max_output_tokens,
         )
+        self.last_provider_response = response.model_dump() if hasattr(response, "model_dump") else None
         usage = getattr(response, "usage", None)
         self.last_usage = usage.model_dump() if usage is not None and hasattr(usage, "model_dump") else None
         self.last_raw_response = response.choices[0].message.content or ""

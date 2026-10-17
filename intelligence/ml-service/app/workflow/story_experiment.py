@@ -12,6 +12,7 @@ import json
 import math
 import os
 import re
+from pathlib import Path
 
 VERSION = 'REAL_CREATIVE_STORY_EVOLUTION_PILOT_V1'
 SCHEMA = 'story-pilot-candidates-v1'
@@ -71,6 +72,7 @@ def validate(text, context, result):
         failures = []; status = 'SOURCE_COMPLIANT'
         body = candidate.get('text')
         declarations = candidate.get('sourceContract') or {}
+        if not isinstance(declarations, dict): declarations = {}
         if declarations.get('status') == 'PROTECTED_CHANGE_PROPOSAL':
             proposals = declarations.get('protectedChanges')
             valid_proposal = isinstance(proposals, list) and bool(proposals) and all(
@@ -102,7 +104,9 @@ def validate(text, context, result):
             for anchor in policy['protectedAnchors']:
                 binding = bound.get(anchor['id'], {})
                 quote = binding.get('candidateQuote', '')
-                if binding.get('sourceQuote') != anchor['quote'] or not isinstance(quote, str) or not quote or quote not in body or normalize(quote) != normalize(anchor['quote']):
+                if isinstance(quote, str) and quote and quote not in body:
+                    status = 'SOURCE_VIOLATION'; failures.append('Claimed protected fact absent from story: '+anchor['id']); continue
+                if binding.get('sourceQuote') != anchor['quote'] or not isinstance(quote, str) or not quote or normalize(quote) != normalize(anchor['quote']):
                     status = 'UNKNOWN'; failures.append('Unestablished protected fact: '+anchor['id']); continue
                 # Do not accept a quoted protected clause with an explicit
                 # nearby negation. This is a contradiction guard, not NLP proof.
@@ -151,8 +155,12 @@ def preview(role, text, context):
               'inputUsdPerMillion': rates[0], 'outputUsdPerMillion': rates[1],
               'maximumCalculatedUsd': cap, 'automaticRetries': False, 'fallback': False,
               'transport': 'REAL_PROVIDER_ADAPTER', 'payloadBytes': wire['payloadBytes']}
+    app_root = Path(__file__).resolve().parents[1]
+    result['implementationSha256'] = sha({name: hashlib.sha256((app_root / name).read_bytes()).hexdigest()
+        for name in ('workflow/story_experiment.py', 'workflow/creative_roles.py', 'workflow/deepseek.py',
+                     'workflow/api.py', 'llm/openai_provider.py')})
     if role == 'STORY' or 'candidates' in context:
-        result['effectiveRequestSha256'] = sha(json.dumps(wire['payload'], ensure_ascii=False))
+        result['effectiveRequestSha256'] = sha(encoded(wire['payload']))
     return result
 
 
@@ -201,12 +209,14 @@ def execute(role, text, context, cap):
         receipt.update(processingStatus='LOCALLY_REJECTED', error={'category': type(error).__name__, 'detail': str(error)[:2000]})
     if provider is not None:
         receipt.update(rawProviderResponse=getattr(provider, 'last_raw_response', None),
+                       providerApiResponse=getattr(provider, 'last_provider_response', None),
                        usage=getattr(provider, 'last_usage', None), providerResponseMetadata=getattr(provider, 'last_response_metadata', None))
     raw = receipt['rawProviderResponse']; metadata = receipt.get('providerResponseMetadata') or {}
+    received = raw is not None or receipt.get('providerApiResponse') is not None
     if isinstance(raw, str):
         try: receipt['parsedProviderResponse'] = json.loads(raw)
         except (ValueError, TypeError): pass
-    receipt.update(responseReceived=raw is not None, responseSha256=sha(raw) if isinstance(raw, str) else None,
+    receipt.update(responseReceived=received, responseSha256=sha(raw) if isinstance(raw, str) else sha(receipt['providerApiResponse']) if receipt.get('providerApiResponse') is not None else None,
                    responseReceivedAt=datetime.now(timezone.utc).isoformat())
     try:
         cost = _optimization_cost(receipt['usage'], checked['inputUsdPerMillion'], checked['outputUsdPerMillion'])
@@ -221,7 +231,7 @@ def execute(role, text, context, cap):
                 receipt['processingStatus'] = 'CANDIDATES_ACCEPTED' if receipt['sourceValidation']['eligible'] else 'LOCALLY_REJECTED'
             else: receipt['processingStatus'] = 'INDEPENDENT_REVIEW_COMPLETED'
     except Exception as error:
-        receipt['processingStatus'] = 'LOCALLY_REJECTED' if raw is not None else 'DISPATCH_UNCERTAIN' if receipt['providerDispatched'] else 'NOT_DISPATCHED'
+        receipt['processingStatus'] = 'LOCALLY_REJECTED' if received else 'DISPATCH_UNCERTAIN' if receipt['providerDispatched'] else 'NOT_DISPATCHED'
         receipt['error'] = {'category': type(error).__name__, 'detail': str(error)[:2000]}
         if receipt['actualCostUsd'] is None:
             receipt['billingStatus'] = 'USAGE_UNKNOWN' if receipt['providerDispatched'] else 'NOT_DISPATCHED'

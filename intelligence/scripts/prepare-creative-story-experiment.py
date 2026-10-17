@@ -24,6 +24,8 @@ def sha(value):
 
 
 def main():
+    if '--repaired-contract' in sys.argv:
+        return repaired_contract()
     evidence = ROOT / 'intelligence/backend/target/disposable-owner-http/run-oT9HS7/real-execution-runtime'
     saved = json.loads((evidence / 'run-a-final.json').read_text())
     scope = saved['scope']
@@ -123,6 +125,64 @@ def main():
     output = ROOT/'intelligence/docs/CREATIVE_STORY_NEXT_EXPERIMENT_MANIFEST.json'
     output.write_text(json.dumps(manifest,ensure_ascii=False,indent=2)+'\n')
     print(json.dumps({'manifest':str(output),'maximumTotalReservationUsd':str(total),'profiles':profiles,'providerCalls':0}))
+
+
+def repaired_contract():
+    """Recompute the tested owner's exact strict preflight; never dispatch."""
+    from app.workflow.story_experiment import preview, sha as fingerprint, VERSION
+    evidence_path = ROOT/'intelligence/backend/target/story-experiment-contract-dry-run.json'
+    tested = json.loads(evidence_path.read_text())
+    if tested.get('realProviderCalls') != 0 or tested.get('productionDbWrites') != 0:
+        raise SystemExit('Non-billable integrated contract evidence required')
+    scope = tested['trace']['scope']
+    source_scope = scope['sourceScopeSha256']
+    assert fingerprint({k:v for k,v in scope.items() if k != 'sourceScopeSha256'}) == source_scope
+    historical = json.loads((ROOT/'intelligence/docs/CREATIVE_STORY_NEXT_EXPERIMENT_MANIFEST.json').read_text())
+    assert scope['sourceStory'] == historical['originalStory']
+    config = json.loads(subprocess.check_output(['docker','compose','config','--format','json'],cwd=ROOT/'intelligence'))
+    env = config['services']['ml-service']['environment']
+    for role in ('STORY','STORY_REVIEW'):
+        for suffix in ('MODEL','INPUT_USD_PER_MILLION','OUTPUT_USD_PER_MILLION'):
+            key='WORKFLOW_'+role+'_'+suffix
+            if not env.get(key):raise SystemExit('Missing current configured role value: '+key)
+            os.environ[key]=str(env[key])
+    common = {'canonicalStoryFeasibilityContext':scope['canonicalStoryFeasibilityContext'],
+              'approvedStoryText':scope['sourceStory'],'sourceFingerprint':scope['sourceStorySha256'],
+              'objective':scope['objective'],'roundNumber':1,
+              'storyExperiment':{'version':VERSION,'requestedAlternativeCount':2,
+                  'sourceStorySha256':scope['sourceStorySha256'],'sourceScopeSha256':source_scope,
+                  'protectedAnchors':scope['protectedAnchors']}}
+    generation={**common,'inputMode':'DETAILED_STORY','storyGenerationMode':'IMPROVE_EXISTING_STORY',
+                'requestedAlternativeCount':2,'lockedRequirements':['PRESERVE_CORE_PREMISE','PRESERVE_CHARACTER_IDENTITY','PRESERVE_PHYSICAL_RULE','PRESERVE_ENDING']}
+    review_context={**common,'reviewPolicyVersion':'creative-story-merit-v1'}
+    operations=[preview('STORY',scope['sourceStory'],generation),preview('STORY_REVIEW',scope['sourceStory'],review_context)]
+    per_request=max(Decimal(str(x['maximumCalculatedUsd'])) for x in operations).quantize(Decimal('.000001'),rounding=ROUND_CEILING)
+    for operation in operations:operation['maxCostUsd']=float(per_request)
+    total=per_request*2
+    # These must be the same bindings exercised through PostgreSQL + signed ML
+    # request boundaries. A stale test artifact cannot confer fresh readiness.
+    expected=tested['trace']['authorization']['operations']
+    for observed,wanted in zip(operations,expected):
+        if observed != wanted:raise SystemExit('Current preflight differs from integrated evidence; rerun the focused contract test')
+    grant={'experimentVersion':VERSION,'sourceStoryRecordId':scope['sourceStoryRecordId'],
+           'approvalRecordId':scope['sourceApprovalRecordId'],'baselineAnalysisId':scope['baselineAnalysisId'],
+           'protectedAnchors':scope['protectedAnchors'],'objective':scope['objective'],'sourceScopeSha256':source_scope,
+           'operations':operations,'maxRounds':1,'maxRequests':2,'maxRunSeconds':600,'maxTotalUsd':float(total),
+           'automaticRetries':False,'fallback':False,'authorizePaidInference':False,'confirmSourceAuthority':False,
+           'idempotencyKey':'real-story-pilot-v1-'+fingerprint({'scope':source_scope,'operations':operations})[:32]}
+    output={'experimentVersion':VERSION,'sourceStorySha256':scope['sourceStorySha256'],
+            'sourceScopeSha256':source_scope,'sourceScope':scope,'operations':operations,
+            'historicalPreparedCapUsd':'0.017966','recomputedMaximumReservationUsd':str(total),
+            'budgetChangeRequiresExplicitOwnerApproval':total != Decimal('.017966'),
+            'authorizationTemplate':grant,'ownerAuthorization':'NOT_GRANTED','providerCalls':0,'providerSpendUsd':0,
+            'liveAvailability':'NOT_PROBED_NO_INFERENCE','storyRequestPreview':preview_story_request('STORY',scope['sourceStory'],generation),
+            'reviewTemplatePreview':preview_story_request('STORY_REVIEW',scope['sourceStory'],review_context),
+            'reviewPayloadSha256':'NOT_CREATED_UNTIL_DURABLE_STORY_RECEIPT',
+            'integrationEvidenceSha256':hashlib.sha256(evidence_path.read_bytes()).hexdigest()}
+    target=ROOT/'intelligence/docs/REAL_STORY_EXPERIMENT_REPAIRED_MANIFEST.json'
+    target.write_text(json.dumps(output,indent=2,ensure_ascii=False)+'\n')
+    print(json.dumps({'manifest':str(target),'recomputedMaximumReservationUsd':str(total),'providerCalls':0,
+                      'sourceScopeSha256':source_scope}))
 
 
 if __name__ == '__main__':

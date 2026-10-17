@@ -52,6 +52,15 @@ def test_variation_preserves_only_bound_facts_and_keeps_semantics_unknown():
     assert gate['semanticFidelity']=='UNKNOWN_REQUIRES_INDEPENDENT_REVIEW'
 
 
+def test_jsonb_object_key_reordering_cannot_change_effective_request_fingerprint():
+    text,context=inputs()
+    def reorder(value):
+        if isinstance(value,dict):return {k:reorder(value[k]) for k in reversed(list(value))}
+        if isinstance(value,list):return [reorder(x) for x in value]
+        return value
+    assert preview('STORY',text,context)==preview('STORY',text,reorder(context))
+
+
 @pytest.mark.parametrize('change',['instruction','model','price','source','budget','fixture'])
 def test_dispatch_mismatch_fails_before_provider_construction(monkeypatch,change):
     text,context=inputs();authorized=preview('STORY',text,context);authorized['maxCostUsd']=.1

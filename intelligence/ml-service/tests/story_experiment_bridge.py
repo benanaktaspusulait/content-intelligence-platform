@@ -23,6 +23,10 @@ class MockAdapter:
     def __init__(self,*a,**kw): self.model=kw.get('model') or (a[0] if a else '')
     def complete(self,prompt,system='',**kwargs):
         payload=json.loads(prompt);context=body['context'];role=body['role']
+        if (role=='STORY' and mode=='story-timeout') or (role=='STORY_REVIEW' and mode=='review-timeout'):
+            raise TimeoutError('Offline simulated timeout without returned usage')
+        if role=='STORY_REVIEW' and mode=='review-transport':
+            raise ConnectionError('Offline simulated transport error without returned usage')
         self.last_usage={'prompt_tokens':100,'completion_tokens':200}
         self.last_response_metadata={'model':self.model,'finishReason':'stop','requestId':'offline-adapter-receipt'}
         if role=='STORY':
@@ -39,7 +43,6 @@ class MockAdapter:
                 {'anchorId':context['storyExperiment']['protectedAnchors'][-1]['id'],'proposedChange':'Change the ending','justification':'Proposal only, not approved'}])
             result={'alternatives':candidates}
         else:
-            if mode=='review-timeout':raise TimeoutError('Offline simulated review timeout')
             result=review(context['candidates'],context)
         self.last_raw_response='{malformed' if mode=='malformed' or (mode=='review-malformed' and role=='STORY_REVIEW') else json.dumps(result)
         if mode=='missing-usage':self.last_usage=None
