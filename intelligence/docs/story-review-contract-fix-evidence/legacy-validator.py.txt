@@ -1,0 +1,25 @@
+def validate_review(value,text,context):
+    candidates=sources(text,context);checks={a['id'] for a in context['assessmentScope']['sourceScope']['protectedAnchors']}|set(EXTRA_CHECKS)
+    if not isinstance(value,dict) or value.get('schemaVersion')!=SCHEMA:raise ValueError('Assessment response schema required')
+    rows=value.get('candidateAssessments')
+    if not isinstance(rows,list) or len(rows)!=2 or {r.get('candidateRef') for r in rows}!={'A','B'}:raise ValueError('Both independent candidate assessments required')
+    for row in rows:
+        candidate=next(c for c in candidates if c['ref']==row['candidateRef']);sem=row.get('semanticSource',{});findings=sem.get('findings',[])
+        if len(findings)!=len(checks) or {f.get('check') for f in findings}!=checks:raise ValueError('Complete semantic source checks required BEFORE creative recommendation')
+        for f in findings:
+            if f.get('outcome') not in ('PASS','FAIL','UNKNOWN') or not f.get('reason'):raise ValueError('Semantic outcome/reason required')
+            for key,original in (('sourceQuote',text),('candidateQuote',candidate['narrative'])):
+                quote=f.get(key)
+                if not isinstance(quote,str) or (quote and quote not in original) or (f['outcome']!='UNKNOWN' and not quote):raise ValueError('Exact semantic supporting evidence required')
+        outcomes={f['outcome'] for f in findings};overall='SEMANTIC_SOURCE_FAIL' if 'FAIL' in outcomes else 'SEMANTIC_SOURCE_UNKNOWN' if 'UNKNOWN' in outcomes else 'SEMANTIC_SOURCE_PASS'
+        if sem.get('outcome')!=overall:raise ValueError('Uncertain/failed semantics cannot become PASS')
+        creative=row.get('creativeQuality',{});dims=creative.get('dimensions',[])
+        if len(dims)!=len(DIMENSIONS) or {d.get('dimension') for d in dims}!=set(DIMENSIONS):raise ValueError('All six CPQ dimensions required')
+        for d in dims:
+            if not all(isinstance(d.get(k),str) and d[k] for k in ('strength','weakness','risk')):raise ValueError('Strengths, weaknesses and production/evidence risks required')
+            if not isinstance(d.get('quote'),str) or (d['quote'] and d['quote'] not in candidate['narrative']):raise ValueError('Exact creative evidence required')
+        if creative.get('overall') not in ('MATERIAL_IMPROVEMENT','MINOR_VARIATION','NO_IMPROVEMENT','UNKNOWN') or not creative.get('reason'):raise ValueError('Creative comparison conclusion required')
+        eligible=overall=='SEMANTIC_SOURCE_PASS' and creative['overall']=='MATERIAL_IMPROVEMENT'
+        if type(row.get('eligibleForOwnerProposal')) is not bool or row['eligibleForOwnerProposal'] and not eligible:raise ValueError('Semantic FAIL/UNKNOWN cannot become an eligible owner proposal')
+    if value.get('researchPreference') not in ('A','B','NO_CREATIVE_WINNER') or not value.get('reason') or not value.get('evidenceLimitations'):raise ValueError('Separate research preference and limitations required')
+    return value

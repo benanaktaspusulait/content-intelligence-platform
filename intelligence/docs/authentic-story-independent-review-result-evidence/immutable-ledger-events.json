@@ -1,0 +1,392 @@
+[
+  {
+    "id": "dc973f94-5ac7-4bab-a824-e468901be108",
+    "payload": {
+      "state": "AUTHORIZED",
+      "scopeSha256": "5be45f1966d1a2ab8c8fa03e4570f67c090024fa038a34c6ba012055e0e3fcac",
+      "providerCalls": 0,
+      "experimentVersion": "REAL_CREATIVE_STORY_EVOLUTION_PILOT_V1",
+      "assessmentOnlyPolicy": "ASSESSMENT_ONLY_UNKNOWN_SOURCE_V1"
+    }
+  },
+  {
+    "id": "2ec9ab46-79a2-4310-9601-c133a3e33ccf",
+    "payload": {
+      "role": "STORY_REVIEW",
+      "state": "REQUEST_RESERVED",
+      "binding": {
+        "role": "STORY_REVIEW",
+        "model": "gpt-4o-mini-2024-07-18",
+        "policy": "ASSESSMENT_ONLY_UNKNOWN_SOURCE_V1",
+        "fallback": false,
+        "provider": "openai",
+        "maxRequests": 1,
+        "scopeSha256": "5be45f1966d1a2ab8c8fa03e4570f67c090024fa038a34c6ba012055e0e3fcac",
+        "systemBytes": 2387,
+        "payloadBytes": 13057,
+        "systemSha256": "d05e08d595efed2ec0bffdc3cbd128aae6a0c25f12a0d217fb1cb1518d313aa6",
+        "schemaVersion": "assessment-only-story-review-v1",
+        "assessmentOnly": true,
+        "maxOutputTokens": 4000,
+        "automaticRetries": false,
+        "maximumInputBytes": 24000,
+        "sourceStorySha256": "ba352d486c4252c5c6fefe585ad976c0b6f73c299f7554863848bdd842a99b3d",
+        "inputUsdPerMillion": 0.15,
+        "outputUsdPerMillion": 0.6,
+        "implementationSha256": "b19b59c1633aae368d78f1dea0fb9d61922c465c128364e4dab9186c30e91fbc",
+        "maximumCalculatedUsd": 0.0048666000000000004,
+        "responseSchemaSha256": "3de933681573a4679ea6551342c7a38e8b325c8239ddb68070758bdd9d384a5b",
+        "effectiveRequestSha256": "0da629c75bab52e41f81d4fad5481249782a403521b392099883a19f0f40a480"
+      },
+      "requestId": "a520aaa0-c012-388c-844a-d2723bd55e02",
+      "maxCostUsd": 0.004867,
+      "experimentVersion": "REAL_CREATIVE_STORY_EVOLUTION_PILOT_V1",
+      "assessmentOnlyPolicy": "ASSESSMENT_ONLY_UNKNOWN_SOURCE_V1"
+    }
+  },
+  {
+    "id": "cb2fda7e-add2-4d51-943d-2b2d1fe6f0b8",
+    "payload": {
+      "role": "STORY_REVIEW",
+      "state": "PROVIDER_RECEIPT",
+      "envelope": {
+        "role": "STORY_REVIEW",
+        "error": {
+          "detail": "Both independent candidate assessments required",
+          "category": "ValueError"
+        },
+        "model": "gpt-4o-mini-2024-07-18",
+        "runId": "59f47fec-59fb-42e3-b3a4-c9f7d83c7ffc",
+        "usage": {
+          "total_tokens": 5293,
+          "prompt_tokens": 3556,
+          "completion_tokens": 1737,
+          "prompt_tokens_details": {
+            "text_tokens": null,
+            "audio_tokens": 0,
+            "image_tokens": null,
+            "cached_tokens": 0,
+            "cache_write_tokens": null
+          },
+          "completion_tokens_details": {
+            "text_tokens": null,
+            "audio_tokens": 0,
+            "reasoning_tokens": 0,
+            "accepted_prediction_tokens": 0,
+            "rejected_prediction_tokens": 0
+          }
+        },
+        "policy": "ASSESSMENT_ONLY_UNKNOWN_SOURCE_V1",
+        "binding": {
+          "role": "STORY_REVIEW",
+          "model": "gpt-4o-mini-2024-07-18",
+          "policy": "ASSESSMENT_ONLY_UNKNOWN_SOURCE_V1",
+          "fallback": false,
+          "provider": "openai",
+          "maxRequests": 1,
+          "scopeSha256": "5be45f1966d1a2ab8c8fa03e4570f67c090024fa038a34c6ba012055e0e3fcac",
+          "systemBytes": 2387,
+          "payloadBytes": 13057,
+          "systemSha256": "d05e08d595efed2ec0bffdc3cbd128aae6a0c25f12a0d217fb1cb1518d313aa6",
+          "schemaVersion": "assessment-only-story-review-v1",
+          "assessmentOnly": true,
+          "maxOutputTokens": 4000,
+          "automaticRetries": false,
+          "maximumInputBytes": 24000,
+          "sourceStorySha256": "ba352d486c4252c5c6fefe585ad976c0b6f73c299f7554863848bdd842a99b3d",
+          "inputUsdPerMillion": 0.15,
+          "outputUsdPerMillion": 0.6,
+          "implementationSha256": "b19b59c1633aae368d78f1dea0fb9d61922c465c128364e4dab9186c30e91fbc",
+          "maximumCalculatedUsd": 0.0048666000000000004,
+          "responseSchemaSha256": "3de933681573a4679ea6551342c7a38e8b325c8239ddb68070758bdd9d384a5b",
+          "effectiveRequestSha256": "0da629c75bab52e41f81d4fad5481249782a403521b392099883a19f0f40a480"
+        },
+        "provider": "openai",
+        "requestId": "a520aaa0-c012-388c-844a-d2723bd55e02",
+        "retrySafe": false,
+        "evidenceType": "MACHINE_REVIEW",
+        "actualCostUsd": 0.0015756,
+        "billingStatus": "KNOWN_INCURRED",
+        "modelIdentity": {
+          "verified": true,
+          "aliasApplied": false,
+          "policyVersion": "exact-provider-model-v2",
+          "requestedModel": "gpt-4o-mini-2024-07-18",
+          "pricingIdentity": "gpt-4o-mini-2024-07-18",
+          "actualReturnedModel": "gpt-4o-mini-2024-07-18"
+        },
+        "assessmentOnly": true,
+        "rawReceiptFile": "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/backend/target/authentic-story-assessment-real-v1/data/workflow/story-assessment-receipts/a520aaa0-c012-388c-844a-d2723bd55e02-response.json",
+        "responseSha256": "7963c59ce4401e0945780d6d935800d4dbd54514e62612620d661f6074621e7f",
+        "processingStatus": "LOCALLY_REJECTED",
+        "rawReceiptSha256": "cfa9709ae299b8fc3221e912b2a120da048963af2396e17a4c41a890090de2ee",
+        "requestStartedAt": "2026-10-17T21:22:34.811817+00:00",
+        "responseReceived": true,
+        "providerDispatched": true,
+        "requestFingerprint": "05bbba80e829e7fb9ea51397cdde3ed8589cc9c58af01b2c5bcb5fe82aa28f2b",
+        "responseReceivedAt": "2026-10-17T21:22:51.424371+00:00",
+        "providerApiResponse": {
+          "id": "chatcmpl-Ea69M8leyEtIVtGyIpbguHTlYSSLd",
+          "model": "gpt-4o-mini-2024-07-18",
+          "usage": {
+            "total_tokens": 5293,
+            "prompt_tokens": 3556,
+            "completion_tokens": 1737,
+            "prompt_tokens_details": {
+              "text_tokens": null,
+              "audio_tokens": 0,
+              "image_tokens": null,
+              "cached_tokens": 0,
+              "cache_write_tokens": null
+            },
+            "completion_tokens_details": {
+              "text_tokens": null,
+              "audio_tokens": 0,
+              "reasoning_tokens": 0,
+              "accepted_prediction_tokens": 0,
+              "rejected_prediction_tokens": 0
+            }
+          },
+          "object": "chat.completion",
+          "choices": [
+            {
+              "index": 0,
+              "message": {
+                "role": "assistant",
+                "audio": null,
+                "content": "{\n  \"responseContract\": {\n    \"candidateAssessments\": [\n      {\n        \"candidateRef\": \"A\",\n        \"creativeQuality\": {\n          \"dimensions\": [\n            {\n              \"dimension\": \"SCROLL_STOP_VISUAL_PROMISE\",\n              \"quote\": \"Pip the rabbit presses a single sticky note toward the toy cabinet's empty front panel\",\n              \"risk\": \"Narrative lacks a strong visual hook to engage immediately.\",\n              \"strength\": \"Establishes character and action quickly.\",\n              \"weakness\": \"Opening lacks urgency or excitement.\"\n            },\n            {\n              \"dimension\": \"CAUSAL_PROGRESSION\",\n              \"quote\": \"Pip shakes the hand; the note splits into two\",\n              \"risk\": \"Progression is clear but lacks variety in actions.\",\n              \"strength\": \"Logical cause and effect are maintained.\",\n              \"weakness\": \"Repetitive actions diminish engagement.\"\n            },\n            {\n              \"dimension\": \"VISUAL_STORYTELLING\",\n              \"quote\": \"Pip grabs at the four with both arms and they split into eight\",\n              \"risk\": \"Visuals are imaginative but may confuse without context.\",\n              \"strength\": \"Creative imagery enhances the absurdity.\",\n              \"weakness\": \"Complexity may hinder clarity.\"\n            },\n            {\n              \"dimension\": \"PRODUCTION_EXECUTABILITY\",\n              \"quote\": \"Pip sees the doubling finish and goes still\",\n              \"risk\": \"Execution may be challenging due to rapid changes.\",\n              \"strength\": \"Simple actions are feasible.\",\n              \"weakness\": \"Potential for visual overload.\"\n            },\n            {\n              \"dimension\": \"ENDING_REPLAY\",\n              \"quote\": \"Pip is relieved, but the cabinet remains messy.\",\n              \"risk\": \"Ending is satisfying but lacks a strong hook for replay.\",\n              \"strength\": \"Closure is achieved.\",\n              \"weakness\": \"No new insight or twist.\"\n            },\n            {\n              \"dimension\": \"DISTINCTIVE_CREATIVE_VALUE\",\n              \"quote\": \"Pip's nose twitches; a sneeze erupts\",\n              \"risk\": \"Concept is unique but may feel familiar.\",\n              \"strength\": \"Original premise with a whimsical twist.\",\n              \"weakness\": \"Similar themes may dilute distinctiveness.\"\n            }\n          ],\n          \"overall\": \"MATERIAL_IMPROVEMENT\",\n          \"reason\": \"Narrative shows creativity but lacks engagement and variety.\"\n        },\n        \"eligibleForOwnerProposal\": false,\n        \"semanticSource\": {\n          \"findings\": [\n            {\n              \"candidateQuote\": \"Pip the rabbit\",\n              \"check\": \"identity\",\n              \"outcome\": \"PASS\",\n              \"reason\": \"Character identity is preserved.\",\n              \"sourceQuote\": \"Pip the rabbit\"\n            },\n            {\n              \"candidateQuote\": \"it clings to Pip's fingertip while the cabinet stays untouched\",\n              \"check\": \"premise\",\n              \"outcome\": \"PASS\",\n              \"reason\": \"Core premise is maintained.\",\n              \"sourceQuote\": \"it clings to Pip's fingertip while the cabinet stays untouched\"\n            },\n            {\n              \"candidateQuote\": \"\",\n              \"check\": \"rule\",\n              \"outcome\": \"FAIL\",\n              \"reason\": \"Physical rule about note multiplication is missing.\",\n              \"sourceQuote\": \"every removal or transfer attempt multiplies the notes\"\n            },\n            {\n              \"candidateQuote\": \"\",\n              \"check\": \"continuity\",\n              \"outcome\": \"FAIL\",\n              \"reason\": \"Continuity regarding covering until sneeze is missing.\",\n              \"sourceQuote\": \"Pip remains covered until a sneeze scatters the notes onto the cabinet\"\n            },\n            {\n              \"candidateQuote\": \"Pip is relieved, but the cabinet remains messy.\",\n              \"check\": \"ending\",\n              \"outcome\": \"PASS\",\n              \"reason\": \"Ending is consistent with the original.\",\n              \"sourceQuote\": \"Pip is relieved, but the cabinet remains messy.\"\n            }\n          ],\n          \"outcome\": \"SEMANTIC_SOURCE_FAIL\"\n        }\n      },\n      {\n        \"candidateRef\": \"B\",\n        \"creativeQuality\": {\n          \"dimensions\": [\n            {\n              \"dimension\": \"SCROLL_STOP_VISUAL_PROMISE\",\n              \"quote\": \"Pip the rabbit reaches to smooth one sticky note onto the toy cabinet's bare front panel\",\n              \"risk\": \"Opening is visually engaging but lacks immediate action.\",\n              \"strength\": \"Establishes character and setting effectively.\",\n              \"weakness\": \"Could benefit from more urgency.\"\n            },\n            {\n              \"dimension\": \"CAUSAL_PROGRESSION\",\n              \"quote\": \"Pip pinches the note with the other paw to peel it free\",\n              \"risk\": \"Progression is clear but somewhat predictable.\",\n              \"strength\": \"Logical sequence of actions.\",\n              \"weakness\": \"Limited variety in actions.\"\n            },\n            {\n              \"dimension\": \"VISUAL_STORYTELLING\",\n              \"quote\": \"Pip shakes both arms hard to fling the four notes away\",\n              \"risk\": \"Visuals are imaginative but may confuse without context.\",\n              \"strength\": \"Creative imagery enhances the absurdity.\",\n              \"weakness\": \"Complexity may hinder clarity.\"\n            },\n            {\n              \"dimension\": \"PRODUCTION_EXECUTABILITY\",\n              \"quote\": \"Pip freezes, watching the eight notes ripple and settle\",\n              \"risk\": \"Execution may be challenging due to rapid changes.\",\n              \"strength\": \"Simple actions are feasible.\",\n              \"weakness\": \"Potential for visual overload.\"\n            },\n            {\n              \"dimension\": \"ENDING_REPLAY\",\n              \"quote\": \"Pip is relieved, but the cabinet remains messy.\",\n              \"risk\": \"Ending is satisfying but lacks a strong hook for replay.\",\n              \"strength\": \"Closure is achieved.\",\n              \"weakness\": \"No new insight or twist.\"\n            },\n            {\n              \"dimension\": \"DISTINCTIVE_CREATIVE_VALUE\",\n              \"quote\": \"A sneeze bursts out of Pip\",\n              \"risk\": \"Concept is unique but may feel familiar.\",\n              \"strength\": \"Original premise with a whimsical twist.\",\n              \"weakness\": \"Similar themes may dilute distinctiveness.\"\n            }\n          ],\n          \"overall\": \"MATERIAL_IMPROVEMENT\",\n          \"reason\": \"Narrative shows creativity but lacks engagement and variety.\"\n        },\n        \"eligibleForOwnerProposal\": false,\n        \"semanticSource\": {\n          \"findings\": [\n            {\n              \"candidateQuote\": \"Pip the rabbit\",\n              \"check\": \"identity\",\n              \"outcome\": \"PASS\",\n              \"reason\": \"Character identity is preserved.\",\n              \"sourceQuote\": \"Pip the rabbit\"\n            },\n            {\n              \"candidateQuote\": \"it clings to Pip's fingertip while the cabinet stays untouched\",\n              \"check\": \"premise\",\n              \"outcome\": \"PASS\",\n              \"reason\": \"Core premise is maintained.\",\n              \"sourceQuote\": \"it clings to Pip's fingertip while the cabinet stays untouched\"\n            },\n            {\n              \"candidateQuote\": \"every removal or transfer attempt multiplies the notes\",\n              \"check\": \"rule\",\n              \"outcome\": \"PASS\",\n              \"reason\": \"Physical rule about note multiplication is preserved.\",\n              \"sourceQuote\": \"every removal or transfer attempt multiplies the notes\"\n            },\n            {\n              \"candidateQuote\": \"\",\n              \"check\": \"continuity\",\n              \"outcome\": \"FAIL\",\n              \"reason\": \"Continuity regarding covering until sneeze is missing.\",\n              \"sourceQuote\": \"Pip remains covered until a sneeze scatters the notes onto the cabinet\"\n            },\n            {\n              \"candidateQuote\": \"Pip is relieved, but the cabinet remains messy.\",\n              \"check\": \"ending\",\n              \"outcome\": \"PASS\",\n              \"reason\": \"Ending is consistent with the original.\",\n              \"sourceQuote\": \"Pip is relieved, but the cabinet remains messy.\"\n            }\n          ],\n          \"outcome\": \"SEMANTIC_SOURCE_FAIL\"\n        }\n      }\n    ]\n  },\n  \"evidenceLimitations\": [\n    \"explicit unknowns; no visual or audience verification\"\n  ],\n  \"reason\": \"research preference only; no approval\",\n  \"researchPreference\": \"A | B | NO_CREATIVE_WINNER\",\n  \"schemaVersion\": \"assessment-only-story-review-v1\"\n}",
+                "refusal": null,
+                "tool_calls": null,
+                "annotations": [],
+                "function_call": null
+              },
+              "logprobs": null,
+              "finish_reason": "stop"
+            }
+          ],
+          "created": 1792272156,
+          "metadata": null,
+          "moderation": null,
+          "service_tier": "default",
+          "system_fingerprint": "fp_fd3020c6f0"
+        },
+        "rawProviderResponse": "{\n  \"responseContract\": {\n    \"candidateAssessments\": [\n      {\n        \"candidateRef\": \"A\",\n        \"creativeQuality\": {\n          \"dimensions\": [\n            {\n              \"dimension\": \"SCROLL_STOP_VISUAL_PROMISE\",\n              \"quote\": \"Pip the rabbit presses a single sticky note toward the toy cabinet's empty front panel\",\n              \"risk\": \"Narrative lacks a strong visual hook to engage immediately.\",\n              \"strength\": \"Establishes character and action quickly.\",\n              \"weakness\": \"Opening lacks urgency or excitement.\"\n            },\n            {\n              \"dimension\": \"CAUSAL_PROGRESSION\",\n              \"quote\": \"Pip shakes the hand; the note splits into two\",\n              \"risk\": \"Progression is clear but lacks variety in actions.\",\n              \"strength\": \"Logical cause and effect are maintained.\",\n              \"weakness\": \"Repetitive actions diminish engagement.\"\n            },\n            {\n              \"dimension\": \"VISUAL_STORYTELLING\",\n              \"quote\": \"Pip grabs at the four with both arms and they split into eight\",\n              \"risk\": \"Visuals are imaginative but may confuse without context.\",\n              \"strength\": \"Creative imagery enhances the absurdity.\",\n              \"weakness\": \"Complexity may hinder clarity.\"\n            },\n            {\n              \"dimension\": \"PRODUCTION_EXECUTABILITY\",\n              \"quote\": \"Pip sees the doubling finish and goes still\",\n              \"risk\": \"Execution may be challenging due to rapid changes.\",\n              \"strength\": \"Simple actions are feasible.\",\n              \"weakness\": \"Potential for visual overload.\"\n            },\n            {\n              \"dimension\": \"ENDING_REPLAY\",\n              \"quote\": \"Pip is relieved, but the cabinet remains messy.\",\n              \"risk\": \"Ending is satisfying but lacks a strong hook for replay.\",\n              \"strength\": \"Closure is achieved.\",\n              \"weakness\": \"No new insight or twist.\"\n            },\n            {\n              \"dimension\": \"DISTINCTIVE_CREATIVE_VALUE\",\n              \"quote\": \"Pip's nose twitches; a sneeze erupts\",\n              \"risk\": \"Concept is unique but may feel familiar.\",\n              \"strength\": \"Original premise with a whimsical twist.\",\n              \"weakness\": \"Similar themes may dilute distinctiveness.\"\n            }\n          ],\n          \"overall\": \"MATERIAL_IMPROVEMENT\",\n          \"reason\": \"Narrative shows creativity but lacks engagement and variety.\"\n        },\n        \"eligibleForOwnerProposal\": false,\n        \"semanticSource\": {\n          \"findings\": [\n            {\n              \"candidateQuote\": \"Pip the rabbit\",\n              \"check\": \"identity\",\n              \"outcome\": \"PASS\",\n              \"reason\": \"Character identity is preserved.\",\n              \"sourceQuote\": \"Pip the rabbit\"\n            },\n            {\n              \"candidateQuote\": \"it clings to Pip's fingertip while the cabinet stays untouched\",\n              \"check\": \"premise\",\n              \"outcome\": \"PASS\",\n              \"reason\": \"Core premise is maintained.\",\n              \"sourceQuote\": \"it clings to Pip's fingertip while the cabinet stays untouched\"\n            },\n            {\n              \"candidateQuote\": \"\",\n              \"check\": \"rule\",\n              \"outcome\": \"FAIL\",\n              \"reason\": \"Physical rule about note multiplication is missing.\",\n              \"sourceQuote\": \"every removal or transfer attempt multiplies the notes\"\n            },\n            {\n              \"candidateQuote\": \"\",\n              \"check\": \"continuity\",\n              \"outcome\": \"FAIL\",\n              \"reason\": \"Continuity regarding covering until sneeze is missing.\",\n              \"sourceQuote\": \"Pip remains covered until a sneeze scatters the notes onto the cabinet\"\n            },\n            {\n              \"candidateQuote\": \"Pip is relieved, but the cabinet remains messy.\",\n              \"check\": \"ending\",\n              \"outcome\": \"PASS\",\n              \"reason\": \"Ending is consistent with the original.\",\n              \"sourceQuote\": \"Pip is relieved, but the cabinet remains messy.\"\n            }\n          ],\n          \"outcome\": \"SEMANTIC_SOURCE_FAIL\"\n        }\n      },\n      {\n        \"candidateRef\": \"B\",\n        \"creativeQuality\": {\n          \"dimensions\": [\n            {\n              \"dimension\": \"SCROLL_STOP_VISUAL_PROMISE\",\n              \"quote\": \"Pip the rabbit reaches to smooth one sticky note onto the toy cabinet's bare front panel\",\n              \"risk\": \"Opening is visually engaging but lacks immediate action.\",\n              \"strength\": \"Establishes character and setting effectively.\",\n              \"weakness\": \"Could benefit from more urgency.\"\n            },\n            {\n              \"dimension\": \"CAUSAL_PROGRESSION\",\n              \"quote\": \"Pip pinches the note with the other paw to peel it free\",\n              \"risk\": \"Progression is clear but somewhat predictable.\",\n              \"strength\": \"Logical sequence of actions.\",\n              \"weakness\": \"Limited variety in actions.\"\n            },\n            {\n              \"dimension\": \"VISUAL_STORYTELLING\",\n              \"quote\": \"Pip shakes both arms hard to fling the four notes away\",\n              \"risk\": \"Visuals are imaginative but may confuse without context.\",\n              \"strength\": \"Creative imagery enhances the absurdity.\",\n              \"weakness\": \"Complexity may hinder clarity.\"\n            },\n            {\n              \"dimension\": \"PRODUCTION_EXECUTABILITY\",\n              \"quote\": \"Pip freezes, watching the eight notes ripple and settle\",\n              \"risk\": \"Execution may be challenging due to rapid changes.\",\n              \"strength\": \"Simple actions are feasible.\",\n              \"weakness\": \"Potential for visual overload.\"\n            },\n            {\n              \"dimension\": \"ENDING_REPLAY\",\n              \"quote\": \"Pip is relieved, but the cabinet remains messy.\",\n              \"risk\": \"Ending is satisfying but lacks a strong hook for replay.\",\n              \"strength\": \"Closure is achieved.\",\n              \"weakness\": \"No new insight or twist.\"\n            },\n            {\n              \"dimension\": \"DISTINCTIVE_CREATIVE_VALUE\",\n              \"quote\": \"A sneeze bursts out of Pip\",\n              \"risk\": \"Concept is unique but may feel familiar.\",\n              \"strength\": \"Original premise with a whimsical twist.\",\n              \"weakness\": \"Similar themes may dilute distinctiveness.\"\n            }\n          ],\n          \"overall\": \"MATERIAL_IMPROVEMENT\",\n          \"reason\": \"Narrative shows creativity but lacks engagement and variety.\"\n        },\n        \"eligibleForOwnerProposal\": false,\n        \"semanticSource\": {\n          \"findings\": [\n            {\n              \"candidateQuote\": \"Pip the rabbit\",\n              \"check\": \"identity\",\n              \"outcome\": \"PASS\",\n              \"reason\": \"Character identity is preserved.\",\n              \"sourceQuote\": \"Pip the rabbit\"\n            },\n            {\n              \"candidateQuote\": \"it clings to Pip's fingertip while the cabinet stays untouched\",\n              \"check\": \"premise\",\n              \"outcome\": \"PASS\",\n              \"reason\": \"Core premise is maintained.\",\n              \"sourceQuote\": \"it clings to Pip's fingertip while the cabinet stays untouched\"\n            },\n            {\n              \"candidateQuote\": \"every removal or transfer attempt multiplies the notes\",\n              \"check\": \"rule\",\n              \"outcome\": \"PASS\",\n              \"reason\": \"Physical rule about note multiplication is preserved.\",\n              \"sourceQuote\": \"every removal or transfer attempt multiplies the notes\"\n            },\n            {\n              \"candidateQuote\": \"\",\n              \"check\": \"continuity\",\n              \"outcome\": \"FAIL\",\n              \"reason\": \"Continuity regarding covering until sneeze is missing.\",\n              \"sourceQuote\": \"Pip remains covered until a sneeze scatters the notes onto the cabinet\"\n            },\n            {\n              \"candidateQuote\": \"Pip is relieved, but the cabinet remains messy.\",\n              \"check\": \"ending\",\n              \"outcome\": \"PASS\",\n              \"reason\": \"Ending is consistent with the original.\",\n              \"sourceQuote\": \"Pip is relieved, but the cabinet remains messy.\"\n            }\n          ],\n          \"outcome\": \"SEMANTIC_SOURCE_FAIL\"\n        }\n      }\n    ]\n  },\n  \"evidenceLimitations\": [\n    \"explicit unknowns; no visual or audience verification\"\n  ],\n  \"reason\": \"research preference only; no approval\",\n  \"researchPreference\": \"A | B | NO_CREATIVE_WINNER\",\n  \"schemaVersion\": \"assessment-only-story-review-v1\"\n}",
+        "configuredRateCostUsd": 0.0015756,
+        "parsedProviderResponse": {
+          "reason": "research preference only; no approval",
+          "schemaVersion": "assessment-only-story-review-v1",
+          "responseContract": {
+            "candidateAssessments": [
+              {
+                "candidateRef": "A",
+                "semanticSource": {
+                  "outcome": "SEMANTIC_SOURCE_FAIL",
+                  "findings": [
+                    {
+                      "check": "identity",
+                      "reason": "Character identity is preserved.",
+                      "outcome": "PASS",
+                      "sourceQuote": "Pip the rabbit",
+                      "candidateQuote": "Pip the rabbit"
+                    },
+                    {
+                      "check": "premise",
+                      "reason": "Core premise is maintained.",
+                      "outcome": "PASS",
+                      "sourceQuote": "it clings to Pip's fingertip while the cabinet stays untouched",
+                      "candidateQuote": "it clings to Pip's fingertip while the cabinet stays untouched"
+                    },
+                    {
+                      "check": "rule",
+                      "reason": "Physical rule about note multiplication is missing.",
+                      "outcome": "FAIL",
+                      "sourceQuote": "every removal or transfer attempt multiplies the notes",
+                      "candidateQuote": ""
+                    },
+                    {
+                      "check": "continuity",
+                      "reason": "Continuity regarding covering until sneeze is missing.",
+                      "outcome": "FAIL",
+                      "sourceQuote": "Pip remains covered until a sneeze scatters the notes onto the cabinet",
+                      "candidateQuote": ""
+                    },
+                    {
+                      "check": "ending",
+                      "reason": "Ending is consistent with the original.",
+                      "outcome": "PASS",
+                      "sourceQuote": "Pip is relieved, but the cabinet remains messy.",
+                      "candidateQuote": "Pip is relieved, but the cabinet remains messy."
+                    }
+                  ]
+                },
+                "creativeQuality": {
+                  "reason": "Narrative shows creativity but lacks engagement and variety.",
+                  "overall": "MATERIAL_IMPROVEMENT",
+                  "dimensions": [
+                    {
+                      "risk": "Narrative lacks a strong visual hook to engage immediately.",
+                      "quote": "Pip the rabbit presses a single sticky note toward the toy cabinet's empty front panel",
+                      "strength": "Establishes character and action quickly.",
+                      "weakness": "Opening lacks urgency or excitement.",
+                      "dimension": "SCROLL_STOP_VISUAL_PROMISE"
+                    },
+                    {
+                      "risk": "Progression is clear but lacks variety in actions.",
+                      "quote": "Pip shakes the hand; the note splits into two",
+                      "strength": "Logical cause and effect are maintained.",
+                      "weakness": "Repetitive actions diminish engagement.",
+                      "dimension": "CAUSAL_PROGRESSION"
+                    },
+                    {
+                      "risk": "Visuals are imaginative but may confuse without context.",
+                      "quote": "Pip grabs at the four with both arms and they split into eight",
+                      "strength": "Creative imagery enhances the absurdity.",
+                      "weakness": "Complexity may hinder clarity.",
+                      "dimension": "VISUAL_STORYTELLING"
+                    },
+                    {
+                      "risk": "Execution may be challenging due to rapid changes.",
+                      "quote": "Pip sees the doubling finish and goes still",
+                      "strength": "Simple actions are feasible.",
+                      "weakness": "Potential for visual overload.",
+                      "dimension": "PRODUCTION_EXECUTABILITY"
+                    },
+                    {
+                      "risk": "Ending is satisfying but lacks a strong hook for replay.",
+                      "quote": "Pip is relieved, but the cabinet remains messy.",
+                      "strength": "Closure is achieved.",
+                      "weakness": "No new insight or twist.",
+                      "dimension": "ENDING_REPLAY"
+                    },
+                    {
+                      "risk": "Concept is unique but may feel familiar.",
+                      "quote": "Pip's nose twitches; a sneeze erupts",
+                      "strength": "Original premise with a whimsical twist.",
+                      "weakness": "Similar themes may dilute distinctiveness.",
+                      "dimension": "DISTINCTIVE_CREATIVE_VALUE"
+                    }
+                  ]
+                },
+                "eligibleForOwnerProposal": false
+              },
+              {
+                "candidateRef": "B",
+                "semanticSource": {
+                  "outcome": "SEMANTIC_SOURCE_FAIL",
+                  "findings": [
+                    {
+                      "check": "identity",
+                      "reason": "Character identity is preserved.",
+                      "outcome": "PASS",
+                      "sourceQuote": "Pip the rabbit",
+                      "candidateQuote": "Pip the rabbit"
+                    },
+                    {
+                      "check": "premise",
+                      "reason": "Core premise is maintained.",
+                      "outcome": "PASS",
+                      "sourceQuote": "it clings to Pip's fingertip while the cabinet stays untouched",
+                      "candidateQuote": "it clings to Pip's fingertip while the cabinet stays untouched"
+                    },
+                    {
+                      "check": "rule",
+                      "reason": "Physical rule about note multiplication is preserved.",
+                      "outcome": "PASS",
+                      "sourceQuote": "every removal or transfer attempt multiplies the notes",
+                      "candidateQuote": "every removal or transfer attempt multiplies the notes"
+                    },
+                    {
+                      "check": "continuity",
+                      "reason": "Continuity regarding covering until sneeze is missing.",
+                      "outcome": "FAIL",
+                      "sourceQuote": "Pip remains covered until a sneeze scatters the notes onto the cabinet",
+                      "candidateQuote": ""
+                    },
+                    {
+                      "check": "ending",
+                      "reason": "Ending is consistent with the original.",
+                      "outcome": "PASS",
+                      "sourceQuote": "Pip is relieved, but the cabinet remains messy.",
+                      "candidateQuote": "Pip is relieved, but the cabinet remains messy."
+                    }
+                  ]
+                },
+                "creativeQuality": {
+                  "reason": "Narrative shows creativity but lacks engagement and variety.",
+                  "overall": "MATERIAL_IMPROVEMENT",
+                  "dimensions": [
+                    {
+                      "risk": "Opening is visually engaging but lacks immediate action.",
+                      "quote": "Pip the rabbit reaches to smooth one sticky note onto the toy cabinet's bare front panel",
+                      "strength": "Establishes character and setting effectively.",
+                      "weakness": "Could benefit from more urgency.",
+                      "dimension": "SCROLL_STOP_VISUAL_PROMISE"
+                    },
+                    {
+                      "risk": "Progression is clear but somewhat predictable.",
+                      "quote": "Pip pinches the note with the other paw to peel it free",
+                      "strength": "Logical sequence of actions.",
+                      "weakness": "Limited variety in actions.",
+                      "dimension": "CAUSAL_PROGRESSION"
+                    },
+                    {
+                      "risk": "Visuals are imaginative but may confuse without context.",
+                      "quote": "Pip shakes both arms hard to fling the four notes away",
+                      "strength": "Creative imagery enhances the absurdity.",
+                      "weakness": "Complexity may hinder clarity.",
+                      "dimension": "VISUAL_STORYTELLING"
+                    },
+                    {
+                      "risk": "Execution may be challenging due to rapid changes.",
+                      "quote": "Pip freezes, watching the eight notes ripple and settle",
+                      "strength": "Simple actions are feasible.",
+                      "weakness": "Potential for visual overload.",
+                      "dimension": "PRODUCTION_EXECUTABILITY"
+                    },
+                    {
+                      "risk": "Ending is satisfying but lacks a strong hook for replay.",
+                      "quote": "Pip is relieved, but the cabinet remains messy.",
+                      "strength": "Closure is achieved.",
+                      "weakness": "No new insight or twist.",
+                      "dimension": "ENDING_REPLAY"
+                    },
+                    {
+                      "risk": "Concept is unique but may feel familiar.",
+                      "quote": "A sneeze bursts out of Pip",
+                      "strength": "Original premise with a whimsical twist.",
+                      "weakness": "Similar themes may dilute distinctiveness.",
+                      "dimension": "DISTINCTIVE_CREATIVE_VALUE"
+                    }
+                  ]
+                },
+                "eligibleForOwnerProposal": false
+              }
+            ]
+          },
+          "researchPreference": "A | B | NO_CREATIVE_WINNER",
+          "evidenceLimitations": [
+            "explicit unknowns; no visual or audience verification"
+          ]
+        },
+        "providerResponseMetadata": {
+          "model": "gpt-4o-mini-2024-07-18",
+          "apiStatus": "COMPLETED",
+          "requestId": "chatcmpl-Ea69M8leyEtIVtGyIpbguHTlYSSLd",
+          "finishReason": "stop",
+          "promptLength": 8639,
+          "promptPresent": true
+        }
+      },
+      "requestId": "a520aaa0-c012-388c-844a-d2723bd55e02",
+      "experimentVersion": "REAL_CREATIVE_STORY_EVOLUTION_PILOT_V1",
+      "assessmentOnlyPolicy": "ASSESSMENT_ONLY_UNKNOWN_SOURCE_V1"
+    }
+  },
+  {
+    "id": "d7c177a9-73f2-443c-97ae-1097ce3933a3",
+    "payload": {
+      "state": "STOPPED",
+      "reason": "ASSESSMENT_REJECTED_OR_UNCERTAIN"
+    }
+  }
+]

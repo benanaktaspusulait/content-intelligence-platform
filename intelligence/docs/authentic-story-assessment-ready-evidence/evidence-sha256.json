@@ -1,0 +1,19 @@
+{
+  "test-results.json": "3ff2f87b82e00cb8d5c3f1e89b01ed62d1730bddd9fd6a4972e92e587e539201",
+  "historical-integrity.json": "cc18a8d840dda231ef739271e8514e7cabed0e38b849ef45a515885f8cd7fd4f",
+  "actual-http-before-parsing-checkpoint.json": "c950538349d53e917c78b09ffe0fa5c913c9dd15d047d483013578d6f0b4d5af",
+  "actual-http-verification.json": "2e149737a7257dde04e42a41933b0f462256f6b3ff652d05c8353ead1b513255",
+  "reviewer-user.txt": "0da629c75bab52e41f81d4fad5481249782a403521b392099883a19f0f40a480",
+  "actual-http-preflight.json": "8e931ab7376acf3c7553a09774170e3be78ff9ad87db24aaa0c5f566a6143779",
+  "output-capacity.json": "ee06a11a114aa46d1de4b4af0703ea71f1b22a34f6fbeb62adf4e235072b51ef",
+  "authentic-story-assessment-malformed.json": "9de47069aec69962db6248ba94bc1f071cf89520d27b1ef4a8c20979cadaeb36",
+  "mock-spending-grant.json": "dc0c4f6bc34e521eff283c7bab69969938ebf78bd62b4e996a024c68cd8994d7",
+  "actual-http-final-run.json": "2ce9c780c1cf3519565dd8d587e6300cec0a7ed051e1a1bfce2914c64199edd7",
+  "authentic-story-assessment-positive.json": "ac07e7f1b81fad6d8ff13198da46a888f74d60d49004e34c77041683f59809a0",
+  "reviewer-system.txt": "d05e08d595efed2ec0bffdc3cbd128aae6a0c25f12a0d217fb1cb1518d313aa6",
+  "authentic-story-assessment-timeout.json": "a3e7c935cd7f409e863db52a484fdd3c57e65b6b0b167634056bb3097081240c",
+  "actual-http-started.json": "c56187cea8f75d2ef7239299fe6f4954d727a7742e628ebeef228a093740c2f6",
+  "exact-proposed-openai-request.json": "c8a0815c21335c0a7a6bc2c18a0b467f6af656cc67ee6c28c3d3726bf33fcb2b",
+  "authentic-story-assessment-invalid-approval.json": "9a7a69dc681df1af48aae882fd006c48995849066ba81a5686f696bb6d645a07",
+  "authentic-story-assessment-semantic-fail.json": "dce74637b33859ba2506917c762e4e9345889c545a391e72a928bdafedf5beea"
+}

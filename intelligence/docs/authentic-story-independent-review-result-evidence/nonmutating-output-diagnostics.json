@@ -1,0 +1,83 @@
+{
+  "evidenceType": "OFFLINE_DIAGNOSTIC_ONLY_NOT_ACCEPTED_REVIEW",
+  "firstProductionValidatorError": {
+    "detail": "Both independent candidate assessments required",
+    "category": "ValueError"
+  },
+  "issues": [
+    {
+      "path": "$.candidateAssessments",
+      "error": "MISSING_TOP_LEVEL_ARRAY",
+      "actualLocation": "$.responseContract.candidateAssessments"
+    },
+    {
+      "candidate": "A",
+      "check": "causal_clarity",
+      "error": "REQUIRED_CHECK_MISSING"
+    },
+    {
+      "candidate": "A",
+      "check": "protected_events",
+      "error": "REQUIRED_CHECK_MISSING"
+    },
+    {
+      "candidate": "A",
+      "check": "single_mechanic",
+      "error": "REQUIRED_CHECK_MISSING"
+    },
+    {
+      "candidate": "A",
+      "check": "trigger_conditions",
+      "error": "REQUIRED_CHECK_MISSING"
+    },
+    {
+      "candidate": "A",
+      "check": "rule",
+      "field": "candidateQuote",
+      "error": "EMPTY_QUOTE_FOR_DEFINITE_OUTCOME"
+    },
+    {
+      "candidate": "A",
+      "check": "continuity",
+      "field": "candidateQuote",
+      "error": "EMPTY_QUOTE_FOR_DEFINITE_OUTCOME"
+    },
+    {
+      "candidate": "B",
+      "check": "causal_clarity",
+      "error": "REQUIRED_CHECK_MISSING"
+    },
+    {
+      "candidate": "B",
+      "check": "protected_events",
+      "error": "REQUIRED_CHECK_MISSING"
+    },
+    {
+      "candidate": "B",
+      "check": "single_mechanic",
+      "error": "REQUIRED_CHECK_MISSING"
+    },
+    {
+      "candidate": "B",
+      "check": "trigger_conditions",
+      "error": "REQUIRED_CHECK_MISSING"
+    },
+    {
+      "candidate": "B",
+      "check": "continuity",
+      "field": "candidateQuote",
+      "error": "EMPTY_QUOTE_FOR_DEFINITE_OUTCOME"
+    },
+    {
+      "path": "$.researchPreference",
+      "error": "INVALID_ENUM_LITERAL",
+      "actual": "A | B | NO_CREATIVE_WINNER"
+    }
+  ],
+  "nestedRowsInspected": 2,
+  "acceptedSemanticResults": "NOT_EVALUATED",
+  "acceptedCreativeResults": "NOT_EVALUATED",
+  "rawResponseModified": false,
+  "modelPreference": "NOT_ESTABLISHED",
+  "noRepairOrRetryPerformed": true
+}

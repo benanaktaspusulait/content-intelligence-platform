@@ -80,6 +80,7 @@ class OpenAIProvider(LLMProvider):
             "model": getattr(response, "model", None),
             "requestId": getattr(response, "id", None),
             "finishReason": getattr(choice, "finish_reason", None),
+            "refusal": getattr(message, "refusal", None),
             "promptPresent": bool(content and content.strip()),
             "promptLength": len(content or ""),
             "apiStatus": "COMPLETED",

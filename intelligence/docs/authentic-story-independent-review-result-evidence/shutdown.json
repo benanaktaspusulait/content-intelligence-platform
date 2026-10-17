@@ -1,0 +1,7 @@
+{
+  "backendStopped": true,
+  "mlStopped": true,
+  "disposableDatabaseStopped": true,
+  "databaseDumpPreserved": true,
+  "otherContainersUntouched": true
+}

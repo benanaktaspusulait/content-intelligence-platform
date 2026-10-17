@@ -1,0 +1,68 @@
+{
+  "ml": {
+    "command": "POMPOM_DATA_ROOT=../data .venv/bin/pytest -q tests/test_story_assessment.py tests/test_story_evidence_responsibility_split.py tests/test_story_experiment_contract.py tests/test_story_review_contract.py tests/test_creative_roles.py tests/test_story_quality.py tests/test_story_evidence.py tests/test_adaptive_optimization_v3.py tests/test_creative_validity.py tests/test_f8_authorization.py tests/test_hook_002_metamorphic_stability.py tests/test_llm_providers.py",
+    "passed": 238,
+    "exitCode": 0,
+    "warnings": 343
+  },
+  "backend": {
+    "command": "mvn -q -f target/assessment-only-pom.xml -Dtest=StoryExperimentContractTest,StoryEvolutionServiceTest,StoryReviewIndependenceTest test",
+    "passed": 46,
+    "exitCode": 0,
+    "results": {
+      "StoryExperimentContractTest": {
+        "tests": 39,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "StoryEvolutionServiceTest": {
+        "tests": 5,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "StoryReviewIndependenceTest": {
+        "tests": 2,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    "outputDirectory": "target/assessment-only-build"
+  },
+  "actualHttpE2e": {
+    "command": "ml-service/.venv/bin/python /private/tmp/assessment_http_verify.py",
+    "exitCode": 0,
+    "result": {
+      "complete": true,
+      "state": "ASSESSMENT_COMPLETE_OWNER_DECISION_PENDING",
+      "runId": "e753b545-44f9-400c-bc23-d14e4ec24ed2",
+      "actualBackendHttp": true,
+      "actualOwnerSessionAndCsrf": true,
+      "actualPersistedP2SourceReads": true,
+      "actualDisposablePostgres": true,
+      "mockedComponents": [
+        "External OpenAI adapter only"
+      ],
+      "sourceRecordCountBefore": 12,
+      "sourceRecordCountAfter": 12,
+      "mockSdkRequests": 1,
+      "generationRequests": 0,
+      "realProviderCalls": 0,
+      "reviewerRawCapturedBeforeParsing": true,
+      "storyApprovalDenied": true,
+      "promptHandoffDenied": true,
+      "productionDbWrites": 0,
+      "providerCredentialsPresent": false,
+      "externalNetworkAllowed": false
+    }
+  },
+  "preparation": {
+    "command": "ml-service/.venv/bin/python intelligence/scripts/prepare-creative-story-experiment.py --assessment-only-review",
+    "exitCode": 0,
+    "providerCalls": 0
+  },
+  "initialFailures": "Shared target test compilation encountered missing class files. Isolated build configuration then needed correct test working directory/XML namespace. Warm test bridge data-root leakage was fixed. Final suites and HTTP integration passed.",
+  "newRealProviderCalls": 0
+}

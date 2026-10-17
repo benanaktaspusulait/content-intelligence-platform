@@ -1,0 +1,196 @@
+{
+  "responseContract": {
+    "candidateAssessments": [
+      {
+        "candidateRef": "A",
+        "creativeQuality": {
+          "dimensions": [
+            {
+              "dimension": "SCROLL_STOP_VISUAL_PROMISE",
+              "quote": "Pip the rabbit presses a single sticky note toward the toy cabinet's empty front panel",
+              "risk": "Narrative lacks a strong visual hook to engage immediately.",
+              "strength": "Establishes character and action quickly.",
+              "weakness": "Opening lacks urgency or excitement."
+            },
+            {
+              "dimension": "CAUSAL_PROGRESSION",
+              "quote": "Pip shakes the hand; the note splits into two",
+              "risk": "Progression is clear but lacks variety in actions.",
+              "strength": "Logical cause and effect are maintained.",
+              "weakness": "Repetitive actions diminish engagement."
+            },
+            {
+              "dimension": "VISUAL_STORYTELLING",
+              "quote": "Pip grabs at the four with both arms and they split into eight",
+              "risk": "Visuals are imaginative but may confuse without context.",
+              "strength": "Creative imagery enhances the absurdity.",
+              "weakness": "Complexity may hinder clarity."
+            },
+            {
+              "dimension": "PRODUCTION_EXECUTABILITY",
+              "quote": "Pip sees the doubling finish and goes still",
+              "risk": "Execution may be challenging due to rapid changes.",
+              "strength": "Simple actions are feasible.",
+              "weakness": "Potential for visual overload."
+            },
+            {
+              "dimension": "ENDING_REPLAY",
+              "quote": "Pip is relieved, but the cabinet remains messy.",
+              "risk": "Ending is satisfying but lacks a strong hook for replay.",
+              "strength": "Closure is achieved.",
+              "weakness": "No new insight or twist."
+            },
+            {
+              "dimension": "DISTINCTIVE_CREATIVE_VALUE",
+              "quote": "Pip's nose twitches; a sneeze erupts",
+              "risk": "Concept is unique but may feel familiar.",
+              "strength": "Original premise with a whimsical twist.",
+              "weakness": "Similar themes may dilute distinctiveness."
+            }
+          ],
+          "overall": "MATERIAL_IMPROVEMENT",
+          "reason": "Narrative shows creativity but lacks engagement and variety."
+        },
+        "eligibleForOwnerProposal": false,
+        "semanticSource": {
+          "findings": [
+            {
+              "candidateQuote": "Pip the rabbit",
+              "check": "identity",
+              "outcome": "PASS",
+              "reason": "Character identity is preserved.",
+              "sourceQuote": "Pip the rabbit"
+            },
+            {
+              "candidateQuote": "it clings to Pip's fingertip while the cabinet stays untouched",
+              "check": "premise",
+              "outcome": "PASS",
+              "reason": "Core premise is maintained.",
+              "sourceQuote": "it clings to Pip's fingertip while the cabinet stays untouched"
+            },
+            {
+              "candidateQuote": "",
+              "check": "rule",
+              "outcome": "FAIL",
+              "reason": "Physical rule about note multiplication is missing.",
+              "sourceQuote": "every removal or transfer attempt multiplies the notes"
+            },
+            {
+              "candidateQuote": "",
+              "check": "continuity",
+              "outcome": "FAIL",
+              "reason": "Continuity regarding covering until sneeze is missing.",
+              "sourceQuote": "Pip remains covered until a sneeze scatters the notes onto the cabinet"
+            },
+            {
+              "candidateQuote": "Pip is relieved, but the cabinet remains messy.",
+              "check": "ending",
+              "outcome": "PASS",
+              "reason": "Ending is consistent with the original.",
+              "sourceQuote": "Pip is relieved, but the cabinet remains messy."
+            }
+          ],
+          "outcome": "SEMANTIC_SOURCE_FAIL"
+        }
+      },
+      {
+        "candidateRef": "B",
+        "creativeQuality": {
+          "dimensions": [
+            {
+              "dimension": "SCROLL_STOP_VISUAL_PROMISE",
+              "quote": "Pip the rabbit reaches to smooth one sticky note onto the toy cabinet's bare front panel",
+              "risk": "Opening is visually engaging but lacks immediate action.",
+              "strength": "Establishes character and setting effectively.",
+              "weakness": "Could benefit from more urgency."
+            },
+            {
+              "dimension": "CAUSAL_PROGRESSION",
+              "quote": "Pip pinches the note with the other paw to peel it free",
+              "risk": "Progression is clear but somewhat predictable.",
+              "strength": "Logical sequence of actions.",
+              "weakness": "Limited variety in actions."
+            },
+            {
+              "dimension": "VISUAL_STORYTELLING",
+              "quote": "Pip shakes both arms hard to fling the four notes away",
+              "risk": "Visuals are imaginative but may confuse without context.",
+              "strength": "Creative imagery enhances the absurdity.",
+              "weakness": "Complexity may hinder clarity."
+            },
+            {
+              "dimension": "PRODUCTION_EXECUTABILITY",
+              "quote": "Pip freezes, watching the eight notes ripple and settle",
+              "risk": "Execution may be challenging due to rapid changes.",
+              "strength": "Simple actions are feasible.",
+              "weakness": "Potential for visual overload."
+            },
+            {
+              "dimension": "ENDING_REPLAY",
+              "quote": "Pip is relieved, but the cabinet remains messy.",
+              "risk": "Ending is satisfying but lacks a strong hook for replay.",
+              "strength": "Closure is achieved.",
+              "weakness": "No new insight or twist."
+            },
+            {
+              "dimension": "DISTINCTIVE_CREATIVE_VALUE",
+              "quote": "A sneeze bursts out of Pip",
+              "risk": "Concept is unique but may feel familiar.",
+              "strength": "Original premise with a whimsical twist.",
+              "weakness": "Similar themes may dilute distinctiveness."
+            }
+          ],
+          "overall": "MATERIAL_IMPROVEMENT",
+          "reason": "Narrative shows creativity but lacks engagement and variety."
+        },
+        "eligibleForOwnerProposal": false,
+        "semanticSource": {
+          "findings": [
+            {
+              "candidateQuote": "Pip the rabbit",
+              "check": "identity",
+              "outcome": "PASS",
+              "reason": "Character identity is preserved.",
+              "sourceQuote": "Pip the rabbit"
+            },
+            {
+              "candidateQuote": "it clings to Pip's fingertip while the cabinet stays untouched",
+              "check": "premise",
+              "outcome": "PASS",
+              "reason": "Core premise is maintained.",
+              "sourceQuote": "it clings to Pip's fingertip while the cabinet stays untouched"
+            },
+            {
+              "candidateQuote": "every removal or transfer attempt multiplies the notes",
+              "check": "rule",
+              "outcome": "PASS",
+              "reason": "Physical rule about note multiplication is preserved.",
+              "sourceQuote": "every removal or transfer attempt multiplies the notes"
+            },
+            {
+              "candidateQuote": "",
+              "check": "continuity",
+              "outcome": "FAIL",
+              "reason": "Continuity regarding covering until sneeze is missing.",
+              "sourceQuote": "Pip remains covered until a sneeze scatters the notes onto the cabinet"
+            },
+            {
+              "candidateQuote": "Pip is relieved, but the cabinet remains messy.",
+              "check": "ending",
+              "outcome": "PASS",
+              "reason": "Ending is consistent with the original.",
+              "sourceQuote": "Pip is relieved, but the cabinet remains messy."
+            }
+          ],
+          "outcome": "SEMANTIC_SOURCE_FAIL"
+        }
+      }
+    ]
+  },
+  "evidenceLimitations": [
+    "explicit unknowns; no visual or audience verification"
+  ],
+  "reason": "research preference only; no approval",
+  "researchPreference": "A | B | NO_CREATIVE_WINNER",
+  "schemaVersion": "assessment-only-story-review-v1"
+}
