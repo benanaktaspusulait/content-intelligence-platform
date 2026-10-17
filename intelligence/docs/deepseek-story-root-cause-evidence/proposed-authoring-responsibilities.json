@@ -1,0 +1,27 @@
+{
+  "status": "PROPOSED_NOT_ACTIVATED",
+  "paidReviewEligibilityChanged": false,
+  "ownerPolicyApprovalRequired": true,
+  "newSchemaVersion": null,
+  "existingCandidateFields": [
+    "candidateId",
+    "title",
+    "text",
+    "proposedChanges",
+    "motivation",
+    "progression",
+    "weaknesses",
+    "productionRisks",
+    "sourceContract.protectedChanges"
+  ],
+  "modelResponsibilities": "Author complete narrative and honest creative intentions/risks; motivation and progression are author summaries, not certified evidence. Explicitly propose protected changes by anchor ID. Never claim source fidelity PASS.",
+  "applicationResponsibilities": "Derive exact substrings and Unicode offsets from actual narrative; validate source catalog; retain absent quotes as MISSING and semantics as UNKNOWN. Never add sentences or repair raw output.",
+  "independentReviewerResponsibilities": "Judge source meaning, causal triggers, continuity, six CPQ dimensions and risks only after separate policy and request authorization.",
+  "proposedModes": {
+    "SOURCE_BOUND_STORY_REVISION": "Protected facts stay locked; unprotected staging/actions/progression may change. Missing literal facts need semantic assessment, not assumed PASS.",
+    "CREATIVE_EXPLORATION_PROPOSAL": "May propose protected changes; no proposal replaces approved source. Channel identity, child-appropriate tone and coherent causality remain requirements; exact scope needs owner approval."
+  },
+  "dispatchEnabled": false,
+  "sourceApprovalEnabled": false,
+  "buildPromptEnabled": false
+}

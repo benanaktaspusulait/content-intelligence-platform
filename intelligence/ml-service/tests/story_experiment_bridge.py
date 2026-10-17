@@ -17,12 +17,24 @@ data=json.load(sys.stdin);operation=data['operation'];body=data['input'];mode=da
 if operation=='fixture':
     text,context=inputs()
     print(json.dumps({'text':text,'context':context}));sys.exit(0)
+if operation=='offline-evidence-audit':
+    from app.workflow.story_evidence import derive_source_evidence
+    print(json.dumps(derive_source_evidence(body['text'],body['context'],body['candidate'])));sys.exit(0)
 client=TestClient(app)
 
 class MockAdapter:
     def __init__(self,*a,**kw): self.model=kw.get('model') or (a[0] if a else '')
     def complete(self,prompt,system='',**kwargs):
         payload=json.loads(prompt);context=body['context'];role=body['role']
+        if mode in ('saved-first','saved-followup') and role=='STORY':
+            from pathlib import Path
+            folder='first-real-story-evolution-evidence' if mode=='saved-first' else 'real-story-identity-fidelity-followup-evidence'
+            evidence=Path(__file__).resolve().parents[2]/'docs'/folder
+            saved=json.loads((evidence/'provider-receipt.json').read_text())
+            self.last_raw_response=(evidence/'raw-model-response.txt').read_text()
+            self.last_usage=saved['usage'];self.last_response_metadata=saved['providerResponseMetadata']
+            self.last_provider_response=saved['providerApiResponse']
+            return self.last_raw_response
         if (role=='STORY' and mode=='story-timeout') or (role=='STORY_REVIEW' and mode=='review-timeout'):
             raise TimeoutError('Offline simulated timeout without returned usage')
         if role=='STORY_REVIEW' and mode=='review-transport':

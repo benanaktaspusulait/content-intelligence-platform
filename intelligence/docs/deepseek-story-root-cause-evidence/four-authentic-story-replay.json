@@ -1,0 +1,1391 @@
+[
+  {
+    "reference": "call-1/candidate-1",
+    "origin": "AUTHENTIC_REAL_DEEPSEEK_OUTPUT",
+    "originalResponseSha256": "34bc110e50779d47964b3546cd3e5f69b9ac8ea773f9a63aee1e04f2281359d1",
+    "originalReceiptStatus": "LOCALLY_REJECTED",
+    "originalSourceResult": {
+      "candidateId": "candidate-1",
+      "status": "UNKNOWN",
+      "eligible": false,
+      "errors": [
+        "Missing/extraneous narrative evidence: motivation",
+        "Missing/extraneous narrative evidence: progression",
+        "Unestablished protected fact: premise",
+        "Unestablished protected fact: rule",
+        "Unestablished protected fact: continuity"
+      ],
+      "semanticFidelity": "UNKNOWN_REQUIRES_INDEPENDENT_REVIEW",
+      "evidenceScope": "EXACT_PROTECTED_TEXT_FACTS_ONLY",
+      "candidateSha256": "7ec0ee071b06e13b4171c4cb68d4058b3d6de8109d32c5cc3e6a339b86a0983b"
+    },
+    "candidate": {
+      "candidateId": "candidate-1",
+      "title": "The One-Note Problem",
+      "text": "Pip the rabbit stands before the toy cabinet's bare front panel, one sticky note pinched between two fingers, already reaching to press it flat. The note clings to Pip's fingertip while the cabinet stays untouched. Pip peels it with the free hand and it splits into two notes, one stuck to each hand. Pip presses both palms to the cabinet; they spring back and double into four notes, now dotting Pip's wrists. Pip backs away, arms out, and the four notes split into eight across Pip's arms and face. Pip freezes, eyes wide above a note stuck to the muzzle, and watches the last split finish. Pip deliberately lowers both arms and stops struggling. The still note-covered face turns toward the mirror. Pip holds still, breathing, until a sneeze bursts out and scatters the notes onto the cabinet. Pip is relieved, but the cabinet remains messy.",
+      "schemaVersion": "story-pilot-candidates-v1",
+      "durationSeconds": 15,
+      "openingVisualState": "Pip the rabbit stands before the toy cabinet's bare front panel, one sticky note pinched between two fingers, already reaching to press it flat.",
+      "motivation": "Pip wants to place a single sticky note flat on the cabinet's empty front panel.",
+      "progression": "The note clings to Pip's fingertip while the cabinet stays untouched; peeling splits it into two, pressing doubles them to four, and backing away splits them to eight across Pip's arms and face.",
+      "ending": "Pip is relieved, but the cabinet remains messy.",
+      "proposedChanges": [
+        "Open on the single-note placement attempt rather than mid-multiplication so the first visible promise is the rule itself.",
+        "Replace the door-edge push with a backward retreat that triggers the four-to-eight split, giving a clearer full-body silhouette.",
+        "Move the realization to a deliberate lowering of arms and a held still beat before the mirror turn, so the reversal is earned rather than rushed."
+      ],
+      "weaknesses": [
+        "The mirror turn still competes with the sneeze for the final seconds.",
+        "Thin-note contact on the face remains a precision risk.",
+        "The retreat-triggered split may read as accidental rather than causal without careful staging."
+      ],
+      "productionRisks": [
+        "THIN_OBJECT precision on note-to-fingertip and note-to-face contact.",
+        "Face partially occluded by a note during the realization beat.",
+        "Sneeze scatter requires many small notes to move believably in one burst."
+      ],
+      "sourceContract": {
+        "status": "SOURCE_COMPLIANT",
+        "bindings": [
+          {
+            "anchorId": "identity",
+            "sourceQuote": "Pip the rabbit",
+            "candidateQuote": "Pip the rabbit"
+          },
+          {
+            "anchorId": "premise",
+            "sourceQuote": "it clings to Pip's fingertip while the cabinet stays untouched",
+            "candidateQuote": "The note clings to Pip's fingertip while the cabinet stays untouched."
+          },
+          {
+            "anchorId": "rule",
+            "sourceQuote": "every removal or transfer attempt multiplies the notes",
+            "candidateQuote": "Pip peels it with the free hand and it splits into two notes"
+          },
+          {
+            "anchorId": "continuity",
+            "sourceQuote": "Pip remains covered until a sneeze scatters the notes onto the cabinet",
+            "candidateQuote": "Pip holds still, breathing, until a sneeze bursts out and scatters the notes onto the cabinet."
+          },
+          {
+            "anchorId": "ending",
+            "sourceQuote": "Pip is relieved, but the cabinet remains messy.",
+            "candidateQuote": "Pip is relieved, but the cabinet remains messy."
+          }
+        ],
+        "protectedChanges": []
+      }
+    },
+    "separatedEvidenceProposal": {
+      "candidateId": "candidate-1",
+      "narrativeSha256": "7ec0ee071b06e13b4171c4cb68d4058b3d6de8109d32c5cc3e6a339b86a0983b",
+      "narrativeValidity": "COMPLETE_BOUNDED_NARRATIVE",
+      "evidenceScope": "EXACT_TEXT_LOCATIONS_ONLY_NOT_SEMANTIC_CERTIFICATION",
+      "narrativeSpans": [
+        {
+          "start": 0,
+          "end": 144,
+          "quote": "Pip the rabbit stands before the toy cabinet's bare front panel, one sticky note pinched between two fingers, already reaching to press it flat."
+        },
+        {
+          "start": 145,
+          "end": 214,
+          "quote": "The note clings to Pip's fingertip while the cabinet stays untouched."
+        },
+        {
+          "start": 215,
+          "end": 300,
+          "quote": "Pip peels it with the free hand and it splits into two notes, one stuck to each hand."
+        },
+        {
+          "start": 301,
+          "end": 410,
+          "quote": "Pip presses both palms to the cabinet; they spring back and double into four notes, now dotting Pip's wrists."
+        },
+        {
+          "start": 411,
+          "end": 500,
+          "quote": "Pip backs away, arms out, and the four notes split into eight across Pip's arms and face."
+        },
+        {
+          "start": 501,
+          "end": 592,
+          "quote": "Pip freezes, eyes wide above a note stuck to the muzzle, and watches the last split finish."
+        },
+        {
+          "start": 593,
+          "end": 648,
+          "quote": "Pip deliberately lowers both arms and stops struggling."
+        },
+        {
+          "start": 649,
+          "end": 701,
+          "quote": "The still note-covered face turns toward the mirror."
+        },
+        {
+          "start": 702,
+          "end": 796,
+          "quote": "Pip holds still, breathing, until a sneeze bursts out and scatters the notes onto the cabinet."
+        },
+        {
+          "start": 797,
+          "end": 844,
+          "quote": "Pip is relieved, but the cabinet remains messy."
+        }
+      ],
+      "modelEvidenceClaims": [
+        {
+          "field": "openingVisualState",
+          "claimedQuote": "Pip the rabbit stands before the toy cabinet's bare front panel, one sticky note pinched between two fingers, already reaching to press it flat.",
+          "locations": [
+            {
+              "start": 0,
+              "end": 144,
+              "quote": "Pip the rabbit stands before the toy cabinet's bare front panel, one sticky note pinched between two fingers, already reaching to press it flat."
+            }
+          ],
+          "status": "EXACT_QUOTE_PRESENT"
+        },
+        {
+          "field": "motivation",
+          "claimedQuote": "Pip wants to place a single sticky note flat on the cabinet's empty front panel.",
+          "locations": [],
+          "status": "INVALID_EVIDENCE_CLAIM"
+        },
+        {
+          "field": "progression",
+          "claimedQuote": "The note clings to Pip's fingertip while the cabinet stays untouched; peeling splits it into two, pressing doubles them to four, and backing away splits them to eight across Pip's arms and face.",
+          "locations": [],
+          "status": "INVALID_EVIDENCE_CLAIM"
+        },
+        {
+          "field": "ending",
+          "claimedQuote": "Pip is relieved, but the cabinet remains messy.",
+          "locations": [
+            {
+              "start": 797,
+              "end": 844,
+              "quote": "Pip is relieved, but the cabinet remains messy."
+            }
+          ],
+          "status": "EXACT_QUOTE_PRESENT"
+        },
+        {
+          "field": "sourceContract.bindings",
+          "anchorId": "identity",
+          "claimedQuote": "Pip the rabbit",
+          "locations": [
+            {
+              "start": 0,
+              "end": 14,
+              "quote": "Pip the rabbit"
+            }
+          ],
+          "status": "EXACT_QUOTE_PRESENT"
+        },
+        {
+          "field": "sourceContract.bindings",
+          "anchorId": "premise",
+          "claimedQuote": "The note clings to Pip's fingertip while the cabinet stays untouched.",
+          "locations": [
+            {
+              "start": 145,
+              "end": 214,
+              "quote": "The note clings to Pip's fingertip while the cabinet stays untouched."
+            }
+          ],
+          "status": "EXACT_QUOTE_PRESENT"
+        },
+        {
+          "field": "sourceContract.bindings",
+          "anchorId": "rule",
+          "claimedQuote": "Pip peels it with the free hand and it splits into two notes",
+          "locations": [
+            {
+              "start": 215,
+              "end": 275,
+              "quote": "Pip peels it with the free hand and it splits into two notes"
+            }
+          ],
+          "status": "EXACT_QUOTE_PRESENT"
+        },
+        {
+          "field": "sourceContract.bindings",
+          "anchorId": "continuity",
+          "claimedQuote": "Pip holds still, breathing, until a sneeze bursts out and scatters the notes onto the cabinet.",
+          "locations": [
+            {
+              "start": 702,
+              "end": 796,
+              "quote": "Pip holds still, breathing, until a sneeze bursts out and scatters the notes onto the cabinet."
+            }
+          ],
+          "status": "EXACT_QUOTE_PRESENT"
+        },
+        {
+          "field": "sourceContract.bindings",
+          "anchorId": "ending",
+          "claimedQuote": "Pip is relieved, but the cabinet remains messy.",
+          "locations": [
+            {
+              "start": 797,
+              "end": 844,
+              "quote": "Pip is relieved, but the cabinet remains messy."
+            }
+          ],
+          "status": "EXACT_QUOTE_PRESENT"
+        }
+      ],
+      "protectedFacts": [
+        {
+          "anchorId": "identity",
+          "kind": "CHARACTER_IDENTITY",
+          "source": {
+            "start": 20,
+            "end": 34,
+            "quote": "Pip the rabbit"
+          },
+          "candidateLocations": [
+            {
+              "start": 0,
+              "end": 14,
+              "quote": "Pip the rabbit"
+            }
+          ],
+          "literalEvidence": "EXACT_TEXT_LOCATED",
+          "semanticFidelity": "UNKNOWN"
+        },
+        {
+          "anchorId": "premise",
+          "kind": "CORE_PREMISE",
+          "source": {
+            "start": 110,
+            "end": 172,
+            "quote": "it clings to Pip's fingertip while the cabinet stays untouched"
+          },
+          "candidateLocations": [],
+          "literalEvidence": "MISSING",
+          "semanticFidelity": "UNKNOWN"
+        },
+        {
+          "anchorId": "rule",
+          "kind": "PHYSICAL_RULE",
+          "source": {
+            "start": 552,
+            "end": 606,
+            "quote": "every removal or transfer attempt multiplies the notes"
+          },
+          "candidateLocations": [],
+          "literalEvidence": "MISSING",
+          "semanticFidelity": "UNKNOWN"
+        },
+        {
+          "anchorId": "continuity",
+          "kind": "CONTINUITY",
+          "source": {
+            "start": 696,
+            "end": 766,
+            "quote": "Pip remains covered until a sneeze scatters the notes onto the cabinet"
+          },
+          "candidateLocations": [],
+          "literalEvidence": "MISSING",
+          "semanticFidelity": "UNKNOWN"
+        },
+        {
+          "anchorId": "ending",
+          "kind": "ENDING",
+          "source": {
+            "start": 768,
+            "end": 815,
+            "quote": "Pip is relieved, but the cabinet remains messy."
+          },
+          "candidateLocations": [
+            {
+              "start": 797,
+              "end": 844,
+              "quote": "Pip is relieved, but the cabinet remains messy."
+            }
+          ],
+          "literalEvidence": "EXACT_TEXT_LOCATED",
+          "semanticFidelity": "UNKNOWN"
+        }
+      ],
+      "explicitContradictions": [],
+      "protectedChangeProposals": [],
+      "status": "SEMANTIC_FIDELITY_REVIEW_REQUIRED",
+      "semanticFidelity": "UNKNOWN",
+      "independentReview": "NOT_EXECUTED",
+      "semanticQuestions": [
+        {
+          "anchorId": "identity",
+          "question": "Does the narrative preserve this source fact, including trigger and continuity conditions?"
+        },
+        {
+          "anchorId": "premise",
+          "question": "Does the narrative preserve this source fact, including trigger and continuity conditions?"
+        },
+        {
+          "anchorId": "rule",
+          "question": "Does the narrative preserve this source fact, including trigger and continuity conditions?"
+        },
+        {
+          "anchorId": "continuity",
+          "question": "Does the narrative preserve this source fact, including trigger and continuity conditions?"
+        },
+        {
+          "anchorId": "ending",
+          "question": "Does the narrative preserve this source fact, including trigger and continuity conditions?"
+        }
+      ],
+      "paidReviewEligible": false,
+      "policyActivation": "DISABLED_REQUIRES_EXPLICIT_OWNER_DECISION",
+      "futureReviewConsideration": "OWNER_POLICY_DECISION_REQUIRED",
+      "sourceApproved": false,
+      "renderAuthorized": false
+    },
+    "historicalResultChanged": false,
+    "newProviderCalls": 0
+  },
+  {
+    "reference": "call-1/candidate-2",
+    "origin": "AUTHENTIC_REAL_DEEPSEEK_OUTPUT",
+    "originalResponseSha256": "34bc110e50779d47964b3546cd3e5f69b9ac8ea773f9a63aee1e04f2281359d1",
+    "originalReceiptStatus": "LOCALLY_REJECTED",
+    "originalSourceResult": {
+      "candidateId": "candidate-2",
+      "status": "UNKNOWN",
+      "eligible": false,
+      "errors": [
+        "Missing/extraneous narrative evidence: motivation",
+        "Missing/extraneous narrative evidence: progression",
+        "Unestablished protected fact: rule",
+        "Unestablished protected fact: continuity"
+      ],
+      "semanticFidelity": "UNKNOWN_REQUIRES_INDEPENDENT_REVIEW",
+      "evidenceScope": "EXACT_PROTECTED_TEXT_FACTS_ONLY",
+      "candidateSha256": "50bae8834df06f6092a37947d422e136c41c72ea80838057beecf2e7156bb088"
+    },
+    "candidate": {
+      "candidateId": "candidate-2",
+      "title": "Stop Trying",
+      "text": "Pip the rabbit presses a single sticky note toward the toy cabinet's empty front panel, and it clings to Pip's fingertip while the cabinet stays untouched. Pip shakes the hand; the note splits into two, one on each hand. Pip claps both hands onto the cabinet to transfer them, but they bounce back and double into four notes stuck across Pip's chest. Pip grabs at the four with both arms and they split into eight, wrapping Pip's arms and face. Pip sees the doubling finish and goes still, then slowly sits down on the floor, arms folded, refusing to touch anything. The notes stay put. Pip's nose twitches; a sneeze erupts and scatters the notes onto the cabinet. Pip is relieved, but the cabinet remains messy.",
+      "schemaVersion": "story-pilot-candidates-v1",
+      "durationSeconds": 15,
+      "openingVisualState": "Pip the rabbit presses a single sticky note toward the toy cabinet's empty front panel, and it clings to Pip's fingertip while the cabinet stays untouched.",
+      "motivation": "Pip wants to transfer the sticky note onto the cabinet and be done with it.",
+      "progression": "Shaking splits the note into two, clapping doubles them to four across Pip's chest, and grabbing splits them to eight over arms and face; Pip then sits down and refuses to touch anything.",
+      "ending": "Pip is relieved, but the cabinet remains messy.",
+      "proposedChanges": [
+        "Replace the mirror turn with a deliberate sit-down refusal, making the realization a full-body surrender rather than a look.",
+        "Use a clap-to-transfer attempt instead of a press, giving a distinct two-hand silhouette at the four-note stage.",
+        "Keep the sneeze as the only release, so the payoff is earned by Pip's stillness rather than a mirror beat."
+      ],
+      "weaknesses": [
+        "Sitting down may read as giving up rather than realizing the rule.",
+        "The chest-stuck notes reduce face visibility for the sneeze.",
+        "Without a mirror, the realization is conveyed only by posture."
+      ],
+      "productionRisks": [
+        "THIN_OBJECT precision on note-to-chest and note-to-face contact.",
+        "Sit-down motion plus note scatter in the final seconds risks crowding.",
+        "Sneeze burst with many small notes may not read cleanly at 480p."
+      ],
+      "sourceContract": {
+        "status": "SOURCE_COMPLIANT",
+        "bindings": [
+          {
+            "anchorId": "identity",
+            "sourceQuote": "Pip the rabbit",
+            "candidateQuote": "Pip the rabbit"
+          },
+          {
+            "anchorId": "premise",
+            "sourceQuote": "it clings to Pip's fingertip while the cabinet stays untouched",
+            "candidateQuote": "it clings to Pip's fingertip while the cabinet stays untouched"
+          },
+          {
+            "anchorId": "rule",
+            "sourceQuote": "every removal or transfer attempt multiplies the notes",
+            "candidateQuote": "Pip grabs at the four with both arms and they split into eight"
+          },
+          {
+            "anchorId": "continuity",
+            "sourceQuote": "Pip remains covered until a sneeze scatters the notes onto the cabinet",
+            "candidateQuote": "a sneeze erupts and scatters the notes onto the cabinet"
+          },
+          {
+            "anchorId": "ending",
+            "sourceQuote": "Pip is relieved, but the cabinet remains messy.",
+            "candidateQuote": "Pip is relieved, but the cabinet remains messy."
+          }
+        ],
+        "protectedChanges": []
+      }
+    },
+    "separatedEvidenceProposal": {
+      "candidateId": "candidate-2",
+      "narrativeSha256": "50bae8834df06f6092a37947d422e136c41c72ea80838057beecf2e7156bb088",
+      "narrativeValidity": "COMPLETE_BOUNDED_NARRATIVE",
+      "evidenceScope": "EXACT_TEXT_LOCATIONS_ONLY_NOT_SEMANTIC_CERTIFICATION",
+      "narrativeSpans": [
+        {
+          "start": 0,
+          "end": 155,
+          "quote": "Pip the rabbit presses a single sticky note toward the toy cabinet's empty front panel, and it clings to Pip's fingertip while the cabinet stays untouched."
+        },
+        {
+          "start": 156,
+          "end": 220,
+          "quote": "Pip shakes the hand; the note splits into two, one on each hand."
+        },
+        {
+          "start": 221,
+          "end": 350,
+          "quote": "Pip claps both hands onto the cabinet to transfer them, but they bounce back and double into four notes stuck across Pip's chest."
+        },
+        {
+          "start": 351,
+          "end": 444,
+          "quote": "Pip grabs at the four with both arms and they split into eight, wrapping Pip's arms and face."
+        },
+        {
+          "start": 445,
+          "end": 566,
+          "quote": "Pip sees the doubling finish and goes still, then slowly sits down on the floor, arms folded, refusing to touch anything."
+        },
+        {
+          "start": 567,
+          "end": 586,
+          "quote": "The notes stay put."
+        },
+        {
+          "start": 587,
+          "end": 664,
+          "quote": "Pip's nose twitches; a sneeze erupts and scatters the notes onto the cabinet."
+        },
+        {
+          "start": 665,
+          "end": 712,
+          "quote": "Pip is relieved, but the cabinet remains messy."
+        }
+      ],
+      "modelEvidenceClaims": [
+        {
+          "field": "openingVisualState",
+          "claimedQuote": "Pip the rabbit presses a single sticky note toward the toy cabinet's empty front panel, and it clings to Pip's fingertip while the cabinet stays untouched.",
+          "locations": [
+            {
+              "start": 0,
+              "end": 155,
+              "quote": "Pip the rabbit presses a single sticky note toward the toy cabinet's empty front panel, and it clings to Pip's fingertip while the cabinet stays untouched."
+            }
+          ],
+          "status": "EXACT_QUOTE_PRESENT"
+        },
+        {
+          "field": "motivation",
+          "claimedQuote": "Pip wants to transfer the sticky note onto the cabinet and be done with it.",
+          "locations": [],
+          "status": "INVALID_EVIDENCE_CLAIM"
+        },
+        {
+          "field": "progression",
+          "claimedQuote": "Shaking splits the note into two, clapping doubles them to four across Pip's chest, and grabbing splits them to eight over arms and face; Pip then sits down and refuses to touch anything.",
+          "locations": [],
+          "status": "INVALID_EVIDENCE_CLAIM"
+        },
+        {
+          "field": "ending",
+          "claimedQuote": "Pip is relieved, but the cabinet remains messy.",
+          "locations": [
+            {
+              "start": 665,
+              "end": 712,
+              "quote": "Pip is relieved, but the cabinet remains messy."
+            }
+          ],
+          "status": "EXACT_QUOTE_PRESENT"
+        },
+        {
+          "field": "sourceContract.bindings",
+          "anchorId": "identity",
+          "claimedQuote": "Pip the rabbit",
+          "locations": [
+            {
+              "start": 0,
+              "end": 14,
+              "quote": "Pip the rabbit"
+            }
+          ],
+          "status": "EXACT_QUOTE_PRESENT"
+        },
+        {
+          "field": "sourceContract.bindings",
+          "anchorId": "premise",
+          "claimedQuote": "it clings to Pip's fingertip while the cabinet stays untouched",
+          "locations": [
+            {
+              "start": 92,
+              "end": 154,
+              "quote": "it clings to Pip's fingertip while the cabinet stays untouched"
+            }
+          ],
+          "status": "EXACT_QUOTE_PRESENT"
+        },
+        {
+          "field": "sourceContract.bindings",
+          "anchorId": "rule",
+          "claimedQuote": "Pip grabs at the four with both arms and they split into eight",
+          "locations": [
+            {
+              "start": 351,
+              "end": 413,
+              "quote": "Pip grabs at the four with both arms and they split into eight"
+            }
+          ],
+          "status": "EXACT_QUOTE_PRESENT"
+        },
+        {
+          "field": "sourceContract.bindings",
+          "anchorId": "continuity",
+          "claimedQuote": "a sneeze erupts and scatters the notes onto the cabinet",
+          "locations": [
+            {
+              "start": 608,
+              "end": 663,
+              "quote": "a sneeze erupts and scatters the notes onto the cabinet"
+            }
+          ],
+          "status": "EXACT_QUOTE_PRESENT"
+        },
+        {
+          "field": "sourceContract.bindings",
+          "anchorId": "ending",
+          "claimedQuote": "Pip is relieved, but the cabinet remains messy.",
+          "locations": [
+            {
+              "start": 665,
+              "end": 712,
+              "quote": "Pip is relieved, but the cabinet remains messy."
+            }
+          ],
+          "status": "EXACT_QUOTE_PRESENT"
+        }
+      ],
+      "protectedFacts": [
+        {
+          "anchorId": "identity",
+          "kind": "CHARACTER_IDENTITY",
+          "source": {
+            "start": 20,
+            "end": 34,
+            "quote": "Pip the rabbit"
+          },
+          "candidateLocations": [
+            {
+              "start": 0,
+              "end": 14,
+              "quote": "Pip the rabbit"
+            }
+          ],
+          "literalEvidence": "EXACT_TEXT_LOCATED",
+          "semanticFidelity": "UNKNOWN"
+        },
+        {
+          "anchorId": "premise",
+          "kind": "CORE_PREMISE",
+          "source": {
+            "start": 110,
+            "end": 172,
+            "quote": "it clings to Pip's fingertip while the cabinet stays untouched"
+          },
+          "candidateLocations": [
+            {
+              "start": 92,
+              "end": 154,
+              "quote": "it clings to Pip's fingertip while the cabinet stays untouched"
+            }
+          ],
+          "literalEvidence": "EXACT_TEXT_LOCATED",
+          "semanticFidelity": "UNKNOWN"
+        },
+        {
+          "anchorId": "rule",
+          "kind": "PHYSICAL_RULE",
+          "source": {
+            "start": 552,
+            "end": 606,
+            "quote": "every removal or transfer attempt multiplies the notes"
+          },
+          "candidateLocations": [],
+          "literalEvidence": "MISSING",
+          "semanticFidelity": "UNKNOWN"
+        },
+        {
+          "anchorId": "continuity",
+          "kind": "CONTINUITY",
+          "source": {
+            "start": 696,
+            "end": 766,
+            "quote": "Pip remains covered until a sneeze scatters the notes onto the cabinet"
+          },
+          "candidateLocations": [],
+          "literalEvidence": "MISSING",
+          "semanticFidelity": "UNKNOWN"
+        },
+        {
+          "anchorId": "ending",
+          "kind": "ENDING",
+          "source": {
+            "start": 768,
+            "end": 815,
+            "quote": "Pip is relieved, but the cabinet remains messy."
+          },
+          "candidateLocations": [
+            {
+              "start": 665,
+              "end": 712,
+              "quote": "Pip is relieved, but the cabinet remains messy."
+            }
+          ],
+          "literalEvidence": "EXACT_TEXT_LOCATED",
+          "semanticFidelity": "UNKNOWN"
+        }
+      ],
+      "explicitContradictions": [],
+      "protectedChangeProposals": [],
+      "status": "SEMANTIC_FIDELITY_REVIEW_REQUIRED",
+      "semanticFidelity": "UNKNOWN",
+      "independentReview": "NOT_EXECUTED",
+      "semanticQuestions": [
+        {
+          "anchorId": "identity",
+          "question": "Does the narrative preserve this source fact, including trigger and continuity conditions?"
+        },
+        {
+          "anchorId": "premise",
+          "question": "Does the narrative preserve this source fact, including trigger and continuity conditions?"
+        },
+        {
+          "anchorId": "rule",
+          "question": "Does the narrative preserve this source fact, including trigger and continuity conditions?"
+        },
+        {
+          "anchorId": "continuity",
+          "question": "Does the narrative preserve this source fact, including trigger and continuity conditions?"
+        },
+        {
+          "anchorId": "ending",
+          "question": "Does the narrative preserve this source fact, including trigger and continuity conditions?"
+        }
+      ],
+      "paidReviewEligible": false,
+      "policyActivation": "DISABLED_REQUIRES_EXPLICIT_OWNER_DECISION",
+      "futureReviewConsideration": "OWNER_POLICY_DECISION_REQUIRED",
+      "sourceApproved": false,
+      "renderAuthorized": false
+    },
+    "historicalResultChanged": false,
+    "newProviderCalls": 0
+  },
+  {
+    "reference": "call-2/candidate-1",
+    "origin": "AUTHENTIC_REAL_DEEPSEEK_OUTPUT",
+    "originalResponseSha256": "10dc1482d66514e153835b6e3cd90f4e8b58ff1e1d61f51fa99e42424f15fef3",
+    "originalReceiptStatus": "LOCALLY_REJECTED",
+    "originalSourceResult": {
+      "candidateId": "candidate-1",
+      "status": "SOURCE_VIOLATION",
+      "eligible": false,
+      "errors": [
+        "Claimed protected fact absent from story: continuity"
+      ],
+      "semanticFidelity": "UNKNOWN_REQUIRES_INDEPENDENT_REVIEW",
+      "evidenceScope": "EXACT_PROTECTED_TEXT_FACTS_ONLY",
+      "candidateSha256": "4b04e664b70ea9372049231119f2ad786cf5ed0fc1a416c0941101d53167c739"
+    },
+    "candidate": {
+      "candidateId": "candidate-1",
+      "title": "The Sticky Note That Won't Leave Pip",
+      "text": "Pip the rabbit reaches to smooth one sticky note onto the toy cabinet's bare front panel, but it clings to Pip's fingertip while the cabinet stays untouched. Pip pinches the note with the other paw to peel it free, and it splits into two notes, one stuck to each paw. Pip slaps both paws toward the cabinet, but the notes bounce back and double into four, fluttering up Pip's arms. Pip shakes both arms hard to fling the four notes away, and they split into eight, plastering Pip's chest and cheeks. Pip freezes, watching the eight notes ripple and settle, and realizes that every removal or transfer attempt multiplies the notes. Pip deliberately stops struggling and stands still, letting the notes rest. A sneeze bursts out of Pip, and the blast peels the notes off and scatters them across the cabinet. Pip is relieved, but the cabinet remains messy.",
+      "schemaVersion": "story-pilot-candidates-v1",
+      "durationSeconds": 15,
+      "openingVisualState": "Pip the rabbit reaches to smooth one sticky note onto the toy cabinet's bare front panel, but it clings to Pip's fingertip while the cabinet stays untouched.",
+      "motivation": "Pip pinches the note with the other paw to peel it free",
+      "progression": "Pip shakes both arms hard to fling the four notes away, and they split into eight, plastering Pip's chest and cheeks.",
+      "ending": "Pip is relieved, but the cabinet remains messy.",
+      "proposedChanges": [
+        "Replaces the door-edge push with an arm-shake fling so the escalation reads as one clear physical action per beat.",
+        "Moves the realization to a held freeze before the sneeze, giving the reversal its own beat instead of crowding the final seconds.",
+        "Removes the mirror turn to keep the payoff on Pip and the cabinet rather than a reflection."
+      ],
+      "weaknesses": [
+        "The arm-shake fling is still a thin-object contact moment that may need careful staging.",
+        "The freeze beat depends on a readable held pose to sell the realization."
+      ],
+      "productionRisks": [
+        "THIN_OBJECT: sticky notes contacting paws and face require precise thin-object handling.",
+        "FACE_CONTACT: notes plastering Pip's cheeks risk face/hair continuity issues.",
+        "SNEEZE_BURST: the scatter needs a clear directional force to read as one motion."
+      ],
+      "sourceContract": {
+        "status": "SOURCE_COMPLIANT",
+        "bindings": [
+          {
+            "anchorId": "identity",
+            "sourceQuote": "Pip the rabbit",
+            "candidateQuote": "Pip the rabbit"
+          },
+          {
+            "anchorId": "premise",
+            "sourceQuote": "it clings to Pip's fingertip while the cabinet stays untouched",
+            "candidateQuote": "it clings to Pip's fingertip while the cabinet stays untouched"
+          },
+          {
+            "anchorId": "rule",
+            "sourceQuote": "every removal or transfer attempt multiplies the notes",
+            "candidateQuote": "every removal or transfer attempt multiplies the notes"
+          },
+          {
+            "anchorId": "continuity",
+            "sourceQuote": "Pip remains covered until a sneeze scatters the notes onto the cabinet",
+            "candidateQuote": "Pip remains covered until a sneeze scatters the notes onto the cabinet"
+          },
+          {
+            "anchorId": "ending",
+            "sourceQuote": "Pip is relieved, but the cabinet remains messy.",
+            "candidateQuote": "Pip is relieved, but the cabinet remains messy."
+          }
+        ],
+        "protectedChanges": []
+      }
+    },
+    "separatedEvidenceProposal": {
+      "candidateId": "candidate-1",
+      "narrativeSha256": "4b04e664b70ea9372049231119f2ad786cf5ed0fc1a416c0941101d53167c739",
+      "narrativeValidity": "COMPLETE_BOUNDED_NARRATIVE",
+      "evidenceScope": "EXACT_TEXT_LOCATIONS_ONLY_NOT_SEMANTIC_CERTIFICATION",
+      "narrativeSpans": [
+        {
+          "start": 0,
+          "end": 157,
+          "quote": "Pip the rabbit reaches to smooth one sticky note onto the toy cabinet's bare front panel, but it clings to Pip's fingertip while the cabinet stays untouched."
+        },
+        {
+          "start": 158,
+          "end": 267,
+          "quote": "Pip pinches the note with the other paw to peel it free, and it splits into two notes, one stuck to each paw."
+        },
+        {
+          "start": 268,
+          "end": 381,
+          "quote": "Pip slaps both paws toward the cabinet, but the notes bounce back and double into four, fluttering up Pip's arms."
+        },
+        {
+          "start": 382,
+          "end": 499,
+          "quote": "Pip shakes both arms hard to fling the four notes away, and they split into eight, plastering Pip's chest and cheeks."
+        },
+        {
+          "start": 500,
+          "end": 630,
+          "quote": "Pip freezes, watching the eight notes ripple and settle, and realizes that every removal or transfer attempt multiplies the notes."
+        },
+        {
+          "start": 631,
+          "end": 706,
+          "quote": "Pip deliberately stops struggling and stands still, letting the notes rest."
+        },
+        {
+          "start": 707,
+          "end": 806,
+          "quote": "A sneeze bursts out of Pip, and the blast peels the notes off and scatters them across the cabinet."
+        },
+        {
+          "start": 807,
+          "end": 854,
+          "quote": "Pip is relieved, but the cabinet remains messy."
+        }
+      ],
+      "modelEvidenceClaims": [
+        {
+          "field": "openingVisualState",
+          "claimedQuote": "Pip the rabbit reaches to smooth one sticky note onto the toy cabinet's bare front panel, but it clings to Pip's fingertip while the cabinet stays untouched.",
+          "locations": [
+            {
+              "start": 0,
+              "end": 157,
+              "quote": "Pip the rabbit reaches to smooth one sticky note onto the toy cabinet's bare front panel, but it clings to Pip's fingertip while the cabinet stays untouched."
+            }
+          ],
+          "status": "EXACT_QUOTE_PRESENT"
+        },
+        {
+          "field": "motivation",
+          "claimedQuote": "Pip pinches the note with the other paw to peel it free",
+          "locations": [
+            {
+              "start": 158,
+              "end": 213,
+              "quote": "Pip pinches the note with the other paw to peel it free"
+            }
+          ],
+          "status": "EXACT_QUOTE_PRESENT"
+        },
+        {
+          "field": "progression",
+          "claimedQuote": "Pip shakes both arms hard to fling the four notes away, and they split into eight, plastering Pip's chest and cheeks.",
+          "locations": [
+            {
+              "start": 382,
+              "end": 499,
+              "quote": "Pip shakes both arms hard to fling the four notes away, and they split into eight, plastering Pip's chest and cheeks."
+            }
+          ],
+          "status": "EXACT_QUOTE_PRESENT"
+        },
+        {
+          "field": "ending",
+          "claimedQuote": "Pip is relieved, but the cabinet remains messy.",
+          "locations": [
+            {
+              "start": 807,
+              "end": 854,
+              "quote": "Pip is relieved, but the cabinet remains messy."
+            }
+          ],
+          "status": "EXACT_QUOTE_PRESENT"
+        },
+        {
+          "field": "sourceContract.bindings",
+          "anchorId": "identity",
+          "claimedQuote": "Pip the rabbit",
+          "locations": [
+            {
+              "start": 0,
+              "end": 14,
+              "quote": "Pip the rabbit"
+            }
+          ],
+          "status": "EXACT_QUOTE_PRESENT"
+        },
+        {
+          "field": "sourceContract.bindings",
+          "anchorId": "premise",
+          "claimedQuote": "it clings to Pip's fingertip while the cabinet stays untouched",
+          "locations": [
+            {
+              "start": 94,
+              "end": 156,
+              "quote": "it clings to Pip's fingertip while the cabinet stays untouched"
+            }
+          ],
+          "status": "EXACT_QUOTE_PRESENT"
+        },
+        {
+          "field": "sourceContract.bindings",
+          "anchorId": "rule",
+          "claimedQuote": "every removal or transfer attempt multiplies the notes",
+          "locations": [
+            {
+              "start": 575,
+              "end": 629,
+              "quote": "every removal or transfer attempt multiplies the notes"
+            }
+          ],
+          "status": "EXACT_QUOTE_PRESENT"
+        },
+        {
+          "field": "sourceContract.bindings",
+          "anchorId": "continuity",
+          "claimedQuote": "Pip remains covered until a sneeze scatters the notes onto the cabinet",
+          "locations": [],
+          "status": "INVALID_EVIDENCE_CLAIM"
+        },
+        {
+          "field": "sourceContract.bindings",
+          "anchorId": "ending",
+          "claimedQuote": "Pip is relieved, but the cabinet remains messy.",
+          "locations": [
+            {
+              "start": 807,
+              "end": 854,
+              "quote": "Pip is relieved, but the cabinet remains messy."
+            }
+          ],
+          "status": "EXACT_QUOTE_PRESENT"
+        }
+      ],
+      "protectedFacts": [
+        {
+          "anchorId": "identity",
+          "kind": "CHARACTER_IDENTITY",
+          "source": {
+            "start": 20,
+            "end": 34,
+            "quote": "Pip the rabbit"
+          },
+          "candidateLocations": [
+            {
+              "start": 0,
+              "end": 14,
+              "quote": "Pip the rabbit"
+            }
+          ],
+          "literalEvidence": "EXACT_TEXT_LOCATED",
+          "semanticFidelity": "UNKNOWN"
+        },
+        {
+          "anchorId": "premise",
+          "kind": "CORE_PREMISE",
+          "source": {
+            "start": 110,
+            "end": 172,
+            "quote": "it clings to Pip's fingertip while the cabinet stays untouched"
+          },
+          "candidateLocations": [
+            {
+              "start": 94,
+              "end": 156,
+              "quote": "it clings to Pip's fingertip while the cabinet stays untouched"
+            }
+          ],
+          "literalEvidence": "EXACT_TEXT_LOCATED",
+          "semanticFidelity": "UNKNOWN"
+        },
+        {
+          "anchorId": "rule",
+          "kind": "PHYSICAL_RULE",
+          "source": {
+            "start": 552,
+            "end": 606,
+            "quote": "every removal or transfer attempt multiplies the notes"
+          },
+          "candidateLocations": [
+            {
+              "start": 575,
+              "end": 629,
+              "quote": "every removal or transfer attempt multiplies the notes"
+            }
+          ],
+          "literalEvidence": "EXACT_TEXT_LOCATED",
+          "semanticFidelity": "UNKNOWN"
+        },
+        {
+          "anchorId": "continuity",
+          "kind": "CONTINUITY",
+          "source": {
+            "start": 696,
+            "end": 766,
+            "quote": "Pip remains covered until a sneeze scatters the notes onto the cabinet"
+          },
+          "candidateLocations": [],
+          "literalEvidence": "MISSING",
+          "semanticFidelity": "UNKNOWN"
+        },
+        {
+          "anchorId": "ending",
+          "kind": "ENDING",
+          "source": {
+            "start": 768,
+            "end": 815,
+            "quote": "Pip is relieved, but the cabinet remains messy."
+          },
+          "candidateLocations": [
+            {
+              "start": 807,
+              "end": 854,
+              "quote": "Pip is relieved, but the cabinet remains messy."
+            }
+          ],
+          "literalEvidence": "EXACT_TEXT_LOCATED",
+          "semanticFidelity": "UNKNOWN"
+        }
+      ],
+      "explicitContradictions": [],
+      "protectedChangeProposals": [],
+      "status": "SEMANTIC_FIDELITY_REVIEW_REQUIRED",
+      "semanticFidelity": "UNKNOWN",
+      "independentReview": "NOT_EXECUTED",
+      "semanticQuestions": [
+        {
+          "anchorId": "identity",
+          "question": "Does the narrative preserve this source fact, including trigger and continuity conditions?"
+        },
+        {
+          "anchorId": "premise",
+          "question": "Does the narrative preserve this source fact, including trigger and continuity conditions?"
+        },
+        {
+          "anchorId": "rule",
+          "question": "Does the narrative preserve this source fact, including trigger and continuity conditions?"
+        },
+        {
+          "anchorId": "continuity",
+          "question": "Does the narrative preserve this source fact, including trigger and continuity conditions?"
+        },
+        {
+          "anchorId": "ending",
+          "question": "Does the narrative preserve this source fact, including trigger and continuity conditions?"
+        }
+      ],
+      "paidReviewEligible": false,
+      "policyActivation": "DISABLED_REQUIRES_EXPLICIT_OWNER_DECISION",
+      "futureReviewConsideration": "OWNER_POLICY_DECISION_REQUIRED",
+      "sourceApproved": false,
+      "renderAuthorized": false
+    },
+    "historicalResultChanged": false,
+    "newProviderCalls": 0
+  },
+  {
+    "reference": "call-2/candidate-2",
+    "origin": "AUTHENTIC_REAL_DEEPSEEK_OUTPUT",
+    "originalResponseSha256": "10dc1482d66514e153835b6e3cd90f4e8b58ff1e1d61f51fa99e42424f15fef3",
+    "originalReceiptStatus": "LOCALLY_REJECTED",
+    "originalSourceResult": {
+      "candidateId": "candidate-2",
+      "status": "SOURCE_VIOLATION",
+      "eligible": false,
+      "errors": [
+        "Claimed protected fact absent from story: continuity"
+      ],
+      "semanticFidelity": "UNKNOWN_REQUIRES_INDEPENDENT_REVIEW",
+      "evidenceScope": "EXACT_PROTECTED_TEXT_FACTS_ONLY",
+      "candidateSha256": "7bd179926c406f1aa2566b1f513daef9cec355ffebc15517f49168d2d92fa41b"
+    },
+    "candidate": {
+      "candidateId": "candidate-2",
+      "title": "Pip Stops Fighting the Notes",
+      "text": "Pip the rabbit presses one sticky note toward the toy cabinet's empty front panel, but it clings to Pip's fingertip while the cabinet stays untouched. Pip tries to flick the note off with a quick wrist snap, and it splits into two notes, one on each paw. Pip claps both paws together to crush the notes flat, but they spring apart into four and climb Pip's sleeves. Pip backs away and brushes the four notes off against the cabinet's side, and they split into eight, wrapping Pip's shoulders and muzzle. Pip stares at the doubling notes, breathing hard, and realizes that every removal or transfer attempt multiplies the notes. Pip slowly lowers both arms and stops moving entirely, letting the notes cling. A sneeze jerks through Pip, and the notes blow off in a burst and land across the cabinet. Pip is relieved, but the cabinet remains messy.",
+      "schemaVersion": "story-pilot-candidates-v1",
+      "durationSeconds": 15,
+      "openingVisualState": "Pip the rabbit presses one sticky note toward the toy cabinet's empty front panel, but it clings to Pip's fingertip while the cabinet stays untouched.",
+      "motivation": "Pip tries to flick the note off with a quick wrist snap",
+      "progression": "Pip backs away and brushes the four notes off against the cabinet's side, and they split into eight, wrapping Pip's shoulders and muzzle.",
+      "ending": "Pip is relieved, but the cabinet remains messy.",
+      "proposedChanges": [
+        "Uses a wrist-flick and a paw-clap as the first two escalation actions, giving each beat a distinct silhouette.",
+        "Adds a backward step before the brush-off so Pip's retreat visibly fails and motivates the freeze.",
+        "Holds the realization on a breath and lowered arms before the sneeze, separating reversal from payoff."
+      ],
+      "weaknesses": [
+        "The paw-clap crush is a fast action that may read as ambiguous at 480p.",
+        "The backward step plus brush-off risks compressing two actions into one short beat."
+      ],
+      "productionRisks": [
+        "THIN_OBJECT: notes on paws, sleeves and muzzle need careful thin-object contact.",
+        "FACE_CONTACT: notes wrapping the muzzle risk face continuity problems.",
+        "MULTI_OBJECT_STACKING: eight notes spreading across shoulders and cabinet may be hard to track."
+      ],
+      "sourceContract": {
+        "status": "SOURCE_COMPLIANT",
+        "bindings": [
+          {
+            "anchorId": "identity",
+            "sourceQuote": "Pip the rabbit",
+            "candidateQuote": "Pip the rabbit"
+          },
+          {
+            "anchorId": "premise",
+            "sourceQuote": "it clings to Pip's fingertip while the cabinet stays untouched",
+            "candidateQuote": "it clings to Pip's fingertip while the cabinet stays untouched"
+          },
+          {
+            "anchorId": "rule",
+            "sourceQuote": "every removal or transfer attempt multiplies the notes",
+            "candidateQuote": "every removal or transfer attempt multiplies the notes"
+          },
+          {
+            "anchorId": "continuity",
+            "sourceQuote": "Pip remains covered until a sneeze scatters the notes onto the cabinet",
+            "candidateQuote": "Pip remains covered until a sneeze scatters the notes onto the cabinet"
+          },
+          {
+            "anchorId": "ending",
+            "sourceQuote": "Pip is relieved, but the cabinet remains messy.",
+            "candidateQuote": "Pip is relieved, but the cabinet remains messy."
+          }
+        ],
+        "protectedChanges": []
+      }
+    },
+    "separatedEvidenceProposal": {
+      "candidateId": "candidate-2",
+      "narrativeSha256": "7bd179926c406f1aa2566b1f513daef9cec355ffebc15517f49168d2d92fa41b",
+      "narrativeValidity": "COMPLETE_BOUNDED_NARRATIVE",
+      "evidenceScope": "EXACT_TEXT_LOCATIONS_ONLY_NOT_SEMANTIC_CERTIFICATION",
+      "narrativeSpans": [
+        {
+          "start": 0,
+          "end": 150,
+          "quote": "Pip the rabbit presses one sticky note toward the toy cabinet's empty front panel, but it clings to Pip's fingertip while the cabinet stays untouched."
+        },
+        {
+          "start": 151,
+          "end": 254,
+          "quote": "Pip tries to flick the note off with a quick wrist snap, and it splits into two notes, one on each paw."
+        },
+        {
+          "start": 255,
+          "end": 365,
+          "quote": "Pip claps both paws together to crush the notes flat, but they spring apart into four and climb Pip's sleeves."
+        },
+        {
+          "start": 366,
+          "end": 503,
+          "quote": "Pip backs away and brushes the four notes off against the cabinet's side, and they split into eight, wrapping Pip's shoulders and muzzle."
+        },
+        {
+          "start": 504,
+          "end": 627,
+          "quote": "Pip stares at the doubling notes, breathing hard, and realizes that every removal or transfer attempt multiplies the notes."
+        },
+        {
+          "start": 628,
+          "end": 707,
+          "quote": "Pip slowly lowers both arms and stops moving entirely, letting the notes cling."
+        },
+        {
+          "start": 708,
+          "end": 798,
+          "quote": "A sneeze jerks through Pip, and the notes blow off in a burst and land across the cabinet."
+        },
+        {
+          "start": 799,
+          "end": 846,
+          "quote": "Pip is relieved, but the cabinet remains messy."
+        }
+      ],
+      "modelEvidenceClaims": [
+        {
+          "field": "openingVisualState",
+          "claimedQuote": "Pip the rabbit presses one sticky note toward the toy cabinet's empty front panel, but it clings to Pip's fingertip while the cabinet stays untouched.",
+          "locations": [
+            {
+              "start": 0,
+              "end": 150,
+              "quote": "Pip the rabbit presses one sticky note toward the toy cabinet's empty front panel, but it clings to Pip's fingertip while the cabinet stays untouched."
+            }
+          ],
+          "status": "EXACT_QUOTE_PRESENT"
+        },
+        {
+          "field": "motivation",
+          "claimedQuote": "Pip tries to flick the note off with a quick wrist snap",
+          "locations": [
+            {
+              "start": 151,
+              "end": 206,
+              "quote": "Pip tries to flick the note off with a quick wrist snap"
+            }
+          ],
+          "status": "EXACT_QUOTE_PRESENT"
+        },
+        {
+          "field": "progression",
+          "claimedQuote": "Pip backs away and brushes the four notes off against the cabinet's side, and they split into eight, wrapping Pip's shoulders and muzzle.",
+          "locations": [
+            {
+              "start": 366,
+              "end": 503,
+              "quote": "Pip backs away and brushes the four notes off against the cabinet's side, and they split into eight, wrapping Pip's shoulders and muzzle."
+            }
+          ],
+          "status": "EXACT_QUOTE_PRESENT"
+        },
+        {
+          "field": "ending",
+          "claimedQuote": "Pip is relieved, but the cabinet remains messy.",
+          "locations": [
+            {
+              "start": 799,
+              "end": 846,
+              "quote": "Pip is relieved, but the cabinet remains messy."
+            }
+          ],
+          "status": "EXACT_QUOTE_PRESENT"
+        },
+        {
+          "field": "sourceContract.bindings",
+          "anchorId": "identity",
+          "claimedQuote": "Pip the rabbit",
+          "locations": [
+            {
+              "start": 0,
+              "end": 14,
+              "quote": "Pip the rabbit"
+            }
+          ],
+          "status": "EXACT_QUOTE_PRESENT"
+        },
+        {
+          "field": "sourceContract.bindings",
+          "anchorId": "premise",
+          "claimedQuote": "it clings to Pip's fingertip while the cabinet stays untouched",
+          "locations": [
+            {
+              "start": 87,
+              "end": 149,
+              "quote": "it clings to Pip's fingertip while the cabinet stays untouched"
+            }
+          ],
+          "status": "EXACT_QUOTE_PRESENT"
+        },
+        {
+          "field": "sourceContract.bindings",
+          "anchorId": "rule",
+          "claimedQuote": "every removal or transfer attempt multiplies the notes",
+          "locations": [
+            {
+              "start": 572,
+              "end": 626,
+              "quote": "every removal or transfer attempt multiplies the notes"
+            }
+          ],
+          "status": "EXACT_QUOTE_PRESENT"
+        },
+        {
+          "field": "sourceContract.bindings",
+          "anchorId": "continuity",
+          "claimedQuote": "Pip remains covered until a sneeze scatters the notes onto the cabinet",
+          "locations": [],
+          "status": "INVALID_EVIDENCE_CLAIM"
+        },
+        {
+          "field": "sourceContract.bindings",
+          "anchorId": "ending",
+          "claimedQuote": "Pip is relieved, but the cabinet remains messy.",
+          "locations": [
+            {
+              "start": 799,
+              "end": 846,
+              "quote": "Pip is relieved, but the cabinet remains messy."
+            }
+          ],
+          "status": "EXACT_QUOTE_PRESENT"
+        }
+      ],
+      "protectedFacts": [
+        {
+          "anchorId": "identity",
+          "kind": "CHARACTER_IDENTITY",
+          "source": {
+            "start": 20,
+            "end": 34,
+            "quote": "Pip the rabbit"
+          },
+          "candidateLocations": [
+            {
+              "start": 0,
+              "end": 14,
+              "quote": "Pip the rabbit"
+            }
+          ],
+          "literalEvidence": "EXACT_TEXT_LOCATED",
+          "semanticFidelity": "UNKNOWN"
+        },
+        {
+          "anchorId": "premise",
+          "kind": "CORE_PREMISE",
+          "source": {
+            "start": 110,
+            "end": 172,
+            "quote": "it clings to Pip's fingertip while the cabinet stays untouched"
+          },
+          "candidateLocations": [
+            {
+              "start": 87,
+              "end": 149,
+              "quote": "it clings to Pip's fingertip while the cabinet stays untouched"
+            }
+          ],
+          "literalEvidence": "EXACT_TEXT_LOCATED",
+          "semanticFidelity": "UNKNOWN"
+        },
+        {
+          "anchorId": "rule",
+          "kind": "PHYSICAL_RULE",
+          "source": {
+            "start": 552,
+            "end": 606,
+            "quote": "every removal or transfer attempt multiplies the notes"
+          },
+          "candidateLocations": [
+            {
+              "start": 572,
+              "end": 626,
+              "quote": "every removal or transfer attempt multiplies the notes"
+            }
+          ],
+          "literalEvidence": "EXACT_TEXT_LOCATED",
+          "semanticFidelity": "UNKNOWN"
+        },
+        {
+          "anchorId": "continuity",
+          "kind": "CONTINUITY",
+          "source": {
+            "start": 696,
+            "end": 766,
+            "quote": "Pip remains covered until a sneeze scatters the notes onto the cabinet"
+          },
+          "candidateLocations": [],
+          "literalEvidence": "MISSING",
+          "semanticFidelity": "UNKNOWN"
+        },
+        {
+          "anchorId": "ending",
+          "kind": "ENDING",
+          "source": {
+            "start": 768,
+            "end": 815,
+            "quote": "Pip is relieved, but the cabinet remains messy."
+          },
+          "candidateLocations": [
+            {
+              "start": 799,
+              "end": 846,
+              "quote": "Pip is relieved, but the cabinet remains messy."
+            }
+          ],
+          "literalEvidence": "EXACT_TEXT_LOCATED",
+          "semanticFidelity": "UNKNOWN"
+        }
+      ],
+      "explicitContradictions": [],
+      "protectedChangeProposals": [],
+      "status": "SEMANTIC_FIDELITY_REVIEW_REQUIRED",
+      "semanticFidelity": "UNKNOWN",
+      "independentReview": "NOT_EXECUTED",
+      "semanticQuestions": [
+        {
+          "anchorId": "identity",
+          "question": "Does the narrative preserve this source fact, including trigger and continuity conditions?"
+        },
+        {
+          "anchorId": "premise",
+          "question": "Does the narrative preserve this source fact, including trigger and continuity conditions?"
+        },
+        {
+          "anchorId": "rule",
+          "question": "Does the narrative preserve this source fact, including trigger and continuity conditions?"
+        },
+        {
+          "anchorId": "continuity",
+          "question": "Does the narrative preserve this source fact, including trigger and continuity conditions?"
+        },
+        {
+          "anchorId": "ending",
+          "question": "Does the narrative preserve this source fact, including trigger and continuity conditions?"
+        }
+      ],
+      "paidReviewEligible": false,
+      "policyActivation": "DISABLED_REQUIRES_EXPLICIT_OWNER_DECISION",
+      "futureReviewConsideration": "OWNER_POLICY_DECISION_REQUIRED",
+      "sourceApproved": false,
+      "renderAuthorized": false
+    },
+    "historicalResultChanged": false,
+    "newProviderCalls": 0
+  }
+]

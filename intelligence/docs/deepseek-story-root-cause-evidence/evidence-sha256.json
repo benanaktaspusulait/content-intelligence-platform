@@ -1,0 +1,15 @@
+{
+  "call-2-exact-system.txt": "84f6882229fd8ee8c96d064e32588794105fef0af365e7d648eac28d97a9e30d",
+  "story-root-cause-positive-dry-run.json": "75c0a05bc69a3f477f945f226328e8e161258619f9cceeac9bc88f957d0121d9",
+  "call-2-saved-request.json": "fe56e8d77d30b1e44b0518d1e2f82c09150d18b9033c5bf03206cfcf62729427",
+  "proposed-authoring-responsibilities.json": "0734c52a868ff9c7749111975bbef2a282692c16a09e11bc12f9663516bd1cc3",
+  "call-1-exact-user.txt": "9911fb57fc276c6631bcb1aea4378024a55cf00388509fd63b0dc83cb77813e1",
+  "call-1-saved-request.json": "35057560369da3151996a35a7db3c18128fb060ba7fd8bc32f26cc7e4261421f",
+  "test-results.json": "b716a25f03a3a82e725b60296edd417cffa17692769b17805d454e57e0f3e075",
+  "story-root-cause-saved-followup.json": "b3fb3e8fdbfd612cc7cdd79b45a904c176dc08293f68b8548dc6861f34982dcb",
+  "call-2-exact-user.txt": "9911fb57fc276c6631bcb1aea4378024a55cf00388509fd63b0dc83cb77813e1",
+  "four-authentic-story-replay.json": "a9e6b43291ca61731f88aa8b5205d8076e21c542f88ce17770a4d61c6d5ba63d",
+  "story-root-cause-saved-first.json": "6bfe49be826b85da8653ba8fc223795313b08c8c6cc8090f3f8af15b6ba29e8e",
+  "request-audit.json": "e932e6e5226b6e987b9580d4d5d1b9f23ed8f8f6ebd518d11fe6bbb8857bac15",
+  "call-1-exact-system.txt": "f7e53b14f26b2608e6b075fec79ca63408df83aa759c001081a898e82cbf3d4a"
+}

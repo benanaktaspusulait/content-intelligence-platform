@@ -361,3 +361,114 @@ def extract_story_evidence(text: str, context: dict[str, Any]) -> dict[str, Any]
         'character': context.get('mainCharacter'),
         'profile': context.get('profile'),
     }
+
+
+def derive_source_evidence(source: str, context: dict[str, Any], candidate: dict[str, Any]) -> dict[str, Any]:
+    """Offline responsibility-split proposal, NEVER a paid-admission decision.
+
+    Preserve narrative bytes; locate exact text mechanically. A missing source
+    clause or inaccurate model citation cannot establish a semantic violation
+    or a semantic PASS. Existing strict validate()/dispatch paths do not call
+    this function and remain authoritative until a separately approved policy.
+    """
+    from .story_experiment import contract, sha
+    policy = contract(source, context)
+    body = candidate.get('text')
+    body = body if isinstance(body, str) else ''
+
+    def locations(whole, quote):
+        if not isinstance(quote, str) or not quote:
+            return []
+        return [{'start': m.start(), 'end': m.end(), 'quote': whole[m.start():m.end()]}
+                for m in re.finditer(re.escape(quote), whole)]
+
+    # Segmentation is only a locator; it does not certify events or causality.
+    sentences = []
+    for match in re.finditer(r'[^.!?]+(?:[.!?]+|$)', body):
+        value = match.group().strip()
+        if value:
+            start = match.start() + len(match.group()) - len(match.group().lstrip())
+            sentences.append({'start': start, 'end': start + len(value), 'quote': body[start:start+len(value)]})
+    declaration = candidate.get('sourceContract')
+    declaration = declaration if isinstance(declaration, dict) else {}
+    claims = []
+    for key in ('openingVisualState', 'motivation', 'progression', 'ending'):
+        value = candidate.get(key)
+        spans = locations(body, value)
+        claims.append({'field': key, 'claimedQuote': value, 'locations': spans,
+                       'status': 'EXACT_QUOTE_PRESENT' if spans else 'NOT_SUPPLIED' if value is None else 'INVALID_EVIDENCE_CLAIM'})
+    for binding in declaration.get('bindings', []) if isinstance(declaration.get('bindings'), list) else []:
+        if not isinstance(binding, dict):
+            claims.append({'field': 'sourceContract.bindings', 'status': 'INVALID_EVIDENCE_CLAIM'}); continue
+        spans = locations(body, binding.get('candidateQuote'))
+        anchor = next((a for a in policy['protectedAnchors'] if a['id'] == binding.get('anchorId')), None)
+        valid = bool(spans) and bool(anchor) and binding.get('sourceQuote') == anchor['quote']
+        for prefix, whole, quote in (('candidate', body, binding.get('candidateQuote')), ('source', source, binding.get('sourceQuote'))):
+            if prefix+'Start' in binding or prefix+'End' in binding:
+                start, end = binding.get(prefix+'Start'), binding.get(prefix+'End')
+                valid = valid and type(start) is int and type(end) is int and 0 <= start < end <= len(whole) and whole[start:end] == quote
+        claims.append({'field': 'sourceContract.bindings', 'anchorId': binding.get('anchorId'),
+                       'claimedQuote': binding.get('candidateQuote'), 'locations': spans,
+                       'status': 'EXACT_QUOTE_PRESENT' if valid else 'INVALID_EVIDENCE_CLAIM'})
+    anchors = []; contradictions = []
+    for anchor in policy['protectedAnchors']:
+        spans = locations(body, anchor['quote'])
+        # Deliberately tiny explicit-negation grammar, not fuzzy semantics.
+        # Only the entire protected clause with an explicit negation counts;
+        # changed predicates, pronouns and alternative triggers stay UNKNOWN.
+        negations = ['It is false that '+anchor['quote']]
+        for copula in (' is ', ' are '):
+            if copula in anchor['quote']:
+                negations.append(anchor['quote'].replace(copula, copula+'not ', 1))
+        negative_spans = [span for quote in negations for span in locations(body, quote)]
+        if negative_spans:
+            contradictions.append({'anchorId': anchor['id'], 'status': 'EXPLICIT_PROTECTED_CLAUSE_NEGATION', 'locations': negative_spans})
+        anchors.append({'anchorId': anchor['id'], 'kind': anchor['kind'],
+                        'source': {'start': anchor['start'], 'end': anchor['end'], 'quote': source[anchor['start']:anchor['end']]},
+                        'candidateLocations': spans,
+                        'literalEvidence': 'EXACT_TEXT_LOCATED' if spans else 'MISSING',
+                        'semanticFidelity': 'UNKNOWN'})
+    proposals = declaration.get('protectedChanges') or []
+    proposal_claimed = declaration.get('status') == 'PROTECTED_CHANGE_PROPOSAL' or bool(proposals)
+    valid_proposals = isinstance(proposals, list) and bool(proposals) and all(
+        isinstance(p, dict) and p.get('anchorId') in {a['id'] for a in policy['protectedAnchors']}
+        and all(isinstance(p.get(k), str) and p[k].strip() for k in ('proposedChange', 'justification')) for p in proposals)
+    valid_narrative = (isinstance(candidate.get('candidateId'), str) and bool(re.fullmatch(r'[a-zA-Z0-9_-]{1,80}', candidate['candidateId']))
+                       and isinstance(candidate.get('title'), str) and bool(candidate['title'].strip())
+                       and 160 <= len(body.strip()) <= 12000 and len(sentences) >= 2)
+    if not valid_narrative or proposal_claimed and not valid_proposals:
+        status = 'INVALID_GENERATION_OUTPUT'
+    elif proposal_claimed:
+        status = 'PROTECTED_CHANGE_PROPOSAL'
+    elif contradictions:
+        status = 'DEFINITE_SOURCE_VIOLATION'
+    elif all(a['candidateLocations'] for a in anchors):
+        status = 'DETERMINISTIC_SOURCE_CONTRACT_PASSED'
+    else:
+        status = 'SEMANTIC_FIDELITY_REVIEW_REQUIRED'
+    return {'candidateId': candidate.get('candidateId'), 'narrativeSha256': sha(body),
+            'narrativeValidity': 'COMPLETE_BOUNDED_NARRATIVE' if valid_narrative else 'INVALID_GENERATION_OUTPUT',
+            'evidenceScope': 'EXACT_TEXT_LOCATIONS_ONLY_NOT_SEMANTIC_CERTIFICATION',
+            'narrativeSpans': sentences, 'modelEvidenceClaims': claims, 'protectedFacts': anchors,
+            'explicitContradictions': contradictions, 'protectedChangeProposals': proposals,
+            'status': status, 'semanticFidelity': 'UNKNOWN', 'independentReview': 'NOT_EXECUTED',
+            'semanticQuestions': [{'anchorId': a['anchorId'], 'question': 'Does the narrative preserve this source fact, including trigger and continuity conditions?'} for a in anchors],
+            'paidReviewEligible': False, 'policyActivation': 'DISABLED_REQUIRES_EXPLICIT_OWNER_DECISION',
+            'futureReviewConsideration': 'OWNER_POLICY_DECISION_REQUIRED' if status in {
+                'DETERMINISTIC_SOURCE_CONTRACT_PASSED', 'SEMANTIC_FIDELITY_REVIEW_REQUIRED'} else 'BLOCKED_OR_SEPARATE_SOURCE_DECISION_REQUIRED',
+            'sourceApproved': False, 'renderAuthorized': False}
+
+
+def proposed_story_authoring_contract() -> dict[str, Any]:
+    """Document/test an unactivated simplification of existing STORY fields."""
+    return {'status': 'PROPOSED_NOT_ACTIVATED', 'paidReviewEligibilityChanged': False,
+            'ownerPolicyApprovalRequired': True, 'newSchemaVersion': None,
+            'existingCandidateFields': ['candidateId', 'title', 'text', 'proposedChanges', 'motivation',
+                                        'progression', 'weaknesses', 'productionRisks', 'sourceContract.protectedChanges'],
+            'modelResponsibilities': 'Author complete narrative and honest creative intentions/risks; motivation and progression are author summaries, not certified evidence. Explicitly propose protected changes by anchor ID. Never claim source fidelity PASS.',
+            'applicationResponsibilities': 'Derive exact substrings and Unicode offsets from actual narrative; validate source catalog; retain absent quotes as MISSING and semantics as UNKNOWN. Never add sentences or repair raw output.',
+            'independentReviewerResponsibilities': 'Judge source meaning, causal triggers, continuity, six CPQ dimensions and risks only after separate policy and request authorization.',
+            'proposedModes': {
+                'SOURCE_BOUND_STORY_REVISION': 'Protected facts stay locked; unprotected staging/actions/progression may change. Missing literal facts need semantic assessment, not assumed PASS.',
+                'CREATIVE_EXPLORATION_PROPOSAL': 'May propose protected changes; no proposal replaces approved source. Channel identity, child-appropriate tone and coherent causality remain requirements; exact scope needs owner approval.'},
+            'dispatchEnabled': False, 'sourceApprovalEnabled': False, 'buildPromptEnabled': False}

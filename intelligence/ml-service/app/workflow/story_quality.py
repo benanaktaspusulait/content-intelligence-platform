@@ -338,6 +338,11 @@ def analyse_story_candidates(candidates: list[Any], context: dict[str, Any]) -> 
             seq_i = [tuple(s) for s in ev_i.get('eventSequence', [])]
             seq_j = [tuple(s) for s in ev_j.get('eventSequence', [])]
             structural_difference = bool(set(seq_i) ^ set(seq_j))
+            # Raw action vocabulary must not override the already-supported
+            # canonical synonym path (e.g. pull/yank/remove). This is a
+            # conservative near-duplicate diagnostic, not semantic fidelity.
+            if 'causalEventProgression' in shared:
+                structural_difference = False
 
             # Compare distinct actions
             actions_i = set(ev_i.get('distinctActions', []))

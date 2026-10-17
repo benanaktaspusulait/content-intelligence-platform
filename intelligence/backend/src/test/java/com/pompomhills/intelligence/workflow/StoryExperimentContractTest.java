@@ -86,7 +86,7 @@ class StoryExperimentContractTest {
     assertThat(map(result.get("progress"))).containsEntry("ownerStoryApproval","PENDING").containsEntry("reviewerIndependent",true);
     assertThat(map(map(result.get("progress")).get("lastAssessment")).get("recommendationReason")).isEqualTo("NO_CREATIVE_WINNER");
     assertThat(rows(result.get("drafts"))).isEmpty();service.processNext();assertThat(transports).isEqualTo(2);
-    Path trace=ROOT.resolve("intelligence/backend/target/story-model-fidelity-fix-dry-run.json");Files.writeString(trace,json.writerWithDefaultPrettyPrinter().writeValueAsString(Map.of("evidenceOrigin","DETERMINISTIC_MOCK_ADAPTER_CONTRACT_TEST_ONLY","realProviderCalls",0,"productionDbWrites",0,"trace",result)));
+    Path trace=ROOT.resolve("intelligence/backend/target/story-root-cause-positive-dry-run.json");Files.writeString(trace,json.writerWithDefaultPrettyPrinter().writeValueAsString(Map.of("evidenceOrigin","DETERMINISTIC_MOCK_ADAPTER_CONTRACT_TEST_ONLY","realProviderCalls",0,"productionDbWrites",0,"trace",result)));
   }
   @ParameterizedTest @ValueSource(strings={"zero","one","three","duplicate-id","duplicate-text","incomplete","source","unknown","proposal","malformed","missing-usage","over-budget","fixture-fallback","rule-mutation","bad-offsets"})
   void invalidFirstResultIsDurableAndNeverReservesReview(String failure){mode=failure;start();service.processNext();assertThat(transports).isEqualTo(1);assertThat(receipts()).hasSize(1);
@@ -102,6 +102,25 @@ class StoryExperimentContractTest {
     assertThat(receipt.get("rawProviderResponse")).isNotNull();assertThat(view().get("state")).isEqualTo("STOPPED");
     assertThat(map(view().get("progress")).get("unresolvedBilling")).isEqualTo(true);
     service.processNext();assertThat(transports).isEqualTo(1);
+  }
+  @ParameterizedTest @ValueSource(strings={"saved-first","saved-followup"})
+  void authenticSavedNarrativesGetSeparateOfflineEvidenceWithoutChangingPaidGate(String savedMode) throws Exception {
+    mode=savedMode;start();service.processNext();assertThat(transports).isEqualTo(1);
+    assertThat(view().get("state")).isEqualTo("STOPPED");assertThat(receipts()).hasSize(1);
+    var receipt=receipts().getFirst();var values=rows(map(receipt.get("parsedProviderResponse")).get("alternatives"));
+    assertThat(values).hasSize(2);var reports=new ArrayList<Map<String,Object>>();
+    var scope=map(view().get("scope"));var context=service.pilotContext(scope,false,null,null);
+    for(var candidate:values){
+      var report=bridge("offline-evidence-audit",Map.of("text",scope.get("sourceStory"),"context",context,"candidate",candidate));
+      assertThat(report.get("status")).isEqualTo("SEMANTIC_FIDELITY_REVIEW_REQUIRED");
+      assertThat(report.get("paidReviewEligible")).isEqualTo(false);assertThat(report.get("sourceApproved")).isEqualTo(false);
+      assertThat(report.get("narrativeSha256")).isEqualTo(hash(String.valueOf(candidate.get("text"))));reports.add(report);
+    }
+    service.processNext();assertThat(transports).isEqualTo(1);
+    assertThat(rows(view().get("events")).stream().filter(e->"REQUEST_RESERVED".equals(e.get("state"))).count()).isEqualTo(1);
+    String folder=savedMode.equals("saved-first")?"first-real-story-evolution-evidence":"real-story-identity-fidelity-followup-evidence";
+    assertThat(receipt.get("rawProviderResponse")).isEqualTo(Files.readString(ROOT.resolve("intelligence/docs/"+folder+"/raw-model-response.txt")));
+    Files.writeString(ROOT.resolve("intelligence/backend/target/story-root-cause-"+savedMode+".json"),json.writerWithDefaultPrettyPrinter().writeValueAsString(Map.of("evidenceOrigin","OFFLINE_SAVED_RESPONSE_REPLAY_MOCKED_TRANSPORT","newProviderCalls",0,"sourcePaidGateUnchanged",true,"auditReports",reports,"trace",view())));
   }
   @ParameterizedTest @ValueSource(strings={"review-timeout","review-transport","review-malformed"})
   void failedSecondCallPreservesFirstResponseAndKnownBilling(String failure){mode=failure;start();service.processNext();assertThat(transports).isEqualTo(2);assertThat(receipts()).hasSize(2);assertThat(receipts().getFirst().get("billingStatus")).isEqualTo("KNOWN_INCURRED");assertThat(receipts().getFirst().get("rawProviderResponse")).isNotNull();

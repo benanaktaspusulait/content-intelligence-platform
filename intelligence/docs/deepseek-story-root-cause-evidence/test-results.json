@@ -1,0 +1,47 @@
+{
+  "focusedProposalTests": {
+    "command": "POMPOM_DATA_ROOT=<repo>/intelligence/data intelligence/ml-service/.venv/bin/pytest -q intelligence/ml-service/tests/test_story_evidence_responsibility_split.py",
+    "exitCode": 0,
+    "passed": 17
+  },
+  "initialBroadRegression": {
+    "exitCode": 1,
+    "passed": 212,
+    "failed": 1,
+    "failure": "test_story_quality.py::test_rephrasings_are_near_duplicates; PARTIALLY_DISTINCT instead of NEAR_DUPLICATE"
+  },
+  "finalBroadRegression": {
+    "command": "POMPOM_DATA_ROOT=../data .venv/bin/pytest -q tests/test_story_evidence_responsibility_split.py tests/test_story_experiment_contract.py tests/test_story_review_contract.py tests/test_creative_roles.py tests/test_story_quality.py tests/test_story_evidence.py tests/test_adaptive_optimization_v3.py tests/test_creative_validity.py tests/test_f8_authorization.py tests/test_hook_002_metamorphic_stability.py tests/test_llm_providers.py",
+    "exitCode": 0,
+    "passed": 213,
+    "warnings": 343
+  },
+  "backend": {
+    "command": "mvn -q -Dtest=StoryExperimentContractTest,StoryEvolutionServiceTest,StoryReviewIndependenceTest test",
+    "exitCode": 0,
+    "results": {
+      "StoryExperimentContractTest": {
+        "tests": 33,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "StoryEvolutionServiceTest": {
+        "tests": 5,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "StoryReviewIndependenceTest": {
+        "tests": 2,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    "passed": 40
+  },
+  "newProviderCalls": 0,
+  "newProviderSpendUsd": 0,
+  "productionDbWrites": 0
+}
