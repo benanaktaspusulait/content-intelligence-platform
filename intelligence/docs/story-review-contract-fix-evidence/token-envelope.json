@@ -1,0 +1,15 @@
+{
+  "tokenizer": "o200k_base",
+  "model": "gpt-4o-mini-2024-07-18",
+  "fixtureClassification": "SYNTHETIC_CAPACITY_AND_VALIDATION_EXAMPLE_NOT_REAL_MACHINE_REVIEW",
+  "completeSemanticChecks": 18,
+  "completeCreativeDimensions": 12,
+  "outputCompactTokens": 1931,
+  "outputPrettyTokens": 2577,
+  "maximumOutputTokens": 4000,
+  "systemTokens": 574,
+  "userTokens": 1896,
+  "schemaTokens": 864,
+  "billingTokenCountVerified": false,
+  "realInferenceCalls": 0
+}

@@ -1,0 +1,7 @@
+{
+  "applicationsStopped": true,
+  "ownDisposableDatabaseStopped": true,
+  "otherServicesUntouched": true,
+  "dump": "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/backend/target/structured-story-review-http-v5/post-http-e2e.dump",
+  "dumpSha256": "25a83e45c04eb0a228504bf20777249f66440ff407e39fc480dc206af44a6432"
+}

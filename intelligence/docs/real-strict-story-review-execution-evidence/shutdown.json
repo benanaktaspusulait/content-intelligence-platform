@@ -1,0 +1,8 @@
+{
+  "ownBackendStopped": true,
+  "ownMlStopped": true,
+  "ownDisposableDatabaseStopped": true,
+  "otherProcessesAndContainersUntouched": true,
+  "databaseDumpPreserved": true,
+  "independentRestoreVerified": true
+}

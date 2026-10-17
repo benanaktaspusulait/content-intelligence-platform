@@ -1,0 +1,244 @@
+{
+  "schemaVersion": "assessment-only-story-review-v2",
+  "candidateAssessments": {
+    "A": {
+      "semanticChecks": {
+        "identity": {
+          "outcome": "PASS",
+          "basis": "SEMANTIC_SUPPORT",
+          "sourceQuote": "Pip the rabbit",
+          "candidateQuote": "Pip the rabbit",
+          "reason": "Same named rabbit is explicit."
+        },
+        "premise": {
+          "outcome": "PASS",
+          "basis": "SEMANTIC_SUPPORT",
+          "sourceQuote": "it clings to Pip's fingertip while the cabinet stays untouched",
+          "candidateQuote": "it clings to Pip's fingertip while the cabinet stays untouched",
+          "reason": "Finger adhesion leaves the intended cabinet placement unsuccessful."
+        },
+        "rule": {
+          "outcome": "UNKNOWN",
+          "basis": "INSUFFICIENT",
+          "sourceQuote": "every removal or transfer attempt multiplies the notes",
+          "candidateQuote": "the note splits into two",
+          "reason": "Counts escalate; whether shaking is removal-directed needs semantic review."
+        },
+        "continuity": {
+          "outcome": "PASS",
+          "basis": "SEMANTIC_SUPPORT",
+          "sourceQuote": "Pip remains covered until a sneeze scatters the notes onto the cabinet",
+          "candidateQuote": "The notes stay put.",
+          "reason": "Stillness maintains attachment before the following sneeze release; exact source wording is unnecessary."
+        },
+        "ending": {
+          "outcome": "PASS",
+          "basis": "SEMANTIC_SUPPORT",
+          "sourceQuote": "Pip is relieved, but the cabinet remains messy.",
+          "candidateQuote": "Pip is relieved, but the cabinet remains messy.",
+          "reason": "Relief and the messy cabinet are unchanged."
+        },
+        "trigger_conditions": {
+          "outcome": "UNKNOWN",
+          "basis": "INSUFFICIENT",
+          "sourceQuote": "every removal or transfer attempt multiplies the notes",
+          "candidateQuote": "Pip shakes the hand",
+          "reason": "The shake target is uncertain."
+        },
+        "single_mechanic": {
+          "outcome": "PASS",
+          "basis": "SEMANTIC_SUPPORT",
+          "sourceQuote": "every removal or transfer attempt multiplies the notes",
+          "candidateQuote": "the note splits into two",
+          "reason": "Multiplication remains the repeating mechanic; the sneeze releases attached notes."
+        },
+        "causal_clarity": {
+          "outcome": "PASS",
+          "basis": "SEMANTIC_SUPPORT",
+          "sourceQuote": "deliberately stops struggling",
+          "candidateQuote": "refusing to touch anything",
+          "reason": "Stopping is explicit; count/contact continuity still needs visual evidence."
+        },
+        "protected_events": {
+          "outcome": "PASS",
+          "basis": "SEMANTIC_SUPPORT",
+          "sourceQuote": "Pip remains covered until a sneeze scatters the notes onto the cabinet",
+          "candidateQuote": "a sneeze erupts and scatters the notes onto the cabinet",
+          "reason": "Protected covered-until-release facts are retained; incidental mirror staging is not a separate lock."
+        }
+      },
+      "semanticOutcome": "SEMANTIC_SOURCE_UNKNOWN",
+      "sourceUnknowns": "Does shaking unambiguously attempt removal before multiplication?",
+      "creativeDimensions": {
+        "SCROLL_STOP_VISUAL_PROMISE": {
+          "quote": "Pip the rabbit presses a single sticky note toward the toy cabinet's empty front panel, and it clings to Pip's fingertip while the cabinet stays untouched",
+          "strength": "Placement goal and finger/cabinet obstacle are visible.",
+          "weakness": "Opening remains close to the baseline.",
+          "risk": "480p contact legibility is unverified."
+        },
+        "CAUSAL_PROGRESSION": {
+          "quote": "the note splits into two",
+          "strength": "Count changes establish a causal sequence.",
+          "weakness": "Count changes alone do not establish action diversity.",
+          "risk": "Exact multiplication continuity needs visual checking."
+        },
+        "VISUAL_STORYTELLING": {
+          "quote": "arms folded",
+          "strength": "A stopping decision has an observable body state.",
+          "weakness": "Intent may remain ambiguous without clear posture.",
+          "risk": "Coverage can hide facial reaction."
+        },
+        "PRODUCTION_EXECUTABILITY": {
+          "quote": "a sneeze erupts",
+          "strength": "Named actions can be staged sequentially.",
+          "weakness": "Contact, occlusion and scatter remain demanding.",
+          "risk": "Final-second overload remains possible in 15s."
+        },
+        "ENDING_REPLAY": {
+          "quote": "Pip is relieved, but the cabinet remains messy.",
+          "strength": "Relief contrasts with a still-messy cabinet.",
+          "weakness": "No demonstrated replay gain over the original.",
+          "risk": "Audience response is unknown."
+        },
+        "DISTINCTIVE_CREATIVE_VALUE": {
+          "quote": "The notes stay put.",
+          "strength": "Stillness interrupts repetitive struggle.",
+          "weakness": "No independently verified audience benefit.",
+          "risk": "Staging feasibility remains a hypothesis."
+        }
+      },
+      "creativeConclusion": {
+        "outcome": "MATERIAL_IMPROVEMENT",
+        "baselineQuote": "turns the still note-covered face toward the mirror",
+        "candidateQuote": "slowly sits down on the floor, arms folded, refusing to touch anything",
+        "change": "Pip sits with arms folded rather than turning toward the mirror.",
+        "visibleConsequence": "Arms folded while Pip sits makes the refusal observable.",
+        "addressedWeakness": "The mirror turn competes with the deliberate stopping decision.",
+        "newRisk": "Sitting plus sneeze may crowd the 15-second sequence.",
+        "materialityReason": "An explicit refusal posture externalizes the stopping decision; this is a test hypothesis, not observed viewer benefit."
+      },
+      "eligibleForOwnerProposal": false
+    },
+    "B": {
+      "semanticChecks": {
+        "identity": {
+          "outcome": "PASS",
+          "basis": "SEMANTIC_SUPPORT",
+          "sourceQuote": "Pip the rabbit",
+          "candidateQuote": "Pip the rabbit",
+          "reason": "Same named rabbit is explicit."
+        },
+        "premise": {
+          "outcome": "PASS",
+          "basis": "SEMANTIC_SUPPORT",
+          "sourceQuote": "it clings to Pip's fingertip while the cabinet stays untouched",
+          "candidateQuote": "it clings to Pip's fingertip while the cabinet stays untouched",
+          "reason": "Finger adhesion leaves the intended cabinet placement unsuccessful."
+        },
+        "rule": {
+          "outcome": "PASS",
+          "basis": "SEMANTIC_SUPPORT",
+          "sourceQuote": "every removal or transfer attempt multiplies the notes",
+          "candidateQuote": "every removal or transfer attempt multiplies the notes",
+          "reason": "The same removal/transfer condition is explicitly named."
+        },
+        "continuity": {
+          "outcome": "PASS",
+          "basis": "SEMANTIC_SUPPORT",
+          "sourceQuote": "Pip remains covered until a sneeze scatters the notes onto the cabinet",
+          "candidateQuote": "stands still, letting the notes rest.",
+          "reason": "Stillness maintains attachment before the following sneeze release; exact source wording is unnecessary."
+        },
+        "ending": {
+          "outcome": "PASS",
+          "basis": "SEMANTIC_SUPPORT",
+          "sourceQuote": "Pip is relieved, but the cabinet remains messy.",
+          "candidateQuote": "Pip is relieved, but the cabinet remains messy.",
+          "reason": "Relief and the messy cabinet are unchanged."
+        },
+        "trigger_conditions": {
+          "outcome": "PASS",
+          "basis": "SEMANTIC_SUPPORT",
+          "sourceQuote": "every removal or transfer attempt multiplies the notes",
+          "candidateQuote": "to peel it free",
+          "reason": "Peeling, transfer-directed slapping and flinging away are removal attempts."
+        },
+        "single_mechanic": {
+          "outcome": "PASS",
+          "basis": "SEMANTIC_SUPPORT",
+          "sourceQuote": "every removal or transfer attempt multiplies the notes",
+          "candidateQuote": "they split into eight",
+          "reason": "Multiplication remains the repeating mechanic; the sneeze releases attached notes."
+        },
+        "causal_clarity": {
+          "outcome": "PASS",
+          "basis": "SEMANTIC_SUPPORT",
+          "sourceQuote": "deliberately stops struggling",
+          "candidateQuote": "deliberately stops struggling",
+          "reason": "Stopping is explicit; count/contact continuity still needs visual evidence."
+        },
+        "protected_events": {
+          "outcome": "PASS",
+          "basis": "SEMANTIC_SUPPORT",
+          "sourceQuote": "Pip remains covered until a sneeze scatters the notes onto the cabinet",
+          "candidateQuote": "scatters them across the cabinet",
+          "reason": "Protected covered-until-release facts are retained; incidental mirror staging is not a separate lock."
+        }
+      },
+      "semanticOutcome": "SEMANTIC_SOURCE_PASS",
+      "sourceUnknowns": "NONE",
+      "creativeDimensions": {
+        "SCROLL_STOP_VISUAL_PROMISE": {
+          "quote": "Pip the rabbit reaches to smooth one sticky note onto the toy cabinet's bare front panel, but it clings to Pip's fingertip while the cabinet stays untouched",
+          "strength": "Placement goal and finger/cabinet obstacle are visible.",
+          "weakness": "Opening remains close to the baseline.",
+          "risk": "480p contact legibility is unverified."
+        },
+        "CAUSAL_PROGRESSION": {
+          "quote": "it splits into two notes",
+          "strength": "Count changes establish a causal sequence.",
+          "weakness": "Count changes alone do not establish action diversity.",
+          "risk": "Exact multiplication continuity needs visual checking."
+        },
+        "VISUAL_STORYTELLING": {
+          "quote": "deliberately stops struggling",
+          "strength": "A stopping decision has an observable body state.",
+          "weakness": "Intent may remain ambiguous without clear posture.",
+          "risk": "Coverage can hide facial reaction."
+        },
+        "PRODUCTION_EXECUTABILITY": {
+          "quote": "A sneeze bursts out of Pip",
+          "strength": "Named actions can be staged sequentially.",
+          "weakness": "Contact, occlusion and scatter remain demanding.",
+          "risk": "Final-second overload remains possible in 15s."
+        },
+        "ENDING_REPLAY": {
+          "quote": "Pip is relieved, but the cabinet remains messy.",
+          "strength": "Relief contrasts with a still-messy cabinet.",
+          "weakness": "No demonstrated replay gain over the original.",
+          "risk": "Audience response is unknown."
+        },
+        "DISTINCTIVE_CREATIVE_VALUE": {
+          "quote": "letting the notes rest.",
+          "strength": "Stillness interrupts repetitive struggle.",
+          "weakness": "No independently verified audience benefit.",
+          "risk": "Staging feasibility remains a hypothesis."
+        }
+      },
+      "creativeConclusion": {
+        "outcome": "NO_MATERIAL_IMPROVEMENT",
+        "baselineQuote": "",
+        "candidateQuote": "",
+        "change": "",
+        "visibleConsequence": "",
+        "addressedWeakness": "",
+        "newRisk": "",
+        "materialityReason": ""
+      },
+      "eligibleForOwnerProposal": false
+    }
+  },
+  "researchPreference": "NO_CREATIVE_WINNER",
+  "reason": "Neither candidate is an actionable, verified creative winner: A has unresolved trigger semantics, and B lacks a demonstrated material gain.",
+  "evidenceLimitations": "Synthetic offline contract example only; no independent real model judgment, visual test or audience evidence."
+}

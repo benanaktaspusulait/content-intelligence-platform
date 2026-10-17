@@ -1,0 +1,267 @@
+{
+  "type": "object",
+  "properties": {
+    "schemaVersion": {
+      "type": "string",
+      "enum": [
+        "assessment-only-story-review-v2"
+      ]
+    },
+    "candidateAssessments": {
+      "type": "object",
+      "properties": {
+        "A": {
+          "$ref": "#/$defs/candidate"
+        },
+        "B": {
+          "$ref": "#/$defs/candidate"
+        }
+      },
+      "required": [
+        "A",
+        "B"
+      ],
+      "additionalProperties": false
+    },
+    "researchPreference": {
+      "type": "string",
+      "enum": [
+        "A",
+        "B",
+        "NO_CREATIVE_WINNER"
+      ]
+    },
+    "reason": {
+      "type": "string"
+    },
+    "evidenceLimitations": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "candidateAssessments",
+    "researchPreference",
+    "reason",
+    "evidenceLimitations"
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "semantic": {
+      "type": "object",
+      "properties": {
+        "outcome": {
+          "type": "string",
+          "enum": [
+            "PASS",
+            "FAIL",
+            "UNKNOWN"
+          ]
+        },
+        "basis": {
+          "type": "string",
+          "enum": [
+            "SEMANTIC_SUPPORT",
+            "CONTRADICTION",
+            "SUBSTANTIVE_OMISSION",
+            "INSUFFICIENT"
+          ]
+        },
+        "sourceQuote": {
+          "type": "string"
+        },
+        "candidateQuote": {
+          "type": "string"
+        },
+        "reason": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "outcome",
+        "basis",
+        "sourceQuote",
+        "candidateQuote",
+        "reason"
+      ],
+      "additionalProperties": false
+    },
+    "dimension": {
+      "type": "object",
+      "properties": {
+        "quote": {
+          "type": "string"
+        },
+        "strength": {
+          "type": "string"
+        },
+        "weakness": {
+          "type": "string"
+        },
+        "risk": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "quote",
+        "strength",
+        "weakness",
+        "risk"
+      ],
+      "additionalProperties": false
+    },
+    "comparison": {
+      "type": "object",
+      "properties": {
+        "outcome": {
+          "type": "string",
+          "enum": [
+            "MATERIAL_IMPROVEMENT",
+            "MINOR_VARIATION",
+            "NO_MATERIAL_IMPROVEMENT",
+            "UNKNOWN"
+          ]
+        },
+        "baselineQuote": {
+          "type": "string"
+        },
+        "candidateQuote": {
+          "type": "string"
+        },
+        "change": {
+          "type": "string"
+        },
+        "visibleConsequence": {
+          "type": "string"
+        },
+        "addressedWeakness": {
+          "type": "string"
+        },
+        "newRisk": {
+          "type": "string"
+        },
+        "materialityReason": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "outcome",
+        "baselineQuote",
+        "candidateQuote",
+        "change",
+        "visibleConsequence",
+        "addressedWeakness",
+        "newRisk",
+        "materialityReason"
+      ],
+      "additionalProperties": false
+    },
+    "candidate": {
+      "type": "object",
+      "properties": {
+        "semanticChecks": {
+          "type": "object",
+          "properties": {
+            "identity": {
+              "$ref": "#/$defs/semantic"
+            },
+            "premise": {
+              "$ref": "#/$defs/semantic"
+            },
+            "rule": {
+              "$ref": "#/$defs/semantic"
+            },
+            "continuity": {
+              "$ref": "#/$defs/semantic"
+            },
+            "ending": {
+              "$ref": "#/$defs/semantic"
+            },
+            "trigger_conditions": {
+              "$ref": "#/$defs/semantic"
+            },
+            "single_mechanic": {
+              "$ref": "#/$defs/semantic"
+            },
+            "causal_clarity": {
+              "$ref": "#/$defs/semantic"
+            },
+            "protected_events": {
+              "$ref": "#/$defs/semantic"
+            }
+          },
+          "required": [
+            "identity",
+            "premise",
+            "rule",
+            "continuity",
+            "ending",
+            "trigger_conditions",
+            "single_mechanic",
+            "causal_clarity",
+            "protected_events"
+          ],
+          "additionalProperties": false
+        },
+        "semanticOutcome": {
+          "type": "string",
+          "enum": [
+            "SEMANTIC_SOURCE_PASS",
+            "SEMANTIC_SOURCE_FAIL",
+            "SEMANTIC_SOURCE_UNKNOWN"
+          ]
+        },
+        "sourceUnknowns": {
+          "type": "string"
+        },
+        "creativeDimensions": {
+          "type": "object",
+          "properties": {
+            "SCROLL_STOP_VISUAL_PROMISE": {
+              "$ref": "#/$defs/dimension"
+            },
+            "CAUSAL_PROGRESSION": {
+              "$ref": "#/$defs/dimension"
+            },
+            "VISUAL_STORYTELLING": {
+              "$ref": "#/$defs/dimension"
+            },
+            "PRODUCTION_EXECUTABILITY": {
+              "$ref": "#/$defs/dimension"
+            },
+            "ENDING_REPLAY": {
+              "$ref": "#/$defs/dimension"
+            },
+            "DISTINCTIVE_CREATIVE_VALUE": {
+              "$ref": "#/$defs/dimension"
+            }
+          },
+          "required": [
+            "SCROLL_STOP_VISUAL_PROMISE",
+            "CAUSAL_PROGRESSION",
+            "VISUAL_STORYTELLING",
+            "PRODUCTION_EXECUTABILITY",
+            "ENDING_REPLAY",
+            "DISTINCTIVE_CREATIVE_VALUE"
+          ],
+          "additionalProperties": false
+        },
+        "creativeConclusion": {
+          "$ref": "#/$defs/comparison"
+        },
+        "eligibleForOwnerProposal": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "semanticChecks",
+        "semanticOutcome",
+        "sourceUnknowns",
+        "creativeDimensions",
+        "creativeConclusion",
+        "eligibleForOwnerProposal"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

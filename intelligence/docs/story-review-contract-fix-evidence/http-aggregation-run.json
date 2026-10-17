@@ -3,6 +3,8 @@
   "realProviderCalls": 0,
   "productionDbWrites": 0,
   "trace": {
+    "state": "STOPPED",
+    "deadline": "2026-10-17T21:46:18.980095Z",
     "scope": {
       "candidates": [
         {
@@ -2247,7 +2249,7 @@
           "category": "ValueError"
         },
         "model": "gpt-4o-mini-2024-07-18",
-        "runId": "f5fc2d4e-ba20-4f32-b902-3c0721dea615",
+        "runId": "156a3031-12b4-4ab7-92be-3616791d4f5f",
         "usage": {
           "total_tokens": 300,
           "prompt_tokens": 100,
@@ -2277,7 +2279,7 @@
           "inputUsdPerMillion": 0.15,
           "responseFormatType": "json_schema",
           "outputUsdPerMillion": 0.6,
-          "implementationSha256": "e55c282415b4494b12cc85663492b83f323ea4784da672ba402131439ddc7248",
+          "implementationSha256": "36d859a398f2de62d7d0c945b76ef65059004d52d789f5578627364703f8e9e2",
           "maximumCalculatedUsd": 0.00475425,
           "responseFormatSha256": "ebf4f3794cf6488e55e03814e5a1dd23f7100d5805ffc40ad1224141ada0b1ff",
           "responseSchemaSha256": "36c41a078f0826c0ce310710068d7543ad8813335b161106634f1b0a08890bc8",
@@ -2287,7 +2289,7 @@
           "serializedRequestSha256": "895a8798f74933c2d1a278eceb8ef676ae8e6b94fe3e76b537e2499860ab6280"
         },
         "provider": "openai",
-        "requestId": "1af0306f-92a4-314f-807f-186164fd64fa",
+        "requestId": "af3275f3-1515-32a4-9768-3e11fde1f8d6",
         "retrySafe": false,
         "evidenceType": "MACHINE_REVIEW",
         "actualCostUsd": 0.000135,
@@ -2301,15 +2303,15 @@
           "actualReturnedModel": "gpt-4o-mini-2024-07-18"
         },
         "assessmentOnly": true,
-        "rawReceiptFile": "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/backend/target/structured-story-review-http-v2/data/workflow/story-assessment-receipts/1af0306f-92a4-314f-807f-186164fd64fa-response.json",
+        "rawReceiptFile": "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/backend/target/structured-story-review-http-v5/data/workflow/story-assessment-receipts/af3275f3-1515-32a4-9768-3e11fde1f8d6-response.json",
         "responseSha256": "402ffe7bd5301161515a0b2a15a69fa1d1339a1d118dd5a2028e68a16eb24690",
         "processingStatus": "LOCALLY_REJECTED",
-        "rawReceiptSha256": "86e476a5f6e17d1ed1bfc9100dbef4d43e55a419f0aab39f5ab1571d6b9f73ab",
-        "requestStartedAt": "2026-10-17T21:34:07.867548+00:00",
+        "rawReceiptSha256": "ae97060399e49ca62b2639d26ac87e62b94dc4308a284a5006c9250e77ece373",
+        "requestStartedAt": "2026-10-17T21:36:20.891102+00:00",
         "responseReceived": true,
         "providerDispatched": true,
-        "requestFingerprint": "41ead24c05f11e539ab13c63ce47f134dc8e8749073dc2bea33170a98d7b710c",
-        "responseReceivedAt": "2026-10-17T21:34:07.875947+00:00",
+        "requestFingerprint": "08498191db6e961f2c63c73bf355aec474ca05768809a41d893a32fc10706a39",
+        "responseReceivedAt": "2026-10-17T21:36:20.897746+00:00",
         "providerApiResponse": {
           "id": "MOCK_ONLY_aggregation",
           "model": "gpt-4o-mini-2024-07-18",
@@ -2628,7 +2630,7 @@
           "inputUsdPerMillion": 0.15,
           "responseFormatType": "json_schema",
           "outputUsdPerMillion": 0.6,
-          "implementationSha256": "e55c282415b4494b12cc85663492b83f323ea4784da672ba402131439ddc7248",
+          "implementationSha256": "36d859a398f2de62d7d0c945b76ef65059004d52d789f5578627364703f8e9e2",
           "maximumCalculatedUsd": 0.00475425,
           "responseFormatSha256": "ebf4f3794cf6488e55e03814e5a1dd23f7100d5805ffc40ad1224141ada0b1ff",
           "responseSchemaSha256": "36c41a078f0826c0ce310710068d7543ad8813335b161106634f1b0a08890bc8",
@@ -2642,15 +2644,13 @@
       "maxTotalUsd": 0.004755,
       "scopeSha256": "5be45f1966d1a2ab8c8fa03e4570f67c090024fa038a34c6ba012055e0e3fcac",
       "maxRunSeconds": 600,
-      "idempotencyKey": "OFFLINE-MOCK-SDK-aggregation-24cdd495-0199-4066-a0ee-842c4a918990",
+      "idempotencyKey": "OFFLINE-MOCK-SDK-aggregation-4122a3ec-ca5c-4d8e-ba3f-1fc0e05b3de9",
       "automaticRetries": false,
       "assessmentOnlyPolicy": "ASSESSMENT_ONLY_UNKNOWN_SOURCE_V1",
       "confirmAssessmentOnly": true,
       "authorizePaidInference": true
     },
-    "state": "STOPPED",
-    "deadline": "2026-10-17T21:44:05.876111Z",
-    "runId": "f5fc2d4e-ba20-4f32-b902-3c0721dea615",
+    "runId": "156a3031-12b4-4ab7-92be-3616791d4f5f",
     "drafts": [],
     "events": [
       {
@@ -2684,7 +2684,7 @@
           "inputUsdPerMillion": 0.15,
           "responseFormatType": "json_schema",
           "outputUsdPerMillion": 0.6,
-          "implementationSha256": "e55c282415b4494b12cc85663492b83f323ea4784da672ba402131439ddc7248",
+          "implementationSha256": "36d859a398f2de62d7d0c945b76ef65059004d52d789f5578627364703f8e9e2",
           "maximumCalculatedUsd": 0.00475425,
           "responseFormatSha256": "ebf4f3794cf6488e55e03814e5a1dd23f7100d5805ffc40ad1224141ada0b1ff",
           "responseSchemaSha256": "36c41a078f0826c0ce310710068d7543ad8813335b161106634f1b0a08890bc8",
@@ -2693,7 +2693,7 @@
           "strictStructuredOutput": true,
           "serializedRequestSha256": "895a8798f74933c2d1a278eceb8ef676ae8e6b94fe3e76b537e2499860ab6280"
         },
-        "requestId": "1af0306f-92a4-314f-807f-186164fd64fa",
+        "requestId": "af3275f3-1515-32a4-9768-3e11fde1f8d6",
         "maxCostUsd": 0.004755,
         "experimentVersion": "REAL_CREATIVE_STORY_EVOLUTION_PILOT_V1",
         "assessmentOnlyPolicy": "ASSESSMENT_ONLY_UNKNOWN_SOURCE_V1"
@@ -2708,7 +2708,7 @@
             "category": "ValueError"
           },
           "model": "gpt-4o-mini-2024-07-18",
-          "runId": "f5fc2d4e-ba20-4f32-b902-3c0721dea615",
+          "runId": "156a3031-12b4-4ab7-92be-3616791d4f5f",
           "usage": {
             "total_tokens": 300,
             "prompt_tokens": 100,
@@ -2738,7 +2738,7 @@
             "inputUsdPerMillion": 0.15,
             "responseFormatType": "json_schema",
             "outputUsdPerMillion": 0.6,
-            "implementationSha256": "e55c282415b4494b12cc85663492b83f323ea4784da672ba402131439ddc7248",
+            "implementationSha256": "36d859a398f2de62d7d0c945b76ef65059004d52d789f5578627364703f8e9e2",
             "maximumCalculatedUsd": 0.00475425,
             "responseFormatSha256": "ebf4f3794cf6488e55e03814e5a1dd23f7100d5805ffc40ad1224141ada0b1ff",
             "responseSchemaSha256": "36c41a078f0826c0ce310710068d7543ad8813335b161106634f1b0a08890bc8",
@@ -2748,7 +2748,7 @@
             "serializedRequestSha256": "895a8798f74933c2d1a278eceb8ef676ae8e6b94fe3e76b537e2499860ab6280"
           },
           "provider": "openai",
-          "requestId": "1af0306f-92a4-314f-807f-186164fd64fa",
+          "requestId": "af3275f3-1515-32a4-9768-3e11fde1f8d6",
           "retrySafe": false,
           "evidenceType": "MACHINE_REVIEW",
           "actualCostUsd": 0.000135,
@@ -2762,15 +2762,15 @@
             "actualReturnedModel": "gpt-4o-mini-2024-07-18"
           },
           "assessmentOnly": true,
-          "rawReceiptFile": "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/backend/target/structured-story-review-http-v2/data/workflow/story-assessment-receipts/1af0306f-92a4-314f-807f-186164fd64fa-response.json",
+          "rawReceiptFile": "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/backend/target/structured-story-review-http-v5/data/workflow/story-assessment-receipts/af3275f3-1515-32a4-9768-3e11fde1f8d6-response.json",
           "responseSha256": "402ffe7bd5301161515a0b2a15a69fa1d1339a1d118dd5a2028e68a16eb24690",
           "processingStatus": "LOCALLY_REJECTED",
-          "rawReceiptSha256": "86e476a5f6e17d1ed1bfc9100dbef4d43e55a419f0aab39f5ab1571d6b9f73ab",
-          "requestStartedAt": "2026-10-17T21:34:07.867548+00:00",
+          "rawReceiptSha256": "ae97060399e49ca62b2639d26ac87e62b94dc4308a284a5006c9250e77ece373",
+          "requestStartedAt": "2026-10-17T21:36:20.891102+00:00",
           "responseReceived": true,
           "providerDispatched": true,
-          "requestFingerprint": "41ead24c05f11e539ab13c63ce47f134dc8e8749073dc2bea33170a98d7b710c",
-          "responseReceivedAt": "2026-10-17T21:34:07.875947+00:00",
+          "requestFingerprint": "08498191db6e961f2c63c73bf355aec474ca05768809a41d893a32fc10706a39",
+          "responseReceivedAt": "2026-10-17T21:36:20.897746+00:00",
           "providerApiResponse": {
             "id": "MOCK_ONLY_aggregation",
             "model": "gpt-4o-mini-2024-07-18",
@@ -3060,7 +3060,7 @@
             "promptPresent": true
           }
         },
-        "requestId": "1af0306f-92a4-314f-807f-186164fd64fa",
+        "requestId": "af3275f3-1515-32a4-9768-3e11fde1f8d6",
         "experimentVersion": "REAL_CREATIVE_STORY_EVOLUTION_PILOT_V1",
         "assessmentOnlyPolicy": "ASSESSMENT_ONLY_UNKNOWN_SOURCE_V1"
       },

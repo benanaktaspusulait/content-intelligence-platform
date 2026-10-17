@@ -1,0 +1,181 @@
+{
+  "evidenceType": "NONMUTATING_DIAGNOSTIC_OF_REAL_RESPONSE",
+  "schemaValidation": "PASS",
+  "evidenceValidation": "FAIL",
+  "firstAuthoritativeError": "Exact semantic supporting evidence required",
+  "localReadOnlyRecheckMatched": true,
+  "candidateSummaries": [
+    {
+      "candidate": "A",
+      "semanticCheckCount": 9,
+      "creativeDimensionCount": 6,
+      "claimedSemanticOutcome": "SEMANTIC_SOURCE_FAIL",
+      "computedFromClaims": "SEMANTIC_SOURCE_FAIL",
+      "aggregationConsistent": true,
+      "creativeConclusion": "UNKNOWN",
+      "eligibleForOwnerProposal": false
+    },
+    {
+      "candidate": "B",
+      "semanticCheckCount": 9,
+      "creativeDimensionCount": 6,
+      "claimedSemanticOutcome": "SEMANTIC_SOURCE_FAIL",
+      "computedFromClaims": "SEMANTIC_SOURCE_FAIL",
+      "aggregationConsistent": true,
+      "creativeConclusion": "UNKNOWN",
+      "eligibleForOwnerProposal": false
+    }
+  ],
+  "issues": [
+    {
+      "candidate": "A",
+      "area": "semantic",
+      "check": "rule",
+      "field": "candidateQuote",
+      "error": "EMPTY_QUOTE_FOR_DEFINITE_OUTCOME",
+      "claimedOutcome": "FAIL"
+    },
+    {
+      "candidate": "A",
+      "area": "semantic",
+      "check": "continuity",
+      "field": "candidateQuote",
+      "error": "EMPTY_QUOTE_FOR_DEFINITE_OUTCOME",
+      "claimedOutcome": "FAIL"
+    },
+    {
+      "candidate": "A",
+      "area": "semantic",
+      "check": "protected_events",
+      "field": "sourceQuote",
+      "error": "EMPTY_QUOTE_FOR_DEFINITE_OUTCOME",
+      "claimedOutcome": "PASS"
+    },
+    {
+      "candidate": "A",
+      "area": "semantic",
+      "check": "protected_events",
+      "field": "candidateQuote",
+      "error": "EMPTY_QUOTE_FOR_DEFINITE_OUTCOME",
+      "claimedOutcome": "PASS"
+    },
+    {
+      "candidate": "A",
+      "area": "creative",
+      "dimension": "CAUSAL_PROGRESSION",
+      "field": "quote",
+      "error": "NOT_AN_EXACT_SUBSTRING",
+      "actualQuote": "Pip grabs at the four with both arms and they split into eight.",
+      "exactInOtherCandidate": false,
+      "containedInOtherCandidateIgnoringFinalPeriod": false
+    },
+    {
+      "candidate": "A",
+      "area": "creative",
+      "dimension": "VISUAL_STORYTELLING",
+      "field": "quote",
+      "error": "NOT_AN_EXACT_SUBSTRING",
+      "actualQuote": "Pip sits down on the floor, arms folded, refusing to touch anything.",
+      "exactInOtherCandidate": false,
+      "containedInOtherCandidateIgnoringFinalPeriod": false
+    },
+    {
+      "candidate": "A",
+      "area": "creative",
+      "dimension": "PRODUCTION_EXECUTABILITY",
+      "field": "quote",
+      "error": "NOT_AN_EXACT_SUBSTRING",
+      "actualQuote": "Pip shakes both arms hard to fling the four notes away.",
+      "exactInOtherCandidate": false,
+      "containedInOtherCandidateIgnoringFinalPeriod": true
+    },
+    {
+      "candidate": "A",
+      "area": "creative",
+      "dimension": "DISTINCTIVE_CREATIVE_VALUE",
+      "field": "quote",
+      "error": "NOT_AN_EXACT_SUBSTRING",
+      "actualQuote": "Pip's nose twitches; a sneeze erupts and scatters the notes.",
+      "exactInOtherCandidate": false,
+      "containedInOtherCandidateIgnoringFinalPeriod": false
+    },
+    {
+      "candidate": "B",
+      "area": "semantic",
+      "check": "continuity",
+      "field": "sourceQuote",
+      "error": "EMPTY_QUOTE_FOR_DEFINITE_OUTCOME",
+      "claimedOutcome": "FAIL"
+    },
+    {
+      "candidate": "B",
+      "area": "semantic",
+      "check": "continuity",
+      "field": "candidateQuote",
+      "error": "EMPTY_QUOTE_FOR_DEFINITE_OUTCOME",
+      "claimedOutcome": "FAIL"
+    },
+    {
+      "candidate": "B",
+      "area": "semantic",
+      "check": "protected_events",
+      "field": "sourceQuote",
+      "error": "EMPTY_QUOTE_FOR_DEFINITE_OUTCOME",
+      "claimedOutcome": "PASS"
+    },
+    {
+      "candidate": "B",
+      "area": "semantic",
+      "check": "protected_events",
+      "field": "candidateQuote",
+      "error": "EMPTY_QUOTE_FOR_DEFINITE_OUTCOME",
+      "claimedOutcome": "PASS"
+    },
+    {
+      "candidate": "B",
+      "area": "creative",
+      "dimension": "SCROLL_STOP_VISUAL_PROMISE",
+      "field": "quote",
+      "error": "NOT_AN_EXACT_SUBSTRING",
+      "actualQuote": "Pip pinches the note with the other paw to peel it free, and it splits into two notes.",
+      "exactInOtherCandidate": false,
+      "containedInOtherCandidateIgnoringFinalPeriod": false
+    },
+    {
+      "candidate": "B",
+      "area": "creative",
+      "dimension": "CAUSAL_PROGRESSION",
+      "field": "quote",
+      "error": "NOT_AN_EXACT_SUBSTRING",
+      "actualQuote": "Pip realizes that every removal or transfer attempt multiplies the notes.",
+      "exactInOtherCandidate": false,
+      "containedInOtherCandidateIgnoringFinalPeriod": false
+    },
+    {
+      "candidate": "B",
+      "area": "creative",
+      "dimension": "VISUAL_STORYTELLING",
+      "field": "quote",
+      "error": "NOT_AN_EXACT_SUBSTRING",
+      "actualQuote": "Pip freezes, watching the eight notes ripple and settle.",
+      "exactInOtherCandidate": false,
+      "containedInOtherCandidateIgnoringFinalPeriod": false
+    },
+    {
+      "candidate": "B",
+      "area": "creative",
+      "dimension": "PRODUCTION_EXECUTABILITY",
+      "field": "quote",
+      "error": "NOT_AN_EXACT_SUBSTRING",
+      "actualQuote": "Pip slaps both paws toward the cabinet.",
+      "exactInOtherCandidate": false,
+      "containedInOtherCandidateIgnoringFinalPeriod": false
+    }
+  ],
+  "rawResponseModified": false,
+  "noRepairOrReplacement": true,
+  "acceptedSemanticResults": "NOT_EVALUATED",
+  "acceptedCreativeResults": "NOT_EVALUATED",
+  "acceptedResearchPreference": "NOT_ESTABLISHED",
+  "rawClaimedPreference": "NO_CREATIVE_WINNER"
+}

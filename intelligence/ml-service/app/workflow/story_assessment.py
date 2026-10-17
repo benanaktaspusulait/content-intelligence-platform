@@ -152,7 +152,7 @@ def preview(text, context):
         'inputUsdPerMillion':rates[0],'outputUsdPerMillion':rates[1],'maximumCalculatedUsd':bound,
         'automaticRetries':False,'fallback':False,'assessmentOnly':True,
         'implementationSha256':sha({str(p):hashlib.sha256((root/p).read_bytes()).hexdigest() for p in (
-            'workflow/story_assessment.py','workflow/story_evidence.py','workflow/api.py','workflow/creative_roles.py','llm/openai_provider.py')})}
+            'workflow/story_assessment.py','workflow/story_evidence.py','workflow/story_quality.py','workflow/api.py','workflow/creative_roles.py','llm/openai_provider.py')})}
 
 
 def validate_review(value,text,context):
@@ -194,7 +194,7 @@ def validate_review(value,text,context):
             # This is a lower bound on evidence, never a semantic merit certificate.
             def tokens(t):return [_EVENT_ALIASES.get(w,w) for w in re.findall(r"[\w']+",t.lower())]
             def content(t):
-                stop={'the','and','with','from','that','this','into','then','they','their','them','both','tries','pip','rabbit','note','notes','sticky','cabinet','story','candidate','original'}
+                stop={'the','and','with','from','that','this','into','then','they','their','them','both','tries','story','candidate','original'}
                 return {w for w in tokens(t) if len(w)>3 and w not in stop}
             if not (content(creative['change']) & content(creative['candidateQuote'])) or not (content(creative['visibleConsequence']) & content(creative['candidateQuote'])) or not (content(creative['addressedWeakness']) & content(creative['baselineQuote'])):
                 raise ValueError('Generic material claim lacks source-specific comparative grounding')
@@ -204,9 +204,14 @@ def validate_review(value,text,context):
                 raise ValueError('Cosmetic change cannot establish material improvement')
         # No audience/render evidence was supplied. Explicit claims are forbidden;
         # predictions/risks are still model opinions, not performance measurements.
-        authored=encoded({'creative':row['creativeDimensions'],'comparison':creative})
-        if re.search(r'\b(?:measured|proven|verified|guaranteed) (?:audience|retention|engagement|render|visual success)|(?:audience|retention) (?:increased|improved) by \d|official A\+ (?:achieved|verified)',authored,re.I):
-            raise ValueError('Invented audience/render/A+ evidence')
+        statements=[d[k] for d in row['creativeDimensions'].values() for k in ('strength','weakness','risk')]
+        statements.extend(creative[k] for k in ('change','visibleConsequence','addressedWeakness','newRisk','materialityReason'))
+        claim=r'\b(?:measured|proven|verified|guaranteed) (?:audience|retention|engagement|render|visual success)|(?:audience|retention) (?:increased|improved) by \d|official A\+ (?:achieved|verified)'
+        for statement in statements:
+            for sentence in re.split(r'[.!?;]',statement):
+                match=re.search(claim,sentence,re.I)
+                if match and not re.search(r'\b(?:no|not|never|without|unverified|unknown|lacks)\b',sentence[:match.start()],re.I):
+                    raise ValueError('Invented audience/render/A+ evidence')
         eligible=overall=='SEMANTIC_SOURCE_PASS' and creative['outcome']=='MATERIAL_IMPROVEMENT'
         if row['eligibleForOwnerProposal'] and not eligible:raise ValueError('Semantic FAIL/UNKNOWN cannot become an eligible owner proposal')
     if value['researchPreference']!='NO_CREATIVE_WINNER' and not value['candidateAssessments'][value['researchPreference']]['eligibleForOwnerProposal']:

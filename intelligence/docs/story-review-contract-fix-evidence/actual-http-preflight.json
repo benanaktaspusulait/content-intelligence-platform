@@ -1,4 +1,5 @@
 {
+  "maxRequests": 1,
   "maxTotalUsd": 0.004755,
   "providerCalls": 0,
   "scope": {
@@ -2261,10 +2262,9 @@
       "automaticRetries": false,
       "fallback": false,
       "assessmentOnly": true,
-      "implementationSha256": "e55c282415b4494b12cc85663492b83f323ea4784da672ba402131439ddc7248",
+      "implementationSha256": "36d859a398f2de62d7d0c945b76ef65059004d52d789f5578627364703f8e9e2",
       "maxCostUsd": 0.004755
     }
   ],
-  "scopeSha256": "5be45f1966d1a2ab8c8fa03e4570f67c090024fa038a34c6ba012055e0e3fcac",
-  "maxRequests": 1
+  "scopeSha256": "5be45f1966d1a2ab8c8fa03e4570f67c090024fa038a34c6ba012055e0e3fcac"
 }

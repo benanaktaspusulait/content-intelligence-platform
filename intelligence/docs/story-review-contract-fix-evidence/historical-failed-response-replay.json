@@ -1,0 +1,17 @@
+{
+  "rawSha256": "7963c59ce4401e0945780d6d935800d4dbd54514e62612620d661f6074621e7f",
+  "rawUnchanged": true,
+  "normalizationApplied": false,
+  "filledChecks": 0,
+  "chosenPreferenceByServer": false,
+  "evidenceClassification": "UNVALIDATED_MACHINE_REVIEW",
+  "originalRunState": "STOPPED",
+  "legacy": {
+    "accepted": false,
+    "error": "Both independent candidate assessments required"
+  },
+  "strict": {
+    "accepted": false,
+    "error": "Strict review schema: ['evidenceLimitations']: ['explicit unknowns; no visual or audience verification'] is not of type 'string'"
+  }
+}

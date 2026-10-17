@@ -1,0 +1,27 @@
+{
+  "model": "gpt-4o-mini-2024-07-18",
+  "support": "DOCUMENTED_STRUCTURED_OUTPUTS_AND_OFFLINE_INSTALLED_SDK_SERIALIZATION_VERIFIED",
+  "modelAccountAvailability": "NOT_PROBED_NO_PROVIDER_REQUEST",
+  "documentation": [
+    {
+      "url": "https://developers.openai.com/api/docs/guides/structured-outputs?api-mode=chat",
+      "facts": [
+        "The pinned snapshot supports strict response_format json_schema.",
+        "All fields required; closed objects; root object; refs supported.",
+        "Implementation uses only objects, strings, booleans, enums and local $defs/$ref."
+      ]
+    },
+    {
+      "url": "https://developers.openai.com/api/docs/models/gpt-4o-mini",
+      "facts": [
+        "Structured outputs supported; pinned snapshot documented deprecated.",
+        "Configured input/output rates: 0.15/0.60 USD per million."
+      ]
+    }
+  ],
+  "openaiSdkVersion": "3.32.0",
+  "httpxVersion": "0.28.1",
+  "jsonschemaVersion": "4.26.0",
+  "externalSdkTransportMocked": true,
+  "newProviderRequests": 0
+}

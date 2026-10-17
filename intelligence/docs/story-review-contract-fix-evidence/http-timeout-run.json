@@ -3,6 +3,8 @@
   "realProviderCalls": 0,
   "productionDbWrites": 0,
   "trace": {
+    "state": "STOPPED",
+    "deadline": "2026-10-17T21:46:27.378426Z",
     "scope": {
       "candidates": [
         {
@@ -2247,7 +2249,7 @@
           "category": "ValueError"
         },
         "model": "gpt-4o-mini-2024-07-18",
-        "runId": "84303173-08bc-4def-91fa-aed5f4e2811f",
+        "runId": "cb0a735e-d525-4721-b455-149f0e1a7f59",
         "usage": null,
         "policy": "ASSESSMENT_ONLY_UNKNOWN_SOURCE_V1",
         "binding": {
@@ -2271,7 +2273,7 @@
           "inputUsdPerMillion": 0.15,
           "responseFormatType": "json_schema",
           "outputUsdPerMillion": 0.6,
-          "implementationSha256": "e55c282415b4494b12cc85663492b83f323ea4784da672ba402131439ddc7248",
+          "implementationSha256": "36d859a398f2de62d7d0c945b76ef65059004d52d789f5578627364703f8e9e2",
           "maximumCalculatedUsd": 0.00475425,
           "responseFormatSha256": "ebf4f3794cf6488e55e03814e5a1dd23f7100d5805ffc40ad1224141ada0b1ff",
           "responseSchemaSha256": "36c41a078f0826c0ce310710068d7543ad8813335b161106634f1b0a08890bc8",
@@ -2281,7 +2283,7 @@
           "serializedRequestSha256": "895a8798f74933c2d1a278eceb8ef676ae8e6b94fe3e76b537e2499860ab6280"
         },
         "provider": "openai",
-        "requestId": "afe648e5-2daa-311e-8018-1a8d85ba8714",
+        "requestId": "a61fbb97-d4d3-331f-a285-8568b224617b",
         "retrySafe": false,
         "evidenceType": "MACHINE_REVIEW",
         "actualCostUsd": null,
@@ -2297,11 +2299,11 @@
         "assessmentOnly": true,
         "responseSha256": null,
         "processingStatus": "DISPATCH_UNCERTAIN",
-        "requestStartedAt": "2026-10-17T21:34:16.348708+00:00",
+        "requestStartedAt": "2026-10-17T21:36:29.353253+00:00",
         "responseReceived": false,
         "providerDispatched": true,
-        "requestFingerprint": "f34c21b4ddd54bf8c5f3327fd8d5630bee6d9a4bb0a917dab74f65fc96eb0ec6",
-        "responseReceivedAt": "2026-10-17T21:34:16.351846+00:00",
+        "requestFingerprint": "039cc40a337370ee9055f282a87b7e058dbedf5a089b37096db51e321463c841",
+        "responseReceivedAt": "2026-10-17T21:36:29.355697+00:00",
         "providerApiResponse": null,
         "rawProviderResponse": null,
         "providerResponseMetadata": null
@@ -2335,7 +2337,7 @@
           "inputUsdPerMillion": 0.15,
           "responseFormatType": "json_schema",
           "outputUsdPerMillion": 0.6,
-          "implementationSha256": "e55c282415b4494b12cc85663492b83f323ea4784da672ba402131439ddc7248",
+          "implementationSha256": "36d859a398f2de62d7d0c945b76ef65059004d52d789f5578627364703f8e9e2",
           "maximumCalculatedUsd": 0.00475425,
           "responseFormatSha256": "ebf4f3794cf6488e55e03814e5a1dd23f7100d5805ffc40ad1224141ada0b1ff",
           "responseSchemaSha256": "36c41a078f0826c0ce310710068d7543ad8813335b161106634f1b0a08890bc8",
@@ -2349,15 +2351,13 @@
       "maxTotalUsd": 0.004755,
       "scopeSha256": "5be45f1966d1a2ab8c8fa03e4570f67c090024fa038a34c6ba012055e0e3fcac",
       "maxRunSeconds": 600,
-      "idempotencyKey": "OFFLINE-MOCK-SDK-timeout-44335467-666f-40d1-bff2-debf43bc8bbe",
+      "idempotencyKey": "OFFLINE-MOCK-SDK-timeout-f4d1a0e3-f3c2-401c-98a6-cec2b17e03d0",
       "automaticRetries": false,
       "assessmentOnlyPolicy": "ASSESSMENT_ONLY_UNKNOWN_SOURCE_V1",
       "confirmAssessmentOnly": true,
       "authorizePaidInference": true
     },
-    "state": "STOPPED",
-    "deadline": "2026-10-17T21:44:14.499991Z",
-    "runId": "84303173-08bc-4def-91fa-aed5f4e2811f",
+    "runId": "cb0a735e-d525-4721-b455-149f0e1a7f59",
     "drafts": [],
     "events": [
       {
@@ -2391,7 +2391,7 @@
           "inputUsdPerMillion": 0.15,
           "responseFormatType": "json_schema",
           "outputUsdPerMillion": 0.6,
-          "implementationSha256": "e55c282415b4494b12cc85663492b83f323ea4784da672ba402131439ddc7248",
+          "implementationSha256": "36d859a398f2de62d7d0c945b76ef65059004d52d789f5578627364703f8e9e2",
           "maximumCalculatedUsd": 0.00475425,
           "responseFormatSha256": "ebf4f3794cf6488e55e03814e5a1dd23f7100d5805ffc40ad1224141ada0b1ff",
           "responseSchemaSha256": "36c41a078f0826c0ce310710068d7543ad8813335b161106634f1b0a08890bc8",
@@ -2400,7 +2400,7 @@
           "strictStructuredOutput": true,
           "serializedRequestSha256": "895a8798f74933c2d1a278eceb8ef676ae8e6b94fe3e76b537e2499860ab6280"
         },
-        "requestId": "afe648e5-2daa-311e-8018-1a8d85ba8714",
+        "requestId": "a61fbb97-d4d3-331f-a285-8568b224617b",
         "maxCostUsd": 0.004755,
         "experimentVersion": "REAL_CREATIVE_STORY_EVOLUTION_PILOT_V1",
         "assessmentOnlyPolicy": "ASSESSMENT_ONLY_UNKNOWN_SOURCE_V1"
@@ -2415,7 +2415,7 @@
             "category": "ValueError"
           },
           "model": "gpt-4o-mini-2024-07-18",
-          "runId": "84303173-08bc-4def-91fa-aed5f4e2811f",
+          "runId": "cb0a735e-d525-4721-b455-149f0e1a7f59",
           "usage": null,
           "policy": "ASSESSMENT_ONLY_UNKNOWN_SOURCE_V1",
           "binding": {
@@ -2439,7 +2439,7 @@
             "inputUsdPerMillion": 0.15,
             "responseFormatType": "json_schema",
             "outputUsdPerMillion": 0.6,
-            "implementationSha256": "e55c282415b4494b12cc85663492b83f323ea4784da672ba402131439ddc7248",
+            "implementationSha256": "36d859a398f2de62d7d0c945b76ef65059004d52d789f5578627364703f8e9e2",
             "maximumCalculatedUsd": 0.00475425,
             "responseFormatSha256": "ebf4f3794cf6488e55e03814e5a1dd23f7100d5805ffc40ad1224141ada0b1ff",
             "responseSchemaSha256": "36c41a078f0826c0ce310710068d7543ad8813335b161106634f1b0a08890bc8",
@@ -2449,7 +2449,7 @@
             "serializedRequestSha256": "895a8798f74933c2d1a278eceb8ef676ae8e6b94fe3e76b537e2499860ab6280"
           },
           "provider": "openai",
-          "requestId": "afe648e5-2daa-311e-8018-1a8d85ba8714",
+          "requestId": "a61fbb97-d4d3-331f-a285-8568b224617b",
           "retrySafe": false,
           "evidenceType": "MACHINE_REVIEW",
           "actualCostUsd": null,
@@ -2465,16 +2465,16 @@
           "assessmentOnly": true,
           "responseSha256": null,
           "processingStatus": "DISPATCH_UNCERTAIN",
-          "requestStartedAt": "2026-10-17T21:34:16.348708+00:00",
+          "requestStartedAt": "2026-10-17T21:36:29.353253+00:00",
           "responseReceived": false,
           "providerDispatched": true,
-          "requestFingerprint": "f34c21b4ddd54bf8c5f3327fd8d5630bee6d9a4bb0a917dab74f65fc96eb0ec6",
-          "responseReceivedAt": "2026-10-17T21:34:16.351846+00:00",
+          "requestFingerprint": "039cc40a337370ee9055f282a87b7e058dbedf5a089b37096db51e321463c841",
+          "responseReceivedAt": "2026-10-17T21:36:29.355697+00:00",
           "providerApiResponse": null,
           "rawProviderResponse": null,
           "providerResponseMetadata": null
         },
-        "requestId": "afe648e5-2daa-311e-8018-1a8d85ba8714",
+        "requestId": "a61fbb97-d4d3-331f-a285-8568b224617b",
         "experimentVersion": "REAL_CREATIVE_STORY_EVOLUTION_PILOT_V1",
         "assessmentOnlyPolicy": "ASSESSMENT_ONLY_UNKNOWN_SOURCE_V1"
       },

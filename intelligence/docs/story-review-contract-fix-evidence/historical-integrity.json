@@ -1,0 +1,43 @@
+{
+  "originalReviewRunId": "59f47fec-59fb-42e3-b3a4-c9f7d83c7ffc",
+  "allPreexistingAssessmentFilesUnchanged": true,
+  "originalAssessmentFilesVerified": 22,
+  "archives": [
+    {
+      "name": "first-real-story-evolution-evidence",
+      "verifiedFiles": 16,
+      "allUnchanged": true
+    },
+    {
+      "name": "real-story-identity-fidelity-followup-evidence",
+      "verifiedFiles": 17,
+      "allUnchanged": true
+    }
+  ],
+  "fourAuthenticNarratives": [
+    {
+      "archive": "first-real-story-evolution-evidence",
+      "candidateId": "candidate-1",
+      "sha256": "7ec0ee071b06e13b4171c4cb68d4058b3d6de8109d32c5cc3e6a339b86a0983b"
+    },
+    {
+      "archive": "first-real-story-evolution-evidence",
+      "candidateId": "candidate-2",
+      "sha256": "50bae8834df06f6092a37947d422e136c41c72ea80838057beecf2e7156bb088"
+    },
+    {
+      "archive": "real-story-identity-fidelity-followup-evidence",
+      "candidateId": "candidate-1",
+      "sha256": "4b04e664b70ea9372049231119f2ad786cf5ed0fc1a416c0941101d53167c739"
+    },
+    {
+      "archive": "real-story-identity-fidelity-followup-evidence",
+      "candidateId": "candidate-2",
+      "sha256": "7bd179926c406f1aa2566b1f513daef9cec355ffebc15517f49168d2d92fa41b"
+    }
+  ],
+  "currentGitHead": "cf3bbb969ebddb6ec9a98321e5cec24979b44a86",
+  "agentGitHistoryMutations": 0,
+  "originalRealReviewDumpUnchanged": true,
+  "originalRawSha256": "7963c59ce4401e0945780d6d935800d4dbd54514e62612620d661f6074621e7f"
+}

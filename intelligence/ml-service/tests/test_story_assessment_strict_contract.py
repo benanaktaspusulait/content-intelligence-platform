@@ -66,8 +66,8 @@ def test_exact_topology_and_enums(mode):
  ('','UNKNOWN','INSUFFICIENT','No sufficient evidence for this question.'),
 ])
 def test_verbatim_paraphrase_and_uncertainty_are_distinct(candidateQuote,outcome,basis,reason):
-    text,c,v=example();row=v['candidateAssessments']['A'];row['semanticChecks']['continuity'].update(outcome=outcome,basis=basis,sourceQuote='Pip remains covered until a sneeze scatters the notes onto the cabinet',candidateQuote=candidateQuote,reason=reason)
-    assert a.validate_review(v,text,c)['candidateAssessments']['A']['semanticChecks']['continuity']['outcome']==outcome
+    text,c,v=example();row=v['candidateAssessments']['A'];check='identity' if candidateQuote=='Pip the rabbit' else 'continuity';sourceQuote='Pip the rabbit' if check=='identity' else 'Pip remains covered until a sneeze scatters the notes onto the cabinet';row['semanticChecks'][check].update(outcome=outcome,basis=basis,sourceQuote=sourceQuote,candidateQuote=candidateQuote,reason=reason)
+    assert a.validate_review(v,text,c)['candidateAssessments']['A']['semanticChecks'][check]['outcome']==outcome
     assert row['eligibleForOwnerProposal'] is False
 
 
@@ -166,3 +166,8 @@ def test_old_paid_grant_cannot_authorize_revised_request():
     c.update(assessmentSpendingAuthorized=True,assessmentDispatch=old['operations'][0],storyRequestId=str(uuid.uuid4()))
     with patch('app.llm.openai_provider.OpenAIProvider',side_effect=AssertionError('No dispatch')):
         with pytest.raises(ValueError,match='exact assessment spending grant'):a.execute(text,c,.1)
+
+
+def test_negative_audience_evidence_statement_is_not_an_invented_claim():
+    text,c,v=example();v['candidateAssessments']['A']['creativeDimensions']['ENDING_REPLAY']['risk']='No independently verified audience benefit. Retention effects remain unknown.'
+    assert a.validate_review(v,text,c)['researchPreference']=='NO_CREATIVE_WINNER'

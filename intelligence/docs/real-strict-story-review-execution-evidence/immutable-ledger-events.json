@@ -1,0 +1,453 @@
+[
+  {
+    "id": "18f51867-0588-4bd1-9705-b23af0fe5924",
+    "payload": {
+      "state": "AUTHORIZED",
+      "scopeSha256": "5be45f1966d1a2ab8c8fa03e4570f67c090024fa038a34c6ba012055e0e3fcac",
+      "providerCalls": 0,
+      "experimentVersion": "REAL_CREATIVE_STORY_EVOLUTION_PILOT_V1",
+      "assessmentOnlyPolicy": "ASSESSMENT_ONLY_UNKNOWN_SOURCE_V1"
+    }
+  },
+  {
+    "id": "07afa7da-b7e6-479d-8f09-b739334445ea",
+    "payload": {
+      "role": "STORY_REVIEW",
+      "state": "REQUEST_RESERVED",
+      "binding": {
+        "role": "STORY_REVIEW",
+        "model": "gpt-4o-mini-2024-07-18",
+        "policy": "ASSESSMENT_ONLY_UNKNOWN_SOURCE_V1",
+        "fallback": false,
+        "provider": "openai",
+        "maxRequests": 1,
+        "schemaBytes": 3381,
+        "scopeSha256": "5be45f1966d1a2ab8c8fa03e4570f67c090024fa038a34c6ba012055e0e3fcac",
+        "systemBytes": 2999,
+        "payloadBytes": 7498,
+        "systemSha256": "f7cfd303d2c6929256b68702334843080f9ad815800ec5ec29fb74d769690636",
+        "schemaVersion": "assessment-only-story-review-v2",
+        "assessmentOnly": true,
+        "maxOutputTokens": 4000,
+        "automaticRetries": false,
+        "maximumInputBytes": 24000,
+        "sourceStorySha256": "ba352d486c4252c5c6fefe585ad976c0b6f73c299f7554863848bdd842a99b3d",
+        "inputUsdPerMillion": 0.15,
+        "responseFormatType": "json_schema",
+        "outputUsdPerMillion": 0.6,
+        "implementationSha256": "36d859a398f2de62d7d0c945b76ef65059004d52d789f5578627364703f8e9e2",
+        "maximumCalculatedUsd": 0.00475425,
+        "responseFormatSha256": "ebf4f3794cf6488e55e03814e5a1dd23f7100d5805ffc40ad1224141ada0b1ff",
+        "responseSchemaSha256": "36c41a078f0826c0ce310710068d7543ad8813335b161106634f1b0a08890bc8",
+        "effectiveRequestSha256": "c786389ce1ff749f7e92ce5c6b928ac7f0592fa3daf4d03ea00d7ea78bd8caf5",
+        "serializedRequestBytes": 14695,
+        "strictStructuredOutput": true,
+        "serializedRequestSha256": "895a8798f74933c2d1a278eceb8ef676ae8e6b94fe3e76b537e2499860ab6280"
+      },
+      "requestId": "5af8b2ec-ef48-31de-a69e-5f946f376b2b",
+      "maxCostUsd": 0.004755,
+      "experimentVersion": "REAL_CREATIVE_STORY_EVOLUTION_PILOT_V1",
+      "assessmentOnlyPolicy": "ASSESSMENT_ONLY_UNKNOWN_SOURCE_V1"
+    }
+  },
+  {
+    "id": "f895ea9b-ffe4-4d84-ba3e-7ad1c256628c",
+    "payload": {
+      "role": "STORY_REVIEW",
+      "state": "PROVIDER_RECEIPT",
+      "envelope": {
+        "role": "STORY_REVIEW",
+        "error": {
+          "detail": "Exact semantic supporting evidence required",
+          "category": "ValueError"
+        },
+        "model": "gpt-4o-mini-2024-07-18",
+        "runId": "4b59d668-814c-4f9a-ab50-8e288b5df4df",
+        "usage": {
+          "total_tokens": 4940,
+          "prompt_tokens": 3117,
+          "completion_tokens": 1823,
+          "prompt_tokens_details": {
+            "text_tokens": null,
+            "audio_tokens": 0,
+            "image_tokens": null,
+            "cached_tokens": 0,
+            "cache_write_tokens": null
+          },
+          "completion_tokens_details": {
+            "text_tokens": null,
+            "audio_tokens": 0,
+            "reasoning_tokens": 0,
+            "accepted_prediction_tokens": 0,
+            "rejected_prediction_tokens": 0
+          }
+        },
+        "policy": "ASSESSMENT_ONLY_UNKNOWN_SOURCE_V1",
+        "binding": {
+          "role": "STORY_REVIEW",
+          "model": "gpt-4o-mini-2024-07-18",
+          "policy": "ASSESSMENT_ONLY_UNKNOWN_SOURCE_V1",
+          "fallback": false,
+          "provider": "openai",
+          "maxRequests": 1,
+          "schemaBytes": 3381,
+          "scopeSha256": "5be45f1966d1a2ab8c8fa03e4570f67c090024fa038a34c6ba012055e0e3fcac",
+          "systemBytes": 2999,
+          "payloadBytes": 7498,
+          "systemSha256": "f7cfd303d2c6929256b68702334843080f9ad815800ec5ec29fb74d769690636",
+          "schemaVersion": "assessment-only-story-review-v2",
+          "assessmentOnly": true,
+          "maxOutputTokens": 4000,
+          "automaticRetries": false,
+          "maximumInputBytes": 24000,
+          "sourceStorySha256": "ba352d486c4252c5c6fefe585ad976c0b6f73c299f7554863848bdd842a99b3d",
+          "inputUsdPerMillion": 0.15,
+          "responseFormatType": "json_schema",
+          "outputUsdPerMillion": 0.6,
+          "implementationSha256": "36d859a398f2de62d7d0c945b76ef65059004d52d789f5578627364703f8e9e2",
+          "maximumCalculatedUsd": 0.00475425,
+          "responseFormatSha256": "ebf4f3794cf6488e55e03814e5a1dd23f7100d5805ffc40ad1224141ada0b1ff",
+          "responseSchemaSha256": "36c41a078f0826c0ce310710068d7543ad8813335b161106634f1b0a08890bc8",
+          "effectiveRequestSha256": "c786389ce1ff749f7e92ce5c6b928ac7f0592fa3daf4d03ea00d7ea78bd8caf5",
+          "serializedRequestBytes": 14695,
+          "strictStructuredOutput": true,
+          "serializedRequestSha256": "895a8798f74933c2d1a278eceb8ef676ae8e6b94fe3e76b537e2499860ab6280"
+        },
+        "provider": "openai",
+        "requestId": "5af8b2ec-ef48-31de-a69e-5f946f376b2b",
+        "retrySafe": false,
+        "evidenceType": "MACHINE_REVIEW",
+        "actualCostUsd": 0.00156135,
+        "billingStatus": "KNOWN_INCURRED",
+        "modelIdentity": {
+          "verified": true,
+          "aliasApplied": false,
+          "policyVersion": "exact-provider-model-v2",
+          "requestedModel": "gpt-4o-mini-2024-07-18",
+          "pricingIdentity": "gpt-4o-mini-2024-07-18",
+          "actualReturnedModel": "gpt-4o-mini-2024-07-18"
+        },
+        "assessmentOnly": true,
+        "rawReceiptFile": "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/backend/target/strict-story-review-real-v2/data/workflow/story-assessment-receipts/5af8b2ec-ef48-31de-a69e-5f946f376b2b-response.json",
+        "responseSha256": "c1e5607ca75e2edcdf6ddce7564519ee5e7ee5b3a2fdc33496292958e946343b",
+        "processingStatus": "LOCALLY_REJECTED",
+        "rawReceiptSha256": "2cb671df999864a3226c0dc4513d4cb77fb49c002be00416f2dc940544acaf21",
+        "requestStartedAt": "2026-10-17T21:43:14.116387+00:00",
+        "responseReceived": true,
+        "providerDispatched": true,
+        "requestFingerprint": "292c36eab8f4c4d1ed1c912f23081d4f049783a187fc20a5ebe62d1127ec7c04",
+        "responseReceivedAt": "2026-10-17T21:43:31.457284+00:00",
+        "providerApiResponse": {
+          "id": "chatcmpl-Ea6TLYVZP8GduR2oAXjzhcjUA2eWE",
+          "model": "gpt-4o-mini-2024-07-18",
+          "usage": {
+            "total_tokens": 4940,
+            "prompt_tokens": 3117,
+            "completion_tokens": 1823,
+            "prompt_tokens_details": {
+              "text_tokens": null,
+              "audio_tokens": 0,
+              "image_tokens": null,
+              "cached_tokens": 0,
+              "cache_write_tokens": null
+            },
+            "completion_tokens_details": {
+              "text_tokens": null,
+              "audio_tokens": 0,
+              "reasoning_tokens": 0,
+              "accepted_prediction_tokens": 0,
+              "rejected_prediction_tokens": 0
+            }
+          },
+          "object": "chat.completion",
+          "choices": [
+            {
+              "index": 0,
+              "message": {
+                "role": "assistant",
+                "audio": null,
+                "content": "{\"schemaVersion\":\"assessment-only-story-review-v2\",\"candidateAssessments\":{\"A\":{\"semanticChecks\":{\"identity\":{\"outcome\":\"PASS\",\"basis\":\"SEMANTIC_SUPPORT\",\"sourceQuote\":\"Pip the rabbit\",\"candidateQuote\":\"Pip the rabbit\",\"reason\":\"Both versions identify the character as 'Pip the rabbit'.\"},\"premise\":{\"outcome\":\"PASS\",\"basis\":\"SEMANTIC_SUPPORT\",\"sourceQuote\":\"it clings to Pip's fingertip while the cabinet stays untouched\",\"candidateQuote\":\"it clings to Pip's fingertip while the cabinet stays untouched\",\"reason\":\"The premise of the sticky note clinging to Pip's fingertip is preserved.\"},\"rule\":{\"outcome\":\"FAIL\",\"basis\":\"SUBSTANTIVE_OMISSION\",\"sourceQuote\":\"every removal or transfer attempt multiplies the notes\",\"candidateQuote\":\"\",\"reason\":\"The candidate omits the crucial rule that every attempt to remove or transfer the notes results in multiplication.\"},\"continuity\":{\"outcome\":\"FAIL\",\"basis\":\"SUBSTANTIVE_OMISSION\",\"sourceQuote\":\"Pip remains covered until a sneeze scatters the notes onto the cabinet\",\"candidateQuote\":\"\",\"reason\":\"The candidate does not maintain the continuity of Pip being covered until the sneeze occurs.\"},\"ending\":{\"outcome\":\"PASS\",\"basis\":\"SEMANTIC_SUPPORT\",\"sourceQuote\":\"Pip is relieved, but the cabinet remains messy.\",\"candidateQuote\":\"Pip is relieved, but the cabinet remains messy.\",\"reason\":\"The ending is preserved in both versions.\"},\"trigger_conditions\":{\"outcome\":\"UNKNOWN\",\"basis\":\"INSUFFICIENT\",\"sourceQuote\":\"\",\"candidateQuote\":\"\",\"reason\":\"The candidate does not clarify the conditions under which the notes multiply.\"},\"single_mechanic\":{\"outcome\":\"UNKNOWN\",\"basis\":\"INSUFFICIENT\",\"sourceQuote\":\"\",\"candidateQuote\":\"\",\"reason\":\"The candidate does not clearly establish the mechanics of note multiplication.\"},\"causal_clarity\":{\"outcome\":\"UNKNOWN\",\"basis\":\"INSUFFICIENT\",\"sourceQuote\":\"\",\"candidateQuote\":\"\",\"reason\":\"The candidate lacks clarity on the cause-and-effect relationship of actions.\"},\"protected_events\":{\"outcome\":\"PASS\",\"basis\":\"SEMANTIC_SUPPORT\",\"sourceQuote\":\"\",\"candidateQuote\":\"\",\"reason\":\"The events of the story are preserved.\"}},\"semanticOutcome\":\"SEMANTIC_SOURCE_FAIL\",\"sourceUnknowns\":\"The candidate does not clarify the mechanics of note multiplication.\",\"creativeDimensions\":{\"SCROLL_STOP_VISUAL_PROMISE\":{\"quote\":\"Pip shakes the hand; the note splits into two, one on each hand.\",\"strength\":\"The action is visually engaging and creates a sense of movement.\",\"weakness\":\"The visual promise could be stronger with more vivid descriptions.\",\"risk\":\"The visual impact may not be as strong as intended.\"},\"CAUSAL_PROGRESSION\":{\"quote\":\"Pip grabs at the four with both arms and they split into eight.\",\"strength\":\"The progression of actions is clear and follows a logical sequence.\",\"weakness\":\"The cause of the multiplication could be better explained.\",\"risk\":\"The audience may not fully grasp the mechanics of the multiplication.\"},\"VISUAL_STORYTELLING\":{\"quote\":\"Pip sits down on the floor, arms folded, refusing to touch anything.\",\"strength\":\"This moment conveys Pip's frustration visually.\",\"weakness\":\"The visual storytelling lacks dynamic imagery.\",\"risk\":\"The audience may find the scene less engaging.\"},\"PRODUCTION_EXECUTABILITY\":{\"quote\":\"Pip shakes both arms hard to fling the four notes away.\",\"strength\":\"The action is straightforward and easy to visualize.\",\"weakness\":\"Some actions may be challenging to animate effectively.\",\"risk\":\"The production may struggle with the complexity of the scene.\"},\"ENDING_REPLAY\":{\"quote\":\"Pip is relieved, but the cabinet remains messy.\",\"strength\":\"The ending provides a satisfying conclusion.\",\"weakness\":\"The resolution could be more impactful.\",\"risk\":\"The audience may feel the ending is anticlimactic.\"},\"DISTINCTIVE_CREATIVE_VALUE\":{\"quote\":\"Pip's nose twitches; a sneeze erupts and scatters the notes.\",\"strength\":\"The sneeze adds a unique twist to the story.\",\"weakness\":\"The uniqueness may not resonate with all audiences.\",\"risk\":\"The creative twist could be seen as gimmicky.\"}},\"creativeConclusion\":{\"outcome\":\"UNKNOWN\",\"baselineQuote\":\"\",\"candidateQuote\":\"\",\"change\":\"\",\"visibleConsequence\":\"\",\"addressedWeakness\":\"\",\"newRisk\":\"\",\"materialityReason\":\"\"},\"eligibleForOwnerProposal\":false},\"B\":{\"semanticChecks\":{\"identity\":{\"outcome\":\"PASS\",\"basis\":\"SEMANTIC_SUPPORT\",\"sourceQuote\":\"Pip the rabbit\",\"candidateQuote\":\"Pip the rabbit\",\"reason\":\"Both versions identify the character as 'Pip the rabbit'.\"},\"premise\":{\"outcome\":\"PASS\",\"basis\":\"SEMANTIC_SUPPORT\",\"sourceQuote\":\"it clings to Pip's fingertip while the cabinet stays untouched\",\"candidateQuote\":\"it clings to Pip's fingertip while the cabinet stays untouched\",\"reason\":\"The premise of the sticky note clinging to Pip's fingertip is preserved.\"},\"rule\":{\"outcome\":\"PASS\",\"basis\":\"SEMANTIC_SUPPORT\",\"sourceQuote\":\"every removal or transfer attempt multiplies the notes\",\"candidateQuote\":\"every removal or transfer attempt multiplies the notes\",\"reason\":\"The candidate retains the crucial rule regarding note multiplication.\"},\"continuity\":{\"outcome\":\"FAIL\",\"basis\":\"SUBSTANTIVE_OMISSION\",\"sourceQuote\":\"\",\"candidateQuote\":\"\",\"reason\":\"The candidate does not maintain the continuity of Pip being covered until the sneeze occurs.\"},\"ending\":{\"outcome\":\"PASS\",\"basis\":\"SEMANTIC_SUPPORT\",\"sourceQuote\":\"Pip is relieved, but the cabinet remains messy.\",\"candidateQuote\":\"Pip is relieved, but the cabinet remains messy.\",\"reason\":\"The ending is preserved in both versions.\"},\"trigger_conditions\":{\"outcome\":\"UNKNOWN\",\"basis\":\"INSUFFICIENT\",\"sourceQuote\":\"\",\"candidateQuote\":\"\",\"reason\":\"The candidate does not clarify the conditions under which the notes multiply.\"},\"single_mechanic\":{\"outcome\":\"UNKNOWN\",\"basis\":\"INSUFFICIENT\",\"sourceQuote\":\"\",\"candidateQuote\":\"\",\"reason\":\"The candidate does not clearly establish the mechanics of note multiplication.\"},\"causal_clarity\":{\"outcome\":\"UNKNOWN\",\"basis\":\"INSUFFICIENT\",\"sourceQuote\":\"\",\"candidateQuote\":\"\",\"reason\":\"The candidate lacks clarity on the cause-and-effect relationship of actions.\"},\"protected_events\":{\"outcome\":\"PASS\",\"basis\":\"SEMANTIC_SUPPORT\",\"sourceQuote\":\"\",\"candidateQuote\":\"\",\"reason\":\"The events of the story are preserved.\"}},\"semanticOutcome\":\"SEMANTIC_SOURCE_FAIL\",\"sourceUnknowns\":\"The candidate does not clarify the mechanics of note multiplication.\",\"creativeDimensions\":{\"SCROLL_STOP_VISUAL_PROMISE\":{\"quote\":\"Pip pinches the note with the other paw to peel it free, and it splits into two notes.\",\"strength\":\"The action is visually engaging and creates a sense of movement.\",\"weakness\":\"The visual promise could be stronger with more vivid descriptions.\",\"risk\":\"The visual impact may not be as strong as intended.\"},\"CAUSAL_PROGRESSION\":{\"quote\":\"Pip realizes that every removal or transfer attempt multiplies the notes.\",\"strength\":\"The progression of actions is clear and follows a logical sequence.\",\"weakness\":\"The cause of the multiplication could be better explained.\",\"risk\":\"The audience may not fully grasp the mechanics of the multiplication.\"},\"VISUAL_STORYTELLING\":{\"quote\":\"Pip freezes, watching the eight notes ripple and settle.\",\"strength\":\"This moment conveys Pip's frustration visually.\",\"weakness\":\"The visual storytelling lacks dynamic imagery.\",\"risk\":\"The audience may find the scene less engaging.\"},\"PRODUCTION_EXECUTABILITY\":{\"quote\":\"Pip slaps both paws toward the cabinet.\",\"strength\":\"The action is straightforward and easy to visualize.\",\"weakness\":\"Some actions may be challenging to animate effectively.\",\"risk\":\"The production may struggle with the complexity of the scene.\"},\"ENDING_REPLAY\":{\"quote\":\"Pip is relieved, but the cabinet remains messy.\",\"strength\":\"The ending provides a satisfying conclusion.\",\"weakness\":\"The resolution could be more impactful.\",\"risk\":\"The audience may feel the ending is anticlimactic.\"},\"DISTINCTIVE_CREATIVE_VALUE\":{\"quote\":\"A sneeze bursts out of Pip, and the blast peels the notes off and scatters them across the cabinet.\",\"strength\":\"The sneeze adds a unique twist to the story.\",\"weakness\":\"The uniqueness may not resonate with all audiences.\",\"risk\":\"The creative twist could be seen as gimmicky.\"}},\"creativeConclusion\":{\"outcome\":\"UNKNOWN\",\"baselineQuote\":\"\",\"candidateQuote\":\"\",\"change\":\"\",\"visibleConsequence\":\"\",\"addressedWeakness\":\"\",\"newRisk\":\"\",\"materialityReason\":\"\"},\"eligibleForOwnerProposal\":false}},\"researchPreference\":\"NO_CREATIVE_WINNER\",\"reason\":\"Both candidates fail to preserve the continuity of Pip being covered until the sneeze occurs, and both lack clarity on the mechanics of note multiplication. While candidate B retains the rule about multiplication, it does not sufficiently improve upon the original story. Therefore, there is no clear creative winner.\" ,\"evidenceLimitations\":\"The candidates do not clarify the mechanics of note multiplication.\"}",
+                "refusal": null,
+                "tool_calls": null,
+                "annotations": [],
+                "function_call": null
+              },
+              "logprobs": null,
+              "finish_reason": "stop"
+            }
+          ],
+          "created": 1792273395,
+          "metadata": null,
+          "moderation": null,
+          "service_tier": "default",
+          "system_fingerprint": "fp_e0851bd988"
+        },
+        "rawProviderResponse": "{\"schemaVersion\":\"assessment-only-story-review-v2\",\"candidateAssessments\":{\"A\":{\"semanticChecks\":{\"identity\":{\"outcome\":\"PASS\",\"basis\":\"SEMANTIC_SUPPORT\",\"sourceQuote\":\"Pip the rabbit\",\"candidateQuote\":\"Pip the rabbit\",\"reason\":\"Both versions identify the character as 'Pip the rabbit'.\"},\"premise\":{\"outcome\":\"PASS\",\"basis\":\"SEMANTIC_SUPPORT\",\"sourceQuote\":\"it clings to Pip's fingertip while the cabinet stays untouched\",\"candidateQuote\":\"it clings to Pip's fingertip while the cabinet stays untouched\",\"reason\":\"The premise of the sticky note clinging to Pip's fingertip is preserved.\"},\"rule\":{\"outcome\":\"FAIL\",\"basis\":\"SUBSTANTIVE_OMISSION\",\"sourceQuote\":\"every removal or transfer attempt multiplies the notes\",\"candidateQuote\":\"\",\"reason\":\"The candidate omits the crucial rule that every attempt to remove or transfer the notes results in multiplication.\"},\"continuity\":{\"outcome\":\"FAIL\",\"basis\":\"SUBSTANTIVE_OMISSION\",\"sourceQuote\":\"Pip remains covered until a sneeze scatters the notes onto the cabinet\",\"candidateQuote\":\"\",\"reason\":\"The candidate does not maintain the continuity of Pip being covered until the sneeze occurs.\"},\"ending\":{\"outcome\":\"PASS\",\"basis\":\"SEMANTIC_SUPPORT\",\"sourceQuote\":\"Pip is relieved, but the cabinet remains messy.\",\"candidateQuote\":\"Pip is relieved, but the cabinet remains messy.\",\"reason\":\"The ending is preserved in both versions.\"},\"trigger_conditions\":{\"outcome\":\"UNKNOWN\",\"basis\":\"INSUFFICIENT\",\"sourceQuote\":\"\",\"candidateQuote\":\"\",\"reason\":\"The candidate does not clarify the conditions under which the notes multiply.\"},\"single_mechanic\":{\"outcome\":\"UNKNOWN\",\"basis\":\"INSUFFICIENT\",\"sourceQuote\":\"\",\"candidateQuote\":\"\",\"reason\":\"The candidate does not clearly establish the mechanics of note multiplication.\"},\"causal_clarity\":{\"outcome\":\"UNKNOWN\",\"basis\":\"INSUFFICIENT\",\"sourceQuote\":\"\",\"candidateQuote\":\"\",\"reason\":\"The candidate lacks clarity on the cause-and-effect relationship of actions.\"},\"protected_events\":{\"outcome\":\"PASS\",\"basis\":\"SEMANTIC_SUPPORT\",\"sourceQuote\":\"\",\"candidateQuote\":\"\",\"reason\":\"The events of the story are preserved.\"}},\"semanticOutcome\":\"SEMANTIC_SOURCE_FAIL\",\"sourceUnknowns\":\"The candidate does not clarify the mechanics of note multiplication.\",\"creativeDimensions\":{\"SCROLL_STOP_VISUAL_PROMISE\":{\"quote\":\"Pip shakes the hand; the note splits into two, one on each hand.\",\"strength\":\"The action is visually engaging and creates a sense of movement.\",\"weakness\":\"The visual promise could be stronger with more vivid descriptions.\",\"risk\":\"The visual impact may not be as strong as intended.\"},\"CAUSAL_PROGRESSION\":{\"quote\":\"Pip grabs at the four with both arms and they split into eight.\",\"strength\":\"The progression of actions is clear and follows a logical sequence.\",\"weakness\":\"The cause of the multiplication could be better explained.\",\"risk\":\"The audience may not fully grasp the mechanics of the multiplication.\"},\"VISUAL_STORYTELLING\":{\"quote\":\"Pip sits down on the floor, arms folded, refusing to touch anything.\",\"strength\":\"This moment conveys Pip's frustration visually.\",\"weakness\":\"The visual storytelling lacks dynamic imagery.\",\"risk\":\"The audience may find the scene less engaging.\"},\"PRODUCTION_EXECUTABILITY\":{\"quote\":\"Pip shakes both arms hard to fling the four notes away.\",\"strength\":\"The action is straightforward and easy to visualize.\",\"weakness\":\"Some actions may be challenging to animate effectively.\",\"risk\":\"The production may struggle with the complexity of the scene.\"},\"ENDING_REPLAY\":{\"quote\":\"Pip is relieved, but the cabinet remains messy.\",\"strength\":\"The ending provides a satisfying conclusion.\",\"weakness\":\"The resolution could be more impactful.\",\"risk\":\"The audience may feel the ending is anticlimactic.\"},\"DISTINCTIVE_CREATIVE_VALUE\":{\"quote\":\"Pip's nose twitches; a sneeze erupts and scatters the notes.\",\"strength\":\"The sneeze adds a unique twist to the story.\",\"weakness\":\"The uniqueness may not resonate with all audiences.\",\"risk\":\"The creative twist could be seen as gimmicky.\"}},\"creativeConclusion\":{\"outcome\":\"UNKNOWN\",\"baselineQuote\":\"\",\"candidateQuote\":\"\",\"change\":\"\",\"visibleConsequence\":\"\",\"addressedWeakness\":\"\",\"newRisk\":\"\",\"materialityReason\":\"\"},\"eligibleForOwnerProposal\":false},\"B\":{\"semanticChecks\":{\"identity\":{\"outcome\":\"PASS\",\"basis\":\"SEMANTIC_SUPPORT\",\"sourceQuote\":\"Pip the rabbit\",\"candidateQuote\":\"Pip the rabbit\",\"reason\":\"Both versions identify the character as 'Pip the rabbit'.\"},\"premise\":{\"outcome\":\"PASS\",\"basis\":\"SEMANTIC_SUPPORT\",\"sourceQuote\":\"it clings to Pip's fingertip while the cabinet stays untouched\",\"candidateQuote\":\"it clings to Pip's fingertip while the cabinet stays untouched\",\"reason\":\"The premise of the sticky note clinging to Pip's fingertip is preserved.\"},\"rule\":{\"outcome\":\"PASS\",\"basis\":\"SEMANTIC_SUPPORT\",\"sourceQuote\":\"every removal or transfer attempt multiplies the notes\",\"candidateQuote\":\"every removal or transfer attempt multiplies the notes\",\"reason\":\"The candidate retains the crucial rule regarding note multiplication.\"},\"continuity\":{\"outcome\":\"FAIL\",\"basis\":\"SUBSTANTIVE_OMISSION\",\"sourceQuote\":\"\",\"candidateQuote\":\"\",\"reason\":\"The candidate does not maintain the continuity of Pip being covered until the sneeze occurs.\"},\"ending\":{\"outcome\":\"PASS\",\"basis\":\"SEMANTIC_SUPPORT\",\"sourceQuote\":\"Pip is relieved, but the cabinet remains messy.\",\"candidateQuote\":\"Pip is relieved, but the cabinet remains messy.\",\"reason\":\"The ending is preserved in both versions.\"},\"trigger_conditions\":{\"outcome\":\"UNKNOWN\",\"basis\":\"INSUFFICIENT\",\"sourceQuote\":\"\",\"candidateQuote\":\"\",\"reason\":\"The candidate does not clarify the conditions under which the notes multiply.\"},\"single_mechanic\":{\"outcome\":\"UNKNOWN\",\"basis\":\"INSUFFICIENT\",\"sourceQuote\":\"\",\"candidateQuote\":\"\",\"reason\":\"The candidate does not clearly establish the mechanics of note multiplication.\"},\"causal_clarity\":{\"outcome\":\"UNKNOWN\",\"basis\":\"INSUFFICIENT\",\"sourceQuote\":\"\",\"candidateQuote\":\"\",\"reason\":\"The candidate lacks clarity on the cause-and-effect relationship of actions.\"},\"protected_events\":{\"outcome\":\"PASS\",\"basis\":\"SEMANTIC_SUPPORT\",\"sourceQuote\":\"\",\"candidateQuote\":\"\",\"reason\":\"The events of the story are preserved.\"}},\"semanticOutcome\":\"SEMANTIC_SOURCE_FAIL\",\"sourceUnknowns\":\"The candidate does not clarify the mechanics of note multiplication.\",\"creativeDimensions\":{\"SCROLL_STOP_VISUAL_PROMISE\":{\"quote\":\"Pip pinches the note with the other paw to peel it free, and it splits into two notes.\",\"strength\":\"The action is visually engaging and creates a sense of movement.\",\"weakness\":\"The visual promise could be stronger with more vivid descriptions.\",\"risk\":\"The visual impact may not be as strong as intended.\"},\"CAUSAL_PROGRESSION\":{\"quote\":\"Pip realizes that every removal or transfer attempt multiplies the notes.\",\"strength\":\"The progression of actions is clear and follows a logical sequence.\",\"weakness\":\"The cause of the multiplication could be better explained.\",\"risk\":\"The audience may not fully grasp the mechanics of the multiplication.\"},\"VISUAL_STORYTELLING\":{\"quote\":\"Pip freezes, watching the eight notes ripple and settle.\",\"strength\":\"This moment conveys Pip's frustration visually.\",\"weakness\":\"The visual storytelling lacks dynamic imagery.\",\"risk\":\"The audience may find the scene less engaging.\"},\"PRODUCTION_EXECUTABILITY\":{\"quote\":\"Pip slaps both paws toward the cabinet.\",\"strength\":\"The action is straightforward and easy to visualize.\",\"weakness\":\"Some actions may be challenging to animate effectively.\",\"risk\":\"The production may struggle with the complexity of the scene.\"},\"ENDING_REPLAY\":{\"quote\":\"Pip is relieved, but the cabinet remains messy.\",\"strength\":\"The ending provides a satisfying conclusion.\",\"weakness\":\"The resolution could be more impactful.\",\"risk\":\"The audience may feel the ending is anticlimactic.\"},\"DISTINCTIVE_CREATIVE_VALUE\":{\"quote\":\"A sneeze bursts out of Pip, and the blast peels the notes off and scatters them across the cabinet.\",\"strength\":\"The sneeze adds a unique twist to the story.\",\"weakness\":\"The uniqueness may not resonate with all audiences.\",\"risk\":\"The creative twist could be seen as gimmicky.\"}},\"creativeConclusion\":{\"outcome\":\"UNKNOWN\",\"baselineQuote\":\"\",\"candidateQuote\":\"\",\"change\":\"\",\"visibleConsequence\":\"\",\"addressedWeakness\":\"\",\"newRisk\":\"\",\"materialityReason\":\"\"},\"eligibleForOwnerProposal\":false}},\"researchPreference\":\"NO_CREATIVE_WINNER\",\"reason\":\"Both candidates fail to preserve the continuity of Pip being covered until the sneeze occurs, and both lack clarity on the mechanics of note multiplication. While candidate B retains the rule about multiplication, it does not sufficiently improve upon the original story. Therefore, there is no clear creative winner.\" ,\"evidenceLimitations\":\"The candidates do not clarify the mechanics of note multiplication.\"}",
+        "configuredRateCostUsd": 0.00156135,
+        "parsedProviderResponse": {
+          "reason": "Both candidates fail to preserve the continuity of Pip being covered until the sneeze occurs, and both lack clarity on the mechanics of note multiplication. While candidate B retains the rule about multiplication, it does not sufficiently improve upon the original story. Therefore, there is no clear creative winner.",
+          "schemaVersion": "assessment-only-story-review-v2",
+          "researchPreference": "NO_CREATIVE_WINNER",
+          "evidenceLimitations": "The candidates do not clarify the mechanics of note multiplication.",
+          "candidateAssessments": {
+            "A": {
+              "semanticChecks": {
+                "rule": {
+                  "basis": "SUBSTANTIVE_OMISSION",
+                  "reason": "The candidate omits the crucial rule that every attempt to remove or transfer the notes results in multiplication.",
+                  "outcome": "FAIL",
+                  "sourceQuote": "every removal or transfer attempt multiplies the notes",
+                  "candidateQuote": ""
+                },
+                "ending": {
+                  "basis": "SEMANTIC_SUPPORT",
+                  "reason": "The ending is preserved in both versions.",
+                  "outcome": "PASS",
+                  "sourceQuote": "Pip is relieved, but the cabinet remains messy.",
+                  "candidateQuote": "Pip is relieved, but the cabinet remains messy."
+                },
+                "premise": {
+                  "basis": "SEMANTIC_SUPPORT",
+                  "reason": "The premise of the sticky note clinging to Pip's fingertip is preserved.",
+                  "outcome": "PASS",
+                  "sourceQuote": "it clings to Pip's fingertip while the cabinet stays untouched",
+                  "candidateQuote": "it clings to Pip's fingertip while the cabinet stays untouched"
+                },
+                "identity": {
+                  "basis": "SEMANTIC_SUPPORT",
+                  "reason": "Both versions identify the character as 'Pip the rabbit'.",
+                  "outcome": "PASS",
+                  "sourceQuote": "Pip the rabbit",
+                  "candidateQuote": "Pip the rabbit"
+                },
+                "continuity": {
+                  "basis": "SUBSTANTIVE_OMISSION",
+                  "reason": "The candidate does not maintain the continuity of Pip being covered until the sneeze occurs.",
+                  "outcome": "FAIL",
+                  "sourceQuote": "Pip remains covered until a sneeze scatters the notes onto the cabinet",
+                  "candidateQuote": ""
+                },
+                "causal_clarity": {
+                  "basis": "INSUFFICIENT",
+                  "reason": "The candidate lacks clarity on the cause-and-effect relationship of actions.",
+                  "outcome": "UNKNOWN",
+                  "sourceQuote": "",
+                  "candidateQuote": ""
+                },
+                "single_mechanic": {
+                  "basis": "INSUFFICIENT",
+                  "reason": "The candidate does not clearly establish the mechanics of note multiplication.",
+                  "outcome": "UNKNOWN",
+                  "sourceQuote": "",
+                  "candidateQuote": ""
+                },
+                "protected_events": {
+                  "basis": "SEMANTIC_SUPPORT",
+                  "reason": "The events of the story are preserved.",
+                  "outcome": "PASS",
+                  "sourceQuote": "",
+                  "candidateQuote": ""
+                },
+                "trigger_conditions": {
+                  "basis": "INSUFFICIENT",
+                  "reason": "The candidate does not clarify the conditions under which the notes multiply.",
+                  "outcome": "UNKNOWN",
+                  "sourceQuote": "",
+                  "candidateQuote": ""
+                }
+              },
+              "sourceUnknowns": "The candidate does not clarify the mechanics of note multiplication.",
+              "semanticOutcome": "SEMANTIC_SOURCE_FAIL",
+              "creativeConclusion": {
+                "change": "",
+                "newRisk": "",
+                "outcome": "UNKNOWN",
+                "baselineQuote": "",
+                "candidateQuote": "",
+                "addressedWeakness": "",
+                "materialityReason": "",
+                "visibleConsequence": ""
+              },
+              "creativeDimensions": {
+                "ENDING_REPLAY": {
+                  "risk": "The audience may feel the ending is anticlimactic.",
+                  "quote": "Pip is relieved, but the cabinet remains messy.",
+                  "strength": "The ending provides a satisfying conclusion.",
+                  "weakness": "The resolution could be more impactful."
+                },
+                "CAUSAL_PROGRESSION": {
+                  "risk": "The audience may not fully grasp the mechanics of the multiplication.",
+                  "quote": "Pip grabs at the four with both arms and they split into eight.",
+                  "strength": "The progression of actions is clear and follows a logical sequence.",
+                  "weakness": "The cause of the multiplication could be better explained."
+                },
+                "VISUAL_STORYTELLING": {
+                  "risk": "The audience may find the scene less engaging.",
+                  "quote": "Pip sits down on the floor, arms folded, refusing to touch anything.",
+                  "strength": "This moment conveys Pip's frustration visually.",
+                  "weakness": "The visual storytelling lacks dynamic imagery."
+                },
+                "PRODUCTION_EXECUTABILITY": {
+                  "risk": "The production may struggle with the complexity of the scene.",
+                  "quote": "Pip shakes both arms hard to fling the four notes away.",
+                  "strength": "The action is straightforward and easy to visualize.",
+                  "weakness": "Some actions may be challenging to animate effectively."
+                },
+                "DISTINCTIVE_CREATIVE_VALUE": {
+                  "risk": "The creative twist could be seen as gimmicky.",
+                  "quote": "Pip's nose twitches; a sneeze erupts and scatters the notes.",
+                  "strength": "The sneeze adds a unique twist to the story.",
+                  "weakness": "The uniqueness may not resonate with all audiences."
+                },
+                "SCROLL_STOP_VISUAL_PROMISE": {
+                  "risk": "The visual impact may not be as strong as intended.",
+                  "quote": "Pip shakes the hand; the note splits into two, one on each hand.",
+                  "strength": "The action is visually engaging and creates a sense of movement.",
+                  "weakness": "The visual promise could be stronger with more vivid descriptions."
+                }
+              },
+              "eligibleForOwnerProposal": false
+            },
+            "B": {
+              "semanticChecks": {
+                "rule": {
+                  "basis": "SEMANTIC_SUPPORT",
+                  "reason": "The candidate retains the crucial rule regarding note multiplication.",
+                  "outcome": "PASS",
+                  "sourceQuote": "every removal or transfer attempt multiplies the notes",
+                  "candidateQuote": "every removal or transfer attempt multiplies the notes"
+                },
+                "ending": {
+                  "basis": "SEMANTIC_SUPPORT",
+                  "reason": "The ending is preserved in both versions.",
+                  "outcome": "PASS",
+                  "sourceQuote": "Pip is relieved, but the cabinet remains messy.",
+                  "candidateQuote": "Pip is relieved, but the cabinet remains messy."
+                },
+                "premise": {
+                  "basis": "SEMANTIC_SUPPORT",
+                  "reason": "The premise of the sticky note clinging to Pip's fingertip is preserved.",
+                  "outcome": "PASS",
+                  "sourceQuote": "it clings to Pip's fingertip while the cabinet stays untouched",
+                  "candidateQuote": "it clings to Pip's fingertip while the cabinet stays untouched"
+                },
+                "identity": {
+                  "basis": "SEMANTIC_SUPPORT",
+                  "reason": "Both versions identify the character as 'Pip the rabbit'.",
+                  "outcome": "PASS",
+                  "sourceQuote": "Pip the rabbit",
+                  "candidateQuote": "Pip the rabbit"
+                },
+                "continuity": {
+                  "basis": "SUBSTANTIVE_OMISSION",
+                  "reason": "The candidate does not maintain the continuity of Pip being covered until the sneeze occurs.",
+                  "outcome": "FAIL",
+                  "sourceQuote": "",
+                  "candidateQuote": ""
+                },
+                "causal_clarity": {
+                  "basis": "INSUFFICIENT",
+                  "reason": "The candidate lacks clarity on the cause-and-effect relationship of actions.",
+                  "outcome": "UNKNOWN",
+                  "sourceQuote": "",
+                  "candidateQuote": ""
+                },
+                "single_mechanic": {
+                  "basis": "INSUFFICIENT",
+                  "reason": "The candidate does not clearly establish the mechanics of note multiplication.",
+                  "outcome": "UNKNOWN",
+                  "sourceQuote": "",
+                  "candidateQuote": ""
+                },
+                "protected_events": {
+                  "basis": "SEMANTIC_SUPPORT",
+                  "reason": "The events of the story are preserved.",
+                  "outcome": "PASS",
+                  "sourceQuote": "",
+                  "candidateQuote": ""
+                },
+                "trigger_conditions": {
+                  "basis": "INSUFFICIENT",
+                  "reason": "The candidate does not clarify the conditions under which the notes multiply.",
+                  "outcome": "UNKNOWN",
+                  "sourceQuote": "",
+                  "candidateQuote": ""
+                }
+              },
+              "sourceUnknowns": "The candidate does not clarify the mechanics of note multiplication.",
+              "semanticOutcome": "SEMANTIC_SOURCE_FAIL",
+              "creativeConclusion": {
+                "change": "",
+                "newRisk": "",
+                "outcome": "UNKNOWN",
+                "baselineQuote": "",
+                "candidateQuote": "",
+                "addressedWeakness": "",
+                "materialityReason": "",
+                "visibleConsequence": ""
+              },
+              "creativeDimensions": {
+                "ENDING_REPLAY": {
+                  "risk": "The audience may feel the ending is anticlimactic.",
+                  "quote": "Pip is relieved, but the cabinet remains messy.",
+                  "strength": "The ending provides a satisfying conclusion.",
+                  "weakness": "The resolution could be more impactful."
+                },
+                "CAUSAL_PROGRESSION": {
+                  "risk": "The audience may not fully grasp the mechanics of the multiplication.",
+                  "quote": "Pip realizes that every removal or transfer attempt multiplies the notes.",
+                  "strength": "The progression of actions is clear and follows a logical sequence.",
+                  "weakness": "The cause of the multiplication could be better explained."
+                },
+                "VISUAL_STORYTELLING": {
+                  "risk": "The audience may find the scene less engaging.",
+                  "quote": "Pip freezes, watching the eight notes ripple and settle.",
+                  "strength": "This moment conveys Pip's frustration visually.",
+                  "weakness": "The visual storytelling lacks dynamic imagery."
+                },
+                "PRODUCTION_EXECUTABILITY": {
+                  "risk": "The production may struggle with the complexity of the scene.",
+                  "quote": "Pip slaps both paws toward the cabinet.",
+                  "strength": "The action is straightforward and easy to visualize.",
+                  "weakness": "Some actions may be challenging to animate effectively."
+                },
+                "DISTINCTIVE_CREATIVE_VALUE": {
+                  "risk": "The creative twist could be seen as gimmicky.",
+                  "quote": "A sneeze bursts out of Pip, and the blast peels the notes off and scatters them across the cabinet.",
+                  "strength": "The sneeze adds a unique twist to the story.",
+                  "weakness": "The uniqueness may not resonate with all audiences."
+                },
+                "SCROLL_STOP_VISUAL_PROMISE": {
+                  "risk": "The visual impact may not be as strong as intended.",
+                  "quote": "Pip pinches the note with the other paw to peel it free, and it splits into two notes.",
+                  "strength": "The action is visually engaging and creates a sense of movement.",
+                  "weakness": "The visual promise could be stronger with more vivid descriptions."
+                }
+              },
+              "eligibleForOwnerProposal": false
+            }
+          }
+        },
+        "providerResponseMetadata": {
+          "model": "gpt-4o-mini-2024-07-18",
+          "refusal": null,
+          "apiStatus": "COMPLETED",
+          "requestId": "chatcmpl-Ea6TLYVZP8GduR2oAXjzhcjUA2eWE",
+          "finishReason": "stop",
+          "promptLength": 8816,
+          "promptPresent": true
+        }
+      },
+      "requestId": "5af8b2ec-ef48-31de-a69e-5f946f376b2b",
+      "experimentVersion": "REAL_CREATIVE_STORY_EVOLUTION_PILOT_V1",
+      "assessmentOnlyPolicy": "ASSESSMENT_ONLY_UNKNOWN_SOURCE_V1"
+    }
+  },
+  {
+    "id": "ba6b9d8f-59f2-4e94-8f3a-73ce3f1a7f49",
+    "payload": {
+      "state": "STOPPED",
+      "reason": "ASSESSMENT_REJECTED_OR_UNCERTAIN"
+    }
+  }
+]
