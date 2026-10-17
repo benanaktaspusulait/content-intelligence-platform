@@ -16,6 +16,7 @@ from pathlib import Path
 
 VERSION = 'REAL_CREATIVE_STORY_EVOLUTION_PILOT_V1'
 SCHEMA = 'story-pilot-candidates-v1'
+EVIDENCE_CONTRACT = 'exact-protected-facts-and-narrative-excerpts-v2'
 ANCHORS = {'CHARACTER_IDENTITY', 'CORE_PREMISE', 'PHYSICAL_RULE', 'CONTINUITY', 'ENDING'}
 
 
@@ -47,6 +48,33 @@ def contract(text, context):
 
 def normalize(text):
     return re.sub(r'\s+', ' ', text.casefold()).strip(' .;,:!?')
+
+
+def model_policy(role, model):
+    """Direct identities only. Historical compatibility names are never aliases.
+
+    The documented Flash profile is opt-in for a newly bound owner grant; it
+    cannot reinterpret an existing deepseek-chat authorization or receipt.
+    """
+    profile = os.getenv('WORKFLOW_STORY_PILOT_MODEL_POLICY', 'LEGACY_EXACT_CHAT_V1')
+    if role == 'STORY':
+        expected = {'LEGACY_EXACT_CHAT_V1': 'deepseek-chat',
+                    'DIRECT_FLASH_TEXT_V1': 'deepseek-flash'}.get(profile)
+    else:
+        expected = 'gpt-4o-mini-2024-07-18'
+    if not expected or model != expected:
+        raise ValueError('SCOPE_OR_INSTRUCTION_MISMATCH: model/profile is not explicitly configured')
+    return {'version': 'exact-provider-model-v2', 'profile': profile if role == 'STORY' else 'EXACT_OPENAI_REVIEW_V1',
+            'requestedModel': model, 'requiredReturnedModel': model, 'pricingIdentity': model,
+            'aliasPolicy': 'NONE', 'inputModality': 'TEXT_ONLY',
+            'requestParameters': {'thinking': {'type': 'disabled'}} if model == 'deepseek-flash' else {}}
+
+
+def model_identity(requested, metadata):
+    actual = metadata.get('model')
+    return {'policyVersion': 'exact-provider-model-v2', 'requestedModel': requested,
+            'actualReturnedModel': actual, 'verified': bool(actual) and actual == requested,
+            'aliasApplied': False, 'pricingIdentity': actual if actual == requested else None}
 
 
 def validate(text, context, result):
@@ -104,10 +132,19 @@ def validate(text, context, result):
             for anchor in policy['protectedAnchors']:
                 binding = bound.get(anchor['id'], {})
                 quote = binding.get('candidateQuote', '')
+                # Optional offsets must support, never override, the cited text.
+                # Offsets use Python/Unicode code points, not UTF-8 bytes.
+                for prefix, narrative, excerpt in (('candidate', body, quote), ('source', text, anchor['quote'])):
+                    if prefix+'Start' in binding or prefix+'End' in binding:
+                        start, end = binding.get(prefix+'Start'), binding.get(prefix+'End')
+                        if (type(start) is not int or type(end) is not int or not 0 <= start < end <= len(narrative)
+                                or narrative[start:end] != excerpt):
+                            status = 'SOURCE_VIOLATION'; failures.append('Incorrect '+prefix+' excerpt offsets: '+anchor['id'])
                 if isinstance(quote, str) and quote and quote not in body:
                     status = 'SOURCE_VIOLATION'; failures.append('Claimed protected fact absent from story: '+anchor['id']); continue
                 if binding.get('sourceQuote') != anchor['quote'] or not isinstance(quote, str) or not quote or normalize(quote) != normalize(anchor['quote']):
-                    status = 'UNKNOWN'; failures.append('Unestablished protected fact: '+anchor['id']); continue
+                    if status != 'SOURCE_VIOLATION': status = 'UNKNOWN'
+                    failures.append('Unestablished protected fact: '+anchor['id']); continue
                 # Do not accept a quoted protected clause with an explicit
                 # nearby negation. This is a contradiction guard, not NLP proof.
                 prefix = body[max(0, body.find(quote)-35):body.find(quote)]
@@ -139,8 +176,7 @@ def preview(role, text, context):
     template_context = {k: deepcopy(v) for k, v in context.items() if k not in {'candidates', 'sourceRequestId', 'storyExperimentDispatch'}}
     template = preview_story_request(role, text, template_context)
     model = os.getenv('WORKFLOW_'+role+'_MODEL', '')
-    expected_model = 'deepseek-chat' if role == 'STORY' else 'gpt-4o-mini-2024-07-18'
-    if model != expected_model: raise ValueError('SCOPE_OR_INSTRUCTION_MISMATCH: model is not the pilot model')
+    identity_policy = model_policy(role, model)
     rates = [float(os.getenv('WORKFLOW_'+role+'_'+suffix+'_USD_PER_MILLION', 'nan')) for suffix in ('INPUT', 'OUTPUT')]
     if not all(math.isfinite(r) and r > 0 for r in rates): raise ValueError('Verified role pricing required')
     size = wire['payloadBytes'] if role == 'STORY' else 24000
@@ -151,6 +187,7 @@ def preview(role, text, context):
               'systemSha256': sha(wire['system']), 'templateSha256': sha(template),
               'sourceScopeSha256': context['storyExperiment']['sourceScopeSha256'],
               'sourceStorySha256': sha(text), 'schemaVersion': SCHEMA if role == 'STORY' else 'creative-story-merit-v1',
+              'evidenceContractVersion': EVIDENCE_CONTRACT, 'modelIdentityPolicy': identity_policy,
               'maxOutputTokens': 4000, 'maximumInputBytes': 24000,
               'inputUsdPerMillion': rates[0], 'outputUsdPerMillion': rates[1],
               'maximumCalculatedUsd': cap, 'automaticRetries': False, 'fallback': False,
@@ -202,6 +239,8 @@ def execute(role, text, context, cap):
     try:
         provider = DeepSeekTextProvider(checked['model']) if role == 'STORY' else OpenAIProvider(model=checked['model'])
         provider.max_output_tokens = 4000; provider.json_output = True
+        if checked['modelIdentityPolicy']['requestParameters']:
+            provider.request_parameters = checked['modelIdentityPolicy']['requestParameters']
         receipt['providerDispatched'] = True
         result = perform_role(role, text, context, provider, checked['model'])
         receipt.update(result=result['result'], processingStatus='PARSED')
@@ -212,6 +251,7 @@ def execute(role, text, context, cap):
                        providerApiResponse=getattr(provider, 'last_provider_response', None),
                        usage=getattr(provider, 'last_usage', None), providerResponseMetadata=getattr(provider, 'last_response_metadata', None))
     raw = receipt['rawProviderResponse']; metadata = receipt.get('providerResponseMetadata') or {}
+    receipt['modelIdentity'] = model_identity(checked['model'], metadata)
     received = raw is not None or receipt.get('providerApiResponse') is not None
     if isinstance(raw, str):
         try: receipt['parsedProviderResponse'] = json.loads(raw)
@@ -220,11 +260,15 @@ def execute(role, text, context, cap):
                    responseReceivedAt=datetime.now(timezone.utc).isoformat())
     try:
         cost = _optimization_cost(receipt['usage'], checked['inputUsdPerMillion'], checked['outputUsdPerMillion'])
+        receipt['configuredRateCostUsd'] = cost
+        if not receipt['modelIdentity']['verified']:
+            receipt['billingStatus'] = 'MODEL_IDENTITY_UNVERIFIED'
+            raise ValueError('Actual provider model identity missing or differs; configured-rate cost is not verified billing')
         receipt.update(actualCostUsd=cost, billingStatus='KNOWN_INCURRED')
         if cost > cap or receipt['usage'].get('completion_tokens', receipt['usage'].get('output_tokens', 0)) > 4000:
             raise ValueError('Provider usage exceeded authorization')
-        if metadata.get('finishReason') != 'stop' or metadata.get('model') != checked['model']:
-            raise ValueError('Incomplete response or actual model differs')
+        if metadata.get('finishReason') != 'stop':
+            raise ValueError('Incomplete provider response')
         if receipt['processingStatus'] == 'PARSED':
             if role == 'STORY':
                 receipt['sourceValidation'] = validate(text, context, receipt['result'])
@@ -233,6 +277,6 @@ def execute(role, text, context, cap):
     except Exception as error:
         receipt['processingStatus'] = 'LOCALLY_REJECTED' if received else 'DISPATCH_UNCERTAIN' if receipt['providerDispatched'] else 'NOT_DISPATCHED'
         receipt['error'] = {'category': type(error).__name__, 'detail': str(error)[:2000]}
-        if receipt['actualCostUsd'] is None:
+        if receipt['actualCostUsd'] is None and receipt['billingStatus'] != 'MODEL_IDENTITY_UNVERIFIED':
             receipt['billingStatus'] = 'USAGE_UNKNOWN' if receipt['providerDispatched'] else 'NOT_DISPATCHED'
     return receipt

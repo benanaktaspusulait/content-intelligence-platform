@@ -1,0 +1,15 @@
+{
+  "databaseContainer": "pompom-story-pilot-v1-db",
+  "network": "pompom-story-pilot-v1-isolated",
+  "databasePort": 64730,
+  "mlPort": 64732,
+  "backendPort": 64733,
+  "mlPid": 1640,
+  "backendPid": 1645,
+  "databaseSnapshot": "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/backend/target/disposable-owner-http/run-oT9HS7/disposable-real-provider.dump",
+  "providerRequestsBeforeStart": 0,
+  "productionDatabaseCredentialsPresent": false,
+  "productionDatabaseNetworkAllowed": false,
+  "productionApiCredentialsPresent": false,
+  "ownerCredentialReused": true
+}

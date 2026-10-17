@@ -1,0 +1,9 @@
+{
+  "policy": "EXACT_PROVIDER_ORIGINS_ONLY",
+  "allowedHosts": [
+    "api.deepseek.com",
+    "api.openai.com"
+  ],
+  "blockedAttempts": [],
+  "fixtureFallbackAllowed": false
+}

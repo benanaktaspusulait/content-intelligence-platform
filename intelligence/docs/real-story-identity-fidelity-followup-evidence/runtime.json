@@ -1,0 +1,15 @@
+{
+  "databaseContainer": "pompom-story-followup-v2-db",
+  "network": "pompom-story-followup-v2-isolated",
+  "databasePort": 50452,
+  "mlPort": 50454,
+  "backendPort": 50455,
+  "mlPid": 7202,
+  "backendPid": 7206,
+  "databaseSnapshot": "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/backend/target/disposable-owner-http/run-oT9HS7/disposable-real-provider.dump",
+  "providerRequestsBeforeStart": 0,
+  "productionDatabaseCredentialsPresent": false,
+  "productionDatabaseNetworkAllowed": false,
+  "productionApiCredentialsPresent": false,
+  "ownerCredentialReused": true
+}

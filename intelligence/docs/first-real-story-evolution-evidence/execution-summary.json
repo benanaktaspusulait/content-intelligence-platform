@@ -1,0 +1,58 @@
+{
+  "experiment": "REAL_CREATIVE_STORY_EVOLUTION_PILOT_V1",
+  "ownerAuthorization": true,
+  "scopeMatchedBeforeDispatch": true,
+  "requestedModel": "deepseek-chat",
+  "actualResponseModel": "deepseek-flash",
+  "runId": "72796340-fff3-471f-b66a-1c4c3cb29014",
+  "actualProviderRequests": 1,
+  "deepseekGenerationRequests": 1,
+  "openaiReviewRequests": 0,
+  "configuredRateCostUsd": "0.00283890",
+  "actualSpendUsd": "NOT_VERIFIED_ACTUAL_MODEL_RATE",
+  "unresolvedBilling": true,
+  "billingExplanation": "Provider usage is authentic. Ledger calculated cost using authorized deepseek-chat rates, but returned model is deepseek-flash; its actual charged rate is not established by this receipt. Do not present configured-rate calculation as verified invoice cost.",
+  "unusedAuthorizationNotReusable": true,
+  "sourceGate": {
+    "eligible": false,
+    "status": "INSUFFICIENT_TWO_CANDIDATE_RESULT",
+    "candidates": [
+      {
+        "candidateId": "candidate-1",
+        "status": "UNKNOWN",
+        "eligible": false,
+        "errors": [
+          "Missing/extraneous narrative evidence: motivation",
+          "Missing/extraneous narrative evidence: progression",
+          "Unestablished protected fact: premise",
+          "Unestablished protected fact: rule",
+          "Unestablished protected fact: continuity"
+        ],
+        "semanticFidelity": "UNKNOWN_REQUIRES_INDEPENDENT_REVIEW",
+        "evidenceScope": "EXACT_PROTECTED_TEXT_FACTS_ONLY",
+        "candidateSha256": "7ec0ee071b06e13b4171c4cb68d4058b3d6de8109d32c5cc3e6a339b86a0983b"
+      },
+      {
+        "candidateId": "candidate-2",
+        "status": "UNKNOWN",
+        "eligible": false,
+        "errors": [
+          "Missing/extraneous narrative evidence: motivation",
+          "Missing/extraneous narrative evidence: progression",
+          "Unestablished protected fact: rule",
+          "Unestablished protected fact: continuity"
+        ],
+        "semanticFidelity": "UNKNOWN_REQUIRES_INDEPENDENT_REVIEW",
+        "evidenceScope": "EXACT_PROTECTED_TEXT_FACTS_ONLY",
+        "candidateSha256": "50bae8834df06f6092a37947d422e136c41c72ea80838057beecf2e7156bb088"
+      }
+    ],
+    "errors": [],
+    "semanticFidelity": "UNKNOWN_REQUIRES_INDEPENDENT_REVIEW"
+  },
+  "winner": "NONE_NOT_REVIEWED",
+  "ownerStoryApproval": "PENDING",
+  "officialAPlus": "INACTIVE",
+  "status": "STOPPED_ACTUAL_MODEL_MISMATCH_NO_RETRY",
+  "runtimeStopped": true
+}

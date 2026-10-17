@@ -1,0 +1,134 @@
+{
+  "evidenceType": "OWNER_DECISION",
+  "ownerReply": "evet",
+  "scope": {
+    "experimentVersion": "REAL_CREATIVE_STORY_EVOLUTION_PILOT_V1",
+    "sourceStoryRecordId": "ca40c11a-7831-476e-9f50-646a61a1ec9c",
+    "approvalRecordId": "af738239-99c3-4a9e-90b5-a1bee4295cd0",
+    "baselineAnalysisId": "10fc4c38-7cdf-4f71-b8dc-05b14315352a",
+    "protectedAnchors": [
+      {
+        "id": "identity",
+        "end": 34,
+        "kind": "CHARACTER_IDENTITY",
+        "quote": "Pip the rabbit",
+        "start": 20
+      },
+      {
+        "id": "premise",
+        "end": 172,
+        "kind": "CORE_PREMISE",
+        "quote": "it clings to Pip's fingertip while the cabinet stays untouched",
+        "start": 110
+      },
+      {
+        "id": "rule",
+        "end": 606,
+        "kind": "PHYSICAL_RULE",
+        "quote": "every removal or transfer attempt multiplies the notes",
+        "start": 552
+      },
+      {
+        "id": "continuity",
+        "end": 766,
+        "kind": "CONTINUITY",
+        "quote": "Pip remains covered until a sneeze scatters the notes onto the cabinet",
+        "start": 696
+      },
+      {
+        "id": "ending",
+        "end": 815,
+        "kind": "ENDING",
+        "quote": "Pip is relieved, but the cabinet remains messy.",
+        "start": 768
+      }
+    ],
+    "objective": "Propose a materially stronger, natural 15-second ABSURD_PHYSICS story for SEEDANCE_2_0_MINI, image2video, 480p, 9:16. Preserve Pip the rabbit, the sticky-note/cabinet premise, the existing multiplication rule and the final sneeze leaving Pip relieved beside a messy cabinet. Other source events/order are revision proposals, not automatically approved facts. Improve the first visible promise, distinct viewer-visible consequences and natural pacing; reduce artificial strategy density and overloaded final seconds. Avoid thin-object precision where possible; report concept unsuitability rather than disguising generator risk. Compare real creative merit, not numerical rule coverage. No audience or render claims.",
+    "sourceScopeSha256": "05a5625b415331d2e625c28fa328bd6c0c9bfec5a93aaa77dbce9f5fc7703276",
+    "operations": [
+      {
+        "experimentVersion": "REAL_CREATIVE_STORY_EVOLUTION_PILOT_V1",
+        "role": "STORY",
+        "provider": "deepseek",
+        "model": "deepseek-flash",
+        "systemSha256": "84f6882229fd8ee8c96d064e32588794105fef0af365e7d648eac28d97a9e30d",
+        "templateSha256": "52fe17d948304f2fc76555b974a4e0566bcf1a70ff8b9157c9f39b147dae5304",
+        "sourceScopeSha256": "05a5625b415331d2e625c28fa328bd6c0c9bfec5a93aaa77dbce9f5fc7703276",
+        "sourceStorySha256": "ba352d486c4252c5c6fefe585ad976c0b6f73c299f7554863848bdd842a99b3d",
+        "schemaVersion": "story-pilot-candidates-v1",
+        "evidenceContractVersion": "exact-protected-facts-and-narrative-excerpts-v2",
+        "modelIdentityPolicy": {
+          "version": "exact-provider-model-v2",
+          "profile": "DIRECT_FLASH_TEXT_V1",
+          "requestedModel": "deepseek-flash",
+          "requiredReturnedModel": "deepseek-flash",
+          "pricingIdentity": "deepseek-flash",
+          "aliasPolicy": "NONE",
+          "inputModality": "TEXT_ONLY",
+          "requestParameters": {
+            "thinking": {
+              "type": "disabled"
+            }
+          }
+        },
+        "maxOutputTokens": 4000,
+        "maximumInputBytes": 24000,
+        "inputUsdPerMillion": 0.3,
+        "outputUsdPerMillion": 1.2,
+        "maximumCalculatedUsd": 0.0099303,
+        "automaticRetries": false,
+        "fallback": false,
+        "transport": "REAL_PROVIDER_ADAPTER",
+        "payloadBytes": 10221,
+        "implementationSha256": "e5afcdae7d1ce4728f5dc35158e3cb7b68d19aded9f46e1d10f0e63d5900096f",
+        "effectiveRequestSha256": "9911fb57fc276c6631bcb1aea4378024a55cf00388509fd63b0dc83cb77813e1",
+        "maxCostUsd": 0.009931
+      },
+      {
+        "experimentVersion": "REAL_CREATIVE_STORY_EVOLUTION_PILOT_V1",
+        "role": "STORY_REVIEW",
+        "provider": "openai",
+        "model": "gpt-4o-mini-2024-07-18",
+        "systemSha256": "6174f28d352b98d084ffa6cac3112f8282596a25b0e5a10168f30984785c4606",
+        "templateSha256": "6cf3cf2c3b49929f7a4093ec07620191786af8357e3583f6cbca2c211cb689bb",
+        "sourceScopeSha256": "05a5625b415331d2e625c28fa328bd6c0c9bfec5a93aaa77dbce9f5fc7703276",
+        "sourceStorySha256": "ba352d486c4252c5c6fefe585ad976c0b6f73c299f7554863848bdd842a99b3d",
+        "schemaVersion": "creative-story-merit-v1",
+        "evidenceContractVersion": "exact-protected-facts-and-narrative-excerpts-v2",
+        "modelIdentityPolicy": {
+          "version": "exact-provider-model-v2",
+          "profile": "EXACT_OPENAI_REVIEW_V1",
+          "requestedModel": "gpt-4o-mini-2024-07-18",
+          "requiredReturnedModel": "gpt-4o-mini-2024-07-18",
+          "pricingIdentity": "gpt-4o-mini-2024-07-18",
+          "aliasPolicy": "NONE",
+          "inputModality": "TEXT_ONLY",
+          "requestParameters": {}
+        },
+        "maxOutputTokens": 4000,
+        "maximumInputBytes": 24000,
+        "inputUsdPerMillion": 0.15,
+        "outputUsdPerMillion": 0.6,
+        "maximumCalculatedUsd": 0.006790050000000001,
+        "automaticRetries": false,
+        "fallback": false,
+        "transport": "REAL_PROVIDER_ADAPTER",
+        "payloadBytes": 10059,
+        "implementationSha256": "e5afcdae7d1ce4728f5dc35158e3cb7b68d19aded9f46e1d10f0e63d5900096f",
+        "maxCostUsd": 0.009931
+      }
+    ],
+    "maxRounds": 1,
+    "maxRequests": 2,
+    "maxRunSeconds": 600,
+    "maxTotalUsd": 0.019862,
+    "automaticRetries": false,
+    "fallback": false,
+    "authorizePaidInference": true,
+    "confirmSourceAuthority": true,
+    "idempotencyKey": "story-identity-fidelity-v2-14b51e705bd2931ae335ee74417776d8"
+  },
+  "maximumRealCalls": 2,
+  "maximumTotalReservationUsd": 0.019862,
+  "noApprovalOrRender": true
+}

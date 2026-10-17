@@ -1,0 +1,32 @@
+{
+  "checkedOn": "2026-10-17",
+  "inferenceCalls": 0,
+  "officialAliasForChatToFlashVerified": false,
+  "modelDiscovery": "GET https://api.deepseek.com/models lists deepseek-flash and deepseek-v4-pro; not deepseek-chat.",
+  "sources": [
+    {
+      "url": "https://api-docs.deepseek.com/news/news260424/",
+      "finding": "Legacy chat/reasoner routing to V4 Flash was documented only before announced retirement on 2026-07-24."
+    },
+    {
+      "url": "https://api-docs.deepseek.com/quick_start/pricing/",
+      "finding": "Current direct ID is deepseek-flash. Listed compatibility IDs are deepseek-v4-flash and deepseek-v4-flash-vision-exp. No current chat compatibility guarantee is listed. Peak uncached input/output USD per million: 0.30/1.20; off-peak: 0.15/0.60. Weekends are off-peak."
+    },
+    {
+      "url": "https://api-docs.deepseek.com/guides/thinking_mode/",
+      "finding": "Direct Flash supports explicit thinking disabled; follow-up profile binds this text-only request parameter."
+    },
+    {
+      "url": "https://developers.openai.com/api/docs/models/gpt-4o-mini",
+      "finding": "Snapshot gpt-4o-mini-2024-07-18 is listed deprecated; input/output USD per million 0.15/0.60. Non-inference account model lookup separately returned 200."
+    }
+  ],
+  "billing": {
+    "actualInvoiceCost": "UNVERIFIED",
+    "historicalConfiguredRateCalculationUsd": "0.00283890",
+    "currentPublishedWeekendRateCalculationUsd": "0.00141945",
+    "invoiceOrPerRequestAccountChargeAvailable": false,
+    "originalLedgerPreserved": true
+  },
+  "historicalProviderRoutingConclusion": "Client sent chat unchanged to api.deepseek.com; provider response reports Flash. Provider-side resolution observed, exact undocumented legacy compatibility cause unverified. No alias accepted."
+}

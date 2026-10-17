@@ -86,12 +86,21 @@ class StoryExperimentContractTest {
     assertThat(map(result.get("progress"))).containsEntry("ownerStoryApproval","PENDING").containsEntry("reviewerIndependent",true);
     assertThat(map(map(result.get("progress")).get("lastAssessment")).get("recommendationReason")).isEqualTo("NO_CREATIVE_WINNER");
     assertThat(rows(result.get("drafts"))).isEmpty();service.processNext();assertThat(transports).isEqualTo(2);
-    Path trace=ROOT.resolve("intelligence/backend/target/story-experiment-contract-dry-run.json");Files.writeString(trace,json.writerWithDefaultPrettyPrinter().writeValueAsString(Map.of("evidenceOrigin","DETERMINISTIC_MOCK_ADAPTER_CONTRACT_TEST_ONLY","realProviderCalls",0,"productionDbWrites",0,"trace",result)));
+    Path trace=ROOT.resolve("intelligence/backend/target/story-model-fidelity-fix-dry-run.json");Files.writeString(trace,json.writerWithDefaultPrettyPrinter().writeValueAsString(Map.of("evidenceOrigin","DETERMINISTIC_MOCK_ADAPTER_CONTRACT_TEST_ONLY","realProviderCalls",0,"productionDbWrites",0,"trace",result)));
   }
-  @ParameterizedTest @ValueSource(strings={"zero","one","three","duplicate-id","duplicate-text","incomplete","source","unknown","proposal","malformed","missing-usage","over-budget","fixture-fallback"})
+  @ParameterizedTest @ValueSource(strings={"zero","one","three","duplicate-id","duplicate-text","incomplete","source","unknown","proposal","malformed","missing-usage","over-budget","fixture-fallback","rule-mutation","bad-offsets"})
   void invalidFirstResultIsDurableAndNeverReservesReview(String failure){mode=failure;start();service.processNext();assertThat(transports).isEqualTo(1);assertThat(receipts()).hasSize(1);
     assertThat(receipts().getFirst().get("rawProviderResponse")).isNotNull();assertThat(view().get("state")).isEqualTo("STOPPED");
     assertThat(rows(view().get("events")).stream().filter(e->"REQUEST_RESERVED".equals(e.get("state"))).count()).isEqualTo(1);
+    service.processNext();assertThat(transports).isEqualTo(1);
+  }
+  @ParameterizedTest @ValueSource(strings={"unknown-model","missing-model"})
+  void modelMismatchKeepsFullReceiptButDoesNotClaimVerifiedCostOrReserveReview(String failure){
+    mode=failure;start();service.processNext();assertThat(transports).isEqualTo(1);assertThat(receipts()).hasSize(1);
+    var receipt=receipts().getFirst();assertThat(receipt.get("billingStatus")).isEqualTo("MODEL_IDENTITY_UNVERIFIED");
+    assertThat(receipt.get("actualCostUsd")).isNull();assertThat(receipt.get("configuredRateCostUsd")).isEqualTo(.00027);
+    assertThat(receipt.get("rawProviderResponse")).isNotNull();assertThat(view().get("state")).isEqualTo("STOPPED");
+    assertThat(map(view().get("progress")).get("unresolvedBilling")).isEqualTo(true);
     service.processNext();assertThat(transports).isEqualTo(1);
   }
   @ParameterizedTest @ValueSource(strings={"review-timeout","review-transport","review-malformed"})

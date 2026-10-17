@@ -36,6 +36,7 @@ class DeepSeekTextProvider(LLMProvider):
             temperature=temperature,
             response_format={"type": "json_object"},
             max_tokens=self.max_output_tokens,
+            **({'extra_body': self.request_parameters} if getattr(self, 'request_parameters', None) else {}),
         )
         self.last_provider_response = response.model_dump() if hasattr(response, "model_dump") else None
         usage = getattr(response, "usage", None)

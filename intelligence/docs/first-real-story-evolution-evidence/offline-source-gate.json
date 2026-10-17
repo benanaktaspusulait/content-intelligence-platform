@@ -1,0 +1,42 @@
+{
+  "evidenceOrigin": "DETERMINISTIC_OFFLINE_CHECK_OF_UNCHANGED_REAL_RESPONSE",
+  "newProviderCalls": 0,
+  "doesNotReplaceOriginalReceipt": true,
+  "result": {
+    "eligible": false,
+    "status": "INSUFFICIENT_TWO_CANDIDATE_RESULT",
+    "candidates": [
+      {
+        "candidateId": "candidate-1",
+        "status": "UNKNOWN",
+        "eligible": false,
+        "errors": [
+          "Missing/extraneous narrative evidence: motivation",
+          "Missing/extraneous narrative evidence: progression",
+          "Unestablished protected fact: premise",
+          "Unestablished protected fact: rule",
+          "Unestablished protected fact: continuity"
+        ],
+        "semanticFidelity": "UNKNOWN_REQUIRES_INDEPENDENT_REVIEW",
+        "evidenceScope": "EXACT_PROTECTED_TEXT_FACTS_ONLY",
+        "candidateSha256": "7ec0ee071b06e13b4171c4cb68d4058b3d6de8109d32c5cc3e6a339b86a0983b"
+      },
+      {
+        "candidateId": "candidate-2",
+        "status": "UNKNOWN",
+        "eligible": false,
+        "errors": [
+          "Missing/extraneous narrative evidence: motivation",
+          "Missing/extraneous narrative evidence: progression",
+          "Unestablished protected fact: rule",
+          "Unestablished protected fact: continuity"
+        ],
+        "semanticFidelity": "UNKNOWN_REQUIRES_INDEPENDENT_REVIEW",
+        "evidenceScope": "EXACT_PROTECTED_TEXT_FACTS_ONLY",
+        "candidateSha256": "50bae8834df06f6092a37947d422e136c41c72ea80838057beecf2e7156bb088"
+      }
+    ],
+    "errors": [],
+    "semanticFidelity": "UNKNOWN_REQUIRES_INDEPENDENT_REVIEW"
+  }
+}

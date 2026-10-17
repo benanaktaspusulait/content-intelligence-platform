@@ -24,6 +24,8 @@ def sha(value):
 
 
 def main():
+    if '--identity-fidelity-followup' in sys.argv:
+        return identity_fidelity_followup()
     if '--repaired-contract' in sys.argv:
         return repaired_contract()
     evidence = ROOT / 'intelligence/backend/target/disposable-owner-http/run-oT9HS7/real-execution-runtime'
@@ -183,6 +185,68 @@ def repaired_contract():
     target.write_text(json.dumps(output,indent=2,ensure_ascii=False)+'\n')
     print(json.dumps({'manifest':str(target),'recomputedMaximumReservationUsd':str(total),'providerCalls':0,
                       'sourceScopeSha256':source_scope}))
+
+
+def identity_fidelity_followup():
+    """Prepare a fresh direct-identity grant; leave historical manifests intact."""
+    from app.workflow.story_experiment import preview, sha as fingerprint, VERSION
+    original = json.loads((ROOT/'intelligence/docs/REAL_STORY_EXPERIMENT_REPAIRED_MANIFEST.json').read_text())
+    proof_path = ROOT/'intelligence/backend/target/story-model-fidelity-fix-dry-run.json'
+    proof = json.loads(proof_path.read_text())
+    if proof.get('realProviderCalls') != 0 or proof.get('productionDbWrites') != 0:
+        raise SystemExit('Non-billable complete workflow proof required')
+    trace = proof['trace']; scope = trace['scope']
+    if scope != original['sourceScope']:
+        raise SystemExit('Protected source changed; separate owner decision required')
+    evidence = ROOT/'intelligence/docs/story-model-fidelity-fix-evidence'
+    catalog = json.loads((evidence/'live-model-catalog.json').read_text())
+    review_catalog = json.loads((evidence/'openai-review-model.json').read_text())
+    if (catalog['statusCode'] != 200 or 'deepseek-flash' not in {m['id'] for m in catalog['body']['data']}
+            or review_catalog['statusCode'] != 200 or review_catalog['body']['id'] != 'gpt-4o-mini-2024-07-18'):
+        raise SystemExit('Exact non-inference model discovery is required')
+    environment = {'WORKFLOW_STORY_PILOT_MODEL_POLICY':'DIRECT_FLASH_TEXT_V1',
+        'WORKFLOW_STORY_MODEL':'deepseek-flash','WORKFLOW_STORY_INPUT_USD_PER_MILLION':'.3',
+        'WORKFLOW_STORY_OUTPUT_USD_PER_MILLION':'1.2',
+        'WORKFLOW_STORY_REVIEW_MODEL':'gpt-4o-mini-2024-07-18',
+        'WORKFLOW_STORY_REVIEW_INPUT_USD_PER_MILLION':'.15','WORKFLOW_STORY_REVIEW_OUTPUT_USD_PER_MILLION':'.6'}
+    os.environ.update(environment)
+    common={'canonicalStoryFeasibilityContext':scope['canonicalStoryFeasibilityContext'],
+        'approvedStoryText':scope['sourceStory'],'sourceFingerprint':scope['sourceStorySha256'],
+        'objective':scope['objective'],'roundNumber':1,
+        'storyExperiment':{'version':VERSION,'requestedAlternativeCount':2,
+            'sourceStorySha256':scope['sourceStorySha256'],'sourceScopeSha256':scope['sourceScopeSha256'],
+            'protectedAnchors':scope['protectedAnchors']}}
+    generation={**common,'inputMode':'DETAILED_STORY','storyGenerationMode':'IMPROVE_EXISTING_STORY',
+        'requestedAlternativeCount':2,'lockedRequirements':['PRESERVE_CORE_PREMISE','PRESERVE_CHARACTER_IDENTITY','PRESERVE_PHYSICAL_RULE','PRESERVE_ENDING']}
+    review={**common,'reviewPolicyVersion':'creative-story-merit-v1'}
+    operations=[preview('STORY',scope['sourceStory'],generation),preview('STORY_REVIEW',scope['sourceStory'],review)]
+    per_request=max(Decimal(str(x['maximumCalculatedUsd'])) for x in operations).quantize(Decimal('.000001'),rounding=ROUND_CEILING)
+    for op in operations:op['maxCostUsd']=float(per_request)
+    if operations != trace['authorization']['operations']:
+        raise SystemExit('Current bindings differ from complete mocked workflow proof')
+    grant={**original['authorizationTemplate'],'operations':operations,'maxTotalUsd':float(per_request*2),
+        'authorizePaidInference':False,'confirmSourceAuthority':False,
+        'idempotencyKey':'story-identity-fidelity-v2-'+fingerprint({'scope':scope['sourceScopeSha256'],'operations':operations})[:32]}
+    manifest={'experimentVersion':VERSION,'followupContractVersion':'direct-identity-exact-evidence-v2',
+        'sourceScope':scope,'sourceScopeSha256':scope['sourceScopeSha256'],'sourceStorySha256':scope['sourceStorySha256'],
+        'operations':operations,'authorizationTemplate':grant,'ownerAuthorization':'NOT_GRANTED',
+        'maximumRequests':2,'maximumTotalReservationUsd':str(per_request*2),
+        'perRequestReservationUsd':str(per_request),'maxRunSeconds':600,'automaticRetries':False,'fallback':False,
+        'requiredDisposableEnvironmentOverrides':environment,'productionConfigurationChanged':False,
+        'pricingBasis':'2026-10-17 official DeepSeek peak uncached rates, OpenAI standard rates; no cache/discount assumed',
+        'pricingSources':['https://api-docs.deepseek.com/quick_start/pricing/','https://developers.openai.com/api/docs/models/gpt-4o-mini'],
+        'reviewPayloadSha256':'NOT_CREATED_UNTIL_DURABLE_ACCEPTED_CANDIDATES',
+        'storyRequestPreview':preview_story_request('STORY',scope['sourceStory'],generation),
+        'reviewTemplatePreview':preview_story_request('STORY_REVIEW',scope['sourceStory'],review),
+        'disposableProofSha256':hashlib.sha256(proof_path.read_bytes()).hexdigest(),
+        'realProviderCalls':0,'providerSpendUsd':0,'preparedOnly':True,
+        'limitations':['Model catalog discovery is not an inference success guarantee',
+            'OpenAI snapshot is documented deprecated but account metadata lookup returned 200',
+            'No alias accepted; exact requested/returned identity required',
+            'Source textual mapping does not establish independent semantic fidelity']}
+    target=ROOT/'intelligence/docs/REAL_STORY_IDENTITY_FIDELITY_FOLLOWUP_MANIFEST.json'
+    target.write_text(json.dumps(manifest,indent=2,ensure_ascii=False)+'\n')
+    print(json.dumps({'manifest':str(target),'maximumTotalReservationUsd':str(per_request*2),'providerCalls':0,'ownerAuthorization':'NOT_GRANTED'}))
 
 
 if __name__ == '__main__':

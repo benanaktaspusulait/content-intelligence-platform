@@ -1,0 +1,13 @@
+{
+  "endpoint": "GET https://api.openai.com/v1/models/gpt-4o-mini-2024-07-18",
+  "statusCode": 200,
+  "body": {
+    "id": "gpt-4o-mini-2024-07-18",
+    "object": "model",
+    "created": 1721172717,
+    "owned_by": "system",
+    "shutdown_date": "2027-01-14"
+  },
+  "nonInference": true,
+  "inferenceCalls": 0
+}

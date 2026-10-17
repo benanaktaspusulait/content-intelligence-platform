@@ -1,0 +1,35 @@
+{
+  "newInferenceCalls": 0,
+  "rawResponseSha256": "10dc1482d66514e153835b6e3cd90f4e8b58ff1e1d61f51fa99e42424f15fef3",
+  "unchangedResponse": true,
+  "sourceValidation": {
+    "eligible": false,
+    "status": "INSUFFICIENT_TWO_CANDIDATE_RESULT",
+    "candidates": [
+      {
+        "candidateId": "candidate-1",
+        "status": "SOURCE_VIOLATION",
+        "eligible": false,
+        "errors": [
+          "Claimed protected fact absent from story: continuity"
+        ],
+        "semanticFidelity": "UNKNOWN_REQUIRES_INDEPENDENT_REVIEW",
+        "evidenceScope": "EXACT_PROTECTED_TEXT_FACTS_ONLY",
+        "candidateSha256": "4b04e664b70ea9372049231119f2ad786cf5ed0fc1a416c0941101d53167c739"
+      },
+      {
+        "candidateId": "candidate-2",
+        "status": "SOURCE_VIOLATION",
+        "eligible": false,
+        "errors": [
+          "Claimed protected fact absent from story: continuity"
+        ],
+        "semanticFidelity": "UNKNOWN_REQUIRES_INDEPENDENT_REVIEW",
+        "evidenceScope": "EXACT_PROTECTED_TEXT_FACTS_ONLY",
+        "candidateSha256": "7bd179926c406f1aa2566b1f513daef9cec355ffebc15517f49168d2d92fa41b"
+      }
+    ],
+    "errors": [],
+    "semanticFidelity": "UNKNOWN_REQUIRES_INDEPENDENT_REVIEW"
+  }
+}

@@ -674,6 +674,23 @@ def perform_role(role: str, text: str, context: dict[str, Any], provider: LLMPro
                        '{anchorId,proposedChange,justification} in protectedChanges and use PROTECTED_CHANGE_PROPOSAL; it will not be '
                        'sent for this pilot review. Missing protected evidence is UNKNOWN. Do not claim semantic verification. '
                        'Prefer two genuinely different causal/visual approaches with natural timing, not two camera variants.')
+            system += (' Evidence contract v2: write each complete narrative first, then copy exact contiguous substrings '
+                       'from that same narrative into openingVisualState, motivation, progression and ending. '
+                       'Do not summarize or combine separated sentences in these four evidence fields. '
+                       'If motivation needs a stated goal, include that goal in the narrative itself before citing it. '
+                       'For EVERY protected anchor use its supplied id unchanged, copy sourceQuote exactly from the anchor, '
+                       'and copy candidateQuote exactly from your candidate text. This pilot requires the short protected '
+                       'clauses themselves verbatim within natural affirmative sentences; pronoun substitutions or semantic '
+                       'paraphrases are not established by this deterministic gate and remain UNKNOWN. '
+                       'Only these protected clauses are text-locked: all other narrative wording, actions, staging and '
+                       'progression may be revised when consistent with them. Do not add new multiplication triggers or '
+                       'independent mechanics; a stated rule plus contradictory events is not compliance. '
+                       'If preserving a lock prevents the intended creative change, declare PROTECTED_CHANGE_PROPOSAL '
+                       'with anchorId, proposedChange and justification, rather than claiming SOURCE_COMPLIANT. '
+                       'Metadata never overrides the narrative. Bindings may optionally include candidateStart/candidateEnd '
+                       'and sourceStart/sourceEnd as exact Unicode code-point offsets; if supplied they must match. '
+                       'Self-check both distinct complete narratives and every excerpt without adding explanatory prose. '
+                       'A matching excerpt proves a bounded textual mapping, never independent semantic or visual fidelity.')
         elif role == 'STORY_REVIEW':
             safe_context['candidates'] = [{key: c[key] for key in ('candidateId', 'title', 'text') if key in c}
                                           for c in context.get('candidates', [])]

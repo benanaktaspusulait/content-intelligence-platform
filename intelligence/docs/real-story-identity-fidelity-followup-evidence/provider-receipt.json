@@ -1,0 +1,710 @@
+{
+  "role": "STORY",
+  "model": "deepseek-flash",
+  "runId": "b0a57f9c-d6d0-45ae-b1c2-d00ef129c122",
+  "usage": {
+    "total_tokens": 5348,
+    "prompt_tokens": 3926,
+    "completion_tokens": 1422,
+    "prompt_tokens_details": {
+      "text_tokens": null,
+      "audio_tokens": null,
+      "image_tokens": null,
+      "cached_tokens": 384,
+      "cache_write_tokens": null
+    },
+    "prompt_cache_hit_tokens": 384,
+    "prompt_cache_miss_tokens": 3542,
+    "completion_tokens_details": null
+  },
+  "result": {
+    "alternatives": [
+      {
+        "text": "Pip the rabbit reaches to smooth one sticky note onto the toy cabinet's bare front panel, but it clings to Pip's fingertip while the cabinet stays untouched. Pip pinches the note with the other paw to peel it free, and it splits into two notes, one stuck to each paw. Pip slaps both paws toward the cabinet, but the notes bounce back and double into four, fluttering up Pip's arms. Pip shakes both arms hard to fling the four notes away, and they split into eight, plastering Pip's chest and cheeks. Pip freezes, watching the eight notes ripple and settle, and realizes that every removal or transfer attempt multiplies the notes. Pip deliberately stops struggling and stands still, letting the notes rest. A sneeze bursts out of Pip, and the blast peels the notes off and scatters them across the cabinet. Pip is relieved, but the cabinet remains messy.",
+        "title": "The Sticky Note That Won't Leave Pip",
+        "ending": "Pip is relieved, but the cabinet remains messy.",
+        "motivation": "Pip pinches the note with the other paw to peel it free",
+        "weaknesses": [
+          "The arm-shake fling is still a thin-object contact moment that may need careful staging.",
+          "The freeze beat depends on a readable held pose to sell the realization."
+        ],
+        "candidateId": "candidate-1",
+        "progression": "Pip shakes both arms hard to fling the four notes away, and they split into eight, plastering Pip's chest and cheeks.",
+        "schemaVersion": "story-pilot-candidates-v1",
+        "sourceContract": {
+          "status": "SOURCE_COMPLIANT",
+          "bindings": [
+            {
+              "anchorId": "identity",
+              "sourceQuote": "Pip the rabbit",
+              "candidateQuote": "Pip the rabbit"
+            },
+            {
+              "anchorId": "premise",
+              "sourceQuote": "it clings to Pip's fingertip while the cabinet stays untouched",
+              "candidateQuote": "it clings to Pip's fingertip while the cabinet stays untouched"
+            },
+            {
+              "anchorId": "rule",
+              "sourceQuote": "every removal or transfer attempt multiplies the notes",
+              "candidateQuote": "every removal or transfer attempt multiplies the notes"
+            },
+            {
+              "anchorId": "continuity",
+              "sourceQuote": "Pip remains covered until a sneeze scatters the notes onto the cabinet",
+              "candidateQuote": "Pip remains covered until a sneeze scatters the notes onto the cabinet"
+            },
+            {
+              "anchorId": "ending",
+              "sourceQuote": "Pip is relieved, but the cabinet remains messy.",
+              "candidateQuote": "Pip is relieved, but the cabinet remains messy."
+            }
+          ],
+          "protectedChanges": []
+        },
+        "durationSeconds": 15,
+        "productionRisks": [
+          "THIN_OBJECT: sticky notes contacting paws and face require precise thin-object handling.",
+          "FACE_CONTACT: notes plastering Pip's cheeks risk face/hair continuity issues.",
+          "SNEEZE_BURST: the scatter needs a clear directional force to read as one motion."
+        ],
+        "proposedChanges": [
+          "Replaces the door-edge push with an arm-shake fling so the escalation reads as one clear physical action per beat.",
+          "Moves the realization to a held freeze before the sneeze, giving the reversal its own beat instead of crowding the final seconds.",
+          "Removes the mirror turn to keep the payoff on Pip and the cabinet rather than a reflection."
+        ],
+        "openingVisualState": "Pip the rabbit reaches to smooth one sticky note onto the toy cabinet's bare front panel, but it clings to Pip's fingertip while the cabinet stays untouched."
+      },
+      {
+        "text": "Pip the rabbit presses one sticky note toward the toy cabinet's empty front panel, but it clings to Pip's fingertip while the cabinet stays untouched. Pip tries to flick the note off with a quick wrist snap, and it splits into two notes, one on each paw. Pip claps both paws together to crush the notes flat, but they spring apart into four and climb Pip's sleeves. Pip backs away and brushes the four notes off against the cabinet's side, and they split into eight, wrapping Pip's shoulders and muzzle. Pip stares at the doubling notes, breathing hard, and realizes that every removal or transfer attempt multiplies the notes. Pip slowly lowers both arms and stops moving entirely, letting the notes cling. A sneeze jerks through Pip, and the notes blow off in a burst and land across the cabinet. Pip is relieved, but the cabinet remains messy.",
+        "title": "Pip Stops Fighting the Notes",
+        "ending": "Pip is relieved, but the cabinet remains messy.",
+        "motivation": "Pip tries to flick the note off with a quick wrist snap",
+        "weaknesses": [
+          "The paw-clap crush is a fast action that may read as ambiguous at 480p.",
+          "The backward step plus brush-off risks compressing two actions into one short beat."
+        ],
+        "candidateId": "candidate-2",
+        "progression": "Pip backs away and brushes the four notes off against the cabinet's side, and they split into eight, wrapping Pip's shoulders and muzzle.",
+        "schemaVersion": "story-pilot-candidates-v1",
+        "sourceContract": {
+          "status": "SOURCE_COMPLIANT",
+          "bindings": [
+            {
+              "anchorId": "identity",
+              "sourceQuote": "Pip the rabbit",
+              "candidateQuote": "Pip the rabbit"
+            },
+            {
+              "anchorId": "premise",
+              "sourceQuote": "it clings to Pip's fingertip while the cabinet stays untouched",
+              "candidateQuote": "it clings to Pip's fingertip while the cabinet stays untouched"
+            },
+            {
+              "anchorId": "rule",
+              "sourceQuote": "every removal or transfer attempt multiplies the notes",
+              "candidateQuote": "every removal or transfer attempt multiplies the notes"
+            },
+            {
+              "anchorId": "continuity",
+              "sourceQuote": "Pip remains covered until a sneeze scatters the notes onto the cabinet",
+              "candidateQuote": "Pip remains covered until a sneeze scatters the notes onto the cabinet"
+            },
+            {
+              "anchorId": "ending",
+              "sourceQuote": "Pip is relieved, but the cabinet remains messy.",
+              "candidateQuote": "Pip is relieved, but the cabinet remains messy."
+            }
+          ],
+          "protectedChanges": []
+        },
+        "durationSeconds": 15,
+        "productionRisks": [
+          "THIN_OBJECT: notes on paws, sleeves and muzzle need careful thin-object contact.",
+          "FACE_CONTACT: notes wrapping the muzzle risk face continuity problems.",
+          "MULTI_OBJECT_STACKING: eight notes spreading across shoulders and cabinet may be hard to track."
+        ],
+        "proposedChanges": [
+          "Uses a wrist-flick and a paw-clap as the first two escalation actions, giving each beat a distinct silhouette.",
+          "Adds a backward step before the brush-off so Pip's retreat visibly fails and motivates the freeze.",
+          "Holds the realization on a breath and lowered arms before the sneeze, separating reversal from payoff."
+        ],
+        "openingVisualState": "Pip the rabbit presses one sticky note toward the toy cabinet's empty front panel, but it clings to Pip's fingertip while the cabinet stays untouched."
+      }
+    ],
+    "storyQuality": {
+      "pairs": [
+        {
+          "left": 1,
+          "right": 2,
+          "sharedDimensions": [
+            "primaryRuleOrQuestion",
+            "mainObjectOrSituation",
+            "endingFunction"
+          ],
+          "lexicalSimilarity": 0.214,
+          "eventSequenceMatch": false,
+          "differentDimensions": [
+            "characterActions",
+            "openingVisualPromise",
+            "characterGoal",
+            "majorStoryChanges",
+            "centralObstacle",
+            "escalation"
+          ],
+          "dimensionDescriptions": null
+        }
+      ],
+      "method": "story-structure-v1",
+      "summary": "Candidates differ across multiple material narrative dimensions.",
+      "candidates": [
+        {
+          "preflight": {
+            "ending": "resolution",
+            "opening": "SUPPORTED",
+            "concerns": [],
+            "mechanism": "SUPPORTED",
+            "strengths": [
+              "The opening provides an observable focus or situation.",
+              "The story contains a meaningful progression signal.",
+              "Primary unusual rule(s): cabinet interaction."
+            ],
+            "progression": "SUPPORTED",
+            "characterAgency": "SUPPORTED",
+            "productionRisks": [
+              "Repeated attachment/contact needs clear continuity evidence."
+            ]
+          },
+          "assessment": {
+            "risks": [],
+            "unknown": [
+              {
+                "family": "final_payoff",
+                "message": "A final event is described, but its creative effectiveness or audience payoff cannot be determined from text alone.",
+                "outcome": "UNKNOWN",
+                "dimension": "endingPayoff"
+              },
+              {
+                "family": "consistency",
+                "message": "No obvious rule contradictions detected, but full consistency check requires production plan analysis.",
+                "outcome": "UNKNOWN",
+                "dimension": "ruleConsistency"
+              },
+              {
+                "family": "visual_novelty",
+                "message": "Frame-zero visual legibility and hook strength cannot be assessed from story text alone.",
+                "outcome": "NOT_EVALUATED",
+                "dimension": "visualLegibility"
+              },
+              {
+                "family": "ai_producibility",
+                "message": "AI producibility requires a production prompt and cannot be assessed from story text alone.",
+                "outcome": "NOT_EVALUATED",
+                "dimension": "aiProducibility"
+              },
+              {
+                "family": "progression",
+                "message": "Pacing and beat timing cannot be assessed without a production plan.",
+                "outcome": "NOT_EVALUATED",
+                "dimension": "pacing"
+              }
+            ],
+            "strengths": [
+              {
+                "family": "concept_strength",
+                "message": "The story describes a character situation or goal.",
+                "outcome": "PASS",
+                "evidence": "Pip the rabbit reaches to smooth one sticky note onto the toy cabinet's bare front panel, but it clings to Pip's fingertip while the cabinet stays unt",
+                "severity": "INFO",
+                "dimension": "characterGoal"
+              },
+              {
+                "family": "concept_strength",
+                "message": "The story describes an obstacle or challenge.",
+                "outcome": "PASS",
+                "evidence": "Pip pinches the note with the other paw to peel it free, and it splits into two notes, one stuck to each paw.",
+                "severity": "INFO",
+                "dimension": "obstacle"
+              },
+              {
+                "family": "concept_strength",
+                "message": "The character takes 4 distinct actions.",
+                "outcome": "PASS",
+                "evidence": "realizes, shakes, attempt, stands",
+                "severity": "INFO",
+                "dimension": "characterInitiative"
+              },
+              {
+                "family": "progression",
+                "message": "The story contains cause-and-effect progression signals.",
+                "outcome": "PASS",
+                "severity": "INFO",
+                "dimension": "progression"
+              },
+              {
+                "family": "escalation",
+                "message": "The story contains escalation signals (increasing intensity or complexity).",
+                "outcome": "PASS",
+                "severity": "INFO",
+                "dimension": "escalation"
+              },
+              {
+                "family": "progression",
+                "message": "The story contains 4 distinct action types, suggesting multiple attempts or strategies.",
+                "outcome": "PASS",
+                "severity": "INFO",
+                "dimension": "distinctAttempts"
+              },
+              {
+                "family": "final_payoff",
+                "message": "The story describes a final event.",
+                "outcome": "PASS",
+                "evidence": "A sneeze bursts out of Pip, and the blast peels the notes off and scatters them across the cabinet. Pip is relieved, but the cabinet remains messy.",
+                "severity": "INFO",
+                "dimension": "endingEvent"
+              }
+            ],
+            "candidateId": "candidate-1",
+            "fingerprint": "4b04e664b70ea9372049231119f2ad786cf5ed0fc1a416c0941101d53167c739"
+          },
+          "structuralEvidence": {
+            "escalation": "Pip freezes, watching the eight notes ripple and settle, and realizes that every removal or transfer attempt multiplies the notes.",
+            "characterGoal": null,
+            "eventSequence": [
+              "adhere",
+              "remove",
+              "shake",
+              "multiply"
+            ],
+            "mainCharacter": null,
+            "centralPremise": null,
+            "endingFunction": "resolution",
+            "centralObstacle": "Pip pinches the note with the other paw to peel it free, and it splits into two notes, one stuck to each paw.",
+            "majorStoryChanges": "Pip the rabbit reaches to smooth one sticky note onto the toy cabinet's bare front panel, but it clings to Pip's fingertip while the cabinet stays untouched.",
+            "openingVisualPromise": "Pip the rabbit reaches to smooth one sticky note onto the toy cabinet's bare front panel, but it clings to Pip's fingertip while the cabinet stays untouched.",
+            "mainObjectOrSituation": "toy cabinet",
+            "primaryRuleOrQuestion": "cabinet interaction",
+            "reasonToContinueWatching": "Pip the rabbit reaches to smooth one sticky note onto the toy cabinet's bare front panel, but it clings to Pip's fingertip while the cabinet stays untouched.",
+            "productionSensitiveElements": [
+              "contact continuity"
+            ]
+          }
+        },
+        {
+          "preflight": {
+            "ending": "resolution",
+            "opening": "SUPPORTED",
+            "concerns": [],
+            "mechanism": "SUPPORTED",
+            "strengths": [
+              "The opening provides an observable focus or situation.",
+              "The story contains a meaningful progression signal.",
+              "Primary unusual rule(s): cabinet interaction."
+            ],
+            "progression": "SUPPORTED",
+            "characterAgency": "SUPPORTED",
+            "productionRisks": [
+              "Repeated attachment/contact needs clear continuity evidence."
+            ]
+          },
+          "assessment": {
+            "risks": [],
+            "unknown": [
+              {
+                "family": "final_payoff",
+                "message": "A final event is described, but its creative effectiveness or audience payoff cannot be determined from text alone.",
+                "outcome": "UNKNOWN",
+                "dimension": "endingPayoff"
+              },
+              {
+                "family": "consistency",
+                "message": "No obvious rule contradictions detected, but full consistency check requires production plan analysis.",
+                "outcome": "UNKNOWN",
+                "dimension": "ruleConsistency"
+              },
+              {
+                "family": "visual_novelty",
+                "message": "Frame-zero visual legibility and hook strength cannot be assessed from story text alone.",
+                "outcome": "NOT_EVALUATED",
+                "dimension": "visualLegibility"
+              },
+              {
+                "family": "ai_producibility",
+                "message": "AI producibility requires a production prompt and cannot be assessed from story text alone.",
+                "outcome": "NOT_EVALUATED",
+                "dimension": "aiProducibility"
+              },
+              {
+                "family": "progression",
+                "message": "Pacing and beat timing cannot be assessed without a production plan.",
+                "outcome": "NOT_EVALUATED",
+                "dimension": "pacing"
+              }
+            ],
+            "strengths": [
+              {
+                "family": "concept_strength",
+                "message": "The story describes a character situation or goal.",
+                "outcome": "PASS",
+                "evidence": "Pip the rabbit presses one sticky note toward the toy cabinet's empty front panel, but it clings to Pip's fingertip while the cabinet stays untouched.",
+                "severity": "INFO",
+                "dimension": "characterGoal"
+              },
+              {
+                "family": "concept_strength",
+                "message": "The story describes an obstacle or challenge.",
+                "outcome": "PASS",
+                "evidence": "Pip claps both paws together to crush the notes flat, but they spring apart into four and climb Pip's sleeves.",
+                "severity": "INFO",
+                "dimension": "obstacle"
+              },
+              {
+                "family": "concept_strength",
+                "message": "The character takes 5 distinct actions.",
+                "outcome": "PASS",
+                "evidence": "presses, realizes, attempt, tries, climb",
+                "severity": "INFO",
+                "dimension": "characterInitiative"
+              },
+              {
+                "family": "progression",
+                "message": "The story contains cause-and-effect progression signals.",
+                "outcome": "PASS",
+                "severity": "INFO",
+                "dimension": "progression"
+              },
+              {
+                "family": "escalation",
+                "message": "The story contains escalation signals (increasing intensity or complexity).",
+                "outcome": "PASS",
+                "severity": "INFO",
+                "dimension": "escalation"
+              },
+              {
+                "family": "progression",
+                "message": "The story contains 5 distinct action types, suggesting multiple attempts or strategies.",
+                "outcome": "PASS",
+                "severity": "INFO",
+                "dimension": "distinctAttempts"
+              },
+              {
+                "family": "final_payoff",
+                "message": "The story describes a final event.",
+                "outcome": "PASS",
+                "evidence": "A sneeze jerks through Pip, and the notes blow off in a burst and land across the cabinet. Pip is relieved, but the cabinet remains messy.",
+                "severity": "INFO",
+                "dimension": "endingEvent"
+              }
+            ],
+            "candidateId": "candidate-2",
+            "fingerprint": "7bd179926c406f1aa2566b1f513daef9cec355ffebc15517f49168d2d92fa41b"
+          },
+          "structuralEvidence": {
+            "escalation": "Pip backs away and brushes the four notes off against the cabinet's side, and they split into eight, wrapping Pip's shoulders and muzzle.",
+            "characterGoal": "Pip tries to flick the note off with a quick wrist snap, and it splits into two notes, one on each paw.",
+            "eventSequence": [
+              "attempt",
+              "multiply"
+            ],
+            "mainCharacter": null,
+            "centralPremise": null,
+            "endingFunction": "resolution",
+            "centralObstacle": null,
+            "majorStoryChanges": "Pip the rabbit presses one sticky note toward the toy cabinet's empty front panel, but it clings to Pip's fingertip while the cabinet stays untouched.",
+            "openingVisualPromise": "Pip the rabbit presses one sticky note toward the toy cabinet's empty front panel, but it clings to Pip's fingertip while the cabinet stays untouched.",
+            "mainObjectOrSituation": "toy cabinet",
+            "primaryRuleOrQuestion": "cabinet interaction",
+            "reasonToContinueWatching": "Pip the rabbit presses one sticky note toward the toy cabinet's empty front panel, but it clings to Pip's fingertip while the cabinet stays untouched.",
+            "productionSensitiveElements": [
+              "contact continuity"
+            ]
+          }
+        }
+      ],
+      "differences": [
+        "Alternative 1 vs 2: different characterActions, openingVisualPromise, characterGoal, majorStoryChanges, centralObstacle, escalation; shared primaryRuleOrQuestion, mainObjectOrSituation, endingFunction."
+      ],
+      "classification": "DISTINCT",
+      "recommendation": {
+        "isTied": true,
+        "reason": "No evidence-supported recommendation yet.",
+        "whyNot": [],
+        "stillUnknown": [
+          "aiProducibility",
+          "endingPayoff",
+          "pacing",
+          "ruleConsistency",
+          "visualLegibility"
+        ],
+        "bestCandidateId": null
+      },
+      "variationClass": "MATERIAL_VARIATION",
+      "classificationReason": "Candidates differ across multiple material narrative dimensions."
+    }
+  },
+  "binding": {
+    "role": "STORY",
+    "model": "deepseek-flash",
+    "fallback": false,
+    "provider": "deepseek",
+    "transport": "REAL_PROVIDER_ADAPTER",
+    "payloadBytes": 10221,
+    "systemSha256": "84f6882229fd8ee8c96d064e32588794105fef0af365e7d648eac28d97a9e30d",
+    "schemaVersion": "story-pilot-candidates-v1",
+    "templateSha256": "52fe17d948304f2fc76555b974a4e0566bcf1a70ff8b9157c9f39b147dae5304",
+    "maxOutputTokens": 4000,
+    "automaticRetries": false,
+    "experimentVersion": "REAL_CREATIVE_STORY_EVOLUTION_PILOT_V1",
+    "maximumInputBytes": 24000,
+    "sourceScopeSha256": "05a5625b415331d2e625c28fa328bd6c0c9bfec5a93aaa77dbce9f5fc7703276",
+    "sourceStorySha256": "ba352d486c4252c5c6fefe585ad976c0b6f73c299f7554863848bdd842a99b3d",
+    "inputUsdPerMillion": 0.3,
+    "modelIdentityPolicy": {
+      "profile": "DIRECT_FLASH_TEXT_V1",
+      "version": "exact-provider-model-v2",
+      "aliasPolicy": "NONE",
+      "inputModality": "TEXT_ONLY",
+      "requestedModel": "deepseek-flash",
+      "pricingIdentity": "deepseek-flash",
+      "requestParameters": {
+        "thinking": {
+          "type": "disabled"
+        }
+      },
+      "requiredReturnedModel": "deepseek-flash"
+    },
+    "outputUsdPerMillion": 1.2,
+    "implementationSha256": "e5afcdae7d1ce4728f5dc35158e3cb7b68d19aded9f46e1d10f0e63d5900096f",
+    "maximumCalculatedUsd": 0.0099303,
+    "effectiveRequestSha256": "9911fb57fc276c6631bcb1aea4378024a55cf00388509fd63b0dc83cb77813e1",
+    "evidenceContractVersion": "exact-protected-facts-and-narrative-excerpts-v2"
+  },
+  "provider": "deepseek",
+  "requestId": "39470561-a93c-3596-af7c-6177727abd88",
+  "retrySafe": false,
+  "evidenceType": "MODEL_GENERATION",
+  "actualCostUsd": 0.0028842,
+  "billingStatus": "KNOWN_INCURRED",
+  "modelIdentity": {
+    "verified": true,
+    "aliasApplied": false,
+    "policyVersion": "exact-provider-model-v2",
+    "requestedModel": "deepseek-flash",
+    "pricingIdentity": "deepseek-flash",
+    "actualReturnedModel": "deepseek-flash"
+  },
+  "responseSha256": "10dc1482d66514e153835b6e3cd90f4e8b58ff1e1d61f51fa99e42424f15fef3",
+  "processingStatus": "LOCALLY_REJECTED",
+  "requestStartedAt": "2026-10-17T19:31:11.537194+00:00",
+  "responseReceived": true,
+  "sourceValidation": {
+    "errors": [],
+    "status": "INSUFFICIENT_TWO_CANDIDATE_RESULT",
+    "eligible": false,
+    "candidates": [
+      {
+        "errors": [
+          "Claimed protected fact absent from story: continuity"
+        ],
+        "status": "SOURCE_VIOLATION",
+        "eligible": false,
+        "candidateId": "candidate-1",
+        "evidenceScope": "EXACT_PROTECTED_TEXT_FACTS_ONLY",
+        "candidateSha256": "4b04e664b70ea9372049231119f2ad786cf5ed0fc1a416c0941101d53167c739",
+        "semanticFidelity": "UNKNOWN_REQUIRES_INDEPENDENT_REVIEW"
+      },
+      {
+        "errors": [
+          "Claimed protected fact absent from story: continuity"
+        ],
+        "status": "SOURCE_VIOLATION",
+        "eligible": false,
+        "candidateId": "candidate-2",
+        "evidenceScope": "EXACT_PROTECTED_TEXT_FACTS_ONLY",
+        "candidateSha256": "7bd179926c406f1aa2566b1f513daef9cec355ffebc15517f49168d2d92fa41b",
+        "semanticFidelity": "UNKNOWN_REQUIRES_INDEPENDENT_REVIEW"
+      }
+    ],
+    "semanticFidelity": "UNKNOWN_REQUIRES_INDEPENDENT_REVIEW"
+  },
+  "evidenceProvenance": {
+    "model": "deepseek-flash",
+    "origin": "REAL_AI_PROVIDER",
+    "version": "creative-evidence-provenance-v1",
+    "provider": "deepseek",
+    "timestamp": "2026-10-17T19:31:18.406504Z",
+    "reviewerOrigin": "REAL_AI_PROVIDER",
+    "requestFingerprint": "9f15aec290f35c2576aaf8d6041f88a4ed2653933cc3b0379d35f164f77996ca",
+    "responseFingerprint": "742adc871c66ad38c46bc43b85627f1bb927a3edc6c7eb34a99880ac9c50cf18",
+    "reviewerIndependent": false,
+    "officialCalibrationEligible": false,
+    "realCapabilityStatisticsEligible": true
+  },
+  "providerDispatched": true,
+  "requestFingerprint": "9f15aec290f35c2576aaf8d6041f88a4ed2653933cc3b0379d35f164f77996ca",
+  "responseReceivedAt": "2026-10-17T19:31:18.370965+00:00",
+  "providerApiResponse": {
+    "id": "2e3e04df-fd81-4d47-a534-aec23d3fbee4",
+    "model": "deepseek-flash",
+    "usage": {
+      "total_tokens": 5348,
+      "prompt_tokens": 3926,
+      "completion_tokens": 1422,
+      "prompt_tokens_details": {
+        "text_tokens": null,
+        "audio_tokens": null,
+        "image_tokens": null,
+        "cached_tokens": 384,
+        "cache_write_tokens": null
+      },
+      "prompt_cache_hit_tokens": 384,
+      "prompt_cache_miss_tokens": 3542,
+      "completion_tokens_details": null
+    },
+    "object": "chat.completion",
+    "choices": [
+      {
+        "index": 0,
+        "message": {
+          "role": "assistant",
+          "audio": null,
+          "content": "{\"alternatives\":[{\"candidateId\":\"candidate-1\",\"title\":\"The Sticky Note That Won't Leave Pip\",\"text\":\"Pip the rabbit reaches to smooth one sticky note onto the toy cabinet's bare front panel, but it clings to Pip's fingertip while the cabinet stays untouched. Pip pinches the note with the other paw to peel it free, and it splits into two notes, one stuck to each paw. Pip slaps both paws toward the cabinet, but the notes bounce back and double into four, fluttering up Pip's arms. Pip shakes both arms hard to fling the four notes away, and they split into eight, plastering Pip's chest and cheeks. Pip freezes, watching the eight notes ripple and settle, and realizes that every removal or transfer attempt multiplies the notes. Pip deliberately stops struggling and stands still, letting the notes rest. A sneeze bursts out of Pip, and the blast peels the notes off and scatters them across the cabinet. Pip is relieved, but the cabinet remains messy.\",\"schemaVersion\":\"story-pilot-candidates-v1\",\"durationSeconds\":15,\"openingVisualState\":\"Pip the rabbit reaches to smooth one sticky note onto the toy cabinet's bare front panel, but it clings to Pip's fingertip while the cabinet stays untouched.\",\"motivation\":\"Pip pinches the note with the other paw to peel it free\",\"progression\":\"Pip shakes both arms hard to fling the four notes away, and they split into eight, plastering Pip's chest and cheeks.\",\"ending\":\"Pip is relieved, but the cabinet remains messy.\",\"proposedChanges\":[\"Replaces the door-edge push with an arm-shake fling so the escalation reads as one clear physical action per beat.\",\"Moves the realization to a held freeze before the sneeze, giving the reversal its own beat instead of crowding the final seconds.\",\"Removes the mirror turn to keep the payoff on Pip and the cabinet rather than a reflection.\"],\"weaknesses\":[\"The arm-shake fling is still a thin-object contact moment that may need careful staging.\",\"The freeze beat depends on a readable held pose to sell the realization.\"],\"productionRisks\":[\"THIN_OBJECT: sticky notes contacting paws and face require precise thin-object handling.\",\"FACE_CONTACT: notes plastering Pip's cheeks risk face/hair continuity issues.\",\"SNEEZE_BURST: the scatter needs a clear directional force to read as one motion.\"],\"sourceContract\":{\"status\":\"SOURCE_COMPLIANT\",\"bindings\":[{\"anchorId\":\"identity\",\"sourceQuote\":\"Pip the rabbit\",\"candidateQuote\":\"Pip the rabbit\"},{\"anchorId\":\"premise\",\"sourceQuote\":\"it clings to Pip's fingertip while the cabinet stays untouched\",\"candidateQuote\":\"it clings to Pip's fingertip while the cabinet stays untouched\"},{\"anchorId\":\"rule\",\"sourceQuote\":\"every removal or transfer attempt multiplies the notes\",\"candidateQuote\":\"every removal or transfer attempt multiplies the notes\"},{\"anchorId\":\"continuity\",\"sourceQuote\":\"Pip remains covered until a sneeze scatters the notes onto the cabinet\",\"candidateQuote\":\"Pip remains covered until a sneeze scatters the notes onto the cabinet\"},{\"anchorId\":\"ending\",\"sourceQuote\":\"Pip is relieved, but the cabinet remains messy.\",\"candidateQuote\":\"Pip is relieved, but the cabinet remains messy.\"}],\"protectedChanges\":[]}},{\"candidateId\":\"candidate-2\",\"title\":\"Pip Stops Fighting the Notes\",\"text\":\"Pip the rabbit presses one sticky note toward the toy cabinet's empty front panel, but it clings to Pip's fingertip while the cabinet stays untouched. Pip tries to flick the note off with a quick wrist snap, and it splits into two notes, one on each paw. Pip claps both paws together to crush the notes flat, but they spring apart into four and climb Pip's sleeves. Pip backs away and brushes the four notes off against the cabinet's side, and they split into eight, wrapping Pip's shoulders and muzzle. Pip stares at the doubling notes, breathing hard, and realizes that every removal or transfer attempt multiplies the notes. Pip slowly lowers both arms and stops moving entirely, letting the notes cling. A sneeze jerks through Pip, and the notes blow off in a burst and land across the cabinet. Pip is relieved, but the cabinet remains messy.\",\"schemaVersion\":\"story-pilot-candidates-v1\",\"durationSeconds\":15,\"openingVisualState\":\"Pip the rabbit presses one sticky note toward the toy cabinet's empty front panel, but it clings to Pip's fingertip while the cabinet stays untouched.\",\"motivation\":\"Pip tries to flick the note off with a quick wrist snap\",\"progression\":\"Pip backs away and brushes the four notes off against the cabinet's side, and they split into eight, wrapping Pip's shoulders and muzzle.\",\"ending\":\"Pip is relieved, but the cabinet remains messy.\",\"proposedChanges\":[\"Uses a wrist-flick and a paw-clap as the first two escalation actions, giving each beat a distinct silhouette.\",\"Adds a backward step before the brush-off so Pip's retreat visibly fails and motivates the freeze.\",\"Holds the realization on a breath and lowered arms before the sneeze, separating reversal from payoff.\"],\"weaknesses\":[\"The paw-clap crush is a fast action that may read as ambiguous at 480p.\",\"The backward step plus brush-off risks compressing two actions into one short beat.\"],\"productionRisks\":[\"THIN_OBJECT: notes on paws, sleeves and muzzle need careful thin-object contact.\",\"FACE_CONTACT: notes wrapping the muzzle risk face continuity problems.\",\"MULTI_OBJECT_STACKING: eight notes spreading across shoulders and cabinet may be hard to track.\"],\"sourceContract\":{\"status\":\"SOURCE_COMPLIANT\",\"bindings\":[{\"anchorId\":\"identity\",\"sourceQuote\":\"Pip the rabbit\",\"candidateQuote\":\"Pip the rabbit\"},{\"anchorId\":\"premise\",\"sourceQuote\":\"it clings to Pip's fingertip while the cabinet stays untouched\",\"candidateQuote\":\"it clings to Pip's fingertip while the cabinet stays untouched\"},{\"anchorId\":\"rule\",\"sourceQuote\":\"every removal or transfer attempt multiplies the notes\",\"candidateQuote\":\"every removal or transfer attempt multiplies the notes\"},{\"anchorId\":\"continuity\",\"sourceQuote\":\"Pip remains covered until a sneeze scatters the notes onto the cabinet\",\"candidateQuote\":\"Pip remains covered until a sneeze scatters the notes onto the cabinet\"},{\"anchorId\":\"ending\",\"sourceQuote\":\"Pip is relieved, but the cabinet remains messy.\",\"candidateQuote\":\"Pip is relieved, but the cabinet remains messy.\"}],\"protectedChanges\":[]}}]}",
+          "refusal": null,
+          "tool_calls": null,
+          "annotations": null,
+          "function_call": null
+        },
+        "logprobs": null,
+        "finish_reason": "stop"
+      }
+    ],
+    "created": 1792265471,
+    "metadata": null,
+    "moderation": null,
+    "service_tier": null,
+    "system_fingerprint": "e72d3c7f663d3e1383b00b3884cb4501"
+  },
+  "rawProviderResponse": "{\"alternatives\":[{\"candidateId\":\"candidate-1\",\"title\":\"The Sticky Note That Won't Leave Pip\",\"text\":\"Pip the rabbit reaches to smooth one sticky note onto the toy cabinet's bare front panel, but it clings to Pip's fingertip while the cabinet stays untouched. Pip pinches the note with the other paw to peel it free, and it splits into two notes, one stuck to each paw. Pip slaps both paws toward the cabinet, but the notes bounce back and double into four, fluttering up Pip's arms. Pip shakes both arms hard to fling the four notes away, and they split into eight, plastering Pip's chest and cheeks. Pip freezes, watching the eight notes ripple and settle, and realizes that every removal or transfer attempt multiplies the notes. Pip deliberately stops struggling and stands still, letting the notes rest. A sneeze bursts out of Pip, and the blast peels the notes off and scatters them across the cabinet. Pip is relieved, but the cabinet remains messy.\",\"schemaVersion\":\"story-pilot-candidates-v1\",\"durationSeconds\":15,\"openingVisualState\":\"Pip the rabbit reaches to smooth one sticky note onto the toy cabinet's bare front panel, but it clings to Pip's fingertip while the cabinet stays untouched.\",\"motivation\":\"Pip pinches the note with the other paw to peel it free\",\"progression\":\"Pip shakes both arms hard to fling the four notes away, and they split into eight, plastering Pip's chest and cheeks.\",\"ending\":\"Pip is relieved, but the cabinet remains messy.\",\"proposedChanges\":[\"Replaces the door-edge push with an arm-shake fling so the escalation reads as one clear physical action per beat.\",\"Moves the realization to a held freeze before the sneeze, giving the reversal its own beat instead of crowding the final seconds.\",\"Removes the mirror turn to keep the payoff on Pip and the cabinet rather than a reflection.\"],\"weaknesses\":[\"The arm-shake fling is still a thin-object contact moment that may need careful staging.\",\"The freeze beat depends on a readable held pose to sell the realization.\"],\"productionRisks\":[\"THIN_OBJECT: sticky notes contacting paws and face require precise thin-object handling.\",\"FACE_CONTACT: notes plastering Pip's cheeks risk face/hair continuity issues.\",\"SNEEZE_BURST: the scatter needs a clear directional force to read as one motion.\"],\"sourceContract\":{\"status\":\"SOURCE_COMPLIANT\",\"bindings\":[{\"anchorId\":\"identity\",\"sourceQuote\":\"Pip the rabbit\",\"candidateQuote\":\"Pip the rabbit\"},{\"anchorId\":\"premise\",\"sourceQuote\":\"it clings to Pip's fingertip while the cabinet stays untouched\",\"candidateQuote\":\"it clings to Pip's fingertip while the cabinet stays untouched\"},{\"anchorId\":\"rule\",\"sourceQuote\":\"every removal or transfer attempt multiplies the notes\",\"candidateQuote\":\"every removal or transfer attempt multiplies the notes\"},{\"anchorId\":\"continuity\",\"sourceQuote\":\"Pip remains covered until a sneeze scatters the notes onto the cabinet\",\"candidateQuote\":\"Pip remains covered until a sneeze scatters the notes onto the cabinet\"},{\"anchorId\":\"ending\",\"sourceQuote\":\"Pip is relieved, but the cabinet remains messy.\",\"candidateQuote\":\"Pip is relieved, but the cabinet remains messy.\"}],\"protectedChanges\":[]}},{\"candidateId\":\"candidate-2\",\"title\":\"Pip Stops Fighting the Notes\",\"text\":\"Pip the rabbit presses one sticky note toward the toy cabinet's empty front panel, but it clings to Pip's fingertip while the cabinet stays untouched. Pip tries to flick the note off with a quick wrist snap, and it splits into two notes, one on each paw. Pip claps both paws together to crush the notes flat, but they spring apart into four and climb Pip's sleeves. Pip backs away and brushes the four notes off against the cabinet's side, and they split into eight, wrapping Pip's shoulders and muzzle. Pip stares at the doubling notes, breathing hard, and realizes that every removal or transfer attempt multiplies the notes. Pip slowly lowers both arms and stops moving entirely, letting the notes cling. A sneeze jerks through Pip, and the notes blow off in a burst and land across the cabinet. Pip is relieved, but the cabinet remains messy.\",\"schemaVersion\":\"story-pilot-candidates-v1\",\"durationSeconds\":15,\"openingVisualState\":\"Pip the rabbit presses one sticky note toward the toy cabinet's empty front panel, but it clings to Pip's fingertip while the cabinet stays untouched.\",\"motivation\":\"Pip tries to flick the note off with a quick wrist snap\",\"progression\":\"Pip backs away and brushes the four notes off against the cabinet's side, and they split into eight, wrapping Pip's shoulders and muzzle.\",\"ending\":\"Pip is relieved, but the cabinet remains messy.\",\"proposedChanges\":[\"Uses a wrist-flick and a paw-clap as the first two escalation actions, giving each beat a distinct silhouette.\",\"Adds a backward step before the brush-off so Pip's retreat visibly fails and motivates the freeze.\",\"Holds the realization on a breath and lowered arms before the sneeze, separating reversal from payoff.\"],\"weaknesses\":[\"The paw-clap crush is a fast action that may read as ambiguous at 480p.\",\"The backward step plus brush-off risks compressing two actions into one short beat.\"],\"productionRisks\":[\"THIN_OBJECT: notes on paws, sleeves and muzzle need careful thin-object contact.\",\"FACE_CONTACT: notes wrapping the muzzle risk face continuity problems.\",\"MULTI_OBJECT_STACKING: eight notes spreading across shoulders and cabinet may be hard to track.\"],\"sourceContract\":{\"status\":\"SOURCE_COMPLIANT\",\"bindings\":[{\"anchorId\":\"identity\",\"sourceQuote\":\"Pip the rabbit\",\"candidateQuote\":\"Pip the rabbit\"},{\"anchorId\":\"premise\",\"sourceQuote\":\"it clings to Pip's fingertip while the cabinet stays untouched\",\"candidateQuote\":\"it clings to Pip's fingertip while the cabinet stays untouched\"},{\"anchorId\":\"rule\",\"sourceQuote\":\"every removal or transfer attempt multiplies the notes\",\"candidateQuote\":\"every removal or transfer attempt multiplies the notes\"},{\"anchorId\":\"continuity\",\"sourceQuote\":\"Pip remains covered until a sneeze scatters the notes onto the cabinet\",\"candidateQuote\":\"Pip remains covered until a sneeze scatters the notes onto the cabinet\"},{\"anchorId\":\"ending\",\"sourceQuote\":\"Pip is relieved, but the cabinet remains messy.\",\"candidateQuote\":\"Pip is relieved, but the cabinet remains messy.\"}],\"protectedChanges\":[]}}]}",
+  "configuredRateCostUsd": 0.0028842,
+  "parsedProviderResponse": {
+    "alternatives": [
+      {
+        "text": "Pip the rabbit reaches to smooth one sticky note onto the toy cabinet's bare front panel, but it clings to Pip's fingertip while the cabinet stays untouched. Pip pinches the note with the other paw to peel it free, and it splits into two notes, one stuck to each paw. Pip slaps both paws toward the cabinet, but the notes bounce back and double into four, fluttering up Pip's arms. Pip shakes both arms hard to fling the four notes away, and they split into eight, plastering Pip's chest and cheeks. Pip freezes, watching the eight notes ripple and settle, and realizes that every removal or transfer attempt multiplies the notes. Pip deliberately stops struggling and stands still, letting the notes rest. A sneeze bursts out of Pip, and the blast peels the notes off and scatters them across the cabinet. Pip is relieved, but the cabinet remains messy.",
+        "title": "The Sticky Note That Won't Leave Pip",
+        "ending": "Pip is relieved, but the cabinet remains messy.",
+        "motivation": "Pip pinches the note with the other paw to peel it free",
+        "weaknesses": [
+          "The arm-shake fling is still a thin-object contact moment that may need careful staging.",
+          "The freeze beat depends on a readable held pose to sell the realization."
+        ],
+        "candidateId": "candidate-1",
+        "progression": "Pip shakes both arms hard to fling the four notes away, and they split into eight, plastering Pip's chest and cheeks.",
+        "schemaVersion": "story-pilot-candidates-v1",
+        "sourceContract": {
+          "status": "SOURCE_COMPLIANT",
+          "bindings": [
+            {
+              "anchorId": "identity",
+              "sourceQuote": "Pip the rabbit",
+              "candidateQuote": "Pip the rabbit"
+            },
+            {
+              "anchorId": "premise",
+              "sourceQuote": "it clings to Pip's fingertip while the cabinet stays untouched",
+              "candidateQuote": "it clings to Pip's fingertip while the cabinet stays untouched"
+            },
+            {
+              "anchorId": "rule",
+              "sourceQuote": "every removal or transfer attempt multiplies the notes",
+              "candidateQuote": "every removal or transfer attempt multiplies the notes"
+            },
+            {
+              "anchorId": "continuity",
+              "sourceQuote": "Pip remains covered until a sneeze scatters the notes onto the cabinet",
+              "candidateQuote": "Pip remains covered until a sneeze scatters the notes onto the cabinet"
+            },
+            {
+              "anchorId": "ending",
+              "sourceQuote": "Pip is relieved, but the cabinet remains messy.",
+              "candidateQuote": "Pip is relieved, but the cabinet remains messy."
+            }
+          ],
+          "protectedChanges": []
+        },
+        "durationSeconds": 15,
+        "productionRisks": [
+          "THIN_OBJECT: sticky notes contacting paws and face require precise thin-object handling.",
+          "FACE_CONTACT: notes plastering Pip's cheeks risk face/hair continuity issues.",
+          "SNEEZE_BURST: the scatter needs a clear directional force to read as one motion."
+        ],
+        "proposedChanges": [
+          "Replaces the door-edge push with an arm-shake fling so the escalation reads as one clear physical action per beat.",
+          "Moves the realization to a held freeze before the sneeze, giving the reversal its own beat instead of crowding the final seconds.",
+          "Removes the mirror turn to keep the payoff on Pip and the cabinet rather than a reflection."
+        ],
+        "openingVisualState": "Pip the rabbit reaches to smooth one sticky note onto the toy cabinet's bare front panel, but it clings to Pip's fingertip while the cabinet stays untouched."
+      },
+      {
+        "text": "Pip the rabbit presses one sticky note toward the toy cabinet's empty front panel, but it clings to Pip's fingertip while the cabinet stays untouched. Pip tries to flick the note off with a quick wrist snap, and it splits into two notes, one on each paw. Pip claps both paws together to crush the notes flat, but they spring apart into four and climb Pip's sleeves. Pip backs away and brushes the four notes off against the cabinet's side, and they split into eight, wrapping Pip's shoulders and muzzle. Pip stares at the doubling notes, breathing hard, and realizes that every removal or transfer attempt multiplies the notes. Pip slowly lowers both arms and stops moving entirely, letting the notes cling. A sneeze jerks through Pip, and the notes blow off in a burst and land across the cabinet. Pip is relieved, but the cabinet remains messy.",
+        "title": "Pip Stops Fighting the Notes",
+        "ending": "Pip is relieved, but the cabinet remains messy.",
+        "motivation": "Pip tries to flick the note off with a quick wrist snap",
+        "weaknesses": [
+          "The paw-clap crush is a fast action that may read as ambiguous at 480p.",
+          "The backward step plus brush-off risks compressing two actions into one short beat."
+        ],
+        "candidateId": "candidate-2",
+        "progression": "Pip backs away and brushes the four notes off against the cabinet's side, and they split into eight, wrapping Pip's shoulders and muzzle.",
+        "schemaVersion": "story-pilot-candidates-v1",
+        "sourceContract": {
+          "status": "SOURCE_COMPLIANT",
+          "bindings": [
+            {
+              "anchorId": "identity",
+              "sourceQuote": "Pip the rabbit",
+              "candidateQuote": "Pip the rabbit"
+            },
+            {
+              "anchorId": "premise",
+              "sourceQuote": "it clings to Pip's fingertip while the cabinet stays untouched",
+              "candidateQuote": "it clings to Pip's fingertip while the cabinet stays untouched"
+            },
+            {
+              "anchorId": "rule",
+              "sourceQuote": "every removal or transfer attempt multiplies the notes",
+              "candidateQuote": "every removal or transfer attempt multiplies the notes"
+            },
+            {
+              "anchorId": "continuity",
+              "sourceQuote": "Pip remains covered until a sneeze scatters the notes onto the cabinet",
+              "candidateQuote": "Pip remains covered until a sneeze scatters the notes onto the cabinet"
+            },
+            {
+              "anchorId": "ending",
+              "sourceQuote": "Pip is relieved, but the cabinet remains messy.",
+              "candidateQuote": "Pip is relieved, but the cabinet remains messy."
+            }
+          ],
+          "protectedChanges": []
+        },
+        "durationSeconds": 15,
+        "productionRisks": [
+          "THIN_OBJECT: notes on paws, sleeves and muzzle need careful thin-object contact.",
+          "FACE_CONTACT: notes wrapping the muzzle risk face continuity problems.",
+          "MULTI_OBJECT_STACKING: eight notes spreading across shoulders and cabinet may be hard to track."
+        ],
+        "proposedChanges": [
+          "Uses a wrist-flick and a paw-clap as the first two escalation actions, giving each beat a distinct silhouette.",
+          "Adds a backward step before the brush-off so Pip's retreat visibly fails and motivates the freeze.",
+          "Holds the realization on a breath and lowered arms before the sneeze, separating reversal from payoff."
+        ],
+        "openingVisualState": "Pip the rabbit presses one sticky note toward the toy cabinet's empty front panel, but it clings to Pip's fingertip while the cabinet stays untouched."
+      }
+    ]
+  },
+  "providerResponseMetadata": {
+    "model": "deepseek-flash",
+    "requestId": "2e3e04df-fd81-4d47-a534-aec23d3fbee4",
+    "finishReason": "stop"
+  }
+}

@@ -9,7 +9,7 @@ from fastapi.testclient import TestClient
 from app.main import app
 from story_experiment_fixture import alternatives, review, inputs
 
-os.environ.update(WORKFLOW_STORY_MODEL='deepseek-chat', WORKFLOW_STORY_INPUT_USD_PER_MILLION='.3',
+os.environ.update(WORKFLOW_STORY_MODEL='deepseek-flash', WORKFLOW_STORY_PILOT_MODEL_POLICY='DIRECT_FLASH_TEXT_V1', WORKFLOW_STORY_INPUT_USD_PER_MILLION='.3',
                   WORKFLOW_STORY_OUTPUT_USD_PER_MILLION='1.2',WORKFLOW_STORY_REVIEW_MODEL='gpt-4o-mini-2024-07-18',
                   WORKFLOW_STORY_REVIEW_INPUT_USD_PER_MILLION='.15',WORKFLOW_STORY_REVIEW_OUTPUT_USD_PER_MILLION='.6',
                   WORKFLOW_CREATIVE_ROLES_ENABLED='true',WORKFLOW_ADAPTIVE_DISPATCH_TOKEN='offline-disposable-story-dispatch-token-0001')
@@ -29,6 +29,8 @@ class MockAdapter:
             raise ConnectionError('Offline simulated transport error without returned usage')
         self.last_usage={'prompt_tokens':100,'completion_tokens':200}
         self.last_response_metadata={'model':self.model,'finishReason':'stop','requestId':'offline-adapter-receipt'}
+        if mode=='unknown-model':self.last_response_metadata['model']='unapproved-substitute'
+        if mode=='missing-model':self.last_response_metadata.pop('model')
         if role=='STORY':
             candidates=alternatives(body['text'],context['storyExperiment'])
             if mode=='zero':candidates=[]
@@ -39,6 +41,10 @@ class MockAdapter:
             if mode=='incomplete':candidates[1]['text']='Short.'
             if mode=='source':candidates[1]['text']='An unrelated dragon named Rex flies to the moon. Then he lands and stays there. '*4
             if mode=='unknown':candidates[1]['sourceContract']['status']='UNKNOWN'
+            if mode=='rule-mutation':
+                rule=next(a['quote'] for a in context['storyExperiment']['protectedAnchors'] if a['kind']=='PHYSICAL_RULE')
+                candidates[1]['text']=candidates[1]['text'].replace(rule,'walking away multiplies the notes')
+            if mode=='bad-offsets':candidates[1]['sourceContract']['bindings'][0].update(candidateStart=1,candidateEnd=3)
             if mode=='proposal':candidates[1]['sourceContract'].update(status='PROTECTED_CHANGE_PROPOSAL',protectedChanges=[
                 {'anchorId':context['storyExperiment']['protectedAnchors'][-1]['id'],'proposedChange':'Change the ending','justification':'Proposal only, not approved'}])
             result={'alternatives':candidates}

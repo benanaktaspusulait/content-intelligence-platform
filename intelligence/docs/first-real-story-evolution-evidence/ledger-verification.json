@@ -1,0 +1,8 @@
+{
+  "database": "disposable_owner_http",
+  "flywayVersion": "71",
+  "pilotRunId": "72796340-fff3-471f-b66a-1c4c3cb29014",
+  "pilotReservedRequests": 1,
+  "pilotDurableReceipts": 1,
+  "productionDatabaseWrites": 0
+}
