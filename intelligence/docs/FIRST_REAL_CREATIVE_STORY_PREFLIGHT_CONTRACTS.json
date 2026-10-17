@@ -1,0 +1,26 @@
+{
+  "one_candidate_despite_requested_two": {
+    "acceptedByCurrentStoryBoundary": true,
+    "returnedCandidateCount": 1
+  },
+  "obvious_protected_identity_mechanic_and_ending_violation": {
+    "acceptedByCurrentStoryBoundary": true,
+    "returnedCandidateCount": 2
+  },
+  "requestFingerprints": {
+    "sourceStorySha256": "ba352d486c4252c5c6fefe585ad976c0b6f73c299f7554863848bdd842a99b3d",
+    "systemSha256": "fa653c92ae3d37dbe8f886ca7552ebe54ec36c9267b305989fa27ee15f1046ce",
+    "userPayloadSha256": "4cc587f35c15ae20465c24c4f74d28b2608468aea7caa7af3428694520e9e8cd",
+    "manifestFileSha256": "3eecf0c1a790edbb6ef96b3261a84ab241ea649fdac3aaac9dacdbcb8c151d5c",
+    "previewMatchesPreparedManifest": true
+  },
+  "durableEvidenceInspection": {
+    "requestCompletedEventStoresFullResponse": false,
+    "generationStoredBeforeReviewDispatch": false,
+    "failurePathPreservesReceivedResponseAndUsage": false,
+    "basis": "dispatch persists reservation and a completion summary; generated is a local variable until review processing. processNext catch reloads persisted progress and stops with only exception text."
+  },
+  "purpose": "NON_BILLABLE_NEGATIVE_CONTRACT_PROBES_ONLY; not experimental model responses or creative evidence",
+  "providerCalls": 0,
+  "spendUsd": 0
+}

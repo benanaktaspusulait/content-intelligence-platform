@@ -280,7 +280,7 @@ def creative_role_readiness() -> dict[str, Any]:
 @router.post('/creative-role')
 async def creative_role(request: CreativeRoleRequest, http_request: Request) -> dict[str, Any]:
     from .creative_roles import CreativeRoleFailure, run_paid_role
-    if request.role == 'PROMPT_OPTIMIZATION':
+    if request.role == 'PROMPT_OPTIMIZATION' or request.context.get('storyExperiment'):
         import hashlib, hmac, os
         token=os.getenv('WORKFLOW_ADAPTIVE_DISPATCH_TOKEN','')
         expected=hmac.new(token.encode(),await http_request.body(),hashlib.sha256).hexdigest()
@@ -302,6 +302,14 @@ async def creative_role(request: CreativeRoleRequest, http_request: Request) -> 
         } else 409
         raise HTTPException(status_code, detail) from error
     except (ValueError, json.JSONDecodeError) as error:
+        if request.context.get('storyExperiment'):
+            # Pilot post-dispatch failures are returned by execute as complete
+            # receipts. An exception here therefore precedes provider creation.
+            return {'requestId': request.context.get('storyRequestId'), 'role': request.role,
+                    'processingStatus': 'NOT_DISPATCHED', 'billingStatus': 'NOT_DISPATCHED',
+                    'providerDispatched': False, 'actualCostUsd': 0, 'usage': None,
+                    'rawProviderResponse': None, 'retrySafe': False,
+                    'error': {'category': type(error).__name__, 'detail': str(error)[:2000]}}
         message = str(error)
         category = (
             'CONFIGURATION_ERROR' if 'configuration' in message.lower() or 'api key' in message.lower()
@@ -317,7 +325,7 @@ async def creative_role(request: CreativeRoleRequest, http_request: Request) -> 
             'providerDispatched': False,
             'providerResponseReturned': False,
             'candidatesSaved': False,
-            'retrySafe': True,
+            'retrySafe': not bool(request.context.get('storyExperiment')),
             'retryRequiresOperatorAuthorization': True,
         }
         logger.warning("Creative role pre-dispatch rejection role=%s attempt_id=%s category=%s", request.role, attempt_id, category)
@@ -334,6 +342,18 @@ async def creative_role(request: CreativeRoleRequest, http_request: Request) -> 
             'retrySafe': False,
             'retryRequiresOperatorAuthorization': True,
         }) from error
+
+
+@router.post('/story-experiment/preflight')
+def story_experiment_preflight(request: CreativeRoleRequest) -> dict[str, Any]:
+    from .story_experiment import preview
+    return preview(request.role, request.text, request.context)
+
+
+@router.post('/story-experiment/validate')
+def story_experiment_validate(request: dict[str, Any]) -> dict[str, Any]:
+    from .story_experiment import validate
+    return validate(request['text'], request['context'], request['result'])
 
 
 @router.post('/creative-role/revalidate-production-spec')

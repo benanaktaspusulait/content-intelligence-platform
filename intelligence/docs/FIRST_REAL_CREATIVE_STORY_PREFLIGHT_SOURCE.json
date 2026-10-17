@@ -1,0 +1,17 @@
+{
+  "database": "disposable_owner_http",
+  "restoredExistingSnapshot": true,
+  "snapshotSha256": "14dcbfd5758826183846010702288b9308dcd184f42f7188c8def9ea5fbc0ac1",
+  "sourceStoryId": "ca40c11a-7831-476e-9f50-646a61a1ec9c",
+  "approvalRecordId": "af738239-99c3-4a9e-90b5-a1bee4295cd0",
+  "analysisId": "10fc4c38-7cdf-4f71-b8dc-05b14315352a",
+  "sourceStorySha256": "ba352d486c4252c5c6fefe585ad976c0b6f73c299f7554863848bdd842a99b3d",
+  "sourcePromptSha256": "1a9a8cfc7e4c6e0a037ba3642a10c11c81d41ce8b574aa3c79cbaee7ce1215f5",
+  "canonicalScore": 93.42708333333334,
+  "rulesetVersion": "1.11",
+  "existingPilotIdempotencyRecords": 0,
+  "productionDatabaseWrites": 0,
+  "providerCalls": 0,
+  "network": "NONE",
+  "disposableContainerRemovedAfterCheck": true
+}

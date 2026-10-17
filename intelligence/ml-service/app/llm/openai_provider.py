@@ -76,6 +76,7 @@ class OpenAIProvider(LLMProvider):
         message = getattr(choice, "message", None)
         content = getattr(message, "content", None)
         self.last_response_metadata = {
+            "model": getattr(response, "model", None),
             "requestId": getattr(response, "id", None),
             "finishReason": getattr(choice, "finish_reason", None),
             "promptPresent": bool(content and content.strip()),

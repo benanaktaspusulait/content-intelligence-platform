@@ -39,4 +39,8 @@ class DeepSeekTextProvider(LLMProvider):
         )
         usage = getattr(response, "usage", None)
         self.last_usage = usage.model_dump() if usage is not None and hasattr(usage, "model_dump") else None
+        self.last_raw_response = response.choices[0].message.content or ""
+        self.last_response_metadata = {'requestId': getattr(response, 'id', None),
+                                       'model': getattr(response, 'model', None),
+                                       'finishReason': response.choices[0].finish_reason}
         return response.choices[0].message.content or ""

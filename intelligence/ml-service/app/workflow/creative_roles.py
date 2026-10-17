@@ -658,6 +658,31 @@ def perform_role(role: str, text: str, context: dict[str, Any], provider: LLMPro
         'MINIMAL_REPAIR': 'Return JSON patches: at most three minimal edits with integer Unicode code point start/end, exact sourceQuote and replacement. Preserve protected intent and ESSENTIAL source quotes. Never return approval or rewrite the entire prompt.',
     }[role]
     safe_context = {key: context[key] for key in ('protectedIntent', 'intentRequirements', 'findings', 'retrievedLessons', 'constraints', 'inputMode', 'storyGenerationMode', 'lockedRequirements', 'permittedVariation', 'roundNumber', 'objective', 'bestCandidate', 'previousAssessment', 'acceptedChanges', 'rejectedCandidates', 'sourceStoryRecordId', 'mainCharacter', 'character', 'characterRecord', 'characterReferences', 'referenceBindings', 'preferences', 'profile', 'candidates', 'candidateIds', 'requestedAlternativeCount', 'sourceRequestId', 'sourceFingerprint', 'previousReview', 'currentRevision', 'previousRevision', 'targetDuration', 'aspectRatio', 'reviewPolicyVersion', 'selectedGenerator', 'generatorCapabilities', 'targetConfiguration', 'storyTitle', 'promptBuilderContractVersion', 'essentialEvents', 'approvedStoryText', 'optimizationGenerationContractVersion', 'baselineExecution', 'analysisRunId', 'promptVersionId', 'contentId', 'canonicalStoryFeasibilityContext') if key in context}
+    if context.get('storyExperiment'):
+        from .story_experiment import contract, SCHEMA
+        experiment = contract(text, context)
+        safe_context['storyExperiment'] = experiment
+        if role == 'STORY':
+            system += (' Strict experiment: return exactly two distinct complete alternative objects. Each requires candidateId, title, text, '
+                       'schemaVersion="'+SCHEMA+'", durationSeconds=15, openingVisualState, motivation, progression, ending '
+                       '(these four must be exact excerpts of text), proposedChanges, weaknesses, productionRisks (nonempty string arrays), '
+                       'sourceContract={status:"SOURCE_COMPLIANT" or "PROTECTED_CHANGE_PROPOSAL" or "UNKNOWN", '
+                       'bindings:[{anchorId,sourceQuote,candidateQuote}],protectedChanges:[]}. '
+                       'Every protectedAnchors quote must remain an affirmative unchanged fact in the narrative and have its exact source '
+                       'and candidate excerpt mapped once. These limited locked facts do not freeze unprotected wording or progression. '
+                       'Do not just append source quotations to an unrelated story. If a protected fact must change, explicitly list '
+                       '{anchorId,proposedChange,justification} in protectedChanges and use PROTECTED_CHANGE_PROPOSAL; it will not be '
+                       'sent for this pilot review. Missing protected evidence is UNKNOWN. Do not claim semantic verification. '
+                       'Prefer two genuinely different causal/visual approaches with natural timing, not two camera variants.')
+        elif role == 'STORY_REVIEW':
+            safe_context['candidates'] = [{key: c[key] for key in ('candidateId', 'title', 'text') if key in c}
+                                          for c in context.get('candidates', [])]
+            system += (' Independently compare both complete narratives to the original, not generator self-assessment metadata. '
+                       'Would either be meaningfully better for a viewer, or merely more technically compliant? '
+                       'If no material creative improvement is supported return recommendedCandidateId=null and '
+                       'recommendationReason="NO_CREATIVE_WINNER". Never choose the least bad by default. '
+                       'Check protected facts, first-two-second promise, pacing, repetition, artificial checklist density and production risks. '
+                       'Unknown semantic or visual support must remain UNKNOWN; no creative grade or owner approval is granted.')
     story_feasibility = context.get('canonicalStoryFeasibilityContext')
     if isinstance(story_feasibility, dict):
         # The saved context retains the complete canonical evidence. Transport
@@ -1194,6 +1219,9 @@ def run_paid_role(role: str, text: str, context: dict[str, Any], max_cost_usd: f
         raise ValueError('Unknown creative role')
     if os.getenv('WORKFLOW_CREATIVE_ROLES_ENABLED', 'false').lower() != 'true':
         raise ValueError('Paid creative roles are disabled; explicit scope and budget required')
+    if context.get('storyExperiment'):
+        from .story_experiment import execute
+        return execute(role, text, context, max_cost_usd)
     # Test-only transport. It is deliberately opt-in, requires a disposable
     # fixture directory and a per-environment token, and never constructs an
     # SDK/provider client. Production compose does not set these variables.

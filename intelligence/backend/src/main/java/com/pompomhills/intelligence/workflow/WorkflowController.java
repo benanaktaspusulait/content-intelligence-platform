@@ -182,6 +182,9 @@ public class WorkflowController {
   @PostMapping("/cpq/story-evolution-runs")
   public Map<String,Object> startStoryEvolution(@RequestBody Map<String,Object> request, jakarta.servlet.http.HttpServletRequest http) { return storyEvolution.start(request,http); }
 
+  @PostMapping("/cpq/story-evolution-preflight")
+  public Map<String,Object> inspectStoryEvolution(@RequestBody Map<String,Object> request, jakarta.servlet.http.HttpServletRequest http) { return storyEvolution.inspectPilot(request,http); }
+
   @GetMapping("/cpq/story-evolution-source")
   public Map<String,Object> storyEvolutionSource(@RequestParam UUID analysisId) {
     var subject=cpq.pilotSubject(analysisId,null,null); var story=CpqOwnerPilotService.map(subject.get("approvedStory"));

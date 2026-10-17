@@ -1,0 +1,21 @@
+{
+  "profiles": {
+    "STORY": {
+      "model": "deepseek-chat",
+      "inputUsdPerMillion": "0.3",
+      "outputUsdPerMillion": "1.2"
+    },
+    "STORY_REVIEW": {
+      "model": "gpt-4o-mini-2024-07-18",
+      "inputUsdPerMillion": "0.15",
+      "outputUsdPerMillion": "0.6"
+    }
+  },
+  "profilesMatchPreparedManifest": true,
+  "maxTotalReservationUsd": "0.017966",
+  "paidAuthorizationReceived": false,
+  "realDispatchEnabledInProduction": "false",
+  "providerCalls": 0,
+  "actualSpendUsd": 0,
+  "liveAvailability": "NOT_PROBED_NO_INFERENCE"
+}

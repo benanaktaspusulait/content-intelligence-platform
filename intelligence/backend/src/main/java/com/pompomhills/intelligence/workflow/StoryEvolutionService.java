@@ -19,6 +19,9 @@ import static org.springframework.http.HttpStatus.*;
 /** Bounded, durable story evolution.  Prompt optimization remains a separate grant. */
 @Service
 public class StoryEvolutionService {
+  static final String PILOT="REAL_CREATIVE_STORY_EVOLUTION_PILOT_V1";
+  @org.springframework.beans.factory.annotation.Autowired(required=false)
+  org.springframework.transaction.PlatformTransactionManager transactionManager;
   final JdbcClient db; final CpqOwnerPilotService util; final WorkflowService workflow; final QualityMlClient ml;
   @org.springframework.beans.factory.annotation.Autowired(required=false) ContentWorkspaceController contentWorkspace;
   @org.springframework.beans.factory.annotation.Autowired(required=false) IntelligenceQualityValidationService validation;
@@ -29,6 +32,8 @@ public class StoryEvolutionService {
   Map<String,Object> load(UUID id){return db.sql("SELECT owner_principal,source_story_record_id,source_story_sha256,authorization_payload::text,scope::text,state,progress::text,cancel_requested,deadline FROM story_evolution_runs WHERE id=:id").param("id",id).query((rs,n)->Map.<String,Object>of("owner",rs.getString(1),"sourceStoryRecordId",rs.getObject(2,UUID.class),"sourceStorySha256",rs.getString(3),"authorization",util.read(rs.getString(4)),"scope",util.read(rs.getString(5)),"state",rs.getString(6),"progress",util.read(rs.getString(7)),"cancel",rs.getBoolean(8),"deadline",rs.getTimestamp(9).toInstant())).single();}
   void owner(UUID id,HttpServletRequest req){if(!util.owner(req).equals(load(id).get("owner")))throw new ResponseStatusException(FORBIDDEN,"Run belongs to another owner");}
   @Transactional public Map<String,Object> start(Map<String,Object> body,HttpServletRequest req){
+    if(PILOT.equals(body.get("experimentVersion")))return startPilot(body,req);
+    if(body.containsKey("experimentVersion"))throw new ResponseStatusException(BAD_REQUEST,"Unsupported experiment contract");
     String owner=util.owner(req); if(!realEnabled)throw new ResponseStatusException(FORBIDDEN,"Story evolution real dispatch remains disabled; no run authorized");
     UUID source=uuid(body.get("sourceStoryRecordId")); var story=workflow.getByKind(source,"CREATIVE_ROLE");
     if(!"STORY".equals(story.get("role")))throw new ResponseStatusException(BAD_REQUEST,"Exact STORY record required");
@@ -54,6 +59,7 @@ public class StoryEvolutionService {
   @Scheduled(fixedDelayString="${pompom.story-evolution.poll-delay-ms:2000}") public void processNext(){var id=db.sql("SELECT id FROM story_evolution_runs WHERE state='READY' AND cancel_requested=false AND deadline>now() ORDER BY created_at LIMIT 1").query(UUID.class).optional();id.ifPresent(x->{try{step(x);}catch(Exception e){stop(x,"PROVIDER_FAILED_OR_AMBIGUOUS",e.getMessage());}});}
   @Transactional void step(UUID id){
     var row=load(id); var scope=map(row.get("scope")); var p=new LinkedHashMap<>(map(row.get("progress")));
+    if(PILOT.equals(scope.get("experimentVersion"))){stepPilot(id,row,scope,p);return;}
     if(Boolean.TRUE.equals(row.get("cancel"))){stop(id,"CANCELLED","");return;}
     int round=((Number)p.get("round")).intValue()+1; int max=((Number)map(row.get("authorization")).getOrDefault("maxRounds",1)).intValue();
     if(round>max){stop(id,"ROUND_LIMIT_REACHED","");return;}
@@ -274,6 +280,170 @@ public class StoryEvolutionService {
   static Map<String,Object> roleResult(Map<String,Object> envelope) {
     return envelope.get("result") instanceof Map<?,?> ? map(envelope.get("result")) : envelope;
   }
+  /** Read-only owner preflight for the existing, strictly scoped two-call pilot. */
+  public Map<String,Object> inspectPilot(Map<String,Object> body,HttpServletRequest request) {
+    util.owner(request);
+    if(transactionManager==null)throw new ResponseStatusException(CONFLICT,"Durable story ledger transaction manager unavailable");
+    var scope=pilotScope(body);var story=pilotContext(scope,false,null,null);
+    var review=pilotContext(scope,true,null,null);
+    var operations=new ArrayList<Map<String,Object>>();
+    for(var input:List.of(Map.of("role","STORY","context",story),Map.of("role","STORY_REVIEW","context",review))) {
+      var checked=new LinkedHashMap<>(ml.workflow("story-experiment/preflight",Map.of("role",input.get("role"),"text",scope.get("sourceStory"),"context",input.get("context"),"maxCostUsd",20)));
+      operations.add(checked);
+    }
+    double maximum=operations.stream().mapToDouble(x->((Number)x.get("maximumCalculatedUsd")).doubleValue()).max().orElseThrow();
+    double cap=Math.ceil((maximum+1e-12)*1e6)/1e6;
+    operations.forEach(x->x.put("maxCostUsd",cap));
+    return Map.of("experimentVersion",PILOT,"scope",scope,"sourceScopeSha256",scope.get("sourceScopeSha256"),
+        "operations",operations,"maxRequests",2,"maxRounds",1,"maxTotalUsd",cap*2,"providerCalls",0,"persisted",false);
+  }
+  Map<String,Object> pilotScope(Map<String,Object> body) {
+    UUID source=uuid(body.get("sourceStoryRecordId")), approval=uuid(body.get("approvalRecordId")),analysis=uuid(body.get("baselineAnalysisId"));
+    var approved=workflow.approvedStoryForCpq(source,approval);
+    String text=String.valueOf(approved.get("text"));
+    var scope=new LinkedHashMap<String,Object>();
+    scope.put("experimentVersion",PILOT);scope.put("sourceStoryRecordId",source.toString());scope.put("sourceApprovalRecordId",approval.toString());
+    scope.put("sourceRevisionId",approved.get("revision"));scope.put("sourceStory",text);scope.put("sourceStorySha256",hash(text));
+    scope.put("baselineAnalysisId",analysis.toString());scope.put("objective",body.getOrDefault("objective","Improve creative quality, not canonical points"));
+    scope.put("protectedAnchors",body.getOrDefault("protectedAnchors",List.of()));scope.put("requestedAlternativeCount",2);
+    scope.put("canonicalStoryFeasibilityContext",canonicalStoryFeasibilityContext(source,approval,approved,text,analysis));
+    // The canonical context validates analysis/source lineage. Include the
+    // current saved production settings too; a source-only hash is insufficient.
+    scope.put("productionSettings",util.context(analysis,null,null).getOrDefault("productionSettings",Map.of()));
+    scope.put("sourceScopeSha256",hash(util.encode(scope)));
+    return scope;
+  }
+  Map<String,Object> pilotContext(Map<String,Object> scope,boolean review,Object candidates,String runId) {
+    var context=new LinkedHashMap<String,Object>();
+    context.put("canonicalStoryFeasibilityContext",scope.get("canonicalStoryFeasibilityContext"));
+    context.put("approvedStoryText",scope.get("sourceStory"));context.put("sourceFingerprint",scope.get("sourceStorySha256"));
+    context.put("objective",scope.get("objective"));context.put("roundNumber",1);
+    context.put("storyExperiment",Map.of("version",PILOT,"requestedAlternativeCount",2,
+        "sourceStorySha256",scope.get("sourceStorySha256"),"sourceScopeSha256",scope.get("sourceScopeSha256"),"protectedAnchors",scope.get("protectedAnchors")));
+    if(review){
+      context.put("reviewPolicyVersion","creative-story-merit-v1");
+      if(candidates!=null)context.put("candidates",candidates);
+      if(runId!=null)context.put("sourceRequestId",runId);
+    } else {
+      context.put("inputMode","DETAILED_STORY");context.put("storyGenerationMode","IMPROVE_EXISTING_STORY");context.put("requestedAlternativeCount",2);
+      context.put("lockedRequirements",List.of("PRESERVE_CORE_PREMISE","PRESERVE_CHARACTER_IDENTITY","PRESERVE_PHYSICAL_RULE","PRESERVE_ENDING"));
+    }
+    return context;
+  }
+  Map<String,Object> pilotBody(Map<String,Object> scope) {
+    return Map.of("sourceStoryRecordId",scope.get("sourceStoryRecordId"),"approvalRecordId",scope.get("sourceApprovalRecordId"),
+        "baselineAnalysisId",scope.get("baselineAnalysisId"),"protectedAnchors",scope.get("protectedAnchors"),"objective",scope.get("objective"));
+  }
+  Map<String,Object> startPilot(Map<String,Object> body,HttpServletRequest request) {
+    String owner=util.owner(request);var inspected=inspectPilot(body,request);
+    if(!Boolean.TRUE.equals(body.get("authorizePaidInference"))||!Boolean.TRUE.equals(body.get("confirmSourceAuthority"))
+        ||!Boolean.FALSE.equals(body.get("automaticRetries"))||!Boolean.FALSE.equals(body.get("fallback")))
+      throw new ResponseStatusException(BAD_REQUEST,"Fresh exact owner authorization; retries/fallback disabled required");
+    if(integer(body,"maxRequests",2,2)!=2||integer(body,"maxRounds",1,1)!=1||integer(body,"maxRunSeconds",1,600)>600)
+      throw new ResponseStatusException(BAD_REQUEST,"Exact one-round two-call limits required");
+    if(!Objects.equals(body.get("sourceScopeSha256"),inspected.get("sourceScopeSha256"))
+        ||!util.encode(body.get("operations")).equals(util.encode(inspected.get("operations")))
+        ||Double.compare(amount(body.get("maxTotalUsd")),((Number)inspected.get("maxTotalUsd")).doubleValue())!=0)
+      throw new ResponseStatusException(CONFLICT,"SCOPE_OR_INSTRUCTION_MISMATCH");
+    if(!realEnabled)throw new ResponseStatusException(FORBIDDEN,"Real dispatch disabled; no run created");
+    String key=String.valueOf(body.getOrDefault("idempotencyKey",""));if(key.length()<8||key.length()>100)throw new ResponseStatusException(BAD_REQUEST,"Stable idempotency key required");
+    db.sql("SELECT pg_advisory_xact_lock(hashtext(:key))").param("key","story-pilot:"+owner+":"+key).query((rs,n)->rs.getObject(1)).list();
+    var prior=db.sql("SELECT id,authorization_payload::text FROM story_evolution_runs WHERE owner_principal=:o AND idempotency_key=:k")
+      .param("o",owner).param("k",key).query((rs,n)->Map.of("id",rs.getObject(1,UUID.class),"grant",util.read(rs.getString(2)))).optional();
+    if(prior.isPresent()){
+      if(!util.encode(prior.get().get("grant")).equals(util.encode(body)))throw new ResponseStatusException(CONFLICT,"Idempotency key cannot rebind authorization");
+      return view((UUID)prior.get().get("id"),request);
+    }
+    UUID id=UUID.randomUUID();var scope=map(inspected.get("scope"));
+    db.sql("INSERT INTO story_evolution_runs(id,owner_principal,idempotency_key,source_story_record_id,source_story_sha256,authorization_payload,scope,state,progress,deadline) VALUES(:id,:owner,:key,:source,:sha,CAST(:grant AS jsonb),CAST(:scope AS jsonb),'READY','{\"phase\":\"STORY\",\"round\":1,\"requestCount\":0}',now()+make_interval(secs=>:seconds))")
+      .param("id",id).param("owner",owner).param("key",key).param("source",uuid(scope.get("sourceStoryRecordId"))).param("sha",scope.get("sourceStorySha256"))
+      .param("grant",util.encode(body)).param("scope",util.encode(scope)).param("seconds",body.get("maxRunSeconds")).update();
+    event(id,Map.of("state","AUTHORIZED","experimentVersion",PILOT,"sourceScopeSha256",scope.get("sourceScopeSha256"),"providerCalls",0));
+    return view(id,request);
+  }
+  void stepPilot(UUID id,Map<String,Object> row,Map<String,Object> scope,Map<String,Object> progress) {
+    // Only a never-started READY run can enter. A restart never replays either
+    // paid request after uncertain dispatch or durable receipt.
+    int claimed=db.sql("UPDATE story_evolution_runs SET state='RUNNING' WHERE id=:id AND state='READY' AND cancel_requested=false AND deadline>now()")
+      .param("id",id).update();if(claimed!=1)return;
+    var generation=pilotDispatch(id,"STORY",scope,progress,pilotContext(scope,false,null,null));
+    afterPilotReceipt(id,"STORY");
+    if(!"CANDIDATES_ACCEPTED".equals(generation.get("processingStatus"))){stop(id,"STORY_RESULT_REJECTED_OR_UNCERTAIN","");return;}
+    // Reload the exact durable receipt. Never review caller/local alternatives.
+    var persisted=pilotReceipt(id,"STORY");
+    var candidates=map(persisted.get("result")).get("alternatives");
+    var reviewContext=pilotContext(scope,true,candidates,id.toString());
+    var gate=ml.workflow("story-experiment/validate",Map.of("text",scope.get("sourceStory"),"context",reviewContext,"result",map(persisted.get("result"))));
+    if(!Boolean.TRUE.equals(gate.get("eligible"))){stop(id,"STORY_RESULT_INSUFFICIENT",util.encode(gate));return;}
+    var review=pilotDispatch(id,"STORY_REVIEW",scope,progress,reviewContext);
+    afterPilotReceipt(id,"STORY_REVIEW");
+    if(!"INDEPENDENT_REVIEW_COMPLETED".equals(review.get("processingStatus"))){stop(id,"REVIEW_FAILED_OR_UNCERTAIN","");return;}
+    progress.put("reviewedCandidates",candidates);progress.put("lastAssessment",review.get("result"));
+    progress.put("ownerStoryApproval","PENDING");progress.put("phase","RESEARCH_COMPLETE_OWNER_REVIEW_REQUIRED");
+    progress.put("reviewerIndependent",independentProviders(map(generation.get("evidenceProvenance")),map(review.get("evidenceProvenance"))));
+    if(!Boolean.TRUE.equals(progress.get("reviewerIndependent"))){stop(id,"REVIEWER_INDEPENDENCE_UNSUPPORTED","");return;}
+    db.sql("UPDATE story_evolution_runs SET state='RESEARCH_COMPLETE_OWNER_REVIEW_REQUIRED',progress=CAST(:p AS jsonb),updated_at=now() WHERE id=:id")
+      .param("p",util.encode(progress)).param("id",id).update();
+    event(id,Map.of("state","RESEARCH_COMPLETE_OWNER_REVIEW_REQUIRED","ownerStoryApproval","PENDING","canonicalPromptScore","NOT_EVALUATED"));
+  }
+  /** Test seam for a worker dying after durable receipt, never a retry hook. */
+  void afterPilotReceipt(UUID id,String role) {}
+  Map<String,Object> pilotDispatch(UUID id,String role,Map<String,Object> scope,Map<String,Object> progress,Map<String,Object> context) {
+    var row=load(id);var grant=map(row.get("authorization"));
+    if(!realEnabled||!"RUNNING".equals(row.get("state"))||Boolean.TRUE.equals(row.get("cancel"))||!((Instant)row.get("deadline")).isAfter(Instant.now()))throw new IllegalStateException("Pilot disabled/cancelled/expired before dispatch");
+    if(!util.encode(scope).equals(util.encode(pilotScope(pilotBody(scope)))))throw new IllegalStateException("SCOPE_OR_INSTRUCTION_MISMATCH: current source");
+    int index=((Number)progress.getOrDefault("requestCount",0)).intValue();
+    if(index>=2||!(index==0?"STORY":"STORY_REVIEW").equals(role))throw new IllegalStateException("Exact role sequence/request limit reached");
+    var authorized=rows(grant.get("operations")).get(index);
+    var current=ml.workflow("story-experiment/preflight",Map.of("role",role,"text",scope.get("sourceStory"),"context",context,"maxCostUsd",authorized.get("maxCostUsd")));
+    var compare=new LinkedHashMap<>(current);
+    if("STORY_REVIEW".equals(role)){compare.remove("effectiveRequestSha256");compare.remove("payloadBytes");}
+    for(var entry:compare.entrySet())if(!util.encode(entry.getValue()).equals(util.encode(authorized.get(entry.getKey()))))throw new IllegalStateException("SCOPE_OR_INSTRUCTION_MISMATCH: "+entry.getKey());
+    double cap=((Number)authorized.get("maxCostUsd")).doubleValue(),reserved=((Number)progress.getOrDefault("reservedUsd",0)).doubleValue();
+    if(cap<((Number)current.get("maximumCalculatedUsd")).doubleValue()||reserved+cap>((Number)grant.get("maxTotalUsd")).doubleValue()+1e-12)throw new IllegalStateException("Budget ceiling exceeded before reservation");
+    if("STORY_REVIEW".equals(role)){
+      var saved=pilotReceipt(id,"STORY");
+      if(!util.encode(context.get("candidates")).equals(util.encode(map(saved.get("result")).get("alternatives"))))throw new IllegalStateException("SCOPE_OR_INSTRUCTION_MISMATCH: persisted candidates");
+      context.put("reviewPayloadSha256",current.get("effectiveRequestSha256"));
+    }
+    UUID requestId=UUID.nameUUIDFromBytes((id+":"+role).getBytes(java.nio.charset.StandardCharsets.UTF_8));
+    context.put("storyRequestId",requestId.toString());context.put("storyExperimentDispatch",authorized);
+    var request=Map.<String,Object>of("role",role,"text",scope.get("sourceStory"),"context",context,"maxCostUsd",cap);
+    progress.put("requestCount",index+1);progress.put("reservedUsd",reserved+cap);progress.put("phase",role+"_RESERVED");
+    durablePilot(id,progress,Map.of("state","REQUEST_RESERVED","experimentVersion",PILOT,"requestId",requestId.toString(),"role",role,"binding",current,"maxCostUsd",cap));
+    Map<String,Object> receipt;
+    try {receipt=new LinkedHashMap<>(ml.workflow("creative-role",request));}
+    catch(Exception failure){receipt=new LinkedHashMap<>();receipt.put("requestId",requestId.toString());receipt.put("role",role);receipt.put("processingStatus","DISPATCH_UNCERTAIN");receipt.put("billingStatus","USAGE_UNKNOWN");receipt.put("providerDispatched","UNKNOWN");receipt.put("error",Map.of("category",failure.getClass().getSimpleName(),"detail","Transport did not return a durable response; retry forbidden"));}
+    if(!"DISPATCH_UNCERTAIN".equals(receipt.get("processingStatus"))&&(!Objects.equals(receipt.get("provider"),authorized.get("provider"))||!Objects.equals(receipt.get("model"),authorized.get("model"))
+        ||!Boolean.TRUE.equals(receipt.get("providerDispatched"))||!requestId.toString().equals(receipt.get("requestId"))
+        ||!util.encode(current).equals(util.encode(receipt.get("binding")))))receipt.put("processingStatus","UNEXPECTED_TRANSPORT_OR_MODEL");
+    receipt.put("requestFingerprint",hash(util.encode(request)));receipt.put("runId",id.toString());receipt.put("evidenceProvenance",evidenceProvenance(request,receipt));
+    progress.put(role+"Receipt",receipt);progress.put("phase",role+"_RECEIVED");
+    if(receipt.get("actualCostUsd") instanceof Number cost&&Double.isFinite(cost.doubleValue())&&cost.doubleValue()>=0)
+      progress.put("knownActualCostUsd",((Number)progress.getOrDefault("knownActualCostUsd",0)).doubleValue()+cost.doubleValue());
+    else if(!Boolean.FALSE.equals(receipt.get("providerDispatched")))progress.put("unresolvedBilling",true);
+    durablePilot(id,progress,Map.of("state","PROVIDER_RECEIPT","experimentVersion",PILOT,"requestId",requestId.toString(),"role",role,"envelope",receipt));
+    return receipt;
+  }
+  Map<String,Object> pilotReceipt(UUID id,String role) {
+    var durable=db.sql("SELECT payload::text FROM story_evolution_events WHERE run_id=:id AND payload->>'state'='PROVIDER_RECEIPT' AND payload->>'role'=:role ORDER BY created_at,id")
+      .param("id",id).param("role",role).query((rs,n)->util.read(rs.getString(1))).list();
+    if(durable.size()!=1)throw new IllegalStateException("Exact one durable role receipt required; replay forbidden");
+    var receipt=map(durable.getFirst().get("envelope"));
+    if(!util.encode(receipt).equals(util.encode(map(load(id).get("progress")).get(role+"Receipt"))))throw new IllegalStateException("SCOPE_OR_INSTRUCTION_MISMATCH: persisted receipt changed");
+    return receipt;
+  }
+  void durablePilot(UUID id,Map<String,Object> progress,Map<String,Object> evidence) {
+    Runnable write=()->{
+      event(id,evidence);
+      db.sql("UPDATE story_evolution_runs SET progress=CAST(:p AS jsonb),updated_at=now() WHERE id=:id")
+        .param("p",util.encode(progress)).param("id",id).update();
+    };
+    if(transactionManager==null)throw new IllegalStateException("Durable story ledger transaction manager unavailable");
+    var transaction=new org.springframework.transaction.support.TransactionTemplate(transactionManager);
+    transaction.setPropagationBehavior(org.springframework.transaction.TransactionDefinition.PROPAGATION_REQUIRES_NEW);
+    transaction.executeWithoutResult(status->write.run());
+  }
   static boolean independentProviders(Map<String,Object> generation,Map<String,Object> review) {
     return "REAL_AI_PROVIDER".equals(generation.get("origin"))
         && "REAL_AI_PROVIDER".equals(review.get("origin"))
@@ -311,7 +481,7 @@ public class StoryEvolutionService {
   Map<String,Object> evidenceProvenance(Map<String,Object> request,Map<String,Object> result) {
     String provider=String.valueOf(result.getOrDefault("provider","UNKNOWN"));
     boolean dispatched=Boolean.TRUE.equals(result.get("providerDispatched"));
-    String origin=!dispatched||provider.toUpperCase().matches(".*(FIXTURE|MOCK|ISOLATED).*")?"DETERMINISTIC_FIXTURE":
+    String origin="UNKNOWN".equals(result.get("providerDispatched"))?"UNKNOWN_ORIGIN":!dispatched||provider.toUpperCase().matches(".*(FIXTURE|MOCK|ISOLATED).*")?"DETERMINISTIC_FIXTURE":
       !"UNKNOWN".equals(provider)?"REAL_AI_PROVIDER":"UNKNOWN_ORIGIN";
     var out=new LinkedHashMap<String,Object>();out.put("version","creative-evidence-provenance-v1");out.put("origin",origin);
     out.put("provider",provider);out.put("model",result.get("model"));out.put("requestFingerprint",hash(util.encode(request)));
