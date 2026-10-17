@@ -65,7 +65,7 @@ class StoryExperimentContractTest {
       String operation=inv.getArgument(0);Map<String,Object> input=inv.getArgument(1);
       if(operation.equals("creative-role"))transports++;
       var output=new LinkedHashMap<>(bridge(operation,input));
-      if(operation.equals("story-experiment/preflight")&&!drift.isBlank())output.put(drift,"changed-after-authorization");
+      if((operation.equals("story-experiment/preflight")||operation.equals("story-experiment/assessment-preflight"))&&!drift.isBlank())output.put(drift,"changed-after-authorization");
       if(operation.equals("creative-role")&&mode.equals("fixture-fallback"))output.put("provider","ISOLATED_FIXTURE");
       return output;
     });
@@ -142,4 +142,43 @@ class StoryExperimentContractTest {
   void changedAuthorizedInstructionOrModelStopsBeforeReservation(String field){start();drift=field;service.processNext();assertThat(transports).isZero();assertThat(rows(view().get("events")).stream().noneMatch(e->"REQUEST_RESERVED".equals(e.get("state")))).isTrue();}
   @Test void ownerAndExactGrantLimitsAreRequired(){assertThatThrownBy(()->service.inspectPilot(body,new MockHttpServletRequest())).hasMessageContaining("Authenticated owner");var g=grant();g.put("maxRequests",3);assertThatThrownBy(()->service.start(g,owner)).hasMessageContaining("Invalid limit");assertThat(transports).isZero();}
   @Test void budgetAndSourceBindingCannotBeAlteredAfterPreflight(){var g=grant();g.put("maxTotalUsd",.00001);assertThatThrownBy(()->service.start(g,owner)).hasMessageContaining("SCOPE_OR_INSTRUCTION_MISMATCH");var stale=grant();stale.put("sourceScopeSha256","different");assertThatThrownBy(()->service.start(stale,owner)).hasMessageContaining("SCOPE_OR_INSTRUCTION_MISMATCH");assertThat(transports).isZero();}
+  Map<String,Object> assessmentGrant(){
+    service.assessmentEvidenceRoot=ROOT.resolve("intelligence/docs").toString();var checked=service.inspectAssessment(Map.of(),owner);
+    var grant=new LinkedHashMap<String,Object>();grant.put("assessmentOnlyPolicy",StoryEvolutionService.ASSESSMENT);
+    for(String key:List.of("scopeSha256","operations","maxTotalUsd"))grant.put(key,checked.get(key));
+    grant.put("authorizePaidInference",true);grant.put("confirmAssessmentOnly",true);grant.put("automaticRetries",false);grant.put("fallback",false);
+    grant.put("maxRequests",1);grant.put("maxRounds",1);grant.put("maxRunSeconds",600);grant.put("idempotencyKey",UUID.randomUUID().toString());return grant;
+  }
+  @Test void assessmentOnlyAuthenticCrossRunReviewCompletesWithoutProductionAuthority() throws Exception {
+    var g=assessmentGrant();var started=service.start(g,owner);run=uuid(started.get("runId"));
+    assertThat(service.start(g,owner).get("runId")).isEqualTo(run.toString());service.processNext();var result=view();
+    assertThat(transports).isEqualTo(1);assertThat(result.get("state")).isEqualTo("ASSESSMENT_COMPLETE_OWNER_DECISION_PENDING");
+    assertThat(rows(result.get("drafts"))).isEmpty();assertThat(map(result.get("progress"))).containsEntry("ownerStoryApproval","PENDING").containsEntry("renderAuthorized",false);
+    var receipt=receipts().getFirst();assertThat(receipt.get("rawProviderResponse")).isNotNull();assertThat(receipt.get("rawReceiptSha256")).isNotNull();
+    assertThat(map(map(result.get("progress")).get("researchAssessment")).get("researchPreference")).isEqualTo("NO_CREATIVE_WINNER");
+    assertThatThrownBy(()->service.approve(run,Map.of(),owner)).hasMessageContaining("cannot approve");
+    assertThatThrownBy(()->service.handoff(run,Map.of(),owner)).hasMessageContaining("cannot authorize BUILD_PROMPT");
+    service.processNext();assertThat(transports).isEqualTo(1);
+    Files.writeString(ROOT.resolve("intelligence/backend/target/authentic-story-assessment-positive.json"),json.writerWithDefaultPrettyPrinter().writeValueAsString(Map.of("evidenceOrigin","MOCKED_REVIEW_OF_AUTHENTIC_SAVED_NARRATIVES","realProviderCalls",0,"productionDbWrites",0,"trace",result)));
+  }
+  @ParameterizedTest @ValueSource(strings={"assessment-timeout","assessment-malformed","assessment-invalid-approval","assessment-semantic-fail"})
+  void assessmentOnlyNegativeResultsAreDurableAndCannotApprove(String failure) throws Exception {
+    mode=failure;var g=assessmentGrant();run=uuid(service.start(g,owner).get("runId"));service.processNext();
+    assertThat(transports).isEqualTo(1);assertThat(receipts()).hasSize(1);assertThat(rows(view().get("drafts"))).isEmpty();
+    var scope=map(view().get("scope"));assertThat(rows(scope.get("candidates"))).hasSize(2);
+    if(failure.equals("assessment-semantic-fail")){
+      assertThat(view().get("state")).isEqualTo("ASSESSMENT_COMPLETE_OWNER_DECISION_PENDING");
+      var result=map(map(view().get("progress")).get("researchAssessment"));assertThat(rows(result.get("candidateAssessments")).getFirst().get("eligibleForOwnerProposal")).isEqualTo(false);
+    }else assertThat(view().get("state")).isEqualTo("STOPPED");
+    if(!failure.equals("assessment-timeout")){assertThat(receipts().getFirst().get("rawProviderResponse")).isNotNull();assertThat(receipts().getFirst().get("actualCostUsd")).isEqualTo(.000135);}
+    service.processNext();assertThat(transports).isEqualTo(1);
+    Files.writeString(ROOT.resolve("intelligence/backend/target/authentic-story-"+failure+".json"),json.writerWithDefaultPrettyPrinter().writeValueAsString(Map.of("realProviderCalls",0,"trace",view())));
+  }
+  @Test void assessmentMissingSpendingGrantOrStaleBindingsCannotReserve() {
+    var missing=assessmentGrant();missing.put("authorizePaidInference",false);assertThatThrownBy(()->service.start(missing,owner)).hasMessageContaining("Separate exact owner spending");
+    var changed=assessmentGrant();changed.put("scopeSha256","changed-candidate");assertThatThrownBy(()->service.start(changed,owner)).hasMessageContaining("binding changed");
+    var exact=assessmentGrant();run=uuid(service.start(exact,owner).get("runId"));drift="systemSha256";service.processNext();assertThat(transports).isZero();
+    assertThat(rows(view().get("events")).stream().filter(e->"REQUEST_RESERVED".equals(e.get("state"))).count()).isZero();
+  }
+
 }

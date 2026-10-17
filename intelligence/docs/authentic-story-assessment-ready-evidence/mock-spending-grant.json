@@ -1,0 +1,45 @@
+{
+  "evidenceType": "DETERMINISTIC_TEST_GRANT_ONLY_NOT_OWNER_SPENDING_AUTHORIZATION",
+  "noProviderCredentials": true,
+  "allExternalSocketsDenied": true,
+  "scope": {
+    "assessmentOnlyPolicy": "ASSESSMENT_ONLY_UNKNOWN_SOURCE_V1",
+    "scopeSha256": "5be45f1966d1a2ab8c8fa03e4570f67c090024fa038a34c6ba012055e0e3fcac",
+    "operations": [
+      {
+        "policy": "ASSESSMENT_ONLY_UNKNOWN_SOURCE_V1",
+        "role": "STORY_REVIEW",
+        "provider": "openai",
+        "model": "gpt-4o-mini-2024-07-18",
+        "sourceStorySha256": "ba352d486c4252c5c6fefe585ad976c0b6f73c299f7554863848bdd842a99b3d",
+        "scopeSha256": "5be45f1966d1a2ab8c8fa03e4570f67c090024fa038a34c6ba012055e0e3fcac",
+        "systemSha256": "d05e08d595efed2ec0bffdc3cbd128aae6a0c25f12a0d217fb1cb1518d313aa6",
+        "effectiveRequestSha256": "0da629c75bab52e41f81d4fad5481249782a403521b392099883a19f0f40a480",
+        "responseSchemaSha256": "3de933681573a4679ea6551342c7a38e8b325c8239ddb68070758bdd9d384a5b",
+        "schemaVersion": "assessment-only-story-review-v1",
+        "maxRequests": 1,
+        "maximumInputBytes": 24000,
+        "payloadBytes": 13057,
+        "systemBytes": 2387,
+        "maxOutputTokens": 4000,
+        "inputUsdPerMillion": 0.15,
+        "outputUsdPerMillion": 0.6,
+        "maximumCalculatedUsd": 0.0048666000000000004,
+        "automaticRetries": false,
+        "fallback": false,
+        "assessmentOnly": true,
+        "implementationSha256": "b19b59c1633aae368d78f1dea0fb9d61922c465c128364e4dab9186c30e91fbc",
+        "maxCostUsd": 0.004867
+      }
+    ],
+    "maxRequests": 1,
+    "maxRounds": 1,
+    "maxRunSeconds": 600,
+    "maxTotalUsd": 0.004867,
+    "automaticRetries": false,
+    "fallback": false,
+    "authorizePaidInference": true,
+    "confirmAssessmentOnly": true,
+    "idempotencyKey": "authentic-assessment-v1-77cb41df80d5e2f55ca4d16544f1a5e3"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "complete": true,
+  "state": "ASSESSMENT_COMPLETE_OWNER_DECISION_PENDING",
+  "runId": "e753b545-44f9-400c-bc23-d14e4ec24ed2",
+  "actualBackendHttp": true,
+  "actualOwnerSessionAndCsrf": true,
+  "actualPersistedP2SourceReads": true,
+  "actualDisposablePostgres": true,
+  "mockedComponents": [
+    "External OpenAI adapter only"
+  ],
+  "sourceRecordCountBefore": 12,
+  "sourceRecordCountAfter": 12,
+  "mockSdkRequests": 1,
+  "generationRequests": 0,
+  "realProviderCalls": 0,
+  "reviewerRawCapturedBeforeParsing": true,
+  "storyApprovalDenied": true,
+  "promptHandoffDenied": true,
+  "productionDbWrites": 0,
+  "providerCredentialsPresent": false,
+  "externalNetworkAllowed": false
+}

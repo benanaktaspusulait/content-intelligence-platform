@@ -214,7 +214,7 @@ public class QualityMlClient {
 
   public Map<String, Object> workflow(String operation, Map<String, Object> request) {
     if (!List.of(
-            "story-experiment/preflight", "story-experiment/validate", "optimization-loop/local", "cpq-pilot/optimization-loop-execute", "cpq-pilot/capabilities", "cpq-pilot/draft-preflight", "cpq-pilot/execute", "cpq-pilot/revalidate-source", "adaptive-optimization-policy", "review", "source-plan", "optimization-recovery", "optimization-assessment", "creative-prompt-quality/assess", "creative-prompt-quality/calibration-readiness", "creative-prompt-quality/calibration-preview", "repair", "feedback", "critic", "creative-role", "creative-role/readiness", "creative-role/revalidate-production-spec")
+            "story-experiment/preflight", "story-experiment/validate", "story-experiment/assessment-preflight", "optimization-loop/local", "cpq-pilot/optimization-loop-execute", "cpq-pilot/capabilities", "cpq-pilot/draft-preflight", "cpq-pilot/execute", "cpq-pilot/revalidate-source", "adaptive-optimization-policy", "review", "source-plan", "optimization-recovery", "optimization-assessment", "creative-prompt-quality/assess", "creative-prompt-quality/calibration-readiness", "creative-prompt-quality/calibration-preview", "repair", "feedback", "critic", "creative-role", "creative-role/readiness", "creative-role/revalidate-production-spec")
         .contains(operation)) {
       throw new IllegalArgumentException("Unsupported workflow operation");
     }
@@ -223,7 +223,7 @@ public class QualityMlClient {
       var builder=HttpRequest.newBuilder(URI.create(mlServiceUrl + "/api/v1/workflow/" + operation))
           .timeout(Duration.ofSeconds(operation.startsWith("cpq-pilot/")?130:25)).header("Content-Type", "application/json");
       String configuredToken=System.getenv("WORKFLOW_ADAPTIVE_DISPATCH_TOKEN");
-      if (("creative-role".equals(operation) && configuredToken!=null && !configuredToken.isBlank()) || ("creative-role".equals(operation) && ("PROMPT_OPTIMIZATION".equals(request.get("role")) || (request.get("context") instanceof Map<?,?> c && c.containsKey("storyExperiment")))) || "cpq-pilot/optimization-loop-execute".equals(operation) || "cpq-pilot/execute".equals(operation) || "cpq-pilot/revalidate-source".equals(operation)) {
+      if (("creative-role".equals(operation) && configuredToken!=null && !configuredToken.isBlank()) || ("creative-role".equals(operation) && ("PROMPT_OPTIMIZATION".equals(request.get("role")) || (request.get("context") instanceof Map<?,?> c && (c.containsKey("storyExperiment") || c.containsKey("assessmentOnlyPolicy"))))) || "cpq-pilot/optimization-loop-execute".equals(operation) || "cpq-pilot/execute".equals(operation) || "cpq-pilot/revalidate-source".equals(operation)) {
         String token=System.getenv("WORKFLOW_ADAPTIVE_DISPATCH_TOKEN");
         if(token==null || token.length()<32) throw new IllegalStateException("Adaptive dispatch authentication configuration required");
         try {

@@ -280,7 +280,7 @@ def creative_role_readiness() -> dict[str, Any]:
 @router.post('/creative-role')
 async def creative_role(request: CreativeRoleRequest, http_request: Request) -> dict[str, Any]:
     from .creative_roles import CreativeRoleFailure, run_paid_role
-    if request.role == 'PROMPT_OPTIMIZATION' or request.context.get('storyExperiment'):
+    if request.role == 'PROMPT_OPTIMIZATION' or request.context.get('storyExperiment') or request.context.get('assessmentOnlyPolicy'):
         import hashlib, hmac, os
         token=os.getenv('WORKFLOW_ADAPTIVE_DISPATCH_TOKEN','')
         expected=hmac.new(token.encode(),await http_request.body(),hashlib.sha256).hexdigest()
@@ -302,7 +302,7 @@ async def creative_role(request: CreativeRoleRequest, http_request: Request) -> 
         } else 409
         raise HTTPException(status_code, detail) from error
     except (ValueError, json.JSONDecodeError) as error:
-        if request.context.get('storyExperiment'):
+        if request.context.get('storyExperiment') or request.context.get('assessmentOnlyPolicy'):
             # Pilot post-dispatch failures are returned by execute as complete
             # receipts. An exception here therefore precedes provider creation.
             return {'requestId': request.context.get('storyRequestId'), 'role': request.role,
@@ -354,6 +354,13 @@ def story_experiment_preflight(request: CreativeRoleRequest) -> dict[str, Any]:
 def story_experiment_validate(request: dict[str, Any]) -> dict[str, Any]:
     from .story_experiment import validate
     return validate(request['text'], request['context'], request['result'])
+
+
+@router.post('/story-experiment/assessment-preflight')
+def assessment_preflight(request: CreativeRoleRequest) -> dict[str, Any]:
+    from .story_assessment import preview
+    if request.role != 'STORY_REVIEW': raise HTTPException(400,'Assessment-only review role required')
+    return preview(request.text, request.context)
 
 
 @router.post('/creative-role/revalidate-production-spec')

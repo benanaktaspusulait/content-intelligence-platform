@@ -1,0 +1,262 @@
+{
+  "origin": "MOCK_CONTRACT_CAPACITY_ONLY_NOT_REAL_REVIEW",
+  "tokenizer": "tiktoken o200k_base",
+  "outputTokens": 2656,
+  "maximumOutputTokens": 4000,
+  "semanticChecksPerCandidate": 9,
+  "cpqDimensionsPerCandidate": 6,
+  "inputPayloadTokens": 3107,
+  "systemTokens": 438,
+  "sample": {
+    "schemaVersion": "assessment-only-story-review-v1",
+    "candidateAssessments": [
+      {
+        "candidateRef": "A",
+        "semanticSource": {
+          "outcome": "SEMANTIC_SOURCE_UNKNOWN",
+          "findings": [
+            {
+              "check": "identity",
+              "outcome": "UNKNOWN",
+              "sourceQuote": "Already mid-acti",
+              "candidateQuote": "Pip the rabbit presses a single sticky note toward the toy cabinet's empty front panel, and it clings to Pip's fingertip while the cabinet stays untouched.",
+              "reason": "The exact source meaning and causal condition require independent judgment; this mocked case preserves uncertainty."
+            },
+            {
+              "check": "premise",
+              "outcome": "UNKNOWN",
+              "sourceQuote": "Already mid-acti",
+              "candidateQuote": "Pip the rabbit presses a single sticky note toward the toy cabinet's empty front panel, and it clings to Pip's fingertip while the cabinet stays untouched.",
+              "reason": "The exact source meaning and causal condition require independent judgment; this mocked case preserves uncertainty."
+            },
+            {
+              "check": "rule",
+              "outcome": "UNKNOWN",
+              "sourceQuote": "Already mid-acti",
+              "candidateQuote": "Pip the rabbit presses a single sticky note toward the toy cabinet's empty front panel, and it clings to Pip's fingertip while the cabinet stays untouched.",
+              "reason": "The exact source meaning and causal condition require independent judgment; this mocked case preserves uncertainty."
+            },
+            {
+              "check": "continuity",
+              "outcome": "UNKNOWN",
+              "sourceQuote": "Already mid-acti",
+              "candidateQuote": "Pip the rabbit presses a single sticky note toward the toy cabinet's empty front panel, and it clings to Pip's fingertip while the cabinet stays untouched.",
+              "reason": "The exact source meaning and causal condition require independent judgment; this mocked case preserves uncertainty."
+            },
+            {
+              "check": "ending",
+              "outcome": "UNKNOWN",
+              "sourceQuote": "Already mid-acti",
+              "candidateQuote": "Pip the rabbit presses a single sticky note toward the toy cabinet's empty front panel, and it clings to Pip's fingertip while the cabinet stays untouched.",
+              "reason": "The exact source meaning and causal condition require independent judgment; this mocked case preserves uncertainty."
+            },
+            {
+              "check": "trigger_conditions",
+              "outcome": "UNKNOWN",
+              "sourceQuote": "Already mid-acti",
+              "candidateQuote": "Pip the rabbit presses a single sticky note toward the toy cabinet's empty front panel, and it clings to Pip's fingertip while the cabinet stays untouched.",
+              "reason": "The exact source meaning and causal condition require independent judgment; this mocked case preserves uncertainty."
+            },
+            {
+              "check": "single_mechanic",
+              "outcome": "UNKNOWN",
+              "sourceQuote": "Already mid-acti",
+              "candidateQuote": "Pip the rabbit presses a single sticky note toward the toy cabinet's empty front panel, and it clings to Pip's fingertip while the cabinet stays untouched.",
+              "reason": "The exact source meaning and causal condition require independent judgment; this mocked case preserves uncertainty."
+            },
+            {
+              "check": "causal_clarity",
+              "outcome": "UNKNOWN",
+              "sourceQuote": "Already mid-acti",
+              "candidateQuote": "Pip the rabbit presses a single sticky note toward the toy cabinet's empty front panel, and it clings to Pip's fingertip while the cabinet stays untouched.",
+              "reason": "The exact source meaning and causal condition require independent judgment; this mocked case preserves uncertainty."
+            },
+            {
+              "check": "protected_events",
+              "outcome": "UNKNOWN",
+              "sourceQuote": "Already mid-acti",
+              "candidateQuote": "Pip the rabbit presses a single sticky note toward the toy cabinet's empty front panel, and it clings to Pip's fingertip while the cabinet stays untouched.",
+              "reason": "The exact source meaning and causal condition require independent judgment; this mocked case preserves uncertainty."
+            }
+          ]
+        },
+        "creativeQuality": {
+          "dimensions": [
+            {
+              "dimension": "SCROLL_STOP_VISUAL_PROMISE",
+              "quote": "Pip the rabbit presses a single sticky note toward the toy cabinet's empty front panel, and it clings to Pip's fingertip while the cabinet stays untouched.",
+              "strength": "An action and consequence are written explicitly; whether that improves clarity remains unverified.",
+              "weakness": "Timing and viewer comprehension need independent assessment, especially around the final transition.",
+              "risk": "Thin paper and facial contact may challenge the selected generator; no rendered evidence exists."
+            },
+            {
+              "dimension": "CAUSAL_PROGRESSION",
+              "quote": "Pip the rabbit presses a single sticky note toward the toy cabinet's empty front panel, and it clings to Pip's fingertip while the cabinet stays untouched.",
+              "strength": "An action and consequence are written explicitly; whether that improves clarity remains unverified.",
+              "weakness": "Timing and viewer comprehension need independent assessment, especially around the final transition.",
+              "risk": "Thin paper and facial contact may challenge the selected generator; no rendered evidence exists."
+            },
+            {
+              "dimension": "VISUAL_STORYTELLING",
+              "quote": "Pip the rabbit presses a single sticky note toward the toy cabinet's empty front panel, and it clings to Pip's fingertip while the cabinet stays untouched.",
+              "strength": "An action and consequence are written explicitly; whether that improves clarity remains unverified.",
+              "weakness": "Timing and viewer comprehension need independent assessment, especially around the final transition.",
+              "risk": "Thin paper and facial contact may challenge the selected generator; no rendered evidence exists."
+            },
+            {
+              "dimension": "PRODUCTION_EXECUTABILITY",
+              "quote": "Pip the rabbit presses a single sticky note toward the toy cabinet's empty front panel, and it clings to Pip's fingertip while the cabinet stays untouched.",
+              "strength": "An action and consequence are written explicitly; whether that improves clarity remains unverified.",
+              "weakness": "Timing and viewer comprehension need independent assessment, especially around the final transition.",
+              "risk": "Thin paper and facial contact may challenge the selected generator; no rendered evidence exists."
+            },
+            {
+              "dimension": "ENDING_REPLAY",
+              "quote": "Pip the rabbit presses a single sticky note toward the toy cabinet's empty front panel, and it clings to Pip's fingertip while the cabinet stays untouched.",
+              "strength": "An action and consequence are written explicitly; whether that improves clarity remains unverified.",
+              "weakness": "Timing and viewer comprehension need independent assessment, especially around the final transition.",
+              "risk": "Thin paper and facial contact may challenge the selected generator; no rendered evidence exists."
+            },
+            {
+              "dimension": "DISTINCTIVE_CREATIVE_VALUE",
+              "quote": "Pip the rabbit presses a single sticky note toward the toy cabinet's empty front panel, and it clings to Pip's fingertip while the cabinet stays untouched.",
+              "strength": "An action and consequence are written explicitly; whether that improves clarity remains unverified.",
+              "weakness": "Timing and viewer comprehension need independent assessment, especially around the final transition.",
+              "risk": "Thin paper and facial contact may challenge the selected generator; no rendered evidence exists."
+            }
+          ],
+          "overall": "UNKNOWN",
+          "reason": "No real independent judgment in this mocked test."
+        },
+        "eligibleForOwnerProposal": false
+      },
+      {
+        "candidateRef": "B",
+        "semanticSource": {
+          "outcome": "SEMANTIC_SOURCE_UNKNOWN",
+          "findings": [
+            {
+              "check": "identity",
+              "outcome": "UNKNOWN",
+              "sourceQuote": "Already mid-acti",
+              "candidateQuote": "Pip the rabbit reaches to smooth one sticky note onto the toy cabinet's bare front panel, but it clings to Pip's fingertip while the cabinet stays untouched.",
+              "reason": "The exact source meaning and causal condition require independent judgment; this mocked case preserves uncertainty."
+            },
+            {
+              "check": "premise",
+              "outcome": "UNKNOWN",
+              "sourceQuote": "Already mid-acti",
+              "candidateQuote": "Pip the rabbit reaches to smooth one sticky note onto the toy cabinet's bare front panel, but it clings to Pip's fingertip while the cabinet stays untouched.",
+              "reason": "The exact source meaning and causal condition require independent judgment; this mocked case preserves uncertainty."
+            },
+            {
+              "check": "rule",
+              "outcome": "UNKNOWN",
+              "sourceQuote": "Already mid-acti",
+              "candidateQuote": "Pip the rabbit reaches to smooth one sticky note onto the toy cabinet's bare front panel, but it clings to Pip's fingertip while the cabinet stays untouched.",
+              "reason": "The exact source meaning and causal condition require independent judgment; this mocked case preserves uncertainty."
+            },
+            {
+              "check": "continuity",
+              "outcome": "UNKNOWN",
+              "sourceQuote": "Already mid-acti",
+              "candidateQuote": "Pip the rabbit reaches to smooth one sticky note onto the toy cabinet's bare front panel, but it clings to Pip's fingertip while the cabinet stays untouched.",
+              "reason": "The exact source meaning and causal condition require independent judgment; this mocked case preserves uncertainty."
+            },
+            {
+              "check": "ending",
+              "outcome": "UNKNOWN",
+              "sourceQuote": "Already mid-acti",
+              "candidateQuote": "Pip the rabbit reaches to smooth one sticky note onto the toy cabinet's bare front panel, but it clings to Pip's fingertip while the cabinet stays untouched.",
+              "reason": "The exact source meaning and causal condition require independent judgment; this mocked case preserves uncertainty."
+            },
+            {
+              "check": "trigger_conditions",
+              "outcome": "UNKNOWN",
+              "sourceQuote": "Already mid-acti",
+              "candidateQuote": "Pip the rabbit reaches to smooth one sticky note onto the toy cabinet's bare front panel, but it clings to Pip's fingertip while the cabinet stays untouched.",
+              "reason": "The exact source meaning and causal condition require independent judgment; this mocked case preserves uncertainty."
+            },
+            {
+              "check": "single_mechanic",
+              "outcome": "UNKNOWN",
+              "sourceQuote": "Already mid-acti",
+              "candidateQuote": "Pip the rabbit reaches to smooth one sticky note onto the toy cabinet's bare front panel, but it clings to Pip's fingertip while the cabinet stays untouched.",
+              "reason": "The exact source meaning and causal condition require independent judgment; this mocked case preserves uncertainty."
+            },
+            {
+              "check": "causal_clarity",
+              "outcome": "UNKNOWN",
+              "sourceQuote": "Already mid-acti",
+              "candidateQuote": "Pip the rabbit reaches to smooth one sticky note onto the toy cabinet's bare front panel, but it clings to Pip's fingertip while the cabinet stays untouched.",
+              "reason": "The exact source meaning and causal condition require independent judgment; this mocked case preserves uncertainty."
+            },
+            {
+              "check": "protected_events",
+              "outcome": "UNKNOWN",
+              "sourceQuote": "Already mid-acti",
+              "candidateQuote": "Pip the rabbit reaches to smooth one sticky note onto the toy cabinet's bare front panel, but it clings to Pip's fingertip while the cabinet stays untouched.",
+              "reason": "The exact source meaning and causal condition require independent judgment; this mocked case preserves uncertainty."
+            }
+          ]
+        },
+        "creativeQuality": {
+          "dimensions": [
+            {
+              "dimension": "SCROLL_STOP_VISUAL_PROMISE",
+              "quote": "Pip the rabbit reaches to smooth one sticky note onto the toy cabinet's bare front panel, but it clings to Pip's fingertip while the cabinet stays untouched.",
+              "strength": "An action and consequence are written explicitly; whether that improves clarity remains unverified.",
+              "weakness": "Timing and viewer comprehension need independent assessment, especially around the final transition.",
+              "risk": "Thin paper and facial contact may challenge the selected generator; no rendered evidence exists."
+            },
+            {
+              "dimension": "CAUSAL_PROGRESSION",
+              "quote": "Pip the rabbit reaches to smooth one sticky note onto the toy cabinet's bare front panel, but it clings to Pip's fingertip while the cabinet stays untouched.",
+              "strength": "An action and consequence are written explicitly; whether that improves clarity remains unverified.",
+              "weakness": "Timing and viewer comprehension need independent assessment, especially around the final transition.",
+              "risk": "Thin paper and facial contact may challenge the selected generator; no rendered evidence exists."
+            },
+            {
+              "dimension": "VISUAL_STORYTELLING",
+              "quote": "Pip the rabbit reaches to smooth one sticky note onto the toy cabinet's bare front panel, but it clings to Pip's fingertip while the cabinet stays untouched.",
+              "strength": "An action and consequence are written explicitly; whether that improves clarity remains unverified.",
+              "weakness": "Timing and viewer comprehension need independent assessment, especially around the final transition.",
+              "risk": "Thin paper and facial contact may challenge the selected generator; no rendered evidence exists."
+            },
+            {
+              "dimension": "PRODUCTION_EXECUTABILITY",
+              "quote": "Pip the rabbit reaches to smooth one sticky note onto the toy cabinet's bare front panel, but it clings to Pip's fingertip while the cabinet stays untouched.",
+              "strength": "An action and consequence are written explicitly; whether that improves clarity remains unverified.",
+              "weakness": "Timing and viewer comprehension need independent assessment, especially around the final transition.",
+              "risk": "Thin paper and facial contact may challenge the selected generator; no rendered evidence exists."
+            },
+            {
+              "dimension": "ENDING_REPLAY",
+              "quote": "Pip the rabbit reaches to smooth one sticky note onto the toy cabinet's bare front panel, but it clings to Pip's fingertip while the cabinet stays untouched.",
+              "strength": "An action and consequence are written explicitly; whether that improves clarity remains unverified.",
+              "weakness": "Timing and viewer comprehension need independent assessment, especially around the final transition.",
+              "risk": "Thin paper and facial contact may challenge the selected generator; no rendered evidence exists."
+            },
+            {
+              "dimension": "DISTINCTIVE_CREATIVE_VALUE",
+              "quote": "Pip the rabbit reaches to smooth one sticky note onto the toy cabinet's bare front panel, but it clings to Pip's fingertip while the cabinet stays untouched.",
+              "strength": "An action and consequence are written explicitly; whether that improves clarity remains unverified.",
+              "weakness": "Timing and viewer comprehension need independent assessment, especially around the final transition.",
+              "risk": "Thin paper and facial contact may challenge the selected generator; no rendered evidence exists."
+            }
+          ],
+          "overall": "UNKNOWN",
+          "reason": "No real independent judgment in this mocked test."
+        },
+        "eligibleForOwnerProposal": false
+      }
+    ],
+    "researchPreference": "NO_CREATIVE_WINNER",
+    "reason": "Mocked review proves contract only.",
+    "evidenceLimitations": [
+      "No real reviewer or rendered evidence."
+    ]
+  },
+  "reliabilityClaim": "Token fit demonstrates contract capacity only, not real model compliance or creative quality",
+  "providerCalls": 0
+}

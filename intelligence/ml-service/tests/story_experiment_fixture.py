@@ -74,3 +74,23 @@ def review(candidates, context):
                 'ruleAssessments':[{'ruleId':rule,'storyEvidenceExcerpt':c['openingVisualState'],'status':'RISK',
                     'reason':'Offline structural fixture','necessaryImprovement':'Independent review required','changesProtectedSource':False}
                  for rule in ['ATTEMPT_001','ATTEMPT_002','CHAR_002','REPETITION_004','MINI_STORY_LOCK']]} for c in candidates]}}
+
+
+def assessment_inputs():
+    import json,hashlib
+    from pathlib import Path
+    root=Path(__file__).resolve().parents[2]/'docs'
+    path=root/'AUTHENTIC_STORY_ASSESSMENT_SOURCE_CATALOG.json';catalog=json.loads(path.read_text());items=[]
+    for entry in catalog['candidates']:
+        receipt=json.loads((root/entry['receiptFile']).read_text());candidate=next(c for c in json.loads(receipt['rawProviderResponse'])['alternatives'] if c['candidateId']==entry['candidateId'])
+        items.append({**entry,'receipt':receipt,'originalCandidate':candidate})
+    source=catalog['sourceScope'];scope={'experimentVersion':'REAL_CREATIVE_STORY_EVOLUTION_PILOT_V1','assessmentOnlyPolicy':catalog['policy'],'catalogSha256':hashlib.sha256(path.read_bytes()).hexdigest(),'sourceScope':source,'candidates':items,'sourceStoryRecordId':source['sourceStoryRecordId'],'sourceStorySha256':source['sourceStorySha256'],'sourceStory':source['sourceStory'],'ownerPolicyApproval':True}
+    return source['sourceStory'],{'assessmentOnlyPolicy':catalog['policy'],'assessmentScope':scope}
+
+
+def assessment_review(payload):
+    from app.workflow.story_assessment import SCHEMA
+    return {'schemaVersion':SCHEMA,'candidateAssessments':[{'candidateRef':c['ref'],
+        'semanticSource':{'outcome':'SEMANTIC_SOURCE_UNKNOWN','findings':[{'check':check,'outcome':'UNKNOWN','sourceQuote':payload['originalStory'][:16],'candidateQuote':c['narrative'][:14],'reason':'Mock contract only; meaning unverified.'} for check in payload['semanticChecks']]},
+        'creativeQuality':{'dimensions':[{'dimension':d,'quote':c['narrative'][:14],'strength':'UNKNOWN','weakness':'Unverified timing.','risk':'No visual evidence.'} for d in payload['dimensions']],'overall':'UNKNOWN','reason':'No real independent judgment in this mocked test.'},'eligibleForOwnerProposal':False} for c in payload['candidates']],
+        'researchPreference':'NO_CREATIVE_WINNER','reason':'Mocked review proves contract only.','evidenceLimitations':['No real reviewer or rendered evidence.']}

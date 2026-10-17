@@ -7,7 +7,12 @@ import hashlib
 import hmac
 from fastapi.testclient import TestClient
 from app.main import app
-from story_experiment_fixture import alternatives, review, inputs
+from story_experiment_fixture import alternatives, review, inputs, assessment_review
+
+# This bridge is executed repeatedly inside one warm process. Per-review
+# checkpoint directories must not leak into later non-assessment operations.
+os.environ.setdefault('POMPOM_BRIDGE_ORIGINAL_DATA_ROOT',os.environ['POMPOM_DATA_ROOT'])
+os.environ['POMPOM_DATA_ROOT']=os.environ['POMPOM_BRIDGE_ORIGINAL_DATA_ROOT']
 
 os.environ.update(WORKFLOW_STORY_MODEL='deepseek-flash', WORKFLOW_STORY_PILOT_MODEL_POLICY='DIRECT_FLASH_TEXT_V1', WORKFLOW_STORY_INPUT_USD_PER_MILLION='.3',
                   WORKFLOW_STORY_OUTPUT_USD_PER_MILLION='1.2',WORKFLOW_STORY_REVIEW_MODEL='gpt-4o-mini-2024-07-18',
@@ -20,12 +25,28 @@ if operation=='fixture':
 if operation=='offline-evidence-audit':
     from app.workflow.story_evidence import derive_source_evidence
     print(json.dumps(derive_source_evidence(body['text'],body['context'],body['candidate'])));sys.exit(0)
+if body.get('context',{}).get('assessmentOnlyPolicy'):
+    import tempfile
+    os.environ['POMPOM_DATA_ROOT']=tempfile.mkdtemp(prefix='pompom-assessment-contract-')
+    os.environ['CPQ_PILOT_REAL_ENABLED']='true'
 client=TestClient(app)
 
 class MockAdapter:
     def __init__(self,*a,**kw): self.model=kw.get('model') or (a[0] if a else '')
     def complete(self,prompt,system='',**kwargs):
         payload=json.loads(prompt);context=body['context'];role=body['role']
+        if context.get('assessmentOnlyPolicy'):
+            if role!='STORY_REVIEW':raise AssertionError('Assessment must never generate')
+            if mode=='assessment-timeout':raise TimeoutError('Offline reviewer timeout')
+            value=assessment_review(payload)
+            if mode in ('assessment-semantic-fail','assessment-invalid-approval'):
+                row=value['candidateAssessments'][0];row['semanticSource']['findings'][0]['outcome']='FAIL';row['semanticSource']['outcome']='SEMANTIC_SOURCE_FAIL'
+                if mode=='assessment-invalid-approval':row['eligibleForOwnerProposal']=True
+            self.last_usage={'prompt_tokens':100,'completion_tokens':200}
+            self.last_response_metadata={'model':self.model,'finishReason':'stop','requestId':'offline-assessment-receipt'}
+            self.last_raw_response='{malformed' if mode=='assessment-malformed' else json.dumps(value)
+            self.last_provider_response={'model':self.model,'usage':self.last_usage,'choices':[{'message':{'content':self.last_raw_response}}]}
+            return self.last_raw_response
         if mode in ('saved-first','saved-followup') and role=='STORY':
             from pathlib import Path
             folder='first-real-story-evolution-evidence' if mode=='saved-first' else 'real-story-identity-fidelity-followup-evidence'

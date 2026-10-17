@@ -20,6 +20,8 @@ import static org.springframework.http.HttpStatus.*;
 @Service
 public class StoryEvolutionService {
   static final String PILOT="REAL_CREATIVE_STORY_EVOLUTION_PILOT_V1";
+  static final String ASSESSMENT="ASSESSMENT_ONLY_UNKNOWN_SOURCE_V1";
+  @Value("${pompom.cpq-story-assessment.evidence-root:}") String assessmentEvidenceRoot="";
   @org.springframework.beans.factory.annotation.Autowired(required=false)
   org.springframework.transaction.PlatformTransactionManager transactionManager;
   final JdbcClient db; final CpqOwnerPilotService util; final WorkflowService workflow; final QualityMlClient ml;
@@ -32,6 +34,8 @@ public class StoryEvolutionService {
   Map<String,Object> load(UUID id){return db.sql("SELECT owner_principal,source_story_record_id,source_story_sha256,authorization_payload::text,scope::text,state,progress::text,cancel_requested,deadline FROM story_evolution_runs WHERE id=:id").param("id",id).query((rs,n)->Map.<String,Object>of("owner",rs.getString(1),"sourceStoryRecordId",rs.getObject(2,UUID.class),"sourceStorySha256",rs.getString(3),"authorization",util.read(rs.getString(4)),"scope",util.read(rs.getString(5)),"state",rs.getString(6),"progress",util.read(rs.getString(7)),"cancel",rs.getBoolean(8),"deadline",rs.getTimestamp(9).toInstant())).single();}
   void owner(UUID id,HttpServletRequest req){if(!util.owner(req).equals(load(id).get("owner")))throw new ResponseStatusException(FORBIDDEN,"Run belongs to another owner");}
   @Transactional public Map<String,Object> start(Map<String,Object> body,HttpServletRequest req){
+    if(ASSESSMENT.equals(body.get("assessmentOnlyPolicy")))return startAssessment(body,req);
+    if(body.containsKey("assessmentOnlyPolicy"))throw new ResponseStatusException(BAD_REQUEST,"Unsupported assessment policy");
     if(PILOT.equals(body.get("experimentVersion")))return startPilot(body,req);
     if(body.containsKey("experimentVersion"))throw new ResponseStatusException(BAD_REQUEST,"Unsupported experiment contract");
     String owner=util.owner(req); if(!realEnabled)throw new ResponseStatusException(FORBIDDEN,"Story evolution real dispatch remains disabled; no run authorized");
@@ -59,6 +63,7 @@ public class StoryEvolutionService {
   @Scheduled(fixedDelayString="${pompom.story-evolution.poll-delay-ms:2000}") public void processNext(){var id=db.sql("SELECT id FROM story_evolution_runs WHERE state='READY' AND cancel_requested=false AND deadline>now() ORDER BY created_at LIMIT 1").query(UUID.class).optional();id.ifPresent(x->{try{step(x);}catch(Exception e){stop(x,"PROVIDER_FAILED_OR_AMBIGUOUS",e.getMessage());}});}
   @Transactional void step(UUID id){
     var row=load(id); var scope=map(row.get("scope")); var p=new LinkedHashMap<>(map(row.get("progress")));
+    if(ASSESSMENT.equals(scope.get("assessmentOnlyPolicy"))){stepAssessment(id,row,scope,p);return;}
     if(PILOT.equals(scope.get("experimentVersion"))){stepPilot(id,row,scope,p);return;}
     if(Boolean.TRUE.equals(row.get("cancel"))){stop(id,"CANCELLED","");return;}
     int round=((Number)p.get("round")).intValue()+1; int max=((Number)map(row.get("authorization")).getOrDefault("maxRounds",1)).intValue();
@@ -100,13 +105,14 @@ public class StoryEvolutionService {
     if(round<max){p.put("phase","GENERATING");db.sql("UPDATE story_evolution_runs SET state='READY',progress=CAST(:p AS jsonb),updated_at=now() WHERE id=:id").param("p",util.encode(p)).param("id",id).update();event(id,Map.of("state","ROUND_RETAINED","round",round,"draftId",draft.toString(),"providerCalls",used));}
     else {p.put("phase","AWAITING_OWNER_STORY_APPROVAL");p.put("reason","AWAITING_OWNER_STORY_APPROVAL");db.sql("UPDATE story_evolution_runs SET state='AWAITING_OWNER_STORY_APPROVAL',progress=CAST(:p AS jsonb),updated_at=now() WHERE id=:id").param("p",util.encode(p)).param("id",id).update();event(id,Map.of("state","AWAITING_OWNER_STORY_APPROVAL","round",round,"draftId",draft.toString(),"providerCalls",used));}
   }
-  @Transactional public Map<String,Object> approve(UUID id,Map<String,Object> body,HttpServletRequest req){owner(id,req);var row=load(id);if(!"AWAITING_OWNER_STORY_APPROVAL".equals(row.get("state")))throw new ResponseStatusException(CONFLICT,"No story candidate awaits approval");var p=map(row.get("progress"));UUID draft=uuid(body.get("draftId"));if(!draft.toString().equals(p.get("bestDraftId")))throw new ResponseStatusException(CONFLICT,"Exact current story draft required");var d=db.sql("SELECT candidate_id,prompt_payload::text,candidate_sha256 FROM story_evolution_drafts WHERE id=:id AND run_id=:run").param("id",draft).param("run",id).query((rs,n)->Map.of("candidateId",rs.getString(1),"payload",util.read(rs.getString(2)),"sha256",rs.getString(3))).single();if(!Objects.equals(d.get("sha256"),body.get("candidateSha256")))throw new ResponseStatusException(CONFLICT,"Stale story fingerprint");String text=String.valueOf(map(d.get("payload")).get("text"));var newStory=workflow.persistStoryEvolutionDraft(uuid(row.get("sourceStoryRecordId")),text,map(d.get("payload")));String cid=String.valueOf(map(newStory.get("result")).get("alternatives") instanceof List<?> l && !l.isEmpty()?map(l.getFirst()).get("candidateId"):"candidate-1");String revision=cid+"-revision-"+workflow.storyFingerprint(text);var approval=workflow.approveStory(uuid(String.valueOf(newStory.get("recordId"))),Map.of("approvedText",text,"candidateId",cid,"revisionId",revision,"contentFingerprint",workflow.storyFingerprint(text),"sourceType","AUTONOMOUS_STORY_EVOLUTION"));p.put("approval",approval);p.put("phase","APPROVED_NEW_SOURCE");db.sql("UPDATE story_evolution_runs SET state='APPROVED_NEW_SOURCE',progress=CAST(:p AS jsonb),updated_at=now() WHERE id=:id").param("p",util.encode(p)).param("id",id).update();event(id,Map.of("state","OWNER_STORY_APPROVED","newStoryRecordId",newStory.get("recordId")));return view(id,req);
+  @Transactional public Map<String,Object> approve(UUID id,Map<String,Object> body,HttpServletRequest req){owner(id,req);var row=load(id);if(ASSESSMENT.equals(map(row.get("scope")).get("assessmentOnlyPolicy")))throw new ResponseStatusException(CONFLICT,"Research assessment cannot approve a story");if(!"AWAITING_OWNER_STORY_APPROVAL".equals(row.get("state")))throw new ResponseStatusException(CONFLICT,"No story candidate awaits approval");var p=map(row.get("progress"));UUID draft=uuid(body.get("draftId"));if(!draft.toString().equals(p.get("bestDraftId")))throw new ResponseStatusException(CONFLICT,"Exact current story draft required");var d=db.sql("SELECT candidate_id,prompt_payload::text,candidate_sha256 FROM story_evolution_drafts WHERE id=:id AND run_id=:run").param("id",draft).param("run",id).query((rs,n)->Map.of("candidateId",rs.getString(1),"payload",util.read(rs.getString(2)),"sha256",rs.getString(3))).single();if(!Objects.equals(d.get("sha256"),body.get("candidateSha256")))throw new ResponseStatusException(CONFLICT,"Stale story fingerprint");String text=String.valueOf(map(d.get("payload")).get("text"));var newStory=workflow.persistStoryEvolutionDraft(uuid(row.get("sourceStoryRecordId")),text,map(d.get("payload")));String cid=String.valueOf(map(newStory.get("result")).get("alternatives") instanceof List<?> l && !l.isEmpty()?map(l.getFirst()).get("candidateId"):"candidate-1");String revision=cid+"-revision-"+workflow.storyFingerprint(text);var approval=workflow.approveStory(uuid(String.valueOf(newStory.get("recordId"))),Map.of("approvedText",text,"candidateId",cid,"revisionId",revision,"contentFingerprint",workflow.storyFingerprint(text),"sourceType","AUTONOMOUS_STORY_EVOLUTION"));p.put("approval",approval);p.put("phase","APPROVED_NEW_SOURCE");db.sql("UPDATE story_evolution_runs SET state='APPROVED_NEW_SOURCE',progress=CAST(:p AS jsonb),updated_at=now() WHERE id=:id").param("p",util.encode(p)).param("id",id).update();event(id,Map.of("state","OWNER_STORY_APPROVED","newStoryRecordId",newStory.get("recordId")));return view(id,req);
   }
   public Map<String,Object> view(UUID id,HttpServletRequest req){owner(id,req);var r=load(id);var out=new LinkedHashMap<>(r);out.put("runId",id.toString());out.put("drafts",db.sql("SELECT id,round_number,candidate_id,prompt_payload::text, candidate_sha256 FROM story_evolution_drafts WHERE run_id=:id ORDER BY round_number").param("id",id).query((rs,n)->Map.of("draftId",rs.getString(1),"round",rs.getInt(2),"candidateId",rs.getString(3),"payload",util.read(rs.getString(4)),"candidateSha256",rs.getString(5))).list());out.put("events",db.sql("SELECT payload::text FROM story_evolution_events WHERE run_id=:id ORDER BY created_at,id").param("id",id).query((rs,n)->util.read(rs.getString(1))).list());out.remove("owner");return out;}
   @Transactional
   public Map<String,Object> handoff(UUID id, Map<String,Object> body, HttpServletRequest req) {
     owner(id, req);
     var row = load(id);
+    if(ASSESSMENT.equals(map(row.get("scope")).get("assessmentOnlyPolicy")))throw new ResponseStatusException(CONFLICT,"Assessment cannot authorize BUILD_PROMPT");
     if (!"APPROVED_NEW_SOURCE".equals(row.get("state")))
       throw new ResponseStatusException(CONFLICT, "Owner story approval is required before prompt handoff");
     if (!realEnabled)
@@ -386,6 +392,103 @@ public class StoryEvolutionService {
       .param("p",util.encode(progress)).param("id",id).update();
     event(id,Map.of("state","RESEARCH_COMPLETE_OWNER_REVIEW_REQUIRED","ownerStoryApproval","PENDING","canonicalPromptScore","NOT_EVALUATED"));
   }
+  /** Read authentic archived receipts; HTTP callers cannot supply replacement stories. */
+  Map<String,Object> assessmentScope() {
+    if(assessmentEvidenceRoot==null||assessmentEvidenceRoot.isBlank())throw new ResponseStatusException(CONFLICT,"Assessment evidence root is not configured");
+    try {
+      var root=java.nio.file.Path.of(assessmentEvidenceRoot).toRealPath();
+      String catalogText=java.nio.file.Files.readString(root.resolve("AUTHENTIC_STORY_ASSESSMENT_SOURCE_CATALOG.json"));
+      var catalog=util.read(catalogText);
+      if(!ASSESSMENT.equals(catalog.get("policy"))||!Boolean.TRUE.equals(catalog.get("ownerPolicyApproval")))throw new IllegalStateException("Approved assessment-only catalog required");
+      var source=map(catalog.get("sourceScope"));var current=pilotScope(pilotBody(source));
+      if(!util.encode(source).equals(util.encode(current)))throw new IllegalStateException("Assessment approved source/settings changed");
+      var candidates=new ArrayList<Map<String,Object>>();
+      for(var entry:rows(catalog.get("candidates"))) {
+        var file=root.resolve(String.valueOf(entry.get("receiptFile"))).toRealPath();
+        if(!file.startsWith(root))throw new IllegalStateException("Receipt path escapes evidence root");
+        String saved=java.nio.file.Files.readString(file);
+        if(!hash(saved).equals(entry.get("receiptFileSha256")))throw new IllegalStateException("Immutable provider receipt fingerprint changed");
+        var receipt=util.read(saved);String raw=String.valueOf(receipt.get("rawProviderResponse"));
+        if(!hash(raw).equals(entry.get("rawResponseSha256")))throw new IllegalStateException("Authentic raw response fingerprint changed");
+        var candidate=rows(util.read(raw).get("alternatives")).stream().filter(c->Objects.equals(c.get("candidateId"),entry.get("candidateId"))).findFirst().orElseThrow();
+        if(!hash(String.valueOf(candidate.get("text"))).equals(entry.get("candidateSha256")))throw new IllegalStateException("Immutable candidate SHA changed");
+        var bound=new LinkedHashMap<>(entry);bound.put("receipt",receipt);bound.put("originalCandidate",candidate);candidates.add(bound);
+      }
+      var result=new LinkedHashMap<String,Object>();result.put("experimentVersion",PILOT);result.put("assessmentOnlyPolicy",ASSESSMENT);
+      var authority=new TreeMap<String,String>();
+      for(Class<?> type:List.of(StoryEvolutionService.class,QualityMlClient.class,CpqOwnerPilotService.class)) {
+        try(var bytes=type.getResourceAsStream("/"+type.getName().replace('.','/')+".class")) {
+          if(bytes==null)throw new IllegalStateException("Assessment authority implementation unavailable");
+          authority.put(type.getName(),HexFormat.of().formatHex(java.security.MessageDigest.getInstance("SHA-256").digest(bytes.readAllBytes())));
+        } catch(java.security.NoSuchAlgorithmException impossible){throw new IllegalStateException(impossible);}
+      }
+      result.put("authorityImplementationSha256",hash(util.encode(authority)));
+      result.put("catalogSha256",hash(catalogText));result.put("sourceScope",current);result.put("candidates",candidates);
+      result.put("sourceStoryRecordId",current.get("sourceStoryRecordId"));result.put("sourceStorySha256",current.get("sourceStorySha256"));
+      result.put("sourceStory",current.get("sourceStory"));result.put("ownerPolicyApproval",true);return result;
+    } catch(java.io.IOException error){throw new ResponseStatusException(CONFLICT,"Authentic assessment evidence unavailable",error);}
+  }
+  Map<String,Object> assessmentContext(Map<String,Object> scope) {return new LinkedHashMap<>(Map.of("assessmentOnlyPolicy",ASSESSMENT,"assessmentScope",scope));}
+  public Map<String,Object> inspectAssessment(Map<String,Object> body,HttpServletRequest request) {
+    util.owner(request);if(transactionManager==null)throw new ResponseStatusException(CONFLICT,"Durable ledger unavailable");
+    var scope=assessmentScope();var operation=new LinkedHashMap<>(ml.workflow("story-experiment/assessment-preflight",Map.of("role","STORY_REVIEW","text",scope.get("sourceStory"),"context",assessmentContext(scope),"maxCostUsd",20)));
+    double cap=Math.ceil((((Number)operation.get("maximumCalculatedUsd")).doubleValue()+1e-12)*1e6)/1e6;
+    operation.put("maxCostUsd",cap);
+    return Map.of("assessmentOnlyPolicy",ASSESSMENT,"scope",scope,"scopeSha256",hash(util.encode(scope)),"operations",List.of(operation),"maxRequests",1,"maxTotalUsd",cap,"persisted",false,"providerCalls",0);
+  }
+  Map<String,Object> startAssessment(Map<String,Object> body,HttpServletRequest request) {
+    String actor=util.owner(request);var checked=inspectAssessment(body,request);
+    if(!Boolean.TRUE.equals(body.get("authorizePaidInference"))||!Boolean.TRUE.equals(body.get("confirmAssessmentOnly"))
+        ||!Boolean.FALSE.equals(body.get("automaticRetries"))||!Boolean.FALSE.equals(body.get("fallback")))
+      throw new ResponseStatusException(BAD_REQUEST,"Separate exact owner spending authorization required; assessment-only, no retry/fallback");
+    if(integer(body,"maxRequests",1,1)!=1||integer(body,"maxRounds",1,1)!=1)throw new ResponseStatusException(BAD_REQUEST,"Exactly one review; no generation");
+    int seconds=integer(body,"maxRunSeconds",1,600);
+    if(!Objects.equals(body.get("scopeSha256"),checked.get("scopeSha256"))||!util.encode(body.get("operations")).equals(util.encode(checked.get("operations")))
+        ||Double.compare(amount(body.get("maxTotalUsd")),((Number)checked.get("maxTotalUsd")).doubleValue())!=0)
+      throw new ResponseStatusException(CONFLICT,"Assessment source/model/instruction/budget binding changed");
+    if(!realEnabled)throw new ResponseStatusException(FORBIDDEN,"Paid review dispatch disabled");
+    String key=String.valueOf(body.getOrDefault("idempotencyKey",""));if(key.length()<8||key.length()>100)throw new ResponseStatusException(BAD_REQUEST,"Stable bounded idempotency key required");
+    db.sql("SELECT pg_advisory_xact_lock(hashtext(:key))").param("key","assessment:"+actor+":"+key).query((rs,n)->rs.getObject(1)).list();
+    var prior=db.sql("SELECT id,authorization_payload::text FROM story_evolution_runs WHERE owner_principal=:o AND idempotency_key=:k").param("o",actor).param("k",key).query((rs,n)->Map.of("id",rs.getObject(1,UUID.class),"grant",util.read(rs.getString(2)))).optional();
+    if(prior.isPresent()){
+      if(!util.encode(prior.get().get("grant")).equals(util.encode(body)))throw new ResponseStatusException(CONFLICT,"Idempotency cannot rebind assessment grant");
+      return view((UUID)prior.get().get("id"),request);
+    }
+    UUID id=UUID.randomUUID();var scope=map(checked.get("scope"));
+    db.sql("INSERT INTO story_evolution_runs(id,owner_principal,idempotency_key,source_story_record_id,source_story_sha256,authorization_payload,scope,state,progress,deadline) VALUES(:id,:owner,:key,:source,:sha,CAST(:grant AS jsonb),CAST(:scope AS jsonb),'READY','{\"phase\":\"ASSESSMENT_ONLY_REVIEW\",\"requestCount\":0}',now()+make_interval(secs=>:seconds))")
+      .param("id",id).param("owner",actor).param("key",key).param("source",uuid(scope.get("sourceStoryRecordId"))).param("sha",scope.get("sourceStorySha256"))
+      .param("grant",util.encode(body)).param("scope",util.encode(scope)).param("seconds",seconds).update();
+    event(id,Map.of("state","AUTHORIZED","experimentVersion",PILOT,"assessmentOnlyPolicy",ASSESSMENT,"scopeSha256",checked.get("scopeSha256"),"providerCalls",0));return view(id,request);
+  }
+  void stepAssessment(UUID id,Map<String,Object> row,Map<String,Object> scope,Map<String,Object> progress) {
+    if(!"READY".equals(row.get("state"))||Boolean.TRUE.equals(row.get("cancel"))||!((Instant)row.get("deadline")).isAfter(Instant.now()))throw new IllegalStateException("Assessment already started/cancelled/expired; no paid resume");
+    if(db.sql("UPDATE story_evolution_runs SET state='RUNNING',updated_at=now() WHERE id=:id AND state='READY' AND cancel_requested=false AND deadline>now()").param("id",id).update()!=1)throw new IllegalStateException("Assessment already claimed");
+    if(!realEnabled||!util.encode(scope).equals(util.encode(assessmentScope())))throw new IllegalStateException("Assessment disabled or immutable source changed before dispatch");
+    var grant=map(row.get("authorization"));var authorized=rows(grant.get("operations")).getFirst();var context=assessmentContext(scope);
+    var current=ml.workflow("story-experiment/assessment-preflight",Map.of("role","STORY_REVIEW","text",scope.get("sourceStory"),"context",context,"maxCostUsd",authorized.get("maxCostUsd")));
+    for(var entry:current.entrySet())if(!util.encode(entry.getValue()).equals(util.encode(authorized.get(entry.getKey()))))throw new IllegalStateException("Assessment dispatch binding changed: "+entry.getKey());
+    double cap=((Number)authorized.get("maxCostUsd")).doubleValue();
+    if(((Number)progress.getOrDefault("requestCount",0)).intValue()!=0||cap>((Number)grant.get("maxTotalUsd")).doubleValue()||cap<((Number)current.get("maximumCalculatedUsd")).doubleValue())throw new IllegalStateException("Exactly one reserved assessment request required");
+    UUID requestId=UUID.nameUUIDFromBytes((id+":ASSESSMENT_STORY_REVIEW").getBytes(java.nio.charset.StandardCharsets.UTF_8));
+    context.put("assessmentDispatch",authorized);context.put("assessmentSpendingAuthorized",true);context.put("storyRequestId",requestId.toString());
+    var input=Map.<String,Object>of("role","STORY_REVIEW","text",scope.get("sourceStory"),"context",context,"maxCostUsd",cap);
+    progress.put("requestCount",1);progress.put("reservedUsd",cap);
+    durablePilot(id,progress,Map.of("state","REQUEST_RESERVED","experimentVersion",PILOT,"assessmentOnlyPolicy",ASSESSMENT,"role","STORY_REVIEW","requestId",requestId.toString(),"binding",current,"maxCostUsd",cap));
+    Map<String,Object> receipt;
+    try{receipt=new LinkedHashMap<>(ml.workflow("creative-role",input));}
+    catch(Exception error){receipt=new LinkedHashMap<>();receipt.put("processingStatus","DISPATCH_UNCERTAIN");receipt.put("billingStatus","USAGE_UNKNOWN");receipt.put("providerDispatched","UNKNOWN");receipt.put("error",Map.of("detail","Transport outcome unknown; no retry"));}
+    if(!"DISPATCH_UNCERTAIN".equals(receipt.get("processingStatus"))&&(!Objects.equals(receipt.get("provider"),"openai")||!Objects.equals(receipt.get("model"),authorized.get("model"))||!Boolean.TRUE.equals(receipt.get("providerDispatched"))
+        ||!Objects.equals(receipt.get("requestId"),requestId.toString())||!util.encode(receipt.get("binding")).equals(util.encode(current))))receipt.put("processingStatus","UNEXPECTED_TRANSPORT_OR_MODEL");
+    receipt.put("requestFingerprint",hash(util.encode(input)));receipt.put("runId",id.toString());
+    progress.put("assessmentReceipt",receipt);progress.put("phase","ASSESSMENT_RECEIPT_SAVED");
+    if(receipt.get("actualCostUsd") instanceof Number cost)progress.put("knownActualCostUsd",cost.doubleValue());else progress.put("unresolvedBilling",true);
+    durablePilot(id,progress,Map.of("state","PROVIDER_RECEIPT","experimentVersion",PILOT,"assessmentOnlyPolicy",ASSESSMENT,"role","STORY_REVIEW","requestId",requestId.toString(),"envelope",receipt));
+    if(!"INDEPENDENT_REVIEW_COMPLETED".equals(receipt.get("processingStatus"))){stop(id,"ASSESSMENT_REJECTED_OR_UNCERTAIN","Receipt preserved; no retry");return;}
+    progress.put("researchAssessment",receipt.get("result"));progress.put("ownerStoryApproval","PENDING");progress.put("productionSourceAdmission","NOT_SATISFIED_BY_RESEARCH");progress.put("renderAuthorized",false);progress.put("officialAPlus","INACTIVE");
+    db.sql("UPDATE story_evolution_runs SET state='ASSESSMENT_COMPLETE_OWNER_DECISION_PENDING',progress=CAST(:p AS jsonb),updated_at=now() WHERE id=:id").param("p",util.encode(progress)).param("id",id).update();
+    event(id,Map.of("state","ASSESSMENT_COMPLETE_OWNER_DECISION_PENDING","experimentVersion",PILOT,"assessmentOnlyPolicy",ASSESSMENT,"storyApproval",false,"renderAuthorized",false));
+  }
+
   /** Test seam for a worker dying after durable receipt, never a retry hook. */
   void afterPilotReceipt(UUID id,String role) {}
   Map<String,Object> pilotDispatch(UUID id,String role,Map<String,Object> scope,Map<String,Object> progress,Map<String,Object> context) {

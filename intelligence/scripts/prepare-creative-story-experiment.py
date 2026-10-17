@@ -24,6 +24,8 @@ def sha(value):
 
 
 def main():
+    if '--assessment-only-review' in sys.argv:
+        return assessment_only_review()
     if '--identity-fidelity-followup' in sys.argv:
         return identity_fidelity_followup()
     if '--repaired-contract' in sys.argv:
@@ -247,6 +249,45 @@ def identity_fidelity_followup():
     target=ROOT/'intelligence/docs/REAL_STORY_IDENTITY_FIDELITY_FOLLOWUP_MANIFEST.json'
     target.write_text(json.dumps(manifest,indent=2,ensure_ascii=False)+'\n')
     print(json.dumps({'manifest':str(target),'maximumTotalReservationUsd':str(per_request*2),'providerCalls':0,'ownerAuthorization':'NOT_GRANTED'}))
+
+
+def assessment_only_review():
+    """One existing cross-provider reviewer; never generation or dispatch."""
+    from app.workflow.story_assessment import preview, wire, POLICY
+    proof_path=ROOT/'intelligence/backend/target/authentic-story-assessment-positive.json'
+    proof=json.loads(proof_path.read_text())
+    if proof.get('realProviderCalls') != 0 or proof.get('productionDbWrites') != 0:
+        raise SystemExit('Non-billable real-application review proof required')
+    trace=proof['trace']
+    if trace['state'] != 'ASSESSMENT_COMPLETE_OWNER_DECISION_PENDING':
+        raise SystemExit('Complete assessment-only workflow proof required')
+    scope=trace['scope'];context={'assessmentOnlyPolicy':POLICY,'assessmentScope':scope}
+    config=json.loads(subprocess.check_output(['docker','compose','config','--format','json'],cwd=ROOT/'intelligence'))
+    configured=config['services']['ml-service']['environment']
+    for suffix in ('MODEL','INPUT_USD_PER_MILLION','OUTPUT_USD_PER_MILLION'):
+        key='WORKFLOW_STORY_REVIEW_'+suffix
+        if not configured.get(key):raise SystemExit('Explicit configured review profile required')
+        os.environ[key]=str(configured[key])
+    operation=preview(scope['sourceStory'],context)
+    cap=Decimal(str(operation['maximumCalculatedUsd'])).quantize(Decimal('.000001'),rounding=ROUND_CEILING)
+    operation['maxCostUsd']=float(cap)
+    if [operation] != trace['authorization']['operations']:
+        raise SystemExit('Current instruction/model/price/source bindings differ from complete integration proof')
+    from app.workflow.story_experiment import sha as fingerprint
+    grant={'assessmentOnlyPolicy':POLICY,'scopeSha256':fingerprint(scope),'operations':[operation],
+        'maxRequests':1,'maxRounds':1,'maxRunSeconds':600,'maxTotalUsd':float(cap),'automaticRetries':False,'fallback':False,
+        'authorizePaidInference':False,'confirmAssessmentOnly':False,
+        'idempotencyKey':'authentic-assessment-v1-'+fingerprint({'scope':scope,'operation':operation})[:32]}
+    prepared={'policy':POLICY,'ownerPolicyApproval':'APPROVED','ownerPaidReviewAuthorization':'NOT_GRANTED',
+        'scope':scope,'operation':operation,'authorizationTemplate':grant,'fullReviewerRequest':wire(scope['sourceStory'],context),
+        'maxPlannedRealProviderCalls':1,'maximumReservedUsd':str(cap),'realProviderCalls':0,'providerSpendUsd':0,
+        'strictProductionAdmissionChanged':False,'productionDbWrites':0,
+        'readOnlyEvidenceRootRequired':str(ROOT/'intelligence/docs'),
+        'disposableProofSha256':hashlib.sha256(proof_path.read_bytes()).hexdigest(),
+        'providerAvailability':'NOT_PROBED_THIS_TASK; previous non-inference model metadata retained; exact model failure must stop without fallback'}
+    target=ROOT/'intelligence/docs/AUTHENTIC_STORY_ASSESSMENT_REVIEW_MANIFEST.json'
+    target.write_text(json.dumps(prepared,indent=2,ensure_ascii=False)+'\n')
+    print(json.dumps({'manifest':str(target),'maximumReservedUsd':str(cap),'maxCalls':1,'paidAuthorization':'NOT_GRANTED','realProviderCalls':0}))
 
 
 if __name__ == '__main__':

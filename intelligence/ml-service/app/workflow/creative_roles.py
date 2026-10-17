@@ -1238,6 +1238,10 @@ def run_paid_role(role: str, text: str, context: dict[str, Any], max_cost_usd: f
         raise ValueError('Unknown creative role')
     if os.getenv('WORKFLOW_CREATIVE_ROLES_ENABLED', 'false').lower() != 'true':
         raise ValueError('Paid creative roles are disabled; explicit scope and budget required')
+    if context.get('assessmentOnlyPolicy'):
+        if role != 'STORY_REVIEW': raise ValueError('Assessment-only scope cannot generate')
+        from .story_assessment import execute
+        return execute(text, context, max_cost_usd)
     if context.get('storyExperiment'):
         from .story_experiment import execute
         return execute(role, text, context, max_cost_usd)
