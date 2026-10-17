@@ -80,6 +80,7 @@ public class StoryEvolutionService {
     String recommended=String.valueOf(review.getOrDefault("recommendedCandidateId","")); Map<String,Object> chosen=valid.stream().filter(c->recommended.equals(String.valueOf(c.get("candidateId")))).findFirst().orElse(null);
     if(!"COMPLETED".equals(review.get("reviewStatus"))||chosen==null){p.put("rejectedCandidates",rejected);saveProgress(id,p,scope.containsKey("canonicalStoryFeasibilityContext")?"NO_ELIGIBLE_STORY_CANDIDATE":"NO_REVIEW_SUPPORTED_IMPROVEMENT");return;}
     var reviewProvenance=map(reviewEnvelope.getOrDefault("evidenceProvenance",Map.of("origin","UNKNOWN_ORIGIN")));
+    reviewProvenance.put("reviewerIndependent",independentProviders(map(generated.get("evidenceProvenance")),reviewProvenance));
     if(scope.containsKey("canonicalStoryFeasibilityContext")&&!eligibleCanonicalStoryCandidate(review,recommended,reviewProvenance)){
       rejected.add(Map.of("candidateId",recommended,"reason","CANONICAL_A_STRUCTURAL_FEASIBILITY_NOT_ESTABLISHED"));
       p.put("rejectedCandidates",rejected);saveProgress(id,p,"NO_ELIGIBLE_STORY_CANDIDATE");return;
@@ -243,6 +244,7 @@ public class StoryEvolutionService {
     var target=new LinkedHashMap<String,Object>();target.put("name","CANONICAL_A");target.put("minimumScore",92);target.put("rulesetVersion","1.11");target.put("scoreIsPrediction",false);
     var context=new LinkedHashMap<String,Object>();
     context.put("version","canonical-story-feasibility-context-v1");
+    context.put("creativeReviewVersion","creative-story-merit-v1");
     context.put("sourceStoryId",source.toString());context.put("sourceApprovalRecordId",sourceApproval.toString());context.put("sourceRevisionId",approvedSource.get("revision"));context.put("sourceStorySha256",hash(text));
     context.put("baselineAnalysisId",analysis.toString());context.put("rulesetVersion","1.11");context.put("target",target);
     context.put("baseline",Map.of("score",canonical.get("score"),"grade",canonical.get("grade"),"status",canonical.get("status")));
@@ -271,6 +273,16 @@ public class StoryEvolutionService {
   }
   static Map<String,Object> roleResult(Map<String,Object> envelope) {
     return envelope.get("result") instanceof Map<?,?> ? map(envelope.get("result")) : envelope;
+  }
+  static boolean independentProviders(Map<String,Object> generation,Map<String,Object> review) {
+    return "REAL_AI_PROVIDER".equals(generation.get("origin"))
+        && "REAL_AI_PROVIDER".equals(review.get("origin"))
+        && generation.get("provider") instanceof String gp && !gp.isBlank()
+        && review.get("provider") instanceof String rp && !rp.isBlank()
+        && !"UNKNOWN".equalsIgnoreCase(gp) && !"UNKNOWN".equalsIgnoreCase(rp)
+        && !gp.equalsIgnoreCase(rp)
+        && generation.get("model") instanceof String gm && !gm.isBlank()
+        && review.get("model") instanceof String rm && !rm.isBlank();
   }
   Map<String,Object> dispatch(UUID id,Map<String,Object> request,Map<String,Object> progress,Map<String,Object> grant) {
     int index=((Number)progress.getOrDefault("requestCount",0)).intValue()+1;

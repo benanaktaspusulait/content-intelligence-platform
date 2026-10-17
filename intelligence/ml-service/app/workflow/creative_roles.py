@@ -660,6 +660,21 @@ def perform_role(role: str, text: str, context: dict[str, Any], provider: LLMPro
     safe_context = {key: context[key] for key in ('protectedIntent', 'intentRequirements', 'findings', 'retrievedLessons', 'constraints', 'inputMode', 'storyGenerationMode', 'lockedRequirements', 'permittedVariation', 'roundNumber', 'objective', 'bestCandidate', 'previousAssessment', 'acceptedChanges', 'rejectedCandidates', 'sourceStoryRecordId', 'mainCharacter', 'character', 'characterRecord', 'characterReferences', 'referenceBindings', 'preferences', 'profile', 'candidates', 'candidateIds', 'requestedAlternativeCount', 'sourceRequestId', 'sourceFingerprint', 'previousReview', 'currentRevision', 'previousRevision', 'targetDuration', 'aspectRatio', 'reviewPolicyVersion', 'selectedGenerator', 'generatorCapabilities', 'targetConfiguration', 'storyTitle', 'promptBuilderContractVersion', 'essentialEvents', 'approvedStoryText', 'optimizationGenerationContractVersion', 'baselineExecution', 'analysisRunId', 'promptVersionId', 'contentId', 'canonicalStoryFeasibilityContext') if key in context}
     story_feasibility = context.get('canonicalStoryFeasibilityContext')
     if isinstance(story_feasibility, dict):
+        # The saved context retains the complete canonical evidence. Transport
+        # each finding once instead of duplicating nested IR/row details in
+        # both the ceiling audit and canonical findings (24k role envelope).
+        wire_feasibility = deepcopy(story_feasibility)
+        if isinstance(wire_feasibility.get('targetAwarePreflight'), dict):
+            wire_feasibility['targetAwarePreflight'] = {
+                key: value for key, value in wire_feasibility['targetAwarePreflight'].items()
+                if key not in {'losses', 'missingEvidence'}
+            }
+        wire_feasibility['canonicalFindings'] = [
+            {key: value for key, value in row.items() if key != 'details'}
+            for row in wire_feasibility.get('canonicalFindings', [])
+        ]
+        wire_feasibility['evidenceProjection'] = 'COMPACT_FINDINGS; contextSha256 binds the complete saved source context'
+        safe_context['canonicalStoryFeasibilityContext'] = wire_feasibility
         if story_feasibility.get('version') != 'canonical-story-feasibility-context-v1' or story_feasibility.get('rulesetVersion') != '1.11':
             raise ValueError('Unsupported canonical story feasibility context')
         if role == 'STORY':
@@ -670,6 +685,13 @@ def perform_role(role: str, text: str, context: dict[str, Any], provider: LLMPro
                        'Make active involvement, causal consequences, progression, and a realization/reversal/payoff explicit in the story text. '
                        'Opening clarity, curiosity, suspense, discovery, and non-comedic payoffs are all valid. Never claim visual or audience evidence. '
                        'Protected source changes remain proposals requiring owner approval; preserve the supplied character, core premise, physical rule, and ending.')
+            system += (' Improve the actual viewer-visible story, not hand positions or a rule checklist. Consider Instant Impossible, '
+                       'Immediate Problem and Curiosity/Discovery openings without requiring impossible physics in every concept. '
+                       'Seek distinct visible consequences, natural pacing, active character decisions and a causally earned payoff. '
+                       'Allow enough time for major events; do not pack realization, mirror reaction, scatter and resolution into the final seconds. '
+                       'Prefer clear silhouettes and direct interactions; identify thin-object/count/face continuity uncertainty rather than promising render success. '
+                       'Character identity and the existing physical rule are locked when PRESERVE_CHARACTER_IDENTITY or PRESERVE_PHYSICAL_RULE is supplied. '
+                       'Unlocked events may be proposed for revision, but no revision is applied until explicit owner approval.')
         elif role == 'STORY_REVIEW':
             system += (' Also return two separate required top-level objects: creativeQualityAssessment and structuralFeasibilityAssessment. '
                        'Each contains candidateAssessments with exactly one entry per candidate. Creative entries require candidateId, status '
@@ -680,6 +702,14 @@ def perform_role(role: str, text: str, context: dict[str, Any], provider: LLMPro
                        'Any non-empty storyEvidenceExcerpt must be an exact quote from that candidate. This is a text-only prediction, never canonical '
                        'PASS, a score, or proof of rendering. Recommend only a CREATIVELY_STRONG and STRUCTURALLY_PROMISING candidate whose required '
                        'rows contain no NOT_SUPPORTED or UNKNOWN status; otherwise recommendedCandidateId must be null.')
+            system += (' Independently assess all six dimensions: SCROLL_STOP_VISUAL_PROMISE, CAUSAL_PROGRESSION, VISUAL_STORYTELLING, '
+                       'PRODUCTION_EXECUTABILITY, ENDING_REPLAY and DISTINCTIVE_CREATIVE_VALUE. Include one materialFindings entry per '
+                       'dimension in each candidateReviews item, using the existing dimension/finding/supportingTextEvidence/severity/'
+                       'confidenceOrEvidenceStatus/suggestedMinimalImprovement fields. Quote the exact candidate text or explicitly mark missing '
+                       'evidence UNKNOWN. Compare against the complete original story: natural pacing, visual originality, consequence variety, '
+                       'causal clarity, active character role, generator feasibility and artificial rule-optimization risk. Identify weaknesses '
+                       'even when recommending a candidate. CREATIVELY_STRONG alone is insufficient. No audience-performance prediction or '
+                       'creative A/A+ grade is verified by this text-only MACHINE_REVIEW. Proposed story changes still await owner approval.')
     if role == 'PROMPT_OPTIMIZATION':
         from .optimization_distinctness import baseline_execution
         from .optimization_profile_contract import generation_contract
@@ -798,6 +828,19 @@ def perform_role(role: str, text: str, context: dict[str, Any], provider: LLMPro
                 if not isinstance(rule_rows, list) or not {str(item.get('ruleId')) for item in rule_rows if isinstance(item, dict)}.issuperset(required_rules):
                     raise ValueError('Structural feasibility assessment must cover every required rule')
                 candidate_text = str(candidate_by_id[cid].get('text', ''))
+                if story_feasibility.get('creativeReviewVersion') == 'creative-story-merit-v1':
+                    from .creative_reconstruction import DIMENSIONS
+                    reviewed = next(item for item in reviews if str(item['candidateId']) == cid)
+                    findings = reviewed.get('materialFindings', [])
+                    if not isinstance(findings, list) or {item.get('dimension') for item in findings if isinstance(item, dict)} != set(DIMENSIONS):
+                        raise ValueError('Creative story review requires evidence for all six CPQ dimensions')
+                    for finding in findings:
+                        excerpt = finding.get('supportingTextEvidence')
+                        unknown = finding.get('confidenceOrEvidenceStatus') == 'UNKNOWN'
+                        if not finding.get('finding') or not finding.get('severity') or not finding.get('confidenceOrEvidenceStatus'):
+                            raise ValueError('Creative story finding is incomplete')
+                        if not unknown and (not isinstance(excerpt, str) or not excerpt or excerpt not in candidate_text):
+                            raise ValueError('Creative story evidence must quote the exact candidate or remain UNKNOWN')
                 for rule in rule_rows:
                     if rule.get('status') not in {'SUPPORTED', 'RISK', 'NOT_SUPPORTED', 'UNKNOWN'} or not isinstance(rule.get('changesProtectedSource'), bool):
                         raise ValueError('Invalid structural rule feasibility row')
@@ -1126,6 +1169,26 @@ def _isolated_fixture_role(role: str, text: str, context: dict[str, Any], max_co
     return parsed
 
 
+def preview_story_request(role: str, text: str, context: dict[str, Any]) -> dict[str, Any]:
+    """Compile the existing STORY request without constructing a provider."""
+    if role not in {'STORY', 'STORY_REVIEW'}:
+        raise ValueError('Story role required')
+    class Captured(Exception):
+        pass
+    class Capture:
+        def complete(self, prompt, system='', **kwargs):
+            self.prompt, self.system = prompt, system
+            raise Captured()
+    capture = Capture()
+    try:
+        perform_role(role, text, context, capture, 'PREVIEW_ONLY_NO_PROVIDER')
+    except Captured:
+        return {'payload': json.loads(capture.prompt), 'system': capture.system,
+                'payloadBytes': len(capture.prompt.encode('utf-8')),
+                'systemBytes': len(capture.system.encode('utf-8')), 'providerDispatched': False}
+    raise ValueError('Story request preview did not reach request compilation')
+
+
 def run_paid_role(role: str, text: str, context: dict[str, Any], max_cost_usd: float) -> dict[str, Any]:
     if role not in ROLES:
         raise ValueError('Unknown creative role')
@@ -1171,7 +1234,7 @@ def run_paid_role(role: str, text: str, context: dict[str, Any], max_cost_usd: f
         plan_system = generation_system(context)
         plan_payload = request_payload(text, context)
         payload_bytes = len(json.dumps(plan_payload, ensure_ascii=False).encode('utf-8'))
-    output_token_limit = 4000 if role == 'STORY' or plan_first or reconstruction else 2000
+    output_token_limit = 4000 if role in {'STORY', 'STORY_REVIEW'} or plan_first or reconstruction else 2000
     if adaptive:
         output_token_limit = context['authorizedOutputTokens']
         if type(output_token_limit) is not int or not 1 <= output_token_limit <= min(4000, capability['maxOutputTokens']):
@@ -1180,6 +1243,10 @@ def run_paid_role(role: str, text: str, context: dict[str, Any], max_cost_usd: f
     if plan_first: schema_bytes = len(json.dumps(response_format(options=plan_payload['executionOptions'])).encode('utf-8'))
     if reconstruction: schema_bytes = len(json.dumps(response_format(context,text)).encode('utf-8'))
     system_bytes = len(plan_system.encode('utf-8')) if plan_first or reconstruction else 2000
+    if role in {'STORY', 'STORY_REVIEW'}:
+        preview = preview_story_request(role, text, context)
+        payload_bytes = preview['payloadBytes']
+        system_bytes = preview['systemBytes'] + 1000  # framing/accounting safety margin
     upper_bound = ((payload_bytes + schema_bytes + system_bytes) * input_rate + output_token_limit * output_rate) / 1_000_000
     if payload_bytes > (64000 if adaptive else 24000) or upper_bound > max_cost_usd:
         raise ValueError('Request exceeds approved cost ceiling')
@@ -1194,8 +1261,13 @@ def run_paid_role(role: str, text: str, context: dict[str, Any], max_cost_usd: f
     provider.json_output = True
     try:
         result = perform_role(role, text, context, provider, model)
-        if role == 'PROMPT_OPTIMIZATION':
+        if role in {'PROMPT_OPTIMIZATION', 'STORY', 'STORY_REVIEW'}:
             result['actualCostUsd'] = _verified_optimization_cost(result.get('usage'), input_rate, output_rate, max_cost_usd)
+            if role in {'STORY', 'STORY_REVIEW'}:
+                result.update(providerDispatched=True, evidenceType='MACHINE_REVIEW' if role == 'STORY_REVIEW' else 'MODEL_GENERATION',
+                              rawProviderResponse=getattr(provider, 'last_raw_response', None))
+                if result['usage'].get('completion_tokens', result['usage'].get('output_tokens', 0)) > output_token_limit:
+                    raise ValueError('Story role exceeded the configured output-token limit')
             if reconstruction:
                 result['result']['improvementMetrics']['providerCostUsd'] = result['actualCostUsd']
     except Exception as error:

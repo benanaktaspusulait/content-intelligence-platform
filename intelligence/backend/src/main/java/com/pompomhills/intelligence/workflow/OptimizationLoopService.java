@@ -55,7 +55,7 @@ public class OptimizationLoopService {
   Map<String,Object> targetAwareSnapshot(UUID analysis){
     var result=targetAwarePreflight(analysis);
     var snapshot=new LinkedHashMap<String,Object>();
-    for(String key:List.of("state","generationAllowed","researchGenerationEligibility","currentScore","fixedEvidenceOptimisticCeiling","canonicalATargetStatus","reasons","losses","missingEvidence","genuineSourceAttemptCount","creativeQualityTarget","renderAuthorized","sourceAnalysisId","sourcePromptVersionId","sourcePromptSha256","productionSettingsRecordId"))
+    for(String key:List.of("state","generationAllowed","researchGenerationEligibility","currentScore","fixedEvidenceOptimisticCeiling","canonicalATargetStatus","reasons","losses","missingEvidence","genuineSourceAttemptCount","creativeOpportunity","creativeQualityTarget","renderAuthorized","sourceAnalysisId","sourcePromptVersionId","sourcePromptSha256","productionSettingsRecordId"))
       if(result.containsKey(key)) snapshot.put(key,result.get(key));
     return snapshot;
   }

@@ -1,0 +1,129 @@
+#!/usr/bin/env python3
+"""Prepare the existing one-round Story Evolution workflow; never dispatch.
+
+Uses saved research evidence and resolved Compose role configuration. No
+credentials, database connections, provider construction or application POSTs.
+"""
+import hashlib
+import json
+import os
+from pathlib import Path
+from decimal import Decimal, ROUND_CEILING
+import subprocess
+import sys
+
+ROOT = Path(__file__).resolve().parents[2]
+os.environ.setdefault('POMPOM_DATA_ROOT', str(ROOT / 'intelligence/data'))
+sys.path.insert(0, str(ROOT / 'intelligence/ml-service'))
+from app.workflow.creative_roles import preview_story_request
+from app.workflow.adaptive_optimization import feasibility
+
+
+def sha(value):
+    return hashlib.sha256(value.encode()).hexdigest()
+
+
+def main():
+    evidence = ROOT / 'intelligence/backend/target/disposable-owner-http/run-oT9HS7/real-execution-runtime'
+    saved = json.loads((evidence / 'run-a-final.json').read_text())
+    scope = saved['scope']
+    story = scope['approvedStory']['text']
+    assert sha(story) == 'ba352d486c4252c5c6fefe585ad976c0b6f73c299f7554863848bdd842a99b3d'
+    assert sha(scope['baselinePrompt']) == '1a9a8cfc7e4c6e0a037ba3642a10c11c81d41ce8b574aa3c79cbaee7ce1215f5'
+    canonical = (saved['progress'].get('baselineEvaluation') or saved['progress']['bestEvaluation'])['canonical']
+    policy = feasibility(canonical, scope['baselinePrompt'])
+    objective = ('Propose a materially stronger, natural 15-second ABSURD_PHYSICS story for SEEDANCE_2_0_MINI, '
+                 'image2video, 480p, 9:16. Preserve Pip the rabbit, the sticky-note/cabinet premise, the existing '
+                 'multiplication rule and the final sneeze leaving Pip relieved beside a messy cabinet. '
+                 'Other source events/order are revision proposals, not automatically approved facts. '
+                 'Improve the first visible promise, distinct viewer-visible consequences and natural pacing; '
+                 'reduce artificial strategy density and overloaded final seconds. Avoid thin-object precision '
+                 'where possible; report concept unsuitability rather than disguising generator risk. '
+                 'Compare real creative merit, not numerical rule coverage. No audience or render claims.')
+    findings = []
+    losses = {row['ruleId']: row for row in policy['losses']}
+    for bucket in ('failedRules', 'unknownRules'):
+        for row in canonical[bucket]:
+            loss = losses.get(row['ruleId'], {})
+            kind = loss.get('classification')
+            classification = ('STORY_LEVEL_CHANGE_REQUIRES_OWNER_APPROVAL' if kind == 'PROTECTED_STORY_CONFLICT' else
+                              'EVIDENCE_ONLY' if kind == 'EVIDENCE_REQUIRED' or (not loss and bucket == 'unknownRules') else
+                              'PROMPT_OR_EXECUTION_LEVEL')
+            findings.append({**{key: row[key] for key in ('ruleId','outcome','severity','family','message','details') if key in row},
+                             'repairClassification': classification,
+                             **({key: loss[key] for key in ('reason','overallLoss')} if loss else {})})
+    feasibility_context = {
+        'version': 'canonical-story-feasibility-context-v1', 'creativeReviewVersion': 'creative-story-merit-v1',
+        'sourceStoryId': scope['approvedStory']['storyId'],
+        'sourceApprovalRecordId': scope['approvedStory']['approvalRecordId'],
+        'sourceRevisionId': scope['approvedStory']['revision'], 'sourceStorySha256': sha(story),
+        'baselineAnalysisId': scope['analysisId'], 'rulesetVersion': '1.11',
+        'target': {'name':'CANONICAL_A','minimumScore':92,'rulesetVersion':'1.11','scoreIsPrediction':False},
+        'baseline': {key: canonical[key] for key in ('score','grade','status')},
+        'targetAwarePreflight': {key: policy[key] for key in ('version','state','generationAllowed','researchGenerationEligibility','currentScore','fixedEvidenceOptimisticCeiling','canonicalATargetStatus','reasons','losses','missingEvidence','genuineSourceAttemptCount','renderAuthorized')},
+        'canonicalFindings': findings,
+        'mandatoryEvidenceContracts': ['SOURCE_BOUND_BEATS','EXACT_STORY_QUOTES_WHEN_CLAIMED','UNKNOWN_WHEN_UNSUPPORTED','INDEPENDENT_VISUAL_EVIDENCE_FOR_VISUAL_GATES'],
+        'creativeRequirements': ['IMMEDIATE_VISUALLY_UNDERSTANDABLE_OPENING','CLEAR_PHYSICAL_CAUSALITY','MEANINGFUL_VISUAL_PROGRESSION','ACTIVE_MAIN_CHARACTER','GENUINELY_DISTINCT_PROBLEM_SOLVING_WHEN_NARRATIVELY_JUSTIFIED','ESCALATING_CONSEQUENCES','MEANINGFUL_REALIZATION_OR_REVERSAL_OR_PAYOFF','GENERATOR_FEASIBLE_MOVEMENT','ORIGINALITY_WITHOUT_COPYING_PRIOR_SILHOUETTES'],
+        'prohibitedShortcuts': ['INVENT_PASS_EVIDENCE','TREAT_UNKNOWN_AS_PASS','ADD_MEANINGLESS_SCORE_ACTIONS','RENAME_REPEATED_ACTIONS_AS_STRATEGIES','COUNT_CAMERA_CHANGES_AS_STORY_STRATEGIES','CLAIM_UNSEEN_EFFECTS_VISIBLE','ADD_UNRELATED_PROTAGONISTS_OR_ANIMALS','COPY_PRIOR_WINNING_SILHOUETTES','CHANGE_PROTECTED_SOURCE_WITHOUT_OWNER_APPROVAL'],
+        'assessmentScope': 'TEXTUAL_STORY_FEASIBILITY_PREDICTION_ONLY; CANONICAL OUTCOMES REQUIRE BUILD_PROMPT_AND_RULESET_1_11',
+    }
+    feasibility_context['contextSha256'] = sha(json.dumps(feasibility_context, ensure_ascii=False, separators=(',',':')))
+    context = {'inputMode':'DETAILED_STORY','storyGenerationMode':'IMPROVE_EXISTING_STORY',
+               'approvedStoryText':story,'sourceStoryRecordId':scope['approvedStory']['storyId'],
+               'sourceFingerprint':sha(story),
+               'lockedRequirements':['PRESERVE_CORE_PREMISE','PRESERVE_CHARACTER_IDENTITY','PRESERVE_PHYSICAL_RULE','PRESERVE_ENDING'],
+               'objective':objective,'roundNumber':1,'previousRevision':'','bestCandidate':{},
+               'rejectedCandidates':[],'acceptedChanges':[],'previousAssessment':{},'requestedAlternativeCount':2,
+               'canonicalStoryFeasibilityContext':feasibility_context}
+    outbound = preview_story_request('STORY', story, context)
+    # Resolve configuration in memory. Never emit credentials or the complete
+    # compose configuration, which contains secrets.
+    config = json.loads(subprocess.check_output(['docker','compose','config','--format','json'], cwd=ROOT/'intelligence'))
+    env = config['services']['ml-service']['environment']
+    profiles = {}
+    for role, provider, tokens in [('STORY','deepseek',4000),('STORY_REVIEW','openai',4000)]:
+        model = env.get('WORKFLOW_'+role+'_MODEL')
+        input_rate = Decimal(str(env.get('WORKFLOW_'+role+'_INPUT_USD_PER_MILLION')))
+        output_rate = Decimal(str(env.get('WORKFLOW_'+role+'_OUTPUT_USD_PER_MILLION')))
+        if not model or input_rate <= 0 or output_rate <= 0:
+            raise SystemExit('Missing exact current role model/pricing; no experiment ready')
+        preview = outbound if role == 'STORY' else preview_story_request(role, story, {
+            'canonicalStoryFeasibilityContext':feasibility_context})
+        payload_bound = outbound['payloadBytes'] if role == 'STORY' else 24000
+        if payload_bound > 24000:
+            raise SystemExit('Prepared request exceeds current role input limit')
+        bound = (Decimal(payload_bound + preview['systemBytes'] + 1000) * input_rate + tokens * output_rate) / Decimal(1000000)
+        profiles[role] = {'provider':provider,'model':model,
+            'configured':bool(env.get(provider.upper()+'_API_KEY')),
+            'liveAvailability':'NOT_PROBED_NO_INFERENCE', 'inputUsdPerMillion':str(input_rate),'outputUsdPerMillion':str(output_rate),
+            'maxOutputTokens':tokens,'payloadByteUpperBound':payload_bound,'systemBytes':preview['systemBytes'],
+            'framingSafetyMargin':1000,'maximumCalculatedUsd':str(bound),
+            'boundBasis':'EXACT_PREPARED_PAYLOAD' if role == 'STORY' else 'CURRENT_24000_BYTE_REVIEW_INPUT_ENVELOPE; GENERATED_STORIES_NOT_YET_AVAILABLE'}
+    # Existing ledger splits total authorization equally across two requests.
+    per_request = max(Decimal(p['maximumCalculatedUsd']) for p in profiles.values()).quantize(Decimal('.000001'),rounding=ROUND_CEILING)
+    total = per_request * 2
+    grant = {'sourceStoryRecordId':scope['approvedStory']['storyId'],
+             'approvalRecordId':scope['approvedStory']['approvalRecordId'],'baselineAnalysisId':scope['analysisId'],
+             'objective':objective,'maxRounds':1,'maxRequests':2,'maxTotalUsd':float(total),'maxRunSeconds':600,
+             'idempotencyKey':'story-creative-v1-'+sha(story+objective)[:32],
+             'authorizePaidInference':False,'confirmSourceAuthority':False,'automaticRetries':False}
+    manifest = {'version':'prepared-story-creative-experiment-v1','preparedOnly':True,
+                'originalStory':story,'proposedStories':None,'exactProtectedChanges':'PENDING_PROVIDER_OUTPUT_AND_INDEPENDENT_REVIEW',
+                'ownerApprovalDecision':'PENDING','sourceSnapshot':scope['approvedStory'],
+                'sourcePromptSha256':sha(scope['baselinePrompt']),'profiles':profiles,
+                'storyRequestPreview':outbound,'requestContextPreview':context,
+                'contextBindingNote':'Backend revalidates persisted subject and recompiles context on start. This preview is not authority to restore or recreate saved IDs.',
+                'endpoint':'/api/v1/intelligence/workflow/cpq/story-evolution-runs','authorizationTemplate':grant,
+                'maximumRequests':2,'maximumTotalReservationUsd':str(total),'perRequestReservationUsd':str(per_request),
+                'sumCalculatedRequestUpperBoundsUsd':str(sum(Decimal(p['maximumCalculatedUsd']) for p in profiles.values())),
+                'reviewPayloadLimitation':'Exact review bytes depend on the generated stories. The enforced current 24000-byte maximum is priced instead of inventing a candidate.',
+                'realDispatchEnabled':env.get('CPQ_PILOT_REAL_ENABLED','false'),
+                'requiredPreDispatchChecks':['FRESH_EXPLICIT_OWNER_AUTHORIZATION','EXACT_EXISTING_STORY_APPROVAL_ANALYSIS_BINDINGS','CURRENT_MODEL_PRICE_AND_PAYLOAD_MATCH','GENUINE_CROSS_PROVIDER_REVIEW','DURABLE_RESERVATION_BEFORE_EACH_REQUEST','STOP_ON_AMBIGUOUS_DISPATCH_OR_USAGE','NO_RETRY_FALLBACK_OR_EXTRA_ROUND'],
+                'providerCalls':0,'providerSpendUsd':0,'productionDatabaseWrites':0}
+    output = ROOT/'intelligence/docs/CREATIVE_STORY_NEXT_EXPERIMENT_MANIFEST.json'
+    output.write_text(json.dumps(manifest,ensure_ascii=False,indent=2)+'\n')
+    print(json.dumps({'manifest':str(output),'maximumTotalReservationUsd':str(total),'profiles':profiles,'providerCalls':0}))
+
+
+if __name__ == '__main__':
+    main()

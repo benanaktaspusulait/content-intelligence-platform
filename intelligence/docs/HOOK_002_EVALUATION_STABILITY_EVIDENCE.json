@@ -1,0 +1,218 @@
+{
+  "version": "hook-002-scope-forensics-v1",
+  "method": "Actual Ruleset 1.11 evaluator; old extraction replayed in-memory only; no source or historical record changed",
+  "firstBeatSha256": "7c7623ee1b4b673fd1ca953029755e314defee0313a17d1200b2ce5c06c94430",
+  "before": {
+    "baseline": {
+      "score": 93.42708333333334,
+      "grade": "A",
+      "firstBeat": {
+        "id": "beat_01",
+        "startTime": 0.0,
+        "endTime": 2.0,
+        "sourceSpan": [
+          267,
+          574
+        ],
+        "sourceQuote": "0-2s: Already mid-action, Pip the rabbit tries to place one sticky note on the toy cabinet's empty front panel, but it clings to Pip's fingertip while the cabinet stays untouched. [locked medium shot; keep Pip, hands, notes and cabinet causally readable] -> The note attaches to Pip rather than the cabinet.",
+        "sourceAction": "Already mid-action, Pip the rabbit tries to place one sticky note on the toy cabinet's empty front panel, but it clings to Pip's fingertip while the cabinet stays untouched.",
+        "action": "Already mid-action, Pip the rabbit tries to place one sticky note on the toy cab...",
+        "consequence": "The note attaches to Pip rather than the cabinet.",
+        "visualState": "character already mid-action, pip the rabbit tries to place one sticky note on the toy cab...",
+        "sourceReference": null
+      },
+      "hook": {
+        "anomaly": "Already mid-action, Pip the rabbit tries to place one sticky note on the toy cab...",
+        "startsAt": 0.0,
+        "startsMidAction": false,
+        "visualStrength": null,
+        "soundOffClear": null,
+        "textualFirstFrameIntent": {
+          "status": "PASS",
+          "source": "PROMPT_TEXT"
+        }
+      },
+      "HOOK_002": {
+        "ruleId": "HOOK_002",
+        "ruleName": "First Frame Anomaly",
+        "family": "hook_strength",
+        "severity": "PASS",
+        "outcome": "PASS",
+        "message": "Textual first-frame intent establishes an immediate anomaly; visual verification remains a separate gate.",
+        "details": {
+          "textualFirstFrameIntent": {
+            "status": "PASS",
+            "source": "PROMPT_TEXT"
+          },
+          "evaluation_stage": "PRE_RENDER",
+          "recommendation": "The problem must already be visually obvious within the opening second, with no setup, narration, or text explanation required. hook.startsMidAction must be true and hook.visualStrength must be at least 4/5. RULESET 1.3 adds a tolerance window -- hook.startsAt must be <= 0.8s (defaults to 0.0 when absent, a no-op for pre-1.3 IRs); the anomaly doesn't need to be literally frame-0 to read as immediate."
+        }
+      },
+      "scoredHookFamilyRows": [
+        100,
+        85
+      ],
+      "hookFamilyAverage": 92.5,
+      "normalizedHookWeight": 0.125
+    },
+    "candidate": {
+      "score": 92.48958333333336,
+      "grade": "A",
+      "firstBeat": {
+        "id": "beat_01",
+        "startTime": 0.0,
+        "endTime": 2.0,
+        "sourceSpan": [
+          267,
+          574
+        ],
+        "sourceQuote": "0-2s: Already mid-action, Pip the rabbit tries to place one sticky note on the toy cabinet's empty front panel, but it clings to Pip's fingertip while the cabinet stays untouched. [locked medium shot; keep Pip, hands, notes and cabinet causally readable] -> The note attaches to Pip rather than the cabinet.",
+        "sourceAction": "Already mid-action, Pip the rabbit tries to place one sticky note on the toy cabinet's empty front panel, but it clings to Pip's fingertip while the cabinet stays untouched.",
+        "action": "Already mid-action, Pip the rabbit tries to place one sticky note on the toy cab...",
+        "consequence": "The note attaches to Pip rather than the cabinet.",
+        "visualState": "character already mid-action, pip the rabbit tries to place one sticky note on the toy cab...",
+        "sourceReference": null
+      },
+      "hook": {
+        "anomaly": "Already mid-action, Pip the rabbit tries to place one sticky note on the toy cab...",
+        "startsAt": 0.0,
+        "startsMidAction": true,
+        "visualStrength": null,
+        "soundOffClear": null,
+        "textualFirstFrameIntent": {
+          "status": "PASS",
+          "source": "PROMPT_TEXT"
+        }
+      },
+      "HOOK_002": {
+        "ruleId": "HOOK_002",
+        "ruleName": "First Frame Anomaly",
+        "family": "hook_strength",
+        "severity": "CRITICAL",
+        "outcome": "UNKNOWN",
+        "message": "Hook starts mid-action, but visual strength was not explicitly stated in the prompt and cannot be verified.",
+        "details": {
+          "evaluation_stage": "PRE_RENDER",
+          "recommendation": "The problem must already be visually obvious within the opening second, with no setup, narration, or text explanation required. hook.startsMidAction must be true and hook.visualStrength must be at least 4/5. RULESET 1.3 adds a tolerance window -- hook.startsAt must be <= 0.8s (defaults to 0.0 when absent, a no-op for pre-1.3 IRs); the anomaly doesn't need to be literally frame-0 to read as immediate."
+        }
+      },
+      "scoredHookFamilyRows": [
+        85
+      ],
+      "hookFamilyAverage": 85.0,
+      "normalizedHookWeight": 0.125
+    }
+  },
+  "after": {
+    "baseline": {
+      "score": 93.42708333333334,
+      "grade": "A",
+      "firstBeat": {
+        "id": "beat_01",
+        "startTime": 0.0,
+        "endTime": 2.0,
+        "sourceSpan": [
+          267,
+          574
+        ],
+        "sourceQuote": "0-2s: Already mid-action, Pip the rabbit tries to place one sticky note on the toy cabinet's empty front panel, but it clings to Pip's fingertip while the cabinet stays untouched. [locked medium shot; keep Pip, hands, notes and cabinet causally readable] -> The note attaches to Pip rather than the cabinet.",
+        "sourceAction": "Already mid-action, Pip the rabbit tries to place one sticky note on the toy cabinet's empty front panel, but it clings to Pip's fingertip while the cabinet stays untouched.",
+        "action": "Already mid-action, Pip the rabbit tries to place one sticky note on the toy cab...",
+        "consequence": "The note attaches to Pip rather than the cabinet.",
+        "visualState": "character already mid-action, pip the rabbit tries to place one sticky note on the toy cab...",
+        "sourceReference": null
+      },
+      "hook": {
+        "anomaly": "Already mid-action, Pip the rabbit tries to place one sticky note on the toy cab...",
+        "startsAt": 0.0,
+        "startsMidAction": false,
+        "visualStrength": null,
+        "soundOffClear": null,
+        "textualFirstFrameIntent": {
+          "status": "PASS",
+          "source": "PROMPT_TEXT"
+        }
+      },
+      "HOOK_002": {
+        "ruleId": "HOOK_002",
+        "ruleName": "First Frame Anomaly",
+        "family": "hook_strength",
+        "severity": "PASS",
+        "outcome": "PASS",
+        "message": "Textual first-frame intent establishes an immediate anomaly; visual verification remains a separate gate.",
+        "details": {
+          "textualFirstFrameIntent": {
+            "status": "PASS",
+            "source": "PROMPT_TEXT"
+          },
+          "evaluation_stage": "PRE_RENDER",
+          "recommendation": "The problem must already be visually obvious within the opening second, with no setup, narration, or text explanation required. hook.startsMidAction must be true and hook.visualStrength must be at least 4/5. RULESET 1.3 adds a tolerance window -- hook.startsAt must be <= 0.8s (defaults to 0.0 when absent, a no-op for pre-1.3 IRs); the anomaly doesn't need to be literally frame-0 to read as immediate."
+        }
+      },
+      "scoredHookFamilyRows": [
+        100,
+        85
+      ],
+      "hookFamilyAverage": 92.5,
+      "normalizedHookWeight": 0.125
+    },
+    "candidate": {
+      "score": 93.42708333333334,
+      "grade": "A",
+      "firstBeat": {
+        "id": "beat_01",
+        "startTime": 0.0,
+        "endTime": 2.0,
+        "sourceSpan": [
+          267,
+          574
+        ],
+        "sourceQuote": "0-2s: Already mid-action, Pip the rabbit tries to place one sticky note on the toy cabinet's empty front panel, but it clings to Pip's fingertip while the cabinet stays untouched. [locked medium shot; keep Pip, hands, notes and cabinet causally readable] -> The note attaches to Pip rather than the cabinet.",
+        "sourceAction": "Already mid-action, Pip the rabbit tries to place one sticky note on the toy cabinet's empty front panel, but it clings to Pip's fingertip while the cabinet stays untouched.",
+        "action": "Already mid-action, Pip the rabbit tries to place one sticky note on the toy cab...",
+        "consequence": "The note attaches to Pip rather than the cabinet.",
+        "visualState": "character already mid-action, pip the rabbit tries to place one sticky note on the toy cab...",
+        "sourceReference": null
+      },
+      "hook": {
+        "anomaly": "Already mid-action, Pip the rabbit tries to place one sticky note on the toy cab...",
+        "startsAt": 0.0,
+        "startsMidAction": false,
+        "visualStrength": null,
+        "soundOffClear": null,
+        "textualFirstFrameIntent": {
+          "status": "PASS",
+          "source": "PROMPT_TEXT"
+        }
+      },
+      "HOOK_002": {
+        "ruleId": "HOOK_002",
+        "ruleName": "First Frame Anomaly",
+        "family": "hook_strength",
+        "severity": "PASS",
+        "outcome": "PASS",
+        "message": "Textual first-frame intent establishes an immediate anomaly; visual verification remains a separate gate.",
+        "details": {
+          "textualFirstFrameIntent": {
+            "status": "PASS",
+            "source": "PROMPT_TEXT"
+          },
+          "evaluation_stage": "PRE_RENDER",
+          "recommendation": "The problem must already be visually obvious within the opening second, with no setup, narration, or text explanation required. hook.startsMidAction must be true and hook.visualStrength must be at least 4/5. RULESET 1.3 adds a tolerance window -- hook.startsAt must be <= 0.8s (defaults to 0.0 when absent, a no-op for pre-1.3 IRs); the anomaly doesn't need to be literally frame-0 to read as immediate."
+        }
+      },
+      "scoredHookFamilyRows": [
+        100,
+        85
+      ],
+      "hookFamilyAverage": 92.5,
+      "normalizedHookWeight": 0.125
+    }
+  },
+  "providerCalls": 0,
+  "productionDbWrites": 0,
+  "afterRuleOutcomeDifferencesBaselineVsCandidate": [],
+  "candidateRuleOutcomeChangesFromFix": [
+    "HOOK_002"
+  ]
+}

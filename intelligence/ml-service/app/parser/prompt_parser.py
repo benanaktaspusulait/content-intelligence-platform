@@ -1536,9 +1536,21 @@ class PromptParser:
         (evidence missing) rather than defaulting to values that would pass
         HOOK_002's un-reverified threshold checks.
         """
-        starts_mid_action = "start" in text.lower() and ("mid" in text.lower() or "action" in text.lower())
-
         first_beat = beats[0] if beats else None
+
+        # startsMidAction is opening-specific evidence.  Looking for these
+        # tokens across the complete prompt lets an unrelated later beat (for
+        # example, "starting side") change HOOK_002 while beat 1 is unchanged.
+        # Keep the existing lexical contract, but scope it to the parsed
+        # opening so later staging and metadata cannot contaminate this field.
+        opening_text = " ".join(
+            str(first_beat.get(key, ""))
+            for key in ("sourceQuote", "action", "consequence", "visualState")
+        ) if first_beat else ""
+        opening_lower = opening_text.lower()
+        starts_mid_action = "start" in opening_lower and (
+            "mid" in opening_lower or "action" in opening_lower
+        )
 
         visual_strength = self._extract_hook_visual_strength(text)
         sound_off_clear = self._extract_hook_sound_off_clear(text)

@@ -84,6 +84,65 @@ def _aware_review(status='STRUCTURALLY_PROMISING', rule_status='SUPPORTED', reco
     return base
 
 
+def test_merit_review_rejects_label_only_and_fabricated_dimension_evidence():
+    import pytest
+    from app.workflow.creative_reconstruction import DIMENSIONS
+    text = 'Pip tries to peel the note.'
+    context = {'canonicalStoryFeasibilityContext': {**_canonical_context(), 'creativeReviewVersion': 'creative-story-merit-v1'},
+               'sourceRequestId': 'story-1', 'sourceFingerprint': 'src-1',
+               'candidates': [{'candidateId': 'candidate-1', 'text': text}]}
+    value = _aware_review()
+    class Provider:
+        def complete(self, *args, **kwargs):
+            return json.dumps(value)
+    with pytest.raises(ValueError, match='all six CPQ'):
+        perform_role('STORY_REVIEW', text, context, Provider(), 'offline')
+    value['candidateReviews'][0]['materialFindings'] = [
+        {'dimension': dim, 'finding': 'Text-supported hypothesis; visual result unverified.',
+         'supportingTextEvidence': text, 'severity': 'ADVISORY', 'confidenceOrEvidenceStatus': 'TEXT_SUPPORTED',
+         'suggestedMinimalImprovement': 'Review rendered continuity separately.'} for dim in DIMENSIONS]
+    result = perform_role('STORY_REVIEW', text, context, Provider(), 'offline')
+    assert result['result']['recommendedCandidateId'] == 'candidate-1'
+    value['candidateReviews'][0]['materialFindings'][0]['supportingTextEvidence'] = 'Invented scene.'
+    with pytest.raises(ValueError, match='exact candidate'):
+        perform_role('STORY_REVIEW', text, context, Provider(), 'offline')
+
+
+def test_story_preview_compiles_effective_instructions_without_a_provider():
+    from app.workflow.creative_roles import preview_story_request
+    preview = preview_story_request('STORY', 'Pip and a sticky note.', {
+        'requestedAlternativeCount': 2,
+        'canonicalStoryFeasibilityContext': _canonical_context(),
+    })
+    assert not preview['providerDispatched']
+    assert 'natural pacing' in preview['system']
+    assert preview['systemBytes'] == len(preview['system'].encode())
+    assert preview['payload']['text'] == 'Pip and a sticky note.'
+
+
+def test_story_paid_path_uses_mocked_usage_and_disabled_path_never_constructs_provider(monkeypatch):
+    import pytest
+    from unittest.mock import patch
+    from app.workflow.creative_roles import run_paid_role
+    for key, value in {'WORKFLOW_CREATIVE_ROLES_ENABLED':'true','WORKFLOW_STORY_MODEL':'mock-story',
+                       'WORKFLOW_STORY_INPUT_USD_PER_MILLION':'0.3','WORKFLOW_STORY_OUTPUT_USD_PER_MILLION':'1.2'}.items():
+        monkeypatch.setenv(key, value)
+    class Provider:
+        last_usage = {'prompt_tokens':100,'completion_tokens':200}
+        def complete(self, *args, **kwargs):
+            return json.dumps({'alternatives':[{'candidateId':'candidate-1','title':'Proposal only','text':'Pip follows the moving note.'}]})
+    with patch('app.workflow.creative_roles.DeepSeekTextProvider', return_value=Provider()) as factory:
+        result = run_paid_role('STORY', 'Pip and a note.', {'requestedAlternativeCount':1}, .02)
+        factory.assert_called_once()
+        assert result['providerDispatched'] is True
+        assert result['actualCostUsd'] == pytest.approx(.00027)
+        assert result['rawProviderResponse']
+    monkeypatch.setenv('WORKFLOW_CREATIVE_ROLES_ENABLED','false')
+    with patch('app.workflow.creative_roles.DeepSeekTextProvider', side_effect=AssertionError('No dispatch')):
+        with pytest.raises(ValueError, match='disabled'):
+            run_paid_role('STORY', 'Pip and a note.', {}, .02)
+
+
 def test_canonical_aware_story_review_accepts_separate_creative_and_structural_evidence() -> None:
     class Provider(FakeReviewProvider):
         def complete(self, prompt, system, temperature=0):

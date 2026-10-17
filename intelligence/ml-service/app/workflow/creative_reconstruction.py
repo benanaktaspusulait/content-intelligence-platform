@@ -252,7 +252,10 @@ def diagnose(source, context):
     opportunities.sort(key=lambda row:(-row['priorityScore'],row['timeWindow'][0],row['opportunityId']))
     # Do not assume a formulaic ending/loop or invent a text defect where only images could resolve it.
     ending = beats[-1]
+    from .adaptive_optimization import creative_scope_decision
+    scope_decision = creative_scope_decision(source, context.get('baselineCanonicalEvaluation') or {})
     return {'contractVersion': VERSION, 'qualityModelVersion': QUALITY_MODEL, 'openingStrategy': strategy,
+        'optimizationScopeDecision': scope_decision,
         'protectedStoryContract': contract,
         'protectedLayer': ['identity', 'premise', 'approved events and order', 'physical rule', 'outcomes', 'ending', 'safety'],
         'editableLayer': ['staging', 'spatial visibility', 'choreography', 'composition', 'continuity', 'relative timing', 'visual emphasis'],

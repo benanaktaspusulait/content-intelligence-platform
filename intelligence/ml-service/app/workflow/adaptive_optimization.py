@@ -16,6 +16,42 @@ MODES = ('DEEPSEEK_ONLY', 'OPENAI_ONLY', 'ADAPTIVE')
 FIXED_PASS = {'MINI_STORY_LOCK','GOAL_VISIBLE_EARLY','TEMPORAL_COMPLEXITY_SPLIT_GATE','BEAT_DENSITY_RULE'}
 
 
+def creative_scope_decision(source, canonical):
+    """Decide whether another source-bound prompt rewrite has material scope.
+
+    This is independent of canonical scoring.  It uses the existing
+    creative-validity evidence to distinguish local presentation work from
+    weaknesses that require a proposed and owner-approved story revision.
+    """
+    from .creative_validity import assess
+    validity = assess(source, canonical, {'origin': 'UNKNOWN_ORIGIN', 'reviewerIndependent': False})
+    codes = {row.get('code') for row in validity.get('risks', [])}
+    story_level = []
+    if 'REPETITIVE_VIEWER_VISIBLE_CONSEQUENCE' in codes:
+        story_level.append('VIEWER_VISIBLE_CAUSAL_VARIETY_REQUIRES_NEW_SOURCE_CONSEQUENCES')
+    if 'ENDING_TIMING_OVERLOAD' in codes:
+        story_level.append('ENDING_EVENT_LOAD_REQUIRES_STORY_RETIMING_OR_REDESIGN')
+    if 'FRAME_ZERO_STATE_UNVERIFIED' in codes:
+        story_level.append('OPENING_PROMISE_REQUIRES_VISUAL_EVIDENCE_OR_STORY_LEVEL_CHANGE')
+    prompt_level = []
+    if 'CRITICAL_PRODUCIBILITY_RISK' in codes:
+        prompt_level.append('SOURCE_BOUND_PRODUCTION_RISK_MITIGATION')
+    # Two independent story-level weaknesses establish that another bounded
+    # staging pass cannot address the principal creative problem.  Local
+    # staging remains useful, but it is classified honestly as presentation.
+    limited = {'REPETITIVE_VIEWER_VISIBLE_CONSEQUENCE', 'ENDING_TIMING_OVERLOAD'} <= codes
+    return {
+        'version': 'creative-scope-decision-v1',
+        'state': 'NO_MATERIAL_PROMPT_ONLY_CREATIVE_GAIN' if limited else 'SOURCE_BOUND_PRESENTATION_IMPROVEMENT',
+        'promptOnlyGainLimited': limited,
+        'promptLevelOpportunities': prompt_level,
+        'storyLevelCreativeBlockers': story_level,
+        'nextAction': 'OWNER_APPROVED_STORY_EVOLUTION' if limited else 'SOURCE_BOUND_PROMPT_OPTIMIZATION',
+        'providerDispatchRecommended': not limited,
+        'basis': 'Creative-validity risks are evaluated separately from the canonical score; no audience or render improvement is inferred.',
+    }
+
+
 def rows(canonical):
     return sum((canonical.get(k, []) for k in ('passedRules','failedRules','unknownRules','notApplicableRules')), [])
 
@@ -106,8 +142,19 @@ def feasibility(canonical, source='', context=None):
     if ceiling>=A_MINIMUM and visual_missing:state='TARGET_BLOCKED_BY_EVIDENCE'
     if not matches:state='CONTRACT_FAILURE'
     quality_active=context.get('creativeQualityTargetActive') is True
-    return {'version':VERSION,'state':state,'generationAllowed':matches and ceiling>=A_MINIMUM and not visual_missing,'canonicalGradeContract':{'minimumA':A_MINIMUM,'minimumB':80,'aPlusExists':False},'currentScore':current,'fixedEvidenceOptimisticCeiling':ceiling,'ceilingScope':'CURRENT_ELIGIBLE_ROWS_AND_PROTECTED_EVENTS; new independent evidence requires recomputation','familyWeightDenominator':denominator,'losses':losses,'missingEvidence':missing,'genuineSourceAttemptCount':len(attempts),'creativeOpportunity':{'state':'UNKNOWN_REQUIRES_PROMPT_DIAGNOSIS','basis':'No independent CPQ assessment supplied to preflight.'},'canonicalATargetStatus':'CANONICAL_A_UNATTAINABLE_WITH_CURRENT_EVIDENCE' if ceiling<A_MINIMUM else 'CANONICAL_A_POTENTIALLY_ATTAINABLE','creativeQualityTarget':{'active':quality_active,'state':'ACTIVE_CALIBRATED_TARGET' if quality_active else 'CALIBRATION_REQUIRED','gradeThresholdsAvailable':quality_active},'reasons':(['Persisted score does not match authoritative aggregation.'] if not matches else ['Required independent visual evidence is missing.'] if ceiling>=A_MINIMUM and visual_missing else [] if ceiling>=A_MINIMUM else ['No defensible prompt-only path to A with current evidence and protected story.']),
-            'researchGenerationEligibility':research_eligibility(contract_valid=True,aggregate_matches=matches,ceiling=ceiling,protected_attempt=protected_attempt,visual_missing=visual_missing),
+    creative_scope=creative_scope_decision(source,canonical)
+    prompt_scope_limited=creative_scope['promptOnlyGainLimited']
+    if matches and prompt_scope_limited:state='NO_MATERIAL_PROMPT_ONLY_CREATIVE_GAIN'
+    reasons=(['Persisted score does not match authoritative aggregation.'] if not matches else
+             ['Principal creative weaknesses require owner-approved Story Evolution; another source-bound staging round is not justified.'] if prompt_scope_limited else
+             ['Required independent visual evidence is missing.'] if ceiling>=A_MINIMUM and visual_missing else
+             [] if ceiling>=A_MINIMUM else ['No defensible prompt-only path to A with current evidence and protected story.'])
+    research=research_eligibility(contract_valid=True,aggregate_matches=matches,ceiling=ceiling,protected_attempt=protected_attempt,visual_missing=visual_missing)
+    if prompt_scope_limited:
+        research.update(allowed=False,state='NO_MATERIAL_PROMPT_ONLY_CREATIVE_GAIN',
+                        reasons=['Prompt-only capability research is stopped because the principal weaknesses require Story Evolution.'])
+    return {'version':VERSION,'state':state,'generationAllowed':matches and ceiling>=A_MINIMUM and not visual_missing and not prompt_scope_limited,'canonicalGradeContract':{'minimumA':A_MINIMUM,'minimumB':80,'aPlusExists':False},'currentScore':current,'fixedEvidenceOptimisticCeiling':ceiling,'ceilingScope':'CURRENT_ELIGIBLE_ROWS_AND_PROTECTED_EVENTS; new independent evidence requires recomputation','familyWeightDenominator':denominator,'losses':losses,'missingEvidence':missing,'genuineSourceAttemptCount':len(attempts),'creativeOpportunity':creative_scope,'canonicalATargetStatus':'CANONICAL_A_UNATTAINABLE_WITH_CURRENT_EVIDENCE' if ceiling<A_MINIMUM else 'CANONICAL_A_POTENTIALLY_ATTAINABLE','creativeQualityTarget':{'active':quality_active,'state':'ACTIVE_CALIBRATED_TARGET' if quality_active else 'CALIBRATION_REQUIRED','gradeThresholdsAvailable':quality_active},'reasons':reasons,
+            'researchGenerationEligibility':research,
             'renderAuthorized':False}
 
 

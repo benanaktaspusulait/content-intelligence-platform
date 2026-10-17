@@ -36,7 +36,7 @@ def test_mimi_actual_saved_canonical_matches_audit_not_a_new_evaluation():
     assert not audit['generationAllowed'] and audit['state']=='TARGET_BLOCKED_BY_STORY_CONSTRAINT'
     assert audit['genuineSourceAttemptCount']==2 and c==before
     assert audit['canonicalGradeContract']=={'minimumA':92,'minimumB':80,'aPlusExists':False}
-    assert audit['creativeOpportunity']['state']=='UNKNOWN_REQUIRES_PROMPT_DIAGNOSIS'
+    assert audit['creativeOpportunity']['state']=='SOURCE_BOUND_PRESENTATION_IMPROVEMENT'
     assert audit['canonicalATargetStatus']=='CANONICAL_A_UNATTAINABLE_WITH_CURRENT_EVIDENCE'
     assert audit['creativeQualityTarget']=={'active':False,'state':'CALIBRATION_REQUIRED','gradeThresholdsAvailable':False}
     assert sum(l['overallLoss'] for l in audit['losses'])==pytest.approx(11.59375)
