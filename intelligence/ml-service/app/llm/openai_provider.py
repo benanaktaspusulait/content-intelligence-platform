@@ -2,6 +2,11 @@ import os
 import base64
 import json
 import uuid
+import time
+import re
+
+import httpx
+from openai import APITimeoutError, APIConnectionError, APIStatusError
 from pathlib import Path
 from typing import Any
 
@@ -9,6 +14,39 @@ from openai import OpenAI
 
 from .provider import LLMProvider, UnsupportedProviderError
 from ..semantic_provider import SemanticAnalysisRequest, SemanticAnalysisResult
+
+
+def safe_provider_error(error: Exception, elapsed_seconds: float) -> dict:
+    """Allowlisted diagnostics only: never retain request bodies/headers or credentials."""
+    if isinstance(error, (APITimeoutError, httpx.TimeoutException, TimeoutError)):
+        failure = "SDK_TIMEOUT"
+    elif isinstance(error, (APIConnectionError, httpx.NetworkError, ConnectionError)):
+        failure = "NETWORK_CONNECTION_FAILURE"
+    elif isinstance(error, APIStatusError):
+        failure = "HTTP_STATUS_ERROR"
+    else:
+        failure = "UNKNOWN_TRANSPORT_FAILURE"
+    # HTTP error strings may contain arbitrary response bodies and private input.
+    # Preserve SDK-standard safe text; unknown messages are deliberately withheld.
+    message = str(error)
+    safe_messages = {"Request timed out.", "Connection error."}
+    detail = message if message in safe_messages else type(error).__name__ + ": message withheld (may contain private request data)"
+    status = getattr(error, "status_code", None)
+    request_id = getattr(error, "request_id", None)
+    response = getattr(error, "response", None)
+    if response is not None:
+        request_id = request_id or response.headers.get("x-request-id")
+    if not isinstance(request_id, str) or not re.fullmatch(r"[A-Za-z0-9_.:-]{1,512}", request_id):
+        request_id = None
+    causes = []
+    cause = error.__cause__
+    while cause is not None and len(causes) < 4:
+        causes.append(type(cause).__name__)
+        cause = cause.__cause__
+    return {"category": type(error).__name__, "detail": detail, "failureClass": failure,
+            "causeType": causes[0] if causes else None, "causeChainTypes": causes,
+            "httpStatus": status if isinstance(status, int) else None,
+            "providerHttpRequestId": request_id, "elapsedSeconds": round(elapsed_seconds, 6)}
 
 
 def _resolve_dimensions(aspect_ratio: str) -> tuple[int, int]:
@@ -55,15 +93,24 @@ class OpenAIProvider(LLMProvider):
         # above are structurally identical to what the SDK expects at
         # runtime. type: ignore[arg-type] pins this to the upstream
         # openai-python stub strictness, not a first-party typing gap.
+        client_id = getattr(self, "client_request_id", None)
+        if client_id is not None and (not isinstance(client_id, str) or not re.fullmatch(r"[\x21-\x7e]{1,512}", client_id)):
+            raise ValueError("Client request ID must be 1-512 printable ASCII characters")
         self.last_request_started = True
-        response = self.client.chat.completions.create(
-            model=self.model,
-            messages=messages,  # type: ignore[arg-type]
-            temperature=temperature,
-            **({"max_tokens": self.max_output_tokens} if hasattr(self, "max_output_tokens") else {}),
-            **({"response_format": self.response_format} if hasattr(self, "response_format") else
-               {"response_format": {"type": "json_object"}} if getattr(self, "json_output", False) else {}),
-        )
+        started = time.monotonic()
+        try:
+            response = self.client.chat.completions.create(
+                model=self.model,
+                messages=messages,  # type: ignore[arg-type]
+                temperature=temperature,
+                **({"extra_headers": {"X-Client-Request-Id": client_id}} if client_id else {}),
+                **({"max_tokens": self.max_output_tokens} if hasattr(self, "max_output_tokens") else {}),
+                **({"response_format": self.response_format} if hasattr(self, "response_format") else
+                   {"response_format": {"type": "json_object"}} if getattr(self, "json_output", False) else {}),
+            )
+        except Exception as error:
+            self.last_error = safe_provider_error(error, time.monotonic() - started)
+            raise
 
         # ``message.content`` is ``str | None`` upstream (e.g. a tool-call-only
         # response has no text content). The ``LLMProvider`` interface promises
@@ -77,6 +124,9 @@ class OpenAIProvider(LLMProvider):
         message = getattr(choice, "message", None)
         content = getattr(message, "content", None)
         self.last_response_metadata = {
+            "httpRequestId": getattr(response, "_request_id", None),
+            "clientRequestId": client_id,
+            "elapsedSeconds": round(time.monotonic() - started, 6),
             "model": getattr(response, "model", None),
             "requestId": getattr(response, "id", None),
             "finishReason": getattr(choice, "finish_reason", None),

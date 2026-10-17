@@ -1,0 +1,16 @@
+{
+  "providerUsageAccess": "UNAVAILABLE",
+  "providerBillingAccess": "UNAVAILABLE",
+  "existingAdminEnvironmentConfigured": false,
+  "organizationOrProjectConfigured": false,
+  "inferenceCredentialNotUsedForAdminProbe": true,
+  "administrativeRequests": 0,
+  "reason": "No existing authorized organization-admin access or project/API-key identifiers found in runtime environment and configured ML service. Inference credential is not an admin access path.",
+  "usageFinding": "INCONCLUSIVE",
+  "requestLevelBilling": "INCONCLUSIVE",
+  "attributableChargeUsd": null,
+  "additionalKnownLocalConfigurationFilesChecked": [
+    "intelligence/.env"
+  ],
+  "relevantVariableNamesPresent": []
+}

@@ -11,6 +11,7 @@ import os
 from pathlib import Path
 import hashlib
 import uuid
+import time
 from .story_experiment import sha, encoded, model_identity
 from .story_evidence import derive_source_evidence, review_evidence_catalog, verify_review_evidence_catalog
 from .creative_reconstruction import DIMENSIONS
@@ -161,6 +162,7 @@ def preview(text, context):
         'schemaBytes':len(encoded(w['responseFormat']['json_schema']['schema']).encode()),'maxOutputTokens':4000,
         'inputUsdPerMillion':rates[0],'outputUsdPerMillion':rates[1],'maximumCalculatedUsd':bound,
         'automaticRetries':False,'fallback':False,'assessmentOnly':True,
+        'clientRequestIdPolicy':'application-request-uuid-v1',
         'implementationSha256':sha({str(p):hashlib.sha256((root/p).read_bytes()).hexdigest() for p in (
             'workflow/story_assessment.py','workflow/story_evidence.py','workflow/story_quality.py','workflow/api.py','workflow/creative_roles.py','llm/openai_provider.py')})}
 
@@ -255,7 +257,7 @@ def validate_review(value,text,context):
     return value
 
 def execute(text,context,cap):
-    from app.llm.openai_provider import OpenAIProvider
+    from app.llm.openai_provider import OpenAIProvider, safe_provider_error
     from .creative_roles import _optimization_cost
     current=preview(text,context);authorized=context.get('assessmentDispatch') or {}
     if not context.get('assessmentSpendingAuthorized') or any(authorized.get(k)!=v for k,v in current.items()):raise ValueError('Fresh exact assessment spending grant required')
@@ -272,21 +274,21 @@ def execute(text,context,cap):
         return path
     # Exclusive pre-dispatch marker prevents paid replay even after ML/Java
     # process death. A complete raw checkpoint precedes parsing/validation.
-    checkpoint('-reserved',{'requestId':request_id,'binding':current,'automaticResume':False})
+    checkpoint('-reserved',{'requestId':request_id,'clientRequestId':request_id,'binding':current,'automaticResume':False})
     receipt={'role':'STORY_REVIEW','requestId':context.get('storyRequestId'),'provider':'openai','model':current['model'],
         'binding':current,'policy':POLICY,'evidenceType':'MACHINE_REVIEW','assessmentOnly':True,'retrySafe':False,
         'providerDispatched':False,'rawProviderResponse':None,'usage':None,'actualCostUsd':None,
-        'billingStatus':'NOT_DISPATCHED','processingStatus':'NOT_STARTED','requestStartedAt':datetime.now(timezone.utc).isoformat()}
-    provider=None
+        'clientRequestId':request_id,'billingStatus':'NOT_DISPATCHED','processingStatus':'NOT_STARTED','requestStartedAt':datetime.now(timezone.utc).isoformat()}
+    provider=None; started=time.monotonic()
     try:
-        provider=OpenAIProvider(model=current['model']);provider.max_output_tokens=4000;provider.response_format=response_format(evidence_catalog(text,context))
+        provider=OpenAIProvider(model=current['model']);provider.client_request_id=request_id;provider.max_output_tokens=4000;provider.response_format=response_format(evidence_catalog(text,context))
         w=wire(text,context);receipt['providerDispatched']=True
         raw=provider.complete(encoded(w['payload']),system=w['system'],temperature=0)
         provider.last_raw_response=raw
         snapshot={'requestId':request_id,'binding':current,'rawProviderResponse':raw,
                   'providerApiResponse':getattr(provider,'last_provider_response',None),
                   'usage':getattr(provider,'last_usage',None),'providerResponseMetadata':getattr(provider,'last_response_metadata',None),
-                  'responseSha256':sha(raw),'capturedBeforeParsing':True}
+                  'responseSha256':sha(raw),'clientRequestId':request_id,'capturedBeforeParsing':True}
         receipt['rawReceiptFile']=str(checkpoint('-response',snapshot));receipt['rawReceiptSha256']=sha(snapshot)
         if (getattr(provider,'last_response_metadata',None) or {}).get('refusal'):raise ValueError('Provider refusal; no accepted review')
         if (getattr(provider,'last_response_metadata',None) or {}).get('finishReason')!='stop':raise ValueError('Incomplete provider response; no accepted review')
@@ -297,7 +299,17 @@ def execute(text,context,cap):
         receipt['assessmentValidation']={'structuralSchemaValidity':'PASS','evidenceReferenceValidity':'PASS','modelSemanticFindings':'MACHINE_REVIEW_OPINION_NOT_DETERMINISTIC_PROOF','creativeComparison':'MACHINE_REVIEW_OPINION_NOT_PROVEN_QUALITY','ownerDecision':'PENDING'}
         receipt['processingStatus']='INDEPENDENT_REVIEW_COMPLETED'
     except Exception as error:
-        receipt['processingStatus']='LOCALLY_REJECTED';receipt['error']={'category':type(error).__name__,'detail':str(error)[:2000]}
+        receipt['processingStatus']='LOCALLY_REJECTED'
+        diagnostic=getattr(provider,'last_error',None) or safe_provider_error(error,time.monotonic()-started)
+        if getattr(provider,'last_provider_response',None) is not None or getattr(provider,'last_raw_response',None) is not None:
+            meta=getattr(provider,'last_response_metadata',None) or {}
+            diagnostic={'category':type(error).__name__,'detail':str(error)[:2000],
+                'failureClass':'PROVIDER_REFUSAL' if meta.get('refusal') else 'INCOMPLETE_RESPONSE' if meta.get('finishReason')!='stop' else 'RESPONSE_VALIDATION_FAILED',
+                'elapsedSeconds':round(time.monotonic()-started,6)}
+        receipt['error']=diagnostic
+        receipt['primaryFailureFile']=str(checkpoint('-failure',{'requestId':request_id,'clientRequestId':request_id,
+            'primaryError':diagnostic,'completeSdkResponseReceived':getattr(provider,'last_provider_response',None) is not None,
+            'usageReceived':getattr(provider,'last_usage',None) is not None}))
     if provider is not None:
         for dest,attribute in (('rawProviderResponse','last_raw_response'),('providerApiResponse','last_provider_response'),('usage','last_usage'),('providerResponseMetadata','last_response_metadata')):receipt[dest]=getattr(provider,attribute,None)
     raw=receipt['rawProviderResponse'];meta=receipt.get('providerResponseMetadata') or {};receipt['responseReceived']=raw is not None or receipt.get('providerApiResponse') is not None
@@ -310,6 +322,10 @@ def execute(text,context,cap):
         if meta.get('finishReason')!='stop' or cost>cap or receipt['usage'].get('completion_tokens',0)>4000:raise ValueError('Reviewer completion/budget constraint failed')
     except Exception as error:
         receipt['processingStatus']='LOCALLY_REJECTED' if receipt['responseReceived'] else 'DISPATCH_UNCERTAIN'
-        receipt['error']={'category':type(error).__name__,'detail':str(error)[:2000]}
+        accounting_error={'category':type(error).__name__,'detail':str(error)[:2000],
+            'failureClass':'MISSING_USAGE_AFTER_RESPONSE' if receipt['responseReceived'] and not receipt['usage'] else 'ACCOUNTING_VALIDATION_FAILED'}
+        if 'error' in receipt:receipt['accountingError']=accounting_error
+        else:receipt['error']=accounting_error
         if receipt['actualCostUsd'] is None and receipt['billingStatus']!='MODEL_IDENTITY_UNVERIFIED':receipt['billingStatus']='USAGE_UNKNOWN'
+    receipt['diagnostics']={'completeSdkResponseReceived':receipt.get('providerApiResponse') is not None,'usageReceived':receipt['usage'] is not None,'elapsedSeconds':round(time.monotonic()-started,6)}
     return receipt

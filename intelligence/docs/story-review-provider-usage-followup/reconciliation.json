@@ -1,0 +1,63 @@
+{
+  "evidenceType": "READ_ONLY_OFFICIAL_PROVIDER_DASHBOARD_EXPORT",
+  "observedAtUtc": "2026-10-17T23:52:25.109641+00:00",
+  "providerUsageAccess": "AVAILABLE_VIA_EXISTING_AUTHENTICATED_BROWSER",
+  "providerAdminApiAccess": "NOT_USED_NO_ADMIN_KEY",
+  "providerBillingAccess": "AVAILABLE_DAILY_PROJECT_COST_EXPORT",
+  "sourceUrl": "https://platform.openai.com/usage/chat-completions?breakdownBy=model&endDate=2026-10-17&interval=1m&metrics=input_tokens&startDate=2026-10-17",
+  "organizationId": "org-ynjQLG10AxTjfhD3UHAd4xM6",
+  "projectId": "proj_RlAUUtPBGI1apCLjeXGcbmAu",
+  "projectName": "Default project",
+  "model": "gpt-4o-mini-2024-07-18",
+  "identifiedControlApiKeyId": "key_CcUCyotObOyH8IlY",
+  "accountContextEvidence": "Both previous real responses match exact UTC minute, model, input and output tokens in this project/key. The uncertain call has no returned provider ID; exact incident-key attribution remains unconfirmed.",
+  "controlMatches": [
+    {
+      "historicalRunId": "59f47fec-59fb-42e3-b3a4-c9f7d83c7ffc",
+      "providerMinuteUtc": "2026-10-17T21:22:00+00:00",
+      "inputTokens": 3556,
+      "outputTokens": 1737,
+      "sdkResponseId": "chatcmpl-Ea69M8leyEtIVtGyIpbguHTlYSSLd",
+      "usageCsvMatch": "EXACT_MINUTE_MODEL_TOKEN_COUNTS",
+      "projectId": "proj_RlAUUtPBGI1apCLjeXGcbmAu",
+      "apiKeyId": "key_CcUCyotObOyH8IlY"
+    },
+    {
+      "historicalRunId": "4b59d668-814c-4f9a-ab50-8e288b5df4df",
+      "providerMinuteUtc": "2026-10-17T21:43:00+00:00",
+      "inputTokens": 3117,
+      "outputTokens": 1823,
+      "sdkResponseId": "chatcmpl-Ea6TLYVZP8GduR2oAXjzhcjUA2eWE",
+      "usageCsvMatch": "EXACT_MINUTE_MODEL_TOKEN_COUNTS",
+      "projectId": "proj_RlAUUtPBGI1apCLjeXGcbmAu",
+      "apiKeyId": "key_CcUCyotObOyH8IlY"
+    }
+  ],
+  "usageBuckets": 1440,
+  "allDayModelRequests": 2,
+  "allDayInputTokens": 6673,
+  "allDayOutputTokens": 3560,
+  "incidentWindowUtc": [
+    "2026-10-17T23:10:00Z",
+    "2026-10-17T23:25:00Z"
+  ],
+  "incidentWindowMinuteBuckets": 15,
+  "incidentWindowObservedRequests": 0,
+  "dailyProjectCostUsd": "0.003136950000000000000000000000",
+  "twoPriorKnownCallsConfiguredRateCostUsd": "0.00313695",
+  "observedDailyCostExcessOverKnownControlsUsd": "0",
+  "providerUsageFinding": "NO_RELEVANT_USAGE_OBSERVED",
+  "openaiProviderAcceptanceOfIncident": "UNKNOWN",
+  "requestLevelBilling": "INCONCLUSIVE",
+  "attributableIncidentChargeUsd": null,
+  "absenceIsNotProofOfNoProcessingOrCharge": true,
+  "originalReservedCapUsd": ".006104",
+  "originalReservationReleased": false,
+  "originalLedgerRewritten": false,
+  "newPaidProviderRequests": 0,
+  "newInferenceSpendUsd": 0,
+  "supportCaseSubmitted": false,
+  "nextRealReviewAuthorization": "NOT_GRANTED",
+  "readyForNewPaidReview": false,
+  "initialReportSha256": "896f634b6bac46cc004592176789c4965ffe1c530e8d4e82f710e106cac560f4"
+}

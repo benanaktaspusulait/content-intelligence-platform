@@ -1,0 +1,68 @@
+{
+  "evidenceRead": [
+    "durable-provider-receipt.json",
+    "actual-final-run.json",
+    "execution-verification.json",
+    "immutable-ledger-events.json",
+    "exclusive-pre-dispatch-marker.json",
+    "actual-preflight.json",
+    "ml-network-audit.json"
+  ],
+  "originalSdkException": "UNAVAILABLE",
+  "observedElapsedSeconds": 20.222422,
+  "timeoutRootCause": "SUSPECTED_NOT_CONFIRMED",
+  "localRequestId": "3e1ad8c7-5bb7-3c0d-8185-4c5725cef8f3",
+  "oldClientRequestIdTransmitted": false,
+  "basis": "Pre-incident adapter passed no extra_headers; launcher supplied no custom HTTP client/default client header. SDK does not add X-Client-Request-Id automatically. No provider HTTP request ID or completion ID captured.",
+  "logsInspected": [
+    {
+      "path": "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/backend/target/evidence-reference-review-real-v3/ml.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "matchingOriginalTransportExceptionLines": 0
+    },
+    {
+      "path": "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/backend/target/evidence-reference-review-real-v3/backend.log",
+      "sha256": "5810e5d16ad275ea0761b55681574b24da139d3dba1b9fa2a2ed6d5628ab1177",
+      "bytes": 8839,
+      "matchingOriginalTransportExceptionLines": 0
+    }
+  ],
+  "installedSdk": {
+    "sdkVersion": "3.32.0",
+    "httpxVersion": "0.28.1",
+    "configuredSdkTimeout": {
+      "connect": 20,
+      "read": 20,
+      "write": 20,
+      "pool": 20
+    },
+    "maxRetries": 0
+  },
+  "historicalLatencies": [
+    {
+      "archive": "authentic-story-independent-review-result-evidence",
+      "start": "2026-10-17T21:22:34.811817+00:00",
+      "end": "2026-10-17T21:22:51.424371+00:00",
+      "elapsedSeconds": 16.612554,
+      "responseReceived": true,
+      "processingStatus": "LOCALLY_REJECTED"
+    },
+    {
+      "archive": "real-strict-story-review-execution-evidence",
+      "start": "2026-10-17T21:43:14.116387+00:00",
+      "end": "2026-10-17T21:43:31.457284+00:00",
+      "elapsedSeconds": 17.340897,
+      "responseReceived": true,
+      "processingStatus": "LOCALLY_REJECTED"
+    },
+    {
+      "archive": "real-evidence-reference-story-review-evidence",
+      "start": "2026-10-17T23:16:46.460344+00:00",
+      "end": "2026-10-17T23:17:06.682766+00:00",
+      "elapsedSeconds": 20.222422,
+      "responseReceived": false,
+      "processingStatus": "DISPATCH_UNCERTAIN"
+    }
+  ]
+}

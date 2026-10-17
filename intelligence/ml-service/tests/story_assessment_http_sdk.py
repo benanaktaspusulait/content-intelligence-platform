@@ -24,13 +24,17 @@ def transport(request):
     payload=json.loads(body['messages'][1]['content']);assert 'responseContract' not in payload
     assert [x['ref'] for x in payload['candidates']]==['A','B']
     verify_review_evidence_catalog(payload['evidenceCatalog'],{'SOURCE':payload['originalStory'],**{'CANDIDATE_'+c['ref']:c['narrative'] for c in payload['candidates']}})
-    with trace.open('a') as f:f.write(json.dumps({'mode':mode,'serializedSdkBody':body,'realProviderCalls':0})+'\n')
-    if mode=='timeout':raise httpx.ReadTimeout('Offline simulated timeout',request=request)
+    with trace.open('a') as f:f.write(json.dumps({'mode':mode,'serializedSdkBody':body,'clientRequestId':request.headers.get('X-Client-Request-Id'),'realProviderCalls':0})+'\n')
+    failures={'timeout':httpx.ReadTimeout,'connect-timeout':httpx.ConnectTimeout,'read-timeout':httpx.ReadTimeout,'reset':httpx.ReadError,'dns':httpx.ConnectError}
+    if mode in failures:raise failures[mode]('Offline simulated transport failure',request=request)
+    if mode in ('429','503','400'):
+        return httpx.Response(int(mode),headers={'x-request-id':'req-MOCK-ONLY-'+mode},json={'error':{'message':'Offline HTTP status test','type':'offline','code':'offline'}})
     message={'role':'assistant','content':case_response(payload,mode),'refusal':None}
     if mode=='refusal':message.update(content=None,refusal='Offline SDK refusal example')
+    usage=None if mode=='missing-usage' else {'prompt_tokens':-1 if mode=='invalid-usage' else 100,'completion_tokens':200,'total_tokens':300}
     return httpx.Response(200,json={'id':'MOCK_ONLY_'+mode,'object':'chat.completion','created':0,'model':body['model'],
         'choices':[{'index':0,'message':message,'finish_reason':'length' if mode=='incomplete' else 'stop'}],
-        'usage':{'prompt_tokens':100,'completion_tokens':200,'total_tokens':300}})
+        'usage':usage})
 def sdk(**kwargs):
     assert kwargs['max_retries']==0 and kwargs['timeout']==20
     return openai.OpenAI(**kwargs,http_client=httpx.Client(transport=httpx.MockTransport(transport)))

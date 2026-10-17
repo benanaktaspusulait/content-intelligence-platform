@@ -1,0 +1,48 @@
+{
+  "mlRegression": {
+    "passed": 361,
+    "exitCode": 0,
+    "warnings": 343
+  },
+  "transportFocused": {
+    "passed": 20,
+    "exitCode": 0,
+    "overlapWithRegression": 17,
+    "additionalIndependentCases": 3
+  },
+  "uniqueMlCasesPassed": 364,
+  "java": {
+    "passed": 46,
+    "exitCode": 0,
+    "suites": [
+      {
+        "suite": "com.pompomhills.intelligence.workflow.StoryReviewIndependenceTest",
+        "tests": 2,
+        "errors": 0,
+        "failures": 0,
+        "skipped": 0
+      },
+      {
+        "suite": "com.pompomhills.intelligence.workflow.StoryEvolutionServiceTest",
+        "tests": 5,
+        "errors": 0,
+        "failures": 0,
+        "skipped": 0
+      },
+      {
+        "suite": "com.pompomhills.intelligence.workflow.StoryExperimentContractTest",
+        "tests": 39,
+        "errors": 0,
+        "failures": 0,
+        "skipped": 0
+      }
+    ]
+  },
+  "disposableHttp": {
+    "passed": 13,
+    "exitCode": 0,
+    "externalProviderHttpMocked": true,
+    "realPaidRequests": 0
+  },
+  "gitDiffCheckExitCode": 0
+}

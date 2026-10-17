@@ -1,0 +1,7 @@
+{
+  "applicationsStopped": true,
+  "ownDisposableDatabaseStopped": true,
+  "otherServicesUntouched": true,
+  "dump": "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/backend/target/transport-diagnostics-http-v1/post-http-e2e.dump",
+  "dumpSha256": "c8331f11db7b85e45832cab02ad79999bd6e4a246cceb24c8f948d5caa28c284"
+}
