@@ -12,12 +12,17 @@ from pathlib import Path
 import hashlib
 import uuid
 import time
+import httpx
 from .story_experiment import sha, encoded, model_identity
 from .story_evidence import derive_source_evidence, review_evidence_catalog, verify_review_evidence_catalog
 from .creative_reconstruction import DIMENSIONS
 
 POLICY='ASSESSMENT_ONLY_UNKNOWN_SOURCE_V1'
 SCHEMA='assessment-only-story-review-v3-evidence-refs'
+TIMEOUT_POLICY={'version':'assessment-story-review-timeouts-v1','connectSeconds':5,'poolSeconds':5,'writeSeconds':10,'readSeconds':60,'backendHttpSeconds':90,'workflowDeadlineSeconds':600}
+
+def sdk_timeout():
+    return httpx.Timeout(TIMEOUT_POLICY['readSeconds'],connect=TIMEOUT_POLICY['connectSeconds'],pool=TIMEOUT_POLICY['poolSeconds'],write=TIMEOUT_POLICY['writeSeconds'])
 SELECTED={
  'A':('50bae8834df06f6092a37947d422e136c41c72ea80838057beecf2e7156bb088','34bc110e50779d47964b3546cd3e5f69b9ac8ea773f9a63aee1e04f2281359d1'),
  'B':('4b04e664b70ea9372049231119f2ad786cf5ed0fc1a416c0941101d53167c739','10dc1482d66514e153835b6e3cd90f4e8b58ff1e1d61f51fa99e42424f15fef3')}
@@ -139,6 +144,7 @@ def request_body(text,context):
 
 
 def preview(text, context):
+    if context['assessmentScope'].get('transportPolicy')!=TIMEOUT_POLICY:raise ValueError('Assessment-specific timeout policy differs from backend binding')
     w=wire(text,context);model=os.getenv('WORKFLOW_STORY_REVIEW_MODEL','')
     if model!='gpt-4o-mini-2024-07-18':raise ValueError('Exact configured OpenAI STORY_REVIEW model required')
     rates=[float(os.getenv('WORKFLOW_STORY_REVIEW_'+s+'_USD_PER_MILLION','nan')) for s in ('INPUT','OUTPUT')]
@@ -162,7 +168,9 @@ def preview(text, context):
         'schemaBytes':len(encoded(w['responseFormat']['json_schema']['schema']).encode()),'maxOutputTokens':4000,
         'inputUsdPerMillion':rates[0],'outputUsdPerMillion':rates[1],'maximumCalculatedUsd':bound,
         'automaticRetries':False,'fallback':False,'assessmentOnly':True,
-        'clientRequestIdPolicy':'application-request-uuid-v1',
+        'clientRequestIdPolicy':'application-request-uuid-v1','timeoutPolicy':deepcopy(TIMEOUT_POLICY),
+        'outboundTransportMetadataSha256':sha({'timeoutPolicy':TIMEOUT_POLICY,'clientHeader':'X-Client-Request-Id','valuePolicy':'application-request-uuid-v1','valueAsciiBytes':36}),
+        'requestFramingAllowanceBytes':1000,'clientRequestIdHeaderBytes':len('X-Client-Request-Id: '+str(uuid.UUID(int=0))+'\r\n'),
         'implementationSha256':sha({str(p):hashlib.sha256((root/p).read_bytes()).hexdigest() for p in (
             'workflow/story_assessment.py','workflow/story_evidence.py','workflow/story_quality.py','workflow/api.py','workflow/creative_roles.py','llm/openai_provider.py')})}
 
@@ -281,7 +289,7 @@ def execute(text,context,cap):
         'clientRequestId':request_id,'billingStatus':'NOT_DISPATCHED','processingStatus':'NOT_STARTED','requestStartedAt':datetime.now(timezone.utc).isoformat()}
     provider=None; started=time.monotonic()
     try:
-        provider=OpenAIProvider(model=current['model']);provider.client_request_id=request_id;provider.max_output_tokens=4000;provider.response_format=response_format(evidence_catalog(text,context))
+        provider=OpenAIProvider(model=current['model'],request_timeout=sdk_timeout());provider.client_request_id=request_id;provider.max_output_tokens=4000;provider.response_format=response_format(evidence_catalog(text,context))
         w=wire(text,context);receipt['providerDispatched']=True
         raw=provider.complete(encoded(w['payload']),system=w['system'],temperature=0)
         provider.last_raw_response=raw

@@ -68,13 +68,13 @@ def _resolve_dimensions(aspect_ratio: str) -> tuple[int, int]:
 class OpenAIProvider(LLMProvider):
     """OpenAI adapter; provider-neutral semantic code never sees these SDK types."""
 
-    def __init__(self, api_key: str | None = None, model: str = "gpt-4o"):
+    def __init__(self, api_key: str | None = None, model: str = "gpt-4o", request_timeout: httpx.Timeout | None = None):
         self.api_key = api_key or os.getenv("OPENAI_API_KEY")
         if not self.api_key:
             raise ValueError("OPENAI_API_KEY not set")
         self.model = model
         timeout_seconds = float(os.getenv("OPENAI_REQUEST_TIMEOUT_SECONDS", "20"))
-        self.client = OpenAI(api_key=self.api_key, timeout=timeout_seconds, max_retries=0)
+        self.client = OpenAI(api_key=self.api_key, timeout=request_timeout if request_timeout is not None else timeout_seconds, max_retries=0)
 
     def complete(
         self, prompt: str, system: str = "", temperature: float = 0.7, image: str | None = None

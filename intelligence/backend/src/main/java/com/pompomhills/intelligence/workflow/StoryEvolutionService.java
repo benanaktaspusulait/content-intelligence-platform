@@ -422,6 +422,7 @@ public class StoryEvolutionService {
           authority.put(type.getName(),HexFormat.of().formatHex(java.security.MessageDigest.getInstance("SHA-256").digest(bytes.readAllBytes())));
         } catch(java.security.NoSuchAlgorithmException impossible){throw new IllegalStateException(impossible);}
       }
+      result.put("transportPolicy",QualityMlClient.assessmentTransportPolicy());
       result.put("authorityImplementationSha256",hash(util.encode(authority)));
       result.put("catalogSha256",hash(catalogText));result.put("sourceScope",current);result.put("candidates",candidates);
       result.put("sourceStoryRecordId",current.get("sourceStoryRecordId"));result.put("sourceStorySha256",current.get("sourceStorySha256"));
@@ -475,8 +476,20 @@ public class StoryEvolutionService {
     progress.put("requestCount",1);progress.put("reservedUsd",cap);
     durablePilot(id,progress,Map.of("state","REQUEST_RESERVED","experimentVersion",PILOT,"assessmentOnlyPolicy",ASSESSMENT,"role","STORY_REVIEW","requestId",requestId.toString(),"binding",current,"maxCostUsd",cap));
     Map<String,Object> receipt;
+    long dispatchStarted=System.nanoTime();
     try{receipt=new LinkedHashMap<>(ml.workflow("creative-role",input));}
-    catch(Exception error){receipt=new LinkedHashMap<>();receipt.put("processingStatus","DISPATCH_UNCERTAIN");receipt.put("billingStatus","USAGE_UNKNOWN");receipt.put("providerDispatched","UNKNOWN");receipt.put("error",Map.of("detail","Transport outcome unknown; no retry"));}
+    catch(Exception error){
+      receipt=new LinkedHashMap<>();receipt.put("processingStatus","DISPATCH_UNCERTAIN");receipt.put("billingStatus","USAGE_UNKNOWN");receipt.put("providerDispatched","UNKNOWN");
+      receipt.put("requestId",requestId.toString());receipt.put("clientRequestId",requestId.toString());
+      Throwable cause=error;var chain=new ArrayList<String>();boolean timedOut=false,interrupted=false;
+      for(int depth=0;cause!=null&&depth<8;depth++,cause=cause.getCause()){
+        chain.add(cause.getClass().getSimpleName());timedOut|=cause instanceof java.net.http.HttpTimeoutException;interrupted|=cause instanceof InterruptedException;
+      }
+      receipt.put("error",Map.of("category",error.getClass().getSimpleName(),"causeChainTypes",chain,
+          "failureClass",timedOut?"BACKEND_HTTP_TIMEOUT":interrupted?"BACKEND_INTERRUPTED":"BACKEND_TRANSPORT_FAILURE",
+          "detail","Backend-to-ML transport did not return a complete receipt; provider outcome and billing remain unknown; no retry",
+          "elapsedSeconds",(System.nanoTime()-dispatchStarted)/1e9));
+    }
     if(!"DISPATCH_UNCERTAIN".equals(receipt.get("processingStatus"))&&(!Objects.equals(receipt.get("provider"),"openai")||!Objects.equals(receipt.get("model"),authorized.get("model"))||!Boolean.TRUE.equals(receipt.get("providerDispatched"))
         ||!Objects.equals(receipt.get("requestId"),requestId.toString())||!util.encode(receipt.get("binding")).equals(util.encode(current))))receipt.put("processingStatus","UNEXPECTED_TRANSPORT_OR_MODEL");
     receipt.put("requestFingerprint",hash(util.encode(input)));receipt.put("runId",id.toString());

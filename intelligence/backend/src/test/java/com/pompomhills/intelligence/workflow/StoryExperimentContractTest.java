@@ -174,6 +174,20 @@ class StoryExperimentContractTest {
     service.processNext();assertThat(transports).isEqualTo(1);
     Files.writeString(ROOT.resolve("intelligence/backend/target/authentic-story-"+failure+".json"),json.writerWithDefaultPrettyPrinter().writeValueAsString(Map.of("realProviderCalls",0,"trace",view())));
   }
+  @ParameterizedTest @ValueSource(strings={"timeout","interrupted"})
+  void assessmentOuterFailureIsDurableUncertainAndCannotRedispatch(String failure) {
+    var grant=assessmentGrant();run=uuid(service.start(grant,owner).get("runId"));
+    doAnswer(inv->{transports++;throw new IllegalStateException("Offline outer failure",failure.equals("timeout")?new java.net.http.HttpTimeoutException("offline"):new InterruptedException("offline"));})
+        .when(ml).workflow(eq("creative-role"),anyMap());
+    service.processNext();var receipt=receipts().getFirst();
+    assertThat(view().get("state")).isEqualTo("STOPPED");
+    assertThat(receipt.get("processingStatus")).isEqualTo("DISPATCH_UNCERTAIN");
+    assertThat(receipt.get("billingStatus")).isEqualTo("USAGE_UNKNOWN");assertThat(receipt.get("actualCostUsd")).isNull();
+    assertThat(map(receipt.get("error")).get("failureClass")).isEqualTo(failure.equals("timeout")?"BACKEND_HTTP_TIMEOUT":"BACKEND_INTERRUPTED");
+    assertThat(receipt.get("clientRequestId")).isEqualTo(receipt.get("requestId"));
+    service.processNext();assertThat(transports).isEqualTo(1);
+    assertThat(map(view().get("progress")).get("unresolvedBilling")).isEqualTo(true);
+  }
   @Test void assessmentMissingSpendingGrantOrStaleBindingsCannotReserve() {
     var missing=assessmentGrant();missing.put("authorizePaidInference",false);assertThatThrownBy(()->service.start(missing,owner)).hasMessageContaining("Separate exact owner spending");
     var changed=assessmentGrant();changed.put("scopeSha256","changed-candidate");assertThatThrownBy(()->service.start(changed,owner)).hasMessageContaining("binding changed");

@@ -1,0 +1,2708 @@
+{
+  "evidenceOrigin": "ACTUAL_JAVA_FASTAPI_HTTP_POSTGRES_ONLY_EXTERNAL_OPENAI_HTTP_MOCKED",
+  "realProviderCalls": 0,
+  "productionDbWrites": 0,
+  "trace": {
+    "scope": {
+      "candidates": [
+        {
+          "ref": "A",
+          "receipt": {
+            "role": "STORY",
+            "error": {
+              "detail": "Incomplete response or actual model differs",
+              "category": "ValueError"
+            },
+            "model": "deepseek-chat",
+            "runId": "72796340-fff3-471f-b66a-1c4c3cb29014",
+            "usage": {
+              "total_tokens": 5104,
+              "prompt_tokens": 3651,
+              "completion_tokens": 1453,
+              "prompt_tokens_details": {
+                "text_tokens": null,
+                "audio_tokens": null,
+                "image_tokens": null,
+                "cached_tokens": 0,
+                "cache_write_tokens": null
+              },
+              "prompt_cache_hit_tokens": 0,
+              "prompt_cache_miss_tokens": 3651,
+              "completion_tokens_details": null
+            },
+            "result": {
+              "alternatives": [
+                {
+                  "text": "Pip the rabbit stands before the toy cabinet's bare front panel, one sticky note pinched between two fingers, already reaching to press it flat. The note clings to Pip's fingertip while the cabinet stays untouched. Pip peels it with the free hand and it splits into two notes, one stuck to each hand. Pip presses both palms to the cabinet; they spring back and double into four notes, now dotting Pip's wrists. Pip backs away, arms out, and the four notes split into eight across Pip's arms and face. Pip freezes, eyes wide above a note stuck to the muzzle, and watches the last split finish. Pip deliberately lowers both arms and stops struggling. The still note-covered face turns toward the mirror. Pip holds still, breathing, until a sneeze bursts out and scatters the notes onto the cabinet. Pip is relieved, but the cabinet remains messy.",
+                  "title": "The One-Note Problem",
+                  "ending": "Pip is relieved, but the cabinet remains messy.",
+                  "motivation": "Pip wants to place a single sticky note flat on the cabinet's empty front panel.",
+                  "weaknesses": [
+                    "The mirror turn still competes with the sneeze for the final seconds.",
+                    "Thin-note contact on the face remains a precision risk.",
+                    "The retreat-triggered split may read as accidental rather than causal without careful staging."
+                  ],
+                  "candidateId": "candidate-1",
+                  "progression": "The note clings to Pip's fingertip while the cabinet stays untouched; peeling splits it into two, pressing doubles them to four, and backing away splits them to eight across Pip's arms and face.",
+                  "schemaVersion": "story-pilot-candidates-v1",
+                  "sourceContract": {
+                    "status": "SOURCE_COMPLIANT",
+                    "bindings": [
+                      {
+                        "anchorId": "identity",
+                        "sourceQuote": "Pip the rabbit",
+                        "candidateQuote": "Pip the rabbit"
+                      },
+                      {
+                        "anchorId": "premise",
+                        "sourceQuote": "it clings to Pip's fingertip while the cabinet stays untouched",
+                        "candidateQuote": "The note clings to Pip's fingertip while the cabinet stays untouched."
+                      },
+                      {
+                        "anchorId": "rule",
+                        "sourceQuote": "every removal or transfer attempt multiplies the notes",
+                        "candidateQuote": "Pip peels it with the free hand and it splits into two notes"
+                      },
+                      {
+                        "anchorId": "continuity",
+                        "sourceQuote": "Pip remains covered until a sneeze scatters the notes onto the cabinet",
+                        "candidateQuote": "Pip holds still, breathing, until a sneeze bursts out and scatters the notes onto the cabinet."
+                      },
+                      {
+                        "anchorId": "ending",
+                        "sourceQuote": "Pip is relieved, but the cabinet remains messy.",
+                        "candidateQuote": "Pip is relieved, but the cabinet remains messy."
+                      }
+                    ],
+                    "protectedChanges": []
+                  },
+                  "durationSeconds": 15,
+                  "productionRisks": [
+                    "THIN_OBJECT precision on note-to-fingertip and note-to-face contact.",
+                    "Face partially occluded by a note during the realization beat.",
+                    "Sneeze scatter requires many small notes to move believably in one burst."
+                  ],
+                  "proposedChanges": [
+                    "Open on the single-note placement attempt rather than mid-multiplication so the first visible promise is the rule itself.",
+                    "Replace the door-edge push with a backward retreat that triggers the four-to-eight split, giving a clearer full-body silhouette.",
+                    "Move the realization to a deliberate lowering of arms and a held still beat before the mirror turn, so the reversal is earned rather than rushed."
+                  ],
+                  "openingVisualState": "Pip the rabbit stands before the toy cabinet's bare front panel, one sticky note pinched between two fingers, already reaching to press it flat."
+                },
+                {
+                  "text": "Pip the rabbit presses a single sticky note toward the toy cabinet's empty front panel, and it clings to Pip's fingertip while the cabinet stays untouched. Pip shakes the hand; the note splits into two, one on each hand. Pip claps both hands onto the cabinet to transfer them, but they bounce back and double into four notes stuck across Pip's chest. Pip grabs at the four with both arms and they split into eight, wrapping Pip's arms and face. Pip sees the doubling finish and goes still, then slowly sits down on the floor, arms folded, refusing to touch anything. The notes stay put. Pip's nose twitches; a sneeze erupts and scatters the notes onto the cabinet. Pip is relieved, but the cabinet remains messy.",
+                  "title": "Stop Trying",
+                  "ending": "Pip is relieved, but the cabinet remains messy.",
+                  "motivation": "Pip wants to transfer the sticky note onto the cabinet and be done with it.",
+                  "weaknesses": [
+                    "Sitting down may read as giving up rather than realizing the rule.",
+                    "The chest-stuck notes reduce face visibility for the sneeze.",
+                    "Without a mirror, the realization is conveyed only by posture."
+                  ],
+                  "candidateId": "candidate-2",
+                  "progression": "Shaking splits the note into two, clapping doubles them to four across Pip's chest, and grabbing splits them to eight over arms and face; Pip then sits down and refuses to touch anything.",
+                  "schemaVersion": "story-pilot-candidates-v1",
+                  "sourceContract": {
+                    "status": "SOURCE_COMPLIANT",
+                    "bindings": [
+                      {
+                        "anchorId": "identity",
+                        "sourceQuote": "Pip the rabbit",
+                        "candidateQuote": "Pip the rabbit"
+                      },
+                      {
+                        "anchorId": "premise",
+                        "sourceQuote": "it clings to Pip's fingertip while the cabinet stays untouched",
+                        "candidateQuote": "it clings to Pip's fingertip while the cabinet stays untouched"
+                      },
+                      {
+                        "anchorId": "rule",
+                        "sourceQuote": "every removal or transfer attempt multiplies the notes",
+                        "candidateQuote": "Pip grabs at the four with both arms and they split into eight"
+                      },
+                      {
+                        "anchorId": "continuity",
+                        "sourceQuote": "Pip remains covered until a sneeze scatters the notes onto the cabinet",
+                        "candidateQuote": "a sneeze erupts and scatters the notes onto the cabinet"
+                      },
+                      {
+                        "anchorId": "ending",
+                        "sourceQuote": "Pip is relieved, but the cabinet remains messy.",
+                        "candidateQuote": "Pip is relieved, but the cabinet remains messy."
+                      }
+                    ],
+                    "protectedChanges": []
+                  },
+                  "durationSeconds": 15,
+                  "productionRisks": [
+                    "THIN_OBJECT precision on note-to-chest and note-to-face contact.",
+                    "Sit-down motion plus note scatter in the final seconds risks crowding.",
+                    "Sneeze burst with many small notes may not read cleanly at 480p."
+                  ],
+                  "proposedChanges": [
+                    "Replace the mirror turn with a deliberate sit-down refusal, making the realization a full-body surrender rather than a look.",
+                    "Use a clap-to-transfer attempt instead of a press, giving a distinct two-hand silhouette at the four-note stage.",
+                    "Keep the sneeze as the only release, so the payoff is earned by Pip's stillness rather than a mirror beat."
+                  ],
+                  "openingVisualState": "Pip the rabbit presses a single sticky note toward the toy cabinet's empty front panel, and it clings to Pip's fingertip while the cabinet stays untouched."
+                }
+              ],
+              "storyQuality": {
+                "pairs": [
+                  {
+                    "left": 1,
+                    "right": 2,
+                    "sharedDimensions": [
+                      "primaryRuleOrQuestion",
+                      "mainObjectOrSituation"
+                    ],
+                    "lexicalSimilarity": 0.094,
+                    "eventSequenceMatch": false,
+                    "differentDimensions": [
+                      "characterActions",
+                      "openingVisualPromise",
+                      "majorStoryChanges",
+                      "centralObstacle",
+                      "escalation",
+                      "endingFunction"
+                    ],
+                    "dimensionDescriptions": null
+                  }
+                ],
+                "method": "story-structure-v1",
+                "summary": "Candidates differ across multiple material narrative dimensions.",
+                "candidates": [
+                  {
+                    "preflight": {
+                      "ending": "resolution",
+                      "opening": "SUPPORTED",
+                      "concerns": [],
+                      "mechanism": "SUPPORTED",
+                      "strengths": [
+                        "The opening provides an observable focus or situation.",
+                        "The story contains a meaningful progression signal.",
+                        "Primary unusual rule(s): cabinet interaction."
+                      ],
+                      "progression": "SUPPORTED",
+                      "characterAgency": "INSUFFICIENT_EVIDENCE",
+                      "productionRisks": [
+                        "Repeated attachment/contact needs clear continuity evidence."
+                      ]
+                    },
+                    "assessment": {
+                      "risks": [],
+                      "unknown": [
+                        {
+                          "family": "final_payoff",
+                          "message": "A final event is described, but its creative effectiveness or audience payoff cannot be determined from text alone.",
+                          "outcome": "UNKNOWN",
+                          "dimension": "endingPayoff"
+                        },
+                        {
+                          "family": "consistency",
+                          "message": "No obvious rule contradictions detected, but full consistency check requires production plan analysis.",
+                          "outcome": "UNKNOWN",
+                          "dimension": "ruleConsistency"
+                        },
+                        {
+                          "family": "visual_novelty",
+                          "message": "Frame-zero visual legibility and hook strength cannot be assessed from story text alone.",
+                          "outcome": "NOT_EVALUATED",
+                          "dimension": "visualLegibility"
+                        },
+                        {
+                          "family": "ai_producibility",
+                          "message": "AI producibility requires a production prompt and cannot be assessed from story text alone.",
+                          "outcome": "NOT_EVALUATED",
+                          "dimension": "aiProducibility"
+                        },
+                        {
+                          "family": "progression",
+                          "message": "Pacing and beat timing cannot be assessed without a production plan.",
+                          "outcome": "NOT_EVALUATED",
+                          "dimension": "pacing"
+                        }
+                      ],
+                      "strengths": [
+                        {
+                          "family": "concept_strength",
+                          "message": "The story describes a character situation or goal.",
+                          "outcome": "PASS",
+                          "evidence": "Pip the rabbit stands before the toy cabinet's bare front panel, one sticky note pinched between two fingers, already reaching to press it flat.",
+                          "severity": "INFO",
+                          "dimension": "characterGoal"
+                        },
+                        {
+                          "family": "concept_strength",
+                          "message": "The story describes an obstacle or challenge.",
+                          "outcome": "PASS",
+                          "evidence": "Pip peels it with the free hand and it splits into two notes, one stuck to each hand.",
+                          "severity": "INFO",
+                          "dimension": "obstacle"
+                        },
+                        {
+                          "family": "concept_strength",
+                          "message": "The character takes 5 distinct actions.",
+                          "outcome": "PASS",
+                          "evidence": "turns, presses, stands, watches, press",
+                          "severity": "INFO",
+                          "dimension": "characterInitiative"
+                        },
+                        {
+                          "family": "progression",
+                          "message": "The story contains cause-and-effect progression signals.",
+                          "outcome": "PASS",
+                          "severity": "INFO",
+                          "dimension": "progression"
+                        },
+                        {
+                          "family": "escalation",
+                          "message": "The story contains escalation signals (increasing intensity or complexity).",
+                          "outcome": "PASS",
+                          "severity": "INFO",
+                          "dimension": "escalation"
+                        },
+                        {
+                          "family": "progression",
+                          "message": "The story contains 5 distinct action types, suggesting multiple attempts or strategies.",
+                          "outcome": "PASS",
+                          "severity": "INFO",
+                          "dimension": "distinctAttempts"
+                        },
+                        {
+                          "family": "final_payoff",
+                          "message": "The story describes a final event.",
+                          "outcome": "PASS",
+                          "evidence": "Pip holds still, breathing, until a sneeze bursts out and scatters the notes onto the cabinet. Pip is relieved, but the cabinet remains messy.",
+                          "severity": "INFO",
+                          "dimension": "endingEvent"
+                        }
+                      ],
+                      "candidateId": "candidate-1",
+                      "fingerprint": "7ec0ee071b06e13b4171c4cb68d4058b3d6de8109d32c5cc3e6a339b86a0983b"
+                    },
+                    "structuralEvidence": {
+                      "escalation": null,
+                      "characterGoal": null,
+                      "eventSequence": [
+                        "adhere",
+                        "remove",
+                        "cover"
+                      ],
+                      "mainCharacter": null,
+                      "centralPremise": null,
+                      "endingFunction": "resolution",
+                      "centralObstacle": "Pip peels it with the free hand and it splits into two notes, one stuck to each hand.",
+                      "majorStoryChanges": "Pip holds still, breathing, until a sneeze bursts out and scatters the notes onto the cabinet.",
+                      "openingVisualPromise": "Pip the rabbit stands before the toy cabinet's bare front panel, one sticky note pinched between two fingers, already reaching to press it flat.",
+                      "mainObjectOrSituation": "toy cabinet",
+                      "primaryRuleOrQuestion": "cabinet interaction",
+                      "reasonToContinueWatching": "Pip the rabbit stands before the toy cabinet's bare front panel, one sticky note pinched between two fingers, already reaching to press it flat.",
+                      "productionSensitiveElements": [
+                        "contact continuity"
+                      ]
+                    }
+                  },
+                  {
+                    "preflight": {
+                      "ending": "INSUFFICIENT_EVIDENCE",
+                      "opening": "SUPPORTED",
+                      "concerns": [],
+                      "mechanism": "SUPPORTED",
+                      "strengths": [
+                        "The opening provides an observable focus or situation.",
+                        "The story contains a meaningful progression signal.",
+                        "Primary unusual rule(s): cabinet interaction."
+                      ],
+                      "progression": "SUPPORTED",
+                      "characterAgency": "SUPPORTED",
+                      "productionRisks": [
+                        "Repeated attachment/contact needs clear continuity evidence."
+                      ]
+                    },
+                    "assessment": {
+                      "risks": [],
+                      "unknown": [
+                        {
+                          "family": "final_payoff",
+                          "message": "A final event is described, but its creative effectiveness or audience payoff cannot be determined from text alone.",
+                          "outcome": "UNKNOWN",
+                          "dimension": "endingPayoff"
+                        },
+                        {
+                          "family": "consistency",
+                          "message": "No obvious rule contradictions detected, but full consistency check requires production plan analysis.",
+                          "outcome": "UNKNOWN",
+                          "dimension": "ruleConsistency"
+                        },
+                        {
+                          "family": "visual_novelty",
+                          "message": "Frame-zero visual legibility and hook strength cannot be assessed from story text alone.",
+                          "outcome": "NOT_EVALUATED",
+                          "dimension": "visualLegibility"
+                        },
+                        {
+                          "family": "ai_producibility",
+                          "message": "AI producibility requires a production prompt and cannot be assessed from story text alone.",
+                          "outcome": "NOT_EVALUATED",
+                          "dimension": "aiProducibility"
+                        },
+                        {
+                          "family": "progression",
+                          "message": "Pacing and beat timing cannot be assessed without a production plan.",
+                          "outcome": "NOT_EVALUATED",
+                          "dimension": "pacing"
+                        }
+                      ],
+                      "strengths": [
+                        {
+                          "family": "concept_strength",
+                          "message": "The story describes a character situation or goal.",
+                          "outcome": "PASS",
+                          "evidence": "Pip the rabbit presses a single sticky note toward the toy cabinet's empty front panel, and it clings to Pip's fingertip while the cabinet stays untou",
+                          "severity": "INFO",
+                          "dimension": "characterGoal"
+                        },
+                        {
+                          "family": "concept_strength",
+                          "message": "The story describes an obstacle or challenge.",
+                          "outcome": "PASS",
+                          "evidence": "Pip claps both hands onto the cabinet to transfer them, but they bounce back and double into four notes stuck across Pip's chest.",
+                          "severity": "INFO",
+                          "dimension": "obstacle"
+                        },
+                        {
+                          "family": "concept_strength",
+                          "message": "The character takes 5 distinct actions.",
+                          "outcome": "PASS",
+                          "evidence": "presses, touch, shakes, grabs, sees",
+                          "severity": "INFO",
+                          "dimension": "characterInitiative"
+                        },
+                        {
+                          "family": "progression",
+                          "message": "The story contains cause-and-effect progression signals.",
+                          "outcome": "PASS",
+                          "severity": "INFO",
+                          "dimension": "progression"
+                        },
+                        {
+                          "family": "escalation",
+                          "message": "The story contains escalation signals (increasing intensity or complexity).",
+                          "outcome": "PASS",
+                          "severity": "INFO",
+                          "dimension": "escalation"
+                        },
+                        {
+                          "family": "progression",
+                          "message": "The story contains 5 distinct action types, suggesting multiple attempts or strategies.",
+                          "outcome": "PASS",
+                          "severity": "INFO",
+                          "dimension": "distinctAttempts"
+                        },
+                        {
+                          "family": "final_payoff",
+                          "message": "The story describes a final event.",
+                          "outcome": "PASS",
+                          "evidence": "Pip's nose twitches; a sneeze erupts and scatters the notes onto the cabinet. Pip is relieved, but the cabinet remains messy.",
+                          "severity": "INFO",
+                          "dimension": "endingEvent"
+                        }
+                      ],
+                      "candidateId": "candidate-2",
+                      "fingerprint": "50bae8834df06f6092a37947d422e136c41c72ea80838057beecf2e7156bb088"
+                    },
+                    "structuralEvidence": {
+                      "escalation": "Pip sees the doubling finish and goes still, then slowly sits down on the floor, arms folded, refusing to touch anything.",
+                      "characterGoal": null,
+                      "eventSequence": [
+                        "shake",
+                        "adhere"
+                      ],
+                      "mainCharacter": null,
+                      "centralPremise": null,
+                      "endingFunction": null,
+                      "centralObstacle": "Pip claps both hands onto the cabinet to transfer them, but they bounce back and double into four notes stuck across Pip's chest.",
+                      "majorStoryChanges": "Pip claps both hands onto the cabinet to transfer them, but they bounce back and double into four notes stuck across Pip's chest.",
+                      "openingVisualPromise": "Pip the rabbit presses a single sticky note toward the toy cabinet's empty front panel, and it clings to Pip's fingertip while the cabinet stays untouched.",
+                      "mainObjectOrSituation": "toy cabinet",
+                      "primaryRuleOrQuestion": "cabinet interaction",
+                      "reasonToContinueWatching": "Pip the rabbit presses a single sticky note toward the toy cabinet's empty front panel, and it clings to Pip's fingertip while the cabinet stays untouched.",
+                      "productionSensitiveElements": [
+                        "contact continuity"
+                      ]
+                    }
+                  }
+                ],
+                "differences": [
+                  "Alternative 1 vs 2: different characterActions, openingVisualPromise, majorStoryChanges, centralObstacle, escalation, endingFunction; shared primaryRuleOrQuestion, mainObjectOrSituation."
+                ],
+                "classification": "DISTINCT",
+                "recommendation": {
+                  "isTied": true,
+                  "reason": "No evidence-supported recommendation yet.",
+                  "whyNot": [],
+                  "stillUnknown": [
+                    "aiProducibility",
+                    "endingPayoff",
+                    "pacing",
+                    "ruleConsistency",
+                    "visualLegibility"
+                  ],
+                  "bestCandidateId": null
+                },
+                "variationClass": "MATERIAL_VARIATION",
+                "classificationReason": "Candidates differ across multiple material narrative dimensions."
+              }
+            },
+            "binding": {
+              "role": "STORY",
+              "model": "deepseek-chat",
+              "fallback": false,
+              "provider": "deepseek",
+              "transport": "REAL_PROVIDER_ADAPTER",
+              "payloadBytes": 10221,
+              "systemSha256": "f7e53b14f26b2608e6b075fec79ca63408df83aa759c001081a898e82cbf3d4a",
+              "schemaVersion": "story-pilot-candidates-v1",
+              "templateSha256": "32e24fa077346830b3cfa8c03b07ce6d1d945f60f2630719b3e9545bd68062b5",
+              "maxOutputTokens": 4000,
+              "automaticRetries": false,
+              "experimentVersion": "REAL_CREATIVE_STORY_EVOLUTION_PILOT_V1",
+              "maximumInputBytes": 24000,
+              "sourceScopeSha256": "05a5625b415331d2e625c28fa328bd6c0c9bfec5a93aaa77dbce9f5fc7703276",
+              "sourceStorySha256": "ba352d486c4252c5c6fefe585ad976c0b6f73c299f7554863848bdd842a99b3d",
+              "inputUsdPerMillion": 0.3,
+              "outputUsdPerMillion": 1.2,
+              "implementationSha256": "5e0dd06481c8c1bc1f0cd1515b489d578178517bafe0d85dbffe9421645e4535",
+              "maximumCalculatedUsd": 0.009456599999999999,
+              "effectiveRequestSha256": "9911fb57fc276c6631bcb1aea4378024a55cf00388509fd63b0dc83cb77813e1"
+            },
+            "provider": "deepseek",
+            "requestId": "a62de503-5ed6-331c-9cde-e821c7138315",
+            "retrySafe": false,
+            "evidenceType": "MODEL_GENERATION",
+            "actualCostUsd": 0.0028388999999999997,
+            "billingStatus": "KNOWN_INCURRED",
+            "responseSha256": "34bc110e50779d47964b3546cd3e5f69b9ac8ea773f9a63aee1e04f2281359d1",
+            "processingStatus": "LOCALLY_REJECTED",
+            "requestStartedAt": "2026-10-17T14:55:58.777322+00:00",
+            "responseReceived": true,
+            "evidenceProvenance": {
+              "model": "deepseek-chat",
+              "origin": "REAL_AI_PROVIDER",
+              "version": "creative-evidence-provenance-v1",
+              "provider": "deepseek",
+              "timestamp": "2026-10-17T14:56:06.451966Z",
+              "reviewerOrigin": "REAL_AI_PROVIDER",
+              "requestFingerprint": "d9687b10456e6a1ee65a57caa41fece197227faa16daa6e8e9a2b7a350f0bd16",
+              "responseFingerprint": "a2bf7fc80318c7b69c2f112ee8bc8fb4012678803d5f2ba2d0191480e0772423",
+              "reviewerIndependent": false,
+              "officialCalibrationEligible": false,
+              "realCapabilityStatisticsEligible": true
+            },
+            "providerDispatched": true,
+            "requestFingerprint": "d9687b10456e6a1ee65a57caa41fece197227faa16daa6e8e9a2b7a350f0bd16",
+            "responseReceivedAt": "2026-10-17T14:56:06.444869+00:00",
+            "providerApiResponse": {
+              "id": "abde288e-18be-4d13-8b14-2ce58865c3e9",
+              "model": "deepseek-flash",
+              "usage": {
+                "total_tokens": 5104,
+                "prompt_tokens": 3651,
+                "completion_tokens": 1453,
+                "prompt_tokens_details": {
+                  "text_tokens": null,
+                  "audio_tokens": null,
+                  "image_tokens": null,
+                  "cached_tokens": 0,
+                  "cache_write_tokens": null
+                },
+                "prompt_cache_hit_tokens": 0,
+                "prompt_cache_miss_tokens": 3651,
+                "completion_tokens_details": null
+              },
+              "object": "chat.completion",
+              "choices": [
+                {
+                  "index": 0,
+                  "message": {
+                    "role": "assistant",
+                    "audio": null,
+                    "content": "{\"alternatives\":[{\"candidateId\":\"candidate-1\",\"title\":\"The One-Note Problem\",\"text\":\"Pip the rabbit stands before the toy cabinet's bare front panel, one sticky note pinched between two fingers, already reaching to press it flat. The note clings to Pip's fingertip while the cabinet stays untouched. Pip peels it with the free hand and it splits into two notes, one stuck to each hand. Pip presses both palms to the cabinet; they spring back and double into four notes, now dotting Pip's wrists. Pip backs away, arms out, and the four notes split into eight across Pip's arms and face. Pip freezes, eyes wide above a note stuck to the muzzle, and watches the last split finish. Pip deliberately lowers both arms and stops struggling. The still note-covered face turns toward the mirror. Pip holds still, breathing, until a sneeze bursts out and scatters the notes onto the cabinet. Pip is relieved, but the cabinet remains messy.\",\"schemaVersion\":\"story-pilot-candidates-v1\",\"durationSeconds\":15,\"openingVisualState\":\"Pip the rabbit stands before the toy cabinet's bare front panel, one sticky note pinched between two fingers, already reaching to press it flat.\",\"motivation\":\"Pip wants to place a single sticky note flat on the cabinet's empty front panel.\",\"progression\":\"The note clings to Pip's fingertip while the cabinet stays untouched; peeling splits it into two, pressing doubles them to four, and backing away splits them to eight across Pip's arms and face.\",\"ending\":\"Pip is relieved, but the cabinet remains messy.\",\"proposedChanges\":[\"Open on the single-note placement attempt rather than mid-multiplication so the first visible promise is the rule itself.\",\"Replace the door-edge push with a backward retreat that triggers the four-to-eight split, giving a clearer full-body silhouette.\",\"Move the realization to a deliberate lowering of arms and a held still beat before the mirror turn, so the reversal is earned rather than rushed.\"],\"weaknesses\":[\"The mirror turn still competes with the sneeze for the final seconds.\",\"Thin-note contact on the face remains a precision risk.\",\"The retreat-triggered split may read as accidental rather than causal without careful staging.\"],\"productionRisks\":[\"THIN_OBJECT precision on note-to-fingertip and note-to-face contact.\",\"Face partially occluded by a note during the realization beat.\",\"Sneeze scatter requires many small notes to move believably in one burst.\"],\"sourceContract\":{\"status\":\"SOURCE_COMPLIANT\",\"bindings\":[{\"anchorId\":\"identity\",\"sourceQuote\":\"Pip the rabbit\",\"candidateQuote\":\"Pip the rabbit\"},{\"anchorId\":\"premise\",\"sourceQuote\":\"it clings to Pip's fingertip while the cabinet stays untouched\",\"candidateQuote\":\"The note clings to Pip's fingertip while the cabinet stays untouched.\"},{\"anchorId\":\"rule\",\"sourceQuote\":\"every removal or transfer attempt multiplies the notes\",\"candidateQuote\":\"Pip peels it with the free hand and it splits into two notes\"},{\"anchorId\":\"continuity\",\"sourceQuote\":\"Pip remains covered until a sneeze scatters the notes onto the cabinet\",\"candidateQuote\":\"Pip holds still, breathing, until a sneeze bursts out and scatters the notes onto the cabinet.\"},{\"anchorId\":\"ending\",\"sourceQuote\":\"Pip is relieved, but the cabinet remains messy.\",\"candidateQuote\":\"Pip is relieved, but the cabinet remains messy.\"}],\"protectedChanges\":[]}},{\"candidateId\":\"candidate-2\",\"title\":\"Stop Trying\",\"text\":\"Pip the rabbit presses a single sticky note toward the toy cabinet's empty front panel, and it clings to Pip's fingertip while the cabinet stays untouched. Pip shakes the hand; the note splits into two, one on each hand. Pip claps both hands onto the cabinet to transfer them, but they bounce back and double into four notes stuck across Pip's chest. Pip grabs at the four with both arms and they split into eight, wrapping Pip's arms and face. Pip sees the doubling finish and goes still, then slowly sits down on the floor, arms folded, refusing to touch anything. The notes stay put. Pip's nose twitches; a sneeze erupts and scatters the notes onto the cabinet. Pip is relieved, but the cabinet remains messy.\",\"schemaVersion\":\"story-pilot-candidates-v1\",\"durationSeconds\":15,\"openingVisualState\":\"Pip the rabbit presses a single sticky note toward the toy cabinet's empty front panel, and it clings to Pip's fingertip while the cabinet stays untouched.\",\"motivation\":\"Pip wants to transfer the sticky note onto the cabinet and be done with it.\",\"progression\":\"Shaking splits the note into two, clapping doubles them to four across Pip's chest, and grabbing splits them to eight over arms and face; Pip then sits down and refuses to touch anything.\",\"ending\":\"Pip is relieved, but the cabinet remains messy.\",\"proposedChanges\":[\"Replace the mirror turn with a deliberate sit-down refusal, making the realization a full-body surrender rather than a look.\",\"Use a clap-to-transfer attempt instead of a press, giving a distinct two-hand silhouette at the four-note stage.\",\"Keep the sneeze as the only release, so the payoff is earned by Pip's stillness rather than a mirror beat.\"],\"weaknesses\":[\"Sitting down may read as giving up rather than realizing the rule.\",\"The chest-stuck notes reduce face visibility for the sneeze.\",\"Without a mirror, the realization is conveyed only by posture.\"],\"productionRisks\":[\"THIN_OBJECT precision on note-to-chest and note-to-face contact.\",\"Sit-down motion plus note scatter in the final seconds risks crowding.\",\"Sneeze burst with many small notes may not read cleanly at 480p.\"],\"sourceContract\":{\"status\":\"SOURCE_COMPLIANT\",\"bindings\":[{\"anchorId\":\"identity\",\"sourceQuote\":\"Pip the rabbit\",\"candidateQuote\":\"Pip the rabbit\"},{\"anchorId\":\"premise\",\"sourceQuote\":\"it clings to Pip's fingertip while the cabinet stays untouched\",\"candidateQuote\":\"it clings to Pip's fingertip while the cabinet stays untouched\"},{\"anchorId\":\"rule\",\"sourceQuote\":\"every removal or transfer attempt multiplies the notes\",\"candidateQuote\":\"Pip grabs at the four with both arms and they split into eight\"},{\"anchorId\":\"continuity\",\"sourceQuote\":\"Pip remains covered until a sneeze scatters the notes onto the cabinet\",\"candidateQuote\":\"a sneeze erupts and scatters the notes onto the cabinet\"},{\"anchorId\":\"ending\",\"sourceQuote\":\"Pip is relieved, but the cabinet remains messy.\",\"candidateQuote\":\"Pip is relieved, but the cabinet remains messy.\"}],\"protectedChanges\":[]}}]}",
+                    "refusal": null,
+                    "tool_calls": null,
+                    "annotations": null,
+                    "function_call": null
+                  },
+                  "logprobs": null,
+                  "finish_reason": "stop"
+                }
+              ],
+              "created": 1792248959,
+              "metadata": null,
+              "moderation": null,
+              "service_tier": null,
+              "system_fingerprint": "e72d3c7f663d3e1383b00b3884cb4501"
+            },
+            "rawProviderResponse": "{\"alternatives\":[{\"candidateId\":\"candidate-1\",\"title\":\"The One-Note Problem\",\"text\":\"Pip the rabbit stands before the toy cabinet's bare front panel, one sticky note pinched between two fingers, already reaching to press it flat. The note clings to Pip's fingertip while the cabinet stays untouched. Pip peels it with the free hand and it splits into two notes, one stuck to each hand. Pip presses both palms to the cabinet; they spring back and double into four notes, now dotting Pip's wrists. Pip backs away, arms out, and the four notes split into eight across Pip's arms and face. Pip freezes, eyes wide above a note stuck to the muzzle, and watches the last split finish. Pip deliberately lowers both arms and stops struggling. The still note-covered face turns toward the mirror. Pip holds still, breathing, until a sneeze bursts out and scatters the notes onto the cabinet. Pip is relieved, but the cabinet remains messy.\",\"schemaVersion\":\"story-pilot-candidates-v1\",\"durationSeconds\":15,\"openingVisualState\":\"Pip the rabbit stands before the toy cabinet's bare front panel, one sticky note pinched between two fingers, already reaching to press it flat.\",\"motivation\":\"Pip wants to place a single sticky note flat on the cabinet's empty front panel.\",\"progression\":\"The note clings to Pip's fingertip while the cabinet stays untouched; peeling splits it into two, pressing doubles them to four, and backing away splits them to eight across Pip's arms and face.\",\"ending\":\"Pip is relieved, but the cabinet remains messy.\",\"proposedChanges\":[\"Open on the single-note placement attempt rather than mid-multiplication so the first visible promise is the rule itself.\",\"Replace the door-edge push with a backward retreat that triggers the four-to-eight split, giving a clearer full-body silhouette.\",\"Move the realization to a deliberate lowering of arms and a held still beat before the mirror turn, so the reversal is earned rather than rushed.\"],\"weaknesses\":[\"The mirror turn still competes with the sneeze for the final seconds.\",\"Thin-note contact on the face remains a precision risk.\",\"The retreat-triggered split may read as accidental rather than causal without careful staging.\"],\"productionRisks\":[\"THIN_OBJECT precision on note-to-fingertip and note-to-face contact.\",\"Face partially occluded by a note during the realization beat.\",\"Sneeze scatter requires many small notes to move believably in one burst.\"],\"sourceContract\":{\"status\":\"SOURCE_COMPLIANT\",\"bindings\":[{\"anchorId\":\"identity\",\"sourceQuote\":\"Pip the rabbit\",\"candidateQuote\":\"Pip the rabbit\"},{\"anchorId\":\"premise\",\"sourceQuote\":\"it clings to Pip's fingertip while the cabinet stays untouched\",\"candidateQuote\":\"The note clings to Pip's fingertip while the cabinet stays untouched.\"},{\"anchorId\":\"rule\",\"sourceQuote\":\"every removal or transfer attempt multiplies the notes\",\"candidateQuote\":\"Pip peels it with the free hand and it splits into two notes\"},{\"anchorId\":\"continuity\",\"sourceQuote\":\"Pip remains covered until a sneeze scatters the notes onto the cabinet\",\"candidateQuote\":\"Pip holds still, breathing, until a sneeze bursts out and scatters the notes onto the cabinet.\"},{\"anchorId\":\"ending\",\"sourceQuote\":\"Pip is relieved, but the cabinet remains messy.\",\"candidateQuote\":\"Pip is relieved, but the cabinet remains messy.\"}],\"protectedChanges\":[]}},{\"candidateId\":\"candidate-2\",\"title\":\"Stop Trying\",\"text\":\"Pip the rabbit presses a single sticky note toward the toy cabinet's empty front panel, and it clings to Pip's fingertip while the cabinet stays untouched. Pip shakes the hand; the note splits into two, one on each hand. Pip claps both hands onto the cabinet to transfer them, but they bounce back and double into four notes stuck across Pip's chest. Pip grabs at the four with both arms and they split into eight, wrapping Pip's arms and face. Pip sees the doubling finish and goes still, then slowly sits down on the floor, arms folded, refusing to touch anything. The notes stay put. Pip's nose twitches; a sneeze erupts and scatters the notes onto the cabinet. Pip is relieved, but the cabinet remains messy.\",\"schemaVersion\":\"story-pilot-candidates-v1\",\"durationSeconds\":15,\"openingVisualState\":\"Pip the rabbit presses a single sticky note toward the toy cabinet's empty front panel, and it clings to Pip's fingertip while the cabinet stays untouched.\",\"motivation\":\"Pip wants to transfer the sticky note onto the cabinet and be done with it.\",\"progression\":\"Shaking splits the note into two, clapping doubles them to four across Pip's chest, and grabbing splits them to eight over arms and face; Pip then sits down and refuses to touch anything.\",\"ending\":\"Pip is relieved, but the cabinet remains messy.\",\"proposedChanges\":[\"Replace the mirror turn with a deliberate sit-down refusal, making the realization a full-body surrender rather than a look.\",\"Use a clap-to-transfer attempt instead of a press, giving a distinct two-hand silhouette at the four-note stage.\",\"Keep the sneeze as the only release, so the payoff is earned by Pip's stillness rather than a mirror beat.\"],\"weaknesses\":[\"Sitting down may read as giving up rather than realizing the rule.\",\"The chest-stuck notes reduce face visibility for the sneeze.\",\"Without a mirror, the realization is conveyed only by posture.\"],\"productionRisks\":[\"THIN_OBJECT precision on note-to-chest and note-to-face contact.\",\"Sit-down motion plus note scatter in the final seconds risks crowding.\",\"Sneeze burst with many small notes may not read cleanly at 480p.\"],\"sourceContract\":{\"status\":\"SOURCE_COMPLIANT\",\"bindings\":[{\"anchorId\":\"identity\",\"sourceQuote\":\"Pip the rabbit\",\"candidateQuote\":\"Pip the rabbit\"},{\"anchorId\":\"premise\",\"sourceQuote\":\"it clings to Pip's fingertip while the cabinet stays untouched\",\"candidateQuote\":\"it clings to Pip's fingertip while the cabinet stays untouched\"},{\"anchorId\":\"rule\",\"sourceQuote\":\"every removal or transfer attempt multiplies the notes\",\"candidateQuote\":\"Pip grabs at the four with both arms and they split into eight\"},{\"anchorId\":\"continuity\",\"sourceQuote\":\"Pip remains covered until a sneeze scatters the notes onto the cabinet\",\"candidateQuote\":\"a sneeze erupts and scatters the notes onto the cabinet\"},{\"anchorId\":\"ending\",\"sourceQuote\":\"Pip is relieved, but the cabinet remains messy.\",\"candidateQuote\":\"Pip is relieved, but the cabinet remains messy.\"}],\"protectedChanges\":[]}}]}",
+            "parsedProviderResponse": {
+              "alternatives": [
+                {
+                  "text": "Pip the rabbit stands before the toy cabinet's bare front panel, one sticky note pinched between two fingers, already reaching to press it flat. The note clings to Pip's fingertip while the cabinet stays untouched. Pip peels it with the free hand and it splits into two notes, one stuck to each hand. Pip presses both palms to the cabinet; they spring back and double into four notes, now dotting Pip's wrists. Pip backs away, arms out, and the four notes split into eight across Pip's arms and face. Pip freezes, eyes wide above a note stuck to the muzzle, and watches the last split finish. Pip deliberately lowers both arms and stops struggling. The still note-covered face turns toward the mirror. Pip holds still, breathing, until a sneeze bursts out and scatters the notes onto the cabinet. Pip is relieved, but the cabinet remains messy.",
+                  "title": "The One-Note Problem",
+                  "ending": "Pip is relieved, but the cabinet remains messy.",
+                  "motivation": "Pip wants to place a single sticky note flat on the cabinet's empty front panel.",
+                  "weaknesses": [
+                    "The mirror turn still competes with the sneeze for the final seconds.",
+                    "Thin-note contact on the face remains a precision risk.",
+                    "The retreat-triggered split may read as accidental rather than causal without careful staging."
+                  ],
+                  "candidateId": "candidate-1",
+                  "progression": "The note clings to Pip's fingertip while the cabinet stays untouched; peeling splits it into two, pressing doubles them to four, and backing away splits them to eight across Pip's arms and face.",
+                  "schemaVersion": "story-pilot-candidates-v1",
+                  "sourceContract": {
+                    "status": "SOURCE_COMPLIANT",
+                    "bindings": [
+                      {
+                        "anchorId": "identity",
+                        "sourceQuote": "Pip the rabbit",
+                        "candidateQuote": "Pip the rabbit"
+                      },
+                      {
+                        "anchorId": "premise",
+                        "sourceQuote": "it clings to Pip's fingertip while the cabinet stays untouched",
+                        "candidateQuote": "The note clings to Pip's fingertip while the cabinet stays untouched."
+                      },
+                      {
+                        "anchorId": "rule",
+                        "sourceQuote": "every removal or transfer attempt multiplies the notes",
+                        "candidateQuote": "Pip peels it with the free hand and it splits into two notes"
+                      },
+                      {
+                        "anchorId": "continuity",
+                        "sourceQuote": "Pip remains covered until a sneeze scatters the notes onto the cabinet",
+                        "candidateQuote": "Pip holds still, breathing, until a sneeze bursts out and scatters the notes onto the cabinet."
+                      },
+                      {
+                        "anchorId": "ending",
+                        "sourceQuote": "Pip is relieved, but the cabinet remains messy.",
+                        "candidateQuote": "Pip is relieved, but the cabinet remains messy."
+                      }
+                    ],
+                    "protectedChanges": []
+                  },
+                  "durationSeconds": 15,
+                  "productionRisks": [
+                    "THIN_OBJECT precision on note-to-fingertip and note-to-face contact.",
+                    "Face partially occluded by a note during the realization beat.",
+                    "Sneeze scatter requires many small notes to move believably in one burst."
+                  ],
+                  "proposedChanges": [
+                    "Open on the single-note placement attempt rather than mid-multiplication so the first visible promise is the rule itself.",
+                    "Replace the door-edge push with a backward retreat that triggers the four-to-eight split, giving a clearer full-body silhouette.",
+                    "Move the realization to a deliberate lowering of arms and a held still beat before the mirror turn, so the reversal is earned rather than rushed."
+                  ],
+                  "openingVisualState": "Pip the rabbit stands before the toy cabinet's bare front panel, one sticky note pinched between two fingers, already reaching to press it flat."
+                },
+                {
+                  "text": "Pip the rabbit presses a single sticky note toward the toy cabinet's empty front panel, and it clings to Pip's fingertip while the cabinet stays untouched. Pip shakes the hand; the note splits into two, one on each hand. Pip claps both hands onto the cabinet to transfer them, but they bounce back and double into four notes stuck across Pip's chest. Pip grabs at the four with both arms and they split into eight, wrapping Pip's arms and face. Pip sees the doubling finish and goes still, then slowly sits down on the floor, arms folded, refusing to touch anything. The notes stay put. Pip's nose twitches; a sneeze erupts and scatters the notes onto the cabinet. Pip is relieved, but the cabinet remains messy.",
+                  "title": "Stop Trying",
+                  "ending": "Pip is relieved, but the cabinet remains messy.",
+                  "motivation": "Pip wants to transfer the sticky note onto the cabinet and be done with it.",
+                  "weaknesses": [
+                    "Sitting down may read as giving up rather than realizing the rule.",
+                    "The chest-stuck notes reduce face visibility for the sneeze.",
+                    "Without a mirror, the realization is conveyed only by posture."
+                  ],
+                  "candidateId": "candidate-2",
+                  "progression": "Shaking splits the note into two, clapping doubles them to four across Pip's chest, and grabbing splits them to eight over arms and face; Pip then sits down and refuses to touch anything.",
+                  "schemaVersion": "story-pilot-candidates-v1",
+                  "sourceContract": {
+                    "status": "SOURCE_COMPLIANT",
+                    "bindings": [
+                      {
+                        "anchorId": "identity",
+                        "sourceQuote": "Pip the rabbit",
+                        "candidateQuote": "Pip the rabbit"
+                      },
+                      {
+                        "anchorId": "premise",
+                        "sourceQuote": "it clings to Pip's fingertip while the cabinet stays untouched",
+                        "candidateQuote": "it clings to Pip's fingertip while the cabinet stays untouched"
+                      },
+                      {
+                        "anchorId": "rule",
+                        "sourceQuote": "every removal or transfer attempt multiplies the notes",
+                        "candidateQuote": "Pip grabs at the four with both arms and they split into eight"
+                      },
+                      {
+                        "anchorId": "continuity",
+                        "sourceQuote": "Pip remains covered until a sneeze scatters the notes onto the cabinet",
+                        "candidateQuote": "a sneeze erupts and scatters the notes onto the cabinet"
+                      },
+                      {
+                        "anchorId": "ending",
+                        "sourceQuote": "Pip is relieved, but the cabinet remains messy.",
+                        "candidateQuote": "Pip is relieved, but the cabinet remains messy."
+                      }
+                    ],
+                    "protectedChanges": []
+                  },
+                  "durationSeconds": 15,
+                  "productionRisks": [
+                    "THIN_OBJECT precision on note-to-chest and note-to-face contact.",
+                    "Sit-down motion plus note scatter in the final seconds risks crowding.",
+                    "Sneeze burst with many small notes may not read cleanly at 480p."
+                  ],
+                  "proposedChanges": [
+                    "Replace the mirror turn with a deliberate sit-down refusal, making the realization a full-body surrender rather than a look.",
+                    "Use a clap-to-transfer attempt instead of a press, giving a distinct two-hand silhouette at the four-note stage.",
+                    "Keep the sneeze as the only release, so the payoff is earned by Pip's stillness rather than a mirror beat."
+                  ],
+                  "openingVisualState": "Pip the rabbit presses a single sticky note toward the toy cabinet's empty front panel, and it clings to Pip's fingertip while the cabinet stays untouched."
+                }
+              ]
+            },
+            "providerResponseMetadata": {
+              "model": "deepseek-flash",
+              "requestId": "abde288e-18be-4d13-8b14-2ce58865c3e9",
+              "finishReason": "stop"
+            }
+          },
+          "candidateId": "candidate-2",
+          "receiptFile": "first-real-story-evolution-evidence/provider-receipt.json",
+          "originalRunId": "72796340-fff3-471f-b66a-1c4c3cb29014",
+          "ownerSelection": "EXPLICITLY_APPROVED_FOR_UNKNOWN_SOURCE_ASSESSMENT_ONLY",
+          "candidateSha256": "50bae8834df06f6092a37947d422e136c41c72ea80838057beecf2e7156bb088",
+          "originalCandidate": {
+            "text": "Pip the rabbit presses a single sticky note toward the toy cabinet's empty front panel, and it clings to Pip's fingertip while the cabinet stays untouched. Pip shakes the hand; the note splits into two, one on each hand. Pip claps both hands onto the cabinet to transfer them, but they bounce back and double into four notes stuck across Pip's chest. Pip grabs at the four with both arms and they split into eight, wrapping Pip's arms and face. Pip sees the doubling finish and goes still, then slowly sits down on the floor, arms folded, refusing to touch anything. The notes stay put. Pip's nose twitches; a sneeze erupts and scatters the notes onto the cabinet. Pip is relieved, but the cabinet remains messy.",
+            "title": "Stop Trying",
+            "ending": "Pip is relieved, but the cabinet remains messy.",
+            "motivation": "Pip wants to transfer the sticky note onto the cabinet and be done with it.",
+            "weaknesses": [
+              "Sitting down may read as giving up rather than realizing the rule.",
+              "The chest-stuck notes reduce face visibility for the sneeze.",
+              "Without a mirror, the realization is conveyed only by posture."
+            ],
+            "candidateId": "candidate-2",
+            "progression": "Shaking splits the note into two, clapping doubles them to four across Pip's chest, and grabbing splits them to eight over arms and face; Pip then sits down and refuses to touch anything.",
+            "schemaVersion": "story-pilot-candidates-v1",
+            "sourceContract": {
+              "status": "SOURCE_COMPLIANT",
+              "bindings": [
+                {
+                  "anchorId": "identity",
+                  "sourceQuote": "Pip the rabbit",
+                  "candidateQuote": "Pip the rabbit"
+                },
+                {
+                  "anchorId": "premise",
+                  "sourceQuote": "it clings to Pip's fingertip while the cabinet stays untouched",
+                  "candidateQuote": "it clings to Pip's fingertip while the cabinet stays untouched"
+                },
+                {
+                  "anchorId": "rule",
+                  "sourceQuote": "every removal or transfer attempt multiplies the notes",
+                  "candidateQuote": "Pip grabs at the four with both arms and they split into eight"
+                },
+                {
+                  "anchorId": "continuity",
+                  "sourceQuote": "Pip remains covered until a sneeze scatters the notes onto the cabinet",
+                  "candidateQuote": "a sneeze erupts and scatters the notes onto the cabinet"
+                },
+                {
+                  "anchorId": "ending",
+                  "sourceQuote": "Pip is relieved, but the cabinet remains messy.",
+                  "candidateQuote": "Pip is relieved, but the cabinet remains messy."
+                }
+              ],
+              "protectedChanges": []
+            },
+            "durationSeconds": 15,
+            "productionRisks": [
+              "THIN_OBJECT precision on note-to-chest and note-to-face contact.",
+              "Sit-down motion plus note scatter in the final seconds risks crowding.",
+              "Sneeze burst with many small notes may not read cleanly at 480p."
+            ],
+            "proposedChanges": [
+              "Replace the mirror turn with a deliberate sit-down refusal, making the realization a full-body surrender rather than a look.",
+              "Use a clap-to-transfer attempt instead of a press, giving a distinct two-hand silhouette at the four-note stage.",
+              "Keep the sneeze as the only release, so the payoff is earned by Pip's stillness rather than a mirror beat."
+            ],
+            "openingVisualState": "Pip the rabbit presses a single sticky note toward the toy cabinet's empty front panel, and it clings to Pip's fingertip while the cabinet stays untouched."
+          },
+          "rawResponseSha256": "34bc110e50779d47964b3546cd3e5f69b9ac8ea773f9a63aee1e04f2281359d1",
+          "receiptFileSha256": "78351c30e08899e842723813709ea45fcd6367bcae88e94078a1436ba75a574c",
+          "originalExecutionState": "STOPPED",
+          "knownDefiniteSourceViolation": false
+        },
+        {
+          "ref": "B",
+          "receipt": {
+            "role": "STORY",
+            "model": "deepseek-flash",
+            "runId": "b0a57f9c-d6d0-45ae-b1c2-d00ef129c122",
+            "usage": {
+              "total_tokens": 5348,
+              "prompt_tokens": 3926,
+              "completion_tokens": 1422,
+              "prompt_tokens_details": {
+                "text_tokens": null,
+                "audio_tokens": null,
+                "image_tokens": null,
+                "cached_tokens": 384,
+                "cache_write_tokens": null
+              },
+              "prompt_cache_hit_tokens": 384,
+              "prompt_cache_miss_tokens": 3542,
+              "completion_tokens_details": null
+            },
+            "result": {
+              "alternatives": [
+                {
+                  "text": "Pip the rabbit reaches to smooth one sticky note onto the toy cabinet's bare front panel, but it clings to Pip's fingertip while the cabinet stays untouched. Pip pinches the note with the other paw to peel it free, and it splits into two notes, one stuck to each paw. Pip slaps both paws toward the cabinet, but the notes bounce back and double into four, fluttering up Pip's arms. Pip shakes both arms hard to fling the four notes away, and they split into eight, plastering Pip's chest and cheeks. Pip freezes, watching the eight notes ripple and settle, and realizes that every removal or transfer attempt multiplies the notes. Pip deliberately stops struggling and stands still, letting the notes rest. A sneeze bursts out of Pip, and the blast peels the notes off and scatters them across the cabinet. Pip is relieved, but the cabinet remains messy.",
+                  "title": "The Sticky Note That Won't Leave Pip",
+                  "ending": "Pip is relieved, but the cabinet remains messy.",
+                  "motivation": "Pip pinches the note with the other paw to peel it free",
+                  "weaknesses": [
+                    "The arm-shake fling is still a thin-object contact moment that may need careful staging.",
+                    "The freeze beat depends on a readable held pose to sell the realization."
+                  ],
+                  "candidateId": "candidate-1",
+                  "progression": "Pip shakes both arms hard to fling the four notes away, and they split into eight, plastering Pip's chest and cheeks.",
+                  "schemaVersion": "story-pilot-candidates-v1",
+                  "sourceContract": {
+                    "status": "SOURCE_COMPLIANT",
+                    "bindings": [
+                      {
+                        "anchorId": "identity",
+                        "sourceQuote": "Pip the rabbit",
+                        "candidateQuote": "Pip the rabbit"
+                      },
+                      {
+                        "anchorId": "premise",
+                        "sourceQuote": "it clings to Pip's fingertip while the cabinet stays untouched",
+                        "candidateQuote": "it clings to Pip's fingertip while the cabinet stays untouched"
+                      },
+                      {
+                        "anchorId": "rule",
+                        "sourceQuote": "every removal or transfer attempt multiplies the notes",
+                        "candidateQuote": "every removal or transfer attempt multiplies the notes"
+                      },
+                      {
+                        "anchorId": "continuity",
+                        "sourceQuote": "Pip remains covered until a sneeze scatters the notes onto the cabinet",
+                        "candidateQuote": "Pip remains covered until a sneeze scatters the notes onto the cabinet"
+                      },
+                      {
+                        "anchorId": "ending",
+                        "sourceQuote": "Pip is relieved, but the cabinet remains messy.",
+                        "candidateQuote": "Pip is relieved, but the cabinet remains messy."
+                      }
+                    ],
+                    "protectedChanges": []
+                  },
+                  "durationSeconds": 15,
+                  "productionRisks": [
+                    "THIN_OBJECT: sticky notes contacting paws and face require precise thin-object handling.",
+                    "FACE_CONTACT: notes plastering Pip's cheeks risk face/hair continuity issues.",
+                    "SNEEZE_BURST: the scatter needs a clear directional force to read as one motion."
+                  ],
+                  "proposedChanges": [
+                    "Replaces the door-edge push with an arm-shake fling so the escalation reads as one clear physical action per beat.",
+                    "Moves the realization to a held freeze before the sneeze, giving the reversal its own beat instead of crowding the final seconds.",
+                    "Removes the mirror turn to keep the payoff on Pip and the cabinet rather than a reflection."
+                  ],
+                  "openingVisualState": "Pip the rabbit reaches to smooth one sticky note onto the toy cabinet's bare front panel, but it clings to Pip's fingertip while the cabinet stays untouched."
+                },
+                {
+                  "text": "Pip the rabbit presses one sticky note toward the toy cabinet's empty front panel, but it clings to Pip's fingertip while the cabinet stays untouched. Pip tries to flick the note off with a quick wrist snap, and it splits into two notes, one on each paw. Pip claps both paws together to crush the notes flat, but they spring apart into four and climb Pip's sleeves. Pip backs away and brushes the four notes off against the cabinet's side, and they split into eight, wrapping Pip's shoulders and muzzle. Pip stares at the doubling notes, breathing hard, and realizes that every removal or transfer attempt multiplies the notes. Pip slowly lowers both arms and stops moving entirely, letting the notes cling. A sneeze jerks through Pip, and the notes blow off in a burst and land across the cabinet. Pip is relieved, but the cabinet remains messy.",
+                  "title": "Pip Stops Fighting the Notes",
+                  "ending": "Pip is relieved, but the cabinet remains messy.",
+                  "motivation": "Pip tries to flick the note off with a quick wrist snap",
+                  "weaknesses": [
+                    "The paw-clap crush is a fast action that may read as ambiguous at 480p.",
+                    "The backward step plus brush-off risks compressing two actions into one short beat."
+                  ],
+                  "candidateId": "candidate-2",
+                  "progression": "Pip backs away and brushes the four notes off against the cabinet's side, and they split into eight, wrapping Pip's shoulders and muzzle.",
+                  "schemaVersion": "story-pilot-candidates-v1",
+                  "sourceContract": {
+                    "status": "SOURCE_COMPLIANT",
+                    "bindings": [
+                      {
+                        "anchorId": "identity",
+                        "sourceQuote": "Pip the rabbit",
+                        "candidateQuote": "Pip the rabbit"
+                      },
+                      {
+                        "anchorId": "premise",
+                        "sourceQuote": "it clings to Pip's fingertip while the cabinet stays untouched",
+                        "candidateQuote": "it clings to Pip's fingertip while the cabinet stays untouched"
+                      },
+                      {
+                        "anchorId": "rule",
+                        "sourceQuote": "every removal or transfer attempt multiplies the notes",
+                        "candidateQuote": "every removal or transfer attempt multiplies the notes"
+                      },
+                      {
+                        "anchorId": "continuity",
+                        "sourceQuote": "Pip remains covered until a sneeze scatters the notes onto the cabinet",
+                        "candidateQuote": "Pip remains covered until a sneeze scatters the notes onto the cabinet"
+                      },
+                      {
+                        "anchorId": "ending",
+                        "sourceQuote": "Pip is relieved, but the cabinet remains messy.",
+                        "candidateQuote": "Pip is relieved, but the cabinet remains messy."
+                      }
+                    ],
+                    "protectedChanges": []
+                  },
+                  "durationSeconds": 15,
+                  "productionRisks": [
+                    "THIN_OBJECT: notes on paws, sleeves and muzzle need careful thin-object contact.",
+                    "FACE_CONTACT: notes wrapping the muzzle risk face continuity problems.",
+                    "MULTI_OBJECT_STACKING: eight notes spreading across shoulders and cabinet may be hard to track."
+                  ],
+                  "proposedChanges": [
+                    "Uses a wrist-flick and a paw-clap as the first two escalation actions, giving each beat a distinct silhouette.",
+                    "Adds a backward step before the brush-off so Pip's retreat visibly fails and motivates the freeze.",
+                    "Holds the realization on a breath and lowered arms before the sneeze, separating reversal from payoff."
+                  ],
+                  "openingVisualState": "Pip the rabbit presses one sticky note toward the toy cabinet's empty front panel, but it clings to Pip's fingertip while the cabinet stays untouched."
+                }
+              ],
+              "storyQuality": {
+                "pairs": [
+                  {
+                    "left": 1,
+                    "right": 2,
+                    "sharedDimensions": [
+                      "primaryRuleOrQuestion",
+                      "mainObjectOrSituation",
+                      "endingFunction"
+                    ],
+                    "lexicalSimilarity": 0.214,
+                    "eventSequenceMatch": false,
+                    "differentDimensions": [
+                      "characterActions",
+                      "openingVisualPromise",
+                      "characterGoal",
+                      "majorStoryChanges",
+                      "centralObstacle",
+                      "escalation"
+                    ],
+                    "dimensionDescriptions": null
+                  }
+                ],
+                "method": "story-structure-v1",
+                "summary": "Candidates differ across multiple material narrative dimensions.",
+                "candidates": [
+                  {
+                    "preflight": {
+                      "ending": "resolution",
+                      "opening": "SUPPORTED",
+                      "concerns": [],
+                      "mechanism": "SUPPORTED",
+                      "strengths": [
+                        "The opening provides an observable focus or situation.",
+                        "The story contains a meaningful progression signal.",
+                        "Primary unusual rule(s): cabinet interaction."
+                      ],
+                      "progression": "SUPPORTED",
+                      "characterAgency": "SUPPORTED",
+                      "productionRisks": [
+                        "Repeated attachment/contact needs clear continuity evidence."
+                      ]
+                    },
+                    "assessment": {
+                      "risks": [],
+                      "unknown": [
+                        {
+                          "family": "final_payoff",
+                          "message": "A final event is described, but its creative effectiveness or audience payoff cannot be determined from text alone.",
+                          "outcome": "UNKNOWN",
+                          "dimension": "endingPayoff"
+                        },
+                        {
+                          "family": "consistency",
+                          "message": "No obvious rule contradictions detected, but full consistency check requires production plan analysis.",
+                          "outcome": "UNKNOWN",
+                          "dimension": "ruleConsistency"
+                        },
+                        {
+                          "family": "visual_novelty",
+                          "message": "Frame-zero visual legibility and hook strength cannot be assessed from story text alone.",
+                          "outcome": "NOT_EVALUATED",
+                          "dimension": "visualLegibility"
+                        },
+                        {
+                          "family": "ai_producibility",
+                          "message": "AI producibility requires a production prompt and cannot be assessed from story text alone.",
+                          "outcome": "NOT_EVALUATED",
+                          "dimension": "aiProducibility"
+                        },
+                        {
+                          "family": "progression",
+                          "message": "Pacing and beat timing cannot be assessed without a production plan.",
+                          "outcome": "NOT_EVALUATED",
+                          "dimension": "pacing"
+                        }
+                      ],
+                      "strengths": [
+                        {
+                          "family": "concept_strength",
+                          "message": "The story describes a character situation or goal.",
+                          "outcome": "PASS",
+                          "evidence": "Pip the rabbit reaches to smooth one sticky note onto the toy cabinet's bare front panel, but it clings to Pip's fingertip while the cabinet stays unt",
+                          "severity": "INFO",
+                          "dimension": "characterGoal"
+                        },
+                        {
+                          "family": "concept_strength",
+                          "message": "The story describes an obstacle or challenge.",
+                          "outcome": "PASS",
+                          "evidence": "Pip pinches the note with the other paw to peel it free, and it splits into two notes, one stuck to each paw.",
+                          "severity": "INFO",
+                          "dimension": "obstacle"
+                        },
+                        {
+                          "family": "concept_strength",
+                          "message": "The character takes 4 distinct actions.",
+                          "outcome": "PASS",
+                          "evidence": "realizes, shakes, attempt, stands",
+                          "severity": "INFO",
+                          "dimension": "characterInitiative"
+                        },
+                        {
+                          "family": "progression",
+                          "message": "The story contains cause-and-effect progression signals.",
+                          "outcome": "PASS",
+                          "severity": "INFO",
+                          "dimension": "progression"
+                        },
+                        {
+                          "family": "escalation",
+                          "message": "The story contains escalation signals (increasing intensity or complexity).",
+                          "outcome": "PASS",
+                          "severity": "INFO",
+                          "dimension": "escalation"
+                        },
+                        {
+                          "family": "progression",
+                          "message": "The story contains 4 distinct action types, suggesting multiple attempts or strategies.",
+                          "outcome": "PASS",
+                          "severity": "INFO",
+                          "dimension": "distinctAttempts"
+                        },
+                        {
+                          "family": "final_payoff",
+                          "message": "The story describes a final event.",
+                          "outcome": "PASS",
+                          "evidence": "A sneeze bursts out of Pip, and the blast peels the notes off and scatters them across the cabinet. Pip is relieved, but the cabinet remains messy.",
+                          "severity": "INFO",
+                          "dimension": "endingEvent"
+                        }
+                      ],
+                      "candidateId": "candidate-1",
+                      "fingerprint": "4b04e664b70ea9372049231119f2ad786cf5ed0fc1a416c0941101d53167c739"
+                    },
+                    "structuralEvidence": {
+                      "escalation": "Pip freezes, watching the eight notes ripple and settle, and realizes that every removal or transfer attempt multiplies the notes.",
+                      "characterGoal": null,
+                      "eventSequence": [
+                        "adhere",
+                        "remove",
+                        "shake",
+                        "multiply"
+                      ],
+                      "mainCharacter": null,
+                      "centralPremise": null,
+                      "endingFunction": "resolution",
+                      "centralObstacle": "Pip pinches the note with the other paw to peel it free, and it splits into two notes, one stuck to each paw.",
+                      "majorStoryChanges": "Pip the rabbit reaches to smooth one sticky note onto the toy cabinet's bare front panel, but it clings to Pip's fingertip while the cabinet stays untouched.",
+                      "openingVisualPromise": "Pip the rabbit reaches to smooth one sticky note onto the toy cabinet's bare front panel, but it clings to Pip's fingertip while the cabinet stays untouched.",
+                      "mainObjectOrSituation": "toy cabinet",
+                      "primaryRuleOrQuestion": "cabinet interaction",
+                      "reasonToContinueWatching": "Pip the rabbit reaches to smooth one sticky note onto the toy cabinet's bare front panel, but it clings to Pip's fingertip while the cabinet stays untouched.",
+                      "productionSensitiveElements": [
+                        "contact continuity"
+                      ]
+                    }
+                  },
+                  {
+                    "preflight": {
+                      "ending": "resolution",
+                      "opening": "SUPPORTED",
+                      "concerns": [],
+                      "mechanism": "SUPPORTED",
+                      "strengths": [
+                        "The opening provides an observable focus or situation.",
+                        "The story contains a meaningful progression signal.",
+                        "Primary unusual rule(s): cabinet interaction."
+                      ],
+                      "progression": "SUPPORTED",
+                      "characterAgency": "SUPPORTED",
+                      "productionRisks": [
+                        "Repeated attachment/contact needs clear continuity evidence."
+                      ]
+                    },
+                    "assessment": {
+                      "risks": [],
+                      "unknown": [
+                        {
+                          "family": "final_payoff",
+                          "message": "A final event is described, but its creative effectiveness or audience payoff cannot be determined from text alone.",
+                          "outcome": "UNKNOWN",
+                          "dimension": "endingPayoff"
+                        },
+                        {
+                          "family": "consistency",
+                          "message": "No obvious rule contradictions detected, but full consistency check requires production plan analysis.",
+                          "outcome": "UNKNOWN",
+                          "dimension": "ruleConsistency"
+                        },
+                        {
+                          "family": "visual_novelty",
+                          "message": "Frame-zero visual legibility and hook strength cannot be assessed from story text alone.",
+                          "outcome": "NOT_EVALUATED",
+                          "dimension": "visualLegibility"
+                        },
+                        {
+                          "family": "ai_producibility",
+                          "message": "AI producibility requires a production prompt and cannot be assessed from story text alone.",
+                          "outcome": "NOT_EVALUATED",
+                          "dimension": "aiProducibility"
+                        },
+                        {
+                          "family": "progression",
+                          "message": "Pacing and beat timing cannot be assessed without a production plan.",
+                          "outcome": "NOT_EVALUATED",
+                          "dimension": "pacing"
+                        }
+                      ],
+                      "strengths": [
+                        {
+                          "family": "concept_strength",
+                          "message": "The story describes a character situation or goal.",
+                          "outcome": "PASS",
+                          "evidence": "Pip the rabbit presses one sticky note toward the toy cabinet's empty front panel, but it clings to Pip's fingertip while the cabinet stays untouched.",
+                          "severity": "INFO",
+                          "dimension": "characterGoal"
+                        },
+                        {
+                          "family": "concept_strength",
+                          "message": "The story describes an obstacle or challenge.",
+                          "outcome": "PASS",
+                          "evidence": "Pip claps both paws together to crush the notes flat, but they spring apart into four and climb Pip's sleeves.",
+                          "severity": "INFO",
+                          "dimension": "obstacle"
+                        },
+                        {
+                          "family": "concept_strength",
+                          "message": "The character takes 5 distinct actions.",
+                          "outcome": "PASS",
+                          "evidence": "presses, realizes, attempt, tries, climb",
+                          "severity": "INFO",
+                          "dimension": "characterInitiative"
+                        },
+                        {
+                          "family": "progression",
+                          "message": "The story contains cause-and-effect progression signals.",
+                          "outcome": "PASS",
+                          "severity": "INFO",
+                          "dimension": "progression"
+                        },
+                        {
+                          "family": "escalation",
+                          "message": "The story contains escalation signals (increasing intensity or complexity).",
+                          "outcome": "PASS",
+                          "severity": "INFO",
+                          "dimension": "escalation"
+                        },
+                        {
+                          "family": "progression",
+                          "message": "The story contains 5 distinct action types, suggesting multiple attempts or strategies.",
+                          "outcome": "PASS",
+                          "severity": "INFO",
+                          "dimension": "distinctAttempts"
+                        },
+                        {
+                          "family": "final_payoff",
+                          "message": "The story describes a final event.",
+                          "outcome": "PASS",
+                          "evidence": "A sneeze jerks through Pip, and the notes blow off in a burst and land across the cabinet. Pip is relieved, but the cabinet remains messy.",
+                          "severity": "INFO",
+                          "dimension": "endingEvent"
+                        }
+                      ],
+                      "candidateId": "candidate-2",
+                      "fingerprint": "7bd179926c406f1aa2566b1f513daef9cec355ffebc15517f49168d2d92fa41b"
+                    },
+                    "structuralEvidence": {
+                      "escalation": "Pip backs away and brushes the four notes off against the cabinet's side, and they split into eight, wrapping Pip's shoulders and muzzle.",
+                      "characterGoal": "Pip tries to flick the note off with a quick wrist snap, and it splits into two notes, one on each paw.",
+                      "eventSequence": [
+                        "attempt",
+                        "multiply"
+                      ],
+                      "mainCharacter": null,
+                      "centralPremise": null,
+                      "endingFunction": "resolution",
+                      "centralObstacle": null,
+                      "majorStoryChanges": "Pip the rabbit presses one sticky note toward the toy cabinet's empty front panel, but it clings to Pip's fingertip while the cabinet stays untouched.",
+                      "openingVisualPromise": "Pip the rabbit presses one sticky note toward the toy cabinet's empty front panel, but it clings to Pip's fingertip while the cabinet stays untouched.",
+                      "mainObjectOrSituation": "toy cabinet",
+                      "primaryRuleOrQuestion": "cabinet interaction",
+                      "reasonToContinueWatching": "Pip the rabbit presses one sticky note toward the toy cabinet's empty front panel, but it clings to Pip's fingertip while the cabinet stays untouched.",
+                      "productionSensitiveElements": [
+                        "contact continuity"
+                      ]
+                    }
+                  }
+                ],
+                "differences": [
+                  "Alternative 1 vs 2: different characterActions, openingVisualPromise, characterGoal, majorStoryChanges, centralObstacle, escalation; shared primaryRuleOrQuestion, mainObjectOrSituation, endingFunction."
+                ],
+                "classification": "DISTINCT",
+                "recommendation": {
+                  "isTied": true,
+                  "reason": "No evidence-supported recommendation yet.",
+                  "whyNot": [],
+                  "stillUnknown": [
+                    "aiProducibility",
+                    "endingPayoff",
+                    "pacing",
+                    "ruleConsistency",
+                    "visualLegibility"
+                  ],
+                  "bestCandidateId": null
+                },
+                "variationClass": "MATERIAL_VARIATION",
+                "classificationReason": "Candidates differ across multiple material narrative dimensions."
+              }
+            },
+            "binding": {
+              "role": "STORY",
+              "model": "deepseek-flash",
+              "fallback": false,
+              "provider": "deepseek",
+              "transport": "REAL_PROVIDER_ADAPTER",
+              "payloadBytes": 10221,
+              "systemSha256": "84f6882229fd8ee8c96d064e32588794105fef0af365e7d648eac28d97a9e30d",
+              "schemaVersion": "story-pilot-candidates-v1",
+              "templateSha256": "52fe17d948304f2fc76555b974a4e0566bcf1a70ff8b9157c9f39b147dae5304",
+              "maxOutputTokens": 4000,
+              "automaticRetries": false,
+              "experimentVersion": "REAL_CREATIVE_STORY_EVOLUTION_PILOT_V1",
+              "maximumInputBytes": 24000,
+              "sourceScopeSha256": "05a5625b415331d2e625c28fa328bd6c0c9bfec5a93aaa77dbce9f5fc7703276",
+              "sourceStorySha256": "ba352d486c4252c5c6fefe585ad976c0b6f73c299f7554863848bdd842a99b3d",
+              "inputUsdPerMillion": 0.3,
+              "modelIdentityPolicy": {
+                "profile": "DIRECT_FLASH_TEXT_V1",
+                "version": "exact-provider-model-v2",
+                "aliasPolicy": "NONE",
+                "inputModality": "TEXT_ONLY",
+                "requestedModel": "deepseek-flash",
+                "pricingIdentity": "deepseek-flash",
+                "requestParameters": {
+                  "thinking": {
+                    "type": "disabled"
+                  }
+                },
+                "requiredReturnedModel": "deepseek-flash"
+              },
+              "outputUsdPerMillion": 1.2,
+              "implementationSha256": "e5afcdae7d1ce4728f5dc35158e3cb7b68d19aded9f46e1d10f0e63d5900096f",
+              "maximumCalculatedUsd": 0.0099303,
+              "effectiveRequestSha256": "9911fb57fc276c6631bcb1aea4378024a55cf00388509fd63b0dc83cb77813e1",
+              "evidenceContractVersion": "exact-protected-facts-and-narrative-excerpts-v2"
+            },
+            "provider": "deepseek",
+            "requestId": "39470561-a93c-3596-af7c-6177727abd88",
+            "retrySafe": false,
+            "evidenceType": "MODEL_GENERATION",
+            "actualCostUsd": 0.0028842,
+            "billingStatus": "KNOWN_INCURRED",
+            "modelIdentity": {
+              "verified": true,
+              "aliasApplied": false,
+              "policyVersion": "exact-provider-model-v2",
+              "requestedModel": "deepseek-flash",
+              "pricingIdentity": "deepseek-flash",
+              "actualReturnedModel": "deepseek-flash"
+            },
+            "responseSha256": "10dc1482d66514e153835b6e3cd90f4e8b58ff1e1d61f51fa99e42424f15fef3",
+            "processingStatus": "LOCALLY_REJECTED",
+            "requestStartedAt": "2026-10-17T19:31:11.537194+00:00",
+            "responseReceived": true,
+            "sourceValidation": {
+              "errors": [],
+              "status": "INSUFFICIENT_TWO_CANDIDATE_RESULT",
+              "eligible": false,
+              "candidates": [
+                {
+                  "errors": [
+                    "Claimed protected fact absent from story: continuity"
+                  ],
+                  "status": "SOURCE_VIOLATION",
+                  "eligible": false,
+                  "candidateId": "candidate-1",
+                  "evidenceScope": "EXACT_PROTECTED_TEXT_FACTS_ONLY",
+                  "candidateSha256": "4b04e664b70ea9372049231119f2ad786cf5ed0fc1a416c0941101d53167c739",
+                  "semanticFidelity": "UNKNOWN_REQUIRES_INDEPENDENT_REVIEW"
+                },
+                {
+                  "errors": [
+                    "Claimed protected fact absent from story: continuity"
+                  ],
+                  "status": "SOURCE_VIOLATION",
+                  "eligible": false,
+                  "candidateId": "candidate-2",
+                  "evidenceScope": "EXACT_PROTECTED_TEXT_FACTS_ONLY",
+                  "candidateSha256": "7bd179926c406f1aa2566b1f513daef9cec355ffebc15517f49168d2d92fa41b",
+                  "semanticFidelity": "UNKNOWN_REQUIRES_INDEPENDENT_REVIEW"
+                }
+              ],
+              "semanticFidelity": "UNKNOWN_REQUIRES_INDEPENDENT_REVIEW"
+            },
+            "evidenceProvenance": {
+              "model": "deepseek-flash",
+              "origin": "REAL_AI_PROVIDER",
+              "version": "creative-evidence-provenance-v1",
+              "provider": "deepseek",
+              "timestamp": "2026-10-17T19:31:18.406504Z",
+              "reviewerOrigin": "REAL_AI_PROVIDER",
+              "requestFingerprint": "9f15aec290f35c2576aaf8d6041f88a4ed2653933cc3b0379d35f164f77996ca",
+              "responseFingerprint": "742adc871c66ad38c46bc43b85627f1bb927a3edc6c7eb34a99880ac9c50cf18",
+              "reviewerIndependent": false,
+              "officialCalibrationEligible": false,
+              "realCapabilityStatisticsEligible": true
+            },
+            "providerDispatched": true,
+            "requestFingerprint": "9f15aec290f35c2576aaf8d6041f88a4ed2653933cc3b0379d35f164f77996ca",
+            "responseReceivedAt": "2026-10-17T19:31:18.370965+00:00",
+            "providerApiResponse": {
+              "id": "2e3e04df-fd81-4d47-a534-aec23d3fbee4",
+              "model": "deepseek-flash",
+              "usage": {
+                "total_tokens": 5348,
+                "prompt_tokens": 3926,
+                "completion_tokens": 1422,
+                "prompt_tokens_details": {
+                  "text_tokens": null,
+                  "audio_tokens": null,
+                  "image_tokens": null,
+                  "cached_tokens": 384,
+                  "cache_write_tokens": null
+                },
+                "prompt_cache_hit_tokens": 384,
+                "prompt_cache_miss_tokens": 3542,
+                "completion_tokens_details": null
+              },
+              "object": "chat.completion",
+              "choices": [
+                {
+                  "index": 0,
+                  "message": {
+                    "role": "assistant",
+                    "audio": null,
+                    "content": "{\"alternatives\":[{\"candidateId\":\"candidate-1\",\"title\":\"The Sticky Note That Won't Leave Pip\",\"text\":\"Pip the rabbit reaches to smooth one sticky note onto the toy cabinet's bare front panel, but it clings to Pip's fingertip while the cabinet stays untouched. Pip pinches the note with the other paw to peel it free, and it splits into two notes, one stuck to each paw. Pip slaps both paws toward the cabinet, but the notes bounce back and double into four, fluttering up Pip's arms. Pip shakes both arms hard to fling the four notes away, and they split into eight, plastering Pip's chest and cheeks. Pip freezes, watching the eight notes ripple and settle, and realizes that every removal or transfer attempt multiplies the notes. Pip deliberately stops struggling and stands still, letting the notes rest. A sneeze bursts out of Pip, and the blast peels the notes off and scatters them across the cabinet. Pip is relieved, but the cabinet remains messy.\",\"schemaVersion\":\"story-pilot-candidates-v1\",\"durationSeconds\":15,\"openingVisualState\":\"Pip the rabbit reaches to smooth one sticky note onto the toy cabinet's bare front panel, but it clings to Pip's fingertip while the cabinet stays untouched.\",\"motivation\":\"Pip pinches the note with the other paw to peel it free\",\"progression\":\"Pip shakes both arms hard to fling the four notes away, and they split into eight, plastering Pip's chest and cheeks.\",\"ending\":\"Pip is relieved, but the cabinet remains messy.\",\"proposedChanges\":[\"Replaces the door-edge push with an arm-shake fling so the escalation reads as one clear physical action per beat.\",\"Moves the realization to a held freeze before the sneeze, giving the reversal its own beat instead of crowding the final seconds.\",\"Removes the mirror turn to keep the payoff on Pip and the cabinet rather than a reflection.\"],\"weaknesses\":[\"The arm-shake fling is still a thin-object contact moment that may need careful staging.\",\"The freeze beat depends on a readable held pose to sell the realization.\"],\"productionRisks\":[\"THIN_OBJECT: sticky notes contacting paws and face require precise thin-object handling.\",\"FACE_CONTACT: notes plastering Pip's cheeks risk face/hair continuity issues.\",\"SNEEZE_BURST: the scatter needs a clear directional force to read as one motion.\"],\"sourceContract\":{\"status\":\"SOURCE_COMPLIANT\",\"bindings\":[{\"anchorId\":\"identity\",\"sourceQuote\":\"Pip the rabbit\",\"candidateQuote\":\"Pip the rabbit\"},{\"anchorId\":\"premise\",\"sourceQuote\":\"it clings to Pip's fingertip while the cabinet stays untouched\",\"candidateQuote\":\"it clings to Pip's fingertip while the cabinet stays untouched\"},{\"anchorId\":\"rule\",\"sourceQuote\":\"every removal or transfer attempt multiplies the notes\",\"candidateQuote\":\"every removal or transfer attempt multiplies the notes\"},{\"anchorId\":\"continuity\",\"sourceQuote\":\"Pip remains covered until a sneeze scatters the notes onto the cabinet\",\"candidateQuote\":\"Pip remains covered until a sneeze scatters the notes onto the cabinet\"},{\"anchorId\":\"ending\",\"sourceQuote\":\"Pip is relieved, but the cabinet remains messy.\",\"candidateQuote\":\"Pip is relieved, but the cabinet remains messy.\"}],\"protectedChanges\":[]}},{\"candidateId\":\"candidate-2\",\"title\":\"Pip Stops Fighting the Notes\",\"text\":\"Pip the rabbit presses one sticky note toward the toy cabinet's empty front panel, but it clings to Pip's fingertip while the cabinet stays untouched. Pip tries to flick the note off with a quick wrist snap, and it splits into two notes, one on each paw. Pip claps both paws together to crush the notes flat, but they spring apart into four and climb Pip's sleeves. Pip backs away and brushes the four notes off against the cabinet's side, and they split into eight, wrapping Pip's shoulders and muzzle. Pip stares at the doubling notes, breathing hard, and realizes that every removal or transfer attempt multiplies the notes. Pip slowly lowers both arms and stops moving entirely, letting the notes cling. A sneeze jerks through Pip, and the notes blow off in a burst and land across the cabinet. Pip is relieved, but the cabinet remains messy.\",\"schemaVersion\":\"story-pilot-candidates-v1\",\"durationSeconds\":15,\"openingVisualState\":\"Pip the rabbit presses one sticky note toward the toy cabinet's empty front panel, but it clings to Pip's fingertip while the cabinet stays untouched.\",\"motivation\":\"Pip tries to flick the note off with a quick wrist snap\",\"progression\":\"Pip backs away and brushes the four notes off against the cabinet's side, and they split into eight, wrapping Pip's shoulders and muzzle.\",\"ending\":\"Pip is relieved, but the cabinet remains messy.\",\"proposedChanges\":[\"Uses a wrist-flick and a paw-clap as the first two escalation actions, giving each beat a distinct silhouette.\",\"Adds a backward step before the brush-off so Pip's retreat visibly fails and motivates the freeze.\",\"Holds the realization on a breath and lowered arms before the sneeze, separating reversal from payoff.\"],\"weaknesses\":[\"The paw-clap crush is a fast action that may read as ambiguous at 480p.\",\"The backward step plus brush-off risks compressing two actions into one short beat.\"],\"productionRisks\":[\"THIN_OBJECT: notes on paws, sleeves and muzzle need careful thin-object contact.\",\"FACE_CONTACT: notes wrapping the muzzle risk face continuity problems.\",\"MULTI_OBJECT_STACKING: eight notes spreading across shoulders and cabinet may be hard to track.\"],\"sourceContract\":{\"status\":\"SOURCE_COMPLIANT\",\"bindings\":[{\"anchorId\":\"identity\",\"sourceQuote\":\"Pip the rabbit\",\"candidateQuote\":\"Pip the rabbit\"},{\"anchorId\":\"premise\",\"sourceQuote\":\"it clings to Pip's fingertip while the cabinet stays untouched\",\"candidateQuote\":\"it clings to Pip's fingertip while the cabinet stays untouched\"},{\"anchorId\":\"rule\",\"sourceQuote\":\"every removal or transfer attempt multiplies the notes\",\"candidateQuote\":\"every removal or transfer attempt multiplies the notes\"},{\"anchorId\":\"continuity\",\"sourceQuote\":\"Pip remains covered until a sneeze scatters the notes onto the cabinet\",\"candidateQuote\":\"Pip remains covered until a sneeze scatters the notes onto the cabinet\"},{\"anchorId\":\"ending\",\"sourceQuote\":\"Pip is relieved, but the cabinet remains messy.\",\"candidateQuote\":\"Pip is relieved, but the cabinet remains messy.\"}],\"protectedChanges\":[]}}]}",
+                    "refusal": null,
+                    "tool_calls": null,
+                    "annotations": null,
+                    "function_call": null
+                  },
+                  "logprobs": null,
+                  "finish_reason": "stop"
+                }
+              ],
+              "created": 1792265471,
+              "metadata": null,
+              "moderation": null,
+              "service_tier": null,
+              "system_fingerprint": "e72d3c7f663d3e1383b00b3884cb4501"
+            },
+            "rawProviderResponse": "{\"alternatives\":[{\"candidateId\":\"candidate-1\",\"title\":\"The Sticky Note That Won't Leave Pip\",\"text\":\"Pip the rabbit reaches to smooth one sticky note onto the toy cabinet's bare front panel, but it clings to Pip's fingertip while the cabinet stays untouched. Pip pinches the note with the other paw to peel it free, and it splits into two notes, one stuck to each paw. Pip slaps both paws toward the cabinet, but the notes bounce back and double into four, fluttering up Pip's arms. Pip shakes both arms hard to fling the four notes away, and they split into eight, plastering Pip's chest and cheeks. Pip freezes, watching the eight notes ripple and settle, and realizes that every removal or transfer attempt multiplies the notes. Pip deliberately stops struggling and stands still, letting the notes rest. A sneeze bursts out of Pip, and the blast peels the notes off and scatters them across the cabinet. Pip is relieved, but the cabinet remains messy.\",\"schemaVersion\":\"story-pilot-candidates-v1\",\"durationSeconds\":15,\"openingVisualState\":\"Pip the rabbit reaches to smooth one sticky note onto the toy cabinet's bare front panel, but it clings to Pip's fingertip while the cabinet stays untouched.\",\"motivation\":\"Pip pinches the note with the other paw to peel it free\",\"progression\":\"Pip shakes both arms hard to fling the four notes away, and they split into eight, plastering Pip's chest and cheeks.\",\"ending\":\"Pip is relieved, but the cabinet remains messy.\",\"proposedChanges\":[\"Replaces the door-edge push with an arm-shake fling so the escalation reads as one clear physical action per beat.\",\"Moves the realization to a held freeze before the sneeze, giving the reversal its own beat instead of crowding the final seconds.\",\"Removes the mirror turn to keep the payoff on Pip and the cabinet rather than a reflection.\"],\"weaknesses\":[\"The arm-shake fling is still a thin-object contact moment that may need careful staging.\",\"The freeze beat depends on a readable held pose to sell the realization.\"],\"productionRisks\":[\"THIN_OBJECT: sticky notes contacting paws and face require precise thin-object handling.\",\"FACE_CONTACT: notes plastering Pip's cheeks risk face/hair continuity issues.\",\"SNEEZE_BURST: the scatter needs a clear directional force to read as one motion.\"],\"sourceContract\":{\"status\":\"SOURCE_COMPLIANT\",\"bindings\":[{\"anchorId\":\"identity\",\"sourceQuote\":\"Pip the rabbit\",\"candidateQuote\":\"Pip the rabbit\"},{\"anchorId\":\"premise\",\"sourceQuote\":\"it clings to Pip's fingertip while the cabinet stays untouched\",\"candidateQuote\":\"it clings to Pip's fingertip while the cabinet stays untouched\"},{\"anchorId\":\"rule\",\"sourceQuote\":\"every removal or transfer attempt multiplies the notes\",\"candidateQuote\":\"every removal or transfer attempt multiplies the notes\"},{\"anchorId\":\"continuity\",\"sourceQuote\":\"Pip remains covered until a sneeze scatters the notes onto the cabinet\",\"candidateQuote\":\"Pip remains covered until a sneeze scatters the notes onto the cabinet\"},{\"anchorId\":\"ending\",\"sourceQuote\":\"Pip is relieved, but the cabinet remains messy.\",\"candidateQuote\":\"Pip is relieved, but the cabinet remains messy.\"}],\"protectedChanges\":[]}},{\"candidateId\":\"candidate-2\",\"title\":\"Pip Stops Fighting the Notes\",\"text\":\"Pip the rabbit presses one sticky note toward the toy cabinet's empty front panel, but it clings to Pip's fingertip while the cabinet stays untouched. Pip tries to flick the note off with a quick wrist snap, and it splits into two notes, one on each paw. Pip claps both paws together to crush the notes flat, but they spring apart into four and climb Pip's sleeves. Pip backs away and brushes the four notes off against the cabinet's side, and they split into eight, wrapping Pip's shoulders and muzzle. Pip stares at the doubling notes, breathing hard, and realizes that every removal or transfer attempt multiplies the notes. Pip slowly lowers both arms and stops moving entirely, letting the notes cling. A sneeze jerks through Pip, and the notes blow off in a burst and land across the cabinet. Pip is relieved, but the cabinet remains messy.\",\"schemaVersion\":\"story-pilot-candidates-v1\",\"durationSeconds\":15,\"openingVisualState\":\"Pip the rabbit presses one sticky note toward the toy cabinet's empty front panel, but it clings to Pip's fingertip while the cabinet stays untouched.\",\"motivation\":\"Pip tries to flick the note off with a quick wrist snap\",\"progression\":\"Pip backs away and brushes the four notes off against the cabinet's side, and they split into eight, wrapping Pip's shoulders and muzzle.\",\"ending\":\"Pip is relieved, but the cabinet remains messy.\",\"proposedChanges\":[\"Uses a wrist-flick and a paw-clap as the first two escalation actions, giving each beat a distinct silhouette.\",\"Adds a backward step before the brush-off so Pip's retreat visibly fails and motivates the freeze.\",\"Holds the realization on a breath and lowered arms before the sneeze, separating reversal from payoff.\"],\"weaknesses\":[\"The paw-clap crush is a fast action that may read as ambiguous at 480p.\",\"The backward step plus brush-off risks compressing two actions into one short beat.\"],\"productionRisks\":[\"THIN_OBJECT: notes on paws, sleeves and muzzle need careful thin-object contact.\",\"FACE_CONTACT: notes wrapping the muzzle risk face continuity problems.\",\"MULTI_OBJECT_STACKING: eight notes spreading across shoulders and cabinet may be hard to track.\"],\"sourceContract\":{\"status\":\"SOURCE_COMPLIANT\",\"bindings\":[{\"anchorId\":\"identity\",\"sourceQuote\":\"Pip the rabbit\",\"candidateQuote\":\"Pip the rabbit\"},{\"anchorId\":\"premise\",\"sourceQuote\":\"it clings to Pip's fingertip while the cabinet stays untouched\",\"candidateQuote\":\"it clings to Pip's fingertip while the cabinet stays untouched\"},{\"anchorId\":\"rule\",\"sourceQuote\":\"every removal or transfer attempt multiplies the notes\",\"candidateQuote\":\"every removal or transfer attempt multiplies the notes\"},{\"anchorId\":\"continuity\",\"sourceQuote\":\"Pip remains covered until a sneeze scatters the notes onto the cabinet\",\"candidateQuote\":\"Pip remains covered until a sneeze scatters the notes onto the cabinet\"},{\"anchorId\":\"ending\",\"sourceQuote\":\"Pip is relieved, but the cabinet remains messy.\",\"candidateQuote\":\"Pip is relieved, but the cabinet remains messy.\"}],\"protectedChanges\":[]}}]}",
+            "configuredRateCostUsd": 0.0028842,
+            "parsedProviderResponse": {
+              "alternatives": [
+                {
+                  "text": "Pip the rabbit reaches to smooth one sticky note onto the toy cabinet's bare front panel, but it clings to Pip's fingertip while the cabinet stays untouched. Pip pinches the note with the other paw to peel it free, and it splits into two notes, one stuck to each paw. Pip slaps both paws toward the cabinet, but the notes bounce back and double into four, fluttering up Pip's arms. Pip shakes both arms hard to fling the four notes away, and they split into eight, plastering Pip's chest and cheeks. Pip freezes, watching the eight notes ripple and settle, and realizes that every removal or transfer attempt multiplies the notes. Pip deliberately stops struggling and stands still, letting the notes rest. A sneeze bursts out of Pip, and the blast peels the notes off and scatters them across the cabinet. Pip is relieved, but the cabinet remains messy.",
+                  "title": "The Sticky Note That Won't Leave Pip",
+                  "ending": "Pip is relieved, but the cabinet remains messy.",
+                  "motivation": "Pip pinches the note with the other paw to peel it free",
+                  "weaknesses": [
+                    "The arm-shake fling is still a thin-object contact moment that may need careful staging.",
+                    "The freeze beat depends on a readable held pose to sell the realization."
+                  ],
+                  "candidateId": "candidate-1",
+                  "progression": "Pip shakes both arms hard to fling the four notes away, and they split into eight, plastering Pip's chest and cheeks.",
+                  "schemaVersion": "story-pilot-candidates-v1",
+                  "sourceContract": {
+                    "status": "SOURCE_COMPLIANT",
+                    "bindings": [
+                      {
+                        "anchorId": "identity",
+                        "sourceQuote": "Pip the rabbit",
+                        "candidateQuote": "Pip the rabbit"
+                      },
+                      {
+                        "anchorId": "premise",
+                        "sourceQuote": "it clings to Pip's fingertip while the cabinet stays untouched",
+                        "candidateQuote": "it clings to Pip's fingertip while the cabinet stays untouched"
+                      },
+                      {
+                        "anchorId": "rule",
+                        "sourceQuote": "every removal or transfer attempt multiplies the notes",
+                        "candidateQuote": "every removal or transfer attempt multiplies the notes"
+                      },
+                      {
+                        "anchorId": "continuity",
+                        "sourceQuote": "Pip remains covered until a sneeze scatters the notes onto the cabinet",
+                        "candidateQuote": "Pip remains covered until a sneeze scatters the notes onto the cabinet"
+                      },
+                      {
+                        "anchorId": "ending",
+                        "sourceQuote": "Pip is relieved, but the cabinet remains messy.",
+                        "candidateQuote": "Pip is relieved, but the cabinet remains messy."
+                      }
+                    ],
+                    "protectedChanges": []
+                  },
+                  "durationSeconds": 15,
+                  "productionRisks": [
+                    "THIN_OBJECT: sticky notes contacting paws and face require precise thin-object handling.",
+                    "FACE_CONTACT: notes plastering Pip's cheeks risk face/hair continuity issues.",
+                    "SNEEZE_BURST: the scatter needs a clear directional force to read as one motion."
+                  ],
+                  "proposedChanges": [
+                    "Replaces the door-edge push with an arm-shake fling so the escalation reads as one clear physical action per beat.",
+                    "Moves the realization to a held freeze before the sneeze, giving the reversal its own beat instead of crowding the final seconds.",
+                    "Removes the mirror turn to keep the payoff on Pip and the cabinet rather than a reflection."
+                  ],
+                  "openingVisualState": "Pip the rabbit reaches to smooth one sticky note onto the toy cabinet's bare front panel, but it clings to Pip's fingertip while the cabinet stays untouched."
+                },
+                {
+                  "text": "Pip the rabbit presses one sticky note toward the toy cabinet's empty front panel, but it clings to Pip's fingertip while the cabinet stays untouched. Pip tries to flick the note off with a quick wrist snap, and it splits into two notes, one on each paw. Pip claps both paws together to crush the notes flat, but they spring apart into four and climb Pip's sleeves. Pip backs away and brushes the four notes off against the cabinet's side, and they split into eight, wrapping Pip's shoulders and muzzle. Pip stares at the doubling notes, breathing hard, and realizes that every removal or transfer attempt multiplies the notes. Pip slowly lowers both arms and stops moving entirely, letting the notes cling. A sneeze jerks through Pip, and the notes blow off in a burst and land across the cabinet. Pip is relieved, but the cabinet remains messy.",
+                  "title": "Pip Stops Fighting the Notes",
+                  "ending": "Pip is relieved, but the cabinet remains messy.",
+                  "motivation": "Pip tries to flick the note off with a quick wrist snap",
+                  "weaknesses": [
+                    "The paw-clap crush is a fast action that may read as ambiguous at 480p.",
+                    "The backward step plus brush-off risks compressing two actions into one short beat."
+                  ],
+                  "candidateId": "candidate-2",
+                  "progression": "Pip backs away and brushes the four notes off against the cabinet's side, and they split into eight, wrapping Pip's shoulders and muzzle.",
+                  "schemaVersion": "story-pilot-candidates-v1",
+                  "sourceContract": {
+                    "status": "SOURCE_COMPLIANT",
+                    "bindings": [
+                      {
+                        "anchorId": "identity",
+                        "sourceQuote": "Pip the rabbit",
+                        "candidateQuote": "Pip the rabbit"
+                      },
+                      {
+                        "anchorId": "premise",
+                        "sourceQuote": "it clings to Pip's fingertip while the cabinet stays untouched",
+                        "candidateQuote": "it clings to Pip's fingertip while the cabinet stays untouched"
+                      },
+                      {
+                        "anchorId": "rule",
+                        "sourceQuote": "every removal or transfer attempt multiplies the notes",
+                        "candidateQuote": "every removal or transfer attempt multiplies the notes"
+                      },
+                      {
+                        "anchorId": "continuity",
+                        "sourceQuote": "Pip remains covered until a sneeze scatters the notes onto the cabinet",
+                        "candidateQuote": "Pip remains covered until a sneeze scatters the notes onto the cabinet"
+                      },
+                      {
+                        "anchorId": "ending",
+                        "sourceQuote": "Pip is relieved, but the cabinet remains messy.",
+                        "candidateQuote": "Pip is relieved, but the cabinet remains messy."
+                      }
+                    ],
+                    "protectedChanges": []
+                  },
+                  "durationSeconds": 15,
+                  "productionRisks": [
+                    "THIN_OBJECT: notes on paws, sleeves and muzzle need careful thin-object contact.",
+                    "FACE_CONTACT: notes wrapping the muzzle risk face continuity problems.",
+                    "MULTI_OBJECT_STACKING: eight notes spreading across shoulders and cabinet may be hard to track."
+                  ],
+                  "proposedChanges": [
+                    "Uses a wrist-flick and a paw-clap as the first two escalation actions, giving each beat a distinct silhouette.",
+                    "Adds a backward step before the brush-off so Pip's retreat visibly fails and motivates the freeze.",
+                    "Holds the realization on a breath and lowered arms before the sneeze, separating reversal from payoff."
+                  ],
+                  "openingVisualState": "Pip the rabbit presses one sticky note toward the toy cabinet's empty front panel, but it clings to Pip's fingertip while the cabinet stays untouched."
+                }
+              ]
+            },
+            "providerResponseMetadata": {
+              "model": "deepseek-flash",
+              "requestId": "2e3e04df-fd81-4d47-a534-aec23d3fbee4",
+              "finishReason": "stop"
+            }
+          },
+          "candidateId": "candidate-1",
+          "receiptFile": "real-story-identity-fidelity-followup-evidence/provider-receipt.json",
+          "originalRunId": "b0a57f9c-d6d0-45ae-b1c2-d00ef129c122",
+          "ownerSelection": "EXPLICITLY_APPROVED_FOR_UNKNOWN_SOURCE_ASSESSMENT_ONLY",
+          "candidateSha256": "4b04e664b70ea9372049231119f2ad786cf5ed0fc1a416c0941101d53167c739",
+          "originalCandidate": {
+            "text": "Pip the rabbit reaches to smooth one sticky note onto the toy cabinet's bare front panel, but it clings to Pip's fingertip while the cabinet stays untouched. Pip pinches the note with the other paw to peel it free, and it splits into two notes, one stuck to each paw. Pip slaps both paws toward the cabinet, but the notes bounce back and double into four, fluttering up Pip's arms. Pip shakes both arms hard to fling the four notes away, and they split into eight, plastering Pip's chest and cheeks. Pip freezes, watching the eight notes ripple and settle, and realizes that every removal or transfer attempt multiplies the notes. Pip deliberately stops struggling and stands still, letting the notes rest. A sneeze bursts out of Pip, and the blast peels the notes off and scatters them across the cabinet. Pip is relieved, but the cabinet remains messy.",
+            "title": "The Sticky Note That Won't Leave Pip",
+            "ending": "Pip is relieved, but the cabinet remains messy.",
+            "motivation": "Pip pinches the note with the other paw to peel it free",
+            "weaknesses": [
+              "The arm-shake fling is still a thin-object contact moment that may need careful staging.",
+              "The freeze beat depends on a readable held pose to sell the realization."
+            ],
+            "candidateId": "candidate-1",
+            "progression": "Pip shakes both arms hard to fling the four notes away, and they split into eight, plastering Pip's chest and cheeks.",
+            "schemaVersion": "story-pilot-candidates-v1",
+            "sourceContract": {
+              "status": "SOURCE_COMPLIANT",
+              "bindings": [
+                {
+                  "anchorId": "identity",
+                  "sourceQuote": "Pip the rabbit",
+                  "candidateQuote": "Pip the rabbit"
+                },
+                {
+                  "anchorId": "premise",
+                  "sourceQuote": "it clings to Pip's fingertip while the cabinet stays untouched",
+                  "candidateQuote": "it clings to Pip's fingertip while the cabinet stays untouched"
+                },
+                {
+                  "anchorId": "rule",
+                  "sourceQuote": "every removal or transfer attempt multiplies the notes",
+                  "candidateQuote": "every removal or transfer attempt multiplies the notes"
+                },
+                {
+                  "anchorId": "continuity",
+                  "sourceQuote": "Pip remains covered until a sneeze scatters the notes onto the cabinet",
+                  "candidateQuote": "Pip remains covered until a sneeze scatters the notes onto the cabinet"
+                },
+                {
+                  "anchorId": "ending",
+                  "sourceQuote": "Pip is relieved, but the cabinet remains messy.",
+                  "candidateQuote": "Pip is relieved, but the cabinet remains messy."
+                }
+              ],
+              "protectedChanges": []
+            },
+            "durationSeconds": 15,
+            "productionRisks": [
+              "THIN_OBJECT: sticky notes contacting paws and face require precise thin-object handling.",
+              "FACE_CONTACT: notes plastering Pip's cheeks risk face/hair continuity issues.",
+              "SNEEZE_BURST: the scatter needs a clear directional force to read as one motion."
+            ],
+            "proposedChanges": [
+              "Replaces the door-edge push with an arm-shake fling so the escalation reads as one clear physical action per beat.",
+              "Moves the realization to a held freeze before the sneeze, giving the reversal its own beat instead of crowding the final seconds.",
+              "Removes the mirror turn to keep the payoff on Pip and the cabinet rather than a reflection."
+            ],
+            "openingVisualState": "Pip the rabbit reaches to smooth one sticky note onto the toy cabinet's bare front panel, but it clings to Pip's fingertip while the cabinet stays untouched."
+          },
+          "rawResponseSha256": "10dc1482d66514e153835b6e3cd90f4e8b58ff1e1d61f51fa99e42424f15fef3",
+          "receiptFileSha256": "11ba8c6a502e6d4f3de2bc6e8226fcbcd0e2b654c5341acf848ea7bd8c777a39",
+          "originalExecutionState": "STOPPED",
+          "knownDefiniteSourceViolation": false
+        }
+      ],
+      "sourceScope": {
+        "objective": "Propose a materially stronger, natural 15-second ABSURD_PHYSICS story for SEEDANCE_2_0_MINI, image2video, 480p, 9:16. Preserve Pip the rabbit, the sticky-note/cabinet premise, the existing multiplication rule and the final sneeze leaving Pip relieved beside a messy cabinet. Other source events/order are revision proposals, not automatically approved facts. Improve the first visible promise, distinct viewer-visible consequences and natural pacing; reduce artificial strategy density and overloaded final seconds. Avoid thin-object precision where possible; report concept unsuitability rather than disguising generator risk. Compare real creative merit, not numerical rule coverage. No audience or render claims.",
+        "sourceStory": "Already mid-action, Pip the rabbit tries to place one sticky note on the toy cabinet's empty front panel, but it clings to Pip's fingertip while the cabinet stays untouched. Pip tries to peel the note away with the free hand, but it splits into two notes, one on each hand. Pip tries to press both notes onto the cabinet, but they spring back and double into four notes. Pip tries to push the four notes off against the cabinet door edge, but they split into eight and cover Pip's arms and face. Pip sees the four-to-eight change finish, realizes that every removal or transfer attempt multiplies the notes, deliberately stops struggling, and turns the still note-covered face toward the mirror. Pip remains covered until a sneeze scatters the notes onto the cabinet. Pip is relieved, but the cabinet remains messy.",
+        "protectedAnchors": [
+          {
+            "id": "identity",
+            "end": 34,
+            "kind": "CHARACTER_IDENTITY",
+            "quote": "Pip the rabbit",
+            "start": 20
+          },
+          {
+            "id": "premise",
+            "end": 172,
+            "kind": "CORE_PREMISE",
+            "quote": "it clings to Pip's fingertip while the cabinet stays untouched",
+            "start": 110
+          },
+          {
+            "id": "rule",
+            "end": 606,
+            "kind": "PHYSICAL_RULE",
+            "quote": "every removal or transfer attempt multiplies the notes",
+            "start": 552
+          },
+          {
+            "id": "continuity",
+            "end": 766,
+            "kind": "CONTINUITY",
+            "quote": "Pip remains covered until a sneeze scatters the notes onto the cabinet",
+            "start": 696
+          },
+          {
+            "id": "ending",
+            "end": 815,
+            "kind": "ENDING",
+            "quote": "Pip is relieved, but the cabinet remains messy.",
+            "start": 768
+          }
+        ],
+        "sourceRevisionId": "candidate-1-revision-04c8c36b",
+        "experimentVersion": "REAL_CREATIVE_STORY_EVOLUTION_PILOT_V1",
+        "sourceScopeSha256": "05a5625b415331d2e625c28fa328bd6c0c9bfec5a93aaa77dbce9f5fc7703276",
+        "sourceStorySha256": "ba352d486c4252c5c6fefe585ad976c0b6f73c299f7554863848bdd842a99b3d",
+        "baselineAnalysisId": "10fc4c38-7cdf-4f71-b8dc-05b14315352a",
+        "productionSettings": {
+          "settings": {
+            "mode": "image2video",
+            "resolution": "480p",
+            "aspectRatio": "9:16"
+          },
+          "generator": "SEEDANCE_2_0_MINI",
+          "contentProfile": "ABSURD_PHYSICS",
+          "desiredDuration": 15.0,
+          "openingStrategy": "AUTO"
+        },
+        "sourceStoryRecordId": "ca40c11a-7831-476e-9f50-646a61a1ec9c",
+        "sourceApprovalRecordId": "af738239-99c3-4a9e-90b5-a1bee4295cd0",
+        "requestedAlternativeCount": 2,
+        "canonicalStoryFeasibilityContext": {
+          "target": {
+            "name": "CANONICAL_A",
+            "minimumScore": 92,
+            "rulesetVersion": "1.11",
+            "scoreIsPrediction": false
+          },
+          "version": "canonical-story-feasibility-context-v1",
+          "baseline": {
+            "grade": "A",
+            "score": 93.42708333333334,
+            "status": "EVALUATED"
+          },
+          "contextSha256": "d852fd8ec98bf3d558aaa6bff3aa3d0ff6c5be0881f1571c3ff23c6c4782535e",
+          "sourceStoryId": "ca40c11a-7831-476e-9f50-646a61a1ec9c",
+          "rulesetVersion": "1.11",
+          "assessmentScope": "TEXTUAL_STORY_FEASIBILITY_PREDICTION_ONLY; CANONICAL OUTCOMES REQUIRE BUILD_PROMPT_AND_RULESET_1_11",
+          "sourceRevisionId": "candidate-1-revision-04c8c36b",
+          "canonicalFindings": [
+            {
+              "family": "ai_producibility",
+              "reason": "Source still contains fragile note/face interaction; substring detection has limited specificity. No independent risk-reduction evidence or authorized evaluator correction supports removing this penalty.",
+              "ruleId": "PRODUCIBILITY_003",
+              "details": {
+                "riskTags": [
+                  "THIN_OBJECT"
+                ],
+                "recommendation": "Fills the gap between PRODUCIBILITY_001 (very-high-complexity hard block) and PRODUCIBILITY_002 (prop count budget): a middle tier of AI-generation risks (precision alignment, cloth/rope simulation, liquids, thin dangling objects, face/hair contact, multi-object stacking). Uses a tag-based diagnostic model (riskTags in evaluation details) rather than one rule per risk type. Deterministic substring match against setting.mainProps and beat action/consequence text, no LLM call. Always CRITICAL when any tag is found — a human-review trigger, not an outright render block.",
+                "evaluation_stage": "PRE_RENDER"
+              },
+              "message": "Fragile interaction risk tags detected: ['THIN_OBJECT']. These are mid-tier AI-generation risks (precision alignment, cloth/rope simulation, liquids, thin objects, face/hair contact, multi-object stacking) worth a human look before committing render budget, even though they don't rise to very-high-complexity blocking.",
+              "outcome": "FAIL",
+              "severity": "CRITICAL",
+              "overallLoss": 2.0833333333333335,
+              "repairClassification": "EVIDENCE_ONLY"
+            },
+            {
+              "family": "hook_strength",
+              "ruleId": "INSTANT_VISUAL_ABSURDITY_GATE",
+              "details": {
+                "failureBasis": "EVIDENCE_INCOMPLETE",
+                "recommendation": "BLOCKER: the first frame must communicate a physically impossible or clearly wrong situation without history, counting, micro-comparison, audio, text, or prior knowledge. The main character must already be engaged with the event.",
+                "missingEvidence": [
+                  "staticWrongness",
+                  "noHistoryRequired",
+                  "noMicroComparison",
+                  "largeVisualSignal",
+                  "characterAlreadyEngaged"
+                ],
+                "evaluation_stage": "PRE_RENDER"
+              },
+              "message": "First-frame absurdity evidence is incomplete; the concept is blocked before render.",
+              "outcome": "FAIL",
+              "severity": "BLOCKER",
+              "repairClassification": "PROMPT_OR_EXECUTION_LEVEL"
+            },
+            {
+              "family": "visual_novelty",
+              "ruleId": "ENGINE_SILHOUETTE_DUPLICATE",
+              "details": {
+                "failureBasis": "EVIDENCE_INCOMPLETE",
+                "recommendation": "BLOCKER: reject concepts whose visible progression and final silhouette substantially duplicate a known winner visual engine, even when the underlying mathematical rule differs.",
+                "evaluation_stage": "PRE_RENDER"
+              },
+              "message": "No first-frame/final-silhouette comparison evidence was supplied; the concept is blocked before render.",
+              "outcome": "FAIL",
+              "severity": "BLOCKER",
+              "repairClassification": "PROMPT_OR_EXECUTION_LEVEL"
+            },
+            {
+              "family": "consistency",
+              "ruleId": "CONSISTENCY_001",
+              "details": {
+                "recommendation": "The physical rule established in the hook should remain\nconsistent throughout the video unless the concept explicitly\ninvolves rule-breaking as the payoff.",
+                "evaluation_stage": "PRE_RENDER"
+              },
+              "message": "coreMechanic.consistency was not explicitly stated in the prompt and cannot be verified.",
+              "outcome": "UNKNOWN",
+              "severity": "WARNING",
+              "repairClassification": "EVIDENCE_ONLY"
+            },
+            {
+              "family": "hook_strength",
+              "ruleId": "HOOK_003",
+              "details": {
+                "recommendation": "The core problem and physical comedy must work with audio muted. hook.soundOffClear must be true.",
+                "evaluation_stage": "PRE_RENDER"
+              },
+              "message": "hook.soundOffClear was not explicitly stated in the prompt and cannot be verified.",
+              "outcome": "UNKNOWN",
+              "severity": "CRITICAL",
+              "repairClassification": "EVIDENCE_ONLY"
+            },
+            {
+              "family": "visual_novelty",
+              "ruleId": "ATTEMPT_002",
+              "details": {
+                "recommendation": "Attempts must be mechanically distinct, not just differently worded. Identical primaryVerb across attempts is an automatic deterministic FAIL. Verb-distinct attempts are checked for semantic duplication via LLM (e.g. GRAB vs YANK may be the same underlying strategy; RULESET 1.3 explicitly also treats intensity/angle variants of the identical strategy as duplicates, e.g. PUSH/PUSH_HARDER/PUSH_FROM_LEFT). Effective distinct count must meet the same duration-tier minimum as ATTEMPT_001.",
+                "evaluation_stage": "PRE_RENDER",
+                "providerDispatch": false,
+                "requiredEvidence": "VERIFIED_SEMANTIC_JUDGMENT"
+              },
+              "message": "Semantic judgment has no verified evidence; provider dispatch is disabled for this local ruleset.",
+              "outcome": "UNKNOWN",
+              "severity": "CRITICAL",
+              "repairClassification": "EVIDENCE_ONLY"
+            },
+            {
+              "family": "final_payoff",
+              "ruleId": "PAYOFF_003",
+              "details": {
+                "recommendation": "The final twist must derive from the same established physical rule (coreMechanic.physicalRule), applied in a new or bigger way — not an unrelated, disconnected joke. Checked via LLM semantic judgment.",
+                "evaluation_stage": "PRE_RENDER",
+                "providerDispatch": false,
+                "requiredEvidence": "VERIFIED_SEMANTIC_JUDGMENT"
+              },
+              "message": "Semantic judgment has no verified evidence; provider dispatch is disabled for this local ruleset.",
+              "outcome": "UNKNOWN",
+              "severity": "CRITICAL",
+              "repairClassification": "EVIDENCE_ONLY"
+            },
+            {
+              "family": "concept_strength",
+              "ruleId": "CONCEPT_007",
+              "details": {
+                "recommendation": "The concept must exhibit exactly one independent physical/magical rule. Same mechanic applied with escalating/varied consequences is fine (PASS); a second, genuinely independent rule introduced partway through is not (CRITICAL at 2 mechanics, BLOCKER at 3+). coreMechanic.mechanicCount is an author claim, verified (not trusted) via LLM semantic judgment against the beat-by-beat consequences.",
+                "evaluation_stage": "PRE_RENDER",
+                "providerDispatch": false,
+                "requiredEvidence": "VERIFIED_SEMANTIC_JUDGMENT"
+              },
+              "message": "Semantic judgment has no verified evidence; provider dispatch is disabled for this local ruleset.",
+              "outcome": "UNKNOWN",
+              "severity": "BLOCKER",
+              "repairClassification": "EVIDENCE_ONLY"
+            },
+            {
+              "family": "concept_strength",
+              "ruleId": "GOAL_001",
+              "details": {
+                "recommendation": "The character must have an immediately understandable, natural physical goal, and the established abnormal rule must genuinely obstruct that goal. Distinguishes a believable reason to keep trying from an arbitrary or magic-demo setup invented only to showcase the mechanic (the character could simply walk away with no believable reason to continue). Verified via LLM semantic judgment (check_goal_is_natural), fail-closed to SERVICE_ERROR.",
+                "evaluation_stage": "PRE_RENDER",
+                "providerDispatch": false,
+                "requiredEvidence": "VERIFIED_SEMANTIC_JUDGMENT"
+              },
+              "message": "Semantic judgment has no verified evidence; provider dispatch is disabled for this local ruleset.",
+              "outcome": "UNKNOWN",
+              "severity": "BLOCKER",
+              "repairClassification": "EVIDENCE_ONLY"
+            },
+            {
+              "family": "concept_strength",
+              "ruleId": "CONCEPT_008",
+              "details": {
+                "recommendation": "Distinct from CONCEPT_007: a single, internally consistent mechanic is not automatically a legible one. A rule that depends on a combination of exact position, angle, and speed is technically one mechanic but unlearnable by a child audience watching once. Asks whether a viewer could learn the pattern from the first 1-2 occurrences and predict what happens next. Verified via LLM semantic judgment (check_rule_is_predictable), fail-closed to SERVICE_ERROR.",
+                "evaluation_stage": "PRE_RENDER",
+                "providerDispatch": false,
+                "requiredEvidence": "VERIFIED_SEMANTIC_JUDGMENT"
+              },
+              "message": "Semantic judgment has no verified evidence; provider dispatch is disabled for this local ruleset.",
+              "outcome": "UNKNOWN",
+              "severity": "CRITICAL",
+              "repairClassification": "EVIDENCE_ONLY"
+            },
+            {
+              "family": "hook_strength",
+              "ruleId": "HOOK_004",
+              "details": {
+                "recommendation": "Stricter than HOOK_002: HOOK_002 confirms something visually unusual happens immediately; this asks whether the opening ALSO makes clear what the character wants and why they can't get it yet, not just that something odd is occurring. Verified via LLM semantic judgment (check_opening_problem_legible), fail-closed to SERVICE_ERROR.",
+                "evaluation_stage": "PRE_RENDER",
+                "providerDispatch": false,
+                "requiredEvidence": "VERIFIED_SEMANTIC_JUDGMENT"
+              },
+              "message": "Semantic judgment has no verified evidence; provider dispatch is disabled for this local ruleset.",
+              "outcome": "UNKNOWN",
+              "severity": "CRITICAL",
+              "repairClassification": "EVIDENCE_ONLY"
+            },
+            {
+              "family": "character_performance",
+              "ruleId": "PERFORMANCE_001",
+              "details": {
+                "recommendation": "New character_performance family (RULESET 1.3). CHAR_002 confirms the character is active for enough of the runtime; this asks whether that activity reads as emotionally engaged and sympathetic rather than blank, robotic, aggressive, or stuck in prolonged panic. Verified via LLM semantic judgment (check_character_performance_readable), fail-closed to SERVICE_ERROR. Capped at WARNING — a performance-quality nudge, not a structural requirement.",
+                "evaluation_stage": "PRE_RENDER",
+                "providerDispatch": false,
+                "requiredEvidence": "VERIFIED_SEMANTIC_JUDGMENT"
+              },
+              "message": "Semantic judgment has no verified evidence; provider dispatch is disabled for this local ruleset.",
+              "outcome": "UNKNOWN",
+              "severity": "WARNING",
+              "repairClassification": "EVIDENCE_ONLY"
+            },
+            {
+              "family": "generation_executability",
+              "ruleId": "GENERATION_EXECUTABLE_ATTEMPTS",
+              "details": {
+                "recommendation": "Distinct from ATTEMPT_002 (semantic strategy diversity): ATTEMPT_002 asks whether the character is genuinely trying a different strategy; this asks whether that different strategy will actually LOOK different and be reliably executable by an image-to-video generation model (e.g. Seedance). A deterministic keyword pre-filter flags abstract-intent language ('blocks the escape route', 'tries to outsmart') and vague movement-magnitude phrasing ('slightly moves') on attempt beats, plus a beat-budget estimate (too many attempts for the available duration). An LLM semantic check (check_attempts_are_generation_executable) judges each attempt for a concrete action-result pair and flags attempts that would visually collapse into the same choreography despite different wording. BLOCKER only when NO attempt is judged executable at all or the LLM is unreachable (SERVICE_ERROR); CRITICAL when some attempts are unexecutable or abstract-intent language is matched; WARNING for vague magnitude phrasing or beat-budget pressure alone.",
+                "evaluation_stage": "PRE_RENDER",
+                "providerDispatch": false,
+                "requiredEvidence": "VERIFIED_SEMANTIC_JUDGMENT"
+              },
+              "message": "Semantic judgment has no verified evidence; provider dispatch is disabled for this local ruleset.",
+              "outcome": "UNKNOWN",
+              "severity": "BLOCKER",
+              "repairClassification": "EVIDENCE_ONLY"
+            }
+          ],
+          "sourceStorySha256": "ba352d486c4252c5c6fefe585ad976c0b6f73c299f7554863848bdd842a99b3d",
+          "baselineAnalysisId": "10fc4c38-7cdf-4f71-b8dc-05b14315352a",
+          "prohibitedShortcuts": [
+            "INVENT_PASS_EVIDENCE",
+            "TREAT_UNKNOWN_AS_PASS",
+            "ADD_MEANINGLESS_SCORE_ACTIONS",
+            "RENAME_REPEATED_ACTIONS_AS_STRATEGIES",
+            "COUNT_CAMERA_CHANGES_AS_STORY_STRATEGIES",
+            "CLAIM_UNSEEN_EFFECTS_VISIBLE",
+            "ADD_UNRELATED_PROTAGONISTS_OR_ANIMALS",
+            "COPY_PRIOR_WINNING_SILHOUETTES",
+            "CHANGE_PROTECTED_SOURCE_WITHOUT_OWNER_APPROVAL"
+          ],
+          "creativeRequirements": [
+            "IMMEDIATE_VISUALLY_UNDERSTANDABLE_OPENING",
+            "CLEAR_PHYSICAL_CAUSALITY",
+            "MEANINGFUL_VISUAL_PROGRESSION",
+            "ACTIVE_MAIN_CHARACTER",
+            "GENUINELY_DISTINCT_PROBLEM_SOLVING_WHEN_NARRATIVELY_JUSTIFIED",
+            "ESCALATING_CONSEQUENCES",
+            "MEANINGFUL_REALIZATION_OR_REVERSAL_OR_PAYOFF",
+            "GENERATOR_FEASIBLE_MOVEMENT",
+            "ORIGINALITY_WITHOUT_COPYING_PRIOR_SILHOUETTES"
+          ],
+          "targetAwarePreflight": {
+            "state": "NO_MATERIAL_PROMPT_ONLY_CREATIVE_GAIN",
+            "losses": [
+              {
+                "family": "concept_strength",
+                "reason": "Successful Ruleset 1.11 branch retains non-PASS configured severity and earns 85.",
+                "ruleId": "MINI_STORY_LOCK",
+                "details": {
+                  "missing": [],
+                  "recurrence": "OPTIONAL",
+                  "storyEvidence": {
+                    "goal_status": "IMPLICIT_BUT_OBSERVABLE",
+                    "payoff_status": "AVAILABLE",
+                    "temporal_load": "MANAGEABLE",
+                    "raw_beat_count": 5,
+                    "generation_mode": "SINGLE_15S",
+                    "load_beat_count": 5,
+                    "major_beat_count": 5,
+                    "micro_beat_count": 0,
+                    "realization_mode": "EXPLICIT",
+                    "obstruction_status": "AVAILABLE",
+                    "realization_status": "AVAILABLE",
+                    "continuation_status": "NOT_APPLICABLE",
+                    "split_recommendation": null,
+                    "strategy_change_count": 2,
+                    "state_transition_count": 5,
+                    "continuation_mismatches": [],
+                    "critical_beat_durations": [
+                      2.0,
+                      3.0,
+                      3.0,
+                      3.0,
+                      4.0
+                    ]
+                  },
+                  "recommendation": "Every video needs a visible goal, one impossible obstruction tied to that goal, active strategies, progression, realization or decision, and a readable payoff. Fake resolution, recurrence, and final twist are optional bonus evidence.",
+                  "fake_resolution": "OPTIONAL",
+                  "evaluation_stage": "PRE_RENDER"
+                },
+                "rowPoints": 85,
+                "overallLoss": 0.625,
+                "familyWeight": 0.12,
+                "classification": "NOT_CURRENTLY_ATTAINABLE",
+                "sourceEvidence": "Readable mini-story arc: goal, obstruction, attempts, progression, realization and payoff are evidenced.",
+                "maximumRowPoints": 85,
+                "scoredFamilyRows": 3
+              },
+              {
+                "family": "visual_novelty",
+                "reason": "Requires a supported source-bound production change and fresh canonical evaluation.",
+                "ruleId": "BEAT_004",
+                "details": {
+                  "state_id": "character_pip_sees_the_fourtoeight_change_finish_r",
+                  "recommendation": "No single visual state may occupy more than approximately\n25–30% of the entire video unless meaningful new physical\nconsequences occur within that state.\n\nDifferent dialogue or tiny movements do NOT count\nas different visual beats.",
+                  "evaluation_stage": "PRE_RENDER"
+                },
+                "rowPoints": 85,
+                "overallLoss": 0.3645833333333333,
+                "familyWeight": 0.14,
+                "classification": "TEXT_REPAIRABLE",
+                "sourceEvidence": "Visual state 'character_pip_sees_the_fourtoeight_change_finish_r' occupies 26.7% of video. Consider adding variation.",
+                "maximumRowPoints": 100,
+                "scoredFamilyRows": 6
+              },
+              {
+                "family": "progression",
+                "reason": "Protected event windows and ending/fake-win events cannot be rewritten to obtain points.",
+                "ruleId": "PAYOFF_002",
+                "details": {
+                  "recommendation": "Bonus (non-blocking): at least one beat with consequenceType == 'fake_win' before finalPayoff.startsAt, giving the audience a moment to believe the problem is solved before the final twist.",
+                  "evaluation_stage": "PRE_RENDER"
+                },
+                "rowPoints": 85,
+                "overallLoss": 0.34375,
+                "familyWeight": 0.11,
+                "classification": "PROTECTED_STORY_CONFLICT",
+                "sourceEvidence": "No fake-resolution beat found. This is a bonus, not a requirement — consider adding a moment where the problem appears solved before the twist.",
+                "maximumRowPoints": 85,
+                "scoredFamilyRows": 5
+              },
+              {
+                "family": "progression",
+                "reason": "Successful Ruleset 1.11 branch retains non-PASS configured severity and earns 85.",
+                "ruleId": "BEAT_DENSITY_RULE",
+                "details": {
+                  "storyEvidence": {
+                    "goal_status": "IMPLICIT_BUT_OBSERVABLE",
+                    "payoff_status": "AVAILABLE",
+                    "temporal_load": "MANAGEABLE",
+                    "raw_beat_count": 5,
+                    "generation_mode": "SINGLE_15S",
+                    "load_beat_count": 5,
+                    "major_beat_count": 5,
+                    "micro_beat_count": 0,
+                    "realization_mode": "EXPLICIT",
+                    "obstruction_status": "AVAILABLE",
+                    "realization_status": "AVAILABLE",
+                    "continuation_status": "NOT_APPLICABLE",
+                    "split_recommendation": null,
+                    "strategy_change_count": 2,
+                    "state_transition_count": 5,
+                    "continuation_mismatches": [],
+                    "critical_beat_durations": [
+                      2.0,
+                      3.0,
+                      3.0,
+                      3.0,
+                      4.0
+                    ]
+                  },
+                  "microBeatCount": 0,
+                  "recommendation": "A 15-second single-generation plan should contain 4-5 canonical major story beats, with approximately 6 as the upper safe limit. Micro-actions do not count.",
+                  "evaluation_stage": "PRE_RENDER"
+                },
+                "rowPoints": 85,
+                "overallLoss": 0.34375,
+                "familyWeight": 0.11,
+                "classification": "NOT_CURRENTLY_ATTAINABLE",
+                "sourceEvidence": "5 canonical major beats fit the 15-second plan.",
+                "maximumRowPoints": 85,
+                "scoredFamilyRows": 5
+              },
+              {
+                "family": "final_payoff",
+                "reason": "Optimistic conditional improvement only; no invented sub-beat timing or unsupported salience evidence.",
+                "ruleId": "PAYOFF_004",
+                "details": {
+                  "recommendation": "The final payoff's beat.intensity should be at least as high as the highest intensity seen earlier in the video. Computed independently from beat.intensity values; finalPayoff.isPeakIntensity is never trusted as the verdict, only cross-checked for discrepancy reporting. Optimization-level (WARNING), never a blocker. Renamed from \"Final Peak Intensity\" in RULESET 1.3 -- \"intensity\" read as motion/chaos, but beats[].intensity is a 1-10 visual/emotional energy scale; a quiet, conclusive beat can score as high as a frantic one.",
+                  "evaluation_stage": "PRE_RENDER"
+                },
+                "rowPoints": 85,
+                "overallLoss": 0.46875,
+                "familyWeight": 0.09,
+                "classification": "CREATIVE_RECONSTRUCTION_REPAIRABLE",
+                "sourceEvidence": "Final payoff salience (5) ties the earlier peak. Acceptable but not ideal — consider making the ending strictly the peak.",
+                "maximumRowPoints": 100,
+                "scoredFamilyRows": 3
+              },
+              {
+                "family": "ai_producibility",
+                "reason": "Source still contains fragile note/face interaction; substring detection has limited specificity. No independent risk-reduction evidence or authorized evaluator correction supports removing this penalty.",
+                "ruleId": "PRODUCIBILITY_003",
+                "details": {
+                  "riskTags": [
+                    "THIN_OBJECT"
+                  ],
+                  "recommendation": "Fills the gap between PRODUCIBILITY_001 (very-high-complexity hard block) and PRODUCIBILITY_002 (prop count budget): a middle tier of AI-generation risks (precision alignment, cloth/rope simulation, liquids, thin dangling objects, face/hair contact, multi-object stacking). Uses a tag-based diagnostic model (riskTags in evaluation details) rather than one rule per risk type. Deterministic substring match against setting.mainProps and beat action/consequence text, no LLM call. Always CRITICAL when any tag is found — a human-review trigger, not an outright render block.",
+                  "evaluation_stage": "PRE_RENDER"
+                },
+                "rowPoints": 40,
+                "overallLoss": 2.0833333333333335,
+                "familyWeight": 0.1,
+                "classification": "EVIDENCE_REQUIRED",
+                "sourceEvidence": "Fragile interaction risk tags detected: ['THIN_OBJECT']. These are mid-tier AI-generation risks (precision alignment, cloth/rope simulation, liquids, thin objects, face/hair contact, multi-object stacking) worth a human look before committing render budget, even though they don't rise to very-high-complexity blocking.",
+                "maximumRowPoints": 40,
+                "scoredFamilyRows": 3
+              },
+              {
+                "family": "hook_strength",
+                "reason": "Successful Ruleset 1.11 branch retains non-PASS configured severity and earns 85.",
+                "ruleId": "GOAL_VISIBLE_EARLY",
+                "details": {
+                  "goalEvidence": {
+                    "source": "GOAL_DIRECTED_ACTION_INFERENCE",
+                    "goalType": "RETRIEVE_OR_CONTROL_OBJECT",
+                    "description": "Control or retrieve the object despite the established abnormal behavior.",
+                    "obstruction": "Inferred from beat actions",
+                    "primaryGoal": {
+                      "state": "INFERRED",
+                      "method": "GOAL_DIRECTED_ACTION_INFERENCE",
+                      "sourceSpan": null,
+                      "description": "Control or retrieve the object despite the established abnormal behavior.",
+                      "sourceQuote": null,
+                      "semanticVerification": "NOT_PERFORMED"
+                    },
+                    "targetObject": null,
+                    "intendedEffect": "restore_or_control_normal_object_use",
+                    "goalExplicitness": "IMPLICIT_BUT_OBSERVABLE",
+                    "secondaryRecoveryAttempt": {
+                      "state": "OBSERVED",
+                      "beatId": "beat_02",
+                      "method": "EXPLICIT_RECOVERY_ATTEMPT_PATTERN",
+                      "sourceSpan": [
+                        581,
+                        679
+                      ],
+                      "description": "Pip tries to peel the note away with the free hand, but it splits into two notes, one on each hand",
+                      "sourceQuote": "Pip tries to peel the note away with the free hand, but it splits into two notes, one on each hand",
+                      "targetObject": "the note away",
+                      "semanticVerification": "NOT_PERFORMED"
+                    }
+                  },
+                  "recommendation": "The character goal must be explicit or implicit-but-observable in the first 1-2 seconds.",
+                  "evaluation_stage": "PRE_RENDER"
+                },
+                "rowPoints": 85,
+                "overallLoss": 0.9375,
+                "familyWeight": 0.12,
+                "classification": "NOT_CURRENTLY_ATTAINABLE",
+                "sourceEvidence": "The character goal is available in the opening window.",
+                "maximumRowPoints": 85,
+                "scoredFamilyRows": 2
+              },
+              {
+                "family": "generation_executability",
+                "reason": "Successful Ruleset 1.11 branch retains non-PASS configured severity and earns 85.",
+                "ruleId": "TEMPORAL_COMPLEXITY_SPLIT_GATE",
+                "details": {
+                  "mode": "SINGLE_15S",
+                  "storyEvidence": {
+                    "goal_status": "IMPLICIT_BUT_OBSERVABLE",
+                    "payoff_status": "AVAILABLE",
+                    "temporal_load": "MANAGEABLE",
+                    "raw_beat_count": 5,
+                    "generation_mode": "SINGLE_15S",
+                    "load_beat_count": 5,
+                    "major_beat_count": 5,
+                    "micro_beat_count": 0,
+                    "realization_mode": "EXPLICIT",
+                    "obstruction_status": "AVAILABLE",
+                    "realization_status": "AVAILABLE",
+                    "continuation_status": "NOT_APPLICABLE",
+                    "split_recommendation": null,
+                    "strategy_change_count": 2,
+                    "state_transition_count": 5,
+                    "continuation_mismatches": [],
+                    "critical_beat_durations": [
+                      2.0,
+                      3.0,
+                      3.0,
+                      3.0,
+                      4.0
+                    ]
+                  },
+                  "recommendation": "Block an overloaded SINGLE_15S generation plan and recommend SPLIT_2X15S. The creative concept is not rejected when the split plan is selected.",
+                  "evaluation_stage": "PRE_RENDER"
+                },
+                "rowPoints": 85,
+                "overallLoss": 1.40625,
+                "familyWeight": 0.09,
+                "classification": "NOT_CURRENTLY_ATTAINABLE",
+                "sourceEvidence": "Temporal load is manageable for the selected generation plan.",
+                "maximumRowPoints": 85,
+                "scoredFamilyRows": 1
+              }
+            ],
+            "reasons": [
+              "Principal creative weaknesses require owner-approved Story Evolution; another source-bound staging round is not justified."
+            ],
+            "version": "adaptive-creative-optimization-v3",
+            "currentScore": 93.42708333333334,
+            "missingEvidence": [
+              {
+                "reason": "First-frame absurdity evidence is incomplete; the concept is blocked before render.",
+                "ruleId": "INSTANT_VISUAL_ABSURDITY_GATE",
+                "details": {
+                  "failureBasis": "EVIDENCE_INCOMPLETE",
+                  "recommendation": "BLOCKER: the first frame must communicate a physically impossible or clearly wrong situation without history, counting, micro-comparison, audio, text, or prior knowledge. The main character must already be engaged with the event.",
+                  "missingEvidence": [
+                    "staticWrongness",
+                    "noHistoryRequired",
+                    "noMicroComparison",
+                    "largeVisualSignal",
+                    "characterAlreadyEngaged"
+                  ],
+                  "evaluation_stage": "PRE_RENDER"
+                },
+                "classification": "EVIDENCE_REQUIRED"
+              },
+              {
+                "reason": "No first-frame/final-silhouette comparison evidence was supplied; the concept is blocked before render.",
+                "ruleId": "ENGINE_SILHOUETTE_DUPLICATE",
+                "details": {
+                  "failureBasis": "EVIDENCE_INCOMPLETE",
+                  "recommendation": "BLOCKER: reject concepts whose visible progression and final silhouette substantially duplicate a known winner visual engine, even when the underlying mathematical rule differs.",
+                  "evaluation_stage": "PRE_RENDER"
+                },
+                "classification": "EVIDENCE_REQUIRED"
+              },
+              {
+                "reason": "coreMechanic.consistency was not explicitly stated in the prompt and cannot be verified.",
+                "ruleId": "CONSISTENCY_001",
+                "details": {
+                  "recommendation": "The physical rule established in the hook should remain\nconsistent throughout the video unless the concept explicitly\ninvolves rule-breaking as the payoff.",
+                  "evaluation_stage": "PRE_RENDER"
+                },
+                "classification": "EVIDENCE_REQUIRED"
+              },
+              {
+                "reason": "hook.soundOffClear was not explicitly stated in the prompt and cannot be verified.",
+                "ruleId": "HOOK_003",
+                "details": {
+                  "recommendation": "The core problem and physical comedy must work with audio muted. hook.soundOffClear must be true.",
+                  "evaluation_stage": "PRE_RENDER"
+                },
+                "classification": "EVIDENCE_REQUIRED"
+              },
+              {
+                "reason": "Semantic judgment has no verified evidence; provider dispatch is disabled for this local ruleset.",
+                "ruleId": "ATTEMPT_002",
+                "details": {
+                  "recommendation": "Attempts must be mechanically distinct, not just differently worded. Identical primaryVerb across attempts is an automatic deterministic FAIL. Verb-distinct attempts are checked for semantic duplication via LLM (e.g. GRAB vs YANK may be the same underlying strategy; RULESET 1.3 explicitly also treats intensity/angle variants of the identical strategy as duplicates, e.g. PUSH/PUSH_HARDER/PUSH_FROM_LEFT). Effective distinct count must meet the same duration-tier minimum as ATTEMPT_001.",
+                  "evaluation_stage": "PRE_RENDER",
+                  "providerDispatch": false,
+                  "requiredEvidence": "VERIFIED_SEMANTIC_JUDGMENT"
+                },
+                "classification": "EVIDENCE_REQUIRED"
+              },
+              {
+                "reason": "Semantic judgment has no verified evidence; provider dispatch is disabled for this local ruleset.",
+                "ruleId": "PAYOFF_003",
+                "details": {
+                  "recommendation": "The final twist must derive from the same established physical rule (coreMechanic.physicalRule), applied in a new or bigger way — not an unrelated, disconnected joke. Checked via LLM semantic judgment.",
+                  "evaluation_stage": "PRE_RENDER",
+                  "providerDispatch": false,
+                  "requiredEvidence": "VERIFIED_SEMANTIC_JUDGMENT"
+                },
+                "classification": "EVIDENCE_REQUIRED"
+              },
+              {
+                "reason": "Semantic judgment has no verified evidence; provider dispatch is disabled for this local ruleset.",
+                "ruleId": "CONCEPT_007",
+                "details": {
+                  "recommendation": "The concept must exhibit exactly one independent physical/magical rule. Same mechanic applied with escalating/varied consequences is fine (PASS); a second, genuinely independent rule introduced partway through is not (CRITICAL at 2 mechanics, BLOCKER at 3+). coreMechanic.mechanicCount is an author claim, verified (not trusted) via LLM semantic judgment against the beat-by-beat consequences.",
+                  "evaluation_stage": "PRE_RENDER",
+                  "providerDispatch": false,
+                  "requiredEvidence": "VERIFIED_SEMANTIC_JUDGMENT"
+                },
+                "classification": "EVIDENCE_REQUIRED"
+              },
+              {
+                "reason": "Semantic judgment has no verified evidence; provider dispatch is disabled for this local ruleset.",
+                "ruleId": "GOAL_001",
+                "details": {
+                  "recommendation": "The character must have an immediately understandable, natural physical goal, and the established abnormal rule must genuinely obstruct that goal. Distinguishes a believable reason to keep trying from an arbitrary or magic-demo setup invented only to showcase the mechanic (the character could simply walk away with no believable reason to continue). Verified via LLM semantic judgment (check_goal_is_natural), fail-closed to SERVICE_ERROR.",
+                  "evaluation_stage": "PRE_RENDER",
+                  "providerDispatch": false,
+                  "requiredEvidence": "VERIFIED_SEMANTIC_JUDGMENT"
+                },
+                "classification": "EVIDENCE_REQUIRED"
+              },
+              {
+                "reason": "Semantic judgment has no verified evidence; provider dispatch is disabled for this local ruleset.",
+                "ruleId": "CONCEPT_008",
+                "details": {
+                  "recommendation": "Distinct from CONCEPT_007: a single, internally consistent mechanic is not automatically a legible one. A rule that depends on a combination of exact position, angle, and speed is technically one mechanic but unlearnable by a child audience watching once. Asks whether a viewer could learn the pattern from the first 1-2 occurrences and predict what happens next. Verified via LLM semantic judgment (check_rule_is_predictable), fail-closed to SERVICE_ERROR.",
+                  "evaluation_stage": "PRE_RENDER",
+                  "providerDispatch": false,
+                  "requiredEvidence": "VERIFIED_SEMANTIC_JUDGMENT"
+                },
+                "classification": "EVIDENCE_REQUIRED"
+              },
+              {
+                "reason": "Semantic judgment has no verified evidence; provider dispatch is disabled for this local ruleset.",
+                "ruleId": "HOOK_004",
+                "details": {
+                  "recommendation": "Stricter than HOOK_002: HOOK_002 confirms something visually unusual happens immediately; this asks whether the opening ALSO makes clear what the character wants and why they can't get it yet, not just that something odd is occurring. Verified via LLM semantic judgment (check_opening_problem_legible), fail-closed to SERVICE_ERROR.",
+                  "evaluation_stage": "PRE_RENDER",
+                  "providerDispatch": false,
+                  "requiredEvidence": "VERIFIED_SEMANTIC_JUDGMENT"
+                },
+                "classification": "EVIDENCE_REQUIRED"
+              },
+              {
+                "reason": "Semantic judgment has no verified evidence; provider dispatch is disabled for this local ruleset.",
+                "ruleId": "PERFORMANCE_001",
+                "details": {
+                  "recommendation": "New character_performance family (RULESET 1.3). CHAR_002 confirms the character is active for enough of the runtime; this asks whether that activity reads as emotionally engaged and sympathetic rather than blank, robotic, aggressive, or stuck in prolonged panic. Verified via LLM semantic judgment (check_character_performance_readable), fail-closed to SERVICE_ERROR. Capped at WARNING — a performance-quality nudge, not a structural requirement.",
+                  "evaluation_stage": "PRE_RENDER",
+                  "providerDispatch": false,
+                  "requiredEvidence": "VERIFIED_SEMANTIC_JUDGMENT"
+                },
+                "classification": "EVIDENCE_REQUIRED"
+              },
+              {
+                "reason": "Semantic judgment has no verified evidence; provider dispatch is disabled for this local ruleset.",
+                "ruleId": "GENERATION_EXECUTABLE_ATTEMPTS",
+                "details": {
+                  "recommendation": "Distinct from ATTEMPT_002 (semantic strategy diversity): ATTEMPT_002 asks whether the character is genuinely trying a different strategy; this asks whether that different strategy will actually LOOK different and be reliably executable by an image-to-video generation model (e.g. Seedance). A deterministic keyword pre-filter flags abstract-intent language ('blocks the escape route', 'tries to outsmart') and vague movement-magnitude phrasing ('slightly moves') on attempt beats, plus a beat-budget estimate (too many attempts for the available duration). An LLM semantic check (check_attempts_are_generation_executable) judges each attempt for a concrete action-result pair and flags attempts that would visually collapse into the same choreography despite different wording. BLOCKER only when NO attempt is judged executable at all or the LLM is unreachable (SERVICE_ERROR); CRITICAL when some attempts are unexecutable or abstract-intent language is matched; WARNING for vague magnitude phrasing or beat-budget pressure alone.",
+                  "evaluation_stage": "PRE_RENDER",
+                  "providerDispatch": false,
+                  "requiredEvidence": "VERIFIED_SEMANTIC_JUDGMENT"
+                },
+                "classification": "EVIDENCE_REQUIRED"
+              }
+            ],
+            "renderAuthorized": false,
+            "generationAllowed": false,
+            "canonicalATargetStatus": "CANONICAL_A_POTENTIALLY_ATTAINABLE",
+            "genuineSourceAttemptCount": 3,
+            "researchGenerationEligibility": {
+              "scope": "TEXT_ONLY_SOURCE_BOUND_MODEL_CAPABILITY_RESEARCH",
+              "state": "NO_MATERIAL_PROMPT_ONLY_CREATIVE_GAIN",
+              "allowed": false,
+              "reasons": [
+                "Prompt-only capability research is stopped because the principal weaknesses require Story Evolution."
+              ],
+              "version": "canonical-a-text-research-eligibility-v1",
+              "renderAuthorized": false,
+              "promptApprovalAllowed": false,
+              "imageGenerationAllowed": false,
+              "finalCanonicalAAdmitted": false,
+              "renderPreparationAllowed": false,
+              "requiresIndependentCreativeCritic": true,
+              "requiresIndependentSourceFidelity": true,
+              "requiresExplicitOwnerAuthorization": true
+            },
+            "fixedEvidenceOptimisticCeiling": 94.26041666666667
+          },
+          "creativeReviewVersion": "creative-story-merit-v1",
+          "sourceApprovalRecordId": "af738239-99c3-4a9e-90b5-a1bee4295cd0",
+          "mandatoryEvidenceContracts": [
+            "SOURCE_BOUND_BEATS",
+            "EXACT_STORY_QUOTES_WHEN_CLAIMED",
+            "UNKNOWN_WHEN_UNSUPPORTED",
+            "INDEPENDENT_VISUAL_EVIDENCE_FOR_VISUAL_GATES"
+          ]
+        }
+      },
+      "sourceStory": "Already mid-action, Pip the rabbit tries to place one sticky note on the toy cabinet's empty front panel, but it clings to Pip's fingertip while the cabinet stays untouched. Pip tries to peel the note away with the free hand, but it splits into two notes, one on each hand. Pip tries to press both notes onto the cabinet, but they spring back and double into four notes. Pip tries to push the four notes off against the cabinet door edge, but they split into eight and cover Pip's arms and face. Pip sees the four-to-eight change finish, realizes that every removal or transfer attempt multiplies the notes, deliberately stops struggling, and turns the still note-covered face toward the mirror. Pip remains covered until a sneeze scatters the notes onto the cabinet. Pip is relieved, but the cabinet remains messy.",
+      "catalogSha256": "e62351dfea8677da427296312a6a1bccd4ff2c1aa8acfd4cc6defc735915b665",
+      "transportPolicy": {
+        "version": "assessment-story-review-timeouts-v1",
+        "poolSeconds": 5,
+        "readSeconds": 60,
+        "writeSeconds": 10,
+        "connectSeconds": 5,
+        "backendHttpSeconds": 90,
+        "workflowDeadlineSeconds": 600
+      },
+      "experimentVersion": "REAL_CREATIVE_STORY_EVOLUTION_PILOT_V1",
+      "sourceStorySha256": "ba352d486c4252c5c6fefe585ad976c0b6f73c299f7554863848bdd842a99b3d",
+      "ownerPolicyApproval": true,
+      "sourceStoryRecordId": "ca40c11a-7831-476e-9f50-646a61a1ec9c",
+      "assessmentOnlyPolicy": "ASSESSMENT_ONLY_UNKNOWN_SOURCE_V1",
+      "authorityImplementationSha256": "bd510940b702aded29592782e51464044e78489ffcba7d65835086370d091a72"
+    },
+    "deadline": "2026-10-18T00:09:02.726985Z",
+    "state": "STOPPED",
+    "authorization": {
+      "fallback": false,
+      "maxRounds": 1,
+      "operations": [
+        {
+          "role": "STORY_REVIEW",
+          "model": "gpt-4o-mini-2024-07-18",
+          "policy": "ASSESSMENT_ONLY_UNKNOWN_SOURCE_V1",
+          "fallback": false,
+          "provider": "openai",
+          "maxCostUsd": 0.006104,
+          "maxRequests": 1,
+          "schemaBytes": 7273,
+          "scopeSha256": "e843b45debd07250f25ef68e7cc61ff2d488d429f71135c502ec12cd090d37d6",
+          "systemBytes": 2645,
+          "payloadBytes": 12721,
+          "systemSha256": "8cef6972c1ec478f7fbdc04cfec4789a9f3e5757f0f2f2e020e9fc6d98f50cef",
+          "schemaVersion": "assessment-only-story-review-v3-evidence-refs",
+          "timeoutPolicy": {
+            "version": "assessment-story-review-timeouts-v1",
+            "poolSeconds": 5,
+            "readSeconds": 60,
+            "writeSeconds": 10,
+            "connectSeconds": 5,
+            "backendHttpSeconds": 90,
+            "workflowDeadlineSeconds": 600
+          },
+          "assessmentOnly": true,
+          "maxOutputTokens": 4000,
+          "automaticRetries": false,
+          "maximumInputBytes": 24000,
+          "sourceStorySha256": "ba352d486c4252c5c6fefe585ad976c0b6f73c299f7554863848bdd842a99b3d",
+          "inputUsdPerMillion": 0.15,
+          "responseFormatType": "json_schema",
+          "outputUsdPerMillion": 0.6,
+          "implementationSha256": "73320331bfb515d43065341b6aa286777ac069922f1fb43d3bd2a74021a30c73",
+          "maximumCalculatedUsd": 0.0061035,
+          "responseFormatSha256": "f2c4e0311b3a7acc8092dec6d2d2458e7dc3e3122ec2cd45d8a392342f834179",
+          "responseSchemaSha256": "2d40c450d6e011db93b7a3add1545ccce24100555c44c965ffb015aef55ebff6",
+          "clientRequestIdPolicy": "application-request-uuid-v1",
+          "evidenceCatalogSha256": "5b15086899fc5c80f5de99a749fa3b70d47d32175a6a0ee0bcfdd8ab6f2273d7",
+          "effectiveRequestSha256": "139783279debb6bb96565dae71b484f864d3a7c3695b7e84a0fb013faa4ccaf3",
+          "serializedRequestBytes": 23690,
+          "strictStructuredOutput": true,
+          "serializedRequestSha256": "1a71b03de5462156ee09f6f4f65bd526c29f751f03e84b96f719d5eafd10ea35",
+          "evidenceDocumentBindings": {
+            "SOURCE": "ba352d486c4252c5c6fefe585ad976c0b6f73c299f7554863848bdd842a99b3d",
+            "CANDIDATE_A": "50bae8834df06f6092a37947d422e136c41c72ea80838057beecf2e7156bb088",
+            "CANDIDATE_B": "4b04e664b70ea9372049231119f2ad786cf5ed0fc1a416c0941101d53167c739"
+          },
+          "evidenceExtractionVersion": "story-review-exact-spans-v1",
+          "clientRequestIdHeaderBytes": 59,
+          "requestFramingAllowanceBytes": 1000,
+          "outboundTransportMetadataSha256": "fa89454b6228afad847fbbee39a173a329887a707191548760547e70791ea615"
+        }
+      ],
+      "maxRequests": 1,
+      "maxTotalUsd": 0.006104,
+      "scopeSha256": "e843b45debd07250f25ef68e7cc61ff2d488d429f71135c502ec12cd090d37d6",
+      "maxRunSeconds": 600,
+      "idempotencyKey": "OFFLINE-MOCK-SDK-incomplete-76889981-c3d3-4047-ac1f-55b899d6a5d3",
+      "automaticRetries": false,
+      "assessmentOnlyPolicy": "ASSESSMENT_ONLY_UNKNOWN_SOURCE_V1",
+      "confirmAssessmentOnly": true,
+      "authorizePaidInference": true
+    },
+    "sourceStorySha256": "ba352d486c4252c5c6fefe585ad976c0b6f73c299f7554863848bdd842a99b3d",
+    "progress": {
+      "phase": "ASSESSMENT_RECEIPT_SAVED",
+      "detail": "Receipt preserved; no retry",
+      "reason": "ASSESSMENT_REJECTED_OR_UNCERTAIN",
+      "reservedUsd": 0.006104,
+      "requestCount": 1,
+      "assessmentReceipt": {
+        "role": "STORY_REVIEW",
+        "error": {
+          "detail": "Incomplete provider response; no accepted review",
+          "category": "ValueError",
+          "failureClass": "INCOMPLETE_RESPONSE",
+          "elapsedSeconds": 0.006476
+        },
+        "model": "gpt-4o-mini-2024-07-18",
+        "runId": "449e7601-ce70-41b9-b9d3-c65e56564e65",
+        "usage": {
+          "total_tokens": 300,
+          "prompt_tokens": 100,
+          "completion_tokens": 200,
+          "prompt_tokens_details": null,
+          "completion_tokens_details": null
+        },
+        "policy": "ASSESSMENT_ONLY_UNKNOWN_SOURCE_V1",
+        "binding": {
+          "role": "STORY_REVIEW",
+          "model": "gpt-4o-mini-2024-07-18",
+          "policy": "ASSESSMENT_ONLY_UNKNOWN_SOURCE_V1",
+          "fallback": false,
+          "provider": "openai",
+          "maxRequests": 1,
+          "schemaBytes": 7273,
+          "scopeSha256": "e843b45debd07250f25ef68e7cc61ff2d488d429f71135c502ec12cd090d37d6",
+          "systemBytes": 2645,
+          "payloadBytes": 12721,
+          "systemSha256": "8cef6972c1ec478f7fbdc04cfec4789a9f3e5757f0f2f2e020e9fc6d98f50cef",
+          "schemaVersion": "assessment-only-story-review-v3-evidence-refs",
+          "timeoutPolicy": {
+            "version": "assessment-story-review-timeouts-v1",
+            "poolSeconds": 5,
+            "readSeconds": 60,
+            "writeSeconds": 10,
+            "connectSeconds": 5,
+            "backendHttpSeconds": 90,
+            "workflowDeadlineSeconds": 600
+          },
+          "assessmentOnly": true,
+          "maxOutputTokens": 4000,
+          "automaticRetries": false,
+          "maximumInputBytes": 24000,
+          "sourceStorySha256": "ba352d486c4252c5c6fefe585ad976c0b6f73c299f7554863848bdd842a99b3d",
+          "inputUsdPerMillion": 0.15,
+          "responseFormatType": "json_schema",
+          "outputUsdPerMillion": 0.6,
+          "implementationSha256": "73320331bfb515d43065341b6aa286777ac069922f1fb43d3bd2a74021a30c73",
+          "maximumCalculatedUsd": 0.0061035,
+          "responseFormatSha256": "f2c4e0311b3a7acc8092dec6d2d2458e7dc3e3122ec2cd45d8a392342f834179",
+          "responseSchemaSha256": "2d40c450d6e011db93b7a3add1545ccce24100555c44c965ffb015aef55ebff6",
+          "clientRequestIdPolicy": "application-request-uuid-v1",
+          "evidenceCatalogSha256": "5b15086899fc5c80f5de99a749fa3b70d47d32175a6a0ee0bcfdd8ab6f2273d7",
+          "effectiveRequestSha256": "139783279debb6bb96565dae71b484f864d3a7c3695b7e84a0fb013faa4ccaf3",
+          "serializedRequestBytes": 23690,
+          "strictStructuredOutput": true,
+          "serializedRequestSha256": "1a71b03de5462156ee09f6f4f65bd526c29f751f03e84b96f719d5eafd10ea35",
+          "evidenceDocumentBindings": {
+            "SOURCE": "ba352d486c4252c5c6fefe585ad976c0b6f73c299f7554863848bdd842a99b3d",
+            "CANDIDATE_A": "50bae8834df06f6092a37947d422e136c41c72ea80838057beecf2e7156bb088",
+            "CANDIDATE_B": "4b04e664b70ea9372049231119f2ad786cf5ed0fc1a416c0941101d53167c739"
+          },
+          "evidenceExtractionVersion": "story-review-exact-spans-v1",
+          "clientRequestIdHeaderBytes": 59,
+          "requestFramingAllowanceBytes": 1000,
+          "outboundTransportMetadataSha256": "fa89454b6228afad847fbbee39a173a329887a707191548760547e70791ea615"
+        },
+        "provider": "openai",
+        "requestId": "5316462e-ebf9-34f2-a56e-40208d8f5996",
+        "retrySafe": false,
+        "diagnostics": {
+          "usageReceived": true,
+          "elapsedSeconds": 0.006822,
+          "completeSdkResponseReceived": true
+        },
+        "evidenceType": "MACHINE_REVIEW",
+        "actualCostUsd": 0.000135,
+        "billingStatus": "KNOWN_INCURRED",
+        "modelIdentity": {
+          "verified": true,
+          "aliasApplied": false,
+          "policyVersion": "exact-provider-model-v2",
+          "requestedModel": "gpt-4o-mini-2024-07-18",
+          "pricingIdentity": "gpt-4o-mini-2024-07-18",
+          "actualReturnedModel": "gpt-4o-mini-2024-07-18"
+        },
+        "assessmentOnly": true,
+        "rawReceiptFile": "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/backend/target/timeout-hardened-story-review-http-v1/data/workflow/story-assessment-receipts/5316462e-ebf9-34f2-a56e-40208d8f5996-response.json",
+        "responseSha256": "ae0b3f00638cc5d55bb5fb22deed8790c6b2b84080dd01ddadb22e8fcfab5557",
+        "accountingError": {
+          "detail": "Reviewer completion/budget constraint failed",
+          "category": "ValueError",
+          "failureClass": "ACCOUNTING_VALIDATION_FAILED"
+        },
+        "clientRequestId": "5316462e-ebf9-34f2-a56e-40208d8f5996",
+        "processingStatus": "LOCALLY_REJECTED",
+        "rawReceiptSha256": "8cf78aff9dc9639423f46573402634f1a496f3efa00dff2b9176f2d7cbcf74e2",
+        "requestStartedAt": "2026-10-17T23:59:04.558823+00:00",
+        "responseReceived": true,
+        "primaryFailureFile": "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/backend/target/timeout-hardened-story-review-http-v1/data/workflow/story-assessment-receipts/5316462e-ebf9-34f2-a56e-40208d8f5996-failure.json",
+        "providerDispatched": true,
+        "requestFingerprint": "427e3c831ae887c0b58dc8af2baa4108b95f38ad4187199c6f534a012c2431cc",
+        "responseReceivedAt": "2026-10-17T23:59:04.565665+00:00",
+        "providerApiResponse": {
+          "id": "MOCK_ONLY_incomplete",
+          "model": "gpt-4o-mini-2024-07-18",
+          "usage": {
+            "total_tokens": 300,
+            "prompt_tokens": 100,
+            "completion_tokens": 200,
+            "prompt_tokens_details": null,
+            "completion_tokens_details": null
+          },
+          "object": "chat.completion",
+          "choices": [
+            {
+              "index": 0,
+              "message": {
+                "role": "assistant",
+                "audio": null,
+                "content": "{\"schemaVersion\":",
+                "refusal": null,
+                "tool_calls": null,
+                "annotations": null,
+                "function_call": null
+              },
+              "logprobs": null,
+              "finish_reason": "length"
+            }
+          ],
+          "created": 0,
+          "metadata": null,
+          "moderation": null,
+          "service_tier": null,
+          "system_fingerprint": null
+        },
+        "rawProviderResponse": "{\"schemaVersion\":",
+        "configuredRateCostUsd": 0.000135,
+        "providerResponseMetadata": {
+          "model": "gpt-4o-mini-2024-07-18",
+          "refusal": null,
+          "apiStatus": "COMPLETED",
+          "requestId": "MOCK_ONLY_incomplete",
+          "finishReason": "length",
+          "promptLength": 17,
+          "httpRequestId": null,
+          "promptPresent": true,
+          "elapsedSeconds": 0.002497,
+          "clientRequestId": "5316462e-ebf9-34f2-a56e-40208d8f5996"
+        }
+      },
+      "knownActualCostUsd": 0.000135
+    },
+    "cancel": false,
+    "sourceStoryRecordId": "ca40c11a-7831-476e-9f50-646a61a1ec9c",
+    "runId": "449e7601-ce70-41b9-b9d3-c65e56564e65",
+    "drafts": [],
+    "events": [
+      {
+        "state": "AUTHORIZED",
+        "scopeSha256": "e843b45debd07250f25ef68e7cc61ff2d488d429f71135c502ec12cd090d37d6",
+        "providerCalls": 0,
+        "experimentVersion": "REAL_CREATIVE_STORY_EVOLUTION_PILOT_V1",
+        "assessmentOnlyPolicy": "ASSESSMENT_ONLY_UNKNOWN_SOURCE_V1"
+      },
+      {
+        "role": "STORY_REVIEW",
+        "state": "REQUEST_RESERVED",
+        "binding": {
+          "role": "STORY_REVIEW",
+          "model": "gpt-4o-mini-2024-07-18",
+          "policy": "ASSESSMENT_ONLY_UNKNOWN_SOURCE_V1",
+          "fallback": false,
+          "provider": "openai",
+          "maxRequests": 1,
+          "schemaBytes": 7273,
+          "scopeSha256": "e843b45debd07250f25ef68e7cc61ff2d488d429f71135c502ec12cd090d37d6",
+          "systemBytes": 2645,
+          "payloadBytes": 12721,
+          "systemSha256": "8cef6972c1ec478f7fbdc04cfec4789a9f3e5757f0f2f2e020e9fc6d98f50cef",
+          "schemaVersion": "assessment-only-story-review-v3-evidence-refs",
+          "timeoutPolicy": {
+            "version": "assessment-story-review-timeouts-v1",
+            "poolSeconds": 5,
+            "readSeconds": 60,
+            "writeSeconds": 10,
+            "connectSeconds": 5,
+            "backendHttpSeconds": 90,
+            "workflowDeadlineSeconds": 600
+          },
+          "assessmentOnly": true,
+          "maxOutputTokens": 4000,
+          "automaticRetries": false,
+          "maximumInputBytes": 24000,
+          "sourceStorySha256": "ba352d486c4252c5c6fefe585ad976c0b6f73c299f7554863848bdd842a99b3d",
+          "inputUsdPerMillion": 0.15,
+          "responseFormatType": "json_schema",
+          "outputUsdPerMillion": 0.6,
+          "implementationSha256": "73320331bfb515d43065341b6aa286777ac069922f1fb43d3bd2a74021a30c73",
+          "maximumCalculatedUsd": 0.0061035,
+          "responseFormatSha256": "f2c4e0311b3a7acc8092dec6d2d2458e7dc3e3122ec2cd45d8a392342f834179",
+          "responseSchemaSha256": "2d40c450d6e011db93b7a3add1545ccce24100555c44c965ffb015aef55ebff6",
+          "clientRequestIdPolicy": "application-request-uuid-v1",
+          "evidenceCatalogSha256": "5b15086899fc5c80f5de99a749fa3b70d47d32175a6a0ee0bcfdd8ab6f2273d7",
+          "effectiveRequestSha256": "139783279debb6bb96565dae71b484f864d3a7c3695b7e84a0fb013faa4ccaf3",
+          "serializedRequestBytes": 23690,
+          "strictStructuredOutput": true,
+          "serializedRequestSha256": "1a71b03de5462156ee09f6f4f65bd526c29f751f03e84b96f719d5eafd10ea35",
+          "evidenceDocumentBindings": {
+            "SOURCE": "ba352d486c4252c5c6fefe585ad976c0b6f73c299f7554863848bdd842a99b3d",
+            "CANDIDATE_A": "50bae8834df06f6092a37947d422e136c41c72ea80838057beecf2e7156bb088",
+            "CANDIDATE_B": "4b04e664b70ea9372049231119f2ad786cf5ed0fc1a416c0941101d53167c739"
+          },
+          "evidenceExtractionVersion": "story-review-exact-spans-v1",
+          "clientRequestIdHeaderBytes": 59,
+          "requestFramingAllowanceBytes": 1000,
+          "outboundTransportMetadataSha256": "fa89454b6228afad847fbbee39a173a329887a707191548760547e70791ea615"
+        },
+        "requestId": "5316462e-ebf9-34f2-a56e-40208d8f5996",
+        "maxCostUsd": 0.006104,
+        "experimentVersion": "REAL_CREATIVE_STORY_EVOLUTION_PILOT_V1",
+        "assessmentOnlyPolicy": "ASSESSMENT_ONLY_UNKNOWN_SOURCE_V1"
+      },
+      {
+        "role": "STORY_REVIEW",
+        "state": "PROVIDER_RECEIPT",
+        "envelope": {
+          "role": "STORY_REVIEW",
+          "error": {
+            "detail": "Incomplete provider response; no accepted review",
+            "category": "ValueError",
+            "failureClass": "INCOMPLETE_RESPONSE",
+            "elapsedSeconds": 0.006476
+          },
+          "model": "gpt-4o-mini-2024-07-18",
+          "runId": "449e7601-ce70-41b9-b9d3-c65e56564e65",
+          "usage": {
+            "total_tokens": 300,
+            "prompt_tokens": 100,
+            "completion_tokens": 200,
+            "prompt_tokens_details": null,
+            "completion_tokens_details": null
+          },
+          "policy": "ASSESSMENT_ONLY_UNKNOWN_SOURCE_V1",
+          "binding": {
+            "role": "STORY_REVIEW",
+            "model": "gpt-4o-mini-2024-07-18",
+            "policy": "ASSESSMENT_ONLY_UNKNOWN_SOURCE_V1",
+            "fallback": false,
+            "provider": "openai",
+            "maxRequests": 1,
+            "schemaBytes": 7273,
+            "scopeSha256": "e843b45debd07250f25ef68e7cc61ff2d488d429f71135c502ec12cd090d37d6",
+            "systemBytes": 2645,
+            "payloadBytes": 12721,
+            "systemSha256": "8cef6972c1ec478f7fbdc04cfec4789a9f3e5757f0f2f2e020e9fc6d98f50cef",
+            "schemaVersion": "assessment-only-story-review-v3-evidence-refs",
+            "timeoutPolicy": {
+              "version": "assessment-story-review-timeouts-v1",
+              "poolSeconds": 5,
+              "readSeconds": 60,
+              "writeSeconds": 10,
+              "connectSeconds": 5,
+              "backendHttpSeconds": 90,
+              "workflowDeadlineSeconds": 600
+            },
+            "assessmentOnly": true,
+            "maxOutputTokens": 4000,
+            "automaticRetries": false,
+            "maximumInputBytes": 24000,
+            "sourceStorySha256": "ba352d486c4252c5c6fefe585ad976c0b6f73c299f7554863848bdd842a99b3d",
+            "inputUsdPerMillion": 0.15,
+            "responseFormatType": "json_schema",
+            "outputUsdPerMillion": 0.6,
+            "implementationSha256": "73320331bfb515d43065341b6aa286777ac069922f1fb43d3bd2a74021a30c73",
+            "maximumCalculatedUsd": 0.0061035,
+            "responseFormatSha256": "f2c4e0311b3a7acc8092dec6d2d2458e7dc3e3122ec2cd45d8a392342f834179",
+            "responseSchemaSha256": "2d40c450d6e011db93b7a3add1545ccce24100555c44c965ffb015aef55ebff6",
+            "clientRequestIdPolicy": "application-request-uuid-v1",
+            "evidenceCatalogSha256": "5b15086899fc5c80f5de99a749fa3b70d47d32175a6a0ee0bcfdd8ab6f2273d7",
+            "effectiveRequestSha256": "139783279debb6bb96565dae71b484f864d3a7c3695b7e84a0fb013faa4ccaf3",
+            "serializedRequestBytes": 23690,
+            "strictStructuredOutput": true,
+            "serializedRequestSha256": "1a71b03de5462156ee09f6f4f65bd526c29f751f03e84b96f719d5eafd10ea35",
+            "evidenceDocumentBindings": {
+              "SOURCE": "ba352d486c4252c5c6fefe585ad976c0b6f73c299f7554863848bdd842a99b3d",
+              "CANDIDATE_A": "50bae8834df06f6092a37947d422e136c41c72ea80838057beecf2e7156bb088",
+              "CANDIDATE_B": "4b04e664b70ea9372049231119f2ad786cf5ed0fc1a416c0941101d53167c739"
+            },
+            "evidenceExtractionVersion": "story-review-exact-spans-v1",
+            "clientRequestIdHeaderBytes": 59,
+            "requestFramingAllowanceBytes": 1000,
+            "outboundTransportMetadataSha256": "fa89454b6228afad847fbbee39a173a329887a707191548760547e70791ea615"
+          },
+          "provider": "openai",
+          "requestId": "5316462e-ebf9-34f2-a56e-40208d8f5996",
+          "retrySafe": false,
+          "diagnostics": {
+            "usageReceived": true,
+            "elapsedSeconds": 0.006822,
+            "completeSdkResponseReceived": true
+          },
+          "evidenceType": "MACHINE_REVIEW",
+          "actualCostUsd": 0.000135,
+          "billingStatus": "KNOWN_INCURRED",
+          "modelIdentity": {
+            "verified": true,
+            "aliasApplied": false,
+            "policyVersion": "exact-provider-model-v2",
+            "requestedModel": "gpt-4o-mini-2024-07-18",
+            "pricingIdentity": "gpt-4o-mini-2024-07-18",
+            "actualReturnedModel": "gpt-4o-mini-2024-07-18"
+          },
+          "assessmentOnly": true,
+          "rawReceiptFile": "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/backend/target/timeout-hardened-story-review-http-v1/data/workflow/story-assessment-receipts/5316462e-ebf9-34f2-a56e-40208d8f5996-response.json",
+          "responseSha256": "ae0b3f00638cc5d55bb5fb22deed8790c6b2b84080dd01ddadb22e8fcfab5557",
+          "accountingError": {
+            "detail": "Reviewer completion/budget constraint failed",
+            "category": "ValueError",
+            "failureClass": "ACCOUNTING_VALIDATION_FAILED"
+          },
+          "clientRequestId": "5316462e-ebf9-34f2-a56e-40208d8f5996",
+          "processingStatus": "LOCALLY_REJECTED",
+          "rawReceiptSha256": "8cf78aff9dc9639423f46573402634f1a496f3efa00dff2b9176f2d7cbcf74e2",
+          "requestStartedAt": "2026-10-17T23:59:04.558823+00:00",
+          "responseReceived": true,
+          "primaryFailureFile": "/Users/benanaktas/project/video/content-intelligence-platform/intelligence/backend/target/timeout-hardened-story-review-http-v1/data/workflow/story-assessment-receipts/5316462e-ebf9-34f2-a56e-40208d8f5996-failure.json",
+          "providerDispatched": true,
+          "requestFingerprint": "427e3c831ae887c0b58dc8af2baa4108b95f38ad4187199c6f534a012c2431cc",
+          "responseReceivedAt": "2026-10-17T23:59:04.565665+00:00",
+          "providerApiResponse": {
+            "id": "MOCK_ONLY_incomplete",
+            "model": "gpt-4o-mini-2024-07-18",
+            "usage": {
+              "total_tokens": 300,
+              "prompt_tokens": 100,
+              "completion_tokens": 200,
+              "prompt_tokens_details": null,
+              "completion_tokens_details": null
+            },
+            "object": "chat.completion",
+            "choices": [
+              {
+                "index": 0,
+                "message": {
+                  "role": "assistant",
+                  "audio": null,
+                  "content": "{\"schemaVersion\":",
+                  "refusal": null,
+                  "tool_calls": null,
+                  "annotations": null,
+                  "function_call": null
+                },
+                "logprobs": null,
+                "finish_reason": "length"
+              }
+            ],
+            "created": 0,
+            "metadata": null,
+            "moderation": null,
+            "service_tier": null,
+            "system_fingerprint": null
+          },
+          "rawProviderResponse": "{\"schemaVersion\":",
+          "configuredRateCostUsd": 0.000135,
+          "providerResponseMetadata": {
+            "model": "gpt-4o-mini-2024-07-18",
+            "refusal": null,
+            "apiStatus": "COMPLETED",
+            "requestId": "MOCK_ONLY_incomplete",
+            "finishReason": "length",
+            "promptLength": 17,
+            "httpRequestId": null,
+            "promptPresent": true,
+            "elapsedSeconds": 0.002497,
+            "clientRequestId": "5316462e-ebf9-34f2-a56e-40208d8f5996"
+          }
+        },
+        "requestId": "5316462e-ebf9-34f2-a56e-40208d8f5996",
+        "experimentVersion": "REAL_CREATIVE_STORY_EVOLUTION_PILOT_V1",
+        "assessmentOnlyPolicy": "ASSESSMENT_ONLY_UNKNOWN_SOURCE_V1"
+      },
+      {
+        "state": "STOPPED",
+        "reason": "ASSESSMENT_REJECTED_OR_UNCERTAIN"
+      }
+    ]
+  }
+}

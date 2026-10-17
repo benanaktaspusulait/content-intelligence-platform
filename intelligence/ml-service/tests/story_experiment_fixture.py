@@ -85,6 +85,8 @@ def assessment_inputs():
         receipt=json.loads((root/entry['receiptFile']).read_text());candidate=next(c for c in json.loads(receipt['rawProviderResponse'])['alternatives'] if c['candidateId']==entry['candidateId'])
         items.append({**entry,'receipt':receipt,'originalCandidate':candidate})
     source=catalog['sourceScope'];scope={'experimentVersion':'REAL_CREATIVE_STORY_EVOLUTION_PILOT_V1','assessmentOnlyPolicy':catalog['policy'],'catalogSha256':hashlib.sha256(path.read_bytes()).hexdigest(),'sourceScope':source,'candidates':items,'sourceStoryRecordId':source['sourceStoryRecordId'],'sourceStorySha256':source['sourceStorySha256'],'sourceStory':source['sourceStory'],'ownerPolicyApproval':True}
+    from app.workflow.story_assessment import TIMEOUT_POLICY
+    scope['transportPolicy']=dict(TIMEOUT_POLICY)
     return source['sourceStory'],{'assessmentOnlyPolicy':catalog['policy'],'assessmentScope':scope}
 
 

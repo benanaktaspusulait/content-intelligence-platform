@@ -14,6 +14,7 @@ from app.workflow.story_evidence import verify_review_evidence_catalog
 from story_assessment_cases import case_response
 control=Path(os.environ['ASSESSMENT_SDK_CONTROL']);trace=Path(os.environ['ASSESSMENT_MOCK_CALL_TRACE'])
 def transport(request):
+    assert request.extensions['timeout']=={'connect':5,'pool':5,'write':10,'read':60}
     body=json.loads(request.content);mode=json.loads(control.read_text())['mode']
     assert str(request.url)=='https://api.openai.com/v1/chat/completions'
     payload=json.loads(body['messages'][1]['content'])
@@ -24,8 +25,9 @@ def transport(request):
     payload=json.loads(body['messages'][1]['content']);assert 'responseContract' not in payload
     assert [x['ref'] for x in payload['candidates']]==['A','B']
     verify_review_evidence_catalog(payload['evidenceCatalog'],{'SOURCE':payload['originalStory'],**{'CANDIDATE_'+c['ref']:c['narrative'] for c in payload['candidates']}})
-    with trace.open('a') as f:f.write(json.dumps({'mode':mode,'serializedSdkBody':body,'clientRequestId':request.headers.get('X-Client-Request-Id'),'realProviderCalls':0})+'\n')
-    failures={'timeout':httpx.ReadTimeout,'connect-timeout':httpx.ConnectTimeout,'read-timeout':httpx.ReadTimeout,'reset':httpx.ReadError,'dns':httpx.ConnectError}
+    with trace.open('a') as f:f.write(json.dumps({'mode':mode,'serializedSdkBody':body,'clientRequestId':request.headers.get('X-Client-Request-Id'),'effectiveTimeouts':request.extensions['timeout'],'realProviderCalls':0})+'\n')
+    failures={'timeout':httpx.ReadTimeout,'connect-timeout':httpx.ConnectTimeout,'read-timeout':httpx.ReadTimeout,'write-timeout':httpx.WriteTimeout,'pool-timeout':httpx.PoolTimeout,'reset':httpx.ReadError,'dns':httpx.ConnectError}
+    if mode=='outer-disconnect':os._exit(86)  # End only this isolated test ML process before returning an SDK result.
     if mode in failures:raise failures[mode]('Offline simulated transport failure',request=request)
     if mode in ('429','503','400'):
         return httpx.Response(int(mode),headers={'x-request-id':'req-MOCK-ONLY-'+mode},json={'error':{'message':'Offline HTTP status test','type':'offline','code':'offline'}})
@@ -36,7 +38,7 @@ def transport(request):
         'choices':[{'index':0,'message':message,'finish_reason':'length' if mode=='incomplete' else 'stop'}],
         'usage':usage})
 def sdk(**kwargs):
-    assert kwargs['max_retries']==0 and kwargs['timeout']==20
+    assert kwargs['max_retries']==0 and kwargs['timeout'].as_dict()=={'connect':5,'pool':5,'write':10,'read':60}
     return openai.OpenAI(**kwargs,http_client=httpx.Client(transport=httpx.MockTransport(transport)))
 import uvicorn
 from app.main import app
