@@ -254,8 +254,9 @@ def identity_fidelity_followup():
 def assessment_only_review():
     """One existing cross-provider reviewer; never generation or dispatch."""
     from app.workflow.story_assessment import preview, wire, POLICY
-    structured='--structured-review' in sys.argv
-    proof_path=ROOT/('intelligence/docs/story-review-contract-fix-evidence/http-positive-proof.json' if structured else 'intelligence/backend/target/authentic-story-assessment-positive.json')
+    if '--evidence-reference-review' not in sys.argv:
+        raise SystemExit('Consumed quote-review manifests are immutable; use --assessment-only-review --evidence-reference-review for v3 preparation')
+    proof_path=ROOT/'intelligence/docs/story-review-evidence-reference-fix-evidence/http-positive-proof.json'
     proof=json.loads(proof_path.read_text())
     if proof.get('realProviderCalls') != 0 or proof.get('productionDbWrites') != 0:
         raise SystemExit('Non-billable real-application review proof required')
@@ -286,15 +287,15 @@ def assessment_only_review():
         'readOnlyEvidenceRootRequired':str(ROOT/'intelligence/docs'),
         'disposableProofSha256':hashlib.sha256(proof_path.read_bytes()).hexdigest(),
         'providerAvailability':'NOT_PROBED_THIS_TASK; previous non-inference model metadata retained; exact model failure must stop without fallback'}
-    target=ROOT/('intelligence/docs/STORY_REVIEW_STRUCTURED_OUTPUT_REVIEW_MANIFEST.json' if structured else 'intelligence/docs/AUTHENTIC_STORY_ASSESSMENT_REVIEW_MANIFEST.json')
-    if structured:
-        from app.workflow.story_assessment import request_body, RESPONSE_CONTRACT
-        prepared['providerRequest']=request_body(scope['sourceStory'],context)
-        evidence=ROOT/'intelligence/docs/story-review-contract-fix-evidence'
-        for name,value in [('strict-response-schema.json',RESPONSE_CONTRACT),('next-exact-sdk-request.json',prepared['providerRequest'])]:
-            (evidence/name).write_text(json.dumps(value,indent=2,ensure_ascii=False)+'\n')
-        (evidence/'next-system.txt').write_text(prepared['fullReviewerRequest']['system'])
-        (evidence/'next-user.txt').write_text(json.dumps(prepared['fullReviewerRequest']['payload'],ensure_ascii=False,sort_keys=True,separators=(',',':')))
+    target=ROOT/'intelligence/docs/STORY_REVIEW_EVIDENCE_REFERENCE_REVIEW_MANIFEST.json'
+    from app.workflow.story_assessment import request_body
+    prepared['providerRequest']=request_body(scope['sourceStory'],context)
+    prepared['authorizationTemplate']['idempotencyKey']='authentic-assessment-refs-v3-'+fingerprint({'scope':scope,'operation':operation})[:32]
+    evidence=ROOT/'intelligence/docs/story-review-evidence-reference-fix-evidence'
+    for name,value in [('strict-response-schema.json',prepared['providerRequest']['response_format']['json_schema']['schema']),('next-exact-sdk-request.json',prepared['providerRequest']),('evidence-catalog.json',prepared['fullReviewerRequest']['payload']['evidenceCatalog'])]:
+        (evidence/name).write_text(json.dumps(value,indent=2,ensure_ascii=False)+'\n')
+    (evidence/'next-system.txt').write_text(prepared['fullReviewerRequest']['system'])
+    (evidence/'next-user.txt').write_text(json.dumps(prepared['fullReviewerRequest']['payload'],ensure_ascii=False,sort_keys=True,separators=(',',':')))
     target.write_text(json.dumps(prepared,indent=2,ensure_ascii=False)+'\n')
     print(json.dumps({'manifest':str(target),'maximumReservedUsd':str(cap),'maxCalls':1,'paidAuthorization':'NOT_GRANTED','realProviderCalls':0}))
 

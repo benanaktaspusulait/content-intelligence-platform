@@ -1,0 +1,355 @@
+{
+  "schemaVersion": "assessment-only-story-review-v3-evidence-refs",
+  "candidateAssessments": {
+    "A": {
+      "semanticChecks": {
+        "identity": {
+          "outcome": "PASS",
+          "basis": "SEMANTIC_SUPPORT",
+          "sourceEvidenceIds": [
+            "S01-eddd77bfa3dd735f"
+          ],
+          "candidateEvidenceIds": [
+            "A01-6f1e177d2eddfff5"
+          ],
+          "reason": "The same named rabbit is explicit; mocked opinion, not a real review."
+        },
+        "premise": {
+          "outcome": "PASS",
+          "basis": "SEMANTIC_SUPPORT",
+          "sourceEvidenceIds": [
+            "S01-eddd77bfa3dd735f"
+          ],
+          "candidateEvidenceIds": [
+            "A01-6f1e177d2eddfff5"
+          ],
+          "reason": "Finger adhesion leaves intended cabinet placement unsuccessful."
+        },
+        "rule": {
+          "outcome": "UNKNOWN",
+          "basis": "INSUFFICIENT",
+          "sourceEvidenceIds": [
+            "S05-eddd77bfa3dd735f"
+          ],
+          "candidateEvidenceIds": [
+            "A03-6f1e177d2eddfff5",
+            "A05-6f1e177d2eddfff5"
+          ],
+          "reason": "Count increases are explicit; removal intention needs interpretation."
+        },
+        "continuity": {
+          "outcome": "PASS",
+          "basis": "SEMANTIC_SUPPORT",
+          "sourceEvidenceIds": [
+            "S06-eddd77bfa3dd735f"
+          ],
+          "candidateEvidenceIds": [
+            "A05-6f1e177d2eddfff5",
+            "A06-6f1e177d2eddfff5",
+            "A07-6f1e177d2eddfff5",
+            "A08-6f1e177d2eddfff5",
+            "A09-6f1e177d2eddfff5"
+          ],
+          "reason": "The covered-state, held-stop and sneeze-release sequence supports continuity without identical wording; synthetic interpretation only."
+        },
+        "ending": {
+          "outcome": "PASS",
+          "basis": "SEMANTIC_SUPPORT",
+          "sourceEvidenceIds": [
+            "S07-eddd77bfa3dd735f"
+          ],
+          "candidateEvidenceIds": [
+            "A10-6f1e177d2eddfff5"
+          ],
+          "reason": "Relief and a still-messy cabinet are retained."
+        },
+        "trigger_conditions": {
+          "outcome": "UNKNOWN",
+          "basis": "INSUFFICIENT",
+          "sourceEvidenceIds": [
+            "S05-eddd77bfa3dd735f"
+          ],
+          "candidateEvidenceIds": [
+            "A02-6f1e177d2eddfff5"
+          ],
+          "reason": "Shaking may be removal-directed; intent remains ambiguous."
+        },
+        "single_mechanic": {
+          "outcome": "UNKNOWN",
+          "basis": "INSUFFICIENT",
+          "sourceEvidenceIds": [
+            "S05-eddd77bfa3dd735f"
+          ],
+          "candidateEvidenceIds": [
+            "A03-6f1e177d2eddfff5",
+            "A05-6f1e177d2eddfff5"
+          ],
+          "reason": "The notes multiply; no independent visual verification of the mechanism exists."
+        },
+        "causal_clarity": {
+          "outcome": "UNKNOWN",
+          "basis": "INSUFFICIENT",
+          "sourceEvidenceIds": [
+            "S05-eddd77bfa3dd735f"
+          ],
+          "candidateEvidenceIds": [
+            "A06-6f1e177d2eddfff5"
+          ],
+          "reason": "The deliberate stop is visible in text; trigger interpretation is unresolved."
+        },
+        "protected_events": {
+          "outcome": "UNKNOWN",
+          "basis": "INSUFFICIENT",
+          "sourceEvidenceIds": [
+            "S06-eddd77bfa3dd735f"
+          ],
+          "candidateEvidenceIds": [
+            "A09-6f1e177d2eddfff5"
+          ],
+          "reason": "Core coverage and sneeze-release facts need meaning assessment; incidental mirror staging is not separately locked."
+        }
+      },
+      "semanticOutcome": "SEMANTIC_SOURCE_UNKNOWN",
+      "sourceUnknowns": "Remaining uncertainty about trigger intention and independent single-mechanic causal interpretation.",
+      "creativeDimensions": {
+        "SCROLL_STOP_VISUAL_PROMISE": {
+          "candidateEvidenceIds": [
+            "A01-6f1e177d2eddfff5"
+          ],
+          "strength": "Placement goal and contact obstacle are observable.",
+          "weakness": "No demonstrated baseline-relative creative gain.",
+          "risk": "480p contact legibility remains unverified."
+        },
+        "CAUSAL_PROGRESSION": {
+          "candidateEvidenceIds": [
+            "A03-6f1e177d2eddfff5"
+          ],
+          "strength": "Count changes create successive consequences.",
+          "weakness": "No demonstrated baseline-relative creative gain.",
+          "risk": "Count and attachment continuity need visual checking."
+        },
+        "VISUAL_STORYTELLING": {
+          "candidateEvidenceIds": [
+            "A06-6f1e177d2eddfff5"
+          ],
+          "strength": "Stopping is expressed as a body state.",
+          "weakness": "No demonstrated baseline-relative creative gain.",
+          "risk": "Body coverage can hide facial expression."
+        },
+        "PRODUCTION_EXECUTABILITY": {
+          "candidateEvidenceIds": [
+            "A09-6f1e177d2eddfff5"
+          ],
+          "strength": "Named actions can be staged in sequence.",
+          "weakness": "No demonstrated baseline-relative creative gain.",
+          "risk": "Contact plus scatter may overload 15 seconds."
+        },
+        "ENDING_REPLAY": {
+          "candidateEvidenceIds": [
+            "A10-6f1e177d2eddfff5"
+          ],
+          "strength": "Relief contrasts with the remaining messy cabinet.",
+          "weakness": "No demonstrated baseline-relative creative gain.",
+          "risk": "Audience and replay behavior are unknown."
+        },
+        "DISTINCTIVE_CREATIVE_VALUE": {
+          "candidateEvidenceIds": [
+            "A07-6f1e177d2eddfff5"
+          ],
+          "strength": "Stillness interrupts repeated struggling.",
+          "weakness": "No demonstrated baseline-relative creative gain.",
+          "risk": "Stopping posture effectiveness remains a hypothesis."
+        }
+      },
+      "creativeConclusion": {
+        "outcome": "MATERIAL_IMPROVEMENT",
+        "baselineEvidenceIds": [
+          "S05-eddd77bfa3dd735f"
+        ],
+        "candidateEvidenceIds": [
+          "A06-6f1e177d2eddfff5"
+        ],
+        "change": "Pip sits with arms folded rather than turning toward the mirror.",
+        "visibleConsequence": "Arms folded while Pip sits makes the refusal observable.",
+        "addressedWeakness": "The mirror turn competes with the deliberate stopping decision.",
+        "newRisk": "Sitting plus sneeze may crowd the 15-second sequence.",
+        "materialityReason": "An explicit refusal posture externalizes the stopping decision; this is a test hypothesis, not observed viewer benefit."
+      },
+      "eligibleForOwnerProposal": false
+    },
+    "B": {
+      "semanticChecks": {
+        "identity": {
+          "outcome": "PASS",
+          "basis": "SEMANTIC_SUPPORT",
+          "sourceEvidenceIds": [
+            "S01-eddd77bfa3dd735f"
+          ],
+          "candidateEvidenceIds": [
+            "B01-bf050df0590b2a67"
+          ],
+          "reason": "The same named rabbit is explicit; mocked opinion, not a real review."
+        },
+        "premise": {
+          "outcome": "PASS",
+          "basis": "SEMANTIC_SUPPORT",
+          "sourceEvidenceIds": [
+            "S01-eddd77bfa3dd735f"
+          ],
+          "candidateEvidenceIds": [
+            "B01-bf050df0590b2a67"
+          ],
+          "reason": "Finger adhesion leaves intended cabinet placement unsuccessful."
+        },
+        "rule": {
+          "outcome": "UNKNOWN",
+          "basis": "INSUFFICIENT",
+          "sourceEvidenceIds": [
+            "S05-eddd77bfa3dd735f"
+          ],
+          "candidateEvidenceIds": [
+            "B02-bf050df0590b2a67",
+            "B04-bf050df0590b2a67"
+          ],
+          "reason": "Count increases are explicit; removal intention needs interpretation."
+        },
+        "continuity": {
+          "outcome": "PASS",
+          "basis": "SEMANTIC_SUPPORT",
+          "sourceEvidenceIds": [
+            "S06-eddd77bfa3dd735f"
+          ],
+          "candidateEvidenceIds": [
+            "B04-bf050df0590b2a67",
+            "B05-bf050df0590b2a67",
+            "B06-bf050df0590b2a67",
+            "B07-bf050df0590b2a67"
+          ],
+          "reason": "The covered-state, held-stop and sneeze-release sequence supports continuity without identical wording; synthetic interpretation only."
+        },
+        "ending": {
+          "outcome": "PASS",
+          "basis": "SEMANTIC_SUPPORT",
+          "sourceEvidenceIds": [
+            "S07-eddd77bfa3dd735f"
+          ],
+          "candidateEvidenceIds": [
+            "B08-bf050df0590b2a67"
+          ],
+          "reason": "Relief and a still-messy cabinet are retained."
+        },
+        "trigger_conditions": {
+          "outcome": "PASS",
+          "basis": "SEMANTIC_SUPPORT",
+          "sourceEvidenceIds": [
+            "S05-eddd77bfa3dd735f"
+          ],
+          "candidateEvidenceIds": [
+            "B02-bf050df0590b2a67"
+          ],
+          "reason": "Peeling explicitly attempts removal before multiplication."
+        },
+        "single_mechanic": {
+          "outcome": "UNKNOWN",
+          "basis": "INSUFFICIENT",
+          "sourceEvidenceIds": [
+            "S05-eddd77bfa3dd735f"
+          ],
+          "candidateEvidenceIds": [
+            "B02-bf050df0590b2a67",
+            "B04-bf050df0590b2a67"
+          ],
+          "reason": "The notes multiply; no independent visual verification of the mechanism exists."
+        },
+        "causal_clarity": {
+          "outcome": "UNKNOWN",
+          "basis": "INSUFFICIENT",
+          "sourceEvidenceIds": [
+            "S05-eddd77bfa3dd735f"
+          ],
+          "candidateEvidenceIds": [
+            "B06-bf050df0590b2a67"
+          ],
+          "reason": "The deliberate stop is visible in text; trigger interpretation is unresolved."
+        },
+        "protected_events": {
+          "outcome": "UNKNOWN",
+          "basis": "INSUFFICIENT",
+          "sourceEvidenceIds": [
+            "S06-eddd77bfa3dd735f"
+          ],
+          "candidateEvidenceIds": [
+            "B07-bf050df0590b2a67"
+          ],
+          "reason": "Core coverage and sneeze-release facts need meaning assessment; incidental mirror staging is not separately locked."
+        }
+      },
+      "semanticOutcome": "SEMANTIC_SOURCE_UNKNOWN",
+      "sourceUnknowns": "Remaining uncertainty about trigger intention and independent single-mechanic causal interpretation.",
+      "creativeDimensions": {
+        "SCROLL_STOP_VISUAL_PROMISE": {
+          "candidateEvidenceIds": [
+            "B01-bf050df0590b2a67"
+          ],
+          "strength": "Placement goal and contact obstacle are observable.",
+          "weakness": "No demonstrated baseline-relative creative gain.",
+          "risk": "480p contact legibility remains unverified."
+        },
+        "CAUSAL_PROGRESSION": {
+          "candidateEvidenceIds": [
+            "B02-bf050df0590b2a67"
+          ],
+          "strength": "Count changes create successive consequences.",
+          "weakness": "No demonstrated baseline-relative creative gain.",
+          "risk": "Count and attachment continuity need visual checking."
+        },
+        "VISUAL_STORYTELLING": {
+          "candidateEvidenceIds": [
+            "B06-bf050df0590b2a67"
+          ],
+          "strength": "Stopping is expressed as a body state.",
+          "weakness": "No demonstrated baseline-relative creative gain.",
+          "risk": "Body coverage can hide facial expression."
+        },
+        "PRODUCTION_EXECUTABILITY": {
+          "candidateEvidenceIds": [
+            "B07-bf050df0590b2a67"
+          ],
+          "strength": "Named actions can be staged in sequence.",
+          "weakness": "No demonstrated baseline-relative creative gain.",
+          "risk": "Contact plus scatter may overload 15 seconds."
+        },
+        "ENDING_REPLAY": {
+          "candidateEvidenceIds": [
+            "B08-bf050df0590b2a67"
+          ],
+          "strength": "Relief contrasts with the remaining messy cabinet.",
+          "weakness": "No demonstrated baseline-relative creative gain.",
+          "risk": "Audience and replay behavior are unknown."
+        },
+        "DISTINCTIVE_CREATIVE_VALUE": {
+          "candidateEvidenceIds": [
+            "B06-bf050df0590b2a67"
+          ],
+          "strength": "Stillness interrupts repeated struggling.",
+          "weakness": "No demonstrated baseline-relative creative gain.",
+          "risk": "Stopping posture effectiveness remains a hypothesis."
+        }
+      },
+      "creativeConclusion": {
+        "outcome": "NO_MATERIAL_IMPROVEMENT",
+        "baselineEvidenceIds": [],
+        "candidateEvidenceIds": [],
+        "change": "",
+        "visibleConsequence": "",
+        "addressedWeakness": "",
+        "newRisk": "",
+        "materialityReason": ""
+      },
+      "eligibleForOwnerProposal": false
+    }
+  },
+  "researchPreference": "NO_CREATIVE_WINNER",
+  "reason": "No actionable research winner: source questions remain, and the proposed staging gain is not independently verified.",
+  "evidenceLimitations": "Synthetic offline capacity example only; not an independent real machine judgment, render result or audience evidence."
+}

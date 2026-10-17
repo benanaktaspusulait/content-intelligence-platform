@@ -10,16 +10,20 @@ def audit(event,args):
     if event=='socket.getaddrinfo' and args[0] not in ('127.0.0.1','localhost','::1'):raise PermissionError('Offline DNS denied')
 sys.addaudithook(audit)
 from app.workflow.story_assessment import response_format,SYSTEM
+from app.workflow.story_evidence import verify_review_evidence_catalog
 from story_assessment_cases import case_response
 control=Path(os.environ['ASSESSMENT_SDK_CONTROL']);trace=Path(os.environ['ASSESSMENT_MOCK_CALL_TRACE'])
 def transport(request):
     body=json.loads(request.content);mode=json.loads(control.read_text())['mode']
     assert str(request.url)=='https://api.openai.com/v1/chat/completions'
-    assert body['response_format']==response_format()
+    payload=json.loads(body['messages'][1]['content'])
+    assert body['response_format']==response_format(payload['evidenceCatalog'])
+    assert all('Quote' not in key for key in body['response_format']['json_schema']['schema']['$defs']['semantic_A']['properties'])
     assert body['model']=='gpt-4o-mini-2024-07-18' and body['max_tokens']==4000 and body['temperature']==0
     assert body['messages'][0]=={'role':'system','content':SYSTEM}
     payload=json.loads(body['messages'][1]['content']);assert 'responseContract' not in payload
     assert [x['ref'] for x in payload['candidates']]==['A','B']
+    verify_review_evidence_catalog(payload['evidenceCatalog'],{'SOURCE':payload['originalStory'],**{'CANDIDATE_'+c['ref']:c['narrative'] for c in payload['candidates']}})
     with trace.open('a') as f:f.write(json.dumps({'mode':mode,'serializedSdkBody':body,'realProviderCalls':0})+'\n')
     if mode=='timeout':raise httpx.ReadTimeout('Offline simulated timeout',request=request)
     message={'role':'assistant','content':case_response(payload,mode),'refusal':None}

@@ -1,0 +1,27 @@
+........................................................................ [ 20%]
+........................................................................ [ 41%]
+........................................................................ [ 62%]
+........................................................................ [ 83%]
+........................................................                 [100%]
+=============================== warnings summary ===============================
+tests/test_creative_roles.py: 48 warnings
+tests/test_adaptive_optimization_v3.py: 244 warnings
+tests/test_f8_authorization.py: 19 warnings
+tests/test_hook_002_metamorphic_stability.py: 31 warnings
+  /Users/benanaktas/project/video/content-intelligence-platform/intelligence/ml-service/app/parser/prompt_parser.py:209: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+    "createdAt": datetime.utcnow().isoformat() + "Z",
+
+tests/test_llm_providers.py::test_get_provider_gemini
+  /Users/benanaktas/project/video/content-intelligence-platform/intelligence/ml-service/app/llm/gemini_provider.py:3: FutureWarning: 
+  
+  All support for the `google.generativeai` package has ended. It will no longer be receiving 
+  updates or bug fixes. Please switch to the `google.genai` package as soon as possible.
+  See README for more details:
+  
+  https://github.com/google-gemini/deprecated-generative-ai-python/blob/main/README.md
+  
+    import google.generativeai as genai
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+- generated xml file: /Users/benanaktas/project/video/content-intelligence-platform/intelligence/docs/story-review-evidence-reference-fix-evidence/ml-results.xml -
+344 passed, 343 warnings in 7.61s

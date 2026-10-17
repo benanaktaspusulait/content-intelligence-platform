@@ -1,0 +1,12 @@
+{
+  "exampleType": "SYNTHETIC_CONTRACT_AND_CAPACITY_ONLY_NOT_REAL_REVIEW",
+  "tokenizer": "o200k_base",
+  "semanticChecks": 18,
+  "creativeDimensions": 12,
+  "outputCompactTokens": 2365,
+  "outputIndentedTokens": 3182,
+  "maximumOutputTokens": 4000,
+  "wholeSerializedRequestBytes": 23690,
+  "inputBillingVerified": false,
+  "realProviderCalls": 0
+}

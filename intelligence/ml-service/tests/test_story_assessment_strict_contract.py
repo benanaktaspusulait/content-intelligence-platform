@@ -1,173 +1,247 @@
-"""No network/provider calls: actual SDK serialization + exact archived response replay."""
+"""Reference-contract tests: immutable real inputs; SDK HTTP only is mocked."""
 from copy import deepcopy
-import hashlib,json,os,uuid
+import hashlib,json,uuid
 from pathlib import Path
 from unittest.mock import patch
 import httpx,pytest,openai
 from jsonschema import Draft202012Validator
 from app.workflow import story_assessment as a
-from app.workflow.story_experiment import encoded
-from story_experiment_fixture import assessment_inputs,assessment_review
+from app.workflow.story_evidence import review_evidence_catalog,verify_review_evidence_catalog
+from story_experiment_fixture import assessment_inputs,assessment_review,evidence_ids,assessment_failed_check
 from story_assessment_cases import material_comparison,case_response,HISTORICAL,DOCS
 from test_story_assessment import configuration,grant
 
 
 def example():
-    text,c=assessment_inputs();return text,c,assessment_review(a.wire(text,c)['payload'])
+    text,c=assessment_inputs();payload=a.wire(text,c)['payload']
+    return text,c,payload,assessment_review(payload)
 
 
-def test_schema_uses_only_provider_supported_subset_and_is_same_local_authority():
-    Draft202012Validator.check_schema(a.RESPONSE_CONTRACT)
-    allowed={'type','properties','required','additionalProperties','$ref','$defs','enum'}
-    def check(node):
-        assert set(node)<=allowed
-        if node.get('type')=='object':assert set(node['required'])==set(node['properties']) and node['additionalProperties'] is False
-        for v in node.get('properties',{}).values():check(v)
-        for v in node.get('$defs',{}).values():check(v)
-    check(a.RESPONSE_CONTRACT)
-    assert a.response_format()['json_schema']['schema']==a.RESPONSE_CONTRACT
-    assert a.response_format()['json_schema']['strict'] is True
-    text,c,v=example();assert a.validate_review(v,text,c) is v
-    assert 'responseContract' not in a.wire(text,c)['payload']
+def test_native_subset_and_same_local_schema_without_any_quotation_fields():
+    text,c,p,v=example();schema=a.response_contract(p['evidenceCatalog']);Draft202012Validator.check_schema(schema)
+    allowed={'type','properties','required','additionalProperties','$ref','$defs','enum','items'}
+    def inspect(n):
+        assert set(n)<=allowed
+        if n.get('type')=='object':
+            assert set(n['required'])==set(n['properties']) and not n['additionalProperties']
+            assert not any(k in n['properties'] for k in ('sourceQuote','candidateQuote','baselineQuote','quote'))
+        for x in n.get('properties',{}).values():inspect(x)
+        for x in n.get('$defs',{}).values():inspect(x)
+        if 'items' in n:inspect(n['items'])
+    inspect(schema)
+    assert a.wire(text,c)['responseFormat']['json_schema']['schema']==schema
+    assert a.validate_review(v,text,c) is v
 
 
 @pytest.mark.parametrize('ref',['A','B'])
 @pytest.mark.parametrize('check',a.CHECKS)
-def test_every_semantic_check_is_structurally_required(ref,check):
-    text,c,v=example();v['candidateAssessments'][ref]['semanticChecks'].pop(check)
+def test_each_semantic_check_required(ref,check):
+    text,c,p,v=example();v['candidateAssessments'][ref]['semanticChecks'].pop(check)
     with pytest.raises(ValueError,match='Strict review schema'):a.validate_review(v,text,c)
 
 
 @pytest.mark.parametrize('ref',['A','B'])
 @pytest.mark.parametrize('dimension',list(a.DIMENSIONS))
-def test_every_creative_dimension_is_structurally_required(ref,dimension):
-    text,c,v=example();v['candidateAssessments'][ref]['creativeDimensions'].pop(dimension)
+def test_each_creative_dimension_required(ref,dimension):
+    text,c,p,v=example();v['candidateAssessments'][ref]['creativeDimensions'].pop(dimension)
     with pytest.raises(ValueError,match='Strict review schema'):a.validate_review(v,text,c)
 
 
-@pytest.mark.parametrize('mode',['missing-top','nested','missing-B','extra-C','missing-field','extra-field','invalid-enum','combined-enum'])
-def test_exact_topology_and_enums(mode):
-    text,c,v=example()
-    if mode=='missing-top':v.pop('candidateAssessments')
+@pytest.mark.parametrize('mode',['nested','missing-top','missing-B','extra-C','missing-field','extra-field','combined-enum','authored-quote'])
+def test_fixed_topology_and_no_old_quote_fields(mode):
+    text,c,p,v=example()
     if mode=='nested':v['responseContract']={'candidateAssessments':v.pop('candidateAssessments')}
+    if mode=='missing-top':v.pop('candidateAssessments')
     if mode=='missing-B':v['candidateAssessments'].pop('B')
     if mode=='extra-C':v['candidateAssessments']['C']=deepcopy(v['candidateAssessments']['A'])
     if mode=='missing-field':v['candidateAssessments']['A']['semanticChecks']['identity'].pop('reason')
     if mode=='extra-field':v['renderAuthorized']=True
-    if mode=='invalid-enum':v['candidateAssessments']['A']['semanticOutcome']='PASS'
     if mode=='combined-enum':v['researchPreference']='A | B | NO_CREATIVE_WINNER'
-    with pytest.raises(ValueError,match='Strict review schema'):a.validate_review(v,text,c)
-
-
-@pytest.mark.parametrize('candidateQuote,outcome,basis,reason',[
- ('Pip the rabbit','PASS','SEMANTIC_SUPPORT','Same named rabbit is explicit.'),
- ('The notes stay put.','PASS','SEMANTIC_SUPPORT','Attached notes persist into the following sneeze; wording differs.'),
- ('The notes stay put.','UNKNOWN','INSUFFICIENT','Persistence is suggested, but exact release continuity needs independent judgment.'),
- ('','UNKNOWN','INSUFFICIENT','No sufficient evidence for this question.'),
-])
-def test_verbatim_paraphrase_and_uncertainty_are_distinct(candidateQuote,outcome,basis,reason):
-    text,c,v=example();row=v['candidateAssessments']['A'];check='identity' if candidateQuote=='Pip the rabbit' else 'continuity';sourceQuote='Pip the rabbit' if check=='identity' else 'Pip remains covered until a sneeze scatters the notes onto the cabinet';row['semanticChecks'][check].update(outcome=outcome,basis=basis,sourceQuote=sourceQuote,candidateQuote=candidateQuote,reason=reason)
-    assert a.validate_review(v,text,c)['candidateAssessments']['A']['semanticChecks'][check]['outcome']==outcome
-    assert row['eligibleForOwnerProposal'] is False
-
-
-@pytest.mark.parametrize('failure',['source-quote','candidate-quote','empty-fail','absence-fail','basis','aggregation','unknown-question','fail-eligibility'])
-def test_unsupported_or_inconsistent_semantic_claims_rejected(failure):
-    text,c,v=example();row=v['candidateAssessments']['A'];f=row['semanticChecks']['continuity']
-    if failure=='source-quote':f['sourceQuote']='Invented source'
-    if failure=='candidate-quote':f['candidateQuote']='Notes detach before the sneeze'
-    if failure in ('empty-fail','absence-fail','fail-eligibility'):
-        row['semanticOutcome']='SEMANTIC_SOURCE_FAIL';f.update(outcome='FAIL',basis='CONTRADICTION',sourceQuote='Pip remains covered until a sneeze scatters the notes onto the cabinet',candidateQuote='The notes stay put.',reason='A conflicting release is alleged by this offline test.')
-    if failure=='empty-fail':f['candidateQuote']=''
-    if failure=='absence-fail':f['reason']='The exact source sentence is missing.'
-    if failure=='fail-eligibility':row['eligibleForOwnerProposal']=True
-    if failure=='basis':f['basis']='CONTRADICTION'
-    if failure=='aggregation':row['semanticOutcome']='SEMANTIC_SOURCE_PASS'
-    if failure=='unknown-question':row['sourceUnknowns']='NONE'
+    if mode=='authored-quote':v['candidateAssessments']['A']['semanticChecks']['identity']['candidateQuote']='Pip the rabbit'
     with pytest.raises(ValueError):a.validate_review(v,text,c)
 
 
-@pytest.mark.parametrize('conflict,check,sourceQuote',[
- ('The notes fall off before Pip sneezes.','continuity','Pip remains covered until a sneeze scatters the notes onto the cabinet'),
- ('Standing still doubles the notes.','trigger_conditions','every removal or transfer attempt multiplies the notes'),
-])
-def test_explicit_negative_opinions_need_real_conflicting_evidence(conflict,check,sourceQuote):
-    # Isolated synthetic conflict; no authentic candidate is modified or re-hashed.
-    text,c,v=example();synthetic=deepcopy(a.sources(text,c));synthetic[0]['narrative']+=' '+conflict
-    row=v['candidateAssessments']['A'];row['semanticChecks'][check].update(outcome='FAIL',basis='CONTRADICTION',sourceQuote=sourceQuote,candidateQuote=conflict,reason='The candidate explicitly describes a conflicting state or trigger.')
-    row['semanticOutcome']='SEMANTIC_SOURCE_FAIL'
-    with patch.object(a,'sources',return_value=synthetic):assert a.validate_review(v,text,c)['candidateAssessments']['A']['eligibleForOwnerProposal'] is False
+@pytest.mark.parametrize('body',["  Café 🐇 waits; then sneezes.\n Notes stay put!  ", 'α'*1700, 'First clause, '+('word '*230)+'last.', 'One.\nTwo?'])
+def test_catalog_lossless_unicode_offsets_and_determinism(body):
+    docs={'SOURCE':body,'CANDIDATE_A':body,'CANDIDATE_B':body};cat=review_evidence_catalog(docs)
+    assert cat==review_evidence_catalog(docs);verify_review_evidence_catalog(cat,docs)
+    for role,text in docs.items():
+        spans=[r for r in cat['records'] if r['documentRole']==role]
+        assert ''.join(r['exactOriginalText'] for r in spans)==text
+        assert all(text[r['startOffset']:r['endOffset']]==r['exactOriginalText'] and len(r['exactOriginalText'])<=800 for r in spans)
+        assert cat['documentBindings'][role]==hashlib.sha256(text.encode()).hexdigest()
+    assert len({r['evidenceId'] for r in cat['records']})==len(cat['records'])
 
 
-@pytest.mark.parametrize('failure',['empty-comparison','generic','synonym','cosmetic','fake-baseline','fake-candidate','audience','A-plus'])
-def test_material_claims_need_specific_comparative_evidence(failure):
-    text,c,v=example();row=v['candidateAssessments']['A'];comp=material_comparison();row['creativeConclusion']=comp
-    if failure=='empty-comparison':comp['visibleConsequence']=''
+@pytest.mark.parametrize('change',['sha','offset','text','role','id','version','dropped-span','revised-document'])
+def test_catalog_cannot_rebind_or_normalize(change):
+    docs={'SOURCE':'One note. Two notes.','CANDIDATE_A':'Stay still. Sneeze now.','CANDIDATE_B':'Stay still. Sneeze now.'};cat=review_evidence_catalog(docs)
+    key={'sha':'documentSha256','offset':'startOffset','text':'exactOriginalText','role':'documentRole','id':'evidenceId'}.get(change)
+    if key:cat['records'][0][key]=999 if change=='offset' else 'tampered'
+    if change=='version':cat['version']='other'
+    if change=='dropped-span':cat['records'].pop()
+    if change=='revised-document':docs['CANDIDATE_A']+=' Different revision.'
+    with pytest.raises(ValueError):verify_review_evidence_catalog(cat,docs)
+
+
+@pytest.mark.parametrize('bad',[None,'','   ','Bad\x00text','\ud800','x'*12001])
+def test_malformed_document_fails_before_provider(bad):
+    with pytest.raises(ValueError):review_evidence_catalog({'SOURCE':bad,'CANDIDATE_A':'Valid.','CANDIDATE_B':'Valid.'})
+
+
+@pytest.mark.parametrize('target',['A','B'])
+@pytest.mark.parametrize('area',['semantic','creative','comparison'])
+def test_candidate_scoped_native_enums_and_local_isolation(target,area):
+    text,c,p,v=example();other='B' if target=='A' else 'A';row=v['candidateAssessments'][target]
+    wrong=evidence_ids(p,'CANDIDATE_'+other)[:1]
+    if area=='semantic':row['semanticChecks']['identity']['candidateEvidenceIds']=wrong
+    if area=='creative':row['creativeDimensions']['PRODUCTION_EXECUTABILITY']['candidateEvidenceIds']=wrong
+    if area=='comparison':row['creativeConclusion']['candidateEvidenceIds']=wrong
+    assert list(Draft202012Validator(a.response_contract(p['evidenceCatalog'])).iter_errors(v))
+    with pytest.raises(ValueError):a.validate_review(v,text,c)
+
+
+@pytest.mark.parametrize('bad',['invented','A01-different-revision'])
+def test_unknown_or_stale_id_rejected(bad):
+    text,c,p,v=example();v['candidateAssessments']['A']['creativeDimensions']['ENDING_REPLAY']['candidateEvidenceIds']=[bad]
+    with pytest.raises(ValueError):a.validate_review(v,text,c)
+
+
+@pytest.mark.parametrize('ref,fragment,check',[('A','The notes stay put.','continuity'),('B','letting the notes rest.','continuity'),('A','Pip the rabbit','identity')])
+def test_verbatim_or_paraphrased_preservation_selects_real_adjacent_context(ref,fragment,check):
+    text,c,p,v=example();row=v['candidateAssessments'][ref]
+    ids=evidence_ids(p,'CANDIDATE_'+ref,fragment)
+    if check=='continuity':ids+=evidence_ids(p,'CANDIDATE_'+ref,'sneeze')
+    row['semanticChecks'][check].update(outcome='PASS',basis='SEMANTIC_SUPPORT',sourceEvidenceIds=evidence_ids(p,'SOURCE','Pip remains covered' if check=='continuity' else 'Pip the rabbit')[:1],candidateEvidenceIds=list(dict.fromkeys(ids)),reason='Selected sequence supports preserved meaning without a copied source sentence; synthetic opinion only.')
+    assert a.validate_review(v,text,c) is v
+    derived=a.resolve_review_evidence(v,text,c)
+    assert derived['semanticInterpretation']=='MODEL_OPINION_NOT_DETERMINISTIC_PROOF'
+    assert derived['evidenceType']=='APPLICATION_DERIVED_EVIDENCE'
+
+
+@pytest.mark.parametrize('failure',['unsupported-pass','unsupported-fail','literal-absence','wrong-basis','aggregation','unknown-question','fail-eligibility','duplicate-id'])
+def test_semantic_evidence_and_aggregation_guards(failure):
+    text,c,p,v=example();row=v['candidateAssessments']['A'];f=row['semanticChecks']['continuity']
+    if failure in ('unsupported-pass','unsupported-fail'):
+        f.update(outcome='PASS' if failure=='unsupported-pass' else 'FAIL',basis='SEMANTIC_SUPPORT' if failure=='unsupported-pass' else 'CONTRADICTION')
+    if failure in ('literal-absence','fail-eligibility'):
+        assessment_failed_check(v,p);f=row['semanticChecks']['trigger_conditions']
+        if failure=='literal-absence':f['reason']='The exact source sentence is missing.'
+        else:row['eligibleForOwnerProposal']=True
+    if failure=='wrong-basis':f['basis']='CONTRADICTION'
+    if failure=='aggregation':row['semanticOutcome']='SEMANTIC_SOURCE_PASS'
+    if failure=='unknown-question':row['sourceUnknowns']='NONE'
+    if failure=='duplicate-id':f['candidateEvidenceIds']=evidence_ids(p,'CANDIDATE_A')[:1]*2
+    with pytest.raises(ValueError):a.validate_review(v,text,c)
+
+
+def test_substantive_omission_requires_adjacent_context_not_single_matching_passage():
+    text,c,p,v=example();row=v['candidateAssessments']['A'];f=row['semanticChecks']['continuity'];ids=evidence_ids(p,'CANDIDATE_A')
+    row['semanticOutcome']='SEMANTIC_SOURCE_FAIL';f.update(outcome='FAIL',basis='SUBSTANTIVE_OMISSION',sourceEvidenceIds=evidence_ids(p,'SOURCE','Pip remains covered'),candidateEvidenceIds=ids[4:5],reason='Hypothetical omission claim; neighbouring narrative context must be supplied.')
+    with pytest.raises(ValueError,match='adjacent'):a.validate_review(v,text,c)
+    f['candidateEvidenceIds']=[ids[0],ids[-1]]
+    with pytest.raises(ValueError,match='adjacent'):a.validate_review(v,text,c)
+    f['candidateEvidenceIds']=ids[4:6]
+    assert a.validate_review(v,text,c) is v  # provenance/context only, not proof that this alleged omission is true
+
+
+@pytest.mark.parametrize('conflict',['The notes fall off before the sneeze.','Standing still doubles the notes.'])
+def test_conflicting_text_can_be_referenced_without_hardcoded_outcome(conflict):
+    text,c,p,v=example();synthetic=deepcopy(a.sources(text,c));synthetic[0]['narrative']+=' '+conflict
+    with patch.object(a,'sources',return_value=synthetic):
+        payload=a.wire(text,c)['payload'];value=assessment_review(payload);row=value['candidateAssessments']['A'];row['semanticOutcome']='SEMANTIC_SOURCE_FAIL'
+        check='continuity' if 'fall off' in conflict else 'trigger_conditions'
+        row['semanticChecks'][check].update(outcome='FAIL',basis='CONTRADICTION',sourceEvidenceIds=evidence_ids(payload,'SOURCE','Pip remains covered' if check=='continuity' else 'every removal or transfer attempt'),candidateEvidenceIds=evidence_ids(payload,'CANDIDATE_A',conflict),reason='The selected synthetic passage explicitly conflicts with the protected release timing or multiplication trigger.')
+        assert a.validate_review(value,text,c)['candidateAssessments']['A']['eligibleForOwnerProposal'] is False
+
+
+@pytest.mark.parametrize('failure',['empty','generic','cosmetic','audience','A-plus'])
+def test_materiality_and_invented_production_claims_rejected(failure):
+    text,c,p,v=example();row=v['candidateAssessments']['A'];comp=material_comparison(p);row['creativeConclusion']=comp
+    if failure=='empty':comp['candidateEvidenceIds']=[]
     if failure=='generic':
-        for k in ('change','visibleConsequence','addressedWeakness','materialityReason'):comp[k]='Narrative shows creativity but lacks engagement and variety.'
-    if failure=='synonym':comp['baselineQuote']=comp['candidateQuote']='Pip the rabbit'
-    if failure=='cosmetic':comp['change']='Shorter wording describes how Pip sits with arms folded.'
-    if failure=='fake-baseline':comp['baselineQuote']='Made-up original'
-    if failure=='fake-candidate':comp['candidateQuote']='Made-up new narrative'
+        for k in ('change','visibleConsequence','addressedWeakness','materialityReason'):comp[k]='More engaging and creative.'
+    if failure=='cosmetic':comp['change']='Shorter wording describes how the character sits with arms folded.'
     if failure=='audience':row['creativeDimensions']['ENDING_REPLAY']['strength']='Measured retention improved by 30 percent.'
     if failure=='A-plus':row['creativeDimensions']['ENDING_REPLAY']['strength']='Official A+ achieved.'
     with pytest.raises(ValueError):a.validate_review(v,text,c)
 
 
-@pytest.mark.parametrize('outcome',['NO_MATERIAL_IMPROVEMENT','MINOR_VARIATION','UNKNOWN','MATERIAL_IMPROVEMENT'])
-def test_creative_comparison_never_approves_or_overrides_unknown_source(outcome):
-    text,c,v=example();row=v['candidateAssessments']['A'];row['creativeConclusion']=material_comparison();row['creativeConclusion']['outcome']=outcome
+@pytest.mark.parametrize('outcome',['MATERIAL_IMPROVEMENT','MINOR_VARIATION','NO_MATERIAL_IMPROVEMENT','UNKNOWN'])
+def test_comparative_opinion_never_overrides_source_unknown(outcome):
+    text,c,p,v=example();row=v['candidateAssessments']['A'];row['creativeConclusion']=material_comparison(p);row['creativeConclusion']['outcome']=outcome
     assert a.validate_review(v,text,c)['researchPreference']=='NO_CREATIVE_WINNER'
     assert row['eligibleForOwnerProposal'] is False
     v['researchPreference']='A'
-    with pytest.raises(ValueError,match='ineligible'):a.validate_review(v,text,c)
+    with pytest.raises(ValueError):a.validate_review(v,text,c)
 
 
-def test_historical_exact_bytes_fail_both_contracts_without_normalization():
-    text,c=assessment_inputs();raw=HISTORICAL.read_bytes();value=json.loads(raw)
-    receipt=json.loads((HISTORICAL.parent/'durable-provider-receipt.json').read_text())
-    assert hashlib.sha256(raw).hexdigest()==receipt['responseSha256']
-    ns={'sources':a.sources,'DIMENSIONS':a.DIMENSIONS,'SCHEMA':'assessment-only-story-review-v1','EXTRA_CHECKS':a.EXTRA_CHECKS}
-    exec((DOCS/'story-review-contract-fix-evidence/legacy-validator.py.txt').read_text(),ns)
-    with pytest.raises(ValueError,match='Both independent candidate assessments required'):ns['validate_review'](value,text,c)
-    with pytest.raises(ValueError,match='Strict review schema'):a.validate_review(value,text,c)
-    assert raw==HISTORICAL.read_bytes()
+def test_same_text_in_other_document_never_authorizes_other_role_id():
+    cat=review_evidence_catalog({'SOURCE':'Same text.','CANDIDATE_A':'Same text.','CANDIDATE_B':'Same text.'})
+    A=next(r for r in cat['records'] if r['documentRole']=='CANDIDATE_A');B=next(r for r in cat['records'] if r['documentRole']=='CANDIDATE_B')
+    assert A['documentSha256']==B['documentSha256'] and A['evidenceId']!=B['evidenceId']
+    assert A['evidenceId'] not in a.response_contract(cat)['$defs']['ids_B']['items']['enum']
 
 
-@pytest.mark.parametrize('mode',['positive','historical','missing-check','fake-quote','invalid-enum','aggregation','refusal','incomplete','malformed','timeout'])
-def test_real_installed_sdk_serializes_strict_schema_and_preserves_every_receipt(monkeypatch,mode):
+def test_both_historical_paid_responses_are_unchanged_and_rejected():
+    text,c=assessment_inputs();folder=DOCS/'story-review-evidence-reference-fix-evidence'
+    for label,path,validator_path,schema in [
+        ('v1',DOCS/'authentic-story-independent-review-result-evidence/raw-openai-review.txt',DOCS/'story-review-contract-fix-evidence/legacy-validator.py.txt',None),
+        ('v2',DOCS/'real-strict-story-review-execution-evidence/raw-openai-review.txt',folder/'legacy-v2-validator.py.txt',json.loads((folder/'legacy-v2-schema.json').read_text()))]:
+        data=path.read_bytes();value=json.loads(data);receipt=json.loads((path.parent/'durable-provider-receipt.json').read_text());assert hashlib.sha256(data).hexdigest()==receipt['responseSha256']
+        ns={'__name__':'app.workflow.story_assessment','__package__':'app.workflow','sources':a.sources,'DIMENSIONS':a.DIMENSIONS,'EXTRA_CHECKS':a.EXTRA_CHECKS,'SCHEMA':'assessment-only-story-review-'+label,'RESPONSE_CONTRACT':schema}
+        exec(validator_path.read_text(),ns)
+        with pytest.raises(ValueError):ns['validate_review'](value,text,c)
+        with pytest.raises(ValueError):a.validate_review(value,text,c)
+        assert path.read_bytes()==data
+        assert json.loads((path.parent/'actual-final-run.json').read_text())['state']=='STOPPED'
+
+
+@pytest.mark.parametrize('mode',['positive','cross-candidate','fabricated-id','stale-id','missing-evidence','aggregation','unsupported-materiality','refusal','incomplete','malformed','timeout'])
+def test_installed_sdk_serializes_dynamic_enums_preserves_raw_no_retry(monkeypatch,mode):
     text,c=grant();calls=[]
     def transport(request):
-        body=json.loads(request.content);calls.append(body)
-        assert body==a.request_body(text,c)
-        assert body['model']=='gpt-4o-mini-2024-07-18'
-        if mode=='timeout':raise httpx.ReadTimeout('Offline transport timeout',request=request)
+        body=json.loads(request.content);calls.append(body);assert body==a.request_body(text,c)
+        assert body['response_format']['json_schema']['strict'] and body['model']=='gpt-4o-mini-2024-07-18'
+        if mode=='timeout':raise httpx.ReadTimeout('Offline only',request=request)
         message={'role':'assistant','content':case_response(json.loads(body['messages'][1]['content']),mode),'refusal':None}
         if mode=='refusal':message.update(content=None,refusal='Offline refusal')
-        return httpx.Response(200,json={'id':'mock-sdk-only','object':'chat.completion','created':0,'model':body['model'],'choices':[{'index':0,'message':message,'finish_reason':'length' if mode=='incomplete' else 'stop'}],'usage':{'prompt_tokens':100,'completion_tokens':200,'total_tokens':300}})
-    def client(**kwargs):
-        assert kwargs['max_retries']==0 and kwargs['timeout']==20
-        return openai.OpenAI(**kwargs,http_client=httpx.Client(transport=httpx.MockTransport(transport)))
+        return httpx.Response(200,json={'id':'MOCK_ONLY','object':'chat.completion','created':0,'model':body['model'],'choices':[{'index':0,'message':message,'finish_reason':'length' if mode=='incomplete' else 'stop'}],'usage':{'prompt_tokens':100,'completion_tokens':200,'total_tokens':300}})
+    def client(**kw):
+        assert kw['max_retries']==0 and kw['timeout']==20
+        return openai.OpenAI(**kw,http_client=httpx.Client(transport=httpx.MockTransport(transport)))
     monkeypatch.setenv('OPENAI_API_KEY','offline-not-a-credential')
-    with patch('app.llm.openai_provider.OpenAI',side_effect=client):result=a.execute(text,c,.1)
-    assert len(calls)==1
-    assert (result['processingStatus']=='INDEPENDENT_REVIEW_COMPLETED')==(mode=='positive')
-    if mode=='timeout':assert result['billingStatus']=='USAGE_UNKNOWN' and result['actualCostUsd'] is None
-    else:
-        checkpoint=json.loads(Path(result['rawReceiptFile']).read_text());assert checkpoint['capturedBeforeParsing']
-        assert checkpoint['providerApiResponse']==result['providerApiResponse']
-        assert result['actualCostUsd']==pytest.approx(.000135)
+    with patch('app.llm.openai_provider.OpenAI',side_effect=client):r=a.execute(text,c,.1)
+    assert len(calls)==1 and (r['processingStatus']=='INDEPENDENT_REVIEW_COMPLETED')==(mode=='positive')
+    if mode=='timeout':assert r['actualCostUsd'] is None and r['billingStatus']=='USAGE_UNKNOWN'
+    else:assert json.loads(Path(r['rawReceiptFile']).read_text())['providerApiResponse']==r['providerApiResponse']
+    if mode=='positive':
+        assert r['result']==json.loads(r['rawProviderResponse'])
+        assert r['resolvedEvidence']['evidenceType']=='APPLICATION_DERIVED_EVIDENCE'
+        assert r['assessmentValidation']['modelSemanticFindings']=='MACHINE_REVIEW_OPINION_NOT_DETERMINISTIC_PROOF'
     with patch('app.llm.openai_provider.OpenAI',side_effect=AssertionError('No repeat')):
         with pytest.raises(FileExistsError):a.execute(text,c,.1)
 
 
-def test_old_paid_grant_cannot_authorize_revised_request():
-    text,c=assessment_inputs();old=json.loads((DOCS/'authentic-story-independent-review-result-evidence/actual-owner-spending-grant.json').read_text())
-    c.update(assessmentSpendingAuthorized=True,assessmentDispatch=old['operations'][0],storyRequestId=str(uuid.uuid4()))
-    with patch('app.llm.openai_provider.OpenAIProvider',side_effect=AssertionError('No dispatch')):
-        with pytest.raises(ValueError,match='exact assessment spending grant'):a.execute(text,c,.1)
+@pytest.mark.parametrize('archive',['authentic-story-independent-review-result-evidence','real-strict-story-review-execution-evidence'])
+def test_consumed_old_grants_cannot_authorize_reference_contract(archive):
+    text,c=assessment_inputs();old=json.loads((DOCS/archive/'actual-owner-spending-grant.json').read_text());c.update(assessmentSpendingAuthorized=True,assessmentDispatch=old['operations'][0],storyRequestId=str(uuid.uuid4()))
+    with patch('app.llm.openai_provider.OpenAIProvider',side_effect=AssertionError('No provider')):
+        with pytest.raises(ValueError):a.execute(text,c,.1)
 
 
-def test_negative_audience_evidence_statement_is_not_an_invented_claim():
-    text,c,v=example();v['candidateAssessments']['A']['creativeDimensions']['ENDING_REPLAY']['risk']='No independently verified audience benefit. Retention effects remain unknown.'
-    assert a.validate_review(v,text,c)['researchPreference']=='NO_CREATIVE_WINNER'
+def test_id_from_a_real_different_revision_is_not_admitted():
+    text,c,p,v=example();docs={'SOURCE':text,**{'CANDIDATE_'+r['ref']:r['narrative'] for r in p['candidates']}}
+    docs['CANDIDATE_A']+=' Another revision.'
+    revised=review_evidence_catalog(docs)
+    stale=next(r['evidenceId'] for r in revised['records'] if r['documentRole']=='CANDIDATE_A')
+    v['candidateAssessments']['A']['creativeDimensions']['PRODUCTION_EXECUTABILITY']['candidateEvidenceIds']=[stale]
+    with pytest.raises(ValueError,match='Strict review schema'):a.validate_review(v,text,c)
+
+
+@pytest.mark.parametrize('ref',['A','B'])
+def test_same_authorized_source_reference_is_valid_for_both_baselines(ref):
+    text,c,p,v=example();v['candidateAssessments'][ref]['creativeConclusion']['baselineEvidenceIds']=evidence_ids(p,'SOURCE')[:1]
+    assert a.validate_review(v,text,c)['candidateAssessments'][ref]['creativeConclusion']['outcome']=='UNKNOWN'
+    derived=a.resolve_review_evidence(v,text,c)
+    assert derived['resolvedReferences'][ref+'.creativeConclusion.baselineEvidenceIds'][0]['documentRole']=='SOURCE'

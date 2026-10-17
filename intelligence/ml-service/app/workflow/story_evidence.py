@@ -472,3 +472,67 @@ def proposed_story_authoring_contract() -> dict[str, Any]:
                 'SOURCE_BOUND_STORY_REVISION': 'Protected facts stay locked; unprotected staging/actions/progression may change. Missing literal facts need semantic assessment, not assumed PASS.',
                 'CREATIVE_EXPLORATION_PROPOSAL': 'May propose protected changes; no proposal replaces approved source. Channel identity, child-appropriate tone and coherent causality remain requirements; exact scope needs owner approval.'},
             'dispatchEnabled': False, 'sourceApprovalEnabled': False, 'buildPromptEnabled': False}
+
+
+REVIEW_EVIDENCE_VERSION = 'story-review-exact-spans-v1'
+
+
+def review_evidence_catalog(documents: dict[str, str]) -> dict[str, Any]:
+    """Lossless Unicode-code-point spans. No normalization or semantic inference.
+
+    Sentence/semicolon/newline boundaries retain punctuation and whitespace.
+    Long run-on text is split at an original comma/space within 800 code points.
+    IDs bind role, complete document digest and extraction version.
+    """
+    import hashlib
+    from .story_experiment import sha
+    prefixes = {'SOURCE': 'S', 'CANDIDATE_A': 'A', 'CANDIDATE_B': 'B'}
+    if set(documents) != set(prefixes):
+        raise ValueError('Exactly source and candidate A/B documents required')
+    bindings, records = {}, []
+    for role, prefix in prefixes.items():
+        text = documents[role]
+        if not isinstance(text, str) or not text.strip() or len(text) > 12000 or '\x00' in text:
+            raise ValueError('Invalid evidence document')
+        try:
+            digest = hashlib.sha256(text.encode('utf-8')).hexdigest()
+        except UnicodeEncodeError as error:
+            raise ValueError('Invalid Unicode evidence document') from error
+        bindings[role] = digest
+        cuts = [m.end() for m in re.finditer(r'[.!?](?=\s|$)|[;\n]', text)]
+        cuts.append(len(text))
+        start, ordinal = 0, 0
+        for end in sorted(set(cuts)):
+            while end - start > 800:
+                split = max(text.rfind(',', start + 200, start + 800), text.rfind(' ', start + 200, start + 800))
+                cut = split + 1 if split >= 0 else start + 800
+                ordinal += 1
+                records.append({'evidenceId': f'{prefix}{ordinal:02d}-{sha([REVIEW_EVIDENCE_VERSION, role, digest])[:16]}',
+                    'documentRole': role, 'documentSha256': digest, 'startOffset': start,
+                    'endOffset': cut, 'exactOriginalText': text[start:cut]})
+                start = cut
+            if end > start:
+                ordinal += 1
+                records.append({'evidenceId': f'{prefix}{ordinal:02d}-{sha([REVIEW_EVIDENCE_VERSION, role, digest])[:16]}',
+                    'documentRole': role, 'documentSha256': digest, 'startOffset': start,
+                    'endOffset': end, 'exactOriginalText': text[start:end]})
+                start = end
+    catalog = {'version': REVIEW_EVIDENCE_VERSION, 'offsetConvention': 'UNICODE_CODE_POINTS',
+               'documentBindings': bindings, 'records': records}
+    catalog['catalogSha256'] = sha(catalog)
+    return catalog
+
+
+def verify_review_evidence_catalog(catalog: dict[str, Any], documents: dict[str, str]) -> None:
+    """Reject revised/forged text, role, digest, offsets, IDs or extraction version."""
+    if catalog != review_evidence_catalog(documents):
+        raise ValueError('Bound evidence catalog differs from immutable documents')
+    for role, text in documents.items():
+        spans = [r for r in catalog['records'] if r['documentRole'] == role]
+        if ''.join(r['exactOriginalText'] for r in spans) != text:
+            raise ValueError('Incomplete evidence document coverage')
+        cursor = 0
+        for record in spans:
+            if record['startOffset'] != cursor or text[cursor:record['endOffset']] != record['exactOriginalText']:
+                raise ValueError('Evidence offsets do not resolve exact original text')
+            cursor = record['endOffset']

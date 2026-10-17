@@ -1,0 +1,63 @@
+def validate_review(value,text,context):
+    import re
+    from jsonschema import Draft202012Validator
+    from .story_quality import _EVENT_ALIASES
+    errors=sorted(Draft202012Validator(RESPONSE_CONTRACT).iter_errors(value),key=lambda e:str(list(e.path)))
+    if errors:raise ValueError('Strict review schema: '+str(list(errors[0].path))+': '+errors[0].message[:240])
+    candidates=sources(text,context)
+    for ref,row in value['candidateAssessments'].items():
+        candidate=next(c for c in candidates if c['ref']==ref);narrative=candidate['narrative']
+        for check,f in row['semanticChecks'].items():
+            if not f['reason'].strip():raise ValueError('Semantic reason required')
+            expected={'PASS':{'SEMANTIC_SUPPORT'},'FAIL':{'CONTRADICTION','SUBSTANTIVE_OMISSION'},'UNKNOWN':{'INSUFFICIENT'}}
+            if f['basis'] not in expected[f['outcome']]:raise ValueError('Semantic outcome/evidence basis mismatch')
+            for key,original in (('sourceQuote',text),('candidateQuote',narrative)):
+                quote=f[key]
+                if quote and quote not in original or f['outcome']!='UNKNOWN' and not quote.strip():
+                    raise ValueError('Exact semantic supporting evidence required')
+            if f['outcome']=='FAIL' and re.search(r'(?:exact|identical|verbatim|literal) (?:source )?(?:sentence|wording|phrase|text).{0,40}(?:missing|absent|not)|(?:missing|absent).{0,40}(?:exact|identical|verbatim|literal)',f['reason'],re.I):
+                raise ValueError('Literal absence alone cannot establish semantic FAIL')
+        outcomes={f['outcome'] for f in row['semanticChecks'].values()}
+        overall='SEMANTIC_SOURCE_FAIL' if 'FAIL' in outcomes else 'SEMANTIC_SOURCE_UNKNOWN' if 'UNKNOWN' in outcomes else 'SEMANTIC_SOURCE_PASS'
+        if row['semanticOutcome']!=overall:raise ValueError('Uncertain/failed semantics cannot become PASS')
+        if not row['sourceUnknowns'].strip() or ('UNKNOWN' in outcomes and row['sourceUnknowns'].strip().upper() in ('NONE','N/A','UNKNOWN')):
+            raise ValueError('Specific unresolved source questions required')
+        for d in row['creativeDimensions'].values():
+            if not all(d[k].strip() for k in ('strength','weakness','risk')):raise ValueError('Strengths, weaknesses and risks required')
+            if d['quote'] and d['quote'] not in narrative:raise ValueError('Exact creative evidence required')
+            if not d['quote'].strip() and any(d[k].strip().upper()!='UNKNOWN' for k in ('strength','weakness','risk')):
+                raise ValueError('Unsupported creative dimension must remain UNKNOWN')
+        creative=row['creativeConclusion']
+        for key,original in (('baselineQuote',text),('candidateQuote',narrative)):
+            if creative[key] and creative[key] not in original:raise ValueError('Exact comparative evidence required')
+        if creative['outcome']=='MATERIAL_IMPROVEMENT':
+            if not all(creative[k].strip() and creative[k].strip().upper() not in ('NONE','UNKNOWN','N/A') for k in creative if k!='outcome'):
+                raise ValueError('Material improvement needs complete baseline/change/consequence/risk evidence')
+            # Conservative cosmetic guard, reusing the existing synonym vocabulary.
+            # This is a lower bound on evidence, never a semantic merit certificate.
+            def tokens(t):return [_EVENT_ALIASES.get(w,w) for w in re.findall(r"[\w']+",t.lower())]
+            def content(t):
+                stop={'the','and','with','from','that','this','into','then','they','their','them','both','tries','story','candidate','original'}
+                return {w for w in tokens(t) if len(w)>3 and w not in stop}
+            if not (content(creative['change']) & content(creative['candidateQuote'])) or not (content(creative['visibleConsequence']) & content(creative['candidateQuote'])) or not (content(creative['addressedWeakness']) & content(creative['baselineQuote'])):
+                raise ValueError('Generic material claim lacks source-specific comparative grounding')
+            if tokens(creative['baselineQuote'])==tokens(creative['candidateQuote']):
+                raise ValueError('Identical or synonym-only evidence is not material improvement')
+            if re.search(r'\b(?:shorter|polish|wording|vocabulary|synonym|different verb|camera label)\b',creative['change'],re.I):
+                raise ValueError('Cosmetic change cannot establish material improvement')
+        # No audience/render evidence was supplied. Explicit claims are forbidden;
+        # predictions/risks are still model opinions, not performance measurements.
+        statements=[d[k] for d in row['creativeDimensions'].values() for k in ('strength','weakness','risk')]
+        statements.extend(creative[k] for k in ('change','visibleConsequence','addressedWeakness','newRisk','materialityReason'))
+        claim=r'\b(?:measured|proven|verified|guaranteed) (?:audience|retention|engagement|render|visual success)|(?:audience|retention) (?:increased|improved) by \d|official A\+ (?:achieved|verified)'
+        for statement in statements:
+            for sentence in re.split(r'[.!?;]',statement):
+                match=re.search(claim,sentence,re.I)
+                if match and not re.search(r'\b(?:no|not|never|without|unverified|unknown|lacks)\b',sentence[:match.start()],re.I):
+                    raise ValueError('Invented audience/render/A+ evidence')
+        eligible=overall=='SEMANTIC_SOURCE_PASS' and creative['outcome']=='MATERIAL_IMPROVEMENT'
+        if row['eligibleForOwnerProposal'] and not eligible:raise ValueError('Semantic FAIL/UNKNOWN cannot become an eligible owner proposal')
+    if value['researchPreference']!='NO_CREATIVE_WINNER' and not value['candidateAssessments'][value['researchPreference']]['eligibleForOwnerProposal']:
+        raise ValueError('Research preference cannot promote an ineligible candidate')
+    if not value['reason'].strip() or not value['evidenceLimitations'].strip():raise ValueError('Research reason and limitations required')
+    return value

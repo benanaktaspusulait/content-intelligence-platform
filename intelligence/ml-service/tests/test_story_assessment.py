@@ -71,7 +71,7 @@ def test_semantic_before_creative_and_exact_evidence(failure):
         assessment_failed_check(value,wire(text,c)['payload']);row['eligibleForOwnerProposal']=True
     if failure=='missing-semantics':row['semanticChecks']={}
     if failure=='missing-dimension':row['creativeDimensions'].pop(next(iter(row['creativeDimensions'])))
-    if failure=='fake-quote':row['semanticChecks']['identity']['candidateQuote']='An absent made-up phrase'
+    if failure=='fake-quote':row['semanticChecks']['identity']['candidateEvidenceIds']=['invented-id']
     with pytest.raises(ValueError):validate_review(value,text,c)
 
 

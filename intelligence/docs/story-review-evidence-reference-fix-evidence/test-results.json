@@ -1,0 +1,46 @@
+{
+  "ml": {
+    "passed": 344,
+    "exitCode": 0,
+    "warnings": 343,
+    "command": "POMPOM_DATA_ROOT=../data .venv/bin/pytest -q tests/test_story_assessment.py tests/test_story_assessment_strict_contract.py tests/test_story_evidence_responsibility_split.py tests/test_story_experiment_contract.py tests/test_story_review_contract.py tests/test_creative_roles.py tests/test_story_quality.py tests/test_story_evidence.py tests/test_adaptive_optimization_v3.py tests/test_creative_validity.py tests/test_f8_authorization.py tests/test_hook_002_metamorphic_stability.py tests/test_llm_providers.py --junitxml=../docs/story-review-evidence-reference-fix-evidence/ml-results.xml"
+  },
+  "java": {
+    "passed": 46,
+    "exitCode": 0,
+    "command": "mvn -q -f target/assessment-only-pom.xml -Dtest=StoryExperimentContractTest,StoryEvolutionServiceTest,StoryReviewIndependenceTest test",
+    "suites": {
+      "com.pompomhills.intelligence.workflow.StoryReviewIndependenceTest": {
+        "tests": 2,
+        "errors": 0,
+        "failures": 0,
+        "skipped": 0
+      },
+      "com.pompomhills.intelligence.workflow.StoryEvolutionServiceTest": {
+        "tests": 5,
+        "errors": 0,
+        "failures": 0,
+        "skipped": 0
+      },
+      "com.pompomhills.intelligence.workflow.StoryExperimentContractTest": {
+        "tests": 39,
+        "errors": 0,
+        "failures": 0,
+        "skipped": 0
+      }
+    }
+  },
+  "httpE2e": {
+    "passed": true,
+    "scenarios": 13,
+    "exitCode": 0,
+    "command": "ml-service/.venv/bin/python /private/tmp/verify_reference_review_http.py",
+    "mockedOnly": "External OpenAI HTTP transport; actual installed SDK"
+  },
+  "preparation": {
+    "exitCode": 0,
+    "command": "PYTHONPATH=intelligence/ml-service intelligence/ml-service/.venv/bin/python intelligence/scripts/prepare-creative-story-experiment.py --assessment-only-review --evidence-reference-review"
+  },
+  "newRealProviderCalls": 0,
+  "newSpendUsd": 0
+}

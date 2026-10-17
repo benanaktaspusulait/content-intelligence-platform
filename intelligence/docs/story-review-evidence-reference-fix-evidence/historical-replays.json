@@ -1,0 +1,34 @@
+[
+  {
+    "contract": "v1",
+    "rawSha256": "7963c59ce4401e0945780d6d935800d4dbd54514e62612620d661f6074621e7f",
+    "state": "STOPPED",
+    "rawModified": false,
+    "classification": "UNVALIDATED_MACHINE_REVIEW",
+    "historicalValidator": {
+      "accepted": false,
+      "error": "Both independent candidate assessments required"
+    },
+    "newReferenceValidator": {
+      "accepted": false,
+      "error": "Strict review schema: ['evidenceLimitations']: ['explicit unknowns; no visual or audience verification'] is not of type 'string'"
+    },
+    "historicalDumpUnchanged": true
+  },
+  {
+    "contract": "v2",
+    "rawSha256": "c1e5607ca75e2edcdf6ddce7564519ee5e7ee5b3a2fdc33496292958e946343b",
+    "state": "STOPPED",
+    "rawModified": false,
+    "classification": "UNVALIDATED_MACHINE_REVIEW",
+    "historicalValidator": {
+      "accepted": false,
+      "error": "Exact semantic supporting evidence required"
+    },
+    "newReferenceValidator": {
+      "accepted": false,
+      "error": "Strict review schema: ['candidateAssessments', 'A', 'creativeConclusion']: 'baselineEvidenceIds' is a required property"
+    },
+    "historicalDumpUnchanged": true
+  }
+]

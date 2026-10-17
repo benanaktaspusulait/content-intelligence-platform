@@ -1,0 +1,331 @@
+{
+  "auditBeforeProductionChanges": true,
+  "rawSha256": "c1e5607ca75e2edcdf6ddce7564519ee5e7ee5b3a2fdc33496292958e946343b",
+  "originalRunState": "STOPPED",
+  "oldSchema": "PASS",
+  "oldEvidence": "FAIL",
+  "failures": [
+    {
+      "jsonPath": "$.candidateAssessments.A.semanticChecks.rule.candidateQuote",
+      "returnedValue": "",
+      "designatedDocumentRole": "CANDIDATE_A",
+      "designatedDocumentSha256": "50bae8834df06f6092a37947d422e136c41c72ea80838057beecf2e7156bb088",
+      "classification": [
+        "EMPTY_QUOTATION_FOR_DEFINITE_FAIL",
+        "SUBSTANTIVE_OMISSION_CLAIM_WITHOUT_SUPPORTING_CONTEXT"
+      ],
+      "whyInvalid": "An unsupported definite judgment has an empty mandatory quotation. Narrative context exists, but its interpretation requires independent semantic judgment.",
+      "exactReturnedQuotePresent": false,
+      "relevantActualPassages": [
+        "Pip shakes the hand; the note splits into two, one on each hand.",
+        "Pip claps both hands onto the cabinet to transfer them, but they bounce back and double into four notes stuck across Pip's chest.",
+        "Pip grabs at the four with both arms and they split into eight, wrapping Pip's arms and face."
+      ],
+      "relevantPassagesAreLiteral": true,
+      "sameActionExistsInDesignatedNarrative": true,
+      "referenceContractPrevention": "Definite outcome requires source/candidate ID coverage locally; no empty quotation field exists. Valid IDs alone cannot validate the opinion.",
+      "semanticCorrectnessStillUnproven": true
+    },
+    {
+      "jsonPath": "$.candidateAssessments.A.semanticChecks.continuity.candidateQuote",
+      "returnedValue": "",
+      "designatedDocumentRole": "CANDIDATE_A",
+      "designatedDocumentSha256": "50bae8834df06f6092a37947d422e136c41c72ea80838057beecf2e7156bb088",
+      "classification": [
+        "EMPTY_QUOTATION_FOR_DEFINITE_FAIL",
+        "SUBSTANTIVE_OMISSION_CLAIM_WITHOUT_SUPPORTING_CONTEXT"
+      ],
+      "whyInvalid": "An unsupported definite judgment has an empty mandatory quotation. Narrative context exists, but its interpretation requires independent semantic judgment.",
+      "exactReturnedQuotePresent": false,
+      "relevantActualPassages": [
+        "Pip sees the doubling finish and goes still, then slowly sits down on the floor, arms folded, refusing to touch anything.",
+        "The notes stay put.",
+        "Pip's nose twitches; a sneeze erupts and scatters the notes onto the cabinet."
+      ],
+      "relevantPassagesAreLiteral": true,
+      "sameActionExistsInDesignatedNarrative": true,
+      "referenceContractPrevention": "Definite outcome requires source/candidate ID coverage locally; no empty quotation field exists. Valid IDs alone cannot validate the opinion.",
+      "semanticCorrectnessStillUnproven": true
+    },
+    {
+      "jsonPath": "$.candidateAssessments.A.semanticChecks.protected_events.sourceQuote",
+      "returnedValue": "",
+      "designatedDocumentRole": "SOURCE",
+      "designatedDocumentSha256": "ba352d486c4252c5c6fefe585ad976c0b6f73c299f7554863848bdd842a99b3d",
+      "classification": [
+        "EMPTY_QUOTATION_FOR_DEFINITE_PASS"
+      ],
+      "whyInvalid": "An unsupported definite judgment has an empty mandatory quotation. Narrative context exists, but its interpretation requires independent semantic judgment.",
+      "exactReturnedQuotePresent": false,
+      "relevantActualPassages": [
+        "Pip the rabbit",
+        "it clings to Pip's fingertip while the cabinet stays untouched",
+        "every removal or transfer attempt multiplies the notes",
+        "Pip remains covered until a sneeze scatters the notes onto the cabinet",
+        "Pip is relieved, but the cabinet remains messy."
+      ],
+      "relevantPassagesAreLiteral": true,
+      "sameActionExistsInDesignatedNarrative": true,
+      "referenceContractPrevention": "Definite outcome requires source/candidate ID coverage locally; no empty quotation field exists. Valid IDs alone cannot validate the opinion.",
+      "semanticCorrectnessStillUnproven": true
+    },
+    {
+      "jsonPath": "$.candidateAssessments.A.semanticChecks.protected_events.candidateQuote",
+      "returnedValue": "",
+      "designatedDocumentRole": "CANDIDATE_A",
+      "designatedDocumentSha256": "50bae8834df06f6092a37947d422e136c41c72ea80838057beecf2e7156bb088",
+      "classification": [
+        "EMPTY_QUOTATION_FOR_DEFINITE_PASS"
+      ],
+      "whyInvalid": "An unsupported definite judgment has an empty mandatory quotation. Narrative context exists, but its interpretation requires independent semantic judgment.",
+      "exactReturnedQuotePresent": false,
+      "relevantActualPassages": [
+        "The notes stay put.",
+        "Pip's nose twitches; a sneeze erupts and scatters the notes onto the cabinet.",
+        "Pip is relieved, but the cabinet remains messy."
+      ],
+      "relevantPassagesAreLiteral": true,
+      "sameActionExistsInDesignatedNarrative": true,
+      "referenceContractPrevention": "Definite outcome requires source/candidate ID coverage locally; no empty quotation field exists. Valid IDs alone cannot validate the opinion.",
+      "semanticCorrectnessStillUnproven": true
+    },
+    {
+      "jsonPath": "$.candidateAssessments.A.creativeDimensions.CAUSAL_PROGRESSION.quote",
+      "returnedValue": "Pip grabs at the four with both arms and they split into eight.",
+      "designatedDocumentRole": "CANDIDATE_A",
+      "designatedDocumentSha256": "50bae8834df06f6092a37947d422e136c41c72ea80838057beecf2e7156bb088",
+      "classification": [
+        "CHANGED_PUNCTUATION_OR_TRUNCATED_TEXT"
+      ],
+      "whyInvalid": "Returned string is not an exact substring of the designated narrative. No normalization or replacement is applied.",
+      "exactReturnedQuotePresent": false,
+      "relevantActualPassages": [
+        "Pip grabs at the four with both arms and they split into eight, wrapping Pip's arms and face."
+      ],
+      "relevantPassagesAreLiteral": true,
+      "sameActionExistsInDesignatedNarrative": true,
+      "referenceContractPrevention": "Candidate-specific enum forbids another document’s IDs; application resolves exact original spans instead of accepting a generated quotation.",
+      "semanticCorrectnessStillUnproven": true
+    },
+    {
+      "jsonPath": "$.candidateAssessments.A.creativeDimensions.VISUAL_STORYTELLING.quote",
+      "returnedValue": "Pip sits down on the floor, arms folded, refusing to touch anything.",
+      "designatedDocumentRole": "CANDIDATE_A",
+      "designatedDocumentSha256": "50bae8834df06f6092a37947d422e136c41c72ea80838057beecf2e7156bb088",
+      "classification": [
+        "GENERATED_PARAPHRASE_AS_VERBATIM"
+      ],
+      "whyInvalid": "Returned string is not an exact substring of the designated narrative. No normalization or replacement is applied.",
+      "exactReturnedQuotePresent": false,
+      "relevantActualPassages": [
+        "Pip sees the doubling finish and goes still, then slowly sits down on the floor, arms folded, refusing to touch anything."
+      ],
+      "relevantPassagesAreLiteral": true,
+      "sameActionExistsInDesignatedNarrative": true,
+      "referenceContractPrevention": "Candidate-specific enum forbids another document’s IDs; application resolves exact original spans instead of accepting a generated quotation.",
+      "semanticCorrectnessStillUnproven": true
+    },
+    {
+      "jsonPath": "$.candidateAssessments.A.creativeDimensions.PRODUCTION_EXECUTABILITY.quote",
+      "returnedValue": "Pip shakes both arms hard to fling the four notes away.",
+      "designatedDocumentRole": "CANDIDATE_A",
+      "designatedDocumentSha256": "50bae8834df06f6092a37947d422e136c41c72ea80838057beecf2e7156bb088",
+      "classification": [
+        "OTHER_CANDIDATE_ACTION_WITH_CHANGED_PUNCTUATION"
+      ],
+      "whyInvalid": "Returned string is not an exact substring of the designated narrative. No normalization or replacement is applied. The described arm-shake action belongs to Candidate B; it is absent in A.",
+      "exactReturnedQuotePresent": false,
+      "relevantActualPassages": [],
+      "relevantPassagesAreLiteral": true,
+      "sameActionExistsInDesignatedNarrative": false,
+      "referenceContractPrevention": "Candidate-specific enum forbids another document’s IDs; application resolves exact original spans instead of accepting a generated quotation.",
+      "semanticCorrectnessStillUnproven": true
+    },
+    {
+      "jsonPath": "$.candidateAssessments.A.creativeDimensions.DISTINCTIVE_CREATIVE_VALUE.quote",
+      "returnedValue": "Pip's nose twitches; a sneeze erupts and scatters the notes.",
+      "designatedDocumentRole": "CANDIDATE_A",
+      "designatedDocumentSha256": "50bae8834df06f6092a37947d422e136c41c72ea80838057beecf2e7156bb088",
+      "classification": [
+        "TRUNCATED_TEXT_WITH_INTERNAL_OMISSION"
+      ],
+      "whyInvalid": "Returned string is not an exact substring of the designated narrative. No normalization or replacement is applied.",
+      "exactReturnedQuotePresent": false,
+      "relevantActualPassages": [
+        "Pip's nose twitches; a sneeze erupts and scatters the notes onto the cabinet."
+      ],
+      "relevantPassagesAreLiteral": true,
+      "sameActionExistsInDesignatedNarrative": true,
+      "referenceContractPrevention": "Candidate-specific enum forbids another document’s IDs; application resolves exact original spans instead of accepting a generated quotation.",
+      "semanticCorrectnessStillUnproven": true
+    },
+    {
+      "jsonPath": "$.candidateAssessments.B.semanticChecks.continuity.sourceQuote",
+      "returnedValue": "",
+      "designatedDocumentRole": "SOURCE",
+      "designatedDocumentSha256": "ba352d486c4252c5c6fefe585ad976c0b6f73c299f7554863848bdd842a99b3d",
+      "classification": [
+        "EMPTY_QUOTATION_FOR_DEFINITE_FAIL",
+        "SUBSTANTIVE_OMISSION_CLAIM_WITHOUT_SUPPORTING_CONTEXT"
+      ],
+      "whyInvalid": "An unsupported definite judgment has an empty mandatory quotation. Narrative context exists, but its interpretation requires independent semantic judgment.",
+      "exactReturnedQuotePresent": false,
+      "relevantActualPassages": [
+        "Pip remains covered until a sneeze scatters the notes onto the cabinet"
+      ],
+      "relevantPassagesAreLiteral": true,
+      "sameActionExistsInDesignatedNarrative": true,
+      "referenceContractPrevention": "Definite outcome requires source/candidate ID coverage locally; no empty quotation field exists. Valid IDs alone cannot validate the opinion.",
+      "semanticCorrectnessStillUnproven": true
+    },
+    {
+      "jsonPath": "$.candidateAssessments.B.semanticChecks.continuity.candidateQuote",
+      "returnedValue": "",
+      "designatedDocumentRole": "CANDIDATE_B",
+      "designatedDocumentSha256": "4b04e664b70ea9372049231119f2ad786cf5ed0fc1a416c0941101d53167c739",
+      "classification": [
+        "EMPTY_QUOTATION_FOR_DEFINITE_FAIL",
+        "SUBSTANTIVE_OMISSION_CLAIM_WITHOUT_SUPPORTING_CONTEXT"
+      ],
+      "whyInvalid": "An unsupported definite judgment has an empty mandatory quotation. Narrative context exists, but its interpretation requires independent semantic judgment.",
+      "exactReturnedQuotePresent": false,
+      "relevantActualPassages": [
+        "Pip freezes, watching the eight notes ripple and settle, and realizes that every removal or transfer attempt multiplies the notes.",
+        "Pip deliberately stops struggling and stands still, letting the notes rest.",
+        "A sneeze bursts out of Pip, and the blast peels the notes off and scatters them across the cabinet."
+      ],
+      "relevantPassagesAreLiteral": true,
+      "sameActionExistsInDesignatedNarrative": true,
+      "referenceContractPrevention": "Definite outcome requires source/candidate ID coverage locally; no empty quotation field exists. Valid IDs alone cannot validate the opinion.",
+      "semanticCorrectnessStillUnproven": true
+    },
+    {
+      "jsonPath": "$.candidateAssessments.B.semanticChecks.protected_events.sourceQuote",
+      "returnedValue": "",
+      "designatedDocumentRole": "SOURCE",
+      "designatedDocumentSha256": "ba352d486c4252c5c6fefe585ad976c0b6f73c299f7554863848bdd842a99b3d",
+      "classification": [
+        "EMPTY_QUOTATION_FOR_DEFINITE_PASS"
+      ],
+      "whyInvalid": "An unsupported definite judgment has an empty mandatory quotation. Narrative context exists, but its interpretation requires independent semantic judgment.",
+      "exactReturnedQuotePresent": false,
+      "relevantActualPassages": [
+        "Pip the rabbit",
+        "it clings to Pip's fingertip while the cabinet stays untouched",
+        "every removal or transfer attempt multiplies the notes",
+        "Pip remains covered until a sneeze scatters the notes onto the cabinet",
+        "Pip is relieved, but the cabinet remains messy."
+      ],
+      "relevantPassagesAreLiteral": true,
+      "sameActionExistsInDesignatedNarrative": true,
+      "referenceContractPrevention": "Definite outcome requires source/candidate ID coverage locally; no empty quotation field exists. Valid IDs alone cannot validate the opinion.",
+      "semanticCorrectnessStillUnproven": true
+    },
+    {
+      "jsonPath": "$.candidateAssessments.B.semanticChecks.protected_events.candidateQuote",
+      "returnedValue": "",
+      "designatedDocumentRole": "CANDIDATE_B",
+      "designatedDocumentSha256": "4b04e664b70ea9372049231119f2ad786cf5ed0fc1a416c0941101d53167c739",
+      "classification": [
+        "EMPTY_QUOTATION_FOR_DEFINITE_PASS"
+      ],
+      "whyInvalid": "An unsupported definite judgment has an empty mandatory quotation. Narrative context exists, but its interpretation requires independent semantic judgment.",
+      "exactReturnedQuotePresent": false,
+      "relevantActualPassages": [
+        "Pip deliberately stops struggling and stands still, letting the notes rest.",
+        "A sneeze bursts out of Pip, and the blast peels the notes off and scatters them across the cabinet.",
+        "Pip is relieved, but the cabinet remains messy."
+      ],
+      "relevantPassagesAreLiteral": true,
+      "sameActionExistsInDesignatedNarrative": true,
+      "referenceContractPrevention": "Definite outcome requires source/candidate ID coverage locally; no empty quotation field exists. Valid IDs alone cannot validate the opinion.",
+      "semanticCorrectnessStillUnproven": true
+    },
+    {
+      "jsonPath": "$.candidateAssessments.B.creativeDimensions.SCROLL_STOP_VISUAL_PROMISE.quote",
+      "returnedValue": "Pip pinches the note with the other paw to peel it free, and it splits into two notes.",
+      "designatedDocumentRole": "CANDIDATE_B",
+      "designatedDocumentSha256": "4b04e664b70ea9372049231119f2ad786cf5ed0fc1a416c0941101d53167c739",
+      "classification": [
+        "CHANGED_PUNCTUATION_OR_TRUNCATED_TEXT"
+      ],
+      "whyInvalid": "Returned string is not an exact substring of the designated narrative. No normalization or replacement is applied.",
+      "exactReturnedQuotePresent": false,
+      "relevantActualPassages": [
+        "Pip pinches the note with the other paw to peel it free, and it splits into two notes, one stuck to each paw."
+      ],
+      "relevantPassagesAreLiteral": true,
+      "sameActionExistsInDesignatedNarrative": true,
+      "referenceContractPrevention": "Candidate-specific enum forbids another document’s IDs; application resolves exact original spans instead of accepting a generated quotation.",
+      "semanticCorrectnessStillUnproven": true
+    },
+    {
+      "jsonPath": "$.candidateAssessments.B.creativeDimensions.CAUSAL_PROGRESSION.quote",
+      "returnedValue": "Pip realizes that every removal or transfer attempt multiplies the notes.",
+      "designatedDocumentRole": "CANDIDATE_B",
+      "designatedDocumentSha256": "4b04e664b70ea9372049231119f2ad786cf5ed0fc1a416c0941101d53167c739",
+      "classification": [
+        "GENERATED_PARAPHRASE_AS_VERBATIM"
+      ],
+      "whyInvalid": "Returned string is not an exact substring of the designated narrative. No normalization or replacement is applied.",
+      "exactReturnedQuotePresent": false,
+      "relevantActualPassages": [
+        "Pip freezes, watching the eight notes ripple and settle, and realizes that every removal or transfer attempt multiplies the notes."
+      ],
+      "relevantPassagesAreLiteral": true,
+      "sameActionExistsInDesignatedNarrative": true,
+      "referenceContractPrevention": "Candidate-specific enum forbids another document’s IDs; application resolves exact original spans instead of accepting a generated quotation.",
+      "semanticCorrectnessStillUnproven": true
+    },
+    {
+      "jsonPath": "$.candidateAssessments.B.creativeDimensions.VISUAL_STORYTELLING.quote",
+      "returnedValue": "Pip freezes, watching the eight notes ripple and settle.",
+      "designatedDocumentRole": "CANDIDATE_B",
+      "designatedDocumentSha256": "4b04e664b70ea9372049231119f2ad786cf5ed0fc1a416c0941101d53167c739",
+      "classification": [
+        "CHANGED_PUNCTUATION_OR_TRUNCATED_TEXT"
+      ],
+      "whyInvalid": "Returned string is not an exact substring of the designated narrative. No normalization or replacement is applied.",
+      "exactReturnedQuotePresent": false,
+      "relevantActualPassages": [
+        "Pip freezes, watching the eight notes ripple and settle, and realizes that every removal or transfer attempt multiplies the notes."
+      ],
+      "relevantPassagesAreLiteral": true,
+      "sameActionExistsInDesignatedNarrative": true,
+      "referenceContractPrevention": "Candidate-specific enum forbids another document’s IDs; application resolves exact original spans instead of accepting a generated quotation.",
+      "semanticCorrectnessStillUnproven": true
+    },
+    {
+      "jsonPath": "$.candidateAssessments.B.creativeDimensions.PRODUCTION_EXECUTABILITY.quote",
+      "returnedValue": "Pip slaps both paws toward the cabinet.",
+      "designatedDocumentRole": "CANDIDATE_B",
+      "designatedDocumentSha256": "4b04e664b70ea9372049231119f2ad786cf5ed0fc1a416c0941101d53167c739",
+      "classification": [
+        "CHANGED_PUNCTUATION_OR_TRUNCATED_TEXT"
+      ],
+      "whyInvalid": "Returned string is not an exact substring of the designated narrative. No normalization or replacement is applied.",
+      "exactReturnedQuotePresent": false,
+      "relevantActualPassages": [
+        "Pip slaps both paws toward the cabinet, but the notes bounce back and double into four, fluttering up Pip's arms."
+      ],
+      "relevantPassagesAreLiteral": true,
+      "sameActionExistsInDesignatedNarrative": true,
+      "referenceContractPrevention": "Candidate-specific enum forbids another document’s IDs; application resolves exact original spans instead of accepting a generated quotation.",
+      "semanticCorrectnessStillUnproven": true
+    }
+  ],
+  "semanticLimitations": [
+    "Valid references cannot prove interpretation.",
+    "Continuity omission claims remain unsupported; no FAIL is converted to PASS.",
+    "Both creative outcomes were UNKNOWN with empty baseline-relative comparison fields and generic dimension remarks."
+  ],
+  "firstFailureAnalysis": {
+    "originalRun": "59f47fec-59fb-42e3-b3a4-c9f7d83c7ffc",
+    "wrongWrapper": true,
+    "missingChecks": 8,
+    "emptyDefiniteQuotes": 3,
+    "invalidPreferenceEnum": true,
+    "unsupportedMateriality": true,
+    "historicalState": "STOPPED"
+  }
+}

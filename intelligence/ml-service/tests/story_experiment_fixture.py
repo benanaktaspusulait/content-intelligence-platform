@@ -88,25 +88,33 @@ def assessment_inputs():
     return source['sourceStory'],{'assessmentOnlyPolicy':catalog['policy'],'assessmentScope':scope}
 
 
+def evidence_ids(payload,role,fragment=None):
+    records=[r for r in payload['evidenceCatalog']['records'] if r['documentRole']==role and r['exactOriginalText'].strip()]
+    if fragment is not None:records=[r for r in records if fragment in r['exactOriginalText']]
+    if not records:raise AssertionError('Offline fixture evidence fragment absent')
+    return [r['evidenceId'] for r in records]
+
+
 def assessment_review(payload):
-    """Synthetic technical fixture; not independent semantic or creative evidence."""
+    """Synthetic opinion/transport data, never an independent real judgment."""
     from app.workflow.story_assessment import SCHEMA, CHECKS
     return {'schemaVersion':SCHEMA,'candidateAssessments':{c['ref']:{
         'semanticChecks':{check:{'outcome':'UNKNOWN','basis':'INSUFFICIENT',
-            'sourceQuote':'','candidateQuote':'','reason':'Mock contract only; independent meaning unverified.'} for check in CHECKS},
-        'semanticOutcome':'SEMANTIC_SOURCE_UNKNOWN','sourceUnknowns':'Mocked review cannot resolve trigger or continuity semantics.',
-        'creativeDimensions':{d:{'quote':c['narrative'][:14],'strength':'Character is introduced.',
-            'weakness':'Timing is unverified.','risk':'No visual evidence.'} for d in payload['dimensions']},
-        'creativeConclusion':{'outcome':'UNKNOWN',**{k:'' for k in ('baselineQuote','candidateQuote','change','visibleConsequence','addressedWeakness','newRisk','materialityReason')}},
+            'sourceEvidenceIds':[],'candidateEvidenceIds':[],
+            'reason':'Mock contract only; independent meaning unverified.'} for check in CHECKS},
+        'semanticOutcome':'SEMANTIC_SOURCE_UNKNOWN','sourceUnknowns':'Mocked review cannot independently resolve trigger or continuity semantics.',
+        'creativeDimensions':{d:{'candidateEvidenceIds':evidence_ids(payload,'CANDIDATE_'+c['ref'])[:1],
+            'strength':'Placement goal is introduced.','weakness':'Timing is unverified.','risk':'No visual evidence.'} for d in payload['dimensions']},
+        'creativeConclusion':{'outcome':'UNKNOWN','baselineEvidenceIds':[],'candidateEvidenceIds':[],
+            **{k:'' for k in ('change','visibleConsequence','addressedWeakness','newRisk','materialityReason')}},
         'eligibleForOwnerProposal':False} for c in payload['candidates']},
         'researchPreference':'NO_CREATIVE_WINNER','reason':'Mocked review proves contract only.',
         'evidenceLimitations':'No real reviewer, rendered or audience evidence.'}
 
 
 def assessment_failed_check(value,payload):
-    """Mocked negative opinion; exercises failure admission, not a real judgment."""
     row=value['candidateAssessments']['A'];row['semanticOutcome']='SEMANTIC_SOURCE_FAIL'
     row['semanticChecks']['trigger_conditions']={'outcome':'FAIL','basis':'CONTRADICTION',
-        'sourceQuote':'every removal or transfer attempt multiplies the notes',
-        'candidateQuote':'Pip shakes the hand; the note splits into two',
-        'reason':'Offline mock reviewer alleges a non-removal trigger; actual meaning remains unverified.'}
+        'sourceEvidenceIds':evidence_ids(payload,'SOURCE','every removal or transfer attempt'),
+        'candidateEvidenceIds':evidence_ids(payload,'CANDIDATE_A','Pip shakes the hand'),
+        'reason':'Offline mock alleges a non-removal trigger; actual meaning remains unverified.'}
