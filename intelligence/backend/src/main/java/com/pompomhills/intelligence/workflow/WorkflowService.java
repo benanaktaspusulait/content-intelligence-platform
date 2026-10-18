@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pompomhills.intelligence.content.ContentPromptQueryService;
 import com.pompomhills.intelligence.quality.QualityMlClient;
 import com.pompomhills.intelligence.quality.ValidationEvidenceService;
+import com.pompomhills.intelligence.character.CanonicalCharacterIdentity;
 import com.pompomhills.intelligence.video.MediaContentService;
 import com.pompomhills.intelligence.video.VideoService;
 import com.pompomhills.intelligence.video.ml.MlVideoClient;
@@ -1317,6 +1318,20 @@ public class WorkflowService {
     // Authorization is enforced here; the strict provider contract accepts only role/text/context/budget.
     verifiedRequest.remove("generationAuthorized");
     var context = new LinkedHashMap<>(map(request.get("context")));
+    if ("STORY".equals(role)) {
+      var identity = new CanonicalCharacterIdentity(jdbc);
+      var target = new LinkedHashMap<String, Object>(map(context.get("targetConfiguration")));
+      String id = String.valueOf(context.getOrDefault("mainCharacterId", target.getOrDefault("mainCharacterId", "")));
+      String name = String.valueOf(context.getOrDefault("mainCharacter", target.getOrDefault("mainCharacter", "")));
+      var canonicalCharacter = identity.requireActive(id, name);
+      context.put("mainCharacterId", canonicalCharacter.get("id"));
+      context.put("mainCharacter", canonicalCharacter.get("name"));
+      context.put("characterRecord", canonicalCharacter);
+      context.put("canonicalCharacterRegistry", identity.activeRegistry());
+      target.put("mainCharacter", canonicalCharacter.get("name"));
+      target.put("mainCharacterId", canonicalCharacter.get("id"));
+      context.put("targetConfiguration", target);
+    }
     if ("BUILD_PROMPT".equals(role)) {
       context.put("promptBuilderContractVersion", BUILD_PROMPT_CONTRACT_VERSION);
       Object storyId = context.get("sourceStoryRecordId");
@@ -1604,6 +1619,9 @@ public class WorkflowService {
     String candidateText = storyCandidateText(story, storyRecordId, candidateId);
     if (candidateText == null || !candidateText.trim().equals(approvedText))
       throw new IllegalArgumentException("The selected candidate does not match the saved story text");
+    var canonicalCharacter = canonicalCharacterForStory(story);
+    new CanonicalCharacterIdentity(jdbc).requireStoryIdentity(
+        approvedText, canonicalCharacter, new CanonicalCharacterIdentity(jdbc).activeRegistry());
     String expectedFingerprint = storyFingerprint(approvedText);
     if (!expectedFingerprint.equals(fingerprint)
         || !(candidateId + "-revision-" + expectedFingerprint).equals(revisionId))
@@ -1633,6 +1651,9 @@ public class WorkflowService {
     String parentRevisionId = String.valueOf(request.getOrDefault("revisionId", "")).trim();
     String revisedText = String.valueOf(request.getOrDefault("text", "")).trim();
     if (revisedText.isBlank()) throw new IllegalArgumentException("Revised story text is required");
+    var canonicalCharacter = canonicalCharacterForStory(source);
+    new CanonicalCharacterIdentity(jdbc).requireStoryIdentity(
+        revisedText, canonicalCharacter, new CanonicalCharacterIdentity(jdbc).activeRegistry());
     String parentText = storyCandidateText(source, storyRecordId, parentCandidateId);
     if (parentText == null || parentRevisionId.isBlank()
         || !(parentCandidateId + "-revision-" + storyFingerprint(parentText.trim())).equals(parentRevisionId))
@@ -1679,13 +1700,45 @@ public class WorkflowService {
     var parent = getByKind(parentStoryRecordId, "CREATIVE_ROLE");
     if (!"STORY".equals(parent.get("role")) || text == null || text.trim().isBlank())
       throw new IllegalArgumentException("A saved STORY parent and non-empty evolved text are required");
+    var canonicalCharacter = canonicalCharacterForStory(parent);
+    new CanonicalCharacterIdentity(jdbc).requireStoryIdentity(
+        text.trim(), canonicalCharacter, new CanonicalCharacterIdentity(jdbc).activeRegistry());
     String candidateId = "candidate-1"; String fingerprint = storyFingerprint(text.trim());
     var alternative = new LinkedHashMap<String,Object>(); alternative.put("candidateId",candidateId); alternative.put("title", "Autonomous story evolution"); alternative.put("text", text.trim());
     var result = new LinkedHashMap<String,Object>(); result.put("role","STORY"); result.put("alternatives",List.of(alternative)); result.put("revisionId",candidateId+"-revision-"+fingerprint); result.put("parentStoryRecordId",parentStoryRecordId.toString());
     Object parentRequest = parent.get("sourceRequest"); String parentText = parentRequest instanceof Map<?,?> m && m.containsKey("text") ? String.valueOf(m.get("text")) : "";
-    var sourceRequest = new LinkedHashMap<String,Object>(); sourceRequest.put("role","STORY_EVOLUTION"); sourceRequest.put("text", parentText); sourceRequest.put("context", new LinkedHashMap<>(provenance));
+    var sourceContext = new LinkedHashMap<String,Object>(provenance);
+    sourceContext.put("characterRecord", canonicalCharacter);
+    sourceContext.put("mainCharacterId", canonicalCharacter.get("id"));
+    sourceContext.put("mainCharacter", canonicalCharacter.get("name"));
+    sourceContext.put("canonicalIdentityStatus", "REGISTRY_VALIDATED");
+    var sourceRequest = new LinkedHashMap<String,Object>(); sourceRequest.put("role","STORY_EVOLUTION"); sourceRequest.put("text", parentText); sourceRequest.put("context", sourceContext);
     var revision = new LinkedHashMap<String,Object>(); revision.put("role","STORY"); revision.put("sourceRequest",sourceRequest); revision.put("sourceRecordId",parentStoryRecordId.toString()); revision.put("title","Autonomous story evolution"); revision.put("revisionType","AUTONOMOUS_STORY_EVOLUTION"); revision.put("result",result);
     revision.put("recordId",save("CREATIVE_ROLE",null,revision)); return revision;
+  }
+
+  public Map<String, Object> canonicalCharacterForStory(Map<String, Object> story) {
+    var request = map(story.get("sourceRequest"));
+    var context = map(request.get("context"));
+    var character = map(context.get("characterRecord"));
+    String id = String.valueOf(context.getOrDefault("mainCharacterId", character.getOrDefault("id", "")));
+    String name = String.valueOf(context.getOrDefault("mainCharacter", character.getOrDefault("name", "")));
+    return new CanonicalCharacterIdentity(jdbc).requireActive(id, name);
+  }
+
+  public Map<String, Object> canonicalStoryIdentity(UUID storyId, String text) {
+    var story = getByKind(storyId, "CREATIVE_ROLE");
+    var identity = new CanonicalCharacterIdentity(jdbc);
+    var character = canonicalCharacterForStory(story);
+    var registry = identity.activeRegistry();
+    identity.requireStoryIdentity(text, character, registry);
+    var binding = new LinkedHashMap<String, Object>();
+    binding.put("mainCharacterId", character.get("id"));
+    binding.put("mainCharacter", character.get("name"));
+    binding.put("characterRecord", character);
+    binding.put("canonicalCharacterRegistry", registry);
+    binding.put("canonicalIdentityStatus", "REGISTRY_VALIDATED");
+    return binding;
   }
 
   private String storyCandidateText(Map<String, Object> story, UUID storyRecordId, String candidateId) {

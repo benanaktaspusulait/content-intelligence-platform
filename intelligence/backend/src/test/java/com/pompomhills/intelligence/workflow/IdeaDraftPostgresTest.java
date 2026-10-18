@@ -39,6 +39,9 @@ class IdeaDraftPostgresTest {
     videos = mock(VideoService.class);
     contents = mock(ContentWorkspaceController.class);
     jdbc.sql("DROP TABLE IF EXISTS post_family_workflow_events").update();
+    jdbc.sql("DROP TABLE IF EXISTS characters").update();
+    jdbc.sql("CREATE TABLE characters(id uuid PRIMARY KEY,name varchar(120) UNIQUE,status varchar(40),notes text,active boolean NOT NULL DEFAULT true)").update();
+    jdbc.sql("INSERT INTO characters(id,name,status,notes,active) VALUES('00000000-0000-0000-0000-000000000003','Mimi','UNTESTED','test character',true)").update();
     jdbc.sql(
             "CREATE TABLE post_family_workflow_events(id uuid PRIMARY KEY,kind varchar(40),binding_sha256 varchar(128),payload jsonb,created_at timestamptz DEFAULT now())")
         .update();
@@ -60,7 +63,9 @@ class IdeaDraftPostgresTest {
         "duration",
         15,
         "aspectRatio",
-        "9:16");
+        "9:16",
+        "mainCharacterId",
+        "00000000-0000-0000-0000-000000000003");
   }
 
   Map<String, Object> save(UUID id, int expected, Map<String, Object> state) {
@@ -119,7 +124,7 @@ class IdeaDraftPostgresTest {
   @Test
   void detailedStoryIsTruthfulUnapprovedAndContinueIsIdempotent() {
     UUID id = UUID.randomUUID();
-    String source = "A complete human story.\nAn unresolved ending.";
+    String source = "Mimi, the light-blue rabbit, follows a paper boat.\nAn unresolved ending.";
     save(id, 0, state("DETAILED_STORY", source));
     var request = Map.<String, Object>of("expectedRevision", 1, "workspacePath", "library/work");
     var continued = tx.execute(s -> service.continueDraft(id, request));
@@ -142,6 +147,17 @@ class IdeaDraftPostgresTest {
         .isEqualTo(continued);
     assertThat(count()).isEqualTo(3);
     verifyNoInteractions(contents);
+  }
+
+  @Test
+  void detailedStoryImportRejectsNonCanonicalProtagonistWithoutSavingStory() {
+    UUID id = UUID.randomUUID();
+    save(id, 0, state("DETAILED_STORY", "Pip the rabbit finds a paper boat."));
+    var request = Map.<String, Object>of("expectedRevision", 1, "workspacePath", "library/work");
+    assertThatThrownBy(() -> tx.execute(s -> service.continueDraft(id, request)))
+        .isInstanceOf(IllegalArgumentException.class)
+        .hasMessageContaining("does not use the selected canonical protagonist");
+    assertThat(count()).isEqualTo(1);
   }
 
   @Test
@@ -224,7 +240,7 @@ class IdeaDraftPostgresTest {
                 "result",
                 Map.of(
                     "alternatives",
-                    List.of(Map.of("candidateId", "one", "text", "Mock candidate")))));
+                    List.of(Map.of("candidateId", "one", "protagonistCharacterId", "00000000-0000-0000-0000-000000000003", "text", "Mimi finds a paper boat.")))));
     var workflow = new WorkflowService(null, ml, null, videos, new ObjectMapper(), jdbc, null);
     var result =
         tx.execute(
@@ -240,11 +256,12 @@ class IdeaDraftPostgresTest {
                         "maxCostUsd",
                         .1,
                         "context",
-                        Map.of("workspacePath", "library/work"))));
+                        Map.of("workspacePath", "library/work", "mainCharacterId", "00000000-0000-0000-0000-000000000003", "mainCharacter", "Mimi"))));
     assertThat(result)
         .containsKey("recordId")
         .doesNotContainKeys("approvalRecordId", "promptVersionId");
     verify(videos).requirePromptWorkspace("library/work");
+    assertThat(jdbc.sql("SELECT payload->'sourceRequest'->'context'->'characterRecord'->>'name' FROM post_family_workflow_events WHERE kind='CREATIVE_ROLE'").query(String.class).single()).isEqualTo("Mimi");
     verify(ml, times(1))
         .workflow(
             eq("creative-role"),

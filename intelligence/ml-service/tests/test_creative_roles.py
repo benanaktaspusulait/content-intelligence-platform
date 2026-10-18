@@ -5,6 +5,43 @@ import pytest
 from optimization_test_fixture import valid_optimization_fixture
 from app.workflow.creative_roles import migrate_legacy_production_spec, perform_role, run_paid_role, role_readiness
 
+
+def test_canonical_story_identity_is_registry_gated_separately_from_story_fidelity():
+    from app.workflow.creative_roles import _validate_canonical_story_identity
+
+    context = {
+        'characterRecord': {'id': 'mimi-id', 'name': 'Mimi'},
+        'canonicalCharacterRegistry': [
+            {'id': 'mimi-id', 'name': 'Mimi'},
+            {'id': 'kiko-id', 'name': 'Kiko'},
+        ],
+    }
+    valid = [{
+        'candidateId': 'candidate-1',
+        'protagonistCharacterId': 'mimi-id',
+        'text': 'Mimi, the light-blue rabbit, finds a paper boat.',
+    }]
+    assert _validate_canonical_story_identity(valid, context) == [{
+        'candidateId': 'candidate-1',
+        'status': 'REGISTRY_PASS',
+        'characterId': 'mimi-id',
+        'characterName': 'Mimi',
+    }]
+
+    wrong_id = [{**valid[0], 'protagonistCharacterId': 'kiko-id'}]
+    with pytest.raises(ValueError, match='canonical protagonist ID'):
+        _validate_canonical_story_identity(wrong_id, context)
+
+    unknown_character = [{**valid[0], 'text': 'Mimi meets Zuzu the rabbit.'}]
+    with pytest.raises(ValueError, match='unregistered character: Zuzu'):
+        _validate_canonical_story_identity(unknown_character, context)
+
+    with pytest.raises(ValueError, match='absent from the canonical character registry'):
+        _validate_canonical_story_identity(valid, {
+            **context,
+            'canonicalCharacterRegistry': [{'id': 'other-id', 'name': 'Mimi'}],
+        })
+
 class FixtureProvider:
     def __init__(self, result): self.result = result; self.calls = []
     def complete(self, prompt, system='', temperature=0, image=None):

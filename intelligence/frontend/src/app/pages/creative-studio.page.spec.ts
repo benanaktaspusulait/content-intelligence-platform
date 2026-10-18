@@ -14,13 +14,15 @@ describe('creative studio idea-first workflow', () => {
     const fixture=TestBed.createComponent(CreativeStudioPage); const page=fixture.componentInstance; const http=TestBed.inject(HttpTestingController);
     fixture.detectChanges();
     http.expectOne('/api/v1/intelligence/workflow/creative-role/readiness').flush({enabled:true,roles:[{role:'STORY',configured:true,model:'fixture'},{role:'BUILD_PROMPT',configured:true,model:'fixture'}]});
-    http.expectOne('/api/v1/characters').flush([]);
+    http.expectOne('/api/v1/characters').flush([{id:'00000000-0000-0000-0000-000000000002',name:'Kiko'}]);
     http.expectOne('/api/v1/videos/prompt-workspaces/destinations').flush([]);
     http.expectOne('/api/v1/intelligence/workflow/records?kind=CREATIVE_ROLE').flush([]);
     http.expectOne('/api/v1/intelligence/workflow/records?kind=STORY_APPROVAL').flush([]);
     http.expectOne('/api/v1/intelligence/workflow/idea-drafts').flush([]);
     http.expectOne('/api/v1/intelligence/workflow/records?kind=CREATIVE_STUDIO_SESSION').flush([]);
     page.idea='Kiko sınava giriyor'; page.workspacePath='library/fixture'; page.prepareStoryGeneration(); page.storyConsent=true; page.budget=0.01; page.requestStories();
+    expect(page.error).toContain('Select a registered Pompom Hills character');
+    page.mainCharacterId='00000000-0000-0000-0000-000000000002'; page.requestStories();
     const story=http.expectOne('/api/v1/intelligence/workflow/creative-role'); expect(story.request.body.text).toBe('Kiko sınava giriyor'); story.flush({recordId:'story-1',result:{alternatives:['Kiko kalemiyle konuşur.']}});
     await fixture.whenStable(); page.selectStory(page.candidates[0]); page.approveStory();
     const approval=http.expectOne('/api/v1/intelligence/workflow/creative-role/story-1/approve-story'); expect(approval.request.body.approvedText).toContain('kalemiyle'); approval.flush({recordId:'approval-1'});

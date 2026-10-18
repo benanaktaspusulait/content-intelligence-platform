@@ -3,6 +3,7 @@ package com.pompomhills.intelligence.workflow;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pompomhills.intelligence.content.ContentWorkspaceController;
+import com.pompomhills.intelligence.character.CanonicalCharacterIdentity;
 import com.pompomhills.intelligence.video.VideoService;
 import java.time.Instant;
 import java.util.*;
@@ -97,7 +98,7 @@ public class IdeaDraftService {
     videos.requirePromptWorkspace(path);
     String character = text(state, "mainCharacterId");
     if (!character.isBlank()
-        && !jdbc.sql("SELECT EXISTS(SELECT 1 FROM characters WHERE id::text=:id)")
+        && !jdbc.sql("SELECT EXISTS(SELECT 1 FROM characters WHERE id::text=:id AND active=true)")
             .param("id", character)
             .query(Boolean.class)
             .single())
@@ -221,6 +222,11 @@ public class IdeaDraftService {
             ? source.strip().substring(0, Math.min(80, source.strip().length()))
             : text(state, "title").strip();
     if ("DETAILED_STORY".equals(mode)) {
+      var canonicalCharacter =
+          new CanonicalCharacterIdentity(jdbc)
+              .requireActive(text(state, "mainCharacterId"), null);
+      var identity = new CanonicalCharacterIdentity(jdbc);
+      identity.requireStoryIdentity(source, canonicalCharacter, identity.activeRegistry());
       String candidate = "operator-story-1";
       var result =
           Map.<String, Object>of(
@@ -235,8 +241,11 @@ public class IdeaDraftService {
       story.put("title", title);
       story.put("sourceType", "OPERATOR");
       story.put("revisionType", "OPERATOR_IMPORT");
+      var sourceContext = new LinkedHashMap<String, Object>(state);
+      sourceContext.put("characterRecord", canonicalCharacter);
+      sourceContext.put("canonicalIdentityStatus", "REGISTRY_VALIDATED");
       story.put(
-          "sourceRequest", Map.of("role", "OPERATOR_STORY", "text", source, "context", state));
+          "sourceRequest", Map.of("role", "OPERATOR_STORY", "text", source, "context", sourceContext));
       story.put("result", result);
       UUID storyId = append(story, "CREATIVE_ROLE", null);
       next.put("storyRecordId", storyId.toString());

@@ -64,11 +64,12 @@ public class StoryEvolutionService {
           .param("story",source.toString()).query(UUID.class).optional().orElseThrow(() -> new ResponseStatusException(CONFLICT,"Current approved source story required"));
     var approvedSource=workflow.approvedStoryForCpq(source,sourceApproval);
     String text=String.valueOf(approvedSource.get("text")); if(text.isBlank())throw new ResponseStatusException(BAD_REQUEST,"Source story text required");
+    var characterBinding=workflow.canonicalStoryIdentity(source,text);
     int rounds=integer(body,"maxRounds",1,3), requests=integer(body,"maxRequests",2,9); double budget=amount(body.get("maxTotalUsd")); if(requests<rounds*2)throw new ResponseStatusException(BAD_REQUEST,"Each story round requires generation plus independent review");
     if(!Boolean.TRUE.equals(body.get("authorizePaidInference"))||!Boolean.TRUE.equals(body.get("confirmSourceAuthority"))||!Boolean.FALSE.equals(body.get("automaticRetries")))throw new ResponseStatusException(BAD_REQUEST,"Bounded story authorization and retries-disabled confirmation required");
     String key=String.valueOf(body.getOrDefault("idempotencyKey",""));if(key.length()<8)throw new ResponseStatusException(BAD_REQUEST,"Stable idempotency key required");
     var prior=db.sql("SELECT id FROM story_evolution_runs WHERE owner_principal=:o AND idempotency_key=:k").param("o",owner).param("k",key).query(UUID.class).optional();if(prior.isPresent())return view(prior.get(),req);
-    var scope=new LinkedHashMap<String,Object>();scope.put("sourceStoryRecordId",source.toString());scope.put("sourceStory",text);scope.put("sourceApprovalRecordId",sourceApproval.toString());scope.put("sourceRevisionId",approvedSource.get("revision"));scope.put("sourceStorySha256",hash(text));scope.put("objective",body.getOrDefault("objective","Improve visual hook, causal progression, escalation and payoff"));scope.put("profile",body.getOrDefault("profile",Map.of()));scope.put("contractVersion","STORY_EVOLUTION_V1");
+    var scope=new LinkedHashMap<String,Object>();scope.put("sourceStoryRecordId",source.toString());scope.put("sourceStory",text);scope.put("sourceApprovalRecordId",sourceApproval.toString());scope.put("sourceRevisionId",approvedSource.get("revision"));scope.put("sourceStorySha256",hash(text));scope.put("objective",body.getOrDefault("objective","Improve visual hook, causal progression, escalation and payoff"));scope.put("profile",body.getOrDefault("profile",Map.of()));scope.put("canonicalIdentityBinding",characterBinding);scope.put("contractVersion","STORY_EVOLUTION_V1");
     if(body.get("baselineAnalysisId")!=null){
       UUID analysis=uuid(body.get("baselineAnalysisId"));
       scope.put("baselineAnalysisId",analysis.toString());
@@ -90,6 +91,7 @@ public class StoryEvolutionService {
     var context=new LinkedHashMap<String,Object>();
     context.put("inputMode","DETAILED_STORY"); context.put("storyGenerationMode","IMPROVE_EXISTING_STORY");
     context.put("approvedStoryText",scope.get("sourceStory")); context.put("sourceStoryRecordId",scope.get("sourceStoryRecordId")); context.put("sourceFingerprint",scope.get("sourceStorySha256"));
+    context.putAll(map(scope.get("canonicalIdentityBinding")));
     context.put("lockedRequirements",scope.containsKey("canonicalStoryFeasibilityContext")?List.of("PRESERVE_CORE_PREMISE","PRESERVE_CHARACTER_IDENTITY","PRESERVE_PHYSICAL_RULE","PRESERVE_ENDING"):List.of("PRESERVE_CORE_PREMISE","PRESERVE_KEY_EVENTS","PRESERVE_ENDING")); context.put("objective",scope.get("objective"));
     context.put("roundNumber",round); context.put("previousRevision",p.get("bestDraftId")); context.put("bestCandidate",p.getOrDefault("bestCandidate",Map.of())); context.put("rejectedCandidates",p.getOrDefault("rejectedCandidates",List.of()));
     context.put("acceptedChanges",p.getOrDefault("acceptedChanges",List.of())); context.put("previousAssessment",p.getOrDefault("lastAssessment",Map.of())); context.put("requestedAlternativeCount",2);
@@ -143,6 +145,7 @@ public class StoryEvolutionService {
     UUID newStory = uuid(approval.get("storyRecordId"));
     String storyText = String.valueOf(approval.get("approvedText"));
     var context = new LinkedHashMap<String,Object>();
+    context.putAll(workflow.canonicalStoryIdentity(newStory, storyText));
     context.put("sourceStoryRecordId", newStory.toString());
     context.put("candidateId", approval.get("candidateId"));
     context.put("storyRevisionId", approval.get("revisionId"));
@@ -325,12 +328,14 @@ public class StoryEvolutionService {
     UUID source=uuid(body.get("sourceStoryRecordId")), approval=uuid(body.get("approvalRecordId")),analysis=uuid(body.get("baselineAnalysisId"));
     var approved=workflow.approvedStoryForCpq(source,approval);
     String text=String.valueOf(approved.get("text"));
+    var characterBinding=workflow.canonicalStoryIdentity(source,text);
     var scope=new LinkedHashMap<String,Object>();
     scope.put("experimentVersion",PILOT);scope.put("sourceStoryRecordId",source.toString());scope.put("sourceApprovalRecordId",approval.toString());
     scope.put("sourceRevisionId",approved.get("revision"));scope.put("sourceStory",text);scope.put("sourceStorySha256",hash(text));
     scope.put("baselineAnalysisId",analysis.toString());scope.put("objective",body.getOrDefault("objective","Improve creative quality, not canonical points"));
     scope.put("protectedAnchors",body.getOrDefault("protectedAnchors",List.of()));scope.put("requestedAlternativeCount",2);
     scope.put("canonicalStoryFeasibilityContext",canonicalStoryFeasibilityContext(source,approval,approved,text,analysis));
+    scope.put("canonicalIdentityBinding",characterBinding);
     // The canonical context validates analysis/source lineage. Include the
     // current saved production settings too; a source-only hash is insufficient.
     scope.put("productionSettings",util.context(analysis,null,null).getOrDefault("productionSettings",Map.of()));
@@ -340,6 +345,7 @@ public class StoryEvolutionService {
   Map<String,Object> pilotContext(Map<String,Object> scope,boolean review,Object candidates,String runId) {
     var context=new LinkedHashMap<String,Object>();
     context.put("canonicalStoryFeasibilityContext",scope.get("canonicalStoryFeasibilityContext"));
+    context.putAll(map(scope.get("canonicalIdentityBinding")));
     context.put("approvedStoryText",scope.get("sourceStory"));context.put("sourceFingerprint",scope.get("sourceStorySha256"));
     context.put("objective",scope.get("objective"));context.put("roundNumber",1);
     context.put("storyExperiment",Map.of("version",PILOT,"requestedAlternativeCount",2,
