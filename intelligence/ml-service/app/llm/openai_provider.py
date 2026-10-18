@@ -99,15 +99,22 @@ class OpenAIProvider(LLMProvider):
         self.last_request_started = True
         started = time.monotonic()
         try:
-            response = self.client.chat.completions.create(
-                model=self.model,
-                messages=messages,  # type: ignore[arg-type]
-                temperature=temperature,
-                **({"extra_headers": {"X-Client-Request-Id": client_id}} if client_id else {}),
-                **({"max_tokens": self.max_output_tokens} if hasattr(self, "max_output_tokens") else {}),
-                **({"response_format": self.response_format} if hasattr(self, "response_format") else
-                   {"response_format": {"type": "json_object"}} if getattr(self, "json_output", False) else {}),
-            )
+            request = {"model": self.model, "messages": messages}
+            if not getattr(self, "omit_temperature", False):
+                request["temperature"] = temperature
+            if hasattr(self, "max_completion_tokens"):
+                request["max_completion_tokens"] = self.max_completion_tokens
+            elif hasattr(self, "max_output_tokens"):
+                request["max_tokens"] = self.max_output_tokens
+            if hasattr(self, "reasoning_effort"):
+                request["reasoning_effort"] = self.reasoning_effort
+            if client_id:
+                request["extra_headers"] = {"X-Client-Request-Id": client_id}
+            if hasattr(self, "response_format"):
+                request["response_format"] = self.response_format
+            elif getattr(self, "json_output", False):
+                request["response_format"] = {"type": "json_object"}
+            response = self.client.chat.completions.create(**request)  # type: ignore[arg-type]
         except Exception as error:
             self.last_error = safe_provider_error(error, time.monotonic() - started)
             raise

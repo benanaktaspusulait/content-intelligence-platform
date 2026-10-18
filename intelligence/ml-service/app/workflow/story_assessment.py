@@ -20,6 +20,10 @@ from .creative_reconstruction import DIMENSIONS
 POLICY='ASSESSMENT_ONLY_UNKNOWN_SOURCE_V1'
 SCHEMA='assessment-only-story-review-v4-derived-verdict'
 TIMEOUT_POLICY={'version':'assessment-story-review-timeouts-v1','connectSeconds':5,'poolSeconds':5,'writeSeconds':10,'readSeconds':60,'backendHttpSeconds':90,'workflowDeadlineSeconds':600}
+LEGACY_MODEL='gpt-4o-mini-2024-07-18'
+REVIEW_MODEL='gpt-6.1-sol'
+REVIEW_PROFILES={LEGACY_MODEL:{'reasoningEffort':None,'maxCompletionTokens':4000,'temperature':0,'tokenParameter':'max_tokens','maximumInputBytes':24000},
+ REVIEW_MODEL:{'reasoningEffort':'medium','maxCompletionTokens':12000,'temperature':None,'tokenParameter':'max_completion_tokens','maximumInputBytes':24064}}
 
 def sdk_timeout():
     return Timeout(TIMEOUT_POLICY['readSeconds'],connect=TIMEOUT_POLICY['connectSeconds'],pool=TIMEOUT_POLICY['poolSeconds'],write=TIMEOUT_POLICY['writeSeconds'])
@@ -89,6 +93,7 @@ SYSTEM="""Assess source fidelity and creative merit. ASSESSMENT ONLY: no approva
 Read full narratives and adjacent spans. Preserve protected facts, not incidental staging. Rule activation differs from ordinary release; ambiguous intent may be UNKNOWN. Use catalog IDs only; A cites A, B cites B. PASS needs affirmative source and candidate support (paraphrase allowed); FAIL needs contradiction or substantive protected omission, not wording absence. Omission needs adjacent context. UNKNOWN states the unresolved question and may have empty IDs. Valid IDs do not prove meaning.
 PASS on all protected events or rule-trigger conditions must cite the full candidate narrative. Continuity PASS claims the held-state-to-release transition: cite a contiguous candidate suffix through its final passage; otherwise use UNKNOWN. Ending PASS and ENDING_REPLAY must cite the final candidate passage. These checks establish evidence coverage, not semantic truth.
 For the creative comparison, explicitly address each candidate's opening visual promise, concrete action changes and escalation, object-state continuity, character reactions, ending/payoff and replay motivation, and production executability. Ground every claim in candidate evidence; state UNKNOWN when unsupported. For each of six dimensions, give candidate-specific evidence-linked strengths, weaknesses and risks. Avoid generic repeated prose; state when no meaningful difference exists. MATERIAL_IMPROVEMENT needs grounded change, consequence, addressed weakness, risk and materiality; wording, camera labels or arbitrary timing do not qualify. NO_MATERIAL_IMPROVEMENT and NO_CREATIVE_WINNER are valid. Do not invent distinctions or audience/render success. Keep concise within 4000 output tokens."""
+SYSTEM_V61=SYSTEM.replace('Keep concise within 4000 output tokens.','Reserve enough space for the complete requested assessment; do not omit required fields to force brevity.')
 
 
 def check_scope(text,context,catalog=None):
@@ -166,7 +171,8 @@ def wire(text, context):
     # Full narratives and original protected facts remain available. The catalog
     # replaces redundant literal-location/quotation projections, not source text.
     candidates=[{k:c[k] for k in ('ref','title','narrative','candidateSha256','provenance')} for c in selected]
-    return {'system':SYSTEM,'payload':{'policy':POLICY,'originalStory':text,
+    system=SYSTEM_V61 if os.getenv('WORKFLOW_STORY_REVIEW_MODEL','')==REVIEW_MODEL else SYSTEM
+    return {'system':system,'payload':{'policy':POLICY,'originalStory':text,
         'protectedAnchors':scope['protectedAnchors'],'productionSettings':scope['productionSettings'],
         'candidates':candidates,'evidenceCatalog':catalog,'dimensions':list(DIMENSIONS),'semanticChecks':check_scope(text,context,catalog),
         'comparisonObjective':'Identify source-supported viewer-visible gains over the original; NO_CREATIVE_WINNER is valid.',
@@ -175,23 +181,44 @@ def wire(text, context):
 
 def request_body(text,context):
     w=wire(text,context)
-    return {'model':'gpt-4o-mini-2024-07-18','messages':[{'role':'system','content':w['system']},
-        {'role':'user','content':encoded(w['payload'])}],'temperature':0,'max_tokens':4000,'response_format':w['responseFormat']}
+    model=os.getenv('WORKFLOW_STORY_REVIEW_MODEL','');profile=REVIEW_PROFILES.get(model)
+    if profile is None:raise ValueError('Exact configured OpenAI STORY_REVIEW model required')
+    body={'model':model,'messages':[{'role':'system','content':w['system']},
+        {'role':'user','content':encoded(w['payload'])}],profile['tokenParameter']:profile['maxCompletionTokens'],
+        'response_format':w['responseFormat']}
+    if profile['temperature'] is not None:body['temperature']=profile['temperature']
+    if profile['reasoningEffort'] is not None:body['reasoning_effort']=profile['reasoningEffort']
+    return body
 
 
 def preview(text, context):
     if context['assessmentScope'].get('transportPolicy')!=TIMEOUT_POLICY:raise ValueError('Assessment-specific timeout policy differs from backend binding')
     w=wire(text,context);model=os.getenv('WORKFLOW_STORY_REVIEW_MODEL','')
-    if model!='gpt-4o-mini-2024-07-18':raise ValueError('Exact configured OpenAI STORY_REVIEW model required')
+    profile=REVIEW_PROFILES.get(model)
+    if profile is None:raise ValueError('Exact configured OpenAI STORY_REVIEW model required')
     rates=[float(os.getenv('WORKFLOW_STORY_REVIEW_'+s+'_USD_PER_MILLION','nan')) for s in ('INPUT','OUTPUT')]
     if not all(math.isfinite(v) and v>0 for v in rates):raise ValueError('Explicit configured review prices required')
     size=len(encoded(w['payload']).encode());sys_size=len(w['system'].encode())
     request_bytes=len(encoded(request_body(text,context)).encode())
-    if request_bytes>24000:raise ValueError('Assessment complete request exceeds 24000-byte envelope')
-    bound=((request_bytes+1000)*rates[0]+4000*rates[1])/1e6
+    maximum_input_bytes=profile['maximumInputBytes']
+    if request_bytes>maximum_input_bytes:raise ValueError('Assessment complete request exceeds model-specific byte envelope')
+    max_tokens=profile['maxCompletionTokens'];bound=((request_bytes+1000)*rates[0]+max_tokens*rates[1])/1e6
     root=Path(__file__).resolve().parents[1]
+    implementation=sha({str(p):hashlib.sha256((root/p).read_bytes()).hexdigest() for p in (
+            'workflow/story_assessment.py','workflow/story_evidence.py','workflow/story_quality.py','workflow/api.py','workflow/creative_roles.py','llm/openai_provider.py')})
+    operation_binding={'policy':POLICY,'role':'STORY_REVIEW','provider':'openai','model':model,
+        'sourceStorySha256':sha(text),'assessmentScopeSha256':sha(context['assessmentScope']),
+        'evidenceCatalogSha256':w['payload']['evidenceCatalog']['catalogSha256'],
+        'systemSha256':sha(w['system']),'userPayloadSha256':sha(encoded(w['payload'])),
+        'responseFormatSha256':sha(w['responseFormat']),'serializedRequestSha256':sha(request_body(text,context)),
+        'reasoningEffort':profile['reasoningEffort'],'temperature':profile['temperature'],
+        'completionTokenParameter':profile['tokenParameter'],'maxCompletionTokens':max_tokens,
+        'maximumInputBytes':profile['maximumInputBytes'],'requestFramingAllowanceBytes':1000,'maxRequests':1,
+        'inputUsdPerMillion':rates[0],'outputUsdPerMillion':rates[1],'maximumCalculatedUsd':bound,
+        'timeoutPolicy':TIMEOUT_POLICY,'implementationSha256':implementation}
     return {'policy':POLICY,'role':'STORY_REVIEW','provider':'openai','model':model,
         'sourceStorySha256':sha(text),'scopeSha256':sha(context['assessmentScope']),
+        'sourceAssessmentScopeSha256':sha(context['assessmentScope']),
         'evidenceCatalogSha256':w['payload']['evidenceCatalog']['catalogSha256'],
         'evidenceDocumentBindings':w['payload']['evidenceCatalog']['documentBindings'],
         'evidenceExtractionVersion':w['payload']['evidenceCatalog']['version'],
@@ -199,16 +226,17 @@ def preview(text, context):
         'responseSchemaSha256':sha(w['responseFormat']['json_schema']['schema']),'responseFormatSha256':sha(w['responseFormat']),
         'serializedRequestSha256':sha(request_body(text,context)),
         'responseFormatType':'json_schema','strictStructuredOutput':True,
-        'schemaVersion':SCHEMA,'maxRequests':1,'maximumInputBytes':24000,
+        'reasoningEffort':profile['reasoningEffort'],'temperature':profile['temperature'],
+        'completionTokenParameter':profile['tokenParameter'],
+        'schemaVersion':SCHEMA,'maxRequests':1,'maximumInputBytes':maximum_input_bytes,
         'payloadBytes':size,'systemBytes':sys_size,'serializedRequestBytes':request_bytes,
-        'schemaBytes':len(encoded(w['responseFormat']['json_schema']['schema']).encode()),'maxOutputTokens':4000,
+        'schemaBytes':len(encoded(w['responseFormat']['json_schema']['schema']).encode()),'maxOutputTokens':max_tokens,
         'inputUsdPerMillion':rates[0],'outputUsdPerMillion':rates[1],'maximumCalculatedUsd':bound,
         'automaticRetries':False,'fallback':False,'assessmentOnly':True,
         'clientRequestIdPolicy':'application-request-uuid-v1','timeoutPolicy':deepcopy(TIMEOUT_POLICY),
         'outboundTransportMetadataSha256':sha({'timeoutPolicy':TIMEOUT_POLICY,'clientHeader':'X-Client-Request-Id','valuePolicy':'application-request-uuid-v1','valueAsciiBytes':36}),
         'requestFramingAllowanceBytes':1000,'clientRequestIdHeaderBytes':len('X-Client-Request-Id: '+str(uuid.UUID(int=0))+'\r\n'),
-        'implementationSha256':sha({str(p):hashlib.sha256((root/p).read_bytes()).hexdigest() for p in (
-            'workflow/story_assessment.py','workflow/story_evidence.py','workflow/story_quality.py','workflow/api.py','workflow/creative_roles.py','llm/openai_provider.py')})}
+        'implementationSha256':implementation,'fullOperationBindingSha256':sha(operation_binding)}
 
 
 def resolve_review_evidence(value,text,context):
@@ -379,7 +407,12 @@ def execute(text,context,cap):
         'clientRequestId':request_id,'billingStatus':'NOT_DISPATCHED','processingStatus':'NOT_STARTED','requestStartedAt':datetime.now(timezone.utc).isoformat()}
     provider=None; started=time.monotonic()
     try:
-        provider=OpenAIProvider(model=current['model'],request_timeout=sdk_timeout());provider.client_request_id=request_id;provider.max_output_tokens=4000;provider.response_format=response_format(evidence_catalog(text,context))
+        provider=OpenAIProvider(model=current['model'],request_timeout=sdk_timeout());provider.client_request_id=request_id
+        profile=REVIEW_PROFILES[current['model']]
+        if profile['tokenParameter']=='max_completion_tokens':
+            provider.max_completion_tokens=profile['maxCompletionTokens'];provider.reasoning_effort=profile['reasoningEffort'];provider.omit_temperature=True
+        else:provider.max_output_tokens=profile['maxCompletionTokens']
+        provider.response_format=response_format(evidence_catalog(text,context))
         w=wire(text,context);receipt['providerDispatched']=True
         raw=provider.complete(encoded(w['payload']),system=w['system'],temperature=0)
         provider.last_raw_response=raw
@@ -419,7 +452,11 @@ def execute(text,context,cap):
         if not receipt['modelIdentity']['verified']:
             receipt['billingStatus']='MODEL_IDENTITY_UNVERIFIED';raise ValueError('Actual reviewer identity missing/differs')
         receipt.update(actualCostUsd=cost,billingStatus='KNOWN_INCURRED')
-        if meta.get('finishReason')!='stop' or cost>cap or receipt['usage'].get('completion_tokens',0)>4000:raise ValueError('Reviewer completion/budget constraint failed')
+        if meta.get('finishReason')!='stop' or cost>cap or receipt['usage'].get('completion_tokens',0)>current['maxOutputTokens']:
+            raise ValueError('Reviewer completion/budget constraint failed')
+        details=receipt['usage'].get('completion_tokens_details') or {};reasoning=details.get('reasoning_tokens',0)
+        if isinstance(reasoning,bool) or not isinstance(reasoning,int) or reasoning<0 or reasoning>receipt['usage'].get('completion_tokens',0):
+            raise ValueError('Invalid reasoning-token accounting')
     except Exception as error:
         receipt['processingStatus']='LOCALLY_REJECTED' if receipt['responseReceived'] else 'DISPATCH_UNCERTAIN'
         accounting_error={'category':type(error).__name__,'detail':str(error)[:2000],
